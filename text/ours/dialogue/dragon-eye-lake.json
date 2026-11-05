@@ -98,5 +98,23 @@
    "shadow, that fish won't bite",
    "the bait you are using now."
   ]
- ]
+ ],
+ "s009.sec81.vend_prompt": "Choose an item.",
+ "s009.sec81.vend_more": "More",
+ "s009.sec81.vend_back": "Back",
+ "s009.sec81.vend_leave": "Leave",
+ "s009.sec81.vend_poor": "Not enough bits.",
+ "s009.sec81.vend_full": "Your bag is full.",
+ "s009.sec81.vend_daily": "One of each rare mushroom per day.",
+ "s009.sec81.vend_sold": "Sold out today. Come back after midnight.",
+ "s009.sec81.vend_bonus": "Bonus! A Double Floppy!",
+ "s009.sec81.vend_play_prompt": "Play for 1000 bits?",
+ "s009.sec81.vend_play": "Play",
+ "s009.sec81.vend_quit": "Leave",
+ "s009.sec81.vend_buy0": "Digimushroom 51",
+ "s009.sec81.vend_getDigimushrm": "Received Digimushroom!",
+ "s009.sec81.vend_buy1": "Happymushroom 1500",
+ "s009.sec81.vend_getHappymushrm": "Received Happymushroom!",
+ "s009.sec81.vend_buy2": "Ice Mushroom 1000",
+ "s009.sec81.vend_getIceMushrm": "Received Ice Mushroom!"
 }

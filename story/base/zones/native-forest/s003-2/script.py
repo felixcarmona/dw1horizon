@@ -19,7 +19,7 @@ t9 = text.s003.sec9
 @forest.on_enter
 def enter():    # section 254
     roll = random.roll(99)
-    if roll <= 3:
+    if roll <= 7:
         spawn_item(Item.BlueApple, at=(-1250, 1650))
     roll = random.roll(99)
     if roll <= 29:

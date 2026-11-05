@@ -17,7 +17,7 @@ from tools.models.field_animations.channels import replace_channels, coalesce
 from tools.models.field_animations.gliding import _forward
 from motiondiscidentity import changed_programs
 from tools.models.field_animations.war_greymon import rotation, set_rotation, align
-SOURCE = 'becc9dc5f7e8367e572749fd0ea7617fff0c84e01345a0649b822d5248744536'
+SOURCE = '97adae24ba8c103eca938853111e488d9c2ae73e5dcbbac35076df693be7f6b5'
 PARENTS = [-1, 0, 1, 2, 3, 1, 5, 6, 1, 8, 9, 10, 1, 12, 13, 14, 1, 16, 1, 18, 3, 3, 3, 6, 6, 6, 1]
 # Authored primary ankle corrections for nominal 60 FPS support, not source curves.
 CONTACT_BIAS = {2: {10: {0: [0, 0, 1],
@@ -340,9 +340,9 @@ def build(data, sk):
     old = _parse(data, sk)
     authored, solver, idle_lifts = _author(old, sk)
     primary = _pack(authored)
-    assert hashlib.sha256(primary).hexdigest() == '58bbf44587ba435dca646799462d020d7ee14961400b0e01d218a5af4079c1bb'
+    assert hashlib.sha256(primary).hexdigest() == '817118f25c4a7945d754f2d07614903c300a47a5de420011815c002264a16a81'
     result = _pack(_bias(_parse(primary, sk), sk))
-    assert hashlib.sha256(result).hexdigest() == 'ee1882fc0443b1fd5610604dca288d83728f467de4c08be2623a17be5ef148e5'
+    assert hashlib.sha256(result).hexdigest() == '40ece4f24613c995e356e2184826cbc574956c07772b2833dcdb5c3487e9d79e'
     checks, shift_error, rotation_error = _verify(old, _parse(result, sk), sk, solver)
     storage = motionstorage.audit(result, 27)
     assert storage['fits'], storage

@@ -47,6 +47,10 @@ def authored_recipe(obj, data, tool_root=None, words=()):
     choices = []
     if name in ('MOD_FLAG_PALETTE', 'MOD_FLAG_OFFSET', 'MOD_FLAG_RUNS'):
         choices = [('language_flags', [name.removeprefix('MOD_FLAG_').lower()])]
+    if (obj['source'] == 'src/main/script_common.c'
+            and name.startswith('STR_TOURNAMENT_GRADE_')
+            and len(name.removeprefix('STR_TOURNAMENT_GRADE_')) == 1):
+        choices = [('tournament_grade', [name[-1]])]
     if name == 'SOUND_INDEX_FILES' and obj['source'] == 'src/main/sound.c':
         pointers, payload = fields(obj, words)
         if (len(data) == 48 and [p-obj['offset'] for p in pointers] ==

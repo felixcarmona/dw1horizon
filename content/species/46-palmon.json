@@ -3,6 +3,10 @@
   "name": "Palmon",
   "level": "rookie",
   "vanilla": true,
+  "off": {
+    "level": "rookie",
+    "evolution": {"from": [44, -1, -1, -1, -1], "to": [51, 25, 58, 24, 49, 208]}
+  },
   "attribute": "vaccine",
   "specialties": ["nature", null, "ice"],
   "techniques": ["Poison Claw", "Charm Perfume", "Poison Powder", "Mass Morph", "Tear Drop", "Water Blit",
@@ -30,7 +34,7 @@
   },
   "evolution": {
     "from": [44, -1, -1, -1, -1],
-    "to": [51, 25, 58, 24, 49, -1],
+    "to": [51, 25, 58, 49, -1, -1],
     "requirements": {
       "digimon": 44,
       "hp": -1,

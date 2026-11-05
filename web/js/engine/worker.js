@@ -8,6 +8,8 @@
 // Messages in: {kind: 'init', base, plan}, {kind: 'extract', file, ...}, {kind: 'job', job, inputs}, {kind: 'write', ...}
 // Messages out: {kind: 'ready'|'done'|'progress'|'error', ...}
 
+import { retryFile, buildDirectory, discFile } from './storage.js';
+
 const ROOT = '/horizon';
 const REL = `${ROOT}/.release`;
 const OPFS_DIR = 'horizon-build';
@@ -58,21 +60,15 @@ async function bundleFile(path) {
 // (the story passes edit the new screens' .MAP in place) still reads the version the page's registry gives it; the
 // page removes a version once a newer one replaced it and no running job reads it.
 const locOf = (path, token) => (token === 'x' ? path : `@${token}/${path}`);
-const dirCache = new Map();
-async function opfsDir(path, create) {
-  // path: 'a/b/c' (folders)
-  if (dirCache.has(path)) return dirCache.get(path);
-  let d = await (await navigator.storage.getDirectory()).getDirectoryHandle(OPFS_DIR, { create: true });
-  if (path) for (const part of path.split('/')) d = await d.getDirectoryHandle(part, { create });
-  dirCache.set(path, d);
-  return d;
-}
+const opfsDir = buildDirectory;
 const split = (p) => { const i = p.lastIndexOf('/'); return [i < 0 ? '' : p.slice(0, i), p.slice(i + 1)]; };
 
 async function opfsRead(path) {
-  const [dir, name] = split(path);
-  const h = await (await opfsDir(`tree${dir ? '/' + dir : ''}`, false)).getFileHandle(name);
-  return new Uint8Array(await (await h.getFile()).arrayBuffer());
+  return retryFile(`build file ${path}`, async () => {
+    const [dir, name] = split(path);
+    const h = await (await opfsDir(`tree${dir ? '/' + dir : ''}`, false)).getFileHandle(name);
+    return new Uint8Array(await (await h.getFile()).arrayBuffer());
+  }, (line) => post({ kind: 'progress', message: line }));
 }
 
 async function opfsWrite(path, bytes) {
@@ -313,23 +309,24 @@ json.dumps([str(code), buf.getvalue()[-6000:]])
 }
 
 // ---------------------------------------------------------------- the player's disc -> extracted/ (OPFS)
-function mountDisc(file, mount = '/disc') {
+async function mountDisc(input, mount = '/disc') {
+  const file = await retryFile(`input disc ${input.name}`, () => discFile(input));
   FS.mkdirTree(mount);
   try { FS.unmount(mount); } catch { /* not mounted */ }
   FS.mount(FS.filesystems.WORKERFS, { files: [file] }, mount);
   return `${mount}/${file.name}`;
 }
 
-function mountSources(sources) {
-  return (plan.source_discs || []).map((game) => {
+async function mountSources(sources) {
+  return Promise.all((plan.source_discs || []).map(async (game) => {
     if (!sources?.[game]) throw new Error(`source disc required: ${game}`);
-    return `${game}=${mountDisc(sources[game], `/source-disc-${game}`)}`;
-  });
+    return `${game}=${await mountDisc(sources[game], `/source-disc-${game}`)}`;
+  }));
 }
 
 async function extract(m) {
-  const disc = mountDisc(m.file);
-  py.globals.set('SOURCE_DISCS', py.toPy(mountSources(m.sources)));
+  const disc = await mountDisc(m.file);
+  py.globals.set('SOURCE_DISCS', py.toPy(await mountSources(m.sources)));
   for (const p of plan.extract_inputs || []) if (!exists(abs(p))) put(p, await bundleFile(p), 'b', false);
   const t0 = performance.now();
   py.globals.set('DISC', disc);
@@ -381,7 +378,7 @@ json.dumps([key, title, loc])
     for (const game of plan.source_discs || []) {
       try {
         if (!m.sources?.[game]) throw new Error(`source disc required: ${game}`);
-        py.globals.set('SOURCE_DISC', mountDisc(m.sources[game], `/source-disc-${game}`));
+        py.globals.set('SOURCE_DISC', await mountDisc(m.sources[game], `/source-disc-${game}`));
         py.globals.set('SOURCE_GAME', game);
         await py.runPythonAsync(`
 from tools.derive.importers.discs import extract as extract_source
@@ -410,8 +407,8 @@ function patchError(e) {
 // m.holes: [[disc path, its file's place in OPFS under tree/]]
 async function writeDisc(m) {
   trim(new Set(), 0);
-  const disc = mountDisc(m.file);
-  py.globals.set('SOURCE_DISCS', py.toPy(mountSources(m.sources)));
+  const disc = await mountDisc(m.file);
+  py.globals.set('SOURCE_DISCS', py.toPy(await mountSources(m.sources)));
   const t0 = performance.now();
   const root = await navigator.storage.getDirectory();
   const top = await root.getDirectoryHandle(OPFS_DIR, { create: true });
@@ -481,7 +478,9 @@ def read_copy(self, path, offset, length):
             if at <= offset and offset + length <= at + len(known):
                 return known[offset - at:offset - at + length]
     return disc_copy(self, path, offset, length)
-P.BaseDisc.read_copy = read_copy
+# Older packages predate the shared reader fix; keep their browser compatibility path.
+if not hasattr(P, 'USA_LICENSE'):
+    P.BaseDisc.read_copy = read_copy
 
 class Hole(iw.Source):
     """A hole's file in OPFS, read when it is used."""

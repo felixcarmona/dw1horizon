@@ -23,7 +23,7 @@ def enter():    # section 254
     if roll <= 14:
         spawn_item(Item.Digimushrm, at=(-150, -3050))
     roll = random.roll(99)
-    if roll <= 6:
+    if roll <= 7:
         spawn_item(Item.Happymushrm, at=(-950, -1050))
     if strange_plant_rumor_heard and not recruited(Species.Vegiemon):
         objects[0].hide()

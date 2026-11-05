@@ -489,5 +489,25 @@
   [
    "Essaie de demander ailleurs."
   ]
- ]
+ ],
+ "s078.sec81.vend_prompt": "Choisissez un objet.",
+ "s078.sec81.vend_more": "Suite",
+ "s078.sec81.vend_back": "Retour",
+ "s078.sec81.vend_leave": "Partir",
+ "s078.sec81.vend_poor": "Pas assez de bits.",
+ "s078.sec81.vend_full": "Votre sac est plein.",
+ "s078.sec81.vend_daily": "Un de chaque champignon rare par jour.",
+ "s078.sec81.vend_sold": "Épuisé. Revenez après minuit.",
+ "s078.sec81.vend_bonus": "Bonus ! Double soin !",
+ "s078.sec81.vend_play_prompt": "Jouer pour 1000 bits ?",
+ "s078.sec81.vend_play": "Jouer",
+ "s078.sec81.vend_quit": "Partir",
+ "s078.sec81.vend_buy0": "Viande moisie 26",
+ "s078.sec81.vend_getMoldyMeat": "Vous recevez Viande moisie !",
+ "s078.sec81.vend_buy1": "Viande 20",
+ "s078.sec81.vend_getMeat": "Vous recevez Viande !",
+ "s078.sec81.vend_buy2": "Viande géante 300",
+ "s078.sec81.vend_getGiantMeat": "Vous recevez Viande géante !",
+ "s078.sec81.vend_buy3": "Filet de boeuf 1000",
+ "s078.sec81.vend_getSirloin": "Vous recevez Filet de boeuf !"
 }

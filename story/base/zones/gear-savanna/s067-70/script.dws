@@ -19,7 +19,7 @@ script 67 {
             spawn_item(item("Digimushrm"), 40, 84);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 5) {
+        if (random_roll <= 7) {
             spawn_item(item("Digimushrm"), 68, 72);
         }
         store_random(random_roll, 99);
@@ -27,7 +27,7 @@ script 67 {
             spawn_item(item("Digimushrm"), 39, 59);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 3) {
+        if (random_roll <= 7) {
             spawn_item(item("Sweet Nut"), 67, 24);
         }
     }

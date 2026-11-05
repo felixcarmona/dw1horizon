@@ -53,23 +53,23 @@
     },
     "zones/gear-savanna/s075-78/script.dws": {
       "original_sha256": "2ee8bf6719db7ad1eea81499d07222de3b8bcc704eebf498b498142af9eb83b0",
-      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source",
-      "authored_sha256": "9946a6f8ca235febb203f6ed4cf54884ddc29a2e2b1291e25d2dfbc6896b4f62"
+      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "64cdc5f3a7ae3c1fb4c5e644164ed3c22de283295eb098049a32ff8d3c9233fd"
     },
     "zones/gear-savanna/s075-78/script.py": {
       "original_sha256": "0350f9532fdd3446ae113bf53ec0423cee2a3e40d2028d6b13161972145f032d",
-      "authored_sha256": "2c0247ce7b518c000ebf800cb9aef2c4aab99f35eb7daefe5e0fe862f47369e2",
-      "reason": "Five-session training and narrator choice ownership"
+      "authored_sha256": "a29db27606fd750c8466925e33c5f9d6f8958a3f532695900faa23a92ade6bc1",
+      "reason": "Five-session training and narrator choice ownership; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
     },
     "zones/gear-savanna/s126-131/script.dws": {
       "original_sha256": "ccb3defc815e55d781dc6877f932bdc4c96de77e76561c0185787772728b33f8",
-      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source",
-      "authored_sha256": "5ed08f16031bf3a2e944a8fe7460b0c41ec6d7279489adc76b5fa52bad1e101f"
+      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "288ca77c417b50d544bef4d2ccf71fb73e5992827ba61cdd0a7817d42bdd0611"
     },
     "zones/gear-savanna/s126-131/script.py": {
       "original_sha256": "c9e07332643bed2f8a8ddfdb1e70c5af70af8f67e875c3976a455dedde4d58a0",
-      "authored_sha256": "af7a4ed5d4ef8502109df28cdd3f4a7f7d8e4a72a22965ab527ae27596f50e15",
-      "reason": "Five-session training and narrator choice ownership"
+      "authored_sha256": "d5fbe1f6b38e5b7b9fc2b7be2f68ad163265240cab9cf4887e4b41c74a7628b8",
+      "reason": "Five-session training and narrator choice ownership; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
     },
     "zones/green-gym/s108-112/script.dws": {
       "original_sha256": "6d5405ac8680aa851fc7a96911a354303f091eedbbcaf234c164ce8316313e57",
@@ -123,13 +123,13 @@
     },
     "zones/misty-trees/s115-119/script.dws": {
       "original_sha256": "728acc7a8e899e71b61c03342d5deffeae6bf52e0271feb7ec082f121c33cffb",
-      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source",
-      "authored_sha256": "4c260808ee7c526558f1d4f578a4f38fb072b7c0a655b0d2967633a442a11646"
+      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "42fed884765ddb9c6c56937e13b1da14c299f6e7042efbf2411977e382268e05"
     },
     "zones/misty-trees/s115-119/script.py": {
       "original_sha256": "6ce8424027d0f72bd8567a213277a355183fbb9f2918c3739c4276ffdd8c5a7e",
-      "authored_sha256": "f216a59bbae51a10ba1a36bb3e4e67f70d396a60972df5864b9e8f9f6b61ef84",
-      "reason": "Five-session training and narrator choice ownership"
+      "authored_sha256": "316cea578f3397075f97d35ebe1a077cab4ac583ef53115eda0d92f672d4bf1d",
+      "reason": "Five-session training and narrator choice ownership; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
     },
     "zones/monochrome-shop/s049-49/script.dws": {
       "original_sha256": "3e9d6770660fb29e4bb595634cdb633aec5931903cb8a584704d2f581fd641f2",
@@ -158,13 +158,13 @@
     },
     "zones/ancient-glacial-region/s077-80/script.py": {
       "original_sha256": "845799c5e66bba2b18ddf0de3eeb6c8c2a57271d854f65338c43dd4ab347b3d4",
-      "authored_sha256": "2e88cfac6473beed83a138542f1bcc31bda93f1aa3648229f26afb6df08e5e74",
-      "reason": "Recruit the species fought in the balanced map slot"
+      "authored_sha256": "b003f7727936887c8a9d5b5895b47c4e7fff9b038900433d25f75cb599e02290",
+      "reason": "Recruit the species fought in the balanced map slot; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
     },
     "zones/ancient-glacial-region/s077-80/script.dws": {
       "original_sha256": "ca80aa459f3f3e9acd9d2a8d033bc2a6029d5ea5239c180169ce832c4fb6d62f",
-      "authored_sha256": "90443f735200252ad86042788b18ba2afb01170ba0f184ad041fc80206ef987e",
-      "reason": "Recruit the species fought in the balanced map slot"
+      "authored_sha256": "9f30f151736d89446c366fe852f8dee16a424d7897947941180dbbd2801fe677",
+      "reason": "Recruit the species fought in the balanced map slot; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
     },
     "zones/factorial-town/s152-158/script.py": {
       "original_sha256": "e6c8e8477bb4e633ee753b4f6fedb382a84f2592b1788b913a7aa11d645f9e9a",
@@ -178,13 +178,13 @@
     },
     "zones/gear-savanna/s068-71/script.py": {
       "original_sha256": "f4ef98877708b7a5a5a6e7742e5fb8e4c0ba4b2425b83ed4659518df6954b722",
-      "authored_sha256": "6d218285ccede06d043ed78fc7ed08c09aa29a05cc846e2e48151d2ea34528f2",
-      "reason": "Recruit the species fought in the balanced map slot"
+      "authored_sha256": "6ab5a357ef72fc8b85a6b289b20567997fcd6dad72256fcbb577ed2ac94fb424",
+      "reason": "Recruit the species fought in the balanced map slot; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
     },
     "zones/gear-savanna/s068-71/script.dws": {
       "original_sha256": "407d809138a86652adedc287bf9166f1079e9e167f7c02b556a48ace90d89eac",
-      "authored_sha256": "d1c7a7fe412fd5f8e6aef99e56dfec29ff21d716e64aa1af264f22c1ec85884f",
-      "reason": "Recruit the species fought in the balanced map slot"
+      "authored_sha256": "2d2198132fd4f18035129518e4112030cb184849757c498fa798e0d0116fe5b8",
+      "reason": "Recruit the species fought in the balanced map slot; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
     },
     "zones/gear-savanna/s074-77/script.py": {
       "original_sha256": "3c8999ae59e7a48948fda8218bd9fece39289727fb86b71f1b0b45d408c24fc1",
@@ -198,13 +198,13 @@
     },
     "zones/great-canyon-entrance/s036-36/script.py": {
       "original_sha256": "2f43ea5d6e12ba434ef9f44d7a5e6dd5e6c62cdf72c40bcc7e8056f3708ea7cf",
-      "authored_sha256": "368d3ae399cbefdc9ad3aba716380a5c20eda17d161ef24cae788cb4b594fdc3",
-      "reason": "Recruit the species fought in the balanced map slot"
+      "authored_sha256": "feb043a1199f02a0384e48b892bb1543e1006fbc550ef966359c77fa6802f598",
+      "reason": "Recruit the species fought in the balanced map slot; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
     },
     "zones/great-canyon-entrance/s036-36/script.dws": {
       "original_sha256": "0c1afc853c917166ad7c5aea0d3fe42b715d923bc5d7888974a2446202371d18",
-      "authored_sha256": "9a66634debc79d04d63decfc9544fde89a29fca4c8a6f79073d6d06d69636dcb",
-      "reason": "Recruit the species fought in the balanced map slot"
+      "authored_sha256": "9b7b568cabbe1c75139eaabb09becd210b98c2cdd0103887b1de4c05519de2b6",
+      "reason": "Recruit the species fought in the balanced map slot; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
     },
     "zones/libraries/s210/script.py": {
       "original_sha256": "cca0a20ad7afaf03631c5ca87382ea83bd9239234439f2cac96433bc51e7b0dd",
@@ -228,13 +228,13 @@
     },
     "zones/overdell-cemetery/s035-35/script.py": {
       "original_sha256": "9db3b59719b13de1886b016d4077435f38ff71fe543d7e91f9edb078f54ade76",
-      "authored_sha256": "8cc73a22a82b9fd88de60d82a5a209f3c62561e646c5a9dba2ca4696507e8f97",
-      "reason": "Any partner may enter the Grey Lord's Mansion once Myotismon has joined"
+      "authored_sha256": "39a0177a02b3a1ba0e613c81a16cd6d7e4e65114b6ea0808026839806335e34b",
+      "reason": "Any partner may enter the Grey Lord's Mansion once Myotismon has joined; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
     },
     "zones/overdell-cemetery/s035-35/script.dws": {
       "original_sha256": "72c71fb4b666f1615aab44bdb9b26fe2a96f6b709780e7fbadbbbefe5604d799",
-      "authored_sha256": "7de948358843a2d7099fae26ea64a2407e227d89b368a881a7a107faa30671cd",
-      "reason": "Any partner may enter the Grey Lord's Mansion once Myotismon has joined; DWS synchronized with the authored Python source"
+      "authored_sha256": "c60eb2629e8f76c8932aafefc628d118943ec0fd405ba485a6acc9cab9768da0",
+      "reason": "Any partner may enter the Grey Lord's Mansion once Myotismon has joined; DWS synchronized with the authored Python source; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
     },
     "zones/freezeland/s088-92/script.py": {
       "original_sha256": "189c4414dc0adc525d8f6b0cfab6d82013b70b21b07fec837322f0f5d56c5700",
@@ -328,13 +328,13 @@
     },
     "zones/kunemons-bed/s002-1/script.py": {
       "original_sha256": "67a389b8c6144cc83430c94fbc44748970d717e41be0cbb0033c182418c55a4b",
-      "authored_sha256": "c0eb1a8fc639788a2a4861fdedba7f1c55eb6ee1075934d7c58724d57538939a",
-      "reason": "Kunemon's item menu offers only food (pick_item(food=True), patch 0331)"
+      "authored_sha256": "8356dc7312eeedc0658eb8c77ae094d4b1b9c2d608e6a2e1172be23a756ae36d",
+      "reason": "Kunemon's item menu offers only food (pick_item(food=True), patch 0331); Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
     },
     "zones/kunemons-bed/s002-1/script.dws": {
       "original_sha256": "10335941cab7c9041d037b0e3d70296b083b72805cd2ac1cdc6e34e1dc654a63",
-      "authored_sha256": "f6546f23e12388d0cc56e88efd34865802b7fdedba32a081f0f64f843ce702df",
-      "reason": "Kunemon's item menu offers only food (patch 0331); DWS synchronized with the authored Python source"
+      "authored_sha256": "3b55005032d006a26f8d6c476ef6ce5364e0cadcf97d34466ee828410a500172",
+      "reason": "Kunemon's item menu offers only food (patch 0331); DWS synchronized with the authored Python source; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
     },
     "zones/grey-lords-mansion/s051-52/script.py": {
       "original_sha256": "a512b9eb5131e44c5d9f6814bbec741256024f8017cd4c4f4160a7d5c7315f67",
@@ -388,23 +388,23 @@
     },
     "zones/ancient-speedy-region/s082-86/script.py": {
       "original_sha256": "c9b734406e2f7018f668d073962fac3ee05c359d9cbfe27216d1737a5a95a1d4",
-      "authored_sha256": "620d577d7822df3d9ee7c5218786d17b3e8a35e09cf62dbaad834e489aa62769",
-      "reason": "Meteormon's walk-away starts once: the original restarted it at every glance, and a restart a few units short of the point gave a zero step and an endless wait"
+      "authored_sha256": "f4b8fa8519e7b9d82a37738610aa65151caa0c611e89f055c6cc89c2485eb125",
+      "reason": "Meteormon's walk-away starts once: the original restarted it at every glance, and a restart a few units short of the point gave a zero step and an endless wait; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
     },
     "zones/ancient-speedy-region/s082-86/script.dws": {
       "original_sha256": "61b22d964af09d2c5f6c07d27bf154a41c9c2a0d5bc534af1542478132cb88b4",
-      "authored_sha256": "3de91e9b709a77b7aaf784c9257146ea7ab72f44ca02bd4d7542fdde8a700952",
-      "reason": "Meteormon's walk-away starts once: the original restarted it at every glance, and a restart a few units short of the point gave a zero step and an endless wait; DWS synchronized with the authored Python source"
+      "authored_sha256": "4758d18e2e84f7780812afdcfc81f41d3c3d2b362d7d292a217bdee2b03a566a",
+      "reason": "Meteormon's walk-away starts once: the original restarted it at every glance, and a restart a few units short of the point gave a zero step and an endless wait; DWS synchronized with the authored Python source; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
     },
     "zones/ancient-glacial-region/s078-81/script.py": {
       "original_sha256": "c4a24365f2e84358edb1b7b1880e4643d119287d06586d5296e0dc3c501ace01",
-      "authored_sha256": "09e73544fc99af3bdf07d96f03f2a92b27d3c5308d5e97877e70d30f8120fc9b",
-      "reason": "The vending machine's MP Floppy prize is given; the original gave it only when the bag was full and otherwise took 200 bits for nothing"
+      "authored_sha256": "7646c05d5b5ce28689172a7f71a1b2977fc20b54023d6ec694f756447fa6f67f",
+      "reason": "Horizon vending machine on screen 81; synchronized Python and DWS; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
     },
     "zones/ancient-glacial-region/s078-81/script.dws": {
       "original_sha256": "a90ad42f9207f87bcd8b17515b331ef9475c3b1836c9766b55c922d5a804bff2",
-      "authored_sha256": "58cf6d92a10b44270d65acb9fea303f78696527933bf310700ad34a10e8d75fd",
-      "reason": "The vending machine's MP Floppy prize is given; the original gave it only when the bag was full and otherwise took 200 bits for nothing; DWS synchronized with the authored Python source"
+      "authored_sha256": "4e35982128fae4cb6e0c455aba71f984801f68b17f9e8dc318fa768db107a666",
+      "reason": "Horizon vending machine on screen 81; synchronized Python and DWS; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
     },
     "zones/toy-mansion/s144-150/script.py": {
       "original_sha256": "e2b156c42d9300edb6b3847da6c78387d6fa2a859380dd25524e4a8d39cf6b95",
@@ -415,6 +415,566 @@
       "original_sha256": "568687c2bfe39a7cb3c84bcb70ce520e905d26ceaab582faa9bcfc535482a051",
       "authored_sha256": "a8a4bd48490a80e25a2097829c677f56bb85582b48badf63b5436a02b1859f53",
       "reason": "The left ClearAgumon resolves its touch encounter with a battle like the other guards; dialogue alone immediately restarts while the guard remains in contact"
+    },
+    "zones/dragon-eye-lake/s009-8/script.py": {
+      "original_sha256": "3431895936fbfba1892e92e74d9702303fd4d80dd4a48717b2f3471c4c11f4f5",
+      "authored_sha256": "502d59c959f117fd3a1c1aa58ce13a88172778681acfd26b9fdd9ec2fa42f3e9",
+      "reason": "Horizon vending machine on screen 8; synchronized Python and DWS"
+    },
+    "zones/dragon-eye-lake/s009-8/script.dws": {
+      "original_sha256": "df4a48c7d8e1dd8e6445ff8105f265a2cefe4709bbd15fd35e739a7f8f2f3329",
+      "authored_sha256": "7ce6e376a8aa8dae89350a3001037248db663869242742908dfcfc96cb4fa4b2",
+      "reason": "Horizon vending machine on screen 8; synchronized Python and DWS"
+    },
+    "zones/gear-savanna/s071-74/script.py": {
+      "original_sha256": "cd2234ba8d58f096cf540935f574f79a894c154739df91915661d94da00050df",
+      "authored_sha256": "dd76f9b2e7fb82e53d7e96448a7b74ef58d09029b5508b98661a44579ea5a8d6",
+      "reason": "Horizon vending machine on screen 74; synchronized Python and DWS; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
+    },
+    "zones/gear-savanna/s071-74/script.dws": {
+      "original_sha256": "087fad68a86bdf852767c1beb54a33e2a8ed499b84a657397c1f6f85b846db52",
+      "authored_sha256": "7da38c17df093ada34bb224cebe0a6c3261f45aaa1b8a73c2231a0903973092e",
+      "reason": "Horizon vending machine on screen 74; synchronized Python and DWS; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
+    },
+    "zones/tropical-jungle/s012-11/script.py": {
+      "original_sha256": "585635567b345d0d2dd1822a53e5119657b5bb0dd32b1d74a84c1f0e97778d19",
+      "authored_sha256": "45c34f670de1e21a07cf56abd8086610edfae14155efb5a19a5978509ca44ba2",
+      "reason": "Horizon vending machine on screen 11; synchronized Python and DWS; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
+    },
+    "zones/tropical-jungle/s012-11/script.dws": {
+      "original_sha256": "3b2904c49763fbb8216662e1797828eac972dde870f5330ba769410386c01768",
+      "authored_sha256": "8fb4c33ce7581d864a32a440a9565a44ff8be8ed3bec79b71a59558ce3442cc4",
+      "reason": "Horizon vending machine on screen 11; synchronized Python and DWS; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
+    },
+    "zones/amida-forest/s018-17/script.dws": {
+      "original_sha256": "9d2cf19426e0a286cb773fb353b26fb4c49a383e53db27670c8cb06e7d74c240",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "f2b35bb6d78ee54ce062a710a53e1c40d5bd3fa47e614997c8748d3c53315ba7"
+    },
+    "zones/amida-forest/s018-17/script.py": {
+      "original_sha256": "e0b7b58ac38f2021b412727c05776e675fde649b4720bfc583695dc6299aa4b7",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "f58eb92d967ff5829172668cf25ed97f20ce146062dfd5cd3902410d8711362f"
+    },
+    "zones/ancient-dino-region/s076-79/script.dws": {
+      "original_sha256": "b48c05733eb947fb28b98e0434dd0003449100fc6c63ca431672a1580c09400e",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "6ed1efccb1db73301d6b7c0e7130a367614ae74238ecfc7cdbeba161a9966fcd"
+    },
+    "zones/ancient-dino-region/s076-79/script.py": {
+      "original_sha256": "2aa98c33aaaa658a3bbef0a0263f7dbfd3b7ab8511765370b0c4f6d88698a6f4",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "69494f6c2a02c763714474eaa23687638899d3e61a1c400ba72597685177a1ea"
+    },
+    "zones/ancient-glacial-region/s079-82/script.dws": {
+      "original_sha256": "46418f2296dc1fe2ee8252b3dd87f66a2aa11b0ea00e659423a16da9a618ad89",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "ad3dd88b732abed6dadf5dbdd67e11d2e89fa24d35449c4c18a36329ada64281"
+    },
+    "zones/ancient-glacial-region/s079-82/script.py": {
+      "original_sha256": "edd99d93944c65fbf0bc9821159f23377d51acf37b6795dfe5f73f67372d631b",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "9bf8aee8ffbaaff53f747b26d61540e1de58107d2cc3b1feb7845346f0e5a914"
+    },
+    "zones/digimon-bridge/s010-9/script.dws": {
+      "original_sha256": "56d2505aa8d499ebb9f6fa68121f50be2047ff87f70f39e07028f3795be50f13",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "5dc0d5e0e984081d855c20d81a03dfb9528814be69700dddb24fd38e53223954"
+    },
+    "zones/digimon-bridge/s010-9/script.py": {
+      "original_sha256": "290a48395bb9272b67d612a81d08d4c375f90388c4360ac4a0ad037fb2757e21",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "e14a6d5a7e0a4cd1bd7ddc4931e1cae7a19963b73abea018ee6af62920a424e6"
+    },
+    "zones/digimon-bridge/s011-10/script.dws": {
+      "original_sha256": "efc91f0db7abe7f99b3d1802862127c0fbb02ad6892e7031834cf23bb5e30744",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "4256f0fb62639a3555aeb4423bdc9bf76df85491756d8af76badf4d8ca2d1eee"
+    },
+    "zones/digimon-bridge/s011-10/script.py": {
+      "original_sha256": "a619c5abe7ded07f6521f70a1c2d9333d0792939cef6ab1014e276ed59679247",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "60acc7dded1cf2288776b4658f3740675f54eec111bcef441937c0982c71cac3"
+    },
+    "zones/dragon-eye-lake/s007-6/script.dws": {
+      "original_sha256": "2b6c541af695868aeef658548cb420b26ca36439173ea83dfe923590dcc28133",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "0a9fa5af29add90f21b9fa37ee6bd925b5aaffe5a3e20b5eaca378b803bf740d"
+    },
+    "zones/dragon-eye-lake/s007-6/script.py": {
+      "original_sha256": "ed41dd43387f9dd9fa2e4c9c77b338438e52a91a9f57ec19c4fb2f9f9956a2ed",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "be9798b49a84adfcbcf88253c68788d9408a9c7a456b40917cea89a28bda1616"
+    },
+    "zones/drill-tunnel-entrance/s008-7/script.dws": {
+      "original_sha256": "5f507e5f81da8a18e4ec903d55d4df00e0ba9eeb398be3501648324d4be39533",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "80685420329687c33cdc5ae2536a4b10404de0994a25f3ac1037a97accedf9fd"
+    },
+    "zones/drill-tunnel-entrance/s008-7/script.py": {
+      "original_sha256": "50b5df9747c5533e79eb5ae6e033860de19e8447609b811f4caa2fc95ce2dd38",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "bb3bde3267009ad39f27938753f6f43ef8c14de06727de428737cefbbe1951ae"
+    },
+    "zones/foot-of-mt-panorama/s023-22/script.dws": {
+      "original_sha256": "31e7dd8b80b0bc9f793f2585c898f6bf70c0443ec848e5cf019c3dab02fec933",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "24b1fd8cf53ab518d0b70231c25d6c213f0fbfa34d3b8e454e91c17718b47c8b"
+    },
+    "zones/foot-of-mt-panorama/s023-22/script.py": {
+      "original_sha256": "3fc996a17b03def4c1448b010c3a4feaf02f6f489da537709b1bfa3c1821033d",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "ee9b6681c520ead8ecccbaf466037a28c06da3f20c99c961d22dfe0fd3953ab8"
+    },
+    "zones/foot-of-mt-panorama/s024-23/script.dws": {
+      "original_sha256": "a4f5c57677837b21b4814bd9466e7db3e5e8dcfab63720ea66e51907d9a081d4",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "5e2386be926da5bb35d96003754b80d19916eebb5777c6bfaa8e32f80a5ffa47"
+    },
+    "zones/foot-of-mt-panorama/s024-23/script.py": {
+      "original_sha256": "b87e635f35eb39b6df6e8aa5680e15237606aba816332836de30bd4033a27916",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "1c3bdf5f6ab72a188958330f237835230e68c501dadcd87a4af7193ca7c3bdd0"
+    },
+    "zones/fortress-entrance/s040-40/script.dws": {
+      "original_sha256": "b67ab42398222112b1b279c788b41e8ec9bd6f18d68811243a10d8d48194b36a",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "81233fe24115b3d09507f202883460a9de9ae91b50347bd4f5e7f6c049bd528b"
+    },
+    "zones/fortress-entrance/s040-40/script.py": {
+      "original_sha256": "d8bcb5ea5aaa2108a4d2921105f313d927fe0cfc26067cd9578251ede7aca617",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "9c6e1c4594024e7c779444dbc26ab9491250ef6a2d135fb1704fc7abb351925f"
+    },
+    "zones/freezeland/s085-89/script.dws": {
+      "original_sha256": "366c56fa54cdca80750c4ea42ffe069a0a2e10edfbc95aed7260ab5a1a2b36cf",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "f2993d1030f4daa499206c1e5a611cb8f46477922deb1267100fe699b5090753"
+    },
+    "zones/freezeland/s085-89/script.py": {
+      "original_sha256": "f353da8522be6ed04ff5f68e44d90802a5ddd50439257b6c53b90c1e66733e7b",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "55a9c36d96d663b494352fb6a1a460c853bd2c9b597d199017ffbdbc83a09c97"
+    },
+    "zones/freezeland/s086-90/script.dws": {
+      "original_sha256": "61c11c9d40193271c8982189f964c9e25a281eab327ba8117d1f250b392feb03",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "d49ac5fc32b7f029b78ce6106263d39e3e95d4ee5dc81b5c44e0861b9ba2fc04"
+    },
+    "zones/freezeland/s086-90/script.py": {
+      "original_sha256": "61a27b81d80187ffc4d237981e26a5df4772c6da74e5d65762e43038cafeaf2b",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "d0c7b687ae67550c0d9df85dec13cf73a293d99ea739d065c69af78f2f261628"
+    },
+    "zones/freezeland/s087-91/script.dws": {
+      "original_sha256": "197f979553ddf3bb2a465cb2d520cbb25e9fbf7b6eedf25a8161d2bed14516e5",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "2751ea8172ba8960fea3b007309730e4f96e0a19fd36ec6a318781d07f90de55"
+    },
+    "zones/freezeland/s087-91/script.py": {
+      "original_sha256": "8786f1c58487e0c9c17cc6ae44ee0ed8835ca82f0af49368283f898b05e30c86",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "133b56b89b7aacd0919d954bdb2beb9b2c2c9b42aaa6b43220462c5da9faba1f"
+    },
+    "zones/freezeland/s089-93/script.dws": {
+      "original_sha256": "8795e8553d9fde96ff5db7d7b719764ab7db1241d42c18f9fd057c34698ce5ad",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "f7619feaff5e4df3486c775bed0d1e4f6ef8147ab04d2d5c5c208a9533daf58b"
+    },
+    "zones/freezeland/s089-93/script.py": {
+      "original_sha256": "6acdfd93e5e8804f7c97e5970d8e3627050653bfb5fc7508602aa08b07a707fd",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "b90bf1c189137d4faf92aa4b43a0691faa13fa3359ee85bffe7ba5c982457160"
+    },
+    "zones/freezeland/s090-94/script.dws": {
+      "original_sha256": "27a94e2335590b6bd45127556991988f90d65dd11e5539c2eeb490d9b93fd88b",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "f259a28a792dcad7cac3c98bf244bdc499a8480ab4c171905759b20dd762c096"
+    },
+    "zones/freezeland/s090-94/script.py": {
+      "original_sha256": "8e4ebf1422815113fa7c1132d9cde1235fdb3f7bdd5dfcb7654b3431af6c9c7e",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "7810318db9971e05fd3c9661ca7cfa1e6d9e3a3ae07387392570465ce374e0b0"
+    },
+    "zones/freezeland/s091-95/script.dws": {
+      "original_sha256": "0786b9896bdb35be8b2664e85c6f9a1b71e4fa6657d884a0d5924001c30edad4",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "b944359a27be49e5eb363c3590b58427f79e9cb125d9cbf200fd77bbf4ca6d83"
+    },
+    "zones/freezeland/s091-95/script.py": {
+      "original_sha256": "a1e50c2340ae0a2511b5bd9cba53eb2036e03a644b0f1013c6ba7c45ba29d3f2",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "d5b2c1c640c7f40bc1fd85cc7711a4f2ee3ad395d6b65935fd88babf7af965be"
+    },
+    "zones/freezeland/s092-96/script.dws": {
+      "original_sha256": "051525390555ad259d0e05833dd3a7726c58a148956752e5336e7420a4be3196",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "381afa21cc6940292192178af62b676ce397899bf1cf286268b8ee318b5f0fae"
+    },
+    "zones/freezeland/s092-96/script.py": {
+      "original_sha256": "668328368e170cf84df4814cfabfc03dcfb7043ed30a283085e705771eb8d9e5",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "3d7f9ad68b3da7d48c6c2ccf8ab9947289398c03a7467305b56cdce3e03e4308"
+    },
+    "zones/freezeland/s127-132/script.dws": {
+      "original_sha256": "07691149e824e140d043ada43c11c49f2fd2784d00f7328578a52231b3bfefd7",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "ae9a20f4f4cca141023d76b972cc07db15e7a3b9d96994488aea93191e6fc6ab"
+    },
+    "zones/freezeland/s127-132/script.py": {
+      "original_sha256": "c4ae7ac18191e38bdc333d394ef0758901d16cb0a2e255d6dc17e95c75330eb8",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "5cf5727ecfb63ed57e8930e4f120a95751187ce17f961ea271f667743fde03c1"
+    },
+    "zones/freezeland/s128-133/script.dws": {
+      "original_sha256": "5a313e0bf479c0437be0f88d8051c7f6099d0e4bb32f8709878d0a08046510b1",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "b664faceaa4c6791c318b5e5db9b6852f0dc39e8d5793a1e5b14260b66f9f963"
+    },
+    "zones/freezeland/s128-133/script.py": {
+      "original_sha256": "7efe00e265cf2710b3772bba102537ad110d2fe01043613409c4ea039450a396",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "3d06d1428aa68378a67933f1b5802ea175b25eb4b4da237b83b37a923b8a31c3"
+    },
+    "zones/gear-savanna/s066-69/script.dws": {
+      "original_sha256": "452d24716fa01815540ad35144e8eb3891857ccf430cf006c9fd13972aac5211",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "95b233347f97504cabe5b64fa99727540ae2d6dcf11760056390ffcb88875a3e"
+    },
+    "zones/gear-savanna/s066-69/script.py": {
+      "original_sha256": "a53bd023d6276e9bfae216782bcb7aeb7642c0d24408b4a913f25f50c67ac954",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "6f73efd3433915c2403b97434c2b58050ffc2f2e67df1773c6fd7c644cfe786a"
+    },
+    "zones/gear-savanna/s067-70/script.dws": {
+      "original_sha256": "9359d42713aa27e661f0d1edc72629fc3b28a76c27116fc47011c161959b05cc",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "e83938ea0b65dfb84466adb0b3b568b0ec9d37f791dcbc94c16c48c923e2119b"
+    },
+    "zones/gear-savanna/s067-70/script.py": {
+      "original_sha256": "e01bce24b6e6825ddcccc55e46f69569c40b3b16e22b38d7cf85aed52b34d635",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "21640fb8d75b23f006ee585551ee94b3f404888c8f1f3c06d7a41bd2efa395f9"
+    },
+    "zones/gear-savanna/s069-72/script.dws": {
+      "original_sha256": "817a8929710cc44957dc57c7df495adec148fbf530ccf06a1402706160fff470",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "8905d8e36c405dc3dd63533dda46de29ed68829e33156a03aba504e5c325d05e"
+    },
+    "zones/gear-savanna/s069-72/script.py": {
+      "original_sha256": "42f75539f3fc92455c18e48e8af0402d0b69ffc49c9b558cf7c1b324faf3f5ec",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "02e70d57f01118bef989dd6846e3914d47169c38da71ee4a8be86e0cbaf23e31"
+    },
+    "zones/gear-savanna/s072-75/script.dws": {
+      "original_sha256": "92fa49668c0cc171e7464a8f4f3a74afaaaf5685b873996282b20d1891a8dbc7",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "636d01b4a5f37b48214f218358f34578c0750727e420454b7644100ece62797a"
+    },
+    "zones/gear-savanna/s072-75/script.py": {
+      "original_sha256": "c5b4806d8f9951a9d698e700dabacf1733ff3cc10e296ae7adc53570e698fac2",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "dfc162b06e42f6d1d56269f57dc0c38cd82b147bd89b6d9c8fa15f25f3940636"
+    },
+    "zones/gear-savanna/s073-76/script.dws": {
+      "original_sha256": "7dcbf9adc1c2648f5a014973f20e2d2f88c84665c61202ddf596743812e93256",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "750ec7b5545272b4bb7805ce8e7c1a9bd6d6a847a6c0d0d112fb6557bd9e158b"
+    },
+    "zones/gear-savanna/s073-76/script.py": {
+      "original_sha256": "25c946cb882aaea3be35c86d875d36eca8d4816bef5c7d5faadca114c4a9494d",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "b32ee981c6f37b26321adef757bcce4dacf6c2679c5b745ac663c9c0ce9c8051"
+    },
+    "zones/geko-swamp/s133-138/script.dws": {
+      "original_sha256": "58205c7b265a02cb0fbdac80652139d7074d1b1626c21c6a102a747ecd698517",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "5a7b0bae4a8d6e93f1d130319d0cc1867dd0fe9162ded31c90bae3fdcff2822c"
+    },
+    "zones/geko-swamp/s133-138/script.py": {
+      "original_sha256": "031301a73939295668e09fcb7242f3c3a3d9cf8cfd314f31e677377b215d2f2f",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "c86ed56a036965abc6cb71eba7117d88dd405254edad54622719031b16aeb47b"
+    },
+    "zones/geko-swamp/s134-139/script.dws": {
+      "original_sha256": "ae5f9b330cb29ea73a60808a59722666d101314a45a5fb388adfe2ca3e93435c",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "a35f095745068ef81bd9cefb937cab758d2c6d34edc955eae5861d31ee4bb472"
+    },
+    "zones/geko-swamp/s134-139/script.py": {
+      "original_sha256": "9d6787ca9d331800f5514e4c1e176488837303e239450d92a3bd18b311f14049",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "e546c945dc20fa95a359b0ee2e07f3291a99640bfe8bbf530b74ab52db05b5e9"
+    },
+    "zones/great-canyon-bot-area/s041-41/script.dws": {
+      "original_sha256": "dac82c2e71886d73fa360af27ac1d589392ffb06bc3821e1250395dd95bd69db",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "96f087a6941cef09b08ca926944e1380b362421a27461c9d74538fe700084df1"
+    },
+    "zones/great-canyon-bot-area/s041-41/script.py": {
+      "original_sha256": "cd09aba3d738ff3568c4c7c65a7338e5dde6b3899f095968413665f2a596ae05",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "502aa7354ca986281c6333c78818c133754660f38caffabda54c45ae077632c2"
+    },
+    "zones/great-canyon-top-area/s037-37/script.dws": {
+      "original_sha256": "6217822103d8070bf034842f63d4b772fc8ebbe5103137f0f23b0459c6d5c63f",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "0452f9863466ac48635d4a6c34d3c05579991e7e58b4915eb19197b69a2e1d18"
+    },
+    "zones/great-canyon-top-area/s037-37/script.py": {
+      "original_sha256": "34eed9de2f2bf94e46782991c1835dbb73d6da1b2347332c452b64b7ed55af4a",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "94643ef3270df09279b10c9da070b036d7787c541e9f58b42a3f0eb6af2bcf2b"
+    },
+    "zones/great-canyon-top-area/s038-38/script.dws": {
+      "original_sha256": "bc7a1be2ef3f2eb96adf935721651887566f16b8b3d262d2ec9a49d2d391479b",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "33b74c02e18fb85fc8fa48e63c4ed3e34c3f6e3cc65cdf07882d51c5b7c932f2"
+    },
+    "zones/great-canyon-top-area/s038-38/script.py": {
+      "original_sha256": "d40c71a3e7a242ea7952ece1359e340cc1bd34360642d50114dc6d86ef44993d",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "08502db4793b214e20187a064bd4af044e60f7ef5cb64c3932bfb5050a36f7fe"
+    },
+    "zones/great-canyon-top-area/s043-43/script.dws": {
+      "original_sha256": "11899eb78e1010289bed1c0b8cd8509045c2030f77a86cb209a38704798e734e",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "5e7ef855ed4c7a0a183a1fbf5d130b0306f10cc67b582706bf719224c1b80178"
+    },
+    "zones/great-canyon-top-area/s043-43/script.py": {
+      "original_sha256": "06aa4d7e0ac4d0a7884f877cef5712e1f6b9381b96d04b51570cff78fd957481",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "911e331afeb95354fdce2a952d63ee0934a92fa90482af77f6f581a357ac0987"
+    },
+    "zones/great-canyon-top-area/s044-44/script.dws": {
+      "original_sha256": "fdd9e7fa4a024126718723c2ef3c99b878312f5e49d70769dcfaf1994cbb9407",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "a145de6002d45273b1f7d07423b4e955e7a1580eb19e7de94f74e0a739104c97"
+    },
+    "zones/great-canyon-top-area/s044-44/script.py": {
+      "original_sha256": "b068eff092ab52493b33fd0c7f7d79c8994368ae00b7c48ad91f141a2148b176",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "d6c79307f1aa15471f172a1671ea3747fdd62b1c8f3a13c062e52d72ed1ac7f4"
+    },
+    "zones/great-canyon/s123-128/script.dws": {
+      "original_sha256": "c242a91d968db5e423de2f86ed76a48a149f7592a5682599a8c4152ec70a43aa",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "5d00646367f9011c991175b18394b0b16a6c20058d1a1f4699f086795b6df345"
+    },
+    "zones/great-canyon/s123-128/script.py": {
+      "original_sha256": "2c233921f721699af82780e0008b40bcc21490cbd5422cfd51daaad48c1eea41",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "e5a9034f4fc900af0634b2a6d79d9aaafdfeadb7f1255a36574add120dadaa46"
+    },
+    "zones/mangrove-region/s016-15/script.dws": {
+      "original_sha256": "9af33f5fe8154859f956f36b6b7bf8b49929d95115c8710b62cb4f0e6865b870",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "2482ed0997b69be51b5a59bf9e5754544e544831fe6b5b66cfe0e5d9b8b944cc"
+    },
+    "zones/mangrove-region/s016-15/script.py": {
+      "original_sha256": "753a95093ba534f8939204522421a4f60249ac05dd2ee29608de2ed55f4d656d",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "ff7f13a921b6a106cb0fd7a07fe21dcb488ab51535fc04c0ae7f8778960cc127"
+    },
+    "zones/misty-trees/s111-115/script.dws": {
+      "original_sha256": "ea7e98c5b749b1b237e0eb8d96d326027366078c6b005bbc9ebc9fc329e76784",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "410014a1ebd98c2f7f6fe95a1a76ddc6371e0ba7a536065f5011b83b1adda82f"
+    },
+    "zones/misty-trees/s111-115/script.py": {
+      "original_sha256": "eb2860380592a91e217a88d8940fd19c27da919d6fd491ef608a14705f202b14",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "4efb54adf33465a9aa3c99ae3012ea3ce28a15e39d2c0aacf295951085042d40"
+    },
+    "zones/misty-trees/s112-116/script.dws": {
+      "original_sha256": "20bedb06849c6741f9d39371fd75c6e454329e7502b87f396b2c6414350b81c5",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "69446f86d15ec4ba2bd49c9e2d24a963a68fd22d51cbb2e0d9e76a95d367c3d7"
+    },
+    "zones/misty-trees/s112-116/script.py": {
+      "original_sha256": "7299ed95c004de7bc74a72b9843676db65561858fcabd16ffadd5042ade14132",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "8887519b68dca3970208cee80eb4e0cc0a1fab15a7502a222280d06b0731e8b0"
+    },
+    "zones/misty-trees/s113-117/script.dws": {
+      "original_sha256": "e1a3b84308616b883ac4812e06be35dadeb665e8c3b745dc43c8bf1535544427",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "6f21952e55bf9bdcb832cddd9d76b7d932f01725dc91670bfda1ad9469a06568"
+    },
+    "zones/misty-trees/s113-117/script.py": {
+      "original_sha256": "174b05efa0c4470b3f81d98011d850073c81630384f479f15bdecae32111d0a4",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "76e94a3ddd1ec26af6d530a526d294ae4d71aee69a109684398bb8da37a4eb4e"
+    },
+    "zones/misty-trees/s114-118/script.dws": {
+      "original_sha256": "7e14b5df5c0fd0f74f168a4c61e02c582cc87b6f2100833121a14f39396863f3",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "6370e4db9438a87b58682e40a92d2c96cb6dfe42fd79bf78a4f085a158a58bca"
+    },
+    "zones/misty-trees/s114-118/script.py": {
+      "original_sha256": "144cfb2ea122a3463f4c00d1f4e9a9ecfb92f08404031c4ff90923d8156dab91",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "86f3cb2d1b01c64f3a12a1378fde740cc8bf507392dc67ebb439fe12521def19"
+    },
+    "zones/misty-trees/s116-120/script.dws": {
+      "original_sha256": "546ffb5fd817421acf885073ed26a6ebcbd7c1071716248bb0052804786cde01",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "4877b333f9382fd642add74fddbbcd2f864848c301d5b11982ecbd5a8c708d1f"
+    },
+    "zones/misty-trees/s116-120/script.py": {
+      "original_sha256": "3c76f14ec2fc79d53ad456baec5526b8bbd87e2cdc94ffff51b24ef30b9c1666",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "b9b47c1ad3b15d524c945c19fbf1e5954b9cfa70315d15ba40e0ff07990038f6"
+    },
+    "zones/misty-trees/s117-121/script.dws": {
+      "original_sha256": "6b6a6074c40ff70f0661d6dd57233a38268084991ad404d39a01b73322cb5f44",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "25e585eed9942b23beff00d102f3a278883b3418ad901683e1c50e936c989d21"
+    },
+    "zones/misty-trees/s117-121/script.py": {
+      "original_sha256": "38376247c49610992942b8b471d4ed343816e1592c3e768a641394cdbbc5528f",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "ae56e02fb4283a0dd81125d4d1651446acf90906d9b21c353a66ca716d336577"
+    },
+    "zones/mt-panorama-plains/s020-19/script.dws": {
+      "original_sha256": "195d55d61d42fa89edd722e9d3f142fd8394b7fc647a2046dc237ffe8cb9751d",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "4f4fb5e9c897941d7c192629bec64fe9e7e2f4d0a9a8dfd57cd81aa2bed03336"
+    },
+    "zones/mt-panorama-plains/s020-19/script.py": {
+      "original_sha256": "72ffeb7d52daad3bcc0887403fef70fa6e32af32b3d747e97b8c4a638bab6be6",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "1b83e7e29e4b1c763e1c794246678df50a45fc5177c95d12dd3b7a2d837ffe6a"
+    },
+    "zones/mt-panorama-spore-area/s022-21/script.dws": {
+      "original_sha256": "9d65e8b909d3d0d148ce1407d12b9bf0362f1270f6e43711314529affb727562",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "0d9f81073b2daa1abf920a043cf4a322ba8c666028da7d1adae6133e8da901bf"
+    },
+    "zones/mt-panorama-spore-area/s022-21/script.py": {
+      "original_sha256": "f332599f2d4ca4c1b929330b994749ba5e489774bfd9d304c2f427d2a35fd5c9",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "520b75545d6a80f2e256b9a6fe9e7b9ccacc94d877a8edc0fa499949917411ff"
+    },
+    "zones/mt-panorama-spore-area/s189-233/script.dws": {
+      "original_sha256": "ab31068d972ad8e4d0cdda51277c97360987d4a157dad4b3b13b42ad006211f7",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "485155232a53112924b40b88a4f969f630aeae55898509c121419f6954b81eda"
+    },
+    "zones/mt-panorama-spore-area/s189-233/script.py": {
+      "original_sha256": "d3284f7f3f92aa73ffde1b9751574988f8f0b58b7e42b3fb0493567f316fbda5",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "2ad657d224da8c020dee3ca2a0a07a30f04687dfea2674874d804b33d3fe0ba8"
+    },
+    "zones/mt-panorama-spore-area/s190-234/script.dws": {
+      "original_sha256": "7a70cf4eb09586b99615b1a52b57ea951e35387fc392e50ebefd072a8eb6ce1a",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "eae4dde8a6cbd36f26fb26efecb7b147c6362bdd5596d61293873fbc51430743"
+    },
+    "zones/mt-panorama-spore-area/s190-234/script.py": {
+      "original_sha256": "b66d7e4e9ec3cba146f15ff12a460ba42e84296a0293250cc9c6da52d2c228bf",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "1baf7bcb8bbbbec1fba44ec417f503db55f5cfb0c8b249d8ad6e96c12ed1bcd1"
+    },
+    "zones/native-forest/s003-2/script.dws": {
+      "original_sha256": "6ad60d06274fd6de3758660d373658f2431cb429037f7e1f6e53c82d5275f32a",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "72777970ceca02b54dd455c9d08dbddfe27f09bf832dad9867508c955beb89ab"
+    },
+    "zones/native-forest/s003-2/script.py": {
+      "original_sha256": "9d91766ae8919c969c914aefc82925e42ecd937fc1473cf0166be7285403e1ea",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "306f04c263c3beb0dcf2e173f56299534d736ef09ebb814ca78f327cedb72f3c"
+    },
+    "zones/native-forest/s004-3/script.dws": {
+      "original_sha256": "9d7a720b8de30cdc49d54530dc33ef405c1405196714a6f2a909c3bb7c9fd40c",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "c9c9f742922ca92f3cc800afad850a84be04193bb3f0bcf138514a6947cdfd2b"
+    },
+    "zones/native-forest/s004-3/script.py": {
+      "original_sha256": "4598c7a9497f131928b19f4b35ec6a75d316d16acbebb3af0f093462c8eeaadb",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "d08386b01d22180c37371432472b484f515d68b0f5e718dc732de6c83d02f4ee"
+    },
+    "zones/native-forest/s105-109/script.dws": {
+      "original_sha256": "5f3ff1ba4a98e700f54f70777cbade7afddc88c4307a04c047c519c6393e410f",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "87af66b96a09cc5cbd442c89713d607bcc47c0e2f133ff9fd7e163d9db3be8c7"
+    },
+    "zones/native-forest/s105-109/script.py": {
+      "original_sha256": "4f68bfe4bde8c66a02face88d3ea83c30d1a460580067f2930ec890a250e3078",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "c7f015edc4ca32fd82da1f66a0b80d0a001fe83860c4ed76de8984f3e02c2738"
+    },
+    "zones/native-forest/s106-110/script.dws": {
+      "original_sha256": "b3574ea30dbe3ff1816cd2032a90b4e1b120ccec64bb7639b0b641ab9dba1c63",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "c958e2bbdabf12cd80058626328d49d8d51453daeca87bb669d8da6096c69289"
+    },
+    "zones/native-forest/s106-110/script.py": {
+      "original_sha256": "a7d2696dba948837664f2e7e44a431d0657e6d7c173347820d7c0701f80ad349",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "f0c70abfca35625de54e11f28283bc9aff5f6f7d53ffc3515a2df9b54ab4f868"
+    },
+    "zones/native-forest/s107-111/script.dws": {
+      "original_sha256": "c574a2e1c5149ec0c41e5b491761930c533807636e29a7d398b29873d9b66f8d",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "6be2a92f5111d59373e27a09eee4220cca36ba43d0e39ac6473f72ce0ef609d7"
+    },
+    "zones/native-forest/s107-111/script.py": {
+      "original_sha256": "9e3a9cbb83e9eb3396f1799edc6a53ea05f3b2a81fccca9c358f37b053c4ef32",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "aac0afeab61aba7de1979485a0d2119b13edc9a8496a0890d91e1b858d657fbd"
+    },
+    "zones/path-thru-mt-panorama/s019-18/script.dws": {
+      "original_sha256": "7c283d734084373a29f4ed38ecf94425342c48418fdb280f0ab2fa2a51386645",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "0c075a755ccc06e1d0c5d5827d3f4e919e38e752bab38ce212e9afb2d3479dfd"
+    },
+    "zones/path-thru-mt-panorama/s019-18/script.py": {
+      "original_sha256": "a0b7acf582a5fc4af80b33388e700900093110945c3c5af140f2b3accc593da6",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "192a8647b42e211d9c6ad9e0252ce1883a796861b1167bcfb8b05fdbba65e6ed"
+    },
+    "zones/path-thru-mt-panorama/s021-20/script.dws": {
+      "original_sha256": "be3c0176e94adf7a82fbfa2ab6373c2244c10c8e7a892191f6ce345c3663a140",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "a1141fda09beacdeb83b0ae5994e4b3c230eefde4ed3ea1387751cd945deab97"
+    },
+    "zones/path-thru-mt-panorama/s021-20/script.py": {
+      "original_sha256": "f9d7398395f60b19fe021eb70e5590c3ebce3866e6c9a63f095930043d4936d4",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "165ca20d3bf58b0ca7edcef48be442cbc7fb092a0f60837994ebe9a6725184a5"
+    },
+    "zones/tropical-jungle/s013-12/script.dws": {
+      "original_sha256": "b8e989015c1bca2e3e4408b12e3421d99c8156ff4813c7edb1d339592bd14231",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "0eabb1a59104d36f0306a98a3e6bf8599c5a200abbf55f769b7289fd9a2160fd"
+    },
+    "zones/tropical-jungle/s013-12/script.py": {
+      "original_sha256": "f2e847b00d3e9927d3c8bfe6883ffad51d3b33ed19248a184688a69de0eb4b45",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "b8b112ed70e16b1c395ee6dfaf5acc2d4db1f426e0d854719704367620ce12af"
+    },
+    "zones/tropical-jungle/s014-13/script.dws": {
+      "original_sha256": "75c52baaf370716fd028890ef33f7efbf03edf4233b103b66446ce99319f6ed4",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "aba74a180b261057471ccbb08800fe3ddaa06b5ae343eecfbaf7881a1b656a70"
+    },
+    "zones/tropical-jungle/s014-13/script.py": {
+      "original_sha256": "19fc967b3bfeffec6ef4f0fcb6c1311980e4897b5a53a7c5589f05c60f1a2ffa",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "afc92d78d424178a10108148f45e1a9bb8d2c7f77167a23a5c4a579cd6b311dd"
+    },
+    "zones/tropical-jungle/s015-14/script.dws": {
+      "original_sha256": "9b2a181a380933486ad0fee6a622e82be577aae5f64e373564a8c5cbbb4c7351",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "83f82236005fcb95e2131ea107957de0dcd3cd10a7e3885c69c318a99544dc6f"
+    },
+    "zones/tropical-jungle/s015-14/script.py": {
+      "original_sha256": "919d3d395047f8b472adcffcb88724bdd93d1252cbaa37332005ea26c795726a",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
+      "authored_sha256": "01e3fba23507ca10294dd3ec0229ed33f3267ef166c9269f415c826e14f9b0ce"
     }
   }
 }

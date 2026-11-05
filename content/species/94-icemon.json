@@ -3,6 +3,7 @@
   "name": "Icemon",
   "level": "champion",
   "vanilla_as": 48,
+  "off": {"level": "rookie"},
   "attribute": "vaccine",
   "specialties": ["ice", null, "battle"],
   "techniques": ["Megaton Punch", "Giga Freeze", "Ice Needle", "Tremar", "Buster Dive", "Ice Statue",

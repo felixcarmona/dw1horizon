@@ -118,5 +118,25 @@
    "你问，岛的正中央有什么？连我也不知道。",
    "那里总是被厚厚的云遮住。"
   ]
- ]
+ ],
+ "s078.sec81.vend_prompt": "请选择道具。",
+ "s078.sec81.vend_more": "下一页",
+ "s078.sec81.vend_back": "返回",
+ "s078.sec81.vend_leave": "离开",
+ "s078.sec81.vend_poor": "比特不足。",
+ "s078.sec81.vend_full": "背包已满。",
+ "s078.sec81.vend_daily": "每种稀有蘑菇每天只能买一个。",
+ "s078.sec81.vend_sold": "今天已卖完，午夜过后再来吧。",
+ "s078.sec81.vend_bonus": "额外奖励！获得双效软盘！",
+ "s078.sec81.vend_play_prompt": "花1000比特试一次吗？",
+ "s078.sec81.vend_play": "试一次",
+ "s078.sec81.vend_quit": "离开",
+ "s078.sec81.vend_buy0": "发霉肉 26",
+ "s078.sec81.vend_getMoldyMeat": "获得发霉肉！",
+ "s078.sec81.vend_buy1": "肉 20",
+ "s078.sec81.vend_getMeat": "获得肉！",
+ "s078.sec81.vend_buy2": "巨大肉 300",
+ "s078.sec81.vend_getGiantMeat": "获得巨大肉！",
+ "s078.sec81.vend_buy3": "西冷肉 1000",
+ "s078.sec81.vend_getSirloin": "获得西冷肉！"
 }

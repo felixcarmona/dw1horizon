@@ -1,33 +1,28 @@
-// Readable form of script 78 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
-// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
-// Text is by key (text/us/dialogue.json), never the game's own words.
 import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../../core/recruit.dws";
 import "../../../names.dws";
 script 78 {
     npc monochromon = 5;
     npc saberdramon = 6;
     npc brachiomon2 = 7;
     npc brachiomon3 = 8;
-
-    // the section table, in the order of the original header
     sections 254, 5, 6, 82, 7, 8, 81;
-
-    on enter replace {    // section 254
+    on enter replace {    // enter
         store_random(random_roll, 99);
         if (random_roll <= 10) {
-            spawn_item(item("Digimushrm"), 31, 84);
+            spawn_item(item(44), 31, 84);
         }
         store_random(random_roll, 99);
         if (random_roll <= 7) {
-            spawn_item(item("Digimushrm"), 48, 27);
+            spawn_item(item(44), 48, 27);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 3) {
-            spawn_item(item("Red Berry"), 25, 55);
+        if (random_roll <= 7) {
+            spawn_item(item(49), 25, 55);
         }
     }
-
-    on talk(monochromon) replace {    // section 5
+    on talk(monochromon) replace {    // talk
         match (p34, clamp) {
             0 => {
                 say(monochromon, text("s078.sec5.u0"));
@@ -39,8 +34,7 @@ script 78 {
             }
         }
     }
-
-    on talk(saberdramon) replace {    // section 6
+    on talk(saberdramon) replace {    // talk
         face(tamer, saberdramon);
         sound(8, 3);
         wait(15);
@@ -71,8 +65,7 @@ script 78 {
             }
         }
     }
-
-    on use(2) replace {    // section 82
+    on use(2) replace {    // use2
         animate(brachiomon2, 29);
         wait(5);
         say(brachiomon2, text("s078.sec82.u0"));
@@ -101,85 +94,84 @@ script 78 {
             }
         }
     }
-
-    on talk(brachiomon2) replace {    // section 7
+    on talk(brachiomon2) replace {    // talk
     }
-
-    on talk(brachiomon3) replace {    // section 8
+    on talk(brachiomon3) replace {    // talk
     }
-
-    on use(1) replace {    // section 81
-        say(narrator, text("s078.sec81.u0"));
-        say(tamer, text("s078.sec81.u1"));
-        choice {
-            text("s078.sec81.m0.o0") => {
-                if (bits >= 200) {
-                    store_random(prize_roll, 99);
-                    if (prize_roll < 29) {
-                        take_bits(200);
-                        say(narrator, text("s078.sec81.u3"));
-                        give_item(item("Meat"), 1);
-                        if (engine.item_did_not_fit) {
-                            say(tamer, text("s078.sec81.u4"));
-                            engine.picker_mode = true;
-                            call_routine(routine("choose_item"));
-                            call_routine(routine("remove_all_chosen_item"));
-                            give_item(item("Meat"), 1);
-                        }
-                    } else {
-                        if (prize_roll < 59) {
-                            set_dialog_owner(narrator);
-                            take_bits(200);
-                            say(narrator, text("s078.sec81.u5"));
-                            give_item(item("sm.recovery"), 1);
-                            if (engine.item_did_not_fit) {
-                                say(tamer, text("s078.sec81.u6"));
-                                engine.picker_mode = true;
-                                call_routine(routine("choose_item"));
-                                call_routine(routine("remove_all_chosen_item"));
-                                give_item(item("sm.recovery"), 1);
-                            }
-                        } else {
-                            if (prize_roll < 79) {
-                                set_dialog_owner(narrator);
-                                take_bits(200);
-                                say(narrator, text("s078.sec81.u7"));
-                                give_item(item("Moldy Meat"), 1);
-                                if (engine.item_did_not_fit) {
-                                    say(tamer, text("s078.sec81.u8"));
-                                    engine.picker_mode = true;
-                                    call_routine(routine("choose_item"));
-                                    call_routine(routine("remove_all_chosen_item"));
-                                    give_item(item("Moldy Meat"), 1);
-                                }
-                            } else {
-                                if (prize_roll <= 99) {
-                                    set_dialog_owner(narrator);
-                                    take_bits(200);
-                                    say(narrator, text("s078.sec81.u9"));
-                                    give_item(item("MP Floppy"), 1);
-                                    if (engine.item_did_not_fit) {
-                                        say(tamer, text("s078.sec81.u10"));
-                                        engine.picker_mode = true;
-                                        call_routine(routine("choose_item"));
-                                        call_routine(routine("remove_all_chosen_item"));
-                                        give_item(item("MP Floppy"), 1);
-                                        return;
-                                    }
-                                }
-                                return;
-                            }
-                            return;
-                        }
+    on use(1) replace {    // use1
+        rotate(tamer, 2048);
+        loop {
+            say(narrator, text("s078.sec81.vend_prompt"));
+            choice {
+                text("s078.sec81.vend_buy0") => {
+                    if (bits < 26) {
+                        say(narrator, text("s078.sec81.vend_poor"));
                         return;
                     }
+                    give(item(68));
+                    if (engine.item_did_not_fit) {
+                        say(narrator, text("s078.sec81.vend_full"));
+                        return;
+                    }
+                    take_bits(26);
+                    say(narrator, text("s078.sec81.vend_getMoldyMeat"));
                     return;
                 }
-                say(tamer, text("s078.sec81.u2"));
-                return;
+                text("s078.sec81.vend_buy1") => {
+                    if (bits < 20) {
+                        say(narrator, text("s078.sec81.vend_poor"));
+                        return;
+                    }
+                    give(item(38));
+                    if (engine.item_did_not_fit) {
+                        say(narrator, text("s078.sec81.vend_full"));
+                        return;
+                    }
+                    take_bits(20);
+                    say(narrator, text("s078.sec81.vend_getMeat"));
+                    return;
+                }
+                text("s078.sec81.vend_more") => {
+                    say(narrator, text("s078.sec81.vend_prompt"));
+                    choice {
+                        text("s078.sec81.vend_buy2") => {
+                            if (bits < 300) {
+                                say(narrator, text("s078.sec81.vend_poor"));
+                                return;
+                            }
+                            give(item(39));
+                            if (engine.item_did_not_fit) {
+                                say(narrator, text("s078.sec81.vend_full"));
+                                return;
+                            }
+                            take_bits(300);
+                            say(narrator, text("s078.sec81.vend_getGiantMeat"));
+                            return;
+                        }
+                        text("s078.sec81.vend_buy3") => {
+                            if (bits < 1000) {
+                                say(narrator, text("s078.sec81.vend_poor"));
+                                return;
+                            }
+                            give(item(40));
+                            if (engine.item_did_not_fit) {
+                                say(narrator, text("s078.sec81.vend_full"));
+                                return;
+                            }
+                            take_bits(1000);
+                            say(narrator, text("s078.sec81.vend_getSirloin"));
+                            return;
+                        }
+                        text("s078.sec81.vend_back") => {}
+                        cancel => {
+                            return;
+                        }
+                    }
+                }
+                cancel => {
+                    return;
+                }
             }
-            text("s078.sec81.m0.o1") => {}
         }
-        return;
     }
 }

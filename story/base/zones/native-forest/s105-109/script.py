@@ -27,7 +27,7 @@ def enter():    # section 254
         objects[18].show()
         objects[23].hide()
     roll = random.roll(99)
-    if roll <= 2:
+    if roll <= 7:
         spawn_item(Item.Happymushrm, at=(1150, -1450))
     roll = random.roll(99)
     if roll <= 29:

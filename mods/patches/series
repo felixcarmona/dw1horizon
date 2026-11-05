@@ -351,3 +351,11 @@ Share-card-title-writing-and-keep-Chinese-saves-readable-on-2-MB.patch
 Keep-the-resident-Chinese-font-fixed-in-the-options-menu.patch
 Keep-compact-glyph-quads-inside-the-texture-page-edge.patch
 Render-empty-Chinese-battle-move-slots-with-the-resident-font.patch
+Select-a-flat-palette-for-each-animation-frame.patch
+Refill-saved-vending-mushroom-stock-at-midnight.patch
+Draw-each-card-menu-answer-inside-its-own-crop.patch
+Keep-conversation-NPCs-out-of-nearby-wild-encounters.patch
+Resolve-flattened-spit-without-indexing-before-the-move-table.patch
+Swap-configured-evolution-targets-with-NEW-DIGIMON.patch
+Restore-explicit-off-evolution-paths-and-requirements.patch
+Keep-rebirth-species-fallback-resident.patch

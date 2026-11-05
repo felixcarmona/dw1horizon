@@ -11,9 +11,9 @@
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 22,
   "model": {
-    "file": "build/batch9/Gazimon.MMD",
-    "radius": 210,
-    "height": 320,
+    "file": "build/sizes-out/models/Gazimon.MMD",
+    "radius": 171,
+    "height": 260,
     "skeleton": [[-1, -1], [0, 0], [1, 1], [2, 2], [3, 2], [4, 2], [5, 1], [6, 6], [7, 7], [8, 1], [9, 9], [10, 10],
                  [11, 1], [12, 12], [13, 13], [14, 14], [15, 12], [16, 16], [17, 17], [18, 18],
                  [19, 12], [20, 20], [21, 21], [22, 22]],
@@ -22,8 +22,8 @@
   "texture": {"file": "build/batch9/Gazimon.TIM", "entry": 0},
   "voice": 16,
   "battle_music": "normal-battle",
-  "condition_bubble": [0, -58, -3, 4],
-  "effect_origins": [[4, 70, 0, 20, 4, -2, 39, -56], [4, 120, 0, 20, 4, -3, 75, -85]],
+  "condition_bubble": [0, -47, -2, 4],
+  "effect_origins": [[4, 70, 0, 20, 4, -2, 32, -46], [4, 120, 0, 20, 4, -2, 61, -69]],
   "wild": {"hp": 580, "mp": 620, "off": 120, "def": 90, "speed": 110, "brain": 80, "bits": 200},
   "sizing": {
     "game": "dw2",
@@ -32,6 +32,7 @@
     "base_scale": 0.9639,
     "natural": {"height": 332.0, "half_width": 219.1, "half_depth": 362.8}
   },
+  "size": {"height": 260},
   "partner": {
     "voice": 1,
     "hunger_hours": [2, 6, 11, 16, 21],

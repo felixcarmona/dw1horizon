@@ -14,7 +14,7 @@ t53 = text.s008.sec53
 @entrance.on_enter
 def enter():    # section 254
     roll = random.roll(99)
-    if roll <= 1:
+    if roll <= 7:
         spawn_item(Item.Happymushrm, at=(-2750, -1950))
 
 @entrance.on_step(0)

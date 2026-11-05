@@ -187,7 +187,7 @@ STD overlay: `STD_OPPONENT_BASE_STATS` `0x800799B4`, `STD_WIN_CHANCES`
 | 0x04 | i16 | `power` | power; also how much `speedBuffer` drops when using it (`:2580`) |
 | 0x06 | u8 | `mpCost` | cost ÷ 3 (the game multiplies by 3 everywhere, `:2346,2527`; the menu too, `game_menu.c:2353`) |
 | 0x07 | u8 | `iframes` | invulnerability/stun ticks of the target hit (`:2157`) and duration of the particles |
-| 0x08 | u8 | `range` | 1 melee, 2 projectile, 3 area (AI bonus with ≥ 2 enemies), 4 self buff |
+| 0x08 | u8 | `range` | 1 melee, 2 ranged (including animation-driven dashes), 3 area (AI bonus with ≥ 2 enemies), 4 self buff |
 | 0x09 | u8 | `special` | element: 0 Fire, 1 Battle, 2 Air, 3 **Nature**, 4 **Ice**, 5 Mech, 6 Filth (255 none) |
 | 0x0A | u8 | `status` | 1 poison, 2 confusion, 3 stun, 4 flatten (`:3163-3194`) |
 | 0x0B | u8 | `accuracy` | base accuracy (%) |
@@ -277,7 +277,7 @@ flattened Digimon (`0x79`):
 | 44 | Dynamite Kick | Battle | melee | 193 | 99 (33) | 62 | 0 | stun 3 | 1 | — |  |
 | 45 | Counter | Battle | melee | 285 | 165 (55) | 100 | 0 | confusion 10 | 1 | — | counterattack: rival Def ×0.3; the AI never picks it |
 | 46 | Megaton Punch | Battle | melee | 320 | 186 (62) | 70 | 0 | stun 9 | 1 | — |  |
-| 47 | Buster Dive | Battle | ranged | 500 | 258 (86) | 80 | 600 | confusion 14 | 1 | — |  |
+| 47 | Buster Dive | Battle | ranged | 500 | 258 (86) | 80 | 600 | confusion 14 | 1 | — | [Animated dash](../mods/buster-dive.md), not a free-moving projectile |
 | 48 | Dynamite Kick | Battle | melee | 255 | 99 (33) | 90 | 0 | — | 1 | — |  |
 | 49 | Odor Spray | Filth | ranged | 88 | 75 (25) | 37 | 100 | stun 10 | 1 | — |  |
 | 50 | Poop Spd Toss | Filth | ranged | 122 | 96 (32) | 40 | 700 | poison 11 | 1 | — |  |
@@ -581,6 +581,17 @@ has `Counter` equipped and ≥ 165 MP, it counterattacks with probability
 `speed/level %`; otherwise it blocks (anim 0x25, 3 ticks invulnerable): a blocked
 melee hit still deals `dmg · rand(10..30) %`, the defender gains
 +6 % of meter, the attacker +8 % and `blockedCount++` if it is the partner.
+
+The flat spit queues animation `0`. `entityGetTechFromAnim` maps that queued
+animation to technique `0x79` while a flat pose is active, and accepts ordinary
+technique slots only from `0x2E` through `0x3D`. This prevents a read before the
+sixteen-entry move table from classifying the spit as a finisher. That false
+finisher could leave `NO_AI_FLAG` set with an unchanging hold timer: the flattened
+fighter's idle handler does not advance a finisher, so combat stops until fleeing.
+The flat texture's pixels do not control this lookup.
+In the US parameter layout (52-byte rows, moves at offset 35), Yanmamon
+`moves[-46]` aliases Myotismon `moves[6]`: the original value is unused (`255`),
+while the added partner techniques put Death Claw (`62`) there.
 
 **With the caps patches** (the `caps` series merged as patch 0059: stats 9999, HP/MP and
 damage 30000; [partner.md](partner.md)): the `±500` clamp on `Off − Def`

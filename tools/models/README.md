@@ -23,6 +23,8 @@ The editor can extract the three source games with repeated `--source-disc`
 arguments. `--from DERIVE_OUT` reuses their extracted inputs. Its cache lives in
 `build/imported-model-edit/`; accepted models still have to pass every
 source, delta, target and species pin. Rejected edits leave deltas and pins intact.
+Species pins cover the final provider output, including technique repairs on
+models without field overlays and models selected by native builders.
 The origin audit uses a disposable workspace outside the repository.
 
 Other conversion and animation entry points remain at their recorded paths:
@@ -64,3 +66,6 @@ The audit uses each overlay report's generated skeleton. Its JSON includes
 walk/condition/run durations, root travel per tick, bank-4 notes and missing
 voice tones. Long programs (40 ticks or more) need an in-game switch-latency
 measurement as well as an offline speed measurement.
+
+Imported bone-scale consistency, the complete corrected-species list and the
+replay commands are documented in [the scale audit](../../docs/reference/motion-scale-audit.md).

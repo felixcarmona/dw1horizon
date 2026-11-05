@@ -53,7 +53,7 @@
     "from": [122, 352, 331],
     "to": [246, 310],
     "requirements": {
-      "digimon": 122,
+      "digimon": -1,
       "hp": 100,
       "mp": 100,
       "offense": -1,
@@ -63,7 +63,7 @@
       "care": 3,
       "weight": 30,
       "discipline": -1,
-      "happiness": -1,
+      "happiness": 80,
       "battles": -1,
       "techs": -1,
       "flags": 0

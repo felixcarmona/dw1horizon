@@ -276,5 +276,25 @@
    "按{color 6}×{color 1}依次停下三个转轴，",
    "让三个图案一致。"
   ]
- ]
+ ],
+ "s071.sec81.vend_prompt": "请选择道具。",
+ "s071.sec81.vend_more": "下一页",
+ "s071.sec81.vend_back": "返回",
+ "s071.sec81.vend_leave": "离开",
+ "s071.sec81.vend_poor": "比特不足。",
+ "s071.sec81.vend_full": "背包已满。",
+ "s071.sec81.vend_daily": "每种稀有蘑菇每天只能买一个。",
+ "s071.sec81.vend_sold": "今天已卖完，午夜过后再来吧。",
+ "s071.sec81.vend_bonus": "额外奖励！获得双效软盘！",
+ "s071.sec81.vend_play_prompt": "花1000比特试一次吗？",
+ "s071.sec81.vend_play": "试一次",
+ "s071.sec81.vend_quit": "离开",
+ "s071.sec81.vend_buy0": "小型恢复软盘 118",
+ "s071.sec81.vend_getSmRecovery": "获得小型恢复软盘！",
+ "s071.sec81.vend_buy1": "中型恢复软盘 318",
+ "s071.sec81.vend_getMedRecovery": "获得中型恢复软盘！",
+ "s071.sec81.vend_buy2": "MP软盘 218",
+ "s071.sec81.vend_getMPFloppy": "获得MP软盘！",
+ "s071.sec81.vend_buy3": "中型MP软盘 500",
+ "s071.sec81.vend_getMediumMP": "获得中型MP软盘！"
 }

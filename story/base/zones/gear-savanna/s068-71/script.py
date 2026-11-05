@@ -31,7 +31,7 @@ def enter():    # section 254
     if roll <= 19:
         spawn_item(Item.Digimushrm, at=(-1450, 650))
     roll = random.roll(99)
-    if roll <= 2:
+    if roll <= 7:
         spawn_item(Item.SweetNut, at=(-1050, 3150))
     if factorial_town_reopened:
         return

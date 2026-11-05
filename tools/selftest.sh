@@ -66,6 +66,7 @@ if [ -d "$DERIVED/species" ]; then
 else
     skip species-lint-tests "needs generated species (DW_SELFTEST_DERIVE)"
 fi
+run species-off       $PY -W ignore tools/test_species_off.py              # JSON-only level, stats and path overrides
 run fi-info-clock     $PY tools/test_fi_info.py
 disc evolution-tree   $PY tools/test_evo_tree.py --practical
 disc evolution-tree-guard $PY -W ignore::ResourceWarning tools/test_evo_tree_guard.py
@@ -112,6 +113,7 @@ both balance-original  $PY tools/balance.py verify --exe-dir extracted        # 
 both balance-check     $PY tools/balance.py check --exe-dir extracted
 run balance-map-outputs $PY -m unittest tools.test_balance_maps
 run ground-pickup-ids $PY tools/test_ground_items.py
+run vending-audit     $PY tools/test_vending_audit.py
 run economy-audit     $PY tools/economy_audit.py                            # no repeatable conversion turns bits into more bits
 if [ -f "$DERIVED/exe/SLUS_010.32.elf" ]; then
     run balance-int $PY tools/balance.py verify --exe-dir "$DERIVED/exe"
@@ -159,7 +161,7 @@ run patcher-python-only $PY -m unittest tools.test_no_numpy
 run partner-species   $PY -W ignore -m unittest tools.test_partner_species
 run chinese-completeness $PY -m tools.chinese audit --layout
 run chinese-runtime-assets $PY -m unittest tools.test_chinese
-run dws-resource-tests $PY -W ignore -m unittest tools.test_dws_variants tools.test_dws_resources tools.test_dws_text_profiles tools.test_dws_bytecode tools.test_dws_text_sources tools.test_dws_story_testing tools.test_dws_spawns
+run dws-resource-tests $PY -W ignore -m unittest tools.test_dws_variants tools.test_dws_resources tools.test_dws_text_profiles tools.test_dws_bytecode tools.test_dws_text_sources tools.test_dws_story_testing tools.test_dws_spawns tools.test_dws_battle_moves
 run partner-models $PY -W ignore -m unittest tools.test_partner_model_generators
 run model-meshes $PY -W ignore tools/test_meshcheck.py                    # no see-through model (Cherrymon's closed back)
 run model-apis $PY -W ignore -m unittest tools.test_model_provider tools.test_modeldelta tools.test_imported_model_edit tools.test_recordoriginals

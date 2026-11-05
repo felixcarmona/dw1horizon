@@ -27,11 +27,7 @@
       "reason": "Canon main line, then family and shared specialty.",
       "disc": true
     },
-    "Mamemon": {
-      "parents": ["Leomon", "Ninjamon", "Whamon", "Frigimon", "Mojyamon"],
-      "reason": "Canon main line, then family and shared specialty.",
-      "disc": true
-    },
+    "Mamemon": {"parents": ["Leomon", "Ninjamon", "Frigimon", "Mojyamon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
     "Monzaemon": {"parents": ["Numemon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
     "Tsunomon": {"parents": ["Punimon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
     "Gabumon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
@@ -61,11 +57,7 @@
       "reason": "Canon main line, then family and shared specialty.",
       "disc": true
     },
-    "Whamon": {
-      "parents": ["Palmon", "Betamon", "Penguinmon"],
-      "reason": "Canon main line, then family and shared specialty.",
-      "disc": true
-    },
+    "Whamon": {"parents": ["Seadramon", "Shellmon", "Ikkakumon"], "reason": "Aquatic family: sea serpent, shellfish and marine mammal; all share ice with Whamon. Ultimate form from the Bandai reference.", "disc": false},
     "Vegiemon": {
       "parents": ["Kunemon", "Palmon", "Mushroomon", "Floramon"],
       "reason": "Canon main line, then family and shared specialty.",
@@ -187,11 +179,7 @@
         "MegaKabuterimon": "Canon main line: Atlur Kabuterimon -> Herakle Kabuterimon (Adventure 02); the Kabuterimon family. Shares nature and fire. It keeps the disc's row, which the disc's Champion routes also use; reaching it through an Ultimate is later than those routes, not a shortcut."
       }
     },
-    "MegaSeadramon": {
-      "parents": ["Seadramon", "Whamon", "Shellmon", "Coelamon", "Garurumon"],
-      "reason": "Canon main line, then family and shared specialty.",
-      "disc": true
-    },
+    "MegaSeadramon": {"parents": ["Seadramon", "Shellmon", "Coelamon", "Garurumon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
     "WereGarurumon": {
       "parents": ["Garurumon", "Apemon", "Gururumon"],
       "reason": "Canon main line, then family and shared specialty."
@@ -265,20 +253,13 @@
     "Otamamon": {"parents": ["Tanemon", "Bukamon"], "reason": "Canon main line, then family and shared specialty."},
     "Gekomon": {"parents": ["Otamamon"], "reason": "Canon main line, then family and shared specialty."},
     "Tentomon": {"parents": ["Tanemon", "Motimon"], "reason": "Canon main line, then family and shared specialty."},
-    "WaruSeadramon": {
-      "parents": ["Whamon", "Seadramon", "Dolphmon", "Submarimon", "Tylomon"],
-      "reason": "Canon main line, then family and shared specialty."
-    },
+    "WaruSeadramon": {"parents": ["Seadramon", "Dolphmon", "Submarimon", "Tylomon"], "reason": "Canon main line, then family and shared specialty."},
     "Meteormon": {
       "parents": ["Monochromon", "BomberNanimon", "Starmon"],
       "reason": "Canon main line, then family and shared specialty.",
       "disc": true
     },
-    "ShogunGekomon": {
-      "parents": ["Whamon", "Gekomon"],
-      "reason": "Canon main line, then family and shared specialty.",
-      "disc": true
-    },
+    "ShogunGekomon": {"parents": ["Gekomon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
     "KingSukamon": {"parents": ["Sukamon", "Numemon"], "reason": "Filth-family alternative for Numemon without altering original specialties.", "disc": true},
     "Cherrymon": {
       "parents": ["Vegiemon", "Kiwimon", "Woodmon", "MoriShellmon"],
@@ -361,11 +342,7 @@
     "Togemon": {"parents": ["Palmon"], "reason": "Canon main line, then family and shared specialty."},
     "Lillymon": {"parents": ["Togemon", "Vegiemon"], "reason": "Canon main line, then family and shared specialty."},
     "GranKuwagamon": {"parents": ["Okuwamon"], "reason": "Canon main line, then family and shared specialty.", "chain": true},
-    "MetalSeadramon": {
-      "parents": ["MegaSeadramon"],
-      "reason": "Canon main line, then family and shared specialty.",
-      "chain": true
-    },
+    "MetalSeadramon": {"parents": ["MegaSeadramon", "Whamon"], "reason": "Canon main line, then family and shared specialty. Whamon adds an aquatic Ultimate parent sharing ice.", "chain": true},
     "VenomMyotismon": {"parents": ["Myotismon"], "reason": "Canon main line, then family and shared specialty.", "chain": true},
     "AeroVeedramon": {
       "parents": ["Veedramon", "ExVeemon", "Flamedramon", "Maildramon", "Airdramon"],
@@ -383,7 +360,7 @@
       "parents": ["Ikkakumon", "Dolphmon", "Hyogamon", "Submarimon", "Tortomon"],
       "reason": "Canon main line, then family and shared specialty."
     },
-    "Vikemon": {"parents": ["Zudomon"], "reason": "Canon main line, then family and shared specialty.", "chain": true},
+    "Vikemon": {"parents": ["Zudomon", "Whamon"], "reason": "Canon main line, then family and shared specialty. Whamon adds an aquatic Ultimate parent sharing ice.", "chain": true},
     "Salamon": {"parents": ["Nyaromon"], "reason": "Canon In-Training among the hand-made babies (474-477) first, then family and shared specialty."},
     "BlackGatomon": {"parents": ["Salamon", "DemiDevimon"], "reason": "Canon main line, then family and shared specialty."},
     "LadyDevimon": {
@@ -519,12 +496,7 @@
         "SuperStarmon": "Canon: Wikimon lists Superstarmon -> PrinceMamemon; data. Shares battle."
       }
     },
-    "Plesiomon": {
-      "parents": ["Zudomon", "MegaSeadramon", "Divermon", "Digitamamon"],
-      "reason": "Canon main line, then family and shared specialty.",
-      "chain": true,
-      "parent_reasons": {"Digitamamon": "Canon: Wikimon lists Digitamamon -> Plesiomon; data. Shares ice and air."}
-    },
+    "Plesiomon": {"parents": ["Zudomon", "MegaSeadramon", "Divermon", "Digitamamon", "Whamon"], "reason": "Canon main line, then family and shared specialty. Whamon adds an aquatic Ultimate parent sharing ice.", "chain": true, "parent_reasons": {"Digitamamon": "Canon: Wikimon lists Digitamamon -> Plesiomon; data. Shares ice and air."}},
     "Woodmon": {
       "parents": ["Floramon", "Tentomon", "Mushroomon"],
       "reason": "Canon main line, then family and shared specialty."
@@ -613,7 +585,16 @@
         "Vademon": "Canon: Wikimon lists Vademon -> HiAndromon; alien science to machine. Shares mech."
       }
     },
-    "KingEtemon": {"parents": ["Etemon"], "reason": "Canon main line, then family and shared specialty.", "chain": true},
+    "KingEtemon": {
+      "parents": ["Etemon", "Monzaemon", "Digitamamon"],
+      "reason": "Canon main line, then family and shared specialty. Three parents; each has at most three targets. Keeps the Mega stat thresholds and Etemon bonus, with at most ten care mistakes so both added parents have practical chains. ShogunGekomon and Vademon are canon alternatives but share no specialty with KingEtemon.",
+      "chain": true,
+      "parent_reasons": {
+        "Etemon": "Canon main line: the Etemon family. Shares battle, air and filth; retains the primary-parent bonus.",
+        "Monzaemon": "Canon: Wikimon lists Monzaemon -> King Etemon; both Puppet type. Shares battle and air. Adds a second Mega target alongside Puppetmon.",
+        "Digitamamon": "Canon: Wikimon lists Digitamamon -> King Etemon (Bo-215). Shares air. Adds a second Mega target alongside Plesiomon."
+      }
+    },
     "Divermon": {"parents": ["Octomon", "Gesomon"], "reason": "Canon main line, then family and shared specialty."},
     "Ebidramon": {
       "parents": ["Otamamon", "SnowAgumon", "Syakomon", "Crabmon"],
@@ -914,7 +895,7 @@
     {"from": "KingSukamon", "to": "BlackKingNumemon", "reason": "Family: the Numemon/Sukamon filth line's Mega (KingSukamon comes from Numemon and Sukamon). Shares filth. Wikimon's KingEtemon asks for 10+ care mistakes, which the practical check refuses, and MetalEtemon is an original species the rule would also give with NEW DIGIMON off. Its id has no path row (an original 63..179 without a record), so the route is an evolutionUltimate pair; an imported Mega waits the Mega hours."}
   ],
   "specialty_exceptions": [{"parent": "Otamamon", "child": "Geremon", "reason": "Retained canon route explicitly permitted despite no shared specialty; Geremon retains its original filth specialty."}],
-  "canon_levels": "2026-11-03: Phoenixmon, HerculesKabuterimon, MetalEtemon, Machinedramon, Analogman and Jijimon take their canon level, Mega (the identity sheet's Level (canon)). With OPTIONS' NEW DIGIMON off the game gives every original its disc level back (species.py level_swaps, patch 0335). The disc routes from Champions to Phoenixmon and HerculesKabuterimon stay, the one accepted Champion -> Mega exception; Red Ruby and Beetlepearl keep their original Champion rule like those routes; MetalEtemon comes only from Etemon (an Ultimate), and Metalbanana asks for an Ultimate. Phoenixmon's Champion parents Airdramon, Birdramon and Kokatorimon had no second Ultimate left, so each gained one: Airdramon -> AeroVeedramon (canon, shares air and fire), Birdramon -> BlueMeramon (fire family, shares fire), Kokatorimon -> Deramon (bird line, shares battle).",
+  "canon_levels": "2026-11-03: Phoenixmon, HerculesKabuterimon, MetalEtemon, Machinedramon, Analogman and Jijimon take their canon level, Mega (the identity sheet's Level (canon)). With OPTIONS' NEW DIGIMON off, explicit species JSON off fields supply levels and optional targets; no fallback is inferred from disc data. The disc routes from Champions to Phoenixmon and HerculesKabuterimon stay, the one accepted Champion -> Mega exception; Red Ruby and Beetlepearl keep their original Champion rule like those routes; MetalEtemon comes only from Etemon (an Ultimate), and Metalbanana asks for an Ultimate. Phoenixmon's Champion parents Airdramon, Birdramon and Kokatorimon had no second Ultimate left, so each gained one: Airdramon -> AeroVeedramon (canon, shares air and fire), Birdramon -> BlueMeramon (fire family, shares fire), Kokatorimon -> Deramon (bird line, shares battle). Whamon (24) is Ultimate per https://digimon.net/reference_en/detail.php?directory_name=whamon; explicit off JSON restores its Champion identity. Story Whamon (146) is unchanged. All off levels and targets come only from species JSON.",
   "version": 2,
   "sheet_megas": [
     59,
@@ -1052,16 +1033,16 @@
     "1": {"from": [], "to": [2]},
     "2": {"from": [1], "to": [3, 17, 80, 84, 180, 233, 235, 251, 351, 354, 433]},
     "3": {"from": [2], "to": [5, 9, 21, 36, 47, 8]},
-    "4": {"from": [44], "to": [10, 24, 35, 49, 238]},
+    "4": {"from": [44], "to": [10, 35, 49, 238]},
     "5": {"from": [3], "to": [12, 26, 182, 224]},
     "6": {"from": [236, 96], "to": [26, 54, 66]},
     "7": {"from": [45], "to": [54, 59, 213]},
     "8": {"from": [3, 17, 31, 331], "to": [12, 54, 124, 260, 266]},
     "9": {"from": [3, 233], "to": [12, 40, 277, 104]},
-    "10": {"from": [4], "to": [54, 61, 64, 112]},
+    "10": {"from": [4], "to": [54, 61, 64, 112, 24]},
     "11": {"from": [], "to": [14, 120]},
     "12": {"from": [5, 9, 47, 38, 8], "to": [373, 404, 461]},
-    "13": {"from": [48, 58, 24, 23, 52], "to": [270]},
+    "13": {"from": [48, 58, 23, 52], "to": [270]},
     "14": {"from": [11], "to": [181]},
     "15": {"from": [], "to": [16]},
     "16": {"from": [15], "to": [18, 57, 71, 93, 239, 256, 353]},
@@ -1072,7 +1053,7 @@
     "21": {"from": [3, 45], "to": [59, 460, 104]},
     "22": {"from": [17, 57], "to": [26, 61, 62]},
     "23": {"from": [57, 71], "to": [27, 13, 267]},
-    "24": {"from": [46, 4, 57], "to": [61, 13, 119, 112]},
+    "24": {"from": [10, 35, 218], "to": [271, 211, 220]},
     "25": {"from": [32, 46, 263, 273], "to": [55, 121, 123, 209]},
     "26": {"from": [5, 6, 37, 22, 52], "to": [404]},
     "27": {"from": [47, 19, 58, 23], "to": [270]},
@@ -1083,7 +1064,7 @@
     "32": {"from": [], "to": [37, 19, 51, 25, 262]},
     "33": {"from": [31, 45], "to": [41, 59, 90, 309]},
     "34": {"from": [17, 31, 80], "to": [40, 41]},
-    "35": {"from": [4, 57, 284, 283], "to": [60, 61, 275]},
+    "35": {"from": [4, 57, 284, 283], "to": [60, 61, 275, 24]},
     "36": {"from": [3, 17], "to": [40, 41]},
     "37": {"from": [18, 32, 287], "to": [26, 41, 229, 334]},
     "38": {"from": [17, 31], "to": [12, 126]},
@@ -1094,7 +1075,7 @@
     "43": {"from": [], "to": [44]},
     "44": {"from": [43], "to": [46, 4, 74, 109, 111, 183, 185, 273, 285, 263]},
     "45": {"from": [30, 477], "to": [21, 7, 50, 33, 19, 106]},
-    "46": {"from": [44], "to": [51, 25, 58, 24, 49, 208]},
+    "46": {"from": [44], "to": [51, 25, 58, 49, 208]},
     "47": {"from": [3, 17, 68], "to": [12, 27, 113, 126, 257, 88]},
     "48": {"from": [31, 18, 353], "to": [40, 13, 306, 63]},
     "49": {"from": [46, 4, 283, 284], "to": [61, 291]},
@@ -1105,11 +1086,11 @@
     "54": {"from": [8, 6, 7, 10, 249], "to": [329]},
     "55": {"from": [50, 51, 25, 58, 262], "to": [230]},
     "56": {"from": [53], "to": [271]},
-    "57": {"from": [16], "to": [24, 35, 22, 23, 52, 242]},
+    "57": {"from": [16], "to": [35, 22, 23, 52, 242]},
     "58": {"from": [46, 352], "to": [55, 27, 13]},
     "59": {"from": [21, 20, 7, 50, 33], "to": []},
     "60": {"from": [19, 51, 35, 205], "to": []},
-    "61": {"from": [10, 24, 35, 49, 22], "to": [211, 271, 408]},
+    "61": {"from": [10, 35, 49, 22], "to": [211, 271, 408]},
     "62": {"from": [22, 227, 105], "to": [191]},
     "63": {"from": [323, 48, 296], "to": [258, 276]},
     "64": {"from": [10, 254, 305], "to": []},
@@ -1145,12 +1126,12 @@
     "109": {"from": [44, 475], "to": [87, 91, 110, 305]},
     "110": {"from": [109], "to": [119, 275]},
     "111": {"from": [44, 474], "to": [187, 272, 332, 328, 67, 19]},
-    "112": {"from": [24, 10, 238, 202, 254], "to": [408]},
+    "112": {"from": [10, 238, 202, 254], "to": [408]},
     "113": {"from": [47, 232, 243], "to": []},
     "115": {"from": [], "to": []},
     "116": {"from": [], "to": []},
     "117": {"from": [], "to": []},
-    "119": {"from": [24, 110], "to": []},
+    "119": {"from": [110], "to": []},
     "120": {"from": [39, 11], "to": []},
     "121": {"from": [25, 282, 272, 91], "to": [181]},
     "122": {"from": [30, 474], "to": [76, 92, 299, 290]},
@@ -1186,16 +1167,16 @@
     "208": {"from": [46], "to": [209, 274]},
     "209": {"from": [208, 25], "to": [230]},
     "210": {"from": [259], "to": []},
-    "211": {"from": [61], "to": []},
+    "211": {"from": [61, 24], "to": []},
     "212": {"from": [66], "to": []},
     "213": {"from": [203, 194, 195, 324, 7], "to": [192]},
     "214": {"from": [189], "to": [319]},
     "215": {"from": [190], "to": []},
     "216": {"from": [236, 96], "to": [66, 223, 314]},
     "217": {"from": [475], "to": [202, 218, 238, 240, 254, 278]},
-    "218": {"from": [217, 353, 71], "to": [219, 267]},
+    "218": {"from": [217, 353, 71], "to": [219, 267, 24]},
     "219": {"from": [218, 238, 72, 202, 261], "to": [220, 248, 271]},
-    "220": {"from": [219], "to": []},
+    "220": {"from": [219, 24], "to": []},
     "221": {"from": [476], "to": [198, 200, 234, 222, 85]},
     "222": {"from": [221, 236], "to": [223, 66, 432]},
     "223": {"from": [234, 295, 216, 222], "to": [245, 403]},
@@ -1246,7 +1227,7 @@
     "268": {"from": [267], "to": []},
     "269": {"from": [39, 87, 332, 264, 231], "to": [307]},
     "270": {"from": [13, 27, 244], "to": []},
-    "271": {"from": [219, 61, 304, 56], "to": []},
+    "271": {"from": [219, 61, 304, 56, 24], "to": []},
     "272": {"from": [273, 111, 263], "to": [121, 280, 286]},
     "273": {"from": [477, 44], "to": [91, 272, 282, 328, 25]},
     "274": {"from": [208, 282], "to": [230]},
@@ -1277,7 +1258,7 @@
     "299": {"from": [122, 352, 331], "to": [246, 310]},
     "300": {"from": [206, 321], "to": []},
     "302": {"from": [40, 28], "to": []},
-    "303": {"from": [42], "to": []},
+    "303": {"from": [42, 14, 56], "to": []},
     "304": {"from": [278, 240], "to": [401, 271]},
     "305": {"from": [109, 71, 283, 284], "to": [64, 275]},
     "306": {"from": [48, 296, 323, 105, 308], "to": [258, 276, 297, 430]},
@@ -1361,7 +1342,79 @@
       "battles": -1,
       "techs": -1,
       "flags": 0
+    },
+    "72": {
+      "digimon": 71,
+      "hp": 150,
+      "mp": -1,
+      "offense": 100,
+      "defense": -1,
+      "speed": -1,
+      "brain": -1,
+      "care": 3,
+      "weight": 30,
+      "discipline": -1,
+      "happiness": -1,
+      "battles": -1,
+      "techs": -1,
+      "flags": 0
+    },
+    "278": {
+      "digimon": 239,
+      "hp": -1,
+      "mp": 150,
+      "offense": -1,
+      "defense": -1,
+      "speed": -1,
+      "brain": 100,
+      "care": 3,
+      "weight": 40,
+      "discipline": -1,
+      "happiness": -1,
+      "battles": -1,
+      "techs": -1,
+      "flags": 0
+    },
+    "327": {
+      "digimon": 285,
+      "hp": -1,
+      "mp": -1,
+      "offense": -1,
+      "defense": -1,
+      "speed": 100,
+      "brain": 150,
+      "care": 3,
+      "weight": 20,
+      "discipline": -1,
+      "happiness": -1,
+      "battles": -1,
+      "techs": -1,
+      "flags": 0
+    },
+    "330": {
+      "digimon": 68,
+      "hp": 150,
+      "mp": -1,
+      "offense": 150,
+      "defense": -1,
+      "speed": -1,
+      "brain": -1,
+      "care": 3,
+      "weight": 40,
+      "discipline": -1,
+      "happiness": -1,
+      "battles": -1,
+      "techs": -1,
+      "flags": 0
     }
   },
-  "requirement_reason": "Devimon gains ordinary Rookie parents; its old all-disabled requirement row could never pass the picker."
+  "requirement_notes": {
+    "72": "Hyogamon: the Identity ice oni and Snow Punch favor HP and offense; 25–35 weight separates the heavy bruiser from Gesomon.",
+    "278": "Octomon: the Identity ink attacks favor MP and brains; 35–45 weight separates it from the smaller ShellNumemon.",
+    "327": "Gargoylemon: the Identity statue-summoning demon beast favors speed and brains; 15–25 weight separates it from Minotarumon and Dinohyumon.",
+    "330": "Minotarumon: the Identity Demon Arm and Darkside Quake favor HP and offense; 35–45 weight separates the heavy attacker from Gargoylemon."
+  },
+  "requirement_reason": "Devimon gains ordinary Rookie parents; its old all-disabled requirement row could never pass the picker.",
+  "canon_ultimates": [24],
+  "off_routes": {"description": "Routes that change tier with NEW DIGIMON and survive only in explicit off.evolution JSON. No disc-derived fallback.", "pairs": [[46, 24], [4, 24], [57, 24], [24, 61], [24, 13], [24, 119], [24, 112]]}
 }

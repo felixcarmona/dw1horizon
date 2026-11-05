@@ -24,7 +24,7 @@ def enter():    # section 254
     if roll <= 14:
         spawn_item(Item.Digimushrm, at=(1350, -550))
     roll = random.roll(99)
-    if roll <= 5:
+    if roll <= 7:
         spawn_item(Item.Happymushrm, at=(650, -1550))
     if not recruited(Species.Unimon) and centar_clinic_intro_seen:
         unimon.play(28)

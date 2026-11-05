@@ -315,5 +315,29 @@
    "façon. Ké hé !"
   ]
  ],
- "s015.sec51.u23": "Vegiemon a rejoint la ville !"
+ "s015.sec51.u23": "Vegiemon a rejoint la ville !",
+ "s012.sec81.vend_prompt": "Choisissez un objet.",
+ "s012.sec81.vend_more": "Suite",
+ "s012.sec81.vend_back": "Retour",
+ "s012.sec81.vend_leave": "Partir",
+ "s012.sec81.vend_poor": "Pas assez de bits.",
+ "s012.sec81.vend_full": "Votre sac est plein.",
+ "s012.sec81.vend_daily": "Un de chaque champignon rare par jour.",
+ "s012.sec81.vend_sold": "Épuisé. Revenez après minuit.",
+ "s012.sec81.vend_bonus": "Bonus ! Double soin !",
+ "s012.sec81.vend_play_prompt": "Jouer pour 1000 bits ? Aucun remboursement. Faites de la place dans le sac.",
+ "s012.sec81.vend_play": "Jouer",
+ "s012.sec81.vend_quit": "Partir",
+ "s012.sec81.vend_getSmRecovery": "Vous recevez Petit soin !",
+ "s012.sec81.vend_getMedRecovery": "Vous recevez Soin moyen !",
+ "s012.sec81.vend_getLrgRecovery": "Vous recevez Grand soin !",
+ "s012.sec81.vend_getMPFloppy": "Vous recevez Soin MP !",
+ "s012.sec81.vend_getMediumMP": "Vous recevez Soin MP moyen !",
+ "s012.sec81.vend_getLargeMP": "Vous recevez Soin MP grand !",
+ "s012.sec81.vend_getVarious": "Vous recevez Multi-soin !",
+ "s012.sec81.vend_getOmnipotent": "Vous recevez Soin total !",
+ "s012.sec81.vend_getRestore": "Vous recevez Régénérateur !",
+ "s012.sec81.vend_getOffDisk": "Vous recevez Disque Attaque !",
+ "s012.sec81.vend_getDefDisk": "Vous recevez Disque Défense !",
+ "s012.sec81.vend_getHispeedDsk": "Vous recevez Disque Vitesse !"
 }

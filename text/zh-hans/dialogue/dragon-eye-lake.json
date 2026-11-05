@@ -86,5 +86,23 @@
    "鱼影上出现X，表示现在的鱼饵钓不到这条",
    "鱼。"
   ]
- ]
+ ],
+ "s009.sec81.vend_prompt": "请选择道具。",
+ "s009.sec81.vend_more": "下一页",
+ "s009.sec81.vend_back": "返回",
+ "s009.sec81.vend_leave": "离开",
+ "s009.sec81.vend_poor": "比特不足。",
+ "s009.sec81.vend_full": "背包已满。",
+ "s009.sec81.vend_daily": "每种稀有蘑菇每天只能买一个。",
+ "s009.sec81.vend_sold": "今天已卖完，午夜过后再来吧。",
+ "s009.sec81.vend_bonus": "额外奖励！获得双效软盘！",
+ "s009.sec81.vend_play_prompt": "花1000比特试一次吗？",
+ "s009.sec81.vend_play": "试一次",
+ "s009.sec81.vend_quit": "离开",
+ "s009.sec81.vend_buy0": "数码蘑菇 51",
+ "s009.sec81.vend_getDigimushrm": "获得数码蘑菇！",
+ "s009.sec81.vend_buy1": "快乐蘑菇 1500",
+ "s009.sec81.vend_getHappymushrm": "获得快乐蘑菇！",
+ "s009.sec81.vend_buy2": "冰蘑菇 1000",
+ "s009.sec81.vend_getIceMushrm": "获得冰蘑菇！"
 }

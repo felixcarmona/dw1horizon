@@ -759,6 +759,15 @@ def apply_ops(ops, src, disc_copy=None):
     return bytes(out)
 
 
+# USA license extents used by released mappings, addressed in the USA Card Battle raw image.
+# These fixed bytes must not depend on which supported Card Battle release the player supplies.
+USA_LICENSE = [(9492, bytes.fromhex('416d65722020696361')), (11481, bytes.fromhex(
+    'e90544000000000000fb000000fb00cbcbcbcbcbcbcbcbcbcb834e4246bfa946b3cbcbb7a5cbcbcbcbcbcbcbcbcbcb624abfa5cb894abdabad58465c'
+    'cb8dbf58465c58b54ebfbd46bf58cb7ebd465ccbcb4e42b5cb12260fcc000000000000f3000000f300ebebebebebebebebebebcf272123d1da23d7'
+    'ebebd5dcebebebebebebebebebeb3125d1dcebca25d0dbd82c232eebc8d12c232e2cd427d1d023d12ceb3fd0232eebeb2721d4eb1ccf0a8870970135'
+    'ee84b50b22bf38387070ef2cfeb7cb93f50f9c1c2c970aba7059bb2ea4e953bfae1ed1620271ed73c08b8f808d95bb2deebb3a377d51219c51f03838'
+    '7070ea6883fced0a932abaeb57a502706a63d50e8fd0bbf3afee07bbc652cd9bd3f4b443783b5e2d'))]
+
 class BaseDisc:
     """The player's disc as the USA one: data(usa path) gives the bytes its mapping says, source(usa path) a writer
     source (sectors moved where the player's file is used as it is)."""
@@ -813,6 +822,12 @@ class BaseDisc:
 
     def read_copy(self, path, offset, length):
         """Bounded raw/data-plane copy; secondary inputs are the recipe's player discs."""
+        if offset < 0 or length < 0:
+            raise PatchError('invalid disc copy range')
+        if path == '@disc:dcb:@raw':
+            for at, known in USA_LICENSE:
+                if at <= offset and offset + length <= at + len(known):
+                    return known[offset - at:offset - at + length]
         image = self.img
         if path.startswith('@disc:'):
             _, game, path = path.split(':', 2)
@@ -822,8 +837,6 @@ class BaseDisc:
                 image = _iw().Image(self.source_discs[game])
                 self._copy_images[game] = image
             image = self._copy_images[game]
-        if offset < 0 or length < 0:
-            raise PatchError('invalid disc copy range')
         if path == '@raw':
             image.f.seek(offset)
             data = image.f.read(length)

@@ -31,7 +31,7 @@ script 10 {
             spawn_item(item("Digimushrm"), 37, 48);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 3) {
+        if (random_roll <= 7) {
             spawn_item(item("Blue apple"), 38, 52);
         }
     }

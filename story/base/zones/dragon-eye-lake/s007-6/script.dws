@@ -12,7 +12,7 @@ script 7 {
 
     on enter replace {    // section 254
         store_random(random_roll, 99);
-        if (random_roll <= 4) {
+        if (random_roll <= 7) {
             spawn_item(item("Digimushrm"), 57, 83);
         }
     }

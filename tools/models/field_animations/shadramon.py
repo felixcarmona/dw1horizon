@@ -18,8 +18,8 @@ from tools.models.field_animations.channels import replace_channels, coalesce
 from tools.models.field_animations.gliding import _forward
 from tools.models.field_animations.war_greymon import rotation, set_rotation, align
 from motiondiscidentity import changed_programs
-SOURCE = '1dd2fc111ba172a36df3491b15708e994e9dcac794be15372e173424e3bc645a'
-OUTPUT = '51e128a2423e5a6aa1b72a3dff24805951918b142b84c6be04c7a18cd1a6be4b'
+SOURCE = 'eba5bfff162b1bf07da76c3b410195d441e166ec85efac8e3e75be9bbd560e15'
+OUTPUT = '9ae6ca9dd37256d7d32efcfe32ebf1003f03ee36d89b987485c9c47d380c9057'
 PARENTS = [-1, 0, 1, 2, 2, 4, 2, 6, 1, 8, 9, 1, 11, 12, 2, 2, 2, 2]
 
 def _parse(data, sk):

@@ -30,7 +30,7 @@ script 22 {
             spawn_item(item("Digimushrm"), 25, 64);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 5) {
+        if (random_roll <= 7) {
             spawn_item(item("Happymushrm"), 84, 49);
         }
         spawn_chest(item("med.recovery"), 3545, 0, 855, 1024, 696);

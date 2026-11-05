@@ -23,7 +23,7 @@ script 89 {
             spawn_item(item("Digimushrm"), 48, 45);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 3) {
+        if (random_roll <= 7) {
             spawn_item(item("Ice mushrm"), 35, 91);
         }
         freezeland_birdra_stop_unlocked = true;

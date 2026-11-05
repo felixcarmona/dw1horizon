@@ -3,19 +3,18 @@
 
 While a fighter is flattened, `renderFlatDigimon` hides its model and draws one 16x16 frame of its own texture on a
 standing quad, through CLUT row 15 of its slot: idle and idle 2 alternate, then attack (when it spits) and hurt (when it
-is hit). Every original keeps those four frames at (224, 96), (240, 96), (224, 112) and (240, 112) of its 256x128
-texture: an LCD-style drawing of the standing Digimon in two colours, a dark outline (0x0421) and a white fill (0x7FFF).
+is hit). The original partner textures keep those four frames at (224, 96), (240, 96), (224, 112) and (240, 112)
+of their 256x128 texture: an LCD-style drawing of the standing Digimon in two colours, a dark outline (0x0421) and a white fill (0x7FFF).
 A species whose texture has nothing there (no art, an empty row 15) is invisible while flat.
 
 `stamp` gives a species' texture its frames at build time, from our own art and the player's own texture:
   art        the species' four-frame icon (`content/icons/<id>.txt`, idle, idle 2, attack, hurt: the order of the flat
              frames), else the icon of the species whose texture it reuses, else `portraits.py`'s render of its model;
-             recoloured as the originals' frames are: colours darker than LUMA_OUTLINE become the outline, the rest
-             the fill (`mono`).
+             converted from alpha to a white silhouette, a dark outline and a few short interior marks (`mono`).
   placement  where the originals have the frames when no face samples those texels and no texture animation copies
              from or over them; else the first free 32x32 block of the texture; else free 15x15 cells (a frame shows
-             15x15 texels; with fewer than four, frames share a cell: FRAME_FALLBACK); the one-texel margin around
-             the model's texels is dropped only when it leaves fewer than four cells.
+             15x15 texels; with fewer than four, poses share indices decoded through separate unused CLUT rows).
+             Each cell keeps a one-texel margin from the model.
   no room    when the model fills its whole page (a few imports) or leaves room for fewer than four frames,
              `make_room` copies the UV islands over a 15x15 window, texel for texel, into free texels and moves their
              faces' UVs with them: the model looks the same and the window is the frames'. A texture where even that
@@ -23,10 +22,11 @@ A species whose texture has nothing there (no art, an empty row 15) is invisible
   CLUT       row 15, which every imported model but two leaves free (the batch import merges palettes down to 15):
              the two colours. When the faces use row 15 too, the model's own row with a transparent entry and the
              most contrast draws the frames with its darkest and lightest colours (`shared_row`).
-  kept       a texture that already has its four frames there (a native texture, a hand-made baby's drawing) keeps them.
-  trailer    after the TIM, inside the 0x4800 bytes the game reads: "FLT1", the (u, v) of the four frames and the
-             CLUT row. The executable keeps them per model slot when it uploads the texture (patch
-             Flat-sprites-...); a texture without a trailer (the disc's own) uses the originals' frames.
+  kept       trusted native partner textures keep their own four frames. Borrowed native field-enemy pages use
+             authored icons: monochrome noise in their corner can pass a palette-only check.
+  trailer    after the TIM, inside the 0x4800 bytes the game reads: "FLT2", the (u, v) of the four frames and the
+             four CLUT rows. The executable keeps them per model slot when it uploads the texture (patch
+             Select-a-flat-palette-for-each-animation-frame); a texture without a trailer (the disc's own) uses the originals' frames.
 A texture with fewer than 16 CLUT rows or smaller than 256x128 is completed with zeros.
 
 Standard library only (the player's build runs it).
@@ -44,13 +44,11 @@ sys.path.insert(0, HERE)
 NATIVE = ((224, 96), (240, 96), (224, 112), (240, 112))   # idle, idle 2, attack, hurt (renderFlatDigimon)
 CELL = 15                    # the texels a frame shows (setUVWH(..., 0xF, 0xF))
 ROW = 15                     # the flat frames' CLUT row (clutPage + 0x3C0)
-MAGIC = b'FLT1'
+MAGIC = b'FLT2'
 OUTLINE, FILL = 0x0421, 0x7FFF      # the originals' two colours
-LUMA_OUTLINE = 70            # icon colours darker than this (0..255 luma) become the outline: the originals draw a
-                             # white body with black lines; at 110 dark-coloured Digimon turned into black blobs
 TEX_SIZE = 0x4800
 W, H = 256, 128
-# frames that share a cell when the texture has fewer than four free cells: idle and attack first, then idle 2, hurt
+# Shared-cell groups when fewer than four cells fit; their CLUT rows retain separate poses.
 FRAME_FALLBACK = {1: (0, 0, 0, 0), 2: (0, 1, 0, 1), 3: (0, 1, 2, 1), 4: (0, 1, 2, 3)}
 
 
@@ -60,23 +58,196 @@ class NoRoom(Exception):
 
 # ---------------------------------------------------------------- art
 def mono(icon):
-    """The icon (portraits.ICON_SIZE bytes: CLUT + 32x32 4 bpp) with its colours turned into the originals' two."""
+    """Draw LCD frames from alpha, independent of the body's colour or shading.
+
+    Fit the whole animation in the 15x15 area actually sampled by the game. The
+    silhouette gets a white body and an inward, four-connected one-pixel outline.
+    Only short, high-contrast dark marks surrounded by body survive inside it;
+    a small ink budget prevents armour, fur and shaded panels becoming noise.
+    """
+    import portraits
     pal = struct.unpack_from('<16H', icon, 0)
+    luma = [(.299 * (c & 31) + .587 * (c >> 5 & 31) + .114 * (c >> 10 & 31)) * 8 for c in pal]
+    frames = []
+    for f in range(4):
+        ox, oy = (f & 1) * 16, (f >> 1) * 16
+        frames.append([[((icon[32 + (oy + y) * 16 + (ox + x) // 2] >> (4 * (x & 1))) & 15)
+                        for x in range(16)] for y in range(16)])
+    points = [(x, y) for fr in frames for y in range(16) for x in range(16) if pal[fr[y][x]]]
+    if not points:
+        return portraits._pack([0, OUTLINE, FILL] + [0] * 13, [[[0] * 16 for _ in range(16)]] * 4)
+    x0, y0 = min(x for x, y in points), min(y for x, y in points)
+    width, height = max(x for x, y in points) - x0 + 1, max(y for x, y in points) - y0 + 1
+    scale = min(1, CELL / width, CELL / height)
+    w, h = max(1, round(width * scale)), max(1, round(height * scale))
+    left, top = (CELL - w) // 2, CELL - h
     out = []
-    for c in pal:
-        if c == 0:
-            out.append(0)
+    steps = ((-1, 0), (1, 0), (0, -1), (0, 1))
+    for fr in frames:
+        source = {(left + x, top + y): fr[y0 + min(height - 1, int((y + .5) * height / h))]
+                                               [x0 + min(width - 1, int((x + .5) * width / w))]
+                  for y in range(h) for x in range(w)}
+        body = {p for p, c in source.items() if pal[c]}
+        edge = {p for p in body if any((p[0] + dx, p[1] + dy) not in body for dx, dy in steps)}
+        interior = body - edge
+        # Local contrast, rather than a palette threshold: dark body colours and
+        # smooth shading are white too. Thin lines need bright body on both sides.
+        candidates = {}
+        for x, y in interior:
+            value = luma[source[x, y]]
+            contrast = max([0] + [min(luma[source[x - dx, y - dy]], luma[source[x + dx, y + dy]]) - value
+                                  for dx, dy in ((1, 0), (0, 1), (2, 0), (0, 2))
+                                  if (x - dx, y - dy) in body and (x + dx, y + dy) in body])
+            if value < 100 and contrast >= 80:
+                candidates[x, y] = contrast
+        # Keep complete short marks, never a scattering of pixels from a large
+        # internal mesh. Prefer the face (upper half) when several marks compete.
+        groups = []
+        remaining = set(candidates)
+        while remaining:
+            seed = min(remaining)
+            group, todo = {seed}, [seed]
+            remaining.remove(seed)
+            while todo:
+                x, y = todo.pop()
+                for dx, dy in steps:
+                    p = x + dx, y + dy
+                    if p in remaining:
+                        remaining.remove(p)
+                        group.add(p)
+                        todo.append(p)
+            if len(group) <= 8:
+                score = sum(candidates[p] for p in group) / len(group) + 40 * (1 - min(y for x, y in group) / CELL)
+                groups.append((score, sorted(group)))
+        ink, budget = set(), max(4, len(interior) // 8)
+        for _, group in sorted(groups, reverse=True):
+            if len(ink) + len(group) <= budget:
+                ink.update(group)
+        grid = [[0] * 16 for _ in range(16)]
+        for x, y in body:
+            grid[y][x] = 1 if (x, y) in edge or (x, y) in ink else 2
+        out.append(grid)
+    # Static source art still needs readable movement. Leave the sampling margin
+    # empty and translate within it; authored animation otherwise stays intact.
+    for f, (dx, dy) in enumerate(((0, 0), (0, -1), (1, -1), (-1, 0))):
+        if f and out[f] == out[0]:
+            points = [(x, y) for y in range(CELL) for x in range(CELL) if out[f][y][x]]
+            if all(0 <= x + dx < CELL and 0 <= y + dy < CELL for x, y in points):
+                out[f] = portraits._shift(out[f], dx, dy)
+            else:
+                # Full-size stills have no translation margin. Squash vertically
+                # for the bob, lean forward for attack, recoil for hurt.
+                tw, th, tx, ty = {1: (15, 14, 0, 0), 2: (14, 15, 1, 0), 3: (14, 13, 0, 2)}[f]
+                grid = [[0] * 16 for _ in range(16)]
+                for y in range(th):
+                    for x in range(tw):
+                        grid[ty + y][tx + x] = out[f][y * (CELL - 1) // (th - 1)][x * (CELL - 1) // (tw - 1)]
+                out[f] = grid
+    return portraits._pack([0, OUTLINE, FILL] + [0] * 13, out)
+
+
+def merge_palette(model, nbones, rows, idx):
+    """Free a redundant model palette by reindexing a face's colours exactly.
+
+    Preserve every sampled texel and its margin, including faces on other rows
+    that share those coordinates. Animated texture copies are left alone.
+    """
+    import mmd
+    from models.audit_textures import row_of
+    anims = mmd.MMD.parse(model, nbones).anims
+    if any(ins['op'] == 'tex' for a in (anims.anims if anims else []) if a for ins in a.instrs):
+        raise NoRoom('texture copies prevent palette compaction')
+    used, faces = {}, []
+    for off, p in prims_at(model):
+        if not p.mode & 4:
             continue
-        r, g, b = (c & 31) << 3, (c >> 5 & 31) << 3, (c >> 10 & 31) << 3
-        out.append(OUTLINE if .299 * r + .587 * g + .114 * b < LUMA_OUTLINE else FILL)
-    return struct.pack('<16H', *out) + icon[32:]
+        d = p.decode()
+        row = row_of(d['cba'])
+        faces.append((off, row, d['cba']))
+        pixels = used.setdefault(row, set())
+        for x, y in texels(d['uv']):
+            pixels.update(Y * W + X for Y in range(max(0, y - 1), min(H, y + 2))
+                          for X in range(max(0, x - 1), min(W, x + 2)))
+    for source in sorted(used):
+        for target in sorted(used):
+            if source == target:
+                continue
+            remap = {}
+            for p in used[source]:
+                colour = rows[source][idx[p]]
+                choices = [i for i, c in enumerate(rows[target]) if c == colour and all(
+                    rows[r][i] == rows[r][idx[p]] for r in used if r != source and p in used[r])]
+                if not choices:
+                    break
+                remap[p] = choices[0]
+            else:
+                out, pixels = bytearray(model), bytearray(idx)
+                for p, i in remap.items():
+                    pixels[p] = i
+                for off, row, cba in faces:
+                    if row == source:
+                        struct.pack_into('<H', out, off + 6, cba + ((target - source) << 6))
+                return bytes(out), pixels
+    raise NoRoom('no model palette can be freed without changing sampled colours')
+
+
+def palette_frames(icon, cells, rows, idx, face_rows):
+    """Keep poses in shared cells through unused CLUT rows, without extra VRAM.
+
+    A pair of two-colour frames has nine possible pixel combinations: store the
+    combination as an index and let each pose's CLUT decode its own colour. Four
+    poses in one cell need up to 81 combinations; retain the 16 most common,
+    matching rare combinations with alpha weighted above interior ink.
+    """
+    from collections import Counter
+    groups = {}
+    for f, cell in enumerate(cells):
+        groups.setdefault(cell, []).append(f)
+    count = max(map(len, groups.values()))
+    free = [r for r in range(15, -1, -1) if r not in face_rows]
+    if len(free) < count:
+        raise NoRoom(f'{count} shared poses need unused CLUT rows, only {len(free)} available')
+    palettes = free[:count]
+    pal = struct.unpack_from('<16H', icon)
+    frames = []
+    for f in range(4):
+        ox, oy = (f & 1) * 16, (f >> 1) * 16
+        frames.append([0 if pal[c] == 0 else 1 if pal[c] == OUTLINE else 2
+                       for y in range(CELL) for x in range(CELL)
+                       for c in [(icon[32 + (oy + y) * 16 + (ox + x) // 2] >> (4 * (x & 1))) & 15]])
+    frame_rows = [0] * 4
+    for (u, v), fs in groups.items():
+        vectors = [tuple(frames[f][p] for f in fs) + (0,) * (count - len(fs)) for p in range(CELL * CELL)]
+        zero = (0,) * count
+        if count <= 2:
+            codes = [(a, b)[:count] for b in range(3 if count == 2 else 1) for a in range(3)]
+        else:
+            frequency = Counter(vectors)
+            codes = [zero] + sorted((v for v in frequency if v != zero), key=lambda v: (-frequency[v], v))[:15]
+        # All groups use the same positional decoding when count <= 2. A four-
+        # pose group is the sole cell, so its own codebook can occupy these rows.
+        for j, row in enumerate(palettes):
+            rows[row] = [(0, OUTLINE, FILL)[code[j]] for code in codes] + [0] * (16 - len(codes))
+        lookup = {}
+        for vector in set(vectors):
+            lookup[vector] = min(range(len(codes)), key=lambda k: sum(
+                0 if a == b else 4 if a == 0 or b == 0 else 1 for a, b in zip(vector, codes[k])))
+        for p, vector in enumerate(vectors):
+            idx[(v + p // CELL) * W + u + p % CELL] = lookup[vector]
+        for j, f in enumerate(fs):
+            frame_rows[f] = palettes[j]
+    return frame_rows
+
+
+FLAT_ICON_ALIASES = {102: 67}  # SandYanmamon shares Yanmamon's silhouette.
 
 
 def art(s):
     """(icon bytes, where from) of a species definition: its drawing, the drawing of the species its texture comes from,
     else the render of its model (portraits.py), else the portraits' fallback icon."""
     import portraits
-    for t, why in ((s['id'], 'icon'), ((s.get('texture') or {}).get('from'), 'icon of the texture\'s species')):
+    for t, why in ((s['id'], 'icon'), ((s.get('texture') or {}).get('from'), 'icon of the texture\'s species'),
+                   (FLAT_ICON_ALIASES.get(s['id']), 'icon of the same silhouette')):
         if t is not None:
             text = portraits.drawn_text(t)
             if text is not None:
@@ -125,6 +296,14 @@ def trailer(blob):
         return None
     b = blob[end + 4:end + 13]
     return tuple((b[2 * i], b[2 * i + 1]) for i in range(4)), b[8]
+
+
+def frame_rows(tex):
+    """CLUT row for each pose (four rows fit the existing three-word slot record)."""
+    if trailer(tex):
+        end = parse_tim(tex)[6]
+        return tuple(tex[end + 12:end + 16])
+    return (ROW,) * 4
 
 
 # ---------------------------------------------------------------- what the model uses
@@ -207,20 +386,21 @@ def model_use(models, nbones):
     return (Use(marks), Use(marks, 0)), rows
 
 
-def place(uses):
+def place(uses, keep=()):
     """The four (u, v) of the flat frames in a texture whose model needs `uses` (with a margin, without): the
     originals' corner, else a free 31x31 block, else free 15x15 cells (a frame shows 15x15 texels, CELL), each with a
-    texel of margin from what the model uses. Fewer than four cells repeat frames (FRAME_FALLBACK); NoRoom with none."""
+    texel of margin from what the model uses. Fewer than four cells share indices (FRAME_FALLBACK), decoded by palette_frames; NoRoom with none."""
     use = uses[0]
     if use.free(224, 96, 32, 32):
         return NATIVE
-    for y in range(H - 31, -1, -1):          # nearest the originals' corner first: bottom rows, right columns
-        for x in range(W - 31, -1, -1):
+    for y in range(H - 32, -1, -1):          # nearest the originals' corner first: bottom rows, right columns
+        for x in range(W - 32, -1, -1):
             if use.free(x, y, 31, 31):
                 return ((x, y), (x + 16, y), (x, y + 16), (x + 16, y + 16))
-    cells = []
-    for y in range(H - CELL, -1, -1):
-        for x in range(W - CELL, -1, -1):
+    # setUVWH stores the far endpoint in a byte too; do not wrap 255 + 1.
+    cells = [p for p in dict.fromkeys(keep) if p[0] + CELL < W and p[1] + CELL < H and use.free(*p, CELL, CELL)]
+    for y in range(H - CELL - 1, -1, -1):
+        for x in range(W - CELL - 1, -1, -1):
             if len(cells) < 4 and use.free(x, y, CELL, CELL) and not any(
                     abs(x - cx) < CELL and abs(y - cy) < CELL for cx, cy in cells):
                 cells.append((x, y))
@@ -255,10 +435,16 @@ def shared_row(clut):
 
 def native_sprite_ok(rows, idx, uses, face_rows):
     """The texture already has the four frames where the originals keep them (its own drawing: a native texture, a
-    hand-made baby): row 15 is the sprite's alone, no face samples the corner, every frame has an opaque texel."""
+    two-colour hand-made baby): row 15 is the sprite's alone, no face samples the corner, every frame has an opaque texel."""
     if ROW in face_rows or not any(rows[ROW]) or not uses[1].free(224, 96, 32, 32):
         return False
-    return all(any(rows[ROW][idx[(v + y) * W + u + x]] for y in range(16) for x in range(16)) for u, v in NATIVE)
+    colours = {rows[ROW][idx[(v + y) * W + u + x]] for u, v in NATIVE for y in range(16) for x in range(16)}
+    opaque = colours - {0}
+    # Native pages also use STP black (0x8000) and STP white (0xFFFF).
+    monochrome = len(opaque) <= 2 and all(
+        max(c & 31, c >> 5 & 31, c >> 10 & 31) - min(c & 31, c >> 5 & 31, c >> 10 & 31) <= 1 for c in opaque)
+    return monochrome and all(
+        any(rows[ROW][idx[(v + y) * W + u + x]] for y in range(CELL) for x in range(CELL)) for u, v in NATIVE)
 
 
 # ---------------------------------------------------------------- making room
@@ -278,7 +464,7 @@ def prims_at(model):
     return out
 
 
-def make_room(model, nbones, idx, keep=()):
+def make_room(model, nbones, idx, keep=(), _reuse_sources=True):
     """(model, texel indices) with one 15x15 window of the texture freed for the frames, when the model's faces fill the
     whole page: the UV islands (faces that share texels) over the cheapest window and its one-texel border are copied,
     texel for texel and with a texel of margin, into free texels elsewhere and their faces' UVs moved with them;
@@ -324,35 +510,64 @@ def make_room(model, nbones, idx, keep=()):
     for i in range(len(faces)):
         islands.setdefault(find(i), []).append(i)
     texels_of = {k: set().union(*(faces[i][2] for i in v)) for k, v in islands.items()}
-    grid = {t: find(i) for t, i in owner.items()}
+    grid = {}
+    for k, ts in texels_of.items():
+        for t in ts:
+            grid.setdefault(t, set()).add(k)
     bad = {k for k, ts in texels_of.items() if ts & anim}
     used = set(grid) | anim
-    occ = [0] * H
-    for x, y in used:
-        for yy in range(max(0, y - 1), min(H, y + 2)):
-            occ[yy] |= 7 << x >> 1 if x else 3
     full = (1 << W) - 1
     cands = []
     for y in range(0, H - CELL + 1, 2):
         for x in range(0, W - CELL + 1, 2):
-            ks = {grid[(xx, yy)] for yy in range(y - 1, y + CELL + 1) for xx in range(x - 1, x + CELL + 1) if (xx, yy) in grid}
+            ks = set().union(*(grid[(xx, yy)] for yy in range(y - 1, y + CELL + 1)
+                               for xx in range(x - 1, x + CELL + 1) if (xx, yy) in grid))
             if not ks or any(abs(x - kx) <= CELL and abs(y - ky) <= CELL for kx, ky in keep) or ks & bad or any((xx, yy) in anim for yy in range(y, y + CELL) for xx in range(x, x + CELL)):
                 continue
             cands.append((sum(len(texels_of[k]) for k in ks), y, x, sorted(ks)))
     cands.sort()
+    fixed_cache, shape_cache = {}, {}
+    masks = {}
+    for k, ts in texels_of.items():
+        rows = [0] * H
+        for x, y in ts:
+            for yy in range(max(0, y - 1), min(H, y + 2)):
+                rows[yy] |= 7 << x >> 1 if x else 3
+        masks[k] = rows
+    base = [0] * H
+    for x, y in anim:
+        for yy in range(max(0, y - 1), min(H, y + 2)):
+            base[yy] |= 7 << x >> 1 if x else 3
+    for kx, ky in keep:
+        lo, hi = max(0, kx - 1), min(W, kx + CELL + 1)
+        for y in range(max(0, ky - 1), min(H, ky + CELL + 1)):
+            base[y] |= ((1 << (hi - lo)) - 1) << lo
     for _, wy, wx, ks in cands[:400]:
         win = [((full >> (W - CELL - 2)) << wx >> 1) if wy - 1 <= y < wy + CELL + 1 else 0 for y in range(H)]
-        taken = [occ[y] | win[y] for y in range(H)]
+        # Source texels of moved faces become free. Copy from the unchanged
+        # input buffer, keeping every other face, animation and frame reserved.
+        key = tuple(ks)
+        if key not in fixed_cache:
+            fixed = base[:]
+            for k, rows in masks.items():
+                if not _reuse_sources or k not in ks:
+                    for y in range(H):
+                        fixed[y] |= rows[y]
+            fixed_cache[key] = fixed
+        taken = [a | b for a, b in zip(fixed_cache[key], win)]
         moves = {}
         for k in ks:
-            ts = texels_of[k]
-            dil = {(x + dx, y + dy) for x, y in ts for dx in (-1, 0, 1) for dy in (-1, 0, 1)
-                   if 0 <= x + dx < W and 0 <= y + dy < H}
-            x0, y0 = min(x for x, _ in dil), min(y for _, y in dil)
-            x1, y1 = max(x for x, _ in dil), max(y for _, y in dil)
-            rows = [0] * (y1 - y0 + 1)
-            for x, y in dil:
-                rows[y - y0] |= 1 << (x - x0)
+            if k not in shape_cache:
+                ts = texels_of[k]
+                dil = {(x + dx, y + dy) for x, y in ts for dx in (-1, 0, 1) for dy in (-1, 0, 1)
+                       if 0 <= x + dx < W and 0 <= y + dy < H}
+                x0, x1 = min(x for x, _ in dil), max(x for x, _ in dil)
+                y0, y1 = min(y for _, y in dil), max(y for _, y in dil)
+                rows = [0] * (y1 - y0 + 1)
+                for x, y in dil:
+                    rows[y - y0] |= 1 << (x - x0)
+                shape_cache[k] = dil, x0, x1, y0, rows
+            dil, x0, x1, y0, rows = shape_cache[k]
             spot = None
             for Y in range(H - len(rows), -1, -1):
                 for X in range(W - (x1 - x0) - 1, -1, -1):
@@ -381,16 +596,19 @@ def make_room(model, nbones, idx, keep=()):
     raise NoRoom('the model fills its texture and no 15x15 window can be freed')
 
 
-def stamp(tex, model, nbones, icon):
+def stamp(tex, model, nbones, icon, *, keep_native=True):
     """(texture bytes, model bytes, four (u, v), CLUT row, how). A texture that already has its frames
-    (`native_sprite_ok`) gets only its trailer; any other gets `icon` (0x220 bytes, already recoloured: `mono`) at
+    (`native_sprite_ok`, when `keep_native` permits trusting the source) gets only its trailer; any other gets
+    `icon` (0x220 bytes, already recoloured: `mono`) at
     `place`, in CLUT row 15, or, when the model's faces use row 15, in the row `shared_row` picks (its own colours). When
     the model leaves no room, `make_room` moves a few of its UV islands first (`model` changes only then; a list of
     models, all drawn with this texture, is never changed). NoRoom when even that fails."""
     rows, cx, cy, idx, px, py, _ = parse_tim(tex)
     uses, face_rows = model_use(model, nbones)
-    if native_sprite_ok(rows, idx, uses, face_rows):
+    free_rows = len(set(range(16)) - face_rows)
+    if keep_native and native_sprite_ok(rows, idx, uses, face_rows):
         cells, row, how = NATIVE, ROW, 'its own'
+        pose_rows = [row] * 4
     else:
         how = ''
         try:
@@ -398,35 +616,49 @@ def stamp(tex, model, nbones, icon):
         except NoRoom:
             if not isinstance(model, (bytes, bytearray)):
                 raise
-            model, idx = make_room(model, nbones, idx)
+            model, idx = make_room(model, nbones, idx, _reuse_sources=free_rows > 1)
             cells, how = place(model_use(model, nbones)[0]), ', UV islands moved'
-        while len(set(cells)) < 4 and isinstance(model, (bytes, bytearray)):   # frames sharing a cell: room for more
+        while (len(set(cells)) < 2 or max(cells.count(c) for c in cells) > free_rows) and isinstance(model, (bytes, bytearray)):
+            # Prefer two cells (lossless paired encoding); make more when the
+            # model leaves too few palette rows for shared poses.
             try:
-                m2, i2 = make_room(model, nbones, idx, set(cells))
+                m2, i2 = make_room(model, nbones, idx, set(cells), _reuse_sources=free_rows > 1)
             except NoRoom:
                 break
-            c2 = place(model_use(m2, nbones)[0])
+            c2 = place(model_use(m2, nbones)[0], cells)
             if len(set(c2)) <= len(set(cells)):
                 break
             model, idx, cells, how = m2, i2, c2, ', UV islands moved'
-        row, clear, dark, light = (ROW, 0, 0, 0) if ROW not in face_rows else shared_row(rows)
-        pal = struct.unpack_from('<16H', icon, 0)
-        if row == ROW:
-            remap, how = list(range(16)), 'row 15' + how
-            rows[ROW] = list(pal)
+        if len(set(cells)) < 4:
+            while max(cells.count(c) for c in cells) > len(set(range(16)) - face_rows):
+                if not isinstance(model, (bytes, bytearray)):
+                    raise NoRoom('shared textures leave too few unused palettes for the poses')
+                model, idx = merge_palette(model, nbones, rows, idx)
+                uses, face_rows = model_use(model, nbones)
+                how += ', model palette merged'
+            pose_rows = palette_frames(icon, cells, rows, idx, face_rows)
+            row = pose_rows[0]
+            how = 'palette poses' + how + ', moved'
         else:
-            remap = [clear if c == 0 else dark if c == OUTLINE else light for c in pal]
-            how = f'row {row} shared' + how
-        pix = icon[32:]
-        n = 16 if cells == NATIVE else CELL
-        for f, (u, v) in enumerate(cells):
-            ox, oy = (f & 1) * 16, (f >> 1) * 16
-            for y in range(n):
-                for x in range(n):
-                    b = pix[(oy + y) * 16 + (ox + x) // 2]
-                    idx[(v + y) * W + u + x] = remap[b >> 4 if (ox + x) & 1 else b & 15]
-        how += '' if cells == NATIVE else ', moved'
-    out = build_tim(rows, cx, cy, idx, px, py) + MAGIC + bytes(c for uv in cells for c in uv) + bytes((row, 0, 0, 0))
+            row, clear, dark, light = (ROW, 0, 0, 0) if ROW not in face_rows else shared_row(rows)
+            pal = struct.unpack_from('<16H', icon, 0)
+            if row == ROW:
+                remap, how = list(range(16)), 'row 15' + how
+                rows[ROW] = list(pal)
+            else:
+                remap = [clear if c == 0 else dark if c == OUTLINE else light for c in pal]
+                how = f'row {row} shared' + how
+            pix = icon[32:]
+            n = 16 if cells == NATIVE else CELL
+            for f, (u, v) in enumerate(cells):
+                ox, oy = (f & 1) * 16, (f >> 1) * 16
+                for y in range(n):
+                    for x in range(n):
+                        b = pix[(oy + y) * 16 + (ox + x) // 2]
+                        idx[(v + y) * W + u + x] = remap[b >> 4 if (ox + x) & 1 else b & 15]
+            how += '' if cells == NATIVE else ', moved'
+            pose_rows = [row] * 4
+    out = build_tim(rows, cx, cy, idx, px, py) + MAGIC + bytes(c for uv in cells for c in uv) + bytes(pose_rows)
     if len(out) > TEX_SIZE:
         raise ValueError('the texture does not fit 0x4800 bytes')
     return (out + tex[len(out):]).ljust(TEX_SIZE, b'\0')[:TEX_SIZE], model, cells, row, how
@@ -442,14 +674,34 @@ def frames_of(tex):
     """[4 x 16x16 rows of colour words] of a texture's flat frames (the game shows 15x15 of each)."""
     rows, _, _, idx, _, _, _ = parse_tim(tex)
     cells, row = sprite_of(tex)
-    return [[[rows[row][idx[(v + y) * W + u + x]] if u + x < W and v + y < H else 0 for x in range(16)]
-             for y in range(16)] for u, v in cells]
+    pose_rows = frame_rows(tex)
+    return [[[rows[pose_rows[f]][idx[(v + y) * W + u + x]] if u + x < W and v + y < H else 0 for x in range(16)]
+             for y in range(16)] for f, (u, v) in enumerate(cells)]
+
+
+def matches_art(tex, icon):
+    """Whether all visible frame silhouettes match the supplied two-colour art.
+
+    A monochrome palette alone cannot distinguish authored frames from texture noise.
+    Palette colours may be shared with a model; compare transparency, not colour words.
+    """
+    actual = frames_of(tex)
+    pal = struct.unpack_from('<16H', icon, 0)
+    for f in range(4):
+        ox, oy = (f & 1) * 16, (f >> 1) * 16
+        for y in range(CELL):
+            for x in range(CELL):
+                b = icon[32 + (oy + y) * 16 + (ox + x) // 2]
+                colour = pal[(b >> 4 if (ox + x) & 1 else b) & 15]
+                if bool(actual[f][y][x]) != bool(colour):
+                    return False
+    return True
 
 
 def check(tex, model=None, nbones=None):
-    """Problems of a texture's flat sprite (empty list: fine): its CLUT row empty, a frame with no opaque texel, and with
-    the model (MMD bytes, or a list drawn with this texture): a frame on texels the model uses, row 15 holding the
-    sprite while faces use it."""
+    """Problems of a texture's flat sprite (empty list: fine): empty CLUT row or frame, more than two opaque colours;
+    with the model (MMD bytes, or a list drawn with this texture): frames on texels the model uses, or row 15 holding
+    the sprite while faces use it."""
     out = []
     try:
         rows = parse_tim(tex)[0]
@@ -458,7 +710,14 @@ def check(tex, model=None, nbones=None):
     cells, row = sprite_of(tex)
     if not 0 <= row < 16 or not any(rows[row]):
         out.append(f'CLUT row {row} is empty')
-    for f, fr in enumerate(frames_of(tex)):
+    frames = frames_of(tex)
+    colours = {c for fr in frames for line in fr[:CELL] for c in line[:CELL] if c}
+    if len(colours) > 2:
+        out.append(f'flat frames use {len(colours)} opaque colours (expected at most two)')
+    for f, fr in enumerate(frames):
+        u, v = cells[f]
+        if u + CELL >= W or v + CELL >= H:
+            out.append(f'frame {f} at {(u, v)} wraps its GPU UV endpoint or crosses the texture slot')
         if not any(c for r in fr[:CELL] for c in r[:CELL]):
             out.append(f'frame {f} at {cells[f]} has no opaque texel')
     if model is not None:
@@ -466,20 +725,21 @@ def check(tex, model=None, nbones=None):
         for f, (u, v) in enumerate(cells):      # a moved frame keeps a texel of margin, the originals' corner none
             if not uses[cells == NATIVE].free(u, v, CELL, CELL):
                 out.append(f'frame {f} at {(u, v)} lies on texels the model uses')
-        if row == ROW and ROW in face_rows:
-            out.append(f'CLUT row {ROW} holds the sprite but faces use it too')
+        overlap = set(frame_rows(tex)) & face_rows
+        if overlap and (row == ROW or len(set(frame_rows(tex))) > 1):
+            out.append(f'CLUT rows {sorted(overlap)} hold the sprite but faces use them too')
     return out
 
 
 # ---------------------------------------------------------------- contact sheet
 def sheet(out, disc, ids=None, zoom=4):
-    """PNG of every species' four flat frames (from a built disc folder), eight to a row, with the id under each."""
+    """PNG of every species' four flat frames (from a built disc folder), 13 to a row, with the id and name under each."""
     import image
     from models.audit_textures import disc_models
     tiles = []
     for t, name, model, tim in disc_models(disc, set(ids or ())):
         tiles.append((t, name, frames_of(tim)))
-    cols = 8
+    cols = 13
     cw, chh = max(32 * zoom + 8, 160), 32 * zoom + 32
     Wd, Hd = cols * cw, -(-len(tiles) // cols) * chh
     px = bytearray(b'\x18\x18\x18\xff' * (Wd * Hd))

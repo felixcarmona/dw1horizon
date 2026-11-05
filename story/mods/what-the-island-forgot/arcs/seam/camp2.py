@@ -1,15 +1,15 @@
-# 326, CAMP 2 (design/arc-seam.md §2): the Seam's roster (Psychemon always, Shamamon by day, Gururumon by night), and the camp's
-# broken notebook in the human hand of the page the Market Manager sells (§3.1c). Not a memory fragment: three lines of
-# the human crossing, read the first time the tamer comes by.
+# 326, CAMP 2 (design/arc-seam.md §2): the Seam's roster (IceLeomon always, Sorcermon by day, IceDevimon by night), the
+# camp's latrine (maps/toilets.py) and its broken notebook in the human hand of the page the Market Manager sells (§3.1c).
+# Not a memory fragment: three lines of the human crossing, read the first time the tamer comes by.
 from dw import *
 
 seam3 = new_screen(326, map="build/what-the-island-forgot-maps/screens/SEAM04.MAP")
 chest_camp2 = flag()
-seam3_psychemon = seam3.npc(Species.Psychemon, at=(650, 250), hp=900, mp=2300, offense=340, defense=200, speed=240, brain=200, bits=300)
-seam3_shamamon = seam3.npc(Species.Shamamon, at=(-750, -950), hp=1000, mp=2100, offense=360, defense=180, speed=100, brain=50, bits=300,
-                 autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
-seam3_gururumon = seam3.npc(Species.Gururumon, at=(-750, -550), hp=1200, mp=2700, offense=400, defense=190, speed=240, brain=200, bits=400,
-                            autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
+seam3_iceleomon = seam3.npc(Species.IceLeomon, at=(650, 250), hp=4200, mp=4000, offense=600, defense=360, speed=300, brain=280, bits=2000)
+seam3_sorcermon = seam3.npc(Species.Sorcermon, at=(-750, -950), hp=3200, mp=4800, offense=560, defense=280, speed=280, brain=300, bits=1500,
+                            autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
+seam3_icedevimon = seam3.npc(Species.IceDevimon, at=(-750, -550), hp=3900, mp=4600, offense=620, defense=360, speed=200, brain=150, bits=1500,
+                             autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
 camp_read = flag()
 
 @seam3.on_enter
@@ -21,3 +21,20 @@ def the_camp_notebook():
         tamer.say("\"Day 40. The ground changes here. It did not, last year.\"")
         tamer.say("\"Day 41. Half the crates gone. Nobody heard a thing.\"", "\"Day 43. We go on north. CAMP 3 is under the plateau.\"")
         camp_read.set()
+
+
+# Screens with scene handlers have empty default talk sections; wild encounters need their own handlers.
+@seam3_iceleomon.on_talk
+def fight_iceleomon():
+    say("Grrr!")
+    fight()
+
+@seam3_sorcermon.on_talk
+def fight_sorcermon():
+    say("Grrr!")
+    fight()
+
+@seam3_icedevimon.on_talk
+def fight_icedevimon():
+    say("Grrr!")
+    fight()

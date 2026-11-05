@@ -1,0 +1,30 @@
+From 976bce3175fe37427c3942eed9f26b53a339fbc6 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 4 Nov 2026 22:17:55 +0000
+Subject: [PATCH] Resolve flattened spit without indexing before the move table
+
+---
+ src/main/utils2.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/utils2.c b/src/main/utils2.c
+index fd8cdd4..35426e9 100644
+--- a/src/main/utils2.c
++++ b/src/main/utils2.c
+@@ -351,7 +351,12 @@ void learnMove(int32_t move)
+ 
+ uint8_t entityGetTechFromAnim(Entity *e, uint8_t anim)
+ {
+-	if (anim == 0xff) {
++	/* The flat attack queues animation zero, outside the technique slots.
++	 * Reading before moves[] can turn its spit into a finisher and lock AI. */
++	if (anim == 0 && (uint8_t)e->flatSprite < 4) {
++		return 0x79;
++	}
++	if (anim < 0x2e || anim >= 0x3e) {
+ 		return 0xff;
+ 	}
+ 	if ((e->type == 0x3cL) && (anim == 0x3c)) {
+-- 
+2.55.0
+
