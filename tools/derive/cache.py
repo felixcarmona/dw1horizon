@@ -16,11 +16,26 @@ from . import runner
 def tool_key():
     root = Path(runner.ROOT)
     # Modules imported before recording are still code inputs. Conservatively hash
-    # all tool sources, including transitive helpers, rather than infer imports.
+    # all build-tool sources, including transitive helpers, rather than infer imports.
+    # Regression entry points are keyed separately if a builder actually imports one.
     paths = [p for p in (root / 'tools').rglob('*') if p.is_file()
-             and '__pycache__' not in p.parts and p.suffix in ('.py', '.sh', '.json', '.lua')]
+             and '__pycache__' not in p.parts and p.suffix in ('.py', '.sh', '.json', '.lua')
+             and not (p.parent == root / 'tools' and p.name.startswith('test_') and p.suffix == '.py')]
     paths += [p for p in (root / 'content').rglob('*.py') if '__pycache__' not in p.parts]
     return key([[str(p.relative_to(root)), digest(p)] for p in sorted(paths)])
+
+
+def loaded_test_code():
+    """Test entry points are not build inputs unless a builder imports one."""
+    tools = Path(runner.ROOT) / 'tools'
+    paths = set()
+    for module in list(sys.modules.values()):
+        name = getattr(module, '__file__', None)
+        if name:
+            p = Path(name).absolute()
+            if p.parent == tools and p.name.startswith('test_') and p.suffix == '.py' and p.is_file():
+                paths.add(p)
+    return key([[str(p), digest(p)] for p in sorted(paths)])
 
 
 @functools.lru_cache(maxsize=256)
@@ -65,6 +80,7 @@ def identity(ctx, name, args=()):
     ignored = {'DW_BUILD_CACHE', 'DW_CACHE_DIR', 'DERIVE_JOBS', 'DERIVE_ARGS', 'DERIVE_START',
                'DERIVE_UNIT_ORDER', 'DW_CACHE_DEBUG', 'CODEX_TOOL_CALL_ID', '_', 'SHLVL'}
     return dict(kind='derive', name=name, args=args, out=ctx.out, tools=tool_key(),
+                test_helpers=loaded_test_code(),
                 python=[sys.version, sys.executable, sys.platform, runtime_sources()],
                 environment={k: v for k, v in ctx.env.items() if k not in ignored},
                 facts=ctx.facts if getattr(ctx, 'cache_facts', False) else None,

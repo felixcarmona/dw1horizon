@@ -225,6 +225,31 @@ class DeriveCacheTests(unittest.TestCase):
         self.assertEqual(before, cache.identity(ctx, 'unit'))
 
 
+class CodeInputs(unittest.TestCase):
+    def test_test_changes_do_not_invalidate_builds_but_imported_helpers_do(self):
+        import sys
+        with tempfile.TemporaryDirectory() as td, patch.object(runner, 'ROOT', td):
+            root = Path(td)
+            (root / 'tools').mkdir()
+            helper = root / 'tools/helper.py'; helper.write_text('helper = 1')
+            test = root / 'tools/test_example.py'; test.write_text('test = 1')
+            try:
+                cache.tool_key.cache_clear()
+                first = cache.tool_key()
+                test.write_text('test = 2')
+                cache.tool_key.cache_clear()
+                self.assertEqual(first, cache.tool_key())
+                helper.write_text('helper = 2')
+                cache.tool_key.cache_clear()
+                self.assertNotEqual(first, cache.tool_key())
+                with patch.dict(sys.modules, {'example_test_helper': SimpleNamespace(__file__=str(test))}):
+                    loaded = cache.loaded_test_code()
+                    test.write_text('test = 3')
+                    self.assertNotEqual(loaded, cache.loaded_test_code())
+            finally:
+                cache.tool_key.cache_clear()
+
+
 class RecordedSteps(unittest.TestCase):
     def test_facts_are_keyed_for_recorded_fact_consumers(self):
         from tools.derive.__main__ import Ctx

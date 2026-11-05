@@ -70,20 +70,36 @@ class Workers(unittest.TestCase):
 
 class RecordingCache(unittest.TestCase):
     def test_player_replay_does_not_enter_release_helpers(self):
+        import shutil
+        import subprocess
         import dwpatch as dw
-        from types import SimpleNamespace
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
-            (root / 'bundle').mkdir()
-            man = {'files': {'MODEL': {'file': 'model'}}}
-            with patch.object(dw, 'derive_tree'), \
-                    patch.object(dw, 'derive_run', return_value=(man, str(root / 'out'))) as replay, \
-                    patch.object(dw, 'release_derive', side_effect=AssertionError('release-only helper')):
-                got = dw.derive_holes(td, {'extract': []}, {'local': {'recipe': 'everything'}},
-                                     SimpleNamespace(data=lambda q: b''), str(root / 'work'))
-            self.assertEqual(got, {'MODEL': str(root / 'out/model')})
-            self.assertNotIn('measure_worker', replay.call_args.kwargs)
-            self.assertNotIn('release_env', replay.call_args.kwargs)
+            shutil.copyfile(dw.__file__, root / 'dwpatch.py')
+            bundle = root / 'bundle'
+            recipe = bundle / 'tools/derive/recipes/everything.json'
+            recipe.parent.mkdir(parents=True)
+            recipe.write_text(json.dumps({'environment': {'NAME': 'everything'}}))
+            (bundle / 'tools/__init__.py').write_text('')
+            (bundle / 'tools/derive/__init__.py').write_text('')
+            (bundle / 'exe-facts.json').write_text('{}')
+            (bundle / 'tools/derive/__main__.py').write_text(
+                "import json,os,pathlib\n"
+                "assert not any(k in os.environ for k in ('DW_BUILD_CACHE','DW_RECORD_CACHE'))\n"
+                "out=pathlib.Path('build/everything'); (out/'derived').mkdir(parents=True)\n"
+                "(out/'model').write_bytes(b'player bytes')\n"
+                "(out/'derived/manifest.json').write_text(json.dumps({'files':{'MODEL':{'file':'model'}}}))\n")
+            script = (
+                "import pathlib,sys; from types import SimpleNamespace; "
+                "sys.path.insert(0,sys.argv[1]); import dwpatch as dw; root=pathlib.Path(sys.argv[1]); "
+                "got=dw.derive_holes(str(root),{'extract':[]},{'local':{'recipe':'everything'}},"
+                "SimpleNamespace(data=lambda _:b''),str(root/'work')); "
+                "assert pathlib.Path(got['MODEL']).read_bytes()==b'player bytes'")
+            env = {k: v for k, v in os.environ.items() if k not in ('PYTHONPATH', 'PYTHONHOME')}
+            env.update(DW_BUILD_CACHE='must-not-be-used', DW_RECORD_CACHE='must-not-be-used')
+            result = subprocess.run([sys.executable, '-I', '-B', '-E', '-S', '-c', script, td], cwd=td,
+                                    env=env, capture_output=True, text=True, timeout=30)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_launcher_metadata_does_not_prevent_cross_release_hits(self):
         import dwpatch as dw
