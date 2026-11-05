@@ -16,6 +16,7 @@
      "Apocalymon keeps its giant size through every animation."
     ],
     "fixed": [
+     "Fixed a freeze when an egg hatched after your partner died.",
      "Fixed battles stalling with flattened enemies, pauses after victory and nearby NPCs joining unintended battles.",
      "Fixed blocked recruitment and factory conversations, unreachable ground items, gym result boxes and Yes/No text cropping.",
      "The desktop patcher now handles European base discs with Japanese Card Arena correctly. The browser builder explains when storage space is insufficient."
@@ -34,6 +35,7 @@
      "Apocalymon mantiene su tamaño gigante en todas sus animaciones."
     ],
     "fixed": [
+     "Corregido un bloqueo al eclosionar un huevo tras la muerte de tu compañero.",
      "Corregidos los combates atascados con enemigos aplastados, las pausas tras ganar y los PNJ cercanos que entraban en combates ajenos.",
      "Corregidos reclutamientos y conversaciones de la fábrica bloqueados, objetos del suelo inaccesibles, cuadros de resultados del gimnasio y textos de Sí/No recortados.",
      "El parcheador de escritorio ya combina correctamente las bases europeas con Card Arena japonés. El constructor web explica cuándo falta espacio de almacenamiento."
@@ -52,6 +54,7 @@
      "Apocalymon mantém seu tamanho gigante em todas as animações."
     ],
     "fixed": [
+     "Corrigido um travamento ao chocar um ovo após a morte do parceiro.",
      "Corrigidos combates travados com inimigos achatados, pausas após a vitória e NPCs próximos entrando em combates indevidos.",
      "Corrigidos recrutamentos e conversas da fábrica bloqueados, itens no chão inacessíveis, caixas de resultados do ginásio e textos de Sim/Não cortados.",
      "O patcher de desktop agora combina corretamente discos base europeus com Card Arena japonês. O construtor web explica quando falta espaço de armazenamento."
@@ -70,6 +73,7 @@
      "Apocalymon garde sa taille géante dans toutes ses animations."
     ],
     "fixed": [
+     "Correction d’un blocage lors de l’éclosion d’un œuf après la mort du partenaire.",
      "Correction des combats bloqués avec des ennemis aplatis, des pauses après la victoire et des PNJ voisins rejoignant un combat par erreur.",
      "Correction de recrutements et de dialogues de l’usine bloqués, d’objets au sol inaccessibles, des résultats du gymnase et des textes Oui/Non rognés.",
      "Le patcher de bureau combine correctement les disques de base européens avec Card Arena japonais. Le créateur web explique quand l’espace de stockage manque."
@@ -88,6 +92,7 @@
      "Apocalymon behält in jeder Animation seine riesige Größe."
     ],
     "fixed": [
+     "Ein Hänger beim Schlüpfen eines Eis nach dem Tod des Partners wurde behoben.",
      "Kämpfe mit flachgedrückten Gegnern bleiben nicht mehr hängen. Pausen nach Siegen und ungewollte Kampfeintritte benachbarter NPCs wurden behoben.",
      "Blockierte Rekrutierungen und Fabrikgespräche, unerreichbare Bodenfunde, Ergebnisfelder im Trainingsraum und abgeschnittene Ja/Nein-Texte wurden korrigiert.",
      "Der Desktop-Patcher verarbeitet europäische Basisdiscs mit japanischem Card Arena jetzt korrekt. Der Web-Builder erklärt fehlenden Speicherplatz."
@@ -106,6 +111,7 @@
      "Apocalymon mantiene le sue dimensioni gigantesche in tutte le animazioni."
     ],
     "fixed": [
+     "Corretto un blocco alla schiusa di un uovo dopo la morte del compagno.",
      "Corretti i combattimenti bloccati con nemici appiattiti, le pause dopo le vittorie e i PNG vicini che si univano agli scontri per errore.",
      "Corretti reclutamenti e dialoghi della fabbrica bloccati, oggetti a terra irraggiungibili, riquadri dei risultati della palestra e testi Sì/No tagliati.",
      "Il patcher desktop combina correttamente i dischi base europei con Card Arena giapponese. Il creatore web spiega quando lo spazio di archiviazione è insufficiente."
@@ -124,6 +130,7 @@
      "アポカリモンはどの動作でも巨大な大きさを保ちます。"
     ],
     "fixed": [
+     "パートナーが死んだ後、タマゴがかえる際にゲームが止まる問題を修正しました。",
      "つぶれた敵との戦闘停止、勝利後の一時停止、近くの会話相手が意図せず戦闘に参加する問題を修正しました。",
      "仲間集めや工場の会話が進まない問題、拾えないアイテム、トレーニング結果の枠、はい／いいえの文字欠けを修正しました。",
      "デスクトップ版パッチャーで欧州版のベースディスクと日本版デジタルカードアリーナを組み合わせられるようになりました。ブラウザー版は保存領域の不足を説明します。"
@@ -142,6 +149,7 @@
      "Apocalymon manté la seva mida gegant en totes les animacions."
     ],
     "fixed": [
+     "Corregit un bloqueig en néixer d’un ou després de la mort del company.",
      "Corregits els combats encallats amb enemics aixafats, les pauses després de guanyar i els PNJ propers que entraven en combats aliens.",
      "Corregits reclutaments i converses de la fàbrica bloquejats, objectes de terra inaccessibles, quadres de resultats del gimnàs i textos de Sí/No retallats.",
      "El pedaçador d’escriptori ja combina correctament les bases europees amb Card Arena japonès. El constructor web explica quan falta espai d’emmagatzematge."
