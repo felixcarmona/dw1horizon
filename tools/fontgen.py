@@ -345,9 +345,13 @@ def condensed_header(out):
     print(f'{out}: {len(g)} condensed glyphs')
 
 
-def fit_glyphs(text, mode):
-    """[(advance, rows)] the way drawStringMode picks them: mode 0 vanilla, 1 tight, 2 condensed."""
-    codes, glyphs = base_font()
+def fit_glyphs(text, mode, metrics_only=False):
+    """drawStringMode glyphs; metrics_only uses committed ink bounds, never disc pixels."""
+    if metrics_only:
+        codes, base = committed_glyphs()
+        glyphs = dict(zip(codes, base))
+    else:
+        codes, glyphs = base_font()
     extra = {ch: (w, rows) for ch, w, rows in load_extra()}
     cond = load_condensed() if mode == 2 else {}
     out = []
@@ -357,10 +361,10 @@ def fit_glyphs(text, mode):
     return out
 
 
-def fit_layout(text, mode):
+def fit_layout(text, mode, metrics_only=False):
     """[(x, rows)] and the ink width: vanilla advances on the 4-px grid, or ink + FIT_GAP (font.c drawStringMode)."""
     pen, placed, width = 0, [], 0
-    for w, rows in fit_glyphs(text, mode):
+    for w, rows in fit_glyphs(text, mode, metrics_only):
         cols = [c for c in range(W) if any(r[c] == '#' for r in rows)]
         if mode == 0:
             placed.append((pen & ~3, rows)); width = (pen & ~3) + (max(cols) + 1 if cols else 0); pen += w

@@ -128,7 +128,9 @@ A mod's new lines are in its own `text/en.json`, written by `python3 tools/dws.p
 (`courier (Gotsumon) says, page 1 of 2`, `the narrator says`) and which are **menu options** (`option yes of the tamer's
 menu`: one row, 31 units), and the **named lines** (`t("greeter.hello")` in the source) by their names. The translation is
 `text/<lang>.json` beside it, by the same keys. **The source wins**: the English of a line written in place lives in
-`src/*.py`, and `en.json` is rewritten from it (an edit there is lost); a named line's English is `en.json`'s.
+`src/*.py`, and `en.json` is rewritten from it (an edit there is lost); a named line's English is `en.json`'s. Named lines may also use explicit row/page arrays,
+just like translated banks. Use them when a runtime item name needs a dedicated row;
+changing an inline English snapshot alone does not change the compiled dialogue.
 
 - An edited line written in place gets its old translation back marked `~fuzzy `: the build **does not ship it** (it shows
   the English and warns at the line) until you read it against the new English and drop the marker. A named line keeps

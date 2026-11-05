@@ -1,0 +1,73 @@
+From 149bad61609d51b2c3272fdd052d2ed9922f1831 Mon Sep 17 00:00:00 2001
+From: Horizon authors <1969778+felixcarmona@users.noreply.github.com>
+Date: Thu, 5 Nov 2026 14:56:57 +0000
+Subject: [PATCH] Select phase-aware braking steps for MetalGarurumon
+
+---
+ src/main/partner.c          | 12 ++++++++++++
+ src/main/smooth_runtime.inc | 10 ++++++----
+ 2 files changed, 18 insertions(+), 4 deletions(-)
+
+diff --git a/src/main/partner.c b/src/main/partner.c
+index 4130ed0..9765f48 100644
+--- a/src/main/partner.c
++++ b/src/main/partner.c
+@@ -1100,6 +1100,18 @@ void updateConditionAnimation(void)
+ 
+ void setPartnerIdle(void)
+ {
++	Entity *wolf = &PARTNER_ENTITY.digimonEntity.entity;
++	/* Finish a braking step selected from the moving paw phase. These eight
++	 * resident programs are specific to the armoured wolf's field overlay. */
++	if (wolf->type == 191 && !(PARTNER_PARA.condition & 0x63) &&
++	    (wolf->anim.animId == 2 || wolf->anim.animId == 4)) {
++		static const uint8_t stops[8] __attribute__((section(".rodata.modWolfStops"))) = {6, 20, 26, 28, 29, 30, 31, 32};
++		int32_t period = wolf->anim.animId == 2 ? 18 : 14;
++		int32_t phase = ((wolf->anim.animFrame * 4 + period / 2) / period) & 3;
++		PARTNER_ANIMATION = stops[phase + (wolf->anim.animId == 4 ? 4 : 0)];
++		startAnimation(wolf, (uint8_t)PARTNER_ANIMATION);
++		return;
++	}
+ 	if (((PARTNER_ANIMATION != 1) &&
+ 	     (PARTNER_ANIMATION != 0))
+ #if VERSION_EQUAL_OR_NEWER(JP_TRIAL)
+diff --git a/src/main/smooth_runtime.inc b/src/main/smooth_runtime.inc
+index 5847757..f0f3217 100644
+--- a/src/main/smooth_runtime.inc
++++ b/src/main/smooth_runtime.inc
+@@ -21,10 +21,12 @@ int32_t MOD_SMOOTH_STARTS __attribute__((section(".bss.modSmoothStats")));
+ int32_t MOD_SMOOTH_DRAWS __attribute__((section(".bss.modSmoothStats")));
+ int32_t MOD_SMOOTH_FLOOR_ADJUSTS __attribute__((section(".bss.modSmoothStats")));
+ 
+-static int32_t smoothSlot(int32_t s)
++static int32_t smoothSlot(Entity *e, int32_t s)
+ {
+     /* Slot1 is the poor-condition field idle, selected by setPartnerIdle. */
+-    return s==0 || s==1 || s==2 || s==3 || s==4 || s==5 || s==18;
++    return s==0 || s==1 || s==2 || s==3 || s==4 || s==5 || s==18 ||
++        (e->type==191 && (s==6 || s==20 || s==26 || s==28 ||
++                         (s>=29 && s<=32)));
+ }
+ 
+ void modSmoothForget(int32_t instance)
+@@ -94,7 +96,7 @@ void modSmoothBeforeStart(void *entity, int32_t destination)
+     for(i=0;i<ENTITY_MAX;i++) if(ENTITY_TABLE[i]==e) break;
+     if(i==ENTITY_MAX) return;
+     s=smoothStates[i];
+-    if(!smoothEligible(e) || !smoothSlot(destination) || !smoothSlot(e->anim.animId)) {
++    if(!smoothEligible(e) || !smoothSlot(e, destination) || !smoothSlot(e, e->anim.animId)) {
+         modSmoothForget(i); return;
+     }
+     /* Repeating a start in its first frame is not another motion transition. */
+@@ -138,7 +140,7 @@ static int32_t modSmoothDrawBegin(int32_t instance)
+     int32_t b,n,w,elapsed,targetFloor,actualFloor,expectedFloor;
+     SmoothPose target,result;
+     if(!s) return 0;
+-    if(!smoothEligible(e) || !smoothIdentity(s,e) || !smoothSlot(e->anim.animId)) {
++    if(!smoothEligible(e) || !smoothIdentity(s,e) || !smoothSlot(e, e->anim.animId)) {
+         modSmoothForget(instance); return 0;
+     }
+     elapsed=(MOD_FPS_TICKS-s->start)*4096+MOD_RENDER_ALPHA;
+-- 
+2.55.0
+

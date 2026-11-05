@@ -74,23 +74,8 @@ def talk():    # section 5
             animate(mojyamon0, 31);
         }
     """)
-    if not mojyamon_traded.set1_row1 or not mojyamon_traded.set1_row2 or not mojyamon_traded.set1_row3:
-        return
-    if not mojyamon_traded.set2_row1 or not mojyamon_traded.set2_row2 or not mojyamon_traded.set2_row3:
-        return
-    if not mojyamon_traded.set3_row1 or not mojyamon_traded.set3_row2 or not mojyamon_traded.set3_row3:
-        return
-    if recruited(Species.Mojyamon):
-        return
-    say(t5.u5)
-    walk_away(1931, -1543, looks=6, pause=500)
-    leave()
-    glances.set(0)
-    sound.jingle()
-    narrator.say(t5.u6)
-    recruit(Species.Mojyamon)
-    mojyamon_left.set2.set()
-    engine.prosperity.add(2)
+
+# Group 3 handles recruitment after all nine trades.
 
 @mojyamon1.on_talk
 def talk():    # section 6

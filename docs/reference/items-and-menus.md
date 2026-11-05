@@ -230,7 +230,7 @@ happiness +2 (`item.c:2894`). Stat caps are 9999 HP/MP and 999 for the rest.
 | 89 | Fertilizer | 4 | F | 5000 | Vegiemon (25) | |
 | 90 | Koga laws | 4 | F | 5000 | Ninjamon (58) | |
 | 91 | Waterbottle | 4 | F | 5000 | Seadramon (10) | merit 500 |
-| 92 | North Star | 4 | F | 5000 | Whamon (24) | |
+| 92 | North Star | 4 | F | 5000 | Whamon (24); Champion required with NEW DIGIMON on, Rookie with off | tournament cup 14; meritValue 0 |
 | 93 | Red Shell | 4 | F | 5000 | Shellmon (35) | merit 500 |
 | 94 | Hard Scale | 4 | F | 5000 | Coelamon (49) | merit 500 |
 | 95 | Bluecrystal | 4 | F | 5000 | Garurumon (22) | |
@@ -262,7 +262,7 @@ happiness +2 (`item.c:2894`). Stat caps are 9999 HP/MP and 999 for the rest.
 | 121 | Rain Plant | 5 | FB | 1000 | +1000 MP (`handleFood` case `0x79`, no energy or weight) | recyclable |
 | 122 | Steak | 0 | F | 1000 | energy +32, +1000 HP, 20 % chance of sickness (`0x7A`) | recyclable |
 | 123 | Frig Key | 5 | – | 100 | no handler; `itemColor 0xFF`: "Use" is never enabled | cannot be dropped |
-| 124 | AS Decoder | 5 | – | 500 | same | cannot be dropped |
+| 124 | Dolph Fin | 4 | F | 5000 | Dolphmon (238); Rookie required, NEW DIGIMON on | unused AS Decoder slot; group 3 once/save; existing blue item sprite; meritValue 0 |
 | 125 | Giga Hand | 4 | F | 0 | Gigadramon (64); accepted only at level 4 (`partner_impl.c:1426`) | no price; kit ×50 |
 | 126 | Noble Mane | 4 | F | 0 | Panjyamon (63); only at level 3 | kit ×50 |
 | 127 | Metalbanana | 4 | F | 0 | MetalEtemon (65); only at level 4 | kit ×80 |
@@ -392,7 +392,12 @@ consumed (`partner.c:497`). "Merit N" = bought in the merit shop for N points;
   `MOJYAMON_ITEMS_GIVE→GET`: Digimushrm→med.recovery, Supercarrot→Omnipotent,
   Happymushrm→Hair grower, Giant Meat→Auto Pilot, Black trout→Restore, Hispeed dsk→Medicine,
   Omnipotent→S.Off.disk, med.recovery→S.Def.disk, Digianchovy→S.speed.disk; each one
-  once (triggers 5–13; all nine set 14, `:1727`).
+  once (triggers 5–13; all nine set 14, `:1727`). These original flags record first completion,
+  rather than limiting repeat trades. Horizon's current [trade table](../mods/balance.md#61-the-economy-rule)
+  uses saved daily flags 789–796 for eight rows, permanent completion flag 13 for the Dolph Fin row,
+  and caps every amount box at one. Bit 797 remains reserved/cleared for compatibility. Dolph Fin targets Dolphmon
+  (238) through the fourth custom rule; unavailable imported targets are refused. North Star stays Whamon’s
+  arena reward, and the native USA eligibility check reads the owned native target table directly.
 - Routine 10, `tickBirdraTransport` (`:913`): 6 destinations `{map, exit, trigger, cost}`
   = (38, 1000), (70, 1000), (79, 1500), (93, 2000), (119, 2500), (105, 2500); only
   those whose trigger is set; charges `SHOP_VARIABLE` and jumps to section `0x4E3` of script 0.

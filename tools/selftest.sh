@@ -74,6 +74,8 @@ disc evolution-tree-guard $PY -W ignore::ResourceWarning tools/test_evo_tree_gua
 run starter-quiz      $PY tools/starter_quiz.py
 run starter-quiz-tests $PY tools/test_starter_quiz.py
 run language-picker-tests $PY -m unittest tools.test_language_picker
+run localization-audit $PY -m tools.localize.check --json "$OUT/localization-audit.json"
+run localization-tests $PY -W ignore::ResourceWarning -m unittest tools.test_localize_check
 run chinese-authoring-tests $PY -m unittest tools.test_chinese
 run world-gates $PY tools/world_audit.py
 run world-gates-tests $PY -W ignore tools/test_world_audit.py
