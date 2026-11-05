@@ -464,7 +464,8 @@ class Program(Ext):
                 records = BE.DIGI_DATA
                 sp = args[1][1].val
                 if sp not in records: raise err(n, f'no content species {sp}')
-                r = ('wrap', r[1].replace('{species}', records[sp]['name']))
+                from .recruitment import species_name
+                r = ('wrap', r[1].replace('{species}', species_name(sp, self.bank.lang)))
             self.used_text.add(key)
             return V('text', r, key)
         if f == 'page':
