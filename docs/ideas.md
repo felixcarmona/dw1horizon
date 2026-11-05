@@ -4,6 +4,14 @@ Ideas from players and from development that have been noted but **not selected 
 promise: an idea may be done later, changed, or never done. Ideas that were built, or decided against, are moved out of this list
 (see [decisions.md](decisions.md) for deliberate changes once it exists).
 
+## Open questions (being discussed)
+
+- **How long a Rookie waits before evolving into a Champion:** 72 hours (the original game, current) or 96 hours (one more day with the
+  Rookie). A community poll is open in the Discord's polls channel; its result will be weighed, but it isn't binding.
+- **A bigger rebalance of ground item odds.** 0.0.6 raises rare finds to at least 8 % per visit (1 % stat foods to 3 %); a player is
+  preparing a full per-item proposal, which needs its own audit.
+- **Randomizer:** which parts to randomize and whether it fits the patcher.
+
 ## Raising and evolution
 
 - **Evolve early on purpose.** An NPC, item or menu option to evolve a partner before its timer once its requirements are met (a cost or
@@ -23,10 +31,6 @@ promise: an idea may be done later, changed, or never done. Ideas that were buil
 - **A deterministic daily seed for ground items.** The item a spot offers is fixed for the day and entering only changes whether it is
   there. Needs a full rebalance of every spot.
 - **More vending machines** around the island as surprises.
-
-## Game modes and options
-
-- **Randomizer** (starters, evolutions, wild Digimon or items).
 
 ## Languages
 
