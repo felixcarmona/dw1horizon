@@ -27,6 +27,16 @@ class TableDataTests(unittest.TestCase):
         damaged = bytes([data[0] ^ 1]) + data[1:]
         self.assertIsNone(tabledata.authored_recipe(obj, damaged))
 
+    def test_resident_heading_tables_have_checked_semantic_recipes(self):
+        from tools.localize.language_flags import payload
+        for name, kind in [('MOD_LANGUAGE_TITLES', 'titles'), ('MOD_LANGUAGE_TITLE_GLYPHS', 'title_glyphs')]:
+            data = payload(kind)
+            obj = dict(offset=0, length=len(data), section='.rodata.'+name, source='src/main/main_menu.c')
+            recipe = tabledata.authored_recipe(obj, data)
+            self.assertEqual(recipe['params'], [kind])
+            self.assertEqual(tabledata.tail([recipe], 'us', None), data)
+            self.assertIsNone(tabledata.authored_recipe(obj, bytes([data[0] ^ 1])+data[1:]))
+
     def fixture(self):
         target = b''.join(struct.pack('<II', i, 0x80090000 + i * 4) for i in range(6))
         original = b'prefix00' + b''.join(struct.pack('<II', i, 0x800a0000 + i * 12) for i in range(6))

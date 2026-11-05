@@ -53,8 +53,19 @@ def payload(kind):
     if kind=='palette':return struct.pack('<36I',*(v for row in palettes for v in row))
     if kind=='offset':return struct.pack('<9H',*offsets)
     if kind=='runs':return runs
+    if kind=='titles':return b''.join(t.encode('ascii').ljust(9,b'\0') for t in language_titles())
+    if kind=='title_glyphs':return struct.pack('<48H', *title_glyphs())
     if kind=='chinese_name':return struct.pack('<24H', *chinese_name())
     raise ValueError('unknown flag table')
+
+
+def language_titles():
+    return ('LANGUAGE', 'IDIOMA', 'IDIOMA', 'LANGUE', 'SPRACHE', 'LINGUA', '', 'IDIOMA', '')
+
+
+def title_glyphs():
+    font = json.loads((Path(__file__).resolve().parents[1] / 'font/chinese.json').read_text())['glyphs']
+    return [row for char in '言語语言' for row in font[char][1:]]
 
 
 def chinese_name():
@@ -70,7 +81,9 @@ def header():
             '};\nstatic const uint16_t MOD_FLAG_OFFSET[9] = { '+', '.join(map(str,offsets))+' };\n'+
             f'static const uint8_t MOD_FLAG_RUNS[{len(runs)}] = {{\n'+
             ''.join('    '+', '.join(map(str,runs[i:i+24]))+',\n' for i in range(0,len(runs),24))+'};\n' +
-            'static const uint16_t MOD_CHINESE_NAME[24] = { '+', '.join(map(str,chinese_name()))+' };\n')
+            'static const uint16_t MOD_CHINESE_NAME[24] = { '+', '.join(map(str,chinese_name()))+' };\n' +
+            'static const char MOD_LANGUAGE_TITLES[9][9] = { '+', '.join(json.dumps(t) for t in language_titles())+' };\n' +
+            'static const uint16_t MOD_LANGUAGE_TITLE_GLYPHS[48] = { '+', '.join(map(str,title_glyphs()))+' };\n')
 
 
 def main():

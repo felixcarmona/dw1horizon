@@ -6,6 +6,27 @@ and x=96..211,y=84..95 contain no native sprite. Keep shop headers in their old
 cells. C tables are exported by the developer crop generator, not at runtime.
 """
 
+
+CHINESE_MENU_CELLS = {
+    1: ('道具', 56, 95), 2: ('状态', 80, 96), 3: ('玩家', 104, 96),
+    4: ('表扬', 208, 96), 5: ('训斥', 232, 96),
+    6: ('睡觉', 232, 110), 7: ('钓鱼', 176, 70),
+}
+CHINESE_MENU_SIZE = (24, 13)
+
+
+def check_chinese_menu_cells():
+    from tools.localize.fi_info import overlaps
+    protected = [(128,110,38,12), (166,110,28,12), (194,110,34,12),
+                 (96,84,64,12), (160,84,38,12), (144,96,64,12), (144,72,29,8)]
+    used = []
+    for _, u, v in CHINESE_MENU_CELLS.values():
+        rect = (u, v, *CHINESE_MENU_SIZE)
+        if not (0 <= u <= 256-24 and 0 <= v <= 128-13) or any(overlaps(rect,r) for r in protected+used):
+            raise ValueError(f'Chinese menu label overlaps another SYSTEM_W crop: {rect}')
+        used.append(rect)
+
+
 def relocated_rect(item):
     key = item['en'], item['es']
     return {

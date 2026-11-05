@@ -68,6 +68,7 @@ else
 fi
 run species-off       $PY -W ignore tools/test_species_off.py              # JSON-only level, stats and path overrides
 run fi-info-clock     $PY tools/test_fi_info.py
+run systemw-label-tests $PY -m unittest tools.test_systemw
 disc evolution-tree   $PY tools/test_evo_tree.py --practical
 disc evolution-tree-guard $PY -W ignore::ResourceWarning tools/test_evo_tree_guard.py
 run starter-quiz      $PY tools/starter_quiz.py

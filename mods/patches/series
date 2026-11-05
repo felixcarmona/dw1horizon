@@ -360,3 +360,4 @@ Swap-configured-evolution-targets-with-NEW-DIGIMON.patch
 Restore-explicit-off-evolution-paths-and-requirements.patch
 Keep-rebirth-species-fallback-resident.patch
 Show-Chinese-in-a-two-column-language-picker.patch
+Localize-picker-headings-and-enlarge-Chinese-icon-labels.patch

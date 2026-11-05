@@ -1,7 +1,7 @@
 """Small localized UI labels, rendered from the committed bitmap fonts.
 
-Uses the established Spanish texture cells so runtime sprite geometry stays
-identical across translations. No Pillow, downloads or subprocesses.
+Most labels use the established Spanish cells. Chinese triangle-menu labels
+use larger SYSTEM_W cells. No Pillow, downloads or subprocesses.
 """
 from collections import Counter
 from functools import lru_cache
@@ -137,11 +137,19 @@ def apply(files, language, work):
     # fi-info/build.py. Include the shadow and the nine-row REÑIR sprite.
     sizes = SHARED_SIZES
     check_cells([(u, v, *sizes[e]) for e, (_, u, v) in CELLS.items()])
-    for e, (text, u, v) in CELLS.items():
-        width, height = sizes[e]
-        for path, entry in [('ETCDAT/FI_INFO.TIM', 0), ('ETCDAT/ETCTIM.BIN', 4)]:
-            draw(path, (u, v, width, height), word(text, language), 15, 0, 1,
-                 entry, preserve=True, padding=1)
+    if language == 'zh-hans':
+        from tools.localize.systemw import CHINESE_MENU_CELLS, CHINESE_MENU_SIZE, check_chinese_menu_cells
+        check_chinese_menu_cells()
+        for text, u, v in CHINESE_MENU_CELLS.values():
+            for path, entry in [('ETCDAT/SYSTEM_W.TIM', 0), ('ETCDAT/ETCTIM.BIN', 8)]:
+                draw(path, (u, v, *CHINESE_MENU_SIZE), text, 10, 15, 13,
+                     entry, preserve=True, padding=0)
+    else:
+        for e, (text, u, v) in CELLS.items():
+            width, height = sizes[e]
+            for path, entry in [('ETCDAT/FI_INFO.TIM', 0), ('ETCDAT/ETCTIM.BIN', 4)]:
+                draw(path, (u, v, width, height), word(text, language), 15, 0, 1,
+                     entry, preserve=True, padding=1)
 
     if language == 'zh-hans':
         from tools.localize.chinese_catalog import SMALL

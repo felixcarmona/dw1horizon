@@ -35,6 +35,19 @@ class PickerAssets(unittest.TestCase):
         self.assertEqual(len(flags.payload('chinese_name')), 48)
         self.assertEqual(list(struct.unpack('<24H', flags.payload('chinese_name'))), flags.chinese_name())
 
+    def test_resident_headings_match_options_and_fit_every_font(self):
+        font = json.loads((ROOT / 'tools/font/chinese.json').read_text())['glyphs']
+        self.assertEqual(flags.title_glyphs(), [r for c in '言語语言' for r in font[c][1:]])
+        self.assertEqual(len(flags.payload('title_glyphs')), 96)
+        self.assertEqual(len(flags.payload('titles')), 81)
+        for i, language in enumerate(('ours', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca', 'zh-hans')):
+            title = ('言語' if i == 6 else '语言' if i == 8 else flags.language_titles()[i])
+            names = json.loads((ROOT / f'text/{language}/names.json').read_text())
+            self.assertEqual(title, names['main.MOD_OPT_STR_LANG'])
+            if i not in (6, 8):
+                for face in ('original', 'a', 'b'):
+                    self.assertLessEqual(text_width(title, face), 112)
+
     def test_popup_has_four_bounded_rows_in_every_current_language(self):
         for language in ('ours', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca', 'zh-hans'):
             names = json.loads((ROOT / f'text/{language}/names.json').read_text())
