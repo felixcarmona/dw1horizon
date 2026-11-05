@@ -889,9 +889,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/211-MetalSeadramon.MMD.mdelta",
-        "delta_sha256": "a10b20d80e4dd6ac519611f7b3ca33c33fb55e8ba411ffb824731b65e6d2af89",
-        "sha256": "3230a3c7a4ae156b6dfe58880dd0cf3db7e310ae37ae3670b53d702de5e4ad8f",
-        "size": 95236
+        "delta_sha256": "a8c89d72e9039b8175653f0a58ff06f94eb0d5e88fad455eb1545cbe893384f4",
+        "sha256": "9362cbe5a2750a711021fe5142ac5881943e4e505756ada908ecef34f2a60ac5",
+        "size": 91038
       },
       "tim": {
         "sources": [
