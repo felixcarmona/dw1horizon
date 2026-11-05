@@ -1,0 +1,78 @@
+From 909c2090cb77b991157b44bbc7ca1a5e0ba2e9ea Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 5 Nov 2026 20:59:44 +0000
+Subject: [PATCH] Keep shop balances on a complete text row
+
+---
+ src/main/script_common.c  |  6 ------
+ src/main/script_textbox.c | 14 +++++++++++---
+ 2 files changed, 11 insertions(+), 9 deletions(-)
+
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index 214e772..45570e8 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -1857,7 +1857,6 @@ void createShopBitsBox(int32_t showBits)
+ 	setupBoxOrigin(0xfd, &origin);
+ 	setRECT(&rect, -0x98, -0x62, 0x52, 0x21);
+ 	createTextbox(2, flags, &rect, &origin, tickShopBitsBox, renderShopBitsBox);
+-	TEXTBOX_IN_CELLS(2); /* MOD (font): its row is cut in two (renderShopBitsBox) */
+ 	registerTextbox(2, 8, 1, 0, 0);
+ 	tickShopBitsBox();
+ }
+@@ -3258,13 +3257,8 @@ void renderShopBitsBox(void)
+ 	x = UI_BOX_DATA[2].finalPos.x + 6;
+ 	y = UI_BOX_DATA[2].finalPos.y + 4;
+ 
+-#if !VERSION_IS(US)
+ 	renderString(0, x, y, 0x48, 0xc, 0, rowPx, 4, 1);
+ 	renderString(0, x, y + 0xd, 0x48, 0xc, 0x48, rowPx, 4, 1);
+-#else
+-	renderString(0, x + 0x10, y, 0x30, 0xc, 0, rowPx, 4, 1);
+-	renderString(0, x + 0x10, y + 0xd, 0x3c, 0xc, 0x30, rowPx, 4, 1);
+-#endif
+ }
+ 
+ /* MOD (economy as data): written by tools/balance.py from content/tables/economy.json; -1 = the rule does not exist */
+diff --git a/src/main/script_textbox.c b/src/main/script_textbox.c
+index 2d189b6..d5e0703 100644
+--- a/src/main/script_textbox.c
++++ b/src/main/script_textbox.c
+@@ -30,6 +30,7 @@ void renderString(int32_t a0, int32_t a1, int32_t a2, int32_t a3, int32_t a4, in
+ int32_t flipIdleTextboxPage(int32_t boxId);
+ void closeTextbox(int32_t boxId, RECT *target);
+ void renderCustomSizedTextbox(void);
++void renderShopBitsBox(void);
+ int32_t isKeyDown(uint32_t key);
+ void setFreshDialogue(void);
+ int32_t isXPressedAfterDialogue(void);
+@@ -132,6 +133,8 @@ static const uint16_t *TEXTBOX_PIECES;
+ static uint8_t TEXTBOX_PIECES_BOX; /* the box id + 1; 0: none */
+ static uint8_t TEXTBOX_PIECES_ROW;
+ static const uint16_t *DRAW2_PIECES; /* set while drawString2 draws that row */
++/* The currency box can coexist with the card shop's independently sliced answers. */
++static const uint16_t BALANCE_PIECES[] __attribute__((section(".rodata.balance_pieces"))) = { PIECE_WORDS | PIECE_CENTRE, 0x48 | PIECE_CENTRE, 0x90, PIECES_END };
+ #endif
+ 
+ // clang-format off
+@@ -187,9 +190,14 @@ int32_t drawTextboxStrings(boxId, flag)
+ #if FONT_SWITCH
+ 		/* MOD (font): the row a screen copies in pieces (TEXTBOX_ROW_PIECES) */
+ 		/* MOD (language): the row on either page (a box that flips writes its back page's rows after its front's) */
+-		cellsRow = boxId + 1 == TEXTBOX_PIECES_BOX &&
+-		           (box->vramRows != 0 ? box->writeRow % box->vramRows : box->writeRow) == TEXTBOX_PIECES_ROW;
+-		DRAW2_PIECES = cellsRow && (FONT_PROPORTIONAL || (TEXTBOX_PIECES[0] & PIECE_WORDS)) ? TEXTBOX_PIECES : NULL;
++		if (box->render == renderShopBitsBox) {
++			cellsRow = 1;
++			DRAW2_PIECES = BALANCE_PIECES;
++		} else {
++			cellsRow = boxId + 1 == TEXTBOX_PIECES_BOX &&
++			           (box->vramRows != 0 ? box->writeRow % box->vramRows : box->writeRow) == TEXTBOX_PIECES_ROW;
++			DRAW2_PIECES = cellsRow && (FONT_PROPORTIONAL || (TEXTBOX_PIECES[0] & PIECE_WORDS)) ? TEXTBOX_PIECES : NULL;
++		}
+ 		/* MOD (language): with the original font that row is drawn in the original's cells, never in the name
+ 		 * keyboard's 12-pixel ones (its labels, NAMING_LABEL_PIECES) */
+ 		cellsRow = cellsRow && !FONT_PROPORTIONAL;
+-- 
+2.55.0
+
