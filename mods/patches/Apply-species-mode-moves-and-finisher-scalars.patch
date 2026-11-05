@@ -1,4 +1,4 @@
-From 90687a1113560873a12b98d0d221d83218f34a3b Mon Sep 17 00:00:00 2001
+From 346c883ebf5d6b6dbd82abe16233f7fac239d0dd Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Wed, 4 Nov 2026 23:47:46 +0000
 Subject: [PATCH] Apply species mode moves and finisher scalars from JSON
@@ -7,12 +7,13 @@ Subject: [PATCH] Apply species mode moves and finisher scalars from JSON
 ---
  include/dw/species.h   |  4 ++++
  src/btl/battle_main.c  | 37 +++++++++++++++---------------
+ src/main/game_menu.c   |  6 ++---
  src/main/mod_species.c | 52 ++++++++++++++++++++++++++++++++++++++++++
  src/std/std_main.c     | 37 +++++++++++++++---------------
  src/vs/vs_combat.c     |  3 ++-
  src/vs/vs_demo.c       |  3 ++-
  src/vs/vs_main.c       | 31 +++++++++++++------------
- 7 files changed, 114 insertions(+), 53 deletions(-)
+ 8 files changed, 117 insertions(+), 56 deletions(-)
 
 diff --git a/include/dw/species.h b/include/dw/species.h
 index a860114..ff6ffd0 100644
@@ -212,6 +213,37 @@ index b1fc102..7ef1cfe 100644
  		setUVWH(prim, BTL_SPECIAL_ICON_UVS[eff][0], BTL_SPECIAL_ICON_UVS[eff][1], 0x10, 0xf);
  	} else {
  		setUVWH(prim, BTL_COMMAND_ICON_UVS[index - 1][0], BTL_COMMAND_ICON_UVS[index - 1][1], 0x10, 0xf);
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 3bda859..53f17be 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -3227,7 +3227,7 @@ void renderDigimonMovesView(void)
+ 		if (EQUIPPED_MOVES[3] != 0xff) {
+ 			renderString(3, TECH_TITLE_CROPS[1].x, -0xf, TECH_TITLE_CROPS[1].w, 0xc, TECH_TITLE_CROPS[1].u, 0x48, 5, 1);
+ 			renderString(0, -0x7c, 1, 0x84, 0xc, 0, 0x3c, 5, 1);
+-			renderNumber(0, 0x10, 0, 3, MOVE_DATA[EQUIPPED_MOVES[3]].power, 5);
++			renderNumber(0, 0x10, 0, 3, modSpeciesMove(PARTNER_ENTITY.digimonEntity.entity.type, EQUIPPED_MOVES[3])->power, 5);
+ 			renderString(0, 0x65, 1, 0xc, 0xc,
+ 			             (MOVE_DATA[EQUIPPED_MOVES[3]].range - 1) * 0xc + 0x48, 0x6c, 5, 1);
+ 			if (MOVE_DATA[EQUIPPED_MOVES[3]].status != 0) {
+@@ -3524,7 +3524,7 @@ void renderDigimonMovesSelected(int16_t panel)
+ 	}
+ 
+ 	if (hasMove(moveId)) {
+-		move = &MOVE_DATA[moveId];
++		move = modSpeciesMove(PARTNER_ENTITY.digimonEntity.entity.type, moveId);
+ 		setRECT(&rect, 0, 0x84, 0x78, 0xc);
+ 		clearTextSubArea(&rect);
+ 		drawString(MOVE_NAMES[moveId], 0, 0x84);
+@@ -3651,7 +3651,7 @@ void renderDigimonMoveBox(void)
+ 				renderBox(col * 0x12 - 0x2a, y * 0xf - 7, 0xc, 0xc, 0x68, 0x68, 0x68, 3, 4);
+ 			}
+ 			if (hasMove(moveId) == 1) {
+-				special = MOVE_DATA[moveId].special;
++				special = modSpeciesMove(PARTNER_ENTITY.digimonEntity.entity.type, moveId)->special;
+ 				switch (special) {
+ 				case 0:
+ 					clut = 0x7a06;
 diff --git a/src/main/mod_species.c b/src/main/mod_species.c
 index f4072e1..b77bcb7 100644
 --- a/src/main/mod_species.c
