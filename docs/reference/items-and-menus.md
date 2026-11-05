@@ -230,7 +230,7 @@ happiness +2 (`item.c:2894`). Stat caps are 9999 HP/MP and 999 for the rest.
 | 89 | Fertilizer | 4 | F | 5000 | Vegiemon (25) | |
 | 90 | Koga laws | 4 | F | 5000 | Ninjamon (58) | |
 | 91 | Waterbottle | 4 | F | 5000 | Seadramon (10) | merit 500 |
-| 92 | North Star | 4 | F | 5000 | Whamon (24) | |
+| 92 | North Star | 4 | F | 5000 | Dolphmon (238), Rookie required; NEW DIGIMON on | group 3 once/save; tournament cup 14; meritValue 0 |
 | 93 | Red Shell | 4 | F | 5000 | Shellmon (35) | merit 500 |
 | 94 | Hard Scale | 4 | F | 5000 | Coelamon (49) | merit 500 |
 | 95 | Bluecrystal | 4 | F | 5000 | Garurumon (22) | |
@@ -394,7 +394,9 @@ consumed (`partner.c:497`). "Merit N" = bought in the merit shop for N points;
   Omnipotent→S.Off.disk, med.recovery→S.Def.disk, Digianchovy→S.speed.disk; each one
   once (triggers 5–13; all nine set 14, `:1727`). These original flags record first completion,
   rather than limiting repeat trades. Horizon's current [trade table](../mods/balance.md#61-the-economy-rule)
-  uses separate saved daily flags 789–797 and caps the amount box at one.
+  uses saved daily flags 789–796 for eight rows, permanent completion flag 13 for the North Star row,
+  and caps every amount box at one. Bit 797 remains reserved/cleared for compatibility. North Star targets Dolphmon
+  (238); unavailable imported targets are refused, and the USA eligibility check reads the owned table directly.
 - Routine 10, `tickBirdraTransport` (`:913`): 6 destinations `{map, exit, trigger, cost}`
   = (38, 1000), (70, 1000), (79, 1500), (93, 2000), (119, 2500), (105, 2500); only
   those whose trigger is set; charges `SHOP_VARIABLE` and jumps to section `0x4E3` of script 0.

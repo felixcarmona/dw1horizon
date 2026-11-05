@@ -1,5 +1,7 @@
 # Mojyamon investigation, before implementation
 
+This is the original investigation before the first implementation. The subsequent bounded-gains design supersedes its trade mapping, strict daily sale-value restriction and absence of a Dolphmon item. North Star now targets Dolphmon, eight rows are daily and its ninth-row exchange is once per save. See the current table and ceilings in docs/mods/balance.md section 6.1.
+
 Group 1 is the Mojyamon beside Penguinmon on Freezeland screen 134 (script 129). Groups 2 and 3 stand on screen 133 (script 128), in slots 0 and 1. Each group owns three consecutive rows in shops.json. Despite their names, mojyamonGives is what the player hands over and mojyamonTakes is the reward. Nine saved flags record whether each row has ever been completed. The Mojyamon spoken to after all nine are complete joins the city, earns two prosperity and sets its own departure flag. It runs the secret shop in the morning; it does not bring its three exchange rows to that shop.
 
 Always recruiting group 3 is low risk for new recruitment: remove the departure endings from groups 1 and 2 and keep group 3's existing ending. If another group completes the ninth row, the player must return to group 3 and speak to it. Group 3 can still recruit after a cancelled or refused trade because the nine historical completion flags are checked afterwards. Keep existing saves' departure flags and recruitment intact; do not move a previously recruited Mojyamon back out of the city.

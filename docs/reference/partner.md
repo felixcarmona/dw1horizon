@@ -400,6 +400,13 @@ Items 0x47..0x72 → `EVOLUTION_ITEM_TARGET[item-0x47]` only if `level(target) -
 Gigadramon (0x40), Noble Mane (0x7E, Rookie only) → Panjyamon (0x3F), Metalbanana (0x7F) → MetalEtemon (0x41); 0x7D and
 0x7F are only accepted by a Champion. Patch 0323: an item evolves like any other evolution, with the stat gains, the lifetime and the tamer level chance.
 
+Horizon retargets North Star (92) from Whamon (24) to Dolphmon (238), the Champion that takes the former Whamon
+role. The owned `evolution_target` packs into the existing u8 evolution-item table; 238 fits without widening it.
+A Rookie partner can use it to become Dolphmon. A Champion cannot use this Champion evolution item. The USA
+refusal path reads `EVOLUTION_ITEM_TARGET` directly, replacing the original palette-relative alias. Both refusal
+and application reject unavailable imported targets with NEW DIGIMON off, leaving the item unconsumed. All eight
+item descriptions name Dolphmon. No natural-evolution requirement or Whamon story scene changes.
+
 ### Stats on evolving (`EVL_applyEvolution`, `evl.c:1282`)
 
 With `EVOLUTION_STATS_GAINS[target]`, per stat: if the current value >= the gain → `+gain/10`; otherwise →

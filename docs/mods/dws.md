@@ -349,7 +349,7 @@ and story variants. [Building](../building.md) describes the integrated disc;
 [derive](../derive.md) describes output manifests and ordering. These build paths
 manage script assembly and disc relayout automatically.
 
-Horizon reserves original saved triggers 789–797 for daily Mojyamon exchanges and 798–799 for daily rare-mushroom
+Horizon reserves original saved triggers 789–797 for Mojyamon engine state (eight daily rows plus one reserved legacy bit) and 798–799 for daily rare-mushroom
 vending stock. They are not available to mods; day advances clear them. The remaining original allocation pool is
 717-788 (72 bits).
 

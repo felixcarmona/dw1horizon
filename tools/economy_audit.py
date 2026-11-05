@@ -5,12 +5,12 @@ Reads content/items, content/tables/{economy,shops,cards}.json and the card trad
 story/base: DemiMeramon, ClearAgumon, the Trash Mountain swap), works out what every item and card is worth at its best
 way out (a shop's sell price, merit at the merit shop's best rate, Mojyamon, the NPCs that take cards), and checks:
 
-  - every Mojyamon trade: what it gives is worth no more than what it takes (so neither a chain of trades nor a trade fed
-    by bought, fished or picked-up items is worth more than selling the input);
+  - Mojyamon gains require an explicit, identity-pinned daily or once-per-save exception;
+    every uncapped trade still pays no more than selling its input;
   - vending prices, bonus payouts and slot odds, taken from the actual story handlers, including chained trades;
   - a card pack, the item shop's card machine and each card of the daily card shop cost more than what they give back.
 
-Daily-limited gains (the daily card shop: 6 cards a day, one copy each) are reported, not failed.
+Reviewed capped gains are reported separately; their edges never enter unlimited-conversion valuations.
     tools/economy_audit.py            the report; exit 1 when an unlimited loop gains
 """
 import json, sys
@@ -29,6 +29,113 @@ HUNTS = {'Normal plan': (2000, [(20, 9), (20, 10), (10, 18), (10, 19), (10, 20),
                         [(15, 9), (15, 18), (15, 10), (10, 19), (10, 20), (10, 21), (10, 11), (5, 73), (5, 82), (5, 90)]),
          'Special plan': (5000, [(10, 11), (20, 73), (20, 82), (20, 90), (5, 27), (5, 28), (5, 23), (5, 24), (5, 26), (5, 25)],
                           [(10, 11), (10, 73), (10, 82), (10, 90), (10, 27), (10, 28), (10, 23), (10, 24), (10, 26), (10, 25)])}
+
+
+# Runtime contracts: row 8 checks permanent completion flag 13; all other rows
+# check their saved daily bit. Pair identity is pinned so a new trade is uncapped
+# until it is reviewed here and in the engine tests.
+MOJYAMON_CAPS = {
+    0: (69, 45, 'daily'), 1: (67, 70, 'daily'), 2: (63, 47, 'daily'),
+    3: (41, 6, 'daily'), 4: (42, 2, 'daily'), 5: (48, 7, 'daily'),
+    6: (44, 22, 'daily'), 7: (39, 64, 'daily'), 8: (0, 92, 'save'),
+}
+# Explicit exceptions to the output <= input sale rule. A matching, pinned cap
+# is mandatory; North Star must be once per save, never a daily exception.
+MOJYAMON_GAIN_EXCEPTIONS = {
+    2: (63, 47, 'daily'), 3: (41, 6, 'daily'), 4: (42, 2, 'daily'),
+    5: (48, 7, 'daily'), 6: (44, 22, 'daily'), 8: (0, 92, 'save'),
+}
+
+
+def audit_mojyamon(shops, items, sell_pc, caps=None, exceptions=None):
+    caps = MOJYAMON_CAPS if caps is None else caps
+    exceptions = MOJYAMON_GAIN_EXCEPTIONS if exceptions is None else exceptions
+    def sell(i):
+        return items[i]['value'] * sell_pc // 100 if items[i]['droppable'] else 0
+    rows = []
+    for n, (g, t) in enumerate(zip(shops['mojyamonGives'], shops['mojyamonTakes'])):
+        if not (g or t):
+            continue
+        contract = caps.get(n)
+        limit = contract[2] if contract and contract[:2] == (g, t) else 'unlimited'
+        rows.append(dict(row=n, input=g, output=t, limit=limit))
+    # Only uncapped edges belong in unlimited-conversion valuations. A finite
+    # daily or save reward must never inflate vending EV as if it paid forever.
+    worth = {i: sell(i) for i in items}
+    for _ in range(len(rows) + 1):
+        for row in rows:
+            if row['limit'] == 'unlimited':
+                g, t = row['input'], row['output']
+                worth[g] = max(worth[g], worth[t])
+    fails = []
+    for row in rows:
+        n, g, t, limit = (row[k] for k in ('row', 'input', 'output', 'limit'))
+        exception = exceptions.get(n)
+        if n in MOJYAMON_GAIN_EXCEPTIONS and (g, t) == MOJYAMON_GAIN_EXCEPTIONS[n][:2]:
+            required = MOJYAMON_GAIN_EXCEPTIONS[n][2]
+            if limit != required:
+                fails.append(f'Mojyamon row {n + 1}: requires {required} cap, got {limit}')
+        if worth[t] > sell(g) and (exception != (g, t, limit) or limit not in ('daily', 'save')):
+            fails.append(f'Mojyamon {items[g]["name"]} -> {items[t]["name"]}: '
+                         f'unapproved gain {worth[t] - sell(g)} per exchange ({limit})')
+    return dict(rows=rows, worth=worth, fails=fails,
+                daily_gross=sum(worth[r['output']] for r in rows if r['limit'] == 'daily'),
+                once_gross=sum(worth[r['output']] for r in rows if r['limit'] == 'save'))
+
+
+def mojyamon_input_prices(items, econ):
+    """Known shop offers, reading generic shop stock and the actual vending handlers.
+
+    A missing price means no shop offer, rather than the item's nominal value.
+    The regular File City item shop stocks Small Recovery. Vegiemon's fixed-price
+    roots are also available at the generic city stalls; its price stays 500.
+    """
+    import ast
+    from vending_audit import item_ids, menu_paths, run_handler, MACHINES
+    ids = item_ids()
+    prices = {}
+    baby_pc = econ['shop'].get('babyBuyPercent', 100)
+    def offer(i, normal, baby):
+        old = prices.get(i, (normal, baby))
+        prices[i] = (min(normal, old[0]), min(baby, old[1]))
+    offer(0, items[0]['value'], items[0]['value'] * baby_pc // 100)
+    paths = list((ROOT / 'story/base/zones').rglob('script.py'))
+    paths += list((ROOT / 'story/mods/what-the-island-forgot').rglob('*.py'))
+    for path in paths:
+        for call in ast.walk(ast.parse(path.read_text())):
+            if not isinstance(call, ast.Call):
+                continue
+            fn = call.func
+            if not (isinstance(fn, ast.Name) and fn.id == 'shop'
+                    or isinstance(fn, ast.Attribute) and fn.attr == 'shop'):
+                continue
+            for arg in call.args:
+                if isinstance(arg, ast.Attribute) and isinstance(arg.value, ast.Name) and arg.value.id == 'Item':
+                    i = ids[arg.attr]; value = items[i]['value']
+                    offer(i, value, value * baby_pc // 100)
+    # Vegiemon is a scripted purchase, not the generic shop's baby discount.
+    for i in (41, 42):
+        offer(i, 500, 500)
+    for sid in MACHINES:
+        if sid == 12:  # Prize draw outcomes are not fixed-price shop offers.
+            continue
+        source = next((ROOT / 'story/base/zones').glob(f'*/s{sid:03d}-*/script.py')).read_text()
+        for path in menu_paths(source):
+            paid, got, _, _ = run_handler(source, path, 99)
+            # Fixed offers only; random/bonus menus do not establish a unit price.
+            if paid and len(got) == 1:
+                i, count = next(iter(got.items()))
+                if count == 1:
+                    offer(i, paid, paid)
+    return prices
+
+
+def purchase_ceiling(rows, prices, sell, baby=False):
+    daily = [r for r in rows if r['limit'] == 'daily']
+    unsold = sorted({r['input'] for r in daily if r['input'] not in prices})
+    cost = sum(prices[r['input']][int(baby)] for r in daily if r['input'] in prices)
+    gross = sum(sell(r['output']) for r in daily)
+    return dict(cost=cost, gross=gross, net=gross - cost, unsold=unsold)
 
 
 def main():
@@ -52,19 +159,22 @@ def main():
             rate, best = sell(i) / it['meritValue'], i
     print(f'merit: 1 merit = {rate:.2f} bits ({name(best)}: {items[best]["meritValue"]} merit, sells {sell(best)})')
 
-    # items: the best way out, a sale or a Mojyamon trade (and that one's best way out)
-    trades = [(g, t) for g, t in zip(shops['mojyamonGives'], shops['mojyamonTakes']) if g or t]
-    worth = {i: sell(i) for i in items}
-    for _ in range(len(trades) + 1):
-        for g, t in trades:
-            worth[g] = max(worth[g], worth[t])
-    fails = []
-    print('Mojyamon (gives -> gets: the input sells for, the output is worth):')
-    for g, t in trades:
-        ok = worth[t] <= sell(g)
-        print(f'  {"ok  " if ok else "GAIN"} {name(g)} -> {name(t)}: {sell(g)} -> {worth[t]}')
-        if not ok:
-            fails.append(f'Mojyamon {name(g)} -> {name(t)} (+{worth[t] - sell(g)} per exchange)')
+    result = audit_mojyamon(shops, items, sell_pc)
+    worth, fails = result['worth'], result['fails']
+    print('Mojyamon (input sale -> output best unlimited exit; limits are per row):')
+    for row in result['rows']:
+        print(f"  {row['limit']:9} {name(row['input'])} -> {name(row['output'])}: "
+              f"{sell(row['input'])} -> {worth[row['output']]}")
+    print(f"Mojyamon daily reward ceiling: {result['daily_gross']} bits with free inputs; "
+          f"one-time rewards: {result['once_gross']} bits, excluded from the daily ceiling")
+    prices = mojyamon_input_prices(items, econ)
+    for baby in (False, True):
+        scenario = purchase_ceiling(result['rows'], prices, sell, baby)
+        print(f"Mojyamon {'baby' if baby else 'normal'} cheapest purchases + free fishing: "
+              f"inputs {scenario['cost']}, rewards {scenario['gross']}, net {scenario['net']}; "
+              f"after 1500-bit Birdramon trip: {scenario['net'] - 1500}")
+    print('Inputs without a shop offer are fished for free in this calculation: '
+          + ', '.join(name(i) for i in scenario['unsold']))
 
     vending_fails, sold = check_vending(worth, {i: name(i) for i in items})
     fails.extend(vending_fails)

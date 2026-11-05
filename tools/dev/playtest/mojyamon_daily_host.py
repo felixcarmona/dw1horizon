@@ -96,7 +96,7 @@ int main(void) {
   /* The saved trigger array survives a round trip without a transient cache. */
   memcpy(saved,flags,sizeof flags); memset(flags,0,sizeof flags); memcpy(flags,saved,sizeof flags);
   i=amountOpened; SCRIPT_STATE_2=4; openMojyamonShop();
-  assert(shown==12 && amountOpened==i);
+  assert(shown==(row==8 ? 10 : 12) && amountOpened==i);
   assert(inventory[inputs[row]]==4 && inventory[outputs[row]]==1);
  }
  assert(flags[14]); flags[788]=1; flags[798]=flags[799]=1;
@@ -106,11 +106,17 @@ int main(void) {
  for(row=0;row<9;row++) {
   ITEM_MENU_TYPE=(row/3)*3; left.cursor=row%3; right.buf[(row%3)*2]=outputs[row];
   pstats[249]=inputs[row]; inventory[inputs[row]]=5; inventory[outputs[row]]=0;
-  SCRIPT_STATE_2=4; openMojyamonShop(); assert(MAX_SHOP_AMOUNT==1);
-  SHOP_AMOUNT=1; SCRIPT_STATE_2=5; openMojyamonShop();
-  assert(inventory[inputs[row]]==4 && inventory[outputs[row]]==1);
+  i=amountOpened; SCRIPT_STATE_2=4; openMojyamonShop();
+  if(row==8) {
+   assert(shown==10 && amountOpened==i);
+   assert(inventory[inputs[row]]==5 && inventory[outputs[row]]==0);
+  } else {
+   assert(MAX_SHOP_AMOUNT==1);
+   SHOP_AMOUNT=1; SCRIPT_STATE_2=5; openMojyamonShop();
+   assert(inventory[inputs[row]]==4 && inventory[outputs[row]]==1);
+  }
  }
- puts("PASS actual C: nine independent rows, cap 1, cancel, failed give rollback, saved flags, same-day refusal, day reset, next-day success, recruitment history retained");
+ puts("PASS actual C: eight daily rows and one permanent row, cap 1, cancel, failed give rollback, saved flags, same-day refusal, day reset, North Star still refused next day, recruitment history retained");
 }
 '''
     with tempfile.TemporaryDirectory() as folder:
@@ -125,12 +131,27 @@ def check_texts():
         base = ROOT / 'text' / lang / 'dialogue'
         script = json.loads((base / 'unused.json').read_text())
         maphead = json.loads((base / 'maphead.json').read_text())
-        for n in (10, 12):
+        for n in (8, 10, 12):
             value = maphead[f'm1238.u{n}']
             assert isinstance(value, str) and value
             assert value == script[f's000.sec1238.u{n}'], (lang, n)
         assert '{item 249}' in str(maphead['m1238.u11']), 'keep the live amount-box question'
-    print('PASS eight languages: refusal and daily text match in script 0 and the active MAPHEAD bank; amount question retained')
+    import sys
+    sys.path.insert(0, str(ROOT / 'tools'))
+    from dws import backend as BE
+    original = dict(BE.FONT)
+    try:
+        for font in ('original', 'b'):
+            BE.FONT.update(extra=True, glyphs=len(BE.EXTRA_ORDER), chars=frozenset(BE.EXTRA_ORDER), name=font)
+            for lang in ('ours', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca'):
+                bank = json.loads((ROOT / 'text' / lang / 'dialogue/maphead.json').read_text())
+                for n in (8, 10, 12):
+                    key = f'm1238.u{n}'
+                    pages = BE.wrap(bank[key], 3, packed=BE.packed_key(key))
+                    assert len(pages) == 1, (lang, font, key, pages)
+    finally:
+        BE.FONT.clear(); BE.FONT.update(original)
+    print('PASS eight languages: both dialogue copies match; intro and limits fit one box in both fonts; amount question retained')
 
 
 def check_recruitment():

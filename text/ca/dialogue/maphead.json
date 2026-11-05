@@ -753,19 +753,13 @@
    "Deixa-ho"
   ]
  ],
- "m1238.u8": [
-  [
-   "Estic col·leccionant una cosa.",
-   "Si en tens, te la canvio de bon",
-   "grat."
-  ]
- ],
+ "m1238.u8": "Ofertes: una al dia. Estrella Polar: una per aventura.",
  "m1238.u9": [
   [
    "Què em donaràs?"
   ]
  ],
- "m1238.u10": "Cada intercanvi, un cop al dia. Torna demà!",
+ "m1238.u10": "L’Estrella Polar només es canvia un cop per aventura.",
  "m1238.u11": [
   [
    "De debò em dónes",

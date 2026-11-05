@@ -761,19 +761,13 @@
    "Laisse tomber"
   ]
  ],
- "m1238.u8": [
-  [
-   "Je collectionne quelque chose.",
-   "Si tu en as, je te les échange",
-   "avec plaisir."
-  ]
- ],
+ "m1238.u8": "Chaque échange une fois par jour. Étoile polaire : une seule fois.",
  "m1238.u9": [
   [
    "Que vas-tu me donner ?"
   ]
  ],
- "m1238.u10": "Chaque échange, une fois par jour. Reviens demain !",
+ "m1238.u10": "L’Étoile polaire s’échange une seule fois par aventure.",
  "m1238.u11": [
   [
    "Tu veux vraiment me donner",

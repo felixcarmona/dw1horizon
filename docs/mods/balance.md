@@ -259,14 +259,20 @@ into Veemon (`EVOLUTION_TARGET=180`):
 
 ## 6.1 The economy rule
 
-No repeatable conversion may turn bits into more bits. Every item and card is valued at its best way out (a shop's
-sell price, merit at the merit shop's best rate, Mojyamon, DemiMeramon, ClearAgumon, the Trash Mountain card swap): a
-Mojyamon trade may not give more than its input sells for, and a card pack or the card machine may not give back more
-than it costs; the daily card shop (6 cards, one copy each) is bounded by itself. The changes that meet it:
+No **uncapped** conversion may turn bits into more bits. Every unlimited item/card conversion is valued at its
+best unlimited exit: shop sale, merit, uncapped trades and NPC card conversions. An uncapped Mojyamon output must
+not exceed the input's sale value; card-pack and machine expected returns must stay below their purchase price.
+
+There is a precise exception for reviewed Mojyamon rows limited to **one item per in-game day**, persisted in the
+save. Those rows may exceed the input's sale value. The five approved daily gain pairs and the separately approved
+**once-per-save** North Star pair are pinned by row, input, output and limit in `tools/economy_audit.py`'s
+`MOJYAMON_GAIN_EXCEPTIONS`. An unreviewed gain, including a changed profitable pair or missing required cap, fails the audit. North Star must not be
+classified as daily. Capped edges are excluded from unlimited trade-chain/vending valuations; their finite gains
+are reported separately. The existing daily card shop is likewise bounded by six cards, one copy each.
 
 | What | Disc | Now | Why |
 |---|---|---|---|
-| Mojyamon's exchanges (`shops.json`) | unlimited rewards, including Medium Recovery → S.Def.disk | nine fair exchanges, each once per game day (table below) | output sale/conversion value never exceeds the input sale value; amount box caps at 1 |
+| Mojyamon's exchanges (`shops.json`) | unlimited rewards, including Medium Recovery → S.Def.disk | eight daily exchanges and one once-per-save exchange (table below) | explicit bounded gains; amount box caps at 1; North Star cannot be farmed by delaying recruitment |
 | sup.recovery / Sup.restore merit | 20 / 100 | 60 / 250 | merit sold through them made a 500-bit card pack worth about 1090 bits |
 | Card machine odds (`economy.json` `cardMachine`, in its script `libraries/s219` before patch 0237), rarity 2 / 4 | 7 / 70 % | 5 / 72 % | the cards' own sale price plus DemiMeramon and ClearAgumon gave back 103 bits a 100-bit card (the price is in its text) |
 | Tekkamon's drop (`90-tekkamon.json`) | S.Def.disk 100 % | 15 % | a wild fight of the Back Dimension, about 4900 bits each, without limit |
@@ -279,34 +285,71 @@ than it costs; the daily card shop (6 cards, one copy each) is bounded by itself
 | Meat farm big harvest (`libraries/s207`, `file-city/s164-204` section 11) | 1 day in 10 | 1 day in 4 | 5 instead of 3 Meat / Giant Meat / Sirloin; a day's share, no loop |
 | Psychemon / Gururumon wild bits (story mod) | 200 / 200 | 300 / 400 | the pay of the original's wild Digimon of their offense (330-420: about 300) |
 
-Mojyamon's recovery trade is intentional: the original game's Medium Recovery (item 1) -> S.Def.disk (20)
-becomes Medium Recovery (1) -> MP Floppy (4). The item IDs retain their meanings; this is a reward replacement,
-not an item rename. This mapping is already present in v0.0.1. Freezeland scripts 128 and 129 still select the
-same three-row trade groups; the executable reads the player's input from `mojyamonGives` and the reward from
-`mojyamonTakes`. The original recovery purchase (500 bits) -> S.Def.disk sale (2000 bits) allowed unlimited profit.
+The executable reads the player's input from `shops.json`'s `mojyamonGives` and the reward from `mojyamonTakes`.
+Freezeland scripts 128/129 retain three groups. Group 3 alone recruits after all nine historical rows are complete;
+return to it if another group completed the final row. Previously recruited saves keep their departure flags.
 
-Each row can be completed once per in-game day, including after saving and loading. Failed or cancelled attempts
-use no daily allowance. Daily bits 789–797 reset through the same day-advance routine as vending stock; historical
-trade bits 5–13 still record recruitment progress. Only group 3 recruits after all nine historical trades: return
-to it if another group completed the last row. Previously recruited saves keep their existing departure flags.
+| Group | Player gives | Mojyamon gives | Limit | Input sale | Reward sale | Sale-value gain |
+|---|---|---|---|---:|---:|---:|
+| 1 | Happy Mushroom | Ice Mushroom | 1/day | 500 | 500 | 0 |
+| 1 | Digiseabass | Chain Melon | 1/day | 4000 | 2500 | -1500 |
+| 1 | Digisnapper | Digipine | 1/day | 50 | 500 | +450 |
+| 2 | Supercarrot | Large MP | 1/day | 250 | 1000 | +750 |
+| 2 | Hawk Radish | Large Recovery | 1/day | 250 | 500 | +250 |
+| 2 | Blue Apple | Double Floppy | 1/day | 500 | 750 | +250 |
+| 3 | Digimushroom | Auto Pilot | 1/day | 50 | 150 | +100 |
+| 3 | Giant Meat | DigiTrout | 1/day | 250 | 150 | -100 |
+| 3 | Small Recovery | North Star | **1/save** | 50 | 2500 | +2450, once only |
 
-| Group | Player gives | Mojyamon gives | Input sells for | Output sells for |
-|---|---|---|---:|---:|
-| 1 | Happy Mushroom | Ice Mushroom | 500 | 500 |
-| 1 | Digiseabass | Chain Melon | 4000 | 2500 |
-| 1 | Black Trout | Digipine | 500 | 500 |
-| 2 | Digicatfish | Large MP | 1000 | 1000 |
-| 2 | Red Berry | Large Recovery | 500 | 500 |
-| 2 | Sweet Nut | Medium MP | 500 | 400 |
-| 3 | Supercarrot | Auto Pilot | 250 | 150 |
-| 3 | Giant Meat | DigiTrout | 250 | 150 |
-| 3 | Medium Recovery | MP Floppy | 250 | 150 |
+The five positive daily sale-value exceptions total **1800 bits/day** above selling those inputs directly. Taking
+all eight daily rows, including the two that lose sale value, adds **200 bits/day** over selling all eight inputs.
+These are finite allowances, not unlimited conversion exits. Item 70 (Chain Melon) is displayed as Overripe Melon
+in the English item-name bank. Double Floppy is item 7, not Restore.
 
-Item 70, Chain Melon in the data table, is displayed as Overripe Melon in the current English item-name bank.
+Every amount box caps at one. Daily bits 789–796 gate the eight daily rows; the former ninth daily bit 797 stays
+reserved/cleared for compatibility. North Star checks historical completion flag **13**, which is never cleared
+at midnight. Its first successful exchange sets that flag, even if recruitment is postponed. Cancellation and
+full-bag failures spend neither type of allowance. Saving/loading retains the flags. Existing saves that already
+completed the old ninth row keep it spent rather than resetting recruitment progress.
 
-Digimushroom → Auto Pilot would pay 50 → 150, so Supercarrot replaces that input. No item targets Dolphmon:
-North Star (92) still targets Whamon (24), so there is no evolution-item gift. Tapirmon's Market Shed replaces
-Digipine with Hawk Radish at its normal 500-bit price (450 for babies); no exchange consumes Hawk Radish.
+### Daily cash ceilings
+
+Prices below are the cheapest actual fixed offers, rather than treating an item's nominal value as an available
+shop offer. Digiseabass has **no shop offer**: a purely shop-funded eight-row run is impossible. The bought-input
+calculation buys every other input and assumes free fishing/bait for Digiseabass; paid bait would reduce the net.
+Digisnapper is sold by Mammothmon at the Cold Store for 100 (90 with a baby), and can also be fished.
+
+| Daily input | Cheapest normal / baby purchase | Source | Reward sale |
+|---|---:|---|---:|
+| Happy Mushroom | 1500 / 1500 | Dragon Eye Lake vending, one/day | 500 |
+| Digiseabass | not sold | fishing | 2500 |
+| Digisnapper | 100 / 90 | Cold Store | 500 |
+| Supercarrot | 500 / 450 | city stalls; Vegiemon is fixed at 500 | 1000 |
+| Hawk Radish | 500 / 450 | city stalls; Vegiemon is fixed at 500 | 500 |
+| Blue Apple | 1000 / 900 | Tapirmon's Market Shed | 750 |
+| Digimushroom | 51 / 51 | Dragon Eye Lake vending | 150 |
+| Giant Meat | 300 / 300 | Ancient Glacial Region vending | 150 |
+| **All eight daily rows** | **3951 / 3741**, plus free Digiseabass | | **6050** |
+
+- Buying every purchasable input and selling every reward nets **2099 bits/day normally**, or **2309 with baby
+  discounts**. After the **1500-bit Birdramon trip**, that is **599 / 809**. Return travel and paid bait are excluded.
+- With zero-bit inputs from pickups, fishing, farm stock and drops, selling all eight rewards pays **6050 bits/day**,
+  or **4550 after that Birdramon trip**. Supercarrot/Hawk Radish can drop from RedVegiemon/Weedmon (10% each).
+- Group 2 alone pays 2250 gross: buying all three inputs nets **250 / 450**, or **-1250 / -1050** after the trip.
+  Vegiemon's 500-bit prices are unchanged.
+- After group 3 recruits, only groups 1/2 remain: **5750 gross/day** with free inputs, or **2150 / 2360 net** with
+  the cheapest purchases plus free Digiseabass (**650 / 860** after the trip).
+- North Star adds **2500 gross once per save**, not per day. Buying its Small Recovery input costs 100 normally or
+  90 with a baby, for **2400 / 2410 once-only net**. Free-input first completion can therefore pay 8550 gross;
+  the recurring eight-row ceiling remains 6050.
+
+Tapirmon keeps Hawk Radish in place of Digipine at the existing 500-bit value (450 baby purchase), now feeding a
+reviewed daily gain. North Star (item 92) targets **Dolphmon (238)** instead of Whamon (24). It is a Champion
+evolution item for a Rookie partner, regardless of natural parent routes; NEW DIGIMON off refuses the unavailable
+import without consuming the item. Its eight descriptions name Dolphmon. The original palette-relative USA
+refusal lookup now reads the actual evolution-item table. The existing tournament cup-14 reward and new-game
+inventory cleanup still refer to North Star by item ID; no shop stock, drop or merit purchase depends on Whamon.
+It remains recyclable at the existing 2500-bit sale value and has meritValue 0. Story Whamon (146) is unchanged.
 
 The money analysis behind it: upkeep is about 300-1500 bits a game day, nothing on the story path costs
 bits, and bits bought little power (DV chips about 40 stat points a 1000 bits, restaurants 1-4, the gym 80-100 a day for
