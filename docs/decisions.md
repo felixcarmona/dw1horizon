@@ -120,6 +120,7 @@ Keep this page updated when a deliberate change is merged, including reversals a
 - **2026-11-05 — Assaultmon/Datamon/Infermon/Diaboromon:** Assaultmon retains Machine/Battle, Datamon becomes Machine/Air/Fire, Infermon Machine/Plant and Diaboromon Machine/Plant/Battle with corresponding moves; formerly duplicated machine sets need distinct identities while retaining shared-specialty evolution links ([species records](../content/species); PR #189).
 - **2026-11-05 — Constant animation scale:** 67 imports retain a constant body scale across clips, and Apocalymon is a constant giant Mega at about 600 units; animation keys should not make bodies or feet grow and shrink ([model recipes](../content/models/imports), [species records](../content/species); PRs #190, #191).
 - **2026-11-05 — Infermon voice:** it uses Bakemon's voice and insect footsteps instead of dinosaur sounds; audio should match its insect-machine identity ([species record](../content/species/246-infermon.json); PR #190).
+- **2026-11-05 — IceLeomon ice techniques:** Battle/Air/Ice keeps its existing evolution links and electrical moves while adding Ice Needle and Winter Blast; the ice beast-man should learn ice techniques. Fist of the Beast King and both mode-specific finisher values remain unchanged; the added moves reuse its electrical attack clips and are disabled with NEW DIGIMON off ([species record](../content/species/63-iceleomon.json), [partner rules](reference/partner.md#evolution-rules-for-the-added-species)).
 
 ## Battles
 
