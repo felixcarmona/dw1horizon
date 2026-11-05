@@ -55,6 +55,7 @@ try {
             if (s.dead) return;
             if (m.kind === 'extract') route(s, { kind: 'done', ok: true, key: 'us', title: 'fixture', files: 0, bytes: 0, secs: 0, heap: 1 });
             if (m.kind === 'job') {
+              if (s.owner.fileError) { route(s, { kind: 'error', msg: 'NotReadableError: build file fixture' }); return; }
               if (s.owner.oomTest && !s.owner.retried) {
                 s.owner.retried = true;
                 route(s, { kind: 'error', msg: 'MemoryError' }); return;
@@ -82,10 +83,18 @@ try {
       build.oomTest = 'fixture';
       await build.run();
       check(build.state.phase === 'done' && build.state.memoryRetries === 1, 'OOM job retries and finishes');
+      check(!await exists('inputs'), 'successful build removes input snapshots');
       check(await exists('done.json'), 'completion marker is at OPFS root');
       await tidyStorage();
       check(await exists('image.bin'), 'page-load cleanup preserves completed image');
       check(await kept() === 'kept disc', 'a build and the page-load cleanup leave the kept discs alone');
+
+      const lost = new TinyBuild({ us: new File([], 'fixture.bin') }, { workers: 1 });
+      lost.fileError = true;
+      const fileError = await lost.run().catch((e) => e);
+      check(fileError.key === 'engine.fileLost' && fileError.kind === 'file' && !lost.state.memoryRetries,
+        'persistent file failure stops without retrying whole jobs or replacing workers');
+      check(!await exists('inputs'), 'failed build removes input snapshots');
 
       let releaseFetch;
       gate = new Promise((r) => { releaseFetch = r; });

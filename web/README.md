@@ -142,10 +142,14 @@ fakes give `stored()` for IndexedDB and `self.testHandles.revive` makes them aga
 make-release of the everything variant (format 3, the derive builder: `tools/patcher/dwpatch.py`, docs/patcher.md
 §9) as `dwpatch apply` would, with tools/derive's steps spread over the workers:
 
+Before downloads or jobs, all selected discs are copied in 8 MB chunks to `horizon-build/inputs/`. The copies
+remain immutable through disc writing; each worker obtains a fresh File from its OPFS handle when mounting it.
+They are removed on success, cancellation or failure, and by page-load cleanup after a crash.
+
 1. The engine's files (`engine/<version>/`, made by `web/build-engine.sh`) go into the Cache API the first time (the
    service worker `engine-sw.js` serves `engine/<version>/` from there, Pyodide included): a second build downloads
    nothing.
-2. A worker mounts the player's image (WORKERFS: read in place, not copied), checks it (`identify_base`) and writes the
+2. A worker mounts the input copy (WORKERFS: read in place), checks it (`identify_base`) and writes the
    files the build reads (the release's `extract` list, by USA path; jp1's localized images made by the bundle's
    tool, run in-process) to OPFS (`horizon-build/tree/extracted/`). It also reads the three source images, verifies
    their release file checksums, reads the hidden ISO directories and DCB's DRV, and writes their inputs into
@@ -175,7 +179,7 @@ engine versions go and, in OPFS, everything but a finished image (image.bin whos
 tree of a crashed build, a half-written image. One build at a time across tabs (Web Locks, `horizon-build`; the
 page-load tidy skips while another tab builds). Nothing of this is shown to the player.
 
-Room: a build needs about 3 GB in this browser's storage (`roomFor`: twice the holes, the largest image, 1.25 GB;
+Room: a build needs about 3 GB plus the combined size of the selected discs in this browser's storage (`roomFor`: twice the holes, the largest image, 1.25 GB;
 measured at its fullest: 2.63 GB, `web/test/run.mjs` prints it as "peak storage").
 `storage.estimate()` cannot say whether it is there: Chromium reports a fixed quota (its usage + 10 GB, the
 StaticStorageQuota feature, private windows included), while the real one can be far smaller (an incognito window
@@ -270,6 +274,17 @@ workers are on), above the per-step and per-worker detail. The bar is the time s
 left is what is left of this phase plus the estimates of the next ones (the download from the measured rate; the jobs
 from plan.json's estimates, critical path or work over the workers, scaled by how the jobs done so far compared; the
 check and the writer from `write_est`), and it never goes back.
+
+File access: tree reads obtain fresh directories, file handles and Files from OPFS. `InvalidStateError` or
+`NotReadableError` retries the read once from the storage root, preserving the requested job version. A second
+failure names the file in the diagnostic log and stops with `engine.fileLost`: reselect discs from local storage,
+restart, keep the tab open and device awake, or use the desktop patcher. It does not retry whole jobs on other
+workers. Input copying also retries once, reopening the selected handle when one is available; an invalid File
+from a plain file picker needs reselection if it cannot be read again.
+
+`node web/test/file-storage.mjs URL` checks stale reads, retry limits, immutable input copies and cancellation in
+Chromium using tiny OPFS fixtures and the production worker's read function. `node web/test/lifecycle.mjs URL`
+checks failure and cancellation cleanup, worker retries, and locking across tabs without building a disc.
 
 Tests: `web/test/suite.sh TAG [URL]` (not deployed): headless Chromium on the real page (`?test=1` sets the title DONE
 and `window.RESULTS` at the end; `&shuffle=SEED` runs the jobs in a random order;
