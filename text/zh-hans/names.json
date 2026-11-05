@@ -1087,5 +1087,9 @@
  "main.MOD_OPT_STR_ENEMY": "新敌方状态条",
  "main.STR_YEAR_DAY": "年 日",
  "main.STR_YES_NO": "是 否",
- "main.STR_YES_NO_SPACED": "是 否"
+ "main.STR_YES_NO_SPACED": "是 否",
+ "main.MOD_OPT_STR_CHINESE_RAM_0": "中文需要8MB内存。",
+ "main.MOD_OPT_STR_CHINESE_RAM_1": "请在模拟器设置中",
+ "main.MOD_OPT_STR_CHINESE_RAM_2": "将内存设为8MB。",
+ "main.MOD_OPT_STR_CHINESE_RAM_3": "当前语言保持不变。"
 }

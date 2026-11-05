@@ -92,7 +92,8 @@ the order of `mods/patches/series` ([the patch series](../mods/patches/README.md
 assembly and game files are regenerated from your disc. The standard
 build targets the original PlayStation's 2 MB of RAM.
 
-Simplified Chinese requires 8 MB and appears disabled on 2 MB hardware. Choosing
+Simplified Chinese requires 8 MB. Selecting it on 2 MB hardware shows a localized
+RAM error and keeps the current language. Choosing
 Chinese loads its complete bitmap fonts and language module above 2 MB; the other
 eight languages retain their ordinary 2 MB support. The fonts are generated from
 the committed licensed subsets during the player build. See

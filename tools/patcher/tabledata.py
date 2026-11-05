@@ -45,6 +45,8 @@ def authored_recipe(obj, data, tool_root=None, words=()):
     root = str(Path(tool_root) if tool_root else Path(__file__).resolve().parents[2])
     name = obj['section'].split('.')[-1]
     choices = []
+    if name == 'MOD_CHINESE_NAME':
+        choices = [('language_flags', ['chinese_name'])]
     if name in ('MOD_FLAG_PALETTE', 'MOD_FLAG_OFFSET', 'MOD_FLAG_RUNS'):
         choices = [('language_flags', [name.removeprefix('MOD_FLAG_').lower()])]
     if (obj['source'] == 'src/main/script_common.c'

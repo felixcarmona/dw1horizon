@@ -8,7 +8,9 @@ approval is still required; local review evidence and open questions stay outsid
 the published tree.
 
 Chinese is language ID 8. It requires an 8 MB console; the normal language picker
-shows a disabled entry with that requirement on a 2 MB console. Selection loads
+shows its flag and a resident 中文 label in a two-column list. Selecting it on a
+2 MB console opens an error popup in the current language and preserves that
+language. Selection loads
 the complete bitmap font and Chinese runtime into extra RAM. Glyph rendering
 performs no CD reads. Player and partner naming retains the Latin keyboard;
 custom names survive language changes.

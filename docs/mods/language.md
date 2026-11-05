@@ -3,9 +3,12 @@
 The runtime language selector supports English, Spanish, Brazilian Portuguese,
 French, German, Italian, Japanese, Catalan and Simplified Chinese. Chinese requires 8 MB RAM;
 the other eight languages support an original 2 MB console. The picker shows
-Chinese disabled with an 8 MB note when the extra RAM is absent. Text, executable strings, signs and
+Chinese with its flag and resident 中文 label in two columns. Selecting it without
+extra RAM opens a localized error popup and preserves the current language. Text,
+executable strings, signs and
 other translated textures switch together. A first-boot picker shows native names
-and procedural flags; saved options skip it. OPTIONS can change the language later.
+and procedural flags; saved options skip it. OPTIONS keeps its single cycling
+language row and uses the same native name and RAM rejection popup.
 
 Our English translation is in `text/ours`; the other translations are in
 `text/{es,pt-br,fr,de,it,ja,ca,zh-hans}`. `text/<language>.json` supplies common mod text,

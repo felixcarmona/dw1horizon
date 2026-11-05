@@ -72,6 +72,7 @@ disc evolution-tree   $PY tools/test_evo_tree.py --practical
 disc evolution-tree-guard $PY -W ignore::ResourceWarning tools/test_evo_tree_guard.py
 run starter-quiz      $PY tools/starter_quiz.py
 run starter-quiz-tests $PY tools/test_starter_quiz.py
+run language-picker-tests $PY -m unittest tools.test_language_picker
 run chinese-authoring-tests $PY -m unittest tools.test_chinese
 run world-gates $PY tools/world_audit.py
 run world-gates-tests $PY -W ignore tools/test_world_audit.py
