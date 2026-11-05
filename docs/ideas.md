@@ -22,6 +22,9 @@ promise: an idea may be done later, changed, or never done. Ideas that were buil
 - **Unique finishers for the new Digimon.** Many imported Digimon reuse another Digimon's finisher (for example a shuriken or a rocket
   that doesn't fit them).
 - **DarkSuperStarmon.** An alternative Starmon evolution with its own Battle/Machine/Fire identity, once one of its Megas is in the game.
+- **Beelzemon and its Blast Mode.** The normal Beelzemon as a partner, with a sidequest that unlocks Blast Mode.
+- **WarGreymon from Digimon World 2's model** instead of the current one.
+- **Grey Lord's Mansion by type.** Revisit which Digimon may enter where (a player expected a Virus partner to get in).
 - **Ophanimon.** Missing because none of the four supported discs has a model of it; it would have to be built from another model.
 
 ## Items, shops and the economy
@@ -31,6 +34,15 @@ promise: an idea may be done later, changed, or never done. Ideas that were buil
 - **A deterministic daily seed for ground items.** The item a spot offers is fixed for the day and entering only changes whether it is
   there. Needs a full rebalance of every spot.
 - **More vending machines** around the island as surprises.
+
+## Interface
+
+- **Result stats finish on their own.** After training or battle the stat counters could animate quickly and close by themselves.
+- **Keep the key as a key item** instead of an ordinary item.
+
+## Patcher
+
+- **A faster way to build on slow devices.** Phones can take hours to build the disc; a lighter or prebuilt-delta path was suggested.
 
 ## Languages
 
