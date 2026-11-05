@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'
 from mapbase import base_map, Cam, MOD, check_arrivals
 from maps import reach
 
-ART_FULL = os.path.join(MOD, 'art', 'full', 'seam-2-2304x1856.png')   # the 768x640 art is its middle 6:5
+ART_FULL = os.path.join(MOD, 'art', 'full', 'seam-2-entrances.png')   # the complete generated scene, cropped only to remove padding
 ART = os.path.join(MOD, 'art', 'seam-2.png')
 DATA = os.path.join(MOD, 'maps', 'seam-2-data.json')
 CHECKPOINT = os.environ.get('SAM_CHECKPOINT', os.path.join(MOD, '..', '..', '..', 'build', 'new-maps', 'models', 'sam_vit_h_4b8939.pth'))
@@ -45,7 +45,7 @@ BLOCKED = {
     'heaps': [(555, 125), (650, 125), (768, 150), (768, 640), (590, 640), (540, 480), (555, 300)],
 }
 EXIT_S = (200, 616, 540, 640)                           # box: the bottom edge, back to 323
-EXIT_N = (200, 122, 540, 142)                           # box: the top band of the floor, on to 326 (when it exists)
+EXIT_N = (365, 120, 505, 147)                           # box: the top band of the floor, on to 326 (when it exists)
 EXIT_W = (60, 198, 180, 226)                            # box: the gate's foot, into the kennel (325, when it exists)
 EXITS = [
     {'warp': 0, 'target': (323, 1), 'spawn_px': (370, 590), 'face_px': (370, 300)},     # from 323: at the bottom, facing in
@@ -74,7 +74,7 @@ def sam_masks(im, out):
 
 def main(out):
     os.makedirs(out, exist_ok=True)
-    full = Image.open(ART_FULL).convert('RGB'); w0, h0 = full.size; ww = round(h0 * 6 / 5); x0 = (w0 - ww) // 2
+    full = Image.open(ART_FULL).convert('RGB'); w0, h0 = full.size; ww = w0; x0 = 0
     im = np.array(full.crop((x0, 0, x0 + ww, h0)))
     masks, scores = sam_masks(im, out)
     floor = np.zeros((H, W), np.uint8)
