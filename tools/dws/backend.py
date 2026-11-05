@@ -817,6 +817,8 @@ def build_maphead(comp, workdir, report):
     mh = open(mh_path, encoding='utf-8').read()
     mh = new_scripts(comp, workdir, mh)
     mh = place_digimon(comp, mh, report)
+    from .recruit_screens import guard_wilds
+    mh = guard_wilds(comp, mh, report)
     if comp.city is not None and getattr(comp, 'city_table', True):     # (below story-state only its presence rules: the IFs above)
         from . import city
         blob = city.encode(comp.city); sec, body = city.to_section_text(blob)
