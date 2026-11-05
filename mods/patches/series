@@ -349,4 +349,5 @@ Keep-conversation-NPCs-out-of-nearby-wild-encounters.patch
 Resolve-flattened-spit-without-indexing-before-the-move-table.patch
 Swap-configured-evolution-targets-with-NEW-DIGIMON.patch
 Restore-explicit-off-evolution-paths-and-requirements.patch
+Accept-tally-skip-presses-while-other-pad-buttons-are-held.patch
 Keep-rebirth-species-fallback-resident.patch

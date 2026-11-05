@@ -1,0 +1,84 @@
+From 6544dd53365ad4a4c0f0e0bd78bfb803a87e37d1 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 5 Nov 2026 07:12:47 +0000
+Subject: [PATCH] Accept tally skip presses while other pad buttons are held
+
+---
+ src/main/battle_ui.c | 16 ++++++----------
+ src/trn/trn_hud.c    |  7 +++----
+ src/trn2/trn2_hud.c  |  7 +++----
+ 3 files changed, 12 insertions(+), 18 deletions(-)
+
+diff --git a/src/main/battle_ui.c b/src/main/battle_ui.c
+index 35e40eb..daaf93b 100644
+--- a/src/main/battle_ui.c
++++ b/src/main/battle_ui.c
+@@ -462,11 +462,9 @@ void tickBitBox(instanceId)
+ 		return;
+ 	}
+ 
+-	if ((POLLED_INPUT == CONFIRM_BUTTON) || (POLLED_INPUT == CANCEL_BUTTON)) {
+-		if (!(POLLED_INPUT_PREVIOUS & CONFIRM_BUTTON) &&
+-		    !(POLLED_INPUT_PREVIOUS & CANCEL_BUTTON)) {
+-			SHOULD_SKIP_BIT_COUNTING = 1;
+-		}
++	/* A face-button edge on pad 1 still counts with other buttons or pad 2 held. */
++	if ((POLLED_INPUT & ~POLLED_INPUT_PREVIOUS) & (CONFIRM_BUTTON | CANCEL_BUTTON)) {
++		SHOULD_SKIP_BIT_COUNTING = 1;
+ 	}
+ 
+ 	if (SHOULD_SKIP_BIT_COUNTING == 1) {
+@@ -594,11 +592,9 @@ void tickPostBattleStatsBox(void)
+ 		}
+ 	}
+ 
+-	if ((POLLED_INPUT == CONFIRM_BUTTON) || (POLLED_INPUT == CANCEL_BUTTON)) {
+-		if (!(POLLED_INPUT_PREVIOUS & CONFIRM_BUTTON) &&
+-		    !(POLLED_INPUT_PREVIOUS & CANCEL_BUTTON)) {
+-			SHOULD_SKIP_BIT_COUNTING = 1;
+-		}
++	/* A face-button edge on pad 1 still counts with other buttons or pad 2 held. */
++	if ((POLLED_INPUT & ~POLLED_INPUT_PREVIOUS) & (CONFIRM_BUTTON | CANCEL_BUTTON)) {
++		SHOULD_SKIP_BIT_COUNTING = 1;
+ 	}
+ 
+ 	if (SHOULD_SKIP_BIT_COUNTING != 1) {
+diff --git a/src/trn/trn_hud.c b/src/trn/trn_hud.c
+index fb18236..f40d315 100644
+--- a/src/trn/trn_hud.c
++++ b/src/trn/trn_hud.c
+@@ -213,10 +213,9 @@ void TRN_tickPostTrainingStatsBox(void)
+ 		}
+ 	}
+ 
+-	if ((POLLED_INPUT == CONFIRM_BUTTON) || (POLLED_INPUT == CANCEL_BUTTON)) {
+-		if (!(POLLED_INPUT_PREVIOUS & CONFIRM_BUTTON) && !(POLLED_INPUT_PREVIOUS & CANCEL_BUTTON)) {
+-			MAIN_D_80135394 = 1;
+-		}
++	/* A face-button edge on pad 1 still counts with other buttons or pad 2 held. */
++	if ((POLLED_INPUT & ~POLLED_INPUT_PREVIOUS) & (CONFIRM_BUTTON | CANCEL_BUTTON)) {
++		MAIN_D_80135394 = 1;
+ 	}
+ 
+ 	if (MAIN_D_80135394 != 1) {
+diff --git a/src/trn2/trn2_hud.c b/src/trn2/trn2_hud.c
+index c0511fc..2c1dad7 100644
+--- a/src/trn2/trn2_hud.c
++++ b/src/trn2/trn2_hud.c
+@@ -376,10 +376,9 @@ void TRN2_tickPostTrainingStatsBox(void)
+ 		}
+ 	}
+ 
+-	if ((POLLED_INPUT == CONFIRM_BUTTON) || (POLLED_INPUT == CANCEL_BUTTON)) {
+-		if (!(POLLED_INPUT_PREVIOUS & CONFIRM_BUTTON) && !(POLLED_INPUT_PREVIOUS & CANCEL_BUTTON)) {
+-			MAIN_D_801353D4 = 1;
+-		}
++	/* A face-button edge on pad 1 still counts with other buttons or pad 2 held. */
++	if ((POLLED_INPUT & ~POLLED_INPUT_PREVIOUS) & (CONFIRM_BUTTON | CANCEL_BUTTON)) {
++		MAIN_D_801353D4 = 1;
+ 	}
+ 
+ 	if (MAIN_D_801353D4 != 1) {
+-- 
+2.55.0
+
