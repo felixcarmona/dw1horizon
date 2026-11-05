@@ -32,10 +32,10 @@ hills2_guardromon = hills2.npc(Species.Guardromon, at=(950, -550), hp=3200, mp=3
 # legs lie one above the other and a chase across the terrace face starts a battle the two cannot fight (2026-10-21).
 # Stand beside the turns rather than sealing either leg with the starting body footprint.
 hills3 = new_screen(319, map="build/what-the-island-forgot-maps/screens/IRON03.MAP")
-hills3_assaultmon = hills3.npc(Species.Assaultmon, at=(-250, 250), hp=3800, mp=3600, offense=560, defense=330, speed=260, brain=250, bits=1800, range=400)
-hills3_tankmon = hills3.npc(Species.Tankmon, at=(650, -950), hp=4000, mp=2300, offense=530, defense=280, speed=120, brain=50, bits=1400, range=400,
+hills3_assaultmon = hills3.npc(Species.Assaultmon, at=(-1050, 1000), hp=3800, mp=3600, offense=560, defense=330, speed=260, brain=250, bits=1800, range=400)
+hills3_tankmon = hills3.npc(Species.Tankmon, at=(850, -650), hp=4000, mp=2300, offense=530, defense=280, speed=120, brain=50, bits=1400, range=400,
                             autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
-hills3_guardromon = hills3.npc(Species.Guardromon, at=(250, 2450), hp=3200, mp=3800, offense=600, defense=340, speed=120, brain=80, bits=1300, range=400,
+hills3_guardromon = hills3.npc(Species.Guardromon, at=(200, 2450), hp=3200, mp=3800, offense=600, defense=340, speed=120, brain=80, bits=1300, range=400,
                                autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
 
 # 320, the fourth Iron Hills screen (the ridge): the same roster, spread over the plateau.
