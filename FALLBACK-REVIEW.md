@@ -4,7 +4,7 @@ Reviewed the eight borderline findings from the audit following PR #183 against 
 
 Game decisions and defaults must come from owned JSON. Models, map artwork/geometry, display text, sounds and the code needed to use them may be reconstructed from pinned player assets. A checksum proves identity, not that a byte is an asset rather than a gameplay parameter.
 
-One definite source-of-truth problem is fixed: case 5 used committed CSV instead of the existing screen JSON. It did not read a live disc, but violated the JSON-only configuration requirement and could override edits or deletions. Cases 3, 4, 6 and 7 do not demonstrate a product gameplay fallback in their inspected paths. Cases 1, 2 and 8 remain unresolved classification work; they are **not certified asset-only**. No speculative binary replacement was made.
+Two definite problems are fixed: case 5 used committed CSV instead of the existing screen JSON, and case 7 silently imported disc scripts when a generated cache index was missing. Case 5 did not read a live disc, but violated the JSON-only configuration requirement and could override edits or deletions. Cases 3, 4 and 6 do not demonstrate a product gameplay fallback in their inspected paths. Cases 1, 2 and 8 remain unresolved classification work; they are **not certified asset-only**. No speculative binary replacement was made.
 
 Effort below describes the work involved, rather than an unmeasured completion-time promise. Small means a localized generator/configuration change; medium includes tracing all readers of a domain and regional comparisons; large requires an inventory across executables/overlays and release replay.
 
@@ -82,17 +82,19 @@ Effort below describes the work involved, rather than an unmeasured completion-t
 
 **Concrete fix:** none required by the data rule. Optional release text policy could use `content/tables/text-policy.json`, `release.requireAuthoredKeys` and `development.allowPartialZones`, to reject unintended retained strings while allowing explicit text-source builds. Keep actual untranslated disc dialogue out of published JSON. **Effort: medium**, because permitted retained keys must be inventoried across languages. Left unchanged.
 
-## 7. Explicit legacy script patching — authoring path, not product fallback
+## 7. Missing generated script cache silently imports disc scripts — fixed
 
-**Where:** `tools/dws/backend.py:227` (`ensure_dis`), `:841` (`apply`); `tools/dws/basebuild.py` (`_build`, temporary replacement of `BE.DIS_CACHE` and `BE.MAPHEAD_SCN`).
+**Where:** `tools/dws/backend.py:227` (`ensure_dis`), `apply`; `tools/dws/basebuild.py` (`_build`, temporary replacement of `BE.DIS_CACHE` and `BE.MAPHEAD_SCN`).
 
-**In plain words:** the legacy developer `dws build` command patches a disassembled original script. The product story builder first compiles owned `story/base` sources and temporarily points that same backend at the owned result. A missing product story source already fails; it does not switch to disc scripts.
+**In plain words:** the legacy developer command patches a disassembled original script, which is an explicit authoring operation. The product builder compiles owned `story/base` sources and points that same backend at its generated cache. However, the backend previously checked for `dg.scn.lst` in that supplied cache and, if missing, disassembled the original disc into it. A missing intermediate could silently change the source of the scripts being patched.
 
-**Rule verdict:** no product gameplay fallback. Explicit disc import/inspection remains an authoring tool, just like extraction of numeric tables. Using legacy `dws build` directly as a replacement product story build would retain disc decisions and break the rule.
+**Rule verdict:** the missing-index branch was a definite gameplay fallback. The explicit legacy authoring path itself remains permitted. Normal product builds create the index, which explains why normal output comparisons alone did not expose the defect. Requiring `story/base` at the entry point was insufficient to close this later fallback.
 
-**Risk if left:** command names alone do not prevent someone from treating a legacy developer output as a release input. Product-route tests and the required owned-base check remain important.
+**Risk if left:** a deleted, incomplete or incorrectly supplied generated cache could retain original script operands rather than the owned decisions. The source change would be hidden behind recovery of an apparently missing build artifact.
 
-**Concrete follow-up:** no gameplay JSON field is needed; scripts belong in owned story sources. Optional separation can use `tools/dws/build-policy.json`, `product.storySource: "owned"`, `authoring.allowDiscScriptImport: true`, enforced at the release entry point. Prefer an explicit authoring command over adding a disc fallback flag to product compilation. **Effort: medium** for command separation and release-entry tests. Left unchanged.
+**Implemented fix:** `ensure_dis` raises `BackendError` for a nondefault generated cache without its index. A ready generated cache is used as supplied. The default legacy authoring cache retains its explicit import behavior. **No new JSON fallback field is appropriate:** this is a missing compiler artifact; regenerate it from owned `story/base` sources rather than introducing a second source of script decisions. The concrete source remains the owned story files and the existing domain JSON they reference. **Effort: small; implemented in a separate fix commit.**
+
+**Proof:** dedicated tests prohibit the disc disassembler from being called in both the missing and ready generated-cache cases. A third fresh complete base-story build after this fix is compared against the saved pre-change build. Both story payloads remain byte-identical; the missing-index scenario now intentionally errors instead of importing the disc.
 
 ## 8. Generic binary copies and deltas — unresolved per copied object
 
@@ -113,5 +115,7 @@ Evidence is local under `build/fallback-review/`:
 - `metadata-proof.json`: 239 native rows equal; normalized metadata SHA-256 `f33ad81336daee9ae482f87c427dc47d0f6d86bca072353df5c702e188e642ba`.
 - `story-proof.json`: before/after `DG.SCN` SHA-256 `2047a2792e43b8c909b52260d0d6c8de4601c847e6a4aad2489b40e14556f534`; `MAPHEAD.SCN` SHA-256 `1828aae4d92acbf42d1bdad26ff7b8942e3d414e21b4895e8d17bb7055f5a8c7`.
 - `tests.log`: 47 focused data-source, table-recipe, buffer and code-copy tests pass, including the new deletion/mutation/configuration checks.
+- `cache-tests.log`: all 11 current data-source tests pass, including the two new generated-cache checks. `cache-proof.json` records the third build comparison for case 7.
+- `final-tests.log`: all 49 focused tests pass after both fixes.
 
 No C or patch-series changes were made. The compared story files have identical sizes and bytes; the executable and its BSS are unchanged by this generator change. No new heap measurement, full eight-language ISO build, browser package replay, emulator session or physical-console test was performed. This review does not prove every copied binary literal is non-gameplay data. No media was produced and nothing was pushed.

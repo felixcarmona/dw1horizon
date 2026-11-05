@@ -208,3 +208,5 @@ Story builds require the committed `story/base` sources. Missing sources fail th
 Regional menu positions are explicit signed 16-bit layout fields in `tools/patcher/ui-sources.json` (`objects.*.values`, keyed by base region). Player-side recipes use those values plus authored text crops. `sources` records import provenance; it never supplies runtime defaults. An unknown region is an error.
 
 The story compiler reads native screen file names and flags from `content/screens/*.json`. `content/tables/story-screens.json` (`nativeScreenIds`) explicitly selects its visible native IDs, keeping reserved executable rows outside the compiler namespace. Deleted screen rows produce no entry; a missing visibility configuration fails the build. `docs/data/map_files.csv` is inspection metadata and supplies no defaults to the compiler.
+
+The story backend also requires the index of any supplied generated script cache. A missing `dg.scn.lst` fails closed; it never replaces the generated cache with an implicit disc disassembly. The default legacy authoring cache retains its explicit disc-import behavior.

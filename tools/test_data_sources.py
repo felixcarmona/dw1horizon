@@ -61,6 +61,24 @@ class StoryScreenMetadata(unittest.TestCase):
                         be.native_screen_metadata()
 
 
+class GeneratedStoryCache(unittest.TestCase):
+    def test_missing_generated_index_never_disassembles_disc(self):
+        from dws import backend as be
+        with tempfile.TemporaryDirectory() as directory, \
+             patch.object(be, 'DIS_CACHE', str(Path(directory) / 'generated')), \
+             patch.object(be, 'dis', side_effect=AssertionError('disc script import')):
+            with self.assertRaisesRegex(be.BackendError, 'missing generated story cache index'):
+                be.ensure_dis()
+
+    def test_ready_generated_cache_is_used_without_disc_import(self):
+        from dws import backend as be
+        with tempfile.TemporaryDirectory() as directory, \
+             patch.object(be, 'DIS_CACHE', directory), \
+             patch.object(be, 'dis', side_effect=AssertionError('disc script import')):
+            (Path(directory) / 'dg.scn.lst').write_text('; owned generated cache\n')
+            be.ensure_dis()
+
+
 class EmptyDomains(unittest.TestCase):
     def test_empty_directories_remove_all_rows(self):
         with patch.object(content, 'load_techniques', return_value=None), \

@@ -229,7 +229,7 @@ def ensure_dis():
     made before the 2026-10-14 button fix re-encoded × and △ the other way)."""
     if DIS_CACHE != DIS_DEFAULT:                       # (the story build points it at the text it generated: kept as it is)
         if not os.path.exists(os.path.join(DIS_CACHE, 'dg.scn.lst')):
-            dis(DG_SCN, DIS_CACHE)
+            raise BackendError('missing generated story cache index; rebuild the owned story sources')
         return
     stamp = bytecode.source_digest()
     sp = os.path.join(DIS_CACHE, 'bytecode.sha1')
