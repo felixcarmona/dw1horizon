@@ -1107,6 +1107,9 @@ def build_disc3(p, base, holes, out_bin, expect_sha1=None, progress=True):
             elif t == 'b':
                 data = apply_binary_delta(p['deltas'][op[1]], base.key, base.code, blob, tool_root=getattr(base, 'tool_root', None))
                 out += data[op[2]:op[2] + op[3]]
+            elif t == 'j':
+                import chinese_container
+                out += chinese_container.rebuild(p['chinese'][op[1]], files, getattr(base, 'tool_root', None))
             elif t == 'o': out += files[op[1]][op[2]:op[2] + op[3]]                # an earlier file of this disc
             elif t == 'l': out += blob[op[1]:op[1] + op[2]]
             elif t == 'h':
@@ -1123,7 +1126,10 @@ def build_disc3(p, base, holes, out_bin, expect_sha1=None, progress=True):
             # on a base whose own files the build reads, the Japanese one, it may differ from the USA-based file)
             whole_hole = len(ops) == 1 and ops[0][0] == 'h' and ops[0][2] == 0 and ops[0][1] in holes
             b = holes[ops[0][1]] if whole_hole else assemble(ops)
-            if not whole_hole:
+            # A container's components have individual source/delta/hole hashes.
+            # Its header is regenerated because regional payload geometry can differ.
+            whole_container = len(ops) == 1 and ops[0][0] == 'j'
+            if not whole_hole and not whole_container:
                 pins = p.get('sha1_by_base', {})
                 want = pins.get(getattr(base, 'pin', base.key), {}).get(path) or pins.get(base.key, {}).get(path) \
                     or p['sha1'][path]
@@ -1133,6 +1139,8 @@ def build_disc3(p, base, holes, out_bin, expect_sha1=None, progress=True):
     if bad:
         raise PatchError('these files came out different from the release: ' + ', '.join(bad) + '. Nothing was written.')
     lay = iw.Layout(p['layout'])
+    if p.get('chinese'):
+        files = {path: files[path] for path in lay.files()}
     t = p.get('table')
     if t:
         pl = iw.plan(lay, {k: (s.size if isinstance(s, iw.Source) else len(s)) for k, s in files.items()})
@@ -1864,6 +1872,10 @@ def release_notices(out):
         shutil.copyfile(os.path.join(REPO, name), os.path.join(out, name))
     source = os.path.join(REPO, 'tools', 'font', 'japanese-license')
     shutil.copytree(source, os.path.join(out, 'licenses', 'japanese-font'), dirs_exist_ok=True)
+    source = os.path.join(REPO, 'tools', 'font', 'chinese-license')
+    shutil.copytree(source, os.path.join(out, 'licenses', 'chinese-font'), dirs_exist_ok=True)
+    # Browser workers carry tools/ in their code pack, including the subset notices.
+    shutil.copytree(source, os.path.join(out, 'bundle', 'tools', 'font', 'chinese-license'), dirs_exist_ok=True)
     shutil.copyfile(os.path.join(REPO, 'tools', 'image-license.txt'),
                     os.path.join(out, 'licenses', 'raster.txt'))
 
@@ -1961,8 +1973,10 @@ def cmd_make_release3(a):
             mp_ = opt.get('manifest') or os.path.join(os.path.dirname(os.path.abspath(target)),
                                                       os.path.basename(target)[:-4], 'derived', 'manifest.json')
             dman = json.load(open(mp_))
-            aut = tuple(dman.get('plan', {}).get('authored', ()))
-            gate_plans[name] = dman['plan']
+            import chinese_container
+            package_plan = chinese_container.metadata(dman['plan'])
+            aut = tuple(package_plan.get('authored', ()))
+            gate_plans[name] = package_plan
             say(f'variant {name}: {target} {flags}')
             T = iw.Image(target)
             layout = iw.layout_from_image(T)
@@ -1980,13 +1994,20 @@ def cmd_make_release3(a):
             built = local_base
             lost = [q for q in dman['files'] if q not in built]
             if lost: raise SystemExit(f'{name}: the bundle\'s build did not make {lost[:5]}')
-            for q in lay.files():
-                D = T.read(q); datas[q] = D; hid = None
+            chinese_spec, chinese_parts = None, {}
+            if dman['plan'].get('CHINESE_RESOURCES'):
+                import chinese_container
+                build_dir = os.path.splitext(os.path.abspath(target))[0]
+                chinese_spec, chinese_parts = chinese_container.components(T.read('SCN/LANGZH.BIN'), dman['plan'], build_dir)
+            for q in list(lay.files()) + list(chinese_parts):
+                if chinese_spec and q == 'SCN/LANGZH.BIN':
+                    continue
+                D = chinese_parts[q] if q in chinese_parts else T.read(q); datas[q] = D; hid = None
                 if q in built:
                     if hashlib.sha1(open(built[q], 'rb').read()).digest() != hashlib.sha1(D).digest():
                         errors.append(f'{name}: {q} built locally differs from the build')
                     hid = len(holes)
-                ops = enc.encode(q, D, hid, code=authored3(q, aut))
+                ops = enc.encode(q, D, hid, code=authored3(q, aut) or q in chinese_parts)
                 if hid is not None:
                     holes.append(dict(id=hid, file=q, size=len(D), sha1=hashlib.sha1(D).hexdigest())); hole_bytes[hid] = D
                 files[q] = ops
@@ -2013,9 +2034,12 @@ def cmd_make_release3(a):
             font_copies = dict(reason='Compact Latin tables are generated in program deltas from each player font.')
             for source in ('tools/fontgen.py', 'tools/font/b.txt', 'tools/font/extra.txt',
                            'tools/font/original-metrics.json', 'tools/font/japanese.txt',
+                           'tools/chinese.py', 'tools/chinese_resources.py',
+                           'tools/font/chinese.json', 'tools/font/chinese-ui.json', 'tools/font/chinese-codes.json',
+                           'tools/localize/chinese_catalog.py', 'tools/localize/language_flags.py',
                            'tools/localize/executable/bank.py', 'tools/localize/executable/us-format-codes.json',
                            'tools/patcher/sdk-messages.json',
-                           *(f'text/{lang}/names.json' for lang in ('ours', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca'))):
+                           *(f'text/{lang}/names.json' for lang in ('ours', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca', 'zh-hans'))):
                 dest = os.path.join(out, 'bundle', *source.split('/'))
                 os.makedirs(os.path.dirname(dest), exist_ok=True)
                 shutil.copyfile(os.path.join(REPO, source), dest)
@@ -2032,7 +2056,11 @@ def cmd_make_release3(a):
             import codecopy
             build_dir = os.path.join(os.path.dirname(os.path.abspath(target)), os.path.basename(target)[:-4])
             delta_report = codecopy.copy_files(p, build_dir, datas, dict(us=usa, **bases_img), say,
-                                               plan=dman.get('plan') if dman is not None else None)
+                                               plan=chinese_container.metadata(dman['plan']) if chinese_spec else dman.get('plan'))
+            if chinese_spec:
+                p['chinese'] = [chinese_spec]
+                datas['SCN/LANGZH.BIN'] = T.read('SCN/LANGZH.BIN')
+                p['files']['SCN/LANGZH.BIN'] = [['j', 0, 0, len(T.read('SCN/LANGZH.BIN'))]]
             json.dump(delta_report, open(os.path.join(out, name + '-binary-deltas.json'), 'w'), indent=2)
             audit_txt.append(f'binary deltas: {len(delta_report["files"])} files; raw extras per base: ' +
                              ', '.join(f'{key}={counts["extra"]}' for key, counts in delta_report['bases'].items()))
@@ -2145,6 +2173,7 @@ def copy_release_frontend(out):
     shutil.copyfile(os.path.abspath(__file__), os.path.join(out, 'dwpatch.py'))
     shutil.copyfile(os.path.join(REPO, 'tools', 'isowriter.py'), os.path.join(out, 'isowriter.py'))
     shutil.copyfile(os.path.join(REPO, 'tools', 'patcher', 'fontcopy.py'), os.path.join(out, 'fontcopy.py'))
+    shutil.copyfile(os.path.join(REPO, 'tools', 'patcher', 'chinese_container.py'), os.path.join(out, 'chinese_container.py'))
     readme = os.path.join(REPO, 'docs', 'release', 'README-players.md')
     if os.path.exists(readme):
         with open(readme, encoding='utf-8') as source:

@@ -7,6 +7,7 @@ contracts, not interchangeable capacities.
 from dataclasses import dataclass
 import pathlib
 import re
+from functools import lru_cache
 
 BINARY_ROW_UNITS = 32
 COMPILER_ROW_UNITS = 31
@@ -33,6 +34,15 @@ def unpacked_entry(script, section, entry):
 
 def packed_key(key):
     return not (key and UNPACKED_KEYS.match(key))
+
+
+@lru_cache(None)
+def sized_boxes(root):
+    """Explicit script window dimensions by text key, including newspaper/instruction boxes."""
+    pattern = re.compile(r'set_textbox_size\([^,]+,\s*(\d+),\s*(\d+)\);\s*show_textbox\(text\("([^"]+)"\)\)')
+    return {key:(min(240,int(cols)*12+8),int(rows))
+            for path in pathlib.Path(root,'story/base').rglob('*.dws')
+            for cols,rows,key in pattern.findall(path.read_text())}
 
 
 STATEMENT = re.compile(r'\bsay\(([\w()]+)((?:,\s*text\("[^"]+"\))+)\)|\b(?:choice|set_dialog_owner)\(([\w()]+)\)|'

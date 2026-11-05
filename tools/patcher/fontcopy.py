@@ -374,6 +374,8 @@ def semantic_table(kind, params, tool_root=None):
         spec.loader.exec_module(value)
         return value
 
+    if kind == 'language_flags':
+        return module('tools/localize/language_flags.py').payload(params[0])
     if kind == 'tournament_grade':
         letter, = params
         if not isinstance(letter, str) or len(letter) != 1 or not 'A' <= letter <= 'Z':
@@ -512,7 +514,7 @@ def authored_bank(root, language):
     spec = importlib.util.spec_from_file_location('_dwpatch_authored_bank', root / 'tools/localize/executable/bank.py')
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    if language not in ('en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca'):
+    if language not in ('en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca', 'zh-hans'):
         raise ValueError('unknown authored text language')
     return module.exe_bank('ours' if language == 'en' else language, exe_font='b')[0]
 

@@ -15,6 +15,28 @@ import tabledata
 
 
 class TableDataTests(unittest.TestCase):
+    def test_picker_name_is_rebuilt_from_the_licensed_subset(self):
+        from tools.localize.language_flags import payload
+        data = payload('chinese_name')
+        obj = dict(offset=0, length=len(data), section='.rodata.MOD_CHINESE_NAME',
+                   source='src/main/main_menu.c')
+        recipe = tabledata.authored_recipe(obj, data)
+        self.assertEqual(recipe['generator'], 'language_flags')
+        self.assertEqual(recipe['params'], ['chinese_name'])
+        self.assertEqual(tabledata.tail([recipe], 'us', None), data)
+        damaged = bytes([data[0] ^ 1]) + data[1:]
+        self.assertIsNone(tabledata.authored_recipe(obj, damaged))
+
+    def test_resident_heading_tables_have_checked_semantic_recipes(self):
+        from tools.localize.language_flags import payload
+        for name, kind in [('MOD_LANGUAGE_TITLES', 'titles'), ('MOD_LANGUAGE_TITLE_GLYPHS', 'title_glyphs')]:
+            data = payload(kind)
+            obj = dict(offset=0, length=len(data), section='.rodata.'+name, source='src/main/main_menu.c')
+            recipe = tabledata.authored_recipe(obj, data)
+            self.assertEqual(recipe['params'], [kind])
+            self.assertEqual(tabledata.tail([recipe], 'us', None), data)
+            self.assertIsNone(tabledata.authored_recipe(obj, bytes([data[0] ^ 1])+data[1:]))
+
     def fixture(self):
         target = b''.join(struct.pack('<II', i, 0x80090000 + i * 4) for i in range(6))
         original = b'prefix00' + b''.join(struct.pack('<II', i, 0x800a0000 + i * 12) for i in range(6))

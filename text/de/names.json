@@ -1087,5 +1087,9 @@
  "main.LAB_STR_ASK_LOAD": "Diesen Spielstand laden?",
  "main.CITY_STR_PROSPERITY": "Wohlstand",
  "main.CITY_STR_RESIDENTS": "Bewohner",
- "main.STATUS_STR_TIRED": "Müde"
+ "main.STATUS_STR_TIRED": "Müde",
+ "main.MOD_OPT_STR_CHINESE_RAM_0": "Chinesisch benötigt",
+ "main.MOD_OPT_STR_CHINESE_RAM_1": "8 MB RAM. Aktiviere",
+ "main.MOD_OPT_STR_CHINESE_RAM_2": "8 MB in den Optionen",
+ "main.MOD_OPT_STR_CHINESE_RAM_3": "deines Emulators."
 }

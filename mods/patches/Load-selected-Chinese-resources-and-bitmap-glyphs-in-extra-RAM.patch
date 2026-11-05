@@ -1,0 +1,1489 @@
+From 6bf70b495fd839437a70cffa3c5f83f4e10aa6fe Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 4 Nov 2026 22:23:03 +0000
+Subject: [PATCH] Load selected Chinese resources and bitmap glyphs in extra
+ RAM
+
+---
+ config/us/overlay.ld    |  12 ++-
+ include/dw/chinese.h    |  20 +++++
+ include/dw/lang.h       |   4 +-
+ mk/version/us.mk        |   6 +-
+ src/btl/battle_effect.c | 158 ++++++++++++++++++++++++++++++++++-
+ src/main/chinese.c      | 178 ++++++++++++++++++++++++++++++++++++++++
+ src/main/file.c         |   2 +
+ src/main/font.c         |  16 +++-
+ src/main/game_menu.c    |  60 +++++++++++++-
+ src/main/main_menu.c    | 101 +++++++++++++++--------
+ src/main/mod_options.c  |  52 +++++++++---
+ src/main/mod_species.c  |   3 +-
+ src/main/model.c        |   7 +-
+ src/main/utils2.c       |   2 +
+ src/std/std_hud.c       | 158 ++++++++++++++++++++++++++++++++++-
+ src/vs/vs_hud.c         | 158 ++++++++++++++++++++++++++++++++++-
+ tools/gen_lang_files.py |  10 +--
+ 17 files changed, 876 insertions(+), 71 deletions(-)
+ create mode 100644 include/dw/chinese.h
+ create mode 100644 src/main/chinese.c
+
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index ad18290..bcd21bd 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -2,6 +2,12 @@
+ 
+ SECTIONS
+ {
++    .ZH 0x80400800 : AT(0) {
++        BUILD_DIR/src/main/chinese.c.o(.text.* .rodata .rodata.* .data.* .bss.* .sdata.* .sbss.*);
++        . = ALIGN(., 4);
++    }
++    ASSERT(SIZEOF(.ZH) <= 0xF800, "Chinese runtime exceeds its extra-RAM module slot")
++
+ 	OVERLAY OVL_BTL_BASE : NOCROSSREFS
+ 	{
+ 		.BTL {
+@@ -873,13 +879,13 @@ SECTIONS
+ 			/* MOD (heap): read-only data of the card menus that only this overlay reaches (tools/xref.py classes): their
+ 			 * messages, labels and the save icon. Nothing that is ever written goes here: a reload would undo it */
+ 			BUILD_DIR/src/main/main_menu.c.o(
+-				.data.PLAIN_LETTERS .data.SAVE_ICON_FRAME_1 .data.SAVE_ICON_FRAME_0 .data.MENU_VIEWS
+-				.data.MEMORY_CARD_ERROR_MESSAGES .data.SAVE_ICON_CLUT .data.MOD_LANGUAGE_NAMES .data.MAIN_D_801315A0
++				.data.PLAIN_LETTERS .data.SAVE_ICON_FRAME_1 .data.MENU_VIEWS
++				.data.MEMORY_CARD_ERROR_MESSAGES .data.MOD_LANGUAGE_NAMES .data.MAIN_D_801315A0
+ 				.data.MAIN_D_80131390 .data.MAIN_D_8013134C .data.MAIN_D_801311D4 .data.MAIN_D_80131580
+ 				.data.MAIN_D_80131500 .data.MAIN_D_801313E4 .data.MAIN_D_80131264 .data.MAIN_D_80131200
+ 				.data.MAIN_D_801311EC .data.MAIN_D_801315C0 .data.MAIN_D_8013154C .data.MAIN_D_801314B0
+ 				.data.MAIN_D_8013147C .data.MAIN_D_80131460 .data.MAIN_D_80131290 .data.MAIN_D_80131218
+-				.data.SAVE_TITLE_RESERVED .data.MAIN_D_801315EC .data.MAIN_D_801315D0 .data.MAIN_D_80131538
++				.data.MAIN_D_801315EC .data.MAIN_D_801315D0 .data.MAIN_D_80131538
+ 				.data.MAIN_D_801314C8 .data.MAIN_D_8013141C .data.MAIN_D_80131400 .data.MAIN_D_801313B0
+ 				.data.MAIN_D_801312FC .data.MAIN_D_80131568 .data.MAIN_D_8013151C .data.MAIN_D_801313D0
+ 				.data.MAIN_D_80131278 .data.MAIN_D_8013119C .data.MAIN_D_80131150 .data.MAIN_D_801314E4
+diff --git a/include/dw/chinese.h b/include/dw/chinese.h
+new file mode 100644
+index 0000000..ca68fdf
+--- /dev/null
++++ b/include/dw/chinese.h
+@@ -0,0 +1,20 @@
++#ifndef DW_CHINESE_H
++#define DW_CHINESE_H
++#include <dw/types.h>
++#include <dw/file.h>
++#include <dw/params.h>
++/* Reserved extra RAM: independent of the cold animation cache at 0x80200000. */
++#define ZH_BASE 0x80400000
++#define ZH_PREFIX_SIZE 0x60000
++#define ZH_FONT 0x80410000
++#define ZH_NAMES 0x80430000
++#define ZH_DIRECTORY 0x80440000
++#define ZH_PATCH 0x80450000
++#define ZH_MAGIC 0x5A435744u
++DigimonPara *zhSpeciesPara(DigimonPara *para, int32_t type);
++int32_t zhStart(void);
++int32_t zhPreviousFont(void);
++int32_t zhLookupFile(FileLookup *lookup, char *name);
++int32_t zhDrawGlyph(uint16_t codepoint, uint16_t x, uint16_t y);
++int32_t zhGlyphWidth(uint16_t codepoint);
++#endif
+diff --git a/include/dw/lang.h b/include/dw/lang.h
+index 95a79bb..8c58fe4 100644
+--- a/include/dw/lang.h
++++ b/include/dw/lang.h
+@@ -13,7 +13,9 @@
+ #define MOD_LANG_IT	5
+ #define MOD_LANG_JA	6
+ #define MOD_LANG_CA	7
+-#define MOD_LANGS	8
++#define MOD_LANG_ZH	8
++#define MOD_LANG_ZH_HANS	8
++#define MOD_LANGS	9
+ 
+ #include <lang_build.h>
+ 
+diff --git a/mk/version/us.mk b/mk/version/us.mk
+index d3eae6a..a5a4f60 100644
+--- a/mk/version/us.mk
++++ b/mk/version/us.mk
+@@ -76,6 +76,7 @@ MAIN_C_SRC := \
+ 	src/main/mod_species.c \
+ 	src/main/mod_screen.c \
+ 	src/main/mod_options.c \
++	src/main/chinese.c \
+ 	src/main/mod_feed.c \
+ 	src/main/mod_qol.c \
+ 	src/main/tfs_stream.c \
+@@ -103,7 +104,7 @@ $(eval $(call unit,MAIN,main))
+ 
+ # MOD (menu overlay, docs/mods/memory.md "The menu overlay"): most of main_menu.c's code is linked into .MENU
+ # (config/us/overlay.ld), read where a card menu opens; the file stays a MAIN source
+-OVERLAY += MENU
++OVERLAY += MENU ZH
+ 
+ SHOP_C_SRC := \
+ 	src/shop/script_menu.c
+@@ -230,3 +231,6 @@ VS_C_SRC := \
+ 	src/vs/vs_select.c
+ 
+ $(eval $(call overlay,VS,vs))
++
++# Extra-RAM globals are outside the resident GP window.
++$(BUILD_DIR)/src/main/chinese.c.o: GCC_FLAGS += -G0
+diff --git a/src/btl/battle_effect.c b/src/btl/battle_effect.c
+index 2a2be8c..792de4c 100644
+--- a/src/btl/battle_effect.c
++++ b/src/btl/battle_effect.c
+@@ -587,7 +587,163 @@ MATRIX BTL_BATTLE_START_TEXT_MATRIX = {
+ /* MOD (language): the BATTLE banner's blocks; Spanish ¡LUCHA! (154 blocks, the last one repeated:
+  * tools/localize/textures/misc/battle-banner-es.json) */
+ int16_t BTL_BATTLE_START_TEXT_POSITIONS[155][2] = {
+-#if (MOD_LANG_BUILD == MOD_LANG_FR || MOD_LANG_BUILD == MOD_LANG_CA)
++#if MOD_LANG_BUILD == MOD_LANG_ZH
++	{ -68, -48 },
++	{ -36, -48 },
++	{ -28, -48 },
++	{ -4, -48 },
++	{ 20, -48 },
++	{ 60, -48 },
++	{ -68, -36 },
++	{ -36, -36 },
++	{ 4, -36 },
++	{ 20, -36 },
++	{ 60, -36 },
++	{ -68, -24 },
++	{ -60, -24 },
++	{ -44, -24 },
++	{ -36, -24 },
++	{ -28, -24 },
++	{ -4, -24 },
++	{ 20, -24 },
++	{ 60, -24 },
++	{ -68, -12 },
++	{ -36, -12 },
++	{ 4, -12 },
++	{ 20, -12 },
++	{ 60, -12 },
++	{ -76, 0 },
++	{ -68, 0 },
++	{ -60, 0 },
++	{ -36, 0 },
++	{ -28, 0 },
++	{ 20, 0 },
++	{ 28, 0 },
++	{ 36, 0 },
++	{ 60, 0 },
++	{ -76, 12 },
++	{ -60, 12 },
++	{ -36, 12 },
++	{ -12, 12 },
++	{ -4, 12 },
++	{ 4, 12 },
++	{ 12, 12 },
++	{ 20, 12 },
++	{ -76, 24 },
++	{ -68, 24 },
++	{ -60, 24 },
++	{ -44, 24 },
++	{ -28, 24 },
++	{ 20, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++#elif (MOD_LANG_BUILD == MOD_LANG_FR || MOD_LANG_BUILD == MOD_LANG_CA)
+ 	{ -136, -48 },
+ 	{ -128, -48 },
+ 	{ -120, -48 },
+diff --git a/src/main/chinese.c b/src/main/chinese.c
+new file mode 100644
+index 0000000..e4ce615
+--- /dev/null
++++ b/src/main/chinese.c
+@@ -0,0 +1,178 @@
++/* Loaded only for Chinese on an 8 MB console; code, font and work buffers stay above 2 MB. */
++#include <libcd.h>
++#include <libgpu.h>
++#include <dw/chinese.h>
++#include <dw/file_table.h>
++#include <dw/mod_options.h>
++#include <dw/mod_font.h>
++#include <dw/sjis.h>
++#include <dw/font.h>
++#include <dw/entity.h>
++#include <dw/partner.h>
++#include <string.h>
++
++#define ZH_HEADER ((uint32_t *)ZH_BASE)
++#define ZH_GLYPHS ((uint16_t *)(ZH_FONT + 32))
++#define ZH_SLOTS 32
++#define ZH_STRIDE 96
++static uint8_t ZH_UPLOAD[ZH_SLOTS * ZH_STRIDE] __attribute__((aligned(4)));
++static int32_t ZH_SLOT __attribute__((section(".bss.zh_state")));
++static int32_t ZH_LAST_X __attribute__((section(".bss.zh_state")));
++static int32_t ZH_LAST_Y __attribute__((section(".bss.zh_state")));
++static uint8_t *ZH_LAST_SLOT __attribute__((section(".bss.zh_state")));
++static uint32_t ZH_SECTOR __attribute__((section(".bss.zh_state")));
++static int32_t ZH_PREVIOUS_FONT __attribute__((section(".bss.zh_state")));
++extern uint8_t COLORCODE_LOWBITS;
++extern int16_t GLYPH_CARRY_Y;
++extern int8_t FONT_CELLS;
++uint16_t *glyphRows(uint16_t codepoint);
++
++typedef struct {
++    uint32_t hash, flags, sector, size;
++} ZhFile;
++
++/* Copies are indexed by type, so one cache eviction cannot change a held parameter pointer. */
++static DigimonPara ZH_PARA[NUM_DIGIMON];
++DigimonPara *zhSpeciesPara(DigimonPara *para, int32_t type)
++{
++    if ((uint32_t)type >= NUM_DIGIMON) return para;
++    memcpy(&ZH_PARA[type], para, sizeof(DigimonPara));
++    if (((char *)ZH_NAMES)[type * 20]) memcpy(ZH_PARA[type].name, (char *)ZH_NAMES + type * 20, 20);
++    return &ZH_PARA[type];
++}
++
++int32_t zhStart(void)
++{
++    uint32_t *h = ZH_HEADER;
++    uint32_t *font = (uint32_t *)ZH_FONT;
++    uint32_t *patch = (uint32_t *)ZH_PATCH;
++    uint32_t *run, count, i, hash = 0x811C9DC5;
++    uint8_t *bytes = (uint8_t *)ZH_BASE;
++    FileEntry *entry;
++    int32_t type = PARTNER_ENTITY.digimonEntity.entity.type;
++    int32_t followName = type > 0 && (uint32_t)type < NUM_DIGIMON && modPartnerNameIsSpecies(type);
++    if (h[0] != ZH_MAGIC || h[1] != 1 || h[2] != ZH_PREFIX_SIZE || h[3] > 0xF800 ||
++        h[4] > 0x20000 || h[5] > 4096 || h[6] < 8 || h[6] > 0x10000) return 0;
++    for (i = 32; i < ZH_PREFIX_SIZE; i++) hash = (hash ^ bytes[i]) * 0x01000193;
++    if (hash != h[7] || font[0] != 0x485A5744 || font[1] != 1 || font[2] != 12 || font[3] != 12 ||
++        font[4] != 26 || font[5] != 95 || font[6] > 12032 || 32 + (font[5] + font[6]) * 26 != h[4] ||
++        patch[0] != 0x504C5744) return 0;
++    entry = findFileEntry("LANGZH.BIN");
++    if (!entry || !entry->sector) return 0;
++    /* Validate all writes before changing the active language's resident data. */
++    run = patch + 2;
++    for (count = patch[1]; count; count--) {
++        if ((uint32_t)(run + 2) > ZH_PATCH + h[6] || run[0] < 0x80090000 || run[0] >= 0x80200000 ||
++            run[1] > 0x80200000 - run[0] || run[1] > h[6] ||
++            (uint32_t)(run + 2) + ((run[1] + 3) & ~3) > ZH_PATCH + h[6]) return 0;
++        run += 2 + (run[1] + 3) / 4;
++    }
++    run = patch + 2;
++    for (count = patch[1]; count; count--) {
++        memcpy((void *)run[0], run + 2, run[1]);
++        run += 2 + (run[1] + 3) / 4;
++    }
++    if (followName) {
++        int32_t previous = MOD_LANG;
++        MOD_LANG = MOD_LANG_ZH;
++        modPartnerNameSetSpecies(type);
++        MOD_LANG = previous;
++    }
++    ZH_PREVIOUS_FONT = MOD_FONT;
++    ZH_SECTOR = entry->sector;
++    ZH_SLOT = 0;
++    ZH_LAST_Y = -1;
++    return 1;
++}
++
++int32_t zhLookupFile(FileLookup *lookup, char *name)
++{
++    uint32_t hash = fileNameHash(name), i, story = !MOD_OPT_STORY;
++    const ZhFile *files = (const ZhFile *)ZH_DIRECTORY;
++    for (i = 0; i < ZH_HEADER[5]; i++) {
++        if (files[i].hash == hash && (files[i].flags & 1) == story) {
++            if ((files[i].flags & 2) && !MOD_OPT_SIGNS) return 0;
++            lookup->size = files[i].size;
++            CdIntToPos(ZH_SECTOR + files[i].sector, &lookup->pos);
++            return 1;
++        }
++    }
++    return 0;
++}
++
++static int32_t zhIndex(uint16_t codepoint)
++{
++    uint32_t code = (codepoint >> 8) | ((codepoint & 255) << 8);
++    uint32_t lead = code >> 8, trail = code & 255;
++    int32_t i;
++    if (lead >= 0xA0 && lead <= 0xDF && trail >= 0x40 && trail <= 0xFC && trail != 0x7F) {
++        i = (lead - 0xA0) * 188 + trail - 0x40 - (trail > 0x7F);
++        return i < ((uint32_t *)ZH_FONT)[6] ? i + 95 : -1;
++    }
++    /* Existing callers pass ASCII through the game's SJIS conversion first. */
++    if (code == 0x8175) code = 0x8166;
++    if (code == 0x8176) code = 0x8168;
++    for (i = 32; i < 127; i++) if ((uint32_t)convertAsciiToJis(i) == code) return i - 32;
++    return -1; /* Use the existing button bitmaps and control-colour mapping. */
++}
++
++int32_t zhGlyphWidth(uint16_t codepoint)
++{
++    int32_t index = zhIndex(codepoint);
++    return index >= 0 ? ZH_GLYPHS[index * 13] : glyphRows(codepoint)[11] & 255;
++}
++
++int32_t zhDrawGlyph(uint16_t codepoint, uint16_t x, uint16_t y)
++{
++    int32_t index = zhIndex(codepoint), cx, shift, shared = 0, row, col;
++    uint16_t *glyph, *legacy, fallback[13];
++    uint32_t ink;
++    uint8_t *slot, *carry = NULL;
++    int32_t color = modButtonColor((codepoint >> 8) | ((codepoint & 255) << 8), COLORCODE_LOWBITS), advance;
++    RECT rect;
++    if (index < 0) {
++        legacy = glyphRows(codepoint);
++        fallback[0] = legacy[11] & 255;
++        for (row = 0; row < 11; row++) fallback[row+1] = legacy[row];
++        fallback[12] = 0xFFFF;
++        glyph = fallback;
++    } else glyph = ZH_GLYPHS + index * 13;
++    advance = glyph[0];
++    if (FONT_CELLS && index < 95) {
++        int32_t cell = glyphCell(codepoint);
++        x += (cell - advance + 1) / 2;
++        advance = cell;
++    }
++    if (x >= 244 || y >= 244) return 0;
++    if (++ZH_SLOT == ZH_SLOTS) { ZH_SLOT = 0; DrawSync(0); }
++    slot = ZH_UPLOAD + ZH_SLOT * ZH_STRIDE;
++    cx = x & ~3; shift = x & 3;
++    if (GLYPH_CARRY_Y == y && ZH_LAST_Y == y && ZH_LAST_X < cx && cx < ZH_LAST_X + 16) {
++        shared = (ZH_LAST_X + 16 - cx) / 2;
++        carry = ZH_LAST_SLOT + (cx - ZH_LAST_X) / 2;
++    }
++    for (row = 0; row < 12; row++) {
++        ink = ((uint16_t)~glyph[row + 1] & 0xFFF0) >> shift;
++        for (col = 0; col < 8; col++) {
++            slot[row * 8 + col] = ((ink & (0x8000 >> (col * 2))) ? color : 0) |
++                ((ink & (0x4000 >> (col * 2))) ? color << 4 : 0);
++            if (col < shared) slot[row * 8 + col] |= carry[row * 8 + col];
++        }
++    }
++    setRECT(&rect, cx / 4 + TEXT_VRAM_X, y + TEXT_VRAM_Y, 4, 12);
++    LoadImage(&rect, (u_long *)slot);
++    ZH_LAST_X = cx; ZH_LAST_Y = y; ZH_LAST_SLOT = slot; GLYPH_CARRY_Y = y;
++    return advance;
++}
++
++int32_t zhPreviousFont(void)
++{
++    int32_t type = PARTNER_ENTITY.digimonEntity.entity.type;
++    if (type > 0 && (uint32_t)type < NUM_DIGIMON &&
++        !strcmp(PARTNER_ENTITY.name, (char *)ZH_NAMES + type * 20)) {
++        MOD_LANG = MOD_LANG_EN;
++        modPartnerNameSetSpecies(type);
++        MOD_LANG = MOD_LANG_ZH;
++    }
++    return ZH_PREVIOUS_FONT;
++}
+diff --git a/src/main/file.c b/src/main/file.c
+index 6c428e5..4c5fb8d 100644
+--- a/src/main/file.c
++++ b/src/main/file.c
+@@ -8,6 +8,7 @@
+ #include <dw/main.h>
+ #include <dw/mod_font.h>
+ #include <dw/mod_options.h>
++#include <dw/chinese.h>
+ #include <dw/tfs_stream.h>
+ 
+ #include "common.h"
+@@ -73,6 +74,7 @@ int32_t lookupFileTable(FileLookup *lookup, char *path)
+ 	} else {
+ 		++filename;
+ 	}
++    if (MOD_LANG == MOD_LANG_ZH && zhLookupFile(lookup, filename)) return 1;
+ 	filename = modStoryFile(modLangFile(filename)); /* MOD (language, story): the language's copy, then its story's */
+ 
+ 	entry = findFileEntry(filename);
+diff --git a/src/main/font.c b/src/main/font.c
+index 2288e07..738d364 100644
+--- a/src/main/font.c
++++ b/src/main/font.c
+@@ -3,6 +3,7 @@
+ #include <dw/font.h>
+ #include <dw/mod_font.h>
+ #include <dw/mod_options.h>
++#include <dw/chinese.h>
+ #include <dw/sjis.h>
+ #include <dw/types.h>
+ #include <dw/version.h>
+@@ -1410,7 +1411,7 @@ extern int32_t MOD_RENDER_PASS;
+ #if FONT_SWITCH
+ /* MOD (font): the cell of the last glyph uploaded (drawGlyph): its text-area x (a multiple of 4), y, ring slot */
+ static int16_t GLYPH_CARRY_X;
+-static int16_t GLYPH_CARRY_Y = -1;
++int16_t GLYPH_CARRY_Y = -1;
+ static uint8_t *GLYPH_CARRY_SLOT;
+ #ifdef FONT_KERN
+ /* MOD (font): the last glyph drawGlyph drew (its Shift-JIS code, row, where its advance ended), for the kerning */
+@@ -1557,7 +1558,7 @@ static uint16_t *classicRows(uint16_t code)
+ }
+ 
+ /* the rows of a glyph placed to the pixel (GLYPH_HEIGHT, then its width: the advance, the original width above it) */
+-static uint16_t *glyphRows(uint16_t codepoint)
++uint16_t *glyphRows(uint16_t codepoint)
+ {
+ 	uint16_t code;
+ 
+@@ -1575,7 +1576,7 @@ static uint16_t *glyphRows(uint16_t codepoint)
+ #ifdef FONT_KERN
+ /*
+  * MOD (font): font b's kerning (tools/font/b.txt `kern`, generated KERN_RULES): what the pen moves when the glyph `code`
+- * comes right after `prev` (Shift-JIS codes), 0 for most pairs. The mockup the owner approved draws T V W Y P F closer
++ * comes right after `prev` (Shift-JIS codes), 0 for most pairs. The font draws T V W Y P F closer
+  * to the lowercase letters and the period and comma after them, r f before those two.
+  */
+ int32_t kernOf(uint16_t prev, uint16_t code)
+@@ -1584,7 +1585,7 @@ int32_t kernOf(uint16_t prev, uint16_t code)
+ 	const uint16_t *right;
+ 	int32_t i;
+ 
+-	if (MOD_FONT != MOD_FONT_NEW) {
++	if (MOD_FONT != MOD_FONT_NEW || MOD_LANG == MOD_LANG_ZH) {
+ 		return 0; /* CLASSIC: the original letters, without font b's pairs */
+ 	}
+ 	for (r = KERN_RULES; r[0] != 0; r = right + r[2]) {
+@@ -1607,12 +1608,14 @@ int32_t kernOf(uint16_t prev, uint16_t code)
+ /* the advance of a glyph in pixels (script_textbox.c centres the name keyboard's letters in their 12-pixel cells) */
+ int32_t glyphWidth(uint16_t codepoint)
+ {
++	if (MOD_LANG == MOD_LANG_ZH) return zhGlyphWidth(codepoint);
+ 	return glyphRows(codepoint)[GLYPH_HEIGHT] & 0xff;
+ }
+ 
+ /* the original glyph's width, its cell (script_textbox.c lays out a row in pieces by it) */
+ int32_t glyphCell(uint16_t codepoint)
+ {
++	if (MOD_LANG == MOD_LANG_ZH && (codepoint & 255) >= 0xA0) return 12;
+ 	return glyphRows(codepoint)[GLYPH_HEIGHT] >> 8;
+ }
+ 
+@@ -1864,6 +1867,7 @@ int8_t MOD_FONT;
+ 
+ void modSetFont(int32_t font)
+ {
++    if (MOD_LANG == MOD_LANG_ZH) font = MOD_FONT_NEW;
+ 	int32_t files;
+ 
+ 	if (font != MOD_FONT_ORIGINAL && font != MOD_FONT_CLASSIC) {
+@@ -1895,6 +1899,10 @@ int32_t drawGlyph(codepoint, x, y)
+ 	uint16_t y;
+ // clang-format on
+ {
++    if (MOD_LANG == MOD_LANG_ZH) {
++        int32_t advance = zhDrawGlyph(codepoint, x, y);
++        if (advance >= 0) return advance;
++    }
+ 	if (FONT_PROPORTIONAL) {
+ 		return drawGlyphPixel(codepoint, x, y);
+ 	}
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 3bda859..244c55d 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -648,6 +648,11 @@ IconRect MOVES_VIEW_TECHSET_TEXT[13] = {
+ 	{ 0x0052, 0xffb0, 0x001c, 0x000c, 0x00a6, 0x006e },
+ 	{ 0x0070, 0xffb0, 0x0022, 0x000c, 0x00c2, 0x006e },
+ 
++#elif MOD_LANG_BUILD == MOD_LANG_ZH
++	{ 0x000e, 0xffb0, 0x0026, 0x000c, 0x0080, 0x006e },
++	{ 0x0052, 0xffb0, 0x001c, 0x000c, 0x00a6, 0x006e },
++	{ 0x0070, 0xffb0, 0x0022, 0x000c, 0x00c2, 0x006e },
++
+ #else
+ 	{ 0x0016, 0xffb4, 0x17, 0x07, 0x5c, 0x22 },
+ 	{ 0x0062, 0xffb4, 0x13, 0x07, 0x4c, 0x29 },
+@@ -923,6 +928,29 @@ IconRect STATS_VIEW_ELEMENTS[21] = {
+ 	{ 0xfffb, 0x004f, 0x0025, 0x000c, 0x00d4, 0x0052 },
+ 	{ 0xff76, 0x004f, 0x0009, 0x000b, 0x002c, 0x0074 },
+ 
++#elif MOD_LANG_BUILD == MOD_LANG_ZH
++	{ 0xff74, 0xffaf, 0x0035, 0x000b, 0x0000, 0x004b },
++	{ 0xff74, 0xfff4, 0x0035, 0x000b, 0x0000, 0x0056 },
++	{ 0xffee, 0xfff4, 0x0035, 0x000b, 0x0000, 0x0061 },
++	{ 0xff71, 0xffbe, 0x001f, 0x000a, 0x0080, 0x0030 },
++	{ 0xff71, 0xffce, 0x001e, 0x000a, 0x009f, 0x0030 },
++	{ 0xffc1, 0xffde, 0x0014, 0x000a, 0x00bd, 0x0030 },
++	{ 0xff79, 0xffde, 0x0014, 0x000a, 0x00d1, 0x0030 },
++	{ 0x0034, 0xffc2, 0x0019, 0x0008, 0x0000, 0x0038 },
++	{ 0x0009, 0xffc2, 0x001d, 0x0008, 0x0090, 0x0048 },
++	{ 0x0055, 0xffc2, 0x0019, 0x0008, 0x0032, 0x0038 },
++	{ 0xff77, 0x004f, 0x0009, 0x000b, 0x00f0, 0x0025 },
++	{ 0xffef, 0x0004, 0x000b, 0x000b, 0x0093, 0x003a },
++	{ 0xffef, 0x0013, 0x000b, 0x000b, 0x009e, 0x003a },
++	{ 0xffef, 0x0022, 0x000b, 0x000b, 0x00a9, 0x003a },
++	{ 0xffef, 0x0031, 0x000b, 0x000b, 0x00b4, 0x003a },
++	{ 0xffef, 0x0040, 0x000b, 0x000b, 0x00bf, 0x003a },
++	{ 0xffef, 0x004f, 0x000a, 0x000b, 0x00ca, 0x003a },
++	{ 0xff83, 0x0031, 0x0024, 0x000c, 0x00d4, 0x003a },
++	{ 0xfffb, 0x0040, 0x0027, 0x000c, 0x00d4, 0x0046 },
++	{ 0xfffb, 0x004f, 0x0025, 0x000c, 0x00d4, 0x0052 },
++	{ 0xff76, 0x004f, 0x0009, 0x000b, 0x002c, 0x0074 },
++
+ #else
+ 	{ 0xff74, 0xffaf, 0x35, 0x0b, 0x00, 0x4b },
+ 	{ 0xff74, 0xfff4, 0x35, 0x0b, 0x00, 0x56 },
+@@ -1017,6 +1045,15 @@ IconRect MOVES_VIEW_ELEMENT_NAMES[7] = {
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0068, 0x0098 },
+ 	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x003c, 0x00e0 },
+ 
++#elif MOD_LANG_BUILD == MOD_LANG_ZH
++	{ 0xffbf, 0x0000, 0x0014, 0x000a, 0x0000, 0x0098 },
++	{ 0xffb5, 0x0000, 0x001e, 0x000a, 0x0014, 0x0098 },
++	{ 0xffc5, 0x0000, 0x000e, 0x000a, 0x0032, 0x0098 },
++	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x0040, 0x0098 },
++	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0056, 0x0098 },
++	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0068, 0x0098 },
++	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x003c, 0x00e0 },
++
+ #else
+ 	{ 0xffbd, 0x0000, 0x14, 0x0a, 0x00, 0x98 },
+ 	{ 0xffbd, 0x0000, 0x14, 0x0a, 0x14, 0x98 },
+@@ -1081,6 +1118,13 @@ IconRect MOVES_SELECTED_LABELS[5] = {
+ 	{ 0xff74, 0x003d, 0x0026, 0x000c, 0x00a0, 0x00d4 },
+ 	{ 0xff74, 0x004e, 0x0022, 0x000c, 0x00c2, 0x00ee },
+ 
++#elif MOD_LANG_BUILD == MOD_LANG_ZH
++	{ 0xff74, 0xfffa, 0x0040, 0x000c, 0x0060, 0x00d4 },
++	{ 0xff74, 0x001b, 0x0026, 0x000c, 0x0080, 0x00ee },
++	{ 0xff74, 0x002c, 0x000b, 0x0007, 0x0074, 0x00a2 },
++	{ 0xff74, 0x003d, 0x0026, 0x000c, 0x00a0, 0x00d4 },
++	{ 0xff74, 0x004e, 0x0022, 0x000c, 0x00c2, 0x00ee },
++
+ #else
+ 	{ 0xff74, 0xfffe, 0x25, 0x07, 0x11, 0xb0 },
+ 	{ 0xff74, 0x001d, 0x17, 0x07, 0x5c, 0xa2 },
+@@ -1357,6 +1401,12 @@ LabelCrop PLAYER_TAB_CROPS[5] = {
+ 	{ -14, 60, 36 },
+ 	{ 41, 96, 36 },
+ 	{ 108, 132, 24 },
++#elif MOD_LANG_BUILD == MOD_LANG_ZH
++	{ -122, 0, 24 },
++	{ -65, 24, 36 },
++	{ -14, 60, 36 },
++	{ 41, 96, 36 },
++	{ 108, 132, 24 },
+ #elif MOD_LANG_BUILD == MOD_LANG_CA
+ 	{ -140, 0, 60 },
+ 	{ -67, 60, 40 },
+@@ -1381,6 +1431,8 @@ uint16_t PLAYER_TAB_PIECES[6] = {
+ 	0 | PIECE_CENTRE, 52 | PIECE_CENTRE, 92 | PIECE_CENTRE, 124 | PIECE_CENTRE, 168 | PIECE_CENTRE, PIECES_END,
+ #elif MOD_LANG_BUILD == MOD_LANG_JA
+ 	0 | PIECE_CENTRE, 24 | PIECE_CENTRE, 60 | PIECE_CENTRE, 96 | PIECE_CENTRE, 132 | PIECE_CENTRE, PIECES_END,
++#elif MOD_LANG_BUILD == MOD_LANG_ZH
++	0 | PIECE_CENTRE, 24 | PIECE_CENTRE, 60 | PIECE_CENTRE, 96 | PIECE_CENTRE, 132 | PIECE_CENTRE, PIECES_END,
+ #elif MOD_LANG_BUILD == MOD_LANG_CA
+ 	0 | PIECE_CENTRE, 60 | PIECE_CENTRE, 100 | PIECE_CENTRE, 132 | PIECE_CENTRE, 184 | PIECE_CENTRE, PIECES_END,
+ #endif
+@@ -1537,7 +1589,9 @@ LabelCrop CHART_TREE_CROP = {
+ };
+ 
+ LabelCrop CHART_LEVEL_CROPS[5] = {
+-#if MOD_LANG_BUILD != MOD_LANG_EN
++#if MOD_LANG_BUILD == MOD_LANG_ZH
++    { -92,40,48 }, { -98,88,60 }, { -94,0,52 }, { -98,52,60 }, { -101,0,66 },
++#elif MOD_LANG_BUILD != MOD_LANG_EN
+ 	{ -0x58, 0x28, 0x28 },
+ 	{ -0x61, 0x50, 0x3a },
+ 	{ -0x5e, 0x00, 0x34 },
+@@ -1553,7 +1607,9 @@ LabelCrop CHART_LEVEL_CROPS[5] = {
+ };
+ 
+ uint16_t CHART_TREE_ROW_PIECES[5] = {
+-#if MOD_LANG_BUILD != MOD_LANG_EN
++#if MOD_LANG_BUILD == MOD_LANG_ZH
++    0 | PIECE_CENTRE, 40 | PIECE_CENTRE, 88 | PIECE_CENTRE, 204, PIECES_END,
++#elif MOD_LANG_BUILD != MOD_LANG_EN
+ 	0 | PIECE_CENTRE, 0x28 | PIECE_CENTRE, 0x50 | PIECE_CENTRE, 0xcc, PIECES_END,
+ #else
+ 	0 | PIECE_CENTRE, 0x24 | PIECE_CENTRE, 0x52 | PIECE_CENTRE, 0xcc, PIECES_END,
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 1a6dec7..dfbafe6 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -1238,6 +1238,7 @@ uint8_t SAVE_TITLE_RESERVED[28] = { 0 };
+ void renderText(POLY_FT4 *prim, int32_t x, int32_t y, int32_t u, int32_t v,
+ 		int32_t w, int32_t h, int32_t textColor)
+ {
++    if (MOD_LANG == MOD_LANG_ZH && h == 11) h = 12;
+ 	x -= 0xA0;
+ 	y -= 0x78;
+ 	SetPolyFT4(prim);
+@@ -6014,7 +6015,7 @@ void renderInitialMenu(void)
+ #define MOD_OPT_GAP	8	/* pixels between the labels' column and the values', and between two values */
+ #define MOD_OPT_MARGIN	8	/* the box's frame to its text */
+ 
+-static char *MOD_OPT_TEXT[MOD_OPT_ROWS][1 + MOD_OPT_VALUES] = {
++static char *MOD_OPT_TEXT[MOD_OPT_ROWS][3] = {
+ 	{ MOD_OPT_STR_JP, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+ 	{ MOD_OPT_STR_CLOCK, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+ 	{ MOD_OPT_STR_BARS, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+@@ -6025,19 +6026,47 @@ static char *MOD_OPT_TEXT[MOD_OPT_ROWS][1 + MOD_OPT_VALUES] = {
+ 	{ MOD_OPT_STR_QUICK, MOD_OPT_STR_OFF, MOD_OPT_STR_ON }, /* MOD (quick battle start) */
+ 	{ MOD_OPT_STR_FPS, MOD_OPT_STR_20, MOD_OPT_STR_60 },
+ #if FONT_SWITCH
+-	{ MOD_OPT_STR_FONT, MOD_OPT_STR_NEW, MOD_OPT_STR_CLASSIC, MOD_OPT_STR_ORIGINAL },
++	{ MOD_OPT_STR_FONT, MOD_OPT_STR_NEW, MOD_OPT_STR_CLASSIC },
+ #endif
+-	{ MOD_OPT_STR_LANG, MOD_OPT_STR_ENGLISH, MOD_OPT_STR_SPANISH, MOD_OPT_STR_PORTUGUESE }, /* MOD (language) */
++	{ MOD_OPT_STR_LANG }, /* MOD (language) */
+ 	{ MOD_OPT_STR_SIGNS, MOD_OPT_STR_ORIGINAL, MOD_OPT_STR_TRANSLATED },
+ 	{ MOD_OPT_STR_CHEATS, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+ 	{ MOD_OPT_STR_ENEMY, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+ };
+ /* the text area place of each value, its row + 0x100 in the right half: a value two rows share (OFF, ON, ORIGINAL) is
+  * drawn once (drawOptionsText) */
+-static int16_t MOD_OPT_V[MOD_OPT_ROWS][MOD_OPT_VALUES];
++/* The font row's third value uses the following language row's otherwise unused slot. */
++#if FONT_SWITCH
++typedef char mod_options_font_slot[(MOD_OPT_ROW_LANG == MOD_OPT_ROW_FONT + 1) ? 1 : -1];
++#endif
++static int16_t MOD_OPT_V[MOD_OPT_ROWS * 2];
++static int16_t MOD_OPT_LANG_V;
+ /* the pixels of each label and value as the font draws them (drawOptionsText) */
+-static uint8_t MOD_OPT_W[MOD_OPT_ROWS][1 + MOD_OPT_VALUES];
+-static char *MOD_LANGUAGE_NAMES[MOD_LANGS] = { MOD_OPT_STR_ENGLISH, MOD_OPT_STR_SPANISH, MOD_OPT_STR_PORTUGUESE, MOD_OPT_STR_FRENCH, MOD_OPT_STR_GERMAN, MOD_OPT_STR_ITALIAN, MOD_OPT_STR_JAPANESE, MOD_OPT_STR_CATALAN };
++static uint8_t MOD_OPT_W[MOD_OPT_ROWS * 3];
++static uint8_t MOD_OPT_LANG_W[1 + MOD_LANGS];
++extern int32_t MOD_COLD_CACHE_TYPE;
++extern uint32_t MOD_LANGUAGE_AVAILABLE;
++static char *MOD_LANGUAGE_NAMES[MOD_LANGS] = { MOD_OPT_STR_ENGLISH, MOD_OPT_STR_SPANISH, MOD_OPT_STR_PORTUGUESE, MOD_OPT_STR_FRENCH, MOD_OPT_STR_GERMAN, MOD_OPT_STR_ITALIAN, MOD_OPT_STR_JAPANESE, MOD_OPT_STR_CATALAN, "Chinese - needs 8 MB" };
++
++/* Language values share one texture position; the other option rows have at most three values. */
++static char *modOptionText(int32_t row, int32_t value)
++{
++    if (row == MOD_OPT_ROW_LANG && value > 0) return MOD_LANGUAGE_NAMES[modLanguageAt(value - 1)];
++#if FONT_SWITCH
++    if (row == MOD_OPT_ROW_FONT && value == 3) return MOD_OPT_STR_ORIGINAL;
++#endif
++    return MOD_OPT_TEXT[row][value];
++}
++
++static int16_t *modOptionV(int32_t row, int32_t value)
++{
++    return row == MOD_OPT_ROW_LANG ? &MOD_OPT_LANG_V : &MOD_OPT_V[row * 2 + value];
++}
++
++static uint8_t *modOptionW(int32_t row, int32_t value)
++{
++    return row == MOD_OPT_ROW_LANG ? &MOD_OPT_LANG_W[value] : &MOD_OPT_W[row * 3 + value];
++}
+ 
+ /* the box's layout in the font that draws it (drawOptionsText measures it): the labels' column on the screen, its
+  * width, a value's, how many values a row shows (all, or 1 with the original font, 0 for 1 at the right edge: above)
+@@ -6050,7 +6079,14 @@ static int16_t MOD_OPT_SHOWN;
+ 
+ static int32_t modOptionCount(int32_t row)
+ {
+-	return row == MOD_OPT_ROW_LANG ? modLanguageCount() : MOD_OPT_TEXT[row][3] != NULL ? 3 : 2;
++	if (row == MOD_OPT_ROW_LANG) {
++        int32_t count = modLanguageCount();
++        return count - (MOD_COLD_CACHE_TYPE < 0 && (MOD_LANGUAGE_AVAILABLE & (1u << MOD_LANG_ZH)));
++    }
++#if FONT_SWITCH
++    if (row == MOD_OPT_ROW_FONT) return 3;
++#endif
++    return 2;
+ }
+ 
+ /* the index of the row's chosen value, -1 none (an FPS=20 build's frame rate, or 30 from an FPS=30 build) */
+@@ -6166,42 +6202,39 @@ static void drawOptionsText(void)
+ 	int32_t r2;
+ 	int32_t k2;
+ 
+-	for (k = 0; k < modLanguageCount(); k++) {
+-        MOD_OPT_TEXT[MOD_OPT_ROW_LANG][k + 1] = MOD_LANGUAGE_NAMES[modLanguageAt(k)];
+-    }
+     MOD_OPT_LABEL_W = 0;
+ 	MOD_OPT_VALUE_W = 0;
+ 	y = MOD_OPT_VALUE_Y << 1; /* the value's place times two, its half in the low bit */
+ 	for (r = 0; r < MOD_OPT_ROWS; r++) {
+ 		for (k = 0; k <= modOptionCount(r); k++) {
+ 			if (r == MOD_OPT_ROW_LANG && k > 0) {
+-				MOD_OPT_V[r][k - 1] = (y >> 1) + ((y & 1) << 8);
+-				if (k - 1 == modOptionValue(r)) drawString(MOD_OPT_TEXT[r][k], (y & 1) * MOD_OPT_VALUE_U, y >> 1);
++				(*modOptionV(r, k - 1)) = (y >> 1) + ((y & 1) << 8);
++				if (k - 1 == modOptionValue(r)) drawString(modOptionText(r, k), (y & 1) * MOD_OPT_VALUE_U, y >> 1);
+ 				if (k == modOptionCount(r)) y += (y & 1) ? 0xC * 2 - 1 : 1;
+ 				goto drawn;
+ 			}
+ 			if (k > 0) { /* MOD (language): a value an earlier row has is drawn once */
+ 				for (r2 = 0; r2 <= r; r2++) {
+ 					for (k2 = 1; k2 <= modOptionCount(r2) && (r2 < r || k2 < k); k2++) {
+-						if (!strcmp(MOD_OPT_TEXT[r2][k2], MOD_OPT_TEXT[r][k])) {
++						if (!strcmp(modOptionText(r2, k2), modOptionText(r, k))) {
+ 							goto shared;
+ 						}
+ 					}
+ 				}
+-				MOD_OPT_V[r][k - 1] = (y >> 1) + ((y & 1) << 8);
+-				drawString(MOD_OPT_TEXT[r][k], (y & 1) * MOD_OPT_VALUE_U, y >> 1);
++				(*modOptionV(r, k - 1)) = (y >> 1) + ((y & 1) << 8);
++				drawString(modOptionText(r, k), (y & 1) * MOD_OPT_VALUE_U, y >> 1);
+ 				y += (y & 1) ? 0xC * 2 - 1 : 1;
+ 				goto drawn;
+ 			shared:
+-				MOD_OPT_V[r][k - 1] = MOD_OPT_V[r2][k2 - 1];
+-				MOD_OPT_W[r][k] = MOD_OPT_W[r2][k2];
++				(*modOptionV(r, k - 1)) = (*modOptionV(r2, k2 - 1));
++				(*modOptionW(r, k)) = (*modOptionW(r2, k2));
+ 				continue;
+ 			}
+-			drawString(MOD_OPT_TEXT[r][k], 0, r * 0xC);
++			drawString(modOptionText(r, k), 0, r * 0xC);
+ 		drawn:
+ 			DrawSync(0);
+-			w = measureStringMode(MOD_OPT_TEXT[r][k], FIT_VANILLA) + 1; /* and the shadow */
+-			MOD_OPT_W[r][k] = w < 0xFF ? w : 0xFF;
++			w = measureStringMode(modOptionText(r, k), FIT_VANILLA) + 1; /* and the shadow */
++			(*modOptionW(r, k)) = w < 0xFF ? w : 0xFF;
+ 			if (k == 0) {
+ 				MOD_OPT_LABEL_W = w > MOD_OPT_LABEL_W ? w : MOD_OPT_LABEL_W;
+ 			} else {
+@@ -6221,9 +6254,9 @@ static void drawOptionsText(void)
+ 		for (r = 0; r < MOD_OPT_ROWS; r++) {
+ 			k2 = 0;
+ 			for (k = 1; k <= modOptionCount(r); k++) {
+-				k2 = MOD_OPT_W[r][k] > k2 ? MOD_OPT_W[r][k] : k2;
++				k2 = (*modOptionW(r, k)) > k2 ? (*modOptionW(r, k)) : k2;
+ 			}
+-			k2 += MOD_OPT_W[r][0] + MOD_OPT_GAP;
++			k2 += (*modOptionW(r, 0)) + MOD_OPT_GAP;
+ 			w = k2 > w ? k2 : w;
+ 		}
+ 	}
+@@ -6247,22 +6280,22 @@ static void renderOptionsMenu(void)
+ 	for (r = 0; r < MOD_OPT_ROWS; r++) {
+ 		y = 0x37 + r * 0xC;
+ 		value = modOptionValue(r);
+-		renderText(cur++, MOD_OPT_TEXT_X, y, 0, r * 0xC, MOD_OPT_SHOWN ? MOD_OPT_LABEL_W : MOD_OPT_W[r][0], 0xC, 0);
++		renderText(cur++, MOD_OPT_TEXT_X, y, 0, r * 0xC, MOD_OPT_SHOWN ? MOD_OPT_LABEL_W : (*modOptionW(r, 0)), 0xC, 0);
+ 		x = MOD_OPT_TEXT_X + MOD_OPT_LABEL_W + MOD_OPT_GAP;
+ 		if (MOD_OPT_SHOWN == 0) { /* the chosen value at the right edge */
+ 			value = value > 0 ? value : 0;
+-			k = MOD_OPT_V[r][value];
+-			renderText(cur++, MOD_OPT_TEXT_X + MOD_OPT_TEXT_W - MOD_OPT_W[r][1 + value], y, (k >> 8) * MOD_OPT_VALUE_U,
+-				   k & 0xFF, MOD_OPT_W[r][1 + value], 0xC, modOptionValue(r) >= 0 ? 2 : 1);
++			k = (*modOptionV(r, value));
++			renderText(cur++, MOD_OPT_TEXT_X + MOD_OPT_TEXT_W - (*modOptionW(r, 1 + value)), y, (k >> 8) * MOD_OPT_VALUE_U,
++				   k & 0xFF, (*modOptionW(r, 1 + value)), 0xC, modOptionValue(r) >= 0 ? 2 : 1);
+ 			continue;
+ 		}
+ 		if (MOD_OPT_SHOWN == 1) { /* the chosen value (the first one, grey, when none is) */
+-			k = MOD_OPT_V[r][value > 0 ? value : 0];
++			k = (*modOptionV(r, value > 0 ? value : 0));
+ 			renderText(cur++, x, y, (k >> 8) * MOD_OPT_VALUE_U, k & 0xFF, MOD_OPT_VALUE_W, 0xC, value >= 0 ? 2 : 1);
+ 			continue;
+ 		}
+ 		for (k = 0; k < modOptionCount(r); k++) {
+-			renderText(cur++, x, y, (MOD_OPT_V[r][k] >> 8) * MOD_OPT_VALUE_U, MOD_OPT_V[r][k] & 0xFF, MOD_OPT_VALUE_W,
++			renderText(cur++, x, y, ((*modOptionV(r, k)) >> 8) * MOD_OPT_VALUE_U, (*modOptionV(r, k)) & 0xFF, MOD_OPT_VALUE_W,
+ 				   0xC, value == k ? 2 : 1);
+ 			x += MOD_OPT_VALUE_W + MOD_OPT_GAP;
+ 		}
+@@ -6282,7 +6315,7 @@ static void modDrawLanguagePicker(void)
+ 	drawString("LANGUAGE - IDIOMA", 0, 0);
+ 	DrawSync(0);
+ 	for (i = 0; i < modLanguageCount(); i++) {
+-		drawString(MOD_LANGUAGE_NAMES[modLanguageAt(i)], 0, 16 + i * 20);
++		drawString(MOD_LANGUAGE_NAMES[modLanguageAt(i)], 0, 16 + i * 18);
+ 		DrawSync(0);
+ 	}
+ 	drawString("START", 0, 188);
+@@ -6354,26 +6387,28 @@ static void modRenderLanguagePicker(void)
+ {
+ 	POLY_FT4 *text;
+ 	MenuHighlight selected = {0};
+-	selected.x = 69; selected.y = 44; selected.w = 182; selected.h = 16; selected.rowHeight = 20;
++	selected.x = 69; selected.y = 44; selected.w = 182; selected.h = 16; selected.rowHeight = 18;
+ 	int32_t i, x, y, end, lang;
+ 	uint32_t colour;
+ 	text = (POLY_FT4 *)GsGetWorkBase();
+ 	renderText(text++, 68, 22, 0, 0, 216, 12, 0);
+ 	for (i = 0; i < modLanguageCount(); i++) {
+-		renderText(text++, 108, 46 + i*20, 0, 16 + i*20, 144, 12, i == MOD_BOOT_LANGUAGE_CURSOR ? 2 : 0);
++        lang = modLanguageAt(i);
++		renderText(text++, 108, 46 + i*18, 0, 16 + i*18, 144, 12, lang == MOD_LANG_ZH && MOD_COLD_CACHE_TYPE < 0 ? 1 : i == MOD_BOOT_LANGUAGE_CURSOR ? 2 : 0);
+ 	}
+ 	renderText(text++, 132, 210, 0, 188, 80, 12, 0);
+ 	GsSetWorkBase((PACKET *)text);
+ 	for (i = 0; i < modLanguageCount(); i++) {
+ 		lang = modLanguageAt(i);
++        if (lang == MOD_LANG_ZH) continue;
+ 		for (y = 0; y < 16; y++) {
+ 			for (x = 0; x < 24; x = end) {
+ 				colour = modFlagPixel(lang, x, y);
+ 				for (end = x + 1; end < 24 && modFlagPixel(lang, end, y) == colour; end++);
+-				modFlagRect(76+x, 44+i*20+y, end-x, 1, colour);
++				modFlagRect(76+x, 44+i*18+y, end-x, 1, colour);
+ 			}
+ 		}
+-		modFlagRect(75, 43+i*20, 26, 18, 0x080808);
++		modFlagRect(75, 43+i*18, 26, 18, 0x080808);
+ 	}
+ 	selected.pos = MOD_BOOT_LANGUAGE_CURSOR;
+ 	renderMenuSelector(&selected);
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index fc51b6b..90a6f8b 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -53,6 +53,9 @@
+ #include <string.h>
+ #include <dw/file_table.h>
+ #include <dw/file.h>
++#include <dw/chinese.h>
++#include <dw/species.h>
++#include <libapi.h>
+ 
+ #include "common.h"
+ 
+@@ -363,11 +366,12 @@ int32_t modFileOnDisc(char *name)
+  * itself when the disc has no such copy. A row is the name's FNV-1a hash and the copies' places among the new files
+  * (tools/gen_lang_files.py, which refuses a hash two names of the disc share): the names are FILE_OFFSET_TABLE's.
+  */
+-typedef struct {
+-	uint32_t hash;
++typedef struct __attribute__((packed)) {
++	uint32_t hash : 24;
+ 	uint16_t copy;
+ 	uint16_t original; /* Spanish, English signs: a place after FILE_TABLE_NEW_FIRST, 0xFFFF none */
+ } LangFileRow;
++_Static_assert(sizeof(LangFileRow) == 7, "language routes use seven bytes");
+ 
+ static LangFileRow LANG_FILE_TABLE[] = {
+ #include <lang_files.h>
+@@ -379,7 +383,7 @@ static char MOD_LANG_NAME[FILE_NAME_MAX + 1]; /* the copy's name, ended (an entr
+ 
+ char *modLangFile(char *name)
+ {
+-	uint32_t i;
++	LangFileRow *row;
+ 	uint32_t hash;
+ 	int32_t tfs;
+ 	int32_t copy;
+@@ -387,15 +391,15 @@ char *modLangFile(char *name)
+ 	uint32_t key;
+ 
+ 	hash = fileNameHash(name);
+-	for (i = 0; i < sizeof(LANG_FILE_TABLE) / sizeof(LangFileRow) - 1; i++) {
+-		if (LANG_FILE_TABLE[i].hash != hash) {
++	for (row = LANG_FILE_TABLE; row->hash; row++) {
++		if (row->hash != hash) {
+ 			continue;
+ 		}
+ 		tfs = strlen(name) > 4 && (!strcmp(name + strlen(name) - 4, ".TFS") || !strcmp(name + strlen(name) - 4, ".MAP")); /* a background or its sprites */
+ 		if (tfs && !MOD_OPT_SIGNS) {
+ 			return name;
+ 		}
+-		copy = !MOD_OPT_STORY && LANG_FILE_TABLE[i].original != 0xFFFF ? LANG_FILE_TABLE[i].original : LANG_FILE_TABLE[i].copy;
++		copy = !MOD_OPT_STORY && row->original != 0xFFFF ? row->original : row->copy;
+ 		if (copy == 0xFFFF || (!tfs && MOD_LANG == MOD_LANG_EN)) {
+ 			return name;
+ 		}
+@@ -433,18 +437,26 @@ int32_t modStoryChoice(void)
+ }
+ 
+ /* MOD (language): the patch that turns the executable's strings into each language */
+-static char *LANG_PATCH_FILE[MOD_LANGS] = { "LANGEN.BIN", "LANGES.BIN", "LANGPT.BIN", "LANGFR.BIN", "LANGDE.BIN", "LANGIT.BIN", "LANGJA.BIN", "LANGCA.BIN" };
++static char LANG_PATCH_FILE[] = "LANGEN.BIN";
++static char *langPatchFile(int32_t lang)
++{
++    static const char codes[] = "ENESPTFRDEITJACAZH";
++    LANG_PATCH_FILE[4] = codes[lang * 2];
++    LANG_PATCH_FILE[5] = codes[lang * 2 + 1];
++    return LANG_PATCH_FILE;
++}
++
++uint32_t MOD_LANGUAGE_AVAILABLE;
+ int32_t modLanguageAt(int32_t index)
+ {
+-    static uint32_t available;
+     int32_t lang;
+-    if (available == 0) {
++    if (MOD_LANGUAGE_AVAILABLE == 0) {
+         for (lang = 0; lang < MOD_LANGS; lang++) {
+-            if (lang == MOD_LANG || modFileOnDisc(LANG_PATCH_FILE[lang])) available |= 1u << lang;
++            if (lang == MOD_LANG || modFileOnDisc(langPatchFile(lang))) MOD_LANGUAGE_AVAILABLE |= 1u << lang;
+         }
+     }
+     for (lang = 0; lang < MOD_LANGS; lang++) {
+-        if ((available & (1u << lang)) && index-- == 0) return lang;
++        if ((MOD_LANGUAGE_AVAILABLE & (1u << lang)) && index-- == 0) return lang;
+     }
+     return -1;
+ }
+@@ -471,14 +483,25 @@ void modSetLanguage(int32_t lang)
+ 	uint32_t len;
+ 
+ 	lang = lang >= 0 && lang < MOD_LANGS ? lang : MOD_LANG_EN;
+-	if (lang == MOD_LANG || !modFileOnDisc(LANG_PATCH_FILE[lang])) { /* a disc in one language: no choice */
++	if (lang == MOD_LANG || !modFileOnDisc(langPatchFile(lang))) { /* a disc in one language: no choice */
+ 		return;
+ 	}
+ 	while (isFileReadQueueBusy()) {
+ 		tickFileReadQueue(0);
+ 	}
+ 	DrawSync(0);
+-	readFile(LANG_PATCH_FILE[lang], GENERAL_BUFFER); /* free at the title: the next loads put their own files there */
++    if (lang == MOD_LANG_ZH) {
++        if (!modProbeRam()) return;
++        readFileSectors(langPatchFile(lang), (void *)ZH_BASE, 0, ZH_PREFIX_SIZE / 2048);
++        run = (uint32_t *)ZH_BASE;
++        if (run[0] != ZH_MAGIC || run[1] != 1 || run[2] != ZH_PREFIX_SIZE) return;
++        count = 0x811C9DC5;
++        for (len = 32; len < ZH_PREFIX_SIZE; len++) count = (count ^ ((uint8_t *)run)[len]) * 0x01000193;
++        if (count != run[7]) return;
++        FlushCache();
++        if (!zhStart()) return;
++    } else {
++	readFile(langPatchFile(lang), GENERAL_BUFFER); /* free at the title: the next loads put their own files there */
+ 	run = (uint32_t *)GENERAL_BUFFER;
+ 	if (run[0] != 0x504C5744) { /* "DWLP" */
+ 		return;
+@@ -490,7 +513,10 @@ void modSetLanguage(int32_t lang)
+ 		memcpy((void *)run[0], &run[2], len);
+ 		run += 2 + (len + 3) / 4;
+ 	}
++	}
++    if (MOD_LANG == MOD_LANG_ZH && lang != MOD_LANG_ZH) MOD_FONT = zhPreviousFont();
+ 	MOD_LANG = lang;
++    if (lang == MOD_LANG_ZH) MOD_FONT = MOD_FONT_NEW;
+ 	/*
+ 	 * the title's and the card menus' own strings (NEW GAME, the slots, Yes / No...) are MENU_REL's, read in the
+ 	 * language it had then: read it again, in the new language's copy (modLangFile), or the menus stay in the old one
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index 542a067..632c32c 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -12,6 +12,7 @@
+ #include <dw/sound.h>
+ #include <dw/species.h>
+ #include <dw/mod_options.h>
++#include <dw/chinese.h>
+ 
+ #include "common.h"
+ 
+@@ -525,7 +526,7 @@ DigimonPara *getSpeciesPara(int32_t type)
+ 	if (rec == NULL) {
+ 		return &NO_PARA;
+ 	}
+-	return &rec->para;
++	return MOD_LANG == MOD_LANG_ZH ? zhSpeciesPara(&rec->para, type) : &rec->para;
+ }
+ 
+ int32_t isValidDigimonType(int32_t type)
+diff --git a/src/main/model.c b/src/main/model.c
+index ec967eb..7f2a1fa 100644
+--- a/src/main/model.c
++++ b/src/main/model.c
+@@ -3509,11 +3509,8 @@ static char *getPartnerModelName(int32_t type)
+ 			continue;
+ 		}
+ 		concatStrings(file, p->name, MAIN_D_801340E4);
+-		for (f = FILE_OFFSET_TABLE; f->sizeCode != 0; f++) {
+-			if (f->sector != 0 && fileEntryIs(f, file)) {
+-				return p->name;
+-			}
+-		}
++        f = findFileEntry(file);
++        if (f && f->sector) return p->name;
+ 	}
+ 	return getDigimonModelName(type); /* MOD (integration): species names */
+ }
+diff --git a/src/main/utils2.c b/src/main/utils2.c
+index fd8cdd4..426a975 100644
+--- a/src/main/utils2.c
++++ b/src/main/utils2.c
+@@ -268,6 +268,8 @@ void renderString(uint8_t color, int16_t x, int16_t y, int16_t w, int16_t h,
+ {
+ 	POLY_FT4 *prim;
+ 
++    if (MOD_LANG == MOD_LANG_ZH) { if (h == 11) h = 12; shadow = 0; }
++
+ 	prim = (POLY_FT4 *)GsGetWorkBase();
+ 	initStringFT4(prim);
+ 	setRGB0(prim, TEXT_COLORS[color].r, TEXT_COLORS[color].g,
+diff --git a/src/std/std_hud.c b/src/std/std_hud.c
+index 1b5097f..ada9a46 100644
+--- a/src/std/std_hud.c
++++ b/src/std/std_hud.c
+@@ -180,7 +180,163 @@ MATRIX STD_BATTLE_START_TEXT_MATRIX = {
+ /* MOD (language): the BATTLE banner's blocks; Spanish ¡LUCHA! (154 blocks, the last one repeated:
+  * tools/localize/textures/misc/battle-banner-es.json) */
+ int16_t STD_BATTLE_START_TEXT_POSITIONS[155][2] = {
+-#if (MOD_LANG_BUILD == MOD_LANG_FR || MOD_LANG_BUILD == MOD_LANG_CA)
++#if MOD_LANG_BUILD == MOD_LANG_ZH
++	{ -68, -48 },
++	{ -36, -48 },
++	{ -28, -48 },
++	{ -4, -48 },
++	{ 20, -48 },
++	{ 60, -48 },
++	{ -68, -36 },
++	{ -36, -36 },
++	{ 4, -36 },
++	{ 20, -36 },
++	{ 60, -36 },
++	{ -68, -24 },
++	{ -60, -24 },
++	{ -44, -24 },
++	{ -36, -24 },
++	{ -28, -24 },
++	{ -4, -24 },
++	{ 20, -24 },
++	{ 60, -24 },
++	{ -68, -12 },
++	{ -36, -12 },
++	{ 4, -12 },
++	{ 20, -12 },
++	{ 60, -12 },
++	{ -76, 0 },
++	{ -68, 0 },
++	{ -60, 0 },
++	{ -36, 0 },
++	{ -28, 0 },
++	{ 20, 0 },
++	{ 28, 0 },
++	{ 36, 0 },
++	{ 60, 0 },
++	{ -76, 12 },
++	{ -60, 12 },
++	{ -36, 12 },
++	{ -12, 12 },
++	{ -4, 12 },
++	{ 4, 12 },
++	{ 12, 12 },
++	{ 20, 12 },
++	{ -76, 24 },
++	{ -68, 24 },
++	{ -60, 24 },
++	{ -44, 24 },
++	{ -28, 24 },
++	{ 20, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++#elif (MOD_LANG_BUILD == MOD_LANG_FR || MOD_LANG_BUILD == MOD_LANG_CA)
+ 	{ -136, -48 },
+ 	{ -128, -48 },
+ 	{ -120, -48 },
+diff --git a/src/vs/vs_hud.c b/src/vs/vs_hud.c
+index 91cb5a8..698ea0f 100644
+--- a/src/vs/vs_hud.c
++++ b/src/vs/vs_hud.c
+@@ -188,7 +188,163 @@ MATRIX VS_BATTLE_START_TEXT_MATRIX = {
+ /* MOD (language): the BATTLE banner's blocks; Spanish ¡LUCHA! (154 blocks, the last one repeated:
+  * tools/localize/textures/misc/battle-banner-es.json) */
+ int16_t VS_BATTLE_START_TEXT_POSITIONS[155][2] = {
+-#if (MOD_LANG_BUILD == MOD_LANG_FR || MOD_LANG_BUILD == MOD_LANG_CA)
++#if MOD_LANG_BUILD == MOD_LANG_ZH
++	{ -68, -48 },
++	{ -36, -48 },
++	{ -28, -48 },
++	{ -4, -48 },
++	{ 20, -48 },
++	{ 60, -48 },
++	{ -68, -36 },
++	{ -36, -36 },
++	{ 4, -36 },
++	{ 20, -36 },
++	{ 60, -36 },
++	{ -68, -24 },
++	{ -60, -24 },
++	{ -44, -24 },
++	{ -36, -24 },
++	{ -28, -24 },
++	{ -4, -24 },
++	{ 20, -24 },
++	{ 60, -24 },
++	{ -68, -12 },
++	{ -36, -12 },
++	{ 4, -12 },
++	{ 20, -12 },
++	{ 60, -12 },
++	{ -76, 0 },
++	{ -68, 0 },
++	{ -60, 0 },
++	{ -36, 0 },
++	{ -28, 0 },
++	{ 20, 0 },
++	{ 28, 0 },
++	{ 36, 0 },
++	{ 60, 0 },
++	{ -76, 12 },
++	{ -60, 12 },
++	{ -36, 12 },
++	{ -12, 12 },
++	{ -4, 12 },
++	{ 4, 12 },
++	{ 12, 12 },
++	{ 20, 12 },
++	{ -76, 24 },
++	{ -68, 24 },
++	{ -60, 24 },
++	{ -44, 24 },
++	{ -28, 24 },
++	{ 20, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++	{ 60, 24 },
++#elif (MOD_LANG_BUILD == MOD_LANG_FR || MOD_LANG_BUILD == MOD_LANG_CA)
+ 	{ -136, -48 },
+ 	{ -128, -48 },
+ 	{ -120, -48 },
+diff --git a/tools/gen_lang_files.py b/tools/gen_lang_files.py
+index cdd21a2..c4e1a7b 100644
+--- a/tools/gen_lang_files.py
++++ b/tools/gen_lang_files.py
+@@ -2,8 +2,8 @@
+ """Generate active-language file routes for modLangFile.
+ 
+ Each language has identical row layout: a 24-bit collision-checked FNV key in
+-u32, a u16 copy index and a u16 original-story index (0xFFFF when absent).
+-LANGxx.BIN patches just the active language's eight-byte rows. All filenames
++a packed three-byte field, a u16 copy index and a u16 original-story index (0xFFFF when absent).
++LANGxx.BIN patches just the active language's seven-byte rows. All filenames
+ in the original table and NEW_FILES must have distinct nonzero keys.
+ 
+   gen_lang_files.py OUT.h --lang "NAME:ES:EN[:PT:FR:DE:IT:JA:CA] ..."
+@@ -35,7 +35,7 @@ def main():
+     for value, group in hashes.items():
+         if value == 0 or len(group) > 1:
+             sys.exit(f'gen_lang_files: ambiguous filename hash {value:08X}: {sorted(group)}')
+-    rows = [[] for _ in range(8)]
++    rows = [[] for _ in range(9)]
+     for spec in a.lang.split():
+         parts = spec.split(':')
+         if not 3 <= len(parts) <= 9:
+@@ -53,9 +53,9 @@ def main():
+             else:
+                 sys.exit(f'gen_lang_files: {c} (a copy of {key}) is not in NEW_FILES')
+         original = [where.get('_' + c[1:], 0xFFFF) if c != '-' else 0xFFFF for c in copies]
+-        for lang in range(8):
++        for lang in range(9):
+             col = 1 if lang == 0 else 0 if lang == 1 else lang
+-            rows[lang].append('{ 0x%08X, %d, %d }, /* %s */' % (fnv1a(key), idx[col], original[col], key))
++            rows[lang].append('{ 0x%08X, %d, %d }, /* %s */' % (fnv1a(key), idx[col] if lang < 8 else 0xFFFF, original[col] if lang < 8 else 0xFFFF, key))
+     text = ''.join('#if MOD_LANG_BUILD == %d\n%s#endif\n' % (lang, ''.join(r + '\n' for r in table)) for lang, table in enumerate(rows))
+     if not os.path.exists(a.out) or open(a.out).read() != text:
+         open(a.out, 'w').write(text)
+-- 
+2.55.0
+

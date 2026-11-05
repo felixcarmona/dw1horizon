@@ -45,6 +45,12 @@ class ReleaseSelection(unittest.TestCase):
                              (Path(D.REPO) / 'THIRD-PARTY.md').read_bytes())
             self.assertEqual((out / 'dwpatch.py').read_bytes(), Path(D.__file__).read_bytes())
             self.assertTrue((out / 'isowriter.py').is_file())
+            notices = Path(D.REPO) / 'tools/font/chinese-license'
+            for source in notices.rglob('*'):
+                if source.is_file():
+                    relative = source.relative_to(notices)
+                    for folder in ('licenses/chinese-font', 'bundle/tools/font/chinese-license'):
+                        self.assertEqual((out / folder / relative).read_bytes(), source.read_bytes())
             self.assertEqual((out / 'source-releases.md').read_bytes(),
                              (Path(D.REPO) / 'docs/data/source-releases.md').read_bytes())
             self.assertIn('(source-releases.md)', (out / 'README.md').read_text())
