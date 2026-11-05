@@ -2,7 +2,7 @@
 // build/stage9/node/node_modules. node web/test/langs.mjs URL [SHOTS_DIR]
 //   1. the first visit follows the browser's languages (de-DE -> de, pt-PT -> pt-br, ca-ES -> ca, nl -> en) and a
 //      remembered choice wins over them
-//   2. the menu lists the eight by their own names; choosing each one switches the page: <html lang>, every
+//   2. the menu lists the nine by their own names; choosing each one switches the page: <html lang>, every
 //      data-i18n string and attribute is that language's (none left as its key), the cards' titles are that
 //      language's (with {n} and {languages} filled; a hidden card is not shown)
 //   3. the choice is remembered after a reload
@@ -13,7 +13,7 @@ import path from 'node:path';
 const [url, shots] = process.argv.slice(2);
 const web = path.join(path.dirname(new URL(import.meta.url).pathname), '..');
 const read = (p) => JSON.parse(fs.readFileSync(path.join(web, p), 'utf8'));
-const { LANGS, NAMES } = await import(path.join(web, 'js/i18n.js'));
+const { LANGS, NAMES, tag } = await import(path.join(web, 'js/i18n.js'));
 const discs = read('data/discs.json'), features = read('content/features.json'), en = read('i18n/en.json');
 const BUILD = path.join(web, '../build');   // (the snap Chromium cannot read /tmp)
 fs.mkdirSync(BUILD, { recursive: true });
@@ -43,7 +43,7 @@ const visit = async (langs, keep = false) => {
 const page = () => p.evaluate(() => ({ lang: document.documentElement.lang, menu: document.querySelector('#lang').value }));
 
 // 1. the browser's language
-for (const [langs, want] of [[['de-DE', 'en'], 'de'], [['pt-PT'], 'pt-br'], [['ca-ES', 'es'], 'ca'], [['ja'], 'ja'], [['nl-NL', 'nl'], 'en'], [['es-MX'], 'es']]) {
+for (const [langs, want] of [[['de-DE', 'en'], 'de'], [['pt-PT'], 'pt-br'], [['ca-ES', 'es'], 'ca'], [['ja'], 'ja'], [['zh-CN'], 'zh-hans'], [['zh-Hans'], 'zh-hans'], [['nl-NL', 'nl'], 'en'], [['es-MX'], 'es']]) {
   await visit(langs);
   const s = await page();
   ok(s.menu === want, `browser ${langs}: the page in ${want}: ${s.menu} (html lang ${s.lang})`);
@@ -60,7 +60,7 @@ ok(JSON.stringify(opts.map((o) => o[0])) === JSON.stringify(LANGS) && opts.every
 ok(await p.$eval('#lang', (s) => !!s.getAttribute('aria-label')), 'the menu has its label');
 for (const lang of LANGS) {
   await p.select('#lang', lang);
-  await p.waitForFunction((t) => document.documentElement.lang === t, {}, lang.replace(/-(\w+)$/, (m, r) => `-${r.toUpperCase()}`));
+  await p.waitForFunction((t) => document.documentElement.lang === t, {}, tag(lang));
   const t = read(`i18n/${lang}.json`);
   const got = await p.evaluate(() => ({
     texts: [...document.querySelectorAll('[data-i18n]')].map((e) => [e.dataset.i18n, e.textContent]),
@@ -85,7 +85,7 @@ ok((await page()).menu === 'ja', 'the choice is remembered after a reload');
 // screenshots: the hero and the slots
 if (shots) {
   fs.mkdirSync(shots, { recursive: true });
-  for (const lang of ['ja', 'de', 'pt-br']) {
+  for (const lang of ['zh-hans']) {
     await p.select('#lang', lang);
     for (const phone of [false, true]) {
       await p.setViewport(phone ? { width: 390, height: 844, deviceScaleFactor: 2 } : { width: 1280, height: 900 });

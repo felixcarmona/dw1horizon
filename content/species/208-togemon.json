@@ -7,7 +7,8 @@
   "attribute": "data",
   "specialties": ["nature", "battle", null],
   "techniques": ["Poison Claw", "Danger Sting", "Mass Morph", "Insect Plague", "Poison Powder", "Charm Perfume",
-                 "Sonic Jab", "Megaton Punch", "Muscle Charge", "War Cry", "Fist of the Beast King"],
+                 "Sonic Jab", "Megaton Punch", "Muscle Charge", "War Cry", "Fist of the Beast King",
+                 "Green Trap"],
   "drop": {"item": "Various", "percent": 30},
   "effects_like": 23,
   "model": {

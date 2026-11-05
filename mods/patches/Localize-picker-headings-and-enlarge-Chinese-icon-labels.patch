@@ -1,0 +1,148 @@
+From 077d2f7d8d39c257ef695c826d8915fd62cf7945 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 5 Nov 2026 13:20:53 +0000
+Subject: [PATCH] Localize the hovered picker heading and enlarge Chinese icon
+ labels
+
+---
+ config/us/overlay.ld      |  2 +-
+ src/main/game_menu.c      | 18 +++++++++++++++---
+ src/main/language_flags.h |  2 ++
+ src/main/main_menu.c      | 30 ++++++++++++++++++++++--------
+ 4 files changed, 40 insertions(+), 12 deletions(-)
+
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index 3fff7d0e..6195f120 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -969,7 +969,7 @@ SECTIONS
+ 			. = ALIGN(., 4);
+             /* Resident helpers reached only by this loaded overlay (xref). */
+             BUILD_DIR/src/main/main_menu.c.o(.text.modFlagPixel);
+-            BUILD_DIR/src/main/main_menu.c.o(.text.modOptionCount* .text.setRegisteredSpecies*);
++            BUILD_DIR/src/main/main_menu.c.o(.text.setRegisteredSpecies*);
+             BUILD_DIR/src/main/main_menu.c.o(.text.swapPartnerSpecies);
+             BUILD_DIR/src/main/mod_options.c.o(.text.modFrameRate);
+             BUILD_DIR/src/main/sjis.c.o(.text.asciiToShiftJIS);
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 244c55d3..07aafeea 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -484,9 +484,19 @@ GameMenuSprite MENU_OPTIONS[8] = {
+ 
+ /* MOD (language): translated labels use FI_INFO's free cells, excluding all five clock
+  * frames. tools/localize/textures/fi-info/build.py prints these rows; V is TIM row + 1.
+- * DIGIMON keeps the disc's label. */
++ * DIGIMON keeps the disc's label. Chinese uses SYSTEM_W's unused cells for
++ * native 12px labels; its V values are direct rows and its palette uses white. */
+ GameMenuLabel GAME_MENU_TEXT_SPRITES[8] = {
+-#if MOD_LANG_BUILD == MOD_LANG_PT_BR
++#if MOD_LANG_BUILD == MOD_LANG_ZH
++	{ 0x0000, 0x0000, 0x00, 0x00, 0x00, 0x00 },
++	{ 0x0012, 0x005e, 0x18, 0x0d, 0x38, 0x5f },
++	{ 0x0036, 0x005e, 0x18, 0x0d, 0x50, 0x60 },
++	{ 0x0059, 0x005e, 0x18, 0x0d, 0x68, 0x60 },
++	{ 0x0012, 0x0086, 0x18, 0x0d, 0xd0, 0x60 },
++	{ 0x0036, 0x0086, 0x18, 0x0d, 0xe8, 0x60 },
++	{ 0x0059, 0x0086, 0x18, 0x0d, 0xe8, 0x6e },
++	{ 0x0012, 0x0036, 0x18, 0x0d, 0xb0, 0x46 },
++#elif MOD_LANG_BUILD == MOD_LANG_PT_BR
+ 	{ 0x0000, 0x0000, 0x00, 0x00, 0x00, 0x00 },
+ 	{ 0x0015, 0x0060, 0x13, 0x07, 0x80, 0x31 },
+ 	{ 0x0035, 0x0060, 0x1c, 0x07, 0x50, 0x1b },
+@@ -2145,7 +2155,9 @@ void renderGameMenu(void)
+ 		                  GAME_MENU_TEXT_SPRITES[i].width,
+ 		                  GAME_MENU_TEXT_SPRITES[i].height,
+ 		                  GAME_MENU_TEXT_SPRITES[i].texX,
+-		                  GAME_MENU_TEXT_SPRITES[i].texY + 0xbf, 0x1e, 0x7f50, 6,
++                          GAME_MENU_TEXT_SPRITES[i].texY + (MOD_LANG == MOD_LANG_ZH ? 0x80 : 0xbf),
++                          MOD_LANG == MOD_LANG_ZH ? 5 : 0x1e,
++                          MOD_LANG == MOD_LANG_ZH ? 0x7b06 : 0x7f50, 6,
+ 		                  disabled);
+ 	}
+ #if !VERSION_IS(US)
+diff --git a/src/main/language_flags.h b/src/main/language_flags.h
+index ee1f7cd8..10cdb189 100644
+--- a/src/main/language_flags.h
++++ b/src/main/language_flags.h
+@@ -31,3 +31,5 @@ static const uint8_t MOD_FLAG_RUNS[408] = {
+     1, 33, 17, 3, 33, 3, 33, 4, 34, 10, 12, 33, 11, 9, 34, 13, 10, 33, 13, 24, 24, 24, 24, 24,
+ };
+ static const uint16_t MOD_CHINESE_NAME[24] = { 65535, 64511, 64511, 31, 31711, 31711, 31711, 31, 64511, 64511, 64511, 64511, 65535, 63487, 64511, 31, 57215, 57215, 61183, 61183, 62975, 64511, 58623, 7967 };
++static const char MOD_LANGUAGE_TITLES[9][9] = { "LANGUAGE", "IDIOMA", "IDIOMA", "LANGUE", "SPRACHE", "LINGUA", "", "IDIOMA", "" };
++static const uint16_t MOD_LANGUAGE_TITLE_GLYPHS[48] = { 65535, 63487, 64511, 31, 65535, 32831, 65535, 32831, 65535, 32831, 49087, 32831, 65535, 28703, 48639, 4159, 64447, 7103, 57375, 8191, 61471, 6111, 22495, 4127, 65535, 28703, 48639, 61503, 64447, 15295, 40991, 49151, 45087, 47071, 38879, 45087, 65535, 63487, 64511, 31, 65535, 32831, 65535, 32831, 65535, 32831, 49087, 32831 };
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index b869b5d3..7c982e22 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -6305,12 +6305,13 @@ static void renderOptionsMenu(void)
+  * remembered by the existing save-header options, with no extra card writes. */
+ static void modDrawLanguagePicker(void)
+ {
+-    int32_t i;
++    int32_t i, lang;
+     clearTextArea();
+-    drawString("LANGUAGE - IDIOMA", 0, 0);
+-    DrawSync(0);
+     for (i = 0; i < modLanguageCount(); i++) {
+-        modDrawLanguageName(modLanguageAt(i), (i & 1) * 128, 16 + (i / 2) * 20);
++        lang = modLanguageAt(i);
++        modDrawLanguageName(lang, (i & 1) * 128, 16 + (i / 2) * 20);
++        DrawSync(0);
++        modDrawLanguageName(lang + MOD_LANGS, (lang & 1) * 128, 120 + (lang / 2) * 12);
+         DrawSync(0);
+     }
+     drawString("START", 0, 188);
+@@ -6362,24 +6363,34 @@ static void modFlagRect(int32_t x, int32_t y, int32_t w, int32_t h, uint32_t rgb
+ 
+ #include "language_flags.h"
+ 
+-/* The two name glyphs use the licensed 12px subset, independent of active font/RAM. */
++/* Names and headings share the licensed resident 12px pairs. The heading
++ * selector is the language plus MOD_LANGS; no language bank is loaded on hover. */
+ static void __attribute__((noinline)) modDrawLanguageName(int32_t lang, int32_t x, int32_t y)
+ {
+     uint32_t pixels[36];
+     RECT rect;
+     int32_t row, col;
+-    if (lang != MOD_LANG_ZH) {
++    const uint16_t *glyphs = MOD_CHINESE_NAME;
++    if (lang >= MOD_LANGS) {
++        lang -= MOD_LANGS;
++        glyphs = MOD_LANGUAGE_TITLE_GLYPHS + (lang == MOD_LANG_ZH ? 24 : 0);
++        if (lang != MOD_LANG_JA && lang != MOD_LANG_ZH) {
++            drawString(MOD_LANGUAGE_TITLES[lang], x, y);
++            return;
++        }
++    } else if (lang != MOD_LANG_ZH) {
+         drawString(MOD_LANGUAGE_NAMES[lang], x, y);
+         return;
+     }
+     memset(pixels, 0, sizeof(pixels));
+     for (row = 0; row < 12; row++) {
+         for (col = 0; col < 24; col++) {
+-            if (!(MOD_CHINESE_NAME[(col / 12) * 12 + row] & (0x8000 >> (col % 12))))
++            if (!(glyphs[(col / 12) * 12 + row] & (0x8000 >> (col % 12))))
+                 pixels[row * 3 + col / 8] |= 1u << ((col % 8) * 4);
+         }
+     }
+     setRECT(&rect, TEXT_VRAM_X + x / 4, TEXT_VRAM_Y + y, 6, 12);
++    DrawSync(0);
+     LoadImage(&rect, (u_long *)pixels);
+     DrawSync(0);
+ }
+@@ -6435,7 +6446,10 @@ static void modRenderLanguagePicker(void)
+     const uint8_t *run;
+     uint32_t colour;
+     text = (POLY_FT4 *)GsGetWorkBase();
+-    renderText(text++, (320 - measureStringMode("LANGUAGE - IDIOMA", FIT_VANILLA)) / 2, 30, 0, 0, 216, 12, 0);
++    lang = modLanguageAt(MOD_BOOT_LANGUAGE_CURSOR);
++    renderText(text++, (320 - (lang == MOD_LANG_JA || lang == MOD_LANG_ZH ? 24 :
++               measureStringMode(MOD_LANGUAGE_TITLES[lang], FIT_VANILLA))) / 2,
++               30, (lang & 1) * 128, 120 + (lang / 2) * 12, 112, 12, 0);
+     for (i = 0; i < modLanguageCount(); i++) {
+         renderText(text++, 48 + (i & 1) * 152, 68 + (i / 2) * 26,
+                    (i & 1) * 128, 16 + (i / 2) * 20, 112, 12, i == MOD_BOOT_LANGUAGE_CURSOR ? 2 : 0);
+-- 
+2.55.0
+

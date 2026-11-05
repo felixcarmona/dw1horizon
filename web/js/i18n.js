@@ -1,17 +1,17 @@
-// The page's languages: the same eight the game's language option offers (tools/languages.py CODES). Strings live in
+// The page's languages: the same languages the game's language option offers (tools/languages.py CODES). Strings live in
 // i18n/<lang>.json, every one with en.json's keys (web/test/i18n.mjs checks); a string missing from one falls back
 // to English. Elements name theirs with data-i18n="key" (text) or data-i18n-attr="attr:key" (an attribute). The
 // choice is remembered per browser; the first visit follows the browser's languages (the first one the page has,
 // by full tag, then by its language alone: pt-PT -> pt-br), else English.
 
-export const LANGS = ['en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca'];
+export const LANGS = ['en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca', 'zh-hans'];
 // Each language by its own name (the menu, the languages line): fixed, as Intl.DisplayNames lowercases some.
 export const NAMES = {
   en: 'English', es: 'Español', 'pt-br': 'Português (Brasil)', fr: 'Français', de: 'Deutsch', it: 'Italiano',
-  ja: '日本語', ca: 'Català',
+  ja: '日本語', ca: 'Català', 'zh-hans':'简体中文',
 };
 // The BCP 47 tag of each (the html lang, Intl's locales).
-export const tag = (lang) => lang.replace(/-(\w+)$/, (m, r) => `-${r.toUpperCase()}`);
+export const tag = (lang) => lang.split('-').map((part,i) => !i ? part : part.length === 4 ? part[0].toUpperCase()+part.slice(1) : part.toUpperCase()).join('-');
 const KEY = 'horizon.lang';
 
 function remembered() {

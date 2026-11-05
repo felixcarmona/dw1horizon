@@ -7,7 +7,7 @@
   "attribute": "virus",
   "specialties": ["nature", "battle", null],
   "techniques": ["Poison Claw", "Mass Morph", "Insect Plague", "Poison Powder", "Sonic Jab", "Muscle Charge",
-                 "War Cry", "Poison Ivy"],
+                 "War Cry", "Poison Ivy", "Danger Sting"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 22,
   "model": {

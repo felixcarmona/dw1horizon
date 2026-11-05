@@ -8,7 +8,7 @@
   "specialties": ["nature", "filth", "battle"],
   "techniques": ["Insect Plague", "Mass Morph", "Poison Claw", "Poison Powder", "Danger Sting", "Odor Spray",
                  "Horizontal Kick (55)", "Poop Rnd Toss", "Dynamite Kick (44)", "Muscle Charge",
-                 "Electro Shocker"],
+                 "Electro Shocker", "Bug", "Big Poop Toss", "Megaton Punch"],
   "drop": {"item": "Giant Meat", "percent": 30},
   "effects_like": 5,
   "model": {
