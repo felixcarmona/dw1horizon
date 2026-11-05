@@ -5,10 +5,10 @@
   "level": "mega",
   "vanilla_as": 61,
   "attribute": "data",
-  "specialties": ["ice", "mech", null],
+  "specialties": ["ice", "mech", "air"],
   "techniques": ["Aurora Freeze", "Ice Statue", "Giga Freeze", "Water Blit", "Ice Needle", "Winter Blast",
                  "Tear Drop", "Aqua Magic", "DG Dimension", "Pulse Laser", "All Range Beam",
-                 "Delete Program", "Reverse Prog", "Power Crane", "Mail Strome"],
+                 "Delete Program", "Reverse Prog", "Full Potential", "Thunder Justice", "Mail Strome"],
   "drop": {"item": "sm.recovery", "percent": 30},
   "effects_like": 26,
   "model": {
