@@ -1,3 +1,5 @@
+import { staleFile, retryFile, snapshotDisc } from './storage.js';
+
 // The web engine: builds the "everything" disc from the player's discs, here in the browser.
 //
 //   1. the engine's files (engine/<version>/: Pyodide, the bundle's packs, plan.json) into the Cache API, once
@@ -160,8 +162,8 @@ export async function tidyStorage() {
 const roomFor = (plan) => 2 * plan.release.holes_bytes + Math.max(...Object.values(plan.release.outputs).map((o) => o.size)) + 1.25 * 2 ** 30;
 // The same for the page before a build (js/remember.js keeps that much free when it copies discs); without an engine
 // here, about what the current release needs.
-export async function buildRoom() {
-  try { return roomFor((await loadPlan()).plan); } catch { return 3 * 2 ** 30; }
+export async function buildRoom(inputBytes = 0) {
+  try { return roomFor((await loadPlan()).plan) + inputBytes; } catch { return 3 * 2 ** 30 + inputBytes; }
 }
 
 // Is there room for `need` bytes more in this browser's storage? {need, reason: null (it fits, as far as the browser
@@ -202,6 +204,7 @@ const NETWORK = /Failed to fetch|NetworkError|Load failed|network error|ERR_INTE
 export function failureKind(text) {
   text = String(text || '');
   if (STORAGE.test(text)) return 'storage';
+  if (staleFile(text)) return 'file';
   if (BLOCKED.test(text)) return 'blocked';
   if (MEMORY.test(text)) return 'memory';
   if (NETWORK.test(text)) return 'network';
@@ -219,10 +222,12 @@ async function opfsDir(path) {
 }
 
 async function opfsText(path) {
-  let d = await opfsRoot();
-  const parts = path.split('/');
-  for (const p of parts.slice(0, -1)) d = await d.getDirectoryHandle(p);
-  return (await (await d.getFileHandle(parts.at(-1))).getFile()).text();
+  return retryFile(`build file ${path}`, async () => {
+    let d = await opfsRoot();
+    const parts = path.split('/');
+    for (const p of parts.slice(0, -1)) d = await d.getDirectoryHandle(p);
+    return (await (await d.getFileHandle(parts.at(-1))).getFile()).text();
+  });
 }
 
 async function opfsPut(path, data) {
@@ -254,7 +259,8 @@ export class Build {
   constructor(discs, { onState, workers = workerCount() } = {}) {
     if (discs instanceof Blob) discs = { us: discs };   // (a page from before the four discs, still in a cache)
     this.file = discs.us;
-    this.sources = discs.sources || {};
+    this.sources = { ...discs.sources };
+    this.handles = discs.handles || {};
     this.titles = discs.titles || {};
     this.n = workers;
     this.onState = onState || (() => {});
@@ -370,13 +376,13 @@ export class Build {
     const KEEP = new Set(['build.cancelled', 'engine.otherTab', 'engine.noWasm', 'engine.noOpfs', 'engine.noStreams',
                           'engine.sourceDiffers', 'engine.holesDiffer', 'engine.imageDiffers', 'engine.notDeployed']);
     const OWN = { 'engine.noSpace': 'storage', 'engine.quota': 'storage', 'engine.storageBlocked': 'blocked',
-                  'engine.outOfMemory': 'memory', 'engine.workerFailed': 'memory', 'engine.download': 'network' };
+                  'engine.outOfMemory': 'memory', 'engine.workerFailed': 'memory', 'engine.download': 'network', 'engine.fileLost': 'file' };
     const vars = { ...err.vars, bytes: err.vars.bytes || this.need || 0 };
     if (OWN[err.key]) return Object.assign(new EngineError(err.key, vars, err.detail), { kind: OWN[err.key] });
-    if (KEEP.has(err.key)) return Object.assign(err, { kind: null });
+    if (KEEP.has(err.key) && !staleFile(err.detail)) return Object.assign(err, { kind: null });
     const kind = failureKind(`${err.detail}\n${err.message}`);
     const key = { storage: 'engine.quota', blocked: 'engine.storageBlocked', network: 'engine.network',
-                  memory: 'engine.outOfMemory' }[kind] || err.key;
+                  memory: 'engine.outOfMemory', file: 'engine.fileLost' }[kind] || err.key;
     if (key === 'engine.outOfMemory') vars.job ||= this.state.now?.[0] || '';
     return Object.assign(new EngineError(key, vars, err.detail), { kind });
   }
@@ -439,16 +445,25 @@ export class Build {
     this.checkStopped();
     try { await (await navigator.storage.getDirectory()).removeEntry(OPFS_DIR, { recursive: true }); } catch { /* none */ }
     this.checkStopped();
-    // room: the tree (~0.5 GB), the image and the engine's files. The discs the page keeps for next time
-    // (OPFS horizon-discs, js/remember.js) are already in `usage` and are read in place: they need nothing more.
+    // Room for the build and immutable copies of all selected discs. Remembered discs remain in usage.
     // Asked before anything is downloaded or built (checkRoom: the browser's estimate, then the storage itself).
-    this.need = roomFor(plan);
+    this.need = roomFor(plan) + [this.file, ...Object.values(this.sources)].reduce((n, f) => n + f.size, 0);
     const room = await checkRoom(this.need, this.roomTest || this.need);
     this.checkStopped();
     this.log(`room: ${(this.need / 2 ** 30).toFixed(2)} GB needed; ${room.reason || 'ok'}${room.free != null ? `, browser estimate ${(room.free / 2 ** 30).toFixed(1)} GB free` : ''}${room.msg ? ` (${room.msg})` : ''}`);
     if (room.reason === 'quota') throw new EngineError('engine.noSpace', { bytes: this.need }, `room: ${room.msg}`);
     if (room.reason === 'blocked') throw new EngineError('engine.storageBlocked', {}, room.msg);
     st.room = room.reason;                 // 'unkept': a private window, most likely; the build tries anyway
+
+    // Keep the player's discs independent of downloads, removable storage and old File snapshots.
+    st.phase = 'extract';
+    this.emit();
+    for (const [game, file] of Object.entries({ us: this.file, ...this.sources })) {
+      this.log(`copying input disc ${game} into browser storage`);
+      const copy = await snapshotDisc(file, game, { handle: this.handles[game],
+        check: () => this.checkStopped(), log: (line) => this.log(line) });
+      if (game === 'us') this.file = copy; else this.sources[game] = copy;
+    }
 
     // 1. the engine's files
     st.phase = 'download';
@@ -480,7 +495,7 @@ export class Build {
     }
     this.registry = new Map();
     const onJob = new Map();
-    const route = (slot, m) => { const f = onJob.get(slot); if (f) f(m); };
+    const route = (slot, m) => { if (m.message) this.log(m.message); const f = onJob.get(slot); if (f) f(m); };
     let extracted = null;
     const reader = () => this.spawn(-1, (slot, m) => {
       if (m.kind === 'progress') { st.extract.done = m.done; st.extract.total = m.total; this.emit(); }
@@ -650,6 +665,10 @@ export class Build {
         j.memoryFailures = (j.memoryFailures || 0) + 1;
         const why = String(msg).split('\n').filter((l) => MEMORY.test(l) || STORAGE.test(l)).pop() || String(msg).split('\n').filter(Boolean).pop();
         // the browser's storage is full: another worker would only fail the same way
+        if (staleFile(msg)) {
+          fail(new EngineError('engine.fileLost', { job: j.name }, msg));
+          return;
+        }
         if (STORAGE.test(String(msg))) {
           this.log(`w${slot.id} ${j.name}: no room left in this browser's storage (${(why || '').trim()})`);
           fail(new EngineError('engine.quota', { job: j.name, bytes: this.need }, msg));
@@ -803,7 +822,8 @@ export class Build {
     this.checkStopped();
     await opfsPut(DONE, JSON.stringify({ size: w.size, sha1: w.sha1, base: key, release: plan.release.version }));
     this.checkStopped();
-    const bin = await (await root.getFileHandle(IMAGE)).getFile();
+    try { await root.removeEntry('inputs', { recursive: true }); } catch { /* tidied on the next visit */ }
+    const bin = await retryFile('finished image', async () => (await (await opfsRoot()).getFileHandle(IMAGE)).getFile());
     this.checkStopped();
     const cue = new Blob([`FILE "${OUTPUT_NAME}.bin" BINARY\r\n  TRACK 01 MODE2/2352\r\n    INDEX 01 00:00:00\r\n`], { type: 'text/plain' });
     st.phase = 'done';
