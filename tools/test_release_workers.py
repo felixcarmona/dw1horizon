@@ -69,6 +69,22 @@ class Workers(unittest.TestCase):
 
 
 class RecordingCache(unittest.TestCase):
+    def test_player_replay_does_not_enter_release_helpers(self):
+        import dwpatch as dw
+        from types import SimpleNamespace
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            (root / 'bundle').mkdir()
+            man = {'files': {'MODEL': {'file': 'model'}}}
+            with patch.object(dw, 'derive_tree'), \
+                    patch.object(dw, 'derive_run', return_value=(man, str(root / 'out'))) as replay, \
+                    patch.object(dw, 'release_derive', side_effect=AssertionError('release-only helper')):
+                got = dw.derive_holes(td, {'extract': []}, {'local': {'recipe': 'everything'}},
+                                     SimpleNamespace(data=lambda q: b''), str(root / 'work'))
+            self.assertEqual(got, {'MODEL': str(root / 'out/model')})
+            self.assertNotIn('measure_worker', replay.call_args.kwargs)
+            self.assertNotIn('release_env', replay.call_args.kwargs)
+
     def test_launcher_metadata_does_not_prevent_cross_release_hits(self):
         import dwpatch as dw
         first = {'SPECIES': 'all', 'FUTURE_BUILD_FLAG': 'one', 'CODEX_THREAD_ID': 'first',

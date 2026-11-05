@@ -1550,8 +1550,13 @@ def derive_holes(rel, m, v, base, work, jobs=None, source_discs=None, cache=None
     derive_tree(root, files, m['extract'], lambda q: base.data(q), phase)
     if SCREEN is not None:
         SCREEN.start(next(k for k in SCREEN.keys if k.startswith('step:')))
-    man, out = release_derive(root, v['local']['recipe'], os.path.join(root, 'exe-facts.json'), cache=cache, slot=slot, jobs=jobs,
-                          source_discs=source_discs)
+    if cache is not None or slot is not None:
+        man, out = release_derive(root, v['local']['recipe'], os.path.join(root, 'exe-facts.json'),
+                                  cache=cache, slot=slot, jobs=jobs, source_discs=source_discs)
+    else:
+        # The shipped reader has no release-only helpers or caches.
+        man, out = derive_run(root, v['local']['recipe'], os.path.join(root, 'exe-facts.json'),
+                              jobs=jobs, source_discs=source_discs)
     return derive_files(man, out)
 
 
