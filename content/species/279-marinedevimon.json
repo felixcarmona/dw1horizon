@@ -5,41 +5,251 @@
   "level": "ultimate",
   "vanilla_as": 40,
   "attribute": "virus",
-  "specialties": ["ice", "battle", null],
-  "techniques": ["Giga Freeze", "Aurora Freeze", "Ice Statue", "Water Blit", "Ice Needle", "Winter Blast",
-                 "Tear Drop", "Aqua Magic", "Megaton Punch", "Buster Dive", "Counter",
-                 "Dynamite Kick (44)", "Tremar", "Death Claw"],
-  "drop": {"item": "sm.recovery", "percent": 10},
+  "specialties": [
+    "ice",
+    "battle",
+    null
+  ],
+  "techniques": [
+    "Giga Freeze",
+    "Aurora Freeze",
+    "Ice Statue",
+    "Water Blit",
+    "Ice Needle",
+    "Winter Blast",
+    "Tear Drop",
+    "Aqua Magic",
+    "Megaton Punch",
+    "Buster Dive",
+    "Counter",
+    "Dynamite Kick (44)",
+    "Tremar",
+    "Death Claw"
+  ],
+  "drop": {
+    "item": "sm.recovery",
+    "percent": 10
+  },
   "effects_like": 26,
   "model": {
     "file": "build/sizes-out/models/MarineDevimon.MMD",
     "radius": 180,
     "height": 420,
-    "skeleton": [[-1, -1], [0, 0], [1, 1], [2, 2], [3, 3], [4, 4], [5, 2], [6, 6], [7, 7], [8, 2], [9, 9], [10, 10],
-                 [11, 1], [12, 12], [13, 1], [14, 1], [15, 1], [16, 1], [17, 1], [18, 18], [19, 19],
-                 [20, 1], [21, 21], [22, 22], [23, 1], [24, 24], [25, 25], [26, 1], [27, 27],
-                 [28, 28], [29, 1], [30, 30]],
-    "slot_aliases": [[47, 56], [48, 55], [49, 54], [50, 54], [51, 56], [53, 56], [55, 52], [56, 46], [57, 46],
-                     [58, 52], [52, 54], [59, 46], [60, 46], [61, 54], [54, 46], [46, 61]]
+    "skeleton": [
+      [
+        -1,
+        -1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        4,
+        4
+      ],
+      [
+        5,
+        2
+      ],
+      [
+        6,
+        6
+      ],
+      [
+        7,
+        7
+      ],
+      [
+        8,
+        2
+      ],
+      [
+        9,
+        9
+      ],
+      [
+        10,
+        10
+      ],
+      [
+        11,
+        1
+      ],
+      [
+        12,
+        12
+      ],
+      [
+        13,
+        1
+      ],
+      [
+        14,
+        1
+      ],
+      [
+        15,
+        1
+      ],
+      [
+        16,
+        1
+      ],
+      [
+        17,
+        1
+      ],
+      [
+        18,
+        18
+      ],
+      [
+        19,
+        19
+      ],
+      [
+        20,
+        1
+      ],
+      [
+        21,
+        21
+      ],
+      [
+        22,
+        22
+      ],
+      [
+        23,
+        1
+      ],
+      [
+        24,
+        24
+      ],
+      [
+        25,
+        25
+      ],
+      [
+        26,
+        1
+      ],
+      [
+        27,
+        27
+      ],
+      [
+        28,
+        28
+      ],
+      [
+        29,
+        1
+      ],
+      [
+        30,
+        30
+      ]
+    ]
   },
-  "texture": {"file": "build/batch9/MarineDevimon.TIM", "entry": 0},
+  "texture": {
+    "file": "build/batch9/MarineDevimon.TIM",
+    "entry": 0
+  },
   "voice": 6,
   "battle_music": "normal-battle",
-  "condition_bubble": [0, -129, -94, 31],
-  "effect_origins": [[4, -70, 70, 0, 31, 0, 69, -26], [17, 118, 0, 129, 6, -110, 69, -6],
-                     [2, 230, -100, 0, 1, -56, -85, -156], [2, 0, 0, 0, 1, 0, 0, 0]],
-  "wild": {"hp": 2760, "mp": 2880, "off": 455, "def": 310, "speed": 360, "brain": 290, "bits": 1500},
+  "condition_bubble": [
+    0,
+    -129,
+    -94,
+    31
+  ],
+  "effect_origins": [
+    [
+      4,
+      -70,
+      70,
+      0,
+      31,
+      0,
+      69,
+      -26
+    ],
+    [
+      17,
+      118,
+      0,
+      129,
+      6,
+      -110,
+      69,
+      -6
+    ],
+    [
+      2,
+      230,
+      -100,
+      0,
+      1,
+      -56,
+      -85,
+      -156
+    ],
+    [
+      2,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ]
+  ],
+  "wild": {
+    "hp": 2760,
+    "mp": 2880,
+    "off": 455,
+    "def": 310,
+    "speed": 360,
+    "brain": 290,
+    "bits": 1500
+  },
   "sizing": {
     "game": "dw2",
     "level": 5,
     "base_model": "build/batch9/MarineDevimon.MMD",
     "base_scale": 1.0,
-    "natural": {"height": 457.2, "half_width": 274.1, "half_depth": 326.3}
+    "natural": {
+      "height": 457.2,
+      "half_width": 274.1,
+      "half_depth": 326.3
+    }
   },
-  "size": {"height": 420},
+  "size": {
+    "height": 420
+  },
   "partner": {
     "voice": 3,
-    "hunger_hours": [4, 12, 20],
+    "hunger_hours": [
+      4,
+      12,
+      20
+    ],
     "energy_max": 80,
     "energy_fed": 30,
     "energy_per_hour": 4,
@@ -50,13 +260,27 @@
     "favored_region": 6,
     "training_type": "offense-speed",
     "birth_weight": 30,
-    "status_screen_position": [30, 390, -940],
+    "status_screen_position": [
+      30,
+      390,
+      -940
+    ],
     "item_distance": 25,
-    "training": {"animation": 60, "hit_tick": 10}
+    "training": {
+      "animation": 60,
+      "hit_tick": 10
+    }
   },
   "evolution": {
-    "from": [240, 278, 100, 94],
-    "to": [401],
+    "from": [
+      240,
+      278,
+      100,
+      94
+    ],
+    "to": [
+      401
+    ],
     "requirements": {
       "digimon": 240,
       "hp": -1,
@@ -73,6 +297,13 @@
       "techs": -1,
       "flags": 16
     },
-    "gains": {"hp": 4600, "mp": 4850, "offense": 705, "defense": 455, "speed": 590, "brains": 485}
+    "gains": {
+      "hp": 4600,
+      "mp": 4850,
+      "offense": 705,
+      "defense": 455,
+      "speed": 590,
+      "brains": 485
+    }
   }
 }

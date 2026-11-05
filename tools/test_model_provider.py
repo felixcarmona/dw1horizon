@@ -50,10 +50,19 @@ class ModelProvider(unittest.TestCase):
         self.assertEqual(len(records), 183)  # the 175 source-game imports and the eight hand-made babies
         selected = {t: model.OVERLAYS[e['field_overlay']]
                     for t, e in records.items() if e.get('field_overlay')}
+        # Baked deltas retain their effective field generator as authoring provenance.
+        for path in Path('content/modeldelta/scale-locks').glob('*.json'):
+            proof = json.loads(path.read_text())
+            sid = str(proof['species'])
+            self.assertTrue(records[sid]['aliases_applied'])
+            self.assertNotIn('field_overlay', records[sid])
+            preceding = proof['preceding_provider'].get('field_overlay')
+            if preceding:
+                self.assertNotIn(sid, selected)
+                selected[sid] = model.OVERLAYS[preceding]
         celebrations = json.load(open('content/models/imports/celebrations.json'))
-        self.assertEqual(len(selected), 120 + sum(not r.get('base_generator') for r in celebrations.values()))
-        self.assertEqual({e['field_overlay'] for e in records.values() if e.get('field_overlay')},
-                         set(model.OVERLAYS))
+        self.assertEqual(len(selected), len(model.OVERLAYS))
+        self.assertEqual(set(selected.values()), set(model.OVERLAYS.values()))
         for species, (bound_species, _, _) in selected.items():
             self.assertEqual(species, bound_species)
         assignments = {t: entry[1:] for t, entry in selected.items()}
