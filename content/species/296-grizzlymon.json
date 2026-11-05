@@ -7,7 +7,7 @@
   "attribute": "vaccine",
   "specialties": ["battle", "ice", null],
   "techniques": ["Megaton Punch", "Counter", "Muscle Charge", "War Cry", "Sonic Jab", "Tremar", "Ice Needle",
-                 "Aqua Magic", "Tear Drop", "Winter Blast", "Mail Strome"],
+                 "Aqua Magic", "Tear Drop", "Winter Blast", "Mail Strome", "Giga Freeze"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 35,
   "model": {

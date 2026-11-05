@@ -18,7 +18,8 @@
     "Sonic Jab",
     "Muscle Charge",
     "War Cry",
-    "Poison Ivy"
+    "Poison Ivy",
+    "Danger Sting"
   ],
   "drop": {
     "item": "sm.recovery",

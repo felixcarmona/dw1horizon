@@ -8,7 +8,7 @@
   "specialties": ["nature", "air", null],
   "techniques": ["Poison Powder", "Danger Sting", "Mass Morph", "Insect Plague", "Poison Claw", "Charm Perfume",
                  "Electric Cloud", "Static Elect", "Wind Cutter", "Confused Storm",
-                 "Spnning Needle"],
+                 "Spnning Needle", "Bug", "Spinning Shot"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 33,
   "model": {
