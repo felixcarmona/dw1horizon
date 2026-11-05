@@ -356,3 +356,6 @@ Keep-rebirth-species-fallback-resident.patch
 mojyamon-daily-exchanges.patch
 mojyamon-one-time-north-star-and-evolution-targets.patch
 dolph-fin-evolution-item.patch
+Finish-scripted-moves-with-a-rounded-zero-step.patch
+Keep-item-bank-column-clears-within-their-text-slot.patch
+wait-for-quick-battle-effects-before-melee.patch

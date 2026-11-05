@@ -2,9 +2,9 @@
 """Authoring of the first Seam screen (screen 323, files SEAM01), run by hand (needs numpy, cv2, torch and
 Segment Anything): the floor is SAM's mask (two passes, the block floor left and right of the seam) unioned with a
 generous traced polygon (all the floor between the red wall, the top wall and the right wall), minus the four heaps
-of broken blocks along the seam. The picture has no gap in the walls, so the way to the Brink is the foot of the red
-wall and the way on is the top band of the floor right of the heaps. Writes maps/seam-1-data.json for the build-time
-recipe maps/seam-1.py, and OUT_DIR/SEAM01-zones.png (green: the real reach, blue: exit tiles, white: arrivals).
+of broken blocks along the seam. The west rock passage leads to the Brink; the top doorway opens onto the left
+aisle. Writes maps/seam-1-data.json for the build-time recipe maps/seam-1.py, and OUT_DIR/SEAM01-zones.png
+(green: the real reach, blue: exit tiles, white: arrivals).
 
     SAM_CHECKPOINT=path/to/sam_vit_h_4b8939.pth python3 author/seam-1-layout.py OUT_DIR
     (SAM_CACHE=1 reuses OUT_DIR/SEAM01-sam.npz for polygon, exit or spawn tweaks)
@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'
 from mapbase import base_map, Cam, MOD, check_arrivals
 from maps import reach
 
-ART_FULL = os.path.join(MOD, 'art', 'full', 'seam-1-2304x1856.png')   # the 768x640 art is its middle 6:5
+ART_FULL = os.path.join(MOD, 'art', 'full', 'seam-1-entrances.png')   # the complete generated scene, cropped only to remove padding
 ART = os.path.join(MOD, 'art', 'seam-1.png')
 DATA = os.path.join(MOD, 'maps', 'seam-1-data.json')
 CHECKPOINT = os.environ.get('SAM_CHECKPOINT', os.path.join(MOD, '..', '..', '..', 'build', 'new-maps', 'models', 'sam_vit_h_4b8939.pth'))
@@ -40,6 +40,7 @@ PASSES = [
 ]
 FORCED = {                                              # all the floor between the walls
     'ground': [(120, 100), (700, 100), (705, 640), (110, 640)],
+    'west-passage': [(40, 267), (200, 267), (200, 387), (40, 387)],
 }
 BLOCKED = {
     'heap-1': [(380, 90), (450, 90), (455, 185), (385, 185)],
@@ -47,11 +48,11 @@ BLOCKED = {
     'heap-3': [(380, 365), (450, 365), (455, 475), (385, 475)],
     'heap-4': [(385, 550), (460, 550), (465, 640), (390, 640)],
 }
-EXIT_W = (105, 180, 135, 420)                           # box: the foot of the red wall, back to the Brink (322)
-EXIT_N = (480, 100, 680, 120)                           # box: the top band of the floor right of the heaps, on to 324 (when it exists)
+EXIT_W = (65, 287, 105, 370)                           # box: the foot of the red wall, back to the Brink (322)
+EXIT_N = (300, 95, 365, 122)                           # box: the clear left half of the top doorway, on to 324 (when it exists)
 EXITS = [
     {'warp': 0, 'target': (322, 1), 'spawn_px': (180, 300), 'face_px': (500, 300)},     # from the Brink: by the red wall, facing the seam
-    {'warp': 1, 'target': (324, 0), 'spawn_px': (580, 165), 'face_px': (580, 500)},     # from 324: by the top wall, facing down
+    {'warp': 1, 'target': (324, 0), 'spawn_px': (330, 170), 'face_px': (330, 500)},     # from 324: below the top doorway, facing down
 ]
 
 
@@ -75,7 +76,7 @@ def sam_masks(im, out):
 
 def main(out):
     os.makedirs(out, exist_ok=True)
-    full = Image.open(ART_FULL).convert('RGB'); w0, h0 = full.size; ww = round(h0 * 6 / 5); x0 = (w0 - ww) // 2
+    full = Image.open(ART_FULL).convert('RGB'); w0, h0 = full.size; ww = w0; x0 = 0
     im = np.array(full.crop((x0, 0, x0 + ww, h0)))
     masks, scores = sam_masks(im, out)
     floor = np.zeros((H, W), np.uint8)

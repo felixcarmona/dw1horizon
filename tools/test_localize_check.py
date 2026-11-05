@@ -54,7 +54,7 @@ class LocalizationAudit(unittest.TestCase):
 
     def test_named_keys_follow_the_owner_of_an_event(self):
         import pathlib, tempfile
-        from tools.dws.text.profiles import named_keys
+        from tools.dws.text.profiles import named_keys, narrator_keys
         with tempfile.TemporaryDirectory() as root:
             path = pathlib.Path(root, 'story/base/zones/z/s1/script.dws'); path.parent.mkdir(parents=True)
             path.write_text("""on talk(a) replace {
@@ -70,6 +70,93 @@ on talk(b) replace {
 }
 """)
             self.assertEqual(named_keys(root), {'a', 'b', 'c', 'e'})
+            self.assertEqual(narrator_keys(root), {'n'})
+
+    def test_physical_rows_respect_named_narrator_and_custom_boxes(self):
+        from tools.dws.text.profiles import textbox_overflows
+        script = '\n'.join([
+            'SET_DIALOG_OWNER TAMER', 'SHOW_TEXTBOX', ' "a{br}b"', ' "c"', ' "lost"',
+            'SET_DIALOG_OWNER 255', 'SHOW_TEXTBOX', ' "a"', ' "b"', ' "c"', ' "fits"',
+            'SHOW_TEXTBOX', ' "a"', ' "b"', ' "c"', ' "d"', ' "lost"',
+            'SET_TEXTBOX_SIZE 0, 20, 2', 'SHOW_TEXTBOX', ' "a"', ' "b"', ' "lost"',
+            'END_SECTION', 'SHOW_TEXTBOX', ' "a"', ' "b"', ' "c"', ' "fits"'])
+        self.assertEqual(list(textbox_overflows(script)), [
+            (3, ['a', 'b', 'c', 'lost']), (4, ['a', 'b', 'c', 'd', 'lost']), (2, ['a', 'b', 'lost'])])
+
+    def test_story_build_rejects_physical_overflow(self):
+        import pathlib, tempfile
+        from dws.basebuild import check_named_pages
+        from dws.diag import DwsError
+        with tempfile.TemporaryDirectory() as run:
+            path = pathlib.Path(run, 'scn/script_121.scn.txt')
+            path.parent.mkdir()
+            path.write_text('SET_DIALOG_OWNER 255\nSHOW_TEXTBOX\n "a{br}b{br}c{br}d{br}lost"\n')
+            with self.assertRaisesRegex(DwsError, '5 rows in a 4-row box'):
+                check_named_pages(run, 'pt-br')
+            path.write_text('SET_DIALOG_OWNER 6\nSHOW_TEXTBOX\n "greeting"\nSHOW_TEXTBOX\n "offer"\n')
+            check_named_pages(run, 'pt-br')
+
+    def test_compiled_tournament_arrays_are_not_dialogue_pages(self):
+        from tools.dws.text.profiles import textbox_overflows, UNPACKED_SCRIPTS
+        script = '\n'.join(['.section 10 table', '.section 11 dialogue', 'table:', 'SHOW_TEXTBOX',
+                             ' "a"', ' "b"', ' "c"', ' "d"', ' "e"', ' "f"', ' "g"', 'END_SECTION',
+                             'dialogue:', 'SET_DIALOG_OWNER 6', 'SHOW_TEXTBOX',
+                             ' "a"', ' "b"', ' "c"', ' "lost"'])
+        for sid in UNPACKED_SCRIPTS:
+            self.assertEqual(list(textbox_overflows(script, sid)), [(3, ['a', 'b', 'c', 'lost'])])
+        self.assertEqual(len(list(textbox_overflows(script, 121))), 2)
+
+    def test_page_audit_detects_the_reported_demimeramon_cut(self):
+        from tools.localize.check import BE, dialogue_layout, page_problems
+        from dws.textbank import TextBank
+        previous = dict(BE.FONT)
+        try:
+            BE.FONT.update(extra=True, chars=frozenset(BE.EXTRA_ORDER), name='b')
+            key = 's121.sec5.u0'
+            reported = [['Oi, oi. Conhece as cartas', 'Digimon? Coleciono cartas de',
+                         'Meramon. Traga uma, e eu', 'compro por 1500 Bits!']]
+            rendered, limit = dialogue_layout(key, reported, TextBank(source='ours'), {}, {key})
+            self.assertEqual(page_problems(key, rendered, limit), ['page 1: 4 rows in a 3-row box'])
+            for narrator, expected in [(False, True), (True, False)]:
+                rendered, limit = dialogue_layout('mod.line', reported, TextBank(source='ours'), {}, set(),
+                                                 True, 'the narrator' if narrator else 'npc (Agumon)')
+                self.assertEqual(bool(page_problems('mod.line', rendered, limit)), expected)
+            rendered, limit = dialogue_layout('custom', [['a{br}b', 'c']], TextBank(source='ours'),
+                                             {'custom': (240, 2)}, set())
+            self.assertTrue(page_problems('custom', rendered, limit))
+        finally:
+            BE.FONT.clear()
+            BE.FONT.update(previous)
+
+    def test_all_dialogue_pages_fit_every_language_and_font(self):
+        from tools.localize.check import audit_pages, LANGUAGES, FONTS
+        result = audit_pages()
+        self.assertEqual(result['errors'], [])
+        self.assertEqual(set(result['coverage']), {lang + ':' + font for lang in LANGUAGES for font in FONTS})
+        self.assertTrue(all(count['entries'] > 4000 and count['pages'] >= count['entries']
+                            for count in result['coverage'].values()))
+
+    def test_demimeramon_offer_keeps_every_word_in_both_script_banks(self):
+        import json
+        from tools.localize.check import BE, ROOT, LANGUAGES, FONTS, dialogue_layout, page_problems
+        from dws.textbank import TextBank, join_rows
+        previous = dict(BE.FONT)
+        try:
+            key = 's121.sec5.u0'
+            for lang in LANGUAGES:
+                source = 'ours' if lang == 'en' else lang
+                value = json.loads((ROOT / 'text' / source / 'dialogue/lava-cave.json').read_text())[key]
+                for font in FONTS:
+                    BE.FONT.update(extra=True, chars=frozenset(BE.EXTRA_ORDER), name=font)
+                    rendered, limit = dialogue_layout(key, value, TextBank(lang, source), {}, {key})
+                    self.assertEqual(page_problems(key, rendered, limit), [], (lang, font))
+                    self.assertEqual(join_rows(row for page in rendered for row in page),
+                                     join_rows(row for page in value for row in page), (lang, font))
+                    self.assertIn('1500', rendered[-1][-1], (lang, font))
+                    self.assertTrue(all(BE.fits(row) for page in rendered for row in page), (lang, font))
+        finally:
+            BE.FONT.clear()
+            BE.FONT.update(previous)
 
     def test_every_shipped_bank_fits_both_fonts_and_preserves_references(self):
         from tools.localize.check import audit, LANGUAGES

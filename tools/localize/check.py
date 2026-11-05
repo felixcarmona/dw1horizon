@@ -20,14 +20,14 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path[:0] = [str(ROOT), str(ROOT / 'tools')]
 from dws import backend as BE
-from dws.text.profiles import NAMED_PAGE_ROWS, header_row, maphead_page_too_tall, merged_name_rows, named_keys
+from dws.text.profiles import NAMED_PAGE_ROWS, header_row, maphead_page_too_tall, merged_name_rows, named_keys, narrator_keys
 from dws.textbank import TextBank
 from dws.text.jaspace import kinsoku_problems, problems as ja_space_problems
 from dws.py.lower import escape_problems, font_problems, literal_escapes, resolve_escapes
 from tools.localize.executable.bank import exe_bank, FORMAT, encoded_len, list_width, VERBATIM
 from tools.fontgen import text_width
 
-LANGUAGES = ('en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca')
+from tools.languages import CODES as LANGUAGES
 FONTS = ('b', 'original')
 REFERENCE = re.compile(r'\{[^{}]+\}|[○□△×]')
 HEADER = re.compile(r'^\{color [67]\}.*?\{color 1\}[.!?]*$')
@@ -235,13 +235,88 @@ def name_rows(key, value, bank):
     return [f[0][0] for f in fitted if not isinstance(f, str)]
 
 
-def rendered_pages(key, value, bank):
+def rendered_pages(key, value, bank, row_limit=3):
     # The base game's source loader reflows wide explicit rows. Mod banks are
     # loaded verbatim, so do not hide a mod's overflow by running the fitter.
     value = bank.fit(key, value)
     if isinstance(value, str):
-        return [[value]] if CHOICE.search(key) else BE.wrap(value, 3, BE.packed_key(key))
+        return [[value]] if CHOICE.search(key) else BE.wrap(value, row_limit, BE.packed_key(key))
     return pages(value)
+
+
+def dialogue_layout(key, value, bank, boxes, named, is_mod=False, where='', narrated=()):
+    """The page rows actually emitted, with the active box's physical capacity."""
+    limit = boxes.get(key, (240, 4))[1]
+    if is_mod:
+        limit = 4 if 'narrator' in where else 3
+        rendered = BE.wrap(value, limit) if isinstance(value, str) else pages(value)
+    else:
+        if key in named and key not in boxes:
+            limit = NAMED_PAGE_ROWS
+        # show_textbox of string keys uses three rows in the compiler. Explicit
+        # narrator/custom pages can use the full capacity of their active box.
+        rendered = rendered_pages(key, value, bank, 4 if key in narrated else 3)
+    physical = [[part for row in page for part in re.split(r'\{br\}', row, flags=re.I)]
+                for page in rendered]
+    return physical, limit
+
+
+def page_problems(key, rendered, limit):
+    if TABLE.match(key) or CHOICE.search(key):
+        return []
+    problems = []
+    for index, page in enumerate(rendered, 1):
+        capacity = min(limit, NAMED_PAGE_ROWS) if maphead_page_too_tall(key, page) else limit
+        if len(page) > capacity:
+            problems.append(f'page {index}: {len(page)} rows in a {capacity}-row box')
+    return problems
+
+
+def audit_pages(languages=LANGUAGES, fonts=FONTS, root=ROOT):
+    """Audit every dialogue bank's emitted pages, separately from UI/name widths.
+
+    Include English mod fallbacks, both font-specific script banks, physical
+    row escapes and MAPHEAD's indexed entries. Counts make coverage reviewable.
+    """
+    errors, counts = [], {}
+    boxes, named, narrated = custom_boxes(root), named_keys(root), narrator_keys(root)
+    previous = dict(BE.FONT)
+    try:
+        for language in languages:
+            for font in fonts:
+                BE.FONT.update(extra=True, glyphs=len(BE.EXTRA_ORDER), chars=frozenset(BE.EXTRA_ORDER), name=font)
+                bank = TextBank(language, 'ours' if language == 'en' else language)
+                checked = collections.Counter()
+                for source, path, executable in bank_pairs(language, root):
+                    if executable or not source.exists():
+                        continue
+                    if not path.exists() and 'mods' in path.parts:
+                        path = source
+                    if not path.exists():
+                        errors.append(dict(language=language, font=font, file=str(path.relative_to(root)),
+                                           key='(bank)', why='translation bank missing'))
+                        continue
+                    english, data = json.loads(source.read_text()), json.loads(path.read_text())
+                    for key, value in data.items():
+                        if key.startswith(('_', 'x.')) or TABLE.match(key) or CHOICE.search(key):
+                            continue
+                        rendered, limit = dialogue_layout(key, value, bank, boxes, named,
+                                                         'mods' in path.parts, english.get('_where', {}).get(key, ''), narrated)
+                        checked['entries'] += 1
+                        checked['pages'] += len(rendered)
+                        checked['rows'] += sum(map(len, rendered))
+                        problems = page_problems(key, rendered, limit)
+                        over = bank.single_page_overflow(key, len(rendered))
+                        if over:
+                            problems.append(over)
+                        for why in problems:
+                            errors.append(dict(language=language, font=font, file=str(path.relative_to(root)),
+                                               key=key, why=why))
+                counts[language + ':' + font] = dict(checked)
+    finally:
+        BE.FONT.clear()
+        BE.FONT.update(previous)
+    return dict(errors=errors, coverage=counts)
 
 
 def expand_references(row, names, species, cards, cache=None):
@@ -284,6 +359,7 @@ def audit(languages=LANGUAGES, fonts=FONTS, root=ROOT):
     errors, notes, widest, counts = [], [], {}, collections.Counter()
     boxes = custom_boxes(root)
     named = named_keys(root)
+    narrated = narrator_keys(root)
     species = {int(p.name.split('-')[0]): json.loads(p.read_text())['name']
                for p in (root / 'content/species').glob('*.json')}
     card_file = root / 'content/tables/cards.json'
@@ -384,7 +460,7 @@ def audit(languages=LANGUAGES, fonts=FONTS, root=ROOT):
                                 line_count = 4 if 'narrator' in where else 3
                                 rendered = BE.wrap(value, line_count) if isinstance(value, str) else pages(value)
                         else:
-                            rendered = rendered_pages(key, value, bank)
+                            rendered = rendered_pages(key, value, bank, 4 if key in narrated else 3)
                             for row in merged_name_rows([] if key in named else name_rows(key, value, bank), rendered):
                                 issue(language, font, path, key, f'a speaker\'s name row is not its own first row: {row}')
                             if language == 'ja':
@@ -393,13 +469,12 @@ def audit(languages=LANGUAGES, fonts=FONTS, root=ROOT):
                         over = bank.single_page_overflow(key, len(rendered))
                         if over:
                             issue(language, font, path, key, over)
+                        physical, limit = dialogue_layout(key, value, bank, boxes, named, is_mod,
+                                                         str(english.get('_where', {}).get(key, '')), narrated)
+                        for why in page_problems(key, physical, limit):
+                            issue(language, font, path, key, why)
                         for page in rendered:
                             max_rows = boxes.get(key, (240, 4))[1]
-                            if len(page) > max_rows and not TABLE.match(key):
-                                issue(language, font, path, key, f'{len(page)} rows in a {max_rows}-row page')
-                            if key in named and key not in boxes and len(page) > NAMED_PAGE_ROWS or \
-                                    maphead_page_too_tall(key, page):
-                                issue(language, font, path, key, f'{len(page)} rows under a speaker\'s name, {NAMED_PAGE_ROWS} fit')
                             for i, row in enumerate(page):
                                 packed = BE.packed_key(key)
                                 pixels = BE.text_px(row)
@@ -434,16 +509,22 @@ def audit(languages=LANGUAGES, fonts=FONTS, root=ROOT):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--json', type=pathlib.Path)
+    parser.add_argument('--pages-only', action='store_true', help='all dialogue page heights and indexed-page counts')
     args = parser.parse_args()
-    result = audit()
+    result = audit_pages() if args.pages_only else audit()
     if args.json:
         args.json.parent.mkdir(parents=True, exist_ok=True)
         args.json.write_text(json.dumps(result, ensure_ascii=False, indent=1) + '\n')
-    for note in result['notes']:
+    for note in result.get('notes', []):
         print('{language} {file}: {why}'.format(**note))
     for error in result['errors']:
         print('{language}/{font} {file}:{key}: {why}'.format(**error))
-    print(f"{sum(result['entries'].values())} entries checked; {len(result['errors'])} errors")
+    if args.pages_only:
+        for pair, count in result['coverage'].items():
+            print(f"{pair}: {count['entries']} dialogue entries, {count['pages']} pages, {count['rows']} rows")
+    else:
+        print(f"{sum(result['entries'].values())} entries checked; {len(result['errors'])} errors")
+    print(f"{len(result['errors'])} errors")
     return bool(result['errors'])
 
 
