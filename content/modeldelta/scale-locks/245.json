@@ -2,8 +2,8 @@
   "species": 245,
   "name": "Piedmon",
   "threshold": 0.02,
-  "source_sha256": "38d1df04ebd48516df4d6ae47681f64b6021c9ef81a8279ade2bc42acdbd5cca",
-  "output_sha256": "14672bce0eed5aceef489d4339934a9ba931fd3f0ced5d99cdb734fe65e4dd16",
+  "source_sha256": "ba19353476ffe4b98721d9520f7b230812b963ddd6967dfb1bd36fc8c2b45702",
+  "output_sha256": "1337bb904e2378aea6baef81eaac614b973d0ae3ea046d7a8435af4ce35e533d",
   "preceding_provider": {
     "model": "245-Piedmon.MMD",
     "aliases_applied": true,
@@ -70,6 +70,44 @@
       [
         46,
         47
+      ]
+    ],
+    "condition_bubble": [
+      0,
+      -126,
+      3,
+      3
+    ],
+    "effect_origins": [
+      [
+        4,
+        90,
+        0,
+        0,
+        3,
+        0,
+        -43,
+        -80
+      ],
+      [
+        8,
+        330,
+        0,
+        0,
+        21,
+        117,
+        150,
+        -239
+      ],
+      [
+        1,
+        0,
+        0,
+        0,
+        20,
+        0,
+        0,
+        0
       ]
     ]
   },
@@ -225,7 +263,7 @@
   ],
   "grounding_max_under": 0.0,
   "grounding_max_over": -0.0,
-  "resident_bytes": 78336,
+  "resident_bytes": 73094,
   "resident_limit": 100352,
   "cold_buffer_bytes": 8192,
   "audit": {
