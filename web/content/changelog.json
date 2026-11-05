@@ -2,6 +2,146 @@
  "_doc": "Releases, newest first. Each version has a date and text in every page language: new, changed and fixed bullet lists, plus an optional upgrade line in all languages. Empty groups are hidden.",
  "versions": [
   {
+   "version": "0.0.6",
+   "date": "2026-11-05",
+   "en": {
+    "new": [
+     "Digimon World 3 (USA) can now supply the World 3 imports.",
+     "New toilets and stronger wild encounters in the Iron Hills, the Seam and Overdell Pass. Every vending machine now has its own selection."
+    ],
+    "changed": [
+     "With NEW DIGIMON on, every raisable Ultimate has a Mega evolution, Whamon is an Ultimate, and Vemmon is a Rookie. The evolution chart shows every route.",
+     "Many imported Digimon have improved walks, runs, sleep and celebration animations, steadier sizes, clearer flat sprites and more fitting voices and techniques.",
+     "Rare daily ground items appear more often."
+    ],
+    "fixed": [
+     "Fixed battles stalling with flattened enemies, pauses after victory and nearby NPCs joining unintended battles.",
+     "Fixed blocked recruitment and factory conversations, unreachable ground items, gym result boxes and Yes/No text cropping.",
+     "The desktop patcher now handles European base discs with Japanese Card Arena correctly. The browser builder explains when storage space is insufficient."
+    ],
+    "upgrade": "Saves from 0.0.5 work. The required games are unchanged; Digimon World 3 (USA) is now another supported source."
+   },
+   "es": {
+    "new": [
+     "Digimon World 3 (USA) ya sirve como fuente para las importaciones de World 3.",
+     "Nuevos aseos y encuentros salvajes más fuertes en las Colinas de Hierro, la Falla y el Paso de Overdell. Cada máquina expendedora tiene su propia selección."
+    ],
+    "changed": [
+     "Con NEW DIGIMON activado, todos los Digimon de nivel Ultimate que puedes criar tienen una evolución Mega, Whamon es Ultimate y Vemmon es Rookie. El árbol muestra todas las rutas.",
+     "Muchos Digimon importados mejoran sus animaciones al caminar, correr, dormir y celebrar, mantienen un tamaño estable y tienen mejores imágenes planas, voces y técnicas.",
+     "Los objetos diarios poco comunes del suelo aparecen más a menudo."
+    ],
+    "fixed": [
+     "Corregidos los combates atascados con enemigos aplastados, las pausas tras ganar y los PNJ cercanos que entraban en combates ajenos.",
+     "Corregidos reclutamientos y conversaciones de la fábrica bloqueados, objetos del suelo inaccesibles, cuadros de resultados del gimnasio y textos de Sí/No recortados.",
+     "El parcheador de escritorio ya combina correctamente las bases europeas con Card Arena japonés. El constructor web explica cuándo falta espacio de almacenamiento."
+    ],
+    "upgrade": "Las partidas de 0.0.5 son compatibles. Los juegos necesarios no cambian; Digimon World 3 (USA) es otra fuente compatible."
+   },
+   "pt-br": {
+    "new": [
+     "Digimon World 3 (USA) agora pode fornecer as importações de World 3.",
+     "Novos banheiros e encontros selvagens mais fortes nas Colinas de Ferro, na Fenda e na Passagem de Overdell. Cada máquina de vendas tem sua própria seleção."
+    ],
+    "changed": [
+     "Com NEW DIGIMON ativado, todo Ultimate que você pode criar tem uma evolução Mega, Whamon é Ultimate e Vemmon é Rookie. A árvore mostra todas as rotas.",
+     "Muitos Digimon importados têm melhores animações ao andar, correr, dormir e comemorar, tamanhos estáveis, imagens planas mais claras e vozes e técnicas mais adequadas.",
+     "Itens diários raros no chão aparecem com mais frequência."
+    ],
+    "fixed": [
+     "Corrigidos combates travados com inimigos achatados, pausas após a vitória e NPCs próximos entrando em combates indevidos.",
+     "Corrigidos recrutamentos e conversas da fábrica bloqueados, itens no chão inacessíveis, caixas de resultados do ginásio e textos de Sim/Não cortados.",
+     "O patcher de desktop agora combina corretamente discos base europeus com Card Arena japonês. O construtor web explica quando falta espaço de armazenamento."
+    ],
+    "upgrade": "Os saves da versão 0.0.5 funcionam. Os jogos necessários não mudaram; Digimon World 3 (USA) é mais uma fonte compatível."
+   },
+   "fr": {
+    "new": [
+     "Digimon World 3 (USA) peut désormais fournir les imports de World 3.",
+     "De nouvelles toilettes et des rencontres sauvages plus fortes dans les Collines de Fer, la Faille et le Col d’Overdell. Chaque distributeur propose sa propre sélection."
+    ],
+    "changed": [
+     "Avec NEW DIGIMON activé, chaque Ultimate pouvant être élevé possède une évolution Mega, Whamon est Ultimate et Vemmon est Rookie. L’arbre affiche toutes les voies.",
+     "De nombreux Digimon importés ont de meilleures animations de marche, de course, de sommeil et de célébration, une taille stable, des sprites aplatis plus lisibles et des voix et techniques mieux adaptées.",
+     "Les objets quotidiens rares au sol apparaissent plus souvent."
+    ],
+    "fixed": [
+     "Correction des combats bloqués avec des ennemis aplatis, des pauses après la victoire et des PNJ voisins rejoignant un combat par erreur.",
+     "Correction de recrutements et de dialogues de l’usine bloqués, d’objets au sol inaccessibles, des résultats du gymnase et des textes Oui/Non rognés.",
+     "Le patcher de bureau combine correctement les disques de base européens avec Card Arena japonais. Le créateur web explique quand l’espace de stockage manque."
+    ],
+    "upgrade": "Les sauvegardes de la version 0.0.5 fonctionnent. Les jeux requis ne changent pas ; Digimon World 3 (USA) est une source supplémentaire compatible."
+   },
+   "de": {
+    "new": [
+     "Digimon World 3 (USA) kann jetzt als Quelle für die World-3-Importe dienen.",
+     "Neue Toiletten und stärkere wilde Gegner in den Eisenhügeln, der Kluft und am Overdell-Pass. Jeder Verkaufsautomat hat jetzt ein eigenes Sortiment."
+    ],
+    "changed": [
+     "Mit aktiviertem NEW DIGIMON hat jedes aufziehbare Ultimate eine Mega-Entwicklung. Whamon ist Ultimate und Vemmon Rookie. Der Entwicklungsbaum zeigt alle Wege.",
+     "Viele importierte Digimon haben bessere Geh-, Lauf-, Schlaf- und Jubelanimationen, eine gleichbleibende Größe, klarere flache Sprites sowie passendere Stimmen und Techniken.",
+     "Seltene tägliche Bodenfunde erscheinen häufiger."
+    ],
+    "fixed": [
+     "Kämpfe mit flachgedrückten Gegnern bleiben nicht mehr hängen. Pausen nach Siegen und ungewollte Kampfeintritte benachbarter NPCs wurden behoben.",
+     "Blockierte Rekrutierungen und Fabrikgespräche, unerreichbare Bodenfunde, Ergebnisfelder im Trainingsraum und abgeschnittene Ja/Nein-Texte wurden korrigiert.",
+     "Der Desktop-Patcher verarbeitet europäische Basisdiscs mit japanischem Card Arena jetzt korrekt. Der Web-Builder erklärt fehlenden Speicherplatz."
+    ],
+    "upgrade": "Spielstände aus 0.0.5 funktionieren. Die benötigten Spiele bleiben gleich; Digimon World 3 (USA) wird zusätzlich als Quelle unterstützt."
+   },
+   "it": {
+    "new": [
+     "Digimon World 3 (USA) può ora fornire le importazioni di World 3.",
+     "Nuovi bagni e incontri selvatici più forti nelle Colline di Ferro, nella Faglia e nel Passo di Overdell. Ogni distributore ha una propria selezione."
+    ],
+    "changed": [
+     "Con NEW DIGIMON attivo, ogni Ultimate allevabile ha un’evoluzione Mega, Whamon è Ultimate e Vemmon è Rookie. L’albero mostra tutti i percorsi.",
+     "Molti Digimon importati hanno animazioni migliori per camminare, correre, dormire e festeggiare, dimensioni stabili, immagini appiattite più chiare e voci e tecniche più adatte.",
+     "Gli oggetti giornalieri rari a terra compaiono più spesso."
+    ],
+    "fixed": [
+     "Corretti i combattimenti bloccati con nemici appiattiti, le pause dopo le vittorie e i PNG vicini che si univano agli scontri per errore.",
+     "Corretti reclutamenti e dialoghi della fabbrica bloccati, oggetti a terra irraggiungibili, riquadri dei risultati della palestra e testi Sì/No tagliati.",
+     "Il patcher desktop combina correttamente i dischi base europei con Card Arena giapponese. Il creatore web spiega quando lo spazio di archiviazione è insufficiente."
+    ],
+    "upgrade": "I salvataggi della versione 0.0.5 funzionano. I giochi richiesti non cambiano; Digimon World 3 (USA) è un’ulteriore fonte supportata."
+   },
+   "ja": {
+    "new": [
+     "北米版Digimon World 3からも、World 3のデジモンを取り込めるようになりました。",
+     "鉄の丘、裂け目、オーバーデル峠にトイレと強めの野生デジモンを追加しました。自動販売機ごとに品ぞろえが異なります。"
+    ],
+    "changed": [
+     "NEW DIGIMONがオンのとき、育成可能なすべての完全体に究極体への進化先があります。ホエーモンは完全体、ベムモンは成長期になります。進化図にはすべてのルートを表示します。",
+     "多くの追加デジモンの歩行、走行、睡眠、喜びの動作を改善しました。動作中の大きさを安定させ、つぶれた姿の画像、鳴き声、技も見直しました。",
+     "毎日の拾い物で珍しいアイテムが出やすくなりました。"
+    ],
+    "fixed": [
+     "つぶれた敵との戦闘停止、勝利後の一時停止、近くの会話相手が意図せず戦闘に参加する問題を修正しました。",
+     "仲間集めや工場の会話が進まない問題、拾えないアイテム、トレーニング結果の枠、はい／いいえの文字欠けを修正しました。",
+     "デスクトップ版パッチャーで欧州版のベースディスクと日本版デジタルカードアリーナを組み合わせられるようになりました。ブラウザー版は保存領域の不足を説明します。"
+    ],
+    "upgrade": "0.0.5のセーブデータを引き続き使えます。必要なゲームは同じです。北米版Digimon World 3も素材として使えるようになりました。"
+   },
+   "ca": {
+    "new": [
+     "Digimon World 3 (USA) ja pot proporcionar les importacions de World 3.",
+     "Nous lavabos i trobades salvatges més fortes als Turons de Ferro, la Falla i el Pas d’Overdell. Cada màquina expenedora té la seva pròpia selecció."
+    ],
+    "changed": [
+     "Amb NEW DIGIMON activat, tots els Digimon de nivell Ultimate que pots criar tenen una evolució Mega, Whamon és Ultimate i Vemmon és Rookie. L’arbre mostra totes les rutes.",
+     "Molts Digimon importats milloren les animacions de caminar, córrer, dormir i celebrar, mantenen una mida estable i tenen imatges planes més clares, veus i tècniques més adequades.",
+     "Els objectes diaris poc comuns de terra apareixen més sovint."
+    ],
+    "fixed": [
+     "Corregits els combats encallats amb enemics aixafats, les pauses després de guanyar i els PNJ propers que entraven en combats aliens.",
+     "Corregits reclutaments i converses de la fàbrica bloquejats, objectes de terra inaccessibles, quadres de resultats del gimnàs i textos de Sí/No retallats.",
+     "El pedaçador d’escriptori ja combina correctament les bases europees amb Card Arena japonès. El constructor web explica quan falta espai d’emmagatzematge."
+    ],
+    "upgrade": "Les partides de 0.0.5 són compatibles. Els jocs necessaris no canvien; Digimon World 3 (USA) és una altra font compatible."
+   }
+  },
+  {
    "version": "0.0.5",
    "date": "2026-11-04",
    "en": {
