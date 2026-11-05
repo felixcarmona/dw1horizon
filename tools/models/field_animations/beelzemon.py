@@ -126,3 +126,16 @@ def build(data, sk):
     assert storage['fits'], storage
     return result, dict(proof, output_sha256=hashlib.sha256(result).hexdigest(), changed_slots=proof['changed_slots'] + [FINISHER],
                         gait_output_sha256=proof['output_sha256'], finisher_check=check, storage=storage)
+
+
+def humanoid_walk(data, sk):
+    """An upright, relaxed walk on the baked chibi model; Devimon is the visual reference."""
+    profile = dict(gaits.PROFILES[SID],
+        source='3c07b7fe613d426df67ff8fb772a6b982aec1ee2453c321ba1368b4518a6ae7d',
+        slots=[2], periods={2: 24}, macro_periods={2: 24}, speeds={2: 15},
+        lifts={2: 18}, tracks=32, height_bias=-7, leans={2: 2},
+        gaze_pitch_by_slot={2: 0}, bounce={2: 2}, sway={2: 3},
+        arm_amplitudes={2: 17}, arm_bends={2: 20}, arm_base=3, arm_spread=10,
+        steady_arm_amp=.55, steady_arm_bends={2: 16}, encoding_tol=1, validate_ik=True,
+        style='upright humanoid steps, soft elbows, delayed torso and wing/tail acting')
+    return gaits.build_profile(data, sk, SID, profile)
