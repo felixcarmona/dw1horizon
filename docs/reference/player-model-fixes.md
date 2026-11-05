@@ -55,3 +55,13 @@ The existing curated route is Kabuterimon (19) → MegaKabuterimon (205) →
 HerculesKabuterimon (60). No level-skipping route is added. Source records and
 `content/tables/evolution-tree.json` already agree on both edges; the built
 chart audit must also show these links with NEW DIGIMON enabled.
+
+## VenomMyotismon: loose long-arm run
+
+The run's shoulders drive alternating arcs, followed by the elbows and then
+the heavy gauntlets. Smooth periodic reversals avoid a rigid held-fist pose.
+Devimon's native long-arm motion is the visual reference. The existing chest,
+head, wing, tail and supported-leg performance remains unchanged, as do root
+travel, scale channels, clip duration and sound/control events. The authoring
+pass checks every unselected channel over four decoded cycles and changes only
+run slot 4. Final provider output retains the animation storage gate.
