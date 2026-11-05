@@ -353,3 +353,5 @@ Apply-species-mode-moves-and-finisher-scalars.patch
 Show-item-descriptions-while-browsing-shops.patch
 Accept-tally-skip-presses-while-other-pad-buttons-are-held.patch
 Keep-rebirth-species-fallback-resident.patch
+Bound-the-battle-start-banner-to-its-GPU-packet-budget.patch
+Keep-effect-interpreter-context-intact-during-battle-loading.patch
