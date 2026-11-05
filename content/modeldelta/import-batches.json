@@ -2031,7 +2031,7 @@
         ]
       },
       "level": 5,
-      "spec": "content/imports/specs/MagnaAngemon.json",
+      "spec": "content/imports/specs/MagnaAngemon-mesh.json",
       "spec_sha256": "ec8b0ccd1a8d0ea78f4b28a1bdb0c93c21366e1afc88c9ef6887c094e064ae43",
       "out": "build/batch3"
     },

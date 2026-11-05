@@ -232,7 +232,7 @@ def species_file(out, t, recs=None, names=None, generate=False):
         s.pop('_path', None)
     # Battle reach is applied after all field size passes: their global model
     # scaling would otherwise shorten the native dash again.
-    if 'Buster Dive' in (s.get('techniques') or []):
+    if 'Buster Dive' in (s.get('techniques') or []) and not e.get('native_animation_donor'):
         import species as species_tools
         from tools.models import buster_dive
         from pathlib import Path

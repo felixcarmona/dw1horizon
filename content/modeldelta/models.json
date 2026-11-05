@@ -731,12 +731,17 @@
             "path": "build/sizes-out/models/MagnaAngemon.MMD",
             "sha256": "b5fb25768fc0188fb69021ce90f4857913645517e0442ba8f119d8c879756f02",
             "size": 96252
+          },
+          {
+            "path": "extracted/CHDAT/MMD0/ANGE.MMD",
+            "sha256": "4bbdf9a2763dab219bc599f0d9cfa44d93263fc5e00930d405ad055f68c22ed9",
+            "size": 91328
           }
         ],
         "delta": "content/modeldelta/deltas/206-MagnaAngemon.MMD.mdelta",
-        "delta_sha256": "8a756692a9342c99501734c651e8e17d1892334c93b4973b58959e5f05d746cb",
-        "sha256": "95db9388c46a072e28ec582734779c1c508fe51faa7a38158af84373d2cbb3d9",
-        "size": 99812
+        "delta_sha256": "b8206ee0f6dd429f026854cd0b41f1c2389745e30f4b74db16495e99c4427cee",
+        "sha256": "021cc8d15c072b57aa4dc997da87424b799a96c778b248a824402a120201ff16",
+        "size": 96310
       },
       "tim": {
         "sources": [
