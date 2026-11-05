@@ -6,6 +6,17 @@ languages. Container coordinates and checksum are regenerated after replay.
 """
 from pathlib import Path
 import struct
+import sys
+
+
+def _resources(tool_root=None):
+    if tool_root is None:
+        folder = Path(__file__).resolve().parent
+        tool_root = folder / 'bundle' if (folder / 'bundle/tools').is_dir() else folder.parents[1]
+    if str(tool_root) not in sys.path:
+        sys.path.insert(0, str(tool_root))
+    from tools import chinese_resources
+    return chinese_resources
 
 
 def metadata(plan):
@@ -20,7 +31,7 @@ def metadata(plan):
 
 
 def components(data, plan, build_dir):
-    from tools import chinese_resources as zh
+    zh = _resources()
     zh.validate(data)
     _, _, _, module_size, font_size, _, patch_size, _ = zh.HEADER.unpack_from(data)
     pieces = {
@@ -48,10 +59,7 @@ def components(data, plan, build_dir):
 
 
 def rebuild(descriptor, files, tool_root=None):
-    import sys
-    if tool_root and str(tool_root) not in sys.path:
-        sys.path.insert(0, str(tool_root))
-    from tools import chinese_resources as zh
+    zh = _resources(tool_root)
     if descriptor.get('format') != 1:
         raise ValueError('unsupported Chinese component recipe')
     rows = [{**r, 'data': files[r['file']]} for r in descriptor['resources']]

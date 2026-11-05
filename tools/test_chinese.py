@@ -145,6 +145,21 @@ class ChineseContainerTests(unittest.TestCase):
                 [{**r, 'data': (root / r['source']).read_bytes()} for r in rows])
             recipe, parts = container.components(data, plan, root)
             self.assertEqual(container.rebuild(recipe, parts), data)
+            # The developer CLI starts with tools/patcher on sys.path, without the repository root.
+            import json
+            import subprocess
+            import sys
+            (root / 'input.bin').write_bytes(data)
+            (root / 'plan.json').write_text(json.dumps(plan))
+            standalone = (
+                'import sys,json;from pathlib import Path;'
+                f'sys.path.insert(0,{str(zh.ROOT / "tools/patcher")!r});'
+                'import chinese_container as C;'
+                f'r=Path({str(root)!r});b=(r/"input.bin").read_bytes();'
+                'p,f=C.components(b,json.loads((r/"plan.json").read_text()),r);'
+                'assert C.rebuild(p,f)==b')
+            subprocess.run([sys.executable, '-I', '-c', standalone], cwd=tmp, check=True,
+                           capture_output=True, text=True)
             parts['@zh/lang/one.SCN'] = b'regional' * 900
             changed = container.rebuild(recipe, parts)
             self.assertEqual(resources.validate(changed), 2)
