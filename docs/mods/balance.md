@@ -2,9 +2,7 @@
 
 Every number that balances a Digimon (techniques, evolution requirements and
 paths, stat gains, raise data, learning chances, drops, wild enemies,
-tournaments) can be changed by editing JSON. `tools/balance.py` reads the
-original values from the player's own disc into JSON, and writes JSON back into
-the compiled executable, its overlays and the `.MAP` files.
+tournaments) can be changed by editing JSON. `tools/balance.py extract` can import numerical values for authoring. Builds clear numeric domains and apply committed JSON to the executable, its overlays and the `.MAP` files; they never inherit a player-disc balance floor.
 
 **Species are not overrides.** Everything the game keeps per
 species (parameters, techniques, drops, raise data, voices, training rows,
@@ -373,7 +371,7 @@ Every partner Rookie has at least four distinct Champion targets in the final tr
 | Agumon | Greymon, Meramon, Birdramon, Centarumon, Monochromon, Tyrannomon |
 | Armadillomon | Ankylomon, Digmon, Submarimon, Tortomon, Dinohyumon |
 | Bearmon | Gururumon, Golemon, Ikkakumon, Grizzlymon, Leomon |
-| Betamon | Seadramon, Whamon, Shellmon, Coelamon, Dolphmon |
+| Betamon | Seadramon, Dolphmon, Shellmon, Coelamon |
 | Biyomon | Birdramon, Airdramon, Kokatorimon, Unimon, Kabuterimon, Saberdramon |
 | Candlemon | Baronmon, Wizardmon, Shadramon, Flarerizamon, Lynxmon |
 | Crabmon | Ebidramon, Coelamon, Shellmon, Tylomon, Gesomon |
@@ -397,9 +395,9 @@ Every partner Rookie has at least four distinct Champion targets in the final tr
 | Muchomon | Soulmon, Aquilamon, Sorcermon, Quetzalmon |
 | Mushroomon | Woodmon, Kiwimon, Snimon, Vegiemon |
 | Otamamon | Geremon, MoriShellmon, Gekomon, Ebidramon |
-| Palmon | Kuwagamon, Vegiemon, Ninjamon, Whamon, Coelamon, Togemon |
+| Palmon | Kuwagamon, Vegiemon, Ninjamon, Dolphmon, Coelamon, Togemon |
 | Patamon | Drimogemon, Tyrannomon, Ogremon, Leomon, Angemon, Unimon |
-| Penguinmon | Whamon, Shellmon, Garurumon, Frigimon, Mojyamon, Sorcermon |
+| Penguinmon | Dolphmon, Shellmon, Garurumon, Frigimon, Mojyamon, Sorcermon |
 | Psychemon | Ankylomon, Lighdramon, Minotarumon, Gururumon |
 | RedOtamamon | Shadramon, Growlmon, Maildramon, Flarerizamon, Meramon |
 | Renamon | Baronmon, Gatomon, Wizardmon, Kyubimon |
@@ -467,7 +465,7 @@ the slot price, and introduce selective full-bag refunds; each must fail.
 
 ## 6.4 Level changes in both NEW DIGIMON modes
 
-Level changes own complete targets, technique slots and finisher scalars in the species JSON. On values are `evolution.gains`, `techniques` and `finisher`; the explicit `off` block owns the other mode. No balancing value is inferred from player data. `content/tables/species-mode-balance.json` freezes the pre-change measurements and fit bands so changing the affected species cannot silently expand their own limits. Stored finisher MP cost 40 means 120 MP charged.
+Level changes own complete targets, technique slots and finisher scalars in the species JSON. On values are `evolution.gains`, `techniques` and `finisher`; the explicit `off` block owns the other mode. No balancing value is inferred from player data. `content/tables/species-mode-balance.json` freezes the pre-change measurements and fit bands so changing the affected species cannot silently expand their own limits. All measured finisher rows store MP cost 40. Finisher execution consumes its gauge and skips MP deduction; ordinary techniques charge three times their stored cost.
 
 The measurements include all raisable peers on, and the native raisable pool off. A moved native's missing old off targets are measured from committed original-species JSON, never an executable. Raw finisher ranges expose borrowed-technique outliers: on Rookies 85–172, Champions 100–260, Ultimates 100–260, Megas 170–777; off Rookies 85–101, Champions 100–196, Ultimates 170–260. No Mega is raisable off. The 777-power boss Infinity Cannon is not a normal Mega peer. Ordinary native Rookie finishers give 85–101; ordinary Champions give 130–196, with 100 for filth exceptions. Native Ultimate finishers cluster around 200–260; 196–260 accommodates the lower edge used by imported Ultimates. Imported Mega finishers reuse native ids and range 180–260; moved Megas use their upper 250–260 band rather than inheriting a Champion's 170 or the boss's 777. All measured costs are 40. Elements express the species' actual attack identity, not an ordering by level.
 
@@ -509,3 +507,7 @@ Whamon uses Ultimate targets 6000/4500/400/550/450/500 and 210-power Ice Blastin
 Dolphmon takes the former Champion Whamon requirements exactly, including HP 100 (1000 actual HP), brains 100, at most five mistakes, weight 40 and discipline 60, with every other threshold and flag unchanged. This applies on only. Its four parents are Gomamon, Palmon, Betamon and Penguinmon, all sharing Ice; Palmon and Penguinmon had five Champion options after Whamon moved and now have six, while Betamon keeps four and Gomamon six. No suitable replacement has to be removed. `resident_target_order` retains the JSON route order in those three native path rows: Dolphmon occupies Whamon’s former position instead of being appended after every native sibling. With 1500 HP/MP, 150 other stats, weight 40, zero mistakes and the discipline bonus, all three still pick Dolphmon; unchanged formal requirements alone would not preserve those winning states. Gomamon also has a zero-training witness within the same requirement row. Its own Champion targets remain 1750/1400/140/175/135/145. It keeps Ice/Air and 150-power Ice Blasting Spout; Ice Statue and Aurora Freeze complete the former Whamon Ice repertoire in two already-aliased animation slots, while its Air moves replace Whamon's Nature controls. All earlier slots, including the finisher, stay at their indices. NEW DIGIMON off still follows Palmon/Betamon/Penguinmon → Whamon using explicit JSON; Dolphmon remains unavailable in that mode.
 
 Radius/height and animation/effect donors describe the same physical model in both modes, not a level multiplier, so they do not change. Hunger, sleep, weight and discipline retain species identity; evolution time/lifetime use the engine's existing level rules. There is no species-wide battle AI priority or merit payout: wild priorities, stats, bits and recruit difficulty belong to individual map/story encounters. Those explicit encounter values remain fixed in both modes, including intentionally weak Vermilimon encounters. Species wild defaults already fit the curated on identities; they are authoring defaults, not live partner targets. No automatic level-based size or economy multiplier is introduced. The off blocks own every balance value that actually varies with the option.
+
+The natural evolution thresholds retain their curated JSON challenge. In particular, the legacy native Mega routes retain their strict thresholds in both modes; Whamon alone changes its incoming level and therefore has a separate off requirement row. Native enemies whose lower off tier is not raisable gain no new off evolution routes. Neither mode resets trained stats to evolution targets.
+
+The complete runtime change, including menu readers, grows the eight-language `main_BSS_END` by 700 bytes (0x801ce4d4 → 0x801ce790). Active finisher scalars and scratch use 172 bytes; both full move lists stay on disc in owned-data output. Heap alignment costs 704 bytes overall: 186,208 bytes remain. All 320 actual archive setups fit; screen 207 is tightest with 1,488 bytes. Level/target/finisher tests cover both modes and shared-id isolation; source and archive practical tree checks also pass.

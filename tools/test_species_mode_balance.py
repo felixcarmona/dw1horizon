@@ -58,6 +58,23 @@ class ModeBalance(unittest.TestCase):
             with self.assertRaisesRegex(SystemExit, 'off.techniques: ordinary move'):
                 S.validate(s)
 
+    def test_off_mode_keeps_existing_encounter_attack_slots(self):
+        import content
+        moved = {s['name']: s for s in S.load_content().values() if 'techniques' in s.get('off', {})}
+        checked = 0
+        for name, map_data in content.load_maps().items():
+            for entry in map_data.get('digimon', []):
+                species = moved.get(entry.get('species'))
+                if species is None: continue
+                on = S.techniques_from_json(species['techniques'], name)
+                off = S.techniques_from_json(species['off']['techniques'], name)
+                for animation in entry['moves']:
+                    if 46 <= animation < 62 and on[animation - 46] != 255:
+                        self.assertNotEqual(off[animation - 46], 255,
+                                            (name, species['name'], animation))
+                        checked += 1
+        self.assertGreater(checked, 20)
+
     def test_production_sector_reader_applies_all_species_in_both_modes(self):
         source = Path(S.ROOT, 'build/decomp-int/src/main/mod_species.c')
         if not source.exists() or not shutil.which('cc'):

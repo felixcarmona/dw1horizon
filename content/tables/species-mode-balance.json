@@ -1,5 +1,5 @@
 {
-  "_comment": "Frozen pre-rebalance JSON peer measurements include legacy outliers. Fit bands select ordinary level peers; costs are stored units (charged MP = 3x). No disc reads.",
+  "_comment": "Frozen pre-rebalance JSON peer measurements include legacy outliers. Fit bands select ordinary level peers; costs are stored units (ordinary MP = 3x; finishers use their gauge and skip MP deduction). No disc reads.",
   "measured": {
     "on": {
       "rookie": {
