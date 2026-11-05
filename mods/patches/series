@@ -350,3 +350,4 @@ Resolve-flattened-spit-without-indexing-before-the-move-table.patch
 Swap-configured-evolution-targets-with-NEW-DIGIMON.patch
 Restore-explicit-off-evolution-paths-and-requirements.patch
 Show-item-descriptions-while-browsing-shops.patch
+Keep-rebirth-species-fallback-resident.patch

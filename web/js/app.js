@@ -105,6 +105,8 @@ function fixes(kind, bytes = 0) {
     // (the message itself says to close other tabs and programs)
     if (/Firefox/.test(navigator.userAgent) && visitorOS() === 'windows') add('fix.firefox64');
     elsewhere();
+  } else if (kind === 'file') {
+    elsewhere();
   } else if (kind === 'network') {
     add('fix.connection');
   } else {
@@ -944,7 +946,7 @@ async function askRoom() {
   if (roomAsked) return;
   roomAsked = true;
   try {
-    const need = await buildRoom();
+    const need = await buildRoom([...games.values()].reduce((n, g) => n + (g.cur?.file?.size || 0), 0));
     const q = new URLSearchParams(location.search);
     // (under the build lock, as copies and builds are: not while another tab builds; no warning then)
     room = await withLock((free) => (free ? checkRoom(need, TEST && Number(q.get('room')) || need) : null));
@@ -983,6 +985,7 @@ async function patch() {
   // the other three games (their files are read and checked by the engine's extractor)
   const others = [...games.values()].filter((g) => g.id !== 'us');
   building = new Build({ us: games.get('us').cur.file, sources: Object.fromEntries(others.map((g) => [g.id, g.cur.file])),
+                         handles: Object.fromEntries([...games.values()].filter((g) => !g.cur.from?.converted && g.cur.from?.handle).map((g) => [g.id, g.cur.from.handle])),
                          titles: Object.fromEntries(others.map((g) => [g.id, g.cur.expect.title])) }, opts);
   if (TEST && q.get('oom')) building.oomTest = q.get('oom');
   if (TEST && q.get('quota')) building.quotaTest = q.get('quota');
