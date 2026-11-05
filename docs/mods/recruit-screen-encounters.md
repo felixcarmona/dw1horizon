@@ -52,3 +52,15 @@ Native Forest 4, Lava Cave 30, Sewer 163 and Toy Mansion 147 have no ordinary
 wild handlers to delay. The same applies to Candlemon's destination if its only
 other NPC is a service. Future direct `fight()` scenes remain explicit review
 points; the compiler never infers that a scripted battle is an ordinary wild.
+
+## Candlemon's battle room
+
+Candlemon waits in terminal Lava Cave screen 125 (`TUNN08_3`) at (2500, -650),
+away from the corridor in screen 30. Dialogue, stats and the recruitment flag
+are unchanged. Saves with Candlemon still unrecruited can use the new encounter;
+saves that already recruited it keep the Forge resident.
+
+The native collision stays intact. The placement must be reachable from entry 0
+with the chest and trader footprints included, provide a broad battle floor,
+remain more than 300 units from arrivals at tracking range zero, and leave the
+chest approach and exit reachable. The card trader remains available.
