@@ -46,6 +46,12 @@ species of those ids have none). Selection: by id like an import (`SPECIES="111 
 too: same mesh, the record's technique list (the provisional finisher is appended last, so the enemy's own slots keep
 their numbers); field NPC requests for the seven restored species use the NPC twins below.
 
+Additional ordinary techniques are appended without shifting existing attack or finisher slots. For imported models,
+`content/models/imports/models.json` may specify `technique_aliases` as `{new technique: existing technique}`.
+The provider applies these clip aliases after field overlays and Buster Dive processing, so the final model retains
+its authored acting and attack events. Record originals use `model.slot_aliases` directly. Both routes share animation
+programs rather than duplicating them; adding a technique still requires a compatible effect and a free move slot.
+
 ## Original NPC twins
 
 Ids 462–468 are internal NPC records for ShogunGekomon, KingSukamon,

@@ -13,7 +13,9 @@ t81 = text.s029.sec81
 @pond.on_enter
 def enter():    # section 254
     call(Routine.load_dirt_cart)
-    call(Routine.load_dirt_pile)
+    # The pile counter is transient; saved work opens the tunnel at eight.
+    if underground_pond_dig_work < 8:
+        call(Routine.load_dirt_pile)
     if drimogemon_job_days >= 5 and drill_tunnel_progress < 3 and drill_tunnel_progress >= 1:
         call(Routine.dirt_pile_shrink)
         call(Routine.dirt_pile_shrink)
