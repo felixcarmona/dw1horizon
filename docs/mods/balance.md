@@ -1,5 +1,7 @@
 # Balance as JSON
 
+Looking for why something changed? See the [gameplay and design decision log](../decisions.md).
+
 Every number that balances a Digimon (techniques, evolution requirements and
 paths, stat gains, raise data, learning chances, drops, wild enemies,
 tournaments) can be changed by editing JSON. `tools/balance.py` reads the
