@@ -1,0 +1,65 @@
+From 57e3ad1f998a881318978290988eb7092ef20862 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 5 Nov 2026 07:42:26 +0000
+Subject: [PATCH] Show item descriptions while browsing shops
+
+Show the selected item effect in the existing lower text page in regular and merit buy lists. Wait for background shop dialogue to finish, and keep the existing popup and quantity controls.
+---
+ src/main/script_common.c | 34 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
+
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index a5b7cf1..361a73e 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -788,6 +788,38 @@ int32_t shopFillSellItemList(void)
+ 	return result;
+ }
+ 
++/* Keep the buy list's lower panel on the selected item, using its existing text page. */
++static void updateShopItemDescription(ItemMenuBox *box)
++{
++	TextBoxData *entry = &TEXTBOX_DATA.box[0];
++	uint8_t item;
++	char *line;
++	RECT area;
++	int32_t row;
++
++	if ((ITEM_MENU_TYPE != 0 && ITEM_MENU_TYPE != 7) || box->itemCount == 0 ||
++	    SCRIPT_TEXTBOX_MODE != 0 || entry->idle == 0 ||
++	    entry->writeCount != entry->renderCount) {
++		return;
++	}
++	item = box->buf[(box->topRow + box->cursor) * 2];
++	if (item == 0xff) {
++		return;
++	}
++	row = entry->vramRow + entry->backPage * entry->vramRows;
++	line = (char *)TEXTBOX_LINES_PTR + row * 64;
++	if (strcmp(line, ITEM_DESCS[item]) == 0) {
++		return;
++	}
++	memset(line, 0, entry->vramRows * 64);
++	strcpy(line, ITEM_DESCS[item]);
++	setRECT(&area, 0, row * 12, 0xfc, entry->vramRows * 12);
++	clearTextSubArea(&area);
++	setTextColor(1);
++	drawString(ITEM_DESCS[item], 0, row * 12);
++	DrawSync(0);
++}
++
+ void tickItemMenu(void)
+ {
+ 	ItemMenuBox *box;
+@@ -820,6 +852,8 @@ void tickItemMenu(void)
+ 		return;
+ 	}
+ 
++	updateShopItemDescription(box);
++
+ 	if (isKeyDown(CONFIRM_BUTTON)) {
+ 		src = &ITEM_MENU_DESCRIPTION_RECTS[ITEM_MENU_TYPE * 4];
+ 		setRECT(&rect, src[0], src[1], src[2], src[3]);
+-- 
+2.55.0
+
