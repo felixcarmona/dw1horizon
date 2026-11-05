@@ -13,13 +13,13 @@ def enter():    # section 254
     if roll <= 9:
         spawn_item(Item.Digimushrm, at=(2650, -2850))
     roll = random.roll(99)
-    if roll <= 4:
+    if roll <= 7:
         spawn_item(Item.Digimushrm, at=(-1850, -1850))
     roll = random.roll(99)
-    if roll <= 6:
+    if roll <= 7:
         spawn_item(Item.Pricklypear, at=(1650, -1850))
     roll = random.roll(99)
-    if roll <= 2:
+    if roll <= 7:
         spawn_item(Item.Happymushrm, at=(-2750, -2550))
     swing_door(0)
     wait(1000)

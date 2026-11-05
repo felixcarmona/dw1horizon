@@ -26,10 +26,10 @@ def enter():    # section 254
     if roll <= 9:
         spawn_item(Item.Digimushrm, at=(-1450, 4050))
     roll = random.roll(99)
-    if roll <= 4:
+    if roll <= 7:
         spawn_item(Item.Digimushrm, at=(-3050, 1850))
     roll = random.roll(99)
-    if roll <= 0:
+    if roll <= 7:
         spawn_item(Item.Happymushrm, at=(-3850, 3950))
     roll = random.roll(99)
     if roll <= 0:

@@ -25,13 +25,13 @@ def enter():    # section 254
     if roll <= 16:
         spawn_item(Item.Digimushrm, at=(50, 1050))
     roll = random.roll(99)
-    if roll <= 4:
+    if roll <= 7:
         spawn_item(Item.Digimushrm, at=(-1550, -2850))
     roll = random.roll(99)
     if roll <= 7:
         spawn_item(Item.Digimushrm, at=(-1750, 850))
     roll = random.roll(99)
-    if roll <= 3:
+    if roll <= 7:
         spawn_item(Item.Happymushrm, at=(-50, -2450))
     misty_trees_visited.set()
 

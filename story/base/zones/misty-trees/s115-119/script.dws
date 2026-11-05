@@ -17,11 +17,11 @@ script 115 {
             spawn_item(item(44), 56, 80);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 3) {
+        if (random_roll <= 7) {
             spawn_item(item(47), 35, 64);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 0) {
+        if (random_roll <= 2) {
             spawn_item(item(61), 67, 32);
         }
         if (cherrymon_met) {

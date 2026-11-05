@@ -19,15 +19,15 @@ script 133 {
             spawn_item(item("Digimushrm"), 58, 71);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 6) {
+        if (random_roll <= 7) {
             spawn_item(item("Digimushrm"), 32, 37);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 3) {
+        if (random_roll <= 7) {
             spawn_item(item("Spiny green"), 31, 48);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 0) {
+        if (random_roll <= 2) {
             spawn_item(item("Muscle Yam"), 84, 35);
         }
     }

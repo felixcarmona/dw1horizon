@@ -21,7 +21,7 @@ def enter():    # section 254
     if roll <= 16:
         spawn_item(Item.Digimushrm, at=(-1650, 2750))
     roll = random.roll(99)
-    if roll <= 2:
+    if roll <= 7:
         spawn_item(Item.SweetNut, at=(250, 1450))
 
 @savanna.on_step(0)

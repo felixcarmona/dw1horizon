@@ -24,7 +24,7 @@ def enter():    # section 254
     if roll <= 7:
         spawn_item(Item.Digimushrm, at=(1150, -3850))
     roll = random.roll(99)
-    if roll <= 3:
+    if roll <= 7:
         spawn_item(Item.IceMushrm, at=(2350, -3850))
 
 @snowagumon0.on_talk

@@ -48,19 +48,19 @@ script 18 {
             spawn_item(item("Moldy Meat"), 50, 34);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 1) {
+        if (random_roll <= 7) {
             spawn_item(item("Orange bana"), 49, 18);
-        } else if (random_roll <= 9) {
+        } else if (random_roll <= 19) {
             spawn_item(item("Happymushrm"), 49, 18);
-        } else if (random_roll <= 29) {
+        } else if (random_roll <= 39) {
             spawn_item(item("Auto Pilot"), 49, 18);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 4) {
+        if (random_roll <= 7) {
             spawn_item(item("Omni Disk"), 65, 22);
             return;
         }
-        if (random_roll <= 29) {
+        if (random_roll <= 32) {
             spawn_item(item("Medium MP"), 65, 22);
         }
     }

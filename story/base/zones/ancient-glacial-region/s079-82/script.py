@@ -21,13 +21,13 @@ def enter():    # section 254
     if roll <= 15:
         spawn_item(Item.Digimushrm, at=(450, -550))
     roll = random.roll(99)
-    if roll <= 6:
+    if roll <= 7:
         spawn_item(Item.Digimushrm, at=(-950, 250))
     roll = random.roll(99)
     if roll <= 17:
         spawn_item(Item.Digimushrm, at=(-1050, 350))
     roll = random.roll(99)
-    if roll <= 3:
+    if roll <= 7:
         spawn_item(Item.Happymushrm, at=(850, 1550))
     call(Routine.save_clock_speed, arg=0)
 

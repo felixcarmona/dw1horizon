@@ -26,16 +26,16 @@ t9 = text.s117.sec9
 @trees.on_enter
 def enter():    # section 254
     roll = random.roll(99)
-    if roll <= 4:
+    if roll <= 7:
         spawn_item(Item.Digimushrm, at=(-1450, 3050))
     roll = random.roll(99)
     if roll <= 16:
         spawn_item(Item.Digimushrm, at=(550, -50))
     roll = random.roll(99)
-    if roll <= 6:
+    if roll <= 7:
         spawn_item(Item.Digimushrm, at=(-250, 4550))
     roll = random.roll(99)
-    if roll <= 3:
+    if roll <= 7:
         spawn_item(Item.Digipine, at=(-950, 450))
     misty_trees_visited.set()
 

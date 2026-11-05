@@ -29,7 +29,7 @@ def enter():    # section 254
     if roll <= 17:
         spawn_item(Item.Digimushrm, at=(-150, 450))
     roll = random.roll(99)
-    if roll <= 3:
+    if roll <= 7:
         spawn_item(Item.IceMushrm, at=(-1450, -4150))
     freezeland_birdra_stop_unlocked.set()
 

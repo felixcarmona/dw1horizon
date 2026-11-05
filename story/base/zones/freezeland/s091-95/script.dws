@@ -17,7 +17,7 @@ script 91 {
 
     on enter replace {    // section 254
         store_random(random_roll, 99);
-        if (random_roll <= 5) {
+        if (random_roll <= 7) {
             spawn_item(item("Digimushrm"), 49, 36);
         }
         store_random(random_roll, 99);
@@ -29,7 +29,7 @@ script 91 {
             spawn_item(item("Digimushrm"), 48, 61);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 2) {
+        if (random_roll <= 7) {
             spawn_item(item("Ice mushrm"), 38, 60);
         }
     }

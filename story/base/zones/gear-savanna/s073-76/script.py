@@ -18,7 +18,7 @@ t9 = text.s073.sec9
 @savanna.on_enter
 def enter():    # section 254
     roll = random.roll(99)
-    if roll <= 5:
+    if roll <= 7:
         spawn_item(Item.Digimushrm, at=(-1050, -950))
     roll = random.roll(99)
     if roll <= 14:
@@ -27,7 +27,7 @@ def enter():    # section 254
     if roll <= 11:
         spawn_item(Item.Digimushrm, at=(-950, 2550))
     roll = random.roll(99)
-    if roll <= 6:
+    if roll <= 7:
         spawn_item(Item.Digimushrm, at=(1150, 1450))
     trigger(338).clear()
 
