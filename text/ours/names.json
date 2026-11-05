@@ -1006,5 +1006,9 @@
  "main.MAIN_D_80123A18": "PlayerChartMed.CardsCity",
  "main.CITY_STR_PROSPERITY": "Prosperity",
  "main.CITY_STR_RESIDENTS": "Residents",
- "main.STATUS_STR_TIRED": "Tired"
+ "main.STATUS_STR_TIRED": "Tired",
+ "main.MOD_OPT_STR_CHINESE_RAM_0": "Chinese needs 8 MB",
+ "main.MOD_OPT_STR_CHINESE_RAM_1": "of RAM. Enable 8 MB",
+ "main.MOD_OPT_STR_CHINESE_RAM_2": "in your emulator's",
+ "main.MOD_OPT_STR_CHINESE_RAM_3": "settings."
 }

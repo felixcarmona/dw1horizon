@@ -15,6 +15,28 @@ import literal_gate
 
 
 class DeltaAuditTests(unittest.TestCase):
+    def test_chinese_language_patch_comes_from_current_data_spans(self):
+        import langpatch
+        base = 0x80090000
+        symbols = {'draw': (base, 4, 'func'), 'TEXT': (base + 4, 4, 'object')}
+        with tempfile.TemporaryDirectory() as tmp:
+            for language in ('en', 'zh-hans'):
+                (Path(tmp) / ('exe-' + language)).mkdir()
+            with patch.object(langpatch, 'elf_symbols', return_value=symbols), \
+                 patch.object(langpatch, 'exe_image', side_effect=[(base, b'CODEabc\0'), (base, b'CODExy\0\0')]):
+                data = delta_audit.chinese_language_writes(tmp)
+            import struct
+            self.assertEqual(data, b'DWLP' + struct.pack('<III', 1, base + 4, 3) + b'xy\0\0')
+            with patch.object(langpatch, 'elf_symbols', return_value=symbols), \
+                 patch.object(langpatch, 'exe_image', side_effect=[(base, b'CODEabc\0'), (base, b'XODExy\0\0')]):
+                with self.assertRaises(SystemExit):
+                    delta_audit.chinese_language_writes(tmp)
+            changed = dict(symbols, TEXT=(base + 5, 4, 'object'))
+            with patch.object(langpatch, 'elf_symbols', side_effect=[symbols, changed]), \
+                 patch.object(langpatch, 'exe_image', side_effect=[(base, b'CODEabc\0'), (base, b'CODExy\0\0')]):
+                with self.assertRaises(SystemExit):
+                    delta_audit.chinese_language_writes(tmp)
+
     def test_overlay_in_a_folder_uses_its_linker_map(self):
         with tempfile.TemporaryDirectory() as tmp:
             folder = Path(tmp) / 'exe'

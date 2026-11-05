@@ -3,10 +3,10 @@
 The text-source identifier is also the mod bank's language (text/pt-br.json), while
 PT_BR is the C preprocessor identifier and LANGPT.BIN is an 8.3 disc filename.
 """
-CODES = ('en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca')
-PATCHES = dict(zip(CODES, ('LANGEN.BIN', 'LANGES.BIN', 'LANGPT.BIN', 'LANGFR.BIN', 'LANGDE.BIN', 'LANGIT.BIN', 'LANGJA.BIN', 'LANGCA.BIN')))
-COLUMNS = {'es': 1, 'en': 2, 'pt-br': 3, 'fr': 4, 'de': 5, 'it': 6, 'ja': 7, 'ca': 8}
-PREFIXES = {'en': 'LE', 'es': 'LE', 'pt-br': 'LP', 'fr': 'LF', 'de': 'LD', 'it': 'LI', 'ja': 'LJ', 'ca': 'LC'}
+CODES = ('en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca', 'zh-hans')
+PATCHES = dict(zip(CODES, ('LANGEN.BIN', 'LANGES.BIN', 'LANGPT.BIN', 'LANGFR.BIN', 'LANGDE.BIN', 'LANGIT.BIN', 'LANGJA.BIN', 'LANGCA.BIN', 'LANGZH.BIN')))
+COLUMNS = {'es': 1, 'en': 2, 'pt-br': 3, 'fr': 4, 'de': 5, 'it': 6, 'ja': 7, 'ca': 8, 'zh-hans': 9}
+PREFIXES = {'en': 'LE', 'es': 'LE', 'pt-br': 'LP', 'fr': 'LF', 'de': 'LD', 'it': 'LI', 'ja': 'LJ', 'ca': 'LC', 'zh-hans': 'LZ'}
 
 
 def selected(env):

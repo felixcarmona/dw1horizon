@@ -76,7 +76,7 @@ def main():
                 continue
             out[output].append((off, off + n, sect, obj, str(file)))
         return out
-    M = {l: maps(l) for l in ('en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca')}
+    M = {l: maps(l) for l in ('en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca', 'zh-hans')}
     BANKS = {l: json.load(open(build / f'text-bank-{l}.json'))['text'] for l in M}
 
     @functools.lru_cache(None)

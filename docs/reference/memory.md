@@ -477,6 +477,21 @@ between overlays.
 
 ### The menu overlay (patches 0211, 0216)
 
+The title also loads EVL before MENU. Its spare tail contains the language
+picker, native heading/name glyphs, flags and unsupported-language popup helpers.
+The linker bounds this title block above MENU's whole-sector read and below
+FISH. The evolution code never calls it; evolution reloads its own overlay as
+usual. Language changes reload MENU while the language-independent EVL tail
+remains intact. Returning from VS reloads both before restoring title callbacks.
+World saves retain `loadMenuOverlay` alone, including the game-clear save;
+`start_ending` still reloads ENDI before using its first sector.
+
+`python3 tools/title_storage_check.py build/NAME/exe-*/SLUS_010.32.elf` checks
+the compiled callers, sector bounds, at least 100 bytes of MENU spare, and
+identical title bytes in every language. Native language-name arrays stay
+resident for language-bank writes. Option serialization and text/count helpers
+live in MENU, where all their callers run. No new heap buffer is allocated.
+
 `main_menu.c` (the title's menus, new game and continue, the card screens, VS registration, the save machine, the
 sleep save and the game-clear save) was 35 KB of code resident through the whole game. Patch 0211 links most of it into
 `MENU_REL.BIN` (overlay id 17, a new file-table name; on the disc in `SCN/`, because the root directory's first sector
@@ -491,7 +506,7 @@ must keep `SYSTEM.CNF`), read at `OVL_BTL_BASE` by `loadMenuOverlay` where a men
 
 What stays resident: the entry points, the boot options (they run before any menu), `modNewGame` (evolution and
 rebirth call it), the lab's helpers, `modReplayMainMenu` (the extra frame passes) and the file's data, rodata and bss,
-except the moved functions' switch tables and, since patch 0283, the read-only data only the overlay reaches (2.4 KB:
+except the title block described above, the moved functions' switch tables and, since patch 0283, the read-only data only the overlay reaches (2.4 KB:
 card messages, labels, the save icon; found with `xref.py classes`). Data that is ever written, or that the balance
 tables encode (`MOD_VS_UNLOCK`), stays resident: a reload of the overlay would undo a write. `SLOT_ACTION_TITLES` and
 `SLOT_ACTION_QUESTIONS` stay resident and point into the overlay; only the overlay reads them. `config/us/overlay.ld` names the moved functions one by one, so a new

@@ -25,6 +25,7 @@ build/
 !/text/it/
 !/text/ja/
 !/text/ca/
+!/text/zh-hans/
 
 # Remaining private inputs: see docs/building.md
 /mods/experimental/motion/v61-models/files/

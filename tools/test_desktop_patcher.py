@@ -377,7 +377,7 @@ class Strings(unittest.TestCase):
     def test_every_language_has_every_key_and_placeholder(self):
         import re
         table = json.loads((Path(__file__).resolve().parent / 'patcher/app/i18n.json').read_text(encoding='utf-8'))
-        self.assertEqual(sorted(table), sorted(['en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca']))
+        self.assertEqual(sorted(table), sorted(['en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca', 'zh-hans']))
         for lang, strings in table.items():
             self.assertEqual(set(strings), set(table['en']), lang)
             for k, v in strings.items():
