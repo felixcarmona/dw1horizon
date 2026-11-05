@@ -23,34 +23,105 @@ def enter():    # section 254
     if roll <= 9:
         spawn_item(Item.Digimushrm, at=(550, 650))
     roll = random.roll(99)
-    if roll <= 4:
+    if roll <= 7:
         spawn_item(Item.Digimushrm, at=(1850, 350))
 
 @jungle.on_use(1)
 def use1():    # section 81
-    narrator.say(t81.u0)
     tamer.turn(2048)
-    tamer.say(t81.u1)
-    match choose(a=t81.m0.o0, b=t81.m0.o1, c=t81.m0.o2):
-        case "a":
-            if bits >= 200:
-                partner.add(mp=100)
-                take(bits=200)
-                narrator.say(t81.u2)
-            else:
-                tamer.say(t81.u3)
-                return
+    narrator.say(t81.vend_play_prompt)
+    if not ask(yes=t81.vend_play, no=t81.vend_quit):
+        return
+    if bits < 1000:
+        narrator.say(t81.vend_poor)
+        return
+    # Charge before the draw: a full bag must never filter out unwanted prizes for free.
+    take(bits=1000)
+    roll = random.roll(99)
+    if roll < 10:
+        give(Item.SmRecovery)
+        if engine.item_did_not_fit:
+            narrator.say(t81.vend_full)
             return
-        case "b":
-            if bits >= 1800:
-                partner.add(mp=1000)
-                take(bits=1800)
-                narrator.say(t81.u4)
-            else:
-                tamer.say(t81.u5)
-                return
+        narrator.say(t81.vend_getSmRecovery)
+        return
+    elif roll < 20:
+        give(Item.MedRecovery)
+        if engine.item_did_not_fit:
+            narrator.say(t81.vend_full)
             return
-    tamer.say(t81.u6)
+        narrator.say(t81.vend_getMedRecovery)
+        return
+    elif roll < 30:
+        give(Item.LrgRecovery)
+        if engine.item_did_not_fit:
+            narrator.say(t81.vend_full)
+            return
+        narrator.say(t81.vend_getLrgRecovery)
+        return
+    elif roll < 40:
+        give(Item.MPFloppy)
+        if engine.item_did_not_fit:
+            narrator.say(t81.vend_full)
+            return
+        narrator.say(t81.vend_getMPFloppy)
+        return
+    elif roll < 50:
+        give(Item.MediumMP)
+        if engine.item_did_not_fit:
+            narrator.say(t81.vend_full)
+            return
+        narrator.say(t81.vend_getMediumMP)
+        return
+    elif roll < 60:
+        give(Item.LargeMP)
+        if engine.item_did_not_fit:
+            narrator.say(t81.vend_full)
+            return
+        narrator.say(t81.vend_getLargeMP)
+        return
+    elif roll < 70:
+        give(Item.Various)
+        if engine.item_did_not_fit:
+            narrator.say(t81.vend_full)
+            return
+        narrator.say(t81.vend_getVarious)
+        return
+    elif roll < 80:
+        give(Item.Omnipotent)
+        if engine.item_did_not_fit:
+            narrator.say(t81.vend_full)
+            return
+        narrator.say(t81.vend_getOmnipotent)
+        return
+    elif roll < 85:
+        give(Item.Restore)
+        if engine.item_did_not_fit:
+            narrator.say(t81.vend_full)
+            return
+        narrator.say(t81.vend_getRestore)
+        return
+    elif roll < 90:
+        give(Item.OffDisk)
+        if engine.item_did_not_fit:
+            narrator.say(t81.vend_full)
+            return
+        narrator.say(t81.vend_getOffDisk)
+        return
+    elif roll < 95:
+        give(Item.DefDisk)
+        if engine.item_did_not_fit:
+            narrator.say(t81.vend_full)
+            return
+        narrator.say(t81.vend_getDefDisk)
+        return
+    elif roll < 100:
+        give(Item.HispeedDsk)
+        if engine.item_did_not_fit:
+            narrator.say(t81.vend_full)
+            return
+        narrator.say(t81.vend_getHispeedDsk)
+        return
 
 @jungle.on_step(2)
 def step2():    # section 53

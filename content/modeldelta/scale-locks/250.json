@@ -1,0 +1,168 @@
+{
+  "species": 250,
+  "name": "Shadramon",
+  "threshold": 0.02,
+  "source_sha256": "6b7c920dde579cfd82cd82c27a8de18c1567b5faa206ea88394ae4c41b34a39a",
+  "output_sha256": "7c07a92fdc3c0d342f35e7d68e881518535f4762fd59ad1c51524c10897ebf8f",
+  "preceding_provider": {
+    "model": "250-Shadramon.MMD",
+    "aliases_applied": true,
+    "field_overlay": "shadramon-supported-field"
+  },
+  "effective_record_changes": {
+    "model.slot_aliases": [
+      [
+        48,
+        50
+      ],
+      [
+        49,
+        50
+      ],
+      [
+        51,
+        50
+      ],
+      [
+        50,
+        47
+      ],
+      [
+        52,
+        53
+      ],
+      [
+        57,
+        53
+      ],
+      [
+        53,
+        55
+      ],
+      [
+        58,
+        55
+      ],
+      [
+        55,
+        54
+      ],
+      [
+        54,
+        58
+      ]
+    ]
+  },
+  "reference_slot": 2,
+  "scales": [
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ]
+  ],
+  "feet": [
+    10,
+    13
+  ],
+  "affected_slots": [
+    52,
+    57
+  ],
+  "grounding_max_under": 0.5,
+  "grounding_max_over": 0.5,
+  "resident_bytes": 91940,
+  "resident_limit": 100352,
+  "cold_buffer_bytes": 8192,
+  "audit": {
+    "threshold": 0,
+    "occupied_slots": 48,
+    "animated": [],
+    "across_slots": []
+  }
+}

@@ -252,7 +252,13 @@ and starts animation 0. `renderDigimon` (`2867-2929`): per bone
 `GsGetLws` + `GsSortObject4(…, 2, <1 KB fast RAM at 0x1F800000>)`; wireframe (`renderWireframed`)
 during digivolution; `renderFlatDigimon` (`2722-2774`) replaces the model
 with a 15×15 *sprite* taken from its own texture (u 0xE0/0xF0, v
-offset+0x60/0x70) when `flatSprite ≠ −1`.
+offset+0x60/0x70) when `flatSprite ≠ −1`; with the flat-sprite patch, from
+the four positions and CLUT rows in the texture's `FLT2` trailer (`getFlatSprite`, `mod_species.c`).
+`tools/flatsprite.py` supplies missing frames at build time. Native field-enemy textures (source IDs 66–111)
+use available authored icons even when their old corner passes the palette check: Yanmamon's monochrome noise
+can otherwise look valid to that check. SandYanmamon shares Yanmamon's silhouette. Sources without authored art
+retain their native frames. The flat audit compares these replacement silhouettes as well as checking placement
+and model texels; this adds no runtime allocation.
 
 **Animation format** (as `anim.c` reads it; the full format with examples is in [../mods/models.md](../mods/models.md) §2.2): the MMD's table is `u32`
 offsets per *slot* (0 = does not exist), relative to the table itself. Each

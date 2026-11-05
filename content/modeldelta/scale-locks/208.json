@@ -1,0 +1,150 @@
+{
+  "species": 208,
+  "name": "Togemon",
+  "threshold": 0.02,
+  "source_sha256": "5d7ab44d6abaed77565ebc354d9327d9a10c1a9fcd3dca8f2b50df75c397a53a",
+  "output_sha256": "d50416a7df356de5f974c7370631949f607690cfe6cb1b141ae61bbf8a0a37cf",
+  "preceding_provider": {
+    "model": "208-Togemon.MMD",
+    "aliases_applied": true,
+    "field_overlay": "togemon-field"
+  },
+  "effective_record_changes": {
+    "model.slot_aliases": [
+      [
+        48,
+        55
+      ],
+      [
+        50,
+        54
+      ],
+      [
+        51,
+        54
+      ],
+      [
+        52,
+        46
+      ],
+      [
+        53,
+        46
+      ],
+      [
+        54,
+        47
+      ],
+      [
+        55,
+        47
+      ],
+      [
+        56,
+        47
+      ],
+      [
+        47,
+        46
+      ]
+    ]
+  },
+  "reference_slot": 2,
+  "scales": [
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ]
+  ],
+  "feet": [
+    11,
+    13
+  ],
+  "affected_slots": [
+    40,
+    41,
+    43
+  ],
+  "grounding_max_under": 0.4,
+  "grounding_max_over": 0.5,
+  "resident_bytes": 66490,
+  "resident_limit": 100352,
+  "cold_buffer_bytes": 8192,
+  "audit": {
+    "threshold": 0,
+    "occupied_slots": 46,
+    "animated": [],
+    "across_slots": []
+  }
+}

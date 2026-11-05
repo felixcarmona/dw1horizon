@@ -23,12 +23,12 @@ from motiondiscidentity import changed_programs
 from tools.models.field_animations.war_greymon import rotation, align, set_rotation
 
 PROFILES={
- 404:dict(source='a356b6ba345710ced8e66d49e7f1192e008c849b517360c9e16ccb0e7aead249',bones=24,
+ 404:dict(source='c56fedf796622aecbd88bd6898e86707256d039457f253f89c6aa21cd4129c03',bones=24,
           carrier=1,pelvis=2,chest=1,head=15,
           legs=[(5,6,7,[7,8],-1,0),(9,10,11,[11,12],1,.5)],
           arms=[(18,19,-1),(20,21,1)],wings=[(14,1),(17,-1)],front=4,sides=[(13,5,-1),(3,9,1)],
           tracks=70,height_bias=-8,front_out=16,front_follow=.92,style='heavy armored stride'),
- 461:dict(source='7d0bdcdbc5c758535753676dbe8c50edaced855466f8e4bd0a7abf2eb14930f7',bones=25,
+ 461:dict(source='0ed6eabe9392e1108b5a592d3ad1cb9189cc9641dba495ab067d253d720e65f1',bones=25,
           carrier=14,pelvis=14,chest=1,head=2,
           legs=[(15,16,17,[17,18],1,0),(19,20,21,[21,22],-1,.5)],
           arms=[(3,4,1),(9,10,-1)],cape=[23,24],
@@ -70,7 +70,7 @@ PROFILES.update({
           static_offsets={2:[0,0,-10]},
           leans={2:3,3:8,4:22},
           style='upright armored stride, relaxed claw arms and delayed tail; original idle preserved'),
- 432:dict(source='1c6dc946b8e1dbb74034f7e4c0df3d6bd0bbd6c29556d755f505e8fcaf93e89d',bones=26,carrier=1,pelvis=11,chest=1,head=8,
+ 432:dict(source='13dfccc3ba05cfebd13b35d4bcf4e5a28e86d2c364186b8cd81f34afe0183130',bones=26,carrier=1,pelvis=11,chest=1,head=8,
           legs=[(12,13,14,[14,15],1,0),(16,17,18,[18,19],-1,.5)],arms=[(2,3,-1),(5,6,1)],
           slots=[2,3,4],periods={2:16,3:20,4:10},duties={4:.36},
           lifts={2:16,3:10,4:30},tracks=50,height_bias=-10,sway={2:7,3:5,4:5},bounce={2:3,3:3,4:6},
@@ -130,7 +130,15 @@ def build(data,sk):
     from tools.models.field_animations.reviewed import reviewed
     digest=hashlib.sha256(data).hexdigest();matches=[(sid,p)for sid,p in PROFILES.items()if p['source']==reviewed(digest)]
     if len(matches)!=1:raise ValueError('No reviewed field-acting profile for this effective source model')
-    sid,cfg=matches[0];n=len(sk);assert n==cfg['bones'];mmd.exe().skeleton[sid]=sk;mmd.exe().bone_count[sid]=n
+    return build_profile(data,sk,*matches[0])
+
+
+def build_profile(data,sk,sid,cfg):
+    """Author one explicitly pinned profile, including edits to a baked model."""
+    from tools.models.field_animations.reviewed import reviewed
+    digest=hashlib.sha256(data).hexdigest()
+    assert reviewed(digest)==cfg['source']
+    n=len(sk);assert n==cfg['bones'];mmd.exe().skeleton[sid]=sk;mmd.exe().bone_count[sid]=n
     old=mmd.MMD.parse(data,n);old.type=sid;new=copy.deepcopy(old)
     native=copy.deepcopy(animsheet.slot_frames(old,n,33)[0][0]);bind=copy.deepcopy(native);bind[0]=[4096]*3+[0]*6
     selected={cfg[k]for k in ['carrier','pelvis','chest','head']}

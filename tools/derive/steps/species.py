@@ -193,7 +193,7 @@ def settings(ctx):
 
 
 def outputs(ctx):
-    return [('DIGI.DAT', 'DIGI.DAT'), ('species', None), ('derived/species.env', None)]
+    return [('DIGI.DAT', 'DIGI.DAT'), ('ALLTIM.TIM', 'CHDAT/ALLTIM.TIM'), ('species', None), ('derived/species.env', None)]
 
 
 def build(ctx):
@@ -256,6 +256,8 @@ def build(ctx):
                     n += 1
             print(f'icons: {n} drawn by the overlays step')
         S.build(ctx.path('DIGI.DAT'), out)
+        # the originals drawn with their disc texture that have no flat sprite get one (tools/flatsprite.py)
+        print('ALLTIM.TIM flat sprites:', S.build_alltim(ctx.path('ALLTIM.TIM'), out))
     ctx.lines.append(log.getvalue().rstrip('\n'))
     for n in ctx.pin_notes:      # (a developer build: printed, so the build log says which pins it rewrote)
         print(f'note: {PINS} rewritten: {n}')
@@ -266,12 +268,15 @@ def build(ctx):
 
 
 def check(ctx):
-    """species.py lint --files --quiet of the species folder and check of DIGI.DAT (build-full.sh :197)."""
+    """species.py lint --files --quiet of the species folder, check of DIGI.DAT (build-full.sh :197) and its flat
+    sprites (flat-audit)."""
     s = settings(ctx)
     env = {'COLD': '1' if s['cold'] else None, 'SPECIES_RAM_MB': str(s['ram_mb']),
            'EVL_SHARD_SCRATCH_SIZE': hex(s['shard_scratch']), 'SHARD_SCRATCH_WARN': '1' if s['shard_warn'] else None}
     ctx.run('tools/species.py', ['--content', ctx.path('species'), 'lint', '--files', '--quiet'], env=env)
     ctx.run('tools/species.py', ['--content', ctx.path('species'), 'check', ctx.path('DIGI.DAT')], env=env)
+    ctx.run('tools/species.py', ['--content', ctx.path('species'), 'flat-audit', ctx.path('DIGI.DAT'), ctx.path('ALLTIM.TIM')],
+            env=env)
     ctx.run('tools/scriptclips.py', [ctx.path('DIGI.DAT'), '--content', ctx.path('species'), '--out', ctx.path('derived', 'script-clips.json')])
 
 

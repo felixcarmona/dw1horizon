@@ -18,9 +18,18 @@ import importlib.util, json, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '../../..'))
 OVERLAYS = {   # field_overlay: (id, generator module, model name)
+    'marinedevimon-field': ('279', 'tools.models.field_animations.marine_devimon', '279-marinedevimon-field'),
+    'bulbmon-field': ('313', 'tools.models.field_animations.bulbmon', '313-bulbmon-field'),
+    'kurisarimon-celebration': ('431', 'tools.models.field_animations.celebrations', '431-kurisarimon-celebration'),
+    'zanbamon-celebration': ('430', 'tools.models.field_animations.celebrations', '430-zanbamon-celebration'),
+    'raijinmon-celebration': ('333', 'tools.models.field_animations.celebrations', '333-raijinmon-celebration'),
+    'arukenimon-celebration': ('311', 'tools.models.field_animations.celebrations', '311-arukenimon-celebration'),
+    'clockmon-celebration': ('290', 'tools.models.field_animations.celebrations', '290-clockmon-celebration'),
+    'redotamamon-celebration': ('233', 'tools.models.field_animations.celebrations', '233-redotamamon-celebration'),
+    'imperialdramon-celebration': ('192', 'tools.models.field_animations.celebrations', '192-imperialdramon-celebration'),
     'ladydevimon-chibi': ('223', 'tools.models.field_animations.chibi', '223-ladydevimon-chibi'),
     'slashangemon-chibi': ('300', 'tools.models.field_animations.chibi', '300-slashangemon-chibi'),
-    'gallantmon-chibi': ('318', 'tools.models.field_animations.chibi', '318-gallantmon-chibi'),
+    'gallantmon-chibi': ('318', 'tools.models.field_animations.celebrations', '318-gallantmon-chibi'),
     'malomyotismon-chibi': ('406', 'tools.models.field_animations.chibi', '406-malomyotismon-chibi'),
     'neocrimson-chibi': ('402', 'tools.models.field_animations.chibi', '402-neocrimson-chibi'),
     'mummymon-chibi': ('334', 'tools.models.field_animations.chibi', '334-mummymon-chibi'),
@@ -30,13 +39,13 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'musyamon-chibi': ('325', 'tools.models.field_animations.chibi', '325-musyamon-chibi'),
     'maildramon-chibi': ('324', 'tools.models.field_animations.chibi', '324-maildramon-chibi'),
     'kyukimon-chibi': ('322', 'tools.models.field_animations.chibi', '322-kyukimon-chibi'),
-    'knightmon-chibi': ('321', 'tools.models.field_animations.chibi', '321-knightmon-chibi'),
+    'knightmon-chibi': ('321', 'tools.models.field_animations.celebrations', '321-knightmon-chibi'),
     'growlmon-chibi': ('320', 'tools.models.field_animations.chibi', '320-growlmon-chibi'),
-    'pharaohmon-chibi': ('319', 'tools.models.field_animations.chibi', '319-pharaohmon-chibi'),
-    'fujinmon-chibi': ('317', 'tools.models.field_animations.chibi', '317-fujinmon-chibi'),
+    'pharaohmon-chibi': ('319', 'tools.models.field_animations.celebrations', '319-pharaohmon-chibi'),
+    'fujinmon-chibi': ('317', 'tools.models.field_animations.celebrations', '317-fujinmon-chibi'),
     'sakuyamon-chibi': ('316', 'tools.models.field_animations.chibi', '316-sakuyamon-chibi'),
     'skullsatamon-chibi': ('314', 'tools.models.field_animations.chibi', '314-skullsatamon-chibi'),
-    'creepymon-chibi': ('312', 'tools.models.field_animations.chibi', '312-creepymon-chibi'),
+    'creepymon-chibi': ('312', 'tools.models.field_animations.celebrations', '312-creepymon-chibi'),
     'assaultmon-chibi': ('310', 'tools.models.field_animations.chibi', '310-assaultmon-chibi'),
     'antylamon-chibi': ('309', 'tools.models.field_animations.chibi', '309-antylamon-chibi'),
     'dinohyumon-chibi': ('308', 'tools.models.field_animations.chibi', '308-dinohyumon-chibi'),
@@ -47,7 +56,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'marsmon-chibi': ('297', 'tools.models.field_animations.chibi', '297-marsmon-chibi'),
     'boltmon-chibi': ('288', 'tools.models.field_animations.chibi', '288-boltmon-chibi'),
     'skullmeramon-chibi': ('277', 'tools.models.field_animations.chibi', '277-skullmeramon-chibi'),
-    'metaltyrannomon-chibi': ('260', 'tools.models.field_animations.chibi', '260-metaltyrannomon-chibi'),
+    'metaltyrannomon-chibi': ('260', 'tools.models.field_animations.celebrations', '260-metaltyrannomon-chibi'),
     'floramon-pace': ('273', 'tools.models.field_animations.pace', '273-floramon-pace'),
     'mushroomon-pace': ('263', 'tools.models.field_animations.pace', '263-mushroomon-pace'),
     'tortomon-pace': ('261', 'tools.models.field_animations.pace', '261-tortomon-pace'),
@@ -55,33 +64,33 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'tapirmon-pace': ('287', 'tools.models.field_animations.pace', '287-tapirmon-pace'),
     'snimon-pace': ('328', 'tools.models.field_animations.pace', '328-snimon-pace'),
     'grizzlymon-pace': ('296', 'tools.models.field_animations.pace', '296-grizzlymon-pace'),
-    'gryphonmon-pace': ('293', 'tools.models.field_animations.pace', '293-gryphonmon-pace'),
+    'gryphonmon-pace': ('293', 'tools.models.field_animations.celebrations', '293-gryphonmon-pace'),
     'woodmon-pace': ('272', 'tools.models.field_animations.pace', '272-woodmon-pace'),
     'wormmon-pace': ('183', 'tools.models.field_animations.pace', '183-wormmon-pace'),
-    'datamon-pace': ('294', 'tools.models.field_animations.pace', '294-datamon-pace'),
+    'datamon-field': ('294', 'tools.models.field_animations.datamon', '294-datamon-field'),
     'deramon-pace': ('286', 'tools.models.field_animations.pace', '286-deramon-pace'),
     'garbagemon-pace': ('269', 'tools.models.field_animations.pace', '269-garbagemon-pace'),
-    'gazimon-pace': ('285', 'tools.models.field_animations.pace', '285-gazimon-pace'),
+    'gazimon-field': ('285', 'tools.models.field_animations.gazimon', '285-gazimon-field'),
     'dokugumon-pace': ('298', 'tools.models.field_animations.pace', '298-dokugumon-pace'),
     'vilemon-pace': ('295', 'tools.models.field_animations.pace', '295-vilemon-pace'),
     'armageddemon-pace': ('407', 'tools.models.field_animations.pace', '407-armageddemon-pace'),
     'nefertimon-pace': ('198', 'tools.models.field_animations.pace', '198-nefertimon-pace'),
-    'tylomon-native-range': ('254', 'tools.models.field_animations.locomotion', '254-tylomon-native-range'),
+    'tylomon-native-range': ('254', 'tools.models.field_animations.celebrations', '254-tylomon-native-range'),
     'syakomon-native-range': ('283', 'tools.models.field_animations.locomotion', '283-syakomon-native-range'),
-    'apocalymon-native-range': ('400', 'tools.models.field_animations.locomotion', '400-apocalymon-native-range'),
+    'apocalymon-native-range': ('400', 'tools.models.field_animations.celebrations', '400-apocalymon-native-range'),
     'taomon-equipment': ('315', 'tools.models.field_animations.chibi', '315-taomon-equipment'),
     'roachmon-equipment': ('332', 'tools.models.field_animations.chibi', '332-roachmon-equipment'),
-    'megagargomon-equipment': ('335', 'tools.models.field_animations.chibi', '335-megagargomon-equipment'),
-    'solarmon-steady-hover': ('251', 'tools.models.field_animations.locomotion', '251-solarmon-steady-hover'),
+    'megagargomon-equipment': ('335', 'tools.models.field_animations.celebrations', '335-megagargomon-equipment'),
+    'solarmon-steady-hover': ('251', 'tools.models.field_animations.celebrations', '251-solarmon-steady-hover'),
     'thundermon-rolling-boots': ('252', 'tools.models.field_animations.thundermon', '252-thundermon-rolling-boots'),
     'tuskmon-heavy-field': ('253', 'tools.models.field_animations.tuskmon', '253-tuskmon-heavy-field'),
-    'shadramon-supported-field': ('250', 'tools.models.field_animations.pace', '250-shadramon-supported-field'),
+    'shadramon-supported-field': ('250', 'tools.models.field_animations.celebrations', '250-shadramon-supported-field'),
     'marineangemon-steady-run': ('248', 'tools.models.field_animations.gliding', '248-marineangemon-steady-run'),
     'quetzalmon-steady-flight': ('249', 'tools.models.field_animations.gliding', '249-quetzalmon-steady-flight'),
     'kokuwamon-rolling-boots': ('247', 'tools.models.field_animations.pace', '247-kokuwamon-rolling-boots'),
     'infermon-tripod-field': ('246', 'tools.models.field_animations.pace', '246-infermon-tripod-field'),
     'piedmon-native-float': ('245', 'tools.models.field_animations.piedmon', '245-piedmon-native-float'),
-    'superstarmon-supported-field': ('244', 'tools.models.field_animations.super_starmon', '244-superstarmon-supported-field'),
+    'superstarmon-supported-field': ('244', 'tools.models.field_animations.celebrations', '244-superstarmon-supported-field'),
     'starmon-boxer-field': ('243', 'tools.models.field_animations.pace', '243-starmon-boxer-field'),
     'sorcermon-supported-field': ('242', 'tools.models.field_animations.pace', '242-sorcermon-supported-field'),
     'wizardmon-supported-field': ('241', 'tools.models.field_animations.pace', '241-wizardmon-supported-field'),
@@ -106,32 +115,32 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'gomamon-field': ('217', 'tools.models.field_animations.pace', '217-gomamon-field'),
     'devidramon-field': ('216', 'tools.models.field_animations.pace', '216-devidramon-field'),
     'magnadramon-glide': ('215', 'tools.models.field_animations.gliding', '215-magnadramon-glide'),
-    'shakkoumon-glide': ('214', 'tools.models.field_animations.gliding', '214-shakkoumon-glide'),
-    'aeroveedramon-field': ('213', 'tools.models.field_animations.pace', '213-aeroveedramon-field'),
+    'shakkoumon-glide': ('214', 'tools.models.field_animations.celebrations', '214-shakkoumon-glide'),
+    'aeroveedramon-field': ('213', 'tools.models.field_animations.celebrations', '213-aeroveedramon-field'),
     'venommyotismon-field': ('212', 'tools.models.field_animations.venom_myotismon', '212-venommyotismon-field'),
     'metalseadramon-glide': ('211', 'tools.models.field_animations.gliding', '211-metalseadramon-glide'),
     'grankuwagamon-field': ('210', 'tools.models.field_animations.gran_kuwagamon', '210-grankuwagamon-field'),
-    'lillymon-native-flight': ('209', 'tools.models.field_animations.chibi', '209-lillymon-native-flight'),
+    'lillymon-native-flight': ('209', 'tools.models.field_animations.celebrations', '209-lillymon-native-flight'),
     'togemon-field': ('208', 'tools.models.field_animations.togemon', '208-togemon-field'),
     'seraphimon-field': ('207', 'tools.models.field_animations.chibi', '207-seraphimon-field'),
-    'magnaangemon-field': ('206', 'tools.models.field_animations.magna_angemon', '206-magnaangemon-field'),
+    'magnaangemon-field': ('206', 'tools.models.field_animations.celebrations', '206-magnaangemon-field'),
     'megakabuterimon-field': ('205', 'tools.models.field_animations.mega_kabuterimon', '205-megakabuterimon-field'),
     'veedramon-field': ('203', 'tools.models.field_animations.gaits', '203-veedramon-field'),
     'monmon-upperbody': ('352', 'tools.models.field_animations.monmon', '352-monmon-upperbody'),
     'wargreymon-field': ('373', 'tools.models.field_animations.chibi', '373-wargreymon-field'),
-    'blackwargreymon-field': ('404', 'tools.models.field_animations.chibi', '404-blackwargreymon-field'),
-    'omnimon-field': ('461', 'tools.models.field_animations.chibi', '461-omnimon-field'),
+    'blackwargreymon-field': ('404', 'tools.models.field_animations.celebrations', '404-blackwargreymon-field'),
+    'omnimon-field': ('461', 'tools.models.field_animations.celebrations', '461-omnimon-field'),
     'renamon-field': ('354', 'tools.models.field_animations.chibi', '354-renamon-field'),
     'beelzemon-field': ('403', 'tools.models.field_animations.chibi', '403-beelzemon-field'),
     'magnamon-field': ('197', 'tools.models.field_animations.gaits', '197-magnamon-field'),
     'puppetmon-field': ('181', 'tools.models.field_animations.articulation', '181-puppetmon-field'),
     'kotemon-field': ('351', 'tools.models.field_animations.imported_equipment', '351-kotemon-field'),
-    'bastemon-field': ('432', 'tools.models.field_animations.chibi', '432-bastemon-field'),
+    'bastemon-field': ('432', 'tools.models.field_animations.celebrations', '432-bastemon-field'),
     'veemon-field': ('180', 'tools.models.field_animations.gaits', '180-veemon-field'),
     'exveemon-field': ('194', 'tools.models.field_animations.gaits', '194-exveemon-field'),
     'flamedramon-field': ('195', 'tools.models.field_animations.gaits', '195-flamedramon-field'),
     'stingmon-field': ('187', 'tools.models.field_animations.secondary_motion', '187-stingmon-field'),
-    'angewomon-field': ('190', 'tools.models.field_animations.secondary_motion', '190-angewomon-field'),
+    'angewomon-field': ('190', 'tools.models.field_animations.celebrations', '190-angewomon-field'),
     'paildramon-field': ('199', 'tools.models.field_animations.chibi', '199-paildramon-field'),
     'ankylomon-field': ('189', 'tools.models.field_animations.pace', '189-ankylomon-field'),
     'lighdramon-field': ('201', 'tools.models.field_animations.pace', '201-lighdramon-field'),
@@ -220,6 +229,24 @@ def species_file(out, t, recs=None, names=None, generate=False):
         s.update(proof.get('species_patch', {}))
         s['model']['file'] = model_path
         s['model'].pop('slot_aliases', None)
+        s.pop('_path', None)
+    # Battle reach is applied after all field size passes: their global model
+    # scaling would otherwise shorten the native dash again.
+    if 'Buster Dive' in (s.get('techniques') or []):
+        import species as species_tools
+        from tools.models import buster_dive
+        from pathlib import Path
+        s['_path'] = os.path.join(ROOT, 'content/species', name)
+        model, proof = buster_dive.apply(species_tools.species_model(s)[0], s)
+        if proof is not None:
+            generated = Path(os.path.abspath(out) + '-models')
+            generated.mkdir(parents=True, exist_ok=True)
+            (generated / f'{t}-buster-dive-report.json').write_text(json.dumps(proof, indent=2) + '\n')
+            if proof['applied']:
+                model_path = generated / f'{t}-buster-dive.MMD'
+                model_path.write_bytes(model)
+                s['model']['file'] = str(model_path)
+                s['model'].pop('slot_aliases', None)
         s.pop('_path', None)
     return name, s
 

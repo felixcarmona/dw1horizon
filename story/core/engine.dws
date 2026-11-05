@@ -4,6 +4,7 @@ pub group engine {
     pub alias var prosperity = 1;          // recomputed by C on every save and game start
     pub alias var shop_hi = 243;           // SHOP_VARIABLE, high byte
     pub alias var shop_lo = 244;           // SHOP_VARIABLE, low byte
+    pub alias var death_map_entry = 124;   // 1 while Jijimon's house was loaded by the partner's death or lost life (C, not saved)
     pub alias var music_mode = 245;
     pub alias var object = 247;            // CALL_ROUTINE argument: map object / script entity
     pub alias var animation = 248;         // CALL_ROUTINE argument: animation / exit / mood
@@ -14,6 +15,9 @@ pub group engine {
     pub alias var foe3 = 253;
     pub alias var arg = 254;               // argument of CALL_ROUTINE; the chosen item after choose_item
     pub alias var result = 255;            // result of a battle or tournament (won = 1, lost = 255, fled = 0)
+    // Vending stock uses the last two original saved bits; dailyPStatTrigger clears them at midnight.
+    pub alias flag vending_happy_sold = 798;
+    pub alias flag vending_ice_sold = 799;
     pub alias flag item_did_not_fit = 0;
     pub alias flag no_escape = 1;
     pub alias flag picker_mode = 3;        // item picker: sell/discard mode

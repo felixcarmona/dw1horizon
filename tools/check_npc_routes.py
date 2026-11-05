@@ -251,6 +251,26 @@ def authored_geometry(s):
             x,z = edit['tile']
             assert m.collision[z*100+x] == edit['was'], manifest.name
             m.collision[z*100+x] = edit['value']
+    toilet_calls = [n for n in ast.walk(tree) if isinstance(n, ast.Call)
+                    and isinstance(n.func, ast.Attribute) and n.func.attr == 'tiles'
+                    and isinstance(n.func.value, ast.Name) and n.func.value.id == 'toilets']
+    if toilet_calls:
+        # Read only the declarative cells; importing the module also imports rendering tools.
+        source = MOD / 'maps/toilets.py'
+        declarations = {n.targets[0].id: n.value for n in ast.parse(source.read_text()).body
+                        if isinstance(n, ast.Assign) and len(n.targets) == 1
+                        and isinstance(n.targets[0], ast.Name)}
+        booths = eval(compile(ast.Expression(declarations['BOOTHS']), str(source), 'eval'),
+                      {'__builtins__': {}, 'dict': dict, 'range': range})
+        wall = ast.literal_eval(declarations['WALL'])
+        trigger = ast.literal_eval(declarations['TOILET'])
+        for call in toilet_calls:
+            booth = booths[ast.literal_eval(call.args[1])]
+            for x,z in booth['blocked']:
+                m.collision[z*100+x] = wall
+            for x,z in booth['trigger']:
+                assert m.collision[z*100+x] == 0, (s['map'], x, z)
+                m.collision[z*100+x] = trigger
     return m
 
 

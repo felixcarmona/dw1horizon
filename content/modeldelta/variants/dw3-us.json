@@ -9,12 +9,17 @@
   "build/batch16/Renamon.MMD": "5a49398a00861768203661f389156a81c298fa841396309d18f22b1108c8b0c9",
   "build/meshfix2-out/MaloMyotismon.MMD": "4ac33d108c98052c2cbff46d8bd11bc52c381f93efcd2527ba9ef637377c6a7c",
   "build/rescue-kyubimon/Kyubimon.MMD": "97dff5e3e23e2a52e3036ab00756c72a85b4c88f4635c3a618862391bb440c9d",
-  "build/rigfix/Chrysalimon.MMD": "34f721ff396c422e8d6f8c0d92ef9373883aefd51b6a9a9415479e6ed3fe267d"
+  "build/rigfix/Chrysalimon.MMD": "34f721ff396c422e8d6f8c0d92ef9373883aefd51b6a9a9415479e6ed3fe267d",
+  "build/sizes-out/models/Chrysalimon.MMD": "79c9a8e636f9c7fea88498615960f1227214361b76d356e0986236d4bc36ed64"
  },
  "sizes": {
   "build/sizes-out/models/Antylamon.MMD": {
    "source_sha256": "f132ffdd4156b6ce88498232a84553d0d894f62b2b797c0b820c2b555339c323",
    "sha256": "41137b8c4122e6d4abbc6002d546b4d4ccefbe39cf5ccb2bdb9708a235b05e73"
+  },
+  "build/sizes-out/models/Chrysalimon.MMD": {
+   "source_sha256": "34f721ff396c422e8d6f8c0d92ef9373883aefd51b6a9a9415479e6ed3fe267d",
+   "sha256": "79c9a8e636f9c7fea88498615960f1227214361b76d356e0986236d4bc36ed64"
   }
  },
  "models": {
@@ -283,22 +288,22 @@
    "mmd": {
     "sources": [
      {
-      "path": "build/rigfix/Chrysalimon.MMD",
-      "sha256": "34f721ff396c422e8d6f8c0d92ef9373883aefd51b6a9a9415479e6ed3fe267d",
+      "path": "build/sizes-out/models/Chrysalimon.MMD",
+      "sha256": "79c9a8e636f9c7fea88498615960f1227214361b76d356e0986236d4bc36ed64",
       "size": 94314
      }
     ],
     "delta": "content/modeldelta/deltas/dw3-us/431-Kurisarimon.MMD.mdelta",
-    "delta_sha256": "51ed71cd94bfa3343a684636436e847e4661a5f743120efffa0a76d08c55e833",
-    "sha256": "78a710b69729eac441a96cc61c3d6a5290a5636418781da8f08fb601cf15aa2d",
-    "size": 102498
+    "delta_sha256": "c5a6f01d4e06c7b33a601418face6ebfe731383a4804a2ad1a800425b4a49c66",
+    "sha256": "7547ea618390ca0180b8ab46c10d5d12d913e0fe6d3c520ba354c0c6cb3e3e4a",
+    "size": 103664
    },
    "from": {
-    "sha256": "bd8bc12d28dcc9f1ff66ba1afb09c8fd6265187eea2a737cae4c0571d528ef78",
-    "delta_sha256": "93e4720a70d891f31b52ea1b691a9a2713875b5bb2d8f06664b68b5f65deeb8d",
+    "sha256": "49e71a98684543e0a17fcf99706eb8c7031c69b44090891ee750abb2d8c2f100",
+    "delta_sha256": "b32cf39a60a868e5a65a4e6c7b80c530f07f0445fd5592ce9b5ae9ec4820f958",
     "add_bytes": [
-     3858,
-     3858
+     9402,
+     9402
     ],
     "foreign_windows": 0,
     "objects_ours": [
@@ -324,9 +329,9 @@
      5,
      7,
      10,
-     11,
      12,
-     13
+     13,
+     11
     ]
    }
   }

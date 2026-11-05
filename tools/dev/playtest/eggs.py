@@ -4,11 +4,19 @@
 Boots the release corpus card, ends the partner's life as the Cheats' Die of old age row does (lifetime 0, no
 immortal hour), confirms the death dialogue up to the egg box and saves a state there. From it, per case: walks the
 cursor (left/right through every egg, up/down between the rows), hatches the chosen egg and reads the partner's
-species back once control returns in the world. --video records the first case's box and hatch.
+species back once control returns in the world (keeping the name at Jijimon's prompt): the case fails unless it is the
+egg's baby. --video records the first case's box and hatch.
+
+--partner SPECIES evolves the partner if needed (a dying Mega); --trigger N sets a story flag before the death. With
+--homecoming SPECIES (and the flag that makes a story's Jijimon's-house line recruit it, such as root2 727 for
+SkullGreymon 26), the line must not run during the death (the species is still not recruited when control returns)
+and must run at the next entry to the house.
 
   eggs.py DISC.cue --exe EXE --out DIR [--cases 4,5,6,7,0] [--video FILE.mp4] [--vanilla]
+          [--partner 461] [--trigger 727 --homecoming 26]
 """
 import argparse
+import hashlib
 import json
 import os
 import shutil
@@ -22,15 +30,47 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path[:0] = [str(ROOT), str(ROOT / 'tools')]
 from tools.dev.playtest.qol import ProofEmu, test_card
 from tools.langpatch import elf_symbols
+from tools.membudget import Ram, heap_walk
 
 BABY = {0: 1, 1: 15, 2: 29, 3: 43, 4: 470, 5: 471, 6: 472, 7: 473}
 BOX = 3                     # the egg box's UI box (doo2.c)
 UIBOX = 0x24                # sizeof(UIBoxData); +0x12 its state
 
 
+class EggEmu(ProofEmu):
+    def ram(self):
+        data = subprocess.run([sys.executable, str(ROOT / 'tools/dev/emulator.py'), 'ramdump'],
+                              env=self.env, capture_output=True, check=True).stdout
+        assert len(data) == self.ram_mb * 1024 * 1024, len(data)
+        return data
+
+
+def snapshot(e):
+    """Keep the heap and sequence state together, including when a hatch fails."""
+    ram = e.ram()
+    values = {name: e.peek(name, fmt, ram) for name, fmt in (
+        ('CURRENT_SCREEN', 'h'), ('SCRIPT_STATE+346', 'B'), ('PARTNER_ENTITY', 'i'), ('TAMER_STATE', 'B'),
+        ('PARTNER_STATE', 'B'), ('IS_SCRIPT_PAUSED', 'i'), ('ACTIVE_INSTRUCTION', 'B'),
+        ('SEQ', 'i'), ('SEQ+0x08', 'h'), ('SEQ+0x0e', 'h'), ('SEQ+0x3e', 'B'),
+        ('PARTNER_ENTITY+0x1c', 'hh'), ('PARTNER_ENTITY+0x2e', 'BBB'))}
+    for name in ('MOD_COLD_CACHE_TYPE', 'MOD_COLD_PENDING', 'COLD_READ_BUSY', 'GAME_STATE', 'MOD_LANG'):
+        if e.has(name):
+            values[name] = e.peek(name, 'B' if name in ('GAME_STATE', 'COLD_READ_BUSY') else 'i', ram)
+    values['partner_name_hex'] = e.raw('PARTNER_ENTITY+0x68', 20, ram).hex()
+    values['ram_bytes'] = len(ram)
+    values['npc_models'] = [e.peek(f'NPC_MODELS+{i * 0x1c + 0x18}', 'h', ram)
+                            for i in range(5) if e.peek(f'NPC_MODELS+{i * 0x1c}', 'i', ram)]
+    values['heap'] = heap_walk(Ram(ram, e.table))
+    values['cpu'] = e.run('lua', 'local r=PCSX.getRegisters(); return string.format("pc=%08x ra=%08x",r.pc,r.GPR.n.ra)').strip()
+    return values
+
+
 def box_open(e, ram=None):
     ram = ram or e.ram()
-    return e.peek(f'UI_BOX_DATA+{BOX * UIBOX + 0x12}', 'h', ram) == 1 and e.peek('SEQ+0x3c', 'h', ram) == 0
+    return (e.peek('CURRENT_SCREEN', 'h', ram) in (218, 205)
+            and e.peek('SEQ+0x08', 'h', ram) == 4 and e.peek('SEQ', 'i', ram) == -1
+            and e.peek(f'UI_BOX_DATA+{BOX * UIBOX + 0x12}', 'h', ram) == 1
+            and e.peek('SEQ+0x3c', 'h', ram) == 0)
 
 
 def slot(e):
@@ -78,10 +118,88 @@ def walk_all(e, out, count, shots=True):
 
 
 def choose(e, target, count):
-    while slot(e) != target:
+    assert 0 <= target < count, (target, count)
+    for _ in range(count * 3):
+        if slot(e) == target:
+            break
         e.press('RIGHT', 8); e.wait(.3)
+    assert slot(e) == target, f'cursor did not reach egg {target}'
     e.run('shot', str(e.out / f'chosen-{target}.png'))
     e.press('CONFIRM', 8)
+
+
+def evolve(e, species):
+    """the partner becomes `species` through the game's own evolution (the model loader runs as for any evolution)"""
+    if e.peek('PARTNER_ENTITY', 'i') == species:
+        return species       # the corpus already has this Mega; avoid an artificial evolution into the same species
+    e.run('pause')
+    e.poke('EVOLUTION_TARGET', struct.pack('<h', species))
+    e.poke('HAS_USED_EVOITEM', b'\1')
+    e.poke('TAMER_STATE', b'\6')
+    e.poke('TAMER_SUB_STATE', b'\0')
+    e.poke('PARTNER_STATE', bytes([13]))
+    e.poke('PARTNER_SUB_STATE', b'\0')
+    e.run('resume')
+    for _ in range(180):
+        if e.peek('PARTNER_ENTITY', 'i') == species and e.peek('PARTNER_STATE', 'b') == 1:
+            break
+        e.press('START', 8)
+        e.wait(.25)
+    else:
+        raise AssertionError(f'the partner did not become {species}')
+    e.poke('PAUSE_STATE', b'\0')
+    assert e.in_control()
+    return species
+
+
+def battle_before_death(e, out):
+    """Load the battle overlay through a real wild encounter, then return without opening MENU."""
+    e.gs('set', 'hour=10', 'gametime_running=0', 'partner.para.remainingLifetime=500',
+         'partner.stats.currentHP=9000', 'partner.stats.currentMP=9000')
+    e.gs('trigger', '1', '1')
+    assert e.warp(1)
+    assert e.warp(0)
+    e.gs('approach', '0')
+    for _ in range(100):
+        if e.peek('GAME_STATE', 'B') == 2:
+            break
+        e.press('CONFIRM', 8); e.wait(.5)
+    else:
+        raise AssertionError('wild battle did not start')
+    e.run('shot', str(out / 'before-death-battle.png'))
+    # Finish the actual encounter promptly; its normal victory/unload path still runs.
+    for _ in range(80):
+        if (e.peek('GAME_STATE', 'B') == 0 and e.peek('TAMER_STATE', 'B') == 0
+                and e.peek('IS_SCRIPT_PAUSED', 'i') == 1):
+            e.run('shot', str(out / 'after-battle.png'))
+            return True
+        for slot in range(3):
+            e.poke(f'NPC_ENTITIES+{slot * 0x68 + 0x4c}', b'\0\0')
+        e.press('CONFIRM', 8); e.wait(1)
+    raise AssertionError('wild battle did not return control')
+
+
+def to_control(e, tries=60):
+    """CONFIRM through the dialogue; at a choice (Jijimon's "Change the name / Keep it as it is", then "Rename it again /
+    OK") the last option, so the name keyboard never opens"""
+    for _ in range(tries):
+        ram = e.ram()
+        if e.peek('IS_SCRIPT_PAUSED', 'i', ram) == 1 and e.peek('TAMER_STATE', 'b', ram) == 0:
+            return True
+        if e.peek('ACTIVE_INSTRUCTION', 'B', ram) == 0x10:          # a choice is open
+            e.wait(.5)
+            last = e.peek('DIALOGUE_SELECTION+8', 'H') - 1
+            for _ in range(8):
+                if e.peek('DIALOGUE_SELECTION+10', 'H') == last:
+                    break
+                e.press('DOWN', 8); e.wait(.3)
+        e.press('CONFIRM', 8); e.wait(1)
+    return False
+
+
+def recruited(e, species):
+    out = e.gs('trigger', str(200 + species))                # (species below 112: trigger 200 + type)
+    return out.split('=')[1].split()[0] == '1'
 
 
 def hatch(e, out, target):
@@ -90,7 +208,8 @@ def hatch(e, out, target):
     for n in range(8):
         e.wait(3)
         e.run('shot', str(out / f'hatch-{target}-{n}.png'))
-    ok = e.in_control(tries=60)
+        (out / f'hatch-{target}-{n}.json').write_text(json.dumps(snapshot(e), indent=2) + '\n')
+    ok = to_control(e)
     e.wait(2)
     e.run('shot', str(out / f'field-{target}.png'))
     return dict(control=ok, seconds=round(time.time() - t0))
@@ -104,18 +223,37 @@ def main():
     p.add_argument('--video')
     p.add_argument('--box-state', help='start from this state at the open egg box')
     p.add_argument('--vanilla', action='store_true', help='NEW DIGIMON off: four eggs')
+    p.add_argument('--prosperity', type=int, help='set pstat 1 before death (60 selects house 205)')
+    p.add_argument('--partner', type=int,
+                   help='use this partner species, evolving only if it differs (the dying Mega of a player report)')
+    p.add_argument('--trigger', type=int, action='append', default=[],
+                   help='set this trigger before the death (a story scene pending on entering the house, for one)')
+    p.add_argument('--homecoming', type=int,
+                   help="a species a story's Jijimon's-house line recruits (with its --trigger): not during the death, at the next entry")
     p.add_argument('--random', type=int, default=0,
                    help='then N deaths with no lives left (the random egg): the egg each one hatches')
     p.add_argument('--port', type=int, default=int(os.environ.get('EMU_PORT', 39251)))
+    p.add_argument('--ram-mb', type=int, choices=(2, 8), default=2)
+    p.add_argument('--language', choices=('en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca'), default='en')
+    p.add_argument('--angemon', type=int, choices=(0, 1), help='set the house resident recruitment flag before death')
+    p.add_argument('--species-name', action='store_true', help='use the dying species name, testing automatic baby naming')
+    p.add_argument('--skip-walk', action='store_true', help='choose the target directly, without testing every cursor position')
+    p.add_argument('--battle-first', action='store_true', help='fight a wild encounter before death without reloading MENU')
     a = p.parse_args(); out = Path(a.out).resolve(); out.mkdir(parents=True, exist_ok=True)
-    e = ProofEmu(a.disc, a.exe, a.port, str(out / 'emu'))
+    e = EggEmu(a.disc, a.exe, a.port, str(out / 'emu'))
+    e.ram_mb = a.ram_mb
+    e.env['EMU_ARGS'] = '-8mb' if a.ram_mb == 8 else ''
     e.out = out
     for name, (address, _, _) in elf_symbols(a.exe + '.elf').items():
         e.table.setdefault(name, address)
     e.table['SEQ'] = e.table['DOOA_REINCARNATION_SEQ']     # (the overlays link in the executable's ELF)
-    results = {}
+    results = dict(ram_mb=a.ram_mb, language=a.language, new_digimon=not a.vanilla,
+                   disc=Path(a.disc).name, exe_sha256=hashlib.sha256(Path(a.exe).read_bytes()).hexdigest(),
+                   requested_partner=a.partner, prosperity=a.prosperity, angemon=a.angemon,
+                   species_name=a.species_name, box_state=Path(a.box_state).name if a.box_state else None)
     try:
-        e.start(test_card(out))
+        language = ('en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca').index(a.language)
+        e.start(test_card(out, language=language))
         if a.box_state:                 # a state saved at the open egg box by an earlier run of this disc
             shutil.copyfile(a.box_state, out / 'box.state')
             e.run('load', str(out / 'box.state'))
@@ -125,7 +263,25 @@ def main():
             error = e.continue_game()
             assert error == 0, f'Continue failed: {error}'
             e.wait(5); assert e.in_control()
+            assert e.peek('MOD_LANG', 'i') == language
             e.poke('MOD_OPT_NEW_DIGIMON', struct.pack('<i', 0 if a.vanilla else 1))
+            if a.partner is not None:
+                results['evolved_to'] = evolve(e, a.partner)
+            if a.species_name:
+                species = e.peek('PARTNER_ENTITY', 'i')
+                source = next((ROOT / 'content/species').glob(f'{species}-*.json'))
+                name = json.loads(source.read_text())['name'].encode('ascii')
+                assert len(name) < 20
+                e.poke('PARTNER_ENTITY+0x68', name.ljust(20, b'\0'))
+            if a.battle_first:
+                results['battle_before_death'] = battle_before_death(e, out)
+            for n in a.trigger:
+                e.gs('trigger', str(n), '1')
+            if a.angemon is not None:
+                e.gs('trigger', '220', str(a.angemon))
+            if a.prosperity is not None:
+                e.gs('pstat', '1', str(a.prosperity))
+            results['ram_bytes'] = len(e.ram())
             results['partner_before'] = e.peek('PARTNER_ENTITY', 'I')
             # Cheats' Die of old age (patch 0307): lifetime 0 and no immortal hour; the natural death runs at once
             e.gs('set', 'partner.para.remainingLifetime=0')
@@ -135,10 +291,19 @@ def main():
                     break
                 e.wait(.5)
             results['natural_death'] = e.peek('IS_NATURAL_DEATH', 'i') == 1
+            assert results['natural_death'], 'old-age death did not start'
             results['confirms_to_box'] = reach_box(e, out)
+            results['death_screen'] = e.peek('CURRENT_SCREEN', 'h')
+            if a.prosperity is not None and a.prosperity >= 50:
+                assert results['death_screen'] == 205, results['death_screen']
             e.wait(1)
             e.run('save', str(out / 'box.state'))
             e.run('shot', str(out / 'box.png'))
+        results['box'] = snapshot(e)
+        assert e.peek('MOD_LANG', 'i') == language, 'box state has a different language'
+        assert bool(e.peek('MOD_OPT_NEW_DIGIMON', 'i')) == (not a.vanilla), 'box state has a different egg option'
+        if a.angemon is not None and results['box']['CURRENT_SCREEN'] == 205:
+            assert (142 in results['box']['npc_models']) == bool(a.angemon), results['box']['npc_models']
         count = 4 if a.vanilla else 8
         cases = [int(x) for x in a.cases.split(',')] if a.cases else []
         for i, c in enumerate(cases):
@@ -149,7 +314,7 @@ def main():
                 rec = subprocess.Popen([sys.executable, str(ROOT / 'tools/dev/emulator.py'), 'record', a.video, '75', '30'],
                                        env=e.env)
                 e.wait(2)
-            case = dict(walk=walk_all(e, out, count, shots=(i == 0)))
+            case = dict(walk=[] if a.skip_walk else walk_all(e, out, count, shots=(i == 0)))
             choose(e, c, count)
             case.update(hatch(e, out, c))
             if rec:
@@ -158,10 +323,32 @@ def main():
             case['eggSlot'] = e.peek('SEQ+0x0e', 'h', ram)
             case['type'] = e.peek('PARTNER_ENTITY', 'I', ram)
             case['expected'] = BABY[c]
+            case['after'] = snapshot(e)
             case['stats'] = e.gs('show', 'partner.stats').strip()
+            if a.homecoming is not None:
+                case['recruited_after_death'] = recruited(e, a.homecoming)
             results[f'egg-{c}'] = case
             (out / 'result.json').write_text(json.dumps(results, indent=2) + '\n')
-            print(c, case, flush=True)
+            print(c, {k: case[k] for k in ('control', 'seconds', 'type', 'expected')}, flush=True)
+            assert case['control'], f'egg {c}: no control after the hatch'
+            assert case['type'] == BABY[c], f'egg {c}: the partner is {case["type"]}, not {BABY[c]}'
+            if a.species_name:
+                source = next((ROOT / 'content/species').glob(f'{BABY[c]}-*.json'))
+                expected_name = json.loads(source.read_text())['name'].encode('ascii')
+                actual_name = bytes.fromhex(case['after']['partner_name_hex']).split(b'\0')[0]
+                assert actual_name == expected_name, (actual_name, expected_name)
+            if a.homecoming is not None:
+                assert not case['recruited_after_death'], f'the homecoming line ran during the death ({a.homecoming} recruited)'
+                if i == 0:                  # the next entry to the house is a homecoming: the line runs there
+                    screen = e.peek('CURRENT_SCREEN', 'h')
+                    # A pending homecoming owns the tamer until its dialogue ends, so warp's control poll can time out.
+                    e.warp(screen)
+                    assert to_control(e), 'no control after the homecoming'
+                    assert e.peek('CURRENT_SCREEN', 'h') == screen, f'screen {screen} did not load again'
+                    e.run('shot', str(out / 'homecoming.png'))
+                    results['recruited_at_homecoming'] = recruited(e, a.homecoming)
+                    (out / 'result.json').write_text(json.dumps(results, indent=2) + '\n')
+                    assert results['recruited_at_homecoming'], 'the homecoming line did not run at the next entry'
         # the random egg: no lives left, DOOA_getSequenceState replaces the choice by rand() % eggCount()
         picks = []
         for n in range(a.random):
@@ -182,6 +369,10 @@ def main():
             print('random', picks, flush=True)
     except BaseException as err:
         results['error'] = str(err)
+        try:
+            results['failure'] = snapshot(e)
+        except Exception as diagnostic_error:
+            results['diagnostic_error'] = str(diagnostic_error)
         e.run('shot', str(out / 'failure.png'), check=False)
         e.run('save', str(out / 'failure.state'), check=False)
         raise

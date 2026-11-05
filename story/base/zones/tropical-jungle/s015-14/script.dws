@@ -20,7 +20,7 @@ script 15 {
             spawn_item(item("Digimushrm"), 48, 80);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 6) {
+        if (random_roll <= 7) {
             spawn_item(item("Happymushrm"), 40, 60);
         }
         if (strange_plant_rumor_heard && !is_recruited(species("Vegiemon"))) {

@@ -2,6 +2,7 @@
 
 ## Players
 
+- [decisions.md](decisions.md): deliberate gameplay and design changes, their reasons and sources.
 - [release/README-players.md](release/README-players.md): how to patch your disc with the command-line patcher.
 - The web page, [dw1horizon.com](https://dw1horizon.com), does the same in the browser.
 

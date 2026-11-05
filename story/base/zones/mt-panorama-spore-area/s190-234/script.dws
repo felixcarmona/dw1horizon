@@ -12,7 +12,7 @@ script 190 {
 
     on enter replace {    // section 254
         store_random(random_roll, 99);
-        if (random_roll <= 4) {
+        if (random_roll <= 7) {
             spawn_item(item("Digimushrm"), 39, 47);
             spawn_item(item("Digimushrm"), 39, 45);
             spawn_item(item("Digimushrm"), 39, 49);
@@ -22,7 +22,7 @@ script 190 {
             spawn_item(item("Digimushrm"), 44, 66);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 3) {
+        if (random_roll <= 7) {
             spawn_item(item("Happymushrm"), 59, 42);
         }
         spawn_chest(item("med.recovery"), 938, 0, 1239, 1024, 696);

@@ -18,6 +18,89 @@ import fontcopy
 
 
 class DataCopyTests(unittest.TestCase):
+    def test_regional_license_with_every_source_release(self):
+        # Model the release packager replacing mapping literals with USA DCB copies.
+        # The source mappings remain the reference; no disc images are needed.
+        root = Path(__file__).resolve().parents[1]
+        source = bytes(28032)
+        for key in ('us', 'eu', 'fr', 'de', 'es', 'it', 'jp', 'jp1'):
+            entry = None if key == 'us' else json.loads(
+                (root / f'mods/base-discs/dw1-{key}.json').read_text())['files']['license_data.dat']
+            expected = source if entry is None else dw.apply_ops(entry['ops'], source)
+            copies = 0
+            if entry:
+                ops = []
+                for op in entry['ops']:
+                    if 'data' not in op:
+                        ops.append(op)
+                        continue
+                    data = bytes.fromhex(op['data'])
+                    # Only the known extents are normalized; other bytes stay literal.
+                    while data:
+                        match = next(((at + i, n) for at, known in dw.USA_LICENSE
+                                      for i in range(len(known))
+                                      for n in [min(len(data), len(known) - i)]
+                                      if n >= 2 and data[:n] == known[i:i+n]), None)
+                        if match:
+                            at, n = match
+                            ops.append({'disc_copy': ['@disc:dcb:@raw', at, n]})
+                            copies += n
+                        else:
+                            n = 1
+                            ops.append({'data': data[:n].hex()})
+                        data = data[n:]
+                entry.update(ops=ops, from_sha1=hashlib.sha1(source).hexdigest(),
+                             sha1=hashlib.sha1(expected).hexdigest())
+                self.assertGreater(copies, 0)
+            for dcb in ('us', 'eu', 'jp', 'jp-arena'):
+                for dw2 in ('us', 'jp'):
+                    for dw3 in ('eu', 'us', 'jp'):
+                        with self.subTest(base=key, dcb=dcb, dw2=dw2, dw3=dw3):
+                            image = types.SimpleNamespace(license=lambda: source, files={})
+                            with patch.object(dw, '_iw', return_value=types.SimpleNamespace(Image=lambda p: image)):
+                                base = dw.BaseDisc(key, 'base', {'files': {'license_data.dat': entry}} if entry else None,
+                                    source_discs=[f'dcb={dcb}', f'dw2={dw2}', f'dw2003={dw3}'])
+                            # A non-USA source has different bytes at the USA raw offsets.
+                            raw = bytearray(12000)
+                            if dcb == 'us':
+                                for at, known in dw.USA_LICENSE:
+                                    raw[at:at+len(known)] = known
+                            base._copy_images['dcb'] = types.SimpleNamespace(f=io.BytesIO(raw))
+                            self.assertEqual(base.data('license_data.dat'), expected)
+
+    def test_license_extents_are_bounded_and_other_copies_use_player_disc(self):
+        base = object.__new__(dw.BaseDisc)
+        base.img = types.SimpleNamespace(f=io.BytesIO(bytes(12000)))
+        base.source_discs = {'dcb': 'player'}
+        base._copy_images = {'dcb': base.img}
+        for at, known in dw.USA_LICENSE:
+            for i in range(len(known)):
+                self.assertEqual(base.read_copy('@disc:dcb:@raw', at+i, len(known)-i), known[i:])
+            self.assertEqual(base.read_copy('@disc:dcb:@raw', at-1, len(known)+1), bytes(len(known)+1))
+            self.assertEqual(base.read_copy('@raw', at, len(known)), bytes(len(known)))
+        with self.assertRaises(dw.PatchError):
+            base.read_copy('@disc:dcb:@raw', 9492, -1)
+
+    def test_web_worker_uses_shared_fix_and_keeps_old_packages_working(self):
+        root = Path(__file__).resolve().parents[1]
+        worker = (root / 'web/js/engine/worker.js').read_text()
+        compatibility = worker[worker.index('USA_LICENSE = '):worker.index('\nclass Hole(')]
+        # Execute the actual worker's Python compatibility block for both package generations.
+        for shared in (False, True):
+            original = lambda *args: b'player bytes'
+            cls = type('BaseDisc', (), {'read_copy': original})
+            module = types.SimpleNamespace(BaseDisc=cls)
+            if shared:
+                module.USA_LICENSE = dw.USA_LICENSE
+            scope = {'P': module}
+            exec(compatibility, scope)
+            self.assertEqual(scope['USA_LICENSE'], dw.USA_LICENSE)
+            if shared:
+                self.assertIs(cls.read_copy, original)
+            else:
+                self.assertEqual(cls().read_copy('@disc:dcb:@raw', 9492, 9), dw.USA_LICENSE[0][1])
+                self.assertEqual(cls().read_copy('@raw', 9492, 9), b'player bytes')
+
     @unittest.skipUnless(shutil.which('c++'), 'developer search needs C++17')
     def test_fresh_scanner_resolves_secondary_rows_and_sector_boundaries(self):
         logical = random.Random(87).randbytes(4096)

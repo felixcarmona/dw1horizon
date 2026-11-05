@@ -4,6 +4,7 @@
   "_source": "dcb 126 (card Brachiomon) (tools/import_batch.py run ../fifteenth-test.json); was species 349 until 2026-10-13, merged into the disc's id 126 (a record original)",
   "level": "ultimate",
   "vanilla_as": 12,
+  "off": {"level": "ultimate"},
   "attribute": "data",
   "specialties": ["fire", "battle", null],
   "techniques": ["Spit Fire", "Fire Tower", "Magma Bomb", "Heat Laser", "Red Inferno", "Meltdown", "Inifinity Burn",

@@ -1,0 +1,202 @@
+{
+  "species": 431,
+  "name": "Kurisarimon",
+  "source_sha256": "e56d2adae684f12a0bc5deedb51aeecabf91a1a689611dcb34d78427b2bbba42",
+  "output_sha256": "49e71a98684543e0a17fcf99706eb8c7031c69b44090891ee750abb2d8c2f100",
+  "preceding_provider": {
+    "model": "431-Kurisarimon.MMD",
+    "field_overlay": "kurisarimon-celebration"
+  },
+  "effective_record_changes": {
+    "model.slot_aliases": [
+      [
+        47,
+        51
+      ],
+      [
+        49,
+        51
+      ],
+      [
+        53,
+        51
+      ],
+      [
+        48,
+        46
+      ],
+      [
+        52,
+        46
+      ],
+      [
+        50,
+        54
+      ],
+      [
+        51,
+        54
+      ],
+      [
+        55,
+        54
+      ],
+      [
+        56,
+        54
+      ]
+    ]
+  },
+  "audit": {
+    "threshold": 0,
+    "occupied_slots": 46,
+    "animated": [],
+    "across_slots": []
+  },
+  "size_adjustment": {
+    "factor": 0.7843137254901961,
+    "before_height": 459,
+    "after_height": 360,
+    "radius": 150,
+    "method": "Uniform vertices and translation rescale; rotations, scales, events, control flow and slot aliases retained."
+  },
+  "resident_bytes": 75896,
+  "resident_limit": 100352,
+  "cold_bytes": 26236,
+  "cold_buffer_bytes": 8192,
+  "cold_reads": [
+    {
+      "slot": 5,
+      "offset": 0,
+      "length": 3656,
+      "sector_read_bytes": 4096,
+      "fits": true
+    },
+    {
+      "slot": 7,
+      "offset": 3656,
+      "length": 1632,
+      "sector_read_bytes": 4096,
+      "fits": true
+    },
+    {
+      "slot": 8,
+      "offset": 5288,
+      "length": 2224,
+      "sector_read_bytes": 4096,
+      "fits": true
+    },
+    {
+      "slot": 9,
+      "offset": 7512,
+      "length": 4700,
+      "sector_read_bytes": 6144,
+      "fits": true
+    },
+    {
+      "slot": 10,
+      "offset": 12212,
+      "length": 3152,
+      "sector_read_bytes": 6144,
+      "fits": true
+    },
+    {
+      "slot": 11,
+      "offset": 15364,
+      "length": 5984,
+      "sector_read_bytes": 8192,
+      "fits": true
+    },
+    {
+      "slot": 12,
+      "offset": 21348,
+      "length": 3740,
+      "sector_read_bytes": 6144,
+      "fits": true
+    },
+    {
+      "slot": 13,
+      "offset": 25088,
+      "length": 1148,
+      "sector_read_bytes": 2048,
+      "fits": true
+    }
+  ],
+  "fits": true,
+  "variants": {
+    "dw3-us": {
+      "sha256": "7547ea618390ca0180b8ab46c10d5d12d913e0fe6d3c520ba354c0c6cb3e3e4a",
+      "audit": {
+        "threshold": 0,
+        "occupied_slots": 46,
+        "animated": [],
+        "across_slots": []
+      },
+      "storage": {
+        "resident_bytes": 77430,
+        "resident_limit": 100352,
+        "cold_bytes": 26236,
+        "cold_buffer_bytes": 8192,
+        "cold_reads": [
+          {
+            "slot": 5,
+            "offset": 0,
+            "length": 3656,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 7,
+            "offset": 3656,
+            "length": 1632,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 8,
+            "offset": 5288,
+            "length": 2224,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 9,
+            "offset": 7512,
+            "length": 4700,
+            "sector_read_bytes": 6144,
+            "fits": true
+          },
+          {
+            "slot": 10,
+            "offset": 12212,
+            "length": 3152,
+            "sector_read_bytes": 6144,
+            "fits": true
+          },
+          {
+            "slot": 11,
+            "offset": 15364,
+            "length": 5984,
+            "sector_read_bytes": 8192,
+            "fits": true
+          },
+          {
+            "slot": 12,
+            "offset": 21348,
+            "length": 3740,
+            "sector_read_bytes": 6144,
+            "fits": true
+          },
+          {
+            "slot": 13,
+            "offset": 25088,
+            "length": 1148,
+            "sector_read_bytes": 2048,
+            "fits": true
+          }
+        ],
+        "fits": true
+      }
+    }
+  }
+}

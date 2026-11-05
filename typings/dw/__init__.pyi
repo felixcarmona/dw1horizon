@@ -1726,6 +1726,7 @@ class _engine:
     prosperity: Var    # var 1: recomputed by C on every save and game start
     shop_hi: Var    # var 243: SHOP_VARIABLE, high byte
     shop_lo: Var    # var 244: SHOP_VARIABLE, low byte
+    death_map_entry: Var    # var 124: 1 while Jijimon's house was loaded by the partner's death or lost life (C, not saved)
     music_mode: Var    # var 245
     object: Var    # var 247: CALL_ROUTINE argument: map object / script entity
     animation: Var    # var 248: CALL_ROUTINE argument: animation / exit / mood
@@ -1736,6 +1737,8 @@ class _engine:
     foe3: Var    # var 253
     arg: Var    # var 254: argument of CALL_ROUTINE; the chosen item after choose_item
     result: Var    # var 255: result of a battle or tournament (won = 1, lost = 255, fled = 0)
+    vending_happy_sold: Flag    # flag 798
+    vending_ice_sold: Flag    # flag 799
     item_did_not_fit: Flag    # flag 0
     no_escape: Flag    # flag 1
     picker_mode: Flag    # flag 3: item picker: sell/discard mode

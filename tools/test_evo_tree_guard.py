@@ -24,6 +24,24 @@ class GuardTests(unittest.TestCase):
     def test_current_tree(self):
         self.assertEqual(check(self.sp, self.kids, self.table), [])
 
+    def test_whamon_tier_change_keeps_explicit_off_routes(self):
+        for parent in (4, 46, 57):
+            self.assertIn('missing explicit off route', self.errors(
+                lambda s, k: s[parent]['off']['evolution'].update(to=[-1] * 6)))
+        self.assertIn('canon Ultimate', self.errors(lambda s, k: s[24].update(level='champion')))
+
+    def test_whamon_off_rookie_picker_routes(self):
+        sp = copy.deepcopy(self.sp)
+        for species in sp.values():
+            off = species.get('off', {})
+            if off:
+                species['level'] = off['level']
+                species.get('evolution', {}).update(off.get('evolution', {}))
+        kids, reqs, levels = T.model(sp)
+        kids = {p: [c for c in cs if sp[c].get('vanilla')] for p, cs in kids.items()}
+        for parent in (4, 46, 57):
+            self.assertIsNotNone(T.practical(parent, 24, kids, reqs, levels, sp), sp[parent]['name'])
+
     def test_sheet_mega_level(self):
         c = self.names['Apocalymon']
         self.assertIn('sheet Mega must be level 6',

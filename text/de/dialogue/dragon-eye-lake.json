@@ -257,5 +257,23 @@
    "dass er mit dem aktuellen",
    "Köder nicht anbeißt."
   ]
- ]
+ ],
+ "s009.sec81.vend_prompt": "Wähle einen Gegenstand.",
+ "s009.sec81.vend_more": "Mehr",
+ "s009.sec81.vend_back": "Zurück",
+ "s009.sec81.vend_leave": "Gehen",
+ "s009.sec81.vend_poor": "Nicht genug Bits.",
+ "s009.sec81.vend_full": "Deine Tasche ist voll.",
+ "s009.sec81.vend_daily": "Jeden seltenen Pilz einmal pro Tag.",
+ "s009.sec81.vend_sold": "Heute ausverkauft. Komm nach Mitternacht.",
+ "s009.sec81.vend_bonus": "Bonus! Doppelheilung!",
+ "s009.sec81.vend_play_prompt": "Für 1000 Bits spielen?",
+ "s009.sec81.vend_play": "Spielen",
+ "s009.sec81.vend_quit": "Gehen",
+ "s009.sec81.vend_buy0": "Digipilz 51",
+ "s009.sec81.vend_getDigimushrm": "Digipilz erhalten!",
+ "s009.sec81.vend_buy1": "Glückspilz 1500",
+ "s009.sec81.vend_getHappymushrm": "Glückspilz erhalten!",
+ "s009.sec81.vend_buy2": "Eispilz 1000",
+ "s009.sec81.vend_getIceMushrm": "Eispilz erhalten!"
 }

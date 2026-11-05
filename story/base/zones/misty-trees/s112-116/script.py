@@ -30,7 +30,7 @@ def enter():    # section 254
     if roll <= 17:
         spawn_item(Item.Digimushrm, at=(550, -250))
     roll = random.roll(99)
-    if roll <= 1:
+    if roll <= 7:
         spawn_item(Item.Happymushrm, at=(-950, -3050))
 
 @morishellmon0.on_talk

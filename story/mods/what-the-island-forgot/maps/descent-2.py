@@ -11,6 +11,7 @@ read from the player's own disc at build time, with the camera set here. Its wil
 """
 import json, os, sys
 from mapbase import base_map, import_png, MOD, check_arrivals
+import toilets
 from foreground_depth_b import apply as apply_foreground
 
 DATA = os.path.join(MOD, 'maps', 'descent-2-data.json')
@@ -23,7 +24,9 @@ def main(out):
     m = base_map('DGHA01', *d['camera']); m.projection = d['projection']
     m.collision = list(d['collision']); m.warps = d['warps']
     import_png('DGHA01', ART, os.path.join(out, 'OVPS02.TFS'))
+    m = toilets.paste(m, 'OVPS02', out)
     apply_foreground(m, 'descent-2', os.path.join(out, 'OVPS02.TFS'))
+    toilets.tiles(m, 'OVPS02')
     check_arrivals(m, 'OVPS02')
     open(os.path.join(out, 'OVPS02.MAP'), 'wb').write(m.build())
     print(f'OVPS02: free tiles {m.collision.count(0)}, exits {[(w["targetMap"], w["targetExit"]) for w in m.warps if w["targetMap"] != -1]}')

@@ -1222,7 +1222,7 @@ class CityRules(unittest.TestCase):
         rev = lambda *rec, p1=0: self.city.top_map_of(spec['revival'], St(triggers={200 + r for r in rec}, pstats={1: p1}))
         self.assertEqual(rev(), 218); self.assertEqual(rev(20), 205); self.assertEqual(rev(14), 205); self.assertEqual(rev(p1=50), 205); self.assertEqual(rev(p1=49), 218)
         lv = St.levels()
-        self.assertEqual(self.city.prosperity_of(spec['prosperity'], St(triggers={200 + s for s in range(3, 0x3b)})), 100)   # the 47 recruits add exactly 100
+        self.assertEqual(self.city.prosperity_of(spec['prosperity'], St(triggers={200 + s for s in range(3, 0x3b)})), 101)   # current levels include Ultimate Whamon
         self.assertEqual(self.city.prosperity_of(spec['prosperity'], St(triggers={211, 239, 253})), 3)                 # Numemon, Sukamon, Nanimon: 1 each
         self.assertEqual(spec['start']['bits'], 50000); self.assertEqual(spec['start']['lives'], 3); self.assertEqual(len(spec['start']['inventory']), 30)
 
@@ -2038,7 +2038,7 @@ class PythonMods(unittest.TestCase):
             self.assertEqual(PL.free_range('vars', 3), '7-9')
             manifest = os.path.join(mod, 'mod.toml')
             open(manifest, 'w').write('[save]\nflags = "717-794"\nvars = "7-13"\n')
-            self.assertEqual(PL.free_range('flags'), '795-799')
+            self.assertEqual(PL.free_range('flags'), '795-796')
             self.assertEqual(PL.free_range('vars', 3), '14-15')
             open(manifest, 'w').write('[save]\nflags = "717-799"\nvars = "7-15"\n')
             self.assertIsNone(PL.free_range('flags'))
@@ -2077,6 +2077,19 @@ class PythonMods(unittest.TestCase):
         self.assertIn('a.py:4:1: error: screen 3 would need', r.stderr); self.assertIn('python3 tools/dws.py slots 3 lists both', r.stderr)
         r = subprocess.run([sys.executable, os.path.join(ROOT, 'tools/dws.py'), 'slots', '3'], capture_output=True, text=True)
         self.assertRegex(r.stdout, r'heap \(measured, as `check` tests it.*\): \d+ KB free now on the original engine')
+
+    def test_death_screens_enter_waits_for_a_homecoming(self):
+        """The partner's death and lost lives load Jijimon's house (218, 205) behind their scenes: an enter handler a mod
+        adds there runs only when engine.death_map_entry is 0 (a real homecoming); other screens get no such test."""
+        for base, name in (('jijimons_house', 'house'), ('jijimons_house_205', 'house')):
+            root, (p,) = self.mod({'a.py': f'from dw import *\nfrom dw.base.{base} import {name}, jijimon\nnews = flag()\n'
+                                          f'@{name}.on_enter(when=news)\ndef told():\n    jijimon.say("x")\n    news.clear()\n'})
+            self.assertIn('if (news && engine.death_map_entry == 0) {', self.lowered(p))
+            self.assertEqual(errors_of_py(p), '')
+        root, (p,) = self.mod({'a.py': 'from dw import *\nfrom dw.base.centar_clinic import clinic\nnews = flag()\n'
+                                      '@clinic.on_enter(when=news)\ndef told():\n    news.clear()\n'})
+        self.assertIn('if (news) {', self.lowered(p))
+        self.assertNotIn('death_map_entry', self.lowered(p))
 
     def test_third_review_chests(self):
         """dws-python-intuitiveness-3.md 1: spawn_chest(item, at=, opened=a flag of the mod, facing=); the old six numbers are

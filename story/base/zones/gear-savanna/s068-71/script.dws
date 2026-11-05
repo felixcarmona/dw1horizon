@@ -27,7 +27,7 @@ script 68 {
             spawn_item(item("Digimushrm"), 35, 43);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 2) {
+        if (random_roll <= 7) {
             spawn_item(item("Sweet Nut"), 39, 18);
         }
         unless (!factorial_town_reopened) return;

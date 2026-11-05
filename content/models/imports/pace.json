@@ -461,9 +461,9 @@
   "name": "Gryphonmon",
   "bones": 25,
   "skeleton_sha256": "a050c8a9103125e682194f0561764d7d75b286ac8c0c7a7d712fdc55736d9092",
-  "source_sha256": "12ecc0caa82aece7d2028499c228279d7a6403a625706b18828bebcad2451733",
+  "source_sha256": "3a5ffd5e8fa213f759112da5040264e5c039ab0c05e3d9a8f6cda142ecbf89b6",
   "base_generator": null,
-  "post_source_sha256": "12ecc0caa82aece7d2028499c228279d7a6403a625706b18828bebcad2451733",
+  "post_source_sha256": "3a5ffd5e8fa213f759112da5040264e5c039ab0c05e3d9a8f6cda142ecbf89b6",
   "slots": {
    "2": {
     "from": 2,
@@ -683,34 +683,6 @@
    }
   }
  },
- "294": {
-  "name": "Datamon",
-  "bones": 28,
-  "skeleton_sha256": "89aeccbf3c824d416d37217a5c442d9ea82243d73670f61c1c9da4ab40c918bf",
-  "source_sha256": "a0c00af16587cf2e0a3ca629d9bc13ae3a9f5cc3c1e647457974b63f574df604",
-  "base_generator": null,
-  "post_source_sha256": "a0c00af16587cf2e0a3ca629d9bc13ae3a9f5cc3c1e647457974b63f574df604",
-  "slots": {
-   "2": {
-    "from": 2,
-    "ticks": 24,
-    "speed": 20,
-    "slip": [
-     125,
-     250
-    ]
-   },
-   "4": {
-    "from": 4,
-    "ticks": 22,
-    "speed": 38,
-    "slip": [
-     190,
-     360
-    ]
-   }
-  }
- },
  "201": {
   "name": "Lighdramon",
   "bones": 25,
@@ -910,25 +882,6 @@
    }
   }
  },
- "285": {
-  "name": "Gazimon",
-  "bones": 24,
-  "skeleton_sha256": "6b870e790f44d14b121a4c7b5f3092cc8e2809f7cb864ed6f4be5aedc9409178",
-  "source_sha256": "b7e8f53534161056d0c3560b15ece5f1c878a14a0f23d4be5382b08d40d7ee31",
-  "base_generator": null,
-  "post_source_sha256": "b7e8f53534161056d0c3560b15ece5f1c878a14a0f23d4be5382b08d40d7ee31",
-  "slots": {
-   "2": {
-    "from": 2,
-    "ticks": 20,
-    "speed": 20,
-    "slip": [
-     125,
-     250
-    ]
-   }
-  }
- },
  "298": {
   "name": "Dokugumon",
   "bones": 28,
@@ -971,9 +924,9 @@
   "name": "AeroVeedramon",
   "bones": 25,
   "skeleton_sha256": "d7203687becc62c085a7912abb829f28ad16776549dd6f23988286e247d2f8cc",
-  "source_sha256": "8e59a86ad5546db71470e54f4e0818083d021c5a7d81a72fd7666928a6d0289a",
+  "source_sha256": "537ddcde347903c488812ebf8137fe8772001c78f341d96e634f9d0986ebb8f2",
   "base_generator": "tools.models.field_animations.aero_veedramon",
-  "post_source_sha256": "a989099816cc4fde8261c6ea9300bb3a1bf6507b46537e34d38ea80bdfaee81f",
+  "post_source_sha256": "cec6ebd5bd45874ce829f89377d7a0df079d13752357cbaa7054d66b1fcb5f8a",
   "slots": {
    "2": {
     "from": 2,
@@ -990,9 +943,9 @@
   "name": "MegaGargomon",
   "bones": 27,
   "skeleton_sha256": "7e432b6bbde2c831b4f41d3041b60ca2b7be8a671371c85d04fa906b20041291",
-  "source_sha256": "9f466de97ce8fbd3252947e574eb62005170a6a9f2ec495828802e0978c61141",
+  "source_sha256": "49e677ac2a1160b62508330719275c2c243d54d7e64b2f0ae1d4bcb426265dea",
   "base_generator": "tools.models.field_animations.imported_equipment",
-  "post_source_sha256": "5071e72aa83283579f0d3a4aa616431bbc98c966215283b000bcfa4d0e76b303",
+  "post_source_sha256": "edb68134e79d5ca3cfdc5c0c4b7f5e714e9b17a8d8f4248c8f922921331ae8bb",
   "slots": {
    "2": {
     "from": 2,
@@ -1037,9 +990,9 @@
   "name": "Shadramon",
   "bones": 18,
   "skeleton_sha256": "845ab605073256eb7342daef69c59554cb41ff12f50693d65bedb45fc5b991a3",
-  "source_sha256": "1dd2fc111ba172a36df3491b15708e994e9dcac794be15372e173424e3bc645a",
+  "source_sha256": "eba5bfff162b1bf07da76c3b410195d441e166ec85efac8e3e75be9bbd560e15",
   "base_generator": "tools.models.field_animations.shadramon",
-  "post_source_sha256": "51e128a2423e5a6aa1b72a3dff24805951918b142b84c6be04c7a18cd1a6be4b",
+  "post_source_sha256": "9ae6ca9dd37256d7d32efcfe32ebf1003f03ee36d89b987485c9c47d380c9057",
   "slots": {
    "4": {
     "from": 4,

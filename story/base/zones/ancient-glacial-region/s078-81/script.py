@@ -24,7 +24,7 @@ def enter():    # section 254
     if roll <= 7:
         spawn_item(Item.Digimushrm, at=(-150, 2250))
     roll = random.roll(99)
-    if roll <= 3:
+    if roll <= 7:
         spawn_item(Item.RedBerry, at=(-2450, -550))
 
 @monochromon.on_talk
@@ -99,63 +99,63 @@ def talk():    # section 8
 
 @region.on_use(1)
 def use1():    # section 81
-    narrator.say(t81.u0)
-    tamer.say(t81.u1)
-    if ask(yes=t81.m0.o0, no=t81.m0.o1):
-        if bits >= 200:
-            raw.store_random(prize_roll, 99)
-            if prize_roll < 29:
-                take(bits=200)
-                narrator.say(t81.u3)
+    tamer.turn(2048)
+    while True:
+        narrator.say(t81.vend_prompt)
+        match choose(a=t81.vend_buy0, b=t81.vend_buy1, more=t81.vend_more):
+            case "a":
+                if bits < 26:
+                    narrator.say(t81.vend_poor)
+                    return
+                give(Item.MoldyMeat)
+                if engine.item_did_not_fit:
+                    narrator.say(t81.vend_full)
+                    return
+                take(bits=26)
+                narrator.say(t81.vend_getMoldyMeat)
+                return
+            case "b":
+                if bits < 20:
+                    narrator.say(t81.vend_poor)
+                    return
                 give(Item.Meat)
                 if engine.item_did_not_fit:
-                    tamer.say(t81.u4)
-                    pick_item()
-                    take_picked(all=True)
-                    give(Item.Meat)
-            else:
-                if prize_roll < 59:
-                    raw.set_dialog_owner(narrator)
-                    take(bits=200)
-                    narrator.say(t81.u5)
-                    give(Item.SmRecovery)
-                    if engine.item_did_not_fit:
-                        tamer.say(t81.u6)
-                        pick_item()
-                        take_picked(all=True)
-                        give(Item.SmRecovery)
-                else:
-                    if prize_roll < 79:
-                        raw.set_dialog_owner(narrator)
-                        take(bits=200)
-                        narrator.say(t81.u7)
-                        give(Item.MoldyMeat)
-                        if engine.item_did_not_fit:
-                            tamer.say(t81.u8)
-                            pick_item()
-                            take_picked(all=True)
-                            give(Item.MoldyMeat)
-                    else:
-                        if prize_roll <= 99:
-                            raw.set_dialog_owner(narrator)
-                            take(bits=200)
-                            narrator.say(t81.u9)
-                            # Horizon: the original gave the MP Floppy only when the bag was full; with room it took the
-                            # 200 bits, said "An MP Floppy came out!" and gave nothing.
-                            give(Item.MPFloppy)
-                            if engine.item_did_not_fit:
-                                tamer.say(t81.u10)
-                                pick_item()
-                                take_picked(all=True)
-                                give(Item.MPFloppy)
-                                return
-                        return
+                    narrator.say(t81.vend_full)
                     return
+                take(bits=20)
+                narrator.say(t81.vend_getMeat)
                 return
-            return
-        tamer.say(t81.u2)
-        return
-    return
+            case "more":
+                narrator.say(t81.vend_prompt)
+                match choose(a=t81.vend_buy2, b=t81.vend_buy3, back=t81.vend_back):
+                    case "a":
+                        if bits < 300:
+                            narrator.say(t81.vend_poor)
+                            return
+                        give(Item.GiantMeat)
+                        if engine.item_did_not_fit:
+                            narrator.say(t81.vend_full)
+                            return
+                        take(bits=300)
+                        narrator.say(t81.vend_getGiantMeat)
+                        return
+                    case "b":
+                        if bits < 1000:
+                            narrator.say(t81.vend_poor)
+                            return
+                        give(Item.Sirloin)
+                        if engine.item_did_not_fit:
+                            narrator.say(t81.vend_full)
+                            return
+                        take(bits=1000)
+                        narrator.say(t81.vend_getSirloin)
+                        return
+                    case "back":
+                        pass
+                    case _:
+                        return
+            case _:
+                return
 
 # the section table, in the order of the original header
 sections(254, 5, 6, 82, 7, 8, 81)

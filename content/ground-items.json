@@ -1,6 +1,6 @@
 {
  "format": 1,
- "note": "Append-only save IDs. Never remove, reorder IDs, or reuse an ID, including deleted locations. New locations get the next unused ID. Script IDs here describe the original authored screen mapping; new scripts use their explicitly declared screen. \"at\" (optional) is where the spawn really lies on that screen when it differs from the script's tile: a script shared by several screens (Native Forest's script 1 on the new screens) keeps its own tiles, and each new screen places its copy on floor the player reaches (tools/maps/check_pickups.py); the ID and the key stay the script's tile. \"off\": true leaves a shared script's spawn out on that screen (its ID stays reserved): the new screens keep 3 of Native Forest's 7 mushrooms.",
+ "note": "Append-only save IDs. Never remove, reorder IDs, or reuse an ID, including deleted locations. New locations get the next unused ID. Script IDs here describe the original authored screen mapping; new scripts use their explicitly declared screen. \"at\" (optional) is where the spawn really lies on that screen when it differs from the script's tile: a script shared by several screens (Native Forest's script 1 on the new screens) keeps its own tiles, and each new screen places its copy on floor the player reaches (tools/maps/check_pickups.py); the ID and the key stay the script's tile. \"off\": true leaves a shared script's spawn out on that screen (its ID stays reserved): the new screens keep 3 of Native Forest's 7 mushrooms. Root Clearing explicitly spawns those mushrooms.",
  "script_screens": {
   "1": [0],
   "2": [1],
@@ -452,7 +452,7 @@
   {"id": 247, "screen": 318, "tile": [30, 79], "at": [41, 66], "off": true},
   {"id": 248, "screen": 318, "tile": [31, 85], "at": [47, 62], "off": true},
   {"id": 249, "screen": 318, "tile": [35, 88], "at": [54, 66], "off": true},
-  {"id": 250, "screen": 318, "tile": [39, 43], "at": [39, 42]},
+  {"id": 250, "screen": 318, "tile": [39, 43], "at": [40, 42]},
   {"id": 251, "screen": 318, "tile": [49, 46]},
   {"id": 252, "screen": 318, "tile": [68, 84], "at": [57, 63]},
   {"id": 253, "screen": 318, "tile": [78, 31], "at": [57, 35], "off": true},

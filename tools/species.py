@@ -39,6 +39,9 @@ Usage:
                                     build/dcb, build/dw2 pointed to M
   species.py [--content DIR] disc-files
                                     the build-disc.py --file/--add arguments of the originals' replaced models
+  species.py [--content DIR] flat-audit DIGI.DAT ALLTIM.TIM
+                                    every species of a build has the picture it turns into while flattened
+                                    (tools/flatsprite.py); exit 1 if one lacks it
   species.py lint [--files] [--quiet]
                                     what the game cannot handle (errors) or probably not meant (warnings), with the
                                     file, field, value and why; build-full.sh runs it
@@ -486,7 +489,7 @@ def stats_json(v):
 
 
 # ------------------------------------------------------------------ the file format: dict <-> JSON
-KEY_ORDER = ['id', 'name', '_source', 'level', 'vanilla', 'vanilla_as', 'attribute', 'specialties', 'techniques', 'drop', 'effects_like', 'model',
+KEY_ORDER = ['id', 'name', '_source', 'level', 'vanilla', 'vanilla_as', 'off', 'attribute', 'specialties', 'techniques', 'drop', 'effects_like', 'model',
              'texture', 'voice', 'battle_music', 'reincarnation_stats', 'new_game_technique', 'status_screen_position',
              'partner_voice', 'item_distance', 'training', 'condition_bubble', 'effect_origins', 'effect_origin_fallback', 'effect_origin_fallback_always', 'wild', 'sizing', 'size', 'needs_ram_mb',
              'partner', 'care', 'evolution']
@@ -749,6 +752,34 @@ def validate(s):
         raise SystemExit(f'{p}: vanilla: true, for a species the original game raises (left out otherwise)')
     if 'vanilla_as' in s and (s.get('vanilla') or 'partner' not in s or not isinstance(s['vanilla_as'], int)):
         raise SystemExit(f'{p}: vanilla_as: the id of the vanilla species a new partner becomes (tools/vanilla_as.py)')
+    off = s.get('off')
+    if off is not None:
+        if (t >= NUM_ORIGINAL or not isinstance(off, dict) or set(off) - {'level', 'stats', 'evolution'}
+                or off.get('level') not in LEVELS[1:6]):
+            raise SystemExit(f'{p}: off: an original species override with level fresh..ultimate and optional stats')
+        if 'stats' in off and not set(STAT_KEYS) <= set(s.get('evolution', {}).get('gains', {})):
+            raise SystemExit(f'{p}: off.stats: on evolution.gains must supply all six target stats')
+        if 'stats' in off and (not isinstance(off['stats'], dict) or set(off['stats']) != set(STAT_KEYS)
+                or any(type(v) is not int or not 0 <= v <= (9999 if k in ('hp', 'mp') else 999)
+                       for k, v in off['stats'].items())):
+            raise SystemExit(f'{p}: off.stats: all six target stats, hp/mp 0..9999, others 0..999')
+    if off is not None and 'evolution' in off:
+        e = off['evolution']
+        if (not 1 <= t <= 62 or not isinstance(e, dict) or set(e) - {'from', 'to', 'requirements'}
+                or any(not isinstance(e.get(k), list) or len(e[k]) != n
+                       or any(type(v) is not int or not -1 <= v < NUM_DIGIMON for v in e[k])
+                       for k, n in [('from', 5), ('to', 6)])):
+            raise SystemExit(f'{p}: off.evolution: resident ids 1..62, five from and six to ids')
+        if 'requirements' in e and (not isinstance(e['requirements'], dict)
+                or set(e['requirements']) != set(REQ_KEYS)
+                or any(type(v) is not int or not -32768 <= v <= 32767 for v in e['requirements'].values())
+                or not -128 <= e['requirements']['flags'] <= 127):
+            raise SystemExit(f'{p}: off.evolution.requirements: complete requirement row')
+    if t < NUM_ORIGINAL and s.get('level') in LEVELS:
+        with open(os.path.join(ROOT, 'content/tables/original-species-levels.json')) as f:
+            baseline = json.load(f)['levels'][str(t)]
+        if s['level'] != baseline and off is None:
+            raise SystemExit(f'{p}: off: required when level differs from the committed original level')
     if ((s.get('evolution') or {}).get('requirements') or {}).get('digimon') == s['id']:
         raise SystemExit(f'{p}: evolution.requirements.digimon: the species itself (the bonus needs a parent, or -1)')
     para_from_json(s, p)
@@ -850,6 +881,34 @@ def species_texture(s):
                 pal = [f(c) for c in pal]
             tim.pal[r] = pal
     return tim.to_bytes()
+
+
+def needs_authored_flat(s):
+    """Native field-enemy textures can have monochrome noise in the flat corner.
+
+    The original partner block ends at NUM_PARTNER; the field enemies end at 111.
+    Use an available authored icon for their borrowed pages rather than a palette heuristic;
+    retain the original art when no authored replacement exists.
+    """
+    source = (s.get('texture') or {'from': s['id']}).get('from')
+    import flatsprite
+    return source is not None and NUM_PARTNER <= source < 112 and (
+        os.path.isfile(os.path.join(ROOT, 'content', 'icons', f'{source}.txt')) or
+        source in flatsprite.FLAT_ICON_ALIASES)
+
+
+def flat_texture(s, model, nbones, tex):
+    """(texture, model, how) with the species' flat sprite, the picture it turns into while flattened
+    (tools/flatsprite.py): trusted native frames, else its authored icon in two colours where the model leaves room
+    (the model changes only when some of its UV islands had to move to make that room)."""
+    import flatsprite
+    icon, _ = flatsprite.art(s)
+    try:
+        tex, model, _, _, how = flatsprite.stamp(tex, model, nbones, flatsprite.mono(icon),
+                                                 keep_native=not needs_authored_flat(s))
+    except flatsprite.NoRoom as e:
+        raise SystemExit(f'{s["_path"]}: no room for the flat sprite: {e}')
+    return tex, model, how
 
 
 def resident_model(s, r, model):
@@ -1138,9 +1197,10 @@ CHART_ICON_SIZE, CHART_ICONS_PER_SECTOR = 0x120, 7   # a 16-colour CLUT and two 
 HEADER_LEVELS = 0x40             # the header sector: the level of each partner species (one byte, partner list order)
 HEADER_RECORD_ORIGINALS = 0x20   # the header sector: a bit per original carried by its record (23 bytes)
 HEADER_VANILLA = 0x780           # the header sector: a bit per species the original game raises ("vanilla": NEW DIGIMON off)
-# the header sector: a count, then {id, level with NEW DIGIMON on, level with it off} per original whose file gives it
-# another level than the disc's (include/dw/species.h SPECIES_HEADER_LEVEL_OFF; modApplySpeciesLevels)
+# the header sector: a count, then {id, level with NEW DIGIMON on, level with it off} per explicit JSON override (include/dw/species.h SPECIES_HEADER_LEVEL_OFF; modApplySpeciesLevels)
 HEADER_LEVEL_OFF, LEVEL_SWAP_MAX = 0x500, 32
+HEADER_STATS_OFF, STATS_SWAP_MAX = 0x580, 19
+HEADER_EVOLUTION_OFF, EVOLUTION_SWAP_MAX = 0x3c, 20
 VERSION = 2
 HEADER_CITY = 0x38             # optional sector pointer; record format and existing header offsets stay v2
 INDEX_SECTORS = 2                # the partner list and the evolution links (include/dw/species.h)
@@ -1309,6 +1369,7 @@ def build(out=OUT, content=None, quiet=False, select=None):
     for t in sorted(species):
         s = species[t]; r = species_record(s)
         model, mpath = species_model(s); tex = species_texture(s)
+        tex, model, flat = flat_texture(s, model, len(r['bones']), tex)     # (a model whose UV islands made room changes)
         whole = model
         model, cold = resident_model(s, r, model)           # COLD=1: the part the partner buffer holds, and the part read when needed
         if int(s.get('needs_ram_mb', 2)) > 2 and len(model) <= 0x18800:
@@ -1328,7 +1389,7 @@ def build(out=OUT, content=None, quiet=False, select=None):
         blobs.append(model + b'\0' * (-len(model) % SECTOR) + cold + b'\0' * (-len(cold) % SECTOR)); blobs.append(tex)
         recs[t] = r
         if not quiet: print(f'{t:3d} {s["name"]:20s} model {os.path.relpath(mpath, ROOT)} ({len(model)} B), '
-                            f'texture, {"partner" if r["flags"] & FLAG_PARTNER else "not a partner"}')
+                            f'texture (flat sprite: {flat}), {"partner" if r["flags"] & FLAG_PARTNER else "not a partner"}')
     if shard_bad and SHARD_SCRATCH_WARN:   # an executable from before the bigger scratch: it skips those pieces
         print('warning: ' + '\nwarning: '.join(shard_bad) + '\n(this executable sheds no shards for the pieces past it)')
     elif shard_bad:
@@ -1427,9 +1488,17 @@ def build(out=OUT, content=None, quiet=False, select=None):
     if len(partners) > MAX_PARTNERS: raise SystemExit(f'{len(partners)} partner species: at most {MAX_PARTNERS}')
     if len(links) > MAX_LINKS: raise SystemExit(f'{len(links)} evolution links with the original species: at most {MAX_LINKS}')
     first_mega = next((t for t in partners if recs[t]['para']['level'] == 6), 0)
+    evolution_rows = evolution_swaps(allsp, paths)
+    evolution_ref = 0
+    if evolution_rows:
+        evolution_ref = sector
+        block = struct.pack('<H', len(evolution_rows)) + b''.join(evolution_rows)
+        blobs.append(block.ljust(SECTOR, b'\0'))
+        sector += 1
     hdr = bytearray(SECTOR)
     struct.pack_into(HEADER, hdr, 0, b'DIGI', VERSION, RECORD_SIZE, count, 0, first_records, sector, 1, fallback_ref, chart_ref)
     struct.pack_into('<I', hdr, HEADER_CITY, city_ref)
+    struct.pack_into('<I', hdr, HEADER_EVOLUTION_OFF, evolution_ref)
     for i, t in enumerate(partners): hdr[HEADER_LEVELS + i] = recs[t]['para']['level']
     for t in species:                                     # the record originals (include/dw/species.h)
         if t < NUM_ORIGINAL: hdr[HEADER_RECORD_ORIGINALS + t // 8] |= 1 << (t % 8)
@@ -1438,6 +1507,9 @@ def build(out=OUT, content=None, quiet=False, select=None):
     swaps = level_swaps(allsp)                            # the original levels with NEW DIGIMON off
     hdr[HEADER_LEVEL_OFF] = len(swaps)
     for i, row in enumerate(swaps): hdr[HEADER_LEVEL_OFF + 1 + 3 * i:HEADER_LEVEL_OFF + 4 + 3 * i] = bytes(row)
+    stats = stats_swaps(allsp)
+    struct.pack_into('<H', hdr, HEADER_STATS_OFF, len(stats))
+    for i, row in enumerate(stats): struct.pack_into('<13H', hdr, HEADER_STATS_OFF + 2 + 26 * i, *row)
     plist = bytearray(SECTOR); struct.pack_into('<HH', plist, 0, len(partners), first_mega)
     for i, t in enumerate(partners): struct.pack_into('<H', plist, 4 + 2 * i, t)
     llist = bytearray(SECTOR); struct.pack_into('<HH', llist, 0, len(links), 0)
@@ -1455,18 +1527,35 @@ def build(out=OUT, content=None, quiet=False, select=None):
 
 
 def level_swaps(allsp):
-    """[(id, level with NEW DIGIMON on, level with it off)] of the originals whose file gives them another level than the
-    disc's: off is the disc's level, or with none on the disc (0, a story character) the file's, never past Ultimate (the
-    original game has no Mega)."""
-    O = originals(); out = []
-    for t in range(1, NUM_ORIGINAL):
-        s = allsp.get(t)
-        if not s or s.get('level') not in LEVELS: continue
-        on = LEVELS.index(s['level']); disc = O.rec[t]['para']['level']
-        off = disc if 1 <= disc <= 5 else min(on, 5)
-        if on and off != on: out.append((t, on, off))
-    if len(out) > LEVEL_SWAP_MAX: raise SystemExit(f'{len(out)} originals with another level than the disc: room for {LEVEL_SWAP_MAX}')
+    """Explicit JSON level overrides; neither values nor membership come from a disc."""
+    out = [(t, LEVELS.index(s['level']), LEVELS.index(s['off']['level']))
+           for t, s in sorted(allsp.items()) if 'off' in s and s['level'] != s['off']['level']]
+    if len(out) > LEVEL_SWAP_MAX: raise SystemExit(f'{len(out)} off overrides: room for {LEVEL_SWAP_MAX}')
     return out
+
+
+def stats_swaps(allsp):
+    """Header rows: id, six on targets, six explicit off targets. No inferred values."""
+    rows = [(t, *(s['evolution']['gains'][k] for k in STAT_KEYS), *(s['off']['stats'][k] for k in STAT_KEYS))
+            for t, s in sorted(allsp.items()) if 'stats' in s.get('off', {})]
+    if len(rows) > STATS_SWAP_MAX: raise SystemExit(f'{len(rows)} off stats overrides: room for {STATS_SWAP_MAX}')
+    return rows
+
+
+def evolution_swaps(allsp, paths):
+    """One sector of explicit JSON on/off path and requirement rows (102 bytes each)."""
+    rows = []
+    for t, s in sorted(allsp.items()):
+        off = s.get('off', {}).get('evolution')
+        if off is None: continue
+        on = paths[t]
+        req = s['evolution']['requirements']
+        row = struct.pack('<H22h', t, *on['from'], *on['to'], *off['from'], *off['to'])
+        for r in (req, off.get('requirements', req)):
+            row += struct.pack('<13hbB', *(r[k] for k in REQ_KEYS), 0)
+        rows.append(row)
+    if len(rows) > EVOLUTION_SWAP_MAX: raise SystemExit(f'{len(rows)} off evolution overrides: room for {EVOLUTION_SWAP_MAX}')
+    return rows
 
 
 def max_partner_model(content=None, select=None):
@@ -1576,6 +1665,88 @@ def disc_files(content=None):
         if 'partner_file' in m:
             out.append(('--add', os.path.basename(m['partner_file']), m['partner_file']))
     return out
+
+
+def build_alltim(out, content=None):
+    """CHDAT/ALLTIM.TIM of the disc with a flat sprite for each original that is on screen with its disc texture and
+    needs authored art (empty frames or untrusted native field-enemy patterns): the player's own file, those entries completed. Room is measured on every model the game draws with that
+    texture: the disc's (or its replacement, disc_files) and the partner-only file. Returns {id: how} of the changed
+    entries."""
+    import flatsprite
+    import mmd
+    data = bytearray(open(ALLTIM, 'rb').read())
+    O = originals()
+    done = {}
+    for t, s in sorted(load_content(content).items()):
+        if t >= NUM_ORIGINAL: break
+        if t == 0 or is_record_original(s): continue      # the tamer never fights; a record original's is in DIGI.DAT
+        tex = bytes(data[t * TEX_SIZE:(t + 1) * TEX_SIZE])
+        if not needs_authored_flat(s) and not flatsprite.check(tex): continue
+        nb = len(O.rec[t]['bones'])
+        models = [species_model(s)[0]] + ([open(resolve_path(s['model']['partner_file']), 'rb').read()]
+                                          if 'partner_file' in s['model'] else [])
+        icon, _ = flatsprite.art(s)
+        tex, _, _, _, how = flatsprite.stamp(tex, models, nb, flatsprite.mono(icon),
+                                            keep_native=not needs_authored_flat(s))
+        data[t * TEX_SIZE:(t + 1) * TEX_SIZE] = tex
+        done[t] = how
+    with open(out, 'wb') as f:
+        f.write(data)
+    return done
+
+
+def flat_audit(digi, alltim, content=None):
+    """{id: (how, [problems])} of the flat sprite of every species of a build (DIGI.DAT, the CHDAT/ALLTIM.TIM it goes
+    with, its species folder): the texture the game loads for it and the model it draws. The frames of a texture DIGI.DAT
+    carries, and frames moved away from the originals' corner, are checked against every texel the model uses (the
+    model in DIGI.DAT: `flatsprite.make_room` may have moved some of its UV islands)."""
+    import flatsprite
+    d, _, recs = read_archive(digi)
+    by_id = {r['id']: r for r in recs if r}
+    adata = open(alltim, 'rb').read()
+    out = {}
+    for t, s in sorted(load_content(content).items()):
+        if t == 0 or t not in by_id:
+            continue
+        r = by_id[t]
+        src = d if r['texFile'] == TEX_ARCHIVE and (t >= NUM_ORIGINAL or is_record_original(s)) else adata
+        sec = r['texSector'] if src is d else t * (TEX_SIZE // SECTOR)
+        tex = src[sec * SECTOR:sec * SECTOR + TEX_SIZE]
+        cells, row = flatsprite.sprite_of(tex)
+        moved = cells != flatsprite.NATIVE or row != flatsprite.ROW
+        deep = moved or src is d                    # the disc's own textures: only their frames are looked at
+        models = None
+        if deep and src is d:                       # the model DIGI.DAT carries, its cold part joined back
+            import coldsplit
+            model = d[r['modelSector'] * SECTOR:r['modelSector'] * SECTOR + r['modelSize']]
+            if coldsplit.is_split(model):
+                c0 = r['modelSector'] + -(-r['modelSize'] // SECTOR)
+                model = coldsplit.join(model, d[c0 * SECTOR:c0 * SECTOR + coldsplit.cold_length(model)],
+                                       len(r['bones']), coldsplit.table_length(model))
+            models = [model]
+        elif deep:
+            models = [species_model(s)[0]] + ([open(resolve_path(s['model']['partner_file']), 'rb').read()]
+                                              if 'partner_file' in s['model'] else [])
+        problems = flatsprite.check(tex, models, len(r['bones']))
+        if needs_authored_flat(s):
+            icon, _ = flatsprite.art(s)
+            if not flatsprite.matches_art(tex, flatsprite.mono(icon)):
+                problems.append('native field texture does not contain the authored flat silhouettes')
+        out[t] = ('moved' if moved else 'native', problems)
+    return out
+
+
+def cmd_flat_audit(a):
+    """Every species has a flat sprite (tools/flatsprite.py): exit 1 if one lacks it."""
+    rep = flat_audit(a.digi, a.alltim, a.content)
+    bad = {t: p for t, (_, p) in rep.items() if p}
+    for t, p in sorted(bad.items()):
+        print(f'{t}: ' + '; '.join(p))
+    kinds = collections.Counter(h for h, _ in rep.values())
+    print(f'flat sprites: {len(rep)} species, ' + ', '.join(f'{k} {v}' for k, v in sorted(kinds.items()))
+          + f'; {len(bad)} without one')
+    if bad:
+        raise SystemExit(1)
 
 
 def cmd_disc_files(a):
@@ -2349,6 +2520,8 @@ def main():
     p = sub.add_parser('select'); p.add_argument('sel'); p.add_argument('-o', required=True); p.add_argument('--models')
     p.set_defaults(f=cmd_select)
     p = sub.add_parser('disc-files'); p.set_defaults(f=cmd_disc_files)
+    p = sub.add_parser('flat-audit', help='every species of a build has a flat sprite (tools/flatsprite.py)')
+    p.add_argument('digi'); p.add_argument('alltim'); p.set_defaults(f=cmd_flat_audit)
     p = sub.add_parser('lint'); p.add_argument('--files', action='store_true', help='also check that model/texture files exist')
     p.add_argument('--quiet', action='store_true', help='errors only'); p.set_defaults(f=cmd_lint)
     a = ap.parse_args(); a.f(a)

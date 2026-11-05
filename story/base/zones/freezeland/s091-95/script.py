@@ -20,7 +20,7 @@ t9 = text.s091.sec9
 @freezeland.on_enter
 def enter():    # section 254
     roll = random.roll(99)
-    if roll <= 5:
+    if roll <= 7:
         spawn_item(Item.Digimushrm, at=(-50, 1350))
     roll = random.roll(99)
     if roll <= 17:
@@ -29,7 +29,7 @@ def enter():    # section 254
     if roll <= 7:
         spawn_item(Item.Digimushrm, at=(-150, -1150))
     roll = random.roll(99)
-    if roll <= 2:
+    if roll <= 7:
         spawn_item(Item.IceMushrm, at=(-1150, -1050))
 
 @snowagumon1.on_talk

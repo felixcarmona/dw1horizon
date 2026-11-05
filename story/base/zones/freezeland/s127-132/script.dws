@@ -17,7 +17,7 @@ script 127 {
             spawn_item(item("Digimushrm"), 68, 27);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 3) {
+        if (random_roll <= 7) {
             spawn_item(item("Ice mushrm"), 54, 40);
         }
     }

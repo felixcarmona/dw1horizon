@@ -339,3 +339,16 @@ Show-every-evolution-route-in-the-chart-s-detail-vie.patch
 Keep-the-blend-states-of-imported-animations-off-the.patch
 Open-the-gym-s-lower-boxes-under-the-skip-hint-s-row.patch
 Register-a-species-past-255-for-battle-mode-as-itsel.patch
+Draw-flattened-Digimon-with-the-flat-frames-their-te.patch
+Align-stacked-gym-boxes-and-leave-a-clear-gap.patch
+Keep-a-story-s-homecoming-lines-out-of-the-partner-s.patch
+Select-a-flat-palette-for-each-animation-frame.patch
+Refill-saved-vending-mushroom-stock-at-midnight.patch
+Draw-each-card-menu-answer-inside-its-own-crop.patch
+Keep-conversation-NPCs-out-of-nearby-wild-encounters.patch
+Resolve-flattened-spit-without-indexing-before-the-move-table.patch
+Swap-configured-evolution-targets-with-NEW-DIGIMON.patch
+Restore-explicit-off-evolution-paths-and-requirements.patch
+Show-item-descriptions-while-browsing-shops.patch
+Accept-tally-skip-presses-while-other-pad-buttons-are-held.patch
+Keep-rebirth-species-fallback-resident.patch

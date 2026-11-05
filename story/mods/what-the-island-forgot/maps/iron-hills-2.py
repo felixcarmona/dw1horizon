@@ -12,6 +12,7 @@ placed by the story (early-game.py).
 import json, os, sys
 from foreground_depth_a2 import apply as apply_foreground
 from mapbase import base_map, import_png, MOD, check_arrivals
+import toilets
 
 DATA = os.path.join(MOD, 'maps', 'iron-hills-2-data.json')
 ART = os.path.join(MOD, 'art', 'iron-hills-2.png')
@@ -23,7 +24,9 @@ def main(out):
     m = base_map('GIAS04', *d['camera']); m.projection = d['projection']
     m.collision = list(d['collision']); m.warps = d['warps']
     import_png('GIAS04', ART, os.path.join(out, 'IRON02.TFS'))
+    m = toilets.paste(m, 'IRON02', out)
     apply_foreground(m, 'IRON02', os.path.join(out, 'IRON02.TFS'))
+    toilets.tiles(m, 'IRON02')
     check_arrivals(m, 'IRON02')
     open(os.path.join(out, 'IRON02.MAP'), 'wb').write(m.build())
     print(f'IRON02: free tiles {m.collision.count(0)}, exits {[(w["targetMap"], w["targetExit"]) for w in m.warps if w["targetMap"] != -1]}')
