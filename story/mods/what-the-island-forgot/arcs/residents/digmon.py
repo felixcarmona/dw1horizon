@@ -1,9 +1,10 @@
 # Drill Tunnel 24: Digmon digs alone. It builds the Works, so its fight opens the gate in the hedge (arcs/works/gate.py).
+# Stand beside the west wall so the cart route stays clear.
 # Its home is the Stone Yard (district/stone-yard.py). The stats match the tunnel's wild fights.
 from dw import *
 
 tunnel = screen(Screen.drill_tunnel_24)
-digmon = tunnel.npc(Species.Digmon, at=(-1300, 1800), hp=1000, mp=1800, offense=250, defense=130, speed=80, brain=100, bits=300,
+digmon = tunnel.npc(Species.Digmon, at=(-2250, 1100), hp=1000, mp=1800, offense=250, defense=130, speed=80, brain=100, bits=300,
                     range=0, still=True, when=not recruited(Species.Digmon))
 
 
