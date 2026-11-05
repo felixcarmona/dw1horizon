@@ -24,6 +24,61 @@ class NativeDefaults(unittest.TestCase):
                 balance.species_rows(SimpleNamespace(compiled=True))
 
 
+class StoryScreenMetadata(unittest.TestCase):
+    def test_owned_screen_changes_and_deletion_reach_compiler(self):
+        from dws import backend as be
+        import json
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            screens = root / 'content/screens'
+            screens.mkdir(parents=True)
+            tables = root / 'content/tables'
+            tables.mkdir()
+            (tables / 'story-screens.json').write_text(json.dumps({'nativeScreenIds': [0, 1]}))
+            row = screens / '0-test.json'
+            row.write_text(json.dumps({'id': 0, 'file': 'OWNED', 'sound_bank': 7,
+                                       'day_night': False, 'reads_digimon': True, 'flag20': True}))
+            # A reserved executable row is not implicitly visible to story code.
+            (screens / '247-reserved.json').write_text(json.dumps({'id': 247, 'file': 'RESERVED'}))
+            with patch.object(be, 'ROOT', directory), patch.object(content, 'SCREEN_DIR', str(screens)):
+                self.assertEqual(be.native_screen_metadata(), ({0: 'OWNED'}, {0: 231}))
+                row.unlink()
+                self.assertEqual(be.native_screen_metadata(), ({}, {}))
+                (tables / 'story-screens.json').unlink()
+                with self.assertRaises(FileNotFoundError):
+                    be.native_screen_metadata()
+
+    def test_invalid_visibility_cannot_enable_extended_or_duplicate_ids(self):
+        from dws import backend as be
+        import json
+        with tempfile.TemporaryDirectory() as directory:
+            tables = Path(directory) / 'content/tables'
+            tables.mkdir(parents=True)
+            for ids in ([255], [0, 0], [True], '0'):
+                with self.subTest(ids=ids), patch.object(be, 'ROOT', directory):
+                    (tables / 'story-screens.json').write_text(json.dumps({'nativeScreenIds': ids}))
+                    with self.assertRaises(ValueError):
+                        be.native_screen_metadata()
+
+
+class GeneratedStoryCache(unittest.TestCase):
+    def test_missing_generated_index_never_disassembles_disc(self):
+        from dws import backend as be
+        with tempfile.TemporaryDirectory() as directory, \
+             patch.object(be, 'DIS_CACHE', str(Path(directory) / 'generated')), \
+             patch.object(be, 'dis', side_effect=AssertionError('disc script import')):
+            with self.assertRaisesRegex(be.BackendError, 'missing generated story cache index'):
+                be.ensure_dis()
+
+    def test_ready_generated_cache_is_used_without_disc_import(self):
+        from dws import backend as be
+        with tempfile.TemporaryDirectory() as directory, \
+             patch.object(be, 'DIS_CACHE', directory), \
+             patch.object(be, 'dis', side_effect=AssertionError('disc script import')):
+            (Path(directory) / 'dg.scn.lst').write_text('; owned generated cache\n')
+            be.ensure_dis()
+
+
 class EmptyDomains(unittest.TestCase):
     def test_empty_directories_remove_all_rows(self):
         with patch.object(content, 'load_techniques', return_value=None), \

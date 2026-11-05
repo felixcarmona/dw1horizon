@@ -271,7 +271,7 @@ def units(ctx):
                                                       f'{os.path.basename(ctx.out)}-{lang}-{v.replace("/", "-") or "ext"}')
             first = False
             base = v.startswith('base')
-            inputs = (['story/base', 'tools', 'extracted/SCN', 'extracted/MAP', 'content/screens', 'content/species', 'content/tables/city-residents.json', 'text/us',
+            inputs = (['story/base', 'tools', 'extracted/SCN', 'extracted/MAP', 'content/screens', 'content/species', 'content/tables/city-residents.json', 'content/tables/story-screens.json', 'text/us',
                        f'text/{text}'] + ([s.main] if s.main else []) + ([] if base else ['story/mods'] + s.extra) +
                       [f'step:maps ({p})' for p in s.screens] + ([] if base or not s.maps else [f'step:retouch ({s.maps})']))
             outs = [os.path.relpath(os.path.join(d, f), ctx.out) for f in ('DG.SCN', 'MAPHEAD.SCN', 'dws.log')]
