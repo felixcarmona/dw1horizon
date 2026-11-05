@@ -354,3 +354,6 @@ Show-item-descriptions-while-browsing-shops.patch
 Accept-tally-skip-presses-while-other-pad-buttons-are-held.patch
 Keep-rebirth-species-fallback-resident.patch
 Stream-camera-bands-without-blocking-field-ticks.patch
+Finish-scripted-moves-with-a-rounded-zero-step.patch
+Keep-item-bank-column-clears-within-their-text-slot.patch
+wait-for-quick-battle-effects-before-melee.patch

@@ -1919,9 +1919,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/245-Piedmon.MMD.mdelta",
-        "delta_sha256": "2be750c18267ab1f13ab429262e65d8ad3b37a480ae1c3d14712c4b45822ade4",
-        "sha256": "14672bce0eed5aceef489d4339934a9ba931fd3f0ced5d99cdb734fe65e4dd16",
-        "size": 90272
+        "delta_sha256": "2ea1715a652f4dff3f0f5ace701503ada2667e01896fb7cfdb1ca1c8df47eed8",
+        "sha256": "1337bb904e2378aea6baef81eaac614b973d0ae3ea046d7a8435af4ce35e533d",
+        "size": 84638
       },
       "tim": {
         "sources": [
@@ -4109,9 +4109,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/318-Gallantmon.MMD.mdelta",
-        "delta_sha256": "46577ba1798387fca8715b05ba010f13a7af0d18edeb8ec98b76bfa49083a545",
-        "sha256": "06a81382dbd91563cc26db6d8be8737752ed77345595aed17fca0784e0567025",
-        "size": 109784
+        "delta_sha256": "2a45f4407403b636572a89cd3112349d457971c0b293d2b8c58c397c0d377355",
+        "sha256": "b8922062a2313a726551040b0ed3e521782ef98303669c68f47119d1ffc1de46",
+        "size": 110852
       },
       "tim": {
         "sources": [
@@ -4954,9 +4954,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/404-BlackWarGreymon.MMD.mdelta",
-        "delta_sha256": "5530f7e7c9e52aa3e498ceac274e549a27d33f0c3bbedf77b2cc7568b0ba5ac4",
-        "sha256": "a0e3a0674f6b1e134282a215ef4ebd22019d1605ea6e492750f308874be625a9",
-        "size": 105656
+        "delta_sha256": "f804834df2473c172bbc45887512699f6ed90deaf215d59872f1b7a49b417ba4",
+        "sha256": "1249018ca534b6c44398b6b4ee88c1210d343157dee1ae8fbd2fb07d3bab5be2",
+        "size": 101574
       },
       "tim": {
         "sources": [

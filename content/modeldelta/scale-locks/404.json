@@ -2,8 +2,8 @@
   "species": 404,
   "name": "BlackWarGreymon",
   "threshold": 0.02,
-  "source_sha256": "7608d91d4fc558babbda1f550add2e971e41ebba877dbe0ae4dd693696c7c2ec",
-  "output_sha256": "a0e3a0674f6b1e134282a215ef4ebd22019d1605ea6e492750f308874be625a9",
+  "source_sha256": "0a1506566efdf1d03c650e9875607fbc90112fef9addf70a6e82f908e6f5e73a",
+  "output_sha256": "1249018ca534b6c44398b6b4ee88c1210d343157dee1ae8fbd2fb07d3bab5be2",
   "preceding_provider": {
     "model": "404-BlackWarGreymon.MMD",
     "aliases_applied": true,
@@ -78,6 +78,54 @@
       [
         48,
         62
+      ]
+    ],
+    "condition_bubble": [
+      0,
+      -102,
+      -31,
+      15
+    ],
+    "effect_origins": [
+      [
+        7,
+        "any",
+        0,
+        0,
+        10,
+        -18,
+        192,
+        -125
+      ],
+      [
+        10,
+        "any",
+        0,
+        0,
+        13,
+        33,
+        -76,
+        40
+      ],
+      [
+        1,
+        "any",
+        0,
+        0,
+        2,
+        0,
+        0,
+        0
+      ],
+      [
+        6,
+        "any",
+        0,
+        0,
+        3,
+        -6,
+        191,
+        -148
       ]
     ]
   },
@@ -229,7 +277,7 @@
   ],
   "grounding_max_under": 0.5,
   "grounding_max_over": 0.5,
-  "resident_bytes": 83986,
+  "resident_bytes": 80072,
   "resident_limit": 100352,
   "cold_buffer_bytes": 8192,
   "audit": {
