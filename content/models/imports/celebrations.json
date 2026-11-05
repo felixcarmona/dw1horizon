@@ -472,7 +472,7 @@
     },
     "shift": 0.8,
     "body_gain": 1,
-    "base_generator": "tools.models.field_animations.chibi",
+    "base_generator": "tools.models.field_animations.secondary_motion",
     "skeleton_sha256": "3291206a5dbc08aeb7ede901978e33139da3c6f13b5c756e6941bb01806888c1",
     "hanging": [
       [

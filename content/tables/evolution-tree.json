@@ -1325,7 +1325,7 @@
   "specialty_updates": {
     "431": ["mech", "nature", null]
   },
-  "specialty_reason": "Kurisarimon follows the identity sheet. Original battle specialties are unchanged; original-disc links are exempt from shared-specialty checks.",
+  "specialty_reason": "Kurisarimon follows the identity sheet. Original battle specialties are preserved; IceLeomon additionally has Ice in its third slot. Original-disc links are exempt from shared-specialty checks.",
   "resident_target_order": [4, 46, 57],
   "resident_target_reason": "Dolphmon occupies former Champion Whamon target positions so equal requirement rows retain their baseline winning states. Selected builds remove absent imports before packing.",
   "requirement_overrides": {
