@@ -28,3 +28,21 @@ Other technique origin mappings are unchanged.
 Preferred terrain is region 8: Coela Point and both Dragon Eye Lake screens
 carry it in their MAP headers. Region 4, used previously, belongs to Tropical
 Jungle. These region classes are distinct from the map-name indices.
+
+## Mega size comparison
+
+Size adjustments are baked into vertices and all animation translations,
+including root momentum; rotation and bone-scale channels are unchanged.
+The comparison uses native Machinedramon at the same camera scale.
+
+| Species | Uniform multiplier | Idle height before / after |
+|---|---:|---:|
+| MaloMyotismon | 1.37 | 475 / 650 |
+| Imperialdramon | 0.85 | 600 / 510 |
+
+Imperialdramon's wide wings and quadrupedal body retain their silhouette.
+Its final celebration is baked before resizing, so field and battle slots use
+the same proportions. Attached effect origins and condition bubbles follow the
+same multiplier; radius, height and status framing are updated with the model.
+`tools/models/resize.py` refuses storage overflow and checks all animation
+controls and non-translation channels remain exact.
