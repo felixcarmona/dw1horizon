@@ -190,6 +190,7 @@
  "engine.sourceDiffers": "Die von {title} gelesenen Dateien stimmen nicht. Prüf die Disc noch einmal.",
  "engine.quota": "Diesem Browser ging während der Erstellung der Speicherplatz aus, daher wurde sie abgebrochen. Es wurde nichts geschrieben. Die Erstellung braucht etwa {gb} GB freien Platz.",
  "engine.storageBlocked": "Dieser Browser lässt diese Seite die Dateien nicht speichern, die die Erstellung braucht (so ist es in privaten Fenstern und bei blockierten Websitedaten).",
+ "engine.fileLost": "Der Browser hat den Zugriff auf eine Disc oder eine temporäre Datei verloren, auch nach erneutem Öffnen. Wähle die Discs erneut aus dem lokalen Gerätespeicher und starte den Vorgang neu. Halte diesen Tab offen und das Gerät wach. Falls es wieder passiert, nutze die Desktop-App.",
  "engine.network": "Die Verbindung ist beim Herunterladen des Builders abgebrochen. Was schon heruntergeladen war, bleibt erhalten.",
  "fix.private": "Wenn das ein privates oder Inkognito-Fenster ist, öffne die Seite in einem normalen Fenster: Private Fenster bekommen sehr wenig Speicherplatz.",
  "fix.freeDisk": "Mach mindestens {gb} GB auf dem Laufwerk dieses Geräts frei (Papierkorb leeren, große Downloads löschen) und versuch es noch einmal.",

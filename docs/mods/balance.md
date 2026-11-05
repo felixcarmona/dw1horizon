@@ -1,5 +1,7 @@
 # Balance as JSON
 
+Looking for why something changed? See the [gameplay and design decision log](../decisions.md).
+
 Every number that balances a Digimon (techniques, evolution requirements and
 paths, stat gains, raise data, learning chances, drops, wild enemies,
 tournaments) can be changed by editing JSON. `tools/balance.py extract` can import numerical values for authoring. Builds clear numeric domains and apply committed JSON to the executable, its overlays and the `.MAP` files; they never inherit a player-disc balance floor.
@@ -276,6 +278,12 @@ than it costs; the daily card shop (6 cards, one copy each) is bounded by itself
 | New game start kit (`file-city/s193-238` section 55, after the intro wipes the debug save) | 0 bits, no items | 20 Meat, 1000 bits | the first days had only the farm's 3 Meat a day; once per game, no loop |
 | Meat farm big harvest (`libraries/s207`, `file-city/s164-204` section 11) | 1 day in 10 | 1 day in 4 | 5 instead of 3 Meat / Giant Meat / Sirloin; a day's share, no loop |
 | Psychemon / Gururumon wild bits (story mod) | 200 / 200 | 300 / 400 | the pay of the original's wild Digimon of their offense (330-420: about 300) |
+
+Mojyamon's recovery trade is intentional: the original game's Medium Recovery (item 1) -> S.Def.disk (20)
+becomes Medium Recovery (1) -> MP Floppy (4). The item IDs retain their meanings; this is a reward replacement,
+not an item rename. This mapping is already present in v0.0.1. Freezeland scripts 128 and 129 still select the
+same three-row trade groups; the executable reads the player's input from `mojyamonGives` and the reward from
+`mojyamonTakes`. The original recovery purchase (500 bits) -> S.Def.disk sale (2000 bits) allowed unlimited profit.
 
 The money analysis behind it: upkeep is about 300-1500 bits a game day, nothing on the story path costs
 bits, and bits bought little power (DV chips about 40 stat points a 1000 bits, restaurants 1-4, the gym 80-100 a day for
