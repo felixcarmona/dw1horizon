@@ -34,4 +34,20 @@ Thunder Justice preserves the strongest compatible electric attack from
 WaruSeadramon; air becomes the third specialty. Full Potential replaces the
 single-stat Power Crane buff. The added electric technique reuses the existing
 Pulse Laser casting program, Full Potential uses Aqua Magic's casting program,
-and Mail Strome keeps its previous program after moving to the final slot.
+and Infinity Cannon uses the same casting program as Pulse Laser in the final slot.
+
+## Shoulder cannon emissions
+
+The cannon meshes have distinct muzzle planes. The upper right/left barrels
+are bones 19/27, with local muzzle centres `(0, -35, -154)`. The lower right/left
+barrels are bones 20/26, with centres `(0, 0, -73)`. These points come from the
+front ring vertices, so they follow the barrels throughout casting.
+
+Suijinmon now uses Machinedramon's effect type and Infinity Cannon finisher
+(the native Mugen Cannon attack). Its two native cannon origins map to the
+upper battery. Other explicit origins and the fallback map to the lower
+battery; forcing the fallback also covers techniques whose donor table uses
+an entity-relative origin. No shot inherits a pelvis or leg attachment.
+The existing Pulse Laser casting program supports the finisher. The generated
+model bytes and provider pins stay unchanged because the previous finisher
+and Pulse Laser already shared that program.
