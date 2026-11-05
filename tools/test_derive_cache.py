@@ -225,5 +225,65 @@ class DeriveCacheTests(unittest.TestCase):
         self.assertEqual(before, cache.identity(ctx, 'unit'))
 
 
+class RecordedSteps(unittest.TestCase):
+    def test_facts_are_keyed_for_recorded_fact_consumers(self):
+        from tools.derive.__main__ import Ctx
+        with tempfile.TemporaryDirectory() as td, \
+                patch.object(cache, 'tool_key', return_value='tools'), \
+                patch.object(cache, 'runtime_sources', return_value='runtime'):
+            root = Path(td)
+            output = root / 'build/result'
+            calls = []
+            def build(ctx):
+                calls.append(1)
+                output.write_text(str(ctx.facts['limit']))
+            mod = SimpleNamespace(NAME='fixture', FACTS=True, build=build)
+            for limit in (1, 1, 2):
+                output.parent.mkdir(exist_ok=True)
+                if output.exists(): output.unlink()
+                ctx = Ctx(str(output.parent), {'limit': limit}, record=True)
+                ctx.root = str(root)
+                with ctx.calling():
+                    cache.record_step(ctx, mod, str(root / 'cache'))
+                self.assertEqual(output.read_text(), str(limit))
+            self.assertEqual(len(calls), 2)
+
+    def test_reuse_preserves_real_trace_and_tracks_absent_probes(self):
+        import os
+        import shutil
+        from tools.derive.__main__ import Ctx
+        with tempfile.TemporaryDirectory() as td, \
+                patch.object(cache, 'tool_key', return_value='tools'), \
+                patch.object(cache, 'runtime_sources', return_value='runtime'):
+            root = Path(td)
+            source = root / 'source'; source.write_bytes(b'original')
+            missing = root / 'optional'
+            output = root / 'build/everything/result'
+            calls = []
+            def build(ctx):
+                calls.append(1)
+                data = source.read_bytes()
+                if missing.exists():
+                    data += missing.read_bytes()
+                output.parent.mkdir(parents=True, exist_ok=True)
+                output.write_bytes(data)
+            mod = SimpleNamespace(NAME='fixture', build=build)
+            traces = []
+            for i in range(3):
+                shutil.rmtree(root / 'build', ignore_errors=True)
+                if i == 2:
+                    missing.write_bytes(b'new')
+                ctx = Ctx(str(output.parent), None, record=True)
+                ctx.root = str(root)
+                with ctx.calling():
+                    cache.record_step(ctx, mod, str(root / 'cache'))
+                traces.append(ctx.inputs)
+                self.assertEqual(output.read_bytes(), b'original' + (b'new' if i == 2 else b''))
+            self.assertEqual(len(calls), 2)
+            self.assertEqual(traces[0], traces[1])
+            self.assertIn(str(source), traces[1])
+            self.assertFalse(any(str(root / 'cache') in p for trace in traces for p in trace))
+
+
 if __name__ == '__main__':
     unittest.main()

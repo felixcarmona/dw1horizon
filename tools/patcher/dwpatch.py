@@ -1324,6 +1324,7 @@ def release_derive(root, recipe, facts, cache=None, slot=None, record=False, job
         snapshot = None
         if record:
             env.pop('DW_BUILD_CACHE', None)
+            env['DW_RECORD_CACHE'] = str(Path(cache).resolve() / 'record-steps')
             identity_env = {k: v for k, v in env.items() if k not in ('PWD', 'OLDPWD', 'SHLVL', '_')}
             fingerprint = rc.fingerprint(staged, recipe, source_discs, identity_env)
             snapshot = Path(cache).resolve() / 'recordings' / fingerprint
@@ -1362,8 +1363,8 @@ def derive_run(root, recipe, facts, record=False, jobs=None, log=None, source_di
     env = dict(os.environ if release_env is None else release_env,
                PYTHONDONTWRITEBYTECODE='1', PYTHONUNBUFFERED='1', PYTHONUTF8='1')
     # Packages replay in their private tree, independent of developer caches.
-    for name in ('DW_BUILD_CACHE', 'DW_CACHE_DIR', 'DW_CLEAN_NATIVE'):
-        if release_env is None or name != 'DW_BUILD_CACHE':
+    for name in ('DW_BUILD_CACHE', 'DW_RECORD_CACHE', 'DW_CACHE_DIR', 'DW_CLEAN_NATIVE'):
+        if release_env is None or name not in ('DW_BUILD_CACHE', 'DW_RECORD_CACHE'):
             env.pop(name, None)
     t0 = time.time()
     lines = []

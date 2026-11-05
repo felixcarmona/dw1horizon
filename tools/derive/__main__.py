@@ -191,7 +191,10 @@ def build(a, out=None, quiet=False):
         t0 = time.perf_counter()
         try:
             with ctx.calling():      # (with --record: what the step's own code opens, besides its scripts and units)
-                if os.environ.get('DW_BUILD_CACHE') and not a.strict:
+                if a.record and os.environ.get('DW_RECORD_CACHE') and not a.strict:
+                    from .cache import record_step
+                    record_step(ctx, mod, os.environ['DW_RECORD_CACHE'])
+                elif os.environ.get('DW_BUILD_CACHE') and not a.strict:
                     from .cache import build_step
                     build_step(ctx, mod)
                 else:

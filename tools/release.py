@@ -124,7 +124,7 @@ def offline_environment(recipe):
     env = dict(os.environ)
     for key in (*recipe['environment'], *NOT_THE_RECIPES, 'W', 'NAME', 'HEAP_OK',
                 'MOD_VERSION', 'DERIVE_ARGS', 'SCREEN_CONTENT', 'DWS_MAPS',
-                'EXTRA_STORY', 'EXTRA_FILES'):
+                'EXTRA_STORY', 'EXTRA_FILES', 'DW_BUILD_CACHE', 'DW_RECORD_CACHE'):
         env.pop(key, None)
     return env
 
@@ -356,7 +356,7 @@ def pipeline(a, r):
     # Never inherit developer byte overrides or a heap bypass into a release.
     from tools.derive.recipe import NOT_THE_RECIPES
     for key in (*NOT_THE_RECIPES, 'HEAP_OK', 'MOD_VERSION', 'DEV', 'EXTRA_SPECIES', 'DERIVE_ARGS',
-                'DW_BUILD_CACHE', 'DW_CLEAN_NATIVE'):
+                'DW_BUILD_CACHE', 'DW_RECORD_CACHE', 'DW_CLEAN_NATIVE'):
         env.pop(key, None)
     recipe = json.loads((ROOT / 'tools/derive/recipes/everything.json').read_text())
     for key, value in recipe['environment'].items():

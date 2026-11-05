@@ -250,3 +250,40 @@ def run_units(ctx, original):
         done = runner.run_units(ctx, wrapped)
     replay_story(ctx, done)
     return done
+
+
+def record_step(ctx, mod, directory):
+    """Reuse a recorded step while retaining its original positive input trace.
+
+    Cache bookkeeping must not become part of the source-bundle recording. On a
+    hit, restore the audited artifacts and the actual build's input trace. On a
+    miss, both audit hooks observe the same single-process computation. The
+    release still replays the resulting bundle independently without caches.
+    """
+    import json
+    from tools.build_cache import capturing, encoded
+    recording = runner._recording
+    runner._recording = None
+    try:
+        ctx.cache_step = mod.NAME
+        ctx.cache_facts = getattr(mod, 'FACTS', False)
+        ident = json.loads(encoded(identity(ctx, 'record/' + mod.NAME)))
+        cache = Cache(directory, os.path.join(ctx.root, 'build'))
+        result = cache.restore(ident)
+        if result is None:
+            runner._recording = recording
+            try:
+                with capturing(os.path.join(ctx.root, 'build')) as capture:
+                    mod.build(ctx)
+                if recording is not None:
+                    ctx.note_inputs(*recording)
+                result = dict(lines=ctx.lines[:], inputs=sorted(ctx.inputs))
+            finally:
+                runner._recording = None
+            cache.save(ident, capture, result)
+            ctx.lines.insert(0, 'record cache miss')
+        else:
+            ctx.lines[:] = ['record cache hit'] + result['lines']
+            ctx.inputs.update(result['inputs'])
+    finally:
+        runner._recording = recording

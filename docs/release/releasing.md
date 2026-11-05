@@ -86,8 +86,9 @@ recordings run in separate processes, at most two concurrently.
 Release caches live in `build/release-derive-cache`, separate from developer and
 player caches. Source recording keys hash every supplied input file, directory
 inventory, recipe, source-disc contents, environment and interpreter/runtime
-sources. Each snapshot file is SHA-256 checked before any restoration. Regional
-steps use the existing audited derive cache in locked stable staging directories:
+sources. Each snapshot file is SHA-256 checked before any restoration. A changed recording
+key can still reuse audited unchanged steps, including their original input traces;
+cache bookkeeping is excluded from those traces. Regional steps use the existing audited derive cache in locked stable staging directories:
 each cut starts from fresh inputs, checks recorded reads, absent probes and
 directory listings, and verifies every restored artifact. Code and runtime inputs
 are part of those keys. Changed dependencies rebuild their consumers; conservative
