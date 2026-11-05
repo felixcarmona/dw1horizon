@@ -1,4 +1,4 @@
-# Square quick care: field prompt design
+# Square quick care: icon design
 
 Status: design only. No input, C code, game asset or patch-series change is included.
 
@@ -10,18 +10,22 @@ the ordinary confirm button gives the selected item or executes the selected car
 command. Circle with JAPANESE CONTROLS ON, or Cross with it OFF, remains the field
 interaction button. This separates care from talking, training and using machines.
 
-Recommend **A, the partner badge**. It preserves the existing visual association
-between a partner's needs and care, with no new words or permanent HUD element.
-B offers a fixed HUD anchor; C explicitly teaches the shortcut but adds text.
-These are alternatives: display only one of them.
+This revision compares **only the icon artwork**. The existing care badge keeps
+its exact anchor, projected size, bob, appearance/disappearance, visibility rules
+and three-frame press timing. There is no HUD badge, hint row, edge clamp,
+offscreen fallback or new text. Earlier A/B/C placement alternatives are withdrawn.
+The field input change above remains a separate future implementation step.
+
+Recommend **1, native round cap**: the familiar gray button with a pink Square.
+Options 2–4 change only cap shape, outline or face shading within the same texture
+box. No option adds prompt behavior or changes the care list.
 
 ## Existing prompt: asset and drawing path
 
 The floating round cap in `report-circle-prompt.png` matches the **quick-care
 badge**, not a general marker proving an NPC or doorway can be interacted with.
 Its round outer silhouette is the physical button cap; the colored mark on its
-face identifies the input. A Square prompt should retain that cap and change the
-mark to a pink square.
+face identifies the input. The variants below change its artwork to identify Square.
 
 The authoritative sources are the patches in `mods/patches/series`:
 
@@ -71,44 +75,53 @@ That last test requires ±45 degrees and the item-take distance plus 12, capped
 at 127 before `checkEatDistance`. The proposed shortcut removes this last test;
 the other guards remain, with an explicit field/battle ownership check.
 
-## Artwork and three options
+## Four icon variants, one unchanged prompt
 
-All options use the native 16×12 gray cap. Only the face mark changes: a
-6×5 perspective square, bright pink **(248,128,192)** and dark pink
-**(160,64,120)**, both representable in PS1 5-bit channels. The square's corners
-are square, with continuous edges; the gray cap supplies the depth. Its face is
-perspectively compressed like the existing Circle/Cross mark. No antialiasing,
-vector smoothing, modern font or enlarged UI is proposed.
+Every variant occupies the existing **16×12 texel canvas**, with transparent
+surrounding pixels. The game's existing projection determines its screen size;
+none forces it to 16×12 screen pixels. Each supplies three pressed-state frames
+for the existing `(MOD_RING_CLOCK / 4) % 3` cycle. The same ring anchor and draw
+quad are used; neither the icon's center nor its world height is moved.
 
-Square is the physical Square button under **both** layouts. It is never passed
-through the Circle/Cross layout substitution. The new frames require their own
-texture location and palette; replacing the existing confirm frames would also
-replace dialogue confirmation and is incorrect. Generate the cap from the
-player's base disc and erase that base's original symbol, as the existing adapter
-does, then draw Square. Keep all three pressed-frame offsets if retaining the
-native animation.
+| Variant | Artwork | Readability and tradeoff |
+|---|---|---|
+| **1 — Native round cap (recommended)** | Original shaded round gray cap; its face mark becomes a 6×5 perspective pink square | Closest match to the report image and existing pixel art. Dark rim separates it from light floors; gray bevel separates it from dark floors. |
+| **2 — Square cap** | Squared gray button with a beveled light top/left edge, dark base and pink Square | Strongest square silhouette. Uses the same 16×12 canvas and anchor; the cap's outline is intentionally squarer within that box. |
+| **3 — Outlined Square** | Original round cap with a pale pink Square and a one-pixel dark separator around the mark | Most conspicuous symbol at small scale; a heavier face than variant 1. |
+| **4 — Recessed face** | Original round outer silhouette with a darker inset face, pink Square and reversed light/dark inner edge | More subdued cap with a clear pink mark. The face appears recessed in every frame; this is artwork, not a disabled/unavailable state. |
 
-| Option | Placement and presentation | Availability | Tradeoff |
-|---|---|---|---|
-| **A — Partner badge (recommended)** | Existing condition-ring badge anchor; 16×12 source, existing projection, bob and four-tick appearance | Every field tick where quick care can open, regardless of partner distance or facing | Familiar, no text. A large partner or crowded bubbles needs collision checking. |
-| **B — Vitals badge** | Fixed 16×12 screen-pixel cap immediately left of lower-right HP/MP bars; reference `(218,204)` on 320×240 | Same predicate as A, in either old/new status-bar mode | Stable and visible when partner is offscreen; adds persistent HUD weight. |
-| **C — Care hint row** | Native dark blue small box in bottom-left safe area; cap plus localized `Care`, reference box `(12,207)`–`(90,225)` | Same predicate as A; hidden immediately when another UI opens | Clearest meaning, but needs localized width checks and a text-buffer allocation strategy. |
+All retain integer pixels and the native gray bevel palette. Symbol colors are
+PS1-representable **(248,128,192)** pink and **(160,64,120)** dark pink; variant 3
+also uses **(248,192,224)** pale pink. Gray/black values come from the native UI
+palette, including `(24,24,24)`, `(48,48,48)`, `(64,64,64)`, `(88,88,88)`,
+`(104,104,104)`, `(136,136,136)` and `(160,160,160)`. No smoothing or new font is
+used. The 6×5 mark is perspective-compressed like the original Circle/Cross mark;
+the cap remains 16×12 in all three frames.
 
-A's mockup uses a 16×12 cap at the reference camera's partner-side anchor. Actual
-implementation should reuse world projection rather than force that screen size
-at every depth. Clamp A inside a 12-pixel screen safe margin, clear the clock and
-condition bubbles, and use B's fixed anchor as a fallback if the partner is behind
-the camera or offscreen. This fallback is the same single prompt, not a second
-copy. Keep the care badge visible when condition bubbles are disabled: care
-availability must not depend on that cosmetic option. Do not suppress a hunger,
-sickness, toilet or other condition bubble to make room.
+**JAPANESE CONTROLS ON and OFF use identical Square artwork for all four variants.**
+Square is a physical button in both layouts and must bypass Circle/Cross glyph
+substitution. NEW, CLASSIC, ORIGINAL and all language fonts therefore also show
+identical icon pixels. No duplicate layout/font mockups or translations are needed.
+The existing confirm glyphs and their layouts remain separate.
 
-Hide all three during dialogue, training, battle loading/combat/results, inventory,
-triangle menus, shops, evolution, cutscenes, map transitions, fade protection,
-feeding/refusal animations and sleep. With no usable item or care command, show
-nothing and Square does nothing. A low MP partner with an MP Floppy qualifies
-even if no condition bubble is active. Reuse the existing ranked care list and
-refusal/scolding flow. No item is automatically selected and used by Square.
+The image files are numbered 1–4. Each review sheet contains the icon on a light
+floor and a dark floor at the game's actual rendering scale, plus a 4× source
+zoom of the three animation frames. The zoom is explicitly outside the game
+screenshot. Native full-screen PNGs are also supplied for each floor. The source
+canvas zoom is 64×48 pixels; it does not imply the projected badge always has that
+size divided by four on screen.
+
+## Position and behavior constraints
+
+Use the existing `renderBadge` call, its root/condition-row anchor, scale, draw
+order, semitransparency, bob, four-tick appearance/disappearance and visibility
+guards exactly as they stand. Do not replace the anchor with fixed screen
+coordinates. Do not move the icon to avoid floors, scenery, the partner or other
+bubbles. Do not introduce a HUD fallback or hint label. Do not alter the condition
+bubbles to make room. No icon variant changes when care becomes available.
+
+The source trace and future control mapping remain below for implementation
+context; this artwork revision implements neither input nor care eligibility.
 
 ## Input ownership, before and after
 
@@ -140,37 +153,28 @@ script and care box. Require a fresh Square edge after any menu/transition close
 a held button must not reopen care or spend an item. The cap is a promise of
 availability, so input and prompt must share the same predicate.
 
-## Fonts and control-layout coverage
-
-A and B contain no text: Square and cap pixels are identical with NEW, CLASSIC
-and ORIGINAL, and with Japanese controls ON/OFF. Their mockup sheets deliberately
-repeat the same field background to compare the **proposed prompt**, not to claim
-six independent emulator runs. C uses the project's actual glyph renderers:
-font B for NEW, original letters placed to the pixel for CLASSIC, and the original
-4-pixel placement for ORIGINAL. The icon is independent of those renderers.
-
-The English `Care` row is shown in all three settings. A production C row would
-need a short localized label in every supported language, width measured with
-the active font, a maximum box width of 112 pixels, and correct Japanese/Chinese
-bitmap glyph support. These localized rows have not been authored or verified.
-A avoids that new localization and font-fit burden entirely. Existing care-list
-text keeps its current language/font behavior for every option.
-
 ## Heap, VRAM and MENU estimate
 
 This design changes no executable: **main_BSS_END delta 0; heap delta 0;
 MENU_REL delta 0; VRAM delta 0** for this commit. The following are design budgets,
 not compiled measurements or a hardware-safety claim.
 
-| Resource | A/B provisional implementation budget | C provisional implementation budget |
-|---|---|---|
-| Sprite pixels | Three 16×12 frames at 4 bpp = **288 bytes VRAM** | Same |
-| Palette | One 16-color CLUT = **32 bytes VRAM** | Same |
-| New persistent CPU buffers | Target 0; reuse existing load-time scratch and hint/animation state | Avoid resident label cache; render on availability/language/font changes |
-| Resident executable / heap loss | Budget **at most 1,024 bytes**, including code and any retained 320-byte upload data; remove distance/facing-only code if otherwise unused | Budget **at most 2,048 bytes**, including code/text routing; needs actual localization sizing |
-| Per-render packet | One POLY_FT4, **40 bytes** in the existing GPU packet arena | Cap plus existing box/text primitives; reserve **256 bytes** packet budget |
-| MENU_REL growth | **0 bytes** intended | **0 bytes** intended; field hint cannot call an unloaded MENU overlay |
-| New disc filenames / allocations | 0; generate into existing disc-derived UI asset | 0 intended; reuse language/text infrastructure |
+| Resource | Provisional budget, any one variant |
+|---|---|
+| Sprite pixels | Three 16×12 frames at 4 bpp = **288 bytes VRAM** |
+| Palette | One 16-color CLUT = **32 bytes VRAM**; all variants fit within 16 colors |
+| Persistent CPU buffers | Target 0; generate from disc-derived UI data during the build/load path |
+| Resident executable / heap loss | Conservative **1,024-byte budget** for routing/load code and any retained 320-byte upload data; must be measured later |
+| Per-render packet | The existing single POLY_FT4, **40 bytes**; no extra badge packet |
+| MENU_REL growth | **0 bytes** intended; no text or menu change |
+| New disc filenames / allocations | 0 intended; use existing disc-derived UI assets |
+
+Only one variant would ship. These budgets are not multiplied by four, and no
+extra animation state or font/text buffer is needed. Existing confirm artwork
+must remain intact: the care badge needs separate texture/palette routing rather
+than replacing the shared dialogue cap or recoloring a shared CLUT. The preview
+uses an isolated palette specifically because the native palette is also used by
+other UI elements, including the HP/MP HUD.
 
 These VRAM bytes require a verified unused rectangle and palette slot in every
 base-disc/localization UI page. `(352,230)` is already owned by the confirm adapter
@@ -188,11 +192,19 @@ another sector. No MENU growth is needed for the recommended option.
 
 ## Evidence and implementation acceptance
 
-Review artifacts remain local under `build/design/`: PCSX-Redux screenshots,
-three A/B/C sheets with native 320×240 panels, separate native panels, and a
-nearest-neighbor 4× icon zoom. These are **composites**, not implemented controls.
-The supplied report image is the visual reference; reconstructed cap pixels come
-from the disc-derived SYSTEM_W.TIM rather than its enlarged, filtered crop.
+Review artifacts remain local under `build/icon-review/`: four numbered sheets,
+native 320×240 light/dark screenshots, 16×12 source frames and nearest-neighbor
+4× zooms. These are **artwork previews**, not implemented Square controls.
+The supplied report image identifies the badge being redesigned; its position is
+established by the game's existing renderer rather than manually choosing a
+nearby location.
+
+For the screenshots, a restored PCSX-Redux visual fixture renders the existing
+care badge. A temporary debug hint holds it visible for comparison; texture-only
+uploads and a care-palette preview override replace its artwork. Its drawing
+coordinates, projection and animation code are untouched. The comparison includes
+reference captures of the existing badge on each floor. Preview changes are
+emulator-local and are discarded when it stops; no disc or C patch is produced.
 
 Before a later implementation can be accepted:
 
@@ -204,7 +216,8 @@ Before a later implementation can be accepted:
    memory instead of treating the budgets above as evidence.
 3. Test both layouts and all three font settings; show care with no bubble,
    hunger, low MP, scolding, tall/small partners, camera edges and no eligible
-   entries. Verify old/new bars and condition-bubble visibility options.
+   entries. Verify that old/new bars, condition-bubble visibility and prompt
+   behavior remain unchanged.
 4. Press Confirm beside NPCs, training machines, doors, chests and trigger tiles
    while care is eligible: no care menu or unintended MP Floppy use. Press Square
    far from and facing away from the partner: list opens, no item consumed until
@@ -213,4 +226,4 @@ Before a later implementation can be accepted:
    finisher-ready battle, tournament/VS, minigames and simultaneous/held buttons.
    Check map changes and cutscene ownership; stop every test process afterward.
 
-Implementation remains a separate step after a design is selected.
+No icon has been selected for implementation. Implementation remains a separate step.
