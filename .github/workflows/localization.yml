@@ -1,0 +1,31 @@
+name: Localization
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Audit all languages and fonts
+        run: python3 -m tools.localize.check --json build/localization-audit.json
+      - name: Localization regression tests
+        run: python3 -W ignore::ResourceWarning -m unittest tools.test_localize_check
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: localization-audit
+          path: build/localization-audit.json

@@ -113,8 +113,8 @@ def list_width(name, font='original'):
     if font in ('a', 'b'):
         own = fontgen.text_width(name, font) - fontgen.GAP
         if font == 'b': return own
-        return min([own] + [fontgen.fit_layout(name, mode)[1] for mode in (1, 2)])
-    return min(fontgen.fit_layout(name, mode)[1] for mode in range(3))
+        return min([own] + [fontgen.fit_layout(name, mode, metrics_only=True)[1] for mode in (1, 2)])
+    return min(fontgen.fit_layout(name, mode, metrics_only=True)[1] for mode in range(3))
 
 
 def fit_keeping_codes(tb, k, v):
