@@ -37,7 +37,13 @@ class ReleaseTests(unittest.TestCase):
             out = Path(td) / 'candidate'
             info = dict(version='0.0.0-dev.1+abcdef12', date='2026-10-28', commit='a' * 40)
             stdout = io.StringIO()
-            with patch.object(release, 'identity', return_value=info), \
+            groups = []
+            original = release.Run.cmds
+            def capture(run, jobs, *args, **kwargs):
+                groups.append(jobs)
+                return original(run, jobs, *args, **kwargs)
+            with patch.object(release.Run, 'cmds', new=capture), \
+                    patch.object(release, 'identity', return_value=info), \
                     patch.object(release, 'git', side_effect=['/repo/.git', '160000 commit pin decomp']), \
                     patch.object(release.subprocess, 'Popen') as popen, \
                     contextlib.redirect_stdout(stdout):
@@ -49,7 +55,10 @@ class ReleaseTests(unittest.TestCase):
                          'heapcheck.py', 'tools/dws.py story-build', 'selftest.sh',
                          'build-engine.sh', 'run.mjs', 'Standalone package apply'):
                 self.assertIn(step, text)
-            self.assertIn(f'ENGINE_WORK={out}/engine-work', text)
+            replay = next(group for group in groups if 'engine' in group)
+            self.assertEqual(set(replay), {'us', 'jp1', 'eu+dw3-us', 'engine'})
+            self.assertEqual(replay['engine'][2]['ENGINE_WORK'], str(out / 'engine-work'))
+            self.assertTrue(Path(replay['engine'][0][0]).is_absolute())
             self.assertNotIn('web/deploy.sh', text)
             self.assertIn('standalone-jp1', text)
             self.assertIn('-B -E -S', text)

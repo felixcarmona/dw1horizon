@@ -472,7 +472,23 @@ def pipeline(a, r):
             manifest = json.loads((package / 'manifest.json').read_text())
             for k, output in manifest['variants'][manifest['default']]['outputs'].items():
                 r.sums['output-' + k] = output['sha1']
-    with r.step('Standalone package apply (USA, Japan Rev 1, Europe with World 3 USA)'):
+    with r.step('Engine graph fingerprint and record cache preparation'):
+        cache = ROOT / 'build/release-records'
+        key = '<bundle-and-recorder-SHA256>' if r.dry else record_key(package)
+        records = cache / key
+        print(f'RECORDS={records} (reuse only for identical graph inputs)')
+        # build-engine.sh uses fixed filenames under ISOS; give it a private directory.
+        alias = out / 'base-discs'
+        if not r.dry:
+            alias.mkdir()
+            for k, p in bases.items():
+                (alias / (names[k] + '.bin')).symlink_to(p)
+        webenv = dict(env, RECORDS=str(records), ISOS=str(alias), ENGINE_WORK=str(out / 'engine-work'),
+                      PYODIDE_CACHE=str(ROOT / 'build/pyodide-314.0.7'),
+                      ENGINE_JOBS=str(min(a.base_jobs, 2)), WORKER_MEMORY_MIB=str(a.worker_memory_mib),
+                      DCB_IMAGE=str(sources['dcb']), DW2_IMAGE=str(sources['dw2']),
+                      DW3_IMAGE=str(sources['dw2003']))
+    with r.step('Standalone package apply and engine recording in parallel (USA, Japan Rev 1, Europe with World 3 USA)'):
         # Run the shipped reader outside the checkout, without developer imports.
         standalone_env = dict(env)
         for name in ('PYTHONPATH', 'PYTHONHOME'):
@@ -480,9 +496,9 @@ def pipeline(a, r):
         standalone_env.update(PYTHONNOUSERSITE='1', VIRTUAL_ENV=str(player_env),
                               PATH=str(player_py.parent) + os.pathsep + standalone_env.get('PATH', ''))
         applies = (('us', None), ('jp1', None), ('eu', 'dw3-us'))
-        # The three run at once, the CPUs shared (-X cpu_count: apply gives tools/derive --jobs os.cpu_count(); the
-        # bytes do not depend on it). Each one's screen goes to standalone-KEY.log.
-        share = max(1, (os.cpu_count() or 1) // len(applies))
+        # Share the CPUs with two engine recordings. Apply gives tools/derive
+        # --jobs os.cpu_count(); output bytes do not depend on the job count.
+        share = max(1, (os.cpu_count() or 1) // (len(applies) + 2))
         runs = {}
         for base, vid in applies:
             key = base + ('+' + vid if vid else '')
@@ -493,9 +509,11 @@ def pipeline(a, r):
             for game, path in used.items():
                 cmd += ['--source-disc', f'{game}={path}']
             runs[key] = (cmd, out / f'standalone-{key}.log')
+        apply_keys = tuple(runs)
+        runs['engine'] = ([ROOT / 'web/build-engine.sh', package, engine], out / 'engine.log', webenv)
         r.cmds(runs, standalone_env, cwd=out)
         if not r.dry:
-            for key in runs:
+            for key in apply_keys:
                 dest = out / ('standalone-' + key)
                 images = list(dest.glob('*.bin'))
                 expected = manifest['variants'][manifest['default']]['outputs'][key]['sha1']
@@ -515,23 +533,6 @@ def pipeline(a, r):
                    '--version', info['version'], '--commit', info['commit'],
                    '--date', info['date'], '--from', a.record_save,
                    '--work', out / 'save-recording'], env)
-    with r.step('Engine graph fingerprint and record reuse'):
-        cache = ROOT / 'build/release-records'
-        key = '<bundle-and-recorder-SHA256>' if r.dry else record_key(package)
-        records = cache / key
-        print(f'RECORDS={records} (reuse only for identical graph inputs)')
-        # build-engine.sh uses fixed filenames under ISOS; give it a private directory.
-        alias = out / 'base-discs'
-        if not r.dry:
-            alias.mkdir()
-            for k, p in bases.items():
-                (alias / (names[k] + '.bin')).symlink_to(p)
-        webenv = dict(env, RECORDS=str(records), ISOS=str(alias), ENGINE_WORK=str(out / 'engine-work'),
-                      PYODIDE_CACHE=str(ROOT / 'build/pyodide-314.0.7'),
-                      ENGINE_JOBS=str(min(a.base_jobs, 2)), WORKER_MEMORY_MIB=str(a.worker_memory_mib),
-                      DCB_IMAGE=str(sources['dcb']), DW2_IMAGE=str(sources['dw2']),
-                      DW3_IMAGE=str(sources['dw2003']))
-        r.cmd(['web/build-engine.sh', package, engine], webenv)
     if not a.skip_browser:
         with r.step('USA browser suite on candidate before deployment'):
             browser(r, out, engine, bases, sources, env)

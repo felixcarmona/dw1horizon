@@ -81,7 +81,10 @@ against Linux's available memory; on systems without that reading it uses one
 worker. Worker process-tree peak RSS and phase times go to the private
 `package-timing.json`, outside the player package. Binary deltas run in bounded
 processes and merge in their original file/base order. Web-engine USA and Japan
-recordings run in separate processes, at most two concurrently.
+recordings run in separate processes, at most two concurrently. They overlap the
+three standalone player replays after packaging; the replays share the CPU budget
+with those two recordings. Every replay pin and the engine build must pass before
+the browser gate starts.
 
 Release caches live in `build/release-derive-cache`, separate from developer and
 player caches. Retain that directory at the same absolute path between cuts, or
