@@ -129,6 +129,15 @@ class GuardTests(unittest.TestCase):
         for p in (217, 46, 4, 57):
             self.assertIn(238, self.kids[p])
             self.assertLessEqual(len(self.kids[p]), 6)
+        _, reqs, levels = T.model(self.sp)
+        for p in (217, 46, 4, 57):
+            witness = T.practical(p, 238, self.kids, reqs, levels, self.sp)
+            self.assertIsNotNone(witness, self.sp[p]['name'])
+            self.assertEqual(witness['sessions'], 0)
+        for p in (46, 4, 57):
+            stats = dict(hp=1500, mp=1500, offense=150, defense=150, speed=150, brain=150)
+            self.assertEqual(T.E.pick(p, self.kids[p], reqs, levels, stats, 0, 40, 'stats',
+                                     (0, 0, 100, 100)), 238)
         for p in (46, 4, 57):
             self.assertIn(24, self.sp[p]['off']['evolution']['to'])
             # Legacy reverse links may remain, but the off picker excludes non-vanilla targets.
