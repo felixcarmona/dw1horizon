@@ -461,12 +461,12 @@ def pipeline(a, r):
         if a.save_check_emu:
             runs['published-save'] = ([py, 'tools/dev/saves/releases.py', 'emu', cue, '--exe', exe,
                                       '--port', str(a.emu_port_base), '--work', out / 'published-save'],
-                                     out / 'published-save.log', env)
+                                     out / 'published-save.log', dict(env, DW_OBJECT_DIR=str(w)))
             runs['journey'] = ([py, 'tools/dev/playtest/journey.py', cue, out / 'journey'],
-                               out / 'journey.log', dict(env, EMU_PORT=str(a.emu_port_base + 1), DW_SYMS=str(exe)))
+                               out / 'journey.log', dict(env, EMU_PORT=str(a.emu_port_base + 1), DW_SYMS=str(exe), DW_OBJECT_DIR=str(w)))
         if a.ending_card:
             runs['ending'] = ([py, 'tools/dev/playtest/ending.py', cue, out / 'ending', '--card', a.ending_card],
-                              out / 'ending.log', dict(env, EMU_PORT=str(a.emu_port_base + 2), DW_SYMS=str(exe)))
+                              out / 'ending.log', dict(env, EMU_PORT=str(a.emu_port_base + 2), DW_SYMS=str(exe), DW_OBJECT_DIR=str(w)))
         r.cmds(runs)
         if not r.dry:
             manifest = json.loads((package / 'manifest.json').read_text())

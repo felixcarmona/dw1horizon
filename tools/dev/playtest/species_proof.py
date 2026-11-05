@@ -48,8 +48,10 @@ ANIM = 'PARTNER_ENTITY.digimonEntity.entity.anim.animId'
 FRAME = 'PARTNER_ENTITY.digimonEntity.entity.anim.animFrame'
 
 
-def run(cmd, timeout=600):
+def run(cmd, timeout=600, check=False):
     r = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT, timeout=timeout)
+    if check and r.returncode:
+        raise RuntimeError(f'harness command failed ({r.returncode}): {(r.stdout + r.stderr)[-1000:]}')
     return r.stdout + r.stderr
 
 
@@ -79,7 +81,7 @@ def mem(*names):
 
 
 def mset(*kv):
-    return run(M + ['set'] + list(kv))
+    return run(M + ['set'] + list(kv), check=True)
 
 
 def partner_type():
