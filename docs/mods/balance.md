@@ -372,8 +372,8 @@ AS Decoder slot has no stock, drop or story use in this branch or current main; 
 123. Its existing AS Decoder sprite uses an existing blue palette. The existing fourth `evolutionItemRules` slot
 maps it to Dolphmon (238) for a Rookie (level 3), and its handler/refusal range now includes 124. NEW DIGIMON off
 refuses the unavailable import without consuming it. No item table, name/description count, icon atlas, custom
-rule array or save field is enlarged. All eight names fit 11 characters. Current main has no Chinese text table;
-no speculative Chinese-only table is added. Existing ninth-row completion flag 13 remains spent in old saves,
+rule array or save field is enlarged. All nine localized names fit 11 characters. Simplified Chinese includes the item name/description and both
+daily/permanent trade-limit messages, with the 鳍 glyph in both fonts; Chinese requires 8 MB. Existing ninth-row completion flag 13 remains spent in old saves,
 including saves that received the earlier North Star reward; no progress is reset or item silently exchanged.
 
 The money analysis behind it: upkeep is about 300-1500 bits a game day, nothing on the story path costs

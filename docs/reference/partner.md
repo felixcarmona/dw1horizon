@@ -404,7 +404,7 @@ North Star (92) targets Whamon (24). With NEW DIGIMON on Whamon is an Ultimate, 
 Champion; with off Whamon is a Champion and the item requires a Rookie. The native-item stage helper uses the
 current target stage, retaining the established legacy exception for native items whose targets became Mega.
 Both eligibility and application use that same helper. The USA refusal path reads `EVOLUTION_ITEM_TARGET`
-directly rather than a palette-relative alias. The arena cup-14 reward and all eight North Star descriptions
+directly rather than a palette-relative alias. The arena cup-14 reward and all nine North Star descriptions
 remain Whamon's.
 
 Dolph Fin (124, the unused AS Decoder slot) is a separate evolution item with value 5000. The fourth existing
@@ -412,7 +412,7 @@ Dolph Fin (124, the unused AS Decoder slot) is a separate evolution item with va
 0x7C alongside the original 0x7D..0x7F custom items. The common rule lookup rejects unavailable imports, so NEW
 DIGIMON off refuses Dolph Fin without consuming it. Wrong stages refuse it. The group-3 exchange for Small
 Recovery is once per save, with permanent history flag 13; no item or rule table grows. The fridge key at 123 is
-unchanged. Dolph Fin's eight names fit 11 characters and its descriptions name Dolphmon.
+unchanged. Dolph Fin's nine localized names fit 11 characters and its descriptions name Dolphmon.
 
 ### Stats on evolving (`EVL_applyEvolution`, `evl.c:1282`)
 
