@@ -18,6 +18,7 @@ take the tools, the patches and the story from the same commit. Mixing commits i
 | v0.0.3 | `83f99c5` | 0001-0308 | version 4, tagged | `original` |
 | v0.0.4 | `83f99c5` | 0001-0325 | version 4, tagged | `original` |
 | v0.0.5 | `83f99c5` | 0001-0336 | version 4, tagged | `original` |
+| v0.0.6 | `83f99c5` | 351 patches, through `Restore-explicit-off-evolution-paths-and-requirements.patch` | version 4, tagged | `original` |
 
 The patch ranges are the numbers the files had until 2026-11-04 (`mods/patches/index.md`, column **was**). Later
 rows name the last patch of `mods/patches/series` and the number of patches. Add a row for each release. A save from
