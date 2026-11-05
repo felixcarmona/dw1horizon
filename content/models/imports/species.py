@@ -12,7 +12,9 @@ standard library into OUT-models.
 make(out) returns {id: (model file, texture file or None)} for the generated species
 records. overlay(out, id) builds one reviewed overlay; derive schedules those
 independent units, then calls make(out, generate=False) to read their results.
-Every final model and texture is checked against the derive species pins.
+Additional technique_aliases in models.json share attack clips after the field
+overlays and battle reach pass. Every final model and texture is checked against
+the derive species pins.
 """
 import importlib.util, json, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -209,6 +211,22 @@ def overlay(out, t, recs=None, names=None, s=None):
     return model_path, proof
 
 
+def technique_aliases(s, aliases):
+    """Share existing attack clips for additional techniques, after field overlays.
+
+    The imported base already contains its original slot aliases. Applying the
+    additions here keeps those slots stable and also covers generated overlays.
+    """
+    pairs = []
+    for target, source in aliases.items():
+        moves = s['techniques']
+        pairs.append([0x2E + moves.index(target), 0x2E + moves.index(source)])
+    own = dict(s, model=dict(s['model'], slot_aliases=pairs))
+    import species as species_tools
+    model = species_tools.species_model(s)[0]
+    return species_tools.apply_slot_aliases(model, own)
+
+
 def species_file(out, t, recs=None, names=None, generate=False):
     """(file name, species file) of id t as make() writes it into OUT; its overlay (if any) made here (generate) or read
     back from OUT-models (a missing one stops)."""
@@ -248,6 +266,17 @@ def species_file(out, t, recs=None, names=None, generate=False):
                 model_path.write_bytes(model)
                 s['model']['file'] = str(model_path)
                 s['model'].pop('slot_aliases', None)
+        s.pop('_path', None)
+    if e.get('technique_aliases'):
+        generated = os.path.abspath(out) + '-models'
+        os.makedirs(generated, exist_ok=True)
+        s['_path'] = os.path.join(ROOT, 'content/species', name)
+        model = technique_aliases(s, e['technique_aliases'])
+        model_path = os.path.join(generated, f'{t}-techniques.MMD')
+        with open(model_path, 'wb') as f:
+            f.write(model)
+        s['model']['file'] = model_path
+        s['model'].pop('slot_aliases', None)
         s.pop('_path', None)
     return name, s
 
