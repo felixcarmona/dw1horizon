@@ -1,8 +1,53 @@
-# Four field care gauges: design review
+# Field care gauges: design review
 
 Design only. No game code, patch, texture asset, option or save format changes.
 
-**Recommend A, the framed 2×2 grid.** It shows all four values continuously, keeps the existing face icons recognisable and occupies the current 75×23-pixel footprint. B is the lighter alternative if the long silver frames feel too busy. E preserves the best precision but hides half the information.
+**Owner direction: B, the bare grid with native icons and outlined thin bars, including toilet.** The current follow-up candidates are B6 (six readings in two rows) and B4 (four readings, with discipline in the menu only). Neither follow-up is an approved implementation. The original A–E review below is retained as context; its initial recommendation was A.
+
+## B follow-up: B6 and B4
+
+The separate `HUD-B6-B4-review.zip` package contains `B6-review.png` and `B4-review.png`, with the same review format as B: four native **320×240 frames at 1×**, light/dark floor with NEW/CLASSIC, and an exact **3× nearest-neighbour crop** under each frame. Individual frames/crops, `B-native-states.png`, `B-thresholds-3x.png`, the two new icon PNGs, a SHA-256 frame manifest, and the reproduction script are included. These reuse the original captured floors described below; the newly drawn gauges are illustrative composites, not runtime captures of implemented gauges. The ordinary values are hunger 44%, toilet 60%, tiredness 68%, happiness 76%, discipline 32%, sleep 35%, independent of the captured clock.
+
+| Candidate | Row order, left to right | Footprint and precision |
+| --- | --- | --- |
+| **B6** | Top: hunger, toilet, tiredness. Bottom: happiness, discipline, sleep. | **81×23**, x=229..309, y=203..225: six pixels wider to the left, same right/bottom anchors as B. Column pitch 28, row pitch 12; full 11×11 icons, 10×2 fill tracks plus one-pixel dark outlines. Ten fill steps, about 10 percentage points per pixel. |
+| **B4** | Top: hunger, toilet. Bottom: tiredness, happiness. | **75×23**, x=235..309, y=203..225, exactly B's footprint. Column pitch 38, row pitch 12; full 11×11 icons, 18×2 fill tracks plus one-pixel dark outlines. Eighteen steps, about 5.6 points per pixel. Discipline stays in the existing status menu only; no field sleep gauge. |
+
+Both retain B's bare background and native colour treatment. Existing meat, tiredness, happiness and discipline sprites remain at 11×11; new toilet and staggered-Z sleep icons are hand-drawn 11×11 pixel art with dark contours, silver highlights and blue shadows. These are offline proposals, not new game texture uploads or a claim that a free VRAM slot exists. No image-generation or font rendering is needed for either icon. Keep native condition bubbles visible, including toilet and sleep warnings.
+
+Every track has two grey interior rows even when empty and a dark one-pixel outline. Fill is left-to-right, rounded to the nearest pixel, with at least one pixel for any nonzero value; true zero is empty. At 1×, B6 sacrifices precision to retain recognisable full-size icons: it supports broad low/mid/high readings, not minute-level estimation. B4 gives each reading more resolution. The state material covers empty, 49%, 50%, full and active needs; thresholds use live values before pixel rounding, so 49% and 50% can share a fill length while changing colour. These remain subject to CRT/motion validation.
+
+### Exact gauge contract
+
+Here `clamp(v,a,b)` clamps a live value, and percentages below are conceptual; the renderer can calculate pixels directly. Recompute after meals, toilet use, rest, sleep, evolution, load and map changes. No interval start time, new timer or save field is required.
+
+| Gauge | Live data source and displayed fill | Direction and colour |
+| --- | --- | --- |
+| Hunger | `PARTNER_PARA.foodLevel` from `tickHungerMechanics`: `clamp(foodLevel,0,180)/180`. While `condition & 4`, use `clamp(starvationTimer,0,180)/180` instead. | Green meal countdown **drains** towards hunger; full for 180+ game minutes remaining. When hungry, a new red grace countdown drains. Its phase reset is deliberate; it is not stomach fullness or a guaranteed time to a care mistake. |
+| Toilet | `PARTNER_PARA.poopLevel` from `tickPoopingMechanic`, with species baseline `T = RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].poopTimer`. For `T>0`, fill is `1-clamp(poopLevel,0,2*T)/(2*T)`. If `condition & 8`, force full. Guard invalid `T<=0` with empty unless POOPY is active. | **Fills towards needs-to-go**, green before POOPY and full red while POOPY. `poopLevel` counts remaining ten-game-minute units; this is not the virus bar. A fixed `2*T` denominator handles native toilet/wild-poop reset to `2*T`; birth/evolution/portable potty resetting to `T` deliberately starts half full. Feeding, battles and time skips can advance it. No second phase or invented holding-time percentage: while POOPY, `poopingTimer` is a separate frame countdown and the native bubble remains authoritative. |
+| Tiredness | `clamp(PARTNER_PARA.tiredness,0,100)/100`, as in the status screen. | **Fills with fatigue**; green below 50%, red at 50% and above. Rest/sleep reduces it. This is distinct from bedtime. |
+| Happiness | `(clamp(PARTNER_PARA.happiness,-100,100)+100)/200`, matching the status screen. | **Fills with happiness**; red below 50% (raw value below 0), green from 50%. Use the native positive/negative face. |
+| Discipline | `clamp(PARTNER_PARA.discipline,0,100)/100`. B6 only; still present in the menu in B4. | **Fills with discipline**; red below 50%, green from 50%. Use the native high/low discipline face. |
+| Sleep | B6 only. If `condition & 1`, force empty red. Otherwise let `now=60*HOUR+MINUTE`, `bed=60*PARTNER_PARA.sleepyHour`, and `remaining=(bed-now+1440)%1440`; fill is `clamp(remaining,0,180)/180`. | Green **time-until-sleepy countdown drains** over the last three game hours; full earlier, empty red while SLEEPY. It does not show fatigue, sleep duration or a sleep-deprivation grace period. |
+
+Sleep follows the effective hour boundary used by `tickSleepMechanics`: the current condition transition compares `HOUR`, not `sleepyMinute`, even though the schedule stores both and fatigue can update them. Thus the proposed countdown deliberately uses `sleepyHour:00`; using the stored minute would disagree with the actual bubble. A zero countdown remains zero at the boundary while waiting for the condition tick; the active flag takes precedence thereafter. Re-read the live schedule, including midnight wrapping and fatigue adjustments; do not predict tomorrow's schedule from a cached interval. If the game's sleep transition is later changed to honour minutes, update this contract and its boundary checks together. Sources: `decomp/src/main/partner_impl.c` (`tickHungerMechanics`, `tickPoopingMechanic`, `tickSleepMechanics`, `handleToilet`, `handleWildPoop`, `setSleepTimes`), native reset in `decomp/src/main/item.c`, and `docs/reference/partner.md`. Modded builds must use their live timers and species rows.
+
+### B follow-up cost
+
+**Actual executable/RAM/VRAM cost of this review: 0 bytes.** Only this document is committed. Images and scripts remain under ignored `build/hud-design/`; no game build, texture import, heapcheck or measured linker delta is claimed.
+
+Planning allowances relative to the current two-gauge game HUD, not relative to B and not additive to the A–E estimates:
+
+| Candidate | Extra resident main code allowance | Extra BSS | MENU_REL delta | Heap loss allowance including alignment | New icon VRAM allowance | Approximate full-fill GPU packets/frame |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| B6 | 2,048 B | 0 B | 0 B | 2,064 B | 320 B | 960 B (608 B above current) |
+| B4 | 1,280 B | 0 B | 0 B | 1,296 B | 160 B | 640 B (288 B above current) |
+
+The icon allowance assumes each new 11×11 icon reserves a padded 16×16 4-bpp tile (128 B) and one 16-colour CLUT (32 B): toilet for B4, toilet plus sleep for B6. Existing icons need no extra VRAM. Raw new image+palette payloads are correspondingly 160/320 B, before TIM/container and sector overhead; packaging and startup upload code need measurement. A resident RAM copy of either texture is **not** included or proposed: upload using existing startup scratch, then release it. If the chosen loader retains a copy, count that against heap too. VRAM placement and CLUT space must be audited before accepting the implementation.
+
+Each bare gauge assumes one 40 B textured icon quad and five 24 B flat quads (outline, two track rows, two fill rows), giving 160 B at full fill. Actual empty rows may emit fewer packets. These packets consume the existing frame work buffer; any required capacity increase adds resident cost beyond the table. No persistent page state, input routing or new menu option is assumed. Reuse existing menu discipline rendering in B4.
+
+Before implementation acceptance, apply the original 2 MB full multilingual build/linker/heapcheck requirements below, audit packet and texture capacity, and validate toilet resets (including portable potty), POOPY holding/expiry, meals, hungry grace, rest, sleep across midnight, fatigue-adjusted bedtime, evolution and save/load. Confirm the six-pixel leftward extension clears other field overlays and the slide/suppression paths. These are design allowances, not measured free space.
 
 ## Review material
 
