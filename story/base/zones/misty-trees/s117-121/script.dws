@@ -17,7 +17,7 @@ script 117 {
 
     on enter replace {    // section 254
         store_random(random_roll, 99);
-        if (random_roll <= 4) {
+        if (random_roll <= 7) {
             spawn_item(item("Digimushrm"), 35, 19);
         }
         store_random(random_roll, 99);
@@ -25,11 +25,11 @@ script 117 {
             spawn_item(item("Digimushrm"), 55, 50);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 6) {
+        if (random_roll <= 7) {
             spawn_item(item("Digimushrm"), 47, 4);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 3) {
+        if (random_roll <= 7) {
             spawn_item(item("Digipine"), 40, 45);
         }
         misty_trees_visited = true;

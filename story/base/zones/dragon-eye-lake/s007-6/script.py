@@ -11,7 +11,7 @@ t81 = text.s007.sec81
 @lake.on_enter
 def enter():    # section 254
     roll = random.roll(99)
-    if roll <= 4:
+    if roll <= 7:
         spawn_item(Item.Digimushrm, at=(750, -3350))
 
 @lake.on_use(1)

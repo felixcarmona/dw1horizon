@@ -25,7 +25,7 @@ script 19 {
             spawn_item(item("Digimushrm"), 60, 72);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 3) {
+        if (random_roll <= 7) {
             spawn_item(item("Big Berry"), 57, 54);
         }
         native_forest_rockslide_cleared = true;

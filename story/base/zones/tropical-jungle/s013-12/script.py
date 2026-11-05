@@ -26,10 +26,10 @@ def enter():    # section 254
     if roll <= 17:
         spawn_item(Item.Digimushrm, at=(650, -1150))
     roll = random.roll(99)
-    if roll <= 5:
+    if roll <= 7:
         spawn_item(Item.Digimushrm, at=(3750, -1750))
     roll = random.roll(99)
-    if roll <= 2:
+    if roll <= 7:
         spawn_item(Item.OrangeBana, at=(-2850, -750))
 
 @piximon.on_talk

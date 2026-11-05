@@ -20,7 +20,7 @@ script 43 {
             spawn_item(item("Digimushrm"), 48, 68);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 3) {
+        if (random_roll <= 7) {
             spawn_item(item("Pricklypear"), 76, 49);
         }
         clear_trigger(98);

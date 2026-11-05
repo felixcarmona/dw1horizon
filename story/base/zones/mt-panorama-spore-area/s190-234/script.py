@@ -12,7 +12,7 @@ t51 = text.s190.sec51
 @area.on_enter
 def enter():    # section 254
     roll = random.roll(99)
-    if roll <= 4:
+    if roll <= 7:
         spawn_item(Item.Digimushrm, at=(-1050, 250))
         spawn_item(Item.Digimushrm, at=(-1050, 450))
         spawn_item(Item.Digimushrm, at=(-1050, 50))
@@ -20,7 +20,7 @@ def enter():    # section 254
     if roll <= 14:
         spawn_item(Item.Digimushrm, at=(-550, -1650))
     roll = random.roll(99)
-    if roll <= 3:
+    if roll <= 7:
         spawn_item(Item.Happymushrm, at=(950, 750))
     spawn_chest(Item.MedRecovery, at=(938, 1239), opened=trigger(696), facing=1024)
     spawn_chest(Item.MediumMP, at=(985, 856), opened=trigger(697), facing=1024)

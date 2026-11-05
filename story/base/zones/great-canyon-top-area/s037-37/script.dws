@@ -19,11 +19,11 @@ script 37 {
             spawn_item(item("Digimushrm"), 35, 9);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 4) {
+        if (random_roll <= 7) {
             spawn_item(item("Digimushrm"), 19, 31);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 0) {
+        if (random_roll <= 7) {
             spawn_item(item("Happymushrm"), 11, 10);
         }
         store_random(random_roll, 99);

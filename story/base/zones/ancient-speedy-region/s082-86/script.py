@@ -14,7 +14,7 @@ t6 = text.s082.sec6
 @region.on_enter
 def enter():    # section 254
     roll = random.roll(99)
-    if roll <= 0:
+    if roll <= 2:
         spawn_item(Item.SageFruit, at=(1050, -350))
     if not meteormon_checked:
         wait(250)
