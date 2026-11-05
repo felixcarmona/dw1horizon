@@ -3,8 +3,8 @@
 
 While a fighter is flattened, `renderFlatDigimon` hides its model and draws one 16x16 frame of its own texture on a
 standing quad, through CLUT row 15 of its slot: idle and idle 2 alternate, then attack (when it spits) and hurt (when it
-is hit). Every original keeps those four frames at (224, 96), (240, 96), (224, 112) and (240, 112) of its 256x128
-texture: an LCD-style drawing of the standing Digimon in two colours, a dark outline (0x0421) and a white fill (0x7FFF).
+is hit). The original partner textures keep those four frames at (224, 96), (240, 96), (224, 112) and (240, 112)
+of their 256x128 texture: an LCD-style drawing of the standing Digimon in two colours, a dark outline (0x0421) and a white fill (0x7FFF).
 A species whose texture has nothing there (no art, an empty row 15) is invisible while flat.
 
 `stamp` gives a species' texture its frames at build time, from our own art and the player's own texture:
@@ -22,7 +22,8 @@ A species whose texture has nothing there (no art, an empty row 15) is invisible
   CLUT       row 15, which every imported model but two leaves free (the batch import merges palettes down to 15):
              the two colours. When the faces use row 15 too, the model's own row with a transparent entry and the
              most contrast draws the frames with its darkest and lightest colours (`shared_row`).
-  kept       a texture that already has its four frames there (a native two-colour texture) keeps them.
+  kept       trusted native partner textures keep their own four frames. Borrowed native field-enemy pages use
+             authored icons: monochrome noise in their corner can pass a palette-only check.
   trailer    after the TIM, inside the 0x4800 bytes the game reads: "FLT2", the (u, v) of the four frames and the
              four CLUT rows. The executable keeps them per model slot when it uploads the texture (patch
              Select-a-flat-palette-for-each-animation-frame); a texture without a trailer (the disc's own) uses the originals' frames.
@@ -238,11 +239,15 @@ def palette_frames(icon, cells, rows, idx, face_rows):
     return frame_rows
 
 
+FLAT_ICON_ALIASES = {102: 67}  # SandYanmamon shares Yanmamon's silhouette.
+
+
 def art(s):
     """(icon bytes, where from) of a species definition: its drawing, the drawing of the species its texture comes from,
     else the render of its model (portraits.py), else the portraits' fallback icon."""
     import portraits
-    for t, why in ((s['id'], 'icon'), ((s.get('texture') or {}).get('from'), 'icon of the texture\'s species')):
+    for t, why in ((s['id'], 'icon'), ((s.get('texture') or {}).get('from'), 'icon of the texture\'s species'),
+                   (FLAT_ICON_ALIASES.get(s['id']), 'icon of the same silhouette')):
         if t is not None:
             text = portraits.drawn_text(t)
             if text is not None:
@@ -591,16 +596,17 @@ def make_room(model, nbones, idx, keep=(), _reuse_sources=True):
     raise NoRoom('the model fills its texture and no 15x15 window can be freed')
 
 
-def stamp(tex, model, nbones, icon):
+def stamp(tex, model, nbones, icon, *, keep_native=True):
     """(texture bytes, model bytes, four (u, v), CLUT row, how). A texture that already has its frames
-    (`native_sprite_ok`) gets only its trailer; any other gets `icon` (0x220 bytes, already recoloured: `mono`) at
+    (`native_sprite_ok`, when `keep_native` permits trusting the source) gets only its trailer; any other gets
+    `icon` (0x220 bytes, already recoloured: `mono`) at
     `place`, in CLUT row 15, or, when the model's faces use row 15, in the row `shared_row` picks (its own colours). When
     the model leaves no room, `make_room` moves a few of its UV islands first (`model` changes only then; a list of
     models, all drawn with this texture, is never changed). NoRoom when even that fails."""
     rows, cx, cy, idx, px, py, _ = parse_tim(tex)
     uses, face_rows = model_use(model, nbones)
     free_rows = len(set(range(16)) - face_rows)
-    if native_sprite_ok(rows, idx, uses, face_rows):
+    if keep_native and native_sprite_ok(rows, idx, uses, face_rows):
         cells, row, how = NATIVE, ROW, 'its own'
         pose_rows = [row] * 4
     else:
@@ -671,6 +677,25 @@ def frames_of(tex):
     pose_rows = frame_rows(tex)
     return [[[rows[pose_rows[f]][idx[(v + y) * W + u + x]] if u + x < W and v + y < H else 0 for x in range(16)]
              for y in range(16)] for f, (u, v) in enumerate(cells)]
+
+
+def matches_art(tex, icon):
+    """Whether all visible frame silhouettes match the supplied two-colour art.
+
+    A monochrome palette alone cannot distinguish authored frames from texture noise.
+    Palette colours may be shared with a model; compare transparency, not colour words.
+    """
+    actual = frames_of(tex)
+    pal = struct.unpack_from('<16H', icon, 0)
+    for f in range(4):
+        ox, oy = (f & 1) * 16, (f >> 1) * 16
+        for y in range(CELL):
+            for x in range(CELL):
+                b = icon[32 + (oy + y) * 16 + (ox + x) // 2]
+                colour = pal[(b >> 4 if (ox + x) & 1 else b) & 15]
+                if bool(actual[f][y][x]) != bool(colour):
+                    return False
+    return True
 
 
 def check(tex, model=None, nbones=None):
