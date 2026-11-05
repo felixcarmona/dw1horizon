@@ -11,8 +11,17 @@ the right legs' standing pose mirrored as the left's reference, not from mirrore
 - Run (slot 4, also the battle movement 0x24): a rotary gallop (left hind, right hind, right fore, left fore) with a
   gathered flight, 14 ticks at 50 units per tick, footsteps on the two beats.
 - The condition walk (slot 3) is the field pace pass's: this walk 1.5 times slower at 2/3 of its speed
-  (content/models/imports/pace.json). The idle and every other program stay as imported.
+  (content/models/imports/pace.json).
+- Idle: planted, mirrored paws in the gait's neutral stance; the imported breathing,
+  head, missile blades and tail keep moving above them.
 """
+import copy
+import hashlib
+
+import animsheet
+import mmd
+import motionstorage
+from motiondiscidentity import changed_programs
 from tools.models.field_animations import quadruped
 
 PROFILE = dict(
@@ -48,4 +57,38 @@ PROFILE = dict(
 
 
 def build(data, skeleton):
-    return quadruped.build(data, skeleton, PROFILE)
+    walked, report = quadruped.build(data, skeleton, PROFILE)
+    old = mmd.MMD.parse(walked, len(skeleton))
+    old.type = PROFILE['species']
+    new = copy.deepcopy(old)
+    rig = quadruped.Rig(old, skeleton, PROFILE)
+    frames, loop, events = animsheet.slot_frames(old, rig.n, 0)
+    poses = copy.deepcopy(frames)
+    history = {}
+    for pose in poses:
+        for name, (upper, lower, paw, side, front) in PROFILE['legs'].items():
+            reference = PROFILE['legs'][quadruped.MIRROR.get(name, name)][2]
+            track = side * abs(rig.still[reference][0][3])
+            centre = rig.still[upper][2][3] + PROFILE['reach']['front' if front else 'hind']
+            world = quadruped.rot([0, 0, 0])
+            wrist = quadruped.standing(rig, name, track, centre, world)
+            rotation, short = rig.solve(pose, name, wrist, history)
+            assert short <= 0.5, (name, short)
+            quadruped.set_rot(pose, paw, quadruped.mul(quadruped.tr(rotation), world), history)
+    poses = [[[round(v) for v in b] for b in p] for p in poses]
+    poses[-1] = copy.deepcopy(poses[0])
+    index = old.anims.table[0]
+    new.anims.anims[index] = mmd.encode_anim(poses, rig.n, loop_sample=loop, events=events, tol=1)
+    result = new.build()
+    actual = mmd.MMD.parse(result, rig.n)
+    changed = [s for s, i in enumerate(old.anims.table) if i == index]
+    assert changed_programs(old, actual) == changed
+    played = animsheet.slot_frames(actual, rig.n, 0)[0]
+    floor = quadruped._floor(rig, played)
+    assert floor <= quadruped.FLOOR, floor
+    report['idle'] = dict(changed_slots=changed, lowest_point=round(floor, 2), planted_paws=True,
+                          imported_body_motion=True, events_exact=True)
+    report['changed_slots'] = sorted(set(report['changed_slots'] + changed))
+    report['storage'] = motionstorage.require(result, rig.n)
+    report['output_sha256'] = hashlib.sha256(result).hexdigest()
+    return result, report
