@@ -478,6 +478,11 @@ shifts per policy and seed 49:
 | Best fixed species table, ignoring faces | 49.59 % | 49.67 % | 2542 |
 | Best play reading face, remaining deck and total | 74.70 % | 74.67 % | 2738 |
 
+As an information check, the same goal-aware solver without arrival faces reaches
+58.13 % exactly (58.06 % across another 200,000 shifts, seed 49), versus 74.67 %
+with faces. The benefit therefore persists when both policies track the total
+and remaining deck.
+
 The best fixed table is Goblimon +40→+20, Gotsumon +20→−10, Weedmon +10→−10,
 and Muchomon +30→0. Goal-aware play uses first offers from −20 through +50,
 with different choices by species, face and progress; no one price dominates.
