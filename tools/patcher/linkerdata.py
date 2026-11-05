@@ -129,6 +129,7 @@ def words(build, mapped, targets, plan):
     """Bind linked relocations to current map data extents and target bytes."""
     build = Path(build)
     paths = {'SLUS_010.32': ('en', '.main')}
+    paths['@zh/module'] = ('zh-hans', '.ZH')
     for value in plan.get('LANG_OVL', []):
         lang, source, dest = value.split(':')
         paths['SCN/' + dest] = (lang, '.' + source.removesuffix('_REL.BIN'))

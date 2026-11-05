@@ -103,7 +103,9 @@ def set_font(exe):
         if n is None: n = len(EXTRA_ORDER)
     name = 'original' if exe == 'original' else FONT_NAME_GIVEN or fontgen.exe_font(exe_dir(exe))[0] or fontgen.FONT_DEFAULT
     FONT.update({'extra': exe != 'original', 'glyphs': n, 'chars': frozenset(EXTRA_ORDER[:n]), 'of': of, 'stripped': set(),
-                 'name': name})
+                 'name': name, 'chinese': False})
+    bytecode.CHINESE_CODES = {}
+    bytecode.CHINESE_REVERSE = {}
 
 
 def proportional():

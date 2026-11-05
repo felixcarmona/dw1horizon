@@ -1,9 +1,9 @@
 {
  "recipe": "everything",
- "about": "Every engine patch, What the island forgot, all eight languages and every imported species.",
+ "about": "Every engine patch, What the island forgot, all nine languages (Chinese on 8 MB consoles) and every imported species.",
  "environment": {
   "TEXT": "ours",
-  "LANGS": "en,es,pt-br,fr,de,it,ja,ca",
+  "LANGS": "en,es,pt-br,fr,de,it,ja,ca,zh-hans",
   "LANG_BASE": "en",
   "PACK_ASCII": 1,
   "STORY_ALT": 1,

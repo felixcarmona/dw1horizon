@@ -122,6 +122,7 @@ except ValueError as e:
 PYLANG
 )
 LANG_ON=0; [ -n "$LANG_LIST" ] && LANG_ON=1
+if [[ " $LANG_LIST " == *" zh-hans "* ]]; then $PY -m tools.chinese audit --layout; fi
 if [ "$LANG_ON" = 1 ] && [ "${TEXT:-us}" != ours ]; then echo "LANGS=$LANGS: the English of a two-language disc is ours (TEXT=ours)"; exit 1; fi
 if [ "${REUSE_MODELS:-1}" = 1 ] && [ "$NAME" != full ] && [ ! -d "$M" ] && [ -d "$ROOT/build/full/models" ]; then
   cp -a "$ROOT/build/full/models" "$M"; REUSE_MODELS=1
@@ -383,6 +384,7 @@ if [ "$LANG_ON" = 1 ]; then
   done
   # Every target patch contains all bytes that ANY language changes. A pairwise diff from
   # English alone cannot restore a byte that Spanish and English share after Portuguese.
+  $PY -m tools.chinese_resources prepare --out "$O" --tree "$W"
   $PY tools/langpatch.py multi --out "$O/lang" $(for lang in $LANG_LIST; do
     tree=$W; [ "$lang" != "$LANG_BASE" ] && tree=$W-lang-$lang
     echo "$lang:$tree/build/us/psx/gcc/SLUS_010.32.elf:$O/exe-$lang/SLUS_010.32"
@@ -394,6 +396,7 @@ if [ "$LANG_ON" = 1 ]; then
     grep -v ' 0 bytes differ' <<< "$ovl" || true
     cp "$O/exe-$lang/$b" "$O/lang/$c"
   done
+  $PY -m tools.chinese_resources finish --out "$O" --tree "$W"
   # The original filenames always contain English, regardless of boot language.
   cp "$O/exe-en/"* "$O/exe/"
   cp "$O/exe-$LANG_BASE/SLUS_010.32" "$O/exe/SLUS_010.32"

@@ -1,0 +1,174 @@
+From 68b5186beb144995ccc279db05dcfd9494212620 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 5 Nov 2026 15:24:21 +0000
+Subject: [PATCH] Load picker storage with the title overlays
+
+---
+ config/us/main.ld    |  2 ++
+ config/us/overlay.ld | 23 ++++++++++++++++++++---
+ src/main/main.c      |  3 ++-
+ src/main/main_menu.c | 24 ++++++++++++++++--------
+ 4 files changed, 40 insertions(+), 12 deletions(-)
+
+diff --git a/config/us/main.ld b/config/us/main.ld
+index 9b18f6d8..0a6a6f86 100644
+--- a/config/us/main.ld
++++ b/config/us/main.ld
+@@ -1069,6 +1069,8 @@ ASSERT(OVL_READ_END(.MOV) <= OVL_TRN_BASE, "MOV overlay overlaps TRN's slot (TEX
+  * OVL_EVL_BASE except ENDI during the game-clear save (load_ending), whose first sector the last sector of MENU may
+  * overlap: start_ending reads ENDI again. Whole sectors: one more would need that read to be proved again. */
+ ASSERT(OVL_READ_END(.MENU) <= OVL_EVL_BASE + 0x800, "MENU overlay (in whole sectors) reaches past ENDI's first sector")
++ASSERT(title_ui_START >= OVL_READ_END(.MENU), "MENU sector read overwrites the title UI in EVL")
++ASSERT(title_ui_END <= OVL_END(.EVL), "Title UI is outside EVL")
+ ASSERT(TFS_RING_ADDR + TFS_RING_SLOTS * TFS_SLOT_SIZE == TFS_RING_END,
+        "TFS ring size does not match TFS_RING_END")
+ ASSERT(TFS_RING_END <= OVL_KAR_BASE, "TFS ring overlaps KAR, which coexists with the curling map")
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index 6195f120..7ddc0784 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -294,6 +294,24 @@ SECTIONS
+             BUILD_DIR/src/main/script_interp.c.o(.text.forceUpdateBGM);
+             . = ALIGN(., 4);
+ 
++            /* Title-only UI: unused during evolution, above MENU's rounded read.
++             * Language-dependent names remain resident; popup text stays in MENU.
++             * Reload both overlays on return from VS, which replaces this slot. */
++            title_ui_START = .;
++            BUILD_DIR/src/main/main_menu.c.o(
++                .text.modDrawLanguagePicker* .text.modTickLanguagePicker*
++                .text.modRenderLanguagePicker* .text.modDrawLanguageName*
++                .text.modShowLanguageError* .text.modRenderLanguageError*
++                .text.modFlagRect*
++                .rodata.modDrawLanguagePicker* .rodata.modTickLanguagePicker*
++                .rodata.modRenderLanguagePicker*
++                .rodata.MOD_FLAG_PALETTE .rodata.MOD_FLAG_OFFSET .rodata.MOD_FLAG_RUNS
++                .rodata.MOD_CHINESE_NAME .rodata.MOD_LANGUAGE_TITLES
++                .rodata.MOD_LANGUAGE_TITLE_GLYPHS
++            );
++            . = ALIGN(., 4);
++            title_ui_END = .;
++
+ 		}
+ 	}
+ 
+@@ -874,8 +892,7 @@ SECTIONS
+ 			. = ALIGN(., 4);
+ 			/* their switch tables and literals, which only they read */
+ 			BUILD_DIR/src/main/main_menu.c.o(.rodata.tickMainMenu .rodata.renderMainMenu .rodata.drawMainMenuStrings
+-				.rodata.drawMainMenuStrings.str1.4 .rodata.loadSaveCopy .rodata.modOptionValue
+-                .rodata.MOD_FLAG_PALETTE .rodata.MOD_FLAG_OFFSET .rodata.MOD_FLAG_RUNS);
++				.rodata.drawMainMenuStrings.str1.4 .rodata.loadSaveCopy .rodata.modOptionValue);
+ 			. = ALIGN(., 4);
+ 			/* MOD (heap): read-only data of the card menus that only this overlay reaches (tools/xref.py classes): their
+ 			 * messages, labels and the save icon. Nothing that is ever written goes here: a reload would undo it */
+@@ -968,7 +985,7 @@ SECTIONS
+ 			LONG(0);
+ 			. = ALIGN(., 4);
+             /* Resident helpers reached only by this loaded overlay (xref). */
+-            BUILD_DIR/src/main/main_menu.c.o(.text.modFlagPixel);
++            BUILD_DIR/src/main/main_menu.c.o(.text.modOptionBytes .text.modOptionText .text.modOptionCount*);
+             BUILD_DIR/src/main/main_menu.c.o(.text.setRegisteredSpecies*);
+             BUILD_DIR/src/main/main_menu.c.o(.text.swapPartnerSpecies);
+             BUILD_DIR/src/main/mod_options.c.o(.text.modFrameRate);
+diff --git a/src/main/main.c b/src/main/main.c
+index d2e7f270..a19bd36a 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -153,6 +153,7 @@ void loadStackedTIMFile(char *path);
+ void runLandingScreen(void);
+ void runMainMenu(void);
+ void loadMenuOverlay(void);
++void loadTitleMenuOverlays(void);
+ void modBootOptions(void); /* MOD (options) */
+ void modNoticeDraw(void); /* MOD (emulator notice, main_menu.c) */
+ void modNoticeRender(void);
+@@ -3800,7 +3801,7 @@ void runMainMenu(void)
+ 	TARGET_MENU = 0x47;
+ #endif
+ 	loadTIMFile(MAIN_D_8012CEA0, GENERAL_BUFFER_PTR);
+-	loadMenuOverlay(); /* MOD (menu overlay): tickMainMenu and renderMainMenu are in MENU_REL.BIN */
++	loadTitleMenuOverlays(); /* MENU and the title-only picker in EVL's tail */
+ 	addObject(0x1388, 0, (TickFunction)tickMainMenu, (RenderFunction)renderMainMenu);
+ 	addObject(0xfa3, 0, NULL, (RenderFunction)renderMainMenuBackground);
+ 	fadeFromBlack(0x28);
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 7c982e22..a05a8114 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -274,9 +274,9 @@ static void __attribute__((noinline)) modShowLanguageError(void);
+ static void __attribute__((noinline)) modRenderLanguageError(void);
+ static void __attribute__((noinline)) modDrawLanguageName(int32_t lang, int32_t x, int32_t y);
+ static char *MOD_LANGUAGE_NAMES[MOD_LANGS];
+-static void modDrawLanguagePicker(void);
+-static void modTickLanguagePicker(void);
+-static void modRenderLanguagePicker(void);
++static __attribute__((noinline)) void modDrawLanguagePicker(void);
++static __attribute__((noinline)) void modTickLanguagePicker(void);
++static __attribute__((noinline)) void modRenderLanguagePicker(void);
+ static int32_t MOD_OPTIONS_BACK; /* MOD (options): the title menu comes back from OPTIONS */
+ #define MOD_OPT_BYTES	14 /* byte 13: inverted enemy HUD flags; absent/zero = both ON */
+ #define MOD_OPT_HEADER_BYTES 12
+@@ -5828,6 +5828,14 @@ void loadMenuOverlay(void)
+ 	loadDynamicLibrary(MENU_REL, NULL, 0, NULL, NULL);
+ }
+ 
++/* The title shares EVL's spare tail with its picker. Load EVL first: MENU's
++ * last sector may replace its unused first sector. World saves load MENU only. */
++void loadTitleMenuOverlays(void)
++{
++	loadDynamicLibrary(EVL_REL, NULL, 0, NULL, NULL);
++	loadMenuOverlay();
++}
++
+ void closeMenuOverlay(void)
+ {
+ 	checkCurlingMap(CURRENT_SCREEN);
+@@ -5852,7 +5860,7 @@ void modMenuVsBattle(int32_t trial)
+ 	{
+ 		VS__initialize(VS__REGISTERED_DIGIMON_BUFFER, &VS__REGISTERED_DIGIMON_BUFFER[0x28]);
+ 	}
+-	loadMenuOverlay();
++	loadTitleMenuOverlays();
+ 	addObject(0xFA3, 0, NULL, (RenderFunction)renderMainMenuBackground);
+ 	addObject(0x1388, 0, (TickFunction)tickMainMenu, (RenderFunction)renderMainMenu);
+ }
+@@ -6303,7 +6311,7 @@ static void renderOptionsMenu(void)
+ 
+ /* First boot: native language names and small procedural flags. Preferences are
+  * remembered by the existing save-header options, with no extra card writes. */
+-static void modDrawLanguagePicker(void)
++static __attribute__((noinline)) void modDrawLanguagePicker(void)
+ {
+     int32_t i, lang;
+     clearTextArea();
+@@ -6318,7 +6326,7 @@ static void modDrawLanguagePicker(void)
+     DrawSync(0);
+ }
+ 
+-static void modTickLanguagePicker(void)
++static __attribute__((noinline)) void modTickLanguagePicker(void)
+ {
+     int32_t count = modLanguageCount();
+     int32_t cursor = MOD_BOOT_LANGUAGE_CURSOR;
+@@ -6350,7 +6358,7 @@ static void modTickLanguagePicker(void)
+     MOD_BOOT_LANGUAGE_CURSOR = cursor;
+ }
+ 
+-static void modFlagRect(int32_t x, int32_t y, int32_t w, int32_t h, uint32_t rgb)
++static __attribute__((noinline)) void modFlagRect(int32_t x, int32_t y, int32_t w, int32_t h, uint32_t rgb)
+ {
+ 	TILE *tile = (TILE *)GsGetWorkBase();
+ 	setTile(tile);
+@@ -6438,7 +6446,7 @@ static void __attribute__((noinline)) modRenderLanguageError(void)
+     renderMenuBox(20, 68, 280, 80);
+ }
+ 
+-static void modRenderLanguagePicker(void)
++static __attribute__((noinline)) void modRenderLanguagePicker(void)
+ {
+     POLY_FT4 *text;
+     MenuHighlight selected = {0};
+-- 
+2.55.0
+

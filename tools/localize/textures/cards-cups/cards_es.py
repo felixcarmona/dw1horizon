@@ -8,6 +8,12 @@ from card import load,c15
 import cardfont
 NAMES=open('names.txt').read().split('\n')[:66]
 NAMES[0]='Protagonista'; NAMES[65]='Machinedramon'
+if os.environ.get('LOCALIZE_LANGUAGE') == 'zh-hans':
+    from tools.chinese import ROOT, read_json
+    glossary = read_json(ROOT / 'text/zh-hans/glossary.json')
+    terms = {k:v['zh'] for k,v in glossary['species'].items()}
+    terms.update(glossary['provisional'])
+    NAMES = [terms[name] for name in ['main character'] + NAMES[1:]]
 OVERRIDE={0:'Protagonista'}
 BOX_OVERRIDE={20:(62,120)}
 Y0=165            # glyph row 0 (cap top) -> texture v

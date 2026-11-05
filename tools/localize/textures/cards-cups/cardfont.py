@@ -61,6 +61,10 @@ G[' ']=['...']*8+['','']
 
 def mask(word,gap=1):
     """-> dict (x,y)->1.0 or 0.5 ink, width"""
+    if any('\u3400' <= c <= '\u9fff' for c in word):
+        from tools.localize.labels import mask as bitmap
+        rows = bitmap(word, 112, 9, preserve=True)
+        return {(x,y):1.0 for y,row in enumerate(rows) for x,on in enumerate(row) if on},len(rows[0])
     m={}; x=0
     for i,ch in enumerate(word):
         rows=G[ch]; w=max(len(r) for r in rows)

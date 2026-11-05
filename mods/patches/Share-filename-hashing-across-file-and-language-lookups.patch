@@ -1,0 +1,159 @@
+From e5b0e665c9e4abd8e0c84a1d3d87bba320d987a4 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 4 Nov 2026 20:39:50 +0000
+Subject: [PATCH] Share filename hashing across file and language lookups
+
+---
+ include/dw/file_table.h |  2 ++
+ src/main/file.c         | 47 +++++++++++++++++++++++------------------
+ src/main/mod_options.c  | 21 +++---------------
+ 3 files changed, 31 insertions(+), 39 deletions(-)
+
+diff --git a/include/dw/file_table.h b/include/dw/file_table.h
+index 5ae0e87..1bda877 100644
+--- a/include/dw/file_table.h
++++ b/include/dw/file_table.h
+@@ -29,6 +29,8 @@ static inline uint32_t fileEntrySize(const FileEntry *entry)
+ extern FileEntry FILE_OFFSET_TABLE[];
+ /* MOD (file table): 1 when the entry is the file `name` */
+ int32_t fileEntryIs(FileEntry *entry, char *name);
++uint32_t fileNameHash(char *name);
++FileEntry *findFileEntry(char *name);
+ extern const int16_t FILE_TABLE_NEW_FIRST; /* MOD (language): the first of the new files (NEW_FILES) */
+ 
+ #endif
+diff --git a/src/main/file.c b/src/main/file.c
+index a794151..6c428e5 100644
+--- a/src/main/file.c
++++ b/src/main/file.c
+@@ -29,26 +29,38 @@ char *modFontFile(char *path, char *originalFont)
+ 	if (MOD_FONT == MOD_FONT_NEW) {
+ 		return path;
+ 	}
+-	for (entry = FILE_OFFSET_TABLE; entry->sizeCode != 0; ++entry) {
+-		if (fileEntryIs(entry, originalFont)) {
+-			return entry->sector != 0 ? originalFont : path;
+-		}
+-	}
++	entry = findFileEntry(originalFont);
++	if (entry && entry->sector) return originalFont;
+ 	return path;
+ }
+ #endif
+ 
+-int32_t fileEntryIs(FileEntry *entry, char *name)
++uint32_t fileNameHash(char *name)
+ {
+     uint32_t hash = 0x811C9DC5;
+     int32_t i;
+-    if (name[0] == '@') { /* internal language-copy key; not an ISO filename */
++    if (name[0] == '@') {
+         hash = 0;
+         for (i = 1; i <= 8; i++) hash = (hash << 4) | (name[i] <= '9' ? name[i]-'0' : name[i]-'A'+10);
+     } else {
+         for (i = 0; name[i]; i++) hash = (hash ^ (uint8_t)name[i]) * 0x01000193;
+     }
+-    return (hash & 0xFFFFFF) == entry->nameHash;
++    return hash & 0xFFFFFF;
++}
++
++int32_t fileEntryIs(FileEntry *entry, char *name)
++{
++    return entry->nameHash == fileNameHash(name);
++}
++
++FileEntry *findFileEntry(char *name)
++{
++    uint32_t hash = fileNameHash(name);
++    FileEntry *entry;
++    for (entry = FILE_OFFSET_TABLE; entry->sizeCode; entry++) {
++        if (entry->nameHash == hash) return entry;
++    }
++    return NULL;
+ }
+ 
+ int32_t lookupFileTable(FileLookup *lookup, char *path)
+@@ -56,7 +68,6 @@ int32_t lookupFileTable(FileLookup *lookup, char *path)
+ 	char *filename;
+ 	FileEntry *entry;
+ 
+-	entry = (FileEntry *)&FILE_OFFSET_TABLE;
+ 	if (NULL == (filename = strrchr(path, '\\'))) {
+ 		filename = path;
+ 	} else {
+@@ -64,20 +75,14 @@ int32_t lookupFileTable(FileLookup *lookup, char *path)
+ 	}
+ 	filename = modStoryFile(modLangFile(filename)); /* MOD (language, story): the language's copy, then its story's */
+ 
+-	for (; entry->sizeCode != 0; ++entry) {
+-		if (fileEntryIs(entry, filename)) {
+-			lookup->size = fileEntrySize(entry);
+-			CdIntToPos(entry->sector, &lookup->pos);
+-			break;
+-		}
+-	}
+-
+-	if (entry->sizeCode) {
++	entry = findFileEntry(filename);
++	if (entry) {
++		lookup->size = fileEntrySize(entry);
++		CdIntToPos(entry->sector, &lookup->pos);
+ 		return 1;
+-	} else {
+-		empty_800a31f0(path);
+-		return 0;
+ 	}
++	empty_800a31f0(path);
++	return 0;
+ }
+ 
+ uint32_t lookupFileSize(char *path)
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index da0ed19..fc51b6b 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -352,14 +352,8 @@ void modSetFrameRate(int32_t fps)
+ /* MOD (language): the disc has the file (its FILE_OFFSET_TABLE entry got a sector: build-disc.py wrote it) */
+ int32_t modFileOnDisc(char *name)
+ {
+-	FileEntry *entry;
+-
+-	for (entry = FILE_OFFSET_TABLE; entry->sizeCode != 0; ++entry) {
+-		if (fileEntryIs(entry, name)) {
+-			return entry->sector != 0;
+-		}
+-	}
+-	return 0;
++    FileEntry *entry = findFileEntry(name);
++    return entry && entry->sector;
+ }
+ 
+ /*
+@@ -382,15 +376,6 @@ static LangFileRow LANG_FILE_TABLE[] = {
+ 
+ static char MOD_LANG_NAME[FILE_NAME_MAX + 1]; /* the copy's name, ended (an entry's has no NUL at 12 letters) */
+ 
+-static uint32_t modNameHash(char *name)
+-{
+-	uint32_t h = 0x811C9DC5;
+-
+-	while (*name != '\0') {
+-		h = (h ^ (uint8_t)*name++) * 0x01000193;
+-	}
+-	return h & 0xFFFFFF;
+-}
+ 
+ char *modLangFile(char *name)
+ {
+@@ -401,7 +386,7 @@ char *modLangFile(char *name)
+ 	int32_t digit;
+ 	uint32_t key;
+ 
+-	hash = modNameHash(name);
++	hash = fileNameHash(name);
+ 	for (i = 0; i < sizeof(LANG_FILE_TABLE) / sizeof(LangFileRow) - 1; i++) {
+ 		if (LANG_FILE_TABLE[i].hash != hash) {
+ 			continue;
+-- 
+2.55.0
+
