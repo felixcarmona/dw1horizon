@@ -1,4 +1,4 @@
-"""Native Angemon motion and rigid DCB MagnaAngemon binding integration proof.
+"""Native Angemon motion and World 2003 MagnaAngemon binding integration proof.
 
 Set DW_NATIVE_ANGEL_MODEL to the candidate MMD or edit.py get output. The native
 reference comes from the player's extraction; no game assets are test fixtures.
@@ -57,19 +57,35 @@ class NativeAngemonRig(unittest.TestCase):
         rig=self.own['model']['skeleton']
         self.assertEqual(len(rig),26)
         self.assertEqual([p for _,p in rig],[p for _,p in mmd.exe().skeleton[20]])
-        for bone in (14,16):
+        for bone in (10,12):
             obj=rig[bone][0]
-            # Each complete wing has all four rigid feather pieces, sharing a
+            # Each complete wing has both broad feather fans, sharing a
             # single native hinge. Its panels cannot acquire separate motion.
-            self.assertEqual(self.model.tmd.objects[obj].nvert,26)
-            self.assertEqual(len(self.model.tmd.objects[obj].prims),30)
-        self.assertEqual(len(self.model.tmd.objects),18)
+            self.assertEqual(self.model.tmd.objects[obj].nvert,28)
+            self.assertEqual(len(self.model.tmd.objects[obj].prims),28)
+        self.assertEqual(len(self.model.tmd.objects),17)
+
+    def test_native_staff_texture_and_hand_binding(self):
+        texture=Path(os.environ['DW_NATIVE_ANGEL_MODEL']).with_suffix('.TIM')
+        if not texture.is_file():
+            self.skipTest('candidate TIM required for staff atlas proof')
+        own=mmd.Tim4(texture.read_bytes())
+        native=mmd.load_tim('extracted/CHDAT/ALLTIM.TIM',20)
+        self.assertEqual(own.pal[14],native.pal[9])
+        for y in range(8):
+            self.assertEqual(own.idx[y*256:y*256+40],native.idx[(72+y)*256+136:(72+y)*256+176])
+        obj=self.own['model']['skeleton'][9][0]
+        staff=[p.decode()for p in self.model.tmd.objects[obj].prims if (p.decode().get('cba',0)>>6)-488==14]
+        self.assertEqual(len(staff),8)
+        self.assertEqual(self.spec['map']['28'],9)
 
     def test_identity_storage_and_two_disc_sources(self):
         self.assertEqual(self.own['level'],'ultimate')
         self.assertEqual((self.own['voice'],self.own['partner']['voice']),(18,11))
         self.assertEqual((self.own['model']['height'],self.own['model']['radius']),(608,187))
         self.assertEqual(len(self.own['techniques']),14)
+        self.assertEqual(self.spec['dw3'],'M211HANG')
+        self.assertEqual(self.spec['map']['9'],18)
         storage=motionstorage.audit(self.data,26)
         self.assertTrue(storage['fits'],storage)
         records=json.loads(Path('content/modeldelta/models.json').read_text())['models']

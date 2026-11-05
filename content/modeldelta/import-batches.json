@@ -2659,6 +2659,18 @@
       "spec": "content/imports/specs/Suijinmon.json",
       "spec_sha256": "5ee9c2b786d995ba84730ac23c8578f243b86f6b3fb4b098be9edcf9f48d164a",
       "out": "build/meshfix2-out"
+    },
+    {
+      "entry": {
+        "name": "MagnaAngemon",
+        "game": "dw3",
+        "model": "M211HANG",
+        "mesh_only": true
+      },
+      "level": 5,
+      "spec": "content/imports/specs/MagnaAngemon-dw3-mesh.json",
+      "spec_sha256": "12997c739eae943e897fd7be4e566e43967fe15a4d8b401d653f113e54199885",
+      "out": "build/native-mesh"
     }
   ]
 }

@@ -728,9 +728,9 @@
       "mmd": {
         "sources": [
           {
-            "path": "build/sizes-out/models/MagnaAngemon.MMD",
-            "sha256": "b5fb25768fc0188fb69021ce90f4857913645517e0442ba8f119d8c879756f02",
-            "size": 96252
+            "path": "build/native-mesh/MagnaAngemon.MMD",
+            "sha256": "387fdb3bd16a0d3fde957007d9e82c22ca89efb1de112ea96512d97bd0877209",
+            "size": 35260
           },
           {
             "path": "extracted/CHDAT/MMD0/ANGE.MMD",
@@ -739,21 +739,21 @@
           }
         ],
         "delta": "content/modeldelta/deltas/206-MagnaAngemon.MMD.mdelta",
-        "delta_sha256": "b8206ee0f6dd429f026854cd0b41f1c2389745e30f4b74db16495e99c4427cee",
-        "sha256": "021cc8d15c072b57aa4dc997da87424b799a96c778b248a824402a120201ff16",
-        "size": 96310
+        "delta_sha256": "37777c76211f9e03696ab83073e4705bedd660fcfa6ce3af6cf52a603f50bd9d",
+        "sha256": "f4f92ac05ad49560e2682db524a7df12a31b23f2f40ab58702f1fdac28f77eab",
+        "size": 102710
       },
       "tim": {
         "sources": [
           {
-            "path": "build/batch3/MagnaAngemon.TIM",
-            "sha256": "90e8892d2da9c0d8823e22190d3d898dd85536d4c6aa954c132c9e5170373379",
+            "path": "build/native-mesh/MagnaAngemon.TIM",
+            "sha256": "253fcd657e203829ba3018baedebdd7d44eea9a503dd566f0f4a2a31cdd72cb3",
             "size": 18432
           }
         ],
         "delta": "content/modeldelta/deltas/206-MagnaAngemon.TIM.mdelta",
-        "delta_sha256": "86e37ca3a3195f9799a9a65b2786b69a08e11288a44932c177530a4fac2e64f6",
-        "sha256": "90e8892d2da9c0d8823e22190d3d898dd85536d4c6aa954c132c9e5170373379",
+        "delta_sha256": "f59a9dea340d210c5e59b356dc8ac43a2000a33af24575f39ee594a878030684",
+        "sha256": "bec72a01dcb7b1f09644daa6ad3e24fde8d67f23ab49a5b8f11da5fc7b380000",
         "size": 18432
       }
     },
