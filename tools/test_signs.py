@@ -98,5 +98,21 @@ class OgreSign(unittest.TestCase):
         self.assertEqual(signs.SPRITE_JOBS['mayo11_ogre']['frames'], (6,))
 
 
+@unittest.skipUnless(Path('extracted/MAP/MAP10/FRZL17.MAP').exists(), 'needs extracted USA disc')
+class AreaProfileCopies(unittest.TestCase):
+    def test_localized_sprite_copy_keeps_area_profile_without_story_map(self):
+        mp = 'MAP/MAP10/FRZL17'
+        with tempfile.TemporaryDirectory() as out, \
+             patch.object(cutout, 'names', return_value=['audit-27']), \
+             patch.dict(signs.SPRITE_JOBS, {'audit-27': dict(map=mp, box=(55,142,341,303), frames=())}):
+            # Japanese sprite copies retain native pixels, but still need gameplay data.
+            signs.signs(out, languages=('ja',))
+            result = signs.dwmap.MapFile(Path(out, 'ja', mp + '.MAP').read_bytes())
+        before = signs.dwmap.MapFile(Path('extracted', mp + '.MAP').read_bytes())
+        self.assertIn(9, result.regionA)
+        result.regionA = before.regionA
+        self.assertEqual(result.build(), before.build())
+
+
 if __name__ == '__main__':
     unittest.main()

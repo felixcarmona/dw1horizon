@@ -1989,7 +1989,7 @@ FINISHER_FIRST, FINISHER_LAST = 58, 112  # the finisher is the last technique id
 BABY_FIRST, BABY_LAST = 113, 120         # the Fresh / In-Training bubbles
 MAX_AURA_TYPE = 128                      # the aura projectile tables have 129 rows (btl/std/vs effects)
 MAX_EFFECTS_LIKE = 0xB0                  # getOriginalType (map.c) returns -1 above it
-NUM_VBALL, NUM_VLALL, NUM_REGIONS = 71, 16, 9
+NUM_VBALL, NUM_VLALL, NUM_REGIONS = 71, 16, 10
 
 
 # Animation slots the game starts on a partner's entity (startAnimation(entity, slot): anim.c:201 returns when the
@@ -2299,7 +2299,7 @@ def lint(species, check_files=False):
             elif level >= 3 and r['sleepCycle'] >= 6:
                 W(P('sleep_cycle'), partner['sleep_cycle'], 'the Fresh / In-Training pattern on a Rookie or above')
             if not 0 <= r['trainingType'] < len(TRAINING_TYPES): E(P('training_type'), partner.get('training_type'), ', '.join(TRAINING_TYPES))
-            if not 0 <= r['favoredRegion'] < NUM_REGIONS: E(P('favored_region'), r['favoredRegion'], f'a region 0..{NUM_REGIONS - 1} (the .MAP files name 0..8)')
+            if not 0 <= r['favoredRegion'] < NUM_REGIONS: E(P('favored_region'), r['favoredRegion'], f'a region 0..{NUM_REGIONS - 1} (native regions 0..8; cold/water profile 9)')
             if not 1 <= r['defaultWeight'] <= 99: E(P('birth_weight'), r['defaultWeight'], '1..99 (the game clamps the weight to it)')
             if not 0 <= rows['itemTakeDistance'] <= 127: E(P('item_distance'), rows['itemTakeDistance'], '0..127')
             for k, tr in (('training', rows['trainingAnims']), ('training2', rows['training2Anims'])):

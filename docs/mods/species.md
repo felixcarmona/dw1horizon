@@ -203,7 +203,7 @@ lists and objects on one line); load → dump is byte-equal (selftest `species-f
 | `partner.unk2` | `unk2` | unknown, never read; written only when not 1200 (every row has 1200) | 1200 |
 | `partner.favorite_food` | `favoriteFood` | item name | required |
 | `partner.sleep_cycle` | `sleepCycle` (`SLEEP_PATTERN` row) | `16:00-01:00` `19:00-04:00` `22:00-07:00` `02:00-11:00` `07:00-16:00` `10:00-19:00` (when it sleeps) or `fresh`, `in-training` | required |
-| `partner.favored_region` | `favoredRegion` | 0..8: a kind of place; each `.MAP` names the regions its screens please (sleep ×1.2, happiness +1 an hour) and displease; no names in the game, so a number | 0 |
+| `partner.favored_region` | `favoredRegion` | 0..9: native kinds of place 0..8 and cold/water profile 9 (`content/map-regions.json`); each `.MAP` names the regions its screens please (sleep ×1.2, happiness +1 an hour) and displease; no names in the game, so a number | 0 |
 | `partner.training_type` | `trainingType` | which stats train well (`TRN_calculateTrainingMultiplier`): `even` (all 1.0), `offense-speed` (Off/Spd 1.1, MP/Brains 0.9), `mp-brains` (MP/Brains 1.1, HP/Def 0.9), `hp-defense` (HP/Def 1.1, Off/Spd 0.9), `all-low` (all 0.8) | `even` |
 | `partner.birth_weight` | `defaultWeight` | the weight it starts with (1..99, the number the game shows) | required |
 | `partner.status_screen_position` | `viewX/Y/Z` | where the model stands on the status screen (`game_menu.c`), world units | required |
