@@ -4109,8 +4109,8 @@
           }
         ],
         "delta": "content/modeldelta/deltas/318-Gallantmon.MMD.mdelta",
-        "delta_sha256": "ff179f03fd474be3544e8eaab7678e92ec2a59f4d03883b2d6707310b04c84ee",
-        "sha256": "7d3d38cba774d0c34b113e413ccfeb2072d9b339f1a09cad60c73f42fc7317be",
+        "delta_sha256": "46577ba1798387fca8715b05ba010f13a7af0d18edeb8ec98b76bfa49083a545",
+        "sha256": "06a81382dbd91563cc26db6d8be8737752ed77345595aed17fca0784e0567025",
         "size": 109784
       },
       "tim": {
@@ -4122,8 +4122,8 @@
           }
         ],
         "delta": "content/modeldelta/deltas/318-Gallantmon.TIM.mdelta",
-        "delta_sha256": "708938115b83ba966576ea8add24b79f9bf345af7e200531e9a7d1df1aed8d85",
-        "sha256": "52bad5a659d22fc66f53fa3695abef82df4924f0c135ae04f5812ff15d15fed1",
+        "delta_sha256": "a16a1cc84174fdfc2a46f1db5a6dcdce328b74ef1c23bfd44fa11f119aaf0698",
+        "sha256": "bb9628b1555bb0644a4c91884bf894d5756c94a4d068dacad98703ca66960387",
         "size": 18432
       }
     },
@@ -4924,9 +4924,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/403-Beelzemon.MMD.mdelta",
-        "delta_sha256": "4f2c4351b9c8ca8e714784dd8ef8e95a1cb8b13fd3c73a8c7dabbc57a1845463",
-        "sha256": "3c07b7fe613d426df67ff8fb772a6b982aec1ee2453c321ba1368b4518a6ae7d",
-        "size": 123476
+        "delta_sha256": "4919dd0834d2d267304d0cb754c88dd45727f8b713e874be7aa7c3c237366c31",
+        "sha256": "0f9af3a4f3b077caa4b06ae40214afcdb08d132ba58509ee6ffad42c6655d4ef",
+        "size": 122518
       },
       "tim": {
         "sources": [

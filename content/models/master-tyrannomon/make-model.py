@@ -105,6 +105,13 @@ def main():
         sec.anims.append(new)
     out = mmd.MMD()
     out.tmd, out.anims = mesh.tmd, sec
+    # The forearms use a grey panel on TIRS's page. Sample the existing
+    # upper-arm skin instead, keeping Tyrannomon's continuous arm design.
+    for obj in (8, 17):
+        for i, prim in enumerate(out.tmd.objects[obj].prims):
+            face = prim.decode()
+            face['uv'] = [(u - 64, v + 32) for u, v in face['uv']]
+            out.tmd.objects[obj].prims[i] = mmd.Prim.encode(face)
     data = out.build()
     assert len(data) <= PARTNER_MODEL_BUFFER, f'{len(data)} bytes > PARTNER_MODEL_BUFFER'
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
