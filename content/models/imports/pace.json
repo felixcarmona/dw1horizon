@@ -1061,5 +1061,42 @@
     ]
    }
   }
+ },
+ "258": {
+  "name": "SaberLeomon",
+  "bones": 23,
+  "skeleton_sha256": "41b8ccc7ac9915b88fa8b1da83746e0c1f20525c9e2b381cafcbc5b87837bece",
+  "source_sha256": "e54e2abb913e4de5a02522218531a2202210a65ab45ab470ffae090f74ae6574",
+  "base_generator": null,
+  "post_source_sha256": "e54e2abb913e4de5a02522218531a2202210a65ab45ab470ffae090f74ae6574",
+  "slots": {
+   "2": {
+    "from": 2,
+    "ticks": 32,
+    "speed": 22.5,
+    "slip": [
+     55,
+     125
+    ]
+   },
+   "3": {
+    "from": 3,
+    "ticks": 32,
+    "speed": 15,
+    "slip": [
+     55,
+     125
+    ]
+   },
+   "4": {
+    "from": 4,
+    "ticks": 42,
+    "speed": 40,
+    "slip": [
+     55,
+     125
+    ]
+   }
+  }
  }
 }
