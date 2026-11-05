@@ -1,6 +1,6 @@
 # Mojyamon investigation, before implementation
 
-This is the original investigation before the first implementation. The subsequent bounded-gains design supersedes its trade mapping, strict daily sale-value restriction and absence of a Dolphmon item. North Star now targets Dolphmon, eight rows are daily and its ninth-row exchange is once per save. See the current table and ceilings in docs/mods/balance.md section 6.1.
+This is the original investigation before the first implementation. Subsequent designs supersede its trade mapping and strict daily sale-value restriction. North Star remains Whamon's item; separate Dolph Fin (unused item 124) now evolves a Rookie into Dolphmon. Eight rows are daily and Small Recovery → Dolph Fin is once per save. See docs/mods/balance.md section 6.1 for current limits and incremental gain ceilings.
 
 Group 1 is the Mojyamon beside Penguinmon on Freezeland screen 134 (script 129). Groups 2 and 3 stand on screen 133 (script 128), in slots 0 and 1. Each group owns three consecutive rows in shops.json. Despite their names, mojyamonGives is what the player hands over and mojyamonTakes is the reward. Nine saved flags record whether each row has ever been completed. The Mojyamon spoken to after all nine are complete joins the city, earns two prosperity and sets its own departure flag. It runs the secret shop in the morning; it does not bring its three exchange rows to that shop.
 
@@ -21,3 +21,15 @@ Use nine bits of the existing saved trigger array, one per row, for today's comp
 The amount box must cap at one and the engine must reject an already-used row before opening it. Reuse the obsolete Yes/No text slot for the refusal line in all eight languages. Build all languages, measure main_BSS_END and MENU, and run the 320-setup heap check plus a same-day rejection and next-day exchange in the emulator.
 
 Implementation allocation follow-up: the standalone starter example uses 790–791, although shipped-story locks stop at 781. Move that developer example to 787–788 and narrow the examples manifest to 780–786 so both remain buildable outside the reserved engine block. Existing starter test saves must be recreated; shipped-story saved identities do not change.
+
+## Follow-up: a separate Dolphmon item
+
+Item 124, AS Decoder, has no story give/take/check, shop stock or species drop in this branch or current main (8b15663c). It is separate from the real Frig Key, item 123, which Myotismon gives and the mansion refrigerator consumes. Reusing 124 is clean; extending past 127 would need wider assumptions in the icon grid, shop stock and seven-bit trade-menu item encoding.
+
+The custom evolution-item table already reserves four rows, but only Giga Hand, Noble Mane and Metalbanana use them. Dolph Fin occupies the fourth row: item 124, Dolphmon 238, required partner level 3 (Rookie). The handler and refusal bounds include 124, and unavailable imports are rejected by the shared rule lookup. Names and descriptions replace existing slot 124 in all eight languages. The icon reuses the unused AS Decoder sprite with an existing blue palette. No table, atlas or save field grows. Current main has no Chinese text table.
+
+North Star stays item 92 and targets Whamon 24. Whamon's current Ultimate level requires a Champion; NEW DIGIMON off restores Whamon's Champion level and Rookie eligibility. The item-stage helper keeps the established native Mega-item exception while following Whamon's current stage.
+
+Tapirmon's generic shop has global prices: both its menu and charge read ITEM_PARA, and shop(...) exposes stock only. Vegiemon's separate scripted purchases already specify 500 directly. A Tapirmon-only price would need a new override or a replacement menu, so the conditional 700-bit change is skipped. No global item value or Vegiemon price changes.
+
+The additional daily gain over selling owned inputs is 200 if all eight rows are used, or 1800 if only positive sale-value rows are chosen. The latter is 300 after the 1500-bit Birdramon trip. Buying only profitable purchasable inputs yields 999 normally or 1109 with baby discounts, before travel. Digiseabass is not sold; mixed purchase-and-free-fishing cash totals are separate from opportunity-cost gains. Dolph Fin's 2450 gain over selling Small Recovery is once per save, excluded from every daily ceiling. Balance section 6.1 gives all scenarios.

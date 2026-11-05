@@ -26,14 +26,15 @@ class MojyamonEconomy(unittest.TestCase):
         self.assertEqual([], result['fails'])
         self.assertEqual((6050, 2500), (result['daily_gross'], result['once_gross']))
         self.assertEqual(['daily'] * 8 + ['save'], [r['limit'] for r in result['rows']])
+        self.assertEqual((200, 1800, 2450), (result['daily_gain'], result['daily_gain_ceiling'], result['once_gain']))
         self.assertEqual(50, result['worth'][44])
         self.assertEqual(50, result['worth'][0])
 
-    def test_caps_cannot_be_removed_or_changed_to_daily_for_north_star(self):
+    def test_caps_cannot_be_removed_or_changed_to_daily_for_dolph_fin(self):
         for row in E.MOJYAMON_GAIN_EXCEPTIONS:
             caps = dict(E.MOJYAMON_CAPS); caps.pop(row)
             self.assertTrue(self.audit(caps=caps)['fails'], row)
-        caps = dict(E.MOJYAMON_CAPS); caps[8] = (0, 92, 'daily')
+        caps = dict(E.MOJYAMON_CAPS); caps[8] = (0, 124, 'daily')
         self.assertTrue(self.audit(caps=caps)['fails'])
 
     def test_unreviewed_trade_and_uncapped_loop_are_rejected(self):
@@ -67,6 +68,8 @@ class MojyamonEconomy(unittest.TestCase):
             result = E.purchase_ceiling(rows, prices, sell, baby)
             self.assertEqual((cost, net, [67]), (result['cost'], result['net'], result['unsold']))
             self.assertEqual(after_travel, result['net'] - 1500)
+            self.assertEqual((-191, 1109, 3609) if baby else (-401, 999, 3499),
+                             (result['buyable_net'], result['buyable_ceiling'], result['mixed_ceiling']))
 
 
 if __name__ == '__main__':

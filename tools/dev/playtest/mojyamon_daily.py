@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Play daily/permanent Mojyamon limits and North Star evolution on 2 MB."""
+"""Play daily/permanent Mojyamon limits and Dolph Fin evolution on 2 MB."""
 import argparse
 import json
 from pathlib import Path
@@ -143,33 +143,33 @@ hook({e.A('showMapHeadTextbox')},function() local r=PCSX.getRegisters().GPR.n
         assert e.in_control()
         call(e, 'giveItem', [0, 5])
         assert e.warp(133) and e.in_control()
-        def north_star_offer():
+        def dolph_fin_offer():
             talk(e, 128, 6)
             for _ in range(2):
                 e.press('DOWN', 6); e.wait(.5)
             select_offer(e)
-        north_star_offer()
+        dolph_fin_offer()
         assert trace(e, 'amounts') == 3
         assert e.peek('SHOP_ITEM_TYPE', 'B') == 0 and e.peek('MAX_SHOP_AMOUNT', 'B') == 1
-        e.run('shot', str(out / '05-north-star-once-offer.png'))
+        e.run('shot', str(out / '05-dolph-fin-once-offer.png'))
         accept_amount(e, 3)
         assert trace(e, 'trades') == 3 and bit(e,13)
         once = counts(e)
-        assert once.get(0)==4 and once.get(92)==1
+        assert once.get(0)==4 and once.get(124)==1
         assert e.in_control()
-        north_star_offer()
+        dolph_fin_offer()
         assert trace(e, 'onceRefused') == 1 and trace(e,'amounts') == 3
         assert counts(e) == once and e.in_control()
         e.gs('set', 'hour=10', 'minute=0', 'gametime_running=0')
         call(e, 'advanceToTime', [9, 0])
         assert bit(e,13) and not bit(e,797)
-        north_star_offer()
+        dolph_fin_offer()
         assert trace(e,'onceRefused') == 2 and trace(e,'amounts') == 3
         assert counts(e) == once
-        e.run('shot', str(out / '06-north-star-next-day-refused.png'))
+        e.run('shot', str(out / '06-dolph-fin-next-day-refused.png'))
         assert e.in_control()
-        results['north_star_once_per_save'] = True
-        results['north_star_still_refused_after_day_reset'] = True
+        results['dolph_fin_once_per_save'] = True
+        results['dolph_fin_still_refused_after_day_reset'] = True
         # Move to File City's open floor before feeding.
         assert e.warp(1) and e.in_control()
         e.run('pause')
@@ -183,22 +183,24 @@ hook({e.A('showMapHeadTextbox')},function() local r=PCSX.getRegisters().GPR.n
         e.wait(3)
         # Use the actual field feeding entry point. No evolution target/state is injected.
         assert e.peek('PARTNER_ENTITY','i') == 4, 'Betamon fixture is not a Rookie'
-        assert raw[0x800 + e.A('EVOLUTION_ITEM_TARGET') - load + 92 - 71] == 238
-        slot = e.peek('INVENTORY','30h').index(92)
+        assert raw[0x800 + e.A('EVOLUTION_ITEM_TARGET') - load + 92 - 71] == 24
+        rules = struct.unpack_from('<12h', raw, 0x800 + e.A('MOD_EVO_ITEMS') - load)
+        assert (124, 238, 3) in list(zip(rules[::3], rules[1::3], rules[2::3]))
+        slot = e.peek('INVENTORY','30h').index(124)
         e.poke('INVENTORY_POINTER', bytes([slot]))
         e.run('lua', f"""
 MT.evoTarget=0; MT.applied=0
 local m=PCSX.getMemPtr()
 local function u16(a) return tonumber(m[a-0x80000000])+256*tonumber(m[a-0x80000000+1]) end
-MT.bp[#MT.bp+1]=PCSX.addBreakpoint({e.A('gameLoop')},'Exec',4,'north-star-target',function()
+MT.bp[#MT.bp+1]=PCSX.addBreakpoint({e.A('gameLoop')},'Exec',4,'dolph-fin-target',function()
  if tonumber(m[{e.A('PARTNER_STATE')}-0x80000000])==13 and u16({e.A('EVOLUTION_TARGET')})==238 then MT.evoTarget=238 end
 end)
-MT.bp[#MT.bp+1]=PCSX.addBreakpoint({e.A('EVL_applyEvolution')},'Exec',4,'north-star-apply',function()
+MT.bp[#MT.bp+1]=PCSX.addBreakpoint({e.A('EVL_applyEvolution')},'Exec',4,'dolph-fin-apply',function()
  if tonumber(m[{e.A('PARTNER_STATE')}-0x80000000])==13 and u16({e.A('EVOLUTION_TARGET')})==238 then MT.applied=MT.applied+1 end
 end)
 """)
-        e.run('shot', str(out / '07-before-north-star.png'))
-        call(e, 'startFeedingItem', [92])
+        e.run('shot', str(out / '07-before-dolph-fin.png'))
+        call(e, 'startFeedingItem', [124])
         deadline = time.monotonic()+150
         while time.monotonic() < deadline:
             if e.peek('PARTNER_ENTITY','i') == 238 and e.peek('PARTNER_STATE','b') != 13:
@@ -207,13 +209,14 @@ end)
             # Advance any end-of-evolution text; the game chooses and applies its target.
             if trace(e,'evoTarget') == 238:
                 e.press('CONFIRM', 6)
-        assert e.peek('PARTNER_ENTITY','i') == 238, 'North Star did not evolve to Dolphmon'
+        assert e.peek('PARTNER_ENTITY','i') == 238, 'Dolph Fin did not evolve to Dolphmon'
         assert trace(e,'evoTarget') == 238 and trace(e,'applied') >= 1
-        assert counts(e).get(92,0)==0, 'North Star was not consumed'
+        assert counts(e).get(124,0)==0, 'Dolph Fin was not consumed'
         assert e.in_control()
         e.gs('set','gametime_running=0')
-        e.run('shot', str(out / '08-dolphmon-after-north-star.png'))
-        results['north_star_evolution'] = dict(from_species=4, target=238,
+        e.run('shot', str(out / '08-dolphmon-after-dolph-fin.png'))
+        e.run('save', str(out / 'dolphmon.state'))
+        results['dolph_fin_evolution'] = dict(item=124, from_species=4, target=238,
             observed_target=trace(e,'evoTarget'), evolution_applied=trace(e,'applied'), item_consumed=True)
         results['trace'] = {n:trace(e,n) for n in ('lists','amounts','trades','refused','onceRefused')}
         print(json.dumps(results, indent=2), flush=True)

@@ -265,14 +265,14 @@ not exceed the input's sale value; card-pack and machine expected returns must s
 
 There is a precise exception for reviewed Mojyamon rows limited to **one item per in-game day**, persisted in the
 save. Those rows may exceed the input's sale value. The five approved daily gain pairs and the separately approved
-**once-per-save** North Star pair are pinned by row, input, output and limit in `tools/economy_audit.py`'s
-`MOJYAMON_GAIN_EXCEPTIONS`. An unreviewed gain, including a changed profitable pair or missing required cap, fails the audit. North Star must not be
+**once-per-save** Dolph Fin pair are pinned by row, input, output and limit in `tools/economy_audit.py`'s
+`MOJYAMON_GAIN_EXCEPTIONS`. An unreviewed gain, including a changed profitable pair or missing required cap, fails the audit. Dolph Fin must not be
 classified as daily. Capped edges are excluded from unlimited trade-chain/vending valuations; their finite gains
 are reported separately. The existing daily card shop is likewise bounded by six cards, one copy each.
 
 | What | Disc | Now | Why |
 |---|---|---|---|
-| Mojyamon's exchanges (`shops.json`) | unlimited rewards, including Medium Recovery → S.Def.disk | eight daily exchanges and one once-per-save exchange (table below) | explicit bounded gains; amount box caps at 1; North Star cannot be farmed by delaying recruitment |
+| Mojyamon's exchanges (`shops.json`) | unlimited rewards, including Medium Recovery → S.Def.disk | eight daily exchanges and one once-per-save exchange (table below) | explicit bounded gains; amount box caps at 1; Dolph Fin cannot be farmed by delaying recruitment |
 | sup.recovery / Sup.restore merit | 20 / 100 | 60 / 250 | merit sold through them made a 500-bit card pack worth about 1090 bits |
 | Card machine odds (`economy.json` `cardMachine`, in its script `libraries/s219` before patch 0237), rarity 2 / 4 | 7 / 70 % | 5 / 72 % | the cards' own sale price plus DemiMeramon and ClearAgumon gave back 103 bits a 100-bit card (the price is in its text) |
 | Tekkamon's drop (`90-tekkamon.json`) | S.Def.disk 100 % | 15 % | a wild fight of the Back Dimension, about 4900 bits each, without limit |
@@ -299,7 +299,7 @@ return to it if another group completed the final row. Previously recruited save
 | 2 | Blue Apple | Double Floppy | 1/day | 500 | 750 | +250 |
 | 3 | Digimushroom | Auto Pilot | 1/day | 50 | 150 | +100 |
 | 3 | Giant Meat | DigiTrout | 1/day | 250 | 150 | -100 |
-| 3 | Small Recovery | North Star | **1/save** | 50 | 2500 | +2450, once only |
+| 3 | Small Recovery | Dolph Fin | **1/save** | 50 | 2500 | +2450, once only |
 
 The five positive daily sale-value exceptions total **1800 bits/day** above selling those inputs directly. Taking
 all eight daily rows, including the two that lose sale value, adds **200 bits/day** over selling all eight inputs.
@@ -307,17 +307,22 @@ These are finite allowances, not unlimited conversion exits. Item 70 (Chain Melo
 in the English item-name bank. Double Floppy is item 7, not Restore.
 
 Every amount box caps at one. Daily bits 789–796 gate the eight daily rows; the former ninth daily bit 797 stays
-reserved/cleared for compatibility. North Star checks historical completion flag **13**, which is never cleared
+reserved/cleared for compatibility. Dolph Fin checks historical completion flag **13**, which is never cleared
 at midnight. Its first successful exchange sets that flag, even if recruitment is postponed. Cancellation and
 full-bag failures spend neither type of allowance. Saving/loading retains the flags. Existing saves that already
 completed the old ninth row keep it spent rather than resetting recruitment progress.
 
-### Daily cash ceilings
+### Daily gain ceilings
 
-Prices below are the cheapest actual fixed offers, rather than treating an item's nominal value as an available
-shop offer. Digiseabass has **no shop offer**: a purely shop-funded eight-row run is impossible. The bought-input
-calculation buys every other input and assumes free fishing/bait for Digiseabass; paid bait would reduce the net.
-Digisnapper is sold by Mammothmon at the Cold Store for 100 (90 with a baby), and can also be fished.
+A ceiling means **additional gain**, not the gross sale value of the rewards. With inputs already owned, the
+baseline is selling them directly. Doing all eight rows adds **200 bits/day**; choosing only the five positive
+rows adds at most **1800 bits/day**, or **300 after a 1500-bit Birdramon trip**. Doing all eight after that trip
+loses 1300 relative to selling the inputs. A free pickup or fish still has its sale value as an opportunity cost.
+The audit prints both all-row and positive-row totals. After group 3 recruits, the remaining six rows still add
+200 together, with a positive-row ceiling of 1700 (200 after the trip).
+
+Purchase gains subtract the cheapest actual fixed offers below. Digiseabass has **no shop offer**, so no purely
+shop-funded eight-row calculation exists. Digisnapper is sold at the Cold Store for 100 (90 with a baby).
 
 | Daily input | Cheapest normal / baby purchase | Source | Reward sale |
 |---|---:|---|---:|
@@ -331,25 +336,45 @@ Digisnapper is sold by Mammothmon at the Cold Store for 100 (90 with a baby), an
 | Giant Meat | 300 / 300 | Ancient Glacial Region vending | 150 |
 | **All eight daily rows** | **3951 / 3741**, plus free Digiseabass | | **6050** |
 
-- Buying every purchasable input and selling every reward nets **2099 bits/day normally**, or **2309 with baby
-  discounts**. After the **1500-bit Birdramon trip**, that is **599 / 809**. Return travel and paid bait are excluded.
-- With zero-bit inputs from pickups, fishing, farm stock and drops, selling all eight rewards pays **6050 bits/day**,
-  or **4550 after that Birdramon trip**. Supercarrot/Hawk Radish can drop from RedVegiemon/Weedmon (10% each).
-- Group 2 alone pays 2250 gross: buying all three inputs nets **250 / 450**, or **-1250 / -1050** after the trip.
-  Vegiemon's 500-bit prices are unchanged.
-- After group 3 recruits, only groups 1/2 remain: **5750 gross/day** with free inputs, or **2150 / 2360 net** with
-  the cheapest purchases plus free Digiseabass (**650 / 860** after the trip).
-- North Star adds **2500 gross once per save**, not per day. Buying its Small Recovery input costs 100 normally or
-  90 with a baby, for **2400 / 2410 once-only net**. Free-input first completion can therefore pay 8550 gross;
-  the recurring eight-row ceiling remains 6050.
+| Gain baseline and choice | Normal | Baby discounts | After 1500 trip, normal / baby |
+|---|---:|---:|---:|
+| Own all inputs: trade all eight instead of selling them | 200 | 200 | -1300 / -1300 |
+| Own inputs: choose only positive sale-value rows | **1800** | **1800** | **300 / 300** |
+| Buy inputs: trade all seven purchasable rows | -401 | -191 | -1901 / -1691 |
+| Buy inputs: choose only profitable purchasable rows | **999** | **1109** | **-501 / -391** |
+| Buy seven inputs + free Digiseabass: all eight cash net | 2099 | 2309 | 599 / 809 |
+| Buy inputs + free Digiseabass: choose positive cash-net rows | 3499 | 3609 | 1999 / 2109 |
 
-Tapirmon keeps Hawk Radish in place of Digipine at the existing 500-bit value (450 baby purchase), now feeding a
-reviewed daily gain. North Star (item 92) targets **Dolphmon (238)** instead of Whamon (24). It is a Champion
-evolution item for a Rookie partner, regardless of natural parent routes; NEW DIGIMON off refuses the unavailable
-import without consuming the item. Its eight descriptions name Dolphmon. The original palette-relative USA
-refusal lookup now reads the actual evolution-item table. The existing tournament cup-14 reward and new-game
-inventory cleanup still refer to North Star by item ID; no shop stock, drop or merit purchase depends on Whamon.
-It remains recyclable at the existing 2500-bit sale value and has meritValue 0. Story Whamon (146) is unchanged.
+The purchase-only ceiling uses Digisnapper → Digipine, Supercarrot → Large MP and Digimushroom → Auto Pilot;
+Hawk Radish → Large Recovery also profits with baby discounts (normal price breaks even). The mixed cash-net
+scenarios add the fished Digiseabass reward while counting no fishing/bait expense. They do **not** count its
+4000-bit sale value as a cost; that trade actually loses 1500 versus selling the fish. Return travel and paid bait
+are excluded. The outputs' gross 6050 is a receipt total, never the incremental daily-gain ceiling. All eight
+owned inputs sell for 5850 before any exchange. Free inputs can come from pickups, fishing, farm stock and drops;
+Supercarrot/Hawk Radish drop from RedVegiemon/Weedmon at 10% each.
+
+Group 2 adds 1250 over selling its three inputs; buying all three nets 250/450. Dolph Fin adds **2450 once per
+save** over selling Small Recovery, or **2400/2410 once-only purchase net** at a 100/90 input price. It never enters
+recurring daily gains.
+
+Tapirmon keeps Hawk Radish and Supercarrot at their global value 500 (450 baby purchase); Vegiemon remains fixed
+at 500. Generic shops read `ITEM_PARA[item].value` for display and charge, and the story `shop(...)` API takes stock
+only. There is no per-shop price override, so a Tapirmon-only 700-bit price is skipped rather than changing global
+values or Vegiemon's prices.
+
+North Star (92) remains **Whamon (24)**'s arena cup-14 reward, with its original descriptions in all eight languages.
+Whamon is an Ultimate with NEW DIGIMON on, so a Champion can use North Star. With the option off Whamon is a
+Champion and a Rookie can use it. The native target-stage reader follows current stages while preserving the
+established native Mega-item exception. No story Whamon (146), tournament reward, merit or North Star value changes.
+
+**Dolph Fin (124)** is a separate 5000-value evolution item, sold for 2500, with meritValue 0. The otherwise-unused
+AS Decoder slot has no stock, drop or story use in this branch or current main; the real fridge key remains item
+123. Its existing AS Decoder sprite uses an existing blue palette. The existing fourth `evolutionItemRules` slot
+maps it to Dolphmon (238) for a Rookie (level 3), and its handler/refusal range now includes 124. NEW DIGIMON off
+refuses the unavailable import without consuming it. No item table, name/description count, icon atlas, custom
+rule array or save field is enlarged. All eight names fit 11 characters. Current main has no Chinese text table;
+no speculative Chinese-only table is added. Existing ninth-row completion flag 13 remains spent in old saves,
+including saves that received the earlier North Star reward; no progress is reset or item silently exchanged.
 
 The money analysis behind it: upkeep is about 300-1500 bits a game day, nothing on the story path costs
 bits, and bits bought little power (DV chips about 40 stat points a 1000 bits, restaurants 1-4, the gym 80-100 a day for

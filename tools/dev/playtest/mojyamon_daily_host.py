@@ -116,7 +116,7 @@ int main(void) {
    assert(inventory[inputs[row]]==4 && inventory[outputs[row]]==1);
   }
  }
- puts("PASS actual C: eight daily rows and one permanent row, cap 1, cancel, failed give rollback, saved flags, same-day refusal, day reset, North Star still refused next day, recruitment history retained");
+ puts("PASS actual C: eight daily rows and one permanent row, cap 1, cancel, failed give rollback, saved flags, same-day refusal, day reset, Dolph Fin still refused next day, recruitment history retained");
 }
 '''
     with tempfile.TemporaryDirectory() as folder:

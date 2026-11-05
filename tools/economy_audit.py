@@ -37,13 +37,13 @@ HUNTS = {'Normal plan': (2000, [(20, 9), (20, 10), (10, 18), (10, 19), (10, 20),
 MOJYAMON_CAPS = {
     0: (69, 45, 'daily'), 1: (67, 70, 'daily'), 2: (63, 47, 'daily'),
     3: (41, 6, 'daily'), 4: (42, 2, 'daily'), 5: (48, 7, 'daily'),
-    6: (44, 22, 'daily'), 7: (39, 64, 'daily'), 8: (0, 92, 'save'),
+    6: (44, 22, 'daily'), 7: (39, 64, 'daily'), 8: (0, 124, 'save'),
 }
 # Explicit exceptions to the output <= input sale rule. A matching, pinned cap
-# is mandatory; North Star must be once per save, never a daily exception.
+# is mandatory; Dolph Fin must be once per save, never a daily exception.
 MOJYAMON_GAIN_EXCEPTIONS = {
     2: (63, 47, 'daily'), 3: (41, 6, 'daily'), 4: (42, 2, 'daily'),
-    5: (48, 7, 'daily'), 6: (44, 22, 'daily'), 8: (0, 92, 'save'),
+    5: (48, 7, 'daily'), 6: (44, 22, 'daily'), 8: (0, 124, 'save'),
 }
 
 
@@ -80,7 +80,10 @@ def audit_mojyamon(shops, items, sell_pc, caps=None, exceptions=None):
                          f'unapproved gain {worth[t] - sell(g)} per exchange ({limit})')
     return dict(rows=rows, worth=worth, fails=fails,
                 daily_gross=sum(worth[r['output']] for r in rows if r['limit'] == 'daily'),
-                once_gross=sum(worth[r['output']] for r in rows if r['limit'] == 'save'))
+                once_gross=sum(worth[r['output']] for r in rows if r['limit'] == 'save'),
+                daily_gain=sum(sell(r['output']) - sell(r['input']) for r in rows if r['limit'] == 'daily'),
+                daily_gain_ceiling=sum(max(0, sell(r['output']) - sell(r['input'])) for r in rows if r['limit'] == 'daily'),
+                once_gain=sum(sell(r['output']) - sell(r['input']) for r in rows if r['limit'] == 'save'))
 
 
 def mojyamon_input_prices(items, econ):
@@ -135,7 +138,10 @@ def purchase_ceiling(rows, prices, sell, baby=False):
     unsold = sorted({r['input'] for r in daily if r['input'] not in prices})
     cost = sum(prices[r['input']][int(baby)] for r in daily if r['input'] in prices)
     gross = sum(sell(r['output']) for r in daily)
-    return dict(cost=cost, gross=gross, net=gross - cost, unsold=unsold)
+    return dict(cost=cost, gross=gross, net=gross - cost, unsold=unsold,
+                buyable_net=sum(sell(r['output']) - prices[r['input']][int(baby)] for r in daily if r['input'] in prices),
+                buyable_ceiling=sum(max(0, sell(r['output']) - prices[r['input']][int(baby)]) for r in daily if r['input'] in prices),
+                mixed_ceiling=sum(max(0, sell(r['output']) - (prices[r['input']][int(baby)] if r['input'] in prices else 0)) for r in daily))
 
 
 def main():
@@ -165,14 +171,20 @@ def main():
     for row in result['rows']:
         print(f"  {row['limit']:9} {name(row['input'])} -> {name(row['output'])}: "
               f"{sell(row['input'])} -> {worth[row['output']]}")
-    print(f"Mojyamon daily reward ceiling: {result['daily_gross']} bits with free inputs; "
-          f"one-time rewards: {result['once_gross']} bits, excluded from the daily ceiling")
+    print(f"Mojyamon daily reward sales (gross, not gains): {result['daily_gross']} bits with free inputs; "
+          f"one-time rewards: {result['once_gross']} bits, excluded from daily gains")
+    print(f"Mojyamon gain over selling inputs: all eight rows {result['daily_gain']}/day; "
+          f"positive rows only {result['daily_gain_ceiling']}/day (ceiling); "
+          f"after 1500 travel: {result['daily_gain_ceiling'] - 1500}; once-only gain {result['once_gain']}")
     prices = mojyamon_input_prices(items, econ)
     for baby in (False, True):
         scenario = purchase_ceiling(result['rows'], prices, sell, baby)
         print(f"Mojyamon {'baby' if baby else 'normal'} cheapest purchases + free fishing: "
               f"inputs {scenario['cost']}, rewards {scenario['gross']}, net {scenario['net']}; "
               f"after 1500-bit Birdramon trip: {scenario['net'] - 1500}")
+        print(f"  Bought inputs only: all seven {scenario['buyable_net']}/day; "
+              f"positive rows only {scenario['buyable_ceiling']}/day; after travel {scenario['buyable_ceiling'] - 1500}. "
+              f"With free Digiseabass: positive-row cash net {scenario['mixed_ceiling']}/day; its sale value is not counted as a cost.")
     print('Inputs without a shop offer are fished for free in this calculation: '
           + ', '.join(name(i) for i in scenario['unsold']))
 

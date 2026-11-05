@@ -247,6 +247,12 @@
       "target": 65,
       "partnerLevel": 4,
       "note": "Metalbanana -> MetalEtemon"
+    },
+    {
+      "item": 124,
+      "target": 238,
+      "partnerLevel": 3,
+      "note": "Dolph Fin -> Dolphmon (unused AS Decoder slot)"
     }
   ],
   "evolutionFormula": {

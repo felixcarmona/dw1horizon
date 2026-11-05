@@ -1,0 +1,152 @@
+From 88116431ecf98ed3f029673041d05c84d8a3650b Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 5 Nov 2026 15:32:12 +0000
+Subject: [PATCH] Add Dolph Fin in unused item slot and follow native target
+ stages
+
+---
+ include/dw/species.h    |  4 ++--
+ src/main/evolution.c    |  2 +-
+ src/main/item.c         | 12 ++++++------
+ src/main/mod_species.c  | 13 +++++--------
+ src/main/partner_impl.c |  8 ++++----
+ 5 files changed, 18 insertions(+), 21 deletions(-)
+
+diff --git a/include/dw/species.h b/include/dw/species.h
+index ff6ffd0..fd49ce1 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -112,8 +112,8 @@ typedef struct {
+ #define SPECIES_EVOLUTION_SWAP_MAX 20
+ Move *modSpeciesMove(int32_t type, int32_t move);
+ void modApplySpeciesLevels(void);
+-/* the level the original game gives a species (its NEW DIGIMON off level): the original evolution items keep their rule with it */
+-int32_t modOriginalLevel(int32_t type);
++/* Native evolution items follow current stages, retaining the legacy Mega item exception. */
++int32_t modNativeItemTargetLevel(int32_t type);
+ #define SPECIES_VANILLA_BYTES	(NUM_DIGIMON / 8)
+ int32_t isVanillaSpecies(int32_t type);
+ /* the vanilla species a new partner species becomes with NEW DIGIMON off (its record's vanillaAs), 0 none */
+diff --git a/src/main/evolution.c b/src/main/evolution.c
+index 98266ad..140f71e 100644
+--- a/src/main/evolution.c
++++ b/src/main/evolution.c
+@@ -903,7 +903,7 @@ ModEvoItem *getModEvoItem(int32_t item)
+ 
+ 	for (i = 0; i < MOD_EVO_ITEM_MAX; i++) {
+ 		if (MOD_EVO_ITEMS[i].item == item && MOD_EVO_ITEMS[i].target >= 0)
+-			return &MOD_EVO_ITEMS[i];
++			return modSpeciesAllowed(MOD_EVO_ITEMS[i].target) ? &MOD_EVO_ITEMS[i] : NULL;
+ 	}
+ 	return NULL;
+ }
+diff --git a/src/main/item.c b/src/main/item.c
+index 21f83a1..5e1dfac 100644
+--- a/src/main/item.c
++++ b/src/main/item.c
+@@ -1923,7 +1923,7 @@ uint8_t ITEM_CLUT_DATA[NUM_ITEMS] = {
+ 	0x0e, 0x11, 0x04, 0x0a, 0x13, 0x0a, 0x04, 0x04,
+ 	0x04, 0x0a, 0x17, 0x05, 0x04, 0x10, 0x05, 0x0a,
+ 	0x04, 0x07, 0x08, 0x0e, 0x14, 0x09, 0x04, 0x10,
+-	0x04, 0x17, 0x15, 0x04, 0x09, 0x04, 0x04, 0x04,
++	0x04, 0x17, 0x15, 0x04, 0x0e, 0x04, 0x04, 0x04,
+ };
+ 
+ uint8_t EVOLUTION_ITEM_TARGET[44] = {
+@@ -2060,7 +2060,7 @@ ItemFunction ITEM_FUNCTIONS[NUM_ITEMS] = {
+ 	(ItemFunction)handleFood,
+ 	(ItemFunction)handleFood,
+ 	NULL,
+-	NULL,
++	(ItemFunction)handleEvoItems,
+ 	(ItemFunction)handleEvoItems,
+ 	(ItemFunction)handleEvoItems,
+ 	(ItemFunction)handleEvoItems,
+@@ -2202,16 +2202,16 @@ void handleEvoItems(int16_t item)
+ 	int16_t level;
+ 	ModEvoItem *modItem;
+ 
+-	if (item >= 0x7d) {
+-		/* MOD (evolution rules as data): Giga Hand, Noble Mane, Metalbanana: MOD_EVO_ITEMS (content/tables/evolution-rules.json) */
++	if (item >= 0x7c) {
++		/* MOD (evolution rules as data): Dolph Fin, Giga Hand, Noble Mane, Metalbanana: MOD_EVO_ITEMS (content/tables/evolution-rules.json) */
+ 		modItem = getModEvoItem(item);
+-		if (modItem == NULL || !modSpeciesAllowed(modItem->target)) { /* MOD (options): NEW DIGIMON off */
++		if (modItem == NULL) {
+ 			return;
+ 		}
+ 		EVOLUTION_TARGET = modItem->target;
+ 	} else {
+ 		if (!modSpeciesAllowed(EVOLUTION_ITEM_TARGET[item - 0x47])) return;
+-		level = modOriginalLevel(EVOLUTION_ITEM_TARGET[item - 0x47]) - 1; /* MOD (canon levels): the original game's level */
++		level = modNativeItemTargetLevel(EVOLUTION_ITEM_TARGET[item - 0x47]) - 1; /* Native items follow their target's current stage (legacy Mega exception). */
+ 		if (level != DIGI_PARA(ENTITY_TABLE[1]->type).level) {
+ 			return;
+ 		}
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index c118af5..9d86d1e 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -6,6 +6,7 @@
+ #include <dw/entity.h>
+ #include <dw/file.h>
+ #include <dw/main.h>
++#include <dw/level.h>
+ #include <dw/memmap.h>
+ #include <dw/mod_rules.h>
+ #include <dw/script.h>
+@@ -159,16 +160,12 @@ void modApplySpeciesLevels(void)
+ 	}
+ }
+ 
+-int32_t modOriginalLevel(int32_t type)
++int32_t modNativeItemTargetLevel(int32_t type)
+ {
+-	int32_t i;
++	int32_t level = DIGI_PARA(type).level;
+ 
+-	for (i = 0; i < SPECIES_LEVEL_SWAPS; i++) {
+-		if (SPECIES_LEVEL_SWAP[i][0] == type) {
+-			return SPECIES_LEVEL_SWAP[i][2];
+-		}
+-	}
+-	return DIGI_PARA(type).level;
++	/* Current stages include Whamon's Ultimate role; native Mega items keep their legacy stage. */
++	return level == LEVEL_MEGA ? LEVEL_ULTIMATE : level;
+ }
+ 
+ int32_t isVanillaSpecies(int32_t type)
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index 1394030..ba44c88 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -1644,14 +1644,14 @@ int32_t partnerWillRefuseItem(void)
+ 	item = TAMER_ITEM.worldItem.type;
+ 
+ 	if ((item >= 0x73) && (item != 0x79) && (item != 0x7A) &&
+-	    (item < 0x7D))
++	    (item < 0x7C))
+ 		return 1;
+ 	if ((item >= 0x21) && (item < 0x26))
+ 		return 1;
+ 
+ 	if (((item >= 0x47) && (item < 0x73)) ||
+-	    ((item >= 0x7D) && (item < 0x80))) {
+-		if (item >= 0x7D) {
++	    ((item >= 0x7C) && (item < 0x80))) {
++		if (item >= 0x7C) {
+ 			/* MOD (evolution rules as data): the level the partner must have is MOD_EVO_ITEMS'; an item without a row does nothing */
+ 			ModEvoItem *modItem = getModEvoItem(item);
+ 
+@@ -1662,7 +1662,7 @@ int32_t partnerWillRefuseItem(void)
+ 				return 1;
+ 		} else if (!modSpeciesAllowed(ITEM_EVOLUTION_TARGET(item)) ||
+ 			   DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level + 1 !=
+-			   modOriginalLevel(ITEM_EVOLUTION_TARGET(item))) {
++			   modNativeItemTargetLevel(ITEM_EVOLUTION_TARGET(item))) {
+ 			/* Match handleEvoItems: only the predecessor stage may consume an item. */
+ 			return 1;
+ 		}
+-- 
+2.55.0
+
