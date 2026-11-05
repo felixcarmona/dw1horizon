@@ -55,6 +55,24 @@ animations with our mesh and texture, replayed from plain deltas
 Run `python3 -m tools.models.babies check` and
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_native_babies`.
 
+DemiDevimon (236) binds its imported mesh to Birdramon's native skeleton and
+programs through `field_animations/native_binding.py`. The recipe in
+`content/models/imports/native-bindings.json` assigns every rigid piece, fits
+the wing spars and trailing web, and scales native translations once. Native
+timing, rotations, scales and controls remain intact. Texture-copy commands
+are removed because the imported atlas has another layout; effect origins
+use the scaled native joints. The imported delta and texture remain pinned.
+
+Replay the native binding checks with the original DW1 extraction present:
+
+```sh
+BINDING_MODELS=build/imported-model-edit/edit PYTHONPATH=tools \
+  python3 -W ignore -m unittest tools.test_native_bindings
+```
+
+Use `tools/models/edit.py get 236` to populate that folder first. Provider
+checks (`check 236 --species-pins`) also regenerate and verify the final rig.
+
 Measure final field speeds and voice-note coverage with:
 
 ```sh

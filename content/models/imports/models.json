@@ -53,7 +53,7 @@
  "233": {"model": "233-RedOtamamon.MMD", "aliases_applied": true, "field_overlay": "redotamamon-celebration"},
  "234": {"model": "234-Gatomon.MMD", "aliases_applied": true, "field_overlay": "gatomon-supported-field"},
  "235": {"model": "235-Candlemon.MMD", "aliases_applied": true},
- "236": {"model": "236-DemiDevimon.MMD", "aliases_applied": true, "texture": "236-DemiDevimon.TIM"},
+ "236": {"model": "236-DemiDevimon.MMD", "aliases_applied": true, "texture": "236-DemiDevimon.TIM", "field_overlay": "demidevimon-native-flight"},
  "237": {"model": "237-Diaboromon.MMD", "aliases_applied": true, "field_overlay": "diaboromon-supported-field"},
  "238": {"model": "238-Dolphmon.MMD", "aliases_applied": true, "field_overlay": "dolphmon-native-swim"},
  "239": {"model": "239-Gizamon.MMD", "field_overlay": "gizamon-paired-bound"},
