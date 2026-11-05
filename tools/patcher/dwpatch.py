@@ -1859,6 +1859,10 @@ def release_notices(out):
         shutil.copyfile(os.path.join(REPO, name), os.path.join(out, name))
     source = os.path.join(REPO, 'tools', 'font', 'japanese-license')
     shutil.copytree(source, os.path.join(out, 'licenses', 'japanese-font'), dirs_exist_ok=True)
+    source = os.path.join(REPO, 'tools', 'font', 'chinese-license')
+    shutil.copytree(source, os.path.join(out, 'licenses', 'chinese-font'), dirs_exist_ok=True)
+    # Browser workers carry tools/ in their code pack, including the subset notices.
+    shutil.copytree(source, os.path.join(out, 'bundle', 'tools', 'font', 'chinese-license'), dirs_exist_ok=True)
     shutil.copyfile(os.path.join(REPO, 'tools', 'image-license.txt'),
                     os.path.join(out, 'licenses', 'raster.txt'))
 
