@@ -96,3 +96,9 @@ measurement as well as an offline speed measurement.
 
 Imported bone-scale consistency, the complete corrected-species list and the
 replay commands are documented in [the scale audit](../../docs/reference/motion-scale-audit.md).
+
+Vilemon's slow walk keeps its existing footwork, body, wrist poses and mesh.
+The `vilemon` pass after field pace transfers native Ogremon's shoulder and
+elbow motion over each 15-tick stride; every other program, including the run,
+remains exact. `VILEMON_MODEL=MODEL PYTHONPATH=tools python3 -m unittest
+ tools.test_vilemon_walk` checks the complete provider layer against its input.

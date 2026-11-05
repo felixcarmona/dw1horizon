@@ -918,7 +918,8 @@
      250
     ]
    }
-  }
+  },
+  "after_generator": "tools.models.field_animations.vilemon"
  },
  "213": {
   "name": "AeroVeedramon",
