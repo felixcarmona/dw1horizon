@@ -356,3 +356,4 @@ Keep-rebirth-species-fallback-resident.patch
 Finish-scripted-moves-with-a-rounded-zero-step.patch
 Keep-item-bank-column-clears-within-their-text-slot.patch
 wait-for-quick-battle-effects-before-melee.patch
+Select-phase-aware-braking-steps-for-MetalGarurumon.patch
