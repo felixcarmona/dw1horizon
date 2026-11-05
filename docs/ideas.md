@@ -15,7 +15,7 @@ against, leave this list.
 
 | Idea | Kind | Notes |
 |---|---|---|
-| How long a Rookie waits before evolving into a Champion: 72 hours (the original, current) or 96 hours | 🎭 | A community poll is open on the Discord server; its result will be weighed but isn't binding. |
+| How long a Rookie waits before evolving into a Champion: 72 hours (the original, current) or 96 hours; a player also suggests moving the Champion's extra day back to the Rookie | 🎭 | A community poll is open on the Discord server; its result will be weighed but isn't binding. |
 | A larger rebalance of daily ground item odds | ⚖️ | 0.0.6 raises ordinary finds to at least 8 % per visit; a full per-item proposal from a player is in preparation and needs an economy audit. |
 
 ## Ideas
@@ -44,3 +44,13 @@ against, leave this list.
 | Faster loading screens | 🛠️ | Depends on how much is disc reads vs fixed waits. |
 | Monochromon's shop minigame reworked (players point to the Vice mod's version) | 🎭 | Gameplay change of an original minigame. |
 | A Card Battle style card game | 🆕 | Very large. |
+| Learn single techniques from the Cheats menu | 🛠️ | A testing aid; cheap. |
+| Hunger bar in the Digimon menu | 🛠️ | Being designed together with the field need bars (hunger, toilet, tiredness). |
+| Metal Banana obtainable outside its event | ⚖️ | Needs a source that doesn't break its rarity. |
+| Jijimon explains the City tab (a list of the residents who lost their memories) and comments on new recruits | ✨ | Players are split on whether it needs explaining. |
+| Lookalike Digimon (recolours) at the same level as their originals | 🎭 | Players disagree: some prefer canon levels. |
+| Digimon Rumble Arena as an optional extra source disc (Reapermon, Impmon, Imperialdramon Fighter Mode) | 🆕 | Needs a new disc importer. |
+| New areas: the Arena's second floor and the inside of Etemon's tree | 🆕 | New screens. |
+| Syakomon and Mushroomon as quiz starters | ⚖️ | Unique Rookies today reachable only by evolution; to review with the starter table. |
+| Unique recruitment scenes for more of the new Digimon | ✨ | Many new recruits join with a simple fight. |
+| Humanoid sizes growing by stage (Angemon < MagnaAngemon < Seraphimon, Devimon < Myotismon) | ✨ | A per-line size review. |

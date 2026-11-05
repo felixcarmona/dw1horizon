@@ -362,6 +362,8 @@ Apply-species-mode-moves-and-finisher-scalars.patch
 Show-item-descriptions-while-browsing-shops.patch
 Accept-tally-skip-presses-while-other-pad-buttons-are-held.patch
 Keep-rebirth-species-fallback-resident.patch
+Bound-the-battle-start-banner-to-its-GPU-packet-budget.patch
+Keep-effect-interpreter-context-intact-during-battle-loading.patch
 mojyamon-daily-exchanges.patch
 mojyamon-one-time-north-star-and-evolution-targets.patch
 dolph-fin-evolution-item.patch
@@ -373,3 +375,5 @@ wait-for-quick-battle-effects-before-melee.patch
 Select-phase-aware-braking-steps-for-MetalGarurumon.patch
 Load-picker-storage-with-the-title-overlays.patch
 Use-Square-for-field-quick-care-with-a-separate-pink-badge.patch
+food-sickness-message-buffer.patch
+evolution-during-load-wake-grace.patch
