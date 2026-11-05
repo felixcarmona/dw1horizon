@@ -30,4 +30,5 @@ against, leave this list.
 | Item icons in the Item Bank list | 🛠️ | The menu code is close to its size limit; needs measuring. |
 | Using a Portable Potty directly instead of the partner eating it | 🛠️ | Small. |
 | Result stats that animate quickly and close by themselves after training or battle | 🛠️ | Players supported it when asked. |
+| Better Mojyamon trades again, but each trade only once per day | ⚖️ | Makes trades worth doing without the original game's infinite-money loop; needs an economy audit of the daily bits ceiling. |
 | The extended story with only the original partners | 🎭 | Needs an option between NEW DIGIMON on and off. |

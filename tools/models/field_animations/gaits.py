@@ -130,7 +130,15 @@ def build(data,sk):
     from tools.models.field_animations.reviewed import reviewed
     digest=hashlib.sha256(data).hexdigest();matches=[(sid,p)for sid,p in PROFILES.items()if p['source']==reviewed(digest)]
     if len(matches)!=1:raise ValueError('No reviewed field-acting profile for this effective source model')
-    sid,cfg=matches[0];n=len(sk);assert n==cfg['bones'];mmd.exe().skeleton[sid]=sk;mmd.exe().bone_count[sid]=n
+    return build_profile(data,sk,*matches[0])
+
+
+def build_profile(data,sk,sid,cfg):
+    """Author one explicitly pinned profile, including edits to a baked model."""
+    from tools.models.field_animations.reviewed import reviewed
+    digest=hashlib.sha256(data).hexdigest()
+    assert reviewed(digest)==cfg['source']
+    n=len(sk);assert n==cfg['bones'];mmd.exe().skeleton[sid]=sk;mmd.exe().bone_count[sid]=n
     old=mmd.MMD.parse(data,n);old.type=sid;new=copy.deepcopy(old)
     native=copy.deepcopy(animsheet.slot_frames(old,n,33)[0][0]);bind=copy.deepcopy(native);bind[0]=[4096]*3+[0]*6
     selected={cfg[k]for k in ['carrier','pelvis','chest','head']}

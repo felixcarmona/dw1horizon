@@ -160,83 +160,19 @@ def item_recipe(obj, data, sources):
             break
     if language is None:
         return None
-    content = fontcopy.item_content(root)
-    numeric = [data[i*32+20:i*32+32] for i in range(128)]
-    found = {}
-    for key, files in sources.items():
-        for path, raw in files.items():
-            stride = 32 if key in ('us', 'jp1') else 12
-            offset = raw.find(numeric[0])
-            while offset >= 0:
-                if offset + 127*stride+12 > len(raw):
-                    break
-                equal_rows = sum(raw[offset+i*stride:offset+i*stride+12] == numeric[i] for i in range(128))
-                if equal_rows >= 120:  # candidate discovery only; every output field is verified below
-                    overrides = []
-                    good = True
-                    for index in range(128):
-                        at = 0
-                        for field, fmt in fontcopy.ITEM_NUMERIC_FIELDS:
-                            size = struct.calcsize('<' + fmt)
-                            old = raw[offset+index*stride+at:offset+index*stride+at+size]
-                            new = numeric[index][at:at+size]
-                            if old != new:
-                                value, = struct.unpack('<' + fmt, new)
-                                if content.get(index, {}).get(field) != value:
-                                    good = False
-                                    break
-                                overrides.append([index, field])
-                            at += size
-                        if not good:
-                            break
-                    if good:
-                        found[key] = [path, offset, stride, hashlib.sha1(raw).hexdigest(), overrides]
-                        break
-                offset = raw.find(numeric[0], offset+1)
-            if key in found:
-                break
-    if len(found) != len(sources):
-        return None
-    return dict(offset=obj['offset'], size=obj['length'], section=obj['section'], kind='items',
-                language=language, fields=[[0, len(data)]], sources=found)
+    # Every field must agree with owned JSON, even when a disc has the same value.
+    recipe = dict(offset=obj['offset'], size=obj['length'], section=obj['section'], kind='items',
+                  language=language, fields=[[0, len(data)]], sources={})
+    return recipe if fontcopy.item_table(recipe, None, None, root) == data else None
 
 
 
 def aura_recipe(obj, data, sources):
     if not obj['section'].endswith('_AURA_PROJECTILE_TYPES') or len(data) != 129 * 12:
         return None
-    import json
-    authored = json.loads((Path(__file__).resolve().parents[2] / 'content/tables/effects.json').read_text())['auraTypes']
-    names = ('type', 'unk2', 'unk4', 'unk6', 'unk8', 'u')
-    found = {}
-    for key, files in sources.items():
-        for path, raw in files.items():
-            at = raw.find(data[:12])
-            while at >= 0 and at + len(data) <= len(raw):
-                if sum(raw[at+i:at+i+12] == data[i:i+12] for i in range(0, len(data), 12)) >= 120:
-                    overrides, good = [], True
-                    for i in range(129):
-                        for j, name in enumerate(names):
-                            before, = struct.unpack_from('<h', raw, at + i*12 + j*2)
-                            after, = struct.unpack_from('<h', data, i*12 + j*2)
-                            if before != after:
-                                if authored[i][name] != after:
-                                    good = False
-                                    break
-                                overrides.append([i, name])
-                        if not good:
-                            break
-                    if good:
-                        found[key] = [path, at, hashlib.sha1(raw).hexdigest(), overrides]
-                        break
-                at = raw.find(data[:12], at + 1)
-            if key in found:
-                break
-    if len(found) != len(sources):
-        return None
-    return dict(offset=obj['offset'], size=obj['length'], section=obj['section'], kind='aura',
-                fields=[[0, len(data)]], sources=found)
-
+    recipe = dict(offset=obj['offset'], size=obj['length'], section=obj['section'], kind='aura',
+                  fields=[[0, len(data)]], sources={})
+    return recipe if fontcopy.aura_table(recipe, None, None) == data else None
 
 
 def zero_words(obj, words, data):
@@ -337,14 +273,12 @@ def verify(recipes, objects, words, target, images, regional_targets=None):
             raise ValueError('table recipe lacks a current natural data object')
         pointers, payload = fields(obj, words)
         if recipe['kind'] == 'ui':
-            sources = {key: {recipe['sources'][key][0]: image.read(recipe['sources'][key][0])}
-                       for key, image in images.items()}
-            if pointers or ui_recipe(obj, target[obj['offset']:obj['offset'] + obj['length']], sources) != recipe:
-                raise ValueError('UI table lacks reviewed player code/record witnesses')
-            for key, image in images.items():
+            if pointers or ui_recipe(obj, target[obj['offset']:obj['offset'] + obj['length']], {}) != recipe:
+                raise ValueError('UI table differs from its reviewed JSON layout')
+            for key in images:
                 actual = (regional_targets or {}).get(key, target)
-                if tail([recipe], key, image.read) != actual[obj['offset']:obj['offset'] + obj['length']]:
-                    raise ValueError('regional UI fields differ from player coordinates/authored crops')
+                if tail([recipe], key, None) != actual[obj['offset']:obj['offset'] + obj['length']]:
+                    raise ValueError('regional UI fields differ from authored JSON/crops')
             continue
         if recipe['kind'] == 'regional_header':
             sources = {key: {recipe['sources'][key][0]: image.read(recipe['sources'][key][0])}
@@ -358,22 +292,20 @@ def verify(recipes, objects, words, target, images, regional_targets=None):
                     raise ValueError('regional header differs from the player record')
             continue
         if recipe['kind'] == 'aura':
-            sources = {key: {recipe['sources'][key][0]: image.read(recipe['sources'][key][0])}
-                       for key, image in images.items()}
+            sources = {}
             if pointers or aura_recipe(obj, target[obj['offset']:obj['offset'] + obj['length']], sources) != recipe:
-                raise ValueError('aura fields lack complete player-record/authored witnesses')
-            for key, image in images.items():
-                if tail([recipe], key, image.read) != target[obj['offset']:obj['offset'] + obj['length']]:
+                raise ValueError('aura fields differ from complete owned JSON')
+            for key in images:
+                if tail([recipe], key, None) != target[obj['offset']:obj['offset'] + obj['length']]:
                     raise ValueError('generated aura table differs from current output')
             continue
         if recipe['kind'] == 'items':
-            sources = {key: {recipe['sources'][key][0]: image.read(recipe['sources'][key][0])}
-                       for key, image in images.items()}
+            sources = {}
             expected = item_recipe(obj, target[obj['offset']:obj['offset'] + obj['length']], sources)
             if pointers or expected != recipe:
-                raise ValueError('item fields lack complete player-record/authored witnesses')
-            for key, image in images.items():
-                if tail([recipe], key, image.read) != target[obj['offset']:obj['offset'] + obj['length']]:
+                raise ValueError('item fields differ from complete owned JSON')
+            for key in images:
+                if tail([recipe], key, None) != target[obj['offset']:obj['offset'] + obj['length']]:
                     raise ValueError('generated item table differs from current output')
             continue
         if recipe['kind'] == 'semantic':
@@ -439,17 +371,8 @@ def ui_recipe(obj, data, sources):
     profile = profiles[name]
     if obj['length'] != profile['length'] or obj['source'] not in ('src/main/game_menu.c', 'src/main/script_common.c'):
         raise ValueError('regional UI data no longer has its reviewed native type')
-    found = {}
-    for key, files in sources.items():
-        original = profile['sources'][key]
-        path = original['file']
-        if path not in files:
-            return None
-        found[key] = [path, original['offset'], original['copy_length'],
-                      hashlib.sha1(files[path]).hexdigest(), original['refs']]
     recipe = dict(offset=obj['offset'], size=obj['length'], section=obj['section'], kind='ui',
-                  ui=name, fields=[[0, len(data)]], sources=found)
-    # The USA layout is retained; other bases supply their own panel positions.
-    if 'us' in sources and fontcopy.ui_table(recipe, 'us', sources['us'].__getitem__) != data:
+                  ui=name, fields=[[0, len(data)]], sources={})
+    if fontcopy.ui_table(recipe, 'us') != data:
         raise ValueError('native USA UI crops differ from the authored drawing contract')
     return recipe

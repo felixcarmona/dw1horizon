@@ -166,7 +166,7 @@ class AuthoredPayloadTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             tabledata.verify([recipe], [obj], [], b'abc' + b'X' * 20, {'us': None})
 
-    def test_items_witness_numeric_fields_and_generate_only_authored_overrides(self):
+    def test_items_generate_all_numeric_fields_from_owned_json(self):
         import fontcopy
         root = str(Path(__file__).resolve().parents[1])
         bank = fontcopy.authored_bank(root, 'en')
@@ -182,13 +182,36 @@ class AuthoredPayloadTests(unittest.TestCase):
         sources = {'us': {'ORIGINAL': bytes(original)}}
         obj = dict(offset=0, length=4096, section='.data.ITEM_PARA', source='src/main/item.c')
         recipe = tabledata.item_recipe(obj, target, sources)
-        self.assertEqual(recipe['sources']['us'][-1], [[3, 'meritValue']])
+        self.assertEqual(recipe['sources'], {})
         image = types.SimpleNamespace(read=sources['us'].__getitem__)
         tabledata.verify([recipe], [obj], [], target, {'us': image})
-        self.assertEqual(fontcopy.item_table(recipe, 'us', image.read), target)
+        self.assertEqual(fontcopy.item_table(recipe, 'us', lambda _: self.fail('disc data read')), target)
         # Unsupported target numeric data cannot acquire an authored override.
         struct.pack_into('<H', target, 3 * 32 + 24, 65530)
         self.assertIsNone(tabledata.item_recipe(obj, target, sources))
+
+
+    def test_aura_rows_are_owned_even_when_disc_values_match(self):
+        import fontcopy
+        root = Path(__file__).resolve().parents[1]
+        rows = __import__('json').loads((root / 'content/tables/effects.json').read_text())['auraTypes']
+        fields = ('type', 'unk2', 'unk4', 'unk6', 'unk8', 'u')
+        target = b''.join(struct.pack('<6h', *(row[k] for k in fields)) for row in rows)
+        obj = dict(offset=0, length=len(target), section='.data.BTL_AURA_PROJECTILE_TYPES', source='src/btl/battle.c')
+        recipe = tabledata.aura_recipe(obj, target, {})
+        self.assertEqual(recipe['sources'], {})
+        self.assertEqual(fontcopy.aura_table(recipe, 'us', lambda _: self.fail('disc read')), target)
+        tabledata.verify([recipe], [obj], [], target, {'us': None})
+        self.assertIsNone(tabledata.aura_recipe(obj, b'\xff' * len(target), {}))
+
+    def test_deleted_item_is_empty_without_disc_defaults(self):
+        import fontcopy
+        from unittest.mock import patch
+        root = str(Path(__file__).resolve().parents[1])
+        content = {i: row for i, row in fontcopy.item_content(root).items() if i != 3}
+        with patch.object(fontcopy, 'item_content', return_value=content):
+            data = fontcopy.item_table({'language': 'en'}, 'us', lambda _: self.fail('disc read'), root)
+        self.assertEqual(data[3 * 32:4 * 32], bytes(32))
 
 
 class RegionalLayoutTests(unittest.TestCase):
@@ -208,23 +231,19 @@ class RegionalLayoutTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             tabledata.verify([recipe], [obj], words, target, images, {'us': target, 'eu': target})
 
-    def test_ui_coordinates_require_the_original_code_reference(self):
+    def test_ui_coordinates_come_only_from_json(self):
         import fontcopy
-        raw = bytearray(256)
-        struct.pack_into('<II', raw, 0, 0x3c028009, 0x24420040)
-        for i in range(9):
-            struct.pack_into('<hhhBB', raw, 64+i*8, i-100, i*10, 20, 0, 0)
-        recipe = dict(ui='STATS_VIEW_TEXT', size=72,
-            sources={'eu': ['BOOT', 64, 72, hashlib.sha1(raw).hexdigest(), [0, 4]]})
-        got = fontcopy.ui_table(recipe, 'eu', lambda _: raw)
-        for i in range(9):
-            self.assertEqual(got[i*8:i*8+4], raw[64+i*8:64+i*8+4])
-        self.assertEqual(struct.unpack_from('<hBB', got, 4), (48, 72, 48))
-        self.assertEqual(struct.unpack_from('<hBB', got, 60), (0, 0, 48))
-        struct.pack_into('<I', raw, 4, 0x24420044)
-        recipe['sources']['eu'][3] = hashlib.sha1(raw).hexdigest()
-        with self.assertRaisesRegex(ValueError, 'address reference'):
-            fontcopy.ui_table(recipe, 'eu', lambda _: raw)
+        profiles = __import__('json').loads(Path('tools/patcher/ui-sources.json').read_text())['objects']
+        for name, profile in profiles.items():
+            recipe = dict(ui=name, size=profile['length'], sources={})
+            for key, values in profile['values'].items():
+                got = fontcopy.ui_table(recipe, key, lambda _: self.fail('disc coordinate read'))
+                self.assertEqual(len(got), recipe['size'])
+                self.assertEqual(got[:4], struct.pack('<hh', *values[:2]))
+            with self.assertRaises(KeyError):
+                fontcopy.ui_table(recipe, 'unknown')
+        recipe = dict(ui='STATS_VIEW_TEXT', size=72, sources={})
+        self.assertEqual(struct.unpack_from('<hBB', fontcopy.ui_table(recipe, 'eu'), 4), (48, 72, 48))
 
     def test_zeros_do_not_supply_nonzero_adjacent_payload(self):
         fixture = TableDataTests()

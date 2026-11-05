@@ -489,7 +489,7 @@ def stats_json(v):
 
 
 # ------------------------------------------------------------------ the file format: dict <-> JSON
-KEY_ORDER = ['id', 'name', '_source', 'level', 'vanilla', 'vanilla_as', 'off', 'attribute', 'specialties', 'techniques', 'drop', 'effects_like', 'model',
+KEY_ORDER = ['id', 'name', '_source', 'level', 'vanilla', 'vanilla_as', 'off', 'attribute', 'specialties', 'techniques', 'finisher', 'drop', 'effects_like', 'model',
              'texture', 'voice', 'battle_music', 'reincarnation_stats', 'new_game_technique', 'status_screen_position',
              'partner_voice', 'item_distance', 'training', 'condition_bubble', 'effect_origins', 'effect_origin_fallback', 'effect_origin_fallback_always', 'wild', 'sizing', 'size', 'needs_ram_mb',
              'partner', 'care', 'evolution']
@@ -754,7 +754,7 @@ def validate(s):
         raise SystemExit(f'{p}: vanilla_as: the id of the vanilla species a new partner becomes (tools/vanilla_as.py)')
     off = s.get('off')
     if off is not None:
-        if (t >= NUM_ORIGINAL or not isinstance(off, dict) or set(off) - {'level', 'stats', 'evolution'}
+        if (t >= NUM_ORIGINAL or not isinstance(off, dict) or set(off) - {'level', 'stats', 'evolution', 'techniques', 'finisher'}
                 or off.get('level') not in LEVELS[1:6]):
             raise SystemExit(f'{p}: off: an original species override with level fresh..ultimate and optional stats')
         if 'stats' in off and not set(STAT_KEYS) <= set(s.get('evolution', {}).get('gains', {})):
@@ -775,11 +775,56 @@ def validate(s):
                 or any(type(v) is not int or not -32768 <= v <= 32767 for v in e['requirements'].values())
                 or not -128 <= e['requirements']['flags'] <= 127):
             raise SystemExit(f'{p}: off.evolution.requirements: complete requirement row')
+    for mode, block in [('on', s), ('off', off or {})]:
+        if 'techniques' in block:
+            techniques_from_json(block['techniques'], f'{p}.{mode}')
+        if 'finisher' in block:
+            f = block['finisher']
+            if (not isinstance(f, dict) or set(f) != {'power', 'mpCost', 'element'}
+                    or type(f['power']) is not int or not 1 <= f['power'] <= 32767
+                    or type(f['mpCost']) is not int or not 0 <= f['mpCost'] <= 255
+                    or f['element'] not in ELEMENTS):
+                raise SystemExit(f'{p}.{mode}.finisher: power 1..32767, mpCost 0..255, element')
+            moves = techniques_from_json(block.get('techniques'), p)
+            if not any(FINISHER_FIRST <= m <= FINISHER_LAST for m in moves):
+                raise SystemExit(f'{p}.{mode}.finisher: needs a finisher in its techniques')
+    if off and 'techniques' in off:
+        on = techniques_from_json(s['techniques'], p)
+        other = techniques_from_json(off['techniques'], p)
+        # Mode swaps must keep animation/effect identities. Null slots disable a move.
+        if any(a != b and a != 255 and b != 255 for a, b in zip(on, other)):
+            raise SystemExit(f'{p}.off.techniques: preserve animation slots; use null to disable')
     if t < NUM_ORIGINAL and s.get('level') in LEVELS:
         with open(os.path.join(ROOT, 'content/tables/original-species-levels.json')) as f:
             baseline = json.load(f)['levels'][str(t)]
         if s['level'] != baseline and off is None:
             raise SystemExit(f'{p}: off: required when level differs from the committed original level')
+    if 'finisher' in s or 'finisher' in (off or {}):
+        if t >= NUM_ORIGINAL or off is None or 'finisher' not in s or 'finisher' not in off:
+            raise SystemExit(f'{p}.finisher: paired on/off finisher blocks are required for a native species')
+    if off and off['level'] != s['level']:
+        with open(os.path.join(ROOT, 'content/tables/species-mode-balance.json')) as f:
+            bands = json.load(f)['bands']
+        for mode, block, stats in [('on', s, s.get('evolution', {}).get('gains')),
+                                   ('off', off, off.get('stats'))]:
+            if (not isinstance(stats, dict) or not set(STAT_KEYS) <= set(stats)
+                    or not isinstance(block.get('techniques'), list) or 'finisher' not in block):
+                raise SystemExit(f'{p}.{mode}: complete mode balancing requires six targets, techniques and finisher')
+            band = bands[block['level']]
+            for key in STAT_KEYS:
+                lo, hi = band['targets'][key]
+                if type(stats[key]) is not int or not lo <= stats[key] <= hi:
+                    raise SystemExit(f'{p}.{mode}.stats.{key}: {stats[key]} outside {block["level"]} band {lo}..{hi}')
+            from content import load_techniques
+            technique_rows = load_techniques() or {}
+            for move in techniques_from_json(block['techniques'], p):
+                if move >= FINISHER_FIRST: continue
+                row = technique_rows.get(move)
+                if row is None or not band['ordinary_power'][0] <= row['power'] <= band['ordinary_power'][1]:
+                    raise SystemExit(f'{p}.{mode}.techniques: ordinary move {move} outside {block["level"]} power band')
+            for key, limits in [('power', band['finisher_power']), ('mpCost', band['finisher_mpCost'])]:
+                if not limits[0] <= block['finisher'][key] <= limits[1]:
+                    raise SystemExit(f'{p}.{mode}.finisher.{key}: outside {block["level"]} band {limits}')
     if ((s.get('evolution') or {}).get('requirements') or {}).get('digimon') == s['id']:
         raise SystemExit(f'{p}: evolution.requirements.digimon: the species itself (the bonus needs a parent, or -1)')
     para_from_json(s, p)
@@ -1200,6 +1245,7 @@ HEADER_VANILLA = 0x780           # the header sector: a bit per species the orig
 # the header sector: a count, then {id, level with NEW DIGIMON on, level with it off} per explicit JSON override (include/dw/species.h SPECIES_HEADER_LEVEL_OFF; modApplySpeciesLevels)
 HEADER_LEVEL_OFF, LEVEL_SWAP_MAX = 0x500, 32
 HEADER_STATS_OFF, STATS_SWAP_MAX = 0x580, 19
+HEADER_BALANCE_OFF, BALANCE_SWAP_MAX = 0x4fc, 19
 HEADER_EVOLUTION_OFF, EVOLUTION_SWAP_MAX = 0x3c, 20
 VERSION = 2
 HEADER_CITY = 0x38             # optional sector pointer; record format and existing header offsets stay v2
@@ -1495,7 +1541,14 @@ def build(out=OUT, content=None, quiet=False, select=None):
         block = struct.pack('<H', len(evolution_rows)) + b''.join(evolution_rows)
         blobs.append(block.ljust(SECTOR, b'\0'))
         sector += 1
+    balance_rows = balance_swaps(allsp)
+    balance_ref = 0
+    if balance_rows:
+        balance_ref = sector
+        blobs.append((struct.pack('<H', len(balance_rows)) + b''.join(balance_rows)).ljust(SECTOR, b'\0'))
+        sector += 1
     hdr = bytearray(SECTOR)
+    struct.pack_into('<I', hdr, HEADER_BALANCE_OFF, balance_ref)
     struct.pack_into(HEADER, hdr, 0, b'DIGI', VERSION, RECORD_SIZE, count, 0, first_records, sector, 1, fallback_ref, chart_ref)
     struct.pack_into('<I', hdr, HEADER_CITY, city_ref)
     struct.pack_into('<I', hdr, HEADER_EVOLUTION_OFF, evolution_ref)
@@ -1555,6 +1608,22 @@ def evolution_swaps(allsp, paths):
             row += struct.pack('<13hbB', *(r[k] for k in REQ_KEYS), 0)
         rows.append(row)
     if len(rows) > EVOLUTION_SWAP_MAX: raise SystemExit(f'{len(rows)} off evolution overrides: room for {EVOLUTION_SWAP_MAX}')
+    return rows
+
+
+def balance_swaps(allsp):
+    """Per-native-species moves and finisher scalars, both modes, 44 bytes per row."""
+    rows = []
+    for t, s in sorted(allsp.items()):
+        if 'finisher' not in s or 'finisher' not in s.get('off', {}): continue
+        row = struct.pack('<H', t)
+        for block in (s, s['off']):
+            moves = techniques_from_json(block['techniques'], str(t))
+            fin = next(m for m in reversed(moves) if FINISHER_FIRST <= m <= FINISHER_LAST)
+            f = block['finisher']
+            row += bytes(moves) + struct.pack('<BHBB', fin, f['power'], f['mpCost'], ELEMENTS.index(f['element']))
+        rows.append(row)
+    if len(rows) > BALANCE_SWAP_MAX: raise SystemExit('too many mode balance rows')
     return rows
 
 

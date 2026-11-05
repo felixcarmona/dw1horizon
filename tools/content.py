@@ -2,7 +2,7 @@
 """The game's tables as committed JSON, the source of truth of the build (docs/mods/data-sources.md).
 
 Like content/species (tools/species.py), one folder per domain, complete: the build writes the executable's tables from
-these files and never from the disc's values (all or none per domain: a folder that misses a file stops the build).
+these files and never from disc values. Missing files and empty directories remove their rows.
 
   content/techniques/<id>-<name>.json   MOVE_DATA row + MOVE_LEARN_CHANCES row (ids 0..121)
   content/items/<id>-<name>.json        ITEM_PARA row (+ the species an evolution item 71..114 gives) (ids 0..127)
@@ -197,48 +197,45 @@ EMPTY_ITEM = {'name': '', 'value': 0, 'meritValue': 0, 'sortingValue': 0, 'itemC
 
 
 def doc():
-    """The part of a balance document the content folders give (balance.layered puts it over the disc's values). A domain
-    whose folder has files starts from zero: an id without a file gets an empty row."""
+    """Owned numeric domains, starting from zero even when a whole folder is empty."""
     out = {}
-    T = load_techniques()
-    if T:
-        out['techniques'] = {}
-        for i in range(NUM_TECHS):
-            if i not in T:
-                r = dict(EMPTY_TECH)
-                if i < NUM_LEARN: r['learnChances'] = [0, 0, 0]
-                out['techniques'][str(i)] = r; continue
-            x = T[i]
-            bad = [k for k in x if not k.startswith('_') and k not in TECH_KEYS]
-            if bad: raise SystemExit(f'{x["_path"]}: unknown key {", ".join(bad)} (keys: {", ".join(TECH_KEYS)})')
-            el = x['element']
-            r = {'special': ELEMENTS.index(el) if isinstance(el, str) else el}
-            for k in TECH_KEYS[3:-1]: r[k] = x[k]
-            if i < NUM_LEARN:
-                lc = x.get('learnChances')
-                if not (isinstance(lc, list) and len(lc) == 3): raise SystemExit(f'{x["_path"]}: learnChances: [main, second, third] (ids 0..{NUM_LEARN - 1})')
-                r['learnChances'] = list(lc)
-            elif 'learnChances' in x:
-                raise SystemExit(f'{x["_path"]}: learnChances: only techniques 0..{NUM_LEARN - 1} are learned in battle')
-            out['techniques'][str(i)] = r
-    I = load_items()
-    if I:
-        out['items'] = {}; out['evolutionItems'] = {}; out['itemEffects'] = {}
-        for i in range(NUM_ITEMS):
-            evo = EVO_ITEM_FIRST <= i <= EVO_ITEM_LAST
-            if i not in I:
-                out['items'][str(i)] = dict(EMPTY_ITEM)
-                if evo: out['evolutionItems'][str(i)] = 0
-                continue
-            x = I[i]
-            bad = [k for k in x if not k.startswith('_') and k not in ITEM_KEYS]
-            if bad: raise SystemExit(f'{x["_path"]}: unknown key {", ".join(bad)} (keys: {", ".join(ITEM_KEYS)})')
-            if len(x['name'].encode('latin-1', 'replace')) > 19: raise SystemExit(f'{x["_path"]}: name: at most 19 characters')
-            out['items'][str(i)] = {k: x[k] for k in ['name'] + ITEM_KEYS[2:-2]}
-            if evo != ('evolution_target' in x):
-                raise SystemExit(f'{x["_path"]}: evolution_target: {"required" if evo else "only"} for items {EVO_ITEM_FIRST}..{EVO_ITEM_LAST}')
-            if evo: out['evolutionItems'][str(i)] = x['evolution_target']
-            if x.get('effect'): out.setdefault('itemEffects', {})[str(i)] = x['effect']
+    T = load_techniques() or {}
+    out['techniques'] = {}
+    for i in range(NUM_TECHS):
+        if i not in T:
+            r = dict(EMPTY_TECH)
+            if i < NUM_LEARN: r['learnChances'] = [0, 0, 0]
+            out['techniques'][str(i)] = r; continue
+        x = T[i]
+        bad = [k for k in x if not k.startswith('_') and k not in TECH_KEYS]
+        if bad: raise SystemExit(f'{x["_path"]}: unknown key {", ".join(bad)} (keys: {", ".join(TECH_KEYS)})')
+        el = x['element']
+        r = {'special': ELEMENTS.index(el) if isinstance(el, str) else el}
+        for k in TECH_KEYS[3:-1]: r[k] = x[k]
+        if i < NUM_LEARN:
+            lc = x.get('learnChances')
+            if not (isinstance(lc, list) and len(lc) == 3): raise SystemExit(f'{x["_path"]}: learnChances: [main, second, third] (ids 0..{NUM_LEARN - 1})')
+            r['learnChances'] = list(lc)
+        elif 'learnChances' in x:
+            raise SystemExit(f'{x["_path"]}: learnChances: only techniques 0..{NUM_LEARN - 1} are learned in battle')
+        out['techniques'][str(i)] = r
+    I = load_items() or {}
+    out['items'] = {}; out['evolutionItems'] = {}; out['itemEffects'] = {}
+    for i in range(NUM_ITEMS):
+        evo = EVO_ITEM_FIRST <= i <= EVO_ITEM_LAST
+        if i not in I:
+            out['items'][str(i)] = dict(EMPTY_ITEM)
+            if evo: out['evolutionItems'][str(i)] = 0
+            continue
+        x = I[i]
+        bad = [k for k in x if not k.startswith('_') and k not in ITEM_KEYS]
+        if bad: raise SystemExit(f'{x["_path"]}: unknown key {", ".join(bad)} (keys: {", ".join(ITEM_KEYS)})')
+        if len(x['name'].encode('latin-1', 'replace')) > 19: raise SystemExit(f'{x["_path"]}: name: at most 19 characters')
+        out['items'][str(i)] = {k: x[k] for k in ['name'] + ITEM_KEYS[2:-2]}
+        if evo != ('evolution_target' in x):
+            raise SystemExit(f'{x["_path"]}: evolution_target: {"required" if evo else "only"} for items {EVO_ITEM_FIRST}..{EVO_ITEM_LAST}')
+        if evo: out['evolutionItems'][str(i)] = x['evolution_target']
+        if x.get('effect'): out.setdefault('itemEffects', {})[str(i)] = x['effect']
     out.update(load_tables())
     if 'doors' in out:
         out['doors'] = [[[d['model'], d['x'], d['y'], d['z'], d['rotation']] for d in g] for g in out['doors']]
@@ -252,19 +249,18 @@ def doc():
                              '"trainingSpots", then -1 (the overlays point at their spot lists by position; at most 7 screens)')
         out['trainingScreens'] = out['trainingScreensb'] = [{'map': m} for m in scr]
         for m, spots in ts.items(): out[f'trainingSpots{m}'] = out[f'trainingSpots{m}b'] = spots
-    SC = load_screens()
-    if SC:
-        out['screens'] = {}
-        for i in range(NUM_SCREENS):
-            x = SC.get(i)
-            if x is None: out['screens'][str(i)] = dict(EMPTY_SCREEN, fileBytes=[0] * 10); continue
-            bad = [k for k in x if not k.startswith('_') and k not in SCREEN_KEYS]
-            if bad: raise SystemExit(f'{x["_path"]}: unknown key {", ".join(bad)} (keys: {", ".join(SCREEN_KEYS)})')
-            fl = (x['sound_bank'] & 0x1F) | (0x20 if x.get('flag20') else 0) | (0 if x['day_night'] else 0x40) | \
-                 (0x80 if x['reads_digimon'] else 0)
-            out['screens'][str(i)] = {'file': x['file'], 'fileBytes': x.get('fileBytes'), 'tims8': x['tims8'],
-                                      'tims4': x['tims4'], 'flags': fl, 'doors': x['doors'], 'toilet': x['toilet'],
-                                      'caption': x['caption']}
+    SC = load_screens() or {}
+    out['screens'] = {}
+    for i in range(NUM_SCREENS):
+        x = SC.get(i)
+        if x is None: out['screens'][str(i)] = dict(EMPTY_SCREEN, fileBytes=[0] * 10); continue
+        bad = [k for k in x if not k.startswith('_') and k not in SCREEN_KEYS]
+        if bad: raise SystemExit(f'{x["_path"]}: unknown key {", ".join(bad)} (keys: {", ".join(SCREEN_KEYS)})')
+        fl = (x['sound_bank'] & 0x1F) | (0x20 if x.get('flag20') else 0) | (0 if x['day_night'] else 0x40) | \
+             (0x80 if x['reads_digimon'] else 0)
+        out['screens'][str(i)] = {'file': x['file'], 'fileBytes': x.get('fileBytes'), 'tims8': x['tims8'],
+                                  'tims4': x['tims4'], 'flags': fl, 'doors': x['doors'], 'toilet': x['toilet'],
+                                  'caption': x['caption']}
     return out
 
 
@@ -273,8 +269,8 @@ def lint():
     """Errors: what still names a technique or an item that has no file (the game does not have it)."""
     errs = []
     T = load_techniques(); I = load_items(); tab = load_tables()
-    gt = {i for i in range(NUM_TECHS) if T is not None and i not in T}
-    gi = {i for i in range(NUM_ITEMS) if I is not None and i not in I}
+    gt = {i for i in range(NUM_TECHS) if i not in (T or {})}
+    gi = {i for i in range(NUM_ITEMS) if i not in (I or {})}
     tn = S.names('techs')
     def item_id(name, where):
         try: return S.id_of('items', name, where)
@@ -534,9 +530,8 @@ def json_to_slot(i, o, wild, ids, where):
 
 
 def load_maps():
-    """{NAME: file dict} of content/maps (None when the folder has no file: the disc's lists)."""
+    """{NAME: file dict} of content/maps; an empty directory removes every placed Digimon."""
     files = sorted(glob.glob(os.path.join(MAPS_DIR, '*.json')))
-    if not files: return None
     return {os.path.basename(p)[:-5]: dict(json.load(open(p), object_pairs_hook=collections.OrderedDict), _path=p) for p in files}
 
 
@@ -555,7 +550,7 @@ def build_map(name, data, maps=None):
     """The .MAP NAME (its disc bytes `data`) with its Digimon list from content/maps (none without a file). -> bytes"""
     import dwmap
     maps = load_maps() if maps is None else maps
-    if maps is None or name in NEVER_READ: return data
+    if name in NEVER_READ: return data
     m = dwmap.MapFile(data); c = _map_ctx()
     x = maps.get(name)
     slots = x['digimon'] if x else []

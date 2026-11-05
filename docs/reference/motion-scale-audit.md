@@ -149,3 +149,12 @@ bytes. Each species has its own commit.
 | 406 | MaloMyotismon | 54, 61 | 84492 |
 | 407 | Armageddemon | 42, 53 | 73070 |
 | 461 | Omnimon | 42, 43 | 80468 |
+
+Kurisarimon uses a 360-unit Champion height and 150-unit radius. Its final
+celebration model is uniformly resized by 0.784314 from the measured 459-unit
+idle height, with the reviewed victory and praise clips baked into the delta.
+All 46 occupied slots retain constant bone scales; rotations, events and control
+flow are unchanged. Bone-attached effect destinations and the condition bubble
+shrink with the mesh; effect lookup coordinates are unchanged. The import size
+recipe scales the source before applying the rebased delta, including the USA
+World 3 variant. Provenance is recorded in `scale-locks/431.json`.

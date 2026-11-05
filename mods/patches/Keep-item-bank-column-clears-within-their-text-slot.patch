@@ -1,0 +1,30 @@
+From 8fea433636116063230e524b28cfed649c17e553 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 5 Nov 2026 11:49:04 +0000
+Subject: [PATCH] Keep item bank column clears within their text slot
+
+---
+ src/main/script_textbox.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/script_textbox.c b/src/main/script_textbox.c
+index a0be67c..2d189b6 100644
+--- a/src/main/script_textbox.c
++++ b/src/main/script_textbox.c
+@@ -894,7 +894,12 @@ int32_t drawString2(uint8_t *str, int16_t x, int16_t y, int32_t flag)
+ 			break;
+ 		case 0x1c:
+ 			str++;
+-			CLEAR_FROM_PEN(x + pos, y, 0x64);
++			/* The keeper shares each row with the inventory at x = 128.
++			 * Clear only the gap to the count column, not 100 pixels
++			 * beyond the name: a left-list redraw must preserve it. */
++			if (pos < 0x64) {
++				CLEAR_FROM_PEN(x + pos, y, 0x64 - pos);
++			}
+ 			pos = 0x64;
+ 			break;
+ 		case 0x18:
+-- 
+2.55.0
+

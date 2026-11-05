@@ -18,6 +18,7 @@ import importlib.util, json, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '../../..'))
 OVERLAYS = {   # field_overlay: (id, generator module, model name)
+    'saberleomon-pace': ('258', 'tools.models.field_animations.pace', '258-saberleomon-pace'),
     'marinedevimon-field': ('279', 'tools.models.field_animations.marine_devimon', '279-marinedevimon-field'),
     'bulbmon-field': ('313', 'tools.models.field_animations.bulbmon', '313-bulbmon-field'),
     'kurisarimon-celebration': ('431', 'tools.models.field_animations.celebrations', '431-kurisarimon-celebration'),
@@ -89,7 +90,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'quetzalmon-steady-flight': ('249', 'tools.models.field_animations.gliding', '249-quetzalmon-steady-flight'),
     'kokuwamon-rolling-boots': ('247', 'tools.models.field_animations.pace', '247-kokuwamon-rolling-boots'),
     'infermon-tripod-field': ('246', 'tools.models.field_animations.pace', '246-infermon-tripod-field'),
-    'piedmon-native-float': ('245', 'tools.models.field_animations.chibi', '245-piedmon-native-float'),
+    'piedmon-native-float': ('245', 'tools.models.field_animations.piedmon', '245-piedmon-native-float'),
     'superstarmon-supported-field': ('244', 'tools.models.field_animations.celebrations', '244-superstarmon-supported-field'),
     'starmon-boxer-field': ('243', 'tools.models.field_animations.pace', '243-starmon-boxer-field'),
     'sorcermon-supported-field': ('242', 'tools.models.field_animations.pace', '242-sorcermon-supported-field'),
@@ -102,7 +103,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'gatomon-supported-field': ('234', 'tools.models.field_animations.gatomon', '234-gatomon-supported-field'),
     'bombernanimon-boxer-field': ('232', 'tools.models.field_animations.bomber_nanimon', '232-bombernanimon-boxer-field'),
     'shellnumemon-slug-field': ('231', 'tools.models.field_animations.locomotion', '231-shellnumemon-slug-field'),
-    'rosemon-field': ('230', 'tools.models.field_animations.chibi', '230-rosemon-field'),
+    'rosemon-field': ('230', 'tools.models.field_animations.pace', '230-rosemon-field'),
     'phantomon-native-glide': ('229', 'tools.models.field_animations.phantomon', '229-phantomon-native-glide'),
     'apemon-knuckle-field': ('227', 'tools.models.field_animations.apemon', '227-apemon-knuckle-field'),
     'silphymon-field': ('226', 'tools.models.field_animations.chibi', '226-silphymon-field'),
@@ -139,7 +140,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'veemon-field': ('180', 'tools.models.field_animations.gaits', '180-veemon-field'),
     'exveemon-field': ('194', 'tools.models.field_animations.gaits', '194-exveemon-field'),
     'flamedramon-field': ('195', 'tools.models.field_animations.gaits', '195-flamedramon-field'),
-    'stingmon-field': ('187', 'tools.models.field_animations.chibi', '187-stingmon-field'),
+    'stingmon-field': ('187', 'tools.models.field_animations.secondary_motion', '187-stingmon-field'),
     'angewomon-field': ('190', 'tools.models.field_animations.celebrations', '190-angewomon-field'),
     'paildramon-field': ('199', 'tools.models.field_animations.chibi', '199-paildramon-field'),
     'ankylomon-field': ('189', 'tools.models.field_animations.pace', '189-ankylomon-field'),

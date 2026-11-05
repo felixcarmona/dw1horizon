@@ -5,7 +5,7 @@
     {
       "image": "seam-1-north-rubble.png",
       "at": [
-        384,
+        385,
         94
       ],
       "depth": [
@@ -61,14 +61,14 @@
             185
           ]
         ],
-        "score": 0.9164501428604126,
-        "area": 3995,
+        "score": 0.9531247615814209,
+        "area": 4097,
         "part_scores": [],
-        "source": "seam-1-2304x1856.png",
+        "source": "seam-1-entrances.png",
         "crop": [
-          38,
           0,
-          2227,
+          0,
+          2212,
           1856
         ]
       }
@@ -76,8 +76,8 @@
     {
       "image": "seam-1-middle-rubble.png",
       "at": [
-        386,
-        209
+        387,
+        208
       ],
       "depth": [
         433,
@@ -140,14 +140,14 @@
             242
           ]
         ],
-        "score": 0.9641261100769043,
-        "area": 6865,
+        "score": 0.9654639959335327,
+        "area": 7274,
         "part_scores": [],
-        "source": "seam-1-2304x1856.png",
+        "source": "seam-1-entrances.png",
         "crop": [
-          38,
           0,
-          2227,
+          0,
+          2212,
           1856
         ]
       }
@@ -155,7 +155,7 @@
     {
       "image": "seam-1-south-rubble.png",
       "at": [
-        385,
+        384,
         372
       ],
       "depth": [
@@ -215,14 +215,14 @@
             462
           ]
         ],
-        "score": 0.9638307094573975,
-        "area": 5865,
+        "score": 0.9546781778335571,
+        "area": 6118,
         "part_scores": [],
-        "source": "seam-1-2304x1856.png",
+        "source": "seam-1-entrances.png",
         "crop": [
-          38,
           0,
-          2227,
+          0,
+          2212,
           1856
         ]
       }
@@ -230,7 +230,7 @@
     {
       "image": "seam-1-bottom-rubble.png",
       "at": [
-        382,
+        383,
         548
       ],
       "depth": [
@@ -306,14 +306,14 @@
             631
           ]
         ],
-        "score": 0.9617587327957153,
-        "area": 4591,
+        "score": 0.9565550088882446,
+        "area": 4872,
         "part_scores": [],
-        "source": "seam-1-2304x1856.png",
+        "source": "seam-1-entrances.png",
         "crop": [
-          38,
           0,
-          2227,
+          0,
+          2212,
           1856
         ]
       },
@@ -1802,6 +1802,1523 @@
       "before": 0,
       "after": 128,
       "reason": "Close solid rubble edges only; retain the floor crossing behind the lower heap"
+    },
+    {
+      "tile": [
+        42,
+        21
+      ],
+      "before": 128,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        43,
+        21
+      ],
+      "before": 128,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        44,
+        21
+      ],
+      "before": 128,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        45,
+        21
+      ],
+      "before": 128,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        46,
+        21
+      ],
+      "before": 128,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        47,
+        21
+      ],
+      "before": 128,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        42,
+        22
+      ],
+      "before": 0,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        43,
+        22
+      ],
+      "before": 0,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        44,
+        22
+      ],
+      "before": 0,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        45,
+        22
+      ],
+      "before": 0,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        46,
+        22
+      ],
+      "before": 0,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        47,
+        22
+      ],
+      "before": 0,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        59,
+        22
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        60,
+        22
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        61,
+        22
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        62,
+        22
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        63,
+        22
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        64,
+        22
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        65,
+        22
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        66,
+        22
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        67,
+        22
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        68,
+        22
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        69,
+        22
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        70,
+        22
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        71,
+        22
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        72,
+        22
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        43,
+        23
+      ],
+      "before": 0,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        44,
+        23
+      ],
+      "before": 0,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        45,
+        23
+      ],
+      "before": 0,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        46,
+        23
+      ],
+      "before": 0,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        47,
+        23
+      ],
+      "before": 0,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        59,
+        23
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        60,
+        23
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        61,
+        23
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        62,
+        23
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        63,
+        23
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        64,
+        23
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        65,
+        23
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        66,
+        23
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        67,
+        23
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        68,
+        23
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        69,
+        23
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        70,
+        23
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        71,
+        23
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        72,
+        23
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        43,
+        24
+      ],
+      "before": 0,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        44,
+        24
+      ],
+      "before": 0,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        45,
+        24
+      ],
+      "before": 0,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        46,
+        24
+      ],
+      "before": 0,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        47,
+        24
+      ],
+      "before": 0,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        58,
+        24
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        59,
+        24
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        60,
+        24
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        61,
+        24
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        62,
+        24
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        63,
+        24
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        64,
+        24
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        65,
+        24
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        66,
+        24
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        67,
+        24
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        68,
+        24
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        69,
+        24
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        70,
+        24
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        71,
+        24
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        72,
+        24
+      ],
+      "before": 111,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        43,
+        25
+      ],
+      "before": 0,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        44,
+        25
+      ],
+      "before": 0,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        45,
+        25
+      ],
+      "before": 0,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        46,
+        25
+      ],
+      "before": 0,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        47,
+        25
+      ],
+      "before": 0,
+      "after": 111,
+      "reason": "Transition at the open north doorway, clear of jambs and rubble."
+    },
+    {
+      "tile": [
+        28,
+        34
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        29,
+        34
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        29,
+        35
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        29,
+        36
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        29,
+        37
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        29,
+        38
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        30,
+        38
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        29,
+        39
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        30,
+        39
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        30,
+        40
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        30,
+        41
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        30,
+        42
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        30,
+        43
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        31,
+        43
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        25,
+        44
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        26,
+        44
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        27,
+        44
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        28,
+        44
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        29,
+        44
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        30,
+        44
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        31,
+        44
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        25,
+        45
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        26,
+        45
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        27,
+        45
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        28,
+        45
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        29,
+        45
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        30,
+        45
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        31,
+        45
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        25,
+        46
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        26,
+        46
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        27,
+        46
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        28,
+        46
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        29,
+        46
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        30,
+        46
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        31,
+        46
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        25,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        26,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        27,
+        47
+      ],
+      "before": 128,
+      "after": 110,
+      "reason": "Transition inside the open rock passage."
+    },
+    {
+      "tile": [
+        28,
+        47
+      ],
+      "before": 128,
+      "after": 110,
+      "reason": "Transition inside the open rock passage."
+    },
+    {
+      "tile": [
+        29,
+        47
+      ],
+      "before": 128,
+      "after": 110,
+      "reason": "Transition inside the open rock passage."
+    },
+    {
+      "tile": [
+        30,
+        47
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        31,
+        47
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        26,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        27,
+        48
+      ],
+      "before": 128,
+      "after": 110,
+      "reason": "Transition inside the open rock passage."
+    },
+    {
+      "tile": [
+        28,
+        48
+      ],
+      "before": 128,
+      "after": 110,
+      "reason": "Transition inside the open rock passage."
+    },
+    {
+      "tile": [
+        29,
+        48
+      ],
+      "before": 128,
+      "after": 110,
+      "reason": "Transition inside the open rock passage."
+    },
+    {
+      "tile": [
+        30,
+        48
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        31,
+        48
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        26,
+        49
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        27,
+        49
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        28,
+        49
+      ],
+      "before": 128,
+      "after": 110,
+      "reason": "Transition inside the open rock passage."
+    },
+    {
+      "tile": [
+        29,
+        49
+      ],
+      "before": 128,
+      "after": 110,
+      "reason": "Transition inside the open rock passage."
+    },
+    {
+      "tile": [
+        30,
+        49
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        31,
+        49
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        32,
+        49
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        26,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        27,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        28,
+        50
+      ],
+      "before": 128,
+      "after": 110,
+      "reason": "Transition inside the open rock passage."
+    },
+    {
+      "tile": [
+        29,
+        50
+      ],
+      "before": 128,
+      "after": 110,
+      "reason": "Transition inside the open rock passage."
+    },
+    {
+      "tile": [
+        30,
+        50
+      ],
+      "before": 0,
+      "after": 110,
+      "reason": "Transition inside the open rock passage."
+    },
+    {
+      "tile": [
+        31,
+        50
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        32,
+        50
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        26,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        27,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        28,
+        51
+      ],
+      "before": 128,
+      "after": 110,
+      "reason": "Transition inside the open rock passage."
+    },
+    {
+      "tile": [
+        29,
+        51
+      ],
+      "before": 128,
+      "after": 110,
+      "reason": "Transition inside the open rock passage."
+    },
+    {
+      "tile": [
+        30,
+        51
+      ],
+      "before": 0,
+      "after": 110,
+      "reason": "Transition inside the open rock passage."
+    },
+    {
+      "tile": [
+        31,
+        51
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        32,
+        51
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        27,
+        52
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        28,
+        52
+      ],
+      "before": 128,
+      "after": 110,
+      "reason": "Transition inside the open rock passage."
+    },
+    {
+      "tile": [
+        29,
+        52
+      ],
+      "before": 128,
+      "after": 110,
+      "reason": "Transition inside the open rock passage."
+    },
+    {
+      "tile": [
+        30,
+        52
+      ],
+      "before": 0,
+      "after": 110,
+      "reason": "Transition inside the open rock passage."
+    },
+    {
+      "tile": [
+        31,
+        52
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        32,
+        52
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        27,
+        53
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        28,
+        53
+      ],
+      "before": 128,
+      "after": 110,
+      "reason": "Transition inside the open rock passage."
+    },
+    {
+      "tile": [
+        29,
+        53
+      ],
+      "before": 128,
+      "after": 110,
+      "reason": "Transition inside the open rock passage."
+    },
+    {
+      "tile": [
+        30,
+        53
+      ],
+      "before": 0,
+      "after": 110,
+      "reason": "Transition inside the open rock passage."
+    },
+    {
+      "tile": [
+        31,
+        53
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        32,
+        53
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        27,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        28,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        29,
+        54
+      ],
+      "before": 128,
+      "after": 110,
+      "reason": "Transition inside the open rock passage."
+    },
+    {
+      "tile": [
+        30,
+        54
+      ],
+      "before": 0,
+      "after": 110,
+      "reason": "Transition inside the open rock passage."
+    },
+    {
+      "tile": [
+        31,
+        54
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        32,
+        54
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        27,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        28,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        29,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "The open west passage now has ground through the former wall."
+    },
+    {
+      "tile": [
+        32,
+        55
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        33,
+        55
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        32,
+        56
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        33,
+        56
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        32,
+        57
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        33,
+        57
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        32,
+        58
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
+    },
+    {
+      "tile": [
+        33,
+        58
+      ],
+      "before": 110,
+      "after": 0,
+      "reason": "Remove the former wall exit; this remains ordinary approach floor."
     }
-  ]
+  ],
+  "exit_review": {
+    "west": "Open rock passage; the sandy dark floor is at ground level. The transition happens before the wall can overlap the actor.",
+    "north": "The open doorway uses the clear left side, away from the first rubble pile. Actors transition before passing beneath the lintel.",
+    "foreground": "All four rubble silhouettes re-segmented from the edited full-resolution art; the existing donor pages and sorting remain in use."
+  }
 }
