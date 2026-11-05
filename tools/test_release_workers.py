@@ -69,6 +69,16 @@ class Workers(unittest.TestCase):
 
 
 class RecordingCache(unittest.TestCase):
+    def test_launcher_metadata_does_not_prevent_cross_release_hits(self):
+        import dwpatch as dw
+        first = {'SPECIES': 'all', 'FUTURE_BUILD_FLAG': 'one', 'CODEX_THREAD_ID': 'first',
+                 'CLAUDE_CODE_SESSION_ID': 'first', 'NAME': 'release-first', 'W': '/first'}
+        second = dict(first, CODEX_THREAD_ID='second', CLAUDE_CODE_SESSION_ID='second',
+                      NAME='release-second', W='/second')
+        self.assertEqual(dw.release_cache_environment(first), dw.release_cache_environment(second))
+        second['FUTURE_BUILD_FLAG'] = 'two'
+        self.assertNotEqual(dw.release_cache_environment(first), dw.release_cache_environment(second))
+
     def test_fingerprint_tracks_all_inputs_and_ignores_location(self):
         with tempfile.TemporaryDirectory() as td, \
                 patch('tools.derive.cache.runtime_sources', return_value='runtime'):

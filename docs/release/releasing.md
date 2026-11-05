@@ -84,7 +84,10 @@ processes and merge in their original file/base order. Web-engine USA and Japan
 recordings run in separate processes, at most two concurrently.
 
 Release caches live in `build/release-derive-cache`, separate from developer and
-player caches. Source recording keys hash every supplied input file, directory
+player caches. Retain that directory at the same absolute path between cuts, or
+select a retained private location with `--derive-cache`; its locked staging paths
+are part of incremental cache identities. Launcher/session metadata is removed
+from the replay environment, while unknown build settings remain keyed. Source recording keys hash every supplied input file, directory
 inventory, recipe, source-disc contents, environment and interpreter/runtime
 sources. Each snapshot file is SHA-256 checked before any restoration. A changed recording
 key can still reuse audited unchanged steps, including their original input traces;

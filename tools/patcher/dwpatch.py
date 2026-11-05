@@ -1301,6 +1301,14 @@ def release_timing(name, **data):
         RELEASE_METRICS.record(name, data)
 
 
+def release_cache_environment(environment):
+    """Discard launcher metadata and native paths; preserve recipe/build settings."""
+    omitted = {'W', 'DW_PORTRAITS_CACHE', 'EMU_PORT', 'DW_SELFTEST_DERIVE', 'NAME', 'DERIVE_JOBS',
+               'PWD', 'OLDPWD', 'SHLVL', '_', 'DBUS_SESSION_BUS_ADDRESS', 'XDG_SESSION_ID'}
+    return {k: v for k, v in environment.items()
+            if k not in omitted and not k.startswith(('CODEX_', 'CLAUDE'))}
+
+
 def release_derive(root, recipe, facts, cache=None, slot=None, record=False, jobs=None, log=None,
                    source_discs=None):
     """Release-only caching; isolated verification and player replay use derive_run directly."""
@@ -1318,9 +1326,8 @@ def release_derive(root, recipe, facts, cache=None, slot=None, record=False, job
         # The recorded player bundle does not need the developer cache implementation.
         shutil.copyfile(os.path.join(REPO, 'tools/build_cache.py'), staged / 'tools/build_cache.py')
         # Stable roots are necessary for the audited step cache's absolute dependencies.
-        env = dict(os.environ, DW_BUILD_CACHE=str(Path(cache).resolve() / 'steps'))
-        for key in ('W', 'DW_PORTRAITS_CACHE', 'EMU_PORT', 'DW_SELFTEST_DERIVE', 'CODEX_TOOL_CALL_ID', 'NAME', 'DERIVE_JOBS'):
-            env.pop(key, None)
+        env = dict(release_cache_environment(os.environ),
+                   DW_BUILD_CACHE=str(Path(cache).resolve() / 'steps'))
         snapshot = None
         if record:
             env.pop('DW_BUILD_CACHE', None)
