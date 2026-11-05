@@ -365,9 +365,9 @@ Combined Chinese runtime, measured in the full nine-language build:
 `main_BSS_END` 0x801ce1a4, heap 187728 B, 320 B more than the eight-language
 baseline (0x801ce2e4, 187408 B). All 320 actual-archive heap setups pass; the
 tightest screen, 207, keeps 3008 B. MENU is 55156 B, 140 B below its 27-sector
-limit. The Chinese module is 61256 B and resides above 2 MB. PCSX-Redux tests
+limit. The Chinese module is 61276 B and resides above 2 MB. PCSX-Redux tests
 cover Chinese new game, dialogue, menus, ordinary battle and memory-card
 save/load at 8 MB, plus the disabled Chinese entry and the same save in English
 at 2 MB. Physical hardware validation remains outstanding.
 
-| `Render-empty-Chinese-battle-move-slots-with-the-resident-font.patch` | — | Chinese empty technique slots use the resident 未装备 label; other languages keep the original label path. | Chinese module and VS overlay only; final build rechecks the unchanged main/MENU footprint. |
+| `Render-empty-Chinese-battle-move-slots-with-the-resident-font.patch` | — | Chinese empty technique slots use the resident 未装备 label; other languages keep the original label path. | Final nine-language main_BSS_END 0x801ce1a4, heap 187728 B (+320 B over baseline); all 320 setups pass, minimum margin 3008 B. MENU remains 55156 B; extra-RAM module 61276 B. |
