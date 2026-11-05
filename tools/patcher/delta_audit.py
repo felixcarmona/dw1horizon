@@ -13,6 +13,37 @@ from pathlib import Path
 import re
 import struct
 import subprocess
+import sys
+import tempfile
+
+
+def chinese_language_writes(build):
+    """Regenerate virtual DWLP data from current, layout-compatible language executables."""
+    tools = str(Path(__file__).resolve().parents[1])
+    if tools not in sys.path:
+        sys.path.insert(0, tools)
+    import langpatch
+    folders = {p.name[4:]: p for p in Path(build).glob('exe-*') if p.is_dir()}
+    if not {'en', 'zh-hans'} <= folders.keys():
+        raise ValueError('Chinese language provenance requires current English and Chinese executables')
+    languages = ['en'] + sorted(set(folders) - {'en'})
+    symbols, images, addresses = [], [], []
+    for language in languages:
+        folder = folders[language]
+        symbols.append(langpatch.elf_symbols(folder / 'SLUS_010.32.elf'))
+        address, image = langpatch.exe_image(folder / 'SLUS_010.32')
+        addresses.append(address)
+        images.append(image)
+    if len(set(addresses)) != 1:
+        raise ValueError('language executables have different load addresses')
+    for other in symbols[1:]:
+        langpatch.check_layout(symbols[0], other)
+    spans = langpatch.all_language_runs(images, addresses[0])[languages.index('zh-hans')]
+    langpatch.check_code(symbols[0], spans)
+    with tempfile.TemporaryDirectory(prefix='language-provenance-') as tmp:
+        path = Path(tmp) / 'LANGZH.BIN'
+        langpatch.write_patch(spans, path)
+        return path.read_bytes()
 
 
 def sections(build, plan):
@@ -246,6 +277,12 @@ def inspect(payload, build, bases, secondary, plan=None):
                     oldpos += n + seek
                     diffpos += n
             rows = mapped.get(entry['file'], [])
+            if entry['file'] == '@zh/writes':
+                expected = chinese_language_writes(build)
+                if any(files[entry['file']] != expected for files in regional_targets.values()):
+                    raise ValueError('Chinese language writes differ from current executable text spans')
+                classes['a'] += len(expected)
+                continue
             generated = build / 'lang' / Path(entry['file']).name
             if entry['file'].startswith('SCN/LANG') and generated.is_file() and generated.read_bytes() == target:
                 classes['a'] += len(target)
