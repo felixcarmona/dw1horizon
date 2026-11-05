@@ -1049,7 +1049,7 @@
   "skeleton_sha256": "9f02557f6d97eff22598f695be6b093f33e128c0574ba35b2871a8df4854a0a4",
   "source_sha256": "40dc5354af4b00f3d2991db08be5b6835aa0fef8e40f258d6b76285116945aef",
   "base_generator": "tools.models.field_animations.metal_garurumon",
-  "post_source_sha256": "dd7dab39356fca18a40b4ec6d33c647ce6ac23939acdc4838f90edb4160fd1e7",
+  "post_source_sha256": "1087604a67f8e2937b633a4680e432584d847dd486e6d2ea169549780971b4d4",
   "slots": {
    "3": {
     "from": 2,

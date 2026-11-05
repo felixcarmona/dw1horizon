@@ -548,7 +548,8 @@ bones of each leg, the soles, where the paws stand, one row per clip with cadenc
 and body motion). Every target is a world point; the left legs' bend planes are the right legs' standing pose
 mirrored in the world, so an import whose idle stands with one leg back does not twist the other. Footsteps keep the
 species' own sound and land on touchdowns. MetalGarurumon (`metal_garurumon.py`, 191) walks in a lateral sequence
-(18 ticks at 22 units per tick) and gallops (14 at 50); its idle stays as imported. Armadillomon
+(18 ticks at 22 units per tick) and gallops (14 at 50). Its idle plants mirrored paws in the same neutral stance,
+while retaining the imported body breathing, head, blades and tail motion. Armadillomon
 (`armadillomon.py`, 185) has legs of about 80 units under a shell whose rim stands on the floor, so its body cannot
 drop to lengthen a stride: it walks in a quick lateral sequence (9 ticks at 18) and runs in a trot with a short
 flight (8 ticks at 35).
