@@ -1,8 +1,9 @@
-# Square quick care: icon design
+# Square quick care
 
-Status: design only. No input, C code, game asset or patch-series change is included.
+Status: icon 1 selected and implemented. Field quick care uses physical Square;
+Confirm remains field interaction. Validation measurements are recorded below.
 
-## Proposed behavior
+## Field behavior
 
 Square opens quick care from anywhere on the current field map. The partner does
 not have to be nearby or face the tamer. Opening the list never consumes an item;
@@ -10,13 +11,14 @@ the ordinary confirm button gives the selected item or executes the selected car
 command. Circle with JAPANESE CONTROLS ON, or Cross with it OFF, remains the field
 interaction button. This separates care from talking, training and using machines.
 
-This revision compares **only the icon artwork**. The existing care badge keeps
-its exact anchor, projected size, bob, appearance/disappearance, visibility rules
-and three-frame press timing. There is no HUD badge, hint row, edge clamp,
-offscreen fallback or new text. Earlier A/B/C placement alternatives are withdrawn.
-The field input change above remains a separate future implementation step.
+The artwork decision changes **only the icon**. The existing care badge keeps
+its exact anchor, projected size, bob, fade, visual suppression and three-frame
+press timing. Care availability gains distance/facing independence as described
+above. There is no HUD badge, hint row, edge clamp,
+offscreen fallback or extra prompt text. Earlier A/B/C placement alternatives are withdrawn.
+The field input change above is implemented only in ordinary field walking control.
 
-Recommend **1, native round cap**: the familiar gray button with a pink Square.
+Selected **1, native round cap**: the familiar gray button with a pink Square.
 Options 2–4 change only cap shape, outline or face shading within the same texture
 box. No option adds prompt behavior or changes the care list.
 
@@ -35,10 +37,11 @@ The authoritative sources are the patches in `mods/patches/series`:
   palette through `modButtonClut`.
 - `Patch-0241-on-a-Japanese-base-disc-JAPANESE-CONTROLS.patch` detects native
   Circle/Cross artwork and provides the alternate layout's frames.
-- `Let-the-care-menu-win-over-nearby-machines.patch` moves `modFeedTick` ahead
-  of `checkMapInteraction` in `tamerTickWalkingState`. Consequently, current
-  care wins a confirm press even beside a machine when care is available.
-  Older prepared build trees with the reverse order are not current behavior.
+- `Let-the-care-menu-win-over-nearby-machines.patch` established the previous
+  Confirm priority by moving `modFeedTick` ahead of `checkMapInteraction`.
+- `Use-Square-for-field-quick-care-with-a-separate-pink-badge.patch` restores
+  map-interaction priority and gives physical Square exclusive ownership of field
+  quick care, with separate artwork. Menu and battle input handlers are unchanged.
 
 Asset: disc-derived `ETCDAT/SYSTEM_W.TIM`, 4-bit indexed UI texture page based at
 VRAM `(320,128)`. Three **16×12 texel** frames occupy texture UV
@@ -68,11 +71,11 @@ the ring anchor. `MOD_FEED_HINT` grows/shrinks it over four game ticks (0.2 s at
 20 Hz). The condition-ring renderer also hides it in menus, outside field state,
 with unsuitable partner states, and when the condition-ring option is disabled.
 
-`mod_feed.c:modFeedTick` currently requires normal tamer and partner states,
+Before this change, `mod_feed.c:modFeedTick` required normal tamer and partner states,
 script idle (`IS_SCRIPT_PAUSED == 1`), no fade protection, both care boxes fully
 closed, no held world item, a nonempty care list, and `feedPartnerAhead()`.
 That last test requires ±45 degrees and the item-take distance plus 12, capped
-at 127 before `checkEatDistance`. The proposed shortcut removes this last test;
+at 127 before `checkEatDistance`. The Square shortcut removes this last test;
 the other guards remain, with an explicit field/battle ownership check.
 
 ## Four icon variants, one unchanged prompt
@@ -120,8 +123,7 @@ coordinates. Do not move the icon to avoid floors, scenery, the partner or other
 bubbles. Do not introduce a HUD fallback or hint label. Do not alter the condition
 bubbles to make room. No icon variant changes when care becomes available.
 
-The source trace and future control mapping remain below for implementation
-context; this artwork revision implements neither input nor care eligibility.
+The source trace and before/after control mapping below describe the implementation.
 
 ## Input ownership, before and after
 
@@ -139,7 +141,8 @@ this proposal does not change `CONFIRM_BUTTON`, `CANCEL_BUTTON` or `ALT_BUTTON`.
 | Item inventory and item-use flow | Existing Confirm/Cancel and inventory operations | Unchanged; field shortcut disabled for the entire flow |
 | Evolution chart | Square opens requirements on an eligible target; Square or Cancel closes the requirements popup | Unchanged; no care input reaches this menu |
 | Techniques menu | Square enters the existing move-information state (`game_menu.c`, MENU_STATE 6 → 7) | Unchanged |
-| Item Bank / shop quantity boxes | Square selects the maximum amount (`all`); Confirm accepts, Cancel backs out; alternate supports amount stepping | Unchanged; applies to deposit/withdraw and other quantity boxes |
+| Item Bank | Square moves the selected stack (`all`); Confirm moves one and alternate moves ten | Unchanged; no field care dispatch |
+| Shop quantity boxes | Square selects the maximum amount; Confirm accepts, Cancel backs out; alternate supports amount stepping | Unchanged |
 | Naming UI | Square clears the entered name | Unchanged |
 | Field battle | Confirm issues highlighted command; Square requests a finisher when the gauge is ready | Unchanged; no quick-care badge or shortcut, including loading and results |
 | Tournament / VS battle and selection | Existing Square finisher, selection and other context-specific actions | Unchanged; only the field walking-state handler gains care |
@@ -153,42 +156,64 @@ script and care box. Require a fresh Square edge after any menu/transition close
 a held button must not reopen care or spend an item. The cap is a promise of
 availability, so input and prompt must share the same predicate.
 
+## Control explanations
+
+All nine `jijimons-house.json` language files explain Square in Tokomon's item
+tutorial (`s178.sec6.u2`), Botamon's care advice (`s178.sec7.u3`) and Jijimon's
+early forest hint (`s178.sec5.u20`). The tutorial also says that Confirm talks or
+interacts, Square only opens the list, and an item must be selected and confirmed.
+The colored Cross token uses the existing layout adapter to become Circle when
+JAPANESE CONTROLS is on; Square is never remapped. No new glyph codes are needed.
+The nine-language web care description and the player guide's controls section
+match this behavior. There was no separate care FAQ in the documentation.
+
 ## Heap, VRAM and MENU estimate
 
-This design changes no executable: **main_BSS_END delta 0; heap delta 0;
-MENU_REL delta 0; VRAM delta 0** for this commit. The following are design budgets,
-not compiled measurements or a hardware-safety claim.
+The matched full multilingual comparison measures **main_BSS_END +432 B**
+(`0x801ceb70` → `0x801ced20`), hence 432 bytes less heap. Both builds use the same
+nine-language text padding, file tables, compiler image and make arguments, with
+only the five files in the C patch restored for the baseline. MENU remains
+**53,796 B** in both builds (**55,296 B** after sector rounding).
 
-| Resource | Provisional budget, any one variant |
+| Resource | Implemented icon 1 |
 |---|---|
 | Sprite pixels | Three 16×12 frames at 4 bpp = **288 bytes VRAM** |
 | Palette | One 16-color CLUT = **32 bytes VRAM**; all variants fit within 16 colors |
-| Persistent CPU buffers | Target 0; generate from disc-derived UI data during the build/load path |
-| Resident executable / heap loss | Conservative **1,024-byte budget** for routing/load code and any retained 320-byte upload data; must be measured later |
+| Persistent CPU buffers | 0 additional resident buffers; reuse the existing alternate-confirm frame buffer while loading |
+| Resident executable / heap loss | **432 bytes measured** in the full multilingual comparison; loading uses a 96-byte stack sprite buffer |
 | Per-render packet | The existing single POLY_FT4, **40 bytes**; no extra badge packet |
-| MENU_REL growth | **0 bytes** intended; no text or menu change |
-| New disc filenames / allocations | 0 intended; use existing disc-derived UI assets |
+| MENU_REL growth | **0 bytes measured**; no menu code change |
+| New disc filenames / allocations | 0; use existing disc-derived UI assets |
 
-Only one variant would ship. These budgets are not multiplied by four, and no
+Only icon 1 ships. These costs are not multiplied by four, and no
 extra animation state or font/text buffer is needed. Existing confirm artwork
 must remain intact: the care badge needs separate texture/palette routing rather
 than replacing the shared dialogue cap or recoloring a shared CLUT. The preview
 uses an isolated palette specifically because the native palette is also used by
 other UI elements, including the HP/MP HUD.
 
-These VRAM bytes require a verified unused rectangle and palette slot in every
-base-disc/localization UI page. `(352,230)` is already owned by the confirm adapter
-and must not be reused. Prefer a build-time generated asset delta over a new
-resident frame array. Do not assume UI filler is free without a texture-use audit.
-Existing ring state already supplies fade/bob and phase; sharing helpers must not
-accidentally prevent compiler inlining and increase main's size unexpectedly.
+The three care frames use TIM-relative rectangles `(240,27,16,12)`,
+`(240,39,16,12)` and `(192,96,16,12)`; their palette occupies VRAM `(352,252)`.
+All four rectangles contain only filler on all eight supported base discs and
+avoid the native and translated label crops, including Chinese menu cells.
+`tools/localize/systemw.py` reserves these holes against future Chinese label
+changes. `(352,230)` remains owned by the confirm adapter and is not reused.
+The two right-edge uploads omit their first transparent source column and add
+transparent padding. Their UV origin is 239, with the untouched native border
+mapped transparent in the private palette; the endpoint is 255, so the existing
+16-texel span cannot wrap through U=256. All eight base discs' border pixels were
+checked. The guard columns are reserved against localized label changes too.
+`modButtonsTimLoaded` derives the Square from the disc's Cross/Circle cap,
+uploads one stack-local frame at a time with DrawSync before reuse, then restores
+the alternate-confirm buffer. Changing layout preserves the care frames/palette.
 
-As a reference only, the reviewed v0.0.6 build records `main_BSS_END = 0x801ce65c`,
-186,528 bytes heap, and MENU_REL 55,132 bytes (55,296 bytes after 2,048-byte sector
-rounding). This is not a measurement of a future implementation or necessarily
-of this branch's full build. MENU's sector-bound linker assertion and
-`tools/title_storage_check.py` remain mandatory; spare file bytes do not authorize
-another sector. No MENU growth is needed for the recommended option.
+MENU's sector-bound linker assertion and `tools/title_storage_check.py` remain
+mandatory; spare file bytes do not authorize another sector. The final heap is
+**184,784 bytes**. Both the native sweep and all **320 archive-backed screen
+setups** pass without a heap override. The tightest setup is screen 207, with
+**64 bytes** of remaining margin; screen 41 retains 3,000 bytes. All nine language
+builds have the same `main_BSS_END` and MENU size, identical title storage, and
+valid sector bounds. The linked-reference title-storage check also passes.
 
 ## Evidence and implementation acceptance
 
@@ -203,27 +228,48 @@ For the screenshots, a restored PCSX-Redux visual fixture renders the existing
 care badge. A temporary debug hint holds it visible for comparison; texture-only
 uploads and a care-palette preview override replace its artwork. Its drawing
 coordinates, projection and animation code are untouched. The comparison includes
-reference captures of the existing badge on each floor. Preview changes are
-emulator-local and are discarded when it stops; no disc or C patch is produced.
+reference captures of the existing badge on each floor. Those preview changes were
+emulator-local and were discarded; no disc or C patch was produced for the previews.
 
-Before a later implementation can be accepted:
+The implementation evidence is separate from the artwork previews. The full
+nine-language disc was freshly booted with Continue in PCSX-Redux, with 2 MB RAM
+(the game's 8 MB probe returns false). Its own field state was reused only with
+the same executable hash. No texture override or replacement input handler was
+used for these captures. Fixtures set needs, inventory, positions and raised
+flags; the battle fixture fills the actual finisher gauge. Actions use emulated
+pad input, and menu/battle observations read the running game's state.
 
-1. Record `main_BSS_END` before/after using the same full multilingual build;
-   run heapcheck for native and extended-story maps on original 2 MB RAM, with
-   no heap overrides. Run the full documented build with eight jobs.
-2. Measure MENU file/sector bounds and GPU packet high water; verify the proposed
-   sprite/CLUT space against every supported base and language. Measure actual
-   memory instead of treating the budgets above as evidence.
-3. Test both layouts and all three font settings; show care with no bubble,
-   hunger, low MP, scolding, tall/small partners, camera edges and no eligible
-   entries. Verify that old/new bars, condition-bubble visibility and prompt
-   behavior remain unchanged.
-4. Press Confirm beside NPCs, training machines, doors, chests and trigger tiles
-   while care is eligible: no care menu or unintended MP Floppy use. Press Square
-   far from and facing away from the partner: list opens, no item consumed until
-   Confirm. Complete one distant item handoff, including partner pathing/refusal.
-5. Verify evolution requirements, bank `all`, technique information, naming,
-   finisher-ready battle, tournament/VS, minigames and simultaneous/held buttons.
-   Check map changes and cutscene ownership; stop every test process afterward.
+| Runtime check | JAPANESE CONTROLS OFF | JAPANESE CONTROLS ON |
+|---|---|---|
+| Square opens care near the partner | Passed, 141 world units | Passed, 141 world units |
+| Square opens care far away, facing away | Passed, 5,141 world units | Passed, 5,076 world units |
+| Opening care preserves all 10 MP Floppies | Passed near/far | Passed near/far |
+| Confirm talks to an NPC beside the partner; no care or item use | Cross passed | Circle passed |
+| Triangle menu blocks care; Square opens technique help | Passed | Passed |
+| Item Bank Square transfers the full selected stack | Passed | Passed |
+| Evolution chart Square opens/closes requirements | Passed | Passed |
+| Battle Square reaches finisher command 11; no care | Passed, actual Square edge traced | Passed, actual Square edge traced |
+| New, original and classic fonts open care with unchanged artwork | All three passed | All three passed |
 
-No icon has been selected for implementation. Implementation remains a separate step.
+The care atlas/palette hash is identical across layouts and all three fonts.
+Native 320×240 screenshots are in `build/care-proof/`; tutorial captures are in
+`build/care-hints-proof/`. The new tutorial pages were checked in-game: Square
+stays pink, while the talk/interaction glyph changes from Cross to Circle.
+Review sheets preserve screenshot pixels at native size, with captions outside
+the game image. The light-floor hunger bubble and dark-floor standalone badge
+both retain the existing renderer's anchor and projection.
+
+The source-level guard/art regression passes, including simultaneous Confirm
+priority and restoration of alternate Confirm frames. Native texture audits cover
+all eight supported base discs and 24 cap frames. Atlas-reservation tests pass.
+The Chinese audit reports 6,471/6,471 keys, 2,005 extended glyphs, no missing glyphs
+and no errors; the new Japanese text uses existing glyphs. New Latin care pages
+fit all three font metrics. Language/Chinese tests (40), atlas tests (6) and web
+translation tests pass. All 1,713 derived files match the completed build manifest.
+
+Physical hardware, a full boot matrix of other base discs, distant item handoff
+completion/refusal, naming, tournament/VS and minigames were not exercised. GPU
+packet high water was not profiled; source inspection confirms that the existing
+single 40-byte badge packet is reused. The broader partner-size, camera-edge and
+condition-option matrix remains untested. Icon variants 2–4 remain design
+references only.

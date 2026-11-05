@@ -377,6 +377,11 @@
   ],
   [
    "de la ville ?"
+  ],
+  [
+   "Quand le {color 4}□{color 1} rose apparaît,",
+   "appuie sur {color 4}□{color 1} pour soigner",
+   "ton partenaire, même de loin."
   ]
  ],
  "s178.sec6.u0": [
@@ -395,6 +400,16 @@
    "Pour voir tes objets, appuie",
    "sur {color 5}△{color 1}, choisis Objets, puis",
    "regarde-les avec {color 6}×{color 1}."
+  ],
+  [
+   "Quand le {color 4}□{color 1} rose apparaît,",
+   "appuie sur {color 4}□{color 1} pour soigner",
+   "ton partenaire, même de loin."
+  ],
+  [
+   "{color 6}×{color 1} sert à parler et à agir.",
+   "{color 4}□{color 1} ouvre la liste de soins.",
+   "Choisis un objet et confirme."
   ]
  ],
  "s178.sec6.u3": [
@@ -535,6 +550,11 @@
    "gronder. Quoi que tu fasses,",
    "observe bien ton Digimon et",
    "prends soin de lui."
+  ],
+  [
+   "Quand le {color 4}□{color 1} rose apparaît,",
+   "appuie sur {color 4}□{color 1} pour soigner",
+   "ton partenaire, même de loin."
   ]
  ],
  "s178.sec20.u0": [

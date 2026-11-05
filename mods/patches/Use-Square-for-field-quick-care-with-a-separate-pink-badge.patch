@@ -1,0 +1,292 @@
+From bb6c267e3fa711bcdf50a72242323e572af99644 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 5 Nov 2026 21:50:53 +0000
+Subject: [PATCH] Use Square for field quick care with a separate pink badge
+
+---
+ include/dw/mod_options.h |  5 ++++
+ src/main/bubble.c        | 11 +++----
+ src/main/mod_feed.c      | 62 ++++++++--------------------------------
+ src/main/mod_options.c   | 46 ++++++++++++++++++++++++++---
+ src/main/tamer.c         |  6 ++--
+ 5 files changed, 67 insertions(+), 63 deletions(-)
+
+diff --git a/include/dw/mod_options.h b/include/dw/mod_options.h
+index bca54dc..7dbe429 100644
+--- a/include/dw/mod_options.h
++++ b/include/dw/mod_options.h
+@@ -32,6 +32,11 @@ uint16_t modButtonGlyph(uint16_t code);
+ /* the colour (setTextColor's) to draw the US layout's button glyph `code` in, given the text's colour `color` */
+ int32_t modButtonColor(uint16_t code, int32_t color);
+ /* the CLUT of the dialogue box's button frames (ours: the ○ red, the × blue) */
++/* Care-only atlas holes, separate from every confirm glyph and localized label. */
++#define MOD_CARE_BUTTON_U(frame) ((frame) == 2 ? 192 : 239)
++#define MOD_CARE_BUTTON_V(frame) ((frame) == 2 ? 224 : 155 + (frame) * 12)
++#define MOD_CARE_CLUT_X 352
++#define MOD_CARE_CLUT_Y 252
+ uint16_t modButtonClut(void);
+ /* the button layout changes: the dialogue box's button in VRAM follows it */
+ void modSetButtons(int32_t layout);
+diff --git a/src/main/bubble.c b/src/main/bubble.c
+index 0758499..bbcb003 100644
+--- a/src/main/bubble.c
++++ b/src/main/bubble.c
+@@ -716,8 +716,8 @@ static void drawRingBubble(int32_t j, int32_t cx, int32_t cy, int32_t depth,
+ }
+ 
+ /*
+- * MOD (care menu): the X badge. While X in front of the partner would open the care menu (mod_feed.c sets
+- * MOD_FEED_HINT for that tick), the dialogue box's X button (renderUIBox, script_textbox.c: the UI texture page,
++ * MOD (care menu): the Square badge. While Square would open the care menu (mod_feed.c sets
++ * MOD_FEED_HINT for that tick), the care-only native button cap (the UI texture page,
+  * three 16x12 frames pressing it) is drawn beside the bottom right bubble of the row, or where the bubbles would be
+  * when it has none (a scolding or HP short of the maximum need no bubble). It grows in and shrinks out in
+  * RING_BADGE_TICKS and moves with the row (its bob and its steps), one ordering table slot nearer than the bubbles.
+@@ -745,9 +745,10 @@ static void renderBadge(int32_t x, int32_t y, int32_t depth, int32_t k, int32_t
+ 	setPolyFT4(p);
+ 	setSemiTrans(p, 1);
+ 	p->tpage = GetTPage(0, 1, 320, 128);
+-	p->clut = modButtonClut(); /* MOD (options): GetClut(96, 500), the ○ in red */
++	p->clut = GetClut(MOD_CARE_CLUT_X, MOD_CARE_CLUT_Y);
+ 	setRGB0(p, 0x80, 0x80, 0x80);
+-	setUVWH(p, (MOD_RING_CLOCK / 4) % 3 * 16 + 0x4c, 0xb7, RING_BADGE_W, RING_BADGE_H);
++	setUVWH(p, MOD_CARE_BUTTON_U((MOD_RING_CLOCK / 4) % 3),
++	        MOD_CARE_BUTTON_V((MOD_RING_CLOCK / 4) % 3), RING_BADGE_W, RING_BADGE_H);
+ 	setXYWH(p, x - w / 2, y - h / 2, w, h);
+ 	AddPrim(ACTIVE_ORDERING_TABLE->org + slot, p);
+ 	GsSetWorkBase((PACKET *)(p + 1));
+@@ -961,7 +962,7 @@ void tickConditionRingObject(int32_t instanceId)
+ 		return;
+ 	}
+ 	++MOD_RING_CLOCK;
+-	/* MOD (care menu): the X badge follows the hint, which lasts one tick */
++	/* MOD (care menu): the badge follows the hint, which lasts one tick */
+ 	if (MOD_FEED_HINT) {
+ 		if (MOD_RING_BADGE < RING_BADGE_TICKS) {
+ 			++MOD_RING_BADGE;
+diff --git a/src/main/mod_feed.c b/src/main/mod_feed.c
+index e415bf8..2f82ced 100644
+--- a/src/main/mod_feed.c
++++ b/src/main/mod_feed.c
+@@ -1,22 +1,8 @@
+ /*
+- * MOD (care menu): X in front of the partner opens a list of what answers its needs.
+- *
+- * On the map, with the tamer facing the partner (within 45 degrees) and close enough (its item take distance plus
+- * FEED_SLACK, as checkEatDistance measures), X opens a box laid out as the inventory's (two columns of icon, name
+- * and amount, the description box under it) with what the partner needs now and nothing else, every need at once,
+- * most urgent first with the cursor on it: Scold when a scolding is fair (ITEM_SCOLD_FLAG 1: it refused an item out
+- * of indiscipline, it pooped on the ground), what cures an injury or a sickness it has (handleStatusItems with a
+- * cure in its effect row: Medicine before Bandage), the Port. potty when it needs to go, food when it is hungry (its
+- * favourite first, its name in gold), what restores HP or MP short of the maximum (the items the field can use),
+- * Sleep when it is sleepy (the triangle menu's commands, with their icons). The description box adds a line when
+- * there is something to know: its favourite food, a cure that may not work. X gives the chosen item as Items > Use
+- * does (startFeedingItem: the partner comes, takes it or refuses it, one unit is used), a command does what the
+- * triangle menu's does (Scold: discipline up and the next item taken; Sleep), triangle closes the box. When the
+- * partner refuses the item this menu gave and a scolding is fair, the menu opens again on its own with Scold under
+- * the cursor. With nothing to offer X does nothing here. While the box is open the clock stops, as with the triangle
+- * menu. While X would open it, an X button is drawn beside the condition bubbles (bubble.c).
+- * Hooked from tamerTickWalkingState() (tamer.c), after checkMapInteraction(): talking to an NPC, a chest or a
+- * press tile take the X first.
++ * Field quick care: Square opens the ranked needs list from any partner distance or facing.
++ * Confirm/Cancel inside the list keep the selected control layout. Giving an item uses the normal
++ * feeding/refusal flow; opening the list never consumes it. Field Confirm belongs to map interaction.
++ * The Square badge keeps the condition ring's original position, scale and animation.
+  */
+ #include <libgs.h>
+ 
+@@ -40,8 +26,6 @@
+ #define FEED_LIST_BOX	0	/* box 0: the game reads it as "a menu is open" (the triangle menu, the inventory) */
+ #define FEED_DESC_BOX	1
+ #define FEED_ROWS_SHOWN	5	/* rows of two items, as the 10-slot inventory */
+-#define FEED_SLACK	12	/* added to the item take distance (x 20 units in checkEatDistance) */
+-#define FEED_FACING	0x200	/* 45 degrees either side */
+ #define PARTNER_NORMAL	1	/* PARTNER_STATE */
+ #define PARTNER_SLEEP	3	/* PARTNER_STATE: partnerTickSleep, as the triangle menu's Sleep */
+ #define PORT_POTTY	0x20
+@@ -57,8 +41,7 @@
+ #define FEED_DESC_V	0xC0	/* text area rows of the description and the note: under the 16 rows of names */
+ #define FEED_NOTE_V	0xCC
+ 
+-/* 1 for a tick in which X would open the menu: bubble.c (tickConditionRingObject) reads it and clears it, and
+- * draws an X badge beside the condition bubbles while it comes */
++/* One tick of care availability; bubble.c clears it after updating the existing badge animation. */
+ int32_t MOD_FEED_HINT = 0;
+ 
+ enum { FEED_OPENING, FEED_OPEN, FEED_CLOSING, FEED_GIVING, FEED_WATCHING };
+@@ -76,14 +59,13 @@ extern int32_t POLLED_INPUT_PREVIOUS;
+ extern uint32_t CHANGED_INPUT;
+ extern int32_t IS_IN_MENU;
+ extern int8_t TAMER_STATE;
++extern int8_t GAME_STATE;
+ extern int8_t PARTNER_STATE;
+ extern int8_t ITEM_SCOLD_FLAG;
+ extern uint8_t INVENTORY_POINTER;
+ extern TamerEntity TAMER_ENTITY;
+ extern char *ITEM_DESCS[];
+ 
+-int32_t _atan(int32_t dy, int32_t dx);
+-int32_t checkEatDistance(int32_t distance);
+ void tamerSetState(int32_t state);
+ void startAnimation(Entity *entity, int32_t animId);
+ void setPartnerIdling(void);
+@@ -258,25 +240,6 @@ static char *feedName(int32_t i)
+ 	                                : ITEM_NAME(INVENTORY.types.array[feedSlots[i]]);
+ }
+ 
+-/* the partner is within FEED_FACING of where the tamer looks, and close enough to take an item */
+-static int32_t feedPartnerAhead(void)
+-{
+-	VECTOR *t = &TAMER_ENTITY.entity.posData->location;
+-	VECTOR *p = &PARTNER_ENTITY.digimonEntity.entity.posData->location;
+-	int32_t diff;
+-	int32_t reach;
+-
+-	reach = getItemTakeDistance(PARTNER_ENTITY.digimonEntity.entity.type) + FEED_SLACK;
+-	if (reach > 127) {
+-		reach = 127;
+-	}
+-	if (checkEatDistance(reach) == 0) {
+-		return 0;
+-	}
+-	diff = (_atan(p->vz - t->vz, p->vx - t->vx) - TAMER_ENTITY.entity.posData->rotation.vy) & 0xFFF;
+-	return diff <= FEED_FACING || diff >= 0x1000 - FEED_FACING;
+-}
+-
+ static int32_t feedRows(void)
+ {
+ 	return (feedCount + 1) / 2;
+@@ -530,20 +493,19 @@ static int32_t feedOpen(void)
+ 	return 1;
+ }
+ 
+-/* from tamerTickWalkingState: 1 when X opened the menu. Any other use of X there comes first: an NPC talked to, a
+- * press tile or a warp (a script started: IS_SCRIPT_PAUSED 0), a chest (TAMER_STATE 14), an item on the ground
+- * (checkItemPickup: TAMER_STATE 7) */
++/* Only ordinary field walking calls this, after map interaction has taken priority. */
+ int32_t modFeedTick(void)
+ {
+-	if (TAMER_STATE != 0 || IS_SCRIPT_PAUSED != 1 || FADE_PROTECTION != 0 ||
++	if (GAME_STATE != 0 || IS_IN_MENU != 0 || TAMER_STATE != 0 || IS_SCRIPT_PAUSED != 1 || FADE_PROTECTION != 0 ||
+ 	    UI_BOX_DATA[FEED_LIST_BOX].state != 0 || UI_BOX_DATA[FEED_LIST_BOX].frame != 0 ||
+ 	    UI_BOX_DATA[FEED_DESC_BOX].state != 0 || UI_BOX_DATA[FEED_DESC_BOX].frame != 0 ||
+-	    PARTNER_STATE != PARTNER_NORMAL || TAMER_ITEM.worldItem.type != ITEM_NONE || !feedPartnerAhead() ||
++	    PARTNER_STATE != PARTNER_NORMAL || TAMER_ITEM.worldItem.type != ITEM_NONE ||
+ 	    feedCollect() == 0) {
+ 		return 0;
+ 	}
+-	MOD_FEED_HINT = 1; /* X would open the menu: bubble.c draws the X badge */
+-	if ((CHANGED_INPUT & CONFIRM_BUTTON) == 0 || !feedOpen()) {
++	MOD_FEED_HINT = 1;
++	/* A simultaneous Confirm goes to talking/training, never to both actions. */
++	if ((CHANGED_INPUT & CONFIRM_BUTTON) != 0 || (CHANGED_INPUT & 0x80) == 0 || !feedOpen()) {
+ 		return 0;
+ 	}
+ 	addObject(FEED_OBJECT_ID, 0, feedTick, NULL);
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index 90a6f8b..acc9ecb 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -9,7 +9,7 @@
+  * "×Select △Cancel" reads "○Select ×Cancel" without a text of its own; a △ painted green ({color 5}, the fishing help's
+  * "submenu, under △") is the field menu's button and stays. A button glyph the text paints in its button's colour
+  * (× cyan 6, △ green 5, ○ orange 10) takes the colour of the button it now is (modButtonColor). The dialogue box's
+- * button (SYSTEM_W.TIM, three 16x12 frames pressing it, drawn by renderUIBox and the care menu's badge) is made a ○
++ * button (SYSTEM_W.TIM, three 16x12 frames pressing it, drawn by renderUIBox) is made a ○
+  * from the disc's own frames: the cross is painted over with the button's face and a ring drawn where it was, in the
+  * red of the PlayStation's ○ (its own CLUT, modButtonClut).
+  *
+@@ -167,6 +167,13 @@ static const char RING[5][7] = {
+ 	"DL..LD",
+ 	".DLLD.",
+ };
++static const char SQUARE[5][7] = {
++	"LLLLLL",
++	"L....D",
++	"L....D",
++	"L....D",
++	"LDDDDD",
++};
+ static const char CROSS[5][7] = {
+ 	"LD..DL",
+ 	".LDDL.",
+@@ -231,7 +238,7 @@ static int32_t framesButton(uint16_t *f, int32_t made)
+ 			}
+ 			for (y = 0; made && y < 5; y++) {
+ 				for (x = 0; x < 6; x++) {
+-					c = jp ? CROSS[y][x] : RING[y][x];
++					c = made == 2 ? SQUARE[y][x] : jp ? CROSS[y][x] : RING[y][x];
+ 					if (c != '.') {
+ 						setTexel(FRAMES_MADE, x0 + jp + x, y0 + y, c == 'L' ? INK_LIGHT : INK_DARK);
+ 					}
+@@ -294,7 +301,9 @@ uint16_t modButtonClut(void)
+ void modButtonsTimLoaded(GsIMAGE *img)
+ {
+ 	uint16_t *src;
+-	int32_t x;
++	uint16_t sprite[48] __attribute__((aligned(4))); /* word-aligned LoadImage scratch, no resident buffer */
++	RECT rect;
++	int32_t x, y, frame;
+ 
+ 	if (!takeFrames(img, FRAMES_DISC)) {
+ 		return;
+@@ -308,7 +317,36 @@ void modButtonsTimLoaded(GsIMAGE *img)
+ 		MADE_CLUT[x] = ((uint16_t *)img->clut)[FRAMES_CLUT_Y * img->cw + x];
+ 		MADE_CLUT_FILLER[x] = src[(MADE_CLUT_Y - 128) * img->pw + (MADE_CLUT_X - 320) + x];
+ 	}
+-	FRAMES_BASE = framesButton(FRAMES_DISC, 1);
++	FRAMES_BASE = framesButton(FRAMES_DISC, 2);
++	if (FRAMES_BASE >= 0) {
++		/* These atlas holes are outside the native and all localized label crops. Each cap
++		 * keeps its original pressed-frame pixels except the Square mark. */
++		for (frame = 0; frame < 3; frame++) {
++			for (y = 0; y < FRAMES_ROWS; y++) {
++				for (x = 0; x < 4; x++) {
++					uint16_t *row = &FRAMES_MADE[y * FRAMES_WORDS + frame * 4];
++					/* The right-edge slots store columns 1..15 plus transparent padding.
++					 * Their unchanged left border is transparent in this care-only CLUT:
++					 * sampling 239..255 keeps the original 16-texel span without UV wrap. */
++					sprite[y * 4 + x] = frame == 2 ? row[x] :
++					    (row[x] >> 4) | (x == 3 ? 0x8000 : (row[x + 1] & 15) << 12);
++				}
++			}
++			setRECT(&rect, 320 + (MOD_CARE_BUTTON_U(frame) + 1) / 4, MOD_CARE_BUTTON_V(frame), 4, 12);
++			LoadImage(&rect, (u_long *)sprite);
++			DrawSync(0); /* the stack upload buffer may be reused only after GPU transfer */
++		}
++		MADE_CLUT[7] = MADE_CLUT[14] = MADE_CLUT[15] = 0; /* unused by the repainted cap */
++		MADE_CLUT[INK_LIGHT] = 0x621f; /* pink (248,128,192) */
++		MADE_CLUT[INK_DARK] = 0x3d14; /* dark pink (160,64,120) */
++		setRECT(&rect, MOD_CARE_CLUT_X, MOD_CARE_CLUT_Y, 16, 1);
++		LoadImage(&rect, (u_long *)MADE_CLUT);
++		DrawSync(0);
++		framesButton(FRAMES_DISC, 1); /* restore the alternate Confirm frames */
++		for (x = 0; x < 16; x++) {
++			MADE_CLUT[x] = ((uint16_t *)img->clut)[FRAMES_CLUT_Y * img->cw + x];
++		}
++	}
+ 	MADE_CLUT[INK_LIGHT] = FRAMES_BASE == MOD_BUTTONS_JP ? CROSS_LIGHT : RING_LIGHT;
+ 	MADE_CLUT[INK_DARK] = FRAMES_BASE == MOD_BUTTONS_JP ? CROSS_DARK : RING_DARK;
+ 	FRAMES_READY = FRAMES_BASE >= 0;
+diff --git a/src/main/tamer.c b/src/main/tamer.c
+index fb49ba1..697317c 100644
+--- a/src/main/tamer.c
++++ b/src/main/tamer.c
+@@ -569,12 +569,10 @@ void tamerTickWalkingState(void)
+ 	}
+ 
+ 	checkItemPickup();
+-	/* MOD (feed menu): X in front of the hungry partner, mod_feed.c. Before the map: with the X badge shown,
+-	 * X cares for the partner even beside a machine */
+-	if (modFeedTick()) {
++	checkMapInteraction();
++	if (modFeedTick()) { /* Square care is available only while ordinary field control remains. */
+ 		return;
+ 	}
+-	checkMapInteraction();
+ 	checkMedalConditions();
+ 	checkPendingAwards();
+ 
+-- 
+2.55.0
+
