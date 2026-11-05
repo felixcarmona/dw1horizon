@@ -5158,15 +5158,15 @@
       "mmd": {
         "sources": [
           {
-            "path": "build/rigfix/Chrysalimon.MMD",
-            "sha256": "be7c37758eaf5a4242f26310ce32c16d8a972dd8286e07d5591cf404a1fbefc7",
+            "path": "build/sizes-out/models/Chrysalimon.MMD",
+            "sha256": "0625aa414146bae505decaffcf4fd6103dfb067f240c263055404d95807dcaf7",
             "size": 92780
           }
         ],
         "delta": "content/modeldelta/deltas/431-Kurisarimon.MMD.mdelta",
-        "delta_sha256": "2d40a2cf005aee55bd799a9d817689c4f8940fa012b1ed02057f66588eec4638",
-        "sha256": "03f9e96438b772722c0cef86cc416daf77220c0f8525f550bcf42827d0c3baf8",
-        "size": 98002
+        "delta_sha256": "b32cf39a60a868e5a65a4e6c7b80c530f07f0445fd5592ce9b5ae9ec4820f958",
+        "sha256": "49e71a98684543e0a17fcf99706eb8c7031c69b44090891ee750abb2d8c2f100",
+        "size": 102130
       },
       "tim": {
         "sources": [
