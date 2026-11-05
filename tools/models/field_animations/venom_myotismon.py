@@ -416,9 +416,11 @@ def build(data, sk):
                            exact_repeat_nine_cycles=True, original_root_XY_exact=True,
                            forward_units_per_tick={0: 0, 2: 20, 3: 14, 4: 52}[slot],
                            original_events_except_walk_tired_step_timing_exact=True))
+    from tools.models.repair_venom_run import polish
+    result = polish(result, sk)
     storage = motionstorage.audit(result, 28)
     assert storage['fits'], storage
     return result, dict(species=212, source_sha256=SOURCE,
                         output_sha256=hashlib.sha256(result).hexdigest(), changed_slots=[0, 2, 3, 4],
                         mesh_skeleton_private33_care_battle_exact=True,
-                        checks=checks, walk_solver=walk_checks, rest_run_solver=other_checks, storage=storage)
+                        support_stage_checks=checks, run_arm_polish='shoulders lead elbows by two ticks and wrists by three; non-arm channels exact four cycles', walk_solver=walk_checks, rest_run_solver=other_checks, storage=storage)
