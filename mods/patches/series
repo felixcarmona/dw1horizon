@@ -357,3 +357,7 @@ Stream-camera-bands-without-blocking-field-ticks.patch
 Finish-scripted-moves-with-a-rounded-zero-step.patch
 Keep-item-bank-column-clears-within-their-text-slot.patch
 wait-for-quick-battle-effects-before-melee.patch
+Prefetch-scripted-camera-bands-without-blocking-the-field.patch
+Upload-diagonal-camera-bands-from-their-destination-window.patch
+Keep-effect-initialization-exclusive-during-quick-battle-loading.patch
+Choose-uploaded-camera-bands-from-the-actual-window-shift.patch

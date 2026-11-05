@@ -410,6 +410,55 @@ A separate two-battle Cherrymon regression starts six pixels from a row boundary
 the battle window never moves, no reopen is refused or attempted in battle, and no read error occurs. These are
 emulator checks, not physical-console measurements.
 
+Ordinary scripted world pans share the camera-band preflight too. A won battle's return pan can cross a cold
+row before free follow resumes. It now prefetches the destination band and retries an unready step without
+advancing the camera, drawing offsets or division remainders. Pending tiles stay protected across the late follow
+phase until upload. A pan's tile demand bypasses the optional BTL preload hold: its script cannot release control
+for that preload until the camera arrives. Battle camera and forced-upload paths retain their existing behavior.
+
+A full eight-language original-2-MB comparison of this scripted-pan change moves `main_BSS_END` from `0x801ceb44`
+to `0x801cec54` (+272 B), with 184,992 B of aligned heap. Both heap checks pass; all 320 actual-archive setups fit,
+with 272 B remaining on screen 207. Reusing the pan's existing division results limits resident cost. The reproduced
+Native Forest victory-return gap with QUICK BATTLES on at 60 FPS falls from 32 vsyncs (533 ms, four synchronous
+misses) to three (50 ms), with zero synchronous tile misses or read-wait vsyncs. Actor animation advances while the band is pending.
+
+A diagonal world scroll must resolve both tile-window axes before either upload. Otherwise the row updater
+reads a temporary corner in the old column range, outside the preflighted destination window, and can evict the
+incoming band. The shared no-upload dry run selects the destination first. This adds 16 B to main:
+`main_BSS_END` becomes `0x801cec64`, aligned heap 184,976 B, tightest archive-backed margin 256 B on screen 207.
+Both heap checks and all 320 archive setups pass. Window selection and row/column call arguments/counts match
+the original across 8,690,592 host-oracle cases; uploads now use the destination window.
+
+A held window may catch up while a camera axis is stationary or reversing, so the uploader must choose its
+bottom/right edge from `MAP_TILE_Y/X` versus `PREV_TILE_Y/X`, not the caller's direction flag. Otherwise it can
+reload the resident side, miss synchronously, and leave the incoming band stale. A night Horizon pickup/return
+reproduced a 28-vsync gap and missing right column with correct palettes. The real row/column upload functions
+pass 32,234,684 one-band host-oracle cases, including stationary/reversed axes; removing this fix fails on a held
+vertical band.
+
+Quick-battle EFE initialization also owns the interpreter exclusively until its incremental file callbacks finish.
+Both normal EFE ticking and rendering wait for `MOD_BATTLE_LOADING` to clear. Even scanning inactive subeffects
+writes `EFE_SCRIPT_CONTEXT`; between four-opcode initialization callbacks, the renderer can leave it at the last
+subeffect and cause `BTL_setupLoadedEFEFile` to dereference script bytes as an instance. A night Overdell encounter
+reproduced this first-chance exception with TFS inactive and no battle stream open or window movement. The guard
+lives in the battle overlay.
+
+The final full-build 2 MB endurance check finishes 26 won field battles in one emulator boot without state
+reloads: 13 with Agumon and 13 with VenomMyotismon, eight battlefields plus File City visits after every battle.
+The six core screens are repeated with small-partner QUICK BATTLES on/60 FPS and off/30 FPS, then large-partner
+off/60 FPS and on/30 FPS; extra Cemetery and six-NPC Underground Lab encounters complete the matrix. Immediate
+multidirectional walks, field menus, resident conversations and screen changes pass, as do full evolution on
+night Horizon and sleep/wake after a battle. Every battle window stays fixed and every TFS open stays in the world.
+All 297 tile/ring/palette/heap snapshots pass, including 3,500 window-tile comparisons, with no refused reopen,
+read error or corrupt heap block. All tested Horizon arrival heights are zero.
+
+The final laboratory return/walk peaks at five vsyncs (83 ms), with no synchronous tile miss or read-wait vsync.
+The final run's larger ten-vsync (167 ms) gap coincides with cold animation 5 starting in a loot reaction before
+free control, with no tile demand/read active; it remains a separate timing observation. Free walking peaks at
+six vsyncs (100 ms) on a walking-to-idle transition without TFS activity. QUICK BATTLES off retains a pre-world
+transition of 16–21 vsyncs (267–350 ms), including its existing synchronous field-music/setup path. These are
+emulator results, not physical-console measurements or a claim of uniform frame pacing.
+
 **Rule for the load area in the world**: nothing that has to last longer than the load that brought it may be read
 from the load area later. Copy it out when it arrives.
 
