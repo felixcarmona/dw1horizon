@@ -1,0 +1,56 @@
+From d8a438cd56fa6c082d3ee405392dfa8848b1d24c Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 5 Nov 2026 11:45:05 +0000
+Subject: [PATCH] Wait for quick-battle effects before starting melee attacks
+
+---
+ src/btl/battle_main.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
+index 7ef1cfe..069886b 100644
+--- a/src/btl/battle_main.c
++++ b/src/btl/battle_main.c
+@@ -1246,6 +1246,8 @@ int32_t BTL_handlePartnerMoveCommand(DigimonEntity *digimon, DigimonEntity *targ
+ 	return 0;
+ }
+ 
++extern int8_t MOD_BATTLE_LOADING; /* MOD (quick battle start), btl.c */
++
+ int32_t BTL_tickMeleeAttack(DigimonEntity *digimon, DigimonEntity *target, FighterData *fighter, int16_t arg3)
+ {
+ 	int16_t *rot;
+@@ -1265,6 +1267,11 @@ int32_t BTL_tickMeleeAttack(DigimonEntity *digimon, DigimonEntity *target, Fight
+ 		radius = radius * radius;
+ 		if (dist <= radius) {
+ 			handleBattleIdle(digimon, &digimon->stats, fighter->flags);
++			/* Melee starts its animation and effect here, bypassing BTL_startQueuedMove.
++			 * Keep the queued move until the sounds and effects have finished loading. */
++			if (MOD_BATTLE_LOADING) {
++				return 0;
++			}
+ 			if (NO_AI_FLAG != 0) {
+ 				if (FINISHING_ENTITY != &digimon->entity) {
+ 					return 0;
+@@ -1304,6 +1311,9 @@ int32_t BTL_tickMeleeAttack(DigimonEntity *digimon, DigimonEntity *target, Fight
+ 			entityLookAtLocation(&digimon->entity, &target->entity.posData->location);
+ 			goto check;
+ 		}
++		if (MOD_BATTLE_LOADING) {
++			return 0;
++		}
+ 		if (FINISHING_ENTITY != &digimon->entity) {
+ 			return 0;
+ 		}
+@@ -2470,8 +2480,6 @@ void BTL_applyChargeRequirement(DigimonEntity *digimon, FighterData *fighter, in
+ 	}
+ }
+ 
+-extern int8_t MOD_BATTLE_LOADING; /* MOD (quick battle start), btl.c */
+-
+ void BTL_startQueuedMove(DigimonEntity *digimon, DigimonEntity *target, FighterData *fighter)
+ {
+ 	int16_t tech;
+-- 
+2.55.0
+
