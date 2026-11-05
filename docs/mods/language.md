@@ -3,7 +3,7 @@
 The runtime language selector supports English, Spanish, Brazilian Portuguese,
 French, German, Italian, Japanese, Catalan and Simplified Chinese. Chinese requires 8 MB RAM;
 the other eight languages support an original 2 MB console. The picker shows
-Chinese with its flag and resident 中文 label in two columns. Selecting it without
+Chinese with its flag and 中文 label in two columns. Selecting it without
 extra RAM opens a localized error popup and preserves the current language. Text,
 executable strings, signs and
 other translated textures switch together. A first-boot picker shows native names
@@ -13,8 +13,10 @@ The picker heading follows the entry under the cursor: LANGUAGE, IDIOMA,
 IDIOMA, LANGUE, SPRACHE, LINGUA, 言語, IDIOMA and 语言. All headings are
 prepared in unused text-page rows when the picker opens; moving the cursor does
 not switch the current language or read from disc. The Japanese and Chinese
-headings use 96 bytes of resident licensed glyph rows, alongside the 48-byte
-中文 name. OPTIONS uses the matching word in its current language.
+headings use 96 bytes of licensed glyph rows, alongside the 48-byte 中文 name.
+These small tables and the title-only picker helpers load in EVL's spare tail
+when the title opens, including on 2 MB hardware. They consume no resident heap.
+OPTIONS uses the matching word in its current language.
 
 Our English translation is in `text/ours`; the other translations are in
 `text/{es,pt-br,fr,de,it,ja,ca,zh-hans}`. `text/<language>.json` supplies common mod text,

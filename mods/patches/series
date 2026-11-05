@@ -367,3 +367,4 @@ Localize-picker-headings-and-enlarge-Chinese-icon-labels.patch
 Finish-scripted-moves-with-a-rounded-zero-step.patch
 Keep-item-bank-column-clears-within-their-text-slot.patch
 wait-for-quick-battle-effects-before-melee.patch
+Load-picker-storage-with-the-title-overlays.patch
