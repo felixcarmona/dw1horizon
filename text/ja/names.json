@@ -603,7 +603,7 @@
  "main.MOD_OPT_STR_FONT": "もじ",
  "main.MOD_OPT_STR_FPS": "フレーム",
  "main.MOD_OPT_STR_JP": "にほんのボタン",
- "main.MOD_OPT_STR_LANG": "ことば",
+ "main.MOD_OPT_STR_LANG": "言語",
  "main.MOD_OPT_STR_NEW": "あたらしい",
  "main.MOD_OPT_STR_OFF": "いいえ",
  "main.MOD_OPT_STR_ON": "はい",
@@ -1087,5 +1087,9 @@
  "main.LAB_STR_ASK_LOAD": "このデータをロードしますか？",
  "main.CITY_STR_PROSPERITY": "繁栄度",
  "main.CITY_STR_RESIDENTS": "住人",
- "main.STATUS_STR_TIRED": "つかれ"
+ "main.STATUS_STR_TIRED": "つかれ",
+ "main.MOD_OPT_STR_CHINESE_RAM_0": "中国語には8MBの",
+ "main.MOD_OPT_STR_CHINESE_RAM_1": "RAMが必要です。",
+ "main.MOD_OPT_STR_CHINESE_RAM_2": "エミュレーターの設定で",
+ "main.MOD_OPT_STR_CHINESE_RAM_3": "RAMを8MBにしてください。"
 }

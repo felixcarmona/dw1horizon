@@ -1,0 +1,52 @@
+From c7bd76352a5d266f1570eef76c20c2e0058f7155 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 4 Nov 2026 23:34:30 +0000
+Subject: [PATCH] Keep compact glyph quads inside the texture page edge
+
+---
+ src/main/chinese.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/main/chinese.c b/src/main/chinese.c
+index e9e2f2b..c561925 100644
+--- a/src/main/chinese.c
++++ b/src/main/chinese.c
+@@ -188,7 +188,7 @@ int32_t zhPreviousFont(void)
+  * 128..215: digits at 240 and command labels at 216 stay separate. */
+ #define ZH_COMPACT ((uint16_t *)(ZH_BASE + 0x60000 + 32))
+ #define ZH_EN_NAMES ((char *)(ZH_BASE + 0x35000))
+-static uint16_t ZH_VS_CODES[352];
++static uint16_t ZH_VS_CODES[341];
+ static uint8_t ZH_VS_UPLOAD[4][32] __attribute__((aligned(4)));
+ static int32_t ZH_VS_COUNT, ZH_VS_SLOT;
+ void initStringFT4(POLY_FT4 *prim);
+@@ -222,7 +222,7 @@ static int32_t zhVsCell(uint16_t code)
+     uint8_t *upload;
+     RECT rect;
+     for (cell = 0; cell < ZH_VS_COUNT; cell++) if (ZH_VS_CODES[cell] == code) return cell;
+-    if (cell == 352) return -1;
++    if (cell == 341) return -1;
+     index = zhIndex(code);
+     if (index < 0) index = '?' - 32;
+     glyph = ZH_COMPACT + index * 9;
+@@ -235,7 +235,7 @@ static int32_t zhVsCell(uint16_t code)
+             ((ink & (0x8000 >> (x * 2))) ? 1 : 0) |
+             ((ink & (0x4000 >> (x * 2))) ? 16 : 0);
+     }
+-    setRECT(&rect, TEXT_VRAM_X + cell % 32 * 2, TEXT_VRAM_Y + 128 + cell / 32 * 8, 2, 8);
++    setRECT(&rect, TEXT_VRAM_X + cell % 31 * 2, TEXT_VRAM_Y + 128 + cell / 31 * 8, 2, 8);
+     LoadImage(&rect, (u_long *)upload);
+     return cell;
+ }
+@@ -258,7 +258,7 @@ POLY_FT4 *zhVsText(POLY_FT4 *prim, char *text, int32_t x, int32_t y, int32_t col
+             if (cell >= 0) {
+                 initStringFT4(prim);
+                 setRGB0(prim, 0x80, 0x80, 0x80);
+-                setUVDataPolyFT4(prim, cell % 32 * 8, 128 + cell / 32 * 8 + top, 8, bottom - top);
++                setUVDataPolyFT4(prim, cell % 31 * 8, 128 + cell / 31 * 8 + top, 8, bottom - top);
+                 setPosDataPolyFT4(prim, x + n % columns * 8, y + local + top, 8, bottom - top);
+                 AddPrim(ACTIVE_ORDERING_TABLE->org + depth, prim++);
+             }
+-- 
+2.55.0
+

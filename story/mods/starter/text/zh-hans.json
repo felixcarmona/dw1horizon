@@ -1,0 +1,29 @@
+{
+ "_about": "Authored Simplified Chinese translations; reviewed against the English story sources.",
+ "_where": {
+  "starter.dbd06646": "kunemons_bed.py:21 asks: iceleomon (IceLeomon) says, page 1 of 2",
+  "starter.86ff3291": "kunemons_bed.py:22 asks: iceleomon (IceLeomon) says, page 2 of 2",
+  "starter.0b3d7158": "kunemons_bed.py:23 asks: option yes of the tamer's menu",
+  "starter.e4571490": "kunemons_bed.py:23 asks: option no of the tamer's menu",
+  "starter.1666fe2e": "kunemons_bed.py:24 asks: iceleomon (IceLeomon) says",
+  "starter.50aac8a2": "kunemons_bed.py:27 asks: iceleomon (IceLeomon) says",
+  "starter.047b2421": "kunemons_bed.py:31 waits: iceleomon (IceLeomon) says",
+  "starter.de56502c": "kunemons_bed.py:35 finds_the_medal: the narrator says",
+  "starter.5b5de3e9": "kunemons_bed.py:40 joins: iceleomon (IceLeomon) says, page 1 of 2",
+  "starter.5af8aa15": "kunemons_bed.py:40 joins: iceleomon (IceLeomon) says, page 2 of 2",
+  "starter.f7014153": "kunemons_bed.py:42 joins: the narrator says",
+  "starter.bdb93f26": "kunemons_bed.py:45 joins: ? says"
+ },
+ "starter.dbd06646": "我从雪地下来，想在暖和的草地歇歇，没想到勋章不见了。",
+ "starter.86ff3291": "它往西边滚，滚到那块圆石头附近了。能帮我找找吗？",
+ "starter.0b3d7158": "我去找",
+ "starter.e4571490": "现在不了",
+ "starter.1666fe2e": "谢谢。踩上那块石头，就能看见。",
+ "starter.50aac8a2": "那我就在这里等吧。至少，这儿很暖和。",
+ "starter.047b2421": "就在这片空地最西边，那块圆石头旁。拜托你去看看。",
+ "starter.de56502c": "圆石头旁有什么东西在发光。是白狮的勋章！",
+ "starter.5b5de3e9": "我的勋章！驯兽师，你遵守了承诺。",
+ "starter.5af8aa15": "有你这样朋友的城市，一定也很温暖。我会去看看。",
+ "starter.f7014153": "得到了500比特。",
+ "starter.bdb93f26": "白狮加入了文件城！"
+}

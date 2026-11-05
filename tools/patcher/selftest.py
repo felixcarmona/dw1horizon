@@ -264,7 +264,7 @@ def main(argv):
                 import importlib
                 folder = os.path.normcase(os.path.realpath(package))
                 found = []
-                for name in ('isowriter', 'fontcopy'):
+                for name in ('isowriter', 'fontcopy', 'chinese_container'):
                     if not os.path.exists(os.path.join(package, name + '.py')):
                         continue
                     sys.modules.pop(name, None)
