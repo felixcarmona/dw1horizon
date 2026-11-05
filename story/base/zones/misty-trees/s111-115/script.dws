@@ -19,7 +19,7 @@ script 111 {
             spawn_item(item("Digimushrm"), 50, 39);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 4) {
+        if (random_roll <= 7) {
             spawn_item(item("Digimushrm"), 34, 78);
         }
         store_random(random_roll, 99);
@@ -27,7 +27,7 @@ script 111 {
             spawn_item(item("Digimushrm"), 32, 41);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 3) {
+        if (random_roll <= 7) {
             spawn_item(item("Happymushrm"), 49, 74);
         }
         misty_trees_visited = true;

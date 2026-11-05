@@ -87,6 +87,21 @@ class TableDataTests(unittest.TestCase):
 
 
 class AuthoredPayloadTests(unittest.TestCase):
+    def test_single_letter_tournament_grades_are_bound_to_their_symbols(self):
+        import fontcopy
+        for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
+            data = letter.encode() + b'\0'
+            obj = dict(offset=0, length=2, section='.sdata.STR_TOURNAMENT_GRADE_' + letter,
+                       source='src/main/script_common.c')
+            recipe = tabledata.authored_recipe(obj, data)
+            self.assertEqual(recipe['generator'], 'tournament_grade')
+            self.assertEqual(fontcopy.table_tail([recipe], 'us', None), data)
+            self.assertIsNone(tabledata.authored_recipe(obj, b'?\0'))
+            self.assertIsNone(tabledata.authored_recipe(dict(obj, source='other.c'), data))
+        for value in ('AB', 'a', '', '\0'):
+            with self.assertRaises(ValueError):
+                fontcopy.semantic_table('tournament_grade', [value])
+
     def test_type_factors_come_from_the_authored_table(self):
         import json
         import fontcopy

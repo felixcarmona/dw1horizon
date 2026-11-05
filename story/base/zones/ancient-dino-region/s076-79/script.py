@@ -23,7 +23,7 @@ def enter():    # section 254
     if roll <= 9:
         spawn_item(Item.Digimushrm, at=(-1550, -650))
     roll = random.roll(99)
-    if roll <= 5:
+    if roll <= 7:
         spawn_item(Item.Digimushrm, at=(-1250, 650))
     call(Routine.save_clock_speed, arg=2)
 

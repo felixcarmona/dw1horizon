@@ -281,6 +281,17 @@ The money analysis behind it: upkeep is about 300-1500 bits a game day, nothing 
 bits, and bits bought little power (DV chips about 40 stat points a 1000 bits, restaurants 1-4, the gym 80-100 a day for
 free). Drimogemon's plans are checked by the audit: their tables must sell for less than their price.
 
+Daily ground finds use an 8% per-entry floor for ordinary food and utility items. The five 1% single-stat
+food spots (Power Ice, Sage Fruit twice, Muscle Yam and Calm berry) use 3%. Deluxe mushroom, Chain melon
+and Gold Acorn keep their existing odds to protect permanent stats, lifetime and jackpot rewards. The
+one-pickup-per-spot-per-day cap is unchanged: unsuccessful entries can reroll, but collection consumes
+the spot until midnight. Rare useful finds were too rare once this daily cap existed.
+
+Amida Forest keeps Orange banana / Happymushrm / Auto Pilot at 8% / 12% / 20%, preserving that rarity
+order; Omni Disk / Medium MP use 8% / 25%. The added probability comes from the empty outcome, keeping
+companion odds intact. These rolls still stop after Centarumon is recruited. New story screens keep
+their current mushroom odds, including Deluxe mushroom at 2%.
+
 ## 6.2 The care and reward pass
 
 Changes taken from a tester's balance document. They are the rules of the game for everybody: there are no modes.

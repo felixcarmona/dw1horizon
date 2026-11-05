@@ -17,7 +17,7 @@ script 128 {
             spawn_item(item("Digimushrm"), 46, 61);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 0) {
+        if (random_roll <= 2) {
             spawn_item(item("Sage Fruit"), 60, 53);
         }
         if (mojyamon_traded.set2_row1 || mojyamon_traded.set2_row2 || mojyamon_traded.set2_row3) {

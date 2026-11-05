@@ -16,7 +16,7 @@ from tools.models.field_animations.articulation import replace_channels
 from motiondiscidentity import changed_programs
 from tools.models.field_animations.war_greymon import rotation, set_rotation
 
-SOURCE = '80085c00c157740c0c03c3899fff4010fda7c41d7e69d202df4a2f0e5005e177'
+SOURCE = '1076d804c861f905f58a3d4ea9ca290ebe4e29725ec2dab10f962e9810c28c4a'
 SHOULDERS = {6: [-14, 0, -10], 9: [-8, 0, 10]}
 
 

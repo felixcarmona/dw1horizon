@@ -582,6 +582,17 @@ has `Counter` equipped and ≥ 165 MP, it counterattacks with probability
 melee hit still deals `dmg · rand(10..30) %`, the defender gains
 +6 % of meter, the attacker +8 % and `blockedCount++` if it is the partner.
 
+The flat spit queues animation `0`. `entityGetTechFromAnim` maps that queued
+animation to technique `0x79` while a flat pose is active, and accepts ordinary
+technique slots only from `0x2E` through `0x3D`. This prevents a read before the
+sixteen-entry move table from classifying the spit as a finisher. That false
+finisher could leave `NO_AI_FLAG` set with an unchanging hold timer: the flattened
+fighter's idle handler does not advance a finisher, so combat stops until fleeing.
+The flat texture's pixels do not control this lookup.
+In the US parameter layout (52-byte rows, moves at offset 35), Yanmamon
+`moves[-46]` aliases Myotismon `moves[6]`: the original value is unused (`255`),
+while the added partner techniques put Death Claw (`62`) there.
+
 **With the caps patches** (the `caps` series merged as patch 0059: stats 9999, HP/MP and
 damage 30000; [partner.md](partner.md)): the `±500` clamp on `Off − Def`
 stays, so a normal hit is still at most `m·2P/30` (a few hundred) whatever

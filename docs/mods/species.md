@@ -361,3 +361,20 @@ A native species with explicit on/off blocks may declare `finisher: {"power": 21
 Header offset `0x4fc` points to an optional sector: u16 count followed by up to 19 rows of u16 native species id and two 21-byte mode blocks (on then off). Each block holds 16 technique bytes followed by u8 finisher id, little-endian u16 power, u8 cost and u8 element. Only active finisher scalars remain resident. Partner-menu, battle, tournament and versus readers resolve these by casting species, so a shared technique id can have different species values. Global technique JSON remains the source for level-independent distance, accuracy, effect and status fields. The record format and version remain unchanged.
 
 Lint requires every species with unequal on/off levels to declare six targets, technique slots and finisher scalars in each mode. The frozen fit bands in `content/tables/species-mode-balance.json` apply to both blocks; incomplete or out-of-band balancing fails.
+
+Whamon (24) uses the [official Ultimate form](https://digimon.net/reference_en/detail.php?directory_name=whamon). Its on targets are HP 6000, MP 4500, offense 400, defense 550, speed 450 and brains 500. Its native Ice arsenal (including Aurora Freeze and Winter Blast), Nature control techniques and finisher remain. Seadramon, Shellmon and Ikkakumon lead into it; Plesiomon, MetalSeadramon and Vikemon continue the aquatic family. Explicit off data restores Champion targets 2500/1500/100/150/100/200, requirements and the Palmon/Betamon/Penguinmon routes. The three Rookies retain five/four/five Champion choices on. Giant story Whamon (146) is unchanged.
+
+## Machine-line identities
+
+Assaultmon keeps Machine/Battle and its existing armed moveset. Datamon uses
+Machine/Air/Fire: its eight Machine moves are joined by Electric Cloud, Megalo
+Spark, Static Elect, Prominence Beam and Heat Laser. Infermon uses Machine/Plant,
+continuing Kurisarimon's specialties, with poison, Bug, Insect Plague and Mass
+Morph alongside its Machine moves. Diaboromon uses Machine/Plant/Battle, adding
+Megaton Punch, Buster Dive and Counter to the Machine and poison/Bug core.
+
+The finishers remain Genoside Attack (215 power), Smiley Bomb (225), Deadly Bomb
+(260) and Dark Shot (200), respectively. The first three are in the native
+Ultimate finisher range; Diaboromon keeps its existing Mega finisher, also used
+by other imported Megas. These identities preserve every evolution edge's
+shared specialty and use the existing technique animation slots.

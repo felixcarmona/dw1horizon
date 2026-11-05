@@ -31,10 +31,10 @@ def enter():    # section 254
     if roll <= 19:
         spawn_item(Item.Digimushrm, at=(-2550, 550))
     roll = random.roll(99)
-    if roll <= 4:
+    if roll <= 7:
         spawn_item(Item.SuperVeggy, at=(-1350, 2550))
     roll = random.roll(99)
-    if roll <= 2:
+    if roll <= 7:
         spawn_item(Item.Happymushrm, at=(2950, 4350))
     if mansion_fridge_memo_found and not myotismon_freed:
         spawn_item(Item.Steak, at=(-150, 1750))

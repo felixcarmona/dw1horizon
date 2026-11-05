@@ -349,9 +349,9 @@
       "source": "build/batch9/MarineDevimon.MMD",
       "source_sha256": "7fe3e10007ab8c10138814acbe81460f2601ee9591877dfa88ce579a120fec9c",
       "bones": 32,
-      "scale": 1.2509394070116275,
+      "scale": 0.9185219422113349,
       "target": "build/sizes-out/models/MarineDevimon.MMD",
-      "sha256": "54e7d40e8ce7ed1b5c44d2551e5b95508fd23aca84b1042efb544c0b19d3ef1c"
+      "sha256": "013c99d312c1b529f491cc5024c1363a0ddc306949df1c5c3ec2c3e546e1bee7"
     },
     {
       "source": "build/batch9/Pumpkinmon.MMD",
@@ -421,9 +421,9 @@
       "source": "build/batch10/Nanomon.MMD",
       "source_sha256": "d63aaab72db40142c76bb24e5c3eb46d9b9f1a256ce9a7c715235a32cf7696b9",
       "bones": 28,
-      "scale": 1.35,
+      "scale": 0.9418604651162792,
       "target": "build/sizes-out/models/Nanomon.MMD",
-      "sha256": "05b511d837396d973a0bc316010fa71223b757e8a182e3b87ac683d0896d15a1"
+      "sha256": "466c7d0cb860ded9fb356d6ddc09c52f66279fc224dd9fbb33dfaddbb97b755f"
     },
     {
       "source": "build/batch10/Grizzlymon.MMD",
@@ -690,6 +690,22 @@
       "scale": 0.8479701681485705,
       "target": "build/sizes-out/models/Devidramon.MMD",
       "sha256": "6b19a7167b6878f65ed4c2f30599f18a516f8153bff13d3cd6356abf34b24f08"
+    },
+    {
+      "source": "build/batch11/Bulbmon.MMD",
+      "source_sha256": "8a659280d5f1c769310dad25210b226c4c1c8d448c47224843421b4d123695ac",
+      "bones": 23,
+      "scale": 0.8695652173913043,
+      "target": "build/sizes-out/models/Bulbmon.MMD",
+      "sha256": "e881db25c4d80f911dc0fe3d089f62995e377024c704b5a271044757f0c89b2a"
+    },
+    {
+      "source": "build/batch9/Gazimon.MMD",
+      "source_sha256": "0c3c298b505af1c35cebc4dbbaf6f784312e0db031cfeb8916a4f2406cc3a32a",
+      "bones": 24,
+      "scale": 0.8125,
+      "target": "build/sizes-out/models/Gazimon.MMD",
+      "sha256": "dcb1df1f725d80e0323c0e2b879116151b79a66c1102e48a5173d4184a772899"
     }
   ]
 }

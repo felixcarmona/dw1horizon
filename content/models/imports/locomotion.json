@@ -12,10 +12,10 @@
   },
   "251": {
     "name": "Solarmon",
-    "source_sha256": "fea01758a0e16af9d699bd4a47ee5a07d60996176ae817a8e3912a0b0446f59e",
+    "source_sha256": "c41ea9f94379effbe9f821a3ec2717d59724349ca2ffbabad81667a1d457c732",
     "bones": 5,
     "base_generator": "tools.models.field_animations.gliding",
-    "post_source_sha256": "9dc120b009aa6c86d9f024ac3a9aaabfed355d3d2039ea9a38e6e6fee75bc5e7",
+    "post_source_sha256": "b4f0b8e52b7628be080555c83f99af613f9682aa8a902940f28807627b9d358a",
     "speeds": {
       "4": 35
     },
@@ -23,10 +23,10 @@
   },
   "254": {
     "name": "Tylomon",
-    "source_sha256": "ad339a618eb3914b090dad47dbb15274725d7e0d6a73acd8628c33d25971bfd3",
+    "source_sha256": "37ea84f657d1ba815408a5637ca638916260e241373daf95d7c418eb9d36c444",
     "bones": 20,
     "base_generator": null,
-    "post_source_sha256": "ad339a618eb3914b090dad47dbb15274725d7e0d6a73acd8628c33d25971bfd3",
+    "post_source_sha256": "37ea84f657d1ba815408a5637ca638916260e241373daf95d7c418eb9d36c444",
     "speeds": {
       "2": 15,
       "3": 14.7,
@@ -47,10 +47,10 @@
   },
   "400": {
     "name": "Apocalymon",
-    "source_sha256": "2874d80f6291ab46a028663f289e5ac9f7cc2b0d6dae8b599b0691db7948f017",
+    "source_sha256": "a666c36b699b2ffa26a02e1b6135603ef46416695b5a16baa607c1de166ddfe8",
     "bones": 31,
     "base_generator": null,
-    "post_source_sha256": "2874d80f6291ab46a028663f289e5ac9f7cc2b0d6dae8b599b0691db7948f017",
+    "post_source_sha256": "a666c36b699b2ffa26a02e1b6135603ef46416695b5a16baa607c1de166ddfe8",
     "speeds": {
       "2": 15,
       "3": 13

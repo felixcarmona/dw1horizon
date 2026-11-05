@@ -19,10 +19,10 @@ def enter():    # section 254
     if roll <= 12:
         spawn_item(Item.Digimushrm, at=(650, -3050))
     roll = random.roll(99)
-    if roll <= 3:
+    if roll <= 7:
         spawn_item(Item.Digipine, at=(-1450, -1450))
     roll = random.roll(99)
-    if roll <= 0:
+    if roll <= 2:
         spawn_item(Item.CalmBerry, at=(1750, 1750))
     if cherrymon_met:
         raw.entity_move_to(cherrymon, -2017, 1378, 3, 0)

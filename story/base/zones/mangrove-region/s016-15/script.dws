@@ -20,7 +20,7 @@ script 16 {
             spawn_item(item("Digimushrm"), 23, 31);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 3) {
+        if (random_roll <= 7) {
             spawn_item(item("Happymushrm"), 67, 47);
         }
     }

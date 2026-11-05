@@ -374,6 +374,11 @@ def semantic_table(kind, params, tool_root=None):
         spec.loader.exec_module(value)
         return value
 
+    if kind == 'tournament_grade':
+        letter, = params
+        if not isinstance(letter, str) or len(letter) != 1 or not 'A' <= letter <= 'Z':
+            raise ValueError('tournament grade must be one uppercase letter')
+        return letter.encode('ascii') + b'\0'
     if kind == 'empty_sprite_names':
         rows, = params
         if rows not in (112, 116):

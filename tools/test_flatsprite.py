@@ -35,6 +35,15 @@ def icon(colours=(0x0421, 0x7FFF, 0x001F)):
 
 
 class Pure(unittest.TestCase):
+    def test_native_field_texture_policy(self):
+        import species
+        for t in (66, 67, 88, 102, 111):
+            self.assertTrue(species.needs_authored_flat({'id': t}))
+            self.assertTrue(species.needs_authored_flat({'id': 200, 'texture': {'from': t}}))
+        for t in (3, 51, 65, 103, 112):
+            self.assertFalse(species.needs_authored_flat({'id': t}))
+        self.assertFalse(species.needs_authored_flat({'id': 471, 'texture': {'file': 'owned.TIM'}}))
+
     def test_spans_match_the_audit(self):
         rnd = random.Random(7)
         for _ in range(3000):
@@ -233,6 +242,33 @@ class Agumon(unittest.TestCase):
         self.assertEqual(F.trailer(out), (F.NATIVE, F.ROW))
         self.assertEqual(F.check(out, self.model, self.nb), [])
         self.assertEqual(len(out), F.TEX_SIZE)
+
+    def test_monochrome_frames_are_replaced_when_source_is_not_trusted(self):
+        drawn = F.mono(icon())
+        self.assertFalse(F.matches_art(self.tex, drawn))
+        out, model, cells, row, how = F.stamp(self.tex, self.model, self.nb, drawn, keep_native=False)
+        self.assertNotEqual(how, 'its own')
+        self.assertEqual(model, self.model)
+        self.assertTrue(F.matches_art(out, drawn))
+        self.same_texels(self.model, self.tex, model, out)
+
+    def test_native_yanmamon_noise_is_not_accepted_as_art(self):
+        import species
+        data = (ROOT/'extracted/CHDAT/ALLTIM.TIM').read_bytes()
+        content = species.load_content()
+        for t in (67, 102):
+            with self.subTest(species=t):
+                record = species.originals().rec[t]
+                model = (ROOT/f'extracted/CHDAT/MMD{t//30}'/(record['modelName']+'.MMD')).read_bytes()
+                tex = data[t*F.TEX_SIZE:(t+1)*F.TEX_SIZE]
+                drawn = F.mono(F.art(content[t])[0])
+                # The old palette-only audit passes this scrambled square.
+                self.assertEqual(F.check(tex), [])
+                self.assertFalse(F.matches_art(tex, drawn))
+                out, moved, _, _, _ = F.stamp(tex, model, record['para']['boneCount'], drawn, keep_native=False)
+                self.assertEqual(moved, model)
+                self.assertTrue(F.matches_art(out, drawn))
+                self.same_texels(model, tex, moved, out)
 
     def test_missing_frames_drawn_in_the_corner(self):
         tex = self.without_frames()

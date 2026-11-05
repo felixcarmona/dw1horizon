@@ -647,6 +647,12 @@ def build(data, skeleton):
     if reviewed(hashlib.sha256(data).hexdigest()) != row['post_source_sha256']:
         raise ValueError('Chibi proportions: the preceding recipe differs from the reviewed input')
     result, report, scales, k = reshape(data, skeleton, sid, row)
+    if row.get('salute_cape_slots'):
+        from tools.models.field_animations.cape import clear_salute
+        result = clear_salute(result, skeleton, row['salute_cape_slots'], sid)
+        storage = motionstorage.require(result, len(skeleton))
+        report['bytes'][1] = len(result)
+        report['resident_bytes'] = [storage['resident_bytes'], storage['resident_limit']]
     record = json.loads(next((ROOT / 'content/species').glob(f'{sid}-*.json')).read_text())
     proof = dict(report, source_sha256=digest, output_sha256=hashlib.sha256(result).hexdigest(),
                  preceding_recipe=previous, species_patch=species_patch(record, scales, k))
