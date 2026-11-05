@@ -18,7 +18,7 @@ Effort below describes the work involved, rather than an unmeasured completion-t
 
 **Risk if left:** a future mixed structure can introduce an unnoticed numeric disc dependency. Current whole-record and digest checks prevent accepting arbitrary source bytes, but do not establish JSON authority. Conversely, replacing entire records with JSON byte arrays could publish text or other restricted asset bytes.
 
-**Concrete follow-up:** inventory emitted `record` recipes by linker symbol and field offset. For a confirmed gameplay field, put its typed values in the existing domain JSON and add a named `semantic` recipe in `tabledata.authored_recipe` / `fontcopy.semantic_table`. For a newly identified domain, use `content/tables/relocation-data.json`, `objects.<symbol>.numericFields`, containing named typed values, never opaque copied records. Keep pointer expressions and asset references separate. Reject unclassified numeric fields in that domain. Prove all supported regional/language reconstructed fields equal the old output and test that changing the JSON changes output even with unchanged disc bytes. **Effort: large** for the inventory, then small per classified domain. Left documented because the remaining objects have not all been classified.
+**Concrete follow-up:** inventory emitted `record` recipes by linker symbol and field offset. For a confirmed gameplay field, put its typed values in the existing domain JSON and add a named `semantic` recipe in `tabledata.authored_recipe` / `fontcopy.semantic_table`. For a newly identified domain, use a proposed `content/tables/<relocation-data.json>`, `objects.<symbol>.numericFields`, containing named typed values, never opaque copied records. Keep pointer expressions and asset references separate. Reject unclassified numeric fields in that domain. Prove all supported regional/language reconstructed fields equal the old output and test that changing the JSON changes output even with unchanged disc bytes. **Effort: large** for the inventory, then small per classified domain. Left documented because the remaining objects have not all been classified.
 
 ## 2. Initial bytes of overlay scratch buffers — unresolved
 
@@ -42,7 +42,7 @@ Effort below describes the work involved, rather than an unmeasured completion-t
 
 **Risk if left:** a format/header change would need review; the present unique-header search and pin checks fail rather than treating an unknown header as a gameplay default. A layout field mistaken for a game rule would need reclassification.
 
-**Concrete fix:** none required under this rule. If independently authored header layout becomes desirable, use `tools/patcher/overlay-layout.json`, `overlays.<name>.regions.<base>.header`, with typed size/layout fields and generated names/pointers; do not store an opaque 64-byte array. Compare every regional header before changing the recipe. **Effort: medium**, optional structural work. Left unchanged.
+**Concrete fix:** none required under this rule. If independently authored header layout becomes desirable, use a proposed `tools/patcher/<overlay-layout.json>`, `overlays.<name>.regions.<base>.header`, with typed size/layout fields and generated names/pointers; do not store an opaque 64-byte array. Compare every regional header before changing the recipe. **Effort: medium**, optional structural work. Left unchanged.
 
 ## 4. YAKA22's malformed, unreachable placement area — permitted opaque asset exception
 
@@ -54,7 +54,7 @@ Effort below describes the work involved, rather than an unmeasured completion-t
 
 **Risk if left:** making the screen read Digimon later would invalidate the exception and could expose malformed data. Arbitrary clearing risks damaging map assets and cannot preserve the old bytes.
 
-**Concrete follow-up:** no numeric migration is needed while unreachable. Optional hardening: put `opaquePlacementAssets: ["YAKA22"]` in `content/tables/map-policy.json`; make the builder reject any corresponding screen JSON with `reads_digimon: true`. If placements are enabled, first establish a valid map format, then provide `content/maps/YAKA22.json` with an explicit `digimon` list and rebuild that domain from empty. **Effort: small** for the guard, large for format recovery. Left unchanged; byte-identical clearing cannot be claimed.
+**Concrete follow-up:** no numeric migration is needed while unreachable. Optional hardening: put `opaquePlacementAssets: ["YAKA22"]` in a proposed `content/tables/<map-policy.json>`; make the builder reject any corresponding screen JSON with `reads_digimon: true`. If placements are enabled, first establish a valid map format, then provide a proposed `content/maps/<YAKA22.json>` with an explicit `digimon` list and rebuild that domain from empty. **Effort: small** for the guard, large for format recovery. Left unchanged; byte-identical clearing cannot be claimed.
 
 ## 5. Native screen defaults from CSV — fixed
 
@@ -80,7 +80,7 @@ Effort below describes the work involved, rather than an unmeasured completion-t
 
 **Risk if left:** incomplete translations or formatting failures can remain visible in a release. That is a text coverage problem; it is not a hidden battle/evolution fallback. Checks must continue to distinguish text formatting contracts from game rules.
 
-**Concrete fix:** none required by the data rule. Optional release text policy could use `content/tables/text-policy.json`, `release.requireAuthoredKeys` and `development.allowPartialZones`, to reject unintended retained strings while allowing explicit text-source builds. Keep actual untranslated disc dialogue out of published JSON. **Effort: medium**, because permitted retained keys must be inventoried across languages. Left unchanged.
+**Concrete fix:** none required by the data rule. Optional release text policy could use a proposed `content/tables/<text-policy.json>`, `release.requireAuthoredKeys` and `development.allowPartialZones`, to reject unintended retained strings while allowing explicit text-source builds. Keep actual untranslated disc dialogue out of published JSON. **Effort: medium**, because permitted retained keys must be inventoried across languages. Left unchanged.
 
 ## 7. Missing generated script cache silently imports disc scripts — fixed
 
@@ -106,7 +106,7 @@ Effort below describes the work involved, rather than an unmeasured completion-t
 
 **Risk if left:** provenance checks can pass for a mixed literal that still contains a gameplay decision. This overlaps case 1, but also covers raw copies, regional mappings and binary deltas outside structured record recipes. Removing all copies would obstruct required asset reconstruction and could publish restricted bytes as literals.
 
-**Concrete follow-up:** inventory emitted operations against linker objects and derived output domains. Add `tools/patcher/copy-policy.json`, `objects.<symbol>.category` (`code`, `asset`, `layout`, `gameplay`) and `objects.<symbol>.generator` for gameplay fields. Route gameplay spans through the corresponding existing `content/tables/*.json`, species/item/map JSON and semantic generators; exclude those spans from exact-match copy substitution. Fail unknown gameplay classifications, retain pinned asset provenance, and replay a real package across all supported bases. Do not encode the source bytes in policy JSON. **Effort: large**, including regional packaging proof. Left documented, not claimed resolved by the literal provenance gate.
+**Concrete follow-up:** inventory emitted operations against linker objects and derived output domains. Add a proposed `tools/patcher/<copy-policy.json>`, `objects.<symbol>.category` (`code`, `asset`, `layout`, `gameplay`) and `objects.<symbol>.generator` for gameplay fields. Route gameplay spans through the corresponding existing `content/tables/*.json`, species/item/map JSON and semantic generators; exclude those spans from exact-match copy substitution. Fail unknown gameplay classifications, retain pinned asset provenance, and replay a real package across all supported bases. Do not encode the source bytes in policy JSON. **Effort: large**, including regional packaging proof. Left documented, not claimed resolved by the literal provenance gate.
 
 ## Validation and boundaries
 

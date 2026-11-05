@@ -80,7 +80,7 @@ class RecordingCache(unittest.TestCase):
             recipe = bundle / 'tools/derive/recipes/everything.json'
             recipe.parent.mkdir(parents=True)
             recipe.write_text(json.dumps({'environment': {'NAME': 'everything'}}))
-            (bundle / 'tools/__init__.py').write_text('')
+            (bundle / 'tools' / '__init__.py').write_text('')
             (bundle / 'tools/derive/__init__.py').write_text('')
             (bundle / 'exe-facts.json').write_text('{}')
             (bundle / 'tools/derive/__main__.py').write_text(

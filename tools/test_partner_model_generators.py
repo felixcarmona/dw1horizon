@@ -8,7 +8,7 @@ from tools.derive import crmath, pysum, runner
 from tools.derive.steps.models import MODELS
 
 
-# Untouched main 1213fd08, standard everything recipe, standard-library replay.
+# Standard everything recipe with the authored MasterTyrannomon forearm correction, standard-library replay.
 REFERENCE = {
     'ANLP.MMD': 'ca7025a2763e8786c9b603279f973b2f1b04ac6a',
     'ICEM-partner.MMD': 'be9c02b800de9eaf820fd8d9bf00807c37faaf59',
@@ -17,7 +17,7 @@ REFERENCE = {
     'JURE-partner.MMD': '8b048ac68ad45ed78e45cc21b17c1c11b42df949',
     'MUGP.MMD': '60f9890791fcd3d3309d4daabd718a2810e14119',
     'SCUD-partner.MMD': '38048e8649f7d6725706722e5646857f1fc576ea',
-    'TIRS-partner.MMD': 'd0a29f7e7c70c9d290995c9c7bdb8051654929eb',
+    'TIRS-partner.MMD': '9e87b9099f5ae6a0510d74f8f17521bff148f394',
     'TONO-partner.MMD': 'b5f70e4d43e2ec24962a76854627e3b77b138101',
     'VAND-partner.MMD': '092b5bb81e1c448c826ffe1573984d3e377a3471',
     'WARU-partner.MMD': '4136a8575d4785fed6b15fdf31d718477c7911f8',

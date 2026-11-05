@@ -231,8 +231,8 @@ class CodeInputs(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td, patch.object(runner, 'ROOT', td):
             root = Path(td)
             (root / 'tools').mkdir()
-            helper = root / 'tools/helper.py'; helper.write_text('helper = 1')
-            test = root / 'tools/test_example.py'; test.write_text('test = 1')
+            helper = root / 'tools' / 'helper.py'; helper.write_text('helper = 1')
+            test = root / 'tools' / 'test_example.py'; test.write_text('test = 1')
             try:
                 cache.tool_key.cache_clear()
                 first = cache.tool_key()
