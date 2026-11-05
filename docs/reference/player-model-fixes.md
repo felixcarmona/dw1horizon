@@ -46,3 +46,12 @@ the same proportions. Attached effect origins and condition bubbles follow the
 same multiplier; radius, height and status framing are updated with the model.
 `tools/models/resize.py` refuses storage overflow and checks all animation
 controls and non-translation channels remain exact.
+
+## MegaKabuterimon: size and evolution route
+
+MegaKabuterimon uses a uniform 0.90 multiplier (idle height 558 → 502),
+keeping this Ultimate below HerculesKabuterimon while retaining its broad shell.
+The existing curated route is Kabuterimon (19) → MegaKabuterimon (205) →
+HerculesKabuterimon (60). No level-skipping route is added. Source records and
+`content/tables/evolution-tree.json` already agree on both edges; the built
+chart audit must also show these links with NEW DIGIMON enabled.
