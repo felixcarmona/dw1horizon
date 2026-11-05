@@ -3,6 +3,10 @@
   "name": "MegaSeadramon",
   "level": "ultimate",
   "vanilla": true,
+  "off": {
+    "level": "ultimate",
+    "evolution": {"from": [10, 24, 35, 49, 22], "to": [211, 271, 408, -1, -1, -1]}
+  },
   "attribute": "data",
   "specialties": ["ice", "air", null],
   "techniques": ["Tear Drop", "Giga Freeze", "Ice Needle", "Water Blit", "Ice Statue", "Winter Blast",
@@ -30,7 +34,7 @@
     "training": {"animation": 46, "hit_tick": 10}
   },
   "evolution": {
-    "from": [10, 24, 35, 49, 22],
+    "from": [10, 35, 49, 22, -1],
     "to": [-1, -1, -1, -1, -1, -1],
     "requirements": {
       "digimon": -1,

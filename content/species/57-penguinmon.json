@@ -3,6 +3,10 @@
   "name": "Penguinmon",
   "level": "rookie",
   "vanilla": true,
+  "off": {
+    "level": "rookie",
+    "evolution": {"from": [16, -1, -1, -1, -1], "to": [24, 35, 22, 23, 52, 242]}
+  },
   "attribute": "data",
   "specialties": ["ice", null, "nature"],
   "techniques": ["Poison Claw", "Charm Perfume", "Giga Freeze", "Ice Needle", "Water Blit", "Winter Blast",
@@ -31,7 +35,7 @@
   },
   "evolution": {
     "from": [16, -1, -1, -1, -1],
-    "to": [24, 35, 22, 23, 52, -1],
+    "to": [35, 22, 23, 52, -1, -1],
     "requirements": {
       "digimon": 16,
       "hp": -1,

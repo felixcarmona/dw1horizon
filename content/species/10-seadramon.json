@@ -3,6 +3,10 @@
   "name": "Seadramon",
   "level": "champion",
   "vanilla": true,
+  "off": {
+    "level": "champion",
+    "evolution": {"from": [4, -1, -1, -1, -1], "to": [54, 61, 64, 112, -1, -1]}
+  },
   "attribute": "data",
   "specialties": ["ice", "nature", "fire"],
   "techniques": ["Spit Fire", "Magma Bomb", "Danger Sting", "Charm Perfume", "Poison Powder", "Tear Drop",
@@ -31,7 +35,7 @@
   },
   "evolution": {
     "from": [4, -1, -1, -1, -1],
-    "to": [54, 61, 64, 112, -1, -1],
+    "to": [54, 61, 64, 112, 24, -1],
     "requirements": {
       "digimon": -1,
       "hp": 100,

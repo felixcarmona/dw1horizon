@@ -14,9 +14,9 @@
           }
         ],
         "delta": "content/record-originals/deltas/62.MMD.mdelta",
-        "delta_sha256": "b8d068c42245e074a081a3e5fb3e4c862ccbb3343af9a8acd4026dd17a8de90a",
-        "sha256": "3306ca51c7af762045da125ae33ab2c37af213697ce3c1c81bc52e6cde28f797",
-        "size": 92558
+        "delta_sha256": "710d47c8f6993e08c4c4edd3dde65a459fa8f22e2f705d32ffe92e51061f0f97",
+        "sha256": "94844930ee1803235883b713c0c3cbc79c06c6e681fbb4034b60130d563633e6",
+        "size": 100084
       },
       "tim": {
         "sources": [
