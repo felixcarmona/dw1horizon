@@ -131,6 +131,22 @@ class ShopScripts(unittest.TestCase):
                         self.assertEqual(vm.p[123],served)
                     self.assertEqual([outcomes[i] for i in range(3)],[a,b,c])
 
+    def test_menu_rows_fit_the_engine_and_reuse_translations(self):
+        import json
+        # Menu labels come only from the existing bank in every supported
+        # language; no rewritten or missing translated rows can hide here.
+        keys=set()
+        for source in self.customers:
+            for menu in re.findall(r'set_selection\((.*)\);',source):
+                rows=re.findall(r'text\("([^\"]+)"\)',menu)
+                self.assertLessEqual(len(rows),4)
+                self.assertGreaterEqual(len(rows),2)
+                keys.update(rows)
+                self.assertTrue(all(k.endswith('.o0') or '.m0.' in k or '.m10.' in k or '.m20.' in k for k in rows))
+        for language in ('ours','es','pt-br','fr','de','it','ja','ca','zh-hans'):
+            bank=json.loads((ROOT/f'text/{language}/dialogue/libraries.json').read_text())
+            self.assertFalse(keys-bank.keys(),language)
+
     def test_cancel_reopens_without_drawing_budget_again(self):
         vm=LiteralVM(self.customers[0],[(116,0)],[1,0],[None,None,0]).run()
         self.assertEqual(vm.menus,3)
