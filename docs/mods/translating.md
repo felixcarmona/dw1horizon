@@ -217,3 +217,17 @@ the mod's files on top; the accents and the 16 punctuation glyphs need a mod exe
   target's font has no glyph for and lists it (an older executable: `…` as `...`, `( )` dropped).
 - Do not reflow the Japanese page by page: write the sentence; the compiler pages it. Keep a deliberate pause (a reveal,
   a dramatic beat) as its own page with the list form.
+
+## Cropped menu text
+
+Run `python3 -m tools.localize.ui --json build/ui-widths.json` for the menu tabs
+and technique/finisher fields in all nine languages with New, Original and
+Classic fonts. The full `tools.localize.check` also runs these checks. The audit
+uses glyph ink, tab positions and source crops rather than character counts;
+Chinese labels are checked after their executable alignment.
+
+Regular technique names have 120 pixels. Finishers have 136 pixels, leaving
+four pixels before the power column. Original and Classic use the existing
+font-fitting modes when necessary. New retains its own glyphs, so shorten names
+that still exceed the field; keep recognizable localized terms and abbreviations.
+Tab labels must also stay inside the painted tab borders.

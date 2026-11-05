@@ -27,6 +27,7 @@ from dws.py.lower import escape_problems, font_problems, literal_escapes, resolv
 from tools.localize.executable.bank import exe_bank, FORMAT, encoded_len, list_width, VERBATIM
 from tools.fontgen import text_width
 from tools.localize.places import problems as place_problems
+from tools.localize.ui import tab_problems, name_problems
 
 from tools.languages import CODES as LANGUAGES
 FONTS = ('b', 'original')
@@ -519,6 +520,9 @@ def audit(languages=LANGUAGES, fonts=FONTS, root=ROOT):
                                 for why, _ in font_problems(row)[0]:
                                     issue(language, font, path, key, why)
                         if executable:
+                            for ui_font in (('original', 'classic') if font == 'original' else (font,)):
+                                for why in tab_problems(key, value, ui_font, language) + name_problems(key, value, ui_font, language):
+                                    issue(language, ui_font, path, key, why)
                             if key == 'kar.KAR_D_8005ABB8':
                                 for why in curling_menu_problems(value, font, language):
                                     issue(language, font, path, key, why)
