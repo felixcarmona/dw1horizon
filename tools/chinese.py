@@ -242,11 +242,11 @@ def parse_bdf(path, wanted, height=12):
 
 
 def build_font(subset, chars):
-    """Versioned proposal for a font loaded wholly above 2 MB at selection.
+    """Versioned font loaded wholly above 2 MB at selection.
 
     No Unicode map is needed on the console: ASCII indexes the first 95 records,
     followed by the dense two-byte indices. The source map stays in build tools.
-    Runtime integration and the twelve-row renderer remain separate gates.
+    The runtime renderer consumes all twelve bitmap rows.
     """
     encoding(chars)
     records = subset['glyphs']
