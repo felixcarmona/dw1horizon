@@ -48,6 +48,23 @@ class Protocol(unittest.TestCase):
         self.assertEqual(g.batch(['m80010000,2', 'm80010002,2']), ['0100', '0200'])
         self.assertEqual(g.s.sent.count(b'+'), 3)
 
+    def test_overlay_upload_stays_within_packet_limit(self):
+        data = bytes(range(256)) * 300
+        g = connection(ds.GDB, packet('OK') * 100)
+        g.write(0x80052ae0, data)
+        restored = bytearray()
+        for request in g.s.sent:
+            if not request.startswith(b'$M'):
+                continue
+            self.assertLess(len(request), 8192)
+            header, payload = request[2:request.rindex(b'#')].split(b':', 1)
+            address, size = (int(v, 16) for v in header.split(b','))
+            self.assertEqual(address, 0x80052ae0 + len(restored))
+            chunk = bytes.fromhex(payload.decode())
+            self.assertEqual(len(chunk), size)
+            restored.extend(chunk)
+        self.assertEqual(restored, data)
+
     def test_disconnect_does_not_spin(self):
         g = connection(ds.GDB, b'')
         with self.assertRaises(ConnectionError):

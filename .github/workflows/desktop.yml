@@ -11,6 +11,8 @@ on:
       - 'tools/patcher/**'
       - 'tools/isowriter.py'
       - 'tools/test_desktop_patcher.py'
+      - 'tools/dws/**'
+      - 'tools/test_dws_imports.py'
       - 'web/i18n/**'
       - 'web/data/discs.json'
       - '.github/workflows/desktop.yml'
@@ -58,6 +60,8 @@ jobs:
         working-directory: tools
         # (not test_patcher_paths here: its folder names end in a space, which Windows does not allow)
         run: python -m unittest test_desktop_patcher -v
+      - name: Story import identity
+        run: python -m unittest tools.test_dws_imports -v
       - name: Build
         shell: bash
         run: |

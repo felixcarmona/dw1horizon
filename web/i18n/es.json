@@ -15,7 +15,7 @@
  "patch.waiting": "Comprobando…",
  "patch.ready": "Listo. Tarda unos minutos, aquí en tu navegador.",
  "features.title": "Novedades",
- "features.lead": "Elige idioma, imágenes por segundo, letra, dificultad, Digimon nuevos, historia extendida y ajustes de pantalla en OPTIONS. Las mejoras del motor y las correcciones siempre se aplican.",
+ "features.lead": "Elige idioma, letra, dificultad, Digimon nuevos, historia extendida y ajustes de pantalla en OPTIONS. Las mejoras del motor y las correcciones siempre se aplican.",
  "changelog.title": "Historial de cambios",
  "changelog.copyLink": "Copiar enlace a v{version}",
  "changelog.linkCopied": "Enlace copiado",

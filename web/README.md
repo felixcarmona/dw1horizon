@@ -309,6 +309,12 @@ profile to retain for inspection after the run.
 Provision at least the page's reported storage requirement in the browser test
 environment: MiniBrowser's default 1 GB quota is too small for a full build.
 
+`node web/test/downloads.mjs URL` tests the completed build's separate download links and combined button without
+source discs. It checks the saved `.bin` and `.cue` names, bytes, binary MIME types and the CUE's BIN reference in
+headless Chromium, including Android user agent, viewport and touch emulation. Set `FIREFOX=path` to run in headless
+Firefox, or `CHROMIUM=path` for a custom Chromium executable. Both outputs use `application/octet-stream` so download
+managers do not infer a `.txt` suffix for the CUE. The two files stay together in the same folder; open the `.cue`.
+
 Tests: `web/test/suite.sh TAG [URL]` (not deployed): headless Chromium on the real page (`?test=1` sets the title DONE
 and `window.RESULTS` at the end; `&shuffle=SEED` runs the jobs in a random order;
 `&workers=N`; `&keep=1` keeps the OPFS tree for `web/test/treesums.mjs`) on the seven bases and a random order

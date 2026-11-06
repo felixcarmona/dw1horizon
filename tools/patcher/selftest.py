@@ -257,6 +257,41 @@ def main(argv):
                 return f'{len(names)} standard-library modules the package imports'
             ok &= check('the package\'s imports', imports)
 
+            def story_imports():
+                # Exercise the shipped compiler, not a fixture or the app's copy.
+                # Lowered Python imports use absolute paths; Windows can give
+                # those a different drive/directory case from the base prelude.
+                code = '''
+import os, sys
+sys.path.insert(0, os.path.abspath('tools'))
+from dws.backend import Backend
+from dws.gen import Program
+names = os.path.abspath('story/base/names.dws')
+prog = Program(Backend(), None)
+prog.load(names)
+aliases = [os.path.join(os.path.dirname(names), '.', 'names.dws')]
+if os.name == 'nt':
+    aliases += [names[0].swapcase() + names[1:], names.swapcase()]
+    import ctypes
+    from ctypes import wintypes
+    api = ctypes.WinDLL('kernel32', use_last_error=True).GetShortPathNameW
+    api.argtypes = [wintypes.LPCWSTR, wintypes.LPWSTR, wintypes.DWORD]
+    api.restype = wintypes.DWORD
+    buf = ctypes.create_unicode_buffer(32768)
+    n = api(names, buf, len(buf))
+    if 0 < n < len(buf):
+        aliases.append(buf.value)
+for path in aliases:
+    prog.load(path, root=False)
+assert not prog.errors, '\\n'.join(e.render() for e in prog.errors[-3:])
+assert len(prog.loaded) == 1, list(prog.loaded)
+print('names.dws loaded once through', len(aliases) + 1, 'path spellings')
+'''
+                status, out = child(['-c', code], cwd=os.path.join(package, 'bundle'))
+                assert status == 0, (status, out)
+                return out.strip()
+            ok &= check('the package\'s story declaration imports', story_imports)
+
             dw = load_any(package)
 
             def siblings():

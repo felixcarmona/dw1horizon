@@ -45,6 +45,7 @@ def build(ctx):
     from tools.localize import build as L      # (not `import build`: the recipes have a build.py each)
     from tools.care_badge import FILES, stamp
     from tools.field_hud_art import PATH as HUD_PATH, build as field_hud_art
+    from tools import care_bubble_art
     buf = io.StringIO()
     with contextlib.redirect_stdout(buf):      # (its notes go in the step's log)
         all_lines = []
@@ -55,12 +56,21 @@ def build(ctx):
                 data = bytearray(f.read())
             stamp(data, entry)
             if path == HUD_PATH:
-                data = field_hud_art(data)
+                data = care_bubble_art.build(field_hud_art(data))
             dest = ctx.path(OUT, 'en', path)
             os.makedirs(os.path.dirname(dest), exist_ok=True)
             with open(dest, 'wb') as f:
                 f.write(data)
             all_lines.append(f'en {path}')
+        path = care_bubble_art.FEEL
+        with open(os.path.join(ctx.root, 'extracted', path), 'rb') as f:
+            original = f.read()
+        with open(ctx.path(OUT, 'en', HUD_PATH), 'rb') as f:
+            data = care_bubble_art.feel(original, f.read())
+        dest = ctx.path(OUT, 'en', path)
+        with open(dest, 'wb') as f:
+            f.write(data)
+        all_lines.append(f'en {path}')
         for lang in translations(ctx.env):
             folder = ctx.path(OUT) if lang == 'es' else ctx.path(OUT + '-' + lang)
             lines = L.build(folder, os.path.join(ctx.root, 'extracted'), run_with=ctx.run,

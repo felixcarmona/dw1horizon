@@ -30,6 +30,7 @@ run() {   # run NAME CMD...
     fi
 }
 echo "toolchain self-test"
+run story-imports "$PY" -m unittest tools.test_dws_imports
 if [ "$DISC" = 1 ] && [ ! -f text/us/dialogue.json ]; then
     run original-text-bank "$PY" -c 'from pathlib import Path; from tools.dws import textx; Path("text/us").mkdir(parents=True, exist_ok=True); textx.write_bank(textx.extract(), "text/us/dialogue.json")'
 fi
@@ -54,6 +55,8 @@ fi
 run npc-originals-tests "$PY" -W ignore tools/test_npc_originals.py
 run battle-audit      $PY -W ignore tools/test_battle_audit.py
 run patch-series      $PY tools/patch_series.py check                     # mods/patches/series, the patch files and index.md agree
+run technique-timing-tests $PY -m unittest tools.test_technique_timing
+run buster-dive-tests $PY -m unittest tools.test_buster_dive
 run patch-series-tests $PY tools/test_patch_series.py
 if [ -d decomp/src ]; then
     run patch-series-apply $PY tools/patch_series.py check --apply          # the whole series applies to the pinned decomp
@@ -69,6 +72,14 @@ else
 fi
 run species-off       $PY -W ignore tools/test_species_off.py              # JSON-only level, stats and path overrides
 run fi-info-clock     $PY tools/test_fi_info.py
+disc care-bubble-art $PY -m unittest tools.test_care_bubble_art tools.test_care_badge
+if [ -f build/decomp-dev/src/main/mod_feed.c ]; then
+    run care-badge-host $PY tools/dev/playtest/care_badge_host.py build/decomp-dev
+    run hpmp-care-host $PY tools/dev/playtest/hpmp_care_host.py build/decomp-dev
+    run quick-care-host $PY tools/dev/playtest/quick_care_host.py build/decomp-dev
+else
+    skip hpmp-care-host "needs a prepared developer tree"
+fi
 run systemw-label-tests $PY -m unittest tools.test_systemw
 disc evolution-tree   $PY tools/test_evo_tree.py --practical
 disc evolution-tree-guard $PY -W ignore::ResourceWarning tools/test_evo_tree_guard.py
@@ -160,6 +171,14 @@ run dw3-names        $PY tools/dw3_names_check.py                      # DW2003 
 run map-reach-policies $PY tools/test_reach_policies.py
 run developer-contracts $PY tools/test_dev_contracts.py
 run presented-frame-video $PY tools/test_presented_frames.py
+run duckstation-protocol $PY -m unittest tools.test_duckstation_protocol
+PATCHED=${DW_SELFTEST_DECOMP:-build/decomp-dev}
+if [ -f "$PATCHED/src/main/main.c" ]; then
+    run fps-auto $PY tools/test_fps_auto.py "$PATCHED"
+    run options-save $PY tools/test_cheats.py "$PATCHED"
+else
+    skip fps-auto "needs prepared C tree (DW_SELFTEST_DECOMP)"
+fi
 run gallery-foregrounds $PY tools/test_gallery_foregrounds.py
 run retouch-cutouts $PY tools/test_retouch_cutouts.py
 run image-raster      $PY -m unittest tools.test_image

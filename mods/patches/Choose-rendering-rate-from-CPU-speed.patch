@@ -1,0 +1,346 @@
+From fa1125c68a230678f2d31626cfd605362ad65eaa Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 6 Nov 2026 13:58:01 +0000
+Subject: [PATCH] Choose rendering rate from CPU speed
+
+---
+ config/us/overlay.ld     |  4 ++--
+ include/dw/mod_fps.h     | 13 ++++++-----
+ include/dw/mod_options.h |  3 ---
+ src/main/main.c          | 44 ++++++++++++++++++++++++++++++++---
+ src/main/main_menu.c     | 50 +++++++++++++++++++---------------------
+ src/main/mod_options.c   | 16 -------------
+ text/main/main_menu.yaml |  9 --------
+ 7 files changed, 74 insertions(+), 65 deletions(-)
+
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index 7ddc0784..18252aba 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -892,7 +892,8 @@ SECTIONS
+ 			. = ALIGN(., 4);
+ 			/* their switch tables and literals, which only they read */
+ 			BUILD_DIR/src/main/main_menu.c.o(.rodata.tickMainMenu .rodata.renderMainMenu .rodata.drawMainMenuStrings
+-				.rodata.drawMainMenuStrings.str1.4 .rodata.loadSaveCopy .rodata.modOptionValue);
++				.rodata.drawMainMenuStrings.str1.4 .rodata.loadSaveCopy .rodata.modOptionValue
++                .rodata.MOD_OPT_TEXT); /* Options row pointers are read only while MENU is loaded. */
+ 			. = ALIGN(., 4);
+ 			/* MOD (heap): read-only data of the card menus that only this overlay reaches (tools/xref.py classes): their
+ 			 * messages, labels and the save icon. Nothing that is ever written goes here: a reload would undo it */
+@@ -988,7 +989,6 @@ SECTIONS
+             BUILD_DIR/src/main/main_menu.c.o(.text.modOptionBytes .text.modOptionText .text.modOptionCount*);
+             BUILD_DIR/src/main/main_menu.c.o(.text.setRegisteredSpecies*);
+             BUILD_DIR/src/main/main_menu.c.o(.text.swapPartnerSpecies);
+-            BUILD_DIR/src/main/mod_options.c.o(.text.modFrameRate);
+             BUILD_DIR/src/main/sjis.c.o(.text.asciiToShiftJIS);
+             . = ALIGN(., 4);
+ 
+diff --git a/include/dw/mod_fps.h b/include/dw/mod_fps.h
+index 2757b10f..5e1ae2ca 100644
+--- a/include/dw/mod_fps.h
++++ b/include/dw/mod_fps.h
+@@ -6,12 +6,13 @@
+ #include <dw/mod_present.h>
+ #include <fps.h> /* FPS: the build's frame rate (Makefile `FPS=20|30|60`, generated) */
+ 
+-/* MOD (fps): FPS is the build's frame rate, 20, 30 or 60 (Makefile, default
+- * there), and MOD_FPS_MODE the mode modPresent works with: 0 = 20 fps (one
+- * render per tick, the original), 1 = 30, 2 = 60. With FPS=20 it is a
+- * compile-time 0 and the extra passes and the interpolation compile out. With
+- * FPS=30|60 it is MOD_FPS_MODE_RUN (main.c), the build's rate at start; the
+- * title menu's OPTIONS switch it between 30 and 60 (FRAME RATE, mod_options.c). */
++/* FPS=20 compiles out extra passes. FPS=30|60 includes the automatic
++ * 20/60 selector: boot and idle-time CPU measurements choose the mode.
++ * Logic cadence is independent of this presentation setting. */
++#define MOD_CPU_LINES 16
++#define MOD_CPU_SPINS_FAST 8500
++#define MOD_CPU_SPINS_SLOW 7500
++int32_t modCpuProbe(void);
+ #if FPS == 20
+ #define MOD_FPS_MODE 0
+ #elif FPS == 30 || FPS == 60
+diff --git a/include/dw/mod_options.h b/include/dw/mod_options.h
+index 3efa566f..ecc5bc4a 100644
+--- a/include/dw/mod_options.h
++++ b/include/dw/mod_options.h
+@@ -42,9 +42,6 @@ int32_t modSpeciesAllowed(int32_t type);
+  * MOD_SWAP_TO is turned back (main_menu.c, SAVE_TAG_VANILLA_SWAP) */
+ extern int16_t MOD_SWAP_FROM;
+ extern int16_t MOD_SWAP_TO;
+-/* FRAME RATE: the rate the game is shown at, 30 or 60 (20 in an FPS=20 build, which has no choice) */
+-int32_t modFrameRate(void);
+-void modSetFrameRate(int32_t fps);
+ /* a TIM of ETCTIM.BIN was uploaded (loadStackedTIMFile): the SYSTEM_W page's button frames */
+ void modButtonsTimLoaded(GsIMAGE *img);
+ /* at boot: a disc whose dialogue box button is the Japanese ○ starts with JAPANESE CONTROLS on (saved options win) */
+diff --git a/src/main/main.c b/src/main/main.c
+index a19bd36a..d296bf8b 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -4149,8 +4149,8 @@ static void modPerfReset(void)
+ /* MOD (fps): fixed-timestep loop. The game logic (input, scripts,
+  * tickObjects: movement, clock, timers, animation, then the late tick) runs
+  * once per tick, and a tick always lasts 3 vertical refreshes (20 Hz) as in
+- * the original. MOD_FPS_MODE (dw/mod_fps.h: from the build's FPS, Makefile
+- * `FPS=20|30|60`, and the title's FRAME RATE option) chooses at which of the tick's 3
++ * the original. MOD_FPS_MODE (dw/mod_fps.h: fixed 20 or automatic CPU-based
++ * selection in an FPS=30|60 build) chooses at which of the tick's three
+  * refreshes a new frame is shown:
+  *   0 = 20 fps: the third (the original, one render per tick);
+  *   1 = 30 fps: every other refresh, so the ticks alternate between one
+@@ -4165,7 +4165,7 @@ static void modPerfReset(void)
+  * although no code reads it */
+ const int32_t MOD_FPS_BUILD __attribute__((used, retain)) = FPS;
+ #if FPS != 20
+-int32_t MOD_FPS_MODE_RUN = FPS == 60 ? 2 : 1; /* MOD (options): FRAME RATE, 20, 30 or 60 */
++int32_t MOD_FPS_MODE_RUN; /* Automatic presentation: safe 20 fps until the boot probe. */
+ #endif
+ /* test switch (state checks with the slow interpreter CPU, where the extra
+  * passes rarely fit): with N > 0 every tick lasts N refreshes instead of 3,
+@@ -5331,11 +5331,49 @@ int8_t MOD_LOAD_PUMP;
+ int32_t isFileReadQueueBusy(void); /* file_queue.c */
+ void tickFileReadQueue(int32_t unused);
+ 
++/* Automatic presentation. Sample only inside an existing idle wait, with
++ * at least 32 scanlines before its next vblank. The probe costs 16 lines.
++ * Two agreeing samples, two seconds apart, and separate thresholds prevent
++ * boundary noise from switching modes. Reject waits after a long stall: the
++ * SDK line count wraps at 65536, so a small value alone is not proof of slack.
++ * Unsigned elapsed time handles wrap and restored clocks. No deadlines change. */
++#if FPS != 20
++static uint32_t modCpuLastV;
++static int32_t modCpuVotes;
++
++static void modAutoFrameRateSample(int32_t spins)
++{
++	int32_t change = MOD_FPS_MODE_RUN == 0 ? spins >= MOD_CPU_SPINS_FAST : spins < MOD_CPU_SPINS_SLOW;
++
++	if (!change) {
++		modCpuVotes = 0;
++	} else if (++modCpuVotes >= 2) {
++		MOD_FPS_MODE_RUN = MOD_FPS_MODE_RUN == 0 ? 2 : 0;
++		modCpuVotes = 0;
++	}
++}
++
++static void modAutoFrameRatePoll(void)
++{
++	uint32_t now = VSync(-1);
++
++	if (!MOD_LOAD_PUMP && now - modCpuLastV >= 120 &&
++	    now - (uint32_t)modLastEndV < 120 && VSync(1) < 263 - 2 * MOD_CPU_LINES) {
++		modCpuLastV = now;
++		modAutoFrameRateSample(modCpuProbe());
++	}
++}
++#endif
++
+ /* VSync(0), or with MOD_LOAD_PUMP the file queue stepped until the vblank comes (then VSync(0) once nothing is queued) */
+ static void modWaitVblank(void)
+ {
+ 	int32_t v;
+ 
++#if FPS != 20
++	modAutoFrameRatePoll();
++#endif
++
+ 	if (MOD_LOAD_PUMP) {
+ 		v = VSync(-1);
+ 		while (isFileReadQueueBusy()) {
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 85a9f48b..9b2d116e 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -11,6 +11,7 @@ extern int MOD_CHEATS_CARD_MODE, MOD_CHEATS_CARD_DONE;
+ #include <dw/font.h>
+ #include <dw/ids.h>
+ #include <dw/mod_options.h>
++#include <dw/mod_fps.h>
+ #include <dw/mod_version.h>
+ #include <dw/mod_rules.h>
+ #include <dw/pstat.h>
+@@ -288,14 +289,13 @@ static int32_t MOD_SAVE_NUMBER; /* MOD (options): the highest save number seen i
+ #define MOD_OPT_ROW_STORY	3 /* MOD (story): EXTENDED STORY, under NEW DIGIMON */
+ #define MOD_OPT_ROW_DIFF	4 /* MOD (difficulty): DIFFICULTY, under EXTENDED STORY */
+ #define MOD_OPT_ROW_QUICK	5 /* MOD (quick battle start): QUICK BATTLE START, under DIFFICULTY */
+-#define MOD_OPT_ROW_FPS	6
+ #if FONT_SWITCH
+-#define MOD_OPT_ROWS	11 /* MOD (options): and FONT, in a build with both fonts */
+-#define MOD_OPT_ROW_FONT	7
+-#define MOD_OPT_ROW_LANG	8
+-#else
+-#define MOD_OPT_ROWS	10
++#define MOD_OPT_ROWS	10 /* MOD (options): and FONT, in a build with both fonts */
++#define MOD_OPT_ROW_FONT	6
+ #define MOD_OPT_ROW_LANG	7
++#else
++#define MOD_OPT_ROWS	9
++#define MOD_OPT_ROW_LANG	6
+ #endif
+ #define MOD_OPT_ROW_SIGNS	(MOD_OPT_ROW_LANG + 1) /* MOD (language): LANGUAGE and MAP SIGNS, the last two rows */
+ static void renderOptionsMenu(void);
+@@ -4728,7 +4728,7 @@ static void modOptionBytes(uint8_t *d)
+ {
+ 	d[0] = MOD_OPT_BUTTONS;
+ 	d[1] = 1; /* Reserved digital-clock byte. */
+-	d[2] = modFrameRate();
++	d[2] = 20; /* Reserved frame-rate byte; safe for older readers. */
+ 	d[3] = 1; /* Reserved care-HUD byte: always enabled, including for older readers. */
+ #if FONT_SWITCH
+ 	d[4] = MOD_FONT == MOD_FONT_NEW ? 1 : MOD_FONT == MOD_FONT_CLASSIC ? 2 : 0; /* FONT */
+@@ -4757,11 +4757,7 @@ static void modApplyOptions(const uint8_t *d, int32_t len)
+ 	if (len >= 1) {
+ 		modSetButtons(d[0]);
+ 	}
+-	/* Bytes 1, 3 and 13 are reserved; legacy display choices are ignored. */
+-	if (len >= 3 && (d[2] == 20 || d[2] == 30 || d[2] == 60)) {
+-		modSetFrameRate(d[2]);
+-	}
+-	/* Byte 3 is reserved; older saves may contain either value. */
++	/* Bytes 1, 2, 3 and 13 are reserved; legacy display choices are ignored. */
+ #if FONT_SWITCH
+ 	if (len >= 5) {
+ 		modSetFont(d[4] == 0 ? MOD_FONT_ORIGINAL : d[4] == 2 ? MOD_FONT_CLASSIC : MOD_FONT_NEW);
+@@ -4932,8 +4928,6 @@ void modBootOptions(void)
+  * counter that fit in MOD_CPU_LINES lines. The counter follows the screen whatever the emulated CPU does, so the count grows with
+  * an overclock: DuckStation 3801 at 100 %, 7389 at 200 %, 9303 at 250 %, 10977 at 300 %. MOD_CPU_SPINS_FAST sits between 200 and 250.
+  */
+-#define MOD_CPU_LINES		16
+-#define MOD_CPU_SPINS_FAST	8500
+ #define MOD_NOTICE_NO_RAM	1
+ #define MOD_NOTICE_SLOW_CPU	2
+ #define MOD_NOTICE_LEFT		-148 /* the panel, over the top of the logo */
+@@ -4954,7 +4948,8 @@ static char *MOD_NOTICE_TEXT[MOD_NOTICE_STRS] = {
+ 	MOD_NOTICE_STR_HEAD1, MOD_NOTICE_STR_HEAD2, MOD_NOTICE_STR_RAM, MOD_NOTICE_STR_CPU, MOD_NOTICE_STR_MISSING, MOD_NOTICE_STR_READY,
+ };
+ 
+-void modNoticeProbe(void)
++/* Keep this loop identical at boot and during idle presentation waits. */
++int32_t modCpuProbe(void)
+ {
+ 	volatile uint16_t *lines = (volatile uint16_t *)0x1F801110;
+ 	uint16_t start = *lines;
+@@ -4964,6 +4959,17 @@ void modNoticeProbe(void)
+ 		spins++;
+ 	} while ((uint16_t)(*lines - start) < MOD_CPU_LINES);
+ 	MOD_CPU_SPINS = spins;
++	/* Keep CPU advice current without repeating the RAM probe during play. */
++	MOD_NOTICE = (MOD_NOTICE & MOD_NOTICE_NO_RAM) | (spins < MOD_CPU_SPINS_FAST ? MOD_NOTICE_SLOW_CPU : 0);
++	return spins;
++}
++
++void modNoticeProbe(void)
++{
++	modCpuProbe();
++#if FPS != 20
++	MOD_FPS_MODE_RUN = MOD_CPU_SPINS >= MOD_CPU_SPINS_FAST ? 2 : 0;
++#endif
+ 	MOD_NOTICE = (modProbeRam() ? 0 : MOD_NOTICE_NO_RAM) | (MOD_CPU_SPINS < MOD_CPU_SPINS_FAST ? MOD_NOTICE_SLOW_CPU : 0);
+ }
+ 
+@@ -5993,7 +5999,7 @@ void renderInitialMenu(void)
+  * MOD (options): the box's rows, each a label and its values side by side (two, three for FONT); the chosen value is
+  * drawn yellow and the others grey, so the row reads as a switch. Left and right step through the values, confirm takes
+  * the next one (round). With the original font the values do not fit the screen beside "JAPANESE CONTROLS" (200 pixels,
+- * and 61 for "20 FPS"): a row then shows its chosen value only, as the original game's own settings do. When even that
++ * and the values): a row then shows its chosen value only, as the original game's own settings do. When even that
+  * does not fit with the labels and the values in two columns (the widest label beside the widest value, "TRANSLATED":
+  * 342 pixels), each row's value ends at the box's right edge instead, so only a row's own label and values count.
+  */
+@@ -6010,7 +6016,6 @@ static char *MOD_OPT_TEXT[MOD_OPT_ROWS][3] = {
+ 	{ MOD_OPT_STR_STORY, MOD_OPT_STR_OFF, MOD_OPT_STR_ON }, /* MOD (story) */
+ 	{ MOD_OPT_STR_DIFF, MOD_OPT_STR_EASY, MOD_OPT_STR_NORMAL }, /* MOD (difficulty) */
+ 	{ MOD_OPT_STR_QUICK, MOD_OPT_STR_OFF, MOD_OPT_STR_ON }, /* MOD (quick battle start) */
+-	{ MOD_OPT_STR_FPS, MOD_OPT_STR_20, MOD_OPT_STR_60 },
+ #if FONT_SWITCH
+ 	{ MOD_OPT_STR_FONT, MOD_OPT_STR_NEW, MOD_OPT_STR_CLASSIC },
+ #endif
+@@ -6073,7 +6078,7 @@ static int32_t modOptionCount(int32_t row)
+     return 2;
+ }
+ 
+-/* the index of the row's chosen value, -1 none (an FPS=20 build's frame rate, or 30 from an FPS=30 build) */
++/* The index of the row's chosen value. */
+ static int32_t modOptionValue(int32_t row)
+ {
+ 	switch (row) {
+@@ -6106,11 +6111,7 @@ static int32_t modOptionValue(int32_t row)
+ 	case MOD_OPT_ROW_SIGNS:
+ 		return MOD_OPT_SIGNS;
+ 	}
+-#if FPS == 20
+-	return -1;
+-#else
+-	return modFrameRate() == 60 ? 1 : modFrameRate() == 20 ? 0 : -1;
+-#endif
++	return 0;
+ }
+ 
+ static void modSetOption(int32_t row, int32_t value)
+@@ -6140,9 +6141,6 @@ static void modSetOption(int32_t row, int32_t value)
+ 	case MOD_OPT_ROW_QUICK: /* MOD (quick battle start) */
+ 		MOD_OPT_QUICK_BATTLE = value;
+ 		break;
+-	case MOD_OPT_ROW_FPS:
+-		modSetFrameRate(value ? 60 : 20);
+-		break;
+ #if FONT_SWITCH
+ 	case MOD_OPT_ROW_FONT:
+ 		modSetFont(value == 0 ? MOD_FONT_NEW : value == 1 ? MOD_FONT_CLASSIC : MOD_FONT_ORIGINAL);
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index c0a1d3a4..1714db6a 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -18,10 +18,6 @@
+  * NEW STATUS BARS. The field's happiness and discipline bars as patches 0162-0164 draw them (one fill, red below the
+  * midpoint, green from it, on a grey track), or off, as the original drew them (renderStatusBars, partner_impl.c).
+  *
+- * FRAME RATE. 20 (the original: one render per tick) or 60 fps (MOD_FPS_MODE, dw/mod_fps.h); the game logic runs
+- * at 20 Hz in both (30 is still a mode for an FPS=30 build). A build made with FPS=20
+- * keeps 20 and the option shows it without a choice.
+- *
+  * LANGUAGE. English or Spanish (docs/mods/language.md). The executable is built in both languages with every string
+  * padded to the longer of its two texts, so the two builds differ only in those bytes: the disc carries the other
+  * language's as runs (address, bytes; tools/langpatch.py), written over the strings when the language changes. The
+@@ -337,18 +333,6 @@ void modSetButtons(int32_t layout)
+ 	uploadFrames();
+ }
+ 
+-int32_t modFrameRate(void)
+-{
+-	return MOD_FPS_MODE == 2 ? 60 : MOD_FPS_MODE == 1 ? 30 : 20;
+-}
+-
+-void modSetFrameRate(int32_t fps)
+-{
+-#if FPS != 20
+-	MOD_FPS_MODE_RUN = fps == 60 ? 2 : fps == 30 ? 1 : 0;
+-#endif
+-}
+-
+ /* MOD (language): the disc has the file (its FILE_OFFSET_TABLE entry got a sector: build-disc.py wrote it) */
+ int32_t modFileOnDisc(char *name)
+ {
+diff --git a/text/main/main_menu.yaml b/text/main/main_menu.yaml
+index e9afaae0..16b1cb43 100644
+--- a/text/main/main_menu.yaml
++++ b/text/main/main_menu.yaml
+@@ -395,15 +395,6 @@ MOD_OPTIONS:
+     MOD_OPT_STR_QUICK:
+       ja: "QUICK BATTLE START"
+       en_us: "QUICK BATTLE START"
+-    MOD_OPT_STR_FPS:
+-      ja: "FRAME RATE"
+-      en_us: "FRAME RATE"
+-    MOD_OPT_STR_20:
+-      ja: "20 FPS"
+-      en_us: "20 FPS"
+-    MOD_OPT_STR_60:
+-      ja: "60 FPS"
+-      en_us: "60 FPS"
+     MOD_OPT_STR_FONT:
+       ja: "FONT"
+       en_us: "FONT"
+-- 
+2.55.0
+

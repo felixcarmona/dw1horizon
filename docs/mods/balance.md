@@ -372,8 +372,7 @@ values or Vegiemon's prices.
 
 North Star (92) remains **Whamon (24)**'s arena cup-14 reward, with its original descriptions in all eight languages.
 Whamon is an Ultimate with NEW DIGIMON on, so a Champion can use North Star. With the option off Whamon is a
-Champion and a Rookie can use it. The native target-stage reader follows current stages while preserving the
-established native Mega-item exception. No story Whamon (146), tournament reward, merit or North Star value changes.
+Champion and a Rookie can use it. The native target-stage reader follows current stages: Mega items require an Ultimate, including Red Ruby and Beetlepearl. No story Whamon (146), tournament reward, merit or North Star value changes.
 
 **Dolph Fin (124)** is a separate 5000-value evolution item, sold for 2500, with meritValue 0. The otherwise-unused
 AS Decoder slot has no stock, drop or story use in this branch or current main; the real fridge key remains item
@@ -681,7 +680,7 @@ Whamon uses Ultimate targets 6000/4500/400/550/450/500 and 210-power Ice Blastin
 
 Dolphmon takes the former Champion Whamon requirements exactly, including HP 100 (1000 actual HP), brains 100, at most five mistakes, weight 40 and discipline 60, with every other threshold and flag unchanged. This applies on only. Its four parents are Gomamon, Palmon, Betamon and Penguinmon, all sharing Ice; Palmon and Penguinmon had five Champion options after Whamon moved and now have six, while Betamon keeps four and Gomamon six. No suitable replacement has to be removed. `resident_target_order` retains the JSON route order in those three native path rows: Dolphmon occupies Whamon’s former position instead of being appended after every native sibling. With 1500 HP/MP, 150 other stats, weight 40, zero mistakes and the discipline bonus, all three still pick Dolphmon; unchanged formal requirements alone would not preserve those winning states. Gomamon also has a zero-training witness within the same requirement row. Its own Champion targets remain 1750/1400/140/175/135/145. It keeps Ice/Air and 150-power Ice Blasting Spout; Ice Statue and Aurora Freeze complete the former Whamon Ice repertoire in two already-aliased animation slots, while its Air moves replace Whamon's Nature controls. All earlier slots, including the finisher, stay at their indices. NEW DIGIMON off still follows Palmon/Betamon/Penguinmon → Whamon using explicit JSON; Dolphmon remains unavailable in that mode.
 
-Radius/height and animation/effect donors describe the same physical model in both modes, not a level multiplier, so they do not change. Hunger, sleep, weight and discipline retain species identity; evolution time/lifetime use the engine's existing level rules. There is no species-wide battle AI priority or merit payout: wild priorities, stats, bits and recruit difficulty belong to individual map/story encounters. Those explicit encounter values remain fixed in both modes, including intentionally weak Vermilimon encounters. Species wild defaults already fit the curated on identities; they are authoring defaults, not live partner targets. No automatic level-based size or economy multiplier is introduced. The off blocks own every balance value that actually varies with the option.
+Radius/height and animation/effect donors describe the same physical model in both modes, not a level multiplier, so they do not change. Hunger, sleep, weight and discipline retain species identity; evolution time/lifetime use the engine's existing level rules. Runtime battle AI priorities and merit payouts belong to individual map/story encounters. Reviewed DWS authoring defaults in `content/battle/enemy-movesets.json` resolve into explicit map rows; they are separate from partner balance. Encounter stats, bits and recruit difficulty remain fixed in both modes, including intentionally weak Vermilimon encounters. Species wild defaults already fit the curated on identities; they are authoring defaults, not live partner targets. No automatic level-based size or economy multiplier is introduced. The off blocks own every balance value that actually varies with the option.
 
 The natural evolution thresholds retain their curated JSON challenge. In particular, the legacy native Mega routes retain their strict thresholds in both modes; Whamon alone changes its incoming level and therefore has a separate off requirement row. Native enemies whose lower off tier is not raisable gain no new off evolution routes. Neither mode resets trained stats to evolution targets.
 
@@ -707,3 +706,175 @@ contains the placement census, explicit partner scenarios, tournament stat
 rolls, boss landed-hit/TTK budgets, finisher ratios and risks. Reproduce the
 numbers with `python3 tools/battle_audit.py`; add `--charts` in an environment
 with matplotlib to export the multiplier chart and boss table.
+
+## Enemy encounter move variety (2026-11-06)
+
+Enemy difficulty belongs to encounter stats and move selections, independently
+of the partner's learnable list. A species can have many techniques while a
+story placement uses only its first three animation slots. That old DWS default
+gave IceDevimon Sonic Jab, Counter and War Cry: one ordinary damaging technique
+after support choices become unavailable. Counter has damage power but
+`BTL_isMoveUsable` excludes it from the selection lottery; it is reactive.
+IceLeomon (the Panjyamon model) got
+only physical attacks. Current story Devimon, species 130, has Megaton Punch
+rather than Sonic Jab in slot 46; its first three slots nevertheless repeat the
+same attack/support/support pattern. The native Mt. Infinity encounter also
+has Megalo Spark in its fourth slot at weight 10, so it already has two
+proactive attacks rather than only one. The reported interruption pattern is
+credible, but those names must not be used to infer the current slot contents.
+
+`content/battle/enemy-movesets.json` owns reviewed DWS defaults. Techniques are
+named and resolved to each species' existing animation slots at build time.
+The defaults replace inherited template priorities as well as move selections.
+Existing native encounters keep explicit `moves`/`prios` in `content/maps`;
+matching reviewed rows use the same selections. No species technique list,
+animation, global technique power/status chance, encounter stats, bits or drop
+is changed by this pass.
+
+| Species | Attacks | Weights, in order; idle last |
+| --- | --- | --- |
+| Devimon, species 6 | Megaton Punch, Spinning Shot, Giga Freeze, idle | 40 / 25 / 15 / 20 |
+| Story Devimon, species 130 | Megaton Punch, Giga Freeze, Megalo Spark, idle | 40 / 25 / 15 / 20 |
+| IceDevimon | Giga Freeze, Ice Statue, Megaton Punch, idle | 40 / 15 / 25 / 20 |
+| IceLeomon | Megaton Punch, Buster Dive, Winter Blast, Dynamite Kick (44) | 30 / 20 / 30 / 20 |
+| Sorcermon | Giga Freeze, Ice Statue, Wind Cutter, idle | 35 / 15 / 30 / 20 |
+| ShimaUnimon | Dynamite Kick (48), Megalo Spark, Electric Cloud, idle | 30 / 30 / 30 / 10 |
+| NiseDrimogemon | Dynamite Kick (44), Buster Dive, Tremar, idle | 35 / 25 / 30 / 10 |
+| Tekkamon | Megaton Punch, Buster Dive, Pulse Laser, idle | 30 / 25 / 35 / 10 |
+| DarkLizardmon | Magma Bomb, Heat Laser, Red Inferno, idle | 35 / 30 / 25 / 10 |
+| Gururumon | Megaton Punch, Giga Freeze, Winter Blast, idle | 35 / 25 / 30 / 10 |
+| Golemon | Ice Needle, Ice Statue, Winter Blast, idle | 35 / 15 / 30 / 20 |
+| WereGarurumon | Megaton Punch, Magma Bomb, Giga Freeze, idle | 35 / 30 / 25 / 10 |
+| SkullSatamon | Megaton Punch, Buster Dive, Prominence Beam, idle | 30 / 30 / 30 / 10 |
+| Gargoylemon | Megaton Punch, Tremar, Insect Plague, idle | 30 / 30 / 30 / 10 |
+
+Weights are lottery weights, not a rotation or a guaranteed maximum streak.
+They are base weights: the existing AI adds a group-move bonus while another
+enemy lives, suppresses unaffordable/unusable moves and favors available buffs
+early in a fight. The reviewed defaults avoid support-only slots.
+An empty slot with positive weight is intentional: the existing AI takes
+`cooldown.noTargetMs` (4000 ms) before trying again. Completed attacks retain
+`cooldown.afterAttackMs` (2000 ms), plus their existing animation, charge and
+global-effect waits. Removing Sonic Jab from these selections eliminates the
+weak melee fallback instead of changing it for partners everywhere. Ice Statue
+has only 15% base weight in the IceDevimon/Sorcermon/Golemon sets because its
+38% stun chance could otherwise replace interruption with repeated long stuns.
+Devimon uses lower-stun alternatives: Spinning Shot has no status, Giga Freeze
+has a 10% stun chance, and story Devimon's Megalo Spark has only 15% base weight.
+IceLeomon uses Winter Blast (15% stun), whose existing global-effect lock
+prevents another globally locked move from starting for 5500 ms. An initial
+Ice Statue-heavy trial produced 23.1- and 30.35-second action gaps against
+IceLeomon and story Devimon; those measurements prompted these selections.
+IceLeomon keeps three physical attacks available with NEW DIGIMON off, when
+its ice slots are disabled; its fourth slot therefore carries an attack rather
+than an idle choice.
+
+`python3 tools/moveset_audit.py --out build/moveset-audit` inventories every
+owned native placement. Add `--maps build/NAME-maps/screens --maps build/NAME/story-maps --maps build/NAME/balance-maps/maps` after a full build to
+replace native rows with final map data and include generated story encounters.
+It reports distinct weighted ordinary damaging choices and weak melee
+candidates (power 1–100, melee, weight at least 30). These are review flags,
+not measured animation speed or encounter frequency. Zero chase range includes
+both story fights and town actors and is listed separately. Early two-move
+enemies, support specialists, babies and town residents are not automatically
+rebalanced by a count threshold.
+For example, the kennel's caged Bearmon has the same first-three-slot pattern
+but never fights: its release/recruit scene remains unchanged. The neighboring
+Overdell Pass roster does fight, so SkullSatamon, Gargoylemon and WereGarurumon
+receive three proactive specialty attacks rather than two attacks plus
+Counter or a buff.
+
+The generated-map census contains 1,149 placements, including dormant actors.
+The pass edits 42 native rows in 21 maps and supplies 14 DWS species defaults.
+Comparing all 278 canonical map files in the two images finds 91 changed
+runtime enemy rows across 43 maps; only the four move slots and four priorities
+differ. Ninety rows match the reviewed profiles; the noncombat caged Bearmon
+also inherits changed template priorities. Every other enemy field is identical.
+The final source/map census is:
+
+| Group | Rows | Narrow before → after | Weak melee before → after |
+| --- | --- | --- | --- |
+| Nonzero chase range | 709 | 278 → 219 | 226 → 197 |
+| Zero chase range | 440 | 310 → 302 | 102 → 100 |
+
+These categories overlap. Even a
+nonzero chase range can survive on a noncombat template, so these totals must
+not be read as numbers of broken fights.
+
+Remaining review candidates include Goblimon, Shamamon, Psychemon, Tsukaimon,
+SnowGoblimon and SnowAgumon sets with Sonic Jab weighted 30–45; early
+Agumon/ModokiBetamon two-attack sets; and single-Megaton-Punch Gotsumon sets.
+The last group has a strong ordinary attack rather than the reported weak-jab
+pattern. Native resident variants also produce many zero/one-attack flags,
+including Shellmon and Kunemon town placements. Those need scene classification
+before any encounter change. The reproducible census retains every flagged
+row for follow-up; this pass changes the reviewed specialty profiles rather
+than automatically raising the power of the entire early-game roster.
+
+The independent economy and ordinary-damage audits remain
+`tools/economy_audit.py` and `tools/battle_audit.py`; moveset counts do not
+substitute for either audit or for live battle measurements.
+
+Reproduce the 2 MB battle measurements with
+`python3 tools/dev/playtest/seam_movesets.py build/NAME.cue --exe build/NAME/exe/SLUS_010.32 --out build/NAME-battles`.
+The fixture is Agumon, NORMAL, NEW DIGIMON on, 800 Offense, 500 Defense,
+350 Speed, 700 Brains, 9999 HP/MP and Red Inferno under Your Call. It uses one
+named opponent per fight; enemy stats, RNG, hit results and outcomes are not
+injected. This isolates the move selection change; it does not reproduce
+every partner, group fight or player save.
+IceDevimon starts 200 units from the partner to exercise its melee loop; the
+other fixtures use an offset of 300/100 units. The camera pans before staging,
+and battle entry is armed while paused so field following cannot move the
+partner away between staging and the start.
+Add `--neutral --cases iceleomon,icedevimon,devimon` for the physical comparison: Leomon
+with Megaton Punch, the same stats and no forced hits. The flag chooses this
+fixture; it does not force an elemental multiplier of 1.0.
+
+Matched 2 MB measurements (one completed unforced trial per cell):
+
+| Encounter / partner | Outcome and battle seconds, before → after | HP lost | Partner starts / hits | Longest start gap (s) |
+| --- | --- | --- | --- | --- |
+| IceLeomon / Agumon / Red Inferno | win 190.35 → win 175.05 | 3826 → 4717 | 33/23 → 33/23 | 20.45 → 10.85 |
+| IceDevimon / Agumon / Red Inferno | win 113.25 → win 101.65 | 821 → 2064 | 17/14 → 15/14 | 13.65 → 15.75 |
+| Sorcermon / Agumon / Red Inferno | KO 150.90 → win 129.25 | 9999 → 3656 | 22/13 → 26/16 | 14.80 → 9.95 |
+| IceLeomon / Leomon / Megaton Punch | win 74.40 → win 76.40 | 2229 → 2205 | 11/10 → 12/10 | 12.00 → 17.15 |
+| IceDevimon / Leomon / Megaton Punch | win 270.20 → win 33.90 | 5153 → 403 | 49/7 → 8/8 | 13.65 → 4.60 |
+| Story Devimon / Leomon / Megaton Punch | KO 117.95 → win 172.55 | 9999 → 7904 | 17/15 → 22/19 | 14.55 → 17.50 |
+
+KO means the partner lost; otherwise the time is time-to-win. A start is the
+ordinary attack execution hook after animation/charge waits; hits are damage
+calculation events against the selected enemy. Misses and interruptions can
+both prevent a hit. The longest gap is between consecutive starts, excluding
+the wait before the first and after the last. Staged and entered positions are
+identical in every trial and match between images. No partner self-hit was
+recorded.
+
+IceDevimon's baseline landed only Sonic Jab: 19 hits against Agumon and 69
+against Leomon. In the final ranged trial it landed three Giga Freezes and one
+Ice Statue, causing more damage with fewer hits. Leomon completed eight of
+eight attacks instead of seven of 49; that close-melee fixture is substantially
+easier after removing the jab loop. Keep encounter stats fixed and accept
+this shorter close-melee fight as a consequence of removing interruption
+pressure. The ranged Seam
+fixtures still cost 2,064–4,717 HP, and story Devimon costs 7,904 HP. IceLeomon's
+physical comparison stays close in time and HP loss. Sorcermon's reduced Ice
+Statue weighting makes the previous knockout winnable. Thus challenge remains,
+but it is not equal in every matchup and action gaps do not universally shrink.
+
+These trials do not establish a maximum interruption streak or balance for
+every player save. Group fights, multiple RNG seeds, original hardware and
+runtime NEW DIGIMON off remain unmeasured. The off-mode move availability is
+statically checked. Keep the raw starts, damage traces, samples, RAM/heap
+checks and outcomes in the harness output when comparing later changes.
+
+Both images have the same boot executable SHA-256 after disc relayout:
+`aa09cfa6b7bdab95e1e2945daf4903a0895918a6f621fe2c80fabe89e39ac269`.
+The native executable used for symbols/checkpoint identity is also unchanged
+(`83c4340c4e8508c5d7e6a22bab23538db23f107444adabb29db4297abab9b8ba`).
+`main_BSS_END` stays at `0x801cdf84`, leaving 188,272 bytes of heap.
+The final archive-based heap check passes all 320 screen setups; the tightest
+setup is screen 207 at 184,712 bytes, with 3,552 bytes spare. The runtime
+fixtures reject expanded RAM and read exactly 2,097,152 bytes. Battle-entry
+free/largest blocks are 13,392 bytes for daytime Seam, 60,824 for nighttime
+IceDevimon and 129,008 for Mt. Infinity Devimon. Move selection and weights
+change map data only; this pass adds no C code or runtime allocation.

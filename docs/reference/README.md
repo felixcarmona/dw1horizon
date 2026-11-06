@@ -43,7 +43,7 @@ build is in [../building.md](../building.md); how to test is in [../developing.m
 | [memory.md](memory.md) | main RAM, VRAM and SPU RAM: the layout, the fixed buffers, the heap and its budget, what each patch reclaims |
 | [ids.md](ids.md) | the id spaces (species, screens, items, techniques, cards, files) and how the mod widens them |
 | [save-format.md](save-format.md) | the memory card save: the original file and checksum, the tagged extension the patches add |
-| [frame-rate.md](frame-rate.md) | the engine's timing and how drawing at 30 or 60 fps is separated from the 20 Hz game logic |
+| [frame-rate.md](frame-rate.md) | the engine's timing and automatic 20/60 fps drawing, separate from the 20 Hz game logic |
 | [text-sources.md](text-sources.md) | how text is keyed, sourced by checksum from a disc, picked and fitted |
 | [imported-species.md](imported-species.md) | Digimon converted from three other PS1 games: their formats, matching, identity rules, extra species |
 | [motion.md](motion.md) | how the partner's animation slots are used and how imported species are animated and checked |
