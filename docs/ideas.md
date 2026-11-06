@@ -65,6 +65,7 @@ against, leave this list.
 | A search/filter in the Cheats evolve list | 🛠️ | The list is long; scrolling through it is slow. |
 | Drop the word "Mega" from the partner guide, since the level is already shown in its corner | ✨ | Text only. |
 | New content in Beetle Land: more insect enemies and HerculesKabuterimon as a recruit | 🆕 | Area always felt empty; needs a recruit scene. |
+| Terriermon, the third Tamers partner (Guilmon and Renamon lines are already in) | 🆕 | Needs a source model and a place in the evolution tree. |
 | Unique recruitment scenes for more of the new Digimon | ✨ | Many new recruits join with a simple fight. |
 | Humanoid sizes growing by stage (Angemon < MagnaAngemon < Seraphimon, Devimon < Myotismon) | ✨ | A per-line size review. |
 | A minimap like Digimon World 3's, showing where each exit leads, and a wider camera view | 🛠️ | Needs screen space and per-screen exit data. |
