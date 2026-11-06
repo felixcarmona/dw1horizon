@@ -396,6 +396,10 @@ Keep-warning-icons-bright-while-only-bars-dim.patch
 Expand-starter-list-preserving-original-game-results.patch
 status-portrait-camera-anchor.patch
 Drain-toilet-and-energy-gauges-as-care-needs-approach.patch
+Show-recovery-disk-bubbles-for-HP-and-MP-care-needs-.patch
+Keep-care-menu-notes-in-MENU-to-preserve-the-field-h.patch
+Keep-the-complete-condition-group-inside-the-field-v.patch
+Keep-both-MP-letter-stems-visible-at-native-field-sc.patch
 Bound-ordinary-technique-stat-growth.patch
 Make-the-care-HUD-and-status-panels-permanent.patch
 Make-the-digital-clock-and-enemy-life-bars-permanent.patch

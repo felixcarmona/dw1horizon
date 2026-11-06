@@ -5,6 +5,7 @@ Usage: python3 tools/dev/playtest/need_gauge_states_host.py TREE --before PREVIO
 PREVIOUS.c is the partner_impl.c captured before this change.
 """
 import argparse
+import re
 from pathlib import Path
 import subprocess
 import tempfile
@@ -28,6 +29,8 @@ def main():
     src = (a.tree/'src/main/partner_impl.c').read_text()
     old = function(a.before.read_text(), 'void renderStatusBars(state)')
     old = old.replace('void renderStatusBars(state)', 'void renderStatusBarsBefore(state)').replace('renderCareHUD();', 'renderCareHUDBefore();')
+    # Compare the enabled legacy path with the permanent production renderer.
+    old = re.sub(r'if \(MOD_OPT_\w+\)', 'if (1)', old)
     code = r'''
 #include <stdint.h>
 #include <assert.h>
@@ -43,7 +46,7 @@ struct {int poopTimer;} raise;
 int rules[3]={20,200,80};
 int careGet(int slot) { return rules[slot]; }
 struct {int partnerAreaResponse;} MAP_TILE_DATA;
-int PLAYTIME_FRAMES,MOD_OPT_BARS,STATUS_UI_OFFSET_X=75;
+int PLAYTIME_FRAMES,STATUS_UI_OFFSET_X=75;
 #define GetClut(x,y) ((y)*64+(x)/16)
 struct Draw {int a[10];} calls[512],original[512];
 int count;
@@ -56,7 +59,7 @@ void renderRectPolyFT4(int a,int b,int c,int d,int e,int f,int g,int h,int i,int
 static void check(int gauge,int active,int blink,int red) {
  struct PP before=PARTNER_PARA;
  for(int f=0;f<80;f++) {
-  PLAYTIME_FRAMES=f;MOD_OPT_BARS=1;count=0;renderStatusBars(1);
+  PLAYTIME_FRAMES=f;count=0;renderStatusBars(1);
   assert(!memcmp(&before,&PARTNER_PARA,sizeof(before)));assert(count<=13);
   int tiles=0,found=0;
   for(int k=0;k<count;k++) if(calls[k].a[3]==13) {
@@ -97,7 +100,6 @@ static void base(void) {
 }
 int main(void) {
  // The complete original normal-value domain, including every area/blink variant.
- MOD_OPT_BARS=1;
  for(int h=-100;h<=100;h++) for(int d=0;d<=100;d++)
  for(int area=0;area<3;area++) for(int f=0;f<10;f++) {
   PARTNER_PARA.happiness=h;PARTNER_PARA.discipline=d;

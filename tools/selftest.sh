@@ -69,6 +69,14 @@ else
 fi
 run species-off       $PY -W ignore tools/test_species_off.py              # JSON-only level, stats and path overrides
 run fi-info-clock     $PY tools/test_fi_info.py
+disc care-bubble-art $PY -m unittest tools.test_care_bubble_art tools.test_care_badge
+if [ -f build/decomp-dev/src/main/mod_feed.c ]; then
+    run care-badge-host $PY tools/dev/playtest/care_badge_host.py build/decomp-dev
+    run hpmp-care-host $PY tools/dev/playtest/hpmp_care_host.py build/decomp-dev
+    run quick-care-host $PY tools/dev/playtest/quick_care_host.py build/decomp-dev
+else
+    skip hpmp-care-host "needs a prepared developer tree"
+fi
 run systemw-label-tests $PY -m unittest tools.test_systemw
 disc evolution-tree   $PY tools/test_evo_tree.py --practical
 disc evolution-tree-guard $PY -W ignore::ResourceWarning tools/test_evo_tree_guard.py
