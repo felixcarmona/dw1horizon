@@ -11,6 +11,9 @@ script 159 {
     npc sukamon3 = 8;
     sections 254, 5, 81, 6, 7, 8, 51, 82;
     on enter replace {    // enter
+        if (is_recruited(species(39))) {
+            remove(sukamon2);
+        }
         if (!old_fishrod_picked_up) {
             set_obj_visibility(10, 0);
         } else {
@@ -195,9 +198,14 @@ script 159 {
     }
     on talk(sukamon2) replace {    // talk
         if (!is_recruited(species(39))) {
+            say(sukamon2, text("s159.sec7.u0"));
+            walk(sukamon2, 650, -1800);
+            await sukamon2;
+            walk(sukamon2, 189, -3550);
+            await sukamon2;
+            remove(sukamon2);
             recruit(species(39));
             engine.prosperity += 1;
-            say(sukamon2, text("s159.sec7.u0"));
             return;
         }
         say(sukamon2, text("s159.sec7.u1"));

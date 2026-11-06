@@ -65,3 +65,38 @@ head, wing, tail and supported-leg performance remains unchanged, as do root
 travel, scale channels, clip duration and sound/control events. The authoring
 pass checks every unselected channel over four decoded cycles and changes only
 run slot 4. Final provider output retains the animation storage gate.
+
+## Beelzemon: Blast Mode silhouette and face
+
+The winged M377BLZB source is Blast Mode. Its irises should be green, as shown
+in the [official reference](https://digimon.net/reference/detail.php?directory_name=beelzebumonblastmode).
+Only the two iris shades swap red and green channels in an isolated palette;
+blue, shade steps, gold highlights and all other palettes remain exact.
+
+The source reader must honor empty section-table slots: otherwise the free hand
+is truncated. The complete untouched model has 905 primitives, including a
+hidden effect mesh. Culled front, three-quarter, side and back comparisons show
+that the import lost helmet spikes, wing-tip surfaces and belt detail. The
+repair rebuilds the whole head (130 source triangles), all six wing sections
+and all four belt sections, using the existing DW1 proportion bake. The source
+jaw and all three green eyes retain their full-resolution texture patches.
+The current cannon, five claws and boot spikes are present and retained.
+
+Exact triangle pairing and unused-pool cleanup recover space. New pairs keep
+the same diagonal, shared UVs and normals, winding and material; they must form
+convex quads. A small fit of the existing broad body/leg panels supplies the
+remaining slots. Their six extent landmarks are pinned, preserving width,
+height and depth. Head, wing tips, belts, arms, cannon, hands and boots are protected
+from this fit. Animation bytes stay exact. The result keeps the 713-primitive,
+172-vertices-per-object and original resident/cold-buffer limits.
+
+`tools/models/repair_beelzemon.py` is an authoring tool; it needs NetworkX and
+takes the untouched source, DW1-proportioned MMD/TIM, pinned raw importer MMD,
+and output stem. The player build needs no authoring dependency: plain deltas
+and final provider pins carry the result. Store with `tools/models/edit.py put
+403`, then run `check 403 --species-pins`.
+
+`tools/test_beelzemon_face.py` takes `BEELZEMON_BEFORE`, `BEELZEMON_AFTER`,
+`BEELZEMON_SOURCE` and `BEELZEMON_IMPORT`. It checks every restored source
+triangle with its winding, UVs and normals; retained protected geometry;
+body-panel extents; unchanged acting; texture isolation and storage budgets.

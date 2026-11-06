@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Capture normal, both blinking halves, active and satisfied need gauges on 2 MB.
 
-Run with the project's Python. Only care fixtures and the existing
+Only care fixtures and the existing
 clock rule are changed in RAM; the blink phases advance through native play ticks.
 """
 import argparse
@@ -75,7 +75,6 @@ def fixture(e,need=None,state='normal',all_needs=False):
     # A zero day-length rule freezes game time while leaving the field HUD visible.
     # PLAYTIME_FRAMES continues at 20 real ticks/s, including during gym training.
     e.poke('MOD_CLOCK',struct.pack('<h',0))
-    e.poke('MOD_OPT_BARS',struct.pack('<i',1))
     e.gs('set','gametime_running=1','hour=12','minute=0',
          *[f'partner.para.{k}={v}' for k,v in fields.items()])
     e.poke('CURRENT_FRAME',struct.pack('<H',14400))

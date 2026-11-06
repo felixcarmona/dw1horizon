@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create review sheets from native need-state and gym captures with repository raster tools."""
+"""Create review sheets from native need-state and gym captures."""
 import argparse
 import json
 from pathlib import Path

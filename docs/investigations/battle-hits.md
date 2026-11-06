@@ -114,7 +114,8 @@ Buster Dive roster has 68 imports; the three storage exceptions were tested
 individually. Eight looping Kimeramon clips were flagged statically, but its
 loadout deals damage, so a loop alone did not justify a change.
 
-Fresh baseline (`c8ed3594`) and final-disc trials measure these HP losses:
+Fresh baseline (`c8ed3594`) and repair revision `8f18e467` trials measure
+these HP losses. They predate the later damage-curve and HUD changes:
 
 | Species | Technique | Baseline | Repaired |
 |---|---|---:|---:|
@@ -143,6 +144,6 @@ Native accuracy can still produce misses after repair; no hit is forced.
 
 The actual packed models preserve every non-selected slot's live program bytes,
 mesh and texture. Only eight imported model pins change; all texture pins stay
-the same. The full nine-language build retains `main_BSS_END = 0x801ce5e0`, a
+the same. That revision's full nine-language build retains `main_BSS_END = 0x801ce5e0`, a
 186640-byte heap and 30288 bytes free on the tightest swept screen. All battle
 proof uses the emulator's original 2 MB configuration, without its expansion.

@@ -46,7 +46,7 @@
     "favored_region": 6,
     "training_type": "offense-speed",
     "birth_weight": 30,
-    "status_screen_position": [500, 230, -1870],
+    "status_screen_position": [-1124, 324, 1932],
     "item_distance": 10,
     "training": {"animation": 57, "hit_tick": 15}
   },

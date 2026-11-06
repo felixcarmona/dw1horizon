@@ -27,8 +27,9 @@ names = list(balance.NAMED_RULES['battleFormulas']) if hasattr(balance, 'NAMED_R
 SLOT = {k: i for i, k in enumerate(['music.lastBattleSpecies', 'music.lastBattleTrack'])}
 want = balance.encode_named('battleFormulas', obj, None)
 n = len(want) // 2
-# the two music slots are the last two of the table
-SP, TR = T['MOD_BATTLE'] + 2 * (n - 2), T['MOD_BATTLE'] + 2 * (n - 1)
+# Resolve slots by name so appended damage rules cannot move the music probe.
+SP, TR = [T['MOD_BATTLE'] + 2 * names.index('music.' + key)
+          for key in ('lastBattleSpecies', 'lastBattleTrack')]
 ENTITY_IDS = struct.unpack('<I', struct.pack('<I', T['COMBAT_DATA'] + 1644))[0]      # COMBAT_DATA.player.entityIds (1440 + 204)
 ENEMY = 9
 def play(species, wipe=None, predefined=0, set_=None):

@@ -66,6 +66,10 @@ or Cross with it off, talks to people and interacts with machines and objects.
 Square keeps its existing uses inside menus and battles, including evolution
 requirements, Item Bank `all`, and the finisher.
 
+The badge appears beside the lower-right need bubble when you have an item or
+command that can help now. A need still shows its bubble when you lack the item,
+but there is no care badge. With no current need or available action, no badge appears.
+
 ## Bring your own disc
 
 You need a copy of one of these discs, dumped from your own disc as a `.bin` + `.cue` (raw image, "MODE2/2352"),

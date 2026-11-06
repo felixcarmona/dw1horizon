@@ -26,7 +26,6 @@ typedef struct { int state; } Box;
 Box UI_BOX_DATA[4];
 int16_t INITIAL_COMBAT_STATS[1][6], STATS_GAINS[6], STATUS_UI_OFFSET_X;
 int8_t IS_GAMETIME_RUNNING;
-int MOD_OPT_BARS;
 uint32_t CHANGED_INPUT;
 #define CANCEL_BUTTON 16
 #define MOD_COUNT_ROW_H 17
@@ -41,7 +40,7 @@ int32_t modTrainStopReason(int32_t t0,int32_t tiredAt) { return stopReason; }
 void clearTextArea(void) { }
 void clearTextSubArea(RECT *r) { }
 void removeAnimatedUIBox(int id,void *p) { UI_BOX_DATA[id].state=0; }
-void createMenuBox(int a,int b,int c,int d,int e,int f,void (*tick)(void),void (*render)(void)) { if(a==2) assert(b==(MOD_OPT_BARS ? -118 : -94)); UI_BOX_DATA[a].state=1; }
+void createMenuBox(int a,int b,int c,int d,int e,int f,void (*tick)(void),void (*render)(void)) { if(a==2) assert(b==-118); UI_BOX_DATA[a].state=1; }
 void renderString(int a,int b,int c,int d,int e,int f,int g,int h,int i) { }
 void setTextColor(int v) { }
 void drawString(char *s,int x,int y) { }
@@ -104,16 +103,16 @@ static void {pre}_test(void) {{
  // A single session must not enter the repeated-session accounting path.
  slot=0; {pre}_MOD_QUIET=0; {pre}_modBlockArm(); {pre}_modBlockBegin();
  assert(!{pre}_MOD_QUIET); assert({pre}_modBlockNext()==0);
- // The render wrapper restores the slide state and respects OFF and game time.
- for(int bars=0;bars<2;bars++) for(int running=0;running<2;running++) {{
-  MOD_OPT_BARS=bars; IS_GAMETIME_RUNNING=running; STATUS_UI_OFFSET_X=240; drawn=0;
+ // The render wrapper restores the slide state and respects game time.
+ for(int running=0;running<2;running++) {{
+  IS_GAMETIME_RUNNING=running; STATUS_UI_OFFSET_X=240; drawn=0;
   {pre}_renderCareHUD(0);
-  assert(drawn==(bars&&!running)); assert(STATUS_UI_OFFSET_X==240);
+  assert(drawn==!running); assert(STATUS_UI_OFFSET_X==240);
  }}
 }}
 #undef TB
 '''
-    code += 'int main(void) { TRN_test(); TRN2_test(); puts("PASS: both overlays, five sessions, cancel boundaries, native stops, capped totals, single sessions, HUD/OFF/slide state"); }\n'
+    code += 'int main(void) { TRN_test(); TRN2_test(); puts("PASS: both overlays, five sessions, cancel boundaries, native stops, capped totals, single sessions, HUD/slide state"); }\n'
     with tempfile.TemporaryDirectory(prefix='training-care-hud-') as tmp:
         source = Path(tmp) / 'check.c'
         binary = Path(tmp) / 'check'

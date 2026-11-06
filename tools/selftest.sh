@@ -52,6 +52,7 @@ else
     skip npc-originals "needs a built disc image and extracted/ (DW_SELFTEST_DERIVE)"
 fi
 run npc-originals-tests "$PY" -W ignore tools/test_npc_originals.py
+run battle-audit      $PY -W ignore tools/test_battle_audit.py
 run patch-series      $PY tools/patch_series.py check                     # mods/patches/series, the patch files and index.md agree
 run technique-timing-tests $PY -m unittest tools.test_technique_timing
 run buster-dive-tests $PY -m unittest tools.test_buster_dive
@@ -136,14 +137,17 @@ else
     skip evolution-chart "needs a built DIGI.DAT and executable (DW_SELFTEST_DERIVE)"
 fi
 disc dwtables          sh -c 'rm -rf "$2/tables" && "$1" tools/dwtables.py extracted/SLUS_010.32 "$2/tables" >/dev/null && for f in "$2"/tables/*.csv; do [ -f "docs/data/$(basename "$f")" ] || continue; cmp -s "$f" "docs/data/$(basename "$f")" || { echo "differs: $f"; exit 1; }; done' sh "$PY" "$OUT"
-disc dws-tests         $PY -W ignore tools/test_dws.py
+# Original-executable fixtures use the recorded original heap, independent of a local mod build.
+# Current-image heap validation remains in the archive-backed image build checks.
+disc dws-tests         env DW_HEAP_MAP=/dev/null $PY -W ignore tools/test_dws.py
 disc dws-safety        $PY -W ignore tools/test_dws_safety.py
 run dws-authored      $PY -W ignore tools/test_dws_authored.py
 run island-story      $PY -W ignore -m unittest discover -s story/mods/what-the-island-forgot/test
 for d in tools/dws/examples/*.dws; do
     n=$(basename "$d" .dws)
     exe=original; case $n in expanded-*) exe=story-state;; esac       # the engine tier 2 examples
-    disc "dws-$n" $PY tools/dws.py check "$d" --build --exe $exe -o "$OUT/dws-$n.SCN"
+    heap_map_arg=(); [ "$exe" != original ] || heap_map_arg=(env DW_HEAP_MAP=/dev/null)
+    disc "dws-$n" "${heap_map_arg[@]}" $PY tools/dws.py check "$d" --build --exe $exe -o "$OUT/dws-$n.SCN"
 done
 run dws-fmt           $PY tools/dws.py fmt --check tools/dws/examples/*.dws tools/dws/examples/lib/*.dws
 run dws-doctor        $PY tools/dws.py doctor
