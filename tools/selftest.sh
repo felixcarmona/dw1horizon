@@ -92,6 +92,7 @@ else
     skip flat-sprites-built "needs a generated build (DW_SELFTEST_DERIVE)"
 fi
 run heap-tables       $PY tools/test_heap_tables.py                      # compact sector/size records remain lossless
+run effect-targets    $PY -m unittest tools.test_effect_targets          # Nightmare Syndromer excludes its caster
 run npc-footprints   $PY tools/test_reach_policies.py
 run npc-routes       $PY tools/check_npc_routes.py                     # every authored new-screen visibility state
 run npc-route-mutations $PY tools/test_npc_routes.py
