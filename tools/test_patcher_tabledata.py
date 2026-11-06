@@ -15,6 +15,18 @@ import tabledata
 
 
 class TableDataTests(unittest.TestCase):
+    def test_care_hud_layout_has_an_exact_authored_recipe(self):
+        data = bytes([144,178,212,144,178,212,110,224,224,224,237,237,237,242,
+                      1,1,1,1,39,39,39,72,72,86,86,65,79,93])
+        obj = dict(offset=0, length=28, section='.rodata.uv.0', source='src/main/partner_impl.c')
+        recipe = tabledata.authored_recipe(obj, data)
+        self.assertEqual(recipe['generator'], 'care_hud_layout')
+        self.assertEqual(tabledata.tail([recipe], 'us', None), data)
+        self.assertIsNone(tabledata.authored_recipe(obj, bytes(28)))
+        self.assertIsNone(tabledata.authored_recipe(dict(obj, source='other.c'), data))
+        with self.assertRaises(ValueError):
+            tabledata.fontcopy.semantic_table('care_hud_layout', [1])
+
     def test_shipped_generator_resources_support_ui_and_chinese_layout(self):
         import json
         import shutil

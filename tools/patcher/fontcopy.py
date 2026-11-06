@@ -374,6 +374,15 @@ def semantic_table(kind, params, tool_root=None):
         spec.loader.exec_module(value)
         return value
 
+    if kind == 'care_hud_layout':
+        if params:
+            raise ValueError('care HUD layout takes no parameters')
+        # Seven authored icon variants, packed into a 3-column texture grid;
+        # the final tired icon occupies the preceding spare cell.
+        cells = [(144 + 34 * (i % 3), 224 + 13 * (i // 3)) for i in range(6)] + [(110, 242)]
+        positions = [(1, 72), (1, 72), (1, 86), (1, 86), (39, 65), (39, 79), (39, 93)]
+        return bytes([u for u, v in cells] + [v for u, v in cells]
+                     + [x for x, y in positions] + [y for x, y in positions])
     if kind == 'language_flags':
         return module('tools/localize/language_flags.py').payload(params[0])
     if kind == 'tournament_grade':

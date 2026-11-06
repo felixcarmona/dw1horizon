@@ -108,11 +108,13 @@ The isolated bundle verification initially runs from scratch with only the allow
 disc files. Output pins, standalone replays, browser verification and the literal
 gate remain required. Recovery may reuse a completed gate only after checking its
 input fingerprint and all recorded output hashes. `--no-derive-cache` disables recording, derive and delta caches;
-`--base-jobs 1 --no-derive-cache` supplies the sequential reference. Compare the
-DWP payload and every default/source-variant output pin against a parallel run
-from the same commit, inputs and version. Whole manifests contain measured times
-and therefore need not have identical bytes. A command `--dry-run` only prints a
-plan; byte equality requires executing the actual cut without publication.
+`--base-jobs 1 --no-derive-cache` is available for focused debugging. Scheduler
+and recorder tests compare sequential and parallel bytes on small inputs. The
+full isolated gate compares every USA derived file with the canonical sequential
+recording; reconstruction and standalone replays must match the native USA image
+and every declared regional/source-variant output pin. Whole manifests include
+measured times. Record cold timing during the real cut; validation uses one full
+keep-going pass and verified resumes.
 
 Play the disc once: `tools/dev/playtest/journey.py DISC.cue OUTDIR` from a new game to a reload. The checks that need no
 emulator cannot see a story that is missing from a disc: a new game hung on main for a day with every gate green.
@@ -126,8 +128,9 @@ bundle, isolated verification, encoding, base reconstruction and source-variant
 checkpoints in `package-state/`. Nothing is published automatically.
 
 At the end, `failures.json` and `failures.txt` list every failed or blocked driver
-step, including the command, log and exit code for failures. Packaging's complete
-list is in `package-state/failures.json`. Each worker has a separate log; completed
+step and the individual packaging/selftest failures, including commands, logs and
+exit codes. Packaging also retains its detailed list in
+`package-state/failures.json`; `selftest-steps.jsonl` records every offline check. Each worker has a separate log; completed
 round reports and copies of their logs remain under `rounds/`. A failed round
 exits nonzero even when its independent work succeeded.
 
@@ -146,13 +149,20 @@ still requires its exact clean tagged checkout; update the release tag through
 the normal release procedure when a committed fix changes that checkout.
 
 Each step fingerprints its source/data/configuration inputs, environment, runtime
-and relevant phase code. Successful completion markers contain SHA-256 hashes of
+and relevant phase code. Native version stamping stays in the compiler environment;
+asset recording keys its executable facts and source inputs. Encoder keys exclude
+observed timing fields. Conservative tool inventories can invalidate several
+consumers after a tool-source edit. Successful completion markers contain SHA-256 hashes of
 all declared outputs and structured cached results. Resume rehashes them before
 reuse; missing, modified or partial outputs rerun their step. Failed, blocked and
 changed steps rerun, while unchanged verified successes are retained. The final
 completion gate rechecks every output and checks that inputs did not change during
 the round. Keep the worktree, private inputs, output directory and recovery state
-in place. Do not hand-copy partial artifacts or delete markers to force success.
+in place. `prepared-decomp/` is the immutable patched input tree; native compilation
+owns the separate `decomp/` tree, including its generated headers, assembly and
+objects. The selftest uses that native tree and its own `selftest/` output folder.
+A release selftest with skipped checks fails. Do not build manually inside the
+prepared tree, hand-copy partial artifacts or delete markers to force success.
 Only one round may use an output directory at a time.
 
 Story graph recording currently runs serially on its canonical working tree.

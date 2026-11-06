@@ -36,9 +36,7 @@ def environment(context):
     for key,value in recipe['environment'].items():
         if value is None:env.pop(key,None)
         else:env[key]=str(value)
-    import version
     env.update(W=context['w'],NAME=context['name'],DERIVE_JOBS=str(context['options']['jobs']),REUSE_MODELS='0',
-               MOD_VERSION=version.game_text(context['frozen_identity']),
                DW_PORTRAITS_CACHE=str(Path(context['build'])/'derived/portraits-cache'),PYTHONDONTWRITEBYTECODE='1')
     return env
 
@@ -59,6 +57,31 @@ class Commands(release.Run):
             raise
         else:row['exit']=0
         finally:steps.atomic(self.event,steps.encoded(self.events))
+
+
+def native_runtime():
+    """The native builder uses its own interpreter and installed generator libraries."""
+    interpreter=ROOT/'.venv/bin/python'
+    if not interpreter.exists():interpreter=Path(sys.executable)
+    code="import json,sys;from tools.derive.cache import runtime_sources;print(json.dumps([sys.version,runtime_sources()]))"
+    value=subprocess.check_output([str(interpreter),'-B','-c',code],cwd=ROOT,text=True)
+    return json.loads(value)
+
+
+def prepare_decomp(context, runner, destination, revision=None, source=None):
+    """Keep the prepared sources immutable; native compilation owns another tree."""
+    destination=Path(destination);source=Path(source or context['seed'])
+    if destination.exists():
+        runner.cmd(['git','-C',context['seed'],'worktree','remove','--force',destination])
+    runner.cmd(['git','-C',context['seed'],'worktree','add','--force','--detach',destination,revision or context['pin']])
+    if revision is None:
+        from tools import patch_series
+        patches=patch_series.paths(ROOT)
+        if patches:
+            runner.cmd(['git','-C',destination,'-c','user.name='+release.git('config','user.name'),
+                        '-c','user.email='+release.git('config','user.email'),'am',*patches])
+    for relative in ('asm','build/us/psx/generated','external/psyq_headers'):
+        shutil.copytree(source/relative,destination/relative,dirs_exist_ok=True,ignore=shutil.ignore_patterns('.git'))
 
 
 def run_step(name,context):
@@ -94,20 +117,20 @@ def run_step(name,context):
         shutil.rmtree(out/'player-python',ignore_errors=True)
         r.cmd([py,'-m','venv','--without-pip',out/'player-python'])
     elif name=='decomp':
-        if w.exists():
-            r.cmd(['git','-C',context['seed'],'worktree','remove','--force',w])
-        r.cmd(['git','-C',context['seed'],'worktree','add','--detach',w,context['pin']])
-        from tools import patch_series
-        r.cmd(['git','-C',w,'-c','user.name='+release.git('config','user.name'),'-c',
-               'user.email='+release.git('config','user.email'),'am',*patch_series.paths(ROOT)])
-        for relative in ('asm','build/us/psx/generated','external/psyq_headers'):
-            shutil.copytree(Path(context['seed'])/relative,w/relative,dirs_exist_ok=True,ignore=shutil.ignore_patterns('.git'))
+        prepared=out/'prepared-decomp'
+        prepare_decomp(context,r,prepared)
+        steps.atomic(out/'decomp-ready.json',steps.encoded({'commit':release.git('rev-parse','HEAD',cwd=prepared)}))
     elif name=='sources':
         shutil.rmtree(build/'source-games',ignore_errors=True)
         command=[py,'-m','tools.derive','sources','--out',build/'source-games']
         for key,path in sources.items():command+=['--source-disc',f'{key}={path}']
         r.cmd(command,env)
     elif name=='native':
+        import version
+        env['MOD_VERSION']=version.game_text(context['frozen_identity'])
+        prepared=out/'prepared-decomp'
+        ready=json.loads((out/'decomp-ready.json').read_text())
+        prepare_decomp(context,r,w,revision=ready['commit'],source=prepared)
         for suffix in ('.bin','.cue'):
             Path(str(build)+suffix).unlink(missing_ok=True)
         r.cmd(['story/mods/what-the-island-forgot/build.sh'],env)
@@ -125,9 +148,11 @@ def run_step(name,context):
         files=release.selftest_fixtures(build)
         steps.atomic(out/'fixtures.json',steps.encoded({'prepared':True,'files':files}))
     elif name=='selftest':
-        testenv=release.offline_environment(recipe);testenv['DW_SELFTEST_DERIVE']=str(build)
+        testenv=release.offline_environment(recipe);testenv.update(DW_SELFTEST_DERIVE=str(build),DW_SELFTEST_DECOMP=str(w),
+                       DW_SELFTEST_OUT=str(out/'selftest'),DW_SELFTEST_REPORT=str(out/'selftest-steps.jsonl'))
         r.cmd(['tools/selftest.sh'],testenv)
     elif name=='package':
+        for suffix in ('.json','.txt'):(out/'package-state'/('failures'+suffix)).unlink(missing_ok=True)
         command=[py,'tools/patcher/dwpatch.py','make-release','--original',bases['us'],
                  '--variant',f'everything={build}.bin','--title','Digimon World Horizon','-o',package,
                  '--keep-going','--resume-state',out/'package-state','--keep-outputs',out/'reconstructed',
@@ -221,15 +246,16 @@ def declared_outputs(name,context):
     if name=='identity':return [out/'identity.json']
     if name=='prerequisites':return [out/'input-pins.json']
     if name=='player-python':return [out/'player-python']
-    if name=='decomp':return [w/p for p in ('src','include','config','asm','Makefile','external/psyq_headers') if (w/p).exists()]
+    if name=='decomp':return [out/'prepared-decomp',out/'decomp-ready.json']
     if name=='sources':return [build/'source-games']
     if name=='native':
         manifest=json.loads((build/'derived/manifest.json').read_text())
         files=[build/'derived/manifest.json',build/'derived/exe-facts.json',build/'exe',Path(str(build)+'.bin'),Path(str(build)+'.cue')]
         files += [build/item['file'] for item in manifest['files'].values()]
         files += [build/p for p in ('models','record-originals') if (build/p).exists()]
-        return sorted(set(files))
+        return sorted(set(files+[w]))
     if name=='story-heap':return [out/'story-check/DG.SCN',out/'logs/story-heap.log']
+    if name=='selftest':return [out/'selftest',out/'selftest-steps.jsonl',out/'logs/selftest.log']
     if name=='fixtures':return [out/'fixtures.json',*[ROOT/path for path in json.loads((out/'fixtures.json').read_text())['files']]]
     if name=='package':return [out/'package',out/'reconstructed']
     if name in ('published-save','journey','ending'):return [out/name]
@@ -267,6 +293,29 @@ def current_identity(tag):
         # Identity is a reported DAG gate, including when the checkout is dirty.
         import version
         return version.describe(str(ROOT))
+
+
+def child_failure_rows(path, prefix, result, lines=False):
+    """A damaged child report is another failure, never a reason to lose the list."""
+    def error(message, suffix='report'):
+        result['ok']=False
+        result['failures'].append(dict(name=prefix+'/'+suffix,status='failed',exit=1,seconds=0,
+                                       command=[],log=str(path),error=str(message)))
+    try:text=path.read_text()
+    except OSError as exc:error(exc);return []
+    chunks=text.splitlines() if lines else [text]
+    rows=[]
+    for index,chunk in enumerate(chunks,1):
+        if lines and not chunk.strip():continue
+        try:
+            data=json.loads(chunk)
+            batch=[data] if lines else data['failures']
+            if not isinstance(batch,list):raise ValueError('invalid failure list')
+            for row in batch:
+                if not isinstance(row,dict) or not isinstance(row.get('name'),str):raise ValueError('invalid failure row')
+                rows.append(row)
+        except (ValueError,KeyError,TypeError) as exc:error(exc,'report-line-'+str(index) if lines else 'report')
+    return rows
 
 
 def driver(a):
@@ -324,7 +373,8 @@ def locked_driver(a):
     native_files=[ROOT/p for p in tracked if p and p.startswith(('tools/','content/','story/','mods/','text/','docs/data/'))
                   and not p.endswith('.md') and '/test' not in p and not Path(p).name.startswith(('test_','release'))]
     native_files += [ROOT/'extracted',ROOT/'build/digimonworld.xml']
-    runtime_identity=dict(python=sys.version,executable=store.hashes.file(sys.executable))
+    from tools.derive.cache import runtime_sources
+    runtime_identity=dict(python=sys.version,executable=store.hashes.file(sys.executable),libraries=runtime_sources())
     env=environment(context)
     from tools.derive.release_cache import environment as normalized
     env_key=hashlib.sha256(steps.encoded(normalized(env))).hexdigest()
@@ -340,7 +390,9 @@ def locked_driver(a):
     if module.startswith('file://'):
         from urllib.parse import unquote,urlparse
         module=Path(unquote(urlparse(module).path))
-        if module.exists():web_inputs.append(module.parent)
+        if module.exists():
+            installation=next((parent for parent in module.parents if parent.name=='node_modules'),module.parent)
+            web_inputs.append(installation)
 
     from tools import patch_series
     plan=[]
@@ -357,8 +409,13 @@ def locked_driver(a):
                     if current!=store.rows[prior.name].get('fingerprint'):changed.append(prior.name)
                 if changed:raise RuntimeError('inputs changed after validation: '+', '.join(changed))
             paths=inputs() if callable(inputs) else inputs
-            return dict(format=1,files=store.hashes.tree(paths),values=values,environment=env_key,
+            return dict(format=1,files=store.hashes.tree(paths),values=values() if callable(values) else values,environment=env_key,
                         runtime=runtime_identity,phase=phase_code(run_step,name),outputs=phase_code(declared_outputs,name),
+                        commands=[inspect.getsource(Commands),inspect.getsource(release.Run.cmd),inspect.getsource(release.stop_group)],
+                        shared=[inspect.getsource(options),inspect.getsource(environment)],
+                        release_helpers=store.hashes.file(ROOT/'tools/release.py'),
+                        preparation=inspect.getsource(prepare_decomp) if name in ('decomp','native') else None,
+                        native_runtime_code=inspect.getsource(native_runtime) if name=='native' else None,
                         validated_steps={key:row.get('fingerprint') for key,row in store.rows.items() if key!='complete'} if name=='complete' else None,
                         helper=inspect.getsource(release.browser) if name=='browser' else inspect.getsource(release.selftest_fixtures) if name=='fixtures' else None)
         def invoke():
@@ -384,15 +441,16 @@ def locked_driver(a):
     if not a.preflight_only:
         add('prerequisites',['identity'],[*base_inputs,*source_inputs,ROOT/'extracted',ROOT/'tools/discs.py'],values=context['pin'])
         add('player-python',['identity'],[Path(sys.executable)],values=sys.version)
-        add('decomp',['prerequisites'],[*patch_series.paths(ROOT),Path(context['seed'])/'asm',Path(context['seed'])/'external/psyq_headers'],values=context['pin'])
+        add('decomp',['prerequisites'],[ROOT/'mods/patches/series',ROOT/'tools/patch_series.py',*patch_series.paths(ROOT),Path(context['seed'])/'asm',Path(context['seed'])/'external/psyq_headers',Path(context['seed'])/'build/us/psx/generated'],values=context['pin'])
         add('sources',['prerequisites'],[*source_inputs,*[p for p in native_files if '/tools/' in str(p)]])
-        add('native',['decomp','sources'],lambda:[*native_files,w/'src',w/'config',w/'include',w/'asm',w/'Makefile',w/'external/psyq_headers',build/'source-games'],values=context['frozen_identity']['version'])
+        add('native',['decomp','sources'],lambda:[*native_files,ROOT/'tools',out/'prepared-decomp',out/'decomp-ready.json',build/'source-games'],values=lambda:dict(version=context['frozen_identity']['version'],runtime=native_runtime(),
+                                               iso_writer=store.hashes.file(ROOT/'.tools/mkpsxiso/build/mkpsxiso')))
         add('heap',['native'],[ROOT/'tools/heapcheck.py',w/'build/us/psx/gcc/SLUS_010.32.elf.map'])
         add('story-heap',['native'],lambda:[*native_files,build/'DIGI.DAT',build/'derived/exe-facts.json',w/'build/us/psx/gcc/SLUS_010.32.elf.map'])
         safe=['native','heap','story-heap']
-        add('fixtures',safe,lambda:[ROOT/'tools/release.py',build/'derived/manifest.json',build/'models',build/'record-originals',build/'source-games'])
-        add('selftest',['fixtures'],lambda:[*native_files,ROOT/'tools/selftest.sh',build/'derived/manifest.json'])
-        add('package',safe+['published-file'],lambda:[*native_files,*frontend_inputs,*base_inputs,*source_inputs,Path(str(build)+'.bin'),build/'derived/manifest.json'],values=context['identity']['commit'])
+        add('fixtures',safe,lambda:[*native_files,ROOT/'tools',build/'derived/manifest.json',build/'models',build/'record-originals',build/'source-games'])
+        add('selftest',['fixtures'],lambda:[*native_files,ROOT/'tools',w/'src',build/'derived/manifest.json'])
+        add('package',safe+['published-file'],lambda:[*native_files,ROOT/'tools',*frontend_inputs,*base_inputs,*source_inputs,Path(str(build)+'.bin'),build/'derived/manifest.json'],values=context['identity']['commit'])
         if a.save_check_emu:
             for name in ('published-save','journey'):add(name,safe,[ROOT/'tools/dev',Path(str(build)+'.bin'),build/'exe/SLUS_010.32'])
         if a.ending_card:add('ending',safe,[ROOT/'tools/dev',a.ending_card,Path(str(build)+'.bin'),build/'exe/SLUS_010.32'])
@@ -420,22 +478,48 @@ def locked_driver(a):
     try:result=steps.run(plan,store,a.step_workers)
     finally:
         for sig,handler in handlers.items():signal.signal(sig,handler)
+    package_row=next((row for row in result['steps'] if row['name']=='package'),{})
+    package_failures=out/'package-state/failures.json'
+    if package_row.get('status')=='failed' and package_failures.exists():
+        for inner in child_failure_rows(package_failures,'package',result):
+            row=dict(inner,name='package/'+inner['name'])
+            row['blocked_by']=['package/'+name for name in row.get('blocked_by',[])]
+            row['dependencies']=['package/'+name for name in row.get('dependencies',[])]
+            result['failures'].append(row)
+    selftest_row=next((row for row in result['steps'] if row['name']=='selftest'),{})
+    selftest_report=out/'selftest-steps.jsonl'
+    if selftest_row.get('status')=='failed' and selftest_report.exists():
+        for row in child_failure_rows(selftest_report,'selftest',result,lines=True):
+            if row['status'] in ('failed','blocked'):
+                result['failures'].append(dict(row,name='selftest/'+row['name']))
+    lines=[]
+    for row in result['failures']:
+        if row['status']=='blocked':lines.append(row['name']+': blocked by '+', '.join(row['blocked_by']))
+        else:lines.append(f"{row['name']}: exit {row['exit']}; log {row['log']}; command {row['command']}; {row.get('error','')}")
+    steps.atomic(out/'failures.json',steps.encoded(result))
+    steps.atomic(out/'failures.txt',(('\n'.join(lines) if lines else 'All steps passed.')+'\n').encode())
+    print('\n'.join(lines) if lines else 'All required release steps passed.',flush=True)
     round_number=len(list((out/'rounds').glob('*.json')))+1
     result.update(seconds=round(time.monotonic()-round_started,3),round=round_number,commit=context['identity']['commit'],frozen_version=context['frozen_identity']['version'])
     # Preserve evidence before a resume replaces a worker's current log.
     history=out/'rounds'/f'round-{round_number:03}-logs';history.mkdir(parents=True,exist_ok=True)
+    for relative,label in (('recovery/context.json','context.json'),('recovery/plan.json','driver-plan.json'),
+                           ('package-state/plan.json','package-plan.json'),('package-state/round.json','package-round.json'),
+                           ('package-timing.json','package-timing.json')):
+        if (out/relative).is_file():shutil.copy2(out/relative,history/label)
     for row in result['steps']:
         if row.get('log') and Path(row['log']).is_file():
             saved=history/(row['name'].replace('/','-')+'.log')
             shutil.copy2(row['log'],saved);row['archived_log']=str(saved)
+    for row in result['failures']:
+        if row.get('log') and Path(row['log']).is_file() and row['name'].startswith(('selftest/','package/')):
+            shutil.copy2(row['log'],history/(row['name'].replace('/','-')+'.log'))
+            if row.get('worker_log') and Path(row['worker_log']).is_file():
+                shutil.copy2(row['worker_log'],history/(row['name'].replace('/','-')+'-worker.log'))
+    if selftest_report.exists():shutil.copy2(selftest_report,history/'selftest-steps.jsonl')
     if (out/'package-state/failures.json').exists():
         shutil.copy2(out/'package-state/failures.json',history/'package-failures.json')
-        for row in json.loads((out/'package-state/failures.json').read_text())['failures']:
-            if row.get('log') and Path(row['log']).is_file():
-                shutil.copy2(row['log'],history/('package-'+row['name'].replace('/','-')+'.log'))
     steps.atomic(out/'rounds'/f'round-{round_number:03}.json',steps.encoded(result))
-    for filename in ('failures.json','failures.txt'):
-        shutil.copy2(store.root/filename,out/filename)
     steps.atomic(out/'summary.json',steps.encoded(dict(seconds=result['seconds'],result='ok' if result['ok'] else 'FAILED',round=round_number,
         steps=[(row['name'],row['seconds'],row['status']) for row in result['steps']])))
     return 0 if result['ok'] else 1

@@ -1328,6 +1328,10 @@ def release_derive(root, recipe, facts, cache=None, slot=None, record=False, job
                    source_discs=None):
     """Release-only caching; isolated verification and player replay use derive_run directly."""
     _check_cancel()
+    if log:
+        from pathlib import Path
+        Path(log).parent.mkdir(parents=True,exist_ok=True)
+        Path(log).write_text('Release derive: '+str(slot)+'\n')
     if not cache:
         return derive_run(root, recipe, facts, record, jobs, log, source_discs, measure_worker=True)
     if REPO not in sys.path:
@@ -1353,6 +1357,8 @@ def release_derive(root, recipe, facts, cache=None, slot=None, record=False, job
         if snapshot is not None and rc.restore(snapshot, staged):
             hit = True
             say('  source-bundle recording: verified cache hit')
+            if log:
+                with open(log,'a') as stream:stream.write('Verified recording cache hit\n')
             with open(staged / 'tools/derive/recipes' / (recipe + '.json')) as f:
                 build_name = json.load(f)['environment']['NAME']
             made = staged / 'build' / build_name
@@ -1391,6 +1397,7 @@ def derive_run(root, recipe, facts, record=False, jobs=None, log=None, source_di
     t0 = time.time()
     lines = []
     lf = open(log, 'w', encoding='utf-8') if log else None
+    if lf:lf.write('Command: '+repr(argv)+'\n')
     p = None
     job = None
     try:
@@ -1445,10 +1452,11 @@ def derive_run(root, recipe, facts, record=False, jobs=None, log=None, source_di
     if code:
         tail = ''.join(lines)[-3000:]
         if SCREEN is not None and not SCREEN.verbose:
-            raise PatchError('building the files from your disc failed. Its last lines:\n'
-                             + ''.join(lines[-12:]).rstrip('\n'))
-        say(tail)
-        raise PatchError('building the files from your disc failed (the message above says why).')
+            message='building the files from your disc failed. Its last lines:\n'+''.join(lines[-12:]).rstrip('\n')
+        else:
+            say(tail);message='building the files from your disc failed (the message above says why).'
+        error=PatchError(message);error.code=code;error.command=argv
+        raise error
     say(f'   tools/derive: {time.time() - t0:.0f} s')
     return json.load(open(os.path.join(out, 'derived', 'manifest.json'))), out
 
@@ -1567,7 +1575,7 @@ def derive_holes(rel, m, v, base, work, jobs=None, source_discs=None, cache=None
         SCREEN.start(next(k for k in SCREEN.keys if k.startswith('step:')))
     if cache is not None or slot is not None:
         man, out = release_derive(root, v['local']['recipe'], os.path.join(root, 'exe-facts.json'),
-                                  cache=cache, slot=slot, jobs=jobs, source_discs=source_discs)
+                                  cache=cache, slot=slot, jobs=jobs, source_discs=source_discs, log=os.path.join(work,'derive.log'))
     else:
         # The shipped reader has no release-only helpers or caches.
         man, out = derive_run(root, v['local']['recipe'], os.path.join(root, 'exe-facts.json'),
@@ -1844,7 +1852,16 @@ RELEASE_STATE = None
 RELEASE_COMMON = None
 
 
-def recovery_step(name, function, values, outputs=()):
+def recovery_common(name):
+    if name in ('source-bundle','isolated-verification'):
+        # Asset recording consumes executable facts, not the native program image.
+        result={key:RELEASE_COMMON[key] for key in ('recipe','runtime','python','environment','sources')}
+        result['original']=next(value for key,value in RELEASE_COMMON['bases'] if key=='us')
+        return result
+    return RELEASE_COMMON
+
+
+def recovery_step(name, function, values, outputs=(), worker_log=None):
     if RELEASE_STATE is None:
         return function()
     if name not in RELEASE_STATE.dependencies and name.startswith('source-derive/'):
@@ -1853,9 +1870,32 @@ def recovery_step(name, function, values, outputs=()):
             RELEASE_STATE.dependencies[name]=['encode/everything']
             output='source-output/'+variant+'/'+key
             if output in RELEASE_STATE.dependencies:RELEASE_STATE.dependencies[output].append(name)
-    return RELEASE_STATE.call(name, function,
-        lambda: dict(common=RELEASE_COMMON, values=values() if callable(values) else values), outputs,
-        command=[sys.executable, __file__, 'make-release', name])
+    status_log=RELEASE_STATE.path(name).with_suffix('.log')
+    logged=False
+    def invoke():
+        nonlocal logged
+        if worker_log:
+            try:os.unlink(worker_log)
+            except FileNotFoundError:pass
+        try:return function()
+        finally:
+            if worker_log and os.path.isfile(worker_log):
+                logged=True
+                with status_log.open('a') as stream:
+                    stream.write('\nWorker log: '+str(worker_log)+'\n')
+                    with open(worker_log,'rb') as details:
+                        details.seek(max(0,os.path.getsize(worker_log)-16384))
+                        stream.write(details.read().decode('utf-8','replace'))
+    try:
+        return RELEASE_STATE.call(name, invoke,
+            lambda: dict(common=recovery_common(name), values=values() if callable(values) else values), outputs,
+            command=[sys.executable,*sys.argv],log=status_log)
+    finally:
+        if (worker_log and name in RELEASE_STATE.rows and
+                (logged or RELEASE_STATE.rows[name]['status']=='reused') and os.path.isfile(worker_log)):
+            RELEASE_STATE.rows[name]['worker_log']=str(worker_log)
+            RELEASE_STATE.note(RELEASE_STATE.rows[name])
+
 
 
 def recovery_tree(path):
@@ -1896,6 +1936,27 @@ def block_pending_recovery():
         if not changed:break
 
 
+def recovery_inputs(a, target):
+    """Hash every supplied disc and the native side files used by encoders."""
+    from pathlib import Path
+    from tools.derive.cache import runtime_sources
+    root=Path(os.path.splitext(os.path.abspath(target))[0])
+    flags=dict(item.split('=',1) for item in a.variant[0].split('=',1)[1].split(',')[1:])
+    manifest=Path(flags.get('manifest') or root/'derived/manifest.json')
+    native=[root/'derived/exe-facts.json']
+    if flags.get('map'):native.append(Path(flags['map']))
+    native.extend(path for path in sorted(root.glob('exe*')) if path.is_dir())
+    metadata=json.loads(manifest.read_text())
+    native.extend(root/row['source'] for row in metadata.get('plan',{}).get('CHINESE_RESOURCES',[]))
+    return dict(recipe=a.recipe,runtime=RELEASE_STATE.hashes.tree([os.path.join(REPO,p) for p in DERIVE_TREES]),
+                python=[sys.version,runtime_sources()],environment=release_cache_environment(os.environ),
+                sources=[[item.split('=',1)[0],RELEASE_STATE.hashes.file(item.split('=',1)[1])] for item in a.source_disc],
+                bases=[['us',RELEASE_STATE.hashes.file(a.original)]]+
+                      [[item.split('=',1)[0],RELEASE_STATE.hashes.file(item.split('=',1)[1])] for item in a.base],
+                target=RELEASE_STATE.hashes.file(target),native=RELEASE_STATE.hashes.tree(native),
+                manifest=json.dumps({key:metadata.get(key) for key in ('files','plan')},separators=(',',':')))
+
+
 def cmd_make_release(a):
     # Validate before deleting/replacing an existing output folder or invoking a build.
     if a.format != FORMAT or a.holes != 'derive' or a.recipe != 'everything':
@@ -1928,22 +1989,15 @@ def cmd_make_release(a):
         RELEASE_METRICS = Metrics(a.metrics)
     if (getattr(a,'keep_going',False) or getattr(a,'resume',False)) and not getattr(a,'resume_state',None):
         a.resume_state=os.path.abspath(a.output)+'.recovery'
-    if getattr(a, 'resume_state', None):
-        if REPO not in sys.path:sys.path.insert(0,REPO)
-        from tools.release_steps import Store
-        RELEASE_STATE=Store(a.resume_state,resume=True)
-        source_paths=[os.path.join(REPO,p) for p in DERIVE_TREES]
-        # Native target and all supplied recipe/runtime bytes are content keyed.
-        RELEASE_COMMON=dict(recipe=a.recipe, runtime=RELEASE_STATE.hashes.tree(source_paths),
-                            python=sys.version,
-                            environment=release_cache_environment(os.environ),
-                            sources=[[item.split('=',1)[0],RELEASE_STATE.hashes.file(item.split('=',1)[1])]
-                                     for item in a.source_disc],
-                            target=RELEASE_STATE.hashes.file(target))
-        if not a.keep_outputs:a.keep_outputs=os.path.join(a.resume_state,'outputs')
-    recovery_plan(a)
     started = time.monotonic()
     try:
+        if getattr(a, 'resume_state', None):
+            if REPO not in sys.path:sys.path.insert(0,REPO)
+            from tools.release_steps import Store
+            RELEASE_STATE=Store(a.resume_state,resume=True)
+            recovery_plan(a)
+            RELEASE_COMMON=recovery_inputs(a,target)
+            if not a.keep_outputs:a.keep_outputs=os.path.join(a.resume_state,'outputs')
         recovery_step('published-save-file',lambda:save_check(a),{})
         return cmd_make_release3(a)
     except (Exception,SystemExit) as error:
@@ -1981,7 +2035,7 @@ def derived_manifest(root, recipe):
     return os.path.join(root, 'build', name, 'derived', 'manifest.json')
 
 
-def run_release_tasks(tasks, width):
+def run_release_tasks(tasks, width, allow_partial=False):
     if RELEASE_STATE is not None:
         from concurrent.futures import ThreadPoolExecutor, as_completed
         results, failures = {}, []
@@ -1991,9 +2045,9 @@ def run_release_tasks(tasks, width):
                 name=futures[future]
                 try:results[name]=future.result()
                 except (Exception,SystemExit) as error:failures.append((name,str(error)))
-        if failures:
+        if failures and not allow_partial:
             raise PatchError('independent release tasks failed:\n'+'\n'.join(name+': '+error for name,error in failures))
-        return {name:results[name] for name in tasks}
+        return {name:results[name] for name in tasks if name in results}
     from release_workers import ordered
     global CANCEL
     previous = CANCEL
@@ -2025,7 +2079,7 @@ def source_variant_derive(a,out,m,local,holes,base_paths,mappings,work,spec,key,
         lambda:compute_source_variant(a,out,m,local,holes,base_paths,mappings,work,spec,key,jobs),
         lambda:dict(bundle=recovery_tree(os.path.join(out,'bundle')),base=RELEASE_STATE.hashes.file(base_paths[key]),
                     source=RELEASE_STATE.hashes.file(image),mapping=mappings.get(key)),
-        lambda value:[os.path.join(work,vid,key,'derive','root')])
+        lambda value:[os.path.join(work,vid,key,'derive','root')],worker_log=os.path.join(work,vid,key,'derive','derive.log'))
 
 
 def record_source_variants(a, m, out, work, name, local, holes, base_holes, base_paths, mappings, p3, outputs, prepared=None):
@@ -2052,6 +2106,7 @@ def record_source_variants(a, m, out, work, name, local, holes, base_holes, base
         say(f'  source variant {vid} ({game}: {os.path.basename(image)}): tools/derive on us')
         made = dict([prepared[spec] if prepared else derive_one('us', os.cpu_count() or 1)])
         reused, why = None, 'no regional base'
+        failed_regional = set()
         if regional:
             try:
                 with open(derived_manifest(os.path.join(work, vid, 'us', 'derive', 'root'), local['recipe'])) as f:
@@ -2075,7 +2130,10 @@ def record_source_variants(a, m, out, work, name, local, holes, base_holes, base
             jobs = max(1, (os.cpu_count() or 1) // width)
             say(f'    {why}: tools/derive on {", ".join(regional)}, {width} at once, --jobs {jobs} each')
             import functools
-            made.update(run_release_tasks({k: functools.partial(derive_one, k, jobs) for k in regional}, width).values())
+            tasks={k:functools.partial(derive_one,k,jobs) for k in regional}
+            derived=run_release_tasks(tasks,width,allow_partial=True) if RELEASE_STATE is not None else run_release_tasks(tasks,width)
+            made.update(derived.values())
+            failed_regional=set(regional)-set(derived)
         m.setdefault('timings', {}).setdefault('source_variants', {})[vid] = round(time.time() - t0)
         say(f'    derive: {time.time() - t0:.0f} s')
         def compute_variant(key):
@@ -2113,7 +2171,14 @@ def record_source_variants(a, m, out, work, name, local, holes, base_holes, base
         import functools
         from release_workers import worker_count
         width = worker_count(getattr(a, 'base_jobs', 4), len(base_paths), getattr(a, 'worker_memory_mib', 6144))
-        results = run_release_tasks({key: functools.partial(reconstruct_variant, key) for key in base_paths}, width)
+        eligible=[]
+        for key in base_paths:
+            if key in failed_regional:
+                RELEASE_STATE.blocked('source-output/'+vid+'/'+key,['source-derive/'+vid+'/'+key],command=[sys.executable,*sys.argv])
+            else:eligible.append(key)
+        results = run_release_tasks({key: functools.partial(reconstruct_variant, key) for key in eligible}, width)
+        if failed_regional:
+            raise PatchError('source variant derivations failed: '+', '.join(sorted(failed_regional)))
         for pk, pins, output in results.values():
             outputs[pk] = output
             for hh in holes:
@@ -2191,7 +2256,7 @@ def cmd_make_release3(a):
             return value
         bundle, extract, cand = recovery_step('source-bundle',record_bundle,
             dict(original=RELEASE_STATE.hashes.file(a.original),facts=RELEASE_STATE.hashes.file(facts)) if RELEASE_STATE else {},
-            lambda value:[os.path.join(work,'cand'),os.path.join(a.resume_state,'recorded-bundle')])
+            lambda value:[os.path.join(work,'cand'),os.path.join(a.resume_state,'recorded-bundle')],worker_log=os.path.join(work,'derive-cand.log'))
         if RELEASE_STATE is not None:
             shutil.rmtree(os.path.join(out,'bundle'),ignore_errors=True)
             shutil.copytree(os.path.join(a.resume_state,'recorded-bundle'),os.path.join(out,'bundle'))
@@ -2218,7 +2283,7 @@ def cmd_make_release3(a):
                                       source_discs=getattr(a,'source_disc',None))
             return manifest,folder,round(copied-begin,1),round(read-copied,1)
         vman,vout,copy_seconds,read_seconds=recovery_step('isolated-verification',verify_bundle,
-            lambda:dict(bundle=recovery_tree(vb),extract=extract),lambda value:[ver])
+            lambda:dict(bundle=recovery_tree(vb),extract=extract),lambda value:[ver],worker_log=os.path.join(work,'derive-verify.log'))
         t4=time.time()
         release_timing('isolated-verification',seconds=round(t4-t1,2))
         # apply's progress bar: the time of each of its phases here (the same work as the player's: the bundle
@@ -2418,7 +2483,7 @@ def cmd_make_release3(a):
                 return recovery_step('base/'+name+'/'+key,lambda:compute_reconstruction(key),
                     lambda:dict(payload=hashlib.sha256(blob).hexdigest(),bundle=recovery_tree(os.path.join(out,'bundle')),
                                 base=RELEASE_STATE.hashes.file(base_paths[key]),mapping=mappings.get(key)),
-                    lambda value:[os.path.join(a.keep_outputs,f'{name}-{key}.bin'),os.path.join(work,key)])
+                    lambda value:[os.path.join(a.keep_outputs,f'{name}-{key}.bin'),os.path.join(work,key)],worker_log=os.path.join(work,key,'derive','derive.log'))
 
             from release_workers import worker_count
             specs = getattr(a, 'source_variant', None) or []

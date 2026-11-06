@@ -61,6 +61,11 @@ class ModelProvider(unittest.TestCase):
             if preceding:
                 self.assertNotIn(sid, selected)
                 selected[sid] = model.OVERLAYS[preceding]
+        # The final Silphymon walk is baked after its reviewed field recipe.
+        self.assertTrue(records['226']['aliases_applied'])
+        self.assertNotIn('field_overlay', records['226'])
+        self.assertNotIn('226', selected)
+        selected['226'] = model.OVERLAYS['silphymon-field']
         celebrations = json.load(open('content/models/imports/celebrations.json'))
         self.assertEqual(len(selected), len(model.OVERLAYS))
         self.assertEqual(set(selected.values()), set(model.OVERLAYS.values()))

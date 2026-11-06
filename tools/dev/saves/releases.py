@@ -397,10 +397,16 @@ class Emu:
             self.poke('TAMER_STATE', bytes([5]))
         finally:
             self.api('/api/v1/execution-flow?function=start', data=b'')
-        for _ in range(30):
+        deadline = time.monotonic() + 120
+        while time.monotonic() < deadline:
             self.wait(1)
             ram = self.ram()
-            if self.peek('CURRENT_SCREEN', 'h', ram) == screen and self.peek('TAMER_STATE', 'b', ram) == 0: return True
+            if self.peek('CURRENT_SCREEN', 'h', ram) != screen: continue
+            state = self.peek('TAMER_STATE', 'b', ram)
+            if state == 0: return True
+            # Arrival conversations own the tamer until their dialogue is answered.
+            if state in (6, 10) and self.peek('IS_SCRIPT_PAUSED', 'i', ram) == 0:
+                return self.in_control() and self.peek('CURRENT_SCREEN', 'h') == screen
         return False
 
     def save_at_jijimon(self, at_confirm=None, register=False):
@@ -449,6 +455,28 @@ PERMANENT_OPTIONS = {
 def effective_option(emu, key, saved):
     symbol = PERMANENT_OPTIONS.get(key)
     return 1 if symbol and not emu.has(symbol) else saved
+
+
+def compare_option(rows, emu, key, saved, current):
+    if key == 'frameRate' and emu.has('modCpuProbe'):
+        # Saved frame-rate choices are retired; the CPU selector owns presentation.
+        mode = emu.peek('MOD_FPS_MODE_RUN', 'i')
+        rows.append((mode in (0, 2), 'RAM automatic frame rate', f'unsupported automatic mode {mode}' if mode not in (0, 2) else ''))
+    elif key in current:
+        compare(rows, f'RAM option {key}', effective_option(emu, key, saved), current[key])
+    else:
+        rows.append((False, f'RAM option {key}', f'recorded {saved}; this build has no such setting'))
+
+
+def resaved_option_prefix(emu, data):
+    """Only the explicitly retired presentation bytes change in an old prefix."""
+    raw = bytearray(data)
+    if not emu.has('MOD_OPT_BARS') and len(raw) > 3: raw[3] = 1
+    if not emu.has('MOD_OPT_CLOCK'):
+        if len(raw) > 1: raw[1] = 1
+        if len(raw) > 13: raw[13] = 0
+    if emu.has('modCpuProbe') and len(raw) > 2: raw[2] = 20
+    return bytes(raw)
 
 
 def ram_values(emu, locks, profile):
@@ -513,8 +541,7 @@ def check_emu(emu, js, card, locks, rows, keep):
                   'amounts', 'bank', 'cards', 'raised', 'recruited', 'roster'):
             compare(rows, f'RAM {k}', want[k], got[k])
         for k, val in want['options'].items():
-            if k in got['options']: compare(rows, f'RAM option {k}', effective_option(emu, k, val), got['options'][k])
-            else: rows.append((False, f'RAM option {k}', f'recorded {val}; this build has no such setting'))
+            compare_option(rows, emu, k, val, got['options'])
         # The new flags are inverted: every shorter released record upgrades to ON/shown.
         _, _, saved_records = read_card(card)
         options = saved_records.get(9, b'')
@@ -550,13 +577,7 @@ def check_emu(emu, js, card, locks, rows, keep):
         rows.append((not miss, f'saved again: every record kept ({len(old["records"])})', ', '.join(miss) and f'dropped: {", ".join(miss)}'))
         for n, hexv in old['records'].items():
             if n in new['records'] and n not in RESAVE_DRIFT:
-                if n == 'options' and not emu.has('MOD_OPT_BARS') and len(hexv) >= 8:
-                    hexv = hexv[:6] + '01' + hexv[8:]
-                if n == 'options' and not emu.has('MOD_OPT_CLOCK'):
-                    raw = bytearray.fromhex(hexv)
-                    if len(raw) > 1: raw[1] = 1
-                    if len(raw) > 13: raw[13] = 0
-                    hexv = raw.hex()
+                if n == 'options': hexv = resaved_option_prefix(emu, bytes.fromhex(hexv)).hex()
                 compare(rows, f'saved again: record {n} (old prefix)', hexv, new['records'][n][:len(hexv)])
         for k in ('money', 'partnerType', 'player', 'stats', 'roster', 'bank', 'cards'):
             compare(rows, f'saved again: {k}', old[k], new[k])
