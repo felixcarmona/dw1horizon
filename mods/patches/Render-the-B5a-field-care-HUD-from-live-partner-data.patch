@@ -7,14 +7,14 @@ NEW STATUS BARS selects five outlined gauges: the centred happiness/discipline p
 
 The common icon housings, empty tracks and native status colours occupy unused cells of the existing ETCTIM texture. Replace the old flat-row helpers rather than retaining a second new-bar renderer; no new RAM or VRAM buffer is allocated.
 ---
- src/main/partner_impl.c | 149 ++++++++++++++++++++++------------------
- 1 file changed, 83 insertions(+), 66 deletions(-)
+ src/main/partner_impl.c | 148 +++++++++++++++++++++++++++---------------------
+ 1 file changed, 82 insertions(+), 66 deletions(-)
 
 diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
-index 29078f6..45eb8cc 100644
+index 29078f6..a31f75f 100644
 --- a/src/main/partner_impl.c
 +++ b/src/main/partner_impl.c
-@@ -2356,43 +2356,66 @@ void tickStatusBarsSlide(int32_t state)
+@@ -2356,43 +2356,65 @@ void tickStatusBarsSlide(int32_t state)
  		STATUS_UI_OFFSET_X = 75;
  }
  
@@ -55,16 +55,17 @@ index 29078f6..45eb8cc 100644
 -	} else {
 -		r = 0x30;
 -		g = 0xC8;
-+	static const uint8_t uv[7][2] = {
-+		{144,224}, {178,224}, {212,224}, {144,237},
-+		{178,237}, {212,237}, {110,242}
++	/* Texture u/v and screen x/y offsets for the seven icon variants. */
++	static const uint8_t uv[4][7] = {
++		{144,178,212,144,178,212,110},
++		{224,224,224,237,237,237,242},
++		{1,1,1,1,39,39,39},
++		{72,72,86,86,65,79,93}
 +	};
 +	int32_t i, value, max, red, icon, x, y, pixels;
 +	for (i = 0; i < 5; i++) {
 +		max = 100;
 +		icon = i + 2;
-+		x = STATUS_UI_OFFSET_X + 39;
-+		y = 65 + (i - 2) * 14;
 +		switch (i) {
 +		case 0:
 +			value = PARTNER_PARA.happiness + 100;
@@ -96,10 +97,8 @@ index 29078f6..45eb8cc 100644
 +			value = PARTNER_PARA.tiredness;
 +			red = value >= 50;
 +		}
-+		if (i < 2) {
-+			x -= 38;
-+			y = 72 + i * 14;
-+		}
++		x = STATUS_UI_OFFSET_X + uv[2][icon];
++		y = uv[3][icon];
 +		if (value < 0)
 +			value = 0;
 +		if (value > max)
@@ -107,7 +106,7 @@ index 29078f6..45eb8cc 100644
 +		pixels = (value * 18 + max / 2) / max;
 +		if (value && !pixels)
 +			pixels = 1;
-+		renderRectPolyFT4(x, y, 34, 13, uv[icon][0], uv[icon][1], 31, GetClut(272, 500 + icon), 14, 0);
++		renderRectPolyFT4(x, y, 34, 13, uv[0][icon], uv[1][icon], 31, GetClut(272, 500 + icon), 14, 0);
 +		if (pixels)
 +			renderRectPolyFT4(x + 15, y + 6, pixels, 2, 144, 251 + red * 2, 31, GetClut(272, 507), 13, 0);
  	}
@@ -116,7 +115,7 @@ index 29078f6..45eb8cc 100644
  }
  
  // clang-format off
-@@ -2408,6 +2431,10 @@ void renderStatusBars(state)
+@@ -2408,6 +2430,10 @@ void renderStatusBars(state)
  	uint8_t disciplineTexX;
  	uint8_t disciplineTexY;
  
@@ -127,7 +126,7 @@ index 29078f6..45eb8cc 100644
  	/* MOD (fps): the slide is in tickStatusBarsSlide (late tick) */
  	renderRectPolyFT4(STATUS_UI_OFFSET_X, 85, 75, 8, 0, 236, 5, 0x7D06, 15, 0);
  	renderRectPolyFT4(STATUS_UI_OFFSET_X, 97, 75, 8, 0, 236, 5, 0x7D06, 15, 0);
-@@ -2427,38 +2454,28 @@ void renderStatusBars(state)
+@@ -2427,38 +2453,28 @@ void renderStatusBars(state)
  	else
  		disciplineTexX = 33;
  	renderRectPolyFT4(STATUS_UI_OFFSET_X + 3, 95, 11, 11, disciplineTexX, 244, 5, GetClut(96, 498), 14, 0);
@@ -189,4 +188,3 @@ index 29078f6..45eb8cc 100644
  void setImmortalHour(void)
 -- 
 2.55.0
-

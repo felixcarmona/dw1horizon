@@ -5,7 +5,8 @@ Entry 1 (960,448; 256x64; CLUT 272,496) has no native sprite in
 these cells. Seven 34x13 tiles contain a common grey icon block and empty
 outlined track. Rows 500..506 preserve native icon colours; 507 holds the
 status screen's green/red two-row fills. No file, upload or VRAM allocation
-is added. Native pixels are read from this player's SYSTEM_W (entry 8).
+is added. Native pixels come from SYSTEM_W (entry 8) and the toilet-need
+condition frame (entry 3), fitted whole to 11x11 as owner-selected icon 4.
 """
 import argparse
 from pathlib import Path
@@ -19,11 +20,7 @@ PATH = 'ETCDAT/ETCTIM.BIN'
 CELLS = ((144,32), (178,32), (212,32), (144,45), (178,45), (212,45), (110,50))
 # Happy, sad, disciplined, undisciplined, meat, toilet, tired.
 SOURCES = ((64,244,503,11), (97,244,503,11), (22,244,498,11),
-           (33,244,498,11), (72,140,488,12), None, (108,140,489,12))
-TOILET = ('.11111.....', '.12231.....', '.12331.....', '.13331.....',
-          '.11111.....', '..12211111.', '..12444231.', '..1133311..',
-          '...1531....', '...1331....', '..111111...')
-TOILET_COLOURS = ((0,0,0), (16,24,32), (240,248,248), (176,192,200), (104,192,224), (56,112,160))
+           (33,244,498,11), (72,140,488,12), (208,400,483,16), (108,140,489,12))
 
 
 def rgb15(rgb):
@@ -43,6 +40,10 @@ def build(data):
     if entries[8][1:] != (0,256,128) or struct.unpack_from('<4H',d,src-8) != (320,128,64,128) \
             or struct.unpack_from('<4H',d,src-12-512-8) != (96,488,16,16):
         raise ValueError('unexpected native care-icon texture allocation')
+    need = entries[3][0]
+    if entries[3][1:] != (0,256,64) or struct.unpack_from('<4H',d,need-8) != (960,384,64,64) \
+            or struct.unpack_from('<4H',d,need-12-512-8) != (272,480,16,16):
+        raise ValueError('unexpected native toilet-need texture allocation')
 
     def pixel(p,x,y):
         return (d[p+y*128+x//2] >> (4*(x&1))) & 15
@@ -68,19 +69,15 @@ def build(data):
         for y in range(13):
             for x in range(13):
                 tile[y][x] = light if y==0 or x==0 else shadow if y==12 or x==12 else grey
-        if source:
-            sx,sy,cy,size = source
-            native = struct.unpack_from('<16H',d,src-12-512+(cy-488)*32)
+        sx,sy,cy,size = source
+        pixels,base_y,clut_y = (need,384,480) if k==5 else (src,128,488)
+        native = struct.unpack_from('<16H',d,pixels-12-512+(cy-clut_y)*32)
         for y in range(11):
             for x in range(11):
-                if source:
-                    a,b = ((2*t+1)*size//22 for t in (x,y))
-                    colour = native[pixel(src,sx+a,sy-128+b)]
-                    if k in (4,6) and colour in (grey,light,shadow):
-                        colour = 0
-                else:
-                    ch = TOILET[y][x]
-                    colour = 0 if ch=='.' else rgb15(TOILET_COLOURS[int(ch)])
+                a,b = ((2*t+1)*size//22 for t in (x,y))
+                colour = native[pixel(pixels,sx+a,sy-base_y+b)]
+                if k in (4,6) and colour in (grey,light,shadow):
+                    colour = 0
                 if colour:
                     tile[y+1][x+1] = colour
         for y in range(5,9):

@@ -6,13 +6,61 @@ The owner approved **B5a** on 2026-11-06. It is implemented under the existing *
 
 ## Implemented B5a
 
+The owner selected **toilet icon 4**, the game's native toilet-need/poop
+condition graphic, on 2026-11-06. The atlas generator reads the complete 16×16
+frame from ETCTIM entry 3 (texture page 63, UV 208,144; CLUT 272,483) and fits it
+to the existing 11×11 glyph area with nearest sampling. It retains the common
+13×13 grey housing and replaces the proposed drawn toilet. Only the existing
+toilet tile and its CLUT row change: 126 bytes in the same 125,632-byte ETCTIM
+file. No resident artwork, buffer, upload or allocation is added.
+
+The icon-4 follow-up merges `origin/main` at **78dff7bc** first. The merged
+renderer initially left screen 207 **16 bytes over budget**. Extending its
+existing coordinate table with the row positions removes repeated coordinate
+arithmetic and saves **32 resident bytes**, preserving every gauge calculation
+and OFF GPU call. The final nine-language build has `main_BSS_END`
+**0x801ced58**, heap **184,736 B**, and all **320 actual-archive setups pass**.
+Screen 207 remains tightest: peak **184,712 B**, available **184,728 B** after
+allocator overhead, margin **16 B**. MENU is **53,860 B**. Every language has
+the same endpoint. The icon itself changes only the existing asset data.
+
+Localization now produces the combined field HUD and quick-care artwork in
+both translated and English-only builds; the title step no longer supplies a
+competing ETCTIM file. The merge also required deduplicating three patch-series
+entries and using the already-reviewed effect-context patch from 5287b830,
+which reconciles the overlapping quick-battle guards. All 390 patches apply.
+
 `Render-the-B5a-field-care-HUD-from-live-partner-data.patch` replaces the ON renderer with five live gauges. Happiness/discipline blocks start at (236,192)/(236,206); hunger/toilet/tiredness at (274,185)/(274,199)/(274,213). Each block is 13×13, every outlined track has 18 fill steps, and the existing tick-owned slide supplies the horizontal anchor. The native warning bubbles remain active. Both mood icons use their high/low variants. No input handling, save field or timer is added.
 
 The exact gauge contract below is used before pixel rounding, including the hungry grace phase, POOPY override, empty invalid toilet baseline, fatigue direction, clamping, nearest-pixel fill and minimum one pixel for positive readings. The current engine's `RAISE_ROW(type)` accessor supplies the toilet baseline, including imported species' live DIGI.DAT rows. The historical mockup script used a different meat crop; runtime uses the documented native meat crop (72,140), CLUT (96,488).
 
 `tools/field_hud_art.py` derives seven combined icon-block/empty-track tiles and the native green/red fill stripes into previously empty cells of **ETCTIM.BIN entry 1**, at VRAM (960,448), texture page 31. CLUT rows (272,500..507) were empty. The generator checks both source and destination allocations and refuses occupied cells. The original command-label crops end at u=61; the finisher frame uses u=88..133,v=224..235 and its fill u=136..139,v=224..229. The new atlas avoids these rectangles and the upper condition icons. All existing pixels and palettes outside the reserved cells remain intact. Every localized ETCTIM copy receives the same atlas; no new disc file, upload, RAM copy or VRAM allocation is introduced.
 
-The full default multilingual build passed on 2026-11-06. A controlled relink swaps only the field renderer while retaining the final text banks, padding, species data, tables and file routes:
+### Icon-4 runtime confirmation
+
+`build/hud-icon4.cue` completed the full nine-language build without `HEAP_OK`
+or a language subset; image SHA-1 is
+`168ea26c8a35eaf0641372ba8e5c8ac032f1e196`. The final field asset comes from the
+localized-assets manifest, with one producer for the shared ETCTIM upload.
+
+PCSX-Redux's interpreter ran the fresh disc with exactly **2,097,152 bytes of
+RAM**. All eight light/dark × NEW/CLASSIC × 30/60 FPS-mode combinations passed.
+All sixteen ordinary/needs screenshots were visually reviewed at native
+320×240 and with exact 3× HUD crops. Every screenshot's toilet block matches
+the selected icon's native pixels after the emulator's 5-bit colour expansion.
+The OFF, suppression and battle frames were also checked; battle ON/OFF frames
+remain pixel-identical. Native toilet/portable-potty resets are 48/24 and rest
+changes tiredness 70→40. No new motion clip was needed for this icon follow-up.
+
+Validation also passed 589,828 actual-C gauge cases, 609,030 original OFF GPU-call
+comparisons, 14 asset/UI tests, all nine localized atlas comparisons, full
+390-patch application and `git diff --check`. Artifacts are under
+`build/hud-icon4-runtime/`; build and heap logs are `build/hud-icon4-final.log`
+and `build/hud-icon4/story-heap.txt`. The task emulator and Xvfb were stopped.
+
+### Initial B5a measurements before the icon-4 integration merge
+
+The initial full default multilingual build passed on 2026-11-06. A controlled relink swaps only the field renderer while retaining the final text banks, padding, species data, tables and file routes:
 
 | Measurement | Original two-gauge ON renderer | B5a | Delta |
 | --- | ---: | ---: | ---: |
