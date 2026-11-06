@@ -1,16 +1,15 @@
-"""record.py TREE OUT.json: runs the everything build in TREE the way the web engine's workers run it (one job after
-another in this one process: tools.derive's `unit` command, strict) and records, per job, what it opened, listed and
-looked at (stat) and what it changed in the tree. build_engine.py turns that into each job's inputs (the files a worker
-must have before the job starts) and the jobs' order (who wrote what the job reads).
+"""Record the derive graph with bounded, isolated unit workers.
 
-TREE is a release's bundle with extracted/ written from the player's disc (build_engine.py makes it). The jobs:
-  for each step in derive's order: a step made of units: prepare, the units (`derive units --json` asked once the step
-  before it is done, as the engine does), finish; any other step: build, finish.
+Prepare and finish barriers follow recipe order. Independent units run against
+private copies of the prepared tree, then merge in canonical order. Every unit
+imports repository modules afresh, including their input reads. Conflicting
+writes or sibling dependencies fail the recording; there is no fallback.
 
-Every repository module is forgotten before each job (a worker that never ran the job before imports it afresh: what
-a module opens when it is imported is that job's input too). Paths are relative to TREE; reads outside it (the
-interpreter's library, temporary files) are left out.
+The graph uses stable temporary names and estimates. Measured times, RSS and
+per-worker diagnostics stay outside it. --sequential supplies the same protocol
+with one worker for focused debugging and byte comparisons.
 """
+import argparse
 import contextlib
 import hashlib
 import io
@@ -18,6 +17,11 @@ import json
 import os
 import sys
 import time
+import tempfile
+import traceback
+from pathlib import Path
+
+import record_parallel as parallel
 
 TREE = os.path.abspath(sys.argv[1])
 OUT = os.path.abspath(sys.argv[2])
@@ -48,8 +52,9 @@ def _hook(ev, args):
             w = any(c in mode for c in 'wax+')
         else:
             w = isinstance(flags, int) and bool(flags & (os.O_WRONLY | os.O_RDWR | os.O_CREAT | os.O_APPEND | os.O_TRUNC))
-        if not w:
-            REC['reads'].add(_abs(p))
+        REC['writes' if w else 'reads'].add(_abs(p))
+    elif ev == 'os.rename':
+        REC['writes'].add(_abs(args[1]))
     elif ev in ('os.listdir', 'os.scandir'):
         p = args[0]
         if isinstance(p, int):
@@ -88,7 +93,7 @@ def snapshot():
         for f in fns:
             p = os.path.join(dp, f)
             st = _lstat(p)
-            out[os.path.relpath(p, TREE)] = (st.st_size, st.st_mtime_ns)
+            out[os.path.relpath(p, TREE)] = (st.st_size, st.st_mtime_ns, st.st_mode)
     return out
 
 
@@ -118,20 +123,23 @@ def rel_in_tree(paths):
 def run(argv):
     """tools.derive's command line here, as a worker runs it -> (exit code, output, seconds, record)."""
     global REC
-    forget_modules()
-    from tools.derive import __main__ as D        # noqa: (afresh: forget_modules)
     buf = io.StringIO()
     code = 0
     saved_env = dict(os.environ)
-    REC = {'reads': set(), 'lists': set(), 'stats': set()}
+    REC = {'reads': set(), 'writes': set(), 'lists': set(), 'stats': set()}
     t0 = time.perf_counter()
     sys.argv = ['tools.derive'] + argv
     try:
         with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
             try:
+                forget_modules()
+                from tools.derive import __main__ as D
                 D.main()
             except SystemExit as e:
                 code = e.code or 0
+            except Exception:
+                code = 'exception'
+                traceback.print_exc()
     finally:
         rec, REC = REC, None
         os.chdir(TREE)
@@ -139,70 +147,104 @@ def run(argv):
     return code, buf.getvalue(), time.perf_counter() - t0, rec
 
 
+def execute(spec):
+    before = snapshot()
+    before_dirs = {os.path.relpath(p, TREE) for p, _, _ in os.walk(TREE)}
+    # Deterministic private temporary names keep graph paths stable. Creation
+    # still uses tempfile's exclusive filesystem operations.
+    tempfile.gettempdir()  # initialize its process-local probe before the deterministic sequence
+    candidate_names = tempfile._get_candidate_names
+    seed = int(hashlib.sha256(spec['name'].encode()).hexdigest()[:6], 16) << 8
+    names = (f'{(seed + i) % 2**32:08x}' for i in range(2**24))
+    tempfile._get_candidate_names = lambda: names
+    try:
+        code, text, secs, rec = run([a.replace('{ROOT}', TREE) for a in spec['argv']])
+    finally:
+        tempfile._get_candidate_names = candidate_names
+    now = snapshot()
+    changed = sorted({p for p, v in now.items() if before.get(p) != v}
+                     | (rel_in_tree(rec['writes']) & now.keys()))
+    removed = sorted(p for p in before if p not in now)
+    listed = {}
+    for d in sorted(rel_in_tree(rec['lists'])):
+        prefix = d + os.sep
+        children = {p[len(prefix):].split(os.sep, 1)[0] for p in before if p.startswith(prefix)}
+        if children or d in before_dirs:
+            listed[d] = sorted(children)
+    job = dict(spec, seconds=parallel.estimate(spec), code=str(code),
+               reads=sorted(rel_in_tree(rec['reads'])), stats=sorted(rel_in_tree(rec['stats'])),
+               lists=listed, writes={p: sha1(p) for p in changed}, removes=removed)
+    candidates = set(job['reads']) | set(job['stats']) | {os.path.join(d, f) for d, fs in listed.items() for f in fs}
+    job['existed'] = sorted(p for p in candidates if p in before)
+    job['absent'] = sorted(p for p in rel_in_tree(rec['stats']) if p not in before and p not in before_dirs)
+    logs = Path(os.environ['RECORD_LOGS'])
+    logs.mkdir(parents=True, exist_ok=True)
+    log = logs / (f"{spec['step']}-{spec['part']}-{spec['index']}.log")
+    log.write_text(text)
+    timing = dict(name=spec['name'], seconds=round(secs, 3), log=str(log), code=str(code))
+    print(f"{spec['name']}: {secs:.2f} s, exit {code}; {log}", flush=True)
+    return dict(graph=job, timing=timing, log=str(log))
+
+
 def main():
-    out_dir = os.path.join(TREE, 'build', 'everything')
-    base = ['--recipe', 'everything', '--out', out_dir, '--facts', 'exe-facts.json']
+    ap = argparse.ArgumentParser()
+    ap.add_argument('tree')
+    ap.add_argument('out')
+    ap.add_argument('--jobs', type=int, default=8)
+    ap.add_argument('--worker-memory-mib', type=int, default=3072)
+    ap.add_argument('--logs')
+    ap.add_argument('--unit-batch')
+    ap.add_argument('--sequential', action='store_true', help='debugging reference; never an automatic fallback')
+    a = ap.parse_args()
+    if a.jobs < 1 or a.worker_memory_mib < 1:
+        ap.error('jobs and worker memory must be positive')
+    if a.unit_batch:
+        parallel.batch(a.unit_batch, execute)
+        return
+    os.environ['RECORD_LOGS'] = str(Path(a.logs or (OUT + '.logs')).resolve())
+    logs = Path(os.environ['RECORD_LOGS'])
+    logs.mkdir(parents=True, exist_ok=True)
+    base = ['--recipe', 'everything', '--out', '{ROOT}/build/everything', '--facts', 'exe-facts.json']
     forget_modules()
     from tools.derive import steps as S, graph
     order = [m.NAME for m in graph.order(S.owned())]
     after = {n: list(S.load(n).AFTER) for n in order}
     unit_steps = {n for n in order if hasattr(S.load(n), 'units')}
-    jobs = []
-    before = snapshot()
-    t_all = time.perf_counter()
+    jobs, timings = [], []
+    started = time.perf_counter()
 
-    def job(step, part, argv, index=None, name=None):
-        nonlocal before
-        code, text, secs, rec = run(argv)
-        now = snapshot()
-        changed = sorted(p for p, v in now.items() if before.get(p) != v)
-        removed = sorted(p for p in before if p not in now)
-        listed = {}                       # each listed folder as it was before the job: its files and folders
-        for d in sorted(rel_in_tree(rec['lists'])):
-            pre = d + os.sep
-            names = {p[len(pre):].split(os.sep, 1)[0] for p in before if p.startswith(pre)}
-            if names or os.path.isdir(os.path.join(TREE, d)):
-                listed[d] = sorted(names)
-        j = dict(step=step, part=part, index=index, name=name or f'{step} {part}', argv=argv, seconds=round(secs, 2),
-                 code=str(code), reads=sorted(rel_in_tree(rec['reads'])), stats=sorted(rel_in_tree(rec['stats'])),
-                 lists=listed, existed=None, writes={p: sha1(p) for p in changed}, removes=removed)
-        # what existed before the job (a read of a file the job made itself is not an input)
-        cand = set(j['reads']) | set(j['stats']) | {os.path.join(d, f) for d, fs in listed.items() for f in fs}
-        j['existed'] = sorted(p for p in cand if p in before)
-        # looked at but not there before the job (a worker must not have them either)
-        dirs = set()
-        for p in before:
-            while p:
-                p = os.path.dirname(p)
-                if p in dirs: break
-                dirs.add(p)
-        j['absent'] = sorted(p for p in rel_in_tree(rec['stats']) if p not in before and p not in dirs)
-        jobs.append(j)
-        before = now
-        print(f'{time.perf_counter() - t_all:7.1f} s  {j["name"]}: {secs:.1f} s, exit {code}, {len(j["existed"])} inputs, '
-              f'{len(changed)} written, {len(removed)} removed', flush=True)
-        if j['code'] not in ('0', 'None'):
-            print(text[-4000:])
-            raise SystemExit(f'record: {j["name"]} failed')
-        return text
+    def spec(step, part, argv, index=None, name=None):
+        return dict(step=step, part=part, argv=argv, index=index, name=name or f'{step} {part}')
 
-    for s in order:
-        if s in unit_steps:
-            job(s, 'prepare', ['unit', *base, '--step', s, '--prepare', '--strict'])
-            text = job(s, 'units', ['units', *base, '--steps', s, '--json'])
-            units = json.loads(text[text.index('['):])
-            for u in units:
-                job(s, 'unit', ['unit', *base, '--step', s, '--index', str(u['index']), '--strict'], u['index'],
-                    f'{s} {u["index"]} {u["name"]}')
+    def add(result):
+        jobs.append(result['graph'])
+        timings.append(result['timing'])
+        (logs / 'timings.json').write_text(json.dumps(dict(seconds=time.perf_counter()-started, jobs=timings), indent=2))
+        if result['graph']['code'] not in ('0', 'None'):
+            raise RuntimeError(f"recording failed: {result['graph']['name']}; see {result['log']}")
+        return Path(result['log']).read_text()
+
+    for step in order:
+        args = ['unit', *base, '--step', step]
+        if step in unit_steps:
+            add(execute(spec(step, 'prepare', args + ['--prepare', '--strict'])))
+            text = add(execute(spec(step, 'units', ['units', *base, '--steps', step, '--json'])))
+            found = json.loads(text[text.index('['):])
+            specs = [spec(step, 'unit', args + ['--index', str(u['index']), '--strict'], u['index'],
+                          f"{step} {u['index']} {u['name']}") for u in found]
+            if specs:
+                for result in parallel.units(Path(TREE), specs, Path(OUT + '.workers'),
+                                              1 if a.sequential else a.jobs, a.worker_memory_mib):
+                    add(result)
         else:
-            job(s, 'build', ['unit', *base, '--step', s, '--build', '--strict'])
-        job(s, 'finish', ['unit', *base, '--step', s, '--finish', '--strict'])
-    with open(os.path.join(out_dir, 'derived', 'manifest.json')) as f:
-        man = json.load(f)
-    json.dump({'tree': TREE, 'order': order, 'after': after, 'units': sorted(unit_steps), 'jobs': jobs,
-               'manifest_files': {d: e['file'] for d, e in man['files'].items()},
-               'seconds': round(time.perf_counter() - t_all, 1)}, open(OUT, 'w'), indent=0)
-    print(f'record: {len(jobs)} jobs, {time.perf_counter() - t_all:.0f} s')
+            add(execute(spec(step, 'build', args + ['--build', '--strict'])))
+        add(execute(spec(step, 'finish', args + ['--finish', '--strict'])))
+    with open(os.path.join(TREE, 'build/everything/derived/manifest.json')) as file:
+        manifest = json.load(file)
+    record = dict(tree='{ROOT}', order=order, after=after, units=sorted(unit_steps), jobs=jobs,
+                  manifest_files={d: e['file'].replace(TREE, '{ROOT}') for d, e in manifest['files'].items()})
+    Path(OUT).write_text(parallel.graph_record(record))
+    print(f'record: {len(jobs)} jobs, {time.perf_counter() - started:.0f} s', flush=True)
 
 
 if __name__ == '__main__':

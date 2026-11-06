@@ -6,8 +6,8 @@
 #   (web/deploy.sh publishes it as engine/; older versions in OUT are removed).
 # Fetches Pyodide 314.0.7 (npm) into <main>/build/pyodide-314.0.7 the first time. The jobs' inputs
 # are recorded on the USA and the Japanese (Rev 1) discs of ISOS: two derive
-# builds in one process each, ~8 min each. RECORDS=DIR keeps the records there and reuses them (developers; the
-# records only change when the release's derive steps do).
+# builds with bounded unit workers in private trees. RECORDS=DIR keeps verified graph records
+# for identical inputs; private per-worker logs remain under ENGINE_WORK/record-logs.
 set -euo pipefail
 here=$(cd "$(dirname "$0")" && pwd)
 main=$(dirname "$(git -C "$here" rev-parse --path-format=absolute --git-common-dir)")
@@ -33,5 +33,5 @@ fi
 python3 "$here/enginebuild/build_engine.py" --release "$REL" --pyodide "$PYO" --out "$OUT" --work "$work" \
   --disc us="$ISOS/Digimon World (USA).bin" --disc jp1="$ISOS/DigimonWorld (Japan) (Rev 1).bin" \
   "${sources[@]}" \
-  --jobs "${ENGINE_JOBS:-2}" --worker-memory-mib "${WORKER_MEMORY_MIB:-6144}" \
+  --jobs "${ENGINE_JOBS:-2}" --record-jobs "${ENGINE_RECORD_JOBS:-8}" --worker-memory-mib "${WORKER_MEMORY_MIB:-6144}" \
   ${RECORDS:+--records "$RECORDS"}

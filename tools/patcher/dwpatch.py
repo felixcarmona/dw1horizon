@@ -1320,10 +1320,8 @@ def release_timing(name, **data):
 
 def release_cache_environment(environment):
     """Discard launcher metadata and native paths; preserve recipe/build settings."""
-    omitted = {'W', 'DW_PORTRAITS_CACHE', 'EMU_PORT', 'DW_SELFTEST_DERIVE', 'NAME', 'DERIVE_JOBS',
-               'PWD', 'OLDPWD', 'SHLVL', '_', 'DBUS_SESSION_BUS_ADDRESS', 'XDG_SESSION_ID'}
-    return {k: v for k, v in environment.items()
-            if k not in omitted and not k.startswith(('CODEX_', 'CLAUDE'))}
+    from tools.derive.release_cache import environment as normalized
+    return normalized(environment)
 
 
 def release_derive(root, recipe, facts, cache=None, slot=None, record=False, jobs=None, log=None,

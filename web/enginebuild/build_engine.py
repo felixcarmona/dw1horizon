@@ -17,7 +17,7 @@ OUT/current.json       {"version": the engine's, "release_version", "release_dat
 Older versions in OUT are removed.
 
 How the jobs' inputs are known: record.py runs the build in a tree of the release's bundle and the extracted files of
-each --disc, one job after another as a worker would, and records what each job opens, lists and stats. A job waits
+each --disc, recording independent units in bounded private worker trees and merging in recipe order. It records what each job opens, lists and stats. A job waits
 for the jobs that wrote what it reads (and, the other way round, a job that overwrites a file waits for those that
 read the older one), besides derive's step order (AFTER) and its own step's prepare. Every --disc is recorded and the
 inputs are the union: the jobs and their units must come out the same.
@@ -61,7 +61,7 @@ def sha1_file(p):
 
 # ------------------------------------------------------------------ a tree and its record
 def make_tree(rel, key, disc, tree, source_discs=None):
-    """The release's bundle (hard links) + extracted/ from `disc` (glue.extract, as the page does)."""
+    """The release's bundle (private copies) + extracted/ from `disc` (glue.extract, as the page does)."""
     sys.path.insert(0, HERE)
     import glue
     bundle = os.path.join(rel, 'bundle')
@@ -71,10 +71,7 @@ def make_tree(rel, key, disc, tree, source_discs=None):
             src = os.path.join(dp, f)
             dst = os.path.join(tree, os.path.relpath(src, bundle))
             os.makedirs(os.path.dirname(dst), exist_ok=True)
-            try:
-                os.link(src, dst)
-            except OSError:
-                shutil.copyfile(src, dst)
+            shutil.copy2(src, dst)
     k, title = glue.identify(rel, disc)
     if k != key:
         raise SystemExit(f'--disc {key}: that disc is {title} ({k})')
@@ -111,10 +108,16 @@ def extract_reads(rel, key, disc, work, source_discs=None):
     return reads
 
 
-def record(tree, out_json):
+def record(tree, out_json, jobs=1, memory_mib=6144, logs=None, sequential=False):
     t0 = time.time()
     from release_workers import measure
-    process = subprocess.Popen([sys.executable, os.path.join(HERE, 'record.py'), tree, out_json], cwd=tree,
+    command = [sys.executable, os.path.join(HERE, 'record.py'), tree, out_json,
+               '--jobs', str(jobs), '--worker-memory-mib', str(memory_mib)]
+    if logs:
+        command += ['--logs', logs]
+    if sequential:
+        command += ['--sequential']
+    process = subprocess.Popen(command, cwd=tree,
                                env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1'))
     try:
         with measure(process.pid, lambda data: say('engine recording worker: ' + json.dumps(data, sort_keys=True))):
@@ -410,7 +413,8 @@ def vendor_pyodide(src, dst):
 
 def record_base(args):
     """A separate process owns glue's imports, environment and working directory."""
-    rel, spec, work, sources, records = args
+    rel, spec, work, sources, records, *options = args
+    jobs, memory_mib, logs, sequential, keep_tree = options or (1, 6144, None, False, False)
     key, path = spec.split('=', 1)
     rj = os.path.join(records, f'record-{key}.json') if records else None
     if rj:
@@ -432,7 +436,7 @@ def record_base(args):
             argv += ['--source-disc', game + '=' + os.path.abspath(image)]
         subprocess.run(argv, cwd=tree, check=True)
     out_json = os.path.join(work, f'record-{key}.json')
-    result = record(tree, out_json)
+    result = record(tree, out_json, jobs, memory_mib, logs, sequential)
     if rj:
         os.makedirs(records, exist_ok=True)
         raw = Path(out_json).read_bytes()
@@ -441,7 +445,8 @@ def record_base(args):
         os.replace(temp, rj)
         Path(temp).write_text(hashlib.sha256(raw).hexdigest() + '\n')
         os.replace(temp, rj + '.sha256')
-    shutil.rmtree(tree, ignore_errors=True)
+    if not keep_tree:
+        shutil.rmtree(tree, ignore_errors=True)
     return result
 
 
@@ -458,6 +463,9 @@ def main():
     ap.add_argument('--keep-work', action='store_true')
     ap.add_argument('--jobs', type=int, default=2, help='concurrent base recordings (memory bounded)')
     ap.add_argument('--worker-memory-mib', type=int, default=6144)
+    ap.add_argument('--record-jobs', type=int, default=8, help='total unit workers across all base recordings')
+    ap.add_argument('--record-logs', help='retained per-base/per-worker logs and timings (private)')
+    ap.add_argument('--sequential', action='store_true', help='debugging reference; never an automatic fallback')
     ap.add_argument('--records', help='(developers) reuse the records of an earlier run in this folder')
     a = ap.parse_args()
     rel = os.path.abspath(a.release)
@@ -470,6 +478,7 @@ def main():
         raise SystemExit('missing --source-disc: ' + ', '.join(sorted(missing)))
     work = tempfile.mkdtemp(prefix='webengine-', dir=a.work)
     t0 = time.time()
+    success = False
     try:
         for spec in a.disc:
             key, path = spec.split('=', 1)
@@ -480,9 +489,15 @@ def main():
         sys.path.insert(0, os.path.join(REPO, 'tools/patcher'))
         from release_workers import worker_count
         from concurrent.futures import ProcessPoolExecutor
-        width = worker_count(a.jobs, len(a.disc), a.worker_memory_mib)
-        say(f'base recording: {width} workers')
-        arguments = [(rel, spec, work, a.source_disc, a.records) for spec in a.disc]
+        if a.jobs < 1 or a.record_jobs < 1 or a.worker_memory_mib < 1:
+            ap.error('worker counts and memory must be positive')
+        budget = worker_count(a.record_jobs, a.record_jobs, a.worker_memory_mib)
+        width = 1 if a.sequential else min(a.jobs, len(a.disc), budget)
+        unit_jobs = 1 if a.sequential else max(1, budget // width)
+        logs = Path(a.record_logs or (str(Path(work).parent / 'record-logs'))).resolve()
+        say(f'base recording: {width} bases, {unit_jobs} unit workers/base, {budget} total worker budget; logs {logs}')
+        arguments = [(rel, spec, work, a.source_disc, a.records, unit_jobs, a.worker_memory_mib,
+                      str(logs / spec.split('=', 1)[0]), a.sequential, a.keep_work) for spec in a.disc]
         if width == 1:
             recs = list(map(record_base, arguments))
         else:
@@ -601,8 +616,11 @@ def main():
             f'({sum(p["size"] for p in packs) / 2**20:.1f} MB; code {packs[0]["size"] / 2**20:.1f} MB), '
             f'pyodide {size(os.path.join(dst, "pyodide")) / 2**20:.1f} MB, plan {len(text) / 2**20:.2f} MB, '
             f'{time.time() - t0:.0f} s -> {dst}')
+        success = True
     finally:
-        if not a.keep_work:
+        if not success:
+            say(f'Engine build failed; worker trees and diagnostics retained: {work}')
+        if success and not a.keep_work:
             shutil.rmtree(work, ignore_errors=True)
 
 

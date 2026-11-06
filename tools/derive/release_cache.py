@@ -17,6 +17,14 @@ import sys
 from tools.build_cache import atomic, digest, encoded, key
 
 
+def environment(values):
+    """Remove launcher/native staging metadata, preserving unknown build settings."""
+    omitted = {'W', 'DW_PORTRAITS_CACHE', 'EMU_PORT', 'DW_SELFTEST_DERIVE', 'NAME', 'DERIVE_JOBS',
+               'PWD', 'OLDPWD', 'SHLVL', '_', 'DBUS_SESSION_BUS_ADDRESS', 'XDG_SESSION_ID'}
+    return {k: v for k, v in values.items()
+            if k not in omitted and not k.startswith(('CODEX_', 'CLAUDE'))}
+
+
 def files(root):
     return sorted(p for p in root.rglob('*') if p.is_file() and '__pycache__' not in p.parts)
 
@@ -29,9 +37,9 @@ def fingerprint(root, recipe, sources, environment):
     not just the previous recording's positive open events.
     """
     from tools.derive.cache import runtime_sources
-    return key(dict(format=1, recipe=recipe,
+    return key(dict(format=2, recipe=recipe, root_mode=root.stat().st_mode & 0o7777,
                     tree=[[p.relative_to(root).as_posix(), digest(p), p.stat().st_mode & 0o7777] for p in files(root)],
-                    directories=sorted(p.relative_to(root).as_posix() for p in root.rglob('*')
+                    directories=sorted([p.relative_to(root).as_posix(), p.stat().st_mode & 0o7777] for p in root.rglob('*')
                                        if p.is_dir() and '__pycache__' not in p.parts),
                     sources=sorted([game, digest(Path(image))] for game, image in
                                    (s.split('=', 1) for s in sources or [])),
@@ -41,23 +49,30 @@ def fingerprint(root, recipe, sources, environment):
 def restore(snapshot, root):
     try:
         meta = json.loads((snapshot / 'manifest.json').read_bytes())
-        inventory = {'files': meta['files'], 'directories': meta['directories']}
-        if meta.get('format') != 2 or key(inventory) != meta['sha256']:
+        inventory = {k: meta[k] for k in ('files', 'directories', 'root_mode')}
+        if meta.get('format') != 3 or key(inventory) != meta['sha256']:
             return False
-        for rel in meta['directories']:
+        def valid(rel, mode):
             p = Path(rel)
-            if p.is_absolute() or '..' in p.parts:
+            return not p.is_absolute() and '..' not in p.parts and isinstance(mode, int) and 0 <= mode <= 0o7777
+        if not valid('.', meta['root_mode']):
+            return False
+        for rel, mode in meta['directories']:
+            if not valid(rel, mode):
                 return False
-        for rel, sha in meta['files']:
-            p = Path(rel)
-            if p.is_absolute() or '..' in p.parts or digest(snapshot / 'tree' / p) != sha:
+        for rel, sha, mode in meta['files']:
+            if not valid(rel, mode) or digest(snapshot / 'tree' / rel) != sha:
                 return False
-        for rel in meta['directories']:
+        for rel, mode in meta['directories']:
             (root / rel).mkdir(parents=True, exist_ok=True)
-        for rel, sha in meta['files']:
+        for rel, sha, mode in meta['files']:
             dst = root / rel
             dst.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(snapshot / 'tree' / rel, dst)
+            dst.chmod(mode)
+        for rel, mode in reversed(meta['directories']):
+            (root / rel).chmod(mode)
+        root.chmod(meta['root_mode'])
         return True
     except (OSError, ValueError, KeyError, TypeError):
         return False
@@ -70,10 +85,11 @@ def save(snapshot, root):
         rel = source.relative_to(root).as_posix()
         sha = digest(source)
         atomic(snapshot / 'tree' / rel, source.read_bytes())
-        entries.append([rel, sha])
-    inventory = dict(files=entries, directories=sorted(p.relative_to(root).as_posix()
+        entries.append([rel, sha, source.stat().st_mode & 0o7777])
+    inventory = dict(files=entries, root_mode=root.stat().st_mode & 0o7777,
+                     directories=sorted([p.relative_to(root).as_posix(), p.stat().st_mode & 0o7777]
                      for p in root.rglob('*') if p.is_dir() and '__pycache__' not in p.parts))
-    atomic(snapshot / 'manifest.json', encoded(dict(format=2, **inventory, sha256=key(inventory))))
+    atomic(snapshot / 'manifest.json', encoded(dict(format=3, **inventory, sha256=key(inventory))))
 
 
 @contextmanager

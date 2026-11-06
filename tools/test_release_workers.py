@@ -124,7 +124,10 @@ class RecordingCache(unittest.TestCase):
             __import__('shutil').copytree(root, other)
             self.assertEqual(first, cache.fingerprint(other, 'everything', ['dw2003=' + str(source)], {'TEXT': 'ours'}))
             for change in (lambda: file.write_text('new code'), lambda: source.write_bytes(b'new source'),
-                           lambda: (root / 'formerly-absent').write_text('new input')):
+                           lambda: (root / 'formerly-absent').write_text('new input'),
+                           lambda: (root / 'new-directory').mkdir(),
+                           lambda: (root / 'new-directory').chmod(0o700),
+                           lambda: file.chmod(0o600)):
                 before = fingerprint(); change(); self.assertNotEqual(before, fingerprint())
             self.assertNotEqual(fingerprint(), cache.fingerprint(root, 'everything', ['dw2003=' + str(source)], {'TEXT': 'us'}))
 
@@ -132,7 +135,8 @@ class RecordingCache(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td) / 'tree'; root.mkdir()
             (root / 'model').write_bytes(b'correct')
-            (root / 'empty-output').mkdir()
+            (root / 'model').chmod(0o755)
+            (root / 'empty-output').mkdir(mode=0o700)
             snapshot = Path(td) / 'snapshot'
             cache.save(snapshot, root)
             (root / 'model').unlink()
@@ -140,6 +144,8 @@ class RecordingCache(unittest.TestCase):
             self.assertTrue(cache.restore(snapshot, root))
             self.assertEqual((root / 'model').read_bytes(), b'correct')
             self.assertTrue((root / 'empty-output').is_dir())
+            self.assertEqual((root / 'model').stat().st_mode & 0o777, 0o755)
+            self.assertEqual((root / 'empty-output').stat().st_mode & 0o777, 0o700)
             (snapshot / 'tree/model').write_bytes(b'corrupt')
             self.assertFalse(cache.restore(snapshot, root))
 

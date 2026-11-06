@@ -23,7 +23,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from tools import patch_series  # noqa: E402
 FAST = ('test_version', 'test_savecompat', 'test_pysum', 'test_derive_units',
-        'test_patchbundle', 'test_patcher_reloc', 'test_release', 'test_release_reuse', 'test_release_workers')
+        'test_patchbundle', 'test_patcher_reloc', 'test_release', 'test_release_reuse', 'test_release_workers',
+        'test_engine_record', 'test_web_engine_plan')
 
 
 def git(*args, cwd=ROOT):
@@ -92,7 +93,7 @@ def identity(tag):
     return info
 
 
-def record_key(release):
+def record_key(release, environment=None, source_discs=()):
     """Fingerprint extraction inputs, derive inputs and recorder code.
 
     Patch/version metadata alone may reuse records. Regional mappings, readers,
@@ -101,7 +102,11 @@ def record_key(release):
     h = hashlib.sha256()
     manifest = json.loads((release / 'manifest.json').read_text())
     variant = manifest.get('variants', {}).get(manifest.get('default'), {})
-    context = {'bases': manifest['bases'], 'sources': manifest.get('source_discs'),
+    from tools.derive.release_cache import environment as normalized
+    context = {'environment': normalized(os.environ if environment is None else environment),
+               'source_bytes': sorted((game, sha1(image)) for game, image in source_discs),
+               'interpreter': hashlib.sha256(Path(sys.executable).read_bytes()).hexdigest(),
+               'bases': manifest['bases'], 'sources': manifest.get('source_discs'),
                'extract': manifest.get('extract'), 'local': variant.get('local'),
                'python': list(sys.version_info[:3]), 'implementation': sys.implementation.name,
                'platform': sys.platform}
@@ -112,6 +117,10 @@ def record_key(release):
     for label, base in (('bundle', release / 'bundle'), ('bases', release / 'bases'),
                         ('recorder', ROOT / 'web/enginebuild')):
         for path in sorted(base.rglob('*')):
+            if not python_cache(path):
+                h.update(str(path.stat().st_mode & 0o7777).encode() + b'\0')
+            if path.is_dir() and not python_cache(path):
+                h.update(label.encode() + b'/directory/' + str(path.relative_to(base)).encode() + b'\0')
             if path.is_file() and not python_cache(path):
                 h.update(label.encode() + b'/' + str(path.relative_to(base)).encode()
                          + b'\0' + path.read_bytes())
@@ -255,12 +264,12 @@ class Run:
             (self.out / 'summary.json').write_text(json.dumps(data, indent=2) + '\n')
 
 
-def browser(r, out, engine, bases, sources, env):
+def browser(r, out, engine, bases, sources, env, timeout=3600):
     site = out / 'site'
     print(f'Prepare {site} with candidate engine; serve on an ephemeral localhost port')
     if r.dry:
         r.cmd(['node', 'web/test/run.mjs', 'http://127.0.0.1:PORT/?test=1',
-               bases['us'], out / 'browser-profile', '2400'])
+               bases['us'], out / 'browser-profile', str(timeout)])
         print('Require done phase AND independent OPFS SHA-1 = manifest USA output')
         return
     shutil.copytree(ROOT / 'web', site, ignore=shutil.ignore_patterns('enginebuild', 'test', 'media'))
@@ -279,10 +288,10 @@ def browser(r, out, engine, bases, sources, env):
         with log.open('w') as f:
             p = subprocess.Popen(['node', str(script),
                 f'http://127.0.0.1:{server.server_port}/?test=1', str(bases['us']),
-                str(out / 'browser-profile'), '2400'], env=benv, stdout=f,
+                str(out / 'browser-profile'), str(timeout)], env=benv, stdout=f,
                 stderr=subprocess.STDOUT, start_new_session=True)
             try:
-                code = p.wait(timeout=3000)
+                code = p.wait(timeout=timeout + 600)
             finally:
                 stop_group(p)
         if code:
@@ -474,7 +483,7 @@ def pipeline(a, r):
                 r.sums['output-' + k] = output['sha1']
     with r.step('Engine graph fingerprint and record cache preparation'):
         cache = ROOT / 'build/release-records'
-        key = '<bundle-and-recorder-SHA256>' if r.dry else record_key(package)
+        key = '<bundle-and-recorder-SHA256>' if r.dry else record_key(package, env, sources.items())
         records = cache / key
         print(f'RECORDS={records} (reuse only for identical graph inputs)')
         # build-engine.sh uses fixed filenames under ISOS; give it a private directory.
@@ -498,7 +507,9 @@ def pipeline(a, r):
         applies = (('us', None), ('jp1', None), ('eu', 'dw3-us'))
         # Share the CPUs with two engine recordings. Apply gives tools/derive
         # --jobs os.cpu_count(); output bytes do not depend on the job count.
-        share = max(1, (os.cpu_count() or 1) // (len(applies) + 2))
+        engine_bases = min(a.base_jobs, 2)
+        share = max(1, (os.cpu_count() or 1) // (len(applies) + engine_bases))
+        webenv['ENGINE_RECORD_JOBS'] = str(engine_bases * share)
         runs = {}
         for base, vid in applies:
             key = base + ('+' + vid if vid else '')
@@ -535,7 +546,7 @@ def pipeline(a, r):
                    '--work', out / 'save-recording'], env)
     if not a.skip_browser:
         with r.step('USA browser suite on candidate before deployment'):
-            browser(r, out, engine, bases, sources, env)
+            browser(r, out, engine, bases, sources, env, a.browser_timeout)
     else:
         r.times.append(('USA browser suite (--skip-browser)', 0, 'SKIPPED'))
     with r.step('Pack release (package only, never images) and SHA-1 inventory'):
@@ -579,6 +590,7 @@ def main(argv=None):
     p.add_argument('--record-save', type=Path, metavar='SEED.mcd',
                    help='also run releases.py add into OUT/save-corpus (emulator; owner commits the new pair later)')
     p.add_argument('--skip-browser', action='store_true')
+    p.add_argument('--browser-timeout', type=int, default=3600, help='browser reconstruction deadline in seconds')
     p.add_argument('--deploy', action='store_true', help='deploy to the configured server (off by default)')
     p.add_argument('--publish', action='store_true', help='push tag and gh release create (off by default)')
     p.add_argument('--remote', default='origin')
@@ -595,8 +607,8 @@ def main(argv=None):
     p.add_argument('--out', type=Path, default=ROOT / 'build/releases' / dt.datetime.now(
         dt.timezone.utc).strftime('%Y%m%dT%H%M%S%fZ'))
     a = p.parse_args(argv)
-    if min(a.jobs, a.base_jobs, a.worker_memory_mib) < 1:
-        p.error('--jobs, --base-jobs and --worker-memory-mib must be positive')
+    if min(a.jobs, a.base_jobs, a.worker_memory_mib, a.browser_timeout) < 1:
+        p.error('jobs, worker memory and browser timeout must be positive')
     if not 1024 <= a.emu_port_base <= 65533:
         p.error('--emu-port-base must leave three ports between 1024 and 65535')
     if a.ending_card:

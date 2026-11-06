@@ -149,6 +149,30 @@ class ReleaseTests(unittest.TestCase):
             source.write_text('different reads, same nominal job names')
             self.assertNotEqual(first, release.record_key(root))
 
+    def test_record_cache_covers_environment_modes_inventory_and_source_bytes(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            (root/'bundle').mkdir()
+            (root/'bundle/input').write_bytes(b'data')
+            (root/'manifest.json').write_text(json.dumps({'bases': {'us': {}}}))
+            disc = root/'source.bin'
+            disc.write_bytes(b'source one')
+            def key(env=None):
+                return release.record_key(root, env or {'SETTING': 'one'}, [('source', disc)])
+            previous = key()
+            self.assertNotEqual(previous, key({'SETTING': 'two'}))
+            self.assertEqual(previous, key({'SETTING': 'one', 'NAME': 'another-native-build'}))
+            (root/'bundle/empty').mkdir()
+            self.assertNotEqual(previous, key()); previous = key()
+            (root/'bundle/input').chmod(0o600)
+            self.assertNotEqual(previous, key()); previous = key()
+            (root/'bundle/empty').chmod(0o700)
+            self.assertNotEqual(previous, key()); previous = key()
+            old = disc.stat()
+            disc.write_bytes(b'source two')
+            os.utime(disc, ns=(old.st_atime_ns, old.st_mtime_ns))
+            self.assertNotEqual(previous, key())
+
     def test_record_cache_tracks_extraction_mapping_and_reader_changes(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
