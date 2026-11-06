@@ -38,9 +38,10 @@ ENGINE = os.path.join(ROOT, 'content', 'balance', 'engine', 'tables.json')
 DEFAULT_EXE_DIR = os.path.join(ROOT, 'build/decomp-int/build/us/psx/gcc')
 SYMBOL_FILES = ['symbols.txt', 'symbols_trn.txt', 'symbols_trn2.txt', 'symbols_std.txt', 'symbols_fish.txt', 'symbols_btl.txt',
                 'symbols_vs.txt']
+# Original-disc bases. Compiled training overlays use their linked starts below.
 FILE_BASE = {'SLUS_010.32': 0x80090000, 'TRN_REL.BIN': 0x80088800, 'TRN2_REL.BIN': 0x80088800,
              'STD_REL.BIN': 0x80052AE0, 'FISH_REL.BIN': 0x80070000, 'KAR_REL.BIN': 0x80053800,
-             'BTL_REL.BIN': 0x80052AE0, 'VS_REL.BIN': 0x80052AE0}   # include/dw/memmap.h: OVL_TRN_BASE, OVL_BTL_BASE (BTL, STD, VS), OVL_FISH_BASE
+             'BTL_REL.BIN': 0x80052AE0, 'VS_REL.BIN': 0x80052AE0}
 NUM_ORIGINAL = SP.NUM_ORIGINAL
 ELEMENTS = ['fire', 'battle', 'air', 'nature', 'ice', 'mech', 'filth']
 
@@ -256,6 +257,13 @@ class Exe:
         elf = os.path.join(self.folder, 'SLUS_010.32.elf')
         self.compiled = os.path.exists(elf)
         self.syms = elf_symbols(elf) if self.compiled else original_symbols()
+        self.bases = FILE_BASE.copy()
+        if self.compiled:
+            # A compiled overlay can move within the load area; original disc bases stay fixed.
+            from langpatch import elf_symbols as all_elf_symbols
+            symbols = all_elf_symbols(elf)
+            for file, symbol in (('TRN_REL.BIN', 'trn_START'), ('TRN2_REL.BIN', 'trn2_START')):
+                self.bases[file] = symbols[symbol][0]
         self.files = {}
 
     def path(self, f):
@@ -271,7 +279,7 @@ class Exe:
     def where(self, table):
         f = next(x[1] for x in TABLES if x[0] == table)
         addr, size = self.syms[table]
-        return f, addr - FILE_BASE[f], size
+        return f, addr - self.bases[f], size
 
     def has(self, table):
         return table in self.syms
