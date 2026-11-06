@@ -388,3 +388,4 @@ evolution-during-load-wake-grace.patch
 fit-status-technique-names.patch
 Keep-Monochromon-shift-plate-at-a-fixed-width.patch
 Size-the-sequence-buffer-for-the-built-sound-fonts.patch
+Expand-starter-list-preserving-original-game-results.patch
