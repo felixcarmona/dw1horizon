@@ -24,6 +24,15 @@ const DONE = 'done.json';
 const LOCK = 'horizon-build';
 export const OUTPUT_NAME = 'Digimon World Horizon';
 
+export function discDownloads(image) {
+  // Text MIME types can make mobile download managers append .txt to the .cue name.
+  // Slicing supplies the binary MIME without reading the disc into an ArrayBuffer.
+  const type = 'application/octet-stream';
+  const bin = image.slice(0, image.size, type);
+  const cue = new Blob([`FILE "${OUTPUT_NAME}.bin" BINARY\r\n  TRACK 01 MODE2/2352\r\n    INDEX 01 00:00:00\r\n`], { type });
+  return { bin, cue, name: OUTPUT_NAME };
+}
+
 // Memory (web/README.md "Memory"): a worker whose WebAssembly heap grew past RECYCLE_MB after a job is replaced by a
 // fresh one (a heap never shrinks; a fresh Pyodide starts at 36 MB, ~3 s from the cache); each worker keeps at most
 // FILES_MB of bundle and tree files between jobs.
@@ -825,10 +834,9 @@ export class Build {
     try { await root.removeEntry('inputs', { recursive: true }); } catch { /* tidied on the next visit */ }
     const bin = await retryFile('finished image', async () => (await (await opfsRoot()).getFileHandle(IMAGE)).getFile());
     this.checkStopped();
-    const cue = new Blob([`FILE "${OUTPUT_NAME}.bin" BINARY\r\n  TRACK 01 MODE2/2352\r\n    INDEX 01 00:00:00\r\n`], { type: 'text/plain' });
     st.phase = 'done';
     st.eta = 0;
-    st.result = { bin, cue, name: OUTPUT_NAME, sha1: w.sha1, want: w.want, size: w.size, holes: holes.length };
+    st.result = { ...discDownloads(bin), sha1: w.sha1, want: w.want, size: w.size, holes: holes.length };
     st.times.total = (performance.now() - st.t0) / 1000;
     this.emit();
     return st.result;
