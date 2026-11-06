@@ -158,7 +158,7 @@ def rookie_witness(cur, child, kids, reqs, levels, sp):
     return None
 
 
-def practical(cur, child, kids, reqs, levels, sp, base=None, budget=84):
+def practical(cur, child, kids, reqs, levels, sp, base=None, budget=84, kind='stats'):
     """A picker witness within a training budget; never assumes 999 stats or an imported target’s 40-move bonus.
 
     A Champion starts from 1500 HP/MP and 150 other stats; 84 sessions leave
@@ -167,7 +167,7 @@ def practical(cur, child, kids, reqs, levels, sp, base=None, budget=84):
     Secondary gym gains are omitted, making the session bound conservative.
     """
     base = tuple(base or (150,) * 6)
-    cache_key = (cur, child, tuple(kids[cur]), tuple((t, tuple(reqs[t].items())) for t in kids[cur] if t in reqs), base, budget)
+    cache_key = (cur, child, tuple(kids[cur]), tuple((t, tuple(reqs[t].items())) for t in kids[cur] if t in reqs), base, budget, kind)
     if cache_key in _PRACTICAL:
         return _PRACTICAL[cache_key]
     rates = training_rates(sp[cur])
@@ -198,7 +198,7 @@ def practical(cur, child, kids, reqs, levels, sp, base=None, budget=84):
                     if sessions + (battles + 2) // 3 > awake:
                         continue
                     bonus = (battles, 0, 100, happiness)
-                    if E.pick(cur, kids[cur], reqs, levels, st, mistakes, weight, 'stats', bonus) == child:
+                    if E.pick(cur, kids[cur], reqs, levels, st, mistakes, weight, kind, bonus) == child:
                         result = dict(stats=vals, care=mistakes, weight=weight, sessions=sessions, bonus=bonus)
                         _PRACTICAL[cache_key] = result
                         return result
@@ -370,6 +370,8 @@ def plan():
     balance = json.loads((ROOT / 'content/tables/evolution-balance.json').read_text())['species']
     for key, level in table['levels'].items():
         s = sp[int(key)]
+        if s['level'] == level:
+            continue
         s['level'] = level
         s['evolution']['gains'] = dict(balance[key]['gains'])
         s['wild'] = dict(balance[key]['wild'])

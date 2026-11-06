@@ -287,6 +287,8 @@ try:                                                      # every species (tools
 except ImportError:
     _species, DIGI_DATA = None, {}
 EXTRA_SPECIES = {t: r for t, r in DIGI_DATA.items() if t >= 180}   # ids 180+: need --exe species
+from enemy_movesets import load as load_enemy_movesets
+ENEMY_MOVESETS = load_enemy_movesets()
 
 
 def native_screen_metadata():
@@ -432,6 +434,12 @@ def check_model_heap(body, dig, screen, ln):
 
 
 def set_moves(e, dig, ln):
+    if dig in ENEMY_MOVESETS:
+        moves, weights = ENEMY_MOVESETS[dig]
+        for k in range(4):
+            e[f'move{k}'] = moves[k]
+            e[f'prio{k}'] = weights[k]
+        return
     nmoves = len(DIGI_DATA[dig]['moves'].split()) if DIGI_DATA.get(dig, {}).get('moves') else 0
     # An NPC-only species (a twin such as the big Whamon, id 146) has no techniques: placed, it can talk but not fight.
     for k in range(3):                                      # animation ids 0x2E + index into its technique list

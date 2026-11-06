@@ -1,0 +1,82 @@
+From bf6e7b16fa9a7f630414c163c4f40611d321085d Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 6 Nov 2026 19:12:55 +0000
+Subject: [PATCH] Expand timed evolution choices and require the preceding item
+ stage
+
+---
+ include/dw/level.h     | 2 +-
+ src/main/evolution.c   | 6 ++----
+ src/main/item.c        | 5 +++--
+ src/main/mod_species.c | 4 ++--
+ 4 files changed, 8 insertions(+), 9 deletions(-)
+
+diff --git a/include/dw/level.h b/include/dw/level.h
+index 5fba114..62647de 100644
+--- a/include/dw/level.h
++++ b/include/dw/level.h
+@@ -41,7 +41,7 @@ extern int16_t MOD_EVO_TIMING[MOD_EVO_TIMING_SIZE];
+  *                       that triggers the mode 3 check (level, hours), the scolding that arms the flag (level,
+  *                       discipline, happiness before it)
+  */
+-#define MOD_EVO_PAIR_MAX	8
++#define MOD_EVO_PAIR_MAX	16
+ #define MOD_EVO_RULES_MAX	10
+ #define MOD_EVO_COND_MAX	4
+ #define MOD_EVO_SPECIAL_SIZE	9
+diff --git a/src/main/evolution.c b/src/main/evolution.c
+index 848ceb9..6a3fa60 100644
+--- a/src/main/evolution.c
++++ b/src/main/evolution.c
+@@ -868,10 +868,8 @@ GARBAGE(getFreshEvolutionTarget, 10);
+  * writes from content/tables/evolution-rules.json (include/dw/level.h)
+  */
+ int16_t MOD_EVO_TIMING[MOD_EVO_TIMING_SIZE] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+-int16_t MOD_EVO_FRESH[MOD_EVO_PAIR_MAX][2] = { { -1, -1 }, { -1, -1 }, { -1, -1 }, { -1, -1 },
+-					       { -1, -1 }, { -1, -1 }, { -1, -1 }, { -1, -1 } };
+-int16_t MOD_EVO_ULTIMATE[MOD_EVO_PAIR_MAX][2] = { { -1, -1 }, { -1, -1 }, { -1, -1 }, { -1, -1 },
+-						  { -1, -1 }, { -1, -1 }, { -1, -1 }, { -1, -1 } };
++int16_t MOD_EVO_FRESH[MOD_EVO_PAIR_MAX][2] = { [0 ... MOD_EVO_PAIR_MAX - 1] = { -1, -1 } };
++int16_t MOD_EVO_ULTIMATE[MOD_EVO_PAIR_MAX][2] = { [0 ... MOD_EVO_PAIR_MAX - 1] = { -1, -1 } };
+ int16_t MOD_EVO_SPECIAL[MOD_EVO_SPECIAL_SIZE] = { -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+ /* MOD (evolution formulas as data): written by tools/balance.py from content/tables/evolution-rules.json; -1 = the rule does not exist */
+ int16_t MOD_EVO_FORMULA[MOD_EVO_FORMULA_SIZE] = { [0 ... MOD_EVO_FORMULA_SIZE - 1] = -1 };
+diff --git a/src/main/item.c b/src/main/item.c
+index 7b879c8..c238e12 100644
+--- a/src/main/item.c
++++ b/src/main/item.c
+@@ -2203,13 +2203,14 @@ void handleEvoItems(int16_t item)
+ 	if (item >= 0x7c) {
+ 		/* MOD (evolution rules as data): Dolph Fin, Giga Hand, Noble Mane, Metalbanana: MOD_EVO_ITEMS (content/tables/evolution-rules.json) */
+ 		modItem = getModEvoItem(item);
+-		if (modItem == NULL) {
++		if (modItem == NULL || DIGI_PARA(ENTITY_TABLE[1]->type).level !=
++		    (DIGI_PARA(modItem->target).level == LEVEL_MEGA ? LEVEL_ULTIMATE : modItem->level)) {
+ 			return;
+ 		}
+ 		EVOLUTION_TARGET = modItem->target;
+ 	} else {
+ 		if (!modSpeciesAllowed(EVOLUTION_ITEM_TARGET[item - 0x47])) return;
+-		level = modNativeItemTargetLevel(EVOLUTION_ITEM_TARGET[item - 0x47]) - 1; /* Native items follow their target's current stage (legacy Mega exception). */
++		level = modNativeItemTargetLevel(EVOLUTION_ITEM_TARGET[item - 0x47]) - 1; /* Native items follow their target's current stage. */
+ 		if (level != DIGI_PARA(ENTITY_TABLE[1]->type).level) {
+ 			return;
+ 		}
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index cfbcae0..f31f209 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -165,8 +165,8 @@ int32_t modNativeItemTargetLevel(int32_t type)
+ {
+ 	int32_t level = DIGI_PARA(type).level;
+ 
+-	/* Current stages include Whamon's Ultimate role; native Mega items keep their legacy stage. */
+-	return level == LEVEL_MEGA ? LEVEL_ULTIMATE : level;
++	/* Item evolutions always require the stage immediately before the target. */
++	return level;
+ }
+ 
+ int32_t isVanillaSpecies(int32_t type)
+-- 
+2.55.0
+

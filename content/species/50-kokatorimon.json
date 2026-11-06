@@ -3,6 +3,10 @@
   "name": "Kokatorimon",
   "level": "champion",
   "vanilla": true,
+  "off": {
+    "level": "champion",
+    "evolution": {"to": [59, 55, -1, -1, -1, -1], "from": [18, 45, -1, -1, -1]}
+  },
   "attribute": "vaccine",
   "specialties": ["air", null, "battle"],
   "techniques": ["Dynamite Kick (44)", "Tremar", "War Cry", "Static Elect", "Megalo Spark", "Electric Cloud",
@@ -30,7 +34,7 @@
   },
   "evolution": {
     "from": [18, 45, -1, -1, -1],
-    "to": [59, 55, -1, -1, -1, -1],
+    "to": [55, -1, -1, -1, -1, -1],
     "requirements": {
       "digimon": 45,
       "hp": 100,

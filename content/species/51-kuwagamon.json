@@ -3,6 +3,10 @@
   "name": "Kuwagamon",
   "level": "champion",
   "vanilla": true,
+  "off": {
+    "level": "champion",
+    "evolution": {"to": [60, 55, -1, -1, -1, -1], "from": [32, 46, -1, -1, -1]}
+  },
   "attribute": "virus",
   "specialties": ["nature", "battle", "air"],
   "techniques": ["Sonic Jab", "Muscle Charge", "Wind Cutter", "Spinning Shot", "Poison Claw", "Danger Sting",
@@ -30,7 +34,7 @@
   },
   "evolution": {
     "from": [32, 46, -1, -1, -1],
-    "to": [60, 55, -1, -1, -1, -1],
+    "to": [55, -1, -1, -1, -1, -1],
     "requirements": {
       "digimon": 32,
       "hp": 100,

@@ -9,7 +9,8 @@
     "finisher": {"power": 232, "mpCost": 40, "element": "air"},
     "techniques": ["Prominence Beam", "Red Inferno", "Megaton Punch", "Counter", "Buster Dive", "Muscle Charge",
                    "Poison Claw", "Danger Sting", "Green Trap", "Insect Plague", "Bug",
-                   "Charm Perfume", "Poison Powder", "Mass Morph", "Electro Shocker"]
+                   "Charm Perfume", "Poison Powder", "Mass Morph", "Electro Shocker"],
+    "evolution": {"from": [19, 51, 35, 205, -1], "to": [-1, -1, -1, -1, -1, -1]}
   },
   "attribute": "data",
   "specialties": ["nature", "battle", "fire"],
@@ -39,7 +40,7 @@
     "training": {"animation": 48, "hit_tick": 10}
   },
   "evolution": {
-    "from": [19, 51, 35, 205, -1],
+    "from": [205, 123, 209, 259, -1],
     "to": [-1, -1, -1, -1, -1, -1],
     "requirements": {
       "digimon": -1,
