@@ -65,9 +65,13 @@ const split = (p) => { const i = p.lastIndexOf('/'); return [i < 0 ? '' : p.slic
 
 async function opfsRead(path) {
   return retryFile(`build file ${path}`, async () => {
-    const [dir, name] = split(path);
-    const h = await (await opfsDir(`tree${dir ? '/' + dir : ''}`, false)).getFileHandle(name);
-    return new Uint8Array(await (await h.getFile()).arrayBuffer());
+    try {
+      const [dir, name] = split(path);
+      const h = await (await opfsDir(`tree${dir ? '/' + dir : ''}`, false)).getFileHandle(name);
+      return new Uint8Array(await (await h.getFile()).arrayBuffer());
+    } catch (error) {
+      throw new DOMException(`build file ${path}: ${error.message || error}`, error.name || 'UnknownError');
+    }
   }, (line) => post({ kind: 'progress', message: line }));
 }
 

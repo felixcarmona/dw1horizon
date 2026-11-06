@@ -304,7 +304,8 @@ runs a full USA-disc build with one worker and four reported cores; `BROWSER` is
 `webkit`, `chromium` or `firefox`. It hashes the stored image independently and
 accepts `EXPECT_SHA1` for comparison with a CLI build. `PLAYWRIGHT_MODULE` can
 select a local installation, and `CHROMIUM` can select a system executable.
-`BROWSER_PROFILE` selects a persistent profile for regular-session WebKit tests.
+Full builds use a regular temporary profile. `BROWSER_PROFILE` selects a named
+profile to retain for inspection after the run.
 Provision at least the page's reported storage requirement in the browser test
 environment: MiniBrowser's default 1 GB quota is too small for a full build.
 

@@ -1,18 +1,20 @@
 // Full real-disc build in Playwright: node cross-browser.mjs URL ISO_ROOT BROWSER [SECONDS].
 // Install playwright locally or set PLAYWRIGHT_MODULE to its module URL. BROWSER: webkit, chromium, firefox.
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import path from 'node:path';
 const { webkit, chromium, firefox } = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const [url, isoRoot, name = 'webkit', seconds = '21600'] = process.argv.slice(2);
 const type = { webkit, chromium, firefox }[name];
 const options = { headless: true,
   ...(name === 'chromium' && process.env.CHROMIUM ? { executablePath: process.env.CHROMIUM } : {}) };
-const persistent = process.env.BROWSER_PROFILE ? await type.launchPersistentContext(process.env.BROWSER_PROFILE, options) : null;
-const browser = persistent ? persistent.browser() : await type.launch(options);
+fs.mkdirSync('build', { recursive: true });
+const profile = process.env.BROWSER_PROFILE || fs.mkdtempSync(path.resolve(`build/browser-${name}-`));
+const context = await type.launchPersistentContext(profile, options);
+const browser = context.browser();
 let timer;
 try {
   console.log(JSON.stringify({ browser: name, version: browser.version() }));
-  const context = persistent || await browser.newContext();
   await context.addInitScript(() => {
     Object.defineProperty(navigator, 'hardwareConcurrency', { get: () => 4 });
     Object.defineProperty(navigator, 'deviceMemory', { get: () => undefined });
@@ -65,5 +67,6 @@ try {
   if (process.env.EXPECT_SHA1) assert.equal(result.independentHash.sha1, process.env.EXPECT_SHA1);
 } finally {
   clearInterval(timer);
-  await browser.close();
+  await context.close();
+  if (!process.env.BROWSER_PROFILE) fs.rmSync(profile, { recursive: true, force: true });
 }
