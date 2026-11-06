@@ -4,12 +4,15 @@ import assert from 'node:assert/strict';
 import path from 'node:path';
 const { webkit, chromium, firefox } = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const [url, isoRoot, name = 'webkit', seconds = '21600'] = process.argv.slice(2);
-const browser = await ({ webkit, chromium, firefox }[name]).launch({ headless: true,
-  ...(name === 'chromium' && process.env.CHROMIUM ? { executablePath: process.env.CHROMIUM } : {}) });
+const type = { webkit, chromium, firefox }[name];
+const options = { headless: true,
+  ...(name === 'chromium' && process.env.CHROMIUM ? { executablePath: process.env.CHROMIUM } : {}) };
+const persistent = process.env.BROWSER_PROFILE ? await type.launchPersistentContext(process.env.BROWSER_PROFILE, options) : null;
+const browser = persistent ? persistent.browser() : await type.launch(options);
 let timer;
 try {
   console.log(JSON.stringify({ browser: name, version: browser.version() }));
-  const context = await browser.newContext();
+  const context = persistent || await browser.newContext();
   await context.addInitScript(() => {
     Object.defineProperty(navigator, 'hardwareConcurrency', { get: () => 4 });
     Object.defineProperty(navigator, 'deviceMemory', { get: () => undefined });
