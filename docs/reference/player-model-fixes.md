@@ -1,5 +1,52 @@
 # Player model reports
 
+## Native locomotion and weapon pass
+
+Marsmon, GrapLeomon, ExVeemon and Stingmon use Leomon's native walking,
+tired walking and running timing and limb trajectories, fitted to their own
+bone lengths. Garudamon combines those legs with Angemon's wing curves;
+Sakuyamon uses Angemon's staff-bearing performance. Existing faces and textures
+remain intact. GrapLeomon retains its reviewed chibi proportions. ExVeemon's
+neck piece and head attachment are shortened to 78% across every animation.
+
+Kyubimon uses Elecmon's four-paw trajectories, with its own two-link legs solved
+to the native paws and its tail fan retained. A uniform 0.78 resize includes
+every animation, radius, height, bubble and effect attachment. Field loops are
+sampled before resizing and encoded again to avoid rounded momentum accumulating
+a height error at each seam. ChaosLord uses Machinedramon's walk and run; its
+existing tired performance is kept because that donor has no tired clip.
+
+Omnimon's Megaton Punch and Sonic Jab carry the existing cannon-arm strike
+onto the sword shoulder and elbow. Body anticipation, legs, cape, timing and
+attack events remain exact. The cannon keeps its ready pose. Buster Dive keeps
+its separately repaired dash.
+
+The authored outputs are stored as ordinary model deltas. The former field
+overlays for the five affected species are baked before editing and disabled,
+so later generators cannot restore the previous gait or proportions. Recipes
+under `content/models/authoring/native-polish/` pin the input, donor, skeleton
+and output; `tools/models/field_animations/native_polish.py` replays them.
+The output must also pass `edit.py check --species-pins` and the disc's resident
+and cold-animation limits.
+
+```sh
+python3 tools/models/field_animations/native_polish.py \
+  content/models/authoring/native-polish/297.json BEFORE.MMD AFTER.MMD
+POLISH_MODELS=build/polish PYTHONPATH=tools \
+  python3 -W ignore -m unittest tools.test_native_polish
+```
+
+The decoded checks cover unchanged mesh and nonlocomotion programs after the
+explicit proportion changes, native timing, loop closure, field pace, and sole
+clearance at logic ticks and both intervening display frames. Sword checks
+preserve every unaffected channel and every event.
+
+Pegasusmon remains unchanged in this pass. Its static texture audit finds no
+invalid palette rows, UV ranges or palette-data sampling. Coincident head,
+shoulder and wing faces have opposite winding, as in the source import; they
+are intentional backs. Its animation streams contain no texture-copy commands.
+Those checks alone do not establish the cause of an intermittent field defect.
+
 ## Gallantmon: helmet eyes
 
 The full-resolution eye repair is already included in v0.0.6. The final provider
