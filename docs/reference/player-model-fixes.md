@@ -170,3 +170,45 @@ pre-edit provider output at `MODEL_REPORT_DIR/before/403.MMD`:
 MODEL_REPORT_DIR=build/reports PYTHONPATH=tools \
   python3 -W ignore -m unittest tools.test_beelzemon_attack
 ```
+
+## Tyrannomon scene: uninterrupted native strides
+
+The black actor in the Ancient Glacial Region recruitment scene is native
+MasterTyrannomon (`TIRS`, NPC twin 467); the red actor uses native Tyrannomon
+(`ETYR`, 132). Both source walks use both feet. In the animation studio, TIRS
+lifts its feet by 67/60 units and ETYR by 112/112; the partner MasterTyrannomon
+walk retains Tyrannomon's full motion at its larger size, lifting both feet by
+167 units. Native Greymon provides the biped reference. These clips retain
+their original body, arm and tail motion.
+
+Script 79 restarted the black actor's 31-tick walk every 15 ticks and restarted
+the red actor's departure run every 10 ticks. `scriptSetEntityWalking` starts
+the animation unconditionally, so those commands repeatedly replayed the
+beginning of a stride. The scene now starts each movement once. Its existing
+waits, sounds, facing changes, arrival checks and recruitment remain in place.
+No model, texture, rig or animation program changes for either actor.
+
+## SkullSatamon: posture after flatten recovery
+
+The imported `M244SKST` keeps its source healthy battle idle in slot `0x21`.
+The flatten transition starts `0x22`, the tired idle. Previously, recovery
+restored the model scale and cleared the flatten flags while retaining that
+stance; a healthy fighter could keep it until another action started.
+
+`Restore-battle-idle-after-flatten-recovery.patch` selects the existing
+healthy/tired idle when recovery ends. Low HP and poison still select the tired
+stance. Active attacks, knockback, stun and confusion are preserved. SkullSatamon's
+mesh, rig, textures, animation programs and provider pins remain unchanged.
+The full nine-language build adds 52 bytes to BTL (151,248 bytes, still 74
+sectors). Main BSS end stays at `0x801cdf84`, leaving 188,272 bytes of heap.
+All 320 archive-backed screen setups fit; minimum margin is 3,552 bytes.
+
+The host regression compiles the actual status-transition and idle-selection
+functions with address/undefined-behavior sanitizers, covering health, poison,
+the scaled native model and active reactions:
+
+```sh
+python3 tools/dev/playtest/flat_recovery_host.py build/decomp-dev build/flat-host
+```
+
+Use `--baseline` against the previous engine to reproduce the stale tired idle.
