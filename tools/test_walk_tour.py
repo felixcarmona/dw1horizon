@@ -17,6 +17,28 @@ from tools.dev.walk import tour as tour
 
 
 class TourTests(unittest.TestCase):
+    def test_distant_camera_keeps_steering_to_an_unreached_world_point(self):
+        for delta, button in (((3, 1), 'RIGHT'), ((-3, 1), 'LEFT'),
+                              ((1, 3), 'DOWN'), ((1, -3), 'UP')):
+            with self.subTest(delta=delta):
+                seg = Mock()
+                seg.m.projection = 1813
+                position = [(0, 0)]
+
+                def pad(path):
+                    if path == '/api/v1/lua/press?button=' + button:
+                        position[0] = (100, 0)
+
+                with patch.object(tour, 'handle_events', return_value=False), \
+                        patch.object(tour, 'screen', return_value=300), \
+                        patch.object(tour, 'pos', side_effect=lambda: position[0]), \
+                        patch.object(tour.dwmap, 'project', side_effect=[(0, 0), delta] * 2), \
+                        patch.object(tour.time, 'sleep'), \
+                        patch.object(tour.emu, 'api', side_effect=pad) as api:
+                    self.assertTrue(tour.go((100, 0), 300, seg, tol=45, max_steps=2))
+                    self.assertTrue(any(c.args[0] == '/api/v1/lua/release?button=' + button
+                                        for c in api.call_args_list))
+
     def run_route(self, current, result=True):
         seg = Mock()
         seg.wp.return_value = (0, 0)

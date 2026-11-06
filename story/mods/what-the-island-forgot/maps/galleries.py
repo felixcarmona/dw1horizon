@@ -11,6 +11,7 @@ the screen's camera, our collision and exits (maps/<name>-data.json, made by aut
 import glob, json, os, sys
 from mapbase import base_map, import_png, MOD, check_arrivals
 from foreground import apply as apply_foreground
+from field_walkables import apply as apply_walkables
 
 
 def main(out, folder='galleries', *only):
@@ -33,6 +34,7 @@ def main(out, folder='galleries', *only):
             apply(m, c['name'], background)
         else:
             apply_foreground(m, c['name'], background)
+        apply_walkables(m, c['file'])
         check_arrivals(m, c['file'])
         open(os.path.join(out, c['file'] + '.MAP'), 'wb').write(m.build())
         print(f'{c["file"]}: free tiles {m.collision.count(0)}, exits {[(w["targetMap"], w["targetExit"]) for w in m.warps if w["targetMap"] != -1]}')
