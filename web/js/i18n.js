@@ -31,7 +31,7 @@ export function guess(saved = remembered(), wanted = navigator.languages || [nav
 
 const cache = {};
 async function load(lang) {
-  cache[lang] ||= fetch(`i18n/${lang}.json`).then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
+  cache[lang] ||= fetch(new URL(`../i18n/${lang}.json`, import.meta.url)).then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
   return cache[lang];
 }
 

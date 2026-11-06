@@ -1,61 +1,72 @@
 # Horizon player data
 
-A small offline guide for technique learning, partner species and evolution.
-Open `out/index.html` directly; search and sort use plain JavaScript. All assets
-are local. No server, network requests, dependencies, disc data or artwork.
+The main website serves the guide at **`/data/`**, linked from its header.
+It uses `web/style.css`, the shared header, buttons, language menu and Plus
+Jakarta Sans. The guide vendors that font under its OFL license, so it needs
+no CDN, trackers, external fonts or third-party scripts.
 
-Build with Python 3.10+ and Git from this checkout:
+Build the release guide with Python 3.10+ and Git (stdlib only):
 
 ```sh
-python3 tools/guide/build.py
+python3 tools/guide/build.py --ref v0.0.6
 python3 -m unittest discover -s tools/guide -p 'test_*.py'
 ```
 
-The default reads **origin/main**, directly from Git, and labels the output
-“data for the next version” (upcoming 0.0.7, rather than released 0.0.6).
-It does not fetch or read uncommitted content. The source commit appears in the
-page. For a matching release or a reproducible pinned snapshot:
+`tools/guide/out/` contains the generated guide. Serve it with a static server;
+its language menu uses ES modules and local JSON. Default data is the current
+release **v0.0.6**, read directly from Git, never uncommitted game content.
+An explicit `--ref COMMIT --version VERSION` selects a pinned source snapshot.
+The page shows the matching game version and source commit. Identical inputs
+produce identical bytes, without timestamps.
+
+Build the website presentation and guide together:
 
 ```sh
-python3 tools/guide/build.py --ref v0.0.6 --version 0.0.6
-python3 tools/guide/build.py --ref COMMIT --version next --out build/guide-site
+python3 web/build.py --tag v0.0.6 --out build/guide-site
+python3 -m http.server --directory build/guide-site
 ```
 
-Identical source commits, version labels and builder/assets produce identical
-bytes; there are no timestamps. The builder uses only the standard library.
-`out/` is the checked-in generated site. After rebuilding, copy its three files
-to `build/guide-site/` for review or packaging.
+`web/build.py` preserves any validated engine and `data/discs.json` already
+in the destination. It overlays the website UI and generates `data/index.html`
+and `data/es.html` from the requested tag. The **Release and Pages** workflow
+uses this same command with `RELEASE_TAG`, after validating the tag's package
+and engine. A dispatch from main with `tag=v0.0.6` therefore takes presentation
+code from main and player data from v0.0.6. Each later release regenerates its
+own guide automatically. This command alone does not deploy anything.
 
-## Sources and scope
+Guide UI copy lives in `web/i18n/*.json` under `data.*`: English and Spanish,
+with English guide strings for the other website languages. The existing
+`horizon.lang` preference and flag menu are shared. Game names stay unchanged.
+`web/test/data.mjs SITE [SHOTS]` checks the assembled route, release snapshot,
+theme, language switching/fallback, search/sort and phone layout in Chromium;
+it also runs in the publication workflow.
 
-Only these owned files supply guide content:
+## Sources and rules
 
-- `content/techniques/*.json`: all technique rows; MP cost is multiplied by three
-  for the displayed base battle cost. Range and status codes are labeled using
-  `docs/reference/combat.md` (Technique table; Executing a technique).
-- `content/species/*.json`: forms with a `partner` block, their ordered specialty
-  slots, move lists, requirements and finisher overrides. Shared technique names
-  resolve through their explicit IDs. The final technique with ID 58–112 is the
-  finisher; IDs 113+ are intrinsic/other moves.
-- `content/tables/evolution-tree.json`: current NEW DIGIMON on routes,
-  requirement overrides, timed Ultimate routes and special-route notes.
-- `docs/reference/partner.md`: Learning techniques; Evolution → Score, timing and
-  added-species rules. HP/MP thresholds are multiplied by ten; happiness is
-  converted to the player-facing 0–100 scale. The documented Tsunomon→Gabumon
-  weight override is shown separately. Special and laboratory forms are labeled;
-  the Devimon note reflects its ordinary routes in the current tree as well.
+- `content/techniques/*.json`: every technique; MP ×3 is the base battle cost.
+  Finishers cost no MP despite their unused raw MP field.
+  Range/status codes follow `docs/reference/combat.md`.
+- `content/species/*.json`: all partner-enabled forms, original specialty slot
+  positions, move lists, requirement rows and species finisher overrides. Shared
+  technique names use explicit IDs; the last listed ID 58–112 is the finisher.
+- `content/tables/evolution-tree.json`: NEW DIGIMON on routes, requirement
+  overrides, timed Ultimate routes and special/laboratory notes.
+- `docs/reference/partner.md`: learning and evolution scoring. HP/MP thresholds
+  are ×10; happiness uses the status screen's 0–100 scale with rounded boundaries
+  marked. The later Tsunomon→Gabumon weight override appears only in snapshots
+  whose tree contains that route, and does not appear for v0.0.6.
 
-The learning explanation follows `battleMoveLearning` in `main/battle_ui.c`
-and enemy execution recording in `BTL_setupMoveExecution` in
-`btl/battle_main.c`: casting records a distinct normal technique, with no hit or
-partner-target test. The battle learning function checks the first matching
-specialty slot and species move list, rolls the technique's chance, and selects
-one successful candidate. Brains does not enter this roll. This differs from
-learning through Brains training, which has separate rules.
+`battleMoveLearning` in `main/battle_ui.c` checks the first matching specialty
+slot, species list and known moves, rolls the technique's chance, then selects
+one successful candidate. Brains is absent. `BTL_setupMoveExecution` in
+`btl/battle_main.c` records distinct enemy normal-technique executions without
+a hit or partner-target check. Brains training has separate rules.
 
-Evolution lists ordinary and timed routes, with special-route notes. It does
-not enumerate evolution items or NEW DIGIMON off routes. Four requirement
-groups score at most four points; three qualify. The selection explanation
-preserves the documented preference for unraised targets, the required-stat
-average comparison for Champion/Ultimate targets, its accumulator behavior,
-and Rookie-target tie order. No engine changes or game build are needed.
+Evolution requires three of four groups: care, weight, stats and one bonus.
+The explanation preserves the documented unraised-target preference, stat
+average comparison and its accumulator behavior, and Rookie-target tie order.
+Special/laboratory forms are labeled; item evolutions and NEW DIGIMON off
+routes are outside this guide. No game-runtime changes or disc build are needed.
+
+The font is [Plus Jakarta Sans from Google Fonts](https://github.com/google/fonts/tree/main/ofl/plusjakartasans),
+redistributed unchanged with `assets/font/OFL.txt`.

@@ -1,5 +1,23 @@
+import { i18n, LANGS, NAMES, tag } from './js/i18n.js';
+import { FLAGS } from './js/flags.js';
+await i18n.init();
+const spanish = location.pathname.endsWith('/es.html');
+if (spanish !== (i18n.lang === 'es')) location.replace(i18n.lang === 'es' ? 'es.html' + location.hash : './' + location.hash);
+i18n.apply(document);
+const menu = document.querySelector('#lang');
+for (const lang of LANGS) {
+  const option = document.createElement('option');
+  option.value = lang; option.lang = tag(lang); option.textContent = NAMES[lang];
+  menu.append(option);
+}
+menu.value = i18n.lang;
+document.querySelector('#lang-flag').innerHTML = FLAGS[i18n.lang] || '';
+menu.addEventListener('change', async () => {
+  await i18n.set(menu.value);
+  location.href = menu.value === 'es' ? 'es.html' : './';
+});
 'use strict';
-for (const section of document.querySelectorAll('main section')) {
+for (const section of document.querySelectorAll('.data-section')) {
   const table = section.querySelector('table');
   const body = table.tBodies[0];
   const rows = Array.from(body.rows);
@@ -14,7 +32,7 @@ for (const section of document.querySelectorAll('main section')) {
       row.hidden = !words.every(word => texts.get(row).includes(word));
       if (!row.hidden) count++;
     }
-    output.textContent = `${count} of ${rows.length} entries`;
+    output.textContent = i18n.t('data.filtered', {n: count, total: rows.length});
     empty.hidden = count > 0;
   });
   table.querySelectorAll('th button').forEach((button, index) => {
