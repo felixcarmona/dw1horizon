@@ -3,6 +3,10 @@
   "name": "Kabuterimon",
   "level": "champion",
   "vanilla": true,
+  "off": {
+    "level": "champion",
+    "evolution": {"to": [60, 27, -1, -1, -1, -1], "from": [45, 32, 111, -1, -1]}
+  },
   "attribute": "vaccine",
   "specialties": ["nature", "fire", "air"],
   "techniques": ["Spit Fire", "Prominence Beam", "Red Inferno", "Wind Cutter", "Hurricane", "Poison Claw",
@@ -31,7 +35,7 @@
   },
   "evolution": {
     "from": [45, 32, 111, -1, -1],
-    "to": [60, 27, -1, -1, -1, -1],
+    "to": [27, -1, -1, -1, -1, -1],
     "requirements": {
       "digimon": 32,
       "hp": 100,

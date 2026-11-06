@@ -148,6 +148,7 @@
  "step.plan": "Plan del disco",
  "engine.noWasm": "Este navegador no puede crear el disco. Usa un navegador de escritorio actualizado o la guía del jugador para la línea de comandos.",
  "engine.noOpfs": "Este navegador no puede crear el disco. Usa un navegador de escritorio actualizado o la guía del jugador para la línea de comandos.",
+ "engine.noWritable": "Este navegador no puede escribir los archivos de la compilación. En iPhone o iPad, actualiza a iOS/iPadOS 26 o posterior. También puedes crear el disco en un ordenador.",
  "engine.noStreams": "Este navegador no puede crear el disco. Usa un navegador de escritorio actualizado o la guía del jugador para la línea de comandos.",
  "engine.playerGuide": "Guía del jugador: línea de comandos",
  "engine.notDeployed": "El creador todavía no está en esta web.",

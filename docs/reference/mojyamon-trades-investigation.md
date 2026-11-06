@@ -28,7 +28,7 @@ Item 124, AS Decoder, has no story give/take/check, shop stock or species drop i
 
 The custom evolution-item table already reserves four rows, but only Giga Hand, Noble Mane and Metalbanana use them. Dolph Fin occupies the fourth row: item 124, Dolphmon 238, required partner level 3 (Rookie). The handler and refusal bounds include 124, and unavailable imports are rejected by the shared rule lookup. Names and descriptions replace existing slot 124 in all eight languages. The icon reuses the unused AS Decoder sprite with an existing blue palette. No table, atlas or save field grows. The investigated main snapshot (8b15663c) had no Chinese text table. After Chinese integration, the item and trade-limit text also have Simplified Chinese translations; the current names and limits cover all nine languages.
 
-North Star stays item 92 and targets Whamon 24. Whamon's current Ultimate level requires a Champion; NEW DIGIMON off restores Whamon's Champion level and Rookie eligibility. The item-stage helper keeps the established native Mega-item exception while following Whamon's current stage.
+North Star stays item 92 and targets Whamon 24. Whamon's current Ultimate level requires a Champion; NEW DIGIMON off restores Whamon's Champion level and Rookie eligibility. The item-stage helper follows the target's current stage for every native item: Mega targets require an Ultimate.
 
 Tapirmon's generic shop has global prices: both its menu and charge read ITEM_PARA, and shop(...) exposes stock only. Vegiemon's separate scripted purchases already specify 500 directly. A Tapirmon-only price would need a new override or a replacement menu, so the conditional 700-bit change is skipped. No global item value or Vegiemon price changes.
 
