@@ -1,0 +1,33 @@
+From 0cae3323f0cf771886581a66b7b44ae35fd2ff51 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 5 Nov 2026 18:59:29 +0000
+Subject: [PATCH] Choose uploaded camera bands from the actual window shift
+
+---
+ src/main/map.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/main/map.c b/src/main/map.c
+index 8ab3d28a..50161c97 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -5666,6 +5666,8 @@ void updateTileRow(bottom)
+ 	}
+ 
+ 	if (MAP_TILE_Y != PREV_TILE_Y) {
++		/* A held band can catch up while the camera is stationary or reversing. */
++		bottom = MAP_TILE_Y > PREV_TILE_Y;
+ 		base = MAP_TILE_X + ((long)MAP_TILE_Y * MAP_TILE_DATA.width);
+ 
+ 		if (MAP_TILE_DATA.width >= 4) {
+@@ -5708,6 +5710,7 @@ void updateTileColumn(right)
+ 	int32_t i;
+ 
+ 	if (MAP_TILE_X != PREV_TILE_X) {
++		right = MAP_TILE_X > PREV_TILE_X;
+ 		base = MAP_TILE_X + ((long)MAP_TILE_Y * MAP_TILE_DATA.width);
+ 		stride = MAP_TILE_DATA.width;
+ 
+-- 
+2.55.0
+
