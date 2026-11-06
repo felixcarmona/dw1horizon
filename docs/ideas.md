@@ -62,9 +62,11 @@ against, leave this list.
 | ShimaUnimon as a raisable partner | 🆕 | Already in the game as an enemy; needs a place in the evolution tree. |
 | Carry more than one Digimon, or a bank to swap partners (like a PC box) | 🆕 ⚖️ | A big change to the core raise-and-rebirth loop; memory budget on 2 MB. |
 | Ride your Digimon after getting a rare item | 🆕 | Field movement and animation work for many species. |
-| A search/filter in the Cheats evolve list | 🛠️ | The list is long; scrolling through it is slow. |
+| A search/filter in the Cheats evolve list, or pick the evolution from the chart grid (LCD icons) instead of the name list | 🛠️ | The list is long; scrolling through it is slow. |
 | Drop the word "Mega" from the partner guide, since the level is already shown in its corner | ✨ | Text only. |
 | New content in Beetle Land: more insect enemies and HerculesKabuterimon as a recruit | 🆕 | Area always felt empty; needs a recruit scene. |
+| Terriermon, the third Tamers partner (Guilmon and Renamon lines are already in) | 🆕 | Needs a source model and a place in the evolution tree. |
+| Models from Pocket Digimon World and Digital Card Arena (Japanese prequel of Digital Card Battle): MagnaAngemon, Keramon, babies, Babamon | 🆕 | New source discs for the importer; their formats need support first. |
 | Unique recruitment scenes for more of the new Digimon | ✨ | Many new recruits join with a simple fight. |
 | Humanoid sizes growing by stage (Angemon < MagnaAngemon < Seraphimon, Devimon < Myotismon) | ✨ | A per-line size review. |
 | A minimap like Digimon World 3's, showing where each exit leads, and a wider camera view | 🛠️ | Needs screen space and per-screen exit data. |

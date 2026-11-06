@@ -116,11 +116,24 @@ class Guide(unittest.TestCase):
     def test_machinedramon_has_its_route_and_its_requirements(self):
         names = {x['name']: x for x in self.g['digimon']}
         x = names['Machinedramon']
-        self.assertEqual(x['from'], [names['Megadramon']['id'], names['Gigadramon']['id']])
+        self.assertEqual(x['from'], [names[n]['id'] for n in
+                                    ('Megadramon', 'MetalTyrannomon', 'Gigadramon')])
         self.assertEqual(x['req'], {'mistakes': [0, 3], 'weight': [65, 75],
                                     'stats': {'hp': [7000], 'mp': [6000], 'offense': [600], 'defense': [600], 'speed': [400], 'brain': [400]},
-                                    'bonus': {'discipline': [95], 'battles': [100]}, 'after': 48})
-        self.assertEqual([y['name'] for y in self.g['digimon'] if isinstance(y.get('req'), dict) and 'after' in y['req']], ['Machinedramon'])
+                                    'bonus': {'discipline': [95], 'battles': [100]}})
+        # Mixed timed/ordinary parents do not share a single wait value.
+        self.assertNotIn('after', x['req'])
+
+    def test_guide_has_no_level_skips_and_two_mega_choices_per_ultimate(self):
+        levels = {'fresh': 1, 'in-training': 2, 'rookie': 3, 'champion': 4,
+                  'ultimate': 5, 'mega': 6}
+        for p, row in self.by.items():
+            for c in row['to']:
+                self.assertEqual(levels[self.by[c]['level']], levels[row['level']] + 1,
+                                 (row['name'], self.by[c]['name']))
+            if row['level'] == 'ultimate':
+                self.assertGreaterEqual(sum(self.by[c]['level'] == 'mega' for c in row['to']),
+                                        2, row['name'])
 
     def test_new_is_every_species_the_original_game_does_not_raise(self):
         allsp = S.load_content()

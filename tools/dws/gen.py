@@ -91,8 +91,12 @@ class Program(Ext):
     # ------------------------------------------------------------ loading
     def load(self, path, root=True):
         path = os.path.abspath(path)
-        if path in self.loaded: return
-        self.loaded[path] = True
+        # Windows imports can use different casing or an 8.3 directory alias.
+        # Canonicalize identity while keeping the source spelling for diagnostics
+        # and imports relative to this file.
+        key = os.path.normcase(os.path.realpath(path))
+        if key in self.loaded: return
+        self.loaded[key] = True
         try:
             src = open(path, encoding='utf-8').read()
         except OSError as e:

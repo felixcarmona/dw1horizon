@@ -21,7 +21,7 @@ import balance as B
 
 NUM_EVOLVING = 63                 # include/dw/ids.h NUM_EVOLVING_DIGIMON: EVOLUTION_PATHS covers types 1..62
 EXTRA_PARENTS, EXTRA_TARGETS = S.EXTRA_PARENTS, S.EXTRA_TARGETS
-PAIR_MAX = 8
+PAIR_MAX = 16
 CHART_TO_MAX, CHART_FROM_MAX = 24, 12   # game_menu.c CHART_TO_MAX, CHART_FROM_MAX
 TO_PAGE, FROM_PAGE = 6, 5               # boxes a page of each side holds
 

@@ -373,16 +373,16 @@
      }
     ],
     "delta": "content/modeldelta/deltas/dw3-us/409-Kyubimon.MMD.mdelta",
-    "delta_sha256": "567e0228ddfabc4dc4a4521c2732daf7cc13697194e9ce3f94a465adae91feff",
-    "sha256": "ee09610415e0464a90a2f360dc61dd08d8a2fd191d86333f1c0c981625ef5059",
-    "size": 105260
+    "delta_sha256": "613b9872753a87f2380ef41d36f10862510220b3f169d4eba1d5d951954e3898",
+    "sha256": "6fc09ff3d0eaaa9bd0380c8535e659ecd90cd1331b403ae3dc4fc4074945e208",
+    "size": 106632
    },
    "from": {
-    "sha256": "d761f9a236c130e7566061d93a6ff807e56233537f983e21801fdc9234bcbd93",
-    "delta_sha256": "07b471bd03cabc583c5b9e968926ee50cfb58e69ce19d4e97a69afc5694611d0",
+    "sha256": "3cf6a6a6f2a5ae875453cdd8c906699c069264f56376d682e4a71bd9a7a5a669",
+    "delta_sha256": "184c26b5b981afbe0bbb14c40e70723e85e1fdba69ef89c18a10f48fdf1549e3",
     "add_bytes": [
-     8556,
-     8556
+     15562,
+     15646
     ],
     "foreign_windows": 0,
     "objects_other": [
@@ -415,7 +415,12 @@
      10,
      12,
      13
-    ]
+    ],
+    "authored_native_polish": {
+     "recipe": "content/models/authoring/native-polish/409.json",
+     "input_sha256": "ee09610415e0464a90a2f360dc61dd08d8a2fd191d86333f1c0c981625ef5059",
+     "output_sha256": "6fc09ff3d0eaaa9bd0380c8535e659ecd90cd1331b403ae3dc4fc4074945e208"
+    }
    }
   },
   "431": {
