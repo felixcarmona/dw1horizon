@@ -1077,7 +1077,7 @@
         "new": [
           "A new game now opens with Jijimon's seven-question test, which picks your partner from 35 rookies, or from the original nine with NEW DIGIMON off.",
           "New City tab in the Player menu: see who has joined your city and who is still missing.",
-          "New enemy life bars above each enemy's head, with their current HP. NEW ENEMY BARS in OPTIONS turns them off, and your Select choice for showing them is now saved.",
+          "New enemy life bars above each enemy's head, with their current HP.",
           "The status screen shows care mistakes, discipline and a tiredness bar.",
           "Monochromon's shop shift shows your profit and customer count as you work.",
           "The field pause shows the game version and, with CHEATS on, a hint that Select opens the Cheats menu.",
@@ -1116,7 +1116,7 @@
         "new": [
           "Ahora las partidas nuevas empiezan con el test de siete preguntas de Jijimon, que elige a tu compañero entre 35 Digimon de nivel Novato, o entre los nueve originales si desactivas DIGIMON NUEVOS.",
           "Nueva pestaña Ciudad en el menú Jugador: consulta quién se ha unido a tu ciudad y quién falta todavía.",
-          "Nuevas barras de vida sobre la cabeza de cada enemigo, con sus HP actuales. Puedes desactivarlas con BARRAS ENEM. NUEVAS en OPTIONS, y ahora se guarda tu elección de mostrarlas con SELECT.",
+          "Nuevas barras de vida sobre la cabeza de cada enemigo, con sus HP actuales.",
           "La pantalla de estado muestra los errores de cuidado, la disciplina y una barra de cansancio.",
           "Durante el turno en la tienda de Monochromon puedes ver tus beneficios y el número de clientes atendidos.",
           "La pausa fuera de los combates muestra la versión del juego y, con TRUCOS activado, un aviso de que SELECT abre el menú Trucos.",
@@ -1155,7 +1155,7 @@
         "new": [
           "Agora uma nova partida começa com o teste de sete perguntas de Jijimon, que escolhe seu parceiro entre 35 Digimon de nível Novato, ou entre os nove originais com NOVOS DIGIMON desligado.",
           "Nova aba Cidade no menu Jogador: veja quem já se mudou para sua cidade e quem ainda falta.",
-          "Novas barras de vida acima da cabeça de cada inimigo, com os HP atuais. NOVAS BARRAS INIM. em OPTIONS permite desligá-las, e sua escolha de exibi-las com SELECT agora fica salva.",
+          "Novas barras de vida acima da cabeça de cada inimigo, com os HP atuais.",
           "A tela de status mostra os erros de cuidado, a disciplina e uma barra de cansaço.",
           "Durante o turno na loja de Monochromon, você pode acompanhar seu lucro e a quantidade de clientes atendidos.",
           "A pausa fora das lutas mostra a versão do jogo e, com TRUQUES ligado, uma dica de que SELECT abre o menu Truques.",
@@ -1194,7 +1194,7 @@
         "new": [
           "Une nouvelle partie commence désormais par les sept questions de Jijimon, qui choisit ton partenaire parmi 35 Digimon de niveau Disciple, ou parmi les neuf d'origine si NOUV. DIGIMON est désactivé.",
           "Nouvel onglet Ville dans le menu Joueur : vois qui a rejoint ta ville et qui manque encore.",
-          "De nouvelles barres de vie au-dessus de la tête de chaque ennemi affichent ses HP actuels. NOUV. BARRES ENNEMIES dans OPTIONS permet de les désactiver, et ton choix d'affichage avec SELECT est désormais sauvegardé.",
+          "De nouvelles barres de vie au-dessus de la tête de chaque ennemi affichent ses HP actuels.",
           "L'écran de statut affiche les erreurs de soin, la discipline et une jauge de fatigue.",
           "Pendant ton service dans la boutique de Monochromon, tu peux suivre tes bénéfices et le nombre de clients servis.",
           "La pause hors combat affiche la version du jeu et, si TRICHE est activé, un rappel que SELECT ouvre le menu Triches.",
@@ -1233,7 +1233,7 @@
         "new": [
           "Ein neues Spiel beginnt jetzt mit Jijimons sieben Fragen. Deine Antworten bestimmen deinen Partner aus 35 Digimon auf dem Rookie-Level, oder aus den ursprünglichen neun, wenn NEUE DIGIMON ausgeschaltet ist.",
           "Neuer Reiter Stadt im Menü Spieler: Sieh nach, wer schon in deine Stadt gezogen ist und wer noch fehlt.",
-          "Neue Lebensbalken über den Köpfen der Gegner zeigen ihre aktuellen HP. Mit NEUE GEGNERBALKEN in OPTIONS kannst du sie ausschalten. Deine Auswahl zur Anzeige mit SELECT wird jetzt gespeichert.",
+          "Neue Lebensbalken über den Köpfen der Gegner zeigen ihre aktuellen HP.",
           "Die Statusanzeige zeigt Pflegefehler, Disziplin und einen Müdigkeitsbalken.",
           "Während deiner Schicht in Monochromons Laden siehst du deinen Gewinn und die Zahl der bedienten Kunden.",
           "Die Pause außerhalb von Kämpfen zeigt die Spielversion und bei eingeschaltetem CHEATS einen Hinweis darauf, dass SELECT das Menü Cheats öffnet.",
@@ -1272,7 +1272,7 @@
         "new": [
           "Ora una nuova partita inizia con le sette domande di Jijimon, che sceglie il tuo compagno tra 35 Digimon di livello Intermedio, o tra i nove originali se NUOVI DIGIMON è disattivato.",
           "Nuova scheda Città nel menu Giocatore: scopri chi si è trasferito nella tua città e chi manca ancora.",
-          "Nuove barre della vita sopra la testa di ogni nemico, con gli HP attuali. NUOVE BARRE NEMICI in OPTIONS permette di disattivarle, e ora viene salvata la tua scelta di mostrarle con SELECT.",
+          "Nuove barre della vita sopra la testa di ogni nemico, con gli HP attuali.",
           "La schermata di stato mostra gli errori di cura, la disciplina e una barra della stanchezza.",
           "Durante il turno nel negozio di Monochromon puoi vedere i tuoi profitti e il numero di clienti serviti.",
           "La pausa fuori dai combattimenti mostra la versione del gioco e, con TRUCCHI attivato, un suggerimento che ricorda che SELECT apre il menu Trucchi.",
@@ -1311,7 +1311,7 @@
         "new": [
           "新しくゲームを始めると、まずJijimonの7つの質問に答えます。答えに応じて35体の成長期からパートナーが選ばれます。あたらしいデジモンがオフなら、元の9体から選ばれます。",
           "プレイヤーメニューに「まち」タブを追加しました。街に来たデジモンと、まだ来ていないデジモンを確認できます。",
-          "敵の頭上に、現在のHPを示す新しいライフバーを追加しました。OPTIONSの「敵の新HPバー」でオフにできます。SELECTで切り替えた表示設定も保存されるようになりました。",
+          "敵の頭上に、現在のHPを示す新しいライフバーを追加しました。",
           "ステータス画面にいくせいミスとしつけに加え、つかれのバーを表示します。",
           "Monochromonの店で働いている間、利益と接客した人数を確認できるようになりました。",
           "フィールドでポーズすると、ゲームのバージョンを表示します。「チート」がオンなら、SELECTでチートメニューを開けることも案内します。",
@@ -1350,7 +1350,7 @@
         "new": [
           "Ara les partides noves comencen amb el test de set preguntes de Jijimon, que tria el teu company entre 35 Digimon de nivell Novell, o entre els nou originals si desactives NOUS DIGIMON.",
           "Nova pestanya Ciutat al menú Jugador: consulta qui s'ha unit a la teva ciutat i qui encara hi falta.",
-          "Noves barres de vida damunt del cap de cada enemic, amb els HP actuals. NOVES BARRES ENEM. a OPTIONS permet desactivar-les, i ara es desa la teva tria de mostrar-les amb SELECT.",
+          "Noves barres de vida damunt del cap de cada enemic, amb els HP actuals.",
           "La pantalla d'estat mostra els errors de cura, la disciplina i una barra de cansament.",
           "Durant el torn a la botiga de Monochromon pots veure els beneficis i el nombre de clients atesos.",
           "La pausa fora dels combats mostra la versió del joc i, amb TRUCS activat, un avís que SELECT obre el menú Trucs.",
@@ -1389,7 +1389,7 @@
         "new": [
           "新游戏以公公兽的七问测试开场，从35只成长期中选择初始搭档；关闭NEW DIGIMON（新数码宝贝）时，则从原有九只中选择。",
           "玩家菜单新增城市页，可查看谁已经加入文件城、谁还未加入。",
-          "每个敌人头顶新增显示当前HP的生命条。可在OPTIONS（选项）中关闭NEW ENEMY BARS（新敌人生命条）；通过SELECT切换的显示状态也会保存。",
+          "每个敌人头顶新增显示当前HP的生命条。",
           "状态页显示照顾失误、纪律和疲劳条。",
           "在角龙兽商店打工时，会显示当前利润和客人数。",
           "野外暂停画面显示游戏版本；开启CHEATS（作弊）时，还会提示按SELECT打开作弊菜单。",

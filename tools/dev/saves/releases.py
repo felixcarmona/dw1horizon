@@ -437,6 +437,19 @@ class Emu:
         return seen
 
 
+PERMANENT_OPTIONS = {
+    'newStatusBars': 'MOD_OPT_BARS',
+    'digitalClock': 'MOD_OPT_CLOCK',
+    'newEnemyBars': 'MOD_OPT_ENEMY_BARS',
+    'enemyBarsShown': 'BATTLE_TOGGLE_LIFEBAR',
+}
+
+
+def effective_option(emu, key, saved):
+    symbol = PERMANENT_OPTIONS.get(key)
+    return 1 if symbol and not emu.has(symbol) else saved
+
+
 def ram_values(emu, locks, profile):
     """What the running game holds of a save, by field (the story by name through `locks`)."""
     ram = emu.ram()
@@ -459,7 +472,8 @@ def ram_values(emu, locks, profile):
                  ('newEnemyBars', 'MOD_OPT_ENEMY_BARS')):
         if emu.has(s): opts[k] = pk(s, 'i')
     if emu.has('MOD_OPT_ENEMY_BARS') and emu.has('BATTLE_TOGGLE_LIFEBAR'): opts['enemyBarsShown'] = pk('BATTLE_TOGGLE_LIFEBAR', 'B')
-    if not emu.has('MOD_OPT_BARS'): opts['newStatusBars'] = 1
+    for key, symbol in PERMANENT_OPTIONS.items():
+        if not emu.has(symbol): opts[key] = 1
     if emu.has('MOD_FONT'): opts['font'] = {0: 1, 1: 0, 2: 2}[pk('MOD_FONT', 'b')]
     if emu.has('MOD_FPS_MODE_RUN'): opts['frameRate'] = {0: 20, 1: 30, 2: 60}[pk('MOD_FPS_MODE_RUN', 'i')]
     v['options'] = opts
@@ -496,7 +510,7 @@ def check_emu(emu, js, card, locks, rows, keep):
                   'amounts', 'bank', 'cards', 'raised', 'recruited', 'roster'):
             compare(rows, f'RAM {k}', want[k], got[k])
         for k, val in want['options'].items():
-            if k in got['options']: compare(rows, f'RAM option {k}', 1 if k == 'newStatusBars' and not emu.has('MOD_OPT_BARS') else val, got['options'][k])
+            if k in got['options']: compare(rows, f'RAM option {k}', effective_option(emu, k, val), got['options'][k])
             else: rows.append((False, f'RAM option {k}', f'recorded {val}; this build has no such setting'))
         # The new flags are inverted: every shorter released record upgrades to ON/shown.
         _, _, saved_records = read_card(card)
@@ -504,7 +518,7 @@ def check_emu(emu, js, card, locks, rows, keep):
         enemy_flags = options[13] if len(options) >= 14 else 0
         for key, mask in (('newEnemyBars', 1), ('enemyBarsShown', 2)):
             if key in got['options']:
-                compare(rows, f'RAM option {key} (upgrade default)', int(not (enemy_flags & mask)), got['options'][key])
+                compare(rows, f'RAM option {key} (upgrade default)', int(not (enemy_flags & mask)) if emu.has('MOD_OPT_ENEMY_BARS') else 1, got['options'][key])
         story_rows(rows, want['story'], locks, lambda kind, n: flag_of(n, trig, sf) if kind == 'flags' else var_of(n, locks['profile'], pst, sv))
         # the round trip: save again at Jijimon (the loaded screen and place put back at the last confirm)
         here = (got['screen'], got['previousScreen'], emu.raw('TAMER_POSITION_DATA+0x78', 12, emu.ram()))
@@ -535,6 +549,11 @@ def check_emu(emu, js, card, locks, rows, keep):
             if n in new['records'] and n not in RESAVE_DRIFT:
                 if n == 'options' and not emu.has('MOD_OPT_BARS') and len(hexv) >= 8:
                     hexv = hexv[:6] + '01' + hexv[8:]
+                if n == 'options' and not emu.has('MOD_OPT_CLOCK'):
+                    raw = bytearray.fromhex(hexv)
+                    if len(raw) > 1: raw[1] = 1
+                    if len(raw) > 13: raw[13] = 0
+                    hexv = raw.hex()
                 compare(rows, f'saved again: record {n} (old prefix)', hexv, new['records'][n][:len(hexv)])
         for k in ('money', 'partnerType', 'player', 'stats', 'roster', 'bank', 'cards'):
             compare(rows, f'saved again: {k}', old[k], new[k])
@@ -706,7 +725,7 @@ def cmd_add(a):
         compare(checks, 'fixture stats', RICH['stats'], {k: got['stats'][k] for k in RICH['stats']})
         compare(checks, 'fixture inventory', [i for i, _ in RICH['inventory']], got['inventory'][:len(RICH['inventory'])])
         for k, val in got['options'].items():
-            expected = 1 if k == 'newStatusBars' and not emu.has('MOD_OPT_BARS') else RICH['options'][k]
+            expected = effective_option(emu, k, RICH['options'][k])
             compare(checks, f'fixture option {k}', expected, val)
         _, _, saved_records = read_card(card)
         registered = saved_records.get(5, b'')

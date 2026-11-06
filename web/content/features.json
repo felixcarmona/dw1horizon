@@ -552,39 +552,39 @@
    ],
    "en": {
     "title": "Your settings",
-    "body": "Language, frame rate, font, difficulty, the new Digimon, the extended story, the quick battle start and the digital clock: each has its row in OPTIONS at the title, and your choices are kept with your save."
+    "body": "Language, frame rate, font, difficulty, the new Digimon, the extended story and the quick battle start: each has its row in OPTIONS at the title, and your choices are kept with your save."
    },
    "es": {
     "title": "Tus ajustes",
-    "body": "Idioma, imágenes por segundo, letra, dificultad, los Digimon nuevos, la historia extendida, el inicio rápido de los combates y el reloj digital: cada cosa tiene su fila en OPTIONS en la pantalla de título, y tus elecciones se guardan con la partida."
+    "body": "Idioma, imágenes por segundo, letra, dificultad, los Digimon nuevos, la historia extendida y el inicio rápido de los combates: cada cosa tiene su fila en OPTIONS en la pantalla de título, y tus elecciones se guardan con la partida."
    },
    "pt-br": {
     "title": "Suas configurações",
-    "body": "Idioma, taxa de quadros, fonte, dificuldade, os Digimon novos, a história estendida, o início rápido das batalhas e o relógio digital: cada um tem sua linha em OPTIONS na tela de título, e suas escolhas ficam guardadas no seu save."
+    "body": "Idioma, taxa de quadros, fonte, dificuldade, os Digimon novos, a história estendida e o início rápido das batalhas: cada um tem sua linha em OPTIONS na tela de título, e suas escolhas ficam guardadas no seu save."
    },
    "fr": {
     "title": "Tes réglages",
-    "body": "Langue, fréquence d'images, police, difficulté, les nouveaux Digimon, l'histoire étendue, le démarrage rapide des combats et l'horloge numérique : chacun a sa ligne dans OPTIONS sur l'écran titre, et tes choix sont gardés avec ta sauvegarde."
+    "body": "Langue, fréquence d'images, police, difficulté, les nouveaux Digimon, l'histoire étendue et le démarrage rapide des combats : chacun a sa ligne dans OPTIONS sur l'écran titre, et tes choix sont gardés avec ta sauvegarde."
    },
    "de": {
     "title": "Deine Einstellungen",
-    "body": "Sprache, Bildrate, Schrift, Schwierigkeit, die neuen Digimon, die erweiterte Geschichte, der schnelle Kampfstart und die Digitaluhr: Alles hat seine Zeile in OPTIONS auf dem Titelbild, und deine Wahl wird mit deinem Spielstand gespeichert."
+    "body": "Sprache, Bildrate, Schrift, Schwierigkeit, die neuen Digimon, die erweiterte Geschichte und der schnelle Kampfstart: Alles hat seine Zeile in OPTIONS auf dem Titelbild, und deine Wahl wird mit deinem Spielstand gespeichert."
    },
    "it": {
     "title": "Le tue impostazioni",
-    "body": "Lingua, frame rate, font, difficoltà, i nuovi Digimon, la storia estesa, l'avvio rapido delle battaglie e l'orologio digitale: ognuno ha la sua riga in OPTIONS dalla schermata del titolo, e le tue scelte restano salvate con la partita."
+    "body": "Lingua, frame rate, font, difficoltà, i nuovi Digimon, la storia estesa e l'avvio rapido delle battaglie: ognuno ha la sua riga in OPTIONS dalla schermata del titolo, e le tue scelte restano salvate con la partita."
    },
    "ja": {
     "title": "自分好みの設定",
-    "body": "言語、フレームレート、フォント、難易度、新デジモン、拡張ストーリー、バトル即スタート、デジタル時計。タイトル画面のOPTIONSでそれぞれ設定でき、選択はセーブデータに保存されます。"
+    "body": "言語、フレームレート、フォント、難易度、新デジモン、拡張ストーリー、バトル即スタート。タイトル画面のOPTIONSでそれぞれ設定でき、選択はセーブデータに保存されます。"
    },
    "ca": {
     "title": "Els teus ajustos",
-    "body": "Idioma, imatges per segon, lletra, dificultat, els Digimon nous, la història ampliada, l'inici ràpid dels combats i el rellotge digital: cada opció té la seva fila a OPTIONS a la pantalla de títol, i el que triïs es desa amb la partida."
+    "body": "Idioma, imatges per segon, lletra, dificultat, els Digimon nous, la història ampliada i l'inici ràpid dels combats: cada opció té la seva fila a OPTIONS a la pantalla de títol, i el que triïs es desa amb la partida."
    },
    "zh-hans": {
     "title": "各项功能，自由选择",
-    "body": "语言、帧率、字体、难度、新数码宝贝、扩展故事、快速开战、数字时钟：标题画面的OPTIONS（选项）中，每项均可单独设置，选择随存档保存。"
+    "body": "语言、帧率、字体、难度、新数码宝贝、扩展故事、快速开战：标题画面的OPTIONS（选项）中，每项均可单独设置，选择随存档保存。"
    }
   },
   {

@@ -163,10 +163,19 @@ def capture(e, out, name, screen, prefix, count=5, cancel=False, food=310, gym="
         assert c['careMistakes'] == 0
     # Observe the native tally skip and normal return, rather than leaving a gym object behind.
     e.run('resume')
-    for _ in range(80):
-        e.press('CONFIRM', 8); e.wait(.15)
+    # One tally skip, then release: another confirm after native cleanup can
+    # start training again at the station before the harness samples control.
+    for _ in range(200):
         if e.peek('TAMER_STATE', 'b') == 0:
             break
+        if e.peek('UI_BOX_DATA+54', 'h') == 1:
+            e.press('CONFIRM', 12)
+            break
+        e.wait(.1)
+    for _ in range(200):
+        if e.peek('TAMER_STATE', 'b') == 0:
+            break
+        e.wait(.1)
     else:
         raise AssertionError('training failed to restore field control')
     e.run('lua', f'''GH_LIFE={{n=0}};GH_LIFE.bp=PCSX.addBreakpoint({e.A(prefix + '_renderCareHUD')},'Exec',4,'gym-hud-lifetime',function() GH_LIFE.n=GH_LIFE.n+1 end)''')
