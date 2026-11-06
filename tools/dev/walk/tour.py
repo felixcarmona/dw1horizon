@@ -147,6 +147,12 @@ def go(target, scr, seg, tol=70, max_steps=60):
         btn = []
         if abs(du) > px_tol: btn.append('RIGHT' if du > 0 else 'LEFT')
         if abs(dv) > px_tol: btn.append('DOWN' if dv > 0 else 'UP')
+        # A distant camera can project a still-unreached world point inside
+        # both pixel tolerances. Keep steering instead of waiting with no pad
+        # input and eventually treating the pause as a collision.
+        if not btn:
+            btn.append(('RIGHT' if du > 0 else 'LEFT') if abs(du) >= abs(dv)
+                       else ('DOWN' if dv > 0 else 'UP'))
         hold = max(0.05, min(0.35, d / 900 * 0.7))
         for b in btn: emu.api(f'/api/v1/lua/press?button={b}')
         time.sleep(hold)
