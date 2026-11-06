@@ -1,0 +1,25 @@
+From 2e96caa005b0884306417ceee59eedebaff38e6a Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 4 Nov 2026 23:29:56 +0000
+Subject: [PATCH] Keep the resident Chinese font fixed in the options menu
+
+---
+ src/main/main_menu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 68c1c56..604a357 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -6074,7 +6074,7 @@ static int32_t modOptionCount(int32_t row)
+         return count - (MOD_COLD_CACHE_TYPE < 0 && (MOD_LANGUAGE_AVAILABLE & (1u << MOD_LANG_ZH)));
+     }
+ #if FONT_SWITCH
+-    if (row == MOD_OPT_ROW_FONT) return 3;
++    if (row == MOD_OPT_ROW_FONT) return MOD_LANG == MOD_LANG_ZH ? 1 : 3;
+ #endif
+     return 2;
+ }
+-- 
+2.55.0
+

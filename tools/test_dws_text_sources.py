@@ -29,6 +29,14 @@ class TextSources(unittest.TestCase):
         self.assertEqual(extract.tidy('hambre.¿Tienes 1.5?', {'id': 'es-fan'}), 'hambre. ¿Tienes 1.5?')
         self.assertEqual(extract.tidy('hambre.¿Tienes', {'id': 'jp1'}), 'hambre.¿Tienes')
 
+    def test_independent_glyph_codes_share_capacities_without_changing_encoding(self):
+        banks = [dict(font={'山':'8740'}, text={'a':'山', 'b':'abc'}),
+                 dict(font={'山':'A040','兽':'A041'}, text={'a':'山兽', 'b':'ab'}, encoding='dwzh-1')]
+        got = padding.merge(banks)
+        self.assertEqual(got['font']['山'], '8740')
+        self.assertEqual(got['text'], {'a':'XXXX', 'b':'XXX'})
+        self.assertEqual(banks[1]['font']['山'], 'A040')
+
     def test_repage_restores_font_even_after_failure(self):
         before = dict(B.FONT)
         with patch.object(B, 'fits', side_effect=RuntimeError('fixture')):

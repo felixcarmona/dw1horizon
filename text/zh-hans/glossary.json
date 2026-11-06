@@ -1,0 +1,2258 @@
+{
+  "_about": "Simplified Chinese terminology. Species spellings verified against the official Simplified Chinese encyclopedia; project terms are authored translations.",
+  "species": {
+    "Agumon": {
+      "zh": "亚古兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=agumon"
+    },
+    "Gabumon": {
+      "zh": "加布兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=gabumon"
+    },
+    "Jijimon": {
+      "zh": "公公兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=jijimon"
+    },
+    "Tokomon": {
+      "zh": "迪哥兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=tokomon"
+    },
+    "Botamon": {
+      "zh": "黑球兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=botamon"
+    },
+    "Koromon": {
+      "zh": "滚球兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=koromon"
+    },
+    "Punimon": {
+      "zh": "布尼兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=punimon"
+    },
+    "Poyomon": {
+      "zh": "浮游兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=poyomon"
+    },
+    "Yuramon": {
+      "zh": "浮球兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=yuramon"
+    },
+    "Tanemon": {
+      "zh": "种子兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=tanemon"
+    },
+    "Palmon": {
+      "zh": "巴鲁兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=palmon"
+    },
+    "Betamon": {
+      "zh": "贝塔兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=betamon"
+    },
+    "Tyrannomon": {
+      "zh": "巨龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=tyranomon"
+    },
+    "Machinedramon": {
+      "zh": "无限龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=mugendramon"
+    },
+    "Angemon": {
+      "zh": "天使兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=angemon"
+    },
+    "Patamon": {
+      "zh": "巴达兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=patamon"
+    },
+    "Biyomon": {
+      "zh": "比丘兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=piyomon"
+    },
+    "Birdramon": {
+      "zh": "巴多拉兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=birdramon"
+    },
+    "Kunemon": {
+      "zh": "古尼兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=kunemon"
+    },
+    "Leomon": {
+      "zh": "狮子兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=leomon"
+    },
+    "Ogremon": {
+      "zh": "恶鬼兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=orgemon"
+    },
+    "Meramon": {
+      "zh": "燃烧兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=meramon"
+    },
+    "Numemon": {
+      "zh": "鼻涕兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=numemon"
+    },
+    "Monzaemon": {
+      "zh": "熊仔兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=monzaemon"
+    },
+    "Sukamon": {
+      "zh": "大便兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=scumon"
+    },
+    "Etemon": {
+      "zh": "猿猴兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=etemon"
+    },
+    "Penguinmon": {
+      "zh": "企鹅兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=penmon"
+    },
+    "Gomamon": {
+      "zh": "哥玛兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=gomamon"
+    },
+    "Elecmon": {
+      "zh": "艾力兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=elecmon"
+    },
+    "Whamon": {
+      "zh": "巨鲸兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=whamon"
+    },
+    "Coelamon": {
+      "zh": "腔棘鱼兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=coelamon"
+    },
+    "Drimogemon": {
+      "zh": "钻头鼹鼠兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=drimogemon"
+    },
+    "Nanimon": {
+      "zh": "什么兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=nanimon"
+    },
+    "Airdramon": {
+      "zh": "飞龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=airdramon"
+    },
+    "Garurumon": {
+      "zh": "加鲁鲁兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=garurumon"
+    },
+    "Mojyamon": {
+      "zh": "毛人兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=mojyamon"
+    },
+    "Frigimon": {
+      "zh": "雪人兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=yukidarumon"
+    },
+    "Giromon": {
+      "zh": "机雷兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=giromon"
+    },
+    "Andromon": {
+      "zh": "机械人兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=andromon"
+    },
+    "Megadramon": {
+      "zh": "百万龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=megadramon"
+    },
+    "Devimon": {
+      "zh": "恶魔兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=devimon"
+    },
+    "SkullGreymon": {
+      "zh": "丧尸暴龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=skullgreymon"
+    },
+    "Mamemon": {
+      "zh": "豆豆兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=mamemon"
+    },
+    "MetalMamemon": {
+      "zh": "金属豆豆兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=metalmamemon"
+    },
+    "Vademon": {
+      "zh": "入侵兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=vademon"
+    },
+    "Digitamamon": {
+      "zh": "数码蛋兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=digitamamon"
+    },
+    "Cherrymon": {
+      "zh": "祖利兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=jyureimon"
+    },
+    "Tsunomon": {
+      "zh": "犄角兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=tunomon"
+    },
+    "Centarumon": {
+      "zh": "人马兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=centalmon"
+    },
+    "Vegiemon": {
+      "zh": "野菜兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=vegimon"
+    },
+    "AeroVeedramon": {
+      "zh": "飞行V龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=earov-dramon"
+    },
+    "Akatorimon": {
+      "zh": "红鸡兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=akatorimon"
+    },
+    "Angewomon": {
+      "zh": "天女兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=angewomon"
+    },
+    "Ankylomon": {
+      "zh": "甲龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=ankylomon"
+    },
+    "Antylamon": {
+      "zh": "玉兔兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=andiramon_2"
+    },
+    "Apemon": {
+      "zh": "哈奴兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=hanumon"
+    },
+    "Apocalymon": {
+      "zh": "启示录兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=apoclymon"
+    },
+    "Aquilamon": {
+      "zh": "天鹰兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=aquilamon"
+    },
+    "Armadillomon": {
+      "zh": "犰狳兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=armadimon"
+    },
+    "Armageddemon": {
+      "zh": "灭世魔兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=armagemon"
+    },
+    "Arukenimon": {
+      "zh": "阿剌克涅兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=archnemon"
+    },
+    "Aruraumon": {
+      "zh": "爱娜温兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=alraumon"
+    },
+    "Assaultmon": {
+      "zh": "突袭兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=assaultmon"
+    },
+    "Baihumon": {
+      "zh": "白虎兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=baihumon"
+    },
+    "Bakemon": {
+      "zh": "鬼怪兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=bakemon"
+    },
+    "Baronmon": {
+      "zh": "巴隆兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=baromon"
+    },
+    "Bastemon": {
+      "zh": "芭丝特兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=bastemon"
+    },
+    "Bearmon": {
+      "zh": "小熊兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=bearmon"
+    },
+    "Beelzemon": {
+      "zh": "别西卜兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=beelzebumon"
+    },
+    "BlackGatomon": {
+      "zh": "黑暗迪路兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=blacktailmon"
+    },
+    "BlackKingNumemon": {
+      "zh": "黑国王鼻涕兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=blackkingnumemon"
+    },
+    "BlackWarGreymon": {
+      "zh": "黑暗战斗暴龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=blackwargreymon"
+    },
+    "Blossomon": {
+      "zh": "巨花兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=blossomon"
+    },
+    "BlueMeramon": {
+      "zh": "蓝色燃烧兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=bluemeramon"
+    },
+    "Boltmon": {
+      "zh": "螺栓兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=boltmon"
+    },
+    "BomberNanimon": {
+      "zh": "炸弹什么兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=bombernanimon"
+    },
+    "Brachiomon": {
+      "zh": "腕龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=brachiomon"
+    },
+    "Bukamon": {
+      "zh": "布加兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=pukamon"
+    },
+    "Bulbmon": {
+      "zh": "阀门兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=valvemon"
+    },
+    "Candlemon": {
+      "zh": "蜡烛兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=candmon"
+    },
+    "Cannondramon": {
+      "zh": "炮龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=cannondramon"
+    },
+    "ClearAgumon": {
+      "zh": "透明亚古兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=clearagumon"
+    },
+    "Clockmon": {
+      "zh": "时钟兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=clockmon"
+    },
+    "Crabmon": {
+      "zh": "螃蟹兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=ganimon"
+    },
+    "Creepymon": {
+      "zh": "究极魔兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=demon"
+    },
+    "Cyclonemon": {
+      "zh": "独眼龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=cyclomon"
+    },
+    "DarkLizardmon": {
+      "zh": "黑暗蜥蜴兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=darklizamon"
+    },
+    "DarkTyrannomon": {
+      "zh": "黑暗巨龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=darktyranomon"
+    },
+    "Datamon": {
+      "zh": "分子兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=nanomon"
+    },
+    "Deltamon": {
+      "zh": "德尔塔兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=deltamon"
+    },
+    "DemiDevimon": {
+      "zh": "小恶魔兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=picodevimon"
+    },
+    "DemiMeramon": {
+      "zh": "小燃烧兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=petimeramon"
+    },
+    "Deramon": {
+      "zh": "华丽兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=delumon"
+    },
+    "Devidramon": {
+      "zh": "邪龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=devidramon"
+    },
+    "Diaboromon": {
+      "zh": "超恶魔兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=diablomon"
+    },
+    "Digmon": {
+      "zh": "挖掘兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=digmon"
+    },
+    "Dinohyumon": {
+      "zh": "龙人兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=dinohumon"
+    },
+    "Divermon": {
+      "zh": "半鱼兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=hangyomon"
+    },
+    "Dokugumon": {
+      "zh": "毒蜘蛛兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=dokugumon"
+    },
+    "Dokunemon": {
+      "zh": "毒古尼兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=dokunemon"
+    },
+    "Dolphmon": {
+      "zh": "海豚兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=rukamon"
+    },
+    "Dragomon": {
+      "zh": "达贡兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=dagomon"
+    },
+    "Ebidramon": {
+      "zh": "虾龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=ebidramon"
+    },
+    "ExTyrannomon": {
+      "zh": "EX巨龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=ex-tyranomon"
+    },
+    "ExVeemon": {
+      "zh": "XV兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=xv-mon"
+    },
+    "Flamedramon": {
+      "zh": "烈焰龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=fladramon"
+    },
+    "Flarerizamon": {
+      "zh": "火焰蜥蜴兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=flarelizamon"
+    },
+    "Floramon": {
+      "zh": "佛洛拉兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=floramon"
+    },
+    "Flymon": {
+      "zh": "黄蜂兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=flymon"
+    },
+    "Fugamon": {
+      "zh": "风灾兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=fugamon"
+    },
+    "Fujinmon": {
+      "zh": "风神兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=fujinmon"
+    },
+    "Gallantmon": {
+      "zh": "公爵兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=dukemon"
+    },
+    "Garbagemon": {
+      "zh": "垃圾桶兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=gerbemon"
+    },
+    "Gargoylemon": {
+      "zh": "石像鬼兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=gargomon"
+    },
+    "Garudamon": {
+      "zh": "伽楼达兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=garudamon"
+    },
+    "Gatomon": {
+      "zh": "迪路兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=tailmon"
+    },
+    "Gazimon": {
+      "zh": "加支兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=gazimon"
+    },
+    "Gekomon": {
+      "zh": "怪蛙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=gekomon"
+    },
+    "Geremon": {
+      "zh": "卑劣兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=geremon"
+    },
+    "Gesomon": {
+      "zh": "墨鱼兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=gesomon"
+    },
+    "Ghoulmon": {
+      "zh": "死亡兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=deathmon"
+    },
+    "Gigadramon": {
+      "zh": "千兆龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=gigadramon"
+    },
+    "Gizamon": {
+      "zh": "锯齿兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=gizamon"
+    },
+    "Goblimon": {
+      "zh": "哥布林兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=goburimon"
+    },
+    "Golemon": {
+      "zh": "魔像兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=golemon"
+    },
+    "Gotsumon": {
+      "zh": "矿石兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=gottsumon"
+    },
+    "GranKuwagamon": {
+      "zh": "巨大古加兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=grankuwagamon"
+    },
+    "GrapLeomon": {
+      "zh": "格斗狮子兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=grappuleomon"
+    },
+    "Greymon": {
+      "zh": "暴龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=greymon-first"
+    },
+    "Grizzlymon": {
+      "zh": "灰熊兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=gryzmon"
+    },
+    "Growlmon": {
+      "zh": "古拉兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=growmon"
+    },
+    "Gryphonmon": {
+      "zh": "狮鹫兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=griffomon"
+    },
+    "Guardromon": {
+      "zh": "守卫机器人兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=guardromon"
+    },
+    "Guilmon": {
+      "zh": "基尔兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=guilmon"
+    },
+    "Gururumon": {
+      "zh": "古鲁鲁兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=gururumon"
+    },
+    "Hagurumon": {
+      "zh": "齿轮兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=hagurumon"
+    },
+    "Halsemon": {
+      "zh": "荷鲁斯兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=holsmon"
+    },
+    "Hawkmon": {
+      "zh": "麻鹰兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=hawkmon"
+    },
+    "HerculesKabuterimon": {
+      "zh": "力神比多兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=heraklekabuterimon"
+    },
+    "HiAndromon": {
+      "zh": "高等机械人兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=hiandromon"
+    },
+    "Hookmon": {
+      "zh": "铁钩兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=hookmon"
+    },
+    "Hyogamon": {
+      "zh": "冰河兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=hyougamon"
+    },
+    "IceDevimon": {
+      "zh": "冰恶魔兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=icedevimon"
+    },
+    "IceLeomon": {
+      "zh": "白狮兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=panjyamon"
+    },
+    "Icemon": {
+      "zh": "冰石兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=icemon"
+    },
+    "Ikkakumon": {
+      "zh": "海狮兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=ikkakumon"
+    },
+    "Imperialdramon": {
+      "zh": "帝皇龙甲兽：龙形态",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=imperialdramondragonmode"
+    },
+    "Infermon": {
+      "zh": "地狱使者兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=infermon"
+    },
+    "J-Mojyamon": {
+      "zh": "丛林毛人兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=junglemojamon"
+    },
+    "Kabuterimon": {
+      "zh": "比多兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=kabuterimon"
+    },
+    "Kimeramon": {
+      "zh": "奇美拉兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=chimairamon"
+    },
+    "KingEtemon": {
+      "zh": "猿猴大王兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=kingetemon"
+    },
+    "KingSukamon": {
+      "zh": "大便兽大王",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=greatkingscumon"
+    },
+    "Kiwimon": {
+      "zh": "几维鸟兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=kiwimon"
+    },
+    "Knightmon": {
+      "zh": "骑士兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=knightmon"
+    },
+    "Kokatorimon": {
+      "zh": "巨鸡兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=cockatrimon"
+    },
+    "Kokuwamon": {
+      "zh": "小锹形虫兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=kokuwamon"
+    },
+    "Kotemon": {
+      "zh": "剑道兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=kotemon"
+    },
+    "Kurisarimon": {
+      "zh": "虫蛹兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=chrysalimon"
+    },
+    "Kuwagamon": {
+      "zh": "古加兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=kuwagamon"
+    },
+    "Kyubimon": {
+      "zh": "九尾兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=kyubimon"
+    },
+    "Kyukimon": {
+      "zh": "穷奇兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=kyukimon"
+    },
+    "LadyDevimon": {
+      "zh": "女恶魔兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=ladydevimon"
+    },
+    "Lighdramon": {
+      "zh": "闪电龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=lighdramon"
+    },
+    "Lillymon": {
+      "zh": "花仙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=lilimon"
+    },
+    "Lynxmon": {
+      "zh": "猞猁兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=lynxmon"
+    },
+    "MagnaAngemon": {
+      "zh": "神圣天使兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=holyangemon"
+    },
+    "Magnadramon": {
+      "zh": "圣龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=holydramon"
+    },
+    "Magnamon": {
+      "zh": "金甲龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=magnamon"
+    },
+    "Maildramon": {
+      "zh": "铠龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=maildramon"
+    },
+    "MaloMyotismon": {
+      "zh": "贝利亚吸血魔兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=belialvamdemon"
+    },
+    "Mammothmon": {
+      "zh": "猛犸兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=mammon"
+    },
+    "MarineAngemon": {
+      "zh": "海天使兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=marinangemon"
+    },
+    "MarineDevimon": {
+      "zh": "海恶魔兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=marindevimon"
+    },
+    "Marsmon": {
+      "zh": "玛尔斯兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=marsmon"
+    },
+    "MasterTyrannomon": {
+      "zh": "大师巨龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=mastertyranomon"
+    },
+    "MegaGargomon": {
+      "zh": "圣加鲁哥兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=saintgalgomon"
+    },
+    "MegaKabuterimon": {
+      "zh": "超比多兽 (红)",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=atlurkabuterimon"
+    },
+    "MegaSeadramon": {
+      "zh": "百万海龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=megaseadramon"
+    },
+    "MetalEtemon": {
+      "zh": "金属猿猴兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=metaletemon"
+    },
+    "MetalGarurumon": {
+      "zh": "钢铁加鲁鲁兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=metalgarurumon"
+    },
+    "MetalGreymonVaccine": {
+      "zh": "机械暴龙兽 (疫苗种)",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=metalgreymon-v"
+    },
+    "MetalGreymonVirus": {
+      "zh": "机械暴龙兽 (病毒种)",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=metalgreymon-web"
+    },
+    "MetalSeadramon": {
+      "zh": "金属海龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=metalseadramon"
+    },
+    "MetalTyrannomon": {
+      "zh": "金属巨龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=metaltyranomon"
+    },
+    "Meteormon": {
+      "zh": "陨石兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=insekimon"
+    },
+    "Minotarumon": {
+      "zh": "牛人兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=minotaurmon"
+    },
+    "ModokiBetamon": {
+      "zh": "拟贝塔兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=modokibetamon"
+    },
+    "Monmon": {
+      "zh": "小猴兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=koemon"
+    },
+    "Monochromon": {
+      "zh": "角龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=monochromon"
+    },
+    "MoriShellmon": {
+      "zh": "森林贝壳兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=morishellmon"
+    },
+    "Motimon": {
+      "zh": "年糕兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=mochimon"
+    },
+    "Muchomon": {
+      "zh": "五彩兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=muchomon"
+    },
+    "MudFrigimon": {
+      "zh": "泥人兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=tuchidarumon"
+    },
+    "Mummymon": {
+      "zh": "木乃伊兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=mummymon"
+    },
+    "Mushroomon": {
+      "zh": "蘑菇兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=mushmon"
+    },
+    "Musyamon": {
+      "zh": "武士兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=musyamon"
+    },
+    "Myotismon": {
+      "zh": "吸血魔兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=vamdemon"
+    },
+    "Nefertimon": {
+      "zh": "纳芙蒂兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=nefertimon"
+    },
+    "Ninjamon": {
+      "zh": "伊贺兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=igamon"
+    },
+    "NiseDrimogemon": {
+      "zh": "伪钻头鼹鼠兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=nisedrimogemon"
+    },
+    "Nyaromon": {
+      "zh": "喵喵兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=nyaromon"
+    },
+    "Nyokimon": {
+      "zh": "纽奇兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=nyokimon"
+    },
+    "Octomon": {
+      "zh": "章鱼兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=octmon"
+    },
+    "Okuwamon": {
+      "zh": "大古加兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=okuwamon"
+    },
+    "Omnimon": {
+      "zh": "奥米加兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=omegamon"
+    },
+    "Otamamon": {
+      "zh": "蝌蚪兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=otamamon"
+    },
+    "Pabumon": {
+      "zh": "泡泡兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=bubbmon"
+    },
+    "Paildramon": {
+      "zh": "机甲龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=paildramon"
+    },
+    "Pegasusmon": {
+      "zh": "天马兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=pegasmon"
+    },
+    "Phantomon": {
+      "zh": "幻影兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=fantomon"
+    },
+    "Pharaohmon": {
+      "zh": "法老兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=pharaohmon"
+    },
+    "Phoenixmon": {
+      "zh": "凤凰兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=hououmon"
+    },
+    "Pichimon": {
+      "zh": "比基兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=pitchmon"
+    },
+    "Piddomon": {
+      "zh": "炎天使兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=pidmon"
+    },
+    "Piedmon": {
+      "zh": "小丑皇",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=piemon"
+    },
+    "Piximon": {
+      "zh": "妖精兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=picklemon"
+    },
+    "PlatinumSukamon": {
+      "zh": "白金大便兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=platinasukamon"
+    },
+    "Plesiomon": {
+      "zh": "蛇颈龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=plesiomon"
+    },
+    "PrinceMamemon": {
+      "zh": "王子豆豆兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=princemamemon"
+    },
+    "Psychemon": {
+      "zh": "迷幻兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=psychemon"
+    },
+    "Pukumon": {
+      "zh": "河豚兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=pukumon"
+    },
+    "Pumpkinmon": {
+      "zh": "南瓜兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=pumpmon"
+    },
+    "Puppetmon": {
+      "zh": "木偶兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=pinochimon"
+    },
+    "Quetzalmon": {
+      "zh": "羽蛇兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=quetzalmon"
+    },
+    "Raidenmon": {
+      "zh": "雷电兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=raidenmon"
+    },
+    "Raijinmon": {
+      "zh": "雷神兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=raijinmon"
+    },
+    "Raremon": {
+      "zh": "烂泥兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=raremon"
+    },
+    "RedOtamamon": {
+      "zh": "蝌蚪兽 (红)",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=otamamon-red"
+    },
+    "RedVegiemon": {
+      "zh": "红菜兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=redvegimon"
+    },
+    "Renamon": {
+      "zh": "狐狸兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=renamon"
+    },
+    "Roachmon": {
+      "zh": "蟑螂兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=gokimon"
+    },
+    "Rosemon": {
+      "zh": "蔷薇兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=rosemon"
+    },
+    "SaberLeomon": {
+      "zh": "剑狮兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=saberleomon"
+    },
+    "Saberdramon": {
+      "zh": "刃龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=saberdramon"
+    },
+    "Sakuyamon": {
+      "zh": "咲耶兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=sakuyamon"
+    },
+    "Salamon": {
+      "zh": "小狗兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=plotmon"
+    },
+    "SandYanmamon": {
+      "zh": "沙地蜻蜓兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=sandyammamon"
+    },
+    "Scorpiomon": {
+      "zh": "奇虾兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=anomalocarimon"
+    },
+    "Seadramon": {
+      "zh": "海龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=seadramon"
+    },
+    "Seraphimon": {
+      "zh": "炽天使兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=seraphimon"
+    },
+    "Shadramon": {
+      "zh": "阴影龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=shadramon"
+    },
+    "Shakkoumon": {
+      "zh": "土偶兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=shakkoumon"
+    },
+    "Shamamon": {
+      "zh": "萨满兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=shamamon"
+    },
+    "ShellNumemon": {
+      "zh": "贝壳鼻涕兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=karatukinumemon"
+    },
+    "Shellmon": {
+      "zh": "贝壳兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=shellmon"
+    },
+    "ShimaUnimon": {
+      "zh": "独角斑马兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=shimaunimon"
+    },
+    "ShogunGekomon": {
+      "zh": "怪蛙皇",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=tonosamagekomon"
+    },
+    "Shurimon": {
+      "zh": "手里剑兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=shurimon"
+    },
+    "Silphymon": {
+      "zh": "西尔芙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=silphymon"
+    },
+    "SkullMammothmon": {
+      "zh": "骷髅猛犸兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=skullmammon"
+    },
+    "SkullMeramon": {
+      "zh": "死亡燃烧兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=deathmeramon"
+    },
+    "SkullSatamon": {
+      "zh": "骷髅撒旦兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=skullsatamon"
+    },
+    "SlashAngemon": {
+      "zh": "斩天使兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=slashangemon"
+    },
+    "Snimon": {
+      "zh": "狙击兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=snimon"
+    },
+    "SnowAgumon": {
+      "zh": "雪亚古兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=yukiagumon"
+    },
+    "SnowGoblimon": {
+      "zh": "雪哥布林兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=snowgoburimon"
+    },
+    "Solarmon": {
+      "zh": "日轮兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=solarmon"
+    },
+    "Sorcermon": {
+      "zh": "冰巫师兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=sorcerimon"
+    },
+    "Soulmon": {
+      "zh": "鬼魂兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=soulmon"
+    },
+    "Starmon": {
+      "zh": "星星兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=starmon"
+    },
+    "Stingmon": {
+      "zh": "飞虫兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=stingmon"
+    },
+    "Submarimon": {
+      "zh": "潜艇兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=sabmarimon"
+    },
+    "Suijinmon": {
+      "zh": "水神兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=suijinmon"
+    },
+    "SuperStarmon": {
+      "zh": "巨星兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=superstarmon"
+    },
+    "Syakomon": {
+      "zh": "砗磲兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=shakomon"
+    },
+    "Tankmon": {
+      "zh": "坦克兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=tankmon"
+    },
+    "Taomon": {
+      "zh": "道士兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=taomon"
+    },
+    "Tapirmon": {
+      "zh": "梦貘兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=bakumon"
+    },
+    "Tekkamon": {
+      "zh": "铁面兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=tekkamon"
+    },
+    "Tentomon": {
+      "zh": "甲虫兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=tentomon"
+    },
+    "Thundermon": {
+      "zh": "雷电球兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=thunderballmon"
+    },
+    "Togemon": {
+      "zh": "仙人掌兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=togemon"
+    },
+    "Tortomon": {
+      "zh": "陆龟兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=tortamon"
+    },
+    "ToyAgumon": {
+      "zh": "玩具亚古兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=toyagumon"
+    },
+    "Triceramon": {
+      "zh": "三角龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=triceramon"
+    },
+    "Tsukaimon": {
+      "zh": "使魔兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=tukaimon"
+    },
+    "Tuskmon": {
+      "zh": "长牙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=tuskmon"
+    },
+    "Tylomon": {
+      "zh": "海王龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=tylomon"
+    },
+    "Unimon": {
+      "zh": "独角马兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=yunimon"
+    },
+    "Valkyrimon": {
+      "zh": "瓦尔基里兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=valkyrimon"
+    },
+    "Veedramon": {
+      "zh": "V龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=v-dramon"
+    },
+    "Veemon": {
+      "zh": "V仔兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=v-mon"
+    },
+    "Vemmon": {
+      "zh": "贝姆兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=bemmon"
+    },
+    "VenomMyotismon": {
+      "zh": "怨毒吸血魔兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=venomvamdemon"
+    },
+    "Vermilimon": {
+      "zh": "朱红兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=vermillimon"
+    },
+    "Vikemon": {
+      "zh": "维京兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=vikemon"
+    },
+    "Vilemon": {
+      "zh": "灾厄兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=evilmon"
+    },
+    "VioletElecmon": {
+      "zh": "艾力兽 (紫)",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=elecmon-violet"
+    },
+    "WarGreymon": {
+      "zh": "战斗暴龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=wargreymon"
+    },
+    "WarGrowlmon": {
+      "zh": "大古拉兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=megalogrowmon"
+    },
+    "WaruMonzaemon": {
+      "zh": "恶霸熊仔兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=warumonzaemon"
+    },
+    "WaruSeadramon": {
+      "zh": "恶海龙兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=waruseadramon"
+    },
+    "Weedmon": {
+      "zh": "杂草兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=zassoumon"
+    },
+    "WereGarurumon": {
+      "zh": "狼人加鲁鲁兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=weregarrumon"
+    },
+    "Wizardmon": {
+      "zh": "巫师兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=wizarmon"
+    },
+    "Woodmon": {
+      "zh": "枯木兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=woodmon"
+    },
+    "Wormmon": {
+      "zh": "虫虫兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=wormmon"
+    },
+    "Yanmamon": {
+      "zh": "蜻蜓兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=yammamon"
+    },
+    "Yokomon": {
+      "zh": "比高兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=pyocomon"
+    },
+    "YukimiBotamon": {
+      "zh": "雪球兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=yukimibotamon"
+    },
+    "Zanbamon": {
+      "zh": "斩伐兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=zanbamon"
+    },
+    "Zudomon": {
+      "zh": "祖顿兽",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=zudomon"
+    }
+  },
+  "terms": {
+    "Digimon": "数码宝贝",
+    "Digital World": "数码世界",
+    "File Island": "文件岛",
+    "File City": "文件城",
+    "tamer": "驯兽师",
+    "partner": "搭档",
+    "Bits": "比特",
+    "Merit": "功勋",
+    "HP": "HP",
+    "MP": "MP",
+    "Offense": "攻击",
+    "Defense": "防御",
+    "Speed": "速度",
+    "Brains": "智力",
+    "Happiness": "心情",
+    "Discipline": "纪律",
+    "Tiredness": "疲劳",
+    "Care mistakes": "照顾失误",
+    "Digivolution": "进化",
+    "technique": "招式",
+    "finisher": "必杀技",
+    "Meat Farm": "肉田",
+    "Green Gym": "绿色健身房",
+    "Native Forest": "原生森林",
+    "Mt. Infinity": "无限山",
+    "Overripe Melon": "超熟蜜瓜",
+    "Factorial Town": "工厂城",
+    "Tropical Jungle": "热带丛林",
+    "Great Canyon": "大峡谷",
+    "Iceberg Beach": "冰山海滩",
+    "Mt. Panorama": "全景山",
+    "Gear Savanna": "齿轮草原",
+    "Grey Lord’s Mansion": "灰领主宅邸",
+    "Grey Lord's Mansion": "灰领主宅邸",
+    "Ancient Dino Region": "古代恐龙区",
+    "Overdell Cemetery": "奥弗戴尔墓地",
+    "Misty Trees": "迷雾树林",
+    "Geko Swamp": "怪蛙湿地",
+    "Freezeland": "冰封之地",
+    "Beetle Land": "甲虫之地",
+    "Coela Point": "腔棘鱼岬",
+    "Digimon Bridge": "数码桥",
+    "Drill Tunnel": "钻头隧道",
+    "Curling Cave": "冰壶洞窟",
+    "Lava Cave": "熔岩洞窟",
+    "Toy Town": "玩具城"
+  },
+  "provisional": {
+    "Analogman": "模拟人",
+    "Market Manager": "市场管理员",
+    "main character": "主角",
+    "ChaosLord": "混沌领主",
+    "NeoCrimson": "新克里姆森",
+    "Tinmon": "铁皮兽"
+  },
+  "avoid": {
+    "基基兽": "公公兽",
+    "时钟兽爷爷": "公公兽",
+    "豆丁兽": "迪哥兽",
+    "机械邪龙兽": "无限龙兽",
+    "独角兽": "犄角兽"
+  },
+  "provisional_sources": {
+    "Analogman": {
+      "source": null,
+      "note": "provisional authored character name already in project glossary; not a Digimon species"
+    },
+    "ChaosLord": {
+      "source": "https://wikimon.net/Chaos_Lord",
+      "note": "provisional authored translation; source verifies identity only, not Chinese spelling; must not silently substitute Chaosdramon"
+    },
+    "NeoCrimson": {
+      "source": "https://wikimon.net/Neo_Crimson",
+      "note": "provisional authored transliteration; source verifies identity only, not Chinese spelling; native review required"
+    },
+    "Tinmon": {
+      "source": "https://wikimon.net/Burikimon",
+      "note": "provisional authored name from Japanese ブリキモン; no official Simplified Chinese name verified; page inaccessible during this pass"
+    }
+  },
+  "items": {
+    "Small Recovery": {
+      "zh": "小型恢复软盘",
+      "source": "authored"
+    },
+    "Medium Recovery": {
+      "zh": "中型恢复软盘",
+      "source": "authored"
+    },
+    "Large Recovery": {
+      "zh": "大型恢复软盘",
+      "source": "authored"
+    },
+    "Super Recovery": {
+      "zh": "超级恢复软盘",
+      "source": "authored"
+    },
+    "MP Floppy": {
+      "zh": "MP软盘",
+      "source": "authored"
+    },
+    "Medium MP": {
+      "zh": "中型MP软盘",
+      "source": "authored"
+    },
+    "Large MP": {
+      "zh": "大型MP软盘",
+      "source": "authored"
+    },
+    "Double Floppy": {
+      "zh": "双效软盘",
+      "source": "authored"
+    },
+    "Various": {
+      "zh": "多效软盘",
+      "source": "authored"
+    },
+    "Omnipotent Floppy": {
+      "zh": "万能软盘",
+      "source": "authored"
+    },
+    "Protection": {
+      "zh": "防护软盘",
+      "source": "authored"
+    },
+    "Restore Floppy": {
+      "zh": "复苏软盘",
+      "source": "authored"
+    },
+    "Super Restore": {
+      "zh": "超级复苏软盘",
+      "source": "authored"
+    },
+    "Bandage": {
+      "zh": "创可贴",
+      "source": "authored"
+    },
+    "Medicine": {
+      "zh": "药剂",
+      "source": "authored"
+    },
+    "Offense Disk": {
+      "zh": "攻击磁盘",
+      "source": "authored"
+    },
+    "Defense Disk": {
+      "zh": "防御磁盘",
+      "source": "authored"
+    },
+    "Hispeed Disk": {
+      "zh": "高速磁盘",
+      "source": "authored"
+    },
+    "Omnipotent Disk": {
+      "zh": "万能磁盘",
+      "source": "authored"
+    },
+    "S.Offense Disk": {
+      "zh": "超级攻击磁盘",
+      "source": "authored"
+    },
+    "S.Defense Disk": {
+      "zh": "超级防御磁盘",
+      "source": "authored"
+    },
+    "S.Speed Disk": {
+      "zh": "超级速度磁盘",
+      "source": "authored"
+    },
+    "Auto Pilot": {
+      "zh": "自动导航器",
+      "source": "authored"
+    },
+    "Offense Chip": {
+      "zh": "攻击芯片",
+      "source": "authored"
+    },
+    "Defense Chip": {
+      "zh": "防御芯片",
+      "source": "authored"
+    },
+    "Brain Chip": {
+      "zh": "智力芯片",
+      "source": "authored"
+    },
+    "Quick Chip": {
+      "zh": "速度芯片",
+      "source": "authored"
+    },
+    "HP Chip": {
+      "zh": "HP芯片",
+      "source": "authored"
+    },
+    "MP Chip": {
+      "zh": "MP芯片",
+      "source": "authored"
+    },
+    "DV Chip A": {
+      "zh": "DV芯片A",
+      "source": "authored"
+    },
+    "DV Chip D": {
+      "zh": "DV芯片D",
+      "source": "authored"
+    },
+    "DV Chip E": {
+      "zh": "DV芯片E",
+      "source": "authored"
+    },
+    "Portable Potty": {
+      "zh": "便携厕所",
+      "source": "authored"
+    },
+    "Training Manual": {
+      "zh": "训练手册",
+      "source": "authored"
+    },
+    "Rest Pillow": {
+      "zh": "安眠枕",
+      "source": "authored"
+    },
+    "Enemy Repel": {
+      "zh": "驱敌符",
+      "source": "authored"
+    },
+    "Enemy Bell": {
+      "zh": "引敌铃",
+      "source": "authored"
+    },
+    "Health Shoe": {
+      "zh": "健步鞋",
+      "source": "authored"
+    },
+    "Meat": {
+      "zh": "肉",
+      "source": "authored"
+    },
+    "Giant Meat": {
+      "zh": "巨大肉",
+      "source": "authored"
+    },
+    "Sirloin": {
+      "zh": "西冷肉",
+      "source": "authored"
+    },
+    "Supercarrot": {
+      "zh": "超级胡萝卜",
+      "source": "authored"
+    },
+    "Hawk Radish": {
+      "zh": "鹰萝卜",
+      "source": "authored"
+    },
+    "Spiny Green": {
+      "zh": "带刺青菜",
+      "source": "authored"
+    },
+    "Digimushroom": {
+      "zh": "数码蘑菇",
+      "source": "authored"
+    },
+    "Ice Mushroom": {
+      "zh": "冰蘑菇",
+      "source": "authored"
+    },
+    "Deluxe Mushroom": {
+      "zh": "豪华蘑菇",
+      "source": "authored"
+    },
+    "Digipine": {
+      "zh": "数码松果",
+      "source": "authored"
+    },
+    "Blue Apple": {
+      "zh": "蓝苹果",
+      "source": "authored"
+    },
+    "Red Berry": {
+      "zh": "红浆果",
+      "source": "authored"
+    },
+    "Gold Acorn": {
+      "zh": "金橡果",
+      "source": "authored"
+    },
+    "Big Berry": {
+      "zh": "大浆果",
+      "source": "authored"
+    },
+    "Sweet Nut": {
+      "zh": "甜栗子",
+      "source": "authored"
+    },
+    "Super Veggy": {
+      "zh": "超级蔬菜",
+      "source": "authored"
+    },
+    "Prickly Pear": {
+      "zh": "食用仙人掌",
+      "source": "authored"
+    },
+    "Orange Banana": {
+      "zh": "橙色香蕉",
+      "source": "authored"
+    },
+    "Power Fruit": {
+      "zh": "力量果",
+      "source": "authored"
+    },
+    "Power Ice": {
+      "zh": "力量冰",
+      "source": "authored"
+    },
+    "Speed Leaf": {
+      "zh": "疾速叶",
+      "source": "authored"
+    },
+    "Sage Fruit": {
+      "zh": "贤者果",
+      "source": "authored"
+    },
+    "Muscle Yam": {
+      "zh": "强身山药",
+      "source": "authored"
+    },
+    "Calm Berry": {
+      "zh": "安神莓",
+      "source": "authored"
+    },
+    "Digianchovy": {
+      "zh": "数码鳀鱼",
+      "source": "authored"
+    },
+    "Digisnapper": {
+      "zh": "数码鲷鱼",
+      "source": "authored"
+    },
+    "DigiTrout": {
+      "zh": "数码鳟鱼",
+      "source": "authored"
+    },
+    "Black Trout": {
+      "zh": "黑鳟鱼",
+      "source": "authored"
+    },
+    "Digicatfish": {
+      "zh": "数码鲶鱼",
+      "source": "authored"
+    },
+    "Digiseabass": {
+      "zh": "数码鲈鱼",
+      "source": "authored"
+    },
+    "Moldy Meat": {
+      "zh": "发霉肉",
+      "source": "authored"
+    },
+    "Happymushroom": {
+      "zh": "快乐蘑菇",
+      "source": "authored"
+    },
+    "Overripe Melon": {
+      "zh": "超熟蜜瓜",
+      "source": "authored"
+    },
+    "Grey Claws": {
+      "zh": "灰色利爪",
+      "source": "authored"
+    },
+    "Fireball": {
+      "zh": "火球",
+      "source": "authored"
+    },
+    "Flaming Wing": {
+      "zh": "燃烧羽翼",
+      "source": "authored"
+    },
+    "Iron Hoof": {
+      "zh": "铁蹄",
+      "source": "authored"
+    },
+    "Mono Stone": {
+      "zh": "单色石",
+      "source": "authored"
+    },
+    "Steel Drill": {
+      "zh": "钢钻",
+      "source": "authored"
+    },
+    "White Fang": {
+      "zh": "白色獠牙",
+      "source": "authored"
+    },
+    "Black Wing": {
+      "zh": "黑羽",
+      "source": "authored"
+    },
+    "Spike Club": {
+      "zh": "狼牙棒",
+      "source": "authored"
+    },
+    "Flaming Mane": {
+      "zh": "燃烧鬃毛",
+      "source": "authored"
+    },
+    "White Wing": {
+      "zh": "白羽",
+      "source": "authored"
+    },
+    "Torn Tatter": {
+      "zh": "破布",
+      "source": "authored"
+    },
+    "Electro Ring": {
+      "zh": "电能环",
+      "source": "authored"
+    },
+    "Rainbow Horn": {
+      "zh": "彩虹号角",
+      "source": "authored"
+    },
+    "Rooster": {
+      "zh": "公鸡风标",
+      "source": "authored"
+    },
+    "Unihorn": {
+      "zh": "独角",
+      "source": "authored"
+    },
+    "Horn Helmet": {
+      "zh": "角盔",
+      "source": "authored"
+    },
+    "Scissor Jaw": {
+      "zh": "剪刀颚",
+      "source": "authored"
+    },
+    "Fertilizer": {
+      "zh": "肥料",
+      "source": "authored"
+    },
+    "Koga Laws": {
+      "zh": "甲贺秘传书",
+      "source": "authored"
+    },
+    "Water Bottle": {
+      "zh": "水瓶",
+      "source": "authored"
+    },
+    "North Star": {
+      "zh": "北极星",
+      "source": "authored"
+    },
+    "Red Shell": {
+      "zh": "红贝壳",
+      "source": "authored"
+    },
+    "Hard Scale": {
+      "zh": "硬鳞",
+      "source": "authored"
+    },
+    "Blue Crystal": {
+      "zh": "蓝水晶",
+      "source": "authored"
+    },
+    "Ice Crystal": {
+      "zh": "冰水晶",
+      "source": "authored"
+    },
+    "Hair Grower": {
+      "zh": "生发剂",
+      "source": "authored"
+    },
+    "Sunglasses": {
+      "zh": "墨镜",
+      "source": "authored"
+    },
+    "Metal Part": {
+      "zh": "金属零件",
+      "source": "authored"
+    },
+    "Fatal Bone": {
+      "zh": "致命之骨",
+      "source": "authored"
+    },
+    "Cyber Part": {
+      "zh": "电子零件",
+      "source": "authored"
+    },
+    "Mega Hand": {
+      "zh": "百万之手",
+      "source": "authored"
+    },
+    "Silver Ball": {
+      "zh": "银球",
+      "source": "authored"
+    },
+    "Metal Armor": {
+      "zh": "金属铠甲",
+      "source": "authored"
+    },
+    "Chainsaw": {
+      "zh": "链锯",
+      "source": "authored"
+    },
+    "Small Spear": {
+      "zh": "小长矛",
+      "source": "authored"
+    },
+    "Love Bandage": {
+      "zh": "爱心创可贴",
+      "source": "authored"
+    },
+    "Ray Gun": {
+      "zh": "射线枪",
+      "source": "authored"
+    },
+    "Gold Banana": {
+      "zh": "金香蕉",
+      "source": "authored"
+    },
+    "Mystery Egg": {
+      "zh": "神秘蛋",
+      "source": "authored"
+    },
+    "Red Ruby": {
+      "zh": "红宝石",
+      "source": "authored"
+    },
+    "Beetle Pearl": {
+      "zh": "甲虫珍珠",
+      "source": "authored"
+    },
+    "Coral Charm": {
+      "zh": "珊瑚护符",
+      "source": "authored"
+    },
+    "Moon Mirror": {
+      "zh": "月光镜",
+      "source": "authored"
+    },
+    "Blue Flute": {
+      "zh": "蓝笛",
+      "source": "authored"
+    },
+    "Old Rod": {
+      "zh": "旧钓竿",
+      "source": "authored"
+    },
+    "Amazing Rod": {
+      "zh": "神奇钓竿",
+      "source": "authored"
+    },
+    "Leomon Stone": {
+      "zh": "狮子兽石板",
+      "source": "authored"
+    },
+    "Mansion Key": {
+      "zh": "宅邸钥匙",
+      "source": "authored"
+    },
+    "Gear": {
+      "zh": "齿轮",
+      "source": "authored"
+    },
+    "Rain Plant": {
+      "zh": "降雨草",
+      "source": "authored"
+    },
+    "Steak": {
+      "zh": "牛排",
+      "source": "authored"
+    },
+    "Fridge Key": {
+      "zh": "冰箱钥匙",
+      "source": "authored"
+    },
+    "AS Decoder": {
+      "zh": "古文解码器",
+      "source": "authored"
+    },
+    "Giga Hand": {
+      "zh": "千兆之手",
+      "source": "authored"
+    },
+    "Noble Mane": {
+      "zh": "高贵鬃毛",
+      "source": "authored"
+    },
+    "Metal Banana": {
+      "zh": "金属香蕉",
+      "source": "authored"
+    },
+    "Dolph Fin": {
+      "zh": "海豚鳍",
+      "source": "authored"
+    }
+  },
+  "techniques": {
+    "Fire Tower": {
+      "zh": "火焰塔",
+      "source": "authored"
+    },
+    "Prominence Beam": {
+      "zh": "日珥光束",
+      "source": "authored"
+    },
+    "Spit Fire": {
+      "zh": "喷火",
+      "source": "authored"
+    },
+    "Red Inferno": {
+      "zh": "赤红炼狱",
+      "source": "authored"
+    },
+    "Magma Bomb": {
+      "zh": "熔岩炸弹",
+      "source": "authored"
+    },
+    "Heat Laser": {
+      "zh": "热能激光",
+      "source": "authored"
+    },
+    "Infinity Burn": {
+      "zh": "无限燃烧",
+      "source": "authored"
+    },
+    "Meltdown": {
+      "zh": "熔毁",
+      "source": "authored"
+    },
+    "Thunder Justice": {
+      "zh": "雷霆制裁",
+      "source": "authored"
+    },
+    "Spinning Shot": {
+      "zh": "旋转射击",
+      "source": "authored"
+    },
+    "Electric Cloud": {
+      "zh": "电云",
+      "source": "authored"
+    },
+    "Megalo Spark": {
+      "zh": "巨型电光",
+      "source": "authored"
+    },
+    "Static Elect": {
+      "zh": "静电",
+      "source": "authored"
+    },
+    "Wind Cutter": {
+      "zh": "风刃",
+      "source": "authored"
+    },
+    "Confused Storm": {
+      "zh": "混乱风暴",
+      "source": "authored"
+    },
+    "Hurricane": {
+      "zh": "飓风",
+      "source": "authored"
+    },
+    "Giga Freeze": {
+      "zh": "千兆冰封",
+      "source": "authored"
+    },
+    "Ice Statue": {
+      "zh": "冰雕",
+      "source": "authored"
+    },
+    "Winter Blast": {
+      "zh": "寒冬冲击",
+      "source": "authored"
+    },
+    "Ice Needle": {
+      "zh": "冰针",
+      "source": "authored"
+    },
+    "Water Bullet": {
+      "zh": "水弹",
+      "source": "authored"
+    },
+    "Aqua Magic": {
+      "zh": "水之魔法",
+      "source": "authored"
+    },
+    "Aurora Freeze": {
+      "zh": "极光冰封",
+      "source": "authored"
+    },
+    "Tear Drop": {
+      "zh": "泪滴",
+      "source": "authored"
+    },
+    "Power Crane": {
+      "zh": "强力吊臂",
+      "source": "authored"
+    },
+    "All Range Beam": {
+      "zh": "全方位光束",
+      "source": "authored"
+    },
+    "Metal Sprinter": {
+      "zh": "金属疾驰",
+      "source": "authored"
+    },
+    "Pulse Laser": {
+      "zh": "脉冲激光",
+      "source": "authored"
+    },
+    "Delete Program": {
+      "zh": "删除程序",
+      "source": "authored"
+    },
+    "DG Dimension": {
+      "zh": "DG次元",
+      "source": "authored"
+    },
+    "Full Potential": {
+      "zh": "潜力全开",
+      "source": "authored"
+    },
+    "Reverse Program": {
+      "zh": "逆转程序",
+      "source": "authored"
+    },
+    "Poison Powder": {
+      "zh": "毒粉",
+      "source": "authored"
+    },
+    "Bug": {
+      "zh": "程序错误",
+      "source": "authored"
+    },
+    "Mass Morph": {
+      "zh": "形态变换",
+      "source": "authored"
+    },
+    "Insect Plague": {
+      "zh": "虫群瘟疫",
+      "source": "authored"
+    },
+    "Charm Perfume": {
+      "zh": "魅惑香氛",
+      "source": "authored"
+    },
+    "Poison Claw": {
+      "zh": "毒爪",
+      "source": "authored"
+    },
+    "Danger Sting": {
+      "zh": "危险针刺",
+      "source": "authored"
+    },
+    "Green Trap": {
+      "zh": "绿色陷阱",
+      "source": "authored"
+    },
+    "Tremor": {
+      "zh": "震颤",
+      "source": "authored"
+    },
+    "Muscle Charge": {
+      "zh": "肌肉充能",
+      "source": "authored"
+    },
+    "War Cry": {
+      "zh": "战吼",
+      "source": "authored"
+    },
+    "Sonic Jab": {
+      "zh": "音速刺拳",
+      "source": "authored"
+    },
+    "Dynamite Kick": {
+      "zh": "爆炸踢",
+      "source": "authored"
+    },
+    "Counter": {
+      "zh": "反击",
+      "source": "authored"
+    },
+    "Megaton Punch": {
+      "zh": "百万吨重拳",
+      "source": "authored"
+    },
+    "Buster Dive": {
+      "zh": "爆裂俯冲",
+      "source": "authored"
+    },
+    "Odor Spray": {
+      "zh": "恶臭喷射",
+      "source": "authored"
+    },
+    "Fast Poop Toss": {
+      "zh": "高速大便投掷",
+      "source": "authored"
+    },
+    "Big Poop Toss": {
+      "zh": "巨型大便投掷",
+      "source": "authored"
+    },
+    "Big Poop Flurry": {
+      "zh": "巨型大便乱投",
+      "source": "authored"
+    },
+    "Poop Flurry": {
+      "zh": "大便乱投",
+      "source": "authored"
+    },
+    "Fast Poop Flurry": {
+      "zh": "高速大便乱投",
+      "source": "authored"
+    },
+    "Horizontal Kick": {
+      "zh": "横踢",
+      "source": "authored"
+    },
+    "Ultimate Poop Hell": {
+      "zh": "究极大便地狱",
+      "source": "authored"
+    },
+    "Blaze Blast": {
+      "zh": "火焰吐息",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=tyranomon"
+    },
+    "Pepper Breath": {
+      "zh": "小型火焰",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=agumon"
+    },
+    "Lovely Attack": {
+      "zh": "爱心攻击",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=monzaemon"
+    },
+    "Fireball": {
+      "zh": "燃烧拳",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=meramon"
+    },
+    "Death Claw": {
+      "zh": "死亡之爪",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=devimon"
+    },
+    "Mega Flame": {
+      "zh": "超级火焰",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=greymon-first"
+    },
+    "Howling Blaster": {
+      "zh": "妖狐火焰",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=garurumon"
+    },
+    "Party Time": {
+      "zh": "大便",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=nanimon"
+    },
+    "Electric Shock": {
+      "zh": "电击霹雳",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=betamon"
+    },
+    "Abduction Beam": {
+      "zh": "绑架光线",
+      "source": "authored"
+    },
+    "Smiley Bomb": {
+      "zh": "微笑炸弹",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=mamemon"
+    },
+    "Spinning Needle": {
+      "zh": "旋转飞针",
+      "source": "authored"
+    },
+    "Spiral Twister": {
+      "zh": "魔法火焰",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=piyomon"
+    },
+    "Boom Bubble": {
+      "zh": "空气炮",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=patamon"
+    },
+    "Sweet Breath": {
+      "zh": "甜蜜吐息",
+      "source": "authored"
+    },
+    "Bit Bomb": {
+      "zh": "微小炸弹",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=picklemon"
+    },
+    "Deadly Bomb": {
+      "zh": "致命炸弹",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=giromon"
+    },
+    "Drill Spin": {
+      "zh": "钻头旋转",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=drimogemon"
+    },
+    "Electric Thread": {
+      "zh": "电气丝",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=kunemon"
+    },
+    "Energy Bomb": {
+      "zh": "能量炸弹",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=metalmamemon"
+    },
+    "Genocide Attack": {
+      "zh": "灭绝攻击",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=megadramon"
+    },
+    "Giga Destroyer": {
+      "zh": "千兆破坏炮",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=metalgreymon-web"
+    },
+    "Dark Shot": {
+      "zh": "暗黑射击",
+      "source": "authored"
+    },
+    "Pummel Whack": {
+      "zh": "霸王拳",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=orgemon"
+    },
+    "Hand of Fate": {
+      "zh": "天堂之拳",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=angemon"
+    },
+    "Dark Claw": {
+      "zh": "地狱之手",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=bakemon"
+    },
+    "Aerial Attack": {
+      "zh": "神圣飞弹",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=yunimon"
+    },
+    "Bone Boomerang": {
+      "zh": "冻骨回旋镖",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=mojyamon"
+    },
+    "Solar Ray": {
+      "zh": "猎杀加农炮",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=centalmon"
+    },
+    "Hydro Pressure": {
+      "zh": "高压水炮",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=shellmon"
+    },
+    "Ice Blast": {
+      "zh": "冰箭",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=seadramon"
+    },
+    "Iga School Knife Throw": {
+      "zh": "伊贺流手里剑投掷",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=igamon"
+    },
+    "Blasting Spout": {
+      "zh": "爆破喷流",
+      "source": "authored"
+    },
+    "Fist of the Beast King": {
+      "zh": "兽王拳",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=leomon"
+    },
+    "Love Serenade": {
+      "zh": "爱之小夜曲",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=etemon"
+    },
+    "Electro Shocker": {
+      "zh": "百万冲击波",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=kabuterimon"
+    },
+    "Meteor Wing": {
+      "zh": "陨石巨翼",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=birdramon"
+    },
+    "Super Slap": {
+      "zh": "无限耳光",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=penmon"
+    },
+    "Nightmare Syndrome": {
+      "zh": "恶梦症候群",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=digitamamon"
+    },
+    "Frozen Fire Shot": {
+      "zh": "石化之火",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=cockatrimon"
+    },
+    "Poison Ivy": {
+      "zh": "毒藤蔓",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=palmon"
+    },
+    "Blue Blaster": {
+      "zh": "爆炎火焰弹",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=gabumon"
+    },
+    "Scissor Claw": {
+      "zh": "剪刀臂",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=kuwagamon"
+    },
+    "Super Thunder Strike": {
+      "zh": "闪烁雷击",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=elecmon"
+    },
+    "Spiral Sword": {
+      "zh": "螺旋剑",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=andromon"
+    },
+    "Variable Darts": {
+      "zh": "变异飞镖",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=coelamon"
+    },
+    "Volcanic Strike": {
+      "zh": "火山强袭",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=monochromon"
+    },
+    "Subzero Ice Punch": {
+      "zh": "绝对零度拳",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=yukidarumon"
+    },
+    "Infinity Cannon": {
+      "zh": "无限大炮",
+      "source": "https://digimon.net/reference_zh-CHS/detail.php?directory_name=mugendramon"
+    },
+    "Crimson Flare": {
+      "zh": "绯红爆炎",
+      "source": "authored"
+    },
+    "Glacial Blast": {
+      "zh": "冰川冲击",
+      "source": "authored"
+    },
+    "Maelstrom": {
+      "zh": "大漩涡",
+      "source": "authored"
+    },
+    "High Electro Shocker": {
+      "zh": "高压电击",
+      "source": "authored"
+    },
+    "Bubble": {
+      "zh": "泡泡",
+      "source": "authored"
+    }
+  }
+}

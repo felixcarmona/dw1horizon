@@ -7,6 +7,7 @@ contracts, not interchangeable capacities.
 from dataclasses import dataclass
 import pathlib
 import re
+from functools import lru_cache
 
 BINARY_ROW_UNITS = 32
 COMPILER_ROW_UNITS = 31
@@ -35,6 +36,15 @@ def packed_key(key):
     return not (key and UNPACKED_KEYS.match(key))
 
 
+@lru_cache(None)
+def sized_boxes(root):
+    """Explicit script window dimensions by text key, including newspaper/instruction boxes."""
+    pattern = re.compile(r'set_textbox_size\([^,]+,\s*(\d+),\s*(\d+)\);\s*show_textbox\(text\("([^"]+)"\)\)')
+    return {key:(min(240,int(cols)*12+8),int(rows))
+            for path in pathlib.Path(root,'story/base').rglob('*.dws')
+            for cols,rows,key in pattern.findall(path.read_text())}
+
+
 STATEMENT = re.compile(r'\bsay\(([\w()]+)((?:,\s*text\("[^"]+"\))+)\)|\b(?:choice|set_dialog_owner)\(([\w()]+)\)|'
                        r'\bshow_textbox\(text\("([^"]+)"\)\)|\bset_textbox_size\(|^\s*(?:on\s|section\()', re.M)
 
@@ -53,6 +63,14 @@ def named_keys(root):
             if owner not in (None, 'narrator', '255'):
                 keys.update(said)
     return keys
+
+
+def narrator_keys(root):
+    """Direct narrator say() keys wrap to four rows; show_textbox() wraps to three."""
+    return {key for path in (pathlib.Path(root) / 'story/base').rglob('*.dws')
+            for match in STATEMENT.finditer(path.read_text(encoding='utf-8'))
+            if match[1] in ('narrator', '255')
+            for key in re.findall(r'text\("([^"]+)"\)', match[2])}
 
 
 def tall_pages(script):
@@ -77,6 +95,40 @@ def tall_pages(script):
             if len(rows) > NAMED_PAGE_ROWS:
                 tall.append((owner, rows))
     return tall
+
+
+def textbox_overflows(script, script_id=None):
+    """Physical rows exceeding the active box in compiler output.
+
+    Check named, narrator and explicitly sized boxes, including embedded row
+    breaks. Tournament section 10 stores UI arrays using SHOW_TEXTBOX; those
+    entries are data, like selection tables, rather than dialogue pages.
+    """
+    limit = NAMELESS_PAGE_ROWS
+    lines = script.splitlines()
+    sections = {label: int(number) for number, label in
+                re.findall(r'^\.section\s+(\d+)\s+(\w+)', script, re.M)}
+    section = None
+    for i, line in enumerate(lines):
+        words = line.split()
+        if not words:
+            continue
+        if line.strip().removesuffix(':') in sections:
+            section = sections[line.strip().removesuffix(':')]
+        if words[0] == 'SET_DIALOG_OWNER':
+            limit = NAMELESS_PAGE_ROWS if words[1].lower() in ('255', '0xff') else NAMED_PAGE_ROWS
+        elif words[0] == 'SET_TEXTBOX_SIZE':
+            limit = int(line.split(',')[-1], 0)
+        elif words[0] == 'END_SECTION':
+            limit = NAMELESS_PAGE_ROWS
+        elif words[0] == 'SHOW_TEXTBOX' and not (script_id in UNPACKED_SCRIPTS and section == 10):
+            rows = []
+            for row in lines[i + 1:]:
+                if not row.strip().startswith('"'):
+                    break
+                rows.extend(re.split(r'\{br\}', row.strip().strip('"'), flags=re.I))
+            if len(rows) > limit:
+                yield limit, rows
 
 
 def header_row(row):

@@ -11,8 +11,18 @@ the right legs' standing pose mirrored as the left's reference, not from mirrore
 - Run (slot 4, also the battle movement 0x24): a rotary gallop (left hind, right hind, right fore, left fore) with a
   gathered flight, 14 ticks at 50 units per tick, footsteps on the two beats.
 - The condition walk (slot 3) is the field pace pass's: this walk 1.5 times slower at 2/3 of its speed
-  (content/models/imports/pace.json). The idle and every other program stay as imported.
+  (content/models/imports/pace.json).
+- Idle: planted, mirrored paws in the gait's neutral stance; the imported breathing,
+  head, missile blades and tail keep moving above them.
 """
+import copy
+import hashlib
+import math
+
+import animsheet
+import mmd
+import motionstorage
+from motiondiscidentity import changed_programs
 from tools.models.field_animations import quadruped
 
 PROFILE = dict(
@@ -48,4 +58,72 @@ PROFILE = dict(
 
 
 def build(data, skeleton):
-    return quadruped.build(data, skeleton, PROFILE)
+    walked, report = quadruped.build(data, skeleton, PROFILE)
+    old = mmd.MMD.parse(walked, len(skeleton))
+    old.type = PROFILE['species']
+    new = copy.deepcopy(old)
+    rig = quadruped.Rig(old, skeleton, PROFILE)
+    frames, loop, events = animsheet.slot_frames(old, rig.n, 0)
+    poses = copy.deepcopy(frames)
+    history = {}
+    for tick, pose in enumerate(poses):
+        phase = 2 * math.pi * tick / (len(poses)-1)
+        # Slow chest expansion; neck, back plates and tail follow the load.
+        pose[15][7] += round(3 * math.sin(phase))
+        pose[1][3] += round(0.8 * quadruped.DEG * math.sin(phase-.3))
+        pose[2][3] -= round(0.6 * quadruped.DEG * math.sin(phase-.7))
+        pose[22][4] += round(1.8 * quadruped.DEG * math.sin(phase-1))
+        for name, (upper, lower, paw, side, front) in PROFILE['legs'].items():
+            reference = PROFILE['legs'][quadruped.MIRROR.get(name, name)][2]
+            track = side * abs(rig.still[reference][0][3])
+            centre = rig.still[upper][2][3] + PROFILE['reach']['front' if front else 'hind']
+            world = quadruped.rot([0, 0, 0])
+            wrist = quadruped.standing(rig, name, track, centre, world)
+            rotation, short = rig.solve(pose, name, wrist, history)
+            assert short <= 0.5, (name, short)
+            quadruped.set_rot(pose, paw, quadruped.mul(quadruped.tr(rotation), world), history)
+    poses = [[[round(v) for v in b] for b in p] for p in poses]
+    poses[-1] = copy.deepcopy(poses[0])
+    index = old.anims.table[0]
+    new.anims.anims[index] = mmd.encode_anim(poses, rig.n, loop_sample=loop, events=events, tol=1)
+    from tools.models.field_animations.metal_garurumon_stop import author
+    programs, stop_metrics = author(old, rig, poses)
+    for slot, animation in programs.items():
+        assert new.anims.table[slot] is None
+        new.anims.table[slot] = len(new.anims.anims)
+        new.anims.anims.append(animation)
+    result = new.build()
+    actual = mmd.MMD.parse(result, rig.n)
+    changed = [s for s, i in enumerate(old.anims.table) if i == index]
+    assert changed_programs(old, actual) == sorted(changed + list(programs))
+    played = animsheet.slot_frames(actual, rig.n, 0)[0]
+    floor = quadruped._floor(rig, played)
+    assert floor <= quadruped.FLOOR, floor
+    report['idle'] = dict(changed_slots=changed, lowest_point=round(floor, 2), planted_paws=True,
+                          imported_body_motion=True, events_exact=True)
+    report['changed_slots'] = sorted(set(report['changed_slots'] + changed + list(programs)))
+    from tools.models.field_animations.metal_garurumon_stop import STOP_SLOTS
+    stop_checks=[]
+    for slots in STOP_SLOTS.values():
+        for slot in slots:
+            played, stop_loop, _ = animsheet.slot_frames(actual, rig.n, slot)
+            assert stop_loop is None
+            lowest=quadruped._floor(rig,played)
+            assert lowest<=quadruped.FLOOR,(slot,lowest)
+            # After both closing steps, soles remain at their world anchors.
+            drift=0.
+            for name,(_,_,paw,_,front) in PROFILE['legs'].items():
+                points=[]
+                for p in played[9:]:
+                    w=rig.world(p)
+                    point=quadruped.add([w[paw][i][3] for i in range(3)],
+                        quadruped.mv([r[:3] for r in w[paw][:3]],PROFILE['sole'][front]))
+                    point[2]+=p[0][8];points.append(point)
+                drift=max(drift,max(quadruped.norm(quadruped.sub(p,points[0])) for p in points))
+            assert drift<5,(slot,drift)
+            stop_checks.append(dict(slot=slot,floor_60fps=lowest,settled_sole_drift=drift))
+    report['stop_checks']=stop_checks
+    report['stops'] = stop_metrics
+    report['storage'] = motionstorage.require(result, rig.n)
+    report['output_sha256'] = hashlib.sha256(result).hexdigest()
+    return result, report

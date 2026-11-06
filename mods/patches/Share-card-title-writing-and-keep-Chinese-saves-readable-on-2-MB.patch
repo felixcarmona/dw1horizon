@@ -1,0 +1,204 @@
+From ee94c35f30d6a44f5cd759848decee6a161d5aa6 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 4 Nov 2026 23:11:43 +0000
+Subject: [PATCH] Share card-title writing and keep Chinese saves readable on 2
+ MB
+
+---
+ config/us/overlay.ld |  8 ++---
+ include/dw/chinese.h |  2 ++
+ src/main/chinese.c   | 16 ++++++++++
+ src/main/main_menu.c | 75 +++++++++++++++-----------------------------
+ 4 files changed, 48 insertions(+), 53 deletions(-)
+
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index 5371e78..fb0014c 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -830,7 +830,7 @@ SECTIONS
+ 				.text.modDrawSlotName
+ 				.text.modOptionValue
+ 				.text.modRegisterLong
+-				.text.modTitleNameTail
++				.text.modTitleNameTail .text.modTitleNames
+ 				.text.modTitleOptions
+ 				.text.modTitlePlayerName
+ 				.text.pickSaveCopy
+@@ -880,13 +880,13 @@ SECTIONS
+ 			/* MOD (heap): read-only data of the card menus that only this overlay reaches (tools/xref.py classes): their
+ 			 * messages, labels and the save icon. Nothing that is ever written goes here: a reload would undo it */
+ 			BUILD_DIR/src/main/main_menu.c.o(
+-				.data.PLAIN_LETTERS .data.SAVE_ICON_FRAME_1 .data.MENU_VIEWS
+-				.data.MEMORY_CARD_ERROR_MESSAGES
++				.data.PLAIN_LETTERS .data.SAVE_ICON_FRAME_1 .data.SAVE_ICON_FRAME_0 .data.MENU_VIEWS
++				.data.MEMORY_CARD_ERROR_MESSAGES .data.SAVE_ICON_CLUT .data.MAIN_D_801315A0
+ 				.data.MAIN_D_80131390 .data.MAIN_D_8013134C .data.MAIN_D_801311D4 .data.MAIN_D_80131580
+ 				.data.MAIN_D_80131500 .data.MAIN_D_801313E4 .data.MAIN_D_80131264 .data.MAIN_D_80131200
+ 				.data.MAIN_D_801311EC .data.MAIN_D_801315C0 .data.MAIN_D_8013154C .data.MAIN_D_801314B0
+ 				.data.MAIN_D_8013147C .data.MAIN_D_80131460 .data.MAIN_D_80131290 .data.MAIN_D_80131218
+-				.data.MAIN_D_801315EC .data.MAIN_D_801315D0 .data.MAIN_D_80131538
++				.data.SAVE_TITLE_RESERVED .data.MAIN_D_801315EC .data.MAIN_D_801315D0 .data.MAIN_D_80131538
+ 				.data.MAIN_D_801314C8 .data.MAIN_D_8013141C .data.MAIN_D_80131400 .data.MAIN_D_801313B0
+ 				.data.MAIN_D_801312FC .data.MAIN_D_80131568 .data.MAIN_D_8013151C .data.MAIN_D_801313D0
+ 				.data.MAIN_D_80131278 .data.MAIN_D_8013119C .data.MAIN_D_80131150 .data.MAIN_D_801314E4
+diff --git a/include/dw/chinese.h b/include/dw/chinese.h
+index d094873..89a76d2 100644
+--- a/include/dw/chinese.h
++++ b/include/dw/chinese.h
+@@ -17,6 +17,8 @@ int32_t zhPreviousFont(void);
+ int32_t zhLookupFile(FileLookup *lookup, char *name);
+ int32_t zhDrawGlyph(uint16_t codepoint, uint16_t x, uint16_t y);
+ int32_t zhGlyphWidth(uint16_t codepoint);
++char *zhLatinName(int32_t type);
++char *zhCardName(char *name);
+ void zhVsReset(void);
+ void zhRegisterName(char *name, int32_t type);
+ #endif
+diff --git a/src/main/chinese.c b/src/main/chinese.c
+index 21d5e1a..e9e2f2b 100644
+--- a/src/main/chinese.c
++++ b/src/main/chinese.c
+@@ -267,3 +267,19 @@ POLY_FT4 *zhVsText(POLY_FT4 *prim, char *text, int32_t x, int32_t y, int32_t col
+     }
+     return prim;
+ }
++
++/* Card titles remain readable with the console's built-in font and on 2 MB.
++ * The Chinese slot list resolves that stable Latin label back to its species. */
++char *zhLatinName(int32_t type)
++{
++    return (uint32_t)type < NUM_DIGIMON ? ZH_EN_NAMES + type * 20 : "?";
++}
++
++char *zhCardName(char *name)
++{
++    int32_t i;
++    for (i = 1; i < NUM_DIGIMON; i++)
++        if (ZH_EN_NAMES[i * 20] && !strcmp(name, ZH_EN_NAMES + i * 20))
++            return (char *)ZH_NAMES + i * 20;
++    return name;
++}
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 3e11372..68c1c56 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -2440,6 +2440,7 @@ static void modDrawSlot2(char *str, int32_t x, int32_t y, int32_t slot2)
+ 
+ static void modDrawSlotName(char *name, int32_t y)
+ {
++    if (MOD_LANG == MOD_LANG_ZH) name = zhCardName(name);
+ 	if (MOD_SAVE_SLOTS_LONG) {
+ 		drawStringMode(name, SLOT_NAME_X, y, fitStringMode(name, SLOT_LONG_NAME_W));
+ 	} else {
+@@ -2533,7 +2534,7 @@ static void modTitleNameTail(void)
+ {
+ 	char *name;
+ 
+-	name = DIGIMON_NAME(SAVE_FILE.saves[0].partnerType);
++	name = MOD_LANG == MOD_LANG_ZH ? zhLatinName(SAVE_FILE.saves[0].partnerType) : DIGIMON_NAME(SAVE_FILE.saves[0].partnerType);
+ 	if (strlen(name) > 0x11) {
+ 		SAVE_FILE.reserved[0] = 'L';
+ 		SAVE_FILE.reserved[1] = 'N';
+@@ -2581,6 +2582,27 @@ static void modTitlePlayerName(void)
+ 	}
+ }
+ 
++/* Shared by the initial, sleep and save-machine card headers. */
++static void modTitleNames(void)
++{
++	asciiToShiftJIS((uint8_t *)MAIN_D_8013392C,
++	(uint16_t *)SAVE_FILE.title);
++	_strncpy(SAVE_FILE.title + 8,
++	SAVEGAME_ID_LABEL[MEMORY_CARD_SLOT + 1], 4);
++	/* MOD: _strncpy does not terminate: clear old name bytes (original showed "Bayer" for "B" after "Player") */
++	memset(SAVE_FILE.title + 0xe, 0, 0xe);
++	_strncpy(SAVE_FILE.title + 0xe,
++	SAVE_FILE.saves[0].playerName, 0xD);
++	memset(SAVE_FILE.title + 0x1c, 0, 0x12);
++	_strncpy(SAVE_FILE.title + 0x1c,
++	MOD_LANG == MOD_LANG_ZH ? zhLatinName(SAVE_FILE.saves[0].partnerType) : DIGIMON_NAME(SAVE_FILE.saves[0].partnerType),
++	0x11);
++	memcpy(SAVE_FILE.reserved, SAVE_TITLE_RESERVED, 0x1C);
++	modTitleNameTail(); /* MOD (long names) */
++	modTitlePlayerName(); /* MOD (language) */
++	modTitleOptions(); /* MOD (options) */
++}
++
+ void drawRegisteredDigimonSlots(int32_t slot)
+ {
+ 	RECT area;
+@@ -2983,22 +3005,7 @@ void tickMainMenu(void)
+ 		_strncpy(SAVE_FILE.title + 0x2e,
+ 			 MAP_NAME_PTR[MAP_ENTRIES[SAVE_FILE.saves[0].currentScreen].loadingName], 0x12);
+ #else
+-		asciiToShiftJIS((uint8_t *)MAIN_D_8013392C,
+-				(uint16_t *)SAVE_FILE.title);
+-		_strncpy(SAVE_FILE.title + 8,
+-			 SAVEGAME_ID_LABEL[MEMORY_CARD_SLOT + 1], 4);
+-		/* MOD: _strncpy does not terminate: clear old name bytes (original showed "Bayer" for "B" after "Player") */
+-		memset(SAVE_FILE.title + 0xe, 0, 0xe);
+-		_strncpy(SAVE_FILE.title + 0xe,
+-			 SAVE_FILE.saves[0].playerName, 0xD);
+-		memset(SAVE_FILE.title + 0x1c, 0, 0x12);
+-		_strncpy(SAVE_FILE.title + 0x1c,
+-			 DIGIMON_NAME(SAVE_FILE.saves[0].partnerType),
+-			 0x11);
+-		memcpy(SAVE_FILE.reserved, SAVE_TITLE_RESERVED, 0x1C);
+-		modTitleNameTail(); /* MOD (long names) */
+-		modTitlePlayerName(); /* MOD (language) */
+-		modTitleOptions(); /* MOD (options) */
++		modTitleNames();
+ #endif
+ 		prepareSaveFile(MOD_CHEATS_CARD_MODE == 1); /* MOD (save v2): checksums, extension, mirror */
+ 		status = writeSaveFile();
+@@ -3354,22 +3361,7 @@ void tickMainMenu(void)
+ 			_strncpy(SAVE_FILE.title + 0x2e,
+ 				 MAP_NAME_PTR[MAP_ENTRIES[SAVE_FILE.saves[0].currentScreen].loadingName], 0x12);
+ #else
+-			asciiToShiftJIS((uint8_t *)MAIN_D_8013392C,
+-				(uint16_t *)SAVE_FILE.title);
+-			_strncpy(SAVE_FILE.title + 8,
+-				 SAVEGAME_ID_LABEL[MEMORY_CARD_SLOT + 1], 4);
+-			/* MOD: _strncpy does not terminate: clear old name bytes (original showed "Bayer" for "B" after "Player") */
+-			memset(SAVE_FILE.title + 0xe, 0, 0xe);
+-			_strncpy(SAVE_FILE.title + 0xe,
+-				 SAVE_FILE.saves[0].playerName, 0xD);
+-			memset(SAVE_FILE.title + 0x1c, 0, 0x12);
+-			_strncpy(SAVE_FILE.title + 0x1c,
+-				 DIGIMON_NAME(SAVE_FILE.saves[0].partnerType),
+-				 0x11);
+-			memcpy(SAVE_FILE.reserved, SAVE_TITLE_RESERVED, 0x1C);
+-			modTitleNameTail(); /* MOD (long names) */
+-			modTitlePlayerName(); /* MOD (language) */
+-			modTitleOptions(); /* MOD (options) */
++		modTitleNames();
+ #endif
+ 			prepareSaveFile(1); /* MOD (save v2): checksums, extension, mirror */
+ 			status = writeSaveFile();
+@@ -3703,22 +3695,7 @@ void tickMainMenu(void)
+ 			_strncpy(SAVE_FILE.title + 0x2e,
+ 				 MAP_NAME_PTR[MAP_ENTRIES[SAVE_FILE.saves[0].currentScreen].loadingName], 0x12);
+ #else
+-			asciiToShiftJIS((uint8_t *)MAIN_D_8013392C,
+-				(uint16_t *)SAVE_FILE.title);
+-			_strncpy(SAVE_FILE.title + 8,
+-				 SAVEGAME_ID_LABEL[MEMORY_CARD_SLOT + 1], 4);
+-			/* MOD: _strncpy does not terminate: clear old name bytes (original showed "Bayer" for "B" after "Player") */
+-			memset(SAVE_FILE.title + 0xe, 0, 0xe);
+-			_strncpy(SAVE_FILE.title + 0xe,
+-				 SAVE_FILE.saves[0].playerName, 0xD);
+-			memset(SAVE_FILE.title + 0x1c, 0, 0x12);
+-			_strncpy(SAVE_FILE.title + 0x1c,
+-				 DIGIMON_NAME(SAVE_FILE.saves[0].partnerType),
+-				 0x11);
+-			memcpy(SAVE_FILE.reserved, SAVE_TITLE_RESERVED, 0x1C);
+-			modTitleNameTail(); /* MOD (long names) */
+-			modTitlePlayerName(); /* MOD (language) */
+-			modTitleOptions(); /* MOD (options) */
++		modTitleNames();
+ #endif
+ 			prepareSaveFile(1); /* MOD (save v2): checksums, extension, mirror */
+ 			status = writeSaveFile();
+-- 
+2.55.0
+

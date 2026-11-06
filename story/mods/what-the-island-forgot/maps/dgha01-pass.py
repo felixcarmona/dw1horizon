@@ -5,21 +5,22 @@ the boulder and the lower rock, the way up into the Overdell Pass (its last scre
 The notch is our own picture (art/dgha01-pass.png, with transparency; made with Nano Banana on a 5x enlargement of the
 cliff's foot and cut out of its answer: only the sand pocket and the gap behind it, feathered). It is laid over the
 player's own DGHA01 background at build time; nothing of the game's background is in this folder. Exit 3 of the map
-(unused by the game) leads to the pass; the tiles of the pocket and the sand against it trigger it; the arrival from
-the pass is on the sand, two tiles out, facing the clearing. Exit 2's tiles (the way to the Great Canyon Entrance)
+(unused by the game) leads to the pass; only the open mouth triggers it; the wider sandy approach skirts the framing rocks. The arrival from
+the pass is on the clearing, facing away from the mouth. Exit 2's tiles (the way to the Great Canyon Entrance)
 become step trigger 0: the story (arcs/canyon/stone-bridge.py) leads to screen 36, or to 367 (the stone bridge) once
 the Motor is broken (R1).
 
     python3 dgha01-pass.py OUT_DIR        writes OUT_DIR/DGHA01.MAP and DGHA01.TFS (they replace the disc's)
 """
 import os, sys
-from mapbase import extracted, Cam, dwmap, MOD, check_arrivals, bg
+from mapbase import extracted, Cam, dwmap, MOD, check_arrivals, bg, inside
 from maps import reach
 
 PASS_PNG = os.path.join(MOD, 'art', 'dgha01-pass.png')
 PASS_AT = (0, 240)                                      # top-left of the picture on the 640x768 background
-EXIT_BOX = (40, 330, 104, 395)                          # pixels: the sand pocket of the notch and the first free column of sand beside it
-SPAWN_PX = (150, 362)                                   # the arrival from the pass, on the sand, two tiles out
+EXIT_BOX = (35, 332, 60, 355)                          # pixels: the dark open mouth
+APPROACH = [(34, 325), (70, 325), (85, 350), (110, 360), (110, 397), (85, 390), (65, 375), (34, 360)]
+SPAWN_PX = (150, 390)                                   # the arrival from the pass, on the open sand
 ROTATION = 1024                                         # facing +X: into the clearing
 WARP = 3
 TARGET = (335, 1)                                       # the last descent's bottom edge
@@ -35,6 +36,10 @@ def main(out):
     col = list(m.collision); exit_tiles = []; spawn = None; best = None
     for tx, tz, u, v in cam.tiles():
         if u is None: continue
+        # Only sandy floor is opened; the rocks framing the passage remain solid.
+        if inside(APPROACH, u, v): col[tz * 100 + tx] = 0
+        if 32 <= u <= 110 and 312 <= v <= 404 and not inside(APPROACH, u, v):
+            col[tz * 100 + tx] = 128
         if EXIT_BOX[0] <= u <= EXIT_BOX[2] and EXIT_BOX[1] <= v <= EXIT_BOX[3]:
             col[tz * 100 + tx] = 110 + WARP; exit_tiles.append((tx, tz))
         d = (u - SPAWN_PX[0]) ** 2 + (v - SPAWN_PX[1]) ** 2

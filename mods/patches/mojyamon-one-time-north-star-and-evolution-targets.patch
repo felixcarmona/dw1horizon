@@ -1,0 +1,96 @@
+From 345c77c228a65509444347cd00773830a98f1239 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 5 Nov 2026 14:25:06 +0000
+Subject: [PATCH] Keep North Star once per save and read evolution targets
+ directly
+
+Use the permanent ninth-row completion flag for the North Star exchange and a separate permanent-limit message. Retain daily caps for the other eight rows. Read the owned evolution target table for USA refusal checks and reject unavailable imported targets without consuming the item.
+---
+ src/main/item.c         |  1 +
+ src/main/partner_impl.c | 17 +++++------------
+ src/shop/script_menu.c  | 10 ++++++----
+ 3 files changed, 12 insertions(+), 16 deletions(-)
+
+diff --git a/src/main/item.c b/src/main/item.c
+index 03ec959..21f83a1 100644
+--- a/src/main/item.c
++++ b/src/main/item.c
+@@ -2210,6 +2210,7 @@ void handleEvoItems(int16_t item)
+ 		}
+ 		EVOLUTION_TARGET = modItem->target;
+ 	} else {
++		if (!modSpeciesAllowed(EVOLUTION_ITEM_TARGET[item - 0x47])) return;
+ 		level = modOriginalLevel(EVOLUTION_ITEM_TARGET[item - 0x47]) - 1; /* MOD (canon levels): the original game's level */
+ 		if (level != DIGI_PARA(ENTITY_TABLE[1]->type).level) {
+ 			return;
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index 51726c9..1394030 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -1625,11 +1625,8 @@ void tickTirednessMechanics(void)
+ 	}
+ }
+ 
+-#if !VERSION_IS(US)
++/* Read the owned target table on every build, including imported targets. */
+ #define ITEM_EVOLUTION_TARGET(item) EVOLUTION_ITEM_TARGET[(item) - 0x47]
+-#else
+-#define ITEM_EVOLUTION_TARGET(item) (&ITEM_CLUT_DATA[0x39])[item]
+-#endif
+ 
+ int32_t partnerWillRefuseItem(void)
+ {
+@@ -1663,14 +1660,10 @@ int32_t partnerWillRefuseItem(void)
+ 			    DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level !=
+ 			    (DIGI_PARA(modItem->target).level == LEVEL_MEGA ? LEVEL_ULTIMATE : modItem->level))
+ 				return 1;
+-		} else if ((DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level ==
+-			    modOriginalLevel(ITEM_EVOLUTION_TARGET(item))) ||
+-			   (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level + 2 ==
+-			    modOriginalLevel(ITEM_EVOLUTION_TARGET(item))) ||
+-			   (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level - 1 ==
+-			    modOriginalLevel(ITEM_EVOLUTION_TARGET(item)))) {
+-			/* MOD (canon levels): the original items keep the original game's levels (Red Ruby and Beetlepearl on a
+-			 * Champion, as the disc's routes to Phoenixmon and HerculesKabuterimon) */
++		} else if (!modSpeciesAllowed(ITEM_EVOLUTION_TARGET(item)) ||
++			   DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level + 1 !=
++			   modOriginalLevel(ITEM_EVOLUTION_TARGET(item))) {
++			/* Match handleEvoItems: only the predecessor stage may consume an item. */
+ 			return 1;
+ 		}
+ 	}
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index 67d5df9..cb2bce9 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -1147,13 +1147,15 @@ void openMojyamonShop(void)
+ 		   holds (a full inventory works when the whole stack given goes, case 5) */
+ 		int32_t row;
+ 		int32_t room;
++		int32_t trade;
+ 
+ 		row = (ITEM_MENU_LEFT->topRow + ITEM_MENU_LEFT->cursor) * 2;
+-		/* Each row has its own saved daily bit, independent of recruitment history. */
+-		if (isTriggerSet(MOJYA_DAILY_FIRST + ITEM_MENU_TYPE + row / 2)) {
++		/* North Star is once per save; the other rows reset each day. */
++		trade = ITEM_MENU_TYPE + row / 2;
++		if (isTriggerSet(trade == 8 ? 13 : MOJYA_DAILY_FIRST + trade)) {
+ 			setInputRepeatMask(0);
+ 			triggerBoxCloseFlag(1);
+-			showMapHeadTextbox(12, owner, 0, 0x4d6);
++			showMapHeadTextbox(trade == 8 ? 10 : 12, owner, 0, 0x4d6);
+ 			SCRIPT_STATE_2 = 1;
+ 			SCRIPT_NEXT_STATE_2 = 2;
+ 			SCRIPT_TEXTBOX_MODE = 1;
+@@ -1203,7 +1205,7 @@ void openMojyamonShop(void)
+ 	case 6:
+ 		setInputRepeatMask(0);
+ 		triggerBoxCloseFlag(1);
+-		showMapHeadTextbox(10, owner, 0, 0x4d6);
++		showMapHeadTextbox(13, owner, 0, 0x4d6);
+ 		SCRIPT_STATE_2 = 1;
+ 		SCRIPT_NEXT_STATE_2 = 2;
+ 		SCRIPT_TEXTBOX_MODE = 1;
+-- 
+2.55.0
+

@@ -8,7 +8,8 @@
   "attribute": "vaccine",
   "specialties": ["ice", "nature", null],
   "techniques": ["Poison Claw", "Charm Perfume", "Giga Freeze", "Ice Needle", "Water Blit", "Winter Blast",
-                 "Aqua Magic", "Mail Strome"],
+                 "Aqua Magic", "Mail Strome", "Ice Statue", "Aurora Freeze", "Green Trap",
+                 "Poison Powder"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 57,
   "model": {
@@ -17,7 +18,8 @@
     "file": "build/record-originals/123.MMD",
     "radius": 107,
     "height": 320,
-    "skeleton": [[-1, -1], [0, 0], [1, 1], [2, 1], [3, 1], [4, 1]]
+    "skeleton": [[-1, -1], [0, 0], [1, 1], [2, 1], [3, 1], [4, 1]],
+    "slot_aliases": [[54, 48], [55, 51], [56, 47], [57, 47]]
   },
   "texture": {"file": "build/record-originals/123.TIM", "entry": 0},
   "voice": 51,

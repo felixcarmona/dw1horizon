@@ -68,10 +68,15 @@ else
 fi
 run species-off       $PY -W ignore tools/test_species_off.py              # JSON-only level, stats and path overrides
 run fi-info-clock     $PY tools/test_fi_info.py
+run systemw-label-tests $PY -m unittest tools.test_systemw
 disc evolution-tree   $PY tools/test_evo_tree.py --practical
 disc evolution-tree-guard $PY -W ignore::ResourceWarning tools/test_evo_tree_guard.py
 run starter-quiz      $PY tools/starter_quiz.py
 run starter-quiz-tests $PY tools/test_starter_quiz.py
+run language-picker-tests $PY -m unittest tools.test_language_picker
+run localization-audit $PY -m tools.localize.check --json "$OUT/localization-audit.json"
+run localization-tests $PY -W ignore::ResourceWarning -m unittest tools.test_localize_check
+run chinese-authoring-tests $PY -m unittest tools.test_chinese
 run world-gates $PY tools/world_audit.py
 run world-gates-tests $PY -W ignore tools/test_world_audit.py
 run city-residents $PY -W ignore::ResourceWarning -m unittest tools.test_city_residents tools.test_city_recruitment
@@ -158,6 +163,8 @@ run image-dependencies $PY -m unittest tools.test_no_pillow
 run numeric-replay    $PY -m unittest tools.test_arraymath tools.test_dcbplayer tools.test_texel
 run patcher-python-only $PY -m unittest tools.test_no_numpy
 run partner-species   $PY -W ignore -m unittest tools.test_partner_species
+run chinese-completeness $PY -m tools.chinese audit --layout
+run chinese-runtime-assets $PY -m unittest tools.test_chinese
 run dws-resource-tests $PY -W ignore -m unittest tools.test_dws_variants tools.test_dws_resources tools.test_dws_text_profiles tools.test_dws_bytecode tools.test_dws_text_sources tools.test_dws_story_testing tools.test_dws_spawns tools.test_dws_battle_moves
 run partner-models $PY -W ignore -m unittest tools.test_partner_model_generators
 run model-meshes $PY -W ignore tools/test_meshcheck.py                    # no see-through model (Cherrymon's closed back)

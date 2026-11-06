@@ -82,19 +82,6 @@ script 128 {
         if ((mojyamon_traded.set2_row1 ~> mojyamon_traded.set2_row2) && mojyamon_traded.set2_row3) {
             animate(mojyamon0, 31);
         }
-        unless (mojyamon_traded.set1_row1 && mojyamon_traded.set1_row2 && mojyamon_traded.set1_row3) return;
-        unless (mojyamon_traded.set2_row1 && mojyamon_traded.set2_row2 && mojyamon_traded.set2_row3) return;
-        unless (mojyamon_traded.set3_row1 && mojyamon_traded.set3_row2 && mojyamon_traded.set3_row3) return;
-        unless (!is_recruited(species("Mojyamon"))) return;
-        say(mojyamon0, text("s128.sec5.u5"));
-        walk_away(mojyamon0, 1931, -1543, looks: 6, pause: 10);
-        remove(mojyamon0);
-        glances = 0;
-        sound(8, 11);
-        say(narrator, text("s128.sec5.u6"));
-        recruit(species("Mojyamon"));
-        mojyamon_left.set2 = true;
-        engine.prosperity += 2;
     }
 
     on talk(mojyamon1) replace {    // section 6

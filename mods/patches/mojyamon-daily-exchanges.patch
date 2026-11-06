@@ -1,0 +1,84 @@
+From 76005c988ffbb8d1de6ad3069899d4e1f229d8d5 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 5 Nov 2026 12:31:12 +0000
+Subject: [PATCH] Limit each Mojyamon exchange to one per game day
+
+Save successful exchanges in flags 789-797 and clear them in the existing
+daily reset. Retain the original completion flags for recruitment. Reject
+used rows before the amount selector, cap it at one, and use the obsolete
+Yes/No text slot for the localized refusal.
+
+---
+ include/dw/script.h      |  3 +++
+ src/main/script_common.c |  3 +++
+ src/shop/script_menu.c   | 12 ++++++++++++
+ 3 files changed, 18 insertions(+)
+
+diff --git a/include/dw/script.h b/include/dw/script.h
+index d3ff8b9..974b762 100644
+--- a/include/dw/script.h
++++ b/include/dw/script.h
+@@ -337,6 +337,9 @@ void returnFromScriptFile(void);
+ void getEntityScreenPos(Entity *entity, int32_t flag, DVECTOR *outPos);
+ void readFileSection(char *filename, void *dest, uint32_t offset,
+ 		     uint32_t size);
++/* Saved engine flags, excluded from the story allocation pool. */
++#define MOJYA_DAILY_FIRST 789
++#define MOJYA_DAILY_COUNT 9
+ void dailyPStatTrigger(void);
+ void showMapheadSelection(int32_t idx, uint8_t owner, uint16_t x, int32_t *outSel, uint16_t section);
+ int32_t setCardAmount(int32_t cardId, int32_t value);
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index 361a73e..214e772 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -1446,6 +1446,9 @@ void dailyPStatTrigger(void)
+ 	st = SCRIPT_STATE_PTR;
+ 	modForgetGroundPicked(); /* MOD (ground items a day) */
+ 	/* Vending stock shares the original saved trigger array, with no new resident state. */
++	for (i = 0; i < MOJYA_DAILY_COUNT; i++) {
++		unsetTrigger(MOJYA_DAILY_FIRST + i);
++	}
+ 	unsetTrigger(798); /* Happy mushroom */
+ 	unsetTrigger(799); /* Ice mushroom */
+ 	for (i = 0; i < 6; i++) {
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index f6972fa..67d5df9 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -1149,6 +1149,16 @@ void openMojyamonShop(void)
+ 		int32_t room;
+ 
+ 		row = (ITEM_MENU_LEFT->topRow + ITEM_MENU_LEFT->cursor) * 2;
++		/* Each row has its own saved daily bit, independent of recruitment history. */
++		if (isTriggerSet(MOJYA_DAILY_FIRST + ITEM_MENU_TYPE + row / 2)) {
++			setInputRepeatMask(0);
++			triggerBoxCloseFlag(1);
++			showMapHeadTextbox(12, owner, 0, 0x4d6);
++			SCRIPT_STATE_2 = 1;
++			SCRIPT_NEXT_STATE_2 = 2;
++			SCRIPT_TEXTBOX_MODE = 1;
++			break;
++		}
+ 		SHOP_ITEM_TYPE = readPStat(PSTAT_249);
+ 		MOJYA_GOT = ITEM_MENU_RIGHT->buf[row];
+ 		room = econCap(MOD_ECON_STACK_CAP, 255) - getItemCount(MOJYA_GOT);
+@@ -1164,6 +1174,7 @@ void openMojyamonShop(void)
+ 			SCRIPT_TEXTBOX_MODE = 1;
+ 			break;
+ 		}
++		MAX_SHOP_AMOUNT = 1; /* One exchange per row per day. */
+ 		openAmountBox(1);
+ 		SCRIPT_STATE_2 = 1;
+ 		SCRIPT_TEXTBOX_MODE = 3;
+@@ -1907,6 +1918,7 @@ void setMojyaItemTradedTrigger(void)
+ 	int32_t trigger;
+ 
+ 	trigger = ITEM_MENU_TYPE + (ITEM_MENU_LEFT->topRow + ITEM_MENU_LEFT->cursor) + 5;
++	setTrigger(MOJYA_DAILY_FIRST + trigger - 5);
+ 	setTrigger(trigger);
+ 	for (trigger = 5; trigger < 0xe; trigger++) {
+ 		if (isTriggerSet(trigger) == 0) {
+-- 
+2.55.0
+

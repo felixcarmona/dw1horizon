@@ -295,14 +295,11 @@
   "Lo sé",
   "Déjalo"
  ],
- "m1238.u8": "Ando juntando una cosa. Si tienes alguna, te la cambio con mucho gusto.",
+ "m1238.u8": "Ofertas: una al día. Aleta Dolph: una por aventura.",
  "m1238.u9": "¿Qué me vas a dar?",
- "m1238.u10": "Cambio cuando quieras, ¡así que tráeme más!",
+ "m1238.u10": "La oferta de Aleta Dolph es una por aventura.",
  "m1238.u11": "¿De verdad me das {item 249}?",
- "m1238.u12": [
-  "Claro",
-  "No, me lo quedo"
- ],
+ "m1238.u12": "Ya hice ese trueque hoy. ¡Vuelve mañana!",
  "m1238.u13": "¡Muchísimas gracias!",
  "m1238.u14": "Llevas demasiados objetos.",
  "m1238.u15": [

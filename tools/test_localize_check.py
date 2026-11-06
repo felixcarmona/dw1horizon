@@ -54,7 +54,7 @@ class LocalizationAudit(unittest.TestCase):
 
     def test_named_keys_follow_the_owner_of_an_event(self):
         import pathlib, tempfile
-        from tools.dws.text.profiles import named_keys
+        from tools.dws.text.profiles import named_keys, narrator_keys
         with tempfile.TemporaryDirectory() as root:
             path = pathlib.Path(root, 'story/base/zones/z/s1/script.dws'); path.parent.mkdir(parents=True)
             path.write_text("""on talk(a) replace {
@@ -70,10 +70,99 @@ on talk(b) replace {
 }
 """)
             self.assertEqual(named_keys(root), {'a', 'b', 'c', 'e'})
+            self.assertEqual(narrator_keys(root), {'n'})
+
+    def test_physical_rows_respect_named_narrator_and_custom_boxes(self):
+        from tools.dws.text.profiles import textbox_overflows
+        script = '\n'.join([
+            'SET_DIALOG_OWNER TAMER', 'SHOW_TEXTBOX', ' "a{br}b"', ' "c"', ' "lost"',
+            'SET_DIALOG_OWNER 255', 'SHOW_TEXTBOX', ' "a"', ' "b"', ' "c"', ' "fits"',
+            'SHOW_TEXTBOX', ' "a"', ' "b"', ' "c"', ' "d"', ' "lost"',
+            'SET_TEXTBOX_SIZE 0, 20, 2', 'SHOW_TEXTBOX', ' "a"', ' "b"', ' "lost"',
+            'END_SECTION', 'SHOW_TEXTBOX', ' "a"', ' "b"', ' "c"', ' "fits"'])
+        self.assertEqual(list(textbox_overflows(script)), [
+            (3, ['a', 'b', 'c', 'lost']), (4, ['a', 'b', 'c', 'd', 'lost']), (2, ['a', 'b', 'lost'])])
+
+    def test_story_build_rejects_physical_overflow(self):
+        import pathlib, tempfile
+        from dws.basebuild import check_named_pages
+        from dws.diag import DwsError
+        with tempfile.TemporaryDirectory() as run:
+            path = pathlib.Path(run, 'scn/script_121.scn.txt')
+            path.parent.mkdir()
+            path.write_text('SET_DIALOG_OWNER 255\nSHOW_TEXTBOX\n "a{br}b{br}c{br}d{br}lost"\n')
+            with self.assertRaisesRegex(DwsError, '5 rows in a 4-row box'):
+                check_named_pages(run, 'pt-br')
+            path.write_text('SET_DIALOG_OWNER 6\nSHOW_TEXTBOX\n "greeting"\nSHOW_TEXTBOX\n "offer"\n')
+            check_named_pages(run, 'pt-br')
+
+    def test_compiled_tournament_arrays_are_not_dialogue_pages(self):
+        from tools.dws.text.profiles import textbox_overflows, UNPACKED_SCRIPTS
+        script = '\n'.join(['.section 10 table', '.section 11 dialogue', 'table:', 'SHOW_TEXTBOX',
+                             ' "a"', ' "b"', ' "c"', ' "d"', ' "e"', ' "f"', ' "g"', 'END_SECTION',
+                             'dialogue:', 'SET_DIALOG_OWNER 6', 'SHOW_TEXTBOX',
+                             ' "a"', ' "b"', ' "c"', ' "lost"'])
+        for sid in UNPACKED_SCRIPTS:
+            self.assertEqual(list(textbox_overflows(script, sid)), [(3, ['a', 'b', 'c', 'lost'])])
+        self.assertEqual(len(list(textbox_overflows(script, 121))), 2)
+
+    def test_page_audit_detects_the_reported_demimeramon_cut(self):
+        from tools.localize.check import BE, dialogue_layout, page_problems
+        from dws.textbank import TextBank
+        previous = dict(BE.FONT)
+        try:
+            BE.FONT.update(extra=True, chars=frozenset(BE.EXTRA_ORDER), name='b')
+            key = 's121.sec5.u0'
+            reported = [['Oi, oi. Conhece as cartas', 'Digimon? Coleciono cartas de',
+                         'Meramon. Traga uma, e eu', 'compro por 1500 Bits!']]
+            rendered, limit = dialogue_layout(key, reported, TextBank(source='ours'), {}, {key})
+            self.assertEqual(page_problems(key, rendered, limit), ['page 1: 4 rows in a 3-row box'])
+            for narrator, expected in [(False, True), (True, False)]:
+                rendered, limit = dialogue_layout('mod.line', reported, TextBank(source='ours'), {}, set(),
+                                                 True, 'the narrator' if narrator else 'npc (Agumon)')
+                self.assertEqual(bool(page_problems('mod.line', rendered, limit)), expected)
+            rendered, limit = dialogue_layout('custom', [['a{br}b', 'c']], TextBank(source='ours'),
+                                             {'custom': (240, 2)}, set())
+            self.assertTrue(page_problems('custom', rendered, limit))
+        finally:
+            BE.FONT.clear()
+            BE.FONT.update(previous)
+
+    def test_all_dialogue_pages_fit_every_language_and_font(self):
+        from tools.localize.check import audit_pages, LANGUAGES, FONTS
+        result = audit_pages()
+        self.assertEqual(result['errors'], [])
+        self.assertEqual(set(result['coverage']), {lang + ':' + font for lang in LANGUAGES for font in FONTS})
+        self.assertTrue(all(count['entries'] > 4000 and count['pages'] >= count['entries']
+                            for count in result['coverage'].values()))
+
+    def test_demimeramon_offer_keeps_every_word_in_both_script_banks(self):
+        import json
+        from tools.localize.check import BE, ROOT, LANGUAGES, FONTS, dialogue_layout, page_problems
+        from dws.textbank import TextBank, join_rows
+        previous = dict(BE.FONT)
+        try:
+            key = 's121.sec5.u0'
+            for lang in LANGUAGES:
+                source = 'ours' if lang == 'en' else lang
+                value = json.loads((ROOT / 'text' / source / 'dialogue/lava-cave.json').read_text())[key]
+                for font in FONTS:
+                    BE.FONT.update(extra=True, chars=frozenset(BE.EXTRA_ORDER), name=font)
+                    rendered, limit = dialogue_layout(key, value, TextBank(lang, source), {}, {key})
+                    self.assertEqual(page_problems(key, rendered, limit), [], (lang, font))
+                    self.assertEqual(join_rows(row for page in rendered for row in page),
+                                     join_rows(row for page in value for row in page), (lang, font))
+                    self.assertIn('1500', rendered[-1][-1], (lang, font))
+                    self.assertTrue(all(BE.fits(row) for page in rendered for row in page), (lang, font))
+        finally:
+            BE.FONT.clear()
+            BE.FONT.update(previous)
 
     def test_every_shipped_bank_fits_both_fonts_and_preserves_references(self):
         from tools.localize.check import audit, LANGUAGES
-        result = audit()
+        from unittest.mock import patch
+        with patch('fontgen.base_font', side_effect=AssertionError('audit must not read disc bitmaps')):
+            result = audit()
         # The developer-only examples and starter mods have English only and are
         # deliberately audited/reported too; they are not part of the everything recipe.
         self.assertEqual(len(result['notes']), 14)
@@ -106,10 +195,13 @@ on talk(b) replace {
             names = json.loads((ROOT / 'text' / ('ours' if language == 'en' else language) / 'names.json').read_text())
             for font in ('b', 'original'):
                 for key, need in [('DISCIPLINE', 90), ('TECHS', 35), ('HAPPINESS', 100)]:
-                    label = names['main.CHART_STR_' + key] + ' ' + str(need) + '+'
-                    # chartCardLine: 114px card, marker, indent, value and gap.
-                    room = 114 - 18 - 6 - text_width(str(need), font) - 4
-                    self.assertLessEqual(list_width(label, font), room, (language, font, key))
+                    from tools.localize.check import ui_width
+                    # chartCardRender now draws separate label/need/have columns.
+                    # Indented bonus labels start at 49; needs end at 194, have at 280.
+                    label = names['main.CHART_STR_' + key]
+                    need_width = ui_width(str(need) + '+', font, language)
+                    self.assertLessEqual(ui_width(label, font, language), 194 - 49 - need_width - 4,
+                                         (language, font, key))
 
     def test_failed_technique_inheritance_keeps_its_negation(self):
         import json
@@ -146,7 +238,7 @@ on talk(b) replace {
         for language in LANGUAGES:
             names = json.loads((ROOT / 'text' / ('ours' if language == 'en' else language) / 'names.json').read_text())
             for font in ('b', 'original'):
-                self.assertFalse(battle_mp_problems(names, font), (language, font))
+                self.assertFalse(battle_mp_problems(names, font, language), (language, font))
         portuguese = dict(names, **{'btl.BTL_STR_MP_CONSUMPTION_BONUS': '#C1Uso de MP ',
                                   'btl.BTL_STR_REDUCED_BY': '-',
                                   'btl.BTL_STR_MP_BONUS_PERCENT': ' por cento!#W'})
@@ -160,11 +252,48 @@ on talk(b) replace {
                             ['Gesetzt', 'Final', 'Technik'])
         for language in LANGUAGES[1:]:
             names = json.loads((ROOT / 'text' / language / 'names.json').read_text())
-            titles = packed_ui_slices(key, names[key])
-            tabs = packed_ui_slices('main.MAIN_D_801238A0', names['main.MAIN_D_801238A0'])
-            self.assertEqual(titles[1], '必殺' if language == 'ja' else 'Final')
+            if language == 'zh-hans':
+                from tools.localize.executable.chinese_layout import align
+                names = {k: align(k, v) for k, v in names.items() if not k.startswith('_')}
+            titles = packed_ui_slices(key, names[key], language)
+            tabs = packed_ui_slices('main.MAIN_D_801238A0', names['main.MAIN_D_801238A0'], language)
+            self.assertEqual(titles[1], '必殺' if language == 'ja' else '必杀' if language == 'zh-hans' else 'Final')
             self.assertEqual(titles[2], tabs[1], language)
         self.assertEqual(packed_ui_slices('main.MAIN_D_801238A0', '状態         わざ'), ['状態', 'わざ'])
+
+    def test_named_english_pages_are_compiled_instead_of_an_inline_snapshot(self):
+        import json, tempfile
+        from pathlib import Path
+        from tools.dws import build
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp) / 'story/mods/fixture'
+            (folder / 'src').mkdir(parents=True)
+            (folder / 'text').mkdir()
+            layout = [['Received', '{item 93}.']]
+            (folder / 'text/en.json').write_text(json.dumps({'deal': layout}))
+            path = folder / 'src/test.py'
+            path.write_text('from dw import *\narea = screen(3)\n@area.on_enter(when=trigger(5))\ndef enter():\n    narrator.say(t("deal"))\n')
+            prog = build.compile_sources([str(path)], 'mods', lang='en', text_source='ours')
+            self.assertEqual(prog.bank.data['fixture:deal'], layout)
+            self.assertIn('fixture:deal', prog.used_text)
+            code = str(prog.b.scripts)
+            self.assertIn('Received', code)
+            self.assertIn('{item 93}', code)
+
+    def test_chinese_crops_check_emitted_cells_and_keep_rejecting_overflow(self):
+        from tools.localize.check import packed_ui_problems, player_strip_problems, naming_label_problems
+        from tools.localize.executable.chinese_layout import align
+        import json
+        from tools.localize.check import ROOT
+        names = json.loads((ROOT / 'text/zh-hans/names.json').read_text())
+        for key in ('main.MAIN_D_80123A3C', 'main.MAIN_D_80123AB0', 'main.MAIN_D_80123AE4'):
+            self.assertEqual(packed_ui_problems(key, align(key, names[key]), 'zh-hans'), [])
+        key = 'main.MAIN_D_80123A60'
+        self.assertEqual(player_strip_problems(key, align(key, names[key]), 'zh-hans'), [])
+        self.assertTrue(player_strip_problems(key, names[key], 'zh-hans'))
+        self.assertTrue(packed_ui_problems('main.MAIN_D_801238A0', '选' * 30, 'zh-hans'))
+        self.assertTrue(naming_label_problems('shop.MAIN_D_80134600', '退格确定', 'zh-hans'))
+        self.assertFalse(naming_label_problems('shop.MAIN_D_80134600', names['shop.MAIN_D_80134600'], 'zh-hans'))
 
     def test_tall_boxes_are_read_from_the_authored_source(self):
         boxes = custom_boxes()

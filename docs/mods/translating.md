@@ -30,6 +30,14 @@ writing. The discs' text lives in the gitignored `text/<source>/` folders of you
    A page under a speaker's name has 3 rows and a narrator's has 4: the name takes the box's first row, and a fourth row
    would be lost or replace another page's name. The story build refuses such a page; `python3 tools/dws/text/repage.py
    LANGUAGE --named --write` breaks them into pages of 3 rows without changing a word.
+   Run `python3 -m tools.localize.check --pages-only --json build/dialogue-pages.json`
+   to audit every dialogue bank in all eight languages, including English mod fallbacks,
+   for both NEW and CLASSIC/ORIGINAL script layouts. The report counts entries, pages
+   and physical rows per language/font, checks embedded `{br}` breaks and custom
+   windows, and rejects extra indexed MAPHEAD pages that the game cannot display.
+   The story build also checks emitted dialogue for named, narrator and custom box
+   capacities. Use the full audit (without `--pages-only`) for glyphs, references and
+   row widths as well.
    A narrator's page that names its speaker in its own first row (`{color 7}Punimon {color 1}`) keeps that row when the
    CLASSIC and ORIGINAL fonts (their own copy of the script, paged for the original letters' widths) wrap its rows
    again: the rows under it are wrapped three to a page, each page under the name (`textbank.fit`); the text audit
@@ -120,7 +128,9 @@ A mod's new lines are in its own `text/en.json`, written by `python3 tools/dws.p
 (`courier (Gotsumon) says, page 1 of 2`, `the narrator says`) and which are **menu options** (`option yes of the tamer's
 menu`: one row, 31 units), and the **named lines** (`t("greeter.hello")` in the source) by their names. The translation is
 `text/<lang>.json` beside it, by the same keys. **The source wins**: the English of a line written in place lives in
-`src/*.py`, and `en.json` is rewritten from it (an edit there is lost); a named line's English is `en.json`'s.
+`src/*.py`, and `en.json` is rewritten from it (an edit there is lost); a named line's English is `en.json`'s. Named lines may also use explicit row/page arrays,
+just like translated banks. Use them when a runtime item name needs a dedicated row;
+changing an inline English snapshot alone does not change the compiled dialogue.
 
 - An edited line written in place gets its old translation back marked `~fuzzy `: the build **does not ship it** (it shows
   the English and warns at the line) until you read it against the new English and drop the marker. A named line keeps

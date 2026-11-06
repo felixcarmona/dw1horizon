@@ -149,8 +149,8 @@ class Languages(unittest.TestCase):
                         off += size + (-size % 4)
                     self.assertEqual(bytes(ram), target)
 
-    def test_all_eight_language_transitions(self):
-        images = [bytes((i if j % 8 == i else j % 3) for j in range(64)) for i in range(8)]
+    def test_all_nine_language_transitions(self):
+        images = [bytes((i if j % 9 == i else j % 3) for j in range(64)) for i in range(9)]
         patches = all_language_runs(images, 0x80010000, gap=0)
         for source in images:
             for target, spans in zip(images, patches):

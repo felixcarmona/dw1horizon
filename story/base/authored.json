@@ -628,13 +628,13 @@
     },
     "zones/freezeland/s128-133/script.dws": {
       "original_sha256": "5a313e0bf479c0437be0f88d8051c7f6099d0e4bb32f8709878d0a08046510b1",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "b664faceaa4c6791c318b5e5db9b6852f0dc39e8d5793a1e5b14260b66f9f963"
+      "authored_sha256": "99d8152054cfdc86838c8866c51715aa469d7bc60fed78d33ba54cfa563bac39",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; group 3 alone handles recruitment after all nine exchanges"
     },
     "zones/freezeland/s128-133/script.py": {
       "original_sha256": "7efe00e265cf2710b3772bba102537ad110d2fe01043613409c4ea039450a396",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "3d06d1428aa68378a67933f1b5802ea175b25eb4b4da237b83b37a923b8a31c3"
+      "authored_sha256": "905e4626be8f3ee872da2d646184fe8e806f732ed47b045374dcb2907e3baf08",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; group 3 alone handles recruitment after all nine exchanges"
     },
     "zones/gear-savanna/s066-69/script.dws": {
       "original_sha256": "452d24716fa01815540ad35144e8eb3891857ccf430cf006c9fd13972aac5211",
@@ -975,6 +975,16 @@
       "original_sha256": "919d3d395047f8b472adcffcb88724bdd93d1252cbaa37332005ea26c795726a",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
       "authored_sha256": "01e3fba23507ca10294dd3ec0229ed33f3267ef166c9269f415c826e14f9b0ce"
+    },
+    "zones/freezeland/s129-134/script.py": {
+      "original_sha256": "02b381e914a2e56f818995af08faf0b8a06ec839922e510693e3fefe1adde2f1",
+      "authored_sha256": "ab0106507ab28318db6f4d2cb67dad8a8eeb09edbf904b25ceba73938d27ea32",
+      "reason": "Group 3 alone handles Mojyamon recruitment after all nine exchanges"
+    },
+    "zones/freezeland/s129-134/script.dws": {
+      "original_sha256": "946a73c24d560b20d3bce3071fafe206783cac84092548cf6158a3f3c61e9216",
+      "authored_sha256": "8bda450397a4917978a82a4bb0aeaf248b4e8fc83e6b896fdb2b11360888fc25",
+      "reason": "Group 3 alone handles Mojyamon recruitment after all nine exchanges"
     }
   }
 }

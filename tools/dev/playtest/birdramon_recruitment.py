@@ -20,9 +20,9 @@ from tools.dev.playtest.airdramon_timeout import native_card
 from tools.langpatch import elf_symbols
 
 
-def field_card(source, target):
+def field_card(source, target, *, partner_type=3):
     """Start off the city door trigger, whose repeated handler prevents idle."""
-    native_card(source, target)
+    native_card(source, target, partner_type=partner_type)
     card = mcd.Card(target)
     data = bytearray(card.read('BASLUS-01032DMR0'))
     size = 0x2000 if len(data) >= 0x6000 else 0x1000

@@ -1870,7 +1870,7 @@ class PythonMods(unittest.TestCase):
             self.assertFalse([w for w in prog.warn.render() if 'deprecated' in w], p)
             B.assemble(prog, os.path.join(tempfile.mkdtemp(dir=TMP), 'DG.SCN'))
         lock = json.load(open(os.path.join(ROOT, 'story/mods/examples/save.lock')))
-        self.assertTrue(all(780 <= n <= 799 for n in lock['flags'].values()))
+        self.assertTrue(all(780 <= n <= 786 for n in lock['flags'].values()))
 
     def test_starter_mod_builds(self):
         """story/mods/starter: the recipe runs on the player's map, the mod compiles on its output and assembles, and its
@@ -1889,7 +1889,7 @@ class PythonMods(unittest.TestCase):
             B.BE.MAPS_DIRS = saved; PL._MAPS.pop(1, None)
         def flags(mod): return set(json.load(open(os.path.join(ROOT, 'story/mods', mod, 'save.lock')))['flags'].values())
         own = flags('starter')
-        self.assertTrue(own and all(790 <= n <= 799 for n in own))
+        self.assertTrue(own and all(787 <= n <= 788 for n in own))
         self.assertFalse(own & (flags('what-the-island-forgot') | flags('examples')))
 
     def test_ask_keywords_and_every_error(self):
@@ -2037,10 +2037,10 @@ class PythonMods(unittest.TestCase):
             self.assertEqual(PL.free_range('flags'), '717-726')
             self.assertEqual(PL.free_range('vars', 3), '7-9')
             manifest = os.path.join(mod, 'mod.toml')
-            open(manifest, 'w').write('[save]\nflags = "717-794"\nvars = "7-13"\n')
-            self.assertEqual(PL.free_range('flags'), '795-796')
+            open(manifest, 'w').write('[save]\nflags = "717-785"\nvars = "7-13"\n')
+            self.assertEqual(PL.free_range('flags'), '786-787')
             self.assertEqual(PL.free_range('vars', 3), '14-15')
-            open(manifest, 'w').write('[save]\nflags = "717-799"\nvars = "7-15"\n')
+            open(manifest, 'w').write('[save]\nflags = "717-788"\nvars = "7-15"\n')
             self.assertIsNone(PL.free_range('flags'))
             self.assertIsNone(PL.free_range('vars'))
 
