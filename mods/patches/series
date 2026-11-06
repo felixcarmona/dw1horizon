@@ -379,3 +379,4 @@ food-sickness-message-buffer.patch
 shop-balance-complete-row.patch
 evolution-during-load-wake-grace.patch
 fit-status-technique-names.patch
+Render-the-B5a-field-care-HUD-from-live-partner-data.patch

@@ -275,6 +275,9 @@ def build(out, extracted, run_with=None, scratch=None, language="es"):
 
         lines = []
         for (lang, path), data in sorted(files.items()):
+            if path == 'ETCDAT/ETCTIM.BIN':
+                from tools.field_hud_art import build as field_hud_art
+                data = field_hud_art(data)
             p = os.path.join(out, lang, path)
             os.makedirs(os.path.dirname(p), exist_ok=True)
             open(p, 'wb').write(data)

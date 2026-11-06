@@ -1,8 +1,42 @@
-# Field care gauges: design review
+# Field care HUD: B5a implementation and design history
 
-Design only. No game code, patch, texture asset, option or save format changes.
+The owner approved **B5a** on 2026-11-06. It is implemented under the existing **NEW STATUS BARS** option; OFF retains the original field bars. The review material below is historical design evidence.
 
-**Owner direction: B, the bare grid with native icons and outlined thin bars, including toilet.** The current owner layout is **B5**: happiness and discipline in the left column; hunger, toilet and tiredness in the right column, all on matching grey icon blocks. **B5a** centres the left pair vertically; **B5b** top-aligns it. These are design-review variants, not approved implementations. Earlier B6/B4 follow-ups are retained below as history. The original A–E review below is retained as context; its initial recommendation was A.
+**Owner direction: B, the bare grid with native icons and outlined thin bars, including toilet.** The current owner layout is **B5**: happiness and discipline in the left column; hunger, toilet and tiredness in the right column, all on matching grey icon blocks. **B5a** centres the left pair vertically; **B5b** top-aligns it. B5a is the approved implementation; B5b remains a design-review variant. Earlier B6/B4 follow-ups are retained below as history. The original A–E review below is retained as context; its initial recommendation was A.
+
+## Implemented B5a
+
+`Render-the-B5a-field-care-HUD-from-live-partner-data.patch` replaces the ON renderer with five live gauges. Happiness/discipline blocks start at (236,192)/(236,206); hunger/toilet/tiredness at (274,185)/(274,199)/(274,213). Each block is 13×13, every outlined track has 18 fill steps, and the existing tick-owned slide supplies the horizontal anchor. The native warning bubbles remain active. Both mood icons use their high/low variants. No input handling, save field or timer is added.
+
+The exact gauge contract below is used before pixel rounding, including the hungry grace phase, POOPY override, empty invalid toilet baseline, fatigue direction, clamping, nearest-pixel fill and minimum one pixel for positive readings. The current engine's `RAISE_ROW(type)` accessor supplies the toilet baseline, including imported species' live DIGI.DAT rows. The historical mockup script used a different meat crop; runtime uses the documented native meat crop (72,140), CLUT (96,488).
+
+`tools/field_hud_art.py` derives seven combined icon-block/empty-track tiles and the native green/red fill stripes into previously empty cells of **ETCTIM.BIN entry 1**, at VRAM (960,448), texture page 31. CLUT rows (272,500..507) were empty. The generator checks both source and destination allocations and refuses occupied cells. The original command-label crops end at u=61; the finisher frame uses u=88..133,v=224..235 and its fill u=136..139,v=224..229. The new atlas avoids these rectangles and the upper condition icons. All existing pixels and palettes outside the reserved cells remain intact. Every localized ETCTIM copy receives the same atlas; no new disc file, upload, RAM copy or VRAM allocation is introduced.
+
+The full default multilingual build passed on 2026-11-06. A controlled relink swaps only the field renderer while retaining the final text banks, padding, species data, tables and file routes:
+
+| Measurement | Original two-gauge ON renderer | B5a | Delta |
+| --- | ---: | ---: | ---: |
+| `main_BSS_END` | `0x801ced5c` | `0x801cecdc` | **−128 B** |
+| Main text | 509,568 B | 509,424 B | −144 B |
+| Main rodata, including alignment | 29,640 B | 29,656 B | +16 B |
+| Main data/BSS sizes | 134,428 / 623,152 B | 134,428 / 623,152 B | 0 B |
+| `malloc3` heap | 184,736 B | **184,864 B** | **+128 B** |
+| MENU file size | 53,812 B | **53,812 B** | 0 B |
+| Screen 207 margin | 16 B | **144 B** | +128 B |
+
+The normal heapcheck passed without `HEAP_OK`: its tightest historical sweep projection is OGRE03 at 28,512 B. The actual-archive check passed **all 320 setups**, with zero negative margins. Screen 207 is tightest: Birdramon, Leomon and Hawkmon peak at 184,712 B against 184,856 B available after allocator overhead. This 144 B margin is small; keep checking the actual archive when code or models change.
+
+The new renderer emits at most ten FT4 packets, **400 B/frame**, from the existing work buffer. This replaces the old flat-row helpers rather than retaining both ON renderers. No new persistent memory is allocated. The OFF renderer was compared against its original GPU-call sequence in 609,030 happiness/discipline/area-response/blink combinations. The actual ON C renderer passed 589,828 live-value/flag/baseline cases, including imported-species baseline changes. Asset allocation, common housing, fill colours and eight translated atlases were checked separately.
+
+### Runtime verification and delivery
+
+PCSX-Redux ran this full disc with original **2 MB RAM**. All eight NEW/CLASSIC × light/dark floor × 30/60 FPS runtime-mode combinations passed, with ordinary and active-needs native 320×240 screenshots for each. The log independently records `MOD_FONT` 0/2 and `MOD_FPS_MODE_RUN` 1/2. Both original OFF frames were inspected. The existing slide still reaches x-offset 240 when hidden and 75 when shown. JAPANESE CONTROLS has no role in the glyph-free HUD and no input routing was added.
+
+Two 25-second motion clips use the NEW/light/30 and CLASSIC/dark/60 combinations. Care fixtures are written atomically, then native ticks consume the food and toilet timers. The native `handlePostBattleTiredness` event supplies +5 fatigue and its food cost. An awake-schedule fixture isolates this from bedtime. Native reset checks passed: toilet gives `2*T = 48`, portable potty gives `T = 24`, and `reduceTiredness(30)` changes 70 to 40. The clips' final hungry grace timers are 152/156, POOPY is active, and tiredness is 51 from 46.
+
+All sixteen ordinary/warning frames, both OFF frames, suppression and battle frames were visually reviewed. Both videos decoded cleanly; their per-second HUD contact sheets were inspected, and all **1,194 decoded frames** were checked for gauge states: hunger green 1–2 pixels then red 18→16, toilet green 17→18 pixels then full red, tiredness green 8 pixels then red 9. The HTTP screen recorder samples up to 30 frames/s while the game uses the selected 30/60 FPS runtime modes. A real wild-battle checkpoint produced **pixel-identical ON/OFF frames** six GPU swaps after restore; the native battle command/HP/MP/enemy bars remain intact.
+
+The two runtime review sheets, both motion clips, a battle capture and the native-frame/reproduction ZIP were sent with `mg-send` in session **`2026-11-06-032850-upload-mgs6Od`** (six files). Local evidence is under ignored `build/hud-runtime/`, with the full build at `build/hud-baseline.cue` (image SHA-1 `4cab78257afbf857638322c21fd79fc0c8384bf9`) and controlled memory evidence under `build/hud-budget/`. The task's emulator and Xvfb were stopped after verification.
 
 ## Owner layout B5: two mood rows beside three needs rows
 
@@ -43,7 +77,7 @@ Here `clamp(v,a,b)` clamps a live value, and percentages below are conceptual; t
 | Gauge | Live data source and displayed fill | Direction and colour |
 | --- | --- | --- |
 | Hunger | `PARTNER_PARA.foodLevel` from `tickHungerMechanics`: `clamp(foodLevel,0,180)/180`. While `condition & 4`, use `clamp(starvationTimer,0,180)/180` instead. | Green meal countdown **drains** towards hunger; full for 180+ game minutes remaining. When hungry, a new red grace countdown drains. Its phase reset is deliberate; it is not stomach fullness or a guaranteed time to a care mistake. |
-| Toilet | `PARTNER_PARA.poopLevel` from `tickPoopingMechanic`, with species baseline `T = RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].poopTimer`. For `T>0`, fill is `1-clamp(poopLevel,0,2*T)/(2*T)`. If `condition & 8`, force full. Guard invalid `T<=0` with empty unless POOPY is active. | **Fills towards needs-to-go**, green before POOPY and full red while POOPY. `poopLevel` counts remaining ten-game-minute units; this is not the virus bar. A fixed `2*T` denominator handles native toilet/wild-poop reset to `2*T`; birth/evolution/portable potty resetting to `T` deliberately starts half full. Feeding, battles and time skips can advance it. No second phase or invented holding-time percentage: while POOPY, `poopingTimer` is a separate frame countdown and the native bubble remains authoritative. |
+| Toilet | `PARTNER_PARA.poopLevel` from `tickPoopingMechanic`, with species baseline `T = RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).poopTimer` (native `RAISE_DATA`, imported species through the live record accessor). For `T>0`, fill is `1-clamp(poopLevel,0,2*T)/(2*T)`. If `condition & 8`, force full. Guard invalid `T<=0` with empty unless POOPY is active. | **Fills towards needs-to-go**, green before POOPY and full red while POOPY. `poopLevel` counts remaining ten-game-minute units; this is not the virus bar. A fixed `2*T` denominator handles native toilet/wild-poop reset to `2*T`; birth/evolution/portable potty resetting to `T` deliberately starts half full. Feeding, battles and time skips can advance it. No second phase or invented holding-time percentage: while POOPY, `poopingTimer` is a separate frame countdown and the native bubble remains authoritative. |
 | Tiredness | `clamp(PARTNER_PARA.tiredness,0,100)/100`, as in the status screen. | **Fills with fatigue**; green below 50%, red at 50% and above. Rest/sleep reduces it. This is distinct from bedtime. |
 | Happiness | `(clamp(PARTNER_PARA.happiness,-100,100)+100)/200`, matching the status screen. | **Fills with happiness**; red below 50% (raw value below 0), green from 50%. Use the native positive/negative face. |
 | Discipline | `clamp(PARTNER_PARA.discipline,0,100)/100`. B5 and B6; still present in the menu in B4. | **Fills with discipline**; red below 50%, green from 50%. Use the native high/low discipline face. |

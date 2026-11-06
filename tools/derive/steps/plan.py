@@ -202,7 +202,7 @@ def make(ctx):
     with species_tools() as S:      # the models of the disc's species (species.py disc-files)
         for opt, dest, x in S.disc_files(O('species')):
             (P.file if opt == '--file' else P.add)(dest, S.resolve_path(x))
-    for x in ('ETCNA/TITLE256.TIM', 'ETCNA/TITLE2.TIM', 'ETCDAT/TAMA.TIM'):
+    for x in ('ETCNA/TITLE256.TIM', 'ETCNA/TITLE2.TIM', 'ETCDAT/TAMA.TIM', 'ETCDAT/ETCTIM.BIN'):
         P.file(x, O('title', x))
     P.file('CHDAT/ALLTIM.TIM', O('ALLTIM.TIM'))     # the originals' flat sprites (species step)
     for x in ctx.env.get('EXTRA_FILES', '').split():
