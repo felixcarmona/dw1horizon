@@ -47,7 +47,7 @@ def main():
                      for state,phase,label,detail in (
                          ('normal','on','normal','Light blue; grey icon'),
                          ('warning','on','warning normal','1 second at normal brightness'),
-                         ('warning','off','warning dim','1 second at 35% brightness'),
+                         ('warning','off','warning dim','Bar 35%; icon stays normal'),
                          ('active','off','active','55% whole-icon tint; blue bar'))])
     sheet(args.out,'needs-approved-states-2mb.png','Approved need gauges / normal, warning and active',
           'PCSX-Redux interpreter / 2,097,152 B RAM / 20 native ticks per phase',rows)

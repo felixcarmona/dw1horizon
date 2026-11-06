@@ -37,10 +37,10 @@ int STATUS_UI_OFFSET_X=75,PLAYTIME_FRAMES;
 #define MOD_CARE_POOP_PERIOD 1
 #define MOD_CARE_TIRED_EXHAUSTED_AT 2
 int careGet(int slot) { const int rules[]={20,200,80}; return rules[slot]; }
-struct Draw {int x,y,w,h,u,v,page,clut,z,flag;} draws[10]; int count;
+struct Draw {int x,y,w,h,u,v,page,clut,z,flag;} draws[13]; int count;
 #define GetClut(x,y) ((y)*64+(x)/16)
 void renderRectPolyFT4(int x,int y,int w,int h,int u,int v,int page,int clut,int z,int flag) {
- assert((flag==0 || flag==8) && count<10); draws[count++]=(struct Draw){x,y,w,h,u,v,page,clut,z,flag};
+ assert((flag==0 || flag==8) && count<13); draws[count++]=(struct Draw){x,y,w,h,u,v,page,clut,z,flag};
 }
 ''' + renderer + r'''
 int width(int value,int max) {
@@ -68,11 +68,18 @@ void check(int gauge,int value,int max,int red,int icon,int active,int warn) {
  assert(n==5);
  int expected=width(value,max);
  int dim=!active&&warn&&phase?8:0;
- assert(draws[found].flag==dim);
+ assert(draws[found].flag==0);
+ assert(draws[found].w==(dim?13:34));
+ if(dim) {
+  struct Draw track=draws[found+1],iconDraw=draws[found];
+  assert(track.w==20 && track.h==4 && track.x==iconDraw.x+14 && track.y==iconDraw.y+5);
+  assert(track.u==iconDraw.u+14 && track.v==iconDraw.v+5 && track.clut==iconDraw.clut && track.flag==8);
+  found++;
+ }
 
  if(expected) {
   struct Draw d=draws[found+1];
-  assert(d.h==2 && d.w==expected && d.x==draws[found].x+15 && d.y==draws[found].y+6);
+  assert(d.h==2 && d.w==expected && d.x==draws[found].x+(dim?1:15) && d.y==draws[found].y+(dim?1:6));
   assert(d.u==(gauge<2?144:164) && d.v==(gauge<2?251+red*2:251) && d.clut==GetClut(272,507) && d.flag==dim);
  } else assert(found+1==count || draws[found+1].h==13);
  }

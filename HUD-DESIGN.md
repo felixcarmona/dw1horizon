@@ -44,9 +44,10 @@ Hunger, toilet and tiredness use light-blue fills in every state: RGB
 track. Happiness and discipline retain their original green/red colours.
 
 Warnings alternate **one second normal, one second at approximately 35%
-brightness**. Both the complete icon/empty-track tile and its fill receive
-45/128 GPU colour modulation during the dim phase, including the frame and
-unfilled track. `PLAYTIME_FRAMES % 40` supplies twenty native play ticks per
+brightness**. Only the outlined bar and its fill receive 45/128 GPU colour
+modulation during the dim phase, including the frame and unfilled track. The
+complete icon and its housing stay at normal brightness throughout the blink
+(owner option 1). `PLAYTIME_FRAMES % 40` supplies twenty native play ticks per
 phase, including while gym time is paused; no timer or persistent state is added.
 Warnings do not erase or shorten the fill.
 
@@ -72,7 +73,9 @@ Fatigue warns within six raw points of `MOD_CARE_TIRED_EXHAUSTED_AT`, the last
 remains 70. Every draw reads live care data, so resets clear the indication
 immediately. Active palettes occupy the same three CLUT rows (272,508..510);
 the blue stripe uses previously empty texels in the existing atlas. Asset size,
-upload, VRAM allocation and ten-FT4/400-byte maximum packet budget are unchanged.
+upload and VRAM allocation are unchanged. Warning dim phases split the combined
+tile into an unchanged 13×13 icon and a dimmed 20×4 track, adding at most three
+FT4 packets: thirteen packets / 520 bytes total, using the existing work buffer.
 
 `Match-approved-light-blue-need-gauges-and-muted-icon-tint.patch` implements the
 correction after merging `origin/main`, including PR #241's 2048-byte sequence
@@ -131,6 +134,38 @@ exact 3× HUD crops. They and the native-frame/results ZIP were sent through the
 media gateway. Reproduction scripts and measurements are under
 `build/need-corrected/`; the sheet generator is committed at
 `tools/dev/playtest/need_gauge_sheet.py`.
+
+### Bar-only warning correction (owner option 1)
+
+`Keep-warning-icons-bright-while-only-bars-dim.patch` supersedes the whole-tile
+warning dimming in the earlier native captures above. Warning icons and their
+housings stay at normal brightness in both phases. Only the outlined track,
+unfilled remainder and light-blue fill dim to 45/128. The native twenty-tick
+phases and active icon tint remain the same.
+
+The full nine-language rebuild adds **112 B** of main text (**509,648 B**),
+with rodata/data/BSS unchanged. Every language ends at **0x801CE5E8**;
+the aligned heap is **186,640 B**. Normal heapcheck passes, and all **320
+actual-archive screen setups fit**; screen 207 retains **1920 B** margin.
+The maximum warning draw uses **13 FT4s / 520 B** of the existing 81,920-byte
+frame work buffer, with no new allocation, timer, texture or palette.
+The actual-C checks pass 589,828 live-value cases in both phases, 609,030
+original OFF comparisons, warning boundaries and the simultaneous-warning
+packet limit. All **395 patches** apply cleanly.
+
+The rebuilt disc SHA-1 is `940aef366a24adec00dd851579a4712015b6eaa6`.
+All **39 native captures** pass on exactly **2,097,152 B RAM**, including both
+fonts, dark floors and paused gym warnings. Every warning icon pixel is identical
+between phases for all three needs (**maximum error 0**); outlined bar dimming
+matches 45/128 within **8.43/255** native channel rounding. Six consecutive
+cadence captures remain twenty play ticks apart. The capture harness now waits
+for the native map fade to finish before measuring HUD colours.
+
+Reproduce with the commands above using `build/need-bar-only/runtime` as the
+output directory. `warning-bars-only-2mb.png` compares warning phases side by
+side; `needs-approved-states-2mb.png` replaces the previous state sheet. These,
+the three individual warning-dim frames and the native-frame/results ZIP were
+sent through `mg-send`. Evidence remains ignored under `build/need-bar-only/`.
 
 ### Historical measurements before the appearance correction
 

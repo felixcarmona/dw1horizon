@@ -56,6 +56,8 @@ def warp(e,screen):
         e.wait(1)
         ram=e.ram()
         if e.peek('CURRENT_SCREEN','h',ram)==screen and e.peek('TAMER_STATE','b',ram)==0:
+            # Control can return before the native map fade has finished.
+            e.wait(2)
             return
     raise AssertionError(f'warp to {screen} did not finish')
 
@@ -98,7 +100,7 @@ def check_image(file,name,state,on):
     else:
         assert top[0]==top[1]==top[2],(file,top)
     dim=state=='warning' and not on
-    assert (50<=top[0]<=75) if dim else top[0]>150,(file,top)
+    assert top[0]>150,(file,top)
     # Both rows, outline and grey remainder must dim as well as the fill.
     scale=45/128 if dim else 1
     for yoff,base in ((6,(160,208,248)),(7,(120,184,248))):
@@ -133,7 +135,7 @@ def capture(e,out,rows,name,state,on,label=None):
 
 
 def compare_pixels(out):
-    """Compare every icon pixel and every occupied warning tile pixel."""
+    """Compare active tint, unchanged warning icons and dimmed bar pixels."""
     errors={}
     for index,need in enumerate(NEEDS):
         y=185+index*14
@@ -141,7 +143,7 @@ def compare_pixels(out):
         active=Image.open(out/f'{need}-active-off.png').convert('RGB')
         bright=Image.open(out/f'{need}-warning-on.png').convert('RGB')
         dim=Image.open(out/f'{need}-warning-off.png').convert('RGB')
-        tint_error=dim_error=0
+        tint_error=dim_error=icon_error=0
         for dy in range(13):
             for dx in range(34):
                 point=(274+dx,y+dy)
@@ -151,12 +153,15 @@ def compare_pixels(out):
                     lum=sum(c*w for c,w in zip(rgb,(.299,.587,.114)))/255
                     expected=[.45*c+.55*lum*t for c,t in zip(rgb,(235,90,80))]
                     tint_error=max(tint_error,max(abs(a-b) for a,b in zip(active.getpixel(point),expected)))
-                if dx<13 or (14<=dx<34 and 5<=dy<9):
+                if dx<13:
+                    icon_error=max(icon_error,max(abs(a-b) for a,b in zip(dim.getpixel(point),bright.getpixel(point))))
+                if 14<=dx<34 and 5<=dy<9:
                     expected=[c*45/128 for c in bright.getpixel(point)]
                     dim_error=max(dim_error,max(abs(a-b) for a,b in zip(dim.getpixel(point),expected)))
         assert tint_error<12,(need,tint_error)
         assert dim_error<10,(need,dim_error)
-        errors[need]=dict(whole_icon_tint_max_error=tint_error,whole_tile_dim_max_error=dim_error)
+        assert icon_error==0,(need,icon_error)
+        errors[need]=dict(whole_icon_tint_max_error=tint_error,bar_dim_max_error=dim_error,warning_icon_max_error=icon_error)
     return errors
 
 

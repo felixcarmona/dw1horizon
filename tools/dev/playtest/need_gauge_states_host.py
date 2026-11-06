@@ -57,25 +57,34 @@ static void check(int gauge,int active,int blink,int red) {
  struct PP before=PARTNER_PARA;
  for(int f=0;f<80;f++) {
   PLAYTIME_FRAMES=f;MOD_OPT_BARS=1;count=0;renderStatusBars(1);
-  assert(!memcmp(&before,&PARTNER_PARA,sizeof(before)));assert(count<=10);
+  assert(!memcmp(&before,&PARTNER_PARA,sizeof(before)));assert(count<=13);
   int tiles=0,found=0;
-  for(int k=0;k<count;k++) if(calls[k].a[2]==34) {
+  for(int k=0;k<count;k++) if(calls[k].a[3]==13) {
    tiles++;
    if(calls[k].a[1] != 65+(gauge-2)*14) continue;
    assert(calls[k].a[7]==GetClut(272,500+gauge+2+active*4));
-   int width=0,v=0;
-   if(k+1<count && calls[k+1].a[1]==calls[k].a[1]+6) {
-    width=calls[k+1].a[2];v=calls[k+1].a[5];
+   int dim=!active && blink && f%40>=20;
+   assert(calls[k].a[2]==(dim?13:34));
+   int fill=k+1+dim;
+   if(dim) {
+    assert(calls[k+1].a[2]==20 && calls[k+1].a[3]==4);
+    assert(calls[k+1].a[0]==calls[k].a[0]+14 && calls[k+1].a[1]==calls[k].a[1]+5);
+    assert(calls[k+1].a[4]==calls[k].a[4]+14 && calls[k+1].a[5]==calls[k].a[5]+5);
+    assert(calls[k+1].a[7]==calls[k].a[7] && calls[k+1].a[9]==8);
    }
-   assert(calls[k].a[9]==(!active && blink && f%40>=20 ? 8 : 0));
+   int width=0,v=0;
+   if(fill<count && calls[fill].a[1]==calls[k].a[1]+6) {
+    width=calls[fill].a[2];v=calls[fill].a[5];
+   }
+   assert(calls[k].a[9]==0);
    int value=gauge==2?PARTNER_PARA.foodLevel:gauge==3?(raise.poopTimer>0?2*raise.poopTimer-PARTNER_PARA.poopLevel:0):PARTNER_PARA.tiredness;
    int max=gauge==2?180:gauge==3?(raise.poopTimer>0?2*raise.poopTimer:1):100;
    if(value<0)value=0;if(value>max)value=max;
    int expected=(value*18+max/2)/max;if(value&&!expected)expected=1;
    assert(width==expected);
    if(width) {
-    assert(v==251 && calls[k+1].a[4]==164);
-    assert(calls[k+1].a[9]==calls[k].a[9]);
+    assert(v==251 && calls[fill].a[4]==164);
+    assert(calls[fill].a[9]==(dim?8:0));
    }
    found++;
   }
@@ -127,6 +136,10 @@ int main(void) {
  PARTNER_PARA.tiredness=84;check(4,0,1,1);
  PARTNER_PARA.tiredness=90;check(4,1,0,1);
  rules[2]=-1;check(4,0,0,1);
+ // Three simultaneous warnings exercise the maximum packet count.
+ base();PARTNER_PARA.foodLevel=60;PARTNER_PARA.poopLevel=6;PARTNER_PARA.tiredness=74;
+ check(2,0,1,0);check(3,0,1,0);check(4,0,1,0);
+ PLAYTIME_FRAMES=23;count=0;renderStatusBars(1);assert(count==13);
  // Satisfaction clears the warning without any cached phase or state.
  base();PARTNER_PARA.condition=14;
  check(2,1,0,1);check(3,1,0,1);check(4,1,0,1);
