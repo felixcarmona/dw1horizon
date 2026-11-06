@@ -51,7 +51,7 @@
   },
   "evolution": {
     "from": [282, 272, 50],
-    "to": [293],
+    "to": [293, 255],
     "requirements": {
       "digimon": 282,
       "hp": -1,

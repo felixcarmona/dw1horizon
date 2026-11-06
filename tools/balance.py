@@ -161,9 +161,9 @@ TABLES = [
     ('donorBones', 'SLUS_010.32', 'MOD_DONOR_BONES', None),
     # tables of rules that start empty in the C (every slot -1 = the rule does not exist) and are filled from JSON: NAMED_RULES
     ('evolutionTiming', 'SLUS_010.32', 'MOD_EVO_TIMING', 22),
-    ('evolutionFresh', 'SLUS_010.32', 'MOD_EVO_FRESH', 32),
+    ('evolutionFresh', 'SLUS_010.32', 'MOD_EVO_FRESH', 64),
     ('evolutionRookieWeights', 'SLUS_010.32', 'MOD_EVO_ROOKIE_WEIGHTS', 6),
-    ('evolutionUltimate', 'SLUS_010.32', 'MOD_EVO_ULTIMATE', 32),
+    ('evolutionUltimate', 'SLUS_010.32', 'MOD_EVO_ULTIMATE', 64),
     ('evolutionSpecial', 'SLUS_010.32', 'MOD_EVO_SPECIAL', 18),
     ('evolutionRules', 'SLUS_010.32', 'MOD_EVO_RULES', 300),
     ('evolutionItemRules', 'SLUS_010.32', 'MOD_EVO_ITEMS', 24),
@@ -627,7 +627,7 @@ def encode_training(t):
 EVO_STATS = ['discipline', 'happiness', 'tiredness', 'battles', 'defense', 'evoTimer', 'screen', 'scoldFlag']
 EVO_MODES = {'wake': 2, 'praise': 3}
 EVO_RULE = '<5h4b4(bbh)'.replace('4(bbh)', 'bbhbbhbbhbbh')           # evolution.c ModEvoRule: 30 bytes
-EVO_RULE_MAX, EVO_PAIR_MAX = 10, 8
+EVO_RULE_MAX, EVO_PAIR_MAX = 10, 16
 
 MEDAL_KINDS = {'allTriggers': (1, 2), 'wins': (2, 1), 'allCards': (3, 1), 'allMoves': (4, 1), 'stats': (5, 2), 'money': (6, 1),
                'year': (7, 1), 'allRaised': (8, 2), 'fish': (9, 1)}                      # kind id, how many numbers
@@ -655,7 +655,7 @@ def encode_medals(rows):
 
 
 # lists of small rows with a fixed room, empty rows -1: key -> (struct format, JSON fields, room); content/tables/evolution-rules.json
-ROW_RULES = {'evolutionRookieWeights': ('<3h', ('from', 'to', 'weight'), 1), 'evolutionFresh': ('<2h', ('from', 'to'), 8), 'evolutionUltimate': ('<2h', ('from', 'to'), 8),
+ROW_RULES = {'evolutionRookieWeights': ('<3h', ('from', 'to', 'weight'), 1), 'evolutionFresh': ('<2h', ('from', 'to'), 16), 'evolutionUltimate': ('<2h', ('from', 'to'), 16),
              'evolutionItemRules': ('<3h', ('item', 'target', 'partnerLevel'), 4),
              'tournamentRemap': ('<2h', ('from', 'to'), 4),
              'modelScale': ('<2h', ('species', 'percent'), 8), 'animatedTexture': ('<2h', ('species', 'width'), 16)}

@@ -3,6 +3,10 @@
   "name": "Angemon",
   "level": "champion",
   "vanilla": true,
+  "off": {
+    "level": "champion",
+    "evolution": {"to": [40, 59, -1, -1, -1, -1], "from": [31, 18, -1, -1, -1]}
+  },
   "attribute": "vaccine",
   "specialties": ["air", null, "battle"],
   "techniques": ["Dynamite Kick (44)", "Counter", "War Cry", "Static Elect", "Megalo Spark", "Electric Cloud",
@@ -30,7 +34,7 @@
   },
   "evolution": {
     "from": [31, 18, -1, -1, -1],
-    "to": [40, 59, -1, -1, -1, -1],
+    "to": [40, -1, -1, -1, -1, -1],
     "requirements": {
       "digimon": 31,
       "hp": -1,

@@ -60,7 +60,7 @@
     },
     "gains": {"hp": 6000, "mp": 4000, "offense": 650, "defense": 650, "speed": 400, "brains": 500},
     "from": [8, 281],
-    "to": [297]
+    "to": [297, 373]
   },
   "_former_name": "Master Tyrannomon"
 }

@@ -88,8 +88,7 @@ def check(sp, kids, table):
         actual = sum(sp[c]['level'] == target_level for c in set(kids.get(p, [])))
         if actual < count:
             errors.append(f'{sp[p]["name"]}: {actual} {target_level} targets; needs {count}')
-    # The owner, 2026-11-04: every raisable Ultimate has a Mega route with NEW DIGIMON on: a Mega child,
-    # or (an original 63..179 with no path row) an evolutionUltimate pair listed in ultimate_rules.
+    # Count distinct targets across ordinary paths and timed rules.
     rules = ultimate_rules(sp, table)
     if rules is None:
         errors.append('ultimate_rules must match evolution-rules.json evolutionUltimate')
@@ -99,15 +98,18 @@ def check(sp, kids, table):
             errors.append(f'{sp[p]["name"]} -> {sp[c]["name"]}: an Ultimate rule must lead an Ultimate to a Mega')
         if not (set(sp[p]['specialties']) - {None}) & (set(sp[c]['specialties']) - {None}):
             errors.append(f'{sp[p]["name"]} -> {sp[c]["name"]}: no shared specialty')
-    rule_megas = {p for p, _ in rules}
     for p in sorted(checked):
-        if sp[p]['level'] == 'ultimate' and p not in rule_megas and \
-                not any(sp[c]['level'] == 'mega' for c in set(kids.get(p, []))):
-            errors.append(f'{sp[p]["name"]}: Ultimate without a Mega route')
+        if sp[p]['level'] == 'ultimate':
+            targets = {c for c in kids.get(p, []) if sp[c]['level'] == 'mega'}
+            targets.update(c for parent, c in rules if parent == p)
+            if len(targets) < 2:
+                errors.append(f'{sp[p]["name"]}: {len(targets)} Mega targets; needs 2')
     off_routes = {tuple(pair) for pair in table.get('off_routes', {}).get('pairs', [])}
     for p, c in off_routes:
-        if (p != 24 and c != 24) or sp[24]['level'] != 'ultimate':
-            errors.append('off_routes: only the Whamon tier change is permitted')
+        if not ((24 in (p, c) and sp[24]['level'] == 'ultimate') or
+                ((p, c) in original_routes and c in (59, 60) and
+                 sp[p]['level'] == 'champion' and sp[c]['level'] == 'mega')):
+            errors.append('off_routes: only documented native tier changes are permitted')
         if c not in sp[p].get('off', {}).get('evolution', {}).get('to', []):
             errors.append(f'{sp[p]["name"]} -> {sp[c]["name"]}: missing explicit off route')
     for p, c in sorted(original_routes):
@@ -127,22 +129,18 @@ def check(sp, kids, table):
     exceptions |= {(e['parent'], e['child']) for e in canon_links
                    if (e.get('parent'), e.get('child')) == ('Tsunomon', 'Gabumon') and e.get('reason')}
     megas = set(table['canon_megas'])
-    # Only the disc's own existing routes are allowed, never an imported parent.
-    disc_megas = table['disc_mega_routes']
+    if table.get('disc_mega_routes'):
+        errors.append('Champion-to-Mega exceptions are forbidden')
     for p, children in kids.items():
         for c in children:
             parent, child = sp[p], sp[c]
             pair = parent['name'], child['name']
-            # The disc's own Champion routes to Phoenixmon and HerculesKabuterimon (Megas) are the one exception.
-            step_exception = (p, c) in original_routes and child['name'] in ('Phoenixmon', 'HerculesKabuterimon')
-            if T.LEVEL_NO.get(child['level'], 0) != T.LEVEL_NO.get(parent['level'], 0) + 1 and not step_exception:
+            if T.LEVEL_NO.get(child['level'], 0) != T.LEVEL_NO.get(parent['level'], 0) + 1:
                 errors.append(f'{pair[0]} -> {pair[1]}: evolution level step must be +1')
             if (p, c) not in original_routes and not (set(parent['specialties']) - {None}) & (set(child['specialties']) - {None}) and pair not in exceptions:
                 errors.append(f'{pair[0]} -> {pair[1]}: no shared specialty')
             if child['name'] in megas and parent['level'] == 'champion':
-                original = parent['name'] in disc_megas.get(child['name'], []) and p < 63 and c < 63
-                if not original:
-                    errors.append(f'{pair[0]} -> {pair[1]}: Champion parent of a canon Mega')
+                errors.append(f'{pair[0]} -> {pair[1]}: Champion parent of a canon Mega')
             if c in table['sheet_megas'] and c >= T.S.NUM_ORIGINAL and parent['level'] != 'ultimate':
                 errors.append(f'{pair[0]} -> {pair[1]}: imported Mega parent must be Ultimate')
     for name in table['record_parents']:
@@ -177,7 +175,7 @@ def practical_errors(sp, kids, table):
                     if any(signature == {stat for stat in T.ALL if reqs[k][stat] != -1}
                            for k in kids[p] if k != c and k in reqs):
                         errors.append(f'{parent} -> {name}: identical sibling picker average')
-    preserved = {'Analogman', 'Jijimon', 'Machinedramon', 'MetalEtemon'} | set(table.get('disc_mega_routes', {}))
+    preserved = {'Analogman', 'Jijimon'}
     for name in table.get('canon_megas', []):
         if name in preserved:
             continue
@@ -195,7 +193,9 @@ def practical_errors(sp, kids, table):
             continue
         chains += 1
         arrival = T.arrival_witness(p, kids, reqs, levels, sp)
-        if not arrival or not T.practical(p, c, {**kids, p: [c]}, reqs, levels, sp, arrival['stats'], 60):
+        targets = [child for parent, child in ultimate_rules(sp, table) if parent == p]
+        if not arrival or not T.practical(p, c, {**kids, p: targets}, reqs, levels, sp,
+                                         arrival['stats'], 60, kind='rule'):
             errors.append(f'{sp[p]["name"]} -> {sp[c]["name"]}: no practical Ultimate rule')
     return errors, checked, chains
 

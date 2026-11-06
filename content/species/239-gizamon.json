@@ -6,8 +6,8 @@
   "vanilla_as": 18,
   "attribute": "virus",
   "specialties": ["ice", "battle", null],
-  "techniques": ["Water Blit", "Ice Needle", "Aqua Magic", "Tear Drop", "Sonic Jab", "Muscle Charge", "War Cry",
-                 "Super Slap"],
+  "techniques": ["Water Blit", "Ice Needle", "Dynamite Kick (44)", "Tear Drop", "Sonic Jab", "Muscle Charge",
+                 "War Cry", "Super Slap"],
   "drop": {"item": "MP Floppy", "percent": 30},
   "effects_like": 4,
   "model": {
