@@ -116,12 +116,18 @@ def use1():    # section 81
         objects[35].hide()
         call(Routine.shopvar_clear)
         meat_stand.customers.set(0)
+        # Shift-only deck counts: Meat, Portable Potty, Medicine.
+        pstat(113).set(8)
+        pstat(114).set(9)
+        pstat(115).set(3)
         monochrome_shop_halfway_reviewed.clear()
         return use2()
     monochromon.say(t81.u15)
 
 @shop_.on_use(2)
 def use2():    # section 82
+    if recruited(Species.Monochromon):
+        return
     if meat_stand.customers >= 20:
         wait(2000)
         monochromon.say(t82.u4)
@@ -182,6 +188,48 @@ def use2():    # section 82
             monochromon.say(t82.u3)
             tamer.turn(80)
             hide_hud()
+    # Rejection sampling draws a uniform index in the remaining deck. The
+    # original interpreter compares pstats with literals, so subtract the served
+    # count and each item's remaining count in scratch counters.
+    dws(r"""
+        draw_card:
+        store_random(p110, 19);
+        p120 = p123;
+        trim_served:
+        unless (p120 >= 1) goto scan_meat;
+        unless (p110 >= 1) goto draw_card;
+        p120 -= 1;
+        p110 -= 1;
+        goto trim_served;
+        scan_meat:
+        p120 = p113;
+        meat_card:
+        unless (p120 >= 1) goto scan_potty;
+        unless (p110 >= 1) goto picked_meat;
+        p120 -= 1;
+        p110 -= 1;
+        goto meat_card;
+        scan_potty:
+        p120 = p114;
+        potty_card:
+        unless (p120 >= 1) goto picked_medicine;
+        unless (p110 >= 1) goto picked_potty;
+        p120 -= 1;
+        p110 -= 1;
+        goto potty_card;
+        picked_meat:
+        p116 = 0;
+        p113 -= 1;
+        goto card_ready;
+        picked_potty:
+        p116 = 1;
+        p114 -= 1;
+        goto card_ready;
+        picked_medicine:
+        p116 = 2;
+        p115 -= 1;
+        card_ready:
+    """)
     roll = random.roll(8)
     if roll <= 2:
         jump_to_script(199, 51)

@@ -429,12 +429,69 @@ Requirement tests: `tools/test_evo_tree.py --practical`, `tools/economy_audit.py
 
 ## 6.3 Monochromon recruitment
 
-The shift recruit target falls from 3072 to 2560 bits of profit. Recruitment was
-an approximately 1 % outcome at list prices and 13 % at a steady +10 %; simulation
-at 2560 gives 8 % and 37 %, respectively. The top halfway comment moves from
-1536 to 1280 bits, half the new target. The 1792-bit payout tier and the
-500/1500/2000-bit payouts stay unchanged, as do prices, odds, customers and text.
-The plate fills at 2560 bits, with its 1792-bit tick at 70 % of the inside width.
+Each shift serves exactly twenty visits from a shuffled deck of **8 Meat / 9
+Portable Potty / 3 Medicine**. Draw the item first, then independently draw
+Goblimon/Gotsumon/Weedmon/Muchomon with weights 3/3/2/1. This removes the
+Medicine-count lottery. Every visit counts once, including an offended departure.
+
+A customer draws one hidden maximum markup, uniformly in 10-percentage-point
+steps: Goblimon **+30…+50 %**, Gotsumon **0…+30 %**, Weedmon **−10…+20 %**,
+Muchomon **−20…+50 %**. The player selects −30…+50 % in ten-point steps. An offer
+at or below the maximum sells immediately. Overshooting by ten or twenty points
+allows one retry, after reducing the maximum by ten points. An overshoot of
+thirty points, or any second overshoot, ends the visit without a sale. Offers,
+purchases and departures have no additional random rolls or Rethink loop.
+
+The engine's ordinary selection window renders four rows; custom-sized text
+windows have no selection handler. The menu therefore uses existing translated
+Raise / Keep / Lower strings. Raise opens +10/+20/+30 and another Raise entry
+for +40/+50; Lower opens −30/−20/−10. Selecting Keep immediately offers list
+price. All nine prices remain available with no random offer draw.
+
+Arrival bubbles hint at the budget. Goblimon shows annoyed at +30, happy at
++50, and either face with equal probability at +40. Gotsumon's lower half
+(0/+10) shows annoyed 75 % of the time; the upper half (+20/+30) shows happy
+75 % of the time. Weedmon and Muchomon show annoyed in the lower half and
+happy in the upper half. Each face therefore leaves at least two possible
+budgets. A rejection changes the bubble to angry; an offended departure shows
+furious. These hints improve results while leaving profitable offers at risk.
+
+Recruitment requires **2560 profit**, the top halfway comment starts at **1280**,
+and the 1500-bit consolation tier starts at **1792** (70 % of the goal). These
+thresholds match the existing profit plate and the engine's whole 256-bit
+`shop_hi` comparisons. Original per-sale profits and 500/1500/2000-bit payouts
+remain: Meat earns 0…40, Portable Potty 0…240 and Medicine 0…800 over the nine
+prices. Failed shifts still consume eight hours and pay at most 1500; success
+pays 2000 once and disables further shifts. Tuskmon's later shop is unchanged.
+
+`tools/monochromon_shop.py` exhausts every undominated fixed species table,
+then solves the exact Bellman recurrence over remaining deck, running profit,
+species and face. Both searches maximize recruitment probability rather than
+expected profit. The retry pair uses only information available after a rejection.
+Monte Carlo independently shuffles the deck and draws each visit, with 200,000
+shifts per policy and seed 49:
+
+| Policy | Simulated recruit | Exact recruit | Mean profit |
+|---|---:|---:|---:|
+| List price on both offers | 0.00 % | 0.00 % | 1677 |
+| +20 %, then list price for everyone | 16.65 % | 16.67 % | 2144 |
+| Best fixed species table, ignoring faces | 49.59 % | 49.67 % | 2542 |
+| Best play reading face, remaining deck and total | 74.70 % | 74.67 % | 2738 |
+
+As an information check, the same goal-aware solver without arrival faces reaches
+58.13 % exactly (58.06 % across another 200,000 shifts, seed 49), versus 74.67 %
+with faces. The benefit therefore persists when both policies track the total
+and remaining deck.
+
+The best fixed table is Goblimon +40→+20, Gotsumon +20→−10, Weedmon +10→−10,
+and Muchomon +30→0. Goal-aware play uses first offers from −20 through +50,
+with different choices by species, face and progress; no one price dominates.
+Its customers still leave without buying 1.61 % of the time. Profit shares are
+6.62 % Meat, 44.56 % Portable Potty and 48.82 % Medicine, so Meat remains useful.
+The Monte Carlo sampling error near 50 % is about ±0.22 percentage points at
+95 % confidence. Reproduce with `python3 tools/monochromon_shop.py --shifts 200000`
+(NumPy required); boundary and small-deck oracle tests are in
+`tools/test_monochromon_shop.py`.
 
 ## 7. Related sources
 
