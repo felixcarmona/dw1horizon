@@ -249,8 +249,8 @@ menu's option (0070) switches back to the classic bubble.
   A bubble is its circle (rows 0-25 of `CONDITION_SPRITES[11]`) plus the tail (rows 26-31) scaled from half to full
   height, so a full-size bubble looks exactly like the original. The icon scales with its own linear map and keeps its
   pivot centred. `MOD_RING_SHOWN` records what the last pass drew, for checking tools.
-- **X badge** (0158): while confirm in front of the partner would open the care menu (`mod_feed.c` sets
-  `MOD_FEED_HINT` for that tick), the dialogue box's X button (from the UI texture page, three frames) is drawn beside
+- **Care badge** (0158, updated by Square quick care): while physical Square would open the care menu (`mod_feed.c` sets
+  `MOD_FEED_HINT` for that tick), a native round cap with a pink Square (three separate UI texture frames) is drawn beside
   the bottom row's right edge, or where the bubbles would be when there are none, growing and shrinking over 0.2 s. Not
   with the classic bubble.
 
@@ -436,7 +436,7 @@ Techniques are ready within about a second of contact when `BTL_REL` was read ah
 | 0081, 0084, 0106, 0116-0137, 0139-0143, 0229-0230, 0235 | rules and tables as data | [../mods/data-sources.md](../mods/data-sources.md), [../mods/balance.md](../mods/balance.md) |
 | 0090, 0183, 0190-0191, 0203 | text bank and language | [text-sources.md](text-sources.md), [../mods/language.md](../mods/language.md) |
 | 0092-0093, 0096, 0114-0115, 0129, 0182, 0193, 0205 | saves | [save-format.md](save-format.md) |
-| 0150-0155 | care menu (confirm in front of the partner) | [partner.md](partner.md) |
+| 0150-0155, Square quick care | care menu (Square from any partner distance in the field) | [items-and-menus.md](items-and-menus.md) |
 | 0162-0164, 0166, 0218, 0220-0222 | status bars, digital clock, triangle menu | [items-and-menus.md](items-and-menus.md) |
 | 0167, 0169, 0180-0181, 0193-0194, 0199, 0212, 0214, 0234, 0239, 0241 | OPTIONS | [../mods/options.md](../mods/options.md) |
 | 0217, 0232, 0240 | imported animation transitions | [motion.md](motion.md) |

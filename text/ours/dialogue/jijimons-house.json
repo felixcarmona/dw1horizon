@@ -133,12 +133,38 @@
  "s178.sec5.u17": "Oh, thank you. By the way...",
  "s178.sec5.u18": "Ah, ahem. Together with the Digimon who come back, I'm going to rebuild File City.",
  "s178.sec5.u19": "I plan to build shops that you and {color 10}{partner}{color 1} will find handy.",
- "s178.sec5.u20": "To start with... let's see. Why not explore Native Forest, just outside the city?",
+ "s178.sec5.u20": [
+  [
+   "To start with... let's see.",
+   "Why not explore Native",
+   "Forest, just outside the"
+  ],
+  [
+   "city?"
+  ],
+  [
+   "When the pink {color 4}□{color 1} appears,",
+   "press {color 4}□{color 1} for quick care.",
+   "No need to stand nearby."
+  ]
+ ],
  "s178.sec6.u0": "This is for you. Good luck!",
  "s178.sec6.u1": "Got all sorts of items!",
  "s178.sec6.u2": [
-  "To look at your items, press {color 5}△{color 1}, choose Item,",
-  "then view them with {color 6}×{color 1}."
+  [
+   "To look at your items, press {color 5}△{color 1}, choose Item,",
+   "then view them with {color 6}×{color 1}."
+  ],
+  [
+   "When the pink {color 4}□{color 1} appears,",
+   "press {color 4}□{color 1} for quick care.",
+   "No need to stand nearby."
+  ],
+  [
+   "Use {color 6}×{color 1} to talk or interact.",
+   "{color 4}□{color 1} only opens the care list.",
+   "Choose an item, then confirm."
+  ]
  ],
  "s178.sec6.u3": "Looks like Yuramon has picked up some new rumors.",
  "s178.sec6.u4": "Oh yeah, Yuramon says it knows some new rumors.",
@@ -253,6 +279,11 @@
    "Whatever you do, watch your",
    "Digimon closely and take good",
    "care of it."
+  ],
+  [
+   "When the pink {color 4}□{color 1} appears,",
+   "press {color 4}□{color 1} for quick care.",
+   "No need to stand nearby."
   ]
  ],
  "s178.sec20.u0": "So you've come to... I'm so sorry, my boy.",
