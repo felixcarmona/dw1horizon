@@ -15,6 +15,42 @@ import tabledata
 
 
 class TableDataTests(unittest.TestCase):
+    def test_shipped_generator_resources_support_ui_and_chinese_layout(self):
+        import json
+        import shutil
+        import subprocess
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            bundle = []
+            dw.copy_program_runtime(str(root), bundle)
+            shutil.copyfile(tabledata.fontcopy.__file__, root / 'fontcopy.py')
+            script = """import json,pathlib,sys
+sys.path.insert(0,sys.argv[1])
+import fontcopy
+root=pathlib.Path(sys.argv[1])/'bundle'
+profiles=json.loads((root/'tools/patcher/ui-sources.json').read_text())['objects']
+for name,profile in profiles.items():
+ for base in profile['values']:
+  data=fontcopy.ui_table({'ui':name,'size':profile['length']},base,tool_root=root)
+  assert len(data)==profile['length'],(name,base)
+sys.path.insert(0,str(root))
+from tools.localize.executable.chinese_layout import align
+assert align('unlisted.label','text')=='text'
+"""
+            cmd = [sys.executable, '-I', '-B', '-E', '-S', '-c', script, str(root)]
+            result = subprocess.run(cmd, cwd=root, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            (root / 'bundle/tools/patcher/ui-sources.json').unlink()
+            result = subprocess.run(cmd, cwd=root, capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('ui-sources.json', result.stderr)
+            dw.copy_program_runtime(str(root), bundle)
+            (root / 'bundle/tools/localize/executable/chinese_layout.py').unlink()
+            result = subprocess.run(cmd, cwd=root, capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('chinese_layout', result.stderr)
+
     def test_single_text_piece_has_a_semantic_origin_and_terminator(self):
         data = struct.pack('<2H', 0, 0xffff)
         obj = dict(offset=100, length=4, section='.sdata.PIECES_.8',

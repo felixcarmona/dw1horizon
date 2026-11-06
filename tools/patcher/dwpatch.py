@@ -1200,6 +1200,23 @@ def local_holes3(m, v, base, rel, work, a):
 DERIVE_TREES = ('tools', 'content', 'story', 'mods', 'text', 'docs/data')   # what a clean tree copies of the repository
 
 
+def copy_program_runtime(out, bundle):
+    """Ship generator resources even when the asset builder never opens them."""
+    for source in ('tools/fontgen.py', 'tools/font/b.txt', 'tools/font/extra.txt',
+                   'tools/font/original-metrics.json', 'tools/font/japanese.txt',
+                   'tools/chinese.py', 'tools/chinese_resources.py',
+                   'tools/font/chinese.json', 'tools/font/chinese-ui.json', 'tools/font/chinese-codes.json',
+                   'tools/localize/chinese_catalog.py', 'tools/localize/language_flags.py',
+                   'tools/localize/executable/bank.py', 'tools/localize/executable/chinese_layout.py',
+                   'tools/localize/executable/us-format-codes.json',
+                   'tools/patcher/sdk-messages.json', 'tools/patcher/ui-sources.json',
+                   *(f'text/{lang}/names.json' for lang in ('ours', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca', 'zh-hans'))):
+        dest = os.path.join(out, 'bundle', *source.split('/'))
+        os.makedirs(os.path.dirname(dest), exist_ok=True)
+        shutil.copyfile(os.path.join(REPO, source), dest)
+        if source not in bundle: bundle.append(source)
+
+
 STEP_DONE = re.compile(r'^derive (\S+)(?: \(\S+\))?: \d+ files, ([\d.]+) s$')   # current and recorded step logs
 
 
@@ -2160,18 +2177,7 @@ def cmd_make_release3(a):
             import fontcopy
             import fontgen
             font_copies = dict(reason='Compact Latin tables are generated in program deltas from each player font.')
-            for source in ('tools/fontgen.py', 'tools/font/b.txt', 'tools/font/extra.txt',
-                           'tools/font/original-metrics.json', 'tools/font/japanese.txt',
-                           'tools/chinese.py', 'tools/chinese_resources.py',
-                           'tools/font/chinese.json', 'tools/font/chinese-ui.json', 'tools/font/chinese-codes.json',
-                           'tools/localize/chinese_catalog.py', 'tools/localize/language_flags.py',
-                           'tools/localize/executable/bank.py', 'tools/localize/executable/us-format-codes.json',
-                           'tools/patcher/sdk-messages.json',
-                           *(f'text/{lang}/names.json' for lang in ('ours', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca', 'zh-hans'))):
-                dest = os.path.join(out, 'bundle', *source.split('/'))
-                os.makedirs(os.path.dirname(dest), exist_ok=True)
-                shutil.copyfile(os.path.join(REPO, source), dest)
-                if source not in bundle: bundle.append(source)
+            copy_program_runtime(out, bundle)
             data_copies = datacopy.copy_payload(p, base_paths, data_sources, work,
                                                  dict(datas, **{'license_data.dat': lic}),
                                                  os.path.splitext(os.path.abspath(target))[0])
