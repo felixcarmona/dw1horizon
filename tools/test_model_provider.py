@@ -51,7 +51,8 @@ class ModelProvider(unittest.TestCase):
         selected = {t: model.OVERLAYS[e['field_overlay']]
                     for t, e in records.items() if e.get('field_overlay')}
         # Baked deltas retain their effective field generator as authoring provenance.
-        for path in Path('content/modeldelta/scale-locks').glob('*.json'):
+        for path in [*Path('content/modeldelta/scale-locks').glob('*.json'),
+                     *Path('content/modeldelta/resizes').glob('*.json')]:
             proof = json.loads(path.read_text())
             sid = str(proof['species'])
             self.assertTrue(records[sid]['aliases_applied'])
@@ -66,6 +67,8 @@ class ModelProvider(unittest.TestCase):
         for species, (bound_species, _, _) in selected.items():
             self.assertEqual(species, bound_species)
         assignments = {t: entry[1:] for t, entry in selected.items()}
+        self.assertEqual(assignments.pop('236'),
+                         ('tools.models.field_animations.native_binding', '236-demidevimon-native-flight'))
         # Celebration curves run after the final proportions. Unwrap them to
         # keep guarding all the original field recipes and output names.
         for sid, row in celebrations.items():
