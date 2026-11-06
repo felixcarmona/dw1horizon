@@ -15,12 +15,22 @@ export function releasedVersions(versions, releaseTag) {
 }
 
 let entries = null;
+function revealVersion() {
+  // Match IDs directly: arbitrary or unavailable hashes leave the page alone.
+  const target = [...document.querySelectorAll('.changelog-version')]
+    .find((entry) => `#${entry.id}` === location.hash);
+  if (!target) return;
+  target.open = true;
+  target.scrollIntoView({ block: 'start', behavior: 'instant' });
+}
+
 export async function setupChangelog(currentRelease) {
   const [data, current] = await Promise.all([
     fetch('content/changelog.json').then((r) => { if (!r.ok) throw new Error('changelog unavailable'); return r.json(); }),
     currentRelease,
   ]);
   entries = releasedVersions(data.versions, current?.release_tag);
+  window.addEventListener('hashchange', revealVersion);
   renderChangelog();
 }
 
@@ -33,12 +43,27 @@ export function renderChangelog() {
     const own = entry[i18n.lang] || entry.en;
     const details = document.createElement('details');
     details.className = 'changelog-version';
+    details.id = `changelog-${entry.version}`;
     details.open = index === 0;
     const summary = make('summary', `v${entry.version}`);
     const date = make('time', new Intl.DateTimeFormat(tag(i18n.lang),
       { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${entry.date}T00:00:00Z`)));
     date.dateTime = entry.date;
     summary.append(date);
+    const link = make('a', '#');
+    link.className = 'changelog-link';
+    link.href = `#${details.id}`;
+    link.title = link.ariaLabel = i18n.t('changelog.copyLink', { version: entry.version });
+    link.addEventListener('click', (event) => {
+      event.stopPropagation();
+      // Keep native fragment navigation and the link menu when copying is unavailable.
+      details.open = true;
+      if (location.hash === link.hash) revealVersion();
+      navigator.clipboard?.writeText(link.href).then(() => {
+        link.title = link.ariaLabel = i18n.t('changelog.linkCopied');
+      }).catch(() => {});
+    });
+    summary.append(link);
     details.append(summary);
     for (const group of ['new', 'changed', 'fixed']) {
       if (!own[group]?.length) continue;
@@ -54,4 +79,5 @@ export function renderChangelog() {
     list.append(details);
   });
   section.hidden = entries.length === 0;
+  revealVersion();
 }

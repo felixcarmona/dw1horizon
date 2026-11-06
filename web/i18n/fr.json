@@ -17,6 +17,8 @@
  "features.title": "Nouveautés",
  "features.lead": "Choisis la langue, la fréquence d’images, la police, la difficulté, les nouveaux Digimon, l’histoire étendue et l’affichage dans OPTIONS. Les améliorations du moteur et les corrections restent actives.",
  "changelog.title": "Historique des versions",
+ "changelog.copyLink": "Copier le lien vers v{version}",
+ "changelog.linkCopied": "Lien copié",
  "changelog.lead": "Ce que chaque version apporte à votre jeu.",
  "changelog.new": "Nouveautés",
  "changelog.changed": "Modifications",

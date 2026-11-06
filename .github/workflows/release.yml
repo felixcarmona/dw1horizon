@@ -99,6 +99,7 @@ jobs:
           export CHROMIUM="$(command -v google-chrome)"
           node web/test/i18n.mjs
           node web/test/changelog.mjs
+          node web/test/changelog-browser.mjs build/pages-site
           python3 -m http.server 8765 --bind 127.0.0.1 --directory build/pages-site > build/pages-server.log 2>&1 &
           server=$!
           trap 'kill "$server"; wait "$server" || true' EXIT
