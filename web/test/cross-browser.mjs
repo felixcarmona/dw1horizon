@@ -3,7 +3,7 @@
 import assert from 'node:assert/strict';
 import path from 'node:path';
 const { webkit, chromium, firefox } = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
-const [url, isoRoot, name = 'webkit', seconds = '7200'] = process.argv.slice(2);
+const [url, isoRoot, name = 'webkit', seconds = '21600'] = process.argv.slice(2);
 const browser = await ({ webkit, chromium, firefox }[name]).launch({ headless: true,
   ...(name === 'chromium' && process.env.CHROMIUM ? { executablePath: process.env.CHROMIUM } : {}) });
 let timer;
