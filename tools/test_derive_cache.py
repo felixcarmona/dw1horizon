@@ -11,6 +11,12 @@ from tools.build_cache import Cache
 
 
 SCREEN_CALLS = {}
+PRELOADED = {}
+
+
+def emit_preloaded(output):
+    Path(output).write_text(PRELOADED['value'])
+    return 'emitted'
 
 
 def encode_screen(i, row, text, opts):
@@ -258,6 +264,40 @@ class DeriveCacheTests(unittest.TestCase):
 
 
 class CodeInputs(unittest.TestCase):
+    def test_story_key_covers_preloaded_helpers_and_inventory(self):
+        import os
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            helper = root / 'story/mods/helper.py'
+            helper.parent.mkdir(parents=True)
+            helper.write_text("value = 'old'")
+            output = root / 'build/out/archive'
+            output.parent.mkdir(parents=True)
+            ctx = SimpleNamespace(root=str(root), out=str(output.parent), env={}, facts={},
+                                  cache_facts=True, cache_step='story', locks_read_only=True, record=False)
+            unit = runner.Unit('preloaded helper', emit_preloaded, (str(output),), ['story/mods'], ['archive'])
+            with patch.object(runner, 'ROOT', td), patch.object(cache, 'tool_key', return_value='tools'), \
+                    patch.object(cache, 'runtime_sources', return_value='runtime'), \
+                    patch.dict(os.environ, {'DW_BUILD_CACHE': str(root / 'cache')}):
+                def compile():
+                    exec(helper.read_text(), PRELOADED)
+                    wrapped = cache.units(ctx, [unit])[0]
+                    return wrapped.fn(*wrapped.args).splitlines()[0]
+                self.assertEqual(compile(), 'cache miss')
+                output.unlink()
+                self.assertEqual(compile(), 'cache hit')
+                helper.write_text("value = 'new'")
+                self.assertEqual(compile(), 'cache miss')
+                self.assertEqual(output.read_text(), 'new')
+                (root / 'story/new-directory').mkdir()
+                self.assertEqual(compile(), 'cache miss')
+                helper.chmod(0o700)
+                self.assertEqual(compile(), 'cache miss')
+                (output.parent / 'DIGI.DAT').write_bytes(b'new model archive')
+                self.assertEqual(compile(), 'cache miss')
+                output.unlink()
+                self.assertEqual(compile(), 'cache hit')
+
     def test_test_changes_do_not_invalidate_builds_but_imported_helpers_do(self):
         import sys
         with tempfile.TemporaryDirectory() as td, patch.object(runner, 'ROOT', td):

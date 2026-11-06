@@ -97,9 +97,9 @@ key can still reuse audited unchanged steps, including their original input trac
 cache bookkeeping is excluded from those traces. Regional steps use the existing audited derive cache in locked stable staging directories:
 each cut starts from fresh inputs, checks recorded reads, absent probes and
 directory listings, and verifies every restored artifact. Code and runtime inputs
-are part of those keys. Regression entry points do not invalidate build artifacts;
+are part of those keys. Unit code fingerprints exclude unused regression entry points;
 any such helper actually imported by a builder is still keyed. Changed dependencies rebuild their consumers; conservative
-code fingerprints can rebuild more than the minimum. Binary deltas have separate
+code fingerprints can rebuild more than the minimum. Story archives also hash the supplied source trees, directory inventory and modes, and generated model archive before workers start; this covers helpers and data loaded before audit recording. Binary deltas have separate
 keys for source bytes, target bytes, algorithm and native producer. Cache entries
 are private and must never enter publication archives.
 

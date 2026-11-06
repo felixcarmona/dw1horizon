@@ -136,10 +136,33 @@ def screen_piece(fn, args, stage, code_inputs=None):
     return path.read_bytes(), result['size']
 
 
+def story_inputs(ctx):
+    """Fingerprint inputs whose values may already live in imported modules.
+
+    Audit events cannot observe a global populated before a pass starts. Include
+    the supplied source trees, inventory and modes, plus the generated model
+    archive used by story compilation. Compute once before workers publish maps.
+    """
+    root = Path(ctx.root)
+    roots = [root / name for name in ('tools', 'content', 'story', 'mods', 'text',
+                                     'docs/data', 'decomp/config/us', 'extracted')]
+    roots.append(Path(ctx.out) / 'DIGI.DAT')
+    entries = []
+    for base in roots:
+        for p in [base, *sorted(base.rglob('*'))] if base.is_dir() else [base]:
+            if '__pycache__' in p.parts or p.suffix == '.pyc':
+                continue
+            mode = p.stat().st_mode & 0o7777 if p.exists() else None
+            entries.append([str(p), mode, digest(p) if p.is_file() else
+                            'directory' if p.is_dir() else 'absent'])
+    return key(entries)
+
+
 def units(ctx, original):
     directory = os.environ.get('DW_BUILD_CACHE')
     if not directory or runner.strict() or ctx.record:
         return original
+    sources = story_inputs(ctx) if ctx.cache_step == 'story' else None
     out = []
     for u in original:
         fn, args, group = u.fn, u.args, u.order_group
@@ -148,7 +171,7 @@ def units(ctx, original):
             folder = str(Path(ctx.out) / 'cache-story' / str(len(out)))
             fn, args, group = isolated_story, (fn, args, folder, roots), None
         ident = identity(ctx, f'{ctx.cache_step}/{u.name}',
-                         [u.fn.__module__, u.fn.__name__, u.args, declared_code(tuple(u.inputs))])
+                         [u.fn.__module__, u.fn.__name__, u.args, declared_code(tuple(u.inputs)), sources])
         out.append(runner.Unit(u.name, run_unit,
                               (directory, os.path.join(ctx.root, 'build'), ident, fn, args),
                               u.inputs, u.outputs, order_group=group))
