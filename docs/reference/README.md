@@ -27,6 +27,7 @@ build is in [../building.md](../building.md); how to test is in [../developing.m
 | [ram-map.md](ram-map.md) | the key addresses at a glance and the global state by subsystem; how to list every global |
 | [partner.md](partner.md) | the partner's care values (hunger, sleep, poop, weight, happiness, discipline, sickness, lifetime), training, evolution and its scoring, death and rebirth, technique learning |
 | [world.md](world.md) | the 239 screens with exits and placed Digimon, entering a screen, movement and collision, the camera, NPCs, File City, prosperity, recruitment, transport, chests |
+| [liked-regions.md](liked-regions.md) | the nine liked/disliked place patterns, original partner assignments, and the review of new raisable species |
 | [scripts.md](scripts.md) | the script interpreter: triggers and pstats and their meanings, the opcodes, routines, the text box engine |
 | [story-engine.md](story-engine.md) | how the story is put together: entry points, the scripts-to-C conventions, the original quest chain and zone gates, how `story/` becomes the disc's script files, EXTENDED STORY |
 | [combat.md](combat.md) | wild and arena battles, the fighter state, techniques, AI choice, hit and damage formulas, statuses, finishers, rewards, tournaments |
