@@ -82,6 +82,8 @@ def pick(cur, targets, R, levels, st, care, weight, kind, bonus=(0, 0, 0, 0)):
         sc = score(cur, R[t], levels[t], st, care, weight, bonus, target=t)
         if kind == 'in-training':
             if best_score < sc and sc >= 3: best, best_score = t, sc
+        elif kind == 'rule':
+            if sc >= 3: return t
         elif sc >= 3:
             req = R[t]; vals = [st['hp'] // 10, st['mp'] // 10, st['offense'], st['defense'], st['speed'], st['brain']]
             used = [vals[i] for i, k in enumerate(STATS) if req[k] != -1]

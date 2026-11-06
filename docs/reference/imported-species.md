@@ -247,7 +247,7 @@ training type (all stats ×0.8) only on the junk lines (Numemon, Sukamon, Nanimo
 name and stat. Evolution gains are the level's flat row (Rookie 500/500/50/50/50/50, Champion 1500/1500/150..., Ultimate
 5000/5000/600/500/500/500) scaled the same way, HP/MP in steps of 50, the rest of 5.
 
-**Evolution parents.** The curated table (`content/tables/evolution-tree.json`) prefers canon main lines, then family and shared specialty. A child has up to five parents; a parent has six targets. The sheet’s 48 imported canon Megas are engine level `mega`, following Ultimate parents; no Champion fallback is allowed. The original disc routes to Phoenixmon and HerculesKabuterimon stay. Requirement rows distinguish siblings through stats, care and weight, with a primary-parent bonus applying only to the first parent. `tools/evo_tree.py` checks each parent with the picker; `tools/test_evo_tree.py` guards the tree in the self-test. The final tier table revises the affected Rookie links; the 35-entry quiz uses Crabmon and Tapirmon and preserves NEW DIGIMON off. The four Baby II partners have their 6 targets in the executable's
+**Evolution parents.** The curated table (`content/tables/evolution-tree.json`) prefers canon main lines, then family and shared specialty. A child has up to five parents; a parent has six targets. The sheet’s 48 imported canon Megas are engine level `mega`, following Ultimate parents; no Champion fallback is allowed. Native Megas also require Ultimate parents; every raisable Ultimate has at least two Mega choices. The original Champion routes to Phoenixmon and HerculesKabuterimon survive only with NEW DIGIMON off, where these targets are Ultimates. Requirement rows distinguish siblings through stats, care and weight, with a primary-parent bonus applying only to the first parent. `tools/evo_tree.py` checks each parent with the picker; `tools/test_evo_tree.py` guards the tree in the self-test. The final tier table revises the affected Rookie links; the 35-entry quiz uses Crabmon and Tapirmon and preserves NEW DIGIMON off. The four Baby II partners have their 6 targets in the executable's
 `EVOLUTION_PATHS` (`int8_t to[6]`) full; patch 0111 gives each Baby II up to 12 more Rookie targets
 (`getEvolutionExtraTargets`, made from the `DIGI.DAT` links that find no free slot), walked after the 6 by
 `getInTrainingEvolutionTarget`.
@@ -339,7 +339,7 @@ against species 12; the field/care retargeting generators are removed.
 
 The original game has levels 1 Fresh to 5 Ultimate (0 = NPCs that never evolve). The `mega` patches (0058 in the
 series) add **6 = Mega** (`include/dw/level.h`): a species whose record says level 6 is a Mega wherever the game asks
-for a level. The identity sheet defines 48 imported level-6 Megas (47 promoted species and the existing WarGreymon). Their committed ids are `sheet_megas` in `content/tables/evolution-tree.json`; their parents are Ultimates. The original Phoenixmon, HerculesKabuterimon and MetalEtemon retain Ultimate for their established routes; Machinedramon, Jijimon and Analogman retain Ultimate for story behavior. There are no imported Mega routes from Champions.
+for a level. The identity sheet defines 48 imported level-6 Megas (47 promoted species and the existing WarGreymon). Their committed ids are `sheet_megas` in `content/tables/evolution-tree.json`; their parents are Ultimates. Phoenixmon, HerculesKabuterimon, MetalEtemon, Machinedramon, Jijimon and Analogman also use Mega with NEW DIGIMON on and restore Ultimate through explicit off data. No Champion can evolve directly into a Mega.
 
 **Reaching it.** `tickConditions` has one Ultimate branch: Machinedramon's special case (48 h), then
 `getChampionEvolutionTarget` after 96 h for another Ultimate, and a Mega target only once `evoTimer >= 120`
@@ -439,7 +439,7 @@ storage budget and that the deltas' literal bytes are not the donor's.
 - The donor match is a heuristic over skeleton shape: a winged humanoid can get a centaur's walk; [motion.md](motion.md)
   describes the field recipes that replace such gaits.
 
-The second evolution is a real tier change: every promoted species uses Mega training, tamer level, lifetime, chart and arena rules. The archive’s `first_mega` and per-partner level array are generated from these rows. Evolution items still require the adjacent level; the laboratory follows paths and otherwise uses `first_mega`. General arena brackets now include levels 3–6; fixed cup species lists remain authored by the story. The two `evolutionUltimate` special pairs into Machinedramon remain separate from natural path rows; the web guide includes their timed requirements.
+The second evolution is a real tier change: every promoted species uses Mega training, tamer level, lifetime, chart and arena rules. The archive’s `first_mega` and per-partner level array are generated from these rows. Evolution items still require the adjacent level; the laboratory follows paths and otherwise uses `first_mega`. General arena brackets now include levels 3–6; fixed cup species lists remain authored by the story. The original two timed pairs into Machinedramon remain; MetalTyrannomon adds an ordinary Mega path. The guide avoids assigning one shared wait to targets with mixed ordinary and timed parents. Fresh and Ultimate pair tables each reserve sixteen entries.
 
 ### Imported family voices
 

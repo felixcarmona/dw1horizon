@@ -372,8 +372,7 @@ values or Vegiemon's prices.
 
 North Star (92) remains **Whamon (24)**'s arena cup-14 reward, with its original descriptions in all eight languages.
 Whamon is an Ultimate with NEW DIGIMON on, so a Champion can use North Star. With the option off Whamon is a
-Champion and a Rookie can use it. The native target-stage reader follows current stages while preserving the
-established native Mega-item exception. No story Whamon (146), tournament reward, merit or North Star value changes.
+Champion and a Rookie can use it. The native target-stage reader follows current stages: Mega items require an Ultimate, including Red Ruby and Beetlepearl. No story Whamon (146), tournament reward, merit or North Star value changes.
 
 **Dolph Fin (124)** is a separate 5000-value evolution item, sold for 2500, with meritValue 0. The otherwise-unused
 AS Decoder slot has no stock, drop or story use in this branch or current main; the real fridge key remains item
