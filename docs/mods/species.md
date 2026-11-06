@@ -77,6 +77,10 @@ WereGarurumon (62) is the one record original inside the resident path table. `b
 
 ## How the game reads them
 
+For `partner.favored_region`, see the [liked-region reference](../reference/liked-regions.md):
+the nine patterns include disliked places as well as liked ones, so the value
+cannot be inferred from a specialty or a geographical name alone.
+
 - **The 180 originals stay as they were**: `DIGIMON_DATA`, the skeletons,
   model names, voices and `ALLTIM.TIM` are resident and read every frame.
 - **Ids 180 and up** come from `DIGI.DAT` (one `FILE_OFFSET_TABLE` entry):
