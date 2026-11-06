@@ -170,6 +170,14 @@ run dw3-names        $PY tools/dw3_names_check.py                      # DW2003 
 run map-reach-policies $PY tools/test_reach_policies.py
 run developer-contracts $PY tools/test_dev_contracts.py
 run presented-frame-video $PY tools/test_presented_frames.py
+run duckstation-protocol $PY -m unittest tools.test_duckstation_protocol
+PATCHED=${DW_SELFTEST_DECOMP:-build/decomp-dev}
+if [ -f "$PATCHED/src/main/main.c" ]; then
+    run fps-auto $PY tools/test_fps_auto.py "$PATCHED"
+    run options-save $PY tools/test_cheats.py "$PATCHED"
+else
+    skip fps-auto "needs prepared C tree (DW_SELFTEST_DECOMP)"
+fi
 run gallery-foregrounds $PY tools/test_gallery_foregrounds.py
 run retouch-cutouts $PY tools/test_retouch_cutouts.py
 run image-raster      $PY -m unittest tools.test_image

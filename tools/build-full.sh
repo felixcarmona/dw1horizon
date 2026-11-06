@@ -63,10 +63,9 @@
 #   MOD_VERSION=TEXT               the version the title screen and the title menu show in a corner (patch 0257); default
 #                                  `tools/version.py game` (the release tag, "v0.1.0", or a development version, docs/
 #                                  patcher.md "Making a release"); MOD_VERSION= draws nothing
-#   FPS=20|30|60                   the frame rate the executable presents (docs/reference/frame-rate.md; the
-#                                  logic stays at 20 Hz). A build parameter, not a game setting;
-#                                  default: the Makefile's (FPS ?= 60, the pending decision of
-#                                  docs/reference/frame-rate.md)
+#   FPS=20|30|60                   renderer variant: 20 fixes one pass; 30/60 include automatic 20/60 selection
+#                                  from CPU speed (docs/reference/frame-rate.md). Logic stays at 20 Hz.
+#                                  Default: the Makefile's FPS ?= 60.
 #   SCREEN_CONTENT=DIR[:DIR]       more screen files (DIR/<id>-<name>.json, ids 255 and up: tools/screens.py) beside
 #                                  content/screens, e.g. a mod's or a test's own screens (tools/dev/playtest/screens.sh)
 #   EXTRA_FILES="DEST=SRC ..."     more files for the disc: DEST on the disc replaces it (a map a test edits), a new DEST is a

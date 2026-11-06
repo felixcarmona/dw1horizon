@@ -4,14 +4,21 @@ Scripts to build and verify the 60 fps renderer
 (`docs/reference/frame-rate.md`, `docs/reference/frame-rate.md`). They drive the emulator
 through `tools/dev/emulator.py` and read RAM by symbol; all locate their own worktree. Generated Lua goes under `build/dev/fps/`, separated by emulator port.
 
-Since series patch `0080` the frame rate is a build parameter (`FPS=20|30|60`,
-`docs/reference/frame-rate.md` "Choosing the frame rate"), no longer `MOD_FPS_MODE` in
-RAM: a mode argument means "the disc was built with that rate" (`frame_cost.py` and
-`tools/dev/duckstation.py perf` check `MOD_FPS_BUILD`), and comparing rates needs one disc
-per rate. Compare separate discs and save states for each frame rate. `MOD_FPS_INTERP` and `MOD_FPS_TEST_TICK` are still RAM switches.
+The standard `FPS=60` build automatically selects 20 or 60 from CPU speed.
+`MOD_FPS_MODE_RUN` reports the active presentation mode (0 or 2), while
+`MOD_FPS_BUILD` reports which renderer was compiled. `FPS=20` compiles out extra
+passes; both `FPS=30` and `FPS=60` include the automatic selector. There is no
+saved frame-rate setting. Older scripts describing mode as a build parameter
+must check the active runtime mode when using a current disc.
+
+For automatic selection, compare standard CPU speed against 250% with both
+2 MB and 8 MB, and toggle the emulator overclock during play. Measure logic
+and presentation separately; debugger pauses must not count toward wall time.
+`MOD_FPS_INTERP` and `MOD_FPS_TEST_TICK` remain diagnostic RAM switches.
 
 | Script | What it measures |
 |---|---|
+| `autocheck.py` | full-disc automatic/manual comparison: boot selection, original 2 MB and expanded 8 MB, light/heavy/battle fps, guest swap intervals and runtime overclock toggles |
 | `clockrate.py` | game minutes per real minute |
 | `random_call_rate.py` | `rand()` calls per tick |
 | `frame_cost.py`, `interpolation_cost.py` | tick / render / extra-pass cost per scene (MOD_PERF counters) on a build of a given frame rate |

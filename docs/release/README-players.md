@@ -184,9 +184,12 @@ To check your disc without patching: `py dwpatch.py check "Digimon World (USA).c
 
 ## Frame rate
 
-Up to 60 frames per second. A steady 60 needs an emulator with a faster CPU setting; the title screen tells you which
-one. At normal speed busy places run closer to 25-40, and a real PlayStation about 30. Controls are still read 20
-times per second, and the smoothing shows the picture up to 50 ms later. FRAME RATE in OPTIONS goes back to 20.
+The game chooses automatically: evenly spaced 20 frames per second on an original
+PlayStation or an emulator at normal CPU speed, and 60 with enough CPU overclock
+(250%). The title screen shows the recommended emulator settings. Changing the
+CPU overclock during play takes effect after a few seconds. Extra RAM does not
+change the frame rate. Logic and controls remain at 20 Hz; smoothing at 60 fps
+shows the picture up to 50 ms later. There is no frame-rate option to set.
 
 ## Saves
 

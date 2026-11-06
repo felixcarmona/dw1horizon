@@ -15,7 +15,7 @@
  "patch.waiting": "確認中…",
  "patch.ready": "準備完了。ブラウザ上で数分かかります。",
  "features.title": "新要素",
- "features.lead": "言語、フレームレート、フォント、難易度、新デジモン、拡張ストーリー、表示設定はOPTIONSで選べます。エンジンの改善と不具合修正は常に適用されます。",
+ "features.lead": "言語、フォント、難易度、新デジモン、拡張ストーリー、表示設定はOPTIONSで選べます。エンジンの改善と不具合修正は常に適用されます。",
  "changelog.title": "更新履歴",
  "changelog.copyLink": "v{version}へのリンクをコピー",
  "changelog.linkCopied": "リンクをコピーしました",

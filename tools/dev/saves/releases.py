@@ -475,7 +475,9 @@ def ram_values(emu, locks, profile):
     for key, symbol in PERMANENT_OPTIONS.items():
         if not emu.has(symbol): opts[key] = 1
     if emu.has('MOD_FONT'): opts['font'] = {0: 1, 1: 0, 2: 2}[pk('MOD_FONT', 'b')]
-    if emu.has('MOD_FPS_MODE_RUN'): opts['frameRate'] = {0: 20, 1: 30, 2: 60}[pk('MOD_FPS_MODE_RUN', 'i')]
+    # Automatic presentation is hardware-derived, so a save cannot prescribe it.
+    if emu.has('MOD_FPS_MODE_RUN') and not emu.has('modCpuProbe'):
+        opts['frameRate'] = {0: 20, 1: 30, 2: 60}[pk('MOD_FPS_MODE_RUN', 'i')]
     v['options'] = opts
     v['roster'] = emu.raw('SAVE_FILE+0x700', 0xA00, ram).hex()
     trig = emu.raw('SCRIPT_STATE+245', 100, ram); pst = emu.raw('SCRIPT_STATE+345', 256, ram)

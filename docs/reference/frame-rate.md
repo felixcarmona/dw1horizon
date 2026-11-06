@@ -1,9 +1,9 @@
-# Frame rate: 20 Hz logic, 30 or 60 fps drawing
+# Frame rate: 20 Hz logic, automatic 20/60 fps drawing
 
 How the original engine times a frame (one logic tick per drawn frame, `VSync(3)`, 20 Hz), and how the frame-rate
 patches separate drawing from game time: a fixed 20 Hz logic tick, a late-tick phase, render callbacks made
 repeatable, interpolation of the camera, entity roots and bones between ticks, and one present helper shared by every
-game loop. It also covers the `FPS` build parameter, the OPTIONS FRAME RATE row and how battle speed changes the tick
+game loop. It also covers the `FPS` build parameter, automatic CPU-based selection and how battle speed changes the tick
 period.
 
 Patches: 0011, 0026-0047 and 0049 (the core work; 0048 added a lab menu row that 0080 removes), 0074 (`MOD_RENDER_ALPHA`), 0080 (build parameter), 0169/0173/0174
@@ -401,17 +401,81 @@ generated header `fps.h`, so a change rebuilds what depends on it. `decomp/inclu
 | FPS | `MOD_FPS_MODE` |
 |---|---|
 | 20 | compile-time 0: one render per tick at the third refresh, as the original. The extra passes, the render random replay and the interpolation in `modPresent` compile out (the helper is under 1 KB instead of about 9.6 KB); the interpolation tables stay, so the memory layout is the same in all builds |
-| 30 | the variable `MOD_FPS_MODE_RUN`, 1 at start |
-| 60 | the variable `MOD_FPS_MODE_RUN`, 2 at start |
+| 30 | the variable `MOD_FPS_MODE_RUN`, automatic 20/60 selection |
+| 60 | the variable `MOD_FPS_MODE_RUN`, automatic 20/60 selection |
 
 `MOD_FPS_BUILD` is a read-only word in RAM (20, 30 or 60) that tells tools which build is running. The game logic runs
 at 20 Hz in every build. See [../building.md](../building.md) for the build itself.
 
-### OPTIONS FRAME RATE (0169, 0173, 0174)
+### Automatic selection
 
-In an `FPS=30` or `FPS=60` build the title menu's OPTIONS row FRAME RATE switches `MOD_FPS_MODE_RUN` between 0
-(20 FPS, the original) and 2 (60 FPS), and the choice is kept in the save's options record. In an `FPS=20` build the row
-does nothing. Row layout, defaults and the saved record: [../mods/options.md](../mods/options.md#frame-rate).
+The FRAME RATE row is removed from both OPTIONS panels, including its localized
+labels and values. The saved frame-rate byte and the memory-card header copy are
+ignored; new saves write 20 in that reserved byte for compatibility with older
+readers. All other option byte positions are unchanged.
+
+`MOD_FPS_MODE_RUN` starts at 0. The title's existing CPU check counts polling-loop
+iterations over 16 lines of hardware hblank counter 1. That counter follows video
+timing independently of CPU overclock. Recorded DuckStation counts were 3801,
+7389, 9303 and 10977 at 100%, 200%, 250% and 300%. At boot, at least 8500 selects
+mode 2; otherwise mode 0. The loop is shared by boot and runtime checks. On return to the title, its notice uses the latest CPU measurement. The RAM
+probe remains boot-only and has no bearing on presentation.
+
+Boot alone cannot follow a changed emulator overclock or a restored same-build
+save state. `modWaitVblank` therefore polls about every 120 refreshes, only outside
+accelerated file loading and with at least 32 scanlines left before the next
+vblank. A presentation end within the last 120 refreshes is also required:
+the SDK line counter wraps at 65536, so a long blocking read must not look like
+a fresh idle window. The probe consumes 16 of those idle lines; presentation deadlines and the
+logic tick period stay unchanged. Busy frames defer the check until a safe wait.
+Two consecutive samples at least 8500 enable 60; two below 7500 restore 20. Any
+sample agreeing with the current mode clears the pending vote. The gap provides
+hysteresis, and two samples reject a single interrupted measurement. A sustained
+change normally settles within four seconds of safe presentation waits. Unsigned
+refresh subtraction handles counter wrap and a restored state's clock phase.
+A state from another executable version still requires a fresh boot.
+
+At 100% the existing mode-0 path renders once at the third refresh, with no
+interpolation. At 250% the existing mode-2 path schedules three passes per tick.
+No load-based downgrade is added: expensive scenes must not make the mode
+oscillate while CPU speed stays fixed. Existing per-pass deadline checks remain.
+`FPS=20` still compiles out extra passes and runtime probing. Mode 1 remains
+available to developer instrumentation but is never automatically selected.
+
+The decision follows 72 measured cases across DuckStation and Redux: requesting
+60 at 100% CPU presented about 20 fps with worse pacing (Gear Savanna alternated
+20/40; a tournament's 1% low was 15 versus 20). At 250%, 60 held evenly. Logic
+remained 20 Hz throughout. These measurements supersede the early speed estimates
+below. See [options compatibility](../mods/options.md#automatic-frame-rate).
+
+### Automatic-selection verification
+
+A matched full-disc DuckStation comparison uses the preceding manual renderer
+and the automatic renderer at 100% and 250%, with both 2 MB and 8 MB. Each
+configuration covers the house (screen 218), Gear Savanna (69), and a Native
+Forest battle (0): 12 cases per renderer.
+
+| CPU | RAM | Presented fps, all three scenes | Refreshes per swap | Logic ticks/s |
+|---|---|---|---|---|
+| 100% | 2 MB | 20 | 3, all 180 intervals | 20 |
+| 100% | 8 MB | 20 | 3, all 180 intervals | 20 |
+| 250% | 2 MB | 60 | 1, all 180 intervals | 20 |
+| 250% | 8 MB | 60 | 1, all 180 intervals | 20 |
+
+Both renderers give the same results. FPS uses ten seconds of free-running
+counters normalized to guest refresh time; pacing samples actual
+`GsSwapDispBuff` calls, excluding debugger pauses. Both RAM configurations also
+pass runtime 250% → 100% → 250% changes. Including hotkey delivery, the measured
+transitions take 176–248 refreshes (2.93–4.13 seconds); the resulting fps, spacing
+and 20 Hz logic match the table. Booting a card carrying the old 60-fps byte at
+100% still selects 20. The OPTIONS visual matrix covers all eight languages and
+NEW, CLASSIC and ORIGINAL fonts (24 captures).
+
+`tools/dev/fps/autocheck.py` reproduces these checks with a private memory card,
+matching linker map and isolated DuckStation instance. Sanitized extracted-C
+tests cover threshold noise, idle-budget deferral, long stalls, refresh wrap,
+restored clock phases and every legacy frame-rate byte. Physical-console timing
+and save-state restoration in an emulator are not part of this comparison.
 
 ## Battle speed (0184, 0187, 0196)
 
@@ -459,13 +523,10 @@ costs 10-14 lines per pass.
 
 - 60 fps needs, per refresh, `render + tick / 3 ≤ 263` lines on the CPU and the GPU's drawing time per frame under
   263. 30 fps (6 refreshes = 2 ticks + 3 passes) needs `3 × render + 2 × tick ≤ 1578`.
-- At the original CPU speed: File City reaches 40-60 fps, Native Forest about 40, Jijimon's house 20-40 depending on
-  the emulator, Freezeland near 20 (tick plus render already exceed a refresh), and a fight with effects 25-35. A pass that does not fit is
-  skipped, so no scene runs slower than the original.
-- In both emulators measured, the GPU wait is about 0: this game's GPU time (small flat and gouraud polygons, one
-  full-screen background) fits inside its CPU time, so the limit is the CPU. An emulator CPU overclock of 200 % gives
-  a locked 60 fps in every scene tried. On a console, 30 fps is the realistic expectation where one extra pass fits,
-  and evenly paced; 60 fps there would alternate 2 and 1 passes per tick.
+- Early measurements of the smaller patch series suggested higher rates at
+  original CPU speed and 200% CPU. Those estimates do not describe the current
+  full game. The 72-case comparison above establishes automatic 20 at standard
+  CPU speed and 60 at 250%; original hardware uses the evenly spaced mode 0.
 - Background tiles are 12 `POLY_FT4` (negligible CPU); a typical Digimon model is about 400 TMD primitives, about 35
   lines per model with `GsSortObject4`.
 
@@ -555,7 +616,7 @@ aligned heap falls by 80 bytes. KAR contains the history and tile helper.
 | `MOD_RENDER_PASS` | 0 in the tick and first pass, 1, 2 on extra passes |
 | `MOD_RENDER_MULTIPASS` | set around the passes (removals wait) |
 | `MOD_RENDER_ALPHA` | this pass's fraction of the tick, 0..4096 |
-| `MOD_RENDER_CADENCE` | 0 = inactive; 1/2 = normal/early half of steady 30 FPS; 4 = curling at requested rate with deferred tiles; reset at each tick; preserves the player's 20 FPS option |
+| `MOD_RENDER_CADENCE` | 0 = inactive; 1/2 = normal/early half of steady 30 FPS; 4 = curling at requested rate with deferred tiles; reset at each tick; preserves automatic mode 0 |
 | `MOD_FPS_INTERP` | interpolation on (1, default) or off; test switch |
 | `MOD_FPS_INTERP_BONES` | 0 / 1 / 2, see above; test switch |
 | `MOD_FPS_TEST_TICK` | test switch: every tick lasts that many refreshes (0 = off) and every pass is rendered at its fraction of the tick |
@@ -581,6 +642,14 @@ Grade D cup and world walks hash identically every tick at 20, 30 and 60 fps, in
 `tools/dev/fps/` (its README lists them); driving the emulator and reading RAM by symbol: [../developing.md](../developing.md).
 
 ## Memory
+
+The automatic selector is measured against the preceding full language build.
+`main_BSS_END` changes from `0x801CDEC0` to `0x801CDEC8` (+8 bytes); allocator
+alignment leaves usable heap unchanged at 188,464 bytes. Moving the immutable
+OPTIONS row-pointer table into MENU offsets the selector code: MENU_REL changes
+from 53,684 to 53,608 bytes, below its 55,296-byte load limit. All 320 actual-archive
+setups retain their previous margins, with a 3,744-byte minimum on screen 207.
+No allocation is added.
 
 The frame-rate work costs on the order of 25-30 KB of main-executable code and bss, which comes out of the heap
 ([memory.md](memory.md)). The main parts: the late tick table (0.5 KB), the map sprite draw list (1.5 KB), the rollback buffers

@@ -122,7 +122,7 @@ camera → `tickObjects` → `renderObjects` → `DrawSync` → `VSync(3)` → s
 `VSync(3)` waits for three vertical retraces: **20 iterations per second** on NTSC (consistent with `tickPlaytime`
 counting one real minute every 1200 frames). The title and menu screens use `VSync(0)` (60 Hz). Everything that lives
 in the world (clock, partner, NPCs, UI) is an object registered with `addObject(id, ..., tick, render)` and walked
-every frame. The mod's 30/60 fps option changes this; see [frame-rate.md](frame-rate.md).
+every frame. The mod's automatic 20/60 fps renderer separates drawing from logic; see [frame-rate.md](frame-rate.md).
 
 **Input** (l. 3978-4018): `CHANGED_INPUT` = newly pressed buttons plus D-pad auto-repeat (mask `0xF000F000`): in the
 game after 5 frames, then every 2; in menus after 15, then every 6.

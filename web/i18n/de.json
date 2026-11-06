@@ -15,7 +15,7 @@
  "patch.waiting": "Wird geprüft…",
  "patch.ready": "Bereit. Es dauert ein paar Minuten, hier in deinem Browser.",
  "features.title": "Neuerungen",
- "features.lead": "Wähle Sprache, Bildrate, Schrift, Schwierigkeit, neue Digimon, erweiterte Geschichte und Anzeige in OPTIONS. Engine-Verbesserungen und Fehlerkorrekturen bleiben aktiv.",
+ "features.lead": "Wähle Sprache, Schrift, Schwierigkeit, neue Digimon, erweiterte Geschichte und Anzeige in OPTIONS. Engine-Verbesserungen und Fehlerkorrekturen bleiben aktiv.",
  "changelog.title": "Versionsverlauf",
  "changelog.copyLink": "Link zu v{version} kopieren",
  "changelog.linkCopied": "Link kopiert",

@@ -330,7 +330,7 @@ def audit(root=ROOT):
             for name in glossary['species']:
                 if re.search(r'(?<![A-Za-z])' + re.escape(name) + r'(?![A-Za-z])', literal):
                     report['errors'].append(where + ': untranslated species ' + name)
-            autonym = re.fullmatch(r'main\.MOD_OPT_STR_(?:ENGLISH|SPANISH|PORTUGUESE|FRENCH|GERMAN|ITALIAN|JAPANESE|CATALAN|20|60)', key)
+            autonym = re.fullmatch(r'main\.MOD_OPT_STR_(?:ENGLISH|SPANISH|PORTUGUESE|FRENCH|GERMAN|ITALIAN|JAPANESE|CATALAN)', key)
             if not autonym and not CJK.search(literal) and re.search(r'[A-Za-z]{3}', literal) and literal != 'START':
                 report['errors'].append(where + ': untranslated Latin prose')
     report['missing'].sort()

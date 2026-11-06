@@ -1,7 +1,7 @@
 # Options: the title menu's OPTIONS
 
 Patches 0167, 0169, 0173-0175, 0177, 0180-0182, 0199, 0212, 0234, 0239, 0244 and 0276 (`mods/patches/`). The title menu has a fifth row, **OPTIONS**, under BATTLE MODE. It
-opens a box of eleven switches (ten in a `FONT=original` build, which has no FONT):
+opens a box of ten switches (nine in a `FONT=original` build, which has no FONT):
 
 | Row | Values | Default | Effect |
 |---|---|---|---|
@@ -11,7 +11,6 @@ opens a box of eleven switches (ten in a `FONT=original` build, which has no FON
 | EXTENDED STORY | OFF / ON | ON | patch 0199: the story with the story mods built onto the disc (What the Island Forgot: its new places, the city's new residents), or OFF the original story; changing it on a save moves the tamer to Jijimon's house (below) |
 | DIFFICULTY | EASY / NORMAL | NORMAL | patch 0212: EASY, the partner deals double damage and takes half in battles and tournaments (below) |
 | QUICK BATTLE START | OFF / ON | ON | patches 0234, 0239: a field battle starts the moment it is triggered, its BATTLE letters and bubbles over the running fight (patches 0233, 0236, 0238); OFF, the original start |
-| FRAME RATE | 20 FPS / 60 FPS | the build's (60) | `MOD_FPS_MODE` (below) |
 | FONT | NEW / CLASSIC / ORIGINAL | NEW | font b, ours; the original letters evenly spaced; the original font as the original draws it (below) |
 | LANGUAGE | eight languages selected at build time | the build's (`LANG_BASE`) | the selected runtime languages ([languages](language.md)) |
 | MAP SIGNS | ORIGINAL / TRANSLATED | TRANSLATED | patch 0183: the signs painted in the map backgrounds as the disc has them, or in the language |
@@ -22,6 +21,7 @@ HUD shows happiness, discipline, hunger, toilet and tiredness; the status screen
 shows care bars, numbers and care mistakes. See [gauge meanings](../../HUD-DESIGN.md#exact-gauge-contract).
 The digital clock beneath the field dial and continuous enemy head bars are also
 permanent. Saved-options bytes 1 and 3 are ignored on load and written as 1.
+Byte 2 is reserved, ignored on load and written as 20 for older readers.
 Byte 13 is reserved: both inverted enemy-bar bits are ignored and written as 0;
 the old title-header bits 6 and 5 are ignored and cleared.
 The other saved bytes retain their positions, including on older saves.
@@ -37,8 +37,7 @@ older saved options and every selected language after adding a setting.
 Since 0175 the box is laid out in the font that draws it (`drawOptionsText`): the labels' column as wide as the widest
 label, the values' columns as wide as the widest value, 8 pixels between columns, centred on the screen. The labels are
 drawn in the text area's first rows and the values in the rows under them: the original font's "JAPANESE CONTROLS"
-takes 200 of the area's 256 pixels. With that font the two values do not fit beside it (200 + 2 x 61 pixels for "20 FPS"
-and "60 FPS", more than the screen), so a row shows only its chosen value, as the original game's own settings do;
+takes 200 of the area's 256 pixels. With that font long labels and their values do not fit beside each other, so a row shows only its chosen value, as the original game's own settings do;
 left, right and confirm work the same.
 
 ## DIFFICULTY
@@ -81,14 +80,21 @@ executable, `TEXT=us` without new screens, whose paging fits both fonts) reads t
 so it happens only at the title: in OPTIONS, or when a Continue takes the save's options. The executable's own strings
 (menus, names, item texts) are one set for both fonts.
 
-## FRAME RATE
+## Automatic frame rate
 
-With a build made with `FPS=30` or `FPS=60` (`dw/mod_fps.h`), `MOD_FPS_MODE` is the variable `MOD_FPS_MODE_RUN`
-(`main.c`, the build's rate at start) and the row switches it between 0 (20, the original: one render per tick) and 2 (60); the game logic stays at 20 Hz.
-Mode 1 (30) remains for an `FPS=30` build, whose row then shows neither value chosen until one is picked.
-With `FPS=20` it is still the compile-time 0 and the extra passes compile out; the row then shows neither value chosen
-and does nothing. Measured in an emulator (Jijimon's house, 10 s): 30 FPS row 29.95 fps, 60 FPS row 60.0 fps,
-20.0 ticks/s in both. An emulator too slow for the extra passes shows one frame per tick in either mode.
+There is no FRAME RATE row in either OPTIONS panel. The title screen's existing
+CPU measurement selects the renderer: 20 fps on original hardware and emulators
+at 100%, 60 fps with sufficient CPU overclock (250%). Logic and input remain at
+20 Hz. RAM size does not decide the rendering rate.
+
+The same 16-scanline probe runs during spare presentation waits about every two
+seconds. Two agreeing samples and separate enable/disable thresholds prevent
+oscillation. This adapts to runtime overclock changes and same-build save states;
+see [the scheduler and thresholds](../reference/frame-rate.md#automatic-selection).
+Saved-options byte 2 and its title-header copy are ignored and written as 20.
+The remaining bytes keep their positions, so old memory-card saves remain readable.
+The immutable row-pointer table lives in MENU_REL with its callers to offset
+the resident selector cost. Both heap checks use the full language build.
 
 ## JAPANESE CONTROLS
 
@@ -138,7 +144,7 @@ All the controls as in the Japanese version.
   options (`modBootOptions` calls `modButtonsBoot`), `SYSTEM_W.TIM` (9 sectors) is read into `GENERAL_BUFFER` and a
   Japanese ○ there turns JAPANESE CONTROLS on; a save's options, read right after, still win (the title shows a
   card's newest save's choice, a Continue its own). The US disc is as before. 464 bytes of heap.
-- **Saved.** The options are the record `SAVE_TAG_OPTIONS` 0x0009 (`u8[14]`: buttons, reserved clock byte (always 1), frame rate as 30/60, reserved care byte (always 1), font, evolution guide, new digimon, language, map signs, story, difficulty, quick battle start, cheats flags, reserved enemy-bar byte (always 0)),
+- **Saved.** The options are the record `SAVE_TAG_OPTIONS` 0x0009 (`u8[14]`: buttons, reserved clock byte (always 1), reserved frame-rate byte (always 20), reserved care byte (always 1), font, evolution guide, new digimon, language, map signs, story, difficulty, quick battle start, cheats flags, reserved enemy-bar byte (always 0)),
   written with every save. A Continue takes them, unless OPTIONS changed any since the
   console started; a shorter record (0167's 1 byte) leaves the rest at their defaults. So the title screen before a Continue
   has the US controls (on a Japanese base disc with no saves, the Japanese ones: ○ confirms there), and the test tools, which press × at the title, keep working.
