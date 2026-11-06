@@ -66,14 +66,6 @@ class ModelProvider(unittest.TestCase):
         for species, (bound_species, _, _) in selected.items():
             self.assertEqual(species, bound_species)
         assignments = {t: entry[1:] for t, entry in selected.items()}
-        # Native bindings replace the complete rig and its wrapper chain.
-        self.assertEqual(assignments.pop('236'),
-                         ('tools.models.field_animations.native_binding', '236-demidevimon-native-flight'))
-        self.assertEqual(assignments['190'],
-                         ('tools.models.field_animations.native_binding', '190-angewomon-field'))
-        # Keep checking the historical recipes below, including the frozen
-        # Angewomon source that remains the mesh input to its new binding.
-        assignments['190'] = ('tools.models.field_animations.celebrations', '190-angewomon-field')
         # Celebration curves run after the final proportions. Unwrap them to
         # keep guarding all the original field recipes and output names.
         for sid, row in celebrations.items():

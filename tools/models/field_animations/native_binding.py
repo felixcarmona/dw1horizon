@@ -54,8 +54,6 @@ def bind(data, skeleton, recipe):
         rule = recipe.get('pieces', {}).get(str(sb), {})
         factor = rule.get('scale', recipe['mesh_scale'])
         transform = np.eye(3) * factor
-        if 'rotation' in rule:
-            transform = np.array(mmd.rot_matrix(*(v*4096/360 for v in rule['rotation']))) @ transform
         direction = rule.get('direction', [sb, segments[sb]] if sb in segments else None)
         if direction:
             start, end = direction
