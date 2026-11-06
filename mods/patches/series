@@ -395,3 +395,4 @@ Match-approved-light-blue-need-gauges-and-muted-icon-tint.patch
 Keep-warning-icons-bright-while-only-bars-dim.patch
 Expand-starter-list-preserving-original-game-results.patch
 Drain-toilet-and-energy-gauges-as-care-needs-approach.patch
+Bound-ordinary-technique-stat-growth.patch

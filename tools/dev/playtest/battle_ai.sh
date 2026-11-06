@@ -19,7 +19,7 @@ def ok(name, got, want): print(f'{"ok " if got == want else "BAD"} {name:70s} go
 obj = json.load(open('content/tables/battle-formulas.json'))['battleFormulas']
 want = balance.encode_named('battleFormulas', obj, None)
 emu('load', state); time.sleep(1)
-ok('MOD_BATTLE as built = content/tables/battle-formulas.json (162 slots, waits in ticks)', peek(T['MOD_BATTLE'], len(want)) == want, True)
+ok('MOD_BATTLE as built = content/tables/battle-formulas.json (waits in ticks)', peek(T['MOD_BATTLE'], len(want)) == want, True)
 
 def fight(wiped):
     emu('load', state); emu('lua', 'PCSX.pauseEmulator() return 1')
