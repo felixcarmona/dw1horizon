@@ -187,16 +187,31 @@ character rather than the everyday animation donor. This is a native DW1 voice
 substitution, not a newly imported canonical voice recording. Notes 53–55 are
 present in the selected VBALL bank.
 
-Power Crane, slot 51, previously aliased the general 61-tick cast, whose core
-pitch ranged from −648 to 164 angular units. Its dedicated crane gesture reaches
-with the forward claw while the torso, free claws and heavy core counter the
-motion. The core stays within a small tilt instead of pitching through that
-full range. Other casting aliases and the Status portrait remain unchanged.
-The dedicated clip retains its original duration and sound event. The borrowed
-Megadramon origin `(8, 330, 0, 0)` is unique to Power Crane; it now follows a
-surface point on the acting forward claw (bone 17), rather than the idle side
-claw. All other effect origins remain unchanged. Its resident
-model fits the 100,352-byte buffer at 100,330 bytes; cold reads still fit 8,192.
+Power Crane, slot 51, now lashes all five mechanical chains rather than a single
+claw. Each chain bends at its root, middle link and wrist; the wrists follow
+the roots by three ticks. Both humanoid arms and the cloak react as the core
+counters the load without tipping far over. The attack loads, extends, follows
+through and settles into the existing ready pose. Duration (61 ticks), sound
+event and all other animation programs remain exact. The forward claw keeps
+the technique's effect at its local mesh point `(48, -64, -237)` on bone 17.
+
+The resident model uses 100,348 of 100,352 bytes; all cold reads fit 8,192 bytes.
+The small buffer margin is checked on the consumed model. Voice remains the
+Myotismon pair VBALL 56 / VLALL 3. This is a DW1 adaptation of Apocalymon's
+multi-claw attack; the native technique name Power Crane is not a card-game
+attack name.
+
+## Omnimon cape: game-equivalent review rendering
+
+The cape has coincident exterior and lining plates with opposite winding,
+single-sided flags and different white/red materials. Drawing both sides into
+an offline z-buffer produces white speckles. With the game's face culling,
+the same unchanged mesh and texture render solid. Keep the source plates and
+materials; changing their UVs or removing the lining would damage the model.
+
+`tools/animstudio.py` now culls by default. `--cull` remains explicit and
+`--no-cull` is available for diagnostic comparisons. Check the cape from the
+back as well as the front and side, then verify it in the native 2 MB engine.
 
 ## Omnimon: Grey melee and Garuru ranged techniques
 

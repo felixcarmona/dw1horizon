@@ -38,6 +38,16 @@ class ReportedAttacks(unittest.TestCase):
         claw_swing = max(p[15][3] for p in frames) - min(p[15][3] for p in frames)
         self.assertLess(core_pitch, 100)  # below nine degrees, rather than the shared cast's 71-degree range
         self.assertGreater(claw_swing, 350)
+        # Every mechanical chain bends at its own root, elbow and claw.
+        for bone in range(15, 30):
+            excursion = max(max(p[bone][3 + axis] for p in frames) -
+                            min(p[bone][3 + axis] for p in frames) for axis in range(3))
+            self.assertGreater(excursion, 200, f'inactive chain segment {bone}')
+        for bone in [6, 9]:
+            self.assertGreater(max(p[bone][5] for p in frames) - min(p[bone][5] for p in frames), 200)
+        ready, _, _ = animsheet.slot_frames(old, 31, 33)
+        self.assertEqual(frames[-1], ready[0])
+
         for slot in [0, 33, 46, 47, 48, 49, 50, *range(52, 61)]:
             self.assertEqual(animsheet.slot_frames(old, 31, slot), animsheet.slot_frames(new, 31, slot))
 

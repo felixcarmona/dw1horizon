@@ -4839,9 +4839,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/400-Apocalymon.MMD.mdelta",
-        "delta_sha256": "4258a8ea76f8a5c575ddbe0192712c02af854e573b18812704b3ec7550c86123",
-        "sha256": "879b79e8829cc7496ce3d394869c1b64571fe517ebf93c654ef9c2c0d4f77043",
-        "size": 113044
+        "delta_sha256": "64fdb8ac3d8a50784712ba809de838a37c16fbe9315254ef02dd48c1455ae610",
+        "sha256": "91f9848cd31f8c5865b620ce4feb95ce31c09585cb41195d70b876519af2758b",
+        "size": 113062
       },
       "tim": {
         "sources": [

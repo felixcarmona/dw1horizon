@@ -62,31 +62,40 @@ def omnimon(model):
 
 
 def apocalymon(model):
-    """Reach with the forward crane claw while the heavy core counters its weight."""
+    """Lash all five chain claws, with delayed wrists and a grounded heavy core."""
     out = deepcopy(model)
     frames, loop, events = animsheet.slot_frames(model, 31, 51)
     idle, _, _ = animsheet.slot_frames(model, 31, 33)
-    rest = idle[0]; poses = []; hist = {}
-    def reach(t):
-        keys = [(0, 0.), (18, -.35), (38, 1.), (44, .8), (60, 0.)]
+    rest = idle[0]; poses = []
+    def reach(t, lag=0):
+        keys = [(0, 0.), (14 + lag, -.45), (37 + lag, 1.), (45 + lag, .6), (55 + lag, 0.), (60, 0.)]
         if t <= 0: return 0.
         for (a, x), (b, y) in zip(keys, keys[1:]):
             if t <= b:
-                u = (t - a) / (b - a); u = u * u * (3 - 2 * u)
+                u = (t - a) / (b - a)
                 return x + (y - x) * u
         return 0.
+    chains = [(15, 0, -38, 16, 0, 48, 17, 0, -32),
+              (18, 2, 30, 19, 1, 46, 20, 2, -30),
+              (21, 2, -32, 22, 1, 43, 23, 2, 30),
+              (24, 1, -30, 25, 1, -38, 26, 2, 32),
+              (27, 0, 33, 28, 0, -46, 29, 0, 38)]
     for tick in range(len(frames)):
-        pose = deepcopy(rest); drive = reach(tick); lag = reach(tick - 2)
-        for bone, degrees in [(1, [-4 * drive, 0, 0]),
-                              (3, [9 * drive, -3 * drive, 0]),
-                              (6, [0, 0, -5 * drive]), (9, [0, 0, 5 * drive]),
-                              (15, [-42 * drive, 0, 0]), (16, [40 * drive, 0, 0]),
-                              (17, [-24 * lag, 0, 0]), (12, [-3 * lag, 0, 0]), (18, [5 * lag, 0, 0])]:
-            set_rotation(pose, bone, np.array(mmd.rot_matrix(*rest[bone][3:6])) @ rotation(degrees), hist)
-        pose[1][7] -= round(7 * math.sin(math.pi * tick / (len(frames) - 1)) ** 2)
+        pose = deepcopy(rest); drive = reach(tick)
+        def delta(bone, axis, amount):
+            # One local hinge per segment keeps the helical chain's shape.
+            pose[bone][3 + axis] += round(amount * 4096 / 360)
+        delta(1, 0, -3.5 * drive); delta(3, 0, 10 * drive)
+        for root, axis, amount, elbow, ea, em, claw, ca, cm in chains:
+            delta(root, axis, amount * drive)
+            delta(elbow, ea, em * reach(tick, 1))
+            delta(claw, ca, cm * reach(tick, 3))
+        for bone, axis, amount in [(6, 2, 28), (9, 2, -28), (12, 0, -7)]:
+            delta(bone, axis, amount * reach(tick, 2 if bone >= 12 else 0))
+        # All appendages settle into the existing battle stance on the last tick.
+        if tick == len(frames) - 1: pose = deepcopy(rest)
         poses.append([[int(round(x)) for x in bone] for bone in pose])
-    # This dedicated crane gesture fits without changing any beam aliases.
-    animation = mmd.encode_anim(poses, 31, loop_sample=loop, events=events, tol=16, repeats=False)
+    animation = mmd.encode_anim(poses, 31, loop_sample=loop, events=events, tol=36, repeats=False)
     out.anims.anims.append(animation); out.anims.table[51] = len(out.anims.anims) - 1
     return finish(model, out, 31, [51])
 
