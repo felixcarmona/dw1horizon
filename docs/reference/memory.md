@@ -548,7 +548,7 @@ tick callback. It temporarily uses the visible horizontal anchor, calls the
 existing live renderer, then restores the field slide offset. The clock remains
 paused and ordinary field/menu/battle suppression remains intact. The x5 wait
 reuses the existing lower-box visibility byte, so there is no new persistent
-state. Lower result boxes move 24 pixels left only with NEW STATUS BARS on,
+state. Lower result boxes move 24 pixels left,
 clearing the HUD after the tally's 17-pixel skip row.
 
 The full nine-language build keeps `main_BSS_END` at **0x801CED58**, with
@@ -1079,7 +1079,8 @@ allocation, behaviour and reproducible checks.
 
 The condition-group viewport/clock clamp adds **336 B** of resident code, and
 the wider MP sprite descriptor adds **32 B**, with no BSS or texture allocation.
-The final endpoint is **0x801CE69C**, heap **186,464 B**, main text **510,016 B**.
+Before permanent HUD integration, the endpoint is **0x801CE69C**, heap
+**186,464 B**, main text **510,016 B**.
 MENU remains **54,484 B / 27 sectors**; rodata/data/BSS remain
 **29,656 / 134,264 / 621,116 B**. Relative to the pre-feature baseline the
 combined resident growth is **188 B**, and aligned heap decreases **176 B**.
@@ -1089,3 +1090,45 @@ the same native disk in a 32×16 cell to preserve both M stems through point
 sampling. The cells and palettes occupy 448 B of existing texture uploads.
 Normal heapcheck passes without an override; all **320 actual-archive setups**
 fit with the revised code, minimum margin **1,744 B on screen 207**.
+
+## Permanent care panels (2026-11-06)
+
+The care HUD and status panels are always enabled. The status-bars option,
+its runtime variable and the original field/status renderers have been removed;
+training uses the existing care HUD and its lower-box layout unconditionally.
+The saved byte is reserved, ignored on load and written as 1. Other saved
+settings retain their offsets.
+
+Measured on full default-language builds from the same base and player discs,
+with original 2 MB RAM budgeting and no heap override:
+
+| Measurement | Before | After | Change |
+|---|---:|---:|---:|
+| `main_BSS_END` | `0x801CE5E0` | `0x801CE0C4` | −1,308 resident bytes |
+| Heap | 186,640 B | 187,952 B | +1,312 B after heap alignment |
+| Tightest of 320 setups (screen 207) | 1,920 B | 3,232 B | +1,312 B |
+| `MENU_REL` | 53,860 B | 53,824 B | −36 B |
+| `TRN_REL` | 29,400 B | 29,276 B | −124 B |
+| `TRN2_REL` | 23,668 B | 23,584 B | −84 B |
+
+All 320 actual-archive setup margins increase by 1,312 bytes. Screen 41 retains
+6,168 bytes; screens 330–332 retain 7,760 bytes. Both the historical sweep's
+heapcheck and the actual-archive story check pass. MENU still occupies 27 disc
+sectors; the existing rounded overlay-load bounds remain in force.
+
+
+## Integrated HP/MP bubbles and permanent HUD
+
+The full nine-language integration includes the status portrait anchor, permanent
+care panels, digital clock and enemy bars, and the bounded damage curve. The
+removed runtime option variables and OFF paths stay removed. Recovery needs,
+optional Square recovery and the eight-slot condition layout retain their rules.
+
+`main_BSS_END` is **0x801CDF7C**, with **188,288 B** of heap: **1,824 B more**
+than the HP/MP branch before this integration. Main text/rodata/data/BSS are
+**508,320 / 29,560 / 134,268 / 621,096 B**. MENU is **54,324 B / 27 sectors**;
+TRN/TRN2 are **29,276 / 23,584 B**. Overlay read bounds remain unchanged.
+
+Standard heapcheck passes without an override. All **320 actual-archive setups**
+fit; the tightest margin is **3,568 B on screen 207**, followed by **6,504 B on
+screen 41**. The historical sweep's tightest projection is **31,936 B**.

@@ -41,7 +41,7 @@ The host comparison exercises **194,400 layouts**: zero through eight bubbles, l
 
 The field collector and mutable care state remain resident. The care menu's existing note routine, note strings and command captions move to MENU_REL. `feedOpen` loads MENU before reading them. The resident closing/giving paths restore the curling overlay through `closeMenuOverlay` before resuming field activity. The asynchronous care callbacks stay in main, so returning from a menu cannot return into an overwritten overlay.
 
-The comparison uses identical flags, generated headers and all nine padded language banks:
+The feature-only comparison, before permanent HUD integration, uses identical flags, generated headers and all nine padded language banks:
 
 | Stage | main_BSS_END | Heap | MENU_REL |
 |---|---:|---:|---:|
@@ -55,9 +55,28 @@ The resource patch costs 416 resident bytes; moving existing UI routine/data int
 
 The generated care-art cells and palettes match byte-for-byte across all nine language atlases, including the corrected M. ETCTIM remains 125,632 B in every language. The eight generated common FEEL copies match the same private palettes, with no foreign FEEL duplicates.
 
+## Permanent HUD integration
+
+The full nine-language build with the permanent HUD, status portrait anchor and
+bounded damage curve measures `main_BSS_END = 0x801CDF7C`, heap **188,288 B**
+(**+1,824 B** against the feature-only build). MENU is **54,324 B / 27 sectors**;
+main BSS is **621,096 B**. All **320 actual-archive setups** fit, with a tightest
+margin of **3,568 B on screen 207**. Standard heapcheck passes without an override.
+
+The retired status-bars, digital-clock and enemy-bars runtime options stay
+removed. Their saved bytes retain the permanent-HUD compatibility handling.
+HP/MP thresholds, optional recovery, item-independent bubbles and the legacy
+lower-right Square offset are preserved. The hand-pixelled icons and private
+palettes match across all nine atlases and the common condition uploads.
+A fresh 2 MB boot also verifies HP and MP at 29% plus hunger and Square with
+the permanent HUD and digital clock visible; the native frame and exact 4× crop
+were inspected. The retired runtime option symbols are absent from that executable.
+The integrated toolchain selftest passes **120 groups, zero failed and zero
+skipped groups**.
+
 ## Native verification
 
-The final disc passes the 2 MB PCSX-Redux proof: HP 29% and MP 29% each show their bubble and Square; 31% and exactly 30% show neither. HP + MP + hunger use the existing two-row layout. With an empty bag both resource bubbles remain and Square disappears. At 31% the care menu still offers recovery; critical MP sorts before optional HP. Using one sm.recovery raises HP from 29% to 79% and clears the HP bubble.
+The feature’s 2 MB PCSX-Redux proof covers: HP 29% and MP 29% each show their bubble and Square; 31% and exactly 30% show neither. HP + MP + hunger use the existing two-row layout. With an empty bag both resource bubbles remain and Square disappears. At 31% the care menu still offers recovery; critical MP sorts before optional HP. Using one sm.recovery raises HP from 29% to 79% and clears the HP bubble.
 
 Field and menu captures pass in both fonts for English, Spanish, Brazilian Portuguese, French, German, Italian, Japanese and Catalan. The native PNGs and exact 4× crops were inspected. All **119 selftest groups** are verified: 118 passed in the full run; the story reproduction group passed on rerun after correcting stale authored-story pins. Its four authored-story regression tests also pass. Physical console testing remains outstanding; Simplified Chinese retains its existing 8 MB requirement and was checked through the full build and shared-art comparison.
 

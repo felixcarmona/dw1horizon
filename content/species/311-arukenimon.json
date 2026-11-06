@@ -50,7 +50,7 @@
     "favored_region": 7,
     "training_type": "mp-brains",
     "birth_weight": 15,
-    "status_screen_position": [440, 350, -1730],
+    "status_screen_position": [-1991, 409, 2969],
     "item_distance": 10,
     "training": {"animation": 60, "hit_tick": 10}
   },

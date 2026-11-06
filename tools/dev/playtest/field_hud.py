@@ -81,7 +81,7 @@ def main():
             assert e.continue_game()==0
         report['ram_bytes']=len(e.ram());assert report['ram_bytes']==2097152
         e.gs('set','gametime_running=0','partner.para.evoTimer=0','partner.para.remainingLifetime=1000')
-        e.poke('MOD_OPT_STORY',struct.pack('<i',0));e.poke('MOD_OPT_BARS',struct.pack('<i',1))
+        e.poke('MOD_OPT_STORY',struct.pack('<i',0))
         t=e.peek('RAISE_DATA+96','h') # Agumon row 3, 28 bytes/row, poopTimer at +12.
         assert t>0;report['toilet_baseline']=t
         scenes=[] if a.motion_only else [('light',92,12),('dark',0,23)]
@@ -103,10 +103,6 @@ def main():
                     report['matrix'].append(dict(scene=stem,screen=screen,font=e.peek('MOD_FONT','b'),
                         fps_mode=e.peek('MOD_FPS_MODE_RUN','i'),care=care(e)))
                     print('CAPTURE',stem,flush=True)
-            # OFF comparison and common field suppression paths on each floor.
-            e.poke('MOD_OPT_BARS',struct.pack('<i',0));e.wait(.5)
-            e.run('shot',str(out/f'{floor}-OFF-original.png'))
-            e.poke('MOD_OPT_BARS',struct.pack('<i',1))
         # Native transitions, including toilet's different reset conventions.
         setcare(e,condition=8,poopLevel=0,poopingTimer=2000)
         invoke(e,'handleToilet');assert care(e)['poopLevel']==2*t
@@ -146,24 +142,6 @@ def main():
         e.gs('set','gametime_running=1');e.wait(.6)
         assert e.peek('STATUS_UI_OFFSET_X','h')==75
         report['slide']={'hidden':240,'shown':75}
-        # A real wild battle, then deterministic ON/OFF renders from one checkpoint.
-        e.gs('set','gametime_running=1','hour=12','minute=0','partner.stats.off=10')
-        setcare(e,condition=0,foodLevel=180,poopLevel=2*t,tiredness=0)
-        assert e.warp(0);assert e.in_control()
-        e.gs('approach','0','120')
-        for _ in range(40):
-            if e.peek('GAME_STATE','b')==1:break
-            e.press('CONFIRM',8);e.wait(.5)
-        else:raise AssertionError('wild battle did not begin')
-        e.wait(2);e.run('pause');e.run('save',str(out/'battle.state'))
-        for enabled in (0,1):
-            e.run('load',str(out/'battle.state'))
-            e.poke('MOD_OPT_BARS',struct.pack('<i',enabled))
-            shot_after_swaps(e,out/f'battle-bars-{enabled}.png')
-        from tools.image import Image, ImageChops
-        assert ImageChops.difference(Image.open(out/'battle-bars-0.png'),Image.open(out/'battle-bars-1.png')).getbbox() is None
-        report['battle']={'on_off_pixels_identical':True,'swaps_after_checkpoint':6}
-        print('BATTLE: ON/OFF frames identical',flush=True)
         (out/'result.json').write_text(json.dumps(report,indent=2)+'\n')
         print('PASS: 2 MB, eight font/floor/rate combinations, native resets and live care transitions',flush=True)
     finally:

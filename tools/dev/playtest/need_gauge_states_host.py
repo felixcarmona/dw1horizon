@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Check the actual need-gauge renderer and original OFF GPU sequence.
+"""Check the actual need-gauge renderer and previous enabled GPU sequence.
 
 Usage: python3 tools/dev/playtest/need_gauge_states_host.py TREE --before PREVIOUS.c
 PREVIOUS.c is the partner_impl.c captured before this change.
 """
 import argparse
+import re
 from pathlib import Path
 import subprocess
 import tempfile
@@ -27,7 +28,9 @@ def main():
     a = p.parse_args()
     src = (a.tree/'src/main/partner_impl.c').read_text()
     old = function(a.before.read_text(), 'void renderStatusBars(state)')
-    old = old.replace('void renderStatusBars(state)', 'void renderStatusBarsBefore(state)').replace('renderCareHUD();', 'assert(0);')
+    old = old.replace('void renderStatusBars(state)', 'void renderStatusBarsBefore(state)').replace('renderCareHUD();', 'renderCareHUDBefore();')
+    # Compare the enabled legacy path with the permanent production renderer.
+    old = re.sub(r'if \(MOD_OPT_\w+\)', 'if (1)', old)
     code = r'''
 #include <stdint.h>
 #include <assert.h>
@@ -43,7 +46,7 @@ struct {int poopTimer;} raise;
 int rules[3]={20,200,80};
 int careGet(int slot) { return rules[slot]; }
 struct {int partnerAreaResponse;} MAP_TILE_DATA;
-int PLAYTIME_FRAMES,MOD_OPT_BARS,STATUS_UI_OFFSET_X=75;
+int PLAYTIME_FRAMES,STATUS_UI_OFFSET_X=75;
 #define GetClut(x,y) ((y)*64+(x)/16)
 struct Draw {int a[10];} calls[512],original[512];
 int count;
@@ -51,12 +54,12 @@ void renderRectPolyFT4(int a,int b,int c,int d,int e,int f,int g,int h,int i,int
  assert(count<512);calls[count++]=(struct Draw){{a,b,c,d,e,f,g,h,i,j}};
 }
 '''
-    code += function(src, 'static void renderCareHUD(void)') + old + function(src, 'void renderStatusBars(state)')
+    code += function(a.before.read_text(), 'static void renderCareHUD(void)').replace('renderCareHUD(void)', 'renderCareHUDBefore(void)') + function(src, 'static void renderCareHUD(void)') + old + function(src, 'void renderStatusBars(state)')
     code += r'''
 static void check(int gauge,int active,int blink,int red) {
  struct PP before=PARTNER_PARA;
  for(int f=0;f<80;f++) {
-  PLAYTIME_FRAMES=f;MOD_OPT_BARS=1;count=0;renderStatusBars(1);
+  PLAYTIME_FRAMES=f;count=0;renderStatusBars(1);
   assert(!memcmp(&before,&PARTNER_PARA,sizeof(before)));assert(count<=13);
   int tiles=0,found=0;
   for(int k=0;k<count;k++) if(calls[k].a[3]==13) {
@@ -97,7 +100,6 @@ static void base(void) {
 }
 int main(void) {
  // The complete original normal-value domain, including every area/blink variant.
- MOD_OPT_BARS=0;
  for(int h=-100;h<=100;h++) for(int d=0;d<=100;d++)
  for(int area=0;area<3;area++) for(int f=0;f<10;f++) {
   PARTNER_PARA.happiness=h;PARTNER_PARA.discipline=d;
@@ -144,7 +146,7 @@ int main(void) {
  base();PARTNER_PARA.condition=14;
  check(2,1,0,1);check(3,1,0,1);check(4,1,0,1);
  base();check(2,0,0,0);check(3,0,0,0);check(4,0,0,0);
- puts("PASS: 609030 original OFF call sequences; need normal/blink/active boundaries, overrides, satisfaction, 80 phase ticks and read-only state");
+ puts("PASS: 609030 previous enabled call sequences; need normal/blink/active boundaries, overrides, satisfaction, 80 phase ticks and read-only state");
 }
 '''
     with tempfile.TemporaryDirectory(prefix='need-gauges-') as tmp:
