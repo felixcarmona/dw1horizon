@@ -1,6 +1,6 @@
 # Imported and newly raisable partner technique audit
 
-Baseline: `f49be887^` (parent of the separate IceLeomon change). Audit date: 2026-11-05. NEW DIGIMON on, committed species levels. Sources: [partner learning rules](docs/reference/partner.md#learning-techniques), [techniques](content/techniques), [species](content/species), [Brains training order/weights](content/tables/brain-training.json), and the read-only Identity sheet retrieved on the audit date. No external species lore was needed: identity and canon attack descriptions come from those approved rows.
+Baseline: `f49be887^` (parent of the separate IceLeomon change). Audit date: 2026-11-05. NEW DIGIMON on, committed species levels. Sources: [partner learning rules](partner.md#learning-techniques), [techniques](../../content/techniques), [species](../../content/species), [Brains training order/weights](../../content/tables/brain-training.json), and the read-only Identity sheet retrieved on the audit date. No external species lore was needed: identity and canon attack descriptions come from those approved rows.
 
 Scope: **230** newly raisable partners (all species with a partner block and id ≥62), including record originals, WereGarurumon’s imported replacement, and eight new babies. Native comparison: ids 1–61 with partner blocks; enemy-only records, NPC twins and unused placeholders are excluded. This deliberately includes the restored secret/NPC partners so none falls between the native and imported groups.
 

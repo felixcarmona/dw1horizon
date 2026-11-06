@@ -54,3 +54,5 @@ against, leave this list.
 | Syakomon and Mushroomon as quiz starters | ⚖️ | Unique Rookies today reachable only by evolution; to review with the starter table. |
 | Unique recruitment scenes for more of the new Digimon | ✨ | Many new recruits join with a simple fight. |
 | Humanoid sizes growing by stage (Angemon < MagnaAngemon < Seraphimon, Devimon < Myotismon) | ✨ | A per-line size review. |
+| An official community wiki: where each new Digimon is recruited, new maps, evolution routes and requirements | 🛠️ | Could be generated from the project's own data (species, recruit scripts, evolution tree) so it stays accurate. |
+| Remove the evolution bonus condition for the number of techniques learned | ⚖️ | Players find it makes late-game evolutions too broad; check what remains of it after the 0.0.4 balance changes. |

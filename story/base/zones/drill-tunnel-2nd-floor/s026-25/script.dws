@@ -1,9 +1,7 @@
-// Readable form of script 26 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
-// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
-// Text is by key (text/us/dialogue.json), never the game's own words.
+// Authored script, synchronized with script.py. Text stays in the keyed banks.
 import "../../../../core/engine.dws";
-import "../../../../core/recruit.dws";
 import "../../../../core/scene.dws";
+import "../../../../core/recruit.dws";
 import "../../../names.dws";
 script 26 {
     npc goblimon0 = 5;
@@ -12,11 +10,8 @@ script 26 {
     npc ogremon = 8;
     npc agumon4 = 9;
     npc agumon5 = 10;
-
-    // the section table, in the order of the original header
     sections 254, 5, 6, 7, 9, 10, 51, 52, 53;
-
-    on enter replace {    // section 254
+    on enter replace {    // enter
         call_routine(routine("load_dirt_cart"));
         if (drill_tunnel_progress == 3) {
             engine.arg = 0;
@@ -33,47 +28,41 @@ script 26 {
             set_autotalk(goblimon2, 0);
         }
     }
-
-    on talk(goblimon0) replace {    // section 5
+    on talk(goblimon0) replace {    // talk
         if (drill_tunnel_progress >= 3) {
             say(goblimon0, text("s026.sec5.u0"));
             return;
         }
         say(goblimon0, text("s026.sec5.u1"));
         battle();
-        recruit(species("Goblimon"));
+        recruit(species(80));
     }
-
-    on talk(goblimon1) replace {    // section 6
+    on talk(goblimon1) replace {    // talk
         if (drill_tunnel_progress >= 3) {
             say(goblimon1, text("s026.sec6.u0"));
             return;
         }
         say(goblimon1, text("s026.sec6.u1"));
         battle();
-        recruit(species("Goblimon"));
+        recruit(species(80));
     }
-
-    on talk(goblimon2) replace {    // section 7
+    on talk(goblimon2) replace {    // talk
         if (drill_tunnel_progress >= 3) {
             say(goblimon2, text("s026.sec7.u0"));
             return;
         }
         say(goblimon2, text("s026.sec7.u1"));
         battle();
-        recruit(species("Goblimon"));
+        recruit(species(80));
     }
-
-    on talk(agumon4) replace {    // section 9
+    on talk(agumon4) replace {    // talk
         say(agumon4, text("s026.sec9.u0"));
     }
-
-    on talk(agumon5) replace {    // section 10
+    on talk(agumon5) replace {    // talk
         say(agumon5, text("s026.sec10.u0"));
     }
-
-    on step(0) replace {    // section 51
-        unless (new_ogre_fortress_cleared && !is_recruited(species("Ogremon"))) return;
+    on step(0) replace {    // step0
+        unless (new_ogre_fortress_cleared && !is_recruited(species(34))) return;
         walk(tamer, -165, 221, camera: true);
         walk(partner, 171, 615);
         await tamer;
@@ -84,8 +73,8 @@ script 26 {
         await goblimon0;
         await goblimon1;
         await ogremon;
-        entity_set_rotation(tamer, 100);
-        entity_set_rotation(partner, 100);
+        rotate(tamer, 100);
+        rotate(partner, 100);
         face(agumon4, tamer);
         face(agumon5, tamer);
         face(ogremon, tamer);
@@ -98,11 +87,15 @@ script 26 {
         animate(ogremon, anim.idle);
         say(tamer, text("s026.sec51.u5"));
         battle(foes: [agumon4, agumon5, ogremon]);
-        animate(agumon4, 43);
-        animate(agumon5, 43);
+        walk(agumon4, -1800, 500);
+        walk(agumon5, 1500, -500);
         walk(ogremon, 89, -659);
         await ogremon;
-        entity_set_rotation(ogremon, 100);
+        await agumon4;
+        await agumon5;
+        animate(agumon4, 43);
+        animate(agumon5, 43);
+        rotate(ogremon, 100);
         face(tamer, ogremon);
         face(partner, ogremon);
         await ogremon;
@@ -111,7 +104,7 @@ script 26 {
         say(ogremon, text("s026.sec51.u6"));
         animate(ogremon, 29);
         animate(tamer, 19);
-        wait(1s);
+        wait(20);
         say(tamer, text("s026.sec51.u7"));
         animate(tamer, anim.idle);
         say(ogremon, text("s026.sec51.u8"));
@@ -130,7 +123,7 @@ script 26 {
         animate(tamer, anim.idle);
         run(tamer, 160, -193, camera: true);
         await tamer;
-        entity_set_rotation(tamer, 100);
+        rotate(tamer, 100);
         show_textbox(text("s026.sec51.u16"));
         say(ogremon, text("s026.sec51.u17"));
         animate(ogremon, 30);
@@ -149,12 +142,11 @@ script 26 {
             face(partner, ogremon);
         }
         await ogremon;
-        join_city(ogremon, species("Ogremon"), 8, 8, text("s026.sec51.u21"), prosperity: 2);
+        join_city(ogremon, species(34), 8, 8, text("s026.sec51.u21"), prosperity: 2);
         camera_on(tamer, speed: 10);
         await camera;
     }
-
-    on step(1) replace {    // section 52
+    on step(1) replace {    // step1
         if (drill_tunnel_progress == 3) {
             say(tamer, text("s026.sec52.u0"));
             run(tamer, -51, -1550);
@@ -171,7 +163,7 @@ script 26 {
             await camera;
             return;
         }
-        if (is_recruited(species("Meramon")) && engine.prosperity >= 45) {
+        if (is_recruited(species(9)) && engine.prosperity >= 45) {
             walk(tamer, -105, -2200);
             warp_to(126, 0, 255);
         }
@@ -179,8 +171,7 @@ script 26 {
         warp_to(26, 0, 255);
         goto sec53;
     }
-
-    on step(2) replace {    // section 53
+    on step(2) replace {    // step2
         if (drill_tunnel_progress == 3) {
             say(tamer, text("s026.sec53.u0"));
             run(tamer, -2253, 359);
