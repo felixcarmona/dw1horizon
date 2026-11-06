@@ -141,3 +141,29 @@ Unimon placement usable attack priorities. This behavior is present in
 v0.0.6; its regression tests cover the actual placement and moves. It does
 not establish that a later report of inactivity is resolved: verify the live
 wild encounter and its technique execution before changing battle behavior.
+
+## Beelzemon: ordinary cannon strike
+
+The World 2003 source `M377BLZB` is Blast Mode. Its Blaster is the
+[right-arm weapon](https://wikimon.net/Beelzebumon%3A_Blast_Mode); the imported
+mesh keeps it on bones 20–23, opposite the bare-hand chain 16–19. The native
+Leomon hand strike previously drove the bare fist while the projectile origin
+already followed cannon bone 22.
+
+`tools/models/repair_beelzemon_attack.py` authors a plain model delta on the
+already reviewed proportions and field animations. It keeps the source body anticipation, leg and
+wing motion, duration, loop controls and events. The bare hand retains its
+battle idle; the cannon eases into aim and recoils at the strike. Megaton Punch,
+Counter, Dynamite Kick and Sonic Jab retain their existing shared-program
+relationship. The mesh, rig, texture, technique list and damage rules stay exact.
+The model delta and final provider hash both pin the repaired animation.
+
+The resident model uses 100,068 bytes, down from 100,226, within the 100,352-byte
+partner buffer. Every sector-aligned cold animation read fits 8,192 bytes.
+Reproduce the weapon-direction, untouched-channel and storage checks with the
+pre-edit provider output at `MODEL_REPORT_DIR/before/403.MMD`:
+
+```sh
+MODEL_REPORT_DIR=build/reports PYTHONPATH=tools \
+  python3 -W ignore -m unittest tools.test_beelzemon_attack
+```
