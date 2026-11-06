@@ -305,9 +305,9 @@ class Emu:
             button = ('CIRCLE' if japanese else 'CROSS') if button == 'CONFIRM' else ('CROSS' if japanese else 'TRIANGLE')
         self.run('press', button, str(frames))
 
-    def api(self, path):
+    def api(self, path, data=None):
         import urllib.request
-        return urllib.request.urlopen(f'http://127.0.0.1:{self.port}{path}', timeout=15).read()
+        return urllib.request.urlopen(f'http://127.0.0.1:{self.port}{path}', data=data, timeout=15).read()
 
     def chord(self, hold, button, frames=8):
         """`button` pressed while `hold` is held (Select+R1)."""
@@ -388,14 +388,15 @@ class Emu:
     def warp(self, screen, ex=0):
         # A field frame between these writes can replace TARGET_MAP from the current exit.
         # Submit the state transition together, without assuming the state bytes are adjacent.
-        self.api('/api/v1/execution-flow?function=pause')
+        # Execution-flow changes require POST; GET only reports status.
+        self.api('/api/v1/execution-flow?function=pause', data=b'')
         try:
             self.poke('TAMER_SUB_STATE', b'\0')
             self.poke('TARGET_MAP', struct.pack('<h', screen))
             self.poke('CURRENT_EXIT', bytes([ex]))
             self.poke('TAMER_STATE', bytes([5]))
         finally:
-            self.api('/api/v1/execution-flow?function=start')
+            self.api('/api/v1/execution-flow?function=start', data=b'')
         for _ in range(30):
             self.wait(1)
             ram = self.ram()

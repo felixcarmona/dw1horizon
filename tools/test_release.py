@@ -13,6 +13,56 @@ from unittest.mock import patch
 import release
 
 
+class SaveTransitionTests(unittest.TestCase):
+    def test_warp_pauses_memory_writes_and_resumes_after_an_error(self):
+        from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+        from threading import Thread
+        from urllib.parse import parse_qs, urlsplit
+        from tools.dev.saves.releases import Emu
+
+        class Flow(BaseHTTPRequestHandler):
+            def log_message(self, *args):
+                pass
+
+            def do_GET(self):
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(json.dumps({'running': self.server.running}).encode())
+
+            def do_POST(self):
+                function = parse_qs(urlsplit(self.path).query)['function'][0]
+                self.server.running = function == 'start'
+                self.send_response(200)
+                self.end_headers()
+
+        with ThreadingHTTPServer(('127.0.0.1', 0), Flow) as server:
+            server.running = True
+            thread = Thread(target=server.serve_forever, kwargs={'poll_interval': .01})
+            thread.start()
+            try:
+                for fail in (False, True):
+                    with self.subTest(write_failure=fail):
+                        emu = Emu.__new__(Emu)
+                        emu.port = server.server_port
+                        emu.wait = lambda seconds: None
+                        emu.ram = lambda: b'RAM'
+                        emu.peek = lambda name, fmt, ram: 218 if name == 'CURRENT_SCREEN' else 0
+                        def write(name, data):
+                            self.assertFalse(server.running, 'memory write raced a running field frame')
+                            if fail:
+                                raise RuntimeError('write failed')
+                        emu.poke = write
+                        if fail:
+                            with self.assertRaisesRegex(RuntimeError, 'write failed'):
+                                emu.warp(218)
+                        else:
+                            self.assertTrue(emu.warp(218))
+                        self.assertTrue(server.running)
+            finally:
+                server.shutdown()
+                thread.join()
+
+
 class ReleaseTests(unittest.TestCase):
     def test_dirty_tree_refused_before_any_command(self):
         with patch.object(release, 'git', return_value=' M README.md'), \
