@@ -43,7 +43,7 @@
  "223": {"model": "223-LadyDevimon.MMD", "aliases_applied": true, "texture": "223-LadyDevimon.TIM"},
  "224": {"model": "224-MetalGreymonVaccine.MMD", "aliases_applied": true, "builder": "tools.models.metalgreymon"},
  "225": {"model": "225-Shurimon.MMD", "aliases_applied": true, "technique_aliases": {"Spinning Shot": "Wind Cutter", "Dynamite Kick (48)": "Dynamite Kick (44)"}},
- "226": {"model": "226-Silphymon.MMD", "aliases_applied": true, "field_overlay": "silphymon-field"},
+ "226": {"model": "226-Silphymon.MMD", "aliases_applied": true},
  "227": {"model": "227-Apemon.MMD", "aliases_applied": true},
  "228": {"model": "228-Baronmon.MMD", "aliases_applied": true},
  "229": {"model": "229-Phantomon.MMD", "aliases_applied": true},

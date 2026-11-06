@@ -100,3 +100,42 @@ and final provider pins carry the result. Store with `tools/models/edit.py put
 `BEELZEMON_SOURCE` and `BEELZEMON_IMPORT`. It checks every restored source
 triangle with its winding, UVs and normals; retained protected geometry;
 body-panel extents; unchanged acting; texture isolation and storage budgets.
+
+## Silphymon and Starmon: field strides
+
+Silphymon's Card Battle rig carries the head on bone 3 and its ears on bones 4
+and 5. The proportion recipe previously treated only bone 5 as the head,
+enlarging that ear alone. Both ears now retain the source head proportions.
+The corrected proportion bake is stored before the final walk delta; the
+provider uses the resulting model directly.
+
+The field walk, condition walk and run use native Kokatorimon motion for
+Silphymon and native Leomon motion for Starmon. Anatomical chain calibration
+and inverse kinematics fit the native foot paths to the imported leg lengths.
+The feet keep their own orientation with native heel and toe roll. Clearance
+is checked at logical ticks and intermediate blend samples. Silphymon's stride
+uses longer timing for its larger body; Starmon's retains the native timing.
+Upper-body acting and secondary motion keep the gait loose. Meshes, rigs,
+care clips and battle programs are preserved after the proportion correction.
+
+The authoring tools are `tools/models/field_animations/silphymon_walk.py` and
+`starmon_walk.py`. Silphymon's `--prepare` option reconstructs the corrected
+proportion bake from its pinned pre-edit import. Store final results with
+`tools/models/edit.py put`, then check the provider pins. The replay tests use
+`MODEL_REPORT_DIR` for the pre-edit and reviewed files:
+
+```sh
+MODEL_REPORT_DIR=build/reports PYTHONPATH=tools python3 -m unittest \
+  tools.test_player_model_reports tools.test_dws_battle_moves
+```
+
+Saberdramon uses the native DW1 model. The reviewed provider and integrated
+record preserve its source primitives, UVs and texture pages, with identical
+palette rows and sampled texels. A reported tan wing-root surface does not
+justify altering those assets without a demonstrated import regression.
+
+Starmon's nonattacking story encounter inherited zero priorities from a
+noncombat placement template. The story compiler assigns usable priorities
+when replacing that template with a combat species; the regression tests
+cover its actual placement and moves. No battle clip or moveset replacement
+is needed for that issue.
