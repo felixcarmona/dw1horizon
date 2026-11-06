@@ -394,5 +394,8 @@ Size-the-sequence-buffer-for-the-built-sound-fonts.patch
 Match-approved-light-blue-need-gauges-and-muted-icon-tint.patch
 Keep-warning-icons-bright-while-only-bars-dim.patch
 Expand-starter-list-preserving-original-game-results.patch
+status-portrait-camera-anchor.patch
 Drain-toilet-and-energy-gauges-as-care-needs-approach.patch
 Bound-ordinary-technique-stat-growth.patch
+Make-the-care-HUD-and-status-panels-permanent.patch
+Make-the-digital-clock-and-enemy-life-bars-permanent.patch

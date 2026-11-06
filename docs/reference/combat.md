@@ -90,7 +90,6 @@ State machine and global variables (all in the executable, bss):
 | `FLEE_DISABLED[0]` | `0x80134D7C` | i32 | = trigger 1: boss battle, no «Run», everyone on screen joins, enemies spend no MP |
 | `FLEE_DISABLED[1]` | `0x80134D80` | i32 | misnamed: global 110-tick lock after an area technique (`battle_main.c:2469,2487`) |
 | `IS_PREDEFINED_BATTLE` | `0x80134E84` | u8 | = PStat 0xFA: the enemies are set by the script (PStats 0xFB–0xFD) |
-| `BATTLE_TOGGLE_LIFEBAR` | `0x80134D64` | u8 | Select: 1 continuous enemy bars (default), 0 briefly after hits; saved with options |
 | `BATTLE_ATTACKING_DIGIMON` / `BATTLE_TARGETED_DIGIMON` | `0x80134EF8` / `0x80134EF4` | ptr | who attacks and whom, for the EFE engine |
 | `BTL_FINISHER_TIMER` / `BTL_FINISHER_AURA_ID` / `BTL_SAVED_CHARGE_MODE` | `0x80135080` / `0x8013507C` / `0x80135078` | i32, i32, u8 | 0x50-tick aura before releasing the finisher; partner's `chargeMode` on entry (restored on exit) |
 | `BATTLES_STARTED` / `BATTLES_FLED` / `BITS_TO_GAIN` / `MONEY` | `0x80134FC8` / `0x80134FCA` / `0x80134E90` / `0x80134EB8` | u16, u16, u16, u32 | counters (cap 9999); bits being counted in the victory box; bits (cap 999 999) |
@@ -807,10 +806,11 @@ the start (`INITIAL_COMBAT_STATS`) and restores it at the end.
 
 ### Enemy head bars (0276)
 
-`BTL_renderEnemyHPBars` selects the original renderer unchanged when NEW ENEMY
-BARS is OFF. ON uses `dw/enemy_bars.h`, compiled only into BTL/STD/VS overlays.
+`BTL_renderEnemyHPBars` always uses `dw/enemy_bars.h`, compiled only into
+BTL/STD/VS overlays. The original floating renderer and brief-display mode have
+been removed.
 STD and VS add the head bar for fighter 1 alongside their existing fixed panels;
-Select also gates the opponent HP/MP panels, while finisher state keeps ticking.
+the opponent panels stay visible, and finisher state keeps ticking.
 The head uses `DIGI_PARA(type).height` and world projection, as `renderFleeBubble`
 does, including the scrolling camera offset conversion; the body bone is not the anchor. The group clamps to the screen and clears the wild portrait/Auto label and
 partner HP/MP panel, or the two wider arena/VS HP/MP panels. Off-screen feet, dead fighters, `NO_AI_FLAG`
@@ -826,7 +826,7 @@ digits while leaving the current value unpadded. The track
 is 32×3 (34×5 including its frame), grey (52,52,60), and the original green →
 yellow → red rule supplies its fill, with a top row 50 brighter per channel.
 
-`BATTLE_TOGGLE_LIFEBAR` starts at 1 and battle setup never resets it. Select
-retains the original hit timer for brief mode; the new renderer continues HP
-animation while hidden. The save's inverted flags and header copy are described
-in [options](../mods/options.md#enemy-life-bars).
+Select does not toggle the permanent bars. HP animation continues through the
+existing cinematic suppression. Old saved display flags are ignored; their
+reserved bytes and header bits are described in
+[options](../mods/options.md#enemy-life-bars).

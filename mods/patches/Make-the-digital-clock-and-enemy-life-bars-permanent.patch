@@ -1,0 +1,667 @@
+From 48377325075798714db5218bc507d9d139c3f0b6 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 6 Nov 2026 11:32:55 +0000
+Subject: [PATCH] Make the digital clock and enemy life bars permanent
+
+---
+ include/dw/enemy_bars.h  |  1 -
+ include/dw/mod_options.h |  3 --
+ src/btl/battle_main.c    | 92 +---------------------------------------
+ src/btl/battle_setup.c   |  2 -
+ src/main/battle_tick.c   |  5 ---
+ src/main/clock.c         |  3 +-
+ src/main/item.c          |  2 -
+ src/main/main_menu.c     | 58 ++++++++-----------------
+ src/main/mod_options.c   |  2 -
+ src/std/std_hud.c        | 11 +----
+ src/std/std_main.c       |  9 ----
+ src/vs/vs_hud.c          | 19 +--------
+ src/vs/vs_main.c         |  5 ---
+ text/main/main_menu.yaml |  6 ---
+ 14 files changed, 23 insertions(+), 195 deletions(-)
+
+diff --git a/include/dw/enemy_bars.h b/include/dw/enemy_bars.h
+index 5e82b0e..9a62c78 100644
+--- a/include/dw/enemy_bars.h
++++ b/include/dw/enemy_bars.h
+@@ -6,7 +6,6 @@
+ #include <dw/params.h>
+ #include <dw/mod_options.h>
+ 
+-extern uint8_t BATTLE_TOGGLE_LIFEBAR; /* one = always visible; saved with the options */
+ int32_t worldPosToScreenPos(SVECTOR *pos, DVECTOR *out);
+ 
+ static const uint8_t ENEMY_HP_DIGITS[10][5] = {
+diff --git a/include/dw/mod_options.h b/include/dw/mod_options.h
+index f91e7d4..3efa566 100644
+--- a/include/dw/mod_options.h
++++ b/include/dw/mod_options.h
+@@ -17,9 +17,6 @@
+ #define MOD_BUTTONS_JP	1	/* JAPANESE CONTROLS: ○ confirms, × cancels, △ is the third button (input.h) */
+ 
+ extern int32_t MOD_OPT_BUTTONS;	/* JAPANESE CONTROLS: MOD_BUTTONS_JP (input.h reads it) */
+-extern int32_t MOD_OPT_CLOCK;	/* DIGITAL CLOCK: the hour in digits under the clock (clock.c), 1 = shown */
+-extern int32_t MOD_OPT_ENEMY_BARS; /* NEW ENEMY BARS: 0 keeps the original renderer */
+-extern uint8_t BATTLE_TOGGLE_LIFEBAR; /* Select: 1 shown continuously, 0 briefly after damage */
+ extern int32_t MOD_OPT_EVO_GUIDE; /* EVOLUTION GUIDE: the evolution chart's requirement card and lit lines (patch 0176), 0 = the original chart */
+ extern int32_t MOD_OPT_NEW_DIGIMON; /* NEW DIGIMON: the species the mod made raisable; 0 = the original's only */
+ extern int32_t MOD_OPT_CHEATS; /* CHEATS: lab menu, off by default */
+diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
+index 069886b..0790fc4 100644
+--- a/src/btl/battle_main.c
++++ b/src/btl/battle_main.c
+@@ -45,7 +45,6 @@ extern PACKET GS_WORK_BASES[2][0x14000];
+ extern DR_OFFSET DR_OFFSETS[2];
+ extern DigimonEntity *BATTLE_TARGETED_DIGIMON;
+ extern DigimonEntity *BATTLE_ATTACKING_DIGIMON;
+-extern uint8_t BATTLE_TOGGLE_LIFEBAR;
+ extern int8_t PARTNER_WAYPOINT_COUNT;
+ extern int8_t PARTNER_WAYPOINT_CURRENT;
+ extern int8_t PARTNER_WAYPOINT_X[];
+@@ -979,8 +978,6 @@ void BTL_tickAttackState(Entity *entity, DigimonEntity *target, int32_t id)
+ 					}
+ 				}
+ 			}
+-			if (i) {
+-			}
+ 			entity->anim.animFlag |= 1;
+ 		}
+ 	}
+@@ -2205,7 +2202,6 @@ void BTL_tickAttackHits(void)
+ 			fighter->hpDamageBuffer = CAPS_ADD_DAMAGE(fighter->hpDamageBuffer, dmg);
+ 			fighter->flags |= FIGHTER_FLAG_KNOCKED_BACK;
+ 			BTL_handleHitReaction(entity, fighter, &attack, i);
+-			sub->unk25 = 0;
+ 			addEntityText(entity, i, 0, dmg, 0);
+ 			fighter->invulnerableTimer = MOVE_DATA[tech].iframes;
+ 			entity->anim.animFlag &= 0xfe;
+@@ -2250,7 +2246,6 @@ void BTL_tickAttackHits(void)
+ 			}
+ 			/* MOD (caps): summed in 32 bits, up to DAMAGE_CAP (was 9999) */
+ 			fighter->hpDamageBuffer = CAPS_ADD_DAMAGE(fighter->hpDamageBuffer, dmg);
+-			sub->unk25 = 0;
+ 			addEntityText(entity, i, 0, dmg, 0);
+ 		}
+ 		BTL_addFinisherProgress(fighter, fighter->finisherGoal * BM(BLOCK_GAIN_DEF) / 100);
+@@ -2292,98 +2287,16 @@ void BTL_buffStats(digimon, slot, value, stat, color, flag)
+ 
+ #include <dw/enemy_bars.h>
+ 
+-static void renderOriginalEnemyHPBars(void)
+-{
+-	long i;
+-	int32_t w;
+-	DVECTOR pos;
+-	PlayerDataSub *spr;
+-	CombatData *combat;
+-	FighterData *fighter;
+-	Entity *entity;
+-	Stats *stats;
+-	int32_t color;
+-	GsSPRITE *sprite;
+-	int16_t x;
+-	int16_t y;
+-
+-	color = 0xab40a;
+-	combat = COMBAT_DATA_PTR;
+-	GsSetLsMatrix(&GsWSMATRIX);
+-	for (i = 1; i <= ENEMY_COUNT; i++) {
+-		fighter = &combat->fighter[i];
+-		entity = ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]];
+-		spr = &COMBAT_DATA_PTR->player.unk1[i];
+-		if (BATTLE_TOGGLE_LIFEBAR == 0) {
+-			if (spr->unk25 >= 0x15) {
+-				continue;
+-			}
+-		} else {
+-			if ((spr->unk25 >= 0x15) && (fighter->flags & FIGHTER_FLAG_DEAD)) {
+-				continue;
+-			}
+-		}
+-		stats = &((DigimonEntity *)entity)->stats;
+-		if (stats->current.currentHP == 0) {
+-			fighter->hpDamageBuffer = 0;
+-		}
+-		if (!(fighter->flags & FIGHTER_FLAG_KNOCKED_BACK) && (fighter->hpDamageBuffer == 0)) {
+-			spr->unk25++;
+-		}
+-		getEntityScreenPos(entity, 1, &pos);
+-		if (pos.vy < -0x4a) {
+-			y = -0x64;
+-		} else {
+-			y = pos.vy - 0x1a;
+-		}
+-		if (pos.vx >= 0x42) {
+-			x = 0x55;
+-		} else {
+-			x = pos.vx + 0x14;
+-		}
+-		drawLine3P(color, x, y, x + 0x36, y, x + 0x36, y + 6, 7, 0);
+-		drawLine3P(color, x, y + 1, x, y + 6, x + 0x35, y + 6, 7, 0);
+-		drawLine2P(color, x, y + 6, pos.vx, pos.vy, 7, 0);
+-		sprite = (GsSPRITE *)spr;
+-		sprite->x = x + 2;
+-		sprite->y = y + 2;
+-		damageTick(fighter, stats);
+-		w = stats->current.currentHP * 50 / stats->base.hp;
+-		if (w != sprite->w) {
+-			sprite->w = w;
+-			if (sprite->w >= 0xf) {
+-				sprite->r = ((0x32 - sprite->w) * 127 / 35) + 0x80;
+-				sprite->g = 0xff;
+-			} else if ((sprite->w >= 5) && (sprite->w < 0xf)) {
+-				sprite->r = 0xff;
+-				sprite->g = 0xff - ((0xf - sprite->w) * 127 / 10);
+-			} else {
+-				sprite->r = 0xff;
+-				sprite->g = 0x80;
+-			}
+-			sprite->b = 0x80;
+-		}
+-		GsSortFastSprite(sprite, ACTIVE_ORDERING_TABLE, 7);
+-		drawEntityText(0, 4, x + 0x21, y - 9, stats->current.currentHP, 7);
+-	}
+-}
+-
+ void BTL_renderEnemyHPBars(void)
+ {
+ 	int32_t i;
+-	if (!MOD_OPT_ENEMY_BARS) {
+-		renderOriginalEnemyHPBars();
+-		return;
+-	}
+ 	for (i = 1; i <= ENEMY_COUNT; i++) {
+ 		FighterData *fighter = &COMBAT_DATA_PTR->fighter[i];
+ 		DigimonEntity *d = (DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]];
+-		PlayerDataSub *spr = &COMBAT_DATA_PTR->player.unk1[i];
+-		if (!(fighter->flags & FIGHTER_FLAG_KNOCKED_BACK) && !fighter->hpDamageBuffer && spr->unk25 < 21) spr->unk25++;
+ 		/* HP animation remains gameplay state, even while the HUD is hidden. */
+ 		if (d->stats.current.currentHP <= 0) fighter->hpDamageBuffer = 0;
+ 		if (fighter->hpDamageBuffer) damageTick(fighter, &d->stats);
+-		if (BATTLE_TOGGLE_LIFEBAR || spr->unk25 < 21) renderEnemyHeadHP(d, fighter, 1);
++		renderEnemyHeadHP(d, fighter, 1);
+ 	}
+ }
+ 
+@@ -2920,9 +2833,6 @@ void BTL_tickStatusEffects(void)
+ 				dmg = MOD_DIFF_DAMAGE(NULL, entity, ENTITY_TABLE[1], dmg); /* MOD (difficulty) */
+ 				/* MOD (caps): summed in 32 bits, up to DAMAGE_CAP (was 9999) */
+ 				fighter->hpDamageBuffer = CAPS_ADD_DAMAGE(fighter->hpDamageBuffer, dmg);
+-				if (i != 0) {
+-					COMBAT_DATA_PTR->player.unk1[i].unk25 = 0;
+-				}
+ 				addEntityText(entity, i, 0xc, dmg, 0);
+ 			}
+ 		}
+diff --git a/src/btl/battle_setup.c b/src/btl/battle_setup.c
+index 0111771..f78d3a5 100644
+--- a/src/btl/battle_setup.c
++++ b/src/btl/battle_setup.c
+@@ -10,7 +10,6 @@
+ #include <dw/script.h>
+ #include <dw/mod_options.h> /* MOD (quick battle start) */
+ 
+-extern uint8_t BATTLE_TOGGLE_LIFEBAR;
+ extern int16_t DEATH_COUNTDOWN;
+ extern int32_t IS_TAMERLESS_BATTLE;
+ extern int8_t TAMER_START_TILE_X;
+@@ -97,7 +96,6 @@ void BTL_initializeCombat(void)
+ 		f->mpDamageBuffer = 0;
+ 		f->flags = 0;
+ 		f->moveRange = 0;
+-		COMBAT_DATA_PTR->player.unk1[i].unk25 = 0xff;
+ 		f->flatTimer = 0;
+ 		f->invulnerableTimer = 0;
+ 		f->cooldown = 0;
+diff --git a/src/main/battle_tick.c b/src/main/battle_tick.c
+index 8d13457..1412aa4 100644
+--- a/src/main/battle_tick.c
++++ b/src/main/battle_tick.c
+@@ -26,7 +26,6 @@ extern int8_t TAMER_START_TILE_Y;
+ extern int8_t TAMER_WAYPOINT_COUNT;
+ extern int8_t TAMER_WAYPOINT_X[];
+ extern int8_t TAMER_WAYPOINT_Y[];
+-extern uint8_t BATTLE_TOGGLE_LIFEBAR;
+ extern int32_t IS_TAMERLESS_BATTLE;
+ 
+ void BTL_getRemainingEnemies(Entity *self, int16_t *out, int16_t *count);
+@@ -277,10 +276,6 @@ void tamerTickBattle(instanceId)
+ 			}
+ 		}
+ 
+-		if (((POLLED_INPUT & ~POLLED_INPUT_PREVIOUS) & 0x100) != 0) {
+-			BATTLE_TOGGLE_LIFEBAR = (BATTLE_TOGGLE_LIFEBAR + 1) & 1;
+-		}
+-
+ 		handleCommands();
+ 	}
+ 
+diff --git a/src/main/clock.c b/src/main/clock.c
+index c1cb42b..47fe9cd 100644
+--- a/src/main/clock.c
++++ b/src/main/clock.c
+@@ -378,8 +378,7 @@ void renderGameClock(int32_t instanceId)
+ 			  6, 6, 203, 216,
+ 			  GetTPage(0, 0, 896, 448), GetClut(256, 497), 9, 0);
+ 
+-	if (MOD_OPT_CLOCK) /* MOD (options): DIGITAL CLOCK */
+-		renderDigitalClock(CLOCK_OFFSET_X + 13, -46);
++	renderDigitalClock(CLOCK_OFFSET_X + 13, -46);
+ 
+ 	renderStatusBars(IS_GAMETIME_RUNNING);
+ }
+diff --git a/src/main/item.c b/src/main/item.c
+index 6517294..7b879c8 100644
+--- a/src/main/item.c
++++ b/src/main/item.c
+@@ -2102,7 +2102,6 @@ int8_t PARTNER_WAYPOINT_CURRENT;
+ int8_t PARTNER_TAMER_PREVIOUS_TILE_Y;
+ int8_t PARTNER_TAMER_PREVIOUS_TILE_X;
+ Entity *FINISHING_ENTITY;
+-uint8_t BATTLE_TOGGLE_LIFEBAR = 1; /* default: show enemy bars continuously */
+ int16_t BATTLE_FRAME_COUNT;
+ int16_t FLEE_TIMER;
+ int16_t DEATH_COUNTDOWN;
+@@ -2127,7 +2126,6 @@ static void *item_sbss_order[] = {
+ 	&DEATH_COUNTDOWN,
+ 	&FLEE_TIMER,
+ 	&BATTLE_FRAME_COUNT,
+-	&BATTLE_TOGGLE_LIFEBAR,
+ 	&FINISHING_ENTITY,
+ 	&PARTNER_TAMER_PREVIOUS_TILE_X,
+ 	&PARTNER_TAMER_PREVIOUS_TILE_Y,
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 9c44af3..85a9f48 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -278,32 +278,29 @@ static __attribute__((noinline)) void modDrawLanguagePicker(void);
+ static __attribute__((noinline)) void modTickLanguagePicker(void);
+ static __attribute__((noinline)) void modRenderLanguagePicker(void);
+ static int32_t MOD_OPTIONS_BACK; /* MOD (options): the title menu comes back from OPTIONS */
+-#define MOD_OPT_BYTES	14 /* byte 13: inverted enemy HUD flags; absent/zero = both ON */
++#define MOD_OPT_BYTES	14 /* byte 13 reserved; zero keeps permanent enemy bars for older readers */
+ #define MOD_OPT_HEADER_BYTES 12
+ #define MOD_OPT_HEADER_CHEATS 0x80
+-#define MOD_OPT_HEADER_OLD_BARS 0x40
+-#define MOD_OPT_HEADER_HIDE_BARS 0x20
+ #define MOD_OPT_HEADER_COUNT 0x1f
+ #define MOD_OPT_CHEATS_BIT 1 /* byte 12: CHEATS, and the Cheats menu's Select shortcuts in the bit above it */
+ #define MOD_OPT_SHORTCUTS_BIT 2
+ static int32_t MOD_SAVE_NUMBER; /* MOD (options): the highest save number seen in a save header (modTitleOptions) */
+-#define MOD_OPT_ROW_STORY	4 /* MOD (story): EXTENDED STORY, under NEW DIGIMON */
+-#define MOD_OPT_ROW_DIFF	5 /* MOD (difficulty): DIFFICULTY, under EXTENDED STORY */
+-#define MOD_OPT_ROW_QUICK	6 /* MOD (quick battle start): QUICK BATTLE START, under DIFFICULTY */
+-#define MOD_OPT_ROW_FPS	7
++#define MOD_OPT_ROW_STORY	3 /* MOD (story): EXTENDED STORY, under NEW DIGIMON */
++#define MOD_OPT_ROW_DIFF	4 /* MOD (difficulty): DIFFICULTY, under EXTENDED STORY */
++#define MOD_OPT_ROW_QUICK	5 /* MOD (quick battle start): QUICK BATTLE START, under DIFFICULTY */
++#define MOD_OPT_ROW_FPS	6
+ #if FONT_SWITCH
+-#define MOD_OPT_ROWS	13 /* MOD (options): and FONT, in a build with both fonts */
+-#define MOD_OPT_ROW_FONT	8
+-#define MOD_OPT_ROW_LANG	9
+-#else
+-#define MOD_OPT_ROWS	12
++#define MOD_OPT_ROWS	11 /* MOD (options): and FONT, in a build with both fonts */
++#define MOD_OPT_ROW_FONT	7
+ #define MOD_OPT_ROW_LANG	8
++#else
++#define MOD_OPT_ROWS	10
++#define MOD_OPT_ROW_LANG	7
+ #endif
+ #define MOD_OPT_ROW_SIGNS	(MOD_OPT_ROW_LANG + 1) /* MOD (language): LANGUAGE and MAP SIGNS, the last two rows */
+ static void renderOptionsMenu(void);
+ static void drawOptionsText(void);
+-#define MOD_OPT_ROW_CHEATS (MOD_OPT_ROWS - 2)
+-#define MOD_OPT_ROW_ENEMY (MOD_OPT_ROWS - 1)
++#define MOD_OPT_ROW_CHEATS (MOD_OPT_ROWS - 1)
+ static int32_t modOptionValue(int32_t row);
+ static int32_t modOptionCount(int32_t row);
+ static void modSetOption(int32_t row, int32_t value);
+@@ -4730,7 +4727,7 @@ static uint8_t *putRecord(uint8_t *p, int32_t tag, void *data, int32_t len)
+ static void modOptionBytes(uint8_t *d)
+ {
+ 	d[0] = MOD_OPT_BUTTONS;
+-	d[1] = MOD_OPT_CLOCK;
++	d[1] = 1; /* Reserved digital-clock byte. */
+ 	d[2] = modFrameRate();
+ 	d[3] = 1; /* Reserved care-HUD byte: always enabled, including for older readers. */
+ #if FONT_SWITCH
+@@ -4746,7 +4743,7 @@ static void modOptionBytes(uint8_t *d)
+ 	d[10] = MOD_OPT_DIFFICULTY; /* MOD (difficulty) */
+ 	d[11] = MOD_OPT_QUICK_BATTLE;
+ 	d[12] = (MOD_OPT_CHEATS ? MOD_OPT_CHEATS_BIT : 0) | (MOD_OPT_SHORTCUTS ? MOD_OPT_SHORTCUTS_BIT : 0);
+-	d[13] = (!MOD_OPT_ENEMY_BARS ? 1 : 0) | (!BATTLE_TOGGLE_LIFEBAR ? 2 : 0);
++	d[13] = 0; /* Reserved inverted enemy-bar flags: always ON/shown. */
+ }
+ 
+ /* MOD (options): a save's options (modOptionBytes, `len` of them), unless OPTIONS changed them since the start */
+@@ -4754,17 +4751,13 @@ static void modApplyOptions(const uint8_t *d, int32_t len)
+ {
+ 	/* not a row of OPTIONS: a save always decides it. Old saves and the card header: OFF */
+ 	MOD_OPT_SHORTCUTS = len >= 13 && (d[12] & MOD_OPT_SHORTCUTS_BIT) != 0;
+-	BATTLE_TOGGLE_LIFEBAR = len < 14 || !(d[13] & 2);
+ 	if (MOD_OPT_TOUCHED) {
+ 		return;
+ 	}
+-	MOD_OPT_ENEMY_BARS = len < 14 || !(d[13] & 1);
+ 	if (len >= 1) {
+ 		modSetButtons(d[0]);
+ 	}
+-	if (len >= 2) {
+-		MOD_OPT_CLOCK = d[1] != 0;
+-	}
++	/* Bytes 1, 3 and 13 are reserved; legacy display choices are ignored. */
+ 	if (len >= 3 && (d[2] == 20 || d[2] == 30 || d[2] == 60)) {
+ 		modSetFrameRate(d[2]);
+ 	}
+@@ -4813,9 +4806,7 @@ static void modTitleOptions(void)
+ 	memset(p, 0, sizeof(SAVE_FILE.pocketStation));
+ 	MOD_SAVE_NUMBER = (MOD_SAVE_NUMBER + 1) & 0xffff;
+ 	p[0] = 'O';
+-	p[1] = MOD_OPT_HEADER_BYTES | (MOD_OPT_CHEATS ? MOD_OPT_HEADER_CHEATS : 0) |
+-	       (!MOD_OPT_ENEMY_BARS ? MOD_OPT_HEADER_OLD_BARS : 0) |
+-	       (!BATTLE_TOGGLE_LIFEBAR ? MOD_OPT_HEADER_HIDE_BARS : 0);
++	p[1] = MOD_OPT_HEADER_BYTES | (MOD_OPT_CHEATS ? MOD_OPT_HEADER_CHEATS : 0);
+ 	p[2] = MOD_SAVE_NUMBER;
+ 	p[3] = MOD_SAVE_NUMBER >> 8;
+ 	modOptionBytes(options);
+@@ -4887,8 +4878,7 @@ static void modCardOptions(void)
+ 				memcpy(best, &data[0x54], bestLen);
+ 				if (bestLen == MOD_OPT_HEADER_BYTES) {
+ 					best[12] = (data[0x51] & MOD_OPT_HEADER_CHEATS) != 0;
+-					best[13] = ((data[0x51] & MOD_OPT_HEADER_OLD_BARS) ? 1 : 0) |
+-					           ((data[0x51] & MOD_OPT_HEADER_HIDE_BARS) ? 2 : 0);
++					best[13] = 0;
+ 					bestLen = MOD_OPT_BYTES;
+ 				}
+ 			}
+@@ -6015,7 +6005,6 @@ void renderInitialMenu(void)
+ 
+ static char *MOD_OPT_TEXT[MOD_OPT_ROWS][3] = {
+ 	{ MOD_OPT_STR_JP, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+-	{ MOD_OPT_STR_CLOCK, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+ 	{ MOD_OPT_STR_EVO, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+ 	{ MOD_OPT_STR_NEWDIGI, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+ 	{ MOD_OPT_STR_STORY, MOD_OPT_STR_OFF, MOD_OPT_STR_ON }, /* MOD (story) */
+@@ -6028,7 +6017,6 @@ static char *MOD_OPT_TEXT[MOD_OPT_ROWS][3] = {
+ 	{ MOD_OPT_STR_LANG }, /* MOD (language) */
+ 	{ MOD_OPT_STR_SIGNS, MOD_OPT_STR_ORIGINAL, MOD_OPT_STR_TRANSLATED },
+ 	{ MOD_OPT_STR_CHEATS, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+-	{ MOD_OPT_STR_ENEMY, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+ };
+ /* the text area place of each value, its row + 0x100 in the right half: a value two rows share (OFF, ON, ORIGINAL) is
+  * drawn once (drawOptionsText) */
+@@ -6092,10 +6080,8 @@ static int32_t modOptionValue(int32_t row)
+ 	case 0:
+ 		return MOD_OPT_BUTTONS == MOD_BUTTONS_JP;
+ 	case 1:
+-		return MOD_OPT_CLOCK != 0;
+-	case 2:
+ 		return MOD_OPT_EVO_GUIDE != 0;
+-	case 3:
++	case 2:
+ 		return MOD_OPT_NEW_DIGIMON != 0;
+ 	case MOD_OPT_ROW_STORY: /* MOD (story) */
+ 		return MOD_OPT_STORY != 0;
+@@ -6115,8 +6101,6 @@ static int32_t modOptionValue(int32_t row)
+             }
+             return 0;
+         }
+-	case MOD_OPT_ROW_ENEMY:
+-		return MOD_OPT_ENEMY_BARS != 0;
+ 	case MOD_OPT_ROW_CHEATS:
+ 		return MOD_OPT_CHEATS != 0;
+ 	case MOD_OPT_ROW_SIGNS:
+@@ -6141,12 +6125,9 @@ static void modSetOption(int32_t row, int32_t value)
+ 		modSetButtons(value ? MOD_BUTTONS_JP : MOD_BUTTONS_US);
+ 		break;
+ 	case 1:
+-		MOD_OPT_CLOCK = value;
+-		break;
+-	case 2:
+ 		MOD_OPT_EVO_GUIDE = value;
+ 		break;
+-	case 3:
++	case 2:
+ 		MOD_OPT_NEW_DIGIMON = value;
+ 		modApplySpeciesLevels(); /* MOD (canon levels) */
+ 		break;
+@@ -6170,9 +6151,6 @@ static void modSetOption(int32_t row, int32_t value)
+ 	case MOD_OPT_ROW_LANG: /* MOD (language) */
+ 		modSetLanguage(modLanguageAt(value));
+ 		break;
+-	case MOD_OPT_ROW_ENEMY:
+-		MOD_OPT_ENEMY_BARS = value != 0;
+-		break;
+ 	case MOD_OPT_ROW_CHEATS:
+ 		MOD_OPT_CHEATS = value != 0;
+ 		break;
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index 89662b2..c0a1d3a 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -61,11 +61,9 @@
+ 
+ extern uint8_t COLORCODE_LOWBITS; /* font.c: the text's colour */
+ 
+-int32_t MOD_OPT_ENEMY_BARS = 1;
+ int32_t MOD_OPT_CHEATS = 0;
+ int32_t MOD_OPT_SHORTCUTS = 0;
+ int32_t MOD_OPT_BUTTONS = MOD_BUTTONS_US;
+-int32_t MOD_OPT_CLOCK = 1;
+ int32_t MOD_OPT_EVO_GUIDE = 1;
+ int32_t MOD_OPT_NEW_DIGIMON = 1;
+ int16_t MOD_SWAP_FROM;
+diff --git a/src/std/std_hud.c b/src/std/std_hud.c
+index d71f80a..97f4563 100644
+--- a/src/std/std_hud.c
++++ b/src/std/std_hud.c
+@@ -48,7 +48,6 @@ typedef struct {
+ extern GsOT *ACTIVE_ORDERING_TABLE;
+ extern uint32_t POLLED_INPUT;
+ extern uint32_t POLLED_INPUT_PREVIOUS;
+-extern uint8_t BATTLE_TOGGLE_LIFEBAR;
+ extern int8_t GAME_STATE;
+ extern GsRVIEW2 GS_VIEWPOINT;
+ extern int32_t ACTIVE_FRAMEBUFFER;
+@@ -1616,9 +1615,6 @@ void STD_handleCommands(void)
+ 
+ void STD_tickTamerTournament(int32_t instanceId)
+ {
+-	if ((POLLED_INPUT & ~POLLED_INPUT_PREVIOUS) & 0x100) {
+-		BATTLE_TOGGLE_LIFEBAR = (BATTLE_TOGGLE_LIFEBAR + 1) & 1;
+-	}
+ 	if (GAME_STATE == 4) {
+ 		STD_handleCommands();
+ 	}
+@@ -2158,15 +2154,10 @@ void STD_renderFighterStatusBars(id)
+ 	}
+ 
+ 	if (id == 1) {
+-		PlayerDataSub *spr = &COMBAT_DATA_PTR->player.unk1[id];
+-		if (!(fighter->flags & FIGHTER_FLAG_KNOCKED_BACK) && !fighter->hpDamageBuffer && spr->unk25 < 21) spr->unk25++;
+-		if (MOD_OPT_ENEMY_BARS && (BATTLE_TOGGLE_LIFEBAR || spr->unk25 < 21))
+-			renderEnemyHeadHP((DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[id]], fighter, 4);
++		renderEnemyHeadHP((DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[id]], fighter, 4);
+ 	}
+ 
+ 	for (bar = 0; bar < 2; bar++) {
+-		/* Select controls opponent life bars in the arena as well. Keep finisher state ticking below. */
+-		if (id == 1 && !BATTLE_TOGGLE_LIFEBAR && COMBAT_DATA_PTR->player.unk1[id].unk25 >= 21) break;
+ 		p = &STD_STATUS_BAR_SPRITES[bar * 3 + 2];
+ 		if (bar == 0) {
+ 			if (id == 0) {
+diff --git a/src/std/std_main.c b/src/std/std_main.c
+index 7febc0b..272cf3e 100644
+--- a/src/std/std_main.c
++++ b/src/std/std_main.c
+@@ -96,7 +96,6 @@ extern int32_t FLEE_DISABLED[2];
+ extern int32_t P2_AOE_TIMER;
+ extern char *MOVE_NAMES[];
+ extern int16_t STD_MATCH_RESULT;
+-extern uint8_t BATTLE_TOGGLE_LIFEBAR;
+ extern int16_t INITIAL_COMBAT_STATS[][6];
+ extern DigimonEntity *BATTLE_TARGETED_DIGIMON;
+ extern DigimonEntity *BATTLE_ATTACKING_DIGIMON;
+@@ -4055,7 +4054,6 @@ void STD_initializeCombat(Entity *entity, Entity *other)
+ 		f->mpDamageBuffer = 0;
+ 		f->flags = 0;
+ 		f->moveRange = 0;
+-		COMBAT_DATA_PTR->player.unk1[i].unk25 = 0xff;
+ 		f->flatTimer = 0;
+ 		f->invulnerableTimer = 0;
+ 		f->cooldown = 0;
+@@ -4633,8 +4631,6 @@ void STD_tickAttackState(Entity *entity, DigimonEntity *target, int32_t id)
+ 					}
+ 				}
+ 			}
+-			if (i) {
+-			}
+ 			entity->anim.animFlag |= 1;
+ 		}
+ 	}
+@@ -5650,7 +5646,6 @@ skipViewpoint:
+ 			fighter->hpDamageBuffer = CAPS_ADD_DAMAGE(fighter->hpDamageBuffer, dmg);
+ 			fighter->flags |= FIGHTER_FLAG_KNOCKED_BACK;
+ 			STD_handleHitReaction(entity, fighter, &attack, i);
+-			sub->unk25 = 0;
+ 			addEntityText(entity, i, 0, dmg, 0);
+ 			fighter->invulnerableTimer = MOVE_DATA[tech].iframes;
+ 			entity->anim.animFlag &= 0xfe;
+@@ -5695,7 +5690,6 @@ skipViewpoint:
+ 			}
+ 			/* MOD (caps): summed in 32 bits, up to DAMAGE_CAP (was 9999) */
+ 			fighter->hpDamageBuffer = CAPS_ADD_DAMAGE(fighter->hpDamageBuffer, dmg);
+-			sub->unk25 = 0;
+ 			addEntityText(entity, i, 0, dmg, 0);
+ 		}
+ 		STD_addFinisherProgress(fighter, fighter->finisherGoal * BM(BLOCK_GAIN_DEF) / 100);
+@@ -6859,9 +6853,6 @@ void STD_applyMoveResult(void)
+ 				dmg = MOD_DIFF_DAMAGE(NULL, entity, ENTITY_TABLE[1], dmg); /* MOD (difficulty) */
+ 				/* MOD (caps): summed in 32 bits, up to DAMAGE_CAP (was 9999) */
+ 				fighter->hpDamageBuffer = CAPS_ADD_DAMAGE(fighter->hpDamageBuffer, dmg);
+-				if (i != 0) {
+-					COMBAT_DATA_PTR->player.unk1[i].unk25 = 0;
+-				}
+ 				addEntityText(entity, i, 0xc, dmg, 0);
+ 			}
+ 		}
+diff --git a/src/vs/vs_hud.c b/src/vs/vs_hud.c
+index b3970cb..30f1139 100644
+--- a/src/vs/vs_hud.c
++++ b/src/vs/vs_hud.c
+@@ -20,7 +20,6 @@
+ 
+ #include "common.h"
+ 
+-extern uint8_t BATTLE_TOGGLE_LIFEBAR;
+ 
+ #define VS_TMD_BUFFER	((uint8_t *)ARENA_TMD_ADDR)
+ 
+@@ -59,7 +58,6 @@ void VS_renderNumber(int32_t a, int16_t digits, int16_t x, int16_t y, int16_t va
+ void VS_renderFighterHPBar(int16_t id);
+ void VS_renderHPBarFill(int16_t id);
+ void VS_renderHPBarDigits(int16_t i, int16_t id);
+-void VS_tickFighterStatusBars(int32_t id);
+ void VS_renderFighterStatusBars(int32_t id);
+ void VS_tickVersusModelScene(void);
+ void VS_renderVersusModelScene(void);
+@@ -94,7 +92,6 @@ static void *vs_hud_functions[] = {
+ 	VS_loadVersusSceneModel,
+ 	VS_removeFighterStatusBars,
+ 	VS_renderFighterStatusBars,
+-	VS_tickFighterStatusBars,
+ 	VS_addFighterStatusBars,
+ 	VS_renderHPBarDigits,
+ 	VS_renderHPBarFill,
+@@ -2294,14 +2291,7 @@ void VS_addFighterStatusBars(id)
+ 	VS_FINISHER_SEGMENTS[id] = 0;
+ 	VS_FINISHER_READY[id] = 0;
+ 	MAIN_D_801352DA[id] = MAIN_D_801352D8[id] = 0;
+-	COMBAT_DATA_PTR->player.unk1[id].unk25 = 0xff; /* brief mode starts hidden in every match */
+-	addObject(0x19c, id, VS_tickFighterStatusBars, VS_renderFighterStatusBars);
+-}
+-
+-void VS_tickFighterStatusBars(int32_t id)
+-{
+-	if (id == 0 && GAME_STATE == 4 && ((POLLED_INPUT & ~POLLED_INPUT_PREVIOUS) & 0x100))
+-		BATTLE_TOGGLE_LIFEBAR ^= 1;
++	addObject(0x19c, id, NULL, VS_renderFighterStatusBars);
+ }
+ 
+ #include <dw/enemy_bars.h>
+@@ -2344,15 +2334,10 @@ void VS_renderFighterStatusBars(id)
+ 	}
+ 
+ 	if (id == 1) {
+-		PlayerDataSub *spr = &COMBAT_DATA_PTR->player.unk1[id];
+-		if (!(fighter->flags & FIGHTER_FLAG_KNOCKED_BACK) && !fighter->hpDamageBuffer && spr->unk25 < 21) spr->unk25++;
+-		if (MOD_OPT_ENEMY_BARS && (BATTLE_TOGGLE_LIFEBAR || spr->unk25 < 21))
+-			renderEnemyHeadHP((DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[id]], fighter, 4);
++		renderEnemyHeadHP((DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[id]], fighter, 4);
+ 	}
+ 
+ 	for (bar = 0; bar < 2; bar++) {
+-		/* Select controls opponent life bars in the arena as well. Keep finisher state ticking below. */
+-		if (id == 1 && !BATTLE_TOGGLE_LIFEBAR && COMBAT_DATA_PTR->player.unk1[id].unk25 >= 21) break;
+ 		p = &VS_STATUS_BAR_SPRITES[bar * 3 + 2];
+ 		if (bar == 0) {
+ 			if (id == 0) {
+diff --git a/src/vs/vs_main.c b/src/vs/vs_main.c
+index a1ad504..6e02199 100644
+--- a/src/vs/vs_main.c
++++ b/src/vs/vs_main.c
+@@ -618,7 +618,6 @@ skipViewpoint:
+ 			}
+ 			fighter->flags |= FIGHTER_FLAG_KNOCKED_BACK;
+ 			VS_handleHitReaction(entity, fighter, &attack, i);
+-			sub->unk25 = 0;
+ 			addEntityText(entity, i, 0, dmg, 0);
+ 			fighter->invulnerableTimer = MOVE_DATA[tech].iframes;
+ 			entity->anim.animFlag &= 0xfe;
+@@ -665,7 +664,6 @@ skipViewpoint:
+ 			if (fighter->hpDamageBuffer >= 0x2710) {
+ 				fighter->hpDamageBuffer = 0x270f;
+ 			}
+-			sub->unk25 = 0;
+ 			addEntityText(entity, i, 0, dmg, 0);
+ 		}
+ 		VS_addFinisherProgress(fighter, fighter->finisherGoal * BM(BLOCK_GAIN_DEF) / 100);
+@@ -1249,9 +1247,6 @@ void VS_applyMoveResult(void)
+ 				if (fighter->hpDamageBuffer >= 0x2710) {
+ 					fighter->hpDamageBuffer = 0x270f;
+ 				}
+-				if (i != 0) {
+-					COMBAT_DATA_PTR->player.unk1[i].unk25 = 0;
+-				}
+ 				addEntityText(entity, i, 0xc, dmg, 0);
+ 			}
+ 		}
+diff --git a/text/main/main_menu.yaml b/text/main/main_menu.yaml
+index 0c11550..e9afaae 100644
+--- a/text/main/main_menu.yaml
++++ b/text/main/main_menu.yaml
+@@ -350,9 +350,6 @@ MOD_OPTIONS:
+     MOD_OPT_STR_JP:
+       ja: "JAPANESE CONTROLS"
+       en_us: "JAPANESE CONTROLS"
+-    MOD_OPT_STR_CLOCK:
+-      ja: "DIGITAL CLOCK"
+-      en_us: "DIGITAL CLOCK"
+     MOD_OPT_STR_OFF:
+       ja: "OFF"
+       en_us: "OFF"
+@@ -446,9 +443,6 @@ MOD_OPTIONS:
+     MOD_OPT_STR_SPANISH:
+       ja: "ESPANOL"
+       en_us: "ESPANOL"
+-    MOD_OPT_STR_ENEMY:
+-      ja: "敵の新HPバー"
+-      en_us: "NEW ENEMY BARS"
+     MOD_OPT_STR_CHEATS:
+       ja: "CHEATS"
+       en_us: "CHEATS"
+-- 
+2.55.0
+
