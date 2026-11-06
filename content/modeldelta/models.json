@@ -4929,9 +4929,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/403-Beelzemon.MMD.mdelta",
-        "delta_sha256": "4919dd0834d2d267304d0cb754c88dd45727f8b713e874be7aa7c3c237366c31",
-        "sha256": "0f9af3a4f3b077caa4b06ae40214afcdb08d132ba58509ee6ffad42c6655d4ef",
-        "size": 122518
+        "delta_sha256": "69414e8e91209bebfe45bde43995aa2b4daae012a6e1b7cd14dfcc100b35cce6",
+        "sha256": "f19a752540ebea151df9979430bdea14b461a2a8d9e74aba586312f761f32c74",
+        "size": 123110
       },
       "tim": {
         "sources": [
@@ -4942,8 +4942,8 @@
           }
         ],
         "delta": "content/modeldelta/deltas/403-Beelzemon.TIM.mdelta",
-        "delta_sha256": "1e4e0de50c69af882bf494879ce83880aa65fb0b7901cab4391248fe8caf46a4",
-        "sha256": "8ef653b666b075f705e3566dbfb6bc9a300633b37abcd021354ef2b3bfe1fab5",
+        "delta_sha256": "3d812772a4a772f3dc5d883466526491e93b8b25a1860e0d85d79b2c25b46969",
+        "sha256": "950b3d29787dce717cf40cc35c002175c42354f7bb955f5fc855669ed4fdd2bd",
         "size": 18432
       }
     },

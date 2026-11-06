@@ -49,8 +49,20 @@ def main():
                          ('warning','on','warning normal','1 second at normal brightness'),
                          ('warning','off','warning dim','Bar 35%; icon stays normal'),
                          ('active','off','active','55% whole-icon tint; blue bar'))])
-    sheet(args.out,'needs-approved-states-2mb.png','Approved need gauges / normal, warning and active',
+    sheet(args.out,'needs-approved-states-2mb.png','Need reserves drain / normal, warning and active',
           'PCSX-Redux interpreter / 2,097,152 B RAM / 20 native ticks per phase',rows)
+    sheet(args.out,'need-reserves-fonts-2mb.png','Need reserves / both fonts and reserve endpoints',
+          'FULL = fine; toilet empties when due; energy empties at fatigue 100.',[
+          [(args.runtime/f'CLASSIC-60-{state}-{on}.png',f'CLASSIC / {label}',detail)
+           for state,on,label,detail in (('normal',True,'normal','Live reserves'),
+             ('warning',True,'warning bright','Last hour / last step'),
+             ('warning',False,'warning dim','Icon stays bright'),
+             ('active',True,'active','55% icon tint; live fill'))],
+          [(args.runtime/name,label,detail) for name,label,detail in (
+             ('toilet-just-used.png','Toilet / just used','48 units / full reserve'),
+             ('toilet-last-reserve.png','Toilet / last reserve','1 unit / minimum one pixel'),
+             ('tiredness-rested.png','Energy / rested','Fatigue 0 / full reserve'),
+             ('tiredness-exhausted-100.png','Energy / depleted','Fatigue 100 / empty reserve'))]])
     for run in gym['runs'][:2]:
         cells=[]
         for frame in run['frames']:
@@ -58,7 +70,7 @@ def main():
             cells.append((args.gym/frame['file'],f'{run["prefix"]} / session {frame["session"]} of 5',
                           f'Food {care["foodLevel"]}; toilet {care["poopLevel"]}; fatigue {care["tiredness"]}'))
         sheet(args.out,run['prefix']+'-gym-x5-2mb.png',run['prefix']+' / five native training sessions / 2 MB',
-              'Native care costs; no care writes between awards. Light-blue fills throughout.',[cells[:3],cells[3:]])
+              'Energy and toilet reserves drain with native care costs; no care writes between awards.',[cells[:3],cells[3:]])
 
 
 if __name__=='__main__':
