@@ -313,7 +313,8 @@ def record_step(ctx, mod, directory):
     try:
         ctx.cache_step = mod.NAME
         ctx.cache_facts = getattr(mod, 'FACTS', False)
-        ident = json.loads(encoded(identity(ctx, 'record/' + mod.NAME)))
+        sources = story_inputs(ctx) if mod.NAME == 'story' else ()
+        ident = json.loads(encoded(identity(ctx, 'record/' + mod.NAME, sources)))
         cache = Cache(directory, os.path.join(ctx.root, 'build'))
         result = cache.restore(ident)
         if result is None:

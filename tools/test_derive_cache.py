@@ -268,7 +268,7 @@ class CodeInputs(unittest.TestCase):
         import os
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
-            helper = root / 'story/mods/helper.py'
+            helper = root / 'story' / 'mods' / 'helper.py'
             helper.parent.mkdir(parents=True)
             helper.write_text("value = 'old'")
             output = root / 'build/out/archive'
@@ -289,7 +289,7 @@ class CodeInputs(unittest.TestCase):
                 helper.write_text("value = 'new'")
                 self.assertEqual(compile(), 'cache miss')
                 self.assertEqual(output.read_text(), 'new')
-                (root / 'story/new-directory').mkdir()
+                (root / 'story' / 'new-directory').mkdir()
                 self.assertEqual(compile(), 'cache miss')
                 helper.chmod(0o700)
                 self.assertEqual(compile(), 'cache miss')
@@ -323,6 +323,31 @@ class CodeInputs(unittest.TestCase):
 
 
 class RecordedSteps(unittest.TestCase):
+    def test_preloaded_story_inputs_invalidate_recorded_steps(self):
+        with tempfile.TemporaryDirectory() as td, \
+                patch.object(cache, 'tool_key', return_value='tools'), \
+                patch.object(cache, 'runtime_sources', return_value='runtime'), \
+                patch.object(runner, '_recording', None):
+            root = Path(td)
+            helper = root / 'story' / 'helper.py'
+            helper.parent.mkdir()
+            output = root / 'build' / 'out' / 'archive'
+            output.parent.mkdir(parents=True)
+            loaded = {}
+            def build(ctx):
+                output.write_text(loaded['value'])
+            mod = SimpleNamespace(NAME='story', FACTS=True, build=build)
+            ctx = SimpleNamespace(root=td, out=str(output.parent), env={}, facts={},
+                                  locks_read_only=True, inputs=set(), lines=[])
+            for value, hit in [('old', False), ('old', True), ('new', False), ('new', True)]:
+                helper.write_text('value=' + repr(value))
+                exec(helper.read_text(), loaded)
+                output.unlink(missing_ok=True)
+                ctx.lines = []
+                cache.record_step(ctx, mod, str(root / 'cache'))
+                self.assertEqual(ctx.lines[0], 'record cache hit' if hit else 'record cache miss')
+                self.assertEqual(output.read_text(), value)
+
     def test_facts_are_keyed_for_recorded_fact_consumers(self):
         from tools.derive.__main__ import Ctx
         with tempfile.TemporaryDirectory() as td, \
