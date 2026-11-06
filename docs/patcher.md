@@ -206,6 +206,14 @@ starting in this Python and stopping at its first missing disc file (not at a mi
 window in all nine languages, filled with long texts and file names, at its natural and its narrowest size, with no text or button cut (`gui.clipped`). CI runs it on the frozen Windows app (as a windowed program, with no console), on the
 frozen macOS app natively and, when the runner has Rosetta, its Intel half, and from source on Linux.
 
+Package extraction rejects case-colliding file and directory names on every platform.
+The package self-test also loads its real story declarations through several path
+spellings, including drive and directory case changes on Windows. The compiler
+must load each file once: otherwise absolute imports from lowered Python can
+repeat the base prelude's declarations. This compiler fix belongs in the release
+package's `bundle/tools/dws/gen.py`; rebuilding only the desktop executable does
+not update an already cached package.
+
 `desktop.yml` runs on pull requests that touch the patcher (artifacts only), on a pushed `v*` tag, and by hand with
 an optional existing tag. With a tag, the `attach` job uploads both zips to that tag's release (drafted before the
 tag is pushed, see [releasing](release/releasing.md)); without one nothing is published. It needs no disc and no
