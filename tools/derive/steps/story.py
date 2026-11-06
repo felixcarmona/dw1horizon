@@ -276,10 +276,14 @@ def units(ctx):
                       [f'step:maps ({p})' for p in s.screens] + ([] if base or not s.maps else [f'step:retouch ({s.maps})']))
             outs = [os.path.relpath(os.path.join(d, f), ctx.out) for f in ('DG.SCN', 'MAPHEAD.SCN', 'dws.log')]
             ordered = not base or s.main not in ('', DEV_SAVE)   # a custom main source can edit new maps even without mods
+            # Read-only standard passes reconstruct from map preimages. Recording
+            # can use private prepared snapshots and merge their writes in order;
+            # custom main sources and lock writers retain predecessor state.
             out.append(runner.Unit(pass_name(lang, v), run_pass, (ctx.root, d, argv, lowered, s.scrn,
                         ctx.path('DIGI.DAT') if os.path.isfile(ctx.path('DIGI.DAT')) else None,
                         ctx.path('derived/exe-facts.json') if os.path.isfile(ctx.path('derived/exe-facts.json')) else None),
-                        inputs, outs, order_group='story maps and locks' if ordered else None))
+                        inputs, outs, order_group='story maps and locks' if ordered else None,
+                        record_snapshot=ctx.locks_read_only and not s.main))
     return out
 
 

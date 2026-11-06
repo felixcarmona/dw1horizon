@@ -192,10 +192,10 @@ def alias_source_paths(plan):
 def plan_jobs(recs, bundle_files):
     """The jobs of the records (one per --disc; the same jobs) with their inputs and the jobs they wait for."""
     ref = recs[0]
-    names = [j['name'] for j in ref['jobs']]
+    names = [(j['name'], j.get('order_group'), j.get('record_snapshot', False)) for j in ref['jobs']]
     for r in recs[1:]:
-        if [j['name'] for j in r['jobs']] != names:
-            raise SystemExit('the records have different jobs (a step\'s units differ between bases)')
+        if [(j['name'], j.get('order_group'), j.get('record_snapshot', False)) for j in r['jobs']] != names:
+            raise SystemExit('the records have different jobs or ordering policies between bases')
     tree = ref['tree']
     jobs = []
     alive = set()             # files the jobs before this one made (and did not remove): their folders exist
@@ -280,7 +280,7 @@ def plan_jobs(recs, bundle_files):
             absent.discard(MANIFEST)
         jobs.append(dict(id=i, step=j['step'], part=j['part'], index=j['index'], name=j['name'],
                          argv=[a.replace(tree, '{ROOT}') for a in j['argv']],
-                         seconds=max(x['seconds'] for x in js), deps=sorted(deps), tree=tree_in, bundle=bundle_in,
+                         seconds=max(x['seconds'] for x in js), order_group=j.get('order_group'), deps=sorted(deps), tree=tree_in, bundle=bundle_in,
                          lists={d: [sorted(x for x in n if f'{d}/{x}' in existed),
                                     sorted(x for x in n if f'{d}/{x}' not in existed)] for d, n in lists.items()
                                 if not RANDOM.search(d) and not any(RANDOM.search(f'{d}/{x}') for x in n)},
@@ -323,6 +323,7 @@ def schedule_deps(jobs, order, after):
         js = by_step[s]
         first = [j for j in js if j['part'] in ('prepare', 'build')]
         prep = [j['id'] for j in first]
+        groups = {}
         for j in js:
             d = set(j['deps'])
             if j['part'] in ('prepare', 'build'):
@@ -331,6 +332,11 @@ def schedule_deps(jobs, order, after):
                 d |= set(prep)
             elif j['part'] == 'finish':
                 d |= {x['id'] for x in js if x['part'] != 'finish'}
+            group = j.get('order_group') if j['part'] == 'unit' else None
+            if group is not None:
+                if group in groups:
+                    d.add(groups[group])
+                groups[group] = j['id']
             j['deps'] = sorted(d)
     drop = {j['id'] for j in jobs if j['part'] == 'units'}
     keep = [j for j in jobs if j['id'] not in drop]

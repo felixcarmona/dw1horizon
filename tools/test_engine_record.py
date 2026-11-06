@@ -11,6 +11,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 RECORDER = ROOT / 'web/enginebuild/record.py'
+sys.path.insert(0, str(RECORDER.parent))
 spec = importlib.util.spec_from_file_location('record_parallel', RECORDER.with_name('record_parallel.py'))
 parallel = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(parallel)
@@ -21,7 +22,8 @@ HELPER = Path('input-helper.txt').read_text()
 def main():
  a=sys.argv[1:]; out=Path(a[a.index('--out')+1]); step=a[a.index('--step')+1] if '--step' in a else a[a.index('--steps')+1]
  if a[0]=='units':
-  print(json.dumps([dict(index=i,name='unit-'+str(i)) for i in range(3)])); return
+  policy=dict(order_group='sequence') if Path('ordered').exists() else {}
+  print(json.dumps([dict(index=i,name='unit-'+str(i),**policy) for i in range(3)])); return
  out.mkdir(parents=True,exist_ok=True)
  if '--prepare' in a:
   (out/step).mkdir(exist_ok=True); return
@@ -30,15 +32,17 @@ def main():
   files={str(p.relative_to(out)):dict(file=str(p.relative_to(out))) for p in sorted(out.glob('*/*.bin'))}
   (dest/'manifest.json').write_text(json.dumps(dict(files=files))); return
  i=int(a[a.index('--index')+1]); time.sleep((3-i)*0.02)
- assert Path('empty').is_dir(), 'worker baseline directory was not restored'
+ if not Path('ordered').exists(): assert Path('empty').is_dir(), 'worker baseline directory was not restored'
  if Path('fail').exists() and i==1: raise RuntimeError('intentional unit failure')
  source=Path('extracted')/('input-'+str(i)); value=source.read_bytes(); source.write_bytes(value+b'-edited')
- assert not (out/step/('unit-'+str((i+1)%3)+'.bin')).exists(), 'sibling output leaked'
+ if not Path('ordered').exists(): assert not (out/step/('unit-'+str((i+1)%3)+'.bin')).exists(), 'sibling output leaked'
  (out/step/('unit-'+str(i)+'.bin')).write_bytes(value+HELPER.encode())
- common=out/step/'shared.bin';common.write_bytes(b'common' if not Path('conflict').exists() else str(i).encode())
+ common=out/step/'shared.bin'
+ if Path('ordered').exists(): common.write_bytes((common.read_bytes() if common.exists() else b'')+str(i).encode())
+ else: common.write_bytes(b'common' if not Path('conflict').exists() else str(i).encode())
  folder=Path(tempfile.mkdtemp(prefix='run-',dir=out/step))
  (folder/'data.bin').write_bytes(value)
- if i==0: Path('empty').rmdir()
+ if i==0 and Path('empty').exists(): Path('empty').rmdir()
  print('unit complete')
 '''
 
@@ -82,6 +86,19 @@ class RecorderTests(unittest.TestCase):
                 self.assertTrue(list(Path(str(out)+'.logs').rglob('*.timing.json')))
             self.assertEqual(graphs[0], graphs[1])
             self.assertEqual(artifacts[0], artifacts[1])
+
+    def test_ordered_mutations_keep_predecessor_state_at_every_worker_count(self):
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td); graphs=[]
+            for count in (1,3):
+                tree=root/str(count);fixture(tree);(tree/'ordered').touch()
+                out=root/(str(count)+'.json')
+                result=self.run_record(tree,out,count)
+                self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+                graphs.append(out.read_bytes())
+                for step in ('maps','story','signs'):
+                    self.assertEqual((tree/'build/everything'/step/'shared.bin').read_bytes(),b'012')
+            self.assertEqual(*graphs)
 
     def test_worker_failure_has_specific_log_and_no_partial_merge(self):
         with tempfile.TemporaryDirectory() as td:

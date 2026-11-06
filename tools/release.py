@@ -24,7 +24,7 @@ sys.path.insert(0, str(ROOT))
 from tools import patch_series  # noqa: E402
 FAST = ('test_version', 'test_savecompat', 'test_pysum', 'test_derive_units',
         'test_patchbundle', 'test_patcher_reloc', 'test_release', 'test_release_reuse', 'test_release_workers',
-        'test_engine_record', 'test_web_engine_plan', 'test_sign_units')
+        'test_engine_record', 'test_web_engine_plan', 'test_sign_units', 'test_record_groups')
 
 
 def git(*args, cwd=ROOT):

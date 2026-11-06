@@ -4,13 +4,15 @@ import multiprocessing
 from pathlib import Path
 from types import SimpleNamespace
 import tempfile
+import sys
 import unittest
 from unittest.mock import patch
 
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
 from tools.derive.steps import signs as step
 from tools.localize import signs, cutout
-
-ROOT = Path(__file__).resolve().parents[1]
 
 
 def small_sign(args):

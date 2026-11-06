@@ -193,6 +193,7 @@ def main():
     ap.add_argument('--jobs', type=int, default=8)
     ap.add_argument('--worker-memory-mib', type=int, default=3072)
     ap.add_argument('--logs')
+    ap.add_argument('--steps', help='focused recording from already prepared prerequisite outputs')
     ap.add_argument('--unit-batch')
     ap.add_argument('--sequential', action='store_true', help='debugging reference; never an automatic fallback')
     a = ap.parse_args()
@@ -208,13 +209,19 @@ def main():
     forget_modules()
     from tools.derive import steps as S, graph
     order = [m.NAME for m in graph.order(S.owned())]
+    if a.steps:
+        selected = set(a.steps.split(','))
+        unknown = selected - set(order)
+        if unknown:
+            ap.error('unknown steps: ' + ', '.join(sorted(unknown)))
+        order = [name for name in order if name in selected]
     after = {n: list(S.load(n).AFTER) for n in order}
     unit_steps = {n for n in order if hasattr(S.load(n), 'units')}
     jobs, timings = [], []
     started = time.perf_counter()
 
-    def spec(step, part, argv, index=None, name=None):
-        return dict(step=step, part=part, argv=argv, index=index, name=name or f'{step} {part}')
+    def spec(step, part, argv, index=None, name=None, **policy):
+        return dict(step=step, part=part, argv=argv, index=index, name=name or f'{step} {part}', **policy)
 
     def add(result):
         jobs.append(result['graph'])
@@ -231,7 +238,8 @@ def main():
             text = add(execute(spec(step, 'units', ['units', *base, '--steps', step, '--json'])))
             found = json.loads(text[text.index('['):])
             specs = [spec(step, 'unit', args + ['--index', str(u['index']), '--strict'], u['index'],
-                          f"{step} {u['index']} {u['name']}") for u in found]
+                          f"{step} {u['index']} {u['name']}",
+                          order_group=u.get('order_group'), record_snapshot=u.get('record_snapshot', False)) for u in found]
             if specs:
                 for result in parallel.units(Path(TREE), specs, Path(OUT + '.workers'),
                                               1 if a.sequential else a.jobs, a.worker_memory_mib):

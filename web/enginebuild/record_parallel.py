@@ -12,6 +12,8 @@ import sys
 import threading
 import time
 
+import record_groups
+
 # Stable estimates, independent of scheduling and machine load. Actual durations
 # belong in the private timings sidecar, never in the recorded dependency graph.
 ESTIMATES = {'imports': 6, 'maps': 12, 'models': 8, 'retouch': 5,
@@ -21,6 +23,8 @@ ESTIMATES = {'imports': 6, 'maps': 12, 'models': 8, 'retouch': 5,
 def estimate(spec):
     if spec['part'] in ('prepare', 'units', 'finish'):
         return 1
+    if spec['step'] == 'signs' and '/' in spec['name']:
+        return 64
     if spec['step'] == 'story' and 'base' in spec['name']:
         return 20
     return ESTIMATES.get(spec['step'], 5)
@@ -103,18 +107,21 @@ def batch(request, execute):
     before, dirs = mirror(master, tree, folder / 'sync.json')
     results = []
     try:
-        for spec in request['specs']:
-            result = execute(spec)
-            artifact = folder / (spec['step'] + '-unit-' + str(spec['index']))
-            artifact.mkdir(exist_ok=True)
-            result['artifact'] = str(artifact)
-            for name in result['graph']['writes']:
-                copy_file(tree / name, artifact / name, tree, master)
-            results.append(result)
-            (folder / 'results.json').write_text(json.dumps(results))
-            if result['graph']['code'] not in ('0', 'None'):
-                raise RuntimeError(f"record unit failed: {spec['name']}; see {result['log']}")
-            restore(master, tree, before, dirs, set(result['graph']['writes']) | set(result['graph']['removes']))
+        for group in request['groups']:
+            dirty = set()
+            for spec in group:
+                result = execute(spec)
+                artifact = folder / (spec['step'] + '-unit-' + str(spec['index']))
+                artifact.mkdir(exist_ok=True)
+                result['artifact'] = str(artifact)
+                for name in result['graph']['writes']:
+                    copy_file(tree / name, artifact / name, tree, master)
+                results.append(result)
+                dirty |= set(result['graph']['writes']) | set(result['graph']['removes'])
+                (folder / 'results.json').write_text(json.dumps(results))
+                if result['graph']['code'] not in ('0', 'None'):
+                    raise RuntimeError(f"record unit failed: {spec['name']}; see {result['log']}")
+            restore(master, tree, before, dirs, dirty)
     finally:
         (folder / 'results.json').write_text(json.dumps(results))
 
@@ -128,7 +135,8 @@ def units(master, specs, folder, requested, memory_mib):
     scheduler = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(scheduler)
     measure, worker_count = scheduler.measure, scheduler.worker_count
-    width = worker_count(requested, len(specs), memory_mib)
+    tasks = record_groups.groups(specs)
+    width = worker_count(requested, len(tasks), memory_mib)
     print(f'record {specs[0]["step"]}: {len(specs)} units, {width} workers, {memory_mib} MiB/worker', flush=True)
     folder = Path(folder)
     folder.mkdir(parents=True, exist_ok=True)
@@ -141,7 +149,7 @@ def units(master, specs, folder, requested, memory_mib):
         (home / 'tree').mkdir(exist_ok=True)
         req = home / 'request.json'
         req.write_text(json.dumps(dict(master=str(master), tree=str(home / 'tree'), folder=str(home),
-                                       specs=specs[index::width])))
+                                       groups=tasks[index::width])))
         logs = Path(os.environ['RECORD_LOGS']) / ('worker-' + str(index))
         logs.mkdir(parents=True, exist_ok=True)
         log = logs / (specs[0]['step'] + '.log')
@@ -181,35 +189,16 @@ def units(master, specs, folder, requested, memory_mib):
     finally:
         pool.shutdown(wait=True, cancel_futures=True)
     ordered = [results[s['index']] for s in specs]
-    written, removed = {}, set()
-    # Check the entire batch before mutating the master. Shared writes are
-    # allowed only when their bytes agree; a read of a sibling output is a bug.
-    for result in ordered:
-        job = result['graph']
-        reads = set(job['existed'])
-        for other in ordered:
-            if other is result:
-                continue
-            sibling = other['graph']
-            conflict = (reads & set(sibling['writes'])) - set(job['writes'])
-            if conflict or reads & set(sibling['removes']):
-                raise RuntimeError(f"dependent sibling units: {job['name']}, {sibling['name']}: {sorted(conflict)}")
-        for name in job['writes']:
-            path = Path(result['artifact']) / name
-            value = digest(path)
-            if name in removed or (name in written and written[name][0] != value):
-                raise RuntimeError(f'conflicting recorder writes: {job["name"]}: {name}')
-            written[name] = (value, path)
-        for name in job['removes']:
-            if name in written:
-                raise RuntimeError(f'conflicting recorder removal: {job["name"]}: {name}')
-            removed.add(name)
-    for name in sorted(removed):
-        (master / name).unlink(missing_ok=True)
-    for name, (_, source) in sorted(written.items()):
+    record_groups.validate_reads([r['graph'] for r in ordered])
+    operations = record_groups.merge_operations(ordered, digest)
+    # All computation and conflict validation completes before the master changes.
+    for name, source in sorted(operations.items()):
         target = master / name
-        target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(source, target)
+        if source is None:
+            target.unlink(missing_ok=True)
+        else:
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, target)
     return ordered
 
 

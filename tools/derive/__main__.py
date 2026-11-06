@@ -265,7 +265,7 @@ def units(a):
                 print(f'{mod.NAME}: units not known yet ({e})')
             continue
         rows += [{'step': mod.NAME, 'index': i, 'name': u.name, 'after': list(mod.AFTER), 'inputs': u.inputs,
-                  'outputs': u.outputs, 'order_group': u.order_group} for i, u in enumerate(us)]
+                  'outputs': u.outputs, 'order_group': u.order_group, 'record_snapshot': u.record_snapshot} for i, u in enumerate(us)]
         if not a.json:
             print(f'{mod.NAME}: {len(us)} units')
             for u in us:
