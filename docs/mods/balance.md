@@ -686,3 +686,24 @@ Radius/height and animation/effect donors describe the same physical model in bo
 The natural evolution thresholds retain their curated JSON challenge. In particular, the legacy native Mega routes retain their strict thresholds in both modes; Whamon alone changes its incoming level and therefore has a separate off requirement row. Native enemies whose lower off tier is not raisable gain no new off evolution routes. Neither mode resets trained stats to evolution targets.
 
 The complete runtime change, including menu readers, grows the eight-language `main_BSS_END` by 700 bytes (0x801ce4d4 → 0x801ce790). Active finisher scalars and scratch use 172 bytes; both full move lists stay on disc in owned-data output. Heap alignment costs 704 bytes overall: 186,208 bytes remain. All 320 actual archive setups fit; screen 207 is tightest with 1,488 bytes. Level/target/finisher tests cover both modes and shared-id isolation; source and archive practical tree checks also pass.
+
+## Ordinary technique stat curve
+
+Ordinary attacks retain the original integer formula through ±500 Offense minus
+Defense. Beyond +500 they add `power × excess / (excess + 500)`, with truncation
+toward zero: 2× at +500, 2.5× at +1000, 2.9× at +5000, always below 3×.
+The negative side keeps the original minimum. This applies to partner and enemy
+attacks in field/story, tournaments and VS; finishers are unchanged.
+
+The knee/divisor and the new `damage.tailHalfDifference` (500) and
+`damage.tailPowerDivisor` (1) belong to `content/tables/battle-formulas.json`.
+A missing/nonpositive tail parameter disables the extension. Existing element,
+random roll, EASY, counter and block ordering stays intact; VS retains its
+separate 9999 hit limit, BTL/STD their 30000 limit. The ordinary increase beyond
+the old plateau is bounded below 50%, including for enemies.
+
+The [damage investigation](../investigations/technique-damage.md#bounded-high-stat-extension-2026-11-06)
+contains the placement census, explicit partner scenarios, tournament stat
+rolls, boss landed-hit/TTK budgets, finisher ratios and risks. Reproduce the
+numbers with `python3 tools/battle_audit.py`; add `--charts` in an environment
+with matplotlib to export the multiplier chart and boss table.
