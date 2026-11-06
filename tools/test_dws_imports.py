@@ -38,6 +38,26 @@ class Imports(unittest.TestCase):
     def test_directory_and_filename_case(self):
         self.load_alias(str(self.names.resolve()).swapcase())
 
+    @unittest.skipUnless(os.name == 'nt', 'Windows short paths')
+    def test_short_directory_alias(self):
+        import ctypes
+        from ctypes import wintypes
+        path = str(self.names.resolve())
+        api = ctypes.WinDLL('kernel32', use_last_error=True).GetShortPathNameW
+        api.argtypes = [wintypes.LPCWSTR, wintypes.LPWSTR, wintypes.DWORD]
+        api.restype = wintypes.DWORD
+        buf = ctypes.create_unicode_buffer(32768)
+        n = api(path, buf, len(buf))
+        if not n or n >= len(buf) or os.path.normcase(buf.value) == os.path.normcase(path):
+            self.skipTest('8.3 aliases unavailable on this volume')
+        self.load_alias(buf.value)
+
+    @unittest.skipIf(os.name == 'nt', 'symlinks need privileges on Windows')
+    def test_symlink_import(self):
+        alias = self.root / 'alias.dws'
+        alias.symlink_to(self.names)
+        self.load_alias(alias)
+
     def test_distinct_files_still_reject_duplicate_declarations(self):
         other = self.root / 'other.dws'
         other.write_bytes(self.names.read_bytes())

@@ -272,6 +272,15 @@ prog.load(names)
 aliases = [os.path.join(os.path.dirname(names), '.', 'names.dws')]
 if os.name == 'nt':
     aliases += [names[0].swapcase() + names[1:], names.swapcase()]
+    import ctypes
+    from ctypes import wintypes
+    api = ctypes.WinDLL('kernel32', use_last_error=True).GetShortPathNameW
+    api.argtypes = [wintypes.LPCWSTR, wintypes.LPWSTR, wintypes.DWORD]
+    api.restype = wintypes.DWORD
+    buf = ctypes.create_unicode_buffer(32768)
+    n = api(names, buf, len(buf))
+    if 0 < n < len(buf):
+        aliases.append(buf.value)
 for path in aliases:
     prog.load(path, root=False)
 assert not prog.errors, '\\n'.join(e.render() for e in prog.errors[-3:])

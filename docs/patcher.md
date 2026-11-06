@@ -208,7 +208,8 @@ frozen macOS app natively and, when the runner has Rosetta, its Intel half, and 
 
 Package extraction rejects case-colliding file and directory names on every platform.
 The package self-test also loads its real story declarations through several path
-spellings, including drive and directory case changes on Windows. The compiler
+spellings, including drive and directory case changes and 8.3 directory aliases
+on Windows. The compiler
 must load each file once: otherwise absolute imports from lowered Python can
 repeat the base prelude's declarations. This compiler fix belongs in the release
 package's `bundle/tools/dws/gen.py`; rebuilding only the desktop executable does
