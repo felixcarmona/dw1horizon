@@ -62,8 +62,8 @@ def outputs(ctx):
     return out
 
 
-def run_pass(root, out, files, languages=("en", "es")):
-    """One pass (a unit; in this process or a worker): signs.signs into out -> its log line."""
+def run_pass(root, out, files, languages=("en", "es"), listing="files.txt"):
+    """One pass/language (a unit; in this process or a worker): signs.signs into out -> its log line."""
     saved = sys.path[:]
     try:
         from tools.localize import signs as S    # (it puts tools/ and content/localized/signs on sys.path)
@@ -73,21 +73,39 @@ def run_pass(root, out, files, languages=("en", "es")):
     import contextlib, io
     buf = io.StringIO()
     with contextlib.redirect_stdout(buf):      # (its notes go in the step's log: check())
-        lines = S.signs(out, os.path.join(root, 'extracted'), dict(f.split('=', 1) for f in files), languages=languages)
+        lines = S.signs(out, os.path.join(root, 'extracted'), dict(f.split('=', 1) for f in files), languages=languages, listing=listing)
     notes = ''.join(l + '\n' for l in buf.getvalue().splitlines() if l.startswith('note:'))
     return f'{os.path.basename(out)}: {len(lines)} backgrounds with translated signs\n' + notes
 
 
 def units(ctx):
-    """The two passes (runner.Unit): each reads the disc's backgrounds, our sign edits and its story's maps."""
+    """Each story pass/language writes distinct assets and its own file listing."""
     if not localize.lang_on(ctx):
         return []
-    return [runner.Unit(d, run_pass, (ctx.root, ctx.path(d), files, ('en',) + localize.translations(ctx.env)),
+    return [runner.Unit(d + '/' + language, run_pass,
+                        (ctx.root, ctx.path(d), files, (language,), f'files.{language}.txt'),
                         ['tools/localize/signs.py', 'tools/localize/cutout.py', 'content/localized/signs', 'extracted/MAP',
-                         f'step:story ({dict(PASSES)[d]} FILE: lines and their maps)'], [f'{d}/files.txt'])
-            for d, files in passes(ctx)]
+                         f'step:story ({dict(PASSES)[d]} FILE: lines and their maps)'], [f'{d}/files.{language}.txt'])
+            for d, files in passes(ctx) for language in ('en',) + localize.translations(ctx.env)]
+
+
+def finish(ctx):
+    """Keep the original all-TFS-then-all-MAP ordering, independent of completion order."""
+    if not localize.lang_on(ctx):
+        return
+    for folder, _ in passes(ctx):
+        lines = []
+        for language in ('en',) + localize.translations(ctx.env):
+            with open(ctx.path(folder, f'files.{language}.txt')) as file:
+                lines.extend(line for line in file.read().splitlines() if line)
+        if len(lines) != len(set(lines)) or any(not line.endswith(('.TFS', '.MAP')) for line in lines):
+            raise runner.StepError(f'{folder}: conflicting or invalid sign output listings')
+        ordered = sorted(line for line in lines if line.endswith('.TFS'))
+        ordered += sorted(line for line in lines if line.endswith('.MAP'))
+        with open(ctx.path(folder, 'files.txt'), 'w') as file:
+            file.write('\n'.join(ordered) + '\n')
 
 
 def build(ctx):
-    """The passes side by side with --jobs (runner.run_units), else one after the other here."""
     ctx.run_units(units(ctx))
+    finish(ctx)

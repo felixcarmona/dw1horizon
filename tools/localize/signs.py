@@ -177,7 +177,7 @@ def disc_crop(extracted, mp, box, cache):
     return [tuple(pal[idx[y][x]][:3]) for y in range(y0, y1) for x in range(x0, x1)]
 
 
-def signs(out, extracted=None, files=None, languages=('en', 'es')):
+def signs(out, extracted=None, files=None, languages=('en', 'es'), listing='files.txt'):
     """The signs of languages (those with cut-outs) into out (see the module's docstring): extracted the disc's files
     (default the repository's), files {DEST: SRC} what --file gives. -> the files.txt lines"""
     extracted = extracted or os.path.join(ROOT, 'extracted')
@@ -262,7 +262,7 @@ def signs(out, extracted=None, files=None, languages=('en', 'es')):
             open(dest, 'wb').write(mapcopies[(lang, mp)].build())
             lines.append(f'{lang} {mp}.MAP')
     os.makedirs(out, exist_ok=True)
-    open(os.path.join(out, 'files.txt'), 'w').write('\n'.join(lines) + '\n')
+    open(os.path.join(out, listing), 'w').write('\n'.join(lines) + '\n')
     print(f'{out}: {len(lines)} backgrounds with translated signs')
     return lines
 
