@@ -49,8 +49,6 @@ def fixture(tree):
         str(Path('tools/derive')/'steps.py'): 'from types import SimpleNamespace\nSTEPS=[SimpleNamespace(NAME=n,AFTER=(() if i==0 else ("maps",)),units=True) for i,n in enumerate(("maps","story","signs"))]\ndef owned():return STEPS\ndef load(n):return next(s for s in STEPS if s.NAME==n)\n',
         'tools/derive/graph.py': 'def order(steps):return steps\n',
         'input-helper.txt': 'authored helper',
-        str(Path('tools/patcher')/'__init__.py'): '',
-        'tools/patcher/release_workers.py': (ROOT/'tools/patcher/release_workers.py').read_text(),
         **{'extracted/input-'+str(i): 'source-'+str(i) for i in range(3)},
     }.items():
         p = tree / name

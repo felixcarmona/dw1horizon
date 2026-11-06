@@ -111,6 +111,8 @@ def record_key(release, environment=None, source_discs=()):
                'python': list(sys.version_info[:3]), 'implementation': sys.implementation.name,
                'platform': sys.platform}
     h.update(json.dumps(context, sort_keys=True).encode())
+    scheduler = ROOT / 'tools/patcher/release_workers.py'
+    h.update(b'scheduler\0' + scheduler.read_bytes())
     # These readers perform extraction before the bundled derive jobs run.
     for path in sorted(release.glob('*.py')):
         h.update(b'reader/' + path.name.encode() + b'\0' + path.read_bytes())

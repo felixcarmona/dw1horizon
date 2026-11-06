@@ -1,6 +1,7 @@
 """Isolated recorder workers and deterministic graph serialization (stdlib only)."""
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import hashlib
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -120,7 +121,13 @@ def batch(request, execute):
 
 def units(master, specs, folder, requested, memory_mib):
     """Compute in bounded subprocesses; merge only after every worker passes."""
-    from tools.patcher.release_workers import measure, worker_count
+    # The shipped bundle intentionally omits release-only scheduling tools.
+    # Load this recorder's scheduler without importing the bundle's tools package.
+    scheduler_path = Path(__file__).resolve().parents[2] / 'tools/patcher/release_workers.py'
+    spec = importlib.util.spec_from_file_location('engine_release_workers', scheduler_path)
+    scheduler = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(scheduler)
+    measure, worker_count = scheduler.measure, scheduler.worker_count
     width = worker_count(requested, len(specs), memory_mib)
     print(f'record {specs[0]["step"]}: {len(specs)} units, {width} workers, {memory_mib} MiB/worker', flush=True)
     folder = Path(folder)
