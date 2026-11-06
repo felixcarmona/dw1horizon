@@ -59,5 +59,6 @@ against, leave this list.
 | More maps in Beetle Land, with stronger Champion and Ultimate enemies | 🆕 | It takes a lot of effort to unlock and is small. |
 | Armor Digimon levels by power (e.g. Magnamon as a Mega) | 🎭 | Players disagree on which ones. |
 | More room around the forced fights on Iron Hills' zigzag ramp | ✨ | Layout change on new screens. |
+| Kotemon's arena sparring gets stronger after every win (e.g. +10% base stats each time), or teaches battle techniques | ⚖️ | With 690 HP it becomes a one-hit fight late in the game; needs a cap or a curve. |
 | An official community wiki: where each new Digimon is recruited, new maps, evolution routes and requirements | 🛠️ | Could be generated from the project's own data (species, recruit scripts, evolution tree) so it stays accurate. |
 | Remove the evolution bonus condition for the number of techniques learned | ⚖️ | Players find it makes late-game evolutions too broad; check what remains of it after the 0.0.4 balance changes. |
