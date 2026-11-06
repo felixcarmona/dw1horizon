@@ -1,0 +1,12 @@
+{
+  "species": 190,
+  "name": "Angewomon",
+  "factor": 0.74,
+  "source_sha256": "f6bef6b2a00c07dc17d4696a9eec9f067646562895a4f86ba9348ee8bb5c6bda",
+  "output_sha256": "6b36232e8f400a4fecbfa927829519990e81365a1639073b1d729365692871d5",
+  "preceding_provider": {
+    "model": "190-Angewomon.MMD",
+    "aliases_applied": true,
+    "field_overlay": "angewomon-field"
+  }
+}

@@ -102,3 +102,14 @@ through `edit.py put`, so no later field generator can restore the larger size.
 `tools.test_zudomon_size` compares decoded acting and world-space mesh points
 across all clips, including the hammer, with the before/after models supplied
 as `ZUDOMON_BEFORE` and `ZUDOMON_AFTER`.
+
+Angewomon keeps the original mesh, rig and acting, with the existing field
+celebrations baked before a uniform 0.74 resize of mesh vertices and animation
+translations. Its helmet height is close to native Angemon at a shared world
+scale. World 2 and World 3 mesh trials on Angemon and Myotismon did not improve
+the posture and wing silhouette, so their bindings are excluded. The model
+provider uses the resized delta directly.
+
+`PYTHONPATH=tools python3 -m unittest tools.test_angewomon_size` checks the
+reviewed before/after files under `build/angewomon-redo/`; override them with
+`ANGEWOMON_BEFORE` and `ANGEWOMON_AFTER` for reconstructed inputs.

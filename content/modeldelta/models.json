@@ -284,9 +284,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/190-Angewomon.MMD.mdelta",
-        "delta_sha256": "9e39eefd50fc1b8dc3010730edf1db3da2c2b27fee9cf53e2432fad767045e4d",
-        "sha256": "29f7ad7b0f12c90ac0129564b1c779fa042c0451d1545cca1af53fdec893f3b1",
-        "size": 106518
+        "delta_sha256": "24266432780c99b7d2379a04cd7734ff3f680ebe236c03dce414fe4830d9af37",
+        "sha256": "6b36232e8f400a4fecbfa927829519990e81365a1639073b1d729365692871d5",
+        "size": 114308
       },
       "tim": {
         "sources": [
