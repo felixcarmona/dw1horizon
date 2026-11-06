@@ -9,7 +9,8 @@
     "finisher": {"power": 213, "mpCost": 40, "element": "fire"},
     "techniques": ["Magma Bomb", "Prominence Beam", "Red Inferno", "Inifinity Burn", "Meltdown", "Static Elect",
                    "Megalo Spark", "Electric Cloud", "Wind Cutter", "Spinning Shot",
-                   "Thunder Justice", "Confused Storm", "Hurricane", "Crimson Flare"]
+                   "Thunder Justice", "Confused Storm", "Hurricane", "Crimson Flare"],
+    "evolution": {"from": [21, 20, 7, 50, 33], "to": [-1, -1, -1, -1, -1, -1]}
   },
   "attribute": "vaccine",
   "specialties": ["air", "fire", null],
@@ -39,7 +40,7 @@
     "training": {"animation": 46, "hit_tick": 25}
   },
   "evolution": {
-    "from": [21, 20, 7, 50, 33],
+    "from": [460, 104, 213, 315, -1],
     "to": [-1, -1, -1, -1, -1, -1],
     "requirements": {
       "digimon": -1,

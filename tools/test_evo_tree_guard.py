@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Regression mutations must trip the evolution-tree guard."""
 import copy
+import json
 import sys
 import unittest
 from pathlib import Path
@@ -23,6 +24,58 @@ class GuardTests(unittest.TestCase):
 
     def test_current_tree(self):
         self.assertEqual(check(self.sp, self.kids, self.table), [])
+
+    def test_native_mega_shortcuts_are_forbidden(self):
+        for parent, child in [('Kabuterimon', 'HerculesKabuterimon'),
+                              ('Kuwagamon', 'HerculesKabuterimon'),
+                              ('Shellmon', 'HerculesKabuterimon'),
+                              ('Birdramon', 'Phoenixmon'), ('Angemon', 'Phoenixmon'),
+                              ('Airdramon', 'Phoenixmon'), ('Unimon', 'Phoenixmon'),
+                              ('Kokatorimon', 'Phoenixmon')]:
+            p, c = self.names[parent], self.names[child]
+            with self.subTest(parent=parent, child=child):
+                self.assertIn('Champion parent of a canon Mega',
+                              self.errors(lambda s, k: k[p].append(c)))
+
+    def test_losing_second_mega_is_a_failure(self):
+        p, c = self.names['MegaKabuterimon'], self.names['GranKuwagamon']
+        self.assertIn('MegaKabuterimon: 1 Mega targets; needs 2',
+                      self.errors(lambda s, k: k[p].remove(c)))
+
+    def test_native_mega_off_routes_keep_both_directions(self):
+        for p, c in self.table['off_routes']['pairs']:
+            if c not in (59, 60):
+                continue
+            self.assertIn(c, self.sp[p]['off']['evolution']['to'])
+            self.assertIn(p, self.sp[c]['off']['evolution']['from'])
+
+    def test_pair_tables_encode_every_new_rule_and_empty_padding(self):
+        import balance
+        import struct
+        rows = json.loads(
+            (T.ROOT / 'content/tables/evolution-rules.json').read_text())['evolutionUltimate']
+        pairs = list(struct.iter_unpack('<hh', balance.encode_rule_rows('evolutionUltimate', rows)))
+        self.assertEqual(len(pairs), 16)
+        self.assertEqual(pairs[:len(rows)], [(r['from'], r['to']) for r in rows])
+        self.assertEqual(pairs[len(rows):], [(-1, -1)] * (16 - len(rows)))
+
+    def test_timed_pair_picker_uses_first_qualifying_rule(self):
+        _, reqs, levels = T.model(self.sp)
+        p = self.names['KingSukamon']
+        c = self.names['KingEtemon']
+        first = self.names['BlackKingNumemon']
+        reqs[first] = dict(reqs[c])
+        stats = dict(zip(T.ALL, (5000, 5000, 500, 500, 500, 500)))
+        self.assertEqual(T.E.pick(p, [first, c], reqs, levels, stats, 0,
+                                 reqs[c]['weight'], 'rule', (0, 0, 100, 100)), first)
+
+    def test_regeneration_preserves_raise_balance_at_unchanged_levels(self):
+        from unittest.mock import patch
+        with patch.object(T, 'resolve'):
+            planned, errors = T.plan()
+        self.assertEqual(errors, [])
+        for t in self.sp:
+            self.assertEqual(planned[t].get('partner'), self.sp[t].get('partner'))
 
     def test_whamon_tier_change_keeps_explicit_off_routes(self):
         for parent in (4, 46, 57):
@@ -246,10 +299,10 @@ class GuardTests(unittest.TestCase):
 
     def test_ultimate_without_mega(self):
         p = self.names['Piximon']
-        self.assertIn('Piximon: Ultimate without a Mega route', self.errors(lambda s, k: k[p].clear()))
+        self.assertIn('Piximon: 0 Mega targets; needs 2', self.errors(lambda s, k: k[p].clear()))
 
     def test_every_raisable_ultimate_has_a_mega_route(self):
-        missing = [e for e in check(self.sp, self.kids, self.table) if 'without a Mega route' in e]
+        missing = [e for e in check(self.sp, self.kids, self.table) if 'Mega targets; needs 2' in e]
         self.assertEqual(missing, [])
         for name in ('Vademon', 'KingSukamon', 'WaruMonzaemon', 'Gigadramon'):
             self.assertIn('ultimate', self.sp[self.names[name]]['level'])

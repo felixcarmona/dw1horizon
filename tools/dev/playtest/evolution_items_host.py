@@ -76,8 +76,33 @@ int main(void) {
  enabled=1; data[24].level=5; data[4].level=4; consumed=0; handleEvoItems(92);
  assert(EVOLUTION_TARGET==24 && consumed==1);
  EVOLUTION_ITEM_TARGET[111-71]=59; data[59].level=6;
- assert(!refuses(111)); data[4].level=5; assert(refuses(111)); /* Existing native Mega exception. */
- puts("PASS actual item code: Dolph Fin Rookie -> Dolphmon, all wrong stages refused; NEW DIGIMON off refuses without consumption; North Star -> Ultimate Whamon from Champion (Rookie with off); native Mega eligibility retained; fridge key inedible; 128 items and four custom rules");
+ for (int target=59;target<=60;target++) {
+  int item=target==59?111:112;
+  EVOLUTION_ITEM_TARGET[item-71]=target; data[target].level=6;
+  for(int level=1;level<=6;level++) {
+   data[4].level=level; EVOLUTION_TARGET=-1; consumed=0;
+   assert(refuses(item)==(level!=5)); handleEvoItems(item);
+   assert(consumed==(level==5)); assert(EVOLUTION_TARGET==(level==5?target:-1));
+  }
+  /* Explicit off levels preserve the original Champion item stage. */
+  data[target].level=5;
+  for(int level=1;level<=6;level++) {
+   data[4].level=level; assert(refuses(item)==(level!=4));
+  }
+ }
+ data[65].level=6;
+ for(int level=1;level<=6;level++) {
+  data[4].level=level; EVOLUTION_TARGET=-1; consumed=0;
+  assert(refuses(127)==(level!=5)); handleEvoItems(127);
+  assert(consumed==(level==5)); assert(EVOLUTION_TARGET==(level==5?65:-1));
+ }
+ data[63].level=5;
+ for(int level=1;level<=6;level++) {
+  data[4].level=level; EVOLUTION_TARGET=-1; consumed=0;
+  assert(refuses(126)==(level!=4)); handleEvoItems(126);
+  assert(consumed==(level==4)); assert(EVOLUTION_TARGET==(level==4?63:-1));
+ }
+ puts("PASS actual item code: Dolph Fin Rookie -> Dolphmon, all wrong stages refused; NEW DIGIMON off refuses without consumption; North Star -> Ultimate Whamon from Champion (Rookie with off); all three Mega items require Ultimate and reject every wrong stage; fridge key inedible; 128 items and four custom rules");
 }
 '''
     with tempfile.TemporaryDirectory() as folder:

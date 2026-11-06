@@ -3,6 +3,10 @@
   "name": "Unimon",
   "level": "champion",
   "vanilla": true,
+  "off": {
+    "level": "champion",
+    "evolution": {"to": [41, 59, 90, -1, -1, -1], "from": [31, 45, -1, -1, -1]}
+  },
   "attribute": "vaccine",
   "specialties": ["air", "battle", null],
   "techniques": ["Dynamite Kick (48)", "Counter", "War Cry", "Static Elect", "Megalo Spark", "Electric Cloud",
@@ -30,7 +34,7 @@
   },
   "evolution": {
     "from": [31, 45, -1, -1, -1],
-    "to": [41, 59, 90, -1, -1, -1],
+    "to": [41, 90, -1, -1, -1, -1],
     "requirements": {
       "digimon": -1,
       "hp": 100,

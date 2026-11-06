@@ -3,6 +3,10 @@
   "name": "Birdramon",
   "level": "champion",
   "vanilla": true,
+  "off": {
+    "level": "champion",
+    "evolution": {"to": [59, 104, -1, -1, -1, -1], "from": [3, 45, -1, -1, -1]}
+  },
   "attribute": "vaccine",
   "specialties": ["fire", "air", null],
   "techniques": ["Spit Fire", "Fire Tower", "Magma Bomb", "Prominence Beam", "Heat Laser", "Red Inferno",
@@ -30,7 +34,7 @@
   },
   "evolution": {
     "from": [3, 45, -1, -1, -1],
-    "to": [59, 104, -1, -1, -1, -1],
+    "to": [104, -1, -1, -1, -1, -1],
     "requirements": {
       "digimon": 45,
       "hp": -1,
