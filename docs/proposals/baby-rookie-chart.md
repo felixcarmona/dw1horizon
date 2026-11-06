@@ -1,32 +1,39 @@
-# Baby II → Rookie chart proposal
+# Baby II → Rookie chart — implemented
 
-Proposal only, with **NEW DIGIMON on**. Baseline: `31d992c9`.
-No species, requirements, evolution tables, patches or story scripts change here.
+**Implemented, 2026-11-05**, with **NEW DIGIMON on only**. Comparison baseline: `31d992c9`.
+The before/after tables below retain the design evidence. The approved implementation
+uses a canon-link exception instead of the initially proposed Battle specialty.
 
-Recommend six ordinary Rookie targets for each of the eight In-Trainings,
+The implementation provides six ordinary Rookie targets for each of the eight In-Trainings,
 retaining every original-disc route and putting the familiar canon route first
 in the presentation. All 45 raisable Rookies remain reachable: 44 by ordinary
 evolution and Kunemon by its existing special route. This reduces 56 ordinary
 edges to 48, chiefly by removing duplicate added routes.
 
-One prerequisite needs a separate design decision before implementation:
-Tsunomon → Gabumon has no shared specialty today. The recommendation includes
-adding Battle to Tsunomon's empty third specialty slot, retaining Air and Ice.
-That is a proposed exception to the existing policy of preserving original
-battle specialties, not an already permitted change. Without either this
-identity adjustment or a new canon-link specialty exception, the canon request
-and the current hard specialty filter cannot both be satisfied.
+Tsunomon keeps Air/Ice and Gabumon keeps Battle/Fire. The explicit
+`canon_link_exceptions` allow-list in the evolution data contains only
+Tsunomon → Gabumon, with its canon reason. The separate existing Otamamon →
+Geremon specialty exception remains unchanged. This exemption concerns
+specialty matching only; it grants no level skip, automatic evolution or
+relaxation for other links.
 
-## Current chart and the six-slot distinction
+Gabumon uses weight 26 specifically from Tsunomon; its original weight 15
+and requirements from Koromon stay unchanged. A configured parent/target weight
+row supplies the same value to the picker and chart requirements popup.
+Tsunomon's original Elecmon/Penguinmon candidates keep priority. Explicit
+on/off paths omit the new Tsunomon/Gabumon edge in both directions with
+NEW DIGIMON off.
+
+## Baseline chart and the six-slot distinction
 
 Sources: [curated topology](../../content/tables/evolution-tree.json),
 [species rows](../../content/species/), and the
 [added-species evolution rules](../reference/partner.md#evolution-rules-for-the-added-species).
-The lists below follow the current source-model picker order: stored `to` rows,
+The lists below follow the baseline source-model picker order: stored `to` rows,
 then reciprocal record links in species-id order. They count ordinary targets,
 not special transformations. Kunemon is discussed separately below.
 
-| In-Training | Current ordinary Rookies, in order | Count | Beyond the first six / absent from the old fixed chart |
+| In-Training | Baseline ordinary Rookies, in order | Count | Beyond the first six / absent from the old fixed chart |
 |---|---|---:|---|
 | Koromon | Agumon, Gabumon, Goblimon, ToyAgumon, Veemon, RedOtamamon, Candlemon, Solarmon, Kotemon, Renamon, Guilmon | 11 | Candlemon, Solarmon, Kotemon, Renamon, Guilmon |
 | Tsunomon | Elecmon, Penguinmon, SnowAgumon, Muchomon, Gizamon, VioletElecmon, Bearmon | 7 | Bearmon |
@@ -38,14 +45,14 @@ not special transformations. Kunemon is discussed separately below.
 | Yokomon | Biyomon, Floramon, Hawkmon, Mushroomon | 4 | None |
 | **Total ordinary edges** | **44 distinct Rookies; 12 repeat-parent edges** | **56** | **14 beyond six** |
 
-**Current code can show all of these ordinary routes.** The chart fix formerly
+**The baseline chart already could show all of these ordinary routes.** The chart fix formerly
 numbered 0340 is in the patch series as
 [`Show-every-evolution-route-in-the-chart-s-detail-vie.patch`](../../mods/patches/Show-every-evolution-route-in-the-chart-s-detail-vie.patch).
 It collects extra targets and pages the outgoing list six boxes at a time.
 [`tools/evo_chart.py`](../../tools/evo_chart.py) models 24 outgoing entries,
 12 incoming entries, six outgoing boxes per page and five incoming boxes per
-page. Thus the last column describes the historical omission and today's
-second page, not a current inability to display those species. The old renderer
+page. Thus the last column describes the historical omission and the baseline's
+second page at the baseline, not a current display limitation. The old renderer
 also had an odd/even layout issue; none of these populated source rows loses
 an additional sixth box to that issue.
 
@@ -53,8 +60,7 @@ The picker and the display have different limits: an original Baby II has six
 stored targets plus up to 12 extra Rookie targets (patch 0111). The proposed
 six-per-baby layout fits one outgoing page and one stored row, without needing
 either extra-list capacity or an increased chart limit. Six is a presentation
-goal, not the current picker's maximum. Current compiled-disc layout has not
-been re-audited for this documentation-only proposal.
+goal, not the current picker's maximum. The implemented layout is audited from the compiled disc as described below.
 
 ## Canon anchors
 
@@ -62,10 +68,10 @@ These are familiar Adventure lines, not a claim that each species has only one
 canon evolution across the franchise. English project names are used; reference
 pages also use Tunomon, Pyocomon, Mochimon, Pukamon and Plotmon.
 
-| Canon anchor | Current status | Proposal |
+| Canon anchor | Baseline status | Implemented action |
 |---|---|---|
 | Koromon → Agumon | Present; original-disc route | Keep |
-| Tsunomon → Gabumon | Missing; Gabumon currently comes only from Koromon | Add alongside Koromon, subject to the specialty prerequisite |
+| Tsunomon → Gabumon | Missing; Gabumon currently comes only from Koromon | Added alongside Koromon, with the documented canon-link exception |
 | Tokomon → Patamon | Present; original-disc route | Keep |
 | Tanemon → Palmon | Present; original-disc route | Keep |
 | Yokomon → Biyomon | Already present, alongside Tokomon | Keep both; feature Yokomon's canon anchor |
@@ -81,7 +87,7 @@ Canon references: [Tsunomon's Adventure evolution](https://wikimon.net/Tunomon),
 These support the anchor identities; the balancing assignments below are
 project design choices rather than additional canon claims.
 
-## Recommended complete ordinary lists
+## Implemented complete ordinary lists
 
 The first entry is the featured canon anchor, not a promise that it wins every
 picker tie. Preserve original route ordering wherever necessary to protect
@@ -121,12 +127,12 @@ explicit:
 “Move” means replace the named parent only; the proposed complete lists are
 authoritative. No other stage or special evolution changes.
 
-## Specialty audit and its one prerequisite
+## Specialty audit and canon exception
 
 | Parent | Specialty coverage of its proposed targets |
 |---|---|
 | Koromon | Fire and/or Battle for all six |
-| Tsunomon | Air or Ice for the five existing targets; **Gabumon requires the proposed third specialty Battle** |
+| Tsunomon | Air or Ice for the five existing targets; **Gabumon uses the documented canon-link exception** |
 | Tokomon | Air and/or Battle for all six, including Air with Hagurumon |
 | Tanemon | Nature for Palmon, Dokunemon, Armadillomon and Gazimon; Ice for Betamon and Otamamon |
 | Motimon | Nature for Tentomon and Wormmon; Mech for Kokuwamon, Hagurumon, Vemmon and Solarmon |
@@ -134,16 +140,11 @@ authoritative. No other stage or special evolution changes.
 | Nyaromon | Battle for all six; Salamon and DemiDevimon also share Air |
 | Yokomon | Air for Biyomon, Hawkmon, Monmon and Tapirmon; Nature for Floramon and Mushroomon |
 
-With current identities, 47 of the 48 proposed edges pass the specialty filter.
-With Tsunomon's proposed Battle slot, all 48 pass. This preserves its existing
-Air/Ice specialties but changes identity and potentially technique-learning
-behavior; it is not a neutral topology edit. Implementation must explicitly
-review that effect and preserve NEW DIGIMON off behavior. Do not silently
-rewrite Gabumon's Battle/Fire identity or pretend the new link qualifies for
-the original-disc exemption. An alternative is a documented canon exception
-for this single link, leaving all specialties unchanged, but that would relax
-the hard shared-specialty requirement instead. Neither policy change is made
-by this proposal.
+All 47 other edges share a specialty. The single canon-link exception permits
+the remaining edge while preserving Tsunomon's identity. Requirements remain
+fully scored, including the route-specific overfed band for Gabumon. This
+supersedes the original proposal to add Battle to Tsunomon; no specialty changes
+were implemented.
 
 ## Original-route and reachability safeguards
 
@@ -166,31 +167,58 @@ be gated by an egg choice or by a new parent assignment. In particular, leave
 Kunemon's original encounter/recruitment script intact. Every original route
 must still win its original qualifying state, rather than merely exist in JSON.
 
-The lists establish topological coverage, **not proven picker reachability**.
+The lists establish topological coverage; practical picker witnesses are additionally
+required and checked by `tools/test_evo_tree.py --practical`.
 The picker needs three of four points and resolves Rookie ties by list order;
-one requirement row serves every parent of a Rookie. Keep the disc Rookies'
+one base requirement row serves every parent of a Rookie, with the documented
+Tsunomon/Gabumon weight override. Keep the disc Rookies'
 normal weight bands and canonical outcomes. Added Rookies currently use
-underweight/overweight bands (4/26 rather than 15). Reassigning siblings requires
-rechecking those bands, highest-stat choices and `requirements.digimon` bonuses;
-do not assume every six-way list can be reached with today's requirements.
+underweight/overweight bands (4/26 rather than 15). The moved siblings were checked against those bands, highest-stat choices and
+`requirements.digimon` bonuses; topology alone does not establish picker
+reachability.
 
-## Validation required before adopting the design
+## Implementation and validation
 
-The proposal was checked against the committed topology and species identities:
-all eight counts are six, all 44 ordinary Rookies survive, all eight original
-ordinary edges survive, only the Tsunomon/Gabumon identity conflict remains with
-current specialties, and the Kunemon special is retained separately. The
-historical overflow lists were checked using source row order and reciprocal
-links, rather than treating a child's JSON parents as a display-order guarantee.
+The curated tree, forward/reverse links and changed primary-parent bonuses
+implement the complete lists above. Added Rookie requirements are resolved
+against all siblings and parents, with witnesses using at most nine ordinary
+training sessions during Baby II, no inheritance, zero battles and zero or one
+care mistake. Witness weight assumes deliberate feeding; this is not a complete
+care simulation. Original target requirement rows remain unchanged.
 
-An implementation must synchronize the curated tree, forward/reverse species
-links and primary-parent bonuses; settle the Tsunomon policy prerequisite;
-then run `tools/test_evo_tree.py`, `tools/evo_check.py`, `tools/evo_graph.py`
-and the built-disc `tools/evo_chart.py` audit. Require a picker witness for each
-of the 48 ordinary edges, protected original qualifying states, and all 45
-Rookies reachable from rebirth including Kunemon's special. Verify all six
-boxes in every Baby II detail view, canon incoming links, NEW DIGIMON off,
-and original recruitment access. Any later C patch needs patch-series apply
-validation, a full build, `main_BSS_END` comparison and heapcheck on original
-2 MB hardware limits. No build, emulator run or heap measurement is needed
-for this documentation-only commit; none was performed.
+Regression checks cover six children per baby, the single canon-link allow-list,
+unchanged Tsunomon identity, normal-weight original winning states across all
+six highest-stat choices, and mode-specific route weights and paths. The
+compiled chart audit checks all outgoing/incoming links. The runtime weight helper is exported as an unnumbered patch; full-build,
+original-2-MB heap and emulator results are recorded below. Follow-up changes must retain
+these checks and original recruitment access; no story script was changed.
+
+The broader `evo_check.py` audit retains three baseline failures outside Baby II:
+Wormmon → Dokugumon and Gomamon → Tylomon have no picker witness, and
+Seadramon's original Megadramon canonical state selects WaruSeadramon.
+For each case, the starting revision and this implementation have identical
+candidate order, sibling requirements and levels; the baseline model reproduces
+the same failure. Those later-stage rules are outside this chart change. The
+built archive passes all 48 Baby II practical witnesses and has all 45 Rookies
+reachable, with Kunemon counted through its existing special route.
+
+
+The full nine-language build passes. The corrected native image is byte-identical
+to the measured preflight: `main_BSS_END` moves from `0x801cebd0` to
+`0x801cec58` (+136 bytes), aligned usable heap from 185,120 to 184,992 bytes
+(−128 bytes), and MENU from 53,796 to 53,828 bytes (+32 bytes, below 55,296).
+No allocation is added. All 320 archive-backed screen setups fit on 2 MB,
+with a minimum margin of 272 bytes. The final compiled chart audit reports
+655 routes, 655 outgoing boxes, zero omissions and zero missing game routes.
+
+
+On the full disc in an original-2-MB PCSX-Redux, the Koromon and Nyaromon
+detail views each display all six outgoing targets on one page. The
+Tsunomon → Gabumon popup displays weight 21–31, the configured 26 ± 5 band.
+A controlled Nyaromon fixture with weight 26, zero mistakes/battles and MP
+as its highest stat selects Veemon in the real picker, then naturally evolves
+to Veemon through the field tick; that tested target/state is not forced.
+Runtime on/off checks confirm weight 26/15 and removal/restoration of the
+native canon edge in both directions. The repeatable harness is
+[`baby_rookie_chart.py`](../../tools/dev/playtest/baby_rookie_chart.py).
+Physical console testing and full real-time care simulation remain untested.
