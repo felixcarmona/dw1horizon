@@ -30,7 +30,7 @@ class PlayerModelReports(unittest.TestCase):
             with self.subTest(species=sid):
                 old, new = self.load(before, sid), self.load(after, sid)
                 self.assertEqual(old.tmd.build(), new.tmd.build())
-                self.assertEqual(changed_programs(old, new), [2, 3, 4])
+                self.assertEqual(changed_programs(old, new), [2, 3, 4, 35, 36] if sid == 243 else [2, 3, 4])
                 self.assertTrue(motionstorage.require((self.root/after).read_bytes(), mmd.exe().bone_count[sid])['fits'])
                 for slot in (2, 3, 4):
                     poses, loop, _ = animsheet.slot_frames(new, mmd.exe().bone_count[sid], slot)
@@ -44,7 +44,7 @@ class PlayerModelReports(unittest.TestCase):
                                  (226, 'silphymon', (14, 15, 18, 19))):
             model = self.load(name+'-final.MMD', sid)
             rig = mmd.exe().skeleton[sid]
-            for slot in (2, 3, 4):
+            for slot in ((2, 3, 4, 35, 36) if sid == 243 else (2, 3, 4)):
                 frames, _, _ = animsheet.slot_frames(model, len(rig), slot)
                 worst = -float('inf')
                 for tick in range(len(frames)-1):

@@ -3,7 +3,7 @@
 
 Use the pre-edit model from edit.py get as --source, then store --out with
 edit.py put 243. This is an offline authoring recipe; the player build replays
-only the verified plain delta. Mesh, rig and all programs outside 2..4 stay.
+only the verified plain delta. Mesh, rig and all nonlocomotion programs stay.
 """
 import argparse
 import copy
@@ -173,6 +173,11 @@ def build(data, donor_data, skeleton):
         result.anims.table[slot] = len(result.anims.anims)
         result.anims.anims.append(anim)
         checks.append(dict(slot=slot, samples=len(frames), loop_sample=transferred['loop'], max_clearance_lift=max(lifts)))
+    # Native Leomon shares its field and battle walk/run programs. Keep the
+    # same relationship, replacing the import's separate battle shuffle.
+    for battle_slot, field_slot in ((35, 2), (36, 4)):
+        assert donor.anims.anims[donor.anims.table[battle_slot]].build() == donor.anims.anims[donor.anims.table[field_slot]].build()
+        result.anims.table[battle_slot] = result.anims.table[field_slot]
     # Keep consumed programs; discard obsolete streams and unconsumed parse tails.
     for anim in result.anims.anims:
         anim.tail = b''
@@ -181,7 +186,7 @@ def build(data, donor_data, skeleton):
     output = result.build()
     parsed = mmd.MMD.parse(output, nb)
     parsed.type = 243
-    assert changed_programs(model, parsed) == list(SLOTS)
+    assert changed_programs(model, parsed) == [2, 3, 4, 35, 36]
     assert model.tmd.build() == parsed.tmd.build()
     assert parsed.build() == output
     # Validate the encoded result, including the engine's blend samples.
@@ -207,8 +212,8 @@ def build(data, donor_data, skeleton):
     import motionstorage
     storage = motionstorage.require(output, nb)
     return output, dict(species=243, source_sha256=digest(data), donor_sha256=digest(donor_data),
-                        output_sha256=digest(output), changed_slots=list(SLOTS),
-                        mesh_unchanged=True, all_other_programs_exact=True,
+                        output_sha256=digest(output), changed_slots=[2, 3, 4, 35, 36],
+                        mesh_unchanged=True, all_nonlocomotion_programs_exact=True,
                         checks=checks, storage=storage)
 
 

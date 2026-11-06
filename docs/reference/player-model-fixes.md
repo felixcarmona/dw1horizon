@@ -116,7 +116,9 @@ The feet keep their own orientation with native heel and toe roll. Clearance
 is checked at logical ticks and intermediate blend samples. Silphymon's stride
 uses longer timing for its larger body; Starmon's retains the native timing.
 Upper-body acting and secondary motion keep the gait loose. Meshes, rigs,
-care clips and battle programs are preserved after the proportion correction.
+care clips and attack programs are preserved after the proportion correction.
+Starmon shares the repaired walk and run with battle slots 35 and 36, matching
+the native donor and replacing its separate imported battle shuffle.
 
 The authoring tools are `tools/models/field_animations/silphymon_walk.py` and
 `starmon_walk.py`. Silphymon's `--prepare` option reconstructs the corrected
