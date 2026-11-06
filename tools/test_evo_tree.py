@@ -42,6 +42,11 @@ def check(sp, kids, table):
     for entry in table['specialty_exceptions']:
         if (entry['parent'], entry['child']) not in allowed_specialties or not entry.get('reason'):
             errors.append('specialty exception must be a documented permitted canon route')
+    canon_links = table.get('canon_link_exceptions', [])
+    if len(canon_links) != 1 or any(
+            (e.get('parent'), e.get('child')) != ('Tsunomon', 'Gabumon') or not e.get('reason')
+            for e in canon_links):
+        errors.append('canon link allow-list must contain only documented Tsunomon -> Gabumon')
     # the level a vanilla species has with NEW DIGIMON off (Phoenixmon and HerculesKabuterimon are Ultimates there)
     off = {t: T.S.LEVELS[o] for t, _, o in T.S.level_swaps(sp)}
     for t, s in sp.items():
@@ -119,6 +124,8 @@ def check(sp, kids, table):
         if entry.get('chain') and sp[names[name]]['evolution']['requirements']['digimon'] != names[entry['parents'][0]]:
             errors.append(f'{name}: Mega bonus must name its first listed parent')
     exceptions = {(e['parent'], e['child']) for e in table['specialty_exceptions']}
+    exceptions |= {(e['parent'], e['child']) for e in canon_links
+                   if (e.get('parent'), e.get('child')) == ('Tsunomon', 'Gabumon') and e.get('reason')}
     megas = set(table['canon_megas'])
     # Only the disc's own existing routes are allowed, never an imported parent.
     disc_megas = table['disc_mega_routes']
@@ -157,6 +164,10 @@ def practical_errors(sp, kids, table):
         c = names[name]
         for parent in entry['parents']:
             p = names[parent]
+            if levels[p] == 2:
+                checked += 1
+                if not T.rookie_witness(p, c, kids, reqs, levels, sp):
+                    errors.append(f'{parent} -> {name}: no practical Rookie picker state')
             if levels[p] == 4:
                 checked += 1
                 if not T.practical(p, c, kids, reqs, levels, sp):

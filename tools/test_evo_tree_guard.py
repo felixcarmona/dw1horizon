@@ -136,6 +136,47 @@ class GuardTests(unittest.TestCase):
         table['specialty_exceptions'] = [{'parent': 'Agumon', 'child': 'Palmon'}]
         self.assertIn('specialty exception must be a documented permitted canon route', check(self.sp, self.kids, table))
 
+    def test_canon_link_exception_is_narrow_and_required(self):
+        for entries in ([], [{'parent': 'Tsunomon', 'child': 'Gabumon'}],
+                        self.table['canon_link_exceptions'] +
+                        [{'parent': 'Agumon', 'child': 'Palmon', 'reason': 'unrelated'}]):
+            table = copy.deepcopy(self.table)
+            table['canon_link_exceptions'] = entries
+            self.assertIn('canon link allow-list must contain only documented Tsunomon -> Gabumon',
+                          check(self.sp, self.kids, table))
+        table['canon_link_exceptions'] = []
+        self.assertIn('Tsunomon -> Gabumon: no shared specialty', check(self.sp, self.kids, table))
+
+    def test_baby_chart_has_six_practical_targets_and_unchanged_identity(self):
+        _, reqs, levels = T.model(self.sp)
+        for p, s in self.sp.items():
+            if s['level'] != 'in-training' or 'partner' not in s:
+                continue
+            self.assertEqual(len(self.kids[p]), 6, s['name'])
+            for c in self.kids[p]:
+                self.assertIsNotNone(T.rookie_witness(p, c, self.kids, reqs, levels, self.sp),
+                                     f'{s["name"]} -> {self.sp[c]["name"]}')
+        self.assertEqual(self.sp[16]['specialties'], ['air', 'ice', None])
+
+    def test_canon_route_weight_does_not_change_koromon_or_off_mode(self):
+        req = self.sp[17]['evolution']['requirements']
+        self.assertEqual(T.E.target_weight(16, 17, req), 26)
+        self.assertEqual(T.E.target_weight(2, 17, req), 15)
+        self.assertEqual(T.E.target_weight(16, 17, req, new_digimon=False), 15)
+        self.assertNotIn(17, self.sp[16]['off']['evolution']['to'])
+        self.assertNotIn(16, self.sp[17]['off']['evolution']['from'])
+
+    def test_original_baby_winning_states_at_normal_weights_stay(self):
+        import itertools
+        _, reqs, levels = T.model(self.sp)
+        for p, old in ((2, [3, 17]), (16, [18, 57]), (30, [31, 45]), (44, [46, 4])):
+            for top, weight, care in itertools.product(range(6), range(10, 21), (0, 1)):
+                stats = {k: (100 if i == top else 10) * (10 if i < 2 else 1)
+                         for i, k in enumerate(T.ALL)}
+                before = T.E.pick(p, old, reqs, levels, stats, care, weight, 'in-training')
+                self.assertEqual(T.E.pick(p, self.kids[p], reqs, levels, stats, care, weight,
+                                          'in-training'), before, (p, top, weight, care))
+
     def test_rookie_cannot_skip_champion(self):
         p, c = self.names['Agumon'], self.names['MetalGreymonVirus']
         self.assertIn('evolution level step must be +1', self.errors(lambda s, k: k[p].append(c)))

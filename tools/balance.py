@@ -161,6 +161,7 @@ TABLES = [
     # tables of rules that start empty in the C (every slot -1 = the rule does not exist) and are filled from JSON: NAMED_RULES
     ('evolutionTiming', 'SLUS_010.32', 'MOD_EVO_TIMING', 22),
     ('evolutionFresh', 'SLUS_010.32', 'MOD_EVO_FRESH', 32),
+    ('evolutionRookieWeights', 'SLUS_010.32', 'MOD_EVO_ROOKIE_WEIGHTS', 6),
     ('evolutionUltimate', 'SLUS_010.32', 'MOD_EVO_ULTIMATE', 32),
     ('evolutionSpecial', 'SLUS_010.32', 'MOD_EVO_SPECIAL', 18),
     ('evolutionRules', 'SLUS_010.32', 'MOD_EVO_RULES', 300),
@@ -208,7 +209,7 @@ _SMALL_COUNTS = {'cards': 66, 'cardPrices': 5, 'shopMaps': 8, 'arenaMaps': 2, 's
 TABLES += [(k, f, sym, struct.calcsize(fmt) * _SMALL_COUNTS[k]) for k, f, sym, fmt, _ in SMALL_TABLES]
 ORIGINAL_NAMES = {'SPECIES_BATTLE_MUSIC': 'ENEMY_MUSIC_MAPPING'}       # a table renamed by the mod
 TABLES += [('cityResidents', 'SLUS_010.32', 'CITY_RESIDENTS', 14)]
-OPTIONAL = {'cityResidents', 'shopMaps', 'arenaMaps', 'defaultInventoryItems', 'defaultInventoryAmounts', 'curlingWeights', 'curlingStartTypes', 'curlingRingPoints', 'curlingRings', 'curlingObstacleX', 'curlingRules', 'fishingRules', 'battleMusic', 'reincarnation', 'newGameTechniques', 'donorEntries', 'donorOrigins', 'donorBones', 'trainingNum', 'trainingLevel', 'trainingBonus', 'trainGain', 'trainRules', 'train2Gain', 'train2Rules', 'train2Num', 'train2Level', 'train2Bonus', 'evolutionTiming', 'evolutionFresh', 'evolutionUltimate', 'evolutionSpecial', 'evolutionRules', 'evolutionItemRules', 'medals', 'tamerLevel', 'evolutionFormula', 'itemEffects', 'economy', 'curlingRules', 'fishingRules', 'battleFormulas', 'clock', 'newGame', 'careRules', 'careOverrides', 'modelScale', 'animatedTexture', 'tournamentRules', 'dailyRules', 'daytime', 'tournamentRemap', 'stdArena', 'vsUnlock', 'training'}   # a build from before they were tables has none
+OPTIONAL = {'evolutionRookieWeights', 'cityResidents', 'shopMaps', 'arenaMaps', 'defaultInventoryItems', 'defaultInventoryAmounts', 'curlingWeights', 'curlingStartTypes', 'curlingRingPoints', 'curlingRings', 'curlingObstacleX', 'curlingRules', 'fishingRules', 'battleMusic', 'reincarnation', 'newGameTechniques', 'donorEntries', 'donorOrigins', 'donorBones', 'trainingNum', 'trainingLevel', 'trainingBonus', 'trainGain', 'trainRules', 'train2Gain', 'train2Rules', 'train2Num', 'train2Level', 'train2Bonus', 'evolutionTiming', 'evolutionFresh', 'evolutionUltimate', 'evolutionSpecial', 'evolutionRules', 'evolutionItemRules', 'medals', 'tamerLevel', 'evolutionFormula', 'itemEffects', 'economy', 'curlingRules', 'fishingRules', 'battleFormulas', 'clock', 'newGame', 'careRules', 'careOverrides', 'modelScale', 'animatedTexture', 'tournamentRules', 'dailyRules', 'daytime', 'tournamentRemap', 'stdArena', 'vsUnlock', 'training'}   # a build from before they were tables has none
 SPECIES_TABLES = ('para', 'raise', 'itemTakeDistance', 'vlall', 'vball', 'originalTypes', 'trainingAnims',
                   'training2Anims', 'battleMusic', 'reincarnation', 'newGameTechniques')
 # (patch 0087's EFFECT_FALLBACK_SPECIES / _ORIGIN were per-species tables too; patch 0106 replaced them by the DIGI.DAT
@@ -645,7 +646,7 @@ def encode_medals(rows):
 
 
 # lists of small rows with a fixed room, empty rows -1: key -> (struct format, JSON fields, room); content/tables/evolution-rules.json
-ROW_RULES = {'evolutionFresh': ('<2h', ('from', 'to'), 8), 'evolutionUltimate': ('<2h', ('from', 'to'), 8),
+ROW_RULES = {'evolutionRookieWeights': ('<3h', ('from', 'to', 'weight'), 1), 'evolutionFresh': ('<2h', ('from', 'to'), 8), 'evolutionUltimate': ('<2h', ('from', 'to'), 8),
              'evolutionItemRules': ('<3h', ('item', 'target', 'partnerLevel'), 4),
              'tournamentRemap': ('<2h', ('from', 'to'), 4),
              'modelScale': ('<2h', ('species', 'percent'), 8), 'animatedTexture': ('<2h', ('species', 'width'), 16)}
