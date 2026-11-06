@@ -11,7 +11,7 @@ more model, so Hawkmon, Pumpkinmon and Triceramon moved too.
 | File | Species | Screen | Scene |
 |---|---|---|---|
 | `armadillomon.py` | Armadillomon | Ancient Speedy Region 85 | Fight over its hole. |
-| `candlemon.py` | Candlemon | Lava Cave 30 | Friendly fight. |
+| `candlemon.py` | Candlemon | Lava Cave 125 | Friendly fight. |
 | `clockmon.py` | Clockmon | Sewer 163 | Riddle, outside hours 11 to 13, retriable. |
 | `digmon.py` | Digmon | Drill Tunnel 24 | Fight; opens the Works gate. |
 | `floramon.py` | Floramon | Native Forest 4 | Gives up a Sweet Nut. |

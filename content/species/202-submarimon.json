@@ -23,7 +23,7 @@
   "battle_music": "normal-battle",
   "condition_bubble": [5, -222, -118, 1],
   "effect_origins": [[2, 60, 0, 10, 1, -1, 41, -55], [2, -70, 0, 210, 1, 5, -222, -118], [1, 0, 0, 0, 1, -1, 40, 1],
-                     [2, -102, 0, 155, 1, 4, -205, -48]],
+                     [2, -102, 0, 155, 7, 0, 0, -180]],
   "wild": {"hp": 1680, "mp": 1380, "off": 235, "def": 240, "speed": 175, "brain": 175, "bits": 600},
   "sizing": {
     "game": "dcb",
@@ -42,10 +42,10 @@
     "poop_size": 15,
     "favorite_food": "Blue apple",
     "sleep_cycle": "19:00-04:00",
-    "favored_region": 4,
+    "favored_region": 8,
     "training_type": "hp-defense",
     "birth_weight": 40,
-    "status_screen_position": [200, 360, -1360],
+    "status_screen_position": [-642, 357, 463],
     "item_distance": 15,
     "training": {"animation": 57, "hit_tick": 10}
   },

@@ -1,0 +1,112 @@
+From 36cab535a74ffc48b8f8e123e542dfc03da11dcc Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 6 Nov 2026 11:03:48 +0000
+Subject: [PATCH] Extend ordinary technique damage with a bounded stat tail
+
+---
+ include/dw/mod_battle.h | 22 ++++++++++++++++++++++
+ src/btl/battle_main.c   |  8 +-------
+ src/std/std_main.c      |  8 +-------
+ src/vs/vs_main.c        |  8 +-------
+ 4 files changed, 25 insertions(+), 21 deletions(-)
+
+diff --git a/include/dw/mod_battle.h b/include/dw/mod_battle.h
+index 77c657a..d644a39 100644
+--- a/include/dw/mod_battle.h
++++ b/include/dw/mod_battle.h
+@@ -169,6 +169,8 @@ enum {
+ 	MOD_BT_T_DIGIT,		/* ticks a digit of the defeat countdown shows (it pulses 20 ticks of them; the countdown ends after 5) */
+ 	MOD_BT_MUSIC_LAST_SPECIES,	/* the species that, as the first enemy of the fight (COMBAT_DATA_PTR->player.entityIds[1], Machinedramon in the original), makes the battle play the last-battle track (-1: none) */
+ 	MOD_BT_MUSIC_LAST_TRACK,	/* the track (font 0x21) it plays */
++	MOD_BT_TAIL_HALF,
++	MOD_BT_TAIL_DIV,
+ 	MOD_BT_SIZE
+ };
+ 
+@@ -185,6 +187,26 @@ int32_t modBtBrainDiscount(int32_t brain);
+ #define BMS(X) modBtSpan(MOD_BT_##X)
+ #define BMD(a, X) modBtDiv((a), MOD_BT_##X)
+ #define BMV(X) ((int32_t)MOD_BATTLE[MOD_BT_##X])
++
++/* Preserve signed division and rounding inside the original range. Above the
++ * positive knee, a bounded rational tail approaches one extra power. The
++ * supported nonnegative int16 stats/power keep power * excess within int32. */
++static inline int32_t modBtStatPower(int32_t power, int32_t difference)
++{
++	int32_t knee = BM(DIFF_CLAMP);
++	int32_t limited = difference;
++	int32_t result;
++
++	if (limited > knee) limited = knee;
++	if (limited < -knee) limited = -knee;
++	result = power + BMD(limited * power, DIFF_DIV);
++	if (difference > knee && BM(TAIL_HALF) > 0 && BM(TAIL_DIV) > 0) {
++		int32_t excess = difference - knee;
++		result += power * excess / ((excess + BM(TAIL_HALF)) * BM(TAIL_DIV));
++	}
++	return result;
++}
++
+ /* the command menu a partner gets from its brains: the table row for brains / CMD_STEP below CMD_MAX, else the top menu (`first` is the row's first slot) */
+ static inline int32_t modBtCommands(int32_t brain, int32_t first, int32_t top)
+ {
+diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
+index 069886b..c678851 100644
+--- a/src/btl/battle_main.c
++++ b/src/btl/battle_main.c
+@@ -2064,13 +2064,7 @@ int32_t BTL_calculateDamage(DigimonEntity *attacker, DigimonEntity *defender, in
+ 		dmg = BMD((off + modSpeciesMove(attacker->entity.type, move)->power) * (mult[0] + mult[1] + mult[2]), DMG_DIV);
+ 	} else {
+ 		diff = off - def;
+-		if (diff > BM(DIFF_CLAMP)) {
+-			diff = BM(DIFF_CLAMP);
+-		}
+-		if (diff < -BM(DIFF_CLAMP)) {
+-			diff = -BM(DIFF_CLAMP);
+-		}
+-		dmg = BMD((mult[0] + mult[1] + mult[2]) * (modSpeciesMove(attacker->entity.type, move)->power + BMD(diff * modSpeciesMove(attacker->entity.type, move)->power, DIFF_DIV)), DMG_DIV) * (randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN)) / 100;
++		dmg = BMD((mult[0] + mult[1] + mult[2]) * modBtStatPower(modSpeciesMove(attacker->entity.type, move)->power, diff), DMG_DIV) * (randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN)) / 100;
+ 	}
+ 	if ((move >= 0x3a) && (move < 0x71)) {
+ 		if ((Entity *)attacker == ENTITY_TABLE[1]) {
+diff --git a/src/std/std_main.c b/src/std/std_main.c
+index 7febc0b..99db1f5 100644
+--- a/src/std/std_main.c
++++ b/src/std/std_main.c
+@@ -5849,13 +5849,7 @@ int32_t STD_calculateDamage(DigimonEntity *attacker, DigimonEntity *defender, in
+ 		dmg = BMD((off + modSpeciesMove(attacker->entity.type, move)->power) * (mult[0] + mult[1] + mult[2]), DMG_DIV);
+ 	} else {
+ 		diff = off - def;
+-		if (diff > BM(DIFF_CLAMP)) {
+-			diff = BM(DIFF_CLAMP);
+-		}
+-		if (diff < -BM(DIFF_CLAMP)) {
+-			diff = -BM(DIFF_CLAMP);
+-		}
+-		dmg = BMD((mult[0] + mult[1] + mult[2]) * (modSpeciesMove(attacker->entity.type, move)->power + BMD(diff * modSpeciesMove(attacker->entity.type, move)->power, DIFF_DIV)), DMG_DIV) * (randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN)) / 100;
++		dmg = BMD((mult[0] + mult[1] + mult[2]) * modBtStatPower(modSpeciesMove(attacker->entity.type, move)->power, diff), DMG_DIV) * (randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN)) / 100;
+ 	}
+ 	if ((move >= 0x3a) && (move < 0x71)) {
+ 		if ((Entity *)attacker == ENTITY_TABLE[1]) {
+diff --git a/src/vs/vs_main.c b/src/vs/vs_main.c
+index a1ad504..f5498eb 100644
+--- a/src/vs/vs_main.c
++++ b/src/vs/vs_main.c
+@@ -369,13 +369,7 @@ int32_t VS_rollAttackOutcome(DigimonEntity *attacker, DigimonEntity *defender, i
+ 		dmg = dmg * (randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN)) / 100;
+ 	} else {
+ 		diff = atk - def;
+-		if (diff > BM(DIFF_CLAMP)) {
+-			diff = BM(DIFF_CLAMP);
+-		}
+-		if (diff < -BM(DIFF_CLAMP)) {
+-			diff = -BM(DIFF_CLAMP);
+-		}
+-		dmg = BMD((eff[2] + (eff[0] + eff[1])) * (modSpeciesMove(attacker->entity.type, move)->power + BMD(diff * modSpeciesMove(attacker->entity.type, move)->power, DIFF_DIV)), DMG_DIV) * (randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN)) / 100;
++		dmg = BMD((eff[2] + (eff[0] + eff[1])) * modBtStatPower(modSpeciesMove(attacker->entity.type, move)->power, diff), DMG_DIV) * (randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN)) / 100;
+ 	}
+ 
+ 	if (dmg <= BM(DMG_MIN) - 1) {
+-- 
+2.55.0
+

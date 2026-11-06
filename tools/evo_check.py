@@ -11,7 +11,7 @@ The "raised" adjustment is left out (no species raised yet).
 """
 import sys as _sys
 if __name__ == '__main__' and _sys.argv[1:2] in (['-h'], ['--help']): print(__doc__); _sys.exit(0)
-import collections, itertools, json, os, sys
+import collections, functools, itertools, json, os, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, 'tools'))
 import species as S
@@ -40,14 +40,25 @@ def reqs_table(dat):
     return out
 
 
-def score(cur, req, level, st, care, weight, bonus=(0, 0, 0, 0)):
+@functools.lru_cache(None)
+def rookie_weights():
+    with open(os.path.join(ROOT, 'content/tables/evolution-rules.json')) as f:
+        return {(r['from'], r['to']): r['weight'] for r in json.load(f).get('evolutionRookieWeights', [])}
+
+
+def target_weight(cur, target, req, new_digimon=True):
+    return rookie_weights().get((cur, target), req['weight']) if new_digimon else req['weight']
+
+
+def score(cur, req, level, st, care, weight, bonus=(0, 0, 0, 0), target=-1, new_digimon=True):
     battles, techs, discipline, happiness = bonus
     pts = 0
     if req.get('flags', 0) & 0x10:
         pts += care <= req['care']
     else:
         pts += care >= req['care']
-    pts += req['weight'] - 5 <= weight <= req['weight'] + 5
+    needed_weight = target_weight(cur, target, req, new_digimon)
+    pts += needed_weight - 5 <= weight <= needed_weight + 5
     vals = [st['hp'] // 10, st['mp'] // 10, st['offense'], st['defense'], st['speed'], st['brain']]
     if level == 3:
         hi = max(i for i in range(6) if all(vals[i] >= v for v in vals))
@@ -68,7 +79,7 @@ def pick(cur, targets, R, levels, st, care, weight, kind, bonus=(0, 0, 0, 0)):
     stat_total, stat_count = 0, 0
     for t in targets:
         if t not in R: continue
-        sc = score(cur, R[t], levels[t], st, care, weight, bonus)
+        sc = score(cur, R[t], levels[t], st, care, weight, bonus, target=t)
         if kind == 'in-training':
             if best_score < sc and sc >= 3: best, best_score = t, sc
         elif sc >= 3:
@@ -101,8 +112,9 @@ def states(cur, t, targets, R, levels, kind):
         st = dict(zip(STATS, vals))
         for care in sorted({0, max(req['care'], 0), 30}):
             for bonus in bonuses:
-                if pick(cur, targets, R, levels, st, care, req['weight'], kind, bonus) == t:
-                    yield st, care, req['weight'], bonus
+                weight = target_weight(cur, t, req)
+                if pick(cur, targets, R, levels, st, care, weight, kind, bonus) == t:
+                    yield st, care, weight, bonus
 
 
 def canonical(cur, t, R, levels):
@@ -138,7 +150,7 @@ def reachable(cur, t, targets, R, levels, kind):
         st = dict(zip(STATS, vals))
         for care in sorted({0, max(req['care'], 0), 30}):
             for bonus in bonuses:
-                if pick(cur, targets, R, levels, st, care, req['weight'], kind, bonus) == t:
+                if pick(cur, targets, R, levels, st, care, target_weight(cur, t, req), kind, bonus) == t:
                     return True
     return False
 

@@ -42,10 +42,10 @@
     "poop_size": 12,
     "favorite_food": "Sweet Nut",
     "sleep_cycle": "19:00-04:00",
-    "favored_region": 0,
+    "favored_region": 6,
     "training_type": "even",
     "birth_weight": 30,
-    "status_screen_position": [30, 390, -880],
+    "status_screen_position": [-1364, 334, 1754],
     "item_distance": 15,
     "training": {"animation": 60, "hit_tick": 20}
   },

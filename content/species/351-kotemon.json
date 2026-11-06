@@ -45,15 +45,15 @@
     "favored_region": 5,
     "training_type": "hp-defense",
     "birth_weight": 15,
-    "status_screen_position": [420, 230, -1610],
+    "status_screen_position": [-424, 215, -7],
     "item_distance": 10,
     "training": {"animation": 54, "hit_tick": 20}
   },
   "evolution": {
-    "from": [2],
+    "from": [476],
     "to": [195, 227, 228, 253, 265, 325],
     "requirements": {
-      "digimon": 2,
+      "digimon": 476,
       "hp": 1,
       "mp": -1,
       "offense": -1,

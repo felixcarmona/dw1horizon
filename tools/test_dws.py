@@ -165,7 +165,10 @@ class BackendUnits(unittest.TestCase):
         us = os.path.join(ROOT, 'text/us/dialogue.json')
         if not os.path.exists(us): return
         us = json.load(open(us, encoding='utf-8')); buttons = lambda v: re.findall('[×△○□]', json.dumps(v, ensure_ascii=False))
-        own = {'s176.sec7.u1': ['□', '○']}          # Punimon's tips, from the Japanese: □ all, hold ○ for tens (ALT_BUTTON)
+        # Authored tips: Punimon's amount controls and Jijimon's Square care instructions.
+        own = {'s176.sec7.u1': ['□', '○'], 's178.sec5.u20': ['□', '□'],
+               's178.sec6.u2': ['△', '×', '□', '□', '×', '□'],
+               's178.sec7.u3': ['□', '□']}
         for p in glob.glob(os.path.join(ROOT, 'text/ours/dialogue/*.json')):
             for k, v in json.load(open(p, encoding='utf-8')).items():
                 if k.startswith('_') or not buttons(v): continue
@@ -1646,6 +1649,19 @@ class PythonView(unittest.TestCase):
         self.assertEqual(len(files), 223)
         for f in files: ast.parse(open(f, encoding='utf-8').read(), f)
 
+    def test_canyon_ambush_headers_match_python_source(self):
+        from dws import flowcmp
+        paths = [os.path.join(self.base, 'maphead', f'screen{sid:03d}.dws') for sid in (43, 128)]
+        expected = B.compile_sources(paths, exe='story-state', profile='extended-save')
+        actual = B.compile_sources([os.path.join(self.base, 'maphead', 'hooks.py')],
+                                   exe='story-state', profile='extended-save')
+        wanted = {sec: code for sec, _, code, _, _ in expected.b.mh_events}
+        lowered = {sec: code for sec, _, code, _, _ in actual.b.mh_events}
+        for sid in (43, 128):
+            with self.subTest(screen=sid):
+                result = flowcmp.compare(wanted[sid], lowered[sid])
+                self.assertTrue(result['equal'], result)
+
     def test_forms(self):
         v = self.view(77)
         self.assertIn('region = screen(Screen.ancient_glacial_region_80)', v)
@@ -1870,7 +1886,7 @@ class PythonMods(unittest.TestCase):
             self.assertFalse([w for w in prog.warn.render() if 'deprecated' in w], p)
             B.assemble(prog, os.path.join(tempfile.mkdtemp(dir=TMP), 'DG.SCN'))
         lock = json.load(open(os.path.join(ROOT, 'story/mods/examples/save.lock')))
-        self.assertTrue(all(780 <= n <= 799 for n in lock['flags'].values()))
+        self.assertTrue(all(780 <= n <= 786 for n in lock['flags'].values()))
 
     def test_starter_mod_builds(self):
         """story/mods/starter: the recipe runs on the player's map, the mod compiles on its output and assembles, and its
@@ -1889,7 +1905,7 @@ class PythonMods(unittest.TestCase):
             B.BE.MAPS_DIRS = saved; PL._MAPS.pop(1, None)
         def flags(mod): return set(json.load(open(os.path.join(ROOT, 'story/mods', mod, 'save.lock')))['flags'].values())
         own = flags('starter')
-        self.assertTrue(own and all(790 <= n <= 799 for n in own))
+        self.assertTrue(own and all(787 <= n <= 788 for n in own))
         self.assertFalse(own & (flags('what-the-island-forgot') | flags('examples')))
 
     def test_ask_keywords_and_every_error(self):
@@ -2037,10 +2053,10 @@ class PythonMods(unittest.TestCase):
             self.assertEqual(PL.free_range('flags'), '717-726')
             self.assertEqual(PL.free_range('vars', 3), '7-9')
             manifest = os.path.join(mod, 'mod.toml')
-            open(manifest, 'w').write('[save]\nflags = "717-794"\nvars = "7-13"\n')
-            self.assertEqual(PL.free_range('flags'), '795-796')
+            open(manifest, 'w').write('[save]\nflags = "717-785"\nvars = "7-13"\n')
+            self.assertEqual(PL.free_range('flags'), '786-787')
             self.assertEqual(PL.free_range('vars', 3), '14-15')
-            open(manifest, 'w').write('[save]\nflags = "717-799"\nvars = "7-15"\n')
+            open(manifest, 'w').write('[save]\nflags = "717-788"\nvars = "7-15"\n')
             self.assertIsNone(PL.free_range('flags'))
             self.assertIsNone(PL.free_range('vars'))
 

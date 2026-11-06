@@ -1,0 +1,28 @@
+From: Horizon authors <>
+Subject: [PATCH] Keep warning icons bright while only bars dim
+
+---
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -2357,7 +2357,7 @@
+ }
+ 
+ /* B5a: tile art and fills live in unused ETCTIM cells, never in main RAM.
+-   The 10 possible FT4 packets use 400 bytes of the existing frame buffer. */
++   Up to 13 FT4 packets use 520 bytes of the existing frame buffer. */
+ static void renderCareHUD(void)
+ {
+ 	/* Texture u/v and screen x/y offsets for the seven icon variants. */
+@@ -2434,7 +2434,10 @@
+ 			pixels = 1;
+ 		/* 20 play ticks per phase: one second normal, one second dim. */
+ 		dim = !active && warn && PLAYTIME_FRAMES % 40 >= 20 ? 8 : 0;
+-		renderRectPolyFT4(x, y, 34, 13, uv[0][icon], uv[1][icon], 31, GetClut(272, 500 + icon + active * 4), 14, dim);
++		/* Warning dimming affects the outlined bar, never the icon. */
++		renderRectPolyFT4(x, y, dim ? 13 : 34, 13, uv[0][icon], uv[1][icon], 31, GetClut(272, 500 + icon + active * 4), 14, 0);
++		if (dim)
++			renderRectPolyFT4(x + 14, y + 5, 20, 4, uv[0][icon] + 14, uv[1][icon] + 5, 31, GetClut(272, 500 + icon), 14, dim);
+ 		if (pixels)
+ 			renderRectPolyFT4(x + 15, y + 6, pixels, 2, i < 2 ? 144 : 164, i < 2 ? 251 + red * 2 : 251, 31, GetClut(272, 507), 13, dim);
+ 	}

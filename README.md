@@ -12,15 +12,13 @@ and it is delivered as a patch that you apply to your own disc. Original disc im
   The Digimon you recruit move into File City. EXTENDED STORY in OPTIONS switches back to the 1999 story.
 - **Less waiting**: double-speed battles on R2, START skips an evolution's animation, five training sessions in one
   go at the gym, field battles that start the moment they are triggered. None of it changes what your partner gains.
-- **60 frames per second**: the world, battles and tournaments are drawn at up to 60 fps; the game keeps its original
-  timing underneath (your partner ages, trains and gets hungry exactly as before). What to expect: a steady 60 needs
-  an emulator with a faster CPU setting (the title screen tells you which); at normal speed busy places run closer to
-  25-40, and a real PlayStation about 30. Controls are still read 20 times per second, and the smoothing shows the
-  picture up to 50 ms later. Measurements: [docs/reference/frame-rate.md](docs/reference/frame-rate.md).
+- **Automatic 20/60 frames per second**: evenly spaced 20 on original PlayStation hardware and emulators at normal
+  CPU speed; 60 with sufficient CPU overclock (250%). The game adapts if the overclock changes during play.
+  Logic and input stay at 20 Hz. Smoothing at 60 fps displays the picture up to 50 ms later.
 - **Eight languages, switchable in game**: English, Spanish, Brazilian Portuguese, French, German, Italian,
   Japanese and Catalan, with a first-boot language picker and Japanese bitmap font.
-- **Enemy life bars**: compact bars above enemy heads, always shown by default. NEW ENEMY BARS in OPTIONS
-  restores the original style; Select switches to brief display after hits. Both choices are saved.
+- **Enemy life bars**: compact bars above living, visible enemies throughout combat.
+  The display is permanent, including arena and VS opponents.
 - **Optional cheats**: care and stat editing, evolution, teleportation, save/load and return to title.
 - **An evolution guide**: the evolution chart shows what each evolution asks for.
 - **Digimon from three more games**: Digimon from Digital Card Battle, Digimon World 2 and Digimon World 2003 join

@@ -57,6 +57,19 @@ is translated directly from our Spanish. The first launch asks for a language
 with native names and flags when no saved preferences exist. Saving remembers
 it; OPTIONS can change it later. Without a saved game it asks again on restart.
 
+## Quick care controls
+
+In the field, press **Square** when the pink Square badge is available to open
+quick care, even when your partner is far away. Opening the list does not use an
+item: choose an entry and confirm to give it. Circle with JAPANESE CONTROLS on,
+or Cross with it off, talks to people and interacts with machines and objects.
+Square keeps its existing uses inside menus and battles, including evolution
+requirements, Item Bank `all`, and the finisher.
+
+The badge appears beside the lower-right need bubble when you have an item or
+command that can help now. A need still shows its bubble when you lack the item,
+but there is no care badge. With no current need or available action, no badge appears.
+
 ## Bring your own disc
 
 You need a copy of one of these discs, dumped from your own disc as a `.bin` + `.cue` (raw image, "MODE2/2352"),
@@ -171,9 +184,12 @@ To check your disc without patching: `py dwpatch.py check "Digimon World (USA).c
 
 ## Frame rate
 
-Up to 60 frames per second. A steady 60 needs an emulator with a faster CPU setting; the title screen tells you which
-one. At normal speed busy places run closer to 25-40, and a real PlayStation about 30. Controls are still read 20
-times per second, and the smoothing shows the picture up to 50 ms later. FRAME RATE in OPTIONS goes back to 20.
+The game chooses automatically: evenly spaced 20 frames per second on an original
+PlayStation or an emulator at normal CPU speed, and 60 with enough CPU overclock
+(250%). The title screen shows the recommended emulator settings. Changing the
+CPU overclock during play takes effect after a few seconds. Extra RAM does not
+change the frame rate. Logic and controls remain at 20 Hz; smoothing at 60 fps
+shows the picture up to 50 ms later. There is no frame-rate option to set.
 
 ## Saves
 

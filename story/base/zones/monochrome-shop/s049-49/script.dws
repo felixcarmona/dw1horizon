@@ -1,22 +1,18 @@
-// Readable form of script 49 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
-// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
-// Text is by key (text/us/dialogue.json), never the game's own words.
+// Authored Monochromon shift, synchronized with script.py. Text stays in the keyed banks.
 import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../../core/recruit.dws";
 import "../../../names.dws";
 script 49 {
     npc monochromon = 5;
-
-    // the section table, in the order of the original header
     sections 254, 81, 82;
-
-    on enter replace {    // section 254
-        if (!is_recruited(species("Monochromon"))) {
+    on enter replace {    // enter
+        if (!is_recruited(species(47))) {
             animate(monochromon, 28);
         }
     }
-
-    on use(1) replace {    // section 81
-        unless (!is_recruited(species("Monochromon"))) return;
+    on use(1) replace {    // use1
+        unless (!is_recruited(species(47))) return;
         face(tamer, monochromon);
         if (monochrome_shop_job_offered) {
             say(monochromon, text("s049.sec81.u16"));
@@ -40,7 +36,7 @@ script 49 {
         }
         choice {
             text("s049.sec81.m0.o0") => {
-                fadeout_hud(0);
+                hide_hud();
                 walk(monochromon, 133, 292);
                 walk(tamer, -980, -432);
                 await tamer;
@@ -100,8 +96,8 @@ script 49 {
                 set_obj_visibility(30, 0);
                 set_obj_visibility(31, 0);
                 set_obj_visibility(32, 0);
-                wait(3s);
-                entity_set_rotation(tamer, 0);
+                wait(60);
+                rotate(tamer, 0);
                 face(partner, tamer);
                 await tamer;
                 set_obj_visibility(21, 1);
@@ -121,6 +117,9 @@ script 49 {
                 set_obj_visibility(35, 0);
                 call_routine(routine("shopvar_clear"));
                 meat_stand.customers = 0;
+                p113 = 8;
+                p114 = 9;
+                p115 = 3;
                 monochrome_shop_halfway_reviewed = false;
                 goto sec82;
             }
@@ -128,10 +127,10 @@ script 49 {
         }
         say(monochromon, text("s049.sec81.u15"));
     }
-
-    on use(2) replace {    // section 82
+    on use(2) replace {    // use2
+        unless (!is_recruited(species(47))) return;
         if (meat_stand.customers >= 20) {
-            wait(2s);
+            wait(40);
             say(monochromon, text("s049.sec82.u4"));
             call_routine(routine("shopvar_store"));
             if (engine.shop_hi <= 6) {
@@ -167,7 +166,7 @@ script 49 {
             say(narrator, text("s049.sec82.u18"));
             give_bits(2000);
             engine.prosperity += 2;
-            recruit(species("Monochromon"));
+            recruit(species(47));
             store_date(date_year);
             add_minutes_to_date_at(date_year, 480);
             advance_to_date_at(date_year);
@@ -183,18 +182,55 @@ script 49 {
             call_routine(routine("shopvar_store"));
             if (engine.shop_hi <= 2) {
                 say(monochromon, text("s049.sec82.u1"));
-                entity_set_rotation(tamer, 80);
-                fadeout_hud(0);
+                rotate(tamer, 80);
+                hide_hud();
             } else if (engine.shop_hi <= 4) {
                 say(monochromon, text("s049.sec82.u2"));
-                entity_set_rotation(tamer, 80);
-                fadeout_hud(0);
+                rotate(tamer, 80);
+                hide_hud();
             } else {
                 say(monochromon, text("s049.sec82.u3"));
-                entity_set_rotation(tamer, 80);
-                fadeout_hud(0);
+                rotate(tamer, 80);
+                hide_hud();
             }
         }
+        draw_card:
+        store_random(p110, 19);
+        p120 = p123;
+        trim_served:
+        unless (p120 >= 1) goto scan_meat;
+        unless (p110 >= 1) goto draw_card;
+        p120 -= 1;
+        p110 -= 1;
+        goto trim_served;
+        scan_meat:
+        p120 = p113;
+        meat_card:
+        unless (p120 >= 1) goto scan_potty;
+        unless (p110 >= 1) goto picked_meat;
+        p120 -= 1;
+        p110 -= 1;
+        goto meat_card;
+        scan_potty:
+        p120 = p114;
+        potty_card:
+        unless (p120 >= 1) goto picked_medicine;
+        unless (p110 >= 1) goto picked_potty;
+        p120 -= 1;
+        p110 -= 1;
+        goto potty_card;
+        picked_meat:
+        p116 = 0;
+        p113 -= 1;
+        goto card_ready;
+        picked_potty:
+        p116 = 1;
+        p114 -= 1;
+        goto card_ready;
+        picked_medicine:
+        p116 = 2;
+        p115 -= 1;
+        card_ready:
         store_random(random_roll, 8);
         if (random_roll <= 2) {
             jump_to_file(199, 51);

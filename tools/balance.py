@@ -38,9 +38,10 @@ ENGINE = os.path.join(ROOT, 'content', 'balance', 'engine', 'tables.json')
 DEFAULT_EXE_DIR = os.path.join(ROOT, 'build/decomp-int/build/us/psx/gcc')
 SYMBOL_FILES = ['symbols.txt', 'symbols_trn.txt', 'symbols_trn2.txt', 'symbols_std.txt', 'symbols_fish.txt', 'symbols_btl.txt',
                 'symbols_vs.txt']
+# Original-disc bases. Compiled training overlays use their linked starts below.
 FILE_BASE = {'SLUS_010.32': 0x80090000, 'TRN_REL.BIN': 0x80088800, 'TRN2_REL.BIN': 0x80088800,
              'STD_REL.BIN': 0x80052AE0, 'FISH_REL.BIN': 0x80070000, 'KAR_REL.BIN': 0x80053800,
-             'BTL_REL.BIN': 0x80052AE0, 'VS_REL.BIN': 0x80052AE0}   # include/dw/memmap.h: OVL_TRN_BASE, OVL_BTL_BASE (BTL, STD, VS), OVL_FISH_BASE
+             'BTL_REL.BIN': 0x80052AE0, 'VS_REL.BIN': 0x80052AE0}
 NUM_ORIGINAL = SP.NUM_ORIGINAL
 ELEMENTS = ['fire', 'battle', 'air', 'nature', 'ice', 'mech', 'filth']
 
@@ -161,6 +162,7 @@ TABLES = [
     # tables of rules that start empty in the C (every slot -1 = the rule does not exist) and are filled from JSON: NAMED_RULES
     ('evolutionTiming', 'SLUS_010.32', 'MOD_EVO_TIMING', 22),
     ('evolutionFresh', 'SLUS_010.32', 'MOD_EVO_FRESH', 32),
+    ('evolutionRookieWeights', 'SLUS_010.32', 'MOD_EVO_ROOKIE_WEIGHTS', 6),
     ('evolutionUltimate', 'SLUS_010.32', 'MOD_EVO_ULTIMATE', 32),
     ('evolutionSpecial', 'SLUS_010.32', 'MOD_EVO_SPECIAL', 18),
     ('evolutionRules', 'SLUS_010.32', 'MOD_EVO_RULES', 300),
@@ -179,7 +181,7 @@ TABLES = [
     ('economy', 'SLUS_010.32', 'MOD_ECON', 72),
     ('curlingRules', 'SLUS_010.32', 'MOD_KAR', 20),
     ('fishingRules', 'SLUS_010.32', 'MOD_FISH', 92),
-    ('battleFormulas', 'SLUS_010.32', 'MOD_BATTLE', 324),
+    ('battleFormulas', 'SLUS_010.32', 'MOD_BATTLE', 328),
     ('dailyRules', 'SLUS_010.32', 'MOD_DAILY', 14),
     ('daytime', 'SLUS_010.32', 'MOD_DAYTIME', 18),
     ('tournamentRemap', 'STD_REL.BIN', 'STD_REMAP', 16),
@@ -208,7 +210,7 @@ _SMALL_COUNTS = {'cards': 66, 'cardPrices': 5, 'shopMaps': 8, 'arenaMaps': 2, 's
 TABLES += [(k, f, sym, struct.calcsize(fmt) * _SMALL_COUNTS[k]) for k, f, sym, fmt, _ in SMALL_TABLES]
 ORIGINAL_NAMES = {'SPECIES_BATTLE_MUSIC': 'ENEMY_MUSIC_MAPPING'}       # a table renamed by the mod
 TABLES += [('cityResidents', 'SLUS_010.32', 'CITY_RESIDENTS', 14)]
-OPTIONAL = {'cityResidents', 'shopMaps', 'arenaMaps', 'defaultInventoryItems', 'defaultInventoryAmounts', 'curlingWeights', 'curlingStartTypes', 'curlingRingPoints', 'curlingRings', 'curlingObstacleX', 'curlingRules', 'fishingRules', 'battleMusic', 'reincarnation', 'newGameTechniques', 'donorEntries', 'donorOrigins', 'donorBones', 'trainingNum', 'trainingLevel', 'trainingBonus', 'trainGain', 'trainRules', 'train2Gain', 'train2Rules', 'train2Num', 'train2Level', 'train2Bonus', 'evolutionTiming', 'evolutionFresh', 'evolutionUltimate', 'evolutionSpecial', 'evolutionRules', 'evolutionItemRules', 'medals', 'tamerLevel', 'evolutionFormula', 'itemEffects', 'economy', 'curlingRules', 'fishingRules', 'battleFormulas', 'clock', 'newGame', 'careRules', 'careOverrides', 'modelScale', 'animatedTexture', 'tournamentRules', 'dailyRules', 'daytime', 'tournamentRemap', 'stdArena', 'vsUnlock', 'training'}   # a build from before they were tables has none
+OPTIONAL = {'evolutionRookieWeights', 'cityResidents', 'shopMaps', 'arenaMaps', 'defaultInventoryItems', 'defaultInventoryAmounts', 'curlingWeights', 'curlingStartTypes', 'curlingRingPoints', 'curlingRings', 'curlingObstacleX', 'curlingRules', 'fishingRules', 'battleMusic', 'reincarnation', 'newGameTechniques', 'donorEntries', 'donorOrigins', 'donorBones', 'trainingNum', 'trainingLevel', 'trainingBonus', 'trainGain', 'trainRules', 'train2Gain', 'train2Rules', 'train2Num', 'train2Level', 'train2Bonus', 'evolutionTiming', 'evolutionFresh', 'evolutionUltimate', 'evolutionSpecial', 'evolutionRules', 'evolutionItemRules', 'medals', 'tamerLevel', 'evolutionFormula', 'itemEffects', 'economy', 'curlingRules', 'fishingRules', 'battleFormulas', 'clock', 'newGame', 'careRules', 'careOverrides', 'modelScale', 'animatedTexture', 'tournamentRules', 'dailyRules', 'daytime', 'tournamentRemap', 'stdArena', 'vsUnlock', 'training'}   # a build from before they were tables has none
 SPECIES_TABLES = ('para', 'raise', 'itemTakeDistance', 'vlall', 'vball', 'originalTypes', 'trainingAnims',
                   'training2Anims', 'battleMusic', 'reincarnation', 'newGameTechniques')
 # (patch 0087's EFFECT_FALLBACK_SPECIES / _ORIGIN were per-species tables too; patch 0106 replaced them by the DIGI.DAT
@@ -255,6 +257,13 @@ class Exe:
         elf = os.path.join(self.folder, 'SLUS_010.32.elf')
         self.compiled = os.path.exists(elf)
         self.syms = elf_symbols(elf) if self.compiled else original_symbols()
+        self.bases = FILE_BASE.copy()
+        if self.compiled:
+            # A compiled overlay can move within the load area; original disc bases stay fixed.
+            from langpatch import elf_symbols as all_elf_symbols
+            symbols = all_elf_symbols(elf)
+            for file, symbol in (('TRN_REL.BIN', 'trn_START'), ('TRN2_REL.BIN', 'trn2_START')):
+                self.bases[file] = symbols[symbol][0]
         self.files = {}
 
     def path(self, f):
@@ -270,7 +279,7 @@ class Exe:
     def where(self, table):
         f = next(x[1] for x in TABLES if x[0] == table)
         addr, size = self.syms[table]
-        return f, addr - FILE_BASE[f], size
+        return f, addr - self.bases[f], size
 
     def has(self, table):
         return table in self.syms
@@ -360,7 +369,7 @@ NAMED_RULES = {
     'economy': ['money.cap', 'merit.cap', 'item.stackCap', 'defeat.itemLossPercent', 'shop.babyBuyPercent', 'shop.sellPercent', 'cardPack.rarityBelow[0]', 'cardPack.rarityBelow[1]', 'cardPack.rarityBelow[2]', 'cardPack.rarityBelow[3]', 'cards.maxCopies', 'cardPack.price', 'battle.bitsPercent', 'cardMachine.price', 'cardMachine.rarityBelow[0]', 'cardMachine.rarityBelow[1]', 'cardMachine.rarityBelow[2]', 'cardMachine.rarityBelow[3]'],
     'trainRules': ['exhausted.at', 'exhausted.gain', 'session.tiredPenaltyAt', 'session.penaltyHappinessLoss', 'session.penaltyDisciplineLoss', 'session.lifetimeBelowHappiness', 'session.lifetimePerPoints', 'session.starvationDrop', 'session.foodDrop', 'session.poopDrop', 'session.lifetimeCost', 'slots.jackpot', 'slots.match', 'slots.triple', 'slots.miss', 'brains.orderMarks[0]', 'brains.orderMarks[1]', 'brains.orderMarks[2]', 'brains.orderMarks[3]', 'brains.orderMarks[4]', 'brains.learnMarks[0]', 'brains.learnMarks[1]', 'brains.learnMarks[2]', 'brains.learnMarks[3]', 'brains.learnMarks[4]', 'brains.learnMarks[5]', 'brains.learnMarks[6]', 'brains.learnMarks[7]', 'brains.learnMarks[8]', 'brains.learnMarks[9]', 'brains.learnMarks[10]', 'brains.learnMarks[11]', 'session.durationMs', 'session.stepMs'],
     'train2Rules': ['exhausted.at', 'exhausted.gain', 'session.tiredPenaltyAt', 'session.penaltyHappinessLoss', 'session.penaltyDisciplineLoss', 'session.lifetimeBelowHappiness', 'session.lifetimePerPoints', 'session.starvationDrop', 'session.foodDrop', 'session.poopDrop', 'session.lifetimeCost', 'slots.jackpot', 'slots.match', 'slots.triple', 'slots.miss', 'brains.orderMarks[0]', 'brains.orderMarks[1]', 'brains.orderMarks[2]', 'brains.orderMarks[3]', 'brains.orderMarks[4]', 'brains.learnMarks[0]', 'brains.learnMarks[1]', 'brains.learnMarks[2]', 'brains.learnMarks[3]', 'brains.learnMarks[4]', 'brains.learnMarks[5]', 'brains.learnMarks[6]', 'brains.learnMarks[7]', 'brains.learnMarks[8]', 'brains.learnMarks[9]', 'brains.learnMarks[10]', 'brains.learnMarks[11]', 'session.durationMs', 'session.stepMs'],
-    'battleFormulas': ['damage.guardDefensePercent', 'damage.divisor', 'damage.statDifferenceClamp', 'damage.statDifferenceDivisor', 'damage.neutralMultiplier', 'damage.randomMinPercent', 'damage.randomSpan', 'damage.enemyFinisherMinPercent', 'damage.enemyFinisherSpan', 'damage.chargeupFrom', 'damage.chargeupDivisor', 'damage.minimum', 'hit.alwaysHitBelowLevel', 'hit.attackerSpeedDivisor', 'hit.speedDifferenceClamp', 'hit.accuracyDivisor', 'hit.speedNormalizer', 'hit.movingDefenderPercent', 'block.minMp', 'block.damageMinPercent', 'block.damageSpan', 'block.invulnerableMs', 'block.defenderGaugePercent', 'block.attackerGaugePercent', 'hit.bigHitPercent', 'buffs.move[0]', 'buffs.move[1]', 'buffs.move[2]', 'buffs.move[3]', 'buffs.move[4]', 'buffs.offensePercent[0]', 'buffs.offensePercent[1]', 'buffs.offensePercent[2]', 'buffs.offensePercent[3]', 'buffs.offensePercent[4]', 'buffs.defensePercent[0]', 'buffs.defensePercent[1]', 'buffs.defensePercent[2]', 'buffs.defensePercent[3]', 'buffs.defensePercent[4]', 'buffs.speedPercent[0]', 'buffs.speedPercent[1]', 'buffs.speedPercent[2]', 'buffs.speedPercent[3]', 'buffs.speedPercent[4]', 'status.poisonIntervalMs', 'status.poisonMinPercent', 'status.poisonSpan', 'status.confusionMs', 'status.confusionExtraMs', 'status.stunMs', 'status.stunExtraMs', 'mp.costMultiplier', 'mp.conditionPenaltyPercent', 'mp.discountBrain[0]', 'mp.discountBrain[1]', 'mp.discountBrain[2]', 'mp.discountBrain[3]', 'mp.discountPercent[0]', 'mp.discountPercent[1]', 'mp.discountPercent[2]', 'mp.discountPercent[3]', 'speed.bufferMax', 'speed.gainDivisor', 'speed.gainPlus', 'speed.bufferFloor', 'speed.bufferStart', 'cooldown.afterAttackMs', 'cooldown.noTargetMs', 'senile.brainBelow', 'senile.partnerBase', 'senile.enemyBase', 'senile.enemyDivisor', 'senile.durationMs', 'senile.intervalBrainDivisor', 'senile.intervalMsPerStep', 'finisher.attackGaugePercent', 'finisher.goalBase', 'condition.statPenaltyPercent', 'buffs.usesBrainDivisor', 'buffs.tier1Brain', 'buffs.tier2Brain', 'buffs.tier1Uses', 'buffs.tier2Uses', 'buffs.priorityBrainDivisor', 'buffs.priorityBase', 'ai.idleAttackPercent', 'status.flatMs', 'status.flatExtraMs', 'flee.ignoreHitsFromMs', 'flee.lockMs', 'ai.confusedNoTargetOutOf10', 'ai.focusWeakestBrain', 'ai.enemyAimsAtPlayerBelow', 'ai.lowHpDivisor', 'ai.emptySlotWeight', 'ai.chargeMode1MoveWeight', 'ai.groupBrain', 'ai.groupBonusPerEnemy[0]', 'ai.groupBonusPerEnemy[1]', 'ai.groupBonusPerEnemy[2]', 'ai.lowHpBelowPercent', 'ai.enemyGroupMoveWeight', 'yourCall.power[0]', 'yourCall.power[1]', 'yourCall.power[2]', 'yourCall.power[3]', 'yourCall.mp[0]', 'yourCall.mp[1]', 'yourCall.mp[2]', 'yourCall.mp[3]', 'yourCall.wide[0]', 'yourCall.wide[1]', 'yourCall.wide[2]', 'yourCall.wide[3]', 'ai.elementBonus[0]', 'ai.elementBonus[1]', 'ai.elementBonus[2]', 'ai.elementBonus[3]', 'ai.elementBonus[4]', 'ai.targetScore.invertedFactor[0]', 'ai.targetScore.invertedFactor[1]', 'ai.targetScore.invertedFactor[2]', 'ai.targetScore.invertedFactor[3]', 'ai.targetScore.defenseMax', 'ai.targetScore.divisor', 'ai.smartTargetBrain', 'ai.switchTargetGap', 'commands.brainStep', 'commands.maxBrain', 'commands.story[0]', 'commands.story[1]', 'commands.story[2]', 'commands.story[3]', 'commands.story[4]', 'commands.storyTop', 'commands.tournament[0]', 'commands.tournament[1]', 'commands.tournament[2]', 'commands.tournament[3]', 'commands.tournament[4]', 'commands.tournamentTop', 'afterFight.healHpDivisor', 'afterFight.healMpDivisor', 'finisher.chargeGaugeMax', 'finisher.chargeGaugePerPress', 'finisher.chargeWindowMs', 'finisher.holdMs', 'flatten.retargetMs', 'buffs.priorityStepMs', 'flatten.attackRepeatMs', 'speed.stepMs', 'approach.timeoutMs', 'approach.tournamentTimeoutMs', 'approach.tournamentRestMs', 'flatten.attackDelayMs', 'defeat.countdownShowMs', 'defeat.endMs', 'afterFight.settleMs', 'defeat.digitMs', 'music.lastBattleSpecies', 'music.lastBattleTrack'],
+    'battleFormulas': ['damage.guardDefensePercent', 'damage.divisor', 'damage.statDifferenceClamp', 'damage.statDifferenceDivisor', 'damage.neutralMultiplier', 'damage.randomMinPercent', 'damage.randomSpan', 'damage.enemyFinisherMinPercent', 'damage.enemyFinisherSpan', 'damage.chargeupFrom', 'damage.chargeupDivisor', 'damage.minimum', 'hit.alwaysHitBelowLevel', 'hit.attackerSpeedDivisor', 'hit.speedDifferenceClamp', 'hit.accuracyDivisor', 'hit.speedNormalizer', 'hit.movingDefenderPercent', 'block.minMp', 'block.damageMinPercent', 'block.damageSpan', 'block.invulnerableMs', 'block.defenderGaugePercent', 'block.attackerGaugePercent', 'hit.bigHitPercent', 'buffs.move[0]', 'buffs.move[1]', 'buffs.move[2]', 'buffs.move[3]', 'buffs.move[4]', 'buffs.offensePercent[0]', 'buffs.offensePercent[1]', 'buffs.offensePercent[2]', 'buffs.offensePercent[3]', 'buffs.offensePercent[4]', 'buffs.defensePercent[0]', 'buffs.defensePercent[1]', 'buffs.defensePercent[2]', 'buffs.defensePercent[3]', 'buffs.defensePercent[4]', 'buffs.speedPercent[0]', 'buffs.speedPercent[1]', 'buffs.speedPercent[2]', 'buffs.speedPercent[3]', 'buffs.speedPercent[4]', 'status.poisonIntervalMs', 'status.poisonMinPercent', 'status.poisonSpan', 'status.confusionMs', 'status.confusionExtraMs', 'status.stunMs', 'status.stunExtraMs', 'mp.costMultiplier', 'mp.conditionPenaltyPercent', 'mp.discountBrain[0]', 'mp.discountBrain[1]', 'mp.discountBrain[2]', 'mp.discountBrain[3]', 'mp.discountPercent[0]', 'mp.discountPercent[1]', 'mp.discountPercent[2]', 'mp.discountPercent[3]', 'speed.bufferMax', 'speed.gainDivisor', 'speed.gainPlus', 'speed.bufferFloor', 'speed.bufferStart', 'cooldown.afterAttackMs', 'cooldown.noTargetMs', 'senile.brainBelow', 'senile.partnerBase', 'senile.enemyBase', 'senile.enemyDivisor', 'senile.durationMs', 'senile.intervalBrainDivisor', 'senile.intervalMsPerStep', 'finisher.attackGaugePercent', 'finisher.goalBase', 'condition.statPenaltyPercent', 'buffs.usesBrainDivisor', 'buffs.tier1Brain', 'buffs.tier2Brain', 'buffs.tier1Uses', 'buffs.tier2Uses', 'buffs.priorityBrainDivisor', 'buffs.priorityBase', 'ai.idleAttackPercent', 'status.flatMs', 'status.flatExtraMs', 'flee.ignoreHitsFromMs', 'flee.lockMs', 'ai.confusedNoTargetOutOf10', 'ai.focusWeakestBrain', 'ai.enemyAimsAtPlayerBelow', 'ai.lowHpDivisor', 'ai.emptySlotWeight', 'ai.chargeMode1MoveWeight', 'ai.groupBrain', 'ai.groupBonusPerEnemy[0]', 'ai.groupBonusPerEnemy[1]', 'ai.groupBonusPerEnemy[2]', 'ai.lowHpBelowPercent', 'ai.enemyGroupMoveWeight', 'yourCall.power[0]', 'yourCall.power[1]', 'yourCall.power[2]', 'yourCall.power[3]', 'yourCall.mp[0]', 'yourCall.mp[1]', 'yourCall.mp[2]', 'yourCall.mp[3]', 'yourCall.wide[0]', 'yourCall.wide[1]', 'yourCall.wide[2]', 'yourCall.wide[3]', 'ai.elementBonus[0]', 'ai.elementBonus[1]', 'ai.elementBonus[2]', 'ai.elementBonus[3]', 'ai.elementBonus[4]', 'ai.targetScore.invertedFactor[0]', 'ai.targetScore.invertedFactor[1]', 'ai.targetScore.invertedFactor[2]', 'ai.targetScore.invertedFactor[3]', 'ai.targetScore.defenseMax', 'ai.targetScore.divisor', 'ai.smartTargetBrain', 'ai.switchTargetGap', 'commands.brainStep', 'commands.maxBrain', 'commands.story[0]', 'commands.story[1]', 'commands.story[2]', 'commands.story[3]', 'commands.story[4]', 'commands.storyTop', 'commands.tournament[0]', 'commands.tournament[1]', 'commands.tournament[2]', 'commands.tournament[3]', 'commands.tournament[4]', 'commands.tournamentTop', 'afterFight.healHpDivisor', 'afterFight.healMpDivisor', 'finisher.chargeGaugeMax', 'finisher.chargeGaugePerPress', 'finisher.chargeWindowMs', 'finisher.holdMs', 'flatten.retargetMs', 'buffs.priorityStepMs', 'flatten.attackRepeatMs', 'speed.stepMs', 'approach.timeoutMs', 'approach.tournamentTimeoutMs', 'approach.tournamentRestMs', 'flatten.attackDelayMs', 'defeat.countdownShowMs', 'defeat.endMs', 'afterFight.settleMs', 'defeat.digitMs', 'music.lastBattleSpecies', 'music.lastBattleTrack', 'damage.tailHalfDifference', 'damage.tailPowerDivisor'],
     'fishingRules': ['tension.limitSmallRod', 'tension.limitBigRod', 'tension.sizeMin', 'tension.sizeMax', 'tension.slackRelease', 'tension.holdSmall', 'tension.holdBig', 'tension.pullSmall', 'tension.pullBig', 'tension.pullStruggleSmall', 'tension.pullStruggleBig', 'tension.snapStepsBase', 'tension.snapStepsSmall', 'tension.snapStepsBig', 'tension.snapStepMs', 'hook.bigFishSize', 'hook.nibbleSmallMin', 'hook.nibbleSmallMax', 'hook.nibbleBigMin', 'hook.nibbleBigMax', 'hook.strikeWindowSmall', 'hook.strikeWindowBig', 'hook.powerBase', 'hook.powerReserve', 'hook.tiredPowerDivisor', 'hook.tiredStepDivisor', 'hook.freshStepDivisor', 'hook.restRoll', 'hook.restBelow', 'hook.pressedMsForPull', 'hook.moveTimeMin', 'hook.moveTimeMax', 'hook.pauseMin', 'hook.pauseMax', 'bite.radius', 'bite.seadramonPoll', 'bite.seadramonChance', 'bite.poll', 'bite.roll', 'theft.fromFrame', 'theft.everyMs', 'theft.roll', 'theft.below', 'population.poolBelow', 'population.lifetimeMin', 'population.lifetimeMax'],
     'curlingRules': ['stones.frictionPercent', 'stones.stopBelowMove', 'obstacles.mostPerMatch', 'obstacles.xSpan', 'obstacles.zBase', 'obstacles.zSpan', 'match.bigWinScore', 'opponent.aimNoise', 'throw.powerCutAtMode2', 'throw.powerCutOtherModes'],
     'clock': ['dayRealSeconds'],
@@ -506,9 +515,10 @@ def decode_named(key, exe):
             elif path in EXTRA_MS.get(key, ()): v = (v - 1) * TICK_MS
             elif path in TIME_SLOTS.get(key, ()): v *= FRAME_SECONDS
             _set(out, path, v)
-    if key == 'newGame' and len(raw) == 80 + 224 and raw[80:] != b'\xff' * 224:
+    if key == 'newGame':
         import starter_quiz
-        out.update(starter_quiz.unpack(raw[80:]))
+        if len(raw) == 80 + starter_quiz.SIZE and raw[80:] != b'\xff' * starter_quiz.SIZE:
+            out.update(starter_quiz.unpack(raw[80:]))
     return out
 
 
@@ -558,11 +568,11 @@ def encode_named(key, obj, exe):
             if not lo <= d <= hi: raise SystemExit(f'{key}.{path}: {d}, from {lo} to {hi}')
             v = d
         vals.append(v)
-    fmt = NAMED_FMT.get(key, "h"); n = exe.where(key)[2] // struct.calcsize(fmt)   # an executable from before a table grew
+    fmt = NAMED_FMT.get(key, "h"); n = exe.where(key)[2] // struct.calcsize(fmt) if exe is not None else len(paths)   # older tables keep their prefix
     raw = struct.pack(f'<{n}{fmt}', *(vals[:n] + [-1] * (n - len(vals))))
     if key == 'newGame' and n > 20 and quiz is not None:
         import starter_quiz
-        if n != 76:
+        if n * 4 != 80 + starter_quiz.SIZE:
             raise SystemExit('newGame: unsupported packed quiz table size')
         raw = raw[:80] + starter_quiz.pack(dict(obj, quiz=quiz))
     return raw   # older executables hold only their original slots
@@ -645,7 +655,7 @@ def encode_medals(rows):
 
 
 # lists of small rows with a fixed room, empty rows -1: key -> (struct format, JSON fields, room); content/tables/evolution-rules.json
-ROW_RULES = {'evolutionFresh': ('<2h', ('from', 'to'), 8), 'evolutionUltimate': ('<2h', ('from', 'to'), 8),
+ROW_RULES = {'evolutionRookieWeights': ('<3h', ('from', 'to', 'weight'), 1), 'evolutionFresh': ('<2h', ('from', 'to'), 8), 'evolutionUltimate': ('<2h', ('from', 'to'), 8),
              'evolutionItemRules': ('<3h', ('item', 'target', 'partnerLevel'), 4),
              'tournamentRemap': ('<2h', ('from', 'to'), 4),
              'modelScale': ('<2h', ('species', 'percent'), 8), 'animatedTexture': ('<2h', ('species', 'width'), 16)}

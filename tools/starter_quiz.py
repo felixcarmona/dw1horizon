@@ -10,20 +10,21 @@ ROOT = Path(__file__).resolve().parents[1]
 AXES = ('battle', 'fire', 'ice', 'nature', 'air', 'vaccine', 'data', 'virus',
         'bold', 'calm', 'cunning')
 GROUPS = ((0, 5), (5, 8), (8, 11))
-COUNT = 35  # uint16 species ids
+COUNT = 38  # uint16 species ids
 WEIGHTS = COUNT * 2  # 63 sparse weight bytes
 CELLS = WEIGHTS + 63  # 45 cell indices
 VANILLA_CELLS = CELLS + 45  # 45 more, read with NEW DIGIMON off
-SIZE = VANILLA_CELLS + 45 + 1  # one padding byte
-# Partner rookies that reuse another species' model: they are reached by evolution, never as a quiz result.
+SIZE = (VANILLA_CELLS + 45 + 3) & ~3  # align the int32 table tail
+# These partner Rookie recolours are reached by evolution, never as a quiz result.
 RECOLOURS = {
-    71: 'SnowAgumon', 74: 'Dokunemon', 82: 'Psychemon', 93: 'Muchomon',
+    71: 'SnowAgumon', 82: 'Psychemon', 93: 'Muchomon',
     96: 'Tsukaimon', 233: 'RedOtamamon', 256: 'VioletElecmon',
 }
 
 
-# These new rookies have Baby II routes but no quiz slot in the fixed 35-row table.
-EVOLUTION_ONLY = {263: 'Mushroomon', 283: 'Syakomon', 331: 'Vemmon'}
+# Vemmon has Baby II routes but no quiz slot.
+EVOLUTION_ONLY = {331: 'Vemmon'}
+VANILLA_ONLY = {32}  # Kunemon keeps the original-game fallback, but its special route excludes it from the expanded quiz.
 
 def load():
     return json.loads((ROOT / 'content/tables/new-game.json').read_text())['newGame']
@@ -53,8 +54,8 @@ def validate(data):
                 raise ValueError('unknown axis or weight outside 1..15')
     if len(cells) != 45 or any(type(i) is not int or not 0 <= i < COUNT for i in cells):
         raise ValueError('cells must be 45 valid starter indices')
-    if set(cells) != set(range(COUNT)):
-        raise ValueError('each pool species must have a cell')
+    if {starters[i] for i in cells} != set(starters) - VANILLA_ONLY:
+        raise ValueError('each expanded pool species must have a cell')
     if len(vanilla_cells) != 45 or any(type(i) is not int or not 0 <= i < COUNT for i in vanilla_cells):
         raise ValueError('vanillaCells must be 45 valid starter indices')
     if {starters[i] for i in vanilla_cells} != vanilla:
@@ -73,7 +74,7 @@ def pack(data):
             out.extend(row + [0] * (3 - len(row)))
     out.extend(data['quiz']['cells'])
     out.extend(data['quiz']['vanillaCells'])
-    out.extend(b'\0')
+    out.extend(b'\0' * (SIZE - len(out)))
     assert len(out) == SIZE
     return bytes(out)
 
@@ -133,14 +134,14 @@ def check(data):
         raise ValueError('packed quiz does not round trip')
     counts = collections.Counter(data['starters'][result(data, path)]
                                  for path in itertools.product(range(3), repeat=7))
-    for species in data['starters']:
+    for species in set(data['starters']) - VANILLA_ONLY:
         if not 0.005 <= counts[species] / 2187 <= 0.06:
             raise ValueError(f'species {species}: {counts[species]}/2187 outside 0.5%..6%')
     vanilla = collections.Counter(data['starters'][result(data, path, False)]
                                   for path in itertools.product(range(3), repeat=7))
     if not all(0.09 <= n / 2187 <= 0.13 for n in vanilla.values()):
         raise ValueError(f'NEW DIGIMON off outside 9%..13%: {vanilla}')
-    for name, seen, total in (('new digimon on', counts, COUNT), ('new digimon off', vanilla, 9)):
+    for name, seen, total in (('new digimon on', counts, COUNT - len(VANILLA_ONLY)), ('new digimon off', vanilla, 9)):
         print(f'{name}: 2187 paths; {len(seen)}/{total} starters reached; '
               f'min {min(seen.values())}/2187 ({100*min(seen.values())/2187:.4f}%); '
               f'max {max(seen.values())}/2187 ({100*max(seen.values())/2187:.4f}%)')

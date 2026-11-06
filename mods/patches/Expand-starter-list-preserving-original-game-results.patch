@@ -1,0 +1,55 @@
+From 4fd3cb26b6a5b79258c4723da024bb40acad7f0e Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 6 Nov 2026 03:54:56 +0000
+Subject: [PATCH] Expand the starter list while preserving original-game quiz
+ results
+
+---
+ include/dw/mod_rules.h | 9 +++++----
+ src/main/main_menu.c   | 2 +-
+ 2 files changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/include/dw/mod_rules.h b/include/dw/mod_rules.h
+index 9861c6b..a662d02 100644
+--- a/include/dw/mod_rules.h
++++ b/include/dw/mod_rules.h
+@@ -68,7 +68,7 @@ extern int16_t MOD_DAILY[MOD_DAILY_SIZE];
+ 
+ /* a new game and a new partner: MOD_NEWGAME[], every slot -1 = the rule does not exist (modNewGame answers 0), written by tools/balance.py
+  * from content/tables/new-game.json */
+-#define MOD_NEWGAME_SIZE	76
++#define MOD_NEWGAME_SIZE	78
+ #define MOD_NG_MONEY		0 /* the tamer's money in a new game */
+ #define MOD_NG_START_HOUR	1 /* the game clock in a new game */
+ #define MOD_NG_START_MINUTE	2
+@@ -87,10 +87,11 @@ extern int16_t MOD_DAILY[MOD_DAILY_SIZE];
+ extern int32_t MOD_NEWGAME[MOD_NEWGAME_SIZE];
+ int32_t modNewGame(int32_t slot);
+ /* Packed tail of MOD_NEWGAME: species ids, three sparse axis/weight bytes per answer, cells. */
++#define MOD_QUIZ_COUNT 38
+ #define MOD_QUIZ_STARTERS ((uint16_t *)&MOD_NEWGAME[20])
+-#define MOD_QUIZ_WEIGHTS ((uint8_t *)&MOD_NEWGAME[20] + 70)
+-#define MOD_QUIZ_CELLS ((uint8_t *)&MOD_NEWGAME[20] + 133)
+-#define MOD_QUIZ_VANILLA_CELLS ((uint8_t *)&MOD_NEWGAME[20] + 178) /* read with NEW DIGIMON off: original rookies only */
++#define MOD_QUIZ_WEIGHTS ((uint8_t *)&MOD_NEWGAME[20] + MOD_QUIZ_COUNT * 2)
++#define MOD_QUIZ_CELLS ((uint8_t *)&MOD_NEWGAME[20] + MOD_QUIZ_COUNT * 2 + 63)
++#define MOD_QUIZ_VANILLA_CELLS ((uint8_t *)&MOD_NEWGAME[20] + MOD_QUIZ_COUNT * 2 + 108) /* read with NEW DIGIMON off: original rookies only */
+ int32_t modNewGameStarter(void);
+ void modInitializeStarterTechniques(int32_t type);
+ uint8_t modQuizResult(const uint8_t *answers);
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 661356c..3b29eea 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -4272,7 +4272,7 @@ int32_t MOD_NEWGAME[MOD_NEWGAME_SIZE] = { [0 ... MOD_NEWGAME_SIZE - 1] = -1 };
+ int32_t modNewGameStarter(void)
+ {
+ 	uint32_t index = readPStat(PSTAT_254);
+-	return MOD_QUIZ_STARTERS[index < 35 ? index : 0];
++	return MOD_QUIZ_STARTERS[index < MOD_QUIZ_COUNT ? index : 0];
+ }
+ 
+ /* MOD (starter quiz): all seven answers contribute. A tie goes to the latest
+-- 
+2.55.0
+

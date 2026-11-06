@@ -15,7 +15,7 @@ against, leave this list.
 
 | Idea | Kind | Notes |
 |---|---|---|
-| How long a Rookie waits before evolving into a Champion: 72 hours (the original, current) or 96 hours | 🎭 | A community poll is open on the Discord server; its result will be weighed but isn't binding. |
+| How long a Rookie waits before evolving into a Champion: 72 hours (the original, current) or 96 hours; a player also suggests moving the Champion's extra day back to the Rookie | 🎭 | A community poll is open on the Discord server; its result will be weighed but isn't binding. |
 | A larger rebalance of daily ground item odds | ⚖️ | 0.0.6 raises ordinary finds to at least 8 % per visit; a full per-item proposal from a player is in preparation and needs an economy audit. |
 
 ## Ideas
@@ -23,12 +23,48 @@ against, leave this list.
 | Idea | Kind | Notes |
 |---|---|---|
 | Evolve early on purpose (paid, through an NPC, or from the menu) once the requirements are met | 🎭 ⚖️ | Would satisfy both sides of the Rookie wait debate. |
-| Delay an evolution (an item or an NPC) | 🎭 | Same mechanism as evolving early. |
+| Delay or block an evolution (an item, an NPC, or marking a route in the evolution chart) | 🎭 | Same mechanism as evolving early. |
 | Randomizer | 🆕 | A patcher option; large: what to randomize, and keeping the game completable. |
 | Unique finishers for the new Digimon | ✨ | Many imports reuse another Digimon's finisher; a lot of animation and effect work. |
 | DarkSuperStarmon as an alternative Starmon evolution, with its own Battle/Machine/Fire identity | 🆕 | Once one of its Megas is in the game. |
 | Item icons in the Item Bank list | 🛠️ | The menu code is close to its size limit; needs measuring. |
 | Using a Portable Potty directly instead of the partner eating it | 🛠️ | Small. |
 | Result stats that animate quickly and close by themselves after training or battle | 🛠️ | Players supported it when asked. |
-| Better Mojyamon trades again, but each trade only once per day | ⚖️ | Makes trades worth doing without the original game's infinite-money loop; needs an economy audit of the daily bits ceiling. |
 | The extended story with only the original partners | 🎭 | Needs an option between NEW DIGIMON on and off. |
+| Floating idle and walk for flying Digimon (Lillymon, Seraphimon, MegaKabuterimon) | ✨ | Per-species animation work. |
+| A new arena up the File City stairs, with higher tiers (S+, AA, SS) and evolution items for the new Digimon as prizes | 🆕 | Needs a new screen and cup design. |
+| Exchange evolution items (for example three Ultimate items for one Mega item) | ⚖️ | An NPC trade; needs an economy check. |
+| Ride your partner as a mount | 🆕 | Large: movement, camera and animations for every partner. |
+| Alternative tamer outfits | ✨ | Needs art for the tamer model. |
+| Meet other tamers around the island | 🆕 | New NPCs and encounters. |
+| A higher Item Bank storage limit (up to 999 per item) | 🛠️ | Save format and menu size need checking. |
+| The evolution chart remembers where its cursor was | 🛠️ | Small. |
+| A tournaments tab: which cups you entered, their prizes and requirements, and a reminder a few hours before a cup | 🛠️ | Menu space is tight. |
+| A tiredness icon in the field status, like happiness and discipline | 🛠️ | The status bars already show tiredness; an icon needs HUD space. |
+| Faster loading screens | 🛠️ | Depends on how much is disc reads vs fixed waits. |
+| Monochromon's shop minigame reworked (players point to the Vice mod's version) | 🎭 | Gameplay change of an original minigame. |
+| A Card Battle style card game | 🆕 | Very large. |
+| Learn single techniques from the Cheats menu | 🛠️ | A testing aid; cheap. |
+| Hunger bar in the Digimon menu | 🛠️ | Being designed together with the field need bars (hunger, toilet, tiredness). |
+| Metal Banana obtainable outside its event | ⚖️ | Needs a source that doesn't break its rarity. |
+| Jijimon explains the City tab (a list of the residents who lost their memories) and comments on new recruits | ✨ | Players are split on whether it needs explaining. |
+| Lookalike Digimon (recolours) at the same level as their originals | 🎭 | Players disagree: some prefer canon levels, others the original game's levels. |
+| Digimon Rumble Arena as an optional extra source disc (Reapermon, Impmon, Imperialdramon Fighter Mode) | 🆕 | Needs a new disc importer. |
+| New areas: the Arena's second floor and the inside of Etemon's tree | 🆕 | New screens. |
+| Syakomon and Mushroomon as quiz starters | ⚖️ | Unique Rookies today reachable only by evolution; to review with the starter table. |
+| More Digimon requested by players: Lilithmon, Venusmon, Rasielmon, Ordinemon, Mastemon, Ophanimon, Rafflesiamon | 🆕 | Each needs a source model to import, a place in the evolution tree and the memory budget on 2 MB. |
+| A battle counter (and time to the next evolution) on the status screen | 🛠️ | Helps with evolutions that ask for a number of battles; the status panel has little free room. |
+| A higher chance of the training bonus (2×, 4× or 10× gains by matching symbols) | ⚖️ | In the original it is very rare; changes stat growth speed and needs a balance audit. |
+| Vikemon as an evolution of Syakomon and Cannondramon of Triceramon | 🎭 | Each route must respect the evolution tree rules (no canon Mega straight from a Champion). |
+| A way to learn basic Machine techniques before Whamon (a new area, or Hagurumon/Solarmon in the galleries) | ⚖️ 🆕 | Today Machine techniques are only reachable through Whamon. |
+| Wizardmon as the Champion of the SkullSatamon → Beelzemon line (echoing Impmon → Wizardmon → Baalmon → Beelzemon) | 🎭 | Baalmon has no model to import; the route must follow the evolution tree rules. |
+| Unique recruitment scenes for more of the new Digimon | ✨ | Many new recruits join with a simple fight. |
+| Humanoid sizes growing by stage (Angemon < MagnaAngemon < Seraphimon, Devimon < Myotismon) | ✨ | A per-line size review. |
+| A minimap like Digimon World 3's, showing where each exit leads, and a wider camera view | 🛠️ | Needs screen space and per-screen exit data. |
+| Digimon World 3 style card tournaments, and rewards for completing card sets (e.g. a training boost for the eight Adventure cards) | 🆕 ⚖️ | Large; rewards need an economy and balance check. |
+| More maps in Beetle Land, with stronger Champion and Ultimate enemies | 🆕 | It takes a lot of effort to unlock and is small. |
+| Armor Digimon levels by power (e.g. Magnamon as a Mega) | 🎭 | Players disagree on which ones. |
+| More room around the forced fights on Iron Hills' zigzag ramp | ✨ | Layout change on new screens. |
+| Kotemon's arena sparring gets stronger after every win (e.g. +10% base stats each time), or teaches battle techniques | ⚖️ | With 690 HP it becomes a one-hit fight late in the game; needs a cap or a curve. |
+| An official community wiki: where each new Digimon is recruited, new maps, evolution routes and requirements | 🛠️ | Could be generated from the project's own data (species, recruit scripts, evolution tree) so it stays accurate. Some players prefer no guide at all: finding things out and asking each other is part of the fun and builds the community. |
+| Remove the evolution bonus condition for the number of techniques learned | ⚖️ | Players find it makes late-game evolutions too broad; check what remains of it after the 0.0.4 balance changes. |

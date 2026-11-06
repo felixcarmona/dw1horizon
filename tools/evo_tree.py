@@ -138,6 +138,26 @@ def _training_rates(training_type, level):
 _PRACTICAL = {}
 
 
+def rookie_witness(cur, child, kids, reqs, levels, sp):
+    """Small ordinary-training witness during Baby II, with no battles or inheritance.
+
+    Start at 100 HP/MP and 10 other stats; reserve half of the 18 hours
+    between Fresh (6 h from birth) and Rookie (24 h from birth) for care.
+    Weight is conditional on deliberate feeding, not a full care simulation.
+    """
+    rates = training_rates(sp[cur])
+    req = reqs[child]
+    weight = E.target_weight(cur, child, req)
+    for sessions, stat in itertools.product(range(10), range(6)):
+        vals = [10 + (sessions * rates[i] if i == stat else 0) for i in range(6)]
+        stats = {k: vals[i] * (10 if i < 2 else 1) for i, k in enumerate(ALL)}
+        for mistakes in (0, 1):
+            if E.pick(cur, kids[cur], reqs, levels, stats, mistakes, weight,
+                      'in-training', (0, 0, 50, 50)) == child:
+                return dict(stats=vals, care=mistakes, weight=weight, sessions=sessions)
+    return None
+
+
 def practical(cur, child, kids, reqs, levels, sp, base=None, budget=84):
     """A picker witness within a training budget; never assumes 999 stats or an imported target’s 40-move bonus.
 
@@ -294,6 +314,7 @@ def resolve(sp, editable, primary, problems):
         for p in parents[c]:
             kind = 'in-training' if levels[p] == 2 else 'stats'
             if not E.reachable(p, c, kids[p], reqs, levels, kind): return False
+            if levels[p] == 2 and not rookie_witness(p, c, kids, reqs, levels, sp): return False
             if levels[p] == 4 and not practical(p, c, kids, reqs, levels, sp): return False
             if levels[p] == 4 and c in editable and c >= S.NUM_ORIGINAL:
                 signature = {stat for stat in ALL if reqs[c][stat] != -1}

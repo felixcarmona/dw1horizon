@@ -1,0 +1,61 @@
+From 7cae027a86b760bc67297bbf5476157095d7f6ac Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 6 Nov 2026 11:39:09 +0000
+Subject: [PATCH] Anchor travelling Status portraits with a species camera
+
+---
+ include/dw/species.h |  3 ++-
+ src/main/game_menu.c | 16 ++++++++++++++++
+ 2 files changed, 18 insertions(+), 1 deletion(-)
+
+diff --git a/include/dw/species.h b/include/dw/species.h
+index fd49ce1..0ba072a 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -193,7 +193,8 @@ typedef struct {
+ 	 * rows are on bones (shots, breaths): bone, x, y, z of this species (SPECIES_FLAG_EFFECT_DEFAULT; efe.c) */
+ 	int16_t effectDefault[4];	/* 0x1C4 */
+ 	int16_t vanillaAs;		/* 0x1CC MOD (options): NEW DIGIMON off, the vanilla species a loaded partner becomes */
+-	uint8_t reserved1CE[SPECIES_RECORD_SIZE - 0x1CE];
++	uint8_t statusAnchorBone;	/* 0x1CE: Status-only camera follows this bone; 0 keeps the native view */
++	uint8_t reserved1CF[SPECIES_RECORD_SIZE - 0x1CF];
+ } SpeciesRecord;
+ 
+ #define SPECIES_LAYOUT_CHECK(name, cond) typedef char species_layout_##name[(cond) ? 1 : -1]
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index d700b9d..b1b7b21 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -5854,6 +5854,7 @@ int8_t entityId;
+ {
+ 	MATRIX m;
+ 	VECTOR savedPos;
++	SpeciesRecord *record;
+ 	SVECTOR savedRot;
+ 	GsF_LIGHT lights[3];
+ 	PositionData *pos;
+@@ -5903,6 +5904,21 @@ int8_t entityId;
+ 	setupEntityMatrix(entityId);
+ 	startAnimation(entity, 0);
+ 	tickAnimation(entity);
++	/* A travelling partner can use a bone as its Status camera anchor.
++	 * Move the whole portrait, retaining its pose and field animation. */
++	if (type >= NUM_ORIGINAL_DIGIMON) {
++		record = getSpeciesRecord(type);
++		if (record != NULL && record->statusAnchorBone > 0 && record->statusAnchorBone < count) {
++			GsGetLw(&pos[record->statusAnchorBone].posMatrix, &m);
++			pos->location.vx += pos->location.vx - m.t[0];
++			pos->location.vy += pos->location.vy - m.t[1];
++			pos->location.vz += pos->location.vz - m.t[2];
++			setupEntityMatrix(entityId);
++			for (bone = 0; bone < count; bone++) {
++				pos[bone].posMatrix.flg = 0;
++			}
++		}
++	}
+ 	m = GsWSMATRIX;
+ 
+ 	for (bone = 0; bone < count; pos++, bone++) {
+-- 
+2.55.0
+

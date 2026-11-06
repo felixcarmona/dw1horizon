@@ -12,14 +12,15 @@ standard library into OUT-models.
 make(out) returns {id: (model file, texture file or None)} for the generated species
 records. overlay(out, id) builds one reviewed overlay; derive schedules those
 independent units, then calls make(out, generate=False) to read their results.
-Additional technique_aliases in models.json share attack clips after the field
-overlays and battle reach pass. Every final model and texture is checked against
-the derive species pins.
+Additional technique_timing and technique_aliases in models.json align reviewed
+attack clips after the field overlays and battle reach pass. Every final model
+and texture is checked against the derive species pins.
 """
 import importlib.util, json, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '../../..'))
 OVERLAYS = {   # field_overlay: (id, generator module, model name)
+    'suijinmon-centaur-field': ('408', 'tools.models.field_animations.suijinmon', '408-suijinmon-centaur-field'),
     'saberleomon-pace': ('258', 'tools.models.field_animations.pace', '258-saberleomon-pace'),
     'marinedevimon-field': ('279', 'tools.models.field_animations.marine_devimon', '279-marinedevimon-field'),
     'bulbmon-field': ('313', 'tools.models.field_animations.bulbmon', '313-bulbmon-field'),
@@ -144,6 +145,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'flamedramon-field': ('195', 'tools.models.field_animations.gaits', '195-flamedramon-field'),
     'stingmon-field': ('187', 'tools.models.field_animations.secondary_motion', '187-stingmon-field'),
     'angewomon-field': ('190', 'tools.models.field_animations.celebrations', '190-angewomon-field'),
+    'demidevimon-native-flight': ('236', 'tools.models.field_animations.native_binding', '236-demidevimon-native-flight'),
     'paildramon-field': ('199', 'tools.models.field_animations.chibi', '199-paildramon-field'),
     'ankylomon-field': ('189', 'tools.models.field_animations.pace', '189-ankylomon-field'),
     'lighdramon-field': ('201', 'tools.models.field_animations.pace', '201-lighdramon-field'),
@@ -251,12 +253,12 @@ def species_file(out, t, recs=None, names=None, generate=False):
         s.pop('_path', None)
     # Battle reach is applied after all field size passes: their global model
     # scaling would otherwise shorten the native dash again.
-    if 'Buster Dive' in (s.get('techniques') or []):
+    if 'Buster Dive' in (s.get('techniques') or []) and not e.get('native_animation_donor'):
         import species as species_tools
         from tools.models import buster_dive
         from pathlib import Path
         s['_path'] = os.path.join(ROOT, 'content/species', name)
-        model, proof = buster_dive.apply(species_tools.species_model(s)[0], s)
+        model, proof = buster_dive.apply(species_tools.species_model(s)[0], s, clip=e.get('buster_dive_clip'))
         if proof is not None:
             generated = Path(os.path.abspath(out) + '-models')
             generated.mkdir(parents=True, exist_ok=True)
@@ -266,6 +268,20 @@ def species_file(out, t, recs=None, names=None, generate=False):
                 model_path.write_bytes(model)
                 s['model']['file'] = str(model_path)
                 s['model'].pop('slot_aliases', None)
+        s.pop('_path', None)
+    if e.get('technique_timing'):
+        from pathlib import Path
+        import species as species_tools
+        from tools.models import technique_timing
+        generated = Path(os.path.abspath(out) + '-models')
+        generated.mkdir(parents=True, exist_ok=True)
+        s['_path'] = os.path.join(ROOT, 'content/species', name)
+        model, proof = technique_timing.apply(species_tools.species_model(s)[0], s, e['technique_timing'])
+        model_path = generated / f'{t}-technique-timing.MMD'
+        model_path.write_bytes(model)
+        (generated / f'{t}-technique-timing-report.json').write_text(json.dumps(proof, indent=2) + '\n')
+        s['model']['file'] = str(model_path)
+        s['model'].pop('slot_aliases', None)
         s.pop('_path', None)
     if e.get('technique_aliases'):
         generated = os.path.abspath(out) + '-models'

@@ -2,8 +2,8 @@
   "description": "Final evolution topology and identity-sheet levels. Canon main lines precede family and shared specialty; imported canon Megas follow Ultimates. Parent order selects the primary requirement bonus.",
   "children": {
     "Koromon": {"parents": ["Botamon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
-    "Agumon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
-    "Betamon": {"parents": ["Tanemon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
+    "Agumon": {"parents": ["Koromon"], "reason": "Canon line: Koromon -> Agumon, sharing battle/fire. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained.", "disc": true},
+    "Betamon": {"parents": ["Tanemon"], "reason": "Family route: Tanemon -> Betamon, sharing ice. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained.", "disc": true},
     "Greymon": {"parents": ["Agumon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
     "Devimon": {
       "parents": ["DemiDevimon", "Tsukaimon"],
@@ -30,8 +30,8 @@
     "Mamemon": {"parents": ["Leomon", "Ninjamon", "Frigimon", "Mojyamon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
     "Monzaemon": {"parents": ["Numemon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
     "Tsunomon": {"parents": ["Punimon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
-    "Gabumon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
-    "Elecmon": {"parents": ["Tsunomon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
+    "Gabumon": {"parents": ["Koromon", "Tsunomon"], "reason": "Original Koromon route retained; canon Tsunomon route is the sole canon_link_exceptions entry and uses weight 26 rather than Koromon's 15. Both species keep their specialties.", "disc": true},
+    "Elecmon": {"parents": ["Tsunomon"], "reason": "Family route: Tsunomon -> Elecmon, sharing air. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained.", "disc": true},
     "Kabuterimon": {
       "parents": ["Biyomon", "Kunemon", "Tentomon"],
       "reason": "Canon main line, then family and shared specialty.",
@@ -74,7 +74,7 @@
       "disc": true
     },
     "Tokomon": {"parents": ["Poyomon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
-    "Patamon": {"parents": ["Tokomon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
+    "Patamon": {"parents": ["Tokomon"], "reason": "Canon line: Tokomon -> Patamon, sharing air/battle. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained.", "disc": true},
     "Unimon": {
       "parents": ["Patamon", "Biyomon"],
       "reason": "Canon main line, then family and shared specialty.",
@@ -121,8 +121,8 @@
       "disc": true
     },
     "Tanemon": {"parents": ["Yuramon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
-    "Biyomon": {"parents": ["Tokomon", "Yokomon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
-    "Palmon": {"parents": ["Tanemon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
+    "Biyomon": {"parents": ["Tokomon", "Yokomon"], "reason": "Family route: Tokomon -> Biyomon, sharing air. Canon line: Yokomon -> Biyomon, sharing air. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained.", "disc": true},
+    "Palmon": {"parents": ["Tanemon"], "reason": "Canon line: Tanemon -> Palmon, sharing ice/nature. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained.", "disc": true},
     "Monochromon": {
       "parents": ["Agumon", "Gabumon", "Gotsumon"],
       "reason": "Canon main line, then family and shared specialty.",
@@ -160,7 +160,7 @@
       "disc": true
     },
     "Digitamamon": {"parents": ["Nanimon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
-    "Penguinmon": {"parents": ["Tsunomon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
+    "Penguinmon": {"parents": ["Tsunomon"], "reason": "Family route: Tsunomon -> Penguinmon, sharing ice. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained.", "disc": true},
     "Ninjamon": {
       "parents": ["Palmon", "Monmon"],
       "reason": "Canon main line, then family and shared specialty.",
@@ -199,7 +199,7 @@
       "reason": "Canon main line, then family and shared specialty."
     },
     "Yanmamon": {"parents": ["Tentomon", "Wormmon"], "reason": "Canon main line, then family and shared specialty."},
-    "Gotsumon": {"parents": ["Tokomon"], "reason": "Canon main line, then family and shared specialty."},
+    "Gotsumon": {"parents": ["Tokomon"], "reason": "Family route: Tokomon -> Gotsumon, sharing battle. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "Flarerizamon": {
       "parents": ["Candlemon", "Goblimon", "RedOtamamon"],
       "reason": "Canon main line, then family and shared specialty."
@@ -209,13 +209,13 @@
       "reason": "Canon main line, then family and shared specialty.",
       "disc": true
     },
-    "SnowAgumon": {"parents": ["Tsunomon"], "reason": "Canon main line, then family and shared specialty."},
+    "SnowAgumon": {"parents": ["Tsunomon"], "reason": "Family route: Tsunomon -> SnowAgumon, sharing ice. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "Hyogamon": {"parents": ["SnowAgumon", "Gizamon"], "reason": "Canon main line, then family and shared specialty."},
-    "Dokunemon": {"parents": ["Tanemon"], "reason": "Canon In-Training among the hand-made babies (474-477) first, then family and shared specialty."},
+    "Dokunemon": {"parents": ["Tanemon"], "reason": "Family route: Tanemon -> Dokunemon, sharing nature. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "Tankmon": {"parents": ["Hagurumon", "ToyAgumon", "Vemmon"], "reason": "Canon main line, then family and shared specialty."},
-    "Goblimon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty."},
-    "Psychemon": {"parents": ["Tokomon"], "reason": "Canon main line, then family and shared specialty."},
-    "ToyAgumon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty."},
+    "Goblimon": {"parents": ["Koromon"], "reason": "Family route: Koromon -> Goblimon, sharing battle/fire. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
+    "Psychemon": {"parents": ["Tokomon"], "reason": "Family route: Tokomon -> Psychemon, sharing battle. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
+    "ToyAgumon": {"parents": ["Koromon"], "reason": "Family route: Koromon -> ToyAgumon, sharing battle/fire. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "Piddomon": {"parents": ["Tsukaimon", "Salamon"], "reason": "Canon main line, then family and shared specialty."},
     "Geremon": {"parents": ["Otamamon"], "reason": "Canon main line, then family and shared specialty."},
     "Vermilimon": {
@@ -232,9 +232,9 @@
       "parents": ["Hagurumon", "Gotsumon", "Solarmon", "Kokuwamon"],
       "reason": "Canon main line, then family and shared specialty."
     },
-    "Muchomon": {"parents": ["Tsunomon"], "reason": "Canon main line, then family and shared specialty."},
+    "Muchomon": {"parents": ["Tsunomon"], "reason": "Family route: Tsunomon -> Muchomon, sharing air/ice. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "Icemon": {"parents": ["Syakomon", "SnowAgumon"], "reason": "Canon main line, then family and shared specialty."},
-    "Tsukaimon": {"parents": ["Tokomon", "Nyaromon"], "reason": "Canon main line, then family and shared specialty."},
+    "Tsukaimon": {"parents": ["Tokomon"], "reason": "Family route: Tokomon -> Tsukaimon, sharing air/battle. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "IceDevimon": {"parents": ["DemiDevimon"], "reason": "Canon main line, then family and shared specialty."},
     "BlueMeramon": {
       "parents": ["Flarerizamon", "Meramon", "Shadramon", "Birdramon"],
@@ -250,9 +250,9 @@
       "parents": ["Gotsumon", "Monmon", "Bearmon"],
       "reason": "Canon main line, then family and shared specialty."
     },
-    "Otamamon": {"parents": ["Tanemon", "Bukamon"], "reason": "Canon main line, then family and shared specialty."},
+    "Otamamon": {"parents": ["Tanemon", "Bukamon"], "reason": "Family route: Tanemon -> Otamamon, sharing ice. Family route: Bukamon -> Otamamon, sharing ice. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "Gekomon": {"parents": ["Otamamon"], "reason": "Canon main line, then family and shared specialty."},
-    "Tentomon": {"parents": ["Tanemon", "Motimon"], "reason": "Canon main line, then family and shared specialty."},
+    "Tentomon": {"parents": ["Motimon"], "reason": "Canon line: Motimon -> Tentomon, sharing nature. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "WaruSeadramon": {"parents": ["Seadramon", "Dolphmon", "Submarimon", "Tylomon"], "reason": "Canon main line, then family and shared specialty."},
     "Meteormon": {
       "parents": ["Monochromon", "BomberNanimon", "Starmon"],
@@ -265,14 +265,14 @@
       "parents": ["Vegiemon", "Kiwimon", "Woodmon", "MoriShellmon"],
       "reason": "Canon main line, then family and shared specialty."
     },
-    "Hagurumon": {"parents": ["Tokomon", "Motimon"], "reason": "Canon In-Training among the hand-made babies (474-477) first, then family and shared specialty."},
+    "Hagurumon": {"parents": ["Tokomon", "Motimon"], "reason": "Family route: Tokomon -> Hagurumon, sharing air. Family route: Motimon -> Hagurumon, sharing mech. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "Tinmon": {"parents": ["MoriShellmon", "Vegiemon"], "reason": "Canon main line, then family and shared specialty."},
     "MasterTyrannomon": {"parents": ["Tyrannomon", "Cyclonemon"], "reason": "Canon main line, then family and shared specialty."},
     "Brachiomon": {
       "parents": ["Monochromon", "Ankylomon", "Drimogemon"],
       "reason": "Canon main line, then family and shared specialty."
     },
-    "Veemon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty."},
+    "Veemon": {"parents": ["Nyaromon"], "reason": "Family route: Nyaromon -> Veemon, sharing battle. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "Puppetmon": {
       "parents": ["Cherrymon", "Pumpkinmon", "Monzaemon", "Tinmon"],
       "reason": "Canon main line, then family and shared specialty.",
@@ -286,9 +286,9 @@
       "parents": ["Greymon", "Deltamon", "Tuskmon"],
       "reason": "Canon main line, then family and shared specialty."
     },
-    "Wormmon": {"parents": ["Tanemon", "Motimon"], "reason": "Canon main line, then family and shared specialty."},
-    "Hawkmon": {"parents": ["Tokomon", "Yokomon"], "reason": "Canon In-Training among the hand-made babies (474-477) first, then family and shared specialty."},
-    "Armadillomon": {"parents": ["Tanemon"], "reason": "Canon main line, then family and shared specialty."},
+    "Wormmon": {"parents": ["Motimon"], "reason": "Family route: Motimon -> Wormmon, sharing nature. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
+    "Hawkmon": {"parents": ["Yokomon"], "reason": "Family route: Yokomon -> Hawkmon, sharing air. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
+    "Armadillomon": {"parents": ["Tanemon"], "reason": "Family route: Tanemon -> Armadillomon, sharing nature. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "Stingmon": {"parents": ["Wormmon", "Tentomon"], "reason": "Canon main line, then family and shared specialty."},
     "Aquilamon": {
       "parents": ["Hawkmon", "VioletElecmon", "Muchomon", "Tapirmon"],
@@ -351,7 +351,7 @@
     "Shakkoumon": {"parents": ["Ankylomon"], "reason": "Canon main line, then family and shared specialty."},
     "Magnadramon": {"parents": ["Angewomon"], "reason": "Canon main line, then family and shared specialty.", "chain": true},
     "Devidramon": {"parents": ["DemiDevimon", "Tsukaimon"], "reason": "Canon main line, then family and shared specialty."},
-    "Gomamon": {"parents": ["Bukamon"], "reason": "Canon In-Training among the hand-made babies (474-477) first, then family and shared specialty."},
+    "Gomamon": {"parents": ["Bukamon"], "reason": "Canon line: Bukamon -> Gomamon, sharing battle/ice. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "Ikkakumon": {
       "parents": ["Gomamon", "Bearmon", "SnowAgumon"],
       "reason": "Canon main line, then family and shared specialty."
@@ -361,7 +361,7 @@
       "reason": "Canon main line, then family and shared specialty."
     },
     "Vikemon": {"parents": ["Zudomon", "Whamon"], "reason": "Canon main line, then family and shared specialty. Whamon adds an aquatic Ultimate parent sharing ice.", "chain": true},
-    "Salamon": {"parents": ["Nyaromon"], "reason": "Canon In-Training among the hand-made babies (474-477) first, then family and shared specialty."},
+    "Salamon": {"parents": ["Nyaromon"], "reason": "Canon line: Nyaromon -> Salamon, sharing air/battle. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "BlackGatomon": {"parents": ["Salamon", "DemiDevimon"], "reason": "Canon main line, then family and shared specialty."},
     "LadyDevimon": {
       "parents": ["Gatomon", "Vilemon", "Devidramon", "BlackGatomon"],
@@ -395,13 +395,13 @@
     },
     "ShellNumemon": {"parents": ["ToyAgumon", "Gizamon"], "reason": "Canon main line, then family and shared specialty."},
     "BomberNanimon": {"parents": ["Solarmon", "Vemmon"], "reason": "Canon main line, then family and shared specialty."},
-    "RedOtamamon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty."},
+    "RedOtamamon": {"parents": ["Bukamon"], "reason": "Family route: Bukamon -> RedOtamamon, sharing battle. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "Gatomon": {"parents": ["Salamon", "Renamon"], "reason": "Canon main line, then family and shared specialty."},
-    "Candlemon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty."},
-    "DemiDevimon": {"parents": ["Tokomon", "Nyaromon"], "reason": "Canon main line, then family and shared specialty."},
+    "Candlemon": {"parents": ["Koromon"], "reason": "Family route: Koromon -> Candlemon, sharing battle/fire. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
+    "DemiDevimon": {"parents": ["Nyaromon"], "reason": "Family route: Nyaromon -> DemiDevimon, sharing air/battle. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "Diaboromon": {"parents": ["Infermon"], "reason": "Canon main line, then family and shared specialty.", "chain": true},
     "Dolphmon": {"parents": ["Gomamon", "Palmon", "Betamon", "Penguinmon"], "reason": "Takes the former Champion Whamon role: all four parents share ice. Gomamon retains its marine family route; Palmon, Betamon and Penguinmon inherit the old Champion requirements."},
-    "Gizamon": {"parents": ["Bukamon", "Tsunomon"], "reason": "Canon In-Training among the hand-made babies (474-477) first, then family and shared specialty."},
+    "Gizamon": {"parents": ["Bukamon"], "reason": "Family route: Bukamon -> Gizamon, sharing battle/ice. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "Gesomon": {
       "parents": ["Gizamon", "Gomamon", "Crabmon"],
       "reason": "Canon main line, then family and shared specialty."
@@ -422,7 +422,7 @@
       "parents": ["Guardromon", "Hookmon", "Kurisarimon"],
       "reason": "Canon main line, then family and shared specialty."
     },
-    "Kokuwamon": {"parents": ["Motimon"], "reason": "Canon In-Training among the hand-made babies (474-477) first, then family and shared specialty."},
+    "Kokuwamon": {"parents": ["Motimon"], "reason": "Family route: Motimon -> Kokuwamon, sharing mech. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "MarineAngemon": {
       "parents": ["Angewomon", "Zudomon"],
       "reason": "Canon main line, then family and shared specialty.",
@@ -430,7 +430,7 @@
     },
     "Quetzalmon": {"parents": ["Muchomon", "Hawkmon"], "reason": "Canon main line, then family and shared specialty."},
     "Shadramon": {"parents": ["Candlemon", "RedOtamamon"], "reason": "Canon main line, then family and shared specialty."},
-    "Solarmon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty."},
+    "Solarmon": {"parents": ["Motimon"], "reason": "Family route: Motimon -> Solarmon, sharing mech. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "Thundermon": {
       "parents": ["VioletElecmon", "Elecmon", "Kokuwamon"],
       "reason": "Canon main line, then family and shared specialty."
@@ -448,7 +448,7 @@
       "reason": "Canon main line, then family and shared specialty.",
       "chain": true
     },
-    "VioletElecmon": {"parents": ["Tsunomon"], "reason": "Canon main line, then family and shared specialty."},
+    "VioletElecmon": {"parents": ["Tsunomon"], "reason": "Family route: Tsunomon -> VioletElecmon, sharing air. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "Triceramon": {
       "parents": ["Monochromon", "Ankylomon", "Digmon", "Minotarumon", "Tortomon"],
       "reason": "Canon main line, then family and shared specialty."
@@ -471,7 +471,7 @@
       "parents": ["Dokunemon", "Kokuwamon", "Kunemon"],
       "reason": "Canon main line, then family and shared specialty."
     },
-    "Mushroomon": {"parents": ["Tanemon", "Yokomon"], "reason": "Canon In-Training among the hand-made babies (474-477) first, then family and shared specialty."},
+    "Mushroomon": {"parents": ["Yokomon"], "reason": "Family route: Yokomon -> Mushroomon, sharing nature. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "Raremon": {"parents": ["Goblimon", "Monmon"], "reason": "Canon main line, then family and shared specialty."},
     "DarkTyrannomon": {"parents": ["ToyAgumon", "Kotemon"], "reason": "Canon main line, then family and shared specialty."},
     "ExTyrannomon": {
@@ -501,7 +501,7 @@
       "parents": ["Floramon", "Tentomon", "Mushroomon"],
       "reason": "Canon main line, then family and shared specialty."
     },
-    "Floramon": {"parents": ["Yokomon", "Tanemon"], "reason": "Canon In-Training among the hand-made babies (474-477) first, then family and shared specialty."},
+    "Floramon": {"parents": ["Yokomon"], "reason": "Family route: Yokomon -> Floramon, sharing nature. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "Blossomon": {"parents": ["Togemon", "Kiwimon"], "reason": "Canon main line, then family and shared specialty."},
     "Scorpiomon": {
       "parents": ["Ebidramon", "Shellmon", "Gekomon", "Icemon"],
@@ -530,11 +530,11 @@
     "Pumpkinmon": {"parents": ["Wizardmon", "Woodmon"], "reason": "Canon main line, then family and shared specialty."},
     "Cyclonemon": {"parents": ["Goblimon", "Solarmon"], "reason": "Canon main line, then family and shared specialty."},
     "Kiwimon": {"parents": ["Floramon", "Mushroomon"], "reason": "Canon main line, then family and shared specialty."},
-    "Syakomon": {"parents": ["Bukamon"], "reason": "Canon In-Training among the hand-made babies (474-477) first, then family and shared specialty."},
-    "Crabmon": {"parents": ["Bukamon"], "reason": "Canon In-Training among the hand-made babies (474-477) first, then family and shared specialty."},
-    "Gazimon": {"parents": ["Tanemon"], "reason": "Canon main line, then family and shared specialty."},
+    "Syakomon": {"parents": ["Bukamon"], "reason": "Family route: Bukamon -> Syakomon, sharing battle/ice. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
+    "Crabmon": {"parents": ["Bukamon"], "reason": "Family route: Bukamon -> Crabmon, sharing battle/ice. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
+    "Gazimon": {"parents": ["Tanemon"], "reason": "Family route: Tanemon -> Gazimon, sharing nature. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "Deramon": {"parents": ["Kiwimon", "Woodmon", "Kokatorimon"], "reason": "Canon main line, then family and shared specialty."},
-    "Tapirmon": {"parents": ["Tokomon"], "reason": "Canon main line, then family and shared specialty."},
+    "Tapirmon": {"parents": ["Yokomon"], "reason": "Family route: Yokomon -> Tapirmon, sharing air. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "Boltmon": {
       "parents": ["Pumpkinmon", "Mummymon"],
       "reason": "Canon main line, then family and shared specialty.",
@@ -682,10 +682,7 @@
       "parents": ["Gotsumon", "Gazimon", "Psychemon"],
       "reason": "Canon main line, then family and shared specialty."
     },
-    "Vemmon": {
-      "parents": ["Motimon"],
-      "reason": "Canon Rookie (Child). Canon Bowmon is not in the game: Motimon's machine line (shares mech). Children: canon Tyrannomon, then stand-ins for its canon Snatchmon (Hookmon, a grabbing hook), Destromon (Tankmon, an armoured war machine) and Damemon (BomberNanimon, the comic no-good line); all share battle."
-    },
+    "Vemmon": {"parents": ["Motimon"], "reason": "Family route: Motimon -> Vemmon, sharing mech. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "Roachmon": {"parents": ["Tentomon", "Dokunemon"], "reason": "Canon main line, then family and shared specialty."},
     "Raijinmon": {
       "parents": ["Silphymon", "Kyukimon"],
@@ -706,10 +703,10 @@
       "reason": "Canon main line, then family and shared specialty.",
       "chain": true
     },
-    "Kotemon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty."},
-    "Monmon": {"parents": ["Tokomon"], "reason": "Canon main line, then family and shared specialty."},
-    "Bearmon": {"parents": ["Tsunomon", "Nyaromon"], "reason": "Canon In-Training among the hand-made babies (474-477) first, then family and shared specialty."},
-    "Renamon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty."},
+    "Kotemon": {"parents": ["Nyaromon"], "reason": "Family route: Nyaromon -> Kotemon, sharing battle. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
+    "Monmon": {"parents": ["Yokomon"], "reason": "Family route: Yokomon -> Monmon, sharing air. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
+    "Bearmon": {"parents": ["Nyaromon"], "reason": "Family route: Nyaromon -> Bearmon, sharing battle. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
+    "Renamon": {"parents": ["Nyaromon"], "reason": "Family route: Nyaromon -> Renamon, sharing battle. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "WarGreymon": {
       "parents": ["MetalGreymonVirus", "MetalGreymonVaccine", "ExTyrannomon", "Triceramon"],
       "reason": "Canon main line, then family and shared specialty.",
@@ -781,7 +778,7 @@
     },
     "Kurisarimon": {"parents": ["Wormmon", "Dokunemon"], "reason": "Canon main line, then family and shared specialty."},
     "Bastemon": {"parents": ["Gatomon", "BlackGatomon"], "reason": "Canon main line, then family and shared specialty."},
-    "Guilmon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty."},
+    "Guilmon": {"parents": ["Koromon"], "reason": "Family route: Koromon -> Guilmon, sharing battle/fire. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "Garudamon": {
       "parents": ["Birdramon", "Aquilamon", "Halsemon", "Quetzalmon", "Saberdramon"],
       "reason": "Canon main line, then family and shared specialty."
@@ -894,6 +891,7 @@
     {"from": "WaruMonzaemon", "to": "Piedmon", "reason": "Canon: Wikimon lists Waru Monzaemon -> Piemon; dark toy to clown, virus. Shares battle and air. Its id has no path row (an original 63..179 without a record), so the route is an evolutionUltimate pair; an imported Mega waits the Mega hours."},
     {"from": "KingSukamon", "to": "BlackKingNumemon", "reason": "Family: the Numemon/Sukamon filth line's Mega (KingSukamon comes from Numemon and Sukamon). Shares filth. Wikimon's KingEtemon asks for 10+ care mistakes, which the practical check refuses, and MetalEtemon is an original species the rule would also give with NEW DIGIMON off. Its id has no path row (an original 63..179 without a record), so the route is an evolutionUltimate pair; an imported Mega waits the Mega hours."}
   ],
+  "canon_link_exceptions": [{"parent": "Tsunomon", "child": "Gabumon", "reason": "Canon Adventure Baby II to Rookie line. Tsunomon keeps its original air/ice identity and Gabumon keeps battle/fire; NEW DIGIMON on only, alongside the original Koromon route."}],
   "specialty_exceptions": [{"parent": "Otamamon", "child": "Geremon", "reason": "Retained canon route explicitly permitted despite no shared specialty; Geremon retains its original filth specialty."}],
   "canon_levels": "2026-11-03: Phoenixmon, HerculesKabuterimon, MetalEtemon, Machinedramon, Analogman and Jijimon take their canon level, Mega (the identity sheet's Level (canon)). With OPTIONS' NEW DIGIMON off, explicit species JSON off fields supply levels and optional targets; no fallback is inferred from disc data. The disc routes from Champions to Phoenixmon and HerculesKabuterimon stay, the one accepted Champion -> Mega exception; Red Ruby and Beetlepearl keep their original Champion rule like those routes; MetalEtemon comes only from Etemon (an Ultimate), and Metalbanana asks for an Ultimate. Phoenixmon's Champion parents Airdramon, Birdramon and Kokatorimon had no second Ultimate left, so each gained one: Airdramon -> AeroVeedramon (canon, shares air and fire), Birdramon -> BlueMeramon (fire family, shares fire), Kokatorimon -> Deramon (bird line, shares battle). Whamon (24) is Ultimate per https://digimon.net/reference_en/detail.php?directory_name=whamon; explicit off JSON restores its Champion identity. Story Whamon (146) is unchanged. All off levels and targets come only from species JSON.",
   "version": 2,
@@ -1031,7 +1029,7 @@
   },
   "routes": {
     "1": {"from": [], "to": [2]},
-    "2": {"from": [1], "to": [3, 17, 80, 84, 180, 233, 235, 251, 351, 354, 433]},
+    "2": {"from": [1], "to": [3, 17, 80, 84, 235, 433]},
     "3": {"from": [2], "to": [5, 9, 21, 36, 47, 8]},
     "4": {"from": [44], "to": [10, 238, 35, 49]},
     "5": {"from": [3], "to": [12, 26, 182, 224]},
@@ -1045,8 +1043,8 @@
     "13": {"from": [48, 58, 23, 52], "to": [270]},
     "14": {"from": [11], "to": [181]},
     "15": {"from": [], "to": [16]},
-    "16": {"from": [15], "to": [18, 57, 71, 93, 239, 256, 353]},
-    "17": {"from": [2], "to": [36, 47, 38, 8, 34, 22]},
+    "16": {"from": [15], "to": [18, 57, 17, 71, 93, 256]},
+    "17": {"from": [2, 16], "to": [36, 47, 38, 8, 34, 22]},
     "18": {"from": [16], "to": [48, 20, 37, 50, 252]},
     "19": {"from": [45, 32, 111], "to": [60, 27, 205]},
     "20": {"from": [31, 18], "to": [40, 59, 206]},
@@ -1059,7 +1057,7 @@
     "27": {"from": [47, 19, 58, 23], "to": [270]},
     "28": {"from": [], "to": [302]},
     "29": {"from": [], "to": [30]},
-    "30": {"from": [29], "to": [31, 45, 68, 82, 96, 122, 184, 236, 352, 287]},
+    "30": {"from": [29], "to": [31, 45, 68, 82, 96, 122]},
     "31": {"from": [30], "to": [38, 8, 34, 48, 20, 33]},
     "32": {"from": [], "to": [37, 19, 51, 25, 262]},
     "33": {"from": [31, 45], "to": [41, 59, 90, 309]},
@@ -1073,7 +1071,7 @@
     "41": {"from": [36, 34, 37, 33, 252], "to": [329, 336]},
     "42": {"from": [39, 227, 231, 87, 53], "to": [65, 303, 307]},
     "43": {"from": [], "to": [44]},
-    "44": {"from": [43], "to": [46, 4, 74, 109, 111, 183, 185, 273, 285, 263]},
+    "44": {"from": [43], "to": [46, 4, 74, 109, 185, 285]},
     "45": {"from": [30, 477], "to": [21, 7, 50, 33, 19, 106]},
     "46": {"from": [44], "to": [51, 25, 58, 238, 49, 208]},
     "47": {"from": [3, 17, 68], "to": [12, 27, 113, 126, 257, 88]},
@@ -1116,7 +1114,7 @@
     "92": {"from": [122, 68, 251, 247], "to": [90, 246, 294, 310, 313]},
     "93": {"from": [16], "to": [107, 188, 242, 249]},
     "94": {"from": [283, 71], "to": [275, 279]},
-    "96": {"from": [30, 476], "to": [85, 107, 216, 241, 6]},
+    "96": {"from": [30], "to": [85, 107, 216, 241, 6]},
     "100": {"from": [236], "to": [229, 279]},
     "104": {"from": [69, 9, 250, 21], "to": [312]},
     "105": {"from": [285, 353, 71, 82], "to": [62, 306]},
@@ -1125,7 +1123,7 @@
     "108": {"from": [68, 352, 353], "to": [267, 90]},
     "109": {"from": [44, 475], "to": [87, 91, 110, 305]},
     "110": {"from": [109], "to": [119, 275]},
-    "111": {"from": [44, 474], "to": [187, 272, 332, 328, 67, 19]},
+    "111": {"from": [474], "to": [187, 272, 332, 328, 67, 19]},
     "112": {"from": [10, 238, 202, 254], "to": [408]},
     "113": {"from": [47, 232, 243], "to": []},
     "115": {"from": [], "to": []},
@@ -1138,11 +1136,11 @@
     "123": {"from": [91, 25], "to": [181]},
     "124": {"from": [8, 281], "to": [297]},
     "126": {"from": [47, 189, 38], "to": [405]},
-    "180": {"from": [2], "to": [194, 195, 201, 203, 324]},
+    "180": {"from": [476], "to": [194, 195, 201, 203, 324]},
     "181": {"from": [121, 280, 14, 123], "to": []},
     "182": {"from": [5, 292, 253], "to": [329]},
-    "183": {"from": [44, 474], "to": [187, 225, 298, 431, 328, 67]},
-    "184": {"from": [30, 477], "to": [106, 188, 196, 225, 249]},
+    "183": {"from": [474], "to": [187, 225, 298, 431, 328, 67]},
+    "184": {"from": [477], "to": [106, 188, 196, 225, 249]},
     "185": {"from": [44], "to": [189, 193, 202, 261, 308]},
     "187": {"from": [183, 111], "to": [199, 259]},
     "188": {"from": [184, 256, 93, 287], "to": [226, 460]},
@@ -1189,13 +1187,13 @@
     "230": {"from": [209, 274, 55], "to": []},
     "231": {"from": [84, 239], "to": [269, 42]},
     "232": {"from": [251, 331], "to": [113, 294]},
-    "233": {"from": [2], "to": [250, 320, 324, 69, 9]},
+    "233": {"from": [475], "to": [250, 320, 324, 69, 9]},
     "234": {"from": [221, 354], "to": [190, 223, 226, 432]},
     "235": {"from": [2], "to": [228, 241, 250, 69, 323]},
-    "236": {"from": [30, 476], "to": [100, 216, 295, 222, 6]},
+    "236": {"from": [476], "to": [100, 216, 295, 222, 6]},
     "237": {"from": [246], "to": []},
     "238": {"from": [217, 46, 4, 57], "to": [112, 219]},
-    "239": {"from": [475, 16], "to": [72, 240, 254, 278, 231]},
+    "239": {"from": [475], "to": [72, 240, 254, 278, 231]},
     "240": {"from": [239, 217, 284], "to": [279, 291, 304]},
     "241": {"from": [235, 96, 354, 287], "to": [280, 334]},
     "242": {"from": [93, 57], "to": [229, 315]},
@@ -1207,7 +1205,7 @@
     "248": {"from": [190, 219], "to": []},
     "249": {"from": [93, 184], "to": [54, 460]},
     "250": {"from": [235, 233], "to": [277, 104]},
-    "251": {"from": [2], "to": [92, 232, 243, 281, 323]},
+    "251": {"from": [474], "to": [92, 232, 243, 281, 323]},
     "252": {"from": [256, 18, 247], "to": [41, 322]},
     "253": {"from": [80, 351, 433], "to": [266, 182]},
     "254": {"from": [239, 217, 284], "to": [64, 112]},
@@ -1219,7 +1217,7 @@
     "260": {"from": [265, 8, 320, 69], "to": [405]},
     "261": {"from": [185, 68], "to": [219, 257]},
     "262": {"from": [74, 247, 32], "to": [259, 55]},
-    "263": {"from": [44, 477], "to": [272, 282, 328, 25]},
+    "263": {"from": [477], "to": [272, 282, 328, 25]},
     "264": {"from": [80, 352], "to": [269, 70]},
     "265": {"from": [84, 351], "to": [260, 266]},
     "266": {"from": [8, 253, 265, 292], "to": [373]},
@@ -1229,7 +1227,7 @@
     "270": {"from": [13, 27, 244], "to": []},
     "271": {"from": [219, 61, 304, 56, 24], "to": []},
     "272": {"from": [273, 111, 263], "to": [121, 280, 286]},
-    "273": {"from": [477, 44], "to": [91, 272, 282, 328, 25]},
+    "273": {"from": [477], "to": [91, 272, 282, 328, 25]},
     "274": {"from": [208, 282], "to": [230]},
     "275": {"from": [305, 35, 110, 94], "to": [319]},
     "276": {"from": [306, 63, 309], "to": []},
@@ -1243,7 +1241,7 @@
     "284": {"from": [475], "to": [305, 49, 35, 254, 240]},
     "285": {"from": [44], "to": [105, 308, 327, 330, 296]},
     "286": {"from": [282, 272, 50], "to": [293]},
-    "287": {"from": [30], "to": [241, 37, 227, 188]},
+    "287": {"from": [477], "to": [241, 37, 227, 188]},
     "288": {"from": [280, 334], "to": []},
     "289": {"from": [294, 310], "to": []},
     "290": {"from": [122, 247], "to": [294, 313]},
@@ -1292,10 +1290,10 @@
     "334": {"from": [241, 37, 298, 327, 330], "to": [288, 319, 329]},
     "335": {"from": [40, 310, 197], "to": []},
     "336": {"from": [41, 40], "to": []},
-    "351": {"from": [2], "to": [195, 227, 228, 253, 265, 325]},
-    "352": {"from": [30], "to": [108, 227, 299, 264, 325, 58]},
-    "353": {"from": [16, 476], "to": [105, 108, 218, 296, 48]},
-    "354": {"from": [2], "to": [228, 234, 241, 409]},
+    "351": {"from": [476], "to": [195, 227, 228, 253, 265, 325]},
+    "352": {"from": [477], "to": [108, 227, 299, 264, 325, 58]},
+    "353": {"from": [476], "to": [105, 108, 218, 296, 48]},
+    "354": {"from": [476], "to": [228, 234, 241, 409]},
     "373": {"from": [12, 224, 266, 257], "to": []},
     "400": {"from": [229, 294], "to": []},
     "401": {"from": [291, 279, 304], "to": []},
@@ -1317,10 +1315,10 @@
     "471": {"from": [], "to": [475]},
     "472": {"from": [], "to": [476]},
     "473": {"from": [], "to": [477]},
-    "474": {"from": [470], "to": [111, 247, 183, 122, 331]},
-    "475": {"from": [471], "to": [217, 109, 239, 283, 284]},
-    "476": {"from": [472], "to": [221, 96, 236, 353]},
-    "477": {"from": [473], "to": [45, 273, 184, 263]}
+    "474": {"from": [470], "to": [111, 247, 183, 122, 331, 251]},
+    "475": {"from": [471], "to": [217, 109, 239, 283, 284, 233]},
+    "476": {"from": [472], "to": [221, 236, 353, 354, 351, 180]},
+    "477": {"from": [473], "to": [45, 273, 184, 263, 352, 287]}
   },
   "specialty_updates": {
     "431": ["mech", "nature", null]

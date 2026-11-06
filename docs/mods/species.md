@@ -77,6 +77,10 @@ WereGarurumon (62) is the one record original inside the resident path table. `b
 
 ## How the game reads them
 
+For `partner.favored_region`, see the [liked-region reference](../reference/liked-regions.md):
+the nine patterns include disliked places as well as liked ones, so the value
+cannot be inferred from a specialty or a geographical name alone.
+
 - **The 180 originals stay as they were**: `DIGIMON_DATA`, the skeletons,
   model names, voices and `ALLTIM.TIM` are resident and read every frame.
 - **Ids 180 and up** come from `DIGI.DAT` (one `FILE_OFFSET_TABLE` entry):
@@ -203,7 +207,7 @@ lists and objects on one line); load → dump is byte-equal (selftest `species-f
 | `partner.unk2` | `unk2` | unknown, never read; written only when not 1200 (every row has 1200) | 1200 |
 | `partner.favorite_food` | `favoriteFood` | item name | required |
 | `partner.sleep_cycle` | `sleepCycle` (`SLEEP_PATTERN` row) | `16:00-01:00` `19:00-04:00` `22:00-07:00` `02:00-11:00` `07:00-16:00` `10:00-19:00` (when it sleeps) or `fresh`, `in-training` | required |
-| `partner.favored_region` | `favoredRegion` | 0..8: a kind of place; each `.MAP` names the regions its screens please (sleep ×1.2, happiness +1 an hour) and displease; no names in the game, so a number | 0 |
+| `partner.favored_region` | `favoredRegion` | 0..9: native kinds of place 0..8 and cold/water profile 9 (`content/map-regions.json`); each `.MAP` names the regions its screens please (sleep ×1.2, happiness +1 an hour) and displease; no names in the game, so a number | 0 |
 | `partner.training_type` | `trainingType` | which stats train well (`TRN_calculateTrainingMultiplier`): `even` (all 1.0), `offense-speed` (Off/Spd 1.1, MP/Brains 0.9), `mp-brains` (MP/Brains 1.1, HP/Def 0.9), `hp-defense` (HP/Def 1.1, Off/Spd 0.9), `all-low` (all 0.8) | `even` |
 | `partner.birth_weight` | `defaultWeight` | the weight it starts with (1..99, the number the game shows) | required |
 | `partner.status_screen_position` | `viewX/Y/Z` | where the model stands on the status screen (`game_menu.c`), world units | required |
@@ -215,6 +219,49 @@ lists and objects on one line); load → dump is byte-equal (selftest `species-f
 
 Not in the files: padding (always 0, the extractor checks), the dead row of `ITEM_TAKE_DISTANCE` (type 180, written
 0), the rows of the per-partner tables of a species without `partner` (zeros, VLALL 15: what the C has).
+
+Status portraits use `renderDigiviceEntity`'s perspective camera: eye
+`[1300, 0, -3280]`, target `[0, 0, 0]`, projection distance 512 and screen
+origin `[160, 120]`. The renderer resets slot 0 and draws its first tick.
+`tools/status_portraits.py build/NAME --out build/status-audit` audits all
+raisable species, including the complete idle clip, textures, single-sided
+face culling and animated flame phases. Visible pixels crossing the half-panel
+outer edges (`x=10..161`, `y=102..220`) identify overflow; touching alone does
+not qualify a fitting original for changes.
+
+Repairs occupy the free part of Condition **above Life**, which starts at
+`y=154`. Opaque pixels must remain inside `x=14..158`, `y=105..153` and clear
+the actual label rectangle (`x=20..80`, `y=107..120`). Space beside the label
+can be used. This avoids pushing a model behind hearts or care bars. All idle
+ticks and flame phases are rasterized after fitting. The live first pose must
+be at least 20 opaque pixels tall: a floor based on the unobscured native baby
+portraits (about 20–21 pixels above Life). Shorter squash poses elsewhere in
+the idle are recorded separately; the game does not display those poses in
+this view. The first pose's height, full-clip minimum and maximum, label/care
+clearance and checked frame indices are stored in `after_verification`.
+
+`--fix` edits `partner.status_screen_position`. The fitter solves the
+minimum camera depth for an inset rectangle, then preserves the old screen
+anchor as far as the bounds permit. It never moves closer or changes model
+scale. Several placements beside/below the label are checked; a final subpixel
+placement is accepted only after every opaque pixel passes the same strict
+bounds. Floating point projection approximates the GTE, so inspect emulator
+samples as well. Already fitting originals remain byte-identical.
+
+A travelling imported idle can optionally set `partner.status_screen_anchor_bone`
+to a bone index. The camera follows that bone by translating the complete posed
+model; local bone transforms and field animation stay unchanged. The renderer
+restores the world position after drawing. Zero/unset retains the original
+view. Aquilamon uses this to keep its flight and wing poses readable without
+fitting the entire flight trajectory into a tiny silhouette. The byte is stored
+at `0x1CE` in existing species-record padding: record/cache sizes do not grow.
+
+`--reference ORIGINAL_AUDIT.json` supplies original positions and restricts a
+readability repair pass to that audit's fixed set. `--verify-repairs AUDIT.json`
+checks the stored positions of that fixed set after rebuilding, without fitting
+them again. The tool writes `audit.json`, changed-only contact sheets and an
+unchanged borderline list. Review media should include the actual care rows
+and compare the released appearance, the previous positions and the repair.
 
 **What stays in C** (per-species rules that are code, not tables): Machinedramon's last-battle track (`btl.c`: the
 first enemy of type 0x73, before the scripted-battle rule), `MOD_TECH_DONORS` (efe.c, the NPC partners' technique

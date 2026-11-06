@@ -52,7 +52,10 @@ else
     skip npc-originals "needs a built disc image and extracted/ (DW_SELFTEST_DERIVE)"
 fi
 run npc-originals-tests "$PY" -W ignore tools/test_npc_originals.py
+run battle-audit      $PY -W ignore tools/test_battle_audit.py
 run patch-series      $PY tools/patch_series.py check                     # mods/patches/series, the patch files and index.md agree
+run technique-timing-tests $PY -m unittest tools.test_technique_timing
+run buster-dive-tests $PY -m unittest tools.test_buster_dive
 run patch-series-tests $PY tools/test_patch_series.py
 if [ -d decomp/src ]; then
     run patch-series-apply $PY tools/patch_series.py check --apply          # the whole series applies to the pinned decomp
@@ -68,12 +71,22 @@ else
 fi
 run species-off       $PY -W ignore tools/test_species_off.py              # JSON-only level, stats and path overrides
 run fi-info-clock     $PY tools/test_fi_info.py
+disc care-bubble-art $PY -m unittest tools.test_care_bubble_art tools.test_care_badge
+if [ -f build/decomp-dev/src/main/mod_feed.c ]; then
+    run care-badge-host $PY tools/dev/playtest/care_badge_host.py build/decomp-dev
+    run hpmp-care-host $PY tools/dev/playtest/hpmp_care_host.py build/decomp-dev
+    run quick-care-host $PY tools/dev/playtest/quick_care_host.py build/decomp-dev
+else
+    skip hpmp-care-host "needs a prepared developer tree"
+fi
 run systemw-label-tests $PY -m unittest tools.test_systemw
 disc evolution-tree   $PY tools/test_evo_tree.py --practical
 disc evolution-tree-guard $PY -W ignore::ResourceWarning tools/test_evo_tree_guard.py
 run starter-quiz      $PY tools/starter_quiz.py
 run starter-quiz-tests $PY tools/test_starter_quiz.py
 run language-picker-tests $PY -m unittest tools.test_language_picker
+run localization-audit $PY -m tools.localize.check --json "$OUT/localization-audit.json"
+run localization-tests $PY -W ignore::ResourceWarning -m unittest tools.test_localize_check
 run chinese-authoring-tests $PY -m unittest tools.test_chinese
 run world-gates $PY tools/world_audit.py
 run world-gates-tests $PY -W ignore tools/test_world_audit.py
@@ -90,6 +103,7 @@ else
     skip flat-sprites-built "needs a generated build (DW_SELFTEST_DERIVE)"
 fi
 run heap-tables       $PY tools/test_heap_tables.py                      # compact sector/size records remain lossless
+run effect-targets    $PY -m unittest tools.test_effect_targets          # Nightmare Syndromer excludes its caster
 run npc-footprints   $PY tools/test_reach_policies.py
 run npc-routes       $PY tools/check_npc_routes.py                     # every authored new-screen visibility state
 run npc-route-mutations $PY tools/test_npc_routes.py
@@ -131,14 +145,17 @@ else
     skip evolution-chart "needs a built DIGI.DAT and executable (DW_SELFTEST_DERIVE)"
 fi
 disc dwtables          sh -c 'rm -rf "$2/tables" && "$1" tools/dwtables.py extracted/SLUS_010.32 "$2/tables" >/dev/null && for f in "$2"/tables/*.csv; do [ -f "docs/data/$(basename "$f")" ] || continue; cmp -s "$f" "docs/data/$(basename "$f")" || { echo "differs: $f"; exit 1; }; done' sh "$PY" "$OUT"
-disc dws-tests         $PY -W ignore tools/test_dws.py
+# Original-executable fixtures use the recorded original heap, independent of a local mod build.
+# Current-image heap validation remains in the archive-backed image build checks.
+disc dws-tests         env DW_HEAP_MAP=/dev/null $PY -W ignore tools/test_dws.py
 disc dws-safety        $PY -W ignore tools/test_dws_safety.py
 run dws-authored      $PY -W ignore tools/test_dws_authored.py
 run island-story      $PY -W ignore -m unittest discover -s story/mods/what-the-island-forgot/test
 for d in tools/dws/examples/*.dws; do
     n=$(basename "$d" .dws)
     exe=original; case $n in expanded-*) exe=story-state;; esac       # the engine tier 2 examples
-    disc "dws-$n" $PY tools/dws.py check "$d" --build --exe $exe -o "$OUT/dws-$n.SCN"
+    heap_map_arg=(); [ "$exe" != original ] || heap_map_arg=(env DW_HEAP_MAP=/dev/null)
+    disc "dws-$n" "${heap_map_arg[@]}" $PY tools/dws.py check "$d" --build --exe $exe -o "$OUT/dws-$n.SCN"
 done
 run dws-fmt           $PY tools/dws.py fmt --check tools/dws/examples/*.dws tools/dws/examples/lib/*.dws
 run dws-doctor        $PY tools/dws.py doctor
@@ -153,6 +170,14 @@ run dw3-names        $PY tools/dw3_names_check.py                      # DW2003 
 run map-reach-policies $PY tools/test_reach_policies.py
 run developer-contracts $PY tools/test_dev_contracts.py
 run presented-frame-video $PY tools/test_presented_frames.py
+run duckstation-protocol $PY -m unittest tools.test_duckstation_protocol
+PATCHED=${DW_SELFTEST_DECOMP:-build/decomp-dev}
+if [ -f "$PATCHED/src/main/main.c" ]; then
+    run fps-auto $PY tools/test_fps_auto.py "$PATCHED"
+    run options-save $PY tools/test_cheats.py "$PATCHED"
+else
+    skip fps-auto "needs prepared C tree (DW_SELFTEST_DECOMP)"
+fi
 run gallery-foregrounds $PY tools/test_gallery_foregrounds.py
 run retouch-cutouts $PY tools/test_retouch_cutouts.py
 run image-raster      $PY -m unittest tools.test_image

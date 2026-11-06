@@ -84,7 +84,7 @@ def units(ctx):
         return []
     return [runner.Unit(d + '/' + language, run_pass,
                         (ctx.root, ctx.path(d), files, (language,), f'files.{language}.txt'),
-                        ['tools/localize/signs.py', 'tools/localize/cutout.py', 'content/localized/signs', 'extracted/MAP',
+                        ['tools/localize/signs.py', 'tools/localize/cutout.py', 'content/map-regions.json', 'content/localized/signs', 'extracted/MAP',
                          f'step:story ({dict(PASSES)[d]} FILE: lines and their maps)'], [f'{d}/files.{language}.txt'])
             for d, files in passes(ctx) for language in ('en',) + localize.translations(ctx.env)]
 

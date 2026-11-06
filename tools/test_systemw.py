@@ -7,6 +7,17 @@ from tools.localize.systemw import relocated_rect
 
 
 class RasterLabels(unittest.TestCase):
+    def test_care_badge_slots_reject_label_overwrites(self):
+        import json
+        from tools.localize.systemw import (
+            CARE_BUTTON_RECTS, CARE_BUTTON_GUARD_RECTS, CARE_BUTTON_CLUT_RECT,
+            check_care_button_cells,
+        )
+        check_care_button_cells(json.loads(Path('tools/localize/textures/systemw/rects.json').read_text()))
+        for u, v, w, h in (*CARE_BUTTON_RECTS, *CARE_BUTTON_GUARD_RECTS, CARE_BUTTON_CLUT_RECT):
+            with self.subTest(rect=(u, v, w, h)), self.assertRaises(ValueError):
+                check_care_button_cells([dict(en='fixture', es='fixture', u=u, v=v, w=w, h=h)])
+
     def test_minification_keeps_a_stroke_on_an_unsampled_source_row(self):
         # A faint five-row stem surrounds a one-row horizontal bar. Nearest
         # neighbor at height two misses the bar; area coverage preserves it.

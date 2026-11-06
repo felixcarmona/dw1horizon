@@ -11,7 +11,7 @@ floramon = market_shed.npc(Species.Floramon, at=(400, -150), range=0, when=recru
 @tapirmon.on_talk
 def talk():
     say("Fresh from every corner of the island! The dreams are free. The fruit is not.")
-    shop(Item.Digipine, Item.BlueApple, Item.RedBerry, Item.SweetNut, Item.OrangeBana, Item.Supercarrot)
+    shop(Item.HawkRadish, Item.BlueApple, Item.RedBerry, Item.SweetNut, Item.OrangeBana, Item.Supercarrot)
 
 
 @floramon.on_talk

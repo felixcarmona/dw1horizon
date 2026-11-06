@@ -1,4 +1,4 @@
-"""Built-disc profile: partner generator APIs reproduce the untouched reference models."""
+"""Built-disc profile: partner generator APIs reproduce the reviewed reference models."""
 import hashlib
 from pathlib import Path
 import tempfile
@@ -8,7 +8,7 @@ from tools.derive import crmath, pysum, runner
 from tools.derive.steps.models import MODELS
 
 
-# Standard everything recipe with the authored MasterTyrannomon forearm correction, standard-library replay.
+# Standard everything recipe, standard-library replay; hashes include reviewed model edits.
 REFERENCE = {
     'ANLP.MMD': 'ca7025a2763e8786c9b603279f973b2f1b04ac6a',
     'ICEM-partner.MMD': 'be9c02b800de9eaf820fd8d9bf00807c37faaf59',

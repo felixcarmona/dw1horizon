@@ -11,7 +11,7 @@ codes: gen_text encodes every string with the map, and the executable's own stri
 to the game's font. For TEXT=us the text part is empty: the headers, hence the executable, are the ones without a bank.
 
 Not taken from a source (they stay the build's): the species names (main.DIGIMON_NAMES.*, from content/species: the
-names policy), and a name that does not fit its record (ITEM_NAMES: 19 bytes) or, an item's, the lists (96 pixels even
+names policy), and a name that does not fit its record (ITEM_NAMES: 19 bytes) or, an item's, the lists (93 pixels even
 condensed: docs/mods/font.md "Item names"); both are listed in the report."""
 import json, os, re, sys
 
@@ -43,7 +43,7 @@ VERBATIM = ('kar.KAR_D_8005ABB8',                          # curling: two option
             'shop.MAIN_D_801307CC',                         # Mojyamon's trade header: two crops at 0 and 0x42 px (script_menu.c)
             'main.STR_YEAR_DAY', 'main.STR_YES_NO', 'main.STR_YES_NO_SPACED',
             'main.CHART_STR_READY')                         # the chart card's verdict: "N of 4" + two spaces + "ready"
-ITEM_NAME, ITEM_LIST_W = 'main.ITEM_NAMES.', 96             # every item list draws a name within 96 px (ITEM_FIELD_W)
+ITEM_NAME, ITEM_LIST_W = 'main.ITEM_NAMES.', 93             # narrowest shop list: 0x69 - 12; other lists allow 96
 # the format codes of every string of the US executable, {key: [codes]} (no text: committed), so the check that a source keeps
 # them needs no text/us/ (the base disc may be another release); `us-codes` makes it again from text/us/names.json
 US_CODES = os.path.join(HERE, 'us-format-codes.json')
@@ -113,8 +113,8 @@ def list_width(name, font='original'):
     if font in ('a', 'b'):
         own = fontgen.text_width(name, font) - fontgen.GAP
         if font == 'b': return own
-        return min([own] + [fontgen.fit_layout(name, mode)[1] for mode in (1, 2)])
-    return min(fontgen.fit_layout(name, mode)[1] for mode in range(3))
+        return min([own] + [fontgen.fit_layout(name, mode, metrics_only=True)[1] for mode in (1, 2)])
+    return min(fontgen.fit_layout(name, mode, metrics_only=True)[1] for mode in range(3))
 
 
 def fit_keeping_codes(tb, k, v):

@@ -1,0 +1,910 @@
+From 54408fe4e9b1f7679922ab82e5e910a922eee2d9 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 6 Nov 2026 05:13:41 +0000
+Subject: [PATCH] Keep live care gauges visible between gym sessions
+
+---
+ include/dw/memmap.h        |   2 +-
+ include/dw/trn.h           |   2 +
+ include/dw/trn2.h          |   2 +
+ src/trn/trn_block.h        | 127 ++++++++++++++++++++++++++-----------
+ src/trn/trn_brain.c        |  19 ++++--
+ src/trn/trn_def.c          |  17 +++--
+ src/trn/trn_hp.c           |  17 +++--
+ src/trn/trn_mp.c           |  17 +++--
+ src/trn/trn_off.c          |  24 ++++---
+ src/trn/trn_reward.c       |  14 ++--
+ src/trn/trn_speed.c        |  19 ++++--
+ src/trn2/trn2_def_map108.c |  15 +++--
+ src/trn2/trn2_def_map99.c  |  17 +++--
+ src/trn2/trn2_hp_map107.c  |  15 +++--
+ src/trn2/trn2_hp_map99.c   |  13 +++-
+ src/trn2/trn2_mp.c         |  13 +++-
+ src/trn2/trn2_off.c        |  19 ++++--
+ src/trn2/trn2_reward.c     |  13 +++-
+ 18 files changed, 255 insertions(+), 110 deletions(-)
+
+diff --git a/include/dw/memmap.h b/include/dw/memmap.h
+index 55ef8f9..a977b37 100644
+--- a/include/dw/memmap.h
++++ b/include/dw/memmap.h
+@@ -50,7 +50,7 @@
+ #define OVL_MURD_BASE		0x8007C000
+ #define OVL_DOOA_BASE		0x80080000
+ #define OVL_SHOP_BASE		0x80080800	/* DGET (shop_START) */
+-#define OVL_TRN_BASE		0x80088800	/* TRN, TRN2 */
++#define OVL_TRN_BASE		0x80088000	/* TRN, TRN2: include one free scratch sector below TEXTURE_BUFFER */
+ /* TRN/TRN2 must end here: the original's largest, in sectors (memory.md) */
+ #define OVL_TRN_MAX_END		0x8008F800
+ 
+diff --git a/include/dw/trn.h b/include/dw/trn.h
+index 1a98c52..d21f9cf 100644
+--- a/include/dw/trn.h
++++ b/include/dw/trn.h
+@@ -76,6 +76,8 @@ extern int8_t TRN_MOD_QUIET;
+ void TRN_modBlockArm(void);
+ void TRN_modBlockBegin(void);
+ int32_t TRN_modBlockNext(void);
++int32_t TRN_modBlockWait(void);
++void TRN_renderCareHUD(int32_t instanceId);
+ void TRN_modOpenStatsBox(void);
+ 
+ #endif
+diff --git a/include/dw/trn2.h b/include/dw/trn2.h
+index a55ea7c..f5227be 100644
+--- a/include/dw/trn2.h
++++ b/include/dw/trn2.h
+@@ -77,6 +77,8 @@ extern int8_t TRN2_MOD_QUIET;
+ void TRN2_modBlockArm(void);
+ void TRN2_modBlockBegin(void);
+ int32_t TRN2_modBlockNext(void);
++int32_t TRN2_modBlockWait(void);
++void TRN2_renderCareHUD(int32_t instanceId);
+ void TRN2_modOpenStatsBox(void);
+ 
+ #endif
+diff --git a/src/trn/trn_block.h b/src/trn/trn_block.h
+index 0dca8b1..5d0888b 100644
+--- a/src/trn/trn_block.h
++++ b/src/trn/trn_block.h
+@@ -19,6 +19,11 @@
+ #include <libgpu.h>
+ #include <libgs.h>
+ #include <dw/mod_qol.h>
++#include <dw/input.h>
++#include <dw/clock.h>
++#include <dw/mod_options.h>
++
++extern uint32_t CHANGED_INPUT;
+ #include <dw/ui.h>
+ 
+ extern int16_t INITIAL_COMBAT_STATS[][6];
+@@ -47,7 +52,7 @@ static int8_t TB_x5; /* the menu's x5 row */
+ static int8_t TB_count;
+ static int8_t TB_done;
+ static int8_t TB_reason;
+-static int8_t TB_box1Seen;
++static int8_t TB_box1Seen; /* reused as the between-session countdown while MOD_QUIET */
+ static int8_t TB_box2Before; /* box 2 was open when the block began */
+ static int16_t TB_pre[6];
+ static int16_t TB_sum[6];
+@@ -66,11 +71,36 @@ static int32_t TB_box2Y(void)
+ 	return 0x16 + TB_box2Dy;
+ }
+ 
++/* The clock slides the field gauges away while training pauses game time.
++   Render the existing live HUD from the gym object without changing that clock state. */
++extern int16_t STATUS_UI_OFFSET_X;
++void renderStatusBars(int32_t state);
++void TB(renderCareHUD)(int32_t instanceId)
++{
++	int16_t saved;
++	if (MOD_OPT_BARS && !IS_GAMETIME_RUNNING) {
++		saved = STATUS_UI_OFFSET_X;
++		STATUS_UI_OFFSET_X = 75;
++		renderStatusBars(1);
++		STATUS_UI_OFFSET_X = saved;
++	}
++}
++
++/* The skip row puts every lower box beside the care HUD. Keep their right edge
++   at screen x=230, six pixels before the left icon column, only with B5a enabled. */
++static int32_t TB_box2X(void)
++{
++	return MOD_OPT_BARS ? -118 : -94;
++}
++
+ /* from the session's setup (TB(saveTrainingStartTime)), after it read the flag: the menu's x5 row is a normal session
+    in a block (not a block's next hour, which arms again) */
+ void TB(modBlockArm)(void)
+ {
+ 	if (!TB(MOD_QUIET)) {
++		/* Avoid a second, partially slid field copy on the first gym frames. */
++		if (MOD_OPT_BARS)
++			STATUS_UI_OFFSET_X = 240;
+ 		TB_x5 = TB_SLOT == 2;
+ 		if (TB_x5) {
+ 			TB_SLOT = 0;
+@@ -91,8 +121,8 @@ static void TB_tickMessage(void)
+ 
+ static void TB_renderMessage(void)
+ {
+-	renderString(0, -84, 28 + TB_box2Dy, 168, 12, 0, 120, 4, 0);
+-	renderString(0, -84, 40 + TB_box2Dy, 168, 12, 0, 132, 4, 0);
++	renderString(0, TB_box2X() + 10, 28 + TB_box2Dy, 168, 12, 0, 120, 4, 0);
++	renderString(0, TB_box2X() + 10, 40 + TB_box2Dy, 168, 12, 0, 132, 4, 0);
+ }
+ 
+ /* before the gym's award function */
+@@ -103,6 +133,7 @@ void TB(modBlockBegin)(void)
+ 	TB_count = TB_x5 ? 5 : 1;
+ 	TB_done = 0;
+ 	TB_reason = MOD_TB_GO;
++	TB_box1Seen = 0;
+ 	TB_box2Before = UI_BOX_DATA[2].state != 0;
+ 	TB(MOD_QUIET) = TB_count > 1;
+ 	if (TB_count > 1) {
+@@ -114,42 +145,12 @@ void TB(modBlockBegin)(void)
+ 	}
+ }
+ 
+-/* after it: 1 to award the next session of the block */
+-int32_t TB(modBlockNext)(void)
++/* Finalise only completed sessions, for either a native stop or a player cancellation. */
++static void TB_finishBlock(void)
+ {
+ 	RECT area;
+-	int32_t i;
+-	int32_t v;
+-	char *s;
+-	char *d;
+-
+-	if (TB_count <= 1) {
+-		return 0;
+-	}
+-	/* the session's gains go into the stats the next one starts from */
+-	for (i = 0; i < 6; i++) {
+-		v = INITIAL_COMBAT_STATS[0][i] + STATS_GAINS[i];
+-		if (v > CAP_OF_STAT_INDEX(i)) {
+-			v = CAP_OF_STAT_INDEX(i);
+-		}
+-		TB_sum[i] += v - INITIAL_COMBAT_STATS[0][i];
+-		INITIAL_COMBAT_STATS[0][i] = v;
+-		STATS_GAINS[i] = 0;
+-	}
+-	TB(applyBaseStats)();
+-	TB_done++;
+-	/* the gym's box (a technique, new orders) opened by this session: a box 2 open before the block (the Bonus
+-	   Try's reels, a block's own box closing) is not one */
+-	if (!TB_box2Before && UI_BOX_DATA[2].state != 0) {
+-		TB_reason = MOD_TB_LEARNED;
+-	} else {
+-		TB_reason = modTrainStopReason(TB_START_MIN, TB_RULES[MOD_TR_TIRED_AT]);
+-	}
+-	if (TB_reason == MOD_TB_GO && TB_done < TB_count) {
+-		TB(saveTrainingStartTime)(); /* the next session's hour */
+-		return 1;
+-	}
+-
++	int32_t i, v;
++	char *s, *d;
+ 	/* the stats box adds the block's total to the stats from before it */
+ 	for (i = 0; i < 6; i++) {
+ 		INITIAL_COMBAT_STATS[0][i] = TB_pre[i];
+@@ -186,7 +187,57 @@ int32_t TB(modBlockNext)(void)
+ 		drawString(TB_doneText, 0, 120);
+ 		drawString(TB_REASONS[TB_reason], 0, 132);
+ 		TB_box1Seen = 0;
+-		createMenuBox(2, -94, TB_box2Y(), 188, 0x23, 2, TB_tickMessage, TB_renderMessage);
++		createMenuBox(2, TB_box2X(), TB_box2Y(), 188, 0x23, 2, TB_tickMessage, TB_renderMessage);
++	}
++}
++
++/* One second at the native 20 Hz tick gives each care change a visible interval.
++   A fresh cancel press stops before the next hour is awarded. No new state is needed. */
++int32_t TB(modBlockWait)(void)
++{
++	if (CHANGED_INPUT & CANCEL_BUTTON) {
++		TB_finishBlock();
++		return 1;
++	}
++	if (TB_box1Seen > 0) {
++		TB_box1Seen--;
++		return 1;
++	}
++	return 0;
++}
++
++/* after it: 1 to award the next session of the block */
++int32_t TB(modBlockNext)(void)
++{
++	int32_t i, v;
++
++	if (TB_count <= 1) {
++		return 0;
+ 	}
++	/* the session's gains go into the stats the next one starts from */
++	for (i = 0; i < 6; i++) {
++		v = INITIAL_COMBAT_STATS[0][i] + STATS_GAINS[i];
++		if (v > CAP_OF_STAT_INDEX(i)) {
++			v = CAP_OF_STAT_INDEX(i);
++		}
++		TB_sum[i] += v - INITIAL_COMBAT_STATS[0][i];
++		INITIAL_COMBAT_STATS[0][i] = v;
++		STATS_GAINS[i] = 0;
++	}
++	TB(applyBaseStats)();
++	TB_done++;
++	/* the gym's box (a technique, new orders) opened by this session: a box 2 open before the block (the Bonus
++	   Try's reels, a block's own box closing) is not one */
++	if (!TB_box2Before && UI_BOX_DATA[2].state != 0) {
++		TB_reason = MOD_TB_LEARNED;
++	} else {
++		TB_reason = modTrainStopReason(TB_START_MIN, TB_RULES[MOD_TR_TIRED_AT]);
++	}
++	if (TB_reason == MOD_TB_GO && TB_done < TB_count) {
++		TB_box1Seen = 20;
++		return 1;
++	}
++
++	TB_finishBlock();
+ 	return 0;
+ }
+diff --git a/src/trn/trn_brain.c b/src/trn/trn_brain.c
+index 1531b19..172ba19 100644
+--- a/src/trn/trn_brain.c
++++ b/src/trn/trn_brain.c
+@@ -40,7 +40,7 @@ int16_t arg;
+ 		TRN_D_8008F320.vx = -0x4e1;
+ 		TRN_D_8008F320.vy = 0;
+ 		TRN_D_8008F320.vz = 0x3f3;
+-		addObject(0xfb0, 0, (TickFunction)TRN_tickBrainsTraining, NULL);
++		addObject(0xfb0, 0, (TickFunction)TRN_tickBrainsTraining, (RenderFunction)TRN_renderCareHUD);
+ 		if (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level < 3) {
+ 			PARTNER_PARA.upgradeBrainCounter++;
+ 		}
+@@ -53,7 +53,7 @@ int16_t arg;
+ 		TRN_D_8008F320.vx = -0x5e3;
+ 		TRN_D_8008F320.vy = 0;
+ 		TRN_D_8008F320.vz = 0x2ce;
+-		addObject(0xfb0, 9, (TickFunction)TRN_tickBrainsTraining, NULL);
++		addObject(0xfb0, 9, (TickFunction)TRN_tickBrainsTraining, (RenderFunction)TRN_renderCareHUD);
+ 		TRAINING_COMPLETE = 0;
+ 		break;
+ 	}
+@@ -136,9 +136,8 @@ void TRN_tickBrainsTraining(int32_t instanceId)
+ 		}
+ 		if ((((MAIN_D_8013537A >= TRN_SESSION_OF(MOD_TRAIN_RULES)) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_80135370 == 0)) || ((MAIN_D_80135370 == 1) && (r >= 0))) {
+ 			TRN_modBlockBegin(); /* MOD (training block) */
+-			do {
+-				TRN_awardBrainsTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, r);
+-			} while (TRN_modBlockNext());
++			TRN_awardBrainsTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, r);
++			TRN_modBlockNext();
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 			createCameraMovement(&TAMER_ENTITY.entity.posData->location, 10);
+ 			startAnimation(&NPC_ENTITIES[0].digimonEntity.entity, 0);
+@@ -147,6 +146,14 @@ void TRN_tickBrainsTraining(int32_t instanceId)
+ 		}
+ 		break;
+ 	case 4:
++		if (TRN_MOD_QUIET) {
++			if (!TRN_modBlockWait()) {
++				TRN_saveTrainingStartTime();
++				TRN_awardBrainsTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, 10);
++				TRN_modBlockNext();
++			}
++			break;
++		}
+ 		if (TRN_statGainsAreZero() == 1) {
+ 			MAIN_D_8013537C = 0;
+ 			TRAINING_STATE = 5;
+@@ -166,7 +173,7 @@ void TRN_tickBrainsTraining(int32_t instanceId)
+ 			partnerSetState(1);
+ 			MAIN_D_8013537A = 0;
+ 			TRAINING_STATE = 0;
+-			removeObject(0xfb0, instanceId, TRN_tickBrainsTraining, NULL);
++			removeObject(0xfb0, instanceId, TRN_tickBrainsTraining, (RenderFunction)TRN_renderCareHUD);
+ 			TRAINING_COMPLETE = 1;
+ 		}
+ 		break;
+diff --git a/src/trn/trn_def.c b/src/trn/trn_def.c
+index 17ed5e5..8e2fa45 100644
+--- a/src/trn/trn_def.c
++++ b/src/trn/trn_def.c
+@@ -72,7 +72,7 @@ int16_t arg;
+ 		TRN_D_8008F340[2].vz = -0x834;
+ 		MAIN_D_8013536C = 0x47;
+ 		MAIN_D_8013536E = 0xd;
+-		addObject(0xfae, 0, (TickFunction)TRN_tickDefenseTraining, NULL);
++		addObject(0xfae, 0, (TickFunction)TRN_tickDefenseTraining, (RenderFunction)TRN_renderCareHUD);
+ 		if (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level < 3) {
+ 			PARTNER_PARA.upgradeDefenseCounter++;
+ 		}
+@@ -228,9 +228,8 @@ int16_t instanceId;
+ 			}
+ 			if (((MAIN_D_8013537A >= TRN_SESSION_OF(MOD_TRAIN_RULES)) && (MAIN_D_80135370 == 0)) || ((MAIN_D_80135370 == 1) && (r >= 0))) {
+ 				TRN_modBlockBegin(); /* MOD (training block) */
+-				do {
+-					TRN_awardDefenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, r);
+-				} while (TRN_modBlockNext());
++				TRN_awardDefenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, r);
++				TRN_modBlockNext();
+ 				startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 				playSound(8, 0xa);
+ 				thunkStopSoundMask(MAIN_D_80135384);
+@@ -244,6 +243,14 @@ int16_t instanceId;
+ 		}
+ 		break;
+ 	case 12:
++		if (TRN_MOD_QUIET) {
++			if (!TRN_modBlockWait()) {
++				TRN_saveTrainingStartTime();
++				TRN_awardDefenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, 10);
++				TRN_modBlockNext();
++			}
++			break;
++		}
+ 		if (TRN_statGainsAreZero() == 1) {
+ 			MAIN_D_8013537C = 0;
+ 			TRAINING_STATE = 0xd;
+@@ -267,7 +274,7 @@ int16_t instanceId;
+ 			partnerSetState(1);
+ 			MAIN_D_8013537A = 0;
+ 			TRAINING_STATE = 0;
+-			removeObject(0xfae, instanceId, TRN_tickDefenseTraining, NULL);
++			removeObject(0xfae, instanceId, TRN_tickDefenseTraining, (RenderFunction)TRN_renderCareHUD);
+ 			TRAINING_COMPLETE = 1;
+ 		}
+ 		break;
+diff --git a/src/trn/trn_hp.c b/src/trn/trn_hp.c
+index b1a9a00..8312549 100644
+--- a/src/trn/trn_hp.c
++++ b/src/trn/trn_hp.c
+@@ -52,7 +52,7 @@ int16_t arg;
+ 		TRN_D_8008F320.vz = -0x6d0;
+ 		MAIN_D_8013536C = 0x53;
+ 		MAIN_D_8013536E = 0x10;
+-		addObject(0xfab, 0, (TickFunction)TRN_tickHpTraining, NULL);
++		addObject(0xfab, 0, (TickFunction)TRN_tickHpTraining, (RenderFunction)TRN_renderCareHUD);
+ 		MAIN_D_80135370 = readPStat(0xf6);
+ 		if (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level < 3) {
+ 			PARTNER_PARA.upgradeHPcounter++;
+@@ -123,13 +123,20 @@ int16_t instanceId;
+ 			MAIN_D_8013537A /= TRN_STEP_OF(MOD_TRAIN_RULES);
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 			TRN_modBlockBegin(); /* MOD (training block) */
+-			do {
+-				TRN_awardHpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, r);
+-			} while (TRN_modBlockNext());
++			TRN_awardHpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, r);
++			TRN_modBlockNext();
+ 			createCameraMovement(&TAMER_ENTITY.entity.posData->location, 10);
+ 		}
+ 		break;
+ 	case 3:
++		if (TRN_MOD_QUIET) {
++			if (!TRN_modBlockWait()) {
++				TRN_saveTrainingStartTime();
++				TRN_awardHpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, 10);
++				TRN_modBlockNext();
++			}
++			break;
++		}
+ 		if (TRN_statGainsAreZero() == 1) {
+ 			TRAINING_STATE = 4;
+ 			MAIN_D_8013537C = 0;
+@@ -157,7 +164,7 @@ int16_t instanceId;
+ 			removeAllCloudFX();
+ 			MAIN_D_8013537A = 0;
+ 			TRAINING_STATE = 0;
+-			removeObject(0xfab, instanceId, TRN_tickHpTraining, NULL);
++			removeObject(0xfab, instanceId, TRN_tickHpTraining, (RenderFunction)TRN_renderCareHUD);
+ 			TRAINING_COMPLETE = 1;
+ 		}
+ 		break;
+diff --git a/src/trn/trn_mp.c b/src/trn/trn_mp.c
+index 4254bf1..317f50d 100644
+--- a/src/trn/trn_mp.c
++++ b/src/trn/trn_mp.c
+@@ -95,9 +95,8 @@ int16_t instanceId;
+ 		}
+ 		if ((((MAIN_D_8013537A >= TRN_SESSION_OF(MOD_TRAIN_RULES)) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_80135370 == 0)) || ((MAIN_D_80135370 == 1) && (r >= 0))) {
+ 			TRN_modBlockBegin(); /* MOD (training block) */
+-			do {
+-				TRN_awardMpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, r);
+-			} while (TRN_modBlockNext());
++			TRN_awardMpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, r);
++			TRN_modBlockNext();
+ 			setMapObjectsFlag(MAIN_D_80135372, MAIN_D_80135374, 0);
+ 			setMapObjectsFlag(MAIN_D_80135376, MAIN_D_80135378, 1);
+ 			loadMapObjectPosition(TRN_D_8008F368, TRN_D_8008F388, MAIN_D_8013536C, MAIN_D_8013536E);
+@@ -115,6 +114,14 @@ int16_t instanceId;
+ 		}
+ 		break;
+ 	case 5:
++		if (TRN_MOD_QUIET) {
++			if (!TRN_modBlockWait()) {
++				TRN_saveTrainingStartTime();
++				TRN_awardMpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, 10);
++				TRN_modBlockNext();
++			}
++			break;
++		}
+ 		if (TRN_statGainsAreZero() == 1) {
+ 			MAIN_D_8013537C = 0;
+ 			TRAINING_STATE = 6;
+@@ -129,7 +136,7 @@ int16_t instanceId;
+ 			partnerSetState(1);
+ 			MAIN_D_8013537A = 0;
+ 			TRAINING_STATE = 0;
+-			removeObject(0xfaf, instanceId, TRN_tickMpTraining, NULL);
++			removeObject(0xfaf, instanceId, TRN_tickMpTraining, (RenderFunction)TRN_renderCareHUD);
+ 			TRAINING_COMPLETE = 1;
+ 		}
+ 		break;
+@@ -154,7 +161,7 @@ int16_t arg;
+ 		MAIN_D_80135374 = 0x10;
+ 		MAIN_D_80135376 = 0xa3;
+ 		MAIN_D_80135378 = 0x18;
+-		addObject(0xfaf, 0, (TickFunction)TRN_tickMpTraining, NULL);
++		addObject(0xfaf, 0, (TickFunction)TRN_tickMpTraining, (RenderFunction)TRN_renderCareHUD);
+ 		if (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level < 3) {
+ 			PARTNER_PARA.upgradeMPcounter++;
+ 		}
+diff --git a/src/trn/trn_off.c b/src/trn/trn_off.c
+index c1cf0d6..f8eb7ec 100644
+--- a/src/trn/trn_off.c
++++ b/src/trn/trn_off.c
+@@ -61,7 +61,7 @@ int16_t arg;
+ 		if (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level < 3) {
+ 			PARTNER_PARA.upgradeOffCounter++;
+ 		}
+-		addObject(0xfac, 0, (TickFunction)TRN_tickOffenseTraining, NULL);
++		addObject(0xfac, 0, (TickFunction)TRN_tickOffenseTraining, (RenderFunction)TRN_renderCareHUD);
+ 		break;
+ 	case 0x4e:
+ 		TRN_D_8008F330.vx = -0x527;
+@@ -81,7 +81,7 @@ int16_t arg;
+ 		TRN_D_8008F340[2].vz = 0xdac;
+ 		MAIN_D_8013536C = 0x2b;
+ 		MAIN_D_8013536E = 0x1e;
+-		addObject(0xfac, 6, (TickFunction)TRN_tickOffenseTraining, NULL);
++		addObject(0xfac, 6, (TickFunction)TRN_tickOffenseTraining, (RenderFunction)TRN_renderCareHUD);
+ 		break;
+ 	}
+ 
+@@ -162,9 +162,8 @@ void TRN_tickOffenseTraining(int32_t instanceId)
+ 		}
+ 		if ((((MAIN_D_8013537A >= TRN_SESSION_OF(MOD_TRAIN_RULES)) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_80135370 == 0)) || ((r >= 0) && (MAIN_D_80135370 == 1))) {
+ 			TRN_modBlockBegin(); /* MOD (training block) */
+-			do {
+-				TRN_awardOffenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, r);
+-			} while (TRN_modBlockNext());
++			TRN_awardOffenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, r);
++			TRN_modBlockNext();
+ 			startAnimation(ENTITY_TABLE[1], 0x12);
+ 			loadMapObjectPosition(TRN_D_8008F368, TRN_D_8008F388, MAIN_D_8013536C, MAIN_D_8013536E);
+ 			playSound(8, 0xa);
+@@ -173,6 +172,14 @@ void TRN_tickOffenseTraining(int32_t instanceId)
+ 		}
+ 		break;
+ 	case 4:
++		if (TRN_MOD_QUIET) {
++			if (!TRN_modBlockWait()) {
++				TRN_saveTrainingStartTime();
++				TRN_awardOffenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, instanceId, 10);
++				TRN_modBlockNext();
++			}
++			break;
++		}
+ 		if (TRN_statGainsAreZero() == 1) {
+ 			MAIN_D_8013537C = 0;
+ 			TRAINING_STATE = 5;
+@@ -194,7 +201,7 @@ void TRN_tickOffenseTraining(int32_t instanceId)
+ 			setCameraFollowPlayer();
+ 			MAIN_D_8013537A = 0;
+ 			TRAINING_STATE = 0;
+-			removeObject(0xfac, instanceId, TRN_tickOffenseTraining, NULL);
++			removeObject(0xfac, instanceId, TRN_tickOffenseTraining, (RenderFunction)TRN_renderCareHUD);
+ 			TRAINING_COMPLETE = 1;
+ 		}
+ 		break;
+@@ -231,9 +238,8 @@ void TRN_tickOffenseTraining(int32_t instanceId)
+ 			setMapObjectsFlag(0x27, 4, 0);
+ 			setMapObjectsFlag(MAIN_D_8013536C, MAIN_D_8013536E, 1);
+ 			TRN_modBlockBegin(); /* MOD (training block) */
+-			do {
+-				TRN_awardOffenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 6, r);
+-			} while (TRN_modBlockNext());
++			TRN_awardOffenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 6, r);
++			TRN_modBlockNext();
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 			createCameraMovement(&TAMER_ENTITY.entity.posData->location, 10);
+ 			playSound(8, 0xa);
+diff --git a/src/trn/trn_reward.c b/src/trn/trn_reward.c
+index 4655c92..d8e042b 100644
+--- a/src/trn/trn_reward.c
++++ b/src/trn/trn_reward.c
+@@ -646,7 +646,7 @@ int32_t c;
+ 	if (shown == 1) {
+ 		setTextColor(1);
+ 		drawString(TRN_D_8008F140, 0, y);
+-		createMenuBox(2, -94, TB_box2Y(), 188, 0x30, 2, 0, TRN_renderNewOrdersBox); /* MOD (skip hint) */
++		createMenuBox(2, TB_box2X(), TB_box2Y(), 188, 0x30, 2, 0, TRN_renderNewOrdersBox); /* MOD (skip hint) */
+ 		MAIN_D_80135388 = 1;
+ 	} else if (TRN_crossedLearnMark(base, total)) { /* MOD (caps): reaching 999 (was total == 999); MOD (training as data): the marks are MOD_TRAIN_RULES' */
+ 		TRN_tryLearnMove(a);
+@@ -804,7 +804,7 @@ void TRN_advanceTrainingTime(int16_t tiredGain, int16_t energyLoss, int16_t happ
+ 
+ void TRN_renderNewOrdersBox(void)
+ {
+-	renderString(0, -84, 28 + TB_box2Dy, 240, 48, 0, 120, 4, 0);
++	renderString(0, TB_box2X() + 10, 28 + TB_box2Dy, MOD_OPT_BARS ? 168 : 240, 48, 0, 120, 4, 0);
+ }
+ 
+ int32_t TRN_tryLearnMove(int32_t type)
+@@ -869,7 +869,7 @@ int32_t TRN_tryLearnMove(int32_t type)
+ 		MAIN_D_80135392 = strlen(MOVE_NAMES[move]);
+ #endif
+ 		drawString(TRN_D_8008F19C, 0, 0x84);
+-		createMenuBox(2, -94, TB_box2Y(), 188, 0x23, 2, 0, TRN_renderMoveLearnedBox); /* MOD (skip hint) */
++		createMenuBox(2, TB_box2X(), TB_box2Y(), 188, 0x23, 2, 0, TRN_renderMoveLearnedBox); /* MOD (skip hint) */
+ 		MAIN_D_80135388 = 1;
+ 		return 1;
+ 	}
+@@ -885,7 +885,7 @@ int32_t TRN_tryLearnMove(int32_t type)
+  * which cut the US line ("Spit F" + "w" / "as m"). Both strings were drawn whole into the text area by
+  * TRN_tryLearnMove; MAIN_D_80135392 holds the name's width.
+  */
+-#define LEARNED_TEXT_X	-84
++#define LEARNED_TEXT_X	(TB_box2X() + 10)
+ #define LEARNED_TEXT_W	168 /* to the box's inner edge, as far right as the text starts left of it */
+ #define LEARNED_GAP	5   /* from the name's last ink to the text: a blank column and a space */
+ 
+@@ -908,8 +908,8 @@ void TRN_renderMoveLearnedBox(void)
+ #else
+ void TRN_renderMoveLearnedBox(void)
+ {
+-	renderString(3, -84, 28 + TB_box2Dy, (MAIN_D_80135392 / 2) * 12, 12, 0, 120, 4, 0);
+-	renderString(0, ((MAIN_D_80135392 / 2) * 12) - 84, 28 + TB_box2Dy, 12, 12, 0, 132, 4, 0);
+-	renderString(0, -84, 40 + TB_box2Dy, 48, 12, 12, 132, 4, 0);
++	renderString(3, TB_box2X() + 10, 28 + TB_box2Dy, (MAIN_D_80135392 / 2) * 12, 12, 0, 120, 4, 0);
++	renderString(0, ((MAIN_D_80135392 / 2) * 12) + TB_box2X() + 10, 28 + TB_box2Dy, 12, 12, 0, 132, 4, 0);
++	renderString(0, TB_box2X() + 10, 40 + TB_box2Dy, 48, 12, 12, 132, 4, 0);
+ }
+ #endif
+diff --git a/src/trn/trn_speed.c b/src/trn/trn_speed.c
+index c3d3771..2771582 100644
+--- a/src/trn/trn_speed.c
++++ b/src/trn/trn_speed.c
+@@ -38,13 +38,13 @@ int16_t arg;
+ 		if (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level < 3) {
+ 			PARTNER_PARA.upgradeSpeedCounter++;
+ 		}
+-		addObject(0xfad, 0, (TickFunction)TRN_tickSpeedTraining, NULL);
++		addObject(0xfad, 0, (TickFunction)TRN_tickSpeedTraining, (RenderFunction)TRN_renderCareHUD);
+ 		break;
+ 	case 0x4e:
+ 		TRN_D_8008F320.vx = 0x32;
+ 		TRN_D_8008F320.vy = 0;
+ 		TRN_D_8008F320.vz = -0x11f;
+-		addObject(0xfad, 6, (TickFunction)TRN_tickSpeedTraining, NULL);
++		addObject(0xfad, 6, (TickFunction)TRN_tickSpeedTraining, (RenderFunction)TRN_renderCareHUD);
+ 		break;
+ 	}
+ 
+@@ -103,9 +103,8 @@ void TRN_tickSpeedTraining(int32_t instanceId)
+ 		}
+ 		if ((((MAIN_D_8013537A >= TRN_SESSION_OF(MOD_TRAIN_RULES)) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_80135370 == 0)) || ((MAIN_D_80135370 == 1) && (r >= 0))) {
+ 			TRN_modBlockBegin(); /* MOD (training block) */
+-			do {
+-				TRN_awardSpeedTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, instanceId, r);
+-			} while (TRN_modBlockNext());
++			TRN_awardSpeedTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, instanceId, r);
++			TRN_modBlockNext();
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 			playSound(8, 0xa);
+ 			createCameraMovement(&TAMER_ENTITY.entity.posData->location, 10);
+@@ -113,6 +112,14 @@ void TRN_tickSpeedTraining(int32_t instanceId)
+ 		}
+ 		break;
+ 	case 3:
++		if (TRN_MOD_QUIET) {
++			if (!TRN_modBlockWait()) {
++				TRN_saveTrainingStartTime();
++				TRN_awardSpeedTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, instanceId, 10);
++				TRN_modBlockNext();
++			}
++			break;
++		}
+ 		if (TRN_statGainsAreZero() == 1) {
+ 			MAIN_D_8013537C = 0;
+ 			TRAINING_STATE = 4;
+@@ -134,7 +141,7 @@ void TRN_tickSpeedTraining(int32_t instanceId)
+ 			setCameraFollowPlayer();
+ 			MAIN_D_8013537A = 0;
+ 			TRAINING_STATE = 0;
+-			removeObject(0xfad, instanceId, TRN_tickSpeedTraining, NULL);
++			removeObject(0xfad, instanceId, TRN_tickSpeedTraining, (RenderFunction)TRN_renderCareHUD);
+ 			TRAINING_COMPLETE = 1;
+ 		}
+ 		break;
+diff --git a/src/trn2/trn2_def_map108.c b/src/trn2/trn2_def_map108.c
+index c9fc882..0fb2050 100644
+--- a/src/trn2/trn2_def_map108.c
++++ b/src/trn2/trn2_def_map108.c
+@@ -87,9 +87,8 @@ void TRN2_tickDefenseTrainingMap108(int32_t instanceId)
+ 			setMapObjectsFlag(MAIN_D_801353B8, MAIN_D_801353BA, 0);
+ 			setMapObjectsFlag(MAIN_D_801353BE, MAIN_D_801353C0, 1);
+ 			TRN2_modBlockBegin(); /* MOD (training block) */
+-			do {
+-				TRN2_awardDefenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, instanceId, r);
+-			} while (TRN2_modBlockNext());
++			TRN2_awardDefenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, instanceId, r);
++			TRN2_modBlockNext();
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 			createCameraMovement(&TAMER_ENTITY.entity.posData->location, 10);
+ 			playSound(8, 0xa);
+@@ -97,6 +96,14 @@ void TRN2_tickDefenseTrainingMap108(int32_t instanceId)
+ 		}
+ 		break;
+ 	case 4:
++		if (TRN2_MOD_QUIET) {
++			if (!TRN2_modBlockWait()) {
++				TRN2_saveTrainingStartTime();
++				TRN2_awardDefenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, instanceId, 10);
++				TRN2_modBlockNext();
++			}
++			break;
++		}
+ 		if (TRN2_statGainsAreZero() == 1) {
+ 			MAIN_D_801353C4 = 0;
+ 			MAIN_D_801353BD = 5;
+@@ -141,7 +148,7 @@ int16_t arg;
+ 		TRN2_D_8008DC1C.vz = 0x3c5;
+ 		MAIN_D_801353B8 = 0x38;
+ 		MAIN_D_801353BA = 3;
+-		addObject(0xfad, 1, (TickFunction)TRN2_tickSpeedTraining, NULL);
++		addObject(0xfad, 1, (TickFunction)TRN2_tickSpeedTraining, (RenderFunction)TRN2_renderCareHUD);
+ 	}
+ 
+ 	MAIN_D_801353BC = readPStat(0xf6);
+diff --git a/src/trn2/trn2_def_map99.c b/src/trn2/trn2_def_map99.c
+index 3dea0ef..f296413 100644
+--- a/src/trn2/trn2_def_map99.c
++++ b/src/trn2/trn2_def_map99.c
+@@ -106,9 +106,8 @@ int16_t instanceId;
+ 		}
+ 		if (((MAIN_D_801353C2 >= TRN_SESSION_OF(MOD_TRAIN2_RULES)) && (MAIN_D_801353BC == 0)) || ((MAIN_D_801353BC == 1) && (r >= 0))) {
+ 			TRN2_modBlockBegin(); /* MOD (training block) */
+-			do {
+-				TRN2_awardDefenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 3, r);
+-			} while (TRN2_modBlockNext());
++			TRN2_awardDefenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 3, r);
++			TRN2_modBlockNext();
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 			createCameraMovement(&TAMER_ENTITY.entity.posData->location, 10);
+ 			playSound(8, 0xa);
+@@ -116,6 +115,14 @@ int16_t instanceId;
+ 		}
+ 		break;
+ 	case 4:
++		if (TRN2_MOD_QUIET) {
++			if (!TRN2_modBlockWait()) {
++				TRN2_saveTrainingStartTime();
++				TRN2_awardDefenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 3, 10);
++				TRN2_modBlockNext();
++			}
++			break;
++		}
+ 		if (TRN2_statGainsAreZero() == 1) {
+ 			setMapObjectsFlag(MAIN_D_801353B8, MAIN_D_801353BA, 1);
+ 			setMapObjectsFlag(MAIN_D_801353BE, MAIN_D_801353C0, 1);
+@@ -160,7 +167,7 @@ int16_t arg;
+ 		TRN2_D_8008DC1C.vz = 0x2e1;
+ 		MAIN_D_801353B4 = 0xa;
+ 		MAIN_D_801353B6 = 2;
+-		addObject(0xfab, 1, (TickFunction)TRN2_tickHpTrainingMap107, NULL);
++		addObject(0xfab, 1, (TickFunction)TRN2_tickHpTrainingMap107, (RenderFunction)TRN2_renderCareHUD);
+ 		break;
+ 	case 0x63:
+ 		TRN2_D_8008DC1C.vx = 0;
+@@ -174,7 +181,7 @@ int16_t arg;
+ 		MAIN_D_801353B6 = 2;
+ 		MAIN_D_801353B8 = 0xf;
+ 		MAIN_D_801353BA = 0x11;
+-		addObject(0xfab, 3, (TickFunction)TRN2_tickHpTrainingMap99, NULL);
++		addObject(0xfab, 3, (TickFunction)TRN2_tickHpTrainingMap99, (RenderFunction)TRN2_renderCareHUD);
+ 		break;
+ 	}
+ 
+diff --git a/src/trn2/trn2_hp_map107.c b/src/trn2/trn2_hp_map107.c
+index 62113fe..7e2eb53 100644
+--- a/src/trn2/trn2_hp_map107.c
++++ b/src/trn2/trn2_hp_map107.c
+@@ -84,14 +84,21 @@ int16_t instanceId;
+ 			MAIN_D_801353C2 /= TRN_STEP_OF(MOD_TRAIN2_RULES);
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 			TRN2_modBlockBegin(); /* MOD (training block) */
+-			do {
+-				TRN2_awardHpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 1, r);
+-			} while (TRN2_modBlockNext());
++			TRN2_awardHpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 1, r);
++			TRN2_modBlockNext();
+ 			createCameraMovement(&TAMER_ENTITY.entity.posData->location, 10);
+ 			MAIN_D_801353BD = 3;
+ 		}
+ 		break;
+ 	case 3:
++		if (TRN2_MOD_QUIET) {
++			if (!TRN2_modBlockWait()) {
++				TRN2_saveTrainingStartTime();
++				TRN2_awardHpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 1, 10);
++				TRN2_modBlockNext();
++			}
++			break;
++		}
+ 		if (TRN2_statGainsAreZero() == 1) {
+ 			MAIN_D_801353C4 = 0;
+ 			MAIN_D_801353BD = 4;
+@@ -146,7 +153,7 @@ int16_t arg;
+ 		TRN2_D_8008DC1C.vx = 0x6f8;
+ 		TRN2_D_8008DC1C.vy = 0;
+ 		TRN2_D_8008DC1C.vz = 0x1d2;
+-		addObject(0xfaf, 8, (TickFunction)TRN2_tickMpTraining, NULL);
++		addObject(0xfaf, 8, (TickFunction)TRN2_tickMpTraining, (RenderFunction)TRN2_renderCareHUD);
+ 	}
+ 
+ 	TRAINING_COMPLETE = 0;
+diff --git a/src/trn2/trn2_hp_map99.c b/src/trn2/trn2_hp_map99.c
+index 7bdd1f8..b5fb717 100644
+--- a/src/trn2/trn2_hp_map99.c
++++ b/src/trn2/trn2_hp_map99.c
+@@ -106,14 +106,21 @@ int16_t instanceId;
+ 			MAIN_D_801353C2 /= TRN_STEP_OF(MOD_TRAIN2_RULES);
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 			TRN2_modBlockBegin(); /* MOD (training block) */
+-			do {
+-				TRN2_awardHpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 3, r);
+-			} while (TRN2_modBlockNext());
++			TRN2_awardHpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 3, r);
++			TRN2_modBlockNext();
+ 			setMapObjectsFlag(MAIN_D_801353B8, MAIN_D_801353BA, 1);
+ 			createCameraMovement(&TAMER_ENTITY.entity.posData->location, 10);
+ 		}
+ 		break;
+ 	case 3:
++		if (TRN2_MOD_QUIET) {
++			if (!TRN2_modBlockWait()) {
++				TRN2_saveTrainingStartTime();
++				TRN2_awardHpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 3, 10);
++				TRN2_modBlockNext();
++			}
++			break;
++		}
+ 		if (TRN2_statGainsAreZero() == 1) {
+ 			MAIN_D_801353C4 = 0;
+ 			MAIN_D_801353BD = 4;
+diff --git a/src/trn2/trn2_mp.c b/src/trn2/trn2_mp.c
+index 8cdc762..6985b18 100644
+--- a/src/trn2/trn2_mp.c
++++ b/src/trn2/trn2_mp.c
+@@ -63,9 +63,8 @@ int16_t instanceId;
+ 		if ((((MAIN_D_801353C2 >= TRN_SESSION_OF(MOD_TRAIN2_RULES)) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_801353BC == 0)) || ((MAIN_D_801353BC == 1) && (r >= 0))) {
+ 			playSound(8, 0xa);
+ 			TRN2_modBlockBegin(); /* MOD (training block) */
+-			do {
+-				TRN2_awardMpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 8, r);
+-			} while (TRN2_modBlockNext());
++			TRN2_awardMpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 8, r);
++			TRN2_modBlockNext();
+ 			createCameraMovement(&TAMER_ENTITY.entity.posData->location, 10);
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 2);
+ 			MAIN_D_801353BD = 4;
+@@ -79,6 +78,14 @@ int16_t instanceId;
+ 		}
+ 		break;
+ 	case 5:
++		if (TRN2_MOD_QUIET) {
++			if (!TRN2_modBlockWait()) {
++				TRN2_saveTrainingStartTime();
++				TRN2_awardMpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 8, 10);
++				TRN2_modBlockNext();
++			}
++			break;
++		}
+ 		if (TRN2_statGainsAreZero() == 1) {
+ 			MAIN_D_801353C4 = 0;
+ 			MAIN_D_801353BD = 6;
+diff --git a/src/trn2/trn2_off.c b/src/trn2/trn2_off.c
+index 850078b..a6a44e3 100644
+--- a/src/trn2/trn2_off.c
++++ b/src/trn2/trn2_off.c
+@@ -101,7 +101,7 @@ int16_t arg;
+ 		MAIN_D_801353BA = 3;
+ 		MAIN_D_801353BE = 0xf;
+ 		MAIN_D_801353C0 = 1;
+-		addObject(0xfac, 1, (TickFunction)TRN2_tickOffenseTraining, NULL);
++		addObject(0xfac, 1, (TickFunction)TRN2_tickOffenseTraining, (RenderFunction)TRN2_renderCareHUD);
+ 	}
+ 
+ 	TRAINING_COMPLETE = 0;
+@@ -176,15 +176,22 @@ int16_t instanceId;
+ 			setMapObjectsFlag(0x27, 4, 0);
+ 			setMapObjectsFlag(MAIN_D_801353B4, MAIN_D_801353B6, 1);
+ 			TRN2_modBlockBegin(); /* MOD (training block) */
+-			do {
+-				TRN2_awardOffenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 1, r);
+-			} while (TRN2_modBlockNext());
++			TRN2_awardOffenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 1, r);
++			TRN2_modBlockNext();
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 			createCameraMovement(&TAMER_ENTITY.entity.posData->location, 10);
+ 			MAIN_D_801353BD = 4;
+ 		}
+ 		break;
+ 	case 4:
++		if (TRN2_MOD_QUIET) {
++			if (!TRN2_modBlockWait()) {
++				TRN2_saveTrainingStartTime();
++				TRN2_awardOffenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 1, 10);
++				TRN2_modBlockNext();
++			}
++			break;
++		}
+ 		if (TRN2_statGainsAreZero() == 1) {
+ 			MAIN_D_801353C4 = 0;
+ 			MAIN_D_801353BD = 5;
+@@ -234,7 +241,7 @@ int16_t arg;
+ 		MAIN_D_801353BA = 3;
+ 		MAIN_D_801353BE = 7;
+ 		MAIN_D_801353C0 = 0x31;
+-		addObject(0xfae, 1, (TickFunction)TRN2_tickDefenseTrainingMap108, NULL);
++		addObject(0xfae, 1, (TickFunction)TRN2_tickDefenseTrainingMap108, (RenderFunction)TRN2_renderCareHUD);
+ 		break;
+ 	case 0x63:
+ 		TRN2_D_8008DC1C.vx = 0x63e;
+@@ -249,7 +256,7 @@ int16_t arg;
+ 		MAIN_D_801353BA = 1;
+ 		MAIN_D_801353BE = 0x21;
+ 		MAIN_D_801353C0 = 1;
+-		addObject(0xfae, 3, (TickFunction)TRN2_tickDefenseTrainingMap99, NULL);
++		addObject(0xfae, 3, (TickFunction)TRN2_tickDefenseTrainingMap99, (RenderFunction)TRN2_renderCareHUD);
+ 		break;
+ 	}
+ 
+diff --git a/src/trn2/trn2_reward.c b/src/trn2/trn2_reward.c
+index 88829bd..fae151f 100644
+--- a/src/trn2/trn2_reward.c
++++ b/src/trn2/trn2_reward.c
+@@ -82,9 +82,8 @@ void TRN2_tickSpeedTraining(int32_t instanceId)
+ 		if ((((MAIN_D_801353C2 >= TRN_SESSION_OF(MOD_TRAIN2_RULES)) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_801353BC == 0)) || ((MAIN_D_801353BC == 1) && (r >= 0))) {
+ 			setMapObjectsFlag(MAIN_D_801353B8, MAIN_D_801353BA, 1);
+ 			TRN2_modBlockBegin(); /* MOD (training block) */
+-			do {
+-				TRN2_awardSpeedTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, instanceId, r);
+-			} while (TRN2_modBlockNext());
++			TRN2_awardSpeedTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, instanceId, r);
++			TRN2_modBlockNext();
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 			playSound(8, 0xa);
+ 			thunkStopSoundMask(MAIN_D_801353C8);
+@@ -93,6 +92,14 @@ void TRN2_tickSpeedTraining(int32_t instanceId)
+ 		}
+ 		break;
+ 	case 4:
++		if (TRN2_MOD_QUIET) {
++			if (!TRN2_modBlockWait()) {
++				TRN2_saveTrainingStartTime();
++				TRN2_awardSpeedTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, instanceId, 10);
++				TRN2_modBlockNext();
++			}
++			break;
++		}
+ 		if (TRN2_statGainsAreZero() == 1) {
+ 			MAIN_D_801353C4 = 0;
+ 			MAIN_D_801353BD = 5;
+-- 
+2.55.0
+

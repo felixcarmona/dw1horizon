@@ -79,7 +79,7 @@ Removes the engine limits on music, voices and sound memory while the original f
 1. The chunks of `FAALL`/`VBALL`/`VLALL`/`ESALL` are found through an index sector at the head of each file (magic
    `SIDX`, `{u16 sector, u16 sectors}` per chunk) instead of fixed strides and `MAP_SOUND_PARA`. Files without the index
    get the original layout, rebuilt from the file sizes.
-2. Music fonts 34..254 (`playMusic` takes the index's count); `SEQ_BUFFER_SIZE` 0x8000 (was 0x5800), the SEQ copy
+2. Music fonts 34..254 (`playMusic` takes the index's count); `SEQ_BUFFER_SIZE` 0x7800 (was 0x5800, then 0x8000), the SEQ copy
    checked.
 3. SPU RAM allocated per load (`spuPlaceBank`): bank 8 top-aligned under the reverb area, the others at their original
    slot when free, else the lowest free space; the map region or an oversized font is evicted when a load needs room; the
@@ -249,8 +249,8 @@ menu's option (0070) switches back to the classic bubble.
   A bubble is its circle (rows 0-25 of `CONDITION_SPRITES[11]`) plus the tail (rows 26-31) scaled from half to full
   height, so a full-size bubble looks exactly like the original. The icon scales with its own linear map and keeps its
   pivot centred. `MOD_RING_SHOWN` records what the last pass drew, for checking tools.
-- **X badge** (0158): while confirm in front of the partner would open the care menu (`mod_feed.c` sets
-  `MOD_FEED_HINT` for that tick), the dialogue box's X button (from the UI texture page, three frames) is drawn beside
+- **Care badge** (0158, updated by Square quick care): while physical Square would open the care menu (`mod_feed.c` sets
+  `MOD_FEED_HINT` for that tick), a native round cap with a pink Square (three separate UI texture frames) is drawn beside
   the bottom row's right edge, or where the bubbles would be when there are none, growing and shrinking over 0.2 s. Not
   with the classic bubble.
 
@@ -436,7 +436,7 @@ Techniques are ready within about a second of contact when `BTL_REL` was read ah
 | 0081, 0084, 0106, 0116-0137, 0139-0143, 0229-0230, 0235 | rules and tables as data | [../mods/data-sources.md](../mods/data-sources.md), [../mods/balance.md](../mods/balance.md) |
 | 0090, 0183, 0190-0191, 0203 | text bank and language | [text-sources.md](text-sources.md), [../mods/language.md](../mods/language.md) |
 | 0092-0093, 0096, 0114-0115, 0129, 0182, 0193, 0205 | saves | [save-format.md](save-format.md) |
-| 0150-0155 | care menu (confirm in front of the partner) | [partner.md](partner.md) |
+| 0150-0155, Square quick care | care menu (Square from any partner distance in the field) | [items-and-menus.md](items-and-menus.md) |
 | 0162-0164, 0166, 0218, 0220-0222 | status bars, digital clock, triangle menu | [items-and-menus.md](items-and-menus.md) |
 | 0167, 0169, 0180-0181, 0193-0194, 0199, 0212, 0214, 0234, 0239, 0241 | OPTIONS | [../mods/options.md](../mods/options.md) |
 | 0217, 0232, 0240 | imported animation transitions | [motion.md](motion.md) |
@@ -451,7 +451,7 @@ Techniques are ready within about a second of contact when `BTL_REL` was read ah
 | 0094 | the MP bonus message soft-locks the battle result box |
 | 0124 | the script's merit reduction set merit to minus the value (always ending at 0); no original script uses it |
 | 0220 | the Status page's happiness label read the wrong texture columns (a stray mark before it, its last letter cut) |
-| 0231 | a selection with no end-of-selection marker let cancel continue from inside the first option's code (instant wins, entries, prosperity and money by accident); cancel is now refused there |
+| 0231 | a selection with no end-of-selection marker let cancel continue from inside the first option's code, misaligned (23 such selections, 11 already block cancel; the one with a lasting effect is Piximon's Training Manual sale, which overwrote prosperity and the tournament day and cup with the date); cancel is now refused there |
 
 ## Jijimon's starter quiz (0273)
 
@@ -459,7 +459,13 @@ All seven three-option questions run through a single state loop. `modQuizResult
 resolves ties by the latest supporting answer; equal scores supported last by the same answer use the earlier
 axis in the documented order. It maps the element/attribute/temperament cell to a starter-list index.
 `modNewGameStarter` resolves p254 to a uint16 species id for creation and both default-name paths.
-The packed table adds 224 bytes; the linked main executable grows by 832 bytes (`main_BSS_END` 0x801ca0b8 → 0x801ca3f8, series through 0272 → 0273, same EN bank).
+The expanded starter list now has 38 uint16 entries: 37 expanded quiz results plus Kunemon for NEW DIGIMON off. Nature/Virus Bold, Calm and Cunning select Mushroomon, Wormmon and Dokunemon; Ice/Virus Cunning selects Syakomon. The packed tail is 232 bytes, aligned to four bytes. `MOD_QUIZ_COUNT` controls the C offsets and index guard; the Python codec uses the same layout. No dialogue entries change.
+
+The list expansion costs 16 bytes of aligned heap (`main_BSS_END` 0x801cee08 → 0x801cee10, same nine-language padding).
+
+The resident music-sequence buffer is reduced from 0x8000 to 0x7800 to preserve 2 MB model-loading headroom: the largest of the 35 built music fonts uses 0x7284 bytes, leaving 0x57c bytes of capacity above that peak. The sound authoring limit matches the resident buffer. The final nine-language layout has `main_BSS_END` 0x801ce610 and 186592 bytes of heap; all 320 model-aware screen setups fit, with a minimum margin of 1872 bytes on screen 207.
+
+Originally, the packed table added 224 bytes; the linked main executable grew by 832 bytes (`main_BSS_END` 0x801ca0b8 → 0x801ca3f8, series through 0272 → 0273, same EN bank).
 New-game technique exceptions remain the two authored rows; every other starter learns and equips what evolving
 into it teaches (patch 0332, the `EVL_applyEvolution` rule: the weakest technique of its main element in the
 `evolutionFormula.learn` slots), or `DIGI_PARA(type).moves[0]` when it has none of its element. `modInitializeStarterTechniques` runs only in main's new-game branch, after

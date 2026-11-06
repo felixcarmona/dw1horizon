@@ -207,40 +207,40 @@
     }
    ],
    "en": {
-    "title": "60 frames per second",
-    "body": "The world, the battles and the tournaments are drawn at up to 60 frames per second (the original draws 20) while the game keeps its original timing underneath: your partner ages, trains and gets hungry exactly as before. Left, the original; right, Horizon. A steady 60 needs an emulator with a faster CPU setting (the title screen tells you which). At normal speed busy places run closer to 25-40, and on a real PlayStation about 30. Controls are still read 20 times per second, and the smoothing shows the picture up to 50 ms later."
+    "title": "Automatic 20/60 fps",
+    "body": "The game chooses automatically: evenly spaced 20 fps on a PlayStation or an emulator at normal CPU speed, and 60 fps with sufficient CPU overclock (250%). It adapts when the overclock changes during play. Logic and controls stay at 20 Hz. Smoothing at 60 fps shows the picture up to 50 ms later. Left, the original; right, Horizon."
    },
    "es": {
-    "title": "60 imágenes por segundo",
-    "body": "El mundo, los combates y los torneos se dibujan hasta a 60 imágenes por segundo (el original dibuja 20), y por debajo el juego mantiene su ritmo original: tu compañero crece, entrena y tiene hambre exactamente igual que antes. A la izquierda, el original; a la derecha, Horizon. Para mantener 60 estables hace falta un emulador con la CPU acelerada (la pantalla de título te dice qué activar). A velocidad normal, las zonas con más carga rondan 25-40, y en una PlayStation real, unas 30. Los botones se siguen leyendo 20 veces por segundo, y el suavizado muestra la imagen hasta 50 ms después."
+    "title": "20/60 imágenes por segundo automáticas",
+    "body": "El juego elige automáticamente: 20 imágenes por segundo con ritmo uniforme en PlayStation o en un emulador a velocidad normal, y 60 con suficiente aceleración de CPU (250%). Se adapta si cambias la aceleración durante la partida. La lógica y los controles siguen a 20 Hz. El suavizado a 60 muestra la imagen hasta 50 ms después. A la izquierda, el original; a la derecha, Horizon."
    },
    "pt-br": {
-    "title": "60 quadros por segundo",
-    "body": "O mundo, as batalhas e os torneios são desenhados a até 60 quadros por segundo (o original desenha 20), enquanto o jogo mantém o ritmo original por baixo: seu parceiro envelhece, treina e sente fome exatamente como antes. À esquerda, o original; à direita, Horizon. Manter 60 estáveis exige um emulador com a CPU acelerada (a tela de título diz o que ativar). Em velocidade normal, as áreas mais pesadas ficam perto de 25-40, e em um PlayStation real, cerca de 30. Os botões continuam sendo lidos 20 vezes por segundo, e a suavização mostra a imagem até 50 ms depois."
+    "title": "20/60 quadros por segundo automáticos",
+    "body": "O jogo escolhe automaticamente: 20 quadros por segundo com ritmo uniforme no PlayStation ou em um emulador com CPU em velocidade normal, e 60 com overclock suficiente (250%). Ele se adapta se o overclock mudar durante a partida. A lógica e os controles continuam a 20 Hz. A suavização a 60 fps mostra a imagem até 50 ms depois. À esquerda, o original; à direita, Horizon."
    },
    "fr": {
-    "title": "60 images par seconde",
-    "body": "Le monde, les combats et les tournois s'affichent jusqu'à 60 images par seconde (l'original en affiche 20), tandis que le jeu garde son rythme d'origine en dessous : ton partenaire vieillit, s'entraîne et a faim exactement comme avant. À gauche, l'original ; à droite, Horizon. Pour tenir 60 de façon stable, il faut un émulateur avec le CPU accéléré (l'écran titre indique quoi activer). À vitesse normale, les zones chargées tournent plutôt à 25-40, et sur une vraie PlayStation à environ 30. Les boutons sont toujours lus 20 fois par seconde, et le lissage affiche l'image jusqu'à 50 ms plus tard."
+    "title": "20/60 images par seconde automatiques",
+    "body": "Le jeu choisit automatiquement : 20 images par seconde à cadence régulière sur PlayStation ou sur un émulateur à vitesse CPU normale, et 60 avec un CPU suffisamment accéléré (250 %). Il s'adapte si la vitesse change en cours de partie. La logique et les commandes restent à 20 Hz. Le lissage à 60 images par seconde affiche l'image jusqu'à 50 ms plus tard. À gauche, l'original ; à droite, Horizon."
    },
    "de": {
-    "title": "60 Bilder pro Sekunde",
-    "body": "Die Welt, die Kämpfe und die Turniere laufen mit bis zu 60 Bildern pro Sekunde (das Original zeigt 20), während das Spiel darunter sein ursprüngliches Timing behält: Dein Partner altert, trainiert und bekommt Hunger genau wie vorher. Links das Original, rechts Horizon. Für stabile 60 braucht es einen Emulator mit erhöhter CPU-Geschwindigkeit (der Titelbildschirm zeigt, was du aktivieren musst). Bei normaler Geschwindigkeit laufen aufwendige Stellen eher mit 25-40, auf einer echten PlayStation mit etwa 30. Die Tasten werden weiterhin 20-mal pro Sekunde gelesen, und die Glättung zeigt das Bild bis zu 50 ms später."
+    "title": "Automatische 20/60 Bilder pro Sekunde",
+    "body": "Das Spiel wählt automatisch: gleichmäßige 20 Bilder pro Sekunde auf einer PlayStation oder im Emulator bei normalem CPU-Takt, und 60 mit ausreichend CPU-Übertaktung (250 %). Änderungen während des Spiels werden erkannt. Spiellogik und Eingaben bleiben bei 20 Hz. Die Glättung bei 60 Bildern pro Sekunde zeigt das Bild bis zu 50 ms später. Links das Original, rechts Horizon."
    },
    "it": {
-    "title": "60 fotogrammi al secondo",
-    "body": "Il mondo, le battaglie e i tornei sono disegnati fino a 60 fotogrammi al secondo (l'originale ne disegna 20), mentre sotto il gioco mantiene i suoi tempi originali: il tuo partner invecchia, si allena e ha fame esattamente come prima. A sinistra l'originale; a destra Horizon. Per 60 stabili serve un emulatore con la CPU accelerata (la schermata del titolo indica cosa attivare). A velocità normale le zone più pesanti stanno intorno a 25-40, e su una vera PlayStation a circa 30. I pulsanti sono ancora letti 20 volte al secondo, e l'interpolazione mostra l'immagine fino a 50 ms dopo."
+    "title": "20/60 fotogrammi al secondo automatici",
+    "body": "Il gioco sceglie automaticamente: 20 fotogrammi al secondo regolari su PlayStation o su un emulatore con CPU a velocità normale, e 60 con overclock sufficiente (250%). Si adatta ai cambi di overclock durante la partita. Logica e comandi restano a 20 Hz. L'interpolazione a 60 fps mostra l'immagine fino a 50 ms dopo. A sinistra l'originale, a destra Horizon."
    },
    "ja": {
-    "title": "毎秒60フレーム",
-    "body": "フィールド、バトル、大会を最大60fpsで描画します（オリジナルは20fps）。ゲーム内部のタイミングは元のままなので、パートナーの成長、トレーニング、空腹は以前とまったく同じです。左がオリジナル、右がHorizonです。安定した60fpsには、エミュレーターのCPU速度を上げる必要があります（設定はタイトル画面に表示されます）。通常速度では負荷の高い場所は25〜40fps程度、実機のPlayStationでは約30fpsです。ボタン入力は今も毎秒20回の読み取りで、補間により映像は最大50ミリ秒遅れて表示されます。"
+    "title": "20/60fpsを自動選択",
+    "body": "ゲームが自動で選びます。実機のPlayStationや通常のCPU速度のエミュレーターでは等間隔の20fps、十分なCPUオーバークロック（250%）では60fpsです。プレイ中のCPU速度変更にも対応します。ゲームの処理と入力は20Hzのままです。60fpsの補間表示には最大50ミリ秒の遅れがあります。左がオリジナル、右がHorizonです。"
    },
    "ca": {
-    "title": "60 imatges per segon",
-    "body": "El món, els combats i els tornejos es dibuixen fins a 60 imatges per segon (l'original en dibuixa 20) mentre el joc conserva per sota el ritme original: el teu company envelleix, entrena i té gana exactament com abans. A l'esquerra, l'original; a la dreta, Horizon. Per mantenir 60 estables cal un emulador amb la CPU accelerada (la pantalla de títol t'indica què activar). A velocitat normal, les zones amb més càrrega es mouen al voltant de 25-40, i en una PlayStation real, unes 30. Els botons es continuen llegint 20 vegades per segon, i el suavitzat mostra la imatge fins a 50 ms després."
+    "title": "20/60 imatges per segon automàtiques",
+    "body": "El joc tria automàticament: 20 imatges per segon amb ritme uniforme a PlayStation o en un emulador amb la CPU a velocitat normal, i 60 amb prou acceleració de CPU (250%). S'adapta si canvies l'acceleració durant la partida. La lògica i els controls continuen a 20 Hz. El suavitzat a 60 mostra la imatge fins a 50 ms després. A l'esquerra, l'original; a la dreta, Horizon."
    },
    "zh-hans": {
-    "title": "每秒60帧",
-    "body": "世界、战斗和大赛的画面最高可达每秒60帧（原版为20帧），游戏内部计时保持原样：搭档的成长、训练和饥饿速度均不变。左为原版，右为Horizon。稳定60帧需要在模拟器中提高CPU速度，标题画面会提示具体设置。正常CPU速度下，繁忙场景通常为25至40帧；在PlayStation实机上约为30帧。输入仍每秒读取20次，画面平滑最多会带来50毫秒的显示延迟。"
+    "title": "自动选择20/60帧",
+    "body": "游戏会自动选择：原版PlayStation或正常CPU速度的模拟器使用均匀的20帧，CPU超频足够（250%）时使用60帧。游戏中调整超频后也会自动适应。逻辑和输入仍为20Hz。60帧插值画面最多延迟50毫秒。左侧为原版，右侧为Horizon。"
    }
   },
   {
@@ -551,40 +551,40 @@
     }
    ],
    "en": {
-    "title": "Everything is optional",
-    "body": "Language, frame rate, font, difficulty, the new Digimon, the extended story, the quick battle start, the digital clock and the status bars: each has its row in OPTIONS at the title, and your choices are kept with your save."
+    "title": "Your settings",
+    "body": "Language, font, difficulty, the new Digimon, the extended story and the quick battle start: each has its row in OPTIONS at the title, and your choices are kept with your save."
    },
    "es": {
-    "title": "Todo es opcional",
-    "body": "Idioma, imágenes por segundo, letra, dificultad, los Digimon nuevos, la historia extendida, el inicio rápido de los combates, el reloj digital y las barras de estado: cada cosa tiene su fila en OPTIONS en la pantalla de título, y tus elecciones se guardan con la partida."
+    "title": "Tus ajustes",
+    "body": "Idioma, letra, dificultad, los Digimon nuevos, la historia extendida y el inicio rápido de los combates: cada cosa tiene su fila en OPTIONS en la pantalla de título, y tus elecciones se guardan con la partida."
    },
    "pt-br": {
-    "title": "Tudo é opcional",
-    "body": "Idioma, taxa de quadros, fonte, dificuldade, os Digimon novos, a história estendida, o início rápido das batalhas, o relógio digital e as barras de status: cada um tem sua linha em OPTIONS na tela de título, e suas escolhas ficam guardadas no seu save."
+    "title": "Suas configurações",
+    "body": "Idioma, fonte, dificuldade, os Digimon novos, a história estendida e o início rápido das batalhas: cada um tem sua linha em OPTIONS na tela de título, e suas escolhas ficam guardadas no seu save."
    },
    "fr": {
-    "title": "Tout est optionnel",
-    "body": "Langue, fréquence d'images, police, difficulté, les nouveaux Digimon, l'histoire étendue, le démarrage rapide des combats, l'horloge numérique et les barres d'état : chacun a sa ligne dans OPTIONS sur l'écran titre, et tes choix sont gardés avec ta sauvegarde."
+    "title": "Tes réglages",
+    "body": "Langue, police, difficulté, les nouveaux Digimon, l'histoire étendue et le démarrage rapide des combats : chacun a sa ligne dans OPTIONS sur l'écran titre, et tes choix sont gardés avec ta sauvegarde."
    },
    "de": {
-    "title": "Alles ist optional",
-    "body": "Sprache, Bildrate, Schrift, Schwierigkeit, die neuen Digimon, die erweiterte Geschichte, der schnelle Kampfstart, die Digitaluhr und die Statusbalken: Alles hat seine Zeile in OPTIONS auf dem Titelbild, und deine Wahl wird mit deinem Spielstand gespeichert."
+    "title": "Deine Einstellungen",
+    "body": "Sprache, Schrift, Schwierigkeit, die neuen Digimon, die erweiterte Geschichte und der schnelle Kampfstart: Alles hat seine Zeile in OPTIONS auf dem Titelbild, und deine Wahl wird mit deinem Spielstand gespeichert."
    },
    "it": {
-    "title": "Tutto è opzionale",
-    "body": "Lingua, frame rate, font, difficoltà, i nuovi Digimon, la storia estesa, l'avvio rapido delle battaglie, l'orologio digitale e le barre di stato: ognuno ha la sua riga in OPTIONS dalla schermata del titolo, e le tue scelte restano salvate con la partita."
+    "title": "Le tue impostazioni",
+    "body": "Lingua, font, difficoltà, i nuovi Digimon, la storia estesa e l'avvio rapido delle battaglie: ognuno ha la sua riga in OPTIONS dalla schermata del titolo, e le tue scelte restano salvate con la partita."
    },
    "ja": {
-    "title": "すべてオンオフ自由",
-    "body": "言語、フレームレート、フォント、難易度、新デジモン、拡張ストーリー、バトル即スタート、デジタル時計、ステータスバー。タイトル画面のOPTIONSでそれぞれ設定でき、選択はセーブデータに保存されます。"
+    "title": "自分好みの設定",
+    "body": "言語、フォント、難易度、新デジモン、拡張ストーリー、バトル即スタート。タイトル画面のOPTIONSでそれぞれ設定でき、選択はセーブデータに保存されます。"
    },
    "ca": {
-    "title": "Tot és opcional",
-    "body": "Idioma, imatges per segon, lletra, dificultat, els Digimon nous, la història ampliada, l'inici ràpid dels combats, el rellotge digital i les barres d'estat: cada opció té la seva fila a OPTIONS a la pantalla de títol, i el que triïs es desa amb la partida."
+    "title": "Els teus ajustos",
+    "body": "Idioma, lletra, dificultat, els Digimon nous, la història ampliada i l'inici ràpid dels combats: cada opció té la seva fila a OPTIONS a la pantalla de títol, i el que triïs es desa amb la partida."
    },
    "zh-hans": {
     "title": "各项功能，自由选择",
-    "body": "语言、帧率、字体、难度、新数码宝贝、扩展故事、快速开战、数字时钟和状态条：标题画面的OPTIONS（选项）中，每项均可单独设置，选择随存档保存。"
+    "body": "语言、字体、难度、新数码宝贝、扩展故事、快速开战：标题画面的OPTIONS（选项）中，每项均可单独设置，选择随存档保存。"
    }
   },
   {
@@ -670,39 +670,39 @@
    ],
    "en": {
     "title": "A care menu that knows what is wrong",
-    "body": "Press X in front of your partner and the menu lists only what it needs, the most urgent first: a scolding when it deserves one, the cure for what it has, the potty, food when it is hungry (its favourite first) and sleep. A small X badge tells you when the menu is there."
+    "body": "Press Square in the field, even far from your partner and the menu lists only what it needs, the most urgent first: a scolding when it deserves one, the cure for what it has, the potty, food when it is hungry (its favourite first) and sleep. A small pink Square badge tells you when the menu is there."
    },
    "es": {
     "title": "Un menú de cuidados que sabe qué le pasa",
-    "body": "Pulsa X delante de tu compañero y el menú lista solo lo que necesita, lo más urgente primero: una regañina si la merece, la cura de lo que tenga, el orinal, comida si tiene hambre (su favorita primero) y dormir. Una pequeña X te avisa de cuándo está el menú."
+    "body": "Pulsa Cuadrado en el campo, incluso lejos de tu compañero y el menú lista solo lo que necesita, lo más urgente primero: una regañina si la merece, la cura de lo que tenga, el orinal, comida si tiene hambre (su favorita primero) y dormir. Un pequeño Cuadrado rosa te avisa de cuándo está el menú."
    },
    "pt-br": {
     "title": "Um menu de cuidados que sabe o que há de errado",
-    "body": "Aperte X na frente do seu parceiro e o menu lista só o que ele precisa, o mais urgente primeiro: uma bronca quando merece, o remédio para o que ele tem, o penico, comida quando está com fome (a favorita primeiro) e dormir. Um pequeno X avisa quando o menu está disponível."
+    "body": "Aperte Quadrado no campo, mesmo longe do seu parceiro e o menu lista só o que ele precisa, o mais urgente primeiro: uma bronca quando merece, o remédio para o que ele tem, o penico, comida quando está com fome (a favorita primeiro) e dormir. Um pequeno Quadrado rosa avisa quando o menu está disponível."
    },
    "fr": {
     "title": "Un menu de soins qui sait ce qui ne va pas",
-    "body": "Appuie sur X devant ton partenaire : le menu ne liste que ce dont il a besoin, le plus urgent d'abord : une réprimande s'il la mérite, le remède à ce qu'il a, le pot, de la nourriture s'il a faim (sa préférée d'abord) et le sommeil. Un petit X te prévient que le menu est disponible."
+    "body": "Appuie sur Carré sur le terrain, même loin de ton partenaire : le menu ne liste que ce dont il a besoin, le plus urgent d'abord : une réprimande s'il la mérite, le remède à ce qu'il a, le pot, de la nourriture s'il a faim (sa préférée d'abord) et le sommeil. Un petit Carré rose te prévient que le menu est disponible."
    },
    "de": {
     "title": "Ein Pflegemenü, das weiß, was fehlt",
-    "body": "Drücke X vor deinem Partner, und das Menü listet nur, was er braucht, das Dringendste zuerst: eine Standpauke, wenn er sie verdient, das Mittel gegen das, was er hat, das Töpfchen, Futter bei Hunger (Lieblingsessen zuerst) und Schlaf. Ein kleines X zeigt an, dass das Menü bereitsteht."
+    "body": "Drücke Quadrat im Feld, auch weit von deinem Partner entfernt, und das Menü listet nur, was er braucht, das Dringendste zuerst: eine Standpauke, wenn er sie verdient, das Mittel gegen das, was er hat, das Töpfchen, Futter bei Hunger (Lieblingsessen zuerst) und Schlaf. Ein kleines rosa Quadrat zeigt an, dass das Menü bereitsteht."
    },
    "it": {
     "title": "Un menu di cura che sa cosa non va",
-    "body": "Premi X davanti al tuo compagno e il menu elenca solo ciò di cui ha bisogno, il più urgente per primo: una sgridata se la merita, la cura per ciò che ha, il vasino, il cibo se ha fame (il preferito per primo) e il sonno. Una piccola X ti avvisa che il menu è disponibile."
+    "body": "Premi Quadrato sul campo, anche lontano dal tuo compagno e il menu elenca solo ciò di cui ha bisogno, il più urgente per primo: una sgridata se la merita, la cura per ciò che ha, il vasino, il cibo se ha fame (il preferito per primo) e il sonno. Un piccolo Quadrato rosa ti avvisa che il menu è disponibile."
    },
    "ja": {
     "title": "困っていることを知っているお世話メニュー",
-    "body": "パートナーの前でXを押すと、必要なことだけが緊急度の高い順に並びます。叱る（叱るべきとき）、症状の手当て、トイレ、空腹時の食べ物（好物が先頭）、睡眠。メニューが開けるときは小さなXバッジが出ます。"
+    "body": "フィールドで□を押すと、パートナーから離れていても、必要なことだけが緊急度の高い順に並びます。叱る（叱るべきとき）、症状の手当て、トイレ、空腹時の食べ物（好物が先頭）、睡眠。メニューが開けるときはピンクの□バッジが出ます。"
    },
    "ca": {
     "title": "Un menú de cures que sap què li passa",
-    "body": "Prem X davant del teu company i el menú llista només el que necessita, el més urgent primer: una renyada si se la mereix, la cura del que tingui, l'orinal, menjar si té gana (el preferit primer) i dormir. Una petita X t'avisa que el menú és disponible."
+    "body": "Prem Quadrat al camp, encara que siguis lluny del company i el menú llista només el que necessita, el més urgent primer: una renyada si se la mereix, la cura del que tingui, l'orinal, menjar si té gana (el preferit primer) i dormir. Un petit Quadrat rosa t'avisa que el menú és disponible."
    },
    "zh-hans": {
     "title": "按搭档的需要，安排照顾菜单",
-    "body": "站在搭档面前按×，菜单只列出它当前需要的照顾，最紧急的排在前面：该训斥时训斥，按病症给药，上厕所，饿了就喂食（最爱的食物优先），还有睡觉。可以打开菜单时，会出现一个小小的×标记。"
+    "body": "在野外按□，即使远离搭档，菜单只列出它当前需要的照顾，最紧急的排在前面：该训斥时训斥，按病症给药，上厕所，饿了就喂食（最爱的食物优先），还有睡觉。可以打开菜单时，会出现一个粉色的□标记。"
    }
   },
   {

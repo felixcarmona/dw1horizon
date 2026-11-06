@@ -360,6 +360,11 @@
    "Per a començar... vegem. Per què no explores",
    "el Bosc nadiu, aquí mateix, als afores de la",
    "ciutat?"
+  ],
+  [
+   "Quan aparegui el {color 4}□{color 1} rosa,",
+   "prem {color 4}□{color 1} per cuidar el company,",
+   "encara que sigui lluny."
   ]
  ],
  "s178.sec6.u0": [
@@ -378,6 +383,16 @@
    "Per a veure els teus objectes,",
    "prem {color 5}△{color 1}, tria Objectes i",
    "mira'ls amb {color 6}×{color 1}."
+  ],
+  [
+   "Quan aparegui el {color 4}□{color 1} rosa,",
+   "prem {color 4}□{color 1} per cuidar el company,",
+   "encara que sigui lluny."
+  ],
+  [
+   "Prem {color 6}×{color 1} per parlar o actuar.",
+   "{color 4}□{color 1} només obre la llista. Tria",
+   "un objecte i confirma'n l'ús."
   ]
  ],
  "s178.sec6.u3": [
@@ -482,6 +497,11 @@
    "vegades els has de lloar i d'altres, renyar.",
    "Sobretot, observa bé el teu Digimon i cuida'l",
    "molt."
+  ],
+  [
+   "Quan aparegui el {color 4}□{color 1} rosa,",
+   "prem {color 4}□{color 1} per cuidar el company,",
+   "encara que sigui lluny."
   ]
  ],
  "s178.sec20.u0": [

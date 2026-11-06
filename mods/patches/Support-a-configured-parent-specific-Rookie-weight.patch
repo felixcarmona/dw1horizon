@@ -1,0 +1,80 @@
+From b85c50144bfdd3034b1a820bf2c72325622ac8e2 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 5 Nov 2026 22:06:30 +0000
+Subject: [PATCH] Support a configured parent-specific Rookie weight
+
+---
+ include/dw/level.h   |  1 +
+ src/main/evolution.c | 17 +++++++++++++++--
+ src/main/game_menu.c |  1 +
+ 3 files changed, 17 insertions(+), 2 deletions(-)
+
+diff --git a/include/dw/level.h b/include/dw/level.h
+index fe51939..5fba114 100644
+--- a/include/dw/level.h
++++ b/include/dw/level.h
+@@ -353,6 +353,7 @@ int32_t evoPassPoints(void);
+ #define EVO_MET_WEIGHT	2
+ #define EVO_MET_STATS	4
+ #define EVO_MET_BONUS	8
++int32_t evoTargetWeight(int32_t current, int16_t target);
+ int32_t evoRequirementsMet(int32_t current, int16_t target, int8_t isMaxCM, int8_t isMaxBattles);
+ int32_t evoRequirementPoints(int32_t met);
+ int32_t evoPartnerTopStat(void);
+diff --git a/src/main/evolution.c b/src/main/evolution.c
+index 140f71e..848ceb9 100644
+--- a/src/main/evolution.c
++++ b/src/main/evolution.c
+@@ -1209,6 +1209,17 @@ int32_t evoPartnerTopStat(void)
+ 
+ /* MOD (chart): which of the four scored requirements of `target` the partner meets (EVO_MET_CARE, _WEIGHT, _STATS,
+  * _BONUS); calculateRequirementScore turns them into points, the chart's tree shows them */
++/* Optional parent-specific Rookie weight: preserve the target's other routes. */
++int16_t MOD_EVO_ROOKIE_WEIGHTS[3] __attribute__((section(".data.MOD_EVO_ROOKIE_WEIGHTS"))) = { -1, -1, -1 };
++
++int32_t evoTargetWeight(int32_t current, DigimonId target)
++{
++  if (MOD_OPT_NEW_DIGIMON && current == MOD_EVO_ROOKIE_WEIGHTS[0] &&
++      target == MOD_EVO_ROOKIE_WEIGHTS[1])
++    return MOD_EVO_ROOKIE_WEIGHTS[2];
++  return EVO_REQ_ROW(target).weight;
++}
++
+ int32_t evoRequirementsMet(int32_t current, DigimonId target, int8_t isMaxCM, int8_t isMaxBattles)
+ {
+   EvoRequirements *reqs;
+@@ -1216,6 +1227,7 @@ int32_t evoRequirementsMet(int32_t current, DigimonId target, int8_t isMaxCM, in
+   PartnerPara *partner;
+   int16_t reqArray[6];
+   int32_t met;
++  int32_t weight;
+   int8_t numMoves;
+ 
+   reqs = &EVO_REQ_ROW(target);
+@@ -1230,8 +1242,9 @@ int32_t evoRequirementsMet(int32_t current, DigimonId target, int8_t isMaxCM, in
+     met |= EVO_MET_CARE;
+   }
+ 
+-  if (reqs->weight - evoAmt(MOD_EVF_SCORE_WEIGHT_TOL) <= partner->weight &&
+-      partner->weight <= reqs->weight + evoAmt(MOD_EVF_SCORE_WEIGHT_TOL))
++  weight = evoTargetWeight(current, target);
++  if (weight - evoAmt(MOD_EVF_SCORE_WEIGHT_TOL) <= partner->weight &&
++      partner->weight <= weight + evoAmt(MOD_EVF_SCORE_WEIGHT_TOL))
+     met |= EVO_MET_WEIGHT;
+ 
+   if (DIGI_PARA(target).level == 3U) {
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 6e33947..24a010a 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -5113,6 +5113,7 @@ static __attribute__((noinline)) void chartCardBuild(int32_t target)
+ 
+ 	/* weight */
+ 	tol = evoAmt(MOD_EVF_SCORE_WEIGHT_TOL);
++	r.weight = evoTargetWeight(CHART_DETAIL_ID, target);
+ 	chartRange(a, CHART_TEXT_WEIGHT, r.weight - tol, r.weight + tol);
+ 	chartCardLine(a, PARTNER_PARA.weight, met & EVO_MET_WEIGHT, 1, 0, NULL);
+ 
+-- 
+2.55.0
+

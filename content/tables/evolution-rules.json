@@ -15,6 +15,7 @@
       "target": 11
     }
   },
+  "evolutionRookieWeights": [{"from": 16, "to": 17, "weight": 26, "note": "NEW DIGIMON on only: canon Tsunomon to Gabumon uses deliberate overfeeding; Koromon retains Gabumon's original weight 15 and requirements."}],
   "evolutionFresh": [
     {
       "from": 1,
@@ -247,6 +248,12 @@
       "target": 65,
       "partnerLevel": 4,
       "note": "Metalbanana -> MetalEtemon"
+    },
+    {
+      "item": 124,
+      "target": 238,
+      "partnerLevel": 3,
+      "note": "Dolph Fin -> Dolphmon (unused AS Decoder slot)"
     }
   ],
   "evolutionFormula": {

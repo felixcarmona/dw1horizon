@@ -42,7 +42,7 @@
     "poop_size": 8,
     "favorite_food": "Meat",
     "sleep_cycle": "19:00-04:00",
-    "favored_region": 5,
+    "favored_region": 3,
     "training_type": "even",
     "birth_weight": 15,
     "status_screen_position": [200, 330, -1320],
@@ -65,7 +65,7 @@
       "discipline": -1,
       "happiness": -1,
       "battles": 15,
-      "techs": -1,
+      "techs": 0,
       "flags": 16
     },
     "gains": {"hp": 500, "mp": 500, "offense": 100, "defense": 50, "speed": 50, "brains": 100}

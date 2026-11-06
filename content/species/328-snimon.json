@@ -46,10 +46,10 @@
     "poop_size": 10,
     "favorite_food": "Digicatfish",
     "sleep_cycle": "07:00-16:00",
-    "favored_region": 6,
+    "favored_region": 7,
     "training_type": "offense-speed",
     "birth_weight": 30,
-    "status_screen_position": [30, 390, -940],
+    "status_screen_position": [-2141, 458, 3695],
     "item_distance": 25,
     "training": {"animation": 46, "hit_tick": 10}
   },

@@ -182,6 +182,7 @@ def signs(out, extracted=None, files=None, languages=('en', 'es'), listing='file
     (default the repository's), files {DEST: SRC} what --file gives. -> the files.txt lines"""
     extracted = extracted or os.path.join(ROOT, 'extracted')
     given = dict(files or {})
+    from tools.map_regions import apply as apply_regions
 
     def source(mp, ext):
         """the file the disc carries for map path mp (no extension) + ext: --file's, else the disc's"""
@@ -195,6 +196,7 @@ def signs(out, extracted=None, files=None, languages=('en', 'es'), listing='file
     def mapcopy(lang, mp):
         if (lang, mp) not in mapcopies:
             mapcopies[(lang, mp)] = dwmap.MapFile(open(source(mp, '.MAP'), 'rb').read())
+            apply_regions(mapcopies[(lang, mp)], os.path.basename(mp))
         return mapcopies[(lang, mp)]
     with tempfile.TemporaryDirectory() as tmp:
         for lang in sorted({n.split('/')[0] for n in cutout.index()} - {'fromjp'}, reverse=True):   # (pt-br, ..., en)
@@ -246,9 +248,16 @@ def signs(out, extracted=None, files=None, languages=('en', 'es'), listing='file
                     # MAYO11's normal text belongs only to frame 5. Pasting it
                     # into the covering tree or additive lamp glow redraws
                     # DRILL in front of the takeover, even with frame 5 hidden.
+                    frames = None
+                    if sign == 'audit-13':
+                        frames = () if lang == 'ja' else (5,)
+                    elif sign == 'audit-22':
+                        # The collapse reveals hidden frame 7, another copy of
+                        # the warning behind the normal foreground frame 4.
+                        frames = (4, 7)
                     if sprite_paste(mapcopy(lang, mp), t, Pixels(w, h, new), Pixels(w, h, mask), x0, y0,
                                     palette_alpha=(sign in ('audit-13', 'audit-14')),
-                                    frames=(() if lang == 'ja' else (5,)) if sign == 'audit-13' else None):
+                                    frames=frames):
                         sprites_changed.add((lang, mp))
         lines = []
         for (lang, mp), t in sorted(edits.items()):

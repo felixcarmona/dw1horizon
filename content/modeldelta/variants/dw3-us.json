@@ -9,8 +9,8 @@
   "build/batch16/Renamon.MMD": "5a49398a00861768203661f389156a81c298fa841396309d18f22b1108c8b0c9",
   "build/meshfix2-out/MaloMyotismon.MMD": "4ac33d108c98052c2cbff46d8bd11bc52c381f93efcd2527ba9ef637377c6a7c",
   "build/rescue-kyubimon/Kyubimon.MMD": "97dff5e3e23e2a52e3036ab00756c72a85b4c88f4635c3a618862391bb440c9d",
-  "build/rigfix/Chrysalimon.MMD": "34f721ff396c422e8d6f8c0d92ef9373883aefd51b6a9a9415479e6ed3fe267d",
-  "build/sizes-out/models/Chrysalimon.MMD": "79c9a8e636f9c7fea88498615960f1227214361b76d356e0986236d4bc36ed64"
+  "build/sizes-out/models/Chrysalimon.MMD": "79c9a8e636f9c7fea88498615960f1227214361b76d356e0986236d4bc36ed64",
+  "build/rigfix/Chrysalimon.MMD": "34f721ff396c422e8d6f8c0d92ef9373883aefd51b6a9a9415479e6ed3fe267d"
  },
  "sizes": {
   "build/sizes-out/models/Antylamon.MMD": {
@@ -133,6 +133,34 @@
      13495
     ],
     "foreign_windows": 0,
+    "objects_ours": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13,
+     15,
+     16,
+     18,
+     19,
+     20,
+     22,
+     23
+    ],
+    "objects_carried": [
+     14,
+     17,
+     21
+    ],
     "slots_ours": [
      1,
      14,
@@ -180,34 +208,6 @@
      11,
      12,
      13
-    ],
-    "objects_carried": [
-     14,
-     17,
-     21
-    ],
-    "objects_ours": [
-     0,
-     1,
-     2,
-     3,
-     4,
-     5,
-     6,
-     7,
-     8,
-     9,
-     10,
-     11,
-     12,
-     13,
-     15,
-     16,
-     18,
-     19,
-     20,
-     22,
-     23
     ]
    }
   },
@@ -263,16 +263,16 @@
      }
     ],
     "delta": "content/modeldelta/deltas/dw3-us/406-MaloMyotismon.MMD.mdelta",
-    "delta_sha256": "8e88e86c9c9c076c6cdeb79d25cd4131262424119dd62d774d4bfc3b6c88526e",
-    "sha256": "208b6d7afb234fcd8670cd9282ac35b14d18c77b6584905dd1ace2807ceca80e",
+    "delta_sha256": "849627e8c2c00ad3d8c7412c656fd68e6870dc4153ce556b42b96e258dc27258",
+    "sha256": "9a212f26c602e55f6a8f8253d9e292bb244512a5a21e23602b02df8dc97dd5f7",
     "size": 100214
    },
    "from": {
-    "sha256": "658cac3266b5ff0e1bf63482f864306a7a71e66e0d0ee12c39a5f68293dc770d",
-    "delta_sha256": "0e42f9c066cf198490335170c058238e3b013ab7467c71bc4f82f2da7d50c38c",
+    "sha256": "e911480fee8cde2540ce5facc7186a92bda285353ec2f3ffb40959df1d262a4d",
+    "delta_sha256": "0f1c694090b7d40aac7ec929551bd8042d08189bb9ffc181bff5bad709dfeb47",
     "add_bytes": [
-     9756,
-     9756
+     10235,
+     10235
     ],
     "foreign_windows": 0,
     "objects_ours": [

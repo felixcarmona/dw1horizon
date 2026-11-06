@@ -36,10 +36,10 @@
     "poop_size": 10,
     "favorite_food": "Blue apple",
     "sleep_cycle": "02:00-11:00",
-    "favored_region": 0,
+    "favored_region": 3,
     "training_type": "even",
     "birth_weight": 30,
-    "status_screen_position": [50, 340, -940],
+    "status_screen_position": [-1505, 342, 1959],
     "item_distance": 15,
     "training": {"animation": 61, "hit_tick": 11}
   },

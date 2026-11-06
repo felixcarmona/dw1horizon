@@ -198,6 +198,7 @@ class Mesh:
         self.s2 = 0.0           # mean triangle area of the whole model (set by decimate)
         self.kb = 1.0
         self.wb = wb
+        self.pinned_positions = {_pkey(v) for v in b.get('pinned_positions', ())}
         self.pos, key = [], {}
         self.faces = []
         self.src = {}
@@ -315,7 +316,9 @@ class Mesh:
         return out, len(out) > 2
 
     def collapse_cost(self, a, b, kappa, kmove):
-        """Cost of moving vertex a onto vertex b, or None when not allowed."""
+        """Cost of moving vertex a onto vertex b; pinned_positions landmarks never move."""
+        if _pkey(self.pos[a]) in self.pinned_positions:
+            return None
         fab = self.vf[a] & self.vf[b]
         if len(fab) not in (1, 2):
             return None

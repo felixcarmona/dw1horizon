@@ -12,6 +12,8 @@ set here.
 import json, os, sys
 from mapbase import base_map, import_png, MOD, check_arrivals
 
+from map_regions import apply as apply_regions
+
 DATA = os.path.join(MOD, 'maps', 'lake-terrace-data.json')
 ART = os.path.join(MOD, 'art', 'lake-terrace.png')
 
@@ -21,6 +23,7 @@ def main(out):
     d = json.load(open(DATA))
     m = base_map('MAYO04B', *d['camera']); m.projection = d['projection']
     m.collision = list(d['collision']); m.warps = d['warps']
+    apply_regions(m, 'LAKE01')
     check_arrivals(m, 'LAKE01')
     open(os.path.join(out, 'LAKE01.MAP'), 'wb').write(m.build())
     import_png('MAYO04B', ART, os.path.join(out, 'LAKE01.TFS'))

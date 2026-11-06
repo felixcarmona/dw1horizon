@@ -27,6 +27,7 @@ build is in [../building.md](../building.md); how to test is in [../developing.m
 | [ram-map.md](ram-map.md) | the key addresses at a glance and the global state by subsystem; how to list every global |
 | [partner.md](partner.md) | the partner's care values (hunger, sleep, poop, weight, happiness, discipline, sickness, lifetime), training, evolution and its scoring, death and rebirth, technique learning |
 | [world.md](world.md) | the 239 screens with exits and placed Digimon, entering a screen, movement and collision, the camera, NPCs, File City, prosperity, recruitment, transport, chests |
+| [liked-regions.md](liked-regions.md) | the nine liked/disliked place patterns, original partner assignments, and the review of new raisable species |
 | [scripts.md](scripts.md) | the script interpreter: triggers and pstats and their meanings, the opcodes, routines, the text box engine |
 | [story-engine.md](story-engine.md) | how the story is put together: entry points, the scripts-to-C conventions, the original quest chain and zone gates, how `story/` becomes the disc's script files, EXTENDED STORY |
 | [combat.md](combat.md) | wild and arena battles, the fighter state, techniques, AI choice, hit and damage formulas, statuses, finishers, rewards, tournaments |
@@ -42,7 +43,7 @@ build is in [../building.md](../building.md); how to test is in [../developing.m
 | [memory.md](memory.md) | main RAM, VRAM and SPU RAM: the layout, the fixed buffers, the heap and its budget, what each patch reclaims |
 | [ids.md](ids.md) | the id spaces (species, screens, items, techniques, cards, files) and how the mod widens them |
 | [save-format.md](save-format.md) | the memory card save: the original file and checksum, the tagged extension the patches add |
-| [frame-rate.md](frame-rate.md) | the engine's timing and how drawing at 30 or 60 fps is separated from the 20 Hz game logic |
+| [frame-rate.md](frame-rate.md) | the engine's timing and automatic 20/60 fps drawing, separate from the 20 Hz game logic |
 | [text-sources.md](text-sources.md) | how text is keyed, sourced by checksum from a disc, picked and fitted |
 | [imported-species.md](imported-species.md) | Digimon converted from three other PS1 games: their formats, matching, identity rules, extra species |
 | [motion.md](motion.md) | how the partner's animation slots are used and how imported species are animated and checked |

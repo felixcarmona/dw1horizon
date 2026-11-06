@@ -4,6 +4,44 @@ from tools.localize.check import control_problems, custom_boxes, runtime_tokens
 
 
 class LocalizationAudit(unittest.TestCase):
+    def test_curling_options_keep_complete_words_in_their_rows(self):
+        from tools.localize.check import curling_menu_problems, ROOT, LANGUAGES, FONTS
+        from tools.localize.executable.chinese_layout import align
+        import json
+        key = 'kar.KAR_D_8005ABB8'
+        for language in LANGUAGES:
+            names = json.loads((ROOT / 'text' / ('ours' if language == 'en' else language) / 'names.json').read_text())
+            value = align(key, names[key]) if language == 'zh-hans' else names[key]
+            for font in FONTS:
+                self.assertEqual(curling_menu_problems(value, font, language), [], (language, font))
+        self.assertTrue(curling_menu_problems('Começar Como Jogar', 'b', 'pt-br'))
+        self.assertTrue(curling_menu_problems('Spielen          Regeln', 'original', 'de'))
+        self.assertTrue(curling_menu_problems('Start          ' + 'W' * 8, 'original', 'en'))
+        self.assertTrue(curling_menu_problems('Start          ' + 'x' * 30, 'b', 'en'))
+
+    def test_place_names_check_aliases_source_mentions_and_row_breaks(self):
+        from tools.localize.places import problems
+        self.assertTrue(problems('pt-br', 'new', 'Lago Dragon Eye!'))
+        self.assertFalse(problems('pt-br', 'new', [['Lago Olho de', 'Dragão!']]))
+        self.assertTrue(problems('fr', 'new', 'Un autre nom.', 'Go to File City.'))
+        self.assertFalse(problems('de', 'new', 'In der Großen Schlucht.', 'In Great Canyon.'))
+        self.assertFalse(problems('ja', 'new', [['りゅうの目', 'の湖へ行こう。']], 'Go to Dragon Eye Lake.'))
+        self.assertTrue(problems('ja', 'new', [['ドラゴン', 'アイ湖へ行こう。']]))
+        self.assertTrue(problems('ja', 'new', 'Overdellに行こう。'))
+        self.assertTrue(problems('zh-hans', 'new', '去Overdell吧。'))
+        self.assertFalse(problems('fr', 'new', 'Le restaurant est ouvert.', 'The restaurant is open.'))
+        self.assertFalse(problems('pt-br', 'new', 'A cidade cresceu.', 'The city grew.'))
+
+    def test_place_glossaries_cover_all_captions_and_shared_locations(self):
+        from tools.localize.places import catalog, EXTRA
+        from tools.localize.check import LANGUAGES
+        for language in LANGUAGES:
+            if language == 'en':
+                continue
+            entries, english = catalog(language)
+            self.assertEqual(entries.keys(), english.keys())
+            self.assertTrue(EXTRA.keys() <= entries.keys())
+
     def test_inline_player_is_not_a_repeated_speaker(self):
         source = '{color 6}{player}{color 1}, thank you! I am joining the city.'
         value = [['{color 6}{player}{color 1}', 'Thanks!'],
@@ -160,7 +198,9 @@ on talk(b) replace {
 
     def test_every_shipped_bank_fits_both_fonts_and_preserves_references(self):
         from tools.localize.check import audit, LANGUAGES
-        result = audit()
+        from unittest.mock import patch
+        with patch('fontgen.base_font', side_effect=AssertionError('audit must not read disc bitmaps')):
+            result = audit()
         # The developer-only examples and starter mods have English only and are
         # deliberately audited/reported too; they are not part of the everything recipe.
         self.assertEqual(len(result['notes']), 14)
@@ -193,10 +233,13 @@ on talk(b) replace {
             names = json.loads((ROOT / 'text' / ('ours' if language == 'en' else language) / 'names.json').read_text())
             for font in ('b', 'original'):
                 for key, need in [('DISCIPLINE', 90), ('TECHS', 35), ('HAPPINESS', 100)]:
-                    label = names['main.CHART_STR_' + key] + ' ' + str(need) + '+'
-                    # chartCardLine: 114px card, marker, indent, value and gap.
-                    room = 114 - 18 - 6 - text_width(str(need), font) - 4
-                    self.assertLessEqual(list_width(label, font), room, (language, font, key))
+                    from tools.localize.check import ui_width
+                    # chartCardRender now draws separate label/need/have columns.
+                    # Indented bonus labels start at 49; needs end at 194, have at 280.
+                    label = names['main.CHART_STR_' + key]
+                    need_width = ui_width(str(need) + '+', font, language)
+                    self.assertLessEqual(ui_width(label, font, language), 194 - 49 - need_width - 4,
+                                         (language, font, key))
 
     def test_failed_technique_inheritance_keeps_its_negation(self):
         import json
@@ -233,7 +276,7 @@ on talk(b) replace {
         for language in LANGUAGES:
             names = json.loads((ROOT / 'text' / ('ours' if language == 'en' else language) / 'names.json').read_text())
             for font in ('b', 'original'):
-                self.assertFalse(battle_mp_problems(names, font), (language, font))
+                self.assertFalse(battle_mp_problems(names, font, language), (language, font))
         portuguese = dict(names, **{'btl.BTL_STR_MP_CONSUMPTION_BONUS': '#C1Uso de MP ',
                                   'btl.BTL_STR_REDUCED_BY': '-',
                                   'btl.BTL_STR_MP_BONUS_PERCENT': ' por cento!#W'})
@@ -247,11 +290,49 @@ on talk(b) replace {
                             ['Gesetzt', 'Final', 'Technik'])
         for language in LANGUAGES[1:]:
             names = json.loads((ROOT / 'text' / language / 'names.json').read_text())
-            titles = packed_ui_slices(key, names[key])
-            tabs = packed_ui_slices('main.MAIN_D_801238A0', names['main.MAIN_D_801238A0'])
-            self.assertEqual(titles[1], '必殺' if language == 'ja' else 'Final')
-            self.assertEqual(titles[2], tabs[1], language)
+            if language == 'zh-hans':
+                from tools.localize.executable.chinese_layout import align
+                names = {k: align(k, v) for k, v in names.items() if not k.startswith('_')}
+            titles = packed_ui_slices(key, names[key], language)
+            tabs = packed_ui_slices('main.MAIN_D_801238A0', names['main.MAIN_D_801238A0'], language)
+            self.assertEqual(titles[1], '必殺' if language == 'ja' else '必杀' if language == 'zh-hans' else 'Final')
+            tab_title = {'Técn.': 'Técnicas', 'Tecn.': 'Tecniche'}.get(tabs[1], tabs[1])
+            self.assertEqual(titles[2], tab_title, language)
         self.assertEqual(packed_ui_slices('main.MAIN_D_801238A0', '状態         わざ'), ['状態', 'わざ'])
+
+    def test_named_english_pages_are_compiled_instead_of_an_inline_snapshot(self):
+        import json, tempfile
+        from pathlib import Path
+        from tools.dws import build
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp) / 'story' / 'mods' / 'fixture'
+            (folder / 'src').mkdir(parents=True)
+            (folder / 'text').mkdir()
+            layout = [['Received', '{item 93}.']]
+            (folder / 'text/en.json').write_text(json.dumps({'deal': layout}))
+            path = folder / 'src/test.py'
+            path.write_text('from dw import *\narea = screen(3)\n@area.on_enter(when=trigger(5))\ndef enter():\n    narrator.say(t("deal"))\n')
+            prog = build.compile_sources([str(path)], 'mods', lang='en', text_source='ours')
+            self.assertEqual(prog.bank.data['fixture:deal'], layout)
+            self.assertIn('fixture:deal', prog.used_text)
+            code = str(prog.b.scripts)
+            self.assertIn('Received', code)
+            self.assertIn('{item 93}', code)
+
+    def test_chinese_crops_check_emitted_cells_and_keep_rejecting_overflow(self):
+        from tools.localize.check import packed_ui_problems, player_strip_problems, naming_label_problems
+        from tools.localize.executable.chinese_layout import align
+        import json
+        from tools.localize.check import ROOT
+        names = json.loads((ROOT / 'text/zh-hans/names.json').read_text())
+        for key in ('main.MAIN_D_80123A3C', 'main.MAIN_D_80123AB0', 'main.MAIN_D_80123AE4'):
+            self.assertEqual(packed_ui_problems(key, align(key, names[key]), 'zh-hans'), [])
+        key = 'main.MAIN_D_80123A60'
+        self.assertEqual(player_strip_problems(key, align(key, names[key]), 'zh-hans'), [])
+        self.assertTrue(player_strip_problems(key, names[key], 'zh-hans'))
+        self.assertTrue(packed_ui_problems('main.MAIN_D_801238A0', '选' * 30, 'zh-hans'))
+        self.assertTrue(naming_label_problems('shop.MAIN_D_80134600', '退格确定', 'zh-hans'))
+        self.assertFalse(naming_label_problems('shop.MAIN_D_80134600', names['shop.MAIN_D_80134600'], 'zh-hans'))
 
     def test_tall_boxes_are_read_from_the_authored_source(self):
         boxes = custom_boxes()

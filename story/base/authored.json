@@ -8,8 +8,8 @@
     },
     "maphead/hooks.py": {
       "original_sha256": "4bfb261b42580f9928c7706e08108958b68d4ca058fe83a043d2a55be0b1b145",
-      "authored_sha256": "d4a37cc6582c2af7e678475de0f43338a0f81ec5ca453d72ade88203a1eb83c5",
-      "reason": "Optional partner naming text table entries (patch 0207)"
+      "authored_sha256": "afd2ee6df50b477d04be9df08aa5605204ee811c6ac4dbb9b653f11c1aa98502",
+      "reason": "Optional partner naming prompts and canyon bandit battle music only while the encounter remains unbeaten"
     },
     "zones/beetle-land/s103-107/script.dws": {
       "original_sha256": "587838c61e1daa1ff2ef2fc61b0ba0ca175ece9e9d8ebab715c16853d15266cb",
@@ -133,13 +133,13 @@
     },
     "zones/monochrome-shop/s049-49/script.dws": {
       "original_sha256": "3e9d6770660fb29e4bb595634cdb633aec5931903cb8a584704d2f581fd641f2",
-      "authored_sha256": "76d902e99e531ad45e58dc45aa71561a6f5b205f5f9739b0399d489616a1123f",
-      "reason": "Monochromon recruit target 3072 -> 2560 bits; top halfway comment at 1280 bits; DWS synchronized with the authored Python source"
+      "authored_sha256": "cb6d2b9e6e28b323edea3e0c0958ef04f43f994e261d36d4c4b08c151a7fdd45",
+      "reason": "Hidden-budget Monochromon shift with a finite item deck and one reduced-budget retry; DWS synchronized with the authored Python source"
     },
     "zones/monochrome-shop/s049-49/script.py": {
       "original_sha256": "3f196b431498c56dd4f9677e4c0d6bff1e80351fff4bf78fdb00a080c441d7ed",
-      "authored_sha256": "4da0a204c83e977e200c4c1fd466044200484c2b34cd4debccec60504344eee0",
-      "reason": "Monochromon recruit target 3072 -> 2560 bits; top halfway comment at 1280 bits"
+      "authored_sha256": "43b9b863b2d1340efb9c0cacf90886ee288310b83973fd89445d405b921aae84",
+      "reason": "Hidden-budget Monochromon shift with a finite item deck and one reduced-budget retry; DWS synchronized with the authored Python source"
     },
     "zones/secret-item-shop/s177-217/script.dws": {
       "original_sha256": "f121346af89e298ddc44b22e0bb6b90965660a42aca7f9f8613a092d45225713",
@@ -148,13 +148,13 @@
     },
     "zones/trash-mountain/s159-165/script.dws": {
       "original_sha256": "e1e2dfa0ee0306a58af8ae9e980f177b4478c2e7c0df2e2500166d40073e5223",
-      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source",
-      "authored_sha256": "688ac36ac49d9d686ec1f01b117056d5d055b552e5681b90240502af3f3243d8"
+      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source; finish recruitment dialogue before the walking departure",
+      "authored_sha256": "66af979347e0805a3bb48abb55445a5cc0571ae8ef9f0c08bdba7842e33254e5"
     },
     "zones/trash-mountain/s159-165/script.py": {
       "original_sha256": "06478c10d23b9dcc2a488c8964edbbf6903b545703e5e7df94b955661a80d125",
-      "authored_sha256": "35ee7a0892d5035238e315399fad9fcb45ca8bed2407735a380220d8c7652969",
-      "reason": "Five-session training and narrator choice ownership"
+      "authored_sha256": "2f743567ab800ac8497eeb3704094141b4a9295e8e49445337d511b88f7f7072",
+      "reason": "Five-session training and narrator choice ownership; finish recruitment dialogue before the walking departure"
     },
     "zones/ancient-glacial-region/s077-80/script.py": {
       "original_sha256": "845799c5e66bba2b18ddf0de3eeb6c8c2a57271d854f65338c43dd4ab347b3d4",
@@ -308,13 +308,13 @@
     },
     "zones/underground-pond/s029-28/script.py": {
       "original_sha256": "d012f770c7de474e1754bf81d227042e738c65a86d439761b2ef41a3a5cafb2b",
-      "authored_sha256": "b159f541fca39f32a8d05fce1ece262b10e2215d6d9c9906a531fbf9468543ca",
-      "reason": "Dirt hauling in five round trips, each paying and training twice the disc's"
+      "authored_sha256": "52d77d000fc3d0e6b3194683df5d8fd75cc00aa15d6f94ac6f06e774fb1da8b6",
+      "reason": "Dirt hauling in five double-reward round trips; return visits omit the dirt pile once saved excavation work opens the tunnel"
     },
     "zones/underground-pond/s029-28/script.dws": {
       "original_sha256": "51689c322ff6158dabcb303b4e53de7e002fcbae337c25f53f952a3190e034b3",
-      "authored_sha256": "8286486bec3594fe298b4e4035a51d043566ac699e56cc112eca96240f97742c",
-      "reason": "Dirt hauling in five round trips, each paying and training twice the disc's; DWS synchronized with the authored Python source"
+      "authored_sha256": "13d6998440680739a619d76471e42ebbc91161d173f5f18c70bbeba2cf921a9c",
+      "reason": "Dirt hauling in five double-reward round trips; return visits omit the dirt pile once saved excavation work opens the tunnel; DWS synchronized with the authored Python source"
     },
     "zones/file-city/s162-168-169-170/script.py": {
       "original_sha256": "0bbadd3ab80f0b29fc9a8511a0d172eccaded4624ad79d88ede165e290429769",
@@ -628,13 +628,13 @@
     },
     "zones/freezeland/s128-133/script.dws": {
       "original_sha256": "5a313e0bf479c0437be0f88d8051c7f6099d0e4bb32f8709878d0a08046510b1",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "b664faceaa4c6791c318b5e5db9b6852f0dc39e8d5793a1e5b14260b66f9f963"
+      "authored_sha256": "99d8152054cfdc86838c8866c51715aa469d7bc60fed78d33ba54cfa563bac39",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; group 3 alone handles recruitment after all nine exchanges"
     },
     "zones/freezeland/s128-133/script.py": {
       "original_sha256": "7efe00e265cf2710b3772bba102537ad110d2fe01043613409c4ea039450a396",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "3d06d1428aa68378a67933f1b5802ea175b25eb4b4da237b83b37a923b8a31c3"
+      "authored_sha256": "905e4626be8f3ee872da2d646184fe8e806f732ed47b045374dcb2907e3baf08",
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; group 3 alone handles recruitment after all nine exchanges"
     },
     "zones/gear-savanna/s066-69/script.dws": {
       "original_sha256": "452d24716fa01815540ad35144e8eb3891857ccf430cf006c9fd13972aac5211",
@@ -975,6 +975,81 @@
       "original_sha256": "919d3d395047f8b472adcffcb88724bdd93d1252cbaa37332005ea26c795726a",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
       "authored_sha256": "01e3fba23507ca10294dd3ec0229ed33f3267ef166c9269f415c826e14f9b0ce"
+    },
+    "zones/underground-pond/s029-28/README.md": {
+      "original_sha256": "afe4ceb7f1fb659a7b7a1ad0cebf3242066198d0f6cbc62df8877f050a3f82b2",
+      "authored_sha256": "0b80b22215630dcc9aa9d5a6475a274c9d5b2f967225ee82cfd4da7fcbc798cf",
+      "reason": "Document the persistent open-tunnel rubble condition and the matching enter-section size"
+    },
+    "zones/freezeland/s129-134/script.py": {
+      "original_sha256": "02b381e914a2e56f818995af08faf0b8a06ec839922e510693e3fefe1adde2f1",
+      "authored_sha256": "ab0106507ab28318db6f4d2cb67dad8a8eeb09edbf904b25ceba73938d27ea32",
+      "reason": "Group 3 alone handles Mojyamon recruitment after all nine exchanges"
+    },
+    "zones/freezeland/s129-134/script.dws": {
+      "original_sha256": "946a73c24d560b20d3bce3071fafe206783cac84092548cf6158a3f3c61e9216",
+      "authored_sha256": "8bda450397a4917978a82a4bb0aeaf248b4e8fc83e6b896fdb2b11360888fc25",
+      "reason": "Group 3 alone handles Mojyamon recruitment after all nine exchanges"
+    },
+    "maphead/screen043.dws": {
+      "original_sha256": "a34801f42a486762e7a14e804b00a6101ac6b7386e1c548e2859205ff270bd12",
+      "authored_sha256": "f0151802d29fb01cf899efb097966fa141d8a836e913d8b4b61a8e3a20a35156",
+      "reason": "Keep canyon bandit battle music active only until the encounter is won"
+    },
+    "maphead/screen128.dws": {
+      "original_sha256": "e53c638823527d472a75e28fb3c9dd6e7eff648266d8c87ff84f3ea626e1c5a8",
+      "authored_sha256": "3d88f745c5f5d1b68a16367dae3d741c0835fb38818e0df198de5d9d041e185c",
+      "reason": "Keep canyon bandit battle music active only until the encounter is won"
+    },
+    "zones/drill-tunnel-2nd-floor/s026-25/script.py": {
+      "original_sha256": "5396f424118f79b0f832596f60bc9226339b6635759a64e1a71b8c9f9ea4d13e",
+      "authored_sha256": "1d10723d5fef148528efaec5db17873ddbf760a3408faf62b06a907ad1e116ae",
+      "reason": "Move the defeated Drill Tunnel combatants clear of battle drops before their defeated poses"
+    },
+    "zones/libraries/s199/script.py": {
+      "original_sha256": "be277e11741d98808228fbb5c7b78c87945bd11dfb16242b366074297cdee333",
+      "authored_sha256": "3b4d354e95d2e29d0a9ef694f47481c8c92147641c8cb965ac79e57ee4757c64",
+      "reason": "Hidden-budget Monochromon customer: one arrival budget and face draw, finite shift deck, one reduced-budget retry and item-specific profit"
+    },
+    "zones/libraries/s200/script.py": {
+      "original_sha256": "1a7824917d53cf1183e6938c7f983be84acf9d4d68d65c8e43658978f61faadc",
+      "authored_sha256": "689ced6569b93312d2179b5737354705ba437c921e124693472f6b3acfa6fe3e",
+      "reason": "Hidden-budget Monochromon customer: one arrival budget and face draw, finite shift deck, one reduced-budget retry and item-specific profit"
+    },
+    "zones/libraries/s201/script.py": {
+      "original_sha256": "7b4e2ec14167d92d84b8f60612578b11af920824b79a22eb7c740c10f7ab6d98",
+      "authored_sha256": "6ede952ce174f4964fde0684a9008c5cd039df4db8af37dc393f19a8327e6690",
+      "reason": "Hidden-budget Monochromon customer: one arrival budget and face draw, finite shift deck, one reduced-budget retry and item-specific profit"
+    },
+    "zones/libraries/s202/script.py": {
+      "original_sha256": "27adf203c9eba5504622dfd88506094fa9152cb55fb05ca968f1a89873431bc2",
+      "authored_sha256": "8de6d7eba9a0ff8c767377ff570ad5a08e40eefd964291a2db94f0d7bd0f0435",
+      "reason": "Hidden-budget Monochromon customer: one arrival budget and face draw, finite shift deck, one reduced-budget retry and item-specific profit"
+    },
+    "zones/drill-tunnel-2nd-floor/s026-25/script.dws": {
+      "original_sha256": "0473375c38bf36101039b1e85c13910a224d29a64b5ac5f3582f7d5bff536269",
+      "authored_sha256": "4c74e979133873f5888246f4f2710eb73b90d8317ed7b3a0f735944cb3debef9",
+      "reason": "Move defeated combatants clear of battle drops before their defeated poses; DWS synchronized with the authored Python source"
+    },
+    "zones/libraries/s199/script.dws": {
+      "original_sha256": "fa5db5d9ff87320a5ded288e00a9a45259ed8204f408a691fe6e063a895d5328",
+      "authored_sha256": "e6786a4baf3aea8ae0e714050a4c3d1de444071b7f67eab6936550f4c3603de0",
+      "reason": "Hidden-budget Monochromon customer with one arrival draw and one reduced-budget retry; DWS synchronized with the authored Python source"
+    },
+    "zones/libraries/s200/script.dws": {
+      "original_sha256": "55c3a020b719ce1a0838dc70d9080c3f2e0425edc0a6f897cd02709e097f5074",
+      "authored_sha256": "cbf1f9e04ef28c607f035d7a2493e1d1e2aaacc73af96fd472440ec2bec3711f",
+      "reason": "Hidden-budget Monochromon customer with one arrival draw and one reduced-budget retry; DWS synchronized with the authored Python source"
+    },
+    "zones/libraries/s201/script.dws": {
+      "original_sha256": "76d9adb141f74e6f79c5108c70b0ce4f0a5819999bfa4e2902623ecd95ac7143",
+      "authored_sha256": "0075a1ae11b5d52670b7321e387eef35db7f2f607848ff247cfe622915c252fc",
+      "reason": "Hidden-budget Monochromon customer with one arrival draw and one reduced-budget retry; DWS synchronized with the authored Python source"
+    },
+    "zones/libraries/s202/script.dws": {
+      "original_sha256": "8b97bec84ac8ff8d3a93543e5c17f0cc7c9cb63f1eb4cf644d842159b6688780",
+      "authored_sha256": "af2d9276c1670ed9bd2ff209111e37a5a3a0b6b3dad7774e54a3e4931fd6b763",
+      "reason": "Hidden-budget Monochromon customer with one arrival draw and one reduced-budget retry; DWS synchronized with the authored Python source"
     }
   }
 }

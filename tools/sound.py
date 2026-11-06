@@ -74,7 +74,7 @@ SEQ_BUFFER_MAX = 0x5800        # SEQ_BUFFER (sound.c), memcpy without a check
 # loads. SOUND_STAGING_MAX in include/dw/memmap.h (patch 0096; tools/build-full.sh passes the executable's value in the
 # environment); the original's largest, an ESALL chunk, is exactly 124 sectors.
 STAGING_MAX = int(os.environ.get('SOUND_STAGING_MAX', '0x3E000'), 0)
-SEQ_BUFFER_MOD = 0x8000        # soundlimits executable: SEQ_BUFFER_SIZE (include/dw/memmap.h), checked
+SEQ_BUFFER_MOD = 0x7800        # soundlimits executable: SEQ_BUFFER_SIZE (include/dw/memmap.h), checked
 VAB_MAX_PROGRAMS = 128
 TONES_PER_PROGRAM = 16
 

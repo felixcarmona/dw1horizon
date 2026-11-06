@@ -2,6 +2,7 @@
 import sys
 from pathlib import Path
 import unittest
+import hashlib
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -11,6 +12,35 @@ from tools.models.buster_dive import apply, repair
 
 
 class DashEdit(unittest.TestCase):
+    def test_reviewed_compact_body_keeps_exact_native_root_and_other_slots(self):
+        data, donor = self.models(61)
+        before = mmd.MMD.parse(data, 2)
+        source = before.anims.anims[0]
+        recipe = dict(source_sha256=hashlib.sha256(source.build()).hexdigest(),
+                      pose_keys=[[0, 0], [22, 22], [33, 22], [44, 60]])
+        actual = mmd.MMD.parse(repair(data, 2, 47, donor, clip=recipe), 2)
+        dense = mmd.MMD.parse(repair(data, 2, 47, donor), 2)
+        poses, info = mmd.simulate(actual.anims.anims[actual.anims.table[47]], 2, slot=47)
+        original, _ = mmd.simulate(source, 2, slot=47)
+        reference, _ = mmd.simulate(dense.anims.anims[dense.anims.table[47]], 2, slot=47)
+        self.assertEqual(len(poses), 45)
+        self.assertEqual([p[0] for p in poses], [p[0] for p in reference[:45]])
+        for output, source_index in recipe['pose_keys']:
+            for channel in range(9):
+                self.assertLessEqual(abs(poses[output][1][channel] - original[source_index][1][channel]), 1)
+        self.assertIsNone(info['loop'])
+        self.assertEqual(actual.tmd.build(), before.tmd.build())
+        for slot in range(64):
+            if slot != 47:
+                self.assertEqual(actual.anims.anims[actual.anims.table[slot]].build(), source.build())
+        self.assertEqual([(bank, note) for _, bank, note in info['sounds']], [(4, 17)])
+
+    def test_compact_body_rejects_unreviewed_source(self):
+        data, donor = self.models(61)
+        recipe = dict(source_sha256='0' * 64, pose_keys=[[0, 0], [22, 22], [44, 22]])
+        with self.assertRaisesRegex(ValueError, 'body source changed'):
+            repair(data, 2, 47, donor, clip=recipe)
+
     def models(self, length):
         model = mmd.MMD()
         model.nbones = 2

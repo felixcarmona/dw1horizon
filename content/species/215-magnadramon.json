@@ -47,10 +47,10 @@
     "poop_size": 10,
     "favorite_food": "Blue apple",
     "sleep_cycle": "19:00-04:00",
-    "favored_region": 4,
+    "favored_region": 2,
     "training_type": "hp-defense",
     "birth_weight": 40,
-    "status_screen_position": [200, 360, -1360],
+    "status_screen_position": [-680, 504, 506],
     "item_distance": 15,
     "training": {"animation": 61, "hit_tick": 10}
   },

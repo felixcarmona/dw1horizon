@@ -148,6 +148,21 @@ page copy reads that file from the workflow commit (main for a page-only dispatc
 the tag for a dispatch from that tag). The page hides entries newer than the
 engine's `release_tag`; previews without that metadata show all entries.
 
+For Discord #updates, share `https://dw1horizon.com/#changelog-X.Y.Z`
+(no `v` in the fragment), for example
+`https://dw1horizon.com/#changelog-0.0.6`. The page opens that version and scrolls
+its heading into view, including when the fragment changes on an already open
+page. Other entries keep their current/default state. Each version's `#` link
+copies its full URL; if clipboard access is unavailable, it still works as a
+normal link with the browser's copy-link menu.
+
+All nine page languages use this same URL: English (`en`), Spanish (`es`),
+Brazilian Portuguese (`pt-br`), French (`fr`), German (`de`), Italian (`it`),
+Japanese (`ja`), Catalan (`ca`) and Simplified Chinese (`zh-hans`). There are no
+language paths or query parameters: the page uses the saved language choice,
+then the browser's languages, then English. The shared URL does not force the
+recipient's language. Unavailable versions leave the page's default entries alone.
+
 ## Stage the verified artifacts, then publish
 
 After the local gates and publication review pass, start with a clean checkout

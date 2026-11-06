@@ -42,10 +42,10 @@
     "poop_size": 15,
     "favorite_food": "Pricklypear",
     "sleep_cycle": "22:00-07:00",
-    "favored_region": 4,
+    "favored_region": 9,
     "training_type": "hp-defense",
     "birth_weight": 40,
-    "status_screen_position": [0, 320, -880],
+    "status_screen_position": [-1273, 328, 1723],
     "item_distance": 15,
     "training": {"animation": 57, "hit_tick": 16}
   },

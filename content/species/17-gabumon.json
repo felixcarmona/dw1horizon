@@ -3,6 +3,10 @@
   "name": "Gabumon",
   "level": "rookie",
   "vanilla": true,
+  "off": {
+    "level": "rookie",
+    "evolution": {"from": [2, -1, -1, -1, -1], "to": [36, 47, 38, 8, 34, 22]}
+  },
   "attribute": "data",
   "specialties": ["battle", null, "fire"],
   "techniques": ["Fire Tower", "Heat Laser", "Sonic Jab", "Dynamite Kick (44)", "Megaton Punch", "Tremar",
@@ -25,12 +29,12 @@
     "favored_region": 5,
     "training_type": "hp-defense",
     "birth_weight": 15,
-    "status_screen_position": [420, 230, -1610],
+    "status_screen_position": [-172, 217, 82],
     "item_distance": 10,
     "training": {"animation": 46, "hit_tick": 20}
   },
   "evolution": {
-    "from": [2, -1, -1, -1, -1],
+    "from": [2, 16, -1, -1, -1],
     "to": [36, 47, 38, 8, 34, 22],
     "requirements": {
       "digimon": 2,

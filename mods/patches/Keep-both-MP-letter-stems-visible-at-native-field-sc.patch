@@ -1,0 +1,32 @@
+From 72026f1b125fea34e5ac301fe7056b06c86a0981 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 6 Nov 2026 13:18:48 +0000
+Subject: [PATCH] Keep both MP letter stems visible at native field scale
+
+---
+ src/main/bubble.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/bubble.c b/src/main/bubble.c
+index 6517ce4b..475ae1d4 100644
+--- a/src/main/bubble.c
++++ b/src/main/bubble.c
+@@ -480,8 +480,14 @@ static void drawConditionIcon(int32_t icon, int32_t fc, int32_t x, int32_t y,
+ 	case 14: {
+ 		/* Derived ITEM.TIM disks and pixel labels in the existing ETCTIM upload. */
+ 		GsSPRITE disk = CONDITION_SPRITES[0];
+-		disk.u = 224 + (icon - 13) * 16;
++		disk.u = 224;
+ 		disk.v = 192;
++		if (icon == 14) {
++			/* Wider art keeps both M stems and its valleys after sampling. */
++			disk.v = 208;
++			disk.w = 32;
++			disk.mx = 16;
++		}
+ 		disk.tpage = 0x1f;
+ 		disk.cx = 272;
+ 		disk.cy = 493 + icon - 13;
+-- 
+2.55.0
+

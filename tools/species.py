@@ -428,7 +428,7 @@ def raise_to_json(r, training, training2, item, vlall):
 
 PARTNER_KEYS = ['voice', 'hunger_hours', 'energy_max', 'energy_fed', 'energy_per_hour', 'poop_timer_10min', 'poop_size',
                 'unk2', 'favorite_food', 'sleep_cycle', 'favored_region', 'training_type', 'birth_weight',
-                'status_screen_position', 'item_distance', 'training', 'training2']
+                'status_screen_position', 'status_screen_anchor_bone', 'item_distance', 'training', 'training2']
 PARTNER_REQUIRED = ['hunger_hours', 'energy_max', 'energy_fed', 'energy_per_hour', 'poop_timer_10min', 'poop_size',
                     'favorite_food', 'sleep_cycle', 'birth_weight', 'status_screen_position']
 
@@ -447,6 +447,9 @@ def raise_from_json(p, where):
     if missing: raise SystemExit(f'{where}.partner: missing {", ".join(missing)} (required: {", ".join(PARTNER_REQUIRED)})')
     hours = list(p['hunger_hours'])
     if len(hours) > 8: raise SystemExit(f'{where}.partner.hunger_hours: at most 8 hours')
+    anchor = p.get('status_screen_anchor_bone', 0)
+    if type(anchor) is not int or not 0 <= anchor < MAX_BONES:
+        raise SystemExit(f'{where}.partner.status_screen_anchor_bone: a bone index, or 0 for none')
     pos = p['status_screen_position']
     if not (isinstance(pos, list) and len(pos) == 3): raise SystemExit(f'{where}.partner.status_screen_position: [x, y, z]')
     r = dict(hungerTimes=hours + [-1] * (8 - len(hours)), energyCap=p['energy_max'], energyThreshold=p['energy_fed'],
@@ -1044,6 +1047,11 @@ def species_record(s):
             if s.get('vanilla_as'): r['vanillaAs'] = s['vanilla_as']
             if len(bones) > MAX_PARTNER_BONES:
                 raise SystemExit(f'{w}: a partner has at most {MAX_PARTNER_BONES} bones')
+    anchor = s.get('partner', {}).get('status_screen_anchor_bone', 0)
+    if anchor:
+        if t < NUM_ORIGINAL or anchor >= len(r['bones']):
+            raise SystemExit(f'{w}: Status anchor must name a bone of an imported partner')
+        r['statusAnchorBone'] = anchor
     if rows['battleMusic'] is not None: r['battleMusic'] = rows['battleMusic']
     if len(r['bones']) > MAX_BONES: raise SystemExit(f'{w}: more than {MAX_BONES} bones')
     eo = []
@@ -1164,6 +1172,8 @@ def materialize(old, from_files=False):
         if k in old: s[k] = old[k]
     if r['flags'] & FLAG_PARTNER:
         s['partner'] = raise_to_json(r['raise'], r['trainingAnims'], r['training2Anims'], r['itemTakeDistance'], r['vlall'])
+        if r.get('statusAnchorBone'):
+            s['partner']['status_screen_anchor_bone'] = r['statusAnchorBone']
         g = {k: v for k, v in r['evoGains'].items() if k != 'targetDigimon'}
         reqs = {k: v for k, v in r['evoReqs'].items() if k != 'padding'}
         if r['evoReqs']['padding']: raise SystemExit(f'{old["_path"]}: evoReqs.padding is not 0')
@@ -1200,6 +1210,7 @@ def pack_record(r):
     if r.get('conditionFx'):
         struct.pack_into('<4h', b, 0x136, *r['conditionFx'])
     struct.pack_into('<I', b, 0x1C0, r.get('portrait', 0))      # sector | slot << 24 of its icon (tools/portraits.py)
+    b[0x1CE] = r.get('statusAnchorBone', 0)  # Status-only camera anchor; record size is unchanged
     struct.pack_into('<h', b, 0x1CC, r.get('vanillaAs', 0))     # NEW DIGIMON off: the vanilla species it becomes
     if r['flags'] & FLAG_EFFECT_DEFAULT:                         # where a technique without an origin row starts (efe.c)
         struct.pack_into('<4h', b, 0x1C4, *r['effectDefault'])
@@ -1216,6 +1227,7 @@ def unpack_record(b, t):
     r = dict(id=t, para=para, modelName=name.split(b'\0')[0].decode(), modelSector=msec, modelSize=msize,
              texSector=tsec, texFile=tfile, texSectors=tsecs, originalType=ot, vball=vball, vlall=vlall, flags=flags,
              bones=[list(struct.unpack_from('<bb', b, 0x54 + 2 * i)) for i in range(max(0, min(para['boneCount'], MAX_BONES)))])
+    if b[0x1CE]: r['statusAnchorBone'] = b[0x1CE]
     if music: r['battleMusic'] = music
     if flags & FLAG_PARTNER:
         r['raise'] = unpack(RAISE_FIELDS, b, 0xD4)
@@ -1989,7 +2001,7 @@ FINISHER_FIRST, FINISHER_LAST = 58, 112  # the finisher is the last technique id
 BABY_FIRST, BABY_LAST = 113, 120         # the Fresh / In-Training bubbles
 MAX_AURA_TYPE = 128                      # the aura projectile tables have 129 rows (btl/std/vs effects)
 MAX_EFFECTS_LIKE = 0xB0                  # getOriginalType (map.c) returns -1 above it
-NUM_VBALL, NUM_VLALL, NUM_REGIONS = 71, 16, 9
+NUM_VBALL, NUM_VLALL, NUM_REGIONS = 71, 16, 10
 
 
 # Animation slots the game starts on a partner's entity (startAnimation(entity, slot): anim.c:201 returns when the
@@ -2299,7 +2311,7 @@ def lint(species, check_files=False):
             elif level >= 3 and r['sleepCycle'] >= 6:
                 W(P('sleep_cycle'), partner['sleep_cycle'], 'the Fresh / In-Training pattern on a Rookie or above')
             if not 0 <= r['trainingType'] < len(TRAINING_TYPES): E(P('training_type'), partner.get('training_type'), ', '.join(TRAINING_TYPES))
-            if not 0 <= r['favoredRegion'] < NUM_REGIONS: E(P('favored_region'), r['favoredRegion'], f'a region 0..{NUM_REGIONS - 1} (the .MAP files name 0..8)')
+            if not 0 <= r['favoredRegion'] < NUM_REGIONS: E(P('favored_region'), r['favoredRegion'], f'a region 0..{NUM_REGIONS - 1} (native regions 0..8; cold/water profile 9)')
             if not 1 <= r['defaultWeight'] <= 99: E(P('birth_weight'), r['defaultWeight'], '1..99 (the game clamps the weight to it)')
             if not 0 <= rows['itemTakeDistance'] <= 127: E(P('item_distance'), rows['itemTakeDistance'], '0..127')
             for k, tr in (('training', rows['trainingAnims']), ('training2', rows['training2Anims'])):

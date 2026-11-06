@@ -215,7 +215,7 @@ new frame and no `FADE_PROTECTION`: in menus, battles, fishing and cutscenes not
 - Feeding (`partnerHandleFoodFeed`): the item has already added its energy (x1.4 and +2 happiness for the favourite,
   capped at `energyCap`). If it was hungry and now has enough energy: happiness +5, discipline +1, hunger cleared, next
   meal scheduled. Food (items 0x26..0x46, 0x79, 0x7A) given when not hungry: happiness -3, discipline -2.
-- Refusals (`partnerWillRefuseItem`): always refuses 0x73..0x7C except 0x79/0x7A, and items 0x21..0x25; evolution
+- Refusals (`partnerWillRefuseItem`): always refuses 0x73..0x7B except 0x79/0x7A, and items 0x21..0x25; evolution
   items for the wrong level; items 0x00..0x20 are refused if `rand(100) < 110 - (discipline + rand(10) + 10)`
   (discipline 100 never, 50 about 45 %, 0 almost always), then `ITEM_SCOLD_FLAG = 1`; when not hungry the favourite
   food is refused 20 % of the time.
@@ -285,7 +285,7 @@ stats -2 % every 300 frames** (minimum 1) until happiness is back to >= 0 or the
 
 ## Tiredness (`tickTirednessMechanics`)
 
-The status screen shows it as a bar and a number when NEW STATUS BARS is on: green below 50, red from 50.
+The status screen shows it as a bar and a number: green below 50, red from 50.
 
 +5 per battle (`handlePostBattleTiredness`; its factor for MP spent is always 0), +8 per training session, +5/h
 sick, +2/h on a hated map, +10 when sleeping sick; falls when sleeping, with items and -3/h on a favoured map.
@@ -349,7 +349,7 @@ data (patches 0123, 0134).
 
 ### When it is evaluated (`tickConditions`, `partner_impl.c:2068-2119`)
 
-Every frame with no day/night fade in progress (`isInDaytimeTransition`, almost always true), outside the immortal hour,
+Every frame with no day/night fade in progress (`isInDaytimeTransition`, almost always true),
 `PARTNER_STATE == 1` and the tamer free:
 
 | Current level | Condition | Function |
@@ -360,6 +360,11 @@ Every frame with no day/night fade in progress (`isInDaytimeTransition`, almost 
 | 4 Champion | `evoTimer >= 168` (144 on the disc) | `getChampionEvolutionTarget`; nothing if none qualifies |
 | 4 Champion | `evoTimer == 360` | `handleSpecialEvolutions(3)` |
 | 5 Ultimate (mod) | `evoTimer >= 96` | the Mega patch (0058) evaluates the Ultimate's paths: another Ultimate, or a Mega (level 6) once `evoTimer >= 120`; the `evolutionUltimate` pairs score their single target first: Megadramon/Gigadramon → Machinedramon from 48 h, a pair into an imported Mega (WaruMonzaemon, Meteormon, ShogunGekomon, KingSukamon) from 120 h (patch 0339) |
+
+The immortal hour armed by save loading or waking protects against death and sickness escalation, but does not
+block a due evolution. The death and sickness ticks retain their own protection checks. Previously the shared
+early return also suppressed evolution: loading a save or waking deferred it until the next hour even when multiple
+targets qualified. Rookie eligibility still starts at 72 evolution hours; ties keep the existing picker.
 
 A target other than -1 → `tamerSetState(6)`, `partnerSetState(13)`; state 13 runs the EVL sequence and ends in
 `EVL_applyEvolution`. The hours of each level, the specials and the item rules are data in the mod (patches
@@ -400,6 +405,20 @@ Items 0x47..0x72 → `EVOLUTION_ITEM_TARGET[item-0x47]` only if `level(target) -
 Gigadramon (0x40), Noble Mane (0x7E, Rookie only) → Panjyamon (0x3F), Metalbanana (0x7F) → MetalEtemon (0x41); 0x7D and
 0x7F are only accepted by a Champion. Patch 0323: an item evolves like any other evolution, with the stat gains, the lifetime and the tamer level chance.
 
+North Star (92) targets Whamon (24). With NEW DIGIMON on Whamon is an Ultimate, so North Star requires a
+Champion; with off Whamon is a Champion and the item requires a Rookie. The native-item stage helper uses the
+current target stage, retaining the established legacy exception for native items whose targets became Mega.
+Both eligibility and application use that same helper. The USA refusal path reads `EVOLUTION_ITEM_TARGET`
+directly rather than a palette-relative alias. The arena cup-14 reward and all nine North Star descriptions
+remain Whamon's.
+
+Dolph Fin (124, the unused AS Decoder slot) is a separate evolution item with value 5000. The fourth existing
+`MOD_EVO_ITEMS` row maps it to Dolphmon (238) with partnerLevel 3 (Rookie). Its handler and refusal paths include
+0x7C alongside the original 0x7D..0x7F custom items. The common rule lookup rejects unavailable imports, so NEW
+DIGIMON off refuses Dolph Fin without consuming it. Wrong stages refuse it. The group-3 exchange for Small
+Recovery is once per save, with permanent history flag 13; no item or rule table grows. The fridge key at 123 is
+unchanged. Dolph Fin's nine localized names fit 11 characters and its descriptions name Dolphmon.
+
 ### Stats on evolving (`EVL_applyEvolution`, `evl.c:1282`)
 
 With `EVOLUTION_STATS_GAINS[target]`, per stat: if the current value >= the gain → `+gain/10`; otherwise →
@@ -423,7 +442,8 @@ The species added by the mod join the same pickers; the disc's own routes are un
   the 6 slots of its `EVOLUTION_PATHS.to` list. `getInTrainingEvolutionTarget` and the evolution chart's overview walk
   the extra list after the original one; `EvolutionPath` itself is unchanged. The picker still keeps the best score >= 3
   with ties going to the first listed, so the Rookies of one In-Training need distinct requirements.
-- **Parents**: the curated tree in `content/tables/evolution-tree.json` permits up to five parents and six children. Canon main lines come first, then family and shared specialty; mod-added links share a specialty, except the documented canon Otamamon → Geremon route; original-disc paths are exempt without changing their species’ battle specialties. Every Champion reachable from a Fresh has at least two Ultimates, every raisable Ultimate a route to a Mega (2026-11-04), every Rookie at least four Champions, and every In-Training a Rookie. An Ultimate whose original id has no path row (63..179 without a record: Gigadramon, WaruMonzaemon, Meteormon, ShogunGekomon, KingSukamon) reaches its Mega through an `evolutionUltimate` pair, listed with its reason in the tree's `ultimate_rules`; Vademon, raised only by its Champion praise special, is checked from an untrained Champion after its 240 hours. The sheet’s 48 imported canon Megas are level `mega` and follow Ultimates, never Champions. The disc’s Phoenixmon and HerculesKabuterimon routes remain.
+- **Six Rookies per Baby II (NEW DIGIMON on)**: each of the eight In-Trainings has six ordinary outgoing targets, fitting one chart page. The [implemented chart design](../proposals/baby-rookie-chart.md) lists all 48 edges, including all original-disc routes. All 44 ordinary Rookies remain covered; Kunemon retains its original Kunemon's Bed waking special. Tsunomon keeps Air/Ice. Its canon link to Gabumon is the only entry in the explicit canon-link specialty allow-list; it is not an exception to stage progression or scoring. `evolutionRookieWeights` supplies one optional parent/target weight row: Tsunomon → Gabumon uses 26, while Koromon → Gabumon retains 15 and the original requirements. The picker and chart popup use the same helper, gated by NEW DIGIMON; explicit off paths remove the added native link in both directions. Original normal-weight outcomes and all 48 practical Rookie routes are regression checked. Other moved Rookies use distinct highest-stat/weight combinations, with removed-parent bonuses updated.
+- **Parents**: the curated tree in `content/tables/evolution-tree.json` permits up to five parents and six children. Canon main lines come first, then family and shared specialty; mod-added links share a specialty, except the documented Otamamon → Geremon specialty exception and the narrow `canon_link_exceptions` allow-list (only Tsunomon → Gabumon, with its reason); original-disc paths are exempt without changing their species’ battle specialties. Every Champion reachable from a Fresh has at least two Ultimates, every raisable Ultimate a route to a Mega (2026-11-04), every Rookie at least four Champions, and every In-Training a Rookie. An Ultimate whose original id has no path row (63..179 without a record: Gigadramon, WaruMonzaemon, Meteormon, ShogunGekomon, KingSukamon) reaches its Mega through an `evolutionUltimate` pair, listed with its reason in the tree's `ultimate_rules`; Vademon, raised only by its Champion praise special, is checked from an untrained Champion after its 240 hours. The sheet’s 48 imported canon Megas are level `mega` and follow Ultimates, never Champions. The disc’s Phoenixmon and HerculesKabuterimon routes remain.
 - **`requirements.digimon`** names the primary parent: the game reads that field as "the species it evolves from", so
   the bonus point applies to that route only.
 - **Rookie weight bands**: the added Rookies ask for weight 26 (overfed) or 4 (underfed; weight drops while energy is
@@ -639,7 +659,7 @@ Facts that matter when partner RAM is edited from outside (recipes are in [../de
 - Do not write the species id at `PARTNER_ENTITY+0`: the loaded model does not change. A forced evolution writes
   `EVOLUTION_TARGET` and puts the partner in state 13 and the tamer in state 6, which is what `handleEvoItems` does;
   `EVOLUTION_STATS_GAINS[id].target` decides the species actually reached.
-- The immortal hour after sleeping (`HAS_IMMORTAL_HOUR = 1`) blocks death and life loss for that hour.
+- The immortal hour after sleeping or save loading (`HAS_IMMORTAL_HOUR = 1`) blocks death and life loss for that hour; due evolutions are still evaluated.
 - `STATS_LIMIT_ARRAY` only limits scripts; `SET_STAT` id 0x16 (lives) reads past the 22-entry table.
 - `PARTNER_PARA` is saved whole, so any write survives a save.
 

@@ -65,7 +65,7 @@ In our builds (GCC, [compiler.md](compiler.md)) the executable still starts at 0
 | intro, movies | `MOV_REL` with its MDEC buffers, from 0x80010000 (to 0x80085C54 since patch 0098; below `OVL_TRN_BASE`) |
 | title | the title's TIMs (`ETCTIM.BIN`, 0x80010000–0x8002F000) |
 | world | the map background (`.TFS`; the `.MAP` is read there first and processed). Original: the whole TFS stays resident, up to 0x78800 bytes, ending at 0x80088800. With the series: a 4 KB header and an 8-tile ring, 0x80010000–0x80035000, and the rest is world scratch (below) |
-| training | `TRN_REL`/`TRN2_REL` at 0x80088800–0x8008F800 |
+| training | `TRN_REL`/`TRN2_REL` at 0x80088000–0x8008F800 |
 | menus, fishing, death | `DOO2` and `FISH` at 0x80070000, `MURD` at 0x8007C000, `DOOA` at 0x80080000, `DGET` at 0x80080800; the map is reread on return |
 | curling | `KAR` at 0x80053800, alongside the screen's map |
 | evolution, ending | `EVL`, `ENDI`, `EAB` at 0x80060000; the evolving model at `EVO_MMD_ADDR` 0x80020000 |
@@ -98,7 +98,7 @@ against it.
 | `OVL_MURD_BASE` | 0x8007C000 | death |
 | `OVL_DOOA_BASE` | 0x80080000 | DOOA |
 | `OVL_SHOP_BASE` | 0x80080800 | DGET (and the unused shop overlay's slot) |
-| `OVL_TRN_BASE` / `OVL_TRN_MAX_END` | 0x80088800 / 0x8008F800 | TRN, TRN2 |
+| `OVL_TRN_BASE` / `OVL_TRN_MAX_END` | 0x80088000 / 0x8008F800 | TRN, TRN2 |
 | `GENERAL_BUFFER_ADDR` | 0x80010000 | `.MAP` then `.TFS`, sound bank staging, EFE base |
 | `DOOA_WORK_OFFSET` | 0x4B000 | DOOA's work area, from `GENERAL_BUFFER` |
 | `TFS_HEADER_ADDR` / `_SIZE` | 0x80010000 / 0x1000 | streamed background: the TFS header |
@@ -118,7 +118,7 @@ against it.
 | `MAP_SCRIPT_MAX` | 0x4000 | one `DG.SCN` entry (largest original 0x3800) |
 | `SCRIPT_OFFSET_TABLE_SIZE` | 0x800 | `DG.SCN`'s offset table |
 | `MAPHEAD_SCRIPT_MAX` | 0x6800 | resident `MAPHEAD.SCN` |
-| `SEQ_BUFFER_SIZE` | 0x8000 | SEQ block of the current music font (0x5800 originally) |
+| `SEQ_BUFFER_SIZE` | 0x7800 | SEQ block of the current music font (0x5800 originally) |
 | `SPU_BANKS_START` / `SPU_REVERB_START` | 0x1010 / 0x7B7C0 | SPU range the sound banks may use |
 
 ## Fixed buffers in the main bss
@@ -132,12 +132,18 @@ These are static arrays: they cost heap whether or not they are full.
 | `MAPHEAD_SCRIPT_BUFFER` | 0x6800 | `MAPHEAD.SCN`, resident from boot |
 | `SCRIPT_OFFSET_TABLE` | 0x800 | `DG.SCN`'s offset table |
 | the screen script | 0x4000 | the current `DG.SCN` entry |
-| SEQ buffer | 0x8000 | every track of the current music font |
+| SEQ buffer | 0x7800 | every track of the current music font |
 | `COLD_ANIM_BUFFER` | 0x2000 | a partner animation read from the disc when it starts (patch 0113) |
 | `SAVE_FILE` | 0x2000 | the v1 save file; its battle registrations are game state between card operations |
 | `GS_WORK_BASES` | 2 × 0x14000 | GPU packet buffers (one per frame buffer) |
 | ordering tables | 2 × 0x4000 | |
 | `MOD_TFS_CLUTS` | 1.5 KB | resident copy of the map's first three palettes (patch 0159) |
+
+The sequence buffer is sized against all 35 built music fonts: the largest block is 0x7284 bytes, so 0x7800 leaves
+1,404 bytes spare. Reducing its former 0x8000 capacity returns 2,048 resident bytes without removing sound data.
+Both music loaders check this capacity, and the authoring check uses the same limit. In the nine-language integration,
+`main_BSS_END` moves from 0x801cee08 to 0x801ce608 and the heap grows from 184,560 to 186,608 bytes. All 320
+archive-backed screen setups fit; screen 207 is tightest at 1,888 bytes free (previously 160 bytes short).
 
 ### Partner model buffer (patches 0064, 0176)
 
@@ -341,23 +347,30 @@ tiles about to enter the window.
   (0x80011000–0x80035000). A tile is 0x4004 bytes in the file and never sector-aligned, so a slot is 0x4800 and the
   pixels start at `slot + offset % 2048`. A small map never gets more slots than its whole TFS would have taken, so
   whatever the game writes just above a small TFS stays safe.
-- **The window logic is the original's**: `handleTileUpdate`, `updateTileColumn/Row` and `uploadMapTileImages` are
-  unchanged; only the `LoadImage` source changes (`tfsLoadTile`). Whole-window uploads (map load, curling, fishing) read
-  each window row, contiguous in the file, in one `CdRead` over the ring.
+- **Window selection retains the original thresholds**: `handleTileUpdate` expresses the original band intervals
+  arithmetically, including their gaps and inclusive endpoints. A host comparison with the preceding implementation
+  checks 8,690,592 cases, including the order and arguments of row, column and whole-window uploads. Whole-window
+  uploads (map load, curling, fishing) read each window row, contiguous in the file, in one `CdRead` over the ring.
 - **Prefetch**: once per tick, while the game's read queue is empty, the tile the window may need soonest is read
   asynchronously, one tile per `CdRead`. "Soonest" is the camera's distance to `handleTileUpdate`'s thresholds (right at
   `cameraX ≥ 128·(wx+1)+10`, left below `128·wx+1`, down at `cameraY ≥ 128·(wy+1)`, up below `128·wy+1`), plus 96 px
   for a side the camera has not moved toward in the last 40 ticks. A ring tile is only given up for one at least 32 px
   nearer. A read only starts once the drive has finished its last command (`CD_sync`) and 3 vsyncs after the previous
   read ended; starting right after a read can stall the tick for two refreshes waiting for the drive.
+- **Walking across a cold band**: the follow camera calculates its next window without uploading it, then checks
+  every incoming tile. Missing tiles take priority in the asynchronous ring and remain protected until the complete
+  band has been uploaded. Field logic, input and animation continue during those reads. The camera uses the spare
+  pixels of its current 4×3 window, holds at its visible edge if necessary, and gradually consumes retained scroll
+  once the tiles arrive, including after the pad is released. Invalid rings, forced uploads and bands larger than
+  a small map's ring retain the synchronous fallback. No additional tile buffer is allocated.
 - **Hysteresis**: the original's is 1 px vertically and 9 px horizontally, so walking back right after a shift needs
   the strip that just left. That strip is copied from VRAM back into the ring as it leaves (`StoreImage` before the
   replacing `LoadImage`) and never waits for the CD. Tiles already in VRAM are evicted first.
 - **CD arbitration**: the read queue does not start a request while a tile read is in flight; `readFile`,
   `readFileSectors` and `readFileSection` wait for it first. A miss (a tile not in the ring when needed) is read
-  synchronously and counted. Since patch 0206 every synchronous reader and every enqueue also waits for the queue's
-  read in flight (`tfsStreamCheckTarget`): a second `CdRead` aborts the first, which would end with only its first
-  sectors.
+  synchronously and counted on the fallback paths. Since patch 0206 every synchronous reader and every enqueue
+  also waits for the queue's read in flight (`tfsStreamCheckTarget`): a second `CdRead` aborts the first, which would
+  end with only its first sectors.
 - **Invalidation**: a load whose target overlaps 0x80010000–0x80035000, and every battle, empty the ring. The game's
   own `readMapTFS` calls (map load, battle won, evolution, death, jukebox, script op 0x24, Toy Town's background swap)
   now only reread the header and reopen the ring. The battle exit, the jukebox and the ring's own reopening keep the
@@ -375,10 +388,82 @@ tiles about to enter the window.
   refusals, row reads, captures).
 
 Results: the resident TFS goes from up to 482 KB to 148 KB, warps are faster (the header is 2 sectors and the window
-rows about 100 sectors instead of the whole file; leaving a battle rereads 2 sectors instead of 482 KB), and the
-per-tick cost while walking across tile boundaries is unchanged. A longest tile read takes 24–30 vsyncs, a window row
-16–18, and a walk across every window boundary of File City with reversals has no misses. The streaming code costs
+rows about 100 sectors instead of the whole file; a won battle reuses the resident header). A longest tile read takes
+24–30 vsyncs, a window row 16–18, and a walk across every window boundary of File City with reversals has no misses. The streaming code costs
 about 5.6 KB of heap. The scripts in `tools/dev/memory/` check the ring and the window against the file.
+
+The camera-band change recovers its code cost by compacting the original interval lookup. In a matched eight-language
+60 fps build, `main_BSS_END` moves from `0x801ceb00` to `0x801ceab4`: 76 fewer resident bytes and 80 more bytes of aligned
+heap (185,408 B). Both heap checks pass; all 320 archive-backed screen setups fit, with 688 B free on screen 207.
+
+Controlled won-battle returns in PCSX-Redux's original-2-MB interpreter measured the following largest gaps between
+field presentations (GPU vsync counts at 60 Hz, 420 field frames per run):
+
+| Screen | Before | Asynchronous camera bands |
+|---|---:|---:|
+| 0, Native Forest | 31 vsyncs / 517 ms | 3 vsyncs / 50 ms |
+| 20, Path Thru Mt Panorama | 64 vsyncs / 1,067 ms | 5 vsyncs / 83 ms |
+| 23, Foot Mt Panorama | 62 vsyncs / 1,033 ms | 3 vsyncs / 50 ms |
+
+Each fixture starts its follow camera four pixels before a native column boundary, wins an ordinary engine battle,
+and applies the same short walks, idle periods and reversal after returning. The camera window, horizontal start
+and inputs match; NPC motion leaves small differences in vertical framing. All runs stay on their initial screen.
+Each baseline return incurs three synchronous tile misses; all three patched returns have zero misses, waits and
+synchronous-read vsyncs. Retained scroll settles to zero. When a band is still cold, only the camera holds at its
+loaded edge while actors continue moving; it then catches up without a tile read blocking the field tick.
+
+A separate two-battle Cherrymon regression starts six pixels from a row boundary. Both battles return successfully;
+the battle window never moves, no reopen is refused or attempted in battle, and no read error occurs. These are
+emulator checks, not physical-console measurements.
+
+Ordinary scripted world pans share the camera-band preflight too. A won battle's return pan can cross a cold
+row before free follow resumes. It now prefetches the destination band and retries an unready step without
+advancing the camera, drawing offsets or division remainders. Pending tiles stay protected across the late follow
+phase until upload. A pan's tile demand bypasses the optional BTL preload hold: its script cannot release control
+for that preload until the camera arrives. Battle camera and forced-upload paths retain their existing behavior.
+
+A full eight-language original-2-MB comparison of this scripted-pan change moves `main_BSS_END` from `0x801ceb44`
+to `0x801cec54` (+272 B), with 184,992 B of aligned heap. Both heap checks pass; all 320 actual-archive setups fit,
+with 272 B remaining on screen 207. Reusing the pan's existing division results limits resident cost. The reproduced
+Native Forest victory-return gap with QUICK BATTLES on at 60 FPS falls from 32 vsyncs (533 ms, four synchronous
+misses) to three (50 ms), with zero synchronous tile misses or read-wait vsyncs. Actor animation advances while the band is pending.
+
+A diagonal world scroll must resolve both tile-window axes before either upload. Otherwise the row updater
+reads a temporary corner in the old column range, outside the preflighted destination window, and can evict the
+incoming band. The shared no-upload dry run selects the destination first. This adds 16 B to main:
+`main_BSS_END` becomes `0x801cec64`, aligned heap 184,976 B, tightest archive-backed margin 256 B on screen 207.
+Both heap checks and all 320 archive setups pass. Window selection and row/column call arguments/counts match
+the original across 8,690,592 host-oracle cases; uploads now use the destination window.
+
+A held window may catch up while a camera axis is stationary or reversing, so the uploader must choose its
+bottom/right edge from `MAP_TILE_Y/X` versus `PREV_TILE_Y/X`, not the caller's direction flag. Otherwise it can
+reload the resident side, miss synchronously, and leave the incoming band stale. A night Horizon pickup/return
+reproduced a 28-vsync gap and missing right column with correct palettes. The real row/column upload functions
+pass 32,234,684 one-band host-oracle cases, including stationary/reversed axes; removing this fix fails on a held
+vertical band.
+
+Quick-battle EFE initialization also owns the interpreter exclusively until its incremental file callbacks finish.
+Both normal EFE ticking and rendering wait for `MOD_BATTLE_LOADING` to clear. Even scanning inactive subeffects
+writes `EFE_SCRIPT_CONTEXT`; between four-opcode initialization callbacks, the renderer can leave it at the last
+subeffect and cause `BTL_setupLoadedEFEFile` to dereference script bytes as an instance. A night Overdell encounter
+reproduced this first-chance exception with TFS inactive and no battle stream open or window movement. The guard
+lives in the battle overlay.
+
+The final full-build 2 MB endurance check finishes 26 won field battles in one emulator boot without state
+reloads: 13 with Agumon and 13 with VenomMyotismon, eight battlefields plus File City visits after every battle.
+The six core screens are repeated with small-partner QUICK BATTLES on/60 FPS and off/30 FPS, then large-partner
+off/60 FPS and on/30 FPS; extra Cemetery and six-NPC Underground Lab encounters complete the matrix. Immediate
+multidirectional walks, field menus, resident conversations and screen changes pass, as do full evolution on
+night Horizon and sleep/wake after a battle. Every battle window stays fixed and every TFS open stays in the world.
+All 297 tile/ring/palette/heap snapshots pass, including 3,500 window-tile comparisons, with no refused reopen,
+read error or corrupt heap block. All tested Horizon arrival heights are zero.
+
+The final laboratory return/walk peaks at five vsyncs (83 ms), with no synchronous tile miss or read-wait vsync.
+The final run's larger ten-vsync (167 ms) gap coincides with cold animation 5 starting in a loot reaction before
+free control, with no tile demand/read active; it remains a separate timing observation. Free walking peaks at
+six vsyncs (100 ms) on a walking-to-idle transition without TFS activity. QUICK BATTLES off retains a pre-world
+transition of 16–21 vsyncs (267–350 ms), including its existing synchronous field-music/setup path. These are
+emulator results, not physical-console measurements or a claim of uniform frame pacing.
 
 **Rule for the load area in the world**: nothing that has to last longer than the load that brought it may be read
 from the load area later. Copy it out when it arrives.
@@ -445,6 +530,88 @@ may be loading, waits for it first.
 `SAVE_FILE` keeps the v1 file (0x2000), as in the original, because its battle registrations are game state between
 card operations. A multi-part file is read and written part by part in copy order, each part waited for, so a write
 that stops anywhere leaves one whole copy (patch 0096).
+
+### Live training care HUD
+
+`live-care-hud-during-training.patch` keeps the five B5a gauges visible through
+TRN and TRN2, including each x5 award. Both overlay bases move from 0x80088800 to
+0x80088000, borrowing one 2 KB sector of unused world scratch below the temporary
+texture buffer. The streamed field ring ends at 0x80035000. The upper slot limit
+remains 0x8008F800, below main; the existing linker assertions check rounded
+TRN/TRN2 reads against that limit and rounded MOV reads against the new base.
+The loader uses linked `trn_START`/`trn2_START` addresses. The balance writer
+likewise resolves compiled overlay bases from the ELF; original-disc offsets
+remain unchanged. No heap block, main buffer or VRAM allocation is added.
+
+The gym objects own the extra render callback and remove it with their existing
+tick callback. It temporarily uses the visible horizontal anchor, calls the
+existing live renderer, then restores the field slide offset. The clock remains
+paused and ordinary field/menu/battle suppression remains intact. The x5 wait
+reuses the existing lower-box visibility byte, so there is no new persistent
+state. Lower result boxes move 24 pixels left,
+clearing the HUD after the tally's 17-pixel skip row.
+
+The full nine-language build keeps `main_BSS_END` at **0x801CED58**, with
+main text/rodata/data/BSS unchanged at 509,504 / 29,672 / 134,436 / 623,164 bytes.
+Heap remains **184,736 bytes**, MENU remains **53,860 bytes**. TRN grows from
+28,548 to 29,400 bytes (+852); TRN2 from 22,800 to 23,668 (+868). Rounded TRN
+reads still end at 0x8008F800; MOV ends at 0x80086000. Normal heapcheck passes
+without an override; all 320 actual-archive setups fit, with the existing
+16-byte minimum margin on screen 207. This patch adds no margin to that already
+tight screen.
+
+The additional gym draw emits at most 400 bytes of GPU commands per frame in the
+existing work buffer. The five gauges keep their field positions. CANCEL between
+awards ends the block before another session is charged; the existing confirmation
+button still skips the final tally. The native automatic stop conditions and
+per-session gains/care costs are unchanged.
+
+PCSX-Redux verification used original 2 MB RAM, an Agumon partner, the native HP
+state machines in screens 112 (TRN, NEW/30 FPS mode) and 99 (TRN2, CLASSIC/60 FPS
+mode), and the real x5 menu flag. Before the need-alert follow-up, across both
+five-session runs the visible hunger
+fill went 18/18/18/13/7/1 pixels, toilet 2/5/7/9/11/14, and tiredness 3/4/5/7/8/10.
+The raw fatigue values were 14/22/30/38/46/54; each award advanced exactly one game
+hour. Pixel checks matched the live readings. Native cancellation stopped after
+two awards; a hunger fixture also stopped after two. The native new-orders box,
+the taller skip-row tally and OFF were captured and visually checked. The gym
+render callback was absent after returning control in every run.
+
+Reproduce with a Pillow-enabled Python using
+`tools/dev/playtest/training_care_hud.py DISC.cue --exe EXE --card AGUMON.mcd`.
+`tools/dev/playtest/training_care_hud_host.py TREE` checks the actual shared C
+block against cancellation boundaries, native stop reasons, capped totals,
+single-session behaviour and HUD/slide state. The evolution integration proof
+waits for the asynchronous block to finish before checking its session count.
+
+### Need-gauge alerts
+
+`blink-and-highlight-active-care-needs.patch` uses the existing 20-Hz
+`PLAYTIME_FRAMES` for one-Hz final-hour hunger/toilet warnings and the final
+six-point fatigue step before the live exhausted threshold. Only the bar fill
+blinks; active needs hold full red with red icon housings. The same main renderer
+serves the field and paused TRN/TRN2 callbacks. There is no new timer, BSS, heap
+block or saved state. Three palettes occupy already-uploaded spare atlas rows
+508–510; texels, asset size, VRAM allocation and upload remain unchanged.
+
+Loop compaction of the original OFF renderer pays for the new branches while
+preserving its GPU-call order across all 609,030 normal-domain combinations.
+The full nine-language build measures `main_BSS_END` **0x801CED48** (−16 B),
+main text **509,488 B** (−16), unchanged rodata/data/BSS
+**29,672 / 134,436 / 623,164 B**, and aligned heap **184,752 B** (+16).
+MENU/TRN/TRN2 remain **53,860 / 29,400 / 23,668 B**, with unchanged rounded
+read bounds. Normal heapcheck passes; all 320 actual-archive setups fit, with
+screen 207's minimum margin increasing from 16 to **32 B**. The renderer still
+emits at most ten FT4 packets (**400 B/frame**) into the existing work buffer.
+
+PCSX-Redux verifies 39 need-state frames on original 2 MB RAM, including normal,
+both warning halves, steady active red, resets, fatigue 100, NEW/CLASSIC, light/dark
+floors and a paused-gym warning pair. Six consecutive captures are ten native
+play ticks apart while care time stays fixed. Both native x5 gym runs, cancel,
+hunger stop, tally/new-order clearance, OFF and callback cleanup pass again on
+this build. The hunger stop renders full red immediately from overdue food,
+before the paused native HUNGRY flag updates. See
+[need-alert evidence](../../HUD-DESIGN.md#need-alert-runtime-confirmation).
 
 ### Code out of the executable (patch 0098)
 
@@ -882,3 +1049,86 @@ These samples have no heap corruption. Palette rows 5–7 match the generated
 TIM in live partner VRAM; the live mesh selects them on 29 claw, 12 horn and
 94 stripe polygons. The old 224 memory card retains its equipped technique
 slots while loading the native model.
+
+
+## HP/MP care bubbles
+
+Recovery needs use the strict 30% threshold. The two labelled native disks are
+derived into spare cells of the existing ETCTIM upload; private palettes occupy
+unused FEEL_EF CLUT rows and are preserved by its standalone upload. File sizes,
+upload rectangles and file-table names remain unchanged. The condition ring has
+eight slots and keeps its existing layout, animation and frontmost Square badge.
+
+The care collector and mutable UI state remain in main. The existing `feedNote`
+routine and immutable captions move to MENU_REL. `feedOpen` loads MENU before
+reading them, and resident closing/giving paths call `closeMenuOverlay` to restore
+the curling library. Care callbacks remain resident through item animations.
+
+With the final disc flags and all nine padded language banks, `main_BSS_END`
+moves from **0x801CE5E0** to **0x801CE780** for the resource feature (+416 B), then
+to **0x801CE52C** after the UI relocation (−596 B): a net **180 B reduction**.
+Aligned heap grows **186,640 → 186,832 B** (+192 B). Main text/rodata/data/BSS
+are **509,648 / 29,656 / 134,264 / 621,116 B**. MENU grows
+**53,860 → 54,484 B**, remaining at **27 sectors** with unchanged read limits.
+Normal heapcheck passes without an override; all **320 actual-archive setups**
+fit, with **2,112 B** remaining on the tightest setup, screen 207.
+
+See [the bubble implementation and proof](../../BUBBLE-DESIGN.md) for the pixel
+allocation, behaviour and reproducible checks.
+
+
+The condition-group viewport/clock clamp adds **336 B** of resident code, and
+the wider MP sprite descriptor adds **32 B**, with no BSS or texture allocation.
+Before permanent HUD integration, the endpoint is **0x801CE69C**, heap
+**186,464 B**, main text **510,016 B**.
+MENU remains **54,484 B / 27 sectors**; rodata/data/BSS remain
+**29,656 / 134,264 / 621,116 B**. Relative to the pre-feature baseline the
+combined resident growth is **188 B**, and aligned heap decreases **176 B**.
+The group moves as a unit, keeping the legacy lower-right badge offset while
+clearing the viewport and visible clock. HP uses a 16×16 atlas cell; MP centres
+the same native disk in a 32×16 cell to preserve both M stems through point
+sampling. The cells and palettes occupy 448 B of existing texture uploads.
+Normal heapcheck passes without an override; all **320 actual-archive setups**
+fit with the revised code, minimum margin **1,744 B on screen 207**.
+
+## Permanent care panels (2026-11-06)
+
+The care HUD and status panels are always enabled. The status-bars option,
+its runtime variable and the original field/status renderers have been removed;
+training uses the existing care HUD and its lower-box layout unconditionally.
+The saved byte is reserved, ignored on load and written as 1. Other saved
+settings retain their offsets.
+
+Measured on full default-language builds from the same base and player discs,
+with original 2 MB RAM budgeting and no heap override:
+
+| Measurement | Before | After | Change |
+|---|---:|---:|---:|
+| `main_BSS_END` | `0x801CE5E0` | `0x801CE0C4` | −1,308 resident bytes |
+| Heap | 186,640 B | 187,952 B | +1,312 B after heap alignment |
+| Tightest of 320 setups (screen 207) | 1,920 B | 3,232 B | +1,312 B |
+| `MENU_REL` | 53,860 B | 53,824 B | −36 B |
+| `TRN_REL` | 29,400 B | 29,276 B | −124 B |
+| `TRN2_REL` | 23,668 B | 23,584 B | −84 B |
+
+All 320 actual-archive setup margins increase by 1,312 bytes. Screen 41 retains
+6,168 bytes; screens 330–332 retain 7,760 bytes. Both the historical sweep's
+heapcheck and the actual-archive story check pass. MENU still occupies 27 disc
+sectors; the existing rounded overlay-load bounds remain in force.
+
+
+## Integrated HP/MP bubbles and permanent HUD
+
+The full nine-language integration includes the status portrait anchor, permanent
+care panels, digital clock and enemy bars, and the bounded damage curve. The
+removed runtime option variables and OFF paths stay removed. Recovery needs,
+optional Square recovery and the eight-slot condition layout retain their rules.
+
+`main_BSS_END` is **0x801CDF7C**, with **188,288 B** of heap: **1,824 B more**
+than the HP/MP branch before this integration. Main text/rodata/data/BSS are
+**508,320 / 29,560 / 134,268 / 621,096 B**. MENU is **54,324 B / 27 sectors**;
+TRN/TRN2 are **29,276 / 23,584 B**. Overlay read bounds remain unchanged.
+
+Standard heapcheck passes without an override. All **320 actual-archive setups**
+fit; the tightest margin is **3,568 B on screen 207**, followed by **6,504 B on
+screen 41**. The historical sweep's tightest projection is **31,936 B**.

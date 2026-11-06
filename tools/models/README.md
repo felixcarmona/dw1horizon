@@ -55,6 +55,24 @@ animations with our mesh and texture, replayed from plain deltas
 Run `python3 -m tools.models.babies check` and
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_native_babies`.
 
+DemiDevimon (236) binds its imported mesh to Birdramon's native skeleton and
+programs through `field_animations/native_binding.py`. The recipe in
+`content/models/imports/native-bindings.json` assigns every rigid piece, fits
+the wing spars and trailing web, and scales native translations once. Native
+timing, rotations, scales and controls remain intact. Texture-copy commands
+are removed because the imported atlas has another layout; effect origins
+use the scaled native joints. The imported delta and texture remain pinned.
+
+Replay the native binding checks with the original DW1 extraction present:
+
+```sh
+BINDING_MODELS=build/imported-model-edit/edit PYTHONPATH=tools \
+  python3 -W ignore -m unittest tools.test_native_bindings
+```
+
+Use `tools/models/edit.py get 236` to populate that folder first. Provider
+checks (`check 236 --species-pins`) also regenerate and verify the final rig.
+
 Measure final field speeds and voice-note coverage with:
 
 ```sh
@@ -69,3 +87,29 @@ measurement as well as an offline speed measurement.
 
 Imported bone-scale consistency, the complete corrected-species list and the
 replay commands are documented in [the scale audit](../../docs/reference/motion-scale-audit.md).
+
+Vilemon's slow walk keeps its existing footwork, body, wrist poses and mesh.
+The `vilemon` pass after field pace transfers native Ogremon's shoulder and
+elbow motion over each 15-tick stride; every other program, including the run,
+remains exact. `VILEMON_MODEL=MODEL PYTHONPATH=tools python3 -m unittest
+ tools.test_vilemon_walk` checks the complete provider layer against its input.
+
+Zudomon's reviewed model is uniformly resized to 85% with `resize.py`, including
+mesh vertices and translation tracks in every clip. Its radius, height and
+bone-local effect/bubble offsets use the same factor. Rotation, visibility,
+timing, sounds and technique assignments remain unchanged. The resize is stored
+through `edit.py put`, so no later field generator can restore the larger size.
+`tools.test_zudomon_size` compares decoded acting and world-space mesh points
+across all clips, including the hammer, with the before/after models supplied
+as `ZUDOMON_BEFORE` and `ZUDOMON_AFTER`.
+
+Angewomon keeps the original mesh, rig and acting, with the existing field
+celebrations baked before a uniform 0.74 resize of mesh vertices and animation
+translations. Its helmet height is close to native Angemon at a shared world
+scale. World 2 and World 3 mesh trials on Angemon and Myotismon did not improve
+the posture and wing silhouette, so their bindings are excluded. The model
+provider uses the resized delta directly.
+
+`PYTHONPATH=tools python3 -m unittest tools.test_angewomon_size` checks the
+reviewed before/after files under `build/angewomon-redo/`; override them with
+`ANGEWOMON_BEFORE` and `ANGEWOMON_AFTER` for reconstructed inputs.

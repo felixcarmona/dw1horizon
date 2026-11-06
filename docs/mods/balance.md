@@ -259,14 +259,20 @@ into Veemon (`EVOLUTION_TARGET=180`):
 
 ## 6.1 The economy rule
 
-No repeatable conversion may turn bits into more bits. Every item and card is valued at its best way out (a shop's
-sell price, merit at the merit shop's best rate, Mojyamon, DemiMeramon, ClearAgumon, the Trash Mountain card swap): a
-Mojyamon trade may not give more than its input sells for, and a card pack or the card machine may not give back more
-than it costs; the daily card shop (6 cards, one copy each) is bounded by itself. The changes that meet it:
+No **uncapped** conversion may turn bits into more bits. Every unlimited item/card conversion is valued at its
+best unlimited exit: shop sale, merit, uncapped trades and NPC card conversions. An uncapped Mojyamon output must
+not exceed the input's sale value; card-pack and machine expected returns must stay below their purchase price.
+
+There is a precise exception for reviewed Mojyamon rows limited to **one item per in-game day**, persisted in the
+save. Those rows may exceed the input's sale value. The five approved daily gain pairs and the separately approved
+**once-per-save** Dolph Fin pair are pinned by row, input, output and limit in `tools/economy_audit.py`'s
+`MOJYAMON_GAIN_EXCEPTIONS`. An unreviewed gain, including a changed profitable pair or missing required cap, fails the audit. Dolph Fin must not be
+classified as daily. Capped edges are excluded from unlimited trade-chain/vending valuations; their finite gains
+are reported separately. The existing daily card shop is likewise bounded by six cards, one copy each.
 
 | What | Disc | Now | Why |
 |---|---|---|---|
-| Mojyamon's outputs (`shops.json` `mojyamonTakes`) | med.recovery, Omnipotent, Hair grower, Auto Pilot, Restore, Medicine, S.Off/S.Def/S.speed disk | sm.recovery, Off. Disk, Medicine, Auto Pilot, Rest pillow, Def. Disk, Large MP, MP Floppy, Meat | each output is worth no more than its input (the trades never had a limit: med.recovery bought for 500 became an S.Def.disk sold for 2000, 99 at a time since patch 0223) |
+| Mojyamon's exchanges (`shops.json`) | unlimited rewards, including Medium Recovery → S.Def.disk | eight daily exchanges and one once-per-save exchange (table below) | explicit bounded gains; amount box caps at 1; Dolph Fin cannot be farmed by delaying recruitment |
 | sup.recovery / Sup.restore merit | 20 / 100 | 60 / 250 | merit sold through them made a 500-bit card pack worth about 1090 bits |
 | Card machine odds (`economy.json` `cardMachine`, in its script `libraries/s219` before patch 0237), rarity 2 / 4 | 7 / 70 % | 5 / 72 % | the cards' own sale price plus DemiMeramon and ClearAgumon gave back 103 bits a 100-bit card (the price is in its text) |
 | Tekkamon's drop (`90-tekkamon.json`) | S.Def.disk 100 % | 15 % | a wild fight of the Back Dimension, about 4900 bits each, without limit |
@@ -274,16 +280,109 @@ than it costs; the daily card shop (6 cards, one copy each) is bounded by itself
 | New screens' ground items (`content/ground-items.json` `"off"`) | — | 3 of the 7 mushrooms of Native Forest's script they share, on reachable floor | all 7 on 34 screens was about 240 free daily pickups |
 | Battle bits (patch 0235, `economy.json` `battle.bitsPercent`) | the enemies' bits | 150 % | money earned by playing: a fight paid one or two days of upkeep, and nothing was worth saving for |
 | Secret shop chips (`secret-item-shop/s177`, Devimon's hours) | DVChipA / D / E only | DVChipA / D / E only; plain chips stay at 800 merit in the merit shop and in chests | selling the six plain chips beside the Devil Chips undermined them; the merit shop keeps the plain chips |
-| Meat price (`content/items/38-meat.json`) | 50 | 30 | upkeep while training (no fights, no income): a day of food was about 500 bits for Agumon, 1100 for Numemon, 1400 for Tyrannomon; 40 % less for all (Mojyamon's Digianchovy -> Meat: 25 -> 15, still under its input) |
+| Meat price (`content/items/38-meat.json`) | 50 | 30 | upkeep while training (no fights, no income): a day of food was about 500 bits for Agumon, 1100 for Numemon, 1400 for Tyrannomon; 40 % less for all |
 | New game start kit (`file-city/s193-238` section 55, after the intro wipes the debug save) | 0 bits, no items | 20 Meat, 1000 bits | the first days had only the farm's 3 Meat a day; once per game, no loop |
 | Meat farm big harvest (`libraries/s207`, `file-city/s164-204` section 11) | 1 day in 10 | 1 day in 4 | 5 instead of 3 Meat / Giant Meat / Sirloin; a day's share, no loop |
 | Psychemon / Gururumon wild bits (story mod) | 200 / 200 | 300 / 400 | the pay of the original's wild Digimon of their offense (330-420: about 300) |
 
-Mojyamon's recovery trade is intentional: the original game's Medium Recovery (item 1) -> S.Def.disk (20)
-becomes Medium Recovery (1) -> MP Floppy (4). The item IDs retain their meanings; this is a reward replacement,
-not an item rename. This mapping is already present in v0.0.1. Freezeland scripts 128 and 129 still select the
-same three-row trade groups; the executable reads the player's input from `mojyamonGives` and the reward from
-`mojyamonTakes`. The original recovery purchase (500 bits) -> S.Def.disk sale (2000 bits) allowed unlimited profit.
+The executable reads the player's input from `shops.json`'s `mojyamonGives` and the reward from `mojyamonTakes`.
+Freezeland scripts 128/129 retain three groups. Group 3 alone recruits after all nine historical rows are complete;
+return to it if another group completed the final row. Previously recruited saves keep their departure flags.
+
+| Group | Player gives | Mojyamon gives | Limit | Input sale | Reward sale | Sale-value gain |
+|---|---|---|---|---:|---:|---:|
+| 1 | Happy Mushroom | Deluxe Mushroom | 1/day | 500 | 2500 | +2000 |
+| 1 | Digiseabass | Chain Melon | 1/day | 4000 | 2500 | -1500 |
+| 1 | Digisnapper | Digipine | 1/day | 50 | 500 | +450 |
+| 2 | Supercarrot | Large MP | 1/day | 250 | 1000 | +750 |
+| 2 | Hawk Radish | Large Recovery | 1/day | 250 | 500 | +250 |
+| 2 | Blue Apple | Double Floppy | 1/day | 500 | 750 | +250 |
+| 3 | Digimushroom | Auto Pilot | 1/day | 50 | 150 | +100 |
+| 3 | Giant Meat | DigiTrout | 1/day | 250 | 150 | -100 |
+| 3 | Small Recovery | Dolph Fin | **1/save** | 50 | 2500 | +2450, once only |
+
+The six positive daily sale-value exceptions total **3800 bits/day** above selling those inputs directly. Taking
+all eight daily rows, including the two that lose sale value, adds **2200 bits/day** over selling all eight inputs.
+Mammothmon already sells Ice Mushrooms, so the first reward is now Deluxe Mushroom. It grants +100 HP,
++100 MP and +10 to each of the four other stats: about 240 points spread, versus about 900 from a training day.
+Happy Mushrooms are scarce: one per day from Dragon Eye Lake vending for 1500 bits, plus rare ground rolls.
+Buying that input and selling the reward nets at most **1000 bits/day**, below the 1500-bit Birdramon trip.
+With an already-owned input, the gain over selling it is **2000 bits/day** (2500 minus 500); these baselines
+must remain distinct.
+
+These are finite allowances, not unlimited conversion exits. Item 70 (Chain Melon) is displayed as Overripe Melon
+in the English item-name bank. Double Floppy is item 7, not Restore.
+
+Every amount box caps at one. Daily bits 789–796 gate the eight daily rows; the former ninth daily bit 797 stays
+reserved/cleared for compatibility. Dolph Fin checks historical completion flag **13**, which is never cleared
+at midnight. Its first successful exchange sets that flag, even if recruitment is postponed. Cancellation and
+full-bag failures spend neither type of allowance. Saving/loading retains the flags. Existing saves that already
+completed the old ninth row keep it spent rather than resetting recruitment progress.
+
+### Daily gain ceilings
+
+A ceiling means **additional gain**, not the gross sale value of the rewards. With inputs already owned, the
+baseline is selling them directly. Doing all eight rows adds **2200 bits/day**; choosing only the six positive
+rows adds at most **3800 bits/day**, or **2300 after a 1500-bit Birdramon trip**. Doing all eight after that trip
+gains 700 relative to selling the inputs. A free pickup or fish still has its sale value as an opportunity cost.
+The audit prints both all-row and positive-row totals. After group 3 recruits, the remaining six rows still add
+2200 together, with a positive-row ceiling of 3700 (2200 after the trip).
+
+Purchase gains subtract the cheapest actual fixed offers below. Digiseabass has **no shop offer**, so no purely
+shop-funded eight-row calculation exists. Digisnapper is sold at the Cold Store for 100 (90 with a baby).
+
+| Daily input | Cheapest normal / baby purchase | Source | Reward sale |
+|---|---:|---|---:|
+| Happy Mushroom | 1500 / 1500 | Dragon Eye Lake vending, one/day | 2500 |
+| Digiseabass | not sold | fishing | 2500 |
+| Digisnapper | 100 / 90 | Cold Store | 500 |
+| Supercarrot | 500 / 450 | city stalls; Vegiemon is fixed at 500 | 1000 |
+| Hawk Radish | 500 / 450 | city stalls; Vegiemon is fixed at 500 | 500 |
+| Blue Apple | 1000 / 900 | Tapirmon's Market Shed | 750 |
+| Digimushroom | 51 / 51 | Dragon Eye Lake vending | 150 |
+| Giant Meat | 300 / 300 | Ancient Glacial Region vending | 150 |
+| **All eight daily rows** | **3951 / 3741**, plus free Digiseabass | | **8050** |
+
+| Gain baseline and choice | Normal | Baby discounts | After 1500 trip, normal / baby |
+|---|---:|---:|---:|
+| Own all inputs: trade all eight instead of selling them | 2200 | 2200 | 700 / 700 |
+| Own inputs: choose only positive sale-value rows | **3800** | **3800** | **2300 / 2300** |
+| Buy inputs: trade all seven purchasable rows | 1599 | 1809 | 99 / 309 |
+| Buy inputs: choose only profitable purchasable rows | **1999** | **2109** | **499 / 609** |
+| Buy seven inputs + free Digiseabass: all eight cash net | 4099 | 4309 | 2599 / 2809 |
+| Buy inputs + free Digiseabass: choose positive cash-net rows | 4499 | 4609 | 2999 / 3109 |
+
+The purchase-only ceiling uses Happy Mushroom → Deluxe Mushroom, Digisnapper → Digipine,
+Supercarrot → Large MP and Digimushroom → Auto Pilot;
+Hawk Radish → Large Recovery also profits with baby discounts (normal price breaks even). The mixed cash-net
+scenarios add the fished Digiseabass reward while counting no fishing/bait expense. They do **not** count its
+4000-bit sale value as a cost; that trade actually loses 1500 versus selling the fish. Return travel and paid bait
+are excluded. The outputs' gross 8050 is a receipt total, never the incremental daily-gain ceiling. All eight
+owned inputs sell for 5850 before any exchange. Free inputs can come from pickups, fishing, farm stock and drops;
+Supercarrot/Hawk Radish drop from RedVegiemon/Weedmon at 10% each.
+
+Group 2 adds 1250 over selling its three inputs; buying all three nets 250/450. Dolph Fin adds **2450 once per
+save** over selling Small Recovery, or **2400/2410 once-only purchase net** at a 100/90 input price. It never enters
+recurring daily gains.
+
+Tapirmon keeps Hawk Radish and Supercarrot at their global value 500 (450 baby purchase); Vegiemon remains fixed
+at 500. Generic shops read `ITEM_PARA[item].value` for display and charge, and the story `shop(...)` API takes stock
+only. There is no per-shop price override, so a Tapirmon-only 700-bit price is skipped rather than changing global
+values or Vegiemon's prices.
+
+North Star (92) remains **Whamon (24)**'s arena cup-14 reward, with its original descriptions in all eight languages.
+Whamon is an Ultimate with NEW DIGIMON on, so a Champion can use North Star. With the option off Whamon is a
+Champion and a Rookie can use it. The native target-stage reader follows current stages while preserving the
+established native Mega-item exception. No story Whamon (146), tournament reward, merit or North Star value changes.
+
+**Dolph Fin (124)** is a separate 5000-value evolution item, sold for 2500, with meritValue 0. The otherwise-unused
+AS Decoder slot has no stock, drop or story use in this branch or current main; the real fridge key remains item
+123. Its existing AS Decoder sprite uses an existing blue palette. The existing fourth `evolutionItemRules` slot
+maps it to Dolphmon (238) for a Rookie (level 3), and its handler/refusal range now includes 124. NEW DIGIMON off
+refuses the unavailable import without consuming it. No item table, name/description count, icon atlas, custom
+rule array or save field is enlarged. All nine localized names fit 11 characters. Simplified Chinese includes the item name/description and both
+daily/permanent trade-limit messages, with the 鳍 glyph in both fonts; Chinese requires 8 MB. Existing ninth-row completion flag 13 remains spent in old saves,
+including saves that received the earlier North Star reward; no progress is reset or item silently exchanged.
 
 The money analysis behind it: upkeep is about 300-1500 bits a game day, nothing on the story path costs
 bits, and bits bought little power (DV chips about 40 stat points a 1000 bits, restaurants 1-4, the gym 80-100 a day for
@@ -319,23 +418,80 @@ Requirement tests: `tools/test_evo_tree.py --practical`, `tools/economy_audit.py
 | Restaurants (`libraries/s217`, `s218`) | 300-9000 bits, 1-5 points | 400-1500 bits, 8-42 points, 35 energy | a meal was not worth buying. DV chips still give more points a bit, at a lifetime cost |
 | Digitamamon's roll | one in three each | 30 / 30 / 40 %, all stats | a late recruit's meal should please |
 | Drimogemon's plans | 3 days 1000 bits, 10 days 5000 bits | 1 day 2000 bits, 3 days 5000 bits, new tables; with Gabumon 5 % roll another item | the price is what stops a daily profit: the 1000 bits a day table would sell for 1545 |
-| Underground Pond dirt hauling (`underground-pond/s029-28`, `file-city/s162`) | 10 round trips, each 500 bits, Off and Def +5, HP +50, tiredness +10 | 5 round trips, each 1000 bits, Off and Def +10, HP +100, tiredness +20; the pile shrinks two steps a trip, a box carried home counts as a trip | the same totals (5000 bits once, the tunnel's work done) in half the walking; the five-day wait still finishes it |
+| Underground Pond dirt hauling (`underground-pond/s029-28`, `file-city/s162`) | 10 round trips, each 500 bits, Off and Def +5, HP +50, tiredness +10 | 5 round trips, each 1000 bits, Off and Def +10, HP +100, tiredness +20; the pile shrinks two steps a trip and stays gone once the tunnel opens, a box carried home counts as a trip | the same totals (5000 bits once, the tunnel's work done) in half the walking; the five-day wait still finishes it |
 | Poison Claw (`content/techniques/37-poison-claw.json`) | 17 MP (51 shown) | 22 (66 shown) | 44 partners can learn it (10 on the disc), and its poison takes 1-3 % of the foe's max HP every 5 s: cheap enough to spam on every boss |
 | Death evolutions (`libraries/s212`) | 10 % | 30 %; Devimon stays at 50 % | a player should see them without resetting |
 | Evolution items (patch 0323) | no gains, lifetime or tamer level | as any evolution | they are rare, they should not punish |
 | Evolution rows `techs` | a bonus for 21-49 techniques | gone; Gigadramon asks 100 battles instead | the bonus could stand in for the stats, so a raised partner took another route |
 | Grey Lord's Mansion, Ice Sanctuary | a Virus, a Vaccine partner | also any partner once Myotismon, Angemon joined | the partner does not lock a place already opened |
 | Monzaemon's costume | gone after the toy story | a Numemon can always wear it | a late route to Monzaemon |
-| Sukamon, Andromon in File City (`city/file-city-services.py`) | one line each | Sukamon clears the island's poop for 1000 bits (patch 0324); Andromon remodels a Mamemon as Guardromon does, who keeps doing it | Andromon stands there on about one daytime visit in four: the service cannot depend on him alone |
+| Sukamon, Andromon in File City (`city/file-city-services.py`) | one line each | Sukamon clears the island's poop for 1000 bits (patch 0324); Andromon remodels a Mamemon as Guardromon does, who keeps doing it; other partners receive his usual city greeting | Andromon stands there on about one daytime visit in four: the service cannot depend on him alone |
 
 ## 6.3 Monochromon recruitment
 
-The shift recruit target falls from 3072 to 2560 bits of profit. Recruitment was
-an approximately 1 % outcome at list prices and 13 % at a steady +10 %; simulation
-at 2560 gives 8 % and 37 %, respectively. The top halfway comment moves from
-1536 to 1280 bits, half the new target. The 1792-bit payout tier and the
-500/1500/2000-bit payouts stay unchanged, as do prices, odds, customers and text.
-The plate fills at 2560 bits, with its 1792-bit tick at 70 % of the inside width.
+Each shift serves exactly twenty visits from a shuffled deck of **8 Meat / 9
+Portable Potty / 3 Medicine**. Draw the item first, then independently draw
+Goblimon/Gotsumon/Weedmon/Muchomon with weights 3/3/2/1. This removes the
+Medicine-count lottery. Every visit counts once, including an offended departure.
+
+A customer draws one hidden maximum markup, uniformly in 10-percentage-point
+steps: Goblimon **+30…+50 %**, Gotsumon **0…+30 %**, Weedmon **−10…+20 %**,
+Muchomon **−20…+50 %**. The player selects −30…+50 % in ten-point steps. An offer
+at or below the maximum sells immediately. Overshooting by ten or twenty points
+allows one retry, after reducing the maximum by ten points. An overshoot of
+thirty points, or any second overshoot, ends the visit without a sale. Offers,
+purchases and departures have no additional random rolls or Rethink loop.
+
+The engine's ordinary selection window renders four rows; custom-sized text
+windows have no selection handler. The menu therefore uses existing translated
+Raise / Keep / Lower strings. Raise opens +10/+20/+30 and another Raise entry
+for +40/+50; Lower opens −30/−20/−10. Selecting Keep immediately offers list
+price. All nine prices remain available with no random offer draw.
+
+Arrival bubbles hint at the budget. Goblimon shows annoyed at +30, happy at
++50, and either face with equal probability at +40. Gotsumon's lower half
+(0/+10) shows annoyed 75 % of the time; the upper half (+20/+30) shows happy
+75 % of the time. Weedmon and Muchomon show annoyed in the lower half and
+happy in the upper half. Each face therefore leaves at least two possible
+budgets. A rejection changes the bubble to angry; an offended departure shows
+furious. These hints improve results while leaving profitable offers at risk.
+
+Recruitment requires **2560 profit**, the top halfway comment starts at **1280**,
+and the 1500-bit consolation tier starts at **1792** (70 % of the goal). These
+thresholds match the existing profit plate and the engine's whole 256-bit
+`shop_hi` comparisons. Original per-sale profits and 500/1500/2000-bit payouts
+remain: Meat earns 0…40, Portable Potty 0…240 and Medicine 0…800 over the nine
+prices. Failed shifts still consume eight hours and pay at most 1500; success
+pays 2000 once and disables further shifts. Tuskmon's later shop is unchanged.
+
+`tools/monochromon_shop.py` exhausts every undominated fixed species table,
+then solves the exact Bellman recurrence over remaining deck, running profit,
+species and face. Both searches maximize recruitment probability rather than
+expected profit. The retry pair uses only information available after a rejection.
+Monte Carlo independently shuffles the deck and draws each visit, with 200,000
+shifts per policy and seed 49:
+
+| Policy | Simulated recruit | Exact recruit | Mean profit |
+|---|---:|---:|---:|
+| List price on both offers | 0.00 % | 0.00 % | 1677 |
+| +20 %, then list price for everyone | 16.65 % | 16.67 % | 2144 |
+| Best fixed species table, ignoring faces | 49.59 % | 49.67 % | 2542 |
+| Best play reading face, remaining deck and total | 74.70 % | 74.67 % | 2738 |
+
+As an information check, the same goal-aware solver without arrival faces reaches
+58.13 % exactly (58.06 % across another 200,000 shifts, seed 49), versus 74.67 %
+with faces. The benefit therefore persists when both policies track the total
+and remaining deck.
+
+The best fixed table is Goblimon +40→+20, Gotsumon +20→−10, Weedmon +10→−10,
+and Muchomon +30→0. Goal-aware play uses first offers from −20 through +50,
+with different choices by species, face and progress; no one price dominates.
+Its customers still leave without buying 1.61 % of the time. Profit shares are
+6.62 % Meat, 44.56 % Portable Potty and 48.82 % Medicine, so Meat remains useful.
+The Monte Carlo sampling error near 50 % is about ±0.22 percentage points at
+95 % confidence. Reproduce with `python3 tools/monochromon_shop.py --shifts 200000`
+(NumPy required); boundary and small-deck oracle tests are in
+`tools/test_monochromon_shop.py`.
 
 ## 7. Related sources
 
@@ -348,8 +504,8 @@ so these sources remain consistent.
 
 ## Jijimon's starter quiz
 
-`content/tables/new-game.json` owns the 35-rookie starter list, seven questions' weights and two 45-cell grids.
-Seven partner Rookie recolours stay evolution-only: SnowAgumon, Dokunemon, Psychemon, Muchomon, Tsukaimon, RedOtamamon and VioletElecmon. Mushroomon, Syakomon and Vemmon also use Baby II evolution rather than the fixed quiz table. Crabmon and Tapirmon replace Flarerizamon and Yanmamon, which are now Champions.
+`content/tables/new-game.json` owns the 38-entry starter list (37 expanded results plus Kunemon for NEW DIGIMON off), seven questions' weights and two 45-cell grids.
+Six partner Rookie recolours stay evolution-only: SnowAgumon, Psychemon, Muchomon, Tsukaimon, RedOtamamon and VioletElecmon. Vemmon also uses Baby II evolution. Mushroomon, Dokunemon and Syakomon join the expanded quiz; Kunemon stays out because of its special evolution route. Crabmon and Tapirmon replace Flarerizamon and Yanmamon, which are now Champions.
 All seven answers count. Each axis chooses its highest score, breaking a tie by the most recent answer that
 supported it. If that answer supported both tied choices, the earlier axis wins: battle/fire/ice/nature/air,
 vaccine/data/virus, bold/calm/cunning. Mech shares air. There is no random draw.
@@ -365,10 +521,10 @@ vaccine/data/virus, bold/calm/cunning. Mech shares air. There is no random draw.
 | fire / virus | Guilmon | Goblimon | Kotemon |
 | ice / vaccine | Bearmon | Gomamon | Bearmon |
 | ice / data | Crabmon | Penguinmon | Otamamon |
-| ice / virus | Betamon | Gizamon | Betamon |
+| ice / virus | Betamon | Gizamon | Syakomon |
 | nature / vaccine | Palmon | Armadillomon | Palmon |
 | nature / data | Tentomon | Floramon | Penguinmon |
-| nature / virus | Kunemon | Kunemon | Wormmon |
+| nature / virus | Mushroomon | Wormmon | Dokunemon |
 | air / vaccine | Tapirmon | Hagurumon | Salamon |
 | air / data | Elecmon | Hawkmon | Kokuwamon |
 | air / virus | DemiDevimon | Monmon | DemiDevimon |
@@ -449,7 +605,7 @@ All listed prices are in bits. Item values use the best repeatable conversion ex
 |---|---|---|
 | Dragon Eye Lake, screen 8 | Digimushroom **51**; Happy mushroom **1500**; Ice mushroom **1000** | Digimushrooms unlimited; one of each rare mushroom per day, refilled at midnight |
 
-Digimushrooms must cost 51 rather than 20: their shop sale and Mojyamon -> Small Recovery exit both pay 50.
+Digimushrooms must cost 51 rather than 20: their shop sale pays 50.
 Happy and Ice mushrooms each exit at 500. Deluxe mushrooms are not sold. Original saved triggers 798/799 hold
 the two stock bits, excluded from script allocation; the midnight routine clears them with ground pickups.
 There is no new resident state. Buying consumes stock only after the item fits and payment succeeds. Saving
@@ -530,3 +686,24 @@ Radius/height and animation/effect donors describe the same physical model in bo
 The natural evolution thresholds retain their curated JSON challenge. In particular, the legacy native Mega routes retain their strict thresholds in both modes; Whamon alone changes its incoming level and therefore has a separate off requirement row. Native enemies whose lower off tier is not raisable gain no new off evolution routes. Neither mode resets trained stats to evolution targets.
 
 The complete runtime change, including menu readers, grows the eight-language `main_BSS_END` by 700 bytes (0x801ce4d4 → 0x801ce790). Active finisher scalars and scratch use 172 bytes; both full move lists stay on disc in owned-data output. Heap alignment costs 704 bytes overall: 186,208 bytes remain. All 320 actual archive setups fit; screen 207 is tightest with 1,488 bytes. Level/target/finisher tests cover both modes and shared-id isolation; source and archive practical tree checks also pass.
+
+## Ordinary technique stat curve
+
+Ordinary attacks retain the original integer formula through ±500 Offense minus
+Defense. Beyond +500 they add `power × excess / (excess + 500)`, with truncation
+toward zero: 2× at +500, 2.5× at +1000, 2.9× at +5000, always below 3×.
+The negative side keeps the original minimum. This applies to partner and enemy
+attacks in field/story, tournaments and VS; finishers are unchanged.
+
+The knee/divisor and the new `damage.tailHalfDifference` (500) and
+`damage.tailPowerDivisor` (1) belong to `content/tables/battle-formulas.json`.
+A missing/nonpositive tail parameter disables the extension. Existing element,
+random roll, EASY, counter and block ordering stays intact; VS retains its
+separate 9999 hit limit, BTL/STD their 30000 limit. The ordinary increase beyond
+the old plateau is bounded below 50%, including for enemies.
+
+The [damage investigation](../investigations/technique-damage.md#bounded-high-stat-extension-2026-11-06)
+contains the placement census, explicit partner scenarios, tournament stat
+rolls, boss landed-hit/TTK budgets, finisher ratios and risks. Reproduce the
+numbers with `python3 tools/battle_audit.py`; add `--charts` in an environment
+with matplotlib to export the multiplier chart and boss table.
