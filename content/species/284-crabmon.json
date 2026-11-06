@@ -6,7 +6,7 @@
   "vanilla_as": 18,
   "attribute": "data",
   "specialties": ["ice", "battle", null],
-  "techniques": ["Water Blit", "Ice Needle", "Aqua Magic", "Tear Drop", "Sonic Jab", "Muscle Charge", "War Cry",
+  "techniques": ["Water Blit", "Tremar", "Aqua Magic", "Tear Drop", "Sonic Jab", "Counter", "War Cry",
                  "Scissor Claw"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 39,
