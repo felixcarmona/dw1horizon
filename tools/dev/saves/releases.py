@@ -459,6 +459,7 @@ def ram_values(emu, locks, profile):
                  ('newEnemyBars', 'MOD_OPT_ENEMY_BARS')):
         if emu.has(s): opts[k] = pk(s, 'i')
     if emu.has('MOD_OPT_ENEMY_BARS') and emu.has('BATTLE_TOGGLE_LIFEBAR'): opts['enemyBarsShown'] = pk('BATTLE_TOGGLE_LIFEBAR', 'B')
+    if not emu.has('MOD_OPT_BARS'): opts['newStatusBars'] = 1
     if emu.has('MOD_FONT'): opts['font'] = {0: 1, 1: 0, 2: 2}[pk('MOD_FONT', 'b')]
     if emu.has('MOD_FPS_MODE_RUN'): opts['frameRate'] = {0: 20, 1: 30, 2: 60}[pk('MOD_FPS_MODE_RUN', 'i')]
     v['options'] = opts
@@ -495,7 +496,7 @@ def check_emu(emu, js, card, locks, rows, keep):
                   'amounts', 'bank', 'cards', 'raised', 'recruited', 'roster'):
             compare(rows, f'RAM {k}', want[k], got[k])
         for k, val in want['options'].items():
-            if k in got['options']: compare(rows, f'RAM option {k}', val, got['options'][k])
+            if k in got['options']: compare(rows, f'RAM option {k}', 1 if k == 'newStatusBars' and not emu.has('MOD_OPT_BARS') else val, got['options'][k])
             else: rows.append((False, f'RAM option {k}', f'recorded {val}; this build has no such setting'))
         # The new flags are inverted: every shorter released record upgrades to ON/shown.
         _, _, saved_records = read_card(card)
@@ -532,6 +533,8 @@ def check_emu(emu, js, card, locks, rows, keep):
         rows.append((not miss, f'saved again: every record kept ({len(old["records"])})', ', '.join(miss) and f'dropped: {", ".join(miss)}'))
         for n, hexv in old['records'].items():
             if n in new['records'] and n not in RESAVE_DRIFT:
+                if n == 'options' and not emu.has('MOD_OPT_BARS') and len(hexv) >= 8:
+                    hexv = hexv[:6] + '01' + hexv[8:]
                 compare(rows, f'saved again: record {n} (old prefix)', hexv, new['records'][n][:len(hexv)])
         for k in ('money', 'partnerType', 'player', 'stats', 'roster', 'bank', 'cards'):
             compare(rows, f'saved again: {k}', old[k], new[k])
@@ -703,7 +706,8 @@ def cmd_add(a):
         compare(checks, 'fixture stats', RICH['stats'], {k: got['stats'][k] for k in RICH['stats']})
         compare(checks, 'fixture inventory', [i for i, _ in RICH['inventory']], got['inventory'][:len(RICH['inventory'])])
         for k, val in got['options'].items():
-            compare(checks, f'fixture option {k}', RICH['options'][k], val)
+            expected = 1 if k == 'newStatusBars' and not emu.has('MOD_OPT_BARS') else RICH['options'][k]
+            compare(checks, f'fixture option {k}', expected, val)
         _, _, saved_records = read_card(card)
         registered = saved_records.get(5, b'')
         checks.append((any(registered), 'fixture VS registration', ''))

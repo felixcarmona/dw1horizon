@@ -194,6 +194,11 @@ options from the same 0x80-byte header read the slot list makes:
 | 0x52 | u16 save number: one past the highest number seen on the cards (`MOD_SAVE_NUMBER`), so the newest save has the highest |
 | 0x54 | u8[count] the options bytes |
 
+Saved-options byte 3 (header offset 0x57) is reserved for compatibility. Its value
+is ignored when loading, including older saves with zero; new saves write 1.
+The care HUD and status panels are permanent, and all other byte positions stay
+unchanged.
+
 Patch 0276 extends record 0x0009 to 14 bytes. Byte 12 retains the Cheats flags;
 byte 13 uses inverted enemy-bar flags (bit 0: original style, bit 1: brief display).
 An absent byte or record explicitly sets both to zero, upgrading older cards to

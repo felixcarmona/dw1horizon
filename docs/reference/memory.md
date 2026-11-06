@@ -548,7 +548,7 @@ tick callback. It temporarily uses the visible horizontal anchor, calls the
 existing live renderer, then restores the field slide offset. The clock remains
 paused and ordinary field/menu/battle suppression remains intact. The x5 wait
 reuses the existing lower-box visibility byte, so there is no new persistent
-state. Lower result boxes move 24 pixels left only with NEW STATUS BARS on,
+state. Lower result boxes move 24 pixels left,
 clearing the HUD after the tally's 17-pixel skip row.
 
 The full nine-language build keeps `main_BSS_END` at **0x801CED58**, with
@@ -1049,3 +1049,29 @@ These samples have no heap corruption. Palette rows 5–7 match the generated
 TIM in live partner VRAM; the live mesh selects them on 29 claw, 12 horn and
 94 stripe polygons. The old 224 memory card retains its equipped technique
 slots while loading the native model.
+
+
+## Permanent care panels (2026-11-06)
+
+The care HUD and status panels are always enabled. The status-bars option,
+its runtime variable and the original field/status renderers have been removed;
+training uses the existing care HUD and its lower-box layout unconditionally.
+The saved byte is reserved, ignored on load and written as 1. Other saved
+settings retain their offsets.
+
+Measured on full default-language builds from the same base and player discs,
+with original 2 MB RAM budgeting and no heap override:
+
+| Measurement | Before | After | Change |
+|---|---:|---:|---:|
+| `main_BSS_END` | `0x801CE5E0` | `0x801CE0C4` | −1,308 resident bytes |
+| Heap | 186,640 B | 187,952 B | +1,312 B after heap alignment |
+| Tightest of 320 setups (screen 207) | 1,920 B | 3,232 B | +1,312 B |
+| `MENU_REL` | 53,860 B | 53,824 B | −36 B |
+| `TRN_REL` | 29,400 B | 29,276 B | −124 B |
+| `TRN2_REL` | 23,668 B | 23,584 B | −84 B |
+
+All 320 actual-archive setup margins increase by 1,312 bytes. Screen 41 retains
+6,168 bytes; screens 330–332 retain 7,760 bytes. Both the historical sweep's
+heapcheck and the actual-archive story check pass. MENU still occupies 27 disc
+sectors; the existing rounded overlay-load bounds remain in force.

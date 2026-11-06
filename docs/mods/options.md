@@ -1,13 +1,12 @@
 # Options: the title menu's OPTIONS
 
 Patches 0167, 0169, 0173-0175, 0177, 0180-0182, 0199, 0212, 0234, 0239, 0244 and 0276 (`mods/patches/`). The title menu has a fifth row, **OPTIONS**, under BATTLE MODE. It
-opens a box of fourteen switches (thirteen in a `FONT=original` build, which has no FONT):
+opens a box of thirteen switches (twelve in a `FONT=original` build, which has no FONT):
 
 | Row | Values | Default | Effect |
 |---|---|---|---|
 | JAPANESE CONTROLS | OFF / ON | OFF; ON on a Japanese base disc (patch 0241) | the Japanese disc's buttons (below) |
 | DIGITAL CLOCK | OFF / ON | ON | the HH:MM plate under the clock (patch 0166, `renderDigitalClock` in `clock.c`) |
-| NEW STATUS BARS | OFF / ON | ON | B5a field and gym HUD (live after every x5 session): happiness and discipline on the left, hunger, toilet and tiredness on the right; final-hour/last-fatigue-step bars blink, active needs hold full red with red icon blocks ([gauge meanings](../../HUD-DESIGN.md#exact-gauge-contract)); the status screen retains its care bars, numbers and care-mistake field. OFF restores the original field bars and Status page (patch 0218). |
 | EVOLUTION GUIDE | OFF / ON | ON | the evolution chart's green lines and Square requirements popup (patches 0176, 0299); OFF hides the prompt and popup and draws the original detail view |
 | NEW DIGIMON | OFF / ON | ON | OFF: the partner evolves only into the species the original game raises (the species files' `"vanilla": true`, ids 1-65: the chart's 61 and WereGarurumon, IceLeomon, Gigadramon, MetalEtemon by items), so no Megas; the chart is the original sheet and its trees show the original rows (below); the death's egg box shows only the original four eggs (patch 0334; ON adds the hand-made babies' four) |
 | EXTENDED STORY | OFF / ON | ON | patch 0199: the story with the story mods built onto the disc (What the Island Forgot: its new places, the city's new residents), or OFF the original story; changing it on a save moves the tamer to Jijimon's house (below) |
@@ -19,6 +18,12 @@ opens a box of fourteen switches (thirteen in a `FONT=original` build, which has
 | MAP SIGNS | ORIGINAL / TRANSLATED | TRANSLATED | patch 0183: the signs painted in the map backgrounds as the disc has them, or in the language |
 | CHEATS | OFF / ON | OFF | the paused Cheats menu and its editing tools (below) |
 | NEW ENEMY BARS | OFF / ON | ON | patch 0276: compact bars above enemy heads; OFF keeps the original floating bar and leader line in wild fights, and the original fixed arena/VS panels |
+
+The care HUD and status-screen care panels are always enabled. The field and gym
+HUD shows happiness, discipline, hunger, toilet and tiredness; the status screen
+shows care bars, numbers and care mistakes. See [gauge meanings](../../HUD-DESIGN.md#exact-gauge-contract).
+Saved-options byte 3 remains reserved: loading ignores it, and saving writes 1.
+The other saved bytes retain their positions, including on older saves.
 
 Each row shows its label and its values (two, three for FONT); the chosen value is yellow and the others grey. Left and
 right step to the value before and after, confirm takes the next one (round); cancel goes back to the title menu with the cursor on OPTIONS. A new setting needs the current menu row, value/get/set handling and runtime effect,
@@ -132,7 +137,7 @@ All the controls as in the Japanese version.
   options (`modBootOptions` calls `modButtonsBoot`), `SYSTEM_W.TIM` (9 sectors) is read into `GENERAL_BUFFER` and a
   Japanese ○ there turns JAPANESE CONTROLS on; a save's options, read right after, still win (the title shows a
   card's newest save's choice, a Continue its own). The US disc is as before. 464 bytes of heap.
-- **Saved.** The options are the record `SAVE_TAG_OPTIONS` 0x0009 (`u8[14]`: buttons, clock, frame rate as 30/60, bars, font, evolution guide, new digimon, language, map signs, story, difficulty, quick battle start, cheats flags, enemy-bar flags),
+- **Saved.** The options are the record `SAVE_TAG_OPTIONS` 0x0009 (`u8[14]`: buttons, clock, frame rate as 30/60, reserved care byte (always 1), font, evolution guide, new digimon, language, map signs, story, difficulty, quick battle start, cheats flags, enemy-bar flags),
   written with every save. A Continue takes them, unless OPTIONS changed any since the
   console started; a shorter record (0167's 1 byte) leaves the rest at their defaults. So the title screen before a Continue
   has the US controls (on a Japanese base disc with no saves, the Japanese ones: ○ confirms there), and the test tools, which press × at the title, keep working.

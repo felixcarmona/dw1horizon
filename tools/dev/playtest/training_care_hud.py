@@ -4,7 +4,7 @@
 The pad ends only the first animation. Every session cost and intermediate frame
 then comes from the native gym state machine. Observer breakpoints pause after
 GPU refreshes so screenshots contain the newly drawn readings, not stale frames.
-Requires Pillow; run with the project virtual environment.
+Uses the project raster API for PNG inspection.
 """
 import argparse
 import json
@@ -14,10 +14,10 @@ import struct
 import subprocess
 import sys
 import time
-from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path[:0] = [str(ROOT), str(ROOT / 'tools')]
+from tools.image import Image
 from tools.dev.playtest.qol import ProofEmu
 from tools.dev.playtest.training_evolution import call, await_value
 from tools.langpatch import elf_symbols
@@ -95,7 +95,6 @@ def fixture(e, base, screen, prefix, food=310, gym="Hp"):
          'partner.para.discipline=80', 'partner.para.careMistakes=0')
     e.poke('CURRENT_FRAME', struct.pack('<H', 12000))
     e.poke('LAST_HANDLED_FRAME', struct.pack('<H', 12000))
-    e.poke('MOD_OPT_BARS', struct.pack('<i', 1))
     if gym == 'Brains':
         e.gs('set', 'partner.stats.brain=99')
     # Same pstat consumed by the real "Normal training x5" menu row.
@@ -120,10 +119,6 @@ def capture(e, out, name, screen, prefix, count=5, cancel=False, food=310, gym="
         result['frames'].append(row)
         print(json.dumps(row), flush=True)
     shot(0)
-    if name == 'TRN-five':
-        e.poke('MOD_OPT_BARS', struct.pack('<i', 0)); settle(e)
-        e.run('shot', str(out / 'TRN-OFF-training.png'))
-        e.poke('MOD_OPT_BARS', struct.pack('<i', 1)); settle(e)
     observer(e, prefix)
     # Manual override avoids a pad helper waiting for refreshes while the observer pauses.
     btn = 'CROSS' if e.peek('MOD_OPT_BUTTONS', 'i') else 'TRIANGLE'
@@ -139,7 +134,9 @@ def capture(e, out, name, screen, prefix, count=5, cancel=False, food=310, gym="
     finally:
         e.api('/api/v1/lua/release?button=' + btn)
     if cancel:
-        # A fresh press after completed session 2; no third award is allowed.
+        # Let native input poll the release before the fresh cancel press.
+        # No third award is allowed.
+        settle(e, 9)
         e.run('lua', 'GH.paused=false')
         e.api('/api/v1/lua/press?button=' + btn)
         settle(e, 9)
