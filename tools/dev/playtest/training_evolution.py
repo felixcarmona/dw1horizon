@@ -135,6 +135,8 @@ def block(e, out, label, timer, count, expected_target):
     await_value(e, 'TRAINING_STATE', 'b', lambda n: n == 2)
     e.press('TRIANGLE', 10)
     await_value(e, 'TRAINING_STATE', 'b', lambda n: n == 3)
+    # x5 now yields between awards so each live care reading is visible.
+    await_value(e, 'TRN_MOD_QUIET', 'b', lambda n: n == 0)
     e.run('pause')
     got = e.peek('PARTNER_PARA+0x56', 'h') - timer
     assert got == count, f'{label}: {got}/5 sessions, expected {count}/5'

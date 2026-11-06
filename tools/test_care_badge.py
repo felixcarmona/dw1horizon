@@ -79,15 +79,17 @@ class CareBadge(unittest.TestCase):
                 self.assertEqual(badge_hash(data, entry),
                                  'b1e7b69c9135dc9c8adfabb3961ad5abf8f821796cac6af46d09c3af413aceb9')
 
+    @unittest.skipUnless(all(Path('extracted', p).exists() for p, _ in FILES), 'needs the source UI textures')
     def test_single_language_derive_keeps_the_native_ui_assets(self):
         from tools.derive.steps import localize
+        from tools.field_hud_art import PATH as HUD_PATH, build as field_hud_art
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            # A stack of nine compatible TIMs exercises the entry-eight upload.
+            # Both field features share the real TIM stack's existing uploads.
             for path, entry in FILES:
                 source = root / 'extracted' / path
                 source.parent.mkdir(parents=True, exist_ok=True)
-                source.write_bytes(fixture() * (entry + 1))
+                source.write_bytes(Path('extracted', path).read_bytes())
             out = root / 'out'
             ctx = SimpleNamespace(root=str(root), env={},
                                   path=lambda *parts: str(out.joinpath(*parts)), log=lambda line: None)
@@ -97,6 +99,8 @@ class CareBadge(unittest.TestCase):
                 data = bytearray((out / 'lang-tex/en' / path).read_bytes())
                 expected = bytearray((root / 'extracted' / path).read_bytes())
                 stamp(expected, entry)
+                if path == HUD_PATH:
+                    expected = field_hud_art(expected)
                 self.assertEqual(data, expected)
 
 

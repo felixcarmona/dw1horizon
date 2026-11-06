@@ -48,11 +48,18 @@ against, leave this list.
 | Hunger bar in the Digimon menu | 🛠️ | Being designed together with the field need bars (hunger, toilet, tiredness). |
 | Metal Banana obtainable outside its event | ⚖️ | Needs a source that doesn't break its rarity. |
 | Jijimon explains the City tab (a list of the residents who lost their memories) and comments on new recruits | ✨ | Players are split on whether it needs explaining. |
-| Lookalike Digimon (recolours) at the same level as their originals | 🎭 | Players disagree: some prefer canon levels. |
+| Lookalike Digimon (recolours) at the same level as their originals | 🎭 | Players disagree: some prefer canon levels, others the original game's levels. |
 | Digimon Rumble Arena as an optional extra source disc (Reapermon, Impmon, Imperialdramon Fighter Mode) | 🆕 | Needs a new disc importer. |
 | New areas: the Arena's second floor and the inside of Etemon's tree | 🆕 | New screens. |
 | Syakomon and Mushroomon as quiz starters | ⚖️ | Unique Rookies today reachable only by evolution; to review with the starter table. |
+| More Digimon requested by players: Lilithmon, Venusmon, Rasielmon, Ordinemon, Mastemon, Ophanimon, Rafflesiamon | 🆕 | Each needs a source model to import, a place in the evolution tree and the memory budget on 2 MB. |
 | Unique recruitment scenes for more of the new Digimon | ✨ | Many new recruits join with a simple fight. |
 | Humanoid sizes growing by stage (Angemon < MagnaAngemon < Seraphimon, Devimon < Myotismon) | ✨ | A per-line size review. |
-| An official community wiki: where each new Digimon is recruited, new maps, evolution routes and requirements | 🛠️ | Could be generated from the project's own data (species, recruit scripts, evolution tree) so it stays accurate. |
+| A minimap like Digimon World 3's, showing where each exit leads, and a wider camera view | 🛠️ | Needs screen space and per-screen exit data. |
+| Digimon World 3 style card tournaments, and rewards for completing card sets (e.g. a training boost for the eight Adventure cards) | 🆕 ⚖️ | Large; rewards need an economy and balance check. |
+| More maps in Beetle Land, with stronger Champion and Ultimate enemies | 🆕 | It takes a lot of effort to unlock and is small. |
+| Armor Digimon levels by power (e.g. Magnamon as a Mega) | 🎭 | Players disagree on which ones. |
+| More room around the forced fights on Iron Hills' zigzag ramp | ✨ | Layout change on new screens. |
+| Kotemon's arena sparring gets stronger after every win (e.g. +10% base stats each time), or teaches battle techniques | ⚖️ | With 690 HP it becomes a one-hit fight late in the game; needs a cap or a curve. |
+| An official community wiki: where each new Digimon is recruited, new maps, evolution routes and requirements | 🛠️ | Could be generated from the project's own data (species, recruit scripts, evolution tree) so it stays accurate. Some players prefer no guide at all: finding things out and asking each other is part of the fun and builds the community. |
 | Remove the evolution bonus condition for the number of techniques learned | ⚖️ | Players find it makes late-game evolutions too broad; check what remains of it after the 0.0.4 balance changes. |

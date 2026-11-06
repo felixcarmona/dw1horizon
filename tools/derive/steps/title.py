@@ -1,5 +1,6 @@
 """HORIZON under DIGIMON WORLD on the two title images (tools/title_stamp.py; build-full.sh), and the rebirth scene's
-four new eggs in the egg texture (tools/egg_art.py, patch 0334): artwork drawn into the player's own images."""
+four new eggs in the egg texture (tools/egg_art.py, patch 0334): artwork drawn
+into the player's own images. Field UI artwork belongs to localize."""
 NAME = 'title'
 DESCRIPTION = 'Title and egg artwork'
 AFTER = ()

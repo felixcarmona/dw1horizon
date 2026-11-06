@@ -1,0 +1,34 @@
+From af02ab94cd58b69002424fa64b54682bdfab1eb0 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 6 Nov 2026 07:33:16 +0000
+Subject: [PATCH] Drain toilet and energy gauges as care needs approach
+
+---
+ src/main/partner_impl.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index 362aab4..e8aa862 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -2403,7 +2403,7 @@ static void renderCareHUD(void)
+ 			if (max <= 0)
+ 				max = 1;
+ 			else {
+-				value = max - PARTNER_PARA.poopLevel;
++				value = PARTNER_PARA.poopLevel;
+ 				if (period > 0) {
+ 					active |= PARTNER_PARA.poopLevel <= 0;
+ 					warn = PARTNER_PARA.poopLevel * period <= 1200;
+@@ -2421,6 +2421,8 @@ static void renderCareHUD(void)
+ 				/* ceil(100 / 18): the last native gauge step before exhaustion. */
+ 				warn = value + 6 >= period;
+ 			}
++			/* Energy remaining; condition thresholds still use raw fatigue. */
++			value = max - value;
+ 		}
+ 		/* Needs share light-blue fills; active changes only the icon palette. */
+ 		x = STATUS_UI_OFFSET_X + uv[2][icon];
+-- 
+2.55.0
+

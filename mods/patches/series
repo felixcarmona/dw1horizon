@@ -386,6 +386,12 @@ food-sickness-message-buffer.patch
 shop-balance-complete-row.patch
 evolution-during-load-wake-grace.patch
 fit-status-technique-names.patch
+Render-the-B5a-field-care-HUD-from-live-partner-data.patch
 Keep-Monochromon-shift-plate-at-a-fixed-width.patch
+live-care-hud-during-training.patch
+blink-and-highlight-active-care-needs.patch
 Size-the-sequence-buffer-for-the-built-sound-fonts.patch
+Match-approved-light-blue-need-gauges-and-muted-icon-tint.patch
+Keep-warning-icons-bright-while-only-bars-dim.patch
 Expand-starter-list-preserving-original-game-results.patch
+Drain-toilet-and-energy-gauges-as-care-needs-approach.patch
