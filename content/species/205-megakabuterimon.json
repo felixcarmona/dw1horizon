@@ -5,234 +5,38 @@
   "level": "ultimate",
   "vanilla_as": 60,
   "attribute": "data",
-  "specialties": [
-    "nature",
-    "fire",
-    "air"
-  ],
-  "techniques": [
-    "Danger Sting",
-    "Insect Plague",
-    "Bug",
-    "Green Trap",
-    "Charm Perfume",
-    "Poison Powder",
-    "Inifinity Burn",
-    "Prominence Beam",
-    "Meltdown",
-    "Magma Bomb",
-    "Megalo Spark",
-    "Spinning Shot",
-    "Confused Storm",
-    "Bit Bomb"
-  ],
-  "drop": {
-    "item": "sm.recovery",
-    "percent": 10
-  },
+  "specialties": ["nature", "fire", "air"],
+  "techniques": ["Danger Sting", "Insect Plague", "Bug", "Green Trap", "Charm Perfume", "Poison Powder",
+                 "Inifinity Burn", "Prominence Beam", "Meltdown", "Magma Bomb", "Megalo Spark",
+                 "Spinning Shot", "Confused Storm", "Bit Bomb"],
+  "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 60,
   "model": {
     "file": "build/sizes-out/models/MegaKabuterimon.MMD",
     "radius": 248,
     "height": 502,
-    "skeleton": [
-      [
-        -1,
-        -1
-      ],
-      [
-        0,
-        0
-      ],
-      [
-        1,
-        1
-      ],
-      [
-        2,
-        2
-      ],
-      [
-        3,
-        1
-      ],
-      [
-        4,
-        4
-      ],
-      [
-        5,
-        5
-      ],
-      [
-        6,
-        1
-      ],
-      [
-        7,
-        7
-      ],
-      [
-        8,
-        8
-      ],
-      [
-        9,
-        1
-      ],
-      [
-        10,
-        10
-      ],
-      [
-        11,
-        11
-      ],
-      [
-        12,
-        1
-      ],
-      [
-        13,
-        13
-      ],
-      [
-        14,
-        14
-      ],
-      [
-        15,
-        1
-      ],
-      [
-        16,
-        16
-      ],
-      [
-        17,
-        17
-      ],
-      [
-        18,
-        18
-      ],
-      [
-        19,
-        16
-      ],
-      [
-        20,
-        20
-      ],
-      [
-        21,
-        21
-      ]
-    ]
+    "skeleton": [[-1, -1], [0, 0], [1, 1], [2, 2], [3, 1], [4, 4], [5, 5], [6, 1], [7, 7], [8, 8], [9, 1], [10, 10],
+                 [11, 11], [12, 1], [13, 13], [14, 14], [15, 1], [16, 16], [17, 17], [18, 18],
+                 [19, 16], [20, 20], [21, 21]]
   },
-  "texture": {
-    "file": "build/batch3/MegaKabuterimon.TIM",
-    "entry": 0
-  },
+  "texture": {"file": "build/batch3/MegaKabuterimon.TIM", "entry": 0},
   "voice": 54,
   "battle_music": "normal-battle",
-  "condition_bubble": [
-    0,
-    -92,
-    -45,
-    2
-  ],
-  "effect_origins": [
-    [
-      3,
-      117,
-      -9,
-      0,
-      2,
-      0,
-      62,
-      -117
-    ],
-    [
-      3,
-      117,
-      -45,
-      0,
-      2,
-      0,
-      100,
-      -101
-    ],
-    [
-      6,
-      135,
-      0,
-      0,
-      5,
-      56,
-      -95,
-      -105
-    ],
-    [
-      11,
-      90,
-      0,
-      0,
-      10,
-      84,
-      142,
-      58
-    ],
-    [
-      8,
-      135,
-      0,
-      0,
-      8,
-      -50,
-      -63,
-      -130
-    ],
-    [
-      14,
-      90,
-      0,
-      0,
-      13,
-      -84,
-      142,
-      58
-    ]
-  ],
-  "wild": {
-    "hp": 3470,
-    "mp": 2800,
-    "off": 360,
-    "def": 415,
-    "speed": 270,
-    "brain": 295,
-    "bits": 1500
-  },
+  "condition_bubble": [0, -92, -45, 2],
+  "effect_origins": [[3, 117, -9, 0, 2, 0, 62, -117], [3, 117, -45, 0, 2, 0, 100, -101],
+                     [6, 135, 0, 0, 5, 56, -95, -105], [11, 90, 0, 0, 10, 84, 142, 58],
+                     [8, 135, 0, 0, 8, -50, -63, -130], [14, 90, 0, 0, 13, -84, 142, 58]],
+  "wild": {"hp": 3470, "mp": 2800, "off": 360, "def": 415, "speed": 270, "brain": 295, "bits": 1500},
   "sizing": {
     "game": "dcb",
     "level": 5,
     "base_model": "build/batch3/MegaKabuterimon.MMD",
     "base_scale": 1.0,
-    "natural": {
-      "height": 438.7,
-      "half_width": 290.2,
-      "half_depth": 361.5
-    }
+    "natural": {"height": 438.7, "half_width": 290.2, "half_depth": 361.5}
   },
   "partner": {
     "voice": 8,
-    "hunger_hours": [
-      2,
-      7,
-      12,
-      17,
-      21
-    ],
+    "hunger_hours": [2, 7, 12, 17, 21],
     "energy_max": 80,
     "energy_fed": 45,
     "energy_per_hour": 9,
@@ -243,24 +47,13 @@
     "favored_region": 7,
     "training_type": "hp-defense",
     "birth_weight": 40,
-    "status_screen_position": [
-      0,
-      324,
-      -855
-    ],
+    "status_screen_position": [0, 324, -855],
     "item_distance": 15,
-    "training": {
-      "animation": 60,
-      "hit_tick": 10
-    }
+    "training": {"animation": 60, "hit_tick": 10}
   },
   "evolution": {
-    "from": [
-      19
-    ],
-    "to": [
-      60
-    ],
+    "from": [19],
+    "to": [60],
     "requirements": {
       "digimon": 19,
       "hp": 400,
@@ -277,13 +70,6 @@
       "techs": -1,
       "flags": 16
     },
-    "gains": {
-      "hp": 5600,
-      "mp": 4750,
-      "offense": 535,
-      "defense": 555,
-      "speed": 455,
-      "brains": 505
-    }
+    "gains": {"hp": 5600, "mp": 4750, "offense": 535, "defense": 555, "speed": 455, "brains": 505}
   }
 }

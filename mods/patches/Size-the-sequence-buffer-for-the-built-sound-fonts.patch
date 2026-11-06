@@ -1,0 +1,29 @@
+From bbaaa6cb2e8ed8f9e85443c24d16daaafcf27165 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 6 Nov 2026 03:17:05 +0000
+Subject: [PATCH] Size the sequence buffer for the built sound fonts
+
+---
+ include/dw/memmap.h | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/include/dw/memmap.h b/include/dw/memmap.h
+index 55ef8f9..e01b9ed 100644
+--- a/include/dw/memmap.h
++++ b/include/dw/memmap.h
+@@ -149,9 +149,10 @@
+ /*
+  * The SEQ block of the current music font (every track of it), copied from
+  * the FAALL chunk (sound.c). Original 0x5800 (font 0xB uses 0x55F8); the
+- * extra 0x2800 bytes come out of the malloc3 heap (MIN_HEAP assert below).
++ * built fonts need at most 0x7284 bytes. Keep 0x7800 bytes (1404 spare),
++ * returning 0x800 unused resident bytes to the malloc3 heap.
+  */
+-#define SEQ_BUFFER_SIZE		0x8000
++#define SEQ_BUFFER_SIZE		0x7800
+ 
+ /*
+  * SPU RAM (512 KB, sound.c): what the sound banks may use. Below it the
+-- 
+2.55.0
+

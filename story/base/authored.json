@@ -8,8 +8,8 @@
     },
     "maphead/hooks.py": {
       "original_sha256": "4bfb261b42580f9928c7706e08108958b68d4ca058fe83a043d2a55be0b1b145",
-      "authored_sha256": "d4a37cc6582c2af7e678475de0f43338a0f81ec5ca453d72ade88203a1eb83c5",
-      "reason": "Optional partner naming text table entries (patch 0207)"
+      "authored_sha256": "afd2ee6df50b477d04be9df08aa5605204ee811c6ac4dbb9b653f11c1aa98502",
+      "reason": "Optional partner naming prompts and canyon bandit battle music only while the encounter remains unbeaten"
     },
     "zones/beetle-land/s103-107/script.dws": {
       "original_sha256": "587838c61e1daa1ff2ef2fc61b0ba0ca175ece9e9d8ebab715c16853d15266cb",
@@ -133,13 +133,13 @@
     },
     "zones/monochrome-shop/s049-49/script.dws": {
       "original_sha256": "3e9d6770660fb29e4bb595634cdb633aec5931903cb8a584704d2f581fd641f2",
-      "authored_sha256": "76d902e99e531ad45e58dc45aa71561a6f5b205f5f9739b0399d489616a1123f",
-      "reason": "Monochromon recruit target 3072 -> 2560 bits; top halfway comment at 1280 bits; DWS synchronized with the authored Python source"
+      "authored_sha256": "cb6d2b9e6e28b323edea3e0c0958ef04f43f994e261d36d4c4b08c151a7fdd45",
+      "reason": "Hidden-budget Monochromon shift with a finite item deck and one reduced-budget retry; DWS synchronized with the authored Python source"
     },
     "zones/monochrome-shop/s049-49/script.py": {
       "original_sha256": "3f196b431498c56dd4f9677e4c0d6bff1e80351fff4bf78fdb00a080c441d7ed",
-      "authored_sha256": "4da0a204c83e977e200c4c1fd466044200484c2b34cd4debccec60504344eee0",
-      "reason": "Monochromon recruit target 3072 -> 2560 bits; top halfway comment at 1280 bits"
+      "authored_sha256": "43b9b863b2d1340efb9c0cacf90886ee288310b83973fd89445d405b921aae84",
+      "reason": "Hidden-budget Monochromon shift with a finite item deck and one reduced-budget retry; DWS synchronized with the authored Python source"
     },
     "zones/secret-item-shop/s177-217/script.dws": {
       "original_sha256": "f121346af89e298ddc44b22e0bb6b90965660a42aca7f9f8613a092d45225713",
@@ -990,6 +990,66 @@
       "original_sha256": "946a73c24d560b20d3bce3071fafe206783cac84092548cf6158a3f3c61e9216",
       "authored_sha256": "8bda450397a4917978a82a4bb0aeaf248b4e8fc83e6b896fdb2b11360888fc25",
       "reason": "Group 3 alone handles Mojyamon recruitment after all nine exchanges"
+    },
+    "maphead/screen043.dws": {
+      "original_sha256": "a34801f42a486762e7a14e804b00a6101ac6b7386e1c548e2859205ff270bd12",
+      "authored_sha256": "f0151802d29fb01cf899efb097966fa141d8a836e913d8b4b61a8e3a20a35156",
+      "reason": "Keep canyon bandit battle music active only until the encounter is won"
+    },
+    "maphead/screen128.dws": {
+      "original_sha256": "e53c638823527d472a75e28fb3c9dd6e7eff648266d8c87ff84f3ea626e1c5a8",
+      "authored_sha256": "3d88f745c5f5d1b68a16367dae3d741c0835fb38818e0df198de5d9d041e185c",
+      "reason": "Keep canyon bandit battle music active only until the encounter is won"
+    },
+    "zones/drill-tunnel-2nd-floor/s026-25/script.py": {
+      "original_sha256": "5396f424118f79b0f832596f60bc9226339b6635759a64e1a71b8c9f9ea4d13e",
+      "authored_sha256": "1d10723d5fef148528efaec5db17873ddbf760a3408faf62b06a907ad1e116ae",
+      "reason": "Move the defeated Drill Tunnel combatants clear of battle drops before their defeated poses"
+    },
+    "zones/libraries/s199/script.py": {
+      "original_sha256": "be277e11741d98808228fbb5c7b78c87945bd11dfb16242b366074297cdee333",
+      "authored_sha256": "3b4d354e95d2e29d0a9ef694f47481c8c92147641c8cb965ac79e57ee4757c64",
+      "reason": "Hidden-budget Monochromon customer: one arrival budget and face draw, finite shift deck, one reduced-budget retry and item-specific profit"
+    },
+    "zones/libraries/s200/script.py": {
+      "original_sha256": "1a7824917d53cf1183e6938c7f983be84acf9d4d68d65c8e43658978f61faadc",
+      "authored_sha256": "689ced6569b93312d2179b5737354705ba437c921e124693472f6b3acfa6fe3e",
+      "reason": "Hidden-budget Monochromon customer: one arrival budget and face draw, finite shift deck, one reduced-budget retry and item-specific profit"
+    },
+    "zones/libraries/s201/script.py": {
+      "original_sha256": "7b4e2ec14167d92d84b8f60612578b11af920824b79a22eb7c740c10f7ab6d98",
+      "authored_sha256": "6ede952ce174f4964fde0684a9008c5cd039df4db8af37dc393f19a8327e6690",
+      "reason": "Hidden-budget Monochromon customer: one arrival budget and face draw, finite shift deck, one reduced-budget retry and item-specific profit"
+    },
+    "zones/libraries/s202/script.py": {
+      "original_sha256": "27adf203c9eba5504622dfd88506094fa9152cb55fb05ca968f1a89873431bc2",
+      "authored_sha256": "8de6d7eba9a0ff8c767377ff570ad5a08e40eefd964291a2db94f0d7bd0f0435",
+      "reason": "Hidden-budget Monochromon customer: one arrival budget and face draw, finite shift deck, one reduced-budget retry and item-specific profit"
+    },
+    "zones/drill-tunnel-2nd-floor/s026-25/script.dws": {
+      "original_sha256": "0473375c38bf36101039b1e85c13910a224d29a64b5ac5f3582f7d5bff536269",
+      "authored_sha256": "4c74e979133873f5888246f4f2710eb73b90d8317ed7b3a0f735944cb3debef9",
+      "reason": "Move defeated combatants clear of battle drops before their defeated poses; DWS synchronized with the authored Python source"
+    },
+    "zones/libraries/s199/script.dws": {
+      "original_sha256": "fa5db5d9ff87320a5ded288e00a9a45259ed8204f408a691fe6e063a895d5328",
+      "authored_sha256": "e6786a4baf3aea8ae0e714050a4c3d1de444071b7f67eab6936550f4c3603de0",
+      "reason": "Hidden-budget Monochromon customer with one arrival draw and one reduced-budget retry; DWS synchronized with the authored Python source"
+    },
+    "zones/libraries/s200/script.dws": {
+      "original_sha256": "55c3a020b719ce1a0838dc70d9080c3f2e0425edc0a6f897cd02709e097f5074",
+      "authored_sha256": "cbf1f9e04ef28c607f035d7a2493e1d1e2aaacc73af96fd472440ec2bec3711f",
+      "reason": "Hidden-budget Monochromon customer with one arrival draw and one reduced-budget retry; DWS synchronized with the authored Python source"
+    },
+    "zones/libraries/s201/script.dws": {
+      "original_sha256": "76d9adb141f74e6f79c5108c70b0ce4f0a5819999bfa4e2902623ecd95ac7143",
+      "authored_sha256": "0075a1ae11b5d52670b7321e387eef35db7f2f607848ff247cfe622915c252fc",
+      "reason": "Hidden-budget Monochromon customer with one arrival draw and one reduced-budget retry; DWS synchronized with the authored Python source"
+    },
+    "zones/libraries/s202/script.dws": {
+      "original_sha256": "8b97bec84ac8ff8d3a93543e5c17f0cc7c9cb63f1eb4cf644d842159b6688780",
+      "authored_sha256": "af2d9276c1670ed9bd2ff209111e37a5a3a0b6b3dad7774e54a3e4931fd6b763",
+      "reason": "Hidden-budget Monochromon customer with one arrival draw and one reduced-budget retry; DWS synchronized with the authored Python source"
     }
   }
 }

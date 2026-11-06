@@ -118,7 +118,7 @@ against it.
 | `MAP_SCRIPT_MAX` | 0x4000 | one `DG.SCN` entry (largest original 0x3800) |
 | `SCRIPT_OFFSET_TABLE_SIZE` | 0x800 | `DG.SCN`'s offset table |
 | `MAPHEAD_SCRIPT_MAX` | 0x6800 | resident `MAPHEAD.SCN` |
-| `SEQ_BUFFER_SIZE` | 0x8000 | SEQ block of the current music font (0x5800 originally) |
+| `SEQ_BUFFER_SIZE` | 0x7800 | SEQ block of the current music font (0x5800 originally) |
 | `SPU_BANKS_START` / `SPU_REVERB_START` | 0x1010 / 0x7B7C0 | SPU range the sound banks may use |
 
 ## Fixed buffers in the main bss
@@ -132,12 +132,18 @@ These are static arrays: they cost heap whether or not they are full.
 | `MAPHEAD_SCRIPT_BUFFER` | 0x6800 | `MAPHEAD.SCN`, resident from boot |
 | `SCRIPT_OFFSET_TABLE` | 0x800 | `DG.SCN`'s offset table |
 | the screen script | 0x4000 | the current `DG.SCN` entry |
-| SEQ buffer | 0x8000 | every track of the current music font |
+| SEQ buffer | 0x7800 | every track of the current music font |
 | `COLD_ANIM_BUFFER` | 0x2000 | a partner animation read from the disc when it starts (patch 0113) |
 | `SAVE_FILE` | 0x2000 | the v1 save file; its battle registrations are game state between card operations |
 | `GS_WORK_BASES` | 2 × 0x14000 | GPU packet buffers (one per frame buffer) |
 | ordering tables | 2 × 0x4000 | |
 | `MOD_TFS_CLUTS` | 1.5 KB | resident copy of the map's first three palettes (patch 0159) |
+
+The sequence buffer is sized against all 35 built music fonts: the largest block is 0x7284 bytes, so 0x7800 leaves
+1,404 bytes spare. Reducing its former 0x8000 capacity returns 2,048 resident bytes without removing sound data.
+Both music loaders check this capacity, and the authoring check uses the same limit. In the nine-language integration,
+`main_BSS_END` moves from 0x801cee08 to 0x801ce608 and the heap grows from 184,560 to 186,608 bytes. All 320
+archive-backed screen setups fit; screen 207 is tightest at 1,888 bytes free (previously 160 bytes short).
 
 ### Partner model buffer (patches 0064, 0176)
 

@@ -165,7 +165,10 @@ class BackendUnits(unittest.TestCase):
         us = os.path.join(ROOT, 'text/us/dialogue.json')
         if not os.path.exists(us): return
         us = json.load(open(us, encoding='utf-8')); buttons = lambda v: re.findall('[×△○□]', json.dumps(v, ensure_ascii=False))
-        own = {'s176.sec7.u1': ['□', '○']}          # Punimon's tips, from the Japanese: □ all, hold ○ for tens (ALT_BUTTON)
+        # Authored tips: Punimon's amount controls and Jijimon's Square care instructions.
+        own = {'s176.sec7.u1': ['□', '○'], 's178.sec5.u20': ['□', '□'],
+               's178.sec6.u2': ['△', '×', '□', '□', '×', '□'],
+               's178.sec7.u3': ['□', '□']}
         for p in glob.glob(os.path.join(ROOT, 'text/ours/dialogue/*.json')):
             for k, v in json.load(open(p, encoding='utf-8')).items():
                 if k.startswith('_') or not buttons(v): continue
