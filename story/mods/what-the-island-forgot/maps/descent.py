@@ -11,7 +11,8 @@ screen), read from the player's own disc at build time, with the camera set here
 """
 import json, os, sys
 from foreground_depth_a import apply as apply_foreground
-from mapbase import base_map, import_png, MOD
+from field_walkables import apply as apply_walkables
+from mapbase import base_map, import_png, MOD, check_arrivals
 
 DATA = os.path.join(MOD, 'maps', 'descent-data.json')
 ART = os.path.join(MOD, 'art', 'descent.png')
@@ -28,6 +29,8 @@ def main(out):
         m.tims = [bytes(t) for t in d['tims']] + list(m.tims[len(d['tims']):])
     import_png('GCAN01', ART, os.path.join(out, 'DESC01.TFS'))
     apply_foreground(m, 'DESC01', os.path.join(out, 'DESC01.TFS'))
+    apply_walkables(m, 'DESC01')
+    check_arrivals(m, 'DESC01')
     open(os.path.join(out, 'DESC01.MAP'), 'wb').write(m.build())
     print(f'DESC01: free tiles {m.collision.count(0)}, exits {[(w["targetMap"], w["targetExit"]) for w in m.warps if w["targetMap"] != -1]}')
 
