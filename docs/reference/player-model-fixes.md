@@ -192,7 +192,10 @@ pitch ranged from −648 to 164 angular units. Its dedicated crane gesture reach
 with the forward claw while the torso, free claws and heavy core counter the
 motion. The core stays within a small tilt instead of pitching through that
 full range. Other casting aliases and the Status portrait remain unchanged.
-The dedicated clip retains its original duration and sound event. Its resident
+The dedicated clip retains its original duration and sound event. The borrowed
+Megadramon origin `(8, 330, 0, 0)` is unique to Power Crane; it now follows a
+surface point on the acting forward claw (bone 17), rather than the idle side
+claw. All other effect origins remain unchanged. Its resident
 model fits the 100,352-byte buffer at 100,330 bytes; cold reads still fit 8,192.
 
 ## Omnimon: Grey melee and Garuru ranged techniques
