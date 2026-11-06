@@ -57,8 +57,8 @@
   "post_source_sha256": "ffed18941bdef61cfa33249640e604b14083da760344c0c82b941111458206a9",
   "height": 587,
   "fit": {"20": 0.9},
-  "factors": {"head": 1.9, "hand": 1.0, "foot": 1.0, "leg_axial": 0.887, "leg_radial": 1.0, "arm_radial": 1.0, "torso": 1.017},
-  "groups": {"0": "carrier", "1": "carrier", "2": "chest", "3": "chest", "4": "other", "5": "head", "6": "arm", "7": "arm", "8": "hand", "9": "arm", "10": "arm", "11": "hand", "12": "thigh", "13": "shin", "14": "foot", "15": "footpart", "16": "thigh", "17": "shin", "18": "foot", "19": "footpart", "20": "tail"}
+  "factors": {"head": 1.0, "hand": 1.0, "foot": 1.0, "leg_axial": 0.887, "leg_radial": 1.0, "arm_radial": 1.0, "torso": 1.017},
+  "groups": {"0": "carrier", "1": "carrier", "2": "chest", "3": "head", "4": "headpart", "5": "headpart", "6": "arm", "7": "arm", "8": "hand", "9": "arm", "10": "arm", "11": "hand", "12": "thigh", "13": "shin", "14": "foot", "15": "footpart", "16": "thigh", "17": "shin", "18": "foot", "19": "footpart", "20": "tail"}
  },
  "260": {
   "source_sha256": "b56ab3d8dcef8c39143627afb8516fd82ee57ad1ad6919feb3c325c17335b6cd",

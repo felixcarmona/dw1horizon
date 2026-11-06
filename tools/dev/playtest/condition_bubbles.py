@@ -26,7 +26,7 @@ from tools.dev.playtest.care_badge_pixels import capture as capture_badge_pixels
 def snapshot(e):
     ram = e.ram()
     fields = {'badge': ('MOD_RING_BADGE', 'i'),
-              'from': ('MOD_RING_FROM', '6i'), 'to': ('MOD_RING_TO', '6i'),
+              'from': ('MOD_RING_FROM', '8i'), 'to': ('MOD_RING_TO', '8i'),
               'shown': ('MOD_RING_SHOWN', '5i'), 'phase': ('MOD_RING_T', 'i'),
               'mode': ('MOD_STATUS_BUBBLES', 'i'), 'partner_state': ('PARTNER_STATE', 'b'),
               'care_rows': ('feedCount', 'i'), 'condition': ('PARTNER_PARA', 'I')}
@@ -58,6 +58,11 @@ def setup(e, condition, items, scold=0, hp=2000, mp=2000):
     e.wait(2)
 
 
+def expected_bubbles(condition, values):
+    return condition.bit_count() + sum(
+        values.get(resource,2000)*10 < 6000 for resource in ('hp','mp'))
+
+
 def care_contract(e, base, out):
     """An actionable current need owns the badge, independent of distance/facing."""
     result = {}
@@ -76,7 +81,7 @@ def care_contract(e, base, out):
         got = snapshot(e)
         assert got['condition'] == cond
         assert bool(got['badge']) == available, (name, got)
-        assert sum(s != 0x10000 for s in got['from']) == cond.bit_count()
+        assert sum(s != 0x10000 for s in got['from']) == expected_bubbles(cond,values)
         result[name] = got
         e.run('shot', str(out/f'{name}.png'))
     for name, far in [('far-facing-away', True), ('near-facing-away', False)]:
@@ -144,7 +149,6 @@ def main():
         e.run('poke', hex(ptr+0x78), struct.pack('<3i', x+100, y, z).hex())
         e.poke('PARTNER_ENTITY+0x10', struct.pack('<3i', (x+100)<<15, y<<15, z<<15))
         e.poke('TAMER_POSITION_DATA+0x72', struct.pack('<h', 0xc00))
-        e.poke('MOD_OPT_BARS', struct.pack('<i', 1))
         e.run('resume'); e.wait(.5)
         e.run('save', str(out/'field.state'))
         result['ram_bytes'] = len(e.ram()); assert result['ram_bytes'] == 0x200000
@@ -170,7 +174,7 @@ def main():
             setup(e, cond, items, **kw)
             result['cases'][name] = snapshot(e)
             assert result['cases'][name]['condition'] == cond
-            assert sum(s != 0x10000 for s in result['cases'][name]['from']) == cond.bit_count()
+            assert sum(s != 0x10000 for s in result['cases'][name]['from']) == expected_bubbles(cond,kw)
             available = name not in ('healthy', 'hungry-no-food', 'sick-no-medicine')
             assert bool(result['cases'][name]['badge']) == available, name
             if a.pixels:
@@ -182,7 +186,7 @@ def main():
             print(name, result['cases'][name], flush=True)
         if a.square:
             result['care_contract'] = care_contract(e, out/'field.state', out)
-        # Compare the exact same active conditions with the new HUD disabled.
+        # Keep the permanent care HUD visible with the combined conditions.
         setup(e, 77, [38,32,14])
         if a.video:
             e.run('record', str(out/'combined.mp4'), '6', '30')
@@ -193,9 +197,8 @@ def main():
             e.run('shot', str(out/'square-care-menu.png'))
             result['square_opened_without_consuming_items'] = True
             e.press('CANCEL', 8); e.wait(1)
-        e.poke('MOD_OPT_BARS', struct.pack('<i', 0)); e.wait(.6)
-        e.run('shot', str(out/'combined-original-hud.png'))
-        result['original_hud'] = snapshot(e)
+        e.run('shot', str(out/'combined-hud.png'))
+        result['hud'] = snapshot(e)
     finally:
         (out/'result.json').write_text(json.dumps(result, indent=2)+'\n')
         e.stop()

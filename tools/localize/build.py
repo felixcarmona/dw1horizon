@@ -275,6 +275,13 @@ def build(out, extracted, run_with=None, scratch=None, language="es"):
                 data = files.setdefault((lang, path), bytearray(open(os.path.join(ext, path), 'rb').read()))
                 stamp(data, entry)
 
+        from tools import care_bubble_art
+        for lang in ('en', language):
+            stack = (lang, care_bubble_art.PATH)
+            files[stack] = bytearray(care_bubble_art.build(files[stack]))
+            files['en', care_bubble_art.FEEL] = bytearray(care_bubble_art.feel(
+                open(os.path.join(ext, care_bubble_art.FEEL), 'rb').read(), files[stack]))
+
         from tools.localize.fi_info import check_clock
         for path, entry in [('ETCDAT/FI_INFO.TIM', 0), ('ETCDAT/ETCTIM.BIN', 4)]:
             check_clock(open(os.path.join(ext, path), 'rb').read(), files[language, path], entry)

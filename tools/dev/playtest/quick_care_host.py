@@ -38,8 +38,8 @@ static int32_t PARTNER_STATE=1, MOD_FEED_HINT, CHANGED_INPUT, CONFIRM_BUTTON;
 static struct { int state, frame; } UI_BOX_DATA[2];
 static struct { struct { int type; } worldItem; } TAMER_ITEM = {{-1}};
 static int count=1, opened, objects;
-static int feedCollect(void) { return count; }
-static int feedOpen(void) { opened++; return 1; }
+static int feedCollect(int needsOnly) { (void)needsOnly; return count; }
+static int feedOpen(void) { if (!count) return 0; opened++; return 1; }
 static void feedTick(int id) { (void)id; }
 static void addObject(int id, int n, void (*tick)(int), void *render) {
     assert(id==FEED_OBJECT_ID && n==0 && tick==feedTick && render==0); objects++;
