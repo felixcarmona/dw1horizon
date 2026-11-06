@@ -48,11 +48,16 @@ against, leave this list.
 | Hunger bar in the Digimon menu | 🛠️ | Being designed together with the field need bars (hunger, toilet, tiredness). |
 | Metal Banana obtainable outside its event | ⚖️ | Needs a source that doesn't break its rarity. |
 | Jijimon explains the City tab (a list of the residents who lost their memories) and comments on new recruits | ✨ | Players are split on whether it needs explaining. |
-| Lookalike Digimon (recolours) at the same level as their originals | 🎭 | Players disagree: some prefer canon levels. |
+| Lookalike Digimon (recolours) at the same level as their originals | 🎭 | Players disagree: some prefer canon levels, others the original game's levels. |
 | Digimon Rumble Arena as an optional extra source disc (Reapermon, Impmon, Imperialdramon Fighter Mode) | 🆕 | Needs a new disc importer. |
 | New areas: the Arena's second floor and the inside of Etemon's tree | 🆕 | New screens. |
 | Syakomon and Mushroomon as quiz starters | ⚖️ | Unique Rookies today reachable only by evolution; to review with the starter table. |
 | Unique recruitment scenes for more of the new Digimon | ✨ | Many new recruits join with a simple fight. |
 | Humanoid sizes growing by stage (Angemon < MagnaAngemon < Seraphimon, Devimon < Myotismon) | ✨ | A per-line size review. |
+| A minimap like Digimon World 3's, showing where each exit leads, and a wider camera view | 🛠️ | Needs screen space and per-screen exit data. |
+| Digimon World 3 style card tournaments, and rewards for completing card sets (e.g. a training boost for the eight Adventure cards) | 🆕 ⚖️ | Large; rewards need an economy and balance check. |
+| More maps in Beetle Land, with stronger Champion and Ultimate enemies | 🆕 | It takes a lot of effort to unlock and is small. |
+| Armor Digimon levels by power (e.g. Magnamon as a Mega) | 🎭 | Players disagree on which ones. |
+| More room around the forced fights on Iron Hills' zigzag ramp | ✨ | Layout change on new screens. |
 | An official community wiki: where each new Digimon is recruited, new maps, evolution routes and requirements | 🛠️ | Could be generated from the project's own data (species, recruit scripts, evolution tree) so it stays accurate. |
 | Remove the evolution bonus condition for the number of techniques learned | ⚖️ | Players find it makes late-game evolutions too broad; check what remains of it after the 0.0.4 balance changes. |
