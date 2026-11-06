@@ -148,6 +148,7 @@
  "step.plan": "Disc-Plan",
  "engine.noWasm": "Dieser Browser kann das Disc-Abbild nicht erstellen. Nutze einen aktuellen Desktop-Browser oder die Spieleranleitung für die Kommandozeile.",
  "engine.noOpfs": "Dieser Browser kann das Disc-Abbild nicht erstellen. Nutze einen aktuellen Desktop-Browser oder die Spieleranleitung für die Kommandozeile.",
+ "engine.noWritable": "Dieser Browser kann die Build-Dateien nicht schreiben. Aktualisiere dein iPhone oder iPad auf iOS/iPadOS 26 oder neuer. Du kannst die Disc auch auf einem Computer erstellen.",
  "engine.noStreams": "Dieser Browser kann das Disc-Abbild nicht erstellen. Nutze einen aktuellen Desktop-Browser oder die Spieleranleitung für die Kommandozeile.",
  "engine.playerGuide": "Spieleranleitung für die Kommandozeile",
  "engine.notDeployed": "Der Builder ist noch nicht auf dieser Seite.",

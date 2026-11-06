@@ -148,6 +148,7 @@
   "step.plan": "光盘布局",
   "engine.noWasm": "此浏览器无法制作镜像。请使用最新版桌面浏览器，或参阅命令行玩家指南。",
   "engine.noOpfs": "此浏览器无法制作镜像。请使用最新版桌面浏览器，或参阅命令行玩家指南。",
+ "engine.noWritable": "此浏览器无法写入制作文件。请将 iPhone 或 iPad 更新至 iOS/iPadOS 26 或更高版本，也可以使用电脑制作光盘。",
   "engine.noStreams": "此浏览器无法制作镜像。请使用最新版桌面浏览器，或参阅命令行玩家指南。",
   "engine.playerGuide": "命令行玩家指南",
   "engine.notDeployed": "本站尚未部署镜像制作工具。",
