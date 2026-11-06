@@ -5,9 +5,9 @@
   "level": "rookie",
   "vanilla_as": 18,
   "attribute": "virus",
-  "specialties": ["ice", "battle", null],
+  "specialties": ["ice", "battle", "nature"],
   "techniques": ["Water Blit", "Tear Drop", "Aqua Magic", "Winter Blast", "Sonic Jab", "Muscle Charge", "War Cry",
-                 "Blasting Spout"],
+                 "Blasting Spout", "Poison Powder", "Charm Perfume"],
   "drop": {"item": "MP Floppy", "percent": 30},
   "effects_like": 24,
   "model": {

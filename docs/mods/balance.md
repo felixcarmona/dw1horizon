@@ -707,3 +707,99 @@ contains the placement census, explicit partner scenarios, tournament stat
 rolls, boss landed-hit/TTK budgets, finisher ratios and risks. Reproduce the
 numbers with `python3 tools/battle_audit.py`; add `--charts` in an environment
 with matplotlib to export the multiplier chart and boss table.
+
+### Aquatic Rookie technique identities
+
+Gomamon, Gizamon and Crabmon keep Water/Battle (`ice`/`battle` in JSON).
+Syakomon gains Plant (`nature`) in specialty slot three, retaining its existing
+Water/Battle learning ranks. Their Bukamon parent and Champion routes remain.
+
+| Species | Technique changes |
+|---|---|
+| Gomamon | Water Blit → Winter Blast; Aqua Magic → Giga Freeze |
+| Crabmon | Ice Needle → Tremar (Tremor); Muscle Charge → Counter |
+| Gizamon | Aqua Magic → Dynamite Kick (44); keeps Muscle Charge |
+| Syakomon | Adds Poison Powder and Charm Perfume after Blasting Spout |
+
+Each replacement stays at its old animation index. Syakomon's additions use
+slots 0x36/0x37; its finisher remains at 0x35. The new ordinary lists fit the
+16-slot record. Technique numbers and global balance rows remain unchanged.
+The imports registry aliases Dynamite Kick to Gizamon's Sonic Jab, Counter
+to Crabmon's Sonic Jab, and both Plant moves to Syakomon's Winter Blast.
+These choices use attack/casting clips in the reassigned slots. Scripted
+2 MB battles confirmed positive HP loss from every new move, including a
+reactive Counter against a melee opponent. Fresh fights isolate the Plant
+attacks from lingering status effects; all tested fights return to the field.
+Status-screen inspection confirms Water/Battle and Syakomon's third Plant icon. All four final
+models have finite clips for every listed technique and fit the unchanged
+100352-byte resident and 8192-byte streamed-animation buffers. Measured resident
+sizes are Gomamon 91078, Gizamon 77730, Syakomon 30038 and Crabmon 73106 bytes;
+the largest sector-aligned cold read is 6144 bytes (Gizamon).
+
+#### Buster Dive decision
+
+The comparison uses the owned technique JSON and `tools/battle_audit.py`'s
+ordinary damage formula: NORMAL, neutral element sum 30, equal offense and
+defense, 100% damage roll, no guard, buffs or status. The accuracy-weighted column
+is a base-accuracy proxy, not measured DPS or an assertion that every
+collision has that hit chance; speed and defender state affect the hit roll.
+Positioning, cooldown and animation length also matter. Actual MP consumption is three times `mpCost`.
+
+| Technique | Power | Base accuracy | Actual MP | Damage × accuracy | Weighted damage / MP |
+|---|---:|---:|---:|---:|---:|
+| Buster Dive | 500 | 80 | 258 | 400.00 | 1.550 |
+| Dynamite Kick (44) | 193 | 62 | 99 | 119.66 | 1.209 |
+| Counter | 285 | 100 | 165 | 285.00 | 1.727 |
+| Tremar | 178 | 60 | 168 | 106.80 | 0.636 |
+| Giga Freeze | 264 | 65 | 120 | 171.60 | 1.430 |
+| Winter Blast | 120 | 90 | 165 | 108.00 | 0.655 |
+| Poison Powder | 117 | 77 | 171 | 90.09 | 0.527 |
+| Charm Perfume | 180 | 75 | 210 | 135.00 | 0.643 |
+
+Counter's proxy uses its base power. The actual damage calculation reduces
+the target's defense to 30%: at offense/defense 100/100, a neutral 100%-roll
+Counter deals 324 rather than 285. It requires a reactive hit. Area techniques can
+hit multiple enemies; poison and confusion have additional value beyond these
+single-target numbers.
+
+Buster Dive would raise Gizamon's ordinary peak from Water Blit's 211 to 500,
+2.37× the landed damage. Its weighted damage is 3.34× Dynamite Kick's with
+1.28× its MP efficiency, plus ranged dash reach. A neutral 500-HP opponent at
+equal defense falls in one landed Buster Dive versus three Dynamite Kicks
+at the reference roll. With both speeds 100 and a stationary, nonattacking
+defender, the actual hit chances are 77% and 60%, giving 385 versus 115.8
+weighted damage (3.32×). Attacking or stunned defenders are automatically hit;
+these exceptions do not reduce the 500-to-193 landed-damage gap.
+Although Patamon, Gotsumon and Tsukaimon already learn Buster Dive, expanding
+that outlier to this Water/Battle group would overwhelm the intended modest
+melee distinction. Gizamon therefore uses the lower-power fallback and keeps
+Muscle Charge. The existing Buster Dive native-track repair remains necessary
+for users of that move; Gizamon needs no dash recipe.
+
+#### Learning, specialties and evolution
+
+Battle observation chances use the matching specialty's column; the move must
+also appear in the species list. New-move chances are Winter Blast 20%, Giga
+Freeze 17% (Gomamon's primary Water), Tremar 8%, Counter 11% (Crabmon's second
+Battle), Dynamite Kick 17% (Gizamon's second Battle), Poison Powder 14% and Charm
+Perfume 9% (Syakomon's third Plant). Buster Dive would have used 7%.
+
+Brains training also filters by the species list. The new candidates' table
+weights are Winter Blast 18, Giga Freeze 15, Tremar 6, Counter 8, Dynamite Kick
+13 and Poison Powder 7. Charm Perfume has third-specialty training weight zero,
+so Syakomon learns it through battle observation rather than brains training. These are candidate weights, not independent chances
+per training session: the training routine chooses among the earliest unlearned
+candidates for each specialty. Evolution still teaches a weak primary Water
+move; adding Plant does not grant a free Plant attack.
+
+The status renderer supports all three specialty slots and the existing Plant
+icon (element 3). Plant replaces Syakomon's formerly neutral third defensive
+factor: incoming sums for Fire/Battle/Air/Plant/Water/Mech/Filth change from
+22/30/40/40/30/22/30 to 32/30/32/40/22/32/30. Thus Fire and Mech become more
+effective while Air and Water become less effective.
+
+Evolution topology checks require a shared specialty; every affected incoming
+and outgoing edge retains one. Syakomon additionally shares Plant with Coelamon.
+Runtime stat, weight, care and bonus requirements are explicit rows, not
+recomputed from specialties. Known-technique bonuses can count the two added
+moves normally. No requirements or route order change.
