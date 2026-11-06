@@ -65,3 +65,19 @@ head, wing, tail and supported-leg performance remains unchanged, as do root
 travel, scale channels, clip duration and sound/control events. The authoring
 pass checks every unselected channel over four decoded cycles and changes only
 run slot 4. Final provider output retains the animation storage gate.
+
+## Beelzemon: mouth and red eyes
+
+The simplified head had only three collapsed jaw surfaces. The repair restores
+all eight lower-face polygons and the full 30×24 source texture patch, including
+the mouth. Six eye surfaces use a full 48×24 patch and a dedicated red palette;
+the helmet, hair and clothing retain their existing palettes. Five pairs of
+adjacent triangles become quads with the same diagonal, preserving their
+geometry and keeping the model at 713 primitives. Animation bytes are unchanged.
+
+`tools/models/repair_beelzemon.py` authors the repair from the source disc.
+`tools/models/edit.py put 403` stores the plain deltas and final provider pins.
+Run `tools/test_beelzemon_face.py` with `BEELZEMON_BEFORE` and
+`BEELZEMON_AFTER` pointing at reconstructed MMDs to check geometry, acting,
+texture isolation and the polygon budget. Verify the player output with
+`tools/models/edit.py check 403 --species-pins`.
