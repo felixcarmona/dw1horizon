@@ -134,8 +134,8 @@ record preserve its source primitives, UVs and texture pages, with identical
 palette rows and sampled texels. A reported tan wing-root surface does not
 justify altering those assets without a demonstrated import regression.
 
-Starmon's nonattacking story encounter inherited zero priorities from a
-noncombat placement template. The story compiler assigns usable priorities
-when replacing that template with a combat species; the regression tests
-cover its actual placement and moves. No battle clip or moveset replacement
-is needed for that issue.
+The story compiler already gives Starmon's replacement of the noncombat
+Unimon placement usable attack priorities. This behavior is present in
+v0.0.6; its regression tests cover the actual placement and moves. It does
+not establish that a later report of inactivity is resolved: verify the live
+wild encounter and its technique execution before changing battle behavior.

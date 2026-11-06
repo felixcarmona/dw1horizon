@@ -9,6 +9,7 @@ import animsheet
 import mmd
 import motionstorage
 from motiondiscidentity import changed_programs
+from motiontailspace import interpolate_pose
 
 
 class PlayerModelReports(unittest.TestCase):
@@ -37,6 +38,25 @@ class PlayerModelReports(unittest.TestCase):
                     self.assertLess(len(poses), 40)
                     self.assertLess(poses[-1][0][8], poses[0][0][8])
                     self.assertGreater(len({tuple(p[1][3:9]) for p in poses}), 3)
+
+    def test_complete_boots_clear_the_floor_at_ticks_and_blends(self):
+        for sid, name, boots in ((243, 'starmon', (10, 11, 14, 15)),
+                                 (226, 'silphymon', (14, 15, 18, 19))):
+            model = self.load(name+'-final.MMD', sid)
+            rig = mmd.exe().skeleton[sid]
+            for slot in (2, 3, 4):
+                frames, _, _ = animsheet.slot_frames(model, len(rig), slot)
+                worst = -float('inf')
+                for tick in range(len(frames)-1):
+                    for alpha in (0, 1365, 2730, 4096):
+                        pose = interpolate_pose(frames[tick], frames[tick+1], alpha)
+                        pose[0][6:9] = [0, 0, 0]
+                        matrices = mmd.bone_matrices(model, pose)
+                        for bone in boots:
+                            transform = matrices[bone]
+                            worst = max(worst, max(sum(transform[1][k]*v[k] for k in range(3)) + transform[1][3]
+                                                   for v in model.tmd.obj_verts(rig[bone][0])))
+                self.assertLessEqual(worst, 1.5, (sid, slot, worst))
 
     def test_both_ears_keep_the_source_head_proportions(self):
         source = self.load('before/226-Silphymon.MMD', 226)

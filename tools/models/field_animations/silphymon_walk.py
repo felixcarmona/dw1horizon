@@ -66,7 +66,7 @@ def build(data, donor_data, skeleton):
                              keep_world=[3, 8, 11, 15, 19])
     mats = mmd.bone_matrices(model, rest)
     floor = max(sum(mats[b][1][j] * v[j] for j in range(3)) + mats[b][1][3]
-                for b in (15, 19) for v in model.tmd.obj_verts(skeleton[b][0]))
+                for b in (14, 15, 18, 19) for v in model.tmd.obj_verts(skeleton[b][0]))
     rest[1][7] -= round(floor)
     rp, rw = R.world_pos(skeleton, rest), R.world_rots(skeleton, rest)
     dp0 = R.world_pos(donor_skeleton, donor_rest)
@@ -139,7 +139,7 @@ def build(data, donor_data, skeleton):
                 pose[0][6:9] = [0, 0, 0]
                 mats = mmd.bone_matrices(model, pose)
                 floor = max(sum(mats[b][1][j] * v[j] for j in range(3)) + mats[b][1][3]
-                            for b in (15, 19) for v in model.tmd.obj_verts(skeleton[b][0]))
+                            for b in (14, 15, 18, 19) for v in model.tmd.obj_verts(skeleton[b][0]))
                 correction = max(0., floor + .25)
                 lifts[tick] = max(lifts[tick], correction)
                 lifts[tick+1] = max(lifts[tick+1], correction)
@@ -198,7 +198,7 @@ def build(data, donor_data, skeleton):
                 pose[0][6:9] = [0, 0, 0]
                 mats = mmd.bone_matrices(parsed, pose)
                 worst = max(worst, max(sum(mats[b][1][j] * v[j] for j in range(3)) + mats[b][1][3]
-                                       for b in (15, 19) for v in parsed.tmd.obj_verts(skeleton[b][0])))
+                                       for b in (14, 15, 18, 19) for v in parsed.tmd.obj_verts(skeleton[b][0])))
         assert worst <= 1.5, (slot, worst)
         check['max_sole_y_at_ticks_and_thirds'] = worst
         check['native_scaled_travel_eased_over_longer_stride'] = True
