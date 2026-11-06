@@ -362,6 +362,14 @@ Apply-species-mode-moves-and-finisher-scalars.patch
 Show-item-descriptions-while-browsing-shops.patch
 Accept-tally-skip-presses-while-other-pad-buttons-are-held.patch
 Keep-rebirth-species-fallback-resident.patch
+Stream-camera-bands-without-blocking-field-ticks.patch
+Finish-scripted-moves-with-a-rounded-zero-step.patch
+Keep-item-bank-column-clears-within-their-text-slot.patch
+wait-for-quick-battle-effects-before-melee.patch
+Prefetch-scripted-camera-bands-without-blocking-the-field.patch
+Upload-diagonal-camera-bands-from-their-destination-window.patch
+Keep-effect-initialization-exclusive-during-quick-battle-loading.patch
+Choose-uploaded-camera-bands-from-the-actual-window-shift.patch
 Bound-the-battle-start-banner-to-its-GPU-packet-budget.patch
 Keep-effect-interpreter-context-intact-during-battle-loading.patch
 mojyamon-daily-exchanges.patch
@@ -374,9 +382,12 @@ Keep-item-bank-column-clears-within-their-text-slot.patch
 wait-for-quick-battle-effects-before-melee.patch
 Select-phase-aware-braking-steps-for-MetalGarurumon.patch
 Load-picker-storage-with-the-title-overlays.patch
+Support-a-configured-parent-specific-Rookie-weight.patch
+Use-Square-for-field-quick-care-with-a-separate-pink-badge.patch
 Keep-Chinese-list-headers-and-trade-columns-aligned.patch
 food-sickness-message-buffer.patch
 shop-balance-complete-row.patch
 evolution-during-load-wake-grace.patch
 fit-status-technique-names.patch
 Render-the-B5a-field-care-HUD-from-live-partner-data.patch
+Keep-Monochromon-shift-plate-at-a-fixed-width.patch

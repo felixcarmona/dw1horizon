@@ -167,7 +167,21 @@
   ]
  ],
  "s178.sec5.u19": "Planejo construir lojas que você e {color 10}{partner}{color 1} acharão úteis.",
- "s178.sec5.u20": "Para começar... vamos ver. Por que não explorar a Floresta Nativa, fora da cidade?",
+ "s178.sec5.u20": [
+  [
+   "Para começar... vamos ver.",
+   "Por que não explorar a",
+   "Floresta Nativa, fora da"
+  ],
+  [
+   "cidade?"
+  ],
+  [
+   "Quando o {color 4}□{color 1} rosa aparecer,",
+   "aperte {color 4}□{color 1} para cuidar do",
+   "parceiro, mesmo de longe."
+  ]
+ ],
  "s178.sec6.u0": "Isto é para você. Boa sorte!",
  "s178.sec6.u1": [
   [
@@ -178,6 +192,16 @@
   [
    "Para olhar seus itens, pressione {color 5}△{color 1}, escolha",
    "Item, e depois veja-os com {color 6}×{color 1}."
+  ],
+  [
+   "Quando o {color 4}□{color 1} rosa aparecer,",
+   "aperte {color 4}□{color 1} para cuidar do",
+   "parceiro, mesmo de longe."
+  ],
+  [
+   "Use {color 6}×{color 1} para falar ou interagir.",
+   "{color 4}□{color 1} só abre a lista. Escolha",
+   "um item e confirme o uso."
   ]
  ],
  "s178.sec6.u3": "Parece que Yuramon captou novos rumores.",
@@ -261,6 +285,11 @@
    "vezes é preciso elogiar, às vezes repreender.",
    "Acima de tudo, observe seu Digimon com",
    "atenção e cuide bem dele."
+  ],
+  [
+   "Quando o {color 4}□{color 1} rosa aparecer,",
+   "aperte {color 4}□{color 1} para cuidar do",
+   "parceiro, mesmo de longe."
   ]
  ],
  "s178.sec20.u0": [

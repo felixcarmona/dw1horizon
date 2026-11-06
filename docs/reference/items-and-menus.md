@@ -326,17 +326,20 @@ consumed (`partner.c:497`). "Merit N" = bought in the merit shop for N points;
   `ITEM_FUNCTIONS[type]`, `removeOneSelectedItem` (1 unit) and `partnerHandleFoodFeed`
   (`partner.c:486-500`): eating when not hungry costs happiness −3 and discipline −2
   (`partner_impl.c:1622`); the rest is raising.
-- Care menu (our build, patches 0150–0155, 0158 and 0312, `mod_feed.c`): on the map, X in front of the partner, checked
-  before NPCs and machines, lists, in the inventory's
+- Care menu (our build, patches 0150–0155, 0158 and 0312, `mod_feed.c`): on the map, Square at any partner distance or facing, after
+  map interactions have been checked, lists, in the inventory's
   layout and most urgent first (the cursor on it), Sleep when it is sleepy and the items for the needs it has,
   nothing else (cures when injured or sick, Port. potty when it needs to go, food only when hungry with its
   favourite first in gold, field HP/MP items when short of the maximum); a second description line warns of a cure
   that may not work or marks the favourite food. It gives the chosen item through
   `startFeedingItem` as above (refusals included) or puts it to sleep as the triangle menu does. Nothing to offer:
-  X does nothing. With a fair scolding pending (`ITEM_SCOLD_FLAG` 1, patches 0152–0153) Scold heads the list (the
+  Square does nothing. With a fair scolding pending (`ITEM_SCOLD_FLAG` 1, patches 0152–0153) Scold heads the list (the
   triangle menu's Scold), and a refusal of the item the menu gave opens the menu again with Scold under the cursor.
-  While X would open it, the dialogue box's X button is drawn beside the condition bubbles (patch 0158, `bubble.c`; alone where the
-  bubbles would be when there is none).
+  While Square would open it, the native round cap with a pink Square is drawn beside the condition bubbles
+  (`bubble.c`; alone where the bubbles would be when there is none), with the same position, size and animation.
+  Its three frames and palette are separate from the shared dialogue/confirm resources. Circle/Cross remains
+  talking/interacting; Confirm and Cancel inside care follow JAPANESE CONTROLS. Other Square handlers in menus
+  and battle remain unchanged.
 - Battle: `startThrowingItem` (`main.c:4175`) removes 1 unit immediately, the item flies
   for 24 frames (`ITEM_THROW_HEIGHT`) and on landing runs the handler (`:4217`). Healing
   handlers do nothing at HP 0 except Restore/Sup.restore (`item.c:2304`), which revive.

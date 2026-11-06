@@ -63,7 +63,7 @@ GROUPED = {'cards': ['cards', 'cardPrices'],
            'training': ['training', 'training2'],
            'training-gains': ['trainGain', 'train2Gain', 'trainRules', 'train2Rules'],
            'vs-unlock': ['vsUnlock'],
-           'evolution-rules': ['evolutionTiming', 'evolutionFresh', 'evolutionUltimate', 'evolutionSpecial', 'evolutionRules', 'evolutionItemRules', 'evolutionFormula']}
+           'evolution-rules': ['evolutionTiming', 'evolutionRookieWeights', 'evolutionFresh', 'evolutionUltimate', 'evolutionSpecial', 'evolutionRules', 'evolutionItemRules', 'evolutionFormula']}
 # one value written to several copies of a table (the BTL, STD and VS overlays; TRN and TRN2)
 COPIES = {'auraTypes': ['auraTypesStd', 'auraTypesVs'], 'slotReels': ['slotReelsb'], 'slotAssist': ['slotAssistb']}
 SCREEN_KEYS = ['id', 'file', 'tims8', 'tims4', 'sound_bank', 'day_night', 'reads_digimon', 'flag20', 'doors', 'toilet',

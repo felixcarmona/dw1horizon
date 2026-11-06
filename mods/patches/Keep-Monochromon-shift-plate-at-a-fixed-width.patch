@@ -1,0 +1,33 @@
+From f0523fd20514cc8b3b0f3bb785233fad27498952 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 5 Nov 2026 22:15:15 +0000
+Subject: [PATCH] Keep Monochromon shift plate at a fixed width
+
+---
+ src/main/mod_qol.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/src/main/mod_qol.c b/src/main/mod_qol.c
+index 9a12e8d..8d6209f 100644
+--- a/src/main/mod_qol.c
++++ b/src/main/mod_qol.c
+@@ -151,11 +151,14 @@ static void modShopPlateRender(int32_t instanceId)
+ 		return;
+ 	}
+ 	if (customer > 20) customer = 20;
++	if (profit > 9999) profit = 9999;
+ 	sprintf(text, "%d B  %d/20", profit, customer);
+-	w = modPlateWidth(text);
++	w = modPlateWidth("9999 B  20/20");
+ 	/* UI primitives use a screen-centred origin. */
+ 	x = 320 - w - 8 - 160;
+-	modPlate(x, 10 - 120, text, 0, 0xF0, 0xF0, 0xF0);
++	modPlateRect(x, 10 - 120, w, 9, 0x62, 0xB4, 0xF6, 6);
++	modPlateRect(x + 1, 11 - 120, w - 2, 7, 0x18, 0x18, 0x18, 5);
++	modPlateText(x + w - modPlateWidth(text) + 3, 12 - 120, text, 0, 0xF0, 0xF0, 0xF0);
+ 	fill = profit < MOD_SHOP_RECRUIT ? (w - 2) * profit / MOD_SHOP_RECRUIT : w - 2;
+ 	modPlateRect(x, 18 - 120, w, 6, 0x62, 0xB4, 0xF6, 6);
+ 	modPlateRect(x + 1, 19 - 120, w - 2, 4, 0x18, 0x18, 0x18, 5);
+-- 
+2.55.0
+

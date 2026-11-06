@@ -373,6 +373,11 @@
    "Für den Anfang... Mal sehen.",
    "Erkunde doch den Urwald gleich",
    "außerhalb der Stadt."
+  ],
+  [
+   "Wenn das rosa {color 4}□{color 1} erscheint,",
+   "öffnet {color 4}□{color 1} das Pflegemenü,",
+   "auch weit vom Partner weg."
   ]
  ],
  "s178.sec6.u0": [
@@ -390,6 +395,16 @@
    "Drücke {color 5}△{color 1}, wähle Items und",
    "sieh dir deine Gegenstände mit",
    "{color 6}×{color 1} an."
+  ],
+  [
+   "Wenn das rosa {color 4}□{color 1} erscheint,",
+   "öffnet {color 4}□{color 1} das Pflegemenü,",
+   "auch weit vom Partner weg."
+  ],
+  [
+   "Mit {color 6}×{color 1} redest und handelst du.",
+   "{color 4}□{color 1} öffnet nur die Liste. Wähle",
+   "ein Item und bestätige es."
   ]
  ],
  "s178.sec6.u3": [
@@ -529,6 +544,11 @@
   ],
   [
    "und kümmere dich gut darum."
+  ],
+  [
+   "Wenn das rosa {color 4}□{color 1} erscheint,",
+   "öffnet {color 4}□{color 1} das Pflegemenü,",
+   "auch weit vom Partner weg."
   ]
  ],
  "s178.sec20.u0": [

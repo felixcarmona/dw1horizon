@@ -117,9 +117,10 @@ def apply(files, language, work):
             px[y*w+x] = gradient(y-v) if gradient else ink
 
     # Gold, tag, stat, element and header labels: retain each existing palette.
-    from tools.localize.systemw import relocated_rect
+    from tools.localize.systemw import relocated_rect, check_care_button_cells
 
     items = json.load(open(os.path.join(work, 'systemw', 'rects.json')))
+    check_care_button_cells(items)
     elements = {'FIRE', 'BATTLE', 'AIR', 'EARTH', 'ICE', 'MECH', 'FILTH'}
     for item in items:
         if item['es'] not in UI:

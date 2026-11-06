@@ -1,0 +1,47 @@
+From 4e4df9b15d76fc0a3a47da27d9cb393a9db74a9b Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 5 Nov 2026 18:27:58 +0000
+Subject: [PATCH] Keep effect initialization exclusive during quick battle
+ loading
+
+---
+ src/btl/battle_effect.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/src/btl/battle_effect.c b/src/btl/battle_effect.c
+index 2a2be8c..f8106a9 100644
+--- a/src/btl/battle_effect.c
++++ b/src/btl/battle_effect.c
+@@ -2169,6 +2169,8 @@ char *BTL_initializeParticleEmitters(char *base)
+ 	return base + 0x23c4;
+ }
+ 
++extern int8_t MOD_BATTLE_LOADING; /* btl.c */
++
+ void BTL_tickEFEEngine(void)
+ {
+ 	int32_t n;
+@@ -2176,6 +2178,11 @@ void BTL_tickEFEEngine(void)
+ 	int32_t j;
+ 	EfeSound *p;
+ 
++	/* The incremental init script owns the shared EFE interpreter until
++	 * quick-battle loading finishes. Even visiting an inactive slot changes
++	 * its context, so neither ticking nor rendering may interleave it. */
++	if (MOD_BATTLE_LOADING) return;
++
+ 	setMapLayerEnabled(1);
+ 
+ 	COMBAT_EFFECT_ITR = 0;
+@@ -2280,6 +2287,8 @@ void BTL_renderEFEEngine(void)
+ 	int32_t hit;
+ 	int32_t section;
+ 
++	if (MOD_BATTLE_LOADING) return;
++
+ 	target = EFE_TARGET_ENTITY_INDEX;
+ 	hit = EFE_HIT_ENTITY_INDEX;
+ 	section = EFE_ACTIVE_SECTION;
+-- 
+2.55.0
+

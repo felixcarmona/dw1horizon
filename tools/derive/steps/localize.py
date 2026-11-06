@@ -30,7 +30,7 @@ def lang_on(ctx):
 
 def outputs(ctx):
     f = ctx.path(OUT, 'files.txt')
-    if not lang_on(ctx) or not os.path.isfile(f):
+    if not os.path.isfile(f):
         return []
     out = []
     for line in open(f).read().split('\n'):
@@ -41,13 +41,23 @@ def outputs(ctx):
 
 
 def build(ctx):
-    if not lang_on(ctx):
-        return
     import contextlib, io, shutil
     from tools.localize import build as L      # (not `import build`: the recipes have a build.py each)
+    from tools.care_badge import FILES, stamp
     buf = io.StringIO()
     with contextlib.redirect_stdout(buf):      # (its notes go in the step's log)
         all_lines = []
+        # Care artwork also belongs to single-language builds, in the same two
+        # native files. Their ordinary field upload installs the private CLUT.
+        for path, entry in FILES:
+            with open(os.path.join(ctx.root, 'extracted', path), 'rb') as f:
+                data = bytearray(f.read())
+            stamp(data, entry)
+            dest = ctx.path(OUT, 'en', path)
+            os.makedirs(os.path.dirname(dest), exist_ok=True)
+            with open(dest, 'wb') as f:
+                f.write(data)
+            all_lines.append(f'en {path}')
         for lang in translations(ctx.env):
             folder = ctx.path(OUT) if lang == 'es' else ctx.path(OUT + '-' + lang)
             lines = L.build(folder, os.path.join(ctx.root, 'extracted'), run_with=ctx.run,

@@ -378,6 +378,11 @@
    "Per cominciare... Vediamo.",
    "Perché non esplori la Foresta",
    "natia, appena fuori città?"
+  ],
+  [
+   "Quando appare il {color 4}□{color 1} rosa,",
+   "premi {color 4}□{color 1} per curare il",
+   "compagno, anche da lontano."
   ]
  ],
  "s178.sec6.u0": [
@@ -396,6 +401,16 @@
    "Per vedere gli oggetti, premi",
    "{color 5}△{color 1}, scegli Oggetti, poi",
    "esaminali con {color 6}×{color 1}."
+  ],
+  [
+   "Quando appare il {color 4}□{color 1} rosa,",
+   "premi {color 4}□{color 1} per curare il",
+   "compagno, anche da lontano."
+  ],
+  [
+   "Usa {color 6}×{color 1} per parlare o agire.",
+   "{color 4}□{color 1} apre solo la lista. Scegli",
+   "un oggetto e conferma."
   ]
  ],
  "s178.sec6.u3": [
@@ -526,6 +541,11 @@
    "e a volte sgridati. Qualunque",
    "cosa tu faccia, osserva bene il",
    "tuo Digimon e prenditene cura."
+  ],
+  [
+   "Quando appare il {color 4}□{color 1} rosa,",
+   "premi {color 4}□{color 1} per curare il",
+   "compagno, anche da lontano."
   ]
  ],
  "s178.sec20.u0": [

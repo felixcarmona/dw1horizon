@@ -7,6 +7,13 @@ cells. C tables are exported by the developer crop generator, not at runtime.
 """
 
 
+# Care-only native-cap frames, in unused atlas holes (coordinates relative to SYSTEM_W.TIM).
+# These must remain free in every localized label set; the C header uses v + 128.
+CARE_BUTTON_RECTS = ((240, 27, 16, 12), (240, 39, 16, 12), (192, 96, 16, 12))
+CARE_BUTTON_GUARD_RECTS = ((239, 27, 1, 12), (239, 39, 1, 12))
+CARE_BUTTON_CLUT_RECT = (128, 124, 64, 1)  # VRAM words (352,252), 16 colors
+
+
 CHINESE_MENU_CELLS = {
     1: ('道具', 56, 95), 2: ('状态', 80, 96), 3: ('玩家', 104, 96),
     4: ('表扬', 208, 96), 5: ('训斥', 232, 96),
@@ -18,7 +25,8 @@ CHINESE_MENU_SIZE = (24, 13)
 def check_chinese_menu_cells():
     from tools.localize.fi_info import overlaps
     protected = [(128,110,38,12), (166,110,28,12), (194,110,34,12),
-                 (96,84,64,12), (160,84,38,12), (144,96,64,12), (144,72,29,8)]
+                 (96,84,64,12), (160,84,38,12), (144,96,37,9), (144,72,29,8)]
+    protected += list(CARE_BUTTON_RECTS) + list(CARE_BUTTON_GUARD_RECTS) + [CARE_BUTTON_CLUT_RECT]
     used = []
     for _, u, v in CHINESE_MENU_CELLS.values():
         rect = (u, v, *CHINESE_MENU_SIZE)
@@ -38,6 +46,16 @@ def relocated_rect(item):
     }.get(key)
 
 
+def check_care_button_cells(items):
+    """Reject label crops that would overwrite care frames, guard columns or their CLUT."""
+    from tools.localize.fi_info import overlaps
+    protected = list(CARE_BUTTON_RECTS) + list(CARE_BUTTON_GUARD_RECTS) + [CARE_BUTTON_CLUT_RECT]
+    for item in items:
+        for rect in ([item[k] for k in ('u', 'v', 'w', 'h')], relocated_rect(item)):
+            if rect and any(overlaps(rect, reserved) for reserved in protected):
+                raise ValueError(f'SYSTEM_W label overlaps the care badge: {item["en"]} {rect}')
+
+
 def crop_tables(source, metadata):
     """Regenerate the four C sprite tables using each source recipe's rectangles.
 
@@ -45,6 +63,8 @@ def crop_tables(source, metadata):
     language switch. The English branch and non-label sprites remain intact.
     """
     import re
+    for items in metadata.values():
+        check_care_button_cells(items)
     for name in ('MOVES_VIEW_TECHSET_TEXT', 'STATS_VIEW_ELEMENTS',
                  'MOVES_VIEW_ELEMENT_NAMES', 'MOVES_SELECTED_LABELS'):
         begin = source.index('IconRect ' + name + '[')

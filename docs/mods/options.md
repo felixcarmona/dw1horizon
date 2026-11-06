@@ -106,7 +106,7 @@ All the controls as in the Japanese version.
   colour keeps it. In the yaml and the text banks a glyph is the Shift-JIS character of its code. △ (81A2) is the one
   the font draws as ×, and × (817E) the one it draws as △.
 - **The dialogue box's button.** The three 16x12 frames of the × button (UI page u 0x4C v 0xB7: `SYSTEM_W.TIM`, VRAM
-  (339, 183), CLUT (96, 500)) are drawn by `renderUIBox` and by the care menu's badge (patch 0158). The US disc has no ○
+  (339, 183), CLUT (96, 500)) are drawn by `renderUIBox`. The care badge now uses a separate pink Square cap. The US disc has no ○
   there. When `loadStackedTIMFile` uploads `ETCTIM.BIN`, `modButtonsTimLoaded` copies the frames from the file's own
   pixels and makes a ○ version: the cross (indices 0xC and 0xD, a 6x5 box in each frame) is painted over with the face
   (index 3), and a 6x5 ring is drawn where it was. The ring is red, (248, 96, 104) and (160, 48, 56), with a CLUT of its
@@ -115,6 +115,13 @@ All the controls as in the Japanese version.
   the tournament and VS portraits use them. With the option off, the × frames and the filler are uploaded back. A disc
   whose frames are not the expected 6x5 cross keeps the ×. The VS mode's own `SYSTEM_W.TIM` load (`vs_select.c`) is
   not hooked. The mod carries no pixels of the disc.
+- **Quick care.** Physical Square opens care in the field in either layout, regardless of partner distance or
+  facing. The care cap's three 16×12 source frames occupy SYSTEM_W atlas holes `(240,27)`, `(240,39)` and
+  `(192,96)` (TIM-relative texels); its palette is VRAM `(352,252)`. These are separate from Confirm and the
+  translated label cells. The build derives these copies from the native cap in `SYSTEM_W.TIM` and
+  `ETCTIM.BIN`; the normal UI load installs them, with no resident painter or new file. The original badge
+  anchor, projection and animation are unchanged. Field Confirm
+  remains talking/interacting; Square inside menus and battle retains its existing context-specific actions.
 - **A Japanese base disc (patch 0241).** The Japanese disc draws a ○ in the same three frames (a flat 8x5 ellipse in
   the palette's oranges 7, 0xE, 0xF; its CLUT's 0xC and 0xD are unused). The frames tell the base (`framesButton`,
   `mod_options.c`): a 6x5 box of 0xC/0xD in each frame is the US ×, an 8x5 box of 7/0xE/0xF the Japanese ○, anything
