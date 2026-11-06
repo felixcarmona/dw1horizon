@@ -31,4 +31,7 @@ the image tooling used by the checked-out scripts and an extraction of the relev
 See [building from source](../../docs/building.md) for source discs and the
 model replay setup.
 
-`check.py` audits composed rows and localized layout; `systemw.py` packs raster labels using source-specific crop metadata.
+`check.py` audits composed rows, localized layout and the place-name glossaries
+in `text/<language>/places.json`. `places.py` checks names in dialogue, UI labels
+and story translations against those glossaries and their English references.
+`systemw.py` packs raster labels using source-specific crop metadata.

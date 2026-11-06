@@ -6,13 +6,12 @@ import "../names.dws";
 maphead {
     section(43) replace {    // section 43
         set_script(43, 43);
-        if (canyon_bandits_active) {
-            engine.music_mode = 2;
-            set_bgm(6);
-            return;
-        }
         engine.music_mode = 0;
+        if (canyon_bandits_active && !canyon_bandits_beaten) {
+            engine.music_mode = 2;
+        }
         set_bgm(6);
+        unless (!canyon_bandits_active) return;
         load_digimon(species("Goblimon"));
         set_digimon(species("Goblimon"), 0, 1);
         set_digimon(species("Goblimon"), 1, 1);

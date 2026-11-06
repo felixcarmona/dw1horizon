@@ -107,14 +107,14 @@
   "name": "Armadillomon",
   "bones": 23,
   "skeleton_sha256": "f40851011a5f00c3d0c04683fe89f2398de21b91641873bd8b0d517a3e6b1b3a",
-  "source_sha256": "f94cdab3f149ae6b1ed7f31a7c4a146c308ea133472e76c93018d251e422adca",
+  "source_sha256": "17da46e0c9a69e2b757cfb212c2c27b459b2cf1674bc732a692c5a0def7e029b",
   "base_generator": "tools.models.field_animations.armadillomon",
-  "post_source_sha256": "ad67ff179c9570aee5b24737b5fff3ba4bc062393602205cef8cf412e9d22ed9",
+  "post_source_sha256": "83c4816d8dd2ecdbf9b08b9fd34b6f57378da80093df30e27d7cef807ae2f7c6",
   "slots": {
    "3": {
     "from": 2,
-    "ticks": 14,
-    "speed": 12,
+    "ticks": 18,
+    "speed": 14.7,
     "slip": [
      125,
      250
@@ -918,7 +918,8 @@
      250
     ]
    }
-  }
+  },
+  "after_generator": "tools.models.field_animations.vilemon"
  },
  "213": {
   "name": "AeroVeedramon",

@@ -1646,6 +1646,19 @@ class PythonView(unittest.TestCase):
         self.assertEqual(len(files), 223)
         for f in files: ast.parse(open(f, encoding='utf-8').read(), f)
 
+    def test_canyon_ambush_headers_match_python_source(self):
+        from dws import flowcmp
+        paths = [os.path.join(self.base, 'maphead', f'screen{sid:03d}.dws') for sid in (43, 128)]
+        expected = B.compile_sources(paths, exe='story-state', profile='extended-save')
+        actual = B.compile_sources([os.path.join(self.base, 'maphead', 'hooks.py')],
+                                   exe='story-state', profile='extended-save')
+        wanted = {sec: code for sec, _, code, _, _ in expected.b.mh_events}
+        lowered = {sec: code for sec, _, code, _, _ in actual.b.mh_events}
+        for sid in (43, 128):
+            with self.subTest(screen=sid):
+                result = flowcmp.compare(wanted[sid], lowered[sid])
+                self.assertTrue(result['equal'], result)
+
     def test_forms(self):
         v = self.view(77)
         self.assertIn('region = screen(Screen.ancient_glacial_region_80)', v)

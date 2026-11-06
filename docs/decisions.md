@@ -62,6 +62,7 @@ Keep this page updated when a deliberate change is merged, including reversals a
 
 ## Evolution & care
 
+- **2026-11-06 — Reachable evolution alternatives:** Dokugumon asks for offense/brains instead of offense/speed, separating its picker average from Stingmon on Wormmon's list. Tylomon asks for defense/speed instead of HP/defense, separating it from Ikkakumon on Gomamon's list. Earlier siblings won both identical-average ties even outside their weight bands because their parent bonuses supplied the missing point. WaruSeadramon's bonus now comes from 50 battles instead of a free Seadramon parent point: Megadramon's canonical 30-battle state keeps Megadramon. Simply deleting the parent point also changed a qualifying loser's carried average and let Whamon take some existing Megadramon states; the battle bonus preserves those sampled winners ([requirements](../content/species/112-waruseadramon.json), [picker regressions](../tools/test_evo_tree_guard.py)).
 - **2026-10-15 — Added Rookie routes:** In-Training partners gain extra Rookie targets with distinct requirements, including overfed/underfed weight bands, while canonical original states still choose their original child; new partners should extend the tree without replacing ordinary original raising ([partner: added species](reference/partner.md#evolution-rules-for-the-added-species), [tree data](../content/tables/evolution-tree.json)).
 - **By 2026-10-30 — Care menu (earlier button binding):** confirm in front of the partner offers relevant food, cures, toilet, sleep and fair scolding, with urgent needs first, favorite food marked and an interaction badge; care should take fewer menu steps without changing item refusals ([items and menus: using an item](reference/items-and-menus.md#using-an-item)).
 - **By 2026-10-30 — Condition bubbles:** active needs use a fixed row of equal bubbles, superseding the earlier rotating carousel; simultaneous conditions should stay legible ([patch index, former 0069–0077/0155–0156](../mods/patches/index.md)).
@@ -96,6 +97,8 @@ Keep this page updated when a deliberate change is merged, including reversals a
 - **2026-11-04 — KingEtemon parents:** Monzaemon and Digitamamon join Etemon as parents, with a maximum of 10 care mistakes; these canon, shared-specialty chains should be practical, while ShogunGekomon/Vademon remain excluded for lacking a shared specialty ([tree data](../content/tables/evolution-tree.json), [partner rules](reference/partner.md#evolution-rules-for-the-added-species); PR #167).
 - **2026-11-04 — Gazimon/Gizamon routes:** their Champion targets get distinct stat profiles, weight bands and care bands without changing topology; overlapping requirements should not make one target dominate its siblings ([species data](../content/species); PR #181).
 - **2026-11-04 — Creepymon sleep:** its nine-hour sleep moves to 07:00–16:00, like nocturnal native Digimon; its care rhythm should suit its character ([species record](../content/species/312-creepymon.json); PR #174).
+- **2026-11-05 — Armadillomon meals:** its energy cap/fed threshold/hourly usage become 40/25/8, matching Gotsumon, with the same hunger hours; a small Rookie should not need five small meats from an empty stomach ([species record](../content/species/185-armadillomon.json)).
+
 
 ## Species & levels
 

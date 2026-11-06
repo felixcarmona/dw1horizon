@@ -120,7 +120,7 @@ def units(ctx):
     out = folder(ctx)
     rel = os.path.relpath(out, ctx.out)
     imported_models_in = [IMPORTED_MODELS_SCRIPT, os.path.join(os.path.dirname(IMPORTED_MODELS_SCRIPT), 'models.json'),
-              ctx.path('imported-models'), 'tools', 'content/species']
+              ctx.path('imported-models'), 'tools', 'content/species', 'content/models/imports']
     v, ro = icon_ids(ctx)
     icons = ctx.path(ICONS) if v or ro else None
     us = [runner.Unit(f'{t} {ov} ({gen})', make_overlay, (out, t, icons), imported_models_in + [f'{gen.replace(".", "/")}.py'],

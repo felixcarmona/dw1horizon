@@ -185,5 +185,111 @@
     "occupied_slots": 50,
     "animated": [],
     "across_slots": []
+  },
+  "field_repair": {
+    "recipe": "tools.models.field_animations.pace",
+    "source_sha256": "17da46e0c9a69e2b757cfb212c2c27b459b2cf1674bc732a692c5a0def7e029b",
+    "output_sha256": "af8301e804da84ebe3c50d6aebb4a9305226961ea13134e1e2656eb5bc89f623",
+    "changed_slots": [
+      2,
+      3,
+      4
+    ],
+    "mesh_exact": true,
+    "constant_bone_scales": true,
+    "gaits": [
+      {
+        "slot": 2,
+        "gait": "walk",
+        "ticks": 12,
+        "units_per_tick": 22.0,
+        "lowest_point": 0.7,
+        "touchdown": {
+          "LH": 0.0,
+          "LF": 0.25,
+          "RH": 0.5,
+          "RF": 0.75
+        },
+        "duty": {
+          "LH": 0.4,
+          "RH": 0.4,
+          "RF": 0.4,
+          "LF": 0.4
+        },
+        "stance_slip": {
+          "RF": 0.054,
+          "LF": 0.054,
+          "RH": 0.05,
+          "LH": 0.05
+        },
+        "body_drop": 3.7,
+        "unreached": 0.45,
+        "sound_ticks": [
+          3,
+          9
+        ],
+        "stream_bytes": 2592,
+        "aliases": [
+          2
+        ]
+      },
+      {
+        "slot": 4,
+        "gait": "run",
+        "ticks": 10,
+        "units_per_tick": 45.0,
+        "lowest_point": 0.3,
+        "touchdown": {
+          "LF": 0.0,
+          "RH": 0.0,
+          "RF": 0.5,
+          "LH": 0.5
+        },
+        "duty": {
+          "LH": 0.2,
+          "RH": 0.2,
+          "RF": 0.2,
+          "LF": 0.2
+        },
+        "stance_slip": {
+          "RF": 0.081,
+          "LF": 0.079,
+          "RH": 0.081,
+          "LH": 0.082
+        },
+        "body_drop": 0.0,
+        "unreached": 0.0,
+        "sound_ticks": [
+          0,
+          5
+        ],
+        "stream_bytes": 2194,
+        "aliases": [
+          4
+        ]
+      }
+    ],
+    "condition_walk": {
+      "slot": 3,
+      "source_slot": 2,
+      "source_ticks": 12,
+      "ticks": 18,
+      "units_per_tick": 14.722222222222221,
+      "slip_mean": 22.377772767892665,
+      "slip_worst": 66.90693252568892,
+      "floor_source": 0.7137539252729823,
+      "floor": 0.6234536625643159,
+      "raised": 0,
+      "events": 3
+    },
+    "resident_bytes": 84022,
+    "resident_limit": 100352,
+    "cold_read_limit": 8192,
+    "texture": {
+      "source_sha256": "ddd4fcec8f76fef8c17035c8ac6c27f4bb154dd0f94db281250cfb70ab6ba723",
+      "output_sha256": "68ce08386fd6b56f5ad2306c11eec168b177f1dd307c507dca65f998053fd92d",
+      "recolored_texels": 532,
+      "palettes_unchanged": true
+    }
   }
 }

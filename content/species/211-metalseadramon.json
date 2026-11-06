@@ -10,7 +10,7 @@
                  "Tear Drop", "Aqua Magic", "All Range Beam", "Pulse Laser", "DG Dimension",
                  "Delete Program", "Reverse Prog", "Power Crane", "Mail Strome"],
   "drop": {"item": "sm.recovery", "percent": 30},
-  "effects_like": 21,
+  "effects_like": 61,
   "model": {
     "file": "build/sizes-out/models/MetalSeadramon.MMD",
     "radius": 264,
@@ -24,10 +24,8 @@
   "voice": 55,
   "battle_music": "normal-battle",
   "condition_bubble": [-4, -24, -77, 6],
-  "effect_origins": [[4, 0, -20, -130, 6, -1, 109, -98], [4, 0, -10, -85, 6, 0, 72, -61],
-                     [1, 0, 100, -100, 4, 4, 142, 67], [8, 80, -150, 0, 4, 233, -11, 96],
-                     [10, -80, -50, 0, 4, -187, -74, 25], [11, -80, -150, 0, 4, -225, -10, 112],
-                     [7, 80, -50, 0, 4, 188, -76, 12]],
+  "effect_origins": [[1, 0, 0, 0, 1, 0, 0, 0], [3, -126, 0, 283, 6, -17, -56, -304], [3, 50, 0, 90, 6, -1, 70, -76]],
+  "effect_origin_fallback": [6, -1, 70, -76],
   "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
   "sizing": {
     "game": "dcb",
