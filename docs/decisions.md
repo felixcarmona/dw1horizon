@@ -95,6 +95,8 @@ Keep this page updated when a deliberate change is merged, including reversals a
 - **2026-11-04 — KingEtemon parents:** Monzaemon and Digitamamon join Etemon as parents, with a maximum of 10 care mistakes; these canon, shared-specialty chains should be practical, while ShogunGekomon/Vademon remain excluded for lacking a shared specialty ([tree data](../content/tables/evolution-tree.json), [partner rules](reference/partner.md#evolution-rules-for-the-added-species); PR #167).
 - **2026-11-04 — Gazimon/Gizamon routes:** their Champion targets get distinct stat profiles, weight bands and care bands without changing topology; overlapping requirements should not make one target dominate its siblings ([species data](../content/species); PR #181).
 - **2026-11-04 — Creepymon sleep:** its nine-hour sleep moves to 07:00–16:00, like nocturnal native Digimon; its care rhythm should suit its character ([species record](../content/species/312-creepymon.json); PR #174).
+- **2026-11-05 — Armadillomon meals:** its energy cap/fed threshold/hourly usage become 40/25/8, matching Gotsumon, with the same hunger hours; a small Rookie should not need five small meats from an empty stomach ([species record](../content/species/185-armadillomon.json)).
+
 
 ## Species & levels
 
