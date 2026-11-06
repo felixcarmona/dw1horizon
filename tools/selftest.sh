@@ -30,6 +30,7 @@ run() {   # run NAME CMD...
     fi
 }
 echo "toolchain self-test"
+run story-imports "$PY" -m unittest tools.test_dws_imports
 if [ "$DISC" = 1 ] && [ ! -f text/us/dialogue.json ]; then
     run original-text-bank "$PY" -c 'from pathlib import Path; from tools.dws import textx; Path("text/us").mkdir(parents=True, exist_ok=True); textx.write_bank(textx.extract(), "text/us/dialogue.json")'
 fi
