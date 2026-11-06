@@ -1839,6 +1839,63 @@ def authored3(path, extra=()):
     return path in ('SLUS_010.32', 'SYSTEM.CNF') or path.endswith('_REL.BIN') or path in extra
 
 
+# Private recovery state is never copied into a player package.
+RELEASE_STATE = None
+RELEASE_COMMON = None
+
+
+def recovery_step(name, function, values, outputs=()):
+    if RELEASE_STATE is None:
+        return function()
+    if name not in RELEASE_STATE.dependencies and name.startswith('source-derive/'):
+        variant,key=name.split('/')[1:]
+        with RELEASE_STATE.lock:
+            RELEASE_STATE.dependencies[name]=['encode/everything']
+            output='source-output/'+variant+'/'+key
+            if output in RELEASE_STATE.dependencies:RELEASE_STATE.dependencies[output].append(name)
+    return RELEASE_STATE.call(name, function,
+        lambda: dict(common=RELEASE_COMMON, values=values() if callable(values) else values), outputs,
+        command=[sys.executable, __file__, 'make-release', name])
+
+
+def recovery_tree(path):
+    return RELEASE_STATE.hashes.tree([path]) if RELEASE_STATE else None
+
+
+def recovery_plan(a):
+    if RELEASE_STATE is None:return
+    name=a.variant[0].split('=',1)[0]
+    keys=['us']+[item.split('=',1)[0] for item in a.base]
+    deps={'published-save-file':[], 'package-inputs':['published-save-file'],
+          'source-bundle':['package-inputs'], 'isolated-verification':['source-bundle'],
+          'encode/'+name:['isolated-verification']}
+    bases=['base/'+name+'/'+key for key in keys]
+    for item in bases:deps[item]=['encode/'+name]
+    variants=[]
+    for spec in getattr(a,'source_variant',None) or []:
+        game,image=spec.split('=',1);vid,_=variant_of_image(game,image)
+        source='source-derive/'+vid+'/us';deps[source]=['encode/'+name]
+        for key in keys:
+            item='source-output/'+vid+'/'+key
+            deps[item]=bases+[source];variants.append(item)
+    deps['assembly']=bases+variants
+    deps['literal-gate']=['assembly']
+    RELEASE_STATE.dependencies=deps
+    from tools.release_steps import atomic,encoded
+    atomic(RELEASE_STATE.root/'plan.json',encoded({name:{'dependencies':parents} for name,parents in deps.items()}))
+
+
+def block_pending_recovery():
+    if RELEASE_STATE is None:return
+    for _ in range(len(RELEASE_STATE.dependencies)):
+        changed=False
+        for name,deps in RELEASE_STATE.dependencies.items():
+            if name in RELEASE_STATE.rows:continue
+            failed=[d for d in deps if RELEASE_STATE.rows.get(d,{}).get('status') in ('failed','blocked')]
+            if failed:RELEASE_STATE.blocked(name,failed);changed=True
+        if not changed:break
+
+
 def cmd_make_release(a):
     # Validate before deleting/replacing an existing output folder or invoking a build.
     if a.format != FORMAT or a.holes != 'derive' or a.recipe != 'everything':
@@ -1865,17 +1922,43 @@ def cmd_make_release(a):
             raise PatchError('--derive-cache and the package must be separate directories')
     if getattr(a, 'metrics', None) and os.path.commonpath([os.path.abspath(a.output), os.path.abspath(a.metrics)]) == os.path.abspath(a.output):
         raise PatchError('--metrics must be outside the package directory')
-    global RELEASE_METRICS
+    global RELEASE_METRICS, RELEASE_STATE, RELEASE_COMMON
     if getattr(a, 'metrics', None):
         from release_workers import Metrics
         RELEASE_METRICS = Metrics(a.metrics)
+    if (getattr(a,'keep_going',False) or getattr(a,'resume',False)) and not getattr(a,'resume_state',None):
+        a.resume_state=os.path.abspath(a.output)+'.recovery'
+    if getattr(a, 'resume_state', None):
+        if REPO not in sys.path:sys.path.insert(0,REPO)
+        from tools.release_steps import Store
+        RELEASE_STATE=Store(a.resume_state,resume=True)
+        source_paths=[os.path.join(REPO,p) for p in DERIVE_TREES]
+        # Native target and all supplied recipe/runtime bytes are content keyed.
+        RELEASE_COMMON=dict(recipe=a.recipe, runtime=RELEASE_STATE.hashes.tree(source_paths),
+                            python=sys.version,
+                            environment=release_cache_environment(os.environ),
+                            sources=[[item.split('=',1)[0],RELEASE_STATE.hashes.file(item.split('=',1)[1])]
+                                     for item in a.source_disc],
+                            target=RELEASE_STATE.hashes.file(target))
+        if not a.keep_outputs:a.keep_outputs=os.path.join(a.resume_state,'outputs')
+    recovery_plan(a)
     started = time.monotonic()
     try:
-        save_check(a)
+        recovery_step('published-save-file',lambda:save_check(a),{})
         return cmd_make_release3(a)
+    except (Exception,SystemExit) as error:
+        if RELEASE_STATE is not None and not any(row['status']=='failed' for row in RELEASE_STATE.rows.values()):
+            name='package-inputs' if 'source-bundle' not in RELEASE_STATE.rows else 'assembly'
+            def fail():raise error
+            try:recovery_step(name,fail,{})
+            except Exception:pass
+        raise
     finally:
+        block_pending_recovery()
         release_timing('make-release', seconds=round(time.monotonic() - started, 2))
         RELEASE_METRICS = None
+        if RELEASE_STATE is not None:RELEASE_STATE.report()
+        RELEASE_STATE = RELEASE_COMMON = None
 
 
 def variant_of_image(game, image):
@@ -1899,6 +1982,18 @@ def derived_manifest(root, recipe):
 
 
 def run_release_tasks(tasks, width):
+    if RELEASE_STATE is not None:
+        from concurrent.futures import ThreadPoolExecutor, as_completed
+        results, failures = {}, []
+        with ThreadPoolExecutor(width) as pool:
+            futures={pool.submit(fn):name for name,fn in tasks.items()}
+            for future in as_completed(futures):
+                name=futures[future]
+                try:results[name]=future.result()
+                except (Exception,SystemExit) as error:failures.append((name,str(error)))
+        if failures:
+            raise PatchError('independent release tasks failed:\n'+'\n'.join(name+': '+error for name,error in failures))
+        return {name:results[name] for name in tasks}
     from release_workers import ordered
     global CANCEL
     previous = CANCEL
@@ -1909,17 +2004,28 @@ def run_release_tasks(tasks, width):
         CANCEL = previous
 
 
-def source_variant_derive(a, out, m, local, holes, base_paths, mappings, work, spec, key, jobs):
+def compute_source_variant(a, out, m, local, holes, base_paths, mappings, work, spec, key, jobs):
     _check_cancel()
     game, image = spec.split('=', 1)
     vid, _ = variant_of_image(game, image)
     sources = [s for s in a.source_disc if s.split('=', 1)[0] != game] + [spec]
     folder = os.path.join(work, vid, key)
+    if RELEASE_STATE is not None:shutil.rmtree(folder,ignore_errors=True)
     bd = BaseDisc(key, base_paths[key], mappings.get(key), tool_root=REPO, work=folder, source_discs=sources)
     os.makedirs(folder, exist_ok=True)
     got = derive_holes(out, m, dict(local=local), bd, os.path.join(folder, 'derive'), jobs=jobs,
                        source_discs=sources, cache=getattr(a, 'derive_cache', None), slot=vid + '/' + key)
     return key, {hh['id']: open(got[hh['file']], 'rb').read() for hh in holes}
+
+
+def source_variant_derive(a,out,m,local,holes,base_paths,mappings,work,spec,key,jobs):
+    game,image=spec.split('=',1)
+    vid,_=variant_of_image(game,image)
+    return recovery_step('source-derive/'+vid+'/'+key,
+        lambda:compute_source_variant(a,out,m,local,holes,base_paths,mappings,work,spec,key,jobs),
+        lambda:dict(bundle=recovery_tree(os.path.join(out,'bundle')),base=RELEASE_STATE.hashes.file(base_paths[key]),
+                    source=RELEASE_STATE.hashes.file(image),mapping=mappings.get(key)),
+        lambda value:[os.path.join(work,vid,key,'derive','root')])
 
 
 def record_source_variants(a, m, out, work, name, local, holes, base_holes, base_paths, mappings, p3, outputs, prepared=None):
@@ -1972,7 +2078,7 @@ def record_source_variants(a, m, out, work, name, local, holes, base_holes, base
             made.update(run_release_tasks({k: functools.partial(derive_one, k, jobs) for k in regional}, width).values())
         m.setdefault('timings', {}).setdefault('source_variants', {})[vid] = round(time.time() - t0)
         say(f'    derive: {time.time() - t0:.0f} s')
-        def reconstruct_variant(key):
+        def compute_variant(key):
             _check_cancel()
             pk = pin_key(key, vid)
             vb = reused[key] if reused is not None else made[key] if key in made else made['us']
@@ -1994,6 +2100,15 @@ def record_source_variants(a, m, out, work, name, local, holes, base_holes, base
             else:
                 os.remove(ob)
             return pk, pins, output
+
+        def reconstruct_variant(key):
+            return recovery_step('source-output/'+vid+'/'+key,lambda:compute_variant(key),
+                lambda:dict(base=RELEASE_STATE.hashes.file(base_paths[key]),mapping=mappings.get(key),
+                            source=RELEASE_STATE.hashes.file(image),payload=hashlib.sha256(json.dumps(
+                                {k:v for k,v in p3.items() if k!='blob'},sort_keys=True).encode()+p3['blob']).hexdigest(),
+                            holes={str(k):hashlib.sha256(v).hexdigest() for k,v in base_holes[key].items()},
+                            variant={str(k):hashlib.sha256(v).hexdigest() for k,v in (reused[key] if reused is not None else made.get(key,made['us'])).items()}),
+                lambda value:[os.path.join(a.keep_outputs,f'{name}-{pin_key(key,vid)}.bin')])
 
         import functools
         from release_workers import worker_count
@@ -2048,7 +2163,9 @@ def cmd_make_release3(a):
         bases_info[key] = dict(BASES[key], mapping=f'bases/{os.path.basename(mp)}')
         if mappings[key].get('localize_tool'):
             say(f'  {key}: its localize files need {mappings[key]["localize_tool"]} at apply time (bundled when present)')
-    work = tempfile.mkdtemp(prefix='dwrelease-', dir=a.work)
+    work = os.path.join(a.resume_state,'work') if getattr(a,'resume_state',None) else tempfile.mkdtemp(prefix='dwrelease-', dir=a.work)
+    os.makedirs(work,exist_ok=True)
+    recovery_step('package-inputs',lambda:None,{})
     try:
         import datacopy
         data_sources = dict(s.split('=', 1) for s in getattr(a, 'source_disc', None) or [])
@@ -2064,8 +2181,20 @@ def cmd_make_release3(a):
         first = a.variant[0].split('=', 1)[1].split(',')[0]
         facts = os.path.join(os.path.dirname(os.path.abspath(first)), os.path.basename(first)[:-4], 'derived',
                              'exe-facts.json')
-        bundle, extract, cand = make_bundle_derive(usa, work, out, a.recipe, facts,
-                                                  source_discs=getattr(a, 'source_disc', None), cache=getattr(a, 'derive_cache', None))
+        def record_bundle():
+            for folder in (os.path.join(work,'cand'),os.path.join(out,'bundle')):
+                shutil.rmtree(folder,ignore_errors=True)
+            value=make_bundle_derive(usa,work,out,a.recipe,facts,source_discs=getattr(a,'source_disc',None),cache=getattr(a,'derive_cache',None))
+            if RELEASE_STATE is not None:
+                stash=os.path.join(a.resume_state,'recorded-bundle')
+                shutil.rmtree(stash,ignore_errors=True);shutil.copytree(os.path.join(out,'bundle'),stash)
+            return value
+        bundle, extract, cand = recovery_step('source-bundle',record_bundle,
+            dict(original=RELEASE_STATE.hashes.file(a.original),facts=RELEASE_STATE.hashes.file(facts)) if RELEASE_STATE else {},
+            lambda value:[os.path.join(work,'cand'),os.path.join(a.resume_state,'recorded-bundle')])
+        if RELEASE_STATE is not None:
+            shutil.rmtree(os.path.join(out,'bundle'),ignore_errors=True)
+            shutil.copytree(os.path.join(a.resume_state,'recorded-bundle'),os.path.join(out,'bundle'))
         if getattr(a, 'source_disc', None):
             m['source_discs'] = sorted({s.split('=', 1)[0] for s in a.source_disc})
         release_timing('bundle-recording', seconds=round(time.time() - t0, 2))
@@ -2077,18 +2206,24 @@ def cmd_make_release3(a):
         ver = os.path.join(work, 'verify')
         vb = os.path.join(out, 'bundle')
         t1 = time.time()
-        derive_tree(ver, {os.path.relpath(os.path.join(dp, f), vb).replace(os.sep, '/'): os.path.join(dp, f)
-                          for dp, _, fs in os.walk(vb) for f in fs}, [], usa.read)
-        t2 = time.time()
-        derive_tree(ver, {}, extract, usa.read)
-        t3 = time.time()
-        vman, vout = derive_run(ver, a.recipe, os.path.join(ver, 'exe-facts.json'), log=os.path.join(work, 'derive-verify.log'),
-                                 source_discs=getattr(a, 'source_disc', None))
-        t4 = time.time()
-        release_timing('isolated-verification', seconds=round(t4 - t1, 2))
+        def verify_bundle():
+            shutil.rmtree(ver,ignore_errors=True)
+            begin=time.time()
+            derive_tree(ver, {os.path.relpath(os.path.join(dp,f),vb).replace(os.sep,'/'):os.path.join(dp,f)
+                              for dp,_,fs in os.walk(vb) for f in fs}, [], usa.read)
+            copied=time.time()
+            derive_tree(ver,{},extract,usa.read)
+            read=time.time()
+            manifest,folder=derive_run(ver,a.recipe,os.path.join(ver,'exe-facts.json'),log=os.path.join(work,'derive-verify.log'),
+                                      source_discs=getattr(a,'source_disc',None))
+            return manifest,folder,round(copied-begin,1),round(read-copied,1)
+        vman,vout,copy_seconds,read_seconds=recovery_step('isolated-verification',verify_bundle,
+            lambda:dict(bundle=recovery_tree(vb),extract=extract),lambda value:[ver])
+        t4=time.time()
+        release_timing('isolated-verification',seconds=round(t4-t1,2))
         # apply's progress bar: the time of each of its phases here (the same work as the player's: the bundle
         # copied, the extract files written, derive with --jobs, in the order it ran the steps; write: below)
-        apply_t = dict(check=round(t_check, 1), tools=round(t2 - t1, 1), read=round(t3 - t2, 1),
+        apply_t = dict(check=round(t_check, 1), tools=copy_seconds, read=read_seconds,
                        steps=[[n, st['seconds']] for n, st in vman['steps'].items()], holes=1, write=14, result=0.1)
         local_base = derive_files(vman, vout)
         diff = [d for d in set(cand) | set(local_base) if d not in cand or d not in local_base or
@@ -2109,112 +2244,141 @@ def cmd_make_release3(a):
         errors = []
         gate_plans = {}
         for spec in a.variant:
-            name, rest = spec.split('=', 1)
-            target, *flags = rest.split(',')
-            opt = dict(f.split('=', 1) for f in flags if '=' in f)
-            local = dict(builder='derive', recipe=a.recipe)
-            mp_ = opt.get('manifest') or os.path.join(os.path.dirname(os.path.abspath(target)),
-                                                      os.path.basename(target)[:-4], 'derived', 'manifest.json')
-            dman = json.load(open(mp_))
-            import chinese_container
-            package_plan = chinese_container.metadata(dman['plan'])
-            aut = tuple(package_plan.get('authored', ()))
-            gate_plans[name] = package_plan
-            say(f'variant {name}: {target} {flags}')
-            T = iw.Image(target)
-            layout = iw.layout_from_image(T)
-            lay = iw.Layout(layout)
-            mapf = opt.get('map') or os.path.join(os.path.dirname(os.path.abspath(target)),
-                                                  os.path.basename(target)[:-4], 'exe', 'SLUS_010.32.elf.map')
-            exe_t = T.read('SLUS_010.32')
-            fo = None
-            ff = os.path.join(os.path.dirname(os.path.abspath(target)), os.path.basename(target)[:-4], 'derived',
-                              'exe-facts.json')
-            fo = json.load(open(ff)).get('file_offset_table') if os.path.exists(ff) else None
-            table = table_offset(exe_t, T.files, mapf, fo)
-            enc = Encoder3(usa, mappings, bases_img)
-            files = {}; datas = {}; holes = []; hole_bytes = {}
-            built = local_base
-            lost = [q for q in dman['files'] if q not in built]
-            if lost: raise SystemExit(f'{name}: the bundle\'s build did not make {lost[:5]}')
-            chinese_spec, chinese_parts = None, {}
-            if dman['plan'].get('CHINESE_RESOURCES'):
+            variant_name=spec.split('=',1)[0]
+            def encode_variant():
+                variant_errors=[]
+                name, rest = spec.split('=', 1)
+                target, *flags = rest.split(',')
+                opt = dict(f.split('=', 1) for f in flags if '=' in f)
+                local = dict(builder='derive', recipe=a.recipe)
+                mp_ = opt.get('manifest') or os.path.join(os.path.dirname(os.path.abspath(target)),
+                                                          os.path.basename(target)[:-4], 'derived', 'manifest.json')
+                dman = json.load(open(mp_))
                 import chinese_container
-                build_dir = os.path.splitext(os.path.abspath(target))[0]
-                chinese_spec, chinese_parts = chinese_container.components(T.read('SCN/LANGZH.BIN'), dman['plan'], build_dir)
-            for q in list(lay.files()) + list(chinese_parts):
-                if chinese_spec and q == 'SCN/LANGZH.BIN':
-                    continue
-                D = chinese_parts[q] if q in chinese_parts else T.read(q); datas[q] = D; hid = None
-                if q in built:
-                    if hashlib.sha1(open(built[q], 'rb').read()).digest() != hashlib.sha1(D).digest():
-                        errors.append(f'{name}: {q} built locally differs from the build')
-                    hid = len(holes)
-                ops = enc.encode(q, D, hid, code=authored3(q, aut) or q in chinese_parts)
-                if hid is not None:
-                    holes.append(dict(id=hid, file=q, size=len(D), sha1=hashlib.sha1(D).hexdigest())); hole_bytes[hid] = D
-                files[q] = ops
-            lic = T.license()
-            files['\0license'] = enc.encode('license_data.dat', lic)
-            say(f'  {len(files) - 1} files, {sum(1 for o in files.values() if o[0][0] == "s")} whole from the player\'s '
-                f'disc, {len(holes)} built locally, {len(enc.code)} code copies')
-            import reloc as R
-            eligible = {q for q in files if q in datas and authored3(q, aut) and q != table['file'] and
-                        files[q][0][0] not in 'sh'}
-            reused = R.reuse_outputs(enc, files, datas, eligible, {q for q in datas if authored3(q, aut)}, Pool)
-            reloc, fix, lost = R.relocate(enc, files, Pool, say)
-            enc.lost = R.compact(enc, files)
-            lost = sum(v for q, v in enc.lost.items() if q != '\0license')
-            say(f'  code copies: {len(enc.code)} after relocation, {lost} bytes literal (on the USA disc\'s code but not '
-                f'found on every base\'s); {reused} bytes copied from earlier files of the patched disc')
-            lic_ops = files.pop('\0license')
-            p = dict(layout=layout, sources=enc.sources, files=files, license=lic_ops, code=enc.code, reloc=reloc,
-                     fix=fix, sha1={q: hashlib.sha1(datas[q]).hexdigest() for q in files if files[q][0][0] != 's'},
-                     table=table)
-            p['blob'] = bytes(enc.blob)
-            import fontcopy
-            import fontgen
-            font_copies = dict(reason='Compact Latin tables are generated in program deltas from each player font.')
-            copy_program_runtime(out, bundle)
-            data_copies = datacopy.copy_payload(p, base_paths, data_sources, work,
-                                                 dict(datas, **{'license_data.dat': lic}),
-                                                 os.path.splitext(os.path.abspath(target))[0])
-            boot_copies = datacopy.copy_boot_config(p, base_paths, datas)
-            enc.sources, enc.code = p['sources'], p['code']
-            say(f'  data copies: {data_copies["copied"]} literal bytes copied, '
-                f'{len(p["blob"])} remain after BOOT metadata generation (proof: {name}-data-copies.json)')
-            with open(os.path.join(out, f'{name}-data-copies.json'), 'w') as f:
-                json.dump(dict(payload=data_copies, mappings=mapping_copies, fonts=font_copies, boot=boot_copies), f, indent=2)
-            import codecopy
-            build_dir = os.path.join(os.path.dirname(os.path.abspath(target)), os.path.basename(target)[:-4])
-            from release_workers import worker_count
-            delta_started = time.monotonic()
-            delta_report = codecopy.copy_files(p, build_dir, datas, dict(us=usa, **bases_img), say,
-                                               plan=chinese_container.metadata(dman['plan']) if chinese_spec else dman.get('plan'),
-                                               jobs=worker_count(
-                                                   getattr(a, 'base_jobs', 4), len(base_paths),
-                                                   getattr(a, 'worker_memory_mib', 6144)),
-                                               cache_dir=os.path.join(a.derive_cache, 'deltas')
-                                               if getattr(a, 'derive_cache', None) else None)
-            release_timing('binary-deltas', seconds=round(time.monotonic() - delta_started, 2))
-            if chinese_spec:
-                p['chinese'] = [chinese_spec]
-                datas['SCN/LANGZH.BIN'] = T.read('SCN/LANGZH.BIN')
-                p['files']['SCN/LANGZH.BIN'] = [['j', 0, 0, len(T.read('SCN/LANGZH.BIN'))]]
-            json.dump(delta_report, open(os.path.join(out, name + '-binary-deltas.json'), 'w'), indent=2)
-            audit_txt.append(f'binary deltas: {len(delta_report["files"])} files; raw extras per base: ' +
-                             ', '.join(f'{key}={counts["extra"]}' for key, counts in delta_report['bases'].items()))
-            enc.blob = bytearray(p.pop('blob'))
-            j = json.dumps(p, separators=(',', ':')).encode()
-            payload = b'DWP3' + struct.pack('<I', len(j)) + j + bytes(enc.blob)
-            blob = lzma.compress(payload, preset=9 | lzma.PRESET_EXTREME)
-            fn = f'{name}.dwp'; open(os.path.join(out, fn), 'wb').write(blob)
-            th = file_hashes(target, 'hashing the target')
-            p3 = read_payload3(blob)
+                package_plan = chinese_container.metadata(dman['plan'])
+                aut = tuple(package_plan.get('authored', ()))
+                gate_plans[name] = package_plan
+                say(f'variant {name}: {target} {flags}')
+                T = iw.Image(target)
+                layout = iw.layout_from_image(T)
+                lay = iw.Layout(layout)
+                mapf = opt.get('map') or os.path.join(os.path.dirname(os.path.abspath(target)),
+                                                      os.path.basename(target)[:-4], 'exe', 'SLUS_010.32.elf.map')
+                exe_t = T.read('SLUS_010.32')
+                fo = None
+                ff = os.path.join(os.path.dirname(os.path.abspath(target)), os.path.basename(target)[:-4], 'derived',
+                                  'exe-facts.json')
+                fo = json.load(open(ff)).get('file_offset_table') if os.path.exists(ff) else None
+                table = table_offset(exe_t, T.files, mapf, fo)
+                enc = Encoder3(usa, mappings, bases_img)
+                files = {}; datas = {}; holes = []; hole_bytes = {}
+                built = local_base
+                lost = [q for q in dman['files'] if q not in built]
+                if lost: raise SystemExit(f'{name}: the bundle\'s build did not make {lost[:5]}')
+                chinese_spec, chinese_parts = None, {}
+                if dman['plan'].get('CHINESE_RESOURCES'):
+                    import chinese_container
+                    build_dir = os.path.splitext(os.path.abspath(target))[0]
+                    chinese_spec, chinese_parts = chinese_container.components(T.read('SCN/LANGZH.BIN'), dman['plan'], build_dir)
+                for q in list(lay.files()) + list(chinese_parts):
+                    if chinese_spec and q == 'SCN/LANGZH.BIN':
+                        continue
+                    D = chinese_parts[q] if q in chinese_parts else T.read(q); datas[q] = D; hid = None
+                    if q in built:
+                        if hashlib.sha1(open(built[q], 'rb').read()).digest() != hashlib.sha1(D).digest():
+                            variant_errors.append(f'{name}: {q} built locally differs from the build')
+                        hid = len(holes)
+                    ops = enc.encode(q, D, hid, code=authored3(q, aut) or q in chinese_parts)
+                    if hid is not None:
+                        holes.append(dict(id=hid, file=q, size=len(D), sha1=hashlib.sha1(D).hexdigest())); hole_bytes[hid] = D
+                    files[q] = ops
+                lic = T.license()
+                files['\0license'] = enc.encode('license_data.dat', lic)
+                say(f'  {len(files) - 1} files, {sum(1 for o in files.values() if o[0][0] == "s")} whole from the player\'s '
+                    f'disc, {len(holes)} built locally, {len(enc.code)} code copies')
+                import reloc as R
+                eligible = {q for q in files if q in datas and authored3(q, aut) and q != table['file'] and
+                            files[q][0][0] not in 'sh'}
+                reused = R.reuse_outputs(enc, files, datas, eligible, {q for q in datas if authored3(q, aut)}, Pool)
+                reloc, fix, lost = R.relocate(enc, files, Pool, say)
+                enc.lost = R.compact(enc, files)
+                lost = sum(v for q, v in enc.lost.items() if q != '\0license')
+                say(f'  code copies: {len(enc.code)} after relocation, {lost} bytes literal (on the USA disc\'s code but not '
+                    f'found on every base\'s); {reused} bytes copied from earlier files of the patched disc')
+                lic_ops = files.pop('\0license')
+                p = dict(layout=layout, sources=enc.sources, files=files, license=lic_ops, code=enc.code, reloc=reloc,
+                         fix=fix, sha1={q: hashlib.sha1(datas[q]).hexdigest() for q in files if files[q][0][0] != 's'},
+                         table=table)
+                p['blob'] = bytes(enc.blob)
+                import fontcopy
+                import fontgen
+                font_copies = dict(reason='Compact Latin tables are generated in program deltas from each player font.')
+                copy_program_runtime(out, bundle)
+                data_copies = datacopy.copy_payload(p, base_paths, data_sources, work,
+                                                     dict(datas, **{'license_data.dat': lic}),
+                                                     os.path.splitext(os.path.abspath(target))[0])
+                boot_copies = datacopy.copy_boot_config(p, base_paths, datas)
+                enc.sources, enc.code = p['sources'], p['code']
+                say(f'  data copies: {data_copies["copied"]} literal bytes copied, '
+                    f'{len(p["blob"])} remain after BOOT metadata generation (proof: {name}-data-copies.json)')
+                with open(os.path.join(out, f'{name}-data-copies.json'), 'w') as f:
+                    json.dump(dict(payload=data_copies, mappings=mapping_copies, fonts=font_copies, boot=boot_copies), f, indent=2)
+                import codecopy
+                build_dir = os.path.join(os.path.dirname(os.path.abspath(target)), os.path.basename(target)[:-4])
+                from release_workers import worker_count
+                delta_started = time.monotonic()
+                delta_report = codecopy.copy_files(p, build_dir, datas, dict(us=usa, **bases_img), say,
+                                                   plan=chinese_container.metadata(dman['plan']) if chinese_spec else dman.get('plan'),
+                                                   jobs=worker_count(
+                                                       getattr(a, 'base_jobs', 4), len(base_paths),
+                                                       getattr(a, 'worker_memory_mib', 6144)),
+                                                   cache_dir=os.path.join(a.derive_cache, 'deltas')
+                                                   if getattr(a, 'derive_cache', None) else None)
+                release_timing('binary-deltas', seconds=round(time.monotonic() - delta_started, 2))
+                if chinese_spec:
+                    p['chinese'] = [chinese_spec]
+                    datas['SCN/LANGZH.BIN'] = T.read('SCN/LANGZH.BIN')
+                    p['files']['SCN/LANGZH.BIN'] = [['j', 0, 0, len(T.read('SCN/LANGZH.BIN'))]]
+                json.dump(delta_report, open(os.path.join(out, name + '-binary-deltas.json'), 'w'), indent=2)
+                delta_line = (f'binary deltas: {len(delta_report["files"])} files; raw extras per base: ' +
+                                 ', '.join(f'{key}={counts["extra"]}' for key, counts in delta_report['bases'].items()))
+                enc.blob = bytearray(p.pop('blob'))
+                j = json.dumps(p, separators=(',', ':')).encode()
+                payload = b'DWP3' + struct.pack('<I', len(j)) + j + bytes(enc.blob)
+                blob = lzma.compress(payload, preset=9 | lzma.PRESET_EXTREME)
+                fn = f'{name}.dwp'; open(os.path.join(out, fn), 'wb').write(blob)
+                th = file_hashes(target, 'hashing the target')
+                p3 = read_payload3(blob)
+
+                if RELEASE_STATE is not None:
+                    stash=os.path.join(a.resume_state,'encoded',name)
+                    shutil.rmtree(stash,ignore_errors=True);os.makedirs(stash)
+                    shutil.copytree(os.path.join(out,'bundle'),os.path.join(stash,'bundle'))
+                    for file in (fn,name+'-data-copies.json',name+'-binary-deltas.json'):
+                        shutil.copy2(os.path.join(out,file),os.path.join(stash,file))
+                return dict(name=name,target=target,flags=flags,local=local,holes=holes,hole_bytes=hole_bytes,
+                            fn=fn,blob=blob,payload=payload,p3=p3,th=th,aut=aut,files=files,datas=datas,
+                            reloc_stats=enc.reloc_stats,lost_by_file=enc.lost,lost=lost,data_blob=bytes(enc.blob),
+                            plan=package_plan,errors=variant_errors,delta_line=delta_line,bundle=list(bundle))
+            encoded=recovery_step('encode/'+variant_name,encode_variant,
+                lambda:dict(bundle=recovery_tree(os.path.join(out,'bundle'))),
+                lambda value:[os.path.join(a.resume_state,'encoded',variant_name)])
+            name,target,flags,local,holes,hole_bytes,fn,blob,payload,p3,th,aut,files,datas,reloc_stats,lost_by_file,lost,data_blob=(
+                encoded[key] for key in ('name','target','flags','local','holes','hole_bytes','fn','blob','payload','p3','th','aut','files','datas',
+                                         'reloc_stats','lost_by_file','lost','data_blob'))
+            gate_plans[name]=encoded['plan'];errors.extend(encoded['errors']);audit_txt.append(encoded['delta_line'])
+            bundle[:]=encoded['bundle']
+            if RELEASE_STATE is not None:
+                stash=os.path.join(a.resume_state,'encoded',name)
+                shutil.rmtree(os.path.join(out,'bundle'),ignore_errors=True)
+                shutil.copytree(os.path.join(stash,'bundle'),os.path.join(out,'bundle'))
+                for file in (fn,name+'-data-copies.json',name+'-binary-deltas.json'):
+                    shutil.copy2(os.path.join(stash,file),os.path.join(out,file))
             outputs = {}
             base_holes = {}                                 # {base: its derived files' bytes}: the variants differ from them
-            def reconstruct(key):
+            def compute_reconstruction(key):
                 _check_cancel()
+                if RELEASE_STATE is not None:shutil.rmtree(os.path.join(work,key),ignore_errors=True)
                 say(f'  applying to {BASES[key]["title"]}')
                 bd = BaseDisc(key, base_paths[key], mappings.get(key), tool_root=REPO, work=os.path.join(work, key),
                               source_discs=getattr(a, 'source_disc', None))
@@ -2249,6 +2413,12 @@ def cmd_make_release3(a):
                     os.remove(ob)
                 release_timing('reconstruct/' + key, seconds=round(time.time() - t0, 2))
                 return hb, pins, output, write_seconds, bd.trace
+
+            def reconstruct(key):
+                return recovery_step('base/'+name+'/'+key,lambda:compute_reconstruction(key),
+                    lambda:dict(payload=hashlib.sha256(blob).hexdigest(),bundle=recovery_tree(os.path.join(out,'bundle')),
+                                base=RELEASE_STATE.hashes.file(base_paths[key]),mapping=mappings.get(key)),
+                    lambda value:[os.path.join(a.keep_outputs,f'{name}-{key}.bin'),os.path.join(work,key)])
 
             from release_workers import worker_count
             specs = getattr(a, 'source_variant', None) or []
@@ -2294,17 +2464,17 @@ def cmd_make_release3(a):
                                        holes=holes)
             say(f'  {fn}: {len(payload)} bytes, {len(blob)} compressed')
             audit_txt.append(f'== {name} ({os.path.basename(target)} -> {fn}, {len(blob)} bytes; bases: {", ".join(base_paths)})')
-            for key, counts in enc.reloc_stats.items():
+            for key, counts in reloc_stats.items():
                 audit_txt.append(f'code sources on {key}: {counts["absent"]} bytes absent, '
                                  f'{counts["fixed"]} address bytes fixed (after output reuse, before shared-file copies)')
             audit_txt.append(f'{"file":30} {"origin":8} {"moved":>10} {"copied":>8} {"code":>8} {"reused":>8} '
                              f'{"literal":>8} {"lit!=0":>8} {"hole":>8} {"lit_usa":>8}')
             tot = {}
-            p3['blob'] = bytes(enc.blob)
+            p3['blob'] = data_blob
             rows = sorted(files, key=lambda q: (not authored3(q, aut), q))
             for q in rows:
                 r = audit_ops(files[q], datas[q], p3); org = 'authored' if authored3(q, aut) else 'derived'
-                r['lit_usa'] = enc.lost.get(q, 0)
+                r['lit_usa'] = lost_by_file.get(q, 0)
                 t = tot.setdefault(org, dict.fromkeys(r, 0))
                 for k in t: t[k] += r[k]
                 if org == 'derived' and r['literal_nonzero']:
@@ -2329,12 +2499,15 @@ def cmd_make_release3(a):
             raise SystemExit('make-release refused (see audit.txt):\n  ' + '\n  '.join(errors))
         json.dump(m, open(os.path.join(out, 'manifest.json'), 'w', encoding='utf-8'), indent=2)
     finally:
-        shutil.rmtree(work, ignore_errors=True)
+        if RELEASE_STATE is None:shutil.rmtree(work, ignore_errors=True)
     copy_release_frontend(out)
     import literal_gate
     build_dirs = {spec.split('=', 1)[0]: os.path.splitext(os.path.abspath(
         spec.split('=', 1)[1].split(',')[0]))[0] for spec in a.variant}
-    literal_gate.check_release(out, m, base_paths, getattr(a, 'source_disc', None), build_dirs, plans=gate_plans)
+    recovery_step('assembly',lambda:None,lambda:dict(manifest=m),
+                  lambda value:[os.path.join(out,name) for name in sorted(os.listdir(out)) if name!='literal-gate.json'])
+    recovery_step('literal-gate',lambda:literal_gate.check_release(out,m,base_paths,getattr(a,'source_disc',None),build_dirs,plans=gate_plans),
+                  lambda:dict(package=recovery_tree(out)),[os.path.join(out,'literal-gate.json')])
     say(f'release in {out}')
 
 
@@ -2389,6 +2562,9 @@ def main(argv=None):
                    'variant was built from (tools/derive/recipes/NAME.json)')
     p.add_argument('--holes', choices=('derive',), default='derive',
                    help='build derived files from the four player discs with tools/derive')
+    p.add_argument('--keep-going', action='store_true', help='collect independent worker failures without cancellation')
+    p.add_argument('--resume', action='store_true', help='verify and reuse completed make-release steps')
+    p.add_argument('--resume-state', help='private verified step checkpoints; retained across retries')
     p.add_argument('--keep-outputs', help='keep the per-base patched discs in this folder')
     p.add_argument('--source-variant', action='append', metavar='GAME=IMAGE',
                    help='another release of a source game whose imports differ (dw2003=World 3 USA): every base\'s '

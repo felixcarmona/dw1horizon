@@ -241,7 +241,7 @@ def main():
                           f"{step} {u['index']} {u['name']}",
                           order_group=u.get('order_group'), record_snapshot=u.get('record_snapshot', False)) for u in found]
             if specs:
-                if step == 'story' and any(s.get('order_group') for s in specs):
+                if step == 'story':
                     # Story snapshots have not passed the real merge proof.
                     # Preserve the compiler's canonical shared-map state.
                     for item in specs:

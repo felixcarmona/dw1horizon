@@ -24,7 +24,7 @@ sys.path.insert(0, str(ROOT))
 from tools import patch_series  # noqa: E402
 FAST = ('test_version', 'test_savecompat', 'test_pysum', 'test_derive_units',
         'test_patchbundle', 'test_patcher_reloc', 'test_release', 'test_release_reuse', 'test_release_workers',
-        'test_engine_record', 'test_web_engine_plan', 'test_sign_units', 'test_record_groups')
+        'test_engine_record', 'test_web_engine_plan', 'test_sign_units', 'test_record_groups', 'test_release_steps')
 
 
 def git(*args, cwd=ROOT):
@@ -180,6 +180,8 @@ def selftest_fixtures(build):
             # build's own derived file is the source.
             built = build / name.removeprefix('build/')
             target.write_bytes(built.read_bytes() if built.is_file() else provider.source(name))
+
+    return sorted(copied | names | {'text/us/dialogue.json'})
 
 
 class Run:
@@ -577,6 +579,9 @@ def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('tag', nargs='?', help='existing annotated owner tag; omit for dev')
     p.add_argument('--dry-run', action='store_true', help='print commands; no builds, writes or deployment')
+    p.add_argument('--keep-going', action='store_true', help='run independent steps after failures and write a complete failure list')
+    p.add_argument('--resume', action='store_true', help='resume --out after verifying completed input/output hashes')
+    p.add_argument('--step-workers', type=int, default=4, help='bounded concurrent recovery phases')
     p.add_argument('--preflight-only', action='store_true', help='clean/tag, save file gate and fast tests only')
     p.add_argument('--save-check-emu', action='store_true')
     p.add_argument('--ending-card', type=Path,
@@ -634,6 +639,11 @@ def main(argv=None):
         a.record_save = a.record_save.expanduser().resolve()
         if not a.record_save.is_file():
             p.error('--record-save seed does not exist')
+    if a.keep_going or a.resume:
+        a._provided=sorted({word.split('=',1)[0] for word in (sys.argv[1:] if argv is None else argv) if word.startswith('--')})
+        if a.step_workers < 1:p.error('--step-workers must be positive')
+        from release_recovery import driver
+        return driver(a)
     r = Run(a.dry_run, a.out.expanduser().resolve())
     result = 'ok'
     try:

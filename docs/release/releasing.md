@@ -52,7 +52,7 @@ all gates enabled:
 
 ```sh
 ISOS=/path/to/digimon-world SOURCE_ISOS=/path/to/source-discs \
-  python3 tools/release.py --jobs 8 --base-jobs 4 --save-check-emu \
+  python3 tools/release.py --keep-going --jobs 8 --base-jobs 4 --save-check-emu \
   --ending-card /path/to/private-before-final-fight.mcd --quiet-machine \
   --out build/releases/candidate
 ```
@@ -67,8 +67,9 @@ checks use independent emulator ports, starting at `--emu-port-base` (38410 by
 default), and original 2 MB RAM. Inspect the resulting quiz and credits images.
 
 Once the fresh native disc and heap checks pass, packaging overlaps the full
-offline selftest and the emulator gates. Every job must pass before standalone
-replay, engine construction or publication can proceed. Per-job logs and elapsed
+offline selftest and the emulator gates. Standalone replay and engine construction can continue once packaging succeeds,
+even when an independent gate fails. Every required gate must pass before the
+cut is complete or publication can proceed. Per-job logs and elapsed
 times are retained under the cut directory. Packaging still runs its published-
 save file check; `--save-check-emu` runs the emulator save check as a concurrent
 required job. No gate is removed by this reordering.
@@ -103,9 +104,10 @@ code fingerprints can rebuild more than the minimum. Story archives also hash th
 keys for source bytes, target bytes, algorithm and native producer. Cache entries
 are private and must never enter publication archives.
 
-The isolated bundle verification always runs from scratch with only the allowed
+The isolated bundle verification initially runs from scratch with only the allowed
 disc files. Output pins, standalone replays, browser verification and the literal
-gate still run. `--no-derive-cache` disables recording, derive and delta caches;
+gate remain required. Recovery may reuse a completed gate only after checking its
+input fingerprint and all recorded output hashes. `--no-derive-cache` disables recording, derive and delta caches;
 `--base-jobs 1 --no-derive-cache` supplies the sequential reference. Compare the
 DWP payload and every default/source-variant output pin against a parallel run
 from the same commit, inputs and version. Whole manifests contain measured times
@@ -114,6 +116,50 @@ plan; byte equality requires executing the actual cut without publication.
 
 Play the disc once: `tools/dev/playtest/journey.py DISC.cue OUTDIR` from a new game to a reload. The checks that need no
 emulator cannot see a story that is missing from a disc: a new game hung on main for a day with every gate green.
+
+## Recovering a failed cut
+
+Start real cuts with `--keep-going`. The driver records explicit dependencies in
+`recovery/plan.json`, runs independent steps after a failure and marks consumers
+of failed inputs as **blocked by** the failed step. Packaging records its own
+bundle, isolated verification, encoding, base reconstruction and source-variant
+checkpoints in `package-state/`. Nothing is published automatically.
+
+At the end, `failures.json` and `failures.txt` list every failed or blocked driver
+step, including the command, log and exit code for failures. Packaging's complete
+list is in `package-state/failures.json`. Each worker has a separate log; completed
+round reports and copies of their logs remain under `rounds/`. A failed round
+exits nonzero even when its independent work succeeded.
+
+Fix all reported failures, run focused tests and commit the fixes in the same
+worktree. Then resume the **same output directory**:
+
+```sh
+python3 tools/release.py --resume --out build/releases/candidate
+```
+
+Resume restores the original gate options, including the ending-card fixture and
+published-save emulator check. It refuses to remove required browser/full-cut
+gates or change the tag. On an untagged validation cut, the initial game version
+stays fixed while each round records its actual source commit. A tagged release
+still requires its exact clean tagged checkout; update the release tag through
+the normal release procedure when a committed fix changes that checkout.
+
+Each step fingerprints its source/data/configuration inputs, environment, runtime
+and relevant phase code. Successful completion markers contain SHA-256 hashes of
+all declared outputs and structured cached results. Resume rehashes them before
+reuse; missing, modified or partial outputs rerun their step. Failed, blocked and
+changed steps rerun, while unchanged verified successes are retained. The final
+completion gate rechecks every output and checks that inputs did not change during
+the round. Keep the worktree, private inputs, output directory and recovery state
+in place. Do not hand-copy partial artifacts or delete markers to force success.
+Only one round may use an output directory at a time.
+
+Story graph recording currently runs serially on its canonical working tree.
+The unproven parallel story batches are disabled. Existing bounded independent
+workers remain enabled. Validation separates correctness from performance: use
+focused sequential/parallel byte comparisons and a full keep-going pass with
+verified resumes; measure the true cold duration during the next real cut.
 
 ## Engine source
 

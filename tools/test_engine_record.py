@@ -32,17 +32,17 @@ def main():
   files={str(p.relative_to(out)):dict(file=str(p.relative_to(out))) for p in sorted(out.glob('*/*.bin'))}
   (dest/'manifest.json').write_text(json.dumps(dict(files=files))); return
  i=int(a[a.index('--index')+1]); time.sleep((3-i)*0.02)
- if not Path('ordered').exists(): assert Path('empty').is_dir(), 'worker baseline directory was not restored'
+ if not Path('ordered').exists() and step!='story': assert Path('empty').is_dir(), 'worker baseline directory was not restored'
  if Path('fail').exists() and i==1: raise RuntimeError('intentional unit failure')
  source=Path('extracted')/('input-'+str(i)); value=source.read_bytes(); source.write_bytes(value+b'-edited')
- if not Path('ordered').exists(): assert not (out/step/('unit-'+str((i+1)%3)+'.bin')).exists(), 'sibling output leaked'
+ if not Path('ordered').exists() and step!='story': assert not (out/step/('unit-'+str((i+1)%3)+'.bin')).exists(), 'sibling output leaked'
  (out/step/('unit-'+str(i)+'.bin')).write_bytes(value+HELPER.encode())
  common=out/step/'shared.bin'
  if Path('ordered').exists(): common.write_bytes((common.read_bytes() if common.exists() else b'')+str(i).encode())
  else: common.write_bytes(b'common' if not Path('conflict').exists() else str(i).encode())
  folder=Path(tempfile.mkdtemp(prefix='run-',dir=out/step))
  (folder/'data.bin').write_bytes(value)
- if i==0 and Path('empty').exists(): Path('empty').rmdir()
+ if i==0 and step!='story' and Path('empty').exists(): Path('empty').rmdir()
  print('unit complete')
 '''
 
@@ -86,6 +86,14 @@ class RecorderTests(unittest.TestCase):
                 self.assertTrue(list(Path(str(out)+'.logs').rglob('*.timing.json')))
             self.assertEqual(graphs[0], graphs[1])
             self.assertEqual(artifacts[0], artifacts[1])
+
+    def test_story_recording_never_dispatches_parallel_batches(self):
+        with tempfile.TemporaryDirectory() as td:
+            tree=Path(td)/'tree';fixture(tree)
+            result=self.run_record(tree,Path(td)/'graph.json',3)
+            self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+            self.assertNotIn('record story:',result.stdout)
+            self.assertIn('record maps:',result.stdout)
 
     def test_ordered_mutations_keep_predecessor_state_at_every_worker_count(self):
         with tempfile.TemporaryDirectory() as td:
