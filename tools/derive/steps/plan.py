@@ -47,6 +47,7 @@ class Plan:
     def __init__(self, ctx):
         self.ctx, self.files, self.adds, self.ln, self.lang_files, self.lang_ovl = ctx, [], [], 0, [], []
         self.authored = []
+        self.chinese_names, self.chinese_resources, self.chinese_overlays = {}, {}, []
 
     def file(self, dest, src):
         self.files.append(f'{dest}={src}')
@@ -66,8 +67,13 @@ class Plan:
                 f.write(data)
         else:
             shutil.copyfile(src, dst)
-        self.add(f'{d or "SCN"}/{c}', dst)
-        self.set_lang(name, lang, c)
+        if lang == 'zh-hans':
+            self.chinese_names[name] = c
+            self.chinese_resources[(name, 0)] = dict(name=name, story=0, signs=name.endswith(('.MAP','.TFS')),
+                                                    source=os.path.relpath(dst, self.ctx.path('')))
+        else:
+            self.add(f'{d or "SCN"}/{c}', dst)
+            self.set_lang(name, lang, c)
         return c
 
     def set_lang(self, name, lang, copy):
@@ -85,6 +91,8 @@ class Plan:
 
     def lang_of(self, name, col):
         """NAME's copy in LANG_FILES (col 1: Spanish, 2: English signs), or None"""
+        if col == 9:
+            return self.chinese_names.get(name)
         got = [r.split(':')[col] for r in self.lang_files if r.split(':')[0] == name and len(r.split(':')) > col and r.split(':')[col] != '-']
         if len(got) > 1:
             raise SystemExit(f'derive plan: {name} has {len(got)} copies in LANG_FILES')
@@ -94,7 +102,12 @@ class Plan:
         """EXTENDED STORY's copy of the language copy COPY (_E004.SCN for LE004.SCN: the executable's rule)"""
         dst = self.ctx.path('lang', '_' + copy[1:])
         shutil.copyfile(src, dst)
-        self.add(f'{d}/_{copy[1:]}', dst)
+        if copy.startswith('LZ'):
+            name = next(n for n,c in self.chinese_names.items() if c == copy)
+            self.chinese_resources[(name, 1)] = dict(name=name, story=1, signs=name.endswith(('.MAP','.TFS')),
+                                                    source=os.path.relpath(dst, self.ctx.path('')))
+        else:
+            self.add(f'{d}/_{copy[1:]}', dst)
 
 
 def same(a, b):
@@ -128,6 +141,11 @@ def make(ctx):
         P.add(f'{os.path.dirname(dest)}/{name}', O(SC.OUT, name))
     story_copy = {dest for dest, *_ in copies}
     lang_ovl_files = []
+    if not s.lang_on:
+        for line in lines(O('lang-tex', 'files.txt')):
+            lang, path = line.split(' ', 1)
+            if lang == 'en':
+                P.file(path, O('lang-tex', lang, path))
     if s.lang_on:   # (:425-503)
         if os.path.isdir(O('lang')):
             shutil.rmtree(O('lang'))
@@ -174,8 +192,11 @@ def make(ctx):
         for lang in s.languages:
             for b in ovls + (['MENU_REL.BIN'] if f.get('overlay_menu') else []):
                 c = P.lang_copy(b, '', data=PLACEHOLDER, lang=lang)
-                P.lang_ovl.append(f'{lang}:{b}:{c}')
-                lang_ovl_files.append(f'SCN/{c}')
+                if lang == 'zh-hans':
+                    P.chinese_overlays.append(f'{b}:{c}')
+                else:
+                    P.lang_ovl.append(f'{lang}:{b}:{c}')
+                    lang_ovl_files.append(f'SCN/{c}')
         for lang in selected(ctx.env):
             n = PATCHES[lang]
             with open(O('lang', n), 'wb') as fh:
@@ -229,6 +250,25 @@ def build(ctx):
     with open(ctx.path('derived', 'plan.env'), 'w') as fh:
         fh.write(''.join(f"{k}='{v}'\n" for k, v in env.items()))
     plan = dict(env, NEW_FILES=new, LANG_FILES=P.lang_files, LANG_OVL=P.lang_ovl, authored=authored)
+    if P.chinese_resources:
+        for (name, story), row in list(P.chinese_resources.items()):
+            if story == 0 and (name, 1) not in P.chinese_resources:
+                P.chinese_resources[(name,1)] = dict(row, story=1)
+        plan['CHINESE_RESOURCES'] = list(P.chinese_resources.values())
+        plan['CHINESE_OVL'] = P.chinese_overlays
+        from tools import chinese as zh
+        from tools import chinese_resources as zr
+        assets = {'font': zh.build_font(zh.read_json(zh.ROOT / zh.FONT_PATH), zh.repertoire()),
+                  'compact-font': zr.compact_font(),
+                  'names': zr.species_names(ctx.path('species')),
+                  'english-names': zr.latin_species_names(ctx.path('species'))}
+        plan['CHINESE_ASSETS'] = {}
+        for name, data in assets.items():
+            source = 'lang/zh-' + name + '.bin'
+            with open(ctx.path(source), 'wb') as stream:
+                stream.write(data)
+            plan['CHINESE_ASSETS']['@zh/' + name] = source
+
     with open(ctx.path('derived', 'plan.json'), 'w') as fh:
         json.dump(plan, fh, indent=1)
         fh.write('\n')
@@ -277,5 +317,9 @@ def outputs(ctx):
     for d, x in final([l.split('\t', 1)[:1] + l.split('\t', 1)[1].split('=', 1) for l in lines(p)]).items():
         if d not in claimed and d not in plan.get('authored', ()):
             out.append((os.path.relpath(x, ctx.out), d))
+    overlays = {target for spec in plan.get('CHINESE_OVL', []) for _, target in [spec.split(':')]}
+    out += [(source, '@zh/' + source) for source in sorted({r['source'] for r in plan.get('CHINESE_RESOURCES', [])})
+            if os.path.basename(source) not in overlays]
+    out += [(source, dest) for dest, source in plan.get('CHINESE_ASSETS', {}).items()]
     return out + [(os.path.join('derived', n), None) for n in ('disc.txt', 'plan.env', 'plan.json')] + \
         [('newfiles.txt', None)]

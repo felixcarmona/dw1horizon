@@ -6,6 +6,35 @@ and x=96..211,y=84..95 contain no native sprite. Keep shop headers in their old
 cells. C tables are exported by the developer crop generator, not at runtime.
 """
 
+
+# Care-only native-cap frames, in unused atlas holes (coordinates relative to SYSTEM_W.TIM).
+# These must remain free in every localized label set; the C header uses v + 128.
+CARE_BUTTON_RECTS = ((240, 27, 16, 12), (240, 39, 16, 12), (192, 96, 16, 12))
+CARE_BUTTON_GUARD_RECTS = ((239, 27, 1, 12), (239, 39, 1, 12))
+CARE_BUTTON_CLUT_RECT = (128, 124, 64, 1)  # VRAM words (352,252), 16 colors
+
+
+CHINESE_MENU_CELLS = {
+    1: ('道具', 56, 95), 2: ('状态', 80, 96), 3: ('玩家', 104, 96),
+    4: ('表扬', 208, 96), 5: ('训斥', 232, 96),
+    6: ('睡觉', 232, 110), 7: ('钓鱼', 176, 70),
+}
+CHINESE_MENU_SIZE = (24, 13)
+
+
+def check_chinese_menu_cells():
+    from tools.localize.fi_info import overlaps
+    protected = [(128,110,38,12), (166,110,28,12), (194,110,34,12),
+                 (96,84,64,12), (160,84,38,12), (144,96,37,9), (144,72,29,8)]
+    protected += list(CARE_BUTTON_RECTS) + list(CARE_BUTTON_GUARD_RECTS) + [CARE_BUTTON_CLUT_RECT]
+    used = []
+    for _, u, v in CHINESE_MENU_CELLS.values():
+        rect = (u, v, *CHINESE_MENU_SIZE)
+        if not (0 <= u <= 256-24 and 0 <= v <= 128-13) or any(overlaps(rect,r) for r in protected+used):
+            raise ValueError(f'Chinese menu label overlaps another SYSTEM_W crop: {rect}')
+        used.append(rect)
+
+
 def relocated_rect(item):
     key = item['en'], item['es']
     return {
@@ -17,6 +46,16 @@ def relocated_rect(item):
     }.get(key)
 
 
+def check_care_button_cells(items):
+    """Reject label crops that would overwrite care frames, guard columns or their CLUT."""
+    from tools.localize.fi_info import overlaps
+    protected = list(CARE_BUTTON_RECTS) + list(CARE_BUTTON_GUARD_RECTS) + [CARE_BUTTON_CLUT_RECT]
+    for item in items:
+        for rect in ([item[k] for k in ('u', 'v', 'w', 'h')], relocated_rect(item)):
+            if rect and any(overlaps(rect, reserved) for reserved in protected):
+                raise ValueError(f'SYSTEM_W label overlaps the care badge: {item["en"]} {rect}')
+
+
 def crop_tables(source, metadata):
     """Regenerate the four C sprite tables using each source recipe's rectangles.
 
@@ -24,6 +63,8 @@ def crop_tables(source, metadata):
     language switch. The English branch and non-label sprites remain intact.
     """
     import re
+    for items in metadata.values():
+        check_care_button_cells(items)
     for name in ('MOVES_VIEW_TECHSET_TEXT', 'STATS_VIEW_ELEMENTS',
                  'MOVES_VIEW_ELEMENT_NAMES', 'MOVES_SELECTED_LABELS'):
         begin = source.index('IconRect ' + name + '[')
@@ -34,13 +75,13 @@ def crop_tables(source, metadata):
                 for line in first.splitlines()[1:] if '{' in line]
         variants = []
         for lang, macro in [('es', 'ES'), ('pt-br', 'PT_BR'), ('fr', 'FR'),
-                            ('de', 'DE'), ('it', 'IT'), ('ja', 'JA'), ('ca', 'CA')]:
+                            ('de', 'DE'), ('it', 'IT'), ('ja', 'JA'), ('ca', 'CA'), ('zh-hans', 'ZH')]:
             meta = metadata['pt-br' if lang == 'pt-br' else 'es']
             rr = [r.copy() for r in rows]
 
             def put(i, en, es=None, shifted=False):
                 m = next(x for x in meta if x['en'] == en and (es is None or x['es'] == es))
-                rect = relocated_rect(m) if lang in ('fr', 'de', 'it', 'ja', 'ca') else None
+                rect = relocated_rect(m) if lang in ('fr', 'de', 'it', 'ja', 'ca', 'zh-hans') else None
                 u, v, w, h = rect or [m[k] for k in ('u', 'v', 'w', 'h')]
                 rr[i][2:] = [w, h, u, v + (128 if shifted else 0)]
                 return w
@@ -57,13 +98,13 @@ def crop_tables(source, metadata):
             elif name == 'MOVES_VIEW_TECHSET_TEXT':
                 for i, en, es in [(0, 'POWER', None), (1, 'RANG', 'ALC.'), (2, 'SPEC', None)]:
                     put(i, en, es)
-                    if lang in ('fr', 'de', 'it', 'ja', 'ca'):
+                    if lang in ('fr', 'de', 'it', 'ja', 'ca', 'zh-hans'):
                         rr[i][0], rr[i][1] = [14, 82, 112][i], (-80) & 65535
             else:
                 for i, en, es in [(0, 'TECH. DATA', None), (1, 'POWER', None),
                                   (2, 'MP', None), (3, 'RANG', 'ALCANCE'), (4, 'SPEC', None)]:
                     put(i, en, es, shifted=True)
-                    if lang in ('fr', 'de', 'it', 'ja', 'ca'):
+                    if lang in ('fr', 'de', 'it', 'ja', 'ca', 'zh-hans'):
                         # Absolute coordinates: regeneration is idempotent.
                         rr[i][1] = [-6, 27, 44, 61, 78][i] & 65535
             variants.append(('#if' if not variants else '#elif') +
@@ -86,7 +127,7 @@ def main():
     a = parser.parse_args()
     metadata = {}
     for lang in ('es', 'pt-br'):
-        with tempfile.TemporaryDirectory() as work:
+        with tempfile.TemporaryDirectory(dir=a.decomp.resolve().parent) as work:
             d = run('systemw', [['build.py']], work, str(a.extracted.resolve()), language=lang)
             metadata[lang] = json.loads(Path(d, 'rects.json').read_text())
     path = a.decomp / 'src/main/game_menu.c'

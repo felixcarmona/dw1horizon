@@ -129,12 +129,39 @@
  "s178.sec5.u17": "Ah, gracias, muchacho. Por cierto...",
  "s178.sec5.u18": "Ejem, ejem. Junto con los Digimon que vayan volviendo, voy a reconstruir Ciudad File.",
  "s178.sec5.u19": "Pienso levantar tiendas que os vengan bien a ti y a {color 10}{partner}{color 1}.",
- "s178.sec5.u20": "Para empezar... veamos. ¿Por qué no exploras el Bosque Indígena, aquí mismo, a las afueras de la ciudad?",
+ "s178.sec5.u20": [
+  [
+   "Para empezar... veamos.",
+   "¿Por qué no exploras el",
+   "Bosque Indígena, aquí"
+  ],
+  [
+   "mismo, a las afueras de la",
+   "ciudad?"
+  ],
+  [
+   "Cuando aparezca el {color 4}□{color 1} rosa,",
+   "pulsa {color 4}□{color 1} para cuidar a tu",
+   "compañero, incluso de lejos."
+  ]
+ ],
  "s178.sec6.u0": "Esto es para ti. ¡Mucha suerte!",
  "s178.sec6.u1": "¡Has conseguido un montón de objetos!",
  "s178.sec6.u2": [
-  "Para ver tus objetos, pulsa {color 5}△{color 1}, elige",
-  "Objetos y míralos con {color 6}×{color 1}."
+  [
+   "Para ver tus objetos, pulsa {color 5}△{color 1}, elige",
+   "Objetos y míralos con {color 6}×{color 1}."
+  ],
+  [
+   "Cuando aparezca el {color 4}□{color 1} rosa,",
+   "pulsa {color 4}□{color 1} para cuidar a tu",
+   "compañero, incluso de lejos."
+  ],
+  [
+   "Usa {color 6}×{color 1} para hablar o actuar.",
+   "{color 4}□{color 1} solo abre la lista. Elige",
+   "un objeto y confirma su uso."
+  ]
  ],
  "s178.sec6.u3": "Parece que Yuramon se ha enterado de rumores nuevos.",
  "s178.sec6.u4": "¡Ah, sí! Yuramon dice que sabe rumores nuevos.",
@@ -247,6 +274,11 @@
   [
    "Hagas lo que hagas, vigila bien a",
    "tu Digimon y cuídalo mucho."
+  ],
+  [
+   "Cuando aparezca el {color 4}□{color 1} rosa,",
+   "pulsa {color 4}□{color 1} para cuidar a tu",
+   "compañero, incluso de lejos."
   ]
  ],
  "s178.sec20.u0": "Así que has vuelto en ti... Lo siento muchísimo, muchacho.",

@@ -198,7 +198,7 @@ The tools read the target executable's font like its glyph count (`fontgen.exe_f
 else the worktree's last `font_sel.h`, else its Makefile's default; `dws --exe-font NAME`; `tools/build-full.sh` passes
 the `FONT` it builds with): `tools/dws/backend.py` (`text_px` with the font's advances, `text_bytes`, `fits`: 62 bytes
 and 240 px, the last row of a page 228 px, clear of the "next" button), `tools/dws/bytecode/__main__.py asm --font-name` (the same check on
-encoded rows, `line_metrics_pixel`), `tools/localize/executable/bank.py exe-bank --font` (item names within 96 px as font b draws
+encoded rows, `line_metrics_pixel`), `tools/localize/executable/bank.py exe-bank --font` (item names within 93 px as font b draws
 them). `TEXT=us` builds still compile the US text for the original executable, so their `DG.SCN` and `MAPHEAD.SCN` are
 the same bytes as before.
 
@@ -409,11 +409,10 @@ colour code) for a name that fits as the font draws it. `TEXT_COLUMN` (0x12) x m
 trades). After a fitted name the pen moves to the next cell of the 4-pixel grid, because the clears of the codes that follow
 work in whole cells.
 
-**The limit for a name** is therefore 96 pixels in one of the three ways (in the shop's lists a name of 94-96 condensed
-still leaves 8 pixels before the price) (`fontgen.py fit "Name" out.png` prints them) and
-19 bytes; `tools/localize/executable/bank.py` keeps the build's name for a source's item name that is wider (listed in the report).
+**The limit for a name** is 93 pixels, the narrowest shop field, in one of the three fitting modes
+(`fontgen.py fit "Name" out.png` prints their widths), and 19 bytes; `tools/localize/executable/bank.py` keeps the build's name for a source's item name that is wider (listed in the report).
 Examples: Happymushroom 106 / 93 / 80 (drawn tight), Deluxe Mushroom 118 / 101 / 89 (condensed), Omnipotent Floppy 130 /
-110 / 96 (condensed, the limit); too wide: Medium MP Floppy (97), Monochrome Stone (98), Amazing Fishing Rod (107).
+110 / 96 (condensed, too wide for shops; shortened to Omnipotent Flop.); also too wide: Medium MP Floppy (97), Monochrome Stone (98), Amazing Fishing Rod (107).
 
 `FIT_STRIP`, the composition strip, covers 144 pixels instead of the text area's 256: the widest line it composes is a
 name drawn tight in a field of at most 136 (MetalGreymonVaccine, 131). That gives back 616 bytes of bss, more than the
@@ -459,3 +458,5 @@ adds one executable disc sector. The checked native build retains 187,888 bytes
 of heap; all 320 archive-based setups fit, with a minimum margin of 5,856 bytes.
 [Combined reference pins](../reference/font-table-pins.json) record all
 seven new image hashes, reasons and original-2-MB field/battle/OPTIONS/save checks.
+
+`python3 -m tools.localize.ui` checks these item fields in every language with New, Original and Classic, together with menu tabs, techniques, finishers and Yes/No crops. The full localization audit runs the same checks.

@@ -103,7 +103,9 @@ def set_font(exe):
         if n is None: n = len(EXTRA_ORDER)
     name = 'original' if exe == 'original' else FONT_NAME_GIVEN or fontgen.exe_font(exe_dir(exe))[0] or fontgen.FONT_DEFAULT
     FONT.update({'extra': exe != 'original', 'glyphs': n, 'chars': frozenset(EXTRA_ORDER[:n]), 'of': of, 'stripped': set(),
-                 'name': name})
+                 'name': name, 'chinese': False})
+    bytecode.CHINESE_CODES = {}
+    bytecode.CHINESE_REVERSE = {}
 
 
 def proportional():
@@ -782,7 +784,9 @@ def place_digimon(comp, mh, report):
     if short:                                               # every screen that does not fit, not only the first
         raise BackendError('\n'.join(m for m, _ in short), short[0][1])
     out_dir = os.path.join(getattr(comp, 'run_dir', RUN_ROOT), 'maps')
+    from map_regions import apply as apply_regions
     for rel, m in maps.items():
+        apply_regions(m, os.path.basename(rel)[:-4])
         own = inplace_maps.get(rel)                         # a new file name: written back beside its screen file (the build's new-files step adds it)
         dst = own or os.path.join(out_dir, rel); os.makedirs(os.path.dirname(dst), exist_ok=True)
         data = m.build(); orig = os.path.getsize(own + '.orig' if own else os.path.join(ROOT, 'extracted', rel))
@@ -815,6 +819,8 @@ def build_maphead(comp, workdir, report):
     mh = open(mh_path, encoding='utf-8').read()
     mh = new_scripts(comp, workdir, mh)
     mh = place_digimon(comp, mh, report)
+    from .recruit_screens import guard_wilds
+    mh = guard_wilds(comp, mh, report)
     if comp.city is not None and getattr(comp, 'city_table', True):     # (below story-state only its presence rules: the IFs above)
         from . import city
         blob = city.encode(comp.city); sec, body = city.to_section_text(blob)

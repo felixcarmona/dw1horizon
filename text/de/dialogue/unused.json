@@ -759,36 +759,20 @@
    "Lass es"
   ]
  ],
- "s000.sec1238.u8": [
-  [
-   "Ich sammle etwas. Wenn du",
-   "davon hast, würde ich gern mit",
-   "dir tauschen."
-  ]
- ],
+ "s000.sec1238.u8": "Jeder Tausch einmal täglich. Dolphflosse: einmal pro Reise.",
  "s000.sec1238.u9": [
   [
    "Was wirst du mir geben?"
   ]
  ],
- "s000.sec1238.u10": [
-  [
-   "Ich tausche jederzeit. Bring",
-   "also mehr mit!"
-  ]
- ],
+ "s000.sec1238.u10": "Die Dolphflosse gibt es nur einmal pro Reise.",
  "s000.sec1238.u11": [
   [
    "Du gibst mir wirklich",
    "{item 249}?"
   ]
  ],
- "s000.sec1238.u12": [
-  [
-   "Klar",
-   "Nein, ich behalte es"
-  ]
- ],
+ "s000.sec1238.u12": "Heute schon getauscht. Komm morgen wieder!",
  "s000.sec1238.u13": [
   [
    "Vielen Dank!"

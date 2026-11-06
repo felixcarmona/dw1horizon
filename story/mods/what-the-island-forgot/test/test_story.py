@@ -268,7 +268,7 @@ class TuskmonDeal(unittest.TestCase):
                    tuskmon=npc, narrator=npc, Item=items, bits=bits, trigger=lambda n: bag_full,
                    give=lambda what: given.append(what), take=lambda bits: taken.append(bits),
                    call=lambda r: bubbles.append((pstats[247].value, pstats[248].value)), wait=lambda ms: None, Routine=SimpleNamespace(monochromon_mood_bubble=28),
-                   dws=self.ends)
+                   dws=self.ends, t=lambda key: key)
         exec(self.code, env)
         deal = env['deal']
         def run():                  # dws("return;") ends the whole talk, as the shared block does in the game

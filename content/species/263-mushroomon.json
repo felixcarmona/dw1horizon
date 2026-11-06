@@ -7,7 +7,7 @@
   "attribute": "virus",
   "specialties": ["nature", "battle", null],
   "techniques": ["Poison Powder", "Mass Morph", "Insect Plague", "Poison Claw", "Sonic Jab", "Muscle Charge",
-                 "War Cry", "Drill Spin"],
+                 "War Cry", "Drill Spin", "Charm Perfume"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 52,
   "model": {
@@ -42,7 +42,7 @@
     "poop_size": 8,
     "favorite_food": "Digisnapper",
     "sleep_cycle": "16:00-01:00",
-    "favored_region": 1,
+    "favored_region": 5,
     "training_type": "even",
     "birth_weight": 15,
     "status_screen_position": [360, 270, -1620],
@@ -50,7 +50,7 @@
     "training": {"animation": 54, "hit_tick": 10}
   },
   "evolution": {
-    "from": [44, 477],
+    "from": [477],
     "to": [272, 282, 328, 25],
     "requirements": {
       "digimon": -1,

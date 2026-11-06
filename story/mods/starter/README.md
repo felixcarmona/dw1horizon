@@ -51,11 +51,10 @@ recipe and compiles the mod, so it cannot rot.
 
 ## Save numbers
 
-`mod.toml` reserves flags 790-797. The Horizon original-engine profile has 81 free flags, 717-797, and two mods have reserved all of
-them: `what-the-island-forgot` 717-786 and `examples` 780-797. So no free range exists, and numbers from 800 need the
-story-state engine, which `dws disc` cannot build alone. 790-797 stays clear of the shipped story and overlaps only the
-part of the examples' range they do not use (`examples/save.lock` stops at 785). The examples never go on a disc with
-this mod. The mod uses two flags, for the two bits of `LostMedal`, and no saved counter.
+`mod.toml` reserves flags 787-788 for the example quest. The original-engine profile offers flags 717-788;
+789-797 are engine-owned daily Mojyamon state and 798-799 are daily vending state. The shipped story reserves
+717-786 and the other examples reserve 780-786, so the starter's two flags fit beside both. Older starter-only
+test saves using 790-791 must be recreated; shipped story save identities are unchanged.
 
 ## On the Horizon disc
 

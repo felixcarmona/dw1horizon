@@ -7,7 +7,8 @@
   "attribute": "vaccine",
   "specialties": ["battle", "air", "nature"],
   "techniques": ["Sonic Jab", "Muscle Charge", "War Cry", "Tremar", "Dynamite Kick (44)", "Wind Cutter",
-                 "Static Elect", "Electric Cloud", "Poison Claw", "Mass Morph", "Bit Bomb"],
+                 "Static Elect", "Electric Cloud", "Poison Claw", "Mass Morph", "Bit Bomb",
+                 "Spinning Shot", "Counter"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 26,
   "model": {
@@ -45,7 +46,7 @@
     "poop_size": 10,
     "favorite_food": "Digicatfish",
     "sleep_cycle": "07:00-16:00",
-    "favored_region": 6,
+    "favored_region": 7,
     "training_type": "offense-speed",
     "birth_weight": 30,
     "status_screen_position": [30, 390, -940],

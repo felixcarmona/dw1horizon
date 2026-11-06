@@ -7,6 +7,9 @@ maphead {
     section(128) replace {    // section 128
         set_script(123, 128);
         engine.music_mode = 0;
+        if (canyon_bandits_active && !canyon_bandits_beaten) {
+            engine.music_mode = 2;
+        }
         set_bgm(6);
         unless (!canyon_bandits_active) return;
         load_digimon(species("Goblimon"));

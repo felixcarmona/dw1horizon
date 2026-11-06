@@ -8,7 +8,8 @@
   "de": "Aufgenommen in einem Emulator mit Verbesserungen (3-fache Auflösung, Texturfilter, Geometriekorrektur); das Spiel selbst zeichnet in 320 x 240.",
   "it": "Registrato in un emulatore con i miglioramenti attivi (risoluzione 3x, filtro delle texture, correzione della geometria); il gioco in sé disegna a 320 x 240.",
   "ja": "エミュレーターの画質向上機能（3倍解像度、テクスチャフィルタリング、ジオメトリ補正）を有効にして録画しています。ゲーム本来の描画解像度は320×240です。",
-  "ca": "Gravat en un emulador amb millores activades (resolució 3x, filtratge de textures, correcció de geometria); el joc en si dibuixa a 320 x 240."
+  "ca": "Gravat en un emulador amb millores activades (resolució 3x, filtratge de textures, correcció de geometria); el joc en si dibuixa a 320 x 240.",
+  "zh-hans": "视频录制于开启画质增强的模拟器（3倍分辨率、贴图过滤、几何校正）；游戏本身以320 x 240分辨率绘制。"
  },
  "features": [
   {
@@ -26,7 +27,8 @@
       "de": "Der Tamer und Agumon unterwegs an neuen Orten: eine Hängebrücke in einer Mine, eine Terrasse über einem See, eine große Halle",
       "it": "Il tamer e Agumon camminano per luoghi nuovi: un ponte di corda in una miniera, una terrazza su un lago, una grande sala",
       "ja": "テイマーとアグモンが新しい場所を歩く様子：鉱山の吊り橋、湖を見下ろすテラス、大広間",
-      "ca": "El domador i Agumon caminant per llocs nous: un pont de corda en una mina, una terrassa sobre un llac, una gran sala"
+      "ca": "El domador i Agumon caminant per llocs nous: un pont de corda en una mina, una terrassa sobre un llac, una gran sala",
+      "zh-hans": "驯兽师与亚古兽走过新地方：矿坑吊桥、湖上露台和大殿"
      }
     }
    ],
@@ -61,6 +63,10 @@
    "ca": {
     "title": "Una història nova: What the Island Forgot",
     "body": "Llocs nous més enllà de les pantalles que coneixes, amb els seus camins, habitants i combats, entreteixits amb l'aventura de 1999. Els Digimon que reclutes es muden a Ciutat File i la fan seva. Prefereixes la història original? Desactiva EXTENDED STORY."
+   },
+   "zh-hans": {
+    "title": "全新故事：What the Island Forgot",
+    "body": "熟悉场景的另一端，延伸出全新的地方，拥有各自的道路、居民与战斗，融入1999年的冒险。招募来的数码宝贝会搬进文件城，在这里安家。更喜欢原版故事？关闭EXTENDED STORY（扩展故事）即可。"
    }
   },
   {
@@ -79,7 +85,8 @@
       "de": "Geh mit Agumon spazieren",
       "it": "Fai una passeggiata con Agumon",
       "ja": "アグモンと散歩しよう",
-      "ca": "Fes un passeig amb Agumon"
+      "ca": "Fes un passeig amb Agumon",
+      "zh-hans": "和亚古兽散散步"
      }
     }
    ],
@@ -114,6 +121,10 @@
    "ca": {
     "title": "Fes un passeig amb Agumon",
     "body": "Un vídeo caminant per What the Island Forgot, del primer pas a l'últim."
+   },
+   "zh-hans": {
+    "title": "和亚古兽散散步",
+    "body": "跟随这段漫步视频，从头到尾走遍What the Island Forgot的新天地。"
    }
   },
   {
@@ -132,7 +143,8 @@
       "de": "Alle 175 importierten Digimon",
       "it": "Tutti i 175 Digimon importati",
       "ja": "取り込まれた全175体のデジモン",
-      "ca": "Els 175 Digimon importats"
+      "ca": "Els 175 Digimon importats",
+      "zh-hans": "全部175只导入数码宝贝"
      },
      "autoplay": true
     }
@@ -168,6 +180,10 @@
    "ca": {
     "title": "Els 175 Digimon importats",
     "body": "Tots els companys importats, un darrere l’altre, amb la seva animació de repòs. Noms en anglès."
+   },
+   "zh-hans": {
+    "title": "全部175只导入数码宝贝",
+    "body": "逐一展示所有导入的搭档及其待机动画。名称以英语显示。"
    }
   },
   {
@@ -185,7 +201,8 @@
       "de": "Derselbe Gang durch File City, nebeneinander: das Original mit 20 Bildern pro Sekunde, Horizon mit 60",
       "it": "La stessa passeggiata per File City, fianco a fianco: l'originale a 20 fotogrammi al secondo, Horizon a 60",
       "ja": "ファイルシティを歩く同じ場面の比較：20fpsのオリジナルと60fpsのHorizon",
-      "ca": "El mateix passeig per Ciutat File, un al costat de l'altre: l'original a 20 imatges per segon, Horizon a 60"
+      "ca": "El mateix passeig per Ciutat File, un al costat de l'altre: l'original a 20 imatges per segon, Horizon a 60",
+      "zh-hans": "文件城中同一段行走的并排对比：原版每秒20帧，Horizon每秒60帧"
      }
     }
    ],
@@ -220,6 +237,10 @@
    "ca": {
     "title": "60 imatges per segon",
     "body": "El món, els combats i els tornejos es dibuixen fins a 60 imatges per segon (l'original en dibuixa 20) mentre el joc conserva per sota el ritme original: el teu company envelleix, entrena i té gana exactament com abans. A l'esquerra, l'original; a la dreta, Horizon. Per mantenir 60 estables cal un emulador amb la CPU accelerada (la pantalla de títol t'indica què activar). A velocitat normal, les zones amb més càrrega es mouen al voltant de 25-40, i en una PlayStation real, unes 30. Els botons es continuen llegint 20 vegades per segon, i el suavitzat mostra la imatge fins a 50 ms després."
+   },
+   "zh-hans": {
+    "title": "每秒60帧",
+    "body": "世界、战斗和大赛的画面最高可达每秒60帧（原版为20帧），游戏内部计时保持原样：搭档的成长、训练和饥饿速度均不变。左为原版，右为Horizon。稳定60帧需要在模拟器中提高CPU速度，标题画面会提示具体设置。正常CPU速度下，繁忙场景通常为25至40帧；在PlayStation实机上约为30帧。输入仍每秒读取20次，画面平滑最多会带来50毫秒的显示延迟。"
    }
   },
   {
@@ -236,7 +257,8 @@
       "de": "Agumons Digitationsbaum, nebeneinander: Das Original zeichnet ihn nur, Horizon fügt eine Karte hinzu mit dem, was die gewählte Digitation verlangt, abgehakt für deinen Partner",
       "it": "L'albero delle evoluzioni di Agumon, fianco a fianco: l'originale lo disegna e basta, Horizon aggiunge una scheda con cosa chiede l'evoluzione selezionata, spuntata in base al tuo partner",
       "ja": "アグモンの進化ツリーの比較：オリジナルはツリーを表示するだけ、Horizonは選んだ進化の条件をカードで表示し、パートナーの達成状況にチェックを付ける",
-      "ca": "L'arbre d'evolucions d'Agumon, un al costat de l'altre: l'original només el dibuixa, Horizon hi afegeix una fitxa amb el que demana l'evolució triada, marcat segons el teu company"
+      "ca": "L'arbre d'evolucions d'Agumon, un al costat de l'altre: l'original només el dibuixa, Horizon hi afegeix una fitxa amb el que demana l'evolució triada, marcat segons el teu company",
+      "zh-hans": "亚古兽进化树的并排对比：原版仅展示路线，Horizon增加所选进化的条件卡片，并对照搭档的现状逐项打勾"
      }
     }
    ],
@@ -271,6 +293,10 @@
    "ca": {
     "title": "Una guia d'evolucions que t'explica el perquè",
     "body": "El quadre d'evolucions mostra què demana cada evolució (cures, pes, estadístiques), perquè puguis criar el company que vulguis sense tenir una guia oberta al costat. A l'esquerra, el quadre original; a la dreta, el d'Horizon."
+   },
+   "zh-hans": {
+    "title": "说清条件的进化指南",
+    "body": "进化表会列出每条路线的条件，包括照顾、体重和能力。无需在旁边打开攻略，也能培育心仪的搭档。左为原版进化表，右为Horizon。"
    }
   },
   {
@@ -288,7 +314,8 @@
       "de": "Dieselbe wilde Begegnung, nebeneinander: Das Original wartet mit seiner Sprechblase, dann kommen die BATTLE-Buchstaben und das Laden; Horizon kämpft sofort",
       "it": "Lo stesso incontro selvatico, fianco a fianco: l'originale aspetta con il suo fumetto, poi la scritta BATTLE e il caricamento; Horizon combatte subito",
       "ja": "同じ野生デジモンとの遭遇の比較：オリジナルはフキダシ、BATTLEの文字、読み込みを待つが、Horizonはすぐに戦闘開始",
-      "ca": "El mateix encontre salvatge, un al costat de l'altre: l'original espera amb la bombolla, després les lletres BATTLE i la càrrega; Horizon ja està lluitant"
+      "ca": "El mateix encontre salvatge, un al costat de l'altre: l'original espera amb la bombolla, després les lletres BATTLE i la càrrega; Horizon ja està lluitant",
+      "zh-hans": "同一次野外遭遇的并排对比：原版先等待气泡、战斗字样和加载，Horizon立即开战"
      }
     }
    ],
@@ -323,6 +350,10 @@
    "ca": {
     "title": "Els combats comencen a l'instant",
     "body": "Sense esperes: un combat de camp comença just quan un Digimon se't llança a sobre, les lletres llampeguen sobre la lluita ja en marxa, i R2 accelera qualsevol combat al doble de velocitat. A l'esquerra, l'original; a la dreta, Horizon, amb la mateixa pulsació de X."
+   },
+   "zh-hans": {
+    "title": "遭遇即开战",
+    "body": "数码宝贝一扑过来，野外战斗就已开始，无需等待；战斗字样会在正在进行的战斗上方闪过。按R2可让任何战斗以双倍速度进行。左右均从同一次按下×开始对比：左为原版，右为Horizon。"
    }
   },
   {
@@ -342,41 +373,46 @@
       "de": "Ein Figurendialog im Vergleich: die weit auseinanderstehenden Buchstaben des Originals und die neue Schrift von Horizon",
       "it": "Un dialogo di un personaggio, fianco a fianco: le lettere distanziate dell'originale e il nuovo carattere di Horizon",
       "ja": "キャラクターの会話の比較：オリジナルの間隔の広い文字と Horizon の新しいフォント",
-      "ca": "Un diàleg d'un personatge, costat a costat: les lletres separades de l'original i la lletra nova d'Horizon"
+      "ca": "Un diàleg d'un personatge, costat a costat: les lletres separades de l'original i la lletra nova d'Horizon",
+      "zh-hans": "同一角色的对话并排对比：原版疏散的字母间距与Horizon新字体"
      }
     }
    ],
    "en": {
     "title": "Your language, in letters you can read",
-    "body": "The whole game in a new translation, the labels painted in the menus and the signs in the maps included, switchable in OPTIONS at any time. A new, evenly spaced font, or the original one if you miss it. Left, the original; right, Horizon."
+    "body": "The whole game in a new translation, the labels painted in the menus and the signs in the maps included, switchable in OPTIONS at any time. A new, evenly spaced font, or the original one if you miss it. Left, the original; right, Horizon. Simplified Chinese requires 8 MB of RAM; the other eight languages work on 2 MB."
    },
    "es": {
     "title": "Tu idioma, con una letra que se lee",
-    "body": "Todo el juego con una traducción nueva, incluidos los rótulos pintados en los menús y los carteles de los mapas, y se cambia en OPTIONS cuando quieras. Una letra nueva, bien espaciada, o la original si la echas de menos. A la izquierda, el original; a la derecha, Horizon en español."
+    "body": "Todo el juego con una traducción nueva, incluidos los rótulos pintados en los menús y los carteles de los mapas, y se cambia en OPTIONS cuando quieras. Una letra nueva, bien espaciada, o la original si la echas de menos. A la izquierda, el original; a la derecha, Horizon en español. El chino simplificado requiere 8 MB de RAM; los otros ocho idiomas funcionan con 2 MB."
    },
    "pt-br": {
     "title": "Seu idioma, com letras que dá para ler",
-    "body": "O jogo inteiro numa tradução nova, incluindo os textos pintados nos menus e as placas nos mapas, e dá para trocar em OPTIONS a qualquer momento. Uma fonte nova, de espaçamento uniforme, ou a original se sentir falta dela. À esquerda, o original; à direita, Horizon."
+    "body": "O jogo inteiro numa tradução nova, incluindo os textos pintados nos menus e as placas nos mapas, e dá para trocar em OPTIONS a qualquer momento. Uma fonte nova, de espaçamento uniforme, ou a original se sentir falta dela. À esquerda, o original; à direita, Horizon. O chinês simplificado precisa de 8 MB de RAM; os outros oito idiomas funcionam com 2 MB."
    },
    "fr": {
     "title": "Ta langue, en lettres bien lisibles",
-    "body": "Tout le jeu dans une nouvelle traduction, y compris les libellés peints dans les menus et les panneaux des cartes, à changer dans OPTIONS à tout moment. Une nouvelle police aux espacements réguliers, ou l'originale si elle te manque. À gauche, l'original ; à droite, Horizon."
+    "body": "Tout le jeu dans une nouvelle traduction, y compris les libellés peints dans les menus et les panneaux des cartes, à changer dans OPTIONS à tout moment. Une nouvelle police aux espacements réguliers, ou l'originale si elle te manque. À gauche, l'original ; à droite, Horizon. Le chinois simplifié nécessite 8 Mo de mémoire ; les huit autres langues fonctionnent avec 2 Mo."
    },
    "de": {
     "title": "Deine Sprache, in gut lesbarer Schrift",
-    "body": "Das ganze Spiel in einer neuen Übersetzung, samt den gemalten Beschriftungen in den Menüs und den Schildern auf den Karten, jederzeit in OPTIONS umschaltbar. Eine neue, gleichmäßige Schrift, oder die originale, wenn sie dir fehlt. Links das Original, rechts Horizon."
+    "body": "Das ganze Spiel in einer neuen Übersetzung, samt den gemalten Beschriftungen in den Menüs und den Schildern auf den Karten, jederzeit in OPTIONS umschaltbar. Eine neue, gleichmäßige Schrift, oder die originale, wenn sie dir fehlt. Links das Original, rechts Horizon. Vereinfachtes Chinesisch benötigt 8 MB RAM; die acht anderen Sprachen funktionieren mit 2 MB."
    },
    "it": {
     "title": "La tua lingua, con lettere che si leggono",
-    "body": "Tutto il gioco con una nuova traduzione, comprese le scritte dipinte nei menu e i cartelli nelle mappe, da cambiare in OPTIONS quando vuoi. Un nuovo font a spaziatura regolare, o quello originale se ti manca. A sinistra l'originale; a destra Horizon."
+    "body": "Tutto il gioco con una nuova traduzione, comprese le scritte dipinte nei menu e i cartelli nelle mappe, da cambiare in OPTIONS quando vuoi. Un nuovo font a spaziatura regolare, o quello originale se ti manca. A sinistra l'originale; a destra Horizon. Il cinese semplificato richiede 8 MB di RAM; le altre otto lingue funzionano con 2 MB."
    },
    "ja": {
     "title": "あなたの言語で、読みやすい文字で",
-    "body": "ゲーム全体を新たに翻訳。メニュー内の文字画像やマップ上の看板まで翻訳済みで、OPTIONSでいつでも切り替えられます。文字間隔の整った新フォントのほか、オリジナルのフォントも選べます。左がオリジナル、右がHorizonです。"
+    "body": "ゲーム全体を新たに翻訳。メニュー内の文字画像やマップ上の看板まで翻訳済みで、OPTIONSでいつでも切り替えられます。文字間隔の整った新フォントのほか、オリジナルのフォントも選べます。左がオリジナル、右がHorizonです。 簡体字中国語には8 MBのメモリーが必要です。従来の8言語は2 MBでプレイできます。"
    },
    "ca": {
     "title": "El teu idioma, amb lletres que es llegeixen bé",
-    "body": "Tot el joc amb una traducció nova, incloses les etiquetes pintades als menús i els rètols dels mapes, i es pot canviar a OPTIONS quan vulguis. Una lletra nova d'espaiat uniforme, o l'original si la trobes a faltar. A l'esquerra, l'original; a la dreta, Horizon."
+    "body": "Tot el joc amb una traducció nova, incloses les etiquetes pintades als menús i els rètols dels mapes, i es pot canviar a OPTIONS quan vulguis. Una lletra nova d'espaiat uniforme, o l'original si la trobes a faltar. A l'esquerra, l'original; a la dreta, Horizon. El xinès simplificat requereix 8 MB de memòria; els altres vuit idiomes funcionen amb 2 MB."
+   },
+   "zh-hans": {
+    "title": "用熟悉的语言，读清每一行",
+    "body": "全游戏重新翻译，菜单中的贴图文字也包括在内，可随时在OPTIONS（选项）中切换语言。原有八种语言均可在2 MB主机上游玩；简体中文为第九种语言，仅限8 MB主机，2 MB时显示为不可选并提示内存要求。其他语言可选间距均匀的新字体，或怀旧的原版字体；中文使用专用位图字体。左为原版，右为Horizon。"
    }
   },
   {
@@ -394,7 +430,8 @@
       "de": "Eine mit START übersprungene Digitation und ein Kampf in doppelter Geschwindigkeit",
       "it": "Un'evoluzione saltata con START, e una battaglia a velocità doppia",
       "ja": "STARTでスキップされる進化と、2倍速のバトル",
-      "ca": "Una evolució saltada amb START i un combat a doble velocitat"
+      "ca": "Una evolució saltada amb START i un combat a doble velocitat",
+      "zh-hans": "按START跳过进化，以及双倍速度的战斗"
      }
     }
    ],
@@ -429,6 +466,10 @@
    "ca": {
     "title": "Menys esperes",
     "body": "START salta una evolució que ja has vist, R2 duplica la velocitat de qualsevol combat i el gimnàs entrena cinc sessions d'una tirada. Res d'això canvia el que guanya el teu company."
+   },
+   "zh-hans": {
+    "title": "少些等待",
+    "body": "按START可跳过已经看过的进化，R2可让任何战斗加速一倍，健身房可一次连做五次训练。搭档获得的收益保持不变。"
    }
   },
   {
@@ -445,7 +486,8 @@
       "de": "Agumon mit drei Zustandsblasen (hungrig, schläfrig, müde), die Uhr mit ihrer Digitalzeit und die Statusbalken",
       "it": "Agumon con tre fumetti di condizione (fame, sonno, stanchezza), l'orologio con l'ora digitale e le barre di stato",
       "ja": "3つの状態フキダシ（空腹、眠気、疲れ）を出したアグモン、デジタル時刻付きの時計、ステータスバー",
-      "ca": "Agumon amb tres bombolles d'estat (gana, son, cansament), el rellotge amb l'hora digital i les barres d'estat"
+      "ca": "Agumon amb tres bombolles d'estat (gana, son, cansament), el rellotge amb l'hora digital i les barres d'estat",
+      "zh-hans": "亚古兽同时显示饥饿、困倦、疲劳三个状态气泡，时钟带有数字时间，并显示状态条"
      }
     }
    ],
@@ -480,6 +522,10 @@
    "ca": {
     "title": "Les necessitats del teu company d'un cop d'ull",
     "body": "Un rellotge digital sota l'esfera, i totes les condicions actives (gana, son, malaltia…) alhora, com a bombolles."
+   },
+   "zh-hans": {
+    "title": "搭档的需求，一眼看清",
+    "body": "表盘下方显示数字时间，所有当前状态（饥饿、困倦、生病等）同时以气泡显示。"
    }
   },
   {
@@ -499,7 +545,8 @@
       "de": "Das OPTIONS-Menü auf dem Titelbild",
       "it": "Il menu OPTIONS della schermata del titolo",
       "ja": "タイトル画面のOPTIONSメニュー",
-      "ca": "El menú OPTIONS de la pantalla de títol"
+      "ca": "El menú OPTIONS de la pantalla de títol",
+      "zh-hans": "标题画面的OPTIONS菜单"
      }
     }
    ],
@@ -534,6 +581,10 @@
    "ca": {
     "title": "Tot és opcional",
     "body": "Idioma, imatges per segon, lletra, dificultat, els Digimon nous, la història ampliada, l'inici ràpid dels combats, el rellotge digital i les barres d'estat: cada opció té la seva fila a OPTIONS a la pantalla de títol, i el que triïs es desa amb la partida."
+   },
+   "zh-hans": {
+    "title": "各项功能，自由选择",
+    "body": "语言、帧率、字体、难度、新数码宝贝、扩展故事、快速开战、数字时钟和状态条：标题画面的OPTIONS（选项）中，每项均可单独设置，选择随存档保存。"
    }
   },
   {
@@ -553,7 +604,8 @@
       "de": "Die Statusseite des Partners im Original (links) und in Horizon (rechts): die Balken für Zufriedenheit und Disziplin",
       "it": "La schermata di stato del compagno nell'originale (a sinistra) e in Horizon (a destra): le barre di felicità e disciplina",
       "ja": "パートナーのステータス画面。左がオリジナル、右がHorizon。幸福度と規律のバー",
-      "ca": "La pantalla d'estat del company a l'original (esquerra) i a Horizon (dreta): les barres de felicitat i disciplina"
+      "ca": "La pantalla d'estat del company a l'original (esquerra) i a Horizon (dreta): les barres de felicitat i disciplina",
+      "zh-hans": "搭档状态页的对比：左为原版，右为Horizon，展示心情和纪律状态条"
      }
     }
    ],
@@ -588,42 +640,69 @@
    "ca": {
     "title": "Barres que diuen com va el teu company",
     "body": "La felicitat i la disciplina són una barra cadascuna, de buida a plena, vermella per sota de la meitat i verda per sobre, al camp i a la pantalla d'estat. L'original dibuixava cada barra dues vegades, així que es buidava i es tornava a omplir a mig camí (felicitat 0, disciplina 50). La disciplina, de 0 a 100, és com de bé et fa cas el company: amb massa poca rebutja objectes, i renyar-lo la puja. A l'esquerra, l'original; a la dreta, Horizon."
+   },
+   "zh-hans": {
+    "title": "状态条，读数更直观",
+    "body": "野外和状态页中的心情、纪律各用一条完整进度条显示，低于中点为红色，高于中点为绿色。原版会把每条状态条画两遍，因此到中点（心情0、纪律50）时，会先清空再重新填满。纪律范围为0至100，表示搭档有多听话：过低时会拒绝道具，训斥能提高纪律。左为原版，右为Horizon。"
    }
   },
   {
    "id": "carem",
-   "media": [{"type": "image", "src": {"en": "media/clips/carem-en.jpg", "es": "media/clips/carem-es.jpg"}, "alt": {"en": "The care menu listing what the partner needs", "es": "El menú de cuidados con lo que necesita el compañero", "pt-br": "O menu de cuidados com o que o parceiro precisa", "fr": "Le menu de soins avec ce dont le partenaire a besoin", "de": "Das Pflegemenü mit dem, was der Partner braucht", "it": "Il menu delle cure con ciò che serve al compagno", "ja": "パートナーに必要なものを並べたお世話メニュー", "ca": "El menú de cures amb el que necessita el company"}}],
+   "media": [
+    {
+     "type": "image",
+     "src": {
+      "en": "media/clips/carem-en.jpg",
+      "es": "media/clips/carem-es.jpg"
+     },
+     "alt": {
+      "en": "The care menu listing what the partner needs",
+      "es": "El menú de cuidados con lo que necesita el compañero",
+      "pt-br": "O menu de cuidados com o que o parceiro precisa",
+      "fr": "Le menu de soins avec ce dont le partenaire a besoin",
+      "de": "Das Pflegemenü mit dem, was der Partner braucht",
+      "it": "Il menu delle cure con ciò che serve al compagno",
+      "ja": "パートナーに必要なものを並べたお世話メニュー",
+      "ca": "El menú de cures amb el que necessita el company",
+      "zh-hans": "照顾菜单列出搭档当前的需求"
+     }
+    }
+   ],
    "en": {
     "title": "A care menu that knows what is wrong",
-    "body": "Press X in front of your partner and the menu lists only what it needs, the most urgent first: a scolding when it deserves one, the cure for what it has, the potty, food when it is hungry (its favourite first) and sleep. A small X badge tells you when the menu is there."
+    "body": "Press Square in the field, even far from your partner and the menu lists only what it needs, the most urgent first: a scolding when it deserves one, the cure for what it has, the potty, food when it is hungry (its favourite first) and sleep. A small pink Square badge tells you when the menu is there."
    },
    "es": {
     "title": "Un menú de cuidados que sabe qué le pasa",
-    "body": "Pulsa X delante de tu compañero y el menú lista solo lo que necesita, lo más urgente primero: una regañina si la merece, la cura de lo que tenga, el orinal, comida si tiene hambre (su favorita primero) y dormir. Una pequeña X te avisa de cuándo está el menú."
+    "body": "Pulsa Cuadrado en el campo, incluso lejos de tu compañero y el menú lista solo lo que necesita, lo más urgente primero: una regañina si la merece, la cura de lo que tenga, el orinal, comida si tiene hambre (su favorita primero) y dormir. Un pequeño Cuadrado rosa te avisa de cuándo está el menú."
    },
    "pt-br": {
     "title": "Um menu de cuidados que sabe o que há de errado",
-    "body": "Aperte X na frente do seu parceiro e o menu lista só o que ele precisa, o mais urgente primeiro: uma bronca quando merece, o remédio para o que ele tem, o penico, comida quando está com fome (a favorita primeiro) e dormir. Um pequeno X avisa quando o menu está disponível."
+    "body": "Aperte Quadrado no campo, mesmo longe do seu parceiro e o menu lista só o que ele precisa, o mais urgente primeiro: uma bronca quando merece, o remédio para o que ele tem, o penico, comida quando está com fome (a favorita primeiro) e dormir. Um pequeno Quadrado rosa avisa quando o menu está disponível."
    },
    "fr": {
     "title": "Un menu de soins qui sait ce qui ne va pas",
-    "body": "Appuie sur X devant ton partenaire : le menu ne liste que ce dont il a besoin, le plus urgent d'abord : une réprimande s'il la mérite, le remède à ce qu'il a, le pot, de la nourriture s'il a faim (sa préférée d'abord) et le sommeil. Un petit X te prévient que le menu est disponible."
+    "body": "Appuie sur Carré sur le terrain, même loin de ton partenaire : le menu ne liste que ce dont il a besoin, le plus urgent d'abord : une réprimande s'il la mérite, le remède à ce qu'il a, le pot, de la nourriture s'il a faim (sa préférée d'abord) et le sommeil. Un petit Carré rose te prévient que le menu est disponible."
    },
    "de": {
     "title": "Ein Pflegemenü, das weiß, was fehlt",
-    "body": "Drücke X vor deinem Partner, und das Menü listet nur, was er braucht, das Dringendste zuerst: eine Standpauke, wenn er sie verdient, das Mittel gegen das, was er hat, das Töpfchen, Futter bei Hunger (Lieblingsessen zuerst) und Schlaf. Ein kleines X zeigt an, dass das Menü bereitsteht."
+    "body": "Drücke Quadrat im Feld, auch weit von deinem Partner entfernt, und das Menü listet nur, was er braucht, das Dringendste zuerst: eine Standpauke, wenn er sie verdient, das Mittel gegen das, was er hat, das Töpfchen, Futter bei Hunger (Lieblingsessen zuerst) und Schlaf. Ein kleines rosa Quadrat zeigt an, dass das Menü bereitsteht."
    },
    "it": {
     "title": "Un menu di cura che sa cosa non va",
-    "body": "Premi X davanti al tuo compagno e il menu elenca solo ciò di cui ha bisogno, il più urgente per primo: una sgridata se la merita, la cura per ciò che ha, il vasino, il cibo se ha fame (il preferito per primo) e il sonno. Una piccola X ti avvisa che il menu è disponibile."
+    "body": "Premi Quadrato sul campo, anche lontano dal tuo compagno e il menu elenca solo ciò di cui ha bisogno, il più urgente per primo: una sgridata se la merita, la cura per ciò che ha, il vasino, il cibo se ha fame (il preferito per primo) e il sonno. Un piccolo Quadrato rosa ti avvisa che il menu è disponibile."
    },
    "ja": {
     "title": "困っていることを知っているお世話メニュー",
-    "body": "パートナーの前でXを押すと、必要なことだけが緊急度の高い順に並びます。叱る（叱るべきとき）、症状の手当て、トイレ、空腹時の食べ物（好物が先頭）、睡眠。メニューが開けるときは小さなXバッジが出ます。"
+    "body": "フィールドで□を押すと、パートナーから離れていても、必要なことだけが緊急度の高い順に並びます。叱る（叱るべきとき）、症状の手当て、トイレ、空腹時の食べ物（好物が先頭）、睡眠。メニューが開けるときはピンクの□バッジが出ます。"
    },
    "ca": {
     "title": "Un menú de cures que sap què li passa",
-    "body": "Prem X davant del teu company i el menú llista només el que necessita, el més urgent primer: una renyada si se la mereix, la cura del que tingui, l'orinal, menjar si té gana (el preferit primer) i dormir. Una petita X t'avisa que el menú és disponible."
+    "body": "Prem Quadrat al camp, encara que siguis lluny del company i el menú llista només el que necessita, el més urgent primer: una renyada si se la mereix, la cura del que tingui, l'orinal, menjar si té gana (el preferit primer) i dormir. Un petit Quadrat rosa t'avisa que el menú és disponible."
+   },
+   "zh-hans": {
+    "title": "按搭档的需要，安排照顾菜单",
+    "body": "在野外按□，即使远离搭档，菜单只列出它当前需要的照顾，最紧急的排在前面：该训斥时训斥，按病症给药，上厕所，饿了就喂食（最爱的食物优先），还有睡觉。可以打开菜单时，会出现一个粉色的□标记。"
    }
   },
   {
@@ -660,6 +739,10 @@
    "ca": {
     "title": "HP i MP directament al menú",
     "body": "Obre el menú triangle i els HP i MP del teu company apareixen a dalt a la dreta de la pantalla, dibuixats com a l'HUD de combat: HP en verd que passa a groc per sota de la meitat i a vermell per sota d'un quart, i MP en blau. No cal obrir la pantalla d'estat."
+   },
+   "zh-hans": {
+    "title": "菜单里，直接查看HP和MP",
+    "body": "打开△菜单，搭档的HP和MP就会显示在屏幕右上角，样式与战斗界面一致：HP为绿色，低于一半变黄，低于四分之一变红；MP为蓝色。不必再打开状态页。"
    }
   },
   {
@@ -696,12 +779,35 @@
    "ca": {
     "title": "Un mode fàcil, si el vols",
     "body": "DIFFICULTY a OPTIONS: amb EASY, el teu company fa el doble de mal i en rep la meitat, en combats salvatges i tornejos, verí inclòs. NORMAL és l'equilibri original; el mode VS de dos jugadors no canvia."
+   },
+   "zh-hans": {
+    "title": "想轻松些？可选简单模式",
+    "body": "在OPTIONS（选项）中设置DIFFICULTY（难度）。EASY（简单）下，野外战斗和大赛中，搭档造成的伤害加倍，承受的伤害减半，中毒伤害也包括在内。NORMAL（普通）保持原版平衡，双人VS模式始终不受影响。"
    }
   },
   {
    "id": "cheats",
    "wide": true,
-   "media": [{"type": "image", "src": {"en": "media/clips/cheats-en.jpg", "es": "media/clips/cheats-es.jpg"}, "alt": {"en": "The cheat menu", "es": "El menú de trucos", "pt-br": "O menu de trapaças", "fr": "Le menu de triches", "de": "Das Cheat-Menü", "it": "Il menu dei trucchi", "ja": "チートメニュー", "ca": "El menú de trucs"}}],
+   "media": [
+    {
+     "type": "image",
+     "src": {
+      "en": "media/clips/cheats-en.jpg",
+      "es": "media/clips/cheats-es.jpg"
+     },
+     "alt": {
+      "en": "The cheat menu",
+      "es": "El menú de trucos",
+      "pt-br": "O menu de trapaças",
+      "fr": "Le menu de triches",
+      "de": "Das Cheat-Menü",
+      "it": "Il menu dei trucchi",
+      "ja": "チートメニュー",
+      "ca": "El menú de trucs",
+      "zh-hans": "作弊菜单"
+     }
+    }
+   ],
    "en": {
     "title": "A cheat menu, off until you ask",
     "body": "Turn CHEATS on in OPTIONS and press SELECT on the pause screen: add bits, satisfy every need, edit your partner's numbers, evolve it, teleport to any map of the extended story, heal it, save or load. SELECT with L1/R1 changes the partner and with L2/R2 jumps between maps. It is off by default."
@@ -733,6 +839,10 @@
    "ca": {
     "title": "Un menú de trucs, apagat fins que el demanis",
     "body": "Activa CHEATS a OPTIONS i prem SELECT a la pausa: suma bits, satisfés totes les necessitats, edita els números del teu company, fes-lo evolucionar, teletransporta't a qualsevol mapa de la història estesa, cura'l, desa o carrega. SELECT amb L1/R1 canvia de company i amb L2/R2 salta entre mapes. Ve apagat per defecte."
+   },
+   "zh-hans": {
+    "title": "默认关闭的作弊菜单",
+    "body": "在OPTIONS（选项）中打开CHEATS（作弊），暂停时按SELECT，即可添加比特、满足各种需求、编辑搭档数值、进化、传送到扩展故事中的任意地图、治疗、存档或读档。按住SELECT配合L1/R1切换搭档，配合L2/R2切换地图。默认关闭。"
    }
   },
   {
@@ -769,11 +879,34 @@
    "ca": {
     "title": "Errors de l'original, arreglats",
     "body": "Un domador anomenat B ja no apareix com a «Bayer» a la llista de partides. HAPPINESS es dibuixa sencera a la pantalla d'estat. Els noms llargs hi caben: «MetalGreymonVirus» ja no es talla en «MetalGreymonVi», ni els noms d'objectes a les llistes, i la caixa d'«après» del gimnàs mostra el nom sencer de la tècnica. Una copa de torneig ja no penja el joc en alguns emuladors, i △ en una pregunta sense opcions per triar ja no executa brossa de l'script."
+   },
+   "zh-hans": {
+    "title": "修复原版错误",
+    "body": "名字为B的驯兽师，不再在存档列表中显示成“Bayer”。状态页完整显示HAPPINESS。长名称也能完整显示：“MetalGreymonVirus”不再被截成“MetalGreymonVi”，道具列表不再截短名称，健身房的“学会了”提示也能显示完整招式名。修复了某项大赛在部分模拟器上卡死的问题；对没有选项的问题按△，也不再误执行无效脚本数据。"
    }
   },
   {
    "id": "naming",
-   "media": [{"type": "image", "src": {"en": "media/clips/naming-en.jpg", "es": "media/clips/naming-es.jpg"}, "alt": {"en": "The name keyboard with letters, numbers and symbols", "es": "El teclado de nombres con letras, números y símbolos", "pt-br": "O teclado de nomes com letras, números e símbolos", "fr": "Le clavier de noms avec lettres, chiffres et symboles", "de": "Die Namenstastatur mit Buchstaben, Zahlen und Symbolen", "it": "La tastiera dei nomi con lettere, numeri e simboli", "ja": "文字、数字、記号が使える名前入力キーボード", "ca": "El teclat de noms amb lletres, números i símbols"}}],
+   "media": [
+    {
+     "type": "image",
+     "src": {
+      "en": "media/clips/naming-en.jpg",
+      "es": "media/clips/naming-es.jpg"
+     },
+     "alt": {
+      "en": "The name keyboard with letters, numbers and symbols",
+      "es": "El teclado de nombres con letras, números y símbolos",
+      "pt-br": "O teclado de nomes com letras, números e símbolos",
+      "fr": "Le clavier de noms avec lettres, chiffres et symboles",
+      "de": "Die Namenstastatur mit Buchstaben, Zahlen und Symbolen",
+      "it": "La tastiera dei nomi con lettere, numeri e simboli",
+      "ja": "文字、数字、記号が使える名前入力キーボード",
+      "ca": "El teclat de noms amb lletres, números i símbols",
+      "zh-hans": "包含字母、数字和符号的取名键盘"
+     }
+    }
+   ],
    "en": {
     "title": "A name keyboard like a phone's",
     "body": "Three pages: letters, accents and symbols (♥ ★ ♪ included). Naming your partner is optional: skip it and it keeps its species name through evolutions and rebirths. A new game asks you, through Jijimon, whether to name it."
@@ -805,11 +938,34 @@
    "ca": {
     "title": "Un teclat de noms com el del mòbil",
     "body": "Tres pàgines: lletres, accents i símbols (♥ ★ ♪ inclosos). Posar nom al company és opcional: si no ho fas, conserva el nom de la seva espècie en les evolucions i les reencarnacions. Una partida nova t'ho pregunta, per boca de Jijimon."
+   },
+   "zh-hans": {
+    "title": "像手机一样的取名键盘",
+    "body": "共有三页：字母、重音字母和符号（包括♥ ★ ♪）。搭档取名可跳过，跳过后会在进化和转生时始终采用当前种族名。新游戏中，公公兽会询问是否取名。简体中文也保留拉丁字母键盘，用于输入名字。"
    }
   },
   {
    "id": "amount",
-   "media": [{"type": "image", "src": {"en": "media/clips/amount-en.jpg", "es": "media/clips/amount-es.jpg"}, "alt": {"en": "Choosing how many items to trade", "es": "Elegir cuántos objetos cambiar", "pt-br": "Escolher quantos itens trocar", "fr": "Choisir combien d'objets échanger", "de": "Auswählen, wie viele Gegenstände getauscht werden", "it": "Scegliere quanti oggetti scambiare", "ja": "交換するアイテムの数を選ぶ画面", "ca": "Triar quants objectes canviar"}}],
+   "media": [
+    {
+     "type": "image",
+     "src": {
+      "en": "media/clips/amount-en.jpg",
+      "es": "media/clips/amount-es.jpg"
+     },
+     "alt": {
+      "en": "Choosing how many items to trade",
+      "es": "Elegir cuántos objetos cambiar",
+      "pt-br": "Escolher quantos itens trocar",
+      "fr": "Choisir combien d'objets échanger",
+      "de": "Auswählen, wie viele Gegenstände getauscht werden",
+      "it": "Scegliere quanti oggetti scambiare",
+      "ja": "交換するアイテムの数を選ぶ画面",
+      "ca": "Triar quants objectes canviar",
+      "zh-hans": "选择道具交换数量"
+     }
+    }
+   ],
    "en": {
     "title": "Say how many you want",
     "body": "The item shop's card machine, the card packs and Mojyamon's trades open an amount box: change it by one or by ten, up to the most you have or can carry."
@@ -841,6 +997,10 @@
    "ca": {
     "title": "Tria quants en vols",
     "body": "La màquina de cartes de la botiga, els sobres de cartes i els intercanvis de Mojyamon obren una caixa de quantitat: canvia-la d'un en un o de deu en deu, fins al màxim que tinguis o et càpiga."
+   },
+   "zh-hans": {
+    "title": "一次选好数量",
+    "body": "道具店的卡片贩卖机、卡包和毛人兽的交换都会打开数量框，可每次增减一个或十个，最多选到你持有或能携带的数量。"
    }
   }
  ],

@@ -35,7 +35,7 @@
     "poop_size": 8,
     "favorite_food": "Digianchovy",
     "sleep_cycle": "19:00-04:00",
-    "favored_region": 1,
+    "favored_region": 4,
     "training_type": "even",
     "birth_weight": 15,
     "status_screen_position": [450, 240, -1760],
@@ -46,20 +46,20 @@
     "from": [16],
     "to": [107, 188, 242, 249],
     "requirements": {
-      "digimon": 16,
-      "hp": -1,
+      "digimon": -1,
+      "hp": 1,
       "mp": -1,
       "offense": -1,
-      "defense": 1,
+      "defense": -1,
       "speed": -1,
       "brain": -1,
       "care": 0,
-      "weight": 26,
+      "weight": 4,
       "discipline": -1,
       "happiness": -1,
       "battles": -1,
       "techs": 0,
-      "flags": 0
+      "flags": 16
     },
     "gains": {"hp": 500, "mp": 500, "offense": 50, "defense": 50, "speed": 50, "brains": 50}
   }

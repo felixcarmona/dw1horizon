@@ -1,0 +1,38 @@
+From 43cf7ae315a6e7d557eda52d679bcc60ad4b8360 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 5 Nov 2026 20:02:12 +0000
+Subject: [PATCH] Draw food sickness messages without a fixed-size buffer
+
+---
+ src/main/item.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/main/item.c b/src/main/item.c
+index 5e1dfac..6517294 100644
+--- a/src/main/item.c
++++ b/src/main/item.c
+@@ -2895,7 +2895,7 @@ void handleItemSickness(int16_t chance)
+ #if !VERSION_IS(US)
+ 	int32_t halfLen;
+ #else
+-	char buf[0x18];
++	int32_t nameWidth;
+ #endif
+ 
+ 	r = randomLimit(careDie(MOD_CARE_FOOD_SICK_DIE));
+@@ -2917,9 +2917,9 @@ void handleItemSickness(int16_t chance)
+ 		setTextColor(1);
+ 		drawString(STR_IS_SICK, halfLen * 12, 0x78);
+ #else
+-		sprintf(buf, NAME_FORMAT, PARTNER_ENTITY.name);
+-		strcat(buf, STR_IS_SICK);
+-		drawString(buf, 0, 0x78);
++		/* Draw translated text without appending it to a fixed-size name buffer. */
++		nameWidth = drawStringMode(PARTNER_ENTITY.name, 0, 0x78, FIT_VANILLA);
++		drawString(STR_IS_SICK, nameWidth, 0x78);
+ #endif
+ 	}
+ }
+-- 
+2.55.0
+

@@ -230,7 +230,7 @@ happiness +2 (`item.c:2894`). Stat caps are 9999 HP/MP and 999 for the rest.
 | 89 | Fertilizer | 4 | F | 5000 | Vegiemon (25) | |
 | 90 | Koga laws | 4 | F | 5000 | Ninjamon (58) | |
 | 91 | Waterbottle | 4 | F | 5000 | Seadramon (10) | merit 500 |
-| 92 | North Star | 4 | F | 5000 | Whamon (24) | |
+| 92 | North Star | 4 | F | 5000 | Whamon (24); Champion required with NEW DIGIMON on, Rookie with off | tournament cup 14; meritValue 0 |
 | 93 | Red Shell | 4 | F | 5000 | Shellmon (35) | merit 500 |
 | 94 | Hard Scale | 4 | F | 5000 | Coelamon (49) | merit 500 |
 | 95 | Bluecrystal | 4 | F | 5000 | Garurumon (22) | |
@@ -262,7 +262,7 @@ happiness +2 (`item.c:2894`). Stat caps are 9999 HP/MP and 999 for the rest.
 | 121 | Rain Plant | 5 | FB | 1000 | +1000 MP (`handleFood` case `0x79`, no energy or weight) | recyclable |
 | 122 | Steak | 0 | F | 1000 | energy +32, +1000 HP, 20 % chance of sickness (`0x7A`) | recyclable |
 | 123 | Frig Key | 5 | – | 100 | no handler; `itemColor 0xFF`: "Use" is never enabled | cannot be dropped |
-| 124 | AS Decoder | 5 | – | 500 | same | cannot be dropped |
+| 124 | Dolph Fin | 4 | F | 5000 | Dolphmon (238); Rookie required, NEW DIGIMON on | unused AS Decoder slot; group 3 once/save; existing blue item sprite; meritValue 0 |
 | 125 | Giga Hand | 4 | F | 0 | Gigadramon (64); accepted only at level 4 (`partner_impl.c:1426`) | no price; kit ×50 |
 | 126 | Noble Mane | 4 | F | 0 | Panjyamon (63); only at level 3 | kit ×50 |
 | 127 | Metalbanana | 4 | F | 0 | MetalEtemon (65); only at level 4 | kit ×80 |
@@ -326,17 +326,20 @@ consumed (`partner.c:497`). "Merit N" = bought in the merit shop for N points;
   `ITEM_FUNCTIONS[type]`, `removeOneSelectedItem` (1 unit) and `partnerHandleFoodFeed`
   (`partner.c:486-500`): eating when not hungry costs happiness −3 and discipline −2
   (`partner_impl.c:1622`); the rest is raising.
-- Care menu (our build, patches 0150–0155, 0158 and 0312, `mod_feed.c`): on the map, X in front of the partner, checked
-  before NPCs and machines, lists, in the inventory's
+- Care menu (our build, patches 0150–0155, 0158 and 0312, `mod_feed.c`): on the map, Square at any partner distance or facing, after
+  map interactions have been checked, lists, in the inventory's
   layout and most urgent first (the cursor on it), Sleep when it is sleepy and the items for the needs it has,
   nothing else (cures when injured or sick, Port. potty when it needs to go, food only when hungry with its
   favourite first in gold, field HP/MP items when short of the maximum); a second description line warns of a cure
   that may not work or marks the favourite food. It gives the chosen item through
   `startFeedingItem` as above (refusals included) or puts it to sleep as the triangle menu does. Nothing to offer:
-  X does nothing. With a fair scolding pending (`ITEM_SCOLD_FLAG` 1, patches 0152–0153) Scold heads the list (the
+  Square does nothing. With a fair scolding pending (`ITEM_SCOLD_FLAG` 1, patches 0152–0153) Scold heads the list (the
   triangle menu's Scold), and a refusal of the item the menu gave opens the menu again with Scold under the cursor.
-  While X would open it, the dialogue box's X button is drawn beside the condition bubbles (patch 0158, `bubble.c`; alone where the
-  bubbles would be when there is none).
+  While Square would open it, the native round cap with a pink Square is drawn beside the condition bubbles
+  (`bubble.c`; alone where the bubbles would be when there is none), with the same position, size and animation.
+  Its three frames and palette are separate from the shared dialogue/confirm resources. Circle/Cross remains
+  talking/interacting; Confirm and Cancel inside care follow JAPANESE CONTROLS. Other Square handlers in menus
+  and battle remain unchanged.
 - Battle: `startThrowingItem` (`main.c:4175`) removes 1 unit immediately, the item flies
   for 24 frames (`ITEM_THROW_HEIGHT`) and on landing runs the handler (`:4217`). Healing
   handlers do nothing at HP 0 except Restore/Sup.restore (`item.c:2304`), which revive.
@@ -392,7 +395,12 @@ consumed (`partner.c:497`). "Merit N" = bought in the merit shop for N points;
   `MOJYAMON_ITEMS_GIVE→GET`: Digimushrm→med.recovery, Supercarrot→Omnipotent,
   Happymushrm→Hair grower, Giant Meat→Auto Pilot, Black trout→Restore, Hispeed dsk→Medicine,
   Omnipotent→S.Off.disk, med.recovery→S.Def.disk, Digianchovy→S.speed.disk; each one
-  once (triggers 5–13; all nine set 14, `:1727`).
+  once (triggers 5–13; all nine set 14, `:1727`). These original flags record first completion,
+  rather than limiting repeat trades. Horizon's current [trade table](../mods/balance.md#61-the-economy-rule)
+  uses saved daily flags 789–796 for eight rows, permanent completion flag 13 for the Dolph Fin row,
+  and caps every amount box at one. Bit 797 remains reserved/cleared for compatibility. Dolph Fin targets Dolphmon
+  (238) through the fourth custom rule; unavailable imported targets are refused. North Star stays Whamon’s
+  arena reward, and the native USA eligibility check reads the owned native target table directly.
 - Routine 10, `tickBirdraTransport` (`:913`): 6 destinations `{map, exit, trigger, cost}`
   = (38, 1000), (70, 1000), (79, 1500), (93, 2000), (119, 2500), (105, 2500); only
   those whose trigger is set; charges `SHOP_VARIABLE` and jumps to section `0x4E3` of script 0.

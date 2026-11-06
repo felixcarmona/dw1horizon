@@ -1,0 +1,39 @@
+From e4c58eff45f6689f57d8a30fbab32727344654a6 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 5 Nov 2026 00:27:34 +0000
+Subject: [PATCH] Render empty Chinese battle move slots with the resident font
+
+---
+ src/main/chinese.c | 2 ++
+ src/vs/vs_select.c | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/chinese.c b/src/main/chinese.c
+index c561925e..e286b8f4 100644
+--- a/src/main/chinese.c
++++ b/src/main/chinese.c
+@@ -245,6 +245,8 @@ POLY_FT4 *zhVsText(POLY_FT4 *prim, char *text, int32_t x, int32_t y, int32_t col
+ {
+     uint16_t code;
+     int32_t n = 0, top, bottom, local, cell;
++    /* 未装备: the legacy empty-move label has no translated text-bank entry. */
++    if (!text) text = "\xA5\x61\xA8\xAB\xA2\xD5";
+     while (*text) {
+         if (isAsciiEncoded(text)) {
+             code = convertAsciiToJis((uint8_t)*text++);
+diff --git a/src/vs/vs_select.c b/src/vs/vs_select.c
+index 709b52f2..1f499cbb 100644
+--- a/src/vs/vs_select.c
++++ b/src/vs/vs_select.c
+@@ -878,7 +878,7 @@ void VS__renderSelectDigimonPlayer(id)
+ 		for (j = 0; j < 3; j++) {
+ 			if (fighter->moves[j] == 0xff) {
+ 				strcpy(buf, STR_NOT_EQUIPPED);
+-				text = (uint16_t *)buf;
++				text = MOD_LANG == MOD_LANG_ZH ? NULL : (uint16_t *)buf;
+ 			} else {
+ 				moveId = DIGI_PARA(registeredSpecies(fighter)).moves[fighter->moves[j] - 0x2e];
+ 				text = (uint16_t *)MOVE_NAMES[moveId];
+-- 
+2.55.0
+

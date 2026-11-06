@@ -1,4 +1,4 @@
-From 7a3acbb52d73f5f4bdb642a4d082af63963195bd Mon Sep 17 00:00:00 2001
+From 41775bc4f82941ce870c5fc60d7edd9317866c51 Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Thu, 5 Nov 2026 08:06:44 +0000
 Subject: [PATCH] Keep the rebirth species fallback available after other
@@ -10,11 +10,11 @@ Subject: [PATCH] Keep the rebirth species fallback available after other
  2 files changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/config/us/overlay.ld b/config/us/overlay.ld
-index ad18290..e92d34a 100644
+index fb0014c6..231b7b87 100644
 --- a/config/us/overlay.ld
 +++ b/config/us/overlay.ld
-@@ -967,7 +967,6 @@ SECTIONS
-             BUILD_DIR/src/main/main_menu.c.o(.text.modOptionCount);
+@@ -974,7 +974,6 @@ SECTIONS
+             BUILD_DIR/src/main/main_menu.c.o(.text.modOptionCount* .text.setRegisteredSpecies*);
              BUILD_DIR/src/main/main_menu.c.o(.text.swapPartnerSpecies);
              BUILD_DIR/src/main/mod_options.c.o(.text.modFrameRate);
 -            BUILD_DIR/src/main/mod_species.c.o(.text.getSpeciesVanillaAs);
@@ -22,10 +22,10 @@ index ad18290..e92d34a 100644
              . = ALIGN(., 4);
  
 diff --git a/src/main/mod_species.c b/src/main/mod_species.c
-index f4072e1..5b7ab45 100644
+index f77441d7..a102a249 100644
 --- a/src/main/mod_species.c
 +++ b/src/main/mod_species.c
-@@ -127,6 +127,7 @@ int32_t isVanillaSpecies(int32_t type)
+@@ -128,6 +128,7 @@ int32_t isVanillaSpecies(int32_t type)
  	return (uint32_t)type < NUM_DIGIMON && ((SPECIES_VANILLA[type >> 3] >> (type & 7)) & 1);
  }
  

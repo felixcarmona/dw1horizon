@@ -57,6 +57,15 @@ is translated directly from our Spanish. The first launch asks for a language
 with native names and flags when no saved preferences exist. Saving remembers
 it; OPTIONS can change it later. Without a saved game it asks again on restart.
 
+## Quick care controls
+
+In the field, press **Square** when the pink Square badge is available to open
+quick care, even when your partner is far away. Opening the list does not use an
+item: choose an entry and confirm to give it. Circle with JAPANESE CONTROLS on,
+or Cross with it off, talks to people and interacts with machines and objects.
+Square keeps its existing uses inside menus and battles, including evolution
+requirements, Item Bank `all`, and the finisher.
+
 ## Bring your own disc
 
 You need a copy of one of these discs, dumped from your own disc as a `.bin` + `.cue` (raw image, "MODE2/2352"),

@@ -63,7 +63,7 @@ GROUPED = {'cards': ['cards', 'cardPrices'],
            'training': ['training', 'training2'],
            'training-gains': ['trainGain', 'train2Gain', 'trainRules', 'train2Rules'],
            'vs-unlock': ['vsUnlock'],
-           'evolution-rules': ['evolutionTiming', 'evolutionFresh', 'evolutionUltimate', 'evolutionSpecial', 'evolutionRules', 'evolutionItemRules', 'evolutionFormula']}
+           'evolution-rules': ['evolutionTiming', 'evolutionRookieWeights', 'evolutionFresh', 'evolutionUltimate', 'evolutionSpecial', 'evolutionRules', 'evolutionItemRules', 'evolutionFormula']}
 # one value written to several copies of a table (the BTL, STD and VS overlays; TRN and TRN2)
 COPIES = {'auraTypes': ['auraTypesStd', 'auraTypesVs'], 'slotReels': ['slotReelsb'], 'slotAssist': ['slotAssistb']}
 SCREEN_KEYS = ['id', 'file', 'tims8', 'tims4', 'sound_bank', 'day_night', 'reads_digimon', 'flag20', 'doors', 'toilet',
@@ -559,6 +559,8 @@ def build_map(name, data, maps=None):
                                                    f'(a deleted middle slot keeps its place with "species": null)')
     m.digimon = [json_to_slot(i, o, c['wild'], c['ids'], f'{x["_path"]}: slot {i}') for i, o in enumerate(slots)]
     m.digimon_count = len(m.digimon)
+    from map_regions import apply
+    apply(m, name)
     return m.build()
 
 

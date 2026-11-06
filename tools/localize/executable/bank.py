@@ -11,12 +11,13 @@ codes: gen_text encodes every string with the map, and the executable's own stri
 to the game's font. For TEXT=us the text part is empty: the headers, hence the executable, are the ones without a bank.
 
 Not taken from a source (they stay the build's): the species names (main.DIGIMON_NAMES.*, from content/species: the
-names policy), and a name that does not fit its record (ITEM_NAMES: 19 bytes) or, an item's, the lists (96 pixels even
+names policy), and a name that does not fit its record (ITEM_NAMES: 19 bytes) or, an item's, the lists (93 pixels even
 condensed: docs/mods/font.md "Item names"); both are listed in the report."""
 import json, os, re, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
+sys.path.insert(0, ROOT)
 sys.path.insert(0, os.path.join(ROOT, 'tools'))
 # record sizes of the embedded tables (tools/localize/executable/extract.py EMBEDDED): the text and its NUL must fit
 SIZES = {'main.ITEM_NAMES.': 20, 'main.ITEM_MENU_LABELS.': 8, 'main.STAT_LABELS.': 12}
@@ -42,7 +43,7 @@ VERBATIM = ('kar.KAR_D_8005ABB8',                          # curling: two option
             'shop.MAIN_D_801307CC',                         # Mojyamon's trade header: two crops at 0 and 0x42 px (script_menu.c)
             'main.STR_YEAR_DAY', 'main.STR_YES_NO', 'main.STR_YES_NO_SPACED',
             'main.CHART_STR_READY')                         # the chart card's verdict: "N of 4" + two spaces + "ready"
-ITEM_NAME, ITEM_LIST_W = 'main.ITEM_NAMES.', 96             # every item list draws a name within 96 px (ITEM_FIELD_W)
+ITEM_NAME, ITEM_LIST_W = 'main.ITEM_NAMES.', 93             # narrowest shop list: 0x69 - 12; other lists allow 96
 # the format codes of every string of the US executable, {key: [codes]} (no text: committed), so the check that a source keeps
 # them needs no text/us/ (the base disc may be another release); `us-codes` makes it again from text/us/names.json
 US_CODES = os.path.join(HERE, 'us-format-codes.json')
@@ -112,8 +113,8 @@ def list_width(name, font='original'):
     if font in ('a', 'b'):
         own = fontgen.text_width(name, font) - fontgen.GAP
         if font == 'b': return own
-        return min([own] + [fontgen.fit_layout(name, mode)[1] for mode in (1, 2)])
-    return min(fontgen.fit_layout(name, mode)[1] for mode in range(3))
+        return min([own] + [fontgen.fit_layout(name, mode, metrics_only=True)[1] for mode in (1, 2)])
+    return min(fontgen.fit_layout(name, mode, metrics_only=True)[1] for mode in range(3))
 
 
 def fit_keeping_codes(tb, k, v):
@@ -132,7 +133,13 @@ def fit_keeping_codes(tb, k, v):
 def exe_bank(source, glyphs=None, exe_font='original'):
     """-> (bank dict, [(key, why it stays the build's)]). glyphs: how many extra glyphs the executable has (None: all);
     exe_font: its font (original, a, b: docs/mods/font.md "Fonts"), which measures the item names."""
-    font = font_map(glyphs)
+    chinese = source == 'zh-hans'
+    if chinese:
+        from tools.chinese import encoding, repertoire, row_metrics, font_glyphs
+        font = {char: f'{code:04X}' for char, code in encoding(repertoire()).items()}
+        exe_font = 'b'
+    else:
+        font = font_map(glyphs)
     if source == 'us': return {'font': font, 'text': {}}, []
     p = os.path.join(ROOT, 'text', source, 'names.json')
     if not os.path.exists(p):
@@ -141,10 +148,14 @@ def exe_bank(source, glyphs=None, exe_font='original'):
         raise SystemExit(f'TEXT={source}: {os.path.relpath(p, ROOT)} does not exist: python3 tools/dws.py extract-text YOUR-DISC')
     from dws import backend as BE
     from dws.textbank import TextBank, CJK
+    BE.set_font('original')
     n = len(BE.EXTRA_ORDER) if glyphs is None else min(glyphs, len(BE.EXTRA_ORDER))
     BE.FONT.update({'extra': True, 'glyphs': n, 'chars': frozenset(BE.EXTRA_ORDER[:n]), 'of': f'--font-glyphs {n}',
                     'name': exe_font})
     tb = TextBank('en', 'us')
+    if chinese:
+        from tools.chinese import configure_compiler
+        configure_compiler(BE)
     src = json.load(open(p, encoding='utf-8'))
     if source not in ('us', 'ours', 'jp', 'jp-rev1', 'es-fan'):      # a language of ours (text/es/): what it lacks stays our English
         po = os.path.join(ROOT, 'text', 'ours', 'names.json')
@@ -153,23 +164,31 @@ def exe_bank(source, glyphs=None, exe_font='original'):
     out, kept = {}, []
     for k, v in src.items():
         if k.startswith('_') or not isinstance(v, str): continue
-        if k.startswith(KEEP): kept.append((k, 'species names come from content/species')); continue
+        if k.startswith(KEEP) and not chinese: kept.append((k, 'species names come from content/species')); continue
         if CJK.search(v) and set(CJK.findall(v)) - BE.FONT['chars']:
             kept.append((k, 'Japanese characters missing from the target font')); continue
         if k in codes and codes[k] != FORMAT.findall(v):
             kept.append((k, 'its format codes differ from the US executable\'s (' + ' '.join(codes[k]) + ')')); continue
-        if k.startswith(MAP_NAME): t = centre_map_name(tb.fit(k, v))
-        elif k in VERBATIM: t = fit_verbatim(tb, k, v)
+        if k.startswith(MAP_NAME): t = tb.fit(k,v).strip() if chinese else centre_map_name(tb.fit(k, v))
+        elif k in VERBATIM:
+            if chinese:
+                from tools.localize.executable.chinese_layout import align
+                v = align(k,v)
+            t = fit_verbatim(tb, k, v)
         else: t = fit_keeping_codes(tb, k, v)
-        t = ascii_glyphs(t, font).translate(SJIS_LABELS)
+        t = (t if chinese else ascii_glyphs(t, font)).translate(SJIS_LABELS)
         size = next((n for pre, n in SIZES.items() if k.startswith(pre)), None)
         if size is not None and encoded_len(t, font) > size - 1:
             kept.append((k, f'{encoded_len(t, font)} bytes; the record holds {size - 1}')); continue
-        if k.startswith(ITEM_NAME) and list_width(v, exe_font) > ITEM_LIST_W:
-            kept.append((k, f'{list_width(v, exe_font)} px even condensed; the item lists draw {ITEM_LIST_W}')); continue
+        if k.startswith(ITEM_NAME):
+            pixels = row_metrics(v, font_glyphs())[0] if chinese else list_width(v, exe_font)
+            if pixels > ITEM_LIST_W:
+                kept.append((k, f'{pixels} px; the item lists draw {ITEM_LIST_W}')); continue
         out[k] = t
     if tb.unfit: kept.append(('(characters)', 'dropped, no glyph: ' + ' '.join(sorted(tb.unfit))))
-    return {'font': font, 'text': out}, kept
+    bank = {'font': font, 'text': out}
+    if chinese:bank['encoding'] = 'dwzh-1'
+    return bank, kept
 
 
 def main(argv):

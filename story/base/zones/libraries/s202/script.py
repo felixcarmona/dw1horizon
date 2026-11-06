@@ -11,260 +11,423 @@ def enter():    # section 254
 
 @lib.on_step(0)
 def step0():    # section 51
+    # Shift scratch: p116 item; p117 offer and p118 budget encode markup + 3
+    # (0 = -30%, 8 = +50%); p119 is the single retry. p123 counts visits once.
+    # p113..115 are the dispatcher deck; p110 and p120 are temporary counters.
     dws(r"""
         p123 += 1;
+        p119 = 0;
         load_digimon(species("Muchomon"));
         set_digimon(species("Muchomon"), 4, 0);
         delay(20);
         entity_walk_to(9, -501, -508, 0, 0);
         wait_for_entity(9);
         entity_look_at_entity(9, tamer);
-        store_random(p110, 99);
-        unless (p110 <= 31) goto l1;
-        goto l3;
-        l1:
-        unless (p110 <= 66) goto l2;
-        goto l48;
-        l2:
-        goto l92;
-        end_section();
-        l3:
+        store_random(p118, 7);
+        p118 += 1;
+        p247 = 9;
+        p248 = 3;
+        unless (p118 >= 5) goto low_face;
+        p248 = 0;
+        low_face:
+        arrival_face:
+        call_routine(routine("monochromon_mood_bubble"));
+        delay(20);
+        unless (p116 == 0) goto request_1;
         set_dialog_owner(9);
         show_textbox(text("s202.sec51.u0"));
         set_dialog_owner(tamer);
         show_textbox(text("s202.sec51.u1"));
-        l4:
-        p247 = 9;
-        p248 = 5;
-        call_routine(routine("monochromon_mood_bubble"));
-        delay(10);
-        p117 = 6;
-        set_dialog_owner(255);
-        set_selection(l5, l10, l11, text("s202.sec51.m0.o0"), text("s202.sec51.m0.o1"), text("s202.sec51.m0.o2"));
-        end_selection();
+        goto price_menu;
+        request_1:
+        unless (p116 == 1) goto request_2;
+        set_dialog_owner(9);
+        show_textbox(text("s202.sec51.u26"));
         set_dialog_owner(tamer);
-        show_textbox(text("s202.sec51.u2"));
-        goto l4;
-        l5:
-        store_random(p110, 4);
-        unless (p110 <= 0) goto l6;
+        show_textbox(text("s202.sec51.u27"));
+        goto price_menu;
+        request_2:
+        unless (p116 == 2) goto request_3;
+        set_dialog_owner(9);
+        show_textbox(text("s202.sec51.u50"));
+        set_dialog_owner(tamer);
+        show_textbox(text("s202.sec51.u51"));
+        goto price_menu;
+        request_3:
+        price_menu:
+        set_dialog_owner(255);
+        unless (p116 == 0) goto price_item_1;
+        set_selection(raise_0, offer_3, lower_0, text("s199.sec51.m0.o0"), text("s199.sec51.m0.o1"), text("s199.sec51.m0.o2"));
+        end_selection();
+        goto price_menu;
+        price_item_1:
+        unless (p116 == 1) goto price_item_2;
+        set_selection(raise_1, offer_3, lower_1, text("s199.sec51.m10.o0"), text("s199.sec51.m10.o1"), text("s199.sec51.m10.o2"));
+        end_selection();
+        goto price_menu;
+        price_item_2:
+        unless (p116 == 2) goto price_item_3;
+        set_selection(raise_2, offer_3, lower_2, text("s199.sec51.m20.o0"), text("s199.sec51.m20.o1"), text("s199.sec51.m20.o2"));
+        end_selection();
+        goto price_menu;
+        price_item_3:
+        goto price_menu;
+        raise_0:
+        set_selection(offer_4, offer_5, offer_6, raise_more_0, text("s199.sec51.m5.o0"), text("s199.sec51.m4.o0"), text("s199.sec51.m3.o0"), text("s199.sec51.m0.o0"));
+        end_selection();
+        goto price_menu;
+        raise_more_0:
+        set_selection(offer_7, offer_8, text("s199.sec51.m2.o0"), text("s199.sec51.m1.o0"));
+        end_selection();
+        goto price_menu;
+        lower_0:
+        set_selection(offer_0, offer_1, offer_2, text("s199.sec51.m9.o0"), text("s199.sec51.m8.o0"), text("s199.sec51.m7.o0"));
+        end_selection();
+        goto price_menu;
+        raise_1:
+        set_selection(offer_4, offer_5, offer_6, raise_more_1, text("s199.sec51.m15.o0"), text("s199.sec51.m14.o0"), text("s199.sec51.m13.o0"), text("s199.sec51.m10.o0"));
+        end_selection();
+        goto price_menu;
+        raise_more_1:
+        set_selection(offer_7, offer_8, text("s199.sec51.m12.o0"), text("s199.sec51.m11.o0"));
+        end_selection();
+        goto price_menu;
+        lower_1:
+        set_selection(offer_0, offer_1, offer_2, text("s199.sec51.m19.o0"), text("s199.sec51.m18.o0"), text("s199.sec51.m17.o0"));
+        end_selection();
+        goto price_menu;
+        raise_2:
+        set_selection(offer_4, offer_5, offer_6, raise_more_2, text("s199.sec51.m25.o0"), text("s199.sec51.m24.o0"), text("s199.sec51.m23.o0"), text("s199.sec51.m20.o0"));
+        end_selection();
+        goto price_menu;
+        raise_more_2:
+        set_selection(offer_7, offer_8, text("s199.sec51.m22.o0"), text("s199.sec51.m21.o0"));
+        end_selection();
+        goto price_menu;
+        lower_2:
+        set_selection(offer_0, offer_1, offer_2, text("s199.sec51.m29.o0"), text("s199.sec51.m28.o0"), text("s199.sec51.m27.o0"));
+        end_selection();
+        goto price_menu;
+        offer_0:
+        p117 = 0;
+        goto evaluate;
+        offer_1:
+        p117 = 1;
+        goto evaluate;
+        offer_2:
+        p117 = 2;
+        goto evaluate;
+        offer_3:
+        p117 = 3;
+        goto evaluate;
+        offer_4:
+        p117 = 4;
+        goto evaluate;
+        offer_5:
+        p117 = 5;
+        goto evaluate;
+        offer_6:
+        p117 = 6;
+        goto evaluate;
+        offer_7:
+        p117 = 7;
+        goto evaluate;
+        offer_8:
+        p117 = 8;
+        goto evaluate;
+        evaluate:
+        unless (p118 == 0) goto budget_1;
+        unless (p117 <= 0) goto over_0;
+        goto sale;
+        over_0:
+        unless (p119 == 0) goto offended;
+        unless (p117 <= 2) goto offended;
+        goto retry;
+        budget_1:
+        unless (p118 == 1) goto budget_2;
+        unless (p117 <= 1) goto over_1;
+        goto sale;
+        over_1:
+        unless (p119 == 0) goto offended;
+        unless (p117 <= 3) goto offended;
+        goto retry;
+        budget_2:
+        unless (p118 == 2) goto budget_3;
+        unless (p117 <= 2) goto over_2;
+        goto sale;
+        over_2:
+        unless (p119 == 0) goto offended;
+        unless (p117 <= 4) goto offended;
+        goto retry;
+        budget_3:
+        unless (p118 == 3) goto budget_4;
+        unless (p117 <= 3) goto over_3;
+        goto sale;
+        over_3:
+        unless (p119 == 0) goto offended;
+        unless (p117 <= 5) goto offended;
+        goto retry;
+        budget_4:
+        unless (p118 == 4) goto budget_5;
+        unless (p117 <= 4) goto over_4;
+        goto sale;
+        over_4:
+        unless (p119 == 0) goto offended;
+        unless (p117 <= 6) goto offended;
+        goto retry;
+        budget_5:
+        unless (p118 == 5) goto budget_6;
+        unless (p117 <= 5) goto over_5;
+        goto sale;
+        over_5:
+        unless (p119 == 0) goto offended;
+        unless (p117 <= 7) goto offended;
+        goto retry;
+        budget_6:
+        unless (p118 == 6) goto budget_7;
+        unless (p117 <= 6) goto over_6;
+        goto sale;
+        over_6:
+        unless (p119 == 0) goto offended;
+        unless (p117 <= 8) goto offended;
+        goto retry;
+        budget_7:
+        unless (p118 == 7) goto budget_8;
+        unless (p117 <= 7) goto over_7;
+        goto sale;
+        over_7:
+        unless (p119 == 0) goto offended;
+        unless (p117 <= 8) goto offended;
+        goto retry;
+        budget_8:
+        unless (p118 == 8) goto budget_9;
+        unless (p117 <= 8) goto over_8;
+        goto sale;
+        over_8:
+        unless (p119 == 0) goto offended;
+        unless (p117 <= 8) goto offended;
+        goto retry;
+        budget_9:
+        goto offended;
+        retry:
+        p119 = 1;
+        p118 -= 1;
         p247 = 9;
         p248 = 3;
         call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u3"));
-        p117 = 1;
-        set_dialog_owner(255);
-        set_selection(l14, l4, text("s202.sec51.m1.o0"), text("s202.sec51.m1.o1"));
-        end_selection();
-        goto l4;
-        l6:
-        unless (p110 <= 1) goto l7;
-        p247 = 9;
-        p248 = 2;
-        call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u4"));
-        p117 = 2;
-        set_dialog_owner(255);
-        set_selection(l16, l4, text("s202.sec51.m2.o0"), text("s202.sec51.m2.o1"));
-        end_selection();
-        goto l4;
-        l7:
-        unless (p110 <= 2) goto l8;
-        p247 = 9;
-        p248 = 2;
-        call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u5"));
-        p117 = 3;
-        set_dialog_owner(255);
-        set_selection(l18, l4, text("s202.sec51.m3.o0"), text("s202.sec51.m3.o1"));
-        end_selection();
-        goto l4;
-        l8:
-        unless (p110 <= 3) goto l9;
-        p247 = 9;
-        p248 = 1;
-        call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u6"));
-        p117 = 4;
-        set_dialog_owner(255);
-        set_selection(l20, l4, text("s202.sec51.m4.o0"), text("s202.sec51.m4.o1"));
-        end_selection();
-        goto l4;
-        l9:
-        unless (p110 <= 4) goto l10;
-        p247 = 9;
-        p248 = 1;
-        call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u7"));
-        p117 = 5;
-        set_dialog_owner(255);
-        set_selection(l22, l4, text("s202.sec51.m5.o0"), text("s202.sec51.m5.o1"));
-        end_selection();
-        goto l4;
-        l10:
-        p247 = 9;
-        p248 = 0;
-        call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u8"));
-        p117 = 6;
-        set_dialog_owner(255);
-        set_selection(l24, l4, text("s202.sec51.m6.o0"), text("s202.sec51.m6.o1"));
-        end_selection();
-        goto l4;
-        l11:
-        store_random(p110, 2);
-        unless (p110 <= 0) goto l12;
-        p247 = 9;
-        p248 = 0;
-        call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u9"));
-        p117 = 7;
-        set_dialog_owner(255);
-        set_selection(l26, l4, text("s202.sec51.m7.o0"), text("s202.sec51.m7.o1"));
-        end_selection();
-        goto l4;
-        l12:
-        unless (p110 <= 1) goto l13;
-        p247 = 9;
-        p248 = 0;
-        call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u10"));
-        p117 = 8;
-        set_dialog_owner(255);
-        set_selection(l28, l4, text("s202.sec51.m8.o0"), text("s202.sec51.m8.o1"));
-        end_selection();
-        goto l4;
-        l13:
-        unless (p110 <= 2) goto l14;
-        p247 = 9;
-        p248 = 0;
-        call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u11"));
-        p117 = 9;
-        set_dialog_owner(255);
-        set_selection(l30, l4, text("s202.sec51.m9.o0"), text("s202.sec51.m9.o1"));
-        end_selection();
-        goto l4;
-        l14:
-        store_random(p110, 99);
-        unless (p110 <= 44) goto l15;
-        goto l32;
-        l15:
-        goto l42;
-        l16:
-        store_random(p110, 99);
-        unless (p110 <= 49) goto l17;
-        goto l32;
-        l17:
-        goto l42;
-        l18:
-        store_random(p110, 99);
-        unless (p110 <= 54) goto l19;
-        goto l32;
-        l19:
-        goto l42;
-        l20:
-        store_random(p110, 99);
-        unless (p110 <= 59) goto l21;
-        goto l32;
-        l21:
-        goto l42;
-        l22:
-        store_random(p110, 99);
-        unless (p110 <= 64) goto l23;
-        goto l32;
-        l23:
-        goto l42;
-        l24:
-        store_random(p110, 99);
-        unless (p110 <= 69) goto l25;
-        goto l32;
-        l25:
-        goto l42;
-        l26:
-        store_random(p110, 99);
-        unless (p110 <= 74) goto l27;
-        goto l32;
-        l27:
-        goto l42;
-        l28:
-        store_random(p110, 99);
-        unless (p110 <= 79) goto l29;
-        goto l32;
-        l29:
-        goto l42;
-        l30:
-        store_random(p110, 99);
-        unless (p110 <= 84) goto l31;
-        goto l32;
-        l31:
-        goto l42;
-        l32:
         set_dialog_owner(9);
-        show_textbox(text("s202.sec51.u12"));
+        show_textbox(text("s199.sec51.u24"));
+        goto price_menu;
+        offended:
+        p247 = 9;
+        p248 = 4;
+        call_routine(routine("monochromon_mood_bubble"));
+        set_dialog_owner(9);
+        show_textbox(text("s199.sec51.u22"));
+        play_sound(8, 7);
+        goto leave;
+        sale:
+        set_dialog_owner(9);
+        show_textbox(text("s199.sec51.u12"));
         play_sound(8, 6);
         delay(10);
         set_textbox_size(0, 12, 3);
-        unless (p117 == 1) goto l33;
+        unless (p116 == 0) goto profit_item_1;
+        unless (p117 == 0) goto profit_0_1;
         p243 = 0;
-        p244 = 40;
+        p244 = 0;
         call_routine(routine("shopvar_add"));
-        show_textbox(text("s202.sec51.u13"));
-        l33:
-        unless (p117 == 2) goto l34;
-        p243 = 0;
-        p244 = 35;
-        call_routine(routine("shopvar_add"));
-        show_textbox(text("s202.sec51.u14"));
-        l34:
-        unless (p117 == 3) goto l35;
-        p243 = 0;
-        p244 = 30;
-        call_routine(routine("shopvar_add"));
-        show_textbox(text("s202.sec51.u15"));
-        l35:
-        unless (p117 == 4) goto l36;
-        p243 = 0;
-        p244 = 25;
-        call_routine(routine("shopvar_add"));
-        show_textbox(text("s202.sec51.u16"));
-        l36:
-        unless (p117 == 5) goto l37;
-        p243 = 0;
-        p244 = 20;
-        call_routine(routine("shopvar_add"));
-        show_textbox(text("s202.sec51.u17"));
-        l37:
-        unless (p117 == 6) goto l38;
-        p243 = 0;
-        p244 = 15;
-        call_routine(routine("shopvar_add"));
-        show_textbox(text("s202.sec51.u18"));
-        l38:
-        unless (p117 == 7) goto l39;
-        p243 = 0;
-        p244 = 10;
-        call_routine(routine("shopvar_add"));
-        show_textbox(text("s202.sec51.u19"));
-        l39:
-        unless (p117 == 8) goto l40;
+        show_textbox(text("s199.sec51.u21"));
+        goto leave;
+        profit_0_1:
+        unless (p117 == 1) goto profit_0_2;
         p243 = 0;
         p244 = 5;
         call_routine(routine("shopvar_add"));
-        show_textbox(text("s202.sec51.u20"));
-        l40:
-        unless (p117 == 9) goto l41;
-        show_textbox(text("s202.sec51.u21"));
-        l41:
+        show_textbox(text("s199.sec51.u20"));
+        goto leave;
+        profit_0_2:
+        unless (p117 == 2) goto profit_0_3;
+        p243 = 0;
+        p244 = 10;
+        call_routine(routine("shopvar_add"));
+        show_textbox(text("s199.sec51.u19"));
+        goto leave;
+        profit_0_3:
+        unless (p117 == 3) goto profit_0_4;
+        p243 = 0;
+        p244 = 15;
+        call_routine(routine("shopvar_add"));
+        show_textbox(text("s199.sec51.u18"));
+        goto leave;
+        profit_0_4:
+        unless (p117 == 4) goto profit_0_5;
+        p243 = 0;
+        p244 = 20;
+        call_routine(routine("shopvar_add"));
+        show_textbox(text("s199.sec51.u17"));
+        goto leave;
+        profit_0_5:
+        unless (p117 == 5) goto profit_0_6;
+        p243 = 0;
+        p244 = 25;
+        call_routine(routine("shopvar_add"));
+        show_textbox(text("s199.sec51.u16"));
+        goto leave;
+        profit_0_6:
+        unless (p117 == 6) goto profit_0_7;
+        p243 = 0;
+        p244 = 30;
+        call_routine(routine("shopvar_add"));
+        show_textbox(text("s199.sec51.u15"));
+        goto leave;
+        profit_0_7:
+        unless (p117 == 7) goto profit_0_8;
+        p243 = 0;
+        p244 = 35;
+        call_routine(routine("shopvar_add"));
+        show_textbox(text("s199.sec51.u14"));
+        goto leave;
+        profit_0_8:
+        unless (p117 == 8) goto profit_0_9;
+        p243 = 0;
+        p244 = 40;
+        call_routine(routine("shopvar_add"));
+        show_textbox(text("s199.sec51.u13"));
+        goto leave;
+        profit_0_9:
+        profit_item_1:
+        unless (p116 == 1) goto profit_item_2;
+        unless (p117 == 0) goto profit_1_1;
+        p243 = 0;
+        p244 = 0;
+        call_routine(routine("shopvar_add"));
+        show_textbox(text("s199.sec51.u47"));
+        goto leave;
+        profit_1_1:
+        unless (p117 == 1) goto profit_1_2;
+        p243 = 0;
+        p244 = 30;
+        call_routine(routine("shopvar_add"));
+        show_textbox(text("s199.sec51.u46"));
+        goto leave;
+        profit_1_2:
+        unless (p117 == 2) goto profit_1_3;
+        p243 = 0;
+        p244 = 60;
+        call_routine(routine("shopvar_add"));
+        show_textbox(text("s199.sec51.u45"));
+        goto leave;
+        profit_1_3:
+        unless (p117 == 3) goto profit_1_4;
+        p243 = 0;
+        p244 = 90;
+        call_routine(routine("shopvar_add"));
+        show_textbox(text("s199.sec51.u44"));
+        goto leave;
+        profit_1_4:
+        unless (p117 == 4) goto profit_1_5;
+        p243 = 0;
+        p244 = 120;
+        call_routine(routine("shopvar_add"));
+        show_textbox(text("s199.sec51.u43"));
+        goto leave;
+        profit_1_5:
+        unless (p117 == 5) goto profit_1_6;
+        p243 = 0;
+        p244 = 150;
+        call_routine(routine("shopvar_add"));
+        show_textbox(text("s199.sec51.u42"));
+        goto leave;
+        profit_1_6:
+        unless (p117 == 6) goto profit_1_7;
+        p243 = 0;
+        p244 = 180;
+        call_routine(routine("shopvar_add"));
+        show_textbox(text("s199.sec51.u41"));
+        goto leave;
+        profit_1_7:
+        unless (p117 == 7) goto profit_1_8;
+        p243 = 0;
+        p244 = 210;
+        call_routine(routine("shopvar_add"));
+        show_textbox(text("s199.sec51.u40"));
+        goto leave;
+        profit_1_8:
+        unless (p117 == 8) goto profit_1_9;
+        p243 = 0;
+        p244 = 240;
+        call_routine(routine("shopvar_add"));
+        show_textbox(text("s199.sec51.u39"));
+        goto leave;
+        profit_1_9:
+        profit_item_2:
+        unless (p116 == 2) goto profit_item_3;
+        unless (p117 == 0) goto profit_2_1;
+        p243 = 0;
+        p244 = 0;
+        call_routine(routine("shopvar_add"));
+        show_textbox(text("s199.sec51.u71"));
+        goto leave;
+        profit_2_1:
+        unless (p117 == 1) goto profit_2_2;
+        p243 = 0;
+        p244 = 100;
+        call_routine(routine("shopvar_add"));
+        show_textbox(text("s199.sec51.u70"));
+        goto leave;
+        profit_2_2:
+        unless (p117 == 2) goto profit_2_3;
+        p243 = 0;
+        p244 = 200;
+        call_routine(routine("shopvar_add"));
+        show_textbox(text("s199.sec51.u69"));
+        goto leave;
+        profit_2_3:
+        unless (p117 == 3) goto profit_2_4;
+        p243 = 1;
+        p244 = 44;
+        call_routine(routine("shopvar_add"));
+        show_textbox(text("s199.sec51.u68"));
+        goto leave;
+        profit_2_4:
+        unless (p117 == 4) goto profit_2_5;
+        p243 = 1;
+        p244 = 144;
+        call_routine(routine("shopvar_add"));
+        show_textbox(text("s199.sec51.u67"));
+        goto leave;
+        profit_2_5:
+        unless (p117 == 5) goto profit_2_6;
+        p243 = 1;
+        p244 = 244;
+        call_routine(routine("shopvar_add"));
+        show_textbox(text("s199.sec51.u66"));
+        goto leave;
+        profit_2_6:
+        unless (p117 == 6) goto profit_2_7;
+        p243 = 2;
+        p244 = 88;
+        call_routine(routine("shopvar_add"));
+        show_textbox(text("s199.sec51.u65"));
+        goto leave;
+        profit_2_7:
+        unless (p117 == 7) goto profit_2_8;
+        p243 = 2;
+        p244 = 188;
+        call_routine(routine("shopvar_add"));
+        show_textbox(text("s199.sec51.u64"));
+        goto leave;
+        profit_2_8:
+        unless (p117 == 8) goto profit_2_9;
+        p243 = 3;
+        p244 = 32;
+        call_routine(routine("shopvar_add"));
+        show_textbox(text("s199.sec51.u63"));
+        goto leave;
+        profit_2_9:
+        profit_item_3:
+        leave:
         p119 = 0;
         play_sound(0, 23);
         delay(20);
@@ -278,565 +441,6 @@ def step0():    # section 51
         delay(20);
         jump_to_file(49, 82);
         end_section();
-        l42:
-        p247 = 9;
-        p248 = 5;
-        call_routine(routine("monochromon_mood_bubble"));
-        p119 += 1;
-        store_random(p110, 99);
-        unless (p110 <= 99 && p119 >= 3) goto l43;
-        goto l46;
-        l43:
-        unless (p110 <= 49 && p119 == 2) goto l44;
-        goto l46;
-        l44:
-        unless (p110 <= 49 && p119 == 1) goto l45;
-        goto l46;
-        l45:
-        goto l47;
-        l46:
-        set_dialog_owner(9);
-        show_textbox(text("s202.sec51.u22"));
-        p119 = 0;
-        play_sound(8, 7);
-        delay(10);
-        p247 = 9;
-        p248 = 5;
-        call_routine(routine("monochromon_mood_bubble"));
-        entity_walk_to(9, -109, -853, 0, 0);
-        wait_for_entity(9);
-        unload_entity(9);
-        unload_digimon(species("Muchomon"));
-        delay(40);
-        set_dialog_owner(tamer);
-        show_textbox(text("s202.sec51.u23"));
-        fadeout_hud(0);
-        p123 += 1;
-        jump_to_file(49, 82);
-        end_section();
-        l47:
-        set_dialog_owner(9);
-        show_textbox(text("s202.sec51.u24"));
-        set_dialog_owner(tamer);
-        show_textbox(text("s202.sec51.u25"));
-        goto l4;
-        l48:
-        set_dialog_owner(9);
-        show_textbox(text("s202.sec51.u26"));
-        set_dialog_owner(tamer);
-        show_textbox(text("s202.sec51.u27"));
-        l49:
-        p247 = 9;
-        p248 = 5;
-        call_routine(routine("monochromon_mood_bubble"));
-        p117 = 6;
-        set_dialog_owner(255);
-        set_selection(l50, l55, l56, text("s202.sec51.m10.o0"), text("s202.sec51.m10.o1"), text("s202.sec51.m10.o2"));
-        end_selection();
-        set_dialog_owner(tamer);
-        show_textbox(text("s202.sec51.u28"));
-        goto l49;
-        l50:
-        store_random(p110, 4);
-        unless (p110 <= 0) goto l51;
-        p247 = 9;
-        p248 = 3;
-        call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u29"));
-        p117 = 1;
-        set_dialog_owner(255);
-        set_selection(l59, l49, text("s202.sec51.m11.o0"), text("s202.sec51.m11.o1"));
-        end_selection();
-        goto l49;
-        l51:
-        unless (p110 <= 1) goto l52;
-        p247 = 9;
-        p248 = 2;
-        call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u30"));
-        p117 = 2;
-        set_dialog_owner(255);
-        set_selection(l61, l49, text("s202.sec51.m12.o0"), text("s202.sec51.m12.o1"));
-        end_selection();
-        goto l49;
-        l52:
-        unless (p110 <= 2) goto l53;
-        p247 = 9;
-        p248 = 2;
-        call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u31"));
-        p117 = 3;
-        set_dialog_owner(255);
-        set_selection(l63, l49, text("s202.sec51.m13.o0"), text("s202.sec51.m13.o1"));
-        end_selection();
-        goto l49;
-        l53:
-        unless (p110 <= 3) goto l54;
-        p247 = 9;
-        p248 = 1;
-        call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u32"));
-        p117 = 4;
-        set_dialog_owner(255);
-        set_selection(l65, l49, text("s202.sec51.m14.o0"), text("s202.sec51.m14.o1"));
-        end_selection();
-        goto l49;
-        l54:
-        unless (p110 <= 4) goto l55;
-        p247 = 9;
-        p248 = 1;
-        call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u33"));
-        p117 = 5;
-        set_dialog_owner(255);
-        set_selection(l67, l49, text("s202.sec51.m15.o0"), text("s202.sec51.m15.o1"));
-        end_selection();
-        goto l49;
-        l55:
-        p247 = 9;
-        p248 = 0;
-        call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u34"));
-        p117 = 6;
-        set_dialog_owner(255);
-        set_selection(l69, l49, text("s202.sec51.m16.o0"), text("s202.sec51.m16.o1"));
-        end_selection();
-        goto l49;
-        l56:
-        store_random(p110, 2);
-        unless (p110 <= 0) goto l57;
-        p247 = 9;
-        p248 = 0;
-        call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u35"));
-        p117 = 7;
-        set_dialog_owner(255);
-        set_selection(l71, l49, text("s202.sec51.m17.o0"), text("s202.sec51.m17.o1"));
-        end_selection();
-        goto l49;
-        l57:
-        unless (p110 <= 1) goto l58;
-        p247 = 9;
-        p248 = 0;
-        call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u36"));
-        p117 = 8;
-        set_dialog_owner(255);
-        set_selection(l73, l49, text("s202.sec51.m18.o0"), text("s202.sec51.m18.o1"));
-        end_selection();
-        goto l49;
-        l58:
-        unless (p110 <= 2) goto l59;
-        p247 = 9;
-        p248 = 0;
-        call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u37"));
-        p117 = 9;
-        set_dialog_owner(255);
-        set_selection(l75, l49, text("s202.sec51.m19.o0"), text("s202.sec51.m19.o1"));
-        end_selection();
-        goto l49;
-        l59:
-        store_random(p110, 99);
-        unless (p110 <= 44) goto l60;
-        goto l77;
-        l60:
-        goto l87;
-        l61:
-        store_random(p110, 99);
-        unless (p110 <= 49) goto l62;
-        goto l77;
-        l62:
-        goto l87;
-        l63:
-        store_random(p110, 99);
-        unless (p110 <= 54) goto l64;
-        goto l77;
-        l64:
-        goto l87;
-        l65:
-        store_random(p110, 99);
-        unless (p110 <= 59) goto l66;
-        goto l77;
-        l66:
-        goto l87;
-        l67:
-        store_random(p110, 99);
-        unless (p110 <= 64) goto l68;
-        goto l77;
-        l68:
-        goto l87;
-        l69:
-        store_random(p110, 99);
-        unless (p110 <= 69) goto l70;
-        goto l77;
-        l70:
-        goto l87;
-        l71:
-        store_random(p110, 99);
-        unless (p110 <= 74) goto l72;
-        goto l77;
-        l72:
-        goto l87;
-        l73:
-        store_random(p110, 99);
-        unless (p110 <= 79) goto l74;
-        goto l77;
-        l74:
-        goto l87;
-        l75:
-        store_random(p110, 99);
-        unless (p110 <= 84) goto l76;
-        goto l77;
-        l76:
-        goto l87;
-        l77:
-        set_dialog_owner(9);
-        show_textbox(text("s202.sec51.u38"));
-        play_sound(8, 6);
-        delay(10);
-        set_textbox_size(0, 12, 3);
-        unless (p117 == 1) goto l78;
-        p243 = 0;
-        p244 = 240;
-        call_routine(routine("shopvar_add"));
-        show_textbox(text("s202.sec51.u39"));
-        l78:
-        unless (p117 == 2) goto l79;
-        p243 = 0;
-        p244 = 210;
-        call_routine(routine("shopvar_add"));
-        show_textbox(text("s202.sec51.u40"));
-        l79:
-        unless (p117 == 3) goto l80;
-        p243 = 0;
-        p244 = 180;
-        call_routine(routine("shopvar_add"));
-        show_textbox(text("s202.sec51.u41"));
-        l80:
-        unless (p117 == 4) goto l81;
-        p243 = 0;
-        p244 = 150;
-        call_routine(routine("shopvar_add"));
-        show_textbox(text("s202.sec51.u42"));
-        l81:
-        unless (p117 == 5) goto l82;
-        p243 = 0;
-        p244 = 120;
-        call_routine(routine("shopvar_add"));
-        show_textbox(text("s202.sec51.u43"));
-        l82:
-        unless (p117 == 6) goto l83;
-        p243 = 0;
-        p244 = 90;
-        call_routine(routine("shopvar_add"));
-        show_textbox(text("s202.sec51.u44"));
-        l83:
-        unless (p117 == 7) goto l84;
-        p243 = 0;
-        p244 = 60;
-        call_routine(routine("shopvar_add"));
-        show_textbox(text("s202.sec51.u45"));
-        l84:
-        unless (p117 == 8) goto l85;
-        p243 = 0;
-        p244 = 30;
-        call_routine(routine("shopvar_add"));
-        show_textbox(text("s202.sec51.u46"));
-        l85:
-        unless (p117 == 9) goto l86;
-        show_textbox(text("s202.sec51.u47"));
-        l86:
-        goto l41;
-        l87:
-        p247 = 9;
-        p248 = 5;
-        call_routine(routine("monochromon_mood_bubble"));
-        p119 += 1;
-        store_random(p110, 99);
-        unless (p110 <= 99 && p119 >= 3) goto l88;
-        goto l46;
-        l88:
-        unless (p110 <= 49 && p119 == 2) goto l89;
-        goto l46;
-        l89:
-        unless (p110 <= 49 && p119 == 1) goto l90;
-        goto l46;
-        l90:
-        goto l91;
-        l91:
-        set_dialog_owner(9);
-        show_textbox(text("s202.sec51.u48"));
-        set_dialog_owner(tamer);
-        show_textbox(text("s202.sec51.u49"));
-        goto l49;
-        l92:
-        set_dialog_owner(9);
-        show_textbox(text("s202.sec51.u50"));
-        set_dialog_owner(tamer);
-        show_textbox(text("s202.sec51.u51"));
-        l93:
-        p247 = 9;
-        p248 = 5;
-        call_routine(routine("monochromon_mood_bubble"));
-        p117 = 6;
-        set_dialog_owner(255);
-        set_selection(l94, l99, l100, text("s202.sec51.m20.o0"), text("s202.sec51.m20.o1"), text("s202.sec51.m20.o2"));
-        end_selection();
-        set_dialog_owner(tamer);
-        show_textbox(text("s202.sec51.u52"));
-        goto l93;
-        l94:
-        store_random(p110, 4);
-        unless (p110 <= 0) goto l95;
-        p247 = 9;
-        p248 = 3;
-        call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u53"));
-        p117 = 1;
-        set_dialog_owner(255);
-        set_selection(l103, l93, text("s202.sec51.m21.o0"), text("s202.sec51.m21.o1"));
-        end_selection();
-        goto l93;
-        l95:
-        unless (p110 <= 1) goto l96;
-        p247 = 9;
-        p248 = 2;
-        call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u54"));
-        p117 = 2;
-        set_dialog_owner(255);
-        set_selection(l105, l93, text("s202.sec51.m22.o0"), text("s202.sec51.m22.o1"));
-        end_selection();
-        goto l93;
-        l96:
-        unless (p110 <= 2) goto l97;
-        p247 = 9;
-        p248 = 2;
-        call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u55"));
-        p117 = 3;
-        set_dialog_owner(255);
-        set_selection(l107, l93, text("s202.sec51.m23.o0"), text("s202.sec51.m23.o1"));
-        end_selection();
-        goto l93;
-        l97:
-        unless (p110 <= 3) goto l98;
-        p247 = 9;
-        p248 = 1;
-        call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u56"));
-        p117 = 4;
-        set_dialog_owner(255);
-        set_selection(l109, l93, text("s202.sec51.m24.o0"), text("s202.sec51.m24.o1"));
-        end_selection();
-        goto l93;
-        l98:
-        unless (p110 <= 4) goto l99;
-        p247 = 9;
-        p248 = 1;
-        call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u57"));
-        p117 = 5;
-        set_dialog_owner(255);
-        set_selection(l111, l93, text("s202.sec51.m25.o0"), text("s202.sec51.m25.o1"));
-        end_selection();
-        goto l93;
-        l99:
-        p247 = 9;
-        p248 = 0;
-        call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u58"));
-        p117 = 6;
-        set_dialog_owner(255);
-        set_selection(l113, l93, text("s202.sec51.m26.o0"), text("s202.sec51.m26.o1"));
-        end_selection();
-        goto l93;
-        l100:
-        store_random(p110, 2);
-        unless (p110 <= 0) goto l101;
-        p247 = 9;
-        p248 = 0;
-        call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u59"));
-        set_dialog_owner(255);
-        set_selection(l115, l93, text("s202.sec51.m27.o0"), text("s202.sec51.m27.o1"));
-        end_selection();
-        goto l93;
-        l101:
-        unless (p110 <= 1) goto l102;
-        p247 = 9;
-        p248 = 0;
-        call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u60"));
-        p117 = 8;
-        set_dialog_owner(255);
-        set_selection(l117, l93, text("s202.sec51.m28.o0"), text("s202.sec51.m28.o1"));
-        end_selection();
-        goto l93;
-        l102:
-        unless (p110 <= 2) goto l103;
-        p247 = 9;
-        p248 = 0;
-        call_routine(routine("monochromon_mood_bubble"));
-        set_dialog_owner(255);
-        show_textbox(text("s202.sec51.u61"));
-        p117 = 9;
-        set_dialog_owner(255);
-        set_selection(l119, l93, text("s202.sec51.m29.o0"), text("s202.sec51.m29.o1"));
-        end_selection();
-        goto l93;
-        l103:
-        store_random(p110, 99);
-        unless (p110 <= 44) goto l104;
-        goto l121;
-        l104:
-        goto l131;
-        l105:
-        store_random(p110, 99);
-        unless (p110 <= 49) goto l106;
-        goto l121;
-        l106:
-        goto l131;
-        l107:
-        store_random(p110, 99);
-        unless (p110 <= 54) goto l108;
-        goto l121;
-        l108:
-        goto l131;
-        l109:
-        store_random(p110, 99);
-        unless (p110 <= 59) goto l110;
-        goto l121;
-        l110:
-        goto l131;
-        l111:
-        store_random(p110, 99);
-        unless (p110 <= 64) goto l112;
-        goto l121;
-        l112:
-        goto l131;
-        l113:
-        store_random(p110, 99);
-        unless (p110 <= 69) goto l114;
-        goto l121;
-        l114:
-        goto l131;
-        l115:
-        store_random(p110, 99);
-        unless (p110 <= 74) goto l116;
-        goto l121;
-        l116:
-        goto l131;
-        l117:
-        store_random(p110, 99);
-        unless (p110 <= 79) goto l118;
-        goto l121;
-        l118:
-        goto l131;
-        l119:
-        store_random(p110, 99);
-        unless (p110 <= 84) goto l120;
-        goto l121;
-        l120:
-        goto l131;
-        l121:
-        set_dialog_owner(9);
-        play_sound(8, 6);
-        delay(10);
-        set_textbox_size(0, 12, 3);
-        unless (p117 == 1) goto l122;
-        p243 = 3;
-        p244 = 32;
-        call_routine(routine("shopvar_add"));
-        show_textbox(text("s202.sec51.u62"));
-        l122:
-        unless (p117 == 2) goto l123;
-        p243 = 2;
-        p244 = 188;
-        call_routine(routine("shopvar_add"));
-        show_textbox(text("s202.sec51.u63"));
-        l123:
-        unless (p117 == 3) goto l124;
-        p243 = 2;
-        p244 = 88;
-        call_routine(routine("shopvar_add"));
-        show_textbox(text("s202.sec51.u64"));
-        l124:
-        unless (p117 == 4) goto l125;
-        p243 = 1;
-        p244 = 244;
-        call_routine(routine("shopvar_add"));
-        show_textbox(text("s202.sec51.u65"));
-        l125:
-        unless (p117 == 5) goto l126;
-        p243 = 1;
-        p244 = 144;
-        call_routine(routine("shopvar_add"));
-        show_textbox(text("s202.sec51.u66"));
-        l126:
-        unless (p117 == 6) goto l127;
-        p243 = 1;
-        p244 = 44;
-        call_routine(routine("shopvar_add"));
-        show_textbox(text("s202.sec51.u67"));
-        l127:
-        unless (p117 == 7) goto l128;
-        p243 = 0;
-        p244 = 200;
-        call_routine(routine("shopvar_add"));
-        show_textbox(text("s202.sec51.u68"));
-        l128:
-        unless (p117 == 8) goto l129;
-        p243 = 0;
-        p244 = 100;
-        call_routine(routine("shopvar_add"));
-        show_textbox(text("s202.sec51.u69"));
-        l129:
-        unless (p117 == 9) goto l130;
-        show_textbox(text("s202.sec51.u70"));
-        l130:
-        goto l41;
-        l131:
-        p247 = 9;
-        p248 = 5;
-        call_routine(routine("monochromon_mood_bubble"));
-        p119 += 1;
-        store_random(p110, 99);
-        unless (p110 <= 99 && p119 >= 3) goto l132;
-        goto l46;
-        l132:
-        unless (p110 <= 49 && p119 == 2) goto l133;
-        goto l46;
-        l133:
-        unless (p110 <= 49 && p119 == 1) goto l134;
-        goto l46;
-        l134:
-        goto l135;
-        l135:
-        set_dialog_owner(9);
-        show_textbox(text("s202.sec51.u71"));
-        set_dialog_owner(tamer);
-        show_textbox(text("s202.sec51.u72"));
-        goto l93;
-        end_script();
     """)
 
 # the section table, in the order of the original header
