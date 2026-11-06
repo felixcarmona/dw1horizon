@@ -148,13 +148,13 @@
     },
     "zones/trash-mountain/s159-165/script.dws": {
       "original_sha256": "e1e2dfa0ee0306a58af8ae9e980f177b4478c2e7c0df2e2500166d40073e5223",
-      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source; Sukamon recruitment dialogue precedes its walking departure and the recruited NPC remains absent",
+      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source; finish recruitment dialogue before the walking departure",
       "authored_sha256": "66af979347e0805a3bb48abb55445a5cc0571ae8ef9f0c08bdba7842e33254e5"
     },
     "zones/trash-mountain/s159-165/script.py": {
       "original_sha256": "06478c10d23b9dcc2a488c8964edbbf6903b545703e5e7df94b955661a80d125",
       "authored_sha256": "2f743567ab800ac8497eeb3704094141b4a9295e8e49445337d511b88f7f7072",
-      "reason": "Five-session training and narrator choice ownership; Sukamon recruitment dialogue precedes its walking departure and the recruited NPC remains absent"
+      "reason": "Five-session training and narrator choice ownership; finish recruitment dialogue before the walking departure"
     },
     "zones/ancient-glacial-region/s077-80/script.py": {
       "original_sha256": "845799c5e66bba2b18ddf0de3eeb6c8c2a57271d854f65338c43dd4ab347b3d4",
