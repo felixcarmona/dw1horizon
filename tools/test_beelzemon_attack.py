@@ -9,7 +9,7 @@ import animsheet
 import mmd
 import motionstorage
 from motiondiscidentity import changed_programs
-from tools.models.repair_beelzemon_attack import repair, SLOTS
+from tools.models.repair_beelzemon_attack import repair, SLOTS, PUNCH_SLOTS, CAST_SLOTS
 
 
 class CannonAttack(unittest.TestCase):
@@ -27,14 +27,15 @@ class CannonAttack(unittest.TestCase):
     def test_only_shared_hand_strikes_change(self):
         self.assertEqual(changed_programs(self.before, self.after), list(SLOTS))
         self.assertEqual(self.before.tmd.build(), self.after.tmd.build())
-        self.assertEqual(len({self.after.anims.table[s] for s in SLOTS}), 1)
+        for group in (PUNCH_SLOTS, CAST_SLOTS):
+            self.assertEqual(len({self.after.anims.table[s] for s in group}), 1)
 
     def test_barrel_aims_ahead_through_contact_and_recoil(self):
         for slot in SLOTS:
             frames, loop, events = animsheet.slot_frames(self.after, 31, slot)
             original, old_loop, old_events = animsheet.slot_frames(self.before, 31, slot)
             self.assertEqual((len(frames), loop, events), (len(original), old_loop, old_events))
-            for tick in range(4, 11):
+            for tick in (range(4, 11) if slot in PUNCH_SLOTS else range(10, 33)):
                 pose = [b[:] for b in frames[tick]]
                 pose[0] = [4096] * 3 + [0] * 6
                 world = mmd.bone_matrices(self.after, pose)

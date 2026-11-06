@@ -22,7 +22,9 @@ from tools.models.field_animations.articulation import replace_channels
 from tools.models.field_animations.war_greymon import align, set_rotation
 
 SID = 403
-SLOTS = (0x2e, 0x2f, 0x31, 0x33)  # All four aliases of the imported hand strike.
+PUNCH_SLOTS = (0x2e, 0x2f, 0x31, 0x33)
+CAST_SLOTS = (0x32, 0x34, 0x36, 0x37, 0x38, 0x39, 0x3a, 0x3b, 0x3d)
+SLOTS = tuple(sorted(PUNCH_SLOTS + CAST_SLOTS))
 CANNON = 21
 BARE_ARM = (16, 17, 18, 19)
 
@@ -35,16 +37,18 @@ def repair(model, skeleton):
     proofs = []
     for slot in SLOTS:
         frames, loop, events = animsheet.slot_frames(model, nb, slot)
-        if len(frames) != 15 or loop is not None:
-            raise ValueError('ordinary cannon attack requires the reviewed 15-tick punch')
+        punch = slot in PUNCH_SLOTS
+        duration, ramp, shot = (15, 4, 6) if punch else (44, 10, 18)
+        if len(frames) != duration or loop is not None:
+            raise ValueError('cannon attack requires its reviewed finite strike/cast')
         poses = deepcopy(frames)
         history = {}
         for tick, pose in enumerate(poses):
             for bone in BARE_ARM:
-                pose[bone][3:6] = idle[tick][bone][3:6]
+                pose[bone][3:6] = idle[tick % len(idle)][bone][3:6]
             # Ease out of the source ready pose, fire at its contact tick,
             # then let the cannon settle before the original recovery.
-            weight = min(1., max(0., tick / 4), max(0., (14 - tick) / 4))
+            weight = min(1., max(0., tick / ramp), max(0., (duration - 1 - tick) / ramp))
             weight = weight * weight * (3 - 2 * weight)
             if not weight:
                 continue
@@ -54,7 +58,7 @@ def repair(model, skeleton):
             current = world[CANNON, :3, :3]
             axis = current @ np.array([0., 1., 0.])
             # A small kick after the native contact frame, with a soft settle.
-            kick = 10 * max(0., 1 - (tick - 6) / 4) ** 2 if tick >= 6 else 0
+            kick = 10 * max(0., 1 - (tick - shot) / 4) ** 2 if tick >= shot else 0
             angle = math.radians(kick)
             target = np.array([0., -math.sin(angle), -math.cos(angle)])
             q = mmd.quat(*mmd.matrix_euler(align(axis, target)))
@@ -63,8 +67,8 @@ def repair(model, skeleton):
             set_rotation(pose, CANNON, parent.T @ partial @ current, history)
         original = model.anims.anims[model.anims.table[slot]]
         result.anims.table[slot] = len(result.anims.anims)
-        result.anims.anims.append(replace_channels(original, poses, loop, nb, channels, tolerance=6))
-        proofs.append(dict(slot=slot, frames=len(frames), contact_tick=6, recoil_degrees=10))
+        result.anims.anims.append(replace_channels(original, poses, loop, nb, channels, tolerance=6 if punch else 24))
+        proofs.append(dict(slot=slot, frames=len(frames), contact_tick=shot, recoil_degrees=10))
     for animation in result.anims.anims:
         animation.tail = b''
     result.anims.anims, result.anims.table = motioncyclelayer.share_identical_streams(result.anims.anims, result.anims.table)
@@ -82,8 +86,19 @@ def repair(model, skeleton):
                 for channel in range(9):
                     if (bone, channel) not in channels:
                         assert a[bone][channel] == b[bone][channel], (slot, bone, channel)
+    # Raw slot 0x30 still shares the old cast. The player provider replaces
+    # that final reference with its reviewed dash, reclaiming the old stream.
+    # Measure the consumed model, rather than rejecting this intermediate.
+    import json
+    from pathlib import Path
+    from tools.models import buster_dive
+    spec = json.loads((Path(_root) / 'content/species/403-beelzemon.json').read_text())
+    record = json.loads((Path(_root) / 'content/models/imports/models.json').read_text())[str(SID)]
+    consumed, _ = buster_dive.apply(data, spec, clip=record.get('buster_dive_clip'))
     return data, dict(changed_slots=list(SLOTS), cannon_bone=CANNON, checks=proofs,
-                      mesh_exact=True, other_channels_exact=True, storage=motionstorage.require(data, nb))
+                      mesh_exact=True, other_channels_exact=True,
+                      intermediate_storage=motionstorage.audit(data, nb),
+                      storage=motionstorage.require(consumed, nb))
 
 
 def main():

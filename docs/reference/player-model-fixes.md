@@ -155,11 +155,14 @@ already reviewed proportions and field animations. It keeps the source body anti
 wing motion, duration, loop controls and events. The bare hand retains its
 battle idle; the cannon eases into aim and recoils at the strike. Megaton Punch,
 Counter, Dynamite Kick and Sonic Jab retain their existing shared-program
-relationship. The mesh, rig, texture, technique list and damage rules stay exact.
+relationship. The casting group containing Tremor and the mechanical shots
+also aims the cannon, with its existing charge alias kept shared. The mesh, rig, texture, technique list and damage rules stay exact.
 The model delta and final provider hash both pin the repaired animation.
 
-The resident model uses 100,068 bytes, down from 100,226, within the 100,352-byte
+The resident model uses 99,738 bytes, down from 100,226, within the 100,352-byte
 partner buffer. Every sector-aligned cold animation read fits 8,192 bytes.
+The intermediate delta retains the old Buster Dive alias until the provider
+replays its reviewed dash; storage is checked on that consumed result.
 Reproduce the weapon-direction, untouched-channel and storage checks with the
 pre-edit provider output at `MODEL_REPORT_DIR/before/403.MMD`:
 
