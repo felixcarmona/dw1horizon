@@ -118,7 +118,9 @@ All the controls as in the Japanese version.
 - **Quick care.** Physical Square opens care in the field in either layout, regardless of partner distance or
   facing. The care cap's three 16×12 source frames occupy SYSTEM_W atlas holes `(240,27)`, `(240,39)` and
   `(192,96)` (TIM-relative texels); its palette is VRAM `(352,252)`. These are separate from Confirm and the
-  translated label cells. The original badge anchor, projection and animation are unchanged. Field Confirm
+  translated label cells. The build derives these copies from the native cap in `SYSTEM_W.TIM` and
+  `ETCTIM.BIN`; the normal UI load installs them, with no resident painter or new file. The original badge
+  anchor, projection and animation are unchanged. Field Confirm
   remains talking/interacting; Square inside menus and battle retains its existing context-specific actions.
 - **A Japanese base disc (patch 0241).** The Japanese disc draws a ○ in the same three frames (a flat 8x5 ellipse in
   the palette's oranges 7, 0xE, 0xF; its CLUT's 0xC and 0xD are unused). The frames tell the base (`framesButton`,

@@ -1,15 +1,15 @@
-From bb6c267e3fa711bcdf50a72242323e572af99644 Mon Sep 17 00:00:00 2001
+From abe4b57af771c61cf466da49e6c7b2664d5bd1a8 Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
-Date: Thu, 5 Nov 2026 21:50:53 +0000
+Date: Thu, 5 Nov 2026 23:27:56 +0000
 Subject: [PATCH] Use Square for field quick care with a separate pink badge
 
 ---
  include/dw/mod_options.h |  5 ++++
  src/main/bubble.c        | 11 +++----
  src/main/mod_feed.c      | 62 ++++++++--------------------------------
- src/main/mod_options.c   | 46 ++++++++++++++++++++++++++---
+ src/main/mod_options.c   |  2 +-
  src/main/tamer.c         |  6 ++--
- 5 files changed, 67 insertions(+), 63 deletions(-)
+ 5 files changed, 26 insertions(+), 60 deletions(-)
 
 diff --git a/include/dw/mod_options.h b/include/dw/mod_options.h
 index bca54dc..7dbe429 100644
@@ -184,7 +184,7 @@ index e415bf8..2f82ced 100644
  	}
  	addObject(FEED_OBJECT_ID, 0, feedTick, NULL);
 diff --git a/src/main/mod_options.c b/src/main/mod_options.c
-index 90a6f8b..acc9ecb 100644
+index 90a6f8b..74197a9 100644
 --- a/src/main/mod_options.c
 +++ b/src/main/mod_options.c
 @@ -9,7 +9,7 @@
@@ -196,78 +196,6 @@ index 90a6f8b..acc9ecb 100644
   * from the disc's own frames: the cross is painted over with the button's face and a ring drawn where it was, in the
   * red of the PlayStation's ○ (its own CLUT, modButtonClut).
   *
-@@ -167,6 +167,13 @@ static const char RING[5][7] = {
- 	"DL..LD",
- 	".DLLD.",
- };
-+static const char SQUARE[5][7] = {
-+	"LLLLLL",
-+	"L....D",
-+	"L....D",
-+	"L....D",
-+	"LDDDDD",
-+};
- static const char CROSS[5][7] = {
- 	"LD..DL",
- 	".LDDL.",
-@@ -231,7 +238,7 @@ static int32_t framesButton(uint16_t *f, int32_t made)
- 			}
- 			for (y = 0; made && y < 5; y++) {
- 				for (x = 0; x < 6; x++) {
--					c = jp ? CROSS[y][x] : RING[y][x];
-+					c = made == 2 ? SQUARE[y][x] : jp ? CROSS[y][x] : RING[y][x];
- 					if (c != '.') {
- 						setTexel(FRAMES_MADE, x0 + jp + x, y0 + y, c == 'L' ? INK_LIGHT : INK_DARK);
- 					}
-@@ -294,7 +301,9 @@ uint16_t modButtonClut(void)
- void modButtonsTimLoaded(GsIMAGE *img)
- {
- 	uint16_t *src;
--	int32_t x;
-+	uint16_t sprite[48] __attribute__((aligned(4))); /* word-aligned LoadImage scratch, no resident buffer */
-+	RECT rect;
-+	int32_t x, y, frame;
- 
- 	if (!takeFrames(img, FRAMES_DISC)) {
- 		return;
-@@ -308,7 +317,36 @@ void modButtonsTimLoaded(GsIMAGE *img)
- 		MADE_CLUT[x] = ((uint16_t *)img->clut)[FRAMES_CLUT_Y * img->cw + x];
- 		MADE_CLUT_FILLER[x] = src[(MADE_CLUT_Y - 128) * img->pw + (MADE_CLUT_X - 320) + x];
- 	}
--	FRAMES_BASE = framesButton(FRAMES_DISC, 1);
-+	FRAMES_BASE = framesButton(FRAMES_DISC, 2);
-+	if (FRAMES_BASE >= 0) {
-+		/* These atlas holes are outside the native and all localized label crops. Each cap
-+		 * keeps its original pressed-frame pixels except the Square mark. */
-+		for (frame = 0; frame < 3; frame++) {
-+			for (y = 0; y < FRAMES_ROWS; y++) {
-+				for (x = 0; x < 4; x++) {
-+					uint16_t *row = &FRAMES_MADE[y * FRAMES_WORDS + frame * 4];
-+					/* The right-edge slots store columns 1..15 plus transparent padding.
-+					 * Their unchanged left border is transparent in this care-only CLUT:
-+					 * sampling 239..255 keeps the original 16-texel span without UV wrap. */
-+					sprite[y * 4 + x] = frame == 2 ? row[x] :
-+					    (row[x] >> 4) | (x == 3 ? 0x8000 : (row[x + 1] & 15) << 12);
-+				}
-+			}
-+			setRECT(&rect, 320 + (MOD_CARE_BUTTON_U(frame) + 1) / 4, MOD_CARE_BUTTON_V(frame), 4, 12);
-+			LoadImage(&rect, (u_long *)sprite);
-+			DrawSync(0); /* the stack upload buffer may be reused only after GPU transfer */
-+		}
-+		MADE_CLUT[7] = MADE_CLUT[14] = MADE_CLUT[15] = 0; /* unused by the repainted cap */
-+		MADE_CLUT[INK_LIGHT] = 0x621f; /* pink (248,128,192) */
-+		MADE_CLUT[INK_DARK] = 0x3d14; /* dark pink (160,64,120) */
-+		setRECT(&rect, MOD_CARE_CLUT_X, MOD_CARE_CLUT_Y, 16, 1);
-+		LoadImage(&rect, (u_long *)MADE_CLUT);
-+		DrawSync(0);
-+		framesButton(FRAMES_DISC, 1); /* restore the alternate Confirm frames */
-+		for (x = 0; x < 16; x++) {
-+			MADE_CLUT[x] = ((uint16_t *)img->clut)[FRAMES_CLUT_Y * img->cw + x];
-+		}
-+	}
- 	MADE_CLUT[INK_LIGHT] = FRAMES_BASE == MOD_BUTTONS_JP ? CROSS_LIGHT : RING_LIGHT;
- 	MADE_CLUT[INK_DARK] = FRAMES_BASE == MOD_BUTTONS_JP ? CROSS_DARK : RING_DARK;
- 	FRAMES_READY = FRAMES_BASE >= 0;
 diff --git a/src/main/tamer.c b/src/main/tamer.c
 index fb49ba1..697317c 100644
 --- a/src/main/tamer.c

@@ -167,20 +167,34 @@ JAPANESE CONTROLS is on; Square is never remapped. No new glyph codes are needed
 The nine-language web care description and the player guide's controls section
 match this behavior. There was no separate care FAQ in the documentation.
 
-## Heap, VRAM and MENU estimate
+## Heap, VRAM and MENU measurements
 
-The matched full multilingual comparison measures **main_BSS_END +432 B**
-(`0x801ceb70` → `0x801ced20`), hence 432 bytes less heap. Both builds use the same
-nine-language text padding, file tables, compiler image and make arguments, with
-only the five files in the C patch restored for the baseline. MENU remains
-**53,796 B** in both builds (**55,296 B** after sector rounding).
+The resident budget is at most 100 added bytes, with no growth preferred. Every
+main-executable byte reduces the field heap, so the complete multilingual layout
+and archive-backed setup gate must be measured after merging current main.
+
+The resident Square painter has been removed. `tools/care_badge.py` derives the approved
+Square cap during the build and stores it in the two existing field UI files.
+The matched post-merge measurements below compare the complete C patch against
+the same merged sources with that patch reversed, using identical compiler,
+nine-language padding, file tables and make arguments.
+
+Merged baseline: `origin/main` at `3e7b1ef2`. The matched full nine-language
+comparison measures **main_BSS_END −64 B** (`0x801cebcc` → `0x801ceb8c`):
+heap **185,136 → 185,200 B**, with **64 B gained**. MENU is unchanged at
+**53,796 B** (**55,296 B** sector-rounded) in both builds. The comparison
+reverses only this C patch in a copy of the completed compiler tree; all merged
+main changes and generated inputs remain identical. The existing care entry
+shrinks from 384 to 264 bytes (−120 B); the condition-ring renderer gains 48 B
+for the badge coordinates. The original Confirm loader stays at 324 B and its
+frame adapter at 596 B. The final resident saving is 64 B after link alignment.
 
 | Resource | Implemented icon 1 |
 |---|---|
 | Sprite pixels | Three 16×12 frames at 4 bpp = **288 bytes VRAM** |
 | Palette | One 16-color CLUT = **32 bytes VRAM**; all variants fit within 16 colors |
-| Persistent CPU buffers | 0 additional resident buffers; reuse the existing alternate-confirm frame buffer while loading |
-| Resident executable / heap loss | **432 bytes measured** in the full multilingual comparison; loading uses a 96-byte stack sprite buffer |
+| Persistent CPU buffers | 0 additional resident buffers; artwork is loaded with the existing UI texture |
+| Resident executable / heap loss | **64 bytes saved** in the matched full multilingual comparison; no runtime painter or upload scratch buffer |
 | Per-render packet | The existing single POLY_FT4, **40 bytes**; no extra badge packet |
 | MENU_REL growth | **0 bytes measured**; no menu code change |
 | New disc filenames / allocations | 0; use existing disc-derived UI assets |
@@ -198,22 +212,28 @@ All four rectangles contain only filler on all eight supported base discs and
 avoid the native and translated label crops, including Chinese menu cells.
 `tools/localize/systemw.py` reserves these holes against future Chinese label
 changes. `(352,230)` remains owned by the confirm adapter and is not reused.
-The two right-edge uploads omit their first transparent source column and add
+The two right-edge frame cells omit their first transparent source column and add
 transparent padding. Their UV origin is 239, with the untouched native border
 mapped transparent in the private palette; the endpoint is 255, so the existing
 16-texel span cannot wrap through U=256. All eight base discs' border pixels were
 checked. The guard columns are reserved against localized label changes too.
-`modButtonsTimLoaded` derives the Square from the disc's Cross/Circle cap,
-uploads one stack-local frame at a time with DrawSync before reuse, then restores
-the alternate-confirm buffer. Changing layout preserves the care frames/palette.
+`tools/care_badge.py` derives Square from the player's Cross/Circle cap before the
+disc is assembled. It stamps `SYSTEM_W.TIM` and entry 8 of `ETCTIM.BIN`, in the
+base files and every translation. Builds without translations receive the same
+base assets. The private palette is stored inside the TIM's existing pixel block
+at row 124, VRAM word offset 32, so the ordinary texture upload installs it at
+`(352,252)`. There is no runtime painter, frame-copy loop, extra upload, scratch
+buffer or new disc filename. `modButtonsTimLoaded` retains only its original
+Confirm adapter. Native Confirm frames and their TIM palette remain unchanged;
+changing layout preserves the care frames/palette.
 
 MENU's sector-bound linker assertion and `tools/title_storage_check.py` remain
-mandatory; spare file bytes do not authorize another sector. The final heap is
-**184,784 bytes**. Both the native sweep and all **320 archive-backed screen
-setups** pass without a heap override. The tightest setup is screen 207, with
-**64 bytes** of remaining margin; screen 41 retains 3,000 bytes. All nine language
-builds have the same `main_BSS_END` and MENU size, identical title storage, and
-valid sector bounds. The linked-reference title-storage check also passes.
+mandatory; spare file bytes do not authorize another sector.
+
+Both the native sweep and all **320 archive-backed screen setups** pass without
+a heap override. Screen 207 remains the tightest: **416 → 480 B** of margin;
+screen 41 improves **3,352 → 3,416 B**. The final heap is **185,200 B**. The
+baseline and feature use the same actual model archive and screen scripts.
 
 ## Evidence and implementation acceptance
 
@@ -242,7 +262,7 @@ pad input, and menu/battle observations read the running game's state.
 | Runtime check | JAPANESE CONTROLS OFF | JAPANESE CONTROLS ON |
 |---|---|---|
 | Square opens care near the partner | Passed, 141 world units | Passed, 141 world units |
-| Square opens care far away, facing away | Passed, 5,141 world units | Passed, 5,076 world units |
+| Square opens care far away, facing away | Passed, 5,052 world units | Passed, 5,166 world units |
 | Opening care preserves all 10 MP Floppies | Passed near/far | Passed near/far |
 | Confirm talks to an NPC beside the partner; no care or item use | Cross passed | Circle passed |
 | Triangle menu blocks care; Square opens technique help | Passed | Passed |
@@ -252,20 +272,21 @@ pad input, and menu/battle observations read the running game's state.
 | New, original and classic fonts open care with unchanged artwork | All three passed | All three passed |
 
 The care atlas/palette hash is identical across layouts and all three fonts.
-Native 320×240 screenshots are in `build/care-proof/`; tutorial captures are in
-`build/care-hints-proof/`. The new tutorial pages were checked in-game: Square
+Native 320×240 screenshots are in `build/care-budget/proof/`; tutorial captures are in
+`build/care-budget/hints/`. The new tutorial pages were checked in-game: Square
 stays pink, while the talk/interaction glyph changes from Cross to Circle.
 Review sheets preserve screenshot pixels at native size, with captions outside
 the game image. The light-floor hunger bubble and dark-floor standalone badge
 both retain the existing renderer's anchor and projection.
 
-The source-level guard/art regression passes, including simultaneous Confirm
-priority and restoration of alternate Confirm frames. Native texture audits cover
+The source-level entry regression passes, including simultaneous Confirm
+priority and ownership guards. Build-time artwork matches the former runtime
+painter byte-for-byte, including the previous emulator's atlas/palette hash. Native texture audits cover
 all eight supported base discs and 24 cap frames. Atlas-reservation tests pass.
 The Chinese audit reports 6,471/6,471 keys, 2,005 extended glyphs, no missing glyphs
 and no errors; the new Japanese text uses existing glyphs. New Latin care pages
-fit all three font metrics. Language/Chinese tests (40), atlas tests (6) and web
-translation tests pass. All 1,713 derived files match the completed build manifest.
+fit all three font metrics. Language/Chinese tests (40), asset/atlas tests (10) and web
+translation tests pass. All 1,715 recorded derived files match the completed build manifest.
 
 Physical hardware, a full boot matrix of other base discs, distant item handoff
 completion/refusal, naming, tournament/VS and minigames were not exercised. GPU
