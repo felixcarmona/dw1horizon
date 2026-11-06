@@ -150,25 +150,78 @@ mesh keeps it on bones 20–23, opposite the bare-hand chain 16–19. The native
 Leomon hand strike previously drove the bare fist while the projectile origin
 already followed cannon bone 22.
 
-`tools/models/repair_beelzemon_attack.py` authors a plain model delta on the
-already reviewed proportions and field animations. It keeps the source body anticipation, leg and
-wing motion, duration, loop controls and events. The bare hand retains its
-battle idle; the cannon eases into aim and recoils at the strike. Megaton Punch,
-Counter, Dynamite Kick and Sonic Jab retain their existing shared-program
-relationship. The casting group containing Tremor and the mechanical shots
-also aims the cannon, with its existing charge alias kept shared. The mesh, rig, texture, technique list and damage rules stay exact.
-The model delta and final provider hash both pin the repaired animation.
+`tools/models/repair_beelzemon_attack.py` authors the complete firing action.
+The free arm rises to brace below the cannon. The torso loads, turns into the
+shot and takes the recoil; knee flexion and a small pelvis shift carry its
+weight while both feet remain planted. The head counters the turn, and the
+wings and tail follow with delayed motion. Small translation channels use a
+stricter encoding tolerance so compression retains the weight shift.
 
-The resident model uses 99,738 bytes, down from 100,226, within the 100,352-byte
-partner buffer. Every sector-aligned cold animation read fits 8,192 bytes.
-The intermediate delta retains the old Buster Dive alias until the provider
-replays its reviewed dash; storage is checked on that consumed result.
-Reproduce the weapon-direction, untouched-channel and storage checks with the
+The four short strikes share one 15-tick program. The nine casting aliases,
+including Tremor, share a 44-tick program. Their existing events, durations and
+technique rules remain exact. Field/care animations, Buster Dive, War Cry and
+the finisher remain unchanged, as do the mesh, rig and texture.
+
+The consumed resident model uses 99,480 bytes within the 100,352-byte partner
+buffer. Every sector-aligned cold read fits 8,192 bytes. The intermediate delta
+retains the old Buster Dive alias until the provider replays its reviewed dash;
+storage is checked on that consumed result.
+
+Native Andromon Pulse Laser and MetalGreymon Heat Laser provide the visual
+reference. The side-by-side videos remain a separate review requirement;
+physical regression checks cannot establish animation quality by themselves.
+Reproduce event, weapon, bracing, foot placement and storage checks with the
 pre-edit provider output at `MODEL_REPORT_DIR/before/403.MMD`:
 
 ```sh
 MODEL_REPORT_DIR=build/reports PYTHONPATH=tools \
   python3 -W ignore -m unittest tools.test_beelzemon_attack
+```
+
+## Apocalymon: voice and Power Crane
+
+The imported card-game model retains a humanoid torso, floating core and metal
+claws. Its old voice pair, VBALL 48 / VLALL 2, belonged to Megadramon and
+Gigadramon. It now borrows Myotismon's pair, 56 / 3, following the humanoid dark
+character rather than the everyday animation donor. This is a native DW1 voice
+substitution, not a newly imported canonical voice recording. Notes 53–55 are
+present in the selected VBALL bank.
+
+Power Crane, slot 51, previously aliased the general 61-tick cast, whose core
+pitch ranged from −648 to 164 angular units. Its dedicated crane gesture reaches
+with the forward claw while the torso, free claws and heavy core counter the
+motion. The core stays within a small tilt instead of pitching through that
+full range. Other casting aliases and the Status portrait remain unchanged.
+The dedicated clip retains its original duration and sound event. Its resident
+model fits the 100,352-byte buffer at 100,330 bytes; cold reads still fit 8,192.
+
+## Omnimon: Grey melee and Garuru ranged techniques
+
+The [official profile](https://digimon.net/reference_en/detail.php?directory_name=omegamon)
+identifies the Grey sword in the left arm and the Garuru cannon in the right.
+The imported mesh agrees: bones 3–7 carry Grey and 9–13 carry Garuru. The source
+physical clip moved Garuru while Grey's shoulder and elbow remained fixed.
+The physical action is now reflected onto the Grey chain, with the body's weight
+shift and cloak response carried through and eased transitions to the ready pose.
+The mesh is preserved.
+
+| Ordinary technique | Action |
+| --- | --- |
+| Megaton Punch, Counter, Sonic Jab | Grey sword |
+| Tremor | Grey sword ground strike |
+| Buster Dive | Existing whole-body dash |
+| Dynamite Kick | Existing kick |
+| Ice Statue, Aurora Freeze, Giga Freeze, Water Blit | Existing Garuru cannon cast |
+| Prominence Beam, Magma Bomb, Red Inferno, Fire Tower | Existing Garuru cannon cast |
+
+Only slots 46, 48, 50 and 51 change. Ranged programs, the dash, kick, finisher and
+all field animations retain their exact decoded motion. Duration and events of
+the physical group remain exact. The resident model uses 83,376 bytes. Reproduce
+both imported-model regressions with the pre-edit files in
+`FOLLOWUP_REPORT_DIR/before/{400,461}.MMD`:
+
+```sh
+PYTHONPATH=tools python3 -W ignore -m unittest tools.test_reported_attacks
 ```
 
 ## Tyrannomon scene: uninterrupted native strides

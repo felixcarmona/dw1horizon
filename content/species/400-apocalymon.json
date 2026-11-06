@@ -21,14 +21,14 @@
                  [27, 27], [28, 28], [29, 1]]
   },
   "texture": {"file": "build/meshfix2-out/Apocalymon.TIM", "entry": 0},
-  "voice": 48,
+  "voice": 56,
   "battle_music": "normal-battle",
   "condition_bubble": [-56, -93, -50, 6],
   "effect_origins": [[4, 90, 0, 0, 6, 37, 37, -108], [8, 330, 0, 0, 21, -32, 373, -256], [1, 0, 0, 0, 1, 0, -28, 0]],
   "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
   "size": {"height": 600, "radius": 300},
   "partner": {
-    "voice": 2,
+    "voice": 3,
     "hunger_hours": [2, 6, 10, 14, 18, 22],
     "energy_max": 80,
     "energy_fed": 45,
