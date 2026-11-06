@@ -77,7 +77,7 @@ static void check(int gauge,int active,int blink,int red) {
     width=calls[fill].a[2];v=calls[fill].a[5];
    }
    assert(calls[k].a[9]==0);
-   int value=gauge==2?PARTNER_PARA.foodLevel:gauge==3?(raise.poopTimer>0?2*raise.poopTimer-PARTNER_PARA.poopLevel:0):PARTNER_PARA.tiredness;
+   int value=gauge==2?PARTNER_PARA.foodLevel:gauge==3?(raise.poopTimer>0?PARTNER_PARA.poopLevel:0):100-PARTNER_PARA.tiredness;
    int max=gauge==2?180:gauge==3?(raise.poopTimer>0?2*raise.poopTimer:1):100;
    if(value<0)value=0;if(value>max)value=max;
    int expected=(value*18+max/2)/max;if(value&&!expected)expected=1;

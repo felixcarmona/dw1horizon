@@ -216,7 +216,8 @@ def main():
         rows.append(capture(e,out,'TRN-hunger-stop',112,'TRN',count=2,food=110))
         rows.append(capture(e,out,'TRN-new-orders',112,'TRN',count=1,gym='Brains'))
         for run in rows[:2]:
-            previous_toilet = -1
+            previous_toilet = 19
+            previous_energy = 19
             for row in run['frames']:
                 im = Image.open(out / row['file']).convert('RGB')
                 assert im.size == (320,240)
@@ -224,14 +225,19 @@ def main():
                 for y in (191,205,219):
                     fills.append(sum(im.getpixel((x,y))[2]>im.getpixel((x,y))[0]+15 and im.getpixel((x,y))[2]>im.getpixel((x,y))[1]+5 for x in range(289,307)))
                 fatigue = row['care']['tiredness']
-                want_fatigue = max(1,(fatigue*18+50)//100)
+                want_fatigue = max(1,((100-fatigue)*18+50)//100) if fatigue < 100 else 0
                 food = max(0,min(180,row['care']['foodLevel']))
                 want_food = max(1,(food*18+90)//180) if food else 0
                 # Fill length stays present in both warning phases.
                 assert fills[0] == want_food, (row,fills,want_food)
                 assert fills[2] == want_fatigue, (row,fills,want_fatigue)
-                assert fills[1] >= previous_toilet, (row,fills)
+                toilet = max(0,min(48,row['care']['poopLevel']))
+                want_toilet = max(1,(toilet*18+24)//48) if toilet else 0
+                assert fills[1] == want_toilet, (row,fills,want_toilet)
+                assert fills[1] <= previous_toilet, (row,fills)
                 previous_toilet = fills[1]
+                assert fills[2] < previous_energy, (row,fills)
+                previous_energy = fills[2]
                 row['visible_fill_pixels'] = dict(zip(('hunger','toilet','tiredness'),fills))
         (out/'result.json').write_text(json.dumps({'ram_bytes':2097152,'runs':rows},indent=2)+'\n')
         print('PASS: 2 MB, both gym overlays, live five-session frames, cancel and native hunger stop',flush=True)

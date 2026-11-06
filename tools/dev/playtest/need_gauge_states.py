@@ -90,10 +90,13 @@ def check_image(file,name,state,on):
     pixels=[im.getpixel((x,y+6)) for x in range(289,307)]
     # Count blue fill independently of its brightness; dim fills stay present.
     count=sum(b>r+15 and b>g+5 for r,g,b in pixels)
-    normal=dict(hunger=12,toilet=9,tiredness=7)
-    warning=dict(hunger=3,toilet=17,tiredness=14)
-    want=dict(hunger=0,toilet=18,tiredness=14)[name] if state=='active' else normal[name] if state=='normal' else warning[name]
-    if file.name=='tiredness-exhausted-100.png':want=18
+    normal=dict(hunger=12,toilet=9,tiredness=11)
+    warning=dict(hunger=3,toilet=1,tiredness=4)
+    want=dict(hunger=0,toilet=0,tiredness=4)[name] if state=='active' else normal[name] if state=='normal' else warning[name]
+    special={'tiredness-exhausted-100.png':0,'tiredness-rested.png':18,
+             'tiredness-last-energy.png':1,'toilet-just-used.png':18,
+             'toilet-last-reserve.png':1}
+    want=special.get(file.name,want)
     assert count==want,(file,count,want,pixels)
     if state=='active':
         assert top[0]>top[1]+25 and top[1]>top[2],(file,top)
@@ -125,7 +128,10 @@ def capture(e,out,rows,name,state,on,label=None):
     for n in gauges:
         field,normal,warning,active,bit=VALUES[n]
         expected=dict(normal=normal,warning=warning,active=active)[state]
-        if label=='tiredness-exhausted-100.png':expected=100
+        special={'tiredness-exhausted-100.png':100,'tiredness-rested.png':0,
+                 'tiredness-last-energy.png':99,'toilet-just-used.png':48,
+                 'toilet-last-reserve.png':1}
+        expected=special.get(label,expected)
         assert raw[field]==expected,(file,n,raw,expected)
     row=dict(file=file.name,need=name,state=state,on=on,play_tick=tick,
              current_frame=e.peek('CURRENT_FRAME','H'),game_time_running=e.peek('IS_GAMETIME_RUNNING','b'),
@@ -200,6 +206,13 @@ def main():
             fixture(e,name,'normal');capture(e,out,rows,name,'normal',True,f'{name}-satisfied.png')
         fixture(e,'tiredness','active');e.gs('set','partner.para.tiredness=100')
         capture(e,out,rows,'tiredness','active',False,'tiredness-exhausted-100.png')
+        for name,field,value,state,label in (
+            ('toilet','poopLevel',48,'normal','toilet-just-used.png'),
+            ('toilet','poopLevel',1,'warning','toilet-last-reserve.png'),
+            ('tiredness','tiredness',0,'normal','tiredness-rested.png'),
+            ('tiredness','tiredness',99,'active','tiredness-last-energy.png')):
+            fixture(e,name,state);e.gs('set',f'partner.para.{field}={value}')
+            capture(e,out,rows,name,state,True,label)
         # Six uninterrupted native half-cycles with frozen care timers establish cadence.
         fixture(e,state='warning',all_needs=True)
         ticks=[]
