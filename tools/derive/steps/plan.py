@@ -36,7 +36,7 @@ from . import story as ST
 
 NAME = 'plan'
 DESCRIPTION = 'Disc file and language layout'
-AFTER = ('models', 'species', 'sound', 'title', 'story', 'screens', 'localize', 'signs', 'balance', 'storycopies')
+AFTER = ('models', 'species', 'sound', 'effects', 'title', 'story', 'screens', 'localize', 'signs', 'balance', 'storycopies')
 FACTS = True
 SOUND = ('FAALL', 'VBALL', 'VLALL', 'ESALL')
 PLACEHOLDER = bytes(2048)    # an overlay's Spanish copy and LANGEN/LANGES.BIN until the executable is built
@@ -209,6 +209,8 @@ def make(ctx):
             (P.file if opt == '--file' else P.add)(dest, S.resolve_path(x))
     for x in ('ETCNA/TITLE256.TIM', 'ETCNA/TITLE2.TIM', 'ETCDAT/TAMA.TIM'):
         P.file(x, O('title', x))
+    from .effects import DISC_PATH
+    P.file(DISC_PATH, O('effects', DISC_PATH))
     P.file('CHDAT/ALLTIM.TIM', O('ALLTIM.TIM'))     # the originals' flat sprites (species step)
     for x in ctx.env.get('EXTRA_FILES', '').split():
         P.file(*x.split('=', 1))

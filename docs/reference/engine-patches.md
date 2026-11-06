@@ -79,7 +79,7 @@ Removes the engine limits on music, voices and sound memory while the original f
 1. The chunks of `FAALL`/`VBALL`/`VLALL`/`ESALL` are found through an index sector at the head of each file (magic
    `SIDX`, `{u16 sector, u16 sectors}` per chunk) instead of fixed strides and `MAP_SOUND_PARA`. Files without the index
    get the original layout, rebuilt from the file sizes.
-2. Music fonts 34..254 (`playMusic` takes the index's count); `SEQ_BUFFER_SIZE` 0x8000 (was 0x5800), the SEQ copy
+2. Music fonts 34..254 (`playMusic` takes the index's count); `SEQ_BUFFER_SIZE` 0x7800 (was 0x5800, then 0x8000), the SEQ copy
    checked.
 3. SPU RAM allocated per load (`spuPlaceBank`): bank 8 top-aligned under the reverb area, the others at their original
    slot when free, else the lowest free space; the map region or an oversized font is evicted when a load needs room; the
@@ -459,7 +459,13 @@ All seven three-option questions run through a single state loop. `modQuizResult
 resolves ties by the latest supporting answer; equal scores supported last by the same answer use the earlier
 axis in the documented order. It maps the element/attribute/temperament cell to a starter-list index.
 `modNewGameStarter` resolves p254 to a uint16 species id for creation and both default-name paths.
-The packed table adds 224 bytes; the linked main executable grows by 832 bytes (`main_BSS_END` 0x801ca0b8 → 0x801ca3f8, series through 0272 → 0273, same EN bank).
+The expanded starter list now has 38 uint16 entries: 37 expanded quiz results plus Kunemon for NEW DIGIMON off. Nature/Virus Bold, Calm and Cunning select Mushroomon, Wormmon and Dokunemon; Ice/Virus Cunning selects Syakomon. The packed tail is 232 bytes, aligned to four bytes. `MOD_QUIZ_COUNT` controls the C offsets and index guard; the Python codec uses the same layout. No dialogue entries change.
+
+The list expansion costs 16 bytes of aligned heap (`main_BSS_END` 0x801cee08 → 0x801cee10, same nine-language padding).
+
+The resident music-sequence buffer is reduced from 0x8000 to 0x7800 to preserve 2 MB model-loading headroom: the largest of the 35 built music fonts uses 0x7284 bytes, leaving 0x57c bytes of capacity above that peak. The sound authoring limit matches the resident buffer. The final nine-language layout has `main_BSS_END` 0x801ce610 and 186592 bytes of heap; all 320 model-aware screen setups fit, with a minimum margin of 1872 bytes on screen 207.
+
+Originally, the packed table added 224 bytes; the linked main executable grew by 832 bytes (`main_BSS_END` 0x801ca0b8 → 0x801ca3f8, series through 0272 → 0273, same EN bank).
 New-game technique exceptions remain the two authored rows; every other starter learns and equips what evolving
 into it teaches (patch 0332, the `EVL_applyEvolution` rule: the weakest technique of its main element in the
 `evolutionFormula.learn` slots), or `DIGI_PARA(type).moves[0]` when it has none of its element. `modInitializeStarterTechniques` runs only in main's new-game branch, after

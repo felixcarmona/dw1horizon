@@ -504,8 +504,8 @@ so these sources remain consistent.
 
 ## Jijimon's starter quiz
 
-`content/tables/new-game.json` owns the 35-rookie starter list, seven questions' weights and two 45-cell grids.
-Seven partner Rookie recolours stay evolution-only: SnowAgumon, Dokunemon, Psychemon, Muchomon, Tsukaimon, RedOtamamon and VioletElecmon. Mushroomon, Syakomon and Vemmon also use Baby II evolution rather than the fixed quiz table. Crabmon and Tapirmon replace Flarerizamon and Yanmamon, which are now Champions.
+`content/tables/new-game.json` owns the 38-entry starter list (37 expanded results plus Kunemon for NEW DIGIMON off), seven questions' weights and two 45-cell grids.
+Six partner Rookie recolours stay evolution-only: SnowAgumon, Psychemon, Muchomon, Tsukaimon, RedOtamamon and VioletElecmon. Vemmon also uses Baby II evolution. Mushroomon, Dokunemon and Syakomon join the expanded quiz; Kunemon stays out because of its special evolution route. Crabmon and Tapirmon replace Flarerizamon and Yanmamon, which are now Champions.
 All seven answers count. Each axis chooses its highest score, breaking a tie by the most recent answer that
 supported it. If that answer supported both tied choices, the earlier axis wins: battle/fire/ice/nature/air,
 vaccine/data/virus, bold/calm/cunning. Mech shares air. There is no random draw.
@@ -521,10 +521,10 @@ vaccine/data/virus, bold/calm/cunning. Mech shares air. There is no random draw.
 | fire / virus | Guilmon | Goblimon | Kotemon |
 | ice / vaccine | Bearmon | Gomamon | Bearmon |
 | ice / data | Crabmon | Penguinmon | Otamamon |
-| ice / virus | Betamon | Gizamon | Betamon |
+| ice / virus | Betamon | Gizamon | Syakomon |
 | nature / vaccine | Palmon | Armadillomon | Palmon |
 | nature / data | Tentomon | Floramon | Penguinmon |
-| nature / virus | Kunemon | Kunemon | Wormmon |
+| nature / virus | Mushroomon | Wormmon | Dokunemon |
 | air / vaccine | Tapirmon | Hagurumon | Salamon |
 | air / data | Elecmon | Hawkmon | Kokuwamon |
 | air / virus | DemiDevimon | Monmon | DemiDevimon |

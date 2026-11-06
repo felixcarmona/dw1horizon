@@ -1,5 +1,5 @@
 {
-  "_comment": "New-game clock, money, save defaults and partner birth values. Jijimon asks all seven questions; starters is the fixed 35-Rookie quiz pool (p254 stores its index); seven recolours plus Mushroomon and Syakomon use evolution instead. quiz.weights are sparse points by axis; quiz.cells has 45 starter indices in element/attribute/temperament order: battle, fire, ice, nature, air (mech counts as air); vaccine, data, virus; bold, calm, cunning. quiz.vanillaCells is the same grid for NEW DIGIMON off, holding only the original game's nine rookies. Highest score wins each axis; ties favour the most recent answer, then the earlier axis in that order if the same answer last supported both. Weights are packed as up to three axis/weight nibbles per answer; species ids are uint16, cells and vanillaCells uint8. Ten spare cells repeat species. The cell assignment favours attributes, then specialties: unavoidable exceptions are documented in docs/mods/balance.md. startScript selects the opening MAPHEAD section; cardShopStart is the first six card-shop script-state values. Missing ordinary rules mean zero. The conversation is in script_menu.c; dialogue uses the named text-bank mechanism.",
+  "_comment": "New-game clock, money, save defaults and partner birth values. Jijimon asks all seven questions; starters is the 38-entry starter list (p254 stores its index): 37 expanded quiz results plus Kunemon for NEW DIGIMON off; six recolours and Vemmon use evolution instead. Kunemon stays out of the expanded quiz because of its special evolution route. quiz.weights are sparse points by axis; quiz.cells has 45 starter indices in element/attribute/temperament order: battle, fire, ice, nature, air (mech counts as air); vaccine, data, virus; bold, calm, cunning. quiz.vanillaCells is the same grid for NEW DIGIMON off, holding only the original game's nine rookies. Highest score wins each axis; ties favour the most recent answer, then the earlier axis in that order if the same answer last supported both. Weights are packed as up to three axis/weight nibbles per answer; species ids are uint16, cells and vanillaCells uint8. Eight expanded cells repeat species. The cell assignment favours attributes, then specialties: unavoidable exceptions are documented in docs/mods/balance.md. startScript selects the opening MAPHEAD section; cardShopStart is the first six card-shop script-state values. Missing ordinary rules mean zero. The conversation is in script_menu.c; dialogue uses the named text-bank mechanism.",
   "newGame": {
     "money": 50000,
     "startHour": 8,
@@ -40,7 +40,10 @@
       352,
       353,
       354,
-      433
+      433,
+      263,
+      74,
+      283
     ],
     "startScript": 204,
     "cardShopStart": [58, 59, 60, 61, 62, 63],
@@ -83,16 +86,16 @@
         14,
         2,
         25,
-        2,
+        37,
         7,
         20,
         7,
         15,
         28,
         8,
-        5,
-        5,
+        35,
         18,
+        36,
         9,
         16,
         22,
