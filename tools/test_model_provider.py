@@ -51,7 +51,8 @@ class ModelProvider(unittest.TestCase):
         selected = {t: model.OVERLAYS[e['field_overlay']]
                     for t, e in records.items() if e.get('field_overlay')}
         # Baked deltas retain their effective field generator as authoring provenance.
-        for path in Path('content/modeldelta/scale-locks').glob('*.json'):
+        for path in [*Path('content/modeldelta/scale-locks').glob('*.json'),
+                     *Path('content/modeldelta/resizes').glob('*.json')]:
             proof = json.loads(path.read_text())
             sid = str(proof['species'])
             self.assertTrue(records[sid]['aliases_applied'])
@@ -66,6 +67,8 @@ class ModelProvider(unittest.TestCase):
         for species, (bound_species, _, _) in selected.items():
             self.assertEqual(species, bound_species)
         assignments = {t: entry[1:] for t, entry in selected.items()}
+        self.assertEqual(assignments.pop('236'),
+                         ('tools.models.field_animations.native_binding', '236-demidevimon-native-flight'))
         # Celebration curves run after the final proportions. Unwrap them to
         # keep guarding all the original field recipes and output names.
         for sid, row in celebrations.items():
@@ -108,6 +111,8 @@ class ModelProvider(unittest.TestCase):
                                   ('285', 'gazimon', 'gazimon'), ('279', 'marine_devimon', 'marinedevimon')):
             self.assertEqual(assignments.pop(sid),
                              ('tools.models.field_animations.' + module, sid + '-' + name + '-field'))
+        self.assertEqual(assignments.pop('408'),
+                         ('tools.models.field_animations.suijinmon', '408-suijinmon-centaur-field'))
         # All pre-existing bindings outside the repairs stay pinned.
         for sid in ('315', '332', '335'):
             del assignments[sid]

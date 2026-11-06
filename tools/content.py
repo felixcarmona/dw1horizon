@@ -559,6 +559,8 @@ def build_map(name, data, maps=None):
                                                    f'(a deleted middle slot keeps its place with "species": null)')
     m.digimon = [json_to_slot(i, o, c['wild'], c['ids'], f'{x["_path"]}: slot {i}') for i, o in enumerate(slots)]
     m.digimon_count = len(m.digimon)
+    from map_regions import apply
+    apply(m, name)
     return m.build()
 
 

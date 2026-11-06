@@ -95,7 +95,7 @@ def step_units(ctx, step):
                 raise runner.StepError(f'unknown map check: {e["check"]}')
             continue
         script = f'{mod}/{e["script"]}'
-        inputs = [script, f'{mod}/maps', f'{mod}/art', 'tools/dwmap.py', 'extracted/MAP']
+        inputs = [script, f'{mod}/maps', f'{mod}/art', 'tools/dwmap.py', 'content/map-regions.json', 'extracted/MAP']
         if e['script'] in SPLIT:
             fill = SPLIT[e['script']][len(e['args']) - 1:]
             for w in e['writes']:

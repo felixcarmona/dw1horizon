@@ -83,7 +83,7 @@ def units(ctx):
     if not localize.lang_on(ctx):
         return []
     return [runner.Unit(d, run_pass, (ctx.root, ctx.path(d), files, ('en',) + localize.translations(ctx.env)),
-                        ['tools/localize/signs.py', 'tools/localize/cutout.py', 'content/localized/signs', 'extracted/MAP',
+                        ['tools/localize/signs.py', 'tools/localize/cutout.py', 'content/map-regions.json', 'content/localized/signs', 'extracted/MAP',
                          f'step:story ({dict(PASSES)[d]} FILE: lines and their maps)'], [f'{d}/files.txt'])
             for d, files in passes(ctx)]
 

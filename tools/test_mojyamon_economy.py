@@ -24,9 +24,9 @@ class MojyamonEconomy(unittest.TestCase):
     def test_reviewed_caps_and_separate_ceilings(self):
         result = self.audit()
         self.assertEqual([], result['fails'])
-        self.assertEqual((6050, 2500), (result['daily_gross'], result['once_gross']))
+        self.assertEqual((8050, 2500), (result['daily_gross'], result['once_gross']))
         self.assertEqual(['daily'] * 8 + ['save'], [r['limit'] for r in result['rows']])
-        self.assertEqual((200, 1800, 2450), (result['daily_gain'], result['daily_gain_ceiling'], result['once_gain']))
+        self.assertEqual((2200, 3800, 2450), (result['daily_gain'], result['daily_gain_ceiling'], result['once_gain']))
         self.assertEqual(50, result['worth'][44])
         self.assertEqual(50, result['worth'][0])
 
@@ -64,11 +64,11 @@ class MojyamonEconomy(unittest.TestCase):
         self.assertEqual((300, 300), prices[39])
         sell = lambda i: self.items[i]['value'] // 2
         rows = self.audit()['rows']
-        for baby, cost, net, after_travel in ((False, 3951, 2099, 599), (True, 3741, 2309, 809)):
+        for baby, cost, net, after_travel in ((False, 3951, 4099, 2599), (True, 3741, 4309, 2809)):
             result = E.purchase_ceiling(rows, prices, sell, baby)
             self.assertEqual((cost, net, [67]), (result['cost'], result['net'], result['unsold']))
             self.assertEqual(after_travel, result['net'] - 1500)
-            self.assertEqual((-191, 1109, 3609) if baby else (-401, 999, 3499),
+            self.assertEqual((1809, 2109, 4609) if baby else (1599, 1999, 4499),
                              (result['buyable_net'], result['buyable_ceiling'], result['mixed_ceiling']))
 
 

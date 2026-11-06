@@ -2548,7 +2548,7 @@
  "s206.sec6.u15": [
   [
    "Vingui ja, oncle. Vés a pescar",
-   "un peix al Llac Dragon Eye!"
+   "un peix al Llac Ull de Drac!"
   ]
  ],
  "s206.sec7.m0.o0": "Anem allà!",
@@ -3210,8 +3210,8 @@
   [
    "Notícies Shell, número 3 Un",
    "guardià al llac? Diuen que han",
-   "pescat el guardià del Llac",
-   "Dragon Eye. O més ben dit, un",
+   "pescat el guardià del Llac Ull",
+   "de Drac. O més ben dit, un",
    "gran Digimon va respondre a la",
    "crida. Diuen que veure'l",
    "concedeix un desig. S'acosta",
@@ -3563,8 +3563,8 @@
  ],
  "s210.sec51.u2": [
   [
-   "Ha aparegut el camí a la",
-   "Muntanya Infinity!"
+   "Ha aparegut el camí al Mont",
+   "Infinit!"
   ]
  ],
  "s210.sec51.u3": [
@@ -3586,7 +3586,7 @@
  "s210.sec51.u6": [
   [
    "Pel que sé, l'enemic final",
-   "espera en la Muntanya Infinity."
+   "espera al Mont Infinit."
   ]
  ],
  "s210.sec51.u7": [
@@ -3603,17 +3603,15 @@
  ],
  "s210.sec51.u9": [
   [
-   "El camí a la Muntanya Infinity",
-   "ha aparegut a l'altre costat de",
-   "la cascada de la ciutat."
+   "El camí al Mont Infinit ha",
+   "aparegut a l'altre costat de la",
+   "cascada de la ciutat."
   ]
  ],
  "s210.sec51.u10": [
   [
    "Pel que sé, l'enemic final",
-   "espera en la Muntanya Infinity."
-  ],
-  [
+   "espera al Mont Infinit.",
    "Prepara't bé abans d'anar!"
   ],
   [
@@ -3932,9 +3930,13 @@
  ],
  "s211.sec8.u35": [
   [
-   "Diuen que a l'altre costat del Llac Dragon Eye",
-   "hi ha una terra de Digimon insecte. Com",
-   "travessar el llac... Per què no ho penses"
+   "Diuen que a l'altre costat del",
+   "Llac Ull de Drac hi ha una",
+   "terra de Digimon insecte. Com"
+  ],
+  [
+   "travessar el llac... Per què no",
+   "ho penses"
   ],
   [
    "mentre pesques?"

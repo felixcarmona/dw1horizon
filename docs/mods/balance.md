@@ -291,7 +291,7 @@ return to it if another group completed the final row. Previously recruited save
 
 | Group | Player gives | Mojyamon gives | Limit | Input sale | Reward sale | Sale-value gain |
 |---|---|---|---|---:|---:|---:|
-| 1 | Happy Mushroom | Ice Mushroom | 1/day | 500 | 500 | 0 |
+| 1 | Happy Mushroom | Deluxe Mushroom | 1/day | 500 | 2500 | +2000 |
 | 1 | Digiseabass | Chain Melon | 1/day | 4000 | 2500 | -1500 |
 | 1 | Digisnapper | Digipine | 1/day | 50 | 500 | +450 |
 | 2 | Supercarrot | Large MP | 1/day | 250 | 1000 | +750 |
@@ -301,8 +301,15 @@ return to it if another group completed the final row. Previously recruited save
 | 3 | Giant Meat | DigiTrout | 1/day | 250 | 150 | -100 |
 | 3 | Small Recovery | Dolph Fin | **1/save** | 50 | 2500 | +2450, once only |
 
-The five positive daily sale-value exceptions total **1800 bits/day** above selling those inputs directly. Taking
-all eight daily rows, including the two that lose sale value, adds **200 bits/day** over selling all eight inputs.
+The six positive daily sale-value exceptions total **3800 bits/day** above selling those inputs directly. Taking
+all eight daily rows, including the two that lose sale value, adds **2200 bits/day** over selling all eight inputs.
+Mammothmon already sells Ice Mushrooms, so the first reward is now Deluxe Mushroom. It grants +100 HP,
++100 MP and +10 to each of the four other stats: about 240 points spread, versus about 900 from a training day.
+Happy Mushrooms are scarce: one per day from Dragon Eye Lake vending for 1500 bits, plus rare ground rolls.
+Buying that input and selling the reward nets at most **1000 bits/day**, below the 1500-bit Birdramon trip.
+With an already-owned input, the gain over selling it is **2000 bits/day** (2500 minus 500); these baselines
+must remain distinct.
+
 These are finite allowances, not unlimited conversion exits. Item 70 (Chain Melon) is displayed as Overripe Melon
 in the English item-name bank. Double Floppy is item 7, not Restore.
 
@@ -315,18 +322,18 @@ completed the old ninth row keep it spent rather than resetting recruitment prog
 ### Daily gain ceilings
 
 A ceiling means **additional gain**, not the gross sale value of the rewards. With inputs already owned, the
-baseline is selling them directly. Doing all eight rows adds **200 bits/day**; choosing only the five positive
-rows adds at most **1800 bits/day**, or **300 after a 1500-bit Birdramon trip**. Doing all eight after that trip
-loses 1300 relative to selling the inputs. A free pickup or fish still has its sale value as an opportunity cost.
+baseline is selling them directly. Doing all eight rows adds **2200 bits/day**; choosing only the six positive
+rows adds at most **3800 bits/day**, or **2300 after a 1500-bit Birdramon trip**. Doing all eight after that trip
+gains 700 relative to selling the inputs. A free pickup or fish still has its sale value as an opportunity cost.
 The audit prints both all-row and positive-row totals. After group 3 recruits, the remaining six rows still add
-200 together, with a positive-row ceiling of 1700 (200 after the trip).
+2200 together, with a positive-row ceiling of 3700 (2200 after the trip).
 
 Purchase gains subtract the cheapest actual fixed offers below. Digiseabass has **no shop offer**, so no purely
 shop-funded eight-row calculation exists. Digisnapper is sold at the Cold Store for 100 (90 with a baby).
 
 | Daily input | Cheapest normal / baby purchase | Source | Reward sale |
 |---|---:|---|---:|
-| Happy Mushroom | 1500 / 1500 | Dragon Eye Lake vending, one/day | 500 |
+| Happy Mushroom | 1500 / 1500 | Dragon Eye Lake vending, one/day | 2500 |
 | Digiseabass | not sold | fishing | 2500 |
 | Digisnapper | 100 / 90 | Cold Store | 500 |
 | Supercarrot | 500 / 450 | city stalls; Vegiemon is fixed at 500 | 1000 |
@@ -334,22 +341,23 @@ shop-funded eight-row calculation exists. Digisnapper is sold at the Cold Store 
 | Blue Apple | 1000 / 900 | Tapirmon's Market Shed | 750 |
 | Digimushroom | 51 / 51 | Dragon Eye Lake vending | 150 |
 | Giant Meat | 300 / 300 | Ancient Glacial Region vending | 150 |
-| **All eight daily rows** | **3951 / 3741**, plus free Digiseabass | | **6050** |
+| **All eight daily rows** | **3951 / 3741**, plus free Digiseabass | | **8050** |
 
 | Gain baseline and choice | Normal | Baby discounts | After 1500 trip, normal / baby |
 |---|---:|---:|---:|
-| Own all inputs: trade all eight instead of selling them | 200 | 200 | -1300 / -1300 |
-| Own inputs: choose only positive sale-value rows | **1800** | **1800** | **300 / 300** |
-| Buy inputs: trade all seven purchasable rows | -401 | -191 | -1901 / -1691 |
-| Buy inputs: choose only profitable purchasable rows | **999** | **1109** | **-501 / -391** |
-| Buy seven inputs + free Digiseabass: all eight cash net | 2099 | 2309 | 599 / 809 |
-| Buy inputs + free Digiseabass: choose positive cash-net rows | 3499 | 3609 | 1999 / 2109 |
+| Own all inputs: trade all eight instead of selling them | 2200 | 2200 | 700 / 700 |
+| Own inputs: choose only positive sale-value rows | **3800** | **3800** | **2300 / 2300** |
+| Buy inputs: trade all seven purchasable rows | 1599 | 1809 | 99 / 309 |
+| Buy inputs: choose only profitable purchasable rows | **1999** | **2109** | **499 / 609** |
+| Buy seven inputs + free Digiseabass: all eight cash net | 4099 | 4309 | 2599 / 2809 |
+| Buy inputs + free Digiseabass: choose positive cash-net rows | 4499 | 4609 | 2999 / 3109 |
 
-The purchase-only ceiling uses Digisnapper → Digipine, Supercarrot → Large MP and Digimushroom → Auto Pilot;
+The purchase-only ceiling uses Happy Mushroom → Deluxe Mushroom, Digisnapper → Digipine,
+Supercarrot → Large MP and Digimushroom → Auto Pilot;
 Hawk Radish → Large Recovery also profits with baby discounts (normal price breaks even). The mixed cash-net
 scenarios add the fished Digiseabass reward while counting no fishing/bait expense. They do **not** count its
 4000-bit sale value as a cost; that trade actually loses 1500 versus selling the fish. Return travel and paid bait
-are excluded. The outputs' gross 6050 is a receipt total, never the incremental daily-gain ceiling. All eight
+are excluded. The outputs' gross 8050 is a receipt total, never the incremental daily-gain ceiling. All eight
 owned inputs sell for 5850 before any exchange. Free inputs can come from pickups, fishing, farm stock and drops;
 Supercarrot/Hawk Radish drop from RedVegiemon/Weedmon at 10% each.
 
@@ -417,7 +425,7 @@ Requirement tests: `tools/test_evo_tree.py --practical`, `tools/economy_audit.py
 | Evolution rows `techs` | a bonus for 21-49 techniques | gone; Gigadramon asks 100 battles instead | the bonus could stand in for the stats, so a raised partner took another route |
 | Grey Lord's Mansion, Ice Sanctuary | a Virus, a Vaccine partner | also any partner once Myotismon, Angemon joined | the partner does not lock a place already opened |
 | Monzaemon's costume | gone after the toy story | a Numemon can always wear it | a late route to Monzaemon |
-| Sukamon, Andromon in File City (`city/file-city-services.py`) | one line each | Sukamon clears the island's poop for 1000 bits (patch 0324); Andromon remodels a Mamemon as Guardromon does, who keeps doing it | Andromon stands there on about one daytime visit in four: the service cannot depend on him alone |
+| Sukamon, Andromon in File City (`city/file-city-services.py`) | one line each | Sukamon clears the island's poop for 1000 bits (patch 0324); Andromon remodels a Mamemon as Guardromon does, who keeps doing it; other partners receive his usual city greeting | Andromon stands there on about one daytime visit in four: the service cannot depend on him alone |
 
 ## 6.3 Monochromon recruitment
 

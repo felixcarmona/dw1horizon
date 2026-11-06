@@ -1,0 +1,125 @@
+From eef8ff762ff2c65317771decb8cad4031b16a02e Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 5 Nov 2026 23:25:55 +0000
+Subject: [PATCH] Fit localized technique names and keep labels inside status
+ tabs
+
+---
+ src/main/game_menu.c | 28 +++++++++++++++++++---------
+ src/main/main_menu.c |  2 +-
+ 2 files changed, 20 insertions(+), 10 deletions(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 6e33947..33b52e2 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -404,6 +404,10 @@ RECT DIGIMON_STATS_TEXT_AREA = { 0, 24, 256, 200 };
+ 
+ RECT MOVES_VIEW_TEXT_AREA = { 0, 24, 256, 200 };
+ 
++/* Keep four pixels clear before the power column (x = 16). */
++#define MOVE_NAME_WIDTH 120
++#define FINISHER_NAME_WIDTH 136
++
+ RECT MAIN_D_801342F0 = { 0, 24, 256, 200 };
+ 
+ RECT PLAYER_INFO_TEXT_AREA = { 0, 12, 256, 200 };
+@@ -1356,11 +1360,11 @@ typedef struct {
+ 	uint8_t w;
+ } LabelCrop;
+ 
+-/* the Digimon screen's tabs ("Status  Tech"): Técnicas takes the whole tab */
++/* The localized technique tab keeps its text inside the tab border. */
+ LabelCrop DIGIMON_TAB_CROPS[2] = {
+ #if MOD_LANG_BUILD != MOD_LANG_EN
+ 	{ -0x8a, 0x00, 0x3c },
+-	{ -0x46, 0x3c, 0x40 },
++	{ -0x44, 0x3c, 0x3c },
+ #else
+ 	{ -0x8a, 0x00, 0x3c },
+ 	{ -0x3f, 0x3c, 0x30 },
+@@ -2964,7 +2968,8 @@ void equipMove(void)
+ 	PARTNER_ENTITY.digimonEntity.stats.base.moves[slot] = animation + 0x2e;
+ 	setRECT(&textArea, 0, slot * 12 + 0x18, 0x84, 0xc);
+ 	clearTextSubArea(&textArea);
+-	drawString(MOVE_NAMES[moveId], 0, slot * 12 + 0x18);
++	drawStringMode(MOVE_NAMES[moveId], 0, slot * 12 + 0x18,
++		              fitStringMode(MOVE_NAMES[moveId], MOVE_NAME_WIDTH));
+ 	playSound(0, 3);
+ }
+ 
+@@ -3294,7 +3299,7 @@ void renderDigimonMovesView(void)
+ 		renderSeparatorLines(&MOVES_TECHSET_LINES[3], 3, 5);
+ 		if (EQUIPPED_MOVES[3] != 0xff) {
+ 			renderString(3, TECH_TITLE_CROPS[1].x, -0xf, TECH_TITLE_CROPS[1].w, 0xc, TECH_TITLE_CROPS[1].u, 0x48, 5, 1);
+-			renderString(0, -0x7c, 1, 0x84, 0xc, 0, 0x3c, 5, 1);
++			renderString(0, -0x7c, 1, FINISHER_NAME_WIDTH, 0xc, 0, 0x3c, 5, 1);
+ 			renderNumber(0, 0x10, 0, 3, modSpeciesMove(PARTNER_ENTITY.digimonEntity.entity.type, EQUIPPED_MOVES[3])->power, 5);
+ 			renderString(0, 0x65, 1, 0xc, 0xc,
+ 			             (MOVE_DATA[EQUIPPED_MOVES[3]].range - 1) * 0xc + 0x48, 0x6c, 5, 1);
+@@ -3595,7 +3600,8 @@ void renderDigimonMovesSelected(int16_t panel)
+ 		move = modSpeciesMove(PARTNER_ENTITY.digimonEntity.entity.type, moveId);
+ 		setRECT(&rect, 0, 0x84, 0x78, 0xc);
+ 		clearTextSubArea(&rect);
+-		drawString(MOVE_NAMES[moveId], 0, 0x84);
++		drawStringMode(MOVE_NAMES[moveId], 0, 0x84,
++		              fitStringMode(MOVE_NAMES[moveId], MOVE_NAME_WIDTH));
+ 		renderString(0, (panel * 0x9d) - 0x8a, 9, 0x78, 0xc, 0, 0x84, 3, 1);
+ 		renderNumber(0, (panel * 0xcb) - 0x64, 0x1b, 3, move->power, 3);
+ 		renderNumber(0, (panel * 0xcb) - 0x64, 0x2c, 3, move->mpCost * 3, 3);
+@@ -5960,7 +5966,8 @@ int32_t drawDigimonMovesText(void)
+ 		if (PARTNER_ENTITY.digimonEntity.stats.base.moves[0] != 0xff) {
+ 			EQUIPPED_MOVES[0] = entityGetTechFromAnim(ENTITY_TABLE[1],
+ 			                                          PARTNER_ENTITY.digimonEntity.stats.base.moves[0]);
+-			drawString(MOVE_NAMES[EQUIPPED_MOVES[0]], 0, 0x18);
++			drawStringMode(MOVE_NAMES[EQUIPPED_MOVES[0]], 0, 0x18,
++		              fitStringMode(MOVE_NAMES[EQUIPPED_MOVES[0]], MOVE_NAME_WIDTH));
+ 		} else {
+ 			EQUIPPED_MOVES[0] = 0xff;
+ 		}
+@@ -5971,7 +5978,8 @@ int32_t drawDigimonMovesText(void)
+ 		if (PARTNER_ENTITY.digimonEntity.stats.base.moves[1] != 0xff) {
+ 			EQUIPPED_MOVES[1] = entityGetTechFromAnim(ENTITY_TABLE[1],
+ 			                                          PARTNER_ENTITY.digimonEntity.stats.base.moves[1]);
+-			drawString(MOVE_NAMES[EQUIPPED_MOVES[1]], 0, 0x24);
++			drawStringMode(MOVE_NAMES[EQUIPPED_MOVES[1]], 0, 0x24,
++		              fitStringMode(MOVE_NAMES[EQUIPPED_MOVES[1]], MOVE_NAME_WIDTH));
+ 		} else {
+ 			EQUIPPED_MOVES[1] = 0xff;
+ 		}
+@@ -5985,7 +5993,8 @@ int32_t drawDigimonMovesText(void)
+ 		if (PARTNER_ENTITY.digimonEntity.stats.base.moves[2] != 0xff) {
+ 			EQUIPPED_MOVES[2] = entityGetTechFromAnim(ENTITY_TABLE[1],
+ 			                                          PARTNER_ENTITY.digimonEntity.stats.base.moves[2]);
+-			drawString(MOVE_NAMES[EQUIPPED_MOVES[2]], 0, 0x30);
++			drawStringMode(MOVE_NAMES[EQUIPPED_MOVES[2]], 0, 0x30,
++		              fitStringMode(MOVE_NAMES[EQUIPPED_MOVES[2]], MOVE_NAME_WIDTH));
+ 		} else {
+ 			EQUIPPED_MOVES[2] = 0xff;
+ 		}
+@@ -5998,7 +6007,8 @@ int32_t drawDigimonMovesText(void)
+ 		if (PARTNER_ENTITY.digimonEntity.stats.base.moves[3] != 0xff) {
+ 			EQUIPPED_MOVES[3] = entityGetTechFromAnim(ENTITY_TABLE[1],
+ 			                                          PARTNER_ENTITY.digimonEntity.stats.base.moves[3]);
+-			drawString(MOVE_NAMES[EQUIPPED_MOVES[3]], 0, 0x3c);
++			drawStringMode(MOVE_NAMES[EQUIPPED_MOVES[3]], 0, 0x3c,
++		              fitStringMode(MOVE_NAMES[EQUIPPED_MOVES[3]], FINISHER_NAME_WIDTH));
+ 		} else {
+ 			EQUIPPED_MOVES[3] = 0xff;
+ 		}
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index a05a811..661356c 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -2504,7 +2504,7 @@ void drawMoveName(long type, int32_t anim, int32_t color, int32_t pos)
+ 	if (anim >= 0x2E && anim < 0x3E) {
+ 		move = DIGI_PARA(type).moves[anim - 0x2E];
+ 		if (move >= 0 && move < NUM_MOVE_NAMES) {
+-			drawString(MOVE_NAMES[move], color, pos);
++			drawStringMode(MOVE_NAMES[move], color, pos, fitStringMode(MOVE_NAMES[move], 120));
+ 		}
+ 	}
+ }
+-- 
+2.55.0
+

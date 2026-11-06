@@ -20,6 +20,7 @@ import importlib.util, json, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '../../..'))
 OVERLAYS = {   # field_overlay: (id, generator module, model name)
+    'suijinmon-centaur-field': ('408', 'tools.models.field_animations.suijinmon', '408-suijinmon-centaur-field'),
     'saberleomon-pace': ('258', 'tools.models.field_animations.pace', '258-saberleomon-pace'),
     'marinedevimon-field': ('279', 'tools.models.field_animations.marine_devimon', '279-marinedevimon-field'),
     'bulbmon-field': ('313', 'tools.models.field_animations.bulbmon', '313-bulbmon-field'),
@@ -144,6 +145,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'flamedramon-field': ('195', 'tools.models.field_animations.gaits', '195-flamedramon-field'),
     'stingmon-field': ('187', 'tools.models.field_animations.secondary_motion', '187-stingmon-field'),
     'angewomon-field': ('190', 'tools.models.field_animations.celebrations', '190-angewomon-field'),
+    'demidevimon-native-flight': ('236', 'tools.models.field_animations.native_binding', '236-demidevimon-native-flight'),
     'paildramon-field': ('199', 'tools.models.field_animations.chibi', '199-paildramon-field'),
     'ankylomon-field': ('189', 'tools.models.field_animations.pace', '189-ankylomon-field'),
     'lighdramon-field': ('201', 'tools.models.field_animations.pace', '201-lighdramon-field'),
@@ -251,7 +253,7 @@ def species_file(out, t, recs=None, names=None, generate=False):
         s.pop('_path', None)
     # Battle reach is applied after all field size passes: their global model
     # scaling would otherwise shorten the native dash again.
-    if 'Buster Dive' in (s.get('techniques') or []):
+    if 'Buster Dive' in (s.get('techniques') or []) and not e.get('native_animation_donor'):
         import species as species_tools
         from tools.models import buster_dive
         from pathlib import Path

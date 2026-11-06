@@ -22,7 +22,8 @@ def sweep():
 @andromon.on_talk(when=recruited(Species.Andromon))
 def remodel():
     if partner.species != Species.Mamemon:
-        return andromon.talk()
+        say(text.s162.sec7.u0)
+        return
     say(t5.u0)
     match choose(a=t5.m0.o0, b=t5.m0.o1):
         case "a":
