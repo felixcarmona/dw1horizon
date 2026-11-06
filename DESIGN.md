@@ -11,6 +11,10 @@ the ordinary confirm button gives the selected item or executes the selected car
 command. Circle with JAPANESE CONTROLS ON, or Cross with it OFF, remains the field
 interaction button. This separates care from talking, training and using machines.
 
+The badge uses exactly the v0.0.6 anchor: beside the bottom row on its lower right,
+including single-need, multiple-need and standalone cases. Eligibility requires a
+current need plus a useful inventory item or command; an empty care list has no badge.
+
 The artwork decision changes **only the icon**. The existing care badge keeps
 its exact anchor, projected size, bob, fade, visual suppression and three-frame
 press timing. Care availability gains distance/facing independence as described
