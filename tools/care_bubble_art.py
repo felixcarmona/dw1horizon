@@ -12,11 +12,11 @@ from tools.localize.build import tim_entries
 PATH = 'ETCDAT/ETCTIM.BIN'
 FEEL = 'ETCDAT/FEEL_EF.TIM'
 # Hand-pixelled bold stems, doubled critical rows, and two-texel letter gaps.
-# The M is inset one texel so its diagonals survive native field downsampling.
+# The eight-texel M has a deep centre and separate diagonals at native field scale.
 LABELS = (('HH.HH..PPPPP.', 'HH.HH..PP..PP', 'HHHHH..PP..PP', 'HHHHH..PPPPP.',
            'HH.HH..PPPPP.', 'HH.HH..PP....', 'HH.HH..PP....'),
-          ('.MM...MM..PPPPP.', '.MMM.MMM..PP..PP', '.MMM.MMM..PP..PP', '.MM.M.MM..PPPPP.',
-           '.MM.M.MM..PPPPP.', '.MM...MM..PP....', '.MM...MM..PP....'))
+          ('M......M..PPPPP.', 'MM...MMM..PP..PP', 'MMM..MMM..PP..PP', 'M..MM..M..PPPPP.',
+           'M..MM..M..PPPPP.', 'M......M..PP....', 'M......M..PP....', 'M......M..PP....'))
 
 
 def _pixel(data, base, x, y):
@@ -62,7 +62,7 @@ def build(data):
         for y,row in enumerate(label):
             for x,v in enumerate(row):
                 if v != '.':
-                    tile[y+8][x+left] = ink
+                    tile[y+15-len(label)][x+left] = ink
         struct.pack_into('<16H',d,palette_base+(13+which)*32,*palette)
         for y,row in enumerate(tile):
             for x,v in enumerate(row):
