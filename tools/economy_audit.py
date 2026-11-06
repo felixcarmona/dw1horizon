@@ -35,13 +35,14 @@ HUNTS = {'Normal plan': (2000, [(20, 9), (20, 10), (10, 18), (10, 19), (10, 20),
 # check their saved daily bit. Pair identity is pinned so a new trade is uncapped
 # until it is reviewed here and in the engine tests.
 MOJYAMON_CAPS = {
-    0: (69, 45, 'daily'), 1: (67, 70, 'daily'), 2: (63, 47, 'daily'),
+    0: (69, 46, 'daily'), 1: (67, 70, 'daily'), 2: (63, 47, 'daily'),
     3: (41, 6, 'daily'), 4: (42, 2, 'daily'), 5: (48, 7, 'daily'),
     6: (44, 22, 'daily'), 7: (39, 64, 'daily'), 8: (0, 124, 'save'),
 }
 # Explicit exceptions to the output <= input sale rule. A matching, pinned cap
 # is mandatory; Dolph Fin must be once per save, never a daily exception.
 MOJYAMON_GAIN_EXCEPTIONS = {
+    0: (69, 46, 'daily'),
     2: (63, 47, 'daily'), 3: (41, 6, 'daily'), 4: (42, 2, 'daily'),
     5: (48, 7, 'daily'), 6: (44, 22, 'daily'), 8: (0, 124, 'save'),
 }
