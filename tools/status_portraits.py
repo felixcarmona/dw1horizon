@@ -22,7 +22,7 @@ import math
 from pathlib import Path
 import sys
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path[:0] = [str(Path(__file__).resolve().parents[1]), str(Path(__file__).resolve().parent)]
 import animsheet
 import coldsplit
 import mmd
@@ -266,7 +266,7 @@ def texture_at(blob, events, tick, width=0, phase=None):
 
 
 def model_layer(model, skeleton, pose, texture, position, scale):
-    from PIL import Image
+    from tools.image import Image
     pose = scaled_pose(pose, scale)
     tx, ty, tz = camera(position)
 
@@ -292,7 +292,7 @@ def model_layer(model, skeleton, pose, texture, position, scale):
 
 
 def render(model, skeleton, pose, texture, position, scale):
-    from PIL import Image, ImageDraw
+    from tools.image import Image, ImageDraw
     tile = Image.new('RGBA', (320, 240), (39, 56, 66, 255))
     draw = ImageDraw.Draw(tile)
     draw.rectangle((12, 103, 160, 219), outline='#8ae3ef')
@@ -325,7 +325,7 @@ def main():
     rules = json.loads(Path('content/tables/species-rules.json').read_text())
     scales = {r['species']: (r['percent'] * 4096 // 100) / 4096 for r in rules['modelScale']}
     animated = {r['species']: r['width'] for r in rules['animatedTexture']}
-    from PIL import Image, ImageDraw
+    from tools.image import Image, ImageDraw
     tiles, all_tiles, results = [], [], []
     for t, s in sorted(sources.items()):
         if 'partner' not in s:

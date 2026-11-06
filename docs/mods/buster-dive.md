@@ -26,8 +26,9 @@ Native reference clips from the DW1 disc:
 | Gotsumon (68) | 110 | 800 |
 
 The repair gives the affected Buster Dive slot Patamon’s native entity motion:
-about 820 units forward at the peak, settling at 700. It preserves every
-body-pose sample and animation event. Short clips hold their last pose until
+about 820 units forward at the peak, settling at 700. The ordinary repair
+preserves every body-pose sample and animation event; the three compact
+exceptions below use reviewed body-pose selections. Short clips hold their last pose until
 the dash finishes. Shared punches, finishers and field slots retain their
 original programs. Technique range, power, accuracy, MP cost, collision radii
 and effect origins keep their existing values.
@@ -44,11 +45,27 @@ programs. These bytes can include old clips overwritten by slot aliases.
 Every live program's pose samples and events are preserved. The existing
 resident and cold buffers and streaming policy remain unchanged.
 
-All 70 imported users were checked with aliases applied. Of the 61 short
-clips, 57 receive the native track. Nine users already have enough travel.
-Four candidates exceed the fixed resident buffer and retain their original
-clips: Zudomon (219), Diaboromon (237), Infermon (246) and Beelzemon (403).
-Their reach issue remains open and needs separately authored, smaller clips.
+The historical base-model audit checked 70 imported users with aliases applied.
+Nine already had enough travel; 57 short clips received the native track. Four
+candidates originally exceeded the fixed resident buffer. Infermon and Datamon
+no longer learn Buster Dive, leaving 68 current imported users.
+
+The remaining three tight models — Zudomon (219), Diaboromon (237) and
+Beelzemon (403) — now use reviewed compact body clips selected by
+`buster_dive_clip` in the imports JSON registry. Each recipe pins its source
+program and chooses a few source poses for wind-up, charge and recovery.
+Diaboromon holds its charge pose through the end, then uses the ordinary idle
+transition. Body channels interpolate within one encoded unit; the root track
+is copied exactly from the native dash. Sound and texture events follow the
+selected pose progression. Only the Buster Dive slot changes.
+
+Their resident sizes are 99524, 100304 and 99634 bytes respectively, below the
+unchanged 100352-byte limit. Streamed reads retain the 8192-byte limit. A
+configured recipe that exceeds either buffer stops the build. Runtime tests
+must leave a clear attack corridor: the tamer is a real physical obstacle and
+can block a native dash. The playtest's `--clear-path` moves the tamer aside
+without disabling map or entity collision.
+
 The table records the base-model audit before field scaling and measures forward travel from animation sample 23 through sample 34;
 runtime effect timing can differ by one tick from the animation counter.
 
@@ -65,14 +82,14 @@ runtime effect timing can differ by one tick from the animation counter.
 | 210 GranKuwagamon | 292 | 0 | Native dash |
 | 212 VenomMyotismon | 260 | 0 | Native dash |
 | 213 AeroVeedramon | 260 | 0 | Native dash |
-| 219 Zudomon | 293 | 0 | Unchanged: storage limit |
+| 219 Zudomon | 293 | 0 | Compact native dash |
 | 220 Vikemon | 206 | 0 | Native dash |
 | 223 LadyDevimon | 197 | 0 | Native dash |
 | 226 Silphymon | 189 | 0 | Native dash |
-| 237 Diaboromon | 246 | 0 | Unchanged: storage limit |
+| 237 Diaboromon | 246 | 0 | Compact native dash |
 | 244 SuperStarmon | 290 | 6 | Native dash |
 | 245 Piedmon | 145 | 0 | Native dash |
-| 246 Infermon | 280 | 0 | Unchanged: storage limit |
+| 246 Infermon | 280 | 0 | Historical: no longer learns the move |
 | 248 MarineAngemon | 183 | 0 | Native dash |
 | 255 Valkyrimon | 211 | 0 | Native dash |
 | 257 Triceramon | 259 | 424 | Native dash |
@@ -93,7 +110,7 @@ runtime effect timing can differ by one tick from the animation counter.
 | 289 ChaosLord | 300 | 461 | Native dash |
 | 291 Dragomon | 151 | 0 | Native dash |
 | 293 Gryphonmon | 300 | 0 | Native dash |
-| 294 Datamon | 180 | 0 | Native dash |
+| 294 Datamon | 180 | 0 | Historical: no longer learns the move |
 | 297 Marsmon | 156 | 0 | Native dash |
 | 300 SlashAngemon | 139 | 0 | Native dash |
 | 302 HiAndromon | 145 | 1041 | Existing dash |
@@ -117,7 +134,7 @@ runtime effect timing can differ by one tick from the animation counter.
 | 400 Apocalymon | 217 | 0 | Native dash |
 | 401 Pukumon | 100 | 0 | Native dash |
 | 402 NeoCrimson | 227 | 0 | Native dash |
-| 403 Beelzemon | 215 | 0 | Unchanged: storage limit |
+| 403 Beelzemon | 215 | 0 | Compact native dash |
 | 404 BlackWarGreymon | 133 | 487 | Native dash |
 | 406 MaloMyotismon | 216 | 629 | Existing dash |
 | 407 Armageddemon | 300 | 0 | Native dash |
@@ -133,5 +150,5 @@ different effect logic and do not depend on this same long melee dash.
 
 Validation: `python3 -m unittest tools.test_buster_dive` checks a shared short
 attack and a longer recovery, including exact body samples, other slots and
-sound events. The full eight-language build checks the packed models and 2 MB
+sound events. The full nine-language build checks the packed models and 2 MB
 heap budget. In-game evidence and limitations are recorded in the task report.
