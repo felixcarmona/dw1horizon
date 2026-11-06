@@ -50,6 +50,10 @@ class ModelProvider(unittest.TestCase):
         self.assertEqual(len(records), 183)  # the 175 source-game imports and the eight hand-made babies
         selected = {t: model.OVERLAYS[e['field_overlay']]
                     for t, e in records.items() if e.get('field_overlay')}
+        # Silphymon's repaired walk is baked into its plain delta. Keep the
+        # preceding field recipe covered without applying it over that repair.
+        self.assertEqual(records['226'], {'model': '226-Silphymon.MMD', 'aliases_applied': True})
+        selected['226'] = model.OVERLAYS['silphymon-field']
         # Baked deltas retain their effective field generator as authoring provenance.
         for path in [*Path('content/modeldelta/scale-locks').glob('*.json'),
                      *Path('content/modeldelta/resizes').glob('*.json')]:
@@ -59,6 +63,17 @@ class ModelProvider(unittest.TestCase):
             self.assertNotIn('field_overlay', records[sid])
             preceding = proof['preceding_provider'].get('field_overlay')
             if preceding:
+                self.assertNotIn(sid, selected)
+                selected[sid] = model.OVERLAYS[preceding]
+        # Native locomotion is authored after the effective field proportions.
+        # Keep those baked generators covered without running them a second time.
+        for path in Path('content/models/authoring/native-polish').glob('*.json'):
+            proof = json.loads(path.read_text())
+            preceding = proof.get('preceding_provider', {}).get('field_overlay')
+            if preceding:
+                sid = str(proof['species'])
+                self.assertTrue(records[sid]['aliases_applied'])
+                self.assertNotIn('field_overlay', records[sid])
                 self.assertNotIn(sid, selected)
                 selected[sid] = model.OVERLAYS[preceding]
         celebrations = json.load(open('content/models/imports/celebrations.json'))

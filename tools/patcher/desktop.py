@@ -440,6 +440,7 @@ def unpack_package(archive, dest, checksums=None):
     shutil.rmtree(tmp, ignore_errors=True)
     os.makedirs(tmp)
     seen = {}
+    paths = {}
     try:
         with tarfile.open(archive, 'r:*') as t:
             for m in t:
@@ -449,6 +450,14 @@ def unpack_package(archive, dest, checksums=None):
                     continue
                 if not _safe_name(name):
                     raise Problem('app.packageBad', detail=f'unsafe path {m.name}')
+                # Include implicit parent directories: DATA/a and data/b also
+                # collide when extracted onto a case-insensitive filesystem.
+                parts = name.split('/')
+                for i in range(1, len(parts) + 1):
+                    path = '/'.join(parts[:i])
+                    previous = paths.setdefault(path.casefold(), path)
+                    if previous != path:
+                        raise Problem('app.packageBad', detail=f'case-colliding paths: {previous}, {path}')
                 target = os.path.join(tmp, *name.split('/'))
                 if m.isdir():
                     os.makedirs(target, exist_ok=True); continue

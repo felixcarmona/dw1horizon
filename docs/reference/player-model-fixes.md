@@ -1,5 +1,58 @@
 # Player model reports
 
+## Native locomotion and weapon pass
+
+Marsmon, GrapLeomon, ExVeemon and Stingmon use Leomon's native walking,
+tired walking and running timing and limb trajectories, fitted to their own
+bone lengths. Garudamon combines those legs with Angemon's wing curves;
+Sakuyamon uses Angemon's staff-bearing performance. Existing faces and textures
+remain intact. GrapLeomon retains its reviewed chibi proportions. ExVeemon's
+neck piece and head attachment are shortened to 78% across every animation.
+
+Kyubimon uses Elecmon's four-paw trajectories, with its own two-link legs solved
+to the native paws and its tail fan retained. A uniform 0.78 resize includes
+every animation, radius, height, bubble and effect attachment. Field loops are
+sampled before resizing and encoded again to avoid rounded momentum accumulating
+a height error at each seam. ChaosLord uses Machinedramon's walk and run; its
+existing tired performance is kept because that donor has no tired clip.
+
+Omnimon's Megaton Punch and Sonic Jab carry the existing cannon-arm strike
+onto the sword shoulder and elbow. Body anticipation, legs, cape, timing and
+attack events remain exact. The cannon keeps its ready pose. Buster Dive keeps
+its separately repaired dash.
+
+The authored outputs are stored as ordinary model deltas. The former field
+overlays for the five affected species are baked before editing and disabled,
+so later generators cannot restore the previous gait or proportions. Recipes
+under `content/models/authoring/native-polish/` pin the input, donor, skeleton
+and output; `tools/models/field_animations/native_polish.py` replays them.
+The output must also pass `edit.py check --species-pins` and the disc's resident
+and cold-animation limits.
+
+```sh
+python3 tools/models/field_animations/native_polish.py \
+  content/models/authoring/native-polish/297.json BEFORE.MMD AFTER.MMD
+POLISH_MODELS=build/polish PYTHONPATH=tools \
+  python3 -W ignore -m unittest tools.test_native_polish
+```
+
+The decoded checks cover unchanged mesh and nonlocomotion programs after the
+explicit proportion changes, native timing, loop closure, field pace, and sole
+clearance at logic ticks and both intervening display frames. Sword checks
+preserve every unaffected channel and every event.
+
+World 3 USA has its own Kyubimon mesh. Its variant first carries the pinned
+pre-polish delta onto that source, then solves and resizes that mesh through the
+same native recipe. The variant generator checks its ordinary copy/add delta
+for foreign source-data windows and pins the final provider output. This avoids
+matching resized PAL vertex coordinates against different USA vertices.
+
+Pegasusmon remains unchanged in this pass. Its static texture audit finds no
+invalid palette rows, UV ranges or palette-data sampling. Coincident head,
+shoulder and wing faces have opposite winding, as in the source import; they
+are intentional backs. Its animation streams contain no texture-copy commands.
+Those checks alone do not establish the cause of an intermittent field defect.
+
 ## Gallantmon: helmet eyes
 
 The full-resolution eye repair is already included in v0.0.6. The final provider
@@ -219,28 +272,26 @@ The [official profile](https://digimon.net/reference_en/detail.php?directory_nam
 identifies the Grey sword in the left arm and the Garuru cannon in the right.
 The imported mesh agrees: bones 3–7 carry Grey and 9–13 carry Garuru. The source
 physical clip moved Garuru while Grey's shoulder and elbow remained fixed.
-The physical action is now reflected onto the Grey chain, with the body's weight
-shift and cloak response carried through and eased transitions to the ready pose.
-The mesh is preserved.
+The ordinary sword repair is `tools/models/repair_omnimon_attack.py`, retained
+from the native locomotion and weapon pass. It moves the shoulder/elbow action
+onto Grey while preserving the body's anticipation, legs, cape, timing and
+events. Garuru keeps its ready pose. There is one sword implementation.
 
 | Ordinary technique | Action |
 | --- | --- |
-| Megaton Punch, Counter, Sonic Jab | Grey sword |
-| Tremor | Existing Garuru cast; the engine classifies it as ranged |
+| Megaton Punch, Sonic Jab | Grey sword |
+| Counter | Existing guard action |
+| Tremor | Existing Garuru cast; range 3 |
 | Buster Dive | Existing whole-body dash |
 | Dynamite Kick | Existing kick |
 | Ice Statue, Aurora Freeze, Giga Freeze, Water Blit | Existing Garuru cannon cast |
 | Prominence Beam, Magma Bomb, Red Inferno, Fire Tower | Existing Garuru cannon cast |
 
-Only slots 46, 48 and 51 change. Ranged programs, the dash, kick, finisher and
-all field animations retain their exact decoded motion. Duration and events of
-the physical group remain exact. The resident model uses 83,376 bytes. Reproduce
-both imported-model regressions with the pre-edit files in
-`FOLLOWUP_REPORT_DIR/before/{400,461}.MMD`:
-
-```sh
-PYTHONPATH=tools python3 -W ignore -m unittest tools.test_reported_attacks
-```
+Only slots 46 and 51 change. Other programs, the finisher and field animations
+retain their exact decoded motion. `tools/test_native_polish.py` checks the
+sword repair against its before/after artifacts, including exact unaffected
+body channels and attack events. The former whole-body reflected alternative
+has been removed.
 
 ## Tyrannomon scene: uninterrupted native strides
 

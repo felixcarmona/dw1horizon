@@ -49,6 +49,7 @@ const el = (tag, props = {}, ...kids) => { const e = Object.assign(document.crea
 // Capability names help diagnostics, but the player-facing message offers a way forward.
 const SUPPORT_DETAILS = {
   'engine.noWasm': 'WebAssembly workers are unavailable.',
+  'engine.noWritable': 'FileSystemFileHandle.createWritable is unavailable.',
   'engine.noOpfs': 'OPFS / synchronous private file storage is unavailable.',
   'engine.noStreams': 'DecompressionStream (deflate-raw) is unavailable.',
 };
@@ -914,13 +915,13 @@ function renderRemember() {
 // release's deltas make the imported models.
 function patchState() {
   if (building) return ['patch.building', false];
+  const why = missingSupport();
+  if (why) return [why, false];
   const all = [...games.values()];
   if (jobsRunning || all.some((g) => g.pending)) return ['patch.waiting', false];
   const missing = all.filter((g) => !g.cur);
   if (missing.length === all.length) return ['patch.needDiscs', false];
   if (missing.length) return ['patch.missing', false, { list: listOf(missing.map((g) => gameName(g.id))) }];
-  const why = missingSupport();
-  if (why) return [why, false];
   return ['patch.ready', true];
 }
 

@@ -468,13 +468,13 @@
     },
     "zones/ancient-glacial-region/s079-82/script.dws": {
       "original_sha256": "46418f2296dc1fe2ee8252b3dd87f66a2aa11b0ea00e659423a16da9a618ad89",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "ad3dd88b732abed6dadf5dbdd67e11d2e89fa24d35449c4c18a36329ada64281"
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; start each Tyrannomon recruitment movement once and wait for arrival",
+      "authored_sha256": "6f71be26c524e57ae09eb06866eaf104149c34342f435798edd7f8cc8fa05c3e"
     },
     "zones/ancient-glacial-region/s079-82/script.py": {
       "original_sha256": "edd99d93944c65fbf0bc9821159f23377d51acf37b6795dfe5f73f67372d631b",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "9bf8aee8ffbaaff53f747b26d61540e1de58107d2cc3b1feb7845346f0e5a914"
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; start each Tyrannomon recruitment movement once and wait for arrival",
+      "authored_sha256": "53ef7f1aea720266cfd5d3dda42c77f031d5e0816db1dfbaa84a77dd52c22ae6"
     },
     "zones/digimon-bridge/s010-9/script.dws": {
       "original_sha256": "56d2505aa8d499ebb9f6fa68121f50be2047ff87f70f39e07028f3795be50f13",

@@ -160,9 +160,23 @@ def cmd_make(a):
         target = edit.decoded(row['mmd'], ref['mmd'])
         if len(ref['mmd']) != 1:
             raise SystemExit(f'{sid}: a delta over several sources is not supported by carry.py')
-        carrying.selftest(ref['mmd'][0], target, nbones(sid))
         log = []
-        carried, report = carrying.carry(ref['mmd'][0], target, other['mmd'][0], nbones(sid), log=log.append)
+        authored = ROOT / 'content/models/authoring/native-polish' / f'{sid}.json'
+        profile = json.loads(authored.read_text()) if authored.is_file() else {}
+        if profile.get('preceding_delta'):
+            # Reconstruct the accepted pre-polish edit on this release first.
+            # Resized vertices cannot be matched against a different mesh by
+            # coordinate alone; solve its own anatomy and resize its own mesh.
+            from tools.models.field_animations import native_polish
+            preceding = edit.decoded(profile['preceding_delta'], ref['mmd'])
+            carrying.selftest(ref['mmd'][0], preceding, nbones(sid))
+            carried_base, report = carrying.carry(ref['mmd'][0], preceding, other['mmd'][0], nbones(sid), log=log.append)
+            carried, proof = native_polish.build(carried_base, profile)
+            report['authored_native_polish'] = dict(recipe=str(authored.relative_to(ROOT)),
+                                                    input_sha256=sha256(carried_base), output_sha256=sha256(carried))
+        else:
+            carrying.selftest(ref['mmd'][0], target, nbones(sid))
+            carried, report = carrying.carry(ref['mmd'][0], target, other['mmd'][0], nbones(sid), log=log.append)
         delta = modeldelta.encode(carried, other['mmd'])
         if modeldelta.decode(delta, other['mmd']) != carried:
             raise SystemExit(f'{sid}: the carried delta does not decode to the carried model')

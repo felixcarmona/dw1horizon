@@ -215,6 +215,21 @@ class Packages(unittest.TestCase):
                 desktop.unpack_package(str(tar), str(self.dir / name))
             self.assertFalse((self.dir / name).exists())
 
+    def test_unpack_refuses_case_collisions_on_every_platform(self):
+        for first, second in (('bundle/names.dws', 'bundle/NAMES.dws'),
+                              ('bundle/Tools/a.py', 'bundle/tools/b.py'),
+                              ('BUNDLE', 'bundle/tools/b.py')):
+            with self.subTest(first=first, second=second):
+                tar = self.dir / 'collision.tar.gz'
+                files = dict(PACKAGE, **{first: b'one', second: b'two'})
+                tarball(tar, files)
+                dest = self.dir / 'collision'
+                with self.assertRaises(desktop.Problem) as caught:
+                    desktop.unpack_package(str(tar), str(dest), sums(files))
+                self.assertIn('case-colliding paths', caught.exception.params['detail'])
+                self.assertFalse(dest.exists())
+                self.assertFalse((self.dir / 'collision.unpacking').exists())
+
     def test_install_release_downloads_verifies_and_prunes(self):
         tar = self.dir / 'horizon-package.tar.gz'
         tarball(tar, PACKAGE)
