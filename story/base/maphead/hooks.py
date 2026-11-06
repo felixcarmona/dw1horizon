@@ -1338,12 +1338,12 @@ def setup():    # section 42
 @screen(Screen.great_canyon_top_area_43).on_load
 def setup():    # section 43
     use_script(43, Screen.great_canyon_top_area_43)
-    if canyon_bandits_active:
-        engine.music_mode.set(2)
-        music(6)
-        return
     engine.music_mode.set(0)
+    if canyon_bandits_active and not canyon_bandits_beaten:
+        engine.music_mode.set(2)
     music(6)
+    if canyon_bandits_active:
+        return
     load(Species.Goblimon)
     spawn(Species.Goblimon, slot=0, autotalk=True)
     spawn(Species.Goblimon, slot=1, autotalk=True)
@@ -2387,6 +2387,8 @@ def setup():    # section 127
 def setup():    # section 128
     use_script(123, Screen.great_canyon_128)
     engine.music_mode.set(0)
+    if canyon_bandits_active and not canyon_bandits_beaten:
+        engine.music_mode.set(2)
     music(6)
     if canyon_bandits_active:
         return

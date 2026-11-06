@@ -26,6 +26,8 @@ from dws.text.jaspace import kinsoku_problems, problems as ja_space_problems
 from dws.py.lower import escape_problems, font_problems, literal_escapes, resolve_escapes
 from tools.localize.executable.bank import exe_bank, FORMAT, encoded_len, list_width, VERBATIM
 from tools.fontgen import text_width
+from tools.localize.places import problems as place_problems
+from tools.localize.ui import field_problems, confirmation_problems
 
 from tools.languages import CODES as LANGUAGES
 FONTS = ('b', 'original')
@@ -34,6 +36,48 @@ HEADER = re.compile(r'^\{color [67]\}.*?\{color 1\}[.!?]*$')
 # These entries are arrays consumed by the trade/tournament UI, not box-0 pages.
 TABLE = re.compile(r'^(?:s(?:102|168|209|213)\.sec10\.u\d+|(?:s000\.sec|m)1238\.u(?:7|12))$')
 CHOICE = re.compile(r'\.m\d+\.o\d+$')
+
+
+def curling_menu_problems(value, font, language):
+    """KAR_tickYesNoPrompt copies 82 px at 0 and 92 px at 83.
+
+    DRAW_STRING_PIECES assigns glyphs using their original cells rounded down
+    to four pixels, so the second label must start at cell 84.
+    """
+    cells = c_cells(language)
+    pieces = ['', '']
+    second = None
+    for word in re.finditer(r'\S+', value):
+        start = sum(cells.get(c, cells['?']) for c in value[:word.start()])
+        end = start + sum(cells.get(c, cells['?']) for c in word[0])
+        if start < 84 < end:
+            return ['curling option crosses the row boundary at cell 84']
+        slot = int(start >= 84)
+        if slot and second is None:
+            second = start
+        pieces[slot] += (' ' if pieces[slot] else '') + word[0]
+    if not all(pieces) or second != 84:
+        return ['curling needs two option rows, with the second label at cell 84']
+    def width(label):
+        if language == 'zh-hans':
+            return ui_width(label, font, language)
+        if font == 'b':
+            # The first glyph is centred inside its original cell (at most
+            # six pixels of inset); these rows never use item-list condensation.
+            return list_width(label, font) + 6
+        glyphs = c_glyphs(language)
+        pen, right = 0, 0
+        for char in label:
+            advance, rows = glyphs.get(char, glyphs['?'])
+            if char != ' ':
+                right = max(right, (pen & ~3) + max(r.rfind('#') for r in rows) + 1)
+            pen += advance
+        from tools.fontgen import fit_layout
+        # CLASSIC uses these same bitmaps with their natural proportional
+        # advances. Check its uncondensed width as well as ORIGINAL's cells.
+        return max(right, fit_layout(label, 0, metrics_only=True)[1] + 6)
+    return [f'curling option {label!r} exceeds its {limit}-px row'
+            for label, limit in zip(pieces, (82, 91)) if width(label) > limit]
 
 
 # Packed player rows are cut at these original-cell offsets in game_menu.c.
@@ -428,6 +472,15 @@ def audit(languages=LANGUAGES, fonts=FONTS, root=ROOT):
                         issue(language, 'both', path, key, 'translation key missing')
                 pairs.append((source, path, executable, english, data))
             names = next((data for _, _, exe, _, data in pairs if exe), {})
+            for source, path, _, english, data in pairs:
+                if language != 'en' and path == source:
+                    # English-only developer examples retain their vocabulary;
+                    # the existing fallback note reports their missing bank.
+                    continue
+                for key, value in data.items():
+                    if not key.startswith(('_', 'x.')):
+                        for why in place_problems(language, key, value, english.get(key), root):
+                            issue(language, 'both', path, key, why)
             for font in fonts:
                 rows = []
                 substitutions = {}
@@ -467,6 +520,12 @@ def audit(languages=LANGUAGES, fonts=FONTS, root=ROOT):
                                 for why, _ in font_problems(row)[0]:
                                     issue(language, font, path, key, why)
                         if executable:
+                            for ui_font in (('original', 'classic') if font == 'original' else (font,)):
+                                for why in field_problems(key, value, ui_font, language):
+                                    issue(language, ui_font, path, key, why)
+                            if key == 'kar.KAR_D_8005ABB8':
+                                for why in curling_menu_problems(value, font, language):
+                                    issue(language, font, path, key, why)
                             if language != 'en':
                                 for why in packed_ui_problems(key, value, language):
                                     issue(language, font, path, key, why)
@@ -503,6 +562,9 @@ def audit(languages=LANGUAGES, fonts=FONTS, root=ROOT):
                                        'main.MAIN_D_80131024', 'main.MAIN_D_80131030') and (ui_width(value, font, language) if language == 'zh-hans' else list_width(value, font)) > 164:
                                 issue(language, font, path, key, 'title menu exceeds its 164-px text crop')
                             continue
+                        for ui_font in (('original', 'classic') if font == 'original' else (font,)):
+                            for why in confirmation_problems(key, value, ui_font, language):
+                                issue(language, ui_font, path, key, why)
                         if is_mod:
                             where = str(english.get('_where', {}).get(key, ''))
                             if 'option ' in where:

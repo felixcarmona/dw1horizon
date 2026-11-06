@@ -140,6 +140,10 @@ class Provider:
                                           log=lambda *a: None, frozen_mesh=False)
                 made = {f'{stem}.{ext}': (self.work / f'{stem}.{ext}').read_bytes() for ext in ('MMD', 'TIM')}
             self.cache.update(made)
+        elif name.startswith('extracted/CHDAT/MMD') and name.endswith('.MMD') and '..' not in Path(name).parts:
+            # Native animation donors can be additional plain-delta sources.
+            # model() checks the recorded hash before decoding any target.
+            self.cache[name] = (self.repo / name).read_bytes()
         else:
             self.partner(name)
         return self.cache[name]

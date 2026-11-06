@@ -1,0 +1,11 @@
+{
+  "format": "native-mesh-source-v1",
+  "name": "MagnaAngemon",
+  "dw3": "M211HANG",
+  "type": 506,
+  "height": 608,
+  "animation": "anim_00",
+  "frame": 0,
+  "quad_angle": 8.0,
+  "normal_angle": 4.0
+}

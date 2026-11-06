@@ -78,6 +78,52 @@ class GuardTests(unittest.TestCase):
         self.assertEqual(T.E.pick(10, [1, 2, 3], rows, {1: 5, 2: 5, 3: 5},
                                   stats, 0, 30, 'stats'), 1)
 
+    def test_shadowed_rookie_routes_have_ordinary_picker_witnesses(self):
+        _, reqs, levels = T.model(self.sp)
+        cases = [
+            ('Wormmon', 'Dokugumon', (1000, 1000, 100, 200, 100, 300), 3, 20),
+            ('Gomamon', 'Tylomon', (1000, 1000, 100, 100, 300, 100), 0, 10),
+        ]
+        for parent, child, values, care, weight in cases:
+            with self.subTest(parent=parent, child=child):
+                p, c = self.names[parent], self.names[child]
+                stats = dict(zip(T.ALL, values))
+                self.assertEqual(T.E.pick(p, self.kids[p], reqs, levels, stats,
+                                          care, weight, 'stats', (0, 0, 100, 100)), c)
+                # Changing a shared requirement must leave every sibling reachable.
+                for other_parent, children in self.kids.items():
+                    if c in children:
+                        for sibling in children:
+                            self.assertTrue(T.E.reachable(other_parent, sibling, children,
+                                                         reqs, levels, 'stats'),
+                                            (self.sp[other_parent]['name'], self.sp[sibling]['name']))
+
+    def test_seadramon_keeps_original_winning_states(self):
+        _, reqs, levels = T.model(self.sp)
+        p, added = self.names['Seadramon'], self.names['WaruSeadramon']
+        # Before the route repair, WaruSeadramon got its bonus for free from
+        # Seadramon. Retain that baseline to catch changes to the loser's carry.
+        before = copy.deepcopy(reqs)
+        before[added].update(digimon=p, battles=-1)
+        originals = T.S.originals().rec[p]['evoPaths']['to']
+        for child in (c for c in originals if c > 0):
+            with self.subTest(child=self.sp[child]['name']):
+                state = T.E.canonical(p, child, reqs, levels)
+                stats, care, weight, bonus = state
+                self.assertEqual(T.E.pick(p, self.kids[p], reqs, levels, stats,
+                                          care, weight, 'stats', bonus), child)
+                checked = 0
+                for stats, care, weight, bonus in T.E.states(
+                        p, child, self.kids[p], before, levels, 'stats'):
+                    self.assertEqual(T.E.pick(p, self.kids[p], reqs, levels, stats,
+                                              care, weight, 'stats', bonus), child)
+                    checked += 1
+                self.assertGreater(checked, 0)
+        for parent, children in self.kids.items():
+            if added in children:
+                self.assertIsNotNone(T.practical(parent, added, self.kids, reqs,
+                                                 levels, self.sp), self.sp[parent]['name'])
+
     def test_chain_does_not_assume_normal_gains_when_leaving_sukamon(self):
         _, reqs, levels = T.model(self.sp)
         p, c = self.names['Garbagemon'], self.names['BlackKingNumemon']

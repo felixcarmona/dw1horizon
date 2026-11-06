@@ -141,6 +141,11 @@ def make(ctx):
         P.add(f'{os.path.dirname(dest)}/{name}', O(SC.OUT, name))
     story_copy = {dest for dest, *_ in copies}
     lang_ovl_files = []
+    if not s.lang_on:
+        for line in lines(O('lang-tex', 'files.txt')):
+            lang, path = line.split(' ', 1)
+            if lang == 'en':
+                P.file(path, O('lang-tex', lang, path))
     if s.lang_on:   # (:425-503)
         if os.path.isdir(O('lang')):
             shutil.rmtree(O('lang'))

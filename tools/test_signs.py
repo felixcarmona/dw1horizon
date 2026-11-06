@@ -97,6 +97,58 @@ class OgreSign(unittest.TestCase):
                          [(self.mp, (27, 148, 223, 258))])
         self.assertEqual(signs.SPRITE_JOBS['mayo11_ogre']['frames'], (6,))
 
+@unittest.skipUnless(Path('extracted/MAP/MAP3/GCAN08_1.MAP').exists(), 'needs extracted USA disc')
+class FallingRocksSign(unittest.TestCase):
+    @staticmethod
+    def frame_pixels(m, frame):
+        sp = m.sprites[frame]
+        for raw in m.tims:
+            tim = signs.dwmap.TIM(raw)
+            if tim.bpp != 8:
+                continue
+            page = 384 + sp['texX'] // 256 * 128
+            x = (page - tim.x) * 2 + sp['texX'] % 256
+            y = sp['texY'] - tim.y
+            stride = tim.w * 2
+            if 0 <= x and x + sp['width'] <= stride and 0 <= y and y + sp['height'] <= tim.h:
+                return b''.join(tim.pixels[(y + row) * stride + x:(y + row) * stride + x + sp['width']]
+                                for row in range(sp['height']))
+        raise AssertionError('sprite texture not found')
+
+    def test_collapse_cover_keeps_translated_warning_in_every_sign_language(self):
+        mp = 'MAP/MAP3/GCAN08_1'
+        original = signs.dwmap.MapFile(Path('extracted', mp + '.MAP').read_bytes())
+        names = cutout.names
+        languages = ('en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca')
+        with tempfile.TemporaryDirectory() as out, patch.object(
+                cutout, 'names', side_effect=lambda lang: [n for n in names(lang) if n == 'audit-22']):
+            signs.signs(out, languages=languages)
+            for lang in languages:
+                with self.subTest(language=lang):
+                    translated = signs.dwmap.MapFile(Path(out, lang, mp + '.MAP').read_bytes())
+                    # The collapse reveals this initially hidden copy of the warning.
+                    self.assertNotEqual(self.frame_pixels(translated, 7), self.frame_pixels(original, 7))
+                    for frame in (0, 1, 2, 3, 5, 6):
+                        self.assertEqual(self.frame_pixels(translated, frame), self.frame_pixels(original, frame))
+                    self.assertEqual(translated.instances, original.instances)
+                    self.assertEqual(translated.sprites, original.sprites)
+
+
+@unittest.skipUnless(Path('extracted/MAP/MAP10/FRZL17.MAP').exists(), 'needs extracted USA disc')
+class AreaProfileCopies(unittest.TestCase):
+    def test_localized_sprite_copy_keeps_area_profile_without_story_map(self):
+        mp = 'MAP/MAP10/FRZL17'
+        with tempfile.TemporaryDirectory() as out, \
+             patch.object(cutout, 'names', return_value=['audit-27']), \
+             patch.dict(signs.SPRITE_JOBS, {'audit-27': dict(map=mp, box=(55,142,341,303), frames=())}):
+            # Japanese sprite copies retain native pixels, but still need gameplay data.
+            signs.signs(out, languages=('ja',))
+            result = signs.dwmap.MapFile(Path(out, 'ja', mp + '.MAP').read_bytes())
+        before = signs.dwmap.MapFile(Path('extracted', mp + '.MAP').read_bytes())
+        self.assertIn(9, result.regionA)
+        result.regionA = before.regionA
+        self.assertEqual(result.build(), before.build())
+
 
 if __name__ == '__main__':
     unittest.main()
