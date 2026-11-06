@@ -241,9 +241,15 @@ def main():
                           f"{step} {u['index']} {u['name']}",
                           order_group=u.get('order_group'), record_snapshot=u.get('record_snapshot', False)) for u in found]
             if specs:
-                for result in parallel.units(Path(TREE), specs, Path(OUT + '.workers'),
-                                              1 if a.sequential else a.jobs, a.worker_memory_mib):
-                    add(result)
+                if step == 'story' and any(s.get('order_group') for s in specs):
+                    # Story snapshots have not passed the real merge proof.
+                    # Preserve the compiler's canonical shared-map state.
+                    for item in specs:
+                        add(execute(item))
+                else:
+                    for result in parallel.units(Path(TREE), specs, Path(OUT + '.workers'),
+                                                  1 if a.sequential else a.jobs, a.worker_memory_mib):
+                        add(result)
         else:
             add(execute(spec(step, 'build', args + ['--build', '--strict'])))
         add(execute(spec(step, 'finish', args + ['--finish', '--strict'])))

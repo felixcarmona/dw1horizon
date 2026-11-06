@@ -283,7 +283,7 @@ def units(ctx):
                         ctx.path('DIGI.DAT') if os.path.isfile(ctx.path('DIGI.DAT')) else None,
                         ctx.path('derived/exe-facts.json') if os.path.isfile(ctx.path('derived/exe-facts.json')) else None),
                         inputs, outs, order_group='story maps and locks' if ordered else None,
-                        record_snapshot=ctx.locks_read_only and not s.main))
+                        record_snapshot=False))
     return out
 
 

@@ -59,10 +59,10 @@ class Groups(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError,'conflicting'):
                 groups.merge_operations(results,digest)
 
-    def test_only_readonly_standard_story_compiles_opt_into_snapshots(self):
+    def test_story_snapshot_recording_is_disabled(self):
         from tools.derive.steps import story
         with tempfile.TemporaryDirectory() as td:
-            for readonly, main, expected in ((True, '', True), (False, '', False), (True, 'custom.dws', False)):
+            for readonly, main, expected in ((True, '', False), (False, '', False), (True, 'custom.dws', False)):
                 ctx=SimpleNamespace(root=td, out=td, env={}, facts=None, locks_read_only=readonly,
                                     path=lambda *parts:str(Path(td).joinpath(*parts)))
                 settings=SimpleNamespace(main=main, screens=[], maps='', extra=[], scrn=False,
