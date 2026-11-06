@@ -286,6 +286,12 @@ from a plain file picker needs reselection if it cannot be read again.
 Chromium using tiny OPFS fixtures and the production worker's read function. `node web/test/lifecycle.mjs URL`
 checks failure and cancellation cleanup, worker retries, and locking across tabs without building a disc.
 
+`node web/test/downloads.mjs URL` tests the completed build's separate download links and combined button without
+source discs. It checks the saved `.bin` and `.cue` names, bytes, binary MIME types and the CUE's BIN reference in
+headless Chromium, including Android user agent, viewport and touch emulation. Set `FIREFOX=path` to run in headless
+Firefox, or `CHROMIUM=path` for a custom Chromium executable. Both outputs use `application/octet-stream` so download
+managers do not infer a `.txt` suffix for the CUE. The two files stay together in the same folder; open the `.cue`.
+
 Tests: `web/test/suite.sh TAG [URL]` (not deployed): headless Chromium on the real page (`?test=1` sets the title DONE
 and `window.RESULTS` at the end; `&shuffle=SEED` runs the jobs in a random order;
 `&workers=N`; `&keep=1` keeps the OPFS tree for `web/test/treesums.mjs`) on the seven bases and a random order
