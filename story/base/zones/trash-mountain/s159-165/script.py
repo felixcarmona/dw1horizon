@@ -19,6 +19,8 @@ t82 = text.s159.sec82
 
 @mountain.on_enter
 def enter():    # section 254
+    if recruited(Species.Sukamon):
+        sukamon2.leave()
     if not old_fishrod_picked_up:
         objects[10].hide()
     else:
@@ -190,9 +192,13 @@ def talk():    # section 6
 @sukamon2.on_talk
 def talk():    # section 7
     if not recruited(Species.Sukamon):
+        say(t7.u0)
+        # Walk to the southern exit before the recruitment announcement.
+        walk(650, -1800)
+        walk(189, -3550)
+        leave()
         recruit(Species.Sukamon)
         engine.prosperity.add(1)
-        say(t7.u0)
         return
     say(t7.u1)
 
