@@ -187,9 +187,13 @@ def lab_evolve(t, out):
     press('DOWN', 'UP')                  # draws the row; the last row does not move DOWN, so the cursor is put back
     EMU.poke('MOD_LAB_CURSOR', choices.index(t).to_bytes(4, 'little'))
     run(E + ['shot', f'{out}/lab-{t}.png'])
-    press('CONFIRM')
-    EMU.wait(1)
-    confirmation = mem('EVOLUTION_TARGET')
+    for _ in range(3):
+        press('CONFIRM')
+        EMU.wait(1)
+        confirmation = mem('EVOLUTION_TARGET')
+        if (confirmation.get('EVOLUTION_TARGET') == t or partner_type() == t or
+                EMU.peek('TAMER_STATE', 'b') == 6):
+            break
     with open(os.path.join(out, f'evolution-confirmation-{t}.json'), 'w') as stream:
         json.dump(confirmation, stream, indent=2)
     for _ in range(40):                     # START skips the scene; only while it runs, or it would pause the game
@@ -197,6 +201,7 @@ def lab_evolve(t, out):
         tamer = EMU.peek('TAMER_STATE', 'b', ram)
         if tamer == 0 and EMU.peek('IS_SCRIPT_PAUSED', 'i', ram) == 1 and partner_type() == t: break
         if tamer == 6: EMU.press('START', 6)
+        if tamer == 20: EMU.press('CONFIRM', 6)  # dismiss the tamer-level-up message after evolution
         EMU.wait(3)
     seq(f'wait 4, shot {out}/evolved-{t}.png')
 
@@ -281,7 +286,7 @@ def finisher_watch(slot, secs):
     return out, damage
 
 
-def battle(t, moves, out, r):
+def battle(t, moves, out, r, prepare=None, launch_and_watch=None, warmup=16):
     fin = next((0x2E + j for j, x in enumerate(moves) if x != 255 and 58 <= x <= 112), None)
     r['finisher_expected'] = bool(fin)
     techs = [0x2E + j for j, x in enumerate(moves) if x != 255 and not 58 <= x <= 112][:3]
@@ -298,20 +303,29 @@ def battle(t, moves, out, r):
          'PARTNER_ENTITY.digimonEntity.stats.base.brain=400', 'PARTNER_ENTITY.digimonEntity.stats.base.hp=4000',
          'PARTNER_ENTITY.digimonEntity.stats.current.currentHP=4000', 'PARTNER_ENTITY.digimonEntity.stats.base.mp=4000',
          'PARTNER_ENTITY.digimonEntity.stats.current.currentMP=4000', 'PARTNER_PARA.condition=0', 'PARTNER_PARA.tiredness=0')
-    run(G + ['warp', '1', '0']); seq('wait 6'); run(G + ['warp', '0', '0']); seq('wait 8')
+    if not EMU.warp(1): raise RuntimeError('could not warp to battle preparation screen')
+    seq('wait 6')
+    if not EMU.warp(0): raise RuntimeError('could not warp to Native Forest')
+    seq('wait 8')
     run(G + ['approach', '0']); seq('wait 1, CONFIRM 4, wait 4')
     mset(*[f'{key}=2500' for key in ENEMY_MAX + ENEMY_HP])
+    if prepare is not None: prepare()
     seq('CONFIRM 4, wait 1')
-    smp = sample(16)
+    smp = sample(warmup)
     seq(f'shot {out}/battle-{t}.png')
     if fin:
         for _ in range(3):               # a dropped SQUARE leaves the gauge full and the prompt on screen
             mset(*[f'{key}=2500' for key in ENEMY_HP])
             g = mem('COMBAT_DATA.fighter[0].finisherGoal').get('COMBAT_DATA.fighter[0].finisherGoal', 0)
             mset(f'COMBAT_DATA.fighter[0].finisherProgress={g}')
-            seq('wait 1'); EMU.press('SQUARE', 8); seq('wait 1, L1 2, R1 2, L1 2, R1 2, L1 2, R1 2')
-            mset('COMBAT_DATA.player.finisherChargeup[0]=80')
-            watched, r['finisher_damage'] = finisher_watch(fin, 30)
+            def launch():
+                seq('wait 1'); EMU.press('SQUARE', 8); seq('wait 1, L1 2, R1 2, L1 2, R1 2, L1 2, R1 2')
+                mset('COMBAT_DATA.player.finisherChargeup[0]=80')
+            if launch_and_watch is None:
+                launch()
+                watched, r['finisher_damage'] = finisher_watch(fin, 30)
+            else:
+                watched, r['finisher_damage'] = launch_and_watch(fin, 30, launch)
             smp += watched
             if any(s.get(ANIM) == fin for s in watched): break
         seq(f'shot {out}/finisher-{t}.png')

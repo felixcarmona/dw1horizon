@@ -19,10 +19,10 @@ keeps the executable (make), its tables (balance.py build --no-maps), the langua
 import importlib
 
 # Registered steps, in their documented order.
-ALL = ('models', 'imports', 'record_originals', 'overlays', 'species', 'sound', 'story', 'screens', 'maps', 'retouch', 'balance', 'storycopies', 'signs', 'localize', 'title', 'plan')
+ALL = ('models', 'imports', 'record_originals', 'overlays', 'species', 'sound', 'effects', 'story', 'screens', 'maps', 'retouch', 'balance', 'storycopies', 'signs', 'localize', 'title', 'plan')
 
 # Steps derive makes, in the order a build makes those that do not read each other (graph.order)
-OWNED = ['models', 'imports', 'record_originals', 'overlays', 'species', 'sound', 'title', 'maps', 'retouch', 'story', 'screens', 'localize', 'signs',
+OWNED = ['models', 'imports', 'record_originals', 'overlays', 'species', 'sound', 'effects', 'title', 'maps', 'retouch', 'story', 'screens', 'localize', 'signs',
          'balance', 'storycopies', 'plan']
 
 

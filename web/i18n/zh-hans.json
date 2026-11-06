@@ -17,6 +17,8 @@
   "features.title": "新内容",
   "features.lead": "在OPTIONS（选项）中选择语言、帧率、字体、难度、新数码宝贝、扩展故事和显示设置。引擎改进和错误修复始终生效。",
   "changelog.title": "更新日志",
+  "changelog.copyLink": "复制 v{version} 的链接",
+  "changelog.linkCopied": "链接已复制",
   "changelog.lead": "了解每个版本为游戏带来的变化。",
   "changelog.new": "新增",
   "changelog.changed": "调整",

@@ -614,6 +614,21 @@ run, and for the partner the **charge**: 0x50 ticks in which each
 press of L1 or R1 adds 2 to `finisherChargeup` (max 80, `battle_hud.c:312`);
 it counts in the damage if ≥ 41 (×1.025 … ×2). The launcher's meter goes back to 0.
 
+Nightmare Syndromer (96) chooses a random target in its EFE script. Subopcode
+75's operand is an **allow-self** flag: zero excludes `sourceEntity` in all
+three combat overlays. The original script passes one, so its caster can take
+the finisher's damage. The `effects` derive step changes that operand to zero
+in the player's `ETCHI/EFEDAT.EFE`, preserving random opponent selection.
+This fixes SkullSatamon and the other users of the same finisher: Digitamamon
+(56 and 174), VenomMyotismon, AeroVeedramon, Creepymon, BlackWarGreymon and
+MaloMyotismon. `effects_like` controls origins and bones, not this target
+choice; SkullSatamon retains Leomon's donor and its Nightmare Syndromer row.
+The archive length and executable memory layout are unchanged.
+
+`python3 -m unittest tools.test_effect_targets` checks the guarded script edit.
+`.venv/bin/python -m tools.dev.playtest.finisher_targets` records the finisher and both
+sides' HP; fixed runs require opponent damage without caster damage on 2 MB.
+
 **Buffs** (`BTL_applyBuffMove`, `:1887`, by technique id): Muscle Charge
 Off +30 %; War Cry Off +10 %, Def +5 %, Speed +10 %; Mass Morph Def +20 %,
 Speed +10 %; Aqua Magic Off +7 %, Def +8 %, Speed +7 %; Full Potential Off

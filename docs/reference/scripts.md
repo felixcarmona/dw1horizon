@@ -389,7 +389,7 @@ bubble (routine 0x1C) is a separate sprite driven by p247/p248.
   `modQuizResult`; **p254 is an index into `newGame.starters`**, never the species id. All three consumers
   (partner creation and the two default-name paths) call `modNewGameStarter`, which reads the packed uint16 list.
   The existing tamer-name and optional partner-name states follow unchanged; `modPartnerNameSetSpecies` supplies
-  the default. Script 204 still places the new tamer in File City. Weights, cells and the 35-rookie pool
+  the default. Script 204 still places the new tamer in File City. Weights, cells and the 38-entry list (37 expanded starters and Kunemon for the original-game fallback)
   live in `content/tables/new-game.json`; `tools/starter_quiz.py` checks all 2187 answer paths.
   `story/new-game-quiz.dws` extends the base text table only for the expanded engine; original-engine builds keep
   the legacy table and its smaller MAPHEAD buffer.
