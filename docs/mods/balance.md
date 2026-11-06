@@ -425,7 +425,7 @@ Requirement tests: `tools/test_evo_tree.py --practical`, `tools/economy_audit.py
 | Evolution rows `techs` | a bonus for 21-49 techniques | gone; Gigadramon asks 100 battles instead | the bonus could stand in for the stats, so a raised partner took another route |
 | Grey Lord's Mansion, Ice Sanctuary | a Virus, a Vaccine partner | also any partner once Myotismon, Angemon joined | the partner does not lock a place already opened |
 | Monzaemon's costume | gone after the toy story | a Numemon can always wear it | a late route to Monzaemon |
-| Sukamon, Andromon in File City (`city/file-city-services.py`) | one line each | Sukamon clears the island's poop for 1000 bits (patch 0324); Andromon remodels a Mamemon as Guardromon does, who keeps doing it | Andromon stands there on about one daytime visit in four: the service cannot depend on him alone |
+| Sukamon, Andromon in File City (`city/file-city-services.py`) | one line each | Sukamon clears the island's poop for 1000 bits (patch 0324); Andromon remodels a Mamemon as Guardromon does, who keeps doing it; other partners receive his usual city greeting | Andromon stands there on about one daytime visit in four: the service cannot depend on him alone |
 
 ## 6.3 Monochromon recruitment
 
