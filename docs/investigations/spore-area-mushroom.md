@@ -15,6 +15,12 @@ This is inherited from the original game. The ordinary floor collision alone
 does not reveal it: the chest changes collision at runtime after the item spawns.
 Screen 233 has no corresponding chest overlap and keeps its original location.
 
+With the chest footprints applied, screen 21 has no reachable pickup position
+for its original mushroom. Screen 234 retains a narrow approach: 105 reachable
+positions in the pickup window, with none on the item's own tile. The left-side
+approach shown in the report stops at the chest. The late mushroom is hidden and
+awkward to retrieve rather than completely unobtainable.
+
 The fix uses `at` overrides in `content/ground-items.json`. Original script
 coordinates remain the stable keys, so existing daily-pickup bits still refer to
 the same items. The random-roll conditions, items, chest rewards and chest flags
