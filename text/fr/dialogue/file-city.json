@@ -22,8 +22,8 @@
  "s162.sec5.u2": [
   [
    "Hé, tu sais quoi ? Tout au",
-   "nooord, il y a la Plage des",
-   "icebergs. Il paraît qu'un"
+   "nooord, il y a la Plage",
+   "Iceberg. Il paraît qu'un"
   ],
   [
    "Digimon énooorme y apparaît",
@@ -175,7 +175,7 @@
   ]
  ],
  "s162.sec55.m0.o0": "Vers la ville des usines",
- "s162.sec55.m0.o1": "À la grotte plage secrète",
+ "s162.sec55.m0.o1": "À la grotte secrète",
  "s162.sec55.m0.o2": "Laisse tomber",
  "s162.sec55.u0": [
   [
@@ -564,8 +564,8 @@
  "s163.sec8.u12": [
   [
    "Maintenant que j'y pense, le",
-   "{color 6}Champi de glace{color 1} de Freezeland",
-   "est vraiment délicieux."
+   "{color 6}Champi de glace{color 1} des Terres",
+   "gelées est vraiment délicieux."
   ]
  ],
  "s163.sec8.u13": [
@@ -600,16 +600,16 @@
  "s163.sec9.u2": [
   [
    "On répare encore le Pont",
-   "digital. Patiente encore un",
+   "Digimon. Patiente encore un",
    "peu, d'accord ? Ah, au fait, il"
   ],
   [
    "paraît qu'un Digimon rare vit",
-   "au sud, à la Pointe Coela. Il",
-   "sort la tête un court instant"
+   "au sud, au Cap Coela. Il sort",
+   "la tête un court instant chaque"
   ],
   [
-   "chaque jour, vers le soir."
+   "jour, vers le soir."
   ]
  ],
  "s163.sec9.u3": [
@@ -1281,7 +1281,7 @@
  ],
  "s193.sec55.u2": [
   [
-   "Nous sommes à File City, au",
+   "Nous sommes à la ville File, au",
    "centre de l'île File."
   ]
  ],
@@ -1339,10 +1339,11 @@
   [
    "Exactement. Et c'est",
    "dangereux. Selon la légende, si",
-   "File City est en péril, tous"
+   "la ville File est en péril,"
   ],
   [
-   "les Digimon le sont aussi..."
+   "tous les Digimon le sont",
+   "aussi..."
   ]
  ],
  "s193.sec55.u11": [

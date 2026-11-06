@@ -279,8 +279,8 @@
  "s163.sec8.u8": [
   [
    "Falando nisso, a {color 6}Fruta",
-   "vermelha{color 1} da Região Dino Antiga",
-   "é deliciosa."
+   "vermelha{color 1} da Antiga Região de",
+   "Dino é deliciosa."
   ]
  ],
  "s163.sec8.u9": [
@@ -556,7 +556,7 @@
   ]
  ],
  "s164.sec54.m0.o0": "Sala de Giromon",
- "s164.sec54.m0.o1": "Fundo da Cidade de Brinquedos",
+ "s164.sec54.m0.o1": "Fundo: Cidade dos Brinquedos",
  "s164.sec54.m0.o2": "Teste de batalha",
  "s164.sec54.m0.o3": "Última batalha.",
  "s164.sec66.m0.o0": "Debug: atributos altos",

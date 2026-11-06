@@ -1921,7 +1921,7 @@
  "s206.sec6.u12": "Certo, não tenho nada agora...",
  "s206.sec6.u13": "Oops, dar isso não vai adiantar.",
  "s206.sec6.u14": "Nossa, parece gostoso. Oops, jogo primeiro. Entre.",
- "s206.sec6.u15": "Qual é, mano. Vá pegar um peixe no Lago Dragon Eye!",
+ "s206.sec6.u15": "Qual é, mano. Vá pegar um peixe no Lago Olho de Dragão!",
  "s206.sec7.m0.o0": "Vamos fazer isso!",
  "s206.sec7.m0.o1": "Não, obrigado",
  "s206.sec7.u0": "Ei, {color 6}{player}{color 1}. Penguinmon me pediu para cuidar da pista. Por que não me aceita desta vez? Bata em mim e ganhará um prêmio muito especial. Então?",
@@ -2251,7 +2251,7 @@
    "Notícias Shell n. 4 Digimon",
    "fantasma na neve? O Sr. M",
    "conta algo estranho na Terra",
-   "do Gelo: \"Não suporto o frio.",
+   "Gelada: \"Não suporto o frio.",
    "Fiquei preso na neve e caí, mas",
    "fui salvo por... uma espécie de",
    "monte de neve\". Digimon",
@@ -2755,8 +2755,12 @@
  ],
  "s211.sec8.u32": [
   [
-   "Se encontrar um Digimon que coleciona coisas,",
-   "ajudem um ao outro. Tente ir à Terra do Gelo."
+   "Se encontrar um Digimon que",
+   "coleciona coisas, ajudem um ao",
+   "outro. Tente ir à Terra"
+  ],
+  [
+   "Gelada."
   ]
  ],
  "s211.sec8.u33": [
@@ -2773,7 +2777,7 @@
    "a cidade..."
   ]
  ],
- "s211.sec8.u35": "Além do lago Dragon Eye, dizem, há uma terra de insetos Digimon. Como atravessar o lago... por que não pensar enquanto pesca?",
+ "s211.sec8.u35": "Além do Lago Olho de Dragão, dizem, há uma terra de insetos Digimon. Como atravessar o lago... por que não pensar enquanto pesca?",
  "s211.sec8.u36": [
   [
    "Dizem que Digimon máquinas se consertam",

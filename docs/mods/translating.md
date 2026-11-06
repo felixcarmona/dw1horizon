@@ -101,6 +101,22 @@ dialogue rows by hand when a longer name exceeds the font's row limits below. Ch
 font and font b: the multilingual build compiles both layouts. Keep the full place name in music labels;
 shorten the `Tema de...` framing or use `(n.)` for the night variant when necessary.
 
+Each translated language has a `text/<language>/places.json` glossary covering
+map captions and the named areas mentioned in dialogue. It records the existing
+majority spelling, with established native Spanish and Japanese captions taking
+precedence, and the caption breaking ties. `accepted` lists grammatical and
+abbreviated forms; `avoid` records competing names found in the translation.
+Generic references such as "the shop" do not need a proper name.
+
+`python3 -m tools.localize.check --json build/text-audit.json` checks these names
+throughout dialogue, executable labels and story mods, including names split
+across authored rows. It reports known aliases, untranslated English names and
+translated lines that lose a named location from the English source. Document a
+valid inflection or short form in the glossary rather than adding a line-specific
+exception. When adding a location, add its glossary entry in every language.
+The same audit checks the curling menu's two fixed crops in both fonts: its
+second option starts at original cell 84, regardless of the first label's length.
+
 Display names and identifiers are separate: renaming an item in `names.json` changes what the player reads, never the
 `Item.X` a story file uses. A mod's line that names an item writes
 `{item Item.Digimushrm}` (or `{item 44}`): the name the inventory shows, whatever the text source.
@@ -201,3 +217,24 @@ the mod's files on top; the accents and the 16 punctuation glyphs need a mod exe
   target's font has no glyph for and lists it (an older executable: `…` as `...`, `( )` dropped).
 - Do not reflow the Japanese page by page: write the sentence; the compiler pages it. Keep a deliberate pause (a reveal,
   a dramatic beat) as its own page with the list form.
+
+## Cropped menu text
+
+Run `python3 -m tools.localize.ui --json build/ui-widths.json` for the menu tabs
+and technique/finisher fields in all nine languages with New, Original and
+Classic fonts. The full `tools.localize.check` also runs these checks. The audit
+uses glyph ink, tab positions and source crops rather than character counts;
+Chinese labels are checked after their executable alignment.
+
+Regular technique names have 120 pixels. Finishers have 136 pixels, leaving
+four pixels before the power column. Original and Classic use the existing
+font-fitting modes when necessary. New retains its own glyphs, so shorten names
+that still exceed the field; keep recognizable localized terms and abbreviations.
+Tab labels must also stay inside the painted tab borders.
+
+The same audit checks all item names against the narrowest shop field (93 pixels;
+inventory and bank lists allow 96), all title/save Yes/No labels (48 pixels), and
+the item/card confirmation answers (36 pixels each). `m1240.u0` is a fixed layout:
+exactly two physical rows, the question followed by the two answers separated by
+a space. Its question must fit 96 pixels, including Original font's script spaces.
+Ordinary dialogue choice rows remain covered by the dialogue/layout check.

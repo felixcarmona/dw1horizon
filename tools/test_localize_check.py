@@ -4,6 +4,44 @@ from tools.localize.check import control_problems, custom_boxes, runtime_tokens
 
 
 class LocalizationAudit(unittest.TestCase):
+    def test_curling_options_keep_complete_words_in_their_rows(self):
+        from tools.localize.check import curling_menu_problems, ROOT, LANGUAGES, FONTS
+        from tools.localize.executable.chinese_layout import align
+        import json
+        key = 'kar.KAR_D_8005ABB8'
+        for language in LANGUAGES:
+            names = json.loads((ROOT / 'text' / ('ours' if language == 'en' else language) / 'names.json').read_text())
+            value = align(key, names[key]) if language == 'zh-hans' else names[key]
+            for font in FONTS:
+                self.assertEqual(curling_menu_problems(value, font, language), [], (language, font))
+        self.assertTrue(curling_menu_problems('Começar Como Jogar', 'b', 'pt-br'))
+        self.assertTrue(curling_menu_problems('Spielen          Regeln', 'original', 'de'))
+        self.assertTrue(curling_menu_problems('Start          ' + 'W' * 8, 'original', 'en'))
+        self.assertTrue(curling_menu_problems('Start          ' + 'x' * 30, 'b', 'en'))
+
+    def test_place_names_check_aliases_source_mentions_and_row_breaks(self):
+        from tools.localize.places import problems
+        self.assertTrue(problems('pt-br', 'new', 'Lago Dragon Eye!'))
+        self.assertFalse(problems('pt-br', 'new', [['Lago Olho de', 'Dragão!']]))
+        self.assertTrue(problems('fr', 'new', 'Un autre nom.', 'Go to File City.'))
+        self.assertFalse(problems('de', 'new', 'In der Großen Schlucht.', 'In Great Canyon.'))
+        self.assertFalse(problems('ja', 'new', [['りゅうの目', 'の湖へ行こう。']], 'Go to Dragon Eye Lake.'))
+        self.assertTrue(problems('ja', 'new', [['ドラゴン', 'アイ湖へ行こう。']]))
+        self.assertTrue(problems('ja', 'new', 'Overdellに行こう。'))
+        self.assertTrue(problems('zh-hans', 'new', '去Overdell吧。'))
+        self.assertFalse(problems('fr', 'new', 'Le restaurant est ouvert.', 'The restaurant is open.'))
+        self.assertFalse(problems('pt-br', 'new', 'A cidade cresceu.', 'The city grew.'))
+
+    def test_place_glossaries_cover_all_captions_and_shared_locations(self):
+        from tools.localize.places import catalog, EXTRA
+        from tools.localize.check import LANGUAGES
+        for language in LANGUAGES:
+            if language == 'en':
+                continue
+            entries, english = catalog(language)
+            self.assertEqual(entries.keys(), english.keys())
+            self.assertTrue(EXTRA.keys() <= entries.keys())
+
     def test_inline_player_is_not_a_repeated_speaker(self):
         source = '{color 6}{player}{color 1}, thank you! I am joining the city.'
         value = [['{color 6}{player}{color 1}', 'Thanks!'],
@@ -258,7 +296,8 @@ on talk(b) replace {
             titles = packed_ui_slices(key, names[key], language)
             tabs = packed_ui_slices('main.MAIN_D_801238A0', names['main.MAIN_D_801238A0'], language)
             self.assertEqual(titles[1], '必殺' if language == 'ja' else '必杀' if language == 'zh-hans' else 'Final')
-            self.assertEqual(titles[2], tabs[1], language)
+            tab_title = {'Técn.': 'Técnicas', 'Tecn.': 'Tecniche'}.get(tabs[1], tabs[1])
+            self.assertEqual(titles[2], tab_title, language)
         self.assertEqual(packed_ui_slices('main.MAIN_D_801238A0', '状態         わざ'), ['状態', 'わざ'])
 
     def test_named_english_pages_are_compiled_instead_of_an_inline_snapshot(self):
