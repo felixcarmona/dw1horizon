@@ -10,16 +10,15 @@ from pathlib import Path
 def main():
     root = Path(__file__).resolve().parents[1]
     sys.path.insert(0, str(root))
-    from tools.fontgen import text_width
-    for lang in ('en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca'):
-        bank = {} if lang == 'en' else json.loads((root / 'text' / lang / 'names.json').read_text())
-        label = bank.get('main.MOD_OPT_STR_ENEMY', 'NEW ENEMY BARS')
-        values = [bank.get('main.MOD_OPT_STR_' + k, k) for k in ('OFF', 'ON')]
-        width = text_width(label, 'original')
-        assert width < 256, (lang, label, width)
-        assert width + 8 + max(text_width(v, 'original') for v in values) + 18 <= 304, lang
-    print('PASS: all eight enemy-bar labels fit the original font text area and menu row')
-    work = Path(sys.argv[1]) if len(sys.argv) > 1 else Path('build/decomp-feature')
+    work = Path(sys.argv[1]) if len(sys.argv) > 1 else Path('build/decomp-dev')
+    for lang in ('es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca', 'zh-hans'):
+        bank = json.loads((root / 'text' / lang / 'names.json').read_text())
+        for key in ('BARS', 'CLOCK', 'ENEMY'):
+            assert f'main.MOD_OPT_STR_{key}' not in bank
+    english = (work / 'text/main/main_menu.yaml').read_text()
+    for key in ('BARS', 'CLOCK', 'ENEMY'):
+        assert f'MOD_OPT_STR_{key}:' not in english
+    print('PASS: removed option labels are absent in every language')
     source = (work / 'include/dw/enemy_bars.h').read_text()
     source = '\n'.join(line for line in source.splitlines() if not line.startswith('#include'))
     harness = r'''
@@ -46,7 +45,6 @@ typedef struct { int flags; } FighterData;
 #define FIGHTER_FLAG_DEAD 1
 struct { int height; } para;
 #define DIGI_PARA(t) para
-uint8_t BATTLE_TOGGLE_LIFEBAR;
 int GAME_STATE = 1, NO_AI_FLAG, head_y, calls;
 int DRAWING_OFFSET_X = 342, DRAWING_OFFSET_Y = 320;
 int32_t worldPosToScreenPos(SVECTOR *p, DVECTOR *out) {

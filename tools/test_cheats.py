@@ -104,11 +104,9 @@ def main():
 #define PAD_R1 8
 #define PAD_L2 1
 #define PAD_R2 2
-int32_t MOD_OPT_BUTTONS, MOD_OPT_CLOCK, MOD_OPT_BARS, MOD_OPT_EVO_GUIDE;
+int32_t MOD_OPT_BUTTONS, MOD_OPT_EVO_GUIDE;
 int32_t MOD_OPT_NEW_DIGIMON, MOD_LANG, MOD_OPT_SIGNS, MOD_OPT_STORY;
 int32_t MOD_OPT_DIFFICULTY, MOD_OPT_QUICK_BATTLE, MOD_OPT_CHEATS, MOD_OPT_SHORTCUTS, MOD_OPT_TOUCHED;
-int32_t MOD_OPT_ENEMY_BARS = 1;
-uint8_t BATTLE_TOGGLE_LIFEBAR = 1;
 int32_t MOD_SAVE_NUMBER, fps = 60;
 struct { uint8_t prefix[0x50], pocketStation[16], icon[32]; } SAVE_FILE;
 int32_t modFrameRate(void) { return fps; }
@@ -117,6 +115,7 @@ void modSetButtons(int32_t v) { MOD_OPT_BUTTONS = v; }
 void modSetLanguage(int32_t v) { MOD_LANG = v; }
 void modSetSigns(int32_t v) { MOD_OPT_SIGNS = v; }
 void modSetStory(int32_t v) { MOD_OPT_STORY = v; }
+void modApplySpeciesLevels(void) { }
 uint32_t POLLED_INPUT, POLLED_INPUT_PREVIOUS;
 int IS_SCRIPT_PAUSED = 1, EVOLUTION_TARGET = -1, state = 1, busy, effects;
 struct { struct { struct { int type; } entity; } digimonEntity; } PARTNER_ENTITY;
@@ -134,6 +133,16 @@ void modRosterShowCaption(int type) { effects++; }
     code += r'''
 int main(void) {
     uint8_t options[MOD_OPT_BYTES + 1];
+    /* Old OFF/ON bytes are ignored; adjacent saved settings retain their offsets. */
+    for (int oldBars = 0; oldBars < 2; oldBars++) {
+        memset(options, 0, sizeof(options));
+        options[1] = 1; options[2] = 30; options[3] = oldBars; options[5] = 1;
+        MOD_OPT_TOUCHED = 0;
+        modApplyOptions(options, 6);
+        assert(fps == 30 && MOD_OPT_EVO_GUIDE == 1);
+        modOptionBytes(options); assert(options[1] == 1 && options[3] == 1 && options[13] == 0);
+        modTitleOptions(); assert(SAVE_FILE.pocketStation[5] == 1 && SAVE_FILE.pocketStation[7] == 1);
+    }
     for (int cheats = 0; cheats < 2; cheats++) {
         for (int quick = 0; quick < 2; quick++) {
             memset(options, 0xA5, sizeof(options));
@@ -176,24 +185,15 @@ int main(void) {
         SAVE_FILE.pocketStation[1] = count;
         assert((modHeaderSaveNumber((uint8_t *)&SAVE_FILE) >= 0) == ((count & 0x1f) > 0 && (count & 0x1f) <= 12));
     }
-    /* Explicit migration from any old record, including no record at all. */
-    for (int len = 0; len < 14; len++) {
-        MOD_OPT_ENEMY_BARS = BATTLE_TOGGLE_LIFEBAR = 0;
+    /* Legacy clock/style/brief choices never disable permanent displays. */
+    for (int len = 0; len <= 14; len++) for (int flags = 0; flags < 4; flags++) {
+        memset(options, 0, sizeof(options)); options[13] = flags;
         modApplyOptions(len ? options : NULL, len);
-        assert(MOD_OPT_ENEMY_BARS && BATTLE_TOGGLE_LIFEBAR);
-    }
-    for (int style = 0; style < 2; style++) for (int shown = 0; shown < 2; shown++) {
-        MOD_OPT_ENEMY_BARS = style; BATTLE_TOGGLE_LIFEBAR = shown;
-        modOptionBytes(options); modTitleOptions();
-        assert(!!(SAVE_FILE.pocketStation[1] & 0x40) == !style);
-        assert(!!(SAVE_FILE.pocketStation[1] & 0x20) == !shown);
-        MOD_OPT_ENEMY_BARS = !style; BATTLE_TOGGLE_LIFEBAR = !shown;
-        modApplyOptions(options, 14);
-        assert(MOD_OPT_ENEMY_BARS == style && BATTLE_TOGGLE_LIFEBAR == shown);
-        MOD_OPT_TOUCHED = 1; MOD_OPT_ENEMY_BARS = !style; BATTLE_TOGGLE_LIFEBAR = !shown;
-        modApplyOptions(options, 14);
-        assert(MOD_OPT_ENEMY_BARS == !style && BATTLE_TOGGLE_LIFEBAR == shown);
-        MOD_OPT_TOUCHED = 0;
+        modOptionBytes(options);
+        assert(options[1] == 1 && options[3] == 1 && options[13] == 0);
+        modTitleOptions();
+        assert((SAVE_FILE.pocketStation[1] & 0x60) == 0);
+        assert(SAVE_FILE.pocketStation[5] == 1 && SAVE_FILE.pocketStation[7] == 1);
     }
     for (int key = 1; key <= 8; key *= 2) {
         POLLED_INPUT = PAD_SELECT | key; POLLED_INPUT_PREVIOUS = 0;
@@ -211,7 +211,7 @@ int main(void) {
         POLLED_INPUT_PREVIOUS = POLLED_INPUT; effects = 0;
         assert(modRosterTick() == 0 && effects == 0);
     }
-    puts("PASS: save round trips, legacy defaults, enemy-bar migration, header bounds, explicit options retained, all four shortcuts gated");
+    puts("PASS: save round trips, legacy defaults, permanent-display migration, header bounds, explicit options retained, all four shortcuts gated");
 }
 '''
     compile_check(code)

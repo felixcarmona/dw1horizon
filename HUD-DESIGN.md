@@ -1,6 +1,6 @@
 # Field care HUD: B5a implementation and design history
 
-The project adopted **B5a** on 2026-11-06. It is implemented under the existing **NEW STATUS BARS** option; OFF retains the original field bars. The review material below is historical design evidence.
+The project adopted **B5a** on 2026-11-06. The field and training care HUD and status-screen care panels are always enabled. The review material below is historical design evidence.
 
 **Selected direction: B, the bare grid with native icons and outlined thin bars, including toilet.** The selected layout is **B5**: happiness and discipline in the left column; hunger, toilet and tiredness in the right column, all on matching grey icon blocks. **B5a** centres the left pair vertically; **B5b** top-aligns it. B5a is the approved implementation; B5b remains a design-review variant. Earlier B6/B4 follow-ups are retained below as history. The original A–E review below is retained as context; its initial recommendation was A.
 
