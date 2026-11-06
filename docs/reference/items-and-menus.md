@@ -337,6 +337,8 @@ consumed (`partner.c:497`). "Merit N" = bought in the merit shop for N points;
   triangle menu's Scold), and a refusal of the item the menu gave opens the menu again with Scold under the cursor.
   While Square would open it, the native round cap with a pink Square is drawn beside the condition bubbles
   (`bubble.c`; alone where the bubbles would be when there is none), with the same position, size and animation.
+  Its single-need, multiple-need and standalone offsets are identical to v0.0.6. A current need plus a useful
+  item or command is required; without one, its condition bubble remains but the care badge is absent.
   Its three frames and palette are separate from the shared dialogue/confirm resources. Circle/Cross remains
   talking/interacting; Confirm and Cancel inside care follow JAPANESE CONTROLS. Other Square handlers in menus
   and battle remain unchanged.
