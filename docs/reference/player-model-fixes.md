@@ -41,6 +41,12 @@ explicit proportion changes, native timing, loop closure, field pace, and sole
 clearance at logic ticks and both intervening display frames. Sword checks
 preserve every unaffected channel and every event.
 
+World 3 USA has its own Kyubimon mesh. Its variant first carries the pinned
+pre-polish delta onto that source, then solves and resizes that mesh through the
+same native recipe. The variant generator checks its ordinary copy/add delta
+for foreign source-data windows and pins the final provider output. This avoids
+matching resized PAL vertex coordinates against different USA vertices.
+
 Pegasusmon remains unchanged in this pass. Its static texture audit finds no
 invalid palette rows, UV ranges or palette-data sampling. Coincident head,
 shoulder and wing faces have opposite winding, as in the source import; they

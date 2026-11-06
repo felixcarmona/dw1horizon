@@ -21,6 +21,25 @@ ARTIFACTS = Path(os.environ.get('POLISH_MODELS', ROOT / 'build/polish'))
 
 
 class NativePolish(unittest.TestCase):
+    def test_usa_kyubimon_keeps_its_own_mesh(self):
+        path = ARTIFACTS / 'effective/409-dw3-us.MMD'
+        if not path.is_file():
+            self.skipTest('USA Kyubimon review artifacts are not present')
+        cfg = json.loads((ROOT / 'content/models/authoring/native-polish/409.json').read_text())
+        mmd.exe().add_type(409, cfg['skeleton'])
+        expected = mmd.MMD.parse(resize(path.read_bytes(), 27, .78), 27); expected.type = 409
+        output = (ARTIFACTS / 'after/409-dw3-us.MMD').read_bytes()
+        actual = mmd.MMD.parse(output, 27); actual.type = 409
+        self.assertEqual(expected.tmd.build(), actual.tmd.build())
+        self.assertEqual(changed_programs(expected, actual), [2, 3, 4])
+        self.assertTrue(motionstorage.require(output, 27)['fits'])
+        for slot in (2, 3, 4):
+            frames, loop, _ = animsheet.slot_frames(actual, 27, slot)
+            self.assertEqual(loop, 0)
+            for a, b in zip(frames[0][1:], frames[-1][1:]):
+                self.assertEqual(a[:3]+a[6:], b[:3]+b[6:])
+                self.assertEqual([v % 4096 for v in a[3:6]], [v % 4096 for v in b[3:6]])
+
     def test_reviewed_locomotion(self):
         if not (ARTIFACTS / 'effective/297.MMD').is_file():
             self.skipTest('Set POLISH_MODELS to the reviewed before/after artifact directory')

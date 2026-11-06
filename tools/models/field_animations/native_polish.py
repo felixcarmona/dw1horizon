@@ -167,17 +167,9 @@ def author(data, skeleton, sid, cfg):
                         mesh_exact=True, other_programs_exact=True)
 
 
-def main():
-    p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('recipe', type=Path)
-    p.add_argument('source', type=Path)
-    p.add_argument('out', type=Path)
-    a = p.parse_args()
-    cfg = json.loads(a.recipe.read_text())
+def build(data, cfg):
+    """Replay the same anatomical recipe on a verified source-release model."""
     sid = cfg['species']
-    data = a.source.read_bytes()
-    if digest(data) != cfg['source_sha256']:
-        raise SystemExit('Source differs from the reviewed model')
     output, report = author(data, cfg['skeleton'], sid, cfg)
     if cfg.get('local_scales'):
         # Apply a local neck fit after authoring, so the native head motion is
@@ -204,6 +196,20 @@ def main():
         report['resize'] = cfg['resize']
     report['output_sha256'] = digest(output)
     report['storage'] = motionstorage.require(output, len(cfg['skeleton']))
+    return output, report
+
+
+def main():
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('recipe', type=Path)
+    p.add_argument('source', type=Path)
+    p.add_argument('out', type=Path)
+    a = p.parse_args()
+    cfg = json.loads(a.recipe.read_text())
+    data = a.source.read_bytes()
+    if digest(data) != cfg['source_sha256']:
+        raise SystemExit('Source differs from the reviewed model')
+    output, report = build(data, cfg)
     if cfg.get('output_sha256') and report['output_sha256'] != cfg['output_sha256']:
         raise SystemExit('Authored model differs from the reviewed output')
     a.out.parent.mkdir(parents=True, exist_ok=True)

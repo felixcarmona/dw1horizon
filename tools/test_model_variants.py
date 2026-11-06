@@ -126,6 +126,18 @@ class Carry(unittest.TestCase):
 class Records(unittest.TestCase):
     """The committed variant: every record carried from the current reference target, every file pinned."""
 
+    def test_native_polish_pins_its_preceding_edit(self):
+        for path in (ROOT / 'content/models/authoring/native-polish').glob('*.json'):
+            row = json.loads(path.read_text())
+            preceding = row.get('preceding_delta')
+            if not preceding:
+                continue
+            with self.subTest(species=row['species']):
+                delta = (ROOT / preceding['delta']).read_bytes()
+                self.assertEqual(hashlib.sha256(delta).hexdigest(), preceding['delta_sha256'])
+                self.assertEqual(preceding['sha256'], row['source_sha256'])
+                self.assertTrue(delta.startswith(modeldelta.MAGIC + b'\0'))
+
     def test_variant_records_follow_the_reference(self):
         rows = {str(r['id']): r for r in json.loads((ROOT / 'content/modeldelta/models.json').read_text())['models']}
         pins = json.loads((ROOT / 'tools/derive/recipes/species-pins.json').read_text())
