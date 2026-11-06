@@ -1075,3 +1075,17 @@ fit, with **2,112 B** remaining on the tightest setup, screen 207.
 
 See [the bubble implementation and proof](../../BUBBLE-DESIGN.md) for the pixel
 allocation, behaviour and reproducible checks.
+
+
+The condition-group viewport/clock clamp adds **336 B** of resident code, and
+the wider MP sprite descriptor adds **32 B**, with no BSS or texture allocation.
+The final endpoint is **0x801CE69C**, heap **186,464 B**, main text **510,016 B**.
+MENU remains **54,484 B / 27 sectors**; rodata/data/BSS remain
+**29,656 / 134,264 / 621,116 B**. Relative to the pre-feature baseline the
+combined resident growth is **188 B**, and aligned heap decreases **176 B**.
+The group moves as a unit, keeping the legacy lower-right badge offset while
+clearing the viewport and visible clock. HP uses a 16×16 atlas cell; MP centres
+the same native disk in a 32×16 cell to preserve both M stems through point
+sampling. The cells and palettes occupy 448 B of existing texture uploads.
+Normal heapcheck passes without an override; all **320 actual-archive setups**
+fit with the revised code, minimum margin **1,744 B on screen 207**.

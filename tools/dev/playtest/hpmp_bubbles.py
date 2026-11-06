@@ -40,7 +40,11 @@ def setup(e,hp,mp,hunger=False,bag=True):
     e.gs('set','gametime_running=0','partner.para.evoTimer=0','partner.para.remainingLifetime=1000',
          'partner.stats.hp=1000','partner.stats.mp=1000',f'partner.stats.currentHP={hp}',
          f'partner.stats.currentMP={mp}',f'partner.para.condition={4 if hunger else 0}',
-         'partner.para.tiredness=0','partner.para.poopLevel=1000')
+         'partner.para.tiredness=0','partner.para.poopLevel=1000','partner.para.virusBar=0')
+    # Care close resumes the clock; freeze its rule too so repeated menu tours
+    # cannot trigger unrelated evolution or death between captures.
+    e.poke('MOD_CLOCK',struct.pack('<h',-1))
+    e.poke('EVOLUTION_TARGET',struct.pack('<h',-1))
     e.poke('INVENTORY',struct.pack('<30h',*([0,4,38]+[-1]*27 if bag else [-1]*30)))
     e.poke('INVENTORY+60',bytes([5,5,5]+[0]*27 if bag else [0]*30))
     e.poke('INVENTORY+120',bytes([30]))
@@ -59,7 +63,7 @@ def state(e):
             'in_menu':e.peek('IS_IN_MENU','i',ram),'script_paused':e.peek('IS_SCRIPT_PAUSED','i',ram)}
 
 
-def shot(e,out,name):
+def shot(e,out,name,width=88,height=72):
     e.run('pause');path=out/(name+'.png');e.run('shot',str(path))
     from tools.image import Image
     im=Image.open(path);assert im.size==(320,240),im.size
@@ -67,7 +71,7 @@ def shot(e,out,name):
     xy=struct.unpack('<2h',struct.pack('<I',shown))
     x=xy[0]+e.peek('DRAWING_OFFSET_X','i');y=xy[1]+e.peek('DRAWING_OFFSET_Y','i')
     # The real rendered anchor, including bob and top clamp, determines the crop.
-    im.crop((x-44,y-37,x+44,y+35)).resize((352,288),Image.Resampling.NEAREST).save(out/(name+'-4x.png'))
+    im.crop((x-width//2,y-height//2-1,x+width//2,y+height//2-1)).resize((width*4,height*4),Image.Resampling.NEAREST).save(out/(name+'-4x.png'))
     e.run('resume')
 
 
@@ -81,8 +85,21 @@ def menu_press(e,button):
     raise AssertionError(button+' never left the open care menu')
 
 
+def open_menu(e):
+    # A released Square edge can miss an ordinary-walking tick. Retry only
+    # while the care menu is closed; never send a second action to an open UI.
+    for _ in range(8):
+        if e.peek('IS_IN_MENU','i') == 0:
+            e.press('SQUARE',12)
+        if e.peek('IS_IN_MENU','i') == 1:
+            wait(e,'feedState',1,seconds=20)
+            return
+        e.wait(.15)
+    raise AssertionError('Square never opened the care menu')
+
+
 def menu(e,out,name):
-    before=e.peek('INVENTORY+60','30B');e.press('SQUARE',12);wait(e,'feedState',1,seconds=20)
+    before=e.peek('INVENTORY+60','30B');open_menu(e)
     assert e.peek('IS_IN_MENU','i')==1
     count=e.peek('feedCount','i');slots=e.peek('feedSlots',str(count)+'B')
     ranks=e.peek('feedRanks',str(count)+'i')
@@ -155,7 +172,7 @@ def main():
         setup(e,310,290);result['urgency-menu']=menu(e,out,'urgency-menu')
         assert result['urgency-menu']['slots']==[1,0]
         e.run('load',str(base));e.run('resume');setup(e,290,1000)
-        e.press('SQUARE',12);wait(e,'feedState',1,seconds=20)
+        open_menu(e)
         menu_press(e,'CONFIRM')
         wait(e,'TAMER_STATE',0,'b',seconds=45);wait(e,'PARTNER_STATE',1,'b',seconds=45)
         settle(e);healed=state(e)
@@ -180,6 +197,12 @@ def main():
         result['passed']=True
     except BaseException as error:
         result['error']=str(error)
+        try:
+            result['failure_state']=state(e)
+            result['evolution_target']=e.peek('EVOLUTION_TARGET','h')
+            (out/'failure.ram').write_bytes(e.ram())
+        except Exception:
+            pass
         raise
     finally:
         (out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
