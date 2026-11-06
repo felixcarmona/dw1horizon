@@ -160,7 +160,7 @@ def main():
             e.run('load',str(out/'battle.state'))
             e.poke('MOD_OPT_BARS',struct.pack('<i',enabled))
             shot_after_swaps(e,out/f'battle-bars-{enabled}.png')
-        from PIL import Image, ImageChops
+        from tools.image import Image, ImageChops
         assert ImageChops.difference(Image.open(out/'battle-bars-0.png'),Image.open(out/'battle-bars-1.png')).getbbox() is None
         report['battle']={'on_off_pixels_identical':True,'swaps_after_checkpoint':6}
         print('BATTLE: ON/OFF frames identical',flush=True)

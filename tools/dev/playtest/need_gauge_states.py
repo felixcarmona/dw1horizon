@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Capture normal, both blinking halves, active and satisfied need gauges on 2 MB.
 
-Run with the project's Pillow-enabled Python. Only care fixtures and the existing
+Run with the project's Python. Only care fixtures and the existing
 clock rule are changed in RAM; the blink phases advance through native play ticks.
 """
 import argparse
@@ -11,10 +11,10 @@ import struct
 import subprocess
 import sys
 import time
-from PIL import Image
 
 ROOT=Path(__file__).resolve().parents[3]
 sys.path[:0]=[str(ROOT),str(ROOT/'tools')]
+from tools.image import Image
 from tools.dev.playtest.qol import ProofEmu
 from tools.dev.playtest.training_evolution import call,await_value
 from tools.dev.playtest.training_care_hud import care
