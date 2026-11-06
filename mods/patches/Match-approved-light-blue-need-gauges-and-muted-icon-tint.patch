@@ -1,0 +1,71 @@
+From: Horizon authors <>
+Subject: [PATCH] Match approved light-blue need gauges and muted icon tint
+
+---
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index d5c30fd9..d700b9de 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -6224,6 +6224,9 @@ void renderRectPolyFT4(int16_t posX, int16_t posY, uint8_t width,
+ 	}
+ 	if (flag & 1) {
+ 		setRGB0(prim, 0x32, 0x32, 0x32);
++	} else if (flag & 8) {
++		/* Care warning: 45/128 modulation is approximately 35% brightness. */
++		setRGB0(prim, 45, 45, 45);
+ 	} else {
+ 		setRGB0(prim, 0x80, 0x80, 0x80);
+ 	}
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index 61703e6d..b5fdb2a2 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -2367,7 +2367,7 @@ static void renderCareHUD(void)
+ 		{1,1,1,1,39,39,39},
+ 		{72,72,86,86,65,79,93}
+ 	};
+-	int32_t i, value, max, red, icon, x, y, pixels, active, warn, period;
++	int32_t i, value, max, red, icon, x, y, pixels, active, warn, period, dim;
+ 	for (i = 0; i < 5; i++) {
+ 		max = 100;
+ 		icon = i + 2;
+@@ -2422,27 +2422,21 @@ static void renderCareHUD(void)
+ 				warn = value + 6 >= period;
+ 			}
+ 		}
+-		/* Need warnings blink only the fill; active needs stay full red. */
++		/* Needs share light-blue fills; active changes only the icon palette. */
+ 		x = STATUS_UI_OFFSET_X + uv[2][icon];
+ 		y = uv[3][icon];
+-		if (active) {
+-			pixels = 18;
+-			red = 1;
+-		} else {
+-			if (value < 0)
+-				value = 0;
+-			if (value > max)
+-				value = max;
+-			pixels = ((uint32_t)value * 18 + (uint32_t)max / 2) / (uint32_t)max;
+-			if (value && !pixels)
+-				pixels = 1;
+-			/* Real play ticks keep the one-Hz blink running while gym time is paused. */
+-			if (warn && PLAYTIME_FRAMES % 20 >= 10)
+-				pixels = 0;
+-		}
+-		renderRectPolyFT4(x, y, 34, 13, uv[0][icon], uv[1][icon], 31, GetClut(272, 500 + icon + active * 4), 14, 0);
++		if (value < 0)
++			value = 0;
++		if (value > max)
++			value = max;
++		pixels = ((uint32_t)value * 18 + (uint32_t)max / 2) / (uint32_t)max;
++		if (value && !pixels)
++			pixels = 1;
++		/* 20 play ticks per phase: one second normal, one second dim. */
++		dim = !active && warn && PLAYTIME_FRAMES % 40 >= 20 ? 8 : 0;
++		renderRectPolyFT4(x, y, 34, 13, uv[0][icon], uv[1][icon], 31, GetClut(272, 500 + icon + active * 4), 14, dim);
+ 		if (pixels)
+-			renderRectPolyFT4(x + 15, y + 6, pixels, 2, 144, 251 + red * 2, 31, GetClut(272, 507), 13, 0);
++			renderRectPolyFT4(x + 15, y + 6, pixels, 2, i < 2 ? 144 : 164, i < 2 ? 251 + red * 2 : 251, 31, GetClut(272, 507), 13, dim);
+ 	}
+ }
+ 

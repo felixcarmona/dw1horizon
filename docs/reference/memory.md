@@ -65,7 +65,7 @@ In our builds (GCC, [compiler.md](compiler.md)) the executable still starts at 0
 | intro, movies | `MOV_REL` with its MDEC buffers, from 0x80010000 (to 0x80085C54 since patch 0098; below `OVL_TRN_BASE`) |
 | title | the title's TIMs (`ETCTIM.BIN`, 0x80010000–0x8002F000) |
 | world | the map background (`.TFS`; the `.MAP` is read there first and processed). Original: the whole TFS stays resident, up to 0x78800 bytes, ending at 0x80088800. With the series: a 4 KB header and an 8-tile ring, 0x80010000–0x80035000, and the rest is world scratch (below) |
-| training | `TRN_REL`/`TRN2_REL` at 0x80088800–0x8008F800 |
+| training | `TRN_REL`/`TRN2_REL` at 0x80088000–0x8008F800 |
 | menus, fishing, death | `DOO2` and `FISH` at 0x80070000, `MURD` at 0x8007C000, `DOOA` at 0x80080000, `DGET` at 0x80080800; the map is reread on return |
 | curling | `KAR` at 0x80053800, alongside the screen's map |
 | evolution, ending | `EVL`, `ENDI`, `EAB` at 0x80060000; the evolving model at `EVO_MMD_ADDR` 0x80020000 |
@@ -98,7 +98,7 @@ against it.
 | `OVL_MURD_BASE` | 0x8007C000 | death |
 | `OVL_DOOA_BASE` | 0x80080000 | DOOA |
 | `OVL_SHOP_BASE` | 0x80080800 | DGET (and the unused shop overlay's slot) |
-| `OVL_TRN_BASE` / `OVL_TRN_MAX_END` | 0x80088800 / 0x8008F800 | TRN, TRN2 |
+| `OVL_TRN_BASE` / `OVL_TRN_MAX_END` | 0x80088000 / 0x8008F800 | TRN, TRN2 |
 | `GENERAL_BUFFER_ADDR` | 0x80010000 | `.MAP` then `.TFS`, sound bank staging, EFE base |
 | `DOOA_WORK_OFFSET` | 0x4B000 | DOOA's work area, from `GENERAL_BUFFER` |
 | `TFS_HEADER_ADDR` / `_SIZE` | 0x80010000 / 0x1000 | streamed background: the TFS header |
@@ -530,6 +530,88 @@ may be loading, waits for it first.
 `SAVE_FILE` keeps the v1 file (0x2000), as in the original, because its battle registrations are game state between
 card operations. A multi-part file is read and written part by part in copy order, each part waited for, so a write
 that stops anywhere leaves one whole copy (patch 0096).
+
+### Live training care HUD
+
+`live-care-hud-during-training.patch` keeps the five B5a gauges visible through
+TRN and TRN2, including each x5 award. Both overlay bases move from 0x80088800 to
+0x80088000, borrowing one 2 KB sector of unused world scratch below the temporary
+texture buffer. The streamed field ring ends at 0x80035000. The upper slot limit
+remains 0x8008F800, below main; the existing linker assertions check rounded
+TRN/TRN2 reads against that limit and rounded MOV reads against the new base.
+The loader uses linked `trn_START`/`trn2_START` addresses. The balance writer
+likewise resolves compiled overlay bases from the ELF; original-disc offsets
+remain unchanged. No heap block, main buffer or VRAM allocation is added.
+
+The gym objects own the extra render callback and remove it with their existing
+tick callback. It temporarily uses the visible horizontal anchor, calls the
+existing live renderer, then restores the field slide offset. The clock remains
+paused and ordinary field/menu/battle suppression remains intact. The x5 wait
+reuses the existing lower-box visibility byte, so there is no new persistent
+state. Lower result boxes move 24 pixels left only with NEW STATUS BARS on,
+clearing the HUD after the tally's 17-pixel skip row.
+
+The full nine-language build keeps `main_BSS_END` at **0x801CED58**, with
+main text/rodata/data/BSS unchanged at 509,504 / 29,672 / 134,436 / 623,164 bytes.
+Heap remains **184,736 bytes**, MENU remains **53,860 bytes**. TRN grows from
+28,548 to 29,400 bytes (+852); TRN2 from 22,800 to 23,668 (+868). Rounded TRN
+reads still end at 0x8008F800; MOV ends at 0x80086000. Normal heapcheck passes
+without an override; all 320 actual-archive setups fit, with the existing
+16-byte minimum margin on screen 207. This patch adds no margin to that already
+tight screen.
+
+The additional gym draw emits at most 400 bytes of GPU commands per frame in the
+existing work buffer. The five gauges keep their field positions. CANCEL between
+awards ends the block before another session is charged; the existing confirmation
+button still skips the final tally. The native automatic stop conditions and
+per-session gains/care costs are unchanged.
+
+PCSX-Redux verification used original 2 MB RAM, an Agumon partner, the native HP
+state machines in screens 112 (TRN, NEW/30 FPS mode) and 99 (TRN2, CLASSIC/60 FPS
+mode), and the real x5 menu flag. Before the need-alert follow-up, across both
+five-session runs the visible hunger
+fill went 18/18/18/13/7/1 pixels, toilet 2/5/7/9/11/14, and tiredness 3/4/5/7/8/10.
+The raw fatigue values were 14/22/30/38/46/54; each award advanced exactly one game
+hour. Pixel checks matched the live readings. Native cancellation stopped after
+two awards; a hunger fixture also stopped after two. The native new-orders box,
+the taller skip-row tally and OFF were captured and visually checked. The gym
+render callback was absent after returning control in every run.
+
+Reproduce with a Pillow-enabled Python using
+`tools/dev/playtest/training_care_hud.py DISC.cue --exe EXE --card AGUMON.mcd`.
+`tools/dev/playtest/training_care_hud_host.py TREE` checks the actual shared C
+block against cancellation boundaries, native stop reasons, capped totals,
+single-session behaviour and HUD/slide state. The evolution integration proof
+waits for the asynchronous block to finish before checking its session count.
+
+### Need-gauge alerts
+
+`blink-and-highlight-active-care-needs.patch` uses the existing 20-Hz
+`PLAYTIME_FRAMES` for one-Hz final-hour hunger/toilet warnings and the final
+six-point fatigue step before the live exhausted threshold. Only the bar fill
+blinks; active needs hold full red with red icon housings. The same main renderer
+serves the field and paused TRN/TRN2 callbacks. There is no new timer, BSS, heap
+block or saved state. Three palettes occupy already-uploaded spare atlas rows
+508–510; texels, asset size, VRAM allocation and upload remain unchanged.
+
+Loop compaction of the original OFF renderer pays for the new branches while
+preserving its GPU-call order across all 609,030 normal-domain combinations.
+The full nine-language build measures `main_BSS_END` **0x801CED48** (−16 B),
+main text **509,488 B** (−16), unchanged rodata/data/BSS
+**29,672 / 134,436 / 623,164 B**, and aligned heap **184,752 B** (+16).
+MENU/TRN/TRN2 remain **53,860 / 29,400 / 23,668 B**, with unchanged rounded
+read bounds. Normal heapcheck passes; all 320 actual-archive setups fit, with
+screen 207's minimum margin increasing from 16 to **32 B**. The renderer still
+emits at most ten FT4 packets (**400 B/frame**) into the existing work buffer.
+
+PCSX-Redux verifies 39 need-state frames on original 2 MB RAM, including normal,
+both warning halves, steady active red, resets, fatigue 100, NEW/CLASSIC, light/dark
+floors and a paused-gym warning pair. Six consecutive captures are ten native
+play ticks apart while care time stays fixed. Both native x5 gym runs, cancel,
+hunger stop, tally/new-order clearance, OFF and callback cleanup pass again on
+this build. The hunger stop renders full red immediately from overdue food,
+before the paused native HUNGRY flag updates. See
+[need-alert evidence](../../HUD-DESIGN.md#need-alert-runtime-confirmation).
 
 ### Code out of the executable (patch 0098)
 
