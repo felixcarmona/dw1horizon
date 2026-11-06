@@ -148,6 +148,7 @@
  "step.plan": "Disc plan",
  "engine.noWasm": "This browser cannot build the disc. Use a current desktop browser or the command-line player guide.",
  "engine.noOpfs": "This browser cannot build the disc. Use a current desktop browser or the command-line player guide.",
+ "engine.noWritable": "This browser cannot write the build files. On iPhone or iPad, update to iOS/iPadOS 26 or later. You can also build on a computer.",
  "engine.noStreams": "This browser cannot build the disc. Use a current desktop browser or the command-line player guide.",
  "engine.playerGuide": "Command-line player guide",
  "engine.notDeployed": "The builder is not on this site yet.",

@@ -148,6 +148,7 @@
  "step.plan": "Pla del disc",
  "engine.noWasm": "Aquest navegador no pot crear el disc. Fes servir un navegador d’escriptori actualitzat o la guia del jugador per a la línia d’ordres.",
  "engine.noOpfs": "Aquest navegador no pot crear el disc. Fes servir un navegador d’escriptori actualitzat o la guia del jugador per a la línia d’ordres.",
+ "engine.noWritable": "Aquest navegador no pot escriure els fitxers de la compilació. En iPhone o iPad, actualitza a iOS/iPadOS 26 o posterior. També pots crear el disc en un ordinador.",
  "engine.noStreams": "Aquest navegador no pot crear el disc. Fes servir un navegador d’escriptori actualitzat o la guia del jugador per a la línia d’ordres.",
  "engine.playerGuide": "Guia del jugador: línia d’ordres",
  "engine.notDeployed": "El creador encara no és en aquest web.",

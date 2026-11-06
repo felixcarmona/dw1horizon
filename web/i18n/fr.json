@@ -148,6 +148,7 @@
  "step.plan": "Plan du disque",
  "engine.noWasm": "Ce navigateur ne peut pas créer le disque. Utilise un navigateur de bureau à jour ou le guide du joueur en ligne de commande.",
  "engine.noOpfs": "Ce navigateur ne peut pas créer le disque. Utilise un navigateur de bureau à jour ou le guide du joueur en ligne de commande.",
+ "engine.noWritable": "Ce navigateur ne peut pas écrire les fichiers de compilation. Sur iPhone ou iPad, passez à iOS/iPadOS 26 ou une version ultérieure. Vous pouvez aussi créer le disque sur un ordinateur.",
  "engine.noStreams": "Ce navigateur ne peut pas créer le disque. Utilise un navigateur de bureau à jour ou le guide du joueur en ligne de commande.",
  "engine.playerGuide": "Guide du joueur en ligne de commande",
  "engine.notDeployed": "Le générateur n'est pas encore sur ce site.",

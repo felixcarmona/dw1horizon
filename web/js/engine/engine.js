@@ -42,6 +42,7 @@ export class EngineError extends Error {
 export function missingSupport() {
   if (typeof Worker === 'undefined' || typeof WebAssembly === 'undefined') return 'engine.noWasm';
   if (!navigator.storage || !navigator.storage.getDirectory) return 'engine.noOpfs';
+  if (typeof FileSystemFileHandle === 'undefined' || !('createWritable' in FileSystemFileHandle.prototype)) return 'engine.noWritable';
   // (createSyncAccessHandle exists in dedicated workers only: the worker checks it when it starts)
   if (typeof DecompressionStream === 'undefined') return 'engine.noStreams';
   try { new DecompressionStream('deflate-raw'); } catch { return 'engine.noStreams'; }

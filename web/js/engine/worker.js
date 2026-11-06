@@ -214,6 +214,13 @@ sys.path.insert(0, ${JSON.stringify(ROOT + '/.engine')})
   post({ kind: 'ready', load: (tl - t0) / 1000, code: (performance.now() - tl) / 1000, heap: heap() });
 }
 
+// globals.set keeps Python's reference; release the temporary JS-owned proxy immediately.
+function setPython(name, value) {
+  const proxy = py.toPy(value);
+  try { py.globals.set(name, proxy); }
+  finally { proxy.destroy(); }
+}
+
 const heap = () => py._module.HEAP8.length / 2 ** 20;
 
 // ---------------------------------------------------------------- a derive job
@@ -262,7 +269,7 @@ async function runJob(m) {
   const ts = performance.now();
   touched.clear();
   if (m.oom) py.runPython('raise MemoryError("test: this job runs out of memory (?oom)")');
-  py.globals.set('ARGV', py.toPy(job.argv.map((a) => a.replaceAll('{ROOT}', ROOT))));
+  setPython('ARGV', job.argv.map((a) => a.replaceAll('{ROOT}', ROOT)));
   const r = JSON.parse(py.runPython(`
 import sys, io, contextlib, json, os
 os.chdir(${JSON.stringify(ROOT)})
@@ -326,23 +333,24 @@ async function mountSources(sources) {
 
 async function extract(m) {
   const disc = await mountDisc(m.file);
-  py.globals.set('SOURCE_DISCS', py.toPy(await mountSources(m.sources)));
+  const sources = await mountSources(m.sources);
+  setPython('SOURCE_DISCS', sources);
   for (const p of plan.extract_inputs || []) if (!exists(abs(p))) put(p, await bundleFile(p), 'b', false);
   const t0 = performance.now();
   py.globals.set('DISC', disc);
   py.globals.set('REL_DIR', REL);
   let n = 0, bytes = 0;
-  const putFile = async (q, b) => {
-    const data = b.toJs();
+  const putFile = async (q, data) => {
     await opfsWrite(`extracted/${q}`, data);
     n++; bytes += data.length;
   };
   py.globals.set('put_file', putFile);
-  py.globals.set('put_loc', async (q, b) => { await opfsWrite(`localized/${q}`, b.toJs()); });
+  py.globals.set('put_loc', async (q, data) => { await opfsWrite(`localized/${q}`, data); });
   py.globals.set('progress', (i, total) => post({ kind: 'progress', what: 'extract', done: i, total }));
   try {
     const r = await py.runPythonAsync(`
 import glue, os, shutil, json
+from pyodide.ffi import to_js
 from glue import dwpatch
 P = dwpatch(REL_DIR)
 key, title = glue.identify(REL_DIR, DISC)
@@ -352,7 +360,7 @@ base = glue.base_disc(REL_DIR, DISC, key, work, SOURCE_DISCS)
 P.subprocess.run = glue.run_tool
 n = len(m['extract'])
 for i, q in enumerate(m['extract']):
-    await put_file(q, base.data(q))
+    await put_file(q, to_js(base.data(q)))
     if i % 20 == 0 or i == n - 1:
         progress(i + 1, n)
 loc = []
@@ -361,15 +369,14 @@ if base._loc:
         for f in fs:
             q = os.path.join(dp, f)
             loc.append(os.path.relpath(q, base._loc))
-            await put_loc(os.path.relpath(q, base._loc), open(q, 'rb').read())
+            await put_loc(os.path.relpath(q, base._loc), to_js(open(q, 'rb').read()))
 shutil.rmtree(work, ignore_errors=True)
 json.dumps([key, title, loc])
 `);
     const [key, title, localized] = JSON.parse(r);
     const sourceFiles = [];
-    py.globals.set('put_source', async (q, b) => {
+    py.globals.set('put_source', async (q, data) => {
       const path = `${plan.out}/source-games/${q}`;
-      const data = b.toJs();
       await opfsWrite(path, data);
       sourceFiles.push(path); n++; bytes += data.length;
     });
@@ -378,12 +385,13 @@ json.dumps([key, title, loc])
     for (const game of plan.source_discs || []) {
       try {
         if (!m.sources?.[game]) throw new Error(`source disc required: ${game}`);
-        py.globals.set('SOURCE_DISC', await mountDisc(m.sources[game], `/source-disc-${game}`));
+        const source = await mountDisc(m.sources[game], `/source-disc-${game}`);
+        py.globals.set('SOURCE_DISC', source);
         py.globals.set('SOURCE_GAME', game);
         await py.runPythonAsync(`
 from tools.derive.importers.discs import extract as extract_source
 for q, data in extract_source(SOURCE_GAME, SOURCE_DISC):
-    await put_source(q, data)
+    await put_source(q, to_js(data))
 `);
       } catch (e) {
         post({ kind: 'done', ok: false, code: 'source', game, out: patchError(e) });
@@ -408,7 +416,8 @@ function patchError(e) {
 async function writeDisc(m) {
   trim(new Set(), 0);
   const disc = await mountDisc(m.file);
-  py.globals.set('SOURCE_DISCS', py.toPy(await mountSources(m.sources)));
+  const sources = await mountSources(m.sources);
+  setPython('SOURCE_DISCS', sources);
   const t0 = performance.now();
   const root = await navigator.storage.getDirectory();
   const top = await root.getDirectoryHandle(OPFS_DIR, { create: true });
@@ -437,19 +446,18 @@ async function writeDisc(m) {
     return b;
   };
   const holeSize = (p) => handles.get(p).getSize();
-  const write = (proxy) => {
-    const buf = proxy.getBuffer('u8');
-    try {
-      outH.write(buf.data, { at });
-      at += buf.data.length;
-    } finally { buf.release(); }
+  // Python copies each bounded chunk before calling JS: no PyProxy or WASM view crosses the storage API.
+  const write = (data) => {
+    const written = outH.write(data, { at });
+    if (written !== data.length) throw new Error('Incomplete image write');
+    at += written;
     if (at - lastPost > 8 * 2 ** 20 || at === total) { lastPost = at; post({ kind: 'progress', what: 'write', done: at, total }); }
   };
   py.globals.set('DISC', disc);
   py.globals.set('REL_DIR', REL);
   py.globals.set('KEY', m.key);
   py.globals.set('LOCALIZED', (m.localized || []).length > 0);
-  py.globals.set('HOLES', py.toPy(m.holes.map((x) => x[0])));
+  setPython('HOLES', m.holes.map((x) => x[0]));
   py.globals.set('read_hole', readHole);
   py.globals.set('hole_size', holeSize);
   py.globals.set('js_write', write);
@@ -460,6 +468,7 @@ async function writeDisc(m) {
   try {
     const r = py.runPython(`
 import glue, json, hashlib
+from pyodide.ffi import to_js
 P = glue.dwpatch(REL_DIR)
 import isowriter as iw
 
@@ -502,7 +511,7 @@ class Out:
             self.flush()
     def flush(self):
         if self.buf:
-            js_write(self.buf); self.buf = bytearray()
+            js_write(to_js(self.buf)); self.buf = bytearray()
 
 holes = {p: Hole(p) for p in HOLES}
 def check_read(p):

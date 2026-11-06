@@ -148,6 +148,7 @@
  "step.plan": "Piano del disco",
  "engine.noWasm": "Questo browser non può creare il disco. Usa un browser desktop aggiornato o la guida del giocatore per la riga di comando.",
  "engine.noOpfs": "Questo browser non può creare il disco. Usa un browser desktop aggiornato o la guida del giocatore per la riga di comando.",
+ "engine.noWritable": "Questo browser non può scrivere i file della compilazione. Su iPhone o iPad, aggiorna a iOS/iPadOS 26 o successivo. Puoi anche creare il disco su un computer.",
  "engine.noStreams": "Questo browser non può creare il disco. Usa un browser desktop aggiornato o la guida del giocatore per la riga di comando.",
  "engine.playerGuide": "Guida del giocatore: riga di comando",
  "engine.notDeployed": "Il generatore non è ancora su questo sito.",
