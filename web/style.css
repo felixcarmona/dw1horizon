@@ -511,8 +511,10 @@ section { padding-top: 120px; }
 
 /* Release history uses the page's existing card and text styles. */
 #changelog-list { max-width: 760px; margin: auto; }
-.changelog-version { margin-bottom: 16px; padding: 20px 24px; border: 1px solid var(--line); border-radius: 24px; background: #fff; }
-.changelog-version summary { cursor: pointer; font-size: 20px; font-weight: 700; }
+.changelog-version { margin-bottom: 16px; padding: 20px 24px; border: 1px solid var(--line); border-radius: 24px; background: #fff; scroll-margin-top: 80px; }
+.changelog-version summary { position: relative; padding-right: 44px; cursor: pointer; font-size: 20px; font-weight: 700; }
+.changelog-link { position: absolute; right: 0; top: -6px; display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; color: var(--muted); font-size: 16px; }
+.changelog-link:hover, .changelog-link:focus-visible { color: var(--ink); }
 .changelog-version time { display: inline-block; margin-left: 16px; color: var(--muted); font-size: 14px; font-weight: 400; }
 .changelog-version h3 { font-size: 16px; margin: 20px 0 4px; }
 .changelog-version ul { margin: 0; padding-left: 24px; }
