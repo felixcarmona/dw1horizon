@@ -19,7 +19,10 @@ try {
   const target = new URL(url); target.searchParams.set('test', '1'); target.searchParams.set('workers', '1');
   await page.goto(target.href);
   timer = setInterval(async () => {
-    try { console.log(await page.locator('#patch-status').textContent(), '|', await page.locator('#build-phase').textContent()); } catch { /* closing */ }
+    try {
+      console.log(await page.evaluate(() => ['patch-status', 'build-phase', 'build-time', 'build-workers', 'build-steps']
+        .map(id => document.getElementById(id)?.textContent || '').filter(Boolean).join(' | ')));
+    } catch { /* closing */ }
   }, 30000);
   const discs = [
     'digimon-world/Digimon World (USA).bin',
