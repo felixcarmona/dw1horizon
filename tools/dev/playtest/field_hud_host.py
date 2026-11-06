@@ -2,7 +2,7 @@
 """Exercise the actual field HUD C renderer with independent gauge expectations.
 
 Use a prepared decomp tree: field_hud_host.py build/decomp-dev.
-Checks every signed 16-bit timer/value, both need flags, 49/50 boundaries,
+Checks every signed 16-bit timer/value, native need flags, 49/50 boundaries,
 invalid toilet baselines, geometry, colour, and positive subpixel readings.
 """
 import argparse
@@ -32,7 +32,11 @@ struct Raise {int poopTimer;} RAISE_DATA[2], importedRaise;
 int importedReads;
 struct Raise *getSpeciesRaise(int type) { assert(type==200); importedReads++; return &importedRaise; }
 #define RAISE_ROW(t) (*((t)<2 ? &RAISE_DATA[t] : getSpeciesRaise(t)))
-int STATUS_UI_OFFSET_X=75;
+int STATUS_UI_OFFSET_X=75,PLAYTIME_FRAMES;
+#define MOD_CARE_HUNGER_FOOD_PERIOD 0
+#define MOD_CARE_POOP_PERIOD 1
+#define MOD_CARE_TIRED_EXHAUSTED_AT 2
+int careGet(int slot) { const int rules[]={20,200,80}; return rules[slot]; }
 struct Draw {int x,y,w,h,u,v,page,clut,z;} draws[10]; int count;
 #define GetClut(x,y) ((y)*64+(x)/16)
 void renderRectPolyFT4(int x,int y,int w,int h,int u,int v,int page,int clut,int z,int flag) {
@@ -46,7 +50,9 @@ int width(int value,int max) {
  int out=(int)(exact+0.5);
  return out?out:1;
 }
-void check(int gauge,int value,int max,int red,int icon) {
+void check(int gauge,int value,int max,int red,int icon,int active,int warn) {
+ for(int phase=0;phase<2;phase++) {
+ PLAYTIME_FRAMES=phase?13:3;
  count=0;renderCareHUD();
  int n=0, found=0;
  const int ys[]={72,86,65,79,93};
@@ -55,47 +61,49 @@ void check(int gauge,int value,int max,int red,int icon) {
   assert(d.page==31);
   if(d.h==13) {
    assert(d.x==(n<2?76:114) && d.y==ys[n]);
-   if(n==gauge) {assert(d.clut==GetClut(272,500+icon));found=k;}
+   if(n==gauge) {assert(d.clut==GetClut(272,500+icon+active*4));found=k;}
    n++;
   }
  }
  assert(n==5);
- int expected=width(value,max);
+ int expected=active?18:warn&&phase?0:width(value,max);
+ if(active)red=1;
  if(expected) {
   struct Draw d=draws[found+1];
   assert(d.h==2 && d.w==expected && d.x==draws[found].x+15 && d.y==draws[found].y+6);
   assert(d.u==144 && d.v==251+red*2 && d.clut==GetClut(272,507));
  } else assert(found+1==count || draws[found+1].h==13);
+ }
 }
 int main(void) {
  RAISE_DATA[0].poopTimer=12;
  for(int v=-32768;v<=32767;v++) {
-  PARTNER_PARA.happiness=v; check(0,v+100,200,v<0,v<0);
-  PARTNER_PARA.discipline=v; check(1,v,100,v<50,2+(v<50));
-  PARTNER_PARA.tiredness=v; check(4,v,100,v>=50,6);
+  PARTNER_PARA.happiness=v; check(0,v+100,200,v<0,v<0,0,0);
+  PARTNER_PARA.discipline=v; check(1,v,100,v<50,2+(v<50),0,0);
+  PARTNER_PARA.tiredness=v; check(4,v,100,v>=50,6,v>=80,v>=74);
   for(int flag=0;flag<2;flag++) {
    PARTNER_PARA.condition=flag?4:0;
    PARTNER_PARA.foodLevel=v;PARTNER_PARA.starvationTimer=v;
-   check(2,v,180,flag,4);
+   check(2,v,180,flag,4,flag||v<=0,v<=60);
    PARTNER_PARA.condition=flag?8:0;
    PARTNER_PARA.poopLevel=v;
-   check(3,flag?24:24-v,24,flag,5);
+   check(3,24-v,24,flag,5,flag||v<=0,v<=6);
   }
  }
  for(int t=-32768;t<=32767;t++) {
   RAISE_DATA[0].poopTimer=t;
   PARTNER_PARA.poopLevel=0;
-  PARTNER_PARA.condition=0;check(3,t>0?2*t:0,t>0?2*t:1,0,5);
-  PARTNER_PARA.condition=8;check(3,1,1,1,5);
+  PARTNER_PARA.condition=0;check(3,t>0?2*t:0,t>0?2*t:1,0,5,t>0,0);
+  PARTNER_PARA.condition=8;check(3,1,1,1,5,1,0);
  }
  // Toilet and portable-potty native resets: 2*T empty, T half full.
  RAISE_DATA[0].poopTimer=12; PARTNER_PARA.condition=0;
- PARTNER_PARA.poopLevel=24;check(3,0,24,0,5);
- PARTNER_PARA.poopLevel=12;check(3,12,24,0,5);
+ PARTNER_PARA.poopLevel=24;check(3,0,24,0,5,0,0);
+ PARTNER_PARA.poopLevel=12;check(3,12,24,0,5,0,0);
  PARTNER_ENTITY.digimonEntity.entity.type=200; importedRaise.poopTimer=20;
- PARTNER_PARA.condition=0;PARTNER_PARA.poopLevel=20;check(3,20,40,0,5);
- importedRaise.poopTimer=10;check(3,0,20,0,5); assert(importedReads==2);
- puts("PASS: 589828 exhaustive live-value/flag/baseline cases; B5a geometry, fill and palette");
+ PARTNER_PARA.condition=0;PARTNER_PARA.poopLevel=20;check(3,20,40,0,5,0,0);
+ importedRaise.poopTimer=10;check(3,0,20,0,5,0,0); assert(importedReads==4);
+ puts("PASS: 589828 exhaustive live-value/flag/baseline cases, both blink halves; B5a geometry, fill and palettes");
 }
 '''
     with tempfile.TemporaryDirectory() as tmp:

@@ -562,7 +562,8 @@ per-session gains/care costs are unchanged.
 
 PCSX-Redux verification used original 2 MB RAM, an Agumon partner, the native HP
 state machines in screens 112 (TRN, NEW/30 FPS mode) and 99 (TRN2, CLASSIC/60 FPS
-mode), and the real x5 menu flag. Across both five-session runs the visible hunger
+mode), and the real x5 menu flag. Before the need-alert follow-up, across both
+five-session runs the visible hunger
 fill went 18/18/18/13/7/1 pixels, toilet 2/5/7/9/11/14, and tiredness 3/4/5/7/8/10.
 The raw fatigue values were 14/22/30/38/46/54; each award advanced exactly one game
 hour. Pixel checks matched the live readings. Native cancellation stopped after
@@ -576,6 +577,35 @@ Reproduce with a Pillow-enabled Python using
 block against cancellation boundaries, native stop reasons, capped totals,
 single-session behaviour and HUD/slide state. The evolution integration proof
 waits for the asynchronous block to finish before checking its session count.
+
+### Need-gauge alerts
+
+`blink-and-highlight-active-care-needs.patch` uses the existing 20-Hz
+`PLAYTIME_FRAMES` for one-Hz final-hour hunger/toilet warnings and the final
+six-point fatigue step before the live exhausted threshold. Only the bar fill
+blinks; active needs hold full red with red icon housings. The same main renderer
+serves the field and paused TRN/TRN2 callbacks. There is no new timer, BSS, heap
+block or saved state. Three palettes occupy already-uploaded spare atlas rows
+508–510; texels, asset size, VRAM allocation and upload remain unchanged.
+
+Loop compaction of the original OFF renderer pays for the new branches while
+preserving its GPU-call order across all 609,030 normal-domain combinations.
+The full nine-language build measures `main_BSS_END` **0x801CED48** (−16 B),
+main text **509,488 B** (−16), unchanged rodata/data/BSS
+**29,672 / 134,436 / 623,164 B**, and aligned heap **184,752 B** (+16).
+MENU/TRN/TRN2 remain **53,860 / 29,400 / 23,668 B**, with unchanged rounded
+read bounds. Normal heapcheck passes; all 320 actual-archive setups fit, with
+screen 207's minimum margin increasing from 16 to **32 B**. The renderer still
+emits at most ten FT4 packets (**400 B/frame**) into the existing work buffer.
+
+PCSX-Redux verifies 39 need-state frames on original 2 MB RAM, including normal,
+both warning halves, steady active red, resets, fatigue 100, NEW/CLASSIC, light/dark
+floors and a paused-gym warning pair. Six consecutive captures are ten native
+play ticks apart while care time stays fixed. Both native x5 gym runs, cancel,
+hunger stop, tally/new-order clearance, OFF and callback cleanup pass again on
+this build. The hunger stop renders full red immediately from overdue food,
+before the paused native HUNGRY flag updates. See
+[need-alert evidence](../../HUD-DESIGN.md#need-alert-runtime-confirmation).
 
 ### Code out of the executable (patch 0098)
 

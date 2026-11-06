@@ -4,9 +4,10 @@
 Entry 1 (960,448; 256x64; CLUT 272,496) has no native sprite in
 these cells. Seven 34x13 tiles contain a common grey icon block and empty
 outlined track. Rows 500..506 preserve native icon colours; 507 holds the
-status screen's green/red two-row fills. No file, upload or VRAM allocation
+status screen's green/red two-row fills. Rows 508..510 recolour only the three
+need housings for active warnings. No file, upload or VRAM allocation
 is added. Native pixels come from SYSTEM_W (entry 8) and the toilet-need
-condition frame (entry 3), fitted whole to 11x11 as owner-selected icon 4.
+condition frame (entry 3), fitted whole to 11x11.
 """
 import argparse
 from pathlib import Path
@@ -87,6 +88,14 @@ def build(data):
         if len(colours)>16:
             raise ValueError(f'HUD tile {k} exceeds its native palette: {len(colours)}')
         palette(4+k,colours)
+        if k >= 4:
+            # Meat/tired glyph backgrounds were removed above; the native toilet
+            # glyph has no housing-colour aliases. Preserve every glyph ink colour.
+            if k == 5 and any(c in native for c in (grey, light, shadow)):
+                raise ValueError('toilet glyph aliases active housing colours')
+            red_housing = dict(zip((grey,light,shadow),map(rgb15,
+                                  ((176,48,40),(240,112,96),(80,16,16)))))
+            palette(8+k,[red_housing.get(c,c) for c in colours])
         for y,row in enumerate(tile):
             for x,c in enumerate(row):
                 put(u+x,v+y,colours.index(c))

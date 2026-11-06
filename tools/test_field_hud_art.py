@@ -23,7 +23,7 @@ class FieldHUDArt(unittest.TestCase):
         return (b>>(4*(x&1)))&15
 
     def test_only_allocated_cells_change(self):
-        allowed=set(range(self.clut+4*32,self.clut+12*32))
+        allowed=set(range(self.clut+4*32,self.clut+15*32))
         for u,v in CELLS:
             allowed.update(self.dst+y*128+x//2 for y in range(v,v+13) for x in range(u,u+34))
         allowed.update(self.dst+y*128+x//2 for y in range(59,63) for x in range(144,162))
@@ -55,6 +55,20 @@ class FieldHUDArt(unittest.TestCase):
                              (88,88,88) if 15<=x<33 and y==7 else \
                              (16,24,32) if 14<=x<34 and 5<=y<9 else (0,0,0)
                     self.assertEqual(pal[self.pixel(self.new,u+x,v+y)],rgb15(expected),(k,x,y))
+
+    def test_active_need_housings_preserve_icons_and_tracks(self):
+        red = dict(zip(map(rgb15,((144,144,144),(184,184,184),(64,64,64))),
+                       map(rgb15,((176,48,40),(240,112,96),(80,16,16)))))
+        for k in range(4,7):
+            normal=struct.unpack_from('<16H',self.new,self.clut+(4+k)*32)
+            active=struct.unpack_from('<16H',self.new,self.clut+(8+k)*32)
+            self.assertEqual(active,tuple(red.get(c,c) for c in normal))
+            self.assertEqual(active[0],0)
+            # Both phases share the same texels; only three housing inks change.
+            self.assertEqual(sum(a!=b for a,b in zip(normal,active)),3)
+        bad=bytearray(self.base);bad[self.clut+12*32]=1
+        with self.assertRaisesRegex(ValueError,'occupied'):
+            build(bad)
 
     def test_status_screen_fill_colours(self):
         pal=struct.unpack_from('<16H',self.new,self.clut+11*32)
