@@ -371,7 +371,6 @@ Upload-diagonal-camera-bands-from-their-destination-window.patch
 Keep-effect-initialization-exclusive-during-quick-battle-loading.patch
 Choose-uploaded-camera-bands-from-the-actual-window-shift.patch
 Bound-the-battle-start-banner-to-its-GPU-packet-budget.patch
-Keep-effect-interpreter-context-intact-during-battle-loading.patch
 mojyamon-daily-exchanges.patch
 mojyamon-one-time-north-star-and-evolution-targets.patch
 dolph-fin-evolution-item.patch
