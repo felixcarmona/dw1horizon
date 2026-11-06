@@ -57,6 +57,7 @@ against, leave this list.
 | A higher chance of the training bonus (2×, 4× or 10× gains by matching symbols) | ⚖️ | In the original it is very rare; changes stat growth speed and needs a balance audit. |
 | Vikemon as an evolution of Syakomon and Cannondramon of Triceramon | 🎭 | Each route must respect the evolution tree rules (no canon Mega straight from a Champion). |
 | A way to learn basic Machine techniques before Whamon (a new area, or Hagurumon/Solarmon in the galleries) | ⚖️ 🆕 | Today Machine techniques are only reachable through Whamon. |
+| Wizardmon as the Champion of the SkullSatamon → Beelzemon line (echoing Impmon → Wizardmon → Baalmon → Beelzemon) | 🎭 | Baalmon has no model to import; the route must follow the evolution tree rules. |
 | Unique recruitment scenes for more of the new Digimon | ✨ | Many new recruits join with a simple fight. |
 | Humanoid sizes growing by stage (Angemon < MagnaAngemon < Seraphimon, Devimon < Myotismon) | ✨ | A per-line size review. |
 | A minimap like Digimon World 3's, showing where each exit leads, and a wider camera view | 🛠️ | Needs screen space and per-screen exit data. |
