@@ -89,29 +89,29 @@ int main(void) {
  for(int v=-32768;v<=32767;v++) {
   PARTNER_PARA.happiness=v; check(0,v+100,200,v<0,v<0,0,0);
   PARTNER_PARA.discipline=v; check(1,v,100,v<50,2+(v<50),0,0);
-  PARTNER_PARA.tiredness=v; check(4,v,100,v>=50,6,v>=80,v>=74);
+  PARTNER_PARA.tiredness=v; check(4,100-v,100,v>=50,6,v>=80,v>=74);
   for(int flag=0;flag<2;flag++) {
    PARTNER_PARA.condition=flag?4:0;
    PARTNER_PARA.foodLevel=v;PARTNER_PARA.starvationTimer=v;
    check(2,v,180,flag,4,flag||v<=0,v<=60);
    PARTNER_PARA.condition=flag?8:0;
    PARTNER_PARA.poopLevel=v;
-   check(3,24-v,24,flag,5,flag||v<=0,v<=6);
+   check(3,v,24,flag,5,flag||v<=0,v<=6);
   }
  }
  for(int t=-32768;t<=32767;t++) {
   RAISE_DATA[0].poopTimer=t;
   PARTNER_PARA.poopLevel=0;
-  PARTNER_PARA.condition=0;check(3,t>0?2*t:0,t>0?2*t:1,0,5,t>0,0);
-  PARTNER_PARA.condition=8;check(3,t>0?2*t:0,t>0?2*t:1,1,5,1,0);
+  PARTNER_PARA.condition=0;check(3,0,t>0?2*t:1,0,5,t>0,0);
+  PARTNER_PARA.condition=8;check(3,0,t>0?2*t:1,1,5,1,0);
  }
- // Toilet and portable-potty native resets: 2*T empty, T half full.
+ // Toilet and portable-potty native resets: 2*T full, T half full.
  RAISE_DATA[0].poopTimer=12; PARTNER_PARA.condition=0;
- PARTNER_PARA.poopLevel=24;check(3,0,24,0,5,0,0);
+ PARTNER_PARA.poopLevel=24;check(3,24,24,0,5,0,0);
  PARTNER_PARA.poopLevel=12;check(3,12,24,0,5,0,0);
  PARTNER_ENTITY.digimonEntity.entity.type=200; importedRaise.poopTimer=20;
  PARTNER_PARA.condition=0;PARTNER_PARA.poopLevel=20;check(3,20,40,0,5,0,0);
- importedRaise.poopTimer=10;check(3,0,20,0,5,0,0); assert(importedReads==4);
+ importedRaise.poopTimer=10;check(3,20,20,0,5,0,0); assert(importedReads==4);
  puts("PASS: 589828 exhaustive live-value/flag/baseline cases, both blink halves; B5a geometry, fill and palettes");
 }
 '''
