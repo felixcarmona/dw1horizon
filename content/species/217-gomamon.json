@@ -6,7 +6,7 @@
   "vanilla_as": 18,
   "attribute": "vaccine",
   "specialties": ["ice", "battle", null],
-  "techniques": ["Ice Needle", "Water Blit", "Aqua Magic", "Tear Drop", "Sonic Jab", "Muscle Charge", "War Cry",
+  "techniques": ["Ice Needle", "Winter Blast", "Giga Freeze", "Tear Drop", "Sonic Jab", "Muscle Charge", "War Cry",
                  "Super Slap"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 45,

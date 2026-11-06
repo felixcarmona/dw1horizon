@@ -1,0 +1,59 @@
+{
+  "_comment": "DWS enemy defaults: specialty attacks and a weighted four-second idle choice. IceLeomon keeps three physical choices shared with NEW DIGIMON off. Animation slots and move timing stay unchanged. Native encounter rows are authored explicitly in content/maps.",
+  "6": {
+    "moves": ["Megaton Punch", "Spinning Shot", "Giga Freeze", null],
+    "weights": [40, 25, 15, 20]
+  },
+  "62": {
+    "moves": ["Megaton Punch", "Magma Bomb", "Giga Freeze", null],
+    "weights": [35, 30, 25, 10]
+  },
+  "63": {
+    "moves": ["Megaton Punch", "Buster Dive", "Winter Blast", "Dynamite Kick (44)"],
+    "weights": [30, 20, 30, 20]
+  },
+  "75": {
+    "moves": ["Dynamite Kick (48)", "Megalo Spark", "Electric Cloud", null],
+    "weights": [30, 30, 30, 10]
+  },
+  "79": {
+    "moves": ["Dynamite Kick (44)", "Buster Dive", "Tremar", null],
+    "weights": [35, 25, 30, 10]
+  },
+  "90": {
+    "moves": ["Megaton Punch", "Buster Dive", "Pulse Laser", null],
+    "weights": [30, 25, 35, 10]
+  },
+  "100": {
+    "moves": ["Giga Freeze", "Ice Statue", "Megaton Punch", null],
+    "weights": [40, 15, 25, 20]
+  },
+  "101": {
+    "moves": ["Magma Bomb", "Heat Laser", "Red Inferno", null],
+    "weights": [35, 30, 25, 10]
+  },
+  "105": {
+    "moves": ["Megaton Punch", "Giga Freeze", "Winter Blast", null],
+    "weights": [35, 25, 30, 10]
+  },
+  "108": {
+    "moves": ["Ice Needle", "Ice Statue", "Winter Blast", null],
+    "weights": [35, 15, 30, 20]
+  },
+  "130": {
+    "moves": ["Megaton Punch", "Giga Freeze", "Megalo Spark", null],
+    "weights": [40, 25, 15, 20]
+  },
+  "242": {
+    "moves": ["Giga Freeze", "Ice Statue", "Wind Cutter", null],
+    "weights": [35, 15, 30, 20]
+  },
+  "314": {
+    "moves": ["Megaton Punch", "Buster Dive", "Prominence Beam", null],
+    "weights": [30, 30, 30, 10]
+  },
+  "327": {
+    "moves": ["Megaton Punch", "Tremar", "Insect Plague", null],
+    "weights": [30, 30, 30, 10]
+  }
+}

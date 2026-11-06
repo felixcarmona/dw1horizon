@@ -138,6 +138,17 @@ fakes give `stored()` for IndexedDB and `self.testHandles.revive` makes them aga
 
 ## The engine
 
+Building requires OPFS with `FileSystemFileHandle.createWritable`, synchronous
+file access in workers, and raw deflate streams. The page checks storage support
+before disc selection. On iPhone and iPad, iOS/iPadOS 26 or later is required,
+including when using Chrome. Capability detection also accepts Safari 26 when its
+user agent still reports an older OS version.
+
+Python converts extracted files and bounded image chunks to owned JavaScript byte
+arrays before calling storage callbacks. These callbacks never receive Python
+proxies or views into WebAssembly memory. Temporary proxies used to populate
+Python globals are destroyed immediately after assigning the Python reference.
+
 `js/engine/engine.js` (the page's side) and `js/engine/worker.js` (a module Web Worker, one Pyodide each) run a
 make-release of the everything variant (format 3, the derive builder: `tools/patcher/dwpatch.py`, docs/patcher.md
 §9) as `dwpatch apply` would, with tools/derive's steps spread over the workers:
@@ -285,6 +296,18 @@ from a plain file picker needs reselection if it cannot be read again.
 `node web/test/file-storage.mjs URL` checks stale reads, retry limits, immutable input copies and cancellation in
 Chromium using tiny OPFS fixtures and the production worker's read function. `node web/test/lifecycle.mjs URL`
 checks failure and cancellation cleanup, worker retries, and locking across tabs without building a disc.
+
+With Playwright installed, `node web/test/capabilities.mjs URL` checks the storage
+gate in WebKit, Chromium and Firefox without discs, including iOS Chrome and
+Safari's frozen OS version. `node web/test/cross-browser.mjs URL ISO_ROOT BROWSER`
+runs a full USA-disc build with one worker and four reported cores; `BROWSER` is
+`webkit`, `chromium` or `firefox`. It hashes the stored image independently and
+accepts `EXPECT_SHA1` for comparison with a CLI build. `PLAYWRIGHT_MODULE` can
+select a local installation, and `CHROMIUM` can select a system executable.
+Full builds use a regular temporary profile. `BROWSER_PROFILE` selects a named
+profile to retain for inspection after the run.
+Provision at least the page's reported storage requirement in the browser test
+environment: MiniBrowser's default 1 GB quota is too small for a full build.
 
 `node web/test/downloads.mjs URL` tests the completed build's separate download links and combined button without
 source discs. It checks the saved `.bin` and `.cue` names, bytes, binary MIME types and the CUE's BIN reference in
