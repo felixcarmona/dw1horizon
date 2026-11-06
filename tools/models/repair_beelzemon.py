@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Restore Beelzemon's lower face and red eyes from the World 2003 source.
+"""Restore the source face and recolor Beelzemon Blast Mode irises green.
 
 Authoring only: SOURCE.BIN MODEL.MMD TEXTURE.TIM OUT_STEM. Store with
  tools/models/edit.py put 403 OUT_STEM.MMD OUT_STEM.TIM.
@@ -23,10 +23,10 @@ def restore(model_data, texture_data, source_data):
     source = parse_model(source_data)
     head = model.tmd.objects[26]
     # Repack five pairs of adjacent triangles as quads with the same diagonal.
-    # This preserves every triangle and silhouette while freeing five slots.
+    # This preserves every triangle and silhouette while freeing six slots.
     pairs = [(16, 14, 15, [2, 0, 1, 0]), (22, 7, 10, [2, 0, 1, 1]),
              (27, 6, 8, [0, 1, 2, 0]), (27, 7, 10, [2, 0, 1, 0]),
-             (26, 50, 51, [2, 0, 1, 2])]
+             (26, 50, 51, [2, 0, 1, 2]), (0, 76, 77, [1, 2, 0, 1])]
     for oi in sorted({oi for oi, *_ in pairs}):
         obj = model.tmd.objects[oi]
         replacements, dropped = {}, set()
@@ -77,6 +77,62 @@ def restore(model_data, texture_data, source_data):
                 norms.append(normal)
             face['norms'].append(norms.index(normal))
         head.prims.append(mmd.Prim.encode(face))
+    # Unoccupied atlas rectangles: jaw 30x24 at (0,0), eyes 48x24 at (30,0), forehead eye 16x24 at (86,0).
+    # Full source pixels avoid losing the lip and pupil at the old 2/3 packing.
+    for obj in model.tmd.objects:
+        for prim in obj.prims:
+            if prim in head.prims[-8:]:
+                continue
+            uv = prim.decode()['uv']
+            for x, width in [(0, 30), (30, 48), (86, 16)]:
+                assert not uv or min(v for u, v in uv) >= 24 or max(u for u, v in uv) < x or min(u for u, v in uv) >= x + width
+    pixels = source.texture[20:]
+    assert tuple(texture.pal[2]) == struct.unpack_from('<16H', pixels, 248 * 128)
+    assert tuple(texture.pal[5]) == struct.unpack_from('<16H', pixels, 248 * 128 + 16 * 2)
+    for sx, sy, dx, w, h in [(120, 80, 0, 30, 24), (176, 0, 30, 48, 24), (32, 144, 86, 16, 24)]:
+        for y in range(h):
+            for x in range(w):
+                n = (sy + y) * 256 + sx + x
+                texture.idx[y * 256 + dx + x] = (pixels[n // 2] >> (4 * (n % 2))) & 15
+    # Isolate the eye palette. Swap red/green only for the two iris shades;
+    # the original gold highlights, eyelids and helmet colors remain exact.
+    assert not any(texture.pal[11])
+    texture.pal[11] = list(texture.pal[5])
+    for index in (0, 1):
+        r, g, b, alpha = mmd.c15_to_rgba(texture.pal[5][index])
+        texture.pal[11][index] = mmd.rgba_to_c15(g, r, b, alpha)
+    eyes = 0
+    for i, prim in enumerate(head.prims):
+        face = prim.decode()
+        if (face['cba'] >> 6) - 488 == 5 and all(67 <= u <= 99 and 89 <= v <= 105 for u, v in face['uv']):
+            face['uv'] = [(30 + round((u - 67) * 47 / 32), round((v - 89) * 23 / 16)) for u, v in face['uv']]
+            face['cba'] = (488 + 11) << 6
+            head.prims[i] = mmd.Prim.encode(face)
+            eyes += 1
+    # The source forehead eye was completely collapsed by simplification.
+    # Restore its two source triangles as one quad over the retained helmet.
+    # The shared diagonal, UVs and local vertex positions come from DW3.
+    forehead = copy.deepcopy(template)
+    forehead.pop('olen')
+    forehead['mode'] |= 8
+    forehead['cba'] = (488 + 11) << 6
+    forehead['verts'], forehead['norms'] = [], []
+    for v, n in zip([28, 26, 27, 20], [source_head.prims[26].normals[1],
+                                     source_head.prims[26].normals[2],
+                                     source_head.prims[26].normals[0],
+                                     source_head.prims[25].normals[2]]):
+        xyz = tuple(round(c * scale) for c in source_head.vertices[v])
+        nearest = min(range(len(verts)), key=lambda k: sum((verts[k][c] - xyz[c]) ** 2 for c in range(3)))
+        if sum((verts[nearest][c] - xyz[c]) ** 2 for c in range(3)) > 9:
+            nearest = len(verts)
+            verts.append((*xyz, 0))
+        forehead['verts'].append(nearest)
+        normal = (*source_head.normals[n], 0)
+        if normal not in norms:
+            norms.append(normal)
+        forehead['norms'].append(norms.index(normal))
+    forehead['uv'] = [(94, 0), (101, 12), (86, 12), (94, 23)]
+    head.prims.append(mmd.Prim.encode(forehead))
     # Rebuild pools so every other object's local vertex/normal indices stay exact.
     vp, np = [], []
     for i, obj in enumerate(model.tmd.objects):
@@ -87,35 +143,6 @@ def restore(model_data, texture_data, source_data):
         vp.extend(vs)
         np.extend(ns)
     model.tmd.verts, model.tmd.norms = vp, np
-    # Unoccupied atlas rectangles: jaw 30x24 at (0,0), eyes 48x24 at (30,0).
-    # Full source pixels avoid losing the lip and pupil at the old 2/3 packing.
-    for obj in model.tmd.objects:
-        for prim in obj.prims:
-            if prim in head.prims[-8:]:
-                continue
-            uv = prim.decode()['uv']
-            assert not uv or min(v for u, v in uv) >= 24 or min(u for u, v in uv) >= 78
-    pixels = source.texture[20:]
-    assert tuple(texture.pal[2]) == struct.unpack_from('<16H', pixels, 248 * 128)
-    assert tuple(texture.pal[5]) == struct.unpack_from('<16H', pixels, 248 * 128 + 16 * 2)
-    for sx, sy, dx, w, h in [(120, 80, 0, 30, 24), (176, 0, 30, 48, 24)]:
-        for y in range(h):
-            for x in range(w):
-                n = (sy + y) * 256 + sx + x
-                texture.idx[y * 256 + dx + x] = (pixels[n // 2] >> (4 * (n % 2))) & 15
-    # The eye's yellow-green highlights become red in a dedicated palette.
-    assert not any(texture.pal[11])
-    texture.pal[11] = list(texture.pal[5])
-    texture.pal[11][10] = mmd.rgba_to_c15(184, 32, 40)
-    texture.pal[11][11] = mmd.rgba_to_c15(248, 80, 88)
-    eyes = 0
-    for i, prim in enumerate(head.prims):
-        face = prim.decode()
-        if (face['cba'] >> 6) - 488 == 5 and all(67 <= u <= 99 and 89 <= v <= 105 for u, v in face['uv']):
-            face['uv'] = [(30 + round((u - 67) * 47 / 32), round((v - 89) * 23 / 16)) for u, v in face['uv']]
-            face['cba'] = (488 + 11) << 6
-            head.prims[i] = mmd.Prim.encode(face)
-            eyes += 1
     assert eyes == 6
     assert sum(len(o.prims) for o in model.tmd.objects) == 713
     assert model.anims.build() == mmd.MMD.parse(model_data, 31).anims.build()

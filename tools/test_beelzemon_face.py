@@ -19,8 +19,9 @@ def triangles(model, obj_index):
     out = Counter()
     for prim in obj.prims:
         face = prim.decode()
-        if obj_index == 26 and (face['cba'] >> 6) - 488 == 2:
-            continue  # replaced jaw
+        if obj_index == 26 and ((face['cba'] >> 6) - 488 == 2 or
+                                ((face['cba'] >> 6) - 488 == 11 and min(u for u, v in face['uv']) >= 86)):
+            continue  # restored jaw and forehead eye
         for tri in [(0, 1, 2)] + ([(1, 3, 2)] if len(face['verts']) == 4 else []):
             # Compare actual geometry and winding, independent of vertex indices.
             points = tuple(verts[face['verts'][k]][:3] for k in tri)
@@ -52,14 +53,19 @@ class FaceRepair(unittest.TestCase):
         self.assertTrue(all(0 <= u < 30 and 0 <= v < 24 for p in jaw for u, v in p['uv']))
         self.assertEqual(len(self.ta.to_bytes()), len(self.tb.to_bytes()))
 
-    def test_eyes_have_isolated_red_palette(self):
+    def test_three_eyes_have_isolated_green_palette(self):
         eyes = [p.decode() for p in self.after.tmd.objects[26].prims if (p.decode()['cba'] >> 6) - 488 == 11]
-        self.assertEqual(len(eyes), 6)
+        self.assertEqual(len(eyes), 7)
         self.assertEqual(self.tb.pal[:11], self.ta.pal[:11])
-        for index in [10, 11]:
+        for index in [0, 1]:
             r, g, b, _ = mmd.c15_to_rgba(self.ta.pal[11][index])
-            self.assertGreater(r, 2 * max(g, b))
-        self.assertTrue(all(30 <= u < 78 and 0 <= v < 24 for p in eyes for u, v in p['uv']))
+            self.assertGreater(g, 2 * max(r, b))
+        for index in (0, 1):
+            source = self.tb.pal[5][index]
+            expected = (source & 0xFC00) | ((source & 31) << 5) | ((source >> 5) & 31)
+            self.assertEqual(self.ta.pal[11][index], expected)
+        self.assertEqual(self.ta.pal[11][2:], self.tb.pal[5][2:])
+        self.assertTrue(all((30 <= u < 78 or 86 <= u < 102) and 0 <= v < 24 for p in eyes for u, v in p['uv']))
 
 
 if __name__ == '__main__':
