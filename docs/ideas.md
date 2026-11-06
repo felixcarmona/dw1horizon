@@ -67,6 +67,12 @@ against, leave this list.
 | New content in Beetle Land: more insect enemies and HerculesKabuterimon as a recruit | 🆕 | Area always felt empty; needs a recruit scene. |
 | Terriermon, the third Tamers partner (Guilmon and Renamon lines are already in) | 🆕 | Needs a source model and a place in the evolution tree. |
 | Models from Pocket Digimon World and Digital Card Arena (Japanese prequel of Digital Card Battle): MagnaAngemon, Keramon, babies, Babamon | 🆕 | New source discs for the importer; their formats need support first. |
+| A Cheats option to unlock every technique for the partner | 🎭 | Cheats are opt-in; simple to add next to the existing cheat rows. |
+| The evolution requirements table remembers the last species you looked at | 🛠️ | Saves scrolling back to the same cell every time. |
+| Seasonal decorations in File City (winter/Christmas) | ✨ | New art per building; after the game is more stable. |
+| Lock evolutions (as in Next Order) to steer a raise toward a chosen Digimon | 🎭 ⚖️ | Helps completing the roster; must not bypass requirements. |
+| Jogress (DNA) evolutions: ExVeemon + Stingmon, WarGreymon + MetalGarurumon, and a three-way one with a quest NPC | 🆕 | Needs two partners or a stored partner; depends on the two-Digimon idea. |
+| UlforceVeedramon | 🆕 | Needs a source model and a place in the evolution tree. |
 | Unique recruitment scenes for more of the new Digimon | ✨ | Many new recruits join with a simple fight. |
 | Humanoid sizes growing by stage (Angemon < MagnaAngemon < Seraphimon, Devimon < Myotismon) | ✨ | A per-line size review. |
 | A minimap like Digimon World 3's, showing where each exit leads, and a wider camera view | 🛠️ | Needs screen space and per-screen exit data. |
