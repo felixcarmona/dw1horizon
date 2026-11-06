@@ -305,7 +305,7 @@ on talk(b) replace {
         from pathlib import Path
         from tools.dws import build
         with tempfile.TemporaryDirectory() as tmp:
-            folder = Path(tmp) / 'story/mods/fixture'
+            folder = Path(tmp) / 'story' / 'mods' / 'fixture'
             (folder / 'src').mkdir(parents=True)
             (folder / 'text').mkdir()
             layout = [['Received', '{item 93}.']]
