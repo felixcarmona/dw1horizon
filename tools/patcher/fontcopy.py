@@ -431,6 +431,11 @@ def semantic_table(kind, params, tool_root=None):
         if params:
             raise ValueError('picker labels take no supplied bytes')
         return b'LANGUAGE - IDIOMA\0'.ljust(20, b'\0') + b'START\0'
+    if kind == 'text_piece_origin':
+        if params:
+            raise ValueError('text origin takes no supplied bytes')
+        # DRAW_STRING_PIECES: one piece at x=0, followed by PIECES_END.
+        return struct.pack('<2H', 0, 0xffff)
     if kind == 'inventory_labels':
         language, = params
         bank = authored_bank(str(root), language)

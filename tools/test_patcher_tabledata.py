@@ -15,6 +15,20 @@ import tabledata
 
 
 class TableDataTests(unittest.TestCase):
+    def test_single_text_piece_has_a_semantic_origin_and_terminator(self):
+        data = struct.pack('<2H', 0, 0xffff)
+        obj = dict(offset=100, length=4, section='.sdata.PIECES_.8',
+                   source='src/main/game_menu.c')
+        recipe = tabledata.authored_recipe(obj, data)
+        self.assertEqual(recipe['generator'], 'text_piece_origin')
+        self.assertEqual(recipe['params'], [])
+        self.assertEqual(tabledata.tail([recipe], 'us', None), data)
+        self.assertIsNone(tabledata.authored_recipe(obj, struct.pack('<2H', 12, 0xffff)))
+        self.assertIsNone(tabledata.authored_recipe(dict(obj, source='other.c'), data))
+        self.assertIsNone(tabledata.authored_recipe(dict(obj, section='.sdata.OTHER'), data))
+        with self.assertRaises(ValueError):
+            tabledata.fontcopy.semantic_table('text_piece_origin', [0])
+
     def test_picker_name_is_rebuilt_from_the_licensed_subset(self):
         from tools.localize.language_flags import payload
         data = payload('chinese_name')
