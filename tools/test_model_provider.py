@@ -108,6 +108,8 @@ class ModelProvider(unittest.TestCase):
                                   ('285', 'gazimon', 'gazimon'), ('279', 'marine_devimon', 'marinedevimon')):
             self.assertEqual(assignments.pop(sid),
                              ('tools.models.field_animations.' + module, sid + '-' + name + '-field'))
+        self.assertEqual(assignments.pop('408'),
+                         ('tools.models.field_animations.suijinmon', '408-suijinmon-centaur-field'))
         # All pre-existing bindings outside the repairs stay pinned.
         for sid in ('315', '332', '335'):
             del assignments[sid]
