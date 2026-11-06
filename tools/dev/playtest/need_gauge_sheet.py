@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""Create review sheets from native need-state and gym captures (requires Pillow)."""
+"""Create review sheets from native need-state and gym captures."""
 import argparse
 import json
 from pathlib import Path
-from PIL import Image, ImageDraw, ImageFont
+import sys
+ROOT=Path(__file__).resolve().parents[3]
+sys.path.insert(0,str(ROOT))
+from tools.image import Image, ImageDraw, ImageFont
 
 
 def sheet(out, name, title, subtitle, rows):

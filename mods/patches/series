@@ -395,3 +395,5 @@ Match-approved-light-blue-need-gauges-and-muted-icon-tint.patch
 Keep-warning-icons-bright-while-only-bars-dim.patch
 Expand-starter-list-preserving-original-game-results.patch
 Drain-toilet-and-energy-gauges-as-care-needs-approach.patch
+Show-recovery-disk-bubbles-for-HP-and-MP-care-needs-.patch
+Keep-care-menu-notes-in-MENU-to-preserve-the-field-h.patch

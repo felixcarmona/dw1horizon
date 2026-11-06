@@ -1,49 +1,42 @@
-# HP and MP condition bubbles
+# HP and MP care bubbles
 
-Design review only. No game code, condition flags, thresholds or disc assets have changed.
+HP and MP are care needs strictly below 30%: `current * 10 < maximum * 3`, with a positive maximum. At exactly 30%, no resource bubble or resource-only Square hint appears. The need is independent of inventory: low resources still show their bubbles with an empty bag. Square needs an available action, as it does for the other conditions.
 
-HP and MP become care needs only when `current * 10 < maximum * 3`, with a positive maximum. Exactly 30% is not low. Each low resource gets its own condition bubble, whether or not the bag contains a suitable recovery item. The Square badge continues to indicate an available care action; HP/MP recovery entries and their contribution to that badge must use the same threshold. Other care reasons can still show Square independently.
+Square can still open the care menu above the threshold when the bag has a field-usable recovery item for a resource that is not full. Those optional recovery entries sort after the actual needs. Critical recovery retains its existing place before sleep; other care actions keep their priorities. Opening or cancelling the list does not consume an item.
 
-## Five options
+## Pixel art and native layout
 
-Every option spells out HP and MP. Colour reinforces the words: dark red for HP, dark blue for MP. The heart is never used alone.
+The HP bubble uses the native sm.recovery disk (ITEM.TIM item 0, palette 0). The MP bubble uses the native MP Floppy (item 4, palette 4). Both preserve their native pixels outside a small white label plate. HP uses dark-red pixel letters; MP uses blue pixel letters. The letters use explicit seven-row pixel patterns, bold stems, doubled critical rows and a two-texel letter gap. M is inset to retain both diagonals at native field scale. No font rasterizer, text string, blur or filtered resampling is involved. All nine languages share these same pixels.
 
-| Option | Artwork | Reading and tradeoff | Proposed extra texture payload |
-|---|---|---|---|
-| **1 — Chips + labels** | Native HP Chip (item 27) and MP Chip (28), reduced to fit above tiny pixel labels | Familiar stat items, but may suggest increasing the maximum rather than replenishing it. MP Chip is natively grey; its label supplies the blue cue. | Two 24×24 4-bit tiles: 576 B, plus palettes |
-| **2 — Recovery items + labels** | Native sm.recovery (item 0) and MP Floppy (4), with HP/MP underneath | Connects the need to the inventory remedy. The floppy silhouettes are similar, so the labels are essential. | Two 24×24 4-bit tiles: 576 B, plus palettes |
-| **3 — Battle icons + labels** | Native battle HUD red heart and blue orb, with tiny HP/MP alongside | Connects field care to battle resources. More crowded at field scale than the plain labels. | Two 24×24 4-bit tiles: 576 B, plus palettes |
-| **4 — Large pixel labels** | New pixel HP and MP lettering inside the native condition bubble | **Recommended:** the clearest resource names at native size, with no item or affection ambiguity. | Two 16×16 4-bit tiles: 256 B, plus one shared 32 B palette |
-| **5 — Labels + down arrow** | Pixel HP/MP plus a small matching downward arrow | Explicitly suggests low resources, but the arrow adds visual weight and reduces free space. | Two 24×24 4-bit tiles: 576 B, plus one shared 32 B palette |
+The two icons occupy previously empty 16×16 cells `(224,0)` and `(240,0)` of ETCTIM.BIN entry 1, uploaded at `(960,448)`. Their private palettes use the empty rows 13 and 14 of FEEL_EF's CLUT block at `(272,480)`, i.e. VRAM rows 493 and 494. Each copies its own item's palette and replaces only two inks unused by that disk. The standalone FEEL_EF file repeats those palette rows so its ordinary upload preserves them.
 
-Payloads are design estimates for precomposed icon tiles, excluding TIM headers, alignment and executable code. Options 1–3 should budget up to two 32 B palettes (640 B total). The bubble background, hunger icon and Square badge already exist. Reusing item/HUD pixels at build time avoids retaining a new bitmap array in the main executable. An allocation and palette-space audit is still required; these figures are not measured heap deltas or proof that free texture slots exist.
+The art is derived from the player's existing texture stack by `tools/care_bubble_art.py`. The files retain their original sizes and upload rectangles; no disc file, file-table name, bitmap array, heap buffer or upload is added. FEEL_EF is one common replacement, not a per-language duplicate.
 
-## Asset provenance and layout
+The existing condition ring now has eight slots: hunger, toilet, sleep, tiredness, sickness, injury, HP and MP. HP/MP use the same native bubble background, anchor, 205/256 bubble scale, animation, row spacing, tail suppression, and Square overlay as the existing conditions. The disk occupies 20 texels inside the native 26-texel circular height, using the game's ordinary nearest-neighbour sprite scaling. One condition has a tail; two share a row without tails; three or more use the existing two-row layout. No mocked screen-space coordinates are used by the implementation.
 
-- Bubble: `ETCDAT/FEEL_EF.TIM`, native 32×32 cell at texture UV `(160,144)`, CLUT `(272,484)`. The renderer draws its 32×26 circular part and the remaining six rows as a separate tail. `RING_SIZE = 205` scales it to 205/256 of the original bubble.
-- Hunger: the same texture, 16×16 meat cell at UV `(144,128)`, CLUT `(272,483)`.
-- Items: `ETCDAT/ITEM.TIM`; cells follow `(id % 16 * 16, id / 16 * 16)`, using `ITEM_CLUT_DATA` rather than a generic palette. HP Chip uses palette 0; MP Chip uses 4; sm.recovery uses 0; MP Floppy uses 4.
-- Battle: `ETCDAT/BI_IN.TIM`, 11×11 icons at texture UV `(144,176)` and `(155,176)`, CLUT `(256,491)`, as specified by `BTL_STATUS_BAR_SPRITES`. These are icon-only assets; their accompanying HP/MP lettering in the mockups is new pixel lettering.
-- Square: the native UI cap derived by `tools/care_badge.py`, with the care-specific pink palette stored in the existing SYSTEM_W upload. The ordinary confirm cap is separate.
+## Resident memory
 
-The review sheets reuse a real 320×240 field capture with Agumon from an emulator running with 2 MB RAM. HP and MP appear side by side in separate full-frame composites, followed by a combined hunger + HP + Square case. Each full frame is shown at 1×; the detail below is an exact 4× nearest-neighbour crop. Lettering is hinted to the displayed pixel grid so scaling does not erase the H crossbar or the P bowl.
+The field collector and mutable care state remain resident. The care menu's existing note routine, note strings and command captions move to MENU_REL. `feedOpen` loads MENU before reading them. The resident closing/giving paths restore the curling overlay through `closeMenuOverlay` before resuming field activity. The asynchronous care callbacks stay in main, so returning from a menu cannot return into an overwritten overlay.
 
-The fixed mockup anchor is `(158,27)` in the captured frame, with `k = 1` screen pixel per texel before the 205/256 ring scaling (a 26×21 pixel circular sprite rectangle). The head anchor and projection are compositing estimates, not instrumented measurements from the saved executable; exact runtime size and anchoring remain to be checked against a live hunger bubble before implementation.
+The full nine-language comparison uses identical final disc flags, generated headers, language banks and padding. Before the feature, `main_BSS_END` is `0x801CE5E0`; the resource patch alone raises it to `0x801CE780` (+416 B). Moving the existing care UI routine/data into MENU lowers it to **`0x801CE52C`** (−596 B), a net **180 fewer resident bytes**. Aligned heap increases from **186,640 to 186,832 B** (+192 B).
 
-The combined case follows the existing two-condition layout: centres at `anchor.x ± 11*k`, where `k` is the projected texel scale. Neither bubble has a tail. Square is drawn in front near the lower-right edge, using the renderer's existing badge placement; it is not a third condition or a new bubble above the row. A single need retains the native tail. Adding HP/MP to the condition ordering and extending the three-or-more layout are implementation work, outside this review.
+MENU_REL grows from **53,860 to 54,484 B** (+624 B), retaining **27 sectors** and the existing linker read bounds. No BSS is added: it remains 621,116 B. Final main text/rodata/data are 509,648 / 29,656 / 134,264 B. Normal heapcheck passes without an override; **all 320 actual-archive screen setups fit**, with the tightest margin **2,112 B on screen 207**.
 
-## Review artifacts
+The full build includes all nine padded language banks. Its image SHA-1 is `2a077d518d37a69edb85193eb4cf70ea162630f9`. The generated care-art cells and palettes were checked byte-for-byte across all nine language atlases; each matches the current hand-pixelled source and keeps the original file sizes.
 
-Local, uncommitted review sheets are in `build/bubble-design/`:
+## Native verification
 
-- `0-all-options.png`: comparison of all five pairs and combined cases.
-- `1-bubble-design.png` through `5-bubble-design.png`: numbered full-frame 1× composites and 4× details.
-- `option-<number>-<case>-1x.png`: standalone native-resolution composites.
+The final disc passes the 2 MB PCSX-Redux proof: HP 29% and MP 29% each show their bubble and Square; 31% and exactly 30% show neither. HP + MP + hunger use the existing two-row layout. With an empty bag both resource bubbles remain and Square disappears. At 31% the care menu still offers recovery; critical MP sorts before optional HP. Using one sm.recovery raises HP from 29% to 79% and clears the HP bubble.
 
-Disc-derived artwork and captures remain local. No media-service identifiers are recorded in this document.
+Field and menu captures pass in both fonts for English, Spanish, Brazilian Portuguese, French, German, Italian, Japanese and Catalan. The native PNGs and exact 4× crops were inspected. Full toolchain selftest passes **118 checks, zero failures and zero skips**. Physical console testing remains outstanding; Simplified Chinese retains its existing 8 MB requirement and was checked through the full build and shared-art comparison.
 
-## Validation still required after selection
+## Reproduction
 
-The sheets are static composites. Threshold transitions, recovery-item filtering, appearance/disappearance animation, camera depth changes, larger partners, three-or-more active needs, and all supported languages have not been exercised with an implementation. Small labels in options 1–3 are less legible than option 4 and need particular attention on a television.
+- Full disc: `ISOS=/path/to/dw1 SOURCE_ISOS=/path/to/isos python3 -m tools.dev build --jobs 8 --name hpmp-bubble`.
+- Source workflow: `tools/mods.sh prepare int`, commit changes in the private prepared tree, then `tools/mods.sh save int` and `python3 tools/patch_series.py check --apply`.
+- Care logic: `python3 tools/dev/playtest/hpmp_care_host.py build/decomp-dev` and `python3 tools/dev/playtest/quick_care_host.py build/decomp-dev`.
+- Art allocation/preservation: `python3 -m unittest tools.test_care_bubble_art tools.test_care_badge`.
+- Native proof: `python3 tools/dev/playtest/hpmp_bubbles.py DISC.cue --exe EXE --card AGUMON.mcd --out build/hpmp-proof`. This boots the tested executable on 2 MB RAM, captures 29/30/31% cases, combined hunger/HP/MP, an empty bag, optional/critical care ordering, and menus in both fonts across the eight 2 MB languages. It records exact rendered bubble anchors for the 4× crops.
+- Complete toolchain: `DW_SELFTEST_DERIVE=build/hpmp-bubble tools/selftest.sh`.
 
-Any subsequent C patch must measure `main_BSS_END` and run heapcheck on the original 2 MB budget. No C change or full build was needed for this design-only commit.
+The native evidence, raw PNGs, 4× crops and machine-readable results stay local under `build/hpmp-proof/`. Disc-derived pixels are not committed.

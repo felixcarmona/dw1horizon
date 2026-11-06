@@ -4,7 +4,7 @@
 The pad ends only the first animation. Every session cost and intermediate frame
 then comes from the native gym state machine. Observer breakpoints pause after
 GPU refreshes so screenshots contain the newly drawn readings, not stale frames.
-Requires Pillow; run with the project virtual environment.
+Run with the project virtual environment.
 """
 import argparse
 import json
@@ -14,10 +14,10 @@ import struct
 import subprocess
 import sys
 import time
-from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path[:0] = [str(ROOT), str(ROOT / 'tools')]
+from tools.image import Image
 from tools.dev.playtest.qol import ProofEmu
 from tools.dev.playtest.training_evolution import call, await_value
 from tools.langpatch import elf_symbols

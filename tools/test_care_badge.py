@@ -83,6 +83,7 @@ class CareBadge(unittest.TestCase):
     def test_single_language_derive_keeps_the_native_ui_assets(self):
         from tools.derive.steps import localize
         from tools.field_hud_art import PATH as HUD_PATH, build as field_hud_art
+        from tools import care_bubble_art
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
             # Both field features share the real TIM stack's existing uploads.
@@ -90,17 +91,19 @@ class CareBadge(unittest.TestCase):
                 source = root / 'extracted' / path
                 source.parent.mkdir(parents=True, exist_ok=True)
                 source.write_bytes(Path('extracted', path).read_bytes())
+            source = root / 'extracted' / care_bubble_art.FEEL
+            source.write_bytes(Path('extracted', care_bubble_art.FEEL).read_bytes())
             out = root / 'out'
             ctx = SimpleNamespace(root=str(root), env={},
                                   path=lambda *parts: str(out.joinpath(*parts)), log=lambda line: None)
             localize.build(ctx)
-            self.assertEqual({disc for _, disc in localize.outputs(ctx) if disc}, {p for p, _ in FILES})
+            self.assertEqual({disc for _, disc in localize.outputs(ctx) if disc}, {p for p, _ in FILES} | {care_bubble_art.FEEL})
             for path, entry in FILES:
                 data = bytearray((out / 'lang-tex/en' / path).read_bytes())
                 expected = bytearray((root / 'extracted' / path).read_bytes())
                 stamp(expected, entry)
                 if path == HUD_PATH:
-                    expected = field_hud_art(expected)
+                    expected = care_bubble_art.build(field_hud_art(expected))
                 self.assertEqual(data, expected)
 
 

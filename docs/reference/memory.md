@@ -1049,3 +1049,29 @@ These samples have no heap corruption. Palette rows 5–7 match the generated
 TIM in live partner VRAM; the live mesh selects them on 29 claw, 12 horn and
 94 stripe polygons. The old 224 memory card retains its equipped technique
 slots while loading the native model.
+
+
+## HP/MP care bubbles
+
+Recovery needs use the strict 30% threshold. The two labelled native disks are
+derived into spare cells of the existing ETCTIM upload; private palettes occupy
+unused FEEL_EF CLUT rows and are preserved by its standalone upload. File sizes,
+upload rectangles and file-table names remain unchanged. The condition ring has
+eight slots and keeps its existing layout, animation and frontmost Square badge.
+
+The care collector and mutable UI state remain in main. The existing `feedNote`
+routine and immutable captions move to MENU_REL. `feedOpen` loads MENU before
+reading them, and resident closing/giving paths call `closeMenuOverlay` to restore
+the curling library. Care callbacks remain resident through item animations.
+
+With the final disc flags and all nine padded language banks, `main_BSS_END`
+moves from **0x801CE5E0** to **0x801CE780** for the resource feature (+416 B), then
+to **0x801CE52C** after the UI relocation (−596 B): a net **180 B reduction**.
+Aligned heap grows **186,640 → 186,832 B** (+192 B). Main text/rodata/data/BSS
+are **509,648 / 29,656 / 134,264 / 621,116 B**. MENU grows
+**53,860 → 54,484 B**, remaining at **27 sectors** with unchanged read limits.
+Normal heapcheck passes without an override; all **320 actual-archive setups**
+fit, with **2,112 B** remaining on the tightest setup, screen 207.
+
+See [the bubble implementation and proof](../../BUBBLE-DESIGN.md) for the pixel
+allocation, behaviour and reproducible checks.
