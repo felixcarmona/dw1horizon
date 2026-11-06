@@ -211,13 +211,13 @@ The mesh is preserved.
 | Ordinary technique | Action |
 | --- | --- |
 | Megaton Punch, Counter, Sonic Jab | Grey sword |
-| Tremor | Grey sword ground strike |
+| Tremor | Existing Garuru cast; the engine classifies it as ranged |
 | Buster Dive | Existing whole-body dash |
 | Dynamite Kick | Existing kick |
 | Ice Statue, Aurora Freeze, Giga Freeze, Water Blit | Existing Garuru cannon cast |
 | Prominence Beam, Magma Bomb, Red Inferno, Fire Tower | Existing Garuru cannon cast |
 
-Only slots 46, 48, 50 and 51 change. Ranged programs, the dash, kick, finisher and
+Only slots 46, 48 and 51 change. Ranged programs, the dash, kick, finisher and
 all field animations retain their exact decoded motion. Duration and events of
 the physical group remain exact. The resident model uses 83,376 bytes. Reproduce
 both imported-model regressions with the pre-edit files in
@@ -268,3 +268,12 @@ python3 tools/dev/playtest/flat_recovery_host.py build/decomp-dev build/flat-hos
 ```
 
 Use `--baseline` against the previous engine to reproduce the stale tired idle.
+
+### Omnimon projectile origin
+
+Native tracing found Prominence Beam borrowing Greymon bone 5 at `(100, 30, 0)`.
+The previous scaled lookup did not match, leaving the effect on Grey's head.
+Greymon mouth bones 4 and 5 now map to Garuru barrel bone 13, at the centre of
+its six-vertex muzzle ring `(2, 202, 0)`. Bone-based missing rows use the same
+barrel default; entity-centred impacts retain the engine's ordinary fallback.
+Tremor uses range 3 and keeps its original cannon casting program.

@@ -26,7 +26,7 @@ class ReportedAttacks(unittest.TestCase):
         self.assertGreater(sword_swing, 700)
         self.assertEqual(max(p[3][3] for p in old_frames) - min(p[3][3] for p in old_frames), 0)
         # Ordinary ice/fire casts and the native dash/kick retain exact programs.
-        for slot in [47, 49, *range(52, 61)]:
+        for slot in [47, 49, 50, *range(52, 61)]:
             self.assertEqual(animsheet.slot_frames(old, 25, slot), animsheet.slot_frames(new, 25, slot))
 
     def test_power_crane_keeps_core_stable_and_reaches_with_claw(self):

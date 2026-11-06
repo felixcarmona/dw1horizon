@@ -12,7 +12,7 @@ import numeric as np
 from motiondiscidentity import changed_programs
 from tools.models.field_animations.war_greymon import rotation, set_rotation
 
-OMNIMON_MELEE = (46, 48, 50, 51)
+OMNIMON_MELEE = (46, 48, 51)
 
 
 def finish(before, after, bones, slots):
