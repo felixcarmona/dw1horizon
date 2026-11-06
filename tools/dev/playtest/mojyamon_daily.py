@@ -62,6 +62,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('disc'); p.add_argument('--exe', required=True)
     p.add_argument('--port', type=int, default=42167)
+    p.add_argument('--daily-only', action='store_true', help='check the daily mushroom exchange without the Dolph Fin evolution')
     p.add_argument('--out', type=Path, default=Path('build/mojyamon-proof'))
     p.add_argument('--card', type=Path, default=ROOT / 'tools/dev/saves/corpus/20261027-d2796814.mcd')
     a = p.parse_args()
@@ -115,9 +116,10 @@ hook({e.A('showMapHeadTextbox')},function() local r=PCSX.getRegisters().GPR.n
         assert trace(e, 'trades') == 1 and bit(e, 789)
         after = counts(e)
         assert after.get(69, 0) == before.get(69, 0)-1
-        assert after.get(45, 0) == before.get(45, 0)+1
+        assert after.get(46, 0) == before.get(46, 0)+1
+        assert after.get(45, 0) == before.get(45, 0)
         assert e.in_control()
-        results['first_trade'] = dict(input_before=before.get(69), input_after=after.get(69), reward_after=after.get(45), daily_bit=bit(e,789))
+        results['first_trade'] = dict(input_item=69, reward_item=46, input_before=before.get(69), input_after=after.get(69), reward_after=after.get(46), daily_bit=bit(e,789))
         talk(e); select_offer(e)
         assert trace(e, 'refused') == 1 and trace(e, 'amounts') == 1 and trace(e, 'trades') == 1, {n:trace(e,n) for n in ('lists','refused','amounts','trades')}
         assert counts(e) == after
@@ -136,11 +138,15 @@ hook({e.A('showMapHeadTextbox')},function() local r=PCSX.getRegisters().GPR.n
         assert trace(e, 'trades') == 2 and bit(e,789)
         final = counts(e)
         assert final.get(69,0) == after.get(69,0)-1
-        assert final.get(45,0) == after.get(45,0)+1
+        assert final.get(46,0) == after.get(46,0)+1
         e.run('shot', str(out / '04-next-day-allowed.png'))
         results['next_day_allowed'] = True
         results['final_inventory'] = final
         assert e.in_control()
+        if a.daily_only:
+            print(json.dumps(results, indent=2), flush=True)
+            (out / 'results.json').write_text(json.dumps(results, indent=2)+'\n')
+            return
         call(e, 'giveItem', [0, 5])
         assert e.warp(133) and e.in_control()
         def dolph_fin_offer():

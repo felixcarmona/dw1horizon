@@ -10,7 +10,7 @@
  "189": {"model": "189-Ankylomon.MMD", "aliases_applied": true},
  "190": {"model": "190-Angewomon.MMD", "aliases_applied": true, "field_overlay": "angewomon-field"},
  "191": {"model": "191-MetalGarurumon.MMD", "aliases_applied": true, "field_overlay": "metalgarurumon-pace"},
- "192": {"model": "192-Imperialdramon.MMD", "aliases_applied": true, "field_overlay": "imperialdramon-celebration"},
+ "192": {"model": "192-Imperialdramon.MMD", "aliases_applied": true},
  "193": {"model": "193-Digmon.MMD", "aliases_applied": true},
  "194": {"model": "194-ExVeemon.MMD", "aliases_applied": true, "field_overlay": "exveemon-field"},
  "195": {"model": "195-Flamedramon.MMD", "aliases_applied": true, "field_overlay": "flamedramon-field"},

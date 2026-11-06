@@ -5,32 +5,247 @@
   "level": "mega",
   "vanilla_as": 26,
   "attribute": "virus",
-  "specialties": ["fire", "battle", "air"],
-  "techniques": ["Inifinity Burn", "Prominence Beam", "Meltdown", "Magma Bomb", "Red Inferno", "Fire Tower",
-                 "Megaton Punch", "Buster Dive", "Counter", "Dynamite Kick (44)", "Spinning Shot",
-                 "Megalo Spark", "Confused Storm", "Wind Cutter", "Nightmare Syndromer"],
-  "drop": {"item": "sm.recovery", "percent": 30},
+  "specialties": [
+    "fire",
+    "battle",
+    "air"
+  ],
+  "techniques": [
+    "Inifinity Burn",
+    "Prominence Beam",
+    "Meltdown",
+    "Magma Bomb",
+    "Red Inferno",
+    "Fire Tower",
+    "Megaton Punch",
+    "Buster Dive",
+    "Counter",
+    "Dynamite Kick (44)",
+    "Spinning Shot",
+    "Megalo Spark",
+    "Confused Storm",
+    "Wind Cutter",
+    "Nightmare Syndromer"
+  ],
+  "drop": {
+    "item": "sm.recovery",
+    "percent": 30
+  },
   "effects_like": 34,
   "model": {
     "file": "build/meshfix2-out/MaloMyotismon.MMD",
-    "radius": 216,
-    "height": 475,
-    "skeleton": [[-1, -1], [0, 0], [1, 1], [2, 2], [3, 2], [4, 4], [5, 5], [6, 5], [7, 5], [-1, 2], [8, 1], [9, 10],
-                 [10, 10], [11, 12], [12, 13], [13, 13], [14, 13], [-1, 10], [15, 1], [16, 1],
-                 [17, 19], [18, 20], [19, 21], [20, 22], [21, 19], [22, 24], [23, 25], [24, 19],
-                 [25, 27], [26, 28], [27, 29]]
+    "radius": 296,
+    "height": 651,
+    "skeleton": [
+      [
+        -1,
+        -1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        4,
+        4
+      ],
+      [
+        5,
+        5
+      ],
+      [
+        6,
+        5
+      ],
+      [
+        7,
+        5
+      ],
+      [
+        -1,
+        2
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        9,
+        10
+      ],
+      [
+        10,
+        10
+      ],
+      [
+        11,
+        12
+      ],
+      [
+        12,
+        13
+      ],
+      [
+        13,
+        13
+      ],
+      [
+        14,
+        13
+      ],
+      [
+        -1,
+        10
+      ],
+      [
+        15,
+        1
+      ],
+      [
+        16,
+        1
+      ],
+      [
+        17,
+        19
+      ],
+      [
+        18,
+        20
+      ],
+      [
+        19,
+        21
+      ],
+      [
+        20,
+        22
+      ],
+      [
+        21,
+        19
+      ],
+      [
+        22,
+        24
+      ],
+      [
+        23,
+        25
+      ],
+      [
+        24,
+        19
+      ],
+      [
+        25,
+        27
+      ],
+      [
+        26,
+        28
+      ],
+      [
+        27,
+        29
+      ]
+    ]
   },
-  "texture": {"file": "build/meshfix2-out/MaloMyotismon.TIM", "entry": 0},
+  "texture": {
+    "file": "build/meshfix2-out/MaloMyotismon.TIM",
+    "entry": 0
+  },
   "voice": 56,
   "battle_music": "normal-battle",
-  "condition_bubble": [0, -212, 32, 1],
-  "effect_origins": [[7, 93, -3, 0, 14, -29, 67, 4], [3, 88, -57, 0, 1, 0, -65, -41],
-                     [10, 52, -218, 1, 7, 155, 43, -322], [3, 83, -21, 0, 1, 0, -103, -56],
-                     [7, 0, 0, 0, 14, 0, 0, 0]],
-  "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
+  "condition_bubble": [
+    0,
+    -290,
+    44,
+    1
+  ],
+  "effect_origins": [
+    [
+      7,
+      127,
+      -4,
+      0,
+      14,
+      -40,
+      92,
+      5
+    ],
+    [
+      3,
+      121,
+      -78,
+      0,
+      1,
+      0,
+      -89,
+      -56
+    ],
+    [
+      10,
+      71,
+      -299,
+      1,
+      7,
+      212,
+      59,
+      -441
+    ],
+    [
+      3,
+      114,
+      -29,
+      0,
+      1,
+      0,
+      -141,
+      -77
+    ],
+    [
+      7,
+      0,
+      0,
+      0,
+      14,
+      0,
+      0,
+      0
+    ]
+  ],
+  "wild": {
+    "hp": 4158,
+    "mp": 4172,
+    "off": 553,
+    "def": 476,
+    "speed": 413,
+    "brain": 420,
+    "bits": 2100
+  },
   "partner": {
     "voice": 3,
-    "hunger_hours": [1, 5, 9, 13, 17, 21],
+    "hunger_hours": [
+      1,
+      5,
+      9,
+      13,
+      17,
+      21
+    ],
     "energy_max": 80,
     "energy_fed": 40,
     "energy_per_hour": 8,
@@ -38,15 +253,26 @@
     "poop_size": 12,
     "favorite_food": "Gold Acorn",
     "sleep_cycle": "02:00-11:00",
-    "favored_region": 5,
+    "favored_region": 6,
     "training_type": "offense-speed",
     "birth_weight": 30,
-    "status_screen_position": [280, 340, -1390],
+    "status_screen_position": [
+      384,
+      466,
+      -1904
+    ],
     "item_distance": 10,
-    "training": {"animation": 61, "hit_tick": 10}
+    "training": {
+      "animation": 61,
+      "hit_tick": 10
+    }
   },
   "evolution": {
-    "from": [66, 229, 311],
+    "from": [
+      66,
+      229,
+      311
+    ],
     "to": [],
     "requirements": {
       "digimon": 66,
@@ -64,6 +290,13 @@
       "techs": -1,
       "flags": 16
     },
-    "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700}
+    "gains": {
+      "hp": 8000,
+      "mp": 7000,
+      "offense": 800,
+      "defense": 800,
+      "speed": 700,
+      "brains": 700
+    }
   }
 }
