@@ -65,6 +65,17 @@ class ModelProvider(unittest.TestCase):
             if preceding:
                 self.assertNotIn(sid, selected)
                 selected[sid] = model.OVERLAYS[preceding]
+        # Native locomotion is authored after the effective field proportions.
+        # Keep those baked generators covered without running them a second time.
+        for path in Path('content/models/authoring/native-polish').glob('*.json'):
+            proof = json.loads(path.read_text())
+            preceding = proof.get('preceding_provider', {}).get('field_overlay')
+            if preceding:
+                sid = str(proof['species'])
+                self.assertTrue(records[sid]['aliases_applied'])
+                self.assertNotIn('field_overlay', records[sid])
+                self.assertNotIn(sid, selected)
+                selected[sid] = model.OVERLAYS[preceding]
         celebrations = json.load(open('content/models/imports/celebrations.json'))
         self.assertEqual(len(selected), len(model.OVERLAYS))
         self.assertEqual(set(selected.values()), set(model.OVERLAYS.values()))

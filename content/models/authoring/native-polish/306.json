@@ -248,5 +248,10 @@
     10
   ],
   "donor_sha256": "390092e3b3471adc84645a512f8671b2b036413d72e09d046fc982355f1488c7",
-  "output_sha256": "1474586980dbe4282062a1172351fc40be11d8bf9a9ff7700ff86cc4f96dc25f"
+  "output_sha256": "1474586980dbe4282062a1172351fc40be11d8bf9a9ff7700ff86cc4f96dc25f",
+  "preceding_provider": {
+    "model": "306-GrapLeomon.MMD",
+    "aliases_applied": true,
+    "field_overlay": "grapleomon-chibi"
+  }
 }

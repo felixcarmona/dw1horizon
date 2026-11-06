@@ -230,5 +230,10 @@
     14
   ],
   "donor_sha256": "4bbdf9a2763dab219bc599f0d9cfa44d93263fc5e00930d405ad055f68c22ed9",
-  "output_sha256": "ec802272f2f2d38a3a156cd8b165b8358d440ecf31f92c1c61e8336f742048b5"
+  "output_sha256": "ec802272f2f2d38a3a156cd8b165b8358d440ecf31f92c1c61e8336f742048b5",
+  "preceding_provider": {
+    "model": "316-Sakuyamon.MMD",
+    "aliases_applied": true,
+    "field_overlay": "sakuyamon-chibi"
+  }
 }

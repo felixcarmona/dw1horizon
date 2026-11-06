@@ -210,5 +210,10 @@
     8
   ],
   "donor_sha256": "390092e3b3471adc84645a512f8671b2b036413d72e09d046fc982355f1488c7",
-  "output_sha256": "fc238c2747ef7ece88de3a7f762056fc03f8e84b61d8d1da2b29d907ffaf243c"
+  "output_sha256": "fc238c2747ef7ece88de3a7f762056fc03f8e84b61d8d1da2b29d907ffaf243c",
+  "preceding_provider": {
+    "model": "297-Marsmon.MMD",
+    "aliases_applied": true,
+    "field_overlay": "marsmon-chibi"
+  }
 }
