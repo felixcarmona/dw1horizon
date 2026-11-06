@@ -2,13 +2,14 @@
 # by day once beaten where it swings alone; Myotismon keeps the lobby at night after R2. Kotemon offers a spar, as often as asked
 # (100 bits a win, 150 with the battle bonus; less than a wild fight). A battle starts only once every bystander on screen has
 # walked off it (BTL_handleBattleIntro): Greymon behind its desk cannot, and the lobby's battles never began; Greymon steps out
-# for the spar, and the spar ends by loading the screen again at entry 2 (beside Kotemon, on no step tile), which puts Greymon
+# for the spar, and the spar ends by loading the screen again at entry 2 (clear of Kotemon, on no step tile), which puts Greymon
 # back at its desk. Kotemon is the only resident here by day, so no never-spawned NPC is sent off (leave() on one crashes).
 from dw import *
 from dw.base.arena_lobby_208 import lobby_208 as lobby208, greymon as greymon208
 from ..state import root2
 
-kotemon208 = lobby208.npc(Species.Kotemon, at=(650, 250), behaves_like=greymon208, bits=100, when=recruited(Species.Kotemon) and clock.hour < 20)
+# Keep its body box clear of entry 2 at (482, 165), the desk and the route to the door.
+kotemon208 = lobby208.npc(Species.Kotemon, at=(850, -650), behaves_like=greymon208, bits=100, when=recruited(Species.Kotemon) and clock.hour < 20)
 myotismon208 = lobby208.npc(Species.Myotismon, at=(0, 400), behaves_like=greymon208, when=root2 and clock.hour >= 20)
 
 
