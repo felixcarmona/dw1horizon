@@ -222,14 +222,13 @@ def main():
                 assert im.size == (320,240)
                 fills = []
                 for y in (191,205,219):
-                    fills.append(sum(abs(im.getpixel((x,y))[0]-im.getpixel((x,y))[1])>20 for x in range(289,307)))
+                    fills.append(sum(im.getpixel((x,y))[2]>im.getpixel((x,y))[0]+15 and im.getpixel((x,y))[2]>im.getpixel((x,y))[1]+5 for x in range(289,307)))
                 fatigue = row['care']['tiredness']
                 want_fatigue = max(1,(fatigue*18+50)//100)
                 food = max(0,min(180,row['care']['foodLevel']))
                 want_food = max(1,(food*18+90)//180) if food else 0
-                # The pre-need window may be sampled in either blink half.
-                allowed_food = {0, want_food} if 0 < food <= 60 else {want_food}
-                assert fills[0] in allowed_food, (row,fills,want_food)
+                # Fill length stays present in both warning phases.
+                assert fills[0] == want_food, (row,fills,want_food)
                 assert fills[2] == want_fatigue, (row,fills,want_fatigue)
                 assert fills[1] >= previous_toilet, (row,fills)
                 previous_toilet = fills[1]

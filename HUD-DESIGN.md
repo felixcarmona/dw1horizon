@@ -32,18 +32,32 @@ which reconciles the overlapping quick-battle guards. All 390 patches apply.
 
 `Render-the-B5a-field-care-HUD-from-live-partner-data.patch` replaces the ON renderer with five live gauges. Happiness/discipline blocks start at (236,192)/(236,206); hunger/toilet/tiredness at (274,185)/(274,199)/(274,213). Each block is 13×13, every outlined track has 18 fill steps, and the existing tick-owned slide supplies the horizontal anchor. The native warning bubbles remain active. Both mood icons use their high/low variants. No input handling, save field or timer is added.
 
-The exact gauge contract below is used before pixel rounding, including final-hour warnings, full active needs, POOPY override, empty invalid toilet baseline, fatigue direction, clamping, nearest-pixel fill and minimum one pixel for positive readings. The current engine's `RAISE_ROW(type)` accessor supplies the toilet baseline, including imported species' live DIGI.DAT rows. The historical mockup script used a different meat crop; runtime uses the documented native meat crop (72,140), CLUT (96,488).
+The exact gauge contract below is used before pixel rounding, including final-hour warnings, empty invalid toilet baseline, fatigue direction, clamping, nearest-pixel fill and minimum one pixel for positive readings. The current engine's `RAISE_ROW(type)` accessor supplies the toilet baseline, including imported species' live DIGI.DAT rows. The historical mockup script used a different meat crop; runtime uses the documented native meat crop (72,140), CLUT (96,488).
 
-`tools/field_hud_art.py` derives seven combined icon-block/empty-track tiles and the native green/red fill stripes into previously empty cells of **ETCTIM.BIN entry 1**, at VRAM (960,448), texture page 31. CLUT rows (272,500..510) were empty. The generator checks both source and destination allocations and refuses occupied cells. The original command-label crops end at u=61; the finisher frame uses u=88..133,v=224..235 and its fill u=136..139,v=224..229. The new atlas avoids these rectangles and the upper condition icons. All existing pixels and palettes outside the reserved cells remain intact. Every localized ETCTIM copy receives the same atlas; no new disc file, upload, RAM copy or VRAM allocation is introduced.
+`tools/field_hud_art.py` derives seven combined icon-block/empty-track tiles and the mood green/red and need light-blue fill stripes into previously empty cells of **ETCTIM.BIN entry 1**, at VRAM (960,448), texture page 31. CLUT rows (272,500..510) were empty. The generator checks both source and destination allocations and refuses occupied cells. The original command-label crops end at u=61; the finisher frame uses u=88..133,v=224..235 and its fill u=136..139,v=224..229. The new atlas avoids these rectangles and the upper condition icons. All existing pixels and palettes outside the reserved cells remain intact. Every localized ETCTIM copy receives the same atlas; no new disc file, upload, RAM copy or VRAM allocation is introduced.
 
-### Need warning and active states
+### Approved need appearance (2026-11-06 correction)
 
-`blink-and-highlight-active-care-needs.patch` adds a one-Hz warning: the bar
-alternates visible/empty every ten native play ticks (0.5 seconds), leaving its
-icon, housing and empty track visible. `PLAYTIME_FRAMES` supplies the existing
-20-Hz clock, including while gym game time is paused; no timer or saved state is
-added. Active needs override blinking and rounding: their housing turns red and
-their bar stays full red until the live condition clears.
+The owner's approved mockups supersede the older green/red need brief below.
+Hunger, toilet and tiredness use light-blue fills in every state: RGB
+(120,190,255), with a lighter (160,210,255) top row and the existing outlined
+track. Happiness and discipline retain their original green/red colours.
+
+Warnings alternate **one second normal, one second at approximately 35%
+brightness**. Both the complete icon/empty-track tile and its fill receive
+45/128 GPU colour modulation during the dim phase, including the frame and
+unfilled track. `PLAYTIME_FRAMES % 40` supplies twenty native play ticks per
+phase, including while gym time is paused; no timer or persistent state is added.
+Warnings do not erase or shorten the fill.
+
+Active needs remain steady. Only their icon colours change: every housing and
+glyph pixel blends 55% towards its luminance multiplied by RGB (235,90,80),
+then quantizes to PSX RGB15. This is option B from media `gN7Rrh`.
+The separate track palette indices preserve all track colours, including when
+a glyph shares a track's original RGB value. The bar remains light blue.
+Fill length continues to follow the live reading: active hunger at zero is empty,
+active toilet at zero is full, and tiredness 80 remains fourteen pixels.
+Activating a need never forces a full bar.
 
 Hunger warns when positive `foodLevel * MOD_CARE_HUNGER_FOOD_PERIOD <= 1200`;
 toilet warns when positive `poopLevel * MOD_CARE_POOP_PERIOD <= 1200`. These are
@@ -51,20 +65,77 @@ one game hour at the live care periods, normally 60 hunger units or six toilet
 units. Enabled timers reaching zero count as active even before the native flag
 updates during a paused gym. Disabled timers do not invent warnings or due
 states; existing native condition flags still take precedence. Invalid toilet
-baselines remain empty unless POOPY is active.
+baselines remain empty.
 
-Fatigue has no countdown. Its warning starts within six raw points of
-`MOD_CARE_TIRED_EXHAUSTED_AT`, the last 18-step display interval. The default
-threshold is 80, so values 74–79 blink; 80+ or the native exhausted flag is active.
-The separate gym stop threshold of 70 is unchanged. Normal fatigue below active
-still uses its native green/red split at 50. All three gauges re-read live care
-data every draw, so meals, toilet use, rest and other resets need no HUD state.
+Fatigue warns within six raw points of `MOD_CARE_TIRED_EXHAUSTED_AT`, the last
+18-step display interval: normally 74–79 before 80. The gym stop threshold
+remains 70. Every draw reads live care data, so resets clear the indication
+immediately. Active palettes occupy the same three CLUT rows (272,508..510);
+the blue stripe uses previously empty texels in the existing atlas. Asset size,
+upload, VRAM allocation and ten-FT4/400-byte maximum packet budget are unchanged.
 
-Three additional palettes at (272,508..510) recolour only the housing's three
-greys into red. The glyph inks and track stay intact. Existing atlas texels,
-125,632-byte asset size, upload, VRAM allocation and ten-FT4/400-byte maximum
-packet budget stay unchanged. The original OFF renderer has identical GPU calls
-across 609,030 happiness/discipline/area/blink combinations after loop compaction.
+`Match-approved-light-blue-need-gauges-and-muted-icon-tint.patch` implements the
+correction after merging `origin/main`, including PR #241's 2048-byte sequence
+buffer saving. Reproduce the native checks with:
+
+```
+python tools/dev/playtest/need_gauge_states.py DISC.cue --exe EXE --card AGUMON.mcd --out build/need-corrected/runtime
+python tools/dev/playtest/training_care_hud.py DISC.cue --exe EXE --card AGUMON.mcd --out build/need-corrected/gym
+python tools/dev/playtest/need_gauge_sheet.py build/need-corrected/runtime build/need-corrected/gym --out build/need-corrected
+```
+
+Use a Pillow-enabled Python. Only reuse `--boot-state` with the exact same disc.
+Generated runtime frames, results and review sheets remain ignored under
+`build/need-corrected/`.
+
+### Corrected implementation memory validation
+
+The full nine-language build after merging `origin/main` at `c5b95434` has
+`main_BSS_END` **0x801CE578**, identical in every language. Main text is
+**509,536 B** (+48 B); rodata/data are unchanged at **29,672 / 134,436 B**.
+PR #241 reduces BSS by **2048 B** to **621,116 B**, giving a net heap gain
+of **2000 B** over the previous need-alert build: **184,752 → 186,752 B**.
+MENU remains **53,860 B**; TRN/TRN2 remain **29,400 / 23,668 B**.
+
+Normal heapcheck passes without an override. All **320 actual-archive setups
+fit**, with screen 207 tightest: **184,712 B** peak against **186,744 B**
+after allocator overhead, leaving **2032 B**. All nine localized HUD atlases
+match the corrected artwork, and the 394-patch series applies cleanly.
+The host checks pass **589,828 live-value/flag/baseline cases** in both warning
+phases and **609,030 original OFF call comparisons**, plus warning boundaries,
+care-rule overrides and eighty native phase positions.
+
+### Corrected native runtime validation
+
+The fresh full disc (SHA-1 `2adb2f8e55c6b0975e539b9043aeea127152eb5f`)
+passes PCSX-Redux interpreter checks with exactly **2,097,152 B RAM**.
+All **39 native 320×240 captures** pass: each need's normal, warning-normal,
+warning-dim, active in both phases and reset; fatigue 100; both fonts; dark
+floors; and all three warnings during paused gym time. Six consecutive cadence
+captures advance native play ticks **5683/5703/5723/5743/5763/5783**, twenty
+per phase, with care time frozen. Every icon pixel matches the 55% luminance
+tint within RGB15 quantization (maximum channel error 6.13/255); every occupied
+warning tile pixel matches 45/128 dimming within 8.43/255.
+
+Both real x5 HP training runs pass (**TRN NEW/30** and **TRN2 CLASSIC/60**),
+with native costs and no care writes between awards. Tiredness rises
+**14/22/30/38/46/54**; toilet fill grows **2/5/7/9/11/14 pixels**. Final food
+values **10/5** retain one blue pixel even in the dim phase. Cancellation,
+native hunger stop, learned-order/tally clearing, OFF and callback cleanup pass.
+Care-state stills use explicit RAM fixtures; gym costs and awards use the
+native state machine. Real hardware/CRT motion was not repeated.
+
+The reviewed sheets are **needs-approved-states-2mb.png**,
+**TRN-gym-x5-2mb.png** and **TRN2-gym-x5-2mb.png**, pairing native frames with
+exact 3× HUD crops. They and the native-frame/results ZIP were sent through the
+media gateway. Reproduction scripts and measurements are under
+`build/need-corrected/`; the sheet generator is committed at
+`tools/dev/playtest/need_gauge_sheet.py`.
+
+### Historical measurements before the appearance correction
+
+The following need-alert measurements and screenshots describe the superseded
+half-second/empty-fill/red-housing implementation, not the approved appearance.
 
 ### Need-alert memory measurements
 
@@ -213,9 +284,9 @@ Here `clamp(v,a,b)` clamps a live value, and percentages below are conceptual; t
 
 | Gauge | Live data source and displayed fill | Direction and colour |
 | --- | --- | --- |
-| Hunger | `PARTNER_PARA.foodLevel` from `tickHungerMechanics`: `clamp(foodLevel,0,180)/180`. While HUNGRY, force full. | Green meal countdown **drains** towards hunger; full for 180+ game minutes remaining. Blink during the final game hour. While hungry, hold full red with a red icon housing until satisfied; this is not stomach fullness or a care-mistake countdown. |
-| Toilet | `PARTNER_PARA.poopLevel` from `tickPoopingMechanic`, with species baseline `T = RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).poopTimer` (native `RAISE_DATA`, imported species through the live record accessor). For `T>0`, fill is `1-clamp(poopLevel,0,2*T)/(2*T)`. If `condition & 8`, force full. Guard invalid `T<=0` with empty unless POOPY is active. | **Fills towards needs-to-go**, green before POOPY; blink during the final game hour, then hold full red with a red icon housing while POOPY. `poopLevel` counts remaining ten-game-minute units; this is not the virus bar. A fixed `2*T` denominator handles native toilet/wild-poop reset to `2*T`; birth/evolution/portable potty resetting to `T` deliberately starts half full. Feeding, battles and time skips can advance it. No second phase or invented holding-time percentage: while POOPY, `poopingTimer` is a separate frame countdown and the native bubble remains authoritative. |
-| Tiredness | `clamp(PARTNER_PARA.tiredness,0,100)/100`, as in the status screen. | **Fills with fatigue**; green below 50%, red at 50% and above. Blink within the last six raw points before the live exhausted threshold (normally 74–79 before 80). While exhausted, hold full red with a red icon housing. Rest/sleep reduces it. This is distinct from bedtime. |
+| Hunger | `PARTNER_PARA.foodLevel` from `tickHungerMechanics`: `clamp(foodLevel,0,180)/180`, including while HUNGRY. | Light-blue meal countdown **drains** towards hunger; full for 180+ game minutes remaining. Blink during the final game hour. While hungry, keep the live blue reading and apply a 55% whole-icon red tint until satisfied; this is not stomach fullness or a care-mistake countdown. |
+| Toilet | `PARTNER_PARA.poopLevel` from `tickPoopingMechanic`, with species baseline `T = RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).poopTimer` (native `RAISE_DATA`, imported species through the live record accessor). For `T>0`, fill is `1-clamp(poopLevel,0,2*T)/(2*T)`. POOPY changes only the icon. Guard invalid `T<=0` with empty. | **Fills towards needs-to-go**, light blue in every state; blink during the final game hour, then keep the live blue reading with a 55% whole-icon red tint while POOPY. `poopLevel` counts remaining ten-game-minute units; this is not the virus bar. A fixed `2*T` denominator handles native toilet/wild-poop reset to `2*T`; birth/evolution/portable potty resetting to `T` deliberately starts half full. Feeding, battles and time skips can advance it. No second phase or invented holding-time percentage: while POOPY, `poopingTimer` is a separate frame countdown and the native bubble remains authoritative. |
+| Tiredness | `clamp(PARTNER_PARA.tiredness,0,100)/100`, as in the status screen. | **Fills with fatigue**; light blue throughout. Blink within the last six raw points before the live exhausted threshold (normally 74–79 before 80). While exhausted, retain the live blue fatigue reading with a 55% whole-icon red tint. Rest/sleep reduces it. This is distinct from bedtime. |
 | Happiness | `(clamp(PARTNER_PARA.happiness,-100,100)+100)/200`, matching the status screen. | **Fills with happiness**; red below 50% (raw value below 0), green from 50%. Use the native positive/negative face. |
 | Discipline | `clamp(PARTNER_PARA.discipline,0,100)/100`. B5 and B6; still present in the menu in B4. | **Fills with discipline**; red below 50%, green from 50%. Use the native high/low discipline face. |
 | Sleep | B6 only. If `condition & 1`, force empty red. Otherwise let `now=60*HOUR+MINUTE`, `bed=60*PARTNER_PARA.sleepyHour`, and `remaining=(bed-now+1440)%1440`; fill is `clamp(remaining,0,180)/180`. | Green **time-until-sleepy countdown drains** over the last three game hours; full earlier, empty red while SLEEPY. It does not show fatigue, sleep duration or a sleep-deprivation grace period. |

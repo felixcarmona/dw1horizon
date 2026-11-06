@@ -28,12 +28,12 @@ VALUES={'hunger':('foodLevel',120,30,0,4),'toilet':('poopLevel',24,3,0,8),
 def phase(e,on):
     address=e.A('PLAYTIME_FRAMES')&0x1fffff
     # A new tick prevents a repeated phase from capturing the previous fixture.
-    target=3 if on else 13
+    target=3 if on else 23
     e.run('lua',f'''local start=PCSX.getMemPtr()[{address}]+256*PCSX.getMemPtr()[{address+1}]
       NA={{done=false}}
       NA.l=PCSX.Events.createEventListener('GPU::Vsync',function()
         local m=PCSX.getMemPtr();local n=m[{address}]+256*m[{address+1}]
-        if n~=start and n%20=={target} then NA.tick=n;NA.done=true;NA.l:remove();PCSX.pauseEmulator() end
+        if n~=start and n%40=={target} then NA.tick=n;NA.done=true;NA.l:remove();PCSX.pauseEmulator() end
       end)
       PCSX.resumeEmulator()''')
     end=time.monotonic()+20
@@ -86,18 +86,31 @@ def check_image(file,name,state,on):
     y=185+NEEDS.index(name)*14
     top=im.getpixel((274,y))
     pixels=[im.getpixel((x,y+6)) for x in range(289,307)]
-    count=sum(abs(r-g)>20 for r,g,b in pixels)
+    # Count blue fill independently of its brightness; dim fills stay present.
+    count=sum(b>r+15 and b>g+5 for r,g,b in pixels)
+    normal=dict(hunger=12,toilet=9,tiredness=7)
+    warning=dict(hunger=3,toilet=17,tiredness=14)
+    want=dict(hunger=0,toilet=18,tiredness=14)[name] if state=='active' else normal[name] if state=='normal' else warning[name]
+    if file.name=='tiredness-exhausted-100.png':want=18
+    assert count==want,(file,count,want,pixels)
     if state=='active':
-        assert top[0]>top[1]+50,(file,top)
-        assert count==18,(file,count)
-        assert all(r>g+50 for r,g,b in pixels),(file,pixels)
+        assert top[0]>top[1]+25 and top[1]>top[2],(file,top)
     else:
         assert top[0]==top[1]==top[2],(file,top)
-        normal=dict(hunger=12,toilet=9,tiredness=7)
-        warning=dict(hunger=3,toilet=17,tiredness=14)
-        want=normal[name] if state=='normal' else warning[name] if on else 0
-        assert count==want,(file,count,want)
-    return {'fill_pixels':count,'housing_top_rgb':top}
+    dim=state=='warning' and not on
+    assert (50<=top[0]<=75) if dim else top[0]>150,(file,top)
+    # Both rows, outline and grey remainder must dim as well as the fill.
+    scale=45/128 if dim else 1
+    for yoff,base in ((6,(160,208,248)),(7,(120,184,248))):
+        observed=im.getpixel((289,y+yoff))
+        expected=base if want else (112,112,112) if yoff==6 else (88,88,88)
+        assert all(abs(c-scale*b)<10 for c,b in zip(observed,expected)),(file,observed,expected,scale)
+    outline=im.getpixel((288,y+5))
+    assert all(abs(c-scale*b)<10 for c,b in zip(outline,(16,24,32))),(file,outline)
+    if want<18:
+        remainder=im.getpixel((306,y+6))
+        assert all(abs(c-scale*112)<10 for c in remainder),(file,remainder)
+    return {'fill_pixels':count,'housing_top_rgb':top,'dim':dim}
 
 
 def capture(e,out,rows,name,state,on,label=None):
@@ -117,6 +130,34 @@ def capture(e,out,rows,name,state,on,label=None):
              font=e.peek('MOD_FONT','b'),fps_mode=e.peek('MOD_FPS_MODE_RUN','i'),care=raw,pixels=pixels)
     rows.append(row);print(json.dumps(row),flush=True)
     return tick
+
+
+def compare_pixels(out):
+    """Compare every icon pixel and every occupied warning tile pixel."""
+    errors={}
+    for index,need in enumerate(NEEDS):
+        y=185+index*14
+        normal=Image.open(out/f'{need}-normal-on.png').convert('RGB')
+        active=Image.open(out/f'{need}-active-off.png').convert('RGB')
+        bright=Image.open(out/f'{need}-warning-on.png').convert('RGB')
+        dim=Image.open(out/f'{need}-warning-off.png').convert('RGB')
+        tint_error=dim_error=0
+        for dy in range(13):
+            for dx in range(34):
+                point=(274+dx,y+dy)
+                if dx<13:
+                    rgb=normal.getpixel(point)
+                    # Captures have already undergone native RGB15 expansion.
+                    lum=sum(c*w for c,w in zip(rgb,(.299,.587,.114)))/255
+                    expected=[.45*c+.55*lum*t for c,t in zip(rgb,(235,90,80))]
+                    tint_error=max(tint_error,max(abs(a-b) for a,b in zip(active.getpixel(point),expected)))
+                if dx<13 or (14<=dx<34 and 5<=dy<9):
+                    expected=[c*45/128 for c in bright.getpixel(point)]
+                    dim_error=max(dim_error,max(abs(a-b) for a,b in zip(dim.getpixel(point),expected)))
+        assert tint_error<12,(need,tint_error)
+        assert dim_error<10,(need,dim_error)
+        errors[need]=dict(whole_icon_tint_max_error=tint_error,whole_tile_dim_max_error=dim_error)
+    return errors
 
 
 def main():
@@ -158,7 +199,7 @@ def main():
         fixture(e,state='warning',all_needs=True)
         ticks=[]
         for k in range(6):ticks.append(capture(e,out,rows,'all','warning',k%2==0,f'cadence-{k}.png'))
-        assert all((b-a)%1200==10 for a,b in zip(ticks,ticks[1:])),ticks
+        assert all((b-a)%1200==20 for a,b in zip(ticks,ticks[1:])),ticks
         assert all(r['current_frame']==14400 for r in rows), 'care clock advanced during fixtures'
         call(e,'modSetFont',2);e.poke('MOD_FPS_MODE_RUN',struct.pack('<i',2))
         for state,on in [('normal',True),('warning',True),('warning',False),('active',True)]:
@@ -187,8 +228,8 @@ def main():
         capture(e,out,rows,'all','warning',True,'gym-warning-on.png')
         capture(e,out,rows,'all','warning',False,'gym-warning-off.png')
         assert rows[-1]['game_time_running']==0
-        (out/'result.json').write_text(json.dumps(dict(ram_bytes=2097152,half_cycle_ticks=10,rows=rows),indent=2)+'\n')
-        print('PASS: normal/blink-on/blink-off/active/satisfied, three needs, native one-Hz cadence, CLASSIC/60 and paused gym',flush=True)
+        (out/'result.json').write_text(json.dumps(dict(ram_bytes=2097152,half_cycle_ticks=20,pixel_comparison=compare_pixels(out),rows=rows),indent=2)+'\n')
+        print('PASS: normal/blink-on/blink-off/active/satisfied, three needs, native one-second phases, CLASSIC/60 and paused gym',flush=True)
     finally:
         e.stop();xvfb.terminate();xvfb.wait(timeout=10);log.close()
 

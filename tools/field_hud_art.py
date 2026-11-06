@@ -4,8 +4,9 @@
 Entry 1 (960,448; 256x64; CLUT 272,496) has no native sprite in
 these cells. Seven 34x13 tiles contain a common grey icon block and empty
 outlined track. Rows 500..506 preserve native icon colours; 507 holds the
-status screen's green/red two-row fills. Rows 508..510 recolour only the three
-need housings for active warnings. No file, upload or VRAM allocation
+status screen's green/red fills and the light-blue need fills. Rows 508..510
+blend the whole need icon 55% towards luminance-scaled brick red. The track
+uses separate palette indices so it cannot inherit an icon tint. No allocation
 is added. Native pixels come from SYSTEM_W (entry 8) and the toilet-need
 condition frame (entry 3), fitted whole to 11x11.
 """
@@ -27,6 +28,15 @@ SOURCES = ((64,244,503,11), (97,244,503,11), (22,244,498,11),
 def rgb15(rgb):
     r,g,b = (v >> 3 for v in rgb)
     return r | g << 5 | b << 10
+
+
+def active_tint(colour):
+    """Option B: blend 55% towards luminance * (235,90,80), then PSX RGB15."""
+    if not colour:
+        return 0
+    rgb = [((colour >> shift) & 31) * 255 / 31 for shift in (0,5,10)]
+    luminance = sum(c*w for c,w in zip(rgb,(.299,.587,.114))) / 255
+    return rgb15([round(.45*c + .55*luminance*t) for c,t in zip(rgb,(235,90,80))]) or 0x8000
 
 
 def build(data):
@@ -84,26 +94,28 @@ def build(data):
         for y in range(5,9):
             for x in range(14,34):
                 tile[y][x] = top if y==6 and 15<=x<33 else bottom if y==7 and 15<=x<33 else outline
-        colours = list(dict.fromkeys([0]+[c for row in tile for c in row]))
+        # Keep track indices distinct even if a glyph shares a track ink.
+        colours = list(dict.fromkeys([0]+[tile[y][x] for y in range(13) for x in range(13)]))
+        icon_colours = len(colours)
+        colours += [outline,top,bottom]
         if len(colours)>16:
             raise ValueError(f'HUD tile {k} exceeds its native palette: {len(colours)}')
         palette(4+k,colours)
         if k >= 4:
-            # Meat/tired glyph backgrounds were removed above; the native toilet
-            # glyph has no housing-colour aliases. Preserve every glyph ink colour.
-            if k == 5 and any(c in native for c in (grey, light, shadow)):
-                raise ValueError('toilet glyph aliases active housing colours')
-            red_housing = dict(zip((grey,light,shadow),map(rgb15,
-                                  ((176,48,40),(240,112,96),(80,16,16)))))
-            palette(8+k,[red_housing.get(c,c) for c in colours])
+            palette(8+k,[active_tint(c) for c in colours[:icon_colours]]+colours[icon_colours:])
         for y,row in enumerate(tile):
             for x,c in enumerate(row):
-                put(u+x,v+y,colours.index(c))
-    colours = [0] + list(map(rgb15, ((117,218,96),(48,200,40),(234,117,96),(224,48,40))))
+                index = icon_colours + [outline,top,bottom].index(c) if x>=14 and 5<=y<9 else colours.index(c)
+                put(u+x,v+y,index)
+    colours = [0] + list(map(rgb15, ((117,218,96),(48,200,40),(234,117,96),(224,48,40),
+                                    (160,210,255),(120,190,255))))
     palette(11,colours)
     for y in range(4):
         for x in range(18):
             put(144+x,59+y,1+y)
+    for y in range(2):
+        for x in range(18):
+            put(164+x,59+y,5+y)
     return bytes(d)
 
 

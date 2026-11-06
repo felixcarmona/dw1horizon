@@ -55,7 +55,7 @@ void renderRectPolyFT4(int a,int b,int c,int d,int e,int f,int g,int h,int i,int
     code += r'''
 static void check(int gauge,int active,int blink,int red) {
  struct PP before=PARTNER_PARA;
- for(int f=0;f<40;f++) {
+ for(int f=0;f<80;f++) {
   PLAYTIME_FRAMES=f;MOD_OPT_BARS=1;count=0;renderStatusBars(1);
   assert(!memcmp(&before,&PARTNER_PARA,sizeof(before)));assert(count<=10);
   int tiles=0,found=0;
@@ -67,9 +67,16 @@ static void check(int gauge,int active,int blink,int red) {
    if(k+1<count && calls[k+1].a[1]==calls[k].a[1]+6) {
     width=calls[k+1].a[2];v=calls[k+1].a[5];
    }
-   if(active) { assert(width==18);assert(v==253); }
-   else if(blink && f%20>=10) assert(width==0);
-   else { assert(width>0);assert(v==251+red*2); }
+   assert(calls[k].a[9]==(!active && blink && f%40>=20 ? 8 : 0));
+   int value=gauge==2?PARTNER_PARA.foodLevel:gauge==3?(raise.poopTimer>0?2*raise.poopTimer-PARTNER_PARA.poopLevel:0):PARTNER_PARA.tiredness;
+   int max=gauge==2?180:gauge==3?(raise.poopTimer>0?2*raise.poopTimer:1):100;
+   if(value<0)value=0;if(value>max)value=max;
+   int expected=(value*18+max/2)/max;if(value&&!expected)expected=1;
+   assert(width==expected);
+   if(width) {
+    assert(v==251 && calls[k+1].a[4]==164);
+    assert(calls[k+1].a[9]==calls[k].a[9]);
+   }
    found++;
   }
   assert(tiles==5 && found==1);
@@ -124,7 +131,7 @@ int main(void) {
  base();PARTNER_PARA.condition=14;
  check(2,1,0,1);check(3,1,0,1);check(4,1,0,1);
  base();check(2,0,0,0);check(3,0,0,0);check(4,0,0,0);
- puts("PASS: 609030 original OFF call sequences; need normal/blink/active boundaries, overrides, satisfaction, 40 phase ticks and read-only state");
+ puts("PASS: 609030 original OFF call sequences; need normal/blink/active boundaries, overrides, satisfaction, 80 phase ticks and read-only state");
 }
 '''
     with tempfile.TemporaryDirectory(prefix='need-gauges-') as tmp:

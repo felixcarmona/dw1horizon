@@ -26,7 +26,7 @@ class FieldHUDArt(unittest.TestCase):
         allowed=set(range(self.clut+4*32,self.clut+15*32))
         for u,v in CELLS:
             allowed.update(self.dst+y*128+x//2 for y in range(v,v+13) for x in range(u,u+34))
-        allowed.update(self.dst+y*128+x//2 for y in range(59,63) for x in range(144,162))
+        allowed.update(self.dst+y*128+x//2 for y in range(59,63) for x in range(144,182))
         self.assertEqual(len(self.base),len(self.new))
         self.assertTrue({i for i,(a,b) in enumerate(zip(self.base,self.new)) if a!=b}<=allowed)
         # Native commands, bubbles, original HUD, clock and all other entries survive byte for byte.
@@ -56,19 +56,32 @@ class FieldHUDArt(unittest.TestCase):
                              (16,24,32) if 14<=x<34 and 5<=y<9 else (0,0,0)
                     self.assertEqual(pal[self.pixel(self.new,u+x,v+y)],rgb15(expected),(k,x,y))
 
-    def test_active_need_housings_preserve_icons_and_tracks(self):
-        red = dict(zip(map(rgb15,((144,144,144),(184,184,184),(64,64,64))),
-                       map(rgb15,((176,48,40),(240,112,96),(80,16,16)))))
+    def test_active_need_tints_whole_icon_preserves_track(self):
         for k in range(4,7):
             normal=struct.unpack_from('<16H',self.new,self.clut+(4+k)*32)
             active=struct.unpack_from('<16H',self.new,self.clut+(8+k)*32)
-            self.assertEqual(active,tuple(red.get(c,c) for c in normal))
+            u,v=CELLS[k]
+            for y in range(13):
+                for x in range(34):
+                    index=self.pixel(self.new,u+x,v+y)
+                    c=normal[index]
+                    if x<13 and c:
+                        rgb=[((c>>shift)&31)*255/31 for shift in (0,5,10)]
+                        lum=(.299*rgb[0]+.587*rgb[1]+.114*rgb[2])/255
+                        want=rgb15([round(.45*a+.55*lum*b) for a,b in zip(rgb,(235,90,80))]) or 0x8000
+                    else:
+                        want=c
+                    self.assertEqual(active[index],want,(k,x,y))
             self.assertEqual(active[0],0)
-            # Both phases share the same texels; only three housing inks change.
-            self.assertEqual(sum(a!=b for a,b in zip(normal,active)),3)
         bad=bytearray(self.base);bad[self.clut+12*32]=1
         with self.assertRaisesRegex(ValueError,'occupied'):
             build(bad)
+
+    def test_need_fills_are_light_blue(self):
+        pal=struct.unpack_from('<16H',self.new,self.clut+11*32)
+        for y,rgb in enumerate(((160,210,255),(120,190,255))):
+            for x in range(18):
+                self.assertEqual(pal[self.pixel(self.new,164+x,59+y)],rgb15(rgb))
 
     def test_status_screen_fill_colours(self):
         pal=struct.unpack_from('<16H',self.new,self.clut+11*32)

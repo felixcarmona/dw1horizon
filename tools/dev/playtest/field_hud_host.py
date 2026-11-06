@@ -37,10 +37,10 @@ int STATUS_UI_OFFSET_X=75,PLAYTIME_FRAMES;
 #define MOD_CARE_POOP_PERIOD 1
 #define MOD_CARE_TIRED_EXHAUSTED_AT 2
 int careGet(int slot) { const int rules[]={20,200,80}; return rules[slot]; }
-struct Draw {int x,y,w,h,u,v,page,clut,z;} draws[10]; int count;
+struct Draw {int x,y,w,h,u,v,page,clut,z,flag;} draws[10]; int count;
 #define GetClut(x,y) ((y)*64+(x)/16)
 void renderRectPolyFT4(int x,int y,int w,int h,int u,int v,int page,int clut,int z,int flag) {
- assert(!flag && count<10); draws[count++]=(struct Draw){x,y,w,h,u,v,page,clut,z};
+ assert((flag==0 || flag==8) && count<10); draws[count++]=(struct Draw){x,y,w,h,u,v,page,clut,z,flag};
 }
 ''' + renderer + r'''
 int width(int value,int max) {
@@ -52,7 +52,7 @@ int width(int value,int max) {
 }
 void check(int gauge,int value,int max,int red,int icon,int active,int warn) {
  for(int phase=0;phase<2;phase++) {
- PLAYTIME_FRAMES=phase?13:3;
+ PLAYTIME_FRAMES=phase?23:3;
  count=0;renderCareHUD();
  int n=0, found=0;
  const int ys[]={72,86,65,79,93};
@@ -66,12 +66,14 @@ void check(int gauge,int value,int max,int red,int icon,int active,int warn) {
   }
  }
  assert(n==5);
- int expected=active?18:warn&&phase?0:width(value,max);
- if(active)red=1;
+ int expected=width(value,max);
+ int dim=!active&&warn&&phase?8:0;
+ assert(draws[found].flag==dim);
+
  if(expected) {
   struct Draw d=draws[found+1];
   assert(d.h==2 && d.w==expected && d.x==draws[found].x+15 && d.y==draws[found].y+6);
-  assert(d.u==144 && d.v==251+red*2 && d.clut==GetClut(272,507));
+  assert(d.u==(gauge<2?144:164) && d.v==(gauge<2?251+red*2:251) && d.clut==GetClut(272,507) && d.flag==dim);
  } else assert(found+1==count || draws[found+1].h==13);
  }
 }
@@ -94,7 +96,7 @@ int main(void) {
   RAISE_DATA[0].poopTimer=t;
   PARTNER_PARA.poopLevel=0;
   PARTNER_PARA.condition=0;check(3,t>0?2*t:0,t>0?2*t:1,0,5,t>0,0);
-  PARTNER_PARA.condition=8;check(3,1,1,1,5,1,0);
+  PARTNER_PARA.condition=8;check(3,t>0?2*t:0,t>0?2*t:1,1,5,1,0);
  }
  // Toilet and portable-potty native resets: 2*T empty, T half full.
  RAISE_DATA[0].poopTimer=12; PARTNER_PARA.condition=0;
