@@ -204,6 +204,13 @@ def isolated_story(fn, args, folder, roots):
     active = build_cache._ACTIVE
     before = active.writes.copy()
     active.writes.clear()
+    # Each pass owns its maps, so create immutable preimages without DWS's
+    # shared-map hard links. Track them with the edits for ordered publication.
+    for private in replacements.values():
+        for source in Path(private).rglob('*.MAP'):
+            preimage = source.with_name(source.name + '.orig')
+            if not preimage.exists():
+                shutil.copyfile(source, preimage)
     old_run_root = os.environ.get('DWS_RUN_ROOT')
     os.environ['DWS_RUN_ROOT'] = str(folder / 'runs')
     (folder / 'runs').mkdir(exist_ok=True)

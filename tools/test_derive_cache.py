@@ -37,7 +37,8 @@ def run_pass(root, out, argv, lowered, scrn, archive=None, facts=None):
     target = maps / 'MAP.MAP'
     orig = maps / 'MAP.MAP.orig'
     if not orig.exists():
-        orig.write_bytes(target.read_bytes())
+        from tools.dws.backend import keep_orig
+        keep_orig(str(target))
     value = Path(argv[argv.index('--text-source')+1]).read_bytes()
     fd, tmp = tempfile.mkstemp(dir=maps)
     with os.fdopen(fd, 'wb') as f:
@@ -47,6 +48,37 @@ def run_pass(root, out, argv, lowered, scrn, archive=None, facts=None):
 
 
 class DeriveCacheTests(unittest.TestCase):
+    def test_private_map_preimages_allow_cached_story_replay(self):
+        import shutil
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            build = root / 'build'
+            maps = build / 'maps'
+            maps.mkdir(parents=True)
+            source = maps / 'MAP.MAP'
+            source.write_bytes(b'recipe map')
+            text = root / 'text'
+            text.write_bytes(b'first')
+            private = build / 'cache-story/0'
+            args = (str(root), str(build / 'archive'),
+                    ['--screen-content', str(maps), '--maps', str(maps), '--text-source', str(text)],
+                    None, False)
+            store = Cache(root / 'cache', build)
+            def compile_pass():
+                return {'log': cache.isolated_story(run_pass, args, str(private), [str(maps)])}
+            _, hit = store.call({'story': 'private map fixture'}, compile_pass)
+            self.assertFalse(hit)
+            self.assertFalse(store.last_unsafe)
+            self.assertEqual((private / '0/MAP.MAP').read_bytes(), b'recipe mapfirst')
+            self.assertEqual(source.read_bytes(), b'recipe map')
+            shutil.rmtree(private)
+            self.assertTrue(store.call({'story': 'private map fixture'}, compile_pass)[1])
+            self.assertEqual((private / '0/MAP.MAP').read_bytes(), b'recipe mapfirst')
+            text.write_bytes(b'changed')
+            self.assertFalse(store.call({'story': 'private map fixture'}, compile_pass)[1])
+            self.assertEqual((private / '0/MAP.MAP').read_bytes(), b'recipe mapchanged')
+            self.assertEqual(source.read_bytes(), b'recipe map')
+
     def test_screen_pieces_keep_dependencies_on_hits_inside_an_archive_cache(self):
         import os
         root = Path(runner.ROOT)
