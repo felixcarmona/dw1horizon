@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""frame_cost.py MODE SECONDS: on a build with that frame rate (MODE 0/1/2 = FPS 20/30/60; the frame rate is a
-build parameter, MOD_FPS_BUILD says which one runs), reset counters, wait, print averages."""
+"""frame_cost.py MODE SECONDS: at the active presentation rate (MODE 0/1/2 = 20/30/60 fps), reset counters, wait, print averages."""
 
 from pathlib import Path as _DevPath
 import sys as _dev_sys
@@ -12,7 +11,13 @@ R=_DEV_ROOT
 def mem(*a): return subprocess.run([R+'/tools/dev/memory_inspector.py',*a],capture_output=True,text=True,cwd=R).stdout
 n=sys.argv[1]; secs=float(sys.argv[2])
 b=re.search(r'MOD_FPS_BUILD = (\d+)',mem('show','MOD_FPS_BUILD'))
-if not b or int(b.group(1))!={'0':20,'1':30,'2':60}[n]: sys.exit(f"the running build is not mode {n} (MOD_FPS_BUILD {b.group(1) if b else '?'}): build it with FPS=")
+if not b: sys.exit('cannot read renderer build')
+active=0
+if int(b.group(1))!=20:
+    value=re.search(r'MOD_FPS_MODE_RUN = (\d+)',mem('show','MOD_FPS_MODE_RUN'))
+    if not value: sys.exit('cannot read active presentation mode')
+    active=int(value.group(1))
+if active!=int(n): sys.exit(f"active presentation mode is {active}, requested {n}: let CPU selection settle first")
 mem('set','MOD_PERF_RESET=1'); time.sleep(secs)
 names='FRAMES TICK_SUM TICK_MAX RENDER_SUM RENDER_MAX GPU_SUM GPU_MAX XRENDER_SUM XRENDER_MAX XGPU_SUM XGPU_MAX XPASSES SUM MAX PERIOD'.split()
 out=mem('show',*['MOD_PERF_'+x for x in names])

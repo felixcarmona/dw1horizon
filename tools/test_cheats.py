@@ -107,10 +107,8 @@ def main():
 int32_t MOD_OPT_BUTTONS, MOD_OPT_EVO_GUIDE;
 int32_t MOD_OPT_NEW_DIGIMON, MOD_LANG, MOD_OPT_SIGNS, MOD_OPT_STORY;
 int32_t MOD_OPT_DIFFICULTY, MOD_OPT_QUICK_BATTLE, MOD_OPT_CHEATS, MOD_OPT_SHORTCUTS, MOD_OPT_TOUCHED;
-int32_t MOD_SAVE_NUMBER, fps = 60;
+int32_t MOD_SAVE_NUMBER, MOD_FPS_MODE_RUN = 2;
 struct { uint8_t prefix[0x50], pocketStation[16], icon[32]; } SAVE_FILE;
-int32_t modFrameRate(void) { return fps; }
-void modSetFrameRate(int32_t v) { fps = v; }
 void modSetButtons(int32_t v) { MOD_OPT_BUTTONS = v; }
 void modSetLanguage(int32_t v) { MOD_LANG = v; }
 void modSetSigns(int32_t v) { MOD_OPT_SIGNS = v; }
@@ -134,14 +132,20 @@ void modRosterShowCaption(int type) { effects++; }
 int main(void) {
     uint8_t options[MOD_OPT_BYTES + 1];
     /* Old OFF/ON bytes are ignored; adjacent saved settings retain their offsets. */
-    for (int oldBars = 0; oldBars < 2; oldBars++) {
-        memset(options, 0, sizeof(options));
-        options[1] = 1; options[2] = 30; options[3] = oldBars; options[5] = 1;
-        MOD_OPT_TOUCHED = 0;
-        modApplyOptions(options, 6);
-        assert(fps == 30 && MOD_OPT_EVO_GUIDE == 1);
-        modOptionBytes(options); assert(options[1] == 1 && options[3] == 1 && options[13] == 0);
-        modTitleOptions(); assert(SAVE_FILE.pocketStation[5] == 1 && SAVE_FILE.pocketStation[7] == 1);
+    for (int mode = 0; mode <= 2; mode += 2) {
+        for (int oldFps = 0; oldFps <= 255; oldFps++) {
+            for (int oldBars = 0; oldBars < 2; oldBars++) {
+                memset(options, 0, sizeof(options));
+                options[1] = 1; options[2] = oldFps; options[3] = oldBars; options[5] = 1;
+                MOD_OPT_TOUCHED = 0; MOD_FPS_MODE_RUN = mode;
+                modApplyOptions(options, 6);
+                assert(MOD_FPS_MODE_RUN == mode && MOD_OPT_EVO_GUIDE == 1);
+                modOptionBytes(options);
+                assert(options[1] == 1 && options[2] == 20 && options[3] == 1 && options[13] == 0);
+                modTitleOptions();
+                assert(SAVE_FILE.pocketStation[5] == 1 && SAVE_FILE.pocketStation[7] == 1);
+            }
+        }
     }
     for (int cheats = 0; cheats < 2; cheats++) {
         for (int quick = 0; quick < 2; quick++) {
@@ -190,7 +194,7 @@ int main(void) {
         memset(options, 0, sizeof(options)); options[13] = flags;
         modApplyOptions(len ? options : NULL, len);
         modOptionBytes(options);
-        assert(options[1] == 1 && options[3] == 1 && options[13] == 0);
+        assert(options[1] == 1 && options[2] == 20 && options[3] == 1 && options[13] == 0);
         modTitleOptions();
         assert((SAVE_FILE.pocketStation[1] & 0x60) == 0);
         assert(SAVE_FILE.pocketStation[5] == 1 && SAVE_FILE.pocketStation[7] == 1);

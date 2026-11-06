@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Capture B5a on original 2 MB: NEW/CLASSIC, light/dark, 30/60 FPS.
+"""Capture care HUD on original 2 MB: NEW/CLASSIC, light/dark, automatic FPS.
 
 Ordinary and warning stills use live care fixtures. Two motion clips let native
 care ticks consume food/toilet timers; handlePostBattleTiredness supplies the
@@ -90,19 +90,18 @@ def main():
             assert e.warp(screen);assert e.in_control()
             for font,f in [('NEW',0),('CLASSIC',2)]:
                 invoke(e,'modSetFont',f)
-                for fps in (30,60):
-                    invoke(e,'modSetFrameRate',fps)
-                    e.gs('set','gametime_running=1')
-                    setcare(e,condition=0,happiness=52,discipline=32,foodLevel=79,
-                            poopLevel=round(2*t*.4),tiredness=68,areaEffectTimer=0)
-                    e.wait(.7)
-                    stem=f'{floor}-{font}-{fps}'
-                    e.run('shot',str(out/f'{stem}-ordinary.png'))
-                    setcare(e,condition=12,starvationTimer=54,poopingTimer=2000,tiredness=80)
-                    e.wait(.7);e.run('shot',str(out/f'{stem}-needs.png'))
-                    report['matrix'].append(dict(scene=stem,screen=screen,font=e.peek('MOD_FONT','b'),
-                        fps_mode=e.peek('MOD_FPS_MODE_RUN','i'),care=care(e)))
-                    print('CAPTURE',stem,flush=True)
+                fps={0:20,1:30,2:60}[e.peek('MOD_FPS_MODE_RUN','i')]
+                e.gs('set','gametime_running=1')
+                setcare(e,condition=0,happiness=52,discipline=32,foodLevel=79,
+                        poopLevel=round(2*t*.4),tiredness=68,areaEffectTimer=0)
+                e.wait(.7)
+                stem=f'{floor}-{font}-{fps}'
+                e.run('shot',str(out/f'{stem}-ordinary.png'))
+                setcare(e,condition=12,starvationTimer=54,poopingTimer=2000,tiredness=80)
+                e.wait(.7);e.run('shot',str(out/f'{stem}-needs.png'))
+                report['matrix'].append(dict(scene=stem,screen=screen,font=e.peek('MOD_FONT','b'),
+                    fps_mode=e.peek('MOD_FPS_MODE_RUN','i'),care=care(e)))
+                print('CAPTURE',stem,flush=True)
         # Native transitions, including toilet's different reset conventions.
         setcare(e,condition=8,poopLevel=0,poopingTimer=2000)
         invoke(e,'handleToilet');assert care(e)['poopLevel']==2*t
@@ -112,9 +111,10 @@ def main():
         report['native_resets']={'toilet':2*t,'portable_potty':t,'rest_tiredness':40}
         e.run('save',str(out/'field.state'))
         if not a.stills_only:
-            for floor,screen,hour,font,f,fps in [('light',92,12,'NEW',0,30),('dark',0,23,'CLASSIC',2,60)]:
+            for floor,screen,hour,font,f in [('light',92,12,'NEW',0),('dark',0,23,'CLASSIC',2)]:
                 e.gs('set','gametime_running=0',f'hour={hour}','minute=0')
-                assert e.warp(screen);invoke(e,'modSetFont',f);invoke(e,'modSetFrameRate',fps)
+                assert e.warp(screen);invoke(e,'modSetFont',f)
+                fps={0:20,1:30,2:60}[e.peek('MOD_FPS_MODE_RUN','i')]
                 setcare(e,condition=0,foodLevel=25,starvationTimer=0,poopLevel=2,poopingTimer=2000,
                         tiredness=46,subTiredness=0,areaEffectTimer=0,energyLevel=40,
                         happiness=52,discipline=80,evoTimer=0,remainingLifetime=1000,

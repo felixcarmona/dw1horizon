@@ -83,8 +83,11 @@ class GDB:
         return out
 
     def write(self, addr, data):
-        r = self.cmd('M%x,%x:%s' % (addr, len(data), data.hex()))
-        if r != 'OK': sys.exit('write failed: ' + r)
+        # Keep binary uploads below the stub's packet buffer, as read() does.
+        for offset in range(0, len(data), 0x800):
+            chunk = data[offset:offset + 0x800]
+            r = self.cmd('M%x,%x:%s' % (addr + offset, len(chunk), chunk.hex()))
+            if r != 'OK': sys.exit('write failed: ' + r)
 
     def close(self):
         self.cmd('c', reply=False); time.sleep(0.05); self.s.close()
@@ -278,12 +281,18 @@ PERF = 'PERIOD XPASSES XGPU_MAX XGPU_SUM XRENDER_MAX XRENDER_SUM GPU_MAX GPU_SUM
 
 
 def perf(mode, secs):
-    """On a build of that frame rate (mode 0/1/2 = FPS 20/30/60: a build parameter, checked against
-    MOD_FPS_BUILD), reset the MOD_PERF counters, then measure() and the per-tick costs in hblank
-    lines (as tools/dev/fps/frame_cost.py)."""
-    g = GDB(); fps = struct.unpack('<i', g.read(sym('MOD_FPS_BUILD'), 4))[0]; g.close()
-    if fps != (20, 30, 60)[mode]:
-        sys.exit('the disc runs FPS=%d, not mode %d: build it with FPS=%d' % (fps, mode, (20, 30, 60)[mode]))
+    """Check the active renderer, then measure per-tick CPU/GPU costs.
+
+    FPS=30|60 builds select their presentation mode at runtime. A mismatched
+    request must not force a different mode or label 20 fps as 60.
+    """
+    g = GDB()
+    fps = struct.unpack('<i', g.read(sym('MOD_FPS_BUILD'), 4))[0]
+    active = 0 if fps == 20 else struct.unpack('<i', g.read(sym('MOD_FPS_MODE_RUN'), 4))[0]
+    g.close()
+    if active != mode:
+        sys.exit('active presentation is %d fps, requested %d; let CPU selection settle first' %
+                 ((20, 30, 60)[active], (20, 30, 60)[mode]))
     g = GDB(); g.write(sym('MOD_PERF_RESET'), struct.pack('<I', 1)); g.close(); time.sleep(0.5)
     out = measure(secs)
     g = GDB(); base = sym('MOD_PERF_PERIOD'); raw = g.read(base, 4 * len(PERF)); g.close()
