@@ -53,6 +53,10 @@ against, leave this list.
 | New areas: the Arena's second floor and the inside of Etemon's tree | 🆕 | New screens. |
 | Syakomon and Mushroomon as quiz starters | ⚖️ | Unique Rookies today reachable only by evolution; to review with the starter table. |
 | More Digimon requested by players: Lilithmon, Venusmon, Rasielmon, Ordinemon, Mastemon, Ophanimon, Rafflesiamon | 🆕 | Each needs a source model to import, a place in the evolution tree and the memory budget on 2 MB. |
+| A battle counter (and time to the next evolution) on the status screen | 🛠️ | Helps with evolutions that ask for a number of battles; the status panel has little free room. |
+| A higher chance of the training bonus (2×, 4× or 10× gains by matching symbols) | ⚖️ | In the original it is very rare; changes stat growth speed and needs a balance audit. |
+| Vikemon as an evolution of Syakomon and Cannondramon of Triceramon | 🎭 | Each route must respect the evolution tree rules (no canon Mega straight from a Champion). |
+| A way to learn basic Machine techniques before Whamon (a new area, or Hagurumon/Solarmon in the galleries) | ⚖️ 🆕 | Today Machine techniques are only reachable through Whamon. |
 | Unique recruitment scenes for more of the new Digimon | ✨ | Many new recruits join with a simple fight. |
 | Humanoid sizes growing by stage (Angemon < MagnaAngemon < Seraphimon, Devimon < Myotismon) | ✨ | A per-line size review. |
 | A minimap like Digimon World 3's, showing where each exit leads, and a wider camera view | 🛠️ | Needs screen space and per-screen exit data. |
