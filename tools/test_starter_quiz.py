@@ -19,6 +19,18 @@ class QuizTest(unittest.TestCase):
     def test_distribution(self):
         self.assertEqual(sum(Q.check(Q.load()).values()), 2187)
 
+    def test_changed_cells_and_original_fallback(self):
+        data = Q.load()
+        self.assertEqual([data['starters'][data['quiz']['cells'][i]] for i in (33, 34, 35, 26, 24)],
+                         [263, 183, 74, 283, 4])
+        self.assertNotIn(32, {data['starters'][i] for i in data['quiz']['cells']})
+        self.assertIn(32, {data['starters'][i] for i in data['quiz']['vanillaCells']})
+        # Preserve the original-game grid and the original list indices.
+        self.assertEqual(data['quiz']['vanillaCells'], [
+            3, 1, 4, 3, 1, 4, 1, 4, 4, 0, 0, 0, 1, 0, 1, 0, 0, 6,
+            8, 2, 7, 8, 8, 8, 2, 2, 2, 7, 7, 7, 7, 5, 8, 5, 5, 5,
+            6, 6, 6, 3, 3, 3, 6, 6, 3])
+
     def test_invalid_data(self):
         for change in ('pool', 'cell', 'weight', 'axis', 'question', 'fixed', 'vanilla'):
             with self.subTest(change=change):
@@ -189,25 +201,35 @@ class QuizTest(unittest.TestCase):
                                                                 last_row=i == 2), row)
 
     def test_production_c_all_paths(self):
-        source = Q.ROOT / 'build/decomp-int/src/main/main_menu.c'
+        source = next((Q.ROOT / f'build/{tree}/src/main/main_menu.c'
+                       for tree in ('decomp-dev', 'decomp-int')
+                       if (Q.ROOT / f'build/{tree}/src/main/main_menu.c').exists()),
+                      Q.ROOT / 'build/decomp-dev/src/main/main_menu.c')
         if not source.exists() or not shutil.which('cc'):
-            self.skipTest('needs prepared decomp-int and a host C compiler')
+            self.skipTest('needs a prepared decomp tree and a host C compiler')
         text = source.read_text()
         found = re.search(r'uint8_t modQuizResult\(const uint8_t \*answers\)\n\{.*?\n\}', text, re.S)
         if found is None:
-            self.skipTest('prepared decomp-int does not include the quiz patch')
+            self.skipTest('prepared decomp tree does not include the quiz patch')
         data = Q.load()
         with tempfile.TemporaryDirectory() as tmp:
             c = Path(tmp) / 'quiz.c'
             so = Path(tmp) / 'quiz.so'
-            c.write_text('#include <stdint.h>\nint32_t MOD_OPT_NEW_DIGIMON = 1;\n'
-                         'uint8_t table[' + str(Q.SIZE) + '] = {' +
-                         ','.join(map(str, Q.pack(data))) + '};\n' +
-                         f'#define MOD_QUIZ_WEIGHTS (table + {Q.WEIGHTS})\n' +
-                         f'#define MOD_QUIZ_CELLS (table + {Q.CELLS})\n' +
-                         f'#define MOD_QUIZ_VANILLA_CELLS (table + {Q.VANILLA_CELLS})\n' + found[0])
+            header = (source.parents[2] / 'include/dw/mod_rules.h').read_text()
+            defines = '\n'.join(line for line in header.splitlines()
+                                if line.startswith(('#define MOD_NEWGAME_SIZE', '#define MOD_QUIZ_')))
+            starter = re.search(r'int32_t modNewGameStarter\(void\)\n\{.*?\n\}', text, re.S)[0]
+            c.write_text('#include <stdint.h>\nint32_t MOD_OPT_NEW_DIGIMON = 1;\n' + defines + '\n'
+                         'int32_t MOD_NEWGAME[MOD_NEWGAME_SIZE];\n'
+                         'uint32_t test_index;\n#define PSTAT_254 254\n'
+                         'uint32_t readPStat(int n) { (void)n; return test_index; }\n' + starter + '\n' + found[0])
             subprocess.run(['cc', '-shared', '-fPIC', '-Wall', '-Wextra', '-Werror', '-O2', c, '-o', so], check=True)
             lib = ctypes.CDLL(str(so))
+            table = (ctypes.c_uint8 * (80 + Q.SIZE)).in_dll(lib, 'MOD_NEWGAME')
+            table[80:] = Q.pack(data)
+            index = ctypes.c_uint32.in_dll(lib, 'test_index')
+            for index.value in range(256):
+                self.assertEqual(lib.modNewGameStarter(), data['starters'][index.value if index.value < Q.COUNT else 0])
             fn = lib.modQuizResult
             option = ctypes.c_int32.in_dll(lib, 'MOD_OPT_NEW_DIGIMON')
             fn.argtypes = [ctypes.POINTER(ctypes.c_uint8)]
