@@ -47,7 +47,7 @@
     "from": [10, 238, 202, 254],
     "to": [408],
     "requirements": {
-      "digimon": 10,
+      "digimon": -1,
       "hp": -1,
       "mp": -1,
       "offense": 400,
@@ -58,7 +58,7 @@
       "weight": 20,
       "discipline": -1,
       "happiness": -1,
-      "battles": -1,
+      "battles": 50,
       "techs": -1,
       "flags": 16
     },

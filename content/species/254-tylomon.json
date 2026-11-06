@@ -56,11 +56,11 @@
     "to": [64, 112],
     "requirements": {
       "digimon": 239,
-      "hp": 100,
+      "hp": -1,
       "mp": -1,
       "offense": -1,
       "defense": 100,
-      "speed": -1,
+      "speed": 100,
       "brain": -1,
       "care": 1,
       "weight": 10,
