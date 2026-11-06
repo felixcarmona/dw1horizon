@@ -15,6 +15,8 @@ import json, os, sys
 from foreground_depth_a import apply as apply_foreground
 from mapbase import base_map, import_png, MOD, check_arrivals
 
+from map_regions import apply as apply_regions
+
 DATA = os.path.join(MOD, 'maps', 'drowned-shore-data.json')
 ART = os.path.join(MOD, 'art', 'drowned-shore.png')
 
@@ -26,6 +28,7 @@ def main(out):
     m.collision = list(d['collision']); m.warps = d['warps']
     import_png('FRZL03', ART, os.path.join(out, 'SHOR01.TFS'))
     apply_foreground(m, 'SHOR01', os.path.join(out, 'SHOR01.TFS'))
+    apply_regions(m, 'SHOR01')
     check_arrivals(m, 'SHOR01')
     open(os.path.join(out, 'SHOR01.MAP'), 'wb').write(m.build())
     print(f'SHOR01: free tiles {m.collision.count(0)}, arrival {(m.warps[0]["x"], m.warps[0]["z"])}')

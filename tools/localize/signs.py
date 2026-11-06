@@ -182,6 +182,7 @@ def signs(out, extracted=None, files=None, languages=('en', 'es')):
     (default the repository's), files {DEST: SRC} what --file gives. -> the files.txt lines"""
     extracted = extracted or os.path.join(ROOT, 'extracted')
     given = dict(files or {})
+    from tools.map_regions import apply as apply_regions
 
     def source(mp, ext):
         """the file the disc carries for map path mp (no extension) + ext: --file's, else the disc's"""
@@ -195,6 +196,7 @@ def signs(out, extracted=None, files=None, languages=('en', 'es')):
     def mapcopy(lang, mp):
         if (lang, mp) not in mapcopies:
             mapcopies[(lang, mp)] = dwmap.MapFile(open(source(mp, '.MAP'), 'rb').read())
+            apply_regions(mapcopies[(lang, mp)], os.path.basename(mp))
         return mapcopies[(lang, mp)]
     with tempfile.TemporaryDirectory() as tmp:
         for lang in sorted({n.split('/')[0] for n in cutout.index()} - {'fromjp'}, reverse=True):   # (pt-br, ..., en)
