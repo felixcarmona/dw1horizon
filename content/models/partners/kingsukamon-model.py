@@ -89,6 +89,10 @@ def main():
         worst = max(worst, check(new, nb, slot, target, ls, ev))
         sset.put(slot, new)
     assert worst == 0, f're-encoding differs by {worst}'
+    # Additional water and nature attacks share the toss and spray programs.
+    # Keep the original nine attack slots, including the finisher, in place.
+    for slot, source in ((55, 48), (56, 47)):
+        sset.put(slot, sset.sec.anims[sset.sec.table[source]])
     missing = sset.missing(PARTNER_SLOTS + list(range(0x2E, 0x37)))
     assert not missing, f'slots without animation: {[hex(s) for s in missing]}'
     scale_mesh(mesh.tmd, SCALE)
