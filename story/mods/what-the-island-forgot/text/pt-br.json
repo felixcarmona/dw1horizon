@@ -503,5 +503,6 @@
  "what-the-island-forgot.2af647ac": "Este poço velho é bem fundo. Só estou dando uma olhada.",
  "_source": {
   "city.join": "{species} joined the city!"
- }
+ },
+ "kiwimon.refuse": "Deixá-lo passar fome"
 }

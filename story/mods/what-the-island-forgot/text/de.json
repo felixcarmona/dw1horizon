@@ -503,5 +503,6 @@
  "what-the-island-forgot.2af647ac": "Dieser alte Brunnen geht tief hinab. Ich schaue nur nach.",
  "_source": {
   "city.join": "{species} joined the city!"
- }
+ },
+ "kiwimon.refuse": "Hungrig lassen"
 }

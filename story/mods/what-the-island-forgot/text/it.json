@@ -503,5 +503,6 @@
  "what-the-island-forgot.2af647ac": "Questo vecchio pozzo scende parecchio. Sto solo controllando.",
  "_source": {
   "city.join": "{species} joined the city!"
- }
+ },
+ "kiwimon.refuse": "Lasciarlo affamato"
 }

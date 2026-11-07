@@ -406,3 +406,4 @@ Make-the-digital-clock-and-enemy-life-bars-permanent.patch
 Choose-rendering-rate-from-CPU-speed.patch
 Bound-battle-gain-animation-by-the-original-results-wait.patch
 expand-evolution-choices-and-enforce-item-stages.patch
+compact-card-trade-list.patch
