@@ -81,6 +81,8 @@ fi
 run npc-originals-tests "$PY" -W ignore tools/test_npc_originals.py
 run battle-audit      $PY -W ignore tools/test_battle_audit.py
 run patch-series      $PY tools/patch_series.py check                     # mods/patches/series, the patch files and index.md agree
+run caption-translations $PY -m tools.localize.captions
+run caption-translation-tests $PY -m unittest tools.test_caption_translations
 run technique-timing-tests $PY -m unittest tools.test_technique_timing
 run buster-dive-tests $PY -m unittest tools.test_buster_dive
 run patch-series-tests $PY tools/test_patch_series.py
@@ -206,6 +208,7 @@ run presented-frame-video $PY tools/test_presented_frames.py
 run duckstation-protocol $PY -m unittest tools.test_duckstation_protocol
 if [ -f "$PATCHED/src/main/main.c" ]; then
     run fps-auto $PY tools/test_fps_auto.py "$PATCHED"
+    run screen-caption-cache $PY tools/test_screen_caption_cache.py "$PATCHED"
     run options-save $PY tools/test_cheats.py "$PATCHED"
     run world-menu-fit env WORLD_FIT_SOURCE="$PATCHED/src/main/map.c" $PY -m unittest tools.test_world_fit
 else
