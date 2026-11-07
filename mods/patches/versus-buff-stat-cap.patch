@@ -1,0 +1,33 @@
+From 0f597824230952fb2ff6ca28b5dafe022e0b9e31 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 7 Nov 2026 15:38:01 +0000
+Subject: [PATCH] Use the expanded stat cap for versus buffs
+
+---
+ src/vs/vs_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/vs/vs_main.c b/src/vs/vs_main.c
+index f304b8b..623f592 100644
+--- a/src/vs/vs_main.c
++++ b/src/vs/vs_main.c
+@@ -5,6 +5,7 @@
+ #include <libgte.h>
+ 
+ #include <dw/mod_battle.h>
++#include <dw/caps.h>
+ #include <dw/attack_object.h>
+ #include <dw/combat.h>
+ #include <dw/entity.h>
+@@ -535,7 +536,7 @@ void VS_buffStats(digimon, slot, value, stat, color, flag)
+ 	uint8_t flag;
+ // clang-format on
+ {
+-	addWithLimit(stat, value, 0x3e7);
++	addWithLimit(stat, value, STAT_CAP);
+ 	addEntityText(&digimon->entity, slot, color, value, flag);
+ }
+ 
+-- 
+2.55.0
+

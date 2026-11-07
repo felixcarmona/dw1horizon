@@ -43,5 +43,241 @@
       "ai": [0, -1, -1, -1, -1, -1, -1, -1],
       "path": [[10, 0, 0]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [
+        37,
+        74
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid visible stone body and foot of the south-west rock."
+    },
+    {
+      "tile": [
+        37,
+        75
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid visible stone body and foot of the south-west rock."
+    },
+    {
+      "tile": [
+        37,
+        76
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid visible stone body and foot of the south-west rock."
+    },
+    {
+      "tile": [
+        37,
+        77
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid visible stone body and foot of the south-west rock."
+    },
+    {
+      "tile": [
+        38,
+        81
+      ],
+      "before": 52,
+      "after": 128,
+      "reason": "Solid visible stone body and foot of the south-west rock."
+    },
+    {
+      "tile": [
+        38,
+        82
+      ],
+      "before": 52,
+      "after": 128,
+      "reason": "Solid visible stone body and foot of the south-west rock."
+    },
+    {
+      "tile": [
+        61,
+        81
+      ],
+      "before": 54,
+      "after": 128,
+      "reason": "Solid visible stone body and foot of the south-east rock."
+    },
+    {
+      "tile": [
+        61,
+        82
+      ],
+      "before": 54,
+      "after": 128,
+      "reason": "Solid visible stone body and foot of the south-east rock."
+    },
+    {
+      "tile": [
+        37,
+        52
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid visible stone body and foot of the middle-west rock."
+    },
+    {
+      "tile": [
+        37,
+        53
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid visible stone body and foot of the middle-west rock."
+    },
+    {
+      "tile": [
+        37,
+        54
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid visible stone body and foot of the middle-west rock."
+    },
+    {
+      "tile": [
+        62,
+        42
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid visible stone body and foot of the middle-east rock."
+    },
+    {
+      "tile": [
+        62,
+        43
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid visible stone body and foot of the middle-east rock."
+    },
+    {
+      "tile": [
+        62,
+        44
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid visible stone body and foot of the middle-east rock."
+    },
+    {
+      "tile": [
+        62,
+        45
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid visible stone body and foot of the middle-east rock."
+    },
+    {
+      "tile": [
+        62,
+        46
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid visible stone body and foot of the middle-east rock."
+    },
+    {
+      "tile": [
+        62,
+        47
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid visible stone body and foot of the middle-east rock."
+    },
+    {
+      "tile": [
+        62,
+        48
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid visible stone body and foot of the middle-east rock."
+    },
+    {
+      "tile": [
+        54,
+        49
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid visible stone body and foot of the middle-east rock."
+    },
+    {
+      "tile": [
+        62,
+        49
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid visible stone body and foot of the middle-east rock."
+    },
+    {
+      "tile": [
+        55,
+        50
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid visible stone body and foot of the middle-east rock."
+    },
+    {
+      "tile": [
+        62,
+        50
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid visible stone body and foot of the middle-east rock."
+    },
+    {
+      "tile": [
+        55,
+        51
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid visible stone body and foot of the middle-east rock."
+    },
+    {
+      "tile": [
+        56,
+        51
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid visible stone body and foot of the middle-east rock."
+    },
+    {
+      "tile": [
+        62,
+        51
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid visible stone body and foot of the middle-east rock."
+    },
+    {
+      "tile": [
+        57,
+        52
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid visible stone body and foot of the middle-east rock."
+    }
   ]
 }
