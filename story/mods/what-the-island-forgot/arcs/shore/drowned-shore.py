@@ -6,18 +6,18 @@ from ...state import memories, m12_shore, memory_news
 
 shore = new_screen(309, map="build/what-the-island-forgot-maps/screens/SHOR01.MAP")
 chest_shore = flag()
-# The big sea model (the dock's), standing in the water off the beach: an NPC blocks a box of its radius (400) + 100 around
-# it, so it sits well clear of the arrival and leaves the whole beach, the chest and the wreck reachable.
-whamon = shore.npc(Species.Whamon146, at=(1150, -450), range=0, autotalk=False)
+# The ordinary Whamon model fits this small landing. Keep the ferry still at the
+# water's edge: its radius (200) plus the tamer's (100) leaves the beach clear.
+whamon = shore.npc(Species.Whamon, at=(1650, -850), range=0, still=True, autotalk=False)
 
 @shore.on_enter
 def the_wreck():
     # West of the narrow strip by the water: opened from its east side, it leaves the way along the beach free.
-    spawn_chest(Item.SupRecovery, at=(-1400, -800), opened=chest_shore, facing=3072)
+    spawn_chest(Item.SupRecovery, at=(-2036, -1152), opened=chest_shore, facing=3072)
     music(15)                     # Freezeland's
     if not m12_shore:
         tamer.say("Whoa... A ship! A real ship, like from my world. Stuck in the rocks.")
-        tamer.walk(250, -400, camera=True)
+        tamer.walk(363, -580, camera=True)
         tamer.turn(0)
         tamer.say("There's a notebook in the planks. It's soaked... Almost all the ink's run.", "Only one line is left.")
         tamer.say("\"...the children were not supposed to come.\"")

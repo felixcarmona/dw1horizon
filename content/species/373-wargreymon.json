@@ -45,10 +45,10 @@
     "training": {"animation": 61, "hit_tick": 10}
   },
   "evolution": {
-    "from": [12, 224, 266, 257, 124],
+    "from": [224, 12, 266, 257, 124],
     "to": [],
     "requirements": {
-      "digimon": 12,
+      "digimon": 224,
       "hp": -1,
       "mp": 500,
       "offense": -1,

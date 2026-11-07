@@ -257,10 +257,10 @@ def author(data, skeleton, sid, cfg):
                 world_rotation(ankle, aw)
                 world_rotation(foot, fw)
             p[0][6:9] = [round(v) for v in moved['root'][tick]]
-            if cfg.get('ground_contact'):
+            if cfg.get('ground_contact') and not cfg.get('sole_contacts'):
                 p[carrier][7] -= round(ground(p))
             gap = cfg.get('maximum_support_gap', {}).get(str(slot))
-            if gap is not None and ground(p) < -gap:
+            if gap is not None and not cfg.get('sole_contacts') and ground(p) < -gap:
                 p[carrier][7] += round(-gap-ground(p))
             frames.append(p)
         mmd.close_loop(frames, moved['loop'])
@@ -279,8 +279,12 @@ def author(data, skeleton, sid, cfg):
         lifts[0] = lifts[-1] = max(lifts[0], lifts[-1])
         lifts = [max(lifts[j]-1.5*min((i-j)%period, (j-i)%period)**2 for j in range(period)) for i in range(period)]
         lifts.append(lifts[0])
-        for p, lift in zip(frames, lifts):
-            p[carrier][7] -= round(lift)
+        if not cfg.get('sole_contacts'):
+            for p, lift in zip(frames, lifts):
+                p[carrier][7] -= round(lift)
+        if cfg.get('sole_contacts'):
+            from tools.models.field_animations.sole_contacts import bake
+            frames = bake(old, frames, skeleton, cfg, slot)
         events = [(t, kind, ins) for t, kind, ins in moved['events'] if kind == 'sound']
         if str(slot) in cfg.get('retime', {}):
             from tools.models.field_animations.pace import _root_channels, _retimed_events
@@ -332,6 +336,9 @@ def build(data, cfg):
         scaled.anims.anims, scaled.anims.table = motioncyclelayer.share_identical_streams(scaled.anims.anims, scaled.anims.table)
         output = scaled.build()
         report['resize'] = cfg['resize']
+    if cfg.get('appendage_clearance'):
+        from tools.models.field_animations.sole_contacts import clear_appendages
+        output, report['appendage_clearance'] = clear_appendages(output, sid, cfg['skeleton'], cfg)
     report['output_sha256'] = digest(output)
     report['storage'] = motionstorage.require(output, len(cfg['skeleton']))
     return output, report
