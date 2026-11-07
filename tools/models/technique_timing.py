@@ -19,12 +19,15 @@ def program(source, bones, slot, recipe):
         raise ValueError('technique timing requires a finite ordinary clip')
     knots = recipe['samples']
     end = len(poses) - 1
-    if knots[0] != [0, 0] or knots[-1] != [end, end]:
+    duration = recipe.get('ticks', end)
+    if not isinstance(duration, int) or duration < 1:
+        raise ValueError('technique timing requires a positive tick count')
+    if knots[0] != [0, 0] or knots[-1] != [duration, end]:
         raise ValueError('technique timing must preserve the first and last sample')
     if any(a[0] >= b[0] or a[1] >= b[1] for a, b in zip(knots, knots[1:])):
         raise ValueError('technique timing samples must increase')
     mapping = []
-    for tick in range(len(poses)):
+    for tick in range(duration + 1):
         a, b = next((a, b) for a, b in zip(knots, knots[1:]) if a[0] <= tick <= b[0])
         mapping.append(round(a[1] + (b[1] - a[1]) * (tick - a[0]) / (b[0] - a[0])))
     samples = [[[round(v) for v in bone] for bone in poses[i]] for i in mapping]

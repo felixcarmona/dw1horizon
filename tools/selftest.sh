@@ -200,6 +200,7 @@ disc story-build       $PY tools/dws.py story-build tools/dws/examples/dev-save.
 both dwstest-offline  $PY tools/dev/story_test.py offline
 run dw3-names        $PY tools/dw3_names_check.py                      # DW2003 imports named as the game names them (skips without $DW3_ROOT)
 run map-reach-policies $PY tools/test_reach_policies.py
+disc jungle-exit-body-box $PY -m unittest tools.test_trop02_exit
 run developer-contracts $PY tools/test_dev_contracts.py
 run presented-frame-video $PY tools/test_presented_frames.py
 run duckstation-protocol $PY -m unittest tools.test_duckstation_protocol
@@ -225,6 +226,7 @@ run dws-resource-tests $PY -W ignore -m unittest tools.test_dws_variants tools.t
 run partner-models $PY -W ignore -m unittest tools.test_partner_model_generators
 run model-meshes $PY -W ignore tools/test_meshcheck.py                    # no see-through model (Cherrymon's closed back)
 run model-apis $PY -W ignore -m unittest tools.test_model_provider tools.test_modeldelta tools.test_imported_model_edit tools.test_recordoriginals
+run sole-contacts $PY -m unittest tools.test_sole_contacts
 run model-tools-python $PY -m compileall -q tools/models
 run allocation-pools $PY -m unittest tools.test_allocation_pools
 run check-links       $PY tools/checkrefs.py

@@ -912,6 +912,16 @@
      "retouch/TWNB24.MAP",
      "retouch/TWNB24.TFS"
     ]
+   },
+   {
+    "script": "maps/trop02-exit.py",
+    "args": [
+     "{retouch}"
+    ],
+    "step": "retouch",
+    "writes": [
+     "retouch/TROP02.MAP"
+    ]
    }
   ],
   "steps_note": "Ordered map recipes; step: the derive step that runs each recipe; {screens} = OUT/screens, {retouch} = OUT/retouch (OUT = build/NAME-maps); writes: the files it makes under OUT (derive checks them); the check runs where it stands"
