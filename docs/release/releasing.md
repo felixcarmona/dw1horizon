@@ -84,8 +84,9 @@ worker. Worker process-tree peak RSS and phase times go to the private
 processes and merge in their original file/base order. Web-engine USA and Japan
 recordings run in separate processes, at most two concurrently. They overlap the
 three standalone player replays after packaging; the replays share the CPU budget
-with those two recordings. Every replay pin and the engine build must pass before
-the browser gate starts.
+with those two recordings. Browser verification starts once packaging and engine
+construction pass; every standalone replay pin remains required before cut
+completion or publication.
 
 Release caches live in `build/release-derive-cache`, separate from developer and
 player caches. Retain that directory at the same absolute path between cuts, or
