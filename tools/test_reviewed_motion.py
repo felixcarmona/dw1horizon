@@ -87,6 +87,16 @@ class ReviewedMotion(unittest.TestCase):
                     values=[p[b][axis] for p in positions]
                     self.assertLess(max(values)-min(values),4,(slot,feet[b],axis))
 
+    def test_kurisarimon_sleep_keeps_the_shell_above_ground(self):
+        from motiontailspace import interpolate_pose
+        model=self.models(431)[1]
+        for slot in (9,12):
+            frames=animsheet.slot_frames(model,34,slot)[0]
+            for first,second in zip(frames,frames[1:]):
+                for alpha in (0,1365,2730,4096):
+                    pose=interpolate_pose(first,second,alpha)
+                    self.assertLessEqual(max(v[1] for v in points(model,pose,(1,30,31,32,33))),1)
+
     def test_native_donor_clocks_and_voice_cues(self):
         for sid,dsid,path in ((237,26,'MMD0/SKUL.MMD'),(267,47,'MMD1/MONO.MMD'),(268,47,'MMD1/MONO.MMD')):
             model=self.models(sid)[1];donor=load(Path('extracted/CHDAT')/path,dsid)

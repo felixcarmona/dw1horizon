@@ -5169,9 +5169,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/431-Kurisarimon.MMD.mdelta",
-        "delta_sha256": "4c4420700df19ff29ff36026a7a1b0a518e6e6ed0625c7ab4bac9ea9d256e7bb",
-        "sha256": "dbc32553edb3a2d0d588ee55bc0797f0ef6fcd667289c437e904abbf8f511b54",
-        "size": 98358
+        "delta_sha256": "38d7bbf42733dc908a22f9e10788f513fcf26bf5eabc818a97eaebdc8ec31b69",
+        "sha256": "808fe7dcecb47e12d8400b3ab60c7aa3938827a30d17b2b90f295feb8b9753a4",
+        "size": 98356
       },
       "tim": {
         "sources": [

@@ -98,7 +98,7 @@ def care(model):
             if sid == 431:
                 if slot == 9:
                     weight = ease(t / 14)
-                    p[1][7] += round(22*weight)
+                    p[1][7] += round(3*weight)
                     p[1][3] += round(35*weight)
                     for b in (30,31,32):
                         p[b][3] = rest[b][3] + round(18*weight)
