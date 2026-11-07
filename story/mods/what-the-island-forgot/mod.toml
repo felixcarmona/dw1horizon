@@ -6,7 +6,7 @@ requires = ["base >= 1.0"]
 load_after = []
 conflicts = []
 # Story sources: Python handlers and placement-only script copies.
-sources = ["early-game.py", "arcs/works/wild-screens.dws", "arcs/*/*.py", "district/*.py", "city/*.py"]
+sources = ["early-game.py", "arcs/works/wild-screens.dws", "arcs/residents/beetle-cup.dws", "arcs/*/*.py", "district/*.py", "city/*.py"]
 
 [save]
 namespace = "wtif"
