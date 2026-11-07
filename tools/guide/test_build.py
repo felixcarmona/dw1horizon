@@ -79,6 +79,19 @@ class GuideTests(unittest.TestCase):
             self.assertIn(commit[:12], es)
             self.assertNotIn('Tsunomon route: weight 21', es)
 
+    def test_all_page_languages_use_their_catalogs(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            guide.build(out, self.commit, 'next')
+            for catalog in (guide.ROOT / 'web/i18n').glob('*.json'):
+                lang = catalog.stem
+                strings = json.loads(catalog.read_text())
+                page = (out / ('index.html' if lang == 'en' else lang + '.html')).read_text()
+                self.assertIn(f'<html lang="{lang}">', page)
+                self.assertIn(strings['data.nav'], page)
+                self.assertIn(strings['data.learningRule'], page)
+                self.assertIn('Fire Tower', page)
+
     def test_spanish_compound_requirements(self):
         english = json.loads((guide.ROOT / 'web/i18n/en.json').read_text())
         spanish = json.loads((guide.ROOT / 'web/i18n/es.json').read_text())
