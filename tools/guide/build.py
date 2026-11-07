@@ -188,8 +188,10 @@ def build(out, ref='v0.0.6', version=None):
     (out / 'assets/style.css').unlink(missing_ok=True)
     english = json.loads((ROOT / 'web/i18n/en.json').read_text())
     page = render(commit, techniques, species, tree, version)
-    for lang, filename in [('en', 'index.html'), ('es', 'es.html')]:
-        strings = json.loads((ROOT / f'web/i18n/{lang}.json').read_text())
+    for catalog in sorted((ROOT / 'web/i18n').glob('*.json')):
+        lang = catalog.stem
+        filename = 'index.html' if lang == 'en' else lang + '.html'
+        strings = json.loads(catalog.read_text())
         localized = translate(page, english, strings)
         localized = localized.replace('<html lang="en">', f'<html lang="{lang}">')
         localized = localized.replace('placeholder="Name, specialty, or any detail…"',

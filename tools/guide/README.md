@@ -28,14 +28,14 @@ python3 -m http.server --directory build/guide-site
 
 `web/build.py` preserves any validated engine and `data/discs.json` already
 in the destination. It overlays the website UI and generates `data/index.html`
-and `data/es.html` from the requested tag. The **Release and Pages** workflow
-uses this same command with `RELEASE_TAG`, after validating the tag's package
+and the localized language pages from the requested tag. The **Release and Pages**
+workflow uses this same command with `RELEASE_TAG`, after validating the tag's package
 and engine. A dispatch from main with `tag=v0.0.6` therefore takes presentation
 code from main and player data from v0.0.6. Each later release regenerates its
 own guide automatically. This command alone does not deploy anything.
 
-Guide UI copy lives in `web/i18n/*.json` under `data.*`: English and Spanish,
-with English guide strings for the other website languages. The existing
+Guide UI copy lives in `web/i18n/*.json` under `data.*`, translated into all nine
+website languages. Each catalog generates its own guide page. The existing
 `horizon.lang` preference and flag menu are shared. Game names stay unchanged.
 `web/test/data.mjs SITE [SHOTS]` checks the assembled route, release snapshot,
 theme, language switching/fallback, search/sort and phone layout in Chromium;

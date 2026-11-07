@@ -2,6 +2,244 @@
   "_doc": "Releases, newest first. Each version has a date and text in every page language: new, changed and fixed bullet lists, plus an optional upgrade line in all languages. Empty groups are hidden.",
   "versions": [
     {
+      "version": "0.0.7",
+      "date": "2026-11-07",
+      "en": {
+        "new": [
+          "Simplified Chinese is now an in-game language. Enable your emulator’s 8 MB RAM option to use it. The other languages still work on an original 2 MB PlayStation.",
+          "Press Square anywhere in the field for quick care. New HP and MP bubbles warn when either falls below 30%.",
+          "The website has a Game data page with searchable techniques, learning chances, partner movesets and evolution requirements, in all nine page languages."
+        ],
+        "changed": [
+          "Care gauges now show hunger, toilet needs and energy, including during training. Full means fine. The care HUD, digital clock and enemy life bars are always on.",
+          "Frame rate adapts automatically: 20 fps at normal CPU speed, 60 fps with a suitable overclock. Game speed stays the same.",
+          "With NEW DIGIMON on, each In-Training has six regular Rookie routes and every raisable Ultimate has two Megas. Natural evolutions no longer skip stages, and quiz starters are refreshed.",
+          "Mojyamon trades refresh daily with new rewards, including an evolution item for Dolphmon. Monochromon’s shop lets you choose prices and read customers’ reactions.",
+          "More imported partners learn fitting, stronger techniques. Ordinary attacks keep scaling at high Offense, and enemies vary their moves instead of repeatedly interrupting you with weak attacks.",
+          "Many imported Digimon have improved proportions, walks, battle animations, voices and preferred places. Partner portraits fit their status boxes."
+        ],
+        "fixed": [
+          "Fixed freezes when food causes illness, during conversations with residents and in scripted movement.",
+          "Rookies can evolve when their requirements are met after loading a save or waking up.",
+          "Corrected punches and dashes that missed, a finisher that hit its own caster, and MP spent on attacks while quick battles were still loading.",
+          "Battle rewards count up promptly and can be skipped reliably. Returning to the field no longer causes a camera hitch.",
+          "Double Floppy restores 1,500 HP and MP again. Shops show item descriptions, with many descriptions corrected to match their effects.",
+          "Fixed cut-off Item Bank names, six-digit Bits amounts, blank card-trade rows and numerous translated menu and dialogue overflows.",
+          "Repaired blocked returns, walkable rock faces, hard-to-see exits and unreachable ground items.",
+          "Fixed Windows build failures, iPhone disc writing, misleading storage warnings and false “another tab” errors. Android downloads keep the .cue filename."
+        ],
+        "upgrade": "Saves from 0.0.6 work. The required discs have not changed."
+      },
+      "es": {
+        "new": [
+          "El chino simplificado ya es un idioma del juego. Para usarlo, activa la opción de 8 MB de RAM en el emulador. Los demás idiomas siguen funcionando en una PlayStation original de 2 MB.",
+          "Pulsa Cuadrado desde cualquier punto del campo para abrir los cuidados rápidos. Nuevas burbujas de HP y MP avisan cuando bajan del 30%.",
+          "La web tiene una página de datos del juego con búsqueda de técnicas, probabilidades de aprendizaje, técnicas de cada compañero y requisitos de evolución, en los nueve idiomas de la web."
+        ],
+        "changed": [
+          "Las barras de cuidados muestran hambre, necesidad de ir al baño y energía, también al entrenar. Lleno significa que todo va bien. Las barras, el reloj digital y la vida de los enemigos están siempre visibles.",
+          "La tasa de imágenes se ajusta sola: 20 fps con la CPU a velocidad normal y 60 fps con suficiente overclock. La velocidad del juego no cambia.",
+          "Con NEW DIGIMON activado, cada Digimon en entrenamiento tiene seis rutas normales a Rookie y cada Ultimate que puedes criar tiene dos Mega. Las evoluciones naturales ya no se saltan niveles y se renuevan los compañeros del test inicial.",
+          "Los intercambios de Mojyamon se renuevan cada día con nuevas recompensas, incluido un objeto para evolucionar a Dolphmon. En la tienda de Monochromon puedes elegir precios y observar las reacciones de los clientes.",
+          "Más compañeros importados aprenden técnicas potentes y acordes con ellos. Los ataques normales siguen mejorando con un Ataque alto y los enemigos varían sus técnicas en vez de interrumpirte una y otra vez con ataques débiles.",
+          "Muchos Digimon importados mejoran sus proporciones, pasos, animaciones de combate, voces y lugares preferidos. Los retratos de los compañeros caben en sus recuadros de estado."
+        ],
+        "fixed": [
+          "Corregidos bloqueos al enfermar por comida, al hablar con habitantes y durante movimientos de las escenas.",
+          "Los Rookie pueden evolucionar si cumplen los requisitos después de cargar una partida o despertarse.",
+          "Corregidos puñetazos y embestidas que fallaban, un remate que dañaba a quien lo usaba y el gasto de MP en ataques mientras aún se cargaban los combates rápidos.",
+          "Los premios del combate se cuentan con rapidez y se pueden saltar de forma fiable. Volver al campo ya no causa un tirón de cámara.",
+          "Cura doble vuelve a recuperar 1500 HP y MP. Las tiendas muestran las descripciones de los objetos y se corrigen muchas para que coincidan con sus efectos.",
+          "Corregidos nombres recortados en el Banco de objetos, cantidades de Bits de seis cifras, filas vacías al cambiar cartas y numerosos textos traducidos que desbordaban menús y diálogos.",
+          "Corregidos regresos bloqueados, paredes de roca que se podían atravesar, salidas poco visibles y objetos del suelo inaccesibles.",
+          "Corregidos fallos de creación en Windows, la escritura del disco en iPhone, avisos de espacio engañosos y falsos errores de «otra pestaña». Las descargas en Android conservan el nombre .cue."
+        ],
+        "upgrade": "Las partidas de 0.0.6 son compatibles. Los discos necesarios no cambian."
+      },
+      "pt-br": {
+        "new": [
+          "O jogo agora tem chinês simplificado. Para usar, ative a opção de 8 MB de RAM no emulador. Os outros idiomas continuam funcionando em um PlayStation original de 2 MB.",
+          "Aperte Quadrado em qualquer ponto do campo para abrir os cuidados rápidos. Novos balões de HP e MP avisam quando ficam abaixo de 30%.",
+          "O site tem uma página de dados do jogo com busca de técnicas, chances de aprendizado, técnicas dos parceiros e requisitos de evolução, nos nove idiomas do site."
+        ],
+        "changed": [
+          "As barras de cuidados mostram fome, necessidade de banheiro e energia, inclusive durante o treino. Cheio significa que está tudo bem. As barras, o relógio digital e a vida dos inimigos ficam sempre visíveis.",
+          "A taxa de quadros se ajusta automaticamente: 20 fps com a CPU na velocidade normal e 60 fps com overclock suficiente. A velocidade do jogo não muda.",
+          "Com NEW DIGIMON ativo, cada Digimon Em Treinamento tem seis rotas normais para Rookie e todo Ultimate que você pode criar tem dois Megas. Evoluções naturais não pulam mais estágios, e os parceiros do teste inicial foram renovados.",
+          "As trocas de Mojyamon se renovam diariamente com novas recompensas, incluindo um item para evoluir para Dolphmon. Na loja de Monochromon, você escolhe os preços e observa as reações dos clientes.",
+          "Mais parceiros importados aprendem técnicas fortes e adequadas. Ataques comuns continuam melhorando com Ataque alto, e os inimigos variam as técnicas em vez de interromper suas ações repetidamente com golpes fracos.",
+          "Muitos Digimon importados têm melhores proporções, caminhadas, animações de combate, vozes e lugares favoritos. Os retratos dos parceiros cabem nos quadros de status."
+        ],
+        "fixed": [
+          "Corrigidos travamentos ao adoecer por comida, em conversas com moradores e durante movimentos das cenas.",
+          "Rookies podem evoluir ao cumprir os requisitos depois de carregar um save ou acordar.",
+          "Corrigidos socos e investidas que não acertavam, um golpe final que atingia o próprio usuário e o gasto de MP em ataques enquanto os combates rápidos ainda carregavam.",
+          "As recompensas de combate são contadas rapidamente e podem ser puladas com segurança. A volta ao campo não causa mais uma travadinha na câmera.",
+          "Disquete duplo volta a recuperar 1.500 HP e MP. As lojas mostram descrições dos itens, e muitas foram corrigidas para corresponder aos efeitos reais.",
+          "Corrigidos nomes cortados no Banco de Itens, valores de Bits com seis dígitos, linhas vazias nas trocas de cartas e vários textos traduzidos que ultrapassavam menus e diálogos.",
+          "Corrigidos retornos bloqueados, paredes de pedra atravessáveis, saídas difíceis de enxergar e itens no chão fora de alcance.",
+          "Corrigidas falhas de criação no Windows, a gravação do disco no iPhone, avisos de espaço enganosos e falsos erros de “outra aba”. Downloads no Android mantêm o nome .cue."
+        ],
+        "upgrade": "Os saves da versão 0.0.6 funcionam. Os discos necessários não mudaram."
+      },
+      "fr": {
+        "new": [
+          "Le chinois simplifié est désormais une langue du jeu. Active l’option 8 Mo de RAM de ton émulateur pour l’utiliser. Les autres langues fonctionnent toujours sur une PlayStation originale de 2 Mo.",
+          "Appuyez sur Carré n’importe où sur le terrain pour ouvrir les soins rapides. De nouvelles bulles de HP et MP signalent un niveau inférieur à 30 %.",
+          "Le site propose une page de données du jeu avec recherche de techniques, chances d’apprentissage, techniques des partenaires et conditions d’évolution, dans les neuf langues du site."
+        ],
+        "changed": [
+          "Les jauges de soins montrent la faim, les besoins et l’énergie, y compris pendant l’entraînement. Plein signifie que tout va bien. Les jauges, l’horloge numérique et la vie des ennemis sont toujours affichées.",
+          "La fréquence d’affichage s’adapte automatiquement : 20 images/s à la vitesse normale du processeur, 60 avec un overclock suffisant. La vitesse du jeu ne change pas.",
+          "Avec NEW DIGIMON activé, chaque Bébé II possède six voies ordinaires vers des Rookie et chaque Ultimate pouvant être élevé a deux Megas. Les évolutions naturelles ne sautent plus de stade et les partenaires du quiz initial sont renouvelés.",
+          "Les échanges de Mojyamon se renouvellent chaque jour avec de nouvelles récompenses, dont un objet pour évoluer en Dolphmon. La boutique de Monochromon permet de choisir les prix et de lire les réactions des clients.",
+          "Davantage de partenaires importés apprennent des techniques puissantes et adaptées. Les attaques ordinaires continuent de progresser avec une Attaque élevée et les ennemis varient leurs techniques au lieu de répéter de faibles attaques qui bloquent vos actions.",
+          "De nombreux Digimon importés ont de meilleures proportions, démarches, animations de combat, voix et préférences de lieux. Les portraits des partenaires tiennent dans leur cadre d’état."
+        ],
+        "fixed": [
+          "Correction de blocages quand la nourriture rend malade, lors de conversations avec les habitants et pendant les déplacements des scènes.",
+          "Les Rookie peuvent évoluer lorsque leurs conditions sont remplies après un chargement ou un réveil.",
+          "Correction de coups de poing et de charges qui rataient leur cible, d’une attaque finale touchant son lanceur et de MP dépensés pendant le chargement des combats rapides.",
+          "Le décompte des récompenses de combat est rapide et peut être sauté de façon fiable. Le retour sur le terrain ne provoque plus de saccade de caméra.",
+          "Double soin rend à nouveau 1 500 HP et MP. Les boutiques affichent les descriptions des objets, dont beaucoup ont été corrigées pour correspondre à leurs effets.",
+          "Correction des noms tronqués à la banque d’objets, des sommes de Bits à six chiffres, des lignes vides dans les échanges de cartes et de nombreux débordements dans les menus et dialogues traduits.",
+          "Correction de retours bloqués, de parois rocheuses traversables, de sorties peu visibles et d’objets au sol inaccessibles.",
+          "Correction des échecs de création sous Windows, de l’écriture du disque sur iPhone, des avertissements de stockage trompeurs et des fausses erreurs « autre onglet ». Les téléchargements Android gardent le nom .cue."
+        ],
+        "upgrade": "Les sauvegardes de la version 0.0.6 fonctionnent. Les disques requis ne changent pas."
+      },
+      "de": {
+        "new": [
+          "Vereinfachtes Chinesisch ist jetzt eine Spielsprache. Aktiviere dafür im Emulator die Option für 8 MB RAM. Die anderen Sprachen funktionieren weiterhin auf einer originalen PlayStation mit 2 MB.",
+          "Drücke überall auf dem Feld Quadrat für die Schnellpflege. Neue HP- und MP-Symbole warnen bei einem Wert unter 30 %.",
+          "Die Website bietet eine Spieldatenseite mit durchsuchbaren Techniken, Lernchancen, Partnertechniken und Entwicklungsbedingungen in allen neun Website-Sprachen."
+        ],
+        "changed": [
+          "Die Pflegeanzeigen zeigen Hunger, Toilettendrang und Energie, auch beim Training. Voll bedeutet: alles in Ordnung. Pflegeanzeigen, Digitaluhr und gegnerische Lebensbalken sind immer sichtbar.",
+          "Die Bildrate passt sich automatisch an: 20 fps bei normalem CPU-Takt, 60 fps bei ausreichender Übertaktung. Die Spielgeschwindigkeit bleibt gleich.",
+          "Mit NEW DIGIMON hat jedes In-Training sechs reguläre Rookie-Wege und jedes aufziehbare Ultimate zwei Megas. Natürliche Entwicklungen überspringen keine Stufen mehr, und das Anfangsquiz bietet überarbeitete Partnerauswahlen.",
+          "Mojyamons Tauschangebote erneuern sich täglich und bieten neue Belohnungen, darunter ein Entwicklungsitem für Dolphmon. In Monochromons Laden wählst du die Preise und achtest auf die Reaktionen der Kunden.",
+          "Mehr importierte Partner lernen passende, stärkere Techniken. Normale Angriffe werden auch bei hohen Angriffswerten stärker, und Gegner nutzen abwechslungsreichere Techniken, statt dich ständig mit schwachen Angriffen zu unterbrechen.",
+          "Viele importierte Digimon haben bessere Proportionen, Gangarten, Kampfanimationen, Stimmen und bevorzugte Orte. Partnerporträts passen in ihre Statusfelder."
+        ],
+        "fixed": [
+          "Hänger bei durch Futter ausgelöster Krankheit, Gesprächen mit Bewohnern und Bewegungen in Szenen wurden behoben.",
+          "Rookies können sich nach dem Laden oder Aufwachen entwickeln, sobald die Bedingungen erfüllt sind.",
+          "Fehlschlagende Schläge und Sturmangriffe, ein Finisher mit Selbsttreffer und MP-Verbrauch während des Ladens schneller Kämpfe wurden korrigiert.",
+          "Kampfbelohnungen werden zügig hochgezählt und lassen sich zuverlässig überspringen. Bei der Rückkehr aufs Feld stockt die Kamera nicht mehr.",
+          "Doppelheilung stellt 1.500 HP und MP wieder her. Läden zeigen Itembeschreibungen; viele Texte wurden an die tatsächlichen Wirkungen angepasst.",
+          "Abgeschnittene Namen in der Item-Bank, sechsstellige Bits-Beträge, leere Zeilen beim Kartentausch und zahlreiche überlaufende übersetzte Menü- und Dialogtexte wurden korrigiert.",
+          "Blockierte Rückwege, begehbare Felswände, schwer erkennbare Ausgänge und unerreichbare Bodenfunde wurden korrigiert.",
+          "Fehler beim Erstellen unter Windows, das Schreiben der Disc auf dem iPhone, irreführende Speicherwarnungen und falsche Meldungen über einen anderen Tab wurden behoben. Android-Downloads behalten den Dateinamen .cue."
+        ],
+        "upgrade": "Spielstände aus 0.0.6 funktionieren. Die benötigten Discs bleiben unverändert."
+      },
+      "it": {
+        "new": [
+          "Il cinese semplificato è ora una lingua del gioco. Per usarlo, attiva l’opzione 8 MB di RAM nell’emulatore. Le altre lingue continuano a funzionare su una PlayStation originale con 2 MB.",
+          "Premi Quadrato in qualsiasi punto del campo per aprire le cure rapide. Nuove bolle di HP e MP avvisano quando scendono sotto il 30%.",
+          "Il sito ha una pagina di dati del gioco con ricerca delle tecniche, probabilità di apprendimento, tecniche dei compagni e requisiti di evoluzione, in tutte e nove le lingue del sito."
+        ],
+        "changed": [
+          "Le barre delle cure mostrano fame, bisogni ed energia, anche durante l’allenamento. Pieno significa che va tutto bene. Le barre, l’orologio digitale e la vita dei nemici sono sempre visibili.",
+          "La frequenza dei fotogrammi si adatta automaticamente: 20 fps con la CPU a velocità normale e 60 fps con un overclock sufficiente. La velocità del gioco non cambia.",
+          "Con NEW DIGIMON attivo, ogni In-Training ha sei percorsi normali verso i Rookie e ogni Ultimate allevabile ha due Mega. Le evoluzioni naturali non saltano più gli stadi e i compagni del quiz iniziale sono rinnovati.",
+          "Gli scambi di Mojyamon si rinnovano ogni giorno con nuove ricompense, incluso un oggetto per evolvere in Dolphmon. Nel negozio di Monochromon puoi scegliere i prezzi e osservare le reazioni dei clienti.",
+          "Più compagni importati imparano tecniche potenti e adatte a loro. Gli attacchi normali continuano a migliorare con un Attacco elevato e i nemici variano le tecniche invece di interromperti continuamente con attacchi deboli.",
+          "Molti Digimon importati migliorano proporzioni, camminate, animazioni di combattimento, voci e luoghi preferiti. I ritratti dei compagni rientrano nei riquadri di stato."
+        ],
+        "fixed": [
+          "Corretti blocchi quando il cibo provoca malattia, nelle conversazioni con gli abitanti e durante i movimenti delle scene.",
+          "I Rookie possono evolvere quando soddisfano i requisiti dopo aver caricato un salvataggio o essersi svegliati.",
+          "Corretti pugni e cariche che mancavano il bersaglio, una mossa finale che colpiva chi la usava e il consumo di MP durante il caricamento dei combattimenti rapidi.",
+          "Le ricompense di combattimento vengono contate rapidamente e si possono saltare in modo affidabile. Il ritorno sul campo non provoca più uno scatto della telecamera.",
+          "Cura doppia ripristina di nuovo 1.500 HP e MP. I negozi mostrano le descrizioni degli oggetti, molte delle quali corrette per rispecchiare gli effetti reali.",
+          "Corretti nomi tagliati nella Banca oggetti, importi di Bits a sei cifre, righe vuote negli scambi di carte e numerosi testi tradotti che uscivano dai menu e dai dialoghi.",
+          "Corretti ritorni bloccati, pareti rocciose attraversabili, uscite poco visibili e oggetti a terra irraggiungibili.",
+          "Corretti errori di creazione su Windows, la scrittura del disco su iPhone, gli avvisi di spazio ingannevoli e i falsi errori di “altra scheda”. I download Android mantengono il nome .cue."
+        ],
+        "upgrade": "I salvataggi della versione 0.0.6 funzionano. I dischi richiesti non cambiano."
+      },
+      "ja": {
+        "new": [
+          "ゲーム内言語に簡体字中国語を追加しました。使うにはエミュレーターのRAMを8 MBに設定してください。他の言語は引き続きオリジナルの2 MBプレイステーションで使えます。",
+          "フィールドのどこからでも□ボタンでクイックケアを開けます。HP・MPが30%未満になると新しいふきだしで知らせます。",
+          "ウェブサイトにゲームデータのページを追加しました。技の検索、習得確率、パートナーの技、進化条件を全９言語で確認できます。"
+        ],
+        "changed": [
+          "ケアのゲージに空腹、トイレ、元気を表示し、トレーニング中も更新します。満タンなら良好です。ケア表示、デジタル時計、敵のHPバーは常時表示になります。",
+          "フレームレートは自動調整になりました。通常のCPU速度では20 fps、十分なオーバークロック時は60 fpsになります。ゲームの進行速度は変わりません。",
+          "NEW DIGIMONがオンのとき、各幼年期Ⅱには通常の成長期への進化先が６体、育成可能な各完全体には究極体への進化先が２体あります。通常進化で段階を飛ばさなくなり、最初のクイズのパートナー候補も見直しました。",
+          "モジャモンの交換は１日ごとに更新され、ルカモンへの進化アイテムなど報酬を見直しました。モノクロモンの店では価格を選び、お客の反応を見ながら接客できます。",
+          "追加パートナーがより強く、個性に合う技を覚えます。攻撃力が高くなっても通常技の威力が伸び、敵は弱い技での足止めを繰り返す代わりに多彩な技を使います。",
+          "多くの追加デジモンの体型、歩行、戦闘動作、鳴き声、好きな場所を改善しました。ステータス画面のパートナーが枠に収まります。"
+        ],
+        "fixed": [
+          "食べ物で病気になったとき、住民との会話中、イベントの移動中に止まる問題を修正しました。",
+          "ロード直後や起床後でも、条件を満たした成長期が進化できるようになりました。",
+          "当たらないパンチや突進、自分を攻撃する必殺技、クイックバトルの読み込み中に攻撃でMPを消費する問題を修正しました。",
+          "戦闘報酬の加算を短くし、確実にスキップできるようにしました。フィールドに戻ったときのカメラの引っかかりも解消しました。",
+          "ダブル回復が再びHP・MPを1500ずつ回復します。店の購入一覧にアイテムの説明を表示し、実際の効果と違う説明を多数修正しました。",
+          "アイテム預かり所の名前の欠け、６桁の所持金、カード交換一覧の空行、翻訳したメニューや会話のはみ出しを修正しました。",
+          "戻れない出入口、通り抜けられる岩壁、見つけにくい出口、拾えない地面のアイテムを修正しました。",
+          "Windowsでの作成失敗、iPhoneでのディスク書き込み、誤解を招く容量警告、別タブを誤検知する問題を修正しました。Androidでも.cueのファイル名を保ちます。"
+        ],
+        "upgrade": "0.0.6のセーブデータを引き続き使えます。必要なディスクは変わりません。"
+      },
+      "ca": {
+        "new": [
+          "El xinès simplificat ja és un idioma del joc. Per fer-lo servir, activa l’opció de 8 MB de RAM a l’emulador. Els altres idiomes continuen funcionant en una PlayStation original de 2 MB.",
+          "Prem Quadrat des de qualsevol punt del camp per obrir les cures ràpides. Noves bombolles de HP i MP avisen quan baixen del 30%.",
+          "El web té una pàgina de dades del joc amb cerca de tècniques, probabilitats d’aprenentatge, tècniques dels companys i requisits d’evolució, en tots nou idiomes del web."
+        ],
+        "changed": [
+          "Les barres de cures mostren gana, necessitat d’anar al lavabo i energia, també durant l’entrenament. Ple vol dir que tot va bé. Les barres, el rellotge digital i la vida dels enemics són sempre visibles.",
+          "La taxa d’imatges s’ajusta automàticament: 20 fps amb la CPU a velocitat normal i 60 fps amb prou overclock. La velocitat del joc no canvia.",
+          "Amb NEW DIGIMON activat, cada Digimon en entrenament té sis rutes normals a Rookie i cada Ultimate que pots criar té dos Mega. Les evolucions naturals ja no se salten nivells i es renoven els companys del test inicial.",
+          "Els intercanvis de Mojyamon es renoven cada dia amb noves recompenses, inclòs un objecte per evolucionar a Dolphmon. A la botiga de Monochromon pots triar els preus i observar les reaccions dels clients.",
+          "Més companys importats aprenen tècniques potents i adients. Els atacs normals continuen millorant amb un Atac alt i els enemics varien les tècniques en lloc d’interrompre’t contínuament amb atacs febles.",
+          "Molts Digimon importats milloren les proporcions, els passos, les animacions de combat, les veus i els llocs preferits. Els retrats dels companys caben als requadres d’estat."
+        ],
+        "fixed": [
+          "Corregits bloquejos en emmalaltir pel menjar, en parlar amb habitants i durant els moviments de les escenes.",
+          "Els Rookie poden evolucionar si compleixen els requisits després de carregar una partida o despertar-se.",
+          "Corregits cops de puny i envestides que fallaven, un atac final que feria qui el feia servir i la despesa de MP en atacs mentre encara es carregaven els combats ràpids.",
+          "Els premis del combat es compten de pressa i es poden saltar de manera fiable. Tornar al camp ja no provoca una estrebada de càmera.",
+          "Cura doble torna a recuperar 1500 HP i MP. Les botigues mostren les descripcions dels objectes i se’n corregeixen moltes perquè coincideixin amb els efectes reals.",
+          "Corregits noms retallats al Banc d’objectes, quantitats de Bits de sis xifres, files buides en canviar cartes i nombrosos textos traduïts que desbordaven menús i diàlegs.",
+          "Corregits retorns bloquejats, parets de roca que es podien travessar, sortides poc visibles i objectes de terra inaccessibles.",
+          "Corregits errors de creació al Windows, l’escriptura del disc a l’iPhone, avisos d’espai enganyosos i falsos errors d’«una altra pestanya». Les baixades a l’Android conserven el nom .cue."
+        ],
+        "upgrade": "Les partides de 0.0.6 són compatibles. Els discos necessaris no canvien."
+      },
+      "zh-hans": {
+        "new": [
+          "游戏内现已加入简体中文。使用时请在模拟器中开启8 MB RAM选项。其他语言仍可在原版2 MB PlayStation上运行。",
+          "在地图任意位置按方块键即可打开快捷照顾菜单。HP或MP低于30%时会出现新的提示气泡。",
+          "网站新增游戏数据页面，可查询招式、学习概率、搭档招式和进化条件，支持网页的全部九种语言。"
+        ],
+        "changed": [
+          "照顾量表新增饥饿、如厕和精力显示，训练时也会更新。量表满表示状态良好。照顾界面、数字时钟和敌方血条始终显示。",
+          "帧率改为自动调整：正常CPU速度使用20 fps，超频性能足够时使用60 fps。游戏进行速度不变。",
+          "开启NEW DIGIMON（新数码宝贝）时，每只幼年期Ⅱ都有六条常规成长期进化路线，每只可饲养的完全体都有两种究极体进化。常规进化不再跳过阶段，开局问答的搭档候选也已调整。",
+          "毛人兽的交换每天刷新，奖励经过调整，包括进化为海豚兽的道具。角龙兽的商店可自行选择价格，并观察顾客的反应。",
+          "更多导入搭档可学习强力且符合特点的招式。攻击力很高时普通招式仍会继续增强，敌人也会使用更多样的招式，不再反复用弱招打断行动。",
+          "许多导入数码宝贝改善了体型比例、步行、战斗动作、语音和喜好地区。状态画面的搭档图像不再超出边框。"
+        ],
+        "fixed": [
+          "修复食物引发疾病、与居民交谈和剧情移动时发生死机的问题。",
+          "读档或睡醒后，满足条件的成长期搭档可以正常进化。",
+          "修复拳击和冲撞无法命中、必杀技误伤自身，以及快速战斗仍在加载时攻击就消耗MP的问题。",
+          "战斗奖励计数更快，也能可靠跳过。返回地图时镜头不再卡顿。",
+          "双效软盘现可再次恢复1500 HP和MP。商店购买列表显示道具说明，并修正了许多与实际效果不符的描述。",
+          "修复道具银行名称被裁切、六位数Bits显示异常、卡片交换列表出现空行，以及多处翻译菜单和对话文字溢出的问题。",
+          "修复返回位置被挡住、能穿过岩壁、出口不明显和地面道具无法到达的问题。",
+          "修复Windows制作失败、iPhone光盘写入、存储警告误导和误报“其他标签页”的问题。Android下载保留.cue文件名。"
+        ],
+        "upgrade": "0.0.6版存档继续兼容。所需光盘不变。"
+      }
+    },
+    {
       "version": "0.0.6",
       "date": "2026-11-05",
       "en": {

@@ -1,8 +1,9 @@
 import { i18n, LANGS, NAMES, tag } from './js/i18n.js';
 import { FLAGS } from './js/flags.js';
 await i18n.init();
-const spanish = location.pathname.endsWith('/es.html');
-if (spanish !== (i18n.lang === 'es')) location.replace(i18n.lang === 'es' ? 'es.html' + location.hash : './' + location.hash);
+const languagePath = lang => lang === 'en' ? './' : `${lang}.html`;
+const target = new URL(languagePath(i18n.lang), location.href);
+if (location.pathname !== target.pathname) location.replace(target.pathname + location.hash);
 i18n.apply(document);
 const menu = document.querySelector('#lang');
 for (const lang of LANGS) {
@@ -14,7 +15,7 @@ menu.value = i18n.lang;
 document.querySelector('#lang-flag').innerHTML = FLAGS[i18n.lang] || '';
 menu.addEventListener('change', async () => {
   await i18n.set(menu.value);
-  location.href = menu.value === 'es' ? 'es.html' : './';
+  location.href = languagePath(menu.value) + location.hash;
 });
 'use strict';
 for (const section of document.querySelectorAll('.data-section')) {
