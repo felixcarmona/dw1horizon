@@ -40,6 +40,9 @@ def stage(e, x, z, item=38, discipline=100):
          'partner.para.remainingLifetime=1000', 'partner.para.condition=4',
          'partner.para.energyLevel=0', f'partner.para.discipline={discipline}',
          'partner.para.foodLevel=0', 'partner.para.happiness=50',
+         'partner.para.poopLevel=100', 'partner.para.tiredness=0',
+         'partner.para.sleepyHour=23', 'partner.para.wakeupHour=1',
+         'partner.para.nextHungerHour=23',
          f'inventory.types=[{item}' + ',-1' * 29 + ']',
          'inventory.amounts=[2' + ',0' * 29 + ']',
          'inventory.names=[0' + ',255' * 29 + ']')
@@ -193,7 +196,7 @@ def main():
         put(e,'MOD_OPT_STORY','i',1)
         e.gs('set','gametime_running=0','hour=10','partner.para.condition=0',
              'partner.para.foodLevel=100','partner.para.energyLevel=100',
-             'partner.para.poopLevel=0','partner.para.tiredness=0',
+             'partner.para.poopLevel=100','partner.para.tiredness=0',
              'partner.para.sleepyHour=23','partner.para.wakeupHour=1',
              'partner.para.nextHungerHour=23','partner.para.remainingLifetime=1000')
         flag(e,735,True)
