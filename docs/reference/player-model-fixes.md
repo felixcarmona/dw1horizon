@@ -267,3 +267,32 @@ Replay with `tools/models/field_animations/animal_refine.py RECIPE SOURCE OUT`.
 programs, four-cycle playback, interpolated paw clearance, constant canine
 trunk height and complete sleeping limb lengths. The USA Kyubimon variant
 repeats the refinement on its own mesh.
+
+### Larval binding, wing follow-through and amphibian pace
+
+Wormmon uses Kunemon's complete native 28-bone hierarchy and animation
+programs through `native_binding.py`, rather than transferred rotations on
+its imported rig. The already reduced mesh is assigned piece by piece to
+native larval joints; the head and segmented antennae stay together.
+Mesh surface dimensions, texture coordinates and the Rookie size correction
+are retained. Native joint translations use a uniform 0.65 scale; native
+rotation, scale, timing and control instructions remain intact. Technique
+slots select native actions, and effect origins use the scaled native joints.
+
+Stingmon's four wing membranes remain attached to the thorax in their source
+idle planes. Their orientations lag the thorax slightly, with delayed flex
+between the upper and lower pairs. The membranes hinge down as the running
+thorax leans, keeping their trailing planes relaxed. Every other bone and all non-field
+programs retain the approved performance.
+
+Gizamon alternates diagonal supports with visible swing clearance, body bob,
+head response and delayed tail/fin motion. It walks at 20 units per logic tick
+and runs at 40, within native Rookie pace (Betamon 15/35, Agumon 22.5/45).
+Ankle planting and a second support solve keep stance toes on the floor.
+Its source limb lengths, folded hind-leg support pose, sleep and combat
+programs remain intact. The overlays and final provider hashes are pinned.
+
+`tools.test_followthrough` guards the wing-only change and active paw/body
+motion; `tools.test_native_bindings` compares Wormmon's hierarchy and all
+native programs against the donor. Review videos also include actual
+20-tick-per-second playback, alongside phase-aligned pose comparisons.
