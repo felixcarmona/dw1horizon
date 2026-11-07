@@ -69,11 +69,8 @@ jobs:
         shell: bash
         run: |
           # The engine and package stay the tag's; a page-only change is redeployed with workflow_dispatch from main.
-          git checkout "$GITHUB_SHA" -- web tools/site_digimon.py
-          for path in index.html style.css js i18n content media; do
-            rm -rf "build/pages-site/$path"
-            cp -R "web/$path" "build/pages-site/$path"
-          done
+          git checkout "$GITHUB_SHA" -- web tools/site_digimon.py tools/guide
+          python3 web/build.py --tag "$RELEASE_TAG" --out build/pages-site
           # The guide describes the tag's species, which this checkout still has; main may be ahead of the release.
           python3 tools/site_digimon.py --out build/pages-site/content/digimon.json
           test -z "$(tar -tzf build/pages-input/horizon-media.tar.gz | grep -vE '^[a-z0-9-]+\.(mp4|jpg)$')"
@@ -100,6 +97,7 @@ jobs:
           node web/test/i18n.mjs
           node web/test/changelog.mjs
           node web/test/changelog-browser.mjs build/pages-site
+          node web/test/data.mjs build/pages-site
           python3 -m http.server 8765 --bind 127.0.0.1 --directory build/pages-site > build/pages-server.log 2>&1 &
           server=$!
           trap 'kill "$server"; wait "$server" || true' EXIT

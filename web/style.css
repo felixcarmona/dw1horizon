@@ -524,3 +524,8 @@ section { padding-top: 120px; }
   .changelog-version { padding: 16px; }
   .changelog-version time { display: block; margin: 4px 0 0; }
 }
+
+/* The release-matched player data page shares this header. */
+.data-link { font-size: 13px; font-weight: 600; padding: 6px 10px; border-radius: 999px; }
+.data-link:hover { background: rgba(255,255,255,.7); }
+@media (max-width: 560px) { .bar { height: auto; min-height: 68px; flex-wrap: wrap; padding-block: 12px; } .bar .pill { margin-left: auto; } }
