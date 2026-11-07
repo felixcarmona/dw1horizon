@@ -674,7 +674,18 @@ its battle voice and partner voice use Tyrannomon's entries. The mesh and attack
 programs remain unchanged. The replay recipe and preceding delta are under
 `content/models/authoring/native-polish/260.json` and
 `content/modeldelta/authoring/260-before-native-polish.MMD.mdelta`. The final
-resident model uses 94,998 of 100,352 bytes; each cold read fits 8,192 bytes.
+resident model uses 99,406 of 100,352 bytes; each cold read fits 8,192 bytes.
+
+The foot mesh's sole plane, heel and toe define explicit forward-facing ground
+contacts. Each stride lands on its heel, holds the sole flat in world space,
+and rolls off its toe. Scaled two-bone IK and a cyclic pelvis-height envelope
+keep those contacts reachable; the swing fits the shorter imported legs.
+`sole_contacts.py` also fits the knee plane and ankle attachment through render
+subframes. Bounded forearm and tail corrections keep the larger appendages
+clear after grounding the pose. The native cadence, root channels, sound events, mesh, texture and
+attack programs remain identical to the preceding locomotion transfer. Review
+uses side/front foot close-ups and the animation studio's world-space gait
+curves alongside native Tyrannomon.
 
 Kimeramon's mesh and every animation translation are uniformly enlarged by
 1.5, including field, battle and menu clips. Its collision radius/height are

@@ -224,6 +224,7 @@ run dws-resource-tests $PY -W ignore -m unittest tools.test_dws_variants tools.t
 run partner-models $PY -W ignore -m unittest tools.test_partner_model_generators
 run model-meshes $PY -W ignore tools/test_meshcheck.py                    # no see-through model (Cherrymon's closed back)
 run model-apis $PY -W ignore -m unittest tools.test_model_provider tools.test_modeldelta tools.test_imported_model_edit tools.test_recordoriginals
+run sole-contacts $PY -m unittest tools.test_sole_contacts
 run model-tools-python $PY -m compileall -q tools/models
 run allocation-pools $PY -m unittest tools.test_allocation_pools
 run check-links       $PY tools/checkrefs.py
