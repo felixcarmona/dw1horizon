@@ -284,8 +284,9 @@ class GuardTests(unittest.TestCase):
             self.assertFalse(self.sp[238].get('vanilla'))
 
     def test_original_battle_specialties_are_preserved(self):
-        for t in (7, 11, 24, 27, 35, 53, 87):
+        for t in (7, 11, 24, 27, 35, 53):
             self.assertEqual(self.sp[t]['specialties'], T.S.disc_file(t)['specialties'])
+        self.assertEqual(self.sp[87]['specialties'], ['filth', 'nature', None])
 
     def test_mega_chain_uses_real_clock_and_lifetime(self):
         _, reqs, levels = T.model(self.sp)

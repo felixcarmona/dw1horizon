@@ -5,10 +5,10 @@
   "level": "champion",
   "vanilla_as": 5,
   "attribute": "virus",
-  "specialties": ["filth", "battle", null],
+  "specialties": ["filth", "battle", "mech"],
   "techniques": ["Odor Spray", "Poop Rnd Toss", "Horizontal Kick (55)", "Poop Spd Toss", "Rnd Spd Toss",
-                 "Big Poop Toss", "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab",
-                 "Death Claw"],
+                 "Big Poop Toss", "Metal Sprinter", "Muscle Charge", "War Cry", "Sonic Jab",
+                 "Death Claw", "Power Crane"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 42,
   "model": {
