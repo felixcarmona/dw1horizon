@@ -53,6 +53,7 @@ class ModelProvider(unittest.TestCase):
         # These overlays follow already baked field work; cover the live
         # generators separately while retaining the earlier authoring history.
         following = {
+            '307': ('307', 'tools.models.field_animations.black_king_numemon', '307-blackkingnumemon-slug'),
             '183': ('183', 'tools.models.field_animations.native_binding', '183-wormmon-native-crawl'),
             '187': ('187', 'tools.models.field_animations.followthrough', '187-stingmon-wing-followthrough'),
             '239': ('239', 'tools.models.field_animations.followthrough', '239-gizamon-active-gait'),
