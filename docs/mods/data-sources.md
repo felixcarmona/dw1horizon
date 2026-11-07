@@ -44,7 +44,14 @@ Stats: each of hp, mp, off, def, speed, brain, bits is **nothing** (its species'
 or a **fixed** number. The disc species' `wild` is their most common placed stats (the original sets stats by area: 125
 species placed with 278 stat sets), so 723 of the 989 slots write no stat at all and the rest are deltas. What equals the
 usual value is left out (y 0, rotation x/z 0, script id 5 + slot, current HP/MP = HP/MP, unk2 0, unk1 1, flee y 0).
-Proof: `content.py verify-maps` rebuilds the 242 `.MAP` files byte for byte.
+The format round trip preserves source bytes. `content.py verify-maps` lists gameplay differences from the source disc, including reviewed collision repairs.
+
+Native maps may also carry a `collision` list of reviewed tile edits. Each entry gives
+`tile: [x, z]`, `before`, `after` and a `reason`. Coordinates use the 100 by 100 collision grid;
+values are bytes. The build checks the expected source value before applying the edit,
+accepts an already applied edit, and rejects duplicate tiles. These repairs apply in both
+story modes. Amida Forest uses this for exposed stone edges; its trial triggers and routes
+remain open. Backgrounds, sprites and unrelated collision cells keep their source bytes.
 
 **One species per slot** (`content.py lint`, run by the build): MAPHEAD's `spawn(Species.X, slot=k)` (`maphead/hooks.py`)
 and a view's `npc(Species.X, slot=k)` must name the slot's species in content/maps, else the build stops (the engine's

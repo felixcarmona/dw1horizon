@@ -47,7 +47,7 @@ script 186 {
 
     on talk(bluemeramon3) replace {    // section 8
         say(bluemeramon3, text("s186.sec8.u0"));
+        battle();
         recruit(species("BlueMeramon"));
-        return;
     }
 }

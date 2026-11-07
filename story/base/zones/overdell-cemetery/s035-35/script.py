@@ -68,7 +68,10 @@ def talk():    # section 5
     play(11)
     wait(2500)
     play(anim.idle)
-    say(t5.u0)
+    if partner.species in (Species.Bakemon, Species.Bakemon157):
+        say(t5.u8)
+    else:
+        say(t5.u0)
     tamer.play(16)
     tamer.say(t5.u1)
     engine.no_cancel.set()
@@ -78,14 +81,24 @@ def talk():    # section 5
                 animate(bakemon, 11);
                 wait(45);
                 animate(bakemon, anim.idle);
-                say(bakemon, text("s035.sec5.u2"));
+                store_digimon_type(partner_type);
+                if (partner_type == 37 || partner_type == 157) {
+                    say(bakemon, text("s035.sec5.u9"));
+                } else {
+                    say(bakemon, text("s035.sec5.u2"));
+                }
                 choice(open) {
                     text("s035.sec5.m1.o0") => {
                         animate(bakemon, 12);
                         wait(58);
                         animate(bakemon, anim.idle);
                         animate(tamer, 15);
-                        say(bakemon, text("s035.sec5.u3"));
+                        store_digimon_type(partner_type);
+                        if (partner_type == 37 || partner_type == 157) {
+                            say(bakemon, text("s035.sec5.u10"));
+                        } else {
+                            say(bakemon, text("s035.sec5.u3"));
+                        }
                         animate(tamer, 16);
                         choice(open) {
                             text("s035.sec5.m2.o0") => {}
@@ -93,7 +106,12 @@ def talk():    # section 5
                                 animate(bakemon, 13);
                                 wait(34);
                                 animate(bakemon, 13);
-                                say(bakemon, text("s035.sec5.u4"));
+                                store_digimon_type(partner_type);
+                                if (partner_type == 37 || partner_type == 157) {
+                                    say(bakemon, text("s035.sec5.u11"));
+                                } else {
+                                    say(bakemon, text("s035.sec5.u4"));
+                                }
                                 loop {
                                     engine.no_cancel = false;
                                     run(bakemon, 1299, -1074);
