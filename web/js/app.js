@@ -942,6 +942,7 @@ function renderPatch() {
 // with what to do. The button stays: the browser may be wrong, and the build asks again before it starts.
 let room = null;          // {need, reason, free} of the last check
 let roomAsked = false;
+let roomReady = Promise.resolve();
 async function askRoom() {
   if (roomAsked) return;
   roomAsked = true;
@@ -958,7 +959,7 @@ function renderWarning(ready) {
   const t = i18n.t;
   let line = null, kind = null;
   if (ready && !building) {
-    if (!roomAsked) askRoom();
+    if (!roomAsked) roomReady = askRoom();
     const vars = { gb: gb(room?.need || 0) };
     if (room?.reason === 'quota') [line, kind] = [t('patch.lowSpace', vars), 'storage'];
     else if (room?.reason === 'unkept') [line, kind] = [t('patch.private', vars), 'private'];
@@ -977,6 +978,7 @@ async function patch() {
   keep.paused = true;                                // (the build needs the lock a copy holds: copied again after)
   keep.waiting = false;
   await stopCopy();
+  await roomReady;
   if (building || !patchState()[1]) { keep.paused = false; pumpCopies(); return; }
   $('#build-done').dataset.ready = '';
   const q = new URLSearchParams(location.search);
