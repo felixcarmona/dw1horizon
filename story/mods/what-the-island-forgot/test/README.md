@@ -36,3 +36,6 @@ the handover, cold read, animation and food effect still run in the game.
 The result records whether that fixture was used. `--item 5 --discipline 0`
 exercises Medium MP refusal; `--require-clip 13` requires that random branch.
 `--pixel U V` selects another safe setup point on the supplied shore map.
+
+`--state FIXTURE.state` resumes a fixture captured with the same disc before
+repositioning on the shore; this supports splitting long roster runs.

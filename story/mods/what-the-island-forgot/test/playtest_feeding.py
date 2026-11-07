@@ -102,13 +102,17 @@ def feed(e, out, sid, item=38, discipline=100, record=False, handoff=False):
                 'record', str(out / (label + '.mp4')), '18', '20'], env=e.env,
                 stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
         e.press('TRIANGLE', 12)
-        for _ in range(12):
+        for _ in range(60):
             if e.peek('PARTNER_STATE', 'B') == 5:
                 break
-            e.press('CONFIRM', 12)
+            # A care reaction can absorb the first menu press after staging.
+            e.press('CONFIRM' if e.peek('IS_IN_MENU', 'B') else 'TRIANGLE', 12)
             e.wait(.2)
         else:
-            raise AssertionError('inventory never started feeding')
+            e.run('shot', str(out / (label + '-start-failed.png')))
+            state = {name: e.peek(name, 'B') for name in
+                     ('TAMER_STATE', 'PARTNER_STATE', 'PARTNER_SUB_STATE', 'IS_IN_MENU')}
+            raise AssertionError(('inventory never started feeding', state))
         handoff = handoff and e.peek('PARTNER_SUB_STATE','B') in (0,1,2)
         if handoff:
             # Isolate the clip from large models' approach clearance. The real
@@ -174,6 +178,7 @@ def main():
     ap.add_argument('--discipline', type=int, default=100)
     ap.add_argument('--require-clip', type=int, choices=(8,13))
     ap.add_argument('--handoff-fixture', action='store_true', help='skip only the approach walk after selecting Use')
+    ap.add_argument('--state', type=Path, help='resume an explicit fixture state made with this disc')
     a = ap.parse_args()
     out = a.out.resolve()
     out.mkdir(parents=True, exist_ok=True)
@@ -191,7 +196,13 @@ def main():
     try:
         e.start(test_card(out))
         e.run('lua', f"PCSX.addBreakpoint({e.A('playMovie')},'Exec',4,'skip-intro',function() PCSX.getRegisters().GPR.n.a1=0 end)")
-        assert e.continue_game() == 0
+        if a.state:
+            e.run('load', str(a.state.resolve()))
+            e.run('resume')
+            e.wait(1)
+        else:
+            assert e.continue_game() == 0
+        assert len(e.ram()) == 2 * 1024 * 1024, 'feeding proof requires original 2 MB RAM'
         print('Continued on 2 MB',flush=True)
         put(e,'MOD_OPT_STORY','i',1)
         e.gs('set','gametime_running=0','hour=10','partner.para.condition=0',
