@@ -1,22 +1,18 @@
-"""Derive labelled recovery disks into existing field texture uploads.
+"""Derive depleted native battle HUD icons into existing field uploads.
 
-No new disc file, texture upload, or resident bitmap is required. An unused 16x16 cell at ETCTIM entry 1 (224,0) holds item 0; a
-32x16 cell at (224,16) holds item 4 with a wider pixel label. FEEL_EF CLUT rows 13/14 hold their own palettes with two unused inks
-replaced for a hand-pixelled label plate. The standalone FEEL_EF repeats those
-palettes so its ordinary upload cannot erase them. Labels never use a font.
+The 11x11 heart and MP orb retain their native outlines and bottom colour.
+The upper seven rows use a lighter empty graphite shade. Two existing 16x16
+cells and FEEL_EF palette rows 13/14 hold the art, without new uploads or RAM.
 """
 import struct
 from tools.localize.build import tim_entries
 
 PATH = 'ETCDAT/ETCTIM.BIN'
 FEEL = 'ETCDAT/FEEL_EF.TIM'
-# Two-texel strokes and gaps keep every part of M visible through native
-# point sampling. A wider tile holds the label without changing bubble size.
-TILES = ((224,0,16),(224,16,32))
-LABELS = (('HH.HH..PPPPP.', 'HH.HH..PP..PP', 'HHHHH..PP..PP', 'HHHHH..PPPPP.',
-           'HH.HH..PPPPP.', 'HH.HH..PP....', 'HH.HH..PP....'),
-          ('MM......MM..PPPPP.', 'MMMM..MMMM..PP..PP', 'MMMM..MMMM..PP..PP', 'MM..MM..MM..PPPPP.',
-           'MM..MM..MM..PPPPP.', 'MM......MM..PP....', 'MM......MM..PP....', 'MM......MM..PP....'))
+TILES = ((224,0,16),(224,16,16))
+ICONS = ((144,48), (155,48))  # ETCTIM entry 0, battle HUD heart and MP orb
+EMPTY = 10 | (10 << 5) | (11 << 10)  # RGB about 80/80/88: distinct from the black outline
+FILL_ROW = 7
 
 
 def _pixel(data, base, x, y):
@@ -32,13 +28,14 @@ def build(data):
     d = bytearray(data)
     entries = tim_entries(d)
     dst, bpp, w, h = entries[1]
-    src, sbpp, sw, sh = entries[6]
+    src, sbpp, sw, sh = entries[0]
     feel, fbpp, fw, fh = entries[3]
-    if (bpp,w,h,sbpp,sw,sh,fbpp,fw,fh) != (0,256,64,0,256,128,0,256,64) or \
+    if (bpp,w,h,sbpp,sw,sh,fbpp,fw,fh) != (0,256,64,0,256,64,0,256,64) or \
             struct.unpack_from('<4H',d,dst-8) != (960,448,64,64) or \
             struct.unpack_from('<4H',d,feel-8) != (960,384,64,64) or \
             struct.unpack_from('<4H',d,_clut(feel,16)-8) != (272,480,16,16) or \
-            struct.unpack_from('<4H',d,_clut(src,24)-8) != (224,488,16,24):
+            struct.unpack_from('<4H',d,src-8) != (896,384,64,64) or \
+            struct.unpack_from('<4H',d,_clut(src,16)-8) != (256,480,16,16):
         raise ValueError('unexpected care-bubble texture allocation')
     # Validate every destination before changing the caller's copy.
     for y in range(32):
@@ -47,28 +44,21 @@ def build(data):
     palette_base = _clut(feel,16)
     if any(d[palette_base+13*32:palette_base+15*32]):
         raise ValueError('care-bubble CLUT rows are occupied')
-    for which, (item, plate, ink, colour) in enumerate(((0,1,8,0x0852),(4,3,7,0x7c82))):
+    native_palette = list(struct.unpack_from('<16H',d,_clut(src,16)+11*32))
+    for which, (u_source, v_source) in enumerate(ICONS):
         u0,v0,width = TILES[which]
-        native = [[_pixel(d,src,item*16+x,y) for x in range(16)] for y in range(16)]
+        native = [[_pixel(d,src,u_source+x,v_source+y) for x in range(11)] for y in range(11)]
         used = {v for row in native for v in row}
+        empty = next(i for i in range(1,16) if i not in used)
+        palette = native_palette.copy()
+        palette[empty] = EMPTY
         tile = [[0]*width for _ in range(16)]
         for y,row in enumerate(native):
-            tile[y][(width-16)//2:(width+16)//2] = row
-        if plate in used or ink in used:
-            raise ValueError('native recovery disk uses reserved label inks')
-        palette = list(struct.unpack_from('<16H',d,_clut(src,24)+item*32))
-        palette[plate], palette[ink] = 0x7fff, colour
-        label = LABELS[which]
-        left = (width-len(label[0]))//2
-        top = 7 if which == 0 else 5
-        border = 1 if which == 0 else 0
-        for y in range(top,top+8):
-            for x in range(max(0,left-border),min(width,left+len(label[0])+border)):
-                tile[y][x] = plate
-        for y,row in enumerate(label):
-            for x,v in enumerate(row):
-                if v != '.':
-                    tile[y+top+8-len(label)][x+left] = ink
+            for x,index in enumerate(row):
+                colour = palette[index]
+                # Preserve transparency and the native near-black outline/rings.
+                coloured = max(colour & 31, (colour >> 5) & 31, (colour >> 10) & 31) > 2
+                tile[y][x] = empty if y < FILL_ROW and coloured else index
         struct.pack_into('<16H',d,palette_base+(13+which)*32,*palette)
         for y,row in enumerate(tile):
             for x,v in enumerate(row):

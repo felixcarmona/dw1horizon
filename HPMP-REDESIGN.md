@@ -1,11 +1,9 @@
 # HP/MP bubble proposals for v0.0.8
 
-Design review only. No game code, texture build recipe, condition rule, or patch
-series changes. The recommended starting point is **04: native battle HUD icons**:
-the heart is already associated with HP and the blue orb with MP, and both have
-strong silhouettes at the observed field size. The follow-up below addresses
-the plain heart’s possible affection reading; **4e** is the preferred refinement.
-No design is implemented.
+**Selected for v0.0.8: 4a**, the native battle HUD heart and MP orb with only
+the bottom approximately 30% coloured. Implementation and verification details
+are recorded below. The six-option and 4a–4e sections retain the design-review
+history; their recommendations and cost estimates predate this selection.
 
 ## Review assets
 
@@ -174,3 +172,130 @@ crops before sending. The 15 native panels and 15 integer 4× crops were checked
 for dimensions and exact pixel replication. This remains an offline design
 review: no fresh emulator build/run, projection sweep or physical hardware
 validation has been performed.
+
+
+## Implementation: 4a depleted native HUD icons
+
+The field care renderer replaces the recovery disks and their label plates with
+11×11 native heart/orb icons. The empty upper region uses **RGB5 (10,10,11)**,
+about **RGB (80,80,88)**, brighter than the design mockup’s graphite, to distinguish
+it from the original near-black outline. Only the bottom source rows 7–10 retain
+their native colour; no cross, warning marker, crack or text is added. The fill
+is a static low-resource warning, not an exact live percentage gauge.
+
+`tools/care_bubble_art.py` derives both icons from the player’s ETCTIM entry 0,
+using the original HUD palette at `(256,491)`. It preserves the native silhouette,
+transparent texels, black outline and lower red/blue colours, replacing only
+upper coloured texels with the empty shade. It stores each 11×11 icon at the
+upper left of an existing 16×16 cell `(224,0)` or `(224,16)` in entry 1, with private
+palettes in FEEL_EF rows 13/14. The standalone FEEL_EF repeats these palettes so
+its ordinary upload cannot erase them. The original battle HUD stays unchanged.
+
+The new unnumbered patch
+`Show-depleted-native-HUD-icons-for-HP-and-MP-care-needs.patch` changes only the
+resource icon descriptor and scale. Each icon spans 19.25 source units inside
+the unchanged 26-unit native circle; the game’s ordinary point sampling and
+perspective determine its final native-screen footprint. The eight condition
+slots, strict `<30%` thresholds, tails, group animation, layout, viewport/clock
+clamp and existing Square badge behaviour remain unchanged.
+
+Two 16×16 4-bit cells plus two palettes occupy **320 B**, down from **448 B** for
+the disk/label version. These bytes occupy existing fixed-size uploads and do
+not add a disc file, file-table entry, resident art array, heap allocation or GPU
+quad. The former MP cell’s extra 16×16 half is unused again. The renderer still
+emits one shell and one icon quad per resource bubble.
+
+The focused art tests verify reserved-byte-only writes, unchanged file sizes,
+native silhouettes and bottom colours, palette persistence, empty-area contrast,
+and surviving red/blue fill across sampling phases at 8–14 projected pixels.
+The existing care/threshold host checks and 194,400 layout cases pass.
+The full nine-language build and live 2 MB proof passed. The evidence is below.
+
+
+### Build, memory and live 2 MB evidence
+
+The full build used the standard command with `--jobs 8 --name hpmp-redesign`
+and all nine languages; no English-only subset or heap override was used.
+
+| Measurement | Previous disk/label renderer | 4a renderer | Change |
+|---|---:|---:|---:|
+| `main_BSS_END` | `0x801CE104` | `0x801CE0F4` | **−16 B** |
+| Aligned main heap | 187,888 B | 187,904 B | **+16 B** |
+| Reserved art/palette occupancy | 448 B | 320 B | **−128 B** |
+
+The old renderer was recompiled locally with the completed build’s identical
+English text bank, nine-language padding and generated option headers. The
+exported base ELF and all nine language ELFs agree on the new `main_BSS_END`.
+Normal heapcheck passes; all **320 actual-archive screen setups fit**, with a
+minimum **3,184 B margin on screen 207**. No persistent state or extra GPU packet
+is introduced. The texture-space saving does not reduce fixed file/upload sizes.
+
+All **nine language atlases** have byte-identical icon cells and palettes, and
+all **eight standalone FEEL copies** preserve them. ETCTIM remains **125,632 B**
+in every language. `build/hpmp-atlas-audit.json` records the per-language hashes;
+`build/hpmp-heap-delta.json` records the C comparison, and the build’s `heap.txt`
+and `story-heap.json` record the full heap gates.
+
+A fresh boot of the resulting disc uses **2,097,152 bytes of RAM**, with 8 MB
+mode explicitly false. The proof covers HP 29%, MP 29%, both at exactly 30%,
+each at 31%, both plus hunger and Square, empty inventory, full resources,
+optional and critical recovery ordering, and healing through the real care menu.
+One small recovery raises HP **290 → 790**, consumes one item and clears the HP
+bubble. The acceptance fixture sets discipline to 100 so normal item refusal
+cannot randomly turn this healing check into a Scold menu check; game refusal
+rules are unchanged.
+
+The maximum group was then recorded for **120 presented native frames** at
+centre, left, right, top, top-left and top-right: **720 frames total**. Every
+frame retains all eight conditions and Square, stays inside 320×240 and clears
+the visible clock. Actual resource GPU rectangles are logged, and their captured
+framebuffer pixels are checked: HP always retains at least **9 red pixels**,
+MP at least **14 blue pixels**. The upper empty region retains at least **50
+grey pixels in HP** and **38 in MP** across these recordings. These counts
+verify visible fill at the sampled real field depths; they do not claim a
+minimum for every possible camera depth.
+
+| Position | Recorded group bounds, including Square |
+|---|---|
+| Centre | `(125,53)–(200,87)` |
+| Left | `(75,52)–(150,86)` |
+| Right | `(241,52)–(317,86)` |
+| Top | `(127,6)–(197,36)` |
+| Top-left | `(76,6)–(144,36)` |
+| Top-right | `(248,6)–(317,36)` |
+
+The inspected live review sheet is
+`build/hpmp-4a-proof/HPMP-4a-2MB-sheet.png`: nine unaltered 320×240 captures,
+each paired with an exact 4× nearest-neighbour crop. It includes both single
+resources with Square, the hunger combination, and all six maximum-group
+positions. It was visually checked before sending. Native proof data is in
+`build/hpmp-4a-proof/result.json`; per-frame geometry and colour minima are in
+`build/hpmp-4a-edges/result.json`. Both proof emulators have stopped.
+
+Reproduce the live checks after the full build:
+
+```sh
+.venv/bin/python tools/dev/playtest/hpmp_bubbles.py build/hpmp-redesign.cue \
+  --exe build/hpmp-redesign/exe/SLUS_010.32 --card AGUMON.mcd \
+  --out build/hpmp-4a-proof --port 41084 --smoke
+.venv/bin/python tools/dev/playtest/hpmp_extremes.py build/hpmp-redesign.cue \
+  --exe build/hpmp-redesign/exe/SLUS_010.32 --card AGUMON.mcd \
+  --fixture build/hpmp-4a-proof --out build/hpmp-4a-edges \
+  --port 41085 --frames 120 --check-resource-fill
+.venv/bin/python tools/dev/playtest/hpmp_contact.py build/hpmp-4a-proof \
+  --edges build/hpmp-4a-edges
+DW_SELFTEST_DECOMP=build/decomp-dev DW_SELFTEST_DERIVE=build/hpmp-redesign \
+  DW_SELFTEST_OUT=build/hpmp-selftest-final \
+  DW_SELFTEST_REPORT=build/hpmp-selftest-final/report.jsonl tools/selftest.sh
+```
+
+Physical PlayStation and CRT readability remain untested. The existing Chinese
+8 MB restriction is unchanged: its atlas is verified in the nine-language build;
+the live low-resource and edge checks use English on 2 MB.
+
+
+The complete standard selftest passes **128 groups, 0 failed, 0 skipped**.
+Its final structured report is `build/hpmp-selftest-final/report.jsonl` and its
+console log is `build/selftest-final.log`. Patch-series application is included
+in that run. The earlier interrupted run is retained separately for diagnosis;
+the final result comes from a complete fresh run.

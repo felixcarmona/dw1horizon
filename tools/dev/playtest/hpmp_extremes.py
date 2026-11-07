@@ -39,7 +39,7 @@ def observer(e):
         end
       end)
       WORST.entry=PCSX.addBreakpoint(@ENTRY@,'Exec',4,'worst-render',function()
-        WORST.active=true;WORST.quads={};WORST.first=u32(@PACKET@)-2147483648
+        WORST.active=true;WORST.quads={};WORST.resources={};WORST.first=u32(@PACKET@)-2147483648
         if not WORST.ret then
           WORST.ret=PCSX.addBreakpoint(tonumber(PCSX.getRegisters().GPR.n.ra),'Exec',4,'worst-return',function()
             if not WORST.active then return end
@@ -57,6 +57,10 @@ def observer(e):
                   l=math.min(l,x);r=math.max(r,x);t=math.min(t,y);b=math.max(b,y)
                 end
                 WORST.quads[#WORST.quads+1]={l,t,r,b}
+                local u=tonumber(m[cursor+12]);local v=tonumber(m[cursor+13])
+                if u==224 and (v==192 or v==208) then
+                  WORST.resources[#WORST.resources+1]=string.format('[%d,%d,%d,%d,%d]',v==192 and 6 or 7,l,t,r,b)
+                end
               elseif words==4 and cmd>=100 and cmd<=103 then
                 l=s16(cursor+8)+ox;t=s16(cursor+10)+oy
                 r=l+u16(cursor+16);b=t+u16(cursor+18)
@@ -68,8 +72,8 @@ def observer(e):
             for _,q in ipairs(WORST.quads) do
               l=math.min(l,q[1]);t=math.min(t,q[2]);r=math.max(r,q[3]);b=math.max(b,q[4])
             end
-            WORST.report=string.format('{"clock":%d,"condition":%d,"badge":%d,"phase":%d,"quads":%d,"bounds":[%d,%d,%d,%d]}',
-              u32(@CLOCK@),u32(@PARA@),u32(@BADGE@),u32(@PHASE@),#WORST.quads,l,t,r,b)
+            WORST.report=string.format('{"clock":%d,"condition":%d,"badge":%d,"phase":%d,"quads":%d,"bounds":[%d,%d,%d,%d],"resources":[%s]}',
+              u32(@CLOCK@),u32(@PARA@),u32(@BADGE@),u32(@PHASE@),#WORST.quads,l,t,r,b,table.concat(WORST.resources,','))
           end)
         end
       end)
@@ -125,11 +129,34 @@ def zoom(out,name,bounds):
     im.crop((x,y,x+120,y+96)).resize((480,384),Image.Resampling.NEAREST).save(out/(name+'-4x.png'))
 
 
+def resource_fill(raw, records):
+    """Check captured framebuffer colours inside the actual resource GPU quads."""
+    minima={6:[10000,10000],7:[10000,10000]}
+    with raw.open('rb') as stream:
+        for record in records:
+            frame=stream.read(320*240*2);assert len(frame)==320*240*2
+            assert sorted(q[0] for q in record['resources'])==[6,7]
+            for which,left,top,right,bottom in record['resources']:
+                colour=empty=0
+                for y in range(max(0,top),min(240,bottom)):
+                    for x in range(max(0,left),min(320,right)):
+                        c=struct.unpack_from('<H',frame,2*(y*320+x))[0]
+                        r,g,b=c&31,(c>>5)&31,(c>>10)&31
+                        colour+=int(r>g+3 and r>b+3 if which==6 else b>r+3 and b>g)
+                        empty+=int(max(r,g,b)-min(r,g,b)<=3 and 7<=max(r,g,b)<=14)
+                assert colour>=2,(which,'lost coloured fill',record['bounds'])
+                assert empty>=4,(which,'lost empty area',record['bounds'])
+                minima[which]=[min(minima[which][0],colour),min(minima[which][1],empty)]
+        assert not stream.read(1),'extra framebuffer data'
+    return {str(k):{'minimum_coloured_pixels':v[0],'minimum_empty_pixels':v[1]} for k,v in minima.items()}
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('disc');p.add_argument('--exe',required=True);p.add_argument('--card',required=True)
     p.add_argument('--fixture',type=Path,default=Path('build/hpmp-proof'))
     p.add_argument('--out',type=Path,required=True);p.add_argument('--allow-clipping',action='store_true')
+    p.add_argument('--check-resource-fill',action='store_true',help='Check visible red/blue fill and empty areas in every captured frame')
     p.add_argument('--port',type=int,default=38864);p.add_argument('--frames',type=int,default=120)
     a=p.parse_args();a.out=a.out.resolve();a.out.mkdir(parents=True,exist_ok=True)
     expected=json.loads((a.fixture/'fixture.json').read_text())['exe_sha256']
@@ -172,6 +199,8 @@ def main():
             clock_overlap=bounds[0]<clock_right and bounds[2]>clock_right-52 and bounds[1]<84 and bounds[3]>16
             result['cases'][name]={'position':xyz,'projected_head':projected,'state':got,
                 'bounds':bounds,'clipped':clipped,'clock_overlap':clock_overlap,'frames':records}
+            if a.check_resource_fill:
+                result['cases'][name]['resource_fill']=resource_fill(raw,records)
             print(name,'bounds',bounds,'clipped',clipped,'clock overlap',clock_overlap,flush=True)
             subprocess.run([sys.executable,str(ROOT/'tools/dev/presented_frames.py'),'mp4',str(raw),str(a.out/(name+'.mp4'))],check=True)
             if not a.allow_clipping:assert not clipped and not clock_overlap,(name,bounds,clock_overlap)

@@ -6,13 +6,32 @@ Square can still open the care menu above the threshold when the bag has a field
 
 ## Pixel art and native layout
 
-The HP bubble uses the native sm.recovery disk (ITEM.TIM item 0, palette 0). The MP bubble uses the native MP Floppy (item 4, palette 4). Both preserve their native pixels outside a small white label plate. HP uses dark-red pixel letters; MP uses blue pixel letters. HP uses seven pixel rows; MP uses eight. The MP M is ten source texels wide, with two-texel outer stems, stepped diagonals, a deep central join and two-texel valleys. A two-texel gap separates M from P. A sampling regression covers four sampling phases and five projected steps so neither outer stem nor the middle strokes disappear at native scale. No font rasterizer, text string, blur or filtered resampling is involved. All nine languages share these same pixels.
+For v0.0.8, HP and MP use the game’s native battle HUD heart and MP orb, with
+only their bottom approximately 30% coloured. The upper coloured texels become
+an empty graphite shade, RGB5 `(10,10,11)`, distinct from the black outline.
+Transparency, native outlines and lower red/blue pixels are preserved. The
+existing battle HUD itself is unchanged. These are static low-resource icons;
+there is no extra percentage state, label band, recovery disk or text.
 
-The HP icon occupies a previously empty 16×16 cell `(224,0)` of ETCTIM.BIN entry 1, uploaded at `(960,448)`. MP uses a 32×16 cell at `(224,16)`: its original 16×16 disk stays centred at the same scale, while the wider pixel label preserves both M stems through native point sampling. The two cells and palettes use 448 B of existing uploads. Their private palettes use the empty rows 13 and 14 of FEEL_EF's CLUT block at `(272,480)`, i.e. VRAM rows 493 and 494. Each copies its own item's palette and replaces only two inks unused by that disk. The standalone FEEL_EF file repeats those palette rows so its ordinary upload preserves them.
+The 11×11 sources come from ETCTIM entry 0 at `(144,48)` and `(155,48)`, using
+palette `(256,491)`. `tools/care_bubble_art.py` derives them into the existing
+16×16 cells `(224,0)` and `(224,16)` of entry 1, uploaded at `(960,448)`.
+FEEL_EF CLUT rows 13/14 hold their palettes; the standalone FEEL_EF repeats them
+so its ordinary upload cannot erase the private colours. Occupancy is **320 B**,
+replacing the prior disk/label version’s 448 B. Upload/file sizes stay fixed;
+no new file, bitmap array, buffer or allocation is added.
 
-The art is derived from the player's existing texture stack by `tools/care_bubble_art.py`. The files retain their original sizes and upload rectangles; no disc file, file-table name, bitmap array, heap buffer or upload is added. FEEL_EF is one common replacement, not a per-language duplicate. Two resource bubbles add four ordinary textured quads (up to 160 command bytes per field frame) in the existing GPU packet buffers.
+The renderer uses an 11×11 descriptor and 7/4 scale, giving a 19.25-unit icon
+inside the native 26-unit circle. The existing 205/256 bubble scale, anchor,
+animation, row spacing, tail suppression and Square overlay are unchanged.
+One condition has a tail; two share a row without tails; three or more use the
+existing two-row layout. Two resources still add four ordinary textured quads,
+up to 160 command bytes per frame in the existing packet buffers.
 
-The existing condition ring now has eight slots: hunger, toilet, sleep, tiredness, sickness, injury, HP and MP. HP/MP use the same native bubble background, anchor, 205/256 bubble scale, animation, row spacing, tail suppression, and Square overlay as the existing conditions. The disk occupies 20 texels inside the native 26-texel circular height, using the game's ordinary nearest-neighbour sprite scaling. One condition has a tail; two share a row without tails; three or more use the existing two-row layout. No mocked screen-space coordinates are used by the implementation.
+See [HPMP-REDESIGN.md](HPMP-REDESIGN.md) for the design history and current
+implementation evidence. The resident-memory tables below describe the earlier
+resource feature and disk/label iterations; the new icon patch’s measurements
+are recorded separately with its patch index row.
 
 ## Maximum simultaneous conditions and screen edges
 
@@ -53,7 +72,7 @@ The feature-only comparison, before permanent HUD integration, uses identical fl
 
 The resource patch costs 416 resident bytes; moving existing UI routine/data into MENU saves 596 B; viewport/clock protection costs 336 B; the wider MP descriptor costs 32 B. Combined resident growth is **188 B**, and aligned heap decreases **176 B**. No BSS is added: it remains **621,116 B**. Final main text/rodata/data are **510,016 / 29,656 / 134,264 B**. MENU grows 624 B overall, retains **27 sectors** and stays within its linker read bounds. Normal heapcheck passes without an override; all **320 actual-archive screen setups fit**, with a tightest margin of **1,744 B on screen 207**.
 
-The generated care-art cells and palettes match byte-for-byte across all nine language atlases, including the corrected M. ETCTIM remains 125,632 B in every language. The eight generated common FEEL copies match the same private palettes, with no foreign FEEL duplicates.
+The generated care-art cells and palettes match byte-for-byte across all nine language atlases, for the shared resource icons. ETCTIM remains 125,632 B in every language. The eight generated common FEEL copies match the same private palettes, with no foreign FEEL duplicates.
 
 ## Permanent HUD integration
 
@@ -91,3 +110,27 @@ Field and menu captures pass in both fonts for English, Spanish, Brazilian Portu
 - Complete toolchain: `DW_SELFTEST_DERIVE=build/hpmp-bubble tools/selftest.sh`.
 
 The native evidence, raw PNGs, 4× crops and machine-readable results stay local under `build/hpmp-proof-wide/` and `build/hpmp-extremes-wide/`. Disc-derived pixels are not committed.
+
+
+## v0.0.8 depleted-icon verification
+
+The selected 4a heart/orb replacement builds in all nine language atlases, with
+identical resource pixels and palettes and unchanged upload sizes. Compared with
+the immediately preceding disk/label renderer under identical language padding,
+`main_BSS_END` falls from **0x801CE104 to 0x801CE0F4**, saving **16 resident bytes**.
+Aligned heap grows from **187,888 to 187,904 B**. Normal heapcheck passes and all
+**320 actual-archive screen setups fit**, minimum **3,184 B on screen 207**.
+Art occupancy falls from **448 to 320 B** inside existing uploads; there is no
+new allocation, persistent state, file, or GPU quad.
+
+A fresh native 2 MB proof passes 29/30/31% resource boundaries, combined needs,
+empty inventory, recovery sorting and recovery use. Six maximum-group positions
+pass **720 presented frames** with all eight conditions and Square inside the
+viewport and clear of the clock. Every recorded frame retains at least **9 red
+HP pixels and 14 blue MP pixels**, with a distinct empty grey region. The
+inspected native/4× sheet is `build/hpmp-4a-proof/HPMP-4a-2MB-sheet.png`.
+See [HPMP-REDESIGN.md](HPMP-REDESIGN.md) for commands and complete evidence.
+Physical hardware remains untested.
+
+The complete standard selftest passes **128 groups, 0 failed, 0 skipped**,
+including applying the entire unnumbered patch series to the pinned decomp.
