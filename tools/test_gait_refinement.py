@@ -25,7 +25,13 @@ class RefinedGaits(unittest.TestCase):
         records = {r['id']: r for r in json.loads((ROOT/'content/modeldelta/models.json').read_text())['models']}
         for path in (ROOT/'content/models/authoring/gait-refinement').glob('*.json'):
             cfg = json.loads(path.read_text())
-            self.assertEqual(cfg['output_sha256'], records[cfg['species']]['mmd']['sha256'])
+            next_recipe = ROOT/'content/models/authoring/animal-refinement'/path.name
+            if next_recipe.is_file():
+                next_cfg = json.loads(next_recipe.read_text())
+                expected = next_cfg['protected_prior']['sha256'] if cfg['species']==239 else next_cfg['source_sha256']
+                self.assertEqual(cfg['output_sha256'], expected)
+            elif not next_recipe.is_file():
+                self.assertEqual(cfg['output_sha256'], records[cfg['species']]['mmd']['sha256'])
             preceding = cfg['preceding_delta']
             self.assertEqual(preceding['sha256'], cfg['source_sha256'])
             self.assertEqual(hashlib.sha256((ROOT/preceding['delta']).read_bytes()).hexdigest(), preceding['delta_sha256'])

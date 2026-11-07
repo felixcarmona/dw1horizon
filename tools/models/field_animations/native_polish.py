@@ -208,7 +208,9 @@ def author(data, skeleton, sid, cfg):
             for b in cfg.get('secondary', []):
                 p[b][3:6] = source_frames[round(tick*(len(source_frames)-1)/(moved['n']-1))][b][3:6]
             for b, seq in moved['rot'].items():
-                p[b][3:6] = [round(v) for v in seq[tick]]
+                delay = cfg.get('rotation_delays', {}).get(str(b), 0)
+                sample = (tick-delay) % (moved['n']-1) if delay else tick
+                p[b][3:6] = [round(v) for v in seq[sample]]
             if auxiliary:
                 sample = round(tick*(auxiliary['n']-1)/(moved['n']-1))
                 for b, seq in auxiliary['rot'].items():
@@ -280,10 +282,16 @@ def author(data, skeleton, sid, cfg):
         for p, lift in zip(frames, lifts):
             p[carrier][7] -= round(lift)
         events = [(t, kind, ins) for t, kind, ins in moved['events'] if kind == 'sound']
+        if str(slot) in cfg.get('retime', {}):
+            from tools.models.field_animations.pace import _root_channels, _retimed_events
+            timing = cfg['retime'][str(slot)]
+            events = _retimed_events(events, len(frames)-1, timing['ticks'])
+            frames = _root_channels(frames, timing['ticks'], timing['speed'])
+            mmd.close_loop(frames, moved['loop'])
         animation = mmd.encode_anim(frames, nb, moved['loop'], events, tol=cfg.get('tolerance', 2), repeats=False)
         result.anims.table[slot] = len(result.anims.anims)
         result.anims.anims.append(animation)
-        reports.append(dict(slot=slot, samples=len(frames), native_timing=True, scale=scale, max_lift=max(lifts)))
+        reports.append(dict(slot=slot, samples=len(frames), native_timing=str(slot) not in cfg.get('retime', {}), scale=scale, max_lift=max(lifts)))
     for anim in result.anims.anims:
         anim.tail = b''
     result.anims.anims, result.anims.table = motioncyclelayer.share_identical_streams(result.anims.anims, result.anims.table)

@@ -231,3 +231,39 @@ Recipes and pinned input deltas live under
 `tools.test_gait_refinement` replays the artifacts and checks unaffected programs,
 meshes, cyclic playback, interpolated sole clearance and resident/cold storage.
 The World 3 USA variant repeats the refinement on its own Kyubimon mesh.
+
+## Canine, larval and amphibian donor refinement
+
+Stingmon's shoe meshes have mirrored widths and different joint origins. Their
+centroids cannot define the sole frame. Forward and plantar directions are
+calibrated from centered geometry. The left ankle now follows the
+approved opposite-side foot performance at the opposing phase, calibrated to
+that shoe frame. Only the affected leg's rotations change; the other limbs,
+body, hands, mesh and nonlocomotion programs remain exact.
+
+Kyubimon uses Garurumon's canine shoulder, hock and muzzle layout. Its
+alternating walking footfalls are accelerated for the run instead of using a
+bounding performance. The trunk has constant vertical position throughout
+walk, tired walk and run. Individual limb solves clear interpolated swing
+arcs without raising the whole animal. The tail fan retains its shape and
+follows delayed native tail rotations. Cadence follows the native stride travel.
+
+Wormmon keeps the uniform 0.65 Rookie resize. Kunemon supplies its segmented
+body flexion and travelling proleg wave; the curl is reduced for Wormmon's
+longer, lower silhouette. Its head attachments remain on their own joints.
+Battle, care, mesh and attachment sizing remain exact to the resized model.
+
+Gizamon's gait is rebuilt from the raw importer geometry. Betamon supplies a
+low amphibian body and four short support limbs; Gabumon's upright performance
+would not match that layout. The original long hind limbs fold rearward, with
+paws beneath the flanks. Source lengths remain intact in sleep and settling.
+The pinned prior delta protects unrelated combat programs, while the field and
+care programs are authored from the raw model. No old field gait is reused.
+
+Pinned recipes and prior deltas are under
+`content/models/authoring/animal-refinement/` and `content/modeldelta/authoring/`.
+Replay with `tools/models/field_animations/animal_refine.py RECIPE SOURCE OUT`.
+`tools.test_animal_refinement` verifies provenance, unaffected channels and
+programs, four-cycle playback, interpolated paw clearance, constant canine
+trunk height and complete sleeping limb lengths. The USA Kyubimon variant
+repeats the refinement on its own mesh.

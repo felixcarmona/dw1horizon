@@ -1,0 +1,312 @@
+{
+  "species": 409,
+  "donor": 22,
+  "model": "extracted/CHDAT/MMD0/GARU.MMD",
+  "carrier": 1,
+  "scale": 0.95,
+  "rest_slot": 33,
+  "map": {
+    "1": 14,
+    "2": 2,
+    "9": 4,
+    "19": 15,
+    "20": 16,
+    "21": 16,
+    "22": 16,
+    "23": 16,
+    "24": 16,
+    "25": 16,
+    "26": 16
+  },
+  "legs": [
+    [
+      3,
+      4,
+      5,
+      5,
+      13,
+      13
+    ],
+    [
+      6,
+      7,
+      8,
+      8,
+      9,
+      9
+    ],
+    [
+      13,
+      14,
+      15,
+      15,
+      21,
+      21
+    ],
+    [
+      16,
+      17,
+      18,
+      18,
+      25,
+      25
+    ]
+  ],
+  "feet": [
+    5,
+    8,
+    15,
+    18
+  ],
+  "secondary": [
+    10,
+    11,
+    12,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26
+  ],
+  "chains": [
+    [
+      3,
+      4,
+      11,
+      12
+    ],
+    [
+      4,
+      5,
+      12,
+      13
+    ],
+    [
+      6,
+      7,
+      7,
+      8
+    ],
+    [
+      7,
+      8,
+      8,
+      9
+    ],
+    [
+      13,
+      14,
+      19,
+      20
+    ],
+    [
+      14,
+      15,
+      20,
+      21
+    ],
+    [
+      16,
+      17,
+      23,
+      24
+    ],
+    [
+      17,
+      18,
+      24,
+      25
+    ]
+  ],
+  "pole": [
+    0,
+    0,
+    1
+  ],
+  "skeleton": [
+    [
+      -1,
+      -1
+    ],
+    [
+      0,
+      0
+    ],
+    [
+      1,
+      1
+    ],
+    [
+      2,
+      2
+    ],
+    [
+      3,
+      3
+    ],
+    [
+      4,
+      4
+    ],
+    [
+      5,
+      2
+    ],
+    [
+      6,
+      6
+    ],
+    [
+      7,
+      7
+    ],
+    [
+      8,
+      2
+    ],
+    [
+      9,
+      9
+    ],
+    [
+      10,
+      9
+    ],
+    [
+      11,
+      9
+    ],
+    [
+      12,
+      1
+    ],
+    [
+      13,
+      13
+    ],
+    [
+      14,
+      14
+    ],
+    [
+      15,
+      1
+    ],
+    [
+      16,
+      16
+    ],
+    [
+      17,
+      17
+    ],
+    [
+      18,
+      1
+    ],
+    [
+      19,
+      19
+    ],
+    [
+      20,
+      19
+    ],
+    [
+      21,
+      19
+    ],
+    [
+      22,
+      19
+    ],
+    [
+      23,
+      19
+    ],
+    [
+      24,
+      19
+    ],
+    [
+      25,
+      19
+    ]
+  ],
+  "source_sha256": "70d424e69bfc235a6ef050cb3ec858201877024d646ac0afb909bf1174e073eb",
+  "scales": {
+    "2": 0.95,
+    "3": 0.8,
+    "4": 0.95
+  },
+  "donor_sha256": "aa30bb3d1994d1c889c660bbd577b8b29971192676d39f4b111a8cdbfa82159f",
+  "anatomical_terminals": false,
+  "contact_height": true,
+  "rotation_weights": {
+    "1": 0.18,
+    "2": 0.18,
+    "9": 0.3,
+    "19": 0.4,
+    "20": 0.35,
+    "21": 0.35,
+    "22": 0.35,
+    "23": 0.35,
+    "24": 0.35,
+    "25": 0.35,
+    "26": 0.35
+  },
+  "vertical_motion": 0,
+  "foot_lift": 0.45,
+  "maximum_support_gap": {
+    "2": 2,
+    "3": 2,
+    "4": 2
+  },
+  "reason": "Garurumon matches a canine shoulder, hock, muzzle and tail layout. Use its alternating four-paw walking pattern at a faster cadence for running, with a level trunk, rather than its bounding run.",
+  "rotation_delays": {
+    "20": 0,
+    "21": 1,
+    "22": 2,
+    "23": 3,
+    "24": 0,
+    "25": 1,
+    "26": 2
+  },
+  "donor_slots": {
+    "2": 2,
+    "3": 2,
+    "4": 2
+  },
+  "native_bend": true,
+  "retime": {
+    "2": {
+      "ticks": 12,
+      "speed": 19
+    },
+    "3": {
+      "ticks": 17,
+      "speed": 11.3
+    },
+    "4": {
+      "ticks": 6,
+      "speed": 38
+    }
+  },
+  "preceding_delta": {
+    "sources": [
+      {
+        "path": "build/rescue-kyubimon/Kyubimon.MMD",
+        "sha256": "8ea6b2b3dc730caeaec6b326d04b733d83fd53a00e61d1f3801190d7b072853d",
+        "size": 97902
+      }
+    ],
+    "delta": "content/modeldelta/authoring/409-before-animal-refinement.MMD.mdelta",
+    "delta_sha256": "f4b273a2c164477219f07bc1c7722ef2afce46d54f462062379d9cf1c04c5f3f",
+    "sha256": "70d424e69bfc235a6ef050cb3ec858201877024d646ac0afb909bf1174e073eb",
+    "size": 107948
+  },
+  "output_sha256": "234348cb00b8724fbc66d1e4e9900a57255ba0da07b3cccb003ca9dd53b07468"
+}
