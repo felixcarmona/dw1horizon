@@ -42,9 +42,16 @@ def authored_texts(root):
 
 
 def authored_recipe(obj, data, tool_root=None, words=()):
+    import re
     root = str(Path(tool_root) if tool_root else Path(__file__).resolve().parents[2])
     name = obj['section'].split('.')[-1]
     choices = []
+    if (obj['source'] == 'src/main/partner_impl.c'
+            and obj['section'] == '.rodata.uv.0'):
+        choices = [('care_hud_layout', [])]
+    if (obj['source'] == 'src/main/game_menu.c'
+            and re.fullmatch(r'\.(?:sdata|rodata)\.PIECES_(?:\.\d+)?', obj['section'])):
+        choices = [('text_piece_origin', [])]
     if name == 'MOD_LANGUAGE_TITLES':
         choices = [('language_flags', ['titles'])]
     if name == 'MOD_LANGUAGE_TITLE_GLYPHS':

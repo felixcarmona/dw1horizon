@@ -50,6 +50,14 @@ CACHE = os.path.join(ROOT, 'build/mem-types-{}.pickle')
 
 
 def obj_glob():
+    explicit = os.environ.get('DW_OBJECT_DIR')
+    if explicit:
+        directory = os.path.realpath(explicit)
+        pattern = os.path.join(directory, OBJ_SUB)
+        if not glob.glob(pattern, recursive=True):
+            raise RuntimeError('DW_OBJECT_DIR contains no compiled debug objects')
+        import hashlib
+        return pattern, hashlib.sha256(directory.encode()).hexdigest()[:16]
     try:
         b = build()
     except SystemExit:                       # no emulator running: the mods build's types

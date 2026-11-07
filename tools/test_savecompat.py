@@ -46,6 +46,43 @@ class SaveCompatibility(unittest.TestCase):
             emu.press('CANCEL', 4)
             self.assertEqual([call[1] for call in calls], expected)
 
+    def test_retired_frame_rate_checks_the_automatic_selector(self):
+        for mode in (0, 2, 1):
+            emu=SimpleNamespace(has=lambda name:name=='modCpuProbe',peek=lambda *args:mode)
+            rows=[];releases.compare_option(rows,emu,'frameRate',30,{})
+            self.assertEqual(rows[0][0],mode in (0,2))
+        legacy=SimpleNamespace(has=lambda name:False)
+        rows=[];releases.compare_option(rows,legacy,'frameRate',30,{'frameRate':20})
+        self.assertFalse(rows[0][0])
+        rows=[];releases.compare_option(rows,legacy,'unrecognized',7,{})
+        self.assertFalse(rows[0][0])
+
+    def test_resave_normalizes_only_retired_presentation_bytes(self):
+        original=bytes([1,0,30,0,2,0,1,1,1,1,1,1,0,3,71,82])
+        automatic=SimpleNamespace(has=lambda name:name=='modCpuProbe')
+        current=releases.resaved_option_prefix(automatic,original)
+        expected=bytearray(original);expected[1]=1;expected[2]=20;expected[3]=1;expected[13]=0
+        self.assertEqual(current,bytes(expected));self.assertEqual(current[14:],original[14:])
+        self.assertEqual(original[2],30)
+        legacy=SimpleNamespace(has=lambda name:name!='modCpuProbe')
+        self.assertEqual(releases.resaved_option_prefix(legacy,original),original)
+        for length in range(4):self.assertEqual(len(releases.resaved_option_prefix(automatic,original[:length])),length)
+
+    def test_warp_answers_arrival_dialogue_and_requires_the_target_screen(self):
+        for final_screen in (218,204):
+            emu=object.__new__(releases.Emu);writes=[];controls=[]
+            emu.api=lambda *args,**kwargs:None;emu.wait=lambda seconds:None
+            emu.poke=lambda name,data:writes.append(name)
+            def control():controls.append(True);return True
+            emu.in_control=control
+            def peek(name,fmt,ram=None):
+                if name=='CURRENT_SCREEN':return 218 if ram is not None else final_screen
+                if name=='TAMER_STATE':return 6
+                return 0
+            emu.peek=peek;emu.ram=lambda:b'RAM'
+            self.assertEqual(emu.warp(218),final_screen==218)
+            self.assertEqual(controls,[True]);self.assertEqual(writes[-1],'TAMER_STATE')
+
     def test_release_hook_always_checks_files_and_optional_emulator(self):
         from patcher import dwpatch
         args = SimpleNamespace(save_check_emu=False, variant=['everything=build/everything.bin'])
