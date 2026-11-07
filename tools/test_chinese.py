@@ -131,6 +131,31 @@ class ChineseContainerTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'checksum'):
             resources.validate(broken)
 
+    def test_component_replay_reads_lazy_browser_sources_once(self):
+        from collections import Counter
+        from tools.isowriter import Source
+        from tools.patcher import chinese_container as container
+        names = bytes(resources.NAME_COUNT * resources.NAME_SIZE)
+        parts = dict(module=b'runtime', font=self.font, patch=self.patch, names=names,
+                     compact=resources.compact_font(), english_names=names, resource=b'story')
+        recipe = dict(format=1, **{key:key for key in parts if key != 'resource'}, resources=[
+            dict(name='DG.SCN', story=0, source='shared', file='resource'),
+            dict(name='DG.SCN', story=1, source='shared', file='resource')])
+        expected = container.rebuild(recipe, parts)
+        reads = Counter()
+        def read(key):
+            reads[key] += 1
+            return parts[key]
+        lazy = {key:Source(len(value), lambda key=key:read(key)) for key,value in parts.items()}
+        lazy['unrelated'] = Source(1, lambda: self.fail('unrelated files must remain lazy'))
+        actual = container.rebuild(recipe, lazy)
+        self.assertEqual(actual, expected)
+        self.assertEqual(reads, Counter({key:1 for key in parts}))
+        self.assertEqual(resources.validate(actual), 2)
+        damaged = dict(lazy, font=Source(1, lambda:b'bad font'))
+        with self.assertRaises(ValueError):
+            container.rebuild(recipe, damaged)
+
     def test_component_replay_rebuilds_regional_geometry_and_rejects_alias_changes(self):
         from tools.patcher import chinese_container as container
         with tempfile.TemporaryDirectory() as tmp:

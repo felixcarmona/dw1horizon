@@ -1396,7 +1396,7 @@ def derive_run(root, recipe, facts, record=False, jobs=None, log=None, source_di
             env.pop(name, None)
     t0 = time.time()
     lines = []
-    lf = open(log, 'w', encoding='utf-8') if log else None
+    lf = open(log, 'w', encoding='utf-8', buffering=1) if log else None
     if lf:lf.write('Command: '+repr(argv)+'\n')
     p = None
     job = None

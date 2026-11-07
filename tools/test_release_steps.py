@@ -6,10 +6,25 @@ import tempfile
 import unittest
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0,str(Path(__file__).resolve().parent/'patcher'))
 from tools.release_steps import Store,Step,run
 
 
 class RecoveryTests(unittest.TestCase):
+    def test_native_runtime_keys_the_immutable_compiler_image(self):
+        from unittest.mock import patch
+        from tools import release_recovery as recovery
+        values=['["python",{}]','sha256:first','["python",{}]','sha256:changed']
+        with patch.object(recovery.subprocess,'check_output',side_effect=values) as command:
+            first=recovery.native_runtime();second=recovery.native_runtime()
+        self.assertEqual(first['python'],second['python'])
+        self.assertNotEqual(first['toolchain'],second['toolchain'])
+        self.assertEqual(command.call_args_list[1].args[0],
+                         ['docker','image','inspect','--format','{{.Id}}','dw-build'])
+        with patch.object(recovery.subprocess,'check_output',side_effect=['["python",{}]','']):
+            with self.assertRaisesRegex(RuntimeError,'toolchain image'):
+                recovery.native_runtime()
+
     def test_middle_failure_blocks_dependants_and_keeps_independent_work(self):
         with tempfile.TemporaryDirectory() as td:
             root=Path(td);calls=[]

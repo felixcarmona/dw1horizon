@@ -65,7 +65,9 @@ def native_runtime():
     if not interpreter.exists():interpreter=Path(sys.executable)
     code="import json,sys;from tools.derive.cache import runtime_sources;print(json.dumps([sys.version,runtime_sources()]))"
     value=subprocess.check_output([str(interpreter),'-B','-c',code],cwd=ROOT,text=True)
-    return json.loads(value)
+    toolchain=subprocess.check_output(['docker','image','inspect','--format','{{.Id}}','dw-build'],cwd=ROOT,text=True).strip()
+    if not toolchain:raise RuntimeError('native toolchain image has no identity')
+    return dict(python=json.loads(value),toolchain=toolchain)
 
 
 def prepare_decomp(context, runner, destination, revision=None, source=None):
@@ -505,7 +507,7 @@ def locked_driver(a):
     history=out/'rounds'/f'round-{round_number:03}-logs';history.mkdir(parents=True,exist_ok=True)
     for relative,label in (('recovery/context.json','context.json'),('recovery/plan.json','driver-plan.json'),
                            ('package-state/plan.json','package-plan.json'),('package-state/round.json','package-round.json'),
-                           ('package-timing.json','package-timing.json')):
+                           ('package-timing.json','package-timing.json'),('browser.log','browser-runner.log')):
         if (out/relative).is_file():shutil.copy2(out/relative,history/label)
     for row in result['steps']:
         if row.get('log') and Path(row['log']).is_file():
