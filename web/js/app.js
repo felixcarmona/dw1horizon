@@ -93,9 +93,11 @@ function fixes(kind, bytes = 0) {
   if (kind === 'storage') {
     add('fix.private');
     add('fix.freeDisk', room);
+    add('fix.persist');
+    add('fix.storageBrowser');
     const kept = keptBytes();
     if (kept) add('remember.freeSpace', { gb: gb(kept) });
-    elsewhere();
+    if (hasDesktop() || isMobile()) elsewhere();
   } else if (kind === 'private') {
     elsewhere();                                     // (the warning itself says to open a normal window)
   } else if (kind === 'blocked') {
@@ -939,7 +941,7 @@ function renderPatch() {
 }
 
 // Before a build: is there room for it in this browser? Asked once the four discs are ready (js/engine/engine.js
-// checkRoom; it makes a file of the build's size for a moment, so not for every visitor), and said under the button
+// checkRoom; a small write checks access), and said under the button
 // with what to do. The button stays: the browser may be wrong, and the build asks again before it starts.
 let room = null;          // {need, reason, free} of the last check
 let roomAsked = false;
@@ -950,7 +952,7 @@ async function askRoom() {
     const need = await buildRoom([...games.values()].reduce((n, g) => n + (g.cur?.file?.size || 0), 0));
     const q = new URLSearchParams(location.search);
     // (under the build lock, as copies and builds are: not while another tab builds; no warning then)
-    room = await withLock((free) => (free ? checkRoom(need, TEST && Number(q.get('room')) || need) : null));
+    room = await withLock((free) => (free ? checkRoom(need, TEST && Number(q.get('room')) || undefined) : null));
   } catch { room = null; }
   renderPatch();
 }
@@ -961,7 +963,8 @@ function renderWarning(ready) {
   if (ready && !building) {
     if (!roomAsked) askRoom();
     const vars = { gb: gb(room?.need || 0) };
-    if (room?.reason === 'quota') [line, kind] = [t('patch.lowSpace', vars), 'storage'];
+    if (room?.reason === 'unknown') [line, kind] = [t('patch.unknownSpace', vars), 'storage'];
+    else if (room?.reason === 'estimate' || room?.reason === 'quota') [line, kind] = [t('patch.lowSpace', vars), 'storage'];
     else if (room?.reason === 'unkept') [line, kind] = [t('patch.private', vars), 'private'];
     else if (room?.reason === 'blocked') [line, kind] = [t('engine.storageBlocked'), 'blocked'];
     else if (isMobile()) [line, kind] = [t('patch.phone'), 'phone'];
@@ -974,7 +977,7 @@ function renderWarning(ready) {
 
 async function patch() {
   if (building || !patchState()[1]) return;
-  store.persist();                                   // (asked during the click: storage the browser should not evict)
+  const persistence = store.persist();              // Start in the click; await before the engine rechecks quota.
   keep.paused = true;                                // (the build needs the lock a copy holds: copied again after)
   keep.waiting = false;
   await stopCopy();
@@ -1003,6 +1006,8 @@ async function patch() {
     renderBuild();
   }, 1000);
   try {
+    const persisted = await persistence;
+    building.log(`persistent storage: ${persisted ? 'granted' : 'not granted or unavailable'}`);
     await building.run();
   } catch (e) {
     console.error(e);
