@@ -3,7 +3,9 @@
 Mockups only, following review of the implemented 4a icons. The dark empty area
 and small red/blue base are too dominant and too small respectively at native
 resolution. These five alternatives explore a lighter empty container and a
-larger, brighter coloured base. No option is implemented or selected here.
+larger, brighter coloured base. Proposal **4, faded native colour**, is selected and implemented; see
+[HPMP-REDESIGN.md](HPMP-REDESIGN.md) for live verification. The descriptions
+below record the original offline proposals.
 
 ## Review sheet
 

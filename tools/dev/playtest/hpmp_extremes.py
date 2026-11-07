@@ -142,8 +142,9 @@ def resource_fill(raw, records):
                     for x in range(max(0,left),min(320,right)):
                         c=struct.unpack_from('<H',frame,2*(y*320+x))[0]
                         r,g,b=c&31,(c>>5)&31,(c>>10)&31
-                        colour+=int(r>g+3 and r>b+3 if which==6 else b>r+3 and b>g)
-                        empty+=int(max(r,g,b)-min(r,g,b)<=3 and 7<=max(r,g,b)<=14)
+                        colour+=int(r>g+7 and r>b+7 if which==6 else b>r+7 and b>g+3)
+                        # Exclude the bright neutral bubble shell from pale-area counts.
+                        empty+=int(max(r,g,b)-min(r,g,b)<=4 and 14<=min(r,g,b) and max(r,g,b)<=27 and not (r==g==b and r>=23))
                 assert colour>=2,(which,'lost coloured fill',record['bounds'])
                 assert empty>=4,(which,'lost empty area',record['bounds'])
                 minima[which]=[min(minima[which][0],colour),min(minima[which][1],empty)]

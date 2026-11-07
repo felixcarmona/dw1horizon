@@ -112,7 +112,7 @@ Field and menu captures pass in both fonts for English, Spanish, Brazilian Portu
 The native evidence, raw PNGs, 4× crops and machine-readable results stay local under `build/hpmp-proof-wide/` and `build/hpmp-extremes-wide/`. Disc-derived pixels are not committed.
 
 
-## v0.0.8 depleted-icon verification
+## Earlier v0.0.8 dark-icon verification
 
 The selected 4a heart/orb replacement builds in all nine language atlases, with
 identical resource pixels and palettes and unchanged upload sizes. Compared with
@@ -134,3 +134,17 @@ Physical hardware remains untested.
 
 The complete standard selftest passes **128 groups, 0 failed, 0 skipped**,
 including applying the entire unnumbered patch series to the pinned decomp.
+
+## Faded native resource icons
+
+Proposal 4 supersedes the dark 4a art. The upper heart/orb region now has pale
+native shading with a dark outer contour; a bright saturated lower third makes
+the low state visible. The fixed 320-byte atlas/palette allocation, native
+silhouettes, resource thresholds, bubble layout and Square badge are preserved.
+See [HPMP-REDESIGN.md](HPMP-REDESIGN.md#current-implementation-proposal-4-faded-native-colour)
+for the current implementation and its verification.
+
+The faded revision passes the full nine-language build, unchanged 187,904 B
+heap, all 320 actual-archive setups, fresh 2 MB proof including 720 edge frames,
+and the complete 128-group selftest. Its inspected native/4× sheet is
+`build/hpmp-faded-proof/HPMP-FADED-2MB-sheet.png`.

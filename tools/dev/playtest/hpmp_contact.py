@@ -40,7 +40,7 @@ def implementation_contact(folder,edges):
         ('top-left','All eight / top-left'),('top-right','All eight / top-right'))]
     sheet=Image.new('RGB',(1128,1800),(20,25,32));draw=ImageDraw.Draw(sheet)
     font=ImageFont.load_default(size=13);title=ImageFont.load_default(size=19)
-    draw.text((12,10),'4a implemented — depleted native HP heart / MP orb — v0.0.8',font=title,fill='white')
+    draw.text((12,10),'Proposal 4 implemented — faded native HP heart / MP orb — v0.0.8',font=title,fill='white')
     draw.text((12,36),'Original 2 MB / native 320x240 above / exact 4x detail below / all nine atlases share the same art',font=font,fill='#c4cfda')
     for i,(source,stem,label) in enumerate(rows):
         x=12+(i%3)*372;y=70+(i//3)*574
@@ -54,7 +54,7 @@ def implementation_contact(folder,edges):
             cx=max(0,min(232,(l+r)//2-44));cy=max(0,min(168,(t+b)//2-36))
             zoom=frame.crop((cx,cy,cx+88,cy+72)).resize((352,288),Image.Resampling.NEAREST)
         sheet.paste(zoom,(x,y+272))
-    path=folder/'HPMP-4a-2MB-sheet.png';sheet.save(path);print(path)
+    path=folder/'HPMP-FADED-2MB-sheet.png';sheet.save(path);print(path)
 
 
 def main():

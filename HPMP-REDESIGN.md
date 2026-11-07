@@ -1,9 +1,9 @@
 # HP/MP bubble proposals for v0.0.8
 
-**Selected for v0.0.8: 4a**, the native battle HUD heart and MP orb with only
-the bottom approximately 30% coloured. Implementation and verification details
-are recorded below. The six-option and 4a–4e sections retain the design-review
-history; their recommendations and cost estimates predate this selection.
+**Selected for v0.0.8: proposal 4, faded native colour**, with pale native
+shading above a saturated lower approximately 35%. The dark 4a treatment below
+is historical; the faded treatment supersedes it. The six-option and 4a–4e
+sections retain the design-review history; their recommendations and cost estimates predate this selection.
 
 ## Review assets
 
@@ -174,7 +174,7 @@ review: no fresh emulator build/run, projection sweep or physical hardware
 validation has been performed.
 
 
-## Implementation: 4a depleted native HUD icons
+## Previous implementation: dark 4a depleted native HUD icons
 
 The field care renderer replaces the recovery disks and their label plates with
 11×11 native heart/orb icons. The empty upper region uses **RGB5 (10,10,11)**,
@@ -299,3 +299,60 @@ Its final structured report is `build/hpmp-selftest-final/report.jsonl` and its
 console log is `build/selftest-final.log`. Patch-series application is included
 in that run. The earlier interrupted run is retained separately for diagnosis;
 the final result comes from a complete fresh run.
+
+## Current implementation: proposal 4, faded native colour
+
+The dark 4a art is superseded by proposal 4 from
+[the lighter-treatment review](HPMP-LOW-LOOK-MOCKUPS.md). Native battle HUD
+silhouettes remain 11×11, with a continuous dark outer contour, pale desaturated
+native shading above, and saturated red/blue below. Internal black rings fade
+with the native shading instead of forming a dark mass. The original battle HUD
+is untouched.
+
+The PSX RGB5 outline is `(6,6,7)`. Lower fill is HP `(30,8,10)` / MP `(3,19,30)`,
+with a lighter surface row `(31,16,17)` / `(14,26,31)`. Source row 6 starts the
+coloured base; the remaining four rows retain the contour, giving roughly 35%
+coloured height after field sampling. The pale top follows the proposal's
+`116 + 0.30 × native mean + 0.16 × native channel`, quantized to RGB5. Even the
+former inner dark ring becomes mid-grey; the outer contour remains dark.
+
+Both generated palettes fit 16 entries. Two existing 16×16 4-bit cells plus two
+32-byte palettes still occupy **320 B**. All nine language atlases derive this
+same art, and the standalone FEEL uploads retain its palettes. This revision has
+no C patch, sprite descriptor, scale, threshold, layout or Square behavior change.
+It remains a static `<30%` warning rather than an exact live gauge.
+
+### Faded-art build and 2 MB evidence
+
+The standard nine-language full build passes. Image SHA-1:
+`56fb21c2c7051f3be4addcdc0ae169e82af194f1`. All nine ETCTIM files remain 125,632 B
+and have identical resource cells/palettes. All standalone FEEL copies preserve
+the palettes. All ten exported ELFs retain `main_BSS_END = 0x801CE0F4`; aligned
+heap remains **187,904 B**, a **0 B delta** from dark 4a. Normal heapcheck passes;
+all **320** actual-archive setups fit, minimum **3,184 B on screen 207**.
+Local audit: `build/hpmp-faded-audit.json`; build log:
+`build/faded-full-build.log`.
+
+Fresh proof explicitly checks **2,097,152 B RAM / 8 MB false**. HP and MP 29%,
+30% and 31% cases, combined hunger, empty inventory, menu ordering and recovery
+use pass. Recovery raises HP **290 → 790**, consumes one item and clears its
+bubble. Six maximum-condition positions each pass 120 presented frames:
+**720 frames** with all eight bubbles plus Square inside the viewport and clear
+of the clock. Minimum coloured pixels per resource quad are **18 HP / 26 MP**;
+minimum pale pixels are **44 HP / 46 MP**. These minima apply to the captured
+camera depths and animation phases, not every possible field projection.
+
+The inspected review sheet `build/hpmp-faded-proof/HPMP-FADED-2MB-sheet.png`
+contains nine unmodified 320×240 frames plus exact nearest-neighbour 4× crops:
+HP alone, MP alone, hunger combination, and all eight conditions at centre,
+left, right, top, top-left and top-right. Results and raw evidence remain under
+`build/hpmp-faded-proof/` and `build/hpmp-faded-edges/`. Reproduce using the commands
+above with these new output/fixture directories. Physical PlayStation/CRT
+readability remains untested. Chinese retains its existing 8 MB requirement;
+its new atlas and executable are checked, while fresh live proof uses English
+on 2 MB.
+
+The complete standard selftest passes **128 groups, 0 failed, 0 skipped**.
+Log: `build/faded-selftest.log`; structured results:
+`build/hpmp-faded-selftest/report.jsonl`. The focused final art/palette tests
+also pass (8 tests). Both live-proof emulators stopped after capture.

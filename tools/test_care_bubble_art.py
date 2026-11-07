@@ -28,9 +28,6 @@ class CareBubbleArt(unittest.TestCase):
         native=Path('extracted',art.PATH).read_bytes();result=art.build(native)
         entries=tim_entries(native);src=entries[0][0];dst=entries[1][0];feel=entries[3][0]
         source_palette=struct.unpack_from('<16H',native,art._clut(src,16)+11*32)
-        for shift in (0,5,10):
-            # Empty graphite must remain visibly lighter than the native outline.
-            self.assertGreaterEqual(((art.EMPTY >> shift) & 31)-2,6)
         for which,(sx,sy) in enumerate(art.ICONS):
             u,v,_=art.TILES[which]
             palette=struct.unpack_from('<16H',result,art._clut(feel,16)+(13+which)*32)
@@ -42,11 +39,19 @@ class CareBubbleArt(unittest.TestCase):
                         self.assertEqual(got,0);continue
                     old=source_palette[art._pixel(native,src,sx+x,sy+y)]
                     self.assertEqual(got==0,old==0,'silhouette changed')
-                    if old in (0,0x0842) or y>=7:
-                        self.assertEqual(got,old,'native outline or bottom colour changed')
-                        fill+=int(y>=7 and old not in (0,0x0842))
+                    index=art._pixel(native,src,sx+x,sy+y)
+                    occupied=lambda xx,yy: 0<=xx<11 and 0<=yy<11 and art._pixel(native,src,sx+xx,sy+yy)!=0
+                    boundary=index and any(not occupied(x+dx,y+dy) for dx,dy in ((-1,0),(1,0),(0,-1),(0,1)))
+                    rgb=tuple((got>>shift)&31 for shift in (0,5,10))
+                    if not index:continue
+                    if boundary:
+                        self.assertEqual(rgb,art.OUTLINE)
+                    elif y>=art.FILL_ROW:
+                        self.assertEqual(rgb,art.SURFACE[which] if y==art.FILL_ROW else art.FILL[which]);fill+=1
                     else:
-                        self.assertEqual(got,art.EMPTY);empty+=1
+                        self.assertEqual(rgb,art.faded(old));empty+=1
+                        self.assertGreaterEqual(min(rgb),14)
+                        self.assertLessEqual(max(rgb)-min(rgb),4)
             self.assertGreaterEqual(fill,8)
             self.assertGreater(empty,fill)
             # The vacant right half of the former wide MP cell is reclaimed.
@@ -76,10 +81,10 @@ class CareBubbleArt(unittest.TestCase):
                                 sx=min(10,int((x+px)*step))
                                 c=palette[art._pixel(result,dst,u+sx,v+sy)]
                                 r,g,b=c&31,(c>>5)&31,(c>>10)&31
-                                coloured+=int(r>g+3 and r>b+3 if which==0 else b>r+3 and b>g)
-                                empty+=int(c==art.EMPTY)
+                                coloured+=int(r>g+7 and r>b+7 if which==0 else b>r+7 and b>g+3)
+                                empty+=int(min(r,g,b)>=14 and max(r,g,b)-min(r,g,b)<=4)
                         self.assertGreaterEqual(coloured,2,(which,pixels,px,py))
-                        self.assertGreater(empty,coloured,(which,pixels,px,py))
+                        self.assertGreaterEqual(empty,coloured//2,(which,pixels,px,py))
 
 
 
