@@ -20,6 +20,9 @@ import importlib.util, json, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '../../..'))
 OVERLAYS = {   # field_overlay: (id, generator module, model name)
+    'wormmon-native-crawl': ('183', 'tools.models.field_animations.native_binding', '183-wormmon-native-crawl'),
+    'stingmon-wing-followthrough': ('187', 'tools.models.field_animations.followthrough', '187-stingmon-wing-followthrough'),
+    'gizamon-active-gait': ('239', 'tools.models.field_animations.followthrough', '239-gizamon-active-gait'),
     'suijinmon-centaur-field': ('408', 'tools.models.field_animations.suijinmon', '408-suijinmon-centaur-field'),
     'saberleomon-pace': ('258', 'tools.models.field_animations.pace', '258-saberleomon-pace'),
     'marinedevimon-field': ('279', 'tools.models.field_animations.marine_devimon', '279-marinedevimon-field'),
