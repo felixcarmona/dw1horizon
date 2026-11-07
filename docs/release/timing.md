@@ -8,7 +8,7 @@ The branch includes `origin/main` at `d022435e`. Regional reconstructions and th
 
 The driver and packager record explicit dependencies, continue independent steps after failure, and mark consumers as blocked by failed inputs. Reports include every failing step, command, log and exit code in JSON and text. A failed round exits nonzero. Successful checkpoints record input fingerprints and SHA-256 output inventories; resume verifies both before reuse. Failed, blocked, changed, missing and corrupted work reruns. Immutable prepared sources are separate from native-generated files.
 
-Use `python3 tools/release.py --resume --out build/releases/candidate` after focused fixes and a commit, retaining the original worktree and output directory. The original gate options are restored. Do not delete markers or copy partial outputs to force success. Full commands, worker logs and quiet-machine preparation are documented in [the release procedure](docs/release/releasing.md).
+Use `python3 tools/release.py --resume --out build/releases/candidate` after focused fixes and a commit, retaining the original worktree and output directory. The original gate options are restored. Do not delete markers or copy partial outputs to force success. Full commands, worker logs and quiet-machine preparation are documented in [the release procedure](releasing.md).
 
 ## Correctness evidence
 
