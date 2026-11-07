@@ -8,7 +8,7 @@ shore = new_screen(309, map="build/what-the-island-forgot-maps/screens/SHOR01.MA
 chest_shore = flag()
 # The ordinary Whamon model fits this small landing. Keep the ferry still at the
 # water's edge: its radius (200) plus the tamer's (100) leaves the beach clear.
-whamon = shore.npc(Species.Whamon, at=(1852, -997), range=0, still=True, autotalk=False)
+whamon = shore.npc(Species.Whamon, at=(1650, -850), range=0, still=True, autotalk=False)
 
 @shore.on_enter
 def the_wreck():

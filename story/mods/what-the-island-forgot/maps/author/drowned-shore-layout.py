@@ -57,7 +57,7 @@ def layout():
 def review(m, out):
     """Reach with the actual stationary ferry and the unopened chest present."""
     cam = Cam(m)
-    whale = (1852, -997)
+    whale = (1650, -850)
     chest = (-2036, -1152)
     tx, tz = reach.model_tile(*chest)
     grid = type('Grid', (), {'collision': list(m.collision), 'warps': m.warps})()
