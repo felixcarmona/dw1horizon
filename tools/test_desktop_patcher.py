@@ -180,6 +180,45 @@ def sums(files):
     return {n: hashlib.sha256(d).hexdigest() for n, d in files.items()}
 
 
+class TaggedSelfTest(unittest.TestCase):
+    def prepare(self, root, files=PACKAGE, checksums=None, tag='v9.9.9', commit='c' * 40):
+        from app import prepare_selftest as ci
+
+        def download(command, check):
+            self.assertTrue(check)
+            self.assertEqual(command[:4], ['gh', 'release', 'download', tag])
+            self.assertEqual(command[6:], ['--pattern', desktop.PACKAGE_ASSET,
+                                          '--pattern', desktop.CHECKSUMS_ASSET])
+            out = Path(command[5])
+            tarball(out / desktop.PACKAGE_ASSET, files)
+            (out / desktop.CHECKSUMS_ASSET).write_text(json.dumps(
+                {'package': sums(files) if checksums is None else checksums}))
+
+        with patch.object(ci.subprocess, 'run', side_effect=download):
+            return ci.prepare(tag, root / 'assets', commit)
+
+    def test_draft_tag_package_is_verified_without_latest(self):
+        with tempfile.TemporaryDirectory() as td:
+            folder = self.prepare(Path(td))
+            self.assertEqual(desktop.package_info(folder)['version'], '9.9.9')
+
+    def test_bad_checksum_is_rejected(self):
+        with tempfile.TemporaryDirectory() as td:
+            with self.assertRaises(desktop.Problem):
+                self.prepare(Path(td), checksums=dict(sums(PACKAGE), **{'dwpatch.py': '0' * 64}))
+
+    def test_other_version_or_commit_is_rejected(self):
+        for change in (dict(tag='v9.9.8'), dict(commit='d' * 40)):
+            with self.subTest(change=change), tempfile.TemporaryDirectory() as td:
+                with self.assertRaisesRegex(ValueError, 'version or commit'):
+                    self.prepare(Path(td), **change)
+
+    def test_missing_checksums_is_rejected(self):
+        with tempfile.TemporaryDirectory() as td:
+            with self.assertRaisesRegex(ValueError, 'missing package checksums'):
+                self.prepare(Path(td), checksums={})
+
+
 class Packages(unittest.TestCase):
     def setUp(self):
         self.td = tempfile.TemporaryDirectory()
