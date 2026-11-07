@@ -1,0 +1,92 @@
+// Section replacement has no Python screen-handler form.
+// Beetle Cup registration includes the island's insects; native dates and dialogue remain.
+import "../../../../core/engine.dws";
+import "../../../../base/names.dws";
+script 102 {
+    npc tentomon = 5;
+    on use(1) replace {
+        store_date(date_year);
+        face(tamer, tentomon);
+        face(tentomon, tamer);
+        wait(5);
+        if (!tournament_registered) {
+            if (date_day == 21 && date_hour >= 10) {
+                say(tentomon, text("s102.sec81.u0"));
+                return;
+            } else if (date_day >= 20 && date_day <= 21) {
+                if (date_day == 21 && date_hour >= 23) {
+                    say(tentomon, text("s102.sec81.u2"));
+                }
+                if (partner.is(species("Kabuterimon")) ||
+                    partner.is(species("Kunemon")) ||
+                    partner.is(species("Kuwagamon")) ||
+                    partner.is(species("HerculesKabuterimon")) ||
+                    partner.is(species("Tentomon")) ||
+                    partner.is(species("Dokunemon")) ||
+                    partner.is(species("Wormmon")) ||
+                    partner.is(species("Stingmon")) ||
+                    partner.is(species("MegaKabuterimon")) ||
+                    partner.is(species("GranKuwagamon")) ||
+                    partner.is(species("Kokuwamon")) ||
+                    partner.is(species("Shadramon")) ||
+                    partner.is(species("Okuwamon")) ||
+                    partner.is(species("Flymon")) ||
+                    partner.is(species("Dokugumon")) ||
+                    partner.is(species("Snimon")) ||
+                    partner.is(species("Roachmon")) ||
+                    partner.is(species("Digmon")) ||
+                    partner.is(species("Yanmamon")) ||
+                    partner.is(species("SandYanmamon"))) {
+                    if (!tournament_registered) {
+                        say(tentomon, text("s102.sec81.u4"));
+                        choice(tentomon) {
+                            text("s102.sec81.m0.o0") => {
+                                say(tentomon, text("s102.sec81.u5"));
+                            }
+                            text("s102.sec81.m0.o1") or cancel => {}
+                        }
+                    } else {
+                        say(tentomon, text("s102.sec81.u5"));
+                    }
+                    choice(tentomon) {
+                        text("s102.sec81.m1.o0") => {
+                            call_routine(routine("register_cup22"));
+                            say(tentomon, text("s102.sec81.u11"));
+                            return;
+                        }
+                        text("s102.sec81.m1.o1") => {}
+                        cancel => {
+                            return;
+                        }
+                    }
+                } else {
+                    say(tentomon, text("s102.sec81.u3"));
+                    return;
+                }
+            } else {
+                say(tentomon, text("s102.sec81.u1"));
+                return;
+            }
+        } else if (date_day >= 20 && date_day <= 21) {
+            if (date_day == 21 && date_hour >= 23) {
+                say(tentomon, text("s102.sec81.u7"));
+            }
+            say(tentomon, text("s102.sec81.u8"));
+            choice {
+                text("s102.sec81.m2.o0") => {}
+                text("s102.sec81.m2.o1") => {
+                    tournament_registered = false;
+                    say(tentomon, text("s102.sec81.u9"));
+                    return;
+                }
+                cancel => {
+                    return;
+                }
+            }
+        } else {
+            say(tentomon, text("s102.sec81.u6"));
+            return;
+        }
+        say(tentomon, text("s102.sec81.u10"));
+    }
+}

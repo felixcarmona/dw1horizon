@@ -204,6 +204,7 @@ run duckstation-protocol $PY -m unittest tools.test_duckstation_protocol
 if [ -f "$PATCHED/src/main/main.c" ]; then
     run fps-auto $PY tools/test_fps_auto.py "$PATCHED"
     run options-save $PY tools/test_cheats.py "$PATCHED"
+    run world-menu-fit env WORLD_FIT_SOURCE="$PATCHED/src/main/map.c" $PY -m unittest tools.test_world_fit
 else
     skip fps-auto "needs prepared C tree (DW_SELFTEST_DECOMP)"
     skip options-save "needs prepared C tree (DW_SELFTEST_DECOMP)"
