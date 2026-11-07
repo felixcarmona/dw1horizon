@@ -11,6 +11,10 @@ class NpcRoutes(unittest.TestCase):
     def screen(self, number):
         return next(s for s in routes.placements() if s['screen'] == number)
 
+    def test_stone_yard_includes_reviewed_stair_boundary(self):
+        geometry = routes.authored_geometry(self.screen(357))
+        self.assertEqual(geometry.collision[50], 128)
+
     def test_day_and_night_enemies_never_overlap(self):
         for number in (319, 329):
             states = routes.visible_states(self.screen(number))

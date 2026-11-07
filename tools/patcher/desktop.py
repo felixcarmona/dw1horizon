@@ -450,7 +450,7 @@ def unpack_package(archive, dest, checksums=None):
                     continue
                 if not _safe_name(name):
                     raise Problem('app.packageBad', detail=f'unsafe path {m.name}')
-                # Include implicit parent directories: Tools/a and tools/b also
+                # Include implicit parent directories: Folder/a and folder/b also
                 # collide when extracted onto a case-insensitive filesystem.
                 parts = name.split('/')
                 for i in range(1, len(parts) + 1):
