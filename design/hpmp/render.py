@@ -11,6 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from tools.localize.build import tim_entries
 
 p = argparse.ArgumentParser(description=__doc__)
+p.add_argument('--variants', action='store_true', help='Render 4a-4e native HUD low-resource variants')
 p.add_argument('--proof', type=Path, required=True)
 p.add_argument('--eight', type=Path, required=True)
 p.add_argument('--atlas', type=Path, default=Path('extracted/ETCDAT/ETCTIM.BIN'))
@@ -38,6 +39,9 @@ for name,u in [('native-heart',144),('native-orb',155)]:
             v=pal[idx]
             im.putpixel((x,y),((v&31)*255//31,((v>>5)&31)*255//31,((v>>10)&31)*255//31,255 if v else 0))
     icons[name]=im
+if a.variants:
+    from design.hpmp.native_variants import make
+    icons.update(make(icons['native-heart'], icons['native-orb']))
 for name,im in icons.items():im.save(a.out/(name+'.png'))
 proof=Image.open(a.proof).convert('RGB')
 # Exact 320x240 panel from the existing native proof. No field pixel resampling.
@@ -88,27 +92,38 @@ options=[('Heart + orb','heart-cross','orb','Bold resource shapes; HP has a smal
  ('Native battle HUD','native-heart','native-orb','The existing 11x11 heart and MP orb, at 1:1.'),
  ('Resource + low bar','hp-bar','mp-bar','Small symbol plus 2/7 fill; example shows about 29%.'),
  ('One shared bubble','heart-cross','orb','Single need: full symbol. Both low: heart + energy spark.')]
+ids=[f'{i+1:02}' for i in range(len(options))]
+if a.variants:
+    ids=['4a','4b','4c','4d','4e']
+    options=[
+        ('Low fill', '4a-hp', '4a-mp', 'Bottom ~30% coloured; upper area empty and dark.'),
+        ('Medical cross', '4b-hp', '4b-mp', 'White medical cross on the native heart; MP nearly empty.'),
+        ('Low warning', '4c-hp', '4c-mp', 'Red exclamation mark in a dark corner on both icons.'),
+        ('Cracked / dim', '4d-hp', '4d-mp', 'Broken heart silhouette inside; MP orb loses its glow.'),
+        ('Medical low gauge', '4e-hp', '4e-mp', 'Depleted heart plus medical cross; depleted MP orb.'),
+    ]
 fontfile='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
 font=ImageFont.truetype(fontfile,13);titlefont=ImageFont.truetype(fontfile,21)
-sheet=Image.new('RGB',(1412,1938),'#161c25');d=ImageDraw.Draw(sheet)
-d.text((16,12),'HP / MP — six native-pixel proposals — v0.0.8',font=titlefont,fill='white')
+sheet=Image.new('RGB',(1412,114+304*len(options)),'#161c25');d=ImageDraw.Draw(sheet)
+d.text((16,12),('HP / MP — native HUD low-resource variants 4a–4e — v0.0.8' if a.variants else 'HP / MP — six native-pixel proposals — v0.0.8'),font=titlefont,fill='white')
 d.text((16,43),'Design composites on an existing original 2 MB capture. Three 320x240 panels per option; exact nearest-neighbour 4x detail.',font=font,fill='#c2cedb')
 for x,label in [(16,'HP alone + Square · 1x'),(348,'MP alone + Square · 1x'),(680,'All conditions + Square · 1x'),(1012,'Single icons + group · 4x')]:d.text((x,72),label,font=font,fill='#a0d8ed')
 for i,(title,h,m,note) in enumerate(options):
     y=102+i*304
-    d.text((16,y),f'{i+1:02}   {title}',font=titlefont,fill='white')
+    d.text((16,y),f'{ids[i]}   {title}',font=titlefont,fill='white')
     d.text((360,y+5),note,font=font,fill='#c2cedb')
-    frames={kind:scene(icons[h],icons[m],kind,i==5) for kind in ('hp','mp','all')}
+    frames={kind:scene(icons[h],icons[m],kind,i==5 and not a.variants) for kind in ('hp','mp','all')}
     for x,kind in [(16,'hp'),(348,'mp'),(680,'all')]:
-        frames[kind].save(a.out/f'{i+1:02}-{kind}-1x.png');sheet.paste(frames[kind],(x,y+34))
+        frames[kind].save(a.out/f'{ids[i]}-{kind}-1x.png');sheet.paste(frames[kind],(x,y+34))
     # Each zoom preserves the composite pixels, including the captured shell and badge.
     hpz=frames['hp'].crop((150,42,182,64)).resize((128,88),Image.Resampling.NEAREST)
     mpz=frames['mp'].crop((150,42,182,64)).resize((128,88),Image.Resampling.NEAREST)
     sheet.paste(hpz,(1012,y+34));sheet.paste(mpz,(1156,y+34))
     allz=frames['all'].crop((120,27,208,68)).resize((352,164),Image.Resampling.NEAREST)
-    sheet.paste(allz,(1012,y+130));allz.save(a.out/f'{i+1:02}-all-4x.png')
-    hpz.save(a.out/f'{i+1:02}-hp-4x.png');mpz.save(a.out/f'{i+1:02}-mp-4x.png')
-sheet.save(a.out/'HPMP-REDESIGN-sheet.png')
-manifest={'proof_sha256':hashlib.sha256(a.proof.read_bytes()).hexdigest(),'eight_sha256':hashlib.sha256(a.eight.read_bytes()).hexdigest(),'atlas_sha256':hashlib.sha256(a.atlas.read_bytes()).hexdigest(),'size':[320,240],'icon':[11,11],'shell':[17,14],'options':len(options),'kind':'offline design composites, not running game output'}
-(a.out/'evidence.json').write_text(json.dumps(manifest,indent=2)+'\n')
-print(a.out/'HPMP-REDESIGN-sheet.png')
+    sheet.paste(allz,(1012,y+130));allz.save(a.out/f'{ids[i]}-all-4x.png')
+    hpz.save(a.out/f'{ids[i]}-hp-4x.png');mpz.save(a.out/f'{ids[i]}-mp-4x.png')
+sheetname='HPMP-04-LOW-sheet.png' if a.variants else 'HPMP-REDESIGN-sheet.png'
+sheet.save(a.out/sheetname)
+manifest={'proof_sha256':hashlib.sha256(a.proof.read_bytes()).hexdigest(),'eight_sha256':hashlib.sha256(a.eight.read_bytes()).hexdigest(),'atlas_sha256':hashlib.sha256(a.atlas.read_bytes()).hexdigest(),'size':[320,240],'icon':[11,11],'shell':[17,14],'options':len(options),'ids':ids,'kind':'offline design composites, not running game output'}
+(a.out/('evidence-04-low.json' if a.variants else 'evidence.json')).write_text(json.dumps(manifest,indent=2)+'\n')
+print(a.out/sheetname)

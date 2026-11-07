@@ -3,7 +3,9 @@
 Design review only. No game code, texture build recipe, condition rule, or patch
 series changes. The recommended starting point is **04: native battle HUD icons**:
 the heart is already associated with HP and the blue orb with MP, and both have
-strong silhouettes at the observed field size. No design is implemented.
+strong silhouettes at the observed field size. The follow-up below addresses
+the plain heart’s possible affection reading; **4e** is the preferred refinement.
+No design is implemented.
 
 ## Review assets
 
@@ -108,3 +110,67 @@ The renderer checks grid dimensions, derives option 04 from the local atlas,
 exports all 18 native panels and their 4× crops, and records input hashes.
 This is a design aid, not a game test. Motion, other projection sizes, colour
 accessibility and physical PlayStation display readability remain untested.
+
+
+## Option 04 follow-up: explicitly low resources (4a–4e)
+
+The plain heart can suggest affection or a request for petting. These five
+variants keep the **native battle HUD heart and MP orb as their source**, with
+pixel edits inside the same 11×11 canvas. The new review sheet is
+`build/hpmp-redesign/HPMP-04-LOW-sheet.png`. It has five numbered rows, each with
+HP-only, MP-only and all eight conditions plus Square at native 320×240, followed
+by exact 4× crops of both single cases and the complete group. The backdrop,
+shell, spacing and source 2 MB evidence are the same as the initial sheet.
+
+| Variant | Treatment | Native-size assessment |
+|---|---|---|
+| **4a** | Both icons have a dark empty upper area; only the bottom approximately 30% of their height retains native colour. | The empty/low gauge reads through its large dark area and thin coloured base. The heart’s taper makes its remaining red smaller than the orb’s blue. |
+| **4b** | Native filled heart with a five-pixel white medical cross and dark-red corner pixels behind it; orb partly empty. | The cross clarifies health; HP urgency relies on the condition bubble appearing, while the MP icon explicitly shows depletion. |
+| **4c** | Native icons with a red exclamation mark against a dark lower-right corner. | Strong warning contrast. The marker remains visible at 1× but is tiny and covers some native shading. An arrow was discarded during review because it resembled a cross at this size. |
+| **4d** | Native heart with a dark stepped crack; native orb dimmed to one-third channel intensity. | The crack and loss of glow suggest damage/depletion. The heart can still suggest heartbreak or sadness, and the dark orb can look inactive. |
+| **4e** | Partly empty native heart with a white medical cross in its empty area; partly empty native orb. | **Preferred refinement:** combines a medical health cue with the low-gauge cue. The empty dark area gives the cross clear contrast. |
+
+The fifth idea combines the most useful cues from 4a and 4b. It retains the
+heart’s original outline and avoids adding another small object. None of these
+variants adds text, a label band or a recovery disk.
+
+The depletion line is fixed at source row 7: rows 0–6 keep the original black
+outline but replace coloured pixels with dark graphite; rows 7–10 retain their
+native colours. That is approximately the bottom 30% by height, not 30% of the
+shape’s area or an exact live percentage meter. In particular, the heart tapers
+to a point. These mockups represent the existing below-30% warning state.
+They do not propose changing its threshold or continuously animating a fill.
+
+### Follow-up assets and cost
+
+`design/hpmp/native_variants.py` contains the hand-pixelled cross, warning and
+crack masks and the deterministic palette edits applied to the locally derived
+native icons. It contains no native bitmap data. The offline renderer’s
+`--variants` mode exports `4a-hp.png` / `4a-mp.png` through `4e-hp.png` /
+`4e-mp.png`, plus `4a-{hp,mp,all}-1x.png` and the corresponding `-4x.png` crops
+for each variant. `evidence-04-low.json` records the input hashes.
+
+Each alternative needs only the same two 16×16 4-bit cells plus two 16-colour
+palettes: **320 B of occupancy**, within the current 448 B allocation. The
+cross, crack and exclamation mark are baked into those cells, so no extra GPU
+quad, text rendering, animation state or resident bitmap is planned. These are
+five mutually exclusive review alternatives, not ten runtime icon uploads.
+A static depleted warning icon needs no percentage tracking beyond the
+existing condition threshold. Palette edits mean even 4a requires derived
+warning artwork rather than directly sampling the unmodified native HUD icon.
+Executable cost remains unmeasured until implementation; this mockup revision
+changes no game binary, main heap or upload size.
+
+Recreate the new sheet with:
+
+```sh
+.venv/bin/python design/hpmp/render.py --variants \
+  --proof build/hpmp-redesign/source-native-proof.png \
+  --eight build/hpmp-redesign/source-eight-needs-4x.png
+```
+
+All five rows were visually inspected in their native panels and enlarged
+crops before sending. The 15 native panels and 15 integer 4× crops were checked
+for dimensions and exact pixel replication. This remains an offline design
+review: no fresh emulator build/run, projection sweep or physical hardware
+validation has been performed.
