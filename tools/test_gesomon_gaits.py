@@ -9,10 +9,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import animsheet
 import mmd
 from motiondiscidentity import changed_programs
-from tools.models.field_animations import gesomon
+from tools.models.field_animations import gesomon, gesomon_hops
 
 
 class GesomonGaits(unittest.TestCase):
+    generator = gesomon
     @classmethod
     def setUpClass(cls):
         source = Path('build/imported-model-edit/edit/240-Gesomon.MMD')
@@ -20,7 +21,7 @@ class GesomonGaits(unittest.TestCase):
             raise unittest.SkipTest('reconstruct with tools/models/edit.py get 240')
         cls.source = source.read_bytes()
         cls.rig = json.loads(Path('content/species/240-gesomon.json').read_text())['model']['skeleton']
-        cls.data, cls.report = gesomon.build(cls.source, cls.rig)
+        cls.data, cls.report = cls.generator.build(cls.source, cls.rig)
         cls.old = mmd.MMD.parse(cls.source, 29)
         cls.new = mmd.MMD.parse(cls.data, 29)
         cls.new.type = 240
@@ -62,7 +63,10 @@ class GesomonGaits(unittest.TestCase):
                         stance_errors.append(abs(bottom))
                     else:
                         recovery.append(-bottom)
-                self.assertGreaterEqual(supporting, 2)
+                if self.report['variant'] == 'terrestrial' or plan[0]['stance']:
+                    self.assertGreaterEqual(supporting, 2)
+                else:
+                    self.assertEqual(supporting, 0)
             self.assertLess(max(stance_errors), 3.5)
             self.assertGreater(max(recovery), 25)
 
@@ -88,6 +92,21 @@ class GesomonGaits(unittest.TestCase):
     def test_modified_sources_rejected(self):
         with self.assertRaises(ValueError):
             gesomon.build(b'invalid', self.rig)
+
+
+class GesomonHops(GesomonGaits):
+    generator = gesomon_hops
+
+    def test_native_takeoff_landing_and_mantle_deformation(self):
+        self.assertEqual(self.report['donor'], 44)
+        for row in self.report['checks']:
+            frames, _, events = animsheet.slot_frames(self.new, 29, row['slot'])
+            self.assertEqual(row['period'], 17)
+            self.assertTrue(all(not tip['stance'] for tip in row['plan'][3]))
+            self.assertTrue(all(tip['stance'] for tip in row['plan'][7]))
+            self.assertLess(frames[3][1][7], frames[0][1][7]-40)
+            self.assertLess(frames[8][1][1], 4096)
+            self.assertTrue(any(t == 7 and kind == 'sound' for t, kind, _ in events))
 
 
 if __name__ == '__main__':

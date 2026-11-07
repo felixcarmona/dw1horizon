@@ -718,3 +718,11 @@ Reconstruct species 240 with `tools/models/edit.py get 240`, then run
 The checks cover decoded support contact, intermediate render frames, nine repeating cycles, unchanged
 programs and original-console resident/cold storage. The provider's final
 model and texture remain covered by `species-pins.json`.
+
+The alternative `gesomon-hops` overlay keeps the same import and untouched
+programs. Native Tanemon supplies its 17-tick bounce: take-off at 0, landing
+at 7, then contact, settle and anticipation. The mantle stretches in flight
+and compresses on impact; tips gather during flight and spread into support.
+Both variants pin their reviewed output and use the same final provider checks. Select the alternative by
+changing only species 240's `field_overlay` in the import registry and
+regenerating its provider pin; the default remains terrestrial.
