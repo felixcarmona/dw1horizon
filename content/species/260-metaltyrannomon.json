@@ -20,7 +20,7 @@
                  [19, 19], [20, 19], [21, 19], [22, 1]]
   },
   "texture": {"file": "build/batch7/MetalTyrannomon.TIM", "entry": 0},
-  "voice": 12,
+  "voice": 8,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -122, 22, 12],
   "effect_origins": [[10, 292, 0, 0, 17, 256, 176, 334], [2, 0, 0, 0, 12, 0, 0, 0], [1, 0, 0, 0, 2, 0, 0, 0],
@@ -34,7 +34,7 @@
     "natural": {"height": 400.8, "half_width": 281.6, "half_depth": 270.5}
   },
   "partner": {
-    "voice": 10,
+    "voice": 2,
     "hunger_hours": [4, 9, 13, 18, 23],
     "energy_max": 80,
     "energy_fed": 30,

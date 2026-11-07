@@ -1,0 +1,1292 @@
+[
+  {
+    "id": 3,
+    "screens": [
+      109
+    ],
+    "method": "Win the first fight on leaving the city.",
+    "when": "Any time.",
+    "service": "Item bank",
+    "evidence": {
+      "story/base/zones/native-forest/s105-109/script.py": [
+        "send_to_city(line=t6.u10, camera=False)"
+      ]
+    },
+    "battle": [
+      109,
+      "Agumon"
+    ]
+  },
+  {
+    "id": 4,
+    "screens": [
+      15
+    ],
+    "method": "Talk and invite it to the city.",
+    "when": "Any time.",
+    "service": "Item shop",
+    "evidence": {
+      "story/base/zones/mangrove-region/s016-15/script.py": [
+        "send_to_city(line=t5.u8, species=Species.Betamon, sound=(8, 3), camera=False)"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "screens": [
+      168
+    ],
+    "method": "Win the challenge outside Jijimon’s house.",
+    "when": "Prosperity 15; speak to Jijimon, then leave the house.",
+    "service": "Arena",
+    "evidence": {
+      "story/base/zones/file-city/s162-168-169-170/script.py": [
+        "recruit(Species.Greymon)"
+      ],
+      "story/base/zones/libraries/s210/script.py": [
+        "engine.prosperity >= 15",
+        "greymon_challenge_ready.set()"
+      ]
+    },
+    "battle": [
+      168,
+      "Greymon129"
+    ]
+  },
+  {
+    "id": 6,
+    "screens": [
+      225
+    ],
+    "method": "Defeat Machinedramon at the summit; joins with Airdramon and MetalGreymon.",
+    "when": "Reach Mt. Infinity and finish the main story.",
+    "service": "Arena",
+    "evidence": {
+      "story/base/zones/mt-infinity/s184-225/script.py": [
+        "recruit(Species.Devimon)"
+      ],
+      "story/mods/what-the-island-forgot/arcs/summit/summit.py": [
+        "recruit(Species.MetalGreymonVirus)",
+        "recruit(Species.Airdramon)",
+        "recruit(Species.Devimon)"
+      ]
+    },
+    "battle": [
+      225,
+      "Machinedramon"
+    ]
+  },
+  {
+    "id": 7,
+    "screens": [
+      225
+    ],
+    "method": "Defeat Machinedramon at the summit; joins with Devimon and MetalGreymon.",
+    "when": "Reach Mt. Infinity and finish the main story.",
+    "service": "Arena",
+    "evidence": {
+      "story/base/zones/mt-infinity/s184-225/script.py": [
+        "recruit(Species.Airdramon)"
+      ],
+      "story/mods/what-the-island-forgot/arcs/summit/summit.py": [
+        "recruit(Species.MetalGreymonVirus)",
+        "recruit(Species.Airdramon)",
+        "recruit(Species.Devimon)"
+      ]
+    },
+    "battle": [
+      225,
+      "Machinedramon"
+    ]
+  },
+  {
+    "id": 8,
+    "screens": [
+      79,
+      82
+    ],
+    "method": "Defeat Tyrannomon, investigate the meteor in the Speedy Region, then report back.",
+    "when": "Enter the Speedy Region and defeat Meteormon.",
+    "service": "Restaurant",
+    "evidence": {
+      "story/base/zones/ancient-glacial-region/s079-82/script.py": [
+        "send_to_city(line=t6.u22, species=Species.Tyrannomon, sound=(8, 9), prosperity=2, camera=False)"
+      ]
+    },
+    "battle": [
+      79,
+      "Tyrannomon132"
+    ]
+  },
+  {
+    "id": 9,
+    "screens": [
+      31
+    ],
+    "method": "Resolve the overheating tunnel and defeat Meramon in the lava cave.",
+    "when": "Help the Drill Tunnel workers reach the lava cave.",
+    "service": "Restaurant",
+    "evidence": {
+      "story/base/zones/lava-cave/s031-31/script.py": [
+        "meramon.send_to_city(line=t51.u13, species=Species.Meramon, sound=(8, 8), prosperity=2, camera=False)"
+      ]
+    },
+    "battle": [
+      31,
+      "Meramon133"
+    ]
+  },
+  {
+    "id": 10,
+    "screens": [
+      6
+    ],
+    "method": "Fish it up and ask to be friends; receive the Blue Flute.",
+    "when": "08:00–08:59 or 17:00–17:59; bring a fishing rod and bait.",
+    "service": "Beetle Land ferry",
+    "evidence": {
+      "story/base/zones/dragon-eye-lake/s007-6/script.py": [
+        "recruit(species(\"Seadramon\"))"
+      ],
+      "content/tables/fishing.json": [
+        "\"seadramonTime1\": 1700",
+        "\"seadramonTime2\": 800"
+      ]
+    }
+  },
+  {
+    "id": 11,
+    "screens": [
+      220
+    ],
+    "method": "Defeat the sick Numemon; if SkullGreymon was allowed to rest, persuade it instead.",
+    "when": "Investigate the sewer and resolve the factory shutdown.",
+    "service": "Secret item shop",
+    "evidence": {
+      "story/base/zones/sewer/s180-220-229-230/script.py": [
+        "send_to_city(line=t6.u12, species=Species.Numemon, sound=(8, 10))"
+      ],
+      "story/mods/what-the-island-forgot/arcs/factory/sewer-numemon.py": [
+        "when=root2 and not recruited(Species.Numemon)",
+        "send_to_city(line=t6.u12"
+      ]
+    },
+    "battle": [
+      220,
+      "Numemon135"
+    ]
+  },
+  {
+    "id": 12,
+    "screens": [
+      225
+    ],
+    "method": "Defeat Machinedramon at the summit; joins with Devimon and Airdramon.",
+    "when": "Reach Mt. Infinity and finish the main story.",
+    "service": "Arena",
+    "evidence": {
+      "story/base/zones/mt-infinity/s184-225/script.py": [
+        "recruit(Species.MetalGreymonVirus)"
+      ],
+      "story/mods/what-the-island-forgot/arcs/summit/summit.py": [
+        "recruit(Species.MetalGreymonVirus)",
+        "recruit(Species.Airdramon)",
+        "recruit(Species.Devimon)"
+      ]
+    },
+    "battle": [
+      225,
+      "Machinedramon"
+    ]
+  },
+  {
+    "id": 13,
+    "screens": [
+      19
+    ],
+    "method": "Talk and win the fight.",
+    "when": "Rare encounter: re-enter the area to try again.",
+    "service": "Secret item shop",
+    "evidence": {
+      "story/base/zones/mt-panorama-plains/s020-19/script.py": [
+        "recruit(Species.Mamemon)"
+      ]
+    },
+    "battle": [
+      19,
+      "Mamemon137"
+    ]
+  },
+  {
+    "id": 14,
+    "screens": [
+      146
+    ],
+    "method": "Use a Monzaemon partner to open Toy Mansion; beat WaruMonzaemon and return the Gear to Tinmon.",
+    "when": "If the Gear goes to Andromon first, bring it back afterwards.",
+    "service": "Jijimon’s house",
+    "evidence": {
+      "story/base/zones/robot-house/s140-146/script.py": [
+        "recruit(Species.Monzaemon)"
+      ]
+    }
+  },
+  {
+    "id": 17,
+    "screens": [
+      120
+    ],
+    "method": "Talk and win the fight.",
+    "when": "Any time; reach the far end of Misty Trees.",
+    "service": "Item bank",
+    "evidence": {
+      "story/base/zones/misty-trees/s116-120/script.py": [
+        "recruit(Species.Gabumon)"
+      ]
+    },
+    "battle": [
+      120,
+      "Gabumon139"
+    ]
+  },
+  {
+    "id": 18,
+    "screens": [
+      71
+    ],
+    "method": "Keep talking through three electric shocks.",
+    "when": "Any time.",
+    "service": "Street lights",
+    "evidence": {
+      "story/base/zones/gear-savanna/s068-71/script.py": [
+        "send_to_city(line=t5.u5, species=Species.Elecmon, sound=(8, 5), camera=False)"
+      ]
+    }
+  },
+  {
+    "id": 19,
+    "screens": [
+      107
+    ],
+    "method": "Talk and choose the city invitation.",
+    "when": "Reach Beetle Land using Seadramon’s ferry; recruit Greymon first.",
+    "service": "Green Gym",
+    "evidence": {
+      "story/base/zones/beetle-land/s103-107/script.py": [
+        "if not recruited(Species.Greymon):",
+        "join_city(kabuterimon0"
+      ]
+    }
+  },
+  {
+    "id": 20,
+    "screens": [
+      97
+    ],
+    "method": "Explore the Ice Sanctuary basement, defeat its guardians, then return to the statue.",
+    "when": "Enter the sanctuary with a Vaccine partner. If Angemon stays at the wall, visit Jijimon twice to welcome it home.",
+    "service": "Jijimon’s house",
+    "evidence": {
+      "story/base/zones/ice-sanctuary/s093-97/script.py": [
+        "send_to_city(line=t5.u12, species=Species.Angemon, prosperity=2, camera=False)"
+      ],
+      "story/mods/what-the-island-forgot/city/jijimons-house.py": [
+        "when=root3 and not recruited(Species.Angemon) and not memory_news",
+        "recruit(Species.Angemon, prosperity=3)"
+      ]
+    }
+  },
+  {
+    "id": 21,
+    "screens": [
+      129,
+      39
+    ],
+    "method": "Defeat Birdramon at its nest; if the Motor is broken, fight it at Great Canyon Bridge instead.",
+    "when": "Nest route, or after breaking the Motor.",
+    "service": "Birdra Transport",
+    "evidence": {
+      "story/base/zones/great-canyon/s124-129/script.py": [
+        "recruit(Species.Birdramon)"
+      ],
+      "story/mods/what-the-island-forgot/arcs/canyon/birdramon.py": [
+        "when=root1 and not recruited(Species.Birdramon)",
+        "recruit(Species.Birdramon, prosperity=2)"
+      ]
+    },
+    "battle": [
+      129,
+      "Birdramon143"
+    ]
+  },
+  {
+    "id": 22,
+    "screens": [
+      95
+    ],
+    "method": "Win once, then return for the promised rematch.",
+    "when": "Rematch: from the next day, 15:00–23:59; later days also work. Your partner fights alone.",
+    "service": "Restaurant",
+    "evidence": {
+      "story/base/zones/freezeland/s091-95/script.py": [
+        "clock.hour >= 15 and clock.hour <= 17 and garurumon_promise_days == 1"
+      ],
+      "story/base/maphead/screen095.dws": [
+        "date_hour >= 15 && date_hour < 17",
+        "date_hour >= 17",
+        "garurumon_promise_days >= 1"
+      ]
+    },
+    "battle": [
+      95,
+      "Garurumon144"
+    ],
+    "rematch_slot": 5
+  },
+  {
+    "id": 23,
+    "screens": [
+      137
+    ],
+    "method": "After the cold rescue, return with a partner that tolerates the cold.",
+    "when": "Let a cold-sensitive sick partner collapse in Freezeland; later change to a cold-tolerant form.",
+    "service": "Restaurant",
+    "evidence": {
+      "story/base/zones/freezeland/s132-137/script.py": [
+        "send_to_city(line=t5.u10, species=Species.Frigimon, prosperity=2, camera=False)"
+      ]
+    }
+  },
+  {
+    "id": 24,
+    "screens": [
+      142
+    ],
+    "method": "Help Whamon defeat the invaders in Secret Beach Cave.",
+    "when": "Clear Ogre Fortress, then accept Whamon’s request in Freezeland.",
+    "service": "Ferry",
+    "evidence": {
+      "story/base/zones/secret-beach-cave/s136-142/script.py": [
+        "recruit(Species.Whamon)"
+      ]
+    }
+  },
+  {
+    "id": 25,
+    "screens": [
+      14
+    ],
+    "method": "Give the wilted plant a Rain Plant.",
+    "when": "Hear the strange-plant rumor; collect the Rain Plant at Palmon’s farm on day 15 (displayed date).",
+    "service": "Meat farm",
+    "evidence": {
+      "story/base/zones/tropical-jungle/s015-14/script.py": [
+        "recruit(Species.Vegiemon)"
+      ],
+      "story/base/zones/file-city/s162-168-169-170/script.py": [
+        "if date_day != 14:",
+        "give(Item.RainPlant)"
+      ]
+    }
+  },
+  {
+    "id": 26,
+    "screens": [
+      221,
+      67
+    ],
+    "method": "Defeat SkullGreymon and speak to Myotismon in the lab.",
+    "when": "If you let the bones rest, return to Jijimon’s house twice for SkullGreymon to join.",
+    "service": "Arena",
+    "evidence": {
+      "story/base/zones/underground-lab/s064-67/script.py": [
+        "recruit(Species.SkullGreymon)"
+      ],
+      "story/mods/what-the-island-forgot/city/jijimons-house.py": [
+        "when=root2 and not recruited(Species.SkullGreymon) and not memory_news",
+        "recruit(Species.SkullGreymon, prosperity=3)"
+      ]
+    },
+    "battle": [
+      221,
+      "SkullGreymon148"
+    ]
+  },
+  {
+    "id": 27,
+    "screens": [
+      153
+    ],
+    "method": "Talk and win the fight.",
+    "when": "Rare encounter: re-enter the area to try again.",
+    "service": "Secret item shop",
+    "evidence": {
+      "story/base/zones/factorial-town/s147-153/script.py": [
+        "recruit(Species.MetalMamemon)"
+      ]
+    },
+    "battle": [
+      153,
+      "MetalMamemon149"
+    ]
+  },
+  {
+    "id": 28,
+    "screens": [
+      21,
+      234
+    ],
+    "method": "Inspect the crop circles, read Shellmon’s UFO news, and revisit the circles until Vademon appears.",
+    "when": "Advance the crop-circle investigation through its three stages.",
+    "service": "Restaurant",
+    "evidence": {
+      "story/base/zones/mt-panorama-spore-area/s022-21/script.py": [
+        "recruit(Species.Vademon)"
+      ],
+      "story/base/zones/mt-panorama-spore-area/s190-234/script.py": [
+        "recruit(Species.Vademon)"
+      ]
+    }
+  },
+  {
+    "id": 31,
+    "screens": [
+      72
+    ],
+    "method": "Win three consecutive fights and keep accepting the rematches.",
+    "when": "Any time.",
+    "service": "Item shop",
+    "evidence": {
+      "story/base/zones/gear-savanna/s069-72/script.py": [
+        "send_to_city(line=t5.u10, species=Species.Patamon, sound=(8, 5))"
+      ]
+    },
+    "battle": [
+      72,
+      "Patamon151"
+    ]
+  },
+  {
+    "id": 32,
+    "screens": [
+      1
+    ],
+    "method": "Offer food, then win the fight.",
+    "when": "Bring an edible item.",
+    "service": "Forest shortcut",
+    "evidence": {
+      "story/base/zones/kunemons-bed/s002-1/script.py": [
+        "send_to_city(line=t6.u8, species=Species.Kunemon)"
+      ]
+    },
+    "battle": [
+      1,
+      "Kunemon152"
+    ]
+  },
+  {
+    "id": 33,
+    "screens": [
+      21,
+      233
+    ],
+    "method": "Give the injured Unimon a recovery item or medicine.",
+    "when": "Recruit Centarumon and visit the clinic first.",
+    "service": "Item shop",
+    "evidence": {
+      "story/base/zones/mt-panorama-spore-area/s022-21/script.py": [
+        "send_to_city(line=t5.u13, species=Species.Unimon, sound=(8, 9), prosperity=2, camera=False)"
+      ],
+      "story/base/zones/mt-panorama-spore-area/s189-233/script.py": [
+        "send_to_city(line=t5.u15, species=Species.Unimon, sound=(8, 8), prosperity=2, camera=False)"
+      ]
+    }
+  },
+  {
+    "id": 34,
+    "screens": [
+      25
+    ],
+    "method": "Defeat the bandits at Ogre Fortress and Secret Beach Cave, then the final ambush in Drill Tunnel.",
+    "when": "Clear the second bandit hideout before returning to the tunnel.",
+    "service": "Patrol",
+    "evidence": {
+      "story/base/zones/drill-tunnel-2nd-floor/s026-25/script.py": [
+        "ogremon.send_to_city(line=t51.u21, species=Species.Ogremon, sound=(8, 8), prosperity=2, camera=False)"
+      ]
+    },
+    "battle": [
+      25,
+      "Ogremon154"
+    ]
+  },
+  {
+    "id": 35,
+    "screens": [
+      127,
+      40
+    ],
+    "method": "Free Shellmon by lowering the Ogre Fortress lift; meet it outside. The Motor route also frees it.",
+    "when": "Clear Ogre Fortress and hear Shellmon’s plea.",
+    "service": "Newspaper",
+    "evidence": {
+      "story/base/zones/great-canyon/s122-127/script.py": [
+        "send_to_city(line=t5.u11, species=Species.Shellmon, sound=(8, 10), prosperity=2, camera=False)"
+      ],
+      "story/mods/what-the-island-forgot/arcs/canyon/engine-room.py": [
+        "recruit(Species.Shellmon, prosperity=2)"
+      ]
+    }
+  },
+  {
+    "id": 36,
+    "screens": [
+      17
+    ],
+    "method": "Reach the marked exit in the Amida Forest maze.",
+    "when": "Avoid the gunfire and choose the correct final path.",
+    "service": "Clinic",
+    "evidence": {
+      "story/base/zones/amida-forest/s018-17/script.py": [
+        "recruit(Species.Centarumon)"
+      ]
+    }
+  },
+  {
+    "id": 37,
+    "screens": [
+      35
+    ],
+    "method": "Answer the three questions: yes, yes, no.",
+    "when": "Any time.",
+    "service": "Patrol",
+    "evidence": {
+      "story/base/zones/overdell-cemetery/s035-35/script.py": [
+        "recruit(species(\"Bakemon\"))"
+      ]
+    }
+  },
+  {
+    "id": 38,
+    "screens": [
+      32
+    ],
+    "method": "Start the final digging job and return after three days.",
+    "when": "Open the tunnel beyond Meramon; wait three game days after starting this dig.",
+    "service": "Treasure hunt",
+    "evidence": {
+      "story/base/zones/drill-tunnel/s032-32/script.py": [
+        "drimogemon_job_days >= 3"
+      ]
+    }
+  },
+  {
+    "id": 39,
+    "screens": [
+      165
+    ],
+    "method": "Talk to the Sukamon that wants to visit the city.",
+    "when": "Any time.",
+    "service": "City resident",
+    "evidence": {
+      "story/base/zones/trash-mountain/s159-165/script.py": [
+        "recruit(Species.Sukamon)"
+      ]
+    }
+  },
+  {
+    "id": 40,
+    "screens": [
+      157
+    ],
+    "method": "Investigate Giromon and the sewer, report to Andromon, then return to hear the island’s history.",
+    "when": "Resolve the factory shutdown; revisit after Numemon joins.",
+    "service": "City resident",
+    "evidence": {
+      "story/base/zones/factorial-town/s151-157/script.py": [
+        "recruit(Species.Andromon)"
+      ]
+    }
+  },
+  {
+    "id": 41,
+    "screens": [
+      160,
+      159
+    ],
+    "method": "Defeat the rampaging Giromon, or talk if SkullGreymon was allowed to rest. Resolve the factory, then return and talk.",
+    "when": "Complete Andromon’s investigation.",
+    "service": "Jukebox",
+    "evidence": {
+      "story/base/zones/factorial-town/s153-159/script.py": [
+        "send_to_city(line=t5.u7, species=Species.Giromon, sound=(8, 10), prosperity=3)"
+      ],
+      "story/mods/what-the-island-forgot/arcs/factory/giromon-sane.py": [
+        "when=root2 and not factory_giromon_beaten",
+        "factory_giromon_beaten.set()"
+      ]
+    },
+    "battle": [
+      160,
+      "Giromon161"
+    ]
+  },
+  {
+    "id": 42,
+    "screens": [
+      3
+    ],
+    "method": "Approach the tree house and win the ambush.",
+    "when": "Prosperity 50.",
+    "service": "Gold Banana shop",
+    "evidence": {
+      "story/base/zones/native-forest/s004-3/script.py": [
+        "recruit(Species.Etemon)"
+      ]
+    },
+    "battle": [
+      3,
+      "Etemon162"
+    ]
+  },
+  {
+    "id": 45,
+    "screens": [
+      73
+    ],
+    "method": "Chase Biyomon; place your partner at one hiding spot and approach from the other side.",
+    "when": "Any time.",
+    "service": "Item shop",
+    "evidence": {
+      "story/base/zones/gear-savanna/s070-73/script.py": [
+        "biyomon.send_to_city(line=t54.u11, species=Species.Biyomon, sound=(8, 5), camera=False)"
+      ]
+    }
+  },
+  {
+    "id": 46,
+    "screens": [
+      2
+    ],
+    "method": "Talk four times, then win the fight.",
+    "when": "Any time.",
+    "service": "Meat farm",
+    "evidence": {
+      "story/base/zones/native-forest/s003-2/script.py": [
+        "recruit(Species.Palmon)"
+      ]
+    },
+    "battle": [
+      2,
+      "Palmon164"
+    ]
+  },
+  {
+    "id": 47,
+    "screens": [
+      49
+    ],
+    "method": "Work a shop shift and earn at least 2560 bits profit.",
+    "when": "Serve all 20 customers; the target is profit, not total sales.",
+    "service": "Item shop",
+    "evidence": {
+      "story/base/zones/monochrome-shop/s049-49/script.py": [
+        "meat_stand.customers >= 20",
+        "if engine.shop_hi <= 9:"
+      ]
+    }
+  },
+  {
+    "id": 48,
+    "screens": [
+      78
+    ],
+    "method": "Rescue Leomon from the Goblimon, find the ancestral tablet, and bring back the Leomonstone.",
+    "when": "Recruit Meramon and reach prosperity 45 to open the deep tunnel route.",
+    "service": "City resident",
+    "evidence": {
+      "story/base/zones/gear-savanna/s075-78/script.py": [
+        "leomon.send_to_city(line=t51.u15, species=Species.Leomon, sound=(8, 17), prosperity=2)"
+      ]
+    }
+  },
+  {
+    "id": 49,
+    "screens": [
+      5
+    ],
+    "method": "Cross on its back, inspect the repaired eastern bridge, then return to Coela Point.",
+    "when": "First crossing: 15:00–19:59. After seeing the bridge, return at any hour.",
+    "service": "Item shop",
+    "evidence": {
+      "story/base/zones/coela-point/s006-5/script.py": [
+        "recruit(Species.Coelamon)"
+      ]
+    }
+  },
+  {
+    "id": 50,
+    "screens": [
+      117
+    ],
+    "method": "Win the dawn encounter.",
+    "when": "04:00–06:59; enter the clearing during this window.",
+    "service": "Statue",
+    "evidence": {
+      "story/base/zones/misty-trees/s113-117/script.py": [
+        "recruit(Species.Kokatorimon)"
+      ]
+    },
+    "battle": [
+      117,
+      "Kokatorimon168"
+    ]
+  },
+  {
+    "id": 51,
+    "screens": [
+      108
+    ],
+    "method": "Talk and choose the city invitation.",
+    "when": "Reach Beetle Land using Seadramon’s ferry.",
+    "service": "Green Gym",
+    "evidence": {
+      "story/base/zones/beetle-land/s104-108/script.py": [
+        "send_to_city(line=t5.u5, species=Species.Kuwagamon, sound=(8, 17), prosperity=2, camera=False)"
+      ]
+    }
+  },
+  {
+    "id": 52,
+    "screens": [
+      133
+    ],
+    "method": "Complete all nine distinct trades with the three Mojyamon.",
+    "when": "Trade each requested item at least once; the last trader joins.",
+    "service": "Secret item shop",
+    "evidence": {
+      "story/base/zones/freezeland/s128-133/script.py": [
+        "recruit(Species.Mojyamon)"
+      ]
+    }
+  },
+  {
+    "id": 53,
+    "screens": [
+      48,
+      86,
+      151,
+      220,
+      113
+    ],
+    "method": "Find Nanimon at all five hiding places; the fifth encounter recruits it.",
+    "when": "Ogre Fortress, Speedy Region, Toy Mansion, sewer, and Leomon’s cave after Leomon joins.",
+    "service": "Inventory expansion",
+    "evidence": {
+      "story/base/zones/ancient-speedy-region/s082-86/script.py": [
+        "recruit(Species.Nanimon)"
+      ],
+      "story/base/zones/leomon-ancestors-cave/s109-113/script.py": [
+        "recruit(Species.Nanimon)"
+      ],
+      "story/base/zones/ogre-fortress/s048-48/script.py": [
+        "recruit(Species.Nanimon)"
+      ],
+      "story/base/zones/sewer/s180-220-229-230/script.py": [
+        "recruit(Species.Nanimon)"
+      ],
+      "story/base/zones/toy-mansion/s145-151/script.py": [
+        "recruit(Species.Nanimon)"
+      ]
+    }
+  },
+  {
+    "id": 54,
+    "screens": [
+      254
+    ],
+    "method": "Win the optional fight near the summit.",
+    "when": "Reach Mt. Infinity.",
+    "service": "Arena",
+    "evidence": {
+      "story/base/zones/libraries/s198/script.py": [
+        "recruit(Species.Megadramon)"
+      ]
+    },
+    "battle": [
+      254,
+      "Megadramon172"
+    ]
+  },
+  {
+    "id": 55,
+    "screens": [
+      12
+    ],
+    "method": "Talk and win the fight.",
+    "when": "Rare encounter: re-enter the area to try again.",
+    "service": "Training manual shop",
+    "evidence": {
+      "story/base/zones/tropical-jungle/s013-12/script.py": [
+        "recruit(Species.Piximon)"
+      ]
+    },
+    "battle": [
+      12,
+      "Piximon173"
+    ]
+  },
+  {
+    "id": 56,
+    "screens": [
+      225
+    ],
+    "method": "Return to the summit after the ending and win the fight.",
+    "when": "Main story completed.",
+    "service": "Restaurant",
+    "evidence": {
+      "story/base/zones/mt-infinity/s184-225/script.py": [
+        "digitamamon.send_to_city(line=t51.u3, species=Species.Digitamamon, sound=(8, 0), prosperity=3)"
+      ]
+    },
+    "battle": [
+      225,
+      "Digitamamon174"
+    ]
+  },
+  {
+    "id": 57,
+    "screens": [
+      96
+    ],
+    "method": "Beat Penguinmon at curling.",
+    "when": "Win a curling match; the first attempt is free.",
+    "service": "Curling",
+    "evidence": {
+      "story/base/zones/libraries/s206/script.py": [
+        "slot1.send_to_city(line=t10.u6, species=Species.Penguinmon)"
+      ]
+    }
+  },
+  {
+    "id": 58,
+    "screens": [
+      9
+    ],
+    "method": "Cross Digimon Bridge and win the ambush.",
+    "when": "Recruit at least one of Devimon, Numemon, Mojyamon, or Mamemon.",
+    "service": "Item advice",
+    "evidence": {
+      "story/base/zones/digimon-bridge/s010-9/script.py": [
+        "recruit(Species.Ninjamon)"
+      ]
+    },
+    "battle": [
+      9,
+      "Ninjamon175"
+    ]
+  },
+  {
+    "id": 66,
+    "screens": [
+      67
+    ],
+    "method": "Feed the starving Myotismon, investigate its disappearance, defeat SkullGreymon, then speak in the lab.",
+    "when": "Enter the mansion with a Virus partner, or after Myotismon joins.",
+    "service": "Arena",
+    "evidence": {
+      "story/base/zones/grey-lords-mansion/s054-55/script.py": [
+        "recruit(Species.Myotismon)"
+      ],
+      "story/base/zones/grey-lords-mansion/s183-224/script.py": [
+        "recruit(Species.Myotismon)"
+      ],
+      "story/base/zones/underground-lab/s064-67/script.py": [
+        "recruit(Species.Myotismon)"
+      ]
+    }
+  },
+  {
+    "id": 70,
+    "screens": [
+      151
+    ],
+    "method": "Open Toy Mansion with a Monzaemon partner and defeat WaruMonzaemon; keep the Gear for the toys.",
+    "when": "Complete the Toy Mansion rescue.",
+    "service": "City resident",
+    "evidence": {
+      "story/base/zones/toy-mansion/s145-151/script.py": [
+        "recruit(Species.WaruMonzaemon)"
+      ]
+    },
+    "battle": [
+      151,
+      "WaruMonzaemon"
+    ]
+  },
+  {
+    "id": 184,
+    "screens": [
+      36
+    ],
+    "method": "Invite it to be the city’s lookout.",
+    "when": "Any time.",
+    "service": "Birdra Transport",
+    "npc_source": [
+      "story/mods/what-the-island-forgot/arcs/residents/hawkmon.py",
+      "Hawkmon"
+    ],
+    "evidence": {
+      "story/mods/what-the-island-forgot/arcs/residents/hawkmon.py": [
+        "species=Species.Hawkmon"
+      ]
+    }
+  },
+  {
+    "id": 185,
+    "screens": [
+      85
+    ],
+    "method": "Talk and win the fight.",
+    "when": "Any time.",
+    "service": "Courtyard",
+    "npc_source": [
+      "story/mods/what-the-island-forgot/arcs/residents/armadillomon.py",
+      "Armadillomon"
+    ],
+    "evidence": {
+      "story/mods/what-the-island-forgot/arcs/residents/armadillomon.py": [
+        "species=Species.Armadillomon"
+      ]
+    }
+  },
+  {
+    "id": 193,
+    "screens": [
+      24
+    ],
+    "method": "Talk and win the fight; this opens the Works gate.",
+    "when": "Any time.",
+    "service": "Stone Yard",
+    "npc_source": [
+      "story/mods/what-the-island-forgot/arcs/residents/digmon.py",
+      "Digmon"
+    ],
+    "evidence": {
+      "story/mods/what-the-island-forgot/arcs/residents/digmon.py": [
+        "species=Species.Digmon"
+      ]
+    }
+  },
+  {
+    "id": 229,
+    "screens": [
+      56
+    ],
+    "method": "Talk and win the fight.",
+    "when": "20:00–23:59; enter the mansion with a Virus partner, or after Myotismon joins.",
+    "service": "Secret item shop",
+    "npc_source": [
+      "story/mods/what-the-island-forgot/arcs/residents/phantomon.py",
+      "Phantomon"
+    ],
+    "evidence": {
+      "story/mods/what-the-island-forgot/arcs/residents/phantomon.py": [
+        "clock.hour >= 20",
+        "hp=1500"
+      ]
+    }
+  },
+  {
+    "id": 235,
+    "screens": [
+      125
+    ],
+    "method": "Talk and win the fight.",
+    "when": "Any time.",
+    "service": "Forge shop",
+    "npc_source": [
+      "story/mods/what-the-island-forgot/arcs/residents/candlemon.py",
+      "Candlemon"
+    ],
+    "evidence": {
+      "story/mods/what-the-island-forgot/arcs/residents/candlemon.py": [
+        "species=Species.Candlemon"
+      ]
+    }
+  },
+  {
+    "id": 241,
+    "screens": [
+      59
+    ],
+    "method": "Talk after the city reaches prosperity 20.",
+    "when": "Prosperity 20.",
+    "service": "Power Station",
+    "npc_source": [
+      "story/mods/what-the-island-forgot/arcs/residents/wizardmon.py",
+      "Wizardmon"
+    ],
+    "evidence": {
+      "story/mods/what-the-island-forgot/arcs/residents/wizardmon.py": [
+        "species=Species.Wizardmon"
+      ]
+    }
+  },
+  {
+    "id": 243,
+    "screens": [
+      233
+    ],
+    "method": "Talk and win the fight.",
+    "when": "Any time.",
+    "service": "Container House",
+    "npc_source": [
+      "story/mods/what-the-island-forgot/arcs/residents/starmon.py",
+      "Starmon"
+    ],
+    "evidence": {
+      "story/mods/what-the-island-forgot/arcs/residents/starmon.py": [
+        "species=Species.Starmon"
+      ]
+    }
+  },
+  {
+    "id": 251,
+    "screens": [
+      97
+    ],
+    "method": "Talk; either answer recruits it.",
+    "when": "Enter the Ice Sanctuary with a Vaccine partner.",
+    "service": "Power Station",
+    "npc_source": [
+      "story/mods/what-the-island-forgot/arcs/vault/statue-room.py",
+      "Solarmon"
+    ],
+    "evidence": {
+      "story/mods/what-the-island-forgot/arcs/vault/statue-room.py": [
+        "species=Species.Solarmon"
+      ]
+    }
+  },
+  {
+    "id": 257,
+    "screens": [
+      87
+    ],
+    "method": "Talk and win the fight.",
+    "when": "Any time.",
+    "service": "Forge",
+    "npc_source": [
+      "story/mods/what-the-island-forgot/arcs/residents/triceramon.py",
+      "Triceramon"
+    ],
+    "evidence": {
+      "story/mods/what-the-island-forgot/arcs/residents/triceramon.py": [
+        "species=Species.Triceramon"
+      ]
+    }
+  },
+  {
+    "id": 263,
+    "screens": [
+      21
+    ],
+    "method": "Talk and win the fight.",
+    "when": "Any time.",
+    "service": "Clinic medicine shop",
+    "npc_source": [
+      "story/mods/what-the-island-forgot/arcs/residents/mushroomon.py",
+      "Mushroomon"
+    ],
+    "evidence": {
+      "story/mods/what-the-island-forgot/arcs/residents/mushroomon.py": [
+        "species=Species.Mushroomon"
+      ]
+    }
+  },
+  {
+    "id": 267,
+    "screens": [
+      94
+    ],
+    "method": "Talk and win the fight.",
+    "when": "Any time.",
+    "service": "Cold Store",
+    "npc_source": [
+      "story/mods/what-the-island-forgot/arcs/residents/mammothmon.py",
+      "Mammothmon"
+    ],
+    "evidence": {
+      "story/mods/what-the-island-forgot/arcs/residents/mammothmon.py": [
+        "species=Species.Mammothmon"
+      ]
+    }
+  },
+  {
+    "id": 273,
+    "screens": [
+      4
+    ],
+    "method": "Give it one Sweet Nut (consumed).",
+    "when": "Any time.",
+    "service": "Market Shed",
+    "npc_source": [
+      "story/mods/what-the-island-forgot/arcs/residents/floramon.py",
+      "Floramon"
+    ],
+    "evidence": {
+      "story/mods/what-the-island-forgot/arcs/residents/floramon.py": [
+        "has(Item.SweetNut)",
+        "take(Item.SweetNut)"
+      ]
+    }
+  },
+  {
+    "id": 280,
+    "screens": [
+      147
+    ],
+    "method": "Talk and win the fight.",
+    "when": "20:00–23:59; open Toy Mansion first.",
+    "service": "Scrap Office shop",
+    "npc_source": [
+      "story/mods/what-the-island-forgot/arcs/residents/pumpkinmon.py",
+      "Pumpkinmon"
+    ],
+    "evidence": {
+      "story/mods/what-the-island-forgot/arcs/residents/pumpkinmon.py": [
+        "species=Species.Pumpkinmon"
+      ]
+    }
+  },
+  {
+    "id": 282,
+    "screens": [
+      78
+    ],
+    "method": "Give it one Meat (consumed).",
+    "when": "Any time.",
+    "service": "Restaurant",
+    "npc_source": [
+      "story/mods/what-the-island-forgot/arcs/residents/kiwimon.py",
+      "Kiwimon"
+    ],
+    "evidence": {
+      "story/mods/what-the-island-forgot/arcs/residents/kiwimon.py": [
+        "species=Species.Kiwimon"
+      ]
+    }
+  },
+  {
+    "id": 287,
+    "screens": [
+      6
+    ],
+    "method": "Talk twice to wake it.",
+    "when": "Any time.",
+    "service": "Market Shed shop",
+    "npc_source": [
+      "story/mods/what-the-island-forgot/arcs/residents/tapirmon.py",
+      "Tapirmon"
+    ],
+    "evidence": {
+      "story/mods/what-the-island-forgot/arcs/residents/tapirmon.py": [
+        "species=Species.Tapirmon"
+      ]
+    }
+  },
+  {
+    "id": 290,
+    "screens": [
+      163
+    ],
+    "method": "Answer the riddle: “None at all”.",
+    "when": "00:00–10:59 or 14:00–23:59.",
+    "service": "Courtyard",
+    "npc_source": [
+      "story/mods/what-the-island-forgot/arcs/residents/clockmon.py",
+      "Clockmon"
+    ],
+    "evidence": {
+      "story/mods/what-the-island-forgot/arcs/residents/clockmon.py": [
+        "clock.hour >= 11 and clock.hour <= 13",
+        "case \"b\":"
+      ]
+    }
+  },
+  {
+    "id": 294,
+    "screens": [
+      162
+    ],
+    "method": "Talk and win the fight.",
+    "when": "Any time.",
+    "service": "Scrap Office shop",
+    "npc_source": [
+      "story/mods/what-the-island-forgot/arcs/factory/remodelling.py",
+      "Datamon"
+    ],
+    "evidence": {
+      "story/mods/what-the-island-forgot/arcs/factory/remodelling.py": [
+        "species=Species.Datamon"
+      ]
+    }
+  },
+  {
+    "id": 321,
+    "screens": [
+      222
+    ],
+    "method": "Talk and win the fight.",
+    "when": "Reach Mt. Infinity.",
+    "service": "Guard House",
+    "npc_source": [
+      "story/mods/what-the-island-forgot/arcs/residents/knightmon.py",
+      "Knightmon"
+    ],
+    "evidence": {
+      "story/mods/what-the-island-forgot/arcs/residents/knightmon.py": [
+        "species=Species.Knightmon"
+      ]
+    }
+  },
+  {
+    "id": 351,
+    "screens": [
+      45
+    ],
+    "method": "Talk and win the fight; escape is disabled.",
+    "when": "After Ogre Fortress is cleared.",
+    "service": "Arena sparring",
+    "npc_source": [
+      "story/mods/what-the-island-forgot/arcs/residents/kotemon.py",
+      "Kotemon"
+    ],
+    "evidence": {
+      "story/mods/what-the-island-forgot/arcs/residents/kotemon.py": [
+        "when=ogre_fortress_cleared and not recruited",
+        "hp=1200",
+        "fight(kotemon, escape=False)"
+      ]
+    }
+  },
+  {
+    "id": 353,
+    "screens": [
+      325
+    ],
+    "method": "Defeat the hunter, then talk to the freed Bearmon.",
+    "when": "Find the Kennel through the hidden Seam route.",
+    "service": "Container House",
+    "npc_source": [
+      "story/mods/what-the-island-forgot/arcs/seam/kennel.py",
+      "DarkLizardmon"
+    ],
+    "evidence": {
+      "story/mods/what-the-island-forgot/arcs/seam/kennel.py": [
+        "species=Species.Bearmon"
+      ]
+    }
+  }
+]
