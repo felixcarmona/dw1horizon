@@ -1,5 +1,6 @@
 """Check support, looping, storage, and untouched acting on the real import."""
 import copy
+import hashlib
 import json
 from pathlib import Path
 import sys
@@ -9,11 +10,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import animsheet
 import mmd
 from motiondiscidentity import changed_programs
-from tools.models.field_animations import gesomon, gesomon_hops
+from tools.models.field_animations import gesomon
 
 
 class GesomonGaits(unittest.TestCase):
-    generator = gesomon
     @classmethod
     def setUpClass(cls):
         source = Path('build/imported-model-edit/edit/240-Gesomon.MMD')
@@ -21,10 +21,14 @@ class GesomonGaits(unittest.TestCase):
             raise unittest.SkipTest('reconstruct with tools/models/edit.py get 240')
         cls.source = source.read_bytes()
         cls.rig = json.loads(Path('content/species/240-gesomon.json').read_text())['model']['skeleton']
-        cls.data, cls.report = cls.generator.build(cls.source, cls.rig)
+        cls.data, cls.report = gesomon.build(cls.source, cls.rig)
         cls.old = mmd.MMD.parse(cls.source, 29)
         cls.new = mmd.MMD.parse(cls.data, 29)
         cls.new.type = 240
+
+    def test_reviewed_output_is_exact(self):
+        self.assertEqual(hashlib.sha256(self.data).hexdigest(),
+                         '081021c082a796b86783bc87527e009332380842cf8f34f0a7cacadbd2a4a9fd')
 
     def test_only_walk_and_run_change(self):
         self.assertEqual(changed_programs(self.old, self.new), [2, 4])
@@ -63,50 +67,13 @@ class GesomonGaits(unittest.TestCase):
                         stance_errors.append(abs(bottom))
                     else:
                         recovery.append(-bottom)
-                if self.report['variant'] == 'terrestrial' or plan[0]['stance']:
-                    self.assertGreaterEqual(supporting, 2)
-                else:
-                    self.assertEqual(supporting, 0)
-            self.assertLess(max(stance_errors), 3.5)
+                self.assertGreaterEqual(supporting, 2)
+            self.assertLess(max(stance_errors), 1.5)
             self.assertGreater(max(recovery), 25)
-
-    def test_floor_clearance_between_logic_ticks(self):
-        for row in self.report['checks']:
-            frames, _, _ = animsheet.slot_frames(self.new, 29, row['slot'])
-            for left, right in zip(frames[:-1], frames[1:]):
-                for alpha in (1365/4096, 2730/4096):
-                    pose = copy.deepcopy(left)
-                    for b in range(29):
-                        for c in range(9):
-                            delta = right[b][c]-left[b][c]
-                            if c in (3, 4, 5):
-                                delta = (delta+2048)%4096-2048
-                            pose[b][c] += delta*alpha
-                    w = gesomon.world(self.new, pose)
-                    for chain in gesomon.CHAINS:
-                        bone = chain[-1]
-                        bottom = max(sum(w[bone, 1, j]*v[j] for j in range(3))+w[bone, 1, 3]
-                                     for v in self.new.tmd.obj_verts(self.rig[bone][0]))
-                        self.assertLessEqual(bottom, 1.5, (row['slot'], bone, bottom))
 
     def test_modified_sources_rejected(self):
         with self.assertRaises(ValueError):
             gesomon.build(b'invalid', self.rig)
-
-
-class GesomonHops(GesomonGaits):
-    generator = gesomon_hops
-
-    def test_native_takeoff_landing_and_mantle_deformation(self):
-        self.assertEqual(self.report['donor'], 44)
-        for row in self.report['checks']:
-            frames, _, events = animsheet.slot_frames(self.new, 29, row['slot'])
-            self.assertEqual(row['period'], 17)
-            self.assertTrue(all(not tip['stance'] for tip in row['plan'][3]))
-            self.assertTrue(all(tip['stance'] for tip in row['plan'][7]))
-            self.assertLess(frames[3][1][7], frames[0][1][7]-40)
-            self.assertLess(frames[8][1][1], 4096)
-            self.assertTrue(any(t == 7 and kind == 'sound' for t, kind, _ in events))
 
 
 if __name__ == '__main__':

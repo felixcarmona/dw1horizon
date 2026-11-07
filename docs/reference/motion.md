@@ -707,22 +707,15 @@ catches on the original and reaches the exit after the repair.
 
 The `gesomon-terrestrial` overlay changes only walk (2) and run (4) on the
 pinned 29-bone import. Eight small tentacles alternate support groups, with
-rear pairs delayed behind the front. Two-link solves plant the pointed ends;
-recoveries ease forward and lift clear. Mantle bob, sway and delayed long-arm
-motion follow the supports. Mesh, rig, idle, condition and battle clips remain
-unchanged. Native Kunemon supplies the 18-tick cycle and contact sound timing;
-walk/run travel is 18/35 units per tick.
+rear pairs delayed behind the front. Recoveries ease forward and lift clear;
+mantle bob, sway and delayed long-arm motion follow the supports. Mesh, rig,
+idle, condition, care and battle clips remain unchanged. Native Kunemon
+supplies the 18-tick cycle and contact timing; walk/run travel is 18/35 units
+per tick.
 
-Reconstruct species 240 with `tools/models/edit.py get 240`, then run
+The reviewed motion is locked by its exact output hash. Reconstruct species
+240 with `tools/models/edit.py get 240`, then run
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_gesomon_gaits`.
-The checks cover decoded support contact, intermediate render frames, nine repeating cycles, unchanged
-programs and original-console resident/cold storage. The provider's final
-model and texture remain covered by `species-pins.json`.
-
-The alternative `gesomon-hops` overlay keeps the same import and untouched
-programs. Native Tanemon supplies its 17-tick bounce: take-off at 0, landing
-at 7, then contact, settle and anticipation. The mantle stretches in flight
-and compresses on impact; tips gather during flight and spread into support.
-Both variants pin their reviewed output and use the same final provider checks. Select the alternative by
-changing only species 240's `field_overlay` in the import registry and
-regenerating its provider pin; the default remains terrestrial.
+The checks cover the reviewed bytes, decoded support contact, nine repeating
+cycles, unchanged programs and original-console resident/cold storage. Final
+provider model and texture hashes remain covered by `species-pins.json`.
