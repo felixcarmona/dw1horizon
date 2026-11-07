@@ -1684,9 +1684,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/237-Diaboromon.MMD.mdelta",
-        "delta_sha256": "7fc57c2df9d965ff0f6028b6585f4713c444f521214bcce92dc05cade830d270",
-        "sha256": "f489b9daef2829ab9b2657ebab2c8274be7e7273814ee1962563b8733300de88",
-        "size": 93000
+        "delta_sha256": "fbef1633fe386b7e3d7d4ccbac3bf23c65b7f3e5ce94764afa3340dea4ec2110",
+        "sha256": "88c2625e2a63b817ccb178dfd0bdecde6e60b2c22bd3ee075176b609e50dd86e",
+        "size": 98288
       },
       "tim": {
         "sources": [

@@ -121,6 +121,30 @@ class ReviewedMotion(unittest.TestCase):
                         self.assertLessEqual(max(v[1] for v in points(model,pose,feet)),2,
                                              (sid,slot,tick,alpha))
 
+    def test_diaboromon_walks_on_legs_with_free_arms(self):
+        import math
+        import retarget
+        from motiontailspace import interpolate_pose
+        model=self.models(237)[1]
+        sk=mmd.exe().skeleton[237]
+        for slot in range(5):
+            frames=animsheet.slot_frames(model,24,slot)[0]
+            for first,second in zip(frames,frames[1:]):
+                for alpha in (0,1365,2730,4096):
+                    pose=interpolate_pose(first,second,alpha)
+                    self.assertLessEqual(max(v[1] for v in points(model,pose,range(6,14))),-30,
+                                         ('arm clearance',slot,alpha))
+                    if slot in (0,2,4):
+                        positions=retarget.world_pos(sk,pose)
+                        spine=[positions[2][i]-positions[14][i] for i in range(3)]
+                        lean=math.degrees(math.atan2(-spine[2],-spine[1]))
+                        self.assertTrue(8<lean<35,('spine lean',slot,lean))
+            if slot in (2,4):
+                for foot in (19,23):
+                    floors=[max(v[1] for v in points(model,pose,(foot,))) for pose in frames]
+                    self.assertGreater(max(floors),-5 if slot==2 else -10,('stance',slot,foot))
+                    self.assertLess(min(floors),-50,('swing',slot,foot))
+
     def test_resize_keeps_all_weregarurumon_acting(self):
         before,after=self.models(62)
         for slot,index in enumerate(before.anims.table):
