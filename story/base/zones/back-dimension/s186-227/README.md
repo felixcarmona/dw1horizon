@@ -10,4 +10,6 @@ Screens that load it: 227 Back Dimension.
 | sec5 | readable | 3 | 7 |
 | sec6 | readable | 3 | 7 |
 | sec7 | readable | 3 | 7 |
-| sec8 | readable | 3 | 5 |
+| sec8 | readable | 3 | 7 |
+
+Section 8 includes the missing battle before recruitment in both story modes, matching sections 5–7.

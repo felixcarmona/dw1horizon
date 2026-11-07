@@ -51,6 +51,19 @@ class TechniqueTiming(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'source program changed'):
             program(old.anims.anims[0], 2, 47, recipe)
 
+    def test_shortened_recovery_keeps_contact_endpoints_and_sound(self):
+        old, _, recipe = self.fixture()
+        recipe.update(ticks=12, samples=[[0, 0], [8, 16], [12, 19]])
+        source, _ = mmd.simulate(old.anims.anims[0], 2)
+        animation = program(old.anims.anims[0], 2, 47, recipe)
+        actual, info = mmd.simulate(animation, 2, slot=47)
+        self.assertEqual(len(actual), 13)
+        self.assertEqual(actual[0], source[0])
+        self.assertEqual(actual[8], source[16])
+        self.assertEqual(actual[-1], source[-1])
+        self.assertEqual(info['sounds'], [(8, 4, 17)])
+        self.assertIsNone(info['loop'])
+
     def test_invalid_phase_order_is_rejected(self):
         old, _, recipe = self.fixture()
         recipe['samples'] = [[0, 0], [11, 17], [14, 14], [19, 19]]

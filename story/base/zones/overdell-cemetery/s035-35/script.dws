@@ -78,7 +78,12 @@ script 35 {
         animate(bakemon, 11);
         wait(50);
         animate(bakemon, anim.idle);
-        say(bakemon, text("s035.sec5.u0"));
+        store_digimon_type(partner_type);
+        if (partner_type == 37 || partner_type == 157) {
+            say(bakemon, text("s035.sec5.u8"));
+        } else {
+            say(bakemon, text("s035.sec5.u0"));
+        }
         animate(tamer, 16);
         say(tamer, text("s035.sec5.u1"));
         engine.no_cancel = true;
@@ -87,14 +92,24 @@ script 35 {
                 animate(bakemon, 11);
                 wait(45);
                 animate(bakemon, anim.idle);
-                say(bakemon, text("s035.sec5.u2"));
+                store_digimon_type(partner_type);
+                if (partner_type == 37 || partner_type == 157) {
+                    say(bakemon, text("s035.sec5.u9"));
+                } else {
+                    say(bakemon, text("s035.sec5.u2"));
+                }
                 choice(open) {
                     text("s035.sec5.m1.o0") => {
                         animate(bakemon, 12);
                         wait(58);
                         animate(bakemon, anim.idle);
                         animate(tamer, 15);
-                        say(bakemon, text("s035.sec5.u3"));
+                        store_digimon_type(partner_type);
+                        if (partner_type == 37 || partner_type == 157) {
+                            say(bakemon, text("s035.sec5.u10"));
+                        } else {
+                            say(bakemon, text("s035.sec5.u3"));
+                        }
                         animate(tamer, 16);
                         choice(open) {
                             text("s035.sec5.m2.o0") => {}
@@ -102,7 +117,12 @@ script 35 {
                                 animate(bakemon, 13);
                                 wait(34);
                                 animate(bakemon, 13);
-                                say(bakemon, text("s035.sec5.u4"));
+                                store_digimon_type(partner_type);
+                                if (partner_type == 37 || partner_type == 157) {
+                                    say(bakemon, text("s035.sec5.u11"));
+                                } else {
+                                    say(bakemon, text("s035.sec5.u4"));
+                                }
                                 loop {
                                     engine.no_cancel = false;
                                     run(bakemon, 1299, -1074);
