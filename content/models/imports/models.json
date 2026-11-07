@@ -54,7 +54,7 @@
  "234": {"model": "234-Gatomon.MMD", "aliases_applied": true, "field_overlay": "gatomon-supported-field"},
  "235": {"model": "235-Candlemon.MMD", "aliases_applied": true},
  "236": {"model": "236-DemiDevimon.MMD", "aliases_applied": true, "texture": "236-DemiDevimon.TIM", "field_overlay": "demidevimon-native-flight"},
- "237": {"model": "237-Diaboromon.MMD", "aliases_applied": true, "field_overlay": "diaboromon-supported-field", "buster_dive_clip": {"source_sha256": "e919e9309d14b29278f37fa5f2a59566927a2de6f96035f4887470f93ace138d", "pose_keys": [[0, 0], [22, 22], [44, 22]]}},
+ "237": {"model": "237-Diaboromon.MMD", "aliases_applied": true, "buster_dive_clip": {"source_sha256": "e919e9309d14b29278f37fa5f2a59566927a2de6f96035f4887470f93ace138d", "pose_keys": [[0, 0], [22, 22], [44, 22]]}},
  "238": {"model": "238-Dolphmon.MMD", "aliases_applied": true, "field_overlay": "dolphmon-native-swim"},
  "239": {"model": "239-Gizamon.MMD", "field_overlay": "gizamon-paired-bound", "technique_aliases": {"Dynamite Kick (44)": "Sonic Jab"}},
  "240": {"model": "240-Gesomon.MMD", "aliases_applied": true, "field_overlay": "gesomon-steady-run"},

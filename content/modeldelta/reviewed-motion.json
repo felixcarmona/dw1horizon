@@ -1,0 +1,445 @@
+{
+  "format": 1,
+  "authoring_tool": "tools/models/reviewed_motion.py",
+  "models": {
+    "62": {
+      "source_sha256": "94844930ee1803235883b713c0c3cbc79c06c6e681fbb4034b60130d563633e6",
+      "output_sha256": "b522e22c29e55a7f7dd8bb36ebf126dca41b4e0eaec8520640c1b3b5dc45279b",
+      "factor": 0.74,
+      "storage": {
+        "resident_bytes": 85230,
+        "resident_limit": 100352,
+        "cold_bytes": 14864,
+        "cold_buffer_bytes": 8192,
+        "cold_reads": [
+          {
+            "slot": 5,
+            "offset": 0,
+            "length": 1112,
+            "sector_read_bytes": 2048,
+            "fits": true
+          },
+          {
+            "slot": 7,
+            "offset": 1112,
+            "length": 1548,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 8,
+            "offset": 2660,
+            "length": 2368,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 9,
+            "offset": 5028,
+            "length": 1280,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 10,
+            "offset": 6308,
+            "length": 2660,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 11,
+            "offset": 8968,
+            "length": 2520,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 12,
+            "offset": 11488,
+            "length": 1588,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 13,
+            "offset": 13076,
+            "length": 1788,
+            "sector_read_bytes": 4096,
+            "fits": true
+          }
+        ],
+        "fits": true
+      },
+      "donor": {
+        "species": 48,
+        "source_sha256": "390092e3b3471adc84645a512f8671b2b036413d72e09d046fc982355f1488c7"
+      }
+    },
+    "237": {
+      "source_sha256": "48dd55aa55c812834e9e1f246bb81a077fa1af051a96cf79c9a0df995fb44844",
+      "output_sha256": "f489b9daef2829ab9b2657ebab2c8274be7e7273814ee1962563b8733300de88",
+      "factor": 1.0,
+      "storage": {
+        "resident_bytes": 78074,
+        "resident_limit": 100352,
+        "cold_bytes": 14936,
+        "cold_buffer_bytes": 8192,
+        "cold_reads": [
+          {
+            "slot": 5,
+            "offset": 0,
+            "length": 1636,
+            "sector_read_bytes": 2048,
+            "fits": true
+          },
+          {
+            "slot": 7,
+            "offset": 1636,
+            "length": 2132,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 8,
+            "offset": 3768,
+            "length": 1520,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 9,
+            "offset": 5288,
+            "length": 2356,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 10,
+            "offset": 7644,
+            "length": 1948,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 11,
+            "offset": 9592,
+            "length": 2080,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 12,
+            "offset": 11672,
+            "length": 1984,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 13,
+            "offset": 13656,
+            "length": 1280,
+            "sector_read_bytes": 4096,
+            "fits": true
+          }
+        ],
+        "fits": true
+      },
+      "donor": {
+        "species": 26,
+        "source_sha256": "8f0463024b83fa96b227f98d0fb8cdacd1305576b21e562ade03a52144c10985"
+      },
+      "preceding_provider": {
+        "field_overlay": "diaboromon-supported-field"
+      }
+    },
+    "246": {
+      "source_sha256": "602de488aa9c655f74a6a7c0a03be94cda608b921dafefb403efcd58dc6de4da",
+      "output_sha256": "73ccf43512f73ce04981986571f029ca5ba123da9c9c0516be2fd3c6d7c345c4",
+      "factor": 0.72,
+      "storage": {
+        "resident_bytes": 97706,
+        "resident_limit": 100352,
+        "cold_bytes": 24876,
+        "cold_buffer_bytes": 8192,
+        "cold_reads": [
+          {
+            "slot": 5,
+            "offset": 0,
+            "length": 1852,
+            "sector_read_bytes": 2048,
+            "fits": true
+          },
+          {
+            "slot": 7,
+            "offset": 1852,
+            "length": 1788,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 8,
+            "offset": 3640,
+            "length": 1412,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 9,
+            "offset": 6144,
+            "length": 7420,
+            "sector_read_bytes": 8192,
+            "fits": true
+          },
+          {
+            "slot": 10,
+            "offset": 13564,
+            "length": 2140,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 11,
+            "offset": 15704,
+            "length": 1700,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 12,
+            "offset": 17404,
+            "length": 5792,
+            "sector_read_bytes": 8192,
+            "fits": true
+          },
+          {
+            "slot": 13,
+            "offset": 23196,
+            "length": 1680,
+            "sector_read_bytes": 4096,
+            "fits": true
+          }
+        ],
+        "fits": true
+      }
+    },
+    "267": {
+      "source_sha256": "25c402f0f8ff7cab91d93ce9ec3308d40b360a82f7098ceae5621fae09e52838",
+      "output_sha256": "264b775f674f580d9549bb1c44d913322c361a42d05ae5f495a1b2ccfa2e5f9b",
+      "factor": 1.0,
+      "storage": {
+        "resident_bytes": 94330,
+        "resident_limit": 100352,
+        "cold_bytes": 46892,
+        "cold_buffer_bytes": 8192,
+        "cold_reads": [
+          {
+            "slot": 5,
+            "offset": 0,
+            "length": 6168,
+            "sector_read_bytes": 8192,
+            "fits": true
+          },
+          {
+            "slot": 7,
+            "offset": 6168,
+            "length": 5696,
+            "sector_read_bytes": 6144,
+            "fits": true
+          },
+          {
+            "slot": 8,
+            "offset": 11864,
+            "length": 5032,
+            "sector_read_bytes": 8192,
+            "fits": true
+          },
+          {
+            "slot": 9,
+            "offset": 16896,
+            "length": 7464,
+            "sector_read_bytes": 8192,
+            "fits": true
+          },
+          {
+            "slot": 10,
+            "offset": 24360,
+            "length": 5660,
+            "sector_read_bytes": 8192,
+            "fits": true
+          },
+          {
+            "slot": 11,
+            "offset": 30020,
+            "length": 6452,
+            "sector_read_bytes": 8192,
+            "fits": true
+          },
+          {
+            "slot": 12,
+            "offset": 36472,
+            "length": 5328,
+            "sector_read_bytes": 8192,
+            "fits": true
+          },
+          {
+            "slot": 13,
+            "offset": 41800,
+            "length": 5092,
+            "sector_read_bytes": 6144,
+            "fits": true
+          }
+        ],
+        "fits": true
+      },
+      "donor": {
+        "species": 47,
+        "source_sha256": "181ba67e601aca5bb4785d9c26b7be50924ea0005360fe98e5e767dd774f1344"
+      }
+    },
+    "268": {
+      "source_sha256": "b3e8c18685a002acb85dc2eaf951b25ebf57ae5887476c2650954560134d57f8",
+      "output_sha256": "9d704639e855b455beba16a34df93889343d718e77eab323eee962b0dde910b6",
+      "factor": 1.0,
+      "storage": {
+        "resident_bytes": 99738,
+        "resident_limit": 100352,
+        "cold_bytes": 50316,
+        "cold_buffer_bytes": 8192,
+        "cold_reads": [
+          {
+            "slot": 5,
+            "offset": 0,
+            "length": 6680,
+            "sector_read_bytes": 8192,
+            "fits": true
+          },
+          {
+            "slot": 7,
+            "offset": 6680,
+            "length": 6060,
+            "sector_read_bytes": 8192,
+            "fits": true
+          },
+          {
+            "slot": 8,
+            "offset": 12740,
+            "length": 5088,
+            "sector_read_bytes": 6144,
+            "fits": true
+          },
+          {
+            "slot": 9,
+            "offset": 18432,
+            "length": 8048,
+            "sector_read_bytes": 8192,
+            "fits": true
+          },
+          {
+            "slot": 10,
+            "offset": 26480,
+            "length": 5900,
+            "sector_read_bytes": 8192,
+            "fits": true
+          },
+          {
+            "slot": 11,
+            "offset": 32768,
+            "length": 6748,
+            "sector_read_bytes": 8192,
+            "fits": true
+          },
+          {
+            "slot": 12,
+            "offset": 39516,
+            "length": 5608,
+            "sector_read_bytes": 8192,
+            "fits": true
+          },
+          {
+            "slot": 13,
+            "offset": 45124,
+            "length": 5192,
+            "sector_read_bytes": 6144,
+            "fits": true
+          }
+        ],
+        "fits": true
+      },
+      "donor": {
+        "species": 47,
+        "source_sha256": "181ba67e601aca5bb4785d9c26b7be50924ea0005360fe98e5e767dd774f1344"
+      }
+    },
+    "431": {
+      "source_sha256": "49e71a98684543e0a17fcf99706eb8c7031c69b44090891ee750abb2d8c2f100",
+      "output_sha256": "dbc32553edb3a2d0d588ee55bc0797f0ef6fcd667289c437e904abbf8f511b54",
+      "factor": 1.0,
+      "storage": {
+        "resident_bytes": 75894,
+        "resident_limit": 100352,
+        "cold_bytes": 22472,
+        "cold_buffer_bytes": 8192,
+        "cold_reads": [
+          {
+            "slot": 5,
+            "offset": 0,
+            "length": 3656,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 7,
+            "offset": 3656,
+            "length": 1632,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 8,
+            "offset": 5288,
+            "length": 2224,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 9,
+            "offset": 7512,
+            "length": 2428,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 10,
+            "offset": 9940,
+            "length": 3152,
+            "sector_read_bytes": 6144,
+            "fits": true
+          },
+          {
+            "slot": 11,
+            "offset": 13092,
+            "length": 5980,
+            "sector_read_bytes": 8192,
+            "fits": true
+          },
+          {
+            "slot": 12,
+            "offset": 19072,
+            "length": 2252,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 13,
+            "offset": 21324,
+            "length": 1148,
+            "sector_read_bytes": 2048,
+            "fits": true
+          }
+        ],
+        "fits": true
+      }
+    }
+  }
+}

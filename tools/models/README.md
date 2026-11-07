@@ -113,3 +113,8 @@ provider uses the resized delta directly.
 `PYTHONPATH=tools python3 -m unittest tools.test_angewomon_size` checks the
 reviewed before/after files under `build/angewomon-redo/`; override them with
 `ANGEWOMON_BEFORE` and `ANGEWOMON_AFTER` for reconstructed inputs.
+
+The six-species [creature motion review](../../docs/reference/reviewed-creature-motion.md)
+records native-donor field/care changes, uniform sizes, sound donors and replay
+checks. `reviewed_motion.py` authors its pinned plain deltas offline; player
+builds use those deltas directly.

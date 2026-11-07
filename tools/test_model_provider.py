@@ -76,6 +76,15 @@ class ModelProvider(unittest.TestCase):
                 self.assertNotIn('field_overlay', records[sid])
                 self.assertNotIn(sid, selected)
                 selected[sid] = model.OVERLAYS[preceding]
+        # Reviewed native-donor deltas retain their old overlay as provenance.
+        reviewed = json.loads(Path('content/modeldelta/reviewed-motion.json').read_text())
+        for sid, proof in reviewed['models'].items():
+            preceding = proof.get('preceding_provider', {}).get('field_overlay')
+            if preceding:
+                self.assertTrue(records[sid]['aliases_applied'])
+                self.assertNotIn('field_overlay', records[sid])
+                self.assertNotIn(sid, selected)
+                selected[sid] = model.OVERLAYS[preceding]
         celebrations = json.load(open('content/models/imports/celebrations.json'))
         # Magnamon's native binding supersedes its retained authoring recipe.
         active = dict(model.OVERLAYS)

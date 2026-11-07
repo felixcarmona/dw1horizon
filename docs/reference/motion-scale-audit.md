@@ -38,8 +38,9 @@ source/result hashes, support pieces and storage measurements are retained in
 The original field generators and their manifests remain available as authoring
 references. Subsequent `edit.py get` calls return the final reviewed model.
 
-Infermon uses Bakemon's battle bank 33 and care bank 0. Battle notes 53, 54 and 55
-are all present. Its old Monochromon footstep events now select the native
+Infermon now uses HerculesKabuterimon's battle bank 54 and care bank 8; its
+previous Bakemon banks 33/0 are replaced by the [creature motion review](reviewed-creature-motion.md).
+Battle notes 53, 54 and 55 are all present. Its old Monochromon footstep events now select the native
 Kabuterimon/Kuwagamon footstep (bank 1, note 16), at the same contact ticks.
 
 Apocalymon also uses a 600-unit giant size target. Its previous decoded idle
