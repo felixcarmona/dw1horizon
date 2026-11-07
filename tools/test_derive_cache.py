@@ -11,6 +11,12 @@ from tools.build_cache import Cache
 
 
 SCREEN_CALLS = {}
+PRELOADED = {}
+
+
+def emit_preloaded(output):
+    Path(output).write_text(PRELOADED['value'])
+    return 'emitted'
 
 
 def encode_screen(i, row, text, opts):
@@ -37,7 +43,8 @@ def run_pass(root, out, argv, lowered, scrn, archive=None, facts=None):
     target = maps / 'MAP.MAP'
     orig = maps / 'MAP.MAP.orig'
     if not orig.exists():
-        orig.write_bytes(target.read_bytes())
+        from tools.dws.backend import keep_orig
+        keep_orig(str(target))
     value = Path(argv[argv.index('--text-source')+1]).read_bytes()
     fd, tmp = tempfile.mkstemp(dir=maps)
     with os.fdopen(fd, 'wb') as f:
@@ -47,6 +54,37 @@ def run_pass(root, out, argv, lowered, scrn, archive=None, facts=None):
 
 
 class DeriveCacheTests(unittest.TestCase):
+    def test_private_map_preimages_allow_cached_story_replay(self):
+        import shutil
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            build = root / 'build'
+            maps = build / 'maps'
+            maps.mkdir(parents=True)
+            source = maps / 'MAP.MAP'
+            source.write_bytes(b'recipe map')
+            text = root / 'text'
+            text.write_bytes(b'first')
+            private = build / 'cache-story/0'
+            args = (str(root), str(build / 'archive'),
+                    ['--screen-content', str(maps), '--maps', str(maps), '--text-source', str(text)],
+                    None, False)
+            store = Cache(root / 'cache', build)
+            def compile_pass():
+                return {'log': cache.isolated_story(run_pass, args, str(private), [str(maps)])}
+            _, hit = store.call({'story': 'private map fixture'}, compile_pass)
+            self.assertFalse(hit)
+            self.assertFalse(store.last_unsafe)
+            self.assertEqual((private / '0/MAP.MAP').read_bytes(), b'recipe mapfirst')
+            self.assertEqual(source.read_bytes(), b'recipe map')
+            shutil.rmtree(private)
+            self.assertTrue(store.call({'story': 'private map fixture'}, compile_pass)[1])
+            self.assertEqual((private / '0/MAP.MAP').read_bytes(), b'recipe mapfirst')
+            text.write_bytes(b'changed')
+            self.assertFalse(store.call({'story': 'private map fixture'}, compile_pass)[1])
+            self.assertEqual((private / '0/MAP.MAP').read_bytes(), b'recipe mapchanged')
+            self.assertEqual(source.read_bytes(), b'recipe map')
+
     def test_screen_pieces_keep_dependencies_on_hits_inside_an_archive_cache(self):
         import os
         root = Path(runner.ROOT)
@@ -223,6 +261,153 @@ class DeriveCacheTests(unittest.TestCase):
         before = cache.identity(ctx, 'unit')
         ctx.env['CODEX_TOOL_CALL_ID'] = 'next command'
         self.assertEqual(before, cache.identity(ctx, 'unit'))
+
+
+class CodeInputs(unittest.TestCase):
+    def test_story_key_covers_preloaded_helpers_and_inventory(self):
+        import os
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            helper = root / 'story' / 'mods' / 'helper.py'
+            helper.parent.mkdir(parents=True)
+            helper.write_text("value = 'old'")
+            output = root / 'build/out/archive'
+            output.parent.mkdir(parents=True)
+            ctx = SimpleNamespace(root=str(root), out=str(output.parent), env={}, facts={},
+                                  cache_facts=True, cache_step='story', locks_read_only=True, record=False)
+            unit = runner.Unit('preloaded helper', emit_preloaded, (str(output),), ['story/mods'], ['archive'])
+            with patch.object(runner, 'ROOT', td), patch.object(cache, 'tool_key', return_value='tools'), \
+                    patch.object(cache, 'runtime_sources', return_value='runtime'), \
+                    patch.dict(os.environ, {'DW_BUILD_CACHE': str(root / 'cache')}):
+                def compile():
+                    exec(helper.read_text(), PRELOADED)
+                    wrapped = cache.units(ctx, [unit])[0]
+                    return wrapped.fn(*wrapped.args).splitlines()[0]
+                self.assertEqual(compile(), 'cache miss')
+                output.unlink()
+                self.assertEqual(compile(), 'cache hit')
+                helper.write_text("value = 'new'")
+                self.assertEqual(compile(), 'cache miss')
+                self.assertEqual(output.read_text(), 'new')
+                (root / 'story' / 'new-directory').mkdir()
+                self.assertEqual(compile(), 'cache miss')
+                helper.chmod(0o700)
+                self.assertEqual(compile(), 'cache miss')
+                (output.parent / 'DIGI.DAT').write_bytes(b'new model archive')
+                self.assertEqual(compile(), 'cache miss')
+                output.unlink()
+                self.assertEqual(compile(), 'cache hit')
+
+    def test_test_changes_do_not_invalidate_builds_but_imported_helpers_do(self):
+        import sys
+        with tempfile.TemporaryDirectory() as td, patch.object(runner, 'ROOT', td):
+            root = Path(td)
+            (root / 'tools').mkdir()
+            helper = root / 'tools' / 'helper.py'; helper.write_text('helper = 1')
+            test = root / 'tools' / 'test_example.py'; test.write_text('test = 1')
+            try:
+                cache.tool_key.cache_clear()
+                first = cache.tool_key()
+                test.write_text('test = 2')
+                cache.tool_key.cache_clear()
+                self.assertEqual(first, cache.tool_key())
+                helper.write_text('helper = 2')
+                cache.tool_key.cache_clear()
+                self.assertNotEqual(first, cache.tool_key())
+                with patch.dict(sys.modules, {'example_test_helper': SimpleNamespace(__file__=str(test))}):
+                    loaded = cache.loaded_test_code()
+                    test.write_text('test = 3')
+                    self.assertNotEqual(loaded, cache.loaded_test_code())
+            finally:
+                cache.tool_key.cache_clear()
+
+
+class RecordedSteps(unittest.TestCase):
+    def test_preloaded_story_inputs_invalidate_recorded_steps(self):
+        with tempfile.TemporaryDirectory() as td, \
+                patch.object(cache, 'tool_key', return_value='tools'), \
+                patch.object(cache, 'runtime_sources', return_value='runtime'), \
+                patch.object(runner, '_recording', None):
+            root = Path(td)
+            helper = root / 'story' / 'helper.py'
+            helper.parent.mkdir()
+            output = root / 'build' / 'out' / 'archive'
+            output.parent.mkdir(parents=True)
+            loaded = {}
+            def build(ctx):
+                output.write_text(loaded['value'])
+            mod = SimpleNamespace(NAME='story', FACTS=True, build=build)
+            ctx = SimpleNamespace(root=td, out=str(output.parent), env={}, facts={},
+                                  locks_read_only=True, inputs=set(), lines=[])
+            for value, hit in [('old', False), ('old', True), ('new', False), ('new', True)]:
+                helper.write_text('value=' + repr(value))
+                exec(helper.read_text(), loaded)
+                output.unlink(missing_ok=True)
+                ctx.lines = []
+                cache.record_step(ctx, mod, str(root / 'cache'))
+                self.assertEqual(ctx.lines[0], 'record cache hit' if hit else 'record cache miss')
+                self.assertEqual(output.read_text(), value)
+
+    def test_facts_are_keyed_for_recorded_fact_consumers(self):
+        from tools.derive.__main__ import Ctx
+        with tempfile.TemporaryDirectory() as td, \
+                patch.object(cache, 'tool_key', return_value='tools'), \
+                patch.object(cache, 'runtime_sources', return_value='runtime'):
+            root = Path(td)
+            output = root / 'build/result'
+            calls = []
+            def build(ctx):
+                calls.append(1)
+                output.write_text(str(ctx.facts['limit']))
+            mod = SimpleNamespace(NAME='fixture', FACTS=True, build=build)
+            for limit in (1, 1, 2):
+                output.parent.mkdir(exist_ok=True)
+                if output.exists(): output.unlink()
+                ctx = Ctx(str(output.parent), {'limit': limit}, record=True)
+                ctx.root = str(root)
+                with ctx.calling():
+                    cache.record_step(ctx, mod, str(root / 'cache'))
+                self.assertEqual(output.read_text(), str(limit))
+            self.assertEqual(len(calls), 2)
+
+    def test_reuse_preserves_real_trace_and_tracks_absent_probes(self):
+        import os
+        import shutil
+        from tools.derive.__main__ import Ctx
+        with tempfile.TemporaryDirectory() as td, \
+                patch.object(cache, 'tool_key', return_value='tools'), \
+                patch.object(cache, 'runtime_sources', return_value='runtime'):
+            root = Path(td)
+            source = root / 'source'; source.write_bytes(b'original')
+            missing = root / 'optional'
+            stat_only = root / 'stat-only'; stat_only.write_bytes(b'probe only')
+            output = root / 'build/everything/result'
+            calls = []
+            def build(ctx):
+                calls.append(1)
+                data = source.read_bytes()
+                assert stat_only.exists()
+                if missing.exists():
+                    data += missing.read_bytes()
+                output.parent.mkdir(parents=True, exist_ok=True)
+                output.write_bytes(data)
+            mod = SimpleNamespace(NAME='fixture', build=build)
+            traces = []
+            for i in range(3):
+                shutil.rmtree(root / 'build', ignore_errors=True)
+                if i == 2:
+                    missing.write_bytes(b'new')
+                ctx = Ctx(str(output.parent), None, record=True)
+                ctx.root = str(root)
+                with ctx.calling():
+                    cache.record_step(ctx, mod, str(root / 'cache'))
+                traces.append(ctx.inputs)
+                self.assertEqual(output.read_bytes(), b'original' + (b'new' if i == 2 else b''))
+            self.assertEqual(len(calls), 2)
+            self.assertEqual(traces[0], traces[1])
+            self.assertIn(str(source), traces[1])
+            self.assertTrue(all(str(stat_only) not in trace for trace in traces))
+            self.assertFalse(any(str(root / 'cache') in p for trace in traces for p in trace))
 
 
 if __name__ == '__main__':

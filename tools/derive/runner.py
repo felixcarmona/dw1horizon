@@ -47,6 +47,11 @@ _hooked = False
 def _hook(event, args):
     if _recording is None or event != 'open':
         return
+    # Dependency hashing is cache bookkeeping, not a read by the builder.
+    cache_module = sys.modules.get('tools.build_cache')
+    capture = getattr(cache_module, '_ACTIVE', None)
+    if capture is not None and capture.busy:
+        return
     path, mode = args[0], args[1]
     if not isinstance(path, (str, bytes)) or isinstance(path, bytes):
         return
@@ -194,11 +199,14 @@ class Unit:
                 'step:NAME' for an earlier step's outputs (what a worker must have before it starts)
       outputs   what it writes, under the build's folder
       order_group  optional name of a sequence within this step (shared maps, for example)
+      record_snapshot  recording may compute this group from private prepared snapshots, then merge in order;
+                       runtime ordering still applies. Only use when earlier group outputs are not inputs.
     """
-    def __init__(self, name, fn, args=(), inputs=(), outputs=(), order_group=None):
+    def __init__(self, name, fn, args=(), inputs=(), outputs=(), order_group=None, record_snapshot=False):
         self.name, self.fn, self.args = name, fn, tuple(args)
         self.inputs, self.outputs = list(inputs), list(outputs)
         self.order_group = order_group
+        self.record_snapshot = record_snapshot
 
 
 class Done:

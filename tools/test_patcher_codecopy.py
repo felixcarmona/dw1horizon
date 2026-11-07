@@ -132,7 +132,14 @@ class BinaryDeltaTests(unittest.TestCase):
                     files[file] = [['l', len(blob), len(data)]]
                     blob.extend(data)
                 p = dict(files=files, blob=bytes(blob), sources=[], code=[], license=[])
+                initial = copy.deepcopy(p)
                 report = codecopy.copy_files(p, tmp, outputs, images)
+                for jobs in (2, 1):
+                    replay = copy.deepcopy(initial)
+                    got = codecopy.copy_files(replay, tmp, outputs, images, jobs=jobs,
+                                              cache_dir=str(Path(tmp) / 'delta-cache'))
+                    self.assertEqual(replay, p)  # includes payload bytes and all ordered blob offsets
+                    self.assertEqual(got, report)
                 self.assertEqual(len(report['files']), 3)
                 self.assertEqual(p['files']['SCN/LANGCA.BIN'][0][0], 'l')
                 self.assertNotIn(b'dead bytes must not ship', p['blob'])

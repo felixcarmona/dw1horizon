@@ -338,7 +338,7 @@ def propagate_regional_copies(payload, outputs, changed):
     return aliases
 
 
-def copy_files(payload, build_dir, outputs, images, say=lambda _: None, *, plan=None):
+def copy_files(payload, build_dir, outputs, images, say=lambda _: None, *, plan=None, jobs=1, cache_dir=None):
     """Replace literal-bearing files by per-base bsdiff against corresponding files."""
     plan = _build_plan(build_dir, plan)
     names = source_names(payload, build_dir, images, plan=plan)
@@ -364,6 +364,27 @@ def copy_files(payload, build_dir, outputs, images, say=lambda _: None, *, plan=
             cache[data] = [len(blob), len(data)]
             blob.extend(data)
         return cache[data]
+    # Compute expensive raw deltas in processes (the Python fallback holds the
+    # GIL). Merge only below, in original file/base order, preserving blob offsets
+    # and alternate-source tie breaking byte for byte.
+    prepared = {}
+    if jobs > 1 or cache_dir:
+        from delta_cache import choose
+        from concurrent.futures import ProcessPoolExecutor
+        pairs, arguments = [], []
+        for file, ops in payload['files'].items():
+            if file not in names or not any(op[0] == 'l' for op in ops):
+                continue
+            for base, source in names[file].items():
+                alternate = main_sources.get(base)
+                candidate = images[base].read(alternate) if alternate and alternate != source else None
+                pairs.append((file, base))
+                arguments.append((images[base].read(source), outputs[file], candidate, cache_dir))
+        if jobs > 1:
+            with ProcessPoolExecutor(jobs) as pool:
+                prepared = dict(zip(pairs, pool.map(choose, arguments, chunksize=1)))
+        else:
+            prepared = dict(zip(pairs, map(choose, arguments)))
     for file, ops in list(payload['files'].items()):
         if file not in names or not any(op[0] == 'l' for op in ops):
             continue
@@ -380,15 +401,21 @@ def copy_files(payload, build_dir, outputs, images, say=lambda _: None, *, plan=
             entry['table_recipes'] = recipes
         for base, source in names[file].items():
             old = images[base].read(source)
-            control, diff, extra = make_delta(old, target)
-            alternate = main_sources.get(base)
-            if extra and alternate and alternate != source:
-                candidate = images[base].read(alternate)
-                if len(candidate) >= len(target):
-                    other_control, other_diff, other_extra = make_delta(candidate, target)
-                    if len(other_extra) < len(extra):
-                        source, old = alternate, candidate
-                        control, diff, extra = other_control, other_diff, other_extra
+            if (file, base) in prepared:
+                alternate, control, diff, extra = prepared[file, base]
+                if alternate:
+                    source = main_sources[base]
+                    old = images[base].read(source)
+            else:
+                control, diff, extra = make_delta(old, target)
+                alternate = main_sources.get(base)
+                if extra and alternate and alternate != source:
+                    candidate = images[base].read(alternate)
+                    if len(candidate) >= len(target):
+                        other_control, other_diff, other_extra = make_delta(candidate, target)
+                        if len(other_extra) < len(extra):
+                            source, old = alternate, candidate
+                            control, diff, extra = other_control, other_diff, other_extra
             regional, combined, additional, buffers, changes = bufferdata.player_buffers(
                 mapped.get(file, []), target, base, images[base], source, old)
             copies = linkerdata.payload_copies(mapped.get(file, []), entry.get('linker_words', []), target, old)

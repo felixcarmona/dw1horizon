@@ -15,6 +15,16 @@ import literal_gate
 
 
 class DeltaAuditTests(unittest.TestCase):
+    def test_authored_feed_section_retains_its_source_and_offsets(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp) / 'exe'; folder.mkdir()
+            (folder / 'SLUS_010.32.elf.map').write_text(
+                '.MENU 0x80050000 0x300\n'
+                ' .menu_feed 0x80050198 0xc3 build/us/gcc/src/main/mod_feed.c.o\n')
+            rows = delta_audit.sections(tmp, dict(authored=['SCN/MENU_REL.BIN']))['SCN/MENU_REL.BIN']
+        self.assertEqual([(r['offset'], r['length'], r['section'], r['source']) for r in rows],
+                         [(408, 195, '.menu_feed', 'src/main/mod_feed.c')])
+
     def test_chinese_language_patch_comes_from_current_data_spans(self):
         import langpatch
         base = 0x80090000
