@@ -43,6 +43,11 @@ The recipe rejects different input/donor checksums and a different output. It
 keeps textures intact. `edit.py put` records the plain delta, source/target pins
 and final provider pins, including technique repairs.
 
+Kurisarimon also has a distinct USA World 3 source model. Carry its edits with
+`tools/models/variants.py make dw3-us --games USA_GAMES --reference-games PAL_GAMES`,
+then run `variants.py check dw3-us --games USA_GAMES`. The variant retains its
+own source mesh and unaffected programs, with separate delta and provider pins.
+
 With the before/after files under `build/motion-review-models4/`:
 
 ```sh
