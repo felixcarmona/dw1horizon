@@ -678,7 +678,8 @@ resident model uses 94,998 of 100,352 bytes; each cold read fits 8,192 bytes.
 
 Kimeramon's mesh and every animation translation are uniformly enlarged by
 1.5, including field, battle and menu clips. Its collision radius/height are
-263/600. The decoded idle height is approximately 604 units, compared with 505
+263/600. Authored effect and condition-bubble attachment offsets grow with
+the mesh; native effect lookup keys retain their original values. The decoded idle height is approximately 604 units, compared with 505
 for native HerculesKabuterimon, 657 for Machinedramon and 678 for VenomMyotismon.
 The status camera moves 1.5 times as far from the eye, retaining the complete
 model inside the Condition panel. The model's size in bytes is unchanged; its
