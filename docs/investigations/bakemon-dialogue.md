@@ -89,6 +89,26 @@ The broader source audit and original-USA runtime captures still do **not**
 demonstrate translated cemetery recruitment questions. Claims that those
 questions are translated, including the description on
 [Wikimon's Overdell page](https://wikimon.net/Overdell), conflict with the tested
-USA behavior. Adding readable cemetery questions would require new authored
-dialogue; it must be described as a gameplay addition rather than restoration
-of a translated question set recovered from this disc.
+USA behavior. The readable cemetery dialogue added for v0.0.8 is new authored
+dialogue rather than restoration of a translated question set recovered from
+this disc.
+
+## Horizon v0.0.8
+
+A Bakemon partner now makes the three cemetery recruitment questions and the
+acceptance line readable. Both Bakemon records, partner 37 and NPC twin 157,
+are recognized. Other partners retain the existing ghost speech. The choices,
+Yes/Yes/No solution, animations, departure and recruitment effects are unchanged.
+
+The questions concern moving to the city, guarding it and fear of ghosts. The
+acceptance jokes about haunting the city before correcting that to guarding it.
+Four new keys, `s035.sec5.u8` through `u11`, are authored in every language bank.
+The Python and DWS story views select them with partner-species branches; their
+hashes are pinned in `story/base/authored.json`. File City's existing dialogue
+is unchanged.
+
+The recruitment regression test compiles both story views, resolves the partner
+guards for both Bakemon IDs and unrelated species, and compares every remaining
+choice and side effect with the original USA section by control-flow
+bisimulation. It also rejects imported species whose low byte matches a Bakemon
+ID and checks that all four selected utterances use the intended form.

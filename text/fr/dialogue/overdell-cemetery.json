@@ -5,6 +5,10 @@
  "s035.sec5.m1.o1": "Euh... non",
  "s035.sec5.m2.o0": "Hmmm... oui",
  "s035.sec5.m2.o1": "Argh... non",
+ "s035.sec5.u8": "Tu m'invites à vivre dans ta ville ?",
+ "s035.sec5.u9": "Je peux surveiller la ville et faire fuir les intrus ?",
+ "s035.sec5.u10": "Attends... tu as peur des fantômes ?",
+ "s035.sec5.u11": "Alors je vais hanter ta ville ! Euh... la protéger !",
  "s035.sec5.u0": [
   [
    "Bu-bu?"

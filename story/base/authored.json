@@ -228,13 +228,13 @@
     },
     "zones/overdell-cemetery/s035-35/script.py": {
       "original_sha256": "9db3b59719b13de1886b016d4077435f38ff71fe543d7e91f9edb078f54ade76",
-      "authored_sha256": "39a0177a02b3a1ba0e613c81a16cd6d7e4e65114b6ea0808026839806335e34b",
-      "reason": "Any partner may enter the Grey Lord's Mansion once Myotismon has joined; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
+      "authored_sha256": "6930ab71da291f5ec67a0087aa64db48fde527e7425f1c3ca816dd2e74101061",
+      "reason": "Any partner may enter the Grey Lord's Mansion once Myotismon has joined; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; Bakemon partners (37 and NPC twin 157) understand the three recruitment questions and acceptance while other partners keep ghost speech"
     },
     "zones/overdell-cemetery/s035-35/script.dws": {
       "original_sha256": "72c71fb4b666f1615aab44bdb9b26fe2a96f6b709780e7fbadbbbefe5604d799",
-      "authored_sha256": "c60eb2629e8f76c8932aafefc628d118943ec0fd405ba485a6acc9cab9768da0",
-      "reason": "Any partner may enter the Grey Lord's Mansion once Myotismon has joined; DWS synchronized with the authored Python source; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
+      "authored_sha256": "6f4a629636924b9d254fea3184b8808dd88971cf3a90b5409c36b076631733b8",
+      "reason": "Any partner may enter the Grey Lord's Mansion once Myotismon has joined; DWS synchronized with the authored Python source; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; Bakemon partners (37 and NPC twin 157) understand the three recruitment questions and acceptance while other partners keep ghost speech"
     },
     "zones/freezeland/s088-92/script.py": {
       "original_sha256": "189c4414dc0adc525d8f6b0cfab6d82013b70b21b07fec837322f0f5d56c5700",
