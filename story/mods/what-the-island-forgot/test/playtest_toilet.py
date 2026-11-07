@@ -227,6 +227,19 @@ def main():
         else:
             assert e.continue_game() == 0
         assert len(e.ram()) == 2097152
+        # The corpus partner can have a care event due on the first field tick.
+        # Let any existing event finish before requesting the setup warp.
+        e.run('pause')
+        e.gs('set', 'gametime_running=0', 'hour=20', 'minute=50',
+             'partner.para.condition=0', 'partner.para.foodLevel=100',
+             'partner.para.poopLevel=100', 'partner.para.poopingTimer=2000',
+             'partner.para.energyLevel=100', 'partner.para.tiredness=0',
+             'partner.para.evoTimer=0', 'partner.para.remainingLifetime=1000',
+             'partner.para.sleepyHour=23', 'partner.para.wakeupHour=1',
+             'partner.para.nextHungerHour=23')
+        e.run('resume')
+        e.wait(.5)
+        assert e.in_control(), 'initial care event did not finish'
         put(e, 'MOD_OPT_STORY', 'i', 1)
         for opt in ('MOD_OPT_CHEATS', 'MOD_OPT_SHORTCUTS', 'MOD_OPT_NEW_DIGIMON'):
             put(e, opt, 'i', 1)
@@ -247,6 +260,7 @@ def main():
             e.run('save', str(out / 'resume.state'))
             print(json.dumps(result), flush=True)
     finally:
+        e.run('shot', str(out / 'last.png'), check=False)
         e.stop()
 
 
