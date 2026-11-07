@@ -680,7 +680,9 @@ Kimeramon's mesh and every animation translation are uniformly enlarged by
 1.5, including field, battle and menu clips. Its collision radius/height are
 263/600. The decoded idle height is approximately 604 units, compared with 505
 for native HerculesKabuterimon, 657 for Machinedramon and 678 for VenomMyotismon.
-The model's size in bytes is unchanged; its resident portion uses 87,652 bytes.
+The status camera moves 1.5 times as far from the eye, retaining the complete
+model inside the Condition panel. The model's size in bytes is unchanged; its
+resident portion uses 87,652 bytes.
 
 Tropical Jungle screen 13 (`TROP02`) retains an original-disc collision defect
 on its southwest approach to screen 12: the grass boundary steps inward at rows
