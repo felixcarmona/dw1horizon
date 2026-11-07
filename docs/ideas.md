@@ -85,6 +85,7 @@ against, leave this list.
 | A Cheats option to unlock the whole evolution chart | 🎭 | For testing; cheats are opt-in. |
 | Reorganise the Rookie routes: add Zurumon (Baby) and Pagumon (In-Training, the Virus line: Gazimon, DemiDevimon, Gizamon...) and give each Rookie a single In-Training parent as in the original, about five Rookies each | ⚖️ 🆕 | A player's full table is in the Discord thread "Rookie evolution path re-balance"; animations could reuse Pabumon's and Koromon's. Changes routes players know. |
 | Multiplayer co-op | 🆕 | Very large: the engine is single-player; would need a link-cable/netplay design from scratch. |
+| In File City, a partner that needs the toilet walks straight to it after a map change (no need to hold Up) | 🛠️ | Field AI change for the city toilets only. |
 | Unique recruitment scenes for more of the new Digimon | ✨ | Many new recruits join with a simple fight. |
 | Humanoid sizes growing by stage (Angemon < MagnaAngemon < Seraphimon, Devimon < Myotismon) | ✨ | A per-line size review. |
 | A minimap like Digimon World 3's, showing where each exit leads, and a wider camera view | 🛠️ | Needs screen space and per-screen exit data. |
