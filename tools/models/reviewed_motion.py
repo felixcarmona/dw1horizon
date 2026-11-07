@@ -56,8 +56,7 @@ def set_world(pose, sk, bone, desired, history):
 
 
 def install(model, slot, frames, loop, events):
-    tolerance = 0 if model.type == 237 else 1 if model.type == 246 else 3
-    animation = mmd.encode_anim(frames, len(frames[0]), loop, events, tol=tolerance, repeats=False)
+    animation = mmd.encode_anim(frames, len(frames[0]), loop, events, tol=1 if model.type == 246 else 3, repeats=False)
     assert animation is not None
     model.anims.table[slot] = len(model.anims.anims)
     model.anims.anims.append(animation)
@@ -173,69 +172,18 @@ def support_blends(model, slots, feet, carrier):
     return model
 
 
-def upright_diaboromon(model, donor):
-    """Carry SkullGreymon acting onto an upright, leg-supported Diaboromon.
-
-    Arms 6–9/10–13 remain free; legs 16–19/20–23 take every support solve.
-    The extra hock link keeps its own length and counterrotates above each paw.
-    """
-    sk,dsk=mmd.exe().skeleton[237],mmd.exe().skeleton[26]
-    rest=R.rest_pose(model,24,33);dr=R.rest_pose(donor,26)
-    # Spine rotates around the pelvis. Its hip-to-neck axis leans 15 degrees.
-    rp=R.world_pos(sk,rest);rw=R.world_rots(sk,rest)
-    old=[rp[2][i]-rp[14][i] for i in range(3)]
-    length=math.hypot(old[1],old[2])
-    desired=[old[0],-length*math.cos(math.radians(15)),-length*math.sin(math.radians(15))]
-    set_world(rest,sk,14,R.m3mul(R.swing(old,desired),rw[14]),{})
-    # Independent head and shoulder chains retain their own anatomical axes.
-    for bone in (2,6,10):set_world(rest,sk,bone,rw[bone],{})
-    rest=R.align_reference(sk,rest,dsk,dr,[(7,8,8,9),(11,12,12,13)],keep_world=(4,5,8,9,12,13),sagittal=True)
-    # A 386-unit pelvis height extends the legs without straightening the knees.
-    rest[15][7]=-386
-    # Keep sole orientation and natural separated feet from the native source.
-    rp,dp=R.world_pos(sk,rest),R.world_pos(dsk,dr)
-    rw,dw0=R.world_rots(sk,rest),R.world_rots(dsk,dr)
-    mapping={15:1,14:2,1:2,                    # pelvis and spine
-             2:3,3:4,4:4,5:5,                  # neck, head and jaw
-             6:7,7:8,8:9,9:10,                 # right shoulder, arm, forearm, hand
-             10:11,11:12,12:13,13:14,          # left shoulder, arm, forearm, hand
-             16:17,17:18,18:18,19:19,          # right thigh, shin, hock, foot
-             20:21,21:22,22:22,23:23}          # left thigh, shin, hock, foot
-    ratio=1.0
-    out=copy.deepcopy(model)
-    for slot in range(5):
-        weights={b:(s,.35 if b in (14,1) else .6 if b==2 else 1.) for b,s in mapping.items()}
-        tr=R.transfer(donor,26,slot,237,rest,weights,(15,1,ratio),ratio)
-        source=animsheet.slot_frames(donor,26,slot)[0];frames=[];history={}
-        for tick,src in enumerate(source):
-            p=copy.deepcopy(rest)
-            for bone,seq in tr['rot'].items():p[bone][3:6]=[round(v) for v in seq[tick]]
-            p[15][6:9]=[round(rest[15][6+i]+tr['hips'][tick][i]*(.35 if i==1 else 1.)) for i in range(3)]
-            dw,dpos=R.world_rots(dsk,clean(src)),R.world_pos(dsk,clean(src))
-            for h,k,ankle,foot,df in ((16,17,18,19,19),(20,21,22,23,23)):
-                fw=R.m3mul(R.scale_rot(R.m3mul(dw[df],R.m3t(dw0[df])),.3),rw[foot])
-                # Paw origin follows the donor's stride and floor lift. Only legs support it.
-                goal=[rp[foot][i]+ratio*(dpos[df][i]-dp[df][i]) for i in range(3)]
-                sole=max(sum(fw[1][j]*v[j] for j in range(3)) for v in model.tmd.obj_verts(sk[foot][0]))
-                # Transfer ankle lift, independent of the donor's long claws.
-                # Its rotating toe mesh can cross the floor during a lifted step.
-                lift=max(0,dp[df][1]-dpos[df][1])
-                goal[1]=-sole-ratio*lift-2
-                offset=[sum(fw[i][j]*rest[foot][6+j] for j in range(3)) for i in range(3)]
-                target=[goal[i]-offset[i] for i in range(3)]
-                origin=R.world_pos(sk,p)[h]
-                pole=motionsecondary.transported_native_pole(rp[h],rp[k],rp[ankle],origin,target)
-                joint,end=legik.solve(origin,target,math.dist(rp[h],rp[k]),math.dist(rp[k],rp[ankle]),pole)
-                if math.dist(end,target)>.01:
-                    raise ValueError(f'unreachable Diaboromon leg: slot {slot}, tick {tick}, foot {foot}')
-                rh,rk=motionsecondary.native_plane_rotations([rp[b] for b in (h,k,ankle)],[origin,joint,end],[rw[h],rw[k]])
-                set_world(p,sk,h,rh,history);set_world(p,sk,k,rk,history)
-                set_world(p,sk,ankle,fw,history);set_world(p,sk,foot,fw,history)
-            p[0][6:9]=[round(v) for v in tr['root'][tick]]
-            frames.append(p)
-        if tr['loop'] is not None:mmd.close_loop(frames,tr['loop'])
-        install(out,slot,frames,tr['loop'],[e for e in tr['events'] if e[1]=='sound'])
-    return support_blends(out,range(5),(19,23),15)
+def reverse_hock(origin, target, upper, lower, sign):
+    """Keep Diaboromon's reverse-folded supports on one lateral bend branch."""
+    lateral=sign*100
+    a=math.sqrt(upper*upper-(lateral-origin[0])**2)
+    b=math.sqrt(lower*lower-(lateral-target[0])**2)
+    dy,dz=target[1]-origin[1],target[2]-origin[2]
+    distance=math.hypot(dy,dz)
+    assert abs(a-b)<distance<a+b, ('unreachable reverse hock',origin,target,a,b)
+    y,z=dy/distance,dz/distance
+    along=(a*a-b*b+distance*distance)/(2*distance)
+    height=math.sqrt(a*a-along*along)
+    return [lateral,origin[1]+along*y-height*z,origin[2]+along*z+height*y],target
 
 
 def native_motion(model, donor, slots):
@@ -245,8 +193,14 @@ def native_motion(model, donor, slots):
     nb = len(sk)
     rest, dr = R.rest_pose(model,nb), R.rest_pose(donor,len(dsk))
     if sid == 237:
-        return upright_diaboromon(model, donor)
-    if sid == 267:
+        # SkullGreymon's thigh/shin/paw maps to the distal support chain;
+        # retain the imported proximal thigh and its silhouette.
+        mapping = {15:1,14:15,1:2,2:3,3:4,4:4,5:5,
+                   6:7,7:8,8:9,9:10,10:11,11:12,12:13,13:14,
+                   16:17,17:17,18:18,19:19,20:21,21:21,22:22,23:23}
+        limbs = [(17,18,19,17,18,19),(21,22,23,21,22,23)]
+        carrier = 15
+    elif sid == 267:
         mapping = {1:2,2:13,13:3,14:4,18:5,3:14,4:15,5:16,6:16,
                    21:10,22:11,23:12,24:7,25:8,26:9,
                    7:18,8:19,9:20,10:21,11:22,12:23}
@@ -262,7 +216,10 @@ def native_motion(model, donor, slots):
         carrier = 1
     chords = [(h,k,dh,dk) for h,k,f,dh,dk,df in limbs]
     chords += [(k,f,dk,df) for h,k,f,dh,dk,df in limbs]
-    rest = R.align_reference(sk,rest,dsk,dr,chords,keep_world=[v[2] for v in limbs],sagittal=True)
+    if sid == 237:
+        chords = []
+        chords += [(7,8,8,9),(8,9,9,10),(11,12,12,13),(12,13,13,14)]
+    rest = R.align_reference(sk,rest,dsk,dr,chords,keep_world=[v[2] for v in limbs]+([4,5,9,13] if sid==237 else []),sagittal=True)
     # Ground soles after calibration; paws keep their own world yaw.
     low = max(v[1] for v in points(model,rest,[v[2] for v in limbs]))
     rest[carrier][7] -= round(low)
@@ -272,7 +229,7 @@ def native_motion(model, donor, slots):
     ratio = min(ratios)
     out = copy.deepcopy(model)
     for slot in slots:
-        transfer = R.transfer(donor,dsid,slot,sid,rest,{b:(s, .35 if sid in (267,268) and b==14 else .5 if sid in (267,268) and b==13 else .2 if sid==268 and b==15 else 1.) for b,s in mapping.items()},
+        transfer = R.transfer(donor,dsid,slot,sid,rest,{b:(s, 1. if sid==237 and b in (16,20) else .35 if sid in (267,268) and b==14 else .5 if sid in (267,268) and b==13 else .2 if sid==268 and b==15 else 1.) for b,s in mapping.items()},
                               (carrier,1,ratio),ratio)
         source,_,_ = animsheet.slot_frames(donor,len(dsk),slot)
         frames,history = [],{}
@@ -284,7 +241,7 @@ def native_motion(model, donor, slots):
             dw,dpos = R.world_rots(dsk,clean(src)),R.world_pos(dsk,clean(src))
             for h,k,foot,dh,dk,df in limbs:
                 foot_delta=R.m3mul(dw[df],R.m3t(dw0[df]))
-                fw = R.m3mul(foot_delta,rw[foot])
+                fw = R.m3mul(R.scale_rot(foot_delta,.3) if sid==237 else foot_delta,rw[foot])
                 target = [rp[foot][i]+ratio*(dpos[df][i]-dp[df][i]) for i in range(3)]
                 verts=model.tmd.obj_verts(sk[foot][0])
                 sole=max(sum(fw[1][j]*v[j] for j in range(3)) for v in verts)
@@ -294,7 +251,33 @@ def native_motion(model, donor, slots):
                 v1=legik.sub(rp[k],rp[h]);v2=legik.sub(rp[foot],rp[k])
                 # The native knee supplies a stable anatomical bend plane.
                 pole=motionsecondary.transported_native_pole(rp[h],rp[k],rp[foot],origin,target)
-                joint,end=legik.solve(origin,target,legik.norm(v1),legik.norm(v2),pole)
+                if sid==237:
+                    proximal=sk[h][1]
+                    hip=R.world_pos(sk,p)[proximal]
+                    direction=legik.sub(origin,hip)
+                    turn=R.swing(direction,legik.sub(target,hip))
+                    proximal_world=R.world_rots(sk,p)[proximal]
+                    sign=1 if foot==19 else -1
+                    def feasible(weight):
+                        rot=R.scale_rot(turn,weight)
+                        candidate=[hip[i]+sum(rot[i][j]*direction[j] for j in range(3)) for i in range(3)]
+                        aa=legik.norm(v1)**2-(sign*100-candidate[0])**2
+                        bb=legik.norm(v2)**2-(sign*100-target[0])**2
+                        if min(aa,bb)<=0:return False
+                        distance=math.hypot(target[1]-candidate[1],target[2]-candidate[2])
+                        return abs(math.sqrt(aa)-math.sqrt(bb))+6<distance<math.sqrt(aa)+math.sqrt(bb)-12
+                    if not feasible(0):
+                        lo,hi=0.,next((j/20 for j in range(1,21) if feasible(j/20)),None)
+                        assert hi is not None, ('unreachable proximal support',slot,tick,foot)
+                        for _ in range(18):
+                            mid=(lo+hi)/2
+                            if feasible(mid):hi=mid
+                            else:lo=mid
+                        set_world(p,sk,proximal,R.m3mul(R.scale_rot(turn,hi),proximal_world),history)
+                        origin=R.world_pos(sk,p)[h]
+                    joint,end=reverse_hock(origin,target,legik.norm(v1),legik.norm(v2),sign)
+                else:
+                    joint,end=legik.solve(origin,target,legik.norm(v1),legik.norm(v2),pole)
                 rh,rk=motionsecondary.native_plane_rotations([rp[b] for b in (h,k,foot)],
                                                              [origin,joint,end],[rw[h],rw[k]])
                 set_world(p,sk,h,rh,history);set_world(p,sk,k,rk,history);set_world(p,sk,foot,fw,history)
@@ -304,6 +287,21 @@ def native_motion(model, donor, slots):
             if floor > 0: p[carrier][7]-=math.ceil(floor)
             p[0][6:9]=[round(v) for v in transfer['root'][tick]]
             frames.append(p)
+        if sid == 237:
+            from tools.models.field_animations.war_greymon import rotation
+            import numeric as np
+            for elbow, hand in ((8,9),(12,13)):
+                needed=[]
+                for p in frames:
+                    w=world(model,p)
+                    hinge=np.array(motionsecondary.clearance_rotation(points(model,p,[elbow,hand]),
+                        [w[elbow][i][3] for i in range(3)],
+                        [w[sk[elbow][1]][i][0] for i in range(3)],[-70,0],-12))
+                    needed.append(math.degrees(math.acos(max(-1,min(1,(float(np.trace(hinge))-1)/2)))))
+                for t,p in enumerate(frames):
+                    lift=max(needed[j]-3*abs(t-j) for j in range(len(frames)))
+                    local=R.m3mul(rotation([-lift,0,0]).tolist(),mmd.rot_matrix(*p[elbow][3:6]))
+                    p[elbow][3:6]=[round(v) for v in mmd.matrix_euler(local)]
         if transfer['loop'] is not None: mmd.close_loop(frames,transfer['loop'])
         install(out,slot,frames,transfer['loop'],[e for e in transfer['events'] if e[1]=='sound'])
     return support_blends(out,slots,[v[2] for v in limbs],carrier)
@@ -363,6 +361,9 @@ def main():
         slots=[0,1,2,3,4] if args.species==237 else [0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,16,17,18,19,34,35,36]
         model=native_motion(model,donor,slots)
     data,storage=finish(model)
+    if args.species==237:
+        from tools.models.diaboromon_hands import build as plant_hands
+        data=plant_hands(data)
     factor={62:0.74,246:0.72}.get(args.species,1.)
     if factor!=1: data=resize(data,mmd.exe().bone_count[args.species],factor)
     if args.species==246: data=resized_supports(data)

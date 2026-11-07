@@ -10,7 +10,7 @@ measurements are in `content/modeldelta/reviewed-motion.json`.
 | Kurisarimon (431) | World 2003 M175KRSR has a suspended segmented shell and six trailing tendril chains. Its native battle-idle acting remains intact. The old sleep/scold clips drove the chains through the shell. Those two clips now retain native breathing, an eased withdrawal, staggered tendril motion and settling. Their original durations, termination and sound events remain. |
 | Infermon (246) | Card Battle 165 has six rigid leg chains and broad two-part paws. The old sleep clip folds those paws above the shell; scolding loses ground contact. Native breathing now supplies the care acting while each foot keeps a fixed support position. The whole model and all clip translations are resized to 72%; bone-attached bubbles/effects and dimensions follow. Battle voice 54 and care voice 8 select HerculesKabuterimon's native insect banks. |
 | WereGarurumon (62) | The existing reviewed walk already comes from native Leomon. All its rotations, timing and events remain. A uniform 74% resize of every mesh and translation track brings the 709-unit record height to 525, within the native Ultimate range. Bone-attached bubbles/effects and dimensions follow. The record remains below the unsplit 100,352-byte partner buffer. |
-| Diaboromon (237) | Card Battle 179 supplies the mesh and reverse-folded legs. Field slots 0–4 now follow native SkullGreymon's clocks, weight shifts and alternating arm/leg acting, with an upright reference stance. Arms 6–13 map only to the donor shoulders/arms/hands; legs 16–23 carry the donor stepping through the thigh, shin, hock and paw. Both rigid leg links solve the ankle path, with the extra hock counterrotating above each paw. Ankle lift drives the steps independently of the donor toe mesh. The torso retains a small forward lean and reduced vertical bob; the long arms swing freely above the ground. The previous live overlay is retired; battle/care programs stay intact. |
+| Diaboromon (237) | Card Battle 179 supplies the mesh and reverse-folded legs. Field slots 0–4 now follow native SkullGreymon's clocks, weight shifts and alternating arm/leg acting, with an explicit anatomy map, proximal reach correction and a fixed reverse-hock bend branch. A checksum-pinned crouched baseline then receives a contact-only pass: forearm/hand rotations 8/9 and 12/13 plant the finger pads flat with the wrist collars above the floor. The root, body, upper arms, legs, translations, scales and timings remain identical to that baseline. The previous live overlay is retired; battle/care programs stay intact. |
 | Mammothmon (267) | World 2 M212MANM originally borrowed Garurumon's everyday animation programs. Native Monochromon now supplies field, care, condition and battle movement, with anatomy-specific four-leg contact paths. Head/neck rotation transfer is reduced for the much longer trunk; the original elephant mesh, trunk segments and ears remain. Voice 41, effects donor 47 and behavior template 47 match Monochromon. |
 | SkullMammothmon (268) | World 2 M215SMAN has the same heavy-quadruped donor change, with its own front-leg indices and an independently mapped trunk. Native World 2 battle, hit, faint, get-up and technique performances remain. |
 
@@ -56,8 +56,7 @@ PYTHONPATH=tools python3 -W ignore -m unittest tools.test_reviewed_motion
 
 `MODEL_REVIEW` selects another folder containing `before/ID.MMD` and
 `after/ID.MMD`. The checks decode all occupied clips, check stable Infermon
-scales and care support contacts, require Diaboromon's arms to clear the floor,
-check its upright spine and alternating leg support/swing, preserve unaffected programs and mesh,
+scales and care support contacts, preserve unaffected programs and mesh,
 compare native donor clocks/sounds, retain every WereGarurumon rotation, and
 verify resident/cold-animation budgets. Ground contact is also checked at nominal
 60 Hz blend samples, including the repeating seam; the carrier-height envelope
@@ -71,3 +70,16 @@ and at least four complete cycles of each displayed clip. Native reference
 rows accompany the donor-based comparisons. The screenshots and videos are
 local review artifacts; they contain player-disc assets and are not published
 in the repository.
+
+The hand-only pass is `tools/models/diaboromon_hands.py`; its input checksum
+is recorded under `hand_contacts` in the motion manifest. For its focused
+comparison checks, `HAND_REVIEW` selects a directory with `before/237.MMD`
+(the pinned crouched baseline) and `after/237.MMD` (corrected contacts):
+
+```sh
+PYTHONPATH=tools python3 -W ignore -m unittest tools.test_diaboromon_hands
+```
+
+These checks preserve every other pose channel, mesh and non-field program,
+verify flat pad contact with raised wrists, check floor clearance between keys,
+and execute four actual loops without wrist drift.

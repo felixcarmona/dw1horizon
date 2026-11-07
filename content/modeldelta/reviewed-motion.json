@@ -22,10 +22,10 @@
     },
     "237": {
       "source_sha256": "48dd55aa55c812834e9e1f246bb81a077fa1af051a96cf79c9a0df995fb44844",
-      "output_sha256": "88c2625e2a63b817ccb178dfd0bdecde6e60b2c22bd3ee075176b609e50dd86e",
+      "output_sha256": "e85bdf1f63ee58a6c20d7394a1c43152e7cce2a34931cfa3a7f83b2403697e13",
       "factor": 1.0,
       "storage": {
-        "resident_bytes": 83362,
+        "resident_bytes": 79302,
         "resident_limit": 100352,
         "cold_bytes": 14936,
         "cold_buffer_bytes": 8192,
@@ -95,6 +95,22 @@
       },
       "preceding_provider": {
         "field_overlay": "diaboromon-supported-field"
+      },
+      "hand_contacts": {
+        "source_sha256": "f489b9daef2829ab9b2657ebab2c8274be7e7273814ee1962563b8733300de88",
+        "rotation_bones": [
+          8,
+          9,
+          12,
+          13
+        ],
+        "slots": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
       }
     },
     "246": {
