@@ -194,3 +194,40 @@ Unimon placement usable attack priorities. This behavior is present in
 v0.0.6; its regression tests cover the actual placement and moves. It does
 not establish that a later report of inactivity is resolved: verify the live
 wild encounter and its technique execution before changing battle behavior.
+
+## Locomotion anatomy refinement
+
+The unarmed Leomon-based imports use the native free-arm shoulder, elbow and
+wrist performance on both sides. The sword-bearing arm is reflected by its
+joint directions before transfer, offset by half a cycle so opposite arms
+follow opposite legs. Stingmon maps shoulders 13/17, elbows 14/18
+and wrists 16/20 to native 5/8, 6/9 and 7/10; both forearm-to-wrist chords are
+calibrated. Hand meshes hang from the wrists. Ankle-to-toe directions and toe
+meshes are calibrated separately so an imported idle twist cannot turn a foot
+sideways. Sakuyamon's toe joints 6/10 participate in its foot solve.
+
+GrapLeomon keeps its proportions and uses a more upright torso and head during
+travel, with unarmed arm carriage. Kyubimon retains its own quiet quadruped
+reference and tail fan; reduced body pitch and paw lift keep its run low.
+ChaosLord uses its source knee bend planes and a cyclic Euler fit. Fitting
+rotation charts around the seam avoids the large clearance lift that previously
+left its run above the floor. ExVeemon remains unchanged.
+
+Gizamon retains its source mesh, front support, head and tail acting. Its hind
+paws sit at half-width 85 rather than 120 during travel. The source bend plane
+and complete leg lengths support the narrower stance. Sleep and settling keep
+the hind paws outside the flanks as the body lowers. These changes are baked
+after the previous field overlay, which no longer runs over the final delta.
+
+Wormmon uses a uniform 0.65 resize across vertices and all animation translations,
+including field, battle and care programs. Its idle height changes from about
+288 to 186 units and its width from 363 to 235; native Agumon measures 253 high
+and 202 wide. Radius, height, effect attachments, condition bubble and status
+framing follow the resize. Field cycles are retimed to retain ordinary follow
+speeds with the smaller stride.
+
+Recipes and pinned input deltas live under
+`content/models/authoring/gait-refinement/` and `content/modeldelta/authoring/`.
+`tools.test_gait_refinement` replays the artifacts and checks unaffected programs,
+meshes, cyclic playback, interpolated sole clearance and resident/cold storage.
+The World 3 USA variant repeats the refinement on its own Kyubimon mesh.

@@ -1,0 +1,190 @@
+{
+  "source_sha256": "604544f87b36583d1374adca463a496cb0a9530b1b2cafa725e1db782106d704",
+  "output_sha256": "f6ab404205e357361dce213c91f52095f1508f55fba8f45fe238e0cbe823812f",
+  "checks": [
+    {
+      "slot": 0,
+      "maximum_goal_error": 0.13364346872040217,
+      "hind_paw_half_width": 85
+    },
+    {
+      "slot": 1,
+      "maximum_goal_error": 0.13364346872040217,
+      "hind_paw_half_width": 85
+    },
+    {
+      "slot": 2,
+      "maximum_goal_error": 0.1193131922652527,
+      "hind_paw_half_width": 85
+    },
+    {
+      "slot": 3,
+      "maximum_goal_error": 0.12284390235543856,
+      "hind_paw_half_width": 85
+    },
+    {
+      "slot": 4,
+      "maximum_goal_error": 0.1286927398169013,
+      "hind_paw_half_width": 85
+    },
+    {
+      "slot": 9,
+      "maximum_goal_error": 0.12821188088798446,
+      "hind_paw_half_width": 85
+    },
+    {
+      "slot": 11,
+      "maximum_goal_error": 0.1444264170991303,
+      "hind_paw_half_width": 85
+    }
+  ],
+  "storage": {
+    "resident_bytes": 77620,
+    "resident_limit": 100352,
+    "cold_bytes": 13584,
+    "cold_buffer_bytes": 8192,
+    "cold_reads": [
+      {
+        "slot": 5,
+        "offset": 0,
+        "length": 888,
+        "sector_read_bytes": 2048,
+        "fits": true
+      },
+      {
+        "slot": 7,
+        "offset": 888,
+        "length": 3920,
+        "sector_read_bytes": 6144,
+        "fits": true
+      },
+      {
+        "slot": 8,
+        "offset": 4808,
+        "length": 1596,
+        "sector_read_bytes": 4096,
+        "fits": true
+      },
+      {
+        "slot": 9,
+        "offset": 6404,
+        "length": 1236,
+        "sector_read_bytes": 2048,
+        "fits": true
+      },
+      {
+        "slot": 10,
+        "offset": 7640,
+        "length": 1308,
+        "sector_read_bytes": 4096,
+        "fits": true
+      },
+      {
+        "slot": 11,
+        "offset": 8948,
+        "length": 1896,
+        "sector_read_bytes": 4096,
+        "fits": true
+      },
+      {
+        "slot": 12,
+        "offset": 10844,
+        "length": 1060,
+        "sector_read_bytes": 2048,
+        "fits": true
+      },
+      {
+        "slot": 13,
+        "offset": 11904,
+        "length": 1680,
+        "sector_read_bytes": 4096,
+        "fits": true
+      }
+    ],
+    "fits": true
+  },
+  "species": 239,
+  "preceding_provider": {
+    "model": "239-Gizamon.MMD",
+    "field_overlay": "gizamon-paired-bound"
+  },
+  "skeleton": [
+    [
+      -1,
+      -1
+    ],
+    [
+      0,
+      0
+    ],
+    [
+      1,
+      1
+    ],
+    [
+      2,
+      2
+    ],
+    [
+      3,
+      1
+    ],
+    [
+      4,
+      4
+    ],
+    [
+      5,
+      1
+    ],
+    [
+      6,
+      6
+    ],
+    [
+      7,
+      1
+    ],
+    [
+      8,
+      8
+    ],
+    [
+      9,
+      1
+    ],
+    [
+      10,
+      10
+    ],
+    [
+      11,
+      11
+    ],
+    [
+      12,
+      1
+    ],
+    [
+      13,
+      13
+    ],
+    [
+      14,
+      14
+    ]
+  ],
+  "preceding_delta": {
+    "sources": [
+      {
+        "path": "build/batch5/Gizamon.MMD",
+        "sha256": "16f24ed3558fefe60c6b5442ab5f912a4af56f7a729aed3997afbde191c04ed0",
+        "size": 80722
+      }
+    ],
+    "delta": "content/modeldelta/authoring/239-before-gait-refinement.MMD.mdelta",
+    "delta_sha256": "fac0b2e1f1a67ceb1ae71f67590ad432b03bb5eb5c6a2285e59b0727f9ed7c4c",
+    "sha256": "604544f87b36583d1374adca463a496cb0a9530b1b2cafa725e1db782106d704",
+    "size": 90420
+  }
+}
