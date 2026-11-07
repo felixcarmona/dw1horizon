@@ -45,9 +45,7 @@ def talk():    # section 7
 
 @bluemeramon3.on_talk
 def talk():    # section 8
-    say(t8.u0)
-    recruit(Species.BlueMeramon)
-    return
+    recruitable(bluemeramon3, line=t8.u0)
 
 # the section table, in the order of the original header
 sections(254, 51, 52, 5, 6, 7, 8)

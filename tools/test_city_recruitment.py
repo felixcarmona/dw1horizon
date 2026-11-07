@@ -46,9 +46,35 @@ class Recruitment(unittest.TestCase):
         self.assertNotIn(recruitment.KEY, source)
         self.assertIn('recruit(species(104));', source)
 
+    def test_second_bluemeramon_requires_its_battle_win(self):
+        for extended in (False, True):
+            source = self.lowered('back-dimension', extended)
+            talk = source[source.index('on talk(bluemeramon3)'):]
+            self.assertIn('battle();', talk)
+            if extended:
+                self.assertIn('engine.result == 1 && !is_recruited(species(104))', talk)
+            else:
+                self.assertIn('recruit(species(104));', talk)
+
     def test_silent_conversation_has_no_stale_battle_guard(self):
-        source = self.lowered('back-dimension')
-        bare = source[source.index('on talk(bluemeramon3)'):]
+        source = """from dw import *
+area = screen(3)
+fighter = area.npc(Species.BlueMeramon, slot=5, at=(0, 0))
+visitor = area.npc(Species.BlueMeramon, slot=6, at=(500, 0))
+@fighter.on_talk
+def fight_talk():
+    recruitable(fighter, line="Fight.")
+@visitor.on_talk
+def visit_talk():
+    recruit(Species.BlueMeramon)
+"""
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder).joinpath('story', 'mods', 'fixture', 'src', 'silent.py')
+            path.parent.mkdir(parents=True)
+            path.write_text(source)
+            with former_residents(), recruitment.story(True):
+                compiled = lower.lower_file(str(path))[1]
+        bare = compiled[compiled.index('on talk(visitor)'):]
         self.assertIn('if (!is_recruited(species(104)))', bare)
         self.assertNotIn('engine.result', bare)
 

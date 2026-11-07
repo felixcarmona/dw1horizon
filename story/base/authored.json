@@ -1050,6 +1050,21 @@
       "original_sha256": "8b97bec84ac8ff8d3a93543e5c17f0cc7c9cb63f1eb4cf644d842159b6688780",
       "authored_sha256": "af2d9276c1670ed9bd2ff209111e37a5a3a0b6b3dad7774e54a3e4931fd6b763",
       "reason": "Hidden-budget Monochromon customer with one arrival draw and one reduced-budget retry; DWS synchronized with the authored Python source"
+    },
+    "zones/back-dimension/s186-227/script.py": {
+      "original_sha256": "7e15daa79f770d3667d75631f7cebf720251d71071ce4f1006e868f4ad30d5bf",
+      "authored_sha256": "dc246907f5c7b5a538182316d04918374398bec683f32108f03ea2437db4cd3c",
+      "reason": "The second BlueMeramon in Back Dimension starts the missing battle in both story modes, matching the other three encounters."
+    },
+    "zones/back-dimension/s186-227/script.dws": {
+      "original_sha256": "747c6d134d0c4d0e80489abfc549bc19e6fda661265c9945ef34e8859bf70251",
+      "authored_sha256": "3a5a23c7f92234ada63c15310fd15a456f669a7075dc8c56b383651e384a7906",
+      "reason": "The second BlueMeramon in Back Dimension starts the missing battle in both story modes, matching the other three encounters."
+    },
+    "zones/back-dimension/s186-227/README.md": {
+      "original_sha256": "356db5053134f99261fa01b7c0caa14bf2e59425bea3a1d2888e306b95785acb",
+      "authored_sha256": "4cced79f2ae1de9e12d87f1dbb13669e5321b9839d5f5a631f1f5467f9d91108",
+      "reason": "Document the added battle in section 8."
     }
   }
 }
