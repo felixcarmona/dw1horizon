@@ -131,6 +131,12 @@ local function w16(a,v) w8(a,v);w8(a+1,math.floor(v/256)) end
 local function w32(a,v) w16(a,v);w16(a+2,math.floor(v/65536)) end
 local function u32(a) local o=bit.band(a,0x1fffff);return tonumber(m[o])+256*tonumber(m[o+1])+65536*tonumber(m[o+2])+16777216*tonumber(m[o+3]) end
 local function hook(a,f) HIT.bp[#HIT.bp+1]=PCSX.addBreakpoint(a,'Exec',4,'battle-hits',f) end
+-- Field scripts normally substitute the seven preserved NPC models. This
+-- fixture needs the selected battle/partner model, including KingSukamon.
+hook({a('npcSpeciesType')},function()
+ local r=PCSX.getRegisters().GPR.n
+ if r.a0=={spec['id']} and r.a1==0 then r.v0=r.a0;PCSX.getRegisters().pc=r.ra end
+end)
 hook({a('loadNPCModel')},function()
  local r=PCSX.getRegisters().GPR.n
  local original=tonumber(r.a0)
@@ -327,6 +333,7 @@ def main():
     parser.add_argument('--card', default='tools/dev/saves/corpus/20261027-d2796814.mcd')
     parser.add_argument('--attach', action='store_true')
     parser.add_argument('--video', action='store_true')
+    parser.add_argument('--trace', action='store_true', help='observe launch origins, geometric contacts and direct hits')
     parser.add_argument('--partner', type=int, default=3)
     parser.add_argument('--screen', type=int, default=0, help='use an existing placement outside the forest fixture')
     parser.add_argument('--enemy-slot', type=int, default=0)
@@ -385,10 +392,15 @@ def main():
                     recorder = subprocess.Popen(P.E + ['record', str(out / 'battle.mp4'), str(args.seconds), '20'],
                                                 stdout=(out / 'recorder.log').open('w'), stderr=subprocess.STDOUT)
                 try:
+                    if args.trace:
+                        from tools.dev.playtest.attack_trace import AttackTrace
+                        trace = AttackTrace(battle)
                     row = dict(species=sid, name=spec['name'], slots=slots,
                                partner=args.partner, partner_stat=args.partner_stat,
                                partner_attack=args.partner_attack, clear_path=args.clear_path,
                                **battle.watch(args.seconds, out, defend=args.partner_attack is None, stop_on_hit=args.until_hit))
+                    if args.trace:
+                        row.update(trace.finish())
                 finally:
                     if recorder is not None:
                         recorder.wait(timeout=args.seconds + 30)
@@ -404,7 +416,11 @@ def main():
                 row['ok'] = bool(row['played']) and row['elapsed_frames'] > 20 and (not outgoing or row['damage'] > 0)
                 results.append(row)
                 (args.out / 'result.json').write_text(json.dumps(results, indent=2) + '\n')
-                print(json.dumps({k:v for k,v in row.items() if k != 'samples'}), flush=True)
+                summary = {k:v for k,v in row.items() if k not in ('samples', 'origins', 'hits', 'contacts')}
+                if args.trace:
+                    summary.update(origin_samples=len(row['origins']), direct_hits=len(row['hits']),
+                                   contacts=len(row['contacts']))
+                print(json.dumps(summary), flush=True)
                 # The next case restores its clean field snapshot; reward
                 # animations and care timers are outside this damage audit.
                 battle.flow(False)
