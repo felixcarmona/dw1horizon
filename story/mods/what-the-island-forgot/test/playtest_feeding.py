@@ -70,14 +70,21 @@ def watch(e):
       local function i32(o) local v=u32(o); if v>=2147483648 then v=v-4294967296 end; return v end
       local function u16(o) return m[o]+256*m[o+1] end
       local ent={e.A('PARTNER_ENTITY') & 0x1fffff}
+      local bones={e.feed_bones}
       FV.listener=PCSX.Events.createEventListener('GPU::Vsync',function()
         if #FV.samples>=6000 then return end
         FV.n=FV.n+1
         local p=u32(ent+4)%2097152
-        FV.samples[#FV.samples+1]=string.format('%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d',
+        local meshes=0
+        for b=0,bones-1 do
+          local mesh=u32(p+136*b+8)
+          if mesh>=2147483648 and mesh<2149580800 then meshes=meshes+1 end
+        end
+        FV.samples[#FV.samples+1]=string.format('%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d',
           FV.n,m[ent+46],u16(ent+28),m[ent+52],m[ent+53],m[ent+54],
           i32(p+136+96),i32(p+136+100),i32(p+136+104),
-          i32(p+120),i32(p+124),i32(p+128),m[{e.A('PARTNER_STATE') & 0x1fffff}])
+          i32(p+120),i32(p+124),i32(p+128),
+          i32(p+136+120),i32(p+136+124),i32(p+136+128),meshes,m[{e.A('PARTNER_STATE') & 0x1fffff}])
       end)
     ''')
 
@@ -104,15 +111,17 @@ def feed(e, out, sid, item=38, discipline=100, record=False, handoff=False):
             # Isolate the clip from large models' approach clearance. The real
             # handover, cold read, reaction and item effect still run normally.
             put(e,'PARTNER_SUB_STATE','B',3)
-        seen = set()
+        seen, captured = set(), set()
         deadline = time.monotonic() + 80
         while time.monotonic() < deadline:
             ram = e.ram()
             state = e.peek('PARTNER_STATE', 'B', ram)
             anim = e.peek('PARTNER_ENTITY+0x2e', 'B', ram)
             frame = e.peek('PARTNER_ENTITY+0x1c', 'h', ram)
-            if state == 5 and anim in (8, 13) and anim not in seen:
+            if state == 5 and anim in (8, 13):
                 seen.add(anim)
+            if state == 5 and anim in (8,13) and frame>=2 and anim not in captured:
+                captured.add(anim)
                 e.run('shot', str(out / f'{label}-clip-{anim}.png'))
             if state != 5 and seen:
                 break
@@ -120,16 +129,18 @@ def feed(e, out, sid, item=38, discipline=100, record=False, handoff=False):
         else:
             raise AssertionError('feeding did not finish')
         text = e.run('lua', "FV.listener:remove();return table.concat(FV.samples,'\\n')")
-        (out / (label + '.csv')).write_text('refresh,clip,frame,on_map,on_screen,flat,scale_x,scale_y,scale_z,x,y,z,partner_state\n'+text)
+        (out / (label + '.csv')).write_text('refresh,clip,frame,on_map,on_screen,flat,scale_x,scale_y,scale_z,x,y,z,body_x,body_y,body_z,resident_meshes,partner_state\n'+text)
         samples = [list(map(int, line.split(','))) for line in text.strip().splitlines()]
         played = [row for row in samples if row[1] in (8, 13) and row[-1] == 5]
-        hidden = [row for row in played if not row[3] or not row[4] or row[5] != 255 or min(row[6:9]) <= 0]
+        hidden = [row for row in played if not row[3] or not row[4] or row[5] != 255 or min(row[6:9]) <= 0
+                  or max(abs(v) for v in row[12:15])>5000 or not row[15]]
         amount = e.peek('INVENTORY+60', 'B')
         heap = heap_walk(Ram(e.ram(),e.table))
         assert heap['corrupt'] is None, heap
         result = dict(species=sid, item=item, clips=sorted(seen), samples=len(played),
                       handoff_fixture=handoff, cold_cache_type=e.peek('MOD_COLD_CACHE_TYPE','i'),
-                      render_mode=e.peek('MOD_FPS_MODE_RUN','i'),
+                      render_mode=e.peek('MOD_FPS_MODE_RUN','i'), captured_playing_clips=sorted(captured),
+                      minimum_resident_meshes=min((r[15] for r in played),default=0),
                       hidden_samples=len(hidden), remaining=amount, ram_bytes=len(e.ram()),
                       heap={k:v for k,v in heap.items() if k != 'blocks'})
         e.run('shot', str(out / (label + '-after.png')))
@@ -203,6 +214,7 @@ def main():
                 fixture_partner(e,sid)
             previous = sid
             stage(e,x,z,a.item,a.discipline)
+            e.feed_bones=records[sid]['para']['boneCount']
             assert e.peek('PARTNER_ENTITY','i') == sid
             result = feed(e,out,sid,a.item,a.discipline,record=a.record,handoff=a.handoff_fixture)
             results.append(result)
@@ -217,6 +229,7 @@ def main():
                 e.press('CANCEL',12);e.wait(.3)
             assert not e.peek('IS_IN_MENU','i')
             assert result['samples'] and not result['hidden_samples'], result
+            assert result['captured_playing_clips']==result['clips'], result
     finally:
         e.stop()
     return 0

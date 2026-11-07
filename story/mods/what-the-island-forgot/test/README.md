@@ -18,7 +18,7 @@ sighting retouch and checks that only ordinary floor changes, keeping the
 existing southern connection, exits, hunter records and backgrounds.
 
 `playtest_feeding.py` runs the real inventory handover on original 2 MB RAM,
-records per-refresh body scale and visibility, verifies item consumption and
+records per-refresh scale, position, visibility flags and resident meshes, verifies item consumption and
 checks the live heap. The executable must keep its matching `SCRN.DAT` beside
 its `exe/` directory. Generated cards, traces, screenshots and videos stay in
 the output directory.
