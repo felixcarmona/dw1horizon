@@ -454,7 +454,7 @@ def main():
 
 # ------------------------------------------------------------------------------------------------ maps (placed Digimon)
 # content/maps/<NAME>.json: the Digimon placed in one .MAP (docs/mods/data-sources.md "Maps"), in slot order. The .MAP's
-# assets (ground, collision, backgrounds, sprites, warps) stay the disc's; its Digimon list is written from the file (a
+# assets stay the disc's, with optional reviewed collision tile edits; its Digimon list is written from the file (a
 # .MAP without a file has none). A stat of a slot is its species' `wild` (nothing written), a delta on it ("+200", "-100")
 # or a fixed number. What equals the usual value is left out (y 0, rotation x/z 0, script id 5 + slot, current HP/MP =
 # HP/MP, unk2 0, unk1 1, flee y 0). A slot whose species is null is a placeholder (type 255: the engine copies it inertly).
@@ -546,6 +546,27 @@ def _map_ctx():
     return _MAP_CTX
 
 
+def apply_map_collision(m, edits, where):
+    """Apply reviewed native-map tiles in both story modes, refusing stale geometry."""
+    seen = set()
+    for edit in edits:
+        tile = edit['tile']
+        if len(tile) != 2 or any(type(v) is not int or not 0 <= v < 100 for v in tile):
+            raise ValueError(f'{where}: invalid collision tile {tile}')
+        key = tuple(tile)
+        if key in seen:
+            raise ValueError(f'{where}: duplicate collision tile {tile}')
+        seen.add(key)
+        if not edit.get('reason') or any(type(edit[k]) is not int or not 0 <= edit[k] <= 255 for k in ('before', 'after')):
+            raise ValueError(f'{where}: collision tile {tile} needs byte values and a review reason')
+        current = m.collision[tile[1] * 100 + tile[0]]
+        if current not in (edit['before'], edit['after']):
+            raise ValueError(f'{where}: collision tile {tile}: expected {edit["before"]}, found {current}')
+    for edit in edits:
+        x, z = edit['tile']
+        m.collision[z * 100 + x] = edit['after']
+
+
 def build_map(name, data, maps=None):
     """The .MAP NAME (its disc bytes `data`) with its Digimon list from content/maps (none without a file). -> bytes"""
     import dwmap
@@ -553,6 +574,7 @@ def build_map(name, data, maps=None):
     if name in NEVER_READ: return data
     m = dwmap.MapFile(data); c = _map_ctx()
     x = maps.get(name)
+    apply_map_collision(m, x.get('collision', []) if x else [], name)
     slots = x['digimon'] if x else []
     for i, o in enumerate(slots):
         if o.get('slot', i) != i: raise SystemExit(f'{x["_path"]}: slot {o.get("slot")} at position {i}: slots are positional '

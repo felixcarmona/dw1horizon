@@ -97,9 +97,11 @@ else
     skip species-lint-tests "needs generated species (DW_SELFTEST_DERIVE)"
 fi
 run species-off       $PY -W ignore tools/test_species_off.py              # JSON-only level, stats and path overrides
+run native-map-collision $PY tools/test_map_collision_edits.py
 run fi-info-clock     $PY tools/test_fi_info.py
 disc care-bubble-art $PY -m unittest tools.test_care_bubble_art tools.test_care_badge
 if [ -f "$PATCHED/src/main/mod_feed.c" ]; then
+    run buff-caps-host $PY tools/dev/playtest/buff_caps_host.py "$PATCHED"
     run merit-cards-host $PY tools/dev/playtest/merit_cards_host.py "$PATCHED"
     run care-badge-host $PY tools/dev/playtest/care_badge_host.py "$PATCHED"
     run hpmp-care-host $PY tools/dev/playtest/hpmp_care_host.py "$PATCHED"

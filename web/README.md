@@ -376,13 +376,14 @@ local hosting utility, not required for Pages. Local preview:
 
 ## Player data at /data/
 
-The header links to the release-matched technique/species/evolution guide.
-`python3 web/build.py --tag v0.0.6 --out build/site` overlays the presentation
+The header links to the release-matched technique/species/evolution/recruit guide.
+`python3 web/build.py --tag v0.0.7 --out build/site` overlays the presentation
 and generates `/data/` with `tools/guide/build.py`, using that tag's owned data.
 Release and Pages runs the same command for every release and page-only retry;
 presentation can come from main while the data stays pinned to `RELEASE_TAG`.
-English and Spanish UI lives in `i18n/*.json` (`data.*`); other languages use
-English guide copy. The shared theme, header, language preference and components
+All nine languages have guide UI and recruit instructions in `i18n/*.json`
+(`data.*`). Recruits include locations, availability, quest steps, battle HP,
+City contributions and prosperity, checked against the roster and story sources. The shared theme, header, language preference and components
 also apply to the guide. Its font and all scripts are served locally.
 `node web/test/data.mjs SITE [SHOTS]` checks navigation, release matching,
 languages, table behavior and desktop/mobile layout. See `tools/guide/README.md`.

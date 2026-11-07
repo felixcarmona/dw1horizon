@@ -15,7 +15,16 @@
       "donor": 39,
       "scale": [171, 100],
       "flags": ["same_rig"],
-      "note": "King of Sukamon is Sukamon (same skeleton) built 2.76 times larger, shrunk to 0.62 by its partner model: 1.71 times Sukamon."
+      "origins": [{"from": [12, 35, -20, 0], "to": [12, -127, -160, -60]}],
+      "note": "KingSukamon retains Sukamon's rig at 171/100 scale. The shared hand-toss origin is lowered to native Sukamon's release height, preserving its enlarged horizontal release point at the Fast Poop Toss launch frame. Other origins retain their existing scale."
+    },
+    {
+      "species": 120,
+      "donor": 24,
+      "scale": [1, 1],
+      "flags": [],
+      "origins": [{"from": [2, 60, 0, 10], "to": [0, 0, -297, -300]}],
+      "note": "KingSukamon's Water Blit and Poison Powder borrow Whamon's shared launch row, placed in front of the body at native Sukamon height. The model and its existing technique slots keep their size and acting."
     },
     {
       "species": 94,
