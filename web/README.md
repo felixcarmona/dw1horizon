@@ -348,3 +348,18 @@ which validates a matching package and engine before publishing. The optional
 `web/deploy.sh` script targets a separately configured rsync/nginx host; it is a
 local hosting utility, not required for Pages. Local preview:
 `python3 -m http.server -d web`.
+
+## Player data at /data/
+
+The header links to the release-matched technique/species/evolution guide.
+`python3 web/build.py --tag v0.0.6 --out build/site` overlays the presentation
+and generates `/data/` with `tools/guide/build.py`, using that tag's owned data.
+Release and Pages runs the same command for every release and page-only retry;
+presentation can come from main while the data stays pinned to `RELEASE_TAG`.
+English and Spanish UI lives in `i18n/*.json` (`data.*`); other languages use
+English guide copy. The shared theme, header, language preference and components
+also apply to the guide. Its font and all scripts are served locally.
+`node web/test/data.mjs SITE [SHOTS]` checks navigation, release matching,
+languages, table behavior and desktop/mobile layout. See `tools/guide/README.md`.
+For full-disc Chromium verification, `BUILD_WORKERS=4` selects four workers
+in `web/test/cross-browser.mjs` (default one); `EXPECT_SHA1` enforces a CLI pin.

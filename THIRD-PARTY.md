@@ -126,3 +126,11 @@ Its resampling/compositing and `tools/mediancut.py` retain Pillow arithmetic; th
 required MIT-CMU (HPND) notice is in [tools/image-license.txt](tools/image-license.txt).
 Optional OpenCV and SAM authoring tools use NumPy and PyTorch; SAM setup installs
 neither torchvision nor Pillow. These optional tools are outside player replay.
+
+## Player guide font
+
+`tools/guide/assets/font/PlusJakartaSans.ttf` is the unmodified variable
+Plus Jakarta Sans font distributed by
+[Google Fonts](https://github.com/google/fonts/tree/main/ofl/plusjakartasans).
+It is redistributed with its SIL Open Font License 1.1 notice in
+`tools/guide/assets/font/OFL.txt`, also included in the generated guide.
