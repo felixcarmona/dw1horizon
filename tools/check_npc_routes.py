@@ -9,7 +9,6 @@ are conservatively independent. Accepted empty pockets have explicit bounds.
 import argparse
 import ast
 import json
-import importlib.util
 from collections import deque
 from pathlib import Path
 from types import SimpleNamespace
@@ -212,7 +211,7 @@ def point_components(points, step):
 
 
 def authored_geometry(s):
-    """Read the authored cells, foreground and final boundaries of the recipes.
+    """Read the same authored cells and foreground edits as the map recipes.
 
     Never import or run a rendering recipe: selftest needs no disc or artwork
     conversion. Fail closed for a new recipe whose geometry is not declarative.
@@ -272,13 +271,16 @@ def authored_geometry(s):
             for x,z in booth['trigger']:
                 assert m.collision[z*100+x] == 0, (s['map'], x, z)
                 m.collision[z*100+x] = trigger
-    if any(isinstance(n, ast.ImportFrom) and n.module == 'field_walkables'
-           for n in ast.walk(tree)):
-        # This helper only applies reviewed cells/arrivals; it never renders art.
-        spec = importlib.util.spec_from_file_location('reviewed_field_boundaries', MOD / 'maps/field_walkables.py')
-        boundaries = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(boundaries)
-        boundaries.apply(m, Path(s['map']).stem)
+    if any(isinstance(n, ast.ImportFrom) and n.module == 'field_walkables' for n in ast.walk(tree)):
+        reviewed = json.loads((MOD / 'maps/field-walkables.json').read_text())['maps'].get(s['map'].removesuffix('.MAP'), {})
+        for edit in reviewed.get('collision', []):
+            x,z = edit['tile']
+            assert m.collision[z*100+x] == edit['before'], s['map']
+            m.collision[z*100+x] = edit['after']
+        for edit in reviewed.get('warps', []):
+            warp = m.warps[edit['slot']]
+            assert all(warp[k] == v for k,v in edit['before'].items()), s['map']
+            warp.update(edit['after'])
     return m
 
 

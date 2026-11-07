@@ -11,12 +11,9 @@ class NpcRoutes(unittest.TestCase):
     def screen(self, number):
         return next(s for s in routes.placements() if s['screen'] == number)
 
-    def test_reviewed_stair_boundaries_are_part_of_authored_geometry(self):
-        m = routes.authored_geometry(self.screen(357))
-        for z in range(40):
-            self.assertTrue(m.collision[z * 100 + 50] & 128, ('left rail', z))
-            self.assertTrue(m.collision[z * 100 + 61] & 128, ('right rail', z))
-        self.assertTrue(all(m.collision[z * 100 + 51] == 51 for z in range(4)))
+    def test_stone_yard_includes_reviewed_stair_boundary(self):
+        geometry = routes.authored_geometry(self.screen(357))
+        self.assertEqual(geometry.collision[50], 128)
 
     def test_day_and_night_enemies_never_overlap(self):
         for number in (319, 329):

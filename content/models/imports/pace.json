@@ -944,9 +944,9 @@
   "name": "MegaGargomon",
   "bones": 27,
   "skeleton_sha256": "7e432b6bbde2c831b4f41d3041b60ca2b7be8a671371c85d04fa906b20041291",
-  "source_sha256": "49e677ac2a1160b62508330719275c2c243d54d7e64b2f0ae1d4bcb426265dea",
+  "source_sha256": "903c8d5492d91680921946fd7f4c27a3a480107d71cd2315443a11f31c129705",
   "base_generator": "tools.models.field_animations.imported_equipment",
-  "post_source_sha256": "edb68134e79d5ca3cfdc5c0c4b7f5e714e9b17a8d8f4248c8f922921331ae8bb",
+  "post_source_sha256": "2c909f1527fd491355f22a9c908896f8df9b5c77157ce4edc831d82dc7936ff2",
   "slots": {
    "2": {
     "from": 2,
