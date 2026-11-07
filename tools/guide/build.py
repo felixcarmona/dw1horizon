@@ -12,11 +12,15 @@ import tarfile
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from localize import translate
+import recruits
 
 ROOT = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
 INPUTS = ['content/techniques', 'content/species', 'content/tables/evolution-tree.json',
-          'docs/reference/partner.md', 'docs/reference/combat.md']
+          'docs/reference/partner.md', 'docs/reference/combat.md',
+          'story/base', 'story/mods/what-the-island-forgot', 'content/maps',
+          'content/screens', 'content/tables/city-residents.json',
+          'content/tables/fishing.json', 'text']
 STATS = {'hp': 'HP', 'mp': 'MP', 'offense': 'Offense', 'defense': 'Defense',
          'speed': 'Speed', 'brain': 'Brains'}
 LEVELS = ['fresh', 'in-training', 'rookie', 'champion', 'ultimate', 'mega']
@@ -28,7 +32,7 @@ def esc(value):
     return html.escape(str(value), quote=True)
 
 
-def snapshot(ref='v0.0.6'):
+def snapshot(ref='v0.0.7'):
     commit = subprocess.check_output(['git', 'rev-parse', '--verify', ref + '^{commit}'], cwd=ROOT, text=True).strip()
     raw = subprocess.check_output(['git', 'archive', commit, *INPUTS], cwd=ROOT)
     with tarfile.open(fileobj=io.BytesIO(raw)) as archive:
@@ -172,13 +176,43 @@ def render(commit, techniques, all_species, tree, version):
     header = header.replace('href="#top"', 'href="../"').replace('href="data/"', 'href="./"')
     header = '\n'.join(line.rstrip() for line in header.splitlines())
     return f'''<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Horizon technique learning, species, and evolution data."><title>Digimon World: Horizon — Player data</title><meta name="theme-color" content="#cfd8f6"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="assets/site.css"><link rel="stylesheet" href="assets/guide.css"><script type="module" src="assets/guide.js"></script></head><body><div class="wrap">
-{header}<main id="top"><section class="hero data-hero"><h1>Player data</h1><p class="hero-lead">Data for Horizon {esc(version_note)}. Source snapshot: <code translate="no">{commit[:12]}</code>.</p><nav class="hero-actions" aria-label="Guide sections"><a class="button primary" href="#techniques">Techniques</a><a class="button soft" href="#species">Species</a><a class="button soft" href="#evolutions">Evolutions</a></nav></section>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Horizon technique learning, species, evolutions, and recruit data."><title>Digimon World: Horizon — Player data</title><meta name="theme-color" content="#cfd8f6"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="assets/site.css"><link rel="stylesheet" href="assets/guide.css"><script type="module" src="assets/guide.js"></script></head><body><div class="wrap">
+{header}<main id="top"><section class="hero data-hero"><h1>Player data</h1><p class="hero-lead">Data for Horizon {esc(version_note)}. Source snapshot: <code translate="no">{commit[:12]}</code>.</p><nav class="hero-actions" aria-label="Guide sections"><a class="button primary" href="#techniques">Techniques</a><a class="button soft" href="#species">Species</a><a class="button soft" href="#evolutions">Evolutions</a><a class="button soft" href="#recruits">Recruits</a></nav></section>
 <p class="data-overview">{len(techniques)} techniques · {len(partners)} partner forms · Search each table or select a column heading to sort.</p><noscript><p>All data is available below. Search and sorting need JavaScript.</p></noscript>{tech_table}{species_table}{evo_table}</main><footer class="foot"><p data-i18n="footer.legal"></p></footer></div></body></html>\n'''
 
 
-def build(out, ref='v0.0.6', version=None):
-    commit, techniques, species, tree, _ = snapshot(ref)
+def render_recruits(rows, files, lang, strings):
+    def t(key):
+        return strings['data.recruit.' + key]
+    rendered = []
+    places = recruits.screen_names(files, lang)
+    for row in sorted(rows, key=lambda r: recruits.species_name(files, r['name'], lang).casefold()):
+        locations = '<br>'.join(f'{esc(places[screen])} <small>#{screen}</small>'
+                               for screen in row['screens'])
+        name = recruits.species_name(files, row['name'], lang)
+        method = t(f'method.{row["id"]}')
+        availability = t(f'when.{row["id"]}')
+        hp_location = f' (#{row["battle"][0]})' if 'battle' in row else ''
+        hp = '<br><small>' + esc(t('hp').replace('{n}', str(row['hp'])) + hp_location) + '</small>' if row['hp'] is not None else ''
+        if 'rematch_hp' in row:
+            hp += '<br><small>' + esc(t('rematchHp').replace('{n}', str(row['rematch_hp']))) + '</small>'
+        rendered.append(f'<tr id="recruit-{row["id"]}">' + cell(esc(name)) + cell(locations) +
+                        cell(esc(availability)) + cell(esc(method) + hp) +
+                        cell(esc(t('service.' + row['service']))) + cell(row['points'], row['points']) + '</tr>')
+    # Use the shared table mechanics, with all visible and accessible labels localized.
+    section = table('recruits', esc(t('title')), '<p>' + esc(t('intro')) + '</p>',
+                    [t(k) for k in ('digimon', 'where', 'when', 'how', 'adds', 'points')], rendered)
+    section = section.replace('Search ' + esc(t('title')).lower(), esc(t('search')))
+    section = section.replace('Name, specialty, or any detail…', esc(strings['data.searchHint']))
+    section = section.replace(f'{len(rows)} entries', esc(strings['data.count'].replace('{n}', str(len(rows)))))
+    section = section.replace('No matching entries.', esc(strings['data.noResults']))
+    section = section.replace(esc(t('title')) + ' table', esc(t('table')))
+    return section
+
+
+def build(out, ref='v0.0.7', version=None):
+    commit, techniques, species, tree, files = snapshot(ref)
+    recruit_rows = recruits.load(files, species)
     if version is None:
         if not re.fullmatch(r'v[0-9]+\.[0-9]+\.[0-9]+', ref):
             raise ValueError('Use --version when building a non-release ref')
@@ -188,9 +222,12 @@ def build(out, ref='v0.0.6', version=None):
     (out / 'assets/style.css').unlink(missing_ok=True)
     english = json.loads((ROOT / 'web/i18n/en.json').read_text())
     page = render(commit, techniques, species, tree, version)
-    for lang, filename in [('en', 'index.html'), ('es', 'es.html')]:
-        strings = json.loads((ROOT / f'web/i18n/{lang}.json').read_text())
+    for catalog in sorted((ROOT / 'web/i18n').glob('*.json')):
+        lang = catalog.stem
+        filename = 'index.html' if lang == 'en' else lang + '.html'
+        strings = json.loads(catalog.read_text())
         localized = translate(page, english, strings)
+        localized = localized.replace('</main>', render_recruits(recruit_rows, files, lang, strings) + '</main>')
         localized = localized.replace('<html lang="en">', f'<html lang="{lang}">')
         localized = localized.replace('placeholder="Name, specialty, or any detail…"',
                                       'placeholder="' + esc(strings['data.searchHint']) + '"')
@@ -209,7 +246,7 @@ def build(out, ref='v0.0.6', version=None):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--ref', default='v0.0.6', help='release data ref (default: v0.0.6; never reads working data)')
+    parser.add_argument('--ref', default='v0.0.7', help='release data ref (default: v0.0.7; never reads working data)')
     parser.add_argument('--version', default=None, help='matching version (inferred from a vX.Y.Z ref); next for development data')
     parser.add_argument('--out', type=Path, default=HERE / 'out')
     args = parser.parse_args()

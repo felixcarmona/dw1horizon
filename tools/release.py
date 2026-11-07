@@ -23,7 +23,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from tools import patch_series  # noqa: E402
 FAST = ('test_version', 'test_savecompat', 'test_pysum', 'test_derive_units',
-        'test_patchbundle', 'test_patcher_reloc', 'test_release', 'test_release_reuse')
+        'test_patchbundle', 'test_patcher_reloc', 'test_release', 'test_release_reuse', 'test_release_workers',
+        'test_engine_record', 'test_web_engine_plan', 'test_sign_units', 'test_record_groups', 'test_release_steps')
 
 
 def git(*args, cwd=ROOT):
@@ -53,7 +54,7 @@ def pack_release(package, archive):
 def stop_group(process):
     """Stop a command and descendants, including a browser left after node fails."""
     try:
-        os.killpg(process.pid, signal.SIGTERM)
+        os.killpg(process.pid, signal.SIGINT)
     except ProcessLookupError:
         pass
     try:
@@ -92,7 +93,7 @@ def identity(tag):
     return info
 
 
-def record_key(release):
+def record_key(release, environment=None, source_discs=()):
     """Fingerprint extraction inputs, derive inputs and recorder code.
 
     Patch/version metadata alone may reuse records. Regional mappings, readers,
@@ -101,17 +102,27 @@ def record_key(release):
     h = hashlib.sha256()
     manifest = json.loads((release / 'manifest.json').read_text())
     variant = manifest.get('variants', {}).get(manifest.get('default'), {})
-    context = {'bases': manifest['bases'], 'sources': manifest.get('source_discs'),
+    from tools.derive.release_cache import environment as normalized
+    context = {'environment': normalized(os.environ if environment is None else environment),
+               'source_bytes': sorted((game, sha1(image)) for game, image in source_discs),
+               'interpreter': hashlib.sha256(Path(sys.executable).read_bytes()).hexdigest(),
+               'bases': manifest['bases'], 'sources': manifest.get('source_discs'),
                'extract': manifest.get('extract'), 'local': variant.get('local'),
                'python': list(sys.version_info[:3]), 'implementation': sys.implementation.name,
                'platform': sys.platform}
     h.update(json.dumps(context, sort_keys=True).encode())
+    scheduler = ROOT / 'tools/patcher/release_workers.py'
+    h.update(b'scheduler\0' + scheduler.read_bytes())
     # These readers perform extraction before the bundled derive jobs run.
     for path in sorted(release.glob('*.py')):
         h.update(b'reader/' + path.name.encode() + b'\0' + path.read_bytes())
     for label, base in (('bundle', release / 'bundle'), ('bases', release / 'bases'),
                         ('recorder', ROOT / 'web/enginebuild')):
         for path in sorted(base.rglob('*')):
+            if not python_cache(path):
+                h.update(str(path.stat().st_mode & 0o7777).encode() + b'\0')
+            if path.is_dir() and not python_cache(path):
+                h.update(label.encode() + b'/directory/' + str(path.relative_to(base)).encode() + b'\0')
             if path.is_file() and not python_cache(path):
                 h.update(label.encode() + b'/' + str(path.relative_to(base)).encode()
                          + b'\0' + path.read_bytes())
@@ -124,7 +135,7 @@ def offline_environment(recipe):
     env = dict(os.environ)
     for key in (*recipe['environment'], *NOT_THE_RECIPES, 'W', 'NAME', 'HEAP_OK',
                 'MOD_VERSION', 'DERIVE_ARGS', 'SCREEN_CONTENT', 'DWS_MAPS',
-                'EXTRA_STORY', 'EXTRA_FILES'):
+                'EXTRA_STORY', 'EXTRA_FILES', 'DW_BUILD_CACHE', 'DW_RECORD_CACHE'):
         env.pop(key, None)
     return env
 
@@ -170,6 +181,8 @@ def selftest_fixtures(build):
             built = build / name.removeprefix('build/')
             target.write_bytes(built.read_bytes() if built.is_file() else provider.source(name))
 
+    return sorted(copied | names | {'text/us/dialogue.json'})
+
 
 class Run:
     def __init__(self, dry, out):
@@ -214,15 +227,19 @@ class Run:
         if env:
             print('Environment: ' + shlex.join(f'{k}={env[k]}' for k in
                   ('W', 'NAME', 'DW_HEAP_MAP', 'DERIVE_JOBS', 'RECORDS', 'ISOS', 'RELEASE', 'ENGINE', 'ENGINE_WORK') if k in env))
-        for name, (argv, log) in runs.items():
+        for name, run in runs.items():
+            argv, log = run[:2]
             print(f'{shlex.join(map(str, argv))}  > {log}', flush=True)
         if self.dry:
             return
-        procs = {}
+        procs, starts = {}, {}
         try:
-            for name, (argv, log) in runs.items():
+            for name, run in runs.items():
+                argv, log = run[:2]
+                command_env = run[2] if len(run) > 2 else env
+                starts[name] = time.monotonic()
                 with open(log, 'w') as f:
-                    procs[name] = subprocess.Popen(list(map(str, argv)), cwd=cwd, env=env, stdout=f,
+                    procs[name] = subprocess.Popen(list(map(str, argv)), cwd=cwd, env=command_env, stdout=f,
                                                    stderr=subprocess.STDOUT, start_new_session=True)
             pending = dict(procs)
             while pending:
@@ -230,6 +247,8 @@ class Run:
                     if p.poll() is None:
                         continue
                     del pending[name]
+                    self.times.append((name, round(time.monotonic() - starts[name], 2),
+                                       'ok' if not p.returncode else 'FAILED'))
                     tail = Path(runs[name][1]).read_text(errors='replace').splitlines()[-15:]
                     print(f'  {name}: exit {p.returncode}', flush=True)
                     if p.returncode:
@@ -249,12 +268,12 @@ class Run:
             (self.out / 'summary.json').write_text(json.dumps(data, indent=2) + '\n')
 
 
-def browser(r, out, engine, bases, sources, env):
+def browser(r, out, engine, bases, sources, env, timeout=3600):
     site = out / 'site'
     print(f'Prepare {site} with candidate engine; serve on an ephemeral localhost port')
     if r.dry:
         r.cmd(['node', 'web/test/run.mjs', 'http://127.0.0.1:PORT/?test=1',
-               bases['us'], out / 'browser-profile', '2400'])
+               bases['us'], out / 'browser-profile', str(timeout)])
         print('Require done phase AND independent OPFS SHA-1 = manifest USA output')
         return
     shutil.copytree(ROOT / 'web', site, ignore=shutil.ignore_patterns('enginebuild', 'test', 'media'))
@@ -273,10 +292,10 @@ def browser(r, out, engine, bases, sources, env):
         with log.open('w') as f:
             p = subprocess.Popen(['node', str(script),
                 f'http://127.0.0.1:{server.server_port}/?test=1', str(bases['us']),
-                str(out / 'browser-profile'), '2400'], env=benv, stdout=f,
+                str(out / 'browser-profile'), str(timeout)], env=benv, stdout=f,
                 stderr=subprocess.STDOUT, start_new_session=True)
             try:
-                code = p.wait(timeout=3000)
+                code = p.wait(timeout=timeout + 600)
             finally:
                 stop_group(p)
         if code:
@@ -303,6 +322,8 @@ def pipeline(a, r):
         print(json.dumps(info))
         if a.publish and not a.tag:
             raise RuntimeError('--publish requires a release tag')
+    if a.quiet_machine:
+        print('Quiet-machine cut: other heavy jobs paused; this command does not stop unrelated processes.', flush=True)
     with r.step('Published saves: mandatory file gate'):
         r.cmd([py, 'tools/dev/saves/releases.py', 'check'])
     with r.step('Fast offline regression tests'):
@@ -348,7 +369,7 @@ def pipeline(a, r):
     # Never inherit developer byte overrides or a heap bypass into a release.
     from tools.derive.recipe import NOT_THE_RECIPES
     for key in (*NOT_THE_RECIPES, 'HEAP_OK', 'MOD_VERSION', 'DEV', 'EXTRA_SPECIES', 'DERIVE_ARGS',
-                'DW_BUILD_CACHE', 'DW_CLEAN_NATIVE'):
+                'DW_BUILD_CACHE', 'DW_RECORD_CACHE', 'DW_CLEAN_NATIVE'):
         env.pop(key, None)
     recipe = json.loads((ROOT / 'tools/derive/recipes/everything.json').read_text())
     for key, value in recipe['environment'].items():
@@ -430,11 +451,7 @@ def pipeline(a, r):
         # of the everything recipe's model provider and output directory.
         if not r.dry:
             selftest_fixtures(build)
-    with r.step('Toolchain selftest (offline release gate)'):
-        testenv = offline_environment(recipe)
-        testenv['DW_SELFTEST_DERIVE'] = str(build)
-        r.cmd(['tools/selftest.sh'], testenv)
-    with r.step('Package seven bases and three sources; mandatory save gate'):
+    with r.step('Fresh-disc gates and packaging in parallel'):
         cmd = [py, 'tools/patcher/dwpatch.py', 'make-release', '--original', bases['us'],
                '--variant', f'everything={build}.bin', '--title', 'Digimon World Horizon', '-o', package]
         for k, p in bases.items():
@@ -444,15 +461,47 @@ def pipeline(a, r):
             cmd += ['--source-disc', f'{k}={p}']
         for game, p in variants.values():
             cmd += ['--source-variant', f'{game}={p}']
-        cmd += ['--variant-jobs', str(len(bases))]
+        cmd += ['--variant-jobs', str(a.base_jobs), '--base-jobs', str(a.base_jobs),
+                '--worker-memory-mib', str(a.worker_memory_mib), '--metrics', out / 'package-timing.json']
+        if a.derive_cache:
+            cmd += ['--derive-cache', a.derive_cache]
+        testenv = offline_environment(recipe)
+        testenv['DW_SELFTEST_DERIVE'] = str(build)
+        runs = {'selftest': (['tools/selftest.sh'], out / 'selftest.log', testenv),
+                'package': (cmd, out / 'package.log', env)}
+        exe = build / 'exe/SLUS_010.32'
+        cue = Path(str(build) + '.cue')
         if a.save_check_emu:
-            cmd += ['--save-check-emu']
-        r.cmd(cmd, env)
+            runs['published-save'] = ([py, 'tools/dev/saves/releases.py', 'emu', cue, '--exe', exe,
+                                      '--port', str(a.emu_port_base), '--work', out / 'published-save'],
+                                     out / 'published-save.log', dict(env, DW_OBJECT_DIR=str(w)))
+            runs['journey'] = ([py, 'tools/dev/playtest/journey.py', cue, out / 'journey'],
+                               out / 'journey.log', dict(env, EMU_PORT=str(a.emu_port_base + 1), DW_SYMS=str(exe), DW_OBJECT_DIR=str(w)))
+        if a.ending_card:
+            runs['ending'] = ([py, 'tools/dev/playtest/ending.py', cue, out / 'ending', '--card', a.ending_card],
+                              out / 'ending.log', dict(env, EMU_PORT=str(a.emu_port_base + 2), DW_SYMS=str(exe), DW_OBJECT_DIR=str(w)))
+        r.cmds(runs)
         if not r.dry:
             manifest = json.loads((package / 'manifest.json').read_text())
             for k, output in manifest['variants'][manifest['default']]['outputs'].items():
                 r.sums['output-' + k] = output['sha1']
-    with r.step('Standalone package apply (USA, Japan Rev 1, Europe with World 3 USA)'):
+    with r.step('Engine graph fingerprint and record cache preparation'):
+        cache = ROOT / 'build/release-records'
+        key = '<bundle-and-recorder-SHA256>' if r.dry else record_key(package, env, sources.items())
+        records = cache / key
+        print(f'RECORDS={records} (reuse only for identical graph inputs)')
+        # build-engine.sh uses fixed filenames under ISOS; give it a private directory.
+        alias = out / 'base-discs'
+        if not r.dry:
+            alias.mkdir()
+            for k, p in bases.items():
+                (alias / (names[k] + '.bin')).symlink_to(p)
+        webenv = dict(env, RECORDS=str(records), ISOS=str(alias), ENGINE_WORK=str(out / 'engine-work'),
+                      PYODIDE_CACHE=str(ROOT / 'build/pyodide-314.0.7'),
+                      ENGINE_JOBS=str(min(a.base_jobs, 2)), WORKER_MEMORY_MIB=str(a.worker_memory_mib),
+                      DCB_IMAGE=str(sources['dcb']), DW2_IMAGE=str(sources['dw2']),
+                      DW3_IMAGE=str(sources['dw2003']))
+    with r.step('Standalone package apply and engine recording in parallel (USA, Japan Rev 1, Europe with World 3 USA)'):
         # Run the shipped reader outside the checkout, without developer imports.
         standalone_env = dict(env)
         for name in ('PYTHONPATH', 'PYTHONHOME'):
@@ -460,9 +509,11 @@ def pipeline(a, r):
         standalone_env.update(PYTHONNOUSERSITE='1', VIRTUAL_ENV=str(player_env),
                               PATH=str(player_py.parent) + os.pathsep + standalone_env.get('PATH', ''))
         applies = (('us', None), ('jp1', None), ('eu', 'dw3-us'))
-        # The three run at once, the CPUs shared (-X cpu_count: apply gives tools/derive --jobs os.cpu_count(); the
-        # bytes do not depend on it). Each one's screen goes to standalone-KEY.log.
-        share = max(1, (os.cpu_count() or 1) // len(applies))
+        # Share the CPUs with two engine recordings. Apply gives tools/derive
+        # --jobs os.cpu_count(); output bytes do not depend on the job count.
+        engine_bases = min(a.base_jobs, 2)
+        share = max(1, (os.cpu_count() or 1) // (len(applies) + engine_bases))
+        webenv['ENGINE_RECORD_JOBS'] = str(engine_bases * share)
         runs = {}
         for base, vid in applies:
             key = base + ('+' + vid if vid else '')
@@ -473,9 +524,11 @@ def pipeline(a, r):
             for game, path in used.items():
                 cmd += ['--source-disc', f'{game}={path}']
             runs[key] = (cmd, out / f'standalone-{key}.log')
+        apply_keys = tuple(runs)
+        runs['engine'] = ([ROOT / 'web/build-engine.sh', package, engine], out / 'engine.log', webenv)
         r.cmds(runs, standalone_env, cwd=out)
         if not r.dry:
-            for key in runs:
+            for key in apply_keys:
                 dest = out / ('standalone-' + key)
                 images = list(dest.glob('*.bin'))
                 expected = manifest['variants'][manifest['default']]['outputs'][key]['sha1']
@@ -495,24 +548,9 @@ def pipeline(a, r):
                    '--version', info['version'], '--commit', info['commit'],
                    '--date', info['date'], '--from', a.record_save,
                    '--work', out / 'save-recording'], env)
-    with r.step('Engine graph fingerprint and record reuse'):
-        cache = ROOT / 'build/release-records'
-        key = '<bundle-and-recorder-SHA256>' if r.dry else record_key(package)
-        records = cache / key
-        print(f'RECORDS={records} (reuse only for identical graph inputs)')
-        # build-engine.sh uses fixed filenames under ISOS; give it a private directory.
-        alias = out / 'base-discs'
-        if not r.dry:
-            alias.mkdir()
-            for k, p in bases.items():
-                (alias / (names[k] + '.bin')).symlink_to(p)
-        webenv = dict(env, RECORDS=str(records), ISOS=str(alias), ENGINE_WORK=str(out / 'engine-work'),
-                      DCB_IMAGE=str(sources['dcb']), DW2_IMAGE=str(sources['dw2']),
-                      DW3_IMAGE=str(sources['dw2003']))
-        r.cmd(['web/build-engine.sh', package, engine], webenv)
     if not a.skip_browser:
         with r.step('USA browser suite on candidate before deployment'):
-            browser(r, out, engine, bases, sources, env)
+            browser(r, out, engine, bases, sources, env, a.browser_timeout)
     else:
         r.times.append(('USA browser suite (--skip-browser)', 0, 'SKIPPED'))
     with r.step('Pack release (package only, never images) and SHA-1 inventory'):
@@ -541,11 +579,25 @@ def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('tag', nargs='?', help='existing annotated owner tag; omit for dev')
     p.add_argument('--dry-run', action='store_true', help='print commands; no builds, writes or deployment')
+    p.add_argument('--keep-going', action='store_true', help='run independent steps after failures and write a complete failure list')
+    p.add_argument('--resume', action='store_true', help='resume --out after verifying completed input/output hashes')
+    p.add_argument('--step-workers', type=int, default=4, help='bounded concurrent recovery phases')
     p.add_argument('--preflight-only', action='store_true', help='clean/tag, save file gate and fast tests only')
     p.add_argument('--save-check-emu', action='store_true')
+    p.add_argument('--ending-card', type=Path,
+                   help='private save before the final fight; run ending/credits gate alongside packaging')
+    p.add_argument('--emu-port-base', type=int, default=38410,
+                   help='three private emulator API ports starting here (default 38410)')
+    p.add_argument('--base-jobs', type=int, default=4)
+    p.add_argument('--worker-memory-mib', type=int, default=6144)
+    p.add_argument('--derive-cache', type=Path, default=ROOT / 'build/release-derive-cache')
+    p.add_argument('--no-derive-cache', action='store_true', help='uncached sequential/parallel comparison')
+    p.add_argument('--quiet-machine', action='store_true',
+                   help='record that other heavy jobs have been paused for timing the cut')
     p.add_argument('--record-save', type=Path, metavar='SEED.mcd',
                    help='also run releases.py add into OUT/save-corpus (emulator; owner commits the new pair later)')
     p.add_argument('--skip-browser', action='store_true')
+    p.add_argument('--browser-timeout', type=int, default=3600, help='browser reconstruction deadline in seconds')
     p.add_argument('--deploy', action='store_true', help='deploy to the configured server (off by default)')
     p.add_argument('--publish', action='store_true', help='push tag and gh release create (off by default)')
     p.add_argument('--remote', default='origin')
@@ -562,8 +614,15 @@ def main(argv=None):
     p.add_argument('--out', type=Path, default=ROOT / 'build/releases' / dt.datetime.now(
         dt.timezone.utc).strftime('%Y%m%dT%H%M%S%fZ'))
     a = p.parse_args(argv)
-    if a.jobs < 1:
-        p.error('--jobs must be positive')
+    if min(a.jobs, a.base_jobs, a.worker_memory_mib, a.browser_timeout) < 1:
+        p.error('jobs, worker memory and browser timeout must be positive')
+    if not 1024 <= a.emu_port_base <= 65533:
+        p.error('--emu-port-base must leave three ports between 1024 and 65535')
+    if a.ending_card:
+        a.ending_card = a.ending_card.expanduser().resolve()
+        if not a.ending_card.is_file():
+            p.error('--ending-card does not exist')
+    a.derive_cache = None if a.no_derive_cache else a.derive_cache.expanduser().resolve()
     if a.prepare_reuse and any(getattr(a, 'reuse_' + name) is None for name in
                               ('package', 'outputs', 'build', 'engine', 'bases', 'sources')):
         p.error('--prepare-reuse requires --reuse-{package,outputs,build,engine,bases,sources}')
@@ -580,6 +639,11 @@ def main(argv=None):
         a.record_save = a.record_save.expanduser().resolve()
         if not a.record_save.is_file():
             p.error('--record-save seed does not exist')
+    if a.keep_going or a.resume:
+        a._provided=sorted({word.split('=',1)[0] for word in (sys.argv[1:] if argv is None else argv) if word.startswith('--')})
+        if a.step_workers < 1:p.error('--step-workers must be positive')
+        from release_recovery import driver
+        return driver(a)
     r = Run(a.dry_run, a.out.expanduser().resolve())
     result = 'ok'
     try:

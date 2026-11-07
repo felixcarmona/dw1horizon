@@ -148,7 +148,7 @@ bytes. Each species has its own commit.
 | 403 | Beelzemon | 53, 60 | 99464 |
 | 404 | BlackWarGreymon | Between clips only | 83986 |
 | 406 | MaloMyotismon | 54, 61 | 84492 |
-| 407 | Armageddemon | 42, 53 | 73070 |
+| 407 | Armageddemon | 42, 53 | 73974 |
 | 461 | Omnimon | 42, 43 | 80468 |
 
 Kurisarimon uses a 360-unit Champion height and 150-unit radius. Its final
@@ -159,3 +159,22 @@ flow are unchanged. Bone-attached effect destinations and the condition bubble
 shrink with the mesh; effect lookup coordinates are unchanged. The import size
 recipe scales the source before applying the rebased delta, including the USA
 World 3 variant. Provenance is recorded in `scale-locks/431.json`.
+
+Armageddemon's field idle and praise now flex one leg pair at a time, with four
+supporting feet planted. The 24-tick idle lets the native condition timer advance;
+the praise adds a larger sequential lift with breathing and delayed head and tail
+motion. Mesh, constant scales and locomotion are preserved. The authoring recipe
+is `tools/models/field_animations/armageddemon.py`; the result is baked into the
+model delta. Its 73,974-byte resident model fits the 100,352-byte limit, and the
+largest cold animation read is 8,192 bytes. Run the regression with
+`ARMAGEDDEMON_SOURCE=PRECEDING.MMD PYTHONPATH=tools python3 -W ignore -m unittest tools.test_armageddemon`.
+
+Its specialties are Fire, Machine and Nature. Mouth beams and energy discharges
+fit its [official Black Rain and Ultimate Flare attacks](https://digimon.net/reference/detail.php?directory_name=armagemon).
+All Range Beam, DG Dimension and Full Potential return from its predecessors;
+poison and Bug attacks carry forward Infermon's computer-bug theme. The move list
+fits all 16 slots, including the unchanged fire finisher. Retained moves keep
+their original indices, preserving saved equipped moves and the finisher slot. Existing beam,
+discharge and stationary program clips are remapped together, preserving their
+timing and events. The Battle specialty and its punches, kicks and charge moves
+are removed. Power Crane also gives way to the ranged and program moves.

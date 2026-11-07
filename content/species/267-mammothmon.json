@@ -3,7 +3,7 @@
   "name": "Mammothmon",
   "_source": "dw2 M212MANM (tools/import_batch.py run content/imports/lists/eighth-12.json)",
   "level": "ultimate",
-  "vanilla_as": 47,
+  "vanilla_as": 27,
   "attribute": "vaccine",
   "specialties": ["ice", "battle", null],
   "techniques": ["Giga Freeze", "Ice Statue", "Aurora Freeze", "Water Blit", "Ice Needle", "Winter Blast",

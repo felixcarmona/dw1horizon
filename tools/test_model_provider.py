@@ -50,6 +50,15 @@ class ModelProvider(unittest.TestCase):
         self.assertEqual(len(records), 183)  # the 175 source-game imports and the eight hand-made babies
         selected = {t: model.OVERLAYS[e['field_overlay']]
                     for t, e in records.items() if e.get('field_overlay')}
+        # These overlays follow already baked field work; cover the live
+        # generators separately while retaining the earlier authoring history.
+        following = {
+            '183': ('183', 'tools.models.field_animations.native_binding', '183-wormmon-native-crawl'),
+            '187': ('187', 'tools.models.field_animations.followthrough', '187-stingmon-wing-followthrough'),
+            '239': ('239', 'tools.models.field_animations.followthrough', '239-gizamon-active-gait'),
+        }
+        for sid, expected in following.items():
+            self.assertEqual(selected.pop(sid), expected)
         # Silphymon's repaired walk is baked into its plain delta. Keep the
         # preceding field recipe covered without applying it over that repair.
         self.assertEqual(records['226'], {'model': '226-Silphymon.MMD', 'aliases_applied': True})
@@ -60,20 +69,24 @@ class ModelProvider(unittest.TestCase):
             proof = json.loads(path.read_text())
             sid = str(proof['species'])
             self.assertTrue(records[sid]['aliases_applied'])
-            self.assertNotIn('field_overlay', records[sid])
+            if sid not in following:
+                self.assertNotIn('field_overlay', records[sid])
             preceding = proof['preceding_provider'].get('field_overlay')
             if preceding:
                 self.assertNotIn(sid, selected)
                 selected[sid] = model.OVERLAYS[preceding]
         # Native locomotion is authored after the effective field proportions.
         # Keep those baked generators covered without running them a second time.
-        for path in Path('content/models/authoring/native-polish').glob('*.json'):
+        for path in [*Path('content/models/authoring/native-polish').glob('*.json'),
+                     *Path('content/models/authoring/gait-refinement').glob('*.json'),
+                     *Path('content/models/authoring/animal-refinement').glob('*.json')]:
             proof = json.loads(path.read_text())
             preceding = proof.get('preceding_provider', {}).get('field_overlay')
             if preceding:
                 sid = str(proof['species'])
                 self.assertTrue(records[sid]['aliases_applied'])
-                self.assertNotIn('field_overlay', records[sid])
+                if sid not in following:
+                    self.assertNotIn('field_overlay', records[sid])
                 self.assertNotIn(sid, selected)
                 selected[sid] = model.OVERLAYS[preceding]
         # Reviewed native-donor deltas retain their old overlay as provenance.
@@ -91,8 +104,8 @@ class ModelProvider(unittest.TestCase):
         previous_magnamon = active.pop('magnamon-field')
         self.assertEqual(previous_magnamon,
                          ('197', 'tools.models.field_animations.gaits', '197-magnamon-field'))
-        self.assertEqual(len(selected), len(active))
-        self.assertEqual(set(selected.values()), set(active.values()))
+        self.assertEqual(len(selected)+len(following), len(active))
+        self.assertEqual(set(selected.values()) | set(following.values()), set(active.values()))
         for species, (bound_species, _, _) in selected.items():
             self.assertEqual(species, bound_species)
         assignments = {t: entry[1:] for t, entry in selected.items()}

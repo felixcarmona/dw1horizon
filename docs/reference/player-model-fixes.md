@@ -195,6 +195,108 @@ v0.0.6; its regression tests cover the actual placement and moves. It does
 not establish that a later report of inactivity is resolved: verify the live
 wild encounter and its technique execution before changing battle behavior.
 
+## Locomotion anatomy refinement
+
+The unarmed Leomon-based imports use the native free-arm shoulder, elbow and
+wrist performance on both sides. The sword-bearing arm is reflected by its
+joint directions before transfer, offset by half a cycle so opposite arms
+follow opposite legs. Stingmon maps shoulders 13/17, elbows 14/18
+and wrists 16/20 to native 5/8, 6/9 and 7/10; both forearm-to-wrist chords are
+calibrated. Hand meshes hang from the wrists. Ankle-to-toe directions and toe
+meshes are calibrated separately so an imported idle twist cannot turn a foot
+sideways. Sakuyamon's toe joints 6/10 participate in its foot solve.
+
+GrapLeomon keeps its proportions and uses a more upright torso and head during
+travel, with unarmed arm carriage. Kyubimon retains its own quiet quadruped
+reference and tail fan; reduced body pitch and paw lift keep its run low.
+ChaosLord uses its source knee bend planes and a cyclic Euler fit. Fitting
+rotation charts around the seam avoids the large clearance lift that previously
+left its run above the floor. ExVeemon remains unchanged.
+
+Gizamon retains its source mesh, front support, head and tail acting. Its hind
+paws sit at half-width 85 rather than 120 during travel. The source bend plane
+and complete leg lengths support the narrower stance. Sleep and settling keep
+the hind paws outside the flanks as the body lowers. These changes are baked
+after the previous field overlay, which no longer runs over the final delta.
+
+Wormmon uses a uniform 0.65 resize across vertices and all animation translations,
+including field, battle and care programs. Its idle height changes from about
+288 to 186 units and its width from 363 to 235; native Agumon measures 253 high
+and 202 wide. Radius, height, effect attachments, condition bubble and status
+framing follow the resize. Field cycles are retimed to retain ordinary follow
+speeds with the smaller stride.
+
+Recipes and pinned input deltas live under
+`content/models/authoring/gait-refinement/` and `content/modeldelta/authoring/`.
+`tools.test_gait_refinement` replays the artifacts and checks unaffected programs,
+meshes, cyclic playback, interpolated sole clearance and resident/cold storage.
+The World 3 USA variant repeats the refinement on its own Kyubimon mesh.
+
+## Canine, larval and amphibian donor refinement
+
+Stingmon's shoe meshes have mirrored widths and different joint origins. Their
+centroids cannot define the sole frame. Forward and plantar directions are
+calibrated from centered geometry. The left ankle now follows the
+approved opposite-side foot performance at the opposing phase, calibrated to
+that shoe frame. Only the affected leg's rotations change; the other limbs,
+body, hands, mesh and nonlocomotion programs remain exact.
+
+Kyubimon uses Garurumon's canine shoulder, hock and muzzle layout. Its
+alternating walking footfalls are accelerated for the run instead of using a
+bounding performance. The trunk has constant vertical position throughout
+walk, tired walk and run. Individual limb solves clear interpolated swing
+arcs without raising the whole animal. The tail fan retains its shape and
+follows delayed native tail rotations. Cadence follows the native stride travel.
+
+Wormmon keeps the uniform 0.65 Rookie resize. Kunemon supplies its segmented
+body flexion and travelling proleg wave; the curl is reduced for Wormmon's
+longer, lower silhouette. Its head attachments remain on their own joints.
+Battle, care, mesh and attachment sizing remain exact to the resized model.
+
+Gizamon's gait is rebuilt from the raw importer geometry. Betamon supplies a
+low amphibian body and four short support limbs; Gabumon's upright performance
+would not match that layout. The original long hind limbs fold rearward, with
+paws beneath the flanks. Source lengths remain intact in sleep and settling.
+The pinned prior delta protects unrelated combat programs, while the field and
+care programs are authored from the raw model. No old field gait is reused.
+
+Pinned recipes and prior deltas are under
+`content/models/authoring/animal-refinement/` and `content/modeldelta/authoring/`.
+Replay with `tools/models/field_animations/animal_refine.py RECIPE SOURCE OUT`.
+`tools.test_animal_refinement` verifies provenance, unaffected channels and
+programs, four-cycle playback, interpolated paw clearance, constant canine
+trunk height and complete sleeping limb lengths. The USA Kyubimon variant
+repeats the refinement on its own mesh.
+
+### Larval binding, wing follow-through and amphibian pace
+
+Wormmon uses Kunemon's complete native 28-bone hierarchy and animation
+programs through `native_binding.py`, rather than transferred rotations on
+its imported rig. The already reduced mesh is assigned piece by piece to
+native larval joints; the head and segmented antennae stay together.
+Mesh surface dimensions, texture coordinates and the Rookie size correction
+are retained. Native joint translations use a uniform 0.65 scale; native
+rotation, scale, timing and control instructions remain intact. Technique
+slots select native actions, and effect origins use the scaled native joints.
+
+Stingmon's four wing membranes remain attached to the thorax in their source
+idle planes. Their orientations lag the thorax slightly, with delayed flex
+between the upper and lower pairs. The membranes hinge down as the running
+thorax leans, keeping their trailing planes relaxed. Every other bone and all non-field
+programs retain the approved performance.
+
+Gizamon alternates diagonal supports with visible swing clearance, body bob,
+head response and delayed tail/fin motion. It walks at 20 units per logic tick
+and runs at 40, within native Rookie pace (Betamon 15/35, Agumon 22.5/45).
+Ankle planting and a second support solve keep stance toes on the floor.
+Its source limb lengths, folded hind-leg support pose, sleep and combat
+programs remain intact. The overlays and final provider hashes are pinned.
+
+`tools.test_followthrough` guards the wing-only change and active paw/body
+motion; `tools.test_native_bindings` compares Wormmon's hierarchy and all
+native programs against the donor. Review videos also include actual
+20-tick-per-second playback, alongside phase-aligned pose comparisons.
+
 ## Beelzemon: ordinary cannon strike
 
 The World 2003 source `M377BLZB` is Blast Mode. Its Blaster is the

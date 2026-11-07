@@ -97,6 +97,28 @@ class BattleEvidenceGate(unittest.TestCase):
 
 
 class HarnessReads(unittest.TestCase):
+    def test_failed_memory_write_stops_the_harness(self):
+        import subprocess
+        failed = subprocess.CompletedProcess([], 1, '', 'not an array')
+        with patch.object(proof.subprocess, 'run', return_value=failed):
+            with self.assertRaisesRegex(RuntimeError, 'not an array'):
+                proof.mset('NPC_ENTITIES[0].hp=1')
+
+    def test_explicit_release_objects_are_used_without_emulator_discovery(self):
+        from tools.dev import memory_inspector as inspector
+        with tempfile.TemporaryDirectory() as td:
+            obj = Path(td) / 'build' / 'us' / 'psx' / 'gcc' / 'src' / 'main.c.o'
+            obj.parent.mkdir(parents=True)
+            obj.touch()
+            with patch.dict(os.environ, DW_OBJECT_DIR=td), patch.object(inspector, 'build') as discover:
+                pattern, tag = inspector.obj_glob()
+                self.assertIn(td, pattern)
+                self.assertEqual(len(tag), 16)
+                discover.assert_not_called()
+            with patch.dict(os.environ, DW_OBJECT_DIR=td + '/missing'):
+                with self.assertRaisesRegex(RuntimeError, 'no compiled debug objects'):
+                    inspector.obj_glob()
+
     def test_an_empty_read_is_a_harness_error_not_a_failed_check(self):
         with patch.object(proof, 'run', return_value='dwsyms: build x (explicit)\n.digimonEntity: not a struct\n'):
             with self.assertRaises(RuntimeError) as raised:

@@ -3,7 +3,7 @@
   "name": "SkullMammothmon",
   "_source": "dw2 M215SMAN (tools/import_batch.py run content/imports/lists/eighth-12.json)",
   "level": "mega",
-  "vanilla_as": 47,
+  "vanilla_as": 27,
   "attribute": "vaccine",
   "specialties": ["ice", "battle", null],
   "techniques": ["Ice Statue", "Aurora Freeze", "Giga Freeze", "Water Blit", "Ice Needle", "Winter Blast",

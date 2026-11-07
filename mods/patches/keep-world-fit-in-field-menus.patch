@@ -1,0 +1,32 @@
+From 8bd23a13d23237f83d153c1d5909acf364b93a27 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 7 Nov 2026 09:47:49 +0000
+Subject: [PATCH] Keep world partner framing while field menus are open
+
+---
+ src/main/map.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/src/main/map.c b/src/main/map.c
+index 50161c9..3c70d88 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -4639,11 +4639,12 @@ static __attribute__((noinline)) int16_t modCamStep(int16_t want)
+ 
+ extern int32_t IS_IN_MENU;
+ 
+-/* fit only in the world and wild battles: menus (the Digivice view), the evolution
+- * scene, VS and arenas draw the partner with their own cameras */
++/* Fit the world behind field menus too. The Digivice portrait uses
++ * renderDigiviceEntity directly, so it never passes through this cap.
++ * Evolution, VS and arenas retain their own cameras. */
+ static int32_t modFitOff(void)
+ {
+-	return GAME_STATE > 1 || IS_IN_MENU != 0;
++	return GAME_STATE > 1;
+ }
+ 
+ /* the render scale of the partner (1/4096): its on-screen height (fitPxSeen: the spread of
+-- 
+2.55.0
+

@@ -373,16 +373,16 @@
      }
     ],
     "delta": "content/modeldelta/deltas/dw3-us/409-Kyubimon.MMD.mdelta",
-    "delta_sha256": "613b9872753a87f2380ef41d36f10862510220b3f169d4eba1d5d951954e3898",
-    "sha256": "6fc09ff3d0eaaa9bd0380c8535e659ecd90cd1331b403ae3dc4fc4074945e208",
-    "size": 106632
+    "delta_sha256": "1883d0110f5e5b6b630fe35bbf672c209debd630e2e922b5c4f3b4784efef38e",
+    "sha256": "1c06236db26cc8f3460e0892b5d0c2f4311637de1f84ac86075a370603bccacc",
+    "size": 105352
    },
    "from": {
-    "sha256": "3cf6a6a6f2a5ae875453cdd8c906699c069264f56376d682e4a71bd9a7a5a669",
-    "delta_sha256": "184c26b5b981afbe0bbb14c40e70723e85e1fdba69ef89c18a10f48fdf1549e3",
+    "sha256": "234348cb00b8724fbc66d1e4e9900a57255ba0da07b3cccb003ca9dd53b07468",
+    "delta_sha256": "dccfd50c851532544cf12622cecf9e28b4522b0340b6182f15bdb34b57add31f",
     "add_bytes": [
-     15562,
-     15646
+     15447,
+     15531
     ],
     "foreign_windows": 0,
     "objects_other": [
@@ -416,10 +416,161 @@
      12,
      13
     ],
+    "gait_refinement": {
+     "species": 409,
+     "source_sha256": "6fc09ff3d0eaaa9bd0380c8535e659ecd90cd1331b403ae3dc4fc4074945e208",
+     "donor_sha256": "2f05fc39331e777b76cea7c2ba0b8c36c09935bcb69b50457e0aa00a7d743c5d",
+     "output_sha256": "b1c4411519f05df555d2262bd48232cec184e802ff99e970da10d749ad6f259d",
+     "checks": [
+      {
+       "slot": 2,
+       "samples": 21,
+       "native_timing": true,
+       "scale": 1.2480000000000002,
+       "max_lift": 5.983419657302619
+      },
+      {
+       "slot": 3,
+       "samples": 21,
+       "native_timing": true,
+       "scale": 1.0919999999999999,
+       "max_lift": 3.8875747165601595
+      },
+      {
+       "slot": 4,
+       "samples": 21,
+       "native_timing": true,
+       "scale": 0.9750000000000001,
+       "max_lift": 12.097390141738586
+      }
+     ],
+     "storage": {
+      "resident_bytes": 90740,
+      "resident_limit": 100352,
+      "cold_bytes": 17268,
+      "cold_buffer_bytes": 8192,
+      "cold_reads": [
+       {
+        "slot": 5,
+        "offset": 0,
+        "length": 1944,
+        "sector_read_bytes": 2048,
+        "fits": true
+       },
+       {
+        "slot": 7,
+        "offset": 1944,
+        "length": 3072,
+        "sector_read_bytes": 6144,
+        "fits": true
+       },
+       {
+        "slot": 8,
+        "offset": 5016,
+        "length": 4084,
+        "sector_read_bytes": 6144,
+        "fits": true
+       },
+       {
+        "slot": 9,
+        "offset": 9100,
+        "length": 1608,
+        "sector_read_bytes": 4096,
+        "fits": true
+       },
+       {
+        "slot": 10,
+        "offset": 10708,
+        "length": 3116,
+        "sector_read_bytes": 4096,
+        "fits": true
+       },
+       {
+        "slot": 12,
+        "offset": 13824,
+        "length": 1452,
+        "sector_read_bytes": 4096,
+        "fits": true
+       },
+       {
+        "slot": 13,
+        "offset": 15276,
+        "length": 1992,
+        "sector_read_bytes": 4096,
+        "fits": true
+       }
+      ],
+      "fits": true
+     },
+     "mesh_exact": true,
+     "other_programs_exact": true
+    },
+    "animal_refinement": {
+     "source_sha256": "b1c4411519f05df555d2262bd48232cec184e802ff99e970da10d749ad6f259d",
+     "output_sha256": "1c06236db26cc8f3460e0892b5d0c2f4311637de1f84ac86075a370603bccacc",
+     "storage": {
+      "resident_bytes": 88096,
+      "resident_limit": 100352,
+      "cold_bytes": 17268,
+      "cold_buffer_bytes": 8192,
+      "cold_reads": [
+       {
+        "slot": 5,
+        "offset": 0,
+        "length": 1944,
+        "sector_read_bytes": 2048,
+        "fits": true
+       },
+       {
+        "slot": 7,
+        "offset": 1944,
+        "length": 3072,
+        "sector_read_bytes": 6144,
+        "fits": true
+       },
+       {
+        "slot": 8,
+        "offset": 5016,
+        "length": 4084,
+        "sector_read_bytes": 6144,
+        "fits": true
+       },
+       {
+        "slot": 9,
+        "offset": 9100,
+        "length": 1608,
+        "sector_read_bytes": 4096,
+        "fits": true
+       },
+       {
+        "slot": 10,
+        "offset": 10708,
+        "length": 3116,
+        "sector_read_bytes": 4096,
+        "fits": true
+       },
+       {
+        "slot": 12,
+        "offset": 13824,
+        "length": 1452,
+        "sector_read_bytes": 4096,
+        "fits": true
+       },
+       {
+        "slot": 13,
+        "offset": 15276,
+        "length": 1992,
+        "sector_read_bytes": 4096,
+        "fits": true
+       }
+      ],
+      "fits": true
+     }
+    },
     "authored_native_polish": {
      "recipe": "content/models/authoring/native-polish/409.json",
      "input_sha256": "ee09610415e0464a90a2f360dc61dd08d8a2fd191d86333f1c0c981625ef5059",
-     "output_sha256": "6fc09ff3d0eaaa9bd0380c8535e659ecd90cd1331b403ae3dc4fc4074945e208"
+     "output_sha256": "1c06236db26cc8f3460e0892b5d0c2f4311637de1f84ac86075a370603bccacc"
     }
    }
   },

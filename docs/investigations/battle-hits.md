@@ -3,12 +3,15 @@
 The crowned golden partner is KingSukamon (120). Its partner model uses
 Sukamon's native animation rig at 171/100 scale. Fast Poop Toss is technique
 50, equipped through animation slot 48 on these two species. Its launch origin
-borrows Sukamon's effect row at 171/100 scale (`content/tables/effect-donors.json`),
-so model size does raise the visual release point. The EFE motion script is
-unchanged; the enlarged origin alone does not establish an arc defect.
+borrowed Sukamon's effect row at 171/100 scale (`content/tables/effect-donors.json`)
+in this investigation's baseline, raising the visual release point. The
+subsequent [KingSukamon correction](../mods/kingsukamon.md)
+lowers the shared hand-toss origin to native release height without resizing
+the model. The EFE motion script is unchanged; the enlarged origin alone does
+not establish an arc defect.
 
-The original USA game lands this technique on Tsukaimon (96). The Horizon
-baseline also lands it with KingSukamon. The native trial has
+The original USA game lands this technique on Tsukaimon (96). The historical
+Horizon baseline also lands it with KingSukamon. The native trial has
 three damaging casts and four zero-damage casts at release gaps of 651–674
 units; KingSukamon lands casts at about 673–680 units too. Native misses are
 therefore present at comparable distances. The native

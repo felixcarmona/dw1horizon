@@ -172,6 +172,15 @@ def cmd_make(a):
             carrying.selftest(ref['mmd'][0], preceding, nbones(sid))
             carried_base, report = carrying.carry(ref['mmd'][0], preceding, other['mmd'][0], nbones(sid), log=log.append)
             carried, proof = native_polish.build(carried_base, profile)
+            refinement = ROOT / 'content/models/authoring/gait-refinement' / f'{sid}.json'
+            if refinement.is_file():
+                carried, refinement_proof = native_polish.build(carried, json.loads(refinement.read_text()))
+                report['gait_refinement'] = refinement_proof
+            animal = ROOT / 'content/models/authoring/animal-refinement' / f'{sid}.json'
+            if animal.is_file():
+                from tools.models.field_animations import animal_refine
+                carried, animal_proof = animal_refine.build(carried, json.loads(animal.read_text()))
+                report['animal_refinement'] = animal_proof
             report['authored_native_polish'] = dict(recipe=str(authored.relative_to(ROOT)),
                                                     input_sha256=sha256(carried_base), output_sha256=sha256(carried))
         else:

@@ -1,0 +1,133 @@
+{
+  "species": 187,
+  "skeleton": [
+    [
+      -1,
+      -1
+    ],
+    [
+      0,
+      21
+    ],
+    [
+      1,
+      1
+    ],
+    [
+      2,
+      2
+    ],
+    [
+      3,
+      3
+    ],
+    [
+      4,
+      4
+    ],
+    [
+      5,
+      2
+    ],
+    [
+      6,
+      6
+    ],
+    [
+      7,
+      7
+    ],
+    [
+      8,
+      1
+    ],
+    [
+      9,
+      1
+    ],
+    [
+      10,
+      1
+    ],
+    [
+      11,
+      1
+    ],
+    [
+      12,
+      1
+    ],
+    [
+      13,
+      13
+    ],
+    [
+      14,
+      14
+    ],
+    [
+      15,
+      14
+    ],
+    [
+      16,
+      1
+    ],
+    [
+      17,
+      17
+    ],
+    [
+      18,
+      18
+    ],
+    [
+      19,
+      18
+    ],
+    [
+      20,
+      0
+    ],
+    [
+      21,
+      21
+    ],
+    [
+      22,
+      22
+    ],
+    [
+      23,
+      23
+    ],
+    [
+      24,
+      21
+    ],
+    [
+      25,
+      25
+    ],
+    [
+      26,
+      26
+    ]
+  ],
+  "reason": "Retain the approved gait; calibrate the left shoe from its centered geometry and distinct joint origin.",
+  "source_sha256": "f6ceb6a437be8f03f0bf61ff06f35e818b940bf30c12cbd1aa5bb728fe83c8b1",
+  "preceding_delta": {
+    "sources": [
+      {
+        "path": "build/batch/Stingmon.MMD",
+        "sha256": "8181df21ee3fca6c86630be5ad17f8c32839584f882519455109db1f8ec60515",
+        "size": 99774
+      }
+    ],
+    "delta": "content/modeldelta/authoring/187-before-animal-refinement.MMD.mdelta",
+    "delta_sha256": "cf6c56a1fe385803295f001e4ac2a9a7522b1d3f6e1e2b0134c33a8fabf8d629",
+    "sha256": "f6ceb6a437be8f03f0bf61ff06f35e818b940bf30c12cbd1aa5bb728fe83c8b1",
+    "size": 106652
+  },
+  "output_sha256": "1e9bc91514a1183eec83fede8e4d36d07146f9fcd16b4e49214d61127c678d35"
+}

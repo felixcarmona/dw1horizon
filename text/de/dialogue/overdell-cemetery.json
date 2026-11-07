@@ -5,6 +5,10 @@
  "s035.sec5.m1.o1": "Äh... nein",
  "s035.sec5.m2.o0": "Hmmm... ja",
  "s035.sec5.m2.o1": "Uff... nein",
+ "s035.sec5.u8": "Lädst du mich ein, in deiner Stadt zu wohnen?",
+ "s035.sec5.u9": "Darf ich die Stadt bewachen und Störenfriede verjagen?",
+ "s035.sec5.u10": "Moment... hast du Angst vor Geistern?",
+ "s035.sec5.u11": "Dann werde ich eure Stadt heimsuchen! Äh... bewachen!",
  "s035.sec5.u0": [
   [
    "Bu-bu?"

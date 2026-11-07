@@ -7,6 +7,8 @@ const profile = fs.mkdtempSync(path.resolve('build/lifecycle-'));
 const browser = await puppeteer.launch({ executablePath: process.env.CHROMIUM || '/snap/bin/chromium', headless: 'new',
   userDataDir: profile, args: ['--no-sandbox', '--disable-gpu'] });
 let failures = 0;
+const app = fs.readFileSync(new URL('../js/app.js', import.meta.url), 'utf8');
+const patchStart = app.slice(app.indexOf('async function patch() {'), app.indexOf("  $('#build-done').dataset.ready"));
 try {
   const page = await browser.newPage();
   if (process.env.ENGINE_SOURCE) {
@@ -15,8 +17,8 @@ try {
       ? r.respond({ contentType: 'text/javascript', body: fs.readFileSync(process.env.ENGINE_SOURCE, 'utf8') }) : r.continue());
   }
   await page.goto(process.argv[2], { waitUntil: 'networkidle0' });
-  const results = await page.evaluate(async () => {
-    const { Build, tidyStorage } = await import('./js/engine/engine.js');
+  const results = await page.evaluate(async (patchStart) => {
+    const { Build, tidyStorage, withLock } = await import('./js/engine/engine.js');
     // Preserve the deployed engine; only this page's fetch is replaced for the tiny plan.
     const fetch0 = window.fetch;
     const results = [];
@@ -79,6 +81,25 @@ try {
       }
     }
     try {
+      let releaseProbe, entered = false;
+      const roomReady = withLock(async () => {
+        await new Promise((release) => { releaseProbe = release; });
+      });
+      while (!releaseProbe) await new Promise((r) => setTimeout(r, 0));
+      // Execute the production click prelude against a real Web Lock and tiny build.
+      const click = new Function('patchState', 'store', 'keep', 'stopCopy', 'building', 'roomReady', 'pumpCopies', 'begin',
+        patchStart + '\nreturn begin();\n}\nreturn patch();');
+      const start = click(() => ['patch.ready', true], { persist() {} }, {}, async () => {}, null, roomReady, () => {}, async () => {
+        entered = true;
+        const build = new TinyBuild({ us: new File([], 'fixture.bin') }, { workers: 1 });
+        return build.run().then(() => build.state.phase, (e) => e.key);
+      });
+      await new Promise((r) => setTimeout(r, 30));
+      check(!entered, 'build click waits for this page storage probe');
+      releaseProbe();
+      await roomReady;
+      check(await start === 'done', 'build starts after its own probe releases the lock');
+
       const build = new TinyBuild({ us: new File([], 'fixture.bin') }, { workers: 1 });
       build.oomTest = 'fixture';
       await build.run();
@@ -146,7 +167,7 @@ try {
         return await new TinyBuild({ us: new File([], 'fixture.bin') }).run().then(() => false, (e) => e.key === 'engine.otherTab');
       } finally { release(); await lock; }
     }
-  });
+  }, patchStart);
   // A second tab opening after deployment must leave the running tab's old engine cache alone.
   await page.evaluate(async () => {
     const cache = await caches.open('horizon-engine');

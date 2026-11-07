@@ -38,6 +38,7 @@
   "mod": "story/mods/what-the-island-forgot",
   "sources": [
    "story/mods/what-the-island-forgot/early-game.py",
+   "story/mods/what-the-island-forgot/arcs/residents/beetle-cup.dws",
    "story/mods/what-the-island-forgot/arcs/works/wild-screens.dws",
    "story/mods/what-the-island-forgot/arcs/airdramon/ambush.py",
    "story/mods/what-the-island-forgot/arcs/canyon/birdramon-nest.py",
@@ -93,7 +94,6 @@
    "story/mods/what-the-island-forgot/arcs/mist/hunters-116.py",
    "story/mods/what-the-island-forgot/arcs/mist/hunters-120.py",
    "story/mods/what-the-island-forgot/arcs/news/shellmon.py",
-   "story/mods/what-the-island-forgot/arcs/postgame/back-dimension-227.py",
    "story/mods/what-the-island-forgot/arcs/rumours/hunters-forest.py",
    "story/mods/what-the-island-forgot/arcs/rumours/hunters-savanna.py",
    "story/mods/what-the-island-forgot/arcs/rumours/jijimon-news.py",
@@ -911,6 +911,16 @@
      "retouch/TWNB23.TFS",
      "retouch/TWNB24.MAP",
      "retouch/TWNB24.TFS"
+    ]
+   },
+   {
+    "script": "maps/trop02-exit.py",
+    "args": [
+     "{retouch}"
+    ],
+    "step": "retouch",
+    "writes": [
+     "retouch/TROP02.MAP"
     ]
    }
   ],

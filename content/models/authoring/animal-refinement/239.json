@@ -1,0 +1,109 @@
+{
+  "species": 239,
+  "skeleton": [
+    [
+      -1,
+      -1
+    ],
+    [
+      0,
+      0
+    ],
+    [
+      1,
+      1
+    ],
+    [
+      2,
+      2
+    ],
+    [
+      3,
+      1
+    ],
+    [
+      4,
+      4
+    ],
+    [
+      5,
+      1
+    ],
+    [
+      6,
+      6
+    ],
+    [
+      7,
+      1
+    ],
+    [
+      8,
+      8
+    ],
+    [
+      9,
+      1
+    ],
+    [
+      10,
+      10
+    ],
+    [
+      11,
+      11
+    ],
+    [
+      12,
+      1
+    ],
+    [
+      13,
+      13
+    ],
+    [
+      14,
+      14
+    ]
+  ],
+  "donor": 4,
+  "model": "extracted/CHDAT/MMD0/BETA.MMD",
+  "stride_scale": 0.85,
+  "transverse_scale": 0.2,
+  "reason": "Betamon has a low amphibian trunk and four short support limbs. Preserve the source frog-leg lengths and fold the hind knees rearward beneath the flanks.",
+  "retime": {
+    "2": {
+      "ticks": 8,
+      "speed": 16
+    },
+    "3": {
+      "ticks": 12,
+      "speed": 10.7
+    },
+    "4": {
+      "ticks": 8,
+      "speed": 37.2
+    }
+  },
+  "source_sha256": "16f24ed3558fefe60c6b5442ab5f912a4af56f7a729aed3997afbde191c04ed0",
+  "importer_source": {
+    "path": "build/batch5/Gizamon.MMD",
+    "sha256": "16f24ed3558fefe60c6b5442ab5f912a4af56f7a729aed3997afbde191c04ed0",
+    "size": 80722
+  },
+  "protected_prior": {
+    "sources": [
+      {
+        "path": "build/batch5/Gizamon.MMD",
+        "sha256": "16f24ed3558fefe60c6b5442ab5f912a4af56f7a729aed3997afbde191c04ed0",
+        "size": 80722
+      }
+    ],
+    "delta": "content/modeldelta/authoring/239-before-animal-refinement.MMD.mdelta",
+    "delta_sha256": "5e81609a5817cf577e50632a5ff4d25310d07de0ebb70ecc8dab7118b0bda15a",
+    "sha256": "f6ab404205e357361dce213c91f52095f1508f55fba8f45fe238e0cbe823812f",
+    "size": 91200
+  },
+  "donor_sha256": "22f7ec5041cdab3dd44836991d547d0f82c5e42ef4f9ad704cbb7e94f708f8a1",
+  "output_sha256": "73c0143d223c6a77aea7f98f0c05dda5b4b367b35f24e1209175c818fedc3058"
+}

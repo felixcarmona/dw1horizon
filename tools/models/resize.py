@@ -48,6 +48,34 @@ def resize(data, bones, factor):
     return result
 
 
+def resize_with_pace(data, skeleton, sid, factor):
+    """Resize all clips and retime field cycles to retain their follow pace."""
+    import animsheet
+    import motioncyclelayer
+    import motionstorage
+    from tools.models.field_animations.pace import _root_channels, _retimed_events
+    mmd.exe().add_type(sid, skeleton)
+    nb = len(skeleton)
+    model = mmd.MMD.parse(resize(data, nb, factor), nb)
+    model.type = sid
+    for slot in (2, 3, 4):
+        frames, loop, events = animsheet.slot_frames(model, nb, slot)
+        if loop != 0:
+            raise ValueError('paced resizing requires a complete repeating field cycle')
+        ticks = max(2, round((len(frames)-1)*factor))
+        speed = -(frames[-1][0][8]-frames[0][0][8])/ticks
+        samples = _root_channels(frames, ticks, speed)
+        mmd.close_loop(samples, 0)
+        animation = mmd.encode_anim(samples, nb, 0, _retimed_events(events, len(frames)-1, ticks), tol=1, repeats=False)
+        model.anims.table[slot] = len(model.anims.anims)
+        model.anims.anims.append(animation)
+    for animation in model.anims.anims: animation.tail = b''
+    model.anims.anims, model.anims.table = motioncyclelayer.share_identical_streams(model.anims.anims, model.anims.table)
+    output = model.build()
+    motionstorage.require(output, nb)
+    return output
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('model', type=Path)
