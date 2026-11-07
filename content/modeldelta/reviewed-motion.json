@@ -7,69 +7,13 @@
       "output_sha256": "b522e22c29e55a7f7dd8bb36ebf126dca41b4e0eaec8520640c1b3b5dc45279b",
       "factor": 0.74,
       "storage": {
-        "resident_bytes": 85230,
+        "resident_bytes": 100100,
         "resident_limit": 100352,
-        "cold_bytes": 14864,
+        "cold_bytes": 0,
         "cold_buffer_bytes": 8192,
-        "cold_reads": [
-          {
-            "slot": 5,
-            "offset": 0,
-            "length": 1112,
-            "sector_read_bytes": 2048,
-            "fits": true
-          },
-          {
-            "slot": 7,
-            "offset": 1112,
-            "length": 1548,
-            "sector_read_bytes": 4096,
-            "fits": true
-          },
-          {
-            "slot": 8,
-            "offset": 2660,
-            "length": 2368,
-            "sector_read_bytes": 4096,
-            "fits": true
-          },
-          {
-            "slot": 9,
-            "offset": 5028,
-            "length": 1280,
-            "sector_read_bytes": 4096,
-            "fits": true
-          },
-          {
-            "slot": 10,
-            "offset": 6308,
-            "length": 2660,
-            "sector_read_bytes": 4096,
-            "fits": true
-          },
-          {
-            "slot": 11,
-            "offset": 8968,
-            "length": 2520,
-            "sector_read_bytes": 4096,
-            "fits": true
-          },
-          {
-            "slot": 12,
-            "offset": 11488,
-            "length": 1588,
-            "sector_read_bytes": 4096,
-            "fits": true
-          },
-          {
-            "slot": 13,
-            "offset": 13076,
-            "length": 1788,
-            "sector_read_bytes": 4096,
-            "fits": true
-          }
-        ],
-        "fits": true
+        "cold_reads": [],
+        "fits": true,
+        "authored_bytes": 100084
       },
       "donor": {
         "species": 48,

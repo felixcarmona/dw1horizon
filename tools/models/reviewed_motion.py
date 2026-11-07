@@ -365,6 +365,13 @@ def main():
     if factor!=1: data=resize(data,mmd.exe().bone_count[args.species],factor)
     if args.species==246: data=resized_supports(data)
     storage=motionstorage.require(data,mmd.exe().bone_count[args.species])
+    if args.species==62:
+        # Original records remain resident; only imported IDs use cold splitting.
+        import species
+        spec=json.loads((ROOT/'content/species/62-weregarurumon.json').read_text())
+        effective=species.apply_slot_aliases(data,spec)
+        assert len(effective)<=storage['resident_limit']
+        storage.update(authored_bytes=len(data),resident_bytes=len(effective),cold_bytes=0,cold_reads=[])
     if hashlib.sha256(data).hexdigest()!=proof['output_sha256']:
         raise ValueError('authored result differs from reviewed output: '+hashlib.sha256(data).hexdigest())
     args.out.parent.mkdir(parents=True,exist_ok=True)

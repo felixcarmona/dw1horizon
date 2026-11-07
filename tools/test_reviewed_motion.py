@@ -36,7 +36,16 @@ class ReviewedMotion(unittest.TestCase):
             model=self.models(sid)[1]
             audit=motionstorage.require(model.build(),mmd.exe().bone_count[sid])
             self.assertTrue(audit['fits'],(sid,audit))
-            if sid==62:self.assertLessEqual(len(model.build()),0x18800)
+            if sid==62:
+                self.assertLessEqual(len(model.build()),0x18800)
+                proof=json.loads(Path('content/modeldelta/reviewed-motion.json').read_text())
+                recorded=proof['models']['62']['storage']
+                import species
+                spec=json.loads(Path('content/species/62-weregarurumon.json').read_text())
+                effective=species.apply_slot_aliases(model.build(),spec)
+                self.assertLessEqual(len(effective),0x18800)
+                self.assertEqual(recorded['resident_bytes'],len(effective))
+                self.assertEqual(recorded['cold_bytes'],0)
 
     def test_untouched_programs_and_mesh(self):
         for sid in (237,267,268,431):
