@@ -4839,9 +4839,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/400-Apocalymon.MMD.mdelta",
-        "delta_sha256": "d826bcbb5694b8ccefb9a28f678cc3e578f621ed5bc71e3da32a413530cd9c8f",
-        "sha256": "b24774987c94ca7d65050e895d38fe4c4cfc1a3b3ee9a364ba518f4b383cae94",
-        "size": 112042
+        "delta_sha256": "64fdb8ac3d8a50784712ba809de838a37c16fbe9315254ef02dd48c1455ae610",
+        "sha256": "91f9848cd31f8c5865b620ce4feb95ce31c09585cb41195d70b876519af2758b",
+        "size": 113062
       },
       "tim": {
         "sources": [
@@ -4929,9 +4929,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/403-Beelzemon.MMD.mdelta",
-        "delta_sha256": "69414e8e91209bebfe45bde43995aa2b4daae012a6e1b7cd14dfcc100b35cce6",
-        "sha256": "f19a752540ebea151df9979430bdea14b461a2a8d9e74aba586312f761f32c74",
-        "size": 123110
+        "delta_sha256": "dcd42ee1a66b34ba7f25ddcfabf48c794113f03d8e39e0b138d4437d5f1b06cd",
+        "sha256": "4e4dfa48266df5d2cc6251c31c43e3302db00945379362a5af39ac17593b81cd",
+        "size": 126366
       },
       "tim": {
         "sources": [
