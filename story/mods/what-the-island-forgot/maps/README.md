@@ -128,3 +128,12 @@ Contents:
 - `watchtower-data.json`
 - `watchtower.py`
 - `workshop-gallery-data.json`
+
+The Drowned Shore (309, SHOR01) is a ferry-only stop. Whamon's File City dock
+menu is its entrance; talking to Whamon on the shore returns to the Secret Beach
+Cave. It has no walking exit. The ordinary Whamon model waits still at the water,
+leaving the visible beach around the wreck and the unopened chest accessible.
+`author/drowned-shore-layout.py OUT` regenerates its collision data and a zones
+image with both the chest and Whamon included in the body-box reach simulation.
+The story tests check the arrival, all sides of the wreck, notebook, chest opening
+and ferry talk boundary. The camera keeps characters near the original maps' scale.

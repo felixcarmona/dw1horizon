@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """The Drowned Shore (screen 309, files SHOR01): the old shoreline left under Freezeland's cliff when the island grew,
 a beach of dark pebbles between the ice cliff and the black sea, with the wreck of the hundred-year-old human ship and
-the soaked notebook among its planks (M12). Reached only by sea: Whamon's menu in the Secret Beach Cave (OGRE10) and
-from Iceberg Beach (FRZL16); Whamon waits on the shore and the way out is by script, so the map has no exit tiles,
-only the arrival point (warp 0, script use). Our art (art/drowned-shore.png, Nano Banana Pro with FRZL16's pitch: eye
-6000 from the look-at point, 65 degrees down, projection 1100, 768x640) and our map data (drowned-shore-data.json,
-made by author/drowned-shore-layout.py: the beach segmented from the art, the wreck blocked, the arrival); the
+the soaked notebook among its planks (M12). Reached only by sea from Whamon's File City dock menu;
+Whamon waits on the shore and the way out is by script, so the map has no exit tiles,
+only the arrival point (warp 0, script use). The camera uses FRZL16's 65-degree pitch, distance 7200 and
+projection 900. Our art (art/drowned-shore.png, 768x640) and map data (drowned-shore-data.json,
+made by author/drowned-shore-layout.py: all visible beach ground traced from the art, the wreck and spars blocked, the arrival); the
 structure of the map (tile layout, TIMs, lights) is FRZL03's (a 768x640 Freezeland screen), read from the player's
 own disc at build time, with the camera set here. Day, evening and night palettes are derived from the donor's.
 

@@ -24,33 +24,57 @@ class Closed(Exception): pass
 
 
 class DrownedShore(unittest.TestCase):
-    """Screen 309 has one way out, Whamon: the arrival stays outside its body box, and the chest stays reachable."""
-    def test_arrival_and_chest(self):
-        import json, re, sys
-        from collections import deque
+    """The ferry-only beach stays usable with the closed chest and Whamon present."""
+    @classmethod
+    def setUpClass(cls):
+        import json, re, sys, math
         root = Path(__file__).resolve().parents[4]
-        sys.path.insert(0, str(root / 'tools' / 'maps'))
-        import reach
+        sys.path[:0] = [str(root / 'tools'), str(root / 'story/mods/what-the-island-forgot/maps')]
+        from maps import reach
+        from mapbase import Cam
+        cls.reach = reach
         data = json.loads((root / 'story/mods/what-the-island-forgot/maps/drowned-shore-data.json').read_text())
-        script = (root / 'story/mods/what-the-island-forgot/arcs/shore/drowned-shore.py').read_text()
-        self.assertIn('autotalk=False', script)
-        wx, wz = map(int, re.search(r'shore\.npc\(.*at=\((-?\d+), (-?\d+)\)', script).groups())
-        ax, az = data['warps'][0]['x'], data['warps'][0]['z']
-        self.assertFalse(abs(ax - wx) < 300 and abs(az - wz) < 300, 'the arrival is inside Whamon')     # radius 200 + tamer 100
-        cx, cz, facing = map(int, re.search(r'spawn_chest\(.*at=\((-?\d+), (-?\d+)\).*facing=(\d+)', script).groups())
-        tx, tz = reach.col(cx), reach.row(cz)
-        grid = type('Grid', (), {'collision': list(data['collision'])})()
-        for r in range(tz - 2, tz + 2):
-            for c in range(tx - 2, tx + 2): grid.collision[r * 100 + c] = 0x80       # setImpassableSquare(tile, 2)
-        ox, oz = {0: (0, 4), 2048: (0, -4), 1024: (-4, 0), 3072: (4, 0)}[facing]
-        seen = {(ax // 10 * 10, az // 10 * 10)}; queue = deque(seen); opens = False
-        while queue and not opens:
-            x, z = queue.popleft()
-            opens = abs(reach.col(x) - tx - ox) <= 1 and abs(reach.row(z) - tz - oz) <= 1
-            for d in (1, -1):
-                if reach.can_x(grid, x, z, d, 100) and (x + d * 10, z) not in seen: seen.add((x + d * 10, z)); queue.append((x + d * 10, z))
-                if reach.can_z(grid, x, z, d, 100) and (x, z + d * 10) not in seen: seen.add((x, z + d * 10)); queue.append((x, z + d * 10))
-        self.assertTrue(opens, 'no walkable tile opens the chest')
+        cls.script = (root / 'story/mods/what-the-island-forgot/arcs/shore/drowned-shore.py').read_text()
+        cls.whale = tuple(map(int, re.search(r'shore\.npc\(.*at=\((-?\d+), (-?\d+)\)', cls.script).groups()))
+        cls.chest = tuple(map(int, re.search(r'spawn_chest\(.*at=\((-?\d+), (-?\d+)\)', cls.script).groups()))
+        cls.radius = json.loads((root / 'content/species/24-whamon.json').read_text())['model']['radius']
+        distance, pitch = data['camera']
+        camera = dict(vpx=0, vpy=int(-distance*math.sin(math.radians(pitch))/2),
+                      vpz=int(-distance*math.cos(math.radians(pitch))/2), vrx=0, vry=0, vrz=0)
+        cls.grid = SimpleNamespace(collision=list(data['collision']), warps=data['warps'],
+                                   camera=camera, projection=data['projection'], width=6, height=5)
+        cls.cam = Cam(cls.grid)
+        cls.arrival = (data['warps'][0]['x'],data['warps'][0]['z'])
+        tx,tz = reach.model_tile(*cls.chest)
+        for z in range(tz-2,tz+2):
+            for x in range(tx-2,tx+2): cls.grid.collision[z*100+x] = 128
+        cls.opening = (tx+4,tz)
+        cls.area = reach.reach(cls.grid,seed_policy='spawn_coordinates',footprints=[(*cls.whale,cls.radius)])
+
+    def test_arrival_and_chest(self):
+        r = self.reach
+        self.assertIn('autotalk=False',self.script)
+        self.assertIn('still=True',self.script)
+        self.assertIn('Species.Whamon,',self.script)
+        self.assertTrue(all(r.can_x(self.grid,*self.arrival,d,100) and
+                            r.can_z(self.grid,*self.arrival,d,100) for d in (-1,1)))
+        self.assertGreaterEqual(sum(r.model_tile(x,z)==self.opening for x,z in self.area),50)
+        wx,wz = self.whale
+        edge = self.radius+100
+        self.assertTrue(any(edge < max(abs(x-wx),abs(z-wz)) <= edge+50 and
+                            abs(x-wx)<=edge+50 and abs(z-wz)<=edge+50 for x,z in self.area))
+
+    def test_all_sides_and_notebook_are_reachable(self):
+        self.assertGreater(len(self.area),120000)
+        for pixel in [(600,350),(650,190),(400,150),(50,250),(50,520),(300,500),(430,388)]:
+            x,z = self.cam.world(*pixel)
+            point = (round(x/10)*10,round(z/10)*10)
+            self.assertIn(point,self.area,pixel)
+
+    def test_ferry_is_the_only_exit(self):
+        self.assertTrue(all(w['targetMap']==-1 for w in self.grid.warps))
+        self.assertFalse(any(110<=c<120 for c in self.grid.collision))
+        self.assertIn('warp(Screen.secret_beach_cave_142, entry=2, then=61)',self.script)
 
 
 class WhamonWait(unittest.TestCase):
