@@ -136,6 +136,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'omnimon-field': ('461', 'tools.models.field_animations.celebrations', '461-omnimon-field'),
     'renamon-field': ('354', 'tools.models.field_animations.chibi', '354-renamon-field'),
     'beelzemon-field': ('403', 'tools.models.field_animations.chibi', '403-beelzemon-field'),
+    'magnamon-native': ('197', 'tools.models.field_animations.native_binding', '197-magnamon-native'),
     'magnamon-field': ('197', 'tools.models.field_animations.gaits', '197-magnamon-field'),
     'puppetmon-field': ('181', 'tools.models.field_animations.articulation', '181-puppetmon-field'),
     'kotemon-field': ('351', 'tools.models.field_animations.imported_equipment', '351-kotemon-field'),

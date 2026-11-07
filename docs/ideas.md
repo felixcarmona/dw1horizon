@@ -58,6 +58,31 @@ against, leave this list.
 | Vikemon as an evolution of Syakomon and Cannondramon of Triceramon | 🎭 | Each route must respect the evolution tree rules (no canon Mega straight from a Champion). |
 | A way to learn basic Machine techniques before Whamon (a new area, or Hagurumon/Solarmon in the galleries) | ⚖️ 🆕 | Today Machine techniques are only reachable through Whamon. |
 | Wizardmon as the Champion of the SkullSatamon → Beelzemon line (echoing Impmon → Wizardmon → Baalmon → Beelzemon) | 🎭 | Baalmon has no model to import; the route must follow the evolution tree rules. |
+| Electric techniques for Zudomon, and a lightning finisher instead of its placeholder | ⚖️ | Moveset change; check its specialties and balance. |
+| ShimaUnimon as a raisable partner | 🆕 | Already in the game as an enemy; needs a place in the evolution tree. |
+| Carry more than one Digimon, or a bank to swap partners (like a PC box) | 🆕 ⚖️ | A big change to the core raise-and-rebirth loop; memory budget on 2 MB. |
+| Ride your Digimon after getting a rare item | 🆕 | Field movement and animation work for many species. |
+| A search/filter in the Cheats evolve list, or pick the evolution from the chart grid (LCD icons) instead of the name list | 🛠️ | The list is long; scrolling through it is slow. |
+| Drop the word "Mega" from the partner guide, since the level is already shown in its corner | ✨ | Text only. |
+| New content in Beetle Land: more insect enemies and HerculesKabuterimon as a recruit | 🆕 | Area always felt empty; needs a recruit scene. |
+| Terriermon, the third Tamers partner (Guilmon and Renamon lines are already in) | 🆕 | Needs a source model and a place in the evolution tree. |
+| Models from Pocket Digimon World and Digital Card Arena (Japanese prequel of Digital Card Battle): MagnaAngemon, Keramon, babies, Babamon | 🆕 | New source discs for the importer; their formats need support first. |
+| A Cheats option to unlock every technique for the partner | 🎭 | Cheats are opt-in; simple to add next to the existing cheat rows. |
+| The evolution requirements table remembers the last species you looked at | 🛠️ | Saves scrolling back to the same cell every time. |
+| Seasonal decorations in File City (winter/Christmas) | ✨ | New art per building; after the game is more stable. |
+| Lock evolutions (as in Next Order) to steer a raise toward a chosen Digimon | 🎭 ⚖️ | Helps completing the roster; must not bypass requirements. |
+| Jogress (DNA) evolutions: ExVeemon + Stingmon, WarGreymon + MetalGarurumon, and a three-way one with a quest NPC | 🆕 | Needs two partners or a stored partner; depends on the two-Digimon idea. |
+| UlforceVeedramon | 🆕 | Needs a source model and a place in the evolution tree. |
+| After Analogman, rematches with World 2's Chaos Generals (ChaosGreymon, ChaosSeadramon, ChaosPiedmon...) instead of Machinedramon | 🆕 | Needs their models from Digimon World 2 and new battle scripts. |
+| The Agunimon/Flamemon line up to EmperorGreymon (models from Rumble Arena 2 and DW3) | 🆕 | Rumble Arena 2 is a GameCube/PS2 game: its models would need a new importer. |
+| Recolor evolutions only at the same level (a recolor should never be a higher stage) | 🎭 | Affects many current routes in the evolution tree. |
+| Modern Digimon (Jesmon, Dorugoramon, BlitzGreymon) and NoblePumpkinmon | 🆕 | No PS1 models; would have to be modelled from scratch. |
+| An alternative WarGreymon model (Digimon World 2's) | 🎭 | Players disagree; the current one is the Card Battle model chibified to DW1 proportions. |
+| Rematch every boss after finishing the game (limited per day or under a condition) | 🆕 ⚖️ | More post-game fights to test a raised partner besides tournaments. |
+| Machine techniques taught only by unique bosses become learnable later, e.g. a recruit who teaches a random learnable technique for a hefty price | ⚖️ 🆕 | Today they are missable unless you face those bosses with a Machine partner. |
+| Savanna card vendors show the image of the card you're buying, like the booster machine | ✨ | UI only. |
+| Ikkakumon and Zudomon eat much more (a food-bill like Tyrannomon) | ⚖️ | Species care data; check the economy rule. |
+| A Cheats option to unlock the whole evolution chart | 🎭 | For testing; cheats are opt-in. |
 | Unique recruitment scenes for more of the new Digimon | ✨ | Many new recruits join with a simple fight. |
 | Humanoid sizes growing by stage (Angemon < MagnaAngemon < Seraphimon, Devimon < Myotismon) | ✨ | A per-line size review. |
 | A minimap like Digimon World 3's, showing where each exit leads, and a wider camera view | 🛠️ | Needs screen space and per-screen exit data. |

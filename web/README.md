@@ -138,6 +138,17 @@ fakes give `stored()` for IndexedDB and `self.testHandles.revive` makes them aga
 
 ## The engine
 
+Building requires OPFS with `FileSystemFileHandle.createWritable`, synchronous
+file access in workers, and raw deflate streams. The page checks storage support
+before disc selection. On iPhone and iPad, iOS/iPadOS 26 or later is required,
+including when using Chrome. Capability detection also accepts Safari 26 when its
+user agent still reports an older OS version.
+
+Python converts extracted files and bounded image chunks to owned JavaScript byte
+arrays before calling storage callbacks. These callbacks never receive Python
+proxies or views into WebAssembly memory. Temporary proxies used to populate
+Python globals are destroyed immediately after assigning the Python reference.
+
 `js/engine/engine.js` (the page's side) and `js/engine/worker.js` (a module Web Worker, one Pyodide each) run a
 make-release of the everything variant (format 3, the derive builder: `tools/patcher/dwpatch.py`, docs/patcher.md
 §9) as `dwpatch apply` would, with tools/derive's steps spread over the workers:
@@ -181,15 +192,40 @@ page-load tidy skips while another tab builds). Nothing of this is shown to the 
 
 Room: a build needs about 3 GB plus the combined size of the selected discs in this browser's storage (`roomFor`: twice the holes, the largest image, 1.25 GB;
 measured at its fullest: 2.63 GB, `web/test/run.mjs` prints it as "peak storage").
-`storage.estimate()` cannot say whether it is there: Chromium reports a fixed quota (its usage + 10 GB, the
-StaticStorageQuota feature, private windows included), while the real one can be far smaller (an incognito window
-keeps OPFS in memory, with a quota that is a fraction of the computer's memory, and one file stops growing at
-2000 MiB) or the disk can be nearly full. So `checkRoom` (`js/engine/engine.js`) asks the estimate first (Firefox and Safari report their real
-quota) and then the storage itself (`js/engine/room-worker.js`: an OPFS file made the build's size with a sync
-access handle's `truncate`, then removed; Chromium refuses it with QuotaExceededError when it does not fit, and in
-an incognito window the file does not keep its length). The page asks once the four discs are ready and warns under
-the button (`patch.lowSpace`, `patch.private`, `engine.storageBlocked`; on phones `patch.phone`), the button stays;
-the build asks again before downloading anything and stops with `engine.noSpace` (or `engine.storageBlocked`).
+`navigator.storage.estimate()` is advisory, not a measurement of free disk space or a guarantee that the
+build fits. `checkRoom` validates finite, nonnegative quota and usage values; zero or insufficient remaining quota
+warns, and missing, malformed or rejected estimates show an unknown-space warning. Both let the player try anyway.
+The build click starts `persist()` in the user gesture and awaits its result before the engine rechecks quota;
+denied or unavailable persistence still allows a build. Persistence protects against eviction and does not guarantee
+more room. A 1 MiB OPFS write/flush/length probe checks access, then deletes its file. It does not reserve several GB
+in one file: sparse allocation and single-file limits cannot predict a multi-file build. Only a real probe quota or
+permission failure blocks startup; real writes that run out of storage stop with `engine.quota` without job retries.
+The existing iOS capability gate remains based on the required file APIs.
+
+Browser policies explain why disk space and the estimate differ:
+
+- Firefox applies a best-effort group limit; persistent storage uses a different limit and may prompt for permission.
+  Private windows can have different quotas or unavailable storage. Treat both the estimate and private-mode support
+  as version-dependent. See [Mozilla’s storage policy](https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria).
+- Chromium can expose a fixed estimate while enforcing a smaller actual quota. Its incognito storage pool is based on
+  RAM, and normal profiles reserve disk headroom under storage pressure. See the
+  [Chromium quota implementation](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/storage/browser/quota/quota_settings.cc)
+  and [static estimate change](https://groups.google.com/a/chromium.org/g/blink-dev/c/00aHBCiUGzo/m/B0Dq06SFAQAJ).
+- Edge also supports [static quota estimates](https://learn.microsoft.com/en-us/deployedge/microsoft-edge-browser-policies/staticstoragequotaenabled).
+  Brave is Chromium-based, but its effective quota and persistence grants must be checked at runtime as well;
+  neither browser name nor a quota value reliably identifies private browsing.
+- Safari/WebKit has per-origin and overall quotas, different limits for browser apps and embedded apps, and
+  eviction under storage pressure. See [WebKit’s storage policy](https://webkit.org/blog/14403/updates-to-storage-policy/).
+
+The warning and storage errors explain freeing disk space, using a normal window, allowing persistent storage when
+prompted, and trying a current 64-bit Chrome, Edge or Firefox (or the desktop patcher). This advice is translated
+in every page language. `node web/test/storage.mjs URL [SHOTS_DIR]` uses Playwright in Chromium, Firefox and WebKit
+with regular temporary profiles and simulated low/zero/unknown/malformed quotas, persistence granted/denied/rejected/unavailable, actual tiny input
+copies, and injected probe/write failures. It checks warnings, click-to-engine ordering, continuation past the gate,
+real quota error handling and probe cleanup. Firefox exception names and messages are preserved alongside stacks,
+which can contain only call sites. The expensive builder is replaced after input copying; this is not a
+full-disc checksum test. `web/test/errors.mjs` retains the real-engine quota scenario (`?quota=first|JOB`) and
+`?room=` overrides the probe size for allocation-failure tests.
 
 Errors: `Build.explain` turns any failure into the player's words by its text: a full storage
 (QuotaExceededError and the like) is `engine.quota`, storage not allowed `engine.storageBlocked`, a lost connection
@@ -286,6 +322,18 @@ from a plain file picker needs reselection if it cannot be read again.
 Chromium using tiny OPFS fixtures and the production worker's read function. `node web/test/lifecycle.mjs URL`
 checks failure and cancellation cleanup, worker retries, and locking across tabs without building a disc.
 
+With Playwright installed, `node web/test/capabilities.mjs URL` checks the storage
+gate in WebKit, Chromium and Firefox without discs, including iOS Chrome and
+Safari's frozen OS version. `node web/test/cross-browser.mjs URL ISO_ROOT BROWSER`
+runs a full USA-disc build with one worker and four reported cores; `BROWSER` is
+`webkit`, `chromium` or `firefox`. It hashes the stored image independently and
+accepts `EXPECT_SHA1` for comparison with a CLI build. `PLAYWRIGHT_MODULE` can
+select a local installation, and `CHROMIUM` can select a system executable.
+Full builds use a regular temporary profile. `BROWSER_PROFILE` selects a named
+profile to retain for inspection after the run.
+Provision at least the page's reported storage requirement in the browser test
+environment: MiniBrowser's default 1 GB quota is too small for a full build.
+
 `node web/test/downloads.mjs URL` tests the completed build's separate download links and combined button without
 source discs. It checks the saved `.bin` and `.cue` names, bytes, binary MIME types and the CUE's BIN reference in
 headless Chromium, including Android user agent, viewport and touch emulation. Set `FIREFOX=path` to run in headless
@@ -325,3 +373,18 @@ which validates a matching package and engine before publishing. The optional
 `web/deploy.sh` script targets a separately configured rsync/nginx host; it is a
 local hosting utility, not required for Pages. Local preview:
 `python3 -m http.server -d web`.
+
+## Player data at /data/
+
+The header links to the release-matched technique/species/evolution guide.
+`python3 web/build.py --tag v0.0.6 --out build/site` overlays the presentation
+and generates `/data/` with `tools/guide/build.py`, using that tag's owned data.
+Release and Pages runs the same command for every release and page-only retry;
+presentation can come from main while the data stays pinned to `RELEASE_TAG`.
+English and Spanish UI lives in `i18n/*.json` (`data.*`); other languages use
+English guide copy. The shared theme, header, language preference and components
+also apply to the guide. Its font and all scripts are served locally.
+`node web/test/data.mjs SITE [SHOTS]` checks navigation, release matching,
+languages, table behavior and desktop/mobile layout. See `tools/guide/README.md`.
+For full-disc Chromium verification, `BUILD_WORKERS=4` selects four workers
+in `web/test/cross-browser.mjs` (default one); `EXPECT_SHA1` enforces a CLI pin.

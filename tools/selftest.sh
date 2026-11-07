@@ -56,6 +56,7 @@ run() {   # run NAME CMD...
     fi
 }
 echo "toolchain self-test"
+run story-imports "$PY" -m unittest tools.test_dws_imports
 if [ "$DISC" = 1 ] && [ ! -f text/us/dialogue.json ]; then
     run original-text-bank "$PY" -c 'from pathlib import Path; from tools.dws import textx; Path("text/us").mkdir(parents=True, exist_ok=True); textx.write_bank(textx.extract(), "text/us/dialogue.json")'
 fi
@@ -99,6 +100,7 @@ run species-off       $PY -W ignore tools/test_species_off.py              # JSO
 run fi-info-clock     $PY tools/test_fi_info.py
 disc care-bubble-art $PY -m unittest tools.test_care_bubble_art tools.test_care_badge
 if [ -f "$PATCHED/src/main/mod_feed.c" ]; then
+    run merit-cards-host $PY tools/dev/playtest/merit_cards_host.py "$PATCHED"
     run care-badge-host $PY tools/dev/playtest/care_badge_host.py "$PATCHED"
     run hpmp-care-host $PY tools/dev/playtest/hpmp_care_host.py "$PATCHED"
     run quick-care-host $PY tools/dev/playtest/quick_care_host.py "$PATCHED"

@@ -12,8 +12,8 @@
   "effects_like": 22,
   "model": {
     "file": "build/rescue-kyubimon/Kyubimon.MMD",
-    "radius": 252,
-    "height": 442,
+    "radius": 197,
+    "height": 345,
     "skeleton": [[-1, -1], [0, 0], [1, 1], [2, 2], [3, 3], [4, 4], [5, 2], [6, 6], [7, 7], [8, 2], [9, 9], [10, 9],
                  [11, 9], [12, 1], [13, 13], [14, 14], [15, 1], [16, 16], [17, 17], [18, 1],
                  [19, 19], [20, 19], [21, 19], [22, 19], [23, 19], [24, 19], [25, 19]],
@@ -22,8 +22,8 @@
   "texture": {"file": "build/rescue-kyubimon/Kyubimon.TIM", "entry": 0},
   "voice": 20,
   "battle_music": "normal-battle",
-  "condition_bubble": [1, -173, -71, 9],
-  "effect_origins": [[4, 70, 0, 20, 9, 0, -45, -155], [4, 120, 0, 20, 9, 0, 1, -200]],
+  "condition_bubble": [1, -135, -55, 9],
+  "effect_origins": [[4, 70, 0, 20, 9, 0, -35, -121], [4, 120, 0, 20, 9, 0, 1, -156]],
   "wild": {"hp": 1560, "mp": 1510, "off": 255, "def": 205, "speed": 200, "brain": 175, "bits": 600},
   "partner": {
     "voice": 7,

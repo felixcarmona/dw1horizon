@@ -8,7 +8,7 @@
   "specialties": ["battle", "mech", null],
   "techniques": ["Megaton Punch", "Dynamite Kick (44)", "Buster Dive", "Counter", "Tremar", "Sonic Jab",
                  "Muscle Charge", "War Cry", "Pulse Laser", "DG Dimension", "All Range Beam",
-                 "Delete Program", "Reverse Prog", "Iga School Knife Throw"],
+                 "Delete Program", "Reverse Prog", "Energy Bomb"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 8,
   "model": {
@@ -53,7 +53,7 @@
   },
   "evolution": {
     "from": [324, 195, 201],
-    "to": [335],
+    "to": [335, 318],
     "requirements": {
       "digimon": 324,
       "hp": -1,

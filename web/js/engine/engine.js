@@ -51,6 +51,7 @@ export class EngineError extends Error {
 export function missingSupport() {
   if (typeof Worker === 'undefined' || typeof WebAssembly === 'undefined') return 'engine.noWasm';
   if (!navigator.storage || !navigator.storage.getDirectory) return 'engine.noOpfs';
+  if (typeof FileSystemFileHandle === 'undefined' || !('createWritable' in FileSystemFileHandle.prototype)) return 'engine.noWritable';
   // (createSyncAccessHandle exists in dedicated workers only: the worker checks it when it starts)
   if (typeof DecompressionStream === 'undefined') return 'engine.noStreams';
   try { new DecompressionStream('deflate-raw'); } catch { return 'engine.noStreams'; }
@@ -175,20 +176,21 @@ export async function buildRoom(inputBytes = 0) {
   try { return roomFor((await loadPlan()).plan) + inputBytes; } catch { return 3 * 2 ** 30 + inputBytes; }
 }
 
-// Is there room for `need` bytes more in this browser's storage? {need, reason: null (it fits, as far as the browser
-// says) | 'quota' (it does not) | 'blocked' (the page may not store files: a private window in Firefox, site data
-// blocked) | 'unkept' (storage held in memory, a private or incognito window: it may not fit), free (bytes, when the
-// browser's estimate is to be believed), msg}. storage.estimate() first: Firefox and Safari report their real
-// quota; Chromium reports a fixed one (usage + 10 GB, in private windows too), so the storage is asked as well
-// (js/engine/room-worker.js). `ask`: the bytes the probe asks for, when not `need` (tests).
-export async function checkRoom(need, ask = need) {
-  const out = { need, reason: null, free: null, msg: '' };
+// Estimates are advisory: privacy modes, browser policy and disk reserves can report less (or more)
+// than OPFS can actually use. Probe a small write, never reserve the whole build in one giant file.
+// reason: 'estimate' / 'unknown' warn but allow a build; 'quota' / 'blocked' are real probe failures.
+// `ask` overrides the small probe size for failure tests only.
+export async function checkRoom(need, ask = 1024 * 1024) {
+  const out = { need, reason: 'unknown', free: null, msg: '' };
   if (!navigator.storage || !navigator.storage.getDirectory) return out;      // (missingSupport says it)
   try {
     const est = await navigator.storage.estimate();
-    if (est.quota) out.free = est.quota - est.usage;
-    if (out.free != null && out.free < ask) return { ...out, reason: 'quota', msg: `estimate: ${est.usage} used of ${est.quota}` };
-  } catch { /* no estimate: the probe says */ }
+    if (Number.isFinite(est.quota) && est.quota >= 0 && Number.isFinite(est.usage) && est.usage >= 0) {
+      out.free = Math.max(0, est.quota - est.usage);
+      out.reason = out.free < need ? 'estimate' : null;
+      out.msg = `estimate: ${est.usage} used of ${est.quota}`;
+    }
+  } catch { /* quota unknown; still check storage access */ }
   if (typeof Worker === 'undefined') return out;
   const r = await new Promise((res) => {
     let w;
@@ -201,7 +203,7 @@ export async function checkRoom(need, ask = need) {
   });
   // (a probe that could not run says nothing: the build finds out)
   if (r.reason && r.reason !== 'error') return { ...out, reason: r.reason, msg: r.msg };
-  if (r.reason) out.msg = r.msg;
+  if (r.reason) { out.reason = 'unknown'; out.msg = r.msg; }
   return out;
 }
 
@@ -280,7 +282,7 @@ export class Build {
     this.slots = [];                           // the build workers: {id, w, busy, job, ready, load, dead}
     this.oomTest = null;                       // (tests: a job name whose first run fails as out of memory)
     this.quotaTest = null;                     // (tests: a job name, or 'first', that fails as the storage being full)
-    this.roomTest = 0;                         // (tests: the bytes the room check asks for instead of the build's)
+    this.roomTest = 0;                         // (tests: overrides the small storage probe's byte count)
     this.need = 0;                             // the room the build needs (bytes), once the plan is read
     this.recycleMB = RECYCLE_MB;
   }
@@ -364,7 +366,9 @@ export class Build {
         return await this._run();
       } catch (e) {
         this.cancel();
-        const err = this.explain(e instanceof EngineError ? e : new EngineError('engine.failed', {}, String(e && e.stack || e)));
+        // Firefox stacks can omit the exception name/message, including QuotaExceededError.
+        const detail = [`${e?.name || 'Error'}: ${e?.message || e}`, e?.stack].filter(Boolean).join('\n');
+        const err = this.explain(e instanceof EngineError ? e : new EngineError('engine.failed', {}, detail));
         this.state.phase = 'error';
         this.state.error = { key: err.key, vars: err.vars, detail: err.detail, kind: err.kind };
         this.emit();
@@ -455,14 +459,14 @@ export class Build {
     try { await (await navigator.storage.getDirectory()).removeEntry(OPFS_DIR, { recursive: true }); } catch { /* none */ }
     this.checkStopped();
     // Room for the build and immutable copies of all selected discs. Remembered discs remain in usage.
-    // Asked before anything is downloaded or built (checkRoom: the browser's estimate, then the storage itself).
+    // Estimates warn; only an actual small OPFS probe failure prevents starting.
     this.need = roomFor(plan) + [this.file, ...Object.values(this.sources)].reduce((n, f) => n + f.size, 0);
-    const room = await checkRoom(this.need, this.roomTest || this.need);
+    const room = await checkRoom(this.need, this.roomTest || undefined);
     this.checkStopped();
     this.log(`room: ${(this.need / 2 ** 30).toFixed(2)} GB needed; ${room.reason || 'ok'}${room.free != null ? `, browser estimate ${(room.free / 2 ** 30).toFixed(1)} GB free` : ''}${room.msg ? ` (${room.msg})` : ''}`);
     if (room.reason === 'quota') throw new EngineError('engine.noSpace', { bytes: this.need }, `room: ${room.msg}`);
     if (room.reason === 'blocked') throw new EngineError('engine.storageBlocked', {}, room.msg);
-    st.room = room.reason;                 // 'unkept': a private window, most likely; the build tries anyway
+    st.room = room.reason;                 // Advisory estimates never prevent an attempt.
 
     // Keep the player's discs independent of downloads, removable storage and old File snapshots.
     st.phase = 'extract';

@@ -1,0 +1,30 @@
+From feae4f0cf6d73efe96f9f281a0fa55fbf4673f35 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 6 Nov 2026 18:41:28 +0000
+Subject: [PATCH] Restore battle idle after flatten recovery
+
+---
+ src/btl/battle_main.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
+index 5510909..8b0454a 100644
+--- a/src/btl/battle_main.c
++++ b/src/btl/battle_main.c
+@@ -2886,6 +2886,13 @@ void BTL_tickStatusEffects(void)
+ 				if (modModelScale(entity->type) != 0x1000) { /* MOD (species rules as data): a species with its own scale (Meteormon) */
+ 					entity->posData->scale.vx = entity->posData->scale.vy = entity->posData->scale.vz = modModelScale(entity->type);
+ 				}
++				/* The squash uses the tired idle even at full HP. Once
++				 * restored, choose the fighter's own healthy/tired stance. */
++				if ((entity->anim.animId == 0x22) &&
++				    !(fighter->flags & (FIGHTER_FLAG_ATTACKING | FIGHTER_FLAG_KNOCKED_BACK |
++				                        FIGHTER_FLAG_STUNNED | FIGHTER_FLAG_CONFUSED))) {
++					startBattleIdleAnimation((DigimonEntity *)entity, stats, fighter->flags);
++				}
+ 				break;
+ 			}
+ 		} else {
+-- 
+2.55.0
+

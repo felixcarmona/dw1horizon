@@ -108,19 +108,16 @@ script 79 {
         face(tamer, slot2);
         face(partner, slot2);
         face(tyrannomon1, slot2);
-        walk(slot2, 64, 1093);
         wait(15);
         sound(8, 6);
         face(tamer, slot2);
         face(partner, slot2);
         face(tyrannomon1, slot2);
-        walk(slot2, 64, 1093);
         wait(15);
         sound(8, 6);
         face(tamer, slot2);
         face(partner, slot2);
         face(tyrannomon1, slot2);
-        walk(slot2, 64, 1093);
         await slot2;
         sound(8, 6);
         face(tamer, slot2);
@@ -160,8 +157,8 @@ script 79 {
         animate(tamer, 19);
         say(tamer, text("s079.sec6.u20"));
         say(tyrannomon1, text("s079.sec6.u21"));
+        run(tyrannomon1, -243, -614);
         loop {
-            run(tyrannomon1, -243, -614);
             unless (glances < 6) break;
             glances += 1;
             wait(10);

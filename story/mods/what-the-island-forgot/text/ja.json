@@ -503,5 +503,6 @@
  "what-the-island-forgot.2af647ac": "この古いいどはずっと深い。ちょっと調べてるだけさ。",
  "_source": {
   "city.join": "{species} joined the city!"
- }
+ },
+ "kiwimon.refuse": "お腹をすかせたままにする"
 }
