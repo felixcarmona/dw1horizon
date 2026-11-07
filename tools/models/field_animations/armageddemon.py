@@ -20,7 +20,8 @@ SOURCE = '0203002d79de4b438b7060ee95ae41d9fb7d29f945501c34ac4407dc8aefe050'
 PAIRS = ((15, 24), (12, 18), (9, 21))
 # Indices in the preceding move list, selected by attack posture: beam, mouth
 # discharge, or the stationary program pose. Remap all slots simultaneously.
-ATTACKS = (0, 1, 2, 4, 11, 11, 10, 10, 12, 12, 6, 2, 10, 2, 12, 14)
+# Retained moves keep their save-game indices, including the finisher at 14.
+ATTACKS = (0, 1, 2, 11, 4, 10, 6, 2, 10, 12, 10, 11, 12, 2, 14, 12)
 
 
 def build(data, skeleton):

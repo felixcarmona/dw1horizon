@@ -58,6 +58,15 @@ class Armageddemon(unittest.TestCase):
             self.assertEqual(animsheet.slot_frames(self.old, 27, slot),
                              animsheet.slot_frames(self.new, 27, slot), slot)
 
+    def test_existing_save_slots_keep_retained_moves_and_finisher(self):
+        moves = json.loads(Path('content/species/407-armageddemon.json').read_text())['techniques']
+        retained = {0: 'Inifinity Burn', 1: 'Prominence Beam', 2: 'Meltdown',
+                    4: 'Red Inferno', 10: 'Delete Program', 11: 'Pulse Laser',
+                    12: 'Reverse Prog', 14: 'Crimson Flare'}
+        for index, name in retained.items():
+            self.assertEqual(moves[index], name)
+            self.assertEqual(ATTACKS[index], index)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -6,9 +6,9 @@
   "vanilla_as": 12,
   "attribute": "virus",
   "specialties": ["fire", "mech", "nature"],
-  "techniques": ["Inifinity Burn", "Prominence Beam", "Meltdown", "Red Inferno", "Pulse Laser", "All Range Beam",
-                 "DG Dimension", "Delete Program", "Reverse Prog", "Full Potential", "Poison Claw",
-                 "Poison Powder", "Bug", "Insect Plague", "Mass Morph", "Crimson Flare"],
+  "techniques": ["Inifinity Burn", "Prominence Beam", "Meltdown", "All Range Beam", "Red Inferno", "DG Dimension",
+                 "Poison Claw", "Poison Powder", "Bug", "Full Potential", "Delete Program",
+                 "Pulse Laser", "Reverse Prog", "Insect Plague", "Crimson Flare", "Mass Morph"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 47,
   "model": {

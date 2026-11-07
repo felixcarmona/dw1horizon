@@ -3,7 +3,7 @@
   "name": "Armageddemon",
   "threshold": 0.02,
   "source_sha256": "dc05e90fde3e13ac5e9f5432833d5e6360848d93028ce86d017298a4c2028904",
-  "output_sha256": "633f59d1ad0ce5abb5ed258c803a179c3655a6f01b76b8e998458a756b870e18",
+  "output_sha256": "528518e0ff289d66eed70630e892b0c904d521387b85b3c0cf343bd834c84c89",
   "preceding_provider": {
     "model": "407-Armageddemon.MMD",
     "field_overlay": "armageddemon-pace"
@@ -241,17 +241,27 @@
       0,
       1,
       2,
+      11,
       4,
-      11,
-      11,
       10,
-      10,
-      12,
-      12,
       6,
       2,
       10,
+      12,
+      10,
+      11,
+      12,
       2,
+      14,
+      12
+    ],
+    "retained_equipped_slots": [
+      0,
+      1,
+      2,
+      4,
+      10,
+      11,
       12,
       14
     ]

@@ -172,7 +172,8 @@ Its specialties are Fire, Machine and Nature. Mouth beams and energy discharges
 fit its [official Black Rain and Ultimate Flare attacks](https://digimon.net/reference/detail.php?directory_name=armagemon).
 All Range Beam, DG Dimension and Full Potential return from its predecessors;
 poison and Bug attacks carry forward Infermon's computer-bug theme. The move list
-fits all 16 slots, including the unchanged fire finisher. Existing beam,
+fits all 16 slots, including the unchanged fire finisher. Retained moves keep
+their original indices, preserving saved equipped moves and the finisher slot. Existing beam,
 discharge and stationary program clips are remapped together, preserving their
 timing and events. The Battle specialty and its punches, kicks and charge moves
 are removed. Power Crane also gives way to the ranged and program moves.
