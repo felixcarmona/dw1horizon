@@ -146,6 +146,7 @@ def visit(e, out, sid, bones, max_ticks, record=False, sleep_due=False, allow_wr
         rows = [list(map(int, s.split(','))) for s in raw.strip().splitlines()]
         played = [r for r in rows if r[1] == 6 and r[3] == 10 and r[4] >= 2 and r[5] != 32767]
         assert played and min(r[13] for r in played) > 0, 'toilet clip lost resident geometry'
+        assert rows[-1][14:] == [1, 1, 255], ('returned partner is hidden', rows[-1])
         # Buildings can legitimately hide the partner during the toilet clip.
         # The exit must restore both control and actual movement on open ground.
         para = json.loads(e.gs('dump'))['partner']['para']
@@ -167,6 +168,7 @@ def visit(e, out, sid, bones, max_ticks, record=False, sleep_due=False, allow_wr
                       phases=sorted({r[2] for r in rows if r[1] == 6}),
                       cold_pending_seen=any(r[7] for r in rows),
                       minimum_resident_meshes=min(r[13] for r in played),
+                      return_visibility=rows[-1][14:],
                       movement=moved, movement_direction=direction,
                       return_look_calls=look[0], wrong_return_targets=look[1],
                       return_target=look[2], expected_return_target=look[3],
