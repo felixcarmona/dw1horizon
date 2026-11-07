@@ -73,6 +73,11 @@ against, leave this list.
 | Lock evolutions (as in Next Order) to steer a raise toward a chosen Digimon | 🎭 ⚖️ | Helps completing the roster; must not bypass requirements. |
 | Jogress (DNA) evolutions: ExVeemon + Stingmon, WarGreymon + MetalGarurumon, and a three-way one with a quest NPC | 🆕 | Needs two partners or a stored partner; depends on the two-Digimon idea. |
 | UlforceVeedramon | 🆕 | Needs a source model and a place in the evolution tree. |
+| After Analogman, rematches with World 2's Chaos Generals (ChaosGreymon, ChaosSeadramon, ChaosPiedmon...) instead of Machinedramon | 🆕 | Needs their models from Digimon World 2 and new battle scripts. |
+| The Agunimon/Flamemon line up to EmperorGreymon (models from Rumble Arena 2 and DW3) | 🆕 | Rumble Arena 2 is a GameCube/PS2 game: its models would need a new importer. |
+| Recolor evolutions only at the same level (a recolor should never be a higher stage) | 🎭 | Affects many current routes in the evolution tree. |
+| Modern Digimon (Jesmon, Dorugoramon, BlitzGreymon) and NoblePumpkinmon | 🆕 | No PS1 models; would have to be modelled from scratch. |
+| An alternative WarGreymon model (Digimon World 2's) | 🎭 | Players disagree; the current one is the Card Battle model chibified to DW1 proportions. |
 | Unique recruitment scenes for more of the new Digimon | ✨ | Many new recruits join with a simple fight. |
 | Humanoid sizes growing by stage (Angemon < MagnaAngemon < Seraphimon, Devimon < Myotismon) | ✨ | A per-line size review. |
 | A minimap like Digimon World 3's, showing where each exit leads, and a wider camera view | 🛠️ | Needs screen space and per-screen exit data. |
