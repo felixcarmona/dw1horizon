@@ -3,7 +3,7 @@
   "name": "Armageddemon",
   "threshold": 0.02,
   "source_sha256": "dc05e90fde3e13ac5e9f5432833d5e6360848d93028ce86d017298a4c2028904",
-  "output_sha256": "0203002d79de4b438b7060ee95ae41d9fb7d29f945501c34ac4407dc8aefe050",
+  "output_sha256": "528518e0ff289d66eed70630e892b0c904d521387b85b3c0cf343bd834c84c89",
   "preceding_provider": {
     "model": "407-Armageddemon.MMD",
     "field_overlay": "armageddemon-pace"
@@ -220,7 +220,7 @@
   ],
   "grounding_max_under": 0.5,
   "grounding_max_over": 0.5,
-  "resident_bytes": 73070,
+  "resident_bytes": 73974,
   "resident_limit": 100352,
   "cold_buffer_bytes": 8192,
   "audit": {
@@ -228,5 +228,42 @@
     "occupied_slots": 54,
     "animated": [],
     "across_slots": []
+  },
+  "gestures": {
+    "preceding_sha256": "0203002d79de4b438b7060ee95ae41d9fb7d29f945501c34ac4407dc8aefe050",
+    "recipe": "tools.models.field_animations.armageddemon",
+    "slots": [
+      0,
+      11
+    ],
+    "paired_support": true,
+    "technique_source_indices": [
+      0,
+      1,
+      2,
+      11,
+      4,
+      10,
+      6,
+      2,
+      10,
+      12,
+      10,
+      11,
+      12,
+      2,
+      14,
+      12
+    ],
+    "retained_equipped_slots": [
+      0,
+      1,
+      2,
+      4,
+      10,
+      11,
+      12,
+      14
+    ]
   }
 }

@@ -116,7 +116,7 @@ class Reuse(unittest.TestCase):
 
 class RecordSourceVariants(unittest.TestCase):
     """dwpatch.record_source_variants' two ways: the USA run reused, or derive on every regional base."""
-    def run_it(self, verdict):
+    def run_it(self, verdict, width=4, prefetch=False):
         import argparse
         from unittest.mock import patch
         import dwpatch as dw
@@ -124,7 +124,7 @@ class RecordSourceVariants(unittest.TestCase):
         holes = [dict(id=0, file='DIGI.DAT'), dict(id=1, file='ETCNA/T.TIM')]
         base_holes = {'us': {0: b'digi', 1: b'usa'}, 'eu': {0: b'digi', 1: b'europe'}}
         with tempfile.TemporaryDirectory() as td:
-            def derive_holes(out, m, v, bd, work, jobs=None, source_discs=None):
+            def derive_holes(out, m, v, bd, work, jobs=None, source_discs=None, cache=None, slot=None):
                 calls.append((bd.key, jobs))
                 got = {}
                 for h in holes:
@@ -144,7 +144,7 @@ class RecordSourceVariants(unittest.TestCase):
                 return f'sha-{bd.pin}-{hb[0].decode()}-{hb[1].decode()}', None
 
             a = argparse.Namespace(source_variant=['dw2003=W3.bin'], source_disc=['dcb=a', 'dw2=b', 'dw2003=c'],
-                                   variant_jobs=7, keep_outputs=None)
+                                   variant_jobs=width, base_jobs=width, keep_outputs=None)
             m = dict(extract=[], timings={})
             outputs = {}
             with patch.object(dw, 'variant_of_image', return_value=('dw3-us', 'SLUS_014.36')), \
@@ -159,8 +159,17 @@ class RecordSourceVariants(unittest.TestCase):
                 with open(os.path.join(td, 'manifest.json'), 'w') as f:
                     f.write('{"steps": {}, "files": {}}')
                 sv = dw.record_source_variants(a, m, td, td, 'everything', dict(recipe='everything'), holes,
-                                               base_holes, {'us': 'us.bin', 'eu': 'eu.bin'}, {}, None, outputs)
+                                               base_holes, {'us': 'us.bin', 'eu': 'eu.bin'}, {}, None, outputs,
+                                               prepared={'dw2003=W3.bin': ('us', {0: b'w3 digi', 1: b'usa'})}
+                                               if prefetch else None)
         return sv, calls, outputs, holes
+
+    def test_prefetched_variant_and_parallel_outputs_match_reference(self):
+        sequential = self.run_it((None, 'x'), width=1)
+        parallel = self.run_it((None, 'x'), width=4, prefetch=True)
+        self.assertEqual(sequential[0], parallel[0])
+        self.assertEqual(sequential[2:], parallel[2:])
+        self.assertEqual([k for k, _ in parallel[1]], ['eu'])
 
     def test_fallback_runs_every_regional_base(self):
         sv, calls, outputs, holes = self.run_it((None, 'x'))

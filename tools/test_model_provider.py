@@ -90,13 +90,21 @@ class ModelProvider(unittest.TestCase):
                 self.assertNotIn(sid, selected)
                 selected[sid] = model.OVERLAYS[preceding]
         celebrations = json.load(open('content/models/imports/celebrations.json'))
-        self.assertEqual(len(selected)+len(following), len(model.OVERLAYS))
-        self.assertEqual(set(selected.values()) | set(following.values()), set(model.OVERLAYS.values()))
+        # Magnamon's native binding supersedes its retained authoring recipe.
+        active = dict(model.OVERLAYS)
+        previous_magnamon = active.pop('magnamon-field')
+        self.assertEqual(previous_magnamon,
+                         ('197', 'tools.models.field_animations.gaits', '197-magnamon-field'))
+        self.assertEqual(len(selected)+len(following), len(active))
+        self.assertEqual(set(selected.values()) | set(following.values()), set(active.values()))
         for species, (bound_species, _, _) in selected.items():
             self.assertEqual(species, bound_species)
         assignments = {t: entry[1:] for t, entry in selected.items()}
         self.assertEqual(assignments.pop('236'),
                          ('tools.models.field_animations.native_binding', '236-demidevimon-native-flight'))
+        self.assertEqual(assignments['197'],
+                         ('tools.models.field_animations.native_binding', '197-magnamon-native'))
+        assignments['197'] = previous_magnamon[1:]
         # Celebration curves run after the final proportions. Unwrap them to
         # keep guarding all the original field recipes and output names.
         for sid, row in celebrations.items():

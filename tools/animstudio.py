@@ -8,7 +8,8 @@ curves of the feet, several models side by side (the donor's own walk next to th
   animstudio.py metrics MODEL [MODEL ...] [--slot 2]   foot slip over the ground in stance, foot lift, root speed
   animstudio.py bones MODEL                 the hierarchy: parent, rest position, side, mesh part (extent, vertices)
 
---cull draws only the faces turned to the camera, as the game does (RotNclip): without it the two sides of a thin plate
+The default --cull draws only faces turned to the camera, as the game does (RotNclip).
+--no-cull is diagnostic: without culling the two sides of a thin plate
 (WarGreymon's shield) fight in the z-buffer and show as dots, and a missing back is hidden by the inner faces.
 
 MODEL is  FILE.MMD:TYPE[:TEXTURE[:SLOT[:LABEL]]]  where TEXTURE is a single-model .TIM (an import's NeoCrimson.TIM) or absent (the
@@ -183,7 +184,7 @@ class FastMesh:
 
 
 class Panel:
-    cull = False                # --cull: draw only front faces, as the game does
+    cull = True                 # RotNclip: draw front faces, as the game does
 
     def __init__(self, mod, kind, view, size):
         self.mod, self.kind, self.view, self.size = mod, kind, view, size
@@ -405,7 +406,8 @@ def main():
     ap.add_argument('--speed', type=float, default=1.0)
     ap.add_argument('--size', type=int, default=360)
     ap.add_argument('--ticks', type=int, nargs='*')
-    ap.add_argument('--cull', action='store_true', help='draw only the faces that face the camera, as the game does')
+    ap.add_argument('--cull', action='store_true', default=True, help='draw front faces as the game does (default)')
+    ap.add_argument('--no-cull', dest='cull', action='store_false', help='diagnostic: draw both sides, including coincident backs')
     a = ap.parse_args()
     Panel.cull = a.cull
     if a.cmd == 'metrics':

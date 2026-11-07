@@ -4629,9 +4629,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/335-MegaGargomon.MMD.mdelta",
-        "delta_sha256": "af92ab1e2129e49bd52031223a9890909943beb44cf7b9d503202e8a1e64ce59",
-        "sha256": "3214e75d20aa674ef5b74a7a2d5b2c47515dcb3b95057bf22f986f776bb13220",
-        "size": 101174
+        "delta_sha256": "6746d52b1a73cc439a06ef23bccb383e145d8c9715b7265b9c0b1e78d2a3b9a7",
+        "sha256": "63e58aa49f15d838114a4bb8de3ce26c9db0c38b78fb272928f13808c8d3ec06",
+        "size": 103578
       },
       "tim": {
         "sources": [
@@ -4839,9 +4839,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/400-Apocalymon.MMD.mdelta",
-        "delta_sha256": "d826bcbb5694b8ccefb9a28f678cc3e578f621ed5bc71e3da32a413530cd9c8f",
-        "sha256": "b24774987c94ca7d65050e895d38fe4c4cfc1a3b3ee9a364ba518f4b383cae94",
-        "size": 112042
+        "delta_sha256": "64fdb8ac3d8a50784712ba809de838a37c16fbe9315254ef02dd48c1455ae610",
+        "sha256": "91f9848cd31f8c5865b620ce4feb95ce31c09585cb41195d70b876519af2758b",
+        "size": 113062
       },
       "tim": {
         "sources": [
@@ -4929,9 +4929,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/403-Beelzemon.MMD.mdelta",
-        "delta_sha256": "69414e8e91209bebfe45bde43995aa2b4daae012a6e1b7cd14dfcc100b35cce6",
-        "sha256": "f19a752540ebea151df9979430bdea14b461a2a8d9e74aba586312f761f32c74",
-        "size": 123110
+        "delta_sha256": "dcd42ee1a66b34ba7f25ddcfabf48c794113f03d8e39e0b138d4437d5f1b06cd",
+        "sha256": "4e4dfa48266df5d2cc6251c31c43e3302db00945379362a5af39ac17593b81cd",
+        "size": 126366
       },
       "tim": {
         "sources": [
@@ -5049,9 +5049,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/407-Armageddemon.MMD.mdelta",
-        "delta_sha256": "eec5b9db1cfd34b85c736e82c22c51e7bf036f1484f2cc1c5f5d69a781c85015",
-        "sha256": "0203002d79de4b438b7060ee95ae41d9fb7d29f945501c34ac4407dc8aefe050",
-        "size": 80532
+        "delta_sha256": "dee27c8243bc18817752d11cc1883b0469443f2c7f54386798638672c7de600f",
+        "sha256": "528518e0ff289d66eed70630e892b0c904d521387b85b3c0cf343bd834c84c89",
+        "size": 86712
       },
       "tim": {
         "sources": [

@@ -503,5 +503,6 @@
  "what-the-island-forgot.2af647ac": "Ce vieux puits descend très loin. Je vérifie, c'est tout.",
  "_source": {
   "city.join": "{species} joined the city!"
- }
+ },
+ "kiwimon.refuse": "Le laisser affamé"
 }

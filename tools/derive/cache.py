@@ -16,11 +16,26 @@ from . import runner
 def tool_key():
     root = Path(runner.ROOT)
     # Modules imported before recording are still code inputs. Conservatively hash
-    # all tool sources, including transitive helpers, rather than infer imports.
+    # all build-tool sources, including transitive helpers, rather than infer imports.
+    # Regression entry points are keyed separately if a builder actually imports one.
     paths = [p for p in (root / 'tools').rglob('*') if p.is_file()
-             and '__pycache__' not in p.parts and p.suffix in ('.py', '.sh', '.json', '.lua')]
+             and '__pycache__' not in p.parts and p.suffix in ('.py', '.sh', '.json', '.lua')
+             and not (p.parent == root / 'tools' and p.name.startswith('test_') and p.suffix == '.py')]
     paths += [p for p in (root / 'content').rglob('*.py') if '__pycache__' not in p.parts]
     return key([[str(p.relative_to(root)), digest(p)] for p in sorted(paths)])
+
+
+def loaded_test_code():
+    """Test entry points are not build inputs unless a builder imports one."""
+    tools = Path(runner.ROOT) / 'tools'
+    paths = set()
+    for module in list(sys.modules.values()):
+        name = getattr(module, '__file__', None)
+        if name:
+            p = Path(name).absolute()
+            if p.parent == tools and p.name.startswith('test_') and p.suffix == '.py' and p.is_file():
+                paths.add(p)
+    return key([[str(p), digest(p)] for p in sorted(paths)])
 
 
 @functools.lru_cache(maxsize=256)
@@ -65,6 +80,7 @@ def identity(ctx, name, args=()):
     ignored = {'DW_BUILD_CACHE', 'DW_CACHE_DIR', 'DERIVE_JOBS', 'DERIVE_ARGS', 'DERIVE_START',
                'DERIVE_UNIT_ORDER', 'DW_CACHE_DEBUG', 'CODEX_TOOL_CALL_ID', '_', 'SHLVL'}
     return dict(kind='derive', name=name, args=args, out=ctx.out, tools=tool_key(),
+                test_helpers=loaded_test_code(),
                 python=[sys.version, sys.executable, sys.platform, runtime_sources()],
                 environment={k: v for k, v in ctx.env.items() if k not in ignored},
                 facts=ctx.facts if getattr(ctx, 'cache_facts', False) else None,
@@ -120,10 +136,33 @@ def screen_piece(fn, args, stage, code_inputs=None):
     return path.read_bytes(), result['size']
 
 
+def story_inputs(ctx):
+    """Fingerprint inputs whose values may already live in imported modules.
+
+    Audit events cannot observe a global populated before a pass starts. Include
+    the supplied source trees, inventory and modes, plus the generated model
+    archive used by story compilation. Compute once before workers publish maps.
+    """
+    root = Path(ctx.root)
+    roots = [root / name for name in ('tools', 'content', 'story', 'mods', 'text',
+                                     'docs/data', 'decomp/config/us', 'extracted')]
+    roots.append(Path(ctx.out) / 'DIGI.DAT')
+    entries = []
+    for base in roots:
+        for p in [base, *sorted(base.rglob('*'))] if base.is_dir() else [base]:
+            if '__pycache__' in p.parts or p.suffix == '.pyc':
+                continue
+            mode = p.stat().st_mode & 0o7777 if p.exists() else None
+            entries.append([str(p), mode, digest(p) if p.is_file() else
+                            'directory' if p.is_dir() else 'absent'])
+    return key(entries)
+
+
 def units(ctx, original):
     directory = os.environ.get('DW_BUILD_CACHE')
     if not directory or runner.strict() or ctx.record:
         return original
+    sources = story_inputs(ctx) if ctx.cache_step == 'story' else None
     out = []
     for u in original:
         fn, args, group = u.fn, u.args, u.order_group
@@ -132,7 +171,7 @@ def units(ctx, original):
             folder = str(Path(ctx.out) / 'cache-story' / str(len(out)))
             fn, args, group = isolated_story, (fn, args, folder, roots), None
         ident = identity(ctx, f'{ctx.cache_step}/{u.name}',
-                         [u.fn.__module__, u.fn.__name__, u.args, declared_code(tuple(u.inputs))])
+                         [u.fn.__module__, u.fn.__name__, u.args, declared_code(tuple(u.inputs)), sources])
         out.append(runner.Unit(u.name, run_unit,
                               (directory, os.path.join(ctx.root, 'build'), ident, fn, args),
                               u.inputs, u.outputs, order_group=group))
@@ -188,6 +227,13 @@ def isolated_story(fn, args, folder, roots):
     active = build_cache._ACTIVE
     before = active.writes.copy()
     active.writes.clear()
+    # Each pass owns its maps, so create immutable preimages without DWS's
+    # shared-map hard links. Track them with the edits for ordered publication.
+    for private in replacements.values():
+        for source in Path(private).rglob('*.MAP'):
+            preimage = source.with_name(source.name + '.orig')
+            if not preimage.exists():
+                shutil.copyfile(source, preimage)
     old_run_root = os.environ.get('DWS_RUN_ROOT')
     os.environ['DWS_RUN_ROOT'] = str(folder / 'runs')
     (folder / 'runs').mkdir(exist_ok=True)
@@ -250,3 +296,41 @@ def run_units(ctx, original):
         done = runner.run_units(ctx, wrapped)
     replay_story(ctx, done)
     return done
+
+
+def record_step(ctx, mod, directory):
+    """Reuse a recorded step while retaining its original positive input trace.
+
+    Cache bookkeeping must not become part of the source-bundle recording. On a
+    hit, restore the audited artifacts and the actual build's input trace. On a
+    miss, both audit hooks observe the same single-process computation. The
+    release still replays the resulting bundle independently without caches.
+    """
+    import json
+    from tools.build_cache import capturing, encoded
+    recording = runner._recording
+    runner._recording = None
+    try:
+        ctx.cache_step = mod.NAME
+        ctx.cache_facts = getattr(mod, 'FACTS', False)
+        sources = story_inputs(ctx) if mod.NAME == 'story' else ()
+        ident = json.loads(encoded(identity(ctx, 'record/' + mod.NAME, sources)))
+        cache = Cache(directory, os.path.join(ctx.root, 'build'))
+        result = cache.restore(ident)
+        if result is None:
+            runner._recording = recording
+            try:
+                with capturing(os.path.join(ctx.root, 'build')) as capture:
+                    mod.build(ctx)
+                if recording is not None:
+                    ctx.note_inputs(*recording)
+                result = dict(lines=ctx.lines[:], inputs=sorted(ctx.inputs))
+            finally:
+                runner._recording = None
+            cache.save(ident, capture, result)
+            ctx.lines.insert(0, 'record cache miss')
+        else:
+            ctx.lines[:] = ['record cache hit'] + result['lines']
+            ctx.inputs.update(result['inputs'])
+    finally:
+        runner._recording = recording

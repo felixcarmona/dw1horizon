@@ -6,6 +6,8 @@ import path from 'node:path';
 const { webkit, chromium, firefox } = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const [url, isoRoot, name = 'webkit', seconds = '21600'] = process.argv.slice(2);
 const type = { webkit, chromium, firefox }[name];
+const workers = Number(process.env.BUILD_WORKERS || 1);
+assert.ok(Number.isInteger(workers) && workers >= 1 && workers <= 6);
 const options = { headless: true,
   ...(name === 'chromium' && process.env.CHROMIUM ? { executablePath: process.env.CHROMIUM } : {}) };
 fs.mkdirSync('build', { recursive: true });
@@ -21,7 +23,7 @@ try {
   });
   const page = await context.newPage();
   page.on('pageerror', e => console.log('pageerror:', e.message));
-  const target = new URL(url); target.searchParams.set('test', '1'); target.searchParams.set('workers', '1');
+  const target = new URL(url); target.searchParams.set('test', '1'); target.searchParams.set('workers', String(workers));
   await page.goto(target.href);
   timer = setInterval(async () => {
     try {
@@ -62,7 +64,7 @@ try {
   });
   console.log(JSON.stringify(result, null, 2));
   assert.equal(result.phase, 'done');
-  assert.equal(result.workerCount, 1);
+  assert.equal(result.workerCount, workers);
   assert.equal(result.independentHash.sha1, result.result.sha1);
   if (process.env.EXPECT_SHA1) assert.equal(result.independentHash.sha1, process.env.EXPECT_SHA1);
 } finally {

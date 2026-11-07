@@ -88,7 +88,8 @@ class RegistryTests(unittest.TestCase):
         from dws.pickups import emitted
         data, _ = load_registry()
         moved = [r for r in data['spots'] if 'at' in r]
-        self.assertTrue(moved and all(r['screen'] >= 300 for r in moved))
+        self.assertTrue(moved)
+        self.assertTrue(all(r['screen'] >= 300 or r['screen'] in (21, 234) for r in moved))
         for screen, spots in emitted(data).items():
             self.assertEqual(len({t for _, t in spots}), len(spots), screen)
         with tempfile.TemporaryDirectory() as tmp:
@@ -109,6 +110,33 @@ class RegistryTests(unittest.TestCase):
                 self.assertEqual(len(kept), 3, screen)           # 3 of Native Forest's 7 mushrooms on a new screen
         got = rewrite_text('    SPAWN_ITEM 1, 30, 79\n', [0, 314], spots, off=off)
         self.assertEqual(got, '    SPAWN_ITEM_DAILY 1, 30, 79, 0, 0\n')
+
+    def test_spore_mushrooms_clear_chests_without_changing_save_ids(self):
+        import ast
+        import dwmap
+        from dws.pickups import placements
+        data, spots = load_registry()
+        root = Path(__file__).resolve().parents[1]
+        rows = {r['id']: r for r in data['spots']}
+        for ident, screen, key, source in (
+                (61, 21, (84, 49), 's022-21'),
+                (232, 234, (59, 42), 's190-234')):
+            with self.subTest(screen=screen):
+                row = rows[ident]
+                self.assertEqual((row['screen'], *row['tile']), (screen, *key))
+                tree = ast.parse((root / 'story/base/zones/mt-panorama-spore-area' / source / 'script.py').read_text())
+                chests = []
+                for node in ast.walk(tree):
+                    if not (isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id == 'spawn_chest'):
+                        continue
+                    at = next(k.value for k in node.keywords if k.arg == 'at')
+                    chests.append(dwmap.world_to_tile(*ast.literal_eval(at)))
+                # spawnChest blocks [tile - 2, tile + 2) after the item has spawned.
+                self.assertTrue(any(x - 2 <= key[0] < x + 2 and z - 2 <= key[1] < z + 2 for x, z in chests))
+                x, z = row['at']
+                self.assertTrue(all(max(abs(x - cx), abs(z - cz)) > 4 for cx, cz in chests))
+                rewritten = rewrite_text(f'SPAWN_ITEM 69, {key[0]}, {key[1]}\n', [screen], spots, placements(data))
+                self.assertEqual(rewritten, f'SPAWN_ITEM_DAILY 69, {x}, {z}, {ident}, {screen}\n')
 
     def test_duplicate_registry_entries_fail(self):
         with tempfile.TemporaryDirectory() as tmp:

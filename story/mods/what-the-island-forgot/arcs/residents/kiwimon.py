@@ -10,7 +10,7 @@ kiwimon = savanna.npc(Species.Kiwimon, at=(-750, 1750), range=0, still=True, whe
 def talk():
     say("I'm not moving. I'm too hungry to move. Is that meat I smell?")
     if has(Item.Meat):
-        if ask(yes="Give it a {item Item.Meat}", no="Keep it"):
+        if ask(yes="Give it a {item Item.Meat}", no=t("kiwimon.refuse")):
             take(Item.Meat)
             say("Finally, someone who understands food.")
             send_to_city(line="Kiwimon joined the city!", species=Species.Kiwimon)

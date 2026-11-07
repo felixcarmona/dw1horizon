@@ -271,6 +271,16 @@ def authored_geometry(s):
             for x,z in booth['trigger']:
                 assert m.collision[z*100+x] == 0, (s['map'], x, z)
                 m.collision[z*100+x] = trigger
+    if any(isinstance(n, ast.ImportFrom) and n.module == 'field_walkables' for n in ast.walk(tree)):
+        reviewed = json.loads((MOD / 'maps/field-walkables.json').read_text())['maps'].get(s['map'].removesuffix('.MAP'), {})
+        for edit in reviewed.get('collision', []):
+            x,z = edit['tile']
+            assert m.collision[z*100+x] == edit['before'], s['map']
+            m.collision[z*100+x] = edit['after']
+        for edit in reviewed.get('warps', []):
+            warp = m.warps[edit['slot']]
+            assert all(warp[k] == v for k,v in edit['before'].items()), s['map']
+            warp.update(edit['after'])
     return m
 
 

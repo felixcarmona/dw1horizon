@@ -67,6 +67,24 @@ against, leave this list.
 | New content in Beetle Land: more insect enemies and HerculesKabuterimon as a recruit | 🆕 | Area always felt empty; needs a recruit scene. |
 | Terriermon, the third Tamers partner (Guilmon and Renamon lines are already in) | 🆕 | Needs a source model and a place in the evolution tree. |
 | Models from Pocket Digimon World and Digital Card Arena (Japanese prequel of Digital Card Battle): MagnaAngemon, Keramon, babies, Babamon | 🆕 | New source discs for the importer; their formats need support first. |
+| A Cheats option to unlock every technique for the partner | 🎭 | Cheats are opt-in; simple to add next to the existing cheat rows. |
+| The evolution requirements table remembers the last species you looked at | 🛠️ | Saves scrolling back to the same cell every time. |
+| Seasonal decorations in File City (winter/Christmas) | ✨ | New art per building; after the game is more stable. |
+| Lock evolutions (as in Next Order) to steer a raise toward a chosen Digimon | 🎭 ⚖️ | Helps completing the roster; must not bypass requirements. |
+| Jogress (DNA) evolutions: ExVeemon + Stingmon, WarGreymon + MetalGarurumon, and a three-way one with a quest NPC | 🆕 | Needs two partners or a stored partner; depends on the two-Digimon idea. |
+| UlforceVeedramon | 🆕 | Needs a source model and a place in the evolution tree. |
+| After Analogman, rematches with World 2's Chaos Generals (ChaosGreymon, ChaosSeadramon, ChaosPiedmon...) instead of Machinedramon | 🆕 | Needs their models from Digimon World 2 and new battle scripts. |
+| The Agunimon/Flamemon line up to EmperorGreymon (models from Rumble Arena 2 and DW3) | 🆕 | Rumble Arena 2 is a GameCube/PS2 game: its models would need a new importer. |
+| Recolor evolutions only at the same level (a recolor should never be a higher stage) | 🎭 | Affects many current routes in the evolution tree. |
+| Modern Digimon (Jesmon, Dorugoramon, BlitzGreymon) and NoblePumpkinmon | 🆕 | No PS1 models; would have to be modelled from scratch. |
+| An alternative WarGreymon model (Digimon World 2's) | 🎭 | Players disagree; the current one is the Card Battle model chibified to DW1 proportions. |
+| Rematch every boss after finishing the game (limited per day or under a condition) | 🆕 ⚖️ | More post-game fights to test a raised partner besides tournaments. |
+| Machine techniques taught only by unique bosses become learnable later, e.g. a recruit who teaches a random learnable technique for a hefty price | ⚖️ 🆕 | Today they are missable unless you face those bosses with a Machine partner. |
+| Savanna card vendors show the image of the card you're buying, like the booster machine | ✨ | UI only. |
+| Ikkakumon and Zudomon eat much more (a food-bill like Tyrannomon) | ⚖️ | Species care data; check the economy rule. |
+| A Cheats option to unlock the whole evolution chart | 🎭 | For testing; cheats are opt-in. |
+| Reorganise the Rookie routes: add Zurumon (Baby) and Pagumon (In-Training, the Virus line: Gazimon, DemiDevimon, Gizamon...) and give each Rookie a single In-Training parent as in the original, about five Rookies each | ⚖️ 🆕 | A player's full table is in the Discord thread "Rookie evolution path re-balance"; animations could reuse Pabumon's and Koromon's. Changes routes players know. |
+| Multiplayer co-op | 🆕 | Very large: the engine is single-player; would need a link-cable/netplay design from scratch. |
 | Unique recruitment scenes for more of the new Digimon | ✨ | Many new recruits join with a simple fight. |
 | Humanoid sizes growing by stage (Angemon < MagnaAngemon < Seraphimon, Devimon < Myotismon) | ✨ | A per-line size review. |
 | A minimap like Digimon World 3's, showing where each exit leads, and a wider camera view | 🛠️ | Needs screen space and per-screen exit data. |

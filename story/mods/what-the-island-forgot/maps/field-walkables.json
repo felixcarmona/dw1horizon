@@ -1,0 +1,1138 @@
+{
+  "review": "Tile-by-tile review of the Stone Yard rails, all Descent switchbacks and the Courtyard door approaches. Preserve visible floor and existing foreground silhouettes.",
+  "maps": {
+    "BARR01": {
+      "collision": [
+        {
+          "tile": [
+            50,
+            0
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            0
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            1
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            1
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            2
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            2
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            3
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            3
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            4
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            4
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            5
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            5
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            6
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            6
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            7
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            7
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            8
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            8
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            9
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            9
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            10
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            10
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            11
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            11
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            12
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            12
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            13
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            13
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            14
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            14
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            15
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            15
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            16
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            16
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            17
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            17
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            18
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            18
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            19
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            19
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            20
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            20
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            21
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            21
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            22
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            22
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            23
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            23
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            24
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            24
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            25
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            25
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            26
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            26
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            27
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            27
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            28
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            28
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            29
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            29
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            30
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            30
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            31
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            31
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            32
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            32
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            33
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            33
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            34
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            34
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            35
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            35
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            36
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            36
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            37
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            37
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            38
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            39
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            50,
+            40
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            40
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            41
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            42
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            61,
+            43
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid stair side rail, including its foot; the treads remain open."
+        },
+        {
+          "tile": [
+            51,
+            0
+          ],
+          "before": 0,
+          "after": 51,
+          "reason": "Extend the town trigger across the full width of the stair treads."
+        },
+        {
+          "tile": [
+            51,
+            1
+          ],
+          "before": 0,
+          "after": 51,
+          "reason": "Extend the town trigger across the full width of the stair treads."
+        },
+        {
+          "tile": [
+            51,
+            2
+          ],
+          "before": 0,
+          "after": 51,
+          "reason": "Extend the town trigger across the full width of the stair treads."
+        },
+        {
+          "tile": [
+            51,
+            3
+          ],
+          "before": 0,
+          "after": 51,
+          "reason": "Extend the town trigger across the full width of the stair treads."
+        }
+      ]
+    },
+    "BARR02": {
+      "collision": [],
+      "warps": [
+        {
+          "slot": 2,
+          "before": {
+            "x": 719,
+            "z": 420
+          },
+          "after": {
+            "x": 421,
+            "z": 129,
+            "rotation": 795
+          },
+          "reason": "Return from the Cold Store to the open apron, clear of the workshop roof and bench."
+        }
+      ]
+    },
+    "DESC01": {
+      "collision": [
+        {
+          "tile": [
+            55,
+            51
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the middle rock finger underside; prevent sideways entry into its near face."
+        },
+        {
+          "tile": [
+            56,
+            51
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the middle rock finger underside; prevent sideways entry into its near face."
+        },
+        {
+          "tile": [
+            57,
+            51
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the middle rock finger underside; prevent sideways entry into its near face."
+        },
+        {
+          "tile": [
+            58,
+            51
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the middle rock finger underside; prevent sideways entry into its near face."
+        },
+        {
+          "tile": [
+            59,
+            51
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the middle rock finger underside; prevent sideways entry into its near face."
+        },
+        {
+          "tile": [
+            60,
+            51
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the middle rock finger underside; prevent sideways entry into its near face."
+        },
+        {
+          "tile": [
+            46,
+            52
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the middle rock finger underside; prevent sideways entry into its near face."
+        },
+        {
+          "tile": [
+            47,
+            52
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the middle rock finger underside; prevent sideways entry into its near face."
+        },
+        {
+          "tile": [
+            48,
+            52
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the middle rock finger underside; prevent sideways entry into its near face."
+        },
+        {
+          "tile": [
+            49,
+            52
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the middle rock finger underside; prevent sideways entry into its near face."
+        },
+        {
+          "tile": [
+            50,
+            52
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the middle rock finger underside; prevent sideways entry into its near face."
+        },
+        {
+          "tile": [
+            51,
+            52
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the middle rock finger underside; prevent sideways entry into its near face."
+        },
+        {
+          "tile": [
+            52,
+            52
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the middle rock finger underside; prevent sideways entry into its near face."
+        },
+        {
+          "tile": [
+            53,
+            52
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the middle rock finger underside; prevent sideways entry into its near face."
+        },
+        {
+          "tile": [
+            54,
+            52
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the middle rock finger underside; prevent sideways entry into its near face."
+        },
+        {
+          "tile": [
+            35,
+            58
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid west wall and its vines beside the lower switchback."
+        },
+        {
+          "tile": [
+            35,
+            59
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid west wall and its vines beside the lower switchback."
+        },
+        {
+          "tile": [
+            35,
+            60
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Solid west wall and its vines beside the lower switchback."
+        },
+        {
+          "tile": [
+            44,
+            62
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the lower rock finger underside and tip; retain the outer turning lane."
+        },
+        {
+          "tile": [
+            45,
+            62
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the lower rock finger underside and tip; retain the outer turning lane."
+        },
+        {
+          "tile": [
+            46,
+            62
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the lower rock finger underside and tip; retain the outer turning lane."
+        },
+        {
+          "tile": [
+            47,
+            62
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the lower rock finger underside and tip; retain the outer turning lane."
+        },
+        {
+          "tile": [
+            48,
+            62
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the lower rock finger underside and tip; retain the outer turning lane."
+        },
+        {
+          "tile": [
+            49,
+            62
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the lower rock finger underside and tip; retain the outer turning lane."
+        },
+        {
+          "tile": [
+            50,
+            62
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the lower rock finger underside and tip; retain the outer turning lane."
+        },
+        {
+          "tile": [
+            51,
+            62
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the lower rock finger underside and tip; retain the outer turning lane."
+        },
+        {
+          "tile": [
+            52,
+            62
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the lower rock finger underside and tip; retain the outer turning lane."
+        },
+        {
+          "tile": [
+            53,
+            63
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the lower rock finger underside and tip; retain the outer turning lane."
+        },
+        {
+          "tile": [
+            54,
+            63
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the lower rock finger underside and tip; retain the outer turning lane."
+        },
+        {
+          "tile": [
+            55,
+            63
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the lower rock finger underside and tip; retain the outer turning lane."
+        },
+        {
+          "tile": [
+            56,
+            63
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the lower rock finger underside and tip; retain the outer turning lane."
+        },
+        {
+          "tile": [
+            57,
+            64
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the lower rock finger underside and tip; retain the outer turning lane."
+        },
+        {
+          "tile": [
+            58,
+            64
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the lower rock finger underside and tip; retain the outer turning lane."
+        },
+        {
+          "tile": [
+            59,
+            64
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the lower rock finger underside and tip; retain the outer turning lane."
+        },
+        {
+          "tile": [
+            60,
+            65
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the lower rock finger underside and tip; retain the outer turning lane."
+        },
+        {
+          "tile": [
+            61,
+            66
+          ],
+          "before": 0,
+          "after": 128,
+          "reason": "Complete the lower rock finger underside and tip; retain the outer turning lane."
+        }
+      ]
+    }
+  }
+}

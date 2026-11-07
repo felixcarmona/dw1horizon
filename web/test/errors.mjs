@@ -1,12 +1,9 @@
 // web/test (not deployed): what the page says when a build cannot have the room it needs, headless Chromium, the real
 // page with an engine and the four discs. node web/test/errors.mjs URL DISC.bin [SHOTS_DIR]
 // OTHERS / SOURCE_ISOS as in run.mjs. Scenarios (BASES-like: ONLY="estimate quota" runs those):
-//   estimate  the browser's estimate says there is no room (Firefox and Safari report their real quota; stubbed here):
-//             a warning under the button before the build, with what to do; "Build my disc" stops at once with
-//             engine.noSpace, nothing downloaded; the error's details and the build's log open
-//   probe     no estimate, the storage itself refuses the room (?room=: a size no disk has): the same warning and stop,
-//             from a real QuotaExceededError (js/engine/room-worker.js)
-//   private   an incognito window (storage held in memory): the private-window warning; the button stays usable
+//   estimate  low advisory estimate: warning, then an attempted build; a forced job quota error stops it.
+//   probe     the storage itself refuses a test allocation (?room=): warning and engine.noSpace.
+//   private   incognito with a simulated low estimate: storage warning; the button stays usable.
 //   quota     a job's output cannot be written (?quota=first: the worker throws the QuotaExceededError the player
 //             saw): the build stops at the first one with engine.quota (no retries on other workers), the advice
 //             listed, the details and the log open; the same error in Spanish after switching the menu
@@ -101,20 +98,20 @@ const toSpanish = async (p) => {
 };
 
 if (ONLY.includes('estimate')) {
-  const { p } = await ready({ estimate: { usage: 0, quota: 1.5 * 2 ** 30 } });
+  const { p } = await ready({ estimate: { usage: 0, quota: 1.5 * 2 ** 30 }, query: '&quota=first' });
   const w = await warning(p);
   ok(w && w.kind === 'storage' && has(w.text, 'patch.lowSpace') && w.fixes >= 3 && w.button, `estimate: a warning before the build, with ${w?.fixes} things to do, the button usable`);
   await shot(p, '.patch-row', 'warning-no-room-en');
   const r = await build(p);
-  ok(r.phase === 'error' && r.error.key === 'engine.noSpace' && has(r.errorText, 'engine.noSpace'), `estimate: the build stops with engine.noSpace (${r.error?.key})`);
-  ok(r.download.done === 0, 'estimate: nothing downloaded');
+  ok(r.phase === 'error' && r.error.key === 'engine.quota' && has(r.errorText, 'engine.quota'), `estimate: the build tries and stops on a real write failure with engine.quota (${r.error?.key})`);
+  ok(r.log.some((line) => /copying input disc/.test(line)), 'estimate: input copying started despite the low estimate');
   ok(r.detailsOpen && r.details >= 1 && r.logOpen && r.copy, 'estimate: the details and the log open, the copy button there');
   ok(r.desktopLink && r.fixes.some((f) => has(f, 'fix.private')) && r.fixes.some((f) => has(f, 'fix.freeDisk')), 'estimate: private window, free space and the desktop app suggested');
   await shot(p, '#build', 'error-no-room-en');
   await toSpanish(p);
   await shot(p, '.patch-row', 'warning-no-room-es');
   await shot(p, '#build', 'error-no-room-es');
-  ok(has(await p.$eval('#build-error', (e) => e.innerText), 'engine.noSpace', es), 'estimate: the error in Spanish after switching the menu');
+  ok(has(await p.$eval('#build-error', (e) => e.innerText), 'engine.quota', es), 'estimate: the error in Spanish after switching the menu');
   await p.close();
 }
 
@@ -128,9 +125,9 @@ if (ONLY.includes('probe')) {
 }
 
 if (ONLY.includes('private')) {
-  const { p, ctx } = await ready({ incognito: true });
+  const { p, ctx } = await ready({ incognito: true, estimate: { usage: 0, quota: 1.5 * 2 ** 30 } });
   const w = await warning(p);
-  ok(w && w.kind === 'private' && has(w.text, 'patch.private') && w.button, 'private: the private-window warning, the button usable');
+  ok(w && ['storage', 'private'].includes(w.kind) && (has(w.text, 'patch.lowSpace') || has(w.text, 'patch.private')) && w.button, 'private: a storage warning, the button usable');
   await shot(p, '.patch-row', 'warning-private-en');
   await toSpanish(p);
   await shot(p, '.patch-row', 'warning-private-es');

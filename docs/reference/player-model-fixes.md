@@ -296,3 +296,152 @@ programs remain intact. The overlays and final provider hashes are pinned.
 motion; `tools.test_native_bindings` compares Wormmon's hierarchy and all
 native programs against the donor. Review videos also include actual
 20-tick-per-second playback, alongside phase-aligned pose comparisons.
+
+## Beelzemon: ordinary cannon strike
+
+The World 2003 source `M377BLZB` is Blast Mode. Its Blaster is the
+[right-arm weapon](https://wikimon.net/Beelzebumon%3A_Blast_Mode); the imported
+mesh keeps it on bones 20–23, opposite the bare-hand chain 16–19. The native
+Leomon hand strike previously drove the bare fist while the projectile origin
+already followed cannon bone 22.
+
+`tools/models/repair_beelzemon_attack.py` authors the complete firing action.
+The free arm rises to brace below the cannon. The torso loads, turns into the
+shot and takes the recoil; knee flexion and a small pelvis shift carry its
+weight while both feet remain planted. The head counters the turn, and the
+wings and tail follow with delayed motion. Small translation channels use a
+stricter encoding tolerance so compression retains the weight shift.
+
+The four short strikes share one 15-tick program. The nine casting aliases,
+including Tremor, share a 44-tick program. Their existing events, durations and
+technique rules remain exact. Field/care animations, Buster Dive, War Cry and
+the finisher remain unchanged, as do the mesh, rig and texture.
+
+The consumed resident model uses 99,480 bytes within the 100,352-byte partner
+buffer. Every sector-aligned cold read fits 8,192 bytes. The intermediate delta
+retains the old Buster Dive alias until the provider replays its reviewed dash;
+storage is checked on that consumed result.
+
+Native Andromon Pulse Laser and MetalGreymon Heat Laser provide the visual
+reference. The side-by-side videos remain a separate review requirement;
+physical regression checks cannot establish animation quality by themselves.
+Reproduce event, weapon, bracing, foot placement and storage checks with the
+pre-edit provider output at `MODEL_REPORT_DIR/before/403.MMD`:
+
+```sh
+MODEL_REPORT_DIR=build/reports PYTHONPATH=tools \
+  python3 -W ignore -m unittest tools.test_beelzemon_attack
+```
+
+## Apocalymon: voice and Power Crane
+
+The imported card-game model retains a humanoid torso, floating core and metal
+claws. Its old voice pair, VBALL 48 / VLALL 2, belonged to Megadramon and
+Gigadramon. It now borrows Myotismon's pair, 56 / 3, following the humanoid dark
+character rather than the everyday animation donor. This is a native DW1 voice
+substitution, not a newly imported canonical voice recording. Notes 53–55 are
+present in the selected VBALL bank.
+
+Power Crane, slot 51, now lashes all five mechanical chains rather than a single
+claw. Each chain bends at its root, middle link and wrist; the wrists follow
+the roots by three ticks. Both humanoid arms and the cloak react as the core
+counters the load without tipping far over. The attack loads, extends, follows
+through and settles into the existing ready pose. Duration (61 ticks), sound
+event and all other animation programs remain exact. The forward claw keeps
+the technique's effect at its local mesh point `(48, -64, -237)` on bone 17.
+
+The resident model uses 100,348 of 100,352 bytes; all cold reads fit 8,192 bytes.
+The small buffer margin is checked on the consumed model. Voice remains the
+Myotismon pair VBALL 56 / VLALL 3. This is a DW1 adaptation of Apocalymon's
+multi-claw attack; the native technique name Power Crane is not a card-game
+attack name.
+
+## Omnimon cape: game-equivalent review rendering
+
+The cape has coincident exterior and lining plates with opposite winding,
+single-sided flags and different white/red materials. Drawing both sides into
+an offline z-buffer produces white speckles. With the game's face culling,
+the same unchanged mesh and texture render solid. Keep the source plates and
+materials; changing their UVs or removing the lining would damage the model.
+
+`tools/animstudio.py` now culls by default. `--cull` remains explicit and
+`--no-cull` is available for diagnostic comparisons. Check the cape from the
+back as well as the front and side, then verify it in the native 2 MB engine.
+
+## Omnimon: Grey melee and Garuru ranged techniques
+
+The [official profile](https://digimon.net/reference_en/detail.php?directory_name=omegamon)
+identifies the Grey sword in the left arm and the Garuru cannon in the right.
+The imported mesh agrees: bones 3–7 carry Grey and 9–13 carry Garuru. The source
+physical clip moved Garuru while Grey's shoulder and elbow remained fixed.
+The ordinary sword repair is `tools/models/repair_omnimon_attack.py`, retained
+from the native locomotion and weapon pass. It moves the shoulder/elbow action
+onto Grey while preserving the body's anticipation, legs, cape, timing and
+events. Garuru keeps its ready pose. There is one sword implementation.
+
+| Ordinary technique | Action |
+| --- | --- |
+| Megaton Punch, Sonic Jab | Grey sword |
+| Counter | Existing guard action |
+| Tremor | Existing Garuru cast; range 3 |
+| Buster Dive | Existing whole-body dash |
+| Dynamite Kick | Existing kick |
+| Ice Statue, Aurora Freeze, Giga Freeze, Water Blit | Existing Garuru cannon cast |
+| Prominence Beam, Magma Bomb, Red Inferno, Fire Tower | Existing Garuru cannon cast |
+
+Only slots 46 and 51 change. Other programs, the finisher and field animations
+retain their exact decoded motion. `tools/test_native_polish.py` checks the
+sword repair against its before/after artifacts, including exact unaffected
+body channels and attack events. The former whole-body reflected alternative
+has been removed.
+
+## Tyrannomon scene: uninterrupted native strides
+
+The black actor in the Ancient Glacial Region recruitment scene is native
+MasterTyrannomon (`TIRS`, NPC twin 467); the red actor uses native Tyrannomon
+(`ETYR`, 132). Both source walks use both feet. In the animation studio, TIRS
+lifts its feet by 67/60 units and ETYR by 112/112; the partner MasterTyrannomon
+walk retains Tyrannomon's full motion at its larger size, lifting both feet by
+167 units. Native Greymon provides the biped reference. These clips retain
+their original body, arm and tail motion.
+
+Script 79 restarted the black actor's 31-tick walk every 15 ticks and restarted
+the red actor's departure run every 10 ticks. `scriptSetEntityWalking` starts
+the animation unconditionally, so those commands repeatedly replayed the
+beginning of a stride. The scene now starts each movement once. Its existing
+waits, sounds, facing changes, arrival checks and recruitment remain in place.
+No model, texture, rig or animation program changes for either actor.
+
+## SkullSatamon: posture after flatten recovery
+
+The imported `M244SKST` keeps its source healthy battle idle in slot `0x21`.
+The flatten transition starts `0x22`, the tired idle. Previously, recovery
+restored the model scale and cleared the flatten flags while retaining that
+stance; a healthy fighter could keep it until another action started.
+
+`Restore-battle-idle-after-flatten-recovery.patch` selects the existing
+healthy/tired idle when recovery ends. Low HP and poison still select the tired
+stance. Active attacks, knockback, stun and confusion are preserved. SkullSatamon's
+mesh, rig, textures, animation programs and provider pins remain unchanged.
+The full nine-language build adds 52 bytes to BTL (151,248 bytes, still 74
+sectors). Main BSS end stays at `0x801cdf84`, leaving 188,272 bytes of heap.
+All 320 archive-backed screen setups fit; minimum margin is 3,552 bytes.
+
+The host regression compiles the actual status-transition and idle-selection
+functions with address/undefined-behavior sanitizers, covering health, poison,
+the scaled native model and active reactions:
+
+```sh
+python3 tools/dev/playtest/flat_recovery_host.py build/decomp-dev build/flat-host
+```
+
+Use `--baseline` against the previous engine to reproduce the stale tired idle.
+
+### Omnimon projectile origin
+
+Native tracing found Prominence Beam borrowing Greymon bone 5 at `(100, 30, 0)`.
+The previous scaled lookup did not match, leaving the effect on Grey's head.
+Greymon mouth bones 4 and 5 now map to Garuru barrel bone 13, at the centre of
+its six-vertex muzzle ring `(2, 202, 0)`. Bone-based missing rows use the same
+barrel default; entity-centred impacts retain the engine's ordinary fallback.
+Tremor uses range 3 and keeps its original cannon casting program.
