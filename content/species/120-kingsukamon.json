@@ -11,9 +11,10 @@
                    "Rnd Spd Toss", "Big Rnd Toss", "Ult Poop Hell", "Party time (65)"]
   },
   "attribute": "virus",
-  "specialties": ["filth", null, null],
+  "specialties": ["filth", "ice", "nature"],
   "techniques": ["Horizontal Kick (55)", "Odor Spray", "Poop Spd Toss", "Big Poop Toss", "Poop Rnd Toss",
-                 "Rnd Spd Toss", "Big Rnd Toss", "Ult Poop Hell", "Party time (65)"],
+                 "Rnd Spd Toss", "Big Rnd Toss", "Ult Poop Hell", "Party time (65)", "Water Blit",
+                 "Poison Powder"],
   "finisher": {"power": 200, "mpCost": 40, "element": "filth"},
   "drop": {"item": "sm.recovery", "percent": 10},
   "model": {"name": "SCUD", "bones": 21, "file": "build/models/SCUD-partner.MMD", "radius": 279, "height": 496},
