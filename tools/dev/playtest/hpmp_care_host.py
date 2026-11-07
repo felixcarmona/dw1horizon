@@ -18,6 +18,7 @@ def main():
     root=Path(sys.argv[1] if len(sys.argv)>1 else 'build/decomp-int')
     feed=(root/'src/main/mod_feed.c').read_text()
     partner=(root/'include/dw/partner.h').read_text()
+    bubble=(root/'src/main/bubble.c').read_text()
     defines='\n'.join(line for line in feed.splitlines() if re.match(r'#define (RANK_|FEED_(SCOLD|SLEEP)|SCOLD_PENDING|PORT_POTTY)',line))
     prefix=r'''
 #include <assert.h>
@@ -57,6 +58,17 @@ static struct {struct {int array[30];} types,amounts;int size;} INVENTORY;
 static int ITEM_SCOLD_FLAG;
 static uint8_t feedSlots[32];
 static int feedRanks[32],feedCount;
+#define RING_STEP_TICKS 10
+#define RING_SIZE 205
+#define RING_COL 22
+#define RING_ROW 18
+#define RING_NONE 0x10000
+#define RING_TAIL 0x20000
+static const uint8_t RING_BIT[9]={4,8,1,2,64,32,0,0,0};
+static int IS_IN_MENU,MOD_RING_CLOCK,MOD_RING_T=-1,MOD_RING_STEPS;
+static int MOD_RING_FROM[9],MOD_RING_TO[9],MOD_RING_BADGE,MOD_FEED_HINT;
+#define RING_BADGE_TICKS 4
+
 '''
     tests=r'''
 int main(void) {
@@ -101,12 +113,39 @@ int main(void) {
     ITEM_PARA[0].itemColor=1;
     PARTNER_ENTITY.digimonEntity.stats.current.currentHP=290;
     assert(needRank(0)==0); /* battle-only recovery cannot light the field badge */
-    puts("HP/MP 29/30/31%, full/zero/unsigned maxima, empty bag and menu urgency passed");
+    INVENTORY.size=0;PARTNER_PARA.condition=0;
+    for(int flag=0;flag<=3;flag++) {
+        ITEM_SCOLD_FLAG=flag;
+        assert(modScoldAvailable(flag)==(flag==1));
+        assert(feedCollect(1)==(flag==1));
+        assert(feedCollect(0)==(flag==1));
+        if(flag==1)assert(feedSlots[0]==FEED_SCOLD);
+    }
+    for(int flag=0;flag<=3;flag++)for(int needs=0;needs<2;needs++) {
+        ITEM_SCOLD_FLAG=flag;PARTNER_PARA.condition=needs?111:0;
+        PARTNER_ENTITY.digimonEntity.stats.current.currentHP=needs?290:1000;
+        PARTNER_ENTITY.digimonEntity.stats.current.currentMP=needs?290:1000;
+        MOD_RING_T=-1;
+        for(int i=0;i<9;i++)MOD_RING_FROM[i]=MOD_RING_TO[i]=RING_NONE;
+        for(int t=0;t<25;t++) {
+            MOD_FEED_HINT=modScoldAvailable(flag);tickConditionRingObject(0);
+        }
+        assert((MOD_RING_FROM[8]!=RING_NONE)==(flag==1));
+        for(int i=0;i<8;i++)assert((MOD_RING_FROM[i]!=RING_NONE)==needs);
+        if(needs && flag==1) {
+            /* Five bubbles above four, with Scold last in the lower row. */
+            assert(MOD_RING_FROM[0]==((84<<8)|110));
+            assert(MOD_RING_FROM[4]==((172<<8)|110));
+            assert(MOD_RING_FROM[8]==((161<<8)|128));
+        }
+    }
+    puts("Scold collector/slot membership, all nine needs, plus HP/MP 29/30/31%, full/zero/unsigned maxima, empty bag and menu urgency passed");
 }
 '''
-    source=prefix+defines+'\n'+function(partner,'static inline int32_t modResourceNeed')+'\n'
+    source=prefix+defines+'\n'+function(partner,'static inline int32_t modResourceNeed')+'\n'+function(partner,'static inline int32_t modScoldAvailable')+'\n'
     for signature in ('static int32_t needRank','static void feedAdd','static int32_t feedCollect'):
         source+=function(feed,signature)+'\n'
+    source+=function(bubble,'void tickConditionRingObject(int32_t instanceId)\n{').replace('{','{\n (void)instanceId;',1)+'\n'
     with tempfile.TemporaryDirectory(prefix='hpmp-care-') as tmp:
         c=Path(tmp)/'care.c';exe=Path(tmp)/'care';c.write_text(source+tests)
         subprocess.run(['cc','-std=c99','-Wall','-Wextra','-Werror',str(c),'-o',str(exe)],check=True)

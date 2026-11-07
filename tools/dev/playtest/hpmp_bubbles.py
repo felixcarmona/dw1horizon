@@ -54,7 +54,7 @@ def setup(e,hp,mp,hunger=False,bag=True):
 
 
 def state(e):
-    ram=e.ram();slots=e.peek('MOD_RING_FROM','8i',ram)
+    ram=e.ram();slots=e.peek('MOD_RING_FROM','9i',ram)
     return {'hp':e.peek('PARTNER_ENTITY+0x4c','H',ram),'mp':e.peek('PARTNER_ENTITY+0x4e','H',ram),
             'active':[i for i,slot in enumerate(slots) if slot!=0x10000],
             'badge':e.peek('MOD_RING_BADGE','i',ram),'slots':slots,
