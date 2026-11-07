@@ -658,3 +658,33 @@ comparison in culled front, three-quarter and side views. The encoded model
 has 100,084 authored bytes and 100,100 resident bytes after slot aliases,
 without cold splitting, below the original 2 MB partner buffer's 100,352-byte
 capacity.
+
+### Partner recovery, dinosaur locomotion and large-model scale
+
+Arukenimon's Megaton Punch, Counter, Dynamite Kick and Tremar shared a 96-tick
+imported clip, including a long turned-away hold. Their timing recipes now end
+at tick 36, map the attack cue from tick 27 to 11 and preserve both endpoint
+poses. Other techniques retain their programs. `technique_timing.py` accepts an
+explicit tick count so shortening recovery does not leave an invisible tail.
+
+MetalTyrannomon uses Tyrannomon's native idle, walk, condition walk, run and
+battle locomotion (slots 0, 2–4 and 33–36), anatomically retargeted with foot
+contact. The native stride timing, root travel and step sounds are retained;
+its battle voice and partner voice use Tyrannomon's entries. The mesh and attack
+programs remain unchanged. The replay recipe and preceding delta are under
+`content/models/authoring/native-polish/260.json` and
+`content/modeldelta/authoring/260-before-native-polish.MMD.mdelta`. The final
+resident model uses 94,998 of 100,352 bytes; each cold read fits 8,192 bytes.
+
+Kimeramon's mesh and every animation translation are uniformly enlarged by
+1.5, including field, battle and menu clips. Its collision radius/height are
+263/600. The decoded idle height is approximately 604 units, compared with 505
+for native HerculesKabuterimon, 657 for Machinedramon and 678 for VenomMyotismon.
+The model's size in bytes is unchanged; its resident portion uses 87,652 bytes.
+
+Tropical Jungle screen 13 (`TROP02`) retains an original-disc collision defect
+on its southwest approach to screen 12: the grass boundary steps inward at rows
+79 and 83. `maps/trop02-exit.py` opens 24 grass cells and extends exit 1 across
+eight more cells, preserving the stump, plants, warps and original exit cells.
+`tools.test_trop02_exit` checks a route with the tamer's 100-unit body box that
+catches on the original and reaches the exit after the repair.

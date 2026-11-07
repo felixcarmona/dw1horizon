@@ -74,8 +74,8 @@
           }
         ],
         "delta": "content/modeldelta/deltas/182-Kimeramon.MMD.mdelta",
-        "delta_sha256": "9e865670d1bec7e69098914cf64b43b918e0e5b02bd57d5924c90f0e2765afff",
-        "sha256": "a2fa2a10d5ea73a38257899eeb187861ed121b9b3f36b131d5e41b75dd6f46bb",
+        "delta_sha256": "0d5e3c7b10c5b1e7563b6a73c448175971a9e40a8bff6b98f95b6676396b8772",
+        "sha256": "d512afe8d48c0cf2773abc4ca6b440ccba10c0415fbb1cf42b13274689848060",
         "size": 101448
       },
       "tim": {
@@ -2389,9 +2389,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/260-MetalTyrannomon.MMD.mdelta",
-        "delta_sha256": "13ff7e21ea45b6df26d9f90ce6383ea8266a0741fdca2e20ed541cfa987ab35f",
-        "sha256": "80959aa142b83ac7430fe6575e19f91b25e7ce17e19e9f6c731624d1fb4b6f1a",
-        "size": 113536
+        "delta_sha256": "b591c88b40eab2882bc441b2c96e9758b84256fbfc0153d6e08e40cb6649a8c9",
+        "sha256": "3ee307bd11feb0c9a84a12be5ac45c482117c7810044555e04527310a5acb3b2",
+        "size": 112914
       },
       "tim": {
         "sources": [

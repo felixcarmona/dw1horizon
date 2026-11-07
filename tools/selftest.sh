@@ -198,6 +198,7 @@ disc story-build       $PY tools/dws.py story-build tools/dws/examples/dev-save.
 both dwstest-offline  $PY tools/dev/story_test.py offline
 run dw3-names        $PY tools/dw3_names_check.py                      # DW2003 imports named as the game names them (skips without $DW3_ROOT)
 run map-reach-policies $PY tools/test_reach_policies.py
+disc jungle-exit-body-box $PY -m unittest tools.test_trop02_exit
 run developer-contracts $PY tools/test_dev_contracts.py
 run presented-frame-video $PY tools/test_presented_frames.py
 run duckstation-protocol $PY -m unittest tools.test_duckstation_protocol
