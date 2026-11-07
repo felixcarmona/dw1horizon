@@ -113,3 +113,18 @@ provider uses the resized delta directly.
 `PYTHONPATH=tools python3 -m unittest tools.test_angewomon_size` checks the
 reviewed before/after files under `build/angewomon-redo/`; override them with
 `ANGEWOMON_BEFORE` and `ANGEWOMON_AFTER` for reconstructed inputs.
+
+Garbagemon's can uses the idle attachment to its torso across every occupied
+clip. The Piximon retarget had assigned an independently moving appendage to
+the can, separating it from the body during attacks and care animations. The
+repair in `field_animations/garbagemon.py` keeps the arms, head, lid, gun, root
+travel, timing and support height. Its eating loop is expanded without changing
+its played duration or events. The plain model delta stores the repair; no
+runtime allocation or rig change is needed. Inherited bank-1 note-15 wing cues
+are removed, retaining the existing Sukamon battle and care voices.
+
+With reconstructed before/after models, run `GARBAGEMON_BEFORE=BEFORE.MMD
+GARBAGEMON_AFTER=AFTER.MMD PYTHONPATH=tools python3 -W ignore -m unittest
+tools.test_garbagemon_attachment`. It checks the attachment and grounding over
+every occupied clip, unchanged acting and semantic events, absence of wing
+cues, and original-console resident/cold-animation storage limits.

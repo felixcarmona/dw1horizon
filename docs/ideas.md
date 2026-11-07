@@ -70,7 +70,7 @@ against, leave this list.
 | A Cheats option to unlock every technique for the partner | 🎭 | Cheats are opt-in; simple to add next to the existing cheat rows. |
 | The evolution requirements table remembers the last species you looked at | 🛠️ | Saves scrolling back to the same cell every time. |
 | Seasonal decorations in File City (winter/Christmas) | ✨ | New art per building; after the game is more stable. |
-| Lock evolutions (as in Next Order) to steer a raise toward a chosen Digimon | 🎭 ⚖️ | Helps completing the roster; must not bypass requirements. |
+| Lock evolutions (as in Next Order) to steer a raise toward a chosen Digimon, or choose when several evolutions qualify at once | 🎭 ⚖️ | Helps completing the roster; must not bypass requirements. Two players asked. |
 | Jogress (DNA) evolutions: ExVeemon + Stingmon, WarGreymon + MetalGarurumon, and a three-way one with a quest NPC | 🆕 | Needs two partners or a stored partner; depends on the two-Digimon idea. |
 | UlforceVeedramon | 🆕 | Needs a source model and a place in the evolution tree. |
 | After Analogman, rematches with World 2's Chaos Generals (ChaosGreymon, ChaosSeadramon, ChaosPiedmon...) instead of Machinedramon | 🆕 | Needs their models from Digimon World 2 and new battle scripts. |
@@ -85,6 +85,13 @@ against, leave this list.
 | A Cheats option to unlock the whole evolution chart | 🎭 | For testing; cheats are opt-in. |
 | Reorganise the Rookie routes: add Zurumon (Baby) and Pagumon (In-Training, the Virus line: Gazimon, DemiDevimon, Gizamon...) and give each Rookie a single In-Training parent as in the original, about five Rookies each | ⚖️ 🆕 | A player's full table is in the Discord thread "Rookie evolution path re-balance"; animations could reuse Pabumon's and Koromon's. Changes routes players know. |
 | Multiplayer co-op | 🆕 | Very large: the engine is single-player; would need a link-cable/netplay design from scratch. |
+| In File City, a partner that needs the toilet walks straight to it after a map change (no need to hold Up) | 🛠️ | Field AI change for the city toilets only. |
+| A randomizer mode (species, items, encounters) | 🆕 | A different kind of challenge; large. |
+| A "!" over Digimon that can be recruited now or have a quest available (optionally two icons: quest / ready to join) | 🛠️ 🎭 | Similar on-screen hints were tried and dropped on 2026-10-24 in favour of discovery. |
+| The secret ninja town Ninjamon talks about, as a new area, entered through the false door in Vademon's mansion | 🆕 | New maps, residents and a story hook. |
+| BlackAgumon and BlueGreymon as recolour evolutions | 🎭 | Asked by a player; recolours should bring their own playstyle. |
+| Kogamon (Ninjamon recolour) and Kuzuhamon (Sakuyamon recolour) as Data evolutions: Kotemon/Tsukaimon/Palmon → Kogamon → Tekkamon; Tekkamon/Kyukimon → Kuzuhamon; night-active | 🎭 | A player's detailed proposal (specialties, requirements, finisher placeholders). |
+| Tougher story bosses (e.g. Datamon in Factorial Town is easy for an Ultimate) and more recruitable Digimon in the new areas | ⚖️ 🎭 | Partly covered by the HARD difficulty. |
 | Unique recruitment scenes for more of the new Digimon | ✨ | Many new recruits join with a simple fight. |
 | Humanoid sizes growing by stage (Angemon < MagnaAngemon < Seraphimon, Devimon < Myotismon) | ✨ | A per-line size review. |
 | A minimap like Digimon World 3's, showing where each exit leads, and a wider camera view | 🛠️ | Needs screen space and per-screen exit data. |

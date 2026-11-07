@@ -46,7 +46,7 @@ for (const section of document.querySelectorAll('.data-section')) {
         const x = a.cells[index].dataset.value;
         const y = b.cells[index].dataset.value;
         const cmp = x.trim() !== '' && y.trim() !== '' && Number.isFinite(Number(x)) && Number.isFinite(Number(y))
-          ? Number(x) - Number(y) : x.localeCompare(y, 'en', {numeric: true});
+          ? Number(x) - Number(y) : x.localeCompare(y, i18n.lang, {numeric: true});
         return direction * cmp;
       });
       body.append(...sorted);
