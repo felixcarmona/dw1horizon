@@ -8,12 +8,31 @@
 set -u
 cd "$(dirname "$0")/.."
 PY=python3; [ -x .venv/bin/python ] && PY=.venv/bin/python
-OUT=build/selftest; mkdir -p "$OUT"
+OUT=${DW_SELFTEST_OUT:-build/selftest}; mkdir -p "$OUT"
+REPORT=${DW_SELFTEST_REPORT:-}
+report_errors=0
+if [ -n "$REPORT" ]; then mkdir -p "$(dirname "$REPORT")"; : >"$REPORT"; fi
+PATCHED=${DW_SELFTEST_DECOMP:-build/decomp-dev}
 pass=0; fail=0; skip=0
 DISC=0; [ -f extracted/SLUS_010.32 ] && DISC=1
 DECOMP=0; [ -f decomp/config/us/symbols.txt ] && DECOMP=1
+report_step() {  # STATUS NAME LOG EXIT SECONDS ERROR [COMMAND...]
+    [ -n "$REPORT" ] || return 0
+    if ! "$PY" - "$REPORT" "$@" <<'SELFTEST_REPORT_PY'
+import json, sys
+from pathlib import Path
+report,status,name,log,code,seconds,error=sys.argv[1:8]
+row=dict(name=name,status=status,log=str(Path(log).resolve()) if log else None,
+         exit=int(code) if code else None,seconds=int(seconds),command=sys.argv[8:])
+if error:row['error']=error
+if status=='blocked':row['blocked_by']=[error]
+with open(report,'a') as stream:stream.write(json.dumps(row)+'\n')
+SELFTEST_REPORT_PY
+    then report_errors=$((report_errors + 1)); fi
+}
 skip() {  # skip NAME WHY
     printf '  skip  %s (%s)\n' "$1" "$2"; skip=$((skip + 1))
+    report_step blocked "$1" "" "" 0 "$2"
 }
 disc() {  # disc NAME CMD...: run only with extracted/
     if [ "$DISC" = 1 ]; then run "$@"; else skip "$1" "needs extracted/"; fi
@@ -23,10 +42,17 @@ both() {  # both NAME CMD...: run only with extracted/ and the decompilation's s
 }
 run() {   # run NAME CMD...
     local name=$1; shift
+    local started=$SECONDS code=0
     if "$@" >"$OUT/$name.log" 2>&1; then
         printf '  ok    %s\n' "$name"; pass=$((pass + 1))
     else
+        code=$?
         printf '  FAIL  %s (see %s)\n' "$name" "$OUT/$name.log"; fail=$((fail + 1))
+    fi
+    if [ "$code" -eq 0 ]; then
+        report_step ok "$name" "$OUT/$name.log" "$code" "$((SECONDS - started))" "" "$@"
+    else
+        report_step failed "$name" "$OUT/$name.log" "$code" "$((SECONDS - started))" "selftest check failed" "$@"
     fi
 }
 echo "toolchain self-test"
@@ -73,13 +99,15 @@ fi
 run species-off       $PY -W ignore tools/test_species_off.py              # JSON-only level, stats and path overrides
 run fi-info-clock     $PY tools/test_fi_info.py
 disc care-bubble-art $PY -m unittest tools.test_care_bubble_art tools.test_care_badge
-if [ -f build/decomp-dev/src/main/mod_feed.c ]; then
-    run merit-cards-host $PY tools/dev/playtest/merit_cards_host.py build/decomp-dev
-    run care-badge-host $PY tools/dev/playtest/care_badge_host.py build/decomp-dev
-    run hpmp-care-host $PY tools/dev/playtest/hpmp_care_host.py build/decomp-dev
-    run quick-care-host $PY tools/dev/playtest/quick_care_host.py build/decomp-dev
+if [ -f "$PATCHED/src/main/mod_feed.c" ]; then
+    run merit-cards-host $PY tools/dev/playtest/merit_cards_host.py "$PATCHED"
+    run care-badge-host $PY tools/dev/playtest/care_badge_host.py "$PATCHED"
+    run hpmp-care-host $PY tools/dev/playtest/hpmp_care_host.py "$PATCHED"
+    run quick-care-host $PY tools/dev/playtest/quick_care_host.py "$PATCHED"
 else
+    skip care-badge-host "needs a prepared developer tree"
     skip hpmp-care-host "needs a prepared developer tree"
+    skip quick-care-host "needs a prepared developer tree"
 fi
 run systemw-label-tests $PY -m unittest tools.test_systemw
 disc evolution-tree   $PY tools/test_evo_tree.py --practical
@@ -173,13 +201,13 @@ run map-reach-policies $PY tools/test_reach_policies.py
 run developer-contracts $PY tools/test_dev_contracts.py
 run presented-frame-video $PY tools/test_presented_frames.py
 run duckstation-protocol $PY -m unittest tools.test_duckstation_protocol
-PATCHED=${DW_SELFTEST_DECOMP:-build/decomp-dev}
 if [ -f "$PATCHED/src/main/main.c" ]; then
     run fps-auto $PY tools/test_fps_auto.py "$PATCHED"
     run options-save $PY tools/test_cheats.py "$PATCHED"
     run world-menu-fit env WORLD_FIT_SOURCE="$PATCHED/src/main/map.c" $PY -m unittest tools.test_world_fit
 else
     skip fps-auto "needs prepared C tree (DW_SELFTEST_DECOMP)"
+    skip options-save "needs prepared C tree (DW_SELFTEST_DECOMP)"
 fi
 run gallery-foregrounds $PY tools/test_gallery_foregrounds.py
 run retouch-cutouts $PY tools/test_retouch_cutouts.py
@@ -200,4 +228,6 @@ run allocation-pools $PY -m unittest tools.test_allocation_pools
 run check-links       $PY tools/checkrefs.py
 run check-links-tests $PY tools/test_checkrefs.py
 echo "$pass passed, $fail failed, $skip skipped"
+if [ "$report_errors" -ne 0 ]; then echo "selftest reporting failed" >&2; exit 1; fi
+if [ -n "$REPORT" ] && [ "$skip" -ne 0 ]; then echo "release selftest requires every check; skipped checks are blocked" >&2; exit 1; fi
 [ "$fail" -eq 0 ]

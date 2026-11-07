@@ -59,11 +59,18 @@ def components(data, plan, build_dir):
 
 
 def rebuild(descriptor, files, tool_root=None):
+    """Read only the container's components, including lazy browser file sources."""
     zh = _resources(tool_root)
     if descriptor.get('format') != 1:
         raise ValueError('unsupported Chinese component recipe')
-    rows = [{**r, 'data': files[r['file']]} for r in descriptor['resources']]
-    return zh.build(files[descriptor['module']], files[descriptor['font']], files[descriptor['patch']],
-                    rows, files[descriptor['names']],
-                    files[descriptor['compact']] if descriptor.get('compact') else None,
-                    files[descriptor['english_names']] if descriptor.get('english_names') else None)
+    loaded = {}
+    def data(path):
+        if path not in loaded:
+            value = files[path]
+            loaded[path] = value.read() if hasattr(value, 'read') else value
+        return loaded[path]
+    rows = [{**r, 'data': data(r['file'])} for r in descriptor['resources']]
+    return zh.build(data(descriptor['module']), data(descriptor['font']), data(descriptor['patch']),
+                    rows, data(descriptor['names']),
+                    data(descriptor['compact']) if descriptor.get('compact') else None,
+                    data(descriptor['english_names']) if descriptor.get('english_names') else None)

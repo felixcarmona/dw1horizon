@@ -73,7 +73,9 @@ def sections(build, plan):
                 if offset >= 0:
                     rows.append(dict(output=output, offset=offset, length=4, section='.linker.LONG',
                                      source='linker', value=int(word[2], 16)))
-            match = re.match(r' (\.(?:text|rodata|data|sdata)[\w.]*)\s+0x([\da-f]+)\s+0x([\da-f]+)\s+(\S+\.o)\s*$', line)
+            # The authored feed notes use a named input section in MENU.
+            # Retain its source object instead of losing it as an unmapped gap.
+            match = re.match(r' (\.(?:(?:text|rodata|data|sdata)[\w.]*|menu_feed))\s+0x([\da-f]+)\s+0x([\da-f]+)\s+(\S+\.o)\s*$', line)
             if not match or not output:
                 continue
             section, address, size, obj = match.groups()

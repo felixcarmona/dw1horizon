@@ -186,12 +186,18 @@ def build(a, out=None, quiet=False):
     if facts is not None:
         m['facts'] = facts
     total = time.perf_counter()
+    record_cached = bool(a.record and os.environ.get('DW_RECORD_CACHE') and not a.strict)
+    if record_cached:
+        # Instrumentation is not a dependency of the player's replay.
+        from .cache import record_step
     for mod in mods:
         ctx.lines, ctx.inputs = [], set()
         t0 = time.perf_counter()
         try:
             with ctx.calling():      # (with --record: what the step's own code opens, besides its scripts and units)
-                if os.environ.get('DW_BUILD_CACHE') and not a.strict:
+                if record_cached:
+                    record_step(ctx, mod, os.environ['DW_RECORD_CACHE'])
+                elif os.environ.get('DW_BUILD_CACHE') and not a.strict:
                     from .cache import build_step
                     build_step(ctx, mod)
                 else:
@@ -259,7 +265,7 @@ def units(a):
                 print(f'{mod.NAME}: units not known yet ({e})')
             continue
         rows += [{'step': mod.NAME, 'index': i, 'name': u.name, 'after': list(mod.AFTER), 'inputs': u.inputs,
-                  'outputs': u.outputs, 'order_group': u.order_group} for i, u in enumerate(us)]
+                  'outputs': u.outputs, 'order_group': u.order_group, 'record_snapshot': u.record_snapshot} for i, u in enumerate(us)]
         if not a.json:
             print(f'{mod.NAME}: {len(us)} units')
             for u in us:

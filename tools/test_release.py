@@ -13,6 +13,56 @@ from unittest.mock import patch
 import release
 
 
+class SaveTransitionTests(unittest.TestCase):
+    def test_warp_pauses_memory_writes_and_resumes_after_an_error(self):
+        from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+        from threading import Thread
+        from urllib.parse import parse_qs, urlsplit
+        from tools.dev.saves.releases import Emu
+
+        class Flow(BaseHTTPRequestHandler):
+            def log_message(self, *args):
+                pass
+
+            def do_GET(self):
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(json.dumps({'running': self.server.running}).encode())
+
+            def do_POST(self):
+                function = parse_qs(urlsplit(self.path).query)['function'][0]
+                self.server.running = function == 'start'
+                self.send_response(200)
+                self.end_headers()
+
+        with ThreadingHTTPServer(('127.0.0.1', 0), Flow) as server:
+            server.running = True
+            thread = Thread(target=server.serve_forever, kwargs={'poll_interval': .01})
+            thread.start()
+            try:
+                for fail in (False, True):
+                    with self.subTest(write_failure=fail):
+                        emu = Emu.__new__(Emu)
+                        emu.port = server.server_port
+                        emu.wait = lambda seconds: None
+                        emu.ram = lambda: b'RAM'
+                        emu.peek = lambda name, fmt, ram: 218 if name == 'CURRENT_SCREEN' else 0
+                        def write(name, data):
+                            self.assertFalse(server.running, 'memory write raced a running field frame')
+                            if fail:
+                                raise RuntimeError('write failed')
+                        emu.poke = write
+                        if fail:
+                            with self.assertRaisesRegex(RuntimeError, 'write failed'):
+                                emu.warp(218)
+                        else:
+                            self.assertTrue(emu.warp(218))
+                        self.assertTrue(server.running)
+            finally:
+                server.shutdown()
+                thread.join()
+
+
 class ReleaseTests(unittest.TestCase):
     def test_dirty_tree_refused_before_any_command(self):
         with patch.object(release, 'git', return_value=' M README.md'), \
@@ -37,7 +87,13 @@ class ReleaseTests(unittest.TestCase):
             out = Path(td) / 'candidate'
             info = dict(version='0.0.0-dev.1+abcdef12', date='2026-10-28', commit='a' * 40)
             stdout = io.StringIO()
-            with patch.object(release, 'identity', return_value=info), \
+            groups = []
+            original = release.Run.cmds
+            def capture(run, jobs, *args, **kwargs):
+                groups.append(jobs)
+                return original(run, jobs, *args, **kwargs)
+            with patch.object(release.Run, 'cmds', new=capture), \
+                    patch.object(release, 'identity', return_value=info), \
                     patch.object(release, 'git', side_effect=['/repo/.git', '160000 commit pin decomp']), \
                     patch.object(release.subprocess, 'Popen') as popen, \
                     contextlib.redirect_stdout(stdout):
@@ -49,7 +105,10 @@ class ReleaseTests(unittest.TestCase):
                          'heapcheck.py', 'tools/dws.py story-build', 'selftest.sh',
                          'build-engine.sh', 'run.mjs', 'Standalone package apply'):
                 self.assertIn(step, text)
-            self.assertIn(f'ENGINE_WORK={out}/engine-work', text)
+            replay = next(group for group in groups if 'engine' in group)
+            self.assertEqual(set(replay), {'us', 'jp1', 'eu+dw3-us', 'engine'})
+            self.assertEqual(replay['engine'][2]['ENGINE_WORK'], str(out / 'engine-work'))
+            self.assertTrue(Path(replay['engine'][0][0]).is_absolute())
             self.assertNotIn('web/deploy.sh', text)
             self.assertIn('standalone-jp1', text)
             self.assertIn('-B -E -S', text)
@@ -89,6 +148,30 @@ class ReleaseTests(unittest.TestCase):
             self.assertEqual(first, release.record_key(root))
             source.write_text('different reads, same nominal job names')
             self.assertNotEqual(first, release.record_key(root))
+
+    def test_record_cache_covers_environment_modes_inventory_and_source_bytes(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            (root/'bundle').mkdir()
+            (root/'bundle/input').write_bytes(b'data')
+            (root/'manifest.json').write_text(json.dumps({'bases': {'us': {}}}))
+            disc = root/'source.bin'
+            disc.write_bytes(b'source one')
+            def key(env=None):
+                return release.record_key(root, env or {'SETTING': 'one'}, [('source', disc)])
+            previous = key()
+            self.assertNotEqual(previous, key({'SETTING': 'two'}))
+            self.assertEqual(previous, key({'SETTING': 'one', 'NAME': 'another-native-build'}))
+            (root/'bundle/empty').mkdir()
+            self.assertNotEqual(previous, key()); previous = key()
+            (root/'bundle/input').chmod(0o600)
+            self.assertNotEqual(previous, key()); previous = key()
+            (root/'bundle/empty').chmod(0o700)
+            self.assertNotEqual(previous, key()); previous = key()
+            old = disc.stat()
+            disc.write_bytes(b'source two')
+            os.utime(disc, ns=(old.st_atime_ns, old.st_mtime_ns))
+            self.assertNotEqual(previous, key())
 
     def test_record_cache_tracks_extraction_mapping_and_reader_changes(self):
         with tempfile.TemporaryDirectory() as td:

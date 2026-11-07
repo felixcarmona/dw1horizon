@@ -16,6 +16,25 @@ spec.loader.exec_module(engine)
 
 
 class PlanTests(unittest.TestCase):
+    def test_declared_order_groups_remain_edges_in_the_browser_graph(self):
+        def row(name, part, group=None):
+            return dict(name=name, step='story', part=part, index=0, argv=[], seconds=1,
+                        existed=[], lists={}, absent=[], writes={}, removes=[], order_group=group,
+                        record_snapshot=bool(group))
+        rows=[row('prepare','prepare'),row('list','units'),row('first','unit','maps'),
+              row('independent','unit'),row('last','unit','maps'),row('finish','finish')]
+        record=dict(tree='{ROOT}',jobs=rows)
+        jobs,warnings=engine.plan_jobs([record],set())
+        self.assertEqual(warnings,[])
+        scheduled=engine.schedule_deps(jobs,['story'],{'story':[]})
+        by_name={job['name']:job for job in scheduled}
+        self.assertIn(by_name['first']['id'],by_name['last']['deps'])
+        self.assertNotIn(by_name['first']['id'],by_name['independent']['deps'])
+        other=dict(record,jobs=[dict(j) for j in rows])
+        other['jobs'][2]['order_group']=None
+        with self.assertRaisesRegex(SystemExit,'ordering policies'):
+            engine.plan_jobs([record,other],set())
+
     def test_cold_writer_can_regenerate_authored_executable_text(self):
         root = Path(__file__).resolve().parents[1]
         with tempfile.TemporaryDirectory() as work:
@@ -25,6 +44,8 @@ class PlanTests(unittest.TestCase):
             data = {p.relative_to(root).as_posix() for p in (root / 'text').glob('*/names.json')}
             data.add('docs/data/map_files.csv')
             data.add('text/ours/pages.json')
+            data.add('content/tables/story-screens.json')
+            data.update(p.relative_to(root).as_posix() for p in (root / 'content/screens').glob('*.json'))
             for name in engine.writer_inputs(data, set()):
                 target = tree / name
                 target.parent.mkdir(parents=True, exist_ok=True)
@@ -36,6 +57,23 @@ class PlanTests(unittest.TestCase):
                 "['en','btl.BTL_STR_SHOUT_DEFENSE',64],str(root)); "
                 "assert len(data)==64 and data.strip(bytes(1))", str(tree)], check=True,
                 cwd=tree)
+
+    def test_record_cache_is_verified_in_separate_processes(self):
+        import hashlib
+        import json
+        with tempfile.TemporaryDirectory() as td:
+            for key in ('us', 'jp1'):
+                raw = json.dumps({'tree': key, 'jobs': []}).encode()
+                record = Path(td) / ('record-' + key + '.json')
+                record.write_bytes(raw)
+                Path(str(record) + '.sha256').write_text(hashlib.sha256(raw).hexdigest())
+            code = (
+                "from concurrent.futures import ProcessPoolExecutor; import sys; "
+                "sys.path.insert(0,sys.argv[1]); import build_engine as e; "
+                "args=[('unused',k+'=unused','unused',[],sys.argv[2]) for k in ('us','jp1')]; "
+                "pool=ProcessPoolExecutor(2); results=list(pool.map(e.record_base,args)); pool.shutdown(); "
+                "assert [r['tree'] for r in results]==['us','jp1']")
+            subprocess.run([sys.executable, '-c', code, str(Path(engine.__file__).parent), td], check=True)
 
     def test_recipe_folder_and_player_source_inputs_are_consistent(self):
         import json

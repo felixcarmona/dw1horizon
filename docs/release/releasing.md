@@ -45,8 +45,132 @@ page can be tested now; a copyright-free playable release is not proven here.
 
 ## Before the cut
 
+Use `--quiet-machine` for a timed cut: pause other builds, emulator suites,
+model conversions and release jobs before starting. The flag records that step;
+it does not stop unrelated processes. Start with a new output directory and keep
+all gates enabled:
+
+```sh
+ISOS=/path/to/digimon-world SOURCE_ISOS=/path/to/source-discs \
+  python3 tools/release.py --keep-going --jobs 8 --base-jobs 4 --save-check-emu \
+  --ending-card /path/to/private-before-final-fight.mcd --quiet-machine \
+  --out build/releases/candidate
+```
+
+This runs the full local cut without tagging, publishing, pushing or deploying.
+For an existing annotated release tag, give the tag as the positional argument.
+The ending card must Continue immediately before the final fight on screen 225;
+keep that fixture private. The ending gate plays the final battle and clear save,
+checks that the ending's executable code matches the disc, then captures five
+minutes of credits. It assists only battle HP. The journey and published-save
+checks use independent emulator ports, starting at `--emu-port-base` (38410 by
+default), and original 2 MB RAM. Inspect the resulting quiz and credits images.
+
+Once the fresh native disc and heap checks pass, packaging overlaps the full
+offline selftest and the emulator gates. Standalone replay and engine construction can continue once packaging succeeds,
+even when an independent gate fails. Every required gate must pass before the
+cut is complete or publication can proceed. Per-job logs and elapsed
+times are retained under the cut directory. Packaging still runs its published-
+save file check; `--save-check-emu` runs the emulator save check as a concurrent
+required job. No gate is removed by this reordering.
+
+`make-release --base-jobs` bounds the base reconstructions and the USA World 3
+source derivation together. Results merge in the original base order. Each derive
+gets a share of the available CPUs. The scheduler also reserves 8 GiB for the
+controller and gates, allowing `--worker-memory-mib` (6144 by default) per worker
+against Linux's available memory; on systems without that reading it uses one
+worker. Worker process-tree peak RSS and phase times go to the private
+`package-timing.json`, outside the player package. Binary deltas run in bounded
+processes and merge in their original file/base order. Web-engine USA and Japan
+recordings run in separate processes, at most two concurrently. They overlap the
+three standalone player replays after packaging; the replays share the CPU budget
+with those two recordings. Browser verification starts once packaging and engine
+construction pass; every standalone replay pin remains required before cut
+completion or publication.
+
+Release caches live in `build/release-derive-cache`, separate from developer and
+player caches. Retain that directory at the same absolute path between cuts, or
+select a retained private location with `--derive-cache`; its locked staging paths
+are part of incremental cache identities. Launcher/session metadata is removed
+from the replay environment, while unknown build settings remain keyed. Source recording keys hash every supplied input file, directory
+inventory, recipe, source-disc contents, environment and interpreter/runtime
+sources. Each snapshot file is SHA-256 checked before any restoration. A changed recording
+key can still reuse audited unchanged steps, including their original input traces;
+cache bookkeeping is excluded from those traces. Regional steps use the existing audited derive cache in locked stable staging directories:
+each cut starts from fresh inputs, checks recorded reads, absent probes and
+directory listings, and verifies every restored artifact. Code and runtime inputs
+are part of those keys. Unit code fingerprints exclude unused regression entry points;
+any such helper actually imported by a builder is still keyed. Changed dependencies rebuild their consumers; conservative
+code fingerprints can rebuild more than the minimum. Story archives also hash the supplied source trees, directory inventory and modes, and generated model archive before workers start; this covers helpers and data loaded before audit recording. Binary deltas have separate
+keys for source bytes, target bytes, algorithm and native producer. Cache entries
+are private and must never enter publication archives.
+
+The isolated bundle verification initially runs from scratch with only the allowed
+disc files. Output pins, standalone replays, browser verification and the literal
+gate remain required. Recovery may reuse a completed gate only after checking its
+input fingerprint and all recorded output hashes. `--no-derive-cache` disables recording, derive and delta caches;
+`--base-jobs 1 --no-derive-cache` is available for focused debugging. Scheduler
+and recorder tests compare sequential and parallel bytes on small inputs. The
+full isolated gate compares every USA derived file with the canonical sequential
+recording; reconstruction and standalone replays must match the native USA image
+and every declared regional/source-variant output pin. Whole manifests include
+measured times. Record cold timing during the real cut; validation uses one full
+keep-going pass and verified resumes.
+
 Play the disc once: `tools/dev/playtest/journey.py DISC.cue OUTDIR` from a new game to a reload. The checks that need no
 emulator cannot see a story that is missing from a disc: a new game hung on main for a day with every gate green.
+
+## Recovering a failed cut
+
+Start real cuts with `--keep-going`. The driver records explicit dependencies in
+`recovery/plan.json`, runs independent steps after a failure and marks consumers
+of failed inputs as **blocked by** the failed step. Packaging records its own
+bundle, isolated verification, encoding, base reconstruction and source-variant
+checkpoints in `package-state/`. Nothing is published automatically.
+
+At the end, `failures.json` and `failures.txt` list every failed or blocked driver
+step and the individual packaging/selftest failures, including commands, logs and
+exit codes. Packaging also retains its detailed list in
+`package-state/failures.json`; `selftest-steps.jsonl` records every offline check. Each worker has a separate log; completed
+round reports and copies of their logs remain under `rounds/`. A failed round
+exits nonzero even when its independent work succeeded.
+
+Fix all reported failures, run focused tests and commit the fixes in the same
+worktree. Then resume the **same output directory**:
+
+```sh
+python3 tools/release.py --resume --out build/releases/candidate
+```
+
+Resume restores the original gate options, including the ending-card fixture and
+published-save emulator check. It refuses to remove required browser/full-cut
+gates or change the tag. On an untagged validation cut, the initial game version
+stays fixed while each round records its actual source commit. A tagged release
+still requires its exact clean tagged checkout; update the release tag through
+the normal release procedure when a committed fix changes that checkout.
+
+Each step fingerprints its source/data/configuration inputs, environment, runtime
+and relevant phase code. Native version stamping stays in the compiler environment;
+asset recording keys its executable facts and source inputs. Encoder keys exclude
+observed timing fields. Conservative tool inventories can invalidate several
+consumers after a tool-source edit. Successful completion markers contain SHA-256 hashes of
+all declared outputs and structured cached results. Resume rehashes them before
+reuse; missing, modified or partial outputs rerun their step. Failed, blocked and
+changed steps rerun, while unchanged verified successes are retained. The final
+completion gate rechecks every output and checks that inputs did not change during
+the round. Keep the worktree, private inputs, output directory and recovery state
+in place. `prepared-decomp/` is the immutable patched input tree; native compilation
+owns the separate `decomp/` tree, including its generated headers, assembly and
+objects. The selftest uses that native tree and its own `selftest/` output folder.
+A release selftest with skipped checks fails. Do not build manually inside the
+prepared tree, hand-copy partial artifacts or delete markers to force success.
+Only one round may use an output directory at a time.
+
+Story graph recording currently runs serially on its canonical working tree.
+The unproven parallel story batches are disabled. Existing bounded independent
+workers remain enabled. Validation separates correctness from performance: use
+focused sequential/parallel byte comparisons and a full keep-going pass with
+verified resumes; measure the true cold duration during the next real cut.
 
 ## Engine source
 

@@ -1,4 +1,4 @@
-// Release-tag player data, shared website layout, EN/ES and English fallback.
+// Release-tag player data, shared website layout and every page language.
 // node web/test/data.mjs SITE [SHOTS]; uses the same driver as the Pages checks.
 import puppeteer from './browser.mjs';
 import assert from 'node:assert/strict';
@@ -56,19 +56,25 @@ try {
   await page.click('#techniques-table th:nth-child(3) button');
   const power = await page.$$eval('#techniques-table tbody td:nth-child(3)',cells=>cells.map(cell=>Number(cell.textContent)));
   assert.deepEqual(power,power.slice().sort((a,b)=>a-b));
-  for(const lang of ['en','es','fr']) {
+  const languages = (await fs.readdir(path.join(site,'i18n'))).filter(name=>name.endsWith('.json')).map(name=>name.slice(0,-5)).sort();
+  for(const lang of languages) {
+    const strings = JSON.parse(await fs.readFile(path.join(site,'i18n',lang+'.json'),'utf8'));
     await Promise.all([page.waitForNavigation({waitUntil:'networkidle0'}),page.select('#lang',lang)]);
     await page.waitForFunction(lang=>document.querySelector('#lang').value===lang,{},lang);
-    await page.waitForFunction(spanish=>document.querySelector('#techniques h2').textContent===(spanish?'Técnicas':'Techniques'),{},lang==='es');
+    await page.waitForFunction(title=>document.querySelector('#techniques h2').textContent===title,{},strings['data.techniques']);
     const title = await page.$eval('h1',el=>el.textContent);
-    assert.equal(title,lang==='es'?'Datos del juego':'Player data');
+    assert.equal(title,strings['data.nav']);
+    assert.equal(await page.$eval('html',el=>el.lang.toLowerCase()),lang);
+    const expected = new URL(lang==='en'?'data/':`data/${lang}.html`,root);
+    assert.equal(new URL(page.url()).pathname,expected.pathname);
+    assert.ok(await page.$eval('#techniques',(el,text)=>el.textContent.includes(text),strings['data.learningRule']));
     assert.ok(await page.$eval('#techniques-table',el=>el.textContent.includes('Fire Tower')));
     for(const [size,width,height] of [['desktop',1440,1000],['mobile',390,844]]) {
       await page.setViewport({width,height});
       await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));
       assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
       assert.equal(await page.$$eval('a[href^="#"]',links=>links.filter(a=>!document.getElementById(a.hash.slice(1))).length),0);
-      if(shots && lang!=='fr') {
+      if(shots) {
         await fs.mkdir(shots,{recursive:true});
         await page.screenshot({path:path.join(shots,`data-${size}-${lang}.png`)});
       }
@@ -76,7 +82,7 @@ try {
   }
   assert.deepEqual(errors,[]);
   assert.deepEqual(external,[],'no guide CDNs, trackers or external fonts');
-  console.log('ok: release snapshot, shared light theme/font/header, navigation, search/sort, EN/ES/fallback, desktop/mobile, zero guide external requests');
+  console.log('ok: release snapshot, shared theme, search/sort, all nine languages, desktop/mobile, zero guide external requests');
 } finally {
   if(browser) await browser.close();
   if(server) {server.kill(); await once(server,'exit');}

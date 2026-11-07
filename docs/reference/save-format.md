@@ -214,6 +214,27 @@ save's language and font.
 Patch 0050: the save title's name fields are cleared before a name is copied into them. The original copied over the
 previous contents, so a short tamer name could show the tail of a longer one left from the default.
 
+## Diagnosing missing Chart history
+
+Native raised flags use the original payload's triggers (`RAISED_TRIGGER`), while
+species without a native trigger use extension tag `0x0007`. Losing or rejecting
+the extension can therefore remove imported history without removing native
+history. Check both copies' payload checksums, extension checksums and linked
+payload checksums before attributing an empty chart to an emulator. Also check
+the selected card and save slot: a valid older save is still valid data.
+
+`tools/dev/playtest/chart_card_roundtrip.py` marks native and imported history,
+saves through the game's card menu, moves the extension block to a nonadjacent
+free block in a disposable raw 128 KiB `.mcr` image, and Continues from a fresh
+boot. It checks the history bits and records all five Chart tabs before and
+after. This exercises the raw card and its directory chain; it does not emulate
+ePSXe's CPU, BIOS or card timing.
+
+```sh
+python3 tools/dev/playtest/chart_card_roundtrip.py build/NAME.cue \
+  --exe build/NAME/exe/SLUS_010.32 --out build/chart-card-proof
+```
+
 ## Related
 
 - [ids.md](ids.md): which ids grew and what the v1 bytes keep.

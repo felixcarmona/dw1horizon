@@ -17,7 +17,7 @@ OUT/current.json       {"version": the engine's, "release_version", "release_dat
 Older versions in OUT are removed.
 
 How the jobs' inputs are known: record.py runs the build in a tree of the release's bundle and the extracted files of
-each --disc, one job after another as a worker would, and records what each job opens, lists and stats. A job waits
+each --disc, recording independent units in bounded private worker trees and merging in recipe order. It records what each job opens, lists and stats. A job waits
 for the jobs that wrote what it reads (and, the other way round, a job that overwrites a file waits for those that
 read the older one), besides derive's step order (AFTER) and its own step's prepare. Every --disc is recorded and the
 inputs are the union: the jobs and their units must come out the same.
@@ -33,6 +33,7 @@ import sys
 import tempfile
 import time
 import zlib
+from pathlib import Path
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(HERE))
@@ -60,7 +61,7 @@ def sha1_file(p):
 
 # ------------------------------------------------------------------ a tree and its record
 def make_tree(rel, key, disc, tree, source_discs=None):
-    """The release's bundle (hard links) + extracted/ from `disc` (glue.extract, as the page does)."""
+    """The release's bundle (private copies) + extracted/ from `disc` (glue.extract, as the page does)."""
     sys.path.insert(0, HERE)
     import glue
     bundle = os.path.join(rel, 'bundle')
@@ -70,10 +71,7 @@ def make_tree(rel, key, disc, tree, source_discs=None):
             src = os.path.join(dp, f)
             dst = os.path.join(tree, os.path.relpath(src, bundle))
             os.makedirs(os.path.dirname(dst), exist_ok=True)
-            try:
-                os.link(src, dst)
-            except OSError:
-                shutil.copyfile(src, dst)
+            shutil.copy2(src, dst)
     k, title = glue.identify(rel, disc)
     if k != key:
         raise SystemExit(f'--disc {key}: that disc is {title} ({k})')
@@ -110,11 +108,25 @@ def extract_reads(rel, key, disc, work, source_discs=None):
     return reads
 
 
-def record(tree, out_json):
+def record(tree, out_json, jobs=1, memory_mib=6144, logs=None, sequential=False):
     t0 = time.time()
-    r = subprocess.run([sys.executable, os.path.join(HERE, 'record.py'), tree, out_json], cwd=tree,
-                       env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1'))
-    if r.returncode:
+    from release_workers import measure
+    command = [sys.executable, os.path.join(HERE, 'record.py'), tree, out_json,
+               '--jobs', str(jobs), '--worker-memory-mib', str(memory_mib)]
+    if logs:
+        command += ['--logs', logs]
+    if sequential:
+        command += ['--sequential']
+    process = subprocess.Popen(command, cwd=tree,
+                               env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1'))
+    try:
+        with measure(process.pid, lambda data: say('engine recording worker: ' + json.dumps(data, sort_keys=True))):
+            code = process.wait()
+    finally:
+        if process.poll() is None:
+            process.terminate()
+            process.wait()
+    if code:
         raise SystemExit(f'record.py failed in {tree}')
     say(f'  recorded in {time.time() - t0:.0f} s')
     return json.load(open(out_json))
@@ -180,10 +192,10 @@ def alias_source_paths(plan):
 def plan_jobs(recs, bundle_files):
     """The jobs of the records (one per --disc; the same jobs) with their inputs and the jobs they wait for."""
     ref = recs[0]
-    names = [j['name'] for j in ref['jobs']]
+    names = [(j['name'], j.get('order_group'), j.get('record_snapshot', False)) for j in ref['jobs']]
     for r in recs[1:]:
-        if [j['name'] for j in r['jobs']] != names:
-            raise SystemExit('the records have different jobs (a step\'s units differ between bases)')
+        if [(j['name'], j.get('order_group'), j.get('record_snapshot', False)) for j in r['jobs']] != names:
+            raise SystemExit('the records have different jobs or ordering policies between bases')
     tree = ref['tree']
     jobs = []
     alive = set()             # files the jobs before this one made (and did not remove): their folders exist
@@ -268,7 +280,7 @@ def plan_jobs(recs, bundle_files):
             absent.discard(MANIFEST)
         jobs.append(dict(id=i, step=j['step'], part=j['part'], index=j['index'], name=j['name'],
                          argv=[a.replace(tree, '{ROOT}') for a in j['argv']],
-                         seconds=max(x['seconds'] for x in js), deps=sorted(deps), tree=tree_in, bundle=bundle_in,
+                         seconds=max(x['seconds'] for x in js), order_group=j.get('order_group'), deps=sorted(deps), tree=tree_in, bundle=bundle_in,
                          lists={d: [sorted(x for x in n if f'{d}/{x}' in existed),
                                     sorted(x for x in n if f'{d}/{x}' not in existed)] for d, n in lists.items()
                                 if not RANDOM.search(d) and not any(RANDOM.search(f'{d}/{x}') for x in n)},
@@ -311,6 +323,7 @@ def schedule_deps(jobs, order, after):
         js = by_step[s]
         first = [j for j in js if j['part'] in ('prepare', 'build')]
         prep = [j['id'] for j in first]
+        groups = {}
         for j in js:
             d = set(j['deps'])
             if j['part'] in ('prepare', 'build'):
@@ -319,6 +332,11 @@ def schedule_deps(jobs, order, after):
                 d |= set(prep)
             elif j['part'] == 'finish':
                 d |= {x['id'] for x in js if x['part'] != 'finish'}
+            group = j.get('order_group') if j['part'] == 'unit' else None
+            if group is not None:
+                if group in groups:
+                    d.add(groups[group])
+                groups[group] = j['id']
             j['deps'] = sorted(d)
     drop = {j['id'] for j in jobs if j['part'] == 'units'}
     keep = [j for j in jobs if j['id'] not in drop]
@@ -399,6 +417,45 @@ def vendor_pyodide(src, dst):
     return lock['info']
 
 
+def record_base(args):
+    """A separate process owns glue's imports, environment and working directory."""
+    rel, spec, work, sources, records, *options = args
+    jobs, memory_mib, logs, sequential, keep_tree = options or (1, 6144, None, False, False)
+    key, path = spec.split('=', 1)
+    rj = os.path.join(records, f'record-{key}.json') if records else None
+    if rj:
+        try:
+            raw = Path(rj).read_bytes()
+            expected = Path(rj + '.sha256').read_text().strip()
+            if hashlib.sha256(raw).hexdigest() == expected:
+                say(f'{key}: verified record cache hit')
+                return json.loads(raw)
+        except (OSError, ValueError):
+            pass
+    say(f'{key}: a tree and its record')
+    tree = os.path.join(work, f'tree-{key}')
+    make_tree(rel, key, os.path.abspath(path), tree, sources)
+    if sources:
+        argv = [sys.executable, '-m', 'tools.derive', 'sources', '--out', 'build/everything/source-games']
+        for source in sources:
+            game, image = source.split('=', 1)
+            argv += ['--source-disc', game + '=' + os.path.abspath(image)]
+        subprocess.run(argv, cwd=tree, check=True)
+    out_json = os.path.join(work, f'record-{key}.json')
+    result = record(tree, out_json, jobs, memory_mib, logs, sequential)
+    if rj:
+        os.makedirs(records, exist_ok=True)
+        raw = Path(out_json).read_bytes()
+        temp = rj + '.' + str(os.getpid())
+        Path(temp).write_bytes(raw)
+        os.replace(temp, rj)
+        Path(temp).write_text(hashlib.sha256(raw).hexdigest() + '\n')
+        os.replace(temp, rj + '.sha256')
+    if not keep_tree:
+        shutil.rmtree(tree, ignore_errors=True)
+    return result
+
+
 # ------------------------------------------------------------------ main
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -410,6 +467,11 @@ def main():
     ap.add_argument('--out', required=True)
     ap.add_argument('--work', help='temporary trees (about 1 GB per --disc)')
     ap.add_argument('--keep-work', action='store_true')
+    ap.add_argument('--jobs', type=int, default=2, help='concurrent base recordings (memory bounded)')
+    ap.add_argument('--worker-memory-mib', type=int, default=6144)
+    ap.add_argument('--record-jobs', type=int, default=8, help='total unit workers across all base recordings')
+    ap.add_argument('--record-logs', help='retained per-base/per-worker logs and timings (private)')
+    ap.add_argument('--sequential', action='store_true', help='debugging reference; never an automatic fallback')
     ap.add_argument('--records', help='(developers) reuse the records of an earlier run in this folder')
     a = ap.parse_args()
     rel = os.path.abspath(a.release)
@@ -422,32 +484,31 @@ def main():
         raise SystemExit('missing --source-disc: ' + ', '.join(sorted(missing)))
     work = tempfile.mkdtemp(prefix='webengine-', dir=a.work)
     t0 = time.time()
+    success = False
     try:
-        recs = []
         for spec in a.disc:
             key, path = spec.split('=', 1)
             if key not in m['bases']:
                 raise SystemExit(f'--disc {key}: the release has no base {key}')
-            rj = os.path.join(a.records, f'record-{key}.json') if a.records else None
-            if rj and os.path.exists(rj):
-                say(f'{key}: the record of {rj}')
-                recs.append(json.load(open(rj)))
-                continue
-            say(f'{key}: a tree and its record')
-            tree = os.path.join(work, f'tree-{key}')
-            make_tree(rel, key, os.path.abspath(path), tree, a.source_disc)
-            if m.get('source_discs'):
-                argv = [sys.executable, '-m', 'tools.derive', 'sources', '--out', 'build/everything/source-games']
-                for source in a.source_disc:
-                    game, image = source.split('=', 1)
-                    argv += ['--source-disc', game + '=' + os.path.abspath(image)]
-                subprocess.run(argv, cwd=tree, check=True)
-            out_json = os.path.join(work, f'record-{key}.json')
-            recs.append(record(tree, out_json))
-            if a.records:
-                os.makedirs(a.records, exist_ok=True)
-                shutil.copyfile(out_json, os.path.join(a.records, f'record-{key}.json'))
-            shutil.rmtree(tree, ignore_errors=True)
+        if len({spec.split('=', 1)[0] for spec in a.disc}) != len(a.disc):
+            raise SystemExit('duplicate --disc base')
+        sys.path.insert(0, os.path.join(REPO, 'tools/patcher'))
+        from release_workers import worker_count
+        from concurrent.futures import ProcessPoolExecutor
+        if a.jobs < 1 or a.record_jobs < 1 or a.worker_memory_mib < 1:
+            ap.error('worker counts and memory must be positive')
+        budget = worker_count(a.record_jobs, a.record_jobs, a.worker_memory_mib)
+        width = 1 if a.sequential else min(a.jobs, len(a.disc), budget)
+        unit_jobs = 1 if a.sequential else max(1, budget // width)
+        logs = Path(a.record_logs or (str(Path(work).parent / 'record-logs'))).resolve()
+        say(f'base recording: {width} bases, {unit_jobs} unit workers/base, {budget} total worker budget; logs {logs}')
+        arguments = [(rel, spec, work, a.source_disc, a.records, unit_jobs, a.worker_memory_mib,
+                      str(logs / spec.split('=', 1)[0]), a.sequential, a.keep_work) for spec in a.disc]
+        if width == 1:
+            recs = list(map(record_base, arguments))
+        else:
+            with ProcessPoolExecutor(width) as pool:
+                recs = list(pool.map(record_base, arguments))
         ex_reads = set()
         for spec in a.disc:
             key, path = spec.split('=', 1)
@@ -561,8 +622,11 @@ def main():
             f'({sum(p["size"] for p in packs) / 2**20:.1f} MB; code {packs[0]["size"] / 2**20:.1f} MB), '
             f'pyodide {size(os.path.join(dst, "pyodide")) / 2**20:.1f} MB, plan {len(text) / 2**20:.2f} MB, '
             f'{time.time() - t0:.0f} s -> {dst}')
+        success = True
     finally:
-        if not a.keep_work:
+        if not success:
+            say(f'Engine build failed; worker trees and diagnostics retained: {work}')
+        if success and not a.keep_work:
             shutil.rmtree(work, ignore_errors=True)
 
 
