@@ -78,6 +78,9 @@ against, leave this list.
 | Recolor evolutions only at the same level (a recolor should never be a higher stage) | 🎭 | Affects many current routes in the evolution tree. |
 | Modern Digimon (Jesmon, Dorugoramon, BlitzGreymon) and NoblePumpkinmon | 🆕 | No PS1 models; would have to be modelled from scratch. |
 | An alternative WarGreymon model (Digimon World 2's) | 🎭 | Players disagree; the current one is the Card Battle model chibified to DW1 proportions. |
+| Rematch every boss after finishing the game (limited per day or under a condition) | 🆕 ⚖️ | More post-game fights to test a raised partner besides tournaments. |
+| Machine techniques taught only by unique bosses become learnable later, e.g. a recruit who teaches a random learnable technique for a hefty price | ⚖️ 🆕 | Today they are missable unless you face those bosses with a Machine partner. |
+| Savanna card vendors show the image of the card you're buying, like the booster machine | ✨ | UI only. |
 | Unique recruitment scenes for more of the new Digimon | ✨ | Many new recruits join with a simple fight. |
 | Humanoid sizes growing by stage (Angemon < MagnaAngemon < Seraphimon, Devimon < Myotismon) | ✨ | A per-line size review. |
 | A minimap like Digimon World 3's, showing where each exit leads, and a wider camera view | 🛠️ | Needs screen space and per-screen exit data. |
