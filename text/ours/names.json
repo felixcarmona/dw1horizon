@@ -912,6 +912,7 @@
  "main.MOD_OPT_STR_DIFF": "DIFFICULTY",
  "main.MOD_OPT_STR_EASY": "EASY",
  "main.MOD_OPT_STR_NORMAL": "NORMAL",
+ "main.MOD_OPT_STR_HARD": "HARD",
  "main.MOD_NOTICE_STR_HEAD1": "Emulator settings for smoother play",
  "main.MOD_NOTICE_STR_HEAD2": "if you turn on these options:",
  "main.MOD_NOTICE_STR_RAM": "8 MB RAM",

@@ -8,7 +8,7 @@
   "specialties": ["filth", "mech", null],
   "techniques": ["Big Poop Toss", "Ult Poop Hell", "Big Rnd Toss", "Poop Spd Toss", "Rnd Spd Toss", "Odor Spray",
                  "Poop Rnd Toss", "Horizontal Kick (55)", "Power Crane", "DG Dimension",
-                 "All Range Beam", "Delete Program", "Pulse Laser", "Energy Bomb"],
+                 "All Range Beam", "Delete Program", "Pulse Laser", "Energy Bomb", "Metal Sprinter"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 55,
   "model": {

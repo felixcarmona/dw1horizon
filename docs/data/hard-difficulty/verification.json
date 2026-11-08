@@ -1,0 +1,302 @@
+{
+  "mainBssBefore": "0x801ce104",
+  "mainBssAfter": "0x801ce1d8",
+  "heapBefore": 187888,
+  "heapAfter": 187680,
+  "menuBefore": 54248,
+  "menuAfter": 53972,
+  "languageBss": {
+    "exe-pt-br": "0x801ce1d8",
+    "exe-ca": "0x801ce1d8",
+    "exe-en": "0x801ce1d8",
+    "exe-ja": "0x801ce1d8",
+    "exe-zh-hans": "0x801ce1d8",
+    "exe-fr": "0x801ce1d8",
+    "exe-es": "0x801ce1d8",
+    "exe": "0x801ce1d8",
+    "exe-it": "0x801ce1d8",
+    "exe-de": "0x801ce1d8"
+  },
+  "build": {
+    "seconds": 635.755,
+    "stages": [
+      [
+        "prepare decomp",
+        0.013
+      ],
+      [
+        "extract dw1",
+        0.927
+      ],
+      [
+        "extract dcb",
+        0.213
+      ],
+      [
+        "extract dw2",
+        0.307
+      ],
+      [
+        "extract dw2003",
+        0.382
+      ],
+      [
+        "everything",
+        632.755
+      ]
+    ],
+    "test_build": false,
+    "cache": true,
+    "image_sha1": "c9a635cbc35ef9aab34a72d3691c9825dccee2a5"
+  },
+  "menuSectors": 27,
+  "summaryLines": [
+    "5,497,632 actual C comparisons + 630,021 blocked-floor checks; UBSan clean.",
+    "Full nine-language build passed; main_BSS_END 0x801ce104 \u2192 0x801ce1d8.",
+    "Heap 187,680 B (\u2212208 B); 320 setups fit, minimum 2,960 B (screen 207).",
+    "MENU_REL 54,248 \u2192 53,972 B; 27 sectors; no added menu arrays.",
+    "Selftest 130/0/0; final C checks repeated; 24 options screens + final save round trip."
+  ],
+  "options": [
+    {
+      "language": "en",
+      "font": "new",
+      "difficulty": 2,
+      "menuWidth": 197,
+      "shown": 1,
+      "savedHeaderHonored": true,
+      "expandedRAM": false
+    },
+    {
+      "language": "en",
+      "font": "classic",
+      "difficulty": 2,
+      "menuWidth": 275,
+      "shown": 1,
+      "savedHeaderHonored": true,
+      "expandedRAM": false
+    },
+    {
+      "language": "en",
+      "font": "original",
+      "difficulty": 2,
+      "menuWidth": 240,
+      "shown": 0,
+      "savedHeaderHonored": true,
+      "expandedRAM": false
+    },
+    {
+      "language": "es",
+      "font": "new",
+      "difficulty": 2,
+      "menuWidth": 166,
+      "shown": 1,
+      "savedHeaderHonored": true,
+      "expandedRAM": false
+    },
+    {
+      "language": "es",
+      "font": "classic",
+      "difficulty": 2,
+      "menuWidth": 239,
+      "shown": 1,
+      "savedHeaderHonored": true,
+      "expandedRAM": false
+    },
+    {
+      "language": "es",
+      "font": "original",
+      "difficulty": 2,
+      "menuWidth": 284,
+      "shown": 1,
+      "savedHeaderHonored": true,
+      "expandedRAM": false
+    },
+    {
+      "language": "pt-br",
+      "font": "new",
+      "difficulty": 2,
+      "menuWidth": 160,
+      "shown": 1,
+      "savedHeaderHonored": true,
+      "expandedRAM": false
+    },
+    {
+      "language": "pt-br",
+      "font": "classic",
+      "difficulty": 2,
+      "menuWidth": 229,
+      "shown": 1,
+      "savedHeaderHonored": true,
+      "expandedRAM": false
+    },
+    {
+      "language": "pt-br",
+      "font": "original",
+      "difficulty": 2,
+      "menuWidth": 272,
+      "shown": 1,
+      "savedHeaderHonored": true,
+      "expandedRAM": false
+    },
+    {
+      "language": "fr",
+      "font": "new",
+      "difficulty": 2,
+      "menuWidth": 155,
+      "shown": 1,
+      "savedHeaderHonored": true,
+      "expandedRAM": false
+    },
+    {
+      "language": "fr",
+      "font": "classic",
+      "difficulty": 2,
+      "menuWidth": 221,
+      "shown": 1,
+      "savedHeaderHonored": true,
+      "expandedRAM": false
+    },
+    {
+      "language": "fr",
+      "font": "original",
+      "difficulty": 2,
+      "menuWidth": 260,
+      "shown": 1,
+      "savedHeaderHonored": true,
+      "expandedRAM": false
+    },
+    {
+      "language": "de",
+      "font": "new",
+      "difficulty": 2,
+      "menuWidth": 154,
+      "shown": 1,
+      "savedHeaderHonored": true,
+      "expandedRAM": false
+    },
+    {
+      "language": "de",
+      "font": "classic",
+      "difficulty": 2,
+      "menuWidth": 225,
+      "shown": 1,
+      "savedHeaderHonored": true,
+      "expandedRAM": false
+    },
+    {
+      "language": "de",
+      "font": "original",
+      "difficulty": 2,
+      "menuWidth": 268,
+      "shown": 1,
+      "savedHeaderHonored": true,
+      "expandedRAM": false
+    },
+    {
+      "language": "it",
+      "font": "new",
+      "difficulty": 2,
+      "menuWidth": 155,
+      "shown": 1,
+      "savedHeaderHonored": true,
+      "expandedRAM": false
+    },
+    {
+      "language": "it",
+      "font": "classic",
+      "difficulty": 2,
+      "menuWidth": 223,
+      "shown": 1,
+      "savedHeaderHonored": true,
+      "expandedRAM": false
+    },
+    {
+      "language": "it",
+      "font": "original",
+      "difficulty": 2,
+      "menuWidth": 267,
+      "shown": 1,
+      "savedHeaderHonored": true,
+      "expandedRAM": false
+    },
+    {
+      "language": "ja",
+      "font": "new",
+      "difficulty": 2,
+      "menuWidth": 170,
+      "shown": 1,
+      "savedHeaderHonored": true,
+      "expandedRAM": false
+    },
+    {
+      "language": "ja",
+      "font": "classic",
+      "difficulty": 2,
+      "menuWidth": 184,
+      "shown": 1,
+      "savedHeaderHonored": true,
+      "expandedRAM": false
+    },
+    {
+      "language": "ja",
+      "font": "original",
+      "difficulty": 2,
+      "menuWidth": 220,
+      "shown": 1,
+      "savedHeaderHonored": true,
+      "expandedRAM": false
+    },
+    {
+      "language": "ca",
+      "font": "new",
+      "difficulty": 2,
+      "menuWidth": 147,
+      "shown": 1,
+      "savedHeaderHonored": true,
+      "expandedRAM": false
+    },
+    {
+      "language": "ca",
+      "font": "classic",
+      "difficulty": 2,
+      "menuWidth": 210,
+      "shown": 1,
+      "savedHeaderHonored": true,
+      "expandedRAM": false
+    },
+    {
+      "language": "ca",
+      "font": "original",
+      "difficulty": 2,
+      "menuWidth": 248,
+      "shown": 1,
+      "savedHeaderHonored": true,
+      "expandedRAM": false
+    }
+  ],
+  "saveRoundtrip": {
+    "savedDifficulty": 2,
+    "coldTitleDifficulty": 2,
+    "continuedDifficulty": 2,
+    "menus": [
+      -1,
+      60,
+      69,
+      65
+    ],
+    "validCard": true
+  },
+  "selftest": {
+    "ok": 130,
+    "failed": 0,
+    "blocked": 0
+  },
+  "sourceTree": "68ba29bc8d0fb933ce8467b2b6a8c92d614397d4",
+  "selftestFinalReruns": "Full suite 130/0/0 before ceiling fix; affected C, curve, native link and patch checks repeated after.",
+  "optionsFinalImage": "Save/cold boot/Continue repeated on final image; MENU_REL identical to reviewed 24-screen build.",
+  "overlayScratchBytes": {
+    "BTL": 4,
+    "STD": 4
+  }
+}

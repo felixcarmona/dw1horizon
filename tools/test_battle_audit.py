@@ -32,15 +32,36 @@ class CurveTests(unittest.TestCase):
     def test_owned_encoding_and_older_table_prefix(self):
         obj=B.load('content/tables/battle-formulas.json')['battleFormulas']
         raw=balance.encode_named('battleFormulas',obj,None)
-        self.assertEqual(struct.unpack('<2h',raw[-4:]),(500,1))
+        names=balance.NAMED_RULES['battleFormulas']
+        tail=names.index('damage.tailHalfDifference')*2
+        self.assertEqual(struct.unpack('<2h',raw[tail:tail+4]),(500,1))
+        self.assertEqual(struct.unpack('<3h',raw[-6:]),(15,999,1000))
         class Old:
-            def where(self,key):return ('SLUS_010.32',0,len(raw)-4)
-        self.assertEqual(balance.encode_named('battleFormulas',obj,Old()),raw[:-4])
+            def where(self,key):return ('SLUS_010.32',0,tail)
+        self.assertEqual(balance.encode_named('battleFormulas',obj,Old()),raw[:tail])
         obj=copy.deepcopy(obj)
         del obj['damage']['tailHalfDifference']
         del obj['damage']['tailPowerDivisor']
-        self.assertEqual(balance.encode_named('battleFormulas',obj,None)[:-4],raw[:-4])
-        self.assertEqual(balance.encode_named('battleFormulas',obj,None)[-4:],b'\xff'*4)
+        encoded=balance.encode_named('battleFormulas',obj,None)
+        self.assertEqual(encoded[:tail],raw[:tail])
+        self.assertEqual(encoded[tail:tail+4],b'\xff'*4)
+        self.assertEqual(encoded[tail+4:],raw[tail+4:])
+
+    def test_defense_continuation_and_legacy_boundary(self):
+        before=dict(self.rules);before.pop('defenseKnee');before.pop('defenseTailHalf')
+        for d in range(1000):
+            for o in (0,1,100,500,800,999):
+                for counter in (False,True):
+                    self.assertEqual(B.damage(586,o,d,32,self.rules,counter=counter),
+                                     B.damage(586,o,d,32,before,counter=counter))
+        self.assertEqual(B.damage(586,999,1500,30,self.rules),390)
+        self.assertEqual(B.damage(586,999,9999,30,self.rules),58)
+        self.assertEqual(B.damage(586,999,1500,30,before),1)
+        for off in (500,630,800,999,1500,9999):
+            prior=B.damage(586,off,999,30,self.rules)
+            for d in range(1000,10000):
+                hit=B.damage(586,off,d,30,self.rules)
+                self.assertLessEqual(hit,prior);prior=hit
 
     def test_missing_tail_is_old_rule(self):
         for key in ('tailHalfDifference','tailPowerDivisor'):

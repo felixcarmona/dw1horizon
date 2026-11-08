@@ -89,8 +89,9 @@ def main():
 #include <stdio.h>
 #define FONT_SWITCH 0
 #define MOD_BUTTONS_US 0
-#define MOD_DIFF_EASY 0
-#define MOD_DIFF_NORMAL 1
+#define MOD_DIFF_EASY 1
+#define MOD_DIFF_NORMAL 0
+#define MOD_DIFF_HARD 2
 #define MOD_OPT_BYTES 14
 #define MOD_OPT_HEADER_COUNT 0x1f
 #define MOD_OPT_HEADER_OLD_BARS 0x40
@@ -131,6 +132,20 @@ void modRosterShowCaption(int type) { effects++; }
     code += r'''
 int main(void) {
     uint8_t options[MOD_OPT_BYTES + 1];
+    /* Difficulty uses the existing byte in both tagged saves and the title header. */
+    for (int value=0;value<256;value++) {
+        memset(options,0,sizeof(options)); options[10]=value;
+        MOD_OPT_TOUCHED=0; MOD_OPT_DIFFICULTY=MOD_DIFF_HARD;
+        modApplyOptions(options,14);
+        assert(MOD_OPT_DIFFICULTY==(value<=MOD_DIFF_HARD?value:MOD_DIFF_NORMAL));
+        modOptionBytes(options); modTitleOptions();
+        assert(options[10]==MOD_OPT_DIFFICULTY);
+        assert(SAVE_FILE.pocketStation[14]==MOD_OPT_DIFFICULTY);
+    }
+    for (int len=0;len<11;len++) {
+        MOD_OPT_DIFFICULTY=MOD_DIFF_HARD; modApplyOptions(options,len);
+        assert(MOD_OPT_DIFFICULTY==MOD_DIFF_NORMAL);
+    }
     /* Old OFF/ON bytes are ignored; adjacent saved settings retain their offsets. */
     for (int mode = 0; mode <= 2; mode += 2) {
         for (int oldFps = 0; oldFps <= 255; oldFps++) {

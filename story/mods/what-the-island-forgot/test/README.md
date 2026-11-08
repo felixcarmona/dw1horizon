@@ -39,3 +39,22 @@ exercises Medium MP refusal; `--require-clip 13` requires that random branch.
 
 `--state FIXTURE.state` resumes a fixture captured with the same disc before
 repositioning on the shore; this supports splitting long roster runs.
+
+`playtest_toilet.py` exercises File City's real toilet tile (120), approach,
+cold slot 10, care update, return script and subsequent pad movement on 2 MB.
+It observes the native return-look call and requires the partner's position
+pointer, plus resident geometry and an intact heap. It skips no approach phase.
+The building can hide the partner during the toilet animation; successful exit
+and movement are checked separately.
+
+```sh
+xvfb-run -a python3 story/mods/what-the-island-forgot/test/playtest_toilet.py \
+  build/bugs11.cue --exe build/bugs11/exe/SLUS_010.32 \
+  --archive build/bugs11/DIGI.DAT --ids 307 --record --out build/toilet-proof
+```
+
+Use `--all` for all 175 imported partners. `--sleep-due` adds the night-time
+sleep need; `--max-ticks` defaults to 400 logic ticks for a complete visit.
+Each successful case saves `resume.state`; `--state` resumes a fixture made
+with the same disc for a split run. `--allow-wrong-target` records the known
+pre-fix stack pointer instead of rejecting it, for baseline comparison only.

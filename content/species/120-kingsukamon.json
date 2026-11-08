@@ -34,7 +34,7 @@
     "favored_region": 6,
     "training_type": "all-low",
     "birth_weight": 40,
-    "status_screen_position": [-410, 445, -99],
+    "status_screen_position": [-1385, 381, 2601],
     "item_distance": 16,
     "training": {"animation": 46, "hit_tick": 20}
   },

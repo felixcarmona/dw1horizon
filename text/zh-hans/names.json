@@ -936,6 +936,7 @@
  "main.MOD_OPT_STR_DIFF": "难度",
  "main.MOD_OPT_STR_EASY": "简单",
  "main.MOD_OPT_STR_NORMAL": "普通",
+ "main.MOD_OPT_STR_HARD": "困难",
  "main.MOD_NOTICE_STR_HEAD1": "在模拟器中，开启以下选项，",
  "main.MOD_NOTICE_STR_HEAD2": "可以让游戏运行得更流畅：",
  "main.MOD_NOTICE_STR_RAM": "8MB内存",

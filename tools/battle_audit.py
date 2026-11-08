@@ -40,9 +40,19 @@ def stat_power(power, diff, rules, old=False):
 
 def damage(power, off, defense, factors, rules, old=False, roll=100,
            counter=False, block=100, easy=0):
-    if counter:
-        defense = defense * rules['guardDefensePercent'] // 100
-    value = trunc(stat_power(power, off - defense, rules, old) * factors, rules['divisor'])
+    knee = rules.get('defenseKnee', 0)
+    half = rules.get('defenseTailHalf', 0)
+    effective = defense * rules['guardDefensePercent'] // 100 if counter else defense
+    excess = 0
+    if knee > 0 and half > 0 and defense > knee:
+        knee = max(knee, off)
+        excess = max(0, effective - knee)
+        if excess:
+            effective = knee
+    power = stat_power(power, off - effective, rules, old)
+    if excess:
+        power = trunc(power * half, half + excess)
+    value = trunc(power * factors, rules['divisor'])
     value = value * roll // 100
     # EASY is applied inside calculateDamage; block is applied by the caller.
     value = value * 2 if easy == 1 else (value + 1) // 2 if easy == -1 else value

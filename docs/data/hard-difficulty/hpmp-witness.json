@@ -1,0 +1,81 @@
+{
+  "preMega": [
+    4740,
+    4890,
+    500,
+    500,
+    500,
+    500
+  ],
+  "afterEvolution": [
+    6370,
+    5945,
+    650,
+    650,
+    600,
+    600
+  ],
+  "sessions": [
+    {
+      "gym": "hp",
+      "sessions": 12,
+      "multiplierTenths": 13,
+      "gainsPerSession": [
+        130,
+        0,
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "gym": "mp",
+      "sessions": 32,
+      "multiplierTenths": 11,
+      "gainsPerSession": [
+        0,
+        110,
+        0,
+        2,
+        0,
+        0
+      ]
+    },
+    {
+      "gym": "spd",
+      "sessions": 5,
+      "multiplierTenths": 15,
+      "gainsPerSession": [
+        15,
+        0,
+        0,
+        0,
+        15,
+        0
+      ]
+    },
+    {
+      "gym": "brain",
+      "sessions": 5,
+      "multiplierTenths": 11,
+      "gainsPerSession": [
+        0,
+        11,
+        0,
+        0,
+        0,
+        11
+      ]
+    }
+  ],
+  "final": [
+    8005,
+    9520,
+    674,
+    714,
+    675,
+    655
+  ],
+  "scope": "Constructed arithmetic witness; no chip, gym bonuses, food or battle gains. Not a replay of the reported save."
+}

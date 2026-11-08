@@ -1,0 +1,182 @@
+| Encounter | Profile | Mode | Enemy HP | Enemy O | Enemy D | Ordinary hit | Hits | Assumed TTK s | Incoming P586 probe | Enemy finisher range | Full partner finisher |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| FACT02:0 Guardromon | Original late | EASY | 1700 | 630 | 340 | 2400 | 1 | 3 | 258 | None | 4220 |
+| FACT02:0 Guardromon | Original late | NORMAL | 1700 | 630 | 340 | 1200 | 2 | 6 | 516 | None | 2110 |
+| FACT02:0 Guardromon | Original late | HARD | 1870 | 945 | 357 | 1119 | 2 | 6 | 1006 | None | 2004 |
+| FACT02:0 Guardromon | Reported low | EASY | 1700 | 630 | 340 | 2024 | 1 | 3 | 375 | None | 3620 |
+| FACT02:0 Guardromon | Reported low | NORMAL | 1700 | 630 | 340 | 1012 | 2 | 6 | 750 | None | 1810 |
+| FACT02:0 Guardromon | Reported low | HARD | 1870 | 945 | 357 | 940 | 2 | 6 | 1241 | None | 1719 |
+| FACT02:0 Guardromon | Reported high | EASY | 1700 | 630 | 340 | 2448 | 1 | 3 | 243 | None | 4300 |
+| FACT02:0 Guardromon | Reported high | NORMAL | 1700 | 630 | 340 | 1224 | 2 | 6 | 485 | None | 2150 |
+| FACT02:0 Guardromon | Reported high | HARD | 1870 | 945 | 357 | 1142 | 2 | 6 | 976 | None | 2042 |
+| FACT02:0 Guardromon | Strong late | EASY | 1700 | 630 | 340 | 3210 | 1 | 3 | 68 | None | 7020 |
+| FACT02:0 Guardromon | Strong late | NORMAL | 1700 | 630 | 340 | 1605 | 2 | 6 | 136 | None | 3510 |
+| FACT02:0 Guardromon | Strong late | HARD | 1870 | 945 | 357 | 1520 | 2 | 6 | 464 | None | 3334 |
+| FACT02:0 Guardromon | Heavy grind | EASY | 1700 | 630 | 340 | 3576 | 1 | 3 | 25 | None | 17020 |
+| FACT02:0 Guardromon | Heavy grind | NORMAL | 1700 | 630 | 340 | 1788 | 1 | 3 | 50 | None | 8510 |
+| FACT02:0 Guardromon | Heavy grind | HARD | 1870 | 945 | 357 | 1698 | 2 | 6 | 290 | None | 8084 |
+| FACT02:0 Guardromon | Ceiling | EASY | 1700 | 630 | 340 | 3684 | 1 | 3 | 10 | None | 30000 |
+| FACT02:0 Guardromon | Ceiling | NORMAL | 1700 | 630 | 340 | 1842 | 1 | 3 | 20 | None | 20508 |
+| FACT02:0 Guardromon | Ceiling | HARD | 1870 | 945 | 357 | 1749 | 2 | 6 | 290 | None | 19482 |
+| ICSA08:0 Machinedramon | Original late | EASY | 9999 | 999 | 800 | 858 | 12 | 36 | 546 | [944, 2308] | 4220 |
+| ICSA08:0 Machinedramon | Original late | NORMAL | 9999 | 999 | 800 | 429 | 24 | 72 | 1092 | [1888, 4615] | 2110 |
+| ICSA08:0 Machinedramon | Original late | HARD | 10998 | 1498 | 840 | 376 | 30 | 90 | 1784 | [2831, 6921] | 2004 |
+| ICSA08:0 Machinedramon | Reported low | EASY | 9999 | 999 | 800 | 602 | 17 | 51 | 663 | [944, 2308] | 3620 |
+| ICSA08:0 Machinedramon | Reported low | NORMAL | 9999 | 999 | 800 | 301 | 34 | 102 | 1326 | [1888, 4615] | 1810 |
+| ICSA08:0 Machinedramon | Reported low | HARD | 10998 | 1498 | 840 | 252 | 44 | 132 | 1882 | [2831, 6921] | 1719 |
+| ICSA08:0 Machinedramon | Reported high | EASY | 9999 | 999 | 800 | 892 | 12 | 36 | 530 | [944, 2308] | 4300 |
+| ICSA08:0 Machinedramon | Reported high | NORMAL | 9999 | 999 | 800 | 446 | 23 | 69 | 1060 | [1888, 4615] | 2150 |
+| ICSA08:0 Machinedramon | Reported high | HARD | 10998 | 1498 | 840 | 391 | 29 | 87 | 1766 | [2831, 6921] | 2042 |
+| ICSA08:0 Machinedramon | Strong late | EASY | 9999 | 999 | 800 | 1962 | 6 | 18 | 260 | [944, 2308] | 7020 |
+| ICSA08:0 Machinedramon | Strong late | NORMAL | 9999 | 999 | 800 | 981 | 11 | 33 | 520 | [1888, 4615] | 3510 |
+| ICSA08:0 Machinedramon | Strong late | HARD | 10998 | 1498 | 840 | 914 | 13 | 39 | 778 | [2831, 6921] | 3334 |
+| ICSA08:0 Machinedramon | Heavy grind | EASY | 9999 | 999 | 800 | 2442 | 5 | 15 | 97 | [944, 2308] | 17020 |
+| ICSA08:0 Machinedramon | Heavy grind | NORMAL | 9999 | 999 | 800 | 1221 | 9 | 27 | 194 | [1888, 4615] | 8510 |
+| ICSA08:0 Machinedramon | Heavy grind | HARD | 10998 | 1498 | 840 | 1159 | 10 | 30 | 313 | [2831, 6921] | 8084 |
+| ICSA08:0 Machinedramon | Ceiling | EASY | 9999 | 999 | 800 | 2530 | 4 | 12 | 39 | [944, 2308] | 30000 |
+| ICSA08:0 Machinedramon | Ceiling | NORMAL | 9999 | 999 | 800 | 1265 | 8 | 24 | 77 | [1888, 4615] | 20508 |
+| ICSA08:0 Machinedramon | Ceiling | HARD | 10998 | 1498 | 840 | 1201 | 10 | 30 | 313 | [2831, 6921] | 19482 |
+| MAYO00:0 Dokunemon | Original late | EASY | 300 | 70 | 100 | 1962 | 1 | 3 | 1 | None | 4220 |
+| MAYO00:0 Dokunemon | Original late | NORMAL | 300 | 70 | 100 | 981 | 1 | 3 | 1 | None | 2110 |
+| MAYO00:0 Dokunemon | Original late | HARD | 330 | 105 | 105 | 930 | 1 | 3 | 142 | None | 2004 |
+| MAYO00:0 Dokunemon | Reported low | EASY | 300 | 70 | 100 | 1796 | 1 | 3 | 1 | None | 3620 |
+| MAYO00:0 Dokunemon | Reported low | NORMAL | 300 | 70 | 100 | 898 | 1 | 3 | 1 | None | 1810 |
+| MAYO00:0 Dokunemon | Reported low | HARD | 330 | 105 | 105 | 849 | 1 | 3 | 142 | None | 1719 |
+| MAYO00:0 Dokunemon | Reported high | EASY | 300 | 70 | 100 | 1980 | 1 | 3 | 1 | None | 4300 |
+| MAYO00:0 Dokunemon | Reported high | NORMAL | 300 | 70 | 100 | 990 | 1 | 3 | 1 | None | 2150 |
+| MAYO00:0 Dokunemon | Reported high | HARD | 330 | 105 | 105 | 938 | 1 | 3 | 142 | None | 2042 |
+| MAYO00:0 Dokunemon | Strong late | EASY | 300 | 70 | 100 | 2270 | 1 | 3 | 1 | None | 7020 |
+| MAYO00:0 Dokunemon | Strong late | NORMAL | 300 | 70 | 100 | 1135 | 1 | 3 | 1 | None | 3510 |
+| MAYO00:0 Dokunemon | Strong late | HARD | 330 | 105 | 105 | 1077 | 1 | 3 | 142 | None | 3334 |
+| MAYO00:0 Dokunemon | Heavy grind | EASY | 300 | 70 | 100 | 2466 | 1 | 3 | 1 | None | 17020 |
+| MAYO00:0 Dokunemon | Heavy grind | NORMAL | 300 | 70 | 100 | 1233 | 1 | 3 | 1 | None | 8510 |
+| MAYO00:0 Dokunemon | Heavy grind | HARD | 330 | 105 | 105 | 1171 | 1 | 3 | 142 | None | 8084 |
+| MAYO00:0 Dokunemon | Ceiling | EASY | 300 | 70 | 100 | 2534 | 1 | 3 | 1 | None | 30000 |
+| MAYO00:0 Dokunemon | Ceiling | NORMAL | 300 | 70 | 100 | 1267 | 1 | 3 | 1 | None | 20508 |
+| MAYO00:0 Dokunemon | Ceiling | HARD | 330 | 105 | 105 | 1203 | 1 | 3 | 142 | None | 19482 |
+| MGEN99:0 Machinedramon | Original late | EASY | 9400 | 999 | 650 | 1116 | 9 | 27 | 546 | [944, 2308] | 4220 |
+| MGEN99:0 Machinedramon | Original late | NORMAL | 9400 | 999 | 650 | 558 | 17 | 51 | 1092 | [1888, 4615] | 2110 |
+| MGEN99:0 Machinedramon | Original late | HARD | 10340 | 1498 | 682 | 503 | 21 | 63 | 1784 | [2831, 6921] | 2004 |
+| MGEN99:0 Machinedramon | Reported low | EASY | 9400 | 999 | 650 | 858 | 11 | 33 | 663 | [944, 2308] | 3620 |
+| MGEN99:0 Machinedramon | Reported low | NORMAL | 9400 | 999 | 650 | 429 | 22 | 66 | 1326 | [1888, 4615] | 1810 |
+| MGEN99:0 Machinedramon | Reported low | HARD | 10340 | 1498 | 682 | 381 | 28 | 84 | 1882 | [2831, 6921] | 1719 |
+| MGEN99:0 Machinedramon | Reported high | EASY | 9400 | 999 | 650 | 1150 | 9 | 27 | 530 | [944, 2308] | 4300 |
+| MGEN99:0 Machinedramon | Reported high | NORMAL | 9400 | 999 | 650 | 575 | 17 | 51 | 1060 | [1888, 4615] | 2150 |
+| MGEN99:0 Machinedramon | Reported high | HARD | 10340 | 1498 | 682 | 519 | 20 | 60 | 1766 | [2831, 6921] | 2042 |
+| MGEN99:0 Machinedramon | Strong late | EASY | 9400 | 999 | 650 | 2072 | 5 | 15 | 260 | [944, 2308] | 7020 |
+| MGEN99:0 Machinedramon | Strong late | NORMAL | 9400 | 999 | 650 | 1036 | 10 | 30 | 520 | [1888, 4615] | 3510 |
+| MGEN99:0 Machinedramon | Strong late | HARD | 10340 | 1498 | 682 | 973 | 11 | 33 | 778 | [2831, 6921] | 3334 |
+| MGEN99:0 Machinedramon | Heavy grind | EASY | 9400 | 999 | 650 | 2448 | 4 | 12 | 97 | [944, 2308] | 17020 |
+| MGEN99:0 Machinedramon | Heavy grind | NORMAL | 9400 | 999 | 650 | 1224 | 8 | 24 | 194 | [1888, 4615] | 8510 |
+| MGEN99:0 Machinedramon | Heavy grind | HARD | 10340 | 1498 | 682 | 1161 | 9 | 27 | 313 | [2831, 6921] | 8084 |
+| MGEN99:0 Machinedramon | Ceiling | EASY | 9400 | 999 | 650 | 2530 | 4 | 12 | 39 | [944, 2308] | 30000 |
+| MGEN99:0 Machinedramon | Ceiling | NORMAL | 9400 | 999 | 650 | 1265 | 8 | 24 | 77 | [1888, 4615] | 20508 |
+| MGEN99:0 Machinedramon | Ceiling | HARD | 10340 | 1498 | 682 | 1201 | 9 | 27 | 313 | [2831, 6921] | 19482 |
+| MGEN99:3 Digitamamon | Original late | EASY | 9999 | 999 | 720 | 2262 | 5 | 15 | 546 | None | 4220 |
+| MGEN99:3 Digitamamon | Original late | NORMAL | 9999 | 999 | 720 | 1131 | 9 | 27 | 1092 | None | 2110 |
+| MGEN99:3 Digitamamon | Original late | HARD | 10998 | 1498 | 756 | 1007 | 11 | 33 | 1784 | None | 2004 |
+| MGEN99:3 Digitamamon | Reported low | EASY | 9999 | 999 | 720 | 1680 | 6 | 18 | 663 | None | 3620 |
+| MGEN99:3 Digitamamon | Reported low | NORMAL | 9999 | 999 | 720 | 840 | 12 | 36 | 1326 | None | 1810 |
+| MGEN99:3 Digitamamon | Reported low | HARD | 10998 | 1498 | 756 | 731 | 16 | 48 | 1882 | None | 1719 |
+| MGEN99:3 Digitamamon | Reported high | EASY | 9999 | 999 | 720 | 2342 | 5 | 15 | 530 | None | 4300 |
+| MGEN99:3 Digitamamon | Reported high | NORMAL | 9999 | 999 | 720 | 1171 | 9 | 27 | 1060 | None | 2150 |
+| MGEN99:3 Digitamamon | Reported high | HARD | 10998 | 1498 | 756 | 1045 | 11 | 33 | 1766 | None | 2042 |
+| MGEN99:3 Digitamamon | Strong late | EASY | 9999 | 999 | 720 | 4606 | 3 | 9 | 260 | None | 7020 |
+| MGEN99:3 Digitamamon | Strong late | NORMAL | 9999 | 999 | 720 | 2303 | 5 | 15 | 520 | None | 3510 |
+| MGEN99:3 Digitamamon | Strong late | HARD | 10998 | 1498 | 756 | 2159 | 6 | 18 | 778 | None | 3334 |
+| MGEN99:3 Digitamamon | Heavy grind | EASY | 9999 | 999 | 720 | 5560 | 2 | 6 | 97 | None | 17020 |
+| MGEN99:3 Digitamamon | Heavy grind | NORMAL | 9999 | 999 | 720 | 2780 | 4 | 12 | 194 | None | 8510 |
+| MGEN99:3 Digitamamon | Heavy grind | HARD | 10998 | 1498 | 756 | 2639 | 5 | 15 | 313 | None | 8084 |
+| MGEN99:3 Digitamamon | Ceiling | EASY | 9999 | 999 | 720 | 5752 | 2 | 6 | 39 | None | 30000 |
+| MGEN99:3 Digitamamon | Ceiling | NORMAL | 9999 | 999 | 720 | 2876 | 4 | 12 | 77 | None | 20508 |
+| MGEN99:3 Digitamamon | Ceiling | HARD | 10998 | 1498 | 756 | 2732 | 5 | 15 | 313 | None | 19482 |
+| FACT03:0 Guardromon | Original late | EASY | 2900 | 630 | 340 | 2400 | 2 | 6 | 258 | None | 4220 |
+| FACT03:0 Guardromon | Original late | NORMAL | 2900 | 630 | 340 | 1200 | 3 | 9 | 516 | None | 2110 |
+| FACT03:0 Guardromon | Original late | HARD | 3190 | 945 | 357 | 1119 | 3 | 9 | 1006 | None | 2004 |
+| FACT03:0 Guardromon | Reported low | EASY | 2900 | 630 | 340 | 2024 | 2 | 6 | 375 | None | 3620 |
+| FACT03:0 Guardromon | Reported low | NORMAL | 2900 | 630 | 340 | 1012 | 3 | 9 | 750 | None | 1810 |
+| FACT03:0 Guardromon | Reported low | HARD | 3190 | 945 | 357 | 940 | 4 | 12 | 1241 | None | 1719 |
+| FACT03:0 Guardromon | Reported high | EASY | 2900 | 630 | 340 | 2448 | 2 | 6 | 243 | None | 4300 |
+| FACT03:0 Guardromon | Reported high | NORMAL | 2900 | 630 | 340 | 1224 | 3 | 9 | 485 | None | 2150 |
+| FACT03:0 Guardromon | Reported high | HARD | 3190 | 945 | 357 | 1142 | 3 | 9 | 976 | None | 2042 |
+| FACT03:0 Guardromon | Strong late | EASY | 2900 | 630 | 340 | 3210 | 1 | 3 | 68 | None | 7020 |
+| FACT03:0 Guardromon | Strong late | NORMAL | 2900 | 630 | 340 | 1605 | 2 | 6 | 136 | None | 3510 |
+| FACT03:0 Guardromon | Strong late | HARD | 3190 | 945 | 357 | 1520 | 3 | 9 | 464 | None | 3334 |
+| FACT03:0 Guardromon | Heavy grind | EASY | 2900 | 630 | 340 | 3576 | 1 | 3 | 25 | None | 17020 |
+| FACT03:0 Guardromon | Heavy grind | NORMAL | 2900 | 630 | 340 | 1788 | 2 | 6 | 50 | None | 8510 |
+| FACT03:0 Guardromon | Heavy grind | HARD | 3190 | 945 | 357 | 1698 | 2 | 6 | 290 | None | 8084 |
+| FACT03:0 Guardromon | Ceiling | EASY | 2900 | 630 | 340 | 3684 | 1 | 3 | 10 | None | 30000 |
+| FACT03:0 Guardromon | Ceiling | NORMAL | 2900 | 630 | 340 | 1842 | 2 | 6 | 20 | None | 20508 |
+| FACT03:0 Guardromon | Ceiling | HARD | 3190 | 945 | 357 | 1749 | 2 | 6 | 290 | None | 19482 |
+| Horizon Knightmon:0 Knightmon | Original late | EASY | 4500 | 720 | 380 | 1580 | 3 | 9 | 329 | None | 4220 |
+| Horizon Knightmon:0 Knightmon | Original late | NORMAL | 4500 | 720 | 380 | 790 | 6 | 18 | 657 | None | 2110 |
+| Horizon Knightmon:0 Knightmon | Original late | HARD | 4950 | 1080 | 399 | 734 | 7 | 21 | 1218 | None | 2004 |
+| Horizon Knightmon:0 Knightmon | Reported low | EASY | 4500 | 720 | 380 | 1322 | 4 | 12 | 445 | None | 3620 |
+| Horizon Knightmon:0 Knightmon | Reported low | NORMAL | 4500 | 720 | 380 | 661 | 7 | 21 | 890 | None | 1810 |
+| Horizon Knightmon:0 Knightmon | Reported low | HARD | 4950 | 1080 | 399 | 612 | 9 | 27 | 1452 | None | 1719 |
+| Horizon Knightmon:0 Knightmon | Reported high | EASY | 4500 | 720 | 380 | 1614 | 3 | 9 | 313 | None | 4300 |
+| Horizon Knightmon:0 Knightmon | Reported high | NORMAL | 4500 | 720 | 380 | 807 | 6 | 18 | 625 | None | 2150 |
+| Horizon Knightmon:0 Knightmon | Reported high | HARD | 4950 | 1080 | 399 | 751 | 7 | 21 | 1186 | None | 2042 |
+| Horizon Knightmon:0 Knightmon | Strong late | EASY | 4500 | 720 | 380 | 2194 | 3 | 9 | 115 | None | 7020 |
+| Horizon Knightmon:0 Knightmon | Strong late | NORMAL | 4500 | 720 | 380 | 1097 | 5 | 15 | 230 | None | 3510 |
+| Horizon Knightmon:0 Knightmon | Strong late | HARD | 4950 | 1080 | 399 | 1038 | 5 | 15 | 549 | None | 3334 |
+| Horizon Knightmon:0 Knightmon | Heavy grind | EASY | 4500 | 720 | 380 | 2458 | 2 | 6 | 43 | None | 17020 |
+| Horizon Knightmon:0 Knightmon | Heavy grind | NORMAL | 4500 | 720 | 380 | 1229 | 4 | 12 | 85 | None | 8510 |
+| Horizon Knightmon:0 Knightmon | Heavy grind | HARD | 4950 | 1080 | 399 | 1167 | 5 | 15 | 298 | None | 8084 |
+| Horizon Knightmon:0 Knightmon | Ceiling | EASY | 4500 | 720 | 380 | 2532 | 2 | 6 | 17 | None | 30000 |
+| Horizon Knightmon:0 Knightmon | Ceiling | NORMAL | 4500 | 720 | 380 | 1266 | 4 | 12 | 34 | None | 20508 |
+| Horizon Knightmon:0 Knightmon | Ceiling | HARD | 4950 | 1080 | 399 | 1202 | 5 | 15 | 298 | None | 19482 |
+| Horizon Datamon:0 Datamon | Original late | EASY | 3000 | 640 | 340 | 2400 | 2 | 6 | 266 | None | 4220 |
+| Horizon Datamon:0 Datamon | Original late | NORMAL | 3000 | 640 | 340 | 1200 | 3 | 9 | 532 | None | 2110 |
+| Horizon Datamon:0 Datamon | Original late | HARD | 3300 | 960 | 357 | 1119 | 3 | 9 | 1030 | None | 2004 |
+| Horizon Datamon:0 Datamon | Reported low | EASY | 3000 | 640 | 340 | 2024 | 2 | 6 | 383 | None | 3620 |
+| Horizon Datamon:0 Datamon | Reported low | NORMAL | 3000 | 640 | 340 | 1012 | 3 | 9 | 766 | None | 1810 |
+| Horizon Datamon:0 Datamon | Reported low | HARD | 3300 | 960 | 357 | 940 | 4 | 12 | 1265 | None | 1719 |
+| Horizon Datamon:0 Datamon | Reported high | EASY | 3000 | 640 | 340 | 2448 | 2 | 6 | 251 | None | 4300 |
+| Horizon Datamon:0 Datamon | Reported high | NORMAL | 3000 | 640 | 340 | 1224 | 3 | 9 | 501 | None | 2150 |
+| Horizon Datamon:0 Datamon | Reported high | HARD | 3300 | 960 | 357 | 1142 | 3 | 9 | 1000 | None | 2042 |
+| Horizon Datamon:0 Datamon | Strong late | EASY | 3000 | 640 | 340 | 3210 | 1 | 3 | 73 | None | 7020 |
+| Horizon Datamon:0 Datamon | Strong late | NORMAL | 3000 | 640 | 340 | 1605 | 2 | 6 | 146 | None | 3510 |
+| Horizon Datamon:0 Datamon | Strong late | HARD | 3300 | 960 | 357 | 1520 | 3 | 9 | 480 | None | 3334 |
+| Horizon Datamon:0 Datamon | Heavy grind | EASY | 3000 | 640 | 340 | 3576 | 1 | 3 | 27 | None | 17020 |
+| Horizon Datamon:0 Datamon | Heavy grind | NORMAL | 3000 | 640 | 340 | 1788 | 2 | 6 | 54 | None | 8510 |
+| Horizon Datamon:0 Datamon | Heavy grind | HARD | 3300 | 960 | 357 | 1698 | 2 | 6 | 291 | None | 8084 |
+| Horizon Datamon:0 Datamon | Ceiling | EASY | 3000 | 640 | 340 | 3684 | 1 | 3 | 11 | None | 30000 |
+| Horizon Datamon:0 Datamon | Ceiling | NORMAL | 3000 | 640 | 340 | 1842 | 2 | 6 | 21 | None | 20508 |
+| Horizon Datamon:0 Datamon | Ceiling | HARD | 3300 | 960 | 357 | 1749 | 2 | 6 | 291 | None | 19482 |
+| Horizon WaruSeadramon:0 WaruSeadramon | Original late | EASY | 4500 | 560 | 280 | 3184 | 2 | 6 | 203 | None | 4220 |
+| Horizon WaruSeadramon:0 WaruSeadramon | Original late | NORMAL | 4500 | 560 | 280 | 1592 | 3 | 9 | 406 | None | 2110 |
+| Horizon WaruSeadramon:0 WaruSeadramon | Original late | HARD | 4950 | 840 | 294 | 1491 | 4 | 12 | 842 | None | 2004 |
+| Horizon WaruSeadramon:0 WaruSeadramon | Reported low | EASY | 4500 | 560 | 280 | 2716 | 2 | 6 | 321 | None | 3620 |
+| Horizon WaruSeadramon:0 WaruSeadramon | Reported low | NORMAL | 4500 | 560 | 280 | 1358 | 4 | 12 | 641 | None | 1810 |
+| Horizon WaruSeadramon:0 WaruSeadramon | Reported low | HARD | 4950 | 840 | 294 | 1270 | 4 | 12 | 1077 | None | 1719 |
+| Horizon WaruSeadramon:0 WaruSeadramon | Reported high | EASY | 4500 | 560 | 280 | 3240 | 2 | 6 | 188 | None | 4300 |
+| Horizon WaruSeadramon:0 WaruSeadramon | Reported high | NORMAL | 4500 | 560 | 280 | 1620 | 3 | 9 | 376 | None | 2150 |
+| Horizon WaruSeadramon:0 WaruSeadramon | Reported high | HARD | 4950 | 840 | 294 | 1520 | 4 | 12 | 812 | None | 2042 |
+| Horizon WaruSeadramon:0 WaruSeadramon | Strong late | EASY | 4500 | 560 | 280 | 4044 | 2 | 6 | 31 | None | 7020 |
+| Horizon WaruSeadramon:0 WaruSeadramon | Strong late | NORMAL | 4500 | 560 | 280 | 2022 | 3 | 9 | 62 | None | 3510 |
+| Horizon WaruSeadramon:0 WaruSeadramon | Strong late | HARD | 4950 | 840 | 294 | 1919 | 3 | 9 | 354 | None | 3334 |
+| Horizon WaruSeadramon:0 WaruSeadramon | Heavy grind | EASY | 4500 | 560 | 280 | 4476 | 2 | 6 | 11 | None | 17020 |
+| Horizon WaruSeadramon:0 WaruSeadramon | Heavy grind | NORMAL | 4500 | 560 | 280 | 2238 | 3 | 9 | 22 | None | 8510 |
+| Horizon WaruSeadramon:0 WaruSeadramon | Heavy grind | HARD | 4950 | 840 | 294 | 2125 | 3 | 9 | 282 | None | 8084 |
+| Horizon WaruSeadramon:0 WaruSeadramon | Ceiling | EASY | 4500 | 560 | 280 | 4604 | 1 | 3 | 5 | None | 30000 |
+| Horizon WaruSeadramon:0 WaruSeadramon | Ceiling | NORMAL | 4500 | 560 | 280 | 2302 | 2 | 6 | 9 | None | 20508 |
+| Horizon WaruSeadramon:0 WaruSeadramon | Ceiling | HARD | 4950 | 840 | 294 | 2186 | 3 | 9 | 282 | None | 19482 |
+| Horizon Gururumon:0 Gururumon | Original late | EASY | 3200 | 540 | 300 | 3124 | 2 | 6 | 188 | None | 4220 |
+| Horizon Gururumon:0 Gururumon | Original late | NORMAL | 3200 | 540 | 300 | 1562 | 3 | 9 | 376 | None | 2110 |
+| Horizon Gururumon:0 Gururumon | Original late | HARD | 3520 | 810 | 315 | 1461 | 3 | 9 | 796 | None | 2004 |
+| Horizon Gururumon:0 Gururumon | Reported low | EASY | 3200 | 540 | 300 | 2656 | 2 | 6 | 305 | None | 3620 |
+| Horizon Gururumon:0 Gururumon | Reported low | NORMAL | 3200 | 540 | 300 | 1328 | 3 | 9 | 610 | None | 1810 |
+| Horizon Gururumon:0 Gururumon | Reported low | HARD | 3520 | 810 | 315 | 1238 | 3 | 9 | 1030 | None | 1719 |
+| Horizon Gururumon:0 Gururumon | Reported high | EASY | 3200 | 540 | 300 | 3184 | 2 | 6 | 172 | None | 4300 |
+| Horizon Gururumon:0 Gururumon | Reported high | NORMAL | 3200 | 540 | 300 | 1592 | 3 | 9 | 344 | None | 2150 |
+| Horizon Gururumon:0 Gururumon | Reported high | HARD | 3520 | 810 | 315 | 1490 | 3 | 9 | 766 | None | 2042 |
+| Horizon Gururumon:0 Gururumon | Strong late | EASY | 3200 | 540 | 300 | 4034 | 1 | 3 | 21 | None | 7020 |
+| Horizon Gururumon:0 Gururumon | Strong late | NORMAL | 3200 | 540 | 300 | 2017 | 2 | 6 | 42 | None | 3510 |
+| Horizon Gururumon:0 Gururumon | Strong late | HARD | 3520 | 810 | 315 | 1912 | 2 | 6 | 324 | None | 3334 |
+| Horizon Gururumon:0 Gururumon | Heavy grind | EASY | 3200 | 540 | 300 | 4474 | 1 | 3 | 8 | None | 17020 |
+| Horizon Gururumon:0 Gururumon | Heavy grind | NORMAL | 3200 | 540 | 300 | 2237 | 2 | 6 | 16 | None | 8510 |
+| Horizon Gururumon:0 Gururumon | Heavy grind | HARD | 3520 | 810 | 315 | 2125 | 2 | 6 | 280 | None | 8084 |
+| Horizon Gururumon:0 Gururumon | Ceiling | EASY | 3200 | 540 | 300 | 4604 | 1 | 3 | 3 | None | 30000 |
+| Horizon Gururumon:0 Gururumon | Ceiling | NORMAL | 3200 | 540 | 300 | 2302 | 2 | 6 | 5 | None | 20508 |
+| Horizon Gururumon:0 Gururumon | Ceiling | HARD | 3520 | 810 | 315 | 2186 | 2 | 6 | 280 | None | 19482 |
