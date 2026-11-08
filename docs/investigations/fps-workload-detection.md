@@ -80,7 +80,9 @@ measure the resulting host display loss. Device validation remains necessary.
 Release heap is 187,312 bytes, 352 fewer than the matched main baseline.
 Diagnostics use 187,152 bytes. MENU remains 55,172 bytes in both builds, equal
 to the baseline. The trial allocates nothing and reuses the resident title mesh,
-OTs and packet areas. Original 2 MB boot, Continue and both fields work; the
+OTs and packet areas. All 320 compiled setup cases fit against actual model
+archive bytes, with minimum margins of 2,592 bytes in release and 2,432 in
+diagnostics. Original 2 MB boot, Continue and both fields work; the
 8 MB boot independently detects expanded RAM and gives the same decision.
 
 Native builds pass for release, `FPS_DIAGNOSTICS=1`, and `FPS=20`; the last
