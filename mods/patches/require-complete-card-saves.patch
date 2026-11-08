@@ -1,0 +1,102 @@
+From 67759b7966781406e3f90ffe8b728ce20b38c1de Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 8 Nov 2026 03:27:07 +0000
+Subject: [PATCH] Require complete card saves for extended progress
+
+---
+ src/main/main_menu.c | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
+
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 4cff284..f54000c 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -2955,13 +2955,9 @@ void tickMainMenu(void)
+ 	case 0x10:
+ 		if ((MAIN_MENU_TICKS >= 3) && MemCardSync(1, &command, &result)) {
+ 			SAVE_FILE_NAME[0xF] = HEX_DIGITS[MEMORY_CARD_SLOT];
+-			/* MOD (save v2): two blocks; one (a v1 file) if the card has one left */
++			/* Horizon state always needs both blocks. */
+ 			SAVE_FILE_BYTES = SAVE_V2_BYTES;
+ 			status = MemCardCreateFile(MEMORY_CARD_ID, SAVE_FILE_NAME, SAVE_V2_BYTES / SAVE_V1_BYTES);
+-			if (status == 7) {
+-				SAVE_FILE_BYTES = SAVE_V1_BYTES;
+-				status = MemCardCreateFile(MEMORY_CARD_ID, SAVE_FILE_NAME, 1);
+-			}
+ 			switch (status) {
+ 			case 0:
+ 				TARGET_MENU = 0x11;
+@@ -3016,7 +3012,7 @@ void tickMainMenu(void)
+ 			if (MOD_CHEATS_CARD_MODE == 1) MOD_CHEATS_CARD_DONE = 1;
+ 			else { loadSaveCopy(0); MAIN_STATE = 0; }
+ 		} else {
+-			setMemoryCardReadError(status, 0);
++			setMemoryCardReadError(result, 0);
+ 		}
+ 		break;
+ 
+@@ -3371,7 +3367,7 @@ void tickMainMenu(void)
+ 				if (MOD_CHEATS_CARD_MODE == 1) MOD_CHEATS_CARD_DONE = 1;
+ 				TARGET_MENU = 9;
+ 			} else {
+-				setMemoryCardReadError(status, 0x28);
++				setMemoryCardReadError(result, 0x28);
+ 			}
+ 		}
+ 		break;
+@@ -3704,7 +3700,7 @@ void tickMainMenu(void)
+ 			if (result == 0) {
+ 				TARGET_MENU = 9;
+ 			} else {
+-				setMemoryCardReadError(status, SAVE_RETRY_RETURN_MENU);
++				setMemoryCardReadError(result, SAVE_RETRY_RETURN_MENU);
+ 			}
+ 		}
+ 		break;
+@@ -4644,6 +4640,10 @@ static int32_t needsNewExecutable(int32_t partnerType, int32_t currentScreen, in
+ 			return 1;
+ 		}
+ 	}
++	/* History and recruits are required content even with a native partner. */
++	for (i = 0; i < NUM_DIGIMON / 8; i++) {
++		if (SPECIES_RAISED_BITS[i] || SPECIES_RECRUITED_BITS[i]) return 1;
++	}
+ 	return 0;
+ }
+ 
+@@ -5535,6 +5535,9 @@ static int32_t getSaveFileBytes(void)
+ 	return SAVE_V1_BYTES;
+ }
+ 
++/* the error of the read or write saveFileStart ran (a MEMORY_CARD_ERROR_MESSAGES index), else 0 */
++static long SAVE_IO_FAILED;
++
+ /*
+  * Starts writing SAVE_FILE (prepared) to the slot's file, as MemCardWriteFile.
+  * A one-block file becomes two blocks first when the card has a free block.
+@@ -5559,18 +5562,15 @@ static int32_t writeSaveFile(void)
+ 			}
+ 		}
+ 	}
+-	if (SAVE_FILE_BYTES < SAVE_V2_BYTES && SAVE_FILE.saves[0].checksum != createSavegameChecksum(0)) {
+-		/* no room for the extension: a plain v1 file, which the original reads with cut ids */
+-		SAVE_FILE.saves[0].checksum = createSavegameChecksum(0);
+-		SAVE_FILE.saves[1] = SAVE_FILE.saves[0];
++	if (SAVE_FILE_BYTES < SAVE_V2_BYTES) {
++		/* Never report success after dropping history, recruits or wide IDs. */
++		SAVE_IO_FAILED = 7;
++		return 1;
+ 	}
+ 	SAVE_FILE.blockNumber = SAVE_FILE_BYTES / SAVE_V1_BYTES;
+ 	return saveFileStart(1);
+ }
+ 
+-/* the error of the read or write saveFileStart ran (a MEMORY_CARD_ERROR_MESSAGES index), else 0 */
+-static long SAVE_IO_FAILED;
+-
+ /*
+  * MOD (save extension area, save robustness): reads or writes the slot's file (SAVE_FILE_BYTES), waiting
+  * for each part. A v1 file is one part. A v2 or v3 file is four, in copy order: copy 1's payload
+-- 
+2.55.0
+

@@ -1,0 +1,31 @@
+From e872ea70c477e543bbbd390237620475ab0e815d Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 8 Nov 2026 03:27:07 +0000
+Subject: [PATCH] Clear the dirt pile obstacle when the pile disappears
+
+---
+ src/main/map_object.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/src/main/map_object.c b/src/main/map_object.c
+index 950777b..abd51d9 100644
+--- a/src/main/map_object.c
++++ b/src/main/map_object.c
+@@ -1069,6 +1069,14 @@ void decreaseDirtPileSize(void)
+ 	rotation = DIRT_PILE_SIZE_ROTATION;
+ 
+ 	DIRT_PILE_SIZE_COUNTER -= 1;
++	/* The pile stops rendering below six; remove its live obstacle too. */
++	if (DIRT_PILE_SIZE_COUNTER == 5) {
++		int32_t x, y;
++		extern uint8_t MAP_COLLISION_DATA[];
++		for (y = 41; y < 43; y++) {
++			for (x = 69; x < 72; x++) MAP_COLLISION_DATA[y * 100 + x] = 81;
++		}
++	}
+ 	scaleValue = (DIRT_PILE_SIZE_COUNTER * 0x1000) / 15;
+ 	scale.vx = scaleValue;
+ 	scale.vy = scaleValue;
+-- 
+2.55.0
+

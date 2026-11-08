@@ -84,6 +84,12 @@ run patch-series      $PY tools/patch_series.py check                     # mods
 run technique-timing-tests $PY -m unittest tools.test_technique_timing
 run buster-dive-tests $PY -m unittest tools.test_buster_dive
 run patch-series-tests $PY tools/test_patch_series.py
+if [ -f "$PATCHED/src/main/main_menu.c" ]; then
+    run save-capacity $PY tools/dev/saves/capacity.py "$PATCHED"
+    run dirt-pile-collision $PY tools/dev/playtest/dirt_pile_collision.py "$PATCHED"
+else
+    skip save-capacity "needs prepared patched decompilation"
+fi
 if [ -d decomp/src ]; then
     run patch-series-apply $PY tools/patch_series.py check --apply          # the whole series applies to the pinned decomp
 else
