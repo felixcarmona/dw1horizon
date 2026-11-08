@@ -44,7 +44,7 @@
     "favored_region": 3,
     "training_type": "even",
     "birth_weight": 50,
-    "status_screen_position": [-695, 585, 470],
+    "status_screen_position": [-1713, 416, 3107],
     "item_distance": 15,
     "training": {"animation": 60, "hit_tick": 10}
   },

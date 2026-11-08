@@ -509,3 +509,26 @@ With the reviewed artifacts under `build/model-review/`, run:
 PYTHONPATH=tools python3 -W ignore -m unittest tools.test_kingetemon
 python3 tools/models/edit.py --from build/models5 check 303 --species-pins
 ```
+
+### Status preview clearance
+
+Status cameras reserve the heading, Life/care rows and the full vertical bob
+of the sleeping badge. Grizzlymon's prior zoom already fit the panel; moving
+its camera from `[-1103, 282, 1156]` to `[-806, 282, 1274]` keeps the same
+45-pixel portrait height while shifting it right of the sleeping icon.
+
+The audit covers all 291 raisable species at the first idle tick actually
+rendered by the menu, including animated texture phases. It repairs 144 camera
+positions (77 native IDs and 67 imports); 147 fitting positions stay unchanged.
+No model, animation, field scale or combat data changes. Native camera rows are
+read from each language executable, with record-original replacements applied
+as at boot; imported cameras come from the archive.
+
+```sh
+python3 tools/status_portraits.py build/models5 --out build/status-audit --check
+```
+
+The camera fitter uses the smallest necessary depth increase, preserves the
+old anchor where possible and verifies opaque pixels against the reserved UI.
+The complete idle remains available as a conservative diagnostic, but fitting
+its unseen travelling poses would shrink otherwise readable Status portraits.
