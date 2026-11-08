@@ -418,8 +418,10 @@ readers. All other option byte positions are unchanged.
 iterations over 16 lines of hardware hblank counter 1. That counter follows video
 timing independently of CPU overclock. Recorded DuckStation counts were 3801,
 7389, 9303 and 10977 at 100%, 200%, 250% and 300%. At boot, at least 8500 selects
-mode 2; otherwise mode 0. The loop is shared by boot and runtime checks. On return to the title, its notice uses the latest CPU measurement. The RAM
-probe remains boot-only and has no bearing on presentation.
+mode 2; otherwise mode 0. The always-visible Press Start panel uses the latest
+CPU measurement and selected mode, and redraws if either changes. Its approximate
+percentage interpolates these four calibration points, rounds to 25% steps and
+clamps to 100–300%. The RAM probe remains boot-only and has no bearing on presentation.
 
 Boot alone cannot follow a changed emulator overclock or a restored same-build
 save state. `modWaitVblank` therefore polls about every 120 refreshes, only outside

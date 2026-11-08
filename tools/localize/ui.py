@@ -160,8 +160,34 @@ def confirmation_problems(key, value, font, language):
     return errors
 
 
+# Match modNoticeDraw crops; the renderer adds one shadow pixel outside each field.
+NOTICE_FIELDS = {'HEAD1': (254, None), 'HEAD2': (254, None),
+                 'RAM': (80, (2, 8)), 'CPU': (104, range(100, 301, 25)), 'FPS': (64, (20, 60))}
+
+
+def notice_problems(key, value, font, language):
+    field = key.removeprefix('main.MOD_NOTICE_STR_')
+    if field not in NOTICE_FIELDS:
+        return []
+    limit, values = NOTICE_FIELDS[field]
+    errors = []
+    try:
+        rows = [value % number for number in values] if values else [value]
+    except (TypeError, ValueError):
+        return ['detected-settings format must accept exactly one integer']
+    from tools.localize.executable.bank import encoded_len
+    for row in rows:
+        width = fitted_width(row, font, language)
+        if width > limit:
+            errors.append(f'detected-settings text {row!r} is {width} px; field is {limit} px')
+        if values and encoded_len(row, font) + 1 > 32:
+            errors.append(f'detected-settings text {row!r} exceeds its 32-byte buffer')
+    return errors
+
+
 def field_problems(key, value, font, language):
-    errors = tab_problems(key, value, font, language) + name_problems(key, value, font, language)
+    errors = (tab_problems(key, value, font, language) + name_problems(key, value, font, language)
+              + notice_problems(key, value, font, language))
     if key.startswith('main.ITEM_NAMES.'):
         width = fitted_width(value, font, language)
         if width > ITEM_LIMIT:
@@ -183,7 +209,7 @@ def audit():
         for font in FONTS:
             count = 0
             for key,value in names.items():
-                if key in ('main.MAIN_D_801238A0', 'main.MAIN_D_80123A18', 'main.STR_YES_NO_SPACED', 'main.MAIN_D_801346AC', 'main.MAIN_D_801346B0') or key.startswith(('main.MOVE_NAMES.', 'main.ITEM_NAMES.')):
+                if key in ('main.MAIN_D_801238A0', 'main.MAIN_D_80123A18', 'main.STR_YES_NO_SPACED', 'main.MAIN_D_801346AC', 'main.MAIN_D_801346B0') or key.startswith(('main.MOVE_NAMES.', 'main.ITEM_NAMES.', 'main.MOD_NOTICE_STR_')):
                     if language == 'zh-hans':
                         from tools.localize.executable.chinese_layout import align
                         value = align(key,value)
