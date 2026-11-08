@@ -19,7 +19,7 @@ try{
   await page.setRequestInterception(true);
   let offline=false;
   page.on('request',r=>{
-    if(!r.url().startsWith(root)&&/^https?:/.test(r.url())){if(page.url().includes('/wiki/'))external.push(r.url());r.abort();}
+    if(!r.url().startsWith(root)&&/^https?:/.test(r.url())){const from=r.headers().referer||page.url();if(from.includes('/wiki/'))external.push(r.url());r.abort();}
     else if(offline)r.abort();else r.continue();
   });
   await page.goto(root+'/',{waitUntil:'networkidle0'});
