@@ -672,5 +672,9 @@
   "wiki.trainingOrder": "Training order",
   "wiki.noBrains": "This technique cannot be learned through Brains training.",
   "wiki.aliasSource": "Uses",
-  "wiki.sharedUnlock": "Learning either variant unlocks both. Your current form must be able to learn the variant the enemy uses or the gym selects."
+  "wiki.sharedUnlock": "Learning either variant unlocks both. Your current form must be able to learn the variant the enemy uses or the gym selects.",
+  "wiki.pdfTitle": "Download PDF guide",
+  "wiki.pdfWarning": "Everything after this page reveals secrets.",
+  "wiki.pdfContents": "Contents",
+  "wiki.pdfSpoilers": "SPOILERS — appendix"
 }

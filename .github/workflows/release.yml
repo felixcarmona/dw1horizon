@@ -65,11 +65,23 @@ jobs:
         run: python3 tools/release_pages_test.py
       - name: Validate identity and integrity; build the static site
         run: python3 tools/release_pages.py build "$RELEASE_TAG" --inputs build/pages-input --out build/pages-site
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser test driver
+        run: npm install --prefix "$RUNNER_TEMP/pages-browser" --no-audit --no-fund puppeteer-core@24.31.0
+      - name: Install local PDF dependencies
+        run: |
+          python3 -m pip install pypdf==6.12.0 fonttools==4.60.1 pikepdf==10.0.2
+          sudo apt-get update -qq
+          sudo apt-get install -y fonts-noto-cjk poppler-utils
       - name: Take the page from the commit running this workflow, with the showcase media
         shell: bash
         run: |
           # The engine and package stay the tag's; a page-only change is redeployed with workflow_dispatch from main.
           git checkout "$GITHUB_SHA" -- web tools/guide tools/wiki
+          export PUPPETEER_MODULE="file://$RUNNER_TEMP/pages-browser/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js"
+          export CHROMIUM="$(command -v google-chrome)"
           python3 web/build.py --tag "$RELEASE_TAG" --presentation-ref "$GITHUB_SHA" --out build/pages-site
           test -z "$(tar -tzf build/pages-input/horizon-media.tar.gz | grep -vE '^[a-z0-9-]+\.(mp4|jpg)$')"
           mkdir build/pages-site/media/clips
@@ -83,11 +95,6 @@ jobs:
           sed -i -E "s/(href=\"style\.css|src=\"js\/app\.js)\"/\1?v=${GITHUB_SHA::8}\"/" build/pages-site/index.html
           grep -q "style.css?v=${GITHUB_SHA::8}" build/pages-site/index.html
           grep -q "js/app.js?v=${GITHUB_SHA::8}" build/pages-site/index.html
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - name: Install browser test driver
-        run: npm install --prefix "$RUNNER_TEMP/pages-browser" --no-audit --no-fund puppeteer-core@24.31.0
       - name: Test the generated site without discs
         shell: bash
         run: |
@@ -96,7 +103,7 @@ jobs:
           node web/test/i18n.mjs
           node web/test/changelog.mjs
           node web/test/changelog-browser.mjs build/pages-site
-          python3 -m unittest discover -s tools/wiki -p 'test_*.py'
+          WIKI_PDF_SITE=build/pages-site python3 -m unittest discover -s tools/wiki -p 'test_*.py'
           node web/test/wiki.mjs build/pages-site
           python3 -m http.server 8765 --bind 127.0.0.1 --directory build/pages-site > build/pages-server.log 2>&1 &
           server=$!

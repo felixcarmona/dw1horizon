@@ -3,6 +3,9 @@ import importlib.util
 import json
 from pathlib import Path
 import tempfile
+import sys
+from types import SimpleNamespace
+from unittest.mock import patch
 import unittest
 
 SPEC = importlib.util.spec_from_file_location('guide_build', Path(__file__).with_name('build.py'))
@@ -114,7 +117,12 @@ class GuideTests(unittest.TestCase):
                 path = out / name
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_text('release sentinel')
-            site.build(out, 'v0.0.7')
+            # PDF rendering is covered by the wiki artifact/browser suite. Keep this
+            # preservation test usable with the offline guide's stdlib dependencies.
+            fake_pdf=SimpleNamespace(generate=lambda out,data,pages: {
+                p.lang:dict(file=f'/wiki/{p.lang}/guide.pdf',bytes=1) for p in pages})
+            with patch.dict(sys.modules,{'pdf':fake_pdf}):
+                site.build(out, 'v0.0.7')
             for name in ('data/discs.json', 'engine/current.json'):
                 self.assertEqual((out / name).read_text(), 'release sentinel')
             self.assertTrue((out / 'data/index.html').is_file())

@@ -57,6 +57,15 @@ try{
           if(palette.has(badge.key))assert.equal(badge.colour,palette.get(badge.key),'consistent badge colours');else palette.set(badge.key,badge.colour);
         }
         assert.equal(await page.$$eval('details[open]',es=>es.length),0,'spoilers folded');
+        if(kind==='home'){
+          const guide=await page.$eval('a.pdf-guide',e=>({href:e.getAttribute('href'),text:e.textContent,download:e.hasAttribute('download')}));
+          assert.equal(guide.href,manifest.pdfs[lang].file);
+          assert.ok(guide.download);
+          assert.ok(guide.text.includes(strings['wiki.pdfTitle'])&&guide.text.includes('MB'));
+          const response=await fetch(root+guide.href);
+          assert.equal(response.headers.get('content-type'),'application/pdf');
+          assert.equal((await response.arrayBuffer()).byteLength,manifest.pdfs[lang].bytes);
+        }
         if(kind==='digimon-list'){
           assert.equal(await page.$$eval('.species-card',es=>es.length),manifest.counts.species);
           assert.equal(await page.$$eval('.species-card',es=>es.every(e=>e.querySelectorAll('.badge').length===2&&e.querySelector('.specialties'))),true);

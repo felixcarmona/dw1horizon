@@ -672,5 +672,9 @@
   "wiki.trainingOrder": "Ordre d’entraînement",
   "wiki.noBrains": "Cette technique ne s’apprend pas par l’entraînement des Méninges.",
   "wiki.aliasSource": "Utilise",
-  "wiki.sharedUnlock": "Apprendre une variante débloque les deux. Votre forme actuelle doit pouvoir apprendre la variante utilisée par l’ennemi ou choisie par le gymnase."
+  "wiki.sharedUnlock": "Apprendre une variante débloque les deux. Votre forme actuelle doit pouvoir apprendre la variante utilisée par l’ennemi ou choisie par le gymnase.",
+  "wiki.pdfTitle": "Télécharger le guide PDF",
+  "wiki.pdfWarning": "Tout ce qui suit cette page révèle des secrets.",
+  "wiki.pdfContents": "Sommaire",
+  "wiki.pdfSpoilers": "SPOILERS — annexe"
 }

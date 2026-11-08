@@ -672,5 +672,9 @@
   "wiki.trainingOrder": "Ordem de treinamento",
   "wiki.noBrains": "Esta técnica não pode ser aprendida treinando Inteligência.",
   "wiki.aliasSource": "Usa",
-  "wiki.sharedUnlock": "Aprender uma das variantes desbloqueia ambas. Sua forma atual precisa poder aprender a variante usada pelo inimigo ou selecionada pelo ginásio."
+  "wiki.sharedUnlock": "Aprender uma das variantes desbloqueia ambas. Sua forma atual precisa poder aprender a variante usada pelo inimigo ou selecionada pelo ginásio.",
+  "wiki.pdfTitle": "Baixar guia em PDF",
+  "wiki.pdfWarning": "Tudo após esta página revela segredos.",
+  "wiki.pdfContents": "Sumário",
+  "wiki.pdfSpoilers": "SPOILERS — apêndice"
 }

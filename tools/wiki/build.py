@@ -440,7 +440,7 @@ def build(out, tag, presentation_ref=None):
     dest=out/'wiki'
     if dest.exists():shutil.rmtree(dest)
     assets=dest/'assets';assets.mkdir(parents=True)
-    for name in ('style.css','wiki.js','redirect.js'):
+    for name in ('style.css','wiki.js','redirect.js','print.css'):
         shutil.copyfile(CONTENT/name,assets/name)
     icons=owned_icons()
     if not set(icons)<=set(str(s['id']) for s in data['species']):
@@ -448,9 +448,11 @@ def build(out, tag, presentation_ref=None):
     for name in set(icons.values()):
         (assets/'owned-icons').mkdir(exist_ok=True)
         shutil.copyfile(CONTENT/'owned-icons'/name,assets/'owned-icons'/name)
+    instances=[]
     for lang in model.LANGS:
         articles=json.loads((article_root/f'{lang}.json').read_text())
         pages=Pages(out,data,lang,articles)
+        instances.append(pages)
         pages.species_pages();pages.enemy_pages();pages.technique_pages();pages.article_pages();pages.directories()
         mapping={f'species-{s["id"]}':pages.url(s) for s in data['species']}
         mapping.update({k:pages.base+v+'/' for k,v in [('species','digimon'),('techniques','techniques'),('evolutions','evolutions'),('recruits','recruits')]})
@@ -460,6 +462,14 @@ def build(out, tag, presentation_ref=None):
     presentation=__import__('subprocess').check_output(['git','rev-parse','--verify',(presentation_ref or 'HEAD')+'^{commit}'],cwd=ROOT,text=True).strip()
     manifest=dict(schema=1,tag=tag,commit=data['commit'],presentation_commit=presentation,articles=review,counts={k:len(data[k]) for k in ('species','techniques','recruits')},facts=dict(save_blocks=data['facts']['save_blocks'],hard=bool(data['facts']['hard'])))
     (dest/'manifest.json').write_text(compact(manifest)+'\n')
+    import pdf
+    manifest['pdfs']=pdf.generate(out,dict(data,tag=tag),instances)
+    (dest/'manifest.json').write_text(compact(manifest)+'\n')
+    for pages in instances:
+        record=manifest['pdfs'][pages.lang]
+        link=f'<a class="pdf-guide" download href="{record["file"]}">{pages.t("wiki.pdfTitle")} · {record["bytes"]/1024/1024:.1f} MB</a>'
+        home=dest/pages.lang/'index.html'
+        home.write_text(home.read_text().replace('<div class="intro">','<div class="intro">'+link))
     sizes=budget(out)
     print(f'Wiki {tag}: {len(data["species"])} species, 20 articles × 9 languages; {sizes["wiki_bytes"]:,} bytes')
     return manifest
