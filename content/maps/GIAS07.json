@@ -78,5 +78,13 @@
       "ai": [1, 0, 1, 0, -1, -1, -1, -1],
       "path": [[-298, 0, -3148], [20, 0, 0], [891, 0, -2493], [20, 0, 0]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [38, 98],
+      "before": 0,
+      "after": 128,
+      "reason": "Outside the rendered savanna route. Close an isolated body-box trap without removing reachable floor."
+    }
   ]
 }

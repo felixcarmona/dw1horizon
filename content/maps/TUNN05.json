@@ -30,5 +30,13 @@
       "ai": [0, -1, -1, -1, -1, -1, -1, -1],
       "path": [[10, 0, 0]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [39, 48],
+      "before": 0,
+      "after": 128,
+      "reason": "Timber support foot. Close an isolated body-box trap without removing reachable floor."
+    }
   ]
 }

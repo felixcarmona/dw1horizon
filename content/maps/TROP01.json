@@ -71,5 +71,13 @@
       "ai": [1, 0, 1, 0, -1, -1, -1, -1],
       "path": [[1678, 0, -2920], [20, 0, 0], [1543, 0, -1873], [20, 0, 0]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [67, 50],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid cliff vegetation at the jungle edge. Close an isolated body-box trap without removing reachable floor."
+    }
   ]
 }

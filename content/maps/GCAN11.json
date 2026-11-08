@@ -98,5 +98,37 @@
       "ai": [0, -1, -1, -1, -1, -1, -1, -1],
       "path": [[10, 0, 0]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [38, 43],
+      "before": 0,
+      "after": 128,
+      "reason": "Shop wall, counter or the outer ledge face. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [55, 43],
+      "before": 0,
+      "after": 128,
+      "reason": "Shop wall, counter or the outer ledge face. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [36, 46],
+      "before": 0,
+      "after": 128,
+      "reason": "Shop wall, counter or the outer ledge face. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [36, 49],
+      "before": 0,
+      "after": 128,
+      "reason": "Shop wall, counter or the outer ledge face. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [55, 49],
+      "before": 0,
+      "after": 128,
+      "reason": "Shop wall, counter or the outer ledge face. Close an isolated body-box trap without removing reachable floor."
+    }
   ]
 }

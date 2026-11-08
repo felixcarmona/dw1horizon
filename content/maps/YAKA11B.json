@@ -1,0 +1,18 @@
+{
+  "file": "MAP/MAP4/YAKA11B.MAP",
+  "digimon": [],
+  "collision": [
+    {
+      "tile": [33, 50],
+      "before": 0,
+      "after": 128,
+      "reason": "Mansion wall corner. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [66, 50],
+      "before": 0,
+      "after": 128,
+      "reason": "Mansion wall corner. Close an isolated body-box trap without removing reachable floor."
+    }
+  ]
+}

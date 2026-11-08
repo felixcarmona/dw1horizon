@@ -58,5 +58,19 @@
       "ai": [1, 1, -1, -1, -1, -1, -1, -1],
       "path": [[-556, 0, -897], [489, 0, -1010]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [35, 99],
+      "before": 0,
+      "after": 128,
+      "reason": "Outside the rendered frozen route. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [60, 99],
+      "before": 0,
+      "after": 128,
+      "reason": "Outside the rendered frozen route. Close an isolated body-box trap without removing reachable floor."
+    }
   ]
 }

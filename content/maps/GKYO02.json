@@ -57,5 +57,31 @@
       "ai": [0, -1, -1, -1, -1, -1, -1, -1],
       "path": [[40, 0, 0]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [47, 27],
+      "before": 0,
+      "after": 128,
+      "reason": "Rim of the raised circular platform; the apparent one-tile hole cannot carry the tamer body. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [52, 27],
+      "before": 0,
+      "after": 128,
+      "reason": "Rim of the raised circular platform; the apparent one-tile hole cannot carry the tamer body. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [47, 32],
+      "before": 0,
+      "after": 128,
+      "reason": "Rim of the raised circular platform; the apparent one-tile hole cannot carry the tamer body. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [52, 32],
+      "before": 0,
+      "after": 128,
+      "reason": "Rim of the raised circular platform; the apparent one-tile hole cannot carry the tamer body. Close an isolated body-box trap without removing reachable floor."
+    }
   ]
 }

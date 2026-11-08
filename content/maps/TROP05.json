@@ -99,5 +99,13 @@
       "ai": [1, 0, 2, 0, -1, -1, -1, -1],
       "path": [[658, 0, -1416], [30, 0, 0], [-489, 0, -1272], [20, 0, 0]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [37, 88],
+      "before": 0,
+      "after": 128,
+      "reason": "Mangrove trunk and root body. Close an isolated body-box trap without removing reachable floor."
+    }
   ]
 }

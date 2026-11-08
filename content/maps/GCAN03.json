@@ -72,5 +72,31 @@
       "ai": [1, 1, -1, -1, -1, -1, -1, -1],
       "path": [[-1944, 0, 2125], [-2806, 0, 2014]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [46, 62],
+      "before": 0,
+      "after": 128,
+      "reason": "Isolated rock spur above the canyon; it is disconnected scenery. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [47, 62],
+      "before": 0,
+      "after": 128,
+      "reason": "Isolated rock spur above the canyon; it is disconnected scenery. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [48, 62],
+      "before": 0,
+      "after": 128,
+      "reason": "Isolated rock spur above the canyon; it is disconnected scenery. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [47, 63],
+      "before": 0,
+      "after": 128,
+      "reason": "Isolated rock spur above the canyon; it is disconnected scenery. Close an isolated body-box trap without removing reachable floor."
+    }
   ]
 }

@@ -59,5 +59,13 @@
       "ai": [1, 0, 1, -1, -1, -1, -1, -1],
       "path": [[279, 0, -43], [30, 0, 0], [-775, 0, -648]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [28, 52],
+      "before": 0,
+      "after": 128,
+      "reason": "Frozen cliff lip. Close an isolated body-box trap without removing reachable floor."
+    }
   ]
 }

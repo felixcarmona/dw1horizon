@@ -15,5 +15,13 @@
       "ai": [0, -1, -1, -1, -1, -1, -1, -1],
       "path": [[40, 0, 0]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [56, 67],
+      "before": 0,
+      "after": 128,
+      "reason": "Cave rock spur. Close an isolated body-box trap without removing reachable floor."
+    }
   ]
 }

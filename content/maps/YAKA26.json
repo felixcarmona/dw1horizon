@@ -16,5 +16,13 @@
       "ai": [0, -1, -1, -1, -1, -1, -1, -1],
       "path": [[40, 0, 0]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [55, 22],
+      "before": 0,
+      "after": 128,
+      "reason": "Laboratory machine foot against the wall. Close an isolated body-box trap without removing reachable floor."
+    }
   ]
 }

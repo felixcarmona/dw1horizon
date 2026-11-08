@@ -65,5 +65,109 @@
       "ai": [0, -1, -1, -1, -1, -1, -1, -1],
       "path": [[10, 0, 0]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [59, 23],
+      "before": 0,
+      "after": 128,
+      "reason": "Sarcophagus, raised stair edge or void outside the basement floor. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [78, 23],
+      "before": 0,
+      "after": 128,
+      "reason": "Sarcophagus, raised stair edge or void outside the basement floor. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [83, 29],
+      "before": 0,
+      "after": 128,
+      "reason": "Sarcophagus, raised stair edge or void outside the basement floor. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [59, 30],
+      "before": 0,
+      "after": 128,
+      "reason": "Sarcophagus, raised stair edge or void outside the basement floor. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [94, 37],
+      "before": 0,
+      "after": 128,
+      "reason": "Sarcophagus, raised stair edge or void outside the basement floor. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [19, 39],
+      "before": 0,
+      "after": 128,
+      "reason": "Sarcophagus, raised stair edge or void outside the basement floor. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [20, 39],
+      "before": 0,
+      "after": 128,
+      "reason": "Sarcophagus, raised stair edge or void outside the basement floor. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [21, 39],
+      "before": 0,
+      "after": 128,
+      "reason": "Sarcophagus, raised stair edge or void outside the basement floor. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [22, 39],
+      "before": 0,
+      "after": 128,
+      "reason": "Sarcophagus, raised stair edge or void outside the basement floor. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [23, 39],
+      "before": 0,
+      "after": 128,
+      "reason": "Sarcophagus, raised stair edge or void outside the basement floor. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [24, 39],
+      "before": 0,
+      "after": 128,
+      "reason": "Sarcophagus, raised stair edge or void outside the basement floor. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [25, 39],
+      "before": 0,
+      "after": 128,
+      "reason": "Sarcophagus, raised stair edge or void outside the basement floor. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [26, 39],
+      "before": 0,
+      "after": 128,
+      "reason": "Sarcophagus, raised stair edge or void outside the basement floor. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [27, 39],
+      "before": 0,
+      "after": 128,
+      "reason": "Sarcophagus, raised stair edge or void outside the basement floor. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [62, 39],
+      "before": 0,
+      "after": 128,
+      "reason": "Sarcophagus, raised stair edge or void outside the basement floor. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [77, 48],
+      "before": 0,
+      "after": 128,
+      "reason": "Sarcophagus, raised stair edge or void outside the basement floor. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [94, 48],
+      "before": 0,
+      "after": 128,
+      "reason": "Sarcophagus, raised stair edge or void outside the basement floor. Close an isolated body-box trap without removing reachable floor."
+    }
   ]
 }

@@ -114,5 +114,37 @@
       "ai": [0, -1, -1, -1, -1, -1, -1, -1],
       "path": [[10, 0, 0]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [55, 10],
+      "before": 0,
+      "after": 128,
+      "reason": "Savanna cliff base. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [64, 10],
+      "before": 0,
+      "after": 128,
+      "reason": "Savanna cliff base. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [54, 13],
+      "before": 0,
+      "after": 128,
+      "reason": "Savanna cliff base. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [55, 13],
+      "before": 0,
+      "after": 128,
+      "reason": "Savanna cliff base. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [64, 13],
+      "before": 0,
+      "after": 128,
+      "reason": "Savanna cliff base. Close an isolated body-box trap without removing reachable floor."
+    }
   ]
 }

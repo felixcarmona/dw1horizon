@@ -106,5 +106,31 @@
       "ai": [1, 0, 1, 0, -1, -1, -1, -1],
       "path": [[-460, 0, 3079], [20, 0, 0], [1802, 0, 3755], [20, 0, 0]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [38, 50],
+      "before": 0,
+      "after": 128,
+      "reason": "Upright broken stone beside the fallen tree; the one-tile hole inside its body traps the tamer."
+    },
+    {
+      "tile": [36, 54],
+      "before": 0,
+      "after": 128,
+      "reason": "Broken stone below the west stump; its free tip traps medium partners between the stump and roots."
+    },
+    {
+      "tile": [34, 53],
+      "before": 128,
+      "after": 0,
+      "reason": "Bare grass below the west stump, outside the stone and fallen roots; restores the west escape from the old pocket."
+    },
+    {
+      "tile": [37, 56],
+      "before": 128,
+      "after": 0,
+      "reason": "Bare grass west of the lowest fallen root; restores the south escape from the old partner pocket."
+    }
   ]
 }

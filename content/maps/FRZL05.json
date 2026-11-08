@@ -1,0 +1,36 @@
+{
+  "file": "MAP/MAP7/FRZL05.MAP",
+  "digimon": [],
+  "collision": [
+    {
+      "tile": [32, 50],
+      "before": 0,
+      "after": 128,
+      "reason": "Frozen wall foot or outside the rendered route. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [42, 50],
+      "before": 0,
+      "after": 128,
+      "reason": "Frozen wall foot or outside the rendered route. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [60, 50],
+      "before": 0,
+      "after": 128,
+      "reason": "Frozen wall foot or outside the rendered route. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [72, 50],
+      "before": 0,
+      "after": 128,
+      "reason": "Frozen wall foot or outside the rendered route. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [65, 97],
+      "before": 0,
+      "after": 128,
+      "reason": "Frozen wall foot or outside the rendered route. Close an isolated body-box trap without removing reachable floor."
+    }
+  ]
+}

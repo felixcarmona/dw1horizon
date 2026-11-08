@@ -33,5 +33,13 @@
       "ai": [0, -1, -1, -1, -1, -1, -1, -1],
       "path": [[10, 0, 0]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [29, 70],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid frozen branch at the cliff edge. Close an isolated body-box trap without removing reachable floor."
+    }
   ]
 }

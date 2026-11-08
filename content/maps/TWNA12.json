@@ -113,5 +113,13 @@
       "ai": [0, -1, -1, -1, -1, -1, -1, -1],
       "path": [[40, 0, 0]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [82, 19],
+      "before": 0,
+      "after": 128,
+      "reason": "Cliff and pond bank outside the town walking path. Close an isolated body-box trap without removing reachable floor."
+    }
   ]
 }
