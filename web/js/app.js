@@ -1,10 +1,9 @@
 import { setupChangelog, renderChangelog } from './changelog.js';
 import { renderFeatureList } from './features.js';
 import { setupMaps, labels as mapLabels } from './maps.js';
-import { setupDigimon, labels as digimonLabels } from './digimon.js';
 import { setupDesktop, renderDesktop, hasDesktop, visitorOS } from './desktop.js';
 import { inspect, checkFiles, partOf } from './disc.js';
-import { i18n, LANGS, NAMES, tag } from './i18n.js';
+import { i18n, LANGS, NAMES, tag, guess } from './i18n.js';
 import { FLAGS } from './flags.js';
 import { Build, missingSupport, tidyStorage, buildRoom, checkRoom, isMobile, withLock } from './engine/engine.js';
 import { store, revive } from './remember.js';
@@ -1125,7 +1124,7 @@ function renderBuild() {
 // ---------------------------------------------------------------- features
 
 function renderFeatures() {
-  renderFeatureList($('#feature-list'), features, i18n.lang, discLanguages());   // js/features.js
+  renderFeatureList($('#feature-list'), {...features, features:features.features.filter(f => !['digimon','guide'].includes(f.id))}, i18n.lang, discLanguages());   // js/features.js
 }
 
 // ---------------------------------------------------------------- start
@@ -1148,7 +1147,9 @@ function renderAll() {
   renderFeatures();
   renderChangelog();
   mapLabels();
-  digimonLabels();
+  document.querySelector('.data-link').href = `wiki/${i18n.lang}/`;
+  document.querySelector('.data-link').textContent = i18n.strings['wiki.nav'] || 'Wiki';
+  document.querySelector('#wiki-entry').href = `wiki/${i18n.lang}/`;
   renderDesktop();
 }
 
@@ -1185,7 +1186,6 @@ async function start() {
   setupChangelog(currentRelease).catch(() => { $('#changelog').hidden = true; });
   setupDesktop(currentRelease, LINKS.github).catch((e) => console.warn('desktop apps:', e));
   setupMaps().catch(() => { $('#maps').hidden = true; });
-  setupDigimon().catch(() => { $('#digimon').hidden = true; });
   tidyStorage().catch(() => {});   // what a stopped or crashed build left, the old engines
   restore().catch((e) => console.warn('remembered discs:', e));
 }
@@ -1215,3 +1215,11 @@ start();
   show();
   new MutationObserver(show).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
 })();
+
+// Preserve links to the retired main-page sections without opening spoilers.
+function redirectWikiAnchor() {
+  const section = {digimon:'digimon', evolutions:'evolutions', guide:'evolutions', 'feature-digimon':'digimon', 'feature-guide':'evolutions'}[location.hash.slice(1)];
+  if (section) location.replace(`wiki/${guess()}/${section}/`);
+}
+window.addEventListener('hashchange', redirectWikiAnchor);
+redirectWikiAnchor();

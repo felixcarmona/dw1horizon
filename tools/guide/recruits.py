@@ -32,7 +32,7 @@ def load(files, species):
         for path, needles in row['evidence'].items():
             source = files[path].decode()
             for needle in needles:
-                if needle not in source:
+                if not any(part in source for part in (needle if isinstance(needle, list) else [needle])):
                     raise ValueError(f'Review recruit {ident}: {path} no longer contains {needle!r}')
         row['hp'] = None
         if 'battle' in row:

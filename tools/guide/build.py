@@ -141,7 +141,7 @@ def render(commit, techniques, all_species, tree, version):
     tech_table = table('techniques', 'Techniques', '''<p>Enemy execution of a normal technique records it for learning; it need not land a hit. At battle end, your partner must not already know it, must have it in its species list, and must have a matching specialty. The first matching slot selects the chance below. <strong>Brains does not affect this battle roll.</strong> If several techniques pass their rolls, one is learned at random. Repeated casts do not add extra rolls for the same technique.</p><p>Chances are per candidate roll, not a guaranteed final award. MP is the base battle cost (data cost ×3), before condition and Brains modifiers. Finishers cost no MP. Status percentages apply on a successful hit. Finishers and intrinsic moves have no battle learning chance. Shared names show their data IDs.</p>''', ['Technique', 'Specialty', 'Power', 'MP', 'Range type', 'Status', '1st', '2nd', '3rd'], rows)
     rows, evolutions = [], []
     for s in ordered:
-        moves = [resolve_move(n, techniques) for n in s['techniques']]
+        moves = [resolve_move(n, techniques) for n in s['techniques'] if n is not None]
         learn = []
         intrinsic = []
         for t in moves:

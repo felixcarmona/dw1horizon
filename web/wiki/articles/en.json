@@ -1,0 +1,187 @@
+{
+  "getting-started": {
+    "title": "Getting started with Horizon",
+    "summary": "Your discs, your first boot and your first save.",
+    "paragraphs": [
+      "Build Horizon from your own supported Digimon World, Digital Card Battle, Digimon World 2 and World 3/2003 discs. The website or desktop patcher checks the source releases. The extra games supply imported species; you play Digimon World.",
+      "Keep the resulting .bin and .cue together. Open the .cue in your emulator and provide a BIOS dumped from your PlayStation. Before a new game, choose your language and options at the title. Check the detected RAM and CPU settings there.",
+      "Assign a memory card with {save_blocks} free blocks. Save in the game, restart and check that Continue loads it. Keep an exported copy of the card before an update."
+    ]
+  },
+  "duckstation-desktop": {
+    "title": "DuckStation on desktop",
+    "summary": "BIOS, game files, per-game settings and saves.",
+    "paragraphs": [
+      "Configure your own PlayStation BIOS in DuckStation. Add the directory containing Horizon, keeping the .cue beside its .bin. Launch the .cue; a renamed or missing .bin prevents the cue sheet from finding its track.",
+      "Use per-game settings for Horizon. Enable expanded 8 MB RAM if playing in Simplified Chinese. For automatic 60 fps rendering, enable CPU clock-speed control and set 250%. Other languages can use standard 2 MB RAM; RAM does not choose the frame rate.",
+      "Assign a memory card, leaving {save_blocks} free blocks. A per-game card avoids sharing space with other games. When changing disc filenames or updating Horizon, verify the card assignment and load an in-game save after a fresh boot."
+    ]
+  },
+  "duckstation-android": {
+    "title": "DuckStation on Android",
+    "summary": "BIOS, RAM, CPU settings and memory cards.",
+    "paragraphs": [
+      "Import your own PlayStation BIOS. Give DuckStation access to the folder containing Horizon, keeping .bin and .cue together, then open the .cue. Android storage permissions must allow the emulator to read that folder.",
+      "Open Horizon’s per-game settings. Look for expanded RAM (8 MB), CPU clock-speed control and the overclock percentage. Chinese needs 8 MB; 250% CPU allows the game to select 60 fps when the device keeps up. Restart after changing RAM and check the title’s detected settings. Setting names and availability vary by build.",
+      "In memory-card settings, assign a card with {save_blocks} free blocks. A per-game card keeps other games separate. Export a backup. After an update, confirm that the same card is assigned, boot the new disc and load the in-game save.",
+      "For stale or overlapping menu text on affected Android builds, try disabling Enable Texture Cache and restart. If it persists, report the Horizon version, DuckStation build, renderer and language, with a screenshot."
+    ]
+  },
+  "epsxe": {
+    "title": "ePSXe setup",
+    "summary": "BIOS, Android folder access and memory-card space.",
+    "paragraphs": [
+      "Configure a BIOS dumped from your own console and the folder containing the patched Horizon files. Keep the .cue and .bin together. On Android versions that require an ePSXe base folder, grant access so the app can store its cards and settings.",
+      "Check the assigned memory card and leave {save_blocks} free blocks. Test an in-game save and a fresh Continue before a long session; export a backup before changing app storage or updating the game.",
+      "Do not assume every ePSXe build has expanded RAM or equivalent CPU controls. The ordinary eight languages work with 2 MB. Chinese requires verified 8 MB support. If the title does not detect it, use another supported language or an emulator with that capability."
+    ]
+  },
+  "retroarch": {
+    "title": "RetroArch setup",
+    "summary": "Choose a PlayStation core and check that core’s options.",
+    "paragraphs": [
+      "RetroArch is a frontend: the selected core determines BIOS, memory-card and enhancement behavior. Choose a PlayStation core, read its official core documentation and place your own BIOS in the required system directory. Load the Horizon cue sheet with its .bin present.",
+      "Check the core’s memory-card settings and the directory where saves are written. Leave {save_blocks} free blocks, save in the game, close content cleanly and confirm Continue after reopening. Back up the card before changing cores; save-state formats are not portable between cores.",
+      "Expanded RAM and CPU options belong to the core and may be unavailable. Use the title’s detected settings. Standard 2 MB works for eight languages; Chinese needs 8 MB. Do not substitute a fast-forward setting for emulated CPU overclock."
+    ]
+  },
+  "iphone-web": {
+    "title": "Playing in a web emulator on iPhone",
+    "summary": "Check PlayStation support and protect your saves first.",
+    "paragraphs": [
+      "The Horizon website builds a disc; it does not run the game. A separate PlayStation web emulator, such as a host using EmulatorJS’s PlayStation core, must accept your own game and BIOS files. iPhone compatibility, performance and save export depend on that host and browser version.",
+      "Check the host’s supported file formats before importing. Keep the original .bin/.cue pair and a copy of your BIOS outside browser storage. Confirm that memory-card export and import work, and leave {save_blocks} free blocks on the emulated card.",
+      "Test saving, closing the page and reloading before a long session. Export your card after play; clearing website data can remove browser-held files. Use a standard language unless 8 MB support is verified. No iPhone browser/emulator combination is certified here."
+    ]
+  },
+  "memory-cards": {
+    "title": "Memory cards, backups and updates",
+    "summary": "Save space, per-game cards and safe update habits.",
+    "paragraphs": [
+      "Horizon needs {save_blocks} free blocks for a new Horizon save. Check both free space and the card assigned to the slot. With per-game cards, a new disc filename can select a different card; assign the existing card explicitly if Continue disappears.",
+      "An emulator save state holds the old executable and cached disc positions. To update, back up your memory card, build the new disc, boot it fresh and load an in-game save. Do not use an old save state to continue into a new release.",
+      "Keep backups outside the emulator’s active save directory. Before moving to another device, export the card, import it on the new emulator and verify Continue. Formatting a card erases its saves; create or use a spare card instead when testing."
+    ]
+  },
+  "ram-and-frame-rate": {
+    "title": "2 MB, Chinese and 60 fps",
+    "summary": "RAM and emulated CPU speed do different jobs.",
+    "paragraphs": [
+      "Horizon targets an original 2 MB PlayStation for eight languages. Simplified Chinese loads its extra fonts and language module above 2 MB and requires expanded 8 MB RAM. On a 2 MB system the game refuses that language and keeps the current one.",
+      "The renderer selects 20 fps at normal emulated CPU speed and 60 fps with enough overclock, using 250% as the recommended setting. Logic and controls remain at 20 Hz. Extra RAM does not change the frame rate and there is no in-game frame-rate switch.",
+      "Change emulated CPU speed rather than fast-forward speed. The title reports detected settings; use it to check your emulator configuration. The host device must still run the selected emulation speed fast enough. Restart after changing RAM."
+    ]
+  },
+  "first-day": {
+    "title": "Your partner’s first day",
+    "summary": "A small routine for a new life on File Island.",
+    "paragraphs": [
+      "Choose your partner through Jijimon’s new-game questions. Get familiar with the care indicators, inventory and nearby city services before heading farther out. Keep healing supplies and leave room for useful finds.",
+      "Feed your partner when hungry, reach a toilet when needed and allow sleep when tired. Check the species page for its favourite food and sleep cycle. Avoid spending the whole day training without checking needs.",
+      "Try a short gym session and inspect the stat and tiredness changes. Explore, return to town and make an in-game memory-card save. Evolution requirements depend on care and weight as well as stats, so decide which target you want before training every stat indiscriminately."
+    ]
+  },
+  "care": {
+    "title": "Care mistakes and discipline",
+    "summary": "Understand warnings before chasing a stat target.",
+    "paragraphs": [
+      "Hunger, toilet needs, sleep and tiredness are different systems. Neglecting a hunger warning or letting a partner use the ground can add care mistakes; sickness and exhaustion have their own consequences. Respond to the indicators and check the care panel regularly.",
+      "Discipline and happiness are separate values. Praise and scolding affect them differently, so they are not interchangeable cures for every care problem. A partner’s food preferences and sleep schedule also matter.",
+      "Evolution rows may ask for a maximum or a minimum number of mistakes. A high-mistake target is deliberate care planning, not a general recommendation to neglect a partner. Counts used by ordinary evolution refer to the current form; read the target’s four requirement groups together."
+    ]
+  },
+  "training": {
+    "title": "Training at the gym",
+    "summary": "Balance gains with the partner’s daily needs.",
+    "paragraphs": [
+      "Each gym trains a particular stat. The base gains below are base values; the final award can also depend on the partner, upgrades, items and the training result. Brains training has its own learning thresholds, separate from learning after a battle.",
+      "Training advances time and costs food, tiredness and lifetime. Check hunger, toilet and sleep before starting. Continuing while tired can carry penalties; a larger stat gain is not free time.",
+      "Training x5 runs several ordinary awards with care checks between them. Use x1 when you need to stop near an evolution weight or timing target. Rest and meet care needs before another block."
+    ]
+  },
+  "gym-x5": {
+    "title": "How gym x5 works",
+    "summary": "Several sessions, with normal costs and early stops.",
+    "paragraphs": [
+      "During a gym session, R2 switches the training block between x1 and x5. The block plays the initial animation, then applies each session’s award in sequence. It is not a five-times multiplier without time or care costs.",
+      "A block can stop after a session leaves the partner hungry, needing the toilet, sleepy, tired or unwell; it also checks evolution, lifetime and the gym’s own messages. The result box shows what actually completed. Do not assume five sessions always ran.",
+      "Bonus Try is separate from block training. Feed, rest or deal with the reported need before starting again. If you only want one award, switch to x1 before the session is committed rather than relying on an emergency stop."
+    ]
+  },
+  "evolution-requirements": {
+    "title": "How evolution requirements work",
+    "summary": "Read the target, then count the four groups.",
+    "paragraphs": [
+      "Ordinary evolution scores four groups: care mistakes, weight, stats and bonus. A target must reach {pass_points} points. All listed stat thresholds form one group; meeting two stats does not give two points. For Rookie targets, the highest stat is used instead.",
+      "Weight is a band around the target value. Mistakes can have either a minimum or a maximum. Any one listed bonus condition earns the bonus point; do not add all the bonus alternatives as separate mandatory requirements.",
+      "Open a target in the visual tree to read its row. Time in the current form, special triggers, NEW DIGIMON and competing candidates still affect the outcome. HP and MP thresholds are shown in player units. Happiness is shown on the status screen’s 0–100 scale."
+    ]
+  },
+  "evolution-timing": {
+    "title": "Evolution timing and competing targets",
+    "summary": "Requirements are only one part of the choice.",
+    "paragraphs": [
+      "The hours below are time spent in the current form, not the partner’s total age. Meeting a target’s stat row early does not make ordinary evolution immediate. Timed Ultimate routes also check the target requirements; special and item routes have different triggers.",
+      "The normal picker favours a target you have not raised yet. For Rookie-to-Champion and Champion-to-Ultimate candidates scoring three, it compares required-stat averages with HP/MP divided by ten; list order can affect the comparison. In-Training-to-Rookie keeps the best score and the first listed target on a tie.",
+      "Open a target in the visual tree to read its row. Time in the current form, special triggers, NEW DIGIMON and competing candidates still affect the outcome. HP and MP thresholds are shown in player units. Happiness is shown on the status screen’s 0–100 scale."
+    ]
+  },
+  "learning-techniques": {
+    "title": "Learning techniques",
+    "summary": "Species lists, specialty slots and candidate rolls.",
+    "paragraphs": [
+      "An enemy executing a normal technique records it as a learning candidate; it does not need to hit your partner. After battle, the move must be on the species list, have a matching specialty and not already be known. The first matching specialty slot selects its roll.",
+      "Brains does not change that battle learning roll. Repeated uses of the same move do not create extra candidate rolls. If multiple candidates pass, one is chosen at random; a displayed percentage is not a guaranteed final award.",
+      "Brains training uses separate rules. Technique pages show base battle MP cost before condition and Brains modifiers; finishers cost no MP. Shared move names retain their IDs, and a species-specific finisher can override the ordinary move’s values."
+    ]
+  },
+  "file-city": {
+    "title": "File City and recruiting residents",
+    "summary": "Find services, prosperity and recruit prerequisites.",
+    "paragraphs": [
+      "The recruitment directory lists residents, locations, city services and prosperity contributions inside closed spoilers.",
+      "Recruitment steps are hidden until you open the spoiler disclosure. Times use the game clock. Check prerequisites as well as the place; a resident may depend on a city milestone, another recruit or a story event.",
+      "Recruitment details and solutions are folded spoilers. Open them when you want the answer."
+    ]
+  },
+  "hidden-mechanics": {
+    "title": "Hidden partner mechanics",
+    "summary": "Hidden partner mechanics.",
+    "paragraphs": [
+      "{bakemon_mechanic}",
+      "Partners have individual food preferences and sleep cycles. Their specialties also control which techniques they can learn in battle. An empty specialty slot still counts when selecting the learning probability, even though the summary omits empty slots.",
+      "The in-game evolution guide and the wiki’s tree help explain possible targets. Special transformations and item routes have separate conditions; a normal stat row alone does not describe every way a species can appear."
+    ]
+  },
+  "new-game-quiz": {
+    "title": "New-game quiz: points and starters",
+    "summary": "All seven questions contribute to three score groups.",
+    "paragraphs": [
+      "The table lists points for each answer position in Jijimon’s new-game quiz. Answer positions follow the order shown in the game. Scores select an element, an attribute and a temperament; the combination selects a starter from the grid below.",
+      "The highest score wins within each group. Ties favour the most recent supporting answer; if that answer supports both tied choices, the earlier choice in the group wins. The order is Battle, Fire, Ice, Nature, Air; Vaccine, Data, Virus; Bold, Calm, Cunning.",
+      "The starter columns show NEW DIGIMON on and off. Quiz answers, scores and the starter grid are inside the spoiler below."
+    ],
+    "spoiler_paragraphs": [
+      0,
+      1
+    ]
+  },
+  "difficulty": {
+    "title": "EASY, NORMAL and HARD",
+    "summary": "EASY, NORMAL and HARD.",
+    "paragraphs": [
+      "NORMAL uses the ordinary battle rules. EASY doubles the partner’s damage and halves damage received, rounding up before the usual limits. It also halves poison damage to the partner. These changes cover single-player field battles and tournaments, not two-player VS.",
+      "Difficulty does not rewrite the partner’s saved stats. Scripted percentage damage follows its own rules. Choose difficulty at the title’s options and check the available settings.",
+      "Choose from the difficulty settings shown in the title options. Battle adjustments come from the game’s settings below; they do not change permanent partner growth."
+    ]
+  },
+  "faq": {
+    "title": "Player FAQ and troubleshooting",
+    "summary": "Updates, missing saves, slow patching and useful reports.",
+    "paragraphs": [
+      "If Continue is missing, check the assigned card, its free blocks and the disc filename used by per-game cards. Horizon needs {save_blocks} free blocks for a new save. Back up the card before updating, boot the new disc and load an in-game save.",
+      "Phone patching can be slow. For storage quota errors, use a normal browser window, free space and retry; the desktop patcher is another option. The source-disc checks are intentional: the extra games provide imported species, and a modified or unsupported dump will not match.",
+      "For broken or stale text, record your game version, base disc, language, emulator build and graphics settings. On affected Android builds, try disabling Enable Texture Cache. Include the exact trigger and a screenshot in a bug report; a symptom alone does not identify its cause."
+    ]
+  }
+}

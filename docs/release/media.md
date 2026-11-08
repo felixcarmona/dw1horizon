@@ -1,5 +1,9 @@
 # Publication media
 
+For the current image-free wiki boundary and the separate inventory of existing
+main-page showcase clips/maps, see [the wiki artwork audit](../wiki-art-audit.md).
+The snapshot description below predates the release showcase assembly.
+
 The tracked site contains only `web/media/disc.svg`, the project's authored disc
 placeholder. Pages copies tracked assets, excludes local clips and renders feature
 cards without missing media. No box art, gameplay recordings or console photo is

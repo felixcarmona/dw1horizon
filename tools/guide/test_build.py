@@ -21,6 +21,8 @@ class GuideTests(unittest.TestCase):
         for s in self.partners.values():
             self.assertEqual(self.page.count(f'id="species-{s["id"]}"'), 1)
             for name in s['techniques']:
+                if name is None:
+                    continue
                 self.assertIn(guide.resolve_move(name, self.moves), self.moves)
         for t in self.moves:
             self.assertIn(f'#{t["id"]} · ', self.page)
@@ -112,12 +114,12 @@ class GuideTests(unittest.TestCase):
                 path = out / name
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_text('release sentinel')
-            site.build(out, 'v0.0.6')
+            site.build(out, 'v0.0.7')
             for name in ('data/discs.json', 'engine/current.json'):
                 self.assertEqual((out / name).read_text(), 'release sentinel')
             self.assertTrue((out / 'data/index.html').is_file())
             self.assertTrue((out / 'data/es.html').is_file())
-            self.assertIn('href="data/"', (out / 'index.html').read_text())
+            self.assertIn('href="wiki/"', (out / 'index.html').read_text())
 
     def test_displayed_mp_exempts_finishers(self):
         self.assertEqual(guide.base_mp(guide.resolve_move('Fire Tower', self.moves)), 81)

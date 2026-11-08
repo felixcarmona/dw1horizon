@@ -76,10 +76,10 @@ section { padding-top: 120px; }
 :lang(ja) body { line-break: strict; }
 .hero h1 + .hero-actions { margin-top: 28px; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-/* a phone: two rows of two, the same width */
+/* A phone: paired actions, with a compact centred final action when needed. */
 @media (max-width: 560px) {
   .hero-actions { display: grid; grid-template-columns: 1fr 1fr; }
-  .hero-actions .button.guide { grid-column: 1 / -1; order: 3; }
+  .hero-actions > .button:last-child:nth-child(odd) { grid-column: 1 / -1; justify-self: center; width: calc(50% - 5px); }
   .hero-actions .button { min-width: 0; padding-inline: 10px; white-space: normal; text-align: center; line-height: 1.15; }
 }
 
@@ -529,3 +529,6 @@ section { padding-top: 120px; }
 .data-link { font-size: 13px; font-weight: 600; padding: 6px 10px; border-radius: 999px; }
 .data-link:hover { background: rgba(255,255,255,.7); }
 @media (max-width: 560px) { .bar { height: auto; min-height: 68px; flex-wrap: wrap; padding-block: 12px; } .bar .pill { margin-left: auto; } }
+
+/* Shared locally hosted font for the website and wiki. */
+@font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:200 800;font-display:swap;src:url("media/font/PlusJakartaSans.ttf") format("truetype")}

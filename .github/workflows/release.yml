@@ -69,10 +69,8 @@ jobs:
         shell: bash
         run: |
           # The engine and package stay the tag's; a page-only change is redeployed with workflow_dispatch from main.
-          git checkout "$GITHUB_SHA" -- web tools/site_digimon.py tools/guide
-          python3 web/build.py --tag "$RELEASE_TAG" --out build/pages-site
-          # The guide describes the tag's species, which this checkout still has; main may be ahead of the release.
-          python3 tools/site_digimon.py --out build/pages-site/content/digimon.json
+          git checkout "$GITHUB_SHA" -- web tools/guide tools/wiki
+          python3 web/build.py --tag "$RELEASE_TAG" --presentation-ref "$GITHUB_SHA" --out build/pages-site
           test -z "$(tar -tzf build/pages-input/horizon-media.tar.gz | grep -vE '^[a-z0-9-]+\.(mp4|jpg)$')"
           mkdir build/pages-site/media/clips
           tar -xzf build/pages-input/horizon-media.tar.gz -C build/pages-site/media/clips
@@ -80,6 +78,7 @@ jobs:
           mkdir build/pages-site/media/maps
           tar -xzf build/pages-input/horizon-maps.tar.gz -C build/pages-site/media/maps
           sed -i "s|</head>|  <meta name=\"source-repository\" content=\"https://github.com/$GITHUB_REPOSITORY\">\n</head>|" build/pages-site/index.html
+          python3 tools/wiki/check.py --site build/pages-site
           # A new address per deployment: a browser never mixes this page with a stale stylesheet or script.
           sed -i -E "s/(href=\"style\.css|src=\"js\/app\.js)\"/\1?v=${GITHUB_SHA::8}\"/" build/pages-site/index.html
           grep -q "style.css?v=${GITHUB_SHA::8}" build/pages-site/index.html
@@ -97,7 +96,8 @@ jobs:
           node web/test/i18n.mjs
           node web/test/changelog.mjs
           node web/test/changelog-browser.mjs build/pages-site
-          node web/test/data.mjs build/pages-site
+          python3 -m unittest discover -s tools/wiki -p 'test_*.py'
+          node web/test/wiki.mjs build/pages-site
           python3 -m http.server 8765 --bind 127.0.0.1 --directory build/pages-site > build/pages-server.log 2>&1 &
           server=$!
           trap 'kill "$server"; wait "$server" || true' EXIT

@@ -1,0 +1,187 @@
+{
+  "getting-started": {
+    "title": "Erste Schritte mit Horizon",
+    "summary": "Eigene Discs, erster Start und erster Spielstand.",
+    "paragraphs": [
+      "Erstelle Horizon aus deinen unterstützten Discs von Digimon World, Digital Card Battle, Digimon World 2 und World 3/2003. Website oder Desktop-Patcher prüfen die Ausgaben. Die anderen Spiele liefern importierte Arten; gespielt wird Digimon World.",
+      "Lass .bin und .cue zusammen. Öffne die .cue mit einem von deiner PlayStation ausgelesenen BIOS. Wähle Sprache und Optionen am Titel und prüfe erkannte RAM- und CPU-Einstellungen.",
+      "Weise eine Karte mit {save_blocks} freien Blöcken zu. Speichere im Spiel, starte neu und teste Fortsetzen. Exportiere vor Updates eine Sicherung."
+    ]
+  },
+  "duckstation-desktop": {
+    "title": "DuckStation am Computer",
+    "summary": "BIOS, Spieldateien, Spieleinstellungen und Spielstände.",
+    "paragraphs": [
+      "Richte dein eigenes PlayStation-BIOS ein und füge den Horizon-Ordner hinzu. Die .cue muss bei ihrer .bin bleiben; fehlt diese oder wurde sie umbenannt, wird die Spur nicht gefunden.",
+      "Nutze Einstellungen nur für Horizon. Vereinfachtes Chinesisch braucht 8 MB erweiterten RAM. Aktiviere für automatische 60 fps die CPU-Taktsteuerung mit 250 %. Andere Sprachen laufen mit 2 MB; RAM bestimmt nicht die Bildrate.",
+      "Weise eine Karte mit {save_blocks} freien Blöcken zu. Karten pro Spiel vermeiden geteilten Platz. Prüfe nach Umbenennen oder Update die Kartenzuweisung und lade nach einem frischen Start im Spiel."
+    ]
+  },
+  "duckstation-android": {
+    "title": "DuckStation unter Android",
+    "summary": "BIOS, RAM, CPU-Einstellungen und Speicherkarten.",
+    "paragraphs": [
+      "Importiere dein eigenes PlayStation-BIOS. Erlaube Zugriff auf Horizons Ordner, lass .bin und .cue zusammen und öffne die .cue. Android muss das Lesen des Ordners erlauben.",
+      "Suche in den Spieleinstellungen nach erweitertem RAM mit 8 MB, CPU-Taktsteuerung und Übertaktungsprozent. Chinesisch braucht 8 MB; 250 % ermöglicht 60 fps, wenn das Gerät mithält. Starte nach RAM-Änderungen neu und prüfe die Erkennung am Titel. Namen und Verfügbarkeit hängen vom Build ab.",
+      "Weise eine Karte mit {save_blocks} freien Blöcken zu, möglichst pro Spiel, und exportiere eine Sicherung. Prüfe nach Updates dieselbe Karte, starte die neue Disc und lade den Spielstand im Spiel.",
+      "Bei altem oder überlagertem Text in betroffenen Android-Builds versuche Enable Texture Cache auszuschalten und neu zu starten. Melde bei Fortbestand Horizon-Version, DuckStation-Build, Renderer und Sprache samt Bildschirmfoto."
+    ]
+  },
+  "epsxe": {
+    "title": "ePSXe einrichten",
+    "summary": "BIOS, Android-Ordnerzugriff und Kartenplatz.",
+    "paragraphs": [
+      "Richte dein BIOS und den Horizon-Ordner ein. Lass .cue und .bin zusammen. Verlangt Android einen ePSXe-Basisordner, erlaube dessen Zugriff für Karten und Einstellungen.",
+      "Lass {save_blocks} Blöcke auf der zugewiesenen Karte frei. Teste Speichern im Spiel und Fortsetzen nach Neustart vor einer langen Sitzung. Sichere die Karte vor Speicheränderungen oder Updates.",
+      "Nicht jeder ePSXe-Build bietet erweiterten RAM oder entsprechende CPU-Regler. Acht Sprachen laufen mit 2 MB; Chinesisch braucht nachgewiesene 8 MB. Erkennt der Titel sie nicht, nutze eine andere Sprache oder einen geeigneten Emulator."
+    ]
+  },
+  "retroarch": {
+    "title": "RetroArch einrichten",
+    "summary": "PlayStation-Core wählen und dessen Optionen prüfen.",
+    "paragraphs": [
+      "RetroArch ist die Oberfläche; der Core bestimmt BIOS, Karten und Erweiterungen. Wähle einen PlayStation-Core, lies seine offizielle Dokumentation und lege dein BIOS im geforderten Systemordner ab. Lade die Horizon-.cue mit vorhandener .bin.",
+      "Prüfe Kartenoptionen und Speicherordner. Lass {save_blocks} Blöcke frei, speichere im Spiel, schließe den Inhalt sauber und teste Fortsetzen nach erneutem Öffnen. Sichere vor Core-Wechseln; Speicherzustände sind nicht zwischen Cores übertragbar.",
+      "RAM- und CPU-Optionen hängen vom Core ab und können fehlen. Prüfe die Erkennung am Titel. Acht Sprachen brauchen 2 MB, Chinesisch 8 MB. Schnellvorlauf ersetzt keine emulierte CPU-Übertaktung."
+    ]
+  },
+  "iphone-web": {
+    "title": "Webemulator auf dem iPhone",
+    "summary": "PlayStation-Unterstützung prüfen und Spielstände schützen.",
+    "paragraphs": [
+      "Die Horizon-Website erstellt eine Disc, führt das Spiel aber nicht aus. Ein separater PlayStation-Webemulator, etwa mit EmulatorJS-PlayStation-Core, muss deine Dateien und dein BIOS akzeptieren. iPhone-Kompatibilität, Leistung und Export hängen von Website und Browser ab.",
+      "Prüfe unterstützte Formate. Bewahre .bin/.cue und BIOS außerhalb des Browsers auf. Teste Kartenexport und -import und lass {save_blocks} Blöcke auf der emulierten Karte frei.",
+      "Teste Speichern, Schließen und Neuladen vor längerem Spielen. Exportiere danach die Karte; gelöschte Websitedaten können Dateien entfernen. Nutze ohne nachgewiesene 8 MB eine Standardsprache. Hier ist keine iPhone-Kombination zertifiziert."
+    ]
+  },
+  "memory-cards": {
+    "title": "Speicherkarten, Sicherungen und Updates",
+    "summary": "Platz, Karten pro Spiel und sichere Updates.",
+    "paragraphs": [
+      "Horizon braucht {save_blocks} freie Blöcke für einen neuen Spielstand. Prüfe Platz und zugewiesene Karte. Bei Karten pro Spiel kann ein neuer Discname eine andere Karte wählen; weise die alte zu, wenn Fortsetzen fehlt.",
+      "Speicherzustände enthalten das alte Programm und gepufferte Discpositionen. Sichere zum Update die Karte, erstelle die neue Disc, starte frisch und lade im Spiel. Nutze keinen alten Zustand zum Wechsel in die neue Version.",
+      "Bewahre Sicherungen außerhalb des aktiven Ordners auf. Exportiere beim Gerätewechsel, importiere und teste Fortsetzen. Formatieren löscht Spielstände; nutze zum Testen eine neue oder freie Karte."
+    ]
+  },
+  "ram-and-frame-rate": {
+    "title": "2 MB, Chinesisch und 60 fps",
+    "summary": "RAM und emulierte CPU-Geschwindigkeit haben andere Aufgaben.",
+    "paragraphs": [
+      "Horizon unterstützt acht Sprachen auf einer originalen PlayStation mit 2 MB. Vereinfachtes Chinesisch lädt zusätzliche Schrift und Sprachmodul oberhalb von 2 MB und braucht 8 MB. Bei 2 MB lehnt das Spiel diese Sprache ab und behält die aktuelle.",
+      "Das Rendering wählt 20 fps bei normaler CPU und 60 fps bei ausreichender Übertaktung; empfohlen sind 250 %. Logik und Eingaben bleiben bei 20 Hz. Mehr RAM erhöht die Bildrate nicht, und im Spiel gibt es keinen Bildratenschalter.",
+      "Ändere die emulierte CPU statt Schnellvorlauf. Prüfe erkannte Einstellungen am Titel. Das Gerät muss die gewählte Emulationsgeschwindigkeit halten können. Starte nach RAM-Änderungen neu."
+    ]
+  },
+  "first-day": {
+    "title": "Der erste Tag deines Partners",
+    "summary": "Ein kleiner Tagesplan für File Island.",
+    "paragraphs": [
+      "Wähle den Partner mit Jijimons Fragen. Lerne Pflegeanzeigen, Inventar und nahe Dienste kennen, bevor du weiterziehst. Nimm Heilmittel mit und lass Platz für Funde.",
+      "Füttere bei Hunger, erreiche Toiletten rechtzeitig und lass ihn schlafen. Lieblingsessen und Schlafzeiten stehen auf der Artseite. Trainiere nicht den ganzen Tag ohne Pflegekontrolle.",
+      "Teste eine kurze Einheit und prüfe Werte und Müdigkeit. Erkunde, kehre zurück und speichere auf Karte. Entwicklung hängt auch von Gewicht und Pflege ab; wähle ein Ziel vor wahllosem Training."
+    ]
+  },
+  "care": {
+    "title": "Pflegefehler und Disziplin",
+    "summary": "Warnungen verstehen, bevor du Werte planst.",
+    "paragraphs": [
+      "Hunger, Toilette, Schlaf und Müdigkeit sind getrennte Systeme. Ignorierter Hunger oder Kot auf dem Boden kann Fehler verursachen; Krankheit und Erschöpfung haben eigene Folgen. Prüfe Anzeigen und Pflegebereich regelmäßig.",
+      "Disziplin und Zufriedenheit sind verschieden. Loben und Schimpfen wirken unterschiedlich und lösen nicht jedes Problem. Essensvorlieben und Schlafzeiten zählen ebenfalls.",
+      "Entwicklungen können Mindest- oder Höchstzahlen von Fehlern verlangen. Viele Fehler sind eine gezielte Entscheidung, keine allgemeine Pflegeempfehlung. Gewöhnliche Zähler gelten für die aktuelle Form; lies alle vier Gruppen zusammen."
+    ]
+  },
+  "training": {
+    "title": "Training im Fitnessstudio",
+    "summary": "Zuwachs und tägliche Bedürfnisse ausgleichen.",
+    "paragraphs": [
+      "Jedes Gerät trainiert einen Wert. Die Basiswerte unten sind die Grundwerte; Partner, Verbesserungen, Gegenstände und Trainingsergebnis können sie verändern. Intelligenztraining hat eigene Lernschwellen, getrennt vom Kampf.",
+      "Training verbraucht Zeit, Nahrung, Müdigkeit und Lebensdauer. Prüfe Hunger, Toilette und Schlaf vorher. Müde weiterzumachen kann Strafen auslösen; größere Zuwächse sind keine kostenlose Zeit.",
+      "x5 vergibt mehrere normale Belohnungen mit Prüfungen dazwischen. Nutze x1 nahe Gewichts- oder Entwicklungszielen. Ruhe dich aus und erfülle Bedürfnisse vor einem neuen Block."
+    ]
+  },
+  "gym-x5": {
+    "title": "So funktioniert x5-Training",
+    "summary": "Mehrere Einheiten mit normalen Kosten und frühen Stopps.",
+    "paragraphs": [
+      "R2 wechselt während einer Einheit zwischen x1 und x5. Nach der ersten Animation vergibt der Block die Belohnungen nacheinander. Er ist kein kostenloser Fünffachmultiplikator.",
+      "Er kann nach Hunger, Toilettenbedarf, Schläfrigkeit, Müdigkeit oder Unwohlsein stoppen. Auch Entwicklung, Lebensdauer und Studiomeldungen werden geprüft. Das Ergebnis zeigt die tatsächlich abgeschlossenen Einheiten; es sind nicht immer fünf.",
+      "Bonus Try ist unabhängig vom Block. Kümmere dich vor dem nächsten Versuch um den Stopgrund. Wähle für eine Belohnung rechtzeitig x1, statt auf einen Notstopp zu setzen."
+    ]
+  },
+  "evolution-requirements": {
+    "title": "Entwicklungsvoraussetzungen verstehen",
+    "summary": "Ziel lesen und vier Gruppen zählen.",
+    "paragraphs": [
+      "Gewöhnliche Entwicklung bewertet Pflegefehler, Gewicht, Werte und Bonus. Nötig sind {pass_points} Punkte. Alle Wertgrenzen bilden eine Gruppe; zwei Werte geben keine zwei Punkte. Bei Rookie-Zielen gilt der höchste Wert.",
+      "Gewicht hat einen Bereich; Fehler können ein Minimum oder Maximum haben. Eine einzige Bonusalternative reicht für den Bonuspunkt, nicht alle sind Pflicht.",
+      "Tippe das Ziel im Baum an. Zeit in der Form, Sonderauslöser, NEW DIGIMON und weitere Kandidaten beeinflussen das Ergebnis. HP/MP stehen in Spielerwerten; Zufriedenheit nutzt die Statusskala 0–100."
+    ]
+  },
+  "evolution-timing": {
+    "title": "Entwicklungszeiten und Kandidaten",
+    "summary": "Voraussetzungen sind nur ein Teil der Auswahl.",
+    "paragraphs": [
+      "Die Stunden unten gelten in der aktuellen Form, nicht seit Geburt. Frühe Wertgrenzen lösen keine sofortige Entwicklung aus. Zeitrouten für Ultimate prüfen ebenfalls Voraussetzungen; Sonder- und Gegenstandsrouten haben eigene Auslöser.",
+      "Die Auswahl bevorzugt noch nie aufgezogene Ziele. Für Rookie–Champion und Champion–Ultimate mit drei Punkten vergleicht sie geforderte Durchschnittswerte, HP/MP durch zehn; die Reihenfolge kann wirken. In-Training–Rookie behält die beste Punktzahl und den ersten Gleichstand.",
+      "Tippe das Ziel im Baum an. Zeit in der Form, Sonderauslöser, NEW DIGIMON und weitere Kandidaten beeinflussen das Ergebnis. HP/MP stehen in Spielerwerten; Zufriedenheit nutzt die Statusskala 0–100."
+    ]
+  },
+  "learning-techniques": {
+    "title": "Techniken lernen",
+    "summary": "Artenlisten, Spezialitätsplätze und Kandidatenwürfe.",
+    "paragraphs": [
+      "Eine normale gegnerische Technik wird durch Ausführen zum Kandidaten, auch ohne Treffer. Nach dem Kampf muss sie in der Artenliste stehen, eine passende Spezialität haben und unbekannt sein. Der erste passende Platz bestimmt den Wurf.",
+      "Intelligenz ändert diesen Kampfwurf nicht. Wiederholungen geben keine Zusatzwürfe. Bestehen mehrere Kandidaten, wird einer zufällig gewählt; die Prozentzahl garantiert keine endgültige Belohnung.",
+      "Intelligenztraining folgt anderen Regeln. Seiten zeigen Basis-MP vor Modifikatoren; Finisher kosten keine MP. Gleiche Namen behalten IDs, und artspezifische Finisher können Werte überschreiben."
+    ]
+  },
+  "file-city": {
+    "title": "File City und Bewohner",
+    "summary": "Dienste, Wohlstand und Rekrutierung.",
+    "paragraphs": [
+      "Das Rekrutierungsverzeichnis zeigt Bewohner, Orte, Dienste und Wohlstandsbeiträge in geschlossenen Spoilern.",
+      "Schritte bleiben bis zum Öffnen des Spoilerbereichs verborgen. Zeiten folgen der Spieluhr. Prüfe Ort und Voraussetzungen wie Stadtfortschritt, andere Rekruten oder Ereignisse.",
+      "Rekrutierungsdetails und Lösungen stehen in geschlossenen Spoilern. Öffne sie, wenn du die Antwort sehen möchtest."
+    ]
+  },
+  "hidden-mechanics": {
+    "title": "Verborgene Partnermechaniken",
+    "summary": "Verborgene Partnermechaniken.",
+    "paragraphs": [
+      "{bakemon_mechanic}",
+      "Partner haben eigene Essensvorlieben und Schlafzeiten. Spezialitäten bestimmen lernbare Kampftechniken. Leere Plätze zählen beim Lernwurf weiterhin, auch wenn die Zusammenfassung sie auslässt.",
+      "Spielguide und Baum erläutern Ziele. Sonderverwandlungen und Gegenstände haben eigene Bedingungen; eine normale Wertezeile beschreibt nicht jeden Weg zu einer Art."
+    ]
+  },
+  "new-game-quiz": {
+    "title": "Startquiz: Punkte und Partner",
+    "summary": "Alle sieben Antworten zählen in drei Gruppen.",
+    "paragraphs": [
+      "Die Tabelle zeigt Punkte je Antwortposition in Jijimons Quiz, in Spielreihenfolge. Punkte wählen Element, Attribut und Temperament; die Kombination bestimmt den Startpartner.",
+      "Der höchste Gruppenwert gewinnt. Gleichstände bevorzugen die zuletzt unterstützende Antwort; unterstützt dieselbe Antwort beide, gewinnt der frühere Gruppeneintrag. Reihenfolge: Kampf, Feuer, Eis, Natur, Luft; Impfstoff, Daten, Virus; Mutig, Ruhig, Listig.",
+      "Die Spalten gelten für NEUE DIGIMON ein und aus. Antworten, Punkte und Startpartner stehen im Spoiler unten."
+    ],
+    "spoiler_paragraphs": [
+      0,
+      1
+    ]
+  },
+  "difficulty": {
+    "title": "EASY, NORMAL und HARD",
+    "summary": "EASY, NORMAL und HARD.",
+    "paragraphs": [
+      "NORMAL nutzt gewöhnliche Kampfregeln. EASY verdoppelt Partner-Schaden und halbiert erhaltenen Schaden, aufgerundet vor normalen Grenzen. Auch Partners Gift wird halbiert. Das gilt für Einzelspielerfeldkämpfe und Turniere, nicht Zwei-Spieler-VS.",
+      "Schwierigkeit schreibt gespeicherte Werte nicht um. Skript-Prozentschaden folgt eigenen Regeln. Wähle am Titel und prüfe die verfügbaren Optionen.",
+      "Wähle eine Schwierigkeit in den Titeloptionen. Die Kampfanpassungen stehen unten und verändern das dauerhafte Wachstum des Partners nicht."
+    ]
+  },
+  "faq": {
+    "title": "Häufige Fragen und Fehlerhilfe",
+    "summary": "Updates, Spielstände, langsames Patchen und gute Berichte.",
+    "paragraphs": [
+      "Fehlt Fortsetzen, prüfe Karte, freie Blöcke und Discname bei Karten pro Spiel. Horizon braucht {save_blocks} freie Blöcke für neue Spielstände. Sichere vor Updates und lade nach frischem Discstart im Spiel.",
+      "Patchen am Telefon kann dauern. Bei Speicherquoten nutze ein normales Fenster, schaffe Platz und versuche erneut; alternativ nutze den Desktop-Patcher. Zusatzdiscs liefern Arten; veränderte oder nicht unterstützte Ausgaben bestehen die Prüfung nicht.",
+      "Notiere bei Textfehlern Version, Basisdisc, Sprache, Emulator-Build und Grafik. Versuche bei betroffenen Android-Builds Enable Texture Cache auszuschalten. Nenne Auslöser und füge ein Bild bei; das Symptom allein erklärt die Ursache nicht."
+    ]
+  }
+}

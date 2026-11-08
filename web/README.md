@@ -56,8 +56,7 @@ The project's site: a static page with no backend. The patcher runs in the visit
   `media/clips/` (optional local recordings, excluded from public Pages artifacts;
   `js/features.js` renders text-only cards when media is absent).
 - `js/changelog.js` renders `content/changelog.json`: translated release history, limited to the served engine's release tag; the English entry also supplies release notes.
-- `content/digimon.json`: the Digimon list and evolution guide (`js/digimon.js`). Not tracked: the release workflow
-  writes it with `tools/site_digimon.py` from the tag's content, so it always matches the release the page builds.
+- `wiki/`: the unified multilingual wiki, generated with tagged game data by `tools/wiki/`. The main header and Wiki hero button open it; the former modal is replaced. See [wiki maintenance](../docs/wiki.md).
 - Box art is not stored here: the browser fetches it from libretro-thumbnails (`BOXART` in `js/app.js`), with `media/disc.svg` as the fallback.
 - `media/psx.webp`: the console photo, Evan-Amos, public domain (Wikimedia Commons, PSX-Console-wController.png).
   See the [publication media inventory](../docs/release/media.md) before supplying media.
@@ -376,16 +375,11 @@ local hosting utility, not required for Pages. Local preview:
 
 ## Player data at /data/
 
-The header links to the release-matched technique/species/evolution/recruit guide.
-`python3 web/build.py --tag v0.0.7 --out build/site` overlays the presentation
-and generates `/data/` with `tools/guide/build.py`, using that tag's owned data.
-Release and Pages runs the same command for every release and page-only retry;
-presentation can come from main while the data stays pinned to `RELEASE_TAG`.
-All nine languages have guide UI and recruit instructions in `i18n/*.json`
-(`data.*`). Recruits include locations, availability, quest steps, battle HP,
-City contributions and prosperity, checked against the roster and story sources. The shared theme, header, language preference and components
-also apply to the guide. Its font and all scripts are served locally.
-`node web/test/data.mjs SITE [SHOTS]` checks navigation, release matching,
-languages, table behavior and desktop/mobile layout. See `tools/guide/README.md`.
+The header and main-page Wiki hero button link to `/wiki/<language>/`. The old Digimon/evolution sections and `/data/` routes redirect to the unified latest-release wiki. See [wiki authoring and checks](../docs/wiki.md).
+
 For full-disc Chromium verification, `BUILD_WORKERS=4` selects four workers
 in `web/test/cross-browser.mjs` (default one); `EXPECT_SHA1` enforces a CLI pin.
+
+## Unified wiki
+
+`python3 web/build.py --tag v0.0.7 --out build/pages-site` builds the website and wiki together. `/data/` and its localized pages/anchors now redirect to the wiki, while `data/discs.json` remains patcher metadata. The release workflow takes page code from the dispatching commit and all wiki game facts from the selected tag. Search runs against local JSON; fonts and Digimon images are hosted locally. See [wiki sources, routes, articles and checks](../docs/wiki.md).
