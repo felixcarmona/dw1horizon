@@ -77,7 +77,7 @@ def unobserve(e):
     e.run('lua', 'if GH then GH.bp:remove();GH.v:remove();GH=nil end')
 
 
-def fixture(e, base, screen, prefix, food=310, gym="Hp"):
+def fixture(e, base, screen, prefix, food=310, gym="Hp", sessions=5):
     e.run('load', str(base)); e.run('resume')
     assert e.warp(screen), f'warp {screen}'
     e.poke('TRN_LOADING_COMPLETE', b'\0')
@@ -97,8 +97,9 @@ def fixture(e, base, screen, prefix, food=310, gym="Hp"):
     e.poke('LAST_HANDLED_FRAME', struct.pack('<H', 12000))
     if gym == 'Brains':
         e.gs('set', 'partner.stats.brain=99')
-    # Same pstat consumed by the real "Normal training x5" menu row.
-    call(e, 'writePStat', 246, 2)
+    # Same pstat consumed by the real normal / normal x5 menu rows.
+    assert sessions in (1, 5)
+    call(e, 'writePStat', 246, 2 if sessions == 5 else 0)
     call(e, prefix + '_setup' + gym + 'Training', screen)
     e.run('resume')
     state = 'TRAINING_STATE' if prefix == 'TRN' else 'MAIN_D_801353BD'

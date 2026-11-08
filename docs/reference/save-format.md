@@ -74,12 +74,13 @@ part is pinned by compile-time `SAVE_LAYOUT_CHECK`s, so the original executable 
   range the checksum skips. Zero (an original save) is version 0. 2 is the older fixed-struct extension (still read),
   4 is the tagged list written today. A version the build does not know gives "Data Error" (card menu error 2) rather
   than a misread.
-- **Blocks.** A new game creates a two-block file (seven saves fit on a card). If only one block is free it writes a
-  plain v1 file with the version word and no extension. Saving over a one-block file deletes and recreates it with two
-  blocks when the card has room (libmcrd cannot grow a file in place).
+- **Blocks.** A new game creates a two-block file (seven saves fit on a card). Two free blocks are required when
+  creating a slot. A one-block legacy file grows to two blocks when a spare block is available (libmcrd cannot grow
+  a file in place). Without room, saving reports the card-full error and leaves the existing file untouched. Earlier
+  builds silently wrote only the original block when space ran out, losing extension-only progress.
 - **Refusing the original executable.** When a save holds content the original game cannot represent (a partner species
-  of 180 or more, an item id of 128 or more, a screen of 255 or more), the v1 checksum is stored bit-inverted. The
-  original then shows "Data Error" instead of loading a partner it cannot draw; this build validates such a copy through
+  of 180 or more, an item id of 128 or more, a screen of 255 or more, or any extended raised/recruited bits), the v1
+  checksum is stored bit-inverted. The original then shows "Data Error" instead of loading a partner it cannot draw; this build validates such a copy through
   its extension. A save with only original content keeps a correct v1 checksum and stays loadable by the original game.
 - **Stale extensions.** If the original executable saves over an extended file it rewrites only the v1 part. Each
   extension stores the v1 checksum of the payload it was written with, so it no longer matches and the build reads the
@@ -181,6 +182,36 @@ the extension's records are authoritative. Original ids keep their numbers in th
   the swap. Raised and recruited flags stay. See [../mods/species.md](../mods/species.md) and
   [../mods/options.md](../mods/options.md).
 
+## Card formats and recovery
+
+Horizon writes one game file, `BASLUS-01032DMR<n>`, with both blocks linked through the card directory. There is no
+second companion file. A raw 128 KiB `.mcr` and `.mcd` use the same card layout; changing the filename suffix neither
+adds nor removes extension data. Every partial write waits for `MemCardSync` before the next begins. Per-game card
+selection and when an emulator flushes its card image to disk are emulator settings, outside the game file format.
+The [official ePSXe configuration guide](https://www.epsxe.com/android/memcard.html) documents separate file selections
+for the two card ports and distinguishes memory-card saves from emulator states.
+
+If history or recruits disappear after Continue:
+
+1. Back up the complete card image before saving again. Check that the emulator selected the same card and slot;
+   per-game card settings can select a different image from the global card paths. Let the game finish saving,
+   then close the emulator normally so pending card writes reach disk.
+2. Inspect the file's directory size and both blocks, not only its icon/header. Keep both blocks when copying a save
+   through a card manager; a single exported block cannot hold Horizon's extension.
+3. Restore a complete earlier card backup if the extension is missing or overwritten. A one-block save cannot
+   reconstruct which imported species were raised or recruited. If still running with the correct progress in RAM,
+   free a card block and save through the game before resetting; do not overwrite the only backup. An earlier emulator
+   state may also contain the missing progress: load it with the same build that created it and make a complete
+   in-game save on a card with enough space, then boot the updated build from that card. Do not load the old state
+   directly into a different build.
+4. The new writer refuses to discard the extension and protects extended history/recruits with the inverted payload
+   checksum even when the current partner is native. If both extensions of such a save are damaged, Continue reports
+   Data Error instead of loading empty extended flags. Old saves remain readable, including earlier one-block saves;
+   the next successful save preserves the progress they still contain.
+
+A missing extension alone does not explain loss of native raised triggers. Without the failing card, an entirely
+empty Chart cannot be attributed to ePSXe or to card format solely from a screenshot.
+
 ## The options copy in the card header
 
 Patch 0193 writes a copy of the `SAVE_TAG_OPTIONS` bytes into the card header's PocketStation bytes (file 0x50..0x5F; a
@@ -223,16 +254,28 @@ history. Check both copies' payload checksums, extension checksums and linked
 payload checksums before attributing an empty chart to an emulator. Also check
 the selected card and save slot: a valid older save is still valid data.
 
-`tools/dev/playtest/chart_card_roundtrip.py` marks native and imported history,
-saves through the game's card menu, moves the extension block to a nonadjacent
-free block in a disposable raw 128 KiB `.mcr` image, and Continues from a fresh
-boot. It checks the history bits and records all five Chart tabs before and
-after. This exercises the raw card and its directory chain; it does not emulate
-ePSXe's CPU, BIOS or card timing.
+`tools/dev/playtest/chart_card_roundtrip.py` marks native and imported history
+and extended recruit flags, saves through the game's card menu, moves the extension
+block to a nonadjacent free block in a disposable raw 128 KiB `.mcr` image, and Continues from a fresh
+boot. It checks history and recruit bits and records all five Chart tabs before
+and after, waiting for each page's icon reads to finish before capturing it.
+This exercises the raw card and its directory chain; it does not emulate ePSXe's
+CPU, BIOS or card timing.
 
 ```sh
 python3 tools/dev/playtest/chart_card_roundtrip.py build/NAME.cue \
   --exe build/NAME/exe/SLUS_010.32 --out build/chart-card-proof
+```
+
+The capacity policy has both a prepared-C fault-injection check and an emulator proof. The latter needs a disposable
+copy of an original one-block save; it fills private card copies, checks refusal without writes, grows a legacy file,
+Continues its marked progress, rejects a missing extension and refuses a new slot with only one free block.
+
+```sh
+python3 tools/dev/saves/capacity.py build/decomp-dev
+python3 tools/dev/playtest/save_policy.py build/NAME.cue \
+  --exe build/NAME/exe/SLUS_010.32 --legacy-card build/states/original.mcd \
+  --out build/save-capacity-proof
 ```
 
 ## Related
