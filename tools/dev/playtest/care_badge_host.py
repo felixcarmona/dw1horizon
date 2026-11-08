@@ -13,8 +13,8 @@ source=(root/'src/main/bubble.c').read_text()
 renderer = function(source, 'static void renderConditionRing(int32_t x, int32_t y, int32_t depth,')
 patch = (ROOT/'mods/patches/Patch-0158-X-badge.-The-dialogue-box-s-X-button-rend.patch').read_text()
 added = '\n'.join(line[1:] for line in patch.splitlines() if line.startswith('+') and not line.startswith('+++'))
-legacy_block = function(added, '\tif (MOD_RING_BADGE > 0)').replace('j < 6', 'j < 8')
-current_block = function(renderer, '\tif (MOD_RING_BADGE > 0) {\n\t\tint32_t right')
+legacy_block = function(added, '\tif (MOD_RING_BADGE > 0)').replace('j < 6', 'j < 9').replace('if (MOD_RING_BADGE > 0)', 'if (MOD_RING_BADGE > 0 && drawn > 0)')
+current_block = function(renderer, '\tif (MOD_RING_BADGE > 0 && drawn > 0) {\n\t\tint32_t right')
 legacy = renderer.replace(current_block, legacy_block).replace(
     'static void renderConditionRing(', 'static void renderLegacyConditionRing(', 1)
 prefix=r'''
@@ -26,8 +26,10 @@ prefix=r'''
 #define RING_BADGE_H 12
 #define RING_BADGE_TICKS 4
 static int32_t DRAWING_OFFSET_X=160,DRAWING_OFFSET_Y=120,CLOCK_OFFSET_X=-220;
+static int ITEM_SCOLD_FLAG=1;
+static int modScoldAvailable(int flag){return flag==1;}
 static int32_t VIEWPORT_DISTANCE=4096,MOD_RING_BADGE,MOD_RING_STEPS,MOD_RING_SHOWN[5];
-static int fx[8],fy[8],fs[8],drawn,seen[8],gx[8],gy[8],badgeCount,badgeX,badgeY,badgeK,badgeSize,minTop;
+static int fx[9],fy[9],fs[9],drawn,seen[9],gx[9],gy[9],badgeCount,badgeX,badgeY,badgeK,badgeSize,minTop;
 static int32_t ringPhase(void){return 0;}
 static void ringBubbleAt(int j,int p,int*x,int*y,int*s,int*t){
  (void)p;*x=fx[j];*y=fy[j];*s=fs[j];*t=0;
@@ -57,11 +59,11 @@ int main(void){
  for(int hud=0;hud<2;hud++)for(int oy=30;oy<=200;oy+=85)
  for(int origin=8;origin<=312;origin+=152)
  for(int pattern=0;pattern<3;pattern++)
- for(int n=0;n<=8;n++)for(int grow=25;grow<=205;grow+=60)
+ for(int n=0;n<=9;n++)for(int grow=25;grow<=205;grow+=60)
  for(int k=2048;k<=8192;k+=2048)for(int badge=0;badge<=4;badge++){
   CLOCK_OFFSET_X=hud?-135:-220;
   int top=n>2?(n+1)/2:0;
-  for(int j=0;j<8;j++){
+  for(int j=0;j<9;j++){
    int col=j<top?j:j-top,cnt=j<top?top:n-top;
    fx[j]=j<n?((2*col-(cnt-1))*22/2)*16:0;
    fy[j]=j<n&&j<top?-(pattern==2?9:18)*16:0;
@@ -70,16 +72,16 @@ int main(void){
   }
   drawn=badgeCount=0;minTop=100000;MOD_RING_BADGE=badge;
   renderLegacyConditionRing(origin-DRAWING_OFFSET_X,oy-DRAWING_OFFSET_Y,4096,k);
-  int oldGX[8],oldGY[8];for(int j=0;j<n;j++){oldGX[j]=gx[j];oldGY[j]=gy[j];}
+  int oldGX[9],oldGY[9];for(int j=0;j<n;j++){oldGX[j]=gx[j];oldGY[j]=gy[j];}
   int oldX=badgeX,oldY=badgeY,oldK=badgeK,oldSize=badgeSize;
   int oldW=(RING_BADGE_W*((oldK*oldSize)>>8))>>12;
   int oldH=(RING_BADGE_H*((oldK*oldSize)>>8))>>12;
   int oldLeft=oldX-oldW/2,oldTop=oldY-oldH/2;
-  drawn=badgeCount=0;for(int j=0;j<8;j++)seen[j]=0;
+  drawn=badgeCount=0;for(int j=0;j<9;j++)seen[j]=0;
   renderConditionRing(origin-DRAWING_OFFSET_X,oy-DRAWING_OFFSET_Y,4096,k);
   for(int j=0;j<n;j++)assert(gx[j]==oldGX[j]&&gy[j]==oldGY[j]);
-  assert(drawn==n);assert(badgeCount==(badge>0));
-  if(badge){
+  assert(drawn==n);assert(badgeCount==(badge>0 && n>0));
+  if(badge && n){
    int w=(RING_BADGE_W*((badgeK*badgeSize)>>8))>>12;
    int h=(RING_BADGE_H*((badgeK*badgeSize)>>8))>>12;
    assert(badgeX==oldX&&badgeY==oldY&&badgeK==oldK&&badgeSize==oldSize);
@@ -87,7 +89,16 @@ int main(void){
   }
   cases++;
  }
- printf("PASS: %d layouts; 0..8 bubbles at left/centre/right, growing/moving edges, four projected scales, all badge phases; legacy centre, size and pixel offsets identical; all relative condition positions unchanged; condition-group footprints inside the viewport and clear of the fixed HUD clock under five camera offsets\n",cases);
+ /* An expired Scold slot is hidden immediately, even during its old step. */
+ for(int j=0;j<9;j++){fx[j]=fy[j]=fs[j]=seen[j]=0;}
+ DRAWING_OFFSET_X=160;DRAWING_OFFSET_Y=120;CLOCK_OFFSET_X=-220;
+ fs[8]=205;ITEM_SCOLD_FLAG=0;MOD_RING_BADGE=4;drawn=badgeCount=0;
+ renderConditionRing(0,0,4096,4096);
+ assert(drawn==0 && badgeCount==0 && !seen[8]);
+ ITEM_SCOLD_FLAG=1;drawn=badgeCount=0;
+ renderConditionRing(0,0,4096,4096);
+ assert(drawn==1 && badgeCount==1 && seen[8]);
+ printf("PASS: %d layouts; 0..9 bubbles at left/centre/right, growing/moving edges, four projected scales, all badge phases; legacy centre, size and pixel offsets identical; all relative condition positions unchanged; condition-group footprints inside the viewport and clear of the fixed HUD clock under five camera offsets\n",cases);
 }
 '''
 with tempfile.TemporaryDirectory(prefix='care-badge-host-') as tmp:
