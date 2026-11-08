@@ -24,6 +24,13 @@ import species as S
 EXCEPTIONS = {}
 
 
+def reviewed_radius(species, original, actual):
+    """Only the authored, reviewed reduction may differ on disc; never accept an arbitrary radius."""
+    review = species.get('_npc_collision_review')
+    return (isinstance(review, str) and bool(review.strip()) and
+            actual == species['model']['radius'] and 0 < actual <= original)
+
+
 class Disc:
     def __init__(self, path):
         self.img = isolist.Img(str(path))
@@ -71,7 +78,8 @@ def check(out):
     _, _, _, count, _, rsec, *_ = struct.unpack_from(S.HEADER, data)
     recs = [S.unpack_record(data[rsec*S.SECTOR+t*S.RECORD_SIZE:rsec*S.SECTOR+(t+1)*S.RECORD_SIZE], t)
             for t in range(count)]
-    twins = {s['_npc_original']: t for t, s in S.load_content(str(out / 'species')).items() if '_npc_original' in s}
+    authored = S.load_content(str(out / 'species'))
+    twins = {s['_npc_original']: t for t, s in authored.items() if '_npc_original' in s}
     linkmap = (out / 'exe/SLUS_010.32.elf.map').read_text()
     address = int(re.search(r'0x([0-9a-fA-F]+)\s+DIGIMON_DATA\b', linkmap)[1], 16)
     exe = disc.read('SLUS_010.32')
@@ -122,6 +130,8 @@ def check(out):
             reasons.append(f'missing animation slots {missing}')
         for key in ('radius', 'height'):
             if para[key] != original['para'][key]:
+                if key == 'radius' and reviewed_radius(authored[actual_type], original['para'][key], para[key]):
+                    continue
                 reasons.append(f'{key} {original["para"][key]} -> {para[key]}')
         if reasons:
             if t in EXCEPTIONS:
