@@ -11,6 +11,9 @@ on:
       - 'tools/patcher/**'
       - 'tools/isowriter.py'
       - 'tools/test_desktop_patcher.py'
+      - 'tools/derive/steps/plan.py'
+      - 'tools/test_languages.py'
+      - 'tools/test_model_variants.py'
       - 'tools/dws/**'
       - 'tools/test_dws_imports.py'
       - 'web/i18n/**'
@@ -64,6 +67,11 @@ jobs:
         run: python -m unittest test_desktop_patcher -v
       - name: Story import identity
         run: python -m unittest tools.test_dws_imports -v
+      - name: Chinese resource paths (including the v0.0.7 bundle)
+        run: >-
+          python -m unittest -v
+          tools.test_languages.Languages.test_chinese_resource_routes_use_portable_paths
+          tools.test_model_variants.PinKeys.test_v007_windows_chinese_manifest_passes_hole_checks
       - name: Build
         shell: bash
         run: |
