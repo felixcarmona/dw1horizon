@@ -135,7 +135,8 @@ def author(data, skeleton, sid, cfg):
             donor.anims.table[slot] = len(donor.anims.anims)
             donor.anims.anims.append(mmd.encode_anim(samples, dn, loop, events, tol=1, repeats=False))
     rest = rt.rest_pose(old, nb, cfg.get('rest_slot', 33))
-    dr = rt.rest_pose(donor, dn)
+    donor_ref_slot = cfg.get('donor_ref_slot', 0)
+    dr = rt.rest_pose(donor, dn, donor_ref_slot)
     mapping = {int(k): (v, 1.) for k, v in cfg['map'].items()}
     for key, weight in cfg.get('rotation_weights', {}).items():
         mapping[int(key)] = (mapping[int(key)][0], weight)
@@ -194,7 +195,7 @@ def author(data, skeleton, sid, cfg):
         scale = cfg.get('scales', {}).get(str(slot), cfg['scale'])
         donor_slot = cfg.get('donor_slots', {}).get(str(slot), slot)
         moved = rt.transfer(donor, donor_id, donor_slot, sid, rest, mapping,
-                            (carrier, 1, scale), scale)
+                            (carrier, 1, scale), scale, ref_slot=donor_ref_slot)
         source_frames = animsheet.slot_frames(old, nb, 33)[0]
         native_frames = animsheet.slot_frames(donor, dn, donor_slot)[0]
         auxiliary = None
@@ -257,6 +258,11 @@ def author(data, skeleton, sid, cfg):
                 world_rotation(ankle, aw)
                 world_rotation(foot, fw)
             p[0][6:9] = [round(v) for v in moved['root'][tick]]
+            if cfg.get('native_support_feet'):
+                bottom = max(sum(dw[b][1][j]*v[j] for j in range(3)) + positions[b][1]
+                             for b in cfg['native_support_feet']
+                             for v in donor.tmd.obj_verts(ds[b][0]))
+                p[carrier][7] += round(min(0, bottom)*scale-ground(p))
             if cfg.get('ground_contact') and not cfg.get('sole_contacts'):
                 p[carrier][7] -= round(ground(p))
             gap = cfg.get('maximum_support_gap', {}).get(str(slot))
@@ -264,7 +270,7 @@ def author(data, skeleton, sid, cfg):
                 p[carrier][7] += round(-gap-ground(p))
             frames.append(p)
         mmd.close_loop(frames, moved['loop'])
-        if cfg.get('ground_contact') or cfg.get('maximum_support_gap'):
+        if moved['loop'] is not None and (cfg.get('ground_contact') or cfg.get('maximum_support_gap')):
             frames[-1][1:] = copy.deepcopy(frames[0][1:])
             cyclic_eulers(frames)
         # Clearance includes the engine's interpolated poses, with an eased
@@ -276,9 +282,12 @@ def author(data, skeleton, sid, cfg):
                 lifts[tick] = max(lifts[tick], lift)
                 lifts[tick+1] = max(lifts[tick+1], lift)
         period = len(frames)-1
-        lifts[0] = lifts[-1] = max(lifts[0], lifts[-1])
-        lifts = [max(lifts[j]-1.5*min((i-j)%period, (j-i)%period)**2 for j in range(period)) for i in range(period)]
-        lifts.append(lifts[0])
+        if moved['loop'] is not None:
+            lifts[0] = lifts[-1] = max(lifts[0], lifts[-1])
+            lifts = [max(lifts[j]-1.5*min((i-j)%period, (j-i)%period)**2 for j in range(period)) for i in range(period)]
+            lifts.append(lifts[0])
+        else:
+            lifts = [max(lifts[j]-1.5*(i-j)**2 for j in range(len(lifts))) for i in range(len(lifts))]
         if not cfg.get('sole_contacts'):
             for p, lift in zip(frames, lifts):
                 p[carrier][7] -= round(lift)

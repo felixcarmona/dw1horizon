@@ -119,7 +119,7 @@
  "299": {"model": "299-Hookmon.MMD", "aliases_applied": true, "field_overlay": "hookmon-chibi"},
  "300": {"model": "300-SlashAngemon.MMD", "aliases_applied": true},
  "302": {"model": "302-HiAndromon.MMD", "aliases_applied": true, "field_overlay": "hiandromon-chibi"},
- "303": {"model": "303-KingEtemon.MMD", "aliases_applied": true, "field_overlay": "kingetemon-chibi"},
+ "303": {"model": "303-KingEtemon.MMD", "aliases_applied": true},
  "304": {"model": "304-Divermon.MMD", "aliases_applied": true},
  "305": {"model": "305-Ebidramon.MMD", "aliases_applied": true},
  "306": {"model": "306-GrapLeomon.MMD", "aliases_applied": true},
