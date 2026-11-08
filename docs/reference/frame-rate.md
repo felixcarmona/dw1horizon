@@ -667,10 +667,10 @@ Grade D cup and world walks hash identically every tick at 20, 30 and 60 fps, in
 
 ## Memory
 
-The 0.0.8 ladder is measured against the same current-main assets and text without the ladder:
-`main_BSS_END` changes from `0x801CE4D8` to `0x801CEBCC` (+1,780 bytes); aligned usable heap
-changes from 186,912 to 185,136 bytes (−1,776). All 320 actual-archive setups fit, with 416 bytes
-minimum headroom on screen 207. MENU remains 55,164 bytes (27 sectors; 132 bytes before the
+The 0.0.8 ladder is measured against the merged-main build before the ladder:
+`main_BSS_END` changes from `0x801CE3F0` to `0x801CEAEC` (+1,788 bytes); aligned usable heap
+changes from 187,136 to 185,360 bytes (−1,776). All 320 actual-archive setups fit, with 640 bytes
+minimum headroom on screen 207. MENU remains 53,484 bytes (27 sectors; 1,812 bytes before the
 55,296-byte limit). Title UI grows 20 bytes and stays inside EVL, clear of the MENU sector read.
 All ten executable layouts (base plus nine languages) agree. No allocation is added.
 
