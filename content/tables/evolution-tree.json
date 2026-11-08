@@ -639,7 +639,7 @@
     "Monmon": {"parents": ["Yokomon"], "reason": "Family route: Yokomon -> Monmon, sharing air. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "Bearmon": {"parents": ["Nyaromon"], "reason": "Family route: Nyaromon -> Bearmon, sharing battle. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
     "Renamon": {"parents": ["Nyaromon"], "reason": "Family route: Nyaromon -> Renamon, sharing battle. Six ordinary targets per Baby II with NEW DIGIMON on; original-disc routes retained."},
-    "WarGreymon": {"parents": ["MetalGreymonVirus", "MetalGreymonVaccine", "ExTyrannomon", "Triceramon", "MasterTyrannomon"], "reason": "Canon main line, then family and shared specialty.", "chain": true, "parent_reasons": {"ExTyrannomon": "Canon: Wikimon lists Ex-Tyranomon -> WarGreymon; the Tyrannomon/Greymon dinosaur family, vaccine. Shares fire and battle.", "Triceramon": "Canon: Wikimon lists Triceramon -> WarGreymon; the dinosaur family. Shares battle.", "MasterTyrannomon": "Fire-breathing dinosaur warriors; fire and battle. Second Mega choice."}},
+    "WarGreymon": {"parents": ["MetalGreymonVaccine", "MetalGreymonVirus", "ExTyrannomon", "Triceramon", "MasterTyrannomon"], "reason": "Canon main line, then family and shared specialty.", "chain": true, "parent_reasons": {"ExTyrannomon": "Canon: Wikimon lists Ex-Tyranomon -> WarGreymon; the Tyrannomon/Greymon dinosaur family, vaccine. Shares fire and battle.", "Triceramon": "Canon: Wikimon lists Triceramon -> WarGreymon; the dinosaur family. Shares battle.", "MasterTyrannomon": "Fire-breathing dinosaur warriors; fire and battle. Second Mega choice."}},
     "Apocalymon": {
       "parents": ["Phantomon", "Datamon"],
       "reason": "Canon main line, then family and shared specialty.",
@@ -1257,7 +1257,7 @@
     "352": {"from": [477], "to": [108, 227, 299, 264, 325, 58]},
     "353": {"from": [476], "to": [105, 108, 218, 296, 48]},
     "354": {"from": [476], "to": [228, 234, 241, 409]},
-    "373": {"from": [12, 224, 266, 257, 124], "to": []},
+    "373": {"from": [224, 12, 266, 257, 124], "to": []},
     "400": {"from": [229, 294], "to": []},
     "401": {"from": [291, 279, 304], "to": []},
     "402": {"from": [277, 88, 126], "to": []},

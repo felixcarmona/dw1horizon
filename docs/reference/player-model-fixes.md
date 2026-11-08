@@ -445,3 +445,90 @@ Greymon mouth bones 4 and 5 now map to Garuru barrel bone 13, at the centre of
 its six-vertex muzzle ring `(2, 202, 0)`. Bone-based missing rows use the same
 barrel default; entity-centred impacts retain the engine's ordinary fallback.
 Tremor uses range 3 and keeps its original cannon casting program.
+
+### Greymon run and KingEtemon gestures
+
+Greymon's native `GREY.MMD` is byte-identical to the original disc model.
+Its run has 19 decoded poses with identical loop and event data. Native
+MetalGreymon's model is also unchanged; the gold variant keeps the original
+run program and all 21 decoded poses. Neither species receives a model gait edit.
+
+Greymon's native run changes Euler charts at tick 17→18. Bone 19 moves only
+8.8 degrees physically, but the previous 60 FPS renderer interpolated the
+separate angles through a roughly 120-degree detour. The renderer now chooses
+the nearer equivalent Euler chart before interpolating bones. Native tick
+poses, model bytes, animation timing and the 20 FPS path stay intact. The
+host regression runs 1,800 cases against the actual C helper, checks exact
+endpoint orientations and bounds the repaired run seam within 0.2 degrees
+of quaternion interpolation. The previous renderer reproduces the failure.
+
+```sh
+python3 tools/dev/playtest/bone_interpolation_host.py build/decomp-dev build/bone-interpolation
+```
+
+KingEtemon uses the World 2003 `M250KGET` model. Its crown, glasses and cape
+agree with the [official design](https://digimon.net/reference_en/detail.php?directory_name=kingetemon).
+The imported care and condition poses could leave both feet 40–100 units
+above the floor, unlike their native Leomon donor. The repair changes only
+the carrier height in those programs; acting, timing, events and horizontal
+travel remain intact after the uniform size adjustment. The seated sleep
+pose also gathers the lower cape behind the hips to keep its hem above the floor.
+
+The victory uses native Etemon slot `0x2A`. Megaton Punch uses Etemon's own
+Megaton Punch at `0x34`, replacing the imported jump-kick assignment. The
+three poop throws use Etemon's Ult Poop Hell performance at `0x3A`.
+These transfers retain KingEtemon's 23-bone rig and mesh. Anatomical leg
+solves preserve native support and airborne clearance; wrist solves give
+the raised gloves room beside the larger head. The cape panels trail the
+torso. The fitted wrist tracks retain continuous Euler angles for the 60 FPS
+renderer. Other attack programs, including the finisher, remain unchanged.
+
+The final mesh and every translation are resized to 85%, with recorded
+height 474 and radius 119. The original chibi pass is baked into the delta
+and removed from the provider registry to prevent a second application.
+The authoring recipe is `content/models/authoring/kingetemon.json`; run
+`tools/models/repair_kingetemon.py` on its pinned effective input, then store
+the result with `tools/models/edit.py put`.
+
+The three throw attachment points resolve to glove bone 13. The bone-based
+fallback shared by Rnd Spd Toss and Odor Spray moves from a foot to the glove.
+Explicit origin mappings now also apply to entity points chosen by the missing-row fallback;
+previously only a direct native table row passed through that mapping. Existing
+species data had no matching entity-fallback remaps; the current audit finds
+only the new fast-throw mapping affected. The engine adds no state or allocation.
+
+Together the two engine fixes move nine-language `main_BSS_END` from
+`0x801ce10c` to `0x801ce20c` (+256 bytes). Aligned heap is 187,632 bytes;
+all 320 archive-backed screen setups fit, with minimum margin 2,912 bytes
+on screen 207. The final KingEtemon provider uses 100,200 of 100,352 resident
+bytes; its largest cold read is 6,144 of 8,192 bytes. No buffer is enlarged.
+
+With the reviewed artifacts under `build/model-review/`, run:
+
+```sh
+PYTHONPATH=tools python3 -W ignore -m unittest tools.test_kingetemon
+python3 tools/models/edit.py --from build/models5 check 303 --species-pins
+```
+
+### Status preview clearance
+
+Status cameras reserve the heading, Life/care rows and the full vertical bob
+of the sleeping badge. Grizzlymon's prior zoom already fit the panel; moving
+its camera from `[-1103, 282, 1156]` to `[-806, 282, 1274]` keeps the same
+45-pixel portrait height while shifting it right of the sleeping icon.
+
+The audit covers all 291 raisable species at the first idle tick actually
+rendered by the menu, including animated texture phases. It repairs 144 camera
+positions (77 native IDs and 67 imports); 147 fitting positions stay unchanged.
+No model, animation, field scale or combat data changes. Native camera rows are
+read from each language executable, with record-original replacements applied
+as at boot; imported cameras come from the archive.
+
+```sh
+python3 tools/status_portraits.py build/models5 --out build/status-audit --check
+```
+
+The camera fitter uses the smallest necessary depth increase, preserves the
+old anchor where possible and verifies opaque pixels against the reserved UI.
+The complete idle remains available as a conservative diagnostic, but fitting
+its unseen travelling poses would shrink otherwise readable Status portraits.

@@ -702,3 +702,20 @@ on its southwest approach to screen 12: the grass boundary steps inward at rows
 eight more cells, preserving the stump, plants, warps and original exit cells.
 `tools.test_trop02_exit` checks a route with the tamer's 100-unit body box that
 catches on the original and reaches the exit after the repair.
+
+## Gesomon terrestrial field gait
+
+The `gesomon-terrestrial` overlay changes only walk (2) and run (4) on the
+pinned 29-bone import. Eight small tentacles alternate support groups, with
+rear pairs delayed behind the front. Recoveries ease forward and lift clear;
+mantle bob, sway and delayed long-arm motion follow the supports. Mesh, rig,
+idle, condition, care and battle clips remain unchanged. Native Kunemon
+supplies the 18-tick cycle and contact timing; walk/run travel is 18/35 units
+per tick.
+
+The reviewed motion is locked by its exact output hash. Reconstruct species
+240 with `tools/models/edit.py get 240`, then run
+`PYTHONPATH=tools python3 -W ignore -m unittest tools.test_gesomon_gaits`.
+The checks cover the reviewed bytes, decoded support contact, nine repeating
+cycles, unchanged programs and original-console resident/cold storage. Final
+provider model and texture hashes remain covered by `species-pins.json`.

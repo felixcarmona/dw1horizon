@@ -5,9 +5,10 @@
   "level": "champion",
   "vanilla_as": 51,
   "attribute": "virus",
-  "specialties": ["filth", null, null],
+  "specialties": ["filth", "nature", null],
   "techniques": ["Horizontal Kick (57)", "Odor Spray", "Poop Spd Toss", "Poop Rnd Toss", "Rnd Spd Toss",
-                 "Big Poop Toss", "Big Rnd Toss", "Ult Poop Hell", "Party time (65)"],
+                 "Big Poop Toss", "Big Rnd Toss", "Ult Poop Hell", "Party time (65)",
+                 "Charm Perfume", "Poison Powder"],
   "drop": {"item": "Port. potty", "percent": 10},
   "effects_like": 11,
   "model": {
@@ -19,7 +20,7 @@
     "skeleton": [[-1, -1], [-1, 0], [0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 3], [6, 7], [7, 8], [8, 1], [9, 10],
                  [10, 11], [11, 12], [12, 1], [13, 14], [14, 15], [15, 16], [16, 1], [17, 18],
                  [18, 19], [19, 20]],
-    "slot_aliases": [[51, 47], [52, 50], [53, 50], [54, 47]]
+    "slot_aliases": [[51, 47], [52, 50], [53, 50], [54, 47], [55, 47], [56, 47]]
   },
   "texture": {"from": 87},
   "voice": 11,
@@ -38,7 +39,7 @@
     "favored_region": 6,
     "training_type": "all-low",
     "birth_weight": 20,
-    "status_screen_position": [270, 280, -1340],
+    "status_screen_position": [-368, 206, -138],
     "item_distance": 10,
     "training": {"animation": 46, "hit_tick": 20}
   },
