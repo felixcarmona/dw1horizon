@@ -2234,9 +2234,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/255-Valkyrimon.MMD.mdelta",
-        "delta_sha256": "55fc8ccb410246fad29832e7fa2e491a8f580d87a231bcc7bebac442c1ff6d2d",
-        "sha256": "455fe0fc77943c2cb5ec3ca4f552df49921baf0d7cf9641b3ee6a591761b7c19",
-        "size": 99268
+        "delta_sha256": "94e9280778ecbd8470ca2171f8eadb96f5fdcf95342b5ba2eaccf1fdb0ed0ea5",
+        "sha256": "2206ecd01480cecd0a918a69cf51fcc7988af2acd42ffe3ae79dabff0d22904d",
+        "size": 100470
       },
       "tim": {
         "sources": [

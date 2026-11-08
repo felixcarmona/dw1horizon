@@ -1,0 +1,118 @@
+{
+  "source_sha256": "455fe0fc77943c2cb5ec3ca4f552df49921baf0d7cf9641b3ee6a591761b7c19",
+  "donor_sha256": "4bbdf9a2763dab219bc599f0d9cfa44d93263fc5e00930d405ad055f68c22ed9",
+  "output_sha256": "2206ecd01480cecd0a918a69cf51fcc7988af2acd42ffe3ae79dabff0d22904d",
+  "scale": 0.8,
+  "native_travel_scale": 1.1,
+  "checks": [
+    {
+      "slot": 2,
+      "ticks": 24,
+      "maximum_ik_error": 1e-09,
+      "maximum_support_drop": 18,
+      "maximum_carrier_lift": 4.76676188592792
+    },
+    {
+      "slot": 3,
+      "ticks": 28,
+      "maximum_ik_error": 1e-09,
+      "maximum_support_drop": 20,
+      "maximum_carrier_lift": 2.60791631946055
+    },
+    {
+      "slot": 4,
+      "ticks": 16,
+      "maximum_ik_error": 1e-09,
+      "maximum_support_drop": 56,
+      "maximum_carrier_lift": 8.51864768075282
+    }
+  ],
+  "storage": {
+    "resident_bytes": 80092,
+    "resident_limit": 100352,
+    "cold_bytes": 20384,
+    "cold_buffer_bytes": 8192,
+    "cold_reads": [
+      {
+        "slot": 5,
+        "offset": 0,
+        "length": 2688,
+        "sector_read_bytes": 4096,
+        "fits": true
+      },
+      {
+        "slot": 7,
+        "offset": 2688,
+        "length": 2268,
+        "sector_read_bytes": 4096,
+        "fits": true
+      },
+      {
+        "slot": 8,
+        "offset": 4956,
+        "length": 3088,
+        "sector_read_bytes": 4096,
+        "fits": true
+      },
+      {
+        "slot": 9,
+        "offset": 8044,
+        "length": 2548,
+        "sector_read_bytes": 6144,
+        "fits": true
+      },
+      {
+        "slot": 10,
+        "offset": 10592,
+        "length": 2692,
+        "sector_read_bytes": 4096,
+        "fits": true
+      },
+      {
+        "slot": 11,
+        "offset": 13284,
+        "length": 2784,
+        "sector_read_bytes": 4096,
+        "fits": true
+      },
+      {
+        "slot": 12,
+        "offset": 16068,
+        "length": 2152,
+        "sector_read_bytes": 4096,
+        "fits": true
+      },
+      {
+        "slot": 13,
+        "offset": 18220,
+        "length": 2164,
+        "sector_read_bytes": 4096,
+        "fits": true
+      }
+    ],
+    "fits": true
+  },
+  "species": 255,
+  "baseline_commit": "81238665be91e4d45091ab7bda4d47e84384104c",
+  "authoring_tool": "tools/models/field_animations/valkyrimon.py",
+  "donor": "extracted/CHDAT/MMD0/ANGE.MMD",
+  "changed_slots": [
+    2,
+    3,
+    4
+  ],
+  "other_programs": "unchanged after uniform resize",
+  "provider_storage": {
+    "resident_bytes": 82368,
+    "resident_limit": 100352,
+    "cold_bytes": 20384,
+    "cold_buffer_bytes": 8192,
+    "fits": true,
+    "largest_sector_read": 6144
+  },
+  "provider_sha256": "0a01cf2fe6a3a5327ddcf63a07493c851c8a15eba1e7d0e2513e5489ae7ce762",
+  "support_knee_flexion_mean_degrees": {
+    "native_angemon": 44.4,
+    "authored": 52.8
+  }
+}
