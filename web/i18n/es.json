@@ -672,5 +672,10 @@
   "wiki.trainingOrder": "Orden de entrenamiento",
   "wiki.noBrains": "Esta técnica no se puede aprender entrenando Inteligencia.",
   "wiki.aliasSource": "Usa",
-  "wiki.sharedUnlock": "Aprender cualquiera de las dos variantes desbloquea ambas. Tu forma actual debe poder aprender la variante que use el enemigo o seleccione el gimnasio."
+  "wiki.sharedUnlock": "Aprender cualquiera de las dos variantes desbloquea ambas. Tu forma actual debe poder aprender la variante que use el enemigo o seleccione el gimnasio.",
+  "wiki.pdfLabel": "Guía en PDF",
+  "wiki.pdfTitle": "Descargar la guía en PDF",
+  "wiki.pdfWarning": "Todo lo que aparece después de esta página revela secretos.",
+  "wiki.pdfContents": "Índice",
+  "wiki.pdfSpoilers": "SPOILERS — apéndice"
 }

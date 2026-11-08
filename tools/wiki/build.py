@@ -54,6 +54,16 @@ def budget(out):
     return dict(site_bytes=total, wiki_bytes=size)
 
 
+def add_pdf_links(home, pages, record):
+    size=f'{record["bytes"]/1_000_000:.1f}'
+    if pages.lang in ('es','pt-br','fr','de','it','ca'): size=size.replace('.',',')
+    size += ' MB'
+    attrs=f'download href="{record["file"]}"'
+    button=f'<a class="button soft pdf-guide" {attrs}>⬇ {pages.t("wiki.pdfTitle")} · {size}</a>'
+    tile=f'<a class="pdf-tile" {attrs}><b>{pages.t("wiki.pdfLabel")} ↓</b><span>{size}</span></a>'
+    home.write_text(home.read_text().replace('<!--pdf-button-->',button).replace('<!--pdf-tile-->',tile))
+
+
 class Pages:
     def __init__(self, out, data, lang, articles):
         self.out, self.data, self.lang, self.articles = out, data, lang, articles
@@ -416,7 +426,7 @@ class Pages:
         self.records={}
         links=''.join(f'<a href="{self.base}{path}/"><b>{self.t(key)} ↗</b><span>{count}</span></a>' for path,key,count in [('digimon','data.recruit.digimon',len(self.data['species'])),('techniques','data.techniques',len(self.data['techniques'])),('evolutions','data.evolutions',''),('recruits','data.recruits',len(self.data['recruits']))])
         featured=''.join(self.article_card(k,self.articles[k]) for k in ('duckstation-android','care','evolution-requirements'))
-        body=f'<div class="intro"><span class="eyebrow">{self.t("wiki.nav")}</span><h1>{self.t("wiki.title")}</h1><p>{self.t("wiki.lead")}</p>{self.search_form()}</div><div class="section-heading"><h2>{self.t("wiki.start")}</h2></div><div class="cards">{featured}</div><div class="section-heading"><h2>{self.t("wiki.lookup")}</h2></div><div class="data-links">{links}</div><div class="section-heading"><h2>{self.t("wiki.articles")}</h2><a href="{self.base}guides/">{self.t("wiki.all")} →</a></div><div class="cards">'+''.join(self.article_card(k,self.articles[k]) for k in ('memory-cards','new-game-quiz','difficulty'))+'</div><div class="section-heading"><h2>'+self.t('data.recruit.digimon')+'</h2></div><div class="species-grid">'+''.join(self.card(self.by_id[i]) for i in (3,17,45))+'</div>'
+        body=f'<div class="intro"><span class="eyebrow">{self.t("wiki.nav")}</span><h1>{self.t("wiki.title")}</h1><p>{self.t("wiki.lead")}</p>{self.search_form()}<!--pdf-button--></div><div class="section-heading"><h2>{self.t("wiki.start")}</h2></div><div class="cards">{featured}</div><div class="section-heading"><h2>{self.t("wiki.lookup")}</h2></div><div class="data-links">{links}<!--pdf-tile--></div><div class="section-heading"><h2>{self.t("wiki.articles")}</h2><a href="{self.base}guides/">{self.t("wiki.all")} →</a></div><div class="cards">'+''.join(self.article_card(k,self.articles[k]) for k in ('memory-cards','new-game-quiz','difficulty'))+'</div><div class="section-heading"><h2>'+self.t('data.recruit.digimon')+'</h2></div><div class="species-grid">'+''.join(self.card(self.by_id[i]) for i in (3,17,45))+'</div>'
         self.page('',plain(self.t('wiki.nav')),body,'home')
         types=[('all','wiki.all'),('article','wiki.articles'),('digimon','data.recruit.digimon'),('technique','data.techniques'),('recruit','data.recruits'),('evolution','data.evolutions')]
         filters=''.join(f'<button type="button" data-filter="{kind}" aria-pressed="{str(kind=="all").lower()}">{self.t(label)}</button>' for kind,label in types)
@@ -440,7 +450,7 @@ def build(out, tag, presentation_ref=None):
     dest=out/'wiki'
     if dest.exists():shutil.rmtree(dest)
     assets=dest/'assets';assets.mkdir(parents=True)
-    for name in ('style.css','wiki.js','redirect.js'):
+    for name in ('style.css','wiki.js','redirect.js','print.css'):
         shutil.copyfile(CONTENT/name,assets/name)
     icons=owned_icons()
     if not set(icons)<=set(str(s['id']) for s in data['species']):
@@ -448,9 +458,11 @@ def build(out, tag, presentation_ref=None):
     for name in set(icons.values()):
         (assets/'owned-icons').mkdir(exist_ok=True)
         shutil.copyfile(CONTENT/'owned-icons'/name,assets/'owned-icons'/name)
+    instances=[]
     for lang in model.LANGS:
         articles=json.loads((article_root/f'{lang}.json').read_text())
         pages=Pages(out,data,lang,articles)
+        instances.append(pages)
         pages.species_pages();pages.enemy_pages();pages.technique_pages();pages.article_pages();pages.directories()
         mapping={f'species-{s["id"]}':pages.url(s) for s in data['species']}
         mapping.update({k:pages.base+v+'/' for k,v in [('species','digimon'),('techniques','techniques'),('evolutions','evolutions'),('recruits','recruits')]})
@@ -460,6 +472,11 @@ def build(out, tag, presentation_ref=None):
     presentation=__import__('subprocess').check_output(['git','rev-parse','--verify',(presentation_ref or 'HEAD')+'^{commit}'],cwd=ROOT,text=True).strip()
     manifest=dict(schema=1,tag=tag,commit=data['commit'],presentation_commit=presentation,articles=review,counts={k:len(data[k]) for k in ('species','techniques','recruits')},facts=dict(save_blocks=data['facts']['save_blocks'],hard=bool(data['facts']['hard'])))
     (dest/'manifest.json').write_text(compact(manifest)+'\n')
+    import pdf
+    manifest['pdfs']=pdf.generate(out,dict(data,tag=tag),instances)
+    (dest/'manifest.json').write_text(compact(manifest)+'\n')
+    for pages in instances:
+        add_pdf_links(dest/pages.lang/'index.html', pages, manifest['pdfs'][pages.lang])
     sizes=budget(out)
     print(f'Wiki {tag}: {len(data["species"])} species, 20 articles × 9 languages; {sizes["wiki_bytes"]:,} bytes')
     return manifest

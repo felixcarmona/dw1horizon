@@ -29,6 +29,8 @@ def main():
     p.add_argument('--port', type=int, default=42181)
     p.add_argument('--state', type=Path)
     p.add_argument('--expect-offscreen', action='store_true')
+    p.add_argument('--expect-offset', type=int, nargs=2, metavar=('X', 'Y'),
+                   help='also check the native drawing origin for a known fixture')
     args, options = p.parse_known_args()
     if not args.original and not args.exe:
         p.error('--exe is required unless --original is given')
@@ -52,10 +54,14 @@ def main():
         e.run('resume')
         assert len(e.ram()) == 2097152
         offscreen = call(e, 'entityIsOffScreen', e.A('TAMER_ENTITY'), 320, 240)
-        result = dict(tamer_visible=offscreen == 0, ram_bytes=2097152)
+        ram = e.ram()
+        offset = [e.peek('DRAWING_OFFSET_X', 'i', ram), e.peek('DRAWING_OFFSET_Y', 'i', ram)]
+        result = dict(tamer_visible=offscreen == 0, ram_bytes=2097152, drawing_offset=offset)
         (out/'visibility.json').write_text(json.dumps(result, indent=2)+'\n')
         print(json.dumps(result), flush=True)
         assert result['tamer_visible'] != args.expect_offscreen, 'unexpected camera framing'
+        if args.expect_offset is not None:
+            assert offset == args.expect_offset, 'unexpected drawing origin (a partially visible tamer is insufficient)'
     finally:
         e.stop()
 

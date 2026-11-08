@@ -80,6 +80,8 @@ def step2():    # section 53
         megadramon.face(tamer)
         partner.face(megadramon)
         megadramon.say(t53.u6)
+        sound(8, 0)
+        narrator.say(text.qol.megadramon_joined)
         megadramon.walk_away(0, 0, looks=3)
         megadramon.leave()
         glances.set(0)

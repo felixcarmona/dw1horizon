@@ -1,4 +1,4 @@
-# Frame rate: 20 Hz logic, automatic 20/60 fps drawing
+# Frame rate: 20 Hz logic, AUTO / 60 / 20 fps drawing
 
 How the original engine times a frame (one logic tick per drawn frame, `VSync(3)`, 20 Hz), and how the frame-rate
 patches separate drawing from game time: a fixed 20 Hz logic tick, a late-tick phase, render callbacks made
@@ -409,17 +409,23 @@ at 20 Hz in every build. See [../building.md](../building.md) for the build itse
 
 ### Automatic selection
 
-The FRAME RATE row is removed from both OPTIONS panels, including its localized
-labels and values. The saved frame-rate byte and the memory-card header copy are
-ignored; new saves write 20 in that reserved byte for compatibility with older
-readers. All other option byte positions are unchanged.
+OPTIONS offers AUTO (default), 60 and 20 in all nine languages. AUTO uses the
+probe below. Forced 60 requests three passes per ordinary tick and forced 20 one;
+the existing per-pass deadline checks and battle-speed behavior remain intact.
+The probe keeps measuring in forced modes but cannot change the requested mode.
+Returning to AUTO immediately uses the latest raw probe value, then resumes the
+same hysteresis. `MOD_FPS_MODE_RUN` reports the effective mode for title panels
+and debugging. Tagged byte values preserve new choices, while all old saves
+start on AUTO; see [save compatibility](../mods/options.md#automatic-frame-rate).
 
 `MOD_FPS_MODE_RUN` starts at 0. The title's existing CPU check counts polling-loop
 iterations over 16 lines of hardware hblank counter 1. That counter follows video
 timing independently of CPU overclock. Recorded DuckStation counts were 3801,
 7389, 9303 and 10977 at 100%, 200%, 250% and 300%. At boot, at least 8500 selects
-mode 2; otherwise mode 0. The loop is shared by boot and runtime checks. On return to the title, its notice uses the latest CPU measurement. The RAM
-probe remains boot-only and has no bearing on presentation.
+mode 2; otherwise mode 0. The always-visible Press Start panel uses the latest
+CPU measurement and selected mode, and redraws if either changes. Its approximate
+percentage interpolates these four calibration points, rounds to 25% steps and
+clamps to 100–300%. The RAM probe remains boot-only and has no bearing on presentation.
 
 Boot alone cannot follow a changed emulator overclock or a restored same-build
 save state. `modWaitVblank` therefore polls about every 120 refreshes, only outside

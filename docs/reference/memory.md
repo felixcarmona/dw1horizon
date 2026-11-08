@@ -196,7 +196,20 @@ it. Outside the world the read still blocks: the fight code reads `animFlag` as 
 The title screen's panel (`modNoticeProbe`, patch 0313) reads the same probe and counts reads of the hblank counter over 16
 lines, which grow with an emulated CPU overclock: DuckStation gives 3801 at 100 %, 7389 at 200 %, 9303 at 250 % and 10977 at
 300 %, and the panel asks for 8500. The count changes a little with the loop's address, so measure it again if that code
-moves. With both settings found the panel does not appear.
+moves. The panel now always appears at Press Start, showing RAM, an approximate
+CPU percentage and the selected renderer; see [automatic frame rate](../mods/options.md#automatic-frame-rate).
+Its drawing code, calibration table and scratch live in the title overlay. The
+boot RAM flag and the shared CPU probe remain resident.
+Against parent `ca6f878e`, the nine-language native link moves `main_BSS_END`
+from `0x801ce54c` to `0x801ce1e0` (−876 bytes); aligned heap grows from
+186,800 to 187,664 bytes (+864).
+MENU stays at 55,172 bytes, with 124 bytes spare. The title block grows by
+1,064 bytes, from `0x8006a79c..0x8006b53c` to `0x8006a79c..0x8006b964`.
+EVL's rounded read ends at `0x8006c000`, below FISH at `0x80070000`;
+MENU's rounded read ends at `0x800602e0`, below the title block.
+All 320 actual-archive setups fit; the tightest margin grows from 2,080 to
+2,944 bytes on screen 207.
+
 
 ### MAPHEAD buffer (patches 0004, 0091)
 
@@ -1132,3 +1145,18 @@ TRN/TRN2 are **29,276 / 23,584 B**. Overlay read bounds remain unchanged.
 Standard heapcheck passes without an override. All **320 actual-archive setups**
 fit; the tightest margin is **3,568 B on screen 207**, followed by **6,504 B on
 screen 41**. The historical sweep's tightest projection is **31,936 B**.
+
+
+## FRAME RATE override
+
+The full nine-language build with AUTO / 60 / 20 keeps the original 2 MB
+budget. `main_BSS_END` is **0x801CE390**, leaving **187232 B** of aligned heap.
+All **320 actual-archive setups** fit; screen 207 retains **2512 B**. The
+historical sweep's tightest projected free heap is **30880 B**.
+
+MENU is **55164 B / 27 sectors**, with **132 B** before the 27-sector ceiling,
+above the title checker’s 100-byte reserve. Third option values share the
+immutable four-column row table. A 48-byte language-name resolver lives with
+the resident name array, allowing the MENU text lookup to remain a leaf.
+No new heap allocation or frame buffer is introduced. Title-storage checks
+cover all nine layouts and their unchanged language-independent EVL block.

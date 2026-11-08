@@ -28,14 +28,16 @@ def check(path):
                  'MOD_FLAG_PALETTE', 'MOD_FLAG_OFFSET', 'MOD_FLAG_RUNS',
                  'MOD_CHINESE_NAME', 'MOD_LANGUAGE_TITLES', 'MOD_LANGUAGE_TITLE_GLYPHS',
                  'drawOptionsText', 'renderOptionsMenu', 'modSetOption',
-                 'modOptionValue', 'modOptionText', 'modOptionCount'):
+                 'modOptionValue', 'modOptionText', 'modOptionCount',
+                 'modNoticeDraw', 'modNoticeRender', 'MOD_NOTICE_CACHE'):
         assert start <= symbols[name][0] < end, (name, symbols[name])
     for name in ('modOptionBytes',):
         assert elf.sh[symbols[name][1]]['name'] == '.MENU', name
-    for name in ('loadMenuOverlay', 'loadTitleMenuOverlays', 'modMenuVsBattle', 'MOD_LANGUAGE_NAMES'):
+    for name in ('loadMenuOverlay', 'loadTitleMenuOverlays', 'modMenuVsBattle', 'MOD_LANGUAGE_NAMES', 'modOptionLanguageName'):
         assert elf.sh[symbols[name][1]]['name'] == '.main', name
     # Enumerate actual linked references, including pointers and switch tables.
-    # Only the title branches of these MENU functions may enter the EVL tail.
+    # Only the title branches of these MENU functions and the two Press Start
+    # display calls in main may enter the EVL tail.
     callers = {'drawMainMenuStrings', 'drawOptionsText', 'tickMainMenu', 'renderMainMenu'}
     _, _, edges = graph(path)
     references = 0
@@ -53,7 +55,13 @@ def check(path):
                     address = int(caller[1:], 16)
                 assert start <= address < end, (caller, target)
             else:
-                assert origin == '.MENU' and caller in callers, (origin, caller, target)
+                if origin == '.main':
+                    assert (caller, target) in {
+                        ('runLandingScreen', 'modNoticeDraw'),
+                        ('renderPressStartToContinue', 'modNoticeRender'),
+                    }, (origin, caller, target)
+                else:
+                    assert origin == '.MENU' and caller in callers, (origin, caller, target)
             references += 1
     assert references
     offset = evl['off'] + start - evl['addr']

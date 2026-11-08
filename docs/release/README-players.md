@@ -189,7 +189,9 @@ PlayStation or an emulator at normal CPU speed, and 60 with enough CPU overclock
 (250%). The title screen shows the recommended emulator settings. Changing the
 CPU overclock during play takes effect after a few seconds. Extra RAM does not
 change the frame rate. Logic and controls remain at 20 Hz; smoothing at 60 fps
-shows the picture up to 50 ms later. There is no frame-rate option to set.
+shows the picture up to 50 ms later. FRAME RATE in OPTIONS defaults to AUTO;
+choose 60 or 20 to override the probe. Forced 60 requests extra passes but may
+show fewer when they cannot fit. Older saves start on AUTO.
 
 ## Saves
 

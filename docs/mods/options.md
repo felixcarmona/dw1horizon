@@ -1,7 +1,7 @@
 # Options: the title menu's OPTIONS
 
 Patches 0167, 0169, 0173-0175, 0177, 0180-0182, 0199, 0212, 0234, 0239, 0244 and 0276 (`mods/patches/`). The title menu has a fifth row, **OPTIONS**, under BATTLE MODE. It
-opens a box of ten switches (nine in a `FONT=original` build, which has no FONT):
+opens a box of eleven switches (ten in a `FONT=original` build, which has no FONT):
 
 | Row | Values | Default | Effect |
 |---|---|---|---|
@@ -11,6 +11,7 @@ opens a box of ten switches (nine in a `FONT=original` build, which has no FONT)
 | EXTENDED STORY | OFF / ON | ON | patch 0199: the story with the story mods built onto the disc (What the Island Forgot: its new places, the city's new residents), or OFF the original story; changing it on a save moves the tamer to Jijimon's house (below) |
 | DIFFICULTY | EASY / NORMAL / HARD | NORMAL | EASY doubles partner damage and halves damage taken; HARD scales enemies and adds a damage floor (below) |
 | QUICK BATTLE START | OFF / ON | ON | patches 0234, 0239: a field battle starts the moment it is triggered, its BATTLE letters and bubbles over the running fight (patches 0233, 0236, 0238); OFF, the original start |
+| FRAME RATE | AUTO / 60 / 20 | AUTO | AUTO uses the CPU probe; 60 requests three render passes per tick; 20 requests one. Logic stays 20 Hz. |
 | FONT | NEW / CLASSIC / ORIGINAL | NEW | font b, ours; the original letters evenly spaced; the original font as the original draws it (below) |
 | LANGUAGE | eight languages selected at build time | the build's (`LANG_BASE`) | the selected runtime languages ([languages](language.md)) |
 | MAP SIGNS | ORIGINAL / TRANSLATED | TRANSLATED | patch 0183: the signs painted in the map backgrounds as the disc has them, or in the language |
@@ -21,7 +22,7 @@ HUD shows happiness, discipline, hunger, toilet and tiredness; the status screen
 shows care bars, numbers and care mistakes. See [gauge meanings](../../HUD-DESIGN.md#exact-gauge-contract).
 The digital clock beneath the field dial and continuous enemy head bars are also
 permanent. Saved-options bytes 1 and 3 are ignored on load and written as 1.
-Byte 2 is reserved, ignored on load and written as 20 for older readers.
+Byte 2 stores FRAME RATE as 0xA0 (AUTO), 0xA1 (60), or 0xA2 (20). All other values load as AUTO.
 Byte 13 is reserved: both inverted enemy-bar bits are ignored and written as 0;
 the old title-header bits 6 and 5 are ignored and cleared.
 The other saved bytes retain their positions, including on older saves.
@@ -112,19 +113,54 @@ so it happens only at the title: in OPTIONS, or when a Continue takes the save's
 
 ## Automatic frame rate
 
-There is no FRAME RATE row in either OPTIONS panel. The title screen's existing
-CPU measurement selects the renderer: 20 fps on original hardware and emulators
-at 100%, 60 fps with sufficient CPU overclock (250%). Logic and input remain at
-20 Hz. RAM size does not decide the rendering rate.
+FRAME RATE defaults to AUTO. Left/right select a value; confirm cycles AUTO / 60 / 20.
+AUTO keeps the existing 16-scanline CPU probe, two agreeing samples and
+8500/7500 hysteresis. The probe still runs during spare waits in forced modes,
+but cannot override an explicit choice. Returning to AUTO uses the latest probe.
+60 requests three passes per ordinary tick; existing deadline checks may skip
+passes that cannot fit. 20 requests one. Battle speed and 20 Hz logic are unchanged.
+An `FPS=20` developer build still compiles out extra passes.
+
+At Press Start, the detected-settings panel always shows RAM (`RAM 2 MB` or
+`RAM 8 MB`), estimated CPU speed (`CPU ~100%`, for example), and the selected
+renderer (`20 FPS` or `60 FPS`). Its short hints read “CPU 250%: 60 FPS” and
+“8 MB: Chinese only”. The other eight languages still work with 2 MB.
+RAM is green with 8 MB; CPU is green at the raw 8500-count enable threshold.
+The FPS color follows the selected mode, including the selector's hysteresis.
+These are detected settings, not a measurement of how many frames a busy scene
+actually presents. Title and menu animations retain their existing timing.
+
+The estimate interpolates the documented 100/200/250/300% calibration points,
+rounds to 25% steps and clamps to 100–300%. It is approximate across emulators; readings outside the measured range use the
+nearest endpoint.
+The panel reads the latest sample on entry and redraws if that reading or the
+selected mode changes while it is visible. Press Start does not run the idle-wait
+sampler, so a fresh boot shows the boot CPU reading. RAM remains the boot reading.
+The display code and scratch are in the title overlay, loaded after the intro
+movie and before installing the Press Start callback.
 
 The same 16-scanline probe runs during spare presentation waits about every two
 seconds. Two agreeing samples and separate enable/disable thresholds prevent
 oscillation. This adapts to runtime overclock changes and same-build save states;
 see [the scheduler and thresholds](../reference/frame-rate.md#automatic-selection).
-Saved-options byte 2 and its title-header copy are ignored and written as 20.
-The remaining bytes keep their positions, so old memory-card saves remain readable.
-The immutable row-pointer table lives in MENU_REL with its callers to offset
-the resident selector cost. Both heap checks use the full language build.
+
+Saved-options byte 2 and its title-header copy use 0xA0 + the option index.
+The record stays 14 bytes and every other byte retains its position. All legacy
+values map to AUTO: v0.0.7 wrote 20 unconditionally, so it is indistinguishable
+from an older explicitly selected 20. Resetting both old 60 and old 20 to AUTO
+provides one consistent migration; new explicit choices persist on save/load.
+Missing and invalid values also default to AUTO. Changes made at the title keep
+the existing precedence over the options of a subsequently continued save.
+`MOD_FPS_MODE_RUN` always reports the effective 0/2 mode, including forced choices,
+so a title panel reading it reports the renderer actually requested.
+
+The immutable four-column row-pointer table remains in MENU_REL. Its third
+values are data entries, avoiding separate FONT/DIFFICULTY/FRAME RATE branches.
+The small language-name resolver stays resident with the name array so the
+MENU text lookup can use a tail call and retain the mandatory overlay reserve.
+Full nine-language build: main_BSS_END 0x801ce390, heap 187232 B, MENU 55164 B
+(27 sectors, 132 B spare). Both 2 MB heap checks pass; all 320 actual-archive
+setups fit, with 2512 B on the tightest setup.
 
 ## JAPANESE CONTROLS
 
@@ -174,7 +210,7 @@ All the controls as in the Japanese version.
   options (`modBootOptions` calls `modButtonsBoot`), `SYSTEM_W.TIM` (9 sectors) is read into `GENERAL_BUFFER` and a
   Japanese ○ there turns JAPANESE CONTROLS on; a save's options, read right after, still win (the title shows a
   card's newest save's choice, a Continue its own). The US disc is as before. 464 bytes of heap.
-- **Saved.** The options are the record `SAVE_TAG_OPTIONS` 0x0009 (`u8[14]`: buttons, reserved clock byte (always 1), reserved frame-rate byte (always 20), reserved care byte (always 1), font, evolution guide, new digimon, language, map signs, story, difficulty, quick battle start, cheats flags, reserved enemy-bar byte (always 0)),
+- **Saved.** The options are the record `SAVE_TAG_OPTIONS` 0x0009 (`u8[14]`: buttons, reserved clock byte (always 1), FRAME RATE (0xA0/0xA1/0xA2), reserved care byte (always 1), font, evolution guide, new digimon, language, map signs, story, difficulty, quick battle start, cheats flags, reserved enemy-bar byte (always 0)),
   written with every save. A Continue takes them, unless OPTIONS changed any since the
   console started; a shorter record (0167's 1 byte) leaves the rest at their defaults. So the title screen before a Continue
   has the US controls (on a Japanese base disc with no saves, the Japanese ones: ○ confirms there), and the test tools, which press × at the title, keep working.

@@ -56,6 +56,7 @@ def english_lines():
     lines = {}
     for path in (ROOT / 'text/ours/dialogue').glob('*.json'):
         lines.update(json.loads(path.read_text()))
+    lines.update(json.loads((ROOT / 'text/en.json').read_text()))
     return lines
 
 

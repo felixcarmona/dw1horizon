@@ -1,4 +1,9 @@
 {
+ "qol.sukamon_joined": "Sukamon a rejoint la ville !",
+ "qol.megadramon_joined": "Megadramon a rejoint la ville !",
+ "qol.nanimon_joined": "Nanimon a rejoint la ville !",
+ "qol.myotismon_joined": "Myotismon a rejoint la ville !",
+ "qol.skullgreymon_joined": "SkullGreymon a rejoint la ville !",
  "qol.training_x5": "Entraînement normal x5",
  "qol.mansion_key_used_up": "Toutes les portes du manoir sont ouvertes. Tu n'as plus besoin de la {color 6}Clé du manoir{color 1}.",
  "name.ask_partner": [

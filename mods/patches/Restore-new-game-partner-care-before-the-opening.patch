@@ -1,0 +1,29 @@
+From: Horizon authors <>
+Subject: [PATCH] Restore new-game partner care before the opening
+
+The title prepares a new SavegamePayload, including the configured starting
+age, but only Continue calls initializeLoadedMap to copy its partner care to
+the live state. The USA initializePartner leaves age and several care counters
+alone. A cold boot therefore starts at zero days and a New Game after returning
+to the title can inherit the preceding partner's age.
+
+Restore the new payload's care before the opening. Partner initialization still
+sets species-dependent care and birth values; Continue keeps its saved care.
+---
+ src/main/main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/main/main.c b/src/main/main.c
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -3520,6 +3520,10 @@ void main(void)
+ 	cheats_loaded:
+ 		switch (MAIN_STATE) {
+ 		case 0:
++			/* The title prepared a new payload. Restore its care before the
++			 * opening; initializePartner does not reset age on USA builds. */
++			PARTNER_PARA = SAVED_STATE.partnerPara;
++
+ 			newGameScene();
+ 			finalizeMusic();
+ 			playMovie(1, 1);

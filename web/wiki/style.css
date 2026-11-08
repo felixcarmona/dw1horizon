@@ -74,3 +74,6 @@
 /* Keep encounter names readable beside wrapping location lists on phones. */
 .wiki-page #learn th[scope="row"]{min-width:8em;overflow-wrap:normal;word-break:normal}
 .wiki-page #learn td{white-space:normal}
+
+.intro .pdf-guide{margin-top:12px;border:1px solid var(--line);font-size:14px;max-width:100%;height:auto;min-height:44px;padding:12px 22px;white-space:normal}.data-links{grid-template-columns:repeat(5,minmax(0,1fr))}.data-links a:last-child{border-right:0}
+@media(max-width:650px){.intro .pdf-guide{font-size:12px;padding:12px 16px}.data-links{grid-template-columns:repeat(2,minmax(0,1fr))}.data-links a{border-bottom:1px solid var(--line)}.data-links a:nth-child(2n){border-right:0}.data-links a:last-child{grid-column:1/-1;border-bottom:0}}

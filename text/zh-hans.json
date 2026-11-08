@@ -1,4 +1,9 @@
 {
+ "qol.sukamon_joined": "大便兽加入了文件城！",
+ "qol.megadramon_joined": "百万龙兽加入了文件城！",
+ "qol.nanimon_joined": "什么兽加入了文件城！",
+ "qol.myotismon_joined": "吸血魔兽加入了文件城！",
+ "qol.skullgreymon_joined": "丧尸暴龙兽加入了文件城！",
  "qol.training_x5": "普通训练x5",
  "qol.mansion_key_used_up": "宅邸里的门都打开了。已经不需要{color 6}宅邸钥匙{color 1}了。",
  "name.ask_partner": ["{color 7}公公兽{color 1}", "要给你的数码宝贝取个名字吗？"],
