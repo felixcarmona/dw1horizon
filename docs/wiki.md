@@ -177,3 +177,47 @@ node web/test/wiki.mjs build/pages-site build/wiki-review
 ```
 
 Browser checks visit ten page types in all nine languages at 1440 px and 390 px. They exercise language switches, image-free cards, accessible badge contrast, tree requirements, folded spoilers, search filters/empty results with networking disabled after index load, and legacy routes/anchors. Screenshots include the six requested views in English and Spain Spanish at both widths. The browser and its temporary server close in `finally`.
+
+## Downloadable guide
+
+Every `web/build.py` build also prints one `Horizon-Guide-<tag>-<language>.pdf`
+per wiki language and adds a localized download link and size to that language's
+home as a secondary download button below search and a fifth data tile, with a
+localized size in decimal MB. Install
+`python3 -m pip install -r tools/wiki/requirements.txt` and the
+existing Puppeteer driver (`puppeteer-core@24.31.0`); set `PUPPETEER_MODULE` and
+`CHROMIUM` as for browser tests. Install Poppler (`poppler-utils`) for extraction tests and local CJK fonts (CI uses
+`fonts-noto-cjk`) for Japanese and Chinese. Chromium embeds the fonts; readers
+need no network or font installation.
+
+`tools/wiki/pdf.py` reuses the release model, reviewed article renderer, learning
+source renderer and recruitment renderer. Its temporary print HTML groups the
+20 articles, species by level, techniques and City services on single-column A5
+pages, using static print instances of the shared Plus Jakarta Sans font. Techniques link to their complete
+learning sources. Finishers and innate attacks share a compact table and one
+learning note. Each species lists techniques in separate rows with power/MP/chance
+and one public enemy → place source plus a remaining-source count; its
+requirements appear once and evolution links open the related entries. The clickable
+contents and five PDF bookmarks expose only public section names. Every wiki
+spoiler disclosure moves intact to an appendix after a dedicated warning page;
+secret species/routes and hidden resident records follow the same model flags.
+Print HTML is deleted after rendering and is never deployed with unfolded secrets.
+No remote resources or artwork are loaded.
+
+The manifest records each PDF's release tag, game commit, SHA-256, byte size and
+page count. `check.py` verifies these against embedded provenance, all internal
+PDF destinations and bookmarks. PDFs count toward the existing 64 MiB wiki and
+900 MiB site limits; each PDF must additionally stay below 10 MiB. The release
+workflow installs print dependencies before its presentation overlay, including
+page-only redeploys. PDF dates and document IDs are normalized for reproducible
+bytes when printing with the same Chromium/font versions.
+
+Run extraction regressions on the actual generated PDFs with:
+
+```sh
+WIKI_PDF_SITE=build/pages-site python3 -m unittest discover -s tools/wiki -p 'test_*.py'
+```
+
+The PR workflow builds v0.0.7, validates the artifact, extracts all nine PDFs to
+check spoiler placement, and runs the existing browser suite including download
+links on desktop and phone.

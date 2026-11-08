@@ -672,5 +672,10 @@
   "wiki.trainingOrder": "Trainingsreihenfolge",
   "wiki.noBrains": "Diese Technik lässt sich nicht durch Intelligenztraining lernen.",
   "wiki.aliasSource": "Verwendet",
-  "wiki.sharedUnlock": "Das Lernen einer Variante schaltet beide frei. Deine aktuelle Form muss die vom Gegner verwendete oder vom Training gewählte Variante lernen können."
+  "wiki.sharedUnlock": "Das Lernen einer Variante schaltet beide frei. Deine aktuelle Form muss die vom Gegner verwendete oder vom Training gewählte Variante lernen können.",
+  "wiki.pdfLabel": "PDF-Leitfaden",
+  "wiki.pdfTitle": "PDF-Leitfaden herunterladen",
+  "wiki.pdfWarning": "Alles nach dieser Seite verrät Geheimnisse.",
+  "wiki.pdfContents": "Inhalt",
+  "wiki.pdfSpoilers": "SPOILER — Anhang"
 }
