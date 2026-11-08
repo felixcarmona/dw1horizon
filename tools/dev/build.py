@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Build the everything disc with verified persistent artifacts; python3 -m tools.dev build."""
 import argparse
+import contextlib
+import io
 import hashlib
 import json
 import os
@@ -8,6 +10,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
+import tempfile
 import time
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -25,6 +28,32 @@ def git(*args, cwd=ROOT):
     return subprocess.check_output(['git', *map(str, args)], cwd=cwd, text=True).strip()
 
 
+
+def restore_generated_fonts(tree):
+    """Discard only font headers that still match their generator exactly."""
+    changed = set(git('diff', '--name-only', cwd=tree).splitlines())
+    headers = changed & {'src/main/font_extra.h', 'src/main/font_b.h'}
+    if not headers or not (ROOT / 'extracted/SLUS_010.32').is_file():
+        return
+    from tools import fontgen
+    generated = []
+    with tempfile.TemporaryDirectory(prefix='font-refresh-', dir=ROOT / 'build') as tmp:
+        for rel in sorted(headers):
+            target = tree / rel
+            if not target.is_file():
+                continue
+            expected = Path(tmp) / target.name
+            with contextlib.redirect_stdout(io.StringIO()):
+                if target.name == 'font_extra.h':
+                    fontgen.header(str(expected))
+                else:
+                    fontgen.font_header('b', str(expected))
+            if target.read_bytes() == expected.read_bytes():
+                generated.append(rel)
+    if generated:
+        git('checkout', '--', *generated, cwd=tree)
+
+
 def prepare(tree):
     pin = git('rev-parse', 'HEAD:decomp')
     patches = patch_series.paths(ROOT)
@@ -37,6 +66,7 @@ def prepare(tree):
         # The roster header is generated (tools/city_residents.py), never a user's edit.
         if (tree / 'src/main/city_residents_extra.h').exists():
             git('checkout', '--', 'src/main/city_residents_extra.h', cwd=tree)
+        restore_generated_fonts(tree)
         # Never reset a user's C edits while refreshing the patch series.
         status = git('status', '--porcelain', '--untracked-files=all', '--ignore-submodules=all', cwd=tree)
         edits = [line for line in status.splitlines() if not (

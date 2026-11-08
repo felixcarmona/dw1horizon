@@ -163,7 +163,7 @@ def exe_bank(source, glyphs=None, exe_font='original'):
     codes = us_codes()                                          # the US executable's own strings: their format codes
     out, kept = {}, []
     for k, v in src.items():
-        if k.startswith('_') or not isinstance(v, str): continue
+        if k.startswith(('_', 'screen.caption.')) or not isinstance(v, str): continue
         if k.startswith(KEEP) and not chinese: kept.append((k, 'species names come from content/species')); continue
         if CJK.search(v) and set(CJK.findall(v)) - BE.FONT['chars']:
             kept.append((k, 'Japanese characters missing from the target font')); continue

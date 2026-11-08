@@ -8,6 +8,7 @@ import unittest
 from unittest.mock import patch
 
 from tools import native_build
+from tools.dev import build as dev_build
 
 
 @unittest.skipUnless(shutil.which('make') and shutil.which('cc'), 'needs make and host cc')
@@ -49,6 +50,36 @@ $(OUT)/program: $(OUT)/main.o
                     self.assertEqual(result.returncode, 2)
                 finally:
                     log.unlink(missing_ok=True)
+
+
+
+class GeneratedFontRefreshTests(unittest.TestCase):
+    def test_generated_headers_refresh_but_manual_edits_survive(self):
+        from tools import fontgen
+        for manual in (False, True):
+            with self.subTest(manual=manual), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                tree = root / 'build/decomp-dev'
+                (tree / 'src/main').mkdir(parents=True)
+                (root / 'extracted').mkdir()
+                (root / 'extracted/SLUS_010.32').write_bytes(b'disc fixture')
+                extra = tree / 'src/main/font_extra.h'
+                font_b = tree / 'src/main/font_b.h'
+                extra.write_bytes(b'generated extra' + (b' manual edit' if manual else b''))
+                font_b.write_bytes(b'generated b')
+                def generate_extra(path):
+                    Path(path).write_bytes(b'generated extra')
+                def generate_b(font, path):
+                    self.assertEqual(font, 'b')
+                    Path(path).write_bytes(b'generated b')
+                with patch.object(dev_build, 'ROOT', root), \
+                     patch.object(dev_build, 'git', return_value='src/main/font_extra.h\nsrc/main/font_b.h') as git, \
+                     patch.object(fontgen, 'header', generate_extra), \
+                     patch.object(fontgen, 'font_header', generate_b):
+                    dev_build.restore_generated_fonts(tree)
+                expected = ['src/main/font_b.h'] + ([] if manual else ['src/main/font_extra.h'])
+                git.assert_any_call('checkout', '--', *expected, cwd=tree)
+                self.assertEqual(extra.read_bytes(), b'generated extra' + (b' manual edit' if manual else b''))
 
 
 if __name__ == '__main__':

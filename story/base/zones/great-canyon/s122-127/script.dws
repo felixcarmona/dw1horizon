@@ -39,8 +39,13 @@ script 122 {
         say(tamer, text("s122.sec5.u9"));
         animate(tamer, anim.idle);
         say(shellmon, text("s122.sec5.u10"));
+        sound(8, 10);
+        say(narrator, text("s122.sec5.u11"));
         walk_away(shellmon, -111, -2962, looks: 3);
-        join_city(shellmon, species("Shellmon"), 8, 10, text("s122.sec5.u11"), prosperity: 2);
+        remove(shellmon);
+        glances = 0;
+        recruit(species("Shellmon"));
+        engine.prosperity += 2;
         return;
     }
 }

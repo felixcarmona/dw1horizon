@@ -1,0 +1,30 @@
+From 71a0988d97ca71507fb34eaf7206a775de9e6b73 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 7 Nov 2026 20:53:25 +0000
+Subject: [PATCH] Invalidate cached screen captions after language changes
+
+---
+ src/main/mod_screen.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/src/main/mod_screen.c b/src/main/mod_screen.c
+index 95da3d9..d326c96 100644
+--- a/src/main/mod_screen.c
++++ b/src/main/mod_screen.c
+@@ -62,7 +62,13 @@ static int32_t readScreenRecord(int32_t id)
+  * modFontScriptsChanged) */
+ void modScreenFileChanged(void)
+ {
++	int32_t i;
++
+ 	SCREEN_SECTOR_ID = -1;
++	/* Captions belong to the selected language, including cached headers. */
++	for (i = 0; i < SCREEN_CACHE_SLOTS; i++) {
++		SCREEN_CACHE_ID[i] = -1;
++	}
+ }
+ 
+ static ScreenRecordHead *getScreenHead(int32_t id)
+-- 
+2.55.0
+
