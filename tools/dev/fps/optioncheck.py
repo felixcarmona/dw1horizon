@@ -26,9 +26,15 @@ def main():
     p.add_argument('--out',type=Path,default=Path('build/fps-option'))
     p.add_argument('--port',type=int,default=44615)
     p.add_argument('--card',default='tools/dev/saves/corpus/20261027-d2796814.mcd')
-    p.add_argument('--resume-card');p.add_argument('--tour',action='store_true');p.add_argument('--chinese',action='store_true')
+    p.add_argument('--resume-card');p.add_argument('--capture-forced',action='store_true');p.add_argument('--tour',action='store_true');p.add_argument('--chinese',action='store_true')
     a=p.parse_args();a.out=a.out.resolve();a.out.mkdir(parents=True,exist_ok=True)
     e=Emu(a.disc,a.exe,a.port,str(a.out/'emu'))
+    if a.chinese:
+        def expanded_ram():
+            data=subprocess.run([sys.executable,str(ROOT/'tools/dev/emulator.py'),'ramdump'],env=e.env,capture_output=True,check=True).stdout
+            assert len(data)==0x800000
+            return data
+        e.ram=expanded_ram
     for name,(addr,_,_) in elf_symbols(a.exe+'.elf').items():e.table.setdefault(name,addr)
     bios=ROOT/'.tools/emu/pcsx-redux-zip/squashfs-root/usr/share/pcsx-redux/resources/openbios.bin'
     e.env['EMU_ARGS']='-interpreter -debugger -bios '+str(bios)+(' -8mb' if a.chinese else '')
@@ -36,11 +42,17 @@ def main():
     def settle():
         start=e.peek('MAIN_MENU_TICKS','i');end=time.monotonic()+120
         while time.monotonic()<end:
-            if e.peek('MAIN_MENU_TICKS','i')>=start+3:return
+            if e.peek('MAIN_MENU_TICKS','i')>=start+10:return
             e.wait(.1)
         raise AssertionError('OPTIONS did not become idle')
     def choose(row,key):
-        settle();e.poke(cursor,bytes([row]));e.press(key,4);settle()
+        symbol,fmt={6:('MOD_OPT_FPS','i'),7:('MOD_FONT','b'),8:('MOD_LANG','i')}[row]
+        before=e.peek(symbol,fmt)
+        for attempt in range(3):
+            settle();e.poke(cursor,bytes([row]));e.press(key,12);settle()
+            if e.peek(symbol,fmt)!=before:break
+            # Saturating arrows deliberately leave the boundary unchanged.
+            if row==6 and ((key=='LEFT' and before==0) or (key=='RIGHT' and before==2)):break
     def opened():
         for _ in range(30):
             menu=e.peek('CURRENT_MENU','i')
@@ -78,6 +90,11 @@ return 1""")
     try:
         if a.resume_card:
             e.start(a.resume_card);e.to_title();assert e.peek('MOD_OPT_FPS','i')==1
+            if a.capture_forced:
+                assert e.raw('MOD_VERSION_TEXT',32,e.ram()).split(b'\0')[0]==b'v0.0.7-fpstest1'
+                shot('title-forced60')
+                assert e.continue_game()==0;measure('field-forced60')
+                e.stop();e.start(a.resume_card);e.to_title();assert e.peek('MOD_OPT_FPS','i')==1
             decoded,_,records=read_card(a.resume_card)
             assert records[9][2]==0xA1 and bytes.fromhex(decoded['header_options']['bytes'])[2]==0xA1
             (a.out/'save-roundtrip.json').write_text(json.dumps(dict(taggedByte=161,headerByte=161,coldBootMode=1,validCard=not card_ok(a.resume_card)),indent=2)+'\n')
