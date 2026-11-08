@@ -54,7 +54,7 @@ case "${1:-build}" in
     echo "working copy ready in $W (branch $BR, $(git -C "$W" log --oneline "$BASE".."$BR" | wc -l) patches)" ;;
   build)
     [ -t 0 ] && TTY="-it" || TTY=""
-    docker run --rm $TTY --user "$(id -u):$(id -g)" -e HOME=/tmp -v "$W:/work" -w /work dw-build make -j"$(nproc)" TOOLCHAIN=gcc ${FPS:+FPS=$FPS} ${FONT:+FONT=$FONT} ${PARTNER_MMD_MAX:+PARTNER_MMD_MAX=$PARTNER_MMD_MAX}
+    docker run --rm $TTY --user "$(id -u):$(id -g)" -e HOME=/tmp -v "$W:/work" -w /work dw-build make -j"$(nproc)" TOOLCHAIN=gcc ${FPS:+FPS=$FPS} ${ADAPTIVE_FPS:+ADAPTIVE_FPS=$ADAPTIVE_FPS} ${FONT:+FONT=$FONT} ${PARTNER_MMD_MAX:+PARTNER_MMD_MAX=$PARTNER_MMD_MAX}
     # --relayout: the overlays of the series outgrow the original's sectors (EVL_REL, patch 0079), so the files after
     # them move and FILE_OFFSET_TABLE is rewritten from the linker map (docs/mods/scripts.md "If DG.SCN grows")
     python3 tools/build-disc.py "$NAME" --from "$W/build/us/psx/gcc" --relayout | tail -1 ;;

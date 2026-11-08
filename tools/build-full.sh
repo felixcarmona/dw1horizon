@@ -286,14 +286,14 @@ make_exe() {   # make_exe TREE BANK PAD LOG [LANG]: the executable of TREE with 
   $PY -m tools.city_residents --c-extra-header "$1"
   $PY tools/sdk_messages.py "$1"
   if [ -n "${DW_BUILD_CACHE:-}" ] || [ "${DW_CLEAN_NATIVE:-0}" = 1 ]; then
-    $PY tools/native_build.py "$1" "$2" "$3" "$4" $MAKE_PMM ${FPS:+FPS=$FPS} ${FONT:+FONT=$FONT} \
+    $PY tools/native_build.py "$1" "$2" "$3" "$4" $MAKE_PMM ${FPS:+FPS=$FPS} ${ADAPTIVE_FPS:+ADAPTIVE_FPS=$ADAPTIVE_FPS} ${FONT:+FONT=$FONT} \
       "${MAKE_NEW[@]}" ${5:+LANG_BUILD=$5} "MOD_VERSION=$MOD_VERSION"
     return
   fi
   cmp -s "$2" "$1/text-bank.json" 2>/dev/null || cp "$2" "$1/text-bank.json"
   if [ -n "$3" ]; then cmp -s "$3" "$1/text-bank-pad.json" 2>/dev/null || cp "$3" "$1/text-bank-pad.json"; else rm -f "$1/text-bank-pad.json"; fi
   docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp -v "$1:/work" -w /work dw-build \
-    make -j8 TOOLCHAIN=gcc $MAKE_PMM ${FPS:+FPS=$FPS} ${FONT:+FONT=$FONT} "${MAKE_NEW[@]}" ${5:+LANG_BUILD=$5} "MOD_VERSION=$MOD_VERSION" > "$4" 2>&1 || { tail -30 "$4"; exit 1; }
+    make -j8 TOOLCHAIN=gcc $MAKE_PMM ${FPS:+FPS=$FPS} ${ADAPTIVE_FPS:+ADAPTIVE_FPS=$ADAPTIVE_FPS} ${FONT:+FONT=$FONT} "${MAKE_NEW[@]}" ${5:+LANG_BUILD=$5} "MOD_VERSION=$MOD_VERSION" > "$4" 2>&1 || { tail -30 "$4"; exit 1; }
 }
 if [ "$LANG_ON" = 1 ]; then
   for lang in $LANG_LIST; do

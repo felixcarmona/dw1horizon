@@ -18,6 +18,7 @@ and presentation separately; debugger pauses must not count toward wall time.
 
 | Script | What it measures |
 |---|---|
+| `adaptivecheck.py` | experimental `ADAPTIVE_FPS=1` policy comparison on matching Redux checkpoints: actual swap-counter intervals, host timestamps, 1% lows and switches per guest minute |
 | `autocheck.py` | full-disc automatic/manual comparison: boot selection, original 2 MB and expanded 8 MB, light/heavy/battle fps, guest swap intervals and runtime overclock toggles |
 | `clockrate.py` | game minutes per real minute |
 | `random_call_rate.py` | `rand()` calls per tick |

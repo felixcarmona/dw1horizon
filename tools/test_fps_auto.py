@@ -81,6 +81,7 @@ def test_boot(work):
 #include <stdint.h>
 #include <assert.h>
 #define MOD_CPU_SPINS_FAST 8500
+#define ADAPTIVE_FPS 0
 #define MOD_NOTICE_NO_RAM 1
 #define MOD_NOTICE_SLOW_CPU 2
 int32_t MOD_CPU_SPINS, MOD_NOTICE, MOD_FPS_MODE_RUN, ram;

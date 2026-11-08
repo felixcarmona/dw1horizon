@@ -1,0 +1,199 @@
+From 24edcddf3b9e351e66625a0b6ae6f872b78682ce Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 8 Nov 2026 17:05:41 +0000
+Subject: [PATCH] Gate an experimental presentation deadline selector
+
+---
+ Makefile             |   7 ++-
+ src/main/main.c      | 103 +++++++++++++++++++++++++++++++++++++++++--
+ src/main/main_menu.c |   2 +-
+ 3 files changed, 107 insertions(+), 5 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 9db0aa08..aa658bb4 100644
+--- a/Makefile
++++ b/Makefile
+@@ -42,7 +42,12 @@ FPS ?= 60
+ ifeq ($(filter $(FPS),20 30 60),)
+ $(error FPS=$(FPS): the frame rate must be 20, 30 or 60)
+ endif
+-$(shell mkdir -p $(GEN_DIR); printf '#define FPS %s\n' '$(FPS)' > $(GEN_DIR)/fps.h.tmp; \
++# Experimental presentation feedback, disabled in ordinary builds.
++ADAPTIVE_FPS ?= 0
++ifeq ($(filter $(ADAPTIVE_FPS),0 1),)
++$(error ADAPTIVE_FPS must be 0 or 1)
++endif
++$(shell mkdir -p $(GEN_DIR); printf '#define FPS %s\n#define ADAPTIVE_FPS %s\n' '$(FPS)' '$(ADAPTIVE_FPS)' > $(GEN_DIR)/fps.h.tmp; \
+ 	cmp -s $(GEN_DIR)/fps.h.tmp $(GEN_DIR)/fps.h && rm $(GEN_DIR)/fps.h.tmp \
+ 	|| mv $(GEN_DIR)/fps.h.tmp $(GEN_DIR)/fps.h)
+ 
+diff --git a/src/main/main.c b/src/main/main.c
+index e6e300ee..813f3348 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -4164,7 +4164,11 @@ static void modPerfReset(void)
+  * although no code reads it */
+ const int32_t MOD_FPS_BUILD __attribute__((used, retain)) = FPS;
+ #if FPS != 20
+-int32_t MOD_FPS_MODE_RUN; /* Automatic presentation: safe 20 fps until the boot probe. */
++#if ADAPTIVE_FPS
++int32_t MOD_FPS_MODE_RUN = 2;
++#else
++int32_t MOD_FPS_MODE_RUN; /* Preserve production's uninitialized storage. */
++#endif
+ #endif
+ /* test switch (state checks with the slow interpreter CPU, where the extra
+  * passes rarely fit): with N > 0 every tick lasts N refreshes instead of 3,
+@@ -5350,6 +5354,82 @@ int8_t MOD_LOAD_PUMP;
+ int32_t isFileReadQueueBusy(void); /* file_queue.c */
+ void tickFileReadQueue(int32_t unused);
+ 
++/* Experimental study controls exist only in ADAPTIVE_FPS builds.
++ * 0 feedback; 1 production AUTO; 2 forced 60; 3 forced 20.
++ * No save bytes, menu rows or allocations. Change mode only between ticks. */
++#if ADAPTIVE_FPS && FPS != 20
++int32_t MOD_ADAPT_POLICY;
++uint32_t MOD_ADAPT_SWITCHES;
++static struct {
++    uint32_t scene, state, battle, windowV, dropV;
++    int32_t policy, warmup, ticks, bad, windows, ready, dropped;
++} modAdapt;
++
++static void modAdaptiveBegin(int32_t flags)
++{
++    uint32_t now = VSync(-1);
++    int32_t boundary = !modAdapt.ready || modAdapt.scene != MOD_INTERP_MAP_GEN ||
++        modAdapt.state != GAME_STATE || modAdapt.battle != (flags & MOD_PRESENT_BATTLE);
++
++    if (modAdapt.policy != MOD_ADAPT_POLICY || !modAdapt.ready) {
++        modAdapt.policy = MOD_ADAPT_POLICY;
++        modAdapt.dropped = 0;
++        boundary = 1;
++        MOD_FPS_MODE_RUN = MOD_ADAPT_POLICY == 1 ?
++            (modCpuProbe() >= MOD_CPU_SPINS_FAST ? 2 : 0) : MOD_ADAPT_POLICY == 3 ? 0 : 2;
++    }
++    if (MOD_ADAPT_POLICY == 0 && boundary && modAdapt.dropped &&
++        now - modAdapt.dropV >= 1800) {
++        MOD_FPS_MODE_RUN = 2;
++        MOD_ADAPT_SWITCHES++;
++        modAdapt.dropped = 0;
++    }
++    if (boundary) {
++        modAdapt.scene = MOD_INTERP_MAP_GEN;
++        modAdapt.state = GAME_STATE;
++        modAdapt.battle = flags & MOD_PRESENT_BATTLE;
++        modAdapt.ready = 1;
++        modAdapt.warmup = 30;
++        modAdapt.windowV = now;
++        modAdapt.ticks = modAdapt.bad = modAdapt.windows = 0;
++    }
++}
++
++static void modAdaptiveEnd(int32_t flags, int32_t flips, int32_t late)
++{
++    uint32_t now = VSync(-1);
++    if (MOD_ADAPT_POLICY != 0 || MOD_FPS_MODE_RUN != 2) return;
++    /* Loading, fast battle pairs, pause, forced timing and curling's own
++     * match calibration cannot provide a normal 60-fps workload sample. */
++    if (MOD_LOAD_PUMP || MOD_TICK_FAST || MOD_FPS_TEST_TICK ||
++        MOD_RENDER_CADENCE || (flags & MOD_PRESENT_PAUSE) ||
++        now - (uint32_t)modTickV >= 120) {
++        modAdapt.warmup = 30;
++    }
++    if (modAdapt.warmup) {
++        modAdapt.warmup--;
++        modAdapt.windowV = now;
++        modAdapt.ticks = modAdapt.bad = modAdapt.windows = 0;
++        return;
++    }
++    modAdapt.ticks++;
++    modAdapt.bad += flips != 3 || late;
++    if (now - modAdapt.windowV >= 120) {
++        /* >5% imperfect ticks in each of two consecutive 2-second windows.
++         * A skipped pass or any late flip makes its tick imperfect. */
++        modAdapt.windows = modAdapt.bad * 20 > modAdapt.ticks ? modAdapt.windows + 1 : 0;
++        modAdapt.windowV = now;
++        modAdapt.ticks = modAdapt.bad = 0;
++        if (modAdapt.windows >= 2) {
++            MOD_FPS_MODE_RUN = 0;
++            MOD_ADAPT_SWITCHES++;
++            modAdapt.dropped = 1;
++            modAdapt.dropV = now;
++        }
++    }
++}
++#endif
++
+ /* Automatic presentation. Sample only inside an existing idle wait, with
+  * at least 32 scanlines before its next vblank. The probe costs 16 lines.
+  * Two agreeing samples, two seconds apart, and separate thresholds prevent
+@@ -5390,7 +5470,10 @@ static void modWaitVblank(void)
+ 	int32_t v;
+ 
+ #if FPS != 20
+-	modAutoFrameRatePoll();
++#if ADAPTIVE_FPS
++    if (MOD_ADAPT_POLICY == 1)
++#endif
++    modAutoFrameRatePoll();
+ #endif
+ 
+ 	if (MOD_LOAD_PUMP) {
+@@ -5426,6 +5509,10 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 	int32_t force = MOD_FPS_TEST_TICK > 0;
+ 	int32_t discard = MOD_TICK_FAST && !MOD_REAL_TICK; /* battle speed: rendered, not shown */
+ 	int32_t thirds[3];
++#if ADAPTIVE_FPS && FPS != 20
++    int32_t adaptFlips = 0, adaptLate = 0;
++    modAdaptiveBegin(flags);
++#endif
+ 
+ 	if (flags & MOD_PRESENT_PAUSE) {
+ 		extra = modLoopRollback;
+@@ -5575,12 +5662,19 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 		}
+ 		if (VSync(-1) >= endV) {
+ 			MOD_PERF_LATE++;
++#if ADAPTIVE_FPS && FPS != 20
++            adaptLate = 1;
++#endif
+ 		}
+ 		do {
+ 			modWaitVblank(); /* like VSync(3): always swap on a vertical blank */
+ 		} while (VSync(-1) < endV);
+ 		vLast = VSync(-1);
+-		GsSwapDispBuff();
++#if ADAPTIVE_FPS && FPS != 20
++        adaptFlips++;
++        adaptLate |= vLast != endV;
++#endif
++        GsSwapDispBuff();
+ 		GsSortClear(0, 0, 0, &GS_ORDERING_TABLE[ACTIVE_FRAMEBUFFER]);
+ 		GsDrawOt(&GS_ORDERING_TABLE[ACTIVE_FRAMEBUFFER]);
+ 		MOD_FPS_RENDERS++;
+@@ -5603,6 +5697,9 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 	modFlushRemovals();
+ 	modLastEndV = MOD_RENDER_CADENCE ? tickV + period : VSync(-1);
+ 	modLastEndLines = modLines();
++#if ADAPTIVE_FPS && FPS != 20
++    modAdaptiveEnd(flags, adaptFlips, adaptLate);
++#endif
+ }
+ 
+ void gameLoop(void)
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index d26bfd03..3b2d0628 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -4980,7 +4980,7 @@ void modNoticeProbe(void)
+ {
+ 	modCpuProbe();
+ #if FPS != 20
+-	MOD_FPS_MODE_RUN = MOD_CPU_SPINS >= MOD_CPU_SPINS_FAST ? 2 : 0;
++	MOD_FPS_MODE_RUN = ADAPTIVE_FPS || MOD_CPU_SPINS >= MOD_CPU_SPINS_FAST ? 2 : 0;
+ #endif
+ 	MOD_NOTICE = (modProbeRam() ? 0 : MOD_NOTICE_NO_RAM) | (MOD_CPU_SPINS < MOD_CPU_SPINS_FAST ? MOD_NOTICE_SLOW_CPU : 0);
+ }
+-- 
+2.55.0
+
