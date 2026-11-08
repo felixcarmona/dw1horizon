@@ -30,10 +30,21 @@ def extract(path, name, result='void'):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('tree', type=Path)
+    parser.add_argument('--rules-root', type=Path, default=ROOT,
+                        help='matching source checkout for historical builds')
     args = parser.parse_args()
     tree = args.tree.resolve()
-    rules = json.loads((ROOT / 'content/tables/battle-formulas.json').read_text())['battleFormulas']
-    encoded = balance.encode_named('battleFormulas', rules, None)
+    rules_root = args.rules_root.resolve()
+    if rules_root == ROOT:
+        rules = json.loads((ROOT / 'content/tables/battle-formulas.json').read_text())['battleFormulas']
+        encoded = balance.encode_named('battleFormulas', rules, None)
+    else:
+        # Formula layouts can grow between releases. Use that release's encoder
+        # as well as its data, rather than shifting the historical buff rows.
+        encoded = subprocess.check_output([sys.executable, '-c',
+            'import json,sys; from tools import balance; '
+            'r=json.load(open("content/tables/battle-formulas.json"))["battleFormulas"]; '
+            'sys.stdout.buffer.write(balance.encode_named("battleFormulas",r,None))'], cwd=rules_root)
     values = struct.unpack('<' + 'h' * (len(encoded) // 2), encoded)
     source = r'''
 #include <stdint.h>
