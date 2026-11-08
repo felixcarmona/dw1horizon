@@ -1,7 +1,12 @@
 # HARD difficulty: approach proposal
 
-**Status: review only. No HARD game changes are included in this branch.**
-Experimental implementation work is parked. The existing
+> Historical approach review. Approach A is implemented with the subsequently
+> specified HARD damage floor and shared Defense continuation; see
+> [current rules and evidence](HARD-DIFFICULTY.md). Tables below describe the
+> original alternatives and do not include those later changes.
+
+**Status at this review: proposal only; no HARD game changes were included.**
+Experimental implementation work was parked. The existing
 [stat audit](STAT-SOFTCAP.md) is retained as historical analysis; its universal
 soft-growth and finisher-soft-cap candidates are not recommended here.
 Gameplay inputs are pinned to `origin/main` commit

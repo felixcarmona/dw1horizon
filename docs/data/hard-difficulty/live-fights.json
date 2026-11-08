@@ -1,0 +1,4305 @@
+[
+  {
+    "beforeDefenseCurve": true,
+    "case": "wild-late-normal",
+    "kind": "wild",
+    "profile": "late",
+    "mode": "NORMAL",
+    "loadout": [
+      46,
+      41,
+      42
+    ],
+    "partnerStats": [
+      800,
+      800,
+      800,
+      800
+    ],
+    "partnerMaxHP": 8005,
+    "partnerMaxMP": 9520,
+    "ramBytes": 2097152,
+    "partnerKnockedOut": false,
+    "minimumObservedHP": 7625,
+    "combatSeconds": 34.55,
+    "heap": {
+      "free": 120544,
+      "largest": 120544
+    },
+    "nativeMinimumCheckedHits": 0,
+    "incomingDirectHits": [
+      {
+        "frame": 68,
+        "partnerTarget": 1,
+        "damage": 202,
+        "hpBefore": 8005
+      },
+      {
+        "frame": 294,
+        "partnerTarget": 1,
+        "damage": 178,
+        "hpBefore": 7803
+      }
+    ],
+    "damageCalculations": [
+      {
+        "partner": false,
+        "offense": 630,
+        "defense": 840,
+        "power": 226,
+        "roll": 92,
+        "damage": 202,
+        "frame": 68,
+        "move": 24,
+        "finisher": false
+      },
+      {
+        "partner": false,
+        "offense": 630,
+        "defense": 882,
+        "power": 226,
+        "roll": 95,
+        "damage": 178,
+        "frame": 294,
+        "move": 24,
+        "finisher": false
+      },
+      {
+        "partner": true,
+        "offense": 2125,
+        "defense": 340,
+        "power": 320,
+        "roll": 96,
+        "damage": 835,
+        "frame": 441,
+        "move": 46,
+        "finisher": false
+      },
+      {
+        "partner": true,
+        "offense": 2125,
+        "defense": 340,
+        "power": 320,
+        "roll": 90,
+        "damage": 783,
+        "frame": 505,
+        "move": 46,
+        "finisher": false
+      },
+      {
+        "partner": true,
+        "offense": 2125,
+        "defense": 340,
+        "power": 320,
+        "roll": 102,
+        "damage": 887,
+        "frame": 577,
+        "move": 46,
+        "finisher": false
+      }
+    ],
+    "run": "primary-before",
+    "screen": 153,
+    "playerActions": {
+      "recoveriesCarried": 0,
+      "recoveriesRemaining": null,
+      "recoveryThrows": [],
+      "finisherInput": false,
+      "muscleFirst": false
+    }
+  },
+  {
+    "beforeDefenseCurve": true,
+    "case": "wild-strong-normal",
+    "kind": "wild",
+    "profile": "strong",
+    "mode": "NORMAL",
+    "loadout": [
+      46,
+      41,
+      42
+    ],
+    "partnerStats": [
+      1500,
+      1500,
+      1500,
+      1500
+    ],
+    "partnerMaxHP": 15000,
+    "partnerMaxMP": 15000,
+    "ramBytes": 2097152,
+    "partnerKnockedOut": false,
+    "minimumObservedHP": 14998,
+    "combatSeconds": 32.2,
+    "heap": {
+      "free": 120544,
+      "largest": 120544
+    },
+    "nativeMinimumCheckedHits": 0,
+    "incomingDirectHits": [
+      {
+        "frame": 81,
+        "partnerTarget": 1,
+        "damage": 1,
+        "hpBefore": 15000
+      },
+      {
+        "frame": 325,
+        "partnerTarget": 1,
+        "damage": 1,
+        "hpBefore": 14999
+      }
+    ],
+    "damageCalculations": [
+      {
+        "partner": false,
+        "offense": 630,
+        "defense": 1575,
+        "power": 444,
+        "roll": 96,
+        "damage": 1,
+        "frame": 81,
+        "move": 1,
+        "finisher": false
+      },
+      {
+        "partner": false,
+        "offense": 630,
+        "defense": 1735,
+        "power": 226,
+        "roll": 97,
+        "damage": 1,
+        "frame": 325,
+        "move": 24,
+        "finisher": false
+      },
+      {
+        "partner": true,
+        "offense": 2853,
+        "defense": 340,
+        "power": 320,
+        "roll": 103,
+        "damage": 922,
+        "frame": 463,
+        "move": 46,
+        "finisher": false
+      },
+      {
+        "partner": true,
+        "offense": 2853,
+        "defense": 340,
+        "power": 320,
+        "roll": 108,
+        "damage": 967,
+        "frame": 530,
+        "move": 46,
+        "finisher": false
+      }
+    ],
+    "run": "primary-before",
+    "screen": 153,
+    "playerActions": {
+      "recoveriesCarried": 0,
+      "recoveriesRemaining": null,
+      "recoveryThrows": [],
+      "finisherInput": false,
+      "muscleFirst": false
+    }
+  },
+  {
+    "beforeDefenseCurve": true,
+    "case": "wild-max-normal",
+    "kind": "wild",
+    "profile": "max",
+    "mode": "NORMAL",
+    "loadout": [
+      46,
+      41,
+      42
+    ],
+    "partnerStats": [
+      9999,
+      9999,
+      9999,
+      9999
+    ],
+    "partnerMaxHP": 30000,
+    "partnerMaxMP": 30000,
+    "ramBytes": 2097152,
+    "partnerKnockedOut": false,
+    "minimumObservedHP": 29998,
+    "combatSeconds": 35.75,
+    "heap": {
+      "free": 120544,
+      "largest": 120544
+    },
+    "nativeMinimumCheckedHits": 0,
+    "incomingDirectHits": [
+      {
+        "frame": 68,
+        "partnerTarget": 1,
+        "damage": 1,
+        "hpBefore": 30000
+      },
+      {
+        "frame": 377,
+        "partnerTarget": 1,
+        "damage": 1,
+        "hpBefore": 29999
+      }
+    ],
+    "damageCalculations": [
+      {
+        "partner": false,
+        "offense": 630,
+        "defense": 9999,
+        "power": 226,
+        "roll": 108,
+        "damage": 1,
+        "frame": 68,
+        "move": 24,
+        "finisher": false
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 340,
+        "power": 320,
+        "roll": 107,
+        "damage": 1009,
+        "frame": 132,
+        "move": 46,
+        "finisher": false
+      },
+      {
+        "partner": false,
+        "offense": 630,
+        "defense": 9999,
+        "power": 320,
+        "roll": 94,
+        "damage": 1,
+        "frame": 377,
+        "move": 46,
+        "finisher": false
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 340,
+        "power": 320,
+        "roll": 109,
+        "damage": 1027,
+        "frame": 601,
+        "move": 46,
+        "finisher": false
+      }
+    ],
+    "run": "primary-before",
+    "screen": 153,
+    "playerActions": {
+      "recoveriesCarried": 0,
+      "recoveriesRemaining": null,
+      "recoveryThrows": [],
+      "finisherInput": false,
+      "muscleFirst": false
+    }
+  },
+  {
+    "beforeDefenseCurve": true,
+    "case": "boss-late-normal",
+    "kind": "boss",
+    "profile": "late",
+    "mode": "NORMAL",
+    "loadout": [
+      47,
+      41,
+      42
+    ],
+    "partnerStats": [
+      800,
+      800,
+      800,
+      800
+    ],
+    "partnerMaxHP": 8005,
+    "partnerMaxMP": 9520,
+    "ramBytes": 2097152,
+    "partnerKnockedOut": false,
+    "minimumObservedHP": 4558,
+    "combatSeconds": 101.8,
+    "heap": {
+      "free": 161832,
+      "largest": 161832
+    },
+    "nativeMinimumCheckedHits": 0,
+    "incomingDirectHits": [
+      {
+        "frame": 181,
+        "partnerTarget": 1,
+        "damage": 1026,
+        "hpBefore": 8005
+      },
+      {
+        "frame": 247,
+        "partnerTarget": 1,
+        "damage": 643,
+        "hpBefore": 6979
+      },
+      {
+        "frame": 326,
+        "partnerTarget": 1,
+        "damage": 655,
+        "hpBefore": 6336
+      },
+      {
+        "frame": 404,
+        "partnerTarget": 1,
+        "damage": 637,
+        "hpBefore": 8005
+      },
+      {
+        "frame": 516,
+        "partnerTarget": 1,
+        "damage": 542,
+        "hpBefore": 7368
+      },
+      {
+        "frame": 649,
+        "partnerTarget": 1,
+        "damage": 1092,
+        "hpBefore": 6826
+      },
+      {
+        "frame": 853,
+        "partnerTarget": 1,
+        "damage": 982,
+        "hpBefore": 8005
+      },
+      {
+        "frame": 1147,
+        "partnerTarget": 1,
+        "damage": 1375,
+        "hpBefore": 7023
+      },
+      {
+        "frame": 1315,
+        "partnerTarget": 1,
+        "damage": 1308,
+        "hpBefore": 8005
+      },
+      {
+        "frame": 1538,
+        "partnerTarget": 1,
+        "damage": 2139,
+        "hpBefore": 6697
+      }
+    ],
+    "damageCalculations": [
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 800,
+        "power": 586,
+        "roll": 94,
+        "damage": 1026,
+        "frame": 181,
+        "move": 8,
+        "finisher": false
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 800,
+        "power": 320,
+        "roll": 108,
+        "damage": 643,
+        "frame": 247,
+        "move": 46,
+        "finisher": false
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 800,
+        "power": 320,
+        "roll": 110,
+        "damage": 655,
+        "frame": 326,
+        "move": 46,
+        "finisher": false
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 800,
+        "power": 320,
+        "roll": 107,
+        "damage": 637,
+        "frame": 404,
+        "move": 46,
+        "finisher": false
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 800,
+        "power": 320,
+        "roll": 91,
+        "damage": 542,
+        "frame": 516,
+        "move": 46,
+        "finisher": false
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 800,
+        "power": 586,
+        "roll": 100,
+        "damage": 1092,
+        "frame": 649,
+        "move": 8,
+        "finisher": false
+      },
+      {
+        "partner": true,
+        "offense": 2969,
+        "defense": 650,
+        "power": 500,
+        "roll": 100,
+        "damage": 1392,
+        "frame": 722,
+        "move": 47,
+        "finisher": false
+      },
+      {
+        "partner": true,
+        "offense": 2969,
+        "defense": 650,
+        "power": 500,
+        "roll": 102,
+        "damage": 1419,
+        "frame": 843,
+        "move": 47,
+        "finisher": false
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 800,
+        "power": 586,
+        "roll": 90,
+        "damage": 982,
+        "frame": 853,
+        "move": 8,
+        "finisher": false
+      },
+      {
+        "partner": true,
+        "offense": 2969,
+        "defense": 650,
+        "power": 500,
+        "roll": 99,
+        "damage": 1378,
+        "frame": 1048,
+        "move": 47,
+        "finisher": false
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 800,
+        "power": 573,
+        "roll": 103,
+        "damage": 1375,
+        "frame": 1147,
+        "move": 25,
+        "finisher": false
+      },
+      {
+        "partner": true,
+        "offense": 2969,
+        "defense": 650,
+        "power": 500,
+        "roll": 106,
+        "damage": 1475,
+        "frame": 1219,
+        "move": 47,
+        "finisher": false
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 800,
+        "power": 573,
+        "roll": 98,
+        "damage": 1308,
+        "frame": 1315,
+        "move": 25,
+        "finisher": false
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 800,
+        "power": 260,
+        "roll": 102,
+        "damage": 2139,
+        "frame": 1538,
+        "move": 106,
+        "finisher": true
+      },
+      {
+        "partner": true,
+        "offense": 2969,
+        "defense": 650,
+        "power": 500,
+        "roll": 106,
+        "damage": 1475,
+        "frame": 1704,
+        "move": 47,
+        "finisher": false
+      },
+      {
+        "partner": true,
+        "offense": 2969,
+        "defense": 650,
+        "power": 500,
+        "roll": 92,
+        "damage": 1280,
+        "frame": 1825,
+        "move": 47,
+        "finisher": false
+      },
+      {
+        "partner": true,
+        "offense": 2969,
+        "defense": 650,
+        "power": 500,
+        "roll": 105,
+        "damage": 1461,
+        "frame": 1948,
+        "move": 47,
+        "finisher": false
+      }
+    ],
+    "run": "primary-before",
+    "screen": 225,
+    "playerActions": {
+      "recoveriesCarried": 20,
+      "recoveriesRemaining": 16,
+      "recoveryThrows": [
+        {
+          "frame": 347,
+          "hp": 5681,
+          "itemsBefore": 20
+        },
+        {
+          "frame": 667,
+          "hp": 5734,
+          "itemsBefore": 19
+        },
+        {
+          "frame": 1149,
+          "hp": 5862,
+          "itemsBefore": 18
+        },
+        {
+          "frame": 1644,
+          "hp": 4558,
+          "itemsBefore": 17
+        }
+      ],
+      "finisherInput": true,
+      "muscleFirst": true
+    }
+  },
+  {
+    "beforeDefenseCurve": true,
+    "case": "boss-strong-normal",
+    "kind": "boss",
+    "profile": "strong",
+    "mode": "NORMAL",
+    "loadout": [
+      47,
+      41,
+      42
+    ],
+    "partnerStats": [
+      1500,
+      1500,
+      1500,
+      1500
+    ],
+    "partnerMaxHP": 15000,
+    "partnerMaxMP": 15000,
+    "ramBytes": 2097152,
+    "partnerKnockedOut": false,
+    "minimumObservedHP": 14994,
+    "combatSeconds": 70.4,
+    "heap": {
+      "free": 161832,
+      "largest": 161832
+    },
+    "nativeMinimumCheckedHits": 0,
+    "incomingDirectHits": [
+      {
+        "frame": 272,
+        "partnerTarget": 1,
+        "damage": 1,
+        "hpBefore": 15000
+      },
+      {
+        "frame": 363,
+        "partnerTarget": 1,
+        "damage": 1,
+        "hpBefore": 14999
+      },
+      {
+        "frame": 602,
+        "partnerTarget": 1,
+        "damage": 1,
+        "hpBefore": 14998
+      },
+      {
+        "frame": 693,
+        "partnerTarget": 1,
+        "damage": 1,
+        "hpBefore": 14997
+      },
+      {
+        "frame": 842,
+        "partnerTarget": 1,
+        "damage": 1,
+        "hpBefore": 14996
+      },
+      {
+        "frame": 1049,
+        "partnerTarget": 1,
+        "damage": 1,
+        "hpBefore": 14995
+      }
+    ],
+    "damageCalculations": [
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 1500,
+        "power": 586,
+        "roll": 105,
+        "damage": 1,
+        "frame": 272,
+        "move": 8,
+        "finisher": false
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 1500,
+        "power": 586,
+        "roll": 102,
+        "damage": 1,
+        "frame": 363,
+        "move": 8,
+        "finisher": false
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 1500,
+        "power": 586,
+        "roll": 103,
+        "damage": 1,
+        "frame": 602,
+        "move": 8,
+        "finisher": false
+      },
+      {
+        "partner": true,
+        "offense": 5567,
+        "defense": 650,
+        "power": 500,
+        "roll": 100,
+        "damage": 1449,
+        "frame": 675,
+        "move": 47,
+        "finisher": false
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 1500,
+        "power": 586,
+        "roll": 109,
+        "damage": 1,
+        "frame": 693,
+        "move": 8,
+        "finisher": false
+      },
+      {
+        "partner": true,
+        "offense": 5567,
+        "defense": 650,
+        "power": 500,
+        "roll": 93,
+        "damage": 1347,
+        "frame": 761,
+        "move": 47,
+        "finisher": false
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 1500,
+        "power": 320,
+        "roll": 98,
+        "damage": 1,
+        "frame": 842,
+        "move": 46,
+        "finisher": false
+      },
+      {
+        "partner": true,
+        "offense": 5567,
+        "defense": 650,
+        "power": 500,
+        "roll": 107,
+        "damage": 1550,
+        "frame": 917,
+        "move": 47,
+        "finisher": false
+      },
+      {
+        "partner": true,
+        "offense": 5567,
+        "defense": 650,
+        "power": 500,
+        "roll": 95,
+        "damage": 1376,
+        "frame": 1034,
+        "move": 47,
+        "finisher": false
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 1500,
+        "power": 573,
+        "roll": 97,
+        "damage": 1,
+        "frame": 1049,
+        "move": 25,
+        "finisher": false
+      },
+      {
+        "partner": true,
+        "offense": 5567,
+        "defense": 650,
+        "power": 255,
+        "roll": 93,
+        "damage": 5414,
+        "frame": 1320,
+        "move": 92,
+        "finisher": true
+      }
+    ],
+    "run": "primary-before",
+    "screen": 225,
+    "playerActions": {
+      "recoveriesCarried": 20,
+      "recoveriesRemaining": 20,
+      "recoveryThrows": [],
+      "finisherInput": true,
+      "muscleFirst": true
+    }
+  },
+  {
+    "beforeDefenseCurve": true,
+    "case": "boss-max-normal",
+    "kind": "boss",
+    "profile": "max",
+    "mode": "NORMAL",
+    "loadout": [
+      47,
+      41,
+      42
+    ],
+    "partnerStats": [
+      9999,
+      9999,
+      9999,
+      9999
+    ],
+    "partnerMaxHP": 30000,
+    "partnerMaxMP": 30000,
+    "ramBytes": 2097152,
+    "partnerKnockedOut": false,
+    "minimumObservedHP": 29995,
+    "combatSeconds": 54.2,
+    "heap": {
+      "free": 161832,
+      "largest": 161832
+    },
+    "nativeMinimumCheckedHits": 0,
+    "incomingDirectHits": [
+      {
+        "frame": 272,
+        "partnerTarget": 1,
+        "damage": 1,
+        "hpBefore": 30000
+      },
+      {
+        "frame": 363,
+        "partnerTarget": 1,
+        "damage": 1,
+        "hpBefore": 29999
+      },
+      {
+        "frame": 602,
+        "partnerTarget": 1,
+        "damage": 1,
+        "hpBefore": 29998
+      },
+      {
+        "frame": 693,
+        "partnerTarget": 1,
+        "damage": 1,
+        "hpBefore": 29997
+      },
+      {
+        "frame": 842,
+        "partnerTarget": 1,
+        "damage": 1,
+        "hpBefore": 29996
+      }
+    ],
+    "damageCalculations": [
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 9999,
+        "power": 586,
+        "roll": 105,
+        "damage": 1,
+        "frame": 272,
+        "move": 8,
+        "finisher": false
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 9999,
+        "power": 586,
+        "roll": 102,
+        "damage": 1,
+        "frame": 363,
+        "move": 8,
+        "finisher": false
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 9999,
+        "power": 586,
+        "roll": 103,
+        "damage": 1,
+        "frame": 602,
+        "move": 8,
+        "finisher": false
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 650,
+        "power": 500,
+        "roll": 100,
+        "damage": 1473,
+        "frame": 675,
+        "move": 47,
+        "finisher": false
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 9999,
+        "power": 586,
+        "roll": 109,
+        "damage": 1,
+        "frame": 693,
+        "move": 8,
+        "finisher": false
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 650,
+        "power": 500,
+        "roll": 93,
+        "damage": 1369,
+        "frame": 761,
+        "move": 47,
+        "finisher": false
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 9999,
+        "power": 320,
+        "roll": 98,
+        "damage": 1,
+        "frame": 842,
+        "move": 46,
+        "finisher": false
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 650,
+        "power": 255,
+        "roll": 106,
+        "damage": 10869,
+        "frame": 996,
+        "move": 92,
+        "finisher": true
+      }
+    ],
+    "run": "primary-before",
+    "screen": 225,
+    "playerActions": {
+      "recoveriesCarried": 20,
+      "recoveriesRemaining": 20,
+      "recoveryThrows": [],
+      "finisherInput": true,
+      "muscleFirst": true
+    }
+  },
+  {
+    "beforeDefenseCurve": false,
+    "case": "wild-late-normal",
+    "kind": "wild",
+    "profile": "late",
+    "mode": "NORMAL",
+    "loadout": [
+      46,
+      41,
+      42
+    ],
+    "partnerStats": [
+      800,
+      800,
+      800,
+      800
+    ],
+    "partnerMaxHP": 8005,
+    "partnerMaxMP": 9520,
+    "ramBytes": 2097152,
+    "partnerKnockedOut": false,
+    "minimumObservedHP": 7535,
+    "combatSeconds": 33.95,
+    "heap": {
+      "free": 120336,
+      "largest": 120336
+    },
+    "nativeMinimumCheckedHits": 0,
+    "incomingDirectHits": [
+      {
+        "frame": 68,
+        "partnerTarget": 1,
+        "damage": 202,
+        "hpBefore": 8005,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 294,
+        "partnerTarget": 1,
+        "damage": 141,
+        "hpBefore": 7803,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 515,
+        "partnerTarget": 1,
+        "damage": 127,
+        "hpBefore": 7662,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      }
+    ],
+    "damageCalculations": [
+      {
+        "partner": false,
+        "offense": 630,
+        "defense": 840,
+        "power": 226,
+        "roll": 92,
+        "damage": 202,
+        "frame": 68,
+        "move": 24,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 630,
+        "defense": 926,
+        "power": 226,
+        "roll": 91,
+        "damage": 141,
+        "frame": 294,
+        "move": 24,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 1521,
+        "defense": 340,
+        "power": 320,
+        "roll": 94,
+        "damage": 774,
+        "frame": 446,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 630,
+        "defense": 972,
+        "power": 320,
+        "roll": 94,
+        "damage": 127,
+        "frame": 515,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 1521,
+        "defense": 340,
+        "power": 320,
+        "roll": 98,
+        "damage": 807,
+        "frame": 515,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 1521,
+        "defense": 340,
+        "power": 320,
+        "roll": 103,
+        "damage": 848,
+        "frame": 573,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      }
+    ],
+    "run": "primary-current",
+    "screen": 153,
+    "playerActions": {
+      "recoveriesCarried": 0,
+      "recoveriesRemaining": 0,
+      "recoveryThrows": [],
+      "finisherInput": false,
+      "muscleFirst": false
+    }
+  },
+  {
+    "beforeDefenseCurve": false,
+    "case": "wild-late-hard",
+    "kind": "wild",
+    "profile": "late",
+    "mode": "HARD",
+    "loadout": [
+      46,
+      41,
+      42
+    ],
+    "partnerStats": [
+      800,
+      800,
+      800,
+      800
+    ],
+    "partnerMaxHP": 8005,
+    "partnerMaxMP": 9520,
+    "ramBytes": 2097152,
+    "partnerKnockedOut": false,
+    "minimumObservedHP": 7019,
+    "combatSeconds": 36.95,
+    "heap": {
+      "free": 120336,
+      "largest": 120336
+    },
+    "nativeMinimumCheckedHits": 2,
+    "incomingDirectHits": [
+      {
+        "frame": 82,
+        "partnerTarget": 1,
+        "damage": 537,
+        "hpBefore": 8005,
+        "blockPercent": 100,
+        "zeroDefenseNative": 1099
+      },
+      {
+        "frame": 560,
+        "partnerTarget": 1,
+        "damage": 449,
+        "hpBefore": 7468,
+        "blockPercent": 100,
+        "zeroDefenseNative": 1170
+      }
+    ],
+    "damageCalculations": [
+      {
+        "partner": false,
+        "offense": 945,
+        "defense": 840,
+        "power": 444,
+        "roll": 94,
+        "damage": 537,
+        "frame": 82,
+        "move": 1,
+        "finisher": false,
+        "zeroDefenseNative": 1099,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 880,
+        "defense": 357,
+        "power": 320,
+        "roll": 108,
+        "damage": 670,
+        "frame": 142,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 880,
+        "defense": 357,
+        "power": 320,
+        "roll": 104,
+        "damage": 646,
+        "frame": 214,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 945,
+        "defense": 972,
+        "power": 444,
+        "roll": 100,
+        "damage": 449,
+        "frame": 560,
+        "move": 1,
+        "finisher": false,
+        "zeroDefenseNative": 1170,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 1521,
+        "defense": 357,
+        "power": 320,
+        "roll": 103,
+        "damage": 803,
+        "frame": 633,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      }
+    ],
+    "run": "primary-current",
+    "screen": 153,
+    "playerActions": {
+      "recoveriesCarried": 0,
+      "recoveriesRemaining": 0,
+      "recoveryThrows": [],
+      "finisherInput": false,
+      "muscleFirst": false
+    }
+  },
+  {
+    "beforeDefenseCurve": false,
+    "case": "wild-strong-normal",
+    "kind": "wild",
+    "profile": "strong",
+    "mode": "NORMAL",
+    "loadout": [
+      46,
+      41,
+      42
+    ],
+    "partnerStats": [
+      1500,
+      1500,
+      1500,
+      1500
+    ],
+    "partnerMaxHP": 15000,
+    "partnerMaxMP": 15000,
+    "ramBytes": 2097152,
+    "partnerKnockedOut": false,
+    "minimumObservedHP": 14943,
+    "combatSeconds": 27.85,
+    "heap": {
+      "free": 120336,
+      "largest": 120336
+    },
+    "nativeMinimumCheckedHits": 0,
+    "incomingDirectHits": [
+      {
+        "frame": 70,
+        "partnerTarget": 1,
+        "damage": 57,
+        "hpBefore": 15000,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      }
+    ],
+    "damageCalculations": [
+      {
+        "partner": false,
+        "offense": 630,
+        "defense": 1575,
+        "power": 226,
+        "roll": 92,
+        "damage": 57,
+        "frame": 70,
+        "move": 24,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 2359,
+        "defense": 340,
+        "power": 320,
+        "roll": 101,
+        "damage": 888,
+        "frame": 297,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 3066,
+        "defense": 340,
+        "power": 320,
+        "roll": 106,
+        "damage": 955,
+        "frame": 451,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      }
+    ],
+    "run": "primary-current",
+    "screen": 153,
+    "playerActions": {
+      "recoveriesCarried": 0,
+      "recoveriesRemaining": 0,
+      "recoveryThrows": [],
+      "finisherInput": false,
+      "muscleFirst": false
+    }
+  },
+  {
+    "beforeDefenseCurve": false,
+    "case": "wild-strong-hard",
+    "kind": "wild",
+    "profile": "strong",
+    "mode": "HARD",
+    "loadout": [
+      46,
+      41,
+      42
+    ],
+    "partnerStats": [
+      1500,
+      1500,
+      1500,
+      1500
+    ],
+    "partnerMaxHP": 15000,
+    "partnerMaxMP": 15000,
+    "ramBytes": 2097152,
+    "partnerKnockedOut": false,
+    "minimumObservedHP": 14562,
+    "combatSeconds": 39.65,
+    "heap": {
+      "free": 120336,
+      "largest": 120336
+    },
+    "nativeMinimumCheckedHits": 2,
+    "incomingDirectHits": [
+      {
+        "frame": 69,
+        "partnerTarget": 1,
+        "damage": 195,
+        "hpBefore": 15000,
+        "blockPercent": 100,
+        "zeroDefenseNative": 855
+      },
+      {
+        "frame": 305,
+        "partnerTarget": 1,
+        "damage": 243,
+        "hpBefore": 14805,
+        "blockPercent": 100,
+        "zeroDefenseNative": 1170
+      }
+    ],
+    "damageCalculations": [
+      {
+        "partner": false,
+        "offense": 945,
+        "defense": 1575,
+        "power": 226,
+        "roll": 92,
+        "damage": 195,
+        "frame": 69,
+        "move": 24,
+        "finisher": false,
+        "zeroDefenseNative": 855,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 945,
+        "defense": 1735,
+        "power": 444,
+        "roll": 100,
+        "damage": 243,
+        "frame": 305,
+        "move": 1,
+        "finisher": false,
+        "zeroDefenseNative": 1170,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 3372,
+        "defense": 357,
+        "power": 320,
+        "roll": 101,
+        "damage": 869,
+        "frame": 464,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 21
+      },
+      {
+        "partner": true,
+        "offense": 3372,
+        "defense": 357,
+        "power": 320,
+        "roll": 96,
+        "damage": 825,
+        "frame": 541,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 12
+      },
+      {
+        "partner": true,
+        "offense": 3372,
+        "defense": 357,
+        "power": 320,
+        "roll": 96,
+        "damage": 825,
+        "frame": 612,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 3372,
+        "defense": 357,
+        "power": 320,
+        "roll": 92,
+        "damage": 791,
+        "frame": 679,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      }
+    ],
+    "run": "primary-current",
+    "screen": 153,
+    "playerActions": {
+      "recoveriesCarried": 0,
+      "recoveriesRemaining": 0,
+      "recoveryThrows": [],
+      "finisherInput": false,
+      "muscleFirst": false
+    }
+  },
+  {
+    "beforeDefenseCurve": false,
+    "case": "wild-max-normal",
+    "kind": "wild",
+    "profile": "max",
+    "mode": "NORMAL",
+    "loadout": [
+      46,
+      41,
+      42
+    ],
+    "partnerStats": [
+      9999,
+      9999,
+      9999,
+      9999
+    ],
+    "partnerMaxHP": 30000,
+    "partnerMaxMP": 30000,
+    "ramBytes": 2097152,
+    "partnerKnockedOut": false,
+    "minimumObservedHP": 29981,
+    "combatSeconds": 35.45,
+    "heap": {
+      "free": 120336,
+      "largest": 120336
+    },
+    "nativeMinimumCheckedHits": 0,
+    "incomingDirectHits": [
+      {
+        "frame": 70,
+        "partnerTarget": 1,
+        "damage": 9,
+        "hpBefore": 30000,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 367,
+        "partnerTarget": 1,
+        "damage": 10,
+        "hpBefore": 29991,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      }
+    ],
+    "damageCalculations": [
+      {
+        "partner": false,
+        "offense": 630,
+        "defense": 9999,
+        "power": 226,
+        "roll": 92,
+        "damage": 9,
+        "frame": 70,
+        "move": 24,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 340,
+        "power": 320,
+        "roll": 97,
+        "damage": 914,
+        "frame": 300,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 630,
+        "defense": 9999,
+        "power": 320,
+        "roll": 104,
+        "damage": 10,
+        "frame": 367,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 340,
+        "power": 320,
+        "roll": 96,
+        "damage": 905,
+        "frame": 595,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      }
+    ],
+    "run": "primary-current",
+    "screen": 153,
+    "playerActions": {
+      "recoveriesCarried": 0,
+      "recoveriesRemaining": 0,
+      "recoveryThrows": [],
+      "finisherInput": false,
+      "muscleFirst": false
+    }
+  },
+  {
+    "beforeDefenseCurve": false,
+    "case": "wild-max-hard",
+    "kind": "wild",
+    "profile": "max",
+    "mode": "HARD",
+    "loadout": [
+      46,
+      41,
+      42
+    ],
+    "partnerStats": [
+      9999,
+      9999,
+      9999,
+      9999
+    ],
+    "partnerMaxHP": 30000,
+    "partnerMaxMP": 30000,
+    "ramBytes": 2097152,
+    "partnerKnockedOut": false,
+    "minimumObservedHP": 29540,
+    "combatSeconds": 40.7,
+    "heap": {
+      "free": 120336,
+      "largest": 120336
+    },
+    "nativeMinimumCheckedHits": 3,
+    "incomingDirectHits": [
+      {
+        "frame": 70,
+        "partnerTarget": 1,
+        "damage": 129,
+        "hpBefore": 30000,
+        "blockPercent": 100,
+        "zeroDefenseNative": 855
+      },
+      {
+        "frame": 305,
+        "partnerTarget": 1,
+        "damage": 185,
+        "hpBefore": 29871,
+        "blockPercent": 100,
+        "zeroDefenseNative": 1228
+      },
+      {
+        "frame": 565,
+        "partnerTarget": 1,
+        "damage": 146,
+        "hpBefore": 29686,
+        "blockPercent": 100,
+        "zeroDefenseNative": 968
+      }
+    ],
+    "damageCalculations": [
+      {
+        "partner": false,
+        "offense": 945,
+        "defense": 9999,
+        "power": 226,
+        "roll": 92,
+        "damage": 129,
+        "frame": 70,
+        "move": 24,
+        "finisher": false,
+        "zeroDefenseNative": 855,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 945,
+        "defense": 9999,
+        "power": 444,
+        "roll": 105,
+        "damage": 185,
+        "frame": 305,
+        "move": 1,
+        "finisher": false,
+        "zeroDefenseNative": 1228,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 945,
+        "defense": 9999,
+        "power": 320,
+        "roll": 92,
+        "damage": 146,
+        "frame": 565,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 968,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 357,
+        "power": 320,
+        "roll": 100,
+        "damage": 895,
+        "frame": 635,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 357,
+        "power": 320,
+        "roll": 109,
+        "damage": 975,
+        "frame": 708,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      }
+    ],
+    "run": "primary-current",
+    "screen": 153,
+    "playerActions": {
+      "recoveriesCarried": 0,
+      "recoveriesRemaining": 0,
+      "recoveryThrows": [],
+      "finisherInput": false,
+      "muscleFirst": false
+    }
+  },
+  {
+    "beforeDefenseCurve": false,
+    "case": "boss-late-normal",
+    "kind": "boss",
+    "profile": "late",
+    "mode": "NORMAL",
+    "loadout": [
+      47,
+      41,
+      42
+    ],
+    "partnerStats": [
+      800,
+      800,
+      800,
+      800
+    ],
+    "partnerMaxHP": 8005,
+    "partnerMaxMP": 9520,
+    "ramBytes": 2097152,
+    "partnerKnockedOut": false,
+    "minimumObservedHP": 5108,
+    "combatSeconds": 86.55,
+    "heap": {
+      "free": 161624,
+      "largest": 161624
+    },
+    "nativeMinimumCheckedHits": 0,
+    "incomingDirectHits": [
+      {
+        "frame": 217,
+        "partnerTarget": 1,
+        "damage": 619,
+        "hpBefore": 8005,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 349,
+        "partnerTarget": 1,
+        "damage": 1190,
+        "hpBefore": 7386,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 440,
+        "partnerTarget": 1,
+        "damage": 1102,
+        "hpBefore": 6196,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 543,
+        "partnerTarget": 1,
+        "damage": 1157,
+        "hpBefore": 8005,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 732,
+        "partnerTarget": 1,
+        "damage": 572,
+        "hpBefore": 6848,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 1221,
+        "partnerTarget": 1,
+        "damage": 108,
+        "hpBefore": 6276,
+        "blockPercent": 18,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 1340,
+        "partnerTarget": 1,
+        "damage": 536,
+        "hpBefore": 6168,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      }
+    ],
+    "damageCalculations": [
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 800,
+        "power": 320,
+        "roll": 104,
+        "damage": 619,
+        "frame": 217,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 800,
+        "power": 586,
+        "roll": 109,
+        "damage": 1190,
+        "frame": 349,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 800,
+        "power": 586,
+        "roll": 101,
+        "damage": 1102,
+        "frame": 440,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 800,
+        "power": 586,
+        "roll": 106,
+        "damage": 1157,
+        "frame": 543,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 2969,
+        "defense": 650,
+        "power": 500,
+        "roll": 96,
+        "damage": 1336,
+        "frame": 615,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 800,
+        "power": 320,
+        "roll": 96,
+        "damage": 572,
+        "frame": 732,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 2969,
+        "defense": 650,
+        "power": 500,
+        "roll": 97,
+        "damage": 1350,
+        "frame": 798,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 2969,
+        "defense": 650,
+        "power": 500,
+        "roll": 107,
+        "damage": 1489,
+        "frame": 1169,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 800,
+        "power": 320,
+        "roll": 101,
+        "damage": 601,
+        "frame": 1221,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 18
+      },
+      {
+        "partner": true,
+        "offense": 2969,
+        "defense": 650,
+        "power": 500,
+        "roll": 101,
+        "damage": 1405,
+        "frame": 1286,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 800,
+        "power": 320,
+        "roll": 90,
+        "damage": 536,
+        "frame": 1340,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 2969,
+        "defense": 650,
+        "power": 500,
+        "roll": 106,
+        "damage": 1475,
+        "frame": 1412,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 2969,
+        "defense": 650,
+        "power": 255,
+        "roll": 104,
+        "damage": 3352,
+        "frame": 1643,
+        "move": 92,
+        "finisher": true,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      }
+    ],
+    "run": "primary-current",
+    "screen": 225,
+    "playerActions": {
+      "recoveriesCarried": 20,
+      "recoveriesRemaining": 18,
+      "recoveryThrows": [
+        {
+          "frame": 443,
+          "hp": 5108,
+          "itemsBefore": 20
+        },
+        {
+          "frame": 1358,
+          "hp": 5632,
+          "itemsBefore": 19
+        }
+      ],
+      "finisherInput": true,
+      "muscleFirst": true
+    }
+  },
+  {
+    "beforeDefenseCurve": false,
+    "case": "boss-late-hard",
+    "kind": "boss",
+    "profile": "late",
+    "mode": "HARD",
+    "loadout": [
+      47,
+      41,
+      42
+    ],
+    "partnerStats": [
+      800,
+      800,
+      800,
+      800
+    ],
+    "partnerMaxHP": 8005,
+    "partnerMaxMP": 9520,
+    "ramBytes": 2097152,
+    "partnerKnockedOut": false,
+    "minimumObservedHP": 2075,
+    "combatSeconds": 133.6,
+    "heap": {
+      "free": 161624,
+      "largest": 161624
+    },
+    "nativeMinimumCheckedHits": 12,
+    "incomingDirectHits": [
+      {
+        "frame": 217,
+        "partnerTarget": 1,
+        "damage": 1011,
+        "hpBefore": 8005,
+        "blockPercent": 100,
+        "zeroDefenseNative": 1182
+      },
+      {
+        "frame": 349,
+        "partnerTarget": 1,
+        "damage": 1944,
+        "hpBefore": 6994,
+        "blockPercent": 100,
+        "zeroDefenseNative": 2269
+      },
+      {
+        "frame": 468,
+        "partnerTarget": 1,
+        "damage": 2376,
+        "hpBefore": 8005,
+        "blockPercent": 100,
+        "zeroDefenseNative": 2774
+      },
+      {
+        "frame": 564,
+        "partnerTarget": 1,
+        "damage": 934,
+        "hpBefore": 8005,
+        "blockPercent": 100,
+        "zeroDefenseNative": 1091
+      },
+      {
+        "frame": 824,
+        "partnerTarget": 1,
+        "damage": 924,
+        "hpBefore": 7071,
+        "blockPercent": 100,
+        "zeroDefenseNative": 1080
+      },
+      {
+        "frame": 1105,
+        "partnerTarget": 1,
+        "damage": 1819,
+        "hpBefore": 6147,
+        "blockPercent": 100,
+        "zeroDefenseNative": 2123
+      },
+      {
+        "frame": 1170,
+        "partnerTarget": 1,
+        "damage": 875,
+        "hpBefore": 8005,
+        "blockPercent": 100,
+        "zeroDefenseNative": 1023
+      },
+      {
+        "frame": 1358,
+        "partnerTarget": 1,
+        "damage": 5055,
+        "hpBefore": 7130,
+        "blockPercent": 100,
+        "zeroDefenseNative": 5055
+      },
+      {
+        "frame": 1601,
+        "partnerTarget": 1,
+        "damage": 1641,
+        "hpBefore": 7075,
+        "blockPercent": 100,
+        "zeroDefenseNative": 1915
+      },
+      {
+        "frame": 1748,
+        "partnerTarget": 1,
+        "damage": 1021,
+        "hpBefore": 8005,
+        "blockPercent": 100,
+        "zeroDefenseNative": 1193
+      },
+      {
+        "frame": 2089,
+        "partnerTarget": 1,
+        "damage": 1748,
+        "hpBefore": 6984,
+        "blockPercent": 100,
+        "zeroDefenseNative": 2040
+      },
+      {
+        "frame": 2268,
+        "partnerTarget": 1,
+        "damage": 2136,
+        "hpBefore": 8005,
+        "blockPercent": 100,
+        "zeroDefenseNative": 2494
+      }
+    ],
+    "damageCalculations": [
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 800,
+        "power": 320,
+        "roll": 104,
+        "damage": 1011,
+        "frame": 217,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 1182,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 800,
+        "power": 586,
+        "roll": 109,
+        "damage": 1944,
+        "frame": 349,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 2269,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 800,
+        "power": 573,
+        "roll": 109,
+        "damage": 2376,
+        "frame": 468,
+        "move": 25,
+        "finisher": false,
+        "zeroDefenseNative": 2774,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 800,
+        "power": 320,
+        "roll": 96,
+        "damage": 934,
+        "frame": 564,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 1091,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 2969,
+        "defense": 682,
+        "power": 500,
+        "roll": 107,
+        "damage": 1412,
+        "frame": 637,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 2969,
+        "defense": 682,
+        "power": 500,
+        "roll": 97,
+        "damage": 1280,
+        "frame": 763,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 800,
+        "power": 320,
+        "roll": 95,
+        "damage": 924,
+        "frame": 824,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 1080,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 2969,
+        "defense": 682,
+        "power": 500,
+        "roll": 101,
+        "damage": 1332,
+        "frame": 896,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 2969,
+        "defense": 682,
+        "power": 500,
+        "roll": 109,
+        "damage": 1439,
+        "frame": 1021,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 800,
+        "power": 586,
+        "roll": 102,
+        "damage": 1819,
+        "frame": 1105,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 2123,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 800,
+        "power": 320,
+        "roll": 90,
+        "damage": 875,
+        "frame": 1170,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 1023,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 800,
+        "power": 390,
+        "roll": 98,
+        "damage": 5055,
+        "frame": 1358,
+        "move": 106,
+        "finisher": true,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 800,
+        "power": 586,
+        "roll": 92,
+        "damage": 1641,
+        "frame": 1601,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 1915,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 2969,
+        "defense": 682,
+        "power": 500,
+        "roll": 108,
+        "damage": 1425,
+        "frame": 1674,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 800,
+        "power": 320,
+        "roll": 105,
+        "damage": 1021,
+        "frame": 1748,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 1193,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 2969,
+        "defense": 682,
+        "power": 500,
+        "roll": 93,
+        "damage": 1227,
+        "frame": 1988,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 800,
+        "power": 586,
+        "roll": 98,
+        "damage": 1748,
+        "frame": 2089,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 2040,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 2969,
+        "defense": 682,
+        "power": 500,
+        "roll": 94,
+        "damage": 1240,
+        "frame": 2161,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 800,
+        "power": 573,
+        "roll": 98,
+        "damage": 2136,
+        "frame": 2268,
+        "move": 25,
+        "finisher": false,
+        "zeroDefenseNative": 2494,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 2969,
+        "defense": 682,
+        "power": 500,
+        "roll": 105,
+        "damage": 1386,
+        "frame": 2584,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      }
+    ],
+    "run": "primary-current",
+    "screen": 225,
+    "playerActions": {
+      "recoveriesCarried": 20,
+      "recoveriesRemaining": 13,
+      "recoveryThrows": [
+        {
+          "frame": 352,
+          "hp": 5833,
+          "itemsBefore": 20
+        },
+        {
+          "frame": 494,
+          "hp": 5629,
+          "itemsBefore": 19
+        },
+        {
+          "frame": 1112,
+          "hp": 4551,
+          "itemsBefore": 18
+        },
+        {
+          "frame": 1462,
+          "hp": 2075,
+          "itemsBefore": 17
+        },
+        {
+          "frame": 1628,
+          "hp": 5434,
+          "itemsBefore": 16
+        },
+        {
+          "frame": 2104,
+          "hp": 5259,
+          "itemsBefore": 15
+        },
+        {
+          "frame": 2272,
+          "hp": 5937,
+          "itemsBefore": 14
+        }
+      ],
+      "finisherInput": true,
+      "muscleFirst": true
+    }
+  },
+  {
+    "beforeDefenseCurve": false,
+    "case": "boss-strong-normal",
+    "kind": "boss",
+    "profile": "strong",
+    "mode": "NORMAL",
+    "loadout": [
+      47,
+      41,
+      42
+    ],
+    "partnerStats": [
+      1500,
+      1500,
+      1500,
+      1500
+    ],
+    "partnerMaxHP": 15000,
+    "partnerMaxMP": 15000,
+    "ramBytes": 2097152,
+    "partnerKnockedOut": false,
+    "minimumObservedHP": 11154,
+    "combatSeconds": 84.45,
+    "heap": {
+      "free": 161624,
+      "largest": 161624
+    },
+    "nativeMinimumCheckedHits": 0,
+    "incomingDirectHits": [
+      {
+        "frame": 217,
+        "partnerTarget": 1,
+        "damage": 295,
+        "hpBefore": 15000,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 349,
+        "partnerTarget": 1,
+        "damage": 566,
+        "hpBefore": 14705,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 440,
+        "partnerTarget": 1,
+        "damage": 525,
+        "hpBefore": 14139,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 531,
+        "partnerTarget": 1,
+        "damage": 561,
+        "hpBefore": 13614,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 652,
+        "partnerTarget": 1,
+        "damage": 685,
+        "hpBefore": 13053,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 737,
+        "partnerTarget": 1,
+        "damage": 483,
+        "hpBefore": 12368,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 786,
+        "partnerTarget": 1,
+        "damage": 258,
+        "hpBefore": 11885,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 1241,
+        "partnerTarget": 1,
+        "damage": 473,
+        "hpBefore": 11627,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 1322,
+        "partnerTarget": 1,
+        "damage": 295,
+        "hpBefore": 15000,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 1447,
+        "partnerTarget": 1,
+        "damage": 530,
+        "hpBefore": 14705,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      }
+    ],
+    "damageCalculations": [
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 1500,
+        "power": 320,
+        "roll": 104,
+        "damage": 295,
+        "frame": 217,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 1500,
+        "power": 586,
+        "roll": 109,
+        "damage": 566,
+        "frame": 349,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 1500,
+        "power": 586,
+        "roll": 101,
+        "damage": 525,
+        "frame": 440,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 1500,
+        "power": 586,
+        "roll": 108,
+        "damage": 561,
+        "frame": 531,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 5567,
+        "defense": 650,
+        "power": 500,
+        "roll": 101,
+        "damage": 1463,
+        "frame": 603,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 1500,
+        "power": 573,
+        "roll": 108,
+        "damage": 685,
+        "frame": 652,
+        "move": 25,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 5567,
+        "defense": 650,
+        "power": 500,
+        "roll": 100,
+        "damage": 1449,
+        "frame": 724,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 1500,
+        "power": 586,
+        "roll": 93,
+        "damage": 483,
+        "frame": 737,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 1500,
+        "power": 320,
+        "roll": 91,
+        "damage": 258,
+        "frame": 786,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 5567,
+        "defense": 650,
+        "power": 500,
+        "roll": 108,
+        "damage": 1564,
+        "frame": 856,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 5567,
+        "defense": 650,
+        "power": 500,
+        "roll": 97,
+        "damage": 1405,
+        "frame": 977,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 5567,
+        "defense": 650,
+        "power": 500,
+        "roll": 106,
+        "damage": 1535,
+        "frame": 1228,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 1500,
+        "power": 586,
+        "roll": 91,
+        "damage": 473,
+        "frame": 1241,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 1500,
+        "power": 320,
+        "roll": 104,
+        "damage": 295,
+        "frame": 1322,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 1500,
+        "power": 586,
+        "roll": 102,
+        "damage": 530,
+        "frame": 1447,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 5567,
+        "defense": 650,
+        "power": 255,
+        "roll": 96,
+        "damage": 5589,
+        "frame": 1601,
+        "move": 92,
+        "finisher": true,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      }
+    ],
+    "run": "primary-current",
+    "screen": 225,
+    "playerActions": {
+      "recoveriesCarried": 20,
+      "recoveriesRemaining": 19,
+      "recoveryThrows": [
+        {
+          "frame": 1263,
+          "hp": 11154,
+          "itemsBefore": 20
+        }
+      ],
+      "finisherInput": true,
+      "muscleFirst": true
+    }
+  },
+  {
+    "beforeDefenseCurve": false,
+    "case": "boss-strong-hard",
+    "kind": "boss",
+    "profile": "strong",
+    "mode": "HARD",
+    "loadout": [
+      47,
+      41,
+      42
+    ],
+    "partnerStats": [
+      1500,
+      1500,
+      1500,
+      1500
+    ],
+    "partnerMaxHP": 15000,
+    "partnerMaxMP": 15000,
+    "ramBytes": 2097152,
+    "partnerKnockedOut": false,
+    "minimumObservedHP": 11058,
+    "combatSeconds": 86.3,
+    "heap": {
+      "free": 161624,
+      "largest": 161624
+    },
+    "nativeMinimumCheckedHits": 12,
+    "incomingDirectHits": [
+      {
+        "frame": 217,
+        "partnerTarget": 1,
+        "damage": 442,
+        "hpBefore": 15000,
+        "blockPercent": 100,
+        "zeroDefenseNative": 1182
+      },
+      {
+        "frame": 349,
+        "partnerTarget": 1,
+        "damage": 848,
+        "hpBefore": 14558,
+        "blockPercent": 100,
+        "zeroDefenseNative": 2269
+      },
+      {
+        "frame": 440,
+        "partnerTarget": 1,
+        "damage": 785,
+        "hpBefore": 13710,
+        "blockPercent": 100,
+        "zeroDefenseNative": 2102
+      },
+      {
+        "frame": 531,
+        "partnerTarget": 1,
+        "damage": 840,
+        "hpBefore": 12925,
+        "blockPercent": 100,
+        "zeroDefenseNative": 2248
+      },
+      {
+        "frame": 652,
+        "partnerTarget": 1,
+        "damage": 1027,
+        "hpBefore": 12085,
+        "blockPercent": 100,
+        "zeroDefenseNative": 2748
+      },
+      {
+        "frame": 737,
+        "partnerTarget": 1,
+        "damage": 840,
+        "hpBefore": 15000,
+        "blockPercent": 100,
+        "zeroDefenseNative": 2248
+      },
+      {
+        "frame": 824,
+        "partnerTarget": 1,
+        "damage": 746,
+        "hpBefore": 14160,
+        "blockPercent": 100,
+        "zeroDefenseNative": 1998
+      },
+      {
+        "frame": 935,
+        "partnerTarget": 1,
+        "damage": 1027,
+        "hpBefore": 13414,
+        "blockPercent": 100,
+        "zeroDefenseNative": 2748
+      },
+      {
+        "frame": 1042,
+        "partnerTarget": 1,
+        "damage": 420,
+        "hpBefore": 12387,
+        "blockPercent": 100,
+        "zeroDefenseNative": 1125
+      },
+      {
+        "frame": 1144,
+        "partnerTarget": 1,
+        "damage": 746,
+        "hpBefore": 11967,
+        "blockPercent": 100,
+        "zeroDefenseNative": 1998
+      },
+      {
+        "frame": 1352,
+        "partnerTarget": 1,
+        "damage": 770,
+        "hpBefore": 15000,
+        "blockPercent": 100,
+        "zeroDefenseNative": 2061
+      },
+      {
+        "frame": 1482,
+        "partnerTarget": 1,
+        "damage": 416,
+        "hpBefore": 14230,
+        "blockPercent": 100,
+        "zeroDefenseNative": 1114
+      }
+    ],
+    "damageCalculations": [
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 1500,
+        "power": 320,
+        "roll": 104,
+        "damage": 442,
+        "frame": 217,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 1182,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 1500,
+        "power": 586,
+        "roll": 109,
+        "damage": 848,
+        "frame": 349,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 2269,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 1500,
+        "power": 586,
+        "roll": 101,
+        "damage": 785,
+        "frame": 440,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 2102,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 1500,
+        "power": 586,
+        "roll": 108,
+        "damage": 840,
+        "frame": 531,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 2248,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 5567,
+        "defense": 682,
+        "power": 500,
+        "roll": 101,
+        "damage": 1388,
+        "frame": 603,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 1500,
+        "power": 573,
+        "roll": 108,
+        "damage": 1027,
+        "frame": 652,
+        "move": 25,
+        "finisher": false,
+        "zeroDefenseNative": 2748,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 5567,
+        "defense": 682,
+        "power": 500,
+        "roll": 93,
+        "damage": 1278,
+        "frame": 724,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 1500,
+        "power": 586,
+        "roll": 108,
+        "damage": 840,
+        "frame": 737,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 2248,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 1500,
+        "power": 586,
+        "roll": 96,
+        "damage": 746,
+        "frame": 824,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 1998,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 1500,
+        "power": 573,
+        "roll": 108,
+        "damage": 1027,
+        "frame": 935,
+        "move": 25,
+        "finisher": false,
+        "zeroDefenseNative": 2748,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 1500,
+        "power": 320,
+        "roll": 99,
+        "damage": 420,
+        "frame": 1042,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 1125,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 1500,
+        "power": 586,
+        "roll": 96,
+        "damage": 746,
+        "frame": 1144,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 1998,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 5567,
+        "defense": 682,
+        "power": 500,
+        "roll": 91,
+        "damage": 1251,
+        "frame": 1271,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 1500,
+        "power": 586,
+        "roll": 99,
+        "damage": 770,
+        "frame": 1352,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 2061,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 5567,
+        "defense": 682,
+        "power": 500,
+        "roll": 96,
+        "damage": 1320,
+        "frame": 1427,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 1500,
+        "power": 320,
+        "roll": 98,
+        "damage": 416,
+        "frame": 1482,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 1114,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 5567,
+        "defense": 682,
+        "power": 255,
+        "roll": 103,
+        "damage": 5696,
+        "frame": 1638,
+        "move": 92,
+        "finisher": true,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      }
+    ],
+    "run": "primary-current",
+    "screen": 225,
+    "playerActions": {
+      "recoveriesCarried": 20,
+      "recoveriesRemaining": 18,
+      "recoveryThrows": [
+        {
+          "frame": 654,
+          "hp": 11084,
+          "itemsBefore": 20
+        },
+        {
+          "frame": 1155,
+          "hp": 11243,
+          "itemsBefore": 19
+        }
+      ],
+      "finisherInput": true,
+      "muscleFirst": true
+    }
+  },
+  {
+    "beforeDefenseCurve": false,
+    "case": "boss-max-normal",
+    "kind": "boss",
+    "profile": "max",
+    "mode": "NORMAL",
+    "loadout": [
+      47,
+      41,
+      42
+    ],
+    "partnerStats": [
+      9999,
+      9999,
+      9999,
+      9999
+    ],
+    "partnerMaxHP": 30000,
+    "partnerMaxMP": 30000,
+    "ramBytes": 2097152,
+    "partnerKnockedOut": false,
+    "minimumObservedHP": 25019,
+    "combatSeconds": 113.85,
+    "heap": {
+      "free": 161624,
+      "largest": 161624
+    },
+    "nativeMinimumCheckedHits": 0,
+    "incomingDirectHits": [
+      {
+        "frame": 217,
+        "partnerTarget": 1,
+        "damage": 43,
+        "hpBefore": 30000,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 349,
+        "partnerTarget": 1,
+        "damage": 83,
+        "hpBefore": 29957,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 440,
+        "partnerTarget": 1,
+        "damage": 77,
+        "hpBefore": 29874,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 531,
+        "partnerTarget": 1,
+        "damage": 83,
+        "hpBefore": 29797,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 652,
+        "partnerTarget": 1,
+        "damage": 102,
+        "hpBefore": 29714,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 737,
+        "partnerTarget": 1,
+        "damage": 71,
+        "hpBefore": 29612,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 786,
+        "partnerTarget": 1,
+        "damage": 38,
+        "hpBefore": 29541,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 953,
+        "partnerTarget": 1,
+        "damage": 71,
+        "hpBefore": 29503,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 1132,
+        "partnerTarget": 1,
+        "damage": 46,
+        "hpBefore": 29432,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 1234,
+        "partnerTarget": 1,
+        "damage": 72,
+        "hpBefore": 29386,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 1337,
+        "partnerTarget": 1,
+        "damage": 77,
+        "hpBefore": 29314,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 1510,
+        "partnerTarget": 1,
+        "damage": 71,
+        "hpBefore": 29237,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 1687,
+        "partnerTarget": 1,
+        "damage": 4047,
+        "hpBefore": 29166,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 1907,
+        "partnerTarget": 1,
+        "damage": 100,
+        "hpBefore": 25119,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      }
+    ],
+    "damageCalculations": [
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 9999,
+        "power": 320,
+        "roll": 104,
+        "damage": 43,
+        "frame": 217,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 9999,
+        "power": 586,
+        "roll": 109,
+        "damage": 83,
+        "frame": 349,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 9999,
+        "power": 586,
+        "roll": 101,
+        "damage": 77,
+        "frame": 440,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 9999,
+        "power": 586,
+        "roll": 108,
+        "damage": 83,
+        "frame": 531,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 650,
+        "power": 500,
+        "roll": 101,
+        "damage": 1487,
+        "frame": 603,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 9999,
+        "power": 573,
+        "roll": 108,
+        "damage": 102,
+        "frame": 652,
+        "move": 25,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 650,
+        "power": 500,
+        "roll": 100,
+        "damage": 1473,
+        "frame": 724,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 9999,
+        "power": 586,
+        "roll": 93,
+        "damage": 71,
+        "frame": 737,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 9999,
+        "power": 320,
+        "roll": 91,
+        "damage": 38,
+        "frame": 786,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 650,
+        "power": 500,
+        "roll": 100,
+        "damage": 1473,
+        "frame": 859,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 9999,
+        "power": 586,
+        "roll": 93,
+        "damage": 71,
+        "frame": 953,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 650,
+        "power": 500,
+        "roll": 100,
+        "damage": 1473,
+        "frame": 1023,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 9999,
+        "power": 320,
+        "roll": 110,
+        "damage": 46,
+        "frame": 1132,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 9999,
+        "power": 586,
+        "roll": 94,
+        "damage": 72,
+        "frame": 1234,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 9999,
+        "power": 586,
+        "roll": 100,
+        "damage": 77,
+        "frame": 1337,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 650,
+        "power": 500,
+        "roll": 90,
+        "damage": 1325,
+        "frame": 1405,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 9999,
+        "power": 586,
+        "roll": 93,
+        "damage": 71,
+        "frame": 1510,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 9999,
+        "power": 260,
+        "roll": 101,
+        "damage": 4047,
+        "frame": 1687,
+        "move": 106,
+        "finisher": true,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 999,
+        "defense": 9999,
+        "power": 573,
+        "roll": 106,
+        "damage": 100,
+        "frame": 1907,
+        "move": 25,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 650,
+        "power": 500,
+        "roll": 106,
+        "damage": 1561,
+        "frame": 1983,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 650,
+        "power": 255,
+        "roll": 106,
+        "damage": 10869,
+        "frame": 2189,
+        "move": 92,
+        "finisher": true,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      }
+    ],
+    "run": "primary-current",
+    "screen": 225,
+    "playerActions": {
+      "recoveriesCarried": 20,
+      "recoveriesRemaining": 20,
+      "recoveryThrows": [],
+      "finisherInput": true,
+      "muscleFirst": true
+    }
+  },
+  {
+    "beforeDefenseCurve": false,
+    "case": "boss-max-hard",
+    "kind": "boss",
+    "profile": "max",
+    "mode": "HARD",
+    "loadout": [
+      47,
+      41,
+      42
+    ],
+    "partnerStats": [
+      9999,
+      9999,
+      9999,
+      9999
+    ],
+    "partnerMaxHP": 30000,
+    "partnerMaxMP": 30000,
+    "ramBytes": 2097152,
+    "partnerKnockedOut": false,
+    "minimumObservedHP": 27967,
+    "combatSeconds": 57.4,
+    "heap": {
+      "free": 161624,
+      "largest": 161624
+    },
+    "nativeMinimumCheckedHits": 7,
+    "incomingDirectHits": [
+      {
+        "frame": 217,
+        "partnerTarget": 1,
+        "damage": 178,
+        "hpBefore": 30000,
+        "blockPercent": 100,
+        "zeroDefenseNative": 1182
+      },
+      {
+        "frame": 349,
+        "partnerTarget": 1,
+        "damage": 341,
+        "hpBefore": 29822,
+        "blockPercent": 100,
+        "zeroDefenseNative": 2269
+      },
+      {
+        "frame": 440,
+        "partnerTarget": 1,
+        "damage": 316,
+        "hpBefore": 29481,
+        "blockPercent": 100,
+        "zeroDefenseNative": 2102
+      },
+      {
+        "frame": 531,
+        "partnerTarget": 1,
+        "damage": 338,
+        "hpBefore": 29165,
+        "blockPercent": 100,
+        "zeroDefenseNative": 2248
+      },
+      {
+        "frame": 652,
+        "partnerTarget": 1,
+        "damage": 413,
+        "hpBefore": 28827,
+        "blockPercent": 100,
+        "zeroDefenseNative": 2748
+      },
+      {
+        "frame": 737,
+        "partnerTarget": 1,
+        "damage": 291,
+        "hpBefore": 28414,
+        "blockPercent": 100,
+        "zeroDefenseNative": 1936
+      },
+      {
+        "frame": 786,
+        "partnerTarget": 1,
+        "damage": 156,
+        "hpBefore": 28123,
+        "blockPercent": 100,
+        "zeroDefenseNative": 1034
+      }
+    ],
+    "damageCalculations": [
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 9999,
+        "power": 320,
+        "roll": 104,
+        "damage": 178,
+        "frame": 217,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 1182,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 9999,
+        "power": 586,
+        "roll": 109,
+        "damage": 341,
+        "frame": 349,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 2269,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 9999,
+        "power": 586,
+        "roll": 101,
+        "damage": 316,
+        "frame": 440,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 2102,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 9999,
+        "power": 586,
+        "roll": 108,
+        "damage": 338,
+        "frame": 531,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 2248,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 682,
+        "power": 500,
+        "roll": 101,
+        "damage": 1412,
+        "frame": 603,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 9999,
+        "power": 573,
+        "roll": 108,
+        "damage": 413,
+        "frame": 652,
+        "move": 25,
+        "finisher": false,
+        "zeroDefenseNative": 2748,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 682,
+        "power": 500,
+        "roll": 100,
+        "damage": 1399,
+        "frame": 724,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 9999,
+        "power": 586,
+        "roll": 93,
+        "damage": 291,
+        "frame": 737,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 1936,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 1498,
+        "defense": 9999,
+        "power": 320,
+        "roll": 91,
+        "damage": 156,
+        "frame": 786,
+        "move": 46,
+        "finisher": false,
+        "zeroDefenseNative": 1034,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 682,
+        "power": 500,
+        "roll": 108,
+        "damage": 1510,
+        "frame": 856,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 682,
+        "power": 255,
+        "roll": 108,
+        "damage": 10520,
+        "frame": 1060,
+        "move": 92,
+        "finisher": true,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      }
+    ],
+    "run": "primary-current",
+    "screen": 225,
+    "playerActions": {
+      "recoveriesCarried": 20,
+      "recoveriesRemaining": 20,
+      "recoveryThrows": [],
+      "finisherInput": true,
+      "muscleFirst": true
+    }
+  },
+  {
+    "beforeDefenseCurve": false,
+    "case": "boss-max-hard",
+    "kind": "boss",
+    "profile": "max",
+    "mode": "HARD",
+    "loadout": [
+      47,
+      41,
+      42
+    ],
+    "partnerStats": [
+      9999,
+      9999,
+      9999,
+      9999
+    ],
+    "partnerMaxHP": 30000,
+    "partnerMaxMP": 30000,
+    "ramBytes": 2097152,
+    "partnerKnockedOut": false,
+    "minimumObservedHP": 28384,
+    "combatSeconds": 94.2,
+    "heap": {
+      "free": 76032,
+      "largest": 76032
+    },
+    "nativeMinimumCheckedHits": 4,
+    "incomingDirectHits": [
+      {
+        "frame": 959,
+        "partnerTarget": 1,
+        "damage": 332,
+        "hpBefore": 30000,
+        "blockPercent": 100,
+        "zeroDefenseNative": 2211
+      },
+      {
+        "frame": 1179,
+        "partnerTarget": 1,
+        "damage": 443,
+        "hpBefore": 29668,
+        "blockPercent": 100,
+        "zeroDefenseNative": 2953
+      },
+      {
+        "frame": 1454,
+        "partnerTarget": 1,
+        "damage": 431,
+        "hpBefore": 29225,
+        "blockPercent": 100,
+        "zeroDefenseNative": 2870
+      },
+      {
+        "frame": 1606,
+        "partnerTarget": 1,
+        "damage": 410,
+        "hpBefore": 28794,
+        "blockPercent": 100,
+        "zeroDefenseNative": 2732
+      }
+    ],
+    "damageCalculations": [
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 1276,
+        "power": 500,
+        "roll": 98,
+        "damage": 1368,
+        "frame": 511,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 1467,
+        "power": 500,
+        "roll": 97,
+        "damage": 1353,
+        "frame": 633,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 1687,
+        "power": 500,
+        "roll": 104,
+        "damage": 1450,
+        "frame": 877,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 4570,
+        "defense": 9999,
+        "power": 586,
+        "roll": 98,
+        "damage": 332,
+        "frame": 959,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 2211,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 1687,
+        "power": 500,
+        "roll": 110,
+        "damage": 1534,
+        "frame": 1034,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 1687,
+        "power": 500,
+        "roll": 99,
+        "damage": 1381,
+        "frame": 1155,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 4570,
+        "defense": 9999,
+        "power": 573,
+        "roll": 107,
+        "damage": 443,
+        "frame": 1179,
+        "move": 25,
+        "finisher": false,
+        "zeroDefenseNative": 2953,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 1687,
+        "power": 500,
+        "roll": 105,
+        "damage": 1464,
+        "frame": 1250,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 4570,
+        "defense": 9999,
+        "power": 573,
+        "roll": 104,
+        "damage": 431,
+        "frame": 1454,
+        "move": 25,
+        "finisher": false,
+        "zeroDefenseNative": 2870,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 4570,
+        "defense": 9999,
+        "power": 573,
+        "roll": 99,
+        "damage": 410,
+        "frame": 1606,
+        "move": 25,
+        "finisher": false,
+        "zeroDefenseNative": 2732,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 1687,
+        "power": 500,
+        "roll": 98,
+        "damage": 1367,
+        "frame": 1679,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 1687,
+        "power": 500,
+        "roll": 94,
+        "damage": 1311,
+        "frame": 1796,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      }
+    ],
+    "run": "supplement-1",
+    "screen": 104,
+    "playerActions": {
+      "recoveriesCarried": 0,
+      "recoveriesRemaining": 0,
+      "recoveryThrows": [],
+      "finisherInput": false,
+      "muscleFirst": false
+    }
+  },
+  {
+    "beforeDefenseCurve": false,
+    "case": "boss-max-normal",
+    "kind": "boss",
+    "profile": "max",
+    "mode": "NORMAL",
+    "loadout": [
+      47,
+      41,
+      42
+    ],
+    "partnerStats": [
+      9999,
+      9999,
+      9999,
+      9999
+    ],
+    "partnerMaxHP": 30000,
+    "partnerMaxMP": 30000,
+    "ramBytes": 2097152,
+    "partnerKnockedOut": false,
+    "minimumObservedHP": 21951,
+    "combatSeconds": 113.25,
+    "heap": {
+      "free": 76032,
+      "largest": 76032
+    },
+    "nativeMinimumCheckedHits": 0,
+    "incomingDirectHits": [
+      {
+        "frame": 408,
+        "partnerTarget": 1,
+        "damage": 104,
+        "hpBefore": 30000,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 822,
+        "partnerTarget": 1,
+        "damage": 108,
+        "hpBefore": 29896,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 1224,
+        "partnerTarget": 1,
+        "damage": 7402,
+        "hpBefore": 29788,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 1732,
+        "partnerTarget": 1,
+        "damage": 122,
+        "hpBefore": 22386,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 1999,
+        "partnerTarget": 1,
+        "damage": 87,
+        "hpBefore": 22264,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 2108,
+        "partnerTarget": 1,
+        "damage": 117,
+        "hpBefore": 22177,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      },
+      {
+        "frame": 2220,
+        "partnerTarget": 1,
+        "damage": 109,
+        "hpBefore": 22060,
+        "blockPercent": 100,
+        "zeroDefenseNative": 0
+      }
+    ],
+    "damageCalculations": [
+      {
+        "partner": false,
+        "offense": 1560,
+        "defense": 9999,
+        "power": 573,
+        "roll": 104,
+        "damage": 104,
+        "frame": 408,
+        "move": 25,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 1058,
+        "power": 500,
+        "roll": 93,
+        "damage": 1368,
+        "frame": 482,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 1398,
+        "power": 500,
+        "roll": 96,
+        "damage": 1411,
+        "frame": 724,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 2437,
+        "defense": 9999,
+        "power": 573,
+        "roll": 99,
+        "damage": 108,
+        "frame": 822,
+        "move": 25,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 1398,
+        "power": 500,
+        "roll": 109,
+        "damage": 1602,
+        "frame": 1036,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 2437,
+        "defense": 9999,
+        "power": 260,
+        "roll": 90,
+        "damage": 7402,
+        "frame": 1224,
+        "move": 106,
+        "finisher": true,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 1398,
+        "power": 500,
+        "roll": 96,
+        "damage": 1411,
+        "frame": 1380,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 1607,
+        "power": 500,
+        "roll": 101,
+        "damage": 1484,
+        "frame": 1621,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 3046,
+        "defense": 9999,
+        "power": 573,
+        "roll": 102,
+        "damage": 122,
+        "frame": 1732,
+        "move": 25,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 3046,
+        "defense": 9999,
+        "power": 586,
+        "roll": 90,
+        "damage": 87,
+        "frame": 1999,
+        "move": 8,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 1607,
+        "power": 500,
+        "roll": 90,
+        "damage": 1323,
+        "frame": 2072,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 3046,
+        "defense": 9999,
+        "power": 573,
+        "roll": 98,
+        "damage": 117,
+        "frame": 2108,
+        "move": 25,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": true,
+        "offense": 9999,
+        "defense": 1607,
+        "power": 500,
+        "roll": 103,
+        "damage": 1514,
+        "frame": 2177,
+        "move": 47,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      },
+      {
+        "partner": false,
+        "offense": 3046,
+        "defense": 9999,
+        "power": 573,
+        "roll": 91,
+        "damage": 109,
+        "frame": 2220,
+        "move": 25,
+        "finisher": false,
+        "zeroDefenseNative": 0,
+        "blockPercent": 100
+      }
+    ],
+    "run": "supplement-1",
+    "screen": 104,
+    "playerActions": {
+      "recoveriesCarried": 0,
+      "recoveriesRemaining": 0,
+      "recoveryThrows": [],
+      "finisherInput": false,
+      "muscleFirst": false
+    }
+  }
+]

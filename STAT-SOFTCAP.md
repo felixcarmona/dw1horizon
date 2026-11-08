@@ -1,5 +1,60 @@
 # Stat growth soft cap: audit and review proposal
 
+> Historical growth proposal, superseded by opt-in HARD and a combat-only Defense
+> continuation above 999. Permanent stat growth remains unchanged. See
+> [HARD implementation and evidence](HARD-DIFFICULTY.md). The historical buff
+> sensitivity incorrectly allowed six Full Potential casts for repeat
+> Machinedramon: the current Brains rules allow five. Do not use that six-cast
+> row as a legal encounter state.
+
+## HP/MP review: the first-life Pukumon report
+
+**No general HP/MP growth reduction is justified by this report.** The game uses
+HP/MP in units ten times the other attributes: 8005 HP is 800.5 normalized,
+9520 MP is 952 normalized, versus the reported Offense/Defense/Speed 650–820.
+HP is within that band; normalized MP is 16–46% higher. A screenshot without
+its save/training history cannot identify the exact route or gains.
+
+Pukumon's evolution targets are 8000 HP, 7000 MP, 800 Offense, 800 Defense,
+700 Speed and 700 Brains. Below a target, evolution averages old and target;
+at or above it, evolution adds 10% of the target. Its possible parents include
+MarineDevimon (4600/4850 HP/MP targets) and Divermon (5000/5000), as well as
+Dragomon. These target magnitudes already use the ten-to-one scale.
+
+A **constructed arithmetic witness**, not a reconstruction of the player's
+save, reproduces the reported HP/MP exactly without chips, food, inheritance,
+post-evolution fights or gym bonuses:
+
+| Checkpoint / action | HP | MP | Offense | Defense | Speed | Brains |
+|---|---:|---:|---:|---:|---:|---:|
+| Before Pukumon evolution (assumed state) | 4740 | 4890 | 500 | 500 | 500 | 500 |
+| After actual Pukumon blend | 6370 | 5945 | 650 | 650 | 600 | 600 |
+| After 12 HP, 32 MP, 5 Speed and 5 Brains ordinary sessions | **8005** | **9520** | **674** | **714** | **675** | **655** |
+
+The 54 sessions use Pukumon's actual offense-speed affinity and Mega multiplier.
+Each HP session gives +130 HP / +2 Offense; MP gives +110 MP / +2 Defense;
+Speed gives +15 Speed / +15 HP; Brains uses MP affinity and gives +11 Brains /
++11 MP. Every session still costs time, fatigue and care. This proves arithmetic
+plausibility; a complete first-life route and care schedule were not replayed.
+The added Mega lifetime is 120 h, so 54 training hours are not intrinsically
+an impossible lifetime budget before allocating sleep, rest and care.
+
+Other sources can reach these numbers earlier: gym recruitment/manual/counter
+bonuses and Digipine; +50/99 HP/MP per win against a 5000/9999-HP/MP single
+foe, respectively; evolution averaging; ordinary food +100 all HP/MP with +10
+other stats or +200 targeted HP/MP; restaurants; and the stage's earlier training.
+At the same enemy budget, battle floors are also about 5/9.9 normalized HP/MP
+points, matching typical 5/9 other-stat floors. Rebirth contributes **zero on a
+first life**. Chips are not required, and their absence does not exclude those
+other sources. Screenshot numbers alone cannot establish which were used.
+
+Proposal: retain NORMAL growth. If repeatable first-life playtests later show
+MP disproportionate after normalization, record its sources separately before
+changing targets or battle floors. Avoid applying a literal 999 HP/MP knee or
+reducing all six attributes because raw HP/MP numbers look larger. The previous
+soft-cap proposal below is retained only as historical evidence.
+
+
 Status: **proposal only; gameplay is unchanged**. Baseline: `origin/main`
 `0cbdeb2ccef749de68abe2f6be9376fa2e97ed9d` (2026-11-07).
 
@@ -76,7 +131,7 @@ boost uptime from Digipine, and +24 h lifetime from the melon. Inputs, daily
 caps, recruitment and travel still constrain use. The old unlimited chip or
 cash loop is absent. Buying chips for 9999 bits is a repeatable resource sink;
 there is no finite lifetime-independent maximum below 9999 while extensions
-and purchased boosts remain available. See [the economy audit](docs/mods/balance.md#61-the-economy).
+and purchased boosts remain available. See [the economy audit](docs/mods/balance.md#61-the-economy-rule).
 
 Sources: `content/tables/{training,training-gains,battle-rules,evolution-rules,
 care-rules,tamer-level,shops}.json`; `content/items/*.json` effects;
@@ -378,7 +433,7 @@ The finisher proposal is evaluated in Python only; no patched finisher C exists.
    fights with ordinary/heavy/extreme partners; record TTK, damage taken,
    buffs, finishers, MP, difficulty and technique identities.
 
-**Stop at this document.** No C, balance JSON or story behavior is changed.
-No executable was built and no heap measurement is claimed for this audit;
+**The original audit stopped at this document.** It changed no C, balance JSON or story behavior.
+No executable was built and no heap measurement is claimed for that audit;
 there is no C change to measure. No emulator was started. Live raise distributions,
 actual boss wall-clock times and hardware validation remain untested.
