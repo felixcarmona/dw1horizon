@@ -29,6 +29,12 @@ def main():
     p.add_argument('--resume-card');p.add_argument('--capture-forced',action='store_true');p.add_argument('--tour',action='store_true');p.add_argument('--chinese',action='store_true')
     a=p.parse_args();a.out=a.out.resolve();a.out.mkdir(parents=True,exist_ok=True)
     e=Emu(a.disc,a.exe,a.port,str(a.out/'emu'))
+    if a.chinese:
+        def expanded_ram():
+            data=subprocess.run([sys.executable,str(ROOT/'tools/dev/emulator.py'),'ramdump'],env=e.env,capture_output=True,check=True).stdout
+            assert len(data)==0x800000
+            return data
+        e.ram=expanded_ram
     for name,(addr,_,_) in elf_symbols(a.exe+'.elf').items():e.table.setdefault(name,addr)
     bios=ROOT/'.tools/emu/pcsx-redux-zip/squashfs-root/usr/share/pcsx-redux/resources/openbios.bin'
     e.env['EMU_ARGS']='-interpreter -debugger -bios '+str(bios)+(' -8mb' if a.chinese else '')
@@ -36,11 +42,17 @@ def main():
     def settle():
         start=e.peek('MAIN_MENU_TICKS','i');end=time.monotonic()+120
         while time.monotonic()<end:
-            if e.peek('MAIN_MENU_TICKS','i')>=start+3:return
+            if e.peek('MAIN_MENU_TICKS','i')>=start+10:return
             e.wait(.1)
         raise AssertionError('OPTIONS did not become idle')
     def choose(row,key):
-        settle();e.poke(cursor,bytes([row]));e.press(key,4);settle()
+        symbol,fmt={6:('MOD_OPT_FPS','i'),7:('MOD_FONT','b'),8:('MOD_LANG','i')}[row]
+        before=e.peek(symbol,fmt)
+        for attempt in range(3):
+            settle();e.poke(cursor,bytes([row]));e.press(key,12);settle()
+            if e.peek(symbol,fmt)!=before:break
+            # Saturating arrows deliberately leave the boundary unchanged.
+            if row==6 and ((key=='LEFT' and before==0) or (key=='RIGHT' and before==2)):break
         ram=e.ram();print(json.dumps(dict(row=row,key=key,mode=e.peek('MOD_OPT_FPS','i',ram),effective=e.peek('MOD_FPS_MODE_RUN','i',ram),language=e.peek('MOD_LANG','i',ram),font=e.peek('MOD_FONT','b',ram),menu=e.peek('CURRENT_MENU','i',ram),cursor=e.peek(cursor,'B',ram))),flush=True)
     def opened():
         for _ in range(30):
