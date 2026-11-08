@@ -1463,7 +1463,11 @@ def derive_run(root, recipe, facts, record=False, jobs=None, log=None, source_di
 
 def derive_files(man, out):
     """{disc path: the file derive made}"""
-    return {d: os.path.normpath(os.path.join(out, e['file'])) for d, e in man['files'].items()}
+    # v0.0.7's bundled plan uses os.path.relpath for Chinese resources. On
+    # Windows that leaks backslashes into the virtual disc keys, although the
+    # release pins use forward slashes. Accept those existing bundles too.
+    return {d.replace('\\', '/') if d.startswith('@zh/') else d:
+            os.path.normpath(os.path.join(out, e['file'])) for d, e in man['files'].items()}
 
 
 def needs_usa_paths():

@@ -566,3 +566,26 @@ output hashes and original 2 MB gameplay results. These reference images use the
 previous version stamp; a new release generates and verifies its own manifest.
 The fixed font capacities retain 187,888 bytes of heap, with all 320 checked
 archive setups fitting and a minimum margin of 5,856 bytes.
+
+### v0.0.7 Windows Chinese-resource package hotfix
+
+The original bundled derive plan records Chinese resource sources with the host's
+`os.path.relpath`. On Windows this produces virtual keys such as
+`@zh/lang\LZ028.SCN`; the package checks `@zh/lang/LZ028.SCN` and reports a
+missing resource as a checksum mismatch. This affects every disc region on
+Windows. The browser's POSIX filesystem and Linux/macOS use forward slashes.
+
+The reader accepts these existing bundle keys, and new plans write portable
+resource paths. To repair v0.0.7 without changing the game, replace only
+`dwpatch.py` in its `horizon-package.tar.gz` with the corrected reader and update
+that file's SHA-256 in the companion `horizon-checksums.json` package map. Verify
+all archive entries against that map before replacing both release assets. Keep
+the manifest, payload, bundle, engine and output checksums unchanged. A desktop
+app rebuild alone cannot fix this: the app loads the package's reader.
+
+Already downloaded packages are cached by tag. Players can import the corrected
+archive through the app's package-file chooser, with its matching checksums file
+beside it, to bypass that cache. Alternatively, close the app and remove only the
+cached `packages/v0.0.7` directory before downloading again. Until the corrected
+package is available, use the website patcher with the same discs; changing DW3
+region does not fix Windows paths.

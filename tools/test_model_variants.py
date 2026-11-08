@@ -210,6 +210,23 @@ class PinKeys(unittest.TestCase):
                 with self.assertRaises(dw.PatchError):
                     dw.local_holes3({}, v, Base(), td, td, None)
 
+    def test_v007_windows_chinese_manifest_passes_hole_checks(self):
+        # The shipped Windows plan makes @zh/lang\LZ... keys with relpath.
+        # Keep the on-disk filename separate from the virtual release path.
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / 'resource.bin'
+            path.write_bytes(b'Chinese resource')
+            man = {'files': {'@zh/lang\\LZ028.SCN': {'file': path.name}}}
+            files = dw.derive_files(man, td)
+            v = dict(local=dict(builder='derive'), holes=[dict(id=0, file='@zh/lang/LZ028.SCN',
+                sha1=hashlib.sha1(path.read_bytes()).hexdigest())])
+            base = type('Base', (), {'key': 'us'})()
+            with patch.object(dw, 'derive_holes', return_value=files):
+                self.assertEqual(dw.local_holes3({}, v, base, td, td, None), {0: path.read_bytes()})
+                path.write_bytes(b'corrupt')
+                with self.assertRaisesRegex(dw.PatchError, '@zh/lang/LZ028.SCN'):
+                    dw.local_holes3({}, v, base, td, td, None)
+
     def test_a_package_without_the_variant_stops_before_building(self):
         with tempfile.TemporaryDirectory() as td:
             rel = Path(td)

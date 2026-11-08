@@ -69,8 +69,10 @@ class Plan:
             shutil.copyfile(src, dst)
         if lang == 'zh-hans':
             self.chinese_names[name] = c
+            # This source also forms an @zh/ virtual disc key: always POSIX,
+            # independently of the host filesystem's separator.
             self.chinese_resources[(name, 0)] = dict(name=name, story=0, signs=name.endswith(('.MAP','.TFS')),
-                                                    source=os.path.relpath(dst, self.ctx.path('')))
+                                                    source=f'lang/{c}')
         else:
             self.add(f'{d or "SCN"}/{c}', dst)
             self.set_lang(name, lang, c)
@@ -105,7 +107,7 @@ class Plan:
         if copy.startswith('LZ'):
             name = next(n for n,c in self.chinese_names.items() if c == copy)
             self.chinese_resources[(name, 1)] = dict(name=name, story=1, signs=name.endswith(('.MAP','.TFS')),
-                                                    source=os.path.relpath(dst, self.ctx.path('')))
+                                                    source='lang/_' + copy[1:])
         else:
             self.add(f'{d}/_{copy[1:]}', dst)
 

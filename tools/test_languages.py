@@ -298,6 +298,21 @@ class Languages(unittest.TestCase):
             self.assertEqual(plan.lang_of('DG.SCN', 1), es)
             self.assertEqual(plan.lang_of('DG.SCN', 3), pt)
 
+    def test_chinese_resource_routes_use_portable_paths(self):
+        from tools.derive.steps.plan import Plan
+        from types import SimpleNamespace
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as tmp:
+            pathlib.Path(tmp, 'lang').mkdir()
+            ctx = SimpleNamespace(path=lambda *p: str(pathlib.Path(tmp, *p)))
+            plan = Plan(ctx)
+            # An OS relpath must never become part of a virtual disc path.
+            with patch('tools.derive.steps.plan.os.path.relpath', return_value='lang\\wrong.SCN'):
+                copy = plan.lang_copy('DG.SCN', 'SCN', data=b'zh', lang='zh-hans')
+                plan.story_lang('SCN', copy, ctx.path('lang', copy))
+            self.assertEqual(plan.chinese_resources[('DG.SCN', 0)]['source'], f'lang/{copy}')
+            self.assertEqual(plan.chinese_resources[('DG.SCN', 1)]['source'], 'lang/_' + copy[1:])
+
     def test_portuguese_without_spanish_still_builds_its_story_pass(self):
         from tools.derive.steps.story import Settings
         from types import SimpleNamespace
