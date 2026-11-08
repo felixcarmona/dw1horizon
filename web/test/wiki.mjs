@@ -57,6 +57,26 @@ try{
           if(palette.has(badge.key))assert.equal(badge.colour,palette.get(badge.key),'consistent badge colours');else palette.set(badge.key,badge.colour);
         }
         assert.equal(await page.$$eval('details[open]',es=>es.length),0,'spoilers folded');
+        if(kind==='home'){
+          const guide=await page.$eval('a.pdf-guide',e=>({href:e.getAttribute('href'),text:e.textContent,download:e.hasAttribute('download')}));
+          assert.equal(guide.href,manifest.pdfs[lang].file);
+          assert.ok(guide.download);
+          assert.ok(guide.text.includes(strings['wiki.pdfTitle'])&&guide.text.includes('MB'));
+          assert.ok(await page.$('.intro .searchbox + .pdf-guide.button.soft'));
+          assert.equal(await page.$eval('.intro .eyebrow',e=>e.textContent),strings['wiki.nav']);
+          assert.equal(await page.$$eval('.data-links > a',es=>es.length),5);
+          assert.equal(await page.$eval('.data-links > a:last-child',e=>e.getAttribute('href')),guide.href);
+          assert.ok((await page.$eval('.pdf-tile b',e=>e.textContent)).includes(strings['wiki.pdfLabel']));
+          const size=new Intl.NumberFormat(lang,{minimumFractionDigits:1,maximumFractionDigits:1}).format(manifest.pdfs[lang].bytes/1_000_000);
+          assert.ok(guide.text.includes(size+' MB'));
+          assert.ok(await page.$eval('.pdf-guide',e=>{
+            const r=e.getBoundingClientRect(),search=e.previousElementSibling.getBoundingClientRect();
+            return r.top>=search.bottom && r.left>=0 && r.right<=innerWidth && r.height>=44;
+          }),'download button below search and within viewport');
+          const response=await fetch(root+guide.href);
+          assert.equal(response.headers.get('content-type'),'application/pdf');
+          assert.equal((await response.arrayBuffer()).byteLength,manifest.pdfs[lang].bytes);
+        }
         if(kind==='digimon-list'){
           assert.equal(await page.$$eval('.species-card',es=>es.length),manifest.counts.species);
           assert.equal(await page.$$eval('.species-card',es=>es.every(e=>e.querySelectorAll('.badge').length===2&&e.querySelector('.specialties'))),true);

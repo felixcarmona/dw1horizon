@@ -55,6 +55,8 @@ def check(site):
         engine=json.loads(current.read_text())
         assert manifest['commit']==engine['commit'],'Wiki game snapshot differs from engine'
         assert manifest['tag'].removeprefix('v')==engine['release_version'],'Wiki release differs from engine'
+    import pdf
+    pdf.validate(site,manifest)
     sizes=build.budget(site)
     icons=build.owned_icons()
     if not icons:

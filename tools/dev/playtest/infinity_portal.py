@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path[:0] = [str(ROOT), str(ROOT / 'tools')]
 from tools.dev.playtest.qol import ProofEmu, test_card
 from tools.dev.playtest.quest_regressions import evolve_fixture
+from tools.dev.playtest.training_evolution import call
 from tools.langpatch import elf_symbols
 from tools.membudget import Ram, heap_walk
 
@@ -25,7 +26,7 @@ from tools.membudget import Ram, heap_walk
 def sample(e):
     ram = e.ram()
     flow = json.loads(e.api('/api/v1/execution-flow'))
-    assert not flow['8mb'] and len(ram) == 0x200000
+    assert flow['8mb'] == e.expanded_ram and len(ram) == 0x200000
     heap = heap_walk(Ram(ram, e.table))
     row = {k: e.peek(k, f, ram) for k, f in (
         ('CURRENT_SCREEN', 'h'), ('TAMER_STATE', 'B'), ('GAME_STATE', 'H'),
@@ -34,6 +35,9 @@ def sample(e):
     row.update(ram_bytes=len(ram), expanded_ram=flow['8mb'], running=flow['running'],
                tamer=e.peek('TAMER_POSITION_DATA+0x78', '3i', ram),
                heap={k: v for k, v in heap.items() if k != 'blocks'})
+    row['stream_failures'] = int(e.run('lua', 'return IP.streamFailures').strip())
+    row['battle_cold_reads'] = int(e.run('lua', 'return IP.coldReads').strip())
+    row['tile_window'] = [e.peek(k, 'b', ram) for k in ('MAP_TILE_X', 'MAP_TILE_Y')]
     frame=e.peek('ACTIVE_FRAMEBUFFER','i',ram)
     row['gpu']={
         'framebuffer': frame,
@@ -50,10 +54,15 @@ def sample(e):
         row['enemies'].append(dict(slot=slot, species=e.peek(f'NPC_ENTITIES+{104*slot}', 'i', ram),
              position=struct.unpack_from('<3i', ram, (pd & 0x1fffff)+0x78),
              hp=e.peek(f'NPC_ENTITIES+{104*slot+0x4c}', 'h', ram)))
+    combat = e.peek('COMBAT_DATA_PTR', 'I', ram)
+    row['participants'] = []
+    if row['GAME_STATE'] == 1 and 0x80000000 <= combat < 0x80200000 - 1668:
+        ids = ram[(combat & 0x1fffff) + 1645:][:row['ENEMY_COUNT']]
+        row['participants'] = [n for n in row['enemies'] if n['slot'] + 2 in ids]
     return row
 
 
-def encounter(e, out, species, quick, cleanup):
+def encounter(e, out, species, quick, cleanup, video_seconds=35, all_join=False, city_entrance=False):
     evolve_fixture(e, species)
     # The type changes before the EVL scene releases its overlay and objects.
     # Wait for partner field control before starting another map or overlay.
@@ -73,6 +82,10 @@ def encounter(e, out, species, quick, cleanup):
          'partner.stats.currentHP=9999', 'partner.stats.currentMP=9999', 'partner.stats.off=999',
          'partner.stats.def=999', 'partner.stats.speed=999', 'partner.stats.brain=999')
     e.poke('MOD_OPT_QUICK_BATTLE', struct.pack('<i', quick))
+    if all_join:
+        # Seed only the join roll; visibility, collision and the three-enemy
+        # limit still choose the participants through native encounter code.
+        e.poke('FLEE_CHANCES', bytes([100]) * 12)
     for _ in range(12):
         if e.peek('IS_IN_MENU', 'i'):
             e.press('CANCEL', 8)
@@ -82,40 +95,51 @@ def encounter(e, out, species, quick, cleanup):
             break
         e.wait(.2)
     e.poke('PAUSE_STATE', b'\0')
-    assert e.warp(167, 0), 'source room did not load'
+    assert e.warp(168 if city_entrance else 167, 0), 'source room did not load'
     stem=f'partner-{species}-quick-{quick}'
     before=sample(e)
     e.run('save', str(out/(stem+'-source.state')))
     rows=[before]
     with ThreadPoolExecutor() as pool:
-        video=pool.submit(e.run,'record',str(out/(stem+'.mp4')),'35')
+        video=pool.submit(e.run,'record',str(out/(stem+'.mp4')),str(video_seconds)) if video_seconds else None
         # Step trigger 0 is the portal returning to 166, arrival 1. Move onto
         # its real tile; the game's script performs the walk and warp.
-        e.gs('move', '1200', '1200')
-        end=time.monotonic()+150
-        started=False; frame_start=None; auto=False; cleaned=False
+        if city_entrance:
+            # Run File City's real Mt. Infinity entrance handler (arrival 0).
+            call(e, 'callScriptSection', e.peek('CURRENT_SCRIPT_ID', 'H'), 56, 1)
+            e.run('resume')
+        else:
+            e.gs('move', '1200', '1200')
+        end=time.monotonic()+600
+        started=False; frame_start=None; auto=False; cleaned=False; window=None
         while time.monotonic()<end:
             row=sample(e);rows.append(row)
             (out/(stem+'-samples.json')).write_text(json.dumps(rows,indent=2)+'\n')
             assert row['heap']['corrupt'] is None, row['heap']
+            assert row['running'] and row['stream_failures'] == 0 and row['battle_cold_reads'] == 0, row
             assert row['gpu']['ot_lengths']==12 and row['gpu']['ot1_length']==12, row['gpu']
             if row['CURRENT_SCREEN']==166 and row['GAME_STATE']==1:
                 started=True
                 if row['BATTLE_FRAME_COUNT']>=20 and row['MOD_BATTLE_LOADING']==0:
+                    if window is None:
+                        window = row['tile_window']
+                    assert row['tile_window'] == window, 'tile window moved during battle'
                     if frame_start is None:
                         frame_start=row['BATTLE_FRAME_COUNT']
                         e.run('shot',str(out/(stem+'-battle.png')))
                     if row['BATTLE_FRAME_COUNT']-frame_start>=90 and cleanup and not cleaned:
-                        for enemy in row['enemies']:
+                        for enemy in row['participants']:
                             e.poke(f'NPC_ENTITIES+{104*enemy["slot"]+0x4c}',b'\0\0')
                         cleaned=True
                 if not auto:
                     e.press('CONFIRM',8);auto=True
-                elif all(n['hp'] <= 0 for n in row['enemies']):
+                elif row['participants'] and all(n['hp'] <= 0 for n in row['participants']):
                     e.press('CONFIRM',8)
                 else:
                     e.press('CIRCLE',8)
-            elif started and row['CURRENT_SCREEN']==166 and row['GAME_STATE']==0 and row['TAMER_STATE']==0:
+            # The interrupted arrival walk may touch the return portal before
+            # the observer's next sample. Both rooms are valid field returns.
+            elif started and row['CURRENT_SCREEN'] in (166,168 if city_entrance else 167) and row['GAME_STATE']==0 and row['TAMER_STATE']==0:
                 e.run('shot',str(out/(stem+'-after.png')))
                 break
             else:
@@ -124,9 +148,12 @@ def encounter(e, out, species, quick, cleanup):
         else:
             raise AssertionError(f'{stem}: encounter did not return to field')
         assert frame_start is not None, 'battle did not advance'
+        if all_join:
+            assert any(len(r['participants']) == 3 for r in rows), 'triple battle absent'
         assert any(len([n for n in r['enemies'] if n['species']==88])>=3 for r in rows), 'three Vermilimon absent'
-        video.result()
-    result=dict(species=species,quick=quick,forced_cleanup=cleaned,samples=rows)
+        if video is not None:
+            video.result()
+    result=dict(species=species,quick=quick,forced_cleanup=cleaned,all_join=all_join,city_entrance=city_entrance,samples=rows)
     (out/(stem+'.json')).write_text(json.dumps(result,indent=2)+'\n')
     print('PASS',stem,flush=True)
 
@@ -137,19 +164,37 @@ def main():
     p.add_argument('--out',type=Path,required=True);p.add_argument('--port',type=int,default=39711)
     p.add_argument('--card',type=Path);p.add_argument('--state',type=Path);p.add_argument('--species',type=int,nargs='+',default=[3,407])
     p.add_argument('--quick',type=int,nargs='+',default=[0,1]);p.add_argument('--cleanup',action='store_true')
+    p.add_argument('--city-entrance', action='store_true', help='enter from File City instead of the lower return portal')
+    p.add_argument('--ram8', action='store_true', help='repeat the same encounter with expanded emulator RAM')
+    p.add_argument('--video-seconds', type=int, default=35, help='set 0 to keep samples and screenshots only')
+    p.add_argument('--all-join', action='store_true', help='seed bystander join chances to require a triple battle')
     a=p.parse_args();out=a.out.resolve();out.mkdir(parents=True,exist_ok=True)
     e=ProofEmu(a.disc,a.exe,a.port,str(out/'emu'))
+    e.expanded_ram = a.ram8
+    e.env['EMU_ARGS'] = '-interpreter -debugger' + (' -8mb' if a.ram8 else '')
+    if a.ram8:
+        # Heap and gameplay addresses remain in the original 2 MB region.
+        e.ram = lambda: e.api('/api/v1/cpu/ram/raw')[:0x200000]
     for name,(addr,_,_) in elf_symbols(a.exe+'.elf').items():e.table.setdefault(name,addr)
     try:
         e.start(str(a.card.resolve()) if a.card else test_card(out))
         if a.state:
             e.run('load',str(a.state.resolve()));e.run('resume')
         else:assert e.continue_game()==0, 'Continue failed'
+        e.run('lua', f'''IP={{streamFailures=0,coldReads=0,bp={{}}}}
+          local m=PCSX.getMemPtr()
+          local function battle() return tonumber(m[{e.A('GAME_STATE') & 0x1fffff}])~=0 end
+          IP.bp[1]=PCSX.addBreakpoint({e.A('tfsStreamOpen')},'Exec',4,'portal-stream',function()
+            if battle() then IP.streamFailures=IP.streamFailures+1 end
+          end)
+          IP.bp[2]=PCSX.addBreakpoint({e.A('loadColdAnimation')},'Exec',4,'portal-cold',function()
+            if battle() then IP.coldReads=IP.coldReads+1 end
+          end)''')
         base=out/'base.state';e.run('save',str(base))
         for species in a.species:
             for quick in a.quick:
                 e.run('load',str(base));e.run('resume')
-                encounter(e,out,species,quick,a.cleanup)
+                encounter(e,out,species,quick,a.cleanup,a.video_seconds,a.all_join,a.city_entrance)
     except BaseException:
         e.run('shot',str(out/'failure.png'),check=False)
         e.run('save',str(out/'failure.state'),check=False)

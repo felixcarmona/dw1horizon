@@ -117,6 +117,8 @@ def talk():    # section 11
         narrator.say(t11.u3)
         raw.set_inventory_size(30)
         inventory_expanded.to_30.set()
+        sound(8, 10)
+        narrator.say(text.qol.nanimon_joined)
         recruit(Species.Nanimon)
         engine.prosperity.add(1)
     key_chains.add(1)

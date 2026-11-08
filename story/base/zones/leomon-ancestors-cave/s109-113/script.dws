@@ -115,6 +115,8 @@ script 109 {
             say(narrator, text("s109.sec5.u3"));
             inventory_expanded.to_30 = true;
             set_inventory_size(30);
+            sound(8, 8);
+            say(narrator, text("qol.nanimon_joined"));
             recruit(species("Nanimon"));
             engine.prosperity += 1;
         }

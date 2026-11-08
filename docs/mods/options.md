@@ -117,6 +117,24 @@ CPU measurement selects the renderer: 20 fps on original hardware and emulators
 at 100%, 60 fps with sufficient CPU overclock (250%). Logic and input remain at
 20 Hz. RAM size does not decide the rendering rate.
 
+At Press Start, the detected-settings panel always shows RAM (`RAM 2 MB` or
+`RAM 8 MB`), estimated CPU speed (`CPU ~100%`, for example), and the selected
+renderer (`20 FPS` or `60 FPS`). Its short hints read “CPU 250%: 60 FPS” and
+“8 MB: Chinese only”. The other eight languages still work with 2 MB.
+RAM is green with 8 MB; CPU is green at the raw 8500-count enable threshold.
+The FPS color follows the selected mode, including the selector's hysteresis.
+These are detected settings, not a measurement of how many frames a busy scene
+actually presents. Title and menu animations retain their existing timing.
+
+The estimate interpolates the documented 100/200/250/300% calibration points,
+rounds to 25% steps and clamps to 100–300%. It is approximate across emulators; readings outside the measured range use the
+nearest endpoint.
+The panel reads the latest sample on entry and redraws if that reading or the
+selected mode changes while it is visible. Press Start does not run the idle-wait
+sampler, so a fresh boot shows the boot CPU reading. RAM remains the boot reading.
+The display code and scratch are in the title overlay, loaded after the intro
+movie and before installing the Press Start callback.
+
 The same 16-scanline probe runs during spare presentation waits about every two
 seconds. Two agreeing samples and separate enable/disable thresholds prevent
 oscillation. This adapts to runtime overclock changes and same-build save states;

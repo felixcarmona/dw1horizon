@@ -8,6 +8,12 @@ class CroppedUI(unittest.TestCase):
     def test_shipped_fields_fit_every_language_and_font(self):
         self.assertEqual(audit()['errors'], [])
 
+    def test_detected_settings_expand_numbers_before_checking_crops(self):
+        for font in ('b', 'original', 'classic'):
+            self.assertFalse(field_problems('main.MOD_NOTICE_STR_CPU', 'CPU ~%d%%', font, 'en'))
+        self.assertTrue(field_problems('main.MOD_NOTICE_STR_CPU', 'W' * 20 + '%d%%', 'b', 'en'))
+        self.assertTrue(field_problems('main.MOD_NOTICE_STR_RAM', 'RAM', 'b', 'en'))
+
     def test_reported_tab_cannot_use_full_portuguese_label(self):
         self.assertTrue(tab_problems('main.MAIN_D_801238A0', 'Estado  Técnicas', 'original', 'pt-br'))
 

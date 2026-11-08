@@ -6,6 +6,7 @@ import unittest
 import tempfile
 import subprocess
 import shutil
+import copy
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT), str(ROOT / 'tools')]
@@ -25,8 +26,12 @@ class NpcOriginalsTest(unittest.TestCase):
                 r = S.species_record(s)
                 self.assertEqual(s['_npc_original'], original)
                 self.assertEqual(r['bones'], disc['bones'])
-                for key in ('boneCount', 'radius', 'height'):
+                for key in ('boneCount', 'height'):
                     self.assertEqual(r['para'][key], disc['para'][key])
+                self.assertEqual(r['para']['radius'], s['model']['radius'])
+                if r['para']['radius'] != disc['para']['radius']:
+                    self.assertTrue(s['_npc_collision_review'].strip())
+                    self.assertLess(r['para']['radius'], disc['para']['radius'])
                 self.assertEqual(r['vball'], disc['vball'])
                 self.assertFalse(r['flags'] & S.FLAG_PARTNER)
                 self.assertEqual(s['techniques'], [])
@@ -55,6 +60,15 @@ class NpcOriginalsTest(unittest.TestCase):
         self.assertTrue(twins.isdisjoint(S.extra_rows()))
         guide = site_digimon.guide()
         self.assertTrue(twins.isdisjoint({s['id'] for s in guide['digimon']}))
+
+    def test_reviewed_footprint_preserves_other_disc_properties(self):
+        cherrymon = copy.deepcopy(S.load_content()[464])
+        self.assertFalse(S.lint({464: cherrymon})[0])
+        del cherrymon['_npc_collision_review']
+        self.assertTrue(any('model.radius' in e for e in S.lint({464: cherrymon})[0]))
+        cherrymon['_npc_collision_review'] = 'Reviewed trunk footprint.'
+        cherrymon['model']['height'] += 1
+        self.assertTrue(any('model.height' in e for e in S.lint({464: cherrymon})[0]))
 
     @unittest.skipUnless(shutil.which('cc'), 'needs a host C compiler')
     def test_engine_mapping_in_both_directions(self):

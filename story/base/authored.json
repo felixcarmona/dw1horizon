@@ -148,13 +148,13 @@
     },
     "zones/trash-mountain/s159-165/script.dws": {
       "original_sha256": "e1e2dfa0ee0306a58af8ae9e980f177b4478c2e7c0df2e2500166d40073e5223",
-      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source; finish recruitment dialogue before the walking departure",
-      "authored_sha256": "66af979347e0805a3bb48abb55445a5cc0571ae8ef9f0c08bdba7842e33254e5"
+      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source; finish recruitment dialogue before the walking departure; Announce completed city recruitment with localized narration and the regional jingle",
+      "authored_sha256": "672b53179756dd3b39857e7951c3be87f66a17eab65438ec3522c5ddb081a513"
     },
     "zones/trash-mountain/s159-165/script.py": {
       "original_sha256": "06478c10d23b9dcc2a488c8964edbbf6903b545703e5e7df94b955661a80d125",
-      "authored_sha256": "2f743567ab800ac8497eeb3704094141b4a9295e8e49445337d511b88f7f7072",
-      "reason": "Five-session training and narrator choice ownership; finish recruitment dialogue before the walking departure"
+      "authored_sha256": "a4cc7e16cbd36ca976211f277f03cb2839b4575c19cc4078afd5206a523e342b",
+      "reason": "Five-session training and narrator choice ownership; finish recruitment dialogue before the walking departure; Announce completed city recruitment with localized narration and the regional jingle"
     },
     "zones/ancient-glacial-region/s077-80/script.py": {
       "original_sha256": "845799c5e66bba2b18ddf0de3eeb6c8c2a57271d854f65338c43dd4ab347b3d4",
@@ -388,13 +388,13 @@
     },
     "zones/ancient-speedy-region/s082-86/script.py": {
       "original_sha256": "c9b734406e2f7018f668d073962fac3ee05c359d9cbfe27216d1737a5a95a1d4",
-      "authored_sha256": "f4b8fa8519e7b9d82a37738610aa65151caa0c611e89f055c6cc89c2485eb125",
-      "reason": "Meteormon's walk-away starts once: the original restarted it at every glance, and a restart a few units short of the point gave a zero step and an endless wait; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
+      "authored_sha256": "5cb4faf4b12233ca618d0a7ceac430d3b0da14e797be956780d328d1ff0e5c25",
+      "reason": "Meteormon's walk-away starts once: the original restarted it at every glance, and a restart a few units short of the point gave a zero step and an endless wait; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; Announce completed city recruitment with localized narration and the regional jingle"
     },
     "zones/ancient-speedy-region/s082-86/script.dws": {
       "original_sha256": "61b22d964af09d2c5f6c07d27bf154a41c9c2a0d5bc534af1542478132cb88b4",
-      "authored_sha256": "4758d18e2e84f7780812afdcfc81f41d3c3d2b362d7d292a217bdee2b03a566a",
-      "reason": "Meteormon's walk-away starts once: the original restarted it at every glance, and a restart a few units short of the point gave a zero step and an endless wait; DWS synchronized with the authored Python source; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
+      "authored_sha256": "a9a17011df88f8c65f1fec854c55a45019765db1f5227adea4f0b13c784a7fff",
+      "reason": "Meteormon's walk-away starts once: the original restarted it at every glance, and a restart a few units short of the point gave a zero step and an endless wait; DWS synchronized with the authored Python source; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; Announce completed city recruitment with localized narration and the regional jingle"
     },
     "zones/ancient-glacial-region/s078-81/script.py": {
       "original_sha256": "c4a24365f2e84358edb1b7b1880e4643d119287d06586d5296e0dc3c501ace01",
@@ -1075,6 +1075,66 @@
       "original_sha256": "6b829b48ac79a11f9584398ef7c869c3bcf587c246779941e04a5c3b8134eafb",
       "authored_sha256": "51aa43d3e7e2c38ab936e4aa02e79cd2dce1fe8f17371ac4cedd5306fc4c21b4",
       "reason": "Announce Shellmon recruitment before the departure walk in both story modes"
+    },
+    "zones/libraries/s198/script.py": {
+      "original_sha256": "f011f9bc6e748ab0586598a642405bd942748fb7989e9782261f28010a7939bc",
+      "authored_sha256": "a94ab108e35921e29cdc95d6bdd21ef747998738fe1920019e913f0606ee6045",
+      "reason": "; Announce completed city recruitment with localized narration and the regional jingle"
+    },
+    "zones/libraries/s198/script.dws": {
+      "original_sha256": "33770be2e0f9f50bf15e4520b18432f5893a36b830809ad56a93c51754bc316c",
+      "authored_sha256": "a2ac943a8b16006b936048e47b3e93d227f27ac80a4a458cfeb76032e861be35",
+      "reason": "; Announce completed city recruitment with localized narration and the regional jingle"
+    },
+    "zones/leomon-ancestors-cave/s109-113/script.py": {
+      "original_sha256": "885c3e7957371154a6def05d66445e4944bff33fe4a4a9d787e7104574915655",
+      "authored_sha256": "522b0db239d13b75b8560d5b956c27a949b325215c04bd528c0c131d842366eb",
+      "reason": "; Announce completed city recruitment with localized narration and the regional jingle"
+    },
+    "zones/leomon-ancestors-cave/s109-113/script.dws": {
+      "original_sha256": "203ef09338fb9577d20b5d9c66dbdff9deecbe982fe8890ed88732542efb5306",
+      "authored_sha256": "00909b5df5f1a057b18aa14c6a3d9761646dbe5e5326a7e4ae975c056605ee27",
+      "reason": "; Announce completed city recruitment with localized narration and the regional jingle"
+    },
+    "zones/sewer/s180-220-229-230/script.py": {
+      "original_sha256": "d16b82355fa92378724e46078c1921e9a00056aacd99eb5750b78520e5e30121",
+      "authored_sha256": "d25de4a859c821f1c4801dc1b6caa0c1b25f880f892defe7cbcc54f10ffac073",
+      "reason": "; Announce completed city recruitment with localized narration and the regional jingle"
+    },
+    "zones/sewer/s180-220-229-230/script.dws": {
+      "original_sha256": "aa71b13b44b5ba702d7774327fcc9573bd20838d562c738fb144779305148ddb",
+      "authored_sha256": "6d2f74ec11ab4d10c01703d9e35bbb7e92d44eace9efc8fdb5fb04c0b15d3c62",
+      "reason": "; Announce completed city recruitment with localized narration and the regional jingle"
+    },
+    "zones/ogre-fortress/s048-48/script.py": {
+      "original_sha256": "b315342df19ba2eb794bbd4d6adbfb0a91a5b16e882742f9b088598643cfaa15",
+      "authored_sha256": "47720fde9c5f061022ba9126b1dc968ac0d61cdac51e7f51eac775c2e85b40b6",
+      "reason": "; Announce completed city recruitment with localized narration and the regional jingle"
+    },
+    "zones/ogre-fortress/s048-48/script.dws": {
+      "original_sha256": "eb058aa4bf02289629741b4b6686b39081bc79282c7ff3e22191991de127f5d8",
+      "authored_sha256": "3184ea4450ea02888dd3384498dd9fc276f1950f3880e8061385f2f3f60f4877",
+      "reason": "; Announce completed city recruitment with localized narration and the regional jingle"
+    },
+    "zones/toy-mansion/s145-151/script.py": {
+      "original_sha256": "133a074b6960fc0749556b9e0d408ae3c3ff749224479b98904ffd92d822a9bc",
+      "authored_sha256": "5b3b21034f56f5548cb99e3c801f399511f56637460100ec92dc266c52b8bc06",
+      "reason": "; Announce completed city recruitment with localized narration and the regional jingle"
+    },
+    "zones/toy-mansion/s145-151/script.dws": {
+      "original_sha256": "ec7b3232c8b980665b36b8a6d6251c06e698aea7f55462cdeb47ed6784762f25",
+      "authored_sha256": "ee67f3c99a6f842af2d8ca478b825bfbac4f6d64ba8db6562a83f011559e4808",
+      "reason": "; Announce completed city recruitment with localized narration and the regional jingle"
+    },
+    "zones/underground-lab/s064-67/script.py": {
+      "original_sha256": "d1c55cfda521a57e1991e1c57c824828d9d6c1aa30866228d30ae8ad857f7b4d",
+      "authored_sha256": "f02eb7d7652250e115249c6a472ff15605a9fe0792fcc44b7ca4164832b0f5b1",
+      "reason": "; Announce completed city recruitment with localized narration and the regional jingle"
+    },
+    "zones/underground-lab/s064-67/script.dws": {
+      "original_sha256": "5a630f874505a8ddae41162e10c82b818724a6b019129b087930f4e8e3bf73b4",
+      "authored_sha256": "062411f6019a6245b913dbc949f4972c7b80fb682e1ac029ab18c23111af8010",
+      "reason": "; Announce completed city recruitment with localized narration and the regional jingle"
     }
   }
 }

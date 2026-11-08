@@ -672,5 +672,10 @@
   "wiki.trainingOrder": "Ordine di allenamento",
   "wiki.noBrains": "Questa tecnica non si può imparare allenando il Cervello.",
   "wiki.aliasSource": "Usa",
-  "wiki.sharedUnlock": "Imparare una variante le sblocca entrambe. La forma attuale deve poter imparare la variante usata dal nemico o scelta dalla palestra."
+  "wiki.sharedUnlock": "Imparare una variante le sblocca entrambe. La forma attuale deve poter imparare la variante usata dal nemico o scelta dalla palestra.",
+  "wiki.pdfLabel": "Guida PDF",
+  "wiki.pdfTitle": "Scarica la guida PDF",
+  "wiki.pdfWarning": "Tutto ciò che segue questa pagina rivela segreti.",
+  "wiki.pdfContents": "Indice",
+  "wiki.pdfSpoilers": "SPOILER — appendice"
 }

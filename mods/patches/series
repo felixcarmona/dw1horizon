@@ -427,3 +427,4 @@ Keep-Continue-camera-framing-when-movement-starts-immediately.patch
 Clear-recycled-jukebox-rows-and-fit-titles-inside-the-menu.patch
 Restore-new-game-partner-care-before-the-opening.patch
 Position-the-Continue-view-once-after-collision-relocation.patch
+Always-show-detected-RAM-CPU-speed-and-selected-FPS.patch

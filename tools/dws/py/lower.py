@@ -1554,9 +1554,7 @@ class Body:
 
     def departure(self, call):
         f = call.func
-        if isinstance(f, ast.Name) and f.id == 'walk_away': return True
         if not isinstance(f, ast.Attribute): return False
-        if f.attr == 'walk_away': return True
         if not (f.attr == 'say' and isinstance(f.value, ast.Name) and f.value.id == 'narrator'):
             return False
         from .. import recruitment

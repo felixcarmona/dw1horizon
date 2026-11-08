@@ -672,5 +672,10 @@
   "wiki.trainingOrder": "Ordre d’entrenament",
   "wiki.noBrains": "Aquesta tècnica no es pot aprendre entrenant Intel·ligència.",
   "wiki.aliasSource": "Fa servir",
-  "wiki.sharedUnlock": "Aprendre qualsevol de les dues variants les desbloqueja totes dues. La forma actual ha de poder aprendre la variant que faci servir l’enemic o seleccioni el gimnàs."
+  "wiki.sharedUnlock": "Aprendre qualsevol de les dues variants les desbloqueja totes dues. La forma actual ha de poder aprendre la variant que faci servir l’enemic o seleccioni el gimnàs.",
+  "wiki.pdfLabel": "Guia en PDF",
+  "wiki.pdfTitle": "Descarrega la guia en PDF",
+  "wiki.pdfWarning": "Tot el que apareix després d’aquesta pàgina revela secrets.",
+  "wiki.pdfContents": "Índex",
+  "wiki.pdfSpoilers": "ESPÒILERS — apèndix"
 }

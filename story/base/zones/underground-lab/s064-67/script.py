@@ -80,8 +80,14 @@ def talk():    # section 5
     camera.on(tamer, speed=10)
     camera.arrived()
     myotismon_joined_city.set()
-    recruit(Species.Myotismon)
-    recruit(Species.SkullGreymon)
+    if not recruited(Species.Myotismon):
+        sound(8, 11)
+        narrator.say(text.qol.myotismon_joined)
+        recruit(Species.Myotismon)
+    if not recruited(Species.SkullGreymon):
+        sound(8, 11)
+        narrator.say(text.qol.skullgreymon_joined)
+        recruit(Species.SkullGreymon)
     engine.prosperity.add(3)
     return
 

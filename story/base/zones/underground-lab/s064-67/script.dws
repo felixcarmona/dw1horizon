@@ -85,8 +85,16 @@ script 64 {
         camera_on(tamer, speed: 10);
         await camera;
         myotismon_joined_city = true;
-        recruit(species("Myotismon"));
-        recruit(species("SkullGreymon"));
+        if (!is_recruited(species("Myotismon"))) {
+            sound(8, 11);
+            say(narrator, text("qol.myotismon_joined"));
+            recruit(species("Myotismon"));
+        }
+        if (!is_recruited(species("SkullGreymon"))) {
+            sound(8, 11);
+            say(narrator, text("qol.skullgreymon_joined"));
+            recruit(species("SkullGreymon"));
+        }
         engine.prosperity += 3;
         return;
     }

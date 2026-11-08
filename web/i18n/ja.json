@@ -672,5 +672,10 @@
   "wiki.trainingOrder": "トレーニング順",
   "wiki.noBrains": "この技はかしこさのトレーニングでは覚えられません。",
   "wiki.aliasSource": "使用技",
-  "wiki.sharedUnlock": "どちらかの種類を覚えると両方が解放されます。現在の姿が、敵の使う種類またはトレーニングで選ばれる種類を習得できる必要があります。"
+  "wiki.sharedUnlock": "どちらかの種類を覚えると両方が解放されます。現在の姿が、敵の使う種類またはトレーニングで選ばれる種類を習得できる必要があります。",
+  "wiki.pdfLabel": "PDFガイド",
+  "wiki.pdfTitle": "PDFガイドをダウンロード",
+  "wiki.pdfWarning": "このページ以降は秘密の情報を含みます。",
+  "wiki.pdfContents": "目次",
+  "wiki.pdfSpoilers": "ネタバレ — 付録"
 }
