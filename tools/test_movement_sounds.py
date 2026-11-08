@@ -57,6 +57,24 @@ class MovementSounds(unittest.TestCase):
                                         for _,kind,e in after.events if kind=='sound'))
                 self.assertTrue(proof['storage']['fits'])
 
+    def test_donor_footsteps_in_other_actions_preserve_voices_and_impacts(self):
+        source = mmd.MMD.parse(self.model(True), 3)
+        action = source.anims.anims[0]
+        action.instrs.insert(-1, dict(op='sound', frame=10, bank=4, note=13))
+        action.instrs.insert(-1, dict(op='sound', frame=11, bank=1, note=7))
+        raw = source.build()
+        result, proof = movement_sounds.apply(raw, [[-1,-1],[0,0],[1,1]], 293, 12, (13,))
+        after = mmd.MMD.parse(result, 3)
+        for slot in (0, 7, 11, 33, 42, 44):
+            before = source.anims.anims[source.anims.table[slot]]
+            actual = after.anims.anims[after.anims.table[slot]]
+            expected = [dict(i, note=12) if i['op']=='sound' and (i['bank'],i['note'])==(1,13)
+                        else i for i in before.instrs]
+            self.assertEqual(actual.instrs, expected)
+            self.assertEqual(actual.pose, before.pose)
+        self.assertEqual(source.tmd.build(), after.tmd.build())
+        self.assertTrue(proof['storage']['fits'])
+
 
 if __name__ == '__main__':
     unittest.main()

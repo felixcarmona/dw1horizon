@@ -52,6 +52,13 @@ The provider applies these clip aliases after field overlays and Buster Dive pro
 its authored acting and attack events. Record originals use `model.slot_aliases` directly. Both routes share animation
 programs rather than duplicating them; adding a technique still requires a compatible effect and a free move slot.
 
+Imported model recipes may also set `movement_sound` to an SL note number for the six
+field/battle movement slots. The object form, `{"note": 12, "replace_notes": [20]}`,
+also replaces those explicitly named bank-1 donor footsteps in other animations
+(for example a landing during care or an attack). It preserves voice banks,
+other effects, event frames, geometry and pose/control/texture programs. This
+is an offline recipe edit; no runtime sound mapping or new sample bank is added.
+
 ## Original NPC twins
 
 Ids 462–468 are internal NPC records for ShogunGekomon, KingSukamon,

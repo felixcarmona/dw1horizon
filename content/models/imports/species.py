@@ -306,8 +306,11 @@ def species_file(out, t, recs=None, names=None, generate=False):
         generated = Path(os.path.abspath(out) + '-models')
         generated.mkdir(parents=True, exist_ok=True)
         s['_path'] = os.path.join(ROOT, 'content/species', name)
+        cue = e['movement_sound']
+        settings = cue if isinstance(cue, dict) else {'note': cue}
         model, proof = movement_sounds.apply(species_tools.species_model(s)[0],
-                                             s['model']['skeleton'], int(t), e['movement_sound'])
+                                             s['model']['skeleton'], int(t), settings['note'],
+                                             settings.get('replace_notes', ()))
         model_path = generated / f'{t}-movement-sounds.MMD'
         model_path.write_bytes(model)
         (generated / f'{t}-movement-sounds-report.json').write_text(json.dumps(proof, indent=2) + '\n')

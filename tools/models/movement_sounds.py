@@ -9,7 +9,7 @@ from motioncyclelayer import share_identical_streams
 from motiondiscidentity import changed_programs
 
 
-def apply(data, skeleton, sid, note):
+def apply(data, skeleton, sid, note, replace_notes=()):
     old = mmd.MMD.parse(data, len(skeleton))
     old.type = sid
     new = copy.deepcopy(old)
@@ -39,6 +39,24 @@ def apply(data, skeleton, sid, note):
         new.anims.table[slot] = len(new.anims.anims)
         new.anims.anims.append(authored)
         # Poses, momentum, texture events and control flow stay byte-exact.
+        strip = lambda a: [i for i in a.instrs if i['op'] != 'sound']
+        assert authored.pose == original.pose and strip(authored) == strip(original)
+        rows.append(dict(slot=slot, frames=[i['frame'] for i in sounds], bank=1, note=note))
+    # A landing in a care or attack clip can carry the same donor footstep.
+    # Replace only the explicitly selected SL cues; voices and impact effects stay.
+    for slot, index in enumerate(old.anims.table):
+        if slot in (2, 3, 4, 27, 35, 36) or index is None:
+            continue
+        original = old.anims.anims[index]
+        authored = copy.deepcopy(original)
+        sounds = [i for i in authored.instrs
+                  if i['op'] == 'sound' and i['bank'] == 1 and i['note'] in replace_notes]
+        if not sounds:
+            continue
+        for sound in sounds:
+            sound['note'] = note
+        new.anims.table[slot] = len(new.anims.anims)
+        new.anims.anims.append(authored)
         strip = lambda a: [i for i in a.instrs if i['op'] != 'sound']
         assert authored.pose == original.pose and strip(authored) == strip(original)
         rows.append(dict(slot=slot, frames=[i['frame'] for i in sounds], bank=1, note=note))
