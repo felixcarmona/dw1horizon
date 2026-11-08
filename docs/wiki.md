@@ -182,7 +182,9 @@ Browser checks visit ten page types in all nine languages at 1440 px and 390 px.
 
 Every `web/build.py` build also prints one `Horizon-Guide-<tag>-<language>.pdf`
 per wiki language and adds a localized download link and size to that language's
-home. Install `python3 -m pip install -r tools/wiki/requirements.txt` and the
+home as a secondary download button below search and a fifth data tile, with a
+localized size in decimal MB. Install
+`python3 -m pip install -r tools/wiki/requirements.txt` and the
 existing Puppeteer driver (`puppeteer-core@24.31.0`); set `PUPPETEER_MODULE` and
 `CHROMIUM` as for browser tests. Install Poppler (`poppler-utils`) for extraction tests and local CJK fonts (CI uses
 `fonts-noto-cjk`) for Japanese and Chinese. Chromium embeds the fonts; readers
@@ -192,7 +194,10 @@ need no network or font installation.
 source renderer and recruitment renderer. Its temporary print HTML groups the
 20 articles, species by level, techniques and City services on single-column A5
 pages, using static print instances of the shared Plus Jakarta Sans font. Techniques link to their complete
-learning sources, and each species lists its requirements once and evolution links open the related entries. The clickable
+learning sources. Finishers and innate attacks share a compact table and one
+learning note. Each species lists techniques in separate rows with power/MP/chance
+and one public enemy → place source plus a remaining-source count; its
+requirements appear once and evolution links open the related entries. The clickable
 contents and five PDF bookmarks expose only public section names. Every wiki
 spoiler disclosure moves intact to an appendix after a dedicated warning page;
 secret species/routes and hidden resident records follow the same model flags.

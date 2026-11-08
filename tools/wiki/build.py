@@ -54,6 +54,16 @@ def budget(out):
     return dict(site_bytes=total, wiki_bytes=size)
 
 
+def add_pdf_links(home, pages, record):
+    size=f'{record["bytes"]/1_000_000:.1f}'
+    if pages.lang in ('es','pt-br','fr','de','it','ca'): size=size.replace('.',',')
+    size += ' MB'
+    attrs=f'download href="{record["file"]}"'
+    button=f'<a class="button soft pdf-guide" {attrs}>⬇ {pages.t("wiki.pdfTitle")} · {size}</a>'
+    tile=f'<a class="pdf-tile" {attrs}><b>{pages.t("wiki.pdfLabel")} ↓</b><span>{size}</span></a>'
+    home.write_text(home.read_text().replace('<!--pdf-button-->',button).replace('<!--pdf-tile-->',tile))
+
+
 class Pages:
     def __init__(self, out, data, lang, articles):
         self.out, self.data, self.lang, self.articles = out, data, lang, articles
@@ -416,7 +426,7 @@ class Pages:
         self.records={}
         links=''.join(f'<a href="{self.base}{path}/"><b>{self.t(key)} ↗</b><span>{count}</span></a>' for path,key,count in [('digimon','data.recruit.digimon',len(self.data['species'])),('techniques','data.techniques',len(self.data['techniques'])),('evolutions','data.evolutions',''),('recruits','data.recruits',len(self.data['recruits']))])
         featured=''.join(self.article_card(k,self.articles[k]) for k in ('duckstation-android','care','evolution-requirements'))
-        body=f'<div class="intro"><span class="eyebrow">{self.t("wiki.nav")}</span><h1>{self.t("wiki.title")}</h1><p>{self.t("wiki.lead")}</p>{self.search_form()}</div><div class="section-heading"><h2>{self.t("wiki.start")}</h2></div><div class="cards">{featured}</div><div class="section-heading"><h2>{self.t("wiki.lookup")}</h2></div><div class="data-links">{links}</div><div class="section-heading"><h2>{self.t("wiki.articles")}</h2><a href="{self.base}guides/">{self.t("wiki.all")} →</a></div><div class="cards">'+''.join(self.article_card(k,self.articles[k]) for k in ('memory-cards','new-game-quiz','difficulty'))+'</div><div class="section-heading"><h2>'+self.t('data.recruit.digimon')+'</h2></div><div class="species-grid">'+''.join(self.card(self.by_id[i]) for i in (3,17,45))+'</div>'
+        body=f'<div class="intro"><span class="eyebrow">{self.t("wiki.nav")}</span><h1>{self.t("wiki.title")}</h1><p>{self.t("wiki.lead")}</p>{self.search_form()}<!--pdf-button--></div><div class="section-heading"><h2>{self.t("wiki.start")}</h2></div><div class="cards">{featured}</div><div class="section-heading"><h2>{self.t("wiki.lookup")}</h2></div><div class="data-links">{links}<!--pdf-tile--></div><div class="section-heading"><h2>{self.t("wiki.articles")}</h2><a href="{self.base}guides/">{self.t("wiki.all")} →</a></div><div class="cards">'+''.join(self.article_card(k,self.articles[k]) for k in ('memory-cards','new-game-quiz','difficulty'))+'</div><div class="section-heading"><h2>'+self.t('data.recruit.digimon')+'</h2></div><div class="species-grid">'+''.join(self.card(self.by_id[i]) for i in (3,17,45))+'</div>'
         self.page('',plain(self.t('wiki.nav')),body,'home')
         types=[('all','wiki.all'),('article','wiki.articles'),('digimon','data.recruit.digimon'),('technique','data.techniques'),('recruit','data.recruits'),('evolution','data.evolutions')]
         filters=''.join(f'<button type="button" data-filter="{kind}" aria-pressed="{str(kind=="all").lower()}">{self.t(label)}</button>' for kind,label in types)
@@ -466,10 +476,7 @@ def build(out, tag, presentation_ref=None):
     manifest['pdfs']=pdf.generate(out,dict(data,tag=tag),instances)
     (dest/'manifest.json').write_text(compact(manifest)+'\n')
     for pages in instances:
-        record=manifest['pdfs'][pages.lang]
-        link=f'<a class="pdf-guide" download href="{record["file"]}">{pages.t("wiki.pdfTitle")} · {record["bytes"]/1024/1024:.1f} MB</a>'
-        home=dest/pages.lang/'index.html'
-        home.write_text(home.read_text().replace('<div class="intro">','<div class="intro">'+link))
+        add_pdf_links(dest/pages.lang/'index.html', pages, manifest['pdfs'][pages.lang])
     sizes=budget(out)
     print(f'Wiki {tag}: {len(data["species"])} species, 20 articles × 9 languages; {sizes["wiki_bytes"]:,} bytes')
     return manifest

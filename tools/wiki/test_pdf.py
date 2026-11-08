@@ -78,6 +78,20 @@ class ExtractedTests(unittest.TestCase):
                         self.assertIn(name,after)
                 p=self.build.Pages(self.site,self.data,lang,catalog)
                 html=pdf.document(p,self.manifest['tag'])
+                tree=pdf.Tree(html).root
+                innate=tree.find('innate-moves')
+                self.assertIsNotNone(innate)
+                rows=innate.children[1].children
+                self.assertEqual([r.attrs['id'] for r in rows],[f'move-{i}' for i in range(58,122)])
+                self.assertEqual(html.count(p.t('wiki.notLearnable')),1)
+                def nodes(node):
+                    if isinstance(node,pdf.Node):
+                        yield node
+                        for child in node.children: yield from nodes(child)
+                entries={node.attrs['id']:node for node in nodes(tree) if node.has('species')}
+                for species in self.data['species']:
+                    table=entries[f'species-{species["id"]}'].find('species-moves')
+                    self.assertEqual(len(table.children),len(species['moves']))
                 public,appendix=html.split('<div class="appendix">',1)
                 for s in self.data['species']:
                     if s['spoiler']:

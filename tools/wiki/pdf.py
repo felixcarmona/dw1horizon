@@ -111,14 +111,19 @@ def document(pages, tag):
         if not s['spoiler'] and any(p.by_id[i]['spoiler'] for i in s['parents']+s['to']):
             appendix.append(f'<h3>{escape(p.name(s))} · {p.t("data.evolutions")}</h3>'+routes(p,s,True))
     normal.append(heading('techniques',p.t('data.techniques')))
+    innate={}
     for move in p.data['techniques']:
         range_key={0:'other',1:'melee',2:'ranged',3:'area',4:'buff'}.get(move['range'],'other')
         status_key={1:'poison',2:'confusion',3:'stun',4:'flatten'}.get(move['status'])
         status=p.t('data.'+status_key)+f' ({move["statusChance"]}%)' if status_key else '—'
+        if 58 <= move['id'] <= 121:
+            innate[move['id']]=f'<tr id="move-{move["id"]}"><td>{escape(p.move_name(move))}</td><td>{move["id"]}</td><td>{move["power"]}</td><td>{p.t("data."+range_key)}</td><td>{status}</td></tr>'
+            continue
         labels=[p.t(k) for k in ('data.power','data.mp','data.range','data.status')]
         stats='<table><tr>'+''.join('<th>'+x+'</th>' for x in labels)+'</tr><tr>'+''.join('<td>'+str(x)+'</td>' for x in (move['power'],move['baseMP'],p.t('data.'+range_key),status))+'</tr></table>'
         ident=f'move-{move["id"]}'
         normal.append(f'<section id="{ident}"><h3>{escape(p.move_name(move))} · #{move["id"]}</h3>{stats}'+partition(p.learning_section(move),escape(p.move_name(move)),ident)+'</section>')
+    normal.append('<p>'+p.t('wiki.notLearnable')+'</p><table class="innate-moves"><thead><tr>'+''.join('<th>'+label+'</th>' for label in (p.t('data.techniques'),'ID',p.t('data.power'),p.t('data.range'),p.t('data.status')))+'</tr></thead><tbody>'+''.join(innate[i] for i in sorted(innate))+'</tbody></table>')
     normal.append(heading('city',p.articles['file-city']['title']))
     normal.append('<p>'+p.t('data.recruit.intro')+'</p>')
     for row in p.data['recruits']:
@@ -185,12 +190,15 @@ def species_entry(p,s,secret):
         sources=[r for r in p.data['learning_sources'][m['id']] if secret or not r['spoiler']]
         summary=''
         if sources:
-            first=sources[0]
-            enemy=p.data['enemies'][first['species']]
-            summary=' · '+escape(p.name(enemy))+' → '+escape(p.places[first['screen']])
-            if len(sources)>1: summary+=f' (+{len(sources)-1})'
-        moves.append(f'<a href="#move-{m["id"]}">{escape(p.move_name(m))}</a> ({power} / {m["baseMP"]} MP / {chance}){summary}')
-    html=f'<section class="species" id="species-{s["id"]}"><h3>{escape(p.name(s))} · #{s["id"]}</h3><p>{p.label(s)} · {p.specs(s)}</p><p><b>{p.t("data.techniques")}</b> ({p.t("data.power")} / MP / {p.t("wiki.learning")}): '+ '; '.join(moves)+'</p><p><b>'+p.t('wiki.requirements')+'</b>: '+p.req(s).replace('<br>',' · ')+'</p>'+routes(p,s,secret)
+            labels=[]
+            for source in sources:
+                enemy=p.data['enemies'][source['species']]
+                label=escape(p.name(enemy))+' → '+escape(p.places[source['screen']])
+                if label not in labels: labels.append(label)
+            summary=labels[0]
+            if len(labels)>1: summary+=f' (+{len(labels)-1})'
+        moves.append(f'<li><a href="#move-{m["id"]}">{escape(p.move_name(m))}</a> ({power} / {m["baseMP"]} MP / {chance})'+(f' · {summary}' if summary else '')+'</li>')
+    html=f'<section class="species" id="species-{s["id"]}"><h3>{escape(p.name(s))} · #{s["id"]}</h3><p>{p.label(s)} · {p.specs(s)}</p><p class="move-key"><b>{p.t("data.techniques")}</b> ({p.t("data.power")} / MP / {p.t("wiki.learning")}):</p><ul class="species-moves">'+''.join(moves)+'</ul><p><b>'+p.t('wiki.requirements')+'</b>: '+p.req(s).replace('<br>',' · ')+'</p>'+routes(p,s,secret)
     if secret and s['special']: html+='<p>'+translate(escape(s['special']),p.english,p.strings)+'</p>'
     return html+'</section>'
 
