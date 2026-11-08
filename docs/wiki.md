@@ -14,7 +14,30 @@ This standalone command preserves an existing validated engine and disc metadata
 
 ## Release model and routes
 
-`tools/wiki/model.py` uses `git archive` on the selected ref. Every game input—including species, techniques, evolution rules, City roster, story/map assertions, quiz dialogue translations, care/training tables—comes from that snapshot. The dispatching commit supplies templates, UI strings, articles, reviewed recruit annotations and the empty future owned-icon map.
+`tools/wiki/model.py` uses `git archive` on the selected ref. Every game input—including species, techniques, evolution rules, City roster, story/map assertions, quiz dialogue translations, care/training tables—comes from that snapshot. The dispatching commit supplies templates, UI strings, reviewed recruit annotations and the empty future owned-icon map.
+
+Article prose uses `web/wiki/articles/released/<tag>/` (nine catalogs and its
+`review.json`) when that exact tag has a snapshot. If the directory is absent,
+the builder uses `web/wiki/articles/<language>.json`, the working copy for the
+next release. A present but incomplete or unreviewed snapshot fails the build;
+it never falls back silently. Both sets obey the same translation review rules.
+The working copy can describe upcoming features without publishing them for a
+released tag that has a snapshot.
+
+Tags are created manually; `tools/release.py` consumes an existing annotated tag.
+Before committing the final release sources and creating that tag, freeze the
+reviewed working copy with:
+
+```sh
+python3 tools/wiki/articles.py freeze v0.0.8
+git add web/wiki/articles/released/v0.0.8
+git commit -m 'Freeze wiki articles for v0.0.8'
+```
+
+The command validates all locale hashes, coverage, variables and spoilers, and
+refuses to overwrite an existing snapshot. Include the snapshot commit in the
+tag so later presentation overlays retain the released prose. Continue editing
+the working catalogs for the following release. See the [release steps](release/releasing.md).
 
 `/wiki/<language>/` is the canonical home for the latest released game. There is no version picker, release archive or historical-version prose. Children include `digimon/`, `digimon/<id>-<slug>/`, `techniques/`, `techniques/<id>-<slug>/`, `evolutions/`, `recruits/`, `guides/`, `guides/<slug>/`, and `search/`. `/wiki/` follows the existing language preference; explicit language URLs always win. Switching language retains the page and query. All normal content is pre-rendered; search, tree dialogs and compatibility redirects use small local scripts. No-script entry links remain available.
 

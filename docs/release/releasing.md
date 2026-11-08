@@ -222,6 +222,19 @@ recipient's language. Unavailable versions leave the page's default entries alon
 
 ## Stage the verified artifacts, then publish
 
+Before the final release commit and local gates, freeze the reviewed wiki working
+copy for the new tag (substitute the version being cut):
+
+```sh
+python3 tools/wiki/articles.py freeze v0.0.8
+git add web/wiki/articles/released/v0.0.8
+git commit -m 'Freeze wiki articles for v0.0.8'
+```
+
+Run the release gates against the resulting commit, then tag it. The release
+tools consume an existing tag; they do not create tags or modify their sources.
+See [wiki release model](../wiki.md#release-model-and-routes).
+
 After the local gates and publication review pass, start with a clean checkout
 (including no untracked report), and an owner-created annotated tag on HEAD:
 
