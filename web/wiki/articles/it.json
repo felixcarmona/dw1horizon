@@ -114,7 +114,7 @@
     "paragraphs": [
       "L’evoluzione normale valuta errori, peso, statistiche e bonus. Servono {pass_points} punti. Tutte le statistiche richieste formano un gruppo; due statistiche non danno due punti. Per obiettivi Rookie conta la statistica più alta.",
       "Il peso ammette un intervallo; gli errori possono avere minimo o massimo. Una sola condizione di bonus basta per il punto: non sono tutte obbligatorie.",
-      "Tocca l’obiettivo nell’albero. Tempo nella forma, eventi speciali, NEW DIGIMON e altri candidati influenzano il risultato. HP/MP sono in unità del giocatore; felicità usa la scala 0–100 dello stato."
+      "Tocca l’obiettivo nell’albero. La riga “Tempo (h)” della finestra mostra il controllo del tempo e un avviso rosso segnala una vita residua insufficiente. Tempo nella forma, eventi speciali, NEW DIGIMON e altri candidati influenzano il risultato. HP/MP sono in unità del giocatore; felicità usa la scala 0–100 dello stato."
     ]
   },
   "evolution-timing": {
@@ -123,7 +123,7 @@
     "paragraphs": [
       "Le ore sotto sono nella forma attuale, non l’età totale. Soddisfare presto le statistiche non dà evoluzione immediata. Anche i percorsi Ultimate a tempo verificano i requisiti; speciali e oggetti hanno altri eventi.",
       "La scelta favorisce obiettivi mai allevati. Per Rookie–Champion e Champion–Ultimate con tre punti confronta medie richieste, HP/MP divisi per dieci; l’ordine può influire. In-Training–Rookie tiene il punteggio migliore e il primo pareggio.",
-      "Per un’evoluzione a tempo da Evoluto a Mega, “pronto” nella finestra indica che il punteggio dei requisiti è sufficiente e il modello entra in memoria; l’attesa può non essere finita. I Mega importati richiedono anche {mega_hours} ore di gioco trascorse come Evoluto. Se la vita residua si esaurisce prima, il compagno muore di vecchiaia. {chain_melon} (Chain Melon) aggiunge {chain_melon_hours} ore di vita; {digiseabass} ne aggiunge {digiseabass_hours}. Aumentano la vita residua, non il tempo già trascorso nella forma attuale."
+      "La riga “Tempo (h)” della finestra confronta le ore trascorse nella forma attuale con quelle richieste dall’obiettivo. Il verdetto indica “pronto” solo quando il punteggio dei requisiti è sufficiente, il modello entra in memoria e il tempo è soddisfatto; “Tra N h” significa che manca solo il tempo. L’avviso rosso “La vita finisce prima (N h)” indica che la vita residua è inferiore all’attesa ancora necessaria; N è la vita residua. Le vie indipendenti dal tempo mostrano “Via speciale”. I Mega importati richiedono anche {mega_hours} ore di gioco trascorse come Evoluto. Se la vita residua si esaurisce prima, il compagno muore di vecchiaia. {chain_melon} (Chain Melon) aggiunge {chain_melon_hours} ore di vita; {digiseabass} ne aggiunge {digiseabass_hours}. Aumentano la vita residua, non il tempo già trascorso nella forma attuale."
     ]
   },
   "learning-techniques": {

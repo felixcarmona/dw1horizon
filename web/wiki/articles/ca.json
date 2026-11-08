@@ -114,7 +114,7 @@
     "paragraphs": [
       "L’evolució normal puntua errors, pes, atributs i bonificació. Calen {pass_points} punts. Tots els atributs exigits formen un grup; dos atributs no donen dos punts. Per a objectius Rookie compta l’atribut més alt.",
       "El pes admet una banda; els errors poden tenir mínim o màxim. Una sola alternativa de bonificació dona el punt; no són totes obligatòries.",
-      "Toca l’objectiu de l’arbre. Temps en la forma, desencadenants especials, NEW DIGIMON i altres candidats influeixen. PV/PM són unitats del jugador; felicitat usa l’escala 0–100 de l’estat."
+      "Toca l’objectiu de l’arbre. La fila «Temps (h)» de la finestra mostra la comprovació del temps, i un avís vermell indica si la vida restant és insuficient. Temps en la forma, desencadenants especials, NEW DIGIMON i altres candidats influeixen. PV/PM són unitats del jugador; felicitat usa l’escala 0–100 de l’estat."
     ]
   },
   "evolution-timing": {
@@ -123,7 +123,7 @@
     "paragraphs": [
       "Les hores de sota són en la forma actual, no edat total. Complir aviat els atributs no provoca evolució immediata. Les rutes Ultimate temporitzades també comproven requisits; especials i objectes tenen altres desencadenants.",
       "La selecció afavoreix objectius mai criats. Per a Rookie–Champion i Champion–Ultimate amb tres punts compara mitjanes exigides, PV/PM dividits entre deu; l’ordre pot influir. In-Training–Rookie conserva la millor puntuació i el primer empat.",
-      "En una evolució per temps d’Perfecte a Mega, «a punt» a la finestra indica que es compleixen la puntuació dels requisits i la comprovació que el model cap a la memòria; no que l’espera hagi acabat. Els Megas importats també exigeixen passar {mega_hours} hores de joc com a Perfecte. Si abans s’esgota la vida restant, el company mor de vellesa. {chain_melon} (Chain Melon) afegeix {chain_melon_hours} hores de vida; {digiseabass}, {digiseabass_hours}. Allarguen la vida restant, no el temps ja passat en la forma actual."
+      "La fila «Temps (h)» de la finestra compara les hores passades en la forma actual amb les que exigeix l’objectiu. El veredicte només diu «a punt» quan es compleixen la puntuació dels requisits, la comprovació que el model cap a la memòria i el temps; «En N h» indica que només falta temps. L’avís vermell «La vida s’acaba abans (N h)» indica que la vida restant és més curta que l’espera pendent; N és la vida restant. Les rutes que no depenen del temps mostren «Ruta especial». Els Megas importats també exigeixen passar {mega_hours} hores de joc com a Perfecte. Si abans s’esgota la vida restant, el company mor de vellesa. {chain_melon} (Chain Melon) afegeix {chain_melon_hours} hores de vida; {digiseabass}, {digiseabass_hours}. Allarguen la vida restant, no el temps ja passat en la forma actual."
     ]
   },
   "learning-techniques": {
