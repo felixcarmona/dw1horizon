@@ -58,6 +58,17 @@ class Imports(unittest.TestCase):
         alias.symlink_to(self.names)
         self.load_alias(alias)
 
+    @unittest.skipIf(os.name == 'nt', 'symlinks need privileges on Windows')
+    def test_simulated_short_directory_alias(self):
+        # A second directory spelling of the same file, as with an 8.3 alias.
+        long_dir = self.root / 'Long Story Directory'
+        long_dir.mkdir()
+        self.names.rename(long_dir / 'names.dws')
+        self.names = long_dir / 'names.dws'
+        short_dir = self.root / 'LONGST~1'
+        short_dir.symlink_to(long_dir, target_is_directory=True)
+        self.load_alias(short_dir / 'names.dws')
+
     def test_distinct_files_still_reject_duplicate_declarations(self):
         other = self.root / 'other.dws'
         other.write_bytes(self.names.read_bytes())

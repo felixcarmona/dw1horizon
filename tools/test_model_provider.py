@@ -78,7 +78,8 @@ class ModelProvider(unittest.TestCase):
                 selected[sid] = model.OVERLAYS[preceding]
         # Native locomotion is authored after the effective field proportions.
         # Keep those baked generators covered without running them a second time.
-        for path in [*Path('content/models/authoring/native-polish').glob('*.json'),
+        for path in [*Path('content/models/authoring').glob('*.json'),
+                     *Path('content/models/authoring/native-polish').glob('*.json'),
                      *Path('content/models/authoring/gait-refinement').glob('*.json'),
                      *Path('content/models/authoring/animal-refinement').glob('*.json')]:
             proof = json.loads(path.read_text())
