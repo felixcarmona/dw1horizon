@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compile the applied CPU selector and exercise clock changes and idle budgeting."""
+"""Exercise the applied title trial against presentation rates and clock wrap."""
 from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -9,98 +9,71 @@ from tools.test_cheats import compile_check, function
 def main():
     work = Path(sys.argv[1]) if len(sys.argv) > 1 else Path('build/decomp-int')
     source = (work / 'src/main/main.c').read_text()
-    code = r'''
+    for fps in (20, 60):
+        for diagnostics in (0, 1):
+            code = r'''
 #include <stdint.h>
 #include <assert.h>
-#include <stdio.h>
-#define MOD_CPU_LINES 16
-#define MOD_CPU_SPINS_FAST 8500
-#define MOD_CPU_SPINS_SLOW 7500
-uint32_t modCpuLastV, refresh;
-int32_t modLastEndV;
-int32_t modCpuVotes, MOD_FPS_MODE_RUN, MOD_LOAD_PUMP, line, spins, probes;
-int32_t VSync(int mode) { return mode == -1 ? (int32_t)refresh : line; }
-int32_t modCpuProbe(void) { probes++; return spins; }
-'''
-    for name in ('modAutoFrameRateSample', 'modAutoFrameRatePoll'):
-        code += '\n' + function(source, name)
-    code += r'''
-static void sample(int count) {
-    refresh += 120; modLastEndV = refresh; spins = count; modAutoFrameRatePoll();
+#include <stddef.h>
+#define MOD_WORKLOAD_MIN_FPS 40
+#define FPS_DIAGNOSTICS DIAGNOSTICS
+#define FPS BUILD_FPS
+typedef struct { int marker; } MATRIX;
+struct { MATRIX coord; int flg; } MEDAL_COORDINATES;
+int modTrialDone, MOD_FPS_MODE_RUN, MOD_FPS_AUTO_MODE, MOD_NOTICE;
+uint32_t MOD_FPS_TRIAL_SWAPS, MOD_FPS_TRIAL_VBLANKS;
+int MOD_FPS_TRIAL_FPS100, MOD_FPS_TRIAL_CPU_SPINS;
+uint32_t MOD_FPS_RENDERS, refresh, trialElapsed;
+int rate, period=3, objects, invalidated, probeCalls, presents;
+int VSync(int mode) { assert(mode==-1); return refresh; }
+void modTrialRender(int unused) {}
+void addObject(int id,int instance,void *tick,void (*render)(int)) {
+ assert(id==0x7f60 && !instance && !tick && render==modTrialRender);objects++;
+}
+void removeObject(int id,int instance) { objects--; }
+void modTickStart(int flags) { assert(!flags); }
+void modFpsBeginFrame(void) {}
+void modPresent(int flags,void *rollback) {
+ assert(MOD_FPS_MODE_RUN==2); refresh+=period;trialElapsed+=period;
+ MOD_FPS_RENDERS=(uint32_t)((uint64_t)trialElapsed*rate/60);presents++;
+}
+void modInterpInvalidate(void) { invalidated++; }
+int modCpuProbe(void) { probeCalls++;MOD_NOTICE=3;return 3801; }
+'''.replace('#define FPS_DIAGNOSTICS DIAGNOSTICS', '#define FPS_DIAGNOSTICS '+str(diagnostics)).replace('BUILD_FPS',str(fps))
+            code += function(source, 'modFrameRateTrial')
+            code += r'''
+static void run(int expected) {
+ modTrialDone=0;objects=0;invalidated=0;probeCalls=0;presents=0;
+ MOD_NOTICE=1;MOD_FPS_MODE_RUN=0;trialElapsed=0;MOD_FPS_RENDERS=0;
+ MEDAL_COORDINATES.coord.marker=42;
+ modFrameRateTrial();
+ if (FPS==20) { assert(presents==0 && MOD_FPS_MODE_RUN==0);return; }
+ assert(MOD_FPS_MODE_RUN==expected && objects==0 && invalidated==1);
+ assert(MOD_NOTICE==(expected ? 1 : 3));
+ assert(MEDAL_COORDINATES.coord.marker==42);
+ assert(probeCalls==FPS_DIAGNOSTICS);
+ if (FPS_DIAGNOSTICS) {
+  assert(MOD_FPS_TRIAL_VBLANKS>=120 && MOD_FPS_TRIAL_VBLANKS<120+period);
+  assert(MOD_FPS_TRIAL_CPU_SPINS==3801);
+  assert(MOD_FPS_TRIAL_FPS100/100==rate);
+ }
+ int previous=presents;
+ modFrameRateTrial();assert(presents==previous); /* no oscillation/retrial */
 }
 int main(void) {
-    /* Original CPU must never enable extra passes, including a noisy sample. */
-    for (int i = 0; i < 100; i++) sample(3801);
-    assert(MOD_FPS_MODE_RUN == 0);
-    sample(9303); sample(3801); sample(9303);
-    assert(MOD_FPS_MODE_RUN == 0 && modCpuVotes == 1);
-    sample(9303); assert(MOD_FPS_MODE_RUN == 2);
-    /* The hysteresis band keeps either current mode stable. */
-    for (int i = 0; i < 100; i++) sample(8000);
-    assert(MOD_FPS_MODE_RUN == 2);
-    sample(7499); sample(7500); sample(7499);
-    assert(MOD_FPS_MODE_RUN == 2);
-    sample(7499); assert(MOD_FPS_MODE_RUN == 0);
-    for (int i = 0; i < 100; i++) sample(8499);
-    assert(MOD_FPS_MODE_RUN == 0);
-    /* Busy/load waits defer rather than consume the interval or a vote. */
-    int before = probes; uint32_t last = modCpuLastV;
-    refresh += 120; modLastEndV = refresh; spins = 9303; line = 231;
-    modAutoFrameRatePoll(); assert(probes == before && modCpuLastV == last);
-    line = 230; MOD_LOAD_PUMP = 1;
-    modAutoFrameRatePoll(); assert(probes == before && modCpuLastV == last);
-    MOD_LOAD_PUMP = 0;
-    modAutoFrameRatePoll(); assert(probes == before + 1 && modCpuVotes == 1);
-    refresh += 119;
-    modAutoFrameRatePoll(); assert(probes == before + 1);
-    refresh++; modLastEndV = refresh;
-    modAutoFrameRatePoll(); assert(MOD_FPS_MODE_RUN == 2);
-    /* A wrapped SDK line count after a long stall cannot authorize a probe. */
-    before = probes; refresh += 240; line = 0;
-    modAutoFrameRatePoll(); assert(probes == before);
-    modLastEndV = refresh;
-    modAutoFrameRatePoll(); assert(probes == before + 1);
-    modCpuVotes = 0;
-    /* Refresh wrap and a restored clock do not stall later CPU changes. */
-    modCpuLastV = UINT32_MAX - 59; refresh = 60; modLastEndV = refresh; spins = 3801;
-    modAutoFrameRatePoll(); assert(modCpuVotes == 1);
-    sample(3801); assert(MOD_FPS_MODE_RUN == 0);
-    modCpuLastV = 100000; refresh = 300; modLastEndV = refresh; spins = 9303;
-    modAutoFrameRatePoll(); sample(9303); assert(MOD_FPS_MODE_RUN == 2);
-    puts("PASS: CPU changes, threshold noise, safe idle windows, refresh wrap and restored clocks");
+ for (rate=0;rate<=60;rate++) { refresh=100;run(rate>=40 ? 2 : 0); }
+ /* Lost whole ticks count in elapsed time; long ticks cannot inflate FPS. */
+ period=5;rate=30;run(0);rate=55;run(2);
+ /* Unsigned vblank subtraction crosses the 32-bit counter boundary. */
+ period=3;rate=60;refresh=UINT32_MAX-20;run(2);
 }
 '''
-    compile_check(code)
-    test_boot(work)
-
-
-def test_boot(work):
+            compile_check(code)
+    assert 'modAutoFrameRatePoll' not in source
     menu = (work / 'src/main/main_menu.c').read_text()
-    for fps in (20, 30, 60):
-        code = r'''
-#include <stdint.h>
-#include <assert.h>
-#define MOD_CPU_SPINS_FAST 8500
-#define MOD_NOTICE_NO_RAM 1
-#define MOD_NOTICE_SLOW_CPU 2
-int32_t MOD_CPU_SPINS, MOD_NOTICE, MOD_FPS_MODE_RUN, ram;
-void modCpuProbe(void) { }
-int32_t modProbeRam(void) { return ram; }
-''' + f'\n#define FPS {fps}\n' + function(menu, 'modNoticeProbe') + r'''
-int main(void) {
-    int counts[] = {3801, 7389, 8499, 8500, 9303, 10977};
-    for (ram = 0; ram < 2; ram++) {
-        for (int i = 0; i < 6; i++) {
-            MOD_CPU_SPINS = counts[i]; MOD_FPS_MODE_RUN = 0;
-            modNoticeProbe();
-            assert(MOD_FPS_MODE_RUN == (FPS != 20 && counts[i] >= 8500 ? 2 : 0));
-            assert((MOD_NOTICE & 1) == !ram);
-            assert(!!(MOD_NOTICE & 2) == (counts[i] < 8500));
-        }
-    }
-}
-'''
-        compile_check(code)
+    boot = function(menu, 'modNoticeProbe')
+    assert 'MOD_CPU_SPINS >= MOD_CPU_SPINS_FAST ? 2 : 0' not in boot
+    print('PASS: 0–60 fps, inclusive 40 fps, long ticks, wrap, one-shot, diagnostics, FPS=20')
 
 
 if __name__ == '__main__':

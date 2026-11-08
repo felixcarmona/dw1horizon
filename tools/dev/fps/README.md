@@ -4,20 +4,30 @@ Scripts to build and verify the 60 fps renderer
 (`docs/reference/frame-rate.md`, `docs/reference/frame-rate.md`). They drive the emulator
 through `tools/dev/emulator.py` and read RAM by symbol; all locate their own worktree. Generated Lua goes under `build/dev/fps/`, separated by emulator port.
 
-The standard `FPS=60` build automatically selects 20 or 60 from CPU speed.
-`MOD_FPS_MODE_RUN` reports the active presentation mode (0 or 2), while
-`MOD_FPS_BUILD` reports which renderer was compiled. `FPS=20` compiles out extra
-passes; both `FPS=30` and `FPS=60` include the automatic selector. There is no
-saved frame-rate setting. Older scripts describing mode as a build parameter
-must check the active runtime mode when using a current disc.
+The standard `FPS=60` build chooses 20 or 60 from a two-second title workload
+trial. `MOD_FPS_AUTO_MODE` stores its decision; `MOD_FPS_MODE_RUN` is the active
+mode. Logic stays at 20 Hz. `FPS=20` compiles out the trial and extra passes;
+`FPS=30|60` includes them. Restart to retest a changed CPU setting.
 
-For automatic selection, compare standard CPU speed against 250% with both
-2 MB and 8 MB, and toggle the emulator overclock during play. Measure logic
-and presentation separately; debugger pauses must not count toward wall time.
-`MOD_FPS_INTERP` and `MOD_FPS_TEST_TICK` remain diagnostic RAM switches.
+`FPS_DIAGNOSTICS=1` exports the raw title swap/vblank counts, rate ×100,
+old hblank probe count, and packet byte count. On PCSX-Redux, run:
+
+```sh
+python3 tools/dev/fps/workloadcheck.py --exe build/full/exe/SLUS_010.32 \
+  --port 38090 --out build/dev/fps/workload-city.json
+```
+
+The executable must match the running disc and include diagnostics. The tool
+samples GPU vblanks without breakpoints, rejects missed counter increments,
+and reports guest FPS, 20 Hz logic, host time and swap spacing. Optional
+`--mode 0|2` changes RAM for comparison; restore a matching scene checkpoint
+between comparisons. Six refreshes settle an in-progress tick before sampling.
+Historical DuckStation tools below test the preceding CPU-based selector and
+must be adapted before use with this policy.
 
 | Script | What it measures |
 |---|---|
+| `workloadcheck.py` | PCSX-Redux title trial raw values and free-running field swaps, vblank spacing, logic and host throughput |
 | `autocheck.py` | full-disc automatic/manual comparison: boot selection, original 2 MB and expanded 8 MB, light/heavy/battle fps, guest swap intervals and runtime overclock toggles |
 | `clockrate.py` | game minutes per real minute |
 | `random_call_rate.py` | `rand()` calls per tick |

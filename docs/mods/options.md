@@ -112,19 +112,16 @@ so it happens only at the title: in OPTIONS, or when a Continue takes the save's
 
 ## Automatic frame rate
 
-There is no FRAME RATE row in either OPTIONS panel. The title screen's existing
-CPU measurement selects the renderer: 20 fps on original hardware and emulators
-at 100%, 60 fps with sufficient CPU overclock (250%). Logic and input remain at
-20 Hz. RAM size does not decide the rendering rate.
+AUTO measures a representative rendering workload at the title for about two
+seconds. It chooses 60 mode when the trial presents at least 40 fps; otherwise
+it chooses 20. Logic and input stay at 20 Hz. The decision lasts until reset,
+including across expensive scenes; the CPU hblank counter does not select the
+mode. See [frame-rate detection](../reference/frame-rate.md#automatic-selection).
 
-The same 16-scanline probe runs during spare presentation waits about every two
-seconds. Two agreeing samples and separate enable/disable thresholds prevent
-oscillation. This adapts to runtime overclock changes and same-build save states;
-see [the scheduler and thresholds](../reference/frame-rate.md#automatic-selection).
-Saved-options byte 2 and its title-header copy are ignored and written as 20.
-The remaining bytes keep their positions, so old memory-card saves remain readable.
-The immutable row-pointer table lives in MENU_REL with its callers to offset
-the resident selector cost. Both heap checks use the full language build.
+Main currently has no FRAME RATE row and ignores legacy frame-rate save bytes.
+The separate AUTO/60/20 option branch should reapply `MOD_FPS_AUTO_MODE` when
+AUTO is selected; explicit choices override `MOD_FPS_MODE_RUN`. This change does
+not alter any save byte or add that independent option implementation.
 
 ## JAPANESE CONTROLS
 

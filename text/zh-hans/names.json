@@ -944,7 +944,7 @@
  "main.MOD_NOTICE_STR_HEAD1": "在模拟器中，开启以下选项，",
  "main.MOD_NOTICE_STR_HEAD2": "可以让游戏运行得更流畅：",
  "main.MOD_NOTICE_STR_RAM": "8MB内存",
- "main.MOD_NOTICE_STR_CPU": "CPU超频至250%",
+ "main.MOD_NOTICE_STR_CPU": "60 FPS",
  "main.MOD_NOTICE_STR_MISSING": "未检测到",
  "main.MOD_NOTICE_STR_READY": "已就绪",
  "main.MOD_OPT_STR_QUICK": "快速进入战斗",

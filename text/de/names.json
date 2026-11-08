@@ -997,7 +997,7 @@
  "main.MOD_NOTICE_STR_HEAD1": "Emulator: flüssiger spielen",
  "main.MOD_NOTICE_STR_HEAD2": "mit diesen Einstellungen:",
  "main.MOD_NOTICE_STR_RAM": "8 MB RAM",
- "main.MOD_NOTICE_STR_CPU": "CPU-Übertaktung 250%",
+ "main.MOD_NOTICE_STR_CPU": "60 FPS",
  "main.MOD_NOTICE_STR_MISSING": "NICHT ERKANNT",
  "main.MOD_NOTICE_STR_READY": "BEREIT",
  "main.MOD_OPT_STR_QUICK": "SCHNELLSTART",

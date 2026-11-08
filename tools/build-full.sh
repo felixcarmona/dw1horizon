@@ -64,8 +64,9 @@
 #                                  `tools/version.py game` (the release tag, "v0.1.0", or a development version, docs/
 #                                  patcher.md "Making a release"); MOD_VERSION= draws nothing
 #   FPS=20|30|60                   renderer variant: 20 fixes one pass; 30/60 include automatic 20/60 selection
-#                                  from CPU speed (docs/reference/frame-rate.md). Logic stays at 20 Hz.
+#                                  from a title workload (docs/reference/frame-rate.md). Logic stays at 20 Hz.
 #                                  Default: the Makefile's FPS ?= 60.
+#   FPS_DIAGNOSTICS=1             expose title workload and old CPU samples for the FPS test build
 #   SCREEN_CONTENT=DIR[:DIR]       more screen files (DIR/<id>-<name>.json, ids 255 and up: tools/screens.py) beside
 #                                  content/screens, e.g. a mod's or a test's own screens (tools/dev/playtest/screens.sh)
 #   EXTRA_FILES="DEST=SRC ..."     more files for the disc: DEST on the disc replaces it (a map a test edits), a new DEST is a
@@ -286,14 +287,14 @@ make_exe() {   # make_exe TREE BANK PAD LOG [LANG]: the executable of TREE with 
   $PY -m tools.city_residents --c-extra-header "$1"
   $PY tools/sdk_messages.py "$1"
   if [ -n "${DW_BUILD_CACHE:-}" ] || [ "${DW_CLEAN_NATIVE:-0}" = 1 ]; then
-    $PY tools/native_build.py "$1" "$2" "$3" "$4" $MAKE_PMM ${FPS:+FPS=$FPS} ${FONT:+FONT=$FONT} \
+    $PY tools/native_build.py "$1" "$2" "$3" "$4" $MAKE_PMM ${FPS:+FPS=$FPS} ${FPS_DIAGNOSTICS:+FPS_DIAGNOSTICS=$FPS_DIAGNOSTICS} ${FONT:+FONT=$FONT} \
       "${MAKE_NEW[@]}" ${5:+LANG_BUILD=$5} "MOD_VERSION=$MOD_VERSION"
     return
   fi
   cmp -s "$2" "$1/text-bank.json" 2>/dev/null || cp "$2" "$1/text-bank.json"
   if [ -n "$3" ]; then cmp -s "$3" "$1/text-bank-pad.json" 2>/dev/null || cp "$3" "$1/text-bank-pad.json"; else rm -f "$1/text-bank-pad.json"; fi
   docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp -v "$1:/work" -w /work dw-build \
-    make -j8 TOOLCHAIN=gcc $MAKE_PMM ${FPS:+FPS=$FPS} ${FONT:+FONT=$FONT} "${MAKE_NEW[@]}" ${5:+LANG_BUILD=$5} "MOD_VERSION=$MOD_VERSION" > "$4" 2>&1 || { tail -30 "$4"; exit 1; }
+    make -j8 TOOLCHAIN=gcc $MAKE_PMM ${FPS:+FPS=$FPS} ${FPS_DIAGNOSTICS:+FPS_DIAGNOSTICS=$FPS_DIAGNOSTICS} ${FONT:+FONT=$FONT} "${MAKE_NEW[@]}" ${5:+LANG_BUILD=$5} "MOD_VERSION=$MOD_VERSION" > "$4" 2>&1 || { tail -30 "$4"; exit 1; }
 }
 if [ "$LANG_ON" = 1 ]; then
   for lang in $LANG_LIST; do

@@ -3,7 +3,7 @@
 How the original engine times a frame (one logic tick per drawn frame, `VSync(3)`, 20 Hz), and how the frame-rate
 patches separate drawing from game time: a fixed 20 Hz logic tick, a late-tick phase, render callbacks made
 repeatable, interpolation of the camera, entity roots and bones between ticks, and one present helper shared by every
-game loop. It also covers the `FPS` build parameter, automatic CPU-based selection and how battle speed changes the tick
+game loop. It also covers the `FPS` build parameter, automatic workload-based selection and how battle speed changes the tick
 period.
 
 Patches: 0011, 0026-0047 and 0049 (the core work; 0048 added a lab menu row that 0080 removes), 0074 (`MOD_RENDER_ALPHA`), 0080 (build parameter), 0169/0173/0174
@@ -409,46 +409,58 @@ at 20 Hz in every build. See [../building.md](../building.md) for the build itse
 
 ### Automatic selection
 
-The FRAME RATE row is removed from both OPTIONS panels, including its localized
-labels and values. The saved frame-rate byte and the memory-card header copy are
-ignored; new saves write 20 in that reserved byte for compatibility with older
-readers. All other option byte positions are unchanged.
+AUTO runs a title-screen workload once per boot. For at least 120 vblanks
+(about two NTSC seconds), it requests mode 2 through the real `modPresent`
+path, including its GPU wait, rollback, interpolation setup, extra-pass
+admission and actual display swaps. One warm-up tick is excluded. The decision
+uses `swaps * 60 >= elapsed_vblanks * 40`: at least 40 presented fps selects
+60; otherwise it selects 20. Late whole ticks increase the denominator. Logic
+continues at 20 Hz after the title. There is no runtime polling or oscillation;
+restart after changing an emulator's CPU settings.
 
-`MOD_FPS_MODE_RUN` starts at 0. The title's existing CPU check counts polling-loop
-iterations over 16 lines of hardware hblank counter 1. That counter follows video
-timing independently of CPU overclock. Recorded DuckStation counts were 3801,
-7389, 9303 and 10977 at 100%, 200%, 250% and 300%. At boot, at least 8500 selects
-mode 2; otherwise mode 0. The loop is shared by boot and runtime checks. On return to the title, its notice uses the latest CPU measurement. The RAM
-probe remains boot-only and has no bearing on presentation.
+The title has no world entities. Its already-loaded medal TMD supplies a
+representative workload: 64 individually rotated and translated lit models
+(22 primitives each), kept within the camera view. They go through the same
+libgs matrix/geometry routines and GPU as world models, behind the opaque title
+quad. The trial uses existing OTs and packet buffers, allocates no heap, and
+restores the medal matrix afterward. It does not load a map or invoke gameplay
+logic. This represents a populated field, not every battle/effect workload.
 
-Boot alone cannot follow a changed emulator overclock or a restored same-build
-save state. `modWaitVblank` therefore polls about every 120 refreshes, only outside
-accelerated file loading and with at least 32 scanlines left before the next
-vblank. A presentation end within the last 120 refreshes is also required:
-the SDK line counter wraps at 65536, so a long blocking read must not look like
-a fresh idle window. The probe consumes 16 of those idle lines; presentation deadlines and the
-logic tick period stay unchanged. Busy frames defer the check until a safe wait.
-Two consecutive samples at least 8500 enable 60; two below 7500 restore 20. Any
-sample agreeing with the current mode clears the pending vote. The gap provides
-hysteresis, and two samples reject a single interrupted measurement. A sustained
-change normally settles within four seconds of safe presentation waits. Unsigned
-refresh subtraction handles counter wrap and a restored state's clock phase.
-A state from another executable version still requires a fresh boot.
+`MOD_FPS_AUTO_MODE` caches the decision separately from `MOD_FPS_MODE_RUN` so a
+manual option can return to AUTO without measuring CPU speed again. This branch
+retains main's option/save format. The separate FRAME RATE option implementation
+must use this cached result in its AUTO arm. `FPS=20` compiles out the trial and
+extra passes. Mode 1 is never automatically selected.
 
-At 100% the existing mode-0 path renders once at the third refresh, with no
-interpolation. At 250% the existing mode-2 path schedules three passes per tick.
-No load-based downgrade is added: expensive scenes must not make the mode
-oscillate while CPU speed stays fixed. Existing per-pass deadline checks remain.
-`FPS=20` still compiles out extra passes and runtime probing. Mode 1 remains
-available to developer instrumentation but is never automatically selected.
+The old 16-line hblank polling loop remains a diagnostic comparison, with its
+historic 8500 threshold (DuckStation counts: 3801/7389/9303/10977 at
+100/200/250/300%). It has no vote in the workload decision. The title capability
+row now says `60 FPS`, rather than claiming a detected CPU overclock.
 
-The decision follows 72 measured cases across DuckStation and Redux: requesting
-60 at 100% CPU presented about 20 fps with worse pacing (Gear Savanna alternated
-20/40; a tournament's 1% low was 15 versus 20). At 250%, 60 held evenly. Logic
-remained 20 Hz throughout. These measurements supersede the early speed estimates
-below. See [options compatibility](../mods/options.md#automatic-frame-rate).
+Build with `FPS_DIAGNOSTICS=1` to export `MOD_FPS_TRIAL_SWAPS`,
+`MOD_FPS_TRIAL_VBLANKS`, `MOD_FPS_TRIAL_FPS100`, `MOD_FPS_TRIAL_CPU_SPINS` and
+`MOD_FPS_TRIAL_PACKET_BYTES`. The test build can display both raw signals without
+adding a production HUD. `MOD_FPS_TRIAL_DRAWS` is a diagnostic calibration knob,
+clamped to 1–64; production uses a constant 64. The raw title readings persist
+through field captures and diagnostic manual overrides.
 
-### Automatic-selection verification
+The 40 fps cutoff deliberately accepts imperfect 60 mode: the Redux adaptive
+study (draft PR #343) measured approximately 47 fps in File City and 40 in Gear
+Savanna, versus 20 in mode 0. Dropping either to 20 wastes useful presentation
+capacity. Its tournament result, 20 fps with a worse low than mode 0, shows why
+an arbitrary lightweight title loop is insufficient and why a field trial
+cannot promise every battle will be faster. No scene-based switching is added.
+See [the workload measurements](../investigations/fps-workload-detection.md).
+
+Vblank measures guest presentation opportunities. An emulator that slows the
+entire guest clock can still report 60 guest swaps per guest second while
+showing fewer frames per host second. No guest-only VSync test can detect that
+host/compositor loss. The measurement tool records both clocks; Gamma/device
+validation is still needed.
+
+### Historical CPU-selector verification
+
+The following predates the workload selector and documents the old policy.
 
 A matched full-disc DuckStation comparison uses the preceding manual renderer
 and the automatic renderer at 100% and 250%, with both 2 MB and 8 MB. Each
