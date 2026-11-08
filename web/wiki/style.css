@@ -70,3 +70,7 @@
  .wiki-page .tree-node,.wiki-page .tree-targets .tree-node{min-height:84px}
  .wiki-page .species-card .badge{font-size:10px;padding:4px 6px}
 }
+
+/* Keep encounter names readable beside wrapping location lists on phones. */
+.wiki-page #learn th[scope="row"]{min-width:8em;overflow-wrap:normal;word-break:normal}
+.wiki-page #learn td{white-space:normal}

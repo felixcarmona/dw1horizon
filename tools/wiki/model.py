@@ -15,10 +15,13 @@ _guide_spec = importlib.util.spec_from_file_location('wiki_guide_reader', ROOT /
 guide = importlib.util.module_from_spec(_guide_spec)
 _guide_spec.loader.exec_module(guide)
 import recruits
+import learning
 
 LANGS = ('en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca', 'zh-hans')
 INPUTS = ('content/species', 'content/techniques', 'content/items', 'content/tables',
-          'content/maps', 'content/screens', 'story/base', 'story/mods/what-the-island-forgot',
+          'content/maps', 'content/screens', 'content/battle',
+          'tools/derive/recipes/everything.json', 'tools/dws/backend.py',
+          'story/base', 'story/mods/what-the-island-forgot',
           'text', 'mods/patches', 'docs/reference/partner.md', 'docs/reference/combat.md',
           'docs/mods/options.md', 'docs/release/README-players.md')
 
@@ -151,6 +154,10 @@ def load(ref):
     if '250%' not in players or '20 Hz' not in players:
         raise ValueError('Review frame-rate guidance against selected release')
     return dict(tag=ref, commit=commit, species=rows, techniques=techniques, recruits=roster,
+                enemies={s['id']:s for s in all_species},
+                learning_sources=learning.sources(files,all_species,techniques,rows),
+                brain_learning=learning.brains(files,techniques,rows),
+                technique_aliases=learning.shared_aliases(files),
                 timed=timed, facts=facts, files=files, rules=rules)
 
 
@@ -217,3 +224,19 @@ def bakemon_dialogue(files, lang):
     return dict(readable=readable, rows=[dict(question=clean(own[q]), answer=clean(own[a]),
                                            question_key=q, answer_key=a) for q, a in zip(question_keys, choices)],
                 ending=clean(own[ending_key]))
+
+
+def place_names(files, lang):
+    names = recruits.screen_names(files, lang)
+    english = localized_names(files, 'en')
+    own = localized_names(files, lang)
+    translated = {v.casefold():own.get(k,v) for k,v in english.items()
+                  if k.startswith(('main.STR_MAP_NAME_', 'screen.caption.'))}
+    for path,raw in files.items():
+        if path.startswith('story/mods/what-the-island-forgot/screens/') and path.endswith('.json'):
+            screen = json.loads(raw)
+            caption = screen['caption']
+            if not isinstance(caption,str):
+                raise ValueError('Review mod screen caption: ' + path)
+            names[screen['id']] = translated.get(caption.casefold(), caption)
+    return names

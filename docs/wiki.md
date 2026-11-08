@@ -47,6 +47,39 @@ Requirements use the existing guide's scoring and player-unit conversions, not a
 
 Technique names use `main.MOVE_NAMES.<id>` from the deployed tag’s `text/ours/names.json`, overridden by the selected language’s `names.json`, matching the executable text-bank merge order. This applies to species technique tables, finishers, technique directories/pages and search. English names remain search aliases and stable URL slugs. A missing localized key inherits the English runtime name; only a move absent from that catalog uses its content name. Favourite items resolve the tagged `content/items` aliases to item IDs and then use the same runtime-name catalogs; places retain their language pack’s place-name overrides.
 
+## Technique learning sources
+
+Technique pages distinguish compatible partners from enemies that can teach the
+technique. `tools/wiki/learning.py` reads only the model's release snapshot:
+
+- `content/maps` supplies each native enemy's four animation slots, priorities,
+  stats and MP; `content/species` resolves those slots to techniques.
+- `story/base/maphead/hooks.py` supplies spawn branches, clock windows and early
+  returns. Base scene declarations and battle calls distinguish wild encounters,
+  scripted opponents and noncombat NPCs, including scene-time spawns and embedded
+  DWS battle calls.
+- The tagged `tools/derive/recipes/everything.json` selects active mod scripts in
+  compiler order. Their NPC declarations, presence predicates and battles supply
+  recruitment fights, lobby spars and new-area encounters. The tagged
+  `content/battle/enemy-movesets.json` and `tools/dws/backend.py` define placement
+  defaults; new maps clear their NPC lists before story placements.
+- The battle selector excludes empty/unavailable slots, finishers and innate
+  attacks, checks MP, permits buff priority and conditional group-area priority,
+  and handles Counter as a reactive attack. Arena/tournament combat awards no
+  learning, so its opponents are deliberately not offered as learning sources.
+- `brain-training.json` supplies specialty order and slot weights;
+  `training-gains.json` supplies learning and command thresholds. Shared unlock
+  pairs come from the tagged partner reference's learned-bit table. Indirect
+  sources identify the observed variant and require a compatible current form.
+
+Places use existing localized screen captions, extended to the mod's screen
+catalogs and runtime caption keys. Native clock windows are shown explicitly;
+non-clock spawn predicates receive an availability note. Scripted recruitment
+sources link to the existing folded recruitment requirements where available.
+Story fights, special-route identities and undiscovered mod places are folded.
+Source text is never added to the search index. Enemy-only species receive small
+technique-link pages when no existing partner page can serve as their destination.
+
 ## Articles and source review
 
 `web/wiki/articles/<language>.json` stores twenty articles per language as titles, summaries and paragraphs. This is structured, repository-authored content: it needs no Markdown parser, remote CMS or runtime translation service. The English draft and eight translations follow the existing AI-assisted website/changelog authoring approach. Spanish uses Spain Spanish. `review.json` pins the English and all localized source hashes; changing an article invalidates the build until translations are reviewed and those hashes are updated together. UI copy lives in `web/i18n/*.json`, with the existing key/variable parity check.

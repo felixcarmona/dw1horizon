@@ -655,5 +655,22 @@
   "wiki.minimumDamagePercent": "Enemy damage floor (%)",
   "wiki.bakemonGhost": "Bakemon speaks in a mysterious ghost language. Open the spoiler below to see the conversation and the choices that recruit it.",
   "wiki.bakemonPartner": "A Bakemon partner lets you understand Bakemon’s speech. The conversation and recruitment choices are inside the spoiler below.",
-  "wiki.whereToRecruit": "Where to recruit"
+  "wiki.whereToRecruit": "Where to recruit",
+  "wiki.whereLearn": "Where to learn it",
+  "wiki.canLearn": "Digimon that can learn it",
+  "wiki.enemy": "Enemy",
+  "wiki.places": "Where to fight it",
+  "wiki.noEnemy": "No enemy source in this release.",
+  "wiki.notLearnable": "Finishers and innate attacks cannot be learned by watching enemies or through Brains training.",
+  "wiki.arenaNoLearning": "Arena and tournament battles do not teach techniques.",
+  "wiki.availability": "Availability may also depend on story progress or a random encounter.",
+  "wiki.counterSource": "Reactive Counter: let this enemy counter a missed melee attack.",
+  "wiki.groupSource": "Requires another living enemy in the battle.",
+  "wiki.brainsGym": "Brains gym",
+  "wiki.brainsRule": "Cross a Brains threshold: {marks}. The gym checks the first unknown, compatible technique in each specialty’s training order, keeps the candidate with the highest weight and rolls that percentage. Crossing a command threshold ({orders}) in the same session takes priority. Learning is not guaranteed.",
+  "wiki.brainsWeights": "This technique’s weights by specialty slot: {weights}. A zero weight cannot teach it in that slot.",
+  "wiki.trainingOrder": "Training order",
+  "wiki.noBrains": "This technique cannot be learned through Brains training.",
+  "wiki.aliasSource": "Uses",
+  "wiki.sharedUnlock": "Learning either variant unlocks both. Your current form must be able to learn the variant the enemy uses or the gym selects."
 }

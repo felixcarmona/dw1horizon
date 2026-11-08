@@ -66,7 +66,7 @@ class Pages:
         self.icons = owned_icons()
         self.index = []
         self.records = {}
-        self.places = model.recruits.screen_names(data['files'], lang)
+        self.places = model.place_names(data['files'], lang)
         en_names=json.loads(data['files']['text/ours/names.json'])
         self.names=model.localized_names(data['files'],lang)
         self.item_names={value.casefold():self.names.get(key,value) for key,value in en_names.items() if key.startswith('main.ITEM_NAMES.')}
@@ -237,6 +237,78 @@ class Pages:
             if species['spoiler']:continue
             self.index.append(dict(type='evolution',title=name+' · '+plain(self.t('data.evolutions')),url=self.url(species)+'#evolutions',text=plain(self.req(species)),aliases=' '.join(self.by_id[i]['name'] for i in species['parents']+species['to'] if not self.by_id[i]['spoiler'])+' Horizon',**self.metadata(species)))
 
+    def learning_section(self, move):
+        ident = move['id']
+        rows = self.data['learning_sources'][ident]
+        if ident >= 58:
+            content = f'<p>{self.t("wiki.notLearnable")}</p>'
+        else:
+            def source_table(secret):
+                grouped = {}
+                for row in rows:
+                    if row['spoiler'] != secret: continue
+                    grouped.setdefault(row['species'], []).append(row)
+                rendered = []
+                for sid,places in grouped.items():
+                    enemy = self.data['enemies'][sid]
+                    target = self.enemy_target(enemy)
+                    labels = []
+                    for row in places:
+                        label = escape(self.places[row['screen']])
+                        recruit = next((r for r in self.data['recruits'] if r['id']==target['id'] and row['screen'] in r['screens']),None)
+                        if recruit and row['kind']=='scripted':
+                            label = f'<a href="{self.url(target)}#recruit-{recruit["id"]}">{label}</a>'
+                        hours = row['hours']
+                        if len(hours) < 24:
+                            spans=[]; start=previous=hours[0]
+                            for hour in hours[1:]+[25]:
+                                if hour != previous+1:
+                                    spans.append(f'{start:02}:00–{previous+1:02}:00')
+                                    start=hour
+                                previous=hour
+                            label += ' · ' + ', '.join(spans)
+                        if 'via' in row: label += ' · '+self.t('wiki.aliasSource')+f' <a href="{self.move_url(self.moves[row["via"]])}">{escape(self.move_name(self.moves[row["via"]]))} #{row["via"]}</a>'
+                        if row['conditional']: label += ' <sup>*</sup>'
+                        if row['condition']: label += f' <small>{self.t("wiki."+row["condition"]+"Source")}</small>'
+                        if label not in labels: labels.append(label)
+                    rendered.append(f'<tr><th scope="row"><a href="{self.url(target)}">{escape(self.name(enemy))}</a></th><td>'+ '<br>'.join(labels)+'</td></tr>')
+                if not rendered: return ''
+                return f'<div class="table-wrap"><table><thead><tr><th>{self.t("wiki.enemy")}</th><th>{self.t("wiki.places")}</th></tr></thead><tbody>'+''.join(rendered)+'</tbody></table></div>'
+            normal,secret = source_table(False),source_table(True)
+            content = normal + (self.spoiler(secret) if secret else '')
+            if any(r['conditional'] for r in rows): content += f'<p class="muted"><small>* {self.t("wiki.availability")}</small></p>'
+            if not rows: content = f'<p>{self.t("wiki.noEnemy")}</p>'
+            if ident in self.data['technique_aliases']:
+                other = self.moves[self.data['technique_aliases'][ident]]
+                content += f'<p>{self.t("wiki.sharedUnlock")} <a href="{self.move_url(other)}#learn">{escape(self.move_name(other))} #{other["id"]}</a></p>'
+            brain = self.data['brain_learning'][ident]
+            content += f'<h3>{self.t("wiki.brainsGym")}</h3>'
+            if brain['positions']:
+                content += f'<p>{self.t("wiki.brainsRule",marks=", ".join(map(str,brain["marks"])),orders=", ".join(map(str,brain["orders"])))}</p>'
+                order_table = model.read_json(self.data['files'],'content/tables/brain-training.json')['brainTraining']['techniques']
+                for position in brain['positions']:
+                    content += f'<p>{self.t("wiki.brainsWeights",weights=" / ".join(f"{i+1}: {w}%" for i,w in enumerate(position["weights"])))}</p>'
+                    order = ' → '.join(f'<a href="{self.move_url(self.moves[i])}">{escape(self.move_name(self.moves[i]))}</a>' for i in order_table[position['element']])
+                    content += f'<details><summary>{self.t("wiki.trainingOrder")} · {self.t("data."+position["element"])}</summary><p>{order}</p></details>'
+            else:
+                content += f'<p>{self.t("wiki.noBrains")}</p>'
+            content += f'<p class="muted">{self.t("wiki.arenaNoLearning")}</p>'
+        return f'<section class="surface" id="learn"><h2>{self.t("wiki.whereLearn")}</h2>{content}</section>'
+
+    def enemy_target(self, enemy):
+        return self.by_id.get(enemy['id']) or next((s for s in self.data['species'] if s['name']==enemy['name']),enemy)
+
+    def enemy_pages(self):
+        # Enemy-only species have no partner care/evolutions; still give sources a real destination.
+        ids = {r['species'] for rows in self.data['learning_sources'].values() for r in rows}
+        for sid in sorted(ids):
+            enemy = self.data['enemies'][sid]
+            if self.enemy_target(enemy)['id'] != sid or sid in self.by_id: continue
+            links = ''.join(f'<li><a href="{self.move_url(move)}#learn">{escape(self.move_name(move))}</a></li>' for move in self.data['techniques'] if any(r['species']==sid for r in self.data['learning_sources'][move['id']]))
+            body = f'<h1>{escape(self.name(enemy))}</h1><section class="surface"><h2>{self.t("data.techniques")}</h2><ul>{links}</ul></section>'
+            secret = all(r['spoiler'] for rows in self.data['learning_sources'].values() for r in rows if r['species']==sid)
+            self.page(f'digimon/{sid}-{model.slug(enemy["name"])}/',plain(self.t('wiki.spoilers')) if secret else self.name(enemy),self.spoiler(body) if secret else body,'digimon')
+
     def technique_pages(self):
         cards=[]
         for move in self.data['techniques']:
@@ -247,7 +319,8 @@ class Pages:
             status_key={0:None,1:'poison',2:'confusion',3:'stun',4:'flatten'}.get(move['status'])
             status=self.t('data.'+status_key)+f' ({move["statusChance"]}%)' if status_key else '—'
             stats=f'<dl class="facts"><dt>{self.t("data.range")}</dt><dd>{self.t("data."+range_key)}</dd><dt>{self.t("data.status")}</dt><dd>{status}</dd><dt>{self.t("data.specialty")}</dt><dd>{self.t("data."+str(move["element"] if isinstance(move["element"],str) else "other"))}</dd><dt>{self.t("data.power")}</dt><dd>{move["power"]}</dd><dt>{self.t("data.mp")}</dt><dd>{move["baseMP"]}</dd><dt>{self.t("wiki.learning")}</dt><dd>{chance}</dd></dl>'
-            body=f'<div class="page-title"><span class="eyebrow">{self.t("data.technique")} #{ident}</span><h1>{escape(self.move_name(move))}</h1></div><section class="surface">{stats}<p>{self.t("data.learningRule")}</p><p>{self.t("data.brainsRule")} {self.t("data.oneRule")}</p><p>{self.t("data.costRule")}</p></section><h2>{self.t("data.recruit.digimon")}</h2>'+self.species_cards(species)
+            partner_heading = self.t("wiki.canLearn" if ident<58 else "data.recruit.digimon")
+            body=f'<div class="page-title"><span class="eyebrow">{self.t("data.technique")} #{ident}</span><h1>{escape(self.move_name(move))}</h1></div>{self.learning_section(move)}<section class="surface">{stats}<p>{self.t("data.learningRule")}</p><p>{self.t("data.brainsRule")} {self.t("data.oneRule")}</p><p>{self.t("data.costRule")}</p></section><h2>{partner_heading}</h2>'+self.species_cards(species)
             path=f'techniques/{ident}-{model.slug(move["name"])}/'
             self.page(path,self.move_name(move)+' #'+str(ident),body,'technique',dict(type='technique',text=plain(self.t('data.'+str(move['element'] if isinstance(move['element'],str) else 'other')))+' · '+str(move['power']),aliases=move['name']+' '+' '.join(s['name'] for s in species if not s['spoiler'])))
             cards.append(f'<a class="card" href="{self.move_url(move)}"><h2>{escape(self.move_name(move))}</h2><small>#{ident}</small><p>{self.t("data."+str(move["element"] if isinstance(move["element"],str) else "other"))} · {self.t("data.power")} {move["power"]} · MP {move["baseMP"]}</p></a>')
@@ -378,7 +451,7 @@ def build(out, tag, presentation_ref=None):
     for lang in model.LANGS:
         articles=json.loads((article_root/f'{lang}.json').read_text())
         pages=Pages(out,data,lang,articles)
-        pages.species_pages();pages.technique_pages();pages.article_pages();pages.directories()
+        pages.species_pages();pages.enemy_pages();pages.technique_pages();pages.article_pages();pages.directories()
         mapping={f'species-{s["id"]}':pages.url(s) for s in data['species']}
         mapping.update({k:pages.base+v+'/' for k,v in [('species','digimon'),('techniques','techniques'),('evolutions','evolutions'),('recruits','recruits')]})
         mapping.update({f'recruit-{r["id"]}':pages.base+f'recruits/#recruit-{r["id"]}' for r in data['recruits']})

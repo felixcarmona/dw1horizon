@@ -655,5 +655,22 @@
   "wiki.minimumDamagePercent": "Dano mínimo inimigo (%)",
   "wiki.bakemonGhost": "Bakemon fala em uma misteriosa língua fantasma. Abra o spoiler abaixo para ver a conversa e as respostas para recrutá-lo.",
   "wiki.bakemonPartner": "Um parceiro Bakemon permite entender a fala de Bakemon. A conversa e as respostas para recrutá-lo estão no spoiler abaixo.",
-  "wiki.whereToRecruit": "Onde recrutar"
+  "wiki.whereToRecruit": "Onde recrutar",
+  "wiki.whereLearn": "Onde aprender",
+  "wiki.canLearn": "Digimon que podem aprender",
+  "wiki.enemy": "Inimigo",
+  "wiki.places": "Onde enfrentá-lo",
+  "wiki.noEnemy": "Nenhum inimigo ensina esta técnica nesta versão.",
+  "wiki.notLearnable": "Golpes finais e ataques inatos não podem ser aprendidos observando inimigos nem treinando Inteligência.",
+  "wiki.arenaNoLearning": "Batalhas na arena e em torneios não ensinam técnicas.",
+  "wiki.availability": "A aparição também pode depender do progresso da história ou do acaso.",
+  "wiki.counterSource": "Contra-ataque reativo: deixe este inimigo responder a um ataque corpo a corpo que errou.",
+  "wiki.groupSource": "Requer outro inimigo vivo na batalha.",
+  "wiki.brainsGym": "Ginásio de Inteligência",
+  "wiki.brainsRule": "Ultrapasse um limite de Inteligência: {marks}. O ginásio verifica a primeira técnica compatível desconhecida na ordem de cada especialidade, escolhe a candidata de maior peso e sorteia essa porcentagem. Um limite de comandos ({orders}) ultrapassado na mesma sessão tem prioridade. O aprendizado não é garantido.",
+  "wiki.brainsWeights": "Pesos desta técnica pela posição da especialidade: {weights}. Peso zero impede aprendê-la nessa posição.",
+  "wiki.trainingOrder": "Ordem de treinamento",
+  "wiki.noBrains": "Esta técnica não pode ser aprendida treinando Inteligência.",
+  "wiki.aliasSource": "Usa",
+  "wiki.sharedUnlock": "Aprender uma das variantes desbloqueia ambas. Sua forma atual precisa poder aprender a variante usada pelo inimigo ou selecionada pelo ginásio."
 }
