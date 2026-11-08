@@ -6,7 +6,7 @@ The wiki is part of the main website and maintained only through this repository
 
 The home connects setup, partner care and evolution guides with Digimon, techniques, visual evolution trees and recruitment reference. A Digimon page joins incoming/outgoing routes, requirements on tap, learnable techniques, care and a spoiler-protected recruit record. Stable numeric IDs distinguish same-named species and techniques. Specialty summaries omit empty slots; learning calculations preserve original slot order.
 
-The main page contains a clear “Digimon, evolutions, guides → Wiki” card and header link. Its former Digimon and evolution sections are removed; download/patcher, changelog and remaining sections stay in place. Old main-page anchors and `/data/` localized routes/anchors redirect to the relevant wiki destination without opening spoilers.
+The main page contains a “Wiki” hero button and header link. Its former Digimon and evolution sections are removed; download/patcher, changelog and remaining sections stay in place. Old main-page anchors and `/data/` localized routes/anchors redirect to the relevant wiki destination without opening spoilers.
 
 ## Current release and language URLs
 
@@ -35,7 +35,7 @@ The repository supplies explanatory articles as structured JSON, UI catalogs, te
 
 Any spoiler-sensitive information may appear **only inside a clearly marked spoiler, folded by default**. This includes secret recruits, quest solutions, hidden discoveries, special evolution routes, boss strategies, endings and Bakemon’s cemetery questions and answers. Basic setup and ordinary mechanics stay open. The Bakemon speech/partner mechanic explanation stays outside the spoiler; the conversation and successful choices stay inside it.
 
-Do not expose a solution in page titles, summaries, navigation, images, alt text or search snippets. Recruitment records include identities, places, services and steps inside the disclosure. Special-route species and tree branches are folded, excluded from open pickers, and shown only in folded search results. Quiz answers, scoring solutions and starter grids are folded. Deep links and search never open a spoiler automatically.
+Do not expose a solution in page titles, summaries, navigation, images, alt text or search snippets. Ordinary recruitment cards show their heading, location and role while folding steps. The tagged City roster’s hidden flag keeps secret recruit identities, locations, services and steps inside the disclosure. Special-route species and tree branches are folded, excluded from open pickers, and shown only in folded search results. Quiz answers, scoring solutions and starter grids are folded. Deep links and search never open a spoiler automatically.
 
 Use the shared `Pages.spoiler` renderer for generated information and article `spoiler_paragraphs` for sensitive authored text. Dialogue must use the release’s real localized strings, with readable Bakemon-partner text when the release implements that branch. Verify the question order and successful choice path against the script, and require every locale key. See [authoring documentation](docs/wiki.md) for the source map and verification procedure.
 

@@ -655,7 +655,7 @@
   "wiki.minimumDamagePercent": "Enemy damage floor (%)",
   "wiki.timedMega": "Ultimate → Mega",
   "wiki.untimedUltimate": "Ultimate → Machinedramon",
-  "wiki.entry": "Digimon, evolutions, guides → Wiki",
   "wiki.bakemonGhost": "Bakemon speaks in a mysterious ghost language. Open the spoiler below to see the conversation and the choices that recruit it.",
-  "wiki.bakemonPartner": "A Bakemon partner lets you understand Bakemon’s speech. The conversation and recruitment choices are inside the spoiler below."
+  "wiki.bakemonPartner": "A Bakemon partner lets you understand Bakemon’s speech. The conversation and recruitment choices are inside the spoiler below.",
+  "wiki.whereToRecruit": "Where to recruit"
 }

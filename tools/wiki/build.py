@@ -67,8 +67,13 @@ class Pages:
         self.records = {}
         self.places = model.recruits.screen_names(data['files'], lang)
         en_names=json.loads(data['files']['text/ours/names.json'])
-        own_names=json.loads(data['files'].get(f'text/{lang}/names.json',b'{}'))
-        self.item_names={value.casefold():own_names.get(key,value) for key,value in en_names.items() if key.startswith('main.ITEM_NAMES.')}
+        self.names=model.localized_names(data['files'],lang)
+        self.item_names={value.casefold():self.names.get(key,value) for key,value in en_names.items() if key.startswith('main.ITEM_NAMES.')}
+        # Species food fields use content aliases, which can differ from displayed runtime names.
+        for path,raw in data['files'].items():
+            if path.startswith('content/items/') and path.endswith('.json'):
+                item=json.loads(raw)
+                self.item_names[item['name'].casefold()]=self.names.get('main.ITEM_NAMES.'+str(item['id']),item['name'])
 
     def t(self, key, **values):
         result = self.strings[key]
@@ -81,6 +86,9 @@ class Pages:
 
     def url(self, species):
         return self.base + f'digimon/{species["id"]}-{model.slug(species["name"])}/'
+
+    def move_name(self, move):
+        return self.names.get('main.MOVE_NAMES.'+str(move['id']),move['name'])
 
     def move_url(self, move):
         return self.base + f'techniques/{move["id"]}-{model.slug(move["name"])}/'
@@ -174,11 +182,11 @@ class Pages:
         extra=self.spoiler(graph(parents,targets,'spoiler')) if secrets else ''
         return '<p>'+self.t('wiki.treeHint')+'</p>'+normal+extra
 
-    def recruit(self, row, identity_hidden=True):
+    def recruit(self, row, identity_hidden=True, in_species=False):
         name = model.recruits.species_name(self.data['files'], row['name'], self.lang)
         places = ' · '.join(escape(self.places[i]) for i in row['screens'])
         service = self.t('data.recruit.service.' + row['service'])
-        # Entire recruitment identity, location and solution are opt-in spoilers.
+        # Secret identities and locations stay folded; ordinary recruits show a useful summary.
         details=f'<p>{self.t("data.recruit.when."+str(row["id"]))}</p><p>{self.t("data.recruit.method."+str(row["id"]))}</p>'
         if row['name']=='Bakemon':
             details=self.bakemon(fold=False)
@@ -188,10 +196,11 @@ class Pages:
             details+=f'<p>{self.t("data.recruit.rematchHp",n=row["rematch_hp"])}</p>'
         partner=next((s for s in self.data['species'] if s['name']==row['name']),None)
         heading=f'<a href="{self.url(partner)}">{escape(name)}</a>' if partner else escape(name)
+        if in_species:heading=self.t('wiki.whereToRecruit')
         identity=f'<h2>{heading}</h2><p>{places}</p><div class="chips"><span class="chip">{service}</span><span class="chip">+{row["points"]} {self.t("data.recruit.points")}</span></div>'
         record=self.spoiler(identity+details) if identity_hidden else identity+self.spoiler(details)
-        anchor=f'id="recruit-{row["id"]}"' if identity_hidden else f'data-recruit="recruit-{row["id"]}"'
-        mechanic='<p>'+escape(self.bakemon_mechanic())+'</p>' if row['name']=='Bakemon' and identity_hidden else ''
+        anchor=f'id="recruit-{row["id"]}"' if identity_hidden or in_species else f'data-recruit="recruit-{row["id"]}"'
+        mechanic='<p>'+escape(self.bakemon_mechanic())+'</p>' if row['name']=='Bakemon' and in_species else ''
         return f'<section class="surface recruit-record" {anchor}>'+mechanic+record+'</section>'
 
     def species_pages(self):
@@ -205,13 +214,13 @@ class Pages:
                 finisher = 58 <= m['id'] <= 112
                 power = species['finisher'].get('power',m['power']) if finisher else m['power']
                 chance = str(entry['chance'])+'%' if entry['chance'] is not None else '—'
-                moves.append(f'<tr><td><a href="{self.move_url(m)}">{escape(species["finisher"].get("name",m["name"]) if finisher else m["name"])}</a>{"<br>"+self.t("data.finisher") if finisher else ""}</td><td>{power}</td><td>{m["baseMP"]}</td><td>{chance}</td></tr>')
+                moves.append(f'<tr><td><a href="{self.move_url(m)}">{escape(self.move_name(m))}</a>{"<br>"+self.t("data.finisher") if finisher else ""}</td><td>{power}</td><td>{m["baseMP"]}</td><td>{chance}</td></tr>')
             move_table = f'<div class="table-wrap"><table><thead><tr><th>{self.t("data.technique")}</th><th>{self.t("data.power")}</th><th>{self.t("data.mp")}</th><th>{self.t("wiki.learning")}</th></tr></thead><tbody>{"".join(moves)}</tbody></table></div>'
             p = species['partner']
             food = str(p.get('favorite_food','—'))
             food = self.item_names.get(food.casefold(),food)
             care = f'<section class="surface" id="care"><h2>{self.t("wiki.care")}</h2><dl class="facts"><dt>{self.t("wiki.food")}</dt><dd>{escape(food)}</dd><dt>{self.t("wiki.sleep")}</dt><dd>{escape(p.get("sleep_cycle","—"))}</dd><dt>{self.t("wiki.birthWeight")}</dt><dd>{p.get("birth_weight","—")}</dd></dl></section>'
-            records = [self.recruit(r) for r in self.data['recruits'] if r['name']==species['name']]
+            records = [self.recruit(r,identity_hidden=r['hidden'],in_species=True) for r in self.data['recruits'] if r['name']==species['name']]
             special = ''
             if species['special']:
                 special = self.spoiler('<p>'+translate(escape(species['special']),self.english,self.strings).strip()+'</p>')
@@ -237,10 +246,10 @@ class Pages:
             status_key={0:None,1:'poison',2:'confusion',3:'stun',4:'flatten'}.get(move['status'])
             status=self.t('data.'+status_key)+f' ({move["statusChance"]}%)' if status_key else '—'
             stats=f'<dl class="facts"><dt>{self.t("data.range")}</dt><dd>{self.t("data."+range_key)}</dd><dt>{self.t("data.status")}</dt><dd>{status}</dd><dt>{self.t("data.specialty")}</dt><dd>{self.t("data."+str(move["element"] if isinstance(move["element"],str) else "other"))}</dd><dt>{self.t("data.power")}</dt><dd>{move["power"]}</dd><dt>{self.t("data.mp")}</dt><dd>{move["baseMP"]}</dd><dt>{self.t("wiki.learning")}</dt><dd>{chance}</dd></dl>'
-            body=f'<div class="page-title"><span class="eyebrow">{self.t("data.technique")} #{ident}</span><h1>{escape(move["name"])}</h1></div><section class="surface">{stats}<p>{self.t("data.learningRule")}</p><p>{self.t("data.brainsRule")} {self.t("data.oneRule")}</p><p>{self.t("data.costRule")}</p></section><h2>{self.t("data.recruit.digimon")}</h2>'+self.species_cards(species)
+            body=f'<div class="page-title"><span class="eyebrow">{self.t("data.technique")} #{ident}</span><h1>{escape(self.move_name(move))}</h1></div><section class="surface">{stats}<p>{self.t("data.learningRule")}</p><p>{self.t("data.brainsRule")} {self.t("data.oneRule")}</p><p>{self.t("data.costRule")}</p></section><h2>{self.t("data.recruit.digimon")}</h2>'+self.species_cards(species)
             path=f'techniques/{ident}-{model.slug(move["name"])}/'
-            self.page(path,move['name']+' #'+str(ident),body,'technique',dict(type='technique',text=plain(self.t('data.'+str(move['element'] if isinstance(move['element'],str) else 'other')))+' · '+str(move['power']),aliases=' '.join(s['name'] for s in species if not s['spoiler'])))
-            cards.append(f'<a class="card" href="{self.move_url(move)}"><h2>{escape(move["name"])}</h2><small>#{ident}</small><p>{self.t("data."+str(move["element"] if isinstance(move["element"],str) else "other"))} · {self.t("data.power")} {move["power"]} · MP {move["baseMP"]}</p></a>')
+            self.page(path,self.move_name(move)+' #'+str(ident),body,'technique',dict(type='technique',text=plain(self.t('data.'+str(move['element'] if isinstance(move['element'],str) else 'other')))+' · '+str(move['power']),aliases=move['name']+' '+' '.join(s['name'] for s in species if not s['spoiler'])))
+            cards.append(f'<a class="card" href="{self.move_url(move)}"><h2>{escape(self.move_name(move))}</h2><small>#{ident}</small><p>{self.t("data."+str(move["element"] if isinstance(move["element"],str) else "other"))} · {self.t("data.power")} {move["power"]} · MP {move["baseMP"]}</p></a>')
         self.page('techniques/',plain(self.t('data.techniques')),f'<div class="page-title"><h1>{self.t("data.techniques")}</h1></div>{self.search_form()}<div class="cards">'+''.join(cards)+'</div>','techniques')
 
     def fact_block(self,ident):

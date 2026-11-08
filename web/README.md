@@ -56,7 +56,7 @@ The project's site: a static page with no backend. The patcher runs in the visit
   `media/clips/` (optional local recordings, excluded from public Pages artifacts;
   `js/features.js` renders text-only cards when media is absent).
 - `js/changelog.js` renders `content/changelog.json`: translated release history, limited to the served engine's release tag; the English entry also supplies release notes.
-- `wiki/`: the unified multilingual wiki, generated with tagged game data by `tools/wiki/`. The main header and wiki card open it; the former modal is replaced. See [wiki maintenance](../docs/wiki.md).
+- `wiki/`: the unified multilingual wiki, generated with tagged game data by `tools/wiki/`. The main header and Wiki hero button open it; the former modal is replaced. See [wiki maintenance](../docs/wiki.md).
 - Box art is not stored here: the browser fetches it from libretro-thumbnails (`BOXART` in `js/app.js`), with `media/disc.svg` as the fallback.
 - `media/psx.webp`: the console photo, Evan-Amos, public domain (Wikimedia Commons, PSX-Console-wController.png).
   See the [publication media inventory](../docs/release/media.md) before supplying media.
@@ -375,7 +375,7 @@ local hosting utility, not required for Pages. Local preview:
 
 ## Player data at /data/
 
-The header and main-page wiki card link to `/wiki/<language>/`. The old Digimon/evolution sections and `/data/` routes redirect to the unified latest-release wiki. See [wiki authoring and checks](../docs/wiki.md).
+The header and main-page Wiki hero button link to `/wiki/<language>/`. The old Digimon/evolution sections and `/data/` routes redirect to the unified latest-release wiki. See [wiki authoring and checks](../docs/wiki.md).
 
 For full-disc Chromium verification, `BUILD_WORKERS=4` selects four workers
 in `web/test/cross-browser.mjs` (default one); `EXPECT_SHA1` enforces a CLI pin.

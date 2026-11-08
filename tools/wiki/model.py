@@ -17,7 +17,7 @@ _guide_spec.loader.exec_module(guide)
 import recruits
 
 LANGS = ('en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca', 'zh-hans')
-INPUTS = ('content/species', 'content/techniques', 'content/tables',
+INPUTS = ('content/species', 'content/techniques', 'content/items', 'content/tables',
           'content/maps', 'content/screens', 'story/base', 'story/mods/what-the-island-forgot',
           'text', 'mods/patches', 'docs/reference/partner.md', 'docs/reference/combat.md',
           'docs/mods/options.md', 'docs/release/README-players.md')
@@ -108,8 +108,10 @@ def load(ref):
     for move in techniques:
         move['baseMP'] = guide.base_mp(move)
     roster = recruits.load(files, all_species)
+    hidden={r['id']:r['hidden'] for r in read_json(files,'content/tables/city-residents.json')}
     # Recruitment prose is presentation; dialogue is resolved separately for folded spoilers.
     for row in roster:
+        row['hidden']=hidden[row['id']]
         row.pop('evidence', None)
     tables = {name: read_json(files, f'content/tables/{name}.json') for name in
               ('new-game', 'training-gains', 'care-rules', 'battle-formulas', 'clock')}
@@ -128,6 +130,13 @@ def load(ref):
         raise ValueError('Review frame-rate guidance against selected release')
     return dict(tag=ref, commit=commit, species=rows, techniques=techniques, recruits=roster,
                 timed=timed, facts=facts, files=files, rules=rules)
+
+
+def localized_names(files, lang):
+    """Use the executable text bank's English-base, selected-language override order."""
+    english=read_json(files,'text/ours/names.json')
+    if lang=='en':return english
+    return {**english,**json.loads(files.get(f'text/{lang}/names.json',b'{}'))}
 
 
 def slug(name):

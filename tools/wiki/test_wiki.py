@@ -103,6 +103,36 @@ class WikiTests(unittest.TestCase):
             self.assertIn('/wiki/assets/owned-icons/agumon.svg',enabled.image(species))
         self.assertFalse(any(path.startswith('content/icons/') for path in self.data['files']))
 
+    def test_runtime_translated_moves_items_places_and_missing_name_fallback(self):
+        spec=importlib.util.spec_from_file_location('wiki_locale_names',Path(__file__).with_name('build.py'))
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        for lang in model.LANGS:
+            articles=json.loads((model.ROOT/f'web/wiki/articles/{lang}.json').read_text())
+            pages=module.Pages(Path('unused'),self.data,lang,articles)
+            names=model.localized_names(self.data['files'],lang)
+            for move in self.data['techniques']:
+                self.assertEqual(pages.move_name(move),names.get('main.MOVE_NAMES.'+str(move['id']),move['name']))
+            self.assertTrue(all(str(s['partner'].get('favorite_food','')).casefold() in pages.item_names for s in self.data['species']))
+            if lang=='es':
+                self.assertEqual(pages.move_name(pages.moves[2]),'Escupefuego')
+                self.assertEqual(pages.move_name(pages.moves[59]),'Aliento Picante')
+                self.assertEqual(pages.item_names['meat'],'Carne')
+                self.assertEqual(pages.item_names['digimushrm'],names['main.ITEM_NAMES.44'])
+                self.assertEqual(pages.item_names['sm.recovery'],'Cura pequeña')
+                self.assertEqual(pages.places[109],'Bosque Indígena')
+                rendered={}
+                pages.page=lambda path,title,body,*args:rendered.__setitem__(path,body)
+                pages.species_pages()
+                self.assertIn('>Escupefuego</a>',rendered['digimon/3-agumon/'])
+                self.assertIn('>Aliento Picante</a>',rendered['digimon/3-agumon/'])
+                self.assertIn('Dónde reclutar',rendered['digimon/3-agumon/'])
+        files=dict(self.data['files']);files['text/es/names.json']=b'{}'
+        self.assertEqual(model.localized_names(files,'es')['main.MOVE_NAMES.2'],'Spit Fire')
+        self.assertEqual(model.localized_names(files,'en')['main.MOVE_NAMES.59'],'Pepper Breath')
+        public=next(r for r in self.data['recruits'] if r['id']==3)
+        secret=next(r for r in self.data['recruits'] if r['id']==6)
+        self.assertFalse(public['hidden']);self.assertTrue(secret['hidden'])
+
     def test_twenty_articles_and_nine_reviewed_translations(self):
         import hashlib
         root=model.ROOT/'web/wiki/articles'

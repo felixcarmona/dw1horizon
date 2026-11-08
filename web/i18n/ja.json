@@ -655,7 +655,7 @@
   "wiki.minimumDamagePercent": "敵ダメージ下限（%）",
   "wiki.timedMega": "Ultimate → Mega",
   "wiki.untimedUltimate": "Ultimate → Machinedramon",
-  "wiki.entry": "デジモン・進化・ガイド → Wiki",
   "wiki.bakemonGhost": "バケモンは不思議な幽霊の言葉で話します。下のネタバレを開くと、会話と街に招くための選択肢を確認できます。",
-  "wiki.bakemonPartner": "パートナーがバケモンなら、バケモンの言葉が分かります。会話と街に招くための選択肢は、下のネタバレ内にあります。"
+  "wiki.bakemonPartner": "パートナーがバケモンなら、バケモンの言葉が分かります。会話と街に招くための選択肢は、下のネタバレ内にあります。",
+  "wiki.whereToRecruit": "仲間にする場所"
 }

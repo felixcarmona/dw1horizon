@@ -24,7 +24,9 @@ try{
   });
   await page.goto(root+'/',{waitUntil:'networkidle0'});
   assert.equal(await page.$('#feature-digimon, #feature-guide, #open-guide'),null);
-  assert.match(await page.$eval('#wiki-entry',e=>e.textContent),/Wiki/);
+  assert.equal(await page.$eval('.hero-actions #wiki-entry',e=>e.textContent),'Wiki');
+  assert.ok(await page.$('.hero-actions #wiki-entry.button.soft'));
+  assert.equal(await page.$('.wiki-entry'),null);
   assert.match(await page.$eval('.data-link',e=>e.getAttribute('href')),/^wiki\//);
   await page.click('.data-link');await page.waitForSelector('.wiki-main');
   const results=[];const palette=new Map();
@@ -62,6 +64,20 @@ try{
           const shown=await page.$$eval('.species-card:not([hidden])',es=>es.map(e=>e.dataset.level));
           assert.ok(shown.length>0&&shown.length<manifest.counts.species);assert.ok(shown.every(l=>l==='rookie'));
           await page.click('button[data-level=""]');
+        }
+        if(kind==='agumon'){
+          const heading=await page.$('.recruit-record h2');
+          assert.equal(await heading.evaluate(e=>e.textContent),strings['wiki.whereToRecruit']);
+          assert.equal(await heading.evaluate(e=>e.checkVisibility()),true);
+          assert.ok(await page.$eval('.recruit-record .chips',e=>e.checkVisibility()));
+          assert.equal(await page.$eval('.recruit-record .spoiler p',e=>e.checkVisibility()),false);
+          const own=JSON.parse(await fs.readFile(path.join(site,`wiki/${lang}/search-index.json`),'utf8'));
+          const move=own.find(e=>e.type==='technique'&&e.url.endsWith('/2-spit-fire/'));
+          assert.equal(await page.$eval('#techniques a[href$="/2-spit-fire/"]',e=>e.textContent),move.title.replace(/ #2$/,''));
+          if(lang==='es'){
+            assert.equal(await page.$eval('#techniques a[href$="/2-spit-fire/"]',e=>e.textContent),'Escupefuego');
+            assert.match(await page.$eval('.recruit-record',e=>e.textContent),/Bosque Indígena/);
+          }
         }
         if(kind==='agumon'||kind==='tree'){
           await page.waitForSelector('.tree-edges g path');
@@ -122,6 +138,8 @@ try{
     assert.ok(await page.$eval('.article-body table',e=>e.checkVisibility()));
     await page.goto(root+base+'guides/new-game-quiz/',{waitUntil:'load'});
     assert.equal(await page.$$eval('.article-body table',es=>es.every(e=>!e.checkVisibility())),true);
+    await page.goto(root+base+'digimon/7-airdramon/',{waitUntil:'load'});
+    assert.equal(await page.$eval('.recruit-record h2',e=>e.checkVisibility()),false);
     await page.goto(root+base+'digimon/116-analogman/#evolutions',{waitUntil:'load'});
     assert.equal(await page.$eval('h1',e=>e.checkVisibility()),false);
     await page.goto(root+base+'recruits/#recruit-37',{waitUntil:'load'});
