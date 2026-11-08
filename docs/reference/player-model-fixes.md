@@ -575,3 +575,55 @@ The care tests check every preserved channel, the entire shifted idle cycle,
 and the sleeping paw's ground clearance at ticks and interpolated frames.
 The provider enforces the resident and cold-animation budgets. Geometry,
 texture, battle clips and executable code are unchanged.
+
+## Silphymon: Ultimate size and technique acting
+
+The v0.0.7 player report matches two independent data problems. The corrected
+head/ear and field-stride model still stands 584 units tall, above native
+HerculesKabuterimon's 505-unit idle silhouette. Its species record says 567;
+collision height alone does not resize the mesh. A uniform 0.80 bake reduces
+the idle to about 467 units while retaining the reviewed chibi proportions.
+Every animation translation, radius, height, bubble, target effect attachment
+and status framing follows that scale. The original donor-side effect lookup
+coordinates stay exact. Field cycles are shortened proportionately to retain
+their follow pace.
+
+Seven technique slots previously selected the same imported dive program:
+Megalo Spark, Thunder Justice, Spinning Shot, Wind Cutter, Electric Cloud,
+Buster Dive and Death Claw (slots 46, 48, 49, 51, 52, 55 and 59); Hurricane and Confused
+Storm share Tremar, and the kick/punch/counter share Static Elect. The dive's
+carrier rises from -231 to -588, explaining the upright launch before shots.
+
+`tools/models/silphymon_attacks.py` replaces all fourteen attacks with authored
+clips using each technique's actual native clock and voice cues. Angemon
+supplies the Air techniques, kick and Counter; Devimon supplies Thunder
+Justice, Megaton Punch and Death Claw; Kokatorimon supplies Tremar; Patamon
+supplies Buster Dive. The recipe maps torso/head/arm acting onto the imported
+rig, eases into and out of its support stance, and adds anticipation, delayed
+ears/tail, a kick and recovery. The boots remain grounded in shots. Buster
+Dive alone retains Patamon's exact entity trajectory, including 825 units of
+travel during collision samples 22–33, after the body is resized.
+
+The player build replays the ordinary pinned model delta; this is an offline
+authoring tool. No engine patch or main executable bytes are added. The model
+uses 99,504 of the fixed 100,352 resident bytes and cold reads at most 4,096
+of 8,192 bytes. Care rotations, clocks and events remain exact; one-unit carrier rounding
+errors are closed so repeating idles and care clips cannot accumulate drift.
+
+For local review, reconstruct the parent model with `tools/models/edit.py get
+226 build/silphymon/before`, then run:
+
+```sh
+python3 tools/models/silphymon_attacks.py \
+  build/silphymon/before/226-Silphymon.MMD \
+  build/silphymon/after/226-Silphymon.MMD
+PYTHONPATH=tools python3 -W ignore -m unittest tools.test_silphymon_attacks
+python3 tools/models/edit.py check 226 --species-pins
+```
+
+The decoded checks cover distinct technique programs, native durations and
+sound events, stationary support at 20 Hz keys and both intervening display
+samples, preserved care acting and scaled mesh data, field pace, dash reach and storage.
+Review frames with `tools/animstudio.py` using a shared world scale for the
+before/after and native reference rows. These local images contain disc assets
+and stay outside the repository.
