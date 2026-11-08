@@ -123,7 +123,7 @@
     "paragraphs": [
       "Die Stunden unten gelten in der aktuellen Form, nicht seit Geburt. Frühe Wertgrenzen lösen keine sofortige Entwicklung aus. Zeitrouten für Ultimate prüfen ebenfalls Voraussetzungen; Sonder- und Gegenstandsrouten haben eigene Auslöser.",
       "Die Auswahl bevorzugt noch nie aufgezogene Ziele. Für Rookie–Champion und Champion–Ultimate mit drei Punkten vergleicht sie geforderte Durchschnittswerte, HP/MP durch zehn; die Reihenfolge kann wirken. In-Training–Rookie behält die beste Punktzahl und den ersten Gleichstand.",
-      "Tippe das Ziel im Baum an. Zeit in der Form, Sonderauslöser, NEW DIGIMON und weitere Kandidaten beeinflussen das Ergebnis. HP/MP stehen in Spielerwerten; Zufriedenheit nutzt die Statusskala 0–100."
+      "Bei einer zeitgebundenen Entwicklung von Ultra zu Mega bedeutet „bereit“ im Fenster, dass die Anforderungspunktzahl erreicht ist und das Modell in den Speicher passt; die Wartezeit kann trotzdem noch laufen. Importierte Megas erfordern außerdem {mega_hours} Spielstunden als Ultra. Ist die verbleibende Lebenszeit vorher aufgebraucht, stirbt der Partner an Altersschwäche. {chain_melon} (Chain Melon) verlängert das Leben um {chain_melon_hours} Stunden, {digiseabass} um {digiseabass_hours}. Sie erhöhen die verbleibende Lebenszeit, nicht die bereits in der aktuellen Form verbrachte Zeit."
     ]
   },
   "learning-techniques": {
@@ -141,7 +141,7 @@
     "paragraphs": [
       "Das Rekrutierungsverzeichnis zeigt Bewohner, Orte, Dienste und Wohlstandsbeiträge in geschlossenen Spoilern.",
       "Schritte bleiben bis zum Öffnen des Spoilerbereichs verborgen. Zeiten folgen der Spieluhr. Prüfe Ort und Voraussetzungen wie Stadtfortschritt, andere Rekruten oder Ereignisse.",
-      "Rekrutierungsdetails und Lösungen stehen in geschlossenen Spoilern. Öffne sie, wenn du die Antwort sehen möchtest."
+      "Mojyamons Tauschtabelle steht im geschlossenen Spoiler unten: Die ersten acht Zeilen erlauben einen Gegenstand pro Spieltag, die neunte nur einmal pro Spielstand. Zeigt dein Spiel eine andere oder alte Liste, hast du einen Emulatorzustand aus einer älteren Version geladen. Starte die neue Disc frisch und lade stattdessen den Spielstand von der Speicherkarte. Sichere vorher die Karte."
     ]
   },
   "hidden-mechanics": {

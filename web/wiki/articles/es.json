@@ -123,7 +123,7 @@
     "paragraphs": [
       "Las horas de abajo cuentan desde la forma actual, no desde la edad total. Cumplir una fila pronto no provoca una evolución normal inmediata. Las rutas temporizadas de Ultimate también comprueban los requisitos; las especiales y por objeto tienen sus propios desencadenantes.",
       "La selección normal favorece a quien aún no has criado. Entre candidatos Rookie a Champion y Champion a Ultimate con tres puntos, compara la media de las estadísticas requeridas, dividiendo PV y PM entre diez; el orden puede influir. De In-Training a Rookie conserva la mejor puntuación y el primer empate.",
-      "Pulsa un objetivo del árbol para leer sus requisitos. El tiempo en la forma actual, los desencadenantes especiales, NEW DIGIMON y otros candidatos afectan al resultado. Los umbrales de PV y PM usan las unidades del jugador; la felicidad usa la escala 0–100 del estado."
+      "En una evolución de Perfecto a Mega por tiempo, «listo» en la ventana indica que se cumplen la puntuación de requisitos y la comprobación de que el modelo cabe; no que haya terminado la espera. Los Megas importados también exigen pasar {mega_hours} horas de juego como Perfecto. Si antes se agota la vida restante, el compañero muere de vejez. {chain_melon} (Chain Melon) añade {chain_melon_hours} horas de vida; {digiseabass}, {digiseabass_hours}. Amplían la vida restante, no el tiempo ya pasado en la forma actual."
     ]
   },
   "learning-techniques": {
@@ -141,7 +141,7 @@
     "paragraphs": [
       "El directorio de reclutamiento reúne habitantes, lugares, servicios y aportaciones a la prosperidad dentro de spoilers plegados.",
       "Los pasos permanecen ocultos hasta abrir el aviso de spoilers. Las horas usan el reloj del juego. Comprueba los requisitos además del lugar: puede hacer falta un hito de ciudad, otro recluta o un suceso.",
-      "Los detalles y las soluciones de reclutamiento están en spoilers plegados. Ábrelos cuando quieras ver la respuesta."
+      "La tabla de intercambios de Mojyamon está en el spoiler cerrado de abajo: las ocho primeras filas permiten un objeto por día de juego; la novena, una sola vez por partida guardada. Si en tu juego aparece una lista distinta o antigua, has cargado un estado del emulador de una versión anterior. Arranca el disco nuevo desde cero y carga la partida de la tarjeta de memoria. Haz antes una copia de la tarjeta."
     ]
   },
   "hidden-mechanics": {

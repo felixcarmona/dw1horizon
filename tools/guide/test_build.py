@@ -119,7 +119,7 @@ class GuideTests(unittest.TestCase):
                 self.assertEqual((out / name).read_text(), 'release sentinel')
             self.assertTrue((out / 'data/index.html').is_file())
             self.assertTrue((out / 'data/es.html').is_file())
-            self.assertIn('href="wiki/"', (out / 'index.html').read_text())
+            self.assertIn('href="wiki/en/"', (out / 'index.html').read_text())
 
     def test_displayed_mp_exempts_finishers(self):
         self.assertEqual(guide.base_mp(guide.resolve_move('Fire Tower', self.moves)), 81)

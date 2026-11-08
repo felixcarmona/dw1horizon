@@ -46,6 +46,10 @@ class Spoilers(HTMLParser):
 
 def check(site):
     manifest=json.loads((site/'wiki/manifest.json').read_text())
+    if manifest['tag']=='v0.0.7':
+        for file in (site/'wiki').rglob('*'):
+            if file.is_file():
+                assert b'HARD' not in file.read_bytes(), 'Unreleased difficulty in '+str(file)
     current=site/'engine/current.json'
     if current.exists():
         engine=json.loads(current.read_text())

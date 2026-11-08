@@ -123,7 +123,7 @@
     "paragraphs": [
       "The hours below are time spent in the current form, not the partner’s total age. Meeting a target’s stat row early does not make ordinary evolution immediate. Timed Ultimate routes also check the target requirements; special and item routes have different triggers.",
       "The normal picker favours a target you have not raised yet. For Rookie-to-Champion and Champion-to-Ultimate candidates scoring three, it compares required-stat averages with HP/MP divided by ten; list order can affect the comparison. In-Training-to-Rookie keeps the best score and the first listed target on a tie.",
-      "Open a target in the visual tree to read its row. Time in the current form, special triggers, NEW DIGIMON and competing candidates still affect the outcome. HP and MP thresholds are shown in player units. Happiness is shown on the status screen’s 0–100 scale."
+      "For a timed Ultimate → Mega evolution, the popup’s “ready” means the requirement score and model-fit check pass; it does not mean the timer has finished. Imported Megas also require {mega_hours} in-game hours spent as an Ultimate. If lifetime runs out first, the partner dies of old age. {chain_melon} (Chain Melon) adds {chain_melon_hours} lifetime hours; {digiseabass} adds {digiseabass_hours}. These extend remaining lifetime, not time already spent in the current form."
     ]
   },
   "learning-techniques": {
@@ -141,7 +141,7 @@
     "paragraphs": [
       "The recruitment directory lists residents, locations, city services and prosperity contributions inside closed spoilers.",
       "Recruitment steps are hidden until you open the spoiler disclosure. Times use the game clock. Check prerequisites as well as the place; a resident may depend on a city milestone, another recruit or a story event.",
-      "Recruitment details and solutions are folded spoilers. Open them when you want the answer."
+      "Mojyamon’s exchange table is in the closed spoiler below: the first eight rows allow one item per in-game day; the ninth is once per save. If the list in your game differs or shows old exchanges, you loaded an emulator save state from an older version. Boot the new disc fresh and load the memory-card save instead. Back up the card first."
     ]
   },
   "hidden-mechanics": {

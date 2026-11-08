@@ -11,6 +11,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import model
+import articles as article_catalogs
 from localize import translate
 
 ROOT = model.ROOT
@@ -261,6 +262,9 @@ class Pages:
             rows+=f'<tr><th>{self.t("wiki.untimedUltimate")}</th><td>{facts["timing"]["hours"]["ultimate"]}</td></tr>'
             rows+=f'<tr><th>{self.t("wiki.timedMega")}</th><td>{facts["timing"].get("megaHours",120)}</td></tr>'
             return self.spoiler(f'<h2>{self.t("wiki.timing")}</h2><div class="table-wrap"><table>{rows}</table></div>')
+        if ident=='file-city':
+            rows=''.join(f'<tr><th>{i}</th><td>{escape(self.names["main.ITEM_NAMES."+str(give)])}</td><td>→</td><td>{escape(self.names["main.ITEM_NAMES."+str(take)])}</td></tr>' for i,(give,take) in enumerate(facts['mojyamon'],1))
+            return self.spoiler('<h2>'+escape(self.name(self.by_id[52]))+'</h2><div class="table-wrap"><table>'+rows+'</table></div>')
         if ident=='training':
             labels={'hp':'hp','mp':'mp','off':'offense','def':'defense','spd':'speed','brain':'brains'}
             entries=facts['training-gains']['trainGain']
@@ -271,7 +275,7 @@ class Pages:
                 rows.append(f'<tr><th>{self.t("data."+labels[stat])}</th><td>{row[stat]}</td><td>{row["tired"]}</td></tr>')
             return f'<div class="table-wrap"><table><tr><th>{self.t("digimon.stats")}</th><th>{self.t("wiki.gain")}</th><th>{self.t("wiki.tired")}</th></tr>{"".join(rows)}</table></div>'
         if ident=='difficulty':
-            if not facts['hard']:return '<aside class="note">'+self.t('wiki.hardAbsent')+'</aside>'
+            if not facts['hard']:return ''
             # Numeric config is rendered with localized labels; named factors are not prose copies.
             labels={'hp':'hp','offense':'offense','defense':'defense','speed':'speed','brain':'brains','brains':'brains'}
             rows=''.join(f'<tr><th>{self.t("wiki."+k)}</th><td>{escape(str(v))}</td></tr>' for k,v in facts['hard'].items() if not isinstance(v,(dict,list)))
@@ -302,7 +306,11 @@ class Pages:
         return ''
 
     def article_pages(self):
-        values=dict(bakemon_mechanic=self.bakemon_mechanic(),save_blocks=self.data['facts']['save_blocks'],pass_points=self.data['facts']['score']['passPoints'])
+        values=dict(bakemon_mechanic=self.bakemon_mechanic(),save_blocks=self.data['facts']['save_blocks'],pass_points=self.data['facts']['score']['passPoints'],
+                    mega_hours=self.data['facts']['timing']['megaHours'],
+                    chain_melon=self.names['main.ITEM_NAMES.70'],digiseabass=self.names['main.ITEM_NAMES.67'],
+                    chain_melon_hours=self.data['facts']['chain_melon_hours'],
+                    digiseabass_hours=self.data['facts']['digiseabass_hours'])
         for ident,article in self.articles.items():
             paras=[p.format(**values) for p in article['paragraphs']]
             if values['save_blocks']==1:
@@ -351,11 +359,8 @@ def build(out, tag, presentation_ref=None):
     if not re.fullmatch(r'v\d+\.\d+\.\d+',tag):
         raise ValueError('Wiki requires an explicit release tag')
     data=model.load(tag)
-    english=json.loads((CONTENT/'articles/en.json').read_text())
-    review=json.loads((CONTENT/'articles/review.json').read_text())
-    en_hash=hashlib.sha256((CONTENT/'articles/en.json').read_bytes()).hexdigest()
-    if review['english_sha256']!=en_hash:
-        raise ValueError('English articles changed: translations need review')
+    article_root=article_catalogs.directory(tag, CONTENT/'articles')
+    review=article_catalogs.validate(article_root)
     dest=out/'wiki'
     if dest.exists():shutil.rmtree(dest)
     assets=dest/'assets';assets.mkdir(parents=True)
@@ -368,16 +373,7 @@ def build(out, tag, presentation_ref=None):
         (assets/'owned-icons').mkdir(exist_ok=True)
         shutil.copyfile(CONTENT/'owned-icons'/name,assets/'owned-icons'/name)
     for lang in model.LANGS:
-        file=CONTENT/f'articles/{lang}.json'
-        if review['locales'][lang]!=hashlib.sha256(file.read_bytes()).hexdigest():raise ValueError('Article translation review changed: '+lang)
-        articles=json.loads(file.read_text())
-        if articles.keys()!=english.keys():raise ValueError('Article coverage differs: '+lang)
-        for ident,a in articles.items():
-            marked=a.get('spoiler_paragraphs',[])
-            if marked!=english[ident].get('spoiler_paragraphs',[]) or any(type(i)!=int or i<0 or i>=len(a['paragraphs']) for i in marked):
-                raise ValueError('Article spoiler classification differs: '+lang+'/'+ident)
-            en_tokens=re.findall(r'\{\w+\}',compact(english[ident]))
-            if sorted(re.findall(r'\{\w+\}',compact(a)))!=sorted(en_tokens):raise ValueError('Article variables differ: '+lang+'/'+ident)
+        articles=json.loads((article_root/f'{lang}.json').read_text())
         pages=Pages(out,data,lang,articles)
         pages.species_pages();pages.technique_pages();pages.article_pages();pages.directories()
         mapping={f'species-{s["id"]}':pages.url(s) for s in data['species']}
