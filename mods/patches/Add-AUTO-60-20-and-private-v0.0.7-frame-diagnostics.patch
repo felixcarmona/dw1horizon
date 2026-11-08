@@ -1,4 +1,4 @@
-From d97fe7982e55fe34b697d86860cee5a29bc5058a Mon Sep 17 00:00:00 2001
+From 027f89f79c36b6c570f5b19a6e4a8663a616eca9 Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Sun, 8 Nov 2026 17:43:38 +0000
 Subject: [PATCH] Add AUTO 60 20 and private v0.0.7 frame diagnostics
@@ -146,7 +146,7 @@ index 48505799..6a0d87aa 100644
  void modVersionDraw(void)
  {
 diff --git a/src/main/main_menu.c b/src/main/main_menu.c
-index 9b2d116e..ab2a6fe9 100644
+index 9b2d116e..85a973cb 100644
 --- a/src/main/main_menu.c
 +++ b/src/main/main_menu.c
 @@ -289,13 +289,14 @@ static int32_t MOD_SAVE_NUMBER; /* MOD (options): the highest save number seen i
@@ -203,7 +203,7 @@ index 9b2d116e..ab2a6fe9 100644
  void modNoticeRender(void)
  {
 +#if MOD_FPS_DIAG
-+    modFpsDiagDraw(92); /* Also exposes the raw probe on the title panel. */
++    modFpsDiagDraw(80); /* Also exposes the raw probe on the title panel. */
 +#endif
  	int32_t i;
  	int32_t missing;
@@ -213,7 +213,7 @@ index 9b2d116e..ab2a6fe9 100644
  	GsSetWorkBase((PACKET *)cur);
  	renderMenuBox(0x48, 0x32, 0xB0, 0x46); /* MOD (options): was 0x3A high */
 +#if MOD_FPS_DIAG
-+    modFpsDiagDraw(92);
++    modFpsDiagDraw(80);
 +#endif
  	modVersionRender(); /* MOD (version) */
  #endif
