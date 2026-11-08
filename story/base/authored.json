@@ -1065,6 +1065,16 @@
       "original_sha256": "356db5053134f99261fa01b7c0caa14bf2e59425bea3a1d2888e306b95785acb",
       "authored_sha256": "4cced79f2ae1de9e12d87f1dbb13669e5321b9839d5f5a631f1f5467f9d91108",
       "reason": "Document the added battle in section 8."
+    },
+    "zones/great-canyon/s122-127/script.py": {
+      "original_sha256": "846a6ce9166dc63d34c3842319766abc5686603ce0ec14827a6d54a948e2f93c",
+      "authored_sha256": "bd2d1db7e51d9b73963d053b7fa2a156c7f11835b911846582f1e6fa327af76f",
+      "reason": "Announce Shellmon recruitment before the departure walk in both story modes"
+    },
+    "zones/great-canyon/s122-127/script.dws": {
+      "original_sha256": "6b829b48ac79a11f9584398ef7c869c3bcf587c246779941e04a5c3b8134eafb",
+      "authored_sha256": "51aa43d3e7e2c38ab936e4aa02e79cd2dce1fe8f17371ac4cedd5306fc4c21b4",
+      "reason": "Announce Shellmon recruitment before the departure walk in both story modes"
     }
   }
 }

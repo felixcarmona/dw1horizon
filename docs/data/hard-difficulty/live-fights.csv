@@ -1,0 +1,21 @@
+Run,Before Defense curve,Encounter,Screen,Partner,Difficulty,Loadout,Combat seconds,Knocked out,Direct hits taken,Minimum direct hit,Maximum direct hit,Direct damage taken
+primary-before,True,wild,153,late,NORMAL,46/41/42,34.55,False,2,178,202,380
+primary-before,True,wild,153,strong,NORMAL,46/41/42,32.2,False,2,1,1,2
+primary-before,True,wild,153,max,NORMAL,46/41/42,35.75,False,2,1,1,2
+primary-before,True,boss,225,late,NORMAL,47/41/42,101.8,False,10,542,2139,10399
+primary-before,True,boss,225,strong,NORMAL,47/41/42,70.4,False,6,1,1,6
+primary-before,True,boss,225,max,NORMAL,47/41/42,54.2,False,5,1,1,5
+primary-current,False,wild,153,late,NORMAL,46/41/42,33.95,False,3,127,202,470
+primary-current,False,wild,153,late,HARD,46/41/42,36.95,False,2,449,537,986
+primary-current,False,wild,153,strong,NORMAL,46/41/42,27.85,False,1,57,57,57
+primary-current,False,wild,153,strong,HARD,46/41/42,39.65,False,2,195,243,438
+primary-current,False,wild,153,max,NORMAL,46/41/42,35.45,False,2,9,10,19
+primary-current,False,wild,153,max,HARD,46/41/42,40.7,False,3,129,185,460
+primary-current,False,boss,225,late,NORMAL,47/41/42,86.55,False,7,108,1190,5284
+primary-current,False,boss,225,late,HARD,47/41/42,133.6,False,12,875,5055,21484
+primary-current,False,boss,225,strong,NORMAL,47/41/42,84.45,False,10,258,685,4671
+primary-current,False,boss,225,strong,HARD,47/41/42,86.3,False,12,416,1027,8907
+primary-current,False,boss,225,max,NORMAL,47/41/42,113.85,False,14,38,4047,4981
+primary-current,False,boss,225,max,HARD,47/41/42,57.4,False,7,156,413,2033
+supplement-1,False,boss,104,max,HARD,47/41/42,94.2,False,4,332,443,1616
+supplement-1,False,boss,104,max,NORMAL,47/41/42,113.25,False,7,87,7402,8049

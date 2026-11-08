@@ -41,7 +41,7 @@ def build(ctx):
                 import screens
                 screens.build_files(os.path.join(d, 'with-new-screens', 'MAPHEAD.SCN'), os.path.join(d, 'MAPHEAD.SCN'),
                                     os.path.join(d, 'SCRN.DAT'), [] if v.startswith('base') else s.screens, s.mh_max,
-                                    pack_ascii=pack, log=ctx.log,
+                                    pack_ascii=pack, log=ctx.log, language=lang, font_glyphs=s.glyphs,
                                     cache_records=bool(os.environ.get('DW_BUILD_CACHE')) and not ctx.record and not ST.runner.strict())
 
 

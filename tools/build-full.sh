@@ -98,6 +98,9 @@ W=${W:-$DEFAULT_W}
 # A release pipeline can prepare its own tree without tools/mods.sh.
 # Rebuild the original glyphs from the player's disc, never a committed header.
 if grep -q '#include "font_compact.h"' "$W/src/main/font.c" 2>/dev/null; then
+  # Refresh the licensed extra repertoire before deriving text or counting glyphs.
+  python3 tools/fontgen.py header "$W/src/main/font_extra.h"
+  python3 tools/fontgen.py font-header b "$W/src/main/font_b.h"
   python3 tools/font/compact.py "$W"
 fi
 # the story compiler's heap check measures this tree's heap (its last build's map: tools/membudget.py heap_total_now)

@@ -81,6 +81,8 @@ fi
 run npc-originals-tests "$PY" -W ignore tools/test_npc_originals.py
 run battle-audit      $PY -W ignore tools/test_battle_audit.py
 run patch-series      $PY tools/patch_series.py check                     # mods/patches/series, the patch files and index.md agree
+run caption-translations $PY -m tools.localize.captions
+run caption-translation-tests $PY -m unittest tools.test_caption_translations
 run technique-timing-tests $PY -m unittest tools.test_technique_timing
 run buster-dive-tests $PY -m unittest tools.test_buster_dive
 run patch-series-tests $PY tools/test_patch_series.py
@@ -206,13 +208,16 @@ run presented-frame-video $PY tools/test_presented_frames.py
 run duckstation-protocol $PY -m unittest tools.test_duckstation_protocol
 if [ -f "$PATCHED/src/main/main.c" ]; then
     run fps-auto $PY tools/test_fps_auto.py "$PATCHED"
+    run screen-caption-cache $PY tools/test_screen_caption_cache.py "$PATCHED"
     disc bone-interpolation-host $PY -W ignore tools/dev/playtest/bone_interpolation_host.py "$PATCHED" "$OUT/bone-interpolation"
     run options-save $PY tools/test_cheats.py "$PATCHED"
+    run difficulty-hard-host $PY tools/dev/playtest/hard_host.py "$PATCHED"
     run world-menu-fit env WORLD_FIT_SOURCE="$PATCHED/src/main/map.c" $PY -m unittest tools.test_world_fit
 else
     skip fps-auto "needs prepared C tree (DW_SELFTEST_DECOMP)"
     skip bone-interpolation-host "needs prepared C tree (DW_SELFTEST_DECOMP)"
     skip options-save "needs prepared C tree (DW_SELFTEST_DECOMP)"
+    skip difficulty-hard-host "needs prepared C tree (DW_SELFTEST_DECOMP)"
 fi
 run gallery-foregrounds $PY tools/test_gallery_foregrounds.py
 run retouch-cutouts $PY tools/test_retouch_cutouts.py

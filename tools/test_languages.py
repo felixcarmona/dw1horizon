@@ -273,9 +273,9 @@ class Languages(unittest.TestCase):
 
     def test_new_language_option_rows_fit_the_original_viewport(self):
         from tools import fontgen
-        labels = ('JP', 'CLOCK', 'BARS', 'EVO', 'NEWDIGI', 'STORY', 'FPS', 'FONT', 'LANG', 'SIGNS')
-        values = ('OFF', 'ON', '20', '60', 'NEW', 'CLASSIC', 'ORIGINAL', 'TRANSLATED',
-                  'ENGLISH', 'SPANISH', 'PORTUGUESE', 'FRENCH', 'GERMAN', 'ITALIAN', 'JAPANESE')
+        labels = ('JP', 'EVO', 'NEWDIGI', 'STORY', 'DIFF', 'QUICK', 'FONT', 'LANG', 'SIGNS', 'CHEATS')
+        values = ('OFF', 'ON', 'EASY', 'NORMAL', 'HARD', 'NEW', 'CLASSIC', 'ORIGINAL', 'TRANSLATED',
+                  'ENGLISH', 'SPANISH', 'PORTUGUESE', 'FRENCH', 'GERMAN', 'ITALIAN', 'JAPANESE', 'CATALAN')
         for lang in ('fr', 'de', 'it', 'ja', 'ca'):
             names = json.loads((ROOT / f'text/{lang}/names.json').read_text())
             width = lambda key: fontgen.text_width(names['main.MOD_OPT_STR_' + key], 'original') + 1
