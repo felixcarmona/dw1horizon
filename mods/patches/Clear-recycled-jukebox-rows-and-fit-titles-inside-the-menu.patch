@@ -1,0 +1,56 @@
+From 0e58837af70f8adccbebcae2d15039e6263a6e7c Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 8 Nov 2026 16:12:14 +0000
+Subject: [PATCH] Clear recycled jukebox rows and fit titles inside the menu
+
+---
+ src/main/script_common.c  | 7 ++++++-
+ src/main/script_textbox.c | 4 ++--
+ 2 files changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index d482c363..410f2e88 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -2859,10 +2859,15 @@ void calculateMusicMenuStrings(ItemMenuBox *box, uint8_t row, int32_t isLast)
+ 	out = intToStringSJIS(out, type + 1, 2, 0);
+ 	*out++ = 0xf;
+ 	*out++ = 0;
++	/* Keep the number, gap and title inside the cursor, before the scrollbar. */
++	*out++ = textFitCode(BGM_TRACK_NAMES[type], 0xca - 4 - 22);
++	*out++ = type == readPStat(0xf9) ? 6 : 1;
+ 	strcpy(out, BGM_TRACK_NAMES[type]);
+ 	len = strlen(BGM_TRACK_NAMES[type]);
+ 	out += len;
+-	out = padWithSpaces(out, 0xc, len);
++	/* Recycled rows must erase every old glyph, independent of encoding or font. */
++	*out++ = TEXT_COLUMN;
++	*out++ = 0xfc;
+ 	terminateString(out, isLast);
+ }
+ 
+diff --git a/src/main/script_textbox.c b/src/main/script_textbox.c
+index d002cfea..5297a21e 100644
+--- a/src/main/script_textbox.c
++++ b/src/main/script_textbox.c
+@@ -711,7 +711,7 @@ void registerTextbox(boxId, row, rows, doubleBuffer, mode)
+  */
+ static int16_t drawString2Fit(uint8_t **str, int16_t x, int16_t y, int16_t pos, int32_t code)
+ {
+-	char run[24];
++	char run[64];
+ 	uint8_t *s;
+ 	int32_t n;
+ 
+@@ -720,7 +720,7 @@ static int16_t drawString2Fit(uint8_t **str, int16_t x, int16_t y, int16_t pos,
+ 		setTextColor(*s);
+ 	}
+ 	s++;
+-	for (n = 0; *s >= 0x20 && n < 23; n++) {
++	for (n = 0; *s >= 0x20 && n < sizeof(run) - 1; n++) {
+ 		run[n] = *s++;
+ 	}
+ 	run[n] = '\0';
+-- 
+2.55.0
+
