@@ -10,7 +10,7 @@
                  "Tear Drop", "Aqua Magic", "Megaton Punch", "Buster Dive", "Counter",
                  "Dynamite Kick (44)", "Tremar", "Sonic Jab", "Mail Strome"],
   "drop": {"item": "sm.recovery", "percent": 10},
-  "effects_like": 22,
+  "effects_like": 47,
   "model": {
     "file": "build/sizes-out/models/SkullMammothmon.MMD",
     "radius": 291,
@@ -21,7 +21,7 @@
                  [27, 27]]
   },
   "texture": {"file": "build/batch8/SkullMammothmon.TIM", "entry": 0},
-  "voice": 20,
+  "voice": 41,
   "battle_music": "normal-battle",
   "condition_bubble": [8, -100, -7, 19],
   "effect_origins": [[4, 70, 0, 20, 19, -8, 70, -96], [4, 120, 0, 20, 19, -15, 133, -146]],

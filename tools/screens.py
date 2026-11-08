@@ -9,7 +9,7 @@ the original decides by screen id in code (concave arena, mist, shop, arena), an
 small script of its own. So a new screen costs no resident RAM, and MAPHEAD.SCN only keeps the sections
 of the original screens and the shared ones (1220..).
 
-  screens.py build -o SCRN.DAT --maphead IN.SCN --maphead-out OUT.SCN [--content DIR ...]
+  screens.py build -o SCRN.DAT --maphead IN.SCN --maphead-out OUT.SCN [--content DIR ...] [--lang en]
         the records of every screen file with an id >= 255 in content/screens and the DIRs. Its MAPHEAD
         section is the one IN.SCN has (the story build writes it: `script new for screen N`, `place`), else
         the one its file describes ("maphead": {"like": N, "script": S}); the sections >= 255 are taken
@@ -23,7 +23,8 @@ A screen file (tools/dev/playtest/screens/300-test-hollow.json is one; the keys 
   "doors":   0 = none, 1..24 a row of DOOR_MAPDATA, or the screen's own:
              {"models": [6 ids, -1 = none], "x": [6], "y": [6], "z": [6], "rotation": [6]}
   "toilet":  0 = none, 1..10 a row of TOILET_DATA, or the screen's own {"x1": .., "z1": .., "x2": .., "z2": ..}
-  "caption": 0..69 an area name of the executable (MAP_NAME_PTR), or the screen's own text (up to 35 bytes)
+  "caption": 0..69 an area name of the executable (MAP_NAME_PTR), or the screen's English name;
+             text/<language>/names.json supplies its translation (up to 35 encoded bytes)
   "concave", "mist", "shop", "arena": true for what the original does by screen id (default false)
   "maphead": {"like": N, "script": S}: when the story gives the screen no MAPHEAD section, the section of
              screen N (its music, its spawns) with SET_SCRIPT S, <this screen>; without "like" the section
@@ -91,7 +92,7 @@ def head(x, script):
     elif not 0 <= dr <= 24: raise ScreenError(f'{p}: "doors" is 0 (none), 1..24 (DOOR_MAPDATA) or the screen\'s own doors')
     c = x.get('caption', 0)
     if isinstance(c, str):
-        caption = c.encode('latin-1')
+        caption = bytes(x['_caption_bytes']) if '_caption_bytes' in x else c.encode('latin-1')
         if len(caption) >= CAPTION_MAX: raise ScreenError(f'{p}: "caption" has at most {CAPTION_MAX - 1} bytes')
         c = OWN
     elif not 0 <= c < 70: raise ScreenError(f'{p}: "caption" is 0..69 (an area name of the executable) or a text')
@@ -269,10 +270,12 @@ def build(recs, maphead, maphead_max=0x8000, log=print, pack_ascii=None, cache_r
     return bytes(out), mh, sizes, secs
 
 
-def build_files(maphead, maphead_out, out, content=(), maphead_max=0x8000, pack_ascii=None, log=print, cache_records=False):
+def build_files(maphead, maphead_out, out, content=(), maphead_max=0x8000, pack_ascii=None, log=print, cache_records=False, language='en', font_glyphs=None):
     """`screens.py build`: SCRN.DAT at `out` and the resident MAPHEAD at `maphead_out`, from the MAPHEAD.SCN file `maphead`
     and the screen files of content/screens and the folders `content`."""
     recs = load(content)
+    from tools.localize.captions import localize
+    recs = localize(recs, language, font_glyphs=font_glyphs)
     dat, mh, sizes, _ = build(recs, open(maphead, 'rb').read(), maphead_max, log=log, pack_ascii=pack_ascii,
                              cache_records=cache_records)
     open(out, 'wb').write(dat); open(maphead_out, 'wb').write(mh)
@@ -306,6 +309,8 @@ def main():
     b.add_argument('--maphead-out', required=True); b.add_argument('--content', action='append', default=[])
     b.add_argument('--maphead-max', type=lambda s: int(s, 0), default=0x8000)
     b.add_argument('--num-screens', type=int, default=NUM_SCREENS)
+    from tools.languages import CODES
+    b.add_argument('--lang', choices=CODES, default='en')
     s = sub.add_parser('show'); s.add_argument('dat'); s.add_argument('ids', nargs='*', type=int)
     c = sub.add_parser('section'); c.add_argument('id', type=int); c.add_argument('--maphead', required=True)
     c.add_argument('--content', action='append', default=[])
@@ -313,7 +318,7 @@ def main():
     try:
         if a.cmd == 'build':
             NUM_SCREENS = a.num_screens
-            build_files(a.maphead, a.maphead_out, a.o, a.content, a.maphead_max)
+            build_files(a.maphead, a.maphead_out, a.o, a.content, a.maphead_max, language=a.lang)
         elif a.cmd == 'show':
             for r in records(open(a.dat, 'rb').read()):
                 if a.ids and r['id'] not in a.ids: continue
@@ -326,7 +331,7 @@ def main():
             text = dis_text(open(a.maphead, 'rb').read())
             lines = section_of(text, a.id)
             print('\n'.join(lines) if lines is not None else '\n'.join(synth_section(a.id, recs[a.id], text)))
-    except (ScreenError, bytecode.BytecodeError) as e:
+    except (ScreenError, bytecode.BytecodeError, ValueError) as e:
         sys.exit(f'screens.py: {e}')
 
 

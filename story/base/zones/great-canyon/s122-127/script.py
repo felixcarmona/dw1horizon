@@ -3,6 +3,7 @@
 # game's words. `story-build` reads this file (lowered); the DWS beside it is the proven intermediate; mods import `dw.base`.
 from dw import *
 from dw.text import text
+from dw.names import *
 
 canyon = screen(Screen.great_canyon_127)
 shellmon = canyon.npc(Species.Shellmon155, slot=0)
@@ -37,8 +38,12 @@ def talk():    # section 5
     tamer.say(t5.u9)
     tamer.play(anim.idle)
     say(t5.u10)
+    sound(8, 10)
+    narrator.say(t5.u11)
     walk_away(-111, -2962, looks=3)
-    send_to_city(line=t5.u11, species=Species.Shellmon, sound=(8, 10), prosperity=2, camera=False)
+    shellmon.leave()
+    glances.set(0)
+    recruit(Species.Shellmon, prosperity=2)
     return
 
 # the section table, in the order of the original header
