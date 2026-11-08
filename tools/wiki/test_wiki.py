@@ -8,7 +8,6 @@ import unittest
 
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 import model
-import art
 
 
 class WikiTests(unittest.TestCase):
@@ -89,11 +88,20 @@ class WikiTests(unittest.TestCase):
         self.assertEqual(pages.item_names['meat'],'Carne')
         self.assertEqual(pages.item_names['sirloin'],'Solomillo')
 
-    def test_local_art_coverage(self):
-        for s in self.data['species']:
-            svg=art.portrait(s['id'],self.data['files'])
-            self.assertTrue(svg.startswith('<svg'))
-            self.assertNotIn('http:',svg.replace('http://www.w3.org/2000/svg',''))
+    def test_no_pictures_by_default_and_owned_asset_hook(self):
+        from unittest.mock import patch
+        spec=importlib.util.spec_from_file_location('wiki_art_policy',Path(__file__).with_name('build.py'))
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        self.assertEqual(module.owned_icons(),{})
+        articles=json.loads((model.ROOT/'web/wiki/articles/en.json').read_text())
+        pages=module.Pages(Path('unused'),self.data,'en',articles)
+        species=next(s for s in self.data['species'] if s['id']==3)
+        self.assertNotIn('<img',pages.card(species))
+        self.assertNotIn('<img',pages.tree(species))
+        with patch.object(module,'owned_icons',return_value={'3':'agumon.svg'}):
+            enabled=module.Pages(Path('unused'),self.data,'en',articles)
+            self.assertIn('/wiki/assets/owned-icons/agumon.svg',enabled.image(species))
+        self.assertFalse(any(path.startswith('content/icons/') for path in self.data['files']))
 
     def test_twenty_articles_and_nine_reviewed_translations(self):
         import hashlib

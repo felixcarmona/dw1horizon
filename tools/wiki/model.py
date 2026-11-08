@@ -17,7 +17,7 @@ _guide_spec.loader.exec_module(guide)
 import recruits
 
 LANGS = ('en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca', 'zh-hans')
-INPUTS = ('content/species', 'content/techniques', 'content/tables', 'content/icons',
+INPUTS = ('content/species', 'content/techniques', 'content/tables',
           'content/maps', 'content/screens', 'story/base', 'story/mods/what-the-island-forgot',
           'text', 'mods/patches', 'docs/reference/partner.md', 'docs/reference/combat.md',
           'docs/mods/options.md', 'docs/release/README-players.md')

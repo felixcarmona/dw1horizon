@@ -14,10 +14,11 @@ import build
 
 class Links(HTMLParser):
     def __init__(self):
-        super().__init__();self.links=[];self.ids=set();self.resources=[];self.open_spoilers=False
+        super().__init__();self.links=[];self.ids=set();self.resources=[];self.open_spoilers=False;self.art=[]
     def handle_starttag(self,tag,attrs):
         values=dict(attrs)
         if 'id' in values:self.ids.add(values['id'])
+        if tag in ('img','picture','video','audio','canvas','object','embed','image','use','foreignobject') or (tag=='svg' and values.get('class')!='tree-edges'):self.art.append(tag)
         if tag=='details' and 'spoiler' in values.get('class','').split() and 'open' in values:self.open_spoilers=True
         if tag=='a' and 'href' in values:self.links.append(values['href'])
         if tag in ('img','script') and 'src' in values:self.resources.append(values['src'])
@@ -51,13 +52,19 @@ def check(site):
         assert manifest['commit']==engine['commit'],'Wiki game snapshot differs from engine'
         assert manifest['tag'].removeprefix('v')==engine['release_version'],'Wiki release differs from engine'
     sizes=build.budget(site)
+    icons=build.owned_icons()
+    if not icons:
+        assert not any(p.suffix.lower() in ('.svg','.png','.jpg','.jpeg','.webp','.gif','.avif','.mp4','.webm') for p in (site/'wiki').rglob('*')),'Artwork shipped in text-only wiki'
+        assert not (site/'wiki/assets/icons').exists(),'Stale generated icon directory'
     parsed={}
     pages=list((site/'wiki').rglob('*.html'))
     for page in pages:
         parser=Links();parser.feed(page.read_text());parsed[page]=parser
+        if not icons:assert not parser.art,'Artwork element in text-only wiki: '+str(page)
         assert not parser.open_spoilers,'Generated spoiler is open: '+str(page)
         for href in parser.resources:
             assert not urlsplit(href).netloc,'External wiki resource'
+            assert not urlsplit(href).path.startswith(('/media/clips/','/media/maps/')),'Wiki loads main-page showcase artwork'
     for page,parser in parsed.items():
         for href in parser.links+parser.resources:
             parts=urlsplit(href)

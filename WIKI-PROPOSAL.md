@@ -16,14 +16,14 @@ The wiki always describes only the latest released game. The deployment’s sele
 | --- | --- |
 | `/wiki/` | Preferred-language entry with English fallback |
 | `/wiki/<language>/` | Wiki home |
-| `digimon/`, `digimon/<id>-<slug>/` | Illustrated directory and species pages |
+| `digimon/`, `digimon/<id>-<slug>/` | Text directory and species pages |
 | `techniques/`, `techniques/<id>-<slug>/` | Move directory and move pages |
 | `evolutions/` | Visual tree explorer |
 | `recruits/` | Spoiler-controlled recruitment reference |
 | `guides/`, `guides/<slug>/` | Authored articles |
 | `search/` | Unified article/data search |
 
-All nine page languages have generated HTML and local search JSON. Language switching preserves the article/entity, query and fragment. Spanish is Spain Spanish. Images are shared, local, lazy-loaded SVGs from the project’s hand-drawn icons and repository vector portraits; no external image hosts or extra model-video archive are needed.
+All nine page languages have generated HTML and local search JSON. Language switching preserves the article/entity, query and fragment. Spanish is Spain Spanish. The wiki ships without Digimon pictures. Text cards and compact tree nodes show names, labelled coloured level/attribute badges and specialties. Badge contrast is at least 4.5:1; labels carry the meaning alongside colour. An empty `web/wiki/owned-icons.json` map is the single future hook for reviewed owned local icons. See [the artwork audit](docs/wiki-art-audit.md), which lists the main page’s unchanged clips/maps separately.
 
 ## Generated facts and written explanations
 
@@ -49,9 +49,9 @@ At a release, source assertions and tests verify applicable behavior before gene
 
 One static JSON index per language combines articles, Digimon, techniques, evolutions and recruits. Secret species and recruitment records are classified as spoilers and rendered inside a closed, marked results group. Puzzle dialogue, solutions and sensitive article paragraphs are excluded from the index. Search loads only that language’s index and runs locally, including later queries with networking disabled. Type filters, localized labels, safe snippets and directory fallbacks are provided. Queries remain in the URL; nothing is logged remotely.
 
-The complete Pages artifact must remain below 900 MiB and every file below 100 MiB. The nine-language wiki has a 64 MiB incremental cap, including shared images; each locale index is capped at 400 KiB. The wiki is regenerated as one current release, with no retained archives. Budget checks run on the final artifact after release media extraction.
+The complete Pages artifact must remain below 900 MiB and every file below 100 MiB. The nine-language wiki has a 64 MiB incremental cap, with no artwork payload; each locale index is capped at 400 KiB. The wiki is regenerated as one current release, with no retained archives. Budget checks run on the final artifact after release media extraction.
 
-Validation covers every page type and language at desktop and phone widths, links and anchors, language switching, visual trees, image loading, closed spoilers, actual tagged/localized dialogue, spoiler-safe search, redirects, source/engine agreement and artifact size. See `web/test/wiki.mjs`, `tools/wiki/test_wiki.py`, `tools/wiki/check.py` and `tools/release_pages_test.py`. No game C code changes are required.
+Validation covers every page type and language at desktop and phone widths, links and anchors, language switching, visual trees, absence of pictures and accessible badge contrast, closed spoilers, actual tagged/localized dialogue, spoiler-safe search, redirects, source/engine agreement and artifact size. See `web/test/wiki.mjs`, `tools/wiki/test_wiki.py`, `tools/wiki/check.py` and `tools/release_pages_test.py`. No game C code changes are required.
 
 ## First 20 articles
 

@@ -11,7 +11,7 @@
 .wiki-page .species-card{display:flex;align-items:center;gap:16px;padding:20px 16px;border:1px solid var(--line);background:#fff;border-radius:20px;min-width:0}
 .wiki-page .species-card:hover{border-color:#ccb5c3;background:#fffaf6}
 .wiki-page .species-card h2{font-size:17px;overflow-wrap:anywhere}.wiki-page .species-card p{font-size:12px;color:var(--ink-2);margin:5px 0}.wiki-page .species-card small{font-size:11px;color:var(--muted)}
-.wiki-icon{object-fit:contain;flex-shrink:0;image-rendering:pixelated}.partner-title{display:flex;gap:24px;align-items:center}.partner-title img{background:#ffffff90;border-radius:30px;padding:10px}
+.partner-title{display:flex;gap:24px;align-items:center}
 .wiki-page .card h2{font-size:19px}.wiki-page .card .eyebrow{margin-bottom:12px}.wiki-page .cards{margin-top:20px}.wiki-page .cards .card p{margin-bottom:0}
 .tree-viewport{overflow-x:auto;padding:14px 4px 24px;margin:10px 0;max-width:100%}
 .evolution-tree{position:relative;display:grid;grid-template-columns:1fr 1fr 1fr;gap:52px;min-width:600px;align-items:center;padding:8px 4px}
@@ -26,8 +26,8 @@
 .wiki-page .article-body p{font-size:16px;line-height:1.85;margin:0 0 24px}.wiki-page .toc a{display:block}.wiki-page .article-body h2{margin-top:25px}.wiki-page .filters button[aria-pressed=true]{background:var(--ink);color:white}
 .wiki-page .result p{font-size:14px}.search-icon{font-size:22px;color:var(--muted)}.wiki-page .intro h1{max-width:16ch;margin:0 auto}.wiki-page .searchbox input{font-size:15px}
 @media(max-width:760px){.wiki-page .species-grid{grid-template-columns:1fr 1fr}.wiki-page .species-card{flex-direction:column;text-align:center;gap:8px;padding:16px 10px}.wiki-page .species-card h2{font-size:15px}.wiki-page .species-card p{font-size:11px}.wiki-page .detail-layout{grid-template-columns:1fr}}
-@media(max-width:650px){.wiki-page .surface,.wiki-page .wiki-main section.surface{padding:20px}.wiki-page .partner-title{gap:14px}.wiki-page .partner-title img{width:90px;height:90px;padding:7px;border-radius:20px}.wiki-page .page-title h1{font-size:32px;overflow-wrap:anywhere}.wiki-page .partner-title .chip{font-size:11px}.wiki-page .toc a{display:inline-block}.wiki-page .article-body p{font-size:15px}.wiki-page .searchbox input{font-size:13px}.wiki-page .wiki-nav{gap:14px}.wiki-page .version{font-size:10px}.evolution-tree{gap:40px;min-width:580px}.wiki-page .intro h1{font-size:39px}.wiki-page .cards{grid-template-columns:1fr}.wiki-page table{font-size:12px}.wiki-page td,.wiki-page th{white-space:normal;overflow-wrap:anywhere;vertical-align:top}.wiki-page .article-body .table-wrap{max-width:100%}.wiki-page .article-body table{min-width:320px}}
-.wiki-page .foot{padding:45px 0 40px;margin-top:15px}.wiki-page .toc b{display:block;margin-bottom:10px}.wiki-page .tree-node{min-height:94px;padding:8px}.wiki-page .tree-node img{width:44px;height:44px}
+@media(max-width:650px){.wiki-page .surface,.wiki-page .wiki-main section.surface{padding:20px}.wiki-page .partner-title{gap:14px}.wiki-page .page-title h1{font-size:32px;overflow-wrap:anywhere}.wiki-page .partner-title .chip{font-size:11px}.wiki-page .toc a{display:inline-block}.wiki-page .article-body p{font-size:15px}.wiki-page .searchbox input{font-size:13px}.wiki-page .wiki-nav{gap:14px}.wiki-page .version{font-size:10px}.evolution-tree{gap:40px;min-width:580px}.wiki-page .intro h1{font-size:39px}.wiki-page .cards{grid-template-columns:1fr}.wiki-page table{font-size:12px}.wiki-page td,.wiki-page th{white-space:normal;overflow-wrap:anywhere;vertical-align:top}.wiki-page .article-body .table-wrap{max-width:100%}.wiki-page .article-body table{min-width:320px}}
+.wiki-page .foot{padding:45px 0 40px;margin-top:15px}.wiki-page .toc b{display:block;margin-bottom:10px}.wiki-page .tree-node{min-height:94px;padding:8px}
 @media(max-width:650px){
  .wiki-page .lang select{max-width:118px;min-width:0}.wiki-page .evolution-tree{min-width:0;grid-template-columns:1fr;gap:35px;padding:8px 4px}
  .wiki-page .tree-parents,.wiki-page .tree-focus{align-items:center}.wiki-page .tree-parents .tree-node,.wiki-page .tree-focus .tree-node{width:170px}
@@ -40,3 +40,33 @@
 .spoiler{margin:16px 0;padding:16px;border:1px solid var(--line);border-radius:14px}.spoiler>summary{font-weight:700;cursor:pointer}.spoiler[open]>summary{margin-bottom:18px}.spoiler .species-grid{margin-top:18px}
 
 .wiki-page .lang select{padding-left:14px}
+
+/* Text-first reference cards. Colour is paired with a readable level/attribute label. */
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.badge{display:inline-flex;align-items:center;border-radius:6px;padding:4px 8px;background:#efedf3;color:#494153;font-size:11px;font-weight:700;line-height:1.25;letter-spacing:0;text-transform:none}
+.badge[data-level=fresh]{background:#eee9ff;color:#4a3177}
+.badge[data-level=in-training]{background:#e8f1ff;color:#234c7f}
+.badge[data-level=rookie]{background:#e2f3e8;color:#205b3c}
+.badge[data-level=champion]{background:#fff0dd;color:#794014}
+.badge[data-level=ultimate]{background:#fae8ef;color:#7d2f51}
+.badge[data-level=mega]{background:#eee6f8;color:#57317b}
+.badge[data-attribute=vaccine]{background:#e1f2f0;color:#215b59}
+.badge[data-attribute=data]{background:#e7eef9;color:#294d7a}
+.badge[data-attribute=virus]{background:#fae9e5;color:#83392c}
+.wiki-page .species-card{display:block;padding:22px;text-align:left;min-height:132px}
+.wiki-page .species-card h2{font-size:19px;line-height:1.3}
+.wiki-page .species-card .specialties{display:block;margin-top:12px;font-size:12px;line-height:1.5;color:var(--ink-2)}
+.wiki-page .partner-title{display:block}.wiki-page .partner-title h1{margin-bottom:16px}
+.wiki-page .partner-title .specialties{margin-top:12px;color:var(--ink-2);font-size:15px}
+.wiki-page .tree-node{min-height:84px;padding:12px 10px;gap:7px;border-radius:14px}
+.wiki-page .tree-node .badges{justify-content:center;gap:4px;margin:0}
+.wiki-page .tree-node .badge{font-size:10px;padding:3px 6px}
+.wiki-page .tree-node .specialties{margin:0;font-size:11px;line-height:1.4;color:var(--ink-2)}
+.owned-icon{object-fit:contain;flex-shrink:0}
+.wiki-page .species-card:has(.owned-icon),.wiki-page .partner-title:has(.owned-icon){display:flex;align-items:center;gap:18px}
+@media(max-width:650px){
+ .wiki-page .species-card{padding:18px 14px;min-height:140px}.wiki-page .species-card h2{font-size:17px}
+ .wiki-page .tree-parents .tree-node,.wiki-page .tree-focus .tree-node{width:190px}
+ .wiki-page .tree-node,.wiki-page .tree-targets .tree-node{min-height:84px}
+ .wiki-page .species-card .badge{font-size:10px;padding:4px 6px}
+}

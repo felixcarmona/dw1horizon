@@ -14,7 +14,7 @@ This standalone command preserves an existing validated engine and disc metadata
 
 ## Release model and routes
 
-`tools/wiki/model.py` uses `git archive` on the selected ref. Every game input—including species, techniques, evolution rules, City roster, story/map assertions, quiz dialogue translations, care/training tables and icons—comes from that snapshot. The dispatching commit supplies templates, UI strings, articles, reviewed recruit annotations and native vector portraits.
+`tools/wiki/model.py` uses `git archive` on the selected ref. Every game input—including species, techniques, evolution rules, City roster, story/map assertions, quiz dialogue translations, care/training tables—comes from that snapshot. The dispatching commit supplies templates, UI strings, articles, reviewed recruit annotations and the empty future owned-icon map.
 
 `/wiki/<language>/` is the canonical home for the latest released game. There is no version picker, release archive or historical-version prose. Children include `digimon/`, `digimon/<id>-<slug>/`, `techniques/`, `techniques/<id>-<slug>/`, `evolutions/`, `recruits/`, `guides/`, `guides/<slug>/`, and `search/`. `/wiki/` follows the existing language preference; explicit language URLs always win. Switching language retains the page and query. All normal content is pre-rendered; search, tree dialogs and compatibility redirects use small local scripts. No-script entry links remain available.
 
@@ -59,7 +59,9 @@ Bakemon questions and answers must come verbatim from the deployed tag’s local
 
 To add or change an article: verify each claim against the target release’s code/data, write the English record, classify sensitive paragraphs, bind release-dependent facts instead of writing numbers, then translate all eight other catalogs with the existing AI-assisted workflow. Review meaning, spoiler classification, tokens and Spain Spanish; update `review.json` only after that review. Add generated facts to the model with source assertions and a regression for changed or missing inputs. The public wiki always describes the deployed latest release, without “before/after version” notes.
 
-The existing hand-drawn `content/icons/*.txt` idle frames are converted into small local SVGs. Native partners without those drawings use original vector portraits in `tools/wiki/art.py`. No disc artwork is added to source or fetched from another host. SVG resources are shared by all locales, include explicit dimensions and alt text, and lazy-load. The evolution graph keeps real connected from/to nodes, with tap-to-open requirements and a link to the selected Digimon. Desktop uses a horizontal tree; phones use a vertical trunk so targets remain visible without horizontal panning.
+The wiki ships without Digimon images. Names, small coloured level/attribute badges and plain-text specialties replace artwork in cards, species headings, tree nodes and search. Badge text has at least 4.5:1 contrast, with consistent colours and readable labels in every language. Trees keep real connected from/to nodes and tap-to-open requirements, using compact text nodes on desktop and a vertical trunk on phones.
+
+`web/wiki/owned-icons.json` is the single future opt-in map and is currently empty. Only reviewed owned local files may be listed; no game icon extraction or portrait generation runs. See [the artwork audit](wiki-art-audit.md) for the image-free wiki boundary, future hook, and separate inventory of the main page’s unchanged showcase clips/maps.
 
 ## Budgets and checks
 
@@ -75,4 +77,4 @@ python3 tools/wiki/check.py --site build/pages-site
 node web/test/wiki.mjs build/pages-site build/wiki-review
 ```
 
-Browser checks visit ten page types in all nine languages at 1440 px and 390 px. They exercise language switches, local images, tree requirements, folded spoilers, search filters/empty results with networking disabled after index load, and legacy routes/anchors. Screenshots include the six requested views in English and Spain Spanish at both widths. The browser and its temporary server close in `finally`.
+Browser checks visit ten page types in all nine languages at 1440 px and 390 px. They exercise language switches, image-free cards, accessible badge contrast, tree requirements, folded spoilers, search filters/empty results with networking disabled after index load, and legacy routes/anchors. Screenshots include the six requested views in English and Spain Spanish at both widths. The browser and its temporary server close in `finally`.

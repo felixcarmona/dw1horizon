@@ -27,7 +27,7 @@ try{
   assert.match(await page.$eval('#wiki-entry',e=>e.textContent),/Wiki/);
   assert.match(await page.$eval('.data-link',e=>e.getAttribute('href')),/^wiki\//);
   await page.click('.data-link');await page.waitForSelector('.wiki-main');
-  const results=[];
+  const results=[];const palette=new Map();
   for(const lang of languages){
     const strings=JSON.parse(await fs.readFile(path.join(site,`i18n/${lang}.json`),'utf8'));
     const base=`/wiki/${lang}/`;
@@ -42,11 +42,22 @@ try{
         assert.equal(await page.evaluate(()=>document.fonts.check('500 16px "Plus Jakarta Sans"')),true);
         assert.equal(await page.$eval('#lang',e=>e.value),lang);
         assert.equal(await page.$('.version'),null);
+        assert.equal(await page.$('img,picture,video,canvas,object,embed,svg image'),null,'wiki ships without pictures');
+        const badges=await page.$$eval('.badge',es=>es.map(e=>{
+          const css=getComputedStyle(e);
+          const rgb=value=>value.match(/[\d.]+/g).slice(0,3).map(Number).map(v=>{v/=255;return v<=.04045?v/12.92:((v+.055)/1.055)**2.4;});
+          const luminance=value=>rgb(value).reduce((sum,v,i)=>sum+v*[.2126,.7152,.0722][i],0);
+          const a=luminance(css.color),b=luminance(css.backgroundColor);
+          return {key:e.dataset.level?'level:'+e.dataset.level:'attribute:'+e.dataset.attribute,text:e.textContent.trim(),colour:css.color+'/'+css.backgroundColor,contrast:(Math.max(a,b)+.05)/(Math.min(a,b)+.05)};
+        }));
+        for(const badge of badges){
+          assert.ok(badge.text);assert.ok(badge.contrast>=4.5,`${badge.key} contrast ${badge.contrast}`);
+          if(palette.has(badge.key))assert.equal(badge.colour,palette.get(badge.key),'consistent badge colours');else palette.set(badge.key,badge.colour);
+        }
         assert.equal(await page.$$eval('details[open]',es=>es.length),0,'spoilers folded');
         if(kind==='digimon-list'){
           assert.equal(await page.$$eval('.species-card',es=>es.length),manifest.counts.species);
-          assert.equal(await page.$$eval('.species-card img',es=>es.every(e=>e.loading==='lazy'&&e.alt.length>0)),true);
-          assert.ok(await page.$eval('.species-card img',e=>e.complete&&e.naturalWidth>0));
+          assert.equal(await page.$$eval('.species-card',es=>es.every(e=>e.querySelectorAll('.badge').length===2&&e.querySelector('.specialties'))),true);
           await page.click('button[data-level="rookie"]');
           const shown=await page.$$eval('.species-card:not([hidden])',es=>es.map(e=>e.dataset.level));
           assert.ok(shown.length>0&&shown.length<manifest.counts.species);assert.ok(shown.every(l=>l==='rookie'));
@@ -65,7 +76,8 @@ try{
         }
         if(kind==='search'){
           await page.waitForSelector('.result');
-          assert.ok(await page.$('a.result[href$="/digimon/3-agumon/"]'));
+          assert.ok(await page.$('a.result[href$="/digimon/3-agumon/"] .badge[data-attribute="vaccine"]'));
+          assert.equal(await page.$('#search-results img'),null);
           const recruit=await page.$('a.result[data-kind="recruit"]');
           assert.ok(recruit);assert.equal(await recruit.evaluate(e=>e.checkVisibility()),false);
           await page.click('#search-results > .spoiler > summary');
@@ -79,7 +91,7 @@ try{
           assert.equal(await page.$$eval('.result',es=>es.length),2);
           await page.$eval('#wiki-query',e=>{e.value='impossible-wiki-query-123';e.dispatchEvent(new Event('input'));});
           assert.equal(await page.$eval('#search-results',e=>e.textContent),strings['wiki.empty']);
-          await page.$eval('#wiki-query',e=>{e.value='Horizon';e.dispatchEvent(new Event('input'));});
+          await page.$eval('#wiki-query',e=>{e.value='Agumon';e.dispatchEvent(new Event('input'));});
           offline=false;
         }
         await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));
@@ -130,7 +142,7 @@ try{
   }
   assert.deepEqual(errors,[]);assert.deepEqual(missing,[]);assert.deepEqual(external,[]);
   if(shots)await fs.writeFile(path.join(shots,'browser-validation.json'),JSON.stringify({manifest,results,errors,missing,external},null,2));
-  console.log(`ok: ${results.length} page/type/locale/viewport checks; redirects, trees, offline search, local images, no errors or external wiki requests`);
+  console.log(`ok: ${results.length} page/type/locale/viewport checks; redirects, trees, offline search, text-only cards, badge contrast, no errors or external wiki requests`);
 }finally{
   if(browser)await browser.close();
   if(server){server.kill();await once(server,'exit');}

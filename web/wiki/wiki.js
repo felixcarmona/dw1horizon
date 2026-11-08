@@ -99,8 +99,16 @@ if (config.kind === 'search') {
       const a=document.createElement('a');a.className='result';a.href=entry.url;a.dataset.kind=entry.type;
       const label=document.createElement('span');label.className='eyebrow';label.textContent=strings[labels[entry.type]];
       const title=document.createElement('h2');title.textContent=entry.title+' ↗';
-      const summary=document.createElement('p');summary.textContent=entry.summary||entry.text.slice(0,220);
-      a.append(label,title,summary);(entry.spoiler?spoilers:results).append(a);
+      const summary=document.createElement('p');summary.textContent=entry.specialties||entry.summary||entry.text.slice(0,220);
+      a.append(label,title);
+      if(entry.level&&entry.attribute){
+        const badges=document.createElement('span');badges.className='badges';
+        for(const [key,text] of [['level',entry.levelLabel],['attribute',entry.attributeLabel]]){
+          const badge=document.createElement('span');badge.className='badge';badge.dataset[key]=entry[key];badge.textContent=text;badges.append(badge);
+        }
+        a.append(badges);
+      }
+      a.append(summary);(entry.spoiler?spoilers:results).append(a);
     }
     if(spoilers.children.length>1)results.append(spoilers);
     if(!found.length) results.textContent=config.strings['wiki.empty'];

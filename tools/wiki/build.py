@@ -11,7 +11,6 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import model
-import art
 from localize import translate
 
 ROOT = model.ROOT
@@ -29,6 +28,14 @@ def compact(data):
 
 def plain(text):
     return unescape(re.sub('<[^>]*>', ' ', text)).strip()
+
+
+def owned_icons():
+    """An empty opt-in map ships no pictures; future entries must name reviewed owned assets."""
+    icons=json.loads((CONTENT/'owned-icons.json').read_text())
+    if not isinstance(icons,dict) or any(not key.isdecimal() or not isinstance(name,str) or not re.fullmatch(r'[a-z0-9][a-z0-9-]*\.(svg|png|webp)',name) for key,name in icons.items()):
+        raise ValueError('Owned icons must map species IDs to local filenames')
+    return icons
 
 
 def budget(out):
@@ -55,6 +62,7 @@ class Pages:
         self.english = json.loads((ROOT / 'web/i18n/en.json').read_text())
         self.by_id = {s['id']: s for s in data['species']}
         self.moves = {m['id']: m for m in data['techniques']}
+        self.icons = owned_icons()
         self.index = []
         self.records = {}
         self.places = model.recruits.screen_names(data['files'], lang)
@@ -78,7 +86,18 @@ class Pages:
         return self.base + f'techniques/{move["id"]}-{model.slug(move["name"])}/'
 
     def image(self, species, size=64):
-        return f'<img class="wiki-icon" src="/wiki/assets/icons/{species["id"]}.svg?v={self.data["commit"][:12]}" width="{size}" height="{size}" loading="lazy" decoding="async" alt="{escape(self.name(species))}">'
+        name=self.icons.get(str(species['id']))
+        if not name:return ''
+        return f'<img class="owned-icon" src="/wiki/assets/owned-icons/{name}" width="{size}" height="{size}" loading="lazy" decoding="async" alt="{escape(self.name(species))}">'
+
+    def badges(self, species):
+        return f'<span class="badges"><span class="badge" data-level="{species["level"]}">{self.t("digimon.level."+species["level"])}</span><span class="badge" data-attribute="{species["attribute"]}">{self.t("digimon.attr."+species["attribute"])}</span></span>'
+
+    def metadata(self, species):
+        return dict(level=species['level'],attribute=species['attribute'],
+                    levelLabel=self.strings['digimon.level.'+species['level']],
+                    attributeLabel=self.strings['digimon.attr.'+species['attribute']],
+                    specialties=plain(self.specs(species)))
 
     def specs(self, species):
         return ' / '.join(self.t('data.' + x) for x in species['specialties'])
@@ -90,7 +109,7 @@ class Pages:
         return f'<form class="searchbox" role="search" action="{self.base}search/"><label class="search-icon" for="wiki-query" aria-label="{self.t("wiki.search")}">⌕</label><input id="wiki-query" name="q" type="search" placeholder="{self.t("wiki.searchHint")}" value="{escape(value)}"><button class="button primary">{self.t("wiki.search")}</button></form>'
 
     def card(self, species):
-        return f'<a class="species-card" data-level="{species["level"]}" href="{self.url(species)}">{self.image(species)}<div><h2>{escape(self.name(species))}</h2><p>{self.label(species)}</p><small>{self.specs(species)}</small></div></a>'
+        return f'<a class="species-card" data-level="{species["level"]}" href="{self.url(species)}">{self.image(species)}<div><h2>{escape(self.name(species))}</h2>{self.badges(species)}<small class="specialties">{self.specs(species)}</small></div></a>'
 
     def req(self, species):
         result = translate(species['requirements'], self.english, self.strings).strip()
@@ -144,7 +163,7 @@ class Pages:
             if hours:
                 extra = '<br>' + self.t('digimon.after', hours=hours)
             self.records[str(s['id'])] = dict(name=self.name(s), html=self.req(s)+extra, url=self.url(s))
-            return f'<a class="tree-node {"tree-current" if main else ""}" href="{self.url(s)}" data-species="{s["id"]}" {"aria-current=page" if main else ""}>{self.image(s,56)}<b>{escape(self.name(s))}</b><small>{self.t("digimon.level."+s["level"])}</small></a>'
+            return f'<a class="tree-node {"tree-current" if main else ""}" href="{self.url(s)}" data-species="{s["id"]}" {"aria-current=page" if main else ""}>{self.image(s,56)}<b>{escape(self.name(s))}</b>{self.badges(s)}<small class="specialties">{self.specs(s)}</small></a>'
         def graph(parents, targets, suffix):
             parent_html=''.join(node(self.by_id[i]) for i in parents) or f'<p>{self.t("digimon.hatches" if species["level"]=="fresh" else "digimon.noRoute")}</p>'
             target_html=''.join(node(self.by_id[i]) for i in targets) or f'<p>{self.t("digimon.noNext")}</p>'
@@ -196,8 +215,8 @@ class Pages:
             special = ''
             if species['special']:
                 special = self.spoiler('<p>'+translate(escape(species['special']),self.english,self.strings).strip()+'</p>')
-            body = f'<div class="page-title partner-title">{self.image(species,144)}<div><span class="eyebrow">#{species["id"]:03d}</span><h1>{escape(name)}</h1><p>{self.label(species)}</p><div class="chips"><span class="chip">{self.specs(species)}</span></div></div></div><nav class="anchor-nav"><a href="#evolutions">{self.t("data.evolutions")}</a><a href="#techniques">{self.t("data.techniques")}</a><a href="#care">{self.t("wiki.care")}</a></nav><section class="surface" id="evolutions"><h2>{self.t("data.evolutions")}</h2>{tree}<details><summary>{self.t("wiki.requirements")}</summary><p>{self.req(species)}</p>{special}</details><p><a class="text-link" href="{self.base}guides/evolution-requirements/">{self.t("wiki.readGuide")} →</a></p></section><div class="detail-layout"><section class="surface" id="techniques"><h2>{self.t("data.techniques")}</h2>{move_table}<p class="muted">{self.t("wiki.slots")}</p><p class="muted">{self.t("data.costRule")}</p><a class="text-link" href="{self.base}guides/learning-techniques/">{self.t("wiki.readGuide")} →</a></section><aside>{care}{"".join(records)}</aside></div>'
-            record=dict(type='digimon',text=plain(self.label(species)+' '+self.specs(species)),aliases=species['name'])
+            body = f'<div class="page-title partner-title">{self.image(species,144)}<div><span class="eyebrow">#{species["id"]:03d}</span><h1>{escape(name)}</h1>{self.badges(species)}<p class="specialties">{self.specs(species)}</p></div></div><nav class="anchor-nav"><a href="#evolutions">{self.t("data.evolutions")}</a><a href="#techniques">{self.t("data.techniques")}</a><a href="#care">{self.t("wiki.care")}</a></nav><section class="surface" id="evolutions"><h2>{self.t("data.evolutions")}</h2>{tree}<details><summary>{self.t("wiki.requirements")}</summary><p>{self.req(species)}</p>{special}</details><p><a class="text-link" href="{self.base}guides/evolution-requirements/">{self.t("wiki.readGuide")} →</a></p></section><div class="detail-layout"><section class="surface" id="techniques"><h2>{self.t("data.techniques")}</h2>{move_table}<p class="muted">{self.t("wiki.slots")}</p><p class="muted">{self.t("data.costRule")}</p><a class="text-link" href="{self.base}guides/learning-techniques/">{self.t("wiki.readGuide")} →</a></section><aside>{care}{"".join(records)}</aside></div>'
+            record=dict(type='digimon',text=plain(self.label(species)+' '+self.specs(species)),aliases=species['name'],**self.metadata(species))
             if species['spoiler']:
                 # Native fragment navigation opens closed details ancestors. Keep public targets outside.
                 anchors=re.findall(r' id="(evolutions|techniques|care|recruit-\d+)"',body)
@@ -206,7 +225,7 @@ class Pages:
                 record.update(spoiler=True,title=name)
             self.page(f'digimon/{species["id"]}-{model.slug(species["name"])}/',plain(self.t('wiki.spoilers')) if species['spoiler'] else name,body,'digimon',record)
             if species['spoiler']:continue
-            self.index.append(dict(type='evolution',title=name+' · '+plain(self.t('data.evolutions')),url=self.url(species)+'#evolutions',text=plain(self.req(species)),aliases=' '.join(self.by_id[i]['name'] for i in species['parents']+species['to'] if not self.by_id[i]['spoiler'])+' Horizon'))
+            self.index.append(dict(type='evolution',title=name+' · '+plain(self.t('data.evolutions')),url=self.url(species)+'#evolutions',text=plain(self.req(species)),aliases=' '.join(self.by_id[i]['name'] for i in species['parents']+species['to'] if not self.by_id[i]['spoiler'])+' Horizon',**self.metadata(species)))
 
     def technique_pages(self):
         cards=[]
@@ -333,9 +352,12 @@ def build(out, tag, presentation_ref=None):
     assets=dest/'assets';assets.mkdir(parents=True)
     for name in ('style.css','wiki.js','redirect.js'):
         shutil.copyfile(CONTENT/name,assets/name)
-    (assets/'icons').mkdir()
-    for s in data['species']:
-        (assets/'icons'/f'{s["id"]}.svg').write_text(art.portrait(s['id'],data['files']))
+    icons=owned_icons()
+    if not set(icons)<=set(str(s['id']) for s in data['species']):
+        raise ValueError('Owned icon maps an unknown species')
+    for name in set(icons.values()):
+        (assets/'owned-icons').mkdir(exist_ok=True)
+        shutil.copyfile(CONTENT/'owned-icons'/name,assets/'owned-icons'/name)
     for lang in model.LANGS:
         file=CONTENT/f'articles/{lang}.json'
         if review['locales'][lang]!=hashlib.sha256(file.read_bytes()).hexdigest():raise ValueError('Article translation review changed: '+lang)
