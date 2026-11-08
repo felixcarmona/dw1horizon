@@ -81,6 +81,14 @@ class WikiTests(unittest.TestCase):
             expected=' '.join(re.sub(r'\{[^}]+\}','',x).strip() for x in dialogue['name.quiz.q1.question'][1:])
             self.assertIn(html.escape(expected),block)
 
+    def test_food_names_follow_the_release_language(self):
+        spec=importlib.util.spec_from_file_location('wiki_food',Path(__file__).with_name('build.py'))
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        articles=json.loads((model.ROOT/'web/wiki/articles/es.json').read_text())
+        pages=module.Pages(Path('unused'),self.data,'es',articles)
+        self.assertEqual(pages.item_names['meat'],'Carne')
+        self.assertEqual(pages.item_names['sirloin'],'Solomillo')
+
     def test_local_art_coverage(self):
         for s in self.data['species']:
             svg=art.portrait(s['id'],self.data['files'])

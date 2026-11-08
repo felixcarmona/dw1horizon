@@ -34,3 +34,5 @@
  .wiki-page .tree-targets{padding-left:40px;gap:12px}.wiki-page .tree-targets .tree-node{width:100%;min-height:100px}.wiki-page .tree-node{min-height:100px}
  .wiki-page .tree-column p{max-width:230px}.wiki-page .toc a{margin-right:13px}.wiki-page .article-body section+section{margin-top:25px}
 }
+@media(max-width:650px){.wiki-page #techniques table{min-width:330px}.wiki-page #techniques th{overflow-wrap:normal;word-break:normal}.wiki-page #techniques td:not(:first-child){white-space:nowrap;overflow-wrap:normal}}
+.wiki-page .surface,.wiki-page .detail-layout>*,.wiki-page .article-layout>*{min-width:0}.wiki-page .table-wrap{max-width:100%}

@@ -58,6 +58,9 @@ class Pages:
         self.index = []
         self.records = {}
         self.places = model.recruits.screen_names(data['files'], lang)
+        en_names=json.loads(data['files']['text/ours/names.json'])
+        own_names=json.loads(data['files'].get(f'text/{lang}/names.json',b'{}'))
+        self.item_names={value.casefold():own_names.get(key,value) for key,value in en_names.items() if key.startswith('main.ITEM_NAMES.')}
 
     def t(self, key, **values):
         result = self.strings[key]
@@ -163,6 +166,7 @@ class Pages:
             move_table = f'<div class="table-wrap"><table><thead><tr><th>{self.t("data.technique")}</th><th>{self.t("data.power")}</th><th>{self.t("data.mp")}</th><th>{self.t("wiki.learning")}</th></tr></thead><tbody>{"".join(moves)}</tbody></table></div>'
             p = species['partner']
             food = str(p.get('favorite_food','—'))
+            food = self.item_names.get(food.casefold(),food)
             care = f'<section class="surface" id="care"><h2>{self.t("wiki.care")}</h2><dl class="facts"><dt>{self.t("wiki.food")}</dt><dd>{escape(food)}</dd><dt>{self.t("wiki.sleep")}</dt><dd>{escape(p.get("sleep_cycle","—"))}</dd><dt>{self.t("wiki.birthWeight")}</dt><dd>{p.get("birth_weight","—")}</dd></dl></section>'
             records = [self.recruit(r) for r in self.data['recruits'] if r['name']==species['name']]
             special = ''
