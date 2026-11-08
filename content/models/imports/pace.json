@@ -1027,6 +1027,7 @@
  },
  "198": {
   "name": "Nefertimon",
+  "after_generator": "tools.models.field_animations.nefertimon_care",
   "bones": 24,
   "skeleton_sha256": "f3939397c46dfe31ba957af2274f0f60cc5fc429e63c3657240828589c38f6ed",
   "source_sha256": "2b77a30040762b109ed6c079bfe33a055df6feed6afa91fca312cd2946ed0c70",

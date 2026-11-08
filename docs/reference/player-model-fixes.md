@@ -532,3 +532,46 @@ The camera fitter uses the smallest necessary depth increase, preserves the
 old anchor where possible and verifies opaque pixels against the reserved UI.
 The complete idle remains available as a conservative diagnostic, but fitting
 its unseen travelling poses would shrink otherwise readable Status portraits.
+
+## Nefertimon: Status, sleeping foreleg and voice
+
+Species 198's high tail at the first idle tick made the Status fitter move the
+whole model back to `[-1259, 319, 1584]`. The tail used roughly half the height
+available above Life, leaving the face and body disproportionately small.
+`nefertimon_care.py`, applied after the existing pace recipe, starts the same
+83-tick idle at tick 66, where the existing tail swing is low. Every idle pose
+and its closing frame remain; no events are removed. Status can then use
+`[-187, 188, -325]`: its opaque bounds grow from about 49 to 77 pixels wide,
+while staying 45 pixels tall and clearing the Status label, sleep badge and
+Life rows. The field and battle idle share the shifted cycle.
+
+The same layer changes only right shoulder, elbow and wrist rotations in
+sleep slot 9. A two-bone solve keeps the paw on the ground and lets the elbow
+follow the inherited breathing chest. The paw softly reaches forward as she
+settles; the original timing, sound event, other limbs, head, wings, tail,
+translations and scale channels remain. Native Garurumon's sleep is the
+visual reference for the low forepaw carriage. Slot 11 is also used for care
+celebrations and is unchanged.
+
+The voice pair is now native Leomon's VBALL 42 / VLALL 3, also used by
+SaberLeomon and GrapLeomon, replacing Unimon's 29 / 9. Gatomon and BlackGatomon
+use Patamon's 27 / 1; Lynxmon uses Drimogemon's 34 / 7; Garurumon uses 20 / 7.
+These are borrowed native banks, not imported feline recordings. There is no
+Liollmon species or separate imported voice bank in the current provider.
+Leomon is the large feline donor; its banks cover battle notes 53–55 and care
+notes 48–52, including sleep's note 48. Pitch-correct preview WAVs were
+exported for these alternatives. Auditory comparison remains unverified;
+the donor choice is based on species provenance and note coverage.
+
+Replay with the pre-care paced model available:
+
+```sh
+NEFERTIMON_BEFORE=BEFORE.MMD PYTHONPATH=tools \
+  python3 -W ignore -m unittest tools.test_nefertimon_care
+python3 tools/models/edit.py --from build/NAME check 198 --species-pins
+```
+
+The care tests check every preserved channel, the entire shifted idle cycle,
+and the sleeping paw's ground clearance at ticks and interpolated frames.
+The provider enforces the resident and cold-animation budgets. Geometry,
+texture, battle clips and executable code are unchanged.
