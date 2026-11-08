@@ -13,13 +13,13 @@ try{
   server=spawn('python3',['-u','-c','import http.server\ns=http.server.ThreadingHTTPServer(("127.0.0.1",0),http.server.SimpleHTTPRequestHandler)\nprint(s.server_port,flush=True)\ns.serve_forever()'],{cwd:path.resolve(site),stdio:['ignore','pipe','ignore']});
   const [port]=await once(server.stdout,'data');const root=`http://127.0.0.1:${String(port).trim()}`;
   browser=await puppeteer.launch({executablePath:process.env.CHROMIUM||'/snap/bin/chromium',headless:true,args:['--no-sandbox']});
-  const page=await browser.newPage();const errors=[],external=[],missing=[];
+  const page=await browser.newPage();const errors=[],external=[],missing=[];let fromMainPage=false;
   page.on('pageerror',e=>errors.push(e.message));
   page.on('response',r=>{if(r.status()>=400&&r.url().startsWith(root))missing.push(r.url());});
   await page.setRequestInterception(true);
   let offline=false;
   page.on('request',r=>{
-    if(!r.url().startsWith(root)&&/^https?:/.test(r.url())){const from=r.headers().referer||page.url();if(from.includes('/wiki/'))external.push(r.url());r.abort();}
+    if(!r.url().startsWith(root)&&/^https?:/.test(r.url())){if(page.url().includes('/wiki/')&&!fromMainPage)external.push(r.url());r.abort();}
     else if(offline)r.abort();else r.continue();
   });
   await page.goto(root+'/',{waitUntil:'networkidle0'});
@@ -149,9 +149,11 @@ try{
     assert.ok(await page.$eval('[data-recruit="recruit-37"] h2',e=>e.checkVisibility()));
     assert.equal(await page.$eval('[data-recruit="recruit-37"] table',e=>e.checkVisibility()),false);
     for(const anchor of ['digimon','evolutions','feature-digimon','feature-guide']){
-      await page.goto(root+'/#'+anchor,{waitUntil:'load'});await page.waitForSelector('.wiki-main');
+      // The main page's own requests may still be in flight after its redirect to the wiki.
+      fromMainPage=true;await page.goto(root+'/#'+anchor,{waitUntil:'load'});await page.waitForSelector('.wiki-main');
       assert.ok(page.url().startsWith(root+base),`Expected ${base}; actual ${page.url()}`);
       assert.equal(await page.$$eval('details[open]',es=>es.length),0);
+      await page.goto('about:blank');fromMainPage=false;
     }
     await page.goto(root+base+'guides/memory-cards/',{waitUntil:'load'});
     const next=languages[(languages.indexOf(lang)+1)%languages.length];
