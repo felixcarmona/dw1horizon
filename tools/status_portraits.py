@@ -1,24 +1,21 @@
 #!/usr/bin/env python3
-"""Audit every raisable Status portrait, including every tick of idle slot 0.
+"""Audit every raisable Status portrait at the pose actually drawn by the game.
 
-Run after a full build:
   python3 tools/status_portraits.py build/NAME --out build/status-audit [--fix]
 
-Uses the built DIGI.DAT (including resident/cold joins), native disc models,
-runtime skeletons and modelScale rules. The camera is renderDigiviceEntity's
-GsRVIEW2 (1300,0,-3280 -> 0,0,0), projection 512, screen origin (160,120).
-Repairs use the Condition area's free space above Life (y<154), with a
-20-pixel readability floor on the fixed pose actually drawn by the game.
-Only visible pixels crossing its outer edges qualify for changes. Touching an
-edge or the label alone does not change an otherwise fitting original.
-All idle frames retain a conservative geometry envelope; every repaired frame
-is also rasterized to check opaque pixels, the label and the Life boundary.
-No runtime clipping or model edits are needed: --fix changes only viewX/Y/Z.
+The renderer resets idle slot 0 and draws its first tick on every pass. Check
+that pose, including all animated texture phases, against the panel, header,
+Life/care rows and sleeping badge. --all-idle also checks non-displayed poses
+as a conservative diagnostic; a travelling idle can make that audit unreadable.
+Uses the built archive, native models, runtime skeletons and modelScale rules.
+Repairs only change viewX/Y/Z; model geometry and field behaviour stay intact.
 """
 import argparse
 import hashlib
 import json
 import math
+import re
+import struct
 from pathlib import Path
 import sys
 
@@ -36,6 +33,9 @@ A, B = 3280 / LENGTH, 1300 / LENGTH
 BOUNDS = (160 - 150 + 4, 120 - 18 + 3, 160 - 1 - 1, 120 - 89 + 190 - 4)
 BOX_EDGES = (10, 102, 161, 220)
 LABEL = (20, 107, 80, 120)
+# renderDigimonStatusConditions: sleep is mask 1, column 3. Include every
+# vertical bob position (121..130) and all 12 rows of the badge.
+SLEEP_BADGE = (67, 121, 78, 141)
 # Life starts at y=154. The label occupies only the upper-left rectangle.
 # Native baby portraits retain about 20 visible rows above Life; use that floor.
 LIFE_Y = 154
@@ -108,8 +108,22 @@ def visible_bounds(layer):
     return None if box is None else [box[0], box[1], box[2] - 1, box[3] - 1]
 
 
+def overlaps_rect(layer, rect):
+    left, top, right, bottom = rect
+    return layer.getchannel('A').crop((left, top, right + 1, bottom + 1)).getbbox() is not None
+
+
 def overlaps_label(layer):
-    return layer.getchannel('A').crop((LABEL[0], LABEL[1], LABEL[2] + 1, LABEL[3] + 1)).getbbox() is not None
+    return overlaps_rect(layer, LABEL)
+
+
+def ui_problem(layer, check_height=True):
+    problem = readability_problem(visible_bounds(layer), overlaps_label(layer), check_height)
+    if problem:
+        return problem
+    if overlaps_rect(layer, SLEEP_BADGE):
+        return 'sleep badge overlap'
+    return None
 
 
 def readability_problem(box, label_overlap=False, check_height=True):
@@ -137,13 +151,13 @@ def verify_after(points, frames, model, skeleton, tex, events, width, position, 
             texture = texture_at(tex, events, tick, width, phase)
             layer = model_layer(model, skeleton, pose, texture, position, scale)
             b = visible_bounds(layer)
-            if readability_problem(b, overlaps_label(layer), check_height=tick == 0):
+            if ui_problem(layer, check_height=tick == 0):
                 return None
             height = b[3] - b[1] + 1
             heights.append(height)
             boxes.append(b)
     return dict(frames=len(frames), raster_ticks=list(range(len(frames))),
-                label_clear=True, life_clear=True, minimum_height=min(heights),
+                label_clear=True, life_clear=True, sleep_clear=True, minimum_height=min(heights),
                 maximum_height=max(heights), first_height=boxes[0][3] - boxes[0][1] + 1,
                 first_bounds=boxes[0])
 
@@ -196,6 +210,34 @@ def load_model(t, s, record, archive):
     return model, hashlib.sha256(data).hexdigest()
 
 
+def native_positions(build):
+    """Native views are resident RAISE_DATA, not the archive's duplicate rows."""
+    build = Path(build)
+    baseline = None
+    checked = []
+    for directory in [build / 'exe', *sorted(build.glob('exe-*'))]:
+        exe = directory / 'SLUS_010.32'
+        if not exe.is_file():
+            continue
+        linkmap = Path(str(exe) + '.elf.map').read_text()
+        address = int(re.search(r'^\s*0x([0-9a-fA-F]+)\s+RAISE_DATA\s*$', linkmap, re.M)[1], 16)
+        data = exe.read_bytes()
+        base = struct.unpack_from('<I', data, 0x18)[0] - 0x800
+        stride = struct.calcsize(species._fmt(species.RAISE_FIELDS))
+        rows = {}
+        for sid in range(species.NUM_ORIGINAL):
+            row = species.unpack(species.RAISE_FIELDS, data, address - base + sid * stride)
+            rows[sid] = [row[key] for key in ('viewX','viewY','viewZ')]
+        if baseline is None:
+            baseline = rows
+        elif rows != baseline:
+            raise ValueError(f'{directory.name}: native Status cameras differ by language')
+        checked.append(directory.name)
+    if baseline is None:
+        raise ValueError('native Status audit needs the built executable and linker map')
+    return baseline, checked
+
+
 def anchor_frames(frames, anchor, model):
     """Translate the whole portrait camera with one bone; retain every local pose."""
     if not anchor:
@@ -208,8 +250,8 @@ def anchor_frames(frames, anchor, model):
     return result
 
 
-def cloud(model, skeleton, scale, anchor=0):
-    frames, loop, events = animsheet.slot_frames(model, len(skeleton), 0, max_ticks=10000)
+def cloud(model, skeleton, scale, anchor=0, live_pose=False):
+    frames, loop, events = animsheet.slot_frames(model, len(skeleton), 0, max_ticks=1 if live_pose else 10000)
     if len(frames) == 10000:
         raise ValueError('idle clip exceeds audit limit')
     frames = anchor_frames(frames, anchor, model)
@@ -309,14 +351,27 @@ def main():
     ap.add_argument('build', type=Path)
     ap.add_argument('--out', type=Path, required=True)
     ap.add_argument('--fix', action='store_true')
+    ap.add_argument('--check', action='store_true', help='fail if the built previews need repairs')
+    poses = ap.add_mutually_exclusive_group()
+    poses.add_argument('--live-pose', action='store_true', default=True,
+                       help='audit the first idle tick drawn by Status (default)')
+    poses.add_argument('--all-idle', action='store_false', dest='live_pose',
+                       help='also fit non-displayed idle poses as a conservative diagnostic')
     ap.add_argument('--reference', type=Path,
                     help='compare against the original before positions in a previous audit.json')
     ap.add_argument('--verify-repairs', type=Path,
                     help='verify current positions for every fixed species in an earlier audit')
     args = ap.parse_args()
+    if args.check and (args.fix or args.reference):
+        ap.error('--check cannot be combined with --fix or --reference')
     args.out.mkdir(parents=True, exist_ok=True)
     archive, _, records = species.read_archive(str(args.build / 'DIGI.DAT'))
     alltim = (args.build / 'ALLTIM.TIM').read_bytes()
+    native_views, native_languages = native_positions(args.build)
+    # copyRecordOriginal replaces resident rows at boot for carried native IDs.
+    for sid in species.record_originals(archive):
+        if records[sid]['flags'] & species.FLAG_PARTNER:
+            native_views[sid] = [records[sid]['raise'][key] for key in ('viewX','viewY','viewZ')]
     sources = species.load_content()
     built_sources = species.load_content(str(args.build / 'species'))
     verification_set = {r['id'] for r in json.loads(args.verify_repairs.read_text()) if r['fixed']} if args.verify_repairs else set()
@@ -338,15 +393,16 @@ def main():
         anchor = s['partner'].get('status_screen_anchor_bone', 0)
         if r.get('statusAnchorBone', 0) != anchor:
             raise ValueError(f'{t}: rebuild first: Status anchor differs from archive')
-        points, frames, loop, events = cloud(model, r['bones'], scale, anchor)
+        points, frames, loop, events = cloud(model, r['bones'], scale, anchor, args.live_pose)
         source_position = s['partner']['status_screen_position']
-        built_position = [r['raise'][k] for k in ('viewX', 'viewY', 'viewZ')]
+        built_position = (native_views[t] if t < species.NUM_ORIGINAL else
+                          [r['raise'][k] for k in ('viewX', 'viewY', 'viewZ')])
         if built_position != source_position:
             raise ValueError(f'{t}: rebuild first: archive position {built_position} differs from source {source_position}')
         before = reference[t] if reference is not None else source_position
         before_anchor = reference_rows[t].get('status_anchor_bone', 0) if reference_rows else anchor
         if before_anchor != anchor:
-            before_points, before_frames, _, _ = cloud(model, r['bones'], scale, before_anchor)
+            before_points, before_frames, _, _ = cloud(model, r['bones'], scale, before_anchor, args.live_pose)
         else:
             before_points, before_frames = points, frames
         box = envelope(before_points, before)
@@ -379,6 +435,17 @@ def main():
                         break
                 if worst is not None:
                     break
+        # The live renderer draws the first idle tick. Panel-only tests miss
+        # portraits that obscure the header, care rows or sleeping condition.
+        before_ui_problems = []
+        for phase in (None, 0, 1, 2) if width else (None,):
+            current = texture_at(tex, events, 0, width, phase)
+            layer = model_layer(model, r['bones'], before_frames[0], current, before, scale)
+            problem = ui_problem(layer, check_height=False)
+            if problem and problem not in before_ui_problems:
+                before_ui_problems.append(problem)
+            if problem and worst is None:
+                worst, pixel_box, worst_phase = 0, visible_bounds(layer), phase
         # A prior audit explicitly scopes a readability repair pass. Preserve
         # the fitting originals outside that set byte-for-byte.
         if reference_rows is not None:
@@ -394,9 +461,10 @@ def main():
                                    if worst is not None else (before, None))
         old_depth = camera(before)[2] + LENGTH
         new_depth = camera(after)[2] + LENGTH
-        row = dict(id=t, name=s['name'], frames=len(frames), loop=loop, model_sha256=sha,
+        row = dict(id=t, name=s['name'], pose_scope='live first tick' if args.live_pose else 'complete idle', frames=len(frames), loop=loop, model_sha256=sha,
                    before=before, after=after, before_bounds=box, after_bounds=envelope(points, after),
                    overflow_tick=worst, overflow_pixels=pixel_box, overflow_texture_phase=worst_phase,
+                   before_ui_problems=before_ui_problems,
                    source_position=source_position, status_anchor_bone=anchor, before_anchor_bone=before_anchor,
                    before_distance=old_depth, after_distance=new_depth,
                    magnification_ratio=old_depth / new_depth,
@@ -429,6 +497,7 @@ def main():
             tile.paste(render(model, r['bones'], pose, texture, pos, scale), (x, 25))
         tile.save(args.out / f'{t}.png')
         tiles.append(tile)
+    (args.out / 'native-languages.json').write_text(json.dumps(native_languages, indent=2) + '\n')
     (args.out / 'audit.json').write_text(json.dumps(results, indent=2) + '\n')
     borderline = [r for r in results if r['unchanged_borderline']]
     (args.out / 'unchanged-borderline.txt').write_text(''.join(
@@ -446,7 +515,10 @@ def main():
         for i, tile in enumerate(batch):
             sheet.paste(tile, ((i % 6) * 320, (i // 6) * 260))
         sheet.save(args.out / f'all-{start // 36 + 1:02}.png')
-    print(f'{len(results)} raisable species; {sum(r["fixed"] for r in results)} offenders')
+    offenders = sum(bool(r['before_ui_problems']) or r['overflow_tick'] is not None for r in results)
+    print(f'{len(results)} raisable species; {offenders} offenders; {sum(r["fixed"] for r in results)} camera changes')
+    if args.check and offenders:
+        raise SystemExit(1)
 
 
 if __name__ == '__main__':

@@ -43,9 +43,13 @@ class PlanTests(unittest.TestCase):
                             ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
             data = {p.relative_to(root).as_posix() for p in (root / 'text').glob('*/names.json')}
             data.add('docs/data/map_files.csv')
+            data.update(p.relative_to(root).as_posix() for p in (root / 'docs/data').glob('*.csv'))
             data.add('text/ours/pages.json')
             data.add('content/tables/story-screens.json')
             data.update(p.relative_to(root).as_posix() for p in (root / 'content/screens').glob('*.json'))
+            # Cold text generation imports the backend's owned encounter defaults.
+            for folder in ('content/battle', 'content/species', 'content/techniques', 'content/tables', 'content/items'):
+                data.update(p.relative_to(root).as_posix() for p in (root / folder).glob('*.json'))
             for name in engine.writer_inputs(data, set()):
                 target = tree / name
                 target.parent.mkdir(parents=True, exist_ok=True)

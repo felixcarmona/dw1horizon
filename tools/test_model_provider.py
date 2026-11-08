@@ -78,7 +78,8 @@ class ModelProvider(unittest.TestCase):
                 selected[sid] = model.OVERLAYS[preceding]
         # Native locomotion is authored after the effective field proportions.
         # Keep those baked generators covered without running them a second time.
-        for path in [*Path('content/models/authoring/native-polish').glob('*.json'),
+        for path in [*Path('content/models/authoring').glob('*.json'),
+                     *Path('content/models/authoring/native-polish').glob('*.json'),
                      *Path('content/models/authoring/gait-refinement').glob('*.json'),
                      *Path('content/models/authoring/animal-refinement').glob('*.json')]:
             proof = json.loads(path.read_text())
@@ -150,6 +151,11 @@ class ModelProvider(unittest.TestCase):
                              ('tools.models.field_animations.' + module, sid + '-' + name + '-field'))
         self.assertEqual(assignments.pop('408'),
                          ('tools.models.field_animations.suijinmon', '408-suijinmon-centaur-field'))
+        # The reviewed terrestrial gait replaces Gesomon's previous glide.
+        self.assertEqual(assignments['240'],
+                         ('tools.models.field_animations.gesomon', '240-gesomon-terrestrial'))
+        self.assertNotIn('gesomon-hops', model.OVERLAYS)
+        assignments['240'] = ('tools.models.field_animations.gliding', '240-gesomon-steady-run')
         # All pre-existing bindings outside the repairs stay pinned.
         for sid in ('315', '332', '335'):
             del assignments[sid]

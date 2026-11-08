@@ -3664,9 +3664,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/303-KingEtemon.MMD.mdelta",
-        "delta_sha256": "a61706779245986651e7b408301ce39567fda4f13f386faacf05d47d92307bd4",
-        "sha256": "cd82beb9585d4ae4b7b2e9429284a7d2d81e0219b657ee0ed3edbcc33b9412c1",
-        "size": 103352
+        "delta_sha256": "58a14d13f591ca1a73608565f6f64fa7dd4d78e1306ae9a32dfd90f9d0df93b1",
+        "sha256": "c4c7991003e4667caaadf014a4142b1602ccdaf4d60770146cb6a1831e8fbc4c",
+        "size": 116540
       },
       "tim": {
         "sources": [
