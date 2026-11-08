@@ -1147,8 +1147,6 @@ function renderAll() {
   renderFeatures();
   renderChangelog();
   mapLabels();
-  document.querySelector('.data-link').href = `wiki/${i18n.lang}/`;
-  document.querySelector('.data-link').textContent = i18n.strings['wiki.nav'] || 'Wiki';
   document.querySelector('#wiki-entry').href = `wiki/${i18n.lang}/`;
   renderDesktop();
 }

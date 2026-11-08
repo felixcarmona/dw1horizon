@@ -27,8 +27,8 @@ try{
   assert.equal(await page.$eval('.hero-actions #wiki-entry',e=>e.textContent),'Wiki');
   assert.ok(await page.$('.hero-actions #wiki-entry.button.soft'));
   assert.equal(await page.$('.wiki-entry'),null);
-  assert.match(await page.$eval('.data-link',e=>e.getAttribute('href')),/^wiki\//);
-  await page.click('.data-link');await page.waitForSelector('.wiki-main');
+  assert.match(await page.$eval('#wiki-entry',e=>e.getAttribute('href')),/^wiki\//);
+  await page.click('#wiki-entry');await page.waitForSelector('.wiki-main');
   const results=[];const palette=new Map();
   for(const lang of languages){
     const strings=JSON.parse(await fs.readFile(path.join(site,`i18n/${lang}.json`),'utf8'));
