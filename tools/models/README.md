@@ -114,6 +114,11 @@ provider uses the resized delta directly.
 reviewed before/after files under `build/angewomon-redo/`; override them with
 `ANGEWOMON_BEFORE` and `ANGEWOMON_AFTER` for reconstructed inputs.
 
+The six-species [creature motion review](../../docs/reference/reviewed-creature-motion.md)
+records native-donor field/care changes, uniform sizes, sound donors and replay
+checks. `reviewed_motion.py` authors its pinned plain deltas offline; player
+builds use those deltas directly.
+
 Garbagemon's can uses the idle attachment to its torso across every occupied
 clip. The Piximon retarget had assigned an independently moving appendage to
 the can, separating it from the body during attacks and care animations. The

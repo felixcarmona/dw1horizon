@@ -584,16 +584,16 @@
      }
     ],
     "delta": "content/modeldelta/deltas/dw3-us/431-Kurisarimon.MMD.mdelta",
-    "delta_sha256": "c5a6f01d4e06c7b33a601418face6ebfe731383a4804a2ad1a800425b4a49c66",
-    "sha256": "7547ea618390ca0180b8ab46c10d5d12d913e0fe6d3c520ba354c0c6cb3e3e4a",
-    "size": 103664
+    "delta_sha256": "54c5990eec933ff6ec97ea7ce7a7108fa507eb0acf1ea379aa7b6fc6a62f35e9",
+    "sha256": "b8bf9590c413408fc7a0ebad9386a9e2cfe8fed929bf036bff28bc2626ec3895",
+    "size": 99890
    },
    "from": {
-    "sha256": "49e71a98684543e0a17fcf99706eb8c7031c69b44090891ee750abb2d8c2f100",
-    "delta_sha256": "b32cf39a60a868e5a65a4e6c7b80c530f07f0445fd5592ce9b5ae9ec4820f958",
+    "sha256": "808fe7dcecb47e12d8400b3ab60c7aa3938827a30d17b2b90f295feb8b9753a4",
+    "delta_sha256": "38d7bbf42733dc908a22f9e10788f513fcf26bf5eabc818a97eaebdc8ec31b69",
     "add_bytes": [
-     9402,
-     9402
+     13134,
+     13134
     ],
     "foreign_windows": 0,
     "objects_ours": [
@@ -616,12 +616,9 @@
      2,
      3,
      4,
-     5,
-     7,
-     10,
-     12,
-     13,
-     11
+     11,
+     9,
+     12
     ]
    }
   }
