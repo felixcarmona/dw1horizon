@@ -1,6 +1,23 @@
 # Filth line proposal for v0.0.8
 
-Status: **proposal only, pending approval**. No specialties, arsenals, evolution routes, requirements or icons change on this branch. The implemented changes repair BlackKingNumemon's field/care/victory animation and select native movement sounds for four imported species.
+Status: **approved and applied for v0.0.8**, with the amendments below. The original proposal and its baseline calculations remain below as design context.
+
+## Applied amendments
+
+| Species | Applied change | Ordinary power ceiling before → after |
+| --- | --- | --- |
+| Geremon | Filth/Nature; add Charm Perfume and Poison Powder | 333 → 333 |
+| ShellNumemon | Filth/Ice/Battle; replace four Battle moves with Water Blit, Aqua Magic, Tear Drop and Counter | 211 → 211, excluding conditional Counter |
+| Raremon | Filth/Battle/Mech; replace Dynamite Kick with Metal Sprinter and add Power Crane | 211 → 226 |
+| Garbagemon | Add Metal Sprinter | 722 → 722 |
+| Etemon | Disable Thunder Justice; preserve its original animation slot and NEW DIGIMON-off arsenal | 586 → 500 |
+| MetalEtemon | Keep Thunder Justice and all existing moves | 586 → 586 |
+| KingSukamon | Keep existing specialties, moves, icon and animation | 333 → 333 |
+| BlackKingNumemon | Filth/Ice; replace five Battle moves with Water Blit, Aqua Magic, Tear Drop, Ice Needle and Winter Blast; append Giga Freeze; retain Buster Dive as the power exception | 500 → 500 |
+
+BlackKingNumemon occupies all 16 slots including Death Claw. Buster Dive must be learned before evolving, for example as Etemon, because Filth/Ice cannot learn Battle techniques by observation. It remains equipable after evolution. No global technique power, learning chance, evolution requirement, route or economy value changes. Existing finisher indices stay fixed; additions follow the finisher where necessary. The site's `/data` guide and in-game Tech/Chart read the same owned species data and omit disabled slots.
+
+Run `python3 -m tools.filth_audit` for the applied learning rates, animation slots, incoming element sums and power ceilings. The proposal's BlackKingNumemon 500 → 333 recommendation below is superseded by the retained Buster Dive exception.
 
 The baseline includes PR #297: KingSukamon already has Filth / Ice / Nature, Water Blit and Poison Powder, plus the lower toss release. Ice is the engine's Water/Ice category; Nature is Plant. Keep those changes. This review uses partner species, not the preserved NPC duplicates (for example Etemon 42, not 162; KingSukamon 120, not 463).
 
