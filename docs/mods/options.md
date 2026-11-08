@@ -158,9 +158,9 @@ The immutable four-column row-pointer table remains in MENU_REL. Its third
 values are data entries, avoiding separate FONT/DIFFICULTY/FRAME RATE branches.
 The small language-name resolver stays resident with the name array so the
 MENU text lookup can use a tail call and retain the mandatory overlay reserve.
-Full nine-language build: main_BSS_END 0x801ce6ac, heap 186448 B, MENU 55164 B
+Full nine-language build: main_BSS_END 0x801ce6fc, heap 186368 B, MENU 55164 B
 (27 sectors, 132 B spare). Both 2 MB heap checks pass; all 320 actual-archive
-setups fit, with 1728 B on the tightest setup.
+setups fit, with 1648 B on the tightest setup.
 
 ## JAPANESE CONTROLS
 

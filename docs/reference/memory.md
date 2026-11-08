@@ -1150,9 +1150,9 @@ screen 41**. The historical sweep's tightest projection is **31,936 B**.
 ## FRAME RATE override
 
 The full nine-language build with AUTO / 60 / 20 keeps the original 2 MB
-budget. `main_BSS_END` is **0x801CE6AC**, leaving **186448 B** of aligned heap.
-All **320 actual-archive setups** fit; screen 207 retains **1728 B**. The
-historical sweep's tightest projected free heap is **30096 B**.
+budget. `main_BSS_END` is **0x801CE6FC**, leaving **186368 B** of aligned heap.
+All **320 actual-archive setups** fit; screen 207 retains **1648 B**. The
+historical sweep's tightest projected free heap is **30016 B**.
 
 MENU is **55164 B / 27 sectors**, with **132 B** before the 27-sector ceiling,
 above the title checker’s 100-byte reserve. Third option values share the
