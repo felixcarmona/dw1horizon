@@ -98,6 +98,7 @@ section { padding-top: 120px; }
 .button.guide { color: #2a1a10; background: #ffb86b; }
 .button.guide:hover { background: #ffa64d; }
 .button.discord, .button.github { gap: 9px; color: #fff; }
+#wiki-entry { gap: 9px; }
 .button.discord { background: #5865f2; }
 .button.discord:hover { background: #4752c4; }
 .button.github { background: #24292f; }
