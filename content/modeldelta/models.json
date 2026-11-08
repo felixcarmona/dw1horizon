@@ -1349,9 +1349,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/226-Silphymon.MMD.mdelta",
-        "delta_sha256": "3285b8a672c32e3f3886d270132d9b41f333583b6bbbb660173e3805bbb83dfd",
-        "sha256": "8106a97592acaccfcbf58bde44ceb19290fca503f3701b793c7ddaf708243b1f",
-        "size": 90576
+        "delta_sha256": "aa561a7b7ceaa8e55ee4fb15e95c6f8cd22e2350b6ee0663a365e8ad45075e92",
+        "sha256": "ac3609d32e82ec750182619b8be45b4191bb3df0fe2c76a5691f95233887adcc",
+        "size": 113642
       },
       "tim": {
         "sources": [
