@@ -114,16 +114,16 @@ so it happens only at the title: in OPTIONS, or when a Continue takes the save's
 ## Automatic frame rate
 
 FRAME RATE defaults to AUTO. Left/right select a value; confirm cycles AUTO / 60 / 20.
-AUTO keeps the existing 16-scanline CPU probe, two agreeing samples and
-8500/7500 hysteresis. The probe still runs during spare waits in forced modes,
-but cannot override an explicit choice. Returning to AUTO uses the latest probe.
-60 requests three passes per ordinary tick; existing deadline checks may skip
-passes that cannot fit. 20 requests one. Battle speed and 20 Hz logic are unchanged.
+AUTO chooses 60, steady 30 or 20 from the last 32 ticks' rendering costs and presented frames.
+It drops quickly, raises the rate slowly, and doubles the retry delay after a failed attempt.
+World and battle loops remember separate levels. 60 requests three passes per ordinary tick;
+existing deadline checks may skip passes that cannot fit. 20 requests one.
+Battle speed and 20 Hz logic are unchanged.
 An `FPS=20` developer build still compiles out extra passes.
 
 At Press Start, the detected-settings panel always shows RAM (`RAM 2 MB` or
 `RAM 8 MB`), estimated CPU speed (`CPU ~100%`, for example), and the selected
-renderer (`20 FPS` or `60 FPS`). Its short hints read “CPU 250%: 60 FPS” and
+cadence (`20 FPS`, `30 FPS` or `60 FPS`). Its short hints read “AUTO: 60 / 30 / 20 FPS” and
 “8 MB: Chinese only”. The other eight languages still work with 2 MB.
 RAM is green with 8 MB; CPU is green at the raw 8500-count enable threshold.
 The FPS color follows the selected mode, including the selector's hysteresis.
@@ -139,10 +139,9 @@ sampler, so a fresh boot shows the boot CPU reading. RAM remains the boot readin
 The display code and scratch are in the title overlay, loaded after the intro
 movie and before installing the Press Start callback.
 
-The same 16-scanline probe runs during spare presentation waits about every two
-seconds. Two agreeing samples and separate enable/disable thresholds prevent
-oscillation. This adapts to runtime overclock changes and same-build save states;
-see [the scheduler and thresholds](../reference/frame-rate.md#automatic-selection).
+The 16-scanline probe still updates CPU advice during spare waits, but AUTO depends only on the workload.
+Fast cores can select 60 even when their polling-loop result is ordinary. Diagnostic policy 4 retains the old
+probe selection; see [the cadence ladder](../reference/frame-rate.md#the-cadence-ladder).
 
 Saved-options byte 2 and its title-header copy use 0xA0 + the option index.
 The record stays 14 bytes and every other byte retains its position. All legacy
@@ -151,8 +150,8 @@ from an older explicitly selected 20. Resetting both old 60 and old 20 to AUTO
 provides one consistent migration; new explicit choices persist on save/load.
 Missing and invalid values also default to AUTO. Changes made at the title keep
 the existing precedence over the options of a subsequently continued save.
-`MOD_FPS_MODE_RUN` always reports the effective 0/2 mode, including forced choices,
-so a title panel reading it reports the renderer actually requested.
+`modFrameRateLevel()` reports the effective 0/1/2 rung, including forced choices.
+`MOD_FPS_MODE_RUN` stays at 2 for AUTO/60 and 0 for explicit 20, preserving curling’s single-pass path.
 
 The immutable four-column row-pointer table remains in MENU_REL. Its third
 values are data entries, avoiding separate FONT/DIFFICULTY/FRAME RATE branches.

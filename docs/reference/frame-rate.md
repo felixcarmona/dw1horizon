@@ -3,7 +3,7 @@
 How the original engine times a frame (one logic tick per drawn frame, `VSync(3)`, 20 Hz), and how the frame-rate
 patches separate drawing from game time: a fixed 20 Hz logic tick, a late-tick phase, render callbacks made
 repeatable, interpolation of the camera, entity roots and bones between ticks, and one present helper shared by every
-game loop. It also covers the `FPS` build parameter, automatic CPU-based selection and how battle speed changes the tick
+game loop. It also covers the `FPS` build parameter, automatic workload-based selection and how battle speed changes the tick
 period.
 
 Patches: 0011, 0026-0047 and 0049 (the core work; 0048 added a lab menu row that 0080 removes), 0074 (`MOD_RENDER_ALPHA`), 0080 (build parameter), 0169/0173/0174
@@ -401,22 +401,39 @@ generated header `fps.h`, so a change rebuilds what depends on it. `decomp/inclu
 | FPS | `MOD_FPS_MODE` |
 |---|---|
 | 20 | compile-time 0: one render per tick at the third refresh, as the original. The extra passes, the render random replay and the interpolation in `modPresent` compile out (the helper is under 1 KB instead of about 9.6 KB); the interpolation tables stay, so the memory layout is the same in all builds |
-| 30 | the variable `MOD_FPS_MODE_RUN`, automatic 20/60 selection |
-| 60 | the variable `MOD_FPS_MODE_RUN`, automatic 20/60 selection |
+| 30 | the variable `MOD_FPS_MODE_RUN`, automatic 60/30/20 ladder |
+| 60 | the variable `MOD_FPS_MODE_RUN`, automatic 60/30/20 ladder |
 
 `MOD_FPS_BUILD` is a read-only word in RAM (20, 30 or 60) that tells tools which build is running. The game logic runs
 at 20 Hz in every build. See [../building.md](../building.md) for the build itself.
 
+### The cadence ladder
+
+Since `Choose-the-frames-a-tick-shows-from-what-the-last-ticks-cost.patch` the frames a tick shows are chosen by a
+ladder of three cadences, from what the last ticks cost and showed, in every loop that goes through `modPresent`:
+60 (three passes, a pass that does not fit skipped as before), steady 30 (the curling pair of 0292, `MOD_RENDER_CADENCE`
+`8 | half`: one frame at 2/3 of an even tick that ends a refresh early, two at 1/3 and 3/3 of the odd tick computed
+in that spare refresh; every frame two refreshes apart) and 20 (`MOD_RENDER_CADENCE` 16: one frame at 3/3, as the
+original). `modCadArm` arms the level at the start of a tick; `modCadRecord` stores the tick's cost (tick + first
+pass, extra pass, in lines) and outcome (frames planned, shown, late) in a 32-tick ring and decides: down from 60 when
+fewer than `MOD_CAD_KEEP60`/32 frames a tick are shown (16 ticks of evidence), down from 30 when more than
+`MOD_CAD_KEEP30` frames per 32 ticks are late or skipped, up only after a full window whose costs predict the higher
+cadence and a wait that doubles after every failed try (32 ... 1024 ticks). The world and the battle loops remember
+their levels; a map change clears the evidence and the wait. `MOD_FPS_POLICY` 0 is the ladder, 1/2/3 lock 60 /
+steady 30 / 20, 4 is the CPU-probe selection below (the only policy in which the probe writes `MOD_FPS_MODE_RUN`,
+which stays at 2 for AUTO/60 and at 0 for the explicit 20 option). The CPU probe still runs for the title notice. Design, measurements and
+the recommendation: [../proposals/frame-rate-excellence.md](../proposals/frame-rate-excellence.md);
+`tools/test_fps_ladder.py` replays measured cost profiles through the compiled functions.
+
 ### Automatic selection
 
-OPTIONS offers AUTO (default), 60 and 20 in all nine languages. AUTO uses the
-probe below. Forced 60 requests three passes per ordinary tick and forced 20 one;
-the existing per-pass deadline checks and battle-speed behavior remain intact.
-The probe keeps measuring in forced modes but cannot change the requested mode.
-Returning to AUTO immediately uses the latest raw probe value, then resumes the
-same hysteresis. `MOD_FPS_MODE_RUN` reports the effective mode for title panels
-and debugging. Tagged byte values preserve new choices, while all old saves
-start on AUTO; see [save compatibility](../mods/options.md#automatic-frame-rate).
+OPTIONS offers AUTO (default), 60 and 20 in all nine languages. AUTO maps to policy 0, 60 to policy 1,
+and 20 to policy 3. The save bytes remain A0/A1/A2. Returning to AUTO resumes workload selection, independent
+of CPU polling throughput. The title's always-visible panel uses `modFrameRateLevel()` to report the selected
+60/30/20 rung, including explicit locks. Its hint is “AUTO: 60 / 30 / 20 FPS”; the RAM hint stays unchanged.
+The rung is a cadence request; best-effort 60 can present fewer frames in a busy scene.
+
+The following describes the **legacy diagnostic policy 4**, retained for comparisons. It is no longer AUTO.
 
 `MOD_FPS_MODE_RUN` starts at 0. The title's existing CPU check counts polling-loop
 iterations over 16 lines of hardware hblank counter 1. That counter follows video
@@ -443,21 +460,21 @@ A state from another executable version still requires a fresh boot.
 
 At 100% the existing mode-0 path renders once at the third refresh, with no
 interpolation. At 250% the existing mode-2 path schedules three passes per tick.
-No load-based downgrade is added: expensive scenes must not make the mode
+In legacy policy 4 no load-based downgrade is added: expensive scenes must not make the mode
 oscillate while CPU speed stays fixed. Existing per-pass deadline checks remain.
 `FPS=20` still compiles out extra passes and runtime probing. Mode 1 remains
 available to developer instrumentation but is never automatically selected.
 
-The decision follows 72 measured cases across DuckStation and Redux: requesting
+The former CPU-only decision followed 72 measured cases across DuckStation and Redux: requesting
 60 at 100% CPU presented about 20 fps with worse pacing (Gear Savanna alternated
 20/40; a tournament's 1% low was 15 versus 20). At 250%, 60 held evenly. Logic
 remained 20 Hz throughout. These measurements supersede the early speed estimates
 below. See [options compatibility](../mods/options.md#automatic-frame-rate).
 
-### Automatic-selection verification
+### Historical CPU-selection verification
 
 A matched full-disc DuckStation comparison uses the preceding manual renderer
-and the automatic renderer at 100% and 250%, with both 2 MB and 8 MB. Each
+and the former CPU-selected renderer at 100% and 250%, with both 2 MB and 8 MB. Each
 configuration covers the house (screen 218), Gear Savanna (69), and a Native
 Forest battle (0): 12 cases per renderer.
 
@@ -531,8 +548,8 @@ costs 10-14 lines per pass.
   263. 30 fps (6 refreshes = 2 ticks + 3 passes) needs `3 × render + 2 × tick ≤ 1578`.
 - Early measurements of the smaller patch series suggested higher rates at
   original CPU speed and 200% CPU. Those estimates do not describe the current
-  full game. The 72-case comparison above establishes automatic 20 at standard
-  CPU speed and 60 at 250%; original hardware uses the evenly spaced mode 0.
+  full game. The historical comparison above established the old probe policy; the ladder
+  now measures each scene instead. Console timing remains a separate validation target.
 - Background tiles are 12 `POLY_FT4` (negligible CPU); a typical Digimon model is about 400 TMD primitives, about 35
   lines per model with `GsSortObject4`.
 
@@ -616,13 +633,14 @@ aligned heap falls by 80 bytes. KAR contains the history and tile helper.
 | Symbol | Meaning |
 |---|---|
 | `MOD_FPS_BUILD` | the build's `FPS` (read-only) |
-| `MOD_FPS_MODE_RUN` | run-time mode in FPS=30/60 builds: 0, 1, 2 |
+| `MOD_FPS_MODE_RUN` | presenter capability in FPS=30/60 builds (AUTO/60 = 2, explicit 20 = 0); policy 4 selects 0/2 from the CPU probe; use `modFrameRateLevel()` for the active rung |
 | `MOD_FPS_TICKS` | logic ticks presented through the helper |
 | `MOD_FPS_RENDERS` | render passes |
 | `MOD_RENDER_PASS` | 0 in the tick and first pass, 1, 2 on extra passes |
 | `MOD_RENDER_MULTIPASS` | set around the passes (removals wait) |
 | `MOD_RENDER_ALPHA` | this pass's fraction of the tick, 0..4096 |
-| `MOD_RENDER_CADENCE` | 0 = inactive; 1/2 = normal/early half of steady 30 FPS; 4 = curling at requested rate with deferred tiles; reset at each tick; preserves automatic mode 0 |
+| `MOD_RENDER_CADENCE` | 0 = inactive; 1/2 = normal/early half of steady 30 FPS; 4 = curling at requested rate with deferred tiles; 8 \| 1/2 and 16 = the ladder's steady 30 halves and its 20 (no curling tile flush); reset at each tick |
+| `MOD_FPS_POLICY`, `MOD_CAD_LEVEL`, `MOD_CAD_KEEP60`, `MOD_CAD_KEEP30`, `MOD_CAD_SWITCHES`, `MOD_CAD_LAST` | the cadence ladder: policy, current level (2/1/0), its two thresholds, level changes, the last tick's record |
 | `MOD_FPS_INTERP` | interpolation on (1, default) or off; test switch |
 | `MOD_FPS_INTERP_BONES` | 0 / 1 / 2, see above; test switch |
 | `MOD_FPS_TEST_TICK` | test switch: every tick lasts that many refreshes (0 = off) and every pass is rendered at its fraction of the tick |
@@ -648,6 +666,15 @@ Grade D cup and world walks hash identically every tick at 20, 30 and 60 fps, in
 `tools/dev/fps/` (its README lists them); driving the emulator and reading RAM by symbol: [../developing.md](../developing.md).
 
 ## Memory
+
+The 0.0.8 ladder is measured against the same current-main assets and text without the ladder:
+`main_BSS_END` changes from `0x801CE4D8` to `0x801CEBCC` (+1,780 bytes); aligned usable heap
+changes from 186,912 to 185,136 bytes (−1,776). All 320 actual-archive setups fit, with 416 bytes
+minimum headroom on screen 207. MENU remains 55,164 bytes (27 sectors; 132 bytes before the
+55,296-byte limit). Title UI grows 20 bytes and stays inside EVL, clear of the MENU sector read.
+All ten executable layouts (base plus nine languages) agree. No allocation is added.
+
+The following records the earlier CPU selector's cost.
 
 The automatic selector is measured against the preceding full language build.
 `main_BSS_END` changes from `0x801CDEC0` to `0x801CDEC8` (+8 bytes); allocator

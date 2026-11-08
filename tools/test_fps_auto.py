@@ -17,6 +17,11 @@ def main():
 #define MOD_FPS_AUTO 0
 #define MOD_FPS_60 1
 #define MOD_FPS_20 2
+#define MOD_FPS_POLICY_AUTO 0
+#define MOD_FPS_POLICY_60 1
+#define MOD_FPS_POLICY_20 3
+#define MOD_FPS_POLICY_CPU 4
+int8_t MOD_FPS_POLICY = MOD_FPS_POLICY_CPU;
 int32_t MOD_OPT_FPS, MOD_CPU_SPINS;
 #define MOD_CPU_LINES 16
 #define MOD_CPU_SPINS_FAST 8500
@@ -79,19 +84,48 @@ int main(void) {
     assert(MOD_FPS_MODE_RUN == 2 && MOD_OPT_FPS == MOD_FPS_60);
     modSetFrameRate(MOD_FPS_20);
     for (int i = 0; i < 100; i++) sample(9303);
-    assert(MOD_FPS_MODE_RUN == 0);
+    assert(MOD_FPS_MODE_RUN == 0 && MOD_FPS_POLICY == MOD_FPS_POLICY_20);
     modSetFrameRate(MOD_FPS_AUTO);
-    assert(MOD_FPS_MODE_RUN == 0);
-    sample(9303); sample(9303); assert(MOD_FPS_MODE_RUN == 2);
+    assert(MOD_FPS_MODE_RUN == 2 && MOD_FPS_POLICY == MOD_FPS_POLICY_AUTO);
+    for (int i = 0; i < 100; i++) sample(3801);
+    assert(MOD_FPS_MODE_RUN == 2); /* workload, not clock-loop throughput, decides AUTO */
     modSetFrameRate(99); assert(MOD_OPT_FPS == MOD_FPS_AUTO);
     puts("PASS: forced modes, CPU changes, threshold noise, safe idle windows, refresh wrap and restored clocks");
 }
 '''
     compile_check(code)
+    test_level(work)
     test_boot(work)
     test_slots(work)
     test_schedule(work)
     test_lookup(work)
+
+
+def test_level(work):
+    source = (work / 'src/main/main.c').read_text()
+    for fps in (20, 60):
+        code = r'''
+#include <stdint.h>
+#include <assert.h>
+#define MOD_FPS_POLICY_60 1
+#define MOD_FPS_POLICY_30 2
+#define MOD_FPS_POLICY_20 3
+#define MOD_FPS_POLICY_CPU 4
+int MOD_FPS_POLICY, MOD_FPS_MODE_RUN, MOD_CAD_LEVEL;
+''' + f'\n#define FPS {fps}\n' + function(source, 'modFrameRateLevel') + r'''
+int main(void) {
+    for (MOD_CAD_LEVEL=0; MOD_CAD_LEVEL<3; MOD_CAD_LEVEL++) {
+        MOD_FPS_POLICY=0;
+        assert(modFrameRateLevel()==(FPS==20?0:MOD_CAD_LEVEL));
+        for (MOD_FPS_POLICY=1; MOD_FPS_POLICY<=3; MOD_FPS_POLICY++)
+            assert(modFrameRateLevel()==(FPS==20?0:3-MOD_FPS_POLICY));
+        MOD_FPS_POLICY=4;
+        for(MOD_FPS_MODE_RUN=0;MOD_FPS_MODE_RUN<=2;MOD_FPS_MODE_RUN+=2)
+            assert(modFrameRateLevel()==(FPS==20?0:MOD_FPS_MODE_RUN));
+    }
+}
+'''
+        compile_check(code)
 
 
 def test_boot(work):
@@ -106,6 +140,11 @@ def test_boot(work):
 #define MOD_FPS_AUTO 0
 #define MOD_FPS_60 1
 #define MOD_FPS_20 2
+#define MOD_FPS_POLICY_AUTO 0
+#define MOD_FPS_POLICY_60 1
+#define MOD_FPS_POLICY_20 3
+#define MOD_FPS_POLICY_CPU 4
+int8_t MOD_FPS_POLICY = MOD_FPS_POLICY_CPU;
 int32_t MOD_CPU_SPINS, MOD_NOTICE, MOD_FPS_MODE_RUN, ram, MOD_OPT_FPS, modCpuVotes;
 void modCpuProbe(void) { }
 int32_t modProbeRam(void) { return ram; }
@@ -116,7 +155,7 @@ int main(void) {
         for (int i = 0; i < 6; i++) {
             MOD_CPU_SPINS = counts[i]; MOD_FPS_MODE_RUN = 0;
             modNoticeProbe();
-            assert(MOD_FPS_MODE_RUN == (FPS != 20 && counts[i] >= 8500 ? 2 : 0));
+            assert(MOD_FPS_MODE_RUN == (FPS != 20 ? 2 : 0));
             assert((MOD_NOTICE & 1) == !ram);
             assert(!!(MOD_NOTICE & 2) == (counts[i] < 8500));
         }

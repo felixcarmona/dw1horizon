@@ -430,3 +430,4 @@ Restore-new-game-partner-care-before-the-opening.patch
 Position-the-Continue-view-once-after-collision-relocation.patch
 Always-show-detected-RAM-CPU-speed-and-selected-FPS.patch
 Restore-FRAME-RATE-with-AUTO-and-explicit-60-or-20.patch
+Choose-the-frames-a-tick-shows-from-what-the-last-ticks-cost.patch

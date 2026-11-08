@@ -941,7 +941,7 @@
  "main.MOD_OPT_STR_EASY": "简单",
  "main.MOD_OPT_STR_NORMAL": "普通",
  "main.MOD_OPT_STR_HARD": "困难",
- "main.MOD_NOTICE_STR_HEAD1": "CPU 250%：60帧",
+ "main.MOD_NOTICE_STR_HEAD1": "自动: 60 / 30 / 20 FPS",
  "main.MOD_NOTICE_STR_HEAD2": "8 MB：仅中文需要",
  "main.MOD_NOTICE_STR_RAM": "内存%d MB",
  "main.MOD_NOTICE_STR_CPU": "CPU约%d%%",

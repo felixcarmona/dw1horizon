@@ -162,7 +162,7 @@ def confirmation_problems(key, value, font, language):
 
 # Match modNoticeDraw crops; the renderer adds one shadow pixel outside each field.
 NOTICE_FIELDS = {'HEAD1': (254, None), 'HEAD2': (254, None),
-                 'RAM': (80, (2, 8)), 'CPU': (104, range(100, 301, 25)), 'FPS': (64, (20, 60))}
+                 'RAM': (80, (2, 8)), 'CPU': (104, range(100, 301, 25)), 'FPS': (64, (20, 30, 60))}
 
 
 def notice_problems(key, value, font, language):
