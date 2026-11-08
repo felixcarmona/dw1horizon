@@ -13,6 +13,12 @@ on:
       - '.gitattributes'
       - 'tools/patch_series.py'
       - 'tools/test_patch_series.py'
+      - 'tools/test_technique_coherence.py'
+      - 'content/species/**'
+      - 'content/maps/**'
+      - 'content/battle/**'
+      - 'content/tables/brain-training.json'
+      - 'docs/proposals/technique-coherence.csv'
       - '.github/workflows/patches.yml'
   push:
     branches: [main]
@@ -23,6 +29,12 @@ on:
       - '.gitattributes'
       - 'tools/patch_series.py'
       - 'tools/test_patch_series.py'
+      - 'tools/test_technique_coherence.py'
+      - 'content/species/**'
+      - 'content/maps/**'
+      - 'content/battle/**'
+      - 'content/tables/brain-training.json'
+      - 'docs/proposals/technique-coherence.csv'
       - '.github/workflows/patches.yml'
   workflow_dispatch:
 
@@ -46,6 +58,8 @@ jobs:
         with:
           python-version: '3.13'
       - name: Unit tests
-        run: python3 tools/test_patch_series.py
+        run: |
+          python3 tools/test_patch_series.py
+          python3 tools/test_technique_coherence.py
       - name: Apply the whole series to the pinned decompilation
         run: python3 tools/patch_series.py check --apply

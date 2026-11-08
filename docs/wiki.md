@@ -14,7 +14,9 @@ This standalone command preserves an existing validated engine and disc metadata
 
 ## Release model and routes
 
-`tools/wiki/model.py` uses `git archive` on the selected ref. Every game input—including species, techniques, evolution rules, City roster, story/map assertions, quiz dialogue translations, care/training tables—comes from that snapshot. The dispatching commit supplies templates, UI strings, reviewed recruit annotations and the empty future owned-icon map.
+For next-release review only, `model.load("working")` reads the current tracked and non-ignored source files and labels the result `working:<base commit>`. It never changes a tag or a released snapshot. The public site builder still requires an explicit release tag.
+
+`tools/wiki/model.py` uses `git archive` on the selected ref. Every game input—including species, techniques, evolution rules, City roster, story and map assertions, quiz dialogue translations, care/training tables—comes from that snapshot. The dispatching commit supplies templates, UI strings, reviewed recruit annotations and the empty future owned-icon map.
 
 Article prose uses `web/wiki/articles/released/<tag>/` (nine catalogs and its
 `review.json`) when that exact tag has a snapshot. If the directory is absent,

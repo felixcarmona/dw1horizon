@@ -179,6 +179,7 @@ def decode_records(recs):
         name = TAGS.get(tag, f'unknown{tag:#06x}')
         if name in ('screens', 'inventory', 'registered', 'poopMaps'): out[name] = list(struct.unpack(f'<{len(d) // 2}h', d[:len(d) // 2 * 2]))
         elif name == 'wregs': out[name] = list(struct.unpack(f'<{len(d) // 2}H', d[:len(d) // 2 * 2]))
+        elif name == 'techniqueLayout': out[name] = list(d)
         elif name == 'partnerType': out[name] = struct.unpack('<i', d[:4])[0]
         elif name in ('speciesRaised', 'speciesRecruited', 'groundPickupBits'): out[name] = [i * 8 + b for i, x in enumerate(d) for b in range(8) if x >> b & 1]
         elif name == 'storyFlags': out['story_flags_set'] = [800 + i * 8 + b for i, x in enumerate(d) for b in range(8) if x >> b & 1]

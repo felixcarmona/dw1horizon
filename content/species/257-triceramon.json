@@ -7,8 +7,7 @@
   "attribute": "data",
   "specialties": ["battle", "nature", null],
   "techniques": ["Megaton Punch", "Buster Dive", "Tremar", "Counter", "Dynamite Kick (44)", "Sonic Jab",
-                 "Muscle Charge", "War Cry", "Bug", "Green Trap", "Charm Perfume", "Danger Sting",
-                 "Poison Powder", "Bit Bomb"],
+                 "Muscle Charge", "War Cry", null, null, null, null, null, "Bit Bomb"],
   "drop": {"item": "Restore", "percent": 20},
   "effects_like": 12,
   "model": {

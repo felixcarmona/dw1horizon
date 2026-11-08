@@ -6,8 +6,8 @@
   "vanilla_as": 51,
   "attribute": "vaccine",
   "specialties": ["battle", "nature", null],
-  "techniques": ["Megaton Punch", "Tremar", "Muscle Charge", "War Cry", "Sonic Jab", "Dynamite Kick (44)",
-                 "Green Trap", "Mass Morph", "Insect Plague", "Poison Claw", "Drill Spin"],
+  "techniques": ["Megaton Punch", "Tremar", "Muscle Charge", "War Cry", "Sonic Jab", "Dynamite Kick (44)", null,
+                 "Mass Morph", null, null, "Drill Spin"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 38,
   "model": {

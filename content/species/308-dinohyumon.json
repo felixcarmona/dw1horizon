@@ -5,9 +5,9 @@
   "level": "champion",
   "vanilla_as": 51,
   "attribute": "data",
-  "specialties": ["battle", "nature", null],
+  "specialties": ["battle", "air", null],
   "techniques": ["Megaton Punch", "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Tremar",
-                 "Green Trap", "Mass Morph", "Insect Plague", "Poison Claw", "Scissor Claw"],
+                 "Wind Cutter", "Spinning Shot", "Counter", null, "Scissor Claw"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 48,
   "model": {

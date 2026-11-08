@@ -27,6 +27,14 @@ INPUTS = ('content/species', 'content/techniques', 'content/items', 'content/tab
 
 
 def snapshot(ref):
+    if ref == 'working':
+        # Explicit next-release review only; the public builder still requires a release tag.
+        paths = subprocess.check_output(
+            ['git', 'ls-files', '-z', '--cached', '--others', '--exclude-standard', '--', *INPUTS],
+            cwd=ROOT).decode().split('\0')
+        files = {name: (ROOT / name).read_bytes() for name in paths if name and (ROOT / name).is_file()}
+        base = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
+        return 'working:' + base, files
     commit = subprocess.check_output(['git', 'rev-parse', '--verify', ref + '^{commit}'], cwd=ROOT, text=True).strip()
     raw = subprocess.check_output(['git', 'archive', commit, *INPUTS], cwd=ROOT)
     with tarfile.open(fileobj=io.BytesIO(raw)) as archive:

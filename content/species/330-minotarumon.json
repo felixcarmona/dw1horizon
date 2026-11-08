@@ -6,8 +6,8 @@
   "vanilla_as": 38,
   "attribute": "virus",
   "specialties": ["battle", "nature", null],
-  "techniques": ["Megaton Punch", "Tremar", "Counter", "Muscle Charge", "War Cry", "Sonic Jab", "Mass Morph",
-                 "Insect Plague", "Poison Claw", "Poison Powder", "Pummel Whack"],
+  "techniques": ["Megaton Punch", "Tremar", "Counter", "Muscle Charge", "War Cry", "Sonic Jab", "Mass Morph", null,
+                 null, null, "Pummel Whack"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 34,
   "model": {

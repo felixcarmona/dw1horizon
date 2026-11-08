@@ -5,9 +5,9 @@
   "level": "champion",
   "vanilla_as": 38,
   "attribute": "virus",
-  "specialties": ["battle", "nature", null],
+  "specialties": ["battle", "air", null],
   "techniques": ["Megaton Punch", "Tremar", "Muscle Charge", "War Cry", "Sonic Jab", "Dynamite Kick (44)",
-                 "Green Trap", "Mass Morph", "Insect Plague", "Poison Claw", "Pummel Whack"],
+                 "Wind Cutter", "Confused Storm", "Spinning Shot", "Counter", "Pummel Whack"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 34,
   "model": {
