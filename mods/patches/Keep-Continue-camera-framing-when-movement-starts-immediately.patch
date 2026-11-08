@@ -1,0 +1,47 @@
+From bc2f1dfb1909504b9ee2424783086982b067fc50 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 8 Nov 2026 15:19:08 +0000
+Subject: [PATCH] Keep Continue camera framing when movement starts immediately
+
+Continue already computes and uploads the saved view synchronously. Do not
+queue a second fixed-target pan after that work. With asynchronous tile bands,
+the pan can hold camera follow for 52 ticks while the tamer walks away; when
+follow resumes, its per-step delta cannot recover the missed movement.
+
+The Green Gym left-walk fixture reproduces this on v0.0.7 and main but keeps
+the tamer visible on vanilla or when movement waits until the pan completes.
+Remove the redundant pan instead of adding resident state or disabling field
+input. Scripted pans retain their existing path.
+
+---
+ src/main/main.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/src/main/main.c b/src/main/main.c
+index 978679aa..e6e300ee 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -3882,8 +3882,6 @@ extern int8_t TAMER_PREVIOUS_TILE_X;
+ extern int8_t TAMER_PREVIOUS_TILE_Y;
+ extern int8_t TAMER_WAYPOINT_CURRENT;
+ extern int8_t TAMER_WAYPOINT_ACTIVE;
+-extern int32_t CAMERA_UPDATE_TILES;
+-void createCameraMovement(VECTOR *target, int32_t instanceId);
+ void setImmortalHour(void);
+ extern int8_t PREV_TILE_X;
+ extern int8_t PREV_TILE_Y;
+@@ -3978,8 +3976,9 @@ void initializeLoadedMap(void)
+ 	TAMER_START_TILE_X = SAVED_STATE.tamerStartTileX;
+ 	TAMER_START_TILE_Y = SAVED_STATE.tamerStartTileY;
+ 	TAMER_WAYPOINT_ACTIVE = SAVED_STATE.tamerWaypointActive;
+-	CAMERA_UPDATE_TILES = 1;
+-	createCameraMovement(&TAMER_ENTITY.entity.posData->location, 2);
++	/* Position and upload the final saved view below before field control.
++	 * A second, queued pan keeps aiming at this snapshot while the tamer
++	 * walks; asynchronous camera bands can then leave him outside the view. */
+ 	setImmortalHour();
+ 	initializeDrawingOffsets(MAP_TILE_DATA.tiles);
+ 
+-- 
+2.55.0
+

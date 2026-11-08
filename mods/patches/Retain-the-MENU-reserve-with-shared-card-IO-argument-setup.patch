@@ -1,0 +1,46 @@
+From 93e6ce1dd090dc0fbeb2d3dfc6cbe239cd12c181 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 8 Nov 2026 15:05:14 +0000
+Subject: [PATCH] Retain the MENU reserve with shared card IO argument setup
+
+The full multilingual main build left only 60 bytes in the 27-sector MENU
+allocation, below the title storage checker's 100-byte reserve. Bound the IO
+loop by its operation and share the read/write argument setup. This preserves
+the card protocol and recovers 64 bytes (124 spare) without resident growth.
+The actual save C helpers pass corruption, registration and all 65 frame-cut
+checks, including legacy two-block overwrites.
+
+---
+ src/main/main_menu.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 237ba2d9..d26bfd03 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -5573,9 +5573,8 @@ static long saveFileStart(int32_t write)
+ 	uint8_t *ram;
+ 
+ 	SAVE_IO_FAILED = 0;
+-	for (part = 0; part < 3; part++) {
++	for (part = 0; part < (write ? 2 : 3); part++) {
+ 		if (write) {
+-			if (part == 2) break;
+ 			copy = 1 - part;
+ 			offset = copy * __builtin_offsetof(SaveFile, saves[1]);
+ 			ram = (uint8_t *)&SAVE_FILE + offset;
+@@ -5592,8 +5591,9 @@ static long saveFileStart(int32_t write)
+ 			size = ext;
+ 		}
+ 		result = SAVE_IO_ERROR;
+-		if ((write ? MemCardWriteFile(MEMORY_CARD_ID, SAVE_FILE_NAME, (void *)ram, offset, size)
+-			   : MemCardReadFile(MEMORY_CARD_ID, SAVE_FILE_NAME, (void *)ram, offset, size)) == 1) {
++		/* Both operations have the same ABI. Share argument setup to keep MENU compact. */
++		if ((write ? MemCardWriteFile : MemCardReadFile)(MEMORY_CARD_ID, SAVE_FILE_NAME,
++							     (void *)ram, offset, size) == 1) {
+ 			MemCardSync(0, (long *)&command, (long *)&result);
+ 		}
+ 		if (result != 0) {
+-- 
+2.55.0
+
