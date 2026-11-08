@@ -31,7 +31,7 @@ def check(path):
         assert start <= symbols[name][0] < end, (name, symbols[name])
     for name in ('modOptionBytes', 'modOptionText', 'modOptionCount'):
         assert elf.sh[symbols[name][1]]['name'] == '.MENU', name
-    for name in ('loadMenuOverlay', 'loadTitleMenuOverlays', 'modMenuVsBattle', 'MOD_LANGUAGE_NAMES'):
+    for name in ('loadMenuOverlay', 'loadTitleMenuOverlays', 'modMenuVsBattle', 'MOD_LANGUAGE_NAMES', 'modOptionLanguageName'):
         assert elf.sh[symbols[name][1]]['name'] == '.main', name
     # Enumerate actual linked references, including pointers and switch tables.
     # Only the title branches of these MENU functions and the two Press Start

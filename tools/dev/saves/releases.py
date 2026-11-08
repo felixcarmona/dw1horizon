@@ -465,7 +465,10 @@ def effective_option(emu, key, saved):
 
 
 def compare_option(rows, emu, key, saved, current):
-    if key == 'frameRate' and emu.has('modCpuProbe'):
+    if key == 'frameRate' and emu.has('MOD_OPT_FPS'):
+        expected = saved if saved in (0xA0, 0xA1, 0xA2) else 0xA0
+        compare(rows, 'RAM frame-rate preference', expected, current.get(key))
+    elif key == 'frameRate' and emu.has('modCpuProbe'):
         # Saved frame-rate choices are retired; the CPU selector owns presentation.
         mode = emu.peek('MOD_FPS_MODE_RUN', 'i')
         rows.append((mode in (0, 2), 'RAM automatic frame rate', f'unsupported automatic mode {mode}' if mode not in (0, 2) else ''))
@@ -482,7 +485,11 @@ def resaved_option_prefix(emu, data):
     if not emu.has('MOD_OPT_CLOCK'):
         if len(raw) > 1: raw[1] = 1
         if len(raw) > 13: raw[13] = 0
-    if emu.has('modCpuProbe') and len(raw) > 2: raw[2] = 20
+    if len(raw) > 2:
+        if emu.has('MOD_OPT_FPS'):
+            raw[2] = raw[2] if raw[2] in (0xA0, 0xA1, 0xA2) else 0xA0
+        elif emu.has('modCpuProbe'):
+            raw[2] = 20
     return bytes(raw)
 
 
@@ -511,8 +518,9 @@ def ram_values(emu, locks, profile):
     for key, symbol in PERMANENT_OPTIONS.items():
         if not emu.has(symbol): opts[key] = 1
     if emu.has('MOD_FONT'): opts['font'] = {0: 1, 1: 0, 2: 2}[pk('MOD_FONT', 'b')]
-    # Automatic presentation is hardware-derived, so a save cannot prescribe it.
-    if emu.has('MOD_FPS_MODE_RUN') and not emu.has('modCpuProbe'):
+    if emu.has('MOD_OPT_FPS'):
+        opts['frameRate'] = 0xA0 + pk('MOD_OPT_FPS', 'i')
+    elif emu.has('MOD_FPS_MODE_RUN') and not emu.has('modCpuProbe'):
         opts['frameRate'] = {0: 20, 1: 30, 2: 60}[pk('MOD_FPS_MODE_RUN', 'i')]
     v['options'] = opts
     v['roster'] = emu.raw('SAVE_FILE+0x700', 0xA00, ram).hex()

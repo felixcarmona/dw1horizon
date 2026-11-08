@@ -426,3 +426,4 @@ Retain-the-MENU-reserve-with-shared-card-IO-argument-setup.patch
 Keep-Continue-camera-framing-when-movement-starts-immediately.patch
 Clear-recycled-jukebox-rows-and-fit-titles-inside-the-menu.patch
 Always-show-detected-RAM-CPU-speed-and-selected-FPS.patch
+Restore-FRAME-RATE-with-AUTO-and-explicit-60-or-20.patch
