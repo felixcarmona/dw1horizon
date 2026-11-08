@@ -105,6 +105,8 @@ Keep this page updated when a deliberate change is merged, including reversals a
 - **2026-11-05 — Armadillomon meals:** its energy cap/fed threshold/hourly usage become 40/25/8, matching Gotsumon, with the same hunger hours; a small Rookie should not need five small meats from an empty stomach ([species record](../content/species/185-armadillomon.json)).
 
 
+- **2026-11-08 — First partner lifetime and evolution timing:** the first partner starts with 408 hours instead of 336, matching later births. The 120-hour Mega wait left the first partner too little spare life. The Chart requirements popup now includes the target’s time in form, reserves “ready” for a reached timer and passing requirements with a fitting model, and warns when remaining life runs out before that timer ([new-game table](../content/tables/new-game.json), [balance](mods/balance.md)).
+
 ## Species & levels
 
 - **By 2026-10-30 — Expanded partners:** native NPCs and 175 imports from Card Battle, World 2 and World 3 become usable partners, with care animations and species records; the roster should extend the original raising game ([species](mods/species.md), [native NPC partners](mods/features/partner-models.md), [imported species](reference/imported-species.md)).
