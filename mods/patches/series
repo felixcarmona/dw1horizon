@@ -421,3 +421,4 @@ require-complete-card-saves.patch
 clear-dirt-pile-collision.patch
 Store-complete-Horizon-saves-in-one-memory-card-block.patch
 Show-target-time-and-remaining-life-in-evolution-req.patch
+Advance-MP-training-blocks-during-the-return-walk.patch

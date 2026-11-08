@@ -1,0 +1,66 @@
+From 2e2817c42e88178840fd477abafb80640079048a Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 8 Nov 2026 14:35:12 +0000
+Subject: [PATCH] Advance MP training blocks during the return walk
+
+The MP exercises waited for the partner to finish walking back before ticking
+the remaining x5 sessions. Run the normal inter-session waits during that walk,
+matching the x1 tally and the other exercises. Keep field cleanup blocked until
+both the return walk and the stats tally have finished. No resident code or data.
+
+---
+ src/trn/trn_mp.c   | 6 +++++-
+ src/trn2/trn2_mp.c | 6 +++++-
+ 2 files changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/src/trn/trn_mp.c b/src/trn/trn_mp.c
+index 317f50d0..593f7187 100644
+--- a/src/trn/trn_mp.c
++++ b/src/trn/trn_mp.c
+@@ -112,7 +112,8 @@ int16_t instanceId;
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 			TRAINING_STATE = 5;
+ 		}
+-		break;
++		/* Count the remaining hours during the return walk, as the x1
++		 * tally already does. Do not add that walk to the block's waits. */
+ 	case 5:
+ 		if (TRN_MOD_QUIET) {
+ 			if (!TRN_modBlockWait()) {
+@@ -122,6 +123,9 @@ int16_t instanceId;
+ 			}
+ 			break;
+ 		}
++		if (TRAINING_STATE == 4) {
++			break; /* The tally may finish before the partner reaches the exit. */
++		}
+ 		if (TRN_statGainsAreZero() == 1) {
+ 			MAIN_D_8013537C = 0;
+ 			TRAINING_STATE = 6;
+diff --git a/src/trn2/trn2_mp.c b/src/trn2/trn2_mp.c
+index 6985b188..1fa21461 100644
+--- a/src/trn2/trn2_mp.c
++++ b/src/trn2/trn2_mp.c
+@@ -76,7 +76,8 @@ int16_t instanceId;
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 			MAIN_D_801353BD = 5;
+ 		}
+-		break;
++		/* Count the remaining hours during the return walk, as the x1
++		 * tally already does. Do not add that walk to the block's waits. */
+ 	case 5:
+ 		if (TRN2_MOD_QUIET) {
+ 			if (!TRN2_modBlockWait()) {
+@@ -86,6 +87,9 @@ int16_t instanceId;
+ 			}
+ 			break;
+ 		}
++		if (MAIN_D_801353BD == 4) {
++			break; /* The tally may finish before the partner reaches the exit. */
++		}
+ 		if (TRN2_statGainsAreZero() == 1) {
+ 			MAIN_D_801353C4 = 0;
+ 			MAIN_D_801353BD = 6;
+-- 
+2.55.0
+
