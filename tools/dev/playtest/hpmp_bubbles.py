@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Native 2 MB evidence for recovery needs, labels, menus and both fonts.
+"""Native 2 MB evidence for recovery needs, resource icons, menus and both fonts.
 
 Boots the supplied disc; never imports another executable's state. Setup writes
 only isolate stats, bag and care conditions. Square/Cancel use pad input. The
@@ -172,8 +172,15 @@ def main():
         setup(e,310,290);result['urgency-menu']=menu(e,out,'urgency-menu')
         assert result['urgency-menu']['slots']==[1,0]
         e.run('load',str(base));e.run('resume');setup(e,290,1000)
+        # Isolate recovery acceptance: a low-discipline partner may legitimately
+        # refuse the disk and reopen the care menu with Scold selected.
+        e.gs('set','partner.para.discipline=100')
         open_menu(e)
         menu_press(e,'CONFIRM')
+        deadline=time.monotonic()+45
+        while e.peek('PARTNER_ENTITY+0x4c','H')<=300:
+            assert time.monotonic()<deadline,'recovery was not accepted'
+            e.wait(.15)
         wait(e,'TAMER_STATE',0,'b',seconds=45);wait(e,'PARTNER_STATE',1,'b',seconds=45)
         settle(e);healed=state(e)
         assert healed['hp']>300 and 6 not in healed['active'],healed

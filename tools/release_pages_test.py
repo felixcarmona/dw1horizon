@@ -11,6 +11,7 @@ from unittest.mock import patch
 from types import SimpleNamespace
 
 import release_pages as pages
+import discs
 
 
 def fixture(info):
@@ -34,6 +35,52 @@ def fixture(info):
               'current.json': json.dumps(dict(version=version, release_version=info['version'],
                                              release_date=info['date'], commit=info['commit'])).encode()}
     return package, engine
+
+
+class DiscMetadataTests(unittest.TestCase):
+    def fixture(self, root):
+        def model(sid, folder):
+            return dict(id=sid, name='Renamed' + str(sid),
+                        mmd={'sources': [{'path': folder + '/Shared.MMD'},
+                                         {'path': 'extracted/CHDAT/MMD0/NATIVE.MMD'}]},
+                        tim={'sources': [{'path': folder + '/Shared.TIM'}]})
+        recipes = [dict(out=folder, entry=dict(name='Shared', game=game))
+                   for folder, game in [('build/old', 'dcb'), ('build/new', 'dw3')]]
+        entries = {'content/modeldelta/models.json': {'models': [model(1, 'build/new'), model(2, 'build/old')]},
+                   'content/modeldelta/import-batches.json': {'recipes': recipes},
+                   'content/models/dcb-import/veemon.json': {'dcb': {}},
+                   'content/models/dcb-import/puppetmon.json': {'dcb': {}},
+                   'content/models/dcb-import/kimeramon-dw2.json': {'dw2': {}},
+                   'content/models/mega/wargreymon-dcb.json': {'dcb': {}}}
+        for name, value in entries.items():
+            path = root / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(json.dumps(value))
+        return entries
+
+    def test_shared_filename_uses_current_output_directory(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            self.fixture(root)
+            self.assertEqual(discs.species_counts(root), dict(dcb=1, dw2=0, dw2003=1))
+
+    def test_missing_and_conflicting_import_sources_still_fail(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            entries = self.fixture(root)
+            path = root / 'content/modeldelta/import-batches.json'
+            recipes = entries['content/modeldelta/import-batches.json']['recipes']
+            for changed in [recipes[:1], recipes + [dict(out='build/new', entry=dict(name='Shared', game='dcb'))]]:
+                with self.subTest(recipes=changed):
+                    path.write_text(json.dumps({'recipes': changed}))
+                    with self.assertRaisesRegex(ValueError, 'species 1 Renamed1: its game is not clear'):
+                        discs.species_counts(root)
+
+    def test_current_release_catalog_can_generate_disc_metadata(self):
+        counts = discs.species_counts()
+        models = json.loads((pages.ROOT / 'content/modeldelta/models.json').read_text())['models']
+        self.assertEqual(sum(counts.values()), len(models))
+        self.assertEqual(set(counts), {disc['id'] for disc in discs.SOURCE_DISCS})
 
 
 class PublicationTests(unittest.TestCase):

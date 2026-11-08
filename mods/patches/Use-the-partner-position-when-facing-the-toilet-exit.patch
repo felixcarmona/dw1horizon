@@ -1,0 +1,25 @@
+From 0d93beadfcd75f3ceb2e39e49d26de5af3be0f63 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 7 Nov 2026 20:13:01 +0000
+Subject: [PATCH] Use the partner position when facing the toilet exit
+
+---
+ src/main/partner.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/main/partner.c b/src/main/partner.c
+index 9765f48..4d4dcd3 100644
+--- a/src/main/partner.c
++++ b/src/main/partner.c
+@@ -577,7 +577,7 @@ void tickPartnerToilet(void)
+ 		}
+ 		break;
+ 	case 4:
+-		entityLookAtLocation(&TAMER_ENTITY.entity, (VECTOR*)&location); // BUG: this shouldn't be a pointer?
++		entityLookAtLocation(&TAMER_ENTITY.entity, location);
+ 		if (tickEntityWalkTo(0xfc, 0xff, TOILET_TARGET_POS1.vx,
+                                             TOILET_TARGET_POS1.vz, 0) == 1) {
+ 			SOME_SCRIPT_SYNC_BIT = 1;
+-- 
+2.55.0
+

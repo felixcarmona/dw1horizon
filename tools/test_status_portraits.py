@@ -1,5 +1,7 @@
 """Perspective and fitting invariants for Status portrait audits."""
 import sys
+import struct
+import tempfile
 from pathlib import Path
 import unittest
 from unittest.mock import patch
@@ -64,6 +66,58 @@ class StatusPortraits(unittest.TestCase):
         self.assertEqual([i for i, (a, b) in enumerate(zip(baseline, anchored)) if a != b], [0x1CE])
         self.assertEqual(species.unpack_record(anchored, 188)['statusAnchorBone'], 12)
         self.assertNotIn('statusAnchorBone', species.unpack_record(baseline, 188))
+
+    def test_native_camera_audit_reads_executable_and_checks_language_copies(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            data = bytearray(0x2000)
+            struct.pack_into('<I', data, 0x18, 0x80010000)
+            # RaiseData has 28 bytes; its camera is the final three shorts.
+            struct.pack_into('<3h', data, 0x820 + 3*28 + 22, -100, 200, 300)
+            for name in ('exe', 'exe-es'):
+                directory = root / name
+                directory.mkdir()
+                (directory / 'SLUS_010.32').write_bytes(data)
+                (directory / 'SLUS_010.32.elf.map').write_text('  0x80010020 RAISE_DATA\n')
+            rows, languages = status.native_positions(root)
+            self.assertEqual(rows[3], [-100, 200, 300])
+            self.assertEqual(languages, ['exe', 'exe-es'])
+            changed = bytearray(data)
+            struct.pack_into('<h', changed, 0x820 + 3*28 + 22, -101)
+            (root / 'exe-es/SLUS_010.32').write_bytes(changed)
+            with self.assertRaisesRegex(ValueError, 'differ by language'):
+                status.native_positions(root)
+
+    def test_live_pose_cloud_does_not_fit_unseen_travel(self):
+        from types import SimpleNamespace
+        first = [[4096]*3 + [0]*6]
+        unseen = [[4096]*3 + [0,0,0,5000,0,0]]
+        primitive = SimpleNamespace(decode=lambda: {'verts': [0]})
+        model = SimpleNamespace(tmd=SimpleNamespace(objects=[SimpleNamespace(prims=[primitive])],
+                                                    obj_verts=lambda index: [(0,-100,0,0)]))
+        def samples(model, count, slot, max_ticks):
+            return [first, unseen][:max_ticks], None, []
+        def matrices(model, pose):
+            return [[[1,0,0,pose[0][6]], [0,1,0,0], [0,0,1,0], [0,0,0,1]]]
+        with patch.object(status.animsheet, 'slot_frames', side_effect=samples), \
+                patch.object(status.mmd, 'bone_matrices', side_effect=matrices):
+            points, frames, _, _ = status.cloud(model, [(0,-1)], 1, live_pose=True)
+            full, all_frames, _, _ = status.cloud(model, [(0,-1)], 1)
+        self.assertEqual(len(frames), 1)
+        self.assertEqual(len(all_frames), 2)
+        self.assertEqual(points, [status.camera((0,-100,0))])
+        self.assertGreater(max(p[0] for p in full), 4000)
+
+    def test_sleep_badge_reserves_every_bob_position(self):
+        from tools.image import Image, ImageDraw
+        self.assertEqual(status.SLEEP_BADGE, (67, 121, 78, 141))
+        for x,y in ((67,121), (78,141)):
+            layer = Image.new('RGBA', (320,240), (0,0,0,0))
+            ImageDraw.Draw(layer).rectangle((x,y,x,y), fill=(255,255,255,255))
+            self.assertEqual(status.ui_problem(layer, check_height=False), 'sleep badge overlap')
+        layer = Image.new('RGBA', (320,240), (0,0,0,0))
+        ImageDraw.Draw(layer).rectangle((83,106,110,150), fill=(255,255,255,255))
+        self.assertIsNone(status.ui_problem(layer))
 
     def test_depth_changes_perspective(self):
         near, far = status.project([(100, 0, -1000), (100, 0, 1000)], (0, 0, 0))
