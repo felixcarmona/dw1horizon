@@ -1,7 +1,6 @@
 import { setupChangelog, renderChangelog } from './changelog.js';
 import { renderFeatureList } from './features.js';
 import { setupMaps, labels as mapLabels } from './maps.js';
-import { setupDigimon, labels as digimonLabels } from './digimon.js';
 import { setupDesktop, renderDesktop, hasDesktop, visitorOS } from './desktop.js';
 import { inspect, checkFiles, partOf } from './disc.js';
 import { i18n, LANGS, NAMES, tag } from './i18n.js';
@@ -1148,7 +1147,9 @@ function renderAll() {
   renderFeatures();
   renderChangelog();
   mapLabels();
-  digimonLabels();
+  document.querySelector('.data-link').href = `wiki/${i18n.lang}/`;
+  document.querySelector('.data-link').textContent = i18n.strings['wiki.nav'] || 'Wiki';
+  document.querySelector('#open-guide').href = `wiki/${i18n.lang}/?section=digimon`;
   renderDesktop();
 }
 
@@ -1185,7 +1186,6 @@ async function start() {
   setupChangelog(currentRelease).catch(() => { $('#changelog').hidden = true; });
   setupDesktop(currentRelease, LINKS.github).catch((e) => console.warn('desktop apps:', e));
   setupMaps().catch(() => { $('#maps').hidden = true; });
-  setupDigimon().catch(() => { $('#digimon').hidden = true; });
   tidyStorage().catch(() => {});   // what a stopped or crashed build left, the old engines
   restore().catch((e) => console.warn('remembered discs:', e));
 }

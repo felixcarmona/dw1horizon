@@ -529,3 +529,6 @@ section { padding-top: 120px; }
 .data-link { font-size: 13px; font-weight: 600; padding: 6px 10px; border-radius: 999px; }
 .data-link:hover { background: rgba(255,255,255,.7); }
 @media (max-width: 560px) { .bar { height: auto; min-height: 68px; flex-wrap: wrap; padding-block: 12px; } .bar .pill { margin-left: auto; } }
+
+/* Shared locally hosted font for the website and wiki. */
+@font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:200 800;font-display:swap;src:url("media/font/PlusJakartaSans.ttf") format("truetype")}

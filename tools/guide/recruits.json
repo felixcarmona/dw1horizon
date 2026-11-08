@@ -531,7 +531,10 @@
     "service": "Newspaper",
     "evidence": {
       "story/base/zones/great-canyon/s122-127/script.py": [
-        "send_to_city(line=t5.u11, species=Species.Shellmon, sound=(8, 10), prosperity=2, camera=False)"
+        [
+          "send_to_city(line=t5.u11, species=Species.Shellmon, sound=(8, 10), prosperity=2, camera=False)",
+          "recruit(Species.Shellmon, prosperity=2)"
+        ]
       ],
       "story/mods/what-the-island-forgot/arcs/canyon/engine-room.py": [
         "recruit(Species.Shellmon, prosperity=2)"
@@ -557,8 +560,8 @@
     "screens": [
       35
     ],
-    "method": "Answer the three questions: yes, yes, no.",
-    "when": "Any time.",
+    "method": "A Bakemon partner lets you understand Bakemon’s speech. This guide deliberately leaves the cemetery questions, answers and dialogue out. Bring the relevant partner and discover the conversation yourself.",
+    "when": "A Bakemon partner lets you understand Bakemon’s speech. This guide deliberately leaves the cemetery questions, answers and dialogue out. Bring the relevant partner and discover the conversation yourself.",
     "service": "Patrol",
     "evidence": {
       "story/base/zones/overdell-cemetery/s035-35/script.py": [

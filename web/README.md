@@ -56,8 +56,7 @@ The project's site: a static page with no backend. The patcher runs in the visit
   `media/clips/` (optional local recordings, excluded from public Pages artifacts;
   `js/features.js` renders text-only cards when media is absent).
 - `js/changelog.js` renders `content/changelog.json`: translated release history, limited to the served engine's release tag; the English entry also supplies release notes.
-- `content/digimon.json`: the Digimon list and evolution guide (`js/digimon.js`). Not tracked: the release workflow
-  writes it with `tools/site_digimon.py` from the tag's content, so it always matches the release the page builds.
+- `wiki/`: the unified multilingual wiki, generated with tagged game data by `tools/wiki/`. The main header and Digimon button open it; the former modal is replaced. See [wiki maintenance](../docs/wiki.md).
 - Box art is not stored here: the browser fetches it from libretro-thumbnails (`BOXART` in `js/app.js`), with `media/disc.svg` as the fallback.
 - `media/psx.webp`: the console photo, Evan-Amos, public domain (Wikimedia Commons, PSX-Console-wController.png).
   See the [publication media inventory](../docs/release/media.md) before supplying media.
@@ -389,3 +388,7 @@ also apply to the guide. Its font and all scripts are served locally.
 languages, table behavior and desktop/mobile layout. See `tools/guide/README.md`.
 For full-disc Chromium verification, `BUILD_WORKERS=4` selects four workers
 in `web/test/cross-browser.mjs` (default one); `EXPECT_SHA1` enforces a CLI pin.
+
+## Unified wiki
+
+`python3 web/build.py --tag v0.0.7 --out build/pages-site` builds the website and wiki together. `/data/` and its localized pages/anchors now redirect to the wiki, while `data/discs.json` remains patcher metadata. The release workflow takes page code from the dispatching commit and all wiki game facts from the selected tag. Search runs against local JSON; fonts and Digimon images are hosted locally. See [wiki sources, routes, articles and checks](../docs/wiki.md).

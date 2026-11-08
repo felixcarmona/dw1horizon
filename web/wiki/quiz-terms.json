@@ -1,0 +1,47 @@
+{
+  "en": {
+    "bold": "Bold",
+    "calm": "Calm",
+    "cunning": "Cunning"
+  },
+  "es": {
+    "bold": "Audaz",
+    "calm": "Tranquilo",
+    "cunning": "Astuto"
+  },
+  "pt-br": {
+    "bold": "Ousado",
+    "calm": "Calmo",
+    "cunning": "Astuto"
+  },
+  "fr": {
+    "bold": "Audacieux",
+    "calm": "Calme",
+    "cunning": "Rusé"
+  },
+  "de": {
+    "bold": "Mutig",
+    "calm": "Ruhig",
+    "cunning": "Listig"
+  },
+  "it": {
+    "bold": "Audace",
+    "calm": "Calmo",
+    "cunning": "Astuto"
+  },
+  "ja": {
+    "bold": "大胆",
+    "calm": "冷静",
+    "cunning": "策略"
+  },
+  "ca": {
+    "bold": "Agosarat",
+    "calm": "Calmat",
+    "cunning": "Astut"
+  },
+  "zh-hans": {
+    "bold": "大胆",
+    "calm": "冷静",
+    "cunning": "狡黠"
+  }
+}
