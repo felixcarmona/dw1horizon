@@ -1,0 +1,373 @@
+From d97fe7982e55fe34b697d86860cee5a29bc5058a Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 8 Nov 2026 17:43:38 +0000
+Subject: [PATCH] Add AUTO 60 20 and private v0.0.7 frame diagnostics
+
+---
+ include/dw/mod_fps.h     | 15 +++++++++++++
+ src/main/main.c          | 47 ++++++++++++++++++++++++++++++++++++----
+ src/main/main_menu.c     | 36 +++++++++++++++++++++++-------
+ src/main/mod_qol.c       | 36 +++++++++++++++++++++++++++++-
+ text/main/main_menu.yaml | 12 ++++++++++
+ 5 files changed, 133 insertions(+), 13 deletions(-)
+
+diff --git a/include/dw/mod_fps.h b/include/dw/mod_fps.h
+index 5e1ae2ca..af897921 100644
+--- a/include/dw/mod_fps.h
++++ b/include/dw/mod_fps.h
+@@ -9,10 +9,25 @@
+ /* FPS=20 compiles out extra passes. FPS=30|60 includes the automatic
+  * 20/60 selector: boot and idle-time CPU measurements choose the mode.
+  * Logic cadence is independent of this presentation setting. */
++/* Private v0.0.7-fpstest1 instrumented build; set to 0 to compile diagnostics out. */
++#ifndef MOD_FPS_DIAG
++#define MOD_FPS_DIAG 1
++#endif
++#if MOD_FPS_DIAG
++extern int32_t MOD_DIAG_FPS, MOD_DIAG_MISSED, MOD_DIAG_MISS_COUNT;
++void modFpsDiagDraw(int32_t y);
++void modFpsDiagPresent(void);
++#endif
+ #define MOD_CPU_LINES 16
+ #define MOD_CPU_SPINS_FAST 8500
+ #define MOD_CPU_SPINS_SLOW 7500
+ int32_t modCpuProbe(void);
++/* OPTIONS indices; save byte 2 uses 0xA0 + index, never legacy 20/30/60. */
++#define MOD_FPS_AUTO 0
++#define MOD_FPS_60 1
++#define MOD_FPS_20 2
++extern int32_t MOD_OPT_FPS;
++void modSetFrameRate(int32_t mode);
+ #if FPS == 20
+ #define MOD_FPS_MODE 0
+ #elif FPS == 30 || FPS == 60
+diff --git a/src/main/main.c b/src/main/main.c
+index 48505799..6a0d87aa 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -5338,12 +5338,32 @@ void tickFileReadQueue(int32_t unused);
+  * SDK line count wraps at 65536, so a small value alone is not proof of slack.
+  * Unsigned elapsed time handles wrap and restored clocks. No deadlines change. */
+ #if FPS != 20
+-static uint32_t modCpuLastV;
+ static int32_t modCpuVotes;
++#endif
++int32_t MOD_OPT_FPS; /* AUTO on a fresh boot. */
++void modSetFrameRate(int32_t mode)
++{
++    MOD_OPT_FPS = mode >= MOD_FPS_AUTO && mode <= MOD_FPS_20 ? mode : MOD_FPS_AUTO;
++#if FPS != 20
++    extern int32_t MOD_CPU_SPINS;
++    modCpuVotes = 0;
++    MOD_FPS_MODE_RUN = MOD_OPT_FPS == MOD_FPS_60 ? 2 :
++        MOD_OPT_FPS == MOD_FPS_20 ? 0 : MOD_CPU_SPINS >= MOD_CPU_SPINS_FAST ? 2 : 0;
++#endif
++}
++
++#if FPS != 20
++static uint32_t modCpuLastV;
+ 
+ static void modAutoFrameRateSample(int32_t spins)
+ {
+-	int32_t change = MOD_FPS_MODE_RUN == 0 ? spins >= MOD_CPU_SPINS_FAST : spins < MOD_CPU_SPINS_SLOW;
++	int32_t change;
++
++    if (MOD_OPT_FPS != MOD_FPS_AUTO) {
++        modCpuVotes = 0;
++        return;
++    }
++    change = MOD_FPS_MODE_RUN == 0 ? spins >= MOD_CPU_SPINS_FAST : spins < MOD_CPU_SPINS_SLOW;
+ 
+ 	if (!change) {
+ 		modCpuVotes = 0;
+@@ -5458,14 +5478,20 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 				/* test switch: every pass, however late (the tick then
+ 				 * lasts longer, the logic per tick is the same) */
+ 			} else if (VSync(-1) >= endV) {
+-				continue; /* this pass would be shown late: skip it */
++				#if MOD_FPS_DIAG
++                MOD_DIAG_MISS_COUNT++;
++#endif
++                continue; /* this pass would be shown late: skip it */
+ 			} else if ((tickV + period - vLast) * 263 - VSync(1) <
+ 				   passLines + modPassSetupLines + 4) {
+ 				/* lines left before the vblank that ends the tick,
+ 				 * counted from the last vblank waited for; the pass costs
+ 				 * about what the first one did plus its setup (OT clear,
+ 				 * rollback, view) */
+-				break; /* it would not end before the next tick is due */
++				#if MOD_FPS_DIAG
++                MOD_DIAG_MISS_COUNT += n - r;
++#endif
++                break; /* it would not end before the next tick is due */
+ 			}
+ 			MOD_RENDER_PASS = r;
+ 			modRenderRollbackBegin();
+@@ -5516,6 +5542,9 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 		}
+ 		modRandLogPos = 0;
+ 		renderObjects();
++#if MOD_FPS_DIAG
++        modFpsDiagDraw(105);
++#endif
+ 		if (MOD_RENDER_CADENCE) {
+ 			KAR_flushTiles();
+ 		}
+@@ -5556,6 +5585,9 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 		}
+ 		if (VSync(-1) >= endV) {
+ 			MOD_PERF_LATE++;
++#if MOD_FPS_DIAG
++            if (r > 0) MOD_DIAG_MISS_COUNT++;
++#endif
+ 		}
+ 		do {
+ 			modWaitVblank(); /* like VSync(3): always swap on a vertical blank */
+@@ -5565,6 +5597,9 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 		GsSortClear(0, 0, 0, &GS_ORDERING_TABLE[ACTIVE_FRAMEBUFFER]);
+ 		GsDrawOt(&GS_ORDERING_TABLE[ACTIVE_FRAMEBUFFER]);
+ 		MOD_FPS_RENDERS++;
++#if MOD_FPS_DIAG
++        modFpsDiagPresent();
++#endif
+ 	}
+ 	if (interp) {
+ 		modInterpEndTick();
+@@ -5808,7 +5843,11 @@ void renderPressStartToContinue(void)
+  * the text area's row MOD_VERSION_ROW (free on the title screen; on the menu, the row under OPTIONS: drawMainMenuStrings
+  * draws it with the view's own strings) and shown from there with a drop shadow (renderString). Empty: nothing.
+  */
++#if MOD_FPS_DIAG
++char MOD_VERSION_TEXT[32] = "v0.0.7-fpstest1";
++#else
+ char MOD_VERSION_TEXT[32] = MOD_VERSION_STRING;
++#endif
+ 
+ void modVersionDraw(void)
+ {
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 9b2d116e..ab2a6fe9 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -289,13 +289,14 @@ static int32_t MOD_SAVE_NUMBER; /* MOD (options): the highest save number seen i
+ #define MOD_OPT_ROW_STORY	3 /* MOD (story): EXTENDED STORY, under NEW DIGIMON */
+ #define MOD_OPT_ROW_DIFF	4 /* MOD (difficulty): DIFFICULTY, under EXTENDED STORY */
+ #define MOD_OPT_ROW_QUICK	5 /* MOD (quick battle start): QUICK BATTLE START, under DIFFICULTY */
++#define MOD_OPT_ROW_FPS 6
+ #if FONT_SWITCH
+-#define MOD_OPT_ROWS	10 /* MOD (options): and FONT, in a build with both fonts */
+-#define MOD_OPT_ROW_FONT	6
+-#define MOD_OPT_ROW_LANG	7
++#define MOD_OPT_ROWS	11 /* MOD (options): and FONT, in a build with both fonts */
++#define MOD_OPT_ROW_FONT	7
++#define MOD_OPT_ROW_LANG	8
+ #else
+-#define MOD_OPT_ROWS	9
+-#define MOD_OPT_ROW_LANG	6
++#define MOD_OPT_ROWS	10
++#define MOD_OPT_ROW_LANG	7
+ #endif
+ #define MOD_OPT_ROW_SIGNS	(MOD_OPT_ROW_LANG + 1) /* MOD (language): LANGUAGE and MAP SIGNS, the last two rows */
+ static void renderOptionsMenu(void);
+@@ -4728,7 +4729,7 @@ static void modOptionBytes(uint8_t *d)
+ {
+ 	d[0] = MOD_OPT_BUTTONS;
+ 	d[1] = 1; /* Reserved digital-clock byte. */
+-	d[2] = 20; /* Reserved frame-rate byte; safe for older readers. */
++	d[2] = 0xA0 + MOD_OPT_FPS; /* Distinguish new choices from every legacy save. */
+ 	d[3] = 1; /* Reserved care-HUD byte: always enabled, including for older readers. */
+ #if FONT_SWITCH
+ 	d[4] = MOD_FONT == MOD_FONT_NEW ? 1 : MOD_FONT == MOD_FONT_CLASSIC ? 2 : 0; /* FONT */
+@@ -4757,7 +4758,9 @@ static void modApplyOptions(const uint8_t *d, int32_t len)
+ 	if (len >= 1) {
+ 		modSetButtons(d[0]);
+ 	}
+-	/* Bytes 1, 2, 3 and 13 are reserved; legacy display choices are ignored. */
++	/* All old frame-rate bytes (including v0.0.7's 20) default to AUTO. */
++    modSetFrameRate(len >= 3 && d[2] >= 0xA0 && d[2] <= 0xA2 ? d[2] - 0xA0 : MOD_FPS_AUTO);
++    /* Bytes 1, 3 and 13 remain reserved. */
+ #if FONT_SWITCH
+ 	if (len >= 5) {
+ 		modSetFont(d[4] == 0 ? MOD_FONT_ORIGINAL : d[4] == 2 ? MOD_FONT_CLASSIC : MOD_FONT_NEW);
+@@ -4968,7 +4971,7 @@ void modNoticeProbe(void)
+ {
+ 	modCpuProbe();
+ #if FPS != 20
+-	MOD_FPS_MODE_RUN = MOD_CPU_SPINS >= MOD_CPU_SPINS_FAST ? 2 : 0;
++	modSetFrameRate(MOD_OPT_FPS);
+ #endif
+ 	MOD_NOTICE = (modProbeRam() ? 0 : MOD_NOTICE_NO_RAM) | (MOD_CPU_SPINS < MOD_CPU_SPINS_FAST ? MOD_NOTICE_SLOW_CPU : 0);
+ }
+@@ -5002,6 +5005,9 @@ static void modNoticeString(int32_t color, int32_t x, int32_t y, int32_t i)
+ 
+ void modNoticeRender(void)
+ {
++#if MOD_FPS_DIAG
++    modFpsDiagDraw(92); /* Also exposes the raw probe on the title panel. */
++#endif
+ 	int32_t i;
+ 	int32_t missing;
+ 
+@@ -5991,6 +5997,9 @@ void renderInitialMenu(void)
+ 	renderText(cur++, 0x52, 0x67, 0, 0x30, 0xB0, 0xC, 0); /* MOD (options): OPTIONS */
+ 	GsSetWorkBase((PACKET *)cur);
+ 	renderMenuBox(0x48, 0x32, 0xB0, 0x46); /* MOD (options): was 0x3A high */
++#if MOD_FPS_DIAG
++    modFpsDiagDraw(92);
++#endif
+ 	modVersionRender(); /* MOD (version) */
+ #endif
+ }
+@@ -6016,6 +6025,7 @@ static char *MOD_OPT_TEXT[MOD_OPT_ROWS][3] = {
+ 	{ MOD_OPT_STR_STORY, MOD_OPT_STR_OFF, MOD_OPT_STR_ON }, /* MOD (story) */
+ 	{ MOD_OPT_STR_DIFF, MOD_OPT_STR_EASY, MOD_OPT_STR_NORMAL }, /* MOD (difficulty) */
+ 	{ MOD_OPT_STR_QUICK, MOD_OPT_STR_OFF, MOD_OPT_STR_ON }, /* MOD (quick battle start) */
++    { MOD_OPT_STR_FPS, MOD_OPT_STR_AUTO, MOD_OPT_STR_60 },
+ #if FONT_SWITCH
+ 	{ MOD_OPT_STR_FONT, MOD_OPT_STR_NEW, MOD_OPT_STR_CLASSIC },
+ #endif
+@@ -6031,6 +6041,7 @@ typedef char mod_options_font_slot[(MOD_OPT_ROW_LANG == MOD_OPT_ROW_FONT + 1) ?
+ #endif
+ static int16_t MOD_OPT_V[MOD_OPT_ROWS * 2];
+ static int16_t MOD_OPT_LANG_V;
++static int16_t MOD_OPT_FPS_V;
+ /* the pixels of each label and value as the font draws them (drawOptionsText) */
+ static uint8_t MOD_OPT_W[MOD_OPT_ROWS * 3];
+ static uint8_t MOD_OPT_LANG_W[1 + MOD_LANGS];
+@@ -6041,6 +6052,7 @@ static char *MOD_LANGUAGE_NAMES[MOD_LANGS] = { MOD_OPT_STR_ENGLISH, MOD_OPT_STR_
+ /* Language values share one texture position; the other option rows have at most three values. */
+ static char *modOptionText(int32_t row, int32_t value)
+ {
++    if (row == MOD_OPT_ROW_FPS && value == 3) return MOD_OPT_STR_20;
+     if (row == MOD_OPT_ROW_LANG && value > 0) return MOD_LANGUAGE_NAMES[modLanguageAt(value - 1)];
+ #if FONT_SWITCH
+     if (row == MOD_OPT_ROW_FONT && value == 3) return MOD_OPT_STR_ORIGINAL;
+@@ -6050,11 +6062,13 @@ static char *modOptionText(int32_t row, int32_t value)
+ 
+ static int16_t *modOptionV(int32_t row, int32_t value)
+ {
++    if (row == MOD_OPT_ROW_FPS && value == 2) return &MOD_OPT_FPS_V;
+     return row == MOD_OPT_ROW_LANG ? &MOD_OPT_LANG_V : &MOD_OPT_V[row * 2 + value];
+ }
+ 
+ static uint8_t *modOptionW(int32_t row, int32_t value)
+ {
++    if (row == MOD_OPT_ROW_FPS && value == 3) return &MOD_OPT_W[MOD_OPT_ROW_LANG * 3 + 2];
+     return row == MOD_OPT_ROW_LANG ? &MOD_OPT_LANG_W[value] : &MOD_OPT_W[row * 3 + value];
+ }
+ 
+@@ -6069,6 +6083,7 @@ static int16_t MOD_OPT_SHOWN;
+ 
+ static int32_t modOptionCount(int32_t row)
+ {
++    if (row == MOD_OPT_ROW_FPS) return 3;
+ 	if (row == MOD_OPT_ROW_LANG) {
+         return modLanguageCount();
+     }
+@@ -6092,6 +6107,8 @@ static int32_t modOptionValue(int32_t row)
+ 		return MOD_OPT_STORY != 0;
+ 	case MOD_OPT_ROW_DIFF: /* MOD (difficulty): EASY, NORMAL */
+ 		return MOD_OPT_DIFFICULTY == MOD_DIFF_EASY ? 0 : 1;
++	case MOD_OPT_ROW_FPS:
++        return MOD_OPT_FPS;
+ 	case MOD_OPT_ROW_QUICK: /* MOD (quick battle start) */
+ 		return MOD_OPT_QUICK_BATTLE != 0;
+ #if FONT_SWITCH
+@@ -6138,6 +6155,9 @@ static void modSetOption(int32_t row, int32_t value)
+ 	case MOD_OPT_ROW_DIFF: /* MOD (difficulty) */
+ 		MOD_OPT_DIFFICULTY = value == 0 ? MOD_DIFF_EASY : MOD_DIFF_NORMAL;
+ 		break;
++	case MOD_OPT_ROW_FPS:
++        modSetFrameRate(value);
++        break;
+ 	case MOD_OPT_ROW_QUICK: /* MOD (quick battle start) */
+ 		MOD_OPT_QUICK_BATTLE = value;
+ 		break;
+diff --git a/src/main/mod_qol.c b/src/main/mod_qol.c
+index 8d6209f9..16380379 100644
+--- a/src/main/mod_qol.c
++++ b/src/main/mod_qol.c
+@@ -25,6 +25,8 @@
+ #include <dw/mod_options.h>
+ #include <dw/mod_qol.h>
+ #include <dw/mod_present.h>
++#include <dw/mod_fps.h>
++#include <libetc.h>
+ #include <dw/params.h>
+ #include <dw/partner.h>
+ #include <dw/sound.h>
+@@ -47,7 +49,7 @@ extern uint32_t POLLED_INPUT_PREVIOUS;
+ extern uint8_t PAUSE_STATE;
+ 
+ /* each row of a letter is 3 bits, bit 2 the left column */
+-static const char MOD_PLATE_CHARS[] = "R2x15STA>0346789/B";
++static const char MOD_PLATE_CHARS[] = "R2x15STA>0346789/BPFD";
+ static const uint8_t MOD_PLATE_GLYPHS[][5] = {
+ 	{ 6, 5, 6, 5, 5 }, /* R */
+ 	{ 7, 1, 7, 4, 7 }, /* 2 */
+@@ -67,6 +69,9 @@ static const uint8_t MOD_PLATE_GLYPHS[][5] = {
+ 	{ 7, 5, 7, 1, 7 }, /* 9 */
+ 	{ 1, 1, 2, 4, 4 }, /* / */
+ 	{ 6, 5, 6, 5, 6 }, /* B */
++    { 6, 5, 6, 4, 4 }, /* P */
++    { 7, 4, 6, 4, 4 }, /* F */
++    { 6, 5, 5, 5, 6 }, /* D */
+ };
+ 
+ 
+@@ -376,3 +381,32 @@ int32_t modTrainStopReason(int32_t t0, int32_t tiredAt)
+ 	}
+ 	return MOD_TB_GO;
+ }
++
++#if MOD_FPS_DIAG
++/* Counts actual swaps per 60 guest refreshes, never requested passes or logic ticks.
++ * An emulated guest cannot measure iOS wall time when the host runs slowly. */
++int32_t MOD_DIAG_FPS, MOD_DIAG_MISSED, MOD_DIAG_MISS_COUNT;
++static uint32_t modDiagStart;
++static int32_t modDiagPresents;
++void modFpsDiagPresent(void)
++{
++    uint32_t now = VSync(-1);
++    uint32_t elapsed = now - modDiagStart;
++    modDiagPresents++;
++    if (elapsed >= 60) {
++        MOD_DIAG_FPS = modDiagPresents * 60 / elapsed;
++        MOD_DIAG_MISSED = MOD_DIAG_MISS_COUNT;
++        modDiagStart = now;
++        modDiagPresents = MOD_DIAG_MISS_COUNT = 0;
++    }
++}
++void modFpsDiagDraw(int32_t y)
++{
++    extern int32_t MOD_CPU_SPINS;
++    char text[40];
++    sprintf(text, "P%05d %c>%d F%02d D%02d", MOD_CPU_SPINS,
++        MOD_OPT_FPS == MOD_FPS_AUTO ? 'A' : 'R',
++        MOD_FPS_MODE == 2 ? 60 : 20, MOD_DIAG_FPS, MOD_DIAG_MISSED);
++    modPlate(-152, y, text, 0, 240, 240, 240);
++}
++#endif
+diff --git a/text/main/main_menu.yaml b/text/main/main_menu.yaml
+index 16b1cb43..8bdc995a 100644
+--- a/text/main/main_menu.yaml
++++ b/text/main/main_menu.yaml
+@@ -455,3 +455,15 @@ MOD_OPTIONS:
+     MOD_OPT_STR_CHINESE_RAM_3:
+       ja: "RAMを8MBにしてください。"
+       en_us: "settings."
++    MOD_OPT_STR_FPS:
++      ja: "FRAME RATE"
++      en_us: "FRAME RATE"
++    MOD_OPT_STR_AUTO:
++      ja: "AUTO"
++      en_us: "AUTO"
++    MOD_OPT_STR_60:
++      ja: "60"
++      en_us: "60"
++    MOD_OPT_STR_20:
++      ja: "20"
++      en_us: "20"
+-- 
+2.55.0
+
