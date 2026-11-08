@@ -86,6 +86,47 @@ def visit_talk():
         self.assertNotIn(f'text("{recruitment.KEY}", species(42))', source)
         self.assertIn(f'text("{recruitment.KEY}", species(86))', source)
 
+    def test_walk_alone_does_not_hide_a_join(self):
+        source = """from dw import *
+area = screen(3)
+visitor = area.npc(Species.BlueMeramon, slot=5, at=(0, 0))
+@visitor.on_talk
+def talk():
+    walk_away(500, 0, looks=3)
+    recruit(Species.BlueMeramon)
+"""
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder).joinpath('story', 'mods', 'fixture', 'src', 'silent.py')
+            path.parent.mkdir(parents=True)
+            path.write_text(source)
+            with former_residents(), recruitment.story(True):
+                compiled = lower.lower_file(str(path))[1]
+        self.assertIn(f'text("{recruitment.KEY}", species(104))', compiled)
+
+    def test_shared_sukamon_announcement_precedes_departure(self):
+        path = ROOT / 'story/base/zones/trash-mountain/s159-165/script.py'
+        for extended in (False, True):
+            with self.subTest(extended=extended), recruitment.story(extended):
+                source = lower.lower_file(str(path))[1]
+                scene = source[source.index('on talk(sukamon2)'):source.index('on talk(sukamon3)')]
+                self.assertEqual(scene.count('qol.sukamon_joined'), 1)
+                self.assertNotIn(recruitment.KEY, scene)
+                self.assertLess(scene.index('sound(8, 17)'), scene.index('qol.sukamon_joined'))
+                self.assertLess(scene.index('qol.sukamon_joined'), scene.index('walk(sukamon2'))
+                self.assertLess(scene.index('remove(sukamon2)'), scene.index('recruit(species(39))'))
+
+    def test_lab_completion_does_not_reannounce_existing_flags(self):
+        path = ROOT / 'story/base/zones/underground-lab/s064-67/script.py'
+        for extended in (False, True):
+            with self.subTest(extended=extended), recruitment.story(extended):
+                source = lower.lower_file(str(path))[1]
+                completed = source[source.index('myotismon_joined_city = true;'):]
+                for name, species in (('myotismon', 66), ('skullgreymon', 26)):
+                    guard = f'if (!is_recruited(species({species})))'
+                    self.assertLess(completed.index(guard), completed.index(f'qol.{name}_joined'))
+                    self.assertEqual(completed.count(f'qol.{name}_joined'), 1)
+                    self.assertNotIn(f'text("{recruitment.KEY}", species({species}))', completed)
+
     def test_mod_placed_helper_uses_the_same_policy(self):
         path = ROOT / 'story/mods/examples/src/forest_garurumon.py'
         with former_residents(), recruitment.story(True):
@@ -109,6 +150,18 @@ def visit_talk():
             source = lower.lower_file(str(path))[1]
         for species in (7, 12, 6):
             self.assertIn(f'text("{recruitment.KEY}", species({species}))', source)
+
+    def test_shared_join_lines_compile_in_every_language(self):
+        names = ('sukamon', 'megadramon', 'nanimon', 'myotismon', 'skullgreymon')
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'shared-join.dws'
+            lines = ''.join(f'say(narrator, text("qol.{name}_joined"));' for name in names)
+            path.write_text('import "' + str(ROOT / 'story/core/recruit.dws') + '";\n'
+                            'script 3 { on enter { ' + lines + ' } }\n')
+            for lang in ('en', 'es', 'ca', 'de', 'fr', 'it', 'ja', 'pt-br', 'zh-hans'):
+                with self.subTest(lang=lang):
+                    prog = build.compile_sources([str(path)], 'mods', lang=lang, text_source='ours')
+                    self.assertTrue({f'qol.{name}_joined' for name in names} <= prog.used_text)
 
     def test_templates_compile_in_every_language(self):
         with tempfile.TemporaryDirectory() as folder:

@@ -88,6 +88,8 @@ script 198 {
                 face(megadramon, tamer);
                 face(partner, megadramon);
                 say(megadramon, text("s198.sec53.u6"));
+                sound(8, 0);
+                say(narrator, text("qol.megadramon_joined"));
                 walk_away(megadramon, 0, 0, looks: 3);
                 remove(megadramon);
                 glances = 0;

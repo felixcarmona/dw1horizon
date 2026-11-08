@@ -193,7 +193,9 @@ def talk():    # section 6
 def talk():    # section 7
     if not recruited(Species.Sukamon):
         say(t7.u0)
-        # Walk to the southern exit before the recruitment announcement.
+        sound(8, 17)
+        narrator.say(text.qol.sukamon_joined)
+        # Keep the announcement visible before walking to the southern exit.
         walk(650, -1800)
         walk(189, -3550)
         leave()

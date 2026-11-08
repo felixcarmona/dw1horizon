@@ -1,4 +1,9 @@
 {
+ "qol.sukamon_joined": "Sukamon joined the city!",
+ "qol.megadramon_joined": "Megadramon joined the city!",
+ "qol.nanimon_joined": "Nanimon joined the city!",
+ "qol.myotismon_joined": "Myotismon joined the city!",
+ "qol.skullgreymon_joined": "SkullGreymon joined the city!",
  "qol.training_x5": "Normal training x5",
  "qol.mansion_key_used_up": "Every door in the mansion is open now. You no longer need the {color 6}Mansion Key{color 1}.",
  "name.ask_partner": [
