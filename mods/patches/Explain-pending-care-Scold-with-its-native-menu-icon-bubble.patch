@@ -1,4 +1,4 @@
-From 2ef4aeab54e502c7bf58fdf1987dc944fe697458 Mon Sep 17 00:00:00 2001
+From 4e15dd7ea92053b81eaee25be2c073d564a1aa01 Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Sat, 7 Nov 2026 20:01:18 +0000
 Subject: [PATCH] Explain pending care Scold with its native menu icon bubble
@@ -10,7 +10,7 @@ Subject: [PATCH] Explain pending care Scold with its native menu icon bubble
  3 files changed, 52 insertions(+), 25 deletions(-)
 
 diff --git a/include/dw/partner.h b/include/dw/partner.h
-index 721ead32..7a59b3a9 100644
+index 721ead3..7a59b3a 100644
 --- a/include/dw/partner.h
 +++ b/include/dw/partner.h
 @@ -10,6 +10,12 @@ static inline int32_t modResourceNeed(int32_t current, int32_t maximum)
@@ -27,7 +27,7 @@ index 721ead32..7a59b3a9 100644
  	int8_t hungerTimes[8];
  	uint8_t energyCap;
 diff --git a/src/main/bubble.c b/src/main/bubble.c
-index 475ae1d4..609318dc 100644
+index f555b18..ba9b71c 100644
 --- a/src/main/bubble.c
 +++ b/src/main/bubble.c
 @@ -59,6 +59,7 @@ extern int32_t DRAWING_OFFSET_Y;
@@ -58,8 +58,8 @@ index 475ae1d4..609318dc 100644
 +	}
  	case 13:
  	case 14: {
- 		/* Derived ITEM.TIM disks and pixel labels in the existing ETCTIM upload. */
-@@ -586,7 +601,7 @@ int32_t MOD_STATUS_BUBBLES = 1;
+ 		/* Depleted native HUD heart/orb, derived into the existing ETCTIM upload. */
+@@ -583,7 +598,7 @@ int32_t MOD_STATUS_BUBBLES = 1;
  /*
   * MOD (status-bubbles): the ACTIVE conditions as a fixed row of equal bubbles
   * over the partner, in a fixed order (hungry, poopy, sleepy, tired, sick,
@@ -68,7 +68,7 @@ index 475ae1d4..609318dc 100644
   * on top). Only a bubble on its own has a tail. Nothing rotates: a bubble keeps its
   * place while its condition lasts; when one appears it grows in its place,
   * when one goes it shrinks, and the others slide to their new places. The
-@@ -608,17 +623,17 @@ int32_t MOD_STATUS_BUBBLES = 1;
+@@ -605,17 +620,17 @@ int32_t MOD_STATUS_BUBBLES = 1;
  #define RING_NONE	0x10000	/* slot codes: no bubble, else (x + 128) << 8 | (y + 128), texels, */
  #define RING_TAIL	0x20000	/* | this when the bubble has its tail */
  
@@ -93,7 +93,7 @@ index 475ae1d4..609318dc 100644
  /* what the last render pass drew, one word each (tools/bubblecheck.py):
   * [0] passes drawn, [1] anchor before the bob (x | y << 16, screen pixels),
   * [2] biggest bubble: condition << 24 | shown size (0..256) << 8 | 1 if a
-@@ -740,8 +755,8 @@ static void drawRingBubble(int32_t j, int32_t cx, int32_t cy, int32_t depth,
+@@ -737,8 +752,8 @@ static void drawRingBubble(int32_t j, int32_t cx, int32_t cy, int32_t depth,
  /*
   * MOD (care menu): the Square badge. While Square would open the care menu (mod_feed.c sets
   * MOD_FEED_HINT for that tick), the care-only native button cap (the UI texture page,
@@ -104,7 +104,7 @@ index 475ae1d4..609318dc 100644
   * RING_BADGE_TICKS and moves with the row (its bob and its steps), one ordering table slot nearer than the bubbles.
   */
  #define RING_BADGE_TICKS	4	/* 0.2 s to grow in or shrink out */
-@@ -782,7 +797,7 @@ static void renderConditionRing(int32_t x, int32_t y, int32_t depth,
+@@ -779,7 +794,7 @@ static void renderConditionRing(int32_t x, int32_t y, int32_t depth,
  	int32_t k = (scale * VIEWPORT_DISTANCE) / depth;
  	int32_t cy0 = y - ((18 * k) >> 12);
  	int32_t p = ringPhase();
@@ -113,7 +113,7 @@ index 475ae1d4..609318dc 100644
  	int32_t drawn = 0;
  	int32_t big = -1;
  	int32_t full = 0;
-@@ -790,8 +805,12 @@ static void renderConditionRing(int32_t x, int32_t y, int32_t depth,
+@@ -787,8 +802,12 @@ static void renderConditionRing(int32_t x, int32_t y, int32_t depth,
  	int32_t right = -0x8000;
  	int32_t j;
  
@@ -127,7 +127,7 @@ index 475ae1d4..609318dc 100644
  		if (bs[j] > 24) {
  			int32_t edge = (13 * bs[j]) >> 4;
  			if (bx[j] - edge < left) {
-@@ -835,10 +854,10 @@ static void renderConditionRing(int32_t x, int32_t y, int32_t depth,
+@@ -832,10 +851,10 @@ static void renderConditionRing(int32_t x, int32_t y, int32_t depth,
  	}
  	/* the bottom row first, then the bigger: drawn first is on top (same
  	 * depth), so the bottom row covers the top row's edge */
@@ -140,7 +140,7 @@ index 475ae1d4..609318dc 100644
  			if (bs[j] > 24 &&
  			    (b < 0 || by[j] > by[b] || (by[j] == by[b] && bs[j] > bs[b]))) {
  				b = j;
-@@ -852,14 +871,14 @@ static void renderConditionRing(int32_t x, int32_t y, int32_t depth,
+@@ -849,14 +868,14 @@ static void renderConditionRing(int32_t x, int32_t y, int32_t depth,
  		bs[b] = -bs[b];
  		++drawn;
  	}
@@ -157,7 +157,7 @@ index 475ae1d4..609318dc 100644
  			if (bs[j] < -24) {
  				if (bx[j] + ((168 * -bs[j]) >> 8) > right) {
  					right = bx[j] + ((168 * -bs[j]) >> 8);
-@@ -887,7 +906,7 @@ static int32_t ringAnyBubble(void)
+@@ -884,7 +903,7 @@ static int32_t ringAnyBubble(void)
  {
  	int32_t j;
  
@@ -166,7 +166,7 @@ index 475ae1d4..609318dc 100644
  		if (MOD_RING_FROM[j] != RING_NONE ||
  		    (MOD_RING_T >= 0 && MOD_RING_TO[j] != RING_NONE)) {
  			return 1;
-@@ -1008,8 +1027,8 @@ void renderConditionRingObject(int32_t instanceId)
+@@ -1005,8 +1024,8 @@ void renderConditionRingObject(int32_t instanceId)
  void tickConditionRingObject(int32_t instanceId)
  {
  	uint32_t cond = PARTNER_PARA.condition;
@@ -177,7 +177,7 @@ index 475ae1d4..609318dc 100644
  	int32_t n = 0;
  	int32_t top;
  	int32_t rank = 0;
-@@ -1037,28 +1056,30 @@ void tickConditionRingObject(int32_t instanceId)
+@@ -1034,28 +1053,30 @@ void tickConditionRingObject(int32_t instanceId)
  			++MOD_RING_T;
  			return;
  		}
@@ -212,7 +212,7 @@ index 475ae1d4..609318dc 100644
  		to[j] = RING_NONE;
  		if (act[j]) {
  			int32_t col = rank < top ? rank : rank - top;
-@@ -1074,7 +1095,7 @@ void tickConditionRingObject(int32_t instanceId)
+@@ -1071,7 +1092,7 @@ void tickConditionRingObject(int32_t instanceId)
  		}
  	}
  	if (change) {
@@ -222,7 +222,7 @@ index 475ae1d4..609318dc 100644
  		}
  		MOD_RING_T = 0;
 diff --git a/src/main/mod_feed.c b/src/main/mod_feed.c
-index 6f9176f0..5fc0b14c 100644
+index 6f9176f..5fc0b14 100644
 --- a/src/main/mod_feed.c
 +++ b/src/main/mod_feed.c
 @@ -202,7 +202,7 @@ static int32_t feedCollect(int32_t needsOnly)
