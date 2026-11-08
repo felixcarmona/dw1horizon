@@ -425,6 +425,7 @@ Advance-MP-training-blocks-during-the-return-walk.patch
 Retain-the-MENU-reserve-with-shared-card-IO-argument-setup.patch
 Keep-Continue-camera-framing-when-movement-starts-immediately.patch
 Clear-recycled-jukebox-rows-and-fit-titles-inside-the-menu.patch
+Migrate-equipped-technique-identities-for-layout-A.patch
 Restore-new-game-partner-care-before-the-opening.patch
 Position-the-Continue-view-once-after-collision-relocation.patch
 Always-show-detected-RAM-CPU-speed-and-selected-FPS.patch

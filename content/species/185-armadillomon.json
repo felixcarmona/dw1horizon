@@ -6,8 +6,7 @@
   "vanilla_as": 46,
   "attribute": "vaccine",
   "specialties": ["battle", "nature", null],
-  "techniques": ["Tremar", "Sonic Jab", "Muscle Charge", "War Cry", "Poison Claw", "Mass Morph", "Insect Plague",
-                 "Drill Spin"],
+  "techniques": ["Tremar", "Sonic Jab", "Muscle Charge", "War Cry", null, "Mass Morph", null, "Drill Spin"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 47,
   "model": {

@@ -7,8 +7,8 @@
   "attribute": "virus",
   "specialties": ["filth", "ice", null],
   "techniques": ["Ult Poop Hell", "Big Rnd Toss", "Big Poop Toss", "Poop Spd Toss", "Rnd Spd Toss", "Odor Spray",
-                 "Poop Rnd Toss", "Horizontal Kick (55)", "Water Blit", "Buster Dive", "Aqua Magic",
-                 "Tear Drop", "Ice Needle", "Winter Blast", "Death Claw", "Giga Freeze"],
+                 "Poop Rnd Toss", "Horizontal Kick (55)", "Water Blit", null, "Aqua Magic", "Tear Drop", "Ice Needle",
+                 "Winter Blast", "Death Claw", "Giga Freeze"],
   "drop": {"item": "sm.recovery", "percent": 30},
   "effects_like": 42,
   "model": {

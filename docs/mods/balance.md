@@ -982,3 +982,13 @@ fixtures reject expanded RAM and read exactly 2,097,152 bytes. Battle-entry
 free/largest blocks are 13,392 bytes for daytime Seam, 60,824 for nighttime
 IceDevimon and 129,008 for Mt. Infinity Devimon. Move selection and weights
 change map data only; this pass adds no C code or runtime allocation.
+
+## Technique coherence: option A
+
+The eleven rows in the [implemented proposal](../proposals/technique-coherence.md#option-a-exact-choices-for-review) use its exact slot arrays. Ordinary compatible memberships decrease by sixteen (2,397 → 2,381 across added partners); no global technique power, MP, learning chance or Brains pool/weight changes. New moves require their existing learned bits or normal acquisition.
+
+Tentomon gains secondary Air; Bearmon loses Ice; Dinohyumon and Gargoylemon replace secondary Nature with Air. Muchomon becomes Battle/Air/Ice and Shakkoumon Mech/Air/Nature. These orders also change incoming elemental multipliers, the main-specialty AI preference, evolution's weakest main-element award and the learning-chance column. Muchomon's Ice, Shakkoumon's Nature and Triceramon's Nature remain explicit route bridges with no matching ordinary move. Every evolution edge stays unchanged.
+
+Wild Gargoylemon uses Wind Cutter instead of Insect Plague at the same authored selection weight of 30. Native Tentomon replaces the former perfume choice with Electric Cloud at the existing selection weight of 20; other selected slots survive. Muchomon's existing valid native slots deliberately acquire physical choices; GCAN11's out-of-list selections become Sonic Jab/Dynamite Kick/Wind Cutter at 50/30/20. Selection weights are inputs to the enemy AI, not guaranteed final use percentages.
+
+[Save migration](../reference/save-format.md#technique-layout-a) preserves the learned library and finishers, while removing unsafe equipped substitutions. No entire new list is granted on Continue.

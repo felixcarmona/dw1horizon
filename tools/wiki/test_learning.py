@@ -16,6 +16,21 @@ class LearningTests(unittest.TestCase):
     def setUpClass(cls):
         cls.data = model.load('v0.0.7')
 
+    def test_working_snapshot_is_next_release_and_keeps_release_pinned(self):
+        working=model.load('working')
+        self.assertTrue(working['commit'].startswith('working:'))
+        released=next(s for s in self.data['species'] if s['id']==327)
+        current=next(s for s in working['species'] if s['id']==327)
+        self.assertIn(35,[m['id'] for m in released['moves']])
+        self.assertNotIn(13,[m['id'] for m in released['moves']])
+        self.assertIn(13,[m['id'] for m in current['moves']])
+        self.assertNotIn(35,[m['id'] for m in current['moves']])
+        self.assertTrue(any(r['species']==327 for r in working['learning_sources'][13]))
+        self.assertTrue(any(r['species']==111 for r in working['learning_sources'][10]))
+        # Air is secondary: Wind Cutter uses the exact third pool position's weights.
+        wind=working['brain_learning'][13]['positions']
+        self.assertIn(dict(element='air',position=3,weights=[22,11,7]),wind)
+
     def test_native_attack_animation_and_spawn_hours(self):
         files = self.data['files']
         row = model.read_json(files,'content/maps/MAYO01.json')['digimon'][5]

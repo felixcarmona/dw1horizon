@@ -5,9 +5,9 @@
   "level": "rookie",
   "vanilla_as": 46,
   "attribute": "data",
-  "specialties": ["nature", null, null],
-  "techniques": ["Poison Claw", "Insect Plague", "Bug", "Charm Perfume", "Mass Morph", "Poison Powder",
-                 "Danger Sting", "Poison Ivy"],
+  "specialties": ["nature", "air", null],
+  "techniques": ["Poison Claw", "Insect Plague", "Bug", "Static Elect", "Mass Morph", "Electric Cloud",
+                 "Danger Sting", "Poison Ivy", "Megalo Spark"],
   "drop": {"item": "Auto Pilot", "percent": 40},
   "effects_like": 111,
   "model": {
@@ -19,7 +19,7 @@
     "skeleton": [[-1, -1], [-1, 0], [0, 1], [1, 1], [2, 3], [3, 3], [4, 3], [5, 3], [6, 1], [7, 8], [8, 8], [9, 8],
                  [10, 11], [11, 8], [12, 13], [13, 1], [14, 15], [15, 1], [16, 17], [17, 1],
                  [18, 19], [19, 1], [20, 21], [21, 1], [22, 23], [23, 1], [24, 25]],
-    "slot_aliases": [[51, 49], [52, 46], [53, 48]]
+    "slot_aliases": [[51, 49], [52, 46], [53, 48], [54, 51]]
   },
   "texture": {"from": 111},
   "voice": 68,

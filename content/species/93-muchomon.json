@@ -5,9 +5,9 @@
   "level": "rookie",
   "vanilla_as": 18,
   "attribute": "data",
-  "specialties": ["ice", "air", null],
-  "techniques": ["Static Elect", "Giga Freeze", "Ice Needle", "Aqua Magic", "Winter Blast", "Megalo Spark",
-                 "Water Blit", "Super Slap"],
+  "specialties": ["battle", "air", "ice"],
+  "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Tremar", "War Cry", "Muscle Charge", "Counter", "Wind Cutter",
+                 "Super Slap"],
   "drop": {"item": "Various", "percent": 10},
   "effects_like": 57,
   "model": {

@@ -1,0 +1,296 @@
+From 2c6821ae762a8c6bf3aff55be48cf130e8d3de21 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 8 Nov 2026 17:57:14 +0000
+Subject: [PATCH] Migrate equipped technique identities for layout A
+
+---
+ config/us/overlay.ld      | 14 ++++--
+ include/dw/save_tags.h    |  1 +
+ src/main/coherent_slots.h | 91 +++++++++++++++++++++++++++++++++++++++
+ src/main/main_menu.c      | 39 +++++++++++++++--
+ 4 files changed, 139 insertions(+), 6 deletions(-)
+ create mode 100644 src/main/coherent_slots.h
+
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index 813b7839..72d69fe4 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -303,6 +303,14 @@ SECTIONS
+                 .text.modRenderLanguagePicker* .text.modDrawLanguageName*
+                 .text.modShowLanguageError* .text.modRenderLanguageError*
+                 .text.modFlagRect*
++                /* OPTIONS is title-only (CURRENT_MENU 4). Keep its cold drawing,
++                 * setter and private helpers with the picker; mutable width caches
++                 * and localized pointer tables keep their existing storage. */
++                .text.drawOptionsText* .text.renderOptionsMenu* .text.modSetOption*
++                .text.modOptionValue* .text.modOptionText* .text.modOptionCount*
++                .text.modOptionV* .text.modOptionW*
++                .rodata.drawOptionsText* .rodata.renderOptionsMenu* .rodata.modSetOption*
++                .rodata.modOptionValue* .rodata.modOptionText* .rodata.modOptionCount*
+                 .rodata.modDrawLanguagePicker* .rodata.modTickLanguagePicker*
+                 .rodata.modRenderLanguagePicker*
+                 .rodata.MOD_FLAG_PALETTE .rodata.MOD_FLAG_OFFSET .rodata.MOD_FLAG_RUNS
+@@ -845,12 +853,12 @@ SECTIONS
+ 				.text.isExtensionValid
+ 				.text.isMoveAbsent
+ 				.text.loadSaveCopy
++				.text.migrateCoherentSlots* .text.coherentSlotLayout* .text.migrateCoherentRegistered*
+ 				.text.loadSaveSlotData
+ 				.text.loadSavegame
+ 				.text.modDrawSlot2.constprop.0
+ 				.text.modDrawSlot2.part.0.constprop.0
+ 				.text.modDrawSlotName
+-				.text.modOptionValue
+ 				.text.modRegisterLong
+ 				.text.modTitleNameTail .text.modTitleNames
+ 				.text.modTitleOptions
+@@ -896,7 +904,7 @@ SECTIONS
+ 			. = ALIGN(., 4);
+ 			/* their switch tables and literals, which only they read */
+ 			BUILD_DIR/src/main/main_menu.c.o(.rodata.tickMainMenu .rodata.renderMainMenu .rodata.drawMainMenuStrings
+-				.rodata.drawMainMenuStrings.str1.4 .rodata.loadSaveCopy .rodata.modOptionValue
++				.rodata.drawMainMenuStrings.str1.4 .rodata.loadSaveCopy .rodata.old.*
+                 .rodata.MOD_OPT_TEXT); /* Options row pointers are read only while MENU is loaded. */
+ 			. = ALIGN(., 4);
+ 			/* MOD (heap): read-only data of the card menus that only this overlay reaches (tools/xref.py classes): their
+@@ -995,7 +1003,7 @@ SECTIONS
+ 			LONG(0);
+ 			. = ALIGN(., 4);
+             /* Resident helpers reached only by this loaded overlay (xref). */
+-            BUILD_DIR/src/main/main_menu.c.o(.text.modOptionBytes .text.modOptionText .text.modOptionCount*);
++            BUILD_DIR/src/main/main_menu.c.o(.text.modOptionBytes);
+             BUILD_DIR/src/main/main_menu.c.o(.text.setRegisteredSpecies*);
+             BUILD_DIR/src/main/main_menu.c.o(.text.swapPartnerSpecies);
+             BUILD_DIR/src/main/sjis.c.o(.text.asciiToShiftJIS);
+diff --git a/include/dw/save_tags.h b/include/dw/save_tags.h
+index 45731ef5..ff24dab5 100644
+--- a/include/dw/save_tags.h
++++ b/include/dw/save_tags.h
+@@ -34,6 +34,7 @@
+ #define SAVE_TAG_GROUND_PICKED		0x000B /* {i16 screen, u8 tileX, u8 tileY}[64]: the ground spots picked up today (retired; a zero-length record writes an empty legacy history) */
+ #define SAVE_TAG_GROUND_PICKUP_BITS	0x000C /* bit array: stable ground pickup IDs collected today; registry content/ground-items.json */
+ #define SAVE_TAG_REQUIRED		0x8000
++#define SAVE_TAG_TECHNIQUE_LAYOUT	0x8003 /* u8: 1 = option A animation slots; required to prevent silent downgrade substitution */
+ /* engine tier 2 */
+ #define SAVE_TAG_STORY_FLAGS		0x8001 /* bit array: story flag n = trigger 800 + n */
+ #define SAVE_TAG_STORY_VARS		0x8002 /* i32[n] story variables */
+diff --git a/src/main/coherent_slots.h b/src/main/coherent_slots.h
+new file mode 100644
+index 00000000..cdaac8a4
+--- /dev/null
++++ b/src/main/coherent_slots.h
+@@ -0,0 +1,91 @@
++/* Technique layout A: old saves store animation slots, not technique identities.
++ * Keep the library intact. Replace a removed selection only with an already-known,
++ * compatible normal, preferring its element then the closest power (slot breaks ties).
++ * All migration code/table and the save builder stay in MENU. Title-only
++ * OPTIONS code shares EVL with the picker to retain both heap and MENU limits. */
++static void migrateCoherentSlots(int32_t type, uint8_t *equipped, const uint32_t *learned)
++{
++	static const struct { uint16_t type; uint8_t moves[16]; } old[] = {
++		{111, {37, 35, 33, 36, 34, 32, 38, 98, 255, 255, 255, 255, 255, 255, 255, 255}},
++		{185, {40, 43, 41, 42, 37, 34, 35, 75, 255, 255, 255, 255, 255, 255, 255, 255}},
++		{353, {43, 41, 42, 40, 19, 21, 23, 95, 255, 255, 255, 255, 255, 255, 255, 255}},
++		{189, {46, 40, 41, 42, 43, 44, 39, 34, 35, 37, 75, 255, 255, 255, 255, 255}},
++		{308, {46, 44, 41, 42, 43, 40, 39, 34, 35, 37, 100, 255, 255, 255, 255, 255}},
++		{327, {46, 40, 41, 42, 43, 44, 39, 34, 35, 37, 81, 255, 255, 255, 255, 255}},
++		{330, {46, 40, 45, 41, 42, 43, 34, 35, 37, 32, 81, 255, 255, 255, 255, 255}},
++		{93, {12, 16, 19, 21, 18, 11, 20, 95, 255, 255, 255, 255, 255, 255, 255, 255}},
++		{214, {36, 39, 33, 38, 32, 37, 35, 34, 27, 29, 25, 28, 31, 73, 255, 255}},
++		{257, {46, 47, 40, 45, 44, 43, 41, 42, 33, 39, 36, 38, 32, 73, 255, 255}},
++		{307, {56, 52, 51, 50, 54, 49, 53, 55, 20, 47, 21, 23, 19, 18, 62, 16}},
++	};
++	uint8_t removed[3];
++	DigimonPara *para;
++	int32_t row, i, j, k, tech, prior, best, score, distance;
++
++	for (row = 0; row < sizeof(old) / sizeof(old[0]); row++) {
++		if (old[row].type == type) break;
++	}
++	if (row == sizeof(old) / sizeof(old[0])) return;
++	para = &DIGI_PARA(type);
++	for (i = 0; i < 3; i++) {
++		removed[i] = 0xff;
++		if (equipped[i] == 0xff) continue;
++		prior = equipped[i] >= 0x2e && equipped[i] < 0x3e ? old[row].moves[equipped[i] - 0x2e] : 0xff;
++		/* v0.0.7 used Battle in these slots; the unmarked audit build used Ice.
++		 * A full library cannot distinguish them. Never guess a saved identity. */
++		if (type == 307 && equipped[i] >= 0x2e && equipped[i] < 0x3e &&
++		    ((0xbd00u >> (equipped[i] - 0x2e)) & 1u)) prior = 0xff;
++		equipped[i] = 0xff;
++		if (prior >= 58) continue;
++		for (j = 0; j < 16; j++) {
++			tech = para->moves[j];
++			if (tech != prior || (learned && !((learned[tech / 32] >> (tech % 32)) & 1))) continue;
++			for (k = 0; k < 3 && para->special[k] != MOVE_DATA[tech].special; k++) {}
++			if (k < 3) { equipped[i] = 0x2e + j; break; }
++		}
++		if (equipped[i] == 0xff) removed[i] = prior;
++	}
++	if (learned == NULL) return; /* Registered VS fighters have no library: clear removed selections. */
++	for (i = 0; i < 3; i++) {
++		prior = removed[i];
++		if (prior == 0xff) continue;
++		best = -1;
++		score = 0x7fffffff;
++		for (j = 0; j < 16; j++) {
++			tech = para->moves[j];
++			if (tech >= 58 || !((learned[tech / 32] >> (tech % 32)) & 1)) continue;
++			for (k = 0; k < 3 && para->special[k] != MOVE_DATA[tech].special; k++) {}
++			if (k == 3) continue;
++			for (k = 0; k < 3 && equipped[k] != 0x2e + j; k++) {}
++			if (k < 3) continue;
++			distance = MOVE_DATA[tech].power - MOVE_DATA[prior].power;
++			if (distance < 0) distance = -distance;
++			if (MOVE_DATA[tech].special != MOVE_DATA[prior].special) distance += 0x10000;
++			if (distance < score) { score = distance; best = j; }
++		}
++		equipped[i] = best < 0 ? 0xff : 0x2e + best;
++	}
++}
++
++/* 0: unversioned slots; 1: layout A; -1: a layout this reader cannot interpret. */
++static int32_t coherentSlotLayout(uint8_t *e)
++{
++	int32_t at = sizeof(SaveExtHead);
++	int32_t tag, len;
++	for (;;) {
++		tag = e[at] | (e[at + 1] << 8);
++		len = e[at + 2] | (e[at + 3] << 8);
++		if (tag == SAVE_TAG_END) return 0;
++		if (tag == SAVE_TAG_TECHNIQUE_LAYOUT) return len == 1 && e[at + 4] == 1 ? 1 : -1;
++		at += 4 + len;
++	}
++}
++
++
++/* Registered equipment is also animation slots. Migrate it before stamping a save
++ * or handing a legacy card's entries directly to VS (which bypasses Continue). */
++static void migrateCoherentRegistered(RegisteredDigimon *p, int32_t n)
++{
++	int32_t i;
++	for (i = 0; i < n; i++, p++) migrateCoherentSlots(registeredSpecies(p), p->moves, NULL);
++}
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index d26bfd03..69786e64 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -442,6 +442,12 @@ void writeSavegame(SavegamePayload *savegame);
+ static int32_t SAVE_FILE_BYTES = SAVE_V1_BYTES;
+ static int32_t getSaveFileBytes(void);
+ static int32_t loadSaveCopy(int32_t copy);
++static int32_t coherentSlotLayout(uint8_t *e);
++static int32_t isTaggedVersion(int32_t version);
++static int32_t getSaveVersion(SavegamePayload *savegame);
++static uint8_t *saveExtOf(int32_t copy);
++static int32_t isExtensionValid(int32_t copy);
++static void migrateCoherentRegistered(RegisteredDigimon *p, int32_t n);
+ static int32_t isSaveCopyValid(int32_t copy);
+ static void prepareSaveFile(int32_t fromRam);
+ static void modTitleOptions(void); /* MOD (options) */
+@@ -3511,8 +3517,12 @@ void tickMainMenu(void)
+ 					setMemoryCardReadError(2, 0x32);
+ 					break;
+ 				}
++				status = isTaggedVersion(getSaveVersion(&SAVE_FILE.saves[slot])) && isExtensionValid(slot)
++					 ? coherentSlotLayout(saveExtOf(slot)) : 0;
++				if (status < 0) { setMemoryCardReadError(2, 0x32); break; }
+ 				memcpy(&VS__REGISTERED_DIGIMON_BUFFER[VS_PLAYER_INDEX * 0x28],
+ 				       SAVE_FILE.saves[slot].battleRegistrationData, 0xA00);
++				if (status == 0) migrateCoherentRegistered(&VS__REGISTERED_DIGIMON_BUFFER[VS_PLAYER_INDEX * 0x28], 40);
+ 				dropAbsentRegistered(&VS__REGISTERED_DIGIMON_BUFFER[VS_PLAYER_INDEX * 0x28], 40);
+ 				if (countRegisteredDigimon(&VS__REGISTERED_DIGIMON_BUFFER[VS_PLAYER_INDEX * 0x28])) {
+ 					TARGET_MENU = 0x37;
+@@ -5108,6 +5118,7 @@ static void prepareSaveFile(int32_t fromRam)
+ 		p = putRecord(p, SAVE_TAG_GROUND_PICKED, 0, 0);
+ 		p = putRecord(p, SAVE_TAG_GROUND_PICKUP_BITS, MOD_GROUND_PICKED, sizeof(MOD_GROUND_PICKED));
+ 	}
++	{ uint8_t layout = 1; p = putRecord(p, SAVE_TAG_TECHNIQUE_LAYOUT, &layout, 1); }
+ 	/* MOD (tier 2): the story state's records go here */
+ 	putRecord(p, SAVE_TAG_END, 0, 0);
+ 	p = &savegame->unknown4E1[3];
+@@ -5387,6 +5398,7 @@ static int32_t isRecordKnown(int32_t tag)
+ 	case SAVE_TAG_VANILLA_SWAP:
+ 	case SAVE_TAG_GROUND_PICKED:
+ 	case SAVE_TAG_GROUND_PICKUP_BITS:
++	case SAVE_TAG_TECHNIQUE_LAYOUT:
+ 		return 1;
+ 	}
+ 	return 0;
+@@ -5486,10 +5498,13 @@ static void applyRecords(uint8_t *e)
+  * Loads copy 0 or 1 (isSaveCopyValid): the v1 payload, then
+  * the extension when it is valid. 0 = a newer format this build cannot read.
+  */
++#include "coherent_slots.h"
++
+ static int32_t loadSaveCopy(int32_t copy)
+ {
+ 	SaveExtension *ext;
+ 	int32_t i;
++	int32_t layout = 0;
+ 
+ 	if (!isSaveVersionReadable(getSaveVersion(&SAVE_FILE.saves[copy]))) {
+ 		return 0;
+@@ -5504,6 +5519,10 @@ static int32_t loadSaveCopy(int32_t copy)
+ 	    hasUnreadableRecord(saveExtOf(0))) {
+ 		return 0; /* it holds something this build would silently drop */
+ 	}
++	if (isTaggedVersion(getSaveVersion(&SAVE_FILE.saves[0])) && isExtensionValid(0)) {
++		layout = coherentSlotLayout(saveExtOf(0));
++		if (layout < 0) return 0;
++	}
+ 	/* No options record (original cards too): explicit upgrade defaults. */
+ 	modApplyOptions(NULL, 0);
+ 	loadSavegame(&SAVE_FILE.saves[0]);
+@@ -5533,7 +5552,21 @@ static int32_t loadSaveCopy(int32_t copy)
+ 			}
+ 		}
+ 	}
++	if (layout == 0) {
++		migrateCoherentRegistered(SAVE_FILE.saves[0].battleRegistrationData, 40);
++		migrateCoherentSlots(SAVED_STATE.partnerType, PARTNER_ENTITY.digimonEntity.stats.base.moves,
++				     &PARTNER_ENTITY.learnedMoves[0]);
++		for (i = 0; i < 4; i++) {
++			SAVED_STATE.partnerStats.base.moves[i] = PARTNER_ENTITY.digimonEntity.stats.base.moves[i];
++		}
++	}
+ 	dropAbsentSaveContent();
++	/* The registration menu restores copy 1. Keep its used fields in the selected
++	 * layout too; unk24 contains that copy's inline extension and must stay intact. */
++	for (i = 0; i < 40; i++) {
++		memcpy(&SAVE_FILE.saves[1].battleRegistrationData[i], &SAVE_FILE.saves[0].battleRegistrationData[i],
++		       __builtin_offsetof(RegisteredDigimon, unk24));
++	}
+ 	modVanillaSwap();
+ 	modStoryRelocate();
+ 	return 1;
+@@ -6115,7 +6148,7 @@ static int32_t modOptionValue(int32_t row)
+ 	return 0;
+ }
+ 
+-static void modSetOption(int32_t row, int32_t value)
++static void __attribute__((noinline)) modSetOption(int32_t row, int32_t value)
+ {
+     if (row == MOD_OPT_ROW_LANG && modLanguageAt(value) == MOD_LANG_ZH && MOD_COLD_CACHE_TYPE < 0) {
+         modShowLanguageError();
+@@ -6163,7 +6196,7 @@ static void modSetOption(int32_t row, int32_t value)
+  * The labels in the text area's first rows, the values in bands under them (the original font's "JAPANESE CONTROLS"
+  * takes 200 of its 256 pixels), and the box laid out on the widest of each, centred on the screen.
+  */
+-static void drawOptionsText(void)
++static void __attribute__((noinline)) drawOptionsText(void)
+ {
+ 	MenuHighlight *bar;
+ 	int32_t r;
+@@ -6239,7 +6272,7 @@ static void drawOptionsText(void)
+ 	bar->w = w + 2 * MOD_OPT_MARGIN - 10;
+ }
+ 
+-static void renderOptionsMenu(void)
++static void __attribute__((noinline)) renderOptionsMenu(void)
+ {
+ 	POLY_FT4 *cur;
+ 	int32_t r;
+-- 
+2.55.0
+
