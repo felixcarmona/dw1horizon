@@ -5,8 +5,8 @@ Usage:
   memory_card.py ls CARD                        files: name, blocks, size, first block
   memory_card.py get CARD NAME OUT              a file's bytes (its block chain)
   memory_card.py save CARD [NAME]               the Digimon World saves: both v1 copies (checksum,
-                                        version word, partner, screens, items, bits) and,
-                                        in a two-block (v2) or three-block (v3) file, both extensions
+                                        version word, partner, screens, items, bits) and both
+                                        extensions (inline v5 or legacy linked-block formats)
   memory_card.py patch CARD NAME OFFSET HEX     overwrite bytes of a file in place (tests: corrupt a
                                         copy, fake a newer version...)
   memory_card.py fill CARD N [-o OUT]           add N one-block dummy files (tests: a nearly full card)
@@ -192,6 +192,40 @@ def v1_checksum(p):
     return (sum(p[:0x4E4]) + sum(p[0x500:0xF00])) & 0xFFFFFFFF
 
 
+def extension(data, copy=0):
+    """Return a contiguous extension from either inline v5 or a legacy chain."""
+    p = data[0x200 + copy * 0xF00:0x1100 + copy * 0xF00]
+    if p[0x4E4:0x4E9] == b'DW2\0\x05':
+        return b''.join(p[0x524 + i*64:0x540 + i*64] for i in range(40))
+    size = 0x2000 if len(data) >= 0x6000 else 0x1000
+    return data[0x2000 + copy*size:0x2000 + (copy+1)*size]
+
+
+def inline_base_checksum(p):
+    return v1_checksum(p) - sum(sum(p[0x524+i*64:0x540+i*64]) for i in range(40))
+
+
+def write_extension(card, name, copy, value):
+    """Update a tagged extension and its payload checksum without changing layout."""
+    data = card.read(name)
+    base = 0x200 + copy * 0xF00
+    p = bytearray(data[base:base+0xF00])
+    if p[0x4E4:0x4E9] != b'DW2\0\x05':
+        size = 0x2000 if len(data) >= 0x6000 else 0x1000
+        card.write(name, 0x2000 + copy*size, value)
+        return
+    if len(value) != 1120:
+        raise ValueError('inline extension must be exactly 1120 bytes')
+    inverted = struct.unpack_from('<I', p, 0x4FC)[0] == v1_checksum(p) ^ 0xFFFFFFFF
+    value = bytearray(value)
+    struct.pack_into('<I', value, 8, inline_base_checksum(p))
+    struct.pack_into('<I', value, 1116, sum(value[:1116]))
+    for i in range(40):
+        p[0x524+i*64:0x540+i*64] = value[i*28:(i+1)*28]
+    struct.pack_into('<I', p, 0x4FC, v1_checksum(p) ^ (0xFFFFFFFF if inverted else 0))
+    card.write(name, base, p)
+
+
 def decode_save(data):
     out = {'bytes': len(data), 'blocks': data[3]}
     count = data[0x51] & 0x1F  # high bits: CHEATS, original enemy style, brief enemy bars
@@ -212,16 +246,18 @@ def decode_save(data):
                  screen=p[0x49A], previousScreen=p[0x49B], items=list(p[0x40C:0x40C + 30]),
                  player=p[0x467:0x467 + 20].split(b'\0')[0].decode('ascii', 'replace'))
         out[f'copy{k}'] = c
-    if len(data) >= 0x4000:
+    if len(data) >= 0x4000 or any(out[f'copy{k}']['version'] == 5 for k in range(2)):
         # v2: two 0x1000 extensions (0x2000, 0x3000); v3 (expanded-story engine, three blocks): two 0x2000 ones (0x2000, 0x4000)
         size = 0x2000 if len(data) >= 0x6000 else 0x1000
         for k in range(2):
-            e = data[0x2000 + k * size:0x2000 + (k + 1) * size]
+            e = extension(data, k)
+            size = len(e)
             if e[:4] == b'DW4E':
                 stored = struct.unpack_from('<I', e, size - 4)[0]; recs = parse_records(e)
                 out[f'ext{k}'] = dict(magic='DW4E', version=struct.unpack_from('<H', e, 4)[0], size=struct.unpack_from('<H', e, 6)[0],
                                       checksum_ok=stored == sum(e[:size - 4]) & 0xFFFFFFFF,
-                                      matches_v1=struct.unpack_from('<I', e, 8)[0] == out[f'copy{k}']['checksum'],
+                                      matches_v1=struct.unpack_from('<I', e, 8)[0] == (inline_base_checksum(data[0x200+k*0xF00:0x1100+k*0xF00])
+                                          if out[f'copy{k}']['version'] == 5 else out[f'copy{k}']['checksum']),
                                       records=None if recs is None else decode_records(recs))
                 continue
             stored = struct.unpack_from('<i', e, size - 4)[0]
@@ -279,7 +315,7 @@ def main():
     elif a.cmd in ('tags', 'addtag', 'settag', 'cuttag', 'deltag'):
         data = c.read(a.name); size = 0x2000 if len(data) >= 0x6000 else 0x1000
         for k in range(2):
-            e = data[0x2000 + k * size:0x2000 + (k + 1) * size]
+            e = extension(data, k); size = len(e)
             if e[:4] != b'DW4E': sys.exit(f'{a.name}: ext{k} is not a tagged (v4) extension')
             recs = parse_records(e)
             if a.cmd == 'tags': print(f'ext{k}:', [(f'{t:#06x}', TAGS.get(t, '?'), len(d)) for t, d in recs]); continue
@@ -287,7 +323,7 @@ def main():
             elif a.cmd == 'settag': recs = [(t, bytes.fromhex(a.hex) if t == a.tag else d) for t, d in recs]   # tests: give a record content
             elif a.cmd == 'cuttag': recs = [(t, d[:a.length] if t == a.tag else d) for t, d in recs]   # tests: a shorter record
             else: recs = [(t, d) for t, d in recs if t != a.tag]
-            c.write(a.name, 0x2000 + k * size, build_extension(e, recs, size))
+            write_extension(c, a.name, k, build_extension(e, recs, size))
         if a.cmd != 'tags': print(f'{a.card}: {a.name} {a.cmd} {a.tag:#06x}')
     elif a.cmd == 'fill':
         for k in range(a.n):

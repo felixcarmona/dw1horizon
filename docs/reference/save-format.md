@@ -1,7 +1,7 @@
 # Save format
 
 How a saved game is stored on the memory card: the original game's fixed file (header, two payload copies, checksum), and
-the extension our patches add after it, a list of tagged records that every later build can read. The OPTIONS bytes a
+the tagged extensions Horizon keeps inline in new saves and in a linked second block in legacy saves. The OPTIONS bytes a
 save carries are described in [../mods/options.md](../mods/options.md); id widths in [ids.md](ids.md); where the
 extension lives in RAM while a card operation runs in [memory.md](memory.md).
 
@@ -64,17 +64,60 @@ game state ([ram-map.md](ram-map.md) has the RAM side).
 0x4E4..0x4FB (24 bytes, zero in every original save) and the checksum itself are not covered. A copy is valid when the
 stored value equals the sum. Loading tries copy 0, then copy 1.
 
-## The extended file
+## Current single-block file (v5)
 
-A file written by this build is two blocks (0x4000): the v1 file unchanged in the first 0x2000 bytes, then one
+New Horizon saves occupy **one 8 KiB card block**, retaining the original header,
+all 40 VS registrations and both complete payload copies. Existing one-block and
+two-block saves can be loaded. Saving an existing two-block file leaves its
+allocation and second block in place; moving it to a fresh slot creates a
+one-block file. No save is deleted to resize it.
+
+Each `RegisteredDigimon` has 28 unused bytes at record offsets `0x24..0x3F`.
+Across 40 registrations these provide **1,120 bytes per payload copy**. The current
+record list uses at most **850 bytes including framing**, leaving **270 bytes**
+of margin even with every bit populated. No compression is necessary. Each
+copy's extension is scattered in order through these bytes; no registration
+field or payload offset changes. A compile-time bound includes every written
+record and rejects future growth beyond the available space.
+
+The payload version word is 5. Inside the scattered bytes is the same `DW4E`
+record envelope described below, with version 4 and size 1,120. The link at
+extension offset 8 is the payload's ordinary byte sum **excluding the 40 unused
+ranges**, rather than its stored checksum, avoiding a checksum cycle. Its own
+checksum covers the first 1,116 extension bytes. The payload's stored checksum
+still uses the original algorithm over the complete payload, including the
+scattered bytes, inverted for content the original executable cannot represent.
+
+Saving writes copy 1 (`0x1100..0x1FFF`) first, then the header and copy 0
+(`0x0000..0x10FF`), waiting for each write. Each copy contains its own extension:
+an interrupted overwrite retains an intact old or new copy. The first save to a
+new slot has no pre-existing backup until one copy has completed. Reads fetch block 1 first and only request a second block for legacy payloads.
+All reads, including VS mode, unpack inline extensions before choosing a copy. The world
+scratch staging area remains unchanged; no heap buffer or decompressor is added.
+
+The original executable can read native-only payloads because the checksum and
+all original field offsets remain unchanged. It cannot interpret Horizon records;
+if it changes a payload, the extension link becomes stale and Horizon migrates
+the original fields as before. Older Horizon executables do not understand
+version 5 and report Data Error. Save editors must preserve the unused VS bytes
+to retain Horizon data and recompute both checksums/link when changing fields.
+`tools/dev/memory_card.py` decodes both inline and legacy extensions.
+
+`python3 tools/dev/saves/measure.py` reports raw and compressed sizes for
+controlled early/mid/late/full-Chart profiles derived from the release corpus.
+The raw maximum is independent of progress and compression ratio.
+
+## Legacy extended file (v2/v4)
+
+A file written by earlier Horizon builds is two blocks (0x4000): the v1 file unchanged in the first 0x2000 bytes, then one
 0x1000-byte extension per payload copy, copy 0's at file offset 0x2000 and copy 1's at 0x3000. Every offset of the v1
 part is pinned by compile-time `SAVE_LAYOUT_CHECK`s, so the original executable and the VS mode see an ordinary v1 file.
 
 - **Version word.** Payload bytes 0x4E4..0x4E7 hold `"DW2\0"` and 0x4E8 the layout version of the extension, inside the
   range the checksum skips. Zero (an original save) is version 0. 2 is the older fixed-struct extension (still read),
-  4 is the tagged list written today. A version the build does not know gives "Data Error" (card menu error 2) rather
+  4 is the legacy tagged list; 5 is the inline tagged list written today. A version the build does not know gives "Data Error" (card menu error 2) rather
   than a misread.
-- **Blocks.** A new game creates a two-block file (seven saves fit on a card). Two free blocks are required when
+- **Legacy blocks.** Earlier builds created a two-block file (seven saves fit on a card). Two free blocks are required when
   creating a slot. A one-block legacy file grows to two blocks when a spare block is available (libmcrd cannot grow
   a file in place). Without room, saving reports the card-full error and leaves the existing file untouched. Earlier
   builds silently wrote only the original block when space ran out, losing extension-only progress.
@@ -137,7 +180,7 @@ An extension counts only when magic, its own checksum and its copy of the v1 che
 2. A record may only grow at its end.
 3. New state that must survive goes into a new record, not into the v1 part. It is optional unless losing it would be
    wrong.
-4. A build writes only its own layout (4) and reads every older one (1 and 2). A save moves forward when the game saves
+4. A build writes layout 5 and reads layouts 1, 2 and 4. A save moves forward when the game saves
    it.
 
 ### Loading a v1 save
@@ -151,7 +194,7 @@ the extension's records are authoritative. Original ids keep their numbers in th
   registrations live there between card operations. The two extensions are staged at `SAVE_EXT_ADDR` 0x8004E000
   (`SAVE_EXT_MAX` 0x4000, `memmap.h`) in the world scratch, which is free whenever the card menu runs (patches 0092,
   0093); see [memory.md](memory.md) for what that area must stay clear of.
-- **Copy order (patch 0096).** An extended file is written and read in four parts, each waited for: copy 1's payload
+- **Legacy copy order (patch 0096).** An extended file is written and read in four parts, each waited for: copy 1's payload
   (0x1100..0x1FFF), copy 1's extension (0x3000), then the header with copy 0's payload (0x0000..0x10FF), then copy 0's
   extension (0x2000). A write that stops anywhere leaves one whole valid copy; copy 1 goes first so a file that has
   just grown from one block keeps its old copy 0 until the last part. A one-block file is one part.
@@ -184,7 +227,7 @@ the extension's records are authoritative. Original ids keep their numbers in th
 
 ## Card formats and recovery
 
-Horizon writes one game file, `BASLUS-01032DMR<n>`, with both blocks linked through the card directory. There is no
+Horizon writes one game file, `BASLUS-01032DMR<n>`. Legacy two-block saves link both blocks through the card directory; new saves hold both extensions inline in one block. There is no
 second companion file. A raw 128 KiB `.mcr` and `.mcd` use the same card layout; changing the filename suffix neither
 adds nor removes extension data. Every partial write waits for `MemCardSync` before the next begins. Per-game card
 selection and when an emulator flushes its card image to disk are emulator settings, outside the game file format.
@@ -196,9 +239,9 @@ If history or recruits disappear after Continue:
 1. Back up the complete card image before saving again. Check that the emulator selected the same card and slot;
    per-game card settings can select a different image from the global card paths. Let the game finish saving,
    then close the emulator normally so pending card writes reach disk.
-2. Inspect the file's directory size and both blocks, not only its icon/header. Keep both blocks when copying a save
-   through a card manager; a single exported block cannot hold Horizon's extension.
-3. Restore a complete earlier card backup if the extension is missing or overwritten. A one-block save cannot
+2. Inspect the file's directory size and both blocks, not only its icon/header. Keep both blocks when copying a legacy save
+   through a card manager. New v5 saves carry all extensions inside their first block.
+3. Restore a complete earlier card backup if the extension is missing or overwritten. A legacy save with its extension missing cannot
    reconstruct which imported species were raised or recruited. If still running with the correct progress in RAM,
    free a card block and save through the game before resetting; do not overwrite the only backup. An earlier emulator
    state may also contain the missing progress: load it with the same build that created it and make a complete
@@ -267,16 +310,27 @@ python3 tools/dev/playtest/chart_card_roundtrip.py build/NAME.cue \
   --exe build/NAME/exe/SLUS_010.32 --out build/chart-card-proof
 ```
 
-The capacity policy has both a prepared-C fault-injection check and an emulator proof. The latter needs a disposable
-copy of an original one-block save; it fills private card copies, checks refusal without writes, grows a legacy file,
-Continues its marked progress, rejects a missing extension and refuses a new slot with only one free block.
+The capacity and interruption proofs execute the prepared C implementation and
+boot disposable raw-card snapshots. The emulator test starts from an original
+one-block save, fills the card completely, saves marked history/recruits and
+reloads `.mcd` and `.mcr` copies. It also loads an old two-block save, migrates it
+and checks its retained allocation.
 
 ```sh
 python3 tools/dev/saves/capacity.py build/decomp-dev
-python3 tools/dev/playtest/save_policy.py build/NAME.cue \
+python3 tools/dev/saves/inline.py build/decomp-dev
+python3 tools/dev/playtest/inline_card_roundtrip.py build/NAME.cue \
   --exe build/NAME/exe/SLUS_010.32 --legacy-card build/states/original.mcd \
-  --out build/save-capacity-proof
+  --out build/save-inline-proof
+python3 tools/dev/playtest/inline_power_cut.py build/NAME.cue \
+  --exe build/NAME/exe/SLUS_010.32 --card build/save-inline-proof/written.mcd \
+  --out build/save-live-cut
 ```
+
+The live-cut test pauses the real game at its second `MemCardWriteFile`, after
+copy 1 has synchronized. It kills that disposable emulator, checks that the disk
+image did not change during shutdown, and cold-loads the resulting raw `.mcr`.
+The old and new copies are checked independently before the reload.
 
 ## Related
 
