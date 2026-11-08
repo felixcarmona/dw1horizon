@@ -14,6 +14,7 @@ Standard library only.
 import hashlib
 import importlib.util
 import json
+import logging
 import os
 import re
 import shutil
@@ -27,6 +28,7 @@ import urllib.request
 APP_NAME = 'Horizon Patcher'
 PACKAGE_ASSET = 'horizon-package.tar.gz'
 CHECKSUMS_ASSET = 'horizon-checksums.json'
+PACKAGE_RECORD = '.verified-package.json'
 GAMES = ('us', 'dcb', 'dw2', 'dw2003')                 # the four slots, in the web page's order
 GAME_NAMES = dict(us='Digimon World', dcb='Digimon Digital Card Battle', dw2='Digimon World 2',
                   dw2003='Digimon World 3 / 2003')
@@ -506,7 +508,7 @@ def cached_packages():
     if os.path.isdir(root):
         for name in os.listdir(root):
             p = os.path.join(root, name)
-            if name.endswith(('.unpacking', '.part')) or not os.path.isfile(os.path.join(p, 'manifest.json')):
+            if name.endswith(('.unpacking', '.part', '.previous')) or not os.path.isfile(os.path.join(p, 'manifest.json')):
                 continue
             try:
                 out.append(dict(package_info(p), name=name))
@@ -524,9 +526,13 @@ def install_release(release, progress=None, cancel=None, keep=2):
     root = packages_root()
     os.makedirs(root, exist_ok=True)
     dest = os.path.join(root, re.sub(r'[^A-Za-z0-9._-]', '_', release['tag']))
-    if os.path.isfile(os.path.join(dest, 'manifest.json')):
-        return package_info(dest)
-    shutil.rmtree(dest, ignore_errors=True)
+    previous = dest + '.previous'
+    # Recover if the app stopped between the two directory renames.
+    if not os.path.exists(dest) and os.path.isdir(previous):
+        os.replace(previous, dest)
+    cached = os.path.isfile(os.path.join(dest, 'manifest.json'))
+    if not cached:
+        shutil.rmtree(dest, ignore_errors=True)
     work = tempfile.mkdtemp(prefix='download-', dir=root)
     try:
         sums = download(a[CHECKSUMS_ASSET]['url'], os.path.join(work, CHECKSUMS_ASSET), cancel=cancel)
@@ -534,6 +540,33 @@ def install_release(release, progress=None, cancel=None, keep=2):
             checksums = json.load(f)
         if not isinstance(checksums, dict) or not isinstance(checksums.get('package'), dict):
             raise Problem('app.packageBad', detail='horizon-checksums.json has no package list')
+        checksums = checksums['package']
+        if cached:
+            record = os.path.join(dest, PACKAGE_RECORD)
+            try:
+                with open(record, encoding='utf-8') as f:
+                    verified = json.load(f)
+            except (OSError, ValueError):
+                # Older apps have no record. Hash their files once, including
+                # files removed from the corrected release. Imports add bytecode.
+                verified = {}
+                for folder, dirs, files in os.walk(dest):
+                    dirs[:] = [d for d in dirs if d != '__pycache__']
+                    for filename in files:
+                        path = os.path.join(folder, filename)
+                        name = os.path.relpath(path, dest).replace(os.sep, '/')
+                        if name == PACKAGE_RECORD:
+                            continue
+                        h = hashlib.sha256()
+                        with open(path, 'rb') as f:
+                            for b in iter(lambda: f.read(1 << 20), b''):
+                                h.update(b)
+                        verified[name] = h.hexdigest()
+            if verified == checksums:
+                with open(record, 'w', encoding='utf-8') as f:
+                    json.dump(checksums, f, sort_keys=True)
+                return package_info(dest)
+            logging.getLogger(__name__).warning('Release %s package checksums changed; refreshing cache', release['tag'])
         tar = download(a[PACKAGE_ASSET]['url'], os.path.join(work, PACKAGE_ASSET), progress, cancel,
                        a[PACKAGE_ASSET].get('size'))
         digest = a[PACKAGE_ASSET].get('digest') or ''
@@ -544,7 +577,26 @@ def install_release(release, progress=None, cancel=None, keep=2):
                     h.update(b)
             if h.hexdigest() != digest[7:]:
                 raise Problem('app.packageBad', detail='the download is not the release asset (SHA-256)')
-        unpack_package(tar, dest, checksums['package'])
+        staged = os.path.join(work, 'package')
+        unpack_package(tar, staged, checksums)
+        with open(os.path.join(staged, PACKAGE_RECORD), 'w', encoding='utf-8') as f:
+            json.dump(checksums, f, sort_keys=True)
+        if cached:
+            shutil.rmtree(previous, ignore_errors=True)
+            os.replace(dest, previous)
+        try:
+            os.replace(staged, dest)
+        except BaseException:
+            if cached:
+                os.replace(previous, dest)
+            raise
+        shutil.rmtree(previous, ignore_errors=True)
+    except Exception as e:
+        if not cached or (isinstance(e, Problem) and e.key == 'cancelled'):
+            raise
+        logging.getLogger(__name__).warning('Release %s cache refresh failed; using cached package: %s',
+                                           release['tag'], e)
+        return package_info(dest)
     finally:
         shutil.rmtree(work, ignore_errors=True)
     prune(keep)

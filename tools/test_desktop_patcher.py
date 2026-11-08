@@ -11,7 +11,7 @@ import tarfile
 import tempfile
 import threading
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / 'patcher'))
 import desktop  # noqa: E402
@@ -296,6 +296,90 @@ class Packages(unittest.TestCase):
                 desktop.install_release(bad)
             self.assertEqual(e.exception.key, 'app.noPackage')
 
+    def release_fixture(self, files=PACKAGE):
+        tar = self.dir / desktop.PACKAGE_ASSET
+        tarball(tar, files)
+        checks = self.dir / desktop.CHECKSUMS_ASSET
+        checks.write_text(json.dumps(dict(package=sums(files))))
+        return dict(tag='v9.9.9', assets={
+            desktop.PACKAGE_ASSET: dict(url=str(tar), size=tar.stat().st_size,
+                                       digest='sha256:' + hashlib.sha256(tar.read_bytes()).hexdigest()),
+            desktop.CHECKSUMS_ASSET: dict(url=str(checks))})
+
+    @staticmethod
+    def copy_download(url, dest, *args, **kwargs):
+        Path(dest).write_bytes(Path(url).read_bytes())
+        return dest
+
+    def test_cache_refresh_and_legacy_cache(self):
+        for legacy in (False, True):
+            for change in ('unchanged', 'changed', 'removed'):
+                with self.subTest(legacy=legacy, change=change), patch.object(
+                        desktop, 'download', side_effect=self.copy_download) as download:
+                    info = desktop.install_release(self.release_fixture())
+                    folder = Path(info['folder'])
+                    if legacy:
+                        (folder / desktop.PACKAGE_RECORD).unlink()
+                        (folder / '__pycache__').mkdir(exist_ok=True)
+                        (folder / '__pycache__/dwpatch.pyc').write_bytes(b'generated')
+                    files = dict(PACKAGE)
+                    if change == 'changed':
+                        files['dwpatch.py'] = b'corrected reader'
+                    elif change == 'removed':
+                        del files['bundle/tools/x.py']
+                    rel = self.release_fixture(files)
+                    download.reset_mock()
+                    self.assertEqual(desktop.install_release(rel), info)
+                    self.assertEqual([c.args[0] for c in download.call_args_list],
+                                     [rel['assets'][desktop.CHECKSUMS_ASSET]['url']] +
+                                     ([] if change == 'unchanged' else [rel['assets'][desktop.PACKAGE_ASSET]['url']]))
+                    self.assertEqual((folder / 'dwpatch.py').read_bytes(), files['dwpatch.py'])
+                    self.assertEqual((folder / 'bundle/tools/x.py').exists(), change != 'removed')
+                    self.assertEqual(json.loads((folder / desktop.PACKAGE_RECORD).read_text()), sums(files))
+                    self.assertEqual([p.name for p in folder.parent.iterdir()], ['v9.9.9'])
+
+    def test_failed_refresh_preserves_old_package(self):
+        for failure in ('offline', 'download', 'checksum', 'rename', 'cancel'):
+            with self.subTest(failure=failure):
+                with patch.object(desktop, 'download', side_effect=self.copy_download):
+                    info = desktop.install_release(self.release_fixture())
+                rel = self.release_fixture(dict(PACKAGE, **{'dwpatch.py': b'corrected reader'}))
+                if failure == 'checksum':
+                    Path(rel['assets'][desktop.CHECKSUMS_ASSET]['url']).write_text(
+                        json.dumps(dict(package=dict(sums(PACKAGE), **{'dwpatch.py': '0' * 64}))))
+
+                def download(url, dest, *args, **kwargs):
+                    if failure == 'offline':
+                        raise OSError('offline')
+                    if url == rel['assets'][desktop.PACKAGE_ASSET]['url']:
+                        if failure == 'download':
+                            Path(dest + '.part').write_bytes(b'incomplete')
+                            raise OSError('connection lost')
+                        if failure == 'cancel':
+                            raise desktop.Problem('cancelled')
+                    return self.copy_download(url, dest)
+
+                replace = os.replace
+
+                def rename(src, dst):
+                    if failure == 'rename' and Path(src).name == 'package':
+                        raise OSError('rename failed')
+                    return replace(src, dst)
+
+                with patch.object(desktop, 'download', side_effect=download), patch.object(
+                        desktop.os, 'replace', side_effect=rename):
+                    if failure == 'cancel':
+                        with self.assertRaises(desktop.Problem):
+                            desktop.install_release(rel)
+                    else:
+                        with self.assertLogs('desktop') as logs:
+                            self.assertEqual(desktop.install_release(rel), info)
+                        self.assertIn('using cached package', logs.output[-1])
+                folder = Path(info['folder'])
+                self.assertEqual((folder / 'dwpatch.py').read_bytes(), PACKAGE['dwpatch.py'])
+                self.assertEqual(json.loads((folder / desktop.PACKAGE_RECORD).read_text()), sums(PACKAGE))
+                self.assertEqual([p.name for p in folder.parent.iterdir()], ['v9.9.9'])
+
     def test_install_file_uses_checksums_next_to_it(self):
         tar = self.dir / 'horizon-package.tar.gz'
         tarball(tar, PACKAGE)
@@ -347,6 +431,26 @@ class Packages(unittest.TestCase):
             self.assertEqual(e.exception.key, 'app.packageOld')
         finally:
             sys.modules['dwpatch'] = saved
+
+
+class CacheRefreshFlow(unittest.TestCase):
+    def test_check_and_build_recheck_same_release_but_keep_imported_package(self):
+        import gui
+        for source in ('release', 'file'):
+            app = gui.App.__new__(gui.App)
+            app.package = dict(version='9.9.9', source=source, folder='cached')
+            app.events = Mock()
+            app.t = Mock(return_value='status')
+            app._job_download = Mock(return_value=app.package)
+            latest = dict(version='9.9.9')
+            with patch.object(desktop, 'latest_release', return_value=latest):
+                app._job_latest_checked()
+                self.assertEqual(app._job_download.call_count, int(source == 'release'))
+                app._job_download.reset_mock()
+                with patch.object(desktop, 'load_patcher', side_effect=RuntimeError('stop before applying')):
+                    with self.assertRaisesRegex(RuntimeError, 'stop before applying'):
+                        app._job_build('output')
+                self.assertEqual(app._job_download.call_count, int(source == 'release'))
 
 
 class Interface(unittest.TestCase):
