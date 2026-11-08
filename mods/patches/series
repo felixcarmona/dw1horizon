@@ -426,3 +426,4 @@ Retain-the-MENU-reserve-with-shared-card-IO-argument-setup.patch
 Keep-Continue-camera-framing-when-movement-starts-immediately.patch
 Clear-recycled-jukebox-rows-and-fit-titles-inside-the-menu.patch
 Restore-new-game-partner-care-before-the-opening.patch
+Position-the-Continue-view-once-after-collision-relocation.patch

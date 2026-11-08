@@ -74,9 +74,22 @@ also changes broadly with the portrait-layout repair; those coordinates are
 used by the Status view, not by field follow. The native tamer and Agumon model
 dimensions/locomotion remain the appropriate control for Wolf's screenshot.
 
-The redundant Continue pan is already fixed on main by `6dc46c25`; see
-[player-report investigation](player-reports-2026-11-08.md). This investigation
-does not duplicate that fix or the separately developed frame-rate option.
+The redundant Continue pan was removed on main by `6dc46c25`; see
+[player-report investigation](player-reports-2026-11-08.md). The main control
+exposes a further framing regression: `initializeLoadedMap` calls
+`initializeDrawingOffsets` twice, and that function **adds** the projected
+delta rather than assigning an absolute view. The old queued pan masked the
+double adjustment. Without it, the Green Gym control keeps Y origin 384 rather
+than 242, leaving the tamer clipped at the bottom. The displacement during the
+walk still agrees; the starting view is wrong.
+
+`Position-the-Continue-view-once-after-collision-relocation.patch` removes the
+preliminary USA adjustment. USA marks present NPCs visible without projecting
+them, so that early adjustment is unnecessary. The existing final call then
+positions the view once, **after** any collision/story relocation, before
+synchronous tile upload. It preserves the earlier immediate-follow fix and
+does not restore the old pan. Other regions retain their preliminary visibility
+path. No frame-rate option is added here.
 
 ## Runtime method
 
@@ -94,10 +107,12 @@ is a fixture, not a claimed new game. No camera data is injected.
 Over 80 ticks (4.000 emulated seconds), v0.0.6 presents 160 frames (~40 fps),
 alternating one and two vblanks. Its requested 60 cannot fit every intermediate
 pass in this control. v0.0.7 presents 80 frames (~20 fps), three vblanks apart.
-All 81 sampled tamer-position/camera-offset tuples agree exactly between tags.
-The visible regression here is presentation cadence; no additional camera
-movement fix is justified by that walk. Other screens, partners and cold-tile
-boundaries may have different costs and are outside this one-walk comparison.
+All 81 sampled tamer-position/camera-offset tuples agree exactly between tags
+and vanilla. The v0.0.7 difference in this control is presentation cadence.
+Main before the follow-up has the same positions and camera displacement but
+the constant 142-pixel origin error described above. Other screens, partners
+and cold-tile boundaries may have different costs and are outside this
+one-walk frame-rate comparison.
 
 Runtime screenshots, clips, per-tick/per-present CSVs, build identities and
 acceptance details accompany the task's external `REPORT.md`.

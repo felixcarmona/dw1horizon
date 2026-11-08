@@ -1,0 +1,31 @@
+From: Horizon authors <>
+Subject: [PATCH] Position the Continue view once after collision relocation
+
+initializeDrawingOffsets adds a projection delta; it is not idempotent.
+initializeLoadedMap calls it twice. The original queued pan eventually hid
+the doubled offset, but removing that redundant pan exposes it: in Green Gym
+the drawing origin stays at Y=384 instead of 242 and clips the tamer.
+
+The USA NPC visibility loop marks present NPCs visible without projection,
+so it does not need the preliminary adjustment. Position/upload the view once
+at the existing final call, after any collision/story relocation. Preserve the
+other regions' existing preliminary visibility path.
+---
+ src/main/main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/main/main.c b/src/main/main.c
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -3907,7 +3907,11 @@ void initializeLoadedMap(void)
+ 
+ 	STORED_TAMER_POS = TAMER_ENTITY.entity.posData->location = SAVED_STATE.playerPos;
+ 	PARTNER_ENTITY.digimonEntity.entity.posData->location = SAVED_STATE.partnerPos;
++#if !VERSION_IS(US)
++	/* USA marks NPCs visible below without projection. Its additive camera
++	 * adjustment belongs only at the final position, after relocation. */
+ 	initializeDrawingOffsets(MAP_TILE_DATA.tiles);
++#endif
+ 
+ 	for (i = 0; i < 8; i++) {
+ #if VERSION_EQUAL_OR_OLDER(JP_BOMBOM)

@@ -47,20 +47,32 @@ def until(emu, predicate, seconds=180):
 
 
 def title(emu, language):
+    entry = emu.A('tickMainMenu')
+    offset = entry - emu.A('menu_START')
+    signature = Path(emu.exe).with_name('MENU_REL.BIN').read_bytes()[offset:offset + 32]
     deadline = time.monotonic() + 240
     while time.monotonic() < deadline:
         ram = emu.ram()
-        if emu.peek('CURRENT_MENU', 'i', ram) == 0 and emu.peek('MAIN_MENU_TICKS', 'i', ram) > 3:
+        # MOV and MENU reuse the overlay address range. Menu variables alone
+        # can look ready while the intro movie still occupies that memory.
+        loaded = ram[entry - 0x80000000:entry - 0x80000000 + 32] == signature
+        if loaded and emu.peek('CURRENT_MENU', 'i', ram) == 0 and emu.peek('MAIN_MENU_TICKS', 'i', ram) > 3:
             if not emu.language_picker(ram):
                 assert emu.peek('MOD_LANG', 'i', ram) == language
                 return
+            # Test images can contain only English and Portuguese: language
+            # id 2 is then picker index 1, not index 2 of the full image.
+            available = emu.peek('MOD_LANGUAGE_AVAILABLE', 'I', ram)
+            assert available & (1 << language), 'requested language is absent'
+            target = sum(bool(available & (1 << n)) for n in range(language))
             cursor = emu.peek('MOD_BOOT_LANGUAGE_CURSOR', 'i', ram)
-            if cursor != language:
-                emu.press('DOWN' if language == 2 else 'UP', 4)
+            if cursor != target:
+                button = 'RIGHT' if (cursor & 1) != (target & 1) else 'DOWN' if cursor < target else 'UP'
+                emu.press(button, 12)
             else:
-                emu.press('START', 8)
+                emu.press('START', 16)
         else:
-            emu.press('START', 8)
+            emu.press('START', 16)
         time.sleep(.5)
     raise RuntimeError('title/language selection timed out')
 
@@ -70,12 +82,12 @@ def new_game(emu, out, media):
     until(emu, lambda: emu.peek('CURRENT_MENU', 'i') == 0 and
           emu.peek('MAIN_MENU_TICKS', 'i') > 3)
     while emu.peek('MENU_HIGHLIGHTS', 'b') != 0:
-        emu.press('UP', 4)
+        emu.press('UP', 12)
         time.sleep(.3)
     emu.press('CONFIRM', 16)
     until(emu, lambda: emu.peek('CURRENT_MENU', 'i') == 10)
     while emu.peek('MENU_HIGHLIGHTS+0x10', 'b') != 2:
-        emu.press('DOWN', 4)
+        emu.press('DOWN', 12)
         time.sleep(.3)
     emu.press('CONFIRM', 16)
     until(emu, lambda: emu.peek('CURRENT_MENU', 'i') == 19)
@@ -102,7 +114,9 @@ def new_game(emu, out, media):
             emu.run('save', str(out / 'field.state'))
             emu.run('shot', str(media / (out.name + '-field.png')))
             return result
-        emu.press('CONFIRM', 8)
+        # Give the nested textbox loop several native polls, including on a
+        # busy field frame; short holds can be consumed before its input poll.
+        emu.press('CONFIRM', 24)
         time.sleep(.4)
     raise RuntimeError('new-game introduction timed out')
 
