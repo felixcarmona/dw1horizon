@@ -114,7 +114,7 @@
     "paragraphs": [
       "La evolución normal puntúa cuatro grupos: errores, peso, estadísticas y bonificación. Un objetivo necesita {pass_points} puntos. Todos los umbrales de estadísticas forman un solo grupo; cumplir dos estadísticas no da dos puntos. Para objetivos Rookie se usa la estadística más alta.",
       "El peso admite una banda alrededor del valor objetivo. Los errores pueden tener un mínimo o un máximo. Cualquiera de las condiciones de bonificación da ese punto; no son todas requisitos obligatorios independientes.",
-      "Pulsa un objetivo del árbol para leer sus requisitos. El tiempo en la forma actual, los desencadenantes especiales, NEW DIGIMON y otros candidatos afectan al resultado. Los umbrales de PV y PM usan las unidades del jugador; la felicidad usa la escala 0–100 del estado."
+      "Pulsa un objetivo del árbol para leer sus requisitos. La fila «Tiempo (h)» de la ventana muestra la comprobación del tiempo, y un aviso rojo señala si la vida restante es insuficiente. El tiempo en la forma actual, los desencadenantes especiales, NEW DIGIMON y otros candidatos afectan al resultado. Los umbrales de PV y PM usan las unidades del jugador; la felicidad usa la escala 0–100 del estado."
     ]
   },
   "evolution-timing": {
@@ -123,7 +123,7 @@
     "paragraphs": [
       "Las horas de abajo cuentan desde la forma actual, no desde la edad total. Cumplir una fila pronto no provoca una evolución normal inmediata. Las rutas temporizadas de Ultimate también comprueban los requisitos; las especiales y por objeto tienen sus propios desencadenantes.",
       "La selección normal favorece a quien aún no has criado. Entre candidatos Rookie a Champion y Champion a Ultimate con tres puntos, compara la media de las estadísticas requeridas, dividiendo PV y PM entre diez; el orden puede influir. De In-Training a Rookie conserva la mejor puntuación y el primer empate.",
-      "En una evolución de Perfecto a Mega por tiempo, «listo» en la ventana indica que se cumplen la puntuación de requisitos y la comprobación de que el modelo cabe; no que haya terminado la espera. Los Megas importados también exigen pasar {mega_hours} horas de juego como Perfecto. Si antes se agota la vida restante, el compañero muere de vejez. {chain_melon} (Chain Melon) añade {chain_melon_hours} horas de vida; {digiseabass}, {digiseabass_hours}. Amplían la vida restante, no el tiempo ya pasado en la forma actual."
+      "La fila «Tiempo (h)» de la ventana compara las horas pasadas en la forma actual con las que exige el objetivo. El veredicto solo dice «lista» cuando se cumplen la puntuación de requisitos, la comprobación de que el modelo cabe y el tiempo; «En N h» indica que solo falta tiempo. El aviso rojo «La vida no llega: quedan N h» indica que la vida restante es menor que la espera pendiente; N es la vida restante. Las rutas que no dependen del tiempo muestran «Ruta especial». Los Megas importados también exigen pasar {mega_hours} horas de juego como Perfecto. Si antes se agota la vida restante, el compañero muere de vejez. {chain_melon} (Chain Melon) añade {chain_melon_hours} horas de vida; {digiseabass}, {digiseabass_hours}. Amplían la vida restante, no el tiempo ya pasado en la forma actual."
     ]
   },
   "learning-techniques": {

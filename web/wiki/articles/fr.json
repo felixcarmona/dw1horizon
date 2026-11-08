@@ -114,7 +114,7 @@
     "paragraphs": [
       "L’évolution ordinaire évalue erreurs de soin, poids, statistiques et bonus. Il faut {pass_points} points. Tous les seuils statistiques forment un seul groupe ; deux statistiques ne donnent pas deux points. Une cible Rookie utilise la statistique la plus élevée.",
       "Le poids accepte une plage. Les erreurs peuvent avoir un minimum ou un maximum. Une seule condition de bonus suffit ; les alternatives ne sont pas toutes obligatoires.",
-      "Touchez la cible de l’arbre pour lire ses conditions. Temps dans la forme, déclencheurs spéciaux, NEW DIGIMON et autres candidats influencent le résultat. PV/PM utilisent les unités du joueur ; bonheur utilise l’échelle 0–100 du statut."
+      "Touchez la cible de l’arbre pour lire ses conditions. La ligne « Temps (h) » de la fenêtre montre la condition de temps, et un avertissement rouge signale une vie restante insuffisante. Temps dans la forme, déclencheurs spéciaux, NEW DIGIMON et autres candidats influencent le résultat. PV/PM utilisent les unités du joueur ; bonheur utilise l’échelle 0–100 du statut."
     ]
   },
   "evolution-timing": {
@@ -123,7 +123,7 @@
     "paragraphs": [
       "Les heures ci-dessous sont passées dans la forme actuelle, pas l’âge total. Remplir les statistiques tôt ne provoque pas d’évolution immédiate. Les voies Ultimate temporisées vérifient aussi les conditions ; objets et voies spéciales ont leurs propres déclencheurs.",
       "Le choix favorise une cible jamais élevée. Pour Rookie–Champion et Champion–Ultimate à trois points, il compare les moyennes requises, PV/PM divisés par dix ; l’ordre peut influer. In-Training–Rookie conserve le meilleur score et le premier en cas d’égalité.",
-      "Pour une évolution temporisée d’Ultime en Méga, « prêt » dans la fenêtre signifie que le score des conditions et la vérification de place du modèle sont satisfaits ; le délai peut encore courir. Les Mégas importés exigent aussi {mega_hours} heures de jeu passées en Ultime. Si sa durée de vie s’épuise avant, le partenaire meurt de vieillesse. {chain_melon} (Chain Melon) ajoute {chain_melon_hours} heures de vie ; {digiseabass} en ajoute {digiseabass_hours}. Ils prolongent la vie restante, pas le temps déjà passé dans la forme actuelle."
+      "La ligne « Temps (h) » de la fenêtre compare les heures passées dans la forme actuelle aux heures exigées par la cible. Le verdict indique « prêt » seulement si le score des conditions, la place du modèle et le temps sont suffisants ; « Dans N h » signifie que seul le temps manque. L’avertissement rouge « Vie trop courte (N h de vie) » indique que la vie restante est plus courte que l’attente nécessaire ; N est la durée de vie restante. Les voies indépendantes du temps affichent « Voie spéciale ». Les Mégas importés exigent aussi {mega_hours} heures de jeu passées en Ultime. Si sa durée de vie s’épuise avant, le partenaire meurt de vieillesse. {chain_melon} (Chain Melon) ajoute {chain_melon_hours} heures de vie ; {digiseabass} en ajoute {digiseabass_hours}. Ils prolongent la vie restante, pas le temps déjà passé dans la forme actuelle."
     ]
   },
   "learning-techniques": {

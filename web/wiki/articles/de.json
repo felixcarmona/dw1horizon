@@ -114,7 +114,7 @@
     "paragraphs": [
       "Gewöhnliche Entwicklung bewertet Pflegefehler, Gewicht, Werte und Bonus. Nötig sind {pass_points} Punkte. Alle Wertgrenzen bilden eine Gruppe; zwei Werte geben keine zwei Punkte. Bei Rookie-Zielen gilt der höchste Wert.",
       "Gewicht hat einen Bereich; Fehler können ein Minimum oder Maximum haben. Eine einzige Bonusalternative reicht für den Bonuspunkt, nicht alle sind Pflicht.",
-      "Tippe das Ziel im Baum an. Zeit in der Form, Sonderauslöser, NEW DIGIMON und weitere Kandidaten beeinflussen das Ergebnis. HP/MP stehen in Spielerwerten; Zufriedenheit nutzt die Statusskala 0–100."
+      "Tippe das Ziel im Baum an. Die Zeile „Zeit (h)“ im Fenster zeigt die Zeitprüfung; eine rote Warnung weist auf unzureichende verbleibende Lebenszeit hin. Zeit in der Form, Sonderauslöser, NEW DIGIMON und weitere Kandidaten beeinflussen das Ergebnis. HP/MP stehen in Spielerwerten; Zufriedenheit nutzt die Statusskala 0–100."
     ]
   },
   "evolution-timing": {
@@ -123,7 +123,7 @@
     "paragraphs": [
       "Die Stunden unten gelten in der aktuellen Form, nicht seit Geburt. Frühe Wertgrenzen lösen keine sofortige Entwicklung aus. Zeitrouten für Ultimate prüfen ebenfalls Voraussetzungen; Sonder- und Gegenstandsrouten haben eigene Auslöser.",
       "Die Auswahl bevorzugt noch nie aufgezogene Ziele. Für Rookie–Champion und Champion–Ultimate mit drei Punkten vergleicht sie geforderte Durchschnittswerte, HP/MP durch zehn; die Reihenfolge kann wirken. In-Training–Rookie behält die beste Punktzahl und den ersten Gleichstand.",
-      "Bei einer zeitgebundenen Entwicklung von Ultra zu Mega bedeutet „bereit“ im Fenster, dass die Anforderungspunktzahl erreicht ist und das Modell in den Speicher passt; die Wartezeit kann trotzdem noch laufen. Importierte Megas erfordern außerdem {mega_hours} Spielstunden als Ultra. Ist die verbleibende Lebenszeit vorher aufgebraucht, stirbt der Partner an Altersschwäche. {chain_melon} (Chain Melon) verlängert das Leben um {chain_melon_hours} Stunden, {digiseabass} um {digiseabass_hours}. Sie erhöhen die verbleibende Lebenszeit, nicht die bereits in der aktuellen Form verbrachte Zeit."
+      "Die Zeile „Zeit (h)“ im Fenster vergleicht die Stunden in der aktuellen Form mit den vom Ziel benötigten Stunden. Das Urteil lautet nur „bereit“, wenn die Anforderungspunktzahl erreicht ist, das Modell in den Speicher passt und die Zeit erfüllt ist; „In N h“ bedeutet, dass nur noch Zeit fehlt. Die rote Warnung „Leben zu kurz (N h übrig)“ zeigt, dass die verbleibende Lebenszeit kürzer als die noch nötige Wartezeit ist; N ist die verbleibende Lebenszeit. Wege ohne Zeitbedingung zeigen „Sonderweg“. Importierte Megas erfordern außerdem {mega_hours} Spielstunden als Ultra. Ist die verbleibende Lebenszeit vorher aufgebraucht, stirbt der Partner an Altersschwäche. {chain_melon} (Chain Melon) verlängert das Leben um {chain_melon_hours} Stunden, {digiseabass} um {digiseabass_hours}. Sie erhöhen die verbleibende Lebenszeit, nicht die bereits in der aktuellen Form verbrachte Zeit."
     ]
   },
   "learning-techniques": {
