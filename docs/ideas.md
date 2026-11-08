@@ -89,7 +89,7 @@ against, leave this list.
 | A randomizer mode (species, items, encounters) | 🆕 | A different kind of challenge; large. |
 | A "!" over Digimon that can be recruited now or have a quest available (optionally two icons: quest / ready to join) | 🛠️ 🎭 | Similar on-screen hints were tried and dropped on 2026-10-24 in favour of discovery. |
 | The secret ninja town Ninjamon talks about, as a new area, entered through the false door in Vademon's mansion | 🆕 | New maps, residents and a story hook. |
-| BlackAgumon and BlueGreymon as recolour evolutions | 🎭 | Asked by a player; recolours should bring their own playstyle. |
+| BlackAgumon and BlueGreymon as recolour evolutions, plus the BlackGabumon and BlackGuilmon lines and Omnimon Zwart | 🎭 | Asked by a player; recolours should bring their own playstyle. |
 | Kogamon (Ninjamon recolour) and Kuzuhamon (Sakuyamon recolour) as Data evolutions: Kotemon/Tsukaimon/Palmon → Kogamon → Tekkamon; Tekkamon/Kyukimon → Kuzuhamon; night-active | 🎭 | A player's detailed proposal (specialties, requirements, finisher placeholders). |
 | Tougher story bosses (e.g. Datamon in Factorial Town is easy for an Ultimate) and more recruitable Digimon in the new areas | ⚖️ 🎭 | Partly covered by the HARD difficulty. |
 | Unique recruitment scenes for more of the new Digimon | ✨ | Many new recruits join with a simple fight. |
