@@ -426,6 +426,14 @@ Requirement tests: `tools/test_evo_tree.py --practical`, `tools/economy_audit.py
 | Monzaemon's costume | gone after the toy story | a Numemon can always wear it | a late route to Monzaemon |
 | Sukamon, Andromon in File City (`city/file-city-services.py`) | one line each | Sukamon clears the island's poop for 1000 bits (patch 0324); Andromon remodels a Mamemon as Guardromon does, who keeps doing it; other partners receive his usual city greeting | Andromon stands there on about one daytime visit in four: the service cannot depend on him alone |
 
+The first partner and partners born later both start with **408 hours** of remaining
+lifetime (`new-game.json`: `firstPartner.lifetimeHours`, `partnerBirth.lifetimeHours`).
+Care and training can reduce that budget. The Chart requirements popup shows time
+in the current form against the selected target’s wait, and warns in red when the
+remaining lifetime counter is shorter than the wait still needed. “Ready” requires
+the score, model fit and time; competing targets and special routes still follow
+the game’s selection rules.
+
 ## 6.3 Monochromon recruitment
 
 Each shift serves exactly twenty visits from a shuffled deck of **8 Meat / 9

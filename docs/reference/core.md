@@ -215,7 +215,7 @@ When `HOUR` is changed directly, the palette does not update until the next tran
 2. Default values (`main_menu.c:3840-3878`): everything 0; `currentScreen = 0xCC`, `currentExit = 9`; `partnerType =
    0x72` (does not decide the partner); placeholder player and Digimon names; 100 poop slots with `map = 0xFF`;
    `money = 50000`; `tamerLevel = 0`, `raisedCount = 1`; year 0, day 0, 08:00, `currentFrame = lastHandledFrame =
-   9600`; `partnerLives = 3`; `remainingLifetime` 288 h on the disc, 336 h here (`new-game.json`); `age = 3`; card offers 0x3A..0x3F; a 30-slot
+   9600`; `partnerLives = 3`; `remainingLifetime` 288 h on the disc, 408 h here (`new-game.json`); `age = 3`; card offers 0x3A..0x3F; a 30-slot
    inventory from `DEFAULT_INVENTORY_TYPES`/`_AMOUNTS` (29 items, one free slot). The intro script of screen 0xCC trims
    what the player actually starts with. This start state is data in the mod (patch 0128,
    [../mods/city-rules.md](../mods/city-rules.md)).
