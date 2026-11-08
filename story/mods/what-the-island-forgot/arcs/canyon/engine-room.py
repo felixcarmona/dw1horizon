@@ -1,7 +1,7 @@
 # 300, the Engine Room under the Ogre Fortress (§3.2, §5.2): what is left of Ogremon's band guards the pit he fled by.
 # Beaten, they run; on the crate by the fire is Analogman's first notebook (M5), which only the tamer can read; then the
-# choice: break the Motor (R1: the canyon sinks, Shellmon's rock lets go of him) or leave it. Left, the choice is there
-# again each time the tamer comes back down the lift (fortress-elevator.py).
+# choice, once Shellmon's plea is heard: break the Motor (R1: the canyon sinks, Shellmon's rock lets go of him) or leave
+# it. Left, the choice is there again each time the tamer comes back down the lift (fortress-elevator.py).
 from dw import *
 from dw.names import *
 from ...state import Canyon, root1, memories, m5_notebook, memory_news
@@ -70,7 +70,11 @@ def the_choice():
     sound(8, 9)
     wait(1000)
     tamer.say("This machine's still running. It's what pushes the ground up!", "The whole canyon's sitting on top of it.")
-    if ask(yes="Break the Motor", no="Leave it"):
+    # Use the original saved plea flag: an earlier visit must leave both routes open.
+    if not shellmon_plea_heard:
+        tamer.say("Better leave it alone. Who knows what'd happen up there.")
+        tamer.say("The fortress's other lift still goes up to the canyon top.")
+    elif ask(yes="Break the Motor", no="Leave it"):
         tamer.say("{partner}! The shaft! Pull it loose!")
         sound(8, 9)
         fade_to_white(1500)
