@@ -28,6 +28,11 @@ def main():
     p.add_argument('--card',default='tools/dev/saves/corpus/20261027-d2796814.mcd')
     p.add_argument('--resume-card');p.add_argument('--capture-forced',action='store_true');p.add_argument('--tour',action='store_true');p.add_argument('--chinese',action='store_true')
     a=p.parse_args();a.out=a.out.resolve();a.out.mkdir(parents=True,exist_ok=True)
+    symbols=a.out/'symbols';symbols.mkdir(exist_ok=True)
+    pinned=symbols/'SLUS_010.32'
+    for suffix in ('','.elf','.elf.map'):
+        shutil.copy2(a.exe+suffix,str(pinned)+suffix)
+    a.exe=str(pinned)
     e=Emu(a.disc,a.exe,a.port,str(a.out/'emu'))
     if a.chinese:
         def expanded_ram():

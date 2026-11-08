@@ -80,6 +80,12 @@ int main(void) {
  assert(draws==before+(FPS!=20));
  MOD_CPU_SPINS=8000;modNoticeRender();
  assert(colors[3]==6 && colors[4]==(FPS!=20?7:6));
+ /* A forced 60 request must remain visible with a standard-speed CPU probe. */
+ MOD_CPU_SPINS=3801;MOD_FPS_MODE_RUN=2;modNoticeRender();
+ assert(colors[3]==6 && colors[4]==(FPS!=20?7:6));
+ assert(!strcmp(rows[4],FPS!=20?"60 FPS":"20 FPS"));
+ MOD_FPS_MODE_RUN=0;modNoticeRender();
+ assert(colors[4]==6 && !strcmp(rows[4],"20 FPS"));
  puts("PASS: calibrated/clamped percent, both RAM sizes, all-ready display, mode and sample redraws");
 }
 '''

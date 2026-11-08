@@ -113,7 +113,7 @@ so it happens only at the title: in OPTIONS, or when a Continue takes the save's
 
 ## Automatic frame rate
 
-FRAME RATE defaults to AUTO. Left/right and confirm cycle AUTO / 60 / 20.
+FRAME RATE defaults to AUTO. Left/right select a value; confirm cycles AUTO / 60 / 20.
 AUTO keeps the existing 16-scanline CPU probe, two agreeing samples and
 8500/7500 hysteresis. The probe still runs during spare waits in forced modes,
 but cannot override an explicit choice. Returning to AUTO uses the latest probe.
@@ -158,9 +158,9 @@ The immutable four-column row-pointer table remains in MENU_REL. Its third
 values are data entries, avoiding separate FONT/DIFFICULTY/FRAME RATE branches.
 The small language-name resolver stays resident with the name array so the
 MENU text lookup can use a tail call and retain the mandatory overlay reserve.
-Full nine-language build: main_BSS_END 0x801ce6fc, heap 186368 B, MENU 55164 B
+Full nine-language build: main_BSS_END 0x801ce390, heap 187232 B, MENU 55164 B
 (27 sectors, 132 B spare). Both 2 MB heap checks pass; all 320 actual-archive
-setups fit, with 1648 B on the tightest setup.
+setups fit, with 2512 B on the tightest setup.
 
 ## JAPANESE CONTROLS
 
