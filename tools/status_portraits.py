@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Audit every raisable Status portrait at the pose actually drawn by the game.
 
-  python3 tools/status_portraits.py build/NAME --out build/status-audit [--fix]
+  python3 tools/status_portraits.py build/NAME --out build/status-audit [--fix] [--enlarge-small]
 
 The renderer resets idle slot 0 and draws its first tick on every pass. Check
 that pose, including all animated texture phases, against the panel, header,
@@ -9,6 +9,7 @@ Life/care rows and sleeping badge. --all-idle also checks non-displayed poses
 as a conservative diagnostic; a travelling idle can make that audit unreadable.
 Uses the built archive, native models, runtime skeletons and modelScale rules.
 Repairs only change viewX/Y/Z; model geometry and field behaviour stay intact.
+--enlarge-small recovers portraits below 85% of their attainable fitted height.
 """
 import argparse
 import hashlib
@@ -40,6 +41,8 @@ SLEEP_BADGE = (67, 121, 78, 141)
 # Native baby portraits retain about 20 visible rows above Life; use that floor.
 LIFE_Y = 154
 MIN_HEIGHT = 20
+# Review threshold relative to the largest pixel-verified first-pose fit.
+SMALL_RATIO = .85
 READABLE_BOUNDS = (14, 105, 158, LIFE_Y - 1)
 GEOMETRY_BOUNDS = (13.5, 104.5, 158.5, LIFE_Y - .5)
 TARGET = (16, LABEL[3] + 3, 156, LIFE_Y - 3)
@@ -68,11 +71,12 @@ def inside(box, bounds=BOUNDS):
     return box[0] >= bounds[0] and box[1] >= bounds[1] and box[2] <= bounds[2] and box[3] <= bounds[3]
 
 
-def fit(points, original, bounds=TARGET, align_x=None):
-    """Smallest depth increase inside one rectangle, then the nearest old anchor.
+def fit(points, original, bounds=TARGET, align_x=None, allow_zoom=False):
+    """Smallest fitting depth, then the nearest old screen anchor.
 
     Edge intervals are affine in camera depth; their intersection supplies the
     exact minimum without repeatedly projecting the complete point cloud.
+    By default the old depth is a floor; allow_zoom can recover unused space.
     """
     left, top, right, bottom = bounds
     ox, oy, oz = camera(original)
@@ -83,9 +87,9 @@ def fit(points, original, bounds=TARGET, align_x=None):
     cr = min(ar * z - x for x, y, z in points)
     ct = max(at * z - y for x, y, z in points)
     cb = min(ab * z - y for x, y, z in points)
-    depth = max(old_depth, 1 - min(z for x, y, z in points),
+    depth = max(0 if allow_zoom else old_depth, 1 - min(z for x, y, z in points),
                 (cl - cr) / (ar - al), (ct - cb) / (ab - at))
-    if depth > old_depth:
+    if allow_zoom or depth > old_depth:
         depth += 1  # integer view coordinates retain a subpixel margin
     xl, xr, yt, yb = cl + al * depth, cr + ar * depth, ct + at * depth, cb + ab * depth
     tx = (xl + (xr - xl) * align_x if align_x is not None else
@@ -94,11 +98,11 @@ def fit(points, original, bounds=TARGET, align_x=None):
     tz = depth - LENGTH
     result = [round(A * tx - B * tz), round(ty), round(B * tx + A * tz)]
     actual_depth = camera(result)[2] + LENGTH
-    if actual_depth < old_depth:
+    if not allow_zoom and actual_depth < old_depth:
         result[2] += math.ceil((old_depth - actual_depth) / A)
     if not all(-32768 <= v <= 32767 for v in result):
         raise ValueError(f'portrait position exceeds int16: {result}')
-    assert camera(result)[2] + LENGTH >= old_depth - 1e-8
+    assert allow_zoom or camera(result)[2] + LENGTH >= old_depth - 1e-8
     assert inside(envelope(points, result), GEOMETRY_BOUNDS), result
     return result
 
@@ -162,10 +166,10 @@ def verify_after(points, frames, model, skeleton, tex, events, width, position, 
                 first_bounds=boxes[0])
 
 
-def readable_fit(points, frames, model, skeleton, tex, events, width, original, scale):
+def readable_fit(points, frames, model, skeleton, tex, events, width, original, scale, allow_zoom=False):
     # The upper part of the panel is L-shaped: a portrait can extend beside the
     # label. A full-width candidate is accepted only after all poses clear it.
-    candidates = {tuple(fit(points, original, rectangle, align))
+    candidates = {tuple(fit(points, original, rectangle, align, allow_zoom))
                   for rectangle, align in ((FULL_TARGET, None), (FULL_TARGET, 1),
                                            (FULL_TARGET, .75), (FULL_TARGET, .5),
                                            (RIGHT_TARGET, None), (TARGET, None))}
@@ -183,7 +187,7 @@ def readable_fit(points, frames, model, skeleton, tex, events, width, original, 
     # A final pixel-verified pass uses the remaining subpixel space. It is
     # accepted only when every opaque pixel still clears the separator/Life.
     for align in (.75, 1, .5, None):
-        position = fit(points, original, (14, 104.6, 158, 153.4), align)
+        position = fit(points, original, (14, 104.6, 158, 153.4), align, allow_zoom)
         verification = verify_after(points, frames, model, skeleton, tex, events,
                                     width, position, scale)
         if verification:
@@ -343,6 +347,22 @@ def render(model, skeleton, pose, texture, position, scale):
     draw.text((22, 108), 'STATUS', fill='#171e25')
     draw.text((174, 108), 'ATTRIBUTES', fill='#e5c938')
     tile.alpha_composite(model_layer(model, skeleton, pose, texture, position, scale))
+    # Show the occupied care area too: an empty panel hides the reason for
+    # fitting above Life. This is a schematic preview, not an emulator capture.
+    draw = ImageDraw.Draw(tile)
+    draw.text((20, LIFE_Y), 'Life', fill='#f6f5a0')
+    for x in (78, 92, 106):
+        draw.polygon([(x, LIFE_Y + 2), (x + 2, LIFE_Y), (x + 4, LIFE_Y),
+                      (x + 5, LIFE_Y + 2), (x + 6, LIFE_Y), (x + 8, LIFE_Y),
+                      (x + 10, LIFE_Y + 2), (x + 10, LIFE_Y + 5),
+                      (x + 5, LIFE_Y + 10), (x, LIFE_Y + 5)], fill='#ff4785')
+    for y, name, value in ((170, 'Happy', 75), (182, 'Disc', 50),
+                           (194, 'Tired', 0), (206, 'Virus', 0)):
+        draw.text((20, y + 2), name, fill='#f6f5a0')
+        draw.rectangle((73, y, 124, y + 10), outline='#8aa4b8')
+        if value:
+            draw.rectangle((75, y + 2, 75 + value * 47 // 100, y + 8), fill='#28cc28')
+        draw.text((132, y + 2), str(value), fill='white')
     return tile.convert('RGB')
 
 
@@ -352,6 +372,8 @@ def main():
     ap.add_argument('--out', type=Path, required=True)
     ap.add_argument('--fix', action='store_true')
     ap.add_argument('--check', action='store_true', help='fail if the built previews need repairs')
+    ap.add_argument('--enlarge-small', action='store_true',
+                    help='also repair portraits below 85%% of their attainable fitted height')
     poses = ap.add_mutually_exclusive_group()
     poses.add_argument('--live-pose', action='store_true', default=True,
                        help='audit the first idle tick drawn by Status (default)')
@@ -438,14 +460,31 @@ def main():
         # The live renderer draws the first idle tick. Panel-only tests miss
         # portraits that obscure the header, care rows or sleeping condition.
         before_ui_problems = []
+        before_pixel_boxes = []
         for phase in (None, 0, 1, 2) if width else (None,):
             current = texture_at(tex, events, 0, width, phase)
             layer = model_layer(model, r['bones'], before_frames[0], current, before, scale)
-            problem = ui_problem(layer, check_height=False)
+            before_pixel_boxes.append(visible_bounds(layer))
+            problem = ui_problem(layer)
             if problem and problem not in before_ui_problems:
                 before_ui_problems.append(problem)
             if problem and worst is None:
                 worst, pixel_box, worst_phase = 0, visible_bounds(layer), phase
+        before_height = min(b[3] - b[1] + 1 for b in before_pixel_boxes)
+        enlarged = None
+        size_ratio = None
+        # A depth-only shrinker cannot recover portraits made tiny by fitting
+        # unseen idle travel. Zoom is opt-in except below the readability floor.
+        if args.enlarge_small or before_height < MIN_HEIGHT:
+            enlarged = readable_fit(points, frames, model, r['bones'], tex, events,
+                                    width, before, scale, allow_zoom=True)
+            size_ratio = before_height / enlarged[1]['minimum_height']
+            if before_height < MIN_HEIGHT or size_ratio < SMALL_RATIO:
+                before_ui_problems.append('undersized portrait')
+                if worst is None:
+                    worst, pixel_box, worst_phase = 0, before_pixel_boxes[0], None
+            else:
+                enlarged = None
         # A prior audit explicitly scopes a readability repair pass. Preserve
         # the fitting originals outside that set byte-for-byte.
         if reference_rows is not None:
@@ -457,14 +496,21 @@ def main():
             if not verification:
                 raise ValueError(f'{t}: current portrait fails readability')
         else:
-            after, verification = (readable_fit(points, frames, model, r['bones'], tex, events, width, before, scale)
-                                   if worst is not None else (before, None))
+            if worst is None:
+                after, verification = before, None
+            elif enlarged is not None:
+                after, verification = enlarged
+            else:
+                after, verification = readable_fit(points, frames, model, r['bones'], tex, events,
+                                                    width, before, scale)
         old_depth = camera(before)[2] + LENGTH
         new_depth = camera(after)[2] + LENGTH
         row = dict(id=t, name=s['name'], pose_scope='live first tick' if args.live_pose else 'complete idle', frames=len(frames), loop=loop, model_sha256=sha,
                    before=before, after=after, before_bounds=box, after_bounds=envelope(points, after),
                    overflow_tick=worst, overflow_pixels=pixel_box, overflow_texture_phase=worst_phase,
                    before_ui_problems=before_ui_problems,
+                   before_pixels=before_pixel_boxes[0], before_minimum_height=before_height,
+                   size_ratio=size_ratio,
                    source_position=source_position, status_anchor_bone=anchor, before_anchor_bone=before_anchor,
                    before_distance=old_depth, after_distance=new_depth,
                    magnification_ratio=old_depth / new_depth,
@@ -489,12 +535,14 @@ def main():
         # Show a visibly overflowing frame, retaining the same tick after.
         tile = Image.new('RGB', (640, 265), '#171e25')
         d = ImageDraw.Draw(tile)
-        d.text((8, 5), f'{t} {s["name"]} | idle tick {worst} | BEFORE', fill='white')
+        d.text((8, 5), f'{t} {s["name"]} - BEFORE', fill='white')
         d.text((328, 5), 'AFTER', fill='white')
         texture = texture_at(tex, events, worst, width, worst_phase)
         for x, pos in ((0, before), (320, after)):
             pose = before_frames[worst] if x == 0 else frames[worst]
-            tile.paste(render(model, r['bones'], pose, texture, pos, scale), (x, 25))
+            preview = render(model, r['bones'], pose, texture, pos, scale)
+            tile.paste(preview.crop((10, 102, 160, 222)).resize((300, 240), Image.Resampling.NEAREST),
+                       (x + 10, 25))
         tile.save(args.out / f'{t}.png')
         tiles.append(tile)
     (args.out / 'native-languages.json').write_text(json.dumps(native_languages, indent=2) + '\n')
