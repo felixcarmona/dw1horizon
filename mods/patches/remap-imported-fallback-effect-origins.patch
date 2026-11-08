@@ -1,0 +1,23 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 7 Nov 2026 20:59:32 +0000
+Subject: [PATCH] Honor imported origins for entity fallback effects
+
+---
+ src/main/efe.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/main/efe.c b/src/main/efe.c
+index 017b2122..9df7623a 100644
+--- a/src/main/efe.c
++++ b/src/main/efe.c
+@@ -1497,6 +1497,9 @@ EfeBoneOffset *getModDonorTechBoneOffset(int32_t type, EfeTechBoneOffset *table)
+ 	next = (next + 1) & 7;
+ 	if (row != NULL && onEntity >= onBone && !(rec->flags & SPECIES_FLAG_SHOTS_FROM_DEFAULT)) {
+ 		*out = *row;
++		/* Imported rigs also remap entity points borrowed by the fallback. */
++		return (EfeBoneOffset *)getSpeciesEffectOrigin(EFE_SCRIPT_CONTEXT->sourceEntity->type,
++												 (int16_t *)out);
+ 	} else {
+ 		out->boneId = rec->effectDefault[0];
+ 		out->positionX = rec->effectDefault[1];

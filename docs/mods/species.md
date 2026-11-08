@@ -222,31 +222,38 @@ Not in the files: padding (always 0, the extractor checks), the dead row of `ITE
 
 Status portraits use `renderDigiviceEntity`'s perspective camera: eye
 `[1300, 0, -3280]`, target `[0, 0, 0]`, projection distance 512 and screen
-origin `[160, 120]`. The renderer resets slot 0 and draws its first tick.
-`tools/status_portraits.py build/NAME --out build/status-audit` audits all
-raisable species, including the complete idle clip, textures, single-sided
-face culling and animated flame phases. Visible pixels crossing the half-panel
-outer edges (`x=10..161`, `y=102..220`) identify overflow; touching alone does
-not qualify a fitting original for changes.
+origin `[160, 120]`. On every render pass the menu resets slot 0, advances it
+once and draws that pose. Audit that actual first tick, rather than shrinking
+a travelling model to accommodate idle poses the menu never displays:
 
-Repairs occupy the free part of Condition **above Life**, which starts at
-`y=154`. Opaque pixels must remain inside `x=14..158`, `y=105..153` and clear
-the actual label rectangle (`x=20..80`, `y=107..120`). Space beside the label
-can be used. This avoids pushing a model behind hearts or care bars. All idle
-ticks and flame phases are rasterized after fitting. The live first pose must
-be at least 20 opaque pixels tall: a floor based on the unobscured native baby
-portraits (about 20–21 pixels above Life). Shorter squash poses elsewhere in
-the idle are recorded separately; the game does not display those poses in
-this view. The first pose's height, full-clip minimum and maximum, label/care
-clearance and checked frame indices are stored in `after_verification`.
+```sh
+python3 tools/status_portraits.py build/NAME --out build/status-audit --check
+```
 
-`--fix` edits `partner.status_screen_position`. The fitter solves the
-minimum camera depth for an inset rectangle, then preserves the old screen
-anchor as far as the bounds permit. It never moves closer or changes model
-scale. Several placements beside/below the label are checked; a final subpixel
-placement is accepted only after every opaque pixel passes the same strict
-bounds. Floating point projection approximates the GTE, so inspect emulator
-samples as well. Already fitting originals remain byte-identical.
+The audit covers every raisable species using the built archive, resident/cold
+joins, native models, runtime skeletons, scale rules, texture transparency,
+face culling and all animated flame phases. Native camera rows come from the
+built executable, with the same record-original replacements copied at boot.
+The audit also checks that every language executable has matching camera rows. Opaque pixels must stay inside
+`x=14..158`, `y=105..153`, clear the Status label (`x=20..80`, `y=107..120`)
+and clear the sleeping badge (`x=67..78`, `y=121..141`, including its full bob).
+Life starts at `y=154`; the model must not obscure hearts or care labels.
+The first pose must remain at least 20 opaque pixels tall. Merely staying
+inside the outer box is insufficient: a portrait can still cover its text.
+
+`--fix` edits only `partner.status_screen_position`. The fitter solves the
+smallest camera-depth increase for an inset rectangle and preserves the old
+screen anchor where space permits. It checks several placements beside/below
+the label and accepts one only after raster verification. It never moves the
+camera closer or changes model scale, geometry, field size or animations.
+Already fitting positions remain unchanged. `--check` exits nonzero if any
+built preview still needs repair. Geometry projection approximates the GTE,
+so review actual emulator captures as well.
+
+`--all-idle` retains the conservative full-animation diagnostic. Its bounds
+are not the live Status view; a wide travelling idle may not fit readably
+when all its non-displayed poses are included. Normal audits and repairs use
+one rendered pose plus all of its texture phases.
 
 A travelling imported idle can optionally set `partner.status_screen_anchor_bone`
 to a bone index. The camera follows that bone by translating the complete posed

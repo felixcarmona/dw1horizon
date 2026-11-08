@@ -20,6 +20,7 @@ import importlib.util, json, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '../../..'))
 OVERLAYS = {   # field_overlay: (id, generator module, model name)
+    'blackkingnumemon-slug': ('307', 'tools.models.field_animations.black_king_numemon', '307-blackkingnumemon-slug'),
     'wormmon-native-crawl': ('183', 'tools.models.field_animations.native_binding', '183-wormmon-native-crawl'),
     'stingmon-wing-followthrough': ('187', 'tools.models.field_animations.followthrough', '187-stingmon-wing-followthrough'),
     'gizamon-active-gait': ('239', 'tools.models.field_animations.followthrough', '239-gizamon-active-gait'),
@@ -101,7 +102,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'starmon-boxer-field': ('243', 'tools.models.field_animations.pace', '243-starmon-boxer-field'),
     'sorcermon-supported-field': ('242', 'tools.models.field_animations.pace', '242-sorcermon-supported-field'),
     'wizardmon-supported-field': ('241', 'tools.models.field_animations.pace', '241-wizardmon-supported-field'),
-    'gesomon-steady-run': ('240', 'tools.models.field_animations.gliding', '240-gesomon-steady-run'),
+    'gesomon-terrestrial': ('240', 'tools.models.field_animations.gesomon', '240-gesomon-terrestrial'),
     'gizamon-paired-bound': ('239', 'tools.models.field_animations.pace', '239-gizamon-paired-bound'),
     'dolphmon-native-swim': ('238', 'tools.models.field_animations.dolphmon', '238-dolphmon-native-swim'),
     'diaboromon-supported-field': ('237', 'tools.models.field_animations.pace', '237-diaboromon-supported-field'),
@@ -296,6 +297,21 @@ def species_file(out, t, recs=None, names=None, generate=False):
         with open(model_path, 'wb') as f:
             f.write(model)
         s['model']['file'] = model_path
+        s['model'].pop('slot_aliases', None)
+        s.pop('_path', None)
+    if e.get('movement_sound') is not None:
+        from pathlib import Path
+        import species as species_tools
+        from tools.models import movement_sounds
+        generated = Path(os.path.abspath(out) + '-models')
+        generated.mkdir(parents=True, exist_ok=True)
+        s['_path'] = os.path.join(ROOT, 'content/species', name)
+        model, proof = movement_sounds.apply(species_tools.species_model(s)[0],
+                                             s['model']['skeleton'], int(t), e['movement_sound'])
+        model_path = generated / f'{t}-movement-sounds.MMD'
+        model_path.write_bytes(model)
+        (generated / f'{t}-movement-sounds-report.json').write_text(json.dumps(proof, indent=2) + '\n')
+        s['model']['file'] = str(model_path)
         s['model'].pop('slot_aliases', None)
         s.pop('_path', None)
     return name, s
