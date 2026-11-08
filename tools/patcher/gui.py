@@ -568,7 +568,8 @@ class App:
     def _job_latest_checked(self):
         latest = desktop.latest_release()
         self.events.put(('latest', latest))
-        if not self.package or desktop.version_key(latest['version']) > desktop.version_key(self.package['version']):
+        if not self.package or (self.package.get('source') != 'file'
+                                and desktop.version_key(latest['version']) >= desktop.version_key(self.package['version'])):
             self._job_download(latest)
         else:
             self.events.put(('stage', self.t('app.upToDate'), 'TLabel'))
@@ -664,7 +665,7 @@ class App:
                     raise
                 latest = None
             if latest and (not package or desktop.version_key(latest['version'])
-                           > desktop.version_key(package['version'])):
+                           >= desktop.version_key(package['version'])):
                 package = self._job_download(latest)
         self.events.put(('stage', self.t('now.start'), 'TLabel'))
         dw = desktop.load_patcher(package['folder'])

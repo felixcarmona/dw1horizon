@@ -156,7 +156,12 @@ side is in [release/README-players.md](release/README-players.md#the-desktop-app
   checks the archive's SHA-256 against the asset digest GitHub reports, then unpacks it file by file: only regular
   files and folders, no path out of the folder, every file's SHA-256 equal to `horizon-checksums.json` `package`,
   nothing missing or extra, else nothing is kept. Build downloads a newer release first; offline, the package already
-  there is used. "Use a package file..." takes a `horizon-package.tar.gz` (checked against a
+  there is used. For an already cached tag, Download, Check and Build fetch only the small checksums file
+  first. The cache records the verified `package` map in `.verified-package.json`; older caches are hashed once
+  (excluding generated Python bytecode). An unchanged map avoids downloading the archive. A changed map stages
+  and verifies the complete replacement before swapping folders, with rollback if replacement fails and recovery
+  on the next install if the app stops between renames. Offline or failed refresh keeps the old package usable
+  and logs the reason in `app.log`. "Use a package file..." takes a `horizon-package.tar.gz` (checked against a
   `horizon-checksums.json` next to it when there is one, else the package is used as the player gave it: dwpatch
   still checks the patch and every file it builds). TLS uses the system's certificates; a frozen macOS Python has no
   OpenSSL certificate folder, so the app uses the certifi bundle frozen into it (a build-time dependency only), else
@@ -213,7 +218,7 @@ on Windows. The compiler
 must load each file once: otherwise absolute imports from lowered Python can
 repeat the base prelude's declarations. This compiler fix belongs in the release
 package's `bundle/tools/dws/gen.py`; rebuilding only the desktop executable does
-not update an already cached package.
+not change the package assets; a corrected package must also be published. The app then detects its changed checksums.
 
 `desktop.yml` runs on pull requests that touch the patcher (artifacts only), on a pushed `v*` tag, and by hand with
 an optional existing tag. With a tag, the `attach` job uploads both zips to that tag's release (drafted before the
@@ -583,7 +588,7 @@ all archive entries against that map before replacing both release assets. Keep
 the manifest, payload, bundle, engine and output checksums unchanged. A desktop
 app rebuild alone cannot fix this: the app loads the package's reader.
 
-Already downloaded packages are cached by tag. Players can import the corrected
+Desktop apps built with cache refresh detect a corrected package map for an already cached tag on Download, Check or Build. Older apps keep their tag cache. Players using those apps can import the corrected
 archive through the app's package-file chooser, with its matching checksums file
 beside it, to bypass that cache. Alternatively, close the app and remove only the
 cached `packages/v0.0.7` directory before downloading again. Until the corrected
