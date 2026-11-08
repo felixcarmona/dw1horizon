@@ -9,7 +9,7 @@ opens a box of ten switches (nine in a `FONT=original` build, which has no FONT)
 | EVOLUTION GUIDE | OFF / ON | ON | the evolution chart's green lines and Square requirements popup (patches 0176, 0299); OFF hides the prompt and popup and draws the original detail view |
 | NEW DIGIMON | OFF / ON | ON | OFF: the partner evolves only into the species the original game raises (the species files' `"vanilla": true`, ids 1-65: the chart's 61 and WereGarurumon, IceLeomon, Gigadramon, MetalEtemon by items), so no Megas; the chart is the original sheet and its trees show the original rows (below); the death's egg box shows only the original four eggs (patch 0334; ON adds the hand-made babies' four) |
 | EXTENDED STORY | OFF / ON | ON | patch 0199: the story with the story mods built onto the disc (What the Island Forgot: its new places, the city's new residents), or OFF the original story; changing it on a save moves the tamer to Jijimon's house (below) |
-| DIFFICULTY | EASY / NORMAL | NORMAL | patch 0212: EASY, the partner deals double damage and takes half in battles and tournaments (below) |
+| DIFFICULTY | EASY / NORMAL / HARD | NORMAL | EASY doubles partner damage and halves damage taken; HARD scales enemies and adds a damage floor (below) |
 | QUICK BATTLE START | OFF / ON | ON | patches 0234, 0239: a field battle starts the moment it is triggered, its BATTLE letters and bubbles over the running fight (patches 0233, 0236, 0238); OFF, the original start |
 | FONT | NEW / CLASSIC / ORIGINAL | NEW | font b, ours; the original letters evenly spaced; the original font as the original draws it (below) |
 | LANGUAGE | eight languages selected at build time | the build's (`LANG_BASE`) | the selected runtime languages ([languages](language.md)) |
@@ -54,6 +54,36 @@ Patch 0212. It changes only the fight, the tournaments included. EASY (`MOD_OPT_
 
 Not changed: the VS mode (two players), a script's damage (`69 DEAL_DAMAGE`, a % of the HP, never kills). Measured in a
 wild battle (`addEntityText` logged): NORMAL dealt 72-84 a hit, EASY 156-192; taken 29-329 against 35-66.
+
+### HARD
+
+HARD is opt-in; permanent partner growth retains its existing
+rules. Wild/scripted battles and tournaments scale enemy HP ×1.1, Offense ×1.5,
+Defense ×1.05, Speed ×1.15, Brains ×1.5 and finisher power ×1.5. Partner damage
+from direct techniques/finishers is ×0.95. Poison retains its percentage of
+the target's maximum HP; scripted percentage damage is unchanged. Empty move-slot idle weights are ×0.25, with a minimum of one; stronger
+Brains also activates the existing targeting and buff priorities. Factors live
+in `content/tables/battle-formulas.json: battleFormulas.hard`.
+
+Enemy HP caps at 30000 and other attributes at 9999. MP, rewards, drops and
+partner stats are unchanged. Original field encounter stats are saved before
+scaling, used for rewards, and restored at battle end/flee, so difficulty does
+not increase permanent gains or compound across fights. Single-player difficulty does not apply to two-player VS; the shared
+Defense continuation below still applies there. HP scaling occurs before the bars and fighter AI initialize.
+
+Save byte 10 retains NORMAL=0 and EASY=1, adds HARD=2, and defaults to NORMAL
+for an absent/invalid byte. Both title-header and tagged-save copies use it;
+no save allocation changes. HARD is translated in all nine languages. Chinese
+retains its existing 8 MB and dedicated-font requirements. The third difficulty
+value uses spare language-row texture/width slots; menu arrays stay the same size.
+
+All difficulties use the ordinary-technique Defense continuation above 999;
+HARD additionally floors enemy damage to the partner at 15% of the same hit
+against Defense zero. Finishers already ignore Defense, so the floor is
+automatically satisfied. See [implementation and evidence](../../HARD-DIFFICULTY.md).
+
+See [the difficulty and growth review](../../STAT-SOFTCAP.md) and
+`python3 tools/hard_audit.py` for targets, first-life HP/MP analysis and budgets.
 
 ## FONT
 

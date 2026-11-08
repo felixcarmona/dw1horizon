@@ -1,0 +1,490 @@
+From db9555f60667c157e2396c66fe4c535b1796092e Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 8 Nov 2026 00:02:29 +0000
+Subject: [PATCH] Add HARD single-player difficulty
+
+---
+ include/dw/mod_battle.h  | 31 +++++++++++++++++++++++++++
+ include/dw/mod_hard.h    | 46 ++++++++++++++++++++++++++++++++++++++++
+ include/dw/mod_options.h |  3 ++-
+ src/btl/battle_main.c    | 32 ++++++++++++++++++++++++----
+ src/btl/battle_setup.c   | 26 ++++++++++++++---------
+ src/main/main_menu.c     | 17 +++++++++------
+ src/std/std_main.c       | 31 +++++++++++++++++++++++----
+ src/std/std_setup.c      |  3 +++
+ src/vs/vs_main.c         |  2 +-
+ text/main/main_menu.yaml |  3 +++
+ 10 files changed, 168 insertions(+), 26 deletions(-)
+ create mode 100644 include/dw/mod_hard.h
+
+diff --git a/include/dw/mod_battle.h b/include/dw/mod_battle.h
+index d644a39..e70e21c 100644
+--- a/include/dw/mod_battle.h
++++ b/include/dw/mod_battle.h
+@@ -171,6 +171,17 @@ enum {
+ 	MOD_BT_MUSIC_LAST_TRACK,	/* the track (font 0x21) it plays */
+ 	MOD_BT_TAIL_HALF,
+ 	MOD_BT_TAIL_DIV,
++	MOD_BT_HARD_HP,
++	MOD_BT_HARD_OFF,
++	MOD_BT_HARD_DEF,
++	MOD_BT_HARD_SPEED,
++	MOD_BT_HARD_BRAIN,
++	MOD_BT_HARD_FIN,
++	MOD_BT_HARD_DEALT,
++	MOD_BT_HARD_IDLE,
++	MOD_BT_HARD_FLOOR,
++	MOD_BT_DEF_KNEE,
++	MOD_BT_DEF_HALF,
+ 	MOD_BT_SIZE
+ };
+ 
+@@ -207,6 +218,26 @@ static inline int32_t modBtStatPower(int32_t power, int32_t difference)
+ 	return result;
+ }
+ 
++/* Continue excess Defense with a reciprocal tail once it exceeds both the
++ * original range and Offense. Positive attack advantages keep their existing
++ * curve. Counter transforms Defense first; the original raw range is exact. */
++static inline int32_t modBtDefensePower(int32_t power, int32_t off, int32_t defense, int32_t counter)
++{
++    int32_t knee = BM(DEF_KNEE), half = BM(DEF_HALF);
++    int32_t excess = 0, effective = defense, result;
++    if (counter) effective = effective * BM(GUARD_PCT) / 100;
++    if (knee > 0 && half > 0 && defense > knee) {
++        if (off > knee) knee = off;
++        if (effective > knee) {
++            excess = effective - knee;
++            effective = knee;
++        }
++    }
++    result = modBtStatPower(power, off - effective);
++    if (excess) result = result * half / (half + excess);
++    return result;
++}
++
+ /* the command menu a partner gets from its brains: the table row for brains / CMD_STEP below CMD_MAX, else the top menu (`first` is the row's first slot) */
+ static inline int32_t modBtCommands(int32_t brain, int32_t first, int32_t top)
+ {
+diff --git a/include/dw/mod_hard.h b/include/dw/mod_hard.h
+new file mode 100644
+index 0000000..400cc87
+--- /dev/null
++++ b/include/dw/mod_hard.h
+@@ -0,0 +1,46 @@
++#ifndef DW_MOD_HARD_H
++#define DW_MOD_HARD_H
++#include <dw/caps.h>
++#include <dw/entity.h>
++#include <dw/mod_battle.h>
++#include <dw/mod_options.h>
++
++/* Overlay-only helpers. Missing factors are neutral; products fit signed 32 bits. */
++static inline int32_t modHardScale(int32_t value, int32_t slot, int32_t cap)
++{
++    int32_t factor, result;
++    if (MOD_OPT_DIFFICULTY != MOD_DIFF_HARD) return value;
++    factor = MOD_BATTLE[slot];
++    if (factor <= 0) return value;
++    result = value * factor / 100;
++    return result > cap ? cap : result;
++}
++
++/* Round the minimum upward, including after ordinary block chip rounding. */
++static inline int32_t modHardMinimum(int32_t zeroDamage)
++{
++    return (zeroDamage * BM(HARD_FLOOR) + 99) / 100;
++}
++
++static inline int32_t modHardBlockedFloor(int32_t damage, int32_t zeroDamage, int32_t blockPercent)
++{
++    int32_t minimum;
++    if (MOD_OPT_DIFFICULTY != MOD_DIFF_HARD || zeroDamage <= 0) return damage;
++    minimum = modHardMinimum(zeroDamage * blockPercent / 100);
++    return damage < minimum ? minimum : damage;
++}
++
++/* Called once after encounter generation, before combat UI/AI setup. Original
++ * field stats remain in INITIAL_COMBAT_STATS for rewards and flee restoration. */
++static inline void modHardEnemy(Stats *stats)
++{
++    int32_t oldHP = stats->base.hp;
++    if (MOD_OPT_DIFFICULTY != MOD_DIFF_HARD) return;
++    stats->base.hp = modHardScale(stats->base.hp, MOD_BT_HARD_HP, HPMP_CAP);
++    if (oldHP > 0) stats->current.currentHP = (int32_t)stats->current.currentHP * stats->base.hp / oldHP;
++    stats->base.off = modHardScale(stats->base.off, MOD_BT_HARD_OFF, STAT_CAP);
++    stats->base.def = modHardScale(stats->base.def, MOD_BT_HARD_DEF, STAT_CAP);
++    stats->base.speed = modHardScale(stats->base.speed, MOD_BT_HARD_SPEED, STAT_CAP);
++    stats->base.brain = modHardScale(stats->base.brain, MOD_BT_HARD_BRAIN, STAT_CAP);
++}
++#endif
+diff --git a/include/dw/mod_options.h b/include/dw/mod_options.h
+index ecc5bc4..5683954 100644
+--- a/include/dw/mod_options.h
++++ b/include/dw/mod_options.h
+@@ -86,7 +86,8 @@ void modSetStory(int32_t extended);
+  */
+ #define MOD_DIFF_NORMAL	0
+ #define MOD_DIFF_EASY	1
+-extern int32_t MOD_OPT_DIFFICULTY; /* DIFFICULTY: MOD_DIFF_EASY or MOD_DIFF_NORMAL */
++#define MOD_DIFF_HARD	2
++extern int32_t MOD_OPT_DIFFICULTY; /* Saved values: NORMAL=0, EASY=1, HARD=2. */
+ extern int32_t MOD_OPT_QUICK_BATTLE; /* QUICK BATTLE START: a field battle starts at once, its intro over the fight (battle_setup.c, btl.c); 0 = the original start */
+ /* the damage `dmg` that `attacker` deals `defender` with the difficulty (`partner`: the partner's entity) */
+ #define MOD_DIFF_DAMAGE(attacker, defender, partner, dmg)                                                              \
+diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
+index 8b0454a..c9f4afa 100644
+--- a/src/btl/battle_main.c
++++ b/src/btl/battle_main.c
+@@ -1,3 +1,7 @@
++#include <dw/mod_hard.h>
++
++static int32_t BTL_HARD_ZERO_DAMAGE __attribute__((section(".bss.hard_zero")));
++
+ #include <inline_n.h>
+ #include <libetc.h>
+ #include <libgpu.h>
+@@ -760,6 +764,7 @@ void BTL_deinitializeCombat(void)
+ 		if (i != 0) {
+ 			stats = &((DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]])->stats;
+ 			src = (int16_t *)&INITIAL_COMBAT_STATS[i];
++			if (MOD_OPT_DIFFICULTY == MOD_DIFF_HARD) stats->base.hp = src[0];
+ 			stats->current.currentHP = *src++;
+ 			stats->current.currentMP = *src++;
+ 			stats->base.off = *src++;
+@@ -2042,9 +2047,12 @@ int32_t BTL_calculateDamage(DigimonEntity *attacker, DigimonEntity *defender, in
+ 	uint8_t mult[3];
+ 	long i;
+ 	int32_t dmg;
++	int32_t power;
++	int32_t roll, floorDamage = 0;
+ 	int16_t off;
+ 	int16_t def;
+ 
++	BTL_HARD_ZERO_DAMAGE = 0;
+ 	for (i = 0; i < 3; i++) {
+ 		if (DIGI_PARA(defender->entity.type).special[i] != 0xff) {
+ 			mult[i] = TYPE_FACTORS[modSpeciesMove(attacker->entity.type, move)->special][DIGI_PARA(defender->entity.type).special[i]];
+@@ -2058,10 +2066,20 @@ int32_t BTL_calculateDamage(DigimonEntity *attacker, DigimonEntity *defender, in
+ 		def = def * BM(GUARD_PCT) / 100; /* MOD (battle as data) */
+ 	}
+ 	if ((move >= 0x3a) && (move < 0x71)) {
+-		dmg = BMD((off + modSpeciesMove(attacker->entity.type, move)->power) * (mult[0] + mult[1] + mult[2]), DMG_DIV);
++		power = modSpeciesMove(attacker->entity.type, move)->power;
++		if ((Entity *)attacker != ENTITY_TABLE[1]) power = modHardScale(power, MOD_BT_HARD_FIN, 32767);
++		dmg = BMD((off + power) * (mult[0] + mult[1] + mult[2]), DMG_DIV);
+ 	} else {
+ 		diff = off - def;
+-		dmg = BMD((mult[0] + mult[1] + mult[2]) * modBtStatPower(modSpeciesMove(attacker->entity.type, move)->power, diff), DMG_DIV) * (randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN)) / 100;
++		roll = randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN);
++        dmg = BMD((mult[0] + mult[1] + mult[2]) * modBtDefensePower(modSpeciesMove(attacker->entity.type, move)->power, off, defender->stats.base.def, move == 0x2d), DMG_DIV) * roll / 100;
++        if (MOD_OPT_DIFFICULTY == MOD_DIFF_HARD && (Entity *)defender == ENTITY_TABLE[1] && (Entity *)attacker != ENTITY_TABLE[1]) {
++            floorDamage = BMD((mult[0] + mult[1] + mult[2]) * modBtStatPower(modSpeciesMove(attacker->entity.type, move)->power, off), DMG_DIV) * roll / 100;
++            if (floorDamage > DAMAGE_CAP) floorDamage = DAMAGE_CAP;
++            BTL_HARD_ZERO_DAMAGE = floorDamage;
++            floorDamage = modHardMinimum(floorDamage);
++            if (dmg < floorDamage) dmg = floorDamage;
++        }
+ 	}
+ 	if ((move >= 0x3a) && (move < 0x71)) {
+ 		if ((Entity *)attacker == ENTITY_TABLE[1]) {
+@@ -2074,6 +2092,7 @@ int32_t BTL_calculateDamage(DigimonEntity *attacker, DigimonEntity *defender, in
+ 		dmg = dmg * (randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN)) / 100;
+ 	}
+ 	dmg = MOD_DIFF_DAMAGE(attacker, defender, ENTITY_TABLE[1], dmg); /* MOD (difficulty): EASY, x2 dealt, /2 taken */
++	if ((Entity *)attacker == ENTITY_TABLE[1]) dmg = modHardScale(dmg, MOD_BT_HARD_DEALT, DAMAGE_CAP);
+ 	if (dmg <= BM(DMG_MIN) - 1) {
+ 		dmg = BM(DMG_MIN);
+ 	}
+@@ -2131,7 +2150,7 @@ void BTL_tickAttackHits(void)
+ {
+ 	long j;
+ 	long i;
+-	int32_t dmg;
++	int32_t dmg, blockPercent;
+ 	int32_t hit;
+ 	int32_t tech;
+ 	uint8_t *moves;
+@@ -2234,7 +2253,8 @@ void BTL_tickAttackHits(void)
+ 		}
+ 		if (MOVE_DATA[tech].range == 1) {
+ 			dmg = BTL_calculateDamage((DigimonEntity *)attacker, (DigimonEntity *)entity, tech);
+-			dmg = dmg * (randomLimit(BMS(BLOCK_DMG_SPAN)) + BM(BLOCK_DMG_MIN)) / 100;
++			blockPercent = randomLimit(BMS(BLOCK_DMG_SPAN)) + BM(BLOCK_DMG_MIN);
++			dmg = modHardBlockedFloor(dmg * blockPercent / 100, BTL_HARD_ZERO_DAMAGE, blockPercent);
+ 			if (dmg <= 0) {
+ 				dmg = 1;
+ 			}
+@@ -3851,6 +3871,10 @@ void BTL_selectEnemyMove(DigimonEntity *digimon, FighterData *fighter, int16_t i
+ 
+ 	for (i = 0; i < 4; i++) {
+ 		weights[i] = digimon->stats.base.movesPrio[i];
++		if (index != 0 && digimon->stats.base.moves[i] == 0xff && weights[i] > 0) {
++			weights[i] = modHardScale(weights[i], MOD_BT_HARD_IDLE, 255);
++			if (weights[i] == 0) weights[i] = 1;
++		}
+ 	}
+ 
+ 	for (i = 0; i < 4; i++) {
+diff --git a/src/btl/battle_setup.c b/src/btl/battle_setup.c
+index f78d3a5..c62c3d9 100644
+--- a/src/btl/battle_setup.c
++++ b/src/btl/battle_setup.c
+@@ -1,4 +1,5 @@
+ #include <dw/mod_battle.h>
++#include <dw/mod_hard.h>
+ #include <dw/caps.h> /* MOD (caps) */
+ #include <dw/anim.h>
+ #include <dw/attack_object.h>
+@@ -78,6 +79,21 @@ void BTL_initializeCombat(void)
+ 		COMBAT_DATA_PTR->player.usedMoves[i] = 0xff;
+ 	}
+ 
++	/* Keep reward/restoration inputs unscaled, including on HARD. */
++	for (i = 0; i <= ENEMY_COUNT; i++) {
++		stats = &((DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]])->stats;
++		dst = (int16_t *)&INITIAL_COMBAT_STATS[i];
++		*dst++ = stats->base.hp;
++		*dst++ = stats->base.mp;
++		*dst++ = stats->base.off;
++		*dst++ = stats->base.def;
++		*dst++ = stats->base.speed;
++		*dst = stats->base.brain;
++	}
++
++	for (i = 1; i <= ENEMY_COUNT; i++) {
++		modHardEnemy(&((DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]])->stats);
++	}
+ 	BTL_addEnemyHPBars();
+ 	BTL_initializePartnerStatusBars();
+ 	drawInventoryText();
+@@ -181,16 +197,6 @@ void BTL_initializeCombat(void)
+ 	COMBAT_DATA_PTR->player.hoveredCommand[0] = COMBAT_DATA_PTR->player.numCommands[0] - 1;
+ 	COMBAT_DATA_PTR->player.currentCommand[0] = COMBAT_DATA_PTR->player.bufferedCommand[0] = 3;
+ 
+-	for (i = 0; i <= ENEMY_COUNT; i++) {
+-		stats = &((DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]])->stats;
+-		dst = (int16_t *)&INITIAL_COMBAT_STATS[i];
+-		*dst++ = stats->base.hp;
+-		*dst++ = stats->base.mp;
+-		*dst++ = stats->base.off;
+-		*dst++ = stats->base.def;
+-		*dst++ = stats->base.speed;
+-		*dst = stats->base.brain;
+-	}
+ 
+ 	if ((PARTNER_PARA.condition & 0x60) != 0) {
+ 		stats = &PARTNER_ENTITY.digimonEntity.stats;
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 9b2d116..4cff284 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -4779,9 +4779,8 @@ static void modApplyOptions(const uint8_t *d, int32_t len)
+ 	if (len >= 10) { /* MOD (story) */
+ 		modSetStory(d[9]);
+ 	}
+-	if (len >= 11) { /* MOD (difficulty) */
+-		MOD_OPT_DIFFICULTY = d[10] == MOD_DIFF_EASY ? MOD_DIFF_EASY : MOD_DIFF_NORMAL;
+-	}
++	/* Missing or invalid legacy difficulty defaults to NORMAL. */
++	MOD_OPT_DIFFICULTY = len >= 11 && d[10] <= MOD_DIFF_HARD ? d[10] : MOD_DIFF_NORMAL;
+ 	if (len >= 12) { /* MOD (quick battle start) */
+ 		MOD_OPT_QUICK_BATTLE = d[11] != 0;
+ 	}
+@@ -6025,7 +6024,9 @@ static char *MOD_OPT_TEXT[MOD_OPT_ROWS][3] = {
+ };
+ /* the text area place of each value, its row + 0x100 in the right half: a value two rows share (OFF, ON, ORIGINAL) is
+  * drawn once (drawOptionsText) */
+-/* The font row's third value uses the following language row's otherwise unused slot. */
++/* FONT's third value uses language slot 0; HARD uses language slot 1.
++ * Language values have separate shared storage, so neither adds resident arrays. */
++typedef char mod_options_hard_slot[(MOD_OPT_ROW_LANG > MOD_OPT_ROW_DIFF) ? 1 : -1];
+ #if FONT_SWITCH
+ typedef char mod_options_font_slot[(MOD_OPT_ROW_LANG == MOD_OPT_ROW_FONT + 1) ? 1 : -1];
+ #endif
+@@ -6041,6 +6042,7 @@ static char *MOD_LANGUAGE_NAMES[MOD_LANGS] = { MOD_OPT_STR_ENGLISH, MOD_OPT_STR_
+ /* Language values share one texture position; the other option rows have at most three values. */
+ static char *modOptionText(int32_t row, int32_t value)
+ {
++    if (row == MOD_OPT_ROW_DIFF && value == 3) return MOD_OPT_STR_HARD;
+     if (row == MOD_OPT_ROW_LANG && value > 0) return MOD_LANGUAGE_NAMES[modLanguageAt(value - 1)];
+ #if FONT_SWITCH
+     if (row == MOD_OPT_ROW_FONT && value == 3) return MOD_OPT_STR_ORIGINAL;
+@@ -6050,11 +6052,13 @@ static char *modOptionText(int32_t row, int32_t value)
+ 
+ static int16_t *modOptionV(int32_t row, int32_t value)
+ {
++    if (row == MOD_OPT_ROW_DIFF && value == 2) return &MOD_OPT_V[MOD_OPT_ROW_LANG * 2 + 1];
+     return row == MOD_OPT_ROW_LANG ? &MOD_OPT_LANG_V : &MOD_OPT_V[row * 2 + value];
+ }
+ 
+ static uint8_t *modOptionW(int32_t row, int32_t value)
+ {
++    if (row == MOD_OPT_ROW_DIFF && value == 3) return &MOD_OPT_W[MOD_OPT_ROW_LANG * 3 + 1];
+     return row == MOD_OPT_ROW_LANG ? &MOD_OPT_LANG_W[value] : &MOD_OPT_W[row * 3 + value];
+ }
+ 
+@@ -6069,6 +6073,7 @@ static int16_t MOD_OPT_SHOWN;
+ 
+ static int32_t modOptionCount(int32_t row)
+ {
++    if (row == MOD_OPT_ROW_DIFF) return 3;
+ 	if (row == MOD_OPT_ROW_LANG) {
+         return modLanguageCount();
+     }
+@@ -6091,7 +6096,7 @@ static int32_t modOptionValue(int32_t row)
+ 	case MOD_OPT_ROW_STORY: /* MOD (story) */
+ 		return MOD_OPT_STORY != 0;
+ 	case MOD_OPT_ROW_DIFF: /* MOD (difficulty): EASY, NORMAL */
+-		return MOD_OPT_DIFFICULTY == MOD_DIFF_EASY ? 0 : 1;
++		return MOD_OPT_DIFFICULTY == MOD_DIFF_EASY ? 0 : MOD_OPT_DIFFICULTY == MOD_DIFF_HARD ? 2 : 1;
+ 	case MOD_OPT_ROW_QUICK: /* MOD (quick battle start) */
+ 		return MOD_OPT_QUICK_BATTLE != 0;
+ #if FONT_SWITCH
+@@ -6136,7 +6141,7 @@ static void modSetOption(int32_t row, int32_t value)
+ 		modSetStory(value);
+ 		break;
+ 	case MOD_OPT_ROW_DIFF: /* MOD (difficulty) */
+-		MOD_OPT_DIFFICULTY = value == 0 ? MOD_DIFF_EASY : MOD_DIFF_NORMAL;
++		MOD_OPT_DIFFICULTY = value == 0 ? MOD_DIFF_EASY : value == 2 ? MOD_DIFF_HARD : MOD_DIFF_NORMAL;
+ 		break;
+ 	case MOD_OPT_ROW_QUICK: /* MOD (quick battle start) */
+ 		MOD_OPT_QUICK_BATTLE = value;
+diff --git a/src/std/std_main.c b/src/std/std_main.c
+index 714c5c9..473fcdb 100644
+--- a/src/std/std_main.c
++++ b/src/std/std_main.c
+@@ -1,3 +1,7 @@
++#include <dw/mod_hard.h>
++
++static int32_t STD_HARD_ZERO_DAMAGE __attribute__((section(".bss.hard_zero")));
++
+ #include <dw/species.h>
+ #include <stdlib.h>
+ #include <string.h>
+@@ -5581,7 +5585,7 @@ void STD_tickAttackHits(void)
+ 	FighterData *fighter;
+ 	Entity *entity;
+ 	long i;
+-	int32_t dmg;
++	int32_t dmg, blockPercent;
+ 	int32_t chance;
+ 	int32_t tech;
+ 	uint8_t *moves;
+@@ -5684,7 +5688,8 @@ skipViewpoint:
+ 		}
+ 		if (MOVE_DATA[tech].range == 1) {
+ 			dmg = STD_calculateDamage((DigimonEntity *)attacker, (DigimonEntity *)entity, tech);
+-			dmg = dmg * (randomLimit(BMS(BLOCK_DMG_SPAN)) + BM(BLOCK_DMG_MIN)) / 100;
++			blockPercent = randomLimit(BMS(BLOCK_DMG_SPAN)) + BM(BLOCK_DMG_MIN);
++			dmg = modHardBlockedFloor(dmg * blockPercent / 100, STD_HARD_ZERO_DAMAGE, blockPercent);
+ 			if (dmg <= 0) {
+ 				dmg = 1;
+ 			}
+@@ -5824,9 +5829,12 @@ int32_t STD_calculateDamage(DigimonEntity *attacker, DigimonEntity *defender, in
+ 	uint8_t mult[3];
+ 	long i;
+ 	int32_t dmg;
++	int32_t power;
++	int32_t roll, floorDamage = 0;
+ 	int16_t off;
+ 	int16_t def;
+ 
++	STD_HARD_ZERO_DAMAGE = 0;
+ 	for (i = 0; i < 3; i++) {
+ 		if (DIGI_PARA(defender->entity.type).special[i] != 0xff) {
+ 			mult[i] = TYPE_FACTORS[modSpeciesMove(attacker->entity.type, move)->special][DIGI_PARA(defender->entity.type).special[i]];
+@@ -5840,10 +5848,20 @@ int32_t STD_calculateDamage(DigimonEntity *attacker, DigimonEntity *defender, in
+ 		def = def * BM(GUARD_PCT) / 100; /* MOD (battle as data) */
+ 	}
+ 	if ((move >= 0x3a) && (move < 0x71)) {
+-		dmg = BMD((off + modSpeciesMove(attacker->entity.type, move)->power) * (mult[0] + mult[1] + mult[2]), DMG_DIV);
++		power = modSpeciesMove(attacker->entity.type, move)->power;
++		if ((Entity *)attacker != ENTITY_TABLE[1]) power = modHardScale(power, MOD_BT_HARD_FIN, 32767);
++		dmg = BMD((off + power) * (mult[0] + mult[1] + mult[2]), DMG_DIV);
+ 	} else {
+ 		diff = off - def;
+-		dmg = BMD((mult[0] + mult[1] + mult[2]) * modBtStatPower(modSpeciesMove(attacker->entity.type, move)->power, diff), DMG_DIV) * (randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN)) / 100;
++		roll = randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN);
++        dmg = BMD((mult[0] + mult[1] + mult[2]) * modBtDefensePower(modSpeciesMove(attacker->entity.type, move)->power, off, defender->stats.base.def, move == 0x2d), DMG_DIV) * roll / 100;
++        if (MOD_OPT_DIFFICULTY == MOD_DIFF_HARD && (Entity *)defender == ENTITY_TABLE[1] && (Entity *)attacker != ENTITY_TABLE[1]) {
++            floorDamage = BMD((mult[0] + mult[1] + mult[2]) * modBtStatPower(modSpeciesMove(attacker->entity.type, move)->power, off), DMG_DIV) * roll / 100;
++            if (floorDamage > DAMAGE_CAP) floorDamage = DAMAGE_CAP;
++            STD_HARD_ZERO_DAMAGE = floorDamage;
++            floorDamage = modHardMinimum(floorDamage);
++            if (dmg < floorDamage) dmg = floorDamage;
++        }
+ 	}
+ 	if ((move >= 0x3a) && (move < 0x71)) {
+ 		if ((Entity *)attacker == ENTITY_TABLE[1]) {
+@@ -5856,6 +5874,7 @@ int32_t STD_calculateDamage(DigimonEntity *attacker, DigimonEntity *defender, in
+ 		dmg = dmg * (randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN)) / 100;
+ 	}
+ 	dmg = MOD_DIFF_DAMAGE(attacker, defender, ENTITY_TABLE[1], dmg); /* MOD (difficulty): EASY, x2 dealt, /2 taken */
++	if ((Entity *)attacker == ENTITY_TABLE[1]) dmg = modHardScale(dmg, MOD_BT_HARD_DEALT, DAMAGE_CAP);
+ 	if (dmg <= BM(DMG_MIN) - 1) {
+ 		dmg = BM(DMG_MIN);
+ 	}
+@@ -6332,6 +6351,10 @@ void STD_selectEnemyMove(DigimonEntity *digimon, FighterData *fighter, int16_t i
+ 
+ 	for (i = 0; i < 4; i++) {
+ 		weights[i] = digimon->stats.base.movesPrio[i];
++		if (index != 0 && digimon->stats.base.moves[i] == 0xff && weights[i] > 0) {
++			weights[i] = modHardScale(weights[i], MOD_BT_HARD_IDLE, 255);
++			if (weights[i] == 0) weights[i] = 1;
++		}
+ 	}
+ 
+ 	for (i = 0; i < 4; i++) {
+diff --git a/src/std/std_setup.c b/src/std/std_setup.c
+index 8f4ec09..cb06b08 100644
+--- a/src/std/std_setup.c
++++ b/src/std/std_setup.c
+@@ -15,6 +15,7 @@
+ #include <dw/main.h>
+ #include <dw/math.h>
+ #include <dw/mod_qol.h>
++#include <dw/mod_hard.h>
+ #include <dw/model.h>
+ #include <dw/move.h>
+ #include <dw/params.h>
+@@ -328,10 +329,12 @@ void STD_initializeOpponent(int16_t type, int16_t slot, uint8_t tier)
+ 	if (stats->base.mp >= 0x2710) {
+ 		stats->base.mp = 0x270f;
+ 	}
++
+ #if VERSION_EQUAL_OR_NEWER(JP_TRIAL)
+ 	stats->current.currentHP = stats->base.hp;
+ 	stats->current.currentMP = stats->base.mp;
+ #endif
++	modHardEnemy(stats);
+ 	stats->current.chargeMode = 0;
+ 	ENTITY_TABLE[slot + 2]->isOnMap = 1;
+ 	ENTITY_TABLE[slot + 2]->isOnScreen = 1;
+diff --git a/src/vs/vs_main.c b/src/vs/vs_main.c
+index f304b8b..1ccf920 100644
+--- a/src/vs/vs_main.c
++++ b/src/vs/vs_main.c
+@@ -369,7 +369,7 @@ int32_t VS_rollAttackOutcome(DigimonEntity *attacker, DigimonEntity *defender, i
+ 		dmg = dmg * (randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN)) / 100;
+ 	} else {
+ 		diff = atk - def;
+-		dmg = BMD((eff[2] + (eff[0] + eff[1])) * modBtStatPower(modSpeciesMove(attacker->entity.type, move)->power, diff), DMG_DIV) * (randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN)) / 100;
++		dmg = BMD((eff[2] + (eff[0] + eff[1])) * modBtDefensePower(modSpeciesMove(attacker->entity.type, move)->power, atk, defender->stats.base.def, move == 0x2d), DMG_DIV) * (randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN)) / 100;
+ 	}
+ 
+ 	if (dmg <= BM(DMG_MIN) - 1) {
+diff --git a/text/main/main_menu.yaml b/text/main/main_menu.yaml
+index 16b1cb4..9c5b51e 100644
+--- a/text/main/main_menu.yaml
++++ b/text/main/main_menu.yaml
+@@ -371,6 +371,9 @@ MOD_OPTIONS:
+     MOD_OPT_STR_EASY:
+       ja: "EASY"
+       en_us: "EASY"
++    MOD_OPT_STR_HARD:
++      ja: "HARD"
++      en_us: "HARD"
+     MOD_OPT_STR_NORMAL:
+       ja: "NORMAL"
+       en_us: "NORMAL"
