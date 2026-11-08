@@ -1,5 +1,7 @@
 """Caption banks must cover every screen and survive the on-disc encoding."""
 import unittest
+from pathlib import Path
+import tempfile
 from unittest.mock import patch
 
 from tools import screens
@@ -8,6 +10,45 @@ from tools.localize import captions
 
 
 class CaptionTranslations(unittest.TestCase):
+    def test_authored_captions_reach_screen_files(self):
+        # Exercise the build entry point, not just localize(): v0.0.7 wrote
+        # authored English captions straight into SCRN.DAT in every language.
+        folders = sorted((captions.ROOT / 'story/mods').glob('*/screens'))
+        source = screens.load(folders)
+        script = ''.join(f'.section {ident} sec{ident}\nsec{ident}:\nEND_SECTION\n'
+                         for ident in sorted(source))
+        maphead = screens.bytecode.assemble_script(script, 'caption-test')[0]
+        baseline = None
+        with tempfile.TemporaryDirectory() as directory:
+            directory = Path(directory)
+            original = directory / 'MAPHEAD.SCN'
+            original.write_bytes(maphead)
+            for language in CODES:
+                with self.subTest(language=language):
+                    output = directory / 'SCRN.DAT'
+                    screens.build_files(str(original), str(directory / 'resident.scn'),
+                                        str(output), folders, language=language,
+                                        log=lambda _: None)
+                    data = output.read_bytes()
+                    records = {row['id']: row for row in screens.records(data)}
+                    bank = captions.names(language)
+                    for ident, row in source.items():
+                        caption = row.get('caption', 0)
+                        if isinstance(caption, str):
+                            key = captions.caption_key(caption)
+                            expected = captions.encode(bank[key], language)
+                            self.assertEqual(records[ident]['caption_text'].encode('latin-1'), expected,
+                                             (language, ident, key))
+                    self.assertEqual(records[314]['caption_text'].encode('latin-1'), captions.encode(
+                        bank['screen.caption.root_clearing'], language))
+                    # Localization must leave screen setup and scripts intact.
+                    for ident in source:
+                        start = screens.RECORD_SIZE * (1 + ident - screens.NUM_ORIGINAL_SCREENS)
+                        data = data[:start + 0x5c] + bytes(36) + data[start + 0x80:]
+                    if baseline is None:
+                        baseline = data
+                    self.assertEqual(data, baseline)
+
     def test_complete_inventory(self):
         self.assertGreater(captions.audit(), 60)
 
