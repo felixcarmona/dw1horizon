@@ -2232,6 +2232,12 @@ def lint(species, check_files=False):
                     E('_npc_original', original, 'model and texture must read the unmodified disc species')
                 for key in ('radius', 'height'):
                     if s['model'].get(key) != disc['model'][key]:
+                        # A field footprint can be deliberately tightened after a
+                        # walking review; the disc mesh, skeleton and height stay exact.
+                        if (key == 'radius' and isinstance(s.get('_npc_collision_review'), str) and
+                                s['_npc_collision_review'].strip() and
+                                0 < s['model'][key] <= disc['model'][key]):
+                            continue
                         E('model.' + key, s['model'].get(key), 'must equal the disc NPC')
                 if s['model'].get('skeleton') != originals().rec[original]['bones']:
                     E('model.skeleton', s['model'].get('skeleton'), 'must equal the disc skeleton')
