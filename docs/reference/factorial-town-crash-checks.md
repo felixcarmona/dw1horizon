@@ -102,3 +102,39 @@ The complete nine-language developer build produced image SHA-1
 Selftest passed 124 checks with four generated-input checks deferred during the
 rebuild. All four deferred checks then passed: compiled city rosters, flat
 sprites, all 126 balance tables and all 692 evolution-chart routes.
+
+## KingSukamon loading regression (v0.0.8)
+
+The `598f6a6f` baseline also completes both the ordinary two-guard encounter and
+three-guard stress encounter with KingSukamon (120), Beelzemon (403), and
+MegaGargomon (335), with quick battle both enabled and disabled. These twelve tests boot a native memory
+card on a 2 MB emulator, enter through controller movement, let the partner fight
+automatically, and require normal return to field control. Enemy HP changes and
+attack animations rule out an idle enemy-AI explanation in these fixtures.
+
+A controlled interpreter regression starts from the same KingSukamon room state
+and baseline disc. With both existing EFE traversal guards active, the quick
+three-guard battle finishes and returns to field control at battle frame 1214.
+After verifying the battle overlay's instructions, replacing only the loading
+branches in `BTL_tickEFEEngine` and `BTL_renderEFEEngine` with NOPs stalls the
+same encounter at frame 54, with `MOD_BATTLE_LOADING=2`. The frame remains
+unchanged for more than 150 seconds; the CPU reaches the exception vector.
+This isolates traversal during asynchronous effect initialization as a sufficient
+cause of a loading freeze. Keep both guards from `7810e037` and `ce7dc4a9`.
+This RAM-only negative test does not identify the player's exact failure: the
+original save state and its matching executable were not available.
+
+Guardromon's first five techniques remain the original disc's Prominence Beam,
+Megaton Punch, Power Crane, All Range Beam and Full Potential. The battle's
+normal `usedMoves` collection records enemy techniques without excluding the
+service NPC or predefined encounters. Native learning still checks the partner's
+specialties, allowed techniques, existing knowledge and learning roll. No NPC
+flags, technique lists, battle outcomes or learning rules are changed.
+
+MegaGargomon learns Full Potential during the quick-off three-guard test with the
+normal learning chance: its previously cleared learned bit becomes set after the
+battle. A separate quick-off two-guard fixture leaves only All Range Beam unknown,
+equips known techniques, and sets that technique's primary-specialty learning
+chance to 100 in RAM. It also learns through the native post-battle code and
+returns to field control after the normal medal dialog. The guaranteed roll is
+only a test fixture; the shipped learning chances remain unchanged.

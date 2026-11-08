@@ -97,9 +97,11 @@ else
     skip species-lint-tests "needs generated species (DW_SELFTEST_DERIVE)"
 fi
 run species-off       $PY -W ignore tools/test_species_off.py              # JSON-only level, stats and path overrides
+run native-map-collision $PY tools/test_map_collision_edits.py
 run fi-info-clock     $PY tools/test_fi_info.py
 disc care-bubble-art $PY -m unittest tools.test_care_bubble_art tools.test_care_badge
 if [ -f "$PATCHED/src/main/mod_feed.c" ]; then
+    run buff-caps-host $PY tools/dev/playtest/buff_caps_host.py "$PATCHED"
     run merit-cards-host $PY tools/dev/playtest/merit_cards_host.py "$PATCHED"
     run care-badge-host $PY tools/dev/playtest/care_badge_host.py "$PATCHED"
     run hpmp-care-host $PY tools/dev/playtest/hpmp_care_host.py "$PATCHED"
@@ -198,16 +200,19 @@ disc story-build       $PY tools/dws.py story-build tools/dws/examples/dev-save.
 both dwstest-offline  $PY tools/dev/story_test.py offline
 run dw3-names        $PY tools/dw3_names_check.py                      # DW2003 imports named as the game names them (skips without $DW3_ROOT)
 run map-reach-policies $PY tools/test_reach_policies.py
+disc jungle-exit-body-box $PY -m unittest tools.test_trop02_exit
 run developer-contracts $PY tools/test_dev_contracts.py
 run presented-frame-video $PY tools/test_presented_frames.py
 run duckstation-protocol $PY -m unittest tools.test_duckstation_protocol
 if [ -f "$PATCHED/src/main/main.c" ]; then
     run fps-auto $PY tools/test_fps_auto.py "$PATCHED"
+    disc bone-interpolation-host $PY -W ignore tools/dev/playtest/bone_interpolation_host.py "$PATCHED" "$OUT/bone-interpolation"
     run options-save $PY tools/test_cheats.py "$PATCHED"
     run difficulty-hard-host $PY tools/dev/playtest/hard_host.py "$PATCHED"
     run world-menu-fit env WORLD_FIT_SOURCE="$PATCHED/src/main/map.c" $PY -m unittest tools.test_world_fit
 else
     skip fps-auto "needs prepared C tree (DW_SELFTEST_DECOMP)"
+    skip bone-interpolation-host "needs prepared C tree (DW_SELFTEST_DECOMP)"
     skip options-save "needs prepared C tree (DW_SELFTEST_DECOMP)"
     skip difficulty-hard-host "needs prepared C tree (DW_SELFTEST_DECOMP)"
 fi
@@ -219,12 +224,15 @@ run image-dependencies $PY -m unittest tools.test_no_pillow
 run numeric-replay    $PY -m unittest tools.test_arraymath tools.test_dcbplayer tools.test_texel
 run patcher-python-only $PY -m unittest tools.test_no_numpy
 run partner-species   $PY -W ignore -m unittest tools.test_partner_species
+disc bakemon-translation $PY -W ignore::ResourceWarning -m unittest tools.test_bakemon_translation
 run chinese-completeness $PY -m tools.chinese audit --layout
 run chinese-runtime-assets $PY -m unittest tools.test_chinese
 run dws-resource-tests $PY -W ignore -m unittest tools.test_dws_variants tools.test_dws_resources tools.test_dws_text_profiles tools.test_dws_bytecode tools.test_dws_text_sources tools.test_dws_story_testing tools.test_dws_spawns tools.test_dws_battle_moves
+run status-portraits $PY -W ignore -m unittest tools.test_status_portraits
 run partner-models $PY -W ignore -m unittest tools.test_partner_model_generators
 run model-meshes $PY -W ignore tools/test_meshcheck.py                    # no see-through model (Cherrymon's closed back)
 run model-apis $PY -W ignore -m unittest tools.test_model_provider tools.test_modeldelta tools.test_imported_model_edit tools.test_recordoriginals
+run sole-contacts $PY -m unittest tools.test_sole_contacts
 run model-tools-python $PY -m compileall -q tools/models
 run allocation-pools $PY -m unittest tools.test_allocation_pools
 run check-links       $PY tools/checkrefs.py

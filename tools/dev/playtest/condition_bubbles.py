@@ -26,7 +26,7 @@ from tools.dev.playtest.care_badge_pixels import capture as capture_badge_pixels
 def snapshot(e):
     ram = e.ram()
     fields = {'badge': ('MOD_RING_BADGE', 'i'),
-              'from': ('MOD_RING_FROM', '8i'), 'to': ('MOD_RING_TO', '8i'),
+              'from': ('MOD_RING_FROM', '9i'), 'to': ('MOD_RING_TO', '9i'),
               'shown': ('MOD_RING_SHOWN', '5i'), 'phase': ('MOD_RING_T', 'i'),
               'mode': ('MOD_STATUS_BUBBLES', 'i'), 'partner_state': ('PARTNER_STATE', 'b'),
               'care_rows': ('feedCount', 'i'), 'condition': ('PARTNER_PARA', 'I')}
@@ -174,7 +174,7 @@ def main():
             setup(e, cond, items, **kw)
             result['cases'][name] = snapshot(e)
             assert result['cases'][name]['condition'] == cond
-            assert sum(s != 0x10000 for s in result['cases'][name]['from']) == expected_bubbles(cond,kw)
+            assert sum(s != 0x10000 for s in result['cases'][name]['from']) == (expected_bubbles(cond,kw) + bool(kw.get('scold')))
             available = name not in ('healthy', 'hungry-no-food', 'sick-no-medicine')
             assert bool(result['cases'][name]['badge']) == available, name
             if a.pixels:

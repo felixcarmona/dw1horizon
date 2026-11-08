@@ -410,3 +410,9 @@ expand-evolution-choices-and-enforce-item-stages.patch
 compact-card-trade-list.patch
 keep-world-fit-in-field-menus.patch
 Add-HARD-single-player-difficulty.patch
+Show-depleted-native-HUD-icons-for-HP-and-MP-care-needs.patch
+versus-buff-stat-cap.patch
+Explain-pending-care-Scold-with-its-native-menu-icon-bubble.patch
+Use-the-partner-position-when-facing-the-toilet-exit.patch
+remap-imported-fallback-effect-origins.patch
+keep-bone-interpolation-in-nearest-euler-chart.patch

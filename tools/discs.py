@@ -97,32 +97,37 @@ SOURCE_DISCS = [
 IMPORT_GAMES = {'dcb': 'dcb', 'dw2': 'dw2', 'dw3': 'dw2003'}
 
 
-def species_counts():
+def species_counts(root=None):
     """How many of the imported species each source disc gives: {SOURCE_DISCS id: count}, summing to the species of
     content/modeldelta/models.json (the runtime manifest: what the player's build makes). A species' game is the one
     its importer output comes from, the way tools/derive/importers makes it: the recipe of import-batches.json whose
-    entry name is its source file's stem (the species may have been renamed since: Lighdramon's source is
-    Raidramon.MMD), or, for the four early partner imports, the key of the spec the importer loads (`dcb`: a card
+    complete output path matches its source file (different games may reuse a filename), or, for the four early
+    partner imports, the key of the spec the importer loads (`dcb`: a card
     model of Digital Card Battle, the mega WarGreymon included; `dw2`: a model of Digimon World 2)."""
     import json
-    root = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
+    root = os.fspath(root) if root is not None else os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
     base = os.path.join(root, 'content', 'modeldelta')
     models = json.load(open(os.path.join(base, 'models.json')))['models']
-    by_entry = {}
+    by_source = {}
     for r in json.load(open(os.path.join(base, 'import-batches.json')))['recipes']:
-        by_entry.setdefault(r['entry']['name'], set()).add(r['entry']['game'])
+        for ext in ('MMD', 'TIM'):
+            path = f"{r['out']}/{r['entry']['name']}.{ext}"
+            by_source.setdefault(path, set()).add(r['entry']['game'])
     # the partner imports: the same specs tools/derive/importers/__init__.py partner() loads
-    partners = {'Veemon': 'content/models/dcb-import/veemon.json', 'Puppetmon': 'content/models/dcb-import/puppetmon.json',
-                'Kimeramon': 'content/models/dcb-import/kimeramon-dw2.json', 'WarGreymon': 'content/models/mega/wargreymon-dcb.json'}
+    partners = {'build/dcb/Veemon': 'content/models/dcb-import/veemon.json',
+                'build/dcb/Puppetmon': 'content/models/dcb-import/puppetmon.json',
+                'build/dw2/Kimeramon': 'content/models/dcb-import/kimeramon-dw2.json',
+                'build/models/WarGreymon': 'content/models/mega/wargreymon-dcb.json'}
     for name, spec in partners.items():
         keys = json.load(open(os.path.join(root, spec))).keys()
-        by_entry.setdefault(name, set()).add('dw2' if 'dw2' in keys else 'dcb')
+        for ext in ('MMD', 'TIM'):
+            by_source.setdefault(name + '.' + ext, set()).add('dw2' if 'dw2' in keys else 'dcb')
     counts = {d['id']: 0 for d in SOURCE_DISCS}
     for m in models:
-        stems = {os.path.splitext(os.path.basename(s['path']))[0] for s in m['mmd']['sources'] + m['tim']['sources']}
-        games = set().union(*(by_entry.get(s, set()) for s in stems))
+        sources = {s['path'] for s in m['mmd']['sources'] + m['tim']['sources']}
+        games = set().union(*(by_source.get(s, set()) for s in sources))
         if len(games) != 1:
-            raise ValueError(f"species {m['id']} {m['name']}: its game is not clear from {sorted(stems)} ({sorted(games)})")
+            raise ValueError(f"species {m['id']} {m['name']}: its game is not clear from {sorted(sources)} ({sorted(games)})")
         counts[IMPORT_GAMES[games.pop()]] += 1
     assert sum(counts.values()) == len(models), counts
     return counts
