@@ -262,6 +262,9 @@ class Pages:
             rows+=f'<tr><th>{self.t("wiki.untimedUltimate")}</th><td>{facts["timing"]["hours"]["ultimate"]}</td></tr>'
             rows+=f'<tr><th>{self.t("wiki.timedMega")}</th><td>{facts["timing"].get("megaHours",120)}</td></tr>'
             return self.spoiler(f'<h2>{self.t("wiki.timing")}</h2><div class="table-wrap"><table>{rows}</table></div>')
+        if ident=='file-city':
+            rows=''.join(f'<tr><th>{i}</th><td>{escape(self.names["main.ITEM_NAMES."+str(give)])}</td><td>→</td><td>{escape(self.names["main.ITEM_NAMES."+str(take)])}</td></tr>' for i,(give,take) in enumerate(facts['mojyamon'],1))
+            return self.spoiler('<h2>'+escape(self.name(self.by_id[52]))+'</h2><div class="table-wrap"><table>'+rows+'</table></div>')
         if ident=='training':
             labels={'hp':'hp','mp':'mp','off':'offense','def':'defense','spd':'speed','brain':'brains'}
             entries=facts['training-gains']['trainGain']
@@ -303,7 +306,11 @@ class Pages:
         return ''
 
     def article_pages(self):
-        values=dict(bakemon_mechanic=self.bakemon_mechanic(),save_blocks=self.data['facts']['save_blocks'],pass_points=self.data['facts']['score']['passPoints'])
+        values=dict(bakemon_mechanic=self.bakemon_mechanic(),save_blocks=self.data['facts']['save_blocks'],pass_points=self.data['facts']['score']['passPoints'],
+                    mega_hours=self.data['facts']['timing']['megaHours'],
+                    chain_melon=self.names['main.ITEM_NAMES.70'],digiseabass=self.names['main.ITEM_NAMES.67'],
+                    chain_melon_hours=self.data['facts']['chain_melon_hours'],
+                    digiseabass_hours=self.data['facts']['digiseabass_hours'])
         for ident,article in self.articles.items():
             paras=[p.format(**values) for p in article['paragraphs']]
             if values['save_blocks']==1:

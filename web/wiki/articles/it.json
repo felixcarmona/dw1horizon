@@ -123,7 +123,7 @@
     "paragraphs": [
       "Le ore sotto sono nella forma attuale, non l’età totale. Soddisfare presto le statistiche non dà evoluzione immediata. Anche i percorsi Ultimate a tempo verificano i requisiti; speciali e oggetti hanno altri eventi.",
       "La scelta favorisce obiettivi mai allevati. Per Rookie–Champion e Champion–Ultimate con tre punti confronta medie richieste, HP/MP divisi per dieci; l’ordine può influire. In-Training–Rookie tiene il punteggio migliore e il primo pareggio.",
-      "Tocca l’obiettivo nell’albero. Tempo nella forma, eventi speciali, NEW DIGIMON e altri candidati influenzano il risultato. HP/MP sono in unità del giocatore; felicità usa la scala 0–100 dello stato."
+      "Per un’evoluzione a tempo da Evoluto a Mega, “pronto” nella finestra indica che il punteggio dei requisiti è sufficiente e il modello entra in memoria; l’attesa può non essere finita. I Mega importati richiedono anche {mega_hours} ore di gioco trascorse come Evoluto. Se la vita residua si esaurisce prima, il compagno muore di vecchiaia. {chain_melon} (Chain Melon) aggiunge {chain_melon_hours} ore di vita; {digiseabass} ne aggiunge {digiseabass_hours}. Aumentano la vita residua, non il tempo già trascorso nella forma attuale."
     ]
   },
   "learning-techniques": {
@@ -141,7 +141,7 @@
     "paragraphs": [
       "Il direttorio di reclutamento raccoglie residenti, luoghi, servizi e contributi alla prosperità in spoiler chiusi.",
       "I passaggi restano nascosti fino all’apertura degli spoiler. Gli orari seguono il gioco. Controlla luogo e prerequisiti: progressi della città, altri reclutamenti o eventi possono essere necessari.",
-      "I dettagli e le soluzioni di reclutamento sono in spoiler chiusi. Aprili quando vuoi conoscere la risposta."
+      "La tabella degli scambi di Mojyamon è nello spoiler chiuso qui sotto: le prime otto righe consentono un oggetto per giorno di gioco; la nona, una sola volta per salvataggio. Se il gioco mostra una lista diversa o vecchia, hai caricato uno stato dell’emulatore di una versione precedente. Avvia da zero il nuovo disco e carica invece il salvataggio della scheda di memoria. Prima fai una copia della scheda."
     ]
   },
   "hidden-mechanics": {

@@ -123,7 +123,7 @@
     "paragraphs": [
       "Les heures ci-dessous sont passées dans la forme actuelle, pas l’âge total. Remplir les statistiques tôt ne provoque pas d’évolution immédiate. Les voies Ultimate temporisées vérifient aussi les conditions ; objets et voies spéciales ont leurs propres déclencheurs.",
       "Le choix favorise une cible jamais élevée. Pour Rookie–Champion et Champion–Ultimate à trois points, il compare les moyennes requises, PV/PM divisés par dix ; l’ordre peut influer. In-Training–Rookie conserve le meilleur score et le premier en cas d’égalité.",
-      "Touchez la cible de l’arbre pour lire ses conditions. Temps dans la forme, déclencheurs spéciaux, NEW DIGIMON et autres candidats influencent le résultat. PV/PM utilisent les unités du joueur ; bonheur utilise l’échelle 0–100 du statut."
+      "Pour une évolution temporisée d’Ultime en Méga, « prêt » dans la fenêtre signifie que le score des conditions et la vérification de place du modèle sont satisfaits ; le délai peut encore courir. Les Mégas importés exigent aussi {mega_hours} heures de jeu passées en Ultime. Si sa durée de vie s’épuise avant, le partenaire meurt de vieillesse. {chain_melon} (Chain Melon) ajoute {chain_melon_hours} heures de vie ; {digiseabass} en ajoute {digiseabass_hours}. Ils prolongent la vie restante, pas le temps déjà passé dans la forme actuelle."
     ]
   },
   "learning-techniques": {
@@ -141,7 +141,7 @@
     "paragraphs": [
       "L’annuaire de recrutement regroupe habitants, lieux, services et contributions à la prospérité dans des spoilers repliés.",
       "Les étapes restent masquées jusqu’à l’ouverture du volet spoilers. Les horaires suivent l’horloge du jeu. Vérifiez lieu et prérequis : étape de la ville, autre recrue ou événement peuvent être nécessaires.",
-      "Les détails et solutions de recrutement sont dans des spoilers repliés. Ouvrez-les quand vous souhaitez connaître la réponse."
+      "Le tableau des échanges de Mojyamon se trouve dans le spoiler fermé ci-dessous : les huit premières lignes autorisent un objet par jour de jeu ; la neuvième, une seule fois par sauvegarde. Si votre jeu affiche une liste différente ou ancienne, vous avez chargé un état d’émulateur d’une ancienne version. Démarrez le nouveau disque à neuf et chargez plutôt la sauvegarde de la carte mémoire. Copiez d’abord la carte par précaution."
     ]
   },
   "hidden-mechanics": {

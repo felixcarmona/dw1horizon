@@ -72,6 +72,27 @@ def save_blocks(files):
     return count
 
 
+def article_facts(files):
+    """Bind authored timing, food effects and exchange rows to the selected disc."""
+    items = {item['id']: item for path, raw in files.items()
+             if path.startswith('content/items/') and path.endswith('.json')
+             for item in [json.loads(raw)]}
+    shops = read_json(files, 'content/tables/shops.json')
+    gives, takes = shops['mojyamonGives'], shops['mojyamonTakes']
+    if len(gives) != 12 or len(takes) != 12 or any(gives[9:]) or any(takes[9:]):
+        raise ValueError('Review changed Mojyamon exchange layout')
+    joined = '\n'.join(source for _, source in patch_sources(files))
+    for needle in ('evoRequirementPoints(met) >= evoPassPoints() && isPartnerModelFit(target)',
+                   'PARTNER_PARA.evoTimer < MOD_EVO_TIMING[MOD_EVO_MEGA]',
+                   'MAX_SHOP_AMOUNT = 1;',
+                   'isTriggerSet(trade == 8 ? 13 : MOJYA_DAILY_FIRST + trade)'):
+        if needle not in joined:
+            raise ValueError('Review changed article behavior: ' + needle)
+    return dict(chain_melon_hours=items[70]['effect']['lifetime'],
+                digiseabass_hours=items[67]['effect']['lifetime'],
+                mojyamon=list(zip(gives[:9], takes[:9])))
+
+
 def load(ref):
     commit, files = snapshot(ref)
     all_species = [json.loads(v) for k, v in sorted(files.items()) if k.startswith('content/species/') and k.endswith('.json')]
@@ -119,6 +140,7 @@ def load(ref):
                  score=rules['evolutionFormula']['score'], **tables)
     hard = tables['battle-formulas']['battleFormulas'].get('hard')
     facts['hard'] = hard
+    facts.update(article_facts(files))
     # Bind shared article claims to release source, not just a version string.
     patches = dict(patch_sources(files))
     joined = '\n'.join(patches.values())

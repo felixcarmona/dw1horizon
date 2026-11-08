@@ -123,7 +123,7 @@
     "paragraphs": [
       "As horas abaixo são na forma atual, não idade total. Cumprir os atributos cedo não causa evolução imediata. Rotas temporizadas Ultimate também verificam requisitos; especiais e itens têm outros gatilhos.",
       "O seletor favorece alvos ainda não criados. Entre Rookie–Champion e Champion–Ultimate com três pontos, compara médias dos atributos pedidos, dividindo HP/MP por dez; a ordem pode influir. In-Training–Rookie mantém a melhor pontuação e o primeiro empate.",
-      "Toque no alvo da árvore para abrir a linha. Tempo na forma, gatilhos especiais, NEW DIGIMON e candidatos concorrentes influenciam. HP e MP usam unidades do jogador; felicidade usa a escala 0–100 da tela de status."
+      "Na evolução por tempo de Perfeito para Mega, “pronto” na janela indica que a pontuação dos requisitos e a verificação de espaço do modelo passaram; não que a espera terminou. Megas importados também exigem {mega_hours} horas de jogo como Perfeito. Se a vida restante acabar antes, o parceiro morre de velhice. {chain_melon} (Chain Melon) acrescenta {chain_melon_hours} horas de vida; {digiseabass}, {digiseabass_hours}. Eles aumentam a vida restante, não o tempo já passado na forma atual."
     ]
   },
   "learning-techniques": {
@@ -141,7 +141,7 @@
     "paragraphs": [
       "O diretório de recrutamento reúne moradores, locais, serviços e contribuições para a prosperidade dentro de spoilers fechados.",
       "Os passos ficam ocultos até abrir o aviso de spoilers. Horários usam o relógio do jogo. Confira lugar e pré-requisitos: podem depender de um marco da cidade, outro recruta ou evento.",
-      "Detalhes e soluções de recrutamento ficam em spoilers fechados. Abra quando quiser ver a resposta."
+      "A tabela de trocas de Mojyamon está no spoiler fechado abaixo: as oito primeiras linhas permitem um item por dia de jogo; a nona, uma vez por save. Se a lista no seu jogo for diferente ou mostrar trocas antigas, você carregou um estado do emulador de uma versão anterior. Inicie o novo disco do zero e carregue o save do cartão de memória. Faça uma cópia do cartão antes."
     ]
   },
   "hidden-mechanics": {

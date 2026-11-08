@@ -51,7 +51,7 @@ Technique names use `main.MOVE_NAMES.<id>` from the deployed tag’s `text/ours/
 
 `web/wiki/articles/<language>.json` stores twenty articles per language as titles, summaries and paragraphs. This is structured, repository-authored content: it needs no Markdown parser, remote CMS or runtime translation service. The English draft and eight translations follow the existing AI-assisted website/changelog authoring approach. Spanish uses Spain Spanish. `review.json` pins the English and all localized source hashes; changing an article invalidates the build until translations are reviewed and those hashes are updated together. UI copy lives in `web/i18n/*.json`, with the existing key/variable parity check.
 
-Bindings `{save_blocks}`, `{pass_points}` and the capability-derived `{bakemon_mechanic}` resolve from the selected release. Training gains, difficulty factors, evolution timing, quiz points, actual localized opening questions/answers and both starter grids are generated from its data. Memory-card space resolves the primary file-creation expression and numeric constants in the active patch series. The original two-block primary creation is distinguished from its old one-block fallback; a later primary one-block patch changes the article fact. Unknown expressions fail for review instead of guessing. The runtime and data used by v0.0.7 were checked; a synthetic later one-block patch and current-main HARD data are regression cases.
+Bindings `{save_blocks}`, `{pass_points}` and the capability-derived `{bakemon_mechanic}` resolve from the selected release. `{mega_hours}`, `{chain_melon_hours}` and `{digiseabass_hours}` read the tagged evolution timing and item effects; `{chain_melon}` and `{digiseabass}` use its localized runtime item names. The folded Mojyamon table reads the tagged shop arrays (player input is `mojyamonGives`, reward is `mojyamonTakes`). Source assertions guard the popup verdict, Mega wait and exchange caps. Training gains, difficulty factors, evolution timing, quiz points, actual localized opening questions/answers and both starter grids are generated from its data. Memory-card space resolves the primary file-creation expression and numeric constants in the active patch series. The original two-block primary creation is distinguished from its old one-block fallback; a later primary one-block patch changes the article fact. Unknown expressions fail for review instead of guessing. The runtime and data used by v0.0.7 were checked; a synthetic later one-block patch and current-main HARD data are regression cases.
 
 | Articles | Sources and checked claims |
 | --- | --- |
@@ -71,6 +71,47 @@ Bindings `{save_blocks}`, `{pass_points}` and the capability-derived `{bakemon_m
 | Opening quiz | `new-game.json`, `text/<language>.json` named `name.quiz.*` keys, `story/new-game-quiz.dws`, `tools/starter_quiz.py`, and the starter-quiz runtime patches: seven questions, answer positions, sparse weights, tie order, 45 cells and NEW DIGIMON variants. The generated quiz tables and solution paragraphs are folded spoilers; named cemetery dialogue keys are resolved separately. |
 | Difficulty | Tagged `docs/mods/options.md`, EASY runtime patch and `battle-formulas.json`: EASY's damage/poison effects, limits and VS exclusion. v0.0.7 has no HARD; later HARD factors come from that release's table. |
 | FAQ | Players' guide and existing website storage/error messages; texture-cache investigation documented in `docs/investigations/item-bank-text.md` and the text-clear patches. The Android workaround is conditional, not a diagnosis of every text problem. Reports should include version/platform/renderer and exact trigger. |
+
+### v0.0.7 snapshot review
+
+All twenty records in each of the nine catalogs were checked against
+`git show v0.0.7:<source>` using the sources in the table above, and against
+`git log v0.0.7..origin/main` for player-facing changes. The snapshot keeps the
+working copy's setup, emulator, RAM/frame-rate, first-day, care, learning,
+evolution-requirement and FAQ guidance: these claims hold in the tag. Later
+animation, care-icon, collision, Filth moveset and Defense changes add no claims
+to these articles. Species, technique, route and recruitment facts remain tagged.
+
+Specific checks:
+
+- Memory cards: the tag's primary save creation needs two blocks; the later
+  one-block patch is absent. Both article sets bind the value.
+- Difficulty: the snapshot title and summary contain only EASY and NORMAL.
+  With no HARD data the builder emits no extra difficulty note. The working
+  title remains ready for the next release.
+- Hidden mechanics: the authored paragraph is a capability binding. v0.0.7
+  has no readable Bakemon-partner branch; its actual ghost-language dialogue
+  stays folded. The later translation is retained through capability detection.
+- Training and gym x5: the tag already has sequential awards, R2 selection,
+  care/time/lifetime costs, early stops, and separate Bonus Try. Later award
+  verification does not introduce a new player mechanic described here.
+- Quiz: seven questions, scoring/ties and both starter grids are already in the
+  tag; no quiz/training table changes occur in the compared range. Answer
+  paragraphs and generated tables remain folded.
+- Evolution timing: the modal-chart patch appends the readiness label after
+  `evoRequirementPoints(met) >= evoPassPoints() && isPartnerModelFit(target)`;
+  it does not test the timer there. The evolution runtime separately checks
+  `MOD_EVO_MEGA`, populated from `megaHours` (120). Tagged item effects give
+  Chain Melon 24 and Digiseabass 6 lifetime hours. Exhausted lifetime means
+  old-age death, as documented in the tagged partner reference.
+- City/exchanges: the tag's balance §6.1, shop arrays and daily/one-time patches
+  establish eight daily rows and the ninth once per save. The generated table
+  stays folded and reveals no group or recruitment solution in open text.
+  The save-state recovery follows the tagged player's update instructions.
+
+The two player-question paragraphs are translated in all nine working and
+released catalogs, including Spain Spanish. Each set has its own reviewed
+English and locale hashes; game dialogue remains verbatim from the tag.
 
 External references are authoring sources, not page dependencies. The delivered wiki loads no remote fonts, scripts, images, analytics or search service. BIOS and game files are never supplied by the wiki. Emulator/device walk-throughs were not run as part of this website implementation; the articles avoid device-certification claims.
 

@@ -1,0 +1,187 @@
+{
+  "getting-started": {
+    "title": "Primeros pasos en Horizon",
+    "summary": "Tus discos, el primer inicio y tu primera partida guardada.",
+    "paragraphs": [
+      "Crea Horizon a partir de tus discos compatibles de Digimon World, Digital Card Battle, Digimon World 2 y World 3/2003. La web o el parcheador de escritorio comprueban las ediciones. Los juegos adicionales aportan especies importadas; jugarás a Digimon World.",
+      "Mantén juntos el .bin y el .cue resultantes. Abre el .cue en el emulador y configura una BIOS extraída de tu PlayStation. Antes de empezar, elige el idioma y las opciones en la pantalla de título y comprueba la RAM y la CPU detectadas.",
+      "Asigna una tarjeta con {save_blocks} bloques libres. Guarda dentro del juego, reinicia y comprueba que Continuar carga la partida. Exporta una copia de la tarjeta antes de actualizar."
+    ]
+  },
+  "duckstation-desktop": {
+    "title": "DuckStation en ordenador",
+    "summary": "BIOS, archivos del juego, ajustes por juego y partidas.",
+    "paragraphs": [
+      "Configura tu propia BIOS de PlayStation en DuckStation. Añade la carpeta de Horizon, manteniendo el .cue junto a su .bin. Abre el .cue; si falta el .bin o cambia de nombre, la hoja de pistas no lo encontrará.",
+      "Usa los ajustes por juego de Horizon. Activa la RAM ampliada a 8 MB para jugar en chino simplificado. Para el renderizado automático a 60 fps, activa el control de velocidad de CPU y ponlo al 250 %. Los demás idiomas funcionan con 2 MB; la RAM no determina los fps.",
+      "Asigna una tarjeta con {save_blocks} bloques libres. Una tarjeta por juego evita compartir espacio. Si cambias el nombre del disco o actualizas Horizon, comprueba la tarjeta asignada y carga una partida del juego tras arrancar de nuevo."
+    ]
+  },
+  "duckstation-android": {
+    "title": "DuckStation en Android",
+    "summary": "BIOS, RAM, ajustes de CPU y tarjetas de memoria.",
+    "paragraphs": [
+      "Importa tu propia BIOS de PlayStation. Da a DuckStation acceso a la carpeta de Horizon, mantén juntos el .bin y el .cue y abre el .cue. Los permisos de almacenamiento de Android deben permitir leer esa carpeta.",
+      "Abre los ajustes por juego de Horizon. Busca la RAM ampliada a 8 MB, el control de velocidad de CPU y el porcentaje de overclock. El chino necesita 8 MB; el 250 % permite seleccionar 60 fps si el dispositivo mantiene el ritmo. Reinicia tras cambiar la RAM y comprueba la detección en el título. Los nombres y la disponibilidad varían según la versión del emulador.",
+      "En los ajustes de tarjetas de memoria, asigna una con {save_blocks} bloques libres. Una tarjeta por juego la separa de otros juegos. Exporta una copia. Después de actualizar, comprueba que sigue asignada la misma tarjeta, arranca el disco nuevo y carga la partida del juego.",
+      "Si en alguna versión de Android el texto queda superpuesto o no se borra, prueba a desactivar Enable Texture Cache y reinicia. Si persiste, incluye la versión de Horizon, la compilación de DuckStation, el renderizador, el idioma y una captura en el informe."
+    ]
+  },
+  "epsxe": {
+    "title": "Configurar ePSXe",
+    "summary": "BIOS, acceso a carpetas en Android y espacio de guardado.",
+    "paragraphs": [
+      "Configura una BIOS extraída de tu consola y la carpeta con los archivos de Horizon parcheados. Mantén juntos el .cue y el .bin. Si tu versión de Android exige una carpeta base de ePSXe, concédele acceso para que pueda guardar las tarjetas y los ajustes.",
+      "Comprueba la tarjeta asignada y deja {save_blocks} bloques libres. Prueba a guardar dentro del juego y a cargar con Continuar tras reiniciar antes de una sesión larga. Exporta una copia antes de cambiar el almacenamiento o actualizar.",
+      "No des por hecho que todas las versiones de ePSXe ofrecen RAM ampliada o controles equivalentes de CPU. Los ocho idiomas habituales funcionan con 2 MB. El chino necesita compatibilidad comprobada con 8 MB. Si el título no los detecta, utiliza otro idioma compatible u otro emulador."
+    ]
+  },
+  "retroarch": {
+    "title": "Configurar RetroArch",
+    "summary": "Elige un núcleo de PlayStation y revisa sus opciones.",
+    "paragraphs": [
+      "RetroArch es una interfaz: el núcleo elegido determina la BIOS, las tarjetas y las mejoras. Elige un núcleo de PlayStation, consulta su documentación oficial y coloca tu BIOS en la carpeta de sistema indicada. Carga el .cue de Horizon con su .bin presente.",
+      "Comprueba las opciones de tarjetas del núcleo y la carpeta de guardado. Deja {save_blocks} bloques libres, guarda dentro del juego, cierra el contenido correctamente y comprueba Continuar al abrirlo de nuevo. Haz una copia antes de cambiar de núcleo; los estados rápidos no son portables entre núcleos.",
+      "La RAM ampliada y las opciones de CPU dependen del núcleo y pueden no existir. Comprueba lo detectado en el título. Ocho idiomas funcionan con 2 MB; el chino necesita 8 MB. El avance rápido no equivale al overclock de la CPU emulada."
+    ]
+  },
+  "iphone-web": {
+    "title": "Jugar en un emulador web en iPhone",
+    "summary": "Comprueba la compatibilidad con PlayStation y protege tus partidas.",
+    "paragraphs": [
+      "La web de Horizon crea un disco; no ejecuta el juego. Necesitas otro emulador web de PlayStation, por ejemplo un sitio con el núcleo de PlayStation de EmulatorJS, que acepte tus archivos y tu BIOS. La compatibilidad con iPhone, el rendimiento y la exportación dependen del sitio y del navegador.",
+      "Comprueba los formatos admitidos antes de importar. Guarda el par .bin/.cue original y una copia de la BIOS fuera del almacenamiento del navegador. Verifica la exportación e importación de tarjetas y deja {save_blocks} bloques libres en la tarjeta emulada.",
+      "Antes de jugar mucho tiempo, prueba a guardar, cerrar la página y volver a cargar. Exporta la tarjeta después de jugar: borrar los datos de la web puede eliminar sus archivos. Usa un idioma habitual salvo que hayas verificado los 8 MB. No se certifica aquí ninguna combinación de navegador y emulador de iPhone."
+    ]
+  },
+  "memory-cards": {
+    "title": "Tarjetas de memoria, copias y actualizaciones",
+    "summary": "Espacio, tarjetas por juego y buenos hábitos al actualizar.",
+    "paragraphs": [
+      "Horizon necesita {save_blocks} bloques libres para una partida nueva de Horizon. Comprueba el espacio y la tarjeta asignada a la ranura. Con tarjetas por juego, un nombre de disco nuevo puede seleccionar otra tarjeta; asigna la anterior si desaparece Continuar.",
+      "Un estado rápido del emulador contiene el ejecutable anterior y posiciones del disco en caché. Para actualizar, copia la tarjeta, crea el disco nuevo, arráncalo desde cero y carga una partida guardada dentro del juego. No continúes en una versión nueva mediante un estado rápido antiguo.",
+      "Guarda copias fuera de la carpeta activa del emulador. Para cambiar de dispositivo, exporta la tarjeta, impórtala y comprueba Continuar. Formatear una tarjeta borra sus partidas; utiliza una tarjeta nueva o de repuesto para las pruebas."
+    ]
+  },
+  "ram-and-frame-rate": {
+    "title": "2 MB, chino y 60 fps",
+    "summary": "La RAM y la velocidad de CPU emulada tienen funciones distintas.",
+    "paragraphs": [
+      "Horizon funciona en una PlayStation original de 2 MB en ocho idiomas. El chino simplificado carga fuentes y un módulo de idioma por encima de los 2 MB y necesita 8 MB de RAM ampliada. Con 2 MB, el juego rechaza ese idioma y conserva el actual.",
+      "El renderizador selecciona 20 fps a velocidad normal y 60 fps con suficiente overclock; se recomienda el 250 %. La lógica y los controles siguen a 20 Hz. La RAM adicional no cambia los fps y no hay un selector de tasa de fotogramas dentro del juego.",
+      "Cambia la velocidad de CPU emulada, no el avance rápido. El título muestra los ajustes detectados para comprobar la configuración. El dispositivo debe poder mantener la emulación elegida. Reinicia tras cambiar la RAM."
+    ]
+  },
+  "first-day": {
+    "title": "El primer día con tu compañero",
+    "summary": "Una rutina sencilla para una nueva vida en Isla File.",
+    "paragraphs": [
+      "Elige a tu compañero con las preguntas de Jijimon. Familiarízate con los indicadores de cuidados, el inventario y los servicios cercanos antes de alejarte. Lleva objetos de curación y deja espacio para lo que encuentres.",
+      "Dale de comer cuando tenga hambre, busca un retrete cuando lo necesite y deja que duerma cuando le toque. Consulta su comida favorita y su horario de sueño en la ficha de la especie. No pases el día entrenando sin atender sus necesidades.",
+      "Prueba una sesión corta y revisa los cambios en estadísticas y cansancio. Explora, vuelve a la ciudad y guarda en la tarjeta. La evolución también depende de los cuidados y el peso: decide el objetivo antes de entrenar todas las estadísticas sin criterio."
+    ]
+  },
+  "care": {
+    "title": "Errores de cuidado y disciplina",
+    "summary": "Entiende los avisos antes de perseguir una estadística.",
+    "paragraphs": [
+      "El hambre, el retrete, el sueño y el cansancio son sistemas distintos. Ignorar el hambre o dejar que el compañero haga sus necesidades en el suelo puede sumar errores; la enfermedad y el agotamiento tienen sus propias consecuencias. Atiende los indicadores y consulta los cuidados con frecuencia.",
+      "Disciplina y felicidad son valores diferentes. Elogiar y regañar no los modifican igual, así que no resuelven cualquier problema indistintamente. También importan las preferencias de comida y el horario de sueño.",
+      "Las evoluciones pueden pedir un máximo o un mínimo de errores. Buscar muchos errores es una decisión para una evolución concreta, no una recomendación general. Los recuentos de la evolución normal corresponden a la forma actual; lee juntos los cuatro grupos."
+    ]
+  },
+  "training": {
+    "title": "Entrenar en el gimnasio",
+    "summary": "Equilibra las mejoras y las necesidades diarias.",
+    "paragraphs": [
+      "Cada gimnasio entrena una estadística. Los aumentos base de abajo son valores base; el resultado también depende del compañero, las mejoras, los objetos y el entrenamiento. La inteligencia tiene umbrales de aprendizaje propios, separados de las tiradas tras combatir.",
+      "Entrenar hace pasar el tiempo y consume comida, cansancio y vida. Comprueba el hambre, el retrete y el sueño antes de empezar. Seguir estando cansado puede penalizarte; una mejora mayor no es tiempo gratis.",
+      "El modo x5 aplica varias recompensas normales con comprobaciones de cuidados entre ellas. Usa x1 si quieres parar cerca de un objetivo de peso o de evolución. Descansa y atiende las necesidades antes de otro bloque."
+    ]
+  },
+  "gym-x5": {
+    "title": "Cómo funciona el gimnasio x5",
+    "summary": "Varias sesiones, con costes normales y paradas anticipadas.",
+    "paragraphs": [
+      "Durante una sesión, R2 cambia el bloque entre x1 y x5. Se reproduce la animación inicial y después se aplica cada recompensa en orden. No es un multiplicador por cinco sin costes de tiempo ni cuidados.",
+      "El bloque puede parar si una sesión deja al compañero con hambre, ganas de ir al retrete, sueño, cansancio o malestar; también comprueba la evolución, la vida restante y los mensajes del gimnasio. El resultado indica lo completado. No supongas que siempre fueron cinco sesiones.",
+      "Bonus Try es independiente de los bloques. Alimenta, descansa o atiende el motivo de parada antes de repetir. Si solo quieres una recompensa, selecciona x1 antes de confirmar la sesión en vez de confiar en una parada de emergencia."
+    ]
+  },
+  "evolution-requirements": {
+    "title": "Cómo funcionan los requisitos de evolución",
+    "summary": "Lee la ficha del objetivo y cuenta los cuatro grupos.",
+    "paragraphs": [
+      "La evolución normal puntúa cuatro grupos: errores, peso, estadísticas y bonificación. Un objetivo necesita {pass_points} puntos. Todos los umbrales de estadísticas forman un solo grupo; cumplir dos estadísticas no da dos puntos. Para objetivos Rookie se usa la estadística más alta.",
+      "El peso admite una banda alrededor del valor objetivo. Los errores pueden tener un mínimo o un máximo. Cualquiera de las condiciones de bonificación da ese punto; no son todas requisitos obligatorios independientes.",
+      "Pulsa un objetivo del árbol para leer sus requisitos. El tiempo en la forma actual, los desencadenantes especiales, NEW DIGIMON y otros candidatos afectan al resultado. Los umbrales de PV y PM usan las unidades del jugador; la felicidad usa la escala 0–100 del estado."
+    ]
+  },
+  "evolution-timing": {
+    "title": "Tiempos de evolución y candidatos",
+    "summary": "Los requisitos son solo una parte de la elección.",
+    "paragraphs": [
+      "Las horas de abajo cuentan desde la forma actual, no desde la edad total. Cumplir una fila pronto no provoca una evolución normal inmediata. Las rutas temporizadas de Ultimate también comprueban los requisitos; las especiales y por objeto tienen sus propios desencadenantes.",
+      "La selección normal favorece a quien aún no has criado. Entre candidatos Rookie a Champion y Champion a Ultimate con tres puntos, compara la media de las estadísticas requeridas, dividiendo PV y PM entre diez; el orden puede influir. De In-Training a Rookie conserva la mejor puntuación y el primer empate.",
+      "En una evolución de Perfecto a Mega por tiempo, «listo» en la ventana indica que se cumplen la puntuación de requisitos y la comprobación de que el modelo cabe; no que haya terminado la espera. Los Megas importados también exigen pasar {mega_hours} horas de juego como Perfecto. Si antes se agota la vida restante, el compañero muere de vejez. {chain_melon} (Chain Melon) añade {chain_melon_hours} horas de vida; {digiseabass}, {digiseabass_hours}. Amplían la vida restante, no el tiempo ya pasado en la forma actual."
+    ]
+  },
+  "learning-techniques": {
+    "title": "Aprender técnicas",
+    "summary": "Listas de especie, casillas de especialidad y tiradas.",
+    "paragraphs": [
+      "Que un enemigo ejecute una técnica normal la registra como candidata; no hace falta que alcance a tu compañero. Al terminar, debe figurar en la lista de la especie, coincidir con una especialidad y no estar aprendida. La primera casilla coincidente determina la tirada.",
+      "La inteligencia no cambia esa tirada de combate. Repetir la misma técnica no crea más tiradas. Si superan la prueba varias candidatas, se elige una al azar; el porcentaje no garantiza la recompensa final.",
+      "El entrenamiento de inteligencia sigue otras reglas. Las fichas muestran el coste base de PM antes de modificadores de estado e inteligencia; los remates no gastan PM. Los nombres repetidos conservan sus identificadores y una especie puede modificar su remate."
+    ]
+  },
+  "file-city": {
+    "title": "Ciudad File y sus habitantes",
+    "summary": "Servicios, prosperidad y requisitos de reclutamiento.",
+    "paragraphs": [
+      "El directorio de reclutamiento reúne habitantes, lugares, servicios y aportaciones a la prosperidad dentro de spoilers plegados.",
+      "Los pasos permanecen ocultos hasta abrir el aviso de spoilers. Las horas usan el reloj del juego. Comprueba los requisitos además del lugar: puede hacer falta un hito de ciudad, otro recluta o un suceso.",
+      "La tabla de intercambios de Mojyamon está en el spoiler cerrado de abajo: las ocho primeras filas permiten un objeto por día de juego; la novena, una sola vez por partida guardada. Si en tu juego aparece una lista distinta o antigua, has cargado un estado del emulador de una versión anterior. Arranca el disco nuevo desde cero y carga la partida de la tarjeta de memoria. Haz antes una copia de la tarjeta."
+    ]
+  },
+  "hidden-mechanics": {
+    "title": "Mecánicas ocultas de los compañeros",
+    "summary": "Mecánicas ocultas de los compañeros.",
+    "paragraphs": [
+      "{bakemon_mechanic}",
+      "Cada compañero tiene sus preferencias de comida y sueño. Las especialidades determinan qué técnicas aprende en combate. Una casilla vacía sigue contando al elegir la probabilidad, aunque el resumen no la muestre.",
+      "La guía de evolución del juego y el árbol de la wiki explican los objetivos. Las transformaciones especiales y los objetos tienen condiciones propias; una fila normal de estadísticas no describe todas las formas de obtener una especie."
+    ]
+  },
+  "new-game-quiz": {
+    "title": "Cuestionario inicial: puntos y compañeros",
+    "summary": "Las siete preguntas aportan a tres grupos de puntuación.",
+    "paragraphs": [
+      "La tabla muestra los puntos de cada posición de respuesta del cuestionario de Jijimon. Las posiciones siguen el orden del juego. Las puntuaciones eligen elemento, atributo y temperamento; esa combinación determina el compañero de la cuadrícula.",
+      "Gana la mayor puntuación de cada grupo. En empate se favorece la respuesta más reciente que lo apoye; si esa respuesta apoya a ambos, gana el primero del grupo. El orden es Combate, Fuego, Hielo, Naturaleza, Aire; Vacuna, Datos, Virus; Audaz, Tranquilo, Astuto.",
+      "Las columnas muestran NUEVOS DIGIMON activado y desactivado. Las respuestas, los puntos y la tabla de compañeros iniciales están en el spoiler de abajo."
+    ],
+    "spoiler_paragraphs": [
+      0,
+      1
+    ]
+  },
+  "difficulty": {
+    "title": "EASY y NORMAL",
+    "summary": "EASY y NORMAL.",
+    "paragraphs": [
+      "NORMAL usa las reglas habituales. EASY duplica el daño del compañero y divide entre dos el recibido, redondeando hacia arriba antes de los límites normales. También reduce a la mitad el veneno del compañero. Afecta a combates de campo y torneos individuales, no al VS de dos jugadores.",
+      "La dificultad no reescribe las estadísticas guardadas. El daño porcentual de los guiones sigue sus reglas. Elige la dificultad en las opciones del título y comprueba los ajustes disponibles.",
+      "Elige entre las dificultades de las opciones del título. Los ajustes de combate se muestran abajo y no cambian el crecimiento permanente del compañero."
+    ]
+  },
+  "faq": {
+    "title": "Preguntas frecuentes y problemas",
+    "summary": "Actualizaciones, partidas perdidas, parcheo lento e informes útiles.",
+    "paragraphs": [
+      "Si no aparece Continuar, comprueba la tarjeta asignada, sus bloques libres y el nombre del disco en las tarjetas por juego. Horizon necesita {save_blocks} bloques libres para una partida nueva. Haz una copia antes de actualizar, arranca el disco nuevo y carga la partida del juego.",
+      "Parchear en el móvil puede tardar. Ante errores de cuota, usa una ventana normal, libera espacio y repite; también puedes usar el parcheador de escritorio. Las comprobaciones son intencionadas: los discos adicionales aportan especies y una copia modificada o incompatible no coincidirá.",
+      "Si el texto se ve mal, anota versión del juego, disco base, idioma, compilación del emulador y ajustes gráficos. En versiones Android afectadas, prueba a desactivar Enable Texture Cache. Incluye el desencadenante exacto y una captura: el síntoma por sí solo no identifica la causa."
+    ]
+  }
+}

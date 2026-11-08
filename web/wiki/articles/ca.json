@@ -123,7 +123,7 @@
     "paragraphs": [
       "Les hores de sota són en la forma actual, no edat total. Complir aviat els atributs no provoca evolució immediata. Les rutes Ultimate temporitzades també comproven requisits; especials i objectes tenen altres desencadenants.",
       "La selecció afavoreix objectius mai criats. Per a Rookie–Champion i Champion–Ultimate amb tres punts compara mitjanes exigides, PV/PM dividits entre deu; l’ordre pot influir. In-Training–Rookie conserva la millor puntuació i el primer empat.",
-      "Toca l’objectiu de l’arbre. Temps en la forma, desencadenants especials, NEW DIGIMON i altres candidats influeixen. PV/PM són unitats del jugador; felicitat usa l’escala 0–100 de l’estat."
+      "En una evolució per temps d’Perfecte a Mega, «a punt» a la finestra indica que es compleixen la puntuació dels requisits i la comprovació que el model cap a la memòria; no que l’espera hagi acabat. Els Megas importats també exigeixen passar {mega_hours} hores de joc com a Perfecte. Si abans s’esgota la vida restant, el company mor de vellesa. {chain_melon} (Chain Melon) afegeix {chain_melon_hours} hores de vida; {digiseabass}, {digiseabass_hours}. Allarguen la vida restant, no el temps ja passat en la forma actual."
     ]
   },
   "learning-techniques": {
@@ -141,7 +141,7 @@
     "paragraphs": [
       "El directori de reclutament recull habitants, llocs, serveis i aportacions a la prosperitat dins d’espòilers plegats.",
       "Els passos queden ocults fins a obrir els espòilers. Les hores segueixen el joc. Comprova lloc i requisits: pot caldre progrés de ciutat, un altre recluta o un esdeveniment.",
-      "Els detalls i les solucions de reclutament són en espòilers plegats. Obre’ls quan vulguis veure la resposta."
+      "La taula d’intercanvis de Mojyamon és a l’espòiler tancat de sota: les vuit primeres files permeten un objecte per dia de joc; la novena, una sola vegada per partida desada. Si al joc apareix una llista diferent o antiga, has carregat un estat de l’emulador d’una versió anterior. Arrenca el disc nou de zero i carrega la partida de la targeta de memòria. Fes primer una còpia de la targeta."
     ]
   },
   "hidden-mechanics": {
