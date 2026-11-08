@@ -655,5 +655,22 @@
   "wiki.minimumDamagePercent": "Soglia danno nemico (%)",
   "wiki.bakemonGhost": "Bakemon parla una misteriosa lingua dei fantasmi. Apri lo spoiler qui sotto per leggere la conversazione e le risposte per reclutarlo.",
   "wiki.bakemonPartner": "Un partner Bakemon ti permette di capire Bakemon. La conversazione e le risposte per reclutarlo sono nello spoiler qui sotto.",
-  "wiki.whereToRecruit": "Dove reclutarlo"
+  "wiki.whereToRecruit": "Dove reclutarlo",
+  "wiki.whereLearn": "Dove impararla",
+  "wiki.canLearn": "Digimon che possono impararla",
+  "wiki.enemy": "Nemico",
+  "wiki.places": "Dove affrontarlo",
+  "wiki.noEnemy": "Nessun nemico insegna questa tecnica in questa versione.",
+  "wiki.notLearnable": "Le mosse finali e gli attacchi innati non si imparano osservando i nemici né allenando il Cervello.",
+  "wiki.arenaNoLearning": "Le battaglie nell’arena e nei tornei non insegnano tecniche.",
+  "wiki.availability": "La comparsa può dipendere anche dai progressi nella storia o dal caso.",
+  "wiki.counterSource": "Contrattacco reattivo: lascia che questo nemico risponda a un attacco in mischia mancato.",
+  "wiki.groupSource": "Richiede un altro nemico vivo in battaglia.",
+  "wiki.brainsGym": "Palestra del Cervello",
+  "wiki.brainsRule": "Supera una soglia di Cervello: {marks}. La palestra controlla la prima tecnica compatibile sconosciuta nell’ordine di ogni specialità, sceglie la candidata con il peso maggiore e tenta l’apprendimento con quella percentuale. Una soglia dei comandi ({orders}) superata nella stessa sessione ha la precedenza. L’apprendimento non è garantito.",
+  "wiki.brainsWeights": "Pesi di questa tecnica secondo la posizione della specialità: {weights}. Un peso nullo impedisce di impararla in quella posizione.",
+  "wiki.trainingOrder": "Ordine di allenamento",
+  "wiki.noBrains": "Questa tecnica non si può imparare allenando il Cervello.",
+  "wiki.aliasSource": "Usa",
+  "wiki.sharedUnlock": "Imparare una variante le sblocca entrambe. La forma attuale deve poter imparare la variante usata dal nemico o scelta dalla palestra."
 }

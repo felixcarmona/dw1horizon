@@ -655,5 +655,22 @@
   "wiki.minimumDamagePercent": "Gegner-Schadensuntergrenze (%)",
   "wiki.bakemonGhost": "Bakemon spricht eine geheimnisvolle Geistersprache. Im Spoiler unten stehen das Gespräch und die Antworten zur Rekrutierung.",
   "wiki.bakemonPartner": "Mit einem Bakemon als Partner kannst du Bakemons Sprache verstehen. Gespräch und Rekrutierungsantworten stehen im Spoiler unten.",
-  "wiki.whereToRecruit": "Rekrutierungsort"
+  "wiki.whereToRecruit": "Rekrutierungsort",
+  "wiki.whereLearn": "Wo du sie lernen kannst",
+  "wiki.canLearn": "Digimon, die sie lernen können",
+  "wiki.enemy": "Gegner",
+  "wiki.places": "Wo du gegen ihn kämpfst",
+  "wiki.noEnemy": "In dieser Version gibt es keine gegnerische Lernquelle.",
+  "wiki.notLearnable": "Finisher und angeborene Angriffe lassen sich weder durch Beobachten von Gegnern noch durch Intelligenztraining lernen.",
+  "wiki.arenaNoLearning": "Arena- und Turnierkämpfe lehren keine Techniken.",
+  "wiki.availability": "Das Auftauchen kann auch vom Fortschritt der Geschichte oder vom Zufall abhängen.",
+  "wiki.counterSource": "Reaktiver Konter: Lass diesen Gegner auf einen verfehlten Nahkampfangriff mit einem Konter reagieren.",
+  "wiki.groupSource": "Ein weiterer lebender Gegner muss am Kampf teilnehmen.",
+  "wiki.brainsGym": "Intelligenztraining",
+  "wiki.brainsRule": "Überschreite einen Intelligenz-Schwellenwert: {marks}. Das Training prüft die erste unbekannte, passende Technik in der Trainingsreihenfolge jeder Spezialität, wählt den Kandidaten mit dem höchsten Gewicht und würfelt mit diesem Prozentsatz. Ein in derselben Einheit überschrittener Befehlsschwellenwert ({orders}) hat Vorrang. Das Lernen ist nicht garantiert.",
+  "wiki.brainsWeights": "Gewichte dieser Technik nach Spezialitätsposition: {weights}. Bei Gewicht null kann sie an dieser Position nicht gelernt werden.",
+  "wiki.trainingOrder": "Trainingsreihenfolge",
+  "wiki.noBrains": "Diese Technik lässt sich nicht durch Intelligenztraining lernen.",
+  "wiki.aliasSource": "Verwendet",
+  "wiki.sharedUnlock": "Das Lernen einer Variante schaltet beide frei. Deine aktuelle Form muss die vom Gegner verwendete oder vom Training gewählte Variante lernen können."
 }

@@ -79,6 +79,21 @@ try{
             assert.match(await page.$eval('.recruit-record',e=>e.textContent),/Bosque Indígena/);
           }
         }
+        if(kind==='technique'){
+          assert.equal(await page.$eval('#learn h2',e=>e.textContent),strings['wiki.whereLearn']);
+          assert.ok(await page.$eval('#learn > .table-wrap',e=>e.checkVisibility()));
+          assert.ok(await page.$('#learn a[href$="/digimon/69-flarerizamon/"]'));
+          assert.ok(await page.$('#learn > .spoiler'));
+          assert.equal(await page.$eval('#learn > .spoiler table',e=>e.checkVisibility()),false);
+          assert.equal(await page.$$eval('#learn details[open]',es=>es.length),0);
+          assert.ok(await page.$eval('#learn',e=>e.textContent.includes('07:00–19:00')));
+          assert.ok((await page.$eval('.wiki-main',e=>e.textContent)).includes(strings['wiki.canLearn']));
+          if(shots&&['en','es'].includes(lang)&&view==='phone'){
+            await fs.mkdir(shots,{recursive:true});
+            await page.$eval('#learn',e=>e.scrollIntoView({block:'start'}));
+            await page.screenshot({path:path.join(shots,`${lang}-technique-phone.png`)});
+          }
+        }
         if(kind==='agumon'||kind==='tree'){
           await page.waitForSelector('.tree-edges g path');
           assert.equal(await page.$$eval('.tree-targets .tree-node',es=>es.length),6);

@@ -655,5 +655,22 @@
   "wiki.minimumDamagePercent": "敵ダメージ下限（%）",
   "wiki.bakemonGhost": "バケモンは不思議な幽霊の言葉で話します。下のネタバレを開くと、会話と街に招くための選択肢を確認できます。",
   "wiki.bakemonPartner": "パートナーがバケモンなら、バケモンの言葉が分かります。会話と街に招くための選択肢は、下のネタバレ内にあります。",
-  "wiki.whereToRecruit": "仲間にする場所"
+  "wiki.whereToRecruit": "仲間にする場所",
+  "wiki.whereLearn": "覚えられる場所",
+  "wiki.canLearn": "この技を覚えられるデジモン",
+  "wiki.enemy": "敵",
+  "wiki.places": "戦える場所",
+  "wiki.noEnemy": "このバージョンには、この技を覚えられる敵はいません。",
+  "wiki.notLearnable": "必殺技や固有攻撃は、敵の観察やかしこさのトレーニングでは覚えられません。",
+  "wiki.arenaNoLearning": "闘技場や大会の戦闘では技を覚えられません。",
+  "wiki.availability": "出現には物語の進行状況やランダム判定が関係する場合もあります。",
+  "wiki.counterSource": "反応型カウンター：近接攻撃を外して、この敵に反撃させてください。",
+  "wiki.groupSource": "戦闘中に別の敵が生きている必要があります。",
+  "wiki.brainsGym": "かしこさのトレーニング",
+  "wiki.brainsRule": "かしこさが次の値を下から越えると判定します：{marks}。各得意分野のトレーニング順で、習得可能な未習得技を最初に一つ選び、最も重みの高い候補をその確率で判定します。同じ回で命令のしきい値（{orders}）を越えた場合は命令が優先されます。必ず習得できるわけではありません。",
+  "wiki.brainsWeights": "この技の得意分野スロット別の重み：{weights}。重みが0のスロットでは習得できません。",
+  "wiki.trainingOrder": "トレーニング順",
+  "wiki.noBrains": "この技はかしこさのトレーニングでは覚えられません。",
+  "wiki.aliasSource": "使用技",
+  "wiki.sharedUnlock": "どちらかの種類を覚えると両方が解放されます。現在の姿が、敵の使う種類またはトレーニングで選ばれる種類を習得できる必要があります。"
 }
