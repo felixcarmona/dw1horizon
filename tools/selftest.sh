@@ -87,6 +87,7 @@ run technique-timing-tests $PY -m unittest tools.test_technique_timing
 run buster-dive-tests $PY -m unittest tools.test_buster_dive
 run patch-series-tests $PY tools/test_patch_series.py
 if [ -f "$PATCHED/src/main/main_menu.c" ]; then
+    run training-bonus-host $PY tools/dev/playtest/training_bonus_host.py "$PATCHED"
     run save-capacity $PY tools/dev/saves/capacity.py "$PATCHED"
     run save-inline $PY tools/dev/saves/inline.py "$PATCHED"
     run dirt-pile-collision $PY tools/dev/playtest/dirt_pile_collision.py "$PATCHED"

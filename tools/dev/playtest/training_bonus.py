@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-"""Play Bonus Try after normal and x5 training at every gym on a built disc.
+"""Play consecutive Bonus Tries after normal and x5 training at every gym.
 
 Care, starting stats and the screen are fixtures. Native dialogue selections,
 exercise setup, reels, awards, tally, script completion and field return execute
-real game code. The first exercise animation is skipped through pad input.
+real game code. Each case plays two bonuses without leaving the map, then
+reloads the field checkpoint after the first bonus and plays the second again.
+The first exercise animation is skipped through pad input.
 """
 
 import argparse
@@ -227,7 +229,19 @@ def run(args):
                     )
                 )
                 prepare(e, screen, prefix, gym, 1)
-                results.append(finish(e, out, name + "-bonus", prefix, True, 1))
+                results.append(finish(e, out, name + "-bonus-1", prefix, True, 1))
+                checkpoint = out / (name + "-after-first.state")
+                e.run("save", str(checkpoint))
+                prepare(e, screen, prefix, gym, 1)
+                second = finish(e, out, name + "-bonus-2", prefix, True, 1)
+                results.append(second)
+                e.run("load", str(checkpoint))
+                prepare(e, screen, prefix, gym, 1)
+                replay = finish(e, out, name + "-bonus-2-reloaded", prefix, True, 1)
+                results.append(replay)
+                # Wall-time-driven pad scheduling can change exact reel stops.
+                # Both runs must finish once; deterministic state equality is
+                # checked separately by training_bonus_host.py.
                 (out / "gym.json").write_text(json.dumps(results, indent=2) + "\n")
     except BaseException:
         e.run("shot", str(out / "gym-failure.png"), check=False)
