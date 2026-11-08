@@ -258,9 +258,12 @@ class Pages:
         if ident in ('getting-started','duckstation-desktop','duckstation-android','epsxe','retroarch','iphone-web','memory-cards','faq'):
             return f'<aside class="note">{self.t("wiki.saveBlocks",n=facts["save_blocks"])}</aside>'
         if ident=='evolution-timing':
-            rows=''.join(f'<tr><th>{self.t("digimon.level."+level)}</th><td>{hours}</td></tr>' for level,hours in facts['timing']['hours'].items() if level in model.guide.LEVELS and level!='ultimate')
-            rows+=f'<tr><th>{self.t("wiki.untimedUltimate")}</th><td>{facts["timing"]["hours"]["ultimate"]}</td></tr>'
-            rows+=f'<tr><th>{self.t("wiki.timedMega")}</th><td>{facts["timing"].get("megaHours",120)}</td></tr>'
+            # evolution-rules.json spells the level keys in camelCase (inTraining), the guide's level names use hyphens.
+            level_key=lambda key: re.sub(r'([A-Z])',lambda m:'-'+m.group(1).lower(),key)
+            rows=''.join(f'<tr><th>{self.t("digimon.level."+level_key(level))}</th><td>{hours}</td></tr>' for level,hours in facts['timing']['hours'].items() if level_key(level) in model.guide.LEVELS and level!='ultimate')
+            ultimate=self.t('digimon.level.ultimate')
+            rows+=f'<tr><th>{ultimate} → Machinedramon</th><td>{facts["timing"]["hours"]["ultimate"]}</td></tr>'
+            rows+=f'<tr><th>{ultimate} → {self.t("digimon.level.mega")}</th><td>{facts["timing"].get("megaHours",120)}</td></tr>'
             return self.spoiler(f'<h2>{self.t("wiki.timing")}</h2><div class="table-wrap"><table>{rows}</table></div>')
         if ident=='file-city':
             rows=''.join(f'<tr><th>{i}</th><td>{escape(self.names["main.ITEM_NAMES."+str(give)])}</td><td>→</td><td>{escape(self.names["main.ITEM_NAMES."+str(take)])}</td></tr>' for i,(give,take) in enumerate(facts['mojyamon'],1))
