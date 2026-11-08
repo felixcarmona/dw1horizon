@@ -71,7 +71,7 @@ for (const lang of LANGS) {
   const wrong = [...got.texts, ...got.attrs].filter(([k, v]) => v !== t[k]);
   ok(!wrong.length, `${lang}: every string is this language's (${got.texts.length + got.attrs.length})${wrong.length ? ': ' + wrong.slice(0, 3).map(([k, v]) => `${k}=${v}`).join('; ') : ''}`);
   ok(lang === 'en' || t['hero.title'] !== en['hero.title'], `${lang}: the title is translated: ${t['hero.title']}`);
-  const want = features.features.filter((f) => !f.hidden).map((f) => (f[lang] || f.en).title);
+  const want = features.features.filter((f) => !f.hidden && !['digimon','guide'].includes(f.id)).map((f) => (f[lang] || f.en).title);
   ok(got.cards.length === want.length && got.cards.every((c, i) => !want[i].includes('{') ? c === want[i] : !/\{/.test(c)),
      `${lang}: the cards are this language's: ${got.cards.find((c) => /\d/.test(c)) || got.cards[0]}`);
   ok(!got.braces, `${lang}: no {placeholder} left in the page`);

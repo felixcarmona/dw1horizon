@@ -532,3 +532,6 @@ section { padding-top: 120px; }
 
 /* Shared locally hosted font for the website and wiki. */
 @font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:200 800;font-display:swap;src:url("media/font/PlusJakartaSans.ttf") format("truetype")}
+
+.wiki-entry{display:block;margin:0 0 28px;padding:22px 26px;border:1px solid var(--line);border-radius:18px;background:#fff;font-size:1.15rem;font-weight:700;text-decoration:none;box-shadow:0 20px 50px -34px rgba(60,40,90,.35)}
+.wiki-entry:hover{background:var(--soft)}

@@ -37,8 +37,8 @@ for (const node of document.querySelectorAll('.tree-node:not(.tree-current)')) {
   });
 }
 function drawTree() {
-  const graph = document.querySelector('.evolution-tree');
-  if (!graph) return;
+  for (const graph of document.querySelectorAll('.evolution-tree')) {
+  if (!graph.getClientRects().length) continue;
   const bounds = graph.getBoundingClientRect();
   const svg = graph.querySelector('svg');
   svg.setAttribute('viewBox', `0 0 ${bounds.width} ${bounds.height}`);
@@ -61,13 +61,16 @@ function drawTree() {
         path.setAttribute('d',`M${startX} ${startY}H${bounds.width-12}V${by-18}H${bx}V${by-6}`);
       }else path.setAttribute('d',`M${ax} ${ay}C${ax} ${(ay+by)/2},${bx} ${(ay+by)/2},${bx} ${by-6}`);
     }else path.setAttribute('d',`M${x1} ${y1}C${mid} ${y1},${mid} ${y2},${x2-6} ${y2}`);
-    path.setAttribute('marker-end','url(#arrow)'); group.append(path);
+    path.setAttribute('marker-end',`url(#${svg.querySelector('marker').id})`); group.append(path);
   };
   for(const parent of graph.querySelectorAll('.tree-parents .tree-node')) connect(parent.getBoundingClientRect(),focus);
   for(const target of graph.querySelectorAll('.tree-targets .tree-node')) connect(focus,target.getBoundingClientRect(),true);
+  }
 }
 if (document.querySelector('.evolution-tree')) {
-  new ResizeObserver(drawTree).observe(document.querySelector('.evolution-tree'));
+  const observer=new ResizeObserver(drawTree);
+  for(const graph of document.querySelectorAll('.evolution-tree')) observer.observe(graph);
+  for(const spoiler of document.querySelectorAll('details')) spoiler.addEventListener('toggle',drawTree);
   await document.fonts.ready; drawTree();
 }
 if (config.kind === 'search') {
@@ -75,7 +78,7 @@ if (config.kind === 'search') {
   const params = new URLSearchParams(location.search);
   input.value = params.get('q') || '';
   let type = params.get('type') || 'all';
-  const entries = await fetch(config.base + 'search-index.json').then(r => {
+  const entries = await fetch(config.base + 'search-index.json', {cache:'no-cache'}).then(r => {
     if (!r.ok) throw new Error('Search index unavailable');
     return r.json();
   });
@@ -90,13 +93,16 @@ if (config.kind === 'search') {
       .sort((a,b)=>a.rank-b.rank||a.title.localeCompare(b.title,config.lang,{numeric:true}));
     document.querySelector('#search-count').textContent=config.strings['wiki.results'].replace('{n}',found.length);
     const results=document.querySelector('#search-results');results.replaceChildren();
+    const spoilers=document.createElement('details');spoilers.className='spoiler';
+    const spoilerLabel=document.createElement('summary');spoilerLabel.textContent=strings['wiki.spoilers'];spoilers.append(spoilerLabel);
     for(const entry of found){
       const a=document.createElement('a');a.className='result';a.href=entry.url;a.dataset.kind=entry.type;
       const label=document.createElement('span');label.className='eyebrow';label.textContent=strings[labels[entry.type]];
       const title=document.createElement('h2');title.textContent=entry.title+' ↗';
       const summary=document.createElement('p');summary.textContent=entry.summary||entry.text.slice(0,220);
-      a.append(label,title,summary);results.append(a);
+      a.append(label,title,summary);(entry.spoiler?spoilers:results).append(a);
     }
+    if(spoilers.children.length>1)results.append(spoilers);
     if(!found.length) results.textContent=config.strings['wiki.empty'];
     for(const b of document.querySelectorAll('[data-filter]')) b.setAttribute('aria-pressed',String(b.dataset.filter===type));
     const query=new URLSearchParams();if(input.value)query.set('q',input.value);if(type!=='all')query.set('type',type);
@@ -112,3 +118,12 @@ if(location.hash.startsWith('#recruit-')) {
   // A deep link moves to the record but never opens a spoiler without a tap.
   if(record) record.scrollIntoView();
 }
+
+// Fragment proxies prevent browsers from opening spoilers during navigation.
+// Once the reader opens a disclosure, move to its now-visible linked record.
+for(const spoiler of document.querySelectorAll('.spoiler')) spoiler.addEventListener('toggle',()=>{
+  if(!spoiler.open||!location.hash)return;
+  const key=decodeURIComponent(location.hash.slice(1));
+  const record=[...spoiler.querySelectorAll('[data-recruit],[data-spoiler-anchor]')].find(e=>e.dataset.recruit===key||e.dataset.spoilerAnchor===key);
+  if(record?.checkVisibility())record.scrollIntoView({block:'start'});
+});

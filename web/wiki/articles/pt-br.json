@@ -58,7 +58,7 @@
     "title": "Cartões, backups e atualizações",
     "summary": "Espaço, cartões por jogo e atualização segura.",
     "paragraphs": [
-      "Esta versão precisa de {save_blocks} blocos livres para um novo save. Confira o espaço e o cartão atribuído. Com cartões por jogo, renomear o disco pode selecionar outro cartão; atribua o antigo se Continuar desaparecer.",
+      "Horizon precisa de {save_blocks} blocos livres para um novo save. Confira o espaço e o cartão atribuído. Com cartões por jogo, renomear o disco pode selecionar outro cartão; atribua o antigo se Continuar desaparecer.",
       "Save states guardam o executável antigo e posições do disco em cache. Ao atualizar, faça backup do cartão, crie o disco novo, inicie do zero e carregue o save do jogo. Não continue a nova versão usando um estado antigo.",
       "Guarde backups fora da pasta ativa do emulador. Ao mudar de aparelho, exporte, importe e teste Continuar. Formatar apaga os saves; use um cartão novo ou reserva para testes."
     ]
@@ -94,7 +94,7 @@
     "title": "Treinamento na academia",
     "summary": "Equilibre ganhos com as necessidades diárias.",
     "paragraphs": [
-      "Cada academia treina um atributo. Os ganhos básicos abaixo vêm desta versão; parceiro, melhorias, itens e resultado do treino podem mudar o prêmio. Treinar inteligência tem limites de aprendizado próprios, separados da batalha.",
+      "Cada academia treina um atributo. Os ganhos básicos abaixo são valores básicos; parceiro, melhorias, itens e resultado do treino podem mudar o prêmio. Treinar inteligência tem limites de aprendizado próprios, separados da batalha.",
       "Treino avança o tempo e custa comida, cansaço e vida. Confira fome, banheiro e sono antes. Continuar cansado pode causar penalidades; um ganho maior não é tempo grátis.",
       "O x5 aplica várias recompensas comuns com verificações entre elas. Use x1 perto de metas de peso ou tempo de evolução. Descanse e cuide das necessidades antes de outro bloco."
     ]
@@ -123,7 +123,7 @@
     "paragraphs": [
       "As horas abaixo são na forma atual, não idade total. Cumprir os atributos cedo não causa evolução imediata. Rotas temporizadas Ultimate também verificam requisitos; especiais e itens têm outros gatilhos.",
       "O seletor favorece alvos ainda não criados. Entre Rookie–Champion e Champion–Ultimate com três pontos, compara médias dos atributos pedidos, dividindo HP/MP por dez; a ordem pode influir. In-Training–Rookie mantém a melhor pontuação e o primeiro empate.",
-      "A árvore mostra NEW DIGIMON ligado. Desligar muda os parceiros disponíveis. Use o tempo e os requisitos desta versão, não uma tabela original ou de outra versão."
+      "Toque no alvo da árvore para abrir a linha. Tempo na forma, gatilhos especiais, NEW DIGIMON e candidatos concorrentes influenciam. HP e MP usam unidades do jogador; felicidade usa a escala 0–100 da tela de status."
     ]
   },
   "learning-techniques": {
@@ -139,16 +139,16 @@
     "title": "File City e seus moradores",
     "summary": "Serviços, prosperidade e condições de recrutamento.",
     "paragraphs": [
-      "O diretório cobre os moradores da história estendida desta versão, com locais, funções e prosperidade. Criar um parceiro não conclui automaticamente a missão de recrutamento; siga as condições do morador.",
+      "O diretório de recrutamento reúne moradores, locais, serviços e contribuições para a prosperidade dentro de spoilers fechados.",
       "Os passos ficam ocultos até abrir o aviso de spoilers. Horários usam o relógio do jogo. Confira lugar e pré-requisitos: podem depender de um marco da cidade, outro recruta ou evento.",
-      "A página do Digimon inclui o recruta correspondente quando houver. Alguns encontros usam outro registro de espécie com mesmo nome; a lista de moradores é a referência. Bakemon só recebe uma dica da mecânica, nunca a conversa do cemitério ou solução."
+      "Detalhes e soluções de recrutamento ficam em spoilers fechados. Abra quando quiser ver a resposta."
     ]
   },
   "hidden-mechanics": {
     "title": "Mecânicas ocultas dos parceiros",
-    "summary": "Pequenas interações sem soluções de enigmas.",
+    "summary": "Mecânicas ocultas dos parceiros.",
     "paragraphs": [
-      "Um parceiro Bakemon permite entender a fala de Bakemon. O guia omite perguntas, respostas e diálogo do cemitério. Leve o parceiro e descubra a conversa.",
+      "{bakemon_mechanic}",
       "Cada parceiro tem preferências e sono próprios. Especialidades determinam técnicas aprendidas em batalha. Espaços vazios ainda contam na chance de aprendizado, embora o resumo não os mostre.",
       "O guia do jogo e a árvore ajudam a entender os alvos. Transformações especiais e itens têm condições próprias; a linha normal de atributos não descreve todas as formas de obter uma espécie."
     ]
@@ -159,16 +159,20 @@
     "paragraphs": [
       "A tabela mostra pontos por posição de resposta nas perguntas de Jijimon, na ordem do jogo. As pontuações escolhem elemento, atributo e temperamento; a combinação define o parceiro na grade.",
       "Vence a maior pontuação no grupo. Empates favorecem a resposta de apoio mais recente; se a mesma resposta apoiar ambos, vence o primeiro do grupo. Ordem: Luta, Fogo, Gelo, Natureza, Ar; Vacina, Dados, Vírus; Ousado, Calmo, Astuto.",
-      "As colunas mostram NEW DIGIMON ligado e desligado. Use a grade desta versão; o grupo expandido e células repetidas são intencionais. É o questionário inicial, não o enigma do cemitério."
+      "As colunas mostram NOVOS DIGIMON ligado e desligado. As respostas, os pontos e a tabela de parceiros iniciais estão no spoiler abaixo."
+    ],
+    "spoiler_paragraphs": [
+      0,
+      1
     ]
   },
   "difficulty": {
     "title": "EASY, NORMAL e HARD",
-    "summary": "A dificuldade depende da versão selecionada.",
+    "summary": "EASY, NORMAL e HARD.",
     "paragraphs": [
       "NORMAL usa regras comuns. EASY dobra dano causado e divide o recebido por dois, arredondando para cima antes dos limites. Também reduz o veneno no parceiro pela metade. Vale para campo e torneios individuais, não VS de dois jogadores.",
-      "A dificuldade não reescreve atributos salvos. Dano percentual de scripts segue regras próprias. Escolha no título e confira os valores desta versão.",
-      "Quando disponível, HARD mostra abaixo os ajustes de inimigos e dano desta versão. Não deduza recompensas ou crescimento permanente das barras ajustadas. Uma versão sem HARD informa isso aqui."
+      "A dificuldade não reescreve atributos salvos. Dano percentual de scripts segue regras próprias. Escolha no título e confira as opções disponíveis.",
+      "Escolha uma das dificuldades nas opções do título. Os ajustes de batalha aparecem abaixo e não alteram o crescimento permanente do parceiro."
     ]
   },
   "faq": {

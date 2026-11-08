@@ -58,8 +58,8 @@ class WikiTests(unittest.TestCase):
         spec=importlib.util.spec_from_file_location('wiki_budget',Path(__file__).with_name('build.py'))
         module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
         with tempfile.TemporaryDirectory() as tmp:
-            root=Path(tmp);(root/'wiki/en/v0.0.7').mkdir(parents=True)
-            (root/'wiki/en/v0.0.7/search-index.json').write_text('[]')
+            root=Path(tmp);(root/'wiki/en').mkdir(parents=True)
+            (root/'wiki/en/search-index.json').write_text('[]')
             with patch.object(module,'SITE_LIMIT',1):
                 with self.assertRaises(ValueError):module.budget(root)
             with patch.object(module,'INDEX_LIMIT',1):
@@ -106,9 +106,21 @@ class WikiTests(unittest.TestCase):
             self.assertEqual(len(articles),20)
             self.assertTrue(all(len(a['paragraphs'])>=3 for a in articles.values()))
             self.assertIn('{save_blocks}',articles['memory-cards']['paragraphs'][0])
-        row=next(r for r in self.data['recruits'] if r['name']=='Bakemon')
-        self.assertEqual(row['method'],'')
-        self.assertEqual(row['when'],'')
+    def test_bakemon_dialogue_comes_from_each_snapshot_and_language(self):
+        main=model.load('origin/main')
+        for lang in model.LANGS:
+            old=model.bakemon_dialogue(self.data['files'],lang)
+            new=model.bakemon_dialogue(main['files'],lang)
+            self.assertFalse(old['readable'])
+            self.assertTrue(new['readable'])
+            self.assertEqual([r['answer_key'] for r in new['rows']],['s035.sec5.m0.o0','s035.sec5.m1.o0','s035.sec5.m2.o1'])
+            self.assertEqual(new['rows'][0]['question_key'],'s035.sec5.u8')
+            self.assertNotEqual(old['rows'][0]['question'],new['rows'][0]['question'])
+        files=dict(main['files']);script='story/base/zones/overdell-cemetery/s035-35/script.dws'
+        files[script]=files[script].replace(b's035.sec5.u8',b's035.sec5.tmp').replace(b's035.sec5.u9',b's035.sec5.u8').replace(b's035.sec5.tmp',b's035.sec5.u9')
+        self.assertEqual(model.bakemon_dialogue(files,'en')['rows'][0]['question_key'],'s035.sec5.u9')
+        files=dict(main['files']);files['text/es/dialogue/overdell-cemetery.json']=b'{}'
+        with self.assertRaises(ValueError):model.bakemon_dialogue(files,'es')
 
 
 if __name__=='__main__':unittest.main()

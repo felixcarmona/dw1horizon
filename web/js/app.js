@@ -3,7 +3,7 @@ import { renderFeatureList } from './features.js';
 import { setupMaps, labels as mapLabels } from './maps.js';
 import { setupDesktop, renderDesktop, hasDesktop, visitorOS } from './desktop.js';
 import { inspect, checkFiles, partOf } from './disc.js';
-import { i18n, LANGS, NAMES, tag } from './i18n.js';
+import { i18n, LANGS, NAMES, tag, guess } from './i18n.js';
 import { FLAGS } from './flags.js';
 import { Build, missingSupport, tidyStorage, buildRoom, checkRoom, isMobile, withLock } from './engine/engine.js';
 import { store, revive } from './remember.js';
@@ -1124,7 +1124,7 @@ function renderBuild() {
 // ---------------------------------------------------------------- features
 
 function renderFeatures() {
-  renderFeatureList($('#feature-list'), features, i18n.lang, discLanguages());   // js/features.js
+  renderFeatureList($('#feature-list'), {...features, features:features.features.filter(f => !['digimon','guide'].includes(f.id))}, i18n.lang, discLanguages());   // js/features.js
 }
 
 // ---------------------------------------------------------------- start
@@ -1149,7 +1149,7 @@ function renderAll() {
   mapLabels();
   document.querySelector('.data-link').href = `wiki/${i18n.lang}/`;
   document.querySelector('.data-link').textContent = i18n.strings['wiki.nav'] || 'Wiki';
-  document.querySelector('#open-guide').href = `wiki/${i18n.lang}/?section=digimon`;
+  document.querySelector('#wiki-entry').href = `wiki/${i18n.lang}/`;
   renderDesktop();
 }
 
@@ -1215,3 +1215,11 @@ start();
   show();
   new MutationObserver(show).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
 })();
+
+// Preserve links to the retired main-page sections without opening spoilers.
+function redirectWikiAnchor() {
+  const section = {digimon:'digimon', evolutions:'evolutions', guide:'evolutions', 'feature-digimon':'digimon', 'feature-guide':'evolutions'}[location.hash.slice(1)];
+  if (section) location.replace(`wiki/${guess()}/${section}/`);
+}
+window.addEventListener('hashchange', redirectWikiAnchor);
+redirectWikiAnchor();

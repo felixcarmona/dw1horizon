@@ -58,7 +58,7 @@
     "title": "Speicherkarten, Sicherungen und Updates",
     "summary": "Platz, Karten pro Spiel und sichere Updates.",
     "paragraphs": [
-      "Diese Version braucht {save_blocks} freie Blöcke für einen neuen Spielstand. Prüfe Platz und zugewiesene Karte. Bei Karten pro Spiel kann ein neuer Discname eine andere Karte wählen; weise die alte zu, wenn Fortsetzen fehlt.",
+      "Horizon braucht {save_blocks} freie Blöcke für einen neuen Spielstand. Prüfe Platz und zugewiesene Karte. Bei Karten pro Spiel kann ein neuer Discname eine andere Karte wählen; weise die alte zu, wenn Fortsetzen fehlt.",
       "Speicherzustände enthalten das alte Programm und gepufferte Discpositionen. Sichere zum Update die Karte, erstelle die neue Disc, starte frisch und lade im Spiel. Nutze keinen alten Zustand zum Wechsel in die neue Version.",
       "Bewahre Sicherungen außerhalb des aktiven Ordners auf. Exportiere beim Gerätewechsel, importiere und teste Fortsetzen. Formatieren löscht Spielstände; nutze zum Testen eine neue oder freie Karte."
     ]
@@ -94,7 +94,7 @@
     "title": "Training im Fitnessstudio",
     "summary": "Zuwachs und tägliche Bedürfnisse ausgleichen.",
     "paragraphs": [
-      "Jedes Gerät trainiert einen Wert. Die Basiswerte unten stammen aus dieser Version; Partner, Verbesserungen, Gegenstände und Trainingsergebnis können sie verändern. Intelligenztraining hat eigene Lernschwellen, getrennt vom Kampf.",
+      "Jedes Gerät trainiert einen Wert. Die Basiswerte unten sind die Grundwerte; Partner, Verbesserungen, Gegenstände und Trainingsergebnis können sie verändern. Intelligenztraining hat eigene Lernschwellen, getrennt vom Kampf.",
       "Training verbraucht Zeit, Nahrung, Müdigkeit und Lebensdauer. Prüfe Hunger, Toilette und Schlaf vorher. Müde weiterzumachen kann Strafen auslösen; größere Zuwächse sind keine kostenlose Zeit.",
       "x5 vergibt mehrere normale Belohnungen mit Prüfungen dazwischen. Nutze x1 nahe Gewichts- oder Entwicklungszielen. Ruhe dich aus und erfülle Bedürfnisse vor einem neuen Block."
     ]
@@ -123,7 +123,7 @@
     "paragraphs": [
       "Die Stunden unten gelten in der aktuellen Form, nicht seit Geburt. Frühe Wertgrenzen lösen keine sofortige Entwicklung aus. Zeitrouten für Ultimate prüfen ebenfalls Voraussetzungen; Sonder- und Gegenstandsrouten haben eigene Auslöser.",
       "Die Auswahl bevorzugt noch nie aufgezogene Ziele. Für Rookie–Champion und Champion–Ultimate mit drei Punkten vergleicht sie geforderte Durchschnittswerte, HP/MP durch zehn; die Reihenfolge kann wirken. In-Training–Rookie behält die beste Punktzahl und den ersten Gleichstand.",
-      "Der Baum zeigt NEW DIGIMON an. Ausschalten ändert die Partnerauswahl. Nutze Daten dieser Version statt Originaltabellen oder anderer Horizon-Versionen."
+      "Tippe das Ziel im Baum an. Zeit in der Form, Sonderauslöser, NEW DIGIMON und weitere Kandidaten beeinflussen das Ergebnis. HP/MP stehen in Spielerwerten; Zufriedenheit nutzt die Statusskala 0–100."
     ]
   },
   "learning-techniques": {
@@ -139,16 +139,16 @@
     "title": "File City und Bewohner",
     "summary": "Dienste, Wohlstand und Rekrutierung.",
     "paragraphs": [
-      "Das Verzeichnis enthält die Bewohner der erweiterten Geschichte dieser Version mit Orten, Aufgaben und Wohlstand. Einen Partner aufzuziehen schließt seine Rekrutierungsquest nicht ab; beachte die Bewohnerbedingungen.",
+      "Das Rekrutierungsverzeichnis zeigt Bewohner, Orte, Dienste und Wohlstandsbeiträge in geschlossenen Spoilern.",
       "Schritte bleiben bis zum Öffnen des Spoilerbereichs verborgen. Zeiten folgen der Spieluhr. Prüfe Ort und Voraussetzungen wie Stadtfortschritt, andere Rekruten oder Ereignisse.",
-      "Die Digimon-Seite zeigt gegebenenfalls den Bewohner. Manche Begegnungen verwenden einen anderen Artdatensatz gleichen Namens; die Bewohnerliste ist maßgeblich. Bakemon erhält nur einen Mechanikhinweis, niemals Friedhofsgespräch oder Lösung."
+      "Rekrutierungsdetails und Lösungen stehen in geschlossenen Spoilern. Öffne sie, wenn du die Antwort sehen möchtest."
     ]
   },
   "hidden-mechanics": {
     "title": "Verborgene Partnermechaniken",
-    "summary": "Kleine Entdeckungen ohne Rätsellösungen.",
+    "summary": "Verborgene Partnermechaniken.",
     "paragraphs": [
-      "Ein Bakemon-Partner macht Bakemons Sprache verständlich. Fragen, Antworten und Dialog des Friedhofs fehlen absichtlich. Bring den passenden Partner und entdecke das Gespräch selbst.",
+      "{bakemon_mechanic}",
       "Partner haben eigene Essensvorlieben und Schlafzeiten. Spezialitäten bestimmen lernbare Kampftechniken. Leere Plätze zählen beim Lernwurf weiterhin, auch wenn die Zusammenfassung sie auslässt.",
       "Spielguide und Baum erläutern Ziele. Sonderverwandlungen und Gegenstände haben eigene Bedingungen; eine normale Wertezeile beschreibt nicht jeden Weg zu einer Art."
     ]
@@ -159,23 +159,27 @@
     "paragraphs": [
       "Die Tabelle zeigt Punkte je Antwortposition in Jijimons Quiz, in Spielreihenfolge. Punkte wählen Element, Attribut und Temperament; die Kombination bestimmt den Startpartner.",
       "Der höchste Gruppenwert gewinnt. Gleichstände bevorzugen die zuletzt unterstützende Antwort; unterstützt dieselbe Antwort beide, gewinnt der frühere Gruppeneintrag. Reihenfolge: Kampf, Feuer, Eis, Natur, Luft; Impfstoff, Daten, Virus; Mutig, Ruhig, Listig.",
-      "Die Spalten zeigen NEW DIGIMON an und aus. Erweiterter Pool und doppelte Felder sind beabsichtigt. Dies ist das Startquiz, keine Anleitung zum Friedhofsrätsel."
+      "Die Spalten gelten für NEUE DIGIMON ein und aus. Antworten, Punkte und Startpartner stehen im Spoiler unten."
+    ],
+    "spoiler_paragraphs": [
+      0,
+      1
     ]
   },
   "difficulty": {
     "title": "EASY, NORMAL und HARD",
-    "summary": "Die Auswahl hängt von der Spielversion ab.",
+    "summary": "EASY, NORMAL und HARD.",
     "paragraphs": [
       "NORMAL nutzt gewöhnliche Kampfregeln. EASY verdoppelt Partner-Schaden und halbiert erhaltenen Schaden, aufgerundet vor normalen Grenzen. Auch Partners Gift wird halbiert. Das gilt für Einzelspielerfeldkämpfe und Turniere, nicht Zwei-Spieler-VS.",
-      "Schwierigkeit schreibt gespeicherte Werte nicht um. Skript-Prozentschaden folgt eigenen Regeln. Wähle am Titel und prüfe die Optionen dieser Version.",
-      "Wenn HARD verfügbar ist, stehen seine Gegner- und Schadenswerte unten aus Versionsdaten. Leite Belohnungen und dauerhaftes Wachstum nicht aus skalierten Balken ab. Ältere Versionen ohne HARD weisen darauf hin."
+      "Schwierigkeit schreibt gespeicherte Werte nicht um. Skript-Prozentschaden folgt eigenen Regeln. Wähle am Titel und prüfe die verfügbaren Optionen.",
+      "Wähle eine Schwierigkeit in den Titeloptionen. Die Kampfanpassungen stehen unten und verändern das dauerhafte Wachstum des Partners nicht."
     ]
   },
   "faq": {
     "title": "Häufige Fragen und Fehlerhilfe",
     "summary": "Updates, Spielstände, langsames Patchen und gute Berichte.",
     "paragraphs": [
-      "Fehlt Fortsetzen, prüfe Karte, freie Blöcke und Discname bei Karten pro Spiel. Diese Version braucht {save_blocks} freie Blöcke für neue Spielstände. Sichere vor Updates und lade nach frischem Discstart im Spiel.",
+      "Fehlt Fortsetzen, prüfe Karte, freie Blöcke und Discname bei Karten pro Spiel. Horizon braucht {save_blocks} freie Blöcke für neue Spielstände. Sichere vor Updates und lade nach frischem Discstart im Spiel.",
       "Patchen am Telefon kann dauern. Bei Speicherquoten nutze ein normales Fenster, schaffe Platz und versuche erneut; alternativ nutze den Desktop-Patcher. Zusatzdiscs liefern Arten; veränderte oder nicht unterstützte Ausgaben bestehen die Prüfung nicht.",
       "Notiere bei Textfehlern Version, Basisdisc, Sprache, Emulator-Build und Grafik. Versuche bei betroffenen Android-Builds Enable Texture Cache auszuschalten. Nenne Auslöser und füge ein Bild bei; das Symptom allein erklärt die Ursache nicht."
     ]

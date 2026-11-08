@@ -1,45 +1,17 @@
 # Horizon player data
 
-The main website serves the guide at **`/data/`**, linked from its header.
-It uses `web/style.css`, the shared header, buttons, language menu and Plus
-Jakarta Sans. The guide vendors that font under its OFL license, so it needs
-no CDN, trackers, external fonts or third-party scripts.
+The production website now serves the unified wiki at `/wiki/<language>/`. `/data/` and its localized pages/anchors are redirects. See [wiki maintenance and spoiler rules](../../docs/wiki.md).
 
-Build the release guide with Python 3.10+ and Git (stdlib only):
+This directory retains shared readers, recruitment annotations, the local font and legacy standalone guide utilities. The production builder uses these readers through `tools/wiki/model.py`; `web/build.py --tag <release> --out <directory>` generates the latest-release wiki with presentation from the dispatching commit and game data from that tag. Run `web/test/wiki.mjs` for the production browser checks.
+
+The legacy standalone exporter remains useful for audits, with Python 3.10+ and Git:
 
 ```sh
 python3 tools/guide/build.py --ref v0.0.7
 python3 -m unittest discover -s tools/guide -p 'test_*.py'
 ```
 
-`tools/guide/out/` contains the generated guide. Serve it with a static server;
-its language menu uses ES modules and local JSON. Default data is the current
-release **v0.0.7**, read directly from Git, never uncommitted game content.
-An explicit `--ref COMMIT --version VERSION` selects a pinned source snapshot.
-The page shows the matching game version and source commit. Identical inputs
-produce identical bytes, without timestamps.
-
-Build the website presentation and guide together:
-
-```sh
-python3 web/build.py --tag v0.0.7 --out build/guide-site
-python3 -m http.server --directory build/guide-site
-```
-
-`web/build.py` preserves any validated engine and `data/discs.json` already
-in the destination. It overlays the website UI and generates `data/index.html`
-and the localized language pages from the requested tag. The **Release and Pages**
-workflow uses this same command with `RELEASE_TAG`, after validating the tag's package
-and engine. A dispatch from main with `tag=v0.0.7` therefore takes presentation
-code from main and player data from v0.0.7. Each later release regenerates its
-own guide automatically. This command alone does not deploy anything.
-
-Guide UI copy lives in `web/i18n/*.json` under `data.*`, translated into all nine
-website languages. Each catalog generates its own guide page. The existing
-`horizon.lang` preference and flag menu are shared. Game names stay unchanged.
-`web/test/data.mjs SITE [SHOTS]` checks the assembled route, release snapshot,
-theme, language switching/fallback, search/sort and phone layout in Chromium;
-it also runs in the publication workflow.
+It writes to `tools/guide/out/`; it is not deployed. Its older table UI and `web/test/data.mjs` are compatibility utilities, not the production wiki. Shared `data.*` UI copy remains in `web/i18n/*.json`. The wiki keeps the existing `horizon.lang` preference and hosts the shared font locally under its OFL license.
 
 ## Sources and rules
 
@@ -96,7 +68,4 @@ applies to every table; generated output never reads working game data.
 
 `test_recruits.py` checks exact roster coverage, prosperity, changed-script
 rejection, map HP deltas, names and every language. The ten-entry source review
-is recorded in [the recruit audit](recruit-audit.md). Browser checks in
-`web/test/data.mjs` exercise recruit filtering, sorting, empty results and all
-nine pages at desktop and phone sizes. With a screenshot directory they also
-capture recruit details and the phone table’s service columns.
+is recorded in [the recruit audit](recruit-audit.md). Production browser checks in `web/test/wiki.mjs` cover all nine languages and desktop/phone widths, closed recruitment spoilers and legacy redirects. The wiki derives Bakemon’s conversation from tagged localized text; the legacy annotation is not a dialogue source.

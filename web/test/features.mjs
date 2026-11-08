@@ -13,7 +13,8 @@ try {
   await page.goto(url,{waitUntil:'networkidle0'});await page.waitForSelector('#feature-maps-tour video');
   if(requests.length) throw Error('A long clip was fetched before its card was near the viewport');
   await page.setViewport({width:1280,height:900});
-  for(const id of ['maps-tour','digimon']) {
+  if(await page.$('#feature-digimon, #feature-guide')) throw Error('Retired wiki sections remain');
+  for(const id of ['maps-tour']) {
    const video=await page.$(`#feature-${id} video`);
    const initial=await video.evaluate(v=>({controls:v.controls,loop:v.loop,paused:v.paused,autoplay:v.autoplay,muted:v.muted}));
    if(!initial.controls||initial.loop||!initial.paused||initial.autoplay||!initial.muted) throw Error(JSON.stringify(initial));

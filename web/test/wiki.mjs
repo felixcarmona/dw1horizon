@@ -23,12 +23,14 @@ try{
     else if(offline)r.abort();else r.continue();
   });
   await page.goto(root+'/',{waitUntil:'networkidle0'});
+  assert.equal(await page.$('#feature-digimon, #feature-guide, #open-guide'),null);
+  assert.match(await page.$eval('#wiki-entry',e=>e.textContent),/Wiki/);
   assert.match(await page.$eval('.data-link',e=>e.getAttribute('href')),/^wiki\//);
   await page.click('.data-link');await page.waitForSelector('.wiki-main');
   const results=[];
   for(const lang of languages){
     const strings=JSON.parse(await fs.readFile(path.join(site,`i18n/${lang}.json`),'utf8'));
-    const base=`/wiki/${lang}/${manifest.tag}/`;
+    const base=`/wiki/${lang}/`;
     const pages=[['home',''],['digimon-list','digimon/'],['agumon','digimon/3-agumon/'],['tree','evolutions/'],['article','guides/duckstation-android/'],['search','search/?q=Agumon'],['techniques','techniques/'],['technique','techniques/2-spit-fire/'],['recruits','recruits/'],['articles','guides/']];
     for(const [view,width,height] of [['desktop',1440,1000],['phone',390,844]]){
       await page.setViewport({width,height});
@@ -39,7 +41,7 @@ try{
         assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`${lang} ${view} ${kind} overflow`);
         assert.equal(await page.evaluate(()=>document.fonts.check('500 16px "Plus Jakarta Sans"')),true);
         assert.equal(await page.$eval('#lang',e=>e.value),lang);
-        assert.ok((await page.$eval('.version',e=>e.textContent)).includes(manifest.tag.slice(1)));
+        assert.equal(await page.$('.version'),null);
         assert.equal(await page.$$eval('details[open]',es=>es.length),0,'spoilers folded');
         if(kind==='digimon-list'){
           assert.equal(await page.$$eval('.species-card',es=>es.length),manifest.counts.species);
@@ -64,6 +66,10 @@ try{
         if(kind==='search'){
           await page.waitForSelector('.result');
           assert.ok(await page.$('a.result[href$="/digimon/3-agumon/"]'));
+          const recruit=await page.$('a.result[data-kind="recruit"]');
+          assert.ok(recruit);assert.equal(await recruit.evaluate(e=>e.checkVisibility()),false);
+          await page.click('#search-results > .spoiler > summary');
+          assert.equal(await recruit.evaluate(e=>e.checkVisibility()),true);
           await page.click('[data-filter="technique"]');
           assert.equal(await page.$$eval('.result',es=>es.every(e=>e.dataset.kind==='technique')),true);
           await page.click('[data-filter="all"]');
@@ -89,15 +95,38 @@ try{
     for(const anchor of ['species-3','techniques','evolutions','recruits','recruit-3']){
       const legacy=lang==='en'?'/data/':`/data/${lang}.html`;
       await page.goto(root+legacy+'#'+anchor,{waitUntil:'load'});await page.waitForSelector('.wiki-main');
-      assert.ok(page.url().startsWith(root+base));
+      assert.ok(page.url().startsWith(root+base),`Expected ${base}; actual ${page.url()}`);
       if(anchor==='species-3')assert.equal(new URL(page.url()).pathname,base+'digimon/3-agumon/');
       if(anchor==='recruit-3')assert.equal(new URL(page.url()).hash,'#recruit-3');
+      assert.equal(await page.$$eval('details[open]',es=>es.length),0);
+    }
+    // Real localized cemetery text is rendered, but only after a deliberate spoiler tap.
+    await page.goto(root+base+'guides/hidden-mechanics/',{waitUntil:'load'});
+    assert.equal(await page.$$eval('.spoiler[open]',es=>es.length),0);
+    assert.equal(await page.$eval('.article-body table',e=>e.checkVisibility()),false);
+    assert.ok(await page.$eval('#step-0',e=>e.checkVisibility()));
+    await page.click('.article-body > .spoiler > summary');
+    assert.equal(await page.$$eval('.article-body table tbody tr',es=>es.length),3);
+    assert.ok(await page.$eval('.article-body table',e=>e.checkVisibility()));
+    await page.goto(root+base+'guides/new-game-quiz/',{waitUntil:'load'});
+    assert.equal(await page.$$eval('.article-body table',es=>es.every(e=>!e.checkVisibility())),true);
+    await page.goto(root+base+'digimon/116-analogman/#evolutions',{waitUntil:'load'});
+    assert.equal(await page.$eval('h1',e=>e.checkVisibility()),false);
+    await page.goto(root+base+'recruits/#recruit-37',{waitUntil:'load'});
+    assert.equal(await page.$$eval('.spoiler[open]',es=>es.length),0);
+    assert.equal(await page.$eval('[data-recruit="recruit-37"] h2',e=>e.checkVisibility()),false);
+    await page.click('.wiki-main > .spoiler > summary');
+    assert.ok(await page.$eval('[data-recruit="recruit-37"] h2',e=>e.checkVisibility()));
+    assert.equal(await page.$eval('[data-recruit="recruit-37"] table',e=>e.checkVisibility()),false);
+    for(const anchor of ['digimon','evolutions','feature-digimon','feature-guide']){
+      await page.goto(root+'/#'+anchor,{waitUntil:'load'});await page.waitForSelector('.wiki-main');
+      assert.ok(page.url().startsWith(root+base),`Expected ${base}; actual ${page.url()}`);
       assert.equal(await page.$$eval('details[open]',es=>es.length),0);
     }
     await page.goto(root+base+'guides/memory-cards/',{waitUntil:'load'});
     const next=languages[(languages.indexOf(lang)+1)%languages.length];
     await page.select('#lang',next);await page.waitForFunction(next=>document.documentElement.lang===next,{},next);
-    assert.ok(page.url().includes(`/wiki/${next}/${manifest.tag}/guides/memory-cards/`));
+    assert.ok(page.url().includes(`/wiki/${next}/guides/memory-cards/`));
   }
   assert.deepEqual(errors,[]);assert.deepEqual(missing,[]);assert.deepEqual(external,[]);
   if(shots)await fs.writeFile(path.join(shots,'browser-validation.json'),JSON.stringify({manifest,results,errors,missing,external},null,2));

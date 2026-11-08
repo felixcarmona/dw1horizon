@@ -58,7 +58,7 @@
     "title": "Memory cards, backups and updates",
     "summary": "Save space, per-game cards and safe update habits.",
     "paragraphs": [
-      "This release needs {save_blocks} free blocks for a new Horizon save. Check both free space and the card assigned to the slot. With per-game cards, a new disc filename can select a different card; assign the existing card explicitly if Continue disappears.",
+      "Horizon needs {save_blocks} free blocks for a new Horizon save. Check both free space and the card assigned to the slot. With per-game cards, a new disc filename can select a different card; assign the existing card explicitly if Continue disappears.",
       "An emulator save state holds the old executable and cached disc positions. To update, back up your memory card, build the new disc, boot it fresh and load an in-game save. Do not use an old save state to continue into a new release.",
       "Keep backups outside the emulator’s active save directory. Before moving to another device, export the card, import it on the new emulator and verify Continue. Formatting a card erases its saves; create or use a spare card instead when testing."
     ]
@@ -94,7 +94,7 @@
     "title": "Training at the gym",
     "summary": "Balance gains with the partner’s daily needs.",
     "paragraphs": [
-      "Each gym trains a particular stat. The base gains below come from this release; the final award can also depend on the partner, upgrades, items and the training result. Brains training has its own learning thresholds, separate from learning after a battle.",
+      "Each gym trains a particular stat. The base gains below are base values; the final award can also depend on the partner, upgrades, items and the training result. Brains training has its own learning thresholds, separate from learning after a battle.",
       "Training advances time and costs food, tiredness and lifetime. Check hunger, toilet and sleep before starting. Continuing while tired can carry penalties; a larger stat gain is not free time.",
       "Training x5 runs several ordinary awards with care checks between them. Use x1 when you need to stop near an evolution weight or timing target. Rest and meet care needs before another block."
     ]
@@ -123,7 +123,7 @@
     "paragraphs": [
       "The hours below are time spent in the current form, not the partner’s total age. Meeting a target’s stat row early does not make ordinary evolution immediate. Timed Ultimate routes also check the target requirements; special and item routes have different triggers.",
       "The normal picker favours a target you have not raised yet. For Rookie-to-Champion and Champion-to-Ultimate candidates scoring three, it compares required-stat averages with HP/MP divided by ten; list order can affect the comparison. In-Training-to-Rookie keeps the best score and the first listed target on a tie.",
-      "The tree shows NEW DIGIMON on routes. Turning it off changes the available partner pool. Use the displayed release’s timing and requirements rather than an original-game chart or a guide for another Horizon version."
+      "Open a target in the visual tree to read its row. Time in the current form, special triggers, NEW DIGIMON and competing candidates still affect the outcome. HP and MP thresholds are shown in player units. Happiness is shown on the status screen’s 0–100 scale."
     ]
   },
   "learning-techniques": {
@@ -139,16 +139,16 @@
     "title": "File City and recruiting residents",
     "summary": "Find services, prosperity and recruit prerequisites.",
     "paragraphs": [
-      "The recruits directory covers the selected release’s extended-story roster. Each record links its places, city role and prosperity contribution. Raising a partner does not automatically complete a recruitment quest; follow the resident’s own requirements.",
+      "The recruitment directory lists residents, locations, city services and prosperity contributions inside closed spoilers.",
       "Recruitment steps are hidden until you open the spoiler disclosure. Times use the game clock. Check prerequisites as well as the place; a resident may depend on a city milestone, another recruit or a story event.",
-      "The Digimon page includes the matching recruit record where applicable. Some story encounters use a distinct species record with the same name; the roster remains authoritative. The Bakemon record gives only a mechanic hint, never the cemetery conversation or its solution."
+      "Recruitment details and solutions are folded spoilers. Open them when you want the answer."
     ]
   },
   "hidden-mechanics": {
     "title": "Hidden partner mechanics",
-    "summary": "Small interactions worth noticing, without puzzle solutions.",
+    "summary": "Hidden partner mechanics.",
     "paragraphs": [
-      "A Bakemon partner lets you understand Bakemon’s speech. This guide deliberately leaves the cemetery questions, answers and dialogue out. Bring the relevant partner and discover the conversation yourself.",
+      "{bakemon_mechanic}",
       "Partners have individual food preferences and sleep cycles. Their specialties also control which techniques they can learn in battle. An empty specialty slot still counts when selecting the learning probability, even though the summary omits empty slots.",
       "The in-game evolution guide and the wiki’s tree help explain possible targets. Special transformations and item routes have separate conditions; a normal stat row alone does not describe every way a species can appear."
     ]
@@ -159,23 +159,27 @@
     "paragraphs": [
       "The table lists points for each answer position in Jijimon’s new-game quiz. Answer positions follow the order shown in the game. Scores select an element, an attribute and a temperament; the combination selects a starter from the grid below.",
       "The highest score wins within each group. Ties favour the most recent supporting answer; if that answer supports both tied choices, the earlier choice in the group wins. The order is Battle, Fire, Ice, Nature, Air; Vaccine, Data, Virus; Bold, Calm, Cunning.",
-      "The two starter columns show NEW DIGIMON on and off. Read the grid for this release; the expanded starter pool and repeated cells are intentional. This is the opening quiz, not a cemetery puzzle guide."
+      "The starter columns show NEW DIGIMON on and off. Quiz answers, scores and the starter grid are inside the spoiler below."
+    ],
+    "spoiler_paragraphs": [
+      0,
+      1
     ]
   },
   "difficulty": {
     "title": "EASY, NORMAL and HARD",
-    "summary": "Difficulty options depend on the selected release.",
+    "summary": "EASY, NORMAL and HARD.",
     "paragraphs": [
       "NORMAL uses the ordinary battle rules. EASY doubles the partner’s damage and halves damage received, rounding up before the usual limits. It also halves poison damage to the partner. These changes cover single-player field battles and tournaments, not two-player VS.",
-      "Difficulty does not rewrite the partner’s saved stats. Scripted percentage damage follows its own rules. Choose difficulty at the title’s options and check the values available in this release.",
-      "When HARD is available, its enemy scaling and damage settings appear below from that release’s data. Enemy rewards and permanent partner growth must not be inferred from scaled battle bars. An older release without HARD will say so here."
+      "Difficulty does not rewrite the partner’s saved stats. Scripted percentage damage follows its own rules. Choose difficulty at the title’s options and check the available settings.",
+      "Choose from the difficulty settings shown in the title options. Battle adjustments come from the game’s settings below; they do not change permanent partner growth."
     ]
   },
   "faq": {
     "title": "Player FAQ and troubleshooting",
     "summary": "Updates, missing saves, slow patching and useful reports.",
     "paragraphs": [
-      "If Continue is missing, check the assigned card, its free blocks and the disc filename used by per-game cards. This release needs {save_blocks} free blocks for a new save. Back up the card before updating, boot the new disc and load an in-game save.",
+      "If Continue is missing, check the assigned card, its free blocks and the disc filename used by per-game cards. Horizon needs {save_blocks} free blocks for a new save. Back up the card before updating, boot the new disc and load an in-game save.",
       "Phone patching can be slow. For storage quota errors, use a normal browser window, free space and retry; the desktop patcher is another option. The source-disc checks are intentional: the extra games provide imported species, and a modified or unsupported dump will not match.",
       "For broken or stale text, record your game version, base disc, language, emulator build and graphics settings. On affected Android builds, try disabling Enable Texture Cache. Include the exact trigger and a screenshot in a bug report; a symptom alone does not identify its cause."
     ]

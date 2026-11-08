@@ -58,7 +58,7 @@
     "title": "Targetes, còpies i actualitzacions",
     "summary": "Espai, targetes per joc i actualitzacions segures.",
     "paragraphs": [
-      "Aquesta versió necessita {save_blocks} blocs lliures per a una partida nova. Comprova espai i targeta assignada. Amb targetes per joc, canviar el nom del disc pot triar una altra targeta; assigna l’anterior si desapareix Continua.",
+      "Horizon necessita {save_blocks} blocs lliures per a una partida nova. Comprova espai i targeta assignada. Amb targetes per joc, canviar el nom del disc pot triar una altra targeta; assigna l’anterior si desapareix Continua.",
       "Un estat de l’emulador conté l’executable antic i posicions del disc en memòria cau. Per actualitzar, copia la targeta, crea el disc, arrenca de zero i carrega dins del joc. No passis de versió amb un estat antic.",
       "Guarda còpies fora de la carpeta activa. Per canviar de dispositiu, exporta, importa i prova Continua. Formatar esborra les partides; utilitza una targeta nova o de recanvi per fer proves."
     ]
@@ -94,7 +94,7 @@
     "title": "Entrenar al gimnàs",
     "summary": "Equilibra els guanys i les necessitats diàries.",
     "paragraphs": [
-      "Cada gimnàs entrena un atribut. Els augments base de sota són d’aquesta versió; company, millores, objectes i resultat poden canviar-los. La intel·ligència té llindars d’aprenentatge propis, separats del combat.",
+      "Cada gimnàs entrena un atribut. Els augments base de sota són valors base; company, millores, objectes i resultat poden canviar-los. La intel·ligència té llindars d’aprenentatge propis, separats del combat.",
       "Entrenar consumeix temps, menjar, cansament i vida. Comprova gana, lavabo i son abans. Continuar cansat pot penalitzar; més guany no és temps gratuït.",
       "x5 dona diverses recompenses normals amb comprovacions entre elles. Usa x1 prop d’objectius de pes o evolució. Descansa i atén les necessitats abans d’un altre bloc."
     ]
@@ -123,7 +123,7 @@
     "paragraphs": [
       "Les hores de sota són en la forma actual, no edat total. Complir aviat els atributs no provoca evolució immediata. Les rutes Ultimate temporitzades també comproven requisits; especials i objectes tenen altres desencadenants.",
       "La selecció afavoreix objectius mai criats. Per a Rookie–Champion i Champion–Ultimate amb tres punts compara mitjanes exigides, PV/PM dividits entre deu; l’ordre pot influir. In-Training–Rookie conserva la millor puntuació i el primer empat.",
-      "L’arbre mostra NEW DIGIMON activat. Desactivar-lo canvia els companys disponibles. Usa temps i requisits d’aquesta versió, no taules originals o d’altres Horizon."
+      "Toca l’objectiu de l’arbre. Temps en la forma, desencadenants especials, NEW DIGIMON i altres candidats influeixen. PV/PM són unitats del jugador; felicitat usa l’escala 0–100 de l’estat."
     ]
   },
   "learning-techniques": {
@@ -139,16 +139,16 @@
     "title": "File City i els habitants",
     "summary": "Serveis, prosperitat i requisits de reclutament.",
     "paragraphs": [
-      "El directori cobreix els habitants de la història ampliada d’aquesta versió, amb llocs, funcions i prosperitat. Criar un company no completa automàticament la missió; segueix els requisits de l’habitant.",
+      "El directori de reclutament recull habitants, llocs, serveis i aportacions a la prosperitat dins d’espòilers plegats.",
       "Els passos queden ocults fins a obrir els espòilers. Les hores segueixen el joc. Comprova lloc i requisits: pot caldre progrés de ciutat, un altre recluta o un esdeveniment.",
-      "La pàgina Digimon inclou el recluta quan correspon. Alguns encontres usen un altre registre amb el mateix nom; mana el llistat d’habitants. Bakemon només dona una pista mecànica, mai la conversa del cementiri o la solució."
+      "Els detalls i les solucions de reclutament són en espòilers plegats. Obre’ls quan vulguis veure la resposta."
     ]
   },
   "hidden-mechanics": {
     "title": "Mecàniques ocultes dels companys",
-    "summary": "Petites interaccions sense solucions d’enigmes.",
+    "summary": "Mecàniques ocultes dels companys.",
     "paragraphs": [
-      "Un company Bakemon permet entendre la parla de Bakemon. Les preguntes, respostes i diàlegs del cementiri queden fora. Porta el company adequat i descobreix la conversa.",
+      "{bakemon_mechanic}",
       "Cada company té menjar i son propis. Les especialitats determinen les tècniques apreses al combat. Les caselles buides continuen comptant en la tirada, tot i que el resum les ometi.",
       "La guia del joc i l’arbre expliquen els objectius. Transformacions especials i objectes tenen condicions pròpies; una fila normal no descriu totes les maneres d’obtenir una espècie."
     ]
@@ -159,16 +159,20 @@
     "paragraphs": [
       "La taula mostra punts per posició de resposta al qüestionari de Jijimon, en l’ordre del joc. Les puntuacions trien element, atribut i temperament; la combinació determina el company a la quadrícula.",
       "Guanya el màxim del grup. Els empats afavoreixen la resposta de suport més recent; si és la mateixa per als dos, guanya el primer del grup. Ordre: Combat, Foc, Gel, Natura, Aire; Vacuna, Dades, Virus; Agosarat, Calmat, Astut.",
-      "Les columnes mostren NEW DIGIMON activat i desactivat. Usa aquesta versió; grup ampliat i caselles repetides són intencionals. És el qüestionari inicial, no l’enigma del cementiri."
+      "Les columnes mostren NOUS DIGIMON activat i desactivat. Les respostes, els punts i la taula de companys inicials són a l’espòiler de sota."
+    ],
+    "spoiler_paragraphs": [
+      0,
+      1
     ]
   },
   "difficulty": {
     "title": "EASY, NORMAL i HARD",
-    "summary": "La dificultat depèn de la versió seleccionada.",
+    "summary": "EASY, NORMAL i HARD.",
     "paragraphs": [
       "NORMAL usa les regles habituals. EASY dobla el dany del company i divideix el rebut entre dos, arrodonit amunt abans dels límits. També redueix a la meitat el verí del company. Afecta camp i tornejos individuals, no VS de dos.",
-      "La dificultat no reescriu atributs desats. El dany percentual dels guions té regles pròpies. Tria al títol i comprova les opcions d’aquesta versió.",
-      "Si HARD existeix, sota apareixen els ajustos d’enemics i dany de la versió. No dedueixis recompenses ni creixement permanent de les barres ajustades. Una versió antiga sense HARD ho indica."
+      "La dificultat no reescriu atributs desats. El dany percentual dels guions té regles pròpies. Tria al títol i comprova les opcions disponibles.",
+      "Tria una dificultat a les opcions del títol. Els ajustos de combat es mostren a sota i no canvien el creixement permanent del company."
     ]
   },
   "faq": {

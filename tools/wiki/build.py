@@ -40,7 +40,7 @@ def budget(out):
     size = sum(p.stat().st_size for p in wiki.rglob('*') if p.is_file())
     if size > WIKI_LIMIT:
         raise ValueError('Wiki exceeds 64 MiB budget')
-    for index in wiki.glob('*/*/search-index.json'):
+    for index in wiki.glob('*/search-index.json'):
         if index.stat().st_size > INDEX_LIMIT:
             raise ValueError('Search index exceeds 400 KiB: ' + str(index))
     return dict(site_bytes=total, wiki_bytes=size)
@@ -49,7 +49,7 @@ def budget(out):
 class Pages:
     def __init__(self, out, data, lang, articles):
         self.out, self.data, self.lang, self.articles = out, data, lang, articles
-        self.base = f'/wiki/{lang}/{data["tag"]}/'
+        self.base = f'/wiki/{lang}/'
         self.asset_version = hashlib.sha256(b''.join(p.read_bytes() for p in [ROOT/'web/style.css', CONTENT/'style.css', CONTENT/'wiki.js'])).hexdigest()[:12]
         self.strings = json.loads((ROOT / f'web/i18n/{lang}.json').read_text())
         self.english = json.loads((ROOT / 'web/i18n/en.json').read_text())
@@ -78,7 +78,7 @@ class Pages:
         return self.base + f'techniques/{move["id"]}-{model.slug(move["name"])}/'
 
     def image(self, species, size=64):
-        return f'<img class="wiki-icon" src="/wiki/assets/icons/{species["id"]}.svg" width="{size}" height="{size}" loading="lazy" decoding="async" alt="{escape(self.name(species))}">'
+        return f'<img class="wiki-icon" src="/wiki/assets/icons/{species["id"]}.svg?v={self.data["commit"][:12]}" width="{size}" height="{size}" loading="lazy" decoding="async" alt="{escape(self.name(species))}">'
 
     def specs(self, species):
         return ' / '.join(self.t('data.' + x) for x in species['specialties'])
@@ -104,19 +104,37 @@ class Pages:
                       strings={key:self.strings[key] for key in ('wiki.results','wiki.empty','wiki.requirements','wiki.readGuide','digimon.count')},
                       records=self.records if kind in ('digimon','evolutions') else {})
         config_text = compact(config).replace('<', '\\u003c')
-        hreflang = ''.join(f'<link rel="alternate" hreflang="{lang}" href="/wiki/{lang}/{self.data["tag"]}/{path}">' for lang in model.LANGS)
+        hreflang = ''.join(f'<link rel="alternate" hreflang="{lang}" href="/wiki/{lang}/{path}">' for lang in model.LANGS)
         text = f'''<!doctype html>
 <html lang="{self.lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#cfd8f6"><title>{escape(title)} · Digimon World: Horizon</title><link rel="canonical" href="{self.base}{path}">{hreflang}<link rel="icon" href="/favicon.svg"><link rel="stylesheet" href="/style.css?v={self.asset_version}"><link rel="stylesheet" href="/wiki/assets/style.css?v={self.asset_version}"><script type="module" src="/wiki/assets/wiki.js?v={self.asset_version}"></script></head>
-<body class="wiki-page" data-page="{kind}"><a class="skip" href="#main">{self.t('wiki.contents')}</a><div class="wrap"><header class="bar"><a class="brand" href="/">Digimon World: Horizon</a><nav class="pill" aria-label="{self.t('wiki.nav')}"><a href="{self.base}">{self.t('wiki.nav')}</a><label class="lang"><select id="lang" aria-label="{self.t('lang.label')}">{language_menu}</select></label></nav></header><nav class="wiki-nav" aria-label="{self.t('wiki.nav')}">{nav}<span class="version">{self.t('wiki.version',version=self.data['tag'].removeprefix('v'))}</span></nav><main class="wiki-main" id="main">{body}</main><footer class="foot"><p>{self.t('footer.legal')}</p></footer></div><dialog id="wiki-requirements"><button type="button" class="dialog-close" aria-label="{self.t('digimon.close')}">×</button><div class="requirement-body"></div></dialog><script type="application/json" id="wiki-config">{config_text}</script></body></html>\n'''
+<body class="wiki-page" data-page="{kind}"><a class="skip" href="#main">{self.t('wiki.contents')}</a><div class="wrap"><header class="bar"><a class="brand" href="/">Digimon World: Horizon</a><nav class="pill" aria-label="{self.t('wiki.nav')}"><a href="{self.base}">{self.t('wiki.nav')}</a><label class="lang"><select id="lang" aria-label="{self.t('lang.label')}">{language_menu}</select></label></nav></header><nav class="wiki-nav" aria-label="{self.t('wiki.nav')}">{nav}</nav><main class="wiki-main" id="main">{body}</main><footer class="foot"><p>{self.t('footer.legal')}</p></footer></div><dialog id="wiki-requirements"><button type="button" class="dialog-close" aria-label="{self.t('digimon.close')}">×</button><div class="requirement-body"></div></dialog><script type="application/json" id="wiki-config">{config_text}</script></body></html>\n'''
         dest = self.out / (self.base.strip('/') + '/' + path) / 'index.html'
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(text)
         if record:
-            record['aliases']=record.get('aliases','')+' Horizon '+self.data['tag']
-            self.index.append(dict(title=title, url=self.base+path, **record))
+            record['aliases']=record.get('aliases','')+' Horizon'
+            self.index.append(dict(title=record.pop('title',title), url=self.base+path, **record))
 
     def article_card(self, ident, article):
         return f'<a class="card" href="{self.base}guides/{ident}/"><span class="eyebrow">{self.t("wiki.guideType")}</span><h2>{escape(article["title"])} ↗</h2><p>{escape(article["summary"])}</p></a>'
+
+    def spoiler(self, html):
+        return '<details class="spoiler"><summary>'+self.t('wiki.spoilers')+'</summary>'+html+'</details>'
+
+    def species_cards(self, species):
+        normal=''.join(self.card(s) for s in species if not s['spoiler'])
+        secret=''.join(self.card(s) for s in species if s['spoiler'])
+        return '<div class="species-grid">'+normal+'</div>'+(self.spoiler('<div class="species-grid">'+secret+'</div>') if secret else '')
+
+    def bakemon(self, fold=True):
+        conversation=model.bakemon_dialogue(self.data['files'],self.lang)
+        rows=''.join('<tr><td>'+escape(r['question'])+'</td><td>'+escape(r['answer'])+'</td></tr>' for r in conversation['rows'])
+        html='<div class="table-wrap"><table><thead><tr><th>'+self.t('wiki.question')+'</th><th>'+self.t('wiki.answer')+'</th></tr></thead><tbody>'+rows+'</tbody></table></div><p>'+escape(conversation['ending'])+'</p>'
+        return self.spoiler(html) if fold else html
+
+    def bakemon_mechanic(self):
+        readable=model.bakemon_dialogue(self.data['files'],self.lang)['readable']
+        return self.strings['wiki.bakemonPartner' if readable else 'wiki.bakemonGhost']
 
     def tree(self, species):
         self.records = {}
@@ -127,29 +145,35 @@ class Pages:
                 extra = '<br>' + self.t('digimon.after', hours=hours)
             self.records[str(s['id'])] = dict(name=self.name(s), html=self.req(s)+extra, url=self.url(s))
             return f'<a class="tree-node {"tree-current" if main else ""}" href="{self.url(s)}" data-species="{s["id"]}" {"aria-current=page" if main else ""}>{self.image(s,56)}<b>{escape(self.name(s))}</b><small>{self.t("digimon.level."+s["level"])}</small></a>'
-        parents = ''.join(node(self.by_id[i]) for i in species['parents']) or f'<p>{self.t("digimon.hatches" if species["level"]=="fresh" else "digimon.noRoute")}</p>'
-        targets = ''.join(node(self.by_id[i]) for i in species['to']) or f'<p>{self.t("digimon.noNext")}</p>'
-        fallback = ''.join(f'<li><a href="{self.url(self.by_id[i])}">{escape(self.name(self.by_id[i]))}</a></li>' for i in species['parents']+species['to'])
-        return f'<p>{self.t("wiki.treeHint")}</p><div class="tree-viewport" tabindex="0" role="region" aria-label="{self.t("data.evolutions")}"><div class="evolution-tree"><svg class="tree-edges" aria-hidden="true"><defs><marker id="arrow" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0L6 3L0 6" fill="none" stroke="currentColor"/></marker></defs><g></g></svg><div class="tree-column tree-parents">{parents}</div><div class="tree-column tree-focus">{node(species,True)}</div><div class="tree-column tree-targets">{targets}</div></div></div><noscript><ul>{fallback}</ul></noscript>'
+        def graph(parents, targets, suffix):
+            parent_html=''.join(node(self.by_id[i]) for i in parents) or f'<p>{self.t("digimon.hatches" if species["level"]=="fresh" else "digimon.noRoute")}</p>'
+            target_html=''.join(node(self.by_id[i]) for i in targets) or f'<p>{self.t("digimon.noNext")}</p>'
+            return f'<div class="tree-viewport" tabindex="0" role="region" aria-label="{self.t("data.evolutions")}"><div class="evolution-tree"><svg class="tree-edges" aria-hidden="true"><defs><marker id="arrow-{suffix}" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0L6 3L0 6" fill="none" stroke="currentColor"/></marker></defs><g></g></svg><div class="tree-column tree-parents">{parent_html}</div><div class="tree-column tree-focus">{node(species,True)}</div><div class="tree-column tree-targets">{target_html}</div></div></div>'
+        parents,targets=species['parents'],species['to']
+        normal=graph([i for i in parents if not self.by_id[i]['spoiler']], [i for i in targets if not self.by_id[i]['spoiler']], 'normal')
+        secrets=any(self.by_id[i]['spoiler'] for i in parents+targets)
+        extra=self.spoiler(graph(parents,targets,'spoiler')) if secrets else ''
+        return '<p>'+self.t('wiki.treeHint')+'</p>'+normal+extra
 
-    def recruit(self, row):
+    def recruit(self, row, identity_hidden=True):
         name = model.recruits.species_name(self.data['files'], row['name'], self.lang)
         places = ' · '.join(escape(self.places[i]) for i in row['screens'])
         service = self.t('data.recruit.service.' + row['service'])
-        if row['name'] == 'Bakemon':
-            method = self.articles['hidden-mechanics']['paragraphs'][0]
-            details = f'<p>{escape(method)}</p>'
-        else:
-            # Reviewed annotations are tied to this tag by recruits.load assertions.
-            details = f'<details><summary>{self.t("wiki.spoilers")}</summary><p>{self.t("data.recruit.when."+str(row["id"]))}</p><p>{self.t("data.recruit.method."+str(row["id"]))}</p>'
-            if row['hp'] is not None:
-                details += f'<p>{self.t("data.recruit.hp",n=row["hp"])}</p>'
-            if 'rematch_hp' in row:
-                details += f'<p>{self.t("data.recruit.rematchHp",n=row["rematch_hp"])}</p>'
-            details += '</details>'
-        partner = next((s for s in self.data['species'] if s['name']==row['name']),None)
-        heading = f'<a href="{self.url(partner)}">{escape(name)}</a>' if partner else escape(name)
-        return f'<section class="surface recruit-record" id="recruit-{row["id"]}"><h2>{heading}</h2><p>{places}</p><div class="chips"><span class="chip">{service}</span><span class="chip">+{row["points"]} {self.t("data.recruit.points")}</span></div>{details}</section>'
+        # Entire recruitment identity, location and solution are opt-in spoilers.
+        details=f'<p>{self.t("data.recruit.when."+str(row["id"]))}</p><p>{self.t("data.recruit.method."+str(row["id"]))}</p>'
+        if row['name']=='Bakemon':
+            details=self.bakemon(fold=False)
+        if row['hp'] is not None:
+            details+=f'<p>{self.t("data.recruit.hp",n=row["hp"])}</p>'
+        if 'rematch_hp' in row:
+            details+=f'<p>{self.t("data.recruit.rematchHp",n=row["rematch_hp"])}</p>'
+        partner=next((s for s in self.data['species'] if s['name']==row['name']),None)
+        heading=f'<a href="{self.url(partner)}">{escape(name)}</a>' if partner else escape(name)
+        identity=f'<h2>{heading}</h2><p>{places}</p><div class="chips"><span class="chip">{service}</span><span class="chip">+{row["points"]} {self.t("data.recruit.points")}</span></div>'
+        record=self.spoiler(identity+details) if identity_hidden else identity+self.spoiler(details)
+        anchor=f'id="recruit-{row["id"]}"' if identity_hidden else f'data-recruit="recruit-{row["id"]}"'
+        mechanic='<p>'+escape(self.bakemon_mechanic())+'</p>' if row['name']=='Bakemon' and identity_hidden else ''
+        return f'<section class="surface recruit-record" {anchor}>'+mechanic+record+'</section>'
 
     def species_pages(self):
         for species in self.data['species']:
@@ -171,10 +195,18 @@ class Pages:
             records = [self.recruit(r) for r in self.data['recruits'] if r['name']==species['name']]
             special = ''
             if species['special']:
-                special = '<p>'+translate(escape(species['special']),self.english,self.strings).strip()+'</p>'
+                special = self.spoiler('<p>'+translate(escape(species['special']),self.english,self.strings).strip()+'</p>')
             body = f'<div class="page-title partner-title">{self.image(species,144)}<div><span class="eyebrow">#{species["id"]:03d}</span><h1>{escape(name)}</h1><p>{self.label(species)}</p><div class="chips"><span class="chip">{self.specs(species)}</span></div></div></div><nav class="anchor-nav"><a href="#evolutions">{self.t("data.evolutions")}</a><a href="#techniques">{self.t("data.techniques")}</a><a href="#care">{self.t("wiki.care")}</a></nav><section class="surface" id="evolutions"><h2>{self.t("data.evolutions")}</h2>{tree}<details><summary>{self.t("wiki.requirements")}</summary><p>{self.req(species)}</p>{special}</details><p><a class="text-link" href="{self.base}guides/evolution-requirements/">{self.t("wiki.readGuide")} →</a></p></section><div class="detail-layout"><section class="surface" id="techniques"><h2>{self.t("data.techniques")}</h2>{move_table}<p class="muted">{self.t("wiki.slots")}</p><p class="muted">{self.t("data.costRule")}</p><a class="text-link" href="{self.base}guides/learning-techniques/">{self.t("wiki.readGuide")} →</a></section><aside>{care}{"".join(records)}</aside></div>'
-            self.page(f'digimon/{species["id"]}-{model.slug(species["name"])}/',name,body,'digimon',dict(type='digimon',text=plain(self.label(species)+' '+self.specs(species)),aliases=species['name']))
-            self.index.append(dict(type='evolution',title=name+' · '+plain(self.t('data.evolutions')),url=self.url(species)+'#evolutions',text=plain(self.req(species)),aliases=' '.join(self.by_id[i]['name'] for i in species['parents']+species['to'])+' Horizon '+self.data['tag']))
+            record=dict(type='digimon',text=plain(self.label(species)+' '+self.specs(species)),aliases=species['name'])
+            if species['spoiler']:
+                # Native fragment navigation opens closed details ancestors. Keep public targets outside.
+                anchors=re.findall(r' id="(evolutions|techniques|care|recruit-\d+)"',body)
+                body=re.sub(r' id="(evolutions|techniques|care|recruit-\d+)"',r' data-spoiler-anchor="\1"',body)
+                body=''.join('<span id="'+a+'" class="spoiler-anchor"></span>' for a in anchors)+self.spoiler(body)
+                record.update(spoiler=True,title=name)
+            self.page(f'digimon/{species["id"]}-{model.slug(species["name"])}/',plain(self.t('wiki.spoilers')) if species['spoiler'] else name,body,'digimon',record)
+            if species['spoiler']:continue
+            self.index.append(dict(type='evolution',title=name+' · '+plain(self.t('data.evolutions')),url=self.url(species)+'#evolutions',text=plain(self.req(species)),aliases=' '.join(self.by_id[i]['name'] for i in species['parents']+species['to'] if not self.by_id[i]['spoiler'])+' Horizon'))
 
     def technique_pages(self):
         cards=[]
@@ -186,9 +218,9 @@ class Pages:
             status_key={0:None,1:'poison',2:'confusion',3:'stun',4:'flatten'}.get(move['status'])
             status=self.t('data.'+status_key)+f' ({move["statusChance"]}%)' if status_key else '—'
             stats=f'<dl class="facts"><dt>{self.t("data.range")}</dt><dd>{self.t("data."+range_key)}</dd><dt>{self.t("data.status")}</dt><dd>{status}</dd><dt>{self.t("data.specialty")}</dt><dd>{self.t("data."+str(move["element"] if isinstance(move["element"],str) else "other"))}</dd><dt>{self.t("data.power")}</dt><dd>{move["power"]}</dd><dt>{self.t("data.mp")}</dt><dd>{move["baseMP"]}</dd><dt>{self.t("wiki.learning")}</dt><dd>{chance}</dd></dl>'
-            body=f'<div class="page-title"><span class="eyebrow">{self.t("data.technique")} #{ident}</span><h1>{escape(move["name"])}</h1></div><section class="surface">{stats}<p>{self.t("data.learningRule")}</p><p>{self.t("data.brainsRule")} {self.t("data.oneRule")}</p><p>{self.t("data.costRule")}</p></section><h2>{self.t("data.recruit.digimon")}</h2><div class="species-grid">'+''.join(self.card(s) for s in species)+'</div>'
+            body=f'<div class="page-title"><span class="eyebrow">{self.t("data.technique")} #{ident}</span><h1>{escape(move["name"])}</h1></div><section class="surface">{stats}<p>{self.t("data.learningRule")}</p><p>{self.t("data.brainsRule")} {self.t("data.oneRule")}</p><p>{self.t("data.costRule")}</p></section><h2>{self.t("data.recruit.digimon")}</h2>'+self.species_cards(species)
             path=f'techniques/{ident}-{model.slug(move["name"])}/'
-            self.page(path,move['name']+' #'+str(ident),body,'technique',dict(type='technique',text=plain(self.t('data.'+str(move['element'] if isinstance(move['element'],str) else 'other')))+' · '+str(move['power']),aliases=' '.join(s['name'] for s in species)))
+            self.page(path,move['name']+' #'+str(ident),body,'technique',dict(type='technique',text=plain(self.t('data.'+str(move['element'] if isinstance(move['element'],str) else 'other')))+' · '+str(move['power']),aliases=' '.join(s['name'] for s in species if not s['spoiler'])))
             cards.append(f'<a class="card" href="{self.move_url(move)}"><h2>{escape(move["name"])}</h2><small>#{ident}</small><p>{self.t("data."+str(move["element"] if isinstance(move["element"],str) else "other"))} · {self.t("data.power")} {move["power"]} · MP {move["baseMP"]}</p></a>')
         self.page('techniques/',plain(self.t('data.techniques')),f'<div class="page-title"><h1>{self.t("data.techniques")}</h1></div>{self.search_form()}<div class="cards">'+''.join(cards)+'</div>','techniques')
 
@@ -200,7 +232,7 @@ class Pages:
             rows=''.join(f'<tr><th>{self.t("digimon.level."+level)}</th><td>{hours}</td></tr>' for level,hours in facts['timing']['hours'].items() if level in model.guide.LEVELS and level!='ultimate')
             rows+=f'<tr><th>{self.t("wiki.untimedUltimate")}</th><td>{facts["timing"]["hours"]["ultimate"]}</td></tr>'
             rows+=f'<tr><th>{self.t("wiki.timedMega")}</th><td>{facts["timing"].get("megaHours",120)}</td></tr>'
-            return f'<h2>{self.t("wiki.timing")}</h2><div class="table-wrap"><table>{rows}</table></div>'
+            return self.spoiler(f'<h2>{self.t("wiki.timing")}</h2><div class="table-wrap"><table>{rows}</table></div>')
         if ident=='training':
             labels={'hp':'hp','mp':'mp','off':'offense','def':'defense','spd':'speed','brain':'brains'}
             entries=facts['training-gains']['trainGain']
@@ -242,7 +274,7 @@ class Pages:
         return ''
 
     def article_pages(self):
-        values=dict(save_blocks=self.data['facts']['save_blocks'],pass_points=self.data['facts']['score']['passPoints'])
+        values=dict(bakemon_mechanic=self.bakemon_mechanic(),save_blocks=self.data['facts']['save_blocks'],pass_points=self.data['facts']['score']['passPoints'])
         for ident,article in self.articles.items():
             paras=[p.format(**values) for p in article['paragraphs']]
             if values['save_blocks']==1:
@@ -251,24 +283,24 @@ class Pages:
                     paras=[p.replace(plural,one) for p in paras]
             heading_keys=['wiki.before','wiki.settings','wiki.memoryCards','wiki.troubleshooting'] if ident=='duckstation-android' else ['wiki.basics','wiki.how','wiki.remember']
             toc=''.join(f'<a href="#step-{i}">{self.t(heading_keys[i])}</a>' for i in range(len(paras)))
-            body=f'<div class="page-title"><span class="eyebrow">{self.t("wiki.guideType")}</span><h1>{escape(article["title"])}</h1><p>{escape(article["summary"])}</p></div><div class="article-layout"><nav class="toc" aria-label="{self.t("wiki.contents")}"><b>{self.t("wiki.contents")}</b>{toc}<a href="#related">{self.t("wiki.related")}</a></nav><article class="surface article-body">'+''.join(f'<section id="step-{i}"><h2>{self.t(heading_keys[i])}</h2><p>{escape(p)}</p></section>' for i,p in enumerate(paras))+self.fact_block(ident)+f'<h2 id="related">{self.t("wiki.related")}</h2><a class="text-link" href="{self.base}guides/">{self.t("wiki.articles")} →</a></article></div>'
-            self.page(f'guides/{ident}/',article['title'],body,'article',dict(type='article',text=' '.join(paras),summary=article['summary'],aliases=ident.replace('-',' ')))
+            body=f'<div class="page-title"><span class="eyebrow">{self.t("wiki.guideType")}</span><h1>{escape(article["title"])}</h1><p>{escape(article["summary"])}</p></div><div class="article-layout"><nav class="toc" aria-label="{self.t("wiki.contents")}"><b>{self.t("wiki.contents")}</b>{toc}<a href="#related">{self.t("wiki.related")}</a></nav><article class="surface article-body">'+''.join(f'<section id="step-{i}"><h2>{self.t(heading_keys[i])}</h2>'+(self.spoiler('<p>'+escape(p)+'</p>') if i in article.get('spoiler_paragraphs',[]) else '<p>'+escape(p)+'</p>')+'</section>' for i,p in enumerate(paras))+(self.spoiler(self.fact_block(ident)) if ident=='new-game-quiz' else self.fact_block(ident))+(self.bakemon() if ident=='hidden-mechanics' else '')+f'<h2 id="related">{self.t("wiki.related")}</h2><a class="text-link" href="{self.base}guides/">{self.t("wiki.articles")} →</a></article></div>'
+            self.page(f'guides/{ident}/',article['title'],body,'article',dict(type='article',text=' '.join(p for i,p in enumerate(paras) if i not in article.get('spoiler_paragraphs',[])),summary=article['summary'],aliases=ident.replace('-',' ')))
         self.page('guides/',plain(self.t('wiki.articles')),f'<div class="page-title"><h1>{self.t("wiki.articles")}</h1></div><div class="cards">'+''.join(self.article_card(k,a) for k,a in self.articles.items())+'</div>','articles')
 
     def directories(self):
-        cards=''.join(self.card(s) for s in self.data['species'])
+        cards=self.species_cards(self.data['species'])
         levels=''.join(f'<button type="button" data-level="{level}" aria-pressed="{str(not level).lower()}">{self.t("digimon.level."+level if level else "digimon.allLevels")}</button>' for level in ['',*model.guide.LEVELS])
-        self.page('digimon/',plain(self.t('data.recruit.digimon')),f'<div class="page-title"><h1>{self.t("data.recruit.digimon")}</h1><p id="digimon-count" role="status">{self.t("digimon.count",n=len(self.data["species"]))}</p></div>{self.search_form()}<div class="filters" role="group" aria-label="{self.t("digimon.levels")}">{levels}</div><div class="species-grid">{cards}</div>','digimon-list')
+        self.page('digimon/',plain(self.t('data.recruit.digimon')),f'<div class="page-title"><h1>{self.t("data.recruit.digimon")}</h1><p id="digimon-count" role="status">{self.t("digimon.count",n=len(self.data["species"]))}</p></div>{self.search_form()}<div class="filters" role="group" aria-label="{self.t("digimon.levels")}">{levels}</div>{cards}','digimon-list')
         self.records={}
         s=self.by_id[3]
-        options=''.join(f'<option value="{self.url(sp)}#evolutions" {"selected" if sp["id"]==3 else ""}>{escape(self.name(sp))}</option>' for sp in self.data['species'])
+        options=''.join(f'<option value="{self.url(sp)}#evolutions" {"selected" if sp["id"]==3 else ""}>{escape(self.name(sp))}</option>' for sp in self.data['species'] if not sp['spoiler'])
         body=f'<div class="page-title"><h1>{self.t("data.evolutions")}</h1><p>{self.t("wiki.newOn")}</p></div><label class="tree-picker">{self.t("data.recruit.digimon")} <select id="tree-picker">{options}</select></label><section class="surface">{self.tree(s)}</section><a class="text-link" href="{self.base}guides/evolution-requirements/">{self.t("wiki.readGuide")} →</a>'
         self.page('evolutions/',plain(self.t('data.evolutions')),body,'evolutions',dict(type='evolution',text=plain(self.t('wiki.treeHint')),aliases='evolution tree Agumon'))
-        recruit_cards=''.join(self.recruit(r) for r in self.data['recruits'])
-        self.page('recruits/',plain(self.t('data.recruits')),f'<div class="page-title"><h1>{self.t("data.recruits")}</h1><p>{self.t("data.recruit.intro")}</p></div>{recruit_cards}','recruits')
+        recruit_cards=''.join(f'<span class="spoiler-anchor" id="recruit-{r["id"]}"></span>' for r in self.data['recruits'])+self.spoiler(''.join(self.recruit(r,identity_hidden=False) for r in self.data['recruits']))
+        self.page('recruits/',plain(self.t('data.recruits')),f'<div class="page-title"><h1>{self.t("data.recruits")}</h1><p>{self.t("data.recruit.intro")}</p></div><aside class="note">{escape(self.bakemon_mechanic())}</aside>{recruit_cards}','recruits')
         for row in self.data['recruits']:
             name=model.recruits.species_name(self.data['files'],row['name'],self.lang)
-            self.index.append(dict(type='recruit',title=name,url=self.base+f'recruits/#recruit-{row["id"]}',text=' · '.join(self.places[i] for i in row['screens'])+' · '+plain(self.t('data.recruit.service.'+row['service'])),aliases=row['name']+' Horizon '+self.data['tag']))
+            self.index.append(dict(type='recruit',title=name,url=self.base+f'recruits/#recruit-{row["id"]}',text=' · '.join(self.places[i] for i in row['screens'])+' · '+plain(self.t('data.recruit.service.'+row['service'])),aliases=row['name']+' Horizon',spoiler=True))
         self.records={}
         links=''.join(f'<a href="{self.base}{path}/"><b>{self.t(key)} ↗</b><span>{count}</span></a>' for path,key,count in [('digimon','data.recruit.digimon',len(self.data['species'])),('techniques','data.techniques',len(self.data['techniques'])),('evolutions','data.evolutions',''),('recruits','data.recruits',len(self.data['recruits']))])
         featured=''.join(self.article_card(k,self.articles[k]) for k in ('duckstation-android','care','evolution-requirements'))
@@ -310,16 +342,18 @@ def build(out, tag, presentation_ref=None):
         articles=json.loads(file.read_text())
         if articles.keys()!=english.keys():raise ValueError('Article coverage differs: '+lang)
         for ident,a in articles.items():
+            marked=a.get('spoiler_paragraphs',[])
+            if marked!=english[ident].get('spoiler_paragraphs',[]) or any(type(i)!=int or i<0 or i>=len(a['paragraphs']) for i in marked):
+                raise ValueError('Article spoiler classification differs: '+lang+'/'+ident)
             en_tokens=re.findall(r'\{\w+\}',compact(english[ident]))
             if sorted(re.findall(r'\{\w+\}',compact(a)))!=sorted(en_tokens):raise ValueError('Article variables differ: '+lang+'/'+ident)
         pages=Pages(out,data,lang,articles)
         pages.species_pages();pages.technique_pages();pages.article_pages();pages.directories()
-        redirect(dest/lang/'index.html',pages.base,out)
         mapping={f'species-{s["id"]}':pages.url(s) for s in data['species']}
         mapping.update({k:pages.base+v+'/' for k,v in [('species','digimon'),('techniques','techniques'),('evolutions','evolutions'),('recruits','recruits')]})
         mapping.update({f'recruit-{r["id"]}':pages.base+f'recruits/#recruit-{r["id"]}' for r in data['recruits']})
         redirect(out/'data'/('index.html' if lang=='en' else lang+'.html'),pages.base,out,True,mapping)
-    redirect(dest/'index.html',f'/wiki/en/{tag}/',out)
+    redirect(dest/'index.html','/wiki/en/',out)
     presentation=__import__('subprocess').check_output(['git','rev-parse','--verify',(presentation_ref or 'HEAD')+'^{commit}'],cwd=ROOT,text=True).strip()
     manifest=dict(schema=1,tag=tag,commit=data['commit'],presentation_commit=presentation,articles=review,counts={k:len(data[k]) for k in ('species','techniques','recruits')},facts=dict(save_blocks=data['facts']['save_blocks'],hard=bool(data['facts']['hard'])))
     (dest/'manifest.json').write_text(compact(manifest)+'\n')

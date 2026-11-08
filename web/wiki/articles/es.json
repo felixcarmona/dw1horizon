@@ -58,7 +58,7 @@
     "title": "Tarjetas de memoria, copias y actualizaciones",
     "summary": "Espacio, tarjetas por juego y buenos hábitos al actualizar.",
     "paragraphs": [
-      "Esta versión necesita {save_blocks} bloques libres para una partida nueva de Horizon. Comprueba el espacio y la tarjeta asignada a la ranura. Con tarjetas por juego, un nombre de disco nuevo puede seleccionar otra tarjeta; asigna la anterior si desaparece Continuar.",
+      "Horizon necesita {save_blocks} bloques libres para una partida nueva de Horizon. Comprueba el espacio y la tarjeta asignada a la ranura. Con tarjetas por juego, un nombre de disco nuevo puede seleccionar otra tarjeta; asigna la anterior si desaparece Continuar.",
       "Un estado rápido del emulador contiene el ejecutable anterior y posiciones del disco en caché. Para actualizar, copia la tarjeta, crea el disco nuevo, arráncalo desde cero y carga una partida guardada dentro del juego. No continúes en una versión nueva mediante un estado rápido antiguo.",
       "Guarda copias fuera de la carpeta activa del emulador. Para cambiar de dispositivo, exporta la tarjeta, impórtala y comprueba Continuar. Formatear una tarjeta borra sus partidas; utiliza una tarjeta nueva o de repuesto para las pruebas."
     ]
@@ -94,7 +94,7 @@
     "title": "Entrenar en el gimnasio",
     "summary": "Equilibra las mejoras y las necesidades diarias.",
     "paragraphs": [
-      "Cada gimnasio entrena una estadística. Los aumentos base de abajo pertenecen a esta versión; el resultado también depende del compañero, las mejoras, los objetos y el entrenamiento. La inteligencia tiene umbrales de aprendizaje propios, separados de las tiradas tras combatir.",
+      "Cada gimnasio entrena una estadística. Los aumentos base de abajo son valores base; el resultado también depende del compañero, las mejoras, los objetos y el entrenamiento. La inteligencia tiene umbrales de aprendizaje propios, separados de las tiradas tras combatir.",
       "Entrenar hace pasar el tiempo y consume comida, cansancio y vida. Comprueba el hambre, el retrete y el sueño antes de empezar. Seguir estando cansado puede penalizarte; una mejora mayor no es tiempo gratis.",
       "El modo x5 aplica varias recompensas normales con comprobaciones de cuidados entre ellas. Usa x1 si quieres parar cerca de un objetivo de peso o de evolución. Descansa y atiende las necesidades antes de otro bloque."
     ]
@@ -123,7 +123,7 @@
     "paragraphs": [
       "Las horas de abajo cuentan desde la forma actual, no desde la edad total. Cumplir una fila pronto no provoca una evolución normal inmediata. Las rutas temporizadas de Ultimate también comprueban los requisitos; las especiales y por objeto tienen sus propios desencadenantes.",
       "La selección normal favorece a quien aún no has criado. Entre candidatos Rookie a Champion y Champion a Ultimate con tres puntos, compara la media de las estadísticas requeridas, dividiendo PV y PM entre diez; el orden puede influir. De In-Training a Rookie conserva la mejor puntuación y el primer empate.",
-      "El árbol muestra las rutas con NEW DIGIMON activado. Desactivarlo cambia los compañeros disponibles. Usa los tiempos y requisitos de esta versión, no un cuadro del juego original ni una guía de otra versión de Horizon."
+      "Pulsa un objetivo del árbol para leer sus requisitos. El tiempo en la forma actual, los desencadenantes especiales, NEW DIGIMON y otros candidatos afectan al resultado. Los umbrales de PV y PM usan las unidades del jugador; la felicidad usa la escala 0–100 del estado."
     ]
   },
   "learning-techniques": {
@@ -139,16 +139,16 @@
     "title": "Ciudad File y sus habitantes",
     "summary": "Servicios, prosperidad y requisitos de reclutamiento.",
     "paragraphs": [
-      "El directorio cubre los habitantes de la historia ampliada de esta versión. Cada ficha enlaza lugares, función y prosperidad. Criar un compañero no completa automáticamente una misión de reclutamiento; sigue los requisitos del habitante.",
+      "El directorio de reclutamiento reúne habitantes, lugares, servicios y aportaciones a la prosperidad dentro de spoilers plegados.",
       "Los pasos permanecen ocultos hasta abrir el aviso de spoilers. Las horas usan el reloj del juego. Comprueba los requisitos además del lugar: puede hacer falta un hito de ciudad, otro recluta o un suceso.",
-      "La ficha del Digimon incluye su reclutamiento cuando corresponde. Algunos encuentros usan un registro de especie diferente con el mismo nombre; manda el listado de habitantes. Bakemon solo muestra una pista de su mecánica, nunca la conversación del cementerio ni su solución."
+      "Los detalles y las soluciones de reclutamiento están en spoilers plegados. Ábrelos cuando quieras ver la respuesta."
     ]
   },
   "hidden-mechanics": {
     "title": "Mecánicas ocultas de los compañeros",
-    "summary": "Pequeñas interacciones, sin soluciones de puzles.",
+    "summary": "Mecánicas ocultas de los compañeros.",
     "paragraphs": [
-      "Tener a Bakemon de compañero permite entender el habla de Bakemon. Esta guía omite las preguntas, respuestas y diálogos del cementerio. Lleva al compañero adecuado y descubre la conversación por tu cuenta.",
+      "{bakemon_mechanic}",
       "Cada compañero tiene sus preferencias de comida y sueño. Las especialidades determinan qué técnicas aprende en combate. Una casilla vacía sigue contando al elegir la probabilidad, aunque el resumen no la muestre.",
       "La guía de evolución del juego y el árbol de la wiki explican los objetivos. Las transformaciones especiales y los objetos tienen condiciones propias; una fila normal de estadísticas no describe todas las formas de obtener una especie."
     ]
@@ -159,23 +159,27 @@
     "paragraphs": [
       "La tabla muestra los puntos de cada posición de respuesta del cuestionario de Jijimon. Las posiciones siguen el orden del juego. Las puntuaciones eligen elemento, atributo y temperamento; esa combinación determina el compañero de la cuadrícula.",
       "Gana la mayor puntuación de cada grupo. En empate se favorece la respuesta más reciente que lo apoye; si esa respuesta apoya a ambos, gana el primero del grupo. El orden es Combate, Fuego, Hielo, Naturaleza, Aire; Vacuna, Datos, Virus; Audaz, Tranquilo, Astuto.",
-      "Las columnas muestran NEW DIGIMON activado y desactivado. Consulta la cuadrícula de esta versión; el grupo ampliado y las casillas repetidas son intencionados. Es el cuestionario inicial, no una guía del puzle del cementerio."
+      "Las columnas muestran NUEVOS DIGIMON activado y desactivado. Las respuestas, los puntos y la tabla de compañeros iniciales están en el spoiler de abajo."
+    ],
+    "spoiler_paragraphs": [
+      0,
+      1
     ]
   },
   "difficulty": {
     "title": "EASY, NORMAL y HARD",
-    "summary": "Las dificultades dependen de la versión elegida.",
+    "summary": "EASY, NORMAL y HARD.",
     "paragraphs": [
       "NORMAL usa las reglas habituales. EASY duplica el daño del compañero y divide entre dos el recibido, redondeando hacia arriba antes de los límites normales. También reduce a la mitad el veneno del compañero. Afecta a combates de campo y torneos individuales, no al VS de dos jugadores.",
-      "La dificultad no reescribe las estadísticas guardadas. El daño porcentual de los guiones sigue sus reglas. Elige la dificultad en las opciones del título y comprueba qué valores tiene esta versión.",
-      "Si HARD está disponible, abajo aparecen los ajustes de enemigos y daño de los datos de esa versión. No deduzcas recompensas ni crecimiento permanente de las barras ajustadas. Una versión antigua sin HARD lo indica aquí."
+      "La dificultad no reescribe las estadísticas guardadas. El daño porcentual de los guiones sigue sus reglas. Elige la dificultad en las opciones del título y comprueba los ajustes disponibles.",
+      "Elige entre las dificultades de las opciones del título. Los ajustes de combate se muestran abajo y no cambian el crecimiento permanente del compañero."
     ]
   },
   "faq": {
     "title": "Preguntas frecuentes y problemas",
     "summary": "Actualizaciones, partidas perdidas, parcheo lento e informes útiles.",
     "paragraphs": [
-      "Si no aparece Continuar, comprueba la tarjeta asignada, sus bloques libres y el nombre del disco en las tarjetas por juego. Esta versión necesita {save_blocks} bloques libres para una partida nueva. Haz una copia antes de actualizar, arranca el disco nuevo y carga la partida del juego.",
+      "Si no aparece Continuar, comprueba la tarjeta asignada, sus bloques libres y el nombre del disco en las tarjetas por juego. Horizon necesita {save_blocks} bloques libres para una partida nueva. Haz una copia antes de actualizar, arranca el disco nuevo y carga la partida del juego.",
       "Parchear en el móvil puede tardar. Ante errores de cuota, usa una ventana normal, libera espacio y repite; también puedes usar el parcheador de escritorio. Las comprobaciones son intencionadas: los discos adicionales aportan especies y una copia modificada o incompatible no coincidirá.",
       "Si el texto se ve mal, anota versión del juego, disco base, idioma, compilación del emulador y ajustes gráficos. En versiones Android afectadas, prueba a desactivar Enable Texture Cache. Incluye el desencadenante exacto y una captura: el síntoma por sí solo no identifica la causa."
     ]

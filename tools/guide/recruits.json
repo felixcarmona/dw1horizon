@@ -560,8 +560,8 @@
     "screens": [
       35
     ],
-    "method": "A Bakemon partner lets you understand Bakemon’s speech. This guide deliberately leaves the cemetery questions, answers and dialogue out. Bring the relevant partner and discover the conversation yourself.",
-    "when": "A Bakemon partner lets you understand Bakemon’s speech. This guide deliberately leaves the cemetery questions, answers and dialogue out. Bring the relevant partner and discover the conversation yourself.",
+    "method": "Bakemon speaks in a mysterious ghost language. Open the spoiler below to see the conversation and the choices that recruit it.",
+    "when": "Bakemon speaks in a mysterious ghost language. Open the spoiler below to see the conversation and the choices that recruit it.",
     "service": "Patrol",
     "evidence": {
       "story/base/zones/overdell-cemetery/s035-35/script.py": [

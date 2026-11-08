@@ -14,13 +14,33 @@ import build
 
 class Links(HTMLParser):
     def __init__(self):
-        super().__init__();self.links=[];self.ids=set();self.resources=[]
+        super().__init__();self.links=[];self.ids=set();self.resources=[];self.open_spoilers=False
     def handle_starttag(self,tag,attrs):
         values=dict(attrs)
         if 'id' in values:self.ids.add(values['id'])
+        if tag=='details' and 'spoiler' in values.get('class','').split() and 'open' in values:self.open_spoilers=True
         if tag=='a' and 'href' in values:self.links.append(values['href'])
         if tag in ('img','script') and 'src' in values:self.resources.append(values['src'])
         if tag=='link' and values.get('rel')=='stylesheet':self.resources.append(values['href'])
+
+
+class Spoilers(HTMLParser):
+    def __init__(self):
+        super().__init__();self.details=[];self.hidden='';self.visible='';self.open_spoilers=False;self.skip=0
+    def handle_starttag(self,tag,attrs):
+        values=dict(attrs)
+        if tag in ('script','style'):self.skip+=1
+        if tag=='details':
+            spoiler='spoiler' in values.get('class','').split()
+            self.details.append(spoiler)
+            if spoiler and 'open' in values:self.open_spoilers=True
+    def handle_endtag(self,tag):
+        if tag=='details':self.details.pop()
+        if tag in ('script','style'):self.skip-=1
+    def handle_data(self,value):
+        if self.skip:return
+        if any(self.details):self.hidden+=value
+        else:self.visible+=value
 
 
 def check(site):
@@ -35,6 +55,7 @@ def check(site):
     pages=list((site/'wiki').rglob('*.html'))
     for page in pages:
         parser=Links();parser.feed(page.read_text());parsed[page]=parser
+        assert not parser.open_spoilers,'Generated spoiler is open: '+str(page)
         for href in parser.resources:
             assert not urlsplit(href).netloc,'External wiki resource'
     for page,parser in parsed.items():
@@ -47,14 +68,24 @@ def check(site):
             assert target.is_file(),f'Missing local wiki target: {target.relative_to(site)}'
             if parts.fragment and target in parsed:
                 assert parts.fragment in parsed[target].ids,f'Missing wiki anchor: {target.relative_to(site)}#{parts.fragment}'
-    # Only the approved mechanic hint may occupy the protected recruit fields.
-    # Dialogue is never an export input for articles or the search model.
+    # Dialogue and secret route records are present only inside closed, marked disclosures.
+    data=build.model.load(manifest['tag'])
     for lang in build.model.LANGS:
-        catalog=json.loads((site/f'i18n/{lang}.json').read_text())
-        articles=json.loads((build.CONTENT/f'articles/{lang}.json').read_text())
-        hint=articles['hidden-mechanics']['paragraphs'][0]
-        for field in ('method','when'):
-            assert catalog[f'data.recruit.{field}.37']==hint,'Protected recruit field must be mechanic-only'
+        base=site/'wiki'/lang
+        assert not (base/manifest['tag']).exists(),'Version archives must not be generated'
+        dialogue=build.model.bakemon_dialogue(data['files'],lang)
+        parser=Spoilers();parser.feed((base/'guides/hidden-mechanics/index.html').read_text())
+        assert not parser.open_spoilers,'Spoilers must be folded by default'
+        for row in dialogue['rows']:
+            assert row['question'] in parser.hidden,'Missing tagged Bakemon question in spoiler'
+            assert row['answer'] in parser.hidden,'Missing tagged Bakemon answer in spoiler'
+            assert row['question'] not in parser.visible,'Bakemon question outside spoiler'
+        index=json.loads((base/'search-index.json').read_text())
+        assert all(entry.get('spoiler') for entry in index if entry['type']=='recruit'),'Recruitment identities need spoiler classification'
+        for species in data['species']:
+            if species['spoiler']:
+                assert all(entry.get('spoiler') for entry in index if entry['url'].split('#')[0].endswith(f'/digimon/{species["id"]}-{build.model.slug(species["name"])}/')),'Secret species needs spoiler classification'
+        assert not any(row['question'] in json.dumps(index,ensure_ascii=False) for row in dialogue['rows']),'Dialogue leaked into search'
     print(f'Wiki checks passed: {len(pages)} pages; {sizes}')
     return sizes
 
