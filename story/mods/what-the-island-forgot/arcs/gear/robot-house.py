@@ -4,10 +4,16 @@
 # first: Andromon reads it and the tamer brings it back, and the game's own scene runs then.
 from dw import *
 from dw.names import *
-from dw.base.robot_house import tinmon0
+from dw.base.robot_house import house, tinmon0
 from ...state import gear_for_andromon, m3_archive
 
 gear_offered = flag()
+
+@house.on_step(0, when=gear_for_andromon and not m3_archive)
+def taking_gear_to_andromon():
+    # The original floor greeting walks us back to Tinmon on every attempt to leave.
+    # End this tile section while the scan is pending; direct talks still answer.
+    dws("return;")
 
 @tinmon0.on_talk(when=island_history_read and recruited(Species.WaruMonzaemon) and not toy_tale_heard and has(Item.Gear)
                  and not gear_for_andromon and not gear_offered)
