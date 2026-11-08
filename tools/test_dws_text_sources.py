@@ -13,6 +13,8 @@ class TextSources(unittest.TestCase):
         self.assertEqual(bank.encoded_len('Aéあ🙂', {'é': 0xf040}), 7)
         self.assertEqual('×△'.translate(bank.SJIS_LABELS), '△×')
         self.assertEqual(bank.ascii_glyphs('250%', {'２': 1, '％': 2}), '250％')
+        self.assertEqual(bank.ascii_glyphs('CPU ~%d%%', {'％': 1, '～': 2}), 'CPU ～%d％')
+        self.assertEqual(bank.ascii_glyphs('%d%%', {}), '%d%%')
         self.assertEqual(bank.ascii_glyphs('A{player}B', {'Ａ': 1, 'Ｂ': 2}), 'Ａ{player}Ｂ')
 
     def test_padding_uses_encoded_size_and_all_language_alias_identity(self):

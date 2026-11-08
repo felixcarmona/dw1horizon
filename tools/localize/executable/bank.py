@@ -22,7 +22,7 @@ sys.path.insert(0, os.path.join(ROOT, 'tools'))
 # record sizes of the embedded tables (tools/localize/executable/extract.py EMBEDDED): the text and its NUL must fit
 SIZES = {'main.ITEM_NAMES.': 20, 'main.ITEM_MENU_LABELS.': 8, 'main.STAT_LABELS.': 12}
 KEEP = ('main.DIGIMON_NAMES.',)
-FORMAT = re.compile(r'#[A-Z]\d*|%[-0-9.]*[a-z]')       # the battle messages' #C1 #R #W and the printf codes
+FORMAT = re.compile(r'#[A-Z]\d*|%[-0-9.]*[a-z]|%%')       # the battle messages' #C1 #R #W and the printf codes
 # Strings whose spaces are layout (the fitter collapses runs of spaces and strips the ends):
 # - the map captions: renderMapName crops strlen*8+4 px centred on the screen, so the US pads every name to 24 characters
 #   (the Birdra list prints the same padded string); a source writes the plain name and it is centred here the US's way;
@@ -98,7 +98,10 @@ def ascii_glyphs(t, font):
     parts, codes = FORMAT.split(t), FORMAT.findall(t)
     # A digit stays ASCII: the Japanese subset's ２ is a text glyph of that language, not a form of the font's 2.
     fix = lambda p: ''.join(full_width(c) if not c.isdigit() and full_width(c) != c and full_width(c) in font else c for c in p)
-    return fix(parts[0]) + ''.join(c + fix(p) for c, p in zip(codes, parts[1:]))
+    # A printf escape must produce the font's percent glyph, not two glyphs or
+    # an ASCII percent (whose original Shift-JIS mapping has no drawn glyph).
+    literal = lambda c: full_width('%') if c == '%%' and full_width('%') in font else c
+    return fix(parts[0]) + ''.join(literal(c) + fix(p) for c, p in zip(codes, parts[1:]))
 
 
 def encoded_len(text, font):
