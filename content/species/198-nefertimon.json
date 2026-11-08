@@ -21,7 +21,7 @@
                      [57, 46], [58, 54], [54, 46], [46, 58]]
   },
   "texture": {"file": "build/batch2/Nefertimon.TIM", "entry": 0},
-  "voice": 29,
+  "voice": 42,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -144, 8, 2],
   "effect_origins": [[4, 0, 80, -100, 2, 0, -40, -62], [4, 0, 80, -280, 2, 0, -109, -206],
@@ -35,7 +35,7 @@
     "natural": {"height": 612.0, "half_width": 324.7, "half_depth": 373.5}
   },
   "partner": {
-    "voice": 9,
+    "voice": 3,
     "hunger_hours": [2, 6, 10, 14, 18, 22],
     "energy_max": 80,
     "energy_fed": 53,
@@ -47,7 +47,7 @@
     "favored_region": 2,
     "training_type": "hp-defense",
     "birth_weight": 40,
-    "status_screen_position": [-1259, 319, 1584],
+    "status_screen_position": [-187, 188, -325],
     "item_distance": 10,
     "training": {"animation": 57, "hit_tick": 10}
   },
