@@ -83,13 +83,13 @@ double adjustment. Without it, the Green Gym control keeps Y origin 384 rather
 than 242, leaving the tamer clipped at the bottom. The displacement during the
 walk still agrees; the starting view is wrong.
 
-`Position-the-Continue-view-once-after-collision-relocation.patch` removes the
-preliminary USA adjustment. USA marks present NPCs visible without projecting
-them, so that early adjustment is unnecessary. The existing final call then
-positions the view once, **after** any collision/story relocation, before
-synchronous tile upload. It preserves the earlier immediate-follow fix and
-does not restore the old pan. Other regions retain their preliminary visibility
-path. No frame-rate option is added here.
+`Position-the-Continue-view-once-after-collision-relocation.patch` restores
+`gameLoop`'s view/projection and places Continue at the former pan's absolute,
+clamped endpoint. The calculation is shared with `tickCameraMovement`, retaining
+the large-partner shift and script-pan geometry. The preliminary NPC visibility
+path remains intact; the final absolute placement runs after collision/story
+relocation and before the existing synchronous tile upload. It queues no pan
+object, so movement can follow immediately. No frame-rate option is added here.
 
 ## Runtime method
 
@@ -125,3 +125,28 @@ house and return to free control; a stale `CURRENT_SCREEN` during the quiz is
 not sufficient. Fixtures and screenshots are written only to explicit output
 directories. The prior age and the return-title request are disclosed fixture
 writes; the quiz and introduction run without care writes.
+
+## Acceptance
+
+The EN/PT-BR image uses original 2 MB RAM. Main's cold New Game control starts
+at 0; the corrected full introduction starts at the configured 3, with life 408,
+1,000 bits and unchanged initial stats. A same-session restart fixture with a prior
+age of 17 also finishes the new introduction at 3. A saved age of 17 remains 17
+on Continue.
+
+The corrected 80-tick route restores all 81 position/origin tuples to exact
+agreement with v0.0.6, v0.0.7 and vanilla. Immediate Left for 60 ticks passes
+native visibility and origin checks with Agumon and Greymon; the final origin
+(320,250) matches vanilla at the same final position (-2250,0,79). Follow is
+active from tick 1 with no fixed pan target. WereGarurumon (height 525, above
+the lift threshold) also passes native visibility, retaining its intentional
+height adjustment. Checking only partial actor
+visibility would have missed the prior main regression.
+
+The actual old/new C endpoint calculation also agrees in 100,000 host cases
+with stubbed projection: signed coordinates, tamer/script targets, lift and
+clamping. Runtime introduction pans exercise the shared calculation with real
+GTE projection. The native BSS end changes from `0x801cbda0` to `0x801cbed0`:
+304 bytes of resident code, no new resident state, heap 196,944 → 196,640 bytes.
+The complete EN/PT-BR build and story heap gate pass. This is a selected-language
+test image, not a nine-language release-image checksum claim.

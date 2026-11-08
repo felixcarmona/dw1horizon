@@ -51,15 +51,20 @@ def title(emu, language):
     offset = entry - emu.A('menu_START')
     signature = Path(emu.exe).with_name('MENU_REL.BIN').read_bytes()[offset:offset + 32]
     deadline = time.monotonic() + 240
+    picker_seen = False
     while time.monotonic() < deadline:
         ram = emu.ram()
+        picker_seen |= emu.language_picker(ram)
         # MOV and MENU reuse the overlay address range. Menu variables alone
         # can look ready while the intro movie still occupies that memory.
         loaded = ram[entry - 0x80000000:entry - 0x80000000 + 32] == signature
         if loaded and emu.peek('CURRENT_MENU', 'i', ram) == 0 and emu.peek('MAIN_MENU_TICKS', 'i', ram) > 3:
-            if not emu.language_picker(ram):
+            if not emu.language_picker(ram) and picker_seen:
                 assert emu.peek('MOD_LANG', 'i', ram) == language
                 return
+            if not emu.language_picker(ram):
+                time.sleep(.5)
+                continue
             # Test images can contain only English and Portuguese: language
             # id 2 is then picker index 1, not index 2 of the full image.
             available = emu.peek('MOD_LANGUAGE_AVAILABLE', 'I', ram)
