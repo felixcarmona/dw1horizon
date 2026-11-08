@@ -7,8 +7,8 @@ through `tools/dev/emulator.py` and read RAM by symbol; all locate their own wor
 The standard `FPS=60` build automatically selects 20 or 60 from CPU speed.
 `MOD_FPS_MODE_RUN` reports the active presentation mode (0 or 2), while
 `MOD_FPS_BUILD` reports which renderer was compiled. `FPS=20` compiles out extra
-passes; both `FPS=30` and `FPS=60` include the automatic selector. There is no
-saved frame-rate setting. Older scripts describing mode as a build parameter
+passes; both `FPS=30` and `FPS=60` include the automatic selector. OPTIONS defaults to AUTO, with explicit 60 and 20 overrides saved in byte 2
+as 0xA1 and 0xA2 (AUTO is 0xA0). Legacy values migrate to AUTO. Older scripts describing mode as a build parameter
 must check the active runtime mode when using a current disc.
 
 For automatic selection, compare standard CPU speed against 250% with both

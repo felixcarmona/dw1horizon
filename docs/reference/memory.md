@@ -1145,3 +1145,18 @@ TRN/TRN2 are **29,276 / 23,584 B**. Overlay read bounds remain unchanged.
 Standard heapcheck passes without an override. All **320 actual-archive setups**
 fit; the tightest margin is **3,568 B on screen 207**, followed by **6,504 B on
 screen 41**. The historical sweep's tightest projection is **31,936 B**.
+
+
+## FRAME RATE override
+
+The full nine-language build with AUTO / 60 / 20 keeps the original 2 MB
+budget. `main_BSS_END` is **0x801CE390**, leaving **187232 B** of aligned heap.
+All **320 actual-archive setups** fit; screen 207 retains **2512 B**. The
+historical sweep's tightest projected free heap is **30880 B**.
+
+MENU is **55164 B / 27 sectors**, with **132 B** before the 27-sector ceiling,
+above the title checker’s 100-byte reserve. Third option values share the
+immutable four-column row table. A 48-byte language-name resolver lives with
+the resident name array, allowing the MENU text lookup to remain a leaf.
+No new heap allocation or frame buffer is introduced. Title-storage checks
+cover all nine layouts and their unchanged language-independent EVL block.

@@ -76,7 +76,10 @@ def check_chart(tree):
     moved = {section['name'] for section in obj.sh
              if section['name'].startswith('.rodata.CHART_POPUP_')}
     moved.add('.rodata.CHART_STAT_NAMES')
-    assert len(moved) == 31, moved
+    # The target-time/lifetime chart adds four immutable captions to the original 31.
+    assert {'.rodata.CHART_POPUP_TIME', '.rodata.CHART_POPUP_WAIT',
+            '.rodata.CHART_POPUP_LIFE', '.rodata.CHART_POPUP_SPECIAL'} <= moved
+    assert len(moved) == 35, moved
     assert locations['chartCardLine'] == '.main'
     # Patch 0299 reserves MENU space for scrolling by keeping these helpers resident.
     for helper in ('chartMark', 'chartButton', 'chartRange', 'chartNumber'):

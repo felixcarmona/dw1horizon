@@ -64,9 +64,20 @@ class SaveCompatibility(unittest.TestCase):
         expected=bytearray(original);expected[1]=1;expected[2]=20;expected[3]=1;expected[13]=0
         self.assertEqual(current,bytes(expected));self.assertEqual(current[14:],original[14:])
         self.assertEqual(original[2],30)
-        legacy=SimpleNamespace(has=lambda name:name!='modCpuProbe')
+        legacy=SimpleNamespace(has=lambda name:name not in ('modCpuProbe','MOD_OPT_FPS'))
         self.assertEqual(releases.resaved_option_prefix(legacy,original),original)
         for length in range(4):self.assertEqual(len(releases.resaved_option_prefix(automatic,original[:length])),length)
+
+    def test_frame_rate_override_migration_and_resave(self):
+        emu=SimpleNamespace(has=lambda name:name in ('modCpuProbe','MOD_OPT_FPS'))
+        for saved in range(256):
+            expected=saved if 0xA0 <= saved <= 0xA2 else 0xA0
+            rows=[];releases.compare_option(rows,emu,'frameRate',saved,{'frameRate':expected})
+            self.assertTrue(rows[0][0])
+            raw=bytes([0,1,saved,1])
+            self.assertEqual(releases.resaved_option_prefix(emu,raw)[2],expected)
+            rows=[];releases.compare_option(rows,emu,'frameRate',saved,{'frameRate':0xA3})
+            self.assertFalse(rows[0][0])
 
     def test_warp_answers_arrival_dialogue_and_requires_the_target_screen(self):
         for final_screen in (218,204):
