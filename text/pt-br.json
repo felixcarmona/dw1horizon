@@ -1,4 +1,9 @@
 {
+ "qol.sukamon_joined": "Sukamon veio para a cidade!",
+ "qol.megadramon_joined": "Megadramon veio para a cidade!",
+ "qol.nanimon_joined": "Nanimon veio para a cidade!",
+ "qol.myotismon_joined": "Myotismon veio para a cidade!",
+ "qol.skullgreymon_joined": "SkullGreymon veio para a cidade!",
  "qol.training_x5": "Treino normal x5",
  "qol.mansion_key_used_up": "Todas as portas da mansão estão abertas. Não precisa mais da {color 6}Chave da mansão{color 1}.",
  "name.ask_partner": [

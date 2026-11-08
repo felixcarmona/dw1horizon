@@ -1,4 +1,9 @@
 {
+ "qol.sukamon_joined": "Sukamon ist in die Stadt gezogen!",
+ "qol.megadramon_joined": "Megadramon ist in die Stadt gezogen!",
+ "qol.nanimon_joined": "Nanimon ist in die Stadt gezogen!",
+ "qol.myotismon_joined": "Myotismon ist in die Stadt gezogen!",
+ "qol.skullgreymon_joined": "SkullGreymon ist in die Stadt gezogen!",
  "qol.training_x5": "Normales Training x5",
  "qol.mansion_key_used_up": "Alle Türen der Villa sind jetzt offen. Du brauchst den {color 6}Villaschlüssel{color 1} nicht mehr.",
  "name.ask_partner": [

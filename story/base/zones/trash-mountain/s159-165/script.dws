@@ -199,6 +199,8 @@ script 159 {
     on talk(sukamon2) replace {    // talk
         if (!is_recruited(species(39))) {
             say(sukamon2, text("s159.sec7.u0"));
+            sound(8, 17);
+            say(narrator, text("qol.sukamon_joined"));
             walk(sukamon2, 650, -1800);
             await sukamon2;
             walk(sukamon2, 189, -3550);
