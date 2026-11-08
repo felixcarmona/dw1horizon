@@ -1,0 +1,461 @@
+From 6ec1c4866a69725e8bff1409514a465bef7ff245 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 8 Nov 2026 18:31:49 +0000
+Subject: [PATCH] Choose the frames a tick shows from what the last ticks cost
+
+The frames a tick shows were all or nothing: three passes (60) or one (20),
+chosen at the title by a CPU probe. The probe cannot see what a core really
+presents (a fast mobile core with ordinary polling speed got 20 fps where it
+shows 54), and three passes in a scene that cannot carry them give 20 fps
+with uneven spacing (a tournament at the original speed: every first pass
+late).
+
+A ladder of three cadences now decides from the real workload, in every loop
+that goes through modPresent: 60 (three passes, a pass that does not fit
+skipped as before), steady 30 (the curling pair of patch 0292 for every scene:
+one frame at 2/3 of an even tick that ends a refresh early, two at 1/3 and
+3/3 of the odd tick computed in that spare refresh, every frame two refreshes
+apart) and 20 (one frame at 3/3, the original's timing). modCadArm arms the
+level at the start of a tick (MOD_RENDER_CADENCE 8 | half for the pair, 16
+for one frame; curling's own 1/2/4 are left alone and only they flush its
+tiles). modCadRecord stores each tick's cost (tick + first pass and the extra
+pass, in lines) and outcome (frames planned, shown, late) in a 32-tick ring
+and decides: down from 60 after 16 ticks that show fewer than
+MOD_CAD_KEEP60/32 frames a tick (to steady 30 when every tick fits two
+refreshes, else to 20); down from 30 when more than MOD_CAD_KEEP30 frames per
+32 ticks are late or skipped; up only after a full window whose costs predict
+the higher cadence, and a wait that doubles after every failed try (32 to
+1024 ticks). The world and the battle loops remember their levels; a map
+change clears the evidence and the wait but keeps the level. Fast battle
+ticks, pumped loads, pause frames and stalled ticks are not recorded. The
+pass budget checks stay, so no cadence slows the 20 Hz logic.
+
+MOD_FPS_POLICY: 0 the ladder (default), 1/2/3 lock 60 / steady 30 / 20, 4 the
+CPU-probe selection, the only policy in which the title probe and the idle
+polls write MOD_FPS_MODE_RUN; it otherwise stays at the build's rate. The
+probe still runs for the title notice.
+---
+ include/dw/mod_fps.h     |  16 ++-
+ include/dw/mod_present.h |   3 +-
+ src/main/main.c          | 240 +++++++++++++++++++++++++++++++++++++--
+ src/main/main_menu.c     |   6 +-
+ 4 files changed, 251 insertions(+), 14 deletions(-)
+
+diff --git a/include/dw/mod_fps.h b/include/dw/mod_fps.h
+index 6a830b1a..a99bc34c 100644
+--- a/include/dw/mod_fps.h
++++ b/include/dw/mod_fps.h
+@@ -7,7 +7,7 @@
+ #include <fps.h> /* FPS: the build's frame rate (Makefile `FPS=20|30|60`, generated) */
+ 
+ /* FPS=20 compiles out extra passes. FPS=30|60 includes the automatic
+- * 20/60 selector: boot and idle-time CPU measurements choose the mode.
++ * 60/30/20 ladder: actual workload chooses the cadence.
+  * Logic cadence is independent of this presentation setting. */
+ #define MOD_CPU_LINES 16
+ #define MOD_CPU_SPINS_FAST 8500
+@@ -19,6 +19,20 @@ int32_t modCpuProbe(void);
+ #define MOD_FPS_20 2
+ extern int32_t MOD_OPT_FPS;
+ void modSetFrameRate(int32_t mode);
++int32_t modFrameRateLevel(void);
++/* MOD (fps ladder, main.c): the frames a tick shows follow what the last ticks cost: 60, steady 30 or 20.
++ * MOD_FPS_POLICY chooses the ladder (default), a locked cadence, or the 0.0.7 CPU probe. */
++#define MOD_FPS_POLICY_AUTO 0
++#define MOD_FPS_POLICY_60 1
++#define MOD_FPS_POLICY_30 2
++#define MOD_FPS_POLICY_20 3
++#define MOD_FPS_POLICY_CPU 4
++extern int8_t MOD_FPS_POLICY;
++extern int8_t MOD_CAD_LEVEL;  /* 2 = 60, 1 = steady 30, 0 = 20 (the current level of the ladder) */
++extern int8_t MOD_CAD_KEEP60; /* frames per 32 ticks to stay at 60 */
++extern int8_t MOD_CAD_KEEP30; /* late or skipped frames per 32 ticks tolerated at steady 30 */
++extern int32_t MOD_CAD_SWITCHES;
++extern int32_t MOD_CAD_LAST;
+ #if FPS == 20
+ #define MOD_FPS_MODE 0
+ #elif FPS == 30 || FPS == 60
+diff --git a/include/dw/mod_present.h b/include/dw/mod_present.h
+index 1208ecbc..4fe961e5 100644
+--- a/include/dw/mod_present.h
++++ b/include/dw/mod_present.h
+@@ -37,7 +37,8 @@ void modPresent(int32_t flags, ModRollbackSet *extra);
+  * modTickStart; the scene arms it again from its tick. The player's 20 fps
+  * option still takes precedence. */
+ /* 0: inactive; 1/2: normal/early half of a steady 30 fps pair;
+- * 4: curling at the requested rate, with deferred tile uploads. */
++ * 4: curling at the requested rate, with deferred tile uploads;
++ * 8 | 1/2 and 16: the same halves and one frame at 3/3, armed by the ladder in main.c (no curling tile flush). */
+ extern int32_t MOD_RENDER_CADENCE;
+ 
+ /* MOD (battle speed, main.c): the R2 switch; set before modTickStart when the coming tick may run fast (it clears
+diff --git a/src/main/main.c b/src/main/main.c
+index 1a5601a6..ad9b98d7 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -4170,7 +4170,9 @@ static void modPerfReset(void)
+  * although no code reads it */
+ const int32_t MOD_FPS_BUILD __attribute__((used, retain)) = FPS;
+ #if FPS != 20
+-int32_t MOD_FPS_MODE_RUN; /* Automatic presentation: safe 20 fps until the boot probe. */
++/* The frames a tick shows are chosen by the cadence ladder below (modCadArm); this stays at the build's rate. Only
++ * the CPU-probe policy (MOD_FPS_POLICY 4) writes it. */
++int32_t MOD_FPS_MODE_RUN = FPS == 60 ? 2 : 1;
+ #endif
+ /* test switch (state checks with the slow interpreter CPU, where the extra
+  * passes rarely fit): with N > 0 every tick lasts N refreshes instead of 3,
+@@ -4245,7 +4247,7 @@ void KAR_replayTickPrims(void); /* overlay, resident while curling arms the cade
+ 
+ static void modReplayTickPrims(void)
+ {
+-	if (MOD_RENDER_CADENCE) {
++	if (MOD_RENDER_CADENCE && !(MOD_RENDER_CADENCE & 0x18)) {
+ 		KAR_replayTickPrims();
+ 	}
+ 	if (MOD_TICK_PRIM_MAIN_MENU) {
+@@ -5368,12 +5370,28 @@ static int32_t modCpuVotes;
+ int32_t MOD_OPT_FPS; /* AUTO on a fresh boot. */
+ void modSetFrameRate(int32_t mode)
+ {
++#if FPS != 20
++    int32_t locked20;
++#endif
+     MOD_OPT_FPS = mode >= MOD_FPS_AUTO && mode <= MOD_FPS_20 ? mode : MOD_FPS_AUTO;
+ #if FPS != 20
+-    extern int32_t MOD_CPU_SPINS;
+     modCpuVotes = 0;
+-    MOD_FPS_MODE_RUN = MOD_OPT_FPS == MOD_FPS_60 ? 2 :
+-        MOD_OPT_FPS == MOD_FPS_20 ? 0 : MOD_CPU_SPINS >= MOD_CPU_SPINS_FAST ? 2 : 0;
++    locked20 = MOD_OPT_FPS == MOD_FPS_20;
++    MOD_FPS_POLICY = MOD_OPT_FPS + locked20; /* OPTIONS 0/1/2 -> policies 0/1/3 */
++    MOD_FPS_MODE_RUN = locked20 ? 0 : 2; /* preserve the original single-pass path, including curling */
++#endif
++}
++
++int32_t modFrameRateLevel(void)
++{
++#if FPS != 20
++    if (MOD_FPS_POLICY == MOD_FPS_POLICY_CPU) return MOD_FPS_MODE_RUN == 2 ? 2 : 0;
++    if (MOD_FPS_POLICY == MOD_FPS_POLICY_60) return 2;
++    if (MOD_FPS_POLICY == MOD_FPS_POLICY_30) return 1;
++    if (MOD_FPS_POLICY == MOD_FPS_POLICY_20) return 0;
++    return MOD_CAD_LEVEL;
++#else
++    return 0;
+ #endif
+ }
+ 
+@@ -5390,6 +5408,9 @@ static void modAutoFrameRateSample(int32_t spins)
+     }
+     change = MOD_FPS_MODE_RUN == 0 ? spins >= MOD_CPU_SPINS_FAST : spins < MOD_CPU_SPINS_SLOW;
+ 
++	if (MOD_FPS_POLICY != MOD_FPS_POLICY_CPU) {
++		return; /* the cadence ladder decides from the real workload */
++	}
+ 	if (!change) {
+ 		modCpuVotes = 0;
+ 	} else if (++modCpuVotes >= 2) {
+@@ -5408,6 +5429,187 @@ static void modAutoFrameRatePoll(void)
+ 		modAutoFrameRateSample(modCpuProbe());
+ 	}
+ }
++
++/* MOD (fps ladder): how many frames a tick shows is decided from what the last ticks cost, not from a CPU probe.
++ * Three cadences: 60 (three passes, best effort: a pass that does not fit is skipped), steady 30 (the curling pair:
++ * one frame at 2/3 of an even tick, which ends one refresh early, then two frames at 1/3 and 3/3 of the odd tick
++ * computed in that spare refresh; every frame two refreshes apart) and 20 (one frame at 3/3, the original).
++ * Every tick records its cost in lines (tick + first pass, extra pass) and its outcome (frames planned, shown,
++ * late) in a window of the last MOD_CAD_WINDOW ticks. The level steps down as soon as 16 ticks show the cadence
++ * does not pay (60: fewer than MOD_CAD_KEEP60 frames per 32 ticks; 30: more than MOD_CAD_KEEP30 late or skipped
++ * frames) and up only after a full window whose line costs predict the higher cadence (then it is tried; a try that
++ * fails doubles the wait before the next, up to 1024 ticks). The world and the battle loops each remember their
++ * level, so a battle starts from the last battle's level, not from a trial; a map change clears the evidence but
++ * keeps the level. Fast battle ticks, pause frames, battle data loads, the test tick length and curling (which arms
++ * MOD_RENDER_CADENCE itself) neither count nor change anything. The pass budget checks stay: no cadence slows the
++ * logic, which runs at 20 Hz in every cadence. */
++#define MOD_CAD_WINDOW 32
++#define MOD_CAD_LINES 263 /* lines per refresh */
++#define MOD_CAD_MARGIN 12 /* a pass must end this far before the vblank it is shown at */
++int8_t MOD_FPS_POLICY; /* MOD_FPS_POLICY_*: 0 the ladder, 1/2/3 lock 60 / steady 30 / 20, 4 the 0.0.7 CPU probe */
++int8_t MOD_CAD_LEVEL = 2; /* 2 = 60, 1 = steady 30, 0 = 20 */
++int8_t MOD_CAD_KEEP60 = 60; /* frames per 32 ticks to stay at 60 (60 = 37.5 fps); +4 to step up to it */
++int8_t MOD_CAD_KEEP30 = 4; /* late or skipped frames per 32 ticks tolerated at steady 30 */
++int32_t MOD_CAD_SWITCHES;
++int32_t MOD_CAD_LAST; /* the last recorded tick: cost0 | costX << 12 | shown << 24 | planned << 26 | late << 28 */
++/* one struct: the compiler reaches every field from one base address */
++static struct {
++	uint32_t ring[MOD_CAD_WINDOW];
++	int32_t mapGen;
++	int16_t since; /* ticks since the level changed */
++	int16_t cool[2]; /* ticks a context waits before trying a higher level again */
++	int8_t count, pos, ctx, prev, up;
++	int8_t ctxLevel[2];
++} modCad = { { 0 }, 0, 0, { MOD_CAD_WINDOW, MOD_CAD_WINDOW }, 0, 0, -1, -1, 0, { 2, 2 } };
++
++/* the frames a tick of these costs could show at 60: the first pass is shown at the vblank after it ends, each
++ * extra pass starts at the swap of the one before and is shown at the vblank after it ends, inside the tick */
++static int32_t modCadPredict60(int32_t c0, int32_t cx)
++{
++	int32_t frames = 1;
++	int32_t end = c0 + MOD_CAD_MARGIN; /* where a pass ends, with the margin before its vblank */
++	int32_t s = end > 2 * MOD_CAD_LINES ? 3 : end > MOD_CAD_LINES ? 2 : 1; /* the refresh the frame is shown at */
++
++	if (end > 3 * MOD_CAD_LINES) {
++		return 1;
++	}
++	while (s < 3) {
++		end = s * MOD_CAD_LINES + cx + MOD_CAD_MARGIN;
++		if (end > 3 * MOD_CAD_LINES) {
++			break;
++		}
++		s = end > 2 * MOD_CAD_LINES ? 3 : 2;
++		frames++;
++	}
++	return frames;
++}
++
++/* the level this tick renders with; sets MOD_RENDER_CADENCE for steady 30 (8 | half) and 20 (16); -1 leaves the
++ * tick to the loop's own mode (fast ticks, the test tick length, curling's own cadence) */
++static int32_t modCadArm(int32_t flags, int32_t period, int32_t force)
++{
++	int32_t level;
++	int32_t ctx;
++
++	if (MOD_FPS_MODE <= 0 || period < 3 || force || MOD_RENDER_CADENCE) {
++		return -1;
++	}
++	ctx = (flags & MOD_PRESENT_BATTLE) != 0;
++	if (!(flags & MOD_PRESENT_PAUSE)) {
++		if (ctx != modCad.ctx) {
++			if (modCad.ctx >= 0) {
++				modCad.ctxLevel[modCad.ctx] = MOD_CAD_LEVEL;
++			}
++			modCad.ctx = ctx;
++			MOD_CAD_LEVEL = modCad.ctxLevel[ctx];
++			modCad.count = modCad.pos = 0;
++			modCad.since = 0;
++		}
++		if (MOD_INTERP_MAP_GEN != modCad.mapGen) {
++			modCad.mapGen = MOD_INTERP_MAP_GEN;
++			modCad.count = modCad.pos = 0;
++			modCad.cool[ctx] = MOD_CAD_WINDOW;
++		}
++	}
++	switch (MOD_FPS_POLICY) {
++	case MOD_FPS_POLICY_60:
++		level = 2;
++		break;
++	case MOD_FPS_POLICY_30:
++		level = 1;
++		break;
++	case MOD_FPS_POLICY_20:
++		level = 0;
++		break;
++	case MOD_FPS_POLICY_CPU:
++		level = MOD_FPS_MODE_RUN == 2 ? 2 : 0;
++		break;
++	default:
++		level = MOD_CAD_LEVEL;
++	}
++	/* the steady pair starts with its early half (an even tick), so the odd tick that follows has its spare refresh */
++	if (level == 1 && modCad.prev != 1 && (MOD_FPS_TICKS & 1)) {
++		modCad.prev = 2;
++		return -1; /* align at 60 once; this is not evidence that steady 30 failed */
++	}
++	modCad.prev = level;
++	if (level == 1) {
++		MOD_RENDER_CADENCE = 8 | ((MOD_FPS_TICKS & 1) ? 1 : 2);
++	} else if (level == 0) {
++		MOD_RENDER_CADENCE = 16;
++	}
++	return level;
++}
++
++/* a tick's record and the ladder's decision for the next ticks */
++static void modCadRecord(int32_t planned, int32_t shown, int32_t late, int32_t c0, int32_t cx)
++{
++	int32_t i;
++	int32_t n;
++	int32_t level;
++	int32_t next;
++	int32_t ctx = modCad.ctx;
++	int32_t sumShown = 0;
++	int32_t sumMiss = 0;
++	int32_t sumPred = 0;
++	int32_t fit30 = 0;
++	uint32_t e;
++
++	if (c0 > 4095) {
++		c0 = 4095;
++	}
++	if (cx > 4095) {
++		cx = 4095;
++	}
++	MOD_CAD_LAST = c0 | (cx << 12) | (shown << 24) | (planned << 26) | (late << 28);
++	modCad.ring[modCad.pos] = MOD_CAD_LAST;
++	modCad.pos = (modCad.pos + 1) & (MOD_CAD_WINDOW - 1);
++	if (modCad.count < MOD_CAD_WINDOW) {
++		modCad.count++;
++	}
++	if (modCad.since < 0x7FFF) {
++		modCad.since++;
++	}
++	if (MOD_FPS_POLICY != MOD_FPS_POLICY_AUTO || modCad.count < 16 || ctx < 0 || (modCad.since & 7)) {
++		return;
++	}
++	n = modCad.count;
++	for (i = 0; i < n; i++) {
++		e = modCad.ring[i];
++		c0 = e & 0xFFF;
++		cx = (e >> 12) & 0xFFF;
++		if (cx == 0) {
++			cx = c0; /* no extra pass measured: as costly as the tick and its first pass (its setup included) */
++		}
++		sumShown += (e >> 24) & 3;
++		sumMiss += ((e >> 26) & 3) - ((e >> 24) & 3) + ((e >> 28) & 3);
++		sumPred += modCadPredict60(c0, cx);
++		fit30 += c0 + 2 * MOD_CAD_MARGIN <= 2 * MOD_CAD_LINES && cx + 2 * MOD_CAD_MARGIN <= 2 * MOD_CAD_LINES;
++	}
++	level = next = MOD_CAD_LEVEL;
++	if (level == 2 && sumShown * MOD_CAD_WINDOW < MOD_CAD_KEEP60 * n) {
++		next = fit30 == n ? 1 : 0;
++	} else if (level == 1 && sumMiss * MOD_CAD_WINDOW > MOD_CAD_KEEP30 * n) {
++		next = 0;
++	} else if (n == MOD_CAD_WINDOW && modCad.since >= modCad.cool[ctx]) {
++		if (level == 1 && sumPred * MOD_CAD_WINDOW >= (MOD_CAD_KEEP60 + 4) * n) {
++			next = 2;
++		} else if (level == 0 && fit30 == n) {
++			next = 1;
++		}
++	}
++	if (next != level) {
++		if (next < level && modCad.up && modCad.since < 2 * MOD_CAD_WINDOW && modCad.cool[ctx] < 1024) {
++			modCad.cool[ctx] *= 2; /* the try failed: wait longer before the next */
++		}
++		modCad.up = next > level;
++		MOD_CAD_LEVEL = next;
++		modCad.ctxLevel[ctx] = next;
++		MOD_CAD_SWITCHES++;
++		modCad.since = 0;
++		modCad.count = modCad.pos = 0;
++	}
++}
+ #endif
+ 
+ /* VSync(0), or with MOD_LOAD_PUMP the file queue stepped until the vblank comes (then VSync(0) once nothing is queued) */
+@@ -5452,6 +5654,10 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 	int32_t force = MOD_FPS_TEST_TICK > 0;
+ 	int32_t discard = MOD_TICK_FAST && !MOD_REAL_TICK; /* battle speed: rendered, not shown */
+ 	int32_t thirds[3];
++	int32_t level = -1; /* MOD (fps ladder): the cadence this tick renders with */
++	int32_t shown = 0;
++	int32_t lateCount = 0;
++	int32_t xcost = 0;
+ 
+ 	if (flags & MOD_PRESENT_PAUSE) {
+ 		extra = modLoopRollback;
+@@ -5460,8 +5666,11 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 	}
+ 	tickV = modTickV;
+ 	l0 = modTickL0;
++#if FPS != 20
++	level = modCadArm(flags, period, force);
++#endif
+ 	/* the thirds of the tick at which a frame is shown */
+-	if (MOD_FPS_MODE <= 0 || period < 3) { /* a fast battle tick: one frame */
++	if (MOD_FPS_MODE <= 0 || period < 3 || (MOD_RENDER_CADENCE & 16)) { /* a fast battle tick or the 20 fps level: one frame */
+ 		n = 1;
+ 		thirds[0] = 3;
+ 	} else if (MOD_FPS_MODE == 1 || (MOD_RENDER_CADENCE & 3)) {
+@@ -5481,7 +5690,7 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 		thirds[2] = 3;
+ 	}
+ 	/* at 20 fps nothing below touches the interpolation */
+-	interp = (MOD_FPS_MODE > 0) && (MOD_FPS_INTERP != 0);
++	interp = (MOD_FPS_MODE > 0) && (MOD_FPS_INTERP != 0) && !(MOD_RENDER_CADENCE & 16);
+ 	if (!interp) {
+ 		modInterpInvalidate();
+ 	}
+@@ -5561,7 +5770,7 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 		}
+ 		modRandLogPos = 0;
+ 		renderObjects();
+-		if (MOD_RENDER_CADENCE) {
++		if (MOD_RENDER_CADENCE && !(MOD_RENDER_CADENCE & 0x18)) { /* armed by curling (1, 2, 4): the ladder's 8 | half and 16 must not reach its overlay */
+ 			KAR_flushTiles();
+ 		}
+ 		modRandLogging = 0;
+@@ -5595,18 +5804,23 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 			MOD_PERF_XPASSES++;
+ 			MOD_PERF_XEND = (l3 - l0) & 0xFFFF;
+ 			MOD_PERF_XENDV = VSync(-1) - tickV;
++			if (((l3 - lc) & 0xFFFF) > xcost) {
++				xcost = (l3 - lc) & 0xFFFF; /* the extra pass with its setup */
++			}
+ 		}
+ 		if (discard) {
+ 			break; /* the next tick clears this ordering table and draws over the work area */
+ 		}
+ 		if (VSync(-1) >= endV) {
+ 			MOD_PERF_LATE++;
++			lateCount++;
+ 		}
+ 		do {
+ 			modWaitVblank(); /* like VSync(3): always swap on a vertical blank */
+ 		} while (VSync(-1) < endV);
+ 		vLast = VSync(-1);
+ 		GsSwapDispBuff();
++		shown++;
+ 		GsSortClear(0, 0, 0, &GS_ORDERING_TABLE[ACTIVE_FRAMEBUFFER]);
+ 		GsDrawOt(&GS_ORDERING_TABLE[ACTIVE_FRAMEBUFFER]);
+ 		MOD_FPS_RENDERS++;
+@@ -5627,8 +5841,16 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 	MOD_RENDER_MULTIPASS = 0;
+ 	modExtraRollback = NULL;
+ 	modFlushRemovals();
+-	modLastEndV = MOD_RENDER_CADENCE ? tickV + period : VSync(-1);
++	/* a steady pair or curling counts from the nominal end; the 20 fps level (16) from the refresh reached, as mode 0 */
++	modLastEndV = (MOD_RENDER_CADENCE & ~16) ? tickV + period : VSync(-1);
+ 	modLastEndLines = modLines();
++#if FPS != 20
++	/* MOD (fps ladder): what this tick cost and showed; not a fast, pumped, paused or stalled tick */
++	if (level >= 0 && !discard && !MOD_TICK_FAST && !MOD_LOAD_PUMP && !(flags & MOD_PRESENT_PAUSE) &&
++	    tickLines <= 3 * MOD_CAD_LINES) {
++		modCadRecord(n, shown, lateCount, MOD_PERF_P0END, xcost);
++	}
++#endif
+ }
+ 
+ void gameLoop(void)
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 9104f2b8..8e904f0d 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -5013,13 +5013,13 @@ void modNoticeDraw(void)
+ 
+ 	MOD_NOTICE_CACHE.spins = MOD_CPU_SPINS;
+ #if FPS != 20
+-	MOD_NOTICE_CACHE.mode = MOD_FPS_MODE_RUN;
++	MOD_NOTICE_CACHE.mode = modFrameRateLevel();
+ #else
+ 	MOD_NOTICE_CACHE.mode = 0;
+ #endif
+ 	sprintf(ram, MOD_NOTICE_STR_RAM, MOD_NOTICE & MOD_NOTICE_NO_RAM ? 2 : 8);
+ 	sprintf(cpu, MOD_NOTICE_STR_CPU, modNoticePercent(MOD_NOTICE_CACHE.spins));
+-	sprintf(fps, MOD_NOTICE_STR_FPS, MOD_NOTICE_CACHE.mode == 2 ? 60 : 20);
++	sprintf(fps, MOD_NOTICE_STR_FPS, MOD_NOTICE_CACHE.mode == 2 ? 60 : MOD_NOTICE_CACHE.mode == 1 ? 30 : 20);
+ 	text[0] = MOD_NOTICE_STR_HEAD1;
+ 	text[1] = MOD_NOTICE_STR_HEAD2;
+ 	text[2] = ram;
+@@ -5045,7 +5045,7 @@ void modNoticeRender(void)
+ {
+ 	if (MOD_NOTICE_CACHE.spins != MOD_CPU_SPINS
+ #if FPS != 20
+-	    || MOD_NOTICE_CACHE.mode != MOD_FPS_MODE_RUN
++	    || MOD_NOTICE_CACHE.mode != modFrameRateLevel()
+ #endif
+ 	) {
+ 		modNoticeDraw();
+-- 
+2.55.0
+

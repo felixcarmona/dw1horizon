@@ -994,7 +994,7 @@
  "main.MOD_OPT_STR_EASY": "かんたん",
  "main.MOD_OPT_STR_NORMAL": "ふつう",
  "main.MOD_OPT_STR_HARD": "むずかしい",
- "main.MOD_NOTICE_STR_HEAD1": "CPU 250%: 60 FPS",
+ "main.MOD_NOTICE_STR_HEAD1": "自動: 60 / 30 / 20 FPS",
  "main.MOD_NOTICE_STR_HEAD2": "8 MB: ちゅうごくごのみ",
  "main.MOD_NOTICE_STR_RAM": "RAM %d MB",
  "main.MOD_NOTICE_STR_CPU": "CPU ~%d%%",

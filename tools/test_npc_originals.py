@@ -70,6 +70,15 @@ class NpcOriginalsTest(unittest.TestCase):
         cherrymon['model']['height'] += 1
         self.assertTrue(any('model.height' in e for e in S.lint({464: cherrymon})[0]))
 
+    def test_disc_audit_accepts_only_the_reviewed_authored_radius(self):
+        from tools.npc_originals import reviewed_radius
+        species = copy.deepcopy(S.load_content()[464])
+        self.assertTrue(reviewed_radius(species, 400, 250))
+        self.assertFalse(reviewed_radius(species, 400, 240))
+        self.assertFalse(reviewed_radius(species, 200, 250))
+        species['_npc_collision_review'] = ' '
+        self.assertFalse(reviewed_radius(species, 400, 250))
+
     @unittest.skipUnless(shutil.which('cc'), 'needs a host C compiler')
     def test_engine_mapping_in_both_directions(self):
         patch = next(Path(S.ROOT).glob('mods/patches/Restore-disc-models-and-rows-for-field-NPC-partners.patch')).read_text()

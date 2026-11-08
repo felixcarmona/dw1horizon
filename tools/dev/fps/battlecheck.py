@@ -161,7 +161,13 @@ for tok in inp.split():
     b, n = tok.split(':')
     segs.append(([x for x in b.split('+') if x != 'NONE'], int(n)))
 tbl = '{' + ','.join('{%d,{%s}}' % (n, ','.join('PCSX.CONSTS.PAD.BUTTON.' + x for x in bs)) for bs, n in segs) + '}'
-setcode = '\n'.join('  w32s(m, %d, %d)' % (sym(k), v) for k, v in sets.items())
+# Diagnostic policies include byte-sized globals. A word store could overwrite adjacent flags.
+from tools.langpatch import elf_symbols
+sizes = {name: value[1] for name, value in elf_symbols(MAP.removesuffix('.map')).items()}
+setcode = '\n'.join(
+    '\n'.join('  m[%d] = %d' % (sym(k) + i, (v >> (8 * i)) & 255) for i in range(sizes[k]))
+    if sizes.get(k) in (1, 2) else '  w32s(m, %d, %d)' % (sym(k), v)
+    for k, v in sets.items())
 code = r'''
 local m = PCSX.getMemPtr()
 local function w32(a) return m[a] + m[a+1]*256 + m[a+2]*65536 + m[a+3]*16777216 end

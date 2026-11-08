@@ -4,17 +4,22 @@ Scripts to build and verify the 60 fps renderer
 (`docs/reference/frame-rate.md`, `docs/reference/frame-rate.md`). They drive the emulator
 through `tools/dev/emulator.py` and read RAM by symbol; all locate their own worktree. Generated Lua goes under `build/dev/fps/`, separated by emulator port.
 
-The standard `FPS=60` build automatically selects 20 or 60 from CPU speed.
-`MOD_FPS_MODE_RUN` reports the active presentation mode (0 or 2), while
-`MOD_FPS_BUILD` reports which renderer was compiled. `FPS=20` compiles out extra
-passes; both `FPS=30` and `FPS=60` include the automatic selector. OPTIONS defaults to AUTO, with explicit 60 and 20 overrides saved in byte 2
-as 0xA1 and 0xA2 (AUTO is 0xA0). Legacy values migrate to AUTO. Older scripts describing mode as a build parameter
-must check the active runtime mode when using a current disc.
-
-For automatic selection, compare standard CPU speed against 250% with both
-2 MB and 8 MB, and toggle the emulator overclock during play. Measure logic
-and presentation separately; debugger pauses must not count toward wall time.
+The standard `FPS=60` build uses the workload ladder (60 / steady 30 / 20).
+`MOD_CAD_LEVEL` reports AUTO's rung (2/1/0); `modFrameRateLevel()` also accounts for explicit locks.
+`MOD_FPS_MODE_RUN` stays at 2 for AUTO/60 and 0 for explicit 20, preserving curling’s single-pass path. OPTIONS maps AUTO/60/20 to
+`MOD_FPS_POLICY` 0/1/3 and saves A0/A1/A2 in byte 2; legacy bytes migrate to AUTO.
+Policies 2 and 4 are diagnostic locks at steady 30 and the old CPU probe respectively.
+`FPS=20` compiles out extra passes. Both `FPS=30` and `FPS=60` include the ladder.
 `MOD_FPS_INTERP` and `MOD_FPS_TEST_TICK` remain diagnostic RAM switches.
+
+`laddercheck.py prepare --disc DISC --exe EXE --out DIR --port PORT [--ram 8]` creates matching
+scene checkpoints; `capture file-city gear-savanna freezeland wild tournament` with the same arguments
+measures 30 s per policy, and `summary DIR...` prints tables. Use `--policies 0,1,2,3` for ladder,
+forced 60, steady 30 and the old standard-speed 20 cadence. `--cpu fast` halves eligible Redux JIT
+RAM block cycle charges with `redux_core_scale.lua`; this is an approximate core-budget simulation,
+not a hardware overclock. GPU, GTE and BIOS charges remain unchanged. Each capture uses a fresh process;
+checkpoints must match the executable. Measurements exclude debugger pauses and use guest refreshes.
+
 
 | Script | What it measures |
 |---|---|

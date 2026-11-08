@@ -37,6 +37,7 @@ def main():
 #define MOD_NOTICE_STR_CPU "CPU ~%d%%"
 #define MOD_NOTICE_STR_FPS "%d FPS"
 int MOD_CPU_SPINS, MOD_NOTICE, MOD_FPS_MODE_RUN;
+int modFrameRateLevel(void) { return MOD_FPS_MODE_RUN; }
 struct {int32_t spins, mode; uint8_t widths[5];} MOD_NOTICE_CACHE;
 typedef struct {int x,y,w,h;} RECT;
 #define setRECT(p,a,b,c,d) (*(p)=(RECT){a,b,c,d})
@@ -73,6 +74,9 @@ int main(void) {
   MOD_CPU_SPINS=7389;modNoticeRender();assert(draws==before+1);
   modNoticeRender();assert(draws==before+1);
  }
+ /* Every rung is reported independently of the CPU probe. */
+ MOD_CPU_SPINS=3801; MOD_FPS_MODE_RUN=1;modNoticeRender();
+ assert(!strcmp(rows[4],FPS!=20?"30 FPS":"20 FPS"));
  /* Hysteresis: CPU readiness and the selected rate have separate meanings. */
  MOD_CPU_SPINS=8500;MOD_FPS_MODE_RUN=0;modNoticeRender();
  assert(colors[3]==7 && colors[4]==6 && !strcmp(rows[4],"20 FPS"));
