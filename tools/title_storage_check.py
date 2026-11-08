@@ -26,9 +26,11 @@ def check(path):
                  'modRenderLanguagePicker', 'modDrawLanguageName',
                  'modShowLanguageError', 'modRenderLanguageError', 'modFlagRect',
                  'MOD_FLAG_PALETTE', 'MOD_FLAG_OFFSET', 'MOD_FLAG_RUNS',
-                 'MOD_CHINESE_NAME', 'MOD_LANGUAGE_TITLES', 'MOD_LANGUAGE_TITLE_GLYPHS'):
+                 'MOD_CHINESE_NAME', 'MOD_LANGUAGE_TITLES', 'MOD_LANGUAGE_TITLE_GLYPHS',
+                 'drawOptionsText', 'renderOptionsMenu', 'modSetOption',
+                 'modOptionValue', 'modOptionText', 'modOptionCount'):
         assert start <= symbols[name][0] < end, (name, symbols[name])
-    for name in ('modOptionBytes', 'modOptionText', 'modOptionCount'):
+    for name in ('modOptionBytes',):
         assert elf.sh[symbols[name][1]]['name'] == '.MENU', name
     for name in ('loadMenuOverlay', 'loadTitleMenuOverlays', 'modMenuVsBattle', 'MOD_LANGUAGE_NAMES'):
         assert elf.sh[symbols[name][1]]['name'] == '.main', name
@@ -43,7 +45,13 @@ def check(path):
             continue
         for (origin, caller), _ in sites:
             if origin == '.EVL':
-                assert start <= symbols[caller][0] < end, (caller, target)
+                # xref names anonymous switch-table words by their actual address.
+                if caller in symbols:
+                    address = symbols[caller][0]
+                else:
+                    assert caller.startswith('?'), caller
+                    address = int(caller[1:], 16)
+                assert start <= address < end, (caller, target)
             else:
                 assert origin == '.MENU' and caller in callers, (origin, caller, target)
             references += 1
