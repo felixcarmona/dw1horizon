@@ -1,0 +1,310 @@
+From b6705f88cfc256c1108ecc7822948f0b78a86acf Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 8 Nov 2026 07:40:14 +0000
+Subject: [PATCH] Store complete Horizon saves in one memory card block
+
+---
+ src/main/main_menu.c | 190 +++++++++++++++++++++----------------------
+ 1 file changed, 93 insertions(+), 97 deletions(-)
+
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index f54000c0..237ba2d9 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -173,31 +173,16 @@ SAVE_LAYOUT_CHECK(currentScreen, __builtin_offsetof(SavegamePayload, currentScre
+ SAVE_LAYOUT_CHECK(checksum, __builtin_offsetof(SavegamePayload, checksum) == 0x4FC);
+ SAVE_LAYOUT_CHECK(versionWord, __builtin_offsetof(SavegamePayload, unknown4E1) + 3 == 0x4E4);
+ 
+-/*
+- * MOD (save v2, docs/mods/ids.md "Save format v2"): the file grows from one
+- * memory card block to two. The first 0x2000 bytes stay a complete v1 file
+- * (header and the two SavegamePayload copies, ids as their low byte), so the
+- * original executable and VS mode read it as before; after them come two
+- * extensions, one per copy, with the 16-bit ids and the wide registers.
+- *
+- * - The v1 payload carries a version word in the bytes its checksum skips:
+- *   0x4E4 "DW2\0", 0x4E8 the format version. v1 saves have zeros there.
+- *   A higher version than SAVE_FORMAT_VERSION is a "Data Error".
+- * - An extension is used only if its magic, its checksum and its copy of its
+- *   v1 payload's checksum all match. An older build that saved over a v2 file
+- *   rewrote the v1 part only, so the stale extension fails the last test and
+- *   the v1 data is migrated, as for a v1 save.
+- * - Saving a v1 (one-block) file makes it two blocks (delete and create) when
+- *   the card has a free block; otherwise it stays a v1 file.
+- * - A save holding content the original executable does not have (a partner
+- *   species >= NUM_ORIGINAL_DIGIMON, an item >= NUM_ITEMS, a screen >= 255)
+- *   stores its v1 checksum inverted: the original reports "Data Error"
+- *   instead of loading cut ids; this build accepts it through the extension.
+- *   Without room for the extension (a one-block file on a full card) it is
+- *   written as a plain v1 file instead, readable by both.
+- */
++/* Legacy v2/v4 saves keep their extensions in a linked second block. New v5
++ * saves scatter tagged records through unused VS-registration bytes in each
++ * payload, retaining both complete copies in the first block. See save-format.md.
++ * A two-block directory chain is retained when resaving; it is never deleted
++ * merely to shrink the allocation. */
+ #define SAVE_LEGACY_VERSION	2	/* the extension of v2 files: a fixed struct (SaveExtension), still read */
+ #define SAVE_FORMAT_VERSION	4	/* the extension is a list of tagged records (include/dw/save_tags.h, docs/mods/save-format.md) */
++#define MOD_OPT_BYTES	14 /* byte 13 reserved; zero keeps permanent enemy bars for older readers */
++#define SAVE_INLINE_VERSION	5
++#define SAVE_INLINE_BYTES	(40 * 28)
+ #define SAVE_V1_BYTES		0x2000
+ #define SAVE_V2_BYTES		0x4000
+ #define SAVE_EXT_SAVED_WREGS	16	/* w0..w15 are saved, w16..w63 are scratch */
+@@ -257,9 +242,12 @@ typedef struct {
+ 
+ #define SAVE_EXT_BYTES		0x1000
+ SAVE_LAYOUT_CHECK(extHead, sizeof(SaveExtHead) == 12);
+-/* the most a build writes: the head, the records (4 bytes each and their data), the end record and the checksum */
+-#define SAVE_RECORDS_MAX	(sizeof(SaveExtHead) + 9 * 4 + 4 + 2 * 30 + 4 + 2 * 16 + 2 * 40 + 2 * 100 + 8 + 2 * (NUM_DIGIMON / 8) + 4 + 4 + 4)
+-SAVE_LAYOUT_CHECK(recordsFit, SAVE_RECORDS_MAX <= SAVE_EXT_BYTES);
++/* Bound every record, including the optional swap and daily pickup bitmap. */
++#define SAVE_RECORDS_MAX (sizeof(SaveExtHead) + 12 * 4 + 4 + 60 + 4 + 32 + 80 + 200 + \
++                         2 * (NUM_DIGIMON / 8) + MOD_OPT_BYTES + 4 + sizeof(MOD_GROUND_PICKED) + 4 + 4)
++SAVE_LAYOUT_CHECK(recordsFit, SAVE_RECORDS_MAX <= SAVE_INLINE_BYTES);
++SAVE_LAYOUT_CHECK(inlinePadding, sizeof(((RegisteredDigimon *)0)->unk24) == 28 &&
++                  __builtin_offsetof(RegisteredDigimon, unk24) == 0x24 && sizeof(RegisteredDigimon) == 0x40);
+ 
+ uint32_t CONNECTED_CARDS;
+ int32_t MAIN_MENU_ACTION;
+@@ -279,7 +267,6 @@ static __attribute__((noinline)) void modDrawLanguagePicker(void);
+ static __attribute__((noinline)) void modTickLanguagePicker(void);
+ static __attribute__((noinline)) void modRenderLanguagePicker(void);
+ static int32_t MOD_OPTIONS_BACK; /* MOD (options): the title menu comes back from OPTIONS */
+-#define MOD_OPT_BYTES	14 /* byte 13 reserved; zero keeps permanent enemy bars for older readers */
+ #define MOD_OPT_HEADER_BYTES 12
+ #define MOD_OPT_HEADER_CHEATS 0x80
+ #define MOD_OPT_HEADER_COUNT 0x1f
+@@ -2955,9 +2942,9 @@ void tickMainMenu(void)
+ 	case 0x10:
+ 		if ((MAIN_MENU_TICKS >= 3) && MemCardSync(1, &command, &result)) {
+ 			SAVE_FILE_NAME[0xF] = HEX_DIGITS[MEMORY_CARD_SLOT];
+-			/* Horizon state always needs both blocks. */
+-			SAVE_FILE_BYTES = SAVE_V2_BYTES;
+-			status = MemCardCreateFile(MEMORY_CARD_ID, SAVE_FILE_NAME, SAVE_V2_BYTES / SAVE_V1_BYTES);
++			/* New slots contain both complete copies in one block. */
++			SAVE_FILE_BYTES = SAVE_V1_BYTES;
++			status = MemCardCreateFile(MEMORY_CARD_ID, SAVE_FILE_NAME, 1);
+ 			switch (status) {
+ 			case 0:
+ 				TARGET_MENU = 0x11;
+@@ -4583,7 +4570,7 @@ void writeSavegame(SavegamePayload *savegame)
+ /* the version words this build reads: 1 (no word), the v2 fixed extension, its own tagged one; any other is a layout it does not know */
+ static int32_t isTaggedVersion(int32_t version)
+ {
+-	return version == SAVE_FORMAT_VERSION;
++	return version == SAVE_FORMAT_VERSION || version == SAVE_INLINE_VERSION;
+ }
+ 
+ static int32_t isSaveVersionReadable(int32_t version)
+@@ -4678,18 +4665,44 @@ static int32_t areRecordsWellFormed(uint8_t *e, int32_t size)
+ 	}
+ }
+ 
++/* The original never reads or writes RegisteredDigimon.unk24. Keep all 40
++ * registrations, both payloads and the original byte-sum algorithm intact.
++ * The link excludes these bytes to avoid a checksum cycle. */
++static int32_t inlineBaseChecksum(int32_t copy)
++{
++	int32_t i, sum = createSavegameChecksum(copy);
++	for (i = 0; i < 40; i++)
++		sum -= createByteSum(SAVE_FILE.saves[copy].battleRegistrationData[i].unk24, 28);
++	return sum;
++}
++
++static void inlineExtension(int32_t copy, int32_t pack)
++{
++	int32_t i, j;
++	uint8_t *e = saveExtOf(copy);
++	for (i = 0; i < 40; i++) {
++		uint8_t *p = SAVE_FILE.saves[copy].battleRegistrationData[i].unk24;
++		for (j = 0; j < 28; j++) {
++			if (pack) p[j] = e[i * 28 + j];
++			else e[i * 28 + j] = p[j];
++		}
++	}
++}
++
+ static int32_t isTaggedExtensionValid(int32_t copy)
+ {
+ 	SaveExtHead *h;
+ 	uint8_t *e;
+-	int32_t size;
++	int32_t size, link;
++	int32_t inlined = getSaveVersion(&SAVE_FILE.saves[copy]) == SAVE_INLINE_VERSION;
+ 
+-	size = saveExtSize();
++	size = inlined ? SAVE_INLINE_BYTES : saveExtSize();
++	link = inlined ? inlineBaseChecksum(copy) : SAVE_FILE.saves[copy].checksum;
+ 	e = saveExtOf(copy);
+ 	h = (SaveExtHead *)e;
+-	return SAVE_FILE_BYTES >= SAVE_V2_BYTES && h->magic[0] == 'D' && h->magic[1] == 'W' && h->magic[2] == '4' &&
+-	       h->magic[3] == 'E' && h->version == saveLayoutVersion() && h->size == size &&
+-	       *(int32_t *)(e + size - 4) == createByteSum(e, size - 4) && h->v1Checksum == SAVE_FILE.saves[copy].checksum &&
++	return (SAVE_FILE_BYTES >= SAVE_V2_BYTES || inlined) && h->magic[0] == 'D' && h->magic[1] == 'W' &&
++	       h->magic[2] == '4' && h->magic[3] == 'E' && h->version == saveLayoutVersion() && h->size == size &&
++	       *(int32_t *)(e + size - 4) == createByteSum(e, size - 4) && h->v1Checksum == link &&
+ 	       areRecordsWellFormed(e, size);
+ }
+ 
+@@ -5035,7 +5048,7 @@ static void prepareSaveFile(int32_t fromRam)
+ 	int32_t i;
+ 
+ 	savegame = &SAVE_FILE.saves[0];
+-	size = saveExtSize();
++	size = SAVE_INLINE_BYTES;
+ 	e = saveExtOf(0);
+ 	for (p = e, i = 0; i < size; i++) {
+ 		*p++ = 0;
+@@ -5102,17 +5115,20 @@ static void prepareSaveFile(int32_t fromRam)
+ 	p[1] = 'W';
+ 	p[2] = '2';
+ 	p[3] = '\0';
+-	p[4] = saveLayoutVersion();
++	p[4] = SAVE_INLINE_VERSION;
++	/* The record list must fit even with every supported field populated. */
++	head->v1Checksum = inlineBaseChecksum(0);
++	*(int32_t *)(e + size - 4) = createByteSum(e, size - 4);
++	inlineExtension(0, 1);
+ 	savegame->checksum = createSavegameChecksum(0);
+ 	if (needsNewExecutable(partnerType, screens[0], screens[1], inventory)) {
+-		savegame->checksum = ~savegame->checksum; /* the original refuses it */
++		savegame->checksum = ~savegame->checksum;
+ 	}
+-	head->v1Checksum = savegame->checksum;
+-	*(int32_t *)(e + size - 4) = createByteSum(e, size - 4);
+ 	SAVE_FILE.saves[1] = SAVE_FILE.saves[0];
+ 	for (i = 0; i < size; i++) {
+ 		saveExtOf(1)[i] = e[i];
+ 	}
++	/* Existing two-block directory chains stay allocated; no destructive resize. */
+ 	SAVE_FILE.blockNumber = SAVE_FILE_BYTES / SAVE_V1_BYTES;
+ }
+ 
+@@ -5538,76 +5554,42 @@ static int32_t getSaveFileBytes(void)
+ /* the error of the read or write saveFileStart ran (a MEMORY_CARD_ERROR_MESSAGES index), else 0 */
+ static long SAVE_IO_FAILED;
+ 
+-/*
+- * Starts writing SAVE_FILE (prepared) to the slot's file, as MemCardWriteFile.
+- * A one-block file becomes two blocks first when the card has a free block.
+- */
++/* Overwrite the first block without changing the directory allocation. */
+ static int32_t writeSaveFile(void)
+ {
+-	long count;
+-	int32_t blocks;
+-	int32_t i;
+-
+-	if (SAVE_FILE_BYTES < SAVE_V2_BYTES &&
+-	    MemCardGetDirentry(MEMORY_CARD_ID, MAIN_D_801346C0[1], MEMCARD_DIRENTRIES, &count, 0, 15) == 0) {
+-		blocks = 0;
+-		for (i = 0; i < count; i++) {
+-			blocks += (MEMCARD_DIRENTRIES[i].size + 0x1FFF) / 0x2000;
+-		}
+-		if (blocks < 15 && MemCardDeleteFile(MEMORY_CARD_ID, SAVE_FILE_NAME) == 0) {
+-			if (MemCardCreateFile(MEMORY_CARD_ID, SAVE_FILE_NAME, SAVE_V2_BYTES / SAVE_V1_BYTES) == 0) {
+-				SAVE_FILE_BYTES = SAVE_V2_BYTES;
+-			} else {
+-				MemCardCreateFile(MEMORY_CARD_ID, SAVE_FILE_NAME, 1);
+-			}
+-		}
+-	}
+-	if (SAVE_FILE_BYTES < SAVE_V2_BYTES) {
+-		/* Never report success after dropping history, recruits or wide IDs. */
+-		SAVE_IO_FAILED = 7;
+-		return 1;
+-	}
+ 	SAVE_FILE.blockNumber = SAVE_FILE_BYTES / SAVE_V1_BYTES;
+ 	return saveFileStart(1);
+ }
+ 
+-/*
+- * MOD (save extension area, save robustness): reads or writes the slot's file (SAVE_FILE_BYTES), waiting
+- * for each part. A v1 file is one part. A v2 or v3 file is four, in copy order: copy 1's payload
+- * (file 0x1100-0x2000, from SAVE_FILE), its extension (0x2000 + E, from SAVE_EXT_ADDR + E), then the header
+- * and copy 0's payload (0-0x1100), its extension (0x2000). A copy needs its payload and, when the payload's
+- * checksum is inverted, its extension: a write that stops anywhere (Reset, power, a card pulled) leaves one
+- * copy wholly old or wholly new, which pickSaveCopy finds. Copy 1 goes first: in a file that has just grown
+- * the old file's blocks still hold copy 0 and its extension where the old layout had them (a v2 file's
+- * 0x2000) until the last part. Offsets and sizes are multiples of 128, as libmcrd needs. Always 1
+- * (started, as MemCardWriteFile); the error, if any, is what saveFileSync reports.
+- */
++/* Read the original block first. Only legacy payloads need reads from block 2.
++ * Write copy 1, then header/copy 0; each payload contains its own extension.
++ * All offsets/sizes are multiples of 128 as required by libmcrd. */
+ static long saveFileStart(int32_t write)
+ {
+ 	MemCardSyncWord command;
+ 	MemCardSyncWord result;
+-	int32_t ext;
+-	int32_t part;
+-	int32_t copy;
+-	int32_t offset;
+-	int32_t size;
++	int32_t ext = (SAVE_FILE_BYTES - SAVE_V1_BYTES) / 2;
++	int32_t part, copy, offset, size;
+ 	uint8_t *ram;
+ 
+ 	SAVE_IO_FAILED = 0;
+-	ext = (SAVE_FILE_BYTES - SAVE_V1_BYTES) / 2; /* one extension; 0 for a v1 file */
+-	for (part = 0; part < 4; part++) {
+-		copy = part < 2;
+-		if (part & 1) {
+-			offset = SAVE_V1_BYTES + copy * ext;
+-			ram = (uint8_t *)SAVE_EXT_ADDR + copy * ext;
+-			size = ext;
+-		} else {
++	for (part = 0; part < 3; part++) {
++		if (write) {
++			if (part == 2) break;
++			copy = 1 - part;
+ 			offset = copy * __builtin_offsetof(SaveFile, saves[1]);
+ 			ram = (uint8_t *)&SAVE_FILE + offset;
+-			size = ext == 0 ? SAVE_V1_BYTES : copy ? sizeof(SavegamePayload) : __builtin_offsetof(SaveFile, saves[1]);
+-		}
+-		if (ext == 0 && part != 2) {
+-			continue;
++			size = copy ? sizeof(SavegamePayload) : __builtin_offsetof(SaveFile, saves[1]);
++		} else if (part == 0) {
++			offset = 0;
++			ram = (uint8_t *)&SAVE_FILE;
++			size = SAVE_V1_BYTES;
++		} else {
++			copy = part - 1;
++			if (ext == 0 || getSaveVersion(&SAVE_FILE.saves[copy]) == SAVE_INLINE_VERSION) continue;
++			offset = SAVE_V1_BYTES + copy * ext;
++			ram = saveExtOf(copy);
++			size = ext;
+ 		}
+ 		result = SAVE_IO_ERROR;
+ 		if ((write ? MemCardWriteFile(MEMORY_CARD_ID, SAVE_FILE_NAME, (void *)ram, offset, size)
+@@ -5615,10 +5597,24 @@ static long saveFileStart(int32_t write)
+ 			MemCardSync(0, (long *)&command, (long *)&result);
+ 		}
+ 		if (result != 0) {
+-			/* a part that did not start, or a libmcrd code past the messages: "Not Inserted" */
++			if (!write && part > 0) ram[0] = 0; /* reject a stale or partially read legacy extension */
+ 			SAVE_IO_FAILED = (unsigned long)result < SAVE_IO_MESSAGES ? (long)result : SAVE_IO_ERROR;
+ 			break;
+ 		}
++		if (!write && part == 0) {
++			for (copy = 0; copy < 2; copy++) {
++				if (getSaveVersion(&SAVE_FILE.saves[copy]) == SAVE_INLINE_VERSION) inlineExtension(copy, 0);
++			}
++		}
++	}
++	/* A mixed legacy/inline file can survive an interrupted migration even
++	 * when the old extension cannot be read: retain the valid inline copy. */
++	if (!write && part > 0 && SAVE_IO_FAILED) {
++		for (copy = 0; copy < 2; copy++) {
++			if (getSaveVersion(&SAVE_FILE.saves[copy]) == SAVE_INLINE_VERSION && isSaveCopyValid(copy)) {
++				SAVE_IO_FAILED = 0;
++			}
++		}
+ 	}
+ 	return 1;
+ }
+-- 
+2.55.0
+

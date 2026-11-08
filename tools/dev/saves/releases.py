@@ -81,7 +81,7 @@ def read_card(path, name=SAVE):
     data = mcd.Card(path).read(name)
     dec = mcd.decode_save(data)
     size = 0x2000 if len(data) >= 0x6000 else 0x1000
-    e = data[0x2000:0x2000 + size] if len(data) >= 0x4000 else b''
+    e = mcd.extension(data)
     recs = dict(mcd.parse_records(e) or []) if e[:4] == b'DW4E' else {}
     return dec, data[0x200:0x200 + 0xF00], recs
 
@@ -119,7 +119,7 @@ def card_ok(path, name=SAVE):
         e = dec.get(f'ext{k}')
         if not e: bad.append(f'ext{k}: no extension (a {len(data)}-byte file)'); continue
         if e.get('magic') != 'DW4E': bad.append(f'ext{k}: not a tagged extension ({e.get("magic")!r})'); continue
-        if e['version'] != 4 or e['size'] != (0x2000 if len(data) >= 0x6000 else 0x1000):
+        if e['version'] != 4 or e['size'] != len(mcd.extension(data, k)):
             bad.append(f'ext{k}: invalid version or size')
         if not e['checksum_ok']: bad.append(f'ext{k}: the extension checksum is wrong')
         if not e['matches_v1']: bad.append(f'ext{k}: the extension does not link to its v1 copy (stale)')
@@ -130,6 +130,13 @@ def card_ok(path, name=SAVE):
 # ---- the pure-file check ------------------------------------------------------------------------------------------
 
 def compare(rows, what, want, got):
+    if what.endswith('roster'):
+        # Inline extensions occupy only reserved bytes; compare every VS field,
+        # including the wide species ID, while checking extensions separately.
+        def fields(value):
+            raw = bytes.fromhex(value)
+            return b''.join(raw[i*64:i*64+36] for i in range(40)).hex()
+        want, got = fields(want), fields(got)
     ok = want == got
     rows.append((ok, what, '' if ok else f'recorded {short(want)}, now {short(got)}'))
     return ok

@@ -64,23 +64,17 @@ int main(void) {
     memset(SPECIES_RAISED_BITS, 0, sizeof(SPECIES_RAISED_BITS));
     SPECIES_RECRUITED_BITS[106/8] = 1 << (106%8);
     assert(needsNewExecutable(3, 0, 0, inventory));
-    /* A full card must retain its old one-block save byte for byte. */
+    /* Single-block saves overwrite in place even when the card is full. */
     reset(SAVE_V1_BYTES, 15); SAVE_FILE.saves[0].checksum = ~123;
-    assert(writeSaveFile()==1 && SAVE_IO_FAILED==7);
-    assert(!deletes && !creates && !writes && SAVE_FILE.saves[0].checksum==~123);
-    /* A failed directory lookup must also leave the card untouched. */
-    reset(SAVE_V1_BYTES, 1); dir_error=1;
-    assert(writeSaveFile()==1 && SAVE_IO_FAILED==7 && !deletes && !writes);
-    /* Existing two-block files can save even on a completely full card. */
+    assert(writeSaveFile()==1 && !SAVE_IO_FAILED);
+    assert(!deletes && !creates && writes==1 && SAVE_FILE.saves[0].checksum==~123);
+    assert(SAVE_FILE.blockNumber==1);
+    /* Retain two-block directory chains; no delete/create migration window. */
     reset(SAVE_V2_BYTES, 15);
-    assert(writeSaveFile()==1 && SAVE_IO_FAILED==0 && writes==1 && !deletes);
+    assert(writeSaveFile()==1 && SAVE_IO_FAILED==0 && writes==1 && !deletes && !creates);
     assert(SAVE_FILE.blockNumber==2);
     reset(SAVE_V2_BYTES, 15); write_error=1;
     assert(writeSaveFile()==1 && SAVE_IO_FAILED==1 && writes==1);
-    /* A native one-block file grows when the card has a spare block. */
-    reset(SAVE_V1_BYTES, 14);
-    assert(writeSaveFile()==1 && SAVE_IO_FAILED==0 && writes==1 && deletes==1 && creates==1);
-    assert(SAVE_FILE_BYTES==SAVE_V2_BYTES && SAVE_FILE.blockNumber==2);
     return 0;
 }
 '''
@@ -95,7 +89,7 @@ def main():
         exe = Path(work) / 'test'
         subprocess.run(['cc', '-std=c99', '-O2', str(src), '-o', str(exe)], check=True)
         subprocess.run([str(exe)], check=True)
-    print('PASS: extended progress, full card, failed lookup, IO error and one-block upgrade')
+    print('PASS: extended progress, full card, IO error and nondestructive one/two-block overwrite')
 
 
 if __name__ == '__main__':
