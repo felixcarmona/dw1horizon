@@ -429,8 +429,11 @@ the recommendation: [../proposals/frame-rate-excellence.md](../proposals/frame-r
 
 OPTIONS offers AUTO (default), 60 and 20 in all nine languages. AUTO maps to policy 0, 60 to policy 1,
 and 20 to policy 3. The save bytes remain A0/A1/A2. Returning to AUTO resumes workload selection, independent
-of CPU polling throughput. The title's always-visible panel uses `modFrameRateLevel()` to report the selected
-60/30/20 rung, including explicit locks. Its hint is “AUTO: 60 / 30 / 20 FPS”; the RAM hint stays unchanged.
+of CPU polling throughput. The title's conditional enhancement popup uses `modFrameRateLevel()` to report the selected
+60/30/20 rung, including explicit locks. It appears only with detected 8 MB RAM or a fast CPU;
+a plain 2 MB / normal-CPU boot has no popup, regardless of the requested rate.
+The earlier bordered popup and two-column readiness rows replace the always-visible panel;
+its AUTO/RAM hints and estimated CPU percentage have been removed.
 The rung is a cadence request; best-effort 60 can present fewer frames in a busy scene.
 
 The following describes the **legacy diagnostic policy 4**, retained for comparisons. It is no longer AUTO.
@@ -439,10 +442,9 @@ The following describes the **legacy diagnostic policy 4**, retained for compari
 iterations over 16 lines of hardware hblank counter 1. That counter follows video
 timing independently of CPU overclock. Recorded DuckStation counts were 3801,
 7389, 9303 and 10977 at 100%, 200%, 250% and 300%. At boot, at least 8500 selects
-mode 2; otherwise mode 0. The always-visible Press Start panel uses the latest
-CPU measurement and selected mode, and redraws if either changes. Its approximate
-percentage interpolates these four calibration points, rounds to 25% steps and
-clamps to 100–300%. The RAM probe remains boot-only and has no bearing on presentation.
+mode 2; otherwise mode 0. The Press Start enhancement popup uses the latest CPU readiness result and selected cadence,
+and redraws if the sample or cadence changes. The calibrated percentage display is removed;
+the fast-CPU threshold remains 8500. The RAM probe remains boot-only and has no bearing on presentation.
 
 Boot alone cannot follow a changed emulator overclock or a restored same-build
 save state. `modWaitVblank` therefore polls about every 120 refreshes, only outside

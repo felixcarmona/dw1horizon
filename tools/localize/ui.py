@@ -161,8 +161,9 @@ def confirmation_problems(key, value, font, language):
 
 
 # Match modNoticeDraw crops; the renderer adds one shadow pixel outside each field.
-NOTICE_FIELDS = {'HEAD1': (254, None), 'HEAD2': (254, None),
-                 'RAM': (80, (2, 8)), 'CPU': (104, range(100, 301, 25)), 'FPS': (64, (20, 30, 60))}
+NOTICE_FIELDS = {'HEAD1': (254, None), 'FPS': (254, (20, 30, 60)),
+                 'RAM': (150, None), 'CPU': (150, None),
+                 'MISSING': (120, None), 'READY': (120, None)}
 
 
 def notice_problems(key, value, font, language):
@@ -174,14 +175,14 @@ def notice_problems(key, value, font, language):
     try:
         rows = [value % number for number in values] if values else [value]
     except (TypeError, ValueError):
-        return ['detected-settings format must accept exactly one integer']
+        return ['enhancement-popup format must accept exactly one integer']
     from tools.localize.executable.bank import encoded_len
     for row in rows:
         width = fitted_width(row, font, language)
         if width > limit:
-            errors.append(f'detected-settings text {row!r} is {width} px; field is {limit} px')
+            errors.append(f'enhancement-popup text {row!r} is {width} px; field is {limit} px')
         if values and encoded_len(row, font) + 1 > 32:
-            errors.append(f'detected-settings text {row!r} exceeds its 32-byte buffer')
+            errors.append(f'enhancement-popup text {row!r} exceeds its 32-byte buffer')
     return errors
 
 

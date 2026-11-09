@@ -218,6 +218,7 @@ run duckstation-protocol $PY -m unittest tools.test_duckstation_protocol
 if [ -f "$PATCHED/src/main/main.c" ]; then
     run fps-auto $PY tools/test_fps_auto.py "$PATCHED"
     run fps-ladder $PY tools/test_fps_ladder.py "$PATCHED"
+    run title-popup $PY tools/test_title_panel.py "$PATCHED"
     run screen-caption-cache $PY tools/test_screen_caption_cache.py "$PATCHED"
     disc bone-interpolation-host $PY -W ignore tools/dev/playtest/bone_interpolation_host.py "$PATCHED" "$OUT/bone-interpolation"
     run options-save $PY tools/test_cheats.py "$PATCHED"
@@ -226,6 +227,7 @@ if [ -f "$PATCHED/src/main/main.c" ]; then
 else
     skip fps-auto "needs prepared C tree (DW_SELFTEST_DECOMP)"
     skip fps-ladder "needs prepared C tree (DW_SELFTEST_DECOMP)"
+    skip title-popup "needs prepared C tree (DW_SELFTEST_DECOMP)"
     skip bone-interpolation-host "needs prepared C tree (DW_SELFTEST_DECOMP)"
     skip options-save "needs prepared C tree (DW_SELFTEST_DECOMP)"
     skip difficulty-hard-host "needs prepared C tree (DW_SELFTEST_DECOMP)"

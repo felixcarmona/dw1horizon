@@ -31,7 +31,7 @@ def check(path):
                  'modOptionValue', 'modOptionText', 'modOptionCount',
                  'modNoticeDraw', 'modNoticeRender', 'MOD_NOTICE_CACHE'):
         assert start <= symbols[name][0] < end, (name, symbols[name])
-    for name in ('modOptionBytes',):
+    for name in ('modOptionBytes', 'MOD_NOTICE_TEXT'):
         assert elf.sh[symbols[name][1]]['name'] == '.MENU', name
     for name in ('loadMenuOverlay', 'loadTitleMenuOverlays', 'modMenuVsBattle', 'MOD_LANGUAGE_NAMES', 'modOptionLanguageName'):
         assert elf.sh[symbols[name][1]]['name'] == '.main', name

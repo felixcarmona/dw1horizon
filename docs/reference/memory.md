@@ -195,12 +195,16 @@ it. Outside the world the read still blocks: the fight code reads `animFlag` as 
 
 The title screen's panel (`modNoticeProbe`, patch 0313) reads the same probe and counts reads of the hblank counter over 16
 lines, which grow with an emulated CPU overclock: DuckStation gives 3801 at 100 %, 7389 at 200 %, 9303 at 250 % and 10977 at
-300 %, and the panel asks for 8500. The count changes a little with the loop's address, so measure it again if that code
-moves. The panel now always appears at Press Start, showing RAM, an approximate
-CPU percentage and the selected renderer; see [automatic frame rate](../mods/options.md#automatic-frame-rate).
-Its drawing code, calibration table and scratch live in the title overlay. The
+300 %, and CPU readiness asks for 8500. The count changes a little with the loop's address, so measure it again if that code
+moves. The Press Start popup appears only with detected 8 MB RAM or a fast CPU;
+2 MB / normal-CPU boots show nothing. It restores the earlier blue border and
+two-column readiness rows, with the current 60/30/20 cadence as its second line;
+see [automatic frame rate](../mods/options.md#automatic-frame-rate).
+Its drawing code and scratch live in the title overlay; localized popup text
+lives in MENU, loaded alongside it. The approximate-percent
+calibration table and the always-visible panel's hints are removed. The
 boot RAM flag and the shared CPU probe remain resident.
-Against parent `ca6f878e`, the nine-language native link moves `main_BSS_END`
+For the historical always-visible-panel change, against parent `ca6f878e`, the nine-language native link moved `main_BSS_END`
 from `0x801ce54c` to `0x801ce1e0` (−876 bytes); aligned heap grows from
 186,800 to 187,664 bytes (+864).
 MENU stays at 55,172 bytes, with 124 bytes spare. The title block grows by
@@ -209,6 +213,21 @@ EVL's rounded read ends at `0x8006c000`, below FISH at `0x80070000`;
 MENU's rounded read ends at `0x800602e0`, below the title block.
 All 320 actual-archive setups fit; the tightest margin grows from 2,080 to
 2,944 bytes on screen 207.
+
+
+The conditional-popup restoration was measured against `81238665` with matching
+nine-language builds and `MOD_VERSION=v0.0.7`. `main_BSS_END` falls from
+`0x801ceaec` to `0x801cea90` (−92 B); aligned heap grows from **185,360 to
+185,440 B** (+80 B). The 111-byte localized `MOD_NOTICE_TEXT` aggregate lives in
+MENU, keeping even its short fields out of resident small-data storage. MENU
+becomes **53,596 B**, with **1,700 B spare**, and still reads 27 sectors. The
+title block ends at `0x8006c464`, 64 B earlier; its rounded read still ends at
+`0x8006c800`, below FISH. Drawing and the 16-byte cache remain in EVL.
+
+General heapcheck passes. All **320 actual-archive screen setups** fit; the
+minimum on **screen 207 grows from 640 to 720 B**. The nine-language title-storage
+check verifies that the aggregate is in MENU, the code/cache are in EVL, and
+title bytes remain identical across languages. No new heap allocation is added.
 
 
 ### MAPHEAD buffer (patches 0004, 0091)
