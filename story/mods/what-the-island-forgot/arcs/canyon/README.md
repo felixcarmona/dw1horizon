@@ -16,8 +16,22 @@ Leave through the tunnel, Rift and Descent to screen 42, then return through
 still follows the mod's handler. Ride to 37 (section 53), hear Shellmon's plea on
 bridge 39, and use 37's lift back to the fortress (section 54). Leave on foot,
 ride the lower canyon lift up to 38 and return through 43 and 37 to Shellmon on
-127. Breaking the Motor recruits Shellmon immediately instead, with the shared
-join announcement. While CHASING, returning by the Shaft lift and choosing
+127. The Motor's destruction choice is offered only after hearing Shellmon's plea
+on bridge 39 (`shellmon_plea_heard`, original saved flag 182). Visiting the Engine
+Room first leaves the Motor intact and still settles the chase, preserving the
+notebook and tunnel route. After hearing the plea, return by the mended cable;
+the Engine Room offers the choice again. Breaking the Motor then recruits
+Shellmon with the shared join announcement. Declining still permits the original
+rescue or a later change of mind. No new save allocation is needed: existing
+plea/recruitment flags and `save.lock` retain their meanings, and already broken
+Motor/recruited saves are left intact. This is script-only, with no main-executable
+or heap growth. Run the offline regression with:
+
+```sh
+python3 -m unittest discover -s story/mods/what-the-island-forgot/test -p test_shellmon.py
+```
+
+While CHASING, returning by the Shaft lift and choosing
 "Not down there" also falls through to the base menu.
 
 These routes were exercised on an origin/main English disc at the original
