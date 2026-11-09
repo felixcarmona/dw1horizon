@@ -117,7 +117,7 @@ class GuardTests(unittest.TestCase):
         self.assertIn('imported Mega parent must be Ultimate',
                       self.errors(lambda s, k: k[p].append(c)))
 
-    def test_picker_retains_a_qualifying_losers_average(self):
+    def test_old_average_no_longer_excludes_qualifiers(self):
         rows = {}
         for t, stat in ((1, 'offense'), (2, 'hp'), (3, 'mp')):
             row = dict.fromkeys(('digimon',) + T.ALL +
@@ -130,6 +130,8 @@ class GuardTests(unittest.TestCase):
         # target 3 then averages (200+600)/2, tying target 1.
         self.assertEqual(T.E.pick(10, [1, 2, 3], rows, {1: 5, 2: 5, 3: 5},
                                   stats, 0, 30, 'stats'), 1)
+        self.assertEqual(T.E.outcomes(10, [1, 2, 3], rows, {1: 5, 2: 5, 3: 5},
+                                     stats, 0, 30, 'stats'), (1, 2, 3))
 
     def test_shadowed_rookie_routes_have_ordinary_picker_witnesses(self):
         _, reqs, levels = T.model(self.sp)
@@ -141,8 +143,8 @@ class GuardTests(unittest.TestCase):
             with self.subTest(parent=parent, child=child):
                 p, c = self.names[parent], self.names[child]
                 stats = dict(zip(T.ALL, values))
-                self.assertEqual(T.E.pick(p, self.kids[p], reqs, levels, stats,
-                                          care, weight, 'stats', (0, 0, 100, 100)), c)
+                self.assertIn(c, T.E.outcomes(p, self.kids[p], reqs, levels, stats,
+                                             care, weight, 'stats', (0, 0, 100, 100)))
                 # Changing a shared requirement must leave every sibling reachable.
                 for other_parent, children in self.kids.items():
                     if c in children:
@@ -163,13 +165,13 @@ class GuardTests(unittest.TestCase):
             with self.subTest(child=self.sp[child]['name']):
                 state = T.E.canonical(p, child, reqs, levels)
                 stats, care, weight, bonus = state
-                self.assertEqual(T.E.pick(p, self.kids[p], reqs, levels, stats,
-                                          care, weight, 'stats', bonus), child)
+                self.assertIn(child, T.E.outcomes(p, self.kids[p], reqs, levels, stats,
+                                                  care, weight, 'stats', bonus))
                 checked = 0
                 for stats, care, weight, bonus in T.E.states(
                         p, child, self.kids[p], before, levels, 'stats'):
-                    self.assertEqual(T.E.pick(p, self.kids[p], reqs, levels, stats,
-                                              care, weight, 'stats', bonus), child)
+                    self.assertIn(child, T.E.outcomes(p, self.kids[p], reqs, levels, stats,
+                                                      care, weight, 'stats', bonus))
                     checked += 1
                 self.assertGreater(checked, 0)
         for parent, children in self.kids.items():
@@ -276,8 +278,8 @@ class GuardTests(unittest.TestCase):
             self.assertEqual(witness['sessions'], 0)
         for p in (46, 4, 57):
             stats = dict(hp=1500, mp=1500, offense=150, defense=150, speed=150, brain=150)
-            self.assertEqual(T.E.pick(p, self.kids[p], reqs, levels, stats, 0, 40, 'stats',
-                                     (0, 0, 100, 100)), 238)
+            self.assertIn(238, T.E.outcomes(p, self.kids[p], reqs, levels, stats, 0, 40, 'stats',
+                                        (0, 0, 100, 100)))
         for p in (46, 4, 57):
             self.assertIn(24, self.sp[p]['off']['evolution']['to'])
             # Legacy reverse links may remain, but the off picker excludes non-vanilla targets.
@@ -342,7 +344,7 @@ class GuardTests(unittest.TestCase):
         p = self.names['Kunemon']
         self.assertIn('Kunemon: 0 champion', self.errors(lambda s, k: k[p].clear()))
 
-    def test_identical_picker_average(self):
+    def test_identical_stat_groups_can_both_qualify(self):
         sp = copy.deepcopy(self.sp)
         c, sibling = self.names['Assaultmon'], self.names['Datamon']
         target = sp[c]['evolution']['requirements']
@@ -351,7 +353,7 @@ class GuardTests(unittest.TestCase):
             target[stat] = other[stat]
         table = {'children': {'Assaultmon': {'parents': ['Tankmon']}}}
         errors, _, _ = practical_errors(sp, self.kids, table)
-        self.assertTrue(any('identical sibling picker average' in error for error in errors))
+        self.assertEqual(errors, [])
 
     def test_baby_dead_end(self):
         p = self.names['Koromon']

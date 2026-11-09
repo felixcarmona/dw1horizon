@@ -15,7 +15,8 @@
           "New memory-card saves use one block. Older two-block saves still load, and interrupted writes keep a complete copy. Damaged extended progress is reported instead of silently discarded.",
           "Evolution requirements show time still needed and warn when remaining lifetime is too short. First partners now have the same starting lifetime as later births.",
           "Revised technique lists better suit more partners, including Tentomon and several Filth Digimon. Updating may replace or clear some equipped techniques; learned techniques are kept. Defense above 999 no longer reduces almost every hit to 1.",
-          "Many partners have improved size, walking, attack animations, attachments and sounds, including Armageddemon, KingEtemon, Silphymon and Valkyrimon. MP training x5 finishes sooner with the same gains and care costs."
+          "Many partners have improved size, walking, attack animations, attachments and sounds, including Armageddemon, KingEtemon, Silphymon and Valkyrimon. MP training x5 finishes sooner with the same gains and care costs.",
+          "When several Rookie-to-Champion or Champion-to-Ultimate targets qualify, evolution now chooses among them at random with equal chances. Reloading a memory-card save with different timing can give another result."
         ],
         "fixed": [
           "Continuing a save keeps the tamer in view when you move immediately. Starting a New Game after returning to the title no longer keeps the previous partner’s age.",
@@ -40,7 +41,8 @@
           "Las partidas nuevas ocupan un bloque de tarjeta. Las antiguas de dos bloques siguen cargando y una escritura interrumpida conserva una copia completa. Si el progreso ampliado está dañado, se avisa en vez de descartarlo en silencio.",
           "Los requisitos de evolución muestran cuánto tiempo falta y avisan si la vida restante no alcanza. El primer compañero recibe ahora la misma duración de vida inicial que los nacidos después.",
           "Las listas de técnicas se ajustan mejor a más compañeros, incluidos Tentomon y varios Digimon de Suciedad. Al actualizar, algunas técnicas equipadas pueden sustituirse o quitarse; se conservan las aprendidas. La Defensa superior a 999 ya no reduce casi todos los golpes a 1.",
-          "Muchos compañeros mejoran su tamaño, pasos, ataques, accesorios y sonidos, incluidos Armageddemon, KingEtemon, Silphymon y Valkyrimon. El entrenamiento de MP x5 termina antes con las mismas ganancias y costes de cuidados."
+          "Muchos compañeros mejoran su tamaño, pasos, ataques, accesorios y sonidos, incluidos Armageddemon, KingEtemon, Silphymon y Valkyrimon. El entrenamiento de MP x5 termina antes con las mismas ganancias y costes de cuidados.",
+          "Si varios destinos de Rookie a Champion o de Champion a Ultimate cumplen los requisitos, la evolución elige al azar con la misma probabilidad. Recargar una partida de tarjeta variando el momento puede dar otro resultado."
         ],
         "fixed": [
           "Al continuar una partida, el domador permanece en pantalla aunque te muevas de inmediato. Empezar una partida nueva tras volver al título ya no conserva la edad del compañero anterior.",
@@ -65,7 +67,8 @@
           "Novos saves usam um bloco do cartão de memória. Os saves antigos de dois blocos continuam carregando, e gravações interrompidas preservam uma cópia completa. O jogo avisa quando o progresso ampliado está danificado, em vez de descartá-lo silenciosamente.",
           "Os requisitos de evolução mostram quanto tempo falta e avisam quando a vida restante não é suficiente. O primeiro parceiro agora recebe a mesma duração de vida inicial dos nascimentos seguintes.",
           "As listas de técnicas combinam melhor com mais parceiros, incluindo Tentomon e vários Digimon de Sujeira. Ao atualizar, algumas técnicas equipadas podem ser substituídas ou removidas; as técnicas aprendidas são preservadas. Defesa acima de 999 não reduz mais quase todo golpe a 1.",
-          "Vários parceiros têm melhorias de tamanho, caminhada, ataques, acessórios e sons, incluindo Armageddemon, KingEtemon, Silphymon e Valkyrimon. O treino de MP x5 termina mais cedo com os mesmos ganhos e custos de cuidados."
+          "Vários parceiros têm melhorias de tamanho, caminhada, ataques, acessórios e sons, incluindo Armageddemon, KingEtemon, Silphymon e Valkyrimon. O treino de MP x5 termina mais cedo com os mesmos ganhos e custos de cuidados.",
+          "Quando vários destinos de Rookie para Champion ou de Champion para Ultimate se qualificam, a evolução sorteia entre eles com chances iguais. Recarregar um save do cartão variando o momento pode dar outro resultado."
         ],
         "fixed": [
           "Ao continuar um save, o domador fica visível mesmo se você se mover imediatamente. Começar um Novo Jogo após voltar ao título não mantém mais a idade do parceiro anterior.",
@@ -90,7 +93,8 @@
           "Les nouvelles sauvegardes occupent un bloc de carte mémoire. Les anciennes à deux blocs restent lisibles et une écriture interrompue conserve une copie complète. Les données de progression étendues endommagées sont signalées au lieu d’être supprimées en silence.",
           "Les conditions d’évolution indiquent le temps restant et avertissent si la durée de vie restante est trop courte. Le premier partenaire reçoit désormais la même durée de vie initiale que les naissances suivantes.",
           "Les listes de techniques conviennent mieux à davantage de partenaires, dont Tentomon et plusieurs Digimon de Saleté. La mise à jour peut remplacer ou retirer certaines techniques équipées ; les techniques apprises sont conservées. Une Défense supérieure à 999 ne réduit plus presque tous les coups à 1.",
-          "De nombreux partenaires bénéficient d’améliorations de taille, de démarche, d’attaques, d’accessoires et de sons, dont Armageddemon, KingEtemon, Silphymon et Valkyrimon. L’entraînement MP x5 se termine plus vite, avec les mêmes gains et coûts de soins."
+          "De nombreux partenaires bénéficient d’améliorations de taille, de démarche, d’attaques, d’accessoires et de sons, dont Armageddemon, KingEtemon, Silphymon et Valkyrimon. L’entraînement MP x5 se termine plus vite, avec les mêmes gains et coûts de soins.",
+          "Si plusieurs cibles de Rookie vers Champion ou de Champion vers Ultimate sont admissibles, l’évolution tire au sort à chances égales. Recharger une sauvegarde de carte mémoire en variant le moment peut donner un autre résultat."
         ],
         "fixed": [
           "Après le chargement d’une sauvegarde, le dompteur reste visible même si vous bougez immédiatement. Commencer une nouvelle partie après un retour au titre ne conserve plus l’âge du partenaire précédent.",
@@ -115,7 +119,8 @@
           "Neue Speicherkartenspielstände belegen einen Block. Ältere Spielstände mit zwei Blöcken bleiben lesbar, und unterbrochene Schreibvorgänge lassen eine vollständige Kopie zurück. Beschädigter erweiterter Fortschritt wird gemeldet, statt unbemerkt verworfen zu werden.",
           "Die Evolutionsanforderungen zeigen die verbleibende Wartezeit und warnen, wenn die restliche Lebenszeit zu kurz ist. Der erste Partner erhält jetzt dieselbe anfängliche Lebensdauer wie spätere Neugeborene.",
           "Überarbeitete Techniklisten passen besser zu weiteren Partnern, darunter Tentomon und mehrere Schmutz-Digimon. Beim Aktualisieren werden manche ausgerüsteten Techniken ersetzt oder abgelegt; erlernte Techniken bleiben erhalten. Verteidigung über 999 senkt nicht mehr fast jeden Treffer auf 1 Schaden.",
-          "Viele Partner haben Verbesserungen bei Größe, Gang, Angriffen, Anbauteilen und Geräuschen erhalten, darunter Armageddemon, KingEtemon, Silphymon und Valkyrimon. MP-Training x5 endet früher, bei gleichen Zuwächsen und Pflegekosten."
+          "Viele Partner haben Verbesserungen bei Größe, Gang, Angriffen, Anbauteilen und Geräuschen erhalten, darunter Armageddemon, KingEtemon, Silphymon und Valkyrimon. MP-Training x5 endet früher, bei gleichen Zuwächsen und Pflegekosten.",
+          "Erfüllen mehrere Ziele von Rookie zu Champion oder Champion zu Ultimate die Anforderungen, entscheidet nun der Zufall mit gleichen Chancen. Erneutes Laden des Speicherkartenspielstands mit anderem Timing kann ein anderes Ergebnis liefern."
         ],
         "fixed": [
           "Beim Fortsetzen bleibt der Tamer sichtbar, auch wenn du sofort losläufst. Ein neues Spiel nach der Rückkehr zum Titel übernimmt nicht mehr das Alter des vorherigen Partners.",
@@ -140,7 +145,8 @@
           "I nuovi salvataggi occupano un blocco della scheda di memoria. Quelli vecchi da due blocchi continuano a caricarsi e una scrittura interrotta lascia una copia completa. I progressi aggiuntivi danneggiati vengono segnalati anziché scartati senza avviso.",
           "I requisiti di evoluzione mostrano il tempo mancante e avvisano se la vita restante è troppo breve. Il primo compagno ora riceve la stessa durata di vita iniziale delle nascite successive.",
           "Gli elenchi di tecniche si adattano meglio a più compagni, tra cui Tentomon e vari Digimon Sporcizia. L’aggiornamento può sostituire o rimuovere alcune tecniche equipaggiate; quelle apprese restano. La Difesa oltre 999 non riduce più quasi tutti i colpi a 1.",
-          "Molti compagni migliorano per dimensioni, andatura, attacchi, accessori e suoni, tra cui Armageddemon, KingEtemon, Silphymon e Valkyrimon. L’allenamento MP x5 finisce prima con gli stessi guadagni e costi di cura."
+          "Molti compagni migliorano per dimensioni, andatura, attacchi, accessori e suoni, tra cui Armageddemon, KingEtemon, Silphymon e Valkyrimon. L’allenamento MP x5 finisce prima con gli stessi guadagni e costi di cura.",
+          "Se più mete da Rookie a Champion o da Champion a Ultimate sono idonee, l’evoluzione sceglie a caso con uguali probabilità. Ricaricare il salvataggio della memory card variando i tempi può dare un risultato diverso."
         ],
         "fixed": [
           "Caricando un salvataggio, il domatore resta visibile anche se ti muovi subito. Iniziare una nuova partita dopo essere tornati al titolo non conserva più l’età del compagno precedente.",
@@ -165,7 +171,8 @@
           "新しいメモリーカードのセーブは1ブロックを使用します。従来の2ブロックのセーブも読み込め、書き込みが中断されても完全なコピーが残ります。追加の進行データが壊れている場合は、黙って破棄せずエラーを表示します。",
           "進化条件に残りの待ち時間を表示し、寿命が足りない場合は警告します。最初のパートナーも、転生後と同じ初期寿命になりました。",
           "テントモンや複数の汚物系デジモンなどのわざ構成を、それぞれに合う内容へ見直しました。更新時に装備中のわざが置き換わったり外れたりする場合がありますが、覚えたわざは保持されます。防御力が999を超えても、ほぼすべての被ダメージが1になることはなくなりました。",
-          "Armageddemon、KingEtemon、Silphymon、Valkyrimonなど、多くのパートナーの大きさ、歩き方、攻撃動作、付属パーツ、音を改善しました。MPの5回連続トレーニングは、効果や世話の消費を変えずに早く終わるようになりました。"
+          "Armageddemon、KingEtemon、Silphymon、Valkyrimonなど、多くのパートナーの大きさ、歩き方、攻撃動作、付属パーツ、音を改善しました。MPの5回連続トレーニングは、効果や世話の消費を変えずに早く終わるようになりました。",
+          "成長期から成熟期、成熟期から完全体への進化で複数の候補が条件を満たす場合、等確率でランダムに選ぶようになりました。同じメモリーカードのセーブでも、読み込み直して操作のタイミングを変えると別の結果になることがあります。"
         ],
         "fixed": [
           "セーブを読み込んですぐに動いても、テイマーが画面内に収まるようになりました。タイトルへ戻ってから新しくゲームを始めても、前のパートナーの年齢が残らなくなりました。",
@@ -190,7 +197,8 @@
           "Les partides noves ocupen un bloc de targeta. Les antigues de dos blocs es continuen carregant i una escriptura interrompuda conserva una còpia completa. Si el progrés ampliat està malmès, s’avisa en lloc de descartar-lo en silenci.",
           "Els requisits d’evolució mostren quant de temps falta i avisen si la vida restant no arriba. El primer company rep ara la mateixa durada de vida inicial que els nascuts després.",
           "Les llistes de tècniques s’ajusten millor a més companys, inclosos Tentomon i diversos Digimon de Brutícia. En actualitzar, algunes tècniques equipades es poden substituir o treure; es conserven les apreses. La Defensa superior a 999 ja no redueix gairebé tots els cops a 1.",
-          "Molts companys milloren en mida, passos, atacs, accessoris i sons, inclosos Armageddemon, KingEtemon, Silphymon i Valkyrimon. L’entrenament d’MP x5 acaba abans amb els mateixos guanys i costos de cures."
+          "Molts companys milloren en mida, passos, atacs, accessoris i sons, inclosos Armageddemon, KingEtemon, Silphymon i Valkyrimon. L’entrenament d’MP x5 acaba abans amb els mateixos guanys i costos de cures.",
+          "Si diversos destins de Rookie a Champion o de Champion a Ultimate compleixen els requisits, l’evolució tria a l’atzar amb la mateixa probabilitat. Tornar a carregar la partida de targeta variant el moment pot donar un altre resultat."
         ],
         "fixed": [
           "En continuar una partida, el domador es manté en pantalla encara que et moguis de seguida. Començar una partida nova després de tornar al títol ja no conserva l’edat del company anterior.",
@@ -215,7 +223,8 @@
           "新建的记忆卡存档只占一个区块。旧的双区块存档仍可读取，写入中断也会保留一份完整副本。扩展进度数据损坏时会报错，不再静默丢弃。",
           "进化条件会显示还需等待的时间，并在剩余寿命不足时警告。初代搭档的初始寿命现在与之后转生的搭档相同。",
           "重新调整了甲虫兽及多种污物系数码宝贝等搭档的招式列表，使其更符合各自特点。更新时，部分已装备招式可能被替换或卸下，已学会的招式仍会保留。防御超过999不再让几乎所有攻击都只造成1点伤害。",
-          "改善了Armageddemon、KingEtemon、Silphymon、Valkyrimon等许多搭档的体型、步态、攻击动作、附属部件与声音。MP五连训练结束更快，收益与照顾消耗不变。"
+          "改善了Armageddemon、KingEtemon、Silphymon、Valkyrimon等许多搭档的体型、步态、攻击动作、附属部件与声音。MP五连训练结束更快，收益与照顾消耗不变。",
+          "成长期到成熟期或成熟期到完全体时，若多个目标符合条件，现在会等概率随机选择。重新读取记忆卡存档并改变操作时机，可能得到不同结果。"
         ],
         "fixed": [
           "读档后立即移动，驯兽师也会保持在画面内。返回标题后开始新游戏，不再沿用上一个搭档的年龄。",

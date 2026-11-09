@@ -198,7 +198,7 @@ def practical(cur, child, kids, reqs, levels, sp, base=None, budget=84, kind='st
                     if sessions + (battles + 2) // 3 > awake:
                         continue
                     bonus = (battles, 0, 100, happiness)
-                    if E.pick(cur, kids[cur], reqs, levels, st, mistakes, weight, kind, bonus) == child:
+                    if child in E.outcomes(cur, kids[cur], reqs, levels, st, mistakes, weight, kind, bonus):
                         result = dict(stats=vals, care=mistakes, weight=weight, sessions=sessions, bonus=bonus)
                         _PRACTICAL[cache_key] = result
                         return result
@@ -316,13 +316,6 @@ def resolve(sp, editable, primary, problems):
             if not E.reachable(p, c, kids[p], reqs, levels, kind): return False
             if levels[p] == 2 and not rookie_witness(p, c, kids, reqs, levels, sp): return False
             if levels[p] == 4 and not practical(p, c, kids, reqs, levels, sp): return False
-            if levels[p] == 4 and c in editable and c >= S.NUM_ORIGINAL:
-                signature = {stat for stat in ALL if reqs[c][stat] != -1}
-                # Identical averages always tie, so the earlier sibling wins
-                # every overlap even if care/weight bands let both win alone.
-                if any(signature == {stat for stat in ALL if reqs[k][stat] != -1}
-                       for k in kids[p] if k != c and k in reqs):
-                    return False
             if c in primary and levels[p] == 5:
                 if not chain_witness(p, c, kids, reqs, levels, sp): return False
             old = [k for k in kids[p] if k not in managed]
@@ -350,7 +343,7 @@ def resolve(sp, editable, primary, problems):
 
 
 def requirement(s, parents, rookie_slot=0):
-    """Initial row for the level; resolve() separates competing averages."""
+    """Initial row for the level; resolve() ensures every route has an attainable qualifying state."""
     req = {k: -1 for k in ('digimon',) + ALL + ('care', 'weight', 'discipline', 'happiness', 'battles', 'techs')}
     req.update(digimon=parents[0], flags=16)
     if s['level'] == 'rookie':

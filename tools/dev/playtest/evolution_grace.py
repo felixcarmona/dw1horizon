@@ -44,7 +44,7 @@ def watch(e):
 if EVOP then for _,b in ipairs(EVOP.bp) do b:remove() end end
 EVOP={{bp={{}},calls=0,target=-1,applied=0}}
 local function hook(a,f) local b=PCSX.addBreakpoint(a,'Exec',4,'evolution-grace-proof',f);EVOP.bp[#EVOP.bp+1]=b;return b end
-hook({a('getNaturalEvolutionTarget')},function()
+hook({a('rollNaturalEvolutionTarget' if e.has('rollNaturalEvolutionTarget') else 'getNaturalEvolutionTarget')},function()
  EVOP.calls=EVOP.calls+1
  local b;b=hook(PCSX.getRegisters().GPR.n.ra,function() EVOP.target=PCSX.getRegisters().GPR.n.v0;b:remove() end)
 end)
@@ -113,6 +113,9 @@ def case(e, state, out, species, enabled, before):
         e.run('shot', str(out / (label + '-blocked.png')))
         # Identical eligible partner, clearing only protection, proves the gate.
         e.poke('HAS_IMMORTAL_HOUR', struct.pack('<i', 0))
+    if not before:
+        target = int(e.run('lua', 'return EVOP.target').strip()) & 0xffffffff
+        assert target in qualified, ('non-qualifying evolution', target, qualified)
     finish_evolution(e, target)
     assert int(e.run('lua','return EVOP.applied').strip()) == 1
     e.gs('set', 'gametime_running=0')

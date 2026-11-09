@@ -1,0 +1,355 @@
+From f668aba22e7fbc0da63e9ff02418419f8588c2e9 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Mon, 9 Nov 2026 08:34:38 +0000
+Subject: [PATCH] Choose among qualifying evolutions at random
+
+Gather the admitted ordinary targets before drawing so every eligible slot has
+an equal chance. Keep the requirement threshold, model/options checks, ordered
+raised-history exclusion and fallback, and leave In-Training and special routes
+alone. Remove the stat-average comparison and its retained accumulator.
+
+Mix the existing 15-bit game RNG with the live refresh counter at evolution and
+reject the incomplete modulo tail. Keep training previews deterministic and
+free of RNG draws. Store the translated Square-popup hint in MENU.
+---
+ config/us/overlay.ld     |   1 +
+ include/dw/evolution.h   |   7 +-
+ src/main/evolution.c     | 185 +++++++++++++--------------------------
+ src/main/game_menu.c     |   7 +-
+ src/main/partner_impl.c  |   6 +-
+ text/main/game_menu.yaml |   3 +
+ 6 files changed, 77 insertions(+), 132 deletions(-)
+
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index c50870a..09350fd 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -969,6 +969,7 @@ SECTIONS
+                 .rodata.CHART_POPUP_NEEDS
+                 .rodata.CHART_POPUP_NO
+                 .rodata.CHART_POPUP_READY
++                .rodata.CHART_POPUP_RANDOM
+                 .rodata.CHART_POPUP_SHORT
+                 .rodata.CHART_POPUP_STATS
+                 .rodata.CHART_POPUP_STATS_ANY
+diff --git a/include/dw/evolution.h b/include/dw/evolution.h
+index 618e15c..8a747f3 100644
+--- a/include/dw/evolution.h
++++ b/include/dw/evolution.h
+@@ -5,12 +5,13 @@
+ #include <dw/params.h>
+ #include <dw/types.h>
+ 
+-/* Deterministic natural target lookup; callers check the due hour. Does not change partner state. */
++/* Callers check the due hour. The lookup previews eligibility without RNG/state changes. */
+ int16_t getNaturalEvolutionTarget(int32_t currentDigimon);
++int16_t rollNaturalEvolutionTarget(int32_t currentDigimon);
+ int16_t getFreshEvolutionTarget(int32_t currentDigimon);
+ int16_t getInTrainingEvolutionTarget(int32_t currentDigimon);
+-int16_t getRookieEvolutionTarget(int32_t currentDigimon);
+-int16_t getChampionEvolutionTarget(int32_t currentDigimon);
++int16_t getRookieEvolutionTarget(int32_t currentDigimon, int32_t roll);
++int16_t getChampionEvolutionTarget(int32_t currentDigimon, int32_t roll);
+ /* MOD (machinedramon): Megadramon/Gigadramon -> Machinedramon */
+ int16_t getModUltimateEvolutionTarget(int32_t currentDigimon);
+ int32_t handleSpecialEvolutions(int32_t mode, Entity *entity);
+diff --git a/src/main/evolution.c b/src/main/evolution.c
+index 6a3fa60..671c062 100644
+--- a/src/main/evolution.c
++++ b/src/main/evolution.c
+@@ -1,3 +1,5 @@
++#include <libetc.h>
++
+ #include "dw/partner.h"
+ #include <dw/evolution.h>
+ 
+@@ -964,137 +966,59 @@ int16_t getInTrainingEvolutionTarget(int32_t currentDigimon) {
+   return currentBest;
+ }
+ 
+-int16_t getRookieEvolutionTarget(int32_t currentDigimon) {
+-  DigimonId *targetPtr; /* MOD: was int8_t */
+-  int32_t currentBestDigimon;
+-  int32_t i;
+-  int16_t bestScore;
+-  int16_t statCount;
+-  int16_t statTotal;
+-  int8_t isMaxCM;
+-  int8_t isMaxBattles;
+-
+-  targetPtr = getEvolutionPath(currentDigimon)->to; /* MOD (species) */
+-  currentBestDigimon = -1;
+-  bestScore = statTotal = statCount = 0U;
++/* Admission is independent of the roll, including the route-order raised filter.
++ * A first unraised qualifier becomes the history anchor, excluding later raised
++ * targets. Earlier admitted targets remain eligible. No persistent pool or data. */
++static int16_t chooseQualifiedEvolution(int32_t currentDigimon, int32_t roll)
++{
++  DigimonId *targets = getEvolutionPath(currentDigimon)->to;
++  DigimonId qualified[6];
++  int32_t count = 0;
++  int32_t anchor = -1;
++  int32_t i, target, sample, ceiling;
+ 
+   for (i = 0; i < 6; i++) {
+-    if (*targetPtr == -1 || !isPartnerModelFit(*targetPtr) || !modSpeciesAllowed(*targetPtr)) { /* MOD (scale): a model that does not fit is no target; MOD (options): NEW DIGIMON off, the original's species only */
+-      targetPtr++;
++    target = targets[i];
++    if (target == -1 || !isPartnerModelFit(target) || !modSpeciesAllowed(target))
+       continue;
+-    }
+-
+-    isMaxCM = (EVO_REQ_ROW(*targetPtr).flags & 0x10) >> 4;
+-    isMaxBattles = EVO_REQ_ROW(*targetPtr).flags & 1;
+-    if (calculateRequirementScore(currentDigimon, *targetPtr, isMaxCM,
+-                                  isMaxBattles, currentBestDigimon) >= evoPassPoints()) {
+-      if (EVO_REQ_ROW((int32_t)*targetPtr).hp != -1) {
+-        statTotal += PARTNER_ENTITY.digimonEntity.stats.base.hp / 10;
+-        statCount++;
+-      }
+-      if (EVO_REQ_ROW((int32_t)*targetPtr).mp != -1) {
+-        statTotal += PARTNER_ENTITY.digimonEntity.stats.base.mp / 10;
+-        statCount++;
+-      }
+-      if (EVO_REQ_ROW((int32_t)*targetPtr).offense != -1) {
+-        statTotal += PARTNER_ENTITY.digimonEntity.stats.base.off;
+-        statCount++;
+-      }
+-      if (EVO_REQ_ROW((int32_t)*targetPtr).defense != -1) {
+-        statTotal += PARTNER_ENTITY.digimonEntity.stats.base.def;
+-        statCount++;
+-      }
+-      if (EVO_REQ_ROW((int32_t)*targetPtr).speed != -1) {
+-        statTotal += PARTNER_ENTITY.digimonEntity.stats.base.speed;
+-        statCount++;
+-      }
+-      if (EVO_REQ_ROW((int32_t)*targetPtr).brain != -1) {
+-        statTotal += PARTNER_ENTITY.digimonEntity.stats.base.brain;
+-        statCount++;
+-      }
+-
+-      statTotal /= statCount;
+-      if (bestScore < statTotal) {
+-        currentBestDigimon = *targetPtr;
+-        bestScore = statTotal;
+-        statTotal = statCount = 0;
+-      }
+-    }
+-    targetPtr++;
++    if (calculateRequirementScore(currentDigimon, target,
++          (EVO_REQ_ROW(target).flags & 0x10) >> 4,
++          EVO_REQ_ROW(target).flags & 1, anchor) < evoPassPoints())
++      continue;
++    qualified[count++] = target;
++    anchor = target;
+   }
++  if (!count)
++    return -1;
++  /* Training only asks whether a target exists. Never consume RNG there. */
++  if (!roll || count == 1)
++    return qualified[0];
++  /* The existing RNG has 15 bits. Mix the live refresh counter at evolution,
++   * not saved age/time or a new-game seed: reload timing can change the choice.
++   * Reject the short tail rather than give the first slots extra probability. */
++  ceiling = 32768 - 32768 % count;
++  do {
++    sample = randomLimit(32768) ^ (VSync(-1) & 32767);
++  } while (sample >= ceiling);
++  return qualified[sample % count];
++}
+ 
+-  /* MOD (evolution rules as data): the default target (Numemon) and its wait, from content/tables/evolution-rules.json */
+-  if (currentBestDigimon == -1 && MOD_EVO_TIMING[MOD_EVO_FALLBACK_HOURS] >= 0 &&
++int16_t getRookieEvolutionTarget(int32_t currentDigimon, int32_t roll)
++{
++  int16_t target = chooseQualifiedEvolution(currentDigimon, roll);
++  if (target == -1 && MOD_EVO_TIMING[MOD_EVO_FALLBACK_HOURS] >= 0 &&
+       MOD_EVO_TIMING[MOD_EVO_FALLBACK_TARGET] >= 0 &&
+       PARTNER_PARA.evoTimer >= MOD_EVO_TIMING[MOD_EVO_FALLBACK_HOURS])
+-    currentBestDigimon = MOD_EVO_TIMING[MOD_EVO_FALLBACK_TARGET];
+-
+-  return currentBestDigimon;
++    target = MOD_EVO_TIMING[MOD_EVO_FALLBACK_TARGET];
++  return target;
+ }
+ 
+-
+-int16_t getChampionEvolutionTarget(int32_t currentDigimon) {
+-  DigimonId *targetPtr; /* MOD: was int8_t */
+-  int32_t currentBestDigimon;
+-  int32_t i;
+-  int16_t bestScore;
+-  int16_t statCount;
+-  int16_t statTotal;
+-  int8_t isMaxCM;
+-  int8_t isMaxBattles;
+-
+-  targetPtr = getEvolutionPath(currentDigimon)->to; /* MOD (species) */
+-  currentBestDigimon = -1;
+-  bestScore = statTotal = statCount = 0U;
+-
+-  for (i = 0; i < 6; i++) {
+-    if (*targetPtr == -1 || !isPartnerModelFit(*targetPtr) || !modSpeciesAllowed(*targetPtr)) { /* MOD (scale): a model that does not fit is no target; MOD (options): NEW DIGIMON off, the original's species only */
+-      targetPtr++;
+-      continue;
+-    }
+-
+-    isMaxCM = (EVO_REQ_ROW(*targetPtr).flags & 0x10) >> 4;
+-    isMaxBattles = EVO_REQ_ROW(*targetPtr).flags & 1;
+-    if (calculateRequirementScore(currentDigimon, *targetPtr, isMaxCM,
+-                                  isMaxBattles, currentBestDigimon) >= evoPassPoints()) {
+-      if (EVO_REQ_ROW((int32_t)*targetPtr).hp != -1) {
+-        statTotal += PARTNER_ENTITY.digimonEntity.stats.base.hp / 10;
+-        statCount++;
+-      }
+-      if (EVO_REQ_ROW((int32_t)*targetPtr).mp != -1) {
+-        statTotal += PARTNER_ENTITY.digimonEntity.stats.base.mp / 10;
+-        statCount++;
+-      }
+-      if (EVO_REQ_ROW((int32_t)*targetPtr).offense != -1) {
+-        statTotal += PARTNER_ENTITY.digimonEntity.stats.base.off;
+-        statCount++;
+-      }
+-      if (EVO_REQ_ROW((int32_t)*targetPtr).defense != -1) {
+-        statTotal += PARTNER_ENTITY.digimonEntity.stats.base.def;
+-        statCount++;
+-      }
+-      if (EVO_REQ_ROW((int32_t)*targetPtr).speed != -1) {
+-        statTotal += PARTNER_ENTITY.digimonEntity.stats.base.speed;
+-        statCount++;
+-      }
+-      if (EVO_REQ_ROW((int32_t)*targetPtr).brain != -1) {
+-        statTotal += PARTNER_ENTITY.digimonEntity.stats.base.brain;
+-        statCount++;
+-      }
+-
+-      statTotal /= statCount;
+-      if (bestScore < statTotal) {
+-        currentBestDigimon = *targetPtr;
+-        bestScore = statTotal;
+-        statTotal = statCount = 0;
+-      }
+-    }
+-    targetPtr++;
+-  }
+-
+-  return currentBestDigimon;
++int16_t getChampionEvolutionTarget(int32_t currentDigimon, int32_t roll)
++{
++  return chooseQualifiedEvolution(currentDigimon, roll);
+ }
+ 
++
+ // clang-format off
+ int32_t handleSpecialEvolutions(mode, entity)
+   int8_t mode;
+@@ -1409,8 +1333,8 @@ int16_t getModUltimateEvolutionTarget(int32_t currentDigimon)
+ 	return -1;
+ }
+ 
+-/* The callers check the due hour. Keep random special-evolution rules in the tick. */
+-int16_t getNaturalEvolutionTarget(int32_t currentDigimon)
++/* The callers check the due hour. Only the evolution tick requests a roll. */
++static int16_t naturalEvolutionTarget(int32_t currentDigimon, int32_t roll)
+ {
+ 	int32_t level = DIGI_PARA(currentDigimon).level;
+ 	int16_t evoTimer = PARTNER_PARA.evoTimer;
+@@ -1421,14 +1345,14 @@ int16_t getNaturalEvolutionTarget(int32_t currentDigimon)
+ 	if (level == 2)
+ 		return getInTrainingEvolutionTarget(currentDigimon);
+ 	if (level == 3)
+-		return getRookieEvolutionTarget(currentDigimon);
++		return getRookieEvolutionTarget(currentDigimon, roll);
+ 	if (level == 4)
+-		return getChampionEvolutionTarget(currentDigimon);
++		return getChampionEvolutionTarget(currentDigimon, roll);
+ 	if (level == LEVEL_ULTIMATE) {
+ 		target = getModUltimateEvolutionTarget(currentDigimon);
+ 		if (target == -1 && MOD_EVO_TIMING[MOD_EVO_ULTIMATE_AGAIN] >= 0 &&
+ 		    evoTimer >= MOD_EVO_TIMING[MOD_EVO_ULTIMATE_AGAIN]) {
+-			target = getChampionEvolutionTarget(currentDigimon);
++			target = getChampionEvolutionTarget(currentDigimon, roll);
+ 			if (target != -1 && evoTimer < MOD_EVO_TIMING[MOD_EVO_MEGA] &&
+ 			    DIGI_PARA(target).level == LEVEL_MEGA)
+ 				target = -1;
+@@ -1436,3 +1360,14 @@ int16_t getNaturalEvolutionTarget(int32_t currentDigimon)
+ 	}
+ 	return target;
+ }
++
++/* The existing lookup remains a read-only preview for training and tools. */
++int16_t getNaturalEvolutionTarget(int32_t currentDigimon)
++{
++  return naturalEvolutionTarget(currentDigimon, 0);
++}
++
++int16_t rollNaturalEvolutionTarget(int32_t currentDigimon)
++{
++  return naturalEvolutionTarget(currentDigimon, 1);
++}
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 54fff8e..854020c 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -4886,6 +4886,8 @@ static const char CHART_POPUP_NO[] __attribute__((section(".rodata.CHART_POPUP_N
+ #define CHART_TEXT_NO ((char *)CHART_POPUP_NO)
+ static const char CHART_POPUP_READY[] __attribute__((section(".rodata.CHART_POPUP_READY"))) = CHART_STR_READY;
+ #define CHART_TEXT_READY ((char *)CHART_POPUP_READY)
++static const char CHART_POPUP_RANDOM[] __attribute__((section(".rodata.CHART_POPUP_RANDOM"))) = CHART_STR_RANDOM;
++#define CHART_TEXT_RANDOM ((char *)CHART_POPUP_RANDOM)
+ static const char CHART_POPUP_SHORT[] __attribute__((section(".rodata.CHART_POPUP_SHORT"))) = CHART_STR_SHORT;
+ #define CHART_TEXT_SHORT ((char *)CHART_POPUP_SHORT)
+ static const char CHART_POPUP_STATS[] __attribute__((section(".rodata.CHART_POPUP_STATS"))) = CHART_STR_STATS;
+@@ -5237,7 +5239,10 @@ static __attribute__((noinline)) void chartCardBuild(int32_t target)
+ 			CHART_CARD_VERDICT_COLOR = 6;
+ 		}
+ 		CHART_CARD_VERDICT_W = drawStringMode(a, 0, CHART_CARD_VERDICT_ROW, FIT_VANILLA);
+-		if (k < evoPassPoints()) {
++		if (hours >= 0 && (DIGI_PARA(CHART_DETAIL_ID).level == LEVEL_ROOKIE ||
++		    DIGI_PARA(CHART_DETAIL_ID).level == LEVEL_CHAMPION)) {
++			CHART_CARD_FOOTER_W = drawStringMode(CHART_TEXT_RANDOM, 0, CHART_CARD_FOOTER_ROW, FIT_VANILLA);
++		} else if (k < evoPassPoints()) {
+ 			sprintf(a, CHART_TEXT_SHORT, evoPassPoints() - k);
+ 			CHART_CARD_FOOTER_W = drawStringMode(a, 0, CHART_CARD_FOOTER_ROW, FIT_VANILLA);
+ 		}
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index df00abf..6d0c315 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -2251,8 +2251,8 @@ void tickConditions(void)
+ #ifdef __MWERKS__
+ 	extern int32_t getFreshEvolutionTarget(int32_t currentDigimon);
+ 	extern int32_t getInTrainingEvolutionTarget(int32_t currentDigimon);
+-	extern int32_t getRookieEvolutionTarget(int32_t currentDigimon);
+-	extern int32_t getChampionEvolutionTarget(int32_t currentDigimon);
++	extern int32_t getRookieEvolutionTarget(int32_t currentDigimon, int32_t roll);
++	extern int32_t getChampionEvolutionTarget(int32_t currentDigimon, int32_t roll);
+ 	extern int16_t tamerGetState(void);
+ #endif
+ 	int16_t evoTimer;
+@@ -2304,7 +2304,7 @@ void tickConditions(void)
+ 		due = level >= 1 && level <= LEVEL_ULTIMATE && MOD_EVO_TIMING[level] >= 0 &&
+ 		      evoTimer >= MOD_EVO_TIMING[level];
+ 		if (due) {
+-			EVOLUTION_TARGET = getNaturalEvolutionTarget(PARTNER_ENTITY.digimonEntity.entity.type);
++			EVOLUTION_TARGET = rollNaturalEvolutionTarget(PARTNER_ENTITY.digimonEntity.entity.type);
+ 			/* The Fresh picker is also used to preview training's stop; only the tick resets its timer. */
+ 			if (level == 1)
+ 				PARTNER_PARA.evoTimer = 0;
+diff --git a/text/main/game_menu.yaml b/text/main/game_menu.yaml
+index 67ee31f..f4511cd 100644
+--- a/text/main/game_menu.yaml
++++ b/text/main/game_menu.yaml
+@@ -343,6 +343,9 @@ CHART_TEXT:
+     CHART_STR_VERDICT:
+       ja: "Met %d of 4. Need %d."
+       en_us: "Met %d of 4. Need %d."
++    CHART_STR_RANDOM:
++      ja: "Random among qualifiers."
++      en_us: "Random among qualifiers."
+     CHART_STR_SHORT:
+       ja: "%d more needed."
+       en_us: "%d more needed."
+-- 
+2.55.0
+

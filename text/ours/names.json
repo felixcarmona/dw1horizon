@@ -133,6 +133,7 @@
  "main.CHART_STR_LIFE": "Life runs out first (%d h left)",
  "main.CHART_STR_SPECIAL": "Special route",
  "main.CHART_STR_VERDICT": "Met %d of 4. Need %d.",
+ "main.CHART_STR_RANDOM": "Random among qualifiers.",
  "main.CHART_STR_SHORT": "%d more needed.",
  "main.CHART_STR_NEEDS": "Needs",
  "main.CHART_STR_HAVE": "You have",

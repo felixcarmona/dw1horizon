@@ -1,5 +1,9 @@
 # Salamon evolving to Gatomon with four care mistakes
 
+Historical v0.0.7 investigation. In v0.0.8, qualifying ordinary targets instead
+share an equal random draw; the care-score explanation below still applies. See
+the [current selection rule](../reference/partner.md#score-calculaterequirementscore).
+
 The reported v0.0.7 result is allowed by the ordinary evolution rules. No species,
 engine or popup change is needed. The documentation needed to explain that
 missing the care group is not a veto and that four requirement points do not

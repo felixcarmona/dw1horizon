@@ -134,6 +134,7 @@
  "main.CHART_STR_LIFE": "Vie trop courte (%d h de vie)",
  "main.CHART_STR_SPECIAL": "Voie spéciale",
  "main.CHART_STR_VERDICT": "%d/4. Il faut %d.",
+ "main.CHART_STR_RANDOM": "Au hasard: cibles aptes.",
  "main.CHART_STR_SHORT": "Encore %d à remplir.",
  "main.CHART_STR_NEEDS": "Requis",
  "main.CHART_STR_HAVE": "Actuel",

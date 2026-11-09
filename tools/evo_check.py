@@ -75,6 +75,7 @@ def score(cur, req, level, st, care, weight, bonus=(0, 0, 0, 0), target=-1, new_
 
 
 def pick(cur, targets, R, levels, st, care, weight, kind, bonus=(0, 0, 0, 0)):
+    # Historical deterministic picker, retained for pre-v0.0.8 comparisons.
     best, best_score = -1, 0
     stat_total, stat_count = 0, 0
     for t in targets:
@@ -99,8 +100,32 @@ def pick(cur, targets, R, levels, st, care, weight, kind, bonus=(0, 0, 0, 0)):
     return best
 
 
+def outcomes(cur, targets, R, levels, st, care, weight, kind, bonus=(0, 0, 0, 0),
+             raised=frozenset(), unavailable=frozenset()):
+    """Current possible outcomes; ordinary qualifiers have equal probability.
+
+    Fixtures assume models/options available unless explicitly excluded. Raised
+    IDs are gain-target IDs (identical to species IDs in these content records).
+    In-Training and timed special rules retain their deterministic picker.
+    """
+    if kind in ('in-training', 'rule'):
+        target = pick(cur, targets, R, levels, st, care, weight, kind, bonus)
+        return () if target == -1 else (target,)
+    admitted = []
+    anchor = -1
+    for target in targets:
+        if target not in R or target in unavailable:
+            continue
+        points = score(cur, R[target], levels[target], st, care, weight, bonus, target=target)
+        if points < 3 or (anchor != -1 and anchor not in raised and target in raised):
+            continue
+        admitted.append(target)
+        anchor = target
+    return tuple(admitted)
+
+
 def states(cur, t, targets, R, levels, kind):
-    """Every searched partner state in which the picker chooses t."""
+    """Every searched partner state in which t can be selected."""
     req = R[t]
     own = lambda k, hi: max(req[k], 0) if req[k] != -1 else hi
     bonuses = [(0, 0, 0, 0), (own('battles', 0), own('techs', 0), own('discipline', 0), own('happiness', 0)),
@@ -115,7 +140,7 @@ def states(cur, t, targets, R, levels, kind):
         for care in sorted({0, max(req['care'], 0), 30}):
             for bonus in bonuses:
                 weight = target_weight(cur, t, req)
-                if pick(cur, targets, R, levels, st, care, weight, kind, bonus) == t:
+                if t in outcomes(cur, targets, R, levels, st, care, weight, kind, bonus):
                     yield st, care, weight, bonus
 
 
@@ -131,10 +156,10 @@ def canonical(cur, t, R, levels):
 
 
 def keeps_canonical(cur, t, old, targets, R, levels, kind):
-    """A disc route that its canonical state chose among the disc's targets is still chosen with the new ones."""
+    """A disc route's former canonical winner remains a possible outcome."""
     st, care, w, b = canonical(cur, t, R, levels)
     if pick(cur, old, R, levels, st, care, w, kind, b) != t: return True
-    return pick(cur, targets, R, levels, st, care, w, kind, b) == t
+    return t in outcomes(cur, targets, R, levels, st, care, w, kind, b)
 
 
 def reachable(cur, t, targets, R, levels, kind):
@@ -152,7 +177,7 @@ def reachable(cur, t, targets, R, levels, kind):
         st = dict(zip(STATS, vals))
         for care in sorted({0, max(req['care'], 0), 30}):
             for bonus in bonuses:
-                if pick(cur, targets, R, levels, st, care, target_weight(cur, t, req), kind, bonus) == t:
+                if t in outcomes(cur, targets, R, levels, st, care, target_weight(cur, t, req), kind, bonus):
                     return True
     return False
 
@@ -192,13 +217,13 @@ def main():
             before = list(states(p, t, old, R, levels, kind))
             if not before: continue
             m += 1
-            kept = sum(1 for st, care, w, b in before if pick(p, targets, R, levels, st, care, w, kind, b) == t)
+            kept = sum(1 for st, care, w, b in before if t in outcomes(p, targets, R, levels, st, care, w, kind, b))
             if kept < len(before):
                 lost.append((x['name'], g[t]['name'], kept, len(before),
                              collections.Counter(g[pick(p, targets, R, levels, st, care, w, kind, b)]['name']
                                                  for st, care, w, b in before
-                                                 if pick(p, targets, R, levels, st, care, w, kind, b) != t).most_common(2)))
-    print(f'{m} disc routes with new siblings; routes that lose some states to a new species: {len(lost)}'
+                                                 if t not in outcomes(p, targets, R, levels, st, care, w, kind, b)).most_common(2)))
+    print(f'{m} disc routes with new siblings; routes that lose eligibility in some states: {len(lost)}'
           f' (kept {sum(k for _, _, k, _, _ in lost)} of {sum(n for _, _, _, n, _ in lost)})')
     if '-v' in sys.argv:
         for p, t, k, n, who in lost: print(f'  {p} -> {t}: {k}/{n} states kept; taken by {who}')
@@ -214,7 +239,7 @@ def main():
                 st, care, w, b = canonical(p, t, R, levels)
                 got = pick(p, targets, R, levels, st, care, w, kind, b)
                 broken.append((x['name'], g[t]['name'], g[got]['name'] if got in g else got))
-    print(f'disc routes whose canonical state now picks a new species: {len(broken)}')
+    print(f'disc routes whose canonical state is no longer eligible: {len(broken)}')
     for p, t, w in broken: print(f'  {p} -> {t}: now {w}')
     import test_evo_tree
     table = json.load(open(os.path.join(ROOT, 'content/tables/evolution-tree.json')))
