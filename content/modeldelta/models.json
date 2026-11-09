@@ -464,9 +464,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/196-Halsemon.MMD.mdelta",
-        "delta_sha256": "218983a88edbfce765e24ff8f6e44fcbf46a63bbf215df6db60c0fe7377743e0",
-        "sha256": "3a2a21cafd327b548d5bfd9ccd299c11e63541b8883b037a4865b7c5d5c9f392",
-        "size": 118644
+        "delta_sha256": "698a905aeb590049a6077aadd2121355894461cb37bebdf62af37234f972d9ae",
+        "sha256": "16e2d3c54e91eed9bea82508df428972ea4f643220f303d6a8edcf304935bc24",
+        "size": 121100
       },
       "tim": {
         "sources": [

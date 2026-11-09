@@ -211,3 +211,9 @@ provenance): the feet are solved onto Leomon's footfalls with each knee bending
 out over the wide stance, the body takes part of his lean, the arms part of his
 swing, and the condition walk is his walk slower and lower (his own slides).
 Buster Dive is applied after it at build.
+
+Halsemon's (196) walk and run threw the feet across each other and slid them,
+and the run bounded like a cat. `field_animations/halsemon.py` writes a
+lateral-sequence walk, a slower condition walk and a firm-backed trot with
+`quadruped.py`, every foot flat at its own turned-out idle angle and the short
+hock bones above the hind feet holding their angle (`links`).
