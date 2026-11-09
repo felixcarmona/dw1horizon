@@ -159,7 +159,7 @@
     "paragraphs": [
       "La taula mostra punts per posició de resposta al qüestionari de Jijimon, en l’ordre del joc. Les puntuacions trien element, atribut i temperament; la combinació determina el company a la quadrícula.",
       "Guanya el màxim del grup. Els empats afavoreixen la resposta de suport més recent; si és la mateixa per als dos, guanya el primer del grup. Ordre: Combat, Foc, Gel, Natura, Aire; Vacuna, Dades, Virus; Agosarat, Calmat, Astut.",
-      "Les columnes mostren NOUS DIGIMON activat i desactivat. Les respostes, els punts i la taula de companys inicials són a l’espòiler de sota."
+      "Jijimon manté el teu company en secret: el veuràs al teu costat quan et despertis. Posar-li nom és opcional i els missatges no revelen l’espècie. Les columnes mostren NOUS DIGIMON activat i desactivat. Les respostes, els punts i la taula de companys inicials són a l’espòiler de sota."
     ],
     "spoiler_paragraphs": [
       0,

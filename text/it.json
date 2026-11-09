@@ -11,6 +11,7 @@
   "Vuoi dare un nome",
   "al tuo Digimon?"
  ],
+ "name.confirm_partner": ["{color 7}Jijimon {color 1}", "Va bene così, allora?"],
  "name.ask_partner_choice": [
   "{color 6}{player}{color 1}",
   "Sì",
@@ -125,8 +126,7 @@
  ],
  "name.quiz.result": [
   "{color 7}Jijimon {color 1}",
-  "Mmm. Ora vedo tutto chiaro. Il",
-  "tuo compagno sarà",
-  "{partner}."
+  "Mmh, capisco, capisco.",
+  "Il tuo compagno ti aspetta."
  ]
 }

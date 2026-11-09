@@ -13,9 +13,26 @@ import unittest
 from unittest.mock import patch
 
 import starter_quiz as Q
+from languages import CODES
 
 
 class QuizTest(unittest.TestCase):
+    def test_starter_stays_hidden_in_every_language(self):
+        Q.check_reveal_text()
+        bank_path = Q.ROOT / 'text/en.json'
+        original = Path.read_text
+        for key in ('name.quiz.result', 'name.confirm_partner'):
+            for spoiler in ('{partner}', '{digimon 254}', 'Agumon'):
+                with self.subTest(key=key, spoiler=spoiler):
+                    def read(path, *args, **kwargs):
+                        if path == bank_path:
+                            bank = json.loads(original(path))
+                            bank[key][1] = spoiler
+                            return json.dumps(bank)
+                        return original(path, *args, **kwargs)
+                    with patch.object(Path, 'read_text', read), self.assertRaises(ValueError):
+                        Q.check_reveal_text()
+
     def test_distribution(self):
         self.assertEqual(sum(Q.check(Q.load()).values()), 2187)
 
@@ -132,6 +149,7 @@ class QuizTest(unittest.TestCase):
         old = re.findall(pattern, legacy)
         new = re.findall(pattern, expanded)
         self.assertEqual(len(old), 35)
+        old[30] = 'name.confirm_partner'  # same entry, without echoing the hidden default
         self.assertEqual(new[:35], old)
         self.assertEqual(len(new), 58)
         self.assertEqual(new[35], 'name.quiz.intro')
@@ -168,7 +186,7 @@ class QuizTest(unittest.TestCase):
 
     def test_answers_fit_the_selection_bar(self):
         # The bar is sized from the longest answer; past 21 characters it overhangs the box.
-        for lang in ('en', 'es', 'ca', 'de', 'fr', 'it', 'ja', 'pt-br'):
+        for lang in CODES:
             bank = json.loads((Q.ROOT / 'text' / (lang + '.json')).read_text())
             for key, rows in bank.items():
                 if key.startswith('name.quiz.') and key.endswith('.answers'):
@@ -178,10 +196,11 @@ class QuizTest(unittest.TestCase):
         from dws.text import layout
         species = [json.loads(p.read_text()) for p in (Q.ROOT / 'content/species').glob('*.json')]
         names = [s['name'] for s in species if s['id'] in Q.load()['starters']]
-        for lang in ('en', 'es', 'ca', 'de', 'fr', 'it', 'ja', 'pt-br'):
+        for lang in CODES:
             bank = json.loads((Q.ROOT / 'text' / (lang + '.json')).read_text())
-            lines = {k: v for k, v in bank.items() if k.startswith('name.quiz.')}
-            self.assertEqual(len(lines), 23, lang)
+            lines = {k: v for k, v in bank.items()
+                     if k.startswith('name.quiz.') or k == 'name.confirm_partner'}
+            self.assertEqual(len(lines), 24, lang)
             for fontname in ('b', 'original'):
                 font = dict(name=fontname, extra=True)
                 for key, rows in lines.items():
@@ -237,6 +256,94 @@ class QuizTest(unittest.TestCase):
             for option.value in (1, 0):
                 for path in itertools.product(range(3), repeat=7):
                     self.assertEqual(fn((ctypes.c_uint8*7)(*path)), Q.result(data, path, option.value != 0), path)
+
+    def test_production_naming_flow_keeps_default_private(self):
+        source = next((Q.ROOT / f'build/{tree}/src/shop/script_menu.c'
+                       for tree in ('decomp-int', 'decomp-dev')
+                       if (Q.ROOT / f'build/{tree}/src/shop/script_menu.c').exists()), None)
+        if source is None or not shutil.which('cc'):
+            self.skipTest('needs a prepared decomp tree and a host C compiler')
+        function = re.search(r'int32_t newGameStateMachine\(void\)\n\{.*?\n\}',
+                             source.read_text(), re.S)[0]
+        # Run the actual state machine; replace only UI/engine boundaries.
+        stubs = r'''
+#include <stdint.h>
+#include <string.h>
+#define VERSION_IS(x) 1
+#define TRIGGER_49 49
+#define PSTAT_254 254
+#define DIGIMON_NAME(x) player
+int SCRIPT_STATE_2, SCRIPT_NEXT_STATE_2, SCRIPT_TEXTBOX_MODE;
+int NAMING_BOX_FLAG, DRAW_STRING2_IS_FIXED_WIDTH, entry = -1, species_calls;
+char NAMING_BUFFER[32], player[32];
+struct { struct { struct { int type; } entity; } digimonEntity; char name[32]; } PARTNER_ENTITY;
+struct { int state; } UI_BOX_DATA[3];
+void setTrigger(int n) { (void)n; }
+void unsetTrigger(int n) { (void)n; }
+void closeBox(int n) { (void)n; }
+void triggerBoxCloseFlag(int n) { (void)n; }
+void setInputRepeatMask(int n) { (void)n; }
+void setupNewGameDialogueBox(void) {}
+void setupNameSelectorBox(void) {}
+void setupNameDisplayBox(void) {}
+void writePStat(int n, int v) { (void)n; (void)v; }
+int modNewGameStarter(void) { return 263; }
+uint8_t modQuizResult(const uint8_t *answers) { (void)answers; return 12; }
+void modPartnerNameSetSpecies(int n) {
+    (void)n; species_calls++; strcpy(PARTNER_ENTITY.name, "Mushroomon");
+}
+void showNewGameDialogue(int e, int next) {
+    entry = e; SCRIPT_STATE_2 = 1; SCRIPT_NEXT_STATE_2 = next;
+}
+void showNewGameSelection(int e, int next) { showNewGameDialogue(e, next); }
+void showMapheadSelection(int e, int owner, int count, int *sel, int section) {
+    (void)owner; (void)count; (void)sel; (void)section; entry = e;
+}
+'''
+        with tempfile.TemporaryDirectory() as tmp:
+            c, so = Path(tmp) / 'naming.c', Path(tmp) / 'naming.so'
+            c.write_text(stubs + function)
+            subprocess.run(['cc', '-shared', '-fPIC', '-Wall', '-Wextra', '-Werror', '-O2',
+                            c, '-o', so], check=True)
+            lib = ctypes.CDLL(str(so))
+            def var(name): return ctypes.c_int.in_dll(lib, name)
+            state, flags, entry = (var(n) for n in ('SCRIPT_STATE_2', 'NAMING_BOX_FLAG', 'entry'))
+            buffer = (ctypes.c_char * 32).in_dll(lib, 'NAMING_BUFFER')
+            def step(n):
+                state.value, entry.value = n, -1
+                return lib.newGameStateMachine()
+            # All seven answers precede the neutral result; no species name is prepared for it.
+            step(2)
+            for _ in range(7):
+                step(0x23); step(0x24); step(0x25); step(0x26)
+            step(0x23)
+            self.assertEqual(entry.value, 0x39)
+            self.assertEqual(var('species_calls').value, 0)
+            flags.value = 0
+            buffer.value = b'A'
+            step(0x15); step(0x16)
+            self.assertEqual(entry.value, 0x1b)  # tamer still confirms
+            step(0x18); step(0x20); step(0x21); step(0x1a)
+            self.assertEqual(buffer.value, b'')  # partner keyboard never prefills a species
+            step(0x15); step(0x16)
+            self.assertEqual(var('species_calls').value, 1)
+            self.assertEqual(entry.value, 0x1e)  # neutral confirmation never interpolates the default
+            self.assertEqual(var('SCRIPT_NEXT_STATE_2').value, 0x1b)
+            step(0x1c)
+            step(0x1e)
+            self.assertEqual(entry.value, 0x20)  # farewell, then movie
+            # A typed name keeps its confirmation and No returns to its keyboard.
+            buffer.value = b'Buddy'
+            step(0x15); step(0x16)
+            self.assertEqual(entry.value, 0x1e)
+            self.assertEqual(var('SCRIPT_NEXT_STATE_2').value, 0x1b)
+            step(0x1d)
+            self.assertEqual(state.value, 0x13)
+            self.assertEqual(buffer.value, b'Buddy')
+            step(0x22)  # choosing not to name also bypasses confirmation
+            self.assertEqual(state.value, 0x1e)
+            flags.value = 3  # renaming after meeting the partner remains unchanged
+            self.assertEqual(step(0x16), 1)
 
 
 if __name__ == '__main__':

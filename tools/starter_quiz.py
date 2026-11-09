@@ -4,7 +4,10 @@ import collections
 import itertools
 import json
 from pathlib import Path
+import re
 import struct
+
+from languages import CODES
 
 ROOT = Path(__file__).resolve().parents[1]
 AXES = ('battle', 'fire', 'ice', 'nature', 'air', 'vaccine', 'data', 'virus',
@@ -28,6 +31,24 @@ VANILLA_ONLY = {32}  # Kunemon keeps the original-game fallback, but its special
 
 def load():
     return json.loads((ROOT / 'content/tables/new-game.json').read_text())['newGame']
+
+
+def check_reveal_text():
+    """The quiz and optional-name question must leave the first sighting a surprise."""
+    starters = set(load()['starters'])
+    names = {s['name'].casefold() for p in (ROOT / 'content/species').glob('*.json')
+             if (s := json.loads(p.read_text()))['id'] in starters}
+    for lang in CODES:
+        bank = json.loads((ROOT / 'text' / (lang + '.json')).read_text())
+        for key in ('name.quiz.result', 'name.ask_partner', 'name.ask_partner_choice', 'name.confirm_partner'):
+            rows = bank[key]
+            text = ' '.join(rows)
+            # Only speaker colours and the player's own name may be interpolated.
+            if any(token != 'player' and not re.fullmatch(r'color \d+', token)
+                   for token in re.findall(r'\{([^}]+)\}', text)):
+                raise ValueError(f'{lang}: {key} reveals a name or species')
+            if any(name in text.casefold() for name in names):
+                raise ValueError(f'{lang}: {key} names a starter')
 
 
 def validate(data):
@@ -150,3 +171,4 @@ def check(data):
 
 if __name__ == '__main__':
     check(load())
+    check_reveal_text()
