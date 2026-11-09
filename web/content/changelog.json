@@ -2,6 +2,226 @@
   "_doc": "Releases, newest first. Each version has a date and text in every page language: new, changed and fixed bullet lists, plus an optional upgrade line in all languages. Empty groups are hidden.",
   "versions": [
     {
+      "version": "0.0.8",
+      "date": "2026-11-09",
+      "en": {
+        "new": [
+          "HARD difficulty makes enemies tougher and more aggressive without changing partner growth or rewards.",
+          "The website now has a wiki with partner pages, evolution trees, technique learning sources, recruitment guides and articles in all nine page languages. Each language has a downloadable PDF guide, with secrets kept behind spoiler warnings.",
+          "A Scold bubble explains when your partner can be scolded. Low-HP and low-MP bubbles are easier to read."
+        ],
+        "changed": [
+          "AUTO frame rate now adapts to each scene, trying 60, 30 or 20 fps without requiring a CPU overclock. Title OPTIONS lets you choose AUTO, 60 or 20; game speed stays the same.",
+          "New memory-card saves use one block. Older two-block saves still load, and interrupted writes keep a complete copy. Damaged extended progress is reported instead of silently discarded.",
+          "Evolution requirements show time still needed and warn when remaining lifetime is too short. First partners now have the same starting lifetime as later births.",
+          "Revised technique lists better suit more partners, including Tentomon and several Filth Digimon. Updating may replace or clear some equipped techniques; learned techniques are kept. Defense above 999 no longer reduces almost every hit to 1.",
+          "Many partners have improved size, walking, attack animations, attachments and sounds, including Armageddemon, KingEtemon, Silphymon and Valkyrimon. MP training x5 finishes sooner with the same gains and care costs."
+        ],
+        "fixed": [
+          "Continuing a save keeps the tamer in view when you move immediately. Starting a New Game after returning to the title no longer keeps the previous partner’s age.",
+          "KingSukamon’s thrown attacks hit small targets, new insect partners can enter the Beetle Cup, and VS stat boosts work above 999. Fixed a recruitment conversation that looped instead of starting its battle.",
+          "Repaired scenery collision pockets and blocked paths. You can leave Toy Town while an errand is pending, and the final dirt pickup stays visible until excavation is complete. Recruitment scenes respect their prerequisites.",
+          "Improved reliability when partners leave the toilet.",
+          "Area captions are translated, recruitment announcements play when expected, and scrolling jukebox titles no longer leave fragments of older names.",
+          "Status portraits fit their panels, with small partners enlarged and sleeping icons kept clear.",
+          "Fixed Windows patching failures involving Chinese resources. Desktop patchers refresh corrected packages for the same release instead of keeping stale downloads."
+        ],
+        "upgrade": "Saves from 0.0.7 work; back up your memory card and check equipped techniques after updating. The required discs have not changed. Boot the new disc fully and load the memory-card save; old emulator save states do not work across versions. Saves written by 0.0.8 must not be used with older versions, including VS registrations."
+      },
+      "es": {
+        "new": [
+          "La dificultad HARD hace que los enemigos sean más duros y agresivos sin cambiar el crecimiento del compañero ni las recompensas.",
+          "La web incorpora una wiki con páginas de compañeros, árboles de evolución, fuentes de aprendizaje de técnicas, guías de reclutamiento y artículos en los nueve idiomas de la página. Cada idioma tiene una guía PDF descargable, con los secretos protegidos por avisos de spoilers.",
+          "Una burbuja de regañar indica cuándo puedes regañar a tu compañero. Las burbujas de HP y MP bajos se distinguen mejor."
+        ],
+        "changed": [
+          "La tasa de imágenes AUTO se adapta a cada escena e intenta 60, 30 o 20 fps sin exigir overclock. Las OPTIONS del título permiten elegir AUTO, 60 o 20; la velocidad del juego no cambia.",
+          "Las partidas nuevas ocupan un bloque de tarjeta. Las antiguas de dos bloques siguen cargando y una escritura interrumpida conserva una copia completa. Si el progreso ampliado está dañado, se avisa en vez de descartarlo en silencio.",
+          "Los requisitos de evolución muestran cuánto tiempo falta y avisan si la vida restante no alcanza. El primer compañero recibe ahora la misma duración de vida inicial que los nacidos después.",
+          "Las listas de técnicas se ajustan mejor a más compañeros, incluidos Tentomon y varios Digimon de Suciedad. Al actualizar, algunas técnicas equipadas pueden sustituirse o quitarse; se conservan las aprendidas. La Defensa superior a 999 ya no reduce casi todos los golpes a 1.",
+          "Muchos compañeros mejoran su tamaño, pasos, ataques, accesorios y sonidos, incluidos Armageddemon, KingEtemon, Silphymon y Valkyrimon. El entrenamiento de MP x5 termina antes con las mismas ganancias y costes de cuidados."
+        ],
+        "fixed": [
+          "Al continuar una partida, el domador permanece en pantalla aunque te muevas de inmediato. Empezar una partida nueva tras volver al título ya no conserva la edad del compañero anterior.",
+          "Los lanzamientos de KingSukamon alcanzan a objetivos pequeños, los nuevos compañeros insecto pueden entrar en la Copa Escarabajo y las mejoras de estadísticas en VS funcionan por encima de 999. Corregida una conversación de reclutamiento que se repetía sin iniciar el combate.",
+          "Corregidos huecos de colisión y caminos bloqueados. Puedes salir de Toy Town mientras tienes un recado pendiente y el último montón de tierra sigue visible hasta completar la excavación. Las escenas de reclutamiento respetan sus requisitos previos.",
+          "Mejorada la fiabilidad al salir el compañero del baño.",
+          "Los rótulos de zona están traducidos, los anuncios de reclutamiento suenan cuando corresponde y los títulos de la máquina de discos no dejan restos de nombres anteriores al desplazarse.",
+          "Los retratos de Estado caben en sus recuadros; los compañeros pequeños se ven más grandes y los iconos de sueño quedan despejados.",
+          "Corregidos fallos del parcheador en Windows relacionados con los recursos chinos. Los parcheadores de escritorio descargan los paquetes corregidos de una misma versión en vez de conservar copias obsoletas."
+        ],
+        "upgrade": "Las partidas de 0.0.7 son compatibles; haz una copia de la tarjeta y revisa las técnicas equipadas tras actualizar. Los discos necesarios no cambian. Arranca el disco nuevo desde cero y carga la partida de la tarjeta: los estados del emulador de versiones anteriores no son compatibles. No uses partidas guardadas por 0.0.8 con versiones anteriores, incluidos los registros de VS."
+      },
+      "pt-br": {
+        "new": [
+          "A dificuldade HARD deixa os inimigos mais resistentes e agressivos sem mudar o crescimento do parceiro nem as recompensas.",
+          "O site agora tem uma wiki com páginas de parceiros, árvores de evolução, fontes de aprendizado de técnicas, guias de recrutamento e artigos nos nove idiomas da página. Cada idioma tem um guia em PDF para baixar, com os segredos protegidos por avisos de spoiler.",
+          "Um balão de bronca indica quando você pode repreender o parceiro. Os balões de HP e MP baixos ficaram mais fáceis de identificar."
+        ],
+        "changed": [
+          "A taxa de quadros AUTO se adapta a cada cena, tentando 60, 30 ou 20 fps sem exigir overclock. As OPTIONS do título permitem escolher AUTO, 60 ou 20; a velocidade do jogo continua igual.",
+          "Novos saves usam um bloco do cartão de memória. Os saves antigos de dois blocos continuam carregando, e gravações interrompidas preservam uma cópia completa. O jogo avisa quando o progresso ampliado está danificado, em vez de descartá-lo silenciosamente.",
+          "Os requisitos de evolução mostram quanto tempo falta e avisam quando a vida restante não é suficiente. O primeiro parceiro agora recebe a mesma duração de vida inicial dos nascimentos seguintes.",
+          "As listas de técnicas combinam melhor com mais parceiros, incluindo Tentomon e vários Digimon de Sujeira. Ao atualizar, algumas técnicas equipadas podem ser substituídas ou removidas; as técnicas aprendidas são preservadas. Defesa acima de 999 não reduz mais quase todo golpe a 1.",
+          "Vários parceiros têm melhorias de tamanho, caminhada, ataques, acessórios e sons, incluindo Armageddemon, KingEtemon, Silphymon e Valkyrimon. O treino de MP x5 termina mais cedo com os mesmos ganhos e custos de cuidados."
+        ],
+        "fixed": [
+          "Ao continuar um save, o domador fica visível mesmo se você se mover imediatamente. Começar um Novo Jogo após voltar ao título não mantém mais a idade do parceiro anterior.",
+          "Os arremessos de KingSukamon acertam alvos pequenos, novos parceiros inseto podem participar da Copa Besouro e os aumentos de atributos em VS funcionam acima de 999. Corrigida uma conversa de recrutamento que se repetia sem iniciar a batalha.",
+          "Corrigidos buracos de colisão e caminhos bloqueados. É possível sair de Toy Town com uma tarefa pendente, e o último monte de terra permanece visível até a escavação terminar. As cenas de recrutamento respeitam seus pré-requisitos.",
+          "Melhorada a estabilidade quando o parceiro sai do banheiro.",
+          "As legendas de áreas estão traduzidas, os anúncios de recrutamento tocam no momento certo e os títulos da jukebox não deixam pedaços de nomes anteriores ao rolar a lista.",
+          "Os retratos de Status cabem nos painéis; parceiros pequenos aparecem maiores e os ícones de sono ficam desobstruídos.",
+          "Corrigidas falhas do patcher no Windows envolvendo recursos chineses. Os patchers de desktop atualizam pacotes corrigidos da mesma versão em vez de manter downloads antigos."
+        ],
+        "upgrade": "Os saves de 0.0.7 funcionam; faça backup do cartão e confira as técnicas equipadas após atualizar. Os discos necessários não mudaram. Inicie o novo disco do zero e carregue o save do cartão: estados antigos do emulador não funcionam entre versões. Saves gravados por 0.0.8 não devem ser usados em versões anteriores, incluindo registros de VS."
+      },
+      "fr": {
+        "new": [
+          "La difficulté HARD rend les ennemis plus résistants et agressifs sans modifier la progression du partenaire ni les récompenses.",
+          "Le site propose désormais un wiki avec des pages de partenaires, des arbres d’évolution, les sources d’apprentissage des techniques, des guides de recrutement et des articles dans les neuf langues du site. Chaque langue dispose d’un guide PDF téléchargeable, avec des avertissements avant les secrets.",
+          "Une bulle de réprimande indique quand vous pouvez gronder votre partenaire. Les bulles de HP et MP faibles sont plus lisibles."
+        ],
+        "changed": [
+          "La fréquence AUTO s’adapte à chaque scène, en tentant 60, 30 ou 20 images/s sans exiger d’overclock. Les OPTIONS du titre permettent de choisir AUTO, 60 ou 20 ; la vitesse du jeu reste inchangée.",
+          "Les nouvelles sauvegardes occupent un bloc de carte mémoire. Les anciennes à deux blocs restent lisibles et une écriture interrompue conserve une copie complète. Les données de progression étendues endommagées sont signalées au lieu d’être supprimées en silence.",
+          "Les conditions d’évolution indiquent le temps restant et avertissent si la durée de vie restante est trop courte. Le premier partenaire reçoit désormais la même durée de vie initiale que les naissances suivantes.",
+          "Les listes de techniques conviennent mieux à davantage de partenaires, dont Tentomon et plusieurs Digimon de Saleté. La mise à jour peut remplacer ou retirer certaines techniques équipées ; les techniques apprises sont conservées. Une Défense supérieure à 999 ne réduit plus presque tous les coups à 1.",
+          "De nombreux partenaires bénéficient d’améliorations de taille, de démarche, d’attaques, d’accessoires et de sons, dont Armageddemon, KingEtemon, Silphymon et Valkyrimon. L’entraînement MP x5 se termine plus vite, avec les mêmes gains et coûts de soins."
+        ],
+        "fixed": [
+          "Après le chargement d’une sauvegarde, le dompteur reste visible même si vous bougez immédiatement. Commencer une nouvelle partie après un retour au titre ne conserve plus l’âge du partenaire précédent.",
+          "Les projectiles de KingSukamon touchent les petites cibles, les nouveaux partenaires insectes peuvent participer à la Coupe Scarabée et les bonus de statistiques en VS fonctionnent au-delà de 999. Correction d’une conversation de recrutement qui tournait en boucle sans lancer le combat.",
+          "Correction de poches de collision dans les décors et de passages bloqués. Vous pouvez quitter Toy Town pendant une course en attente, et le dernier tas de terre reste visible jusqu’à la fin de l’excavation. Les scènes de recrutement respectent leurs prérequis.",
+          "Fiabilité améliorée lorsque le partenaire sort des toilettes.",
+          "Les noms de zones sont traduits, les annonces de recrutement se déclenchent au bon moment et les titres du juke-box ne laissent plus de fragments d’anciens noms lors du défilement.",
+          "Les portraits de Statut tiennent dans leurs cadres ; les petits partenaires sont agrandis et les icônes de sommeil restent dégagées.",
+          "Correction d’échecs du patcher sous Windows liés aux ressources chinoises. Les patchers de bureau récupèrent les paquets corrigés d’une même version au lieu de conserver des téléchargements périmés."
+        ],
+        "upgrade": "Les sauvegardes de 0.0.7 fonctionnent ; copiez votre carte mémoire et vérifiez les techniques équipées après la mise à jour. Les disques requis ne changent pas. Démarrez entièrement le nouveau disque et chargez la sauvegarde de la carte : les anciens états d’émulateur ne fonctionnent pas entre versions. N’utilisez pas les sauvegardes écrites par 0.0.8 avec une version antérieure, y compris les inscriptions VS."
+      },
+      "de": {
+        "new": [
+          "Der Schwierigkeitsgrad HARD macht Gegner widerstandsfähiger und aggressiver, ohne das Wachstum des Partners oder die Belohnungen zu ändern.",
+          "Die Website bietet jetzt ein Wiki mit Partnerseiten, Evolutionsbäumen, Lernquellen für Techniken, Rekrutierungshilfen und Artikeln in allen neun Seitensprachen. Für jede Sprache gibt es einen PDF-Leitfaden zum Herunterladen; Geheimnisse stehen hinter Spoilerwarnungen.",
+          "Eine Schimpfblase zeigt an, wann du deinen Partner tadeln kannst. Die Warnblasen für niedrige HP und MP sind besser erkennbar."
+        ],
+        "changed": [
+          "Die Bildrate AUTO passt sich an jede Szene an und versucht ohne erforderliche CPU-Übertaktung 60, 30 oder 20 fps. In den OPTIONS des Titelbildschirms kannst du AUTO, 60 oder 20 wählen; die Spielgeschwindigkeit bleibt gleich.",
+          "Neue Speicherkartenspielstände belegen einen Block. Ältere Spielstände mit zwei Blöcken bleiben lesbar, und unterbrochene Schreibvorgänge lassen eine vollständige Kopie zurück. Beschädigter erweiterter Fortschritt wird gemeldet, statt unbemerkt verworfen zu werden.",
+          "Die Evolutionsanforderungen zeigen die verbleibende Wartezeit und warnen, wenn die restliche Lebenszeit zu kurz ist. Der erste Partner erhält jetzt dieselbe anfängliche Lebensdauer wie spätere Neugeborene.",
+          "Überarbeitete Techniklisten passen besser zu weiteren Partnern, darunter Tentomon und mehrere Schmutz-Digimon. Beim Aktualisieren werden manche ausgerüsteten Techniken ersetzt oder abgelegt; erlernte Techniken bleiben erhalten. Verteidigung über 999 senkt nicht mehr fast jeden Treffer auf 1 Schaden.",
+          "Viele Partner haben Verbesserungen bei Größe, Gang, Angriffen, Anbauteilen und Geräuschen erhalten, darunter Armageddemon, KingEtemon, Silphymon und Valkyrimon. MP-Training x5 endet früher, bei gleichen Zuwächsen und Pflegekosten."
+        ],
+        "fixed": [
+          "Beim Fortsetzen bleibt der Tamer sichtbar, auch wenn du sofort losläufst. Ein neues Spiel nach der Rückkehr zum Titel übernimmt nicht mehr das Alter des vorherigen Partners.",
+          "KingSukamons Wurfattacken treffen kleine Ziele, neue Insektenpartner dürfen am Käfer-Cup teilnehmen und Statusboni im VS-Modus wirken über 999 hinaus. Ein Rekrutierungsgespräch startet nun den Kampf, statt sich zu wiederholen.",
+          "Kollisionslöcher in der Umgebung und blockierte Wege wurden repariert. Du kannst Toy Town während eines ausstehenden Auftrags verlassen, und der letzte Erdhaufen bleibt bis zum Ende der Ausgrabung sichtbar. Rekrutierungsszenen beachten ihre Voraussetzungen.",
+          "Die Zuverlässigkeit beim Verlassen der Toilette wurde verbessert.",
+          "Gebietseinblendungen sind übersetzt, Rekrutierungsankündigungen erklingen zum richtigen Zeitpunkt und beim Scrollen der Jukebox bleiben keine Reste älterer Titel stehen.",
+          "Statusporträts passen in ihre Felder; kleine Partner werden größer dargestellt und Schlafsymbole bleiben frei.",
+          "Windows-Patchfehler mit chinesischen Ressourcen wurden behoben. Desktop-Patcher laden korrigierte Pakete derselben Version neu, statt veraltete Downloads zu behalten."
+        ],
+        "upgrade": "Spielstände aus 0.0.7 funktionieren; sichere deine Speicherkarte und prüfe nach dem Update die ausgerüsteten Techniken. Die benötigten Discs bleiben gleich. Starte die neue Disc vollständig neu und lade den Speicherkartenspielstand; alte Emulator-Schnellspeicherstände funktionieren nicht versionsübergreifend. Mit 0.0.8 geschriebene Spielstände dürfen nicht mit älteren Versionen verwendet werden, auch nicht für VS-Registrierungen."
+      },
+      "it": {
+        "new": [
+          "La difficoltà HARD rende i nemici più resistenti e aggressivi senza cambiare la crescita del compagno né le ricompense.",
+          "Il sito ora ha una wiki con pagine dei compagni, alberi evolutivi, fonti per imparare le tecniche, guide al reclutamento e articoli in tutte le nove lingue della pagina. Ogni lingua ha una guida PDF scaricabile, con i segreti protetti da avvisi di spoiler.",
+          "Una bolla di rimprovero indica quando puoi sgridare il compagno. Le bolle di HP e MP bassi sono più leggibili."
+        ],
+        "changed": [
+          "La frequenza AUTO si adatta a ogni scena, provando 60, 30 o 20 fps senza richiedere overclock. Le OPTIONS del titolo permettono di scegliere AUTO, 60 o 20; la velocità del gioco resta uguale.",
+          "I nuovi salvataggi occupano un blocco della scheda di memoria. Quelli vecchi da due blocchi continuano a caricarsi e una scrittura interrotta lascia una copia completa. I progressi aggiuntivi danneggiati vengono segnalati anziché scartati senza avviso.",
+          "I requisiti di evoluzione mostrano il tempo mancante e avvisano se la vita restante è troppo breve. Il primo compagno ora riceve la stessa durata di vita iniziale delle nascite successive.",
+          "Gli elenchi di tecniche si adattano meglio a più compagni, tra cui Tentomon e vari Digimon Sporcizia. L’aggiornamento può sostituire o rimuovere alcune tecniche equipaggiate; quelle apprese restano. La Difesa oltre 999 non riduce più quasi tutti i colpi a 1.",
+          "Molti compagni migliorano per dimensioni, andatura, attacchi, accessori e suoni, tra cui Armageddemon, KingEtemon, Silphymon e Valkyrimon. L’allenamento MP x5 finisce prima con gli stessi guadagni e costi di cura."
+        ],
+        "fixed": [
+          "Caricando un salvataggio, il domatore resta visibile anche se ti muovi subito. Iniziare una nuova partita dopo essere tornati al titolo non conserva più l’età del compagno precedente.",
+          "I lanci di KingSukamon colpiscono i bersagli piccoli, i nuovi compagni insetto possono partecipare alla Coppa Scarabeo e i bonus alle statistiche in VS funzionano oltre 999. Corretta una conversazione di reclutamento che si ripeteva senza avviare la battaglia.",
+          "Corretti buchi nelle collisioni dello scenario e passaggi bloccati. Puoi lasciare Toy Town con una commissione in sospeso e l’ultimo mucchio di terra resta visibile fino al termine dello scavo. Le scene di reclutamento rispettano i prerequisiti.",
+          "Migliorata l’affidabilità quando il compagno esce dal bagno.",
+          "I nomi delle aree sono tradotti, gli annunci di reclutamento partono al momento giusto e i titoli del jukebox non lasciano frammenti dei nomi precedenti scorrendo l’elenco.",
+          "I ritratti di Stato rientrano nei riquadri; i compagni piccoli appaiono più grandi e le icone del sonno restano libere.",
+          "Corretti errori del patcher su Windows legati alle risorse cinesi. I patcher desktop aggiornano i pacchetti corretti della stessa versione anziché conservare download obsoleti."
+        ],
+        "upgrade": "I salvataggi di 0.0.7 funzionano; fai una copia della scheda e controlla le tecniche equipaggiate dopo l’aggiornamento. I dischi richiesti non cambiano. Avvia da zero il nuovo disco e carica il salvataggio dalla scheda: i vecchi stati dell’emulatore non funzionano tra versioni diverse. Non usare salvataggi scritti da 0.0.8 con versioni precedenti, incluse le registrazioni VS."
+      },
+      "ja": {
+        "new": [
+          "難易度HARDを追加しました。パートナーの成長や報酬は変えずに、敵が強く、積極的に攻撃するようになります。",
+          "ウェブサイトに、パートナー紹介、進化ツリー、わざを覚えられる相手、仲間の勧誘ガイド、解説記事をまとめたWikiを追加しました。サイトの全9言語に対応し、各言語のPDFガイドもダウンロードできます。秘密の情報にはネタバレ警告を設けています。",
+          "パートナーを叱れるときに専用の吹き出しを表示します。HP・MP低下の吹き出しも見やすくなりました。"
+        ],
+        "changed": [
+          "フレームレートのAUTOが場面に応じて60・30・20fpsを試すようになり、CPUのオーバークロックが必須ではなくなりました。タイトルのOPTIONSでAUTO・60・20を選べます。ゲームの速度は変わりません。",
+          "新しいメモリーカードのセーブは1ブロックを使用します。従来の2ブロックのセーブも読み込め、書き込みが中断されても完全なコピーが残ります。追加の進行データが壊れている場合は、黙って破棄せずエラーを表示します。",
+          "進化条件に残りの待ち時間を表示し、寿命が足りない場合は警告します。最初のパートナーも、転生後と同じ初期寿命になりました。",
+          "テントモンや複数の汚物系デジモンなどのわざ構成を、それぞれに合う内容へ見直しました。更新時に装備中のわざが置き換わったり外れたりする場合がありますが、覚えたわざは保持されます。防御力が999を超えても、ほぼすべての被ダメージが1になることはなくなりました。",
+          "Armageddemon、KingEtemon、Silphymon、Valkyrimonなど、多くのパートナーの大きさ、歩き方、攻撃動作、付属パーツ、音を改善しました。MPの5回連続トレーニングは、効果や世話の消費を変えずに早く終わるようになりました。"
+        ],
+        "fixed": [
+          "セーブを読み込んですぐに動いても、テイマーが画面内に収まるようになりました。タイトルへ戻ってから新しくゲームを始めても、前のパートナーの年齢が残らなくなりました。",
+          "KingSukamonの投げる攻撃が小さな相手にも当たり、新しい昆虫系パートナーもビートル杯に出場できます。VSの能力上昇も999を超えて働きます。勧誘の会話が繰り返され、バトルが始まらない不具合を修正しました。",
+          "地形の当たり判定の穴や通れない道を修正しました。用事が残っていてもおもちゃのまちから出られ、最後の土の山も掘削完了まで表示されます。勧誘イベントは必要な前提条件を確認するようになりました。",
+          "パートナーがトイレから出る際の処理を安定させました。",
+          "エリア名の字幕を翻訳し、勧誘時のお知らせが適切に流れるようにしました。ジュークボックスの曲名をスクロールしても、前の名前の文字が残りません。",
+          "状態画面のポートレートが枠内に収まり、小さなパートナーは大きく表示され、睡眠アイコンも隠れないようになりました。",
+          "中国語のリソースが原因でWindowsのパッチ処理に失敗する問題を修正しました。デスクトップ版パッチャーは、同じリリースのパッケージが修正された場合も古いダウンロードを使い続けず更新します。"
+        ],
+        "upgrade": "0.0.7のセーブは使えます。更新前にメモリーカードをバックアップし、更新後は装備中のわざを確認してください。必要なディスクは変わりません。新しいディスクを最初から起動し、メモリーカードのセーブを読み込んでください。古いエミュレーターのステートセーブは別バージョンでは使えません。0.0.8で保存したデータは、VS登録も含め、古いバージョンで使わないでください。"
+      },
+      "ca": {
+        "new": [
+          "La dificultat HARD fa que els enemics siguin més resistents i agressius sense canviar el creixement del company ni les recompenses.",
+          "La web incorpora una wiki amb pàgines de companys, arbres d’evolució, fonts d’aprenentatge de tècniques, guies de reclutament i articles en els nou idiomes de la pàgina. Cada idioma té una guia PDF descarregable, amb els secrets protegits per avisos d’espòilers.",
+          "Una bombolla de renyar indica quan pots renyar el company. Les bombolles d’HP i MP baixos es distingeixen millor."
+        ],
+        "changed": [
+          "La taxa d’imatges AUTO s’adapta a cada escena i prova 60, 30 o 20 fps sense exigir overclock. Les OPTIONS del títol permeten triar AUTO, 60 o 20; la velocitat del joc no canvia.",
+          "Les partides noves ocupen un bloc de targeta. Les antigues de dos blocs es continuen carregant i una escriptura interrompuda conserva una còpia completa. Si el progrés ampliat està malmès, s’avisa en lloc de descartar-lo en silenci.",
+          "Els requisits d’evolució mostren quant de temps falta i avisen si la vida restant no arriba. El primer company rep ara la mateixa durada de vida inicial que els nascuts després.",
+          "Les llistes de tècniques s’ajusten millor a més companys, inclosos Tentomon i diversos Digimon de Brutícia. En actualitzar, algunes tècniques equipades es poden substituir o treure; es conserven les apreses. La Defensa superior a 999 ja no redueix gairebé tots els cops a 1.",
+          "Molts companys milloren en mida, passos, atacs, accessoris i sons, inclosos Armageddemon, KingEtemon, Silphymon i Valkyrimon. L’entrenament d’MP x5 acaba abans amb els mateixos guanys i costos de cures."
+        ],
+        "fixed": [
+          "En continuar una partida, el domador es manté en pantalla encara que et moguis de seguida. Començar una partida nova després de tornar al títol ja no conserva l’edat del company anterior.",
+          "Els llançaments de KingSukamon arriben a objectius petits, els nous companys insecte poden entrar a la Copa Escarabat i les millores d’estadístiques de VS funcionen per sobre de 999. Corregida una conversa de reclutament que es repetia sense iniciar el combat.",
+          "Corregits forats de col·lisió i camins bloquejats. Pots sortir de Toy Town amb un encàrrec pendent i l’últim munt de terra continua visible fins a acabar l’excavació. Les escenes de reclutament respecten els requisits previs.",
+          "Millorada la fiabilitat quan el company surt del lavabo.",
+          "Els rètols de zona estan traduïts, els anuncis de reclutament sonen quan toca i els títols de la màquina de discos no deixen restes de noms anteriors en desplaçar-se.",
+          "Els retrats d’Estat caben als requadres; els companys petits es veuen més grans i les icones de son queden lliures.",
+          "Corregits errors del pedaç a Windows relacionats amb els recursos xinesos. Els pedaçadors d’escriptori descarreguen els paquets corregits d’una mateixa versió en lloc de conservar còpies obsoletes."
+        ],
+        "upgrade": "Les partides de 0.0.7 són compatibles; fes una còpia de la targeta i revisa les tècniques equipades després d’actualitzar. Els discos necessaris no canvien. Arrenca el disc nou des de zero i carrega la partida de la targeta: els estats antics de l’emulador no funcionen entre versions. No facis servir partides desades amb 0.0.8 en versions anteriors, inclosos els registres de VS."
+      },
+      "zh-hans": {
+        "new": [
+          "新增HARD难度，让敌人更耐打、进攻更积极，搭档成长与奖励保持不变。",
+          "网站新增Wiki，提供搭档页面、进化树、招式学习来源、招募指南与攻略文章，支持网页的全部九种语言。每种语言都有可下载的PDF指南，秘密内容均设有剧透提示。",
+          "新增训斥气泡，提示何时可以训斥搭档。低HP、低MP气泡也更容易辨认。"
+        ],
+        "changed": [
+          "AUTO帧率现在根据场景负载尝试60、30或20 fps，无需强制CPU超频。标题画面的OPTIONS可选择AUTO、60或20，游戏速度不变。",
+          "新建的记忆卡存档只占一个区块。旧的双区块存档仍可读取，写入中断也会保留一份完整副本。扩展进度数据损坏时会报错，不再静默丢弃。",
+          "进化条件会显示还需等待的时间，并在剩余寿命不足时警告。初代搭档的初始寿命现在与之后转生的搭档相同。",
+          "重新调整了甲虫兽及多种污物系数码宝贝等搭档的招式列表，使其更符合各自特点。更新时，部分已装备招式可能被替换或卸下，已学会的招式仍会保留。防御超过999不再让几乎所有攻击都只造成1点伤害。",
+          "改善了Armageddemon、KingEtemon、Silphymon、Valkyrimon等许多搭档的体型、步态、攻击动作、附属部件与声音。MP五连训练结束更快，收益与照顾消耗不变。"
+        ],
+        "fixed": [
+          "读档后立即移动，驯兽师也会保持在画面内。返回标题后开始新游戏，不再沿用上一个搭档的年龄。",
+          "KingSukamon的投掷攻击可以命中小型目标，新增昆虫搭档可以参加甲虫杯，VS中的能力提升也能超过999。修复一段招募对话反复循环、无法开始战斗的问题。",
+          "修复场景碰撞空洞和被堵住的道路。有待办任务时也能离开玩具城，最后一堆泥土会一直显示到挖掘完成。招募事件会正确检查前置条件。",
+          "提升搭档离开厕所时的稳定性。",
+          "区域名称字幕已翻译，招募公告会在应有的时机播放，滚动点唱机曲名也不再残留旧名称的文字。",
+          "状态页肖像能正确放入边框，小型搭档的显示更大，睡眠图标也不会被遮挡。",
+          "修复Windows补丁工具因中文资源而失败的问题。桌面补丁工具会刷新同一版本中已修正的包，不再一直使用过期下载。"
+        ],
+        "upgrade": "0.0.7存档可以继续使用；更新前请备份记忆卡，更新后检查已装备招式。所需光盘没有变化。请完整重启新光盘并读取记忆卡存档；旧版模拟器即时存档不能跨版本使用。0.0.8写入的存档不得用于旧版，包括VS登记数据。"
+      }
+    },
+    {
       "version": "0.0.7",
       "date": "2026-11-07",
       "en": {
