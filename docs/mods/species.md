@@ -235,6 +235,7 @@ a travelling model to accommodate idle poses the menu never displays:
 
 ```sh
 python3 tools/status_portraits.py build/NAME --out build/status-audit --check
+python3 tools/status_portraits.py build/NAME --out build/status-size-audit --enlarge-small --check
 ```
 
 The audit covers every raisable species using the built archive, resident/cold
@@ -252,8 +253,14 @@ inside the outer box is insufficient: a portrait can still cover its text.
 smallest camera-depth increase for an inset rectangle and preserves the old
 screen anchor where space permits. It checks several placements beside/below
 the label and accepts one only after raster verification. It never moves the
-camera closer or changes model scale, geometry, field size or animations.
-Already fitting positions remain unchanged. `--check` exits nonzero if any
+camera closer unless a portrait is below the 20-pixel readability floor.
+`--enlarge-small` also compares each portrait with its largest raster-verified
+fit and repairs those below 85% of that attainable height. This recovers
+space lost to earlier fits of travelling idle poses; wide silhouettes retain
+their proportions. Both passes edit camera coordinates only, preserving
+model scale, geometry, field size and animations.
+Already fitting positions remain unchanged unless selected by the size check.
+`--check` exits nonzero if any
 built preview still needs repair. Geometry projection approximates the GTE,
 so review actual emulator captures as well.
 

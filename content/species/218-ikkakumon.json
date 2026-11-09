@@ -45,7 +45,7 @@
     "favored_region": 9,
     "training_type": "hp-defense",
     "birth_weight": 40,
-    "status_screen_position": [-1273, 328, 1723],
+    "status_screen_position": [-680, 292, 910],
     "item_distance": 15,
     "training": {"animation": 57, "hit_tick": 16}
   },

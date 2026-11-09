@@ -1,6 +1,7 @@
 """Perspective and fitting invariants for Status portrait audits."""
 import sys
 import struct
+import json
 import tempfile
 from pathlib import Path
 import unittest
@@ -11,6 +12,17 @@ import status_portraits as status
 
 
 class StatusPortraits(unittest.TestCase):
+    def test_native_binding_cannot_restore_a_stale_portrait_camera(self):
+        root = Path(__file__).resolve().parents[1]
+        sources = status.species.load_content(str(root / 'content/species'))
+        recipes = json.loads((root / 'content/models/imports/native-bindings.json').read_text())
+        for recipe in recipes.values():
+            override = recipe.get('species_patch', {}).get('partner', {})
+            if 'status_screen_position' in override:
+                sid = recipe['species']
+                self.assertEqual(override['status_screen_position'],
+                                 sources[sid]['partner']['status_screen_position'], sid)
+
     def test_camera_target_is_screen_origin(self):
         self.assertEqual(status.project([status.camera((0, 0, 0))], (0, 0, 0)), [(160, 120)])
 
@@ -153,6 +165,33 @@ class StatusPortraits(unittest.TestCase):
         depth_change = status.camera(fitted)[2] - status.camera(original)[2]
         self.assertGreaterEqual(depth_change, 0)
         self.assertLess(depth_change, 2)  # integer XYZ rounding only
+
+    def test_small_portrait_can_recover_space_without_changing_geometry(self):
+        points = [(-100, -300, -20), (100, 0, 20)]
+        original = [-1500, 200, 4000]
+        snapshot = list(points)
+        fitted = status.fit(points, original, status.RIGHT_TARGET, allow_zoom=True)
+        before = status.envelope(points, original)
+        after = status.envelope(points, fitted)
+        self.assertGreater(after[3] - after[1], 2 * (before[3] - before[1]))
+        self.assertLess(status.camera(fitted)[2], status.camera(original)[2])
+        self.assertTrue(status.inside(after, status.GEOMETRY_BOUNDS))
+        self.assertGreater(after[0], status.LABEL[2])
+        self.assertLess(after[3], status.LIFE_Y)
+        self.assertEqual(points, snapshot)
+
+    def test_zoom_keeps_every_vertex_in_front_of_the_camera(self):
+        points = [(-100, -300, -2000), (100, 0, 2000)]
+        position = status.fit(points, [0, 0, 0], status.RIGHT_TARGET, allow_zoom=True)
+        depth = status.camera(position)[2] + status.LENGTH
+        self.assertGreater(min(z + depth for x, y, z in points), 0)
+
+    def test_small_portrait_is_checked_even_when_clear_of_all_ui(self):
+        from tools.image import Image, ImageDraw
+        layer = Image.new('RGBA', (320, 240), (0, 0, 0, 0))
+        ImageDraw.Draw(layer).rectangle((92, 132, 142, 149), fill=(255, 255, 255, 255))
+        self.assertEqual(status.ui_problem(layer), 'unreadable height')
+        self.assertIsNone(status.ui_problem(layer, check_height=False))
 
     def test_entity_scale_preserves_idle_root_momentum(self):
         pose = [[4100, 4090, 4096, 0, 0, 0, 0, 0, 0]]

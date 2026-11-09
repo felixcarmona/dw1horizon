@@ -61,6 +61,7 @@ Other checks worth running after a specific change:
 | After changing | Run |
 |---|---|
 | species JSON | `tools/species.py lint`, `tools/dev/playtest/species_proof.py` (emulator), `tools/species_bytes.py` (only names changed?) |
+| Status portrait camera data | `tools/status_portraits.py BUILD --out OUT --enlarge-small --check`; `tools/dev/playtest/status_portraits.py` for 2 MB before/after captures ([audit](investigations/status-portrait-fit.md)) |
 | balance tables, items, shops | `tools/balance.py check`, `tools/economy_audit.py` (no repeatable conversion turns bits into more bits), `tools/balance-proof.sh` |
 | evolution data | `tools/evo_check.py` (every target reachable), `tools/evo_graph.py` |
 | story scripts | `tools/dws.py check FILE --build`, then the story tests of section 5 |
