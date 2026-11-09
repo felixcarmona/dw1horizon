@@ -1219,3 +1219,35 @@ The [runtime harness](../../tools/dev/playtest/evolution_random.py) checks
 original 2 MB RAM, repeated memory-card reloads, completed natural evolutions,
 the Square popup in both fonts and a screen-207 load. The [partner reference](partner.md#score-calculaterequirementscore)
 describes the selection and timing rules.
+
+
+### Hardware and pad-timing entropy follow-up
+
+The hardware-timer patch adds a four-byte unsaved RAM pool and a four-byte
+previous-pad snapshot. VBlank slot 6 samples the existing BIOS pad buffer every
+refresh. Physical changes fold root counters 0/2 and the refresh counter into
+the pool; a roll mixes that pool with fresh timer reads. Idle/held frames do not read timers for the
+pool, and neither the pool nor a new RNG seed is written to the card. Shared
+input polling preserves both repeat cadences and pays for the extra code.
+
+Matching nine-language `MOD_VERSION=v0.0.8` builds move `main_BSS_END` from
+**0x801CE6D0 to 0x801CE6B8** (−24 resident bytes, including the eight-byte state).
+Aligned heap grows **186,400 → 186,432 B**. All **320 actual-archive setups in
+each of the nine layouts** pass; screen **207** remains tightest at
+**1,680 → 1,712 B**. The model archive and screen data are unchanged.
+MENU remains **53,788 B / 27 sectors**, with **1,508 B** spare.
+
+The [actual-C host test](../../tools/dev/playtest/evolution_selection_host.py)
+uses simulated counter registers, checks field/menu press, release and repeat
+behavior, and exhausts the uniform 15-bit XOR and rejection tail. The
+[save-state harness](../../tools/dev/playtest/evolution_entropy.py) observes
+counter reads and pool changes during twelve input patterns from one unchanged
+checkpoint, with two no-input replays as deterministic controls.
+
+PCSX-Redux on original 2 MB RAM completed twelve evolutions from one unchanged
+field checkpoint: **6 Gatomon / 6 BlackGatomon**, with twelve distinct pool
+values. Moving just the first press from refresh 18 to 19 changed the pool and
+target with the same RNG draw and roll refresh. Two no-input controls matched.
+Twelve card reloads gave **5 Gatomon / 7 BlackGatomon**; the Champion→Ultimate
+check, both popup fonts and screen 207 also passed. Physical hardware and
+DuckStation were not tested.

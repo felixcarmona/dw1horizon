@@ -435,3 +435,4 @@ Show-the-title-popup-only-for-detected-enhancements.patch
 Restore-the-v0.0.7-missing-settings-title-notice.patch
 Restore-the-native-disliked-habitat-mood-blink.patch
 Choose-among-qualifying-evolutions-at-random.patch
+Mix-the-hardware-timers-into-the-evolution-roll.patch
