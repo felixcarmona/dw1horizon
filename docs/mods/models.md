@@ -490,6 +490,10 @@ orchestrated by [the release pipeline](../patcher.md#release-pipeline).
 
 ## Model budgets
 
+The [source reduction audit](mesh-reduction-audit.md) compares final imported
+models against their private pre-reduction meshes and original texture pages,
+with per-part coverage, geometry, boundary and texture measurements.
+
 Keep the original PlayStation's 2 MB as the acceptance target. File size alone
 is insufficient: skeletons, primitive buffers, animation tracks, textures and
 simultaneously visible models all consume constrained storage. Validate the

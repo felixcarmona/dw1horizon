@@ -192,7 +192,7 @@ def _mat_key(p):
 class Mesh:
     """One piece (bone) as a triangle mesh with per-corner attributes."""
 
-    def __init__(self, model, bi, cache, wb=2.0):
+    def __init__(self, model, bi, cache, wb=2.0, preserve_components=True):
         b = model.bones[bi]
         self.bi = bi
         self.s2 = 0.0           # mean triangle area of the whole model (set by decimate)
@@ -233,6 +233,23 @@ class Mesh:
         for f in self.faces:
             for v in f.v:
                 self.vf[v].add(f)
+        self.preserve_components = preserve_components
+        self.component, self.component_remaining, self.component_floor = {}, [], []
+        for seed in self.faces:
+            if seed.n in self.component:
+                continue
+            ci = len(self.component_remaining)
+            pending, members = [seed], set()
+            while pending:
+                face = pending.pop()
+                if face.n in members:
+                    continue
+                members.add(face.n)
+                self.component[face.n] = ci
+                for vertex in face.v:
+                    pending.extend(f for f in self.vf[vertex] if f.n not in members)
+            self.component_remaining.append(len(members))
+            self.component_floor.append(min(4,len(members)))
         self.alive_v = [True] * len(self.pos)
         self.ntri = len(self.faces)
         self.Q = [(0.0,) * 10 for _ in self.pos]
@@ -322,6 +339,20 @@ class Mesh:
         fab = self.vf[a] & self.vf[b]
         if len(fab) not in (1, 2):
             return None
+        if self.preserve_components:
+            ci = self.component[next(iter(fab)).n]
+            if self.component_remaining[ci]-len(fab) < self.component_floor[ci]:
+                return None
+            # The vertex-neighbor link check below does not detect a pair of
+            # triangles becoming coincident (the tetrahedron case). Keep the
+            # full surface link, including its faces, from collapsing away.
+            surviving = self.vf[a] | self.vf[b]
+            keys = set()
+            for face in surviving-fab:
+                key = tuple(sorted(b if v == a else v for v in face.v))
+                if key in keys:
+                    return None
+                keys.add(key)
         feats, pinned = self.features(a)
         if pinned:
             return None
@@ -396,6 +427,7 @@ class Mesh:
             if b in f.v:
                 f.alive = False
                 self.ntri -= 1
+                self.component_remaining[self.component[f.n]] -= 1
                 for v in f.v:
                     self.vf[v].discard(f)
             else:
@@ -570,7 +602,8 @@ def _prim_dicts(mesh, items):
 
 
 # ------------------------------------------------------------------ decimation
-def decimate(model, budget=MAX_PRIMS, kappa=0.3, kmove=0.3, quad_angle=25.0, min_tris=4, kb=0.0, log=print):
+def decimate(model, budget=MAX_PRIMS, kappa=0.3, kmove=0.3, quad_angle=25.0, min_tris=4, kb=0.0, log=print,
+             preserve_components=True):
     """Quadric edge collapse until the model has at most `budget` primitives (after the triangle pairs are
     merged into quads again). Returns the number of primitives removed. Pieces of at most `min_tris`
     triangles are left alone."""
@@ -578,7 +611,9 @@ def decimate(model, budget=MAX_PRIMS, kappa=0.3, kmove=0.3, quad_angle=25.0, min
     if n0 <= budget:
         return 0
     cache = {}
-    meshes = [Mesh(model, i, cache) for i, b in enumerate(model.bones) if b['prims']]
+    meshes = [Mesh(model, i, cache,preserve_components=preserve_components) for i, b in enumerate(model.bones) if b['prims']]
+    for m in meshes:
+        m.component_floor = [min(min_tris,n) for n in m.component_remaining]
     tri_areas = [_len(m.tri_normal(f.v)) / 2 for m in meshes for f in m.faces]
     for m in meshes:
         m.s2, m.kb = sum(tri_areas) / max(1, len(tri_areas)), kb
@@ -826,7 +861,7 @@ CANDIDATES = [dict(kappa=0.3, kmove=0.3, quad_angle=25.0), dict(kappa=1.0, kmove
               dict(kappa=0.0, kmove=0.0, quad_angle=40.0), dict(kappa=3.0, kmove=3.0, quad_angle=40.0)]
 
 
-def best_decimation(model, budget, log=print):
+def best_decimation(model, budget, log=print,preserve_components=True):
     """Runs decimate with every candidate parameter set on a copy and returns the set with the smallest measured
     visual error (compare(): silhouette and colour differences in four views)."""
     before = snapshot(model)
@@ -834,7 +869,7 @@ def best_decimation(model, budget, log=print):
     for c in CANDIDATES:
         trial = copy.copy(model)
         trial.bones = copy.deepcopy(model.bones)
-        decimate(trial, budget, log=lambda *a: None, **c)
+        decimate(trial, budget, log=lambda *a: None,preserve_components=preserve_components, **c)
         met, _ = compare(before, snapshot(trial), size=160)
         log(f'  meshfix candidate {c}: prims {prim_count(trial)}, error {met["err"]}')
         if prim_count(trial) <= budget and (best is None or met['err'] < best[0]):
@@ -848,6 +883,9 @@ def apply(model, params=None, log=print):
     """The mesh rules in order. `params` (all optional): bones (max model bones + 1, default 34), prims
     (default 713), decimate (False: never), quad_angle, kappa, kmove, split (default True), hidden (False: keep the
     pieces the idle animation hides by a zero scale)."""
+    # Historical serialized specs lack this field. Preserve their bytes; new
+    # authoring records the guard explicitly and direct library calls enable it.
+    guard = (params or {}).get('preserve_components',params is None)
     params = dict(params or {})
     info = {}
     if params.get('hidden', True):
@@ -861,9 +899,9 @@ def apply(model, params=None, log=print):
     if params.get('decimate', True) and prim_count(model) > budget:
         used = {k: params[k] for k in ('kappa', 'kmove', 'quad_angle') if k in params}
         if len(used) < 3:
-            used, err = best_decimation(model, budget, log)
+            used, err = best_decimation(model, budget, log,preserve_components=guard)
             info['error'] = err
-        decimate(model, budget, log=log, **used)
+        decimate(model, budget, log=log,preserve_components=guard, **used)
         info['decimated'] = used
     if params.get('split', True) and any(unique_verts(b) > MAX_VERTS_PER_OBJECT for b in model.bones):
         info['split'] = split_pieces(model, log=log)

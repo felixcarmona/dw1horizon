@@ -110,7 +110,7 @@ def q_angle(a, b):
 DROP_OVER = 0.27           # primitives over 713 that the smallest-face drop may remove (was 0.12 up to batch 11)
 
 
-def load_source(entry, log=print, card_metadata=True):
+def load_source(entry, log=print, card_metadata=True, legacy_face_drop=False):
     """(mmdport.Model, meta) of a list entry; meta: card level/element when known."""
     game = entry.get('game', 'dcb')
     clip_policy = entry.get('clip_policy')
@@ -148,7 +148,7 @@ def load_source(entry, log=print, card_metadata=True):
                 break
         m.quad_angle = qa
         n0 = sum(len(b['prims']) for b in m.bones)
-        if 713 < n0 <= 713 * (1 + float(entry.get('drop_over', DROP_OVER))) and not entry.get('no_drop') \
+        if legacy_face_drop and 713 < n0 <= 713 * (1 + float(entry.get('drop_over', DROP_OVER))) and not entry.get('no_drop') \
                 and not entry.get('meshfix'):     # (no_drop: the before/after comparison)
             # rule: up to DROP_OVER (27 %; 12 % until batch 12) over the limit, the smallest faces (by area) are dropped: they are the seam and
             # detail slivers (a piece never loses its last face)
@@ -206,9 +206,14 @@ def load_source(entry, log=print, card_metadata=True):
     # bones) when the list entry asks (`"meshfix": true` or a dict of parameters) or the model is beyond what the
     # smallest-face drop can take; the parameters used are recorded in the spec
     mf = entry.get('meshfix')
-    over = meshfix.prim_count(m) > (713 * (1 + float(entry.get('drop_over', DROP_OVER))) if game == 'dw3' else 713)
+    # New authoring must simplify surfaces, never remove independent small
+    # faces. Frozen recipes retain their historical replay so their deltas and
+    # source pins remain valid; repairs are authored as ordinary model deltas.
+    over = meshfix.prim_count(m) > (713 * (1 + float(entry.get('drop_over', DROP_OVER))) if game == 'dw3' and legacy_face_drop else 713)
     if mf is not False and (mf is not None or (over and game != 'dw1')):
         params = mf if isinstance(mf, dict) else {}
+        if not legacy_face_drop:
+            params = dict(params,preserve_components=True)
         lines = []
         info = meshfix.apply(m, params, log=lines.append)
         m.meshfix = meshfix.spec_params(info, params) or True
@@ -1094,7 +1099,7 @@ def replay_model(entry, level, spec, out_dir, log=print, frozen_mesh=True):
         # search. Keep the entry's budgets/other rules, and replay that choice.
         original = entry['meshfix'] if isinstance(entry['meshfix'], dict) else {}
         entry['meshfix'] = dict(original, **{k: params[k] for k in ('kappa', 'kmove', 'quad_angle')})
-    m, _ = load_source(entry, log=log, card_metadata=False)
+    m, _ = load_source(entry, log=log, card_metadata=False, legacy_face_drop=True)
     merge_palettes(m, 15, log=log)
     size_source(m, entry, level)
     if entry.get('game') == 'dw3':

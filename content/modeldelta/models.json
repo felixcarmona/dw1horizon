@@ -4359,9 +4359,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/326-WarGrowlmon.MMD.mdelta",
-        "delta_sha256": "6b2a6e0adfc0dea95d843a32bbe7245cd0588bdbf56d01c760919d8540718523",
-        "sha256": "45b4bafd5ac72e5cb35e3c33e8aa124a1cbafef37a2ee3f6e938a79f91d07553",
-        "size": 100992
+        "delta_sha256": "1ea0c6a6954c997ce4eb385f14d53d0862d60856d5156b3ed0df381d8ae4d636",
+        "sha256": "79006d867d19a4d5934c8cad756d5fc4e48259d3b458818fd068ffed447db755",
+        "size": 101882
       },
       "tim": {
         "sources": [
