@@ -275,3 +275,12 @@ forward and out to its own side, the swing ankle capped in height (its foot
 turned toward standing as far as it was lowered), and the condition walk's
 dragging feet held mostly on their footprints. The body is kept on its claws at
 the ticks and the 60 fps thirds.
+
+Digmon's (193) run was its walk played with twice the travel.
+`field_animations/digmon.py` builds the run from the walk's own poses on a
+14-tick cycle instead of 20, at the same field speed: thighs swing further, the
+upper body leans forward and the body leaves the floor around each of the
+walk's two hops. In the walk, condition walk and run the long toe claws pointed
+through the floor and the right drill dug into it; the ankles and toes turn
+toward standing as far as keeps the claws up and the arm swings up at the
+shoulder just enough to clear its drill, checked at the ticks and the thirds.
