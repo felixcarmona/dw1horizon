@@ -196,9 +196,9 @@ it. Outside the world the read still blocks: the fight code reads `animFlag` as 
 The title screen's panel (`modNoticeProbe`, patch 0313) reads the same probe and counts reads of the hblank counter over 16
 lines, which grow with an emulated CPU overclock: DuckStation gives 3801 at 100 %, 7389 at 200 %, 9303 at 250 % and 10977 at
 300 %, and CPU readiness asks for 8500. The count changes a little with the loop's address, so measure it again if that code
-moves. The Press Start popup appears only with detected 8 MB RAM or a fast CPU;
-2 MB / normal-CPU boots show nothing. It restores the earlier blue border and
-two-column readiness rows, with the current 60/30/20 cadence as its second line;
+moves. The Press Start popup matches v0.0.7: it appears when either 8 MB RAM
+or a fast CPU is missing, and disappears with both present. It shows the two
+original advice lines and RAM/CPU readiness rows, with no frame-rate line;
 see [automatic frame rate](../mods/options.md#automatic-frame-rate).
 Its drawing code and scratch live in the title overlay; localized popup text
 lives in MENU, loaded alongside it. The approximate-percent
@@ -228,6 +228,21 @@ General heapcheck passes. All **320 actual-archive screen setups** fit; the
 minimum on **screen 207 grows from 640 to 720 B**. The nine-language title-storage
 check verifies that the aggregate is in MENU, the code/cache are in EVL, and
 title bytes remain identical across languages. No new heap allocation is added.
+
+
+The v0.0.7 notice correction (after PR #363), with matching nine-language
+banks and `MOD_VERSION=v0.0.7`, moves `main_BSS_END` from **0x801cea90 to
+0x801cea40** (−80 B). Aligned heap grows **185,440 → 185,520 B**. All **320
+actual-archive setups per language** pass; the minimum on **screen 207 grows
+720 → 800 B**, above the 640 B pre-restoration floor.
+
+`MOD_NOTICE_TEXT` is 136 B in MENU; its two original advice lines replace the
+cadence format. MENU is **53,612 B**, with **1,684 B spare** and the same
+27-sector read ending at `0x800602e0`. The title block ends at **0x8006c410**,
+84 B earlier; its rounded EVL read still ends at `0x8006c800`, below FISH.
+The cache shrinks **16 → 12 B** in EVL. The title-storage checker passes all
+nine layouts, including identical title bytes, MENU/EVL ownership, callers
+and sector bounds. There is no new heap allocation or resident popup data.
 
 
 ### MAPHEAD buffer (patches 0004, 0091)

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Clean-boot the three enhancement-popup cases in DuckStation.
+"""Clean-boot the four missing-settings popup cases in DuckStation.
 
 DS_DISPLAY=:177 DS_GDB_PORT=42357 python3 tools/dev/playtest/title_popup.py \
     build/title-popup.cue --exe build/title-popup/exe/SLUS_010.32 \
@@ -7,7 +7,7 @@ DS_DISPLAY=:177 DS_GDB_PORT=42357 python3 tools/dev/playtest/title_popup.py \
 
 Uses real RAM/CPU settings, no detection or renderer pokes. The existing driver
 skips movies by patching their call. Memory cards are disconnected for each boot.
-Inspect the three PNGs alongside the recorded probe results in evidence.json.
+Inspect the four PNGs alongside the recorded probe results in evidence.json.
 """
 from pathlib import Path
 import argparse
@@ -26,7 +26,7 @@ def main():
     ap.add_argument('cue', type=Path)
     ap.add_argument('--exe', type=Path, required=True)
     ap.add_argument('--out', type=Path, required=True)
-    ap.add_argument('--case', choices=('all', 'normal', '8mb', 'fast'), default='all')
+    ap.add_argument('--case', choices=('all', 'normal', '8mb', 'fast', 'both'), default='all')
     args = ap.parse_args()
     if not os.environ.get('DS_DISPLAY') or not os.environ.get('DS_GDB_PORT'):
         ap.error('set private DS_DISPLAY and DS_GDB_PORT values')
@@ -37,7 +37,7 @@ def main():
     args.out.mkdir(parents=True, exist_ok=True)
     original_ini = Path(d.INI).read_bytes()
     assert not Path(d.RUN).exists(), 'stop this worktree’s DuckStation instance first'
-    cases = [('normal', 2, 100, 3), ('8mb', 8, 100, 2), ('fast', 2, 250, 1)]
+    cases = [('normal', 2, 100, 3), ('8mb', 8, 100, 2), ('fast', 2, 250, 1), ('both', 8, 250, 0)]
     evidence = []
     try:
         for name, ram, oc, expected in cases:
@@ -72,7 +72,7 @@ def main():
                 screenshot = args.out / (name + '.png')
                 d.main(['shot', str(screenshot)])
                 row = dict(case=name, ram_mb=ram, cpu_percent=oc,
-                           popup_expected=expected != 3, screenshot=screenshot.name,
+                           popup_expected=expected != 0, screenshot=screenshot.name,
                            observed=values)
                 evidence.append(row)
                 (args.out / 'evidence.json').write_text(json.dumps(evidence, indent=2) + '\n')
