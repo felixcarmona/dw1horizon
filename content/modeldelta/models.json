@@ -164,9 +164,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/185-Armadillomon.MMD.mdelta",
-        "delta_sha256": "07d1891a149c5a2e9dc74d99f34ab9a8caf8b0fd6159d2e51229dc66f2773485",
-        "sha256": "af8301e804da84ebe3c50d6aebb4a9305226961ea13134e1e2656eb5bc89f623",
-        "size": 103218
+        "delta_sha256": "74aca10b1f71b8a647f35f1f2e182abfaabdf1eee9ee1523395ced1449f2d18d",
+        "sha256": "a289beb72cb78909d9a8e3b142576f007d2c3b834f3dab1a05d746e141fc7b52",
+        "size": 96626
       },
       "tim": {
         "sources": [

@@ -144,3 +144,8 @@ with its existing rig and chibi proportions. The offline authoring recipe is
 `field_animations/valkyrimon.py`; player builds replay the plain delta.
 [The motion notes](../../docs/reference/valkyrimon-motion.md) record the source
 mismatch, size comparison, replay commands and original-console checks.
+
+Armadillomon (185) held its head level or lowered in the field idle, walk and
+run, so the shell's front rim covered the brow. `field_animations/armadillomon_head.py`
+adds one constant lift to the head joint in those clips (and the condition walk),
+leaving every other channel as `armadillomon.py` and the pace pass wrote it.
