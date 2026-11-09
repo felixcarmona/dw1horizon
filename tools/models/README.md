@@ -180,3 +180,16 @@ Angewomon's (190) walk and run slid the feet without the legs carrying them.
 run the way `valkyrimon.py` does (legs solved onto his feet, his lean on the
 body), with her own swinging arms (he carries a staff), and the sash ends and
 lowest feathers kept off the ground. Buster Dive is applied after it at build.
+
+Imperialdramon's (192) walk and run swung every limb on its own and slid the
+hands and feet. `field_animations/imperialdramon.py` writes the walk, condition
+walk and run on all fours with `quadruped.py` (a walk with each hand landing
+just before the foot behind it, and a gallop), each hand and foot standing at
+its own turned-out idle angle (per-leg `paw_flat`). The hips sit right behind
+the shoulders: the knees bend out and a lifted arm's elbow swings out past the
+thigh (`swing_pole`), so the legs of a side do not pass through each other. The
+forearm blades always point ahead (`aim`) and the hands swing wide (`wide`), so
+they do not sweep through the head, and the body dips onto each landing in the
+walks and bounds in the run. The idle keeps its crouch and roar with every hand
+and foot planted where it stands at the first tick (the crouch had pushed the
+hind feet into the floor).
