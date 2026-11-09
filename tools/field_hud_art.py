@@ -8,7 +8,9 @@ status screen's green/red fills and the light-blue need fills. Rows 508..510
 blend the whole need icon 55% towards luminance-scaled brick red. The track
 uses separate palette indices so it cannot inherit an icon tint. No allocation
 is added. Native pixels come from SYSTEM_W (entry 8) and the toilet-need
-condition frame (entry 3), fitted whole to 11x11.
+condition frame (entry 3), fitted whole to 11x11. The two mood tiles encode
+normal/disliked colour pairs; spare CLUT rows (272,511) and (256,511) select
+the original worse expressions without adding a tile, draw packet or RAM data.
 """
 import argparse
 from pathlib import Path
@@ -83,17 +85,42 @@ def build(data):
         sx,sy,cy,size = source
         pixels,base_y,clut_y = (need,384,480) if k==5 else (src,128,488)
         native = struct.unpack_from('<16H',d,pixels-12-512+(cy-clut_y)*32)
+        # Mood tiles encode (normal, disliked) colours in each texel index.
+        # Switching the CLUT preserves the native disliked-habitat expressions.
+        if k < 2:
+            tile = [[(c,c) for c in row] for row in tile]
         for y in range(11):
             for x in range(11):
                 a,b = ((2*t+1)*size//22 for t in (x,y))
                 colour = native[pixel(pixels,sx+a,sy-base_y+b)]
                 if k in (4,6) and colour in (grey,light,shadow):
                     colour = 0
-                if colour:
+                if k < 2:
+                    worse = native[pixel(src,sx+x+11,sy-128+y)]
+                    tile[y+1][x+1] = (colour or grey, worse or grey)
+                elif colour:
                     tile[y+1][x+1] = colour
         for y in range(5,9):
             for x in range(14,34):
                 tile[y][x] = top if y==6 and 15<=x<33 else bottom if y==7 and 15<=x<33 else outline
+        if k < 2:
+            for y in range(5,9):
+                for x in range(14,34):
+                    c = tile[y][x]
+                    tile[y][x] = (c,c)
+            colours = list(dict.fromkeys([(0,0)]+[c for row in tile for c in row]))
+            if len(colours)>16:
+                raise ValueError(f'HUD mood {k} exceeds its native palette')
+            palette(4+k,[c[0] for c in colours])
+            # Spare CLUT rows: BTLCOMND (272,511), FI_INFO (256,511).
+            alt = clut+15*32 if k==0 else entries[4][0]-12-512+15*32
+            if any(d[alt:alt+32]):
+                raise ValueError('HUD mood CLUT row is occupied')
+            struct.pack_into('<16H',d,alt,*([c[1] for c in colours]+[0]*(16-len(colours))))
+            for y,row in enumerate(tile):
+                for x,c in enumerate(row):
+                    put(u+x,v+y,colours.index(c))
+            continue
         # Keep track indices distinct even if a glyph shares a track ink.
         colours = list(dict.fromkeys([0]+[tile[y][x] for y in range(13) for x in range(13)]))
         icon_colours = len(colours)

@@ -23,7 +23,9 @@ class FieldHUDArt(unittest.TestCase):
         return (b>>(4*(x&1)))&15
 
     def test_only_allocated_cells_change(self):
-        allowed=set(range(self.clut+4*32,self.clut+15*32))
+        allowed=set(range(self.clut+4*32,self.clut+16*32))
+        other=tim_entries(self.base)[4][0]-12-512+15*32
+        allowed.update(range(other,other+32))
         for u,v in CELLS:
             allowed.update(self.dst+y*128+x//2 for y in range(v,v+13) for x in range(u,u+34))
         allowed.update(self.dst+y*128+x//2 for y in range(59,63) for x in range(144,182))
@@ -76,6 +78,29 @@ class FieldHUDArt(unittest.TestCase):
         bad=bytearray(self.base);bad[self.clut+12*32]=1
         with self.assertRaisesRegex(ValueError,'occupied'):
             build(bad)
+
+    def test_habitat_faces_match_native_pixels_in_both_phases(self):
+        native=tim_entries(self.base)[8][0]
+        native_pal=struct.unpack_from('<16H',self.base,native-12-512+15*32)
+        for k in range(2):
+            u,v=CELLS[k]
+            alternate=self.clut+15*32 if k==0 else tim_entries(self.base)[4][0]-12-512+15*32
+            for phase,clut in enumerate((self.clut+(4+k)*32,alternate)):
+                pal=struct.unpack_from('<16H',self.new,clut)
+                for y in range(13):
+                    for x in range(34):
+                        actual=pal[self.pixel(self.new,u+x,v+y)]
+                        if 1<=x<=11 and 1<=y<=11:
+                            sx=(64 if k==0 else 97)+phase*11+x-1
+                            byte=self.base[native+(115+y)*128+sx//2]
+                            colour=native_pal[(byte>>(4*(sx&1)))&15]
+                            self.assertEqual(actual,colour or rgb15((144,144,144)))
+                        else:
+                            normal=struct.unpack_from('<16H',self.new,self.clut+(4+k)*32)
+                            self.assertEqual(actual,normal[self.pixel(self.new,u+x,v+y)])
+            bad=bytearray(self.base);bad[alternate]=1
+            with self.assertRaisesRegex(ValueError,'occupied'):
+                build(bad)
 
     def test_need_fills_are_light_blue(self):
         pal=struct.unpack_from('<16H',self.new,self.clut+11*32)

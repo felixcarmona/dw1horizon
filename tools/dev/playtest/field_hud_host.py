@@ -26,6 +26,7 @@ def main():
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
+struct { int partnerAreaResponse; } MAP_TILE_DATA;
 struct { int happiness,discipline,condition,starvationTimer,foodLevel,poopLevel,tiredness; } PARTNER_PARA;
 struct { struct { struct {int type;} entity; } digimonEntity; } PARTNER_ENTITY;
 struct Raise {int poopTimer;} RAISE_DATA[2], importedRaise;
@@ -39,6 +40,7 @@ int STATUS_UI_OFFSET_X=75,PLAYTIME_FRAMES;
 int careGet(int slot) { const int rules[]={20,200,80}; return rules[slot]; }
 struct Draw {int x,y,w,h,u,v,page,clut,z,flag;} draws[13]; int count;
 #define GetClut(x,y) ((y)*64+(x)/16)
+#define getClut GetClut
 void renderRectPolyFT4(int x,int y,int w,int h,int u,int v,int page,int clut,int z,int flag) {
  assert((flag==0 || flag==8) && count<13); draws[count++]=(struct Draw){x,y,w,h,u,v,page,clut,z,flag};
 }
@@ -112,6 +114,33 @@ int main(void) {
  PARTNER_ENTITY.digimonEntity.entity.type=200; importedRaise.poopTimer=20;
  PARTNER_PARA.condition=0;PARTNER_PARA.poopLevel=20;check(3,20,40,0,5,0,0);
  importedRaise.poopTimer=10;check(3,20,20,0,5,0,0); assert(importedReads==4);
+ // Preserve the existing one-second need warning phases at every counter value.
+ PARTNER_ENTITY.digimonEntity.entity.type=0; RAISE_DATA[0].poopTimer=12;
+ PARTNER_PARA.condition=0; PARTNER_PARA.foodLevel=20;
+ PARTNER_PARA.poopLevel=4; PARTNER_PARA.tiredness=75;
+ for(int frame=0;frame<=65535;frame++) {
+  PLAYTIME_FRAMES=frame; count=0;renderCareHUD();
+  int row=0;
+  for(int k=0;k<count;k++) if(draws[k].h==13) {
+   if(row>=2) assert(draws[k].w==(frame%40>=20?13:34));
+   row++;
+  }
+  assert(row==5);
+ }
+ // The original phase owns exactly five of every ten play ticks, including wrap.
+ for(int frame=0;frame<=65535;frame++) for(int response=0;response<3;response++) {
+  PLAYTIME_FRAMES=frame; MAP_TILE_DATA.partnerAreaResponse=response;
+  for(int negative=0;negative<2;negative++) {
+   PARTNER_PARA.happiness=negative?-50:50;
+   count=0;renderCareHUD();
+   int expected=(response==2 && frame%10<5) ? GetClut(272,511)-negative : GetClut(272,500+negative);
+   assert(draws[0].clut==expected);
+   // No habitat effect may change the gauge value or its red/green colour.
+   assert(draws[1].w==width(negative?50:150,200));
+   assert(draws[1].v==251+negative*2);
+  }
+ }
+ puts("PASS: native habitat phase over all 65536 play ticks and both happiness signs");
  puts("PASS: 589828 exhaustive live-value/flag/baseline cases, both blink halves; B5a geometry, fill and palettes");
 }
 '''
