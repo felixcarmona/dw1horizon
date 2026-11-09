@@ -17,7 +17,7 @@ from tools.dev.playtest.training_evolution import call, await_value
 from tools.langpatch import elf_symbols
 
 
-def open_chart(e):
+def open_chart(e, parent=306, target=258):
     e.poke('SPECIES_RAISED_BITS', b'\xff' * 128)
     call(e, 'tamerSetState', 1)
     e.poke('IS_IN_MENU', struct.pack('<i', 1))
@@ -28,9 +28,9 @@ def open_chart(e):
     press_value(e, 'RIGHT', 'PLAYER_MENU_STATE', 1, 'b')
     press_value(e, 'CONFIRM', 'MENU_STATE', 2, 'b')
     press_value(e, 'CONFIRM', 'MENU_STATE', 3, 'b')
-    call(e, 'chartDetailGoto', 306); e.run('resume'); e.wait(1)
+    call(e, 'chartDetailGoto', parent); e.run('resume'); e.wait(1)
     ids = e.peek('CHART_TO_IDS', '24h')
-    index = ids.index(258)
+    index = ids.index(target)
     call(e, 'chartDetailMoveCursor', 1, index); e.run('resume')
     e.poke('MOD_OPT_EVO_GUIDE', struct.pack('<i', 1))
     for _ in range(8):

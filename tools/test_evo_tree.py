@@ -170,11 +170,6 @@ def practical_errors(sp, kids, table):
                 checked += 1
                 if not T.practical(p, c, kids, reqs, levels, sp):
                     errors.append(f'{parent} -> {name}: no practical picker state')
-                if not entry.get('disc'):
-                    signature = {stat for stat in T.ALL if reqs[c][stat] != -1}
-                    if any(signature == {stat for stat in T.ALL if reqs[k][stat] != -1}
-                           for k in kids[p] if k != c and k in reqs):
-                        errors.append(f'{parent} -> {name}: identical sibling picker average')
     preserved = {'Analogman', 'Jijimon'}
     for name in table.get('canon_megas', []):
         if name in preserved:

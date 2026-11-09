@@ -160,8 +160,21 @@ def block(e, out, label, timer, count, expected_target):
     else:
         raise AssertionError(f'{label}: training did not return field control')
     if expected_target != -1:
+        # The eligibility preview does not choose the eventual random outcome.
+        if e.has('rollNaturalEvolutionTarget'):
+            e.run('lua', f'''
+              TE_ROLL={{target=-1}}
+              TE_ROLL.bp=PCSX.addBreakpoint({e.A('rollNaturalEvolutionTarget')},'Exec',4,'training-roll',function()
+                TE_ROLL.ret=PCSX.addBreakpoint(PCSX.getRegisters().GPR.n.ra,'Exec',4,'training-roll-return',function()
+                  TE_ROLL.target=PCSX.getRegisters().GPR.n.v0
+                  TE_ROLL.bp:remove(); TE_ROLL.ret:remove()
+                end)
+              end)
+            ''')
         e.gs('set', 'gametime_running=1')
         for _ in range(180):
+            if e.has('rollNaturalEvolutionTarget'):
+                expected_target = int(e.run('lua', 'return TE_ROLL.target').strip())
             if e.peek('PARTNER_ENTITY', 'i') == expected_target and e.peek('PARTNER_STATE', 'b') == 1:
                 break
             e.press('START', 8)

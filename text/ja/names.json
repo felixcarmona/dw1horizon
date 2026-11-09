@@ -134,6 +134,7 @@
  "main.CHART_STR_LIFE": "先に命がつきる (残り%d時間)",
  "main.CHART_STR_SPECIAL": "特別な進化",
  "main.CHART_STR_VERDICT": "4条件中%d達成。必要数%d。",
+ "main.CHART_STR_RANDOM": "条件達成の進化先からランダム",
  "main.CHART_STR_SHORT": "あと%d条件必要。",
  "main.CHART_STR_NEEDS": "条件",
  "main.CHART_STR_HAVE": "現在",

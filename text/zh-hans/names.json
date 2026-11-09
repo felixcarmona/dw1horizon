@@ -562,6 +562,7 @@
  "main.CHART_STR_LIFE": "寿命先耗尽 (剩%d小时)",
  "main.CHART_STR_SPECIAL": "特殊进化",
  "main.CHART_STR_VERDICT": "4项满足%d项，还需%d项。",
+ "main.CHART_STR_RANDOM": "符合条件的目标随机选择",
  "main.CHART_STR_SHORT": "还差%d项。",
  "main.CHART_STR_NEEDS": "条件",
  "main.CHART_STR_HAVE": "当前",

@@ -65,6 +65,7 @@ Other checks worth running after a specific change:
 | balance tables, items, shops | `tools/balance.py check`, `tools/economy_audit.py` (no repeatable conversion turns bits into more bits), `tools/balance-proof.sh` |
 | evolution data | `tools/evo_check.py` (every target reachable), `tools/evo_graph.py` |
 | Ordinary evolution selection / care bounds | `python3 tools/dev/playtest/evolution_selection_host.py build/decomp-int` (actual C, no disc; `--ref v0.0.7` with that tag’s prepared tree) |
+| Random evolution / reload variation | `python3 tools/dev/playtest/evolution_random.py DISC.cue --exe EXE --out build/evolution-random` (eight reloads of one memory-card save, original 2 MB) |
 | story scripts | `tools/dws.py check FILE --build`, then the story tests of section 5 |
 | a C patch's tables | the matching script in `tools/dev/playtest/` (section 6) |
 | laboratory overlay storage | `tools/lab_storage_check.py build/decomp-int` for each full-build language tree, `tools/xref.py classes`/`refs` on its ELF, full eight-language heap checks and the Cheats/field/card-menu runtime checks in [memory.md](reference/memory.md) |

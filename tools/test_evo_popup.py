@@ -85,6 +85,9 @@ int main(void) {
                     self.assertLessEqual(width(text('VERDICT') % (4, 3) + verdict), 244,
                                          (language, font, verdict))
                 self.assertLessEqual(width(text('LIFE') % (max_hours - 1)), 244, (language, font))
+                # Footer starts at 28; Close ends at 286, with a 13 px icon and 6 px gap.
+                self.assertLessEqual(width(text('RANDOM')), 286 - width(text('CLOSE')) - 13 - 6 - 28,
+                                     (language, font))
                 self.assertLessEqual(width(text('TIME')) + width(str(max_hours)) + 4, 194 - 41)
                 # The game's longest canonical name (19 chars) has a full title row.
                 self.assertLessEqual(width(text('EVOLVE') % 'MetalGreymonVaccine'), 244, (language, font))

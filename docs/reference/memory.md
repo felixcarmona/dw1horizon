@@ -1194,3 +1194,28 @@ immutable four-column row table. A 48-byte language-name resolver lives with
 the resident name array, allowing the MENU text lookup to remain a leaf.
 No new heap allocation or frame buffer is introduced. Title-storage checks
 cover all nine layouts and their unchanged language-independent EVL block.
+
+
+## Random qualifying evolution selection (v0.0.8)
+
+Matching full nine-language builds with `MOD_VERSION=v0.0.8` move
+`main_BSS_END` from **0x801CEA40 to 0x801CE6D0** (−880 resident bytes).
+Aligned heap grows **185,520 → 186,400 B**. The shared selector replaces two
+copies of the stat-average comparison. Its six-target pool uses 12 bytes on
+the stack; it adds no persistent state, saved bytes or heap allocation.
+
+All **320 actual-archive setups in each of the nine layouts** pass. The
+minimum remains screen **207**, with margin **800 → 1,680 B**, above the
+640 B floor. The before/after `DIGI.DAT` and resident `MAPHEAD.SCN` hashes
+match, so these measurements use the same model and screen data.
+
+The translated Square-popup hint is a 30-byte padded object at
+**0x8005D0BC in MENU**, outside main. MENU grows **53,612 → 53,788 B**,
+leaving **1,508 B** spare; its read remains 27 sectors. The nine-language
+title-storage check passes, including identical title bytes and safe MENU
+reloads. The title block remains `0x8006A79C..0x8006C410`.
+
+The [runtime harness](../../tools/dev/playtest/evolution_random.py) checks
+original 2 MB RAM, repeated memory-card reloads, completed natural evolutions,
+the Square popup in both fonts and a screen-207 load. The [partner reference](partner.md#score-calculaterequirementscore)
+describes the selection and timing rules.

@@ -134,6 +134,7 @@
  "main.CHART_STR_LIFE": "Leben zu kurz (%d h übrig)",
  "main.CHART_STR_SPECIAL": "Sonderweg",
  "main.CHART_STR_VERDICT": "%d/4 erfüllt. Nötig: %d.",
+ "main.CHART_STR_RANDOM": "Gültige Ziele: Zufall.",
  "main.CHART_STR_SHORT": "Noch %d erforderlich.",
  "main.CHART_STR_NEEDS": "Benötigt",
  "main.CHART_STR_HAVE": "Du hast",

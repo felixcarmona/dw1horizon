@@ -364,7 +364,7 @@ Every frame with no day/night fade in progress (`isInDaytimeTransition`, almost 
 The immortal hour armed by save loading or waking protects against death and sickness escalation, but does not
 block a due evolution. The death and sickness ticks retain their own protection checks. Previously the shared
 early return also suppressed evolution: loading a save or waking deferred it until the next hour even when multiple
-targets qualified. Rookie eligibility still starts at 72 evolution hours; ties keep the existing picker.
+targets qualified. Rookie eligibility still starts at 72 evolution hours; competing ordinary targets use the draw below.
 
 A target other than -1 → `tamerSetState(6)`, `partnerSetState(13)`; state 13 runs the EVL sequence and ends in
 `EVL_applyEvolution`. The hours of each level, the specials and the item rules are data in the mod (patches
@@ -386,21 +386,38 @@ At most 4 points against `EVOLUTION_REQS[target]`:
 3 points are needed; each group is optional if the other three pass. A maximum care value is inclusive, not a
 strict inequality. The mod's score sums the four bits of `evoRequirementsMet`, which the evolution chart also shows.
 
-The ordinary pickers process targets in route order. Against the current best, an already-raised target gets
-0 points if the best is unraised; an unraised target gets +1 if the best is already raised. This adjustment does
-not force an unraised target to replace the current best in the stat pickers: it must still win the comparison.
-In-Training→Rookie keeps the highest adjusted requirement score; an exact tie retains the earlier target.
-For Rookie→Champion and Champion→Ultimate, a score of at least 3 admits a candidate to the stat comparison;
-4 points do not outrank 3. Required current stats are summed (HP/MP divided by 10) and divided by their count using
-integer division. Only a strictly higher result replaces the current best, so exact ties keep the earlier target.
-`statTotal/statCount` are only reset when a new best is found: a qualifying loser leaves its divided total and
-count for the next qualifying candidate. The host-C check below covers selection without claiming an emulator run.
+For Rookie→Champion and Champion→Ultimate, a score of at least 3 admits a candidate;
+4 points do not outrank 3. The ordinary picker gathers qualifiers before rolling,
+checking model fit and NEW DIGIMON as before. The raised-history filter remains
+ordered: after an unraised candidate is admitted, later raised candidates receive
+0 points and are excluded. Earlier admitted raised candidates stay in the pool.
+An admitted candidate becomes the history anchor independently of the eventual draw;
+stat averages no longer control that anchor or the choice.
 
-For example, Salamon (221) can become Gatomon (234) with 4 care mistakes: Gatomon asks for **at most 1**, HP 1000,
-Defense 100 and weight 5–15, with Salamon as its bonus parent. Stats + weight + parent bonus give 3 points despite
-failing care. At HP 2000, MP 1000, Offense 100, Defense 200, Speed 100, Brains 100 and weight 10, Gatomon scores 3
-and BlackGatomon scores 4. With neither raised yet, Gatomon's comparison is 200, BlackGatomon's is 166, and Gatomon
-wins. See the [Salamon investigation](../investigations/salamon-evolution.md) for v0.0.7 evidence and limitations.
+At the evolution tick, `rollNaturalEvolutionTarget` chooses uniformly among this
+pool. It XORs the game's existing 15-bit `randomLimit(32768)` with the low 15 bits
+of the live `VSync(-1)` counter, then rejects the incomplete remainder before
+reducing modulo the pool size. Timing is sampled at evolution, not at new game
+creation or from the partner's saved age. Loading the same memory-card save and
+varying timing can yield a different target; repeated outcomes remain possible.
+There is no persistent pool, allocation or extra saved state. Zero/one candidate
+and `getNaturalEvolutionTarget` training previews consume no randomness. The
+Champion picker reused for ordinary Ultimate path checks uses the same draw;
+timed pair priority, timing gates, special/item routes and Numemon fallback retain
+their rules. In-Training→Rookie still keeps the highest adjusted score and the
+first target on an exact tie.
+
+For example, Salamon (221) can become Gatomon (234) with 4 care mistakes: Gatomon
+asks for **at most 1**, HP 1000, Defense 100 and weight 5–15, with Salamon as its
+bonus parent. Stats + weight + parent bonus give 3 points despite failing care.
+At HP 2000, MP 1000, Offense 100, Defense 200, Speed 100, Brains 100 and weight 10,
+Gatomon scores 3 and BlackGatomon scores 4. With neither raised yet, both now have
+an equal chance. The former stat comparison always chose Gatomon in this fixture;
+see the [historical investigation](../investigations/salamon-evolution.md).
+The [host harness](../../tools/dev/playtest/evolution_selection_host.py) checks
+admission, distribution, exclusions, preview purity and timing variation, while
+[the emulator proof](../../tools/dev/playtest/evolution_random.py) reloads one
+memory-card save with varied timing and completes natural evolutions on 2 MB.
 
 ### Special evolutions (`handleSpecialEvolutions`, one `rand(100)` per call)
 
@@ -470,7 +487,7 @@ The species added by the mod join the same pickers; the disc's own routes are un
 
 A well-kept chain reaches Champion at age 102 h, Ultimate after 168 more hours (age 270 h), then Mega after another 120 h (age 390 h). Birth lifetime 408 plus the Ultimate bonus 96 leaves 114 h immediately before the Mega, which adds 120 h. Happiness must stay at least 80, without sickness or other extra lifetime loss. An Ultimate-to-Ultimate transition preserves the evolution timer and adds no lifetime; only reaching Ultimate from another level grants its 96 h. All 48 imported Megas use the real level-6 rule; Phoenixmon, HerculesKabuterimon, MetalEtemon, Machinedramon, Jijimon and Analogman are also Mega on, and explicitly Ultimate off.
 
-The picker model uses attainable unupgraded File City training states: at most 84 sessions during the Champion's 168 h and 60 during the Ultimate's 120 h, reserving sleep, food and rest. Natural evolution gains feed the second stage. Every Ultimate parent is checked, including secondary parents without the `digimon` bonus. Added Ultimate siblings use distinct stat-average formulas so the first listed cannot win every overlap. Original disc ties remain; Mamemon can use happiness 90 rather than Piximon's 95, and some native routes need deliberate care mistakes. No evolution asks for a number of learned techniques any more; Gigadramon's old 35 became 100 battles. Arrival witnesses prefer ordinary Champion routes and exclude Sukamon’s backup-stat restoration from the ordinary gains formula. The model follows the production picker’s retained accumulator: a qualifying loser leaves its divided stat total and count for the next qualifying candidate. These are conditional stat, picker and lifetime witnesses, not a complete care simulation.
+The picker model uses attainable unupgraded File City training states: at most 84 sessions during the Champion's 168 h and 60 during the Ultimate's 120 h, reserving sleep, food and rest. Natural evolution gains feed the second stage. Every Ultimate parent is checked, including secondary parents without the `digimon` bonus. Added Ultimate siblings use distinct requirement groups; overlapping ordinary qualifiers now share an equal draw. Mamemon can use happiness 90 rather than Piximon's 95, and some native routes need deliberate care mistakes. No evolution asks for a number of learned techniques any more; Gigadramon's old 35 became 100 battles. Arrival witnesses prefer ordinary Champion routes and exclude Sukamon’s backup-stat restoration from the ordinary gains formula. The current model checks membership in the qualifying pool; the old deterministic picker remains available only for historical comparisons. These are conditional stat, picker and lifetime witnesses, not a complete care simulation.
 
 KingEtemon (303, Mega, Virus) evolves from Etemon, Monzaemon, Digitamamon and the timed WaruMonzaemon/KingSukamon rules. Etemon keeps the primary-parent bonus; Monzaemon shares battle and air, and Digitamamon shares air. These [canon parents](https://wikimon.net/King_Etemon) leave Monzaemon and Digitamamon with two Mega targets each. ShogunGekomon and Vademon are also canon candidates, but share none of KingEtemon's specialties and are excluded. KingEtemon keeps its Mega stat thresholds and weight: 5000 HP, 500 speed, 400 brains and weight 40. Its care band is at most 10 mistakes, with raw happiness 80 (90 on the status screen) as an alternative bonus, so the added parents have practical chains (the normal scoring and weight tolerance apply). Practical chain checks cover every included parent.
 
