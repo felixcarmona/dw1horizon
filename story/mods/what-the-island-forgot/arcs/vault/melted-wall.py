@@ -6,7 +6,8 @@ from dw import *
 from ...state import root3
 
 melted = new_screen(311, map="build/what-the-island-forgot-maps/screens/VALT02.MAP")
-keeper = melted.npc(Species.Angemon, at=(0, 800), range=0, when=root3 and not recruited(Species.Angemon))
+# The shared city hints address script speaker 6, including the name lookup.
+keeper = melted.npc(Species.Angemon, section=6, at=(0, 800), range=0, when=root3 and not recruited(Species.Angemon))
 thaw_told = flag()
 
 @melted.on_enter

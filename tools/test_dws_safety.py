@@ -110,5 +110,36 @@ def talk():
 
 
 
+class NewScreenSpeakers(unittest.TestCase):
+    def room(self, declarations):
+        return lower_file('/tmp/story-speakers.py', src='from dw import *\n'
+                          'room = new_screen(311, map="build/test/VALT02.MAP")\n' + declarations)
+
+    def test_shared_speaker_id_preserves_the_physical_slot(self):
+        module, script, _ = self.room(
+            'keeper = room.npc(Species.Angemon, slot=0, section=6)\n'
+            '@keeper.on_talk\ndef talk():\n    jump_to_script(211, 8)\n')
+        self.assertEqual(module.npcs['keeper']['slot'], 0)
+        self.assertEqual(module.npcs['keeper']['entity'], 6)
+        self.assertIn('npc keeper = 6;', script)
+        self.assertIn('jump_to_file(211, 8);', script)
+
+    def test_talk_section_must_be_in_the_npc_range(self):
+        for section in (4, 51):
+            with self.subTest(section=section), self.assertRaisesRegex(PyError, '5-50'):
+                self.room(f'keeper = room.npc(Species.Angemon, slot=0, section={section})\n')
+
+    def test_duplicate_explicit_or_default_speakers_are_rejected(self):
+        for declaration in ('slot=1', 'slot=1, section=6'):
+            with self.subTest(declaration=declaration), self.assertRaisesRegex(PyError, 'already belongs'):
+                self.room('keeper = room.npc(Species.Angemon, slot=0, section=6)\n'
+                          f'other = room.npc(Species.Poyomon, {declaration})\n')
+
+    def test_existing_screens_keep_their_speaker_contract(self):
+        with self.assertRaisesRegex(PyError, 'only for a new screen'):
+            lower_file('/tmp/story-speakers.py', src='from dw import *\n'
+                       'room = screen(1)\nkeeper = room.npc(Species.Angemon, slot=0, section=6)\n')
+
+
 if __name__ == '__main__':
     unittest.main()

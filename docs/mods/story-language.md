@@ -183,7 +183,9 @@ an `IF`'s clauses left to right: `flowcmp` compares one node per clause.)
   stats and random draws are not presence (`check` says so); to send an NPC away by one of them, `npc.leave()` in an
   `on_enter`. `screen(a, b).npc(...)` puts it in the same slot of each screen (one script's screens: the
   File City square is the twelve screens `file_city_168`-`file_city_179` of script 162, one per layout the recruits
-  choose, every one with its eight slots used). `python3 tools/dws.py slots SCREEN` shows the free slot, the species
+  choose, every one with its eight slots used). On a `new_screen`, `npc(..., section=6)` can reserve a script speaker/talk
+  id different from `5 + slot`, for a shared script that addresses that speaker. Talk ids must be unique and in 5-50.
+  `python3 tools/dws.py slots SCREEN` shows the free slot, the species
   that fit in the heap left (measured as `check` measures it; a species already on the screen costs only its instance
   data, its model is loaded once) and where a new NPC can stand: the box of the walkable tiles (`at=(x, z)` inside it) and the
   `dwmap.py overlay` command that draws the screen with them and the coordinates every 500; `check` refuses a species

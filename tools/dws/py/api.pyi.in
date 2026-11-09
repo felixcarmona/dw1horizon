@@ -157,7 +157,8 @@ class ScreenRef:
     def npc(self, species: 'Species | None', *, at: tuple[int, int] | None = None, behaves_like: NPC | None = None,
             when: Cond | ClockTest = ..., autotalk: bool = False, hp: int | None = None, mp: int | None = None,
             offense: int | None = None, defense: int | None = None, speed: int | None = None, brain: int | None = None,
-            bits: int | None = None, range: int | None = None, still: bool = False, slot: int | None = None) -> NPC:
+            bits: int | None = None, range: int | None = None, still: bool = False, slot: int | None = None,
+            section: int | None = None) -> NPC:
         """A new NPC of this mod. It takes the screen's next free slot: the new NPCs of a screen fill its free slots in the
         order the files and mods compiled together declare them (`slot=` may say it, and must be that one; `python3
         tools/dws.py slots SCREEN` lists the slots and the heap left for its model). The mod owns it: its `on_talk` handlers
@@ -165,6 +166,7 @@ class ScreenRef:
         slots SCREEN` prints the walkable box and the overlay that draws it). `behaves_like=tokomon`: it copies that NPC's
         behaviour, range, stats and path (moved to `at`); without it, the screen's first NPC that walks a path (none: its
         last slot, which `check` names).
+        `section=N`: on a new screen, use script speaker/talk id N (5-50) instead of 5 + slot, for shared dialogue.
         `when=`: it is there only while this holds (saved state: quest stages, flags, `recruited(...)`; on every engine);
         `range=N`: how far (world units) a chasing NPC runs after the player; 0 waits to be touched; a zigzag screen whose
         legs lie one above the other wants a short range, or the chase crosses the terrace and the battle cannot be fought.
