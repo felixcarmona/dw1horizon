@@ -143,6 +143,10 @@ python3 tools/dws.py types --check
 python3 -m tools.derive verify --out build/everything
 ```
 
+`verify` rebuilds into a temporary folder with the environment of the shell it runs in and reads the source
+games from `OUT/source-games`, so export the same variables the build used (for example `SPECIES=all
+SPECIES_PROVIDER=imports`) and run it against a build made from the same commit.
+
 Compare both the image SHA-1 and every file's SHA-1 with the reference release
 built from the same patch series. A release made with an older series is a
 different reference even when its version label is unchanged.
