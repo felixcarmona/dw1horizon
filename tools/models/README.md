@@ -193,3 +193,11 @@ they do not sweep through the head, and the body dips onto each landing in the
 walks and bounds in the run. The idle keeps its crouch and roar with every hand
 and foot planted where it stands at the first tick (the crouch had pushed the
 hind feet into the floor).
+
+Pegasusmon's (200) idle stood on a raised right foreleg and swung the
+hindquarters, and its walk and run crossed and slid the hooves.
+`field_animations/pegasusmon.py` writes them all again: a 24-tick idle square on
+four planted hooves (the right foreleg the left's mirror) that only breathes,
+with the neck, tail and wings answering late, then a four-beat walk, a slower
+condition walk and a gallop from `quadruped.py` (the short caps between the
+upper leg bones and the cannons named in `links`).

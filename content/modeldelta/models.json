@@ -584,9 +584,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/200-Pegasusmon.MMD.mdelta",
-        "delta_sha256": "939801d55d86c77e78e27d42450e124a24a1e95efe78234b9dca084f106640df",
-        "sha256": "6d1b4b5f8efe4325cc71c997ec941decc50136fc11e7bbdc58f23fbeb64d653e",
-        "size": 99836
+        "delta_sha256": "0d79015d3b869cae762c0e2df791f337ae750763dd368a0291492323fcc08110",
+        "sha256": "8a7c80ee8e2544406fd314b311554d691b89d5b11799b8586892790178d96e61",
+        "size": 104040
       },
       "tim": {
         "sources": [
