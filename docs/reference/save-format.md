@@ -341,9 +341,18 @@ The old and new copies are checked independently before the reload.
 
 ## Every release's save
 
-`tools/dev/saves/corpus/` is an append-only corpus: a 128 KB card and JSON manifest for each release, starting with
-20261027 (`d2796814`, the package in `build/web-release`). Earlier release cards have not been reconstructed; the older
-format migration tests above remain separate. Never regenerate an older fixture with a newer executable.
+`tools/dev/saves/corpus/` is an append-only corpus of 128 KB cards and JSON
+manifests. Coverage starts with 20261027 (`d2796814`, the package in
+`build/web-release`) and now includes cards written by the reconstructed
+published v0.0.6 disc. Not every intervening release has a fixture; the manifests
+are the coverage inventory. The older format migration tests above remain
+separate. Never regenerate an older fixture with a newer executable.
+
+The [v0.0.6 → v0.0.7 investigation](../investigations/save-upgrade-006-007.md)
+distinguishes a successful complete-card upgrade from the old full-card writer
+that silently omitted extension-only progress. Its emulator harnesses also
+check Hawkmon at both recruit and city locations. Missing extension bytes
+cannot be recovered by a format migration.
 
 Each manifest records the release, disc SHA-1, card SHA-1, tag numbers and names, decoded file state, and state read from
 RAM after a fresh boot and Continue. Story flags and variables are recorded by **mod and name**, together with their lock

@@ -27,6 +27,14 @@ rows name the last patch of `mods/patches/series` and the number of patches. Add
 an earlier release loads in a later one; the release packaging checks this against a corpus of cards
 ([save-format.md](../reference/save-format.md)).
 
+This preserves progress actually present in the card file. The published v0.0.6
+writer could report success after omitting extended history/recruits when an
+existing one-block save could not grow on a full card. Current inline saves fix
+that write path; they cannot reconstruct omitted progress. Complete v0.0.6 cards
+pass cold-load/resave checks on v0.0.7 and main; see the
+[upgrade investigation](../investigations/save-upgrade-006-007.md) for evidence
+and the still-unconfirmed missing-Hawkmon report.
+
 Saves from v0.0.7 load in v0.0.8; new files use one block. The required technique-layout record makes saves written by v0.0.8 unsafe for older versions, including older VS loaders. Back up the card and check equipped techniques after migration. See [technique layout A](../reference/save-format.md#technique-layout-a).
 
 ## Compiler targets
