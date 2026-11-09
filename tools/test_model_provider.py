@@ -106,6 +106,12 @@ class ModelProvider(unittest.TestCase):
         previous_magnamon = active.pop('magnamon-field')
         self.assertEqual(previous_magnamon,
                          ('197', 'tools.models.field_animations.gaits', '197-magnamon-field'))
+        # Flamedramon's walk and run authored on its own skeleton (flamedramon.py, baked into its delta) replace the
+        # procedural stride; the profile stays registered as the source that clip was authored from.
+        previous_flamedramon = active.pop('flamedramon-field')
+        self.assertEqual(previous_flamedramon,
+                         ('195', 'tools.models.field_animations.gaits', '195-flamedramon-field'))
+        self.assertNotIn('field_overlay', records['195'])
         self.assertEqual(len(selected)+len(following), len(active))
         self.assertEqual(set(selected.values()) | set(following.values()), set(active.values()))
         for species, (bound_species, _, _) in selected.items():
@@ -116,6 +122,7 @@ class ModelProvider(unittest.TestCase):
         self.assertEqual(assignments['197'],
                          ('tools.models.field_animations.magnamon', '197-magnamon-native'))
         assignments['197'] = previous_magnamon[1:]
+        assignments['195'] = previous_flamedramon[1:]
         # Celebration curves run after the final proportions. Unwrap them to
         # keep guarding all the original field recipes and output names.
         for sid, row in celebrations.items():

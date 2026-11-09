@@ -248,3 +248,20 @@ The left leg is built as the mirror of the right one, and the recipe sets the
 shoulders 20 units further out (`spread`) with the arms hanging out and the
 elbows bent, so the arms swing clear of the thigh armour; the run leans in,
 drives the arms and has both boots in the air between steps.
+
+Flamedramon (195) walked like a catwalk: the procedural stride (`gaits.py`)
+swung and dropped the hips from side to side, twisted the chest the other way
+and held the arms out wide, and clips on Leomon's footfalls kept Leomon's hunch.
+`field_animations/flamedramon.py` replaces the walk, condition walk and run with
+clips authored on Flamedramon's own bind pose (upright, arms hanging, feet under
+the hips): each foot stays on its own track under the hip, lands flat and peels
+its heel at push-off, the pelvis turns with the swinging leg and the shoulders
+counter it, the arms swing opposite to the legs and the tail follows late.
+Nothing moves on a plain sine or in lockstep: each curve has its own uneven ease
+(`upright_gait.wave`), the chest, head, arms and tail follow the hips one after
+another, and the two sides differ a little, with pelvis, chest and arm
+amplitudes taken from native Agumon's and Leomon's walks and runs. The
+run is an 8-tick cycle with lean, hard arm drive and an airborne phase against
+the 14-tick walk, at the reviewed field speeds (`upright_gait.py` holds the
+pieces both modules share). The result is stored in the plain delta and the
+`flamedramon-field` overlay is no longer applied.

@@ -434,9 +434,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/195-Flamedramon.MMD.mdelta",
-        "delta_sha256": "f13e800c9eb691f0f831589fb626140270f0ab5ab05846c6c01d0e9af0816427",
-        "sha256": "1a06d92267cbdaa1f79154e0bc5dee99bb7349d79abb4ed816e140e455046c55",
-        "size": 106420
+        "delta_sha256": "e795b7334dab8756aa74a8f0f4981c56f4ad2e2881c173b148695b8fa5c19c09",
+        "sha256": "e7ccb58e8846c1cddf29b0a8e3f6c529c4593d391637139742b32f2df807b74d",
+        "size": 104584
       },
       "tim": {
         "sources": [

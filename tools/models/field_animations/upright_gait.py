@@ -1,4 +1,4 @@
-"""Shared pieces for field gaits authored on a model's own skeleton (magnamon.py).
+"""Shared pieces for field gaits authored on a model's own skeleton (flamedramon.py, magnamon.py).
 
 A clip is written as world rotations per bone and a carrier (body) position per tick, the legs solved onto
 footprints; these helpers turn that into frames the game plays: forward kinematics, a two-bone leg solve that keeps
