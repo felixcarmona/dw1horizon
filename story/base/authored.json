@@ -308,13 +308,13 @@
     },
     "zones/underground-pond/s029-28/script.py": {
       "original_sha256": "d012f770c7de474e1754bf81d227042e738c65a86d439761b2ef41a3a5cafb2b",
-      "authored_sha256": "52d77d000fc3d0e6b3194683df5d8fd75cc00aa15d6f94ac6f06e774fb1da8b6",
-      "reason": "Dirt hauling in five double-reward round trips; return visits omit the dirt pile once saved excavation work opens the tunnel"
+      "authored_sha256": "1a595261c890c8aa89cdf8fd5ce4d6f1ca7439652de431e5163c862d80b92de4",
+      "reason": "Keep the final dirt pickup visible until excavation completes at ten units; preserve the separate tunnel opening at eight and completed saves"
     },
     "zones/underground-pond/s029-28/script.dws": {
       "original_sha256": "51689c322ff6158dabcb303b4e53de7e002fcbae337c25f53f952a3190e034b3",
-      "authored_sha256": "13d6998440680739a619d76471e42ebbc91161d173f5f18c70bbeba2cf921a9c",
-      "reason": "Dirt hauling in five double-reward round trips; return visits omit the dirt pile once saved excavation work opens the tunnel; DWS synchronized with the authored Python source"
+      "authored_sha256": "a5baabe255d818f5a679c518a04f05de9ad35c5e2d9ba0289b45cb31b86f69e2",
+      "reason": "Keep the final dirt pickup visible until excavation completes at ten units; preserve the separate tunnel opening at eight and completed saves"
     },
     "zones/file-city/s162-168-169-170/script.py": {
       "original_sha256": "0bbadd3ab80f0b29fc9a8511a0d172eccaded4624ad79d88ede165e290429769",
@@ -978,8 +978,8 @@
     },
     "zones/underground-pond/s029-28/README.md": {
       "original_sha256": "afe4ceb7f1fb659a7b7a1ad0cebf3242066198d0f6cbc62df8877f050a3f82b2",
-      "authored_sha256": "0b80b22215630dcc9aa9d5a6475a274c9d5b2f967225ee82cfd4da7fcbc798cf",
-      "reason": "Document the persistent open-tunnel rubble condition and the matching enter-section size"
+      "authored_sha256": "07a708cf47424defa0e6599e5104cbbf5fb40355877ac2e35d3d571ef312a716",
+      "reason": "Keep the final dirt pickup visible until excavation completes at ten units; preserve the separate tunnel opening at eight and completed saves"
     },
     "zones/freezeland/s129-134/script.py": {
       "original_sha256": "02b381e914a2e56f818995af08faf0b8a06ec839922e510693e3fefe1adde2f1",

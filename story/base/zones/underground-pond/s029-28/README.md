@@ -11,9 +11,16 @@ Screens that load it: 28 Underground Pond.
 | sec81 | readable | 7 | 8 |
 | sec5 | readable | 1 | 2 |
 
-The dirt pile is loaded only while `underground_pond_dig_work < 8`, the same
-saved condition that blocks the tunnel entrance. The original renderer keeps
-its size in a transient counter initialized to 15, so a cold load could restore
-the full pile after excavation. Return visits to an open tunnel now omit the
-pile model, including saves made before this fix. The five-day completion path
-still clears the pile during entry.
+The dirt pile is loaded while `underground_pond_dig_work < 10`: ten is
+excavation completion, whereas eight only opens the tunnel entrance. Hiding
+the pile at eight left the fifth pickup's use trigger on empty ground after a
+return visit or Continue. The collision patch `clear-dirt-pile-collision.patch`
+makes the pile footprint walkable at the renderer's cutoff while preserving
+use trigger 81; it does not decide whether the model is loaded.
+
+The renderer's size counter is transient, initialized to 15. Completed saves
+omit the model so a cold load cannot restore the rubble (the earlier reappearing
+rubble report). Unfinished saves, including older odd work counters, keep their
+pickup. No saved fields or `save.lock` allocations change. The five-day wait
+still clears the pile during entry. Both EXTENDED STORY choices compile this
+base handler; there is no mod override for script 29.

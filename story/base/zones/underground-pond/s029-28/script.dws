@@ -11,7 +11,7 @@ script 29 {
 
     on enter replace {    // section 254
         call_routine(routine("load_dirt_cart"));
-        if (underground_pond_dig_work < 8) {
+        if (underground_pond_dig_work < 10) {
             call_routine(routine("load_dirt_pile"));
         }
         if (drimogemon_job_days >= 5 && drill_tunnel_progress < 3 && drill_tunnel_progress >= 1) {
