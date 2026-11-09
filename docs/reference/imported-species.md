@@ -309,7 +309,10 @@ MetalGreymon Vaccine (224) uses the native MetalGreymon Virus voice pair:
 `voice: 12` (VBALL animation voice) and `partner.voice: 10` (VLALL care voice).
 VBALL chunk 12 has tones for notes 53, 54 and 55, covering every bank-4 event
 in its final model, including the native care/attack clips. Field slots 2–4
-use bank 1, note 12 for footsteps; these are independent of the species voice.
+use bank 1, effect 13 for footsteps in the current generated model; these are
+independent of the species voice. Agumon uses the shorter bank-1 effect 12.
+See the [footstep audit](../investigations/imported-footsteps.md) for actual
+playback keys, sample lengths and imported movement-sound repairs.
 
 ### Choosing an import's voice
 
