@@ -28,6 +28,7 @@ def main():
     p.add_argument('--port', type=int, default=42831)
     p.add_argument('--new-game', action='store_true')
     p.add_argument('--tour', type=Path)
+    p.add_argument('--escape-wilds', action='store_true', help='use Run in escapable battles (requires pyelftools)')
     args = p.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     e = Emu(args.disc, args.exe, args.port, str(args.out / 'emu'))
@@ -85,11 +86,40 @@ def main():
         from tools.dev.walk import tour
         from tools.dev import game_state
         game_state.poke = forbidden
+        if args.escape_wilds:
+            from tools.dev import memory_inspector as memory
+            memory.ram = e.ram
+            memory.poke = forbidden
+            variables, types = memory.build_index()
+            cursor, _ = memory.resolve_expr('COMBAT_DATA.player.hoveredCommand[0]', variables, types)
+            e.table['walk_command_cursor'] = cursor
+        pad_api = tour.emu.api
+        def running_pad(path, *a, **kw):
+            # R1 is the native run modifier (POLLED_INPUT bit 8); unlike
+            # Triangle, pressing it before a direction cannot open a menu.
+            direction = path.rsplit('=', 1)[-1] in ('UP', 'DOWN', 'LEFT', 'RIGHT')
+            if direction and '/lua/press?' in path:
+                pad_api('/api/v1/lua/press?button=R1')
+            result = pad_api(path, *a, **kw)
+            if direction and '/lua/release?' in path:
+                pad_api('/api/v1/lua/release?button=R1')
+            return result
+        tour.emu.api = running_pad
         tour.move_partner_behind = lambda *a, **kw: None
         tour.freeze_clock = lambda: None
         ordinary_events = tour.handle_events
         def handle_events():
             ram = e.ram()
+            if args.escape_wilds and e.peek('GAME_STATE', 'H', ram) == 1:
+                target = 2 if e.peek('FLEE_DISABLED', 'B', ram) else 1
+                if e.peek('walk_command_cursor', 'b', ram) != target:
+                    e.press('LEFT', 10)
+                else:
+                    e.press('CONFIRM', 10)
+                if target == 2:
+                    e.press('SQUARE', 8)
+                time.sleep(.3)
+                return True
             if e.peek('GAME_STATE', 'H', ram) == 0 and e.peek('IS_IN_MENU', 'B', ram):
                 e.press('CANCEL', 12)
                 time.sleep(.3)
