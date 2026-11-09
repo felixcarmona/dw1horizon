@@ -1,0 +1,15 @@
+{
+  "species": 199,
+  "name": "Paildramon",
+  "generator": "tools/models/field_animations/paildramon.py",
+  "donor": "extracted/CHDAT/MMD1/LEOM.MMD",
+  "donor_sha256": "390092e3b3471adc84645a512f8671b2b036413d72e09d046fc982355f1488c7",
+  "source_sha256": "08717642af8a5c67463c49bec57609d079aa73098e17e9d21265b43fa413b8d9",
+  "output_sha256": "35d176119fa192dc82f4b4db36dac5bda7cc82f3a543ba53e9486b755e70a987",
+  "changed_slots": [2, 3, 4],
+  "preceding_provider": {
+    "model": "199-Paildramon.MMD",
+    "aliases_applied": true,
+    "field_overlay": "paildramon-field"
+  }
+}

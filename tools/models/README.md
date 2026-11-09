@@ -201,3 +201,13 @@ four planted hooves (the right foreleg the left's mirror) that only breathes,
 with the neck, tail and wings answering late, then a four-beat walk, a slower
 condition walk and a gallop from `quadruped.py` (the short caps between the
 upper leg bones and the cannons named in `links`).
+
+Paildramon's (199) walk snapped a foot from one place to another between two
+ticks and slid both feet; the run was the walk sped up.
+`field_animations/paildramon.py` takes native Leomon's walk and run the way
+`angewomon.py` does, on the paildramon-field proportions it now bakes in (the
+overlay is retired; `content/models/authoring/199-paildramon.json` keeps it as
+provenance): the feet are solved onto Leomon's footfalls with each knee bending
+out over the wide stance, the body takes part of his lean, the arms part of his
+swing, and the condition walk is his walk slower and lower (his own slides).
+Buster Dive is applied after it at build.
