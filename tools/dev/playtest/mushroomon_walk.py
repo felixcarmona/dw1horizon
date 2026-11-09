@@ -7,9 +7,11 @@ care, battles and gates must be played. No warps, state edits, clock freezes,
 HP refills or partner repositioning are permitted. The emulator stays running.
 """
 import argparse
+import heapq
 import json
 import os
 from pathlib import Path
+import struct
 import sys
 import time
 
@@ -32,11 +34,20 @@ def main():
     args = p.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     e = Emu(args.disc, args.exe, args.port, str(args.out / 'emu'))
+    def read_ram():
+        ram = e.api('/api/v1/cpu/ram/raw')
+        if len(ram) != 0x200000:
+            raise RuntimeError('pad-only run requires original 2 MB RAM')
+        return ram
+    e.ram = read_ram
     e.table.update({n: v[0] for n, v in elf_symbols(e.exe + '.elf').items()})
 
     def forbidden(*a, **kw):
         raise RuntimeError('pad-only run: state writes and partner repositioning are forbidden')
     e.poke = forbidden
+    radii = {row['id']: row.get('model', {}).get('radius', 100)
+             for path in (ROOT / 'content/species').glob('*.json')
+             for row in [json.loads(path.read_text())]}
     questions = [n for n in e.table if n == 'question' or n.startswith('question.')]
     if len(questions) != 1:
         raise RuntimeError(f'expected one quiz question symbol, found {questions}')
@@ -134,6 +145,61 @@ def main():
                 return True
             return ordinary_events()
         tour.handle_events = handle_events
+        class PadRoute(tour.Seg):
+            def __init__(self, mapfile):
+                self.m = tour.dwmap.MapFile(Path(mapfile).read_bytes())
+                self.vp, self.bx, self.by, self.bz = tour.dwmap.camera_basis(self.m)
+                ram = e.ram()
+                # Native story events change collision at runtime (the farm,
+                # tunnel dirt and city buildings). Read the real floor rather
+                # than steering through an obstacle absent from the base map.
+                self.m.collision = bytearray(e.raw('MAP_COLLISION_DATA', 10000, ram))
+                x, _, z = e.peek('TAMER_POSITION_DATA+0x78', '3i', ram)
+                footprints = []
+                for address in e.peek('ENTITY_TABLE+8', '8I', ram):
+                    at = address - 0x80000000
+                    if not 0 <= at < len(ram) - 0x38 or not ram[at + 0x34]:
+                        continue
+                    species, position = struct.unpack_from('<II', ram, at)
+                    position -= 0x80000000
+                    if 0 <= position < len(ram) - 0x84:
+                        nx, _, nz = struct.unpack_from('<3i', ram, position + 0x78)
+                        footprints.append((nx, nz, radii.get(species, 100)))
+                self.R = tour.reach.reach(self.m, [(x, z)],
+                                         seed_policy='spawn_coordinates', footprints=footprints)
+
+            def path(self, a, b):
+                # Keep the existing reach.py lattice and pad steering. A* avoids
+                # repeatedly flooding an entire large native map between steps.
+                def snap(p):
+                    q = (round(p[0] / 10) * 10, round(p[1] / 10) * 10)
+                    if q in self.R:
+                        return q
+                    return min(self.R, key=lambda n: (n[0] - p[0]) ** 2 + (n[1] - p[1]) ** 2)
+                start, goal = snap(a), snap(b)
+                distance = lambda n: max(abs(n[0] - goal[0]), abs(n[1] - goal[1])) // 10
+                queue = [(distance(start), 0, start)]
+                costs, previous = {start: 0}, {start: None}
+                while queue:
+                    _, cost, point = heapq.heappop(queue)
+                    if cost != costs[point]:
+                        continue
+                    if point == goal:
+                        break
+                    for dx, dz in ((10, 0), (-10, 0), (0, 10), (0, -10),
+                                   (10, 10), (10, -10), (-10, 10), (-10, -10)):
+                        nxt = (point[0] + dx, point[1] + dz)
+                        if nxt in self.R and cost + 1 < costs.get(nxt, float('inf')):
+                            costs[nxt], previous[nxt] = cost + 1, point
+                            heapq.heappush(queue, (cost + 1 + distance(nxt), cost + 1, nxt))
+                if goal not in previous:
+                    raise RuntimeError('no physical route to waypoint')
+                route, point = [], goal
+                while point is not None:
+                    route.append(point)
+                    point = previous[point]
+                return route[::-1][30::30] + [b]
+        tour.Seg = PadRoute
         # Use one read-only RAM snapshot instead of spawning a state-reader for
         # every position sample. The existing pathfinder and pad steering remain.
         def state():
@@ -142,7 +208,11 @@ def main():
             return x, z, e.peek('CURRENT_SCREEN', 'h', ram)
         tour.state = state
         tour.sys.argv = [__file__, str(args.tour)]
-        tour.main()
+        try:
+            tour.main()
+        finally:
+            for button in ('UP', 'DOWN', 'LEFT', 'RIGHT', 'R1'):
+                pad_api('/api/v1/lua/release?button=' + button)
     ram = e.ram()
     result = {n: e.peek(n, fmt, ram) for n, fmt in (
         ('CURRENT_SCREEN', 'h'), ('CURRENT_EXIT', 'b'), ('HOUR', 'h'),
