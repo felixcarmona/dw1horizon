@@ -644,6 +644,10 @@ attempts for every technique and the finisher. It accepts the same `EMU_PORT`,
 `DW_SYMS`, disc, archive and card inputs as the species proof. Field slot
 playback holds partner AI and calls the engine's animation entry point; it
 is labelled accordingly and does not prove free following or combat damage.
-Battle mode equips the moves in the normal combat engine, records observed
-damage in `evidence.json`, and refills test HP/MP after each observation. Compare with native Leomon and use `tools/animstudio.py video`
+Battle mode starts from a fresh card boot, equips the moves in the normal
+combat engine and records damage in `evidence.json`. It uses the standard
+technique-proof setup and starts a short recording when the requested slot
+is first observed; a retry starts a fresh live encounter. HP/MP are test values. Field/follow checkpoints are for
+visual review. Battle videos are silent to retain the standard test driver
+timing; field clips include SPU audio. Compare with native Leomon and use `tools/animstudio.py video`
 for additional donor comparisons. Videos contain disc assets and are not committed.

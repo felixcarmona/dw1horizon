@@ -91,10 +91,18 @@ def main():
     ap.add_argument('--card',required=True);ap.add_argument('--label',required=True)
     ap.add_argument('--id',type=int,default=226)
     ap.add_argument('--state',help='reuse a checkpoint from this exact disc')
-    ap.add_argument('--slots',help='comma-separated hexadecimal battle slots to retry')
+    ap.add_argument('--slots',help='comma-separated hexadecimal animation slots')
+    ap.add_argument('--tries',type=int,default=3,help='live battle attempts per technique')
     ap.add_argument('--mode',choices=['field','follow','battle'],required=True)
     a=ap.parse_args(); a.out.mkdir(parents=True,exist_ok=True)
-    os.environ['EMU_AUDIO']=str((a.out/'audio.raw').resolve())
+    if a.mode=='battle' and a.state:
+        ap.error('battle recording requires a fresh card boot; use --state only for field/follow review')
+    if a.mode=='battle':
+        # The SDL disk audio driver runs about 1.3x faster than real time;
+        # keep the same timing as the standard damage proof for battles.
+        os.environ.pop('EMU_AUDIO',None)
+    else:
+        os.environ['EMU_AUDIO']=str((a.out/'audio.raw').resolve())
     if a.mode=='field':
         factory=P.emulator
         def interpreter(cue):
@@ -170,58 +178,58 @@ def main():
         else:
             _,_,recs=T.species.read_archive(a.digi)
             moves=recs[a.id]['para']['moves']; names=T.species.names('techs')
-            if P.game_state()!=1:
+            def start_battle():
                 assert T.start_battle(moves),'battle did not start'
-            P.EMU.run('save',str(a.out/'battle.state'))
+            if P.game_state()!=1:
+                start_battle()
             fin=next(46+i for i,m in enumerate(moves) if 58<=m<=112)
             requests=[(46+i,m) for i,m in enumerate(moves) if m!=255 and not 58<=m<=112]+[(fin,moves[fin-46])]
             if a.slots:
                 wanted={int(s,16) for s in a.slots.split(',')}
                 requests=[r for r in requests if r[0] in wanted]
             for slot,move in requests:
-                raw=a.out/f'raw-{slot}.mp4'; seen=[]
-                # Observe the slot while the standard damage proof runs.
-                mem=P.mem
-                def observe(*args):
-                    values=mem(*args)
-                    if values.get(P.ANIM)==slot and not seen: seen.append(time.time())
-                    return values
-                P.mem=observe
-                started=time.time()
-                worker=threading.Thread(target=record,args=(raw,28));worker.start()
-                if slot==fin: played,damage=T.finisher(slot,str(a.out),a.id)
-                else:
-                    T.equip(slot)
-                    if move==45:
-                        # Counter is never chosen by normal attack AI. It
-                        # reacts to a missed incoming melee hit; provide one
-                        # instead of waiting for an unusable queued attack.
-                        key='NPC_ENTITIES[0].digimonEntity.entity.type'
-                        enemy=P.mem(key)[key]
-                        melee=next(46+i for i,m in enumerate(recs[enemy]['para']['moves'])
-                                   if m!=255 and m!=45 and T.TD[str(m)]['range']==1)
-                        P.mset('PARTNER_ENTITY.digimonEntity.stats.base.speed=999',
-                               'NPC_ENTITIES[0].digimonEntity.stats.current.currentMP=4000',
-                               f'NPC_ENTITIES[0].digimonEntity.stats.base.moves[0]={melee}',
-                               *[f'NPC_ENTITIES[0].digimonEntity.stats.base.moves[{i}]=255' for i in (1,2,3)])
-                    played,damage=T.watch(slot,str(a.out),f'tech-{slot}',secs=20)
-                # Keep this one fight alive while the capture finishes. The
-                # damage observation above completes before these refills.
-                while worker.is_alive():
-                    P.mset(f'{T.HPK}=9999',
-                           'PARTNER_ENTITY.digimonEntity.stats.current.currentHP=4000',
-                           'PARTNER_ENTITY.digimonEntity.stats.current.currentMP=4000')
-                    worker.join(timeout=1)
-                P.mem=mem
-                evidence.append(dict(action=names[move],slot=slot,played=played,damage=damage))
-                if played:
-                    clip=a.out/f'clip-{slot:02}.mp4'
-                    timeline=json.loads(Path(str(raw)+'.frames.json').read_text())['frames']
-                    moment=(seen[0] if seen else started)-.6
-                    begin=next((f['video_seconds'] for f in timeline if f['wall_end']>=moment),0)
-                    caption(raw,clip,f'{a.label}\n{names[move]} - battle',begin,8)
-                    clips.append(clip)
-                print(json.dumps(evidence[-1]),flush=True)
+                for attempt in range(a.tries):
+                    if attempt:
+                        assert T.end_battle(),'could not finish the previous test battle'
+                        start_battle()
+                    raw=a.out/f'raw-{slot}.mp4'; workers=[]
+                    # Observe the slot while the standard damage proof runs.
+                    mem=P.mem
+                    def observe(*args):
+                        values=mem(*args)
+                        if values.get(P.ANIM)==slot and not workers:
+                            worker=threading.Thread(target=record,args=(raw,8))
+                            workers.append(worker);worker.start()
+                        return values
+                    P.mem=observe
+                    if slot==fin: played,damage=T.finisher(slot,str(a.out),a.id)
+                    else:
+                        T.equip(slot)
+                        if move==45:
+                            # Counter is never chosen by normal attack AI. It
+                            # reacts to a missed incoming melee hit; provide one
+                            # instead of waiting for an unusable queued attack.
+                            key='NPC_ENTITIES[0].digimonEntity.entity.type'
+                            enemy=P.mem(key)[key]
+                            melee=next(46+i for i,m in enumerate(recs[enemy]['para']['moves'])
+                                       if m!=255 and m!=45 and T.TD[str(m)]['range']==1)
+                            P.mset('PARTNER_ENTITY.digimonEntity.stats.base.speed=999',
+                                   'NPC_ENTITIES[0].digimonEntity.stats.current.currentMP=4000',
+                                   f'NPC_ENTITIES[0].digimonEntity.stats.base.moves[0]={melee}',
+                                   *[f'NPC_ENTITIES[0].digimonEntity.stats.base.moves[{i}]=255' for i in (1,2,3)])
+                        played,damage=T.watch(slot,str(a.out),f'tech-{slot}',secs=20)
+                    # Stop additional casts after observing the attempt. Never
+                    # revive a defeated enemy while a victory transition is active.
+                    for worker in workers:worker.join()
+                    P.mset(*[f'{T.MOVES}[{i}]=255' for i in range(4)])
+                    P.mem=mem
+                    evidence.append(dict(action=names[move],slot=slot,played=played,damage=damage,attempt=attempt+1))
+                    if played:
+                        clip=a.out/f'clip-{slot:02}.mp4'
+                        caption(raw,clip,f'{a.label}\n{names[move]} - battle',duration=8)
+                        if clip not in clips:clips.append(clip)
+                    print(json.dumps(evidence[-1]),flush=True)
+                    if played and (damage or 0)>0:break
         listing=a.out/'concat.txt'
         listing.write_text(''.join(f"file '{p.resolve()}'\n" for p in clips))
         command(['ffmpeg','-y','-loglevel','error','-f','concat','-safe','0','-i',listing,
