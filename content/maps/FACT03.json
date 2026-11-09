@@ -86,5 +86,19 @@
       "ai": [0, -1, -1, -1, -1, -1, -1, -1],
       "path": [[10, 0, 0]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [49, 12],
+      "before": 0,
+      "after": 128,
+      "reason": "Pipe or machine foot at the factory wall. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [49, 40],
+      "before": 0,
+      "after": 128,
+      "reason": "Pipe or machine foot at the factory wall. Close an isolated body-box trap without removing reachable floor."
+    }
   ]
 }

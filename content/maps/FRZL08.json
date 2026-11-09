@@ -101,5 +101,31 @@
       "ai": [0, -1, -1, -1, -1, -1, -1, -1],
       "path": [[10, 0, 0]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [83, 0],
+      "before": 0,
+      "after": 128,
+      "reason": "Frozen cave wall or outside the rendered route. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [24, 37],
+      "before": 0,
+      "after": 128,
+      "reason": "Frozen cave wall or outside the rendered route. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [25, 37],
+      "before": 0,
+      "after": 128,
+      "reason": "Frozen cave wall or outside the rendered route. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [24, 38],
+      "before": 0,
+      "after": 128,
+      "reason": "Frozen cave wall or outside the rendered route. Close an isolated body-box trap without removing reachable floor."
+    }
   ]
 }

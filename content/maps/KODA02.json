@@ -58,5 +58,13 @@
       "ai": [0, -1, -1, -1, -1, -1, -1, -1],
       "path": [[10, 0, 0]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [28, 73],
+      "before": 0,
+      "after": 128,
+      "reason": "Tree or palm root body at the forest edge. Close an isolated body-box trap without removing reachable floor."
+    }
   ]
 }

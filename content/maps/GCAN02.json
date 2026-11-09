@@ -91,5 +91,13 @@
       "ai": [2, 2, 2, 2, 2, 2, -1, -1],
       "path": [[526, 0, -151], [-346, 0, -368], [-1091, 0, -150], [-1243, 0, 670], [-390, 0, 1069], [340, 0, 609]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [11, 8],
+      "before": 0,
+      "after": 128,
+      "reason": "Canyon rock lip or pillar foot outside the traversable ledge. Close an isolated body-box trap without removing reachable floor."
+    }
   ]
 }

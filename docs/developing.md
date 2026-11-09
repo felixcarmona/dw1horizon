@@ -43,6 +43,11 @@ changing connections to check the model against actual map outputs as well.
 See [the world audit](mods/world-audit.md) for story frontiers, original baselines,
 deliberate exceptions and old-save escape checks.
 
+After collision edits, run `python3 tools/maps/check_traps.py --maps build/NAME-maps --jobs 2`
+over native and generated geometry. It checks isolated static tamer traps; partner
+sizes, live actors and battle bounds still need targeted checks. See the
+[cemetery collision investigation](reference/cemetery-collision.md).
+
 `npc-originals` reads the built image selected by `DW_SELFTEST_DERIVE`. For
 all native species used by NPC maps/scripts it compares the effective NPC's
 posed idle dimensions (within 1%), original animation slots, radius and height

@@ -22,5 +22,13 @@
       "ai": [0, -1, -1, -1, -1, -1, -1, -1],
       "path": [[40, 0, 0]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [61, 50],
+      "before": 0,
+      "after": 128,
+      "reason": "Jungle root body. Close an isolated body-box trap without removing reachable floor."
+    }
   ]
 }

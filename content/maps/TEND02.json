@@ -57,5 +57,31 @@
       "ai": [0, -1, -1, -1, -1, -1, -1, -1],
       "path": [[40, 0, 0]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [77, 13],
+      "before": 0,
+      "after": 128,
+      "reason": "Cliff and pond bank outside the town walking path. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [77, 17],
+      "before": 0,
+      "after": 128,
+      "reason": "Cliff and pond bank outside the town walking path. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [82, 19],
+      "before": 0,
+      "after": 128,
+      "reason": "Cliff and pond bank outside the town walking path. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [32, 66],
+      "before": 0,
+      "after": 128,
+      "reason": "Cliff and pond bank outside the town walking path. Close an isolated body-box trap without removing reachable floor."
+    }
   ]
 }

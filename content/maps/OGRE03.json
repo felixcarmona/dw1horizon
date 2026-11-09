@@ -111,5 +111,13 @@
       "ai": [0, -1, -1, -1, -1, -1, -1, -1],
       "path": [[10, 0, 0]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [47, 72],
+      "before": 0,
+      "after": 128,
+      "reason": "Fortress wall foot. Close an isolated body-box trap without removing reachable floor."
+    }
   ]
 }

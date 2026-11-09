@@ -72,5 +72,13 @@
       "ai": [1, 1, 1, -1, -1, -1, -1, -1],
       "path": [[-2631, 0, 3002], [-844, 0, 3402], [-2745, 0, 3600]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [49, 83],
+      "before": 0,
+      "after": 128,
+      "reason": "Isolated cliff lip below the route. Close an isolated body-box trap without removing reachable floor."
+    }
   ]
 }

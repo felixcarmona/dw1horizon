@@ -19,5 +19,13 @@
       "ai": [0, -1, -1, -1, -1, -1, -1, -1],
       "path": [[10, 0, 0]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [55, 22],
+      "before": 0,
+      "after": 128,
+      "reason": "Mansion furniture foot. Close an isolated body-box trap without removing reachable floor."
+    }
   ]
 }

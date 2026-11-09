@@ -34,5 +34,31 @@
       "ai": [0, -1, -1, -1, -1, -1, -1, -1],
       "path": [[40, 0, 0]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [48, 30],
+      "before": 0,
+      "after": 128,
+      "reason": "Treasure room wall or raised shelf edge. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [55, 30],
+      "before": 0,
+      "after": 128,
+      "reason": "Treasure room wall or raised shelf edge. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [48, 43],
+      "before": 0,
+      "after": 128,
+      "reason": "Treasure room wall or raised shelf edge. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [55, 43],
+      "before": 0,
+      "after": 128,
+      "reason": "Treasure room wall or raised shelf edge. Close an isolated body-box trap without removing reachable floor."
+    }
   ]
 }

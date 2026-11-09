@@ -1,0 +1,12 @@
+{
+  "file": "MAP/MAP10/OMOC04.MAP",
+  "digimon": [],
+  "collision": [
+    {
+      "tile": [57, 34],
+      "before": 0,
+      "after": 128,
+      "reason": "Clock cabinet foot against the block wall. Close an isolated body-box trap without removing reachable floor."
+    }
+  ]
+}

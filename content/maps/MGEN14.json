@@ -1,0 +1,18 @@
+{
+  "file": "MAP/MAP16/MGEN14.MAP",
+  "digimon": [],
+  "collision": [
+    {
+      "tile": [74, 50],
+      "before": 0,
+      "after": 128,
+      "reason": "Raised circuit block rim. Close an isolated body-box trap without removing reachable floor."
+    },
+    {
+      "tile": [81, 50],
+      "before": 0,
+      "after": 128,
+      "reason": "Raised circuit block rim. Close an isolated body-box trap without removing reachable floor."
+    }
+  ]
+}

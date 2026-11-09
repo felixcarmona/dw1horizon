@@ -1,0 +1,12 @@
+{
+  "file": "MAP/MAP7/ICSA03.MAP",
+  "digimon": [],
+  "collision": [
+    {
+      "tile": [71, 50],
+      "before": 0,
+      "after": 128,
+      "reason": "Ice palace wall foot. Close an isolated body-box trap without removing reachable floor."
+    }
+  ]
+}
