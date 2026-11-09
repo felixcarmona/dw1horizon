@@ -1,5 +1,33 @@
 # Player model reports
 
+## WarGrowlmon: missing face plates
+
+The frozen World 3 importer deletes 184 small primitives to reach 713. Its head
+falls from 177 to 140 primitives, leaving gaps around the eyes and face plates.
+The source's pale crest remains intentional; the missing surfaces expose it
+incorrectly from some angles. The repair restores all 272 source head triangles (271 distinct vertex triples)
+with their winding, UVs, palette selection and normals. Texture bytes remain
+unchanged.
+
+The existing chibi performance is baked before repair and its field overlay is
+disabled. Exact triangle pairing recovers storage across the model. Only the
+broad torso panels are additionally simplified for four primitive slots; six
+rendered extent landmarks remain pinned. Other parts preserve their oriented
+triangles and corner attributes. All animation programs stay byte-identical.
+The result keeps 713 primitives, at most 172 vertices per object and the original
+resident/cold-buffer limits, with a smaller resident model than before.
+
+`tools/models/repair_wargrowlmon.py` is an offline authoring tool requiring NumPy
+and NetworkX. Its input is World 2003 `M368MGRW.BIN`, the final model including
+the reviewed chibi overlay, and its existing TIM. The recipe under
+`content/models/authoring/326-wargrowlmon-head.json` pins the operation. Player
+builds replay the ordinary model delta and final provider pins.
+
+`python3 -m unittest tools.test_wargrowlmon` uses private before/after fixtures
+under `build/mesh-evidence`, or `WARGROWLMON_SOURCE`, `WARGROWLMON_BEFORE` and
+`WARGROWLMON_AFTER`. It checks every source head triangle, unchanged acting,
+protected parts, torso extent landmarks and original console storage.
+
 ## Native locomotion and weapon pass
 
 Marsmon, GrapLeomon, ExVeemon and Stingmon use Leomon's native walking,

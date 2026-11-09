@@ -1,0 +1,86 @@
+{
+  "species": 326,
+  "source": {
+    "game": "dw2003",
+    "model": "M368MGRW",
+    "sha256": "9102d0e96f078be4fcfaf90856d0bce3c94119bf8bc47df675a9e9d1145daec6"
+  },
+  "input_sha256": "8991bd400738dfbb5941df48b4efcc9b31c230d8995817c23d890916f0089f86",
+  "output_sha256": "79006d867d19a4d5934c8cad756d5fc4e48259d3b458818fd068ffed447db755",
+  "preceding_provider": {
+    "model": "326-WarGrowlmon.MMD",
+    "aliases_applied": true,
+    "field_overlay": "wargrowlmon-chibi"
+  },
+  "authoring_tool": "tools/models/repair_wargrowlmon.py",
+  "restored_source_bone": 19,
+  "restored_object": 18,
+  "source_head_triangles": 272,
+  "primitive_limit": 713,
+  "storage": {
+    "resident_bytes": 85626,
+    "resident_limit": 100352,
+    "cold_bytes": 16264,
+    "cold_buffer_bytes": 8192,
+    "cold_reads": [
+      {
+        "slot": 5,
+        "offset": 0,
+        "length": 1700,
+        "sector_read_bytes": 2048,
+        "fits": true
+      },
+      {
+        "slot": 7,
+        "offset": 1700,
+        "length": 1784,
+        "sector_read_bytes": 4096,
+        "fits": true
+      },
+      {
+        "slot": 8,
+        "offset": 3484,
+        "length": 2524,
+        "sector_read_bytes": 4096,
+        "fits": true
+      },
+      {
+        "slot": 9,
+        "offset": 6008,
+        "length": 2060,
+        "sector_read_bytes": 4096,
+        "fits": true
+      },
+      {
+        "slot": 10,
+        "offset": 8068,
+        "length": 1836,
+        "sector_read_bytes": 4096,
+        "fits": true
+      },
+      {
+        "slot": 11,
+        "offset": 9904,
+        "length": 2104,
+        "sector_read_bytes": 4096,
+        "fits": true
+      },
+      {
+        "slot": 12,
+        "offset": 12008,
+        "length": 1968,
+        "sector_read_bytes": 4096,
+        "fits": true
+      },
+      {
+        "slot": 13,
+        "offset": 13976,
+        "length": 2288,
+        "sector_read_bytes": 4096,
+        "fits": true
+      }
+    ],
+    "fits": true
+  },
+  "source_head_distinct_triangles": 271
+}
