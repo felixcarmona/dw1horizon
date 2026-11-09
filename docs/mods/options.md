@@ -11,7 +11,7 @@ opens a box of eleven switches (ten in a `FONT=original` build, which has no FON
 | EXTENDED STORY | OFF / ON | ON | patch 0199: the story with the story mods built onto the disc (What the Island Forgot: its new places, the city's new residents), or OFF the original story; changing it on a save moves the tamer to Jijimon's house (below) |
 | DIFFICULTY | EASY / NORMAL / HARD | NORMAL | EASY doubles partner damage and halves damage taken; HARD scales enemies and adds a damage floor (below) |
 | QUICK BATTLE START | OFF / ON | ON | patches 0234, 0239: a field battle starts the moment it is triggered, its BATTLE letters and bubbles over the running fight (patches 0233, 0236, 0238); OFF, the original start |
-| FRAME RATE | AUTO / 60 / 20 | AUTO | AUTO uses the CPU probe; 60 requests three render passes per tick; 20 requests one. Logic stays 20 Hz. |
+| FRAME RATE | AUTO / 60 / 20 | AUTO | AUTO adapts to scene cost through 60/30/20; 60 requests three render passes per tick; 20 requests one. Logic stays 20 Hz. |
 | FONT | NEW / CLASSIC / ORIGINAL | NEW | font b, ours; the original letters evenly spaced; the original font as the original draws it (below) |
 | LANGUAGE | eight languages selected at build time | the build's (`LANG_BASE`) | the selected runtime languages ([languages](language.md)) |
 | MAP SIGNS | ORIGINAL / TRANSLATED | TRANSLATED | patch 0183: the signs painted in the map backgrounds as the disc has them, or in the language |

@@ -13,7 +13,7 @@
     "summary": "BIOS, fitxers, ajustos per joc i partides.",
     "paragraphs": [
       "Configura la teva BIOS de PlayStation i afegeix la carpeta de Horizon. Mantén el .cue al costat del .bin; si falta o canvia de nom, no trobarà la pista.",
-      "Fes servir ajustos per joc. El xinès simplificat necessita 8 MB de RAM ampliada. Per als 60 fps automàtics, activa el control de CPU al 250 %. Les altres llengües funcionen amb 2 MB; la RAM no decideix els fps.",
+      "Fes servir els ajustos per joc de Horizon. Activa els 8 MB de RAM ampliada per al xinès simplificat; els altres idiomes funcionen amb 2 MB. AUTO adapta les imatges a cada escena i busca 60, 30 o 20 fps. Augmentar la velocitat de la CPU emulada pot ajudar a mantenir taxes altes, però AUTO ja no necessita overclock per provar-les.",
       "Assigna una targeta amb {save_blocks} blocs lliures. Una targeta per joc evita compartir espai. Després de canviar el nom del disc o actualitzar, comprova la targeta i carrega dins del joc després d’arrencar de nou."
     ]
   },
@@ -22,7 +22,7 @@
     "summary": "BIOS, RAM, ajustos de CPU i targetes de memòria.",
     "paragraphs": [
       "Importa la teva BIOS de PlayStation. Autoritza l’accés a la carpeta de Horizon, mantén junts .bin i .cue i obre el .cue. Android ha de permetre llegir la carpeta.",
-      "Als ajustos per joc, cerca RAM ampliada a 8 MB, control de velocitat de CPU i percentatge d’overclock. El xinès necessita 8 MB; el 250 % permet 60 fps si el dispositiu aguanta. Reinicia després de canviar la RAM i comprova el títol. Noms i disponibilitat varien segons la compilació.",
+      "Obre els ajustos per joc de Horizon. El xinès necessita 8 MB de RAM ampliada; els altres idiomes funcionen amb 2 MB. AUTO s’adapta al cost de cada escena sense exigir overclock. Si el dispositiu manté el ritme, augmentar la velocitat de la CPU emulada pot ajudar a sostenir taxes més altes. Reinicia després de canviar la RAM. Els noms i la disponibilitat dels ajustos varien segons la versió.",
       "Assigna una targeta amb {save_blocks} blocs lliures, si vols per joc, i exporta’n una còpia. Després d’actualitzar, comprova la mateixa targeta, arrenca el disc nou i carrega la partida del joc.",
       "Si el text queda antic o superposat en compilacions Android afectades, prova de desactivar Enable Texture Cache i reinicia. Si persisteix, indica versió de Horizon, compilació de DuckStation, renderitzador i llengua amb una captura."
     ]
@@ -68,7 +68,7 @@
     "summary": "RAM i velocitat CPU emulada tenen funcions diferents.",
     "paragraphs": [
       "Horizon funciona en una PlayStation original de 2 MB en vuit llengües. El xinès simplificat carrega fonts i mòdul per sobre de 2 MB i necessita 8 MB ampliats. Amb 2 MB el joc rebutja aquesta llengua i conserva l’actual.",
-      "El renderitzador tria 20 fps amb CPU normal i 60 fps amb prou overclock; es recomana el 250 %. Lògica i controls segueixen a 20 Hz. La RAM extra no canvia els fps i no hi ha selector dins del joc.",
+      "AUTO adapta les imatges a cada escena: prova 60 fps i baixa a 30 o 20 amb intervals regulars quan cal. FRAME RATE a les OPTIONS del títol ofereix AUTO, 60 o 20. Forçar 60 pot donar menys imatges si l’escena exigeix massa. La lògica i els controls continuen a 20 Hz; la RAM extra no tria els fps.",
       "Canvia la CPU emulada, no l’avanç ràpid. Comprova els ajustos detectats al títol. El dispositiu ha de mantenir la velocitat triada. Reinicia després de canviar la RAM."
     ]
   },

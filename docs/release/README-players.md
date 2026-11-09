@@ -184,14 +184,15 @@ To check your disc without patching: `py dwpatch.py check "Digimon World (USA).c
 
 ## Frame rate
 
-The game chooses automatically: evenly spaced 20 frames per second on an original
-PlayStation or an emulator at normal CPU speed, and 60 with enough CPU overclock
-(250%). The title screen shows the recommended emulator settings. Changing the
-CPU overclock during play takes effect after a few seconds. Extra RAM does not
-change the frame rate. Logic and controls remain at 20 Hz; smoothing at 60 fps
-shows the picture up to 50 ms later. FRAME RATE in OPTIONS defaults to AUTO;
-choose 60 or 20 to override the probe. Forced 60 requests extra passes but may
-show fewer when they cannot fit. Older saves start on AUTO.
+AUTO adjusts drawing to the current scene, trying 60, then evenly spaced 30
+and 20 frames per second as needed. It works without a CPU overclock. A faster
+emulated CPU (for example 250%) can help sustain higher rates if your device
+keeps up. FRAME RATE in title OPTIONS defaults to AUTO; choose 60 or 20 to
+override it. Forced 60 may show fewer frames when a scene is too costly.
+Logic and controls remain at 20 Hz; smoothing shows the picture up to 50 ms
+later. Extra RAM does not choose the frame rate. At Press Start, the game shows
+an enhancement popup only if it detects 8 MB RAM or a fast CPU; a standard
+2 MB, normal-CPU boot leaves the title clear. Older saves start on AUTO.
 
 ## Saves
 
@@ -199,3 +200,11 @@ Use the emulator's memory cards as usual. Published Horizon saves are checked fo
 Keep a copy of your memory card before switching builds. Emulator save states
 hold the old executable and cached disc offsets; boot the new disc and load a
 memory-card save instead.
+
+Saves from 0.0.7 load in 0.0.8. New saves use one memory-card block; older
+two-block files still load and retain their allocation. Back up your card before
+updating. Revised technique lists preserve learned techniques, but removed
+selections may be replaced or unequipped. BlackKingNumemon has ambiguous old
+selections that are cleared rather than guessed. Check equipped techniques after
+Continue. Saves written by 0.0.8 must not be loaded with older versions; older
+VS loaders also cannot safely read the revised registrations.

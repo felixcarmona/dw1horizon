@@ -20,11 +20,14 @@ take the tools, the patches and the story from the same commit. Mixing commits i
 | v0.0.5 | `83f99c5` | 0001-0336 | version 4, tagged | `original` |
 | v0.0.6 | `83f99c5` | 352 patches, through `Keep-rebirth-species-fallback-resident.patch` | version 4, tagged | `original` |
 | v0.0.7 | `83f99c5` | 410 patches, through `compact-card-trade-list.patch` | version 4, tagged | `original` |
+| v0.0.8 | `83f99c5` | 434 patches, through `Show-the-title-popup-only-for-detected-enhancements.patch` | version 5, inline tagged, technique layout 1 | `original` |
 
 The patch ranges are the numbers the files had until 2026-11-04 (`mods/patches/index.md`, column **was**). Later
 rows name the last patch of `mods/patches/series` and the number of patches. Add a row for each release. A save from
 an earlier release loads in a later one; the release packaging checks this against a corpus of cards
 ([save-format.md](../reference/save-format.md)).
+
+Saves from v0.0.7 load in v0.0.8; new files use one block. The required technique-layout record makes saves written by v0.0.8 unsafe for older versions, including older VS loaders. Back up the card and check equipped techniques after migration. See [technique layout A](../reference/save-format.md#technique-layout-a).
 
 ## Compiler targets
 

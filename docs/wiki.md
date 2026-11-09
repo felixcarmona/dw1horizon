@@ -148,6 +148,24 @@ The two player-question paragraphs are translated in all nine working and
 released catalogs, including Spain Spanish. Each set has its own reviewed
 English and locale hashes; game dialogue remains verbatim from the tag.
 
+### v0.0.8 snapshot review
+
+The v0.0.8 snapshot freezes all twenty articles in all nine languages. The
+working catalogs now describe workload-based AUTO (60/30/20) and the title's
+AUTO/60/20 selector, matching the active frame-rate patches. CPU overclock is
+optional; Chinese retains its 8 MB requirement. The v0.0.7 snapshot is unchanged.
+
+The current-source model resolves one block for new saves, HARD difficulty,
+technique learning sources and the evolution popup's time/lifetime rules.
+Existing bindings select the readable cemetery dialogue only when supported by
+the release scripts; its questions and answers stay folded. Equipment migration
+and downgrade limits are documented in the players' README and save reference.
+
+Build with `--tag v0.0.8` after the annotated tag exists. PDF filenames, cover
+versions, metadata and download links derive from that tag automatically:
+`Horizon-Guide-v0.0.8-<language>.pdf`. Do not regenerate the legacy
+`tools/guide/out` pages or change the v0.0.7 regression fixtures for a new cut.
+
 External references are authoring sources, not page dependencies. The delivered wiki loads no remote fonts, scripts, images, analytics or search service. BIOS and game files are never supplied by the wiki. Emulator/device walk-throughs were not run as part of this website implementation; the articles avoid device-certification claims.
 
 ## Spoilers and images

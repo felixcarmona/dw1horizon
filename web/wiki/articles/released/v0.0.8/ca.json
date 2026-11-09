@@ -1,0 +1,187 @@
+{
+  "getting-started": {
+    "title": "Primers passos amb Horizon",
+    "summary": "Els teus discos, la primera arrencada i la primera partida.",
+    "paragraphs": [
+      "Crea Horizon amb els teus discos compatibles de Digimon World, Digital Card Battle, Digimon World 2 i World 3/2003. El web o el pedaçador d’escriptori comprova les edicions. Els altres jocs aporten espècies importades; jugaràs a Digimon World.",
+      "Mantén junts el .bin i el .cue. Obre el .cue amb una BIOS extreta de la teva PlayStation. Tria llengua i opcions al títol i comprova la RAM i la CPU detectades.",
+      "Assigna una targeta amb {save_blocks} blocs lliures. Desa dins del joc, reinicia i prova Continua. Exporta una còpia abans d’actualitzar."
+    ]
+  },
+  "duckstation-desktop": {
+    "title": "DuckStation a l’ordinador",
+    "summary": "BIOS, fitxers, ajustos per joc i partides.",
+    "paragraphs": [
+      "Configura la teva BIOS de PlayStation i afegeix la carpeta de Horizon. Mantén el .cue al costat del .bin; si falta o canvia de nom, no trobarà la pista.",
+      "Fes servir els ajustos per joc de Horizon. Activa els 8 MB de RAM ampliada per al xinès simplificat; els altres idiomes funcionen amb 2 MB. AUTO adapta les imatges a cada escena i busca 60, 30 o 20 fps. Augmentar la velocitat de la CPU emulada pot ajudar a mantenir taxes altes, però AUTO ja no necessita overclock per provar-les.",
+      "Assigna una targeta amb {save_blocks} blocs lliures. Una targeta per joc evita compartir espai. Després de canviar el nom del disc o actualitzar, comprova la targeta i carrega dins del joc després d’arrencar de nou."
+    ]
+  },
+  "duckstation-android": {
+    "title": "DuckStation a Android",
+    "summary": "BIOS, RAM, ajustos de CPU i targetes de memòria.",
+    "paragraphs": [
+      "Importa la teva BIOS de PlayStation. Autoritza l’accés a la carpeta de Horizon, mantén junts .bin i .cue i obre el .cue. Android ha de permetre llegir la carpeta.",
+      "Obre els ajustos per joc de Horizon. El xinès necessita 8 MB de RAM ampliada; els altres idiomes funcionen amb 2 MB. AUTO s’adapta al cost de cada escena sense exigir overclock. Si el dispositiu manté el ritme, augmentar la velocitat de la CPU emulada pot ajudar a sostenir taxes més altes. Reinicia després de canviar la RAM. Els noms i la disponibilitat dels ajustos varien segons la versió.",
+      "Assigna una targeta amb {save_blocks} blocs lliures, si vols per joc, i exporta’n una còpia. Després d’actualitzar, comprova la mateixa targeta, arrenca el disc nou i carrega la partida del joc.",
+      "Si el text queda antic o superposat en compilacions Android afectades, prova de desactivar Enable Texture Cache i reinicia. Si persisteix, indica versió de Horizon, compilació de DuckStation, renderitzador i llengua amb una captura."
+    ]
+  },
+  "epsxe": {
+    "title": "Configurar ePSXe",
+    "summary": "BIOS, carpetes d’Android i espai a la targeta.",
+    "paragraphs": [
+      "Configura la teva BIOS i la carpeta de Horizon. Mantén junts .cue i .bin. Si Android demana una carpeta base d’ePSXe, dona-hi accés per desar targetes i ajustos.",
+      "Deixa {save_blocks} blocs lliures a la targeta assignada. Prova de desar dins del joc i Continua després de reiniciar abans d’una sessió llarga. Exporta una còpia abans de canviar l’emmagatzematge o actualitzar.",
+      "No totes les compilacions d’ePSXe tenen RAM ampliada o controls CPU equivalents. Vuit llengües funcionen amb 2 MB; el xinès necessita compatibilitat comprovada amb 8 MB. Si el títol no els detecta, tria una altra llengua o emulador."
+    ]
+  },
+  "retroarch": {
+    "title": "Configurar RetroArch",
+    "summary": "Tria un nucli PlayStation i revisa’n les opcions.",
+    "paragraphs": [
+      "RetroArch és una interfície: el nucli determina BIOS, targetes i millores. Tria un nucli PlayStation, consulta’n la documentació oficial i posa la teva BIOS a la carpeta de sistema indicada. Carrega el .cue amb el .bin present.",
+      "Comprova targeta i carpeta de partides. Deixa {save_blocks} blocs lliures, desa dins del joc, tanca el contingut correctament i prova Continua en tornar-lo a obrir. Fes còpia abans de canviar de nucli; els estats no són portables entre nuclis.",
+      "RAM ampliada i controls CPU depenen del nucli i poden faltar. Comprova el títol: vuit llengües fan servir 2 MB, el xinès 8 MB. L’avanç ràpid no substitueix l’overclock de CPU emulada."
+    ]
+  },
+  "iphone-web": {
+    "title": "Emulador web a l’iPhone",
+    "summary": "Comprova PlayStation i protegeix les partides.",
+    "paragraphs": [
+      "El web de Horizon crea el disc, però no executa el joc. Cal un altre emulador web PlayStation, com un lloc amb el nucli PlayStation d’EmulatorJS, que accepti els teus fitxers i BIOS. Compatibilitat, rendiment i exportació depenen del lloc i navegador.",
+      "Comprova els formats acceptats. Guarda .bin/.cue i BIOS fora del navegador. Prova exportar i importar targetes i deixa {save_blocks} blocs lliures a la targeta emulada.",
+      "Prova desar, tancar i recarregar abans de jugar molt. Exporta la targeta després: esborrar dades del lloc pot eliminar fitxers. Usa una llengua habitual sense 8 MB comprovats. No es certifica aquí cap combinació d’iPhone."
+    ]
+  },
+  "memory-cards": {
+    "title": "Targetes, còpies i actualitzacions",
+    "summary": "Espai, targetes per joc i actualitzacions segures.",
+    "paragraphs": [
+      "Horizon necessita {save_blocks} blocs lliures per a una partida nova. Comprova espai i targeta assignada. Amb targetes per joc, canviar el nom del disc pot triar una altra targeta; assigna l’anterior si desapareix Continua.",
+      "Un estat de l’emulador conté l’executable antic i posicions del disc en memòria cau. Per actualitzar, copia la targeta, crea el disc, arrenca de zero i carrega dins del joc. No passis de versió amb un estat antic.",
+      "Guarda còpies fora de la carpeta activa. Per canviar de dispositiu, exporta, importa i prova Continua. Formatar esborra les partides; utilitza una targeta nova o de recanvi per fer proves."
+    ]
+  },
+  "ram-and-frame-rate": {
+    "title": "2 MB, xinès i 60 fps",
+    "summary": "RAM i velocitat CPU emulada tenen funcions diferents.",
+    "paragraphs": [
+      "Horizon funciona en una PlayStation original de 2 MB en vuit llengües. El xinès simplificat carrega fonts i mòdul per sobre de 2 MB i necessita 8 MB ampliats. Amb 2 MB el joc rebutja aquesta llengua i conserva l’actual.",
+      "AUTO adapta les imatges a cada escena: prova 60 fps i baixa a 30 o 20 amb intervals regulars quan cal. FRAME RATE a les OPTIONS del títol ofereix AUTO, 60 o 20. Forçar 60 pot donar menys imatges si l’escena exigeix massa. La lògica i els controls continuen a 20 Hz; la RAM extra no tria els fps.",
+      "Canvia la CPU emulada, no l’avanç ràpid. Comprova els ajustos detectats al títol. El dispositiu ha de mantenir la velocitat triada. Reinicia després de canviar la RAM."
+    ]
+  },
+  "first-day": {
+    "title": "El primer dia del company",
+    "summary": "Una rutina petita per a la vida a File Island.",
+    "paragraphs": [
+      "Tria el company amb les preguntes de Jijimon. Coneix indicadors de cures, inventari i serveis propers abans d’allunyar-te. Porta curacions i deixa espai per a troballes.",
+      "Alimenta’l quan tingui gana, busca un lavabo i respecta el son. La fitxa indica menjar preferit i horaris. No entrenis tot el dia sense revisar les necessitats.",
+      "Prova una sessió curta i revisa atributs i cansament. Explora, torna i desa a la targeta. L’evolució també depèn del pes i les cures: tria un objectiu abans d’entrenar-ho tot sense criteri."
+    ]
+  },
+  "care": {
+    "title": "Errors de cura i disciplina",
+    "summary": "Entén els avisos abans de buscar atributs.",
+    "paragraphs": [
+      "Gana, lavabo, son i cansament són sistemes diferents. Ignorar la gana o deixar fer les necessitats a terra pot sumar errors; malaltia i esgotament tenen efectes propis. Revisa indicadors i cures sovint.",
+      "Disciplina i felicitat són diferents. Elogiar i renyar tenen efectes diferents i no resolen qualsevol problema. També compten menjar i son.",
+      "Les evolucions poden demanar mínim o màxim d’errors. Buscar-ne molts és una decisió específica, no un consell general. Els comptadors normals són de la forma actual; llegeix els quatre grups junts."
+    ]
+  },
+  "training": {
+    "title": "Entrenar al gimnàs",
+    "summary": "Equilibra els guanys i les necessitats diàries.",
+    "paragraphs": [
+      "Cada gimnàs entrena un atribut. Els augments base de sota són valors base; company, millores, objectes i resultat poden canviar-los. La intel·ligència té llindars d’aprenentatge propis, separats del combat.",
+      "Entrenar consumeix temps, menjar, cansament i vida. Comprova gana, lavabo i son abans. Continuar cansat pot penalitzar; més guany no és temps gratuït.",
+      "x5 dona diverses recompenses normals amb comprovacions entre elles. Usa x1 prop d’objectius de pes o evolució. Descansa i atén les necessitats abans d’un altre bloc."
+    ]
+  },
+  "gym-x5": {
+    "title": "Com funciona el gimnàs x5",
+    "summary": "Diverses sessions amb costos normals i aturades.",
+    "paragraphs": [
+      "R2 alterna x1 i x5 durant una sessió. El bloc mostra l’animació inicial i aplica les recompenses en ordre. No és un multiplicador gratuït per cinc.",
+      "Pot aturar-se després de gana, lavabo, son, cansament o malestar; també comprova evolució, vida i missatges del gimnàs. El resultat indica les sessions acabades, no sempre cinc.",
+      "Bonus Try és separat dels blocs. Resol la necessitat indicada abans de repetir. Per a una sola recompensa, tria x1 abans de confirmar en lloc de confiar en una aturada d’emergència."
+    ]
+  },
+  "evolution-requirements": {
+    "title": "Entendre els requisits d’evolució",
+    "summary": "Llegeix l’objectiu i compta els quatre grups.",
+    "paragraphs": [
+      "L’evolució normal puntua errors, pes, atributs i bonificació. Calen {pass_points} punts. Tots els atributs exigits formen un grup; dos atributs no donen dos punts. Per a objectius Rookie compta l’atribut més alt.",
+      "El pes admet una banda; els errors poden tenir mínim o màxim. Una sola alternativa de bonificació dona el punt; no són totes obligatòries.",
+      "Toca l’objectiu de l’arbre. La fila «Temps (h)» de la finestra mostra la comprovació del temps, i un avís vermell indica si la vida restant és insuficient. Temps en la forma, desencadenants especials, NEW DIGIMON i altres candidats influeixen. PV/PM són unitats del jugador; felicitat usa l’escala 0–100 de l’estat."
+    ]
+  },
+  "evolution-timing": {
+    "title": "Temps d’evolució i candidats",
+    "summary": "Els requisits només són part de l’elecció.",
+    "paragraphs": [
+      "Les hores de sota són en la forma actual, no edat total. Complir aviat els atributs no provoca evolució immediata. Les rutes Ultimate temporitzades també comproven requisits; especials i objectes tenen altres desencadenants.",
+      "La selecció afavoreix objectius mai criats. Per a Rookie–Champion i Champion–Ultimate amb tres punts compara mitjanes exigides, PV/PM dividits entre deu; l’ordre pot influir. In-Training–Rookie conserva la millor puntuació i el primer empat.",
+      "La fila «Temps (h)» de la finestra compara les hores passades en la forma actual amb les que exigeix l’objectiu. El veredicte només diu «a punt» quan es compleixen la puntuació dels requisits, la comprovació que el model cap a la memòria i el temps; «En N h» indica que només falta temps. L’avís vermell «La vida s’acaba abans (N h)» indica que la vida restant és més curta que l’espera pendent; N és la vida restant. Les rutes que no depenen del temps mostren «Ruta especial». Els Megas importats també exigeixen passar {mega_hours} hores de joc com a Perfecte. Si abans s’esgota la vida restant, el company mor de vellesa. {chain_melon} (Chain Melon) afegeix {chain_melon_hours} hores de vida; {digiseabass}, {digiseabass_hours}. Allarguen la vida restant, no el temps ja passat en la forma actual."
+    ]
+  },
+  "learning-techniques": {
+    "title": "Aprendre tècniques",
+    "summary": "Llistes d’espècies, caselles i tirades candidates.",
+    "paragraphs": [
+      "L’execució enemiga d’una tècnica normal la registra com a candidata, encara que no impacti. Després del combat ha de ser a la llista de l’espècie, coincidir amb especialitat i ser desconeguda. La primera casella coincident fixa la tirada.",
+      "La intel·ligència no canvia aquesta tirada. Repeticions no donen tirades addicionals. Si passen diverses candidates, se’n tria una a l’atzar; el percentatge no garanteix el premi final.",
+      "Entrenar intel·ligència segueix altres regles. Les fitxes mostren PM base abans de modificadors; els remats no gasten PM. Noms repetits conserven IDs i una espècie pot modificar el remat."
+    ]
+  },
+  "file-city": {
+    "title": "File City i els habitants",
+    "summary": "Serveis, prosperitat i requisits de reclutament.",
+    "paragraphs": [
+      "El directori de reclutament recull habitants, llocs, serveis i aportacions a la prosperitat dins d’espòilers plegats.",
+      "Els passos queden ocults fins a obrir els espòilers. Les hores segueixen el joc. Comprova lloc i requisits: pot caldre progrés de ciutat, un altre recluta o un esdeveniment.",
+      "La taula d’intercanvis de Mojyamon és a l’espòiler tancat de sota: les vuit primeres files permeten un objecte per dia de joc; la novena, una sola vegada per partida desada. Si al joc apareix una llista diferent o antiga, has carregat un estat de l’emulador d’una versió anterior. Arrenca el disc nou de zero i carrega la partida de la targeta de memòria. Fes primer una còpia de la targeta."
+    ]
+  },
+  "hidden-mechanics": {
+    "title": "Mecàniques ocultes dels companys",
+    "summary": "Mecàniques ocultes dels companys.",
+    "paragraphs": [
+      "{bakemon_mechanic}",
+      "Cada company té menjar i son propis. Les especialitats determinen les tècniques apreses al combat. Les caselles buides continuen comptant en la tirada, tot i que el resum les ometi.",
+      "La guia del joc i l’arbre expliquen els objectius. Transformacions especials i objectes tenen condicions pròpies; una fila normal no descriu totes les maneres d’obtenir una espècie."
+    ]
+  },
+  "new-game-quiz": {
+    "title": "Qüestionari inicial: punts i companys",
+    "summary": "Les set respostes aporten a tres grups.",
+    "paragraphs": [
+      "La taula mostra punts per posició de resposta al qüestionari de Jijimon, en l’ordre del joc. Les puntuacions trien element, atribut i temperament; la combinació determina el company a la quadrícula.",
+      "Guanya el màxim del grup. Els empats afavoreixen la resposta de suport més recent; si és la mateixa per als dos, guanya el primer del grup. Ordre: Combat, Foc, Gel, Natura, Aire; Vacuna, Dades, Virus; Agosarat, Calmat, Astut.",
+      "Les columnes mostren NOUS DIGIMON activat i desactivat. Les respostes, els punts i la taula de companys inicials són a l’espòiler de sota."
+    ],
+    "spoiler_paragraphs": [
+      0,
+      1
+    ]
+  },
+  "difficulty": {
+    "title": "EASY, NORMAL i HARD",
+    "summary": "EASY, NORMAL i HARD.",
+    "paragraphs": [
+      "NORMAL usa les regles habituals. EASY dobla el dany del company i divideix el rebut entre dos, arrodonit amunt abans dels límits. També redueix a la meitat el verí del company. Afecta camp i tornejos individuals, no VS de dos.",
+      "La dificultat no reescriu atributs desats. El dany percentual dels guions té regles pròpies. Tria al títol i comprova les opcions disponibles.",
+      "Tria una dificultat a les opcions del títol. Els ajustos de combat es mostren a sota i no canvien el creixement permanent del company."
+    ]
+  },
+  "faq": {
+    "title": "Preguntes i resolució de problemes",
+    "summary": "Actualitzacions, partides, lentitud i informes útils.",
+    "paragraphs": [
+      "Si falta Continua, comprova targeta, blocs i nom del disc amb targetes per joc. Calen {save_blocks} blocs lliures per a una partida nova. Fes còpia, arrenca el disc actualitzat i carrega dins del joc.",
+      "Crear el disc al mòbil pot ser lent. Per errors de quota usa finestra normal, allibera espai i repeteix; també hi ha el pedaçador d’escriptori. Els discos extra aporten espècies; còpies modificades o incompatibles fallen les comprovacions.",
+      "Per text incorrecte anota versió, disc base, llengua, compilació i gràfics. En Android afectat prova de desactivar Enable Texture Cache. Inclou el desencadenant i una captura: el símptoma sol no identifica la causa."
+    ]
+  }
+}
