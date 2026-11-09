@@ -6,6 +6,11 @@ reviewed field overlays remain in derive; immutable recipes remain under
 
 Run developer tools from the repository root:
 
+`audit_reduction.py` compares the complete private source meshes/textures with
+pinned final provider outputs and writes a ranked table and six-view contact
+images. See [the audit guide](../../docs/mods/mesh-reduction-audit.md) for source
+setup, coverage limits and interpretation.
+
 ```sh
 python3 tools/models/edit.py get 183
 python3 tools/models/edit.py --from build/everything check 183 --species-pins
