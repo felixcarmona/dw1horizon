@@ -144,3 +144,39 @@ with its existing rig and chibi proportions. The offline authoring recipe is
 `field_animations/valkyrimon.py`; player builds replay the plain delta.
 [The motion notes](../../docs/reference/valkyrimon-motion.md) record the source
 mismatch, size comparison, replay commands and original-console checks.
+
+Aquilamon (188) had one 89-tick flight flap in its idle, walk, condition walk
+and run, the whole bird climbing about 300 units on every downstroke and gliding
+back to the floor. `field_animations/aquilamon.py` keeps that flap and holds the
+bird at a steady hover (the climb scaled to 15-22%, the wing tips just clearing
+the floor at the bottom of the downstroke); the walk plays the beat 1.25 times
+faster and the run twice as fast, pitched further nose-down:
+`--source build/everything/imported-models/188.MMD --out AFTER.MMD`, then
+`tools/models/edit.py --from build/everything put 188 AFTER.MMD`.
+
+Hawkmon (184) had its right foot bound turned about 58 degrees outward in every
+clip, a walk, condition walk and run that pushed the feet up to 60 units into
+the floor, and an idle that rose onto its tiptoes. `field_animations/hawkmon.py`
+keeps its own clips (the walk hops as before, its cycle eased from 12 to 16
+ticks; the run keeps 12 ticks with the body leaning forward, the wings swept
+back and beating, a longer stride and a higher hop that lifts both feet) and
+corrects the feet per tick: the right foot turned forward, a foot on the floor laid as flat as its
+reach allows, a foot under the floor raised inside its leg; the idle keeps a
+quarter of its rise.
+
+Armadillomon (185) held its head level or lowered in the field idle, walk and
+run, so the shell's front rim covered the brow. `field_animations/armadillomon_head.py`
+adds one constant lift to the head joint in those clips (and the condition walk),
+leaving every other channel as `armadillomon.py` and the pace pass wrote it.
+
+Ankylomon's (189) run threw its legs out sideways and swung the paws far over
+the ground. `field_animations/ankylomon.py` replaces only the run with a heavy
+trot from `quadruped.py`; its paws are bound sole-backwards, so the profile's
+`paw_flat` gives their flat standing rotation, and `tail_up` carries the club
+tail clear of the ground. The 73-frame idle and walk stay as they were.
+
+Angewomon's (190) walk and run slid the feet without the legs carrying them.
+`field_animations/angewomon.py` takes native Angemon's walk, condition walk and
+run the way `valkyrimon.py` does (legs solved onto his feet, his lean on the
+body), with her own swinging arms (he carries a staff), and the sash ends and
+lowest feathers kept off the ground. Buster Dive is applied after it at build.

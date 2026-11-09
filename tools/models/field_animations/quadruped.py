@@ -128,6 +128,10 @@ class Rig:
         still[0] = [4096, 4096, 4096, 0, 0, 0, 0, 0, 0]
         W = self.world(still)
         self.still = W
+        # A paw's flat standing rotation in the world: identity for rigs whose paws are bound sole-down, otherwise
+        # the profile's 'paw_flat' angles (degrees) per front/hind. Rolls are pitched on top of it.
+        flat = profile.get('paw_flat', {})
+        self.flat = {front: rot(flat[front]) if front in flat else rot([0, 0, 0]) for front in (True, False)}
         # Reference bend planes: each right leg's standing pose; the left legs take it mirrored in the world.
         self.ref = {}
         for name, (up, lo, paw, side, front) in profile['legs'].items():
@@ -137,6 +141,10 @@ class Rig:
                 worlds = [mul(mul(MIRROR_X, w), MIRROR_X) for w in worlds]
             parent = [r[:3] for r in W[skeleton[up][1]][:3]]
             self.ref[name] = [mul(tr(parent), worlds[0]), mul(tr(worlds[0]), worlds[1]), mul(tr(worlds[1]), worlds[2])]
+
+    def paw(self, front, pitch):
+        """A paw's world rotation, pitched by the given degrees from flat."""
+        return mul(rot([pitch, 0, 0]), self.flat[front])
 
     def world(self, pose):
         p = [list(v) for v in pose]
@@ -248,7 +256,8 @@ def body(rig, cfg, phase, pose, hist):
     pose[p['head']][4] = rest[p['head']][4] + round(yaw * 0.8 * DEG)
     for k, b in enumerate(p['tail']):
         lag = 0.08 * (k + 1)
-        pose[b][3] = rest[b][3] + round(cfg['tail'] * (0.5 + 0.2 * k) * wave(phase, 0.9 + lag, rate) * DEG)
+        carried = cfg.get('tail_up', 0) if k == 0 else 0    # a tail held up off the ground (degrees at its root)
+        pose[b][3] = rest[b][3] + round((carried + cfg['tail'] * (0.5 + 0.2 * k) * wave(phase, 0.9 + lag, rate)) * DEG)
         pose[b][4] = rest[b][4] + round(cfg['tail'] * 0.6 * math.sin(2 * math.pi * (phase - 0.3 - lag)) * DEG)
     for b, sign in p.get('loose', ()):
         pose[b][3] = rest[b][3] + round(cfg['loose'] * wave(phase, 0.15, rate) * DEG)
@@ -275,7 +284,7 @@ def gait(rig, cfg):
         up, lo, paw, side, front = p['legs'][name]
         key = 'front' if front else 'hind'
         z = centres[name] - stride(name) / 2 + stride(name) * s
-        world = rot([cfg['peel'][key] * smooth((s - 0.55) / 0.45), 0, 0])
+        world = rig.paw(front, cfg['peel'][key] * smooth((s - 0.55) / 0.45))
         lower, out = rig.solve(pose, name, standing(rig, name, tracks[name], z, world), hist)
         set_rot(pose, paw, mul(tr(lower), world), hist)
         return out
@@ -305,13 +314,13 @@ def gait(rig, cfg):
                 short = max(short, stand(pose, name, s, hist))
                 continue
             key = 'front' if front else 'hind'
-            lift_off = standing(rig, name, tracks[name], centres[name] + stride(name) / 2, rot([cfg['peel'][key], 0, 0]))
-            landing = standing(rig, name, tracks[name], centres[name] - stride(name) / 2, rot([0, 0, 0]))
+            lift_off = standing(rig, name, tracks[name], centres[name] + stride(name) / 2, rig.paw(front, cfg['peel'][key]))
+            landing = standing(rig, name, tracks[name], centres[name] - stride(name) / 2, rig.paw(front, 0))
             k = minimum_jerk(s) if cfg['snap'] else smooth(s)
             flight = [lift_off[i] + (landing[i] - lift_off[i]) * (k if i == 2 else s) for i in range(3)]
             flight[2] -= cfg['out'][key] * 6.75 * s * s * (1 - s)    # reaches past the landing, then settles onto it
             flight[1] -= cfg['lift'][key] * math.sin(math.pi * min(1.0, s ** 0.8))
-            world = rot([swing_pitch(cfg, front, s), 0, 0])
+            world = rig.paw(front, swing_pitch(cfg, front, s))
             wrist = folded(pose, name, [flight[0], min(flight[1], -p['clear'] - rig.lowest(paw, world, [0, 0, 0])), flight[2]])
             lower, _ = rig.solve(pose, name, wrist, hist)
             set_rot(pose, paw, mul(tr(lower), world), hist)
