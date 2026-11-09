@@ -68,6 +68,7 @@ Other checks worth running after a specific change:
 | Evolution entropy / save-state variation | `python3 tools/dev/playtest/evolution_entropy.py DISC.cue --exe EXE --out build/evolution-entropy` (12 input timings from one unchanged save state, two no-input controls, root-counter observations, original 2 MB) |
 | Random evolution / reload variation | `python3 tools/dev/playtest/evolution_random.py DISC.cue --exe EXE --out build/evolution-random` (eight reloads of one memory-card save, original 2 MB) |
 | story scripts | `tools/dws.py check FILE --build`, then the story tests of section 5 |
+| Starter quiz or naming prompts | `tools/test_starter_quiz.py`; `tools/dev/playtest/starter_reveal.py DISC.cue --exe EXE --lang en --out build/reveal-en`, then repeat with `--lang es` and a separate output/port for screenshots through the first partner sighting on 2 MB RAM |
 | a C patch's tables | the matching script in `tools/dev/playtest/` (section 6) |
 | laboratory overlay storage | `tools/lab_storage_check.py build/decomp-int` for each full-build language tree, `tools/xref.py classes`/`refs` on its ELF, full eight-language heap checks and the Cheats/field/card-menu runtime checks in [memory.md](reference/memory.md) |
 

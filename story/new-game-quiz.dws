@@ -120,7 +120,8 @@ maphead {
         l30:
         show_textbox(text("m1238.u29"));
         l31:
-        show_textbox(text("m1238.u30"));
+        // Never echo the species default before the player has met the partner.
+        show_textbox(text("name.confirm_partner"));
         l32:
         show_textbox(text("m1238.u31"));
         l33:
@@ -174,6 +175,7 @@ maphead {
         quiz21:
         show_textbox(text("name.quiz.q7.answers"));
         quiz22:
+        // The partner is first revealed after the opening movie, never by this line.
         show_textbox(text("name.quiz.result"));
         end_section();
     }

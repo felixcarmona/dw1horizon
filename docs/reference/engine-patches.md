@@ -473,9 +473,21 @@ into it teaches (patch 0332, the `EVL_applyEvolution` rule: the weakest techniqu
 learned bits before `initializePartner`, and `initializeLoadedMap` restores the equipped slots afterward.
 Intrinsic baby Bubble attacks are outside the learned-move bitset. The rebirth path equips 0x2e; its learned
 bitset survives rebirth.
-The result announcement initializes the species default name before displaying `{partner}`. Naming then
-continues through the existing optional-name flow. The expanded table in `story/new-game-quiz.dws` uses the existing `name.*` translation
-mechanism in `text/<language>.json`, with speaker plus at most three lines.
+The result announcement is neutral in all nine languages: the partner is waiting. The follow-up patch
+`Keep-the-starter-species-private-until-the-opening-reveal.patch` removes the early species-name setup.
+Naming continues through the existing optional-name flow: state 0x1a clears the keyboard, and accepting an
+empty keyboard or declining to name the partner assigns its species name internally. Table entry 0x1e uses
+`name.confirm_partner` instead of echoing `{partner}`; both typed and default names retain confirmation/retry
+without exposing the species. The partner is first seen beside the tamer after the opening movie, matching
+the original disc's reveal. The original 33-entry table asks both names and says farewell; it has no species
+announcement. The expanded table in `story/new-game-quiz.dws` uses the existing `name.*` translation mechanism
+in `text/<language>.json`, with speaker plus at most three lines. `tools/starter_quiz.py` rejects name/species
+interpolation or literal starter names in the pre-reveal prompts; host tests exercise the actual naming C.
+
+With identical nine-language padding and disc file tables, removing the premature name setup shrinks resident
+code by 16 bytes (`main_BSS_END` 0x801ce6c4 → 0x801ce6b4); aligned heap grows 186416 → 186432 bytes.
+No new allocation or resident data is added. The new dialogue lives in the existing MAPHEAD script buffer.
+These figures use a controlled v0.0.8 test layout; see the worktree report for archive and runtime checks.
 
 ## Monochromon shift plate (0279)
 

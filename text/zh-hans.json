@@ -7,6 +7,7 @@
  "qol.training_x5": "普通训练x5",
  "qol.mansion_key_used_up": "宅邸里的门都打开了。已经不需要{color 6}宅邸钥匙{color 1}了。",
  "name.ask_partner": ["{color 7}公公兽{color 1}", "要给你的数码宝贝取个名字吗？"],
+ "name.confirm_partner": ["{color 7}公公兽{color 1}", "嗯，就这样定下来，如何？"],
  "name.ask_partner_choice": ["{color 6}{player}{color 1}", "要", "不要"],
  "name.quiz.intro": ["{color 7}公公兽{color 1}", "一共只有7个问题。", "答完，老夫就知道", "哪只数码宝贝适合你啦。"],
  "name.quiz.q1.number": ["{color 7}公公兽{color 1}", "第1问，共7问。"],
@@ -30,5 +31,5 @@
  "name.quiz.q7.number": ["{color 7}公公兽{color 1}", "最后一问啦。"],
  "name.quiz.q7.question": ["{color 7}公公兽{color 1}", "你最看重搭档的什么品质？"],
  "name.quiz.q7.answers": ["{color 6}{player}{color 1}", "勇气", "机智", "自由"],
- "name.quiz.result": ["{color 7}公公兽{color 1}", "嗯，老夫明白啦。", "你的搭档就是{partner}。"]
+ "name.quiz.result": ["{color 7}公公兽{color 1}", "嗯，老夫明白啦。", "你的搭档正等着你呢。"]
 }

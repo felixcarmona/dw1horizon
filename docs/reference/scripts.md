@@ -383,16 +383,23 @@ bubble (routine 0x1C) is a separate sprite driven by p247/p248.
   (`m1238.u16`). Entry 0x23 introduces seven questions. Each question uses three consecutive entries starting
   at 0x24: its numbered heading (the seventh says "Last question."), question, and speaker plus three answers.
   The topics are owning a Digital Monster, day/dusk/night, friends, camping, a blocked path, island supplies,
-  and a partner's most valued quality. All seven are mandatory. Entry 0x39 announces the selected species using
-  `{partner}`, populated from its real species name before the tamer-name prompt.
+  and a partner's most valued quality. All seven are mandatory. Entry 0x39 acknowledges the answers and says
+  the partner is waiting, without naming its species in any language.
   `newGameStateMachine` loops through the questions in states 0x23-0x28. The answer vector feeds
   `modQuizResult`; **p254 is an index into `newGame.starters`**, never the species id. All three consumers
   (partner creation and the two default-name paths) call `modNewGameStarter`, which reads the packed uint16 list.
-  The existing tamer-name and optional partner-name states follow unchanged; `modPartnerNameSetSpecies` supplies
-  the default. Script 204 still places the new tamer in File City. Weights, cells and the 38-entry list (37 expanded starters and Kunemon for the original-game fallback)
+  The tamer-name and optional partner-name states follow. The partner keyboard starts empty (state 0x1a);
+  choosing No or accepting the empty keyboard calls `modPartnerNameSetSpecies` internally. Entry 0x1e now uses
+  `name.confirm_partner`, a neutral confirmation without `{partner}`, so the default cannot spoil the reveal.
+  Typed names still confirm and can be corrected. The first species reveal is the partner beside the tamer
+  after the opening movie. MAPHEAD section 204 still places the new tamer in File City. Weights, cells and the 38-entry list (37 expanded starters and Kunemon for the original-game fallback)
   live in `content/tables/new-game.json`; `tools/starter_quiz.py` checks all 2187 answer paths.
   `story/new-game-quiz.dws` extends the base text table only for the expanded engine; original-engine builds keep
   the legacy table and its smaller MAPHEAD buffer.
+  The original disc's 1238 table has 33 entries: after the answers, Jijimon acknowledges them (0x19), asks the
+  tamer's name (0x1a), asks the partner's name (0x1d), confirms the typed name (0x1e), and says farewell (0x20).
+  It does not announce a species. The original naming keyboard is empty too; the default-species path is a
+  Horizon addition. The farewell precedes the movie and File City awakening.
 - **Recruiting** (Kunemon, script 2 section 6, the NPC in slot 1 of Kunemon's Bed): sets trigger 44, the NPC asks for
   food (a two-option selection), then trigger 3 and routine 0 let the player pick an item (into p254); `IF p254` is one
   of the meats 38..41 → animations and a challenge → trigger 1, p250 = 1, p251 = 6, p252/253 = 0xFF → `66` → clear

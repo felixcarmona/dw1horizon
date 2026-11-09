@@ -1,0 +1,24 @@
+From 18b036c3a31e7dfee2a148c7335f741c9f4dc8ee Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Mon, 9 Nov 2026 14:56:09 +0000
+Subject: [PATCH] Keep the starter species private until the opening reveal
+
+---
+ src/shop/script_menu.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index c4df7973..2d19407d 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -1293,7 +1293,6 @@ int32_t newGameStateMachine(void)
+ 	case 0x23:
+ 		if (question == 7) {
+ 			writePStat(PSTAT_254, modQuizResult(answers));
+-			modPartnerNameSetSpecies(modNewGameStarter());
+ 			showNewGameDialogue(0x39, 0x12);
+ 		} else {
+ 			showNewGameDialogue(0x24 + question * 3, 0x24);
+-- 
+2.55.0
+

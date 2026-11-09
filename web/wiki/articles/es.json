@@ -159,7 +159,7 @@
     "paragraphs": [
       "La tabla muestra los puntos de cada posición de respuesta del cuestionario de Jijimon. Las posiciones siguen el orden del juego. Las puntuaciones eligen elemento, atributo y temperamento; esa combinación determina el compañero de la cuadrícula.",
       "Gana la mayor puntuación de cada grupo. En empate se favorece la respuesta más reciente que lo apoye; si esa respuesta apoya a ambos, gana el primero del grupo. El orden es Combate, Fuego, Hielo, Naturaleza, Aire; Vacuna, Datos, Virus; Audaz, Tranquilo, Astuto.",
-      "Las columnas muestran NUEVOS DIGIMON activado y desactivado. Las respuestas, los puntos y la tabla de compañeros iniciales están en el spoiler de abajo."
+      "Jijimon mantiene en secreto quién será tu compañero: lo descubrirás a tu lado al despertar. Ponerle nombre es opcional y los mensajes no revelan la especie. Las columnas muestran NUEVOS DIGIMON activado y desactivado. Las respuestas, los puntos y la tabla de compañeros iniciales están en el spoiler de abajo."
     ],
     "spoiler_paragraphs": [
       0,
