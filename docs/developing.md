@@ -225,6 +225,14 @@ attack after the finisher. JSON, screenshots and states record the deadline and 
 HUD objects, finisher globals and the partner's hit state. Field checkpoints require the same disc and test-card
 hashes. `--expect-unsafe` diagnoses the old premature teardown; it does not assert that every timing visibly freezes.
 
+`tools/dev/playtest/battle_return.py` checks a natural wild victory and the
+return to walking on screen 0 or Root Clearing (314), with either battle-start
+setting. It records camera ownership, physical and animation positions and
+native projected visibility after pad input. Use `--state` with `--stay --slot 1`
+to fight a second NPC without reloading the screen; checkpoints must match the
+disc. See the [Root Clearing investigation](investigations/root-clearing-caption-and-battle-return.md)
+for fixture writes, caption coverage and the limits of the reported freeze evidence.
+
 Other suites:
 
 | Folder | What |
