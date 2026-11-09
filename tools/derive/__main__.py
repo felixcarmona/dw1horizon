@@ -341,6 +341,9 @@ def verify(a):
         if ref.get('facts'):
             f = os.path.join(t, 'derived', 'exe-facts.json')
             F.save(ref['facts'], f)
+        src = os.path.join(os.path.abspath(a.out), 'source-games')
+        if os.path.isdir(src):       # the imports replay reads the source games from the output folder
+            os.symlink(src, os.path.join(t, 'source-games'))
         b = argparse.Namespace(facts=f, w=None, steps=','.join(ref['steps']), only=None, checks=False,
                                strict=a.strict, record=False, verbose=False, jobs=1)
         os.environ.pop('REUSE_MODELS', None)
