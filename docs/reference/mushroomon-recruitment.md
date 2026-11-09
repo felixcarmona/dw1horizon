@@ -71,3 +71,12 @@ on 234, checks the unrecruited actor has 1200 HP, and records the conversation,
 real fight, join message and return to field control. It only reads RAM and
 presses the pad. Both drivers write screenshots and structured evidence to
 their output directory.
+
+The English PCSX-Redux check on original 2 MB RAM completed the pad route
+109 → 111 → 18 → 233 → 234, talked to Mushroomon, won its unmodified 1200 HP
+fight, displayed “Mushroomon joined the city!” and returned field control with
+the saved recruitment bit set. T106 was prepared as a fixture; partner stat
+boosts used the normal Cheats menu. The dirt-hauling quest was not replayed.
+No tamer/partner positions, NPC state, fight outcome or recruitment bit were
+written by the test. Physical hardware and other runtime languages were not
+checked in this run.

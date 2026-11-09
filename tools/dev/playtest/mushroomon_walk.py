@@ -174,6 +174,8 @@ def main():
         tour.handle_events = handle_events
         class PadRoute(tour.Seg):
             def __init__(self, mapfile):
+                # CURRENT_SCREEN changes before the native arrival fade ends.
+                time.sleep(3)
                 screen = e.peek('CURRENT_SCREEN', 'h')
                 e.run('shot', str(args.out / f'screen-{screen}.png'))
                 self.m = tour.dwmap.MapFile(Path(mapfile).read_bytes())

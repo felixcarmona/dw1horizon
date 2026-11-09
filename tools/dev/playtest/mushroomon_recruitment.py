@@ -9,6 +9,7 @@ import argparse
 import json
 from pathlib import Path
 import struct
+import shutil
 import sys
 import time
 
@@ -65,6 +66,7 @@ def main():
     e.run('shot', str(args.out / 'mushroomon-found.png'))
     fight = False
     boxes = set()
+    last_box = None
     end = time.monotonic() + 600
     try:
         while time.monotonic() < end:
@@ -79,13 +81,17 @@ def main():
             if row['recruited']:
                 assert fight, 'recruitment occurred without the real fight'
                 e.wait(4)
-                e.run('shot', str(args.out / 'mushroomon-joined.png'))
+                e.run('shot', str(args.out / 'mushroomon-recruited.png'))
+                # send_to_city sets its saved bit after dismissing the join box.
+                assert last_box is not None
+                shutil.copyfile(last_box, args.out / 'mushroomon-joined.png')
                 e.run('save', str(args.out / 'mushroomon-joined.state'))
                 break
             if row['game_state'] == 0 and row['opcode'] == 0x1a and row['script_pointer'] not in boxes:
                 boxes.add(row['script_pointer'])
                 e.wait(1)
-                e.run('shot', str(args.out / f'mushroomon-dialogue-{len(boxes)}.png'))
+                last_box = args.out / f'mushroomon-dialogue-{len(boxes)}.png'
+                e.run('shot', str(last_box))
             if row['game_state'] == 1:
                 e.press('SQUARE', 12)  # native finisher when its meter is full
             e.press('CANCEL' if row['game_state'] == 0 and row['in_menu'] else 'CONFIRM', 12)
