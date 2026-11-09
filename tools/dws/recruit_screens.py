@@ -27,7 +27,7 @@ def waiting_recruits(comp):
                 continue
             flag = recruitment.recruit_trigger(species)
             if requires_unrecruited(condition, flag):
-                result.setdefault(screen, set()).add(flag)
+                result.setdefault(screen, []).append((slot, condition))
     return result
 
 
@@ -83,10 +83,21 @@ def ordinary_slots(screen):
     return slots
 
 
+def absent(condition):
+    """Negate the complete placement guard, retaining time and story requirements."""
+    kind = condition[0]
+    if kind == 'not':
+        return condition[1]
+    if kind in ('and', 'or'):
+        return ('or' if kind == 'and' else 'and', [absent(c) for c in condition[1]])
+    return ('not', condition)
+
+
 def guard_wilds(comp, text, report):
     if not recruitment.ACTIVE.get():
         return text
-    for screen, flags in sorted(waiting_recruits(comp).items()):
+    from .backend import CLOCK_PSTAT, P_SETUP_DATE, presence_if
+    for screen, recruits in sorted(waiting_recruits(comp).items()):
         slots = ordinary_slots(screen)
         if not slots:
             report.append(f'recruit screen {screen}: no ordinary wild handlers; story encounters retained')
@@ -99,6 +110,9 @@ def guard_wilds(comp, text, report):
         guarded_species = {int(sp) for sp, slot in sets if int(slot) in slots}
         load_species = {sp for sp in guarded_species
                         if all(int(slot) in slots for species, slot in sets if int(species) == sp)}
+        conditions = [presence_if(absent(condition), screen, slot) for slot, condition in recruits]
+        date = (f'    STORE_DATE p{P_SETUP_DATE}\n'
+                if any(p in condition.split() for condition in conditions for p in CLOCK_PSTAT.values()) else '')
         count = 0
         def wrap(match):
             nonlocal count
@@ -108,9 +122,9 @@ def guard_wilds(comp, text, report):
                 return match.group()
             label = f'recruit_screen_{screen}_{count}'
             count += 1
-            condition = ', and '.join(f'trigger {flag}' for flag in sorted(flags))
-            return f'    IF {condition}, else {label}\n{match.group()}\n{label}:'
+            guards = ''.join(f'    IF {condition}, else {label}\n' for condition in conditions)
+            return f'{date}{guards}{match.group()}\n{label}:'
         body = re.sub(r'^\s*(LOAD_DIGIMON|SET_DIGIMON)\s+(\d+)(?:,\s*(\d+),[^\n]*)?[^\S\n]*(?:;[^\n]*)?$', wrap, body, flags=re.M)
         text = text[:section.start()] + body + text[section.end():]
-        report.append(f'recruit screen {screen}: wild slots {sorted(slots)}, require recruited triggers {sorted(flags)}')
+        report.append(f'recruit screen {screen}: wild slots {sorted(slots)}, require waiting recruits absent (slots {sorted(slot for slot, _ in recruits)})')
     return text
