@@ -149,3 +149,9 @@ Armadillomon (185) held its head level or lowered in the field idle, walk and
 run, so the shell's front rim covered the brow. `field_animations/armadillomon_head.py`
 adds one constant lift to the head joint in those clips (and the condition walk),
 leaving every other channel as `armadillomon.py` and the pace pass wrote it.
+
+Ankylomon's (189) run threw its legs out sideways and swung the paws far over
+the ground. `field_animations/ankylomon.py` replaces only the run with a heavy
+trot from `quadruped.py`; its paws are bound sole-backwards, so the profile's
+`paw_flat` gives their flat standing rotation, and `tail_up` carries the club
+tail clear of the ground. The 73-frame idle and walk stay as they were.
