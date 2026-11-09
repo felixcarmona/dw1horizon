@@ -585,8 +585,8 @@ collision height alone does not resize the mesh. A uniform 0.80 bake reduces
 the idle to about 467 units while retaining the reviewed chibi proportions.
 Every animation translation, radius, height, bubble, target effect attachment
 and status framing follows that scale. The original donor-side effect lookup
-coordinates stay exact. Field cycles are shortened proportionately to retain
-their follow pace.
+coordinates stay exact. The initial repair shortened field cycles to retain
+follow pace; the Leomon follow-up below uses the native feline cadence.
 
 Seven technique slots previously selected the same imported dive program:
 Megalo Spark, Thunder Justice, Spinning Shot, Wind Cutter, Electric Cloud,
@@ -647,7 +647,11 @@ is labelled accordingly and does not prove free following or combat damage.
 Battle mode starts from a fresh card boot, equips the moves in the normal
 combat engine and records damage in `evidence.json`. It uses the standard
 technique-proof setup and starts a short recording when the requested slot
-is first observed; a retry starts a fresh live encounter. HP/MP are test values. Field/follow checkpoints are for
-visual review. Battle videos are silent to retain the standard test driver
-timing; field clips include SPU audio. Compare with native Leomon and use `tools/animstudio.py video`
-for additional donor comparisons. Videos contain disc assets and are not committed.
+is first observed; a retry starts a fresh live encounter. HP/MP are test values.
+With `--scripted-counter`, an explicitly captioned fallback calls the combat
+engine's queued-move entry point if natural Counter does not trigger. It proves
+battle playback, not natural Counter selection. Field/follow checkpoints are
+for visual review. Battle videos are silent to retain the standard test driver
+timing; field clips include SPU audio. Compare with native Leomon and use
+`tools/animstudio.py video` for additional donor comparisons. Videos contain
+disc assets and are not committed.

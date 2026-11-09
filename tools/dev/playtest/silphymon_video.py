@@ -43,15 +43,17 @@ def caption(source, target, text, start=0, duration=None):
     command(args)
 
 
-def start_slot(slot):
-    gl=P.EMU.A('gameLoop'); fn=P.EMU.A('partnerStartAnimation')
+def engine_call(function, *args):
+    loop='BTL_battleTickFrame' if function.startswith('BTL_') else 'gameLoop'
+    gl=P.EMU.A(loop); fn=P.EMU.A(function)
+    registers='; '.join(f'r.GPR.n.a{i}={value}' for i,value in enumerate(args))
     script=f"""
 if SV and SV.bp then SV.bp:remove() end
 SV={{phase=0}}
 SV.bp=PCSX.addBreakpoint({gl},'Exec',4,'motion-review',function()
  local r=PCSX.getRegisters()
  if SV.phase==0 then
-  SV.saved=r.GPR.n.ra; r.GPR.n.a0={slot}; r.GPR.n.ra={gl}; r.pc={fn}; SV.phase=1
+  SV.saved=r.GPR.n.ra; {registers}; r.GPR.n.ra={gl}; r.pc={fn}; SV.phase=1
  else
   r.GPR.n.ra=SV.saved; SV.bp:remove(); SV.phase=2
  end
@@ -62,7 +64,11 @@ return 'armed'
     for _ in range(40):
         if P.EMU.run('lua','return SV.phase').strip()=='2': return
         time.sleep(.1)
-    raise RuntimeError('animation call did not complete')
+    raise RuntimeError('engine call did not complete')
+
+
+def start_slot(slot):
+    engine_call('partnerStartAnimation',slot)
 
 
 def stage():
@@ -93,6 +99,8 @@ def main():
     ap.add_argument('--state',help='reuse a checkpoint from this exact disc')
     ap.add_argument('--slots',help='comma-separated hexadecimal animation slots')
     ap.add_argument('--tries',type=int,default=3,help='live battle attempts per technique')
+    ap.add_argument('--scripted-counter',action='store_true',
+                    help='labelled queued-move fallback when natural Counter is not observed')
     ap.add_argument('--mode',choices=['field','follow','battle'],required=True)
     a=ap.parse_args(); a.out.mkdir(parents=True,exist_ok=True)
     if a.mode=='battle' and a.state:
@@ -103,7 +111,7 @@ def main():
         os.environ.pop('EMU_AUDIO',None)
     else:
         os.environ['EMU_AUDIO']=str((a.out/'audio.raw').resolve())
-    if a.mode=='field':
+    if a.mode=='field' or a.scripted_counter:
         factory=P.emulator
         def interpreter(cue):
             emu=factory(cue);emu.env['EMU_ARGS']='-interpreter -debugger'
@@ -218,15 +226,33 @@ def main():
                                    f'NPC_ENTITIES[0].digimonEntity.stats.base.moves[0]={melee}',
                                    *[f'NPC_ENTITIES[0].digimonEntity.stats.base.moves[{i}]=255' for i in (1,2,3)])
                         played,damage=T.watch(slot,str(a.out),f'tech-{slot}',secs=20)
+                    scripted=False
+                    if a.scripted_counter and move==45 and not played and P.game_state()==1:
+                        # A review fallback, explicitly labelled: call the same
+                        # queued-move entry point used by the missed-hit handler.
+                        # This proves playback in combat, not natural selection.
+                        P.mset('COMBAT_DATA.fighter[0].queuedAnim=57',
+                               'COMBAT_DATA.fighter[0].targetId=1',
+                               'COMBAT_DATA.fighter[0].moveRange=1',
+                               'COMBAT_DATA.fighter[0].cooldown=0',
+                               'COMBAT_DATA.fighter[0].flags=0',
+                               'FLEE_DISABLED[1]=0')
+                        worker=threading.Thread(target=record,args=(raw,8))
+                        workers.append(worker);worker.start()
+                        engine_call('BTL_startQueuedMove',P.EMU.A('PARTNER_ENTITY'),
+                                    P.EMU.A('NPC_ENTITIES'),P.EMU.A('COMBAT_DATA'))
+                        played,damage=T.watch(slot,str(a.out),'counter-scripted',secs=6)
+                        scripted=True
                     # Stop additional casts after observing the attempt. Never
                     # revive a defeated enemy while a victory transition is active.
                     for worker in workers:worker.join()
                     P.mset(*[f'{T.MOVES}[{i}]=255' for i in range(4)])
                     P.mem=mem
-                    evidence.append(dict(action=names[move],slot=slot,played=played,damage=damage,attempt=attempt+1))
+                    evidence.append(dict(action=names[move],slot=slot,played=played,damage=damage,attempt=attempt+1,scripted_trigger=scripted))
                     if played:
                         clip=a.out/f'clip-{slot:02}.mp4'
-                        caption(raw,clip,f'{a.label}\n{names[move]} - battle',duration=8)
+                        kind='scripted battle trigger' if scripted else 'battle'
+                        caption(raw,clip,f'{a.label}\n{names[move]} - {kind}',duration=8)
                         if clip not in clips:clips.append(clip)
                     print(json.dumps(evidence[-1]),flush=True)
                     if played and (damage or 0)>0:break
