@@ -86,7 +86,7 @@
     "summary": "Comprendi gli avvisi prima di puntare alle statistiche.",
     "paragraphs": [
       "Fame, bagno, sonno e stanchezza sono sistemi distinti. Ignorare la fame o lasciare sporcare a terra può aggiungere errori; malattia ed esaurimento hanno effetti propri. Controlla indicatori e pannello di cura.",
-      "Disciplina e felicità sono diverse. Lodi e rimproveri hanno effetti distinti e non risolvono tutto. Contano anche cibo preferito e sonno.",
+      "Disciplina e felicità sono diverse. Lodi e rimproveri hanno effetti distinti e non risolvono tutto. Contano anche cibo preferito e sonno. In un habitat che non piace al compagno, la faccina dell’umore torna ad alternarsi tra triste e felice, come nell’originale.",
       "Le evoluzioni possono chiedere un minimo o massimo di errori. Cercarne molti è una scelta mirata, non un consiglio generale. I contatori normali riguardano la forma attuale; leggi insieme i quattro gruppi."
     ]
   },
@@ -141,7 +141,10 @@
     "paragraphs": [
       "Il direttorio di reclutamento raccoglie residenti, luoghi, servizi e contributi alla prosperità in spoiler chiusi.",
       "I passaggi restano nascosti fino all’apertura degli spoiler. Gli orari seguono il gioco. Controlla luogo e prerequisiti: progressi della città, altri reclutamenti o eventi possono essere necessari.",
-      "La tabella degli scambi di Mojyamon è nello spoiler chiuso qui sotto: le prime otto righe consentono un oggetto per giorno di gioco; la nona, una sola volta per salvataggio. Se il gioco mostra una lista diversa o vecchia, hai caricato uno stato dell’emulatore di una versione precedente. Avvia da zero il nuovo disco e carica invece il salvataggio della scheda di memoria. Prima fai una copia della scheda."
+      "La tabella degli scambi di Mojyamon è nello spoiler chiuso qui sotto: le prime otto righe consentono un oggetto per giorno di gioco; la nona, una sola volta per salvataggio. Se il gioco mostra una lista diversa o vecchia, hai caricato uno stato dell’emulatore di una versione precedente. Avvia da zero il nuovo disco e carica invece il salvataggio della scheda di memoria. Prima fai una copia della scheda. Mushroomon ora si può trovare e reclutare: appare nell’Area delle Spore del Monte Panorama raggiungibile dal percorso normale. I tre Soulmon della schermata di Haunted/Phantomon sono tornati di giorno (00:00–19:59) e dopo aver reclutato Phantomon."
+    ],
+    "spoiler_paragraphs": [
+      2
     ]
   },
   "hidden-mechanics": {
@@ -180,8 +183,8 @@
     "summary": "Aggiornamenti, salvataggi, patch lente e segnalazioni.",
     "paragraphs": [
       "Se manca Continua, controlla scheda, blocchi e nome del disco per schede per gioco. Servono {save_blocks} blocchi liberi per un nuovo file. Fai una copia, avvia il disco aggiornato e carica nel gioco.",
-      "Creare il disco sul telefono può essere lento. Per errori di quota usa una finestra normale, libera spazio e riprova; esiste anche il patcher desktop. I dischi extra forniscono specie: copie modificate o non supportate non superano i controlli.",
-      "Per testo errato annota versione, disco base, lingua, build e grafica. Su Android interessato prova a disattivare Enable Texture Cache. Includi causa scatenante e schermata: il sintomo da solo non identifica la causa."
+      "Creare il disco sul telefono può essere lento. Per errori di quota usa una finestra normale, libera spazio e riprova; esiste anche il patcher desktop. I dischi extra forniscono specie: copie modificate o non supportate non superano i controlli. Il creatore web sui telefoni Android non si blocca più con un errore di autorizzazione durante la copia del disco.",
+      "Per testo errato annota versione, disco base, lingua, build e grafica. Su Android interessato prova a disattivare Enable Texture Cache. Includi causa scatenante e schermata: il sintomo da solo non identifica la causa. Il volto di WarGrowlmon non ha più buchi."
     ]
   }
 }

@@ -86,7 +86,7 @@
     "summary": "Entén els avisos abans de buscar atributs.",
     "paragraphs": [
       "Gana, lavabo, son i cansament són sistemes diferents. Ignorar la gana o deixar fer les necessitats a terra pot sumar errors; malaltia i esgotament tenen efectes propis. Revisa indicadors i cures sovint.",
-      "Disciplina i felicitat són diferents. Elogiar i renyar tenen efectes diferents i no resolen qualsevol problema. També compten menjar i son.",
+      "Disciplina i felicitat són diferents. Elogiar i renyar tenen efectes diferents i no resolen qualsevol problema. També compten menjar i son. En un hàbitat que no agrada al company, la cara d’ànim torna a alternar entre trista i contenta, com a l’original.",
       "Les evolucions poden demanar mínim o màxim d’errors. Buscar-ne molts és una decisió específica, no un consell general. Els comptadors normals són de la forma actual; llegeix els quatre grups junts."
     ]
   },
@@ -141,7 +141,10 @@
     "paragraphs": [
       "El directori de reclutament recull habitants, llocs, serveis i aportacions a la prosperitat dins d’espòilers plegats.",
       "Els passos queden ocults fins a obrir els espòilers. Les hores segueixen el joc. Comprova lloc i requisits: pot caldre progrés de ciutat, un altre recluta o un esdeveniment.",
-      "La taula d’intercanvis de Mojyamon és a l’espòiler tancat de sota: les vuit primeres files permeten un objecte per dia de joc; la novena, una sola vegada per partida desada. Si al joc apareix una llista diferent o antiga, has carregat un estat de l’emulador d’una versió anterior. Arrenca el disc nou de zero i carrega la partida de la targeta de memòria. Fes primer una còpia de la targeta."
+      "La taula d’intercanvis de Mojyamon és a l’espòiler tancat de sota: les vuit primeres files permeten un objecte per dia de joc; la novena, una sola vegada per partida desada. Si al joc apareix una llista diferent o antiga, has carregat un estat de l’emulador d’una versió anterior. Arrenca el disc nou de zero i carrega la partida de la targeta de memòria. Fes primer una còpia de la targeta. Ara es pot trobar i reclutar Mushroomon: apareix a la Zona d’Espores del Mont Panorama accessible pel camí normal. Els tres Soulmon de la pantalla de Haunted/Phantomon tornen durant el dia (00:00–19:59) i després de reclutar Phantomon."
+    ],
+    "spoiler_paragraphs": [
+      2
     ]
   },
   "hidden-mechanics": {
@@ -180,8 +183,8 @@
     "summary": "Actualitzacions, partides, lentitud i informes útils.",
     "paragraphs": [
       "Si falta Continua, comprova targeta, blocs i nom del disc amb targetes per joc. Calen {save_blocks} blocs lliures per a una partida nova. Fes còpia, arrenca el disc actualitzat i carrega dins del joc.",
-      "Crear el disc al mòbil pot ser lent. Per errors de quota usa finestra normal, allibera espai i repeteix; també hi ha el pedaçador d’escriptori. Els discos extra aporten espècies; còpies modificades o incompatibles fallen les comprovacions.",
-      "Per text incorrecte anota versió, disc base, llengua, compilació i gràfics. En Android afectat prova de desactivar Enable Texture Cache. Inclou el desencadenant i una captura: el símptoma sol no identifica la causa."
+      "Crear el disc al mòbil pot ser lent. Per errors de quota usa finestra normal, allibera espai i repeteix; també hi ha el pedaçador d’escriptori. Els discos extra aporten espècies; còpies modificades o incompatibles fallen les comprovacions. El creador web en telèfons Android ja no falla amb un error de permisos en copiar el disc.",
+      "Per text incorrecte anota versió, disc base, llengua, compilació i gràfics. En Android afectat prova de desactivar Enable Texture Cache. Inclou el desencadenant i una captura: el símptoma sol no identifica la causa. La cara de WarGrowlmon ja no té forats."
     ]
   }
 }

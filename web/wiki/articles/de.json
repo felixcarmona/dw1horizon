@@ -86,7 +86,7 @@
     "summary": "Warnungen verstehen, bevor du Werte planst.",
     "paragraphs": [
       "Hunger, Toilette, Schlaf und Müdigkeit sind getrennte Systeme. Ignorierter Hunger oder Kot auf dem Boden kann Fehler verursachen; Krankheit und Erschöpfung haben eigene Folgen. Prüfe Anzeigen und Pflegebereich regelmäßig.",
-      "Disziplin und Zufriedenheit sind verschieden. Loben und Schimpfen wirken unterschiedlich und lösen nicht jedes Problem. Essensvorlieben und Schlafzeiten zählen ebenfalls.",
+      "Disziplin und Zufriedenheit sind verschieden. Loben und Schimpfen wirken unterschiedlich und lösen nicht jedes Problem. Essensvorlieben und Schlafzeiten zählen ebenfalls. In einem Lebensraum, den der Partner nicht mag, wechselt sein Stimmungsgesicht wieder zwischen traurig und glücklich, wie im Original.",
       "Entwicklungen können Mindest- oder Höchstzahlen von Fehlern verlangen. Viele Fehler sind eine gezielte Entscheidung, keine allgemeine Pflegeempfehlung. Gewöhnliche Zähler gelten für die aktuelle Form; lies alle vier Gruppen zusammen."
     ]
   },
@@ -141,7 +141,10 @@
     "paragraphs": [
       "Das Rekrutierungsverzeichnis zeigt Bewohner, Orte, Dienste und Wohlstandsbeiträge in geschlossenen Spoilern.",
       "Schritte bleiben bis zum Öffnen des Spoilerbereichs verborgen. Zeiten folgen der Spieluhr. Prüfe Ort und Voraussetzungen wie Stadtfortschritt, andere Rekruten oder Ereignisse.",
-      "Mojyamons Tauschtabelle steht im geschlossenen Spoiler unten: Die ersten acht Zeilen erlauben einen Gegenstand pro Spieltag, die neunte nur einmal pro Spielstand. Zeigt dein Spiel eine andere oder alte Liste, hast du einen Emulatorzustand aus einer älteren Version geladen. Starte die neue Disc frisch und lade stattdessen den Spielstand von der Speicherkarte. Sichere vorher die Karte."
+      "Mojyamons Tauschtabelle steht im geschlossenen Spoiler unten: Die ersten acht Zeilen erlauben einen Gegenstand pro Spieltag, die neunte nur einmal pro Spielstand. Zeigt dein Spiel eine andere oder alte Liste, hast du einen Emulatorzustand aus einer älteren Version geladen. Starte die neue Disc frisch und lade stattdessen den Spielstand von der Speicherkarte. Sichere vorher die Karte. Mushroomon kann jetzt gefunden und rekrutiert werden: Es erscheint im Sporengebiet des Bergs Panorama, das über den normalen Weg erreichbar ist. Die drei Soulmon im Bildschirm von Haunted/Phantomon sind tagsüber (00:00–19:59) und nach der Rekrutierung von Phantomon wieder da."
+    ],
+    "spoiler_paragraphs": [
+      2
     ]
   },
   "hidden-mechanics": {
@@ -180,8 +183,8 @@
     "summary": "Updates, Spielstände, langsames Patchen und gute Berichte.",
     "paragraphs": [
       "Fehlt Fortsetzen, prüfe Karte, freie Blöcke und Discname bei Karten pro Spiel. Horizon braucht {save_blocks} freie Blöcke für neue Spielstände. Sichere vor Updates und lade nach frischem Discstart im Spiel.",
-      "Patchen am Telefon kann dauern. Bei Speicherquoten nutze ein normales Fenster, schaffe Platz und versuche erneut; alternativ nutze den Desktop-Patcher. Zusatzdiscs liefern Arten; veränderte oder nicht unterstützte Ausgaben bestehen die Prüfung nicht.",
-      "Notiere bei Textfehlern Version, Basisdisc, Sprache, Emulator-Build und Grafik. Versuche bei betroffenen Android-Builds Enable Texture Cache auszuschalten. Nenne Auslöser und füge ein Bild bei; das Symptom allein erklärt die Ursache nicht."
+      "Patchen am Telefon kann dauern. Bei Speicherquoten nutze ein normales Fenster, schaffe Platz und versuche erneut; alternativ nutze den Desktop-Patcher. Zusatzdiscs liefern Arten; veränderte oder nicht unterstützte Ausgaben bestehen die Prüfung nicht. Der Web-Builder auf Android-Handys scheitert beim Kopieren der Disc nicht mehr an einem Dateiberechtigungsfehler.",
+      "Notiere bei Textfehlern Version, Basisdisc, Sprache, Emulator-Build und Grafik. Versuche bei betroffenen Android-Builds Enable Texture Cache auszuschalten. Nenne Auslöser und füge ein Bild bei; das Symptom allein erklärt die Ursache nicht. WarGrowlmons Gesicht hat keine Löcher mehr."
     ]
   }
 }
