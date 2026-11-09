@@ -12,10 +12,20 @@ The complete before/after screen lists and build rules are in
 
 The extended-story compiler finds newly placed roster recruits whose presence
 requires their own unrecruited flag. For each screen, ordinary base wild handlers
-(`recruitable`, without a surviving city recruit or other scene calls) get an
-additional `recruited(species)` condition on their model load and spawn. Existing
-time, random and story conditions remain in force. Multiple waiting recruits
-require all of their recruitment flags. Original-story builds are unchanged.
+(`recruitable`, without a surviving city recruit or other scene calls) have their
+model load and spawn delayed only while a waiting recruit's complete presence
+condition holds. This includes its time and story requirements, rather than just
+its unrecruited flag. Existing wild time, random and story conditions remain in
+force. With multiple waiting recruits, all must be absent before ordinary wilds
+return. Original-story builds are unchanged.
+
+On screen 56, the original USA game always places the three Soulmon; its MAPHEAD
+has no time or flag test for them. In the extended story, Phantomon takes their
+place only from 20:00 through 23:59 while unrecruited. The Soulmon appear on entry
+at other times, and at any time after Phantomon joins. Previously the compiler
+discarded Phantomon's clock condition when guarding the Soulmon, hiding all three
+even during the day. Presence is selected on screen entry; re-enter after the
+clock changes or recruitment.
 
 | Screen | Waiting recruit | Ordinary wild slots delayed |
 | --- | --- | --- |
