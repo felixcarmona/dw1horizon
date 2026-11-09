@@ -194,6 +194,7 @@
  "engine.quota": "Questo browser ha esaurito lo spazio di archiviazione durante la creazione, che si è quindi fermata. Non è stato scritto nulla. La creazione richiede circa {gb} GB liberi.",
  "engine.storageBlocked": "Questo browser non permette a questa pagina di conservare i file che servono alla creazione (succede nelle finestre private e con i dati dei siti bloccati).",
  "engine.fileLost": "Il browser ha perso l’accesso a un disco o a un file temporaneo, anche dopo averlo riaperto. Seleziona di nuovo i dischi dalla memoria locale e riavvia la creazione. Tieni aperta questa scheda e il dispositivo attivo. Se succede ancora, usa l’applicazione per computer.",
+ "engine.discLost": "Il browser non è riuscito a leggere il disco selezionato. Usa Aggiungi dischi per selezionarlo di nuovo dalla memoria locale del dispositivo, poi riavvia la creazione. Se il file è stato spostato o eliminato, ripristinalo prima. Per i file nel cloud, scarica una copia locale prima di selezionarli.",
  "engine.network": "La connessione si è interrotta durante il download del generatore. Quello che era già stato scaricato viene conservato.",
  "fix.private": "Se questa è una finestra privata o in incognito, apri la pagina in una finestra normale: le finestre private hanno pochissimo spazio.",
  "fix.freeDisk": "Libera almeno {gb} GB sul disco di questo dispositivo (svuota il cestino, elimina i download grandi) e riprova.",

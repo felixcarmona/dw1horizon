@@ -117,6 +117,16 @@ try {
         'persistent file failure stops without retrying whole jobs or replacing workers');
       check(!await exists('inputs'), 'failed build removes input snapshots');
 
+      let inputReads = 0;
+      const unreadable = { size: 4, name: 'disc.bin', slice() { return { async arrayBuffer() {
+        inputReads++; throw new DOMException('platform refuses disc', 'NotAllowedError');
+      } }; } };
+      const inputLost = new TinyBuild({ us: unreadable }, { workers: 1 });
+      const inputError = await inputLost.run().catch(e => e);
+      check(inputReads === 2 && inputError.key === 'engine.discLost' && inputError.kind === 'file'
+        && /NotAllowedError/.test(inputError.detail), 'platform disc refusal retries once and reports translated disc guidance');
+      check(!await exists('inputs'), 'refused input copy cleans up partial snapshots');
+
       let releaseFetch;
       gate = new Promise((r) => { releaseFetch = r; });
       const old = new TinyBuild({ us: new File([], 'fixture.bin') }, { workers: 1 });

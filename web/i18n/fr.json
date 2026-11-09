@@ -194,6 +194,7 @@
  "engine.quota": "Ce navigateur a manqué d'espace de stockage pendant la création, elle s'est donc arrêtée. Rien n'a été écrit. La création a besoin d'environ {gb} Go libres.",
  "engine.storageBlocked": "Ce navigateur ne laisse pas cette page garder les fichiers dont la création a besoin (c'est le cas des fenêtres privées et des données de sites bloquées).",
  "engine.fileLost": "Le navigateur a perdu l’accès à un disque ou à un fichier temporaire, même après sa réouverture. Sélectionnez à nouveau les disques depuis le stockage local et relancez la création. Gardez cet onglet ouvert et l’appareil éveillé. Si cela se reproduit, utilisez l’application pour ordinateur.",
+ "engine.discLost": "Le navigateur n’a pas pu lire le disque sélectionné. Utilisez Ajouter des disques pour le sélectionner à nouveau dans le stockage local de l’appareil, puis relancez la création. Si le fichier a été déplacé ou supprimé, restaurez-le d’abord. Pour un fichier dans le cloud, téléchargez une copie locale avant de le sélectionner.",
  "engine.network": "La connexion a été perdue pendant le téléchargement du générateur. Ce qui était déjà téléchargé est conservé.",
  "fix.private": "Si c'est une fenêtre privée ou de navigation privée, ouvre la page dans une fenêtre normale : les fenêtres privées ont très peu d'espace.",
  "fix.freeDisk": "Libère au moins {gb} Go sur le disque de cet appareil (vide la corbeille, supprime les gros téléchargements) et réessaie.",

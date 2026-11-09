@@ -43,15 +43,18 @@ const hooks = () => {
   const files = new Map(), waiting = new Map();
   window.testGive = (id, file) => { files.set(id, file); for (const r of waiting.get(id) || []) r(file); };
   const fileOf = (id) => (files.has(id) ? Promise.resolve(files.get(id)) : new Promise((r) => waiting.set(id, [...(waiting.get(id) || []), r])));
+  const permissions = new Map();  // successful requests affect later queries, as on real handles
   const conf = (id) => get('test.handles')?.[id] || {};
   window.testRequests = 0;
   const make = (id) => ({
     kind: 'file', name: id, stored: () => ({ fake: id }),
-    async queryPermission() { return conf(id).perm || 'granted'; },
+    async queryPermission() { return permissions.get(id) || conf(id).perm || 'granted'; },
     async requestPermission() {
       window.testRequests++;
       if (conf(id).activation) throw new DOMException('User activation is required', 'SecurityError');
-      return conf(id).request || 'granted';
+      const permission = conf(id).request || 'granted';
+      permissions.set(id, permission);
+      return permission;
     },
     async getFile() {
       const c = conf(id);

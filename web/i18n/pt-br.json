@@ -194,6 +194,7 @@
  "engine.quota": "Este navegador ficou sem espaço durante a criação, então ela parou. Nada foi gravado. A criação precisa de cerca de {gb} GB livres.",
  "engine.storageBlocked": "Este navegador não deixa esta página guardar os arquivos de que a criação precisa (isso acontece em janelas anônimas e com os dados de sites bloqueados).",
  "engine.fileLost": "O navegador perdeu o acesso a um disco ou arquivo temporário, mesmo após reabri-lo. Selecione os discos novamente no armazenamento local do aparelho e reinicie a criação. Mantenha esta aba aberta e o aparelho ativo. Se acontecer de novo, use o aplicativo para computador.",
+ "engine.discLost": "O navegador não conseguiu ler o disco selecionado. Use Adicionar discos para selecioná-lo novamente no armazenamento local do dispositivo e reinicie a criação. Se o arquivo foi movido ou excluído, restaure-o primeiro. Se estiver na nuvem, baixe uma cópia local antes de selecioná-lo.",
  "engine.network": "A conexão caiu enquanto o criador era baixado. O que já foi baixado fica guardado.",
  "fix.private": "Se esta for uma janela anônima ou privada, abra a página em uma janela normal: janelas anônimas têm muito pouco espaço.",
  "fix.freeDisk": "Libere pelo menos {gb} GB no disco deste dispositivo (esvazie a lixeira, apague downloads grandes) e tente de novo.",

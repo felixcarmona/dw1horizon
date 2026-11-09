@@ -6,6 +6,7 @@ import { inspect, checkFiles, partOf } from './disc.js';
 import { i18n, LANGS, NAMES, tag, guess } from './i18n.js';
 import { FLAGS } from './flags.js';
 import { Build, missingSupport, tidyStorage, buildRoom, checkRoom, isMobile, withLock } from './engine/engine.js';
+import { selectedFile } from './engine/storage.js';
 import { store, revive } from './remember.js';
 
 // The links (the hero's Discord and GitHub buttons, the privacy note's code link): change them here.
@@ -573,17 +574,29 @@ function renderSums() {
 // discs are then remembered for next time without a copy. Elsewhere the <input>.
 function setupAdd() {
   const input = $('#add-input');
+  let plainPicker = isMobile();
   $('#add-button').addEventListener('click', async () => {
-    if (typeof window.showOpenFilePicker !== 'function') { input.click(); return; }
+    if (plainPicker || typeof window.showOpenFilePicker !== 'function') { input.click(); return; }
     let handles;
     try {
       handles = await window.showOpenFilePicker({ multiple: true, id: 'horizon-discs' });
     } catch (e) {
-      if (e?.name !== 'AbortError') input.click();      // (a picker this page may not use: the plain chooser)
+      if (e?.name !== 'AbortError') {
+        plainPicker = true;
+        try { input.click(); } catch { showProblems([{ name: '', key: 'engine.discLost', vars: {} }]); }
+      }
       return;
     }
     const items = [];
-    for (const handle of handles) { try { items.push({ file: await handle.getFile(), handle }); } catch { /* gone already */ } }
+    for (const handle of handles) {
+      try { items.push({ file: await selectedFile(handle), handle }); }
+      catch { plainPicker = true; }
+    }
+    if (plainPicker) {
+      // Keep the plain chooser for the next click too: activation may have expired during the handle read.
+      try { input.click(); } catch { /* the next click uses the plain chooser */ }
+      showProblems([{ name: '', key: 'engine.discLost', vars: {} }]);
+    }
     if (items.length) handleFiles(items);
   });
   input.addEventListener('change', () => { const f = [...input.files]; input.value = ''; if (f.length) handleFiles(f); });
@@ -666,7 +679,7 @@ async function remembered(g, entry) {
     const h = entry.from?.handle;
     if (h) {
       let file = entry.file;
-      if (entry.from.converted) { try { file = await h.getFile(); } catch { file = null; } }   // (the archive's own)
+      if (entry.from.converted) { try { file = await selectedFile(h); } catch { file = null; } }   // (the archive's own)
       const rec = file && recordOf(g, entry, { kind: 'handle', handle: h, converted: !!entry.from.converted,
                                                name: file.name, size: file.size, lastModified: file.lastModified });
       if (rec && g.cur === entry && await store.put(rec)) {
@@ -739,7 +752,7 @@ async function openHandle(g, rec, h) {
   g.remembered = null;
   let file;
   try {
-    file = await h.getFile();
+    file = await selectedFile(h);
   } catch (e) {
     const key = e?.name === 'NotFoundError' ? 'remember.gone'
       : e?.name === 'NotAllowedError' || e?.name === 'SecurityError' ? 'remember.denied' : 'remember.unreadable';

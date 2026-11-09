@@ -97,7 +97,7 @@ A returning player builds a new release without giving the four discs again (`js
 "remembered discs", `js/keep-worker.js`). Each accepted disc is remembered in one of two ways:
 
 - A handle, no copy: where the browser gives file handles (Chromium on a computer). `#add-button` opens
-  `showOpenFilePicker({multiple: true})` (the hidden `<input>` elsewhere), and a drop asks every item for
+  `showOpenFilePicker({multiple: true})` (the hidden `<input>` on phones/tablets and elsewhere without the picker), and a drop asks every item for
   `getAsFileSystemHandle()` in the drop event itself. The handle is kept as soon as the disc is accepted.
 - A copy in this browser, only when the player ticks "Keep these discs in this browser for next time (about X GB)",
   shown with the real size under the drop zone whenever an accepted disc has no handle to its image: Firefox, Safari,
@@ -314,8 +314,18 @@ File access: tree reads obtain fresh directories, file handles and Files from OP
 `NotReadableError` retries the read once from the storage root, preserving the requested job version. A second
 failure names the file in the diagnostic log and stops with `engine.fileLost`: reselect discs from local storage,
 restart, keep the tab open and device awake, or use the desktop patcher. It does not retry whole jobs on other
-workers. Input copying also retries once, reopening the selected handle when one is available; an invalid File
-from a plain file picker needs reselection if it cannot be read again.
+workers. Input copying retains and reads the selected `File` first, so a refused external handle does not
+block a readable selection. A source read refusal retries the copy once; a handle can recover a stale File after
+querying/requesting read permission. If that handle is refused, the retained File is tried again. A changed disc
+(size or modification date) needs reselection. Persistent input failures use `engine.discLost`, translated in all
+nine site languages: reselect a local file, restore moved/deleted files, or download cloud files first. Output
+storage failures keep their storage guidance. Persistent browser storage permission does not grant disc access.
+The native picker also checks read permission and retries a refused handle once, then falls back to the plain
+file input and keeps that fallback for the next click if user activation has expired. Cancelling a picker stops.
+Android uses the plain input directly; its selected File is retained through validation and copying.
+
+`node web/test/file-picker.mjs URL` checks the native-picker refusal/fallback, cancellation, and Android user-agent
+choice in desktop Chromium. This simulates Android selection policy; it does not certify an Android device.
 
 `node web/test/file-storage.mjs URL` checks stale reads, retry limits, immutable input copies and cancellation in
 Chromium using tiny OPFS fixtures and the production worker's read function. `node web/test/lifecycle.mjs URL`
