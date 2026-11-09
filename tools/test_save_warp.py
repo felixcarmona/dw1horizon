@@ -15,7 +15,8 @@ class Field:
         self.fail = fail
         self.values = {'CURRENT_SCREEN': 300, 'TARGET_MAP': 301, 'TAMER_STATE': 0}
 
-    def api(self, path):
+    def api(self, path, data=None):
+        if data is None: return b''  # GET observes execution flow; POST changes it.
         self.paused = path.endswith('pause')
         if not self.paused: self.tick()
         return b''
