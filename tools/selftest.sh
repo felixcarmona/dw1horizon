@@ -99,6 +99,11 @@ if [ -d decomp/src ]; then
 else
     skip patch-series-apply "needs decomp/ (git submodule update --init decomp)"
 fi
+if [ -f "$PATCHED/src/main/evolution.c" ]; then
+    run evolution-selection-host $PY tools/dev/playtest/evolution_selection_host.py "$PATCHED"
+else
+    skip evolution-selection-host "needs prepared patched decompilation"
+fi
 run species-format    $PY tools/species.py fmt --check                      # content/species in the canonical layout (docs/mods/species.md)
 run species-lint      $PY tools/species.py lint --quiet                     # what the game cannot handle (docs/mods/species.md)
 if [ -d "$DERIVED/species" ]; then
