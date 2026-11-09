@@ -86,7 +86,7 @@
     "summary": "Understand warnings before chasing a stat target.",
     "paragraphs": [
       "Hunger, toilet needs, sleep and tiredness are different systems. Neglecting a hunger warning or letting a partner use the ground can add care mistakes; sickness and exhaustion have their own consequences. Respond to the indicators and check the care panel regularly.",
-      "Discipline and happiness are separate values. Praise and scolding affect them differently, so they are not interchangeable cures for every care problem. A partner’s food preferences and sleep schedule also matter.",
+      "Discipline and happiness are separate values. Praise and scolding affect them differently, so they are not interchangeable cures for every care problem. A partner’s food preferences and sleep schedule also matter. In a habitat the partner dislikes, its mood face blinks between sad and happy again, as in the original.",
       "Evolution rows may ask for a maximum or a minimum number of mistakes. A high-mistake target is deliberate care planning, not a general recommendation to neglect a partner. Counts used by ordinary evolution refer to the current form; read the target’s four requirement groups together."
     ]
   },
@@ -141,7 +141,10 @@
     "paragraphs": [
       "The recruitment directory lists residents, locations, city services and prosperity contributions inside closed spoilers.",
       "Recruitment steps are hidden until you open the spoiler disclosure. Times use the game clock. Check prerequisites as well as the place; a resident may depend on a city milestone, another recruit or a story event.",
-      "Mojyamon’s exchange table is in the closed spoiler below: the first eight rows allow one item per in-game day; the ninth is once per save. If the list in your game differs or shows old exchanges, you loaded an emulator save state from an older version. Boot the new disc fresh and load the memory-card save instead. Back up the card first."
+      "Mojyamon’s exchange table is in the closed spoiler below: the first eight rows allow one item per in-game day; the ninth is once per save. If the list in your game differs or shows old exchanges, you loaded an emulator save state from an older version. Boot the new disc fresh and load the memory-card save instead. Back up the card first. Mushroomon can now be found and recruited: it appears in the Spore Area of Mt. Panorama that the normal route leads to. The three Soulmon on the Haunted/Phantomon screen are back during the day (00:00–19:59) and after Phantomon is recruited."
+    ],
+    "spoiler_paragraphs": [
+      2
     ]
   },
   "hidden-mechanics": {
@@ -180,8 +183,8 @@
     "summary": "Updates, missing saves, slow patching and useful reports.",
     "paragraphs": [
       "If Continue is missing, check the assigned card, its free blocks and the disc filename used by per-game cards. Horizon needs {save_blocks} free blocks for a new save. Back up the card before updating, boot the new disc and load an in-game save.",
-      "Phone patching can be slow. For storage quota errors, use a normal browser window, free space and retry; the desktop patcher is another option. The source-disc checks are intentional: the extra games provide imported species, and a modified or unsupported dump will not match.",
-      "For broken or stale text, record your game version, base disc, language, emulator build and graphics settings. On affected Android builds, try disabling Enable Texture Cache. Include the exact trigger and a screenshot in a bug report; a symptom alone does not identify its cause."
+      "Phone patching can be slow. For storage quota errors, use a normal browser window, free space and retry; the desktop patcher is another option. The source-disc checks are intentional: the extra games provide imported species, and a modified or unsupported dump will not match. The web builder on Android phones no longer fails with a file permission error while copying the disc.",
+      "For broken or stale text, record your game version, base disc, language, emulator build and graphics settings. On affected Android builds, try disabling Enable Texture Cache. Include the exact trigger and a screenshot in a bug report; a symptom alone does not identify its cause. WarGrowlmon’s face no longer has holes."
     ]
   }
 }

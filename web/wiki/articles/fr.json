@@ -86,7 +86,7 @@
     "summary": "Comprenez les alertes avant de viser une statistique.",
     "paragraphs": [
       "Faim, toilettes, sommeil et fatigue sont distincts. Ignorer la faim ou laisser le partenaire faire au sol peut ajouter des erreurs ; maladie et épuisement ont leurs conséquences. Consultez régulièrement les indicateurs et le panneau de soins.",
-      "Discipline et bonheur sont différents. Féliciter et gronder n’ont pas les mêmes effets et ne résolvent pas tout. Préférences alimentaires et sommeil comptent aussi.",
+      "Discipline et bonheur sont différents. Féliciter et gronder n’ont pas les mêmes effets et ne résolvent pas tout. Préférences alimentaires et sommeil comptent aussi. Dans un habitat que le partenaire n’aime pas, son visage d’humeur alterne de nouveau entre triste et heureux, comme dans le jeu original.",
       "Une évolution peut exiger un minimum ou un maximum d’erreurs. En viser beaucoup est un choix précis, pas un conseil général de négligence. Les compteurs ordinaires concernent la forme actuelle ; lisez les quatre groupes ensemble."
     ]
   },
@@ -141,7 +141,10 @@
     "paragraphs": [
       "L’annuaire de recrutement regroupe habitants, lieux, services et contributions à la prospérité dans des spoilers repliés.",
       "Les étapes restent masquées jusqu’à l’ouverture du volet spoilers. Les horaires suivent l’horloge du jeu. Vérifiez lieu et prérequis : étape de la ville, autre recrue ou événement peuvent être nécessaires.",
-      "Le tableau des échanges de Mojyamon se trouve dans le spoiler fermé ci-dessous : les huit premières lignes autorisent un objet par jour de jeu ; la neuvième, une seule fois par sauvegarde. Si votre jeu affiche une liste différente ou ancienne, vous avez chargé un état d’émulateur d’une ancienne version. Démarrez le nouveau disque à neuf et chargez plutôt la sauvegarde de la carte mémoire. Copiez d’abord la carte par précaution."
+      "Le tableau des échanges de Mojyamon se trouve dans le spoiler fermé ci-dessous : les huit premières lignes autorisent un objet par jour de jeu ; la neuvième, une seule fois par sauvegarde. Si votre jeu affiche une liste différente ou ancienne, vous avez chargé un état d’émulateur d’une ancienne version. Démarrez le nouveau disque à neuf et chargez plutôt la sauvegarde de la carte mémoire. Copiez d’abord la carte par précaution. Mushroomon peut désormais être trouvé et recruté : il apparaît dans la Zone des Spores du mont Panorama accessible par le chemin normal. Les trois Soulmon de l’écran de Haunted/Phantomon sont de retour le jour (00:00–19:59) et après le recrutement de Phantomon."
+    ],
+    "spoiler_paragraphs": [
+      2
     ]
   },
   "hidden-mechanics": {
@@ -180,8 +183,8 @@
     "summary": "Mises à jour, sauvegardes, lenteurs et rapports utiles.",
     "paragraphs": [
       "Si Continuer manque, vérifiez carte, blocs libres et nom du disque pour les cartes par jeu. Horizon exige {save_blocks} blocs libres pour un nouveau fichier. Copiez la carte, démarrez le disque mis à jour et chargez dans le jeu.",
-      "Créer le disque sur téléphone peut être lent. Pour les quotas, utilisez une fenêtre normale, libérez de l’espace et réessayez ; le logiciel de bureau est une alternative. Les autres disques fournissent des espèces ; une copie modifiée ou incompatible échoue aux contrôles.",
-      "Pour un texte incorrect, notez version, disque de base, langue, émulateur et graphismes. Sur Android affecté, essayez de désactiver Enable Texture Cache. Joignez déclencheur exact et capture : un symptôme seul n’identifie pas sa cause."
+      "Créer le disque sur téléphone peut être lent. Pour les quotas, utilisez une fenêtre normale, libérez de l’espace et réessayez ; le logiciel de bureau est une alternative. Les autres disques fournissent des espèces ; une copie modifiée ou incompatible échoue aux contrôles. Le créateur web sur téléphone Android ne rencontre plus d’erreur d’autorisation de fichier pendant la copie du disque.",
+      "Pour un texte incorrect, notez version, disque de base, langue, émulateur et graphismes. Sur Android affecté, essayez de désactiver Enable Texture Cache. Joignez déclencheur exact et capture : un symptôme seul n’identifie pas sa cause. Le visage de WarGrowlmon n’a plus de trous."
     ]
   }
 }
