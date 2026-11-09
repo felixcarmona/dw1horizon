@@ -155,3 +155,9 @@ the ground. `field_animations/ankylomon.py` replaces only the run with a heavy
 trot from `quadruped.py`; its paws are bound sole-backwards, so the profile's
 `paw_flat` gives their flat standing rotation, and `tail_up` carries the club
 tail clear of the ground. The 73-frame idle and walk stay as they were.
+
+Angewomon's (190) walk and run slid the feet without the legs carrying them.
+`field_animations/angewomon.py` takes native Angemon's walk, condition walk and
+run the way `valkyrimon.py` does (legs solved onto his feet, his lean on the
+body), with her own swinging arms (he carries a staff), and the sash ends and
+lowest feathers kept off the ground. Buster Dive is applied after it at build.
