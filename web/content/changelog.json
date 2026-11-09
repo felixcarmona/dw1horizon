@@ -24,7 +24,8 @@
           "Improved reliability when partners leave the toilet.",
           "Area captions are translated, recruitment announcements play when expected, and scrolling jukebox titles no longer leave fragments of older names.",
           "Status portraits fit their panels, with small partners enlarged and sleeping icons kept clear.",
-          "Fixed Windows patching failures involving Chinese resources. Desktop patchers refresh corrected packages for the same release instead of keeping stale downloads."
+          "Fixed Windows patching failures involving Chinese resources. Desktop patchers refresh corrected packages for the same release instead of keeping stale downloads.",
+          "Talking to the Ice Sanctuary keeper (the Angemon behind the Wall of Hearts) after thawing no longer crashes the game."
         ],
         "upgrade": "Saves from 0.0.7 work; back up your memory card and check equipped techniques after updating. The required discs have not changed. Boot the new disc fully and load the memory-card save; old emulator save states do not work across versions. Saves written by 0.0.8 must not be used with older versions, including VS registrations."
       },
@@ -48,7 +49,8 @@
           "Mejorada la fiabilidad al salir el compañero del baño.",
           "Los rótulos de zona están traducidos, los anuncios de reclutamiento suenan cuando corresponde y los títulos de la máquina de discos no dejan restos de nombres anteriores al desplazarse.",
           "Los retratos de Estado caben en sus recuadros; los compañeros pequeños se ven más grandes y los iconos de sueño quedan despejados.",
-          "Corregidos fallos del parcheador en Windows relacionados con los recursos chinos. Los parcheadores de escritorio descargan los paquetes corregidos de una misma versión en vez de conservar copias obsoletas."
+          "Corregidos fallos del parcheador en Windows relacionados con los recursos chinos. Los parcheadores de escritorio descargan los paquetes corregidos de una misma versión en vez de conservar copias obsoletas.",
+          "Hablar con el guardián del Santuario de Hielo (el Angemon tras el Muro de los Corazones) después del deshielo ya no bloquea el juego."
         ],
         "upgrade": "Las partidas de 0.0.7 son compatibles; haz una copia de la tarjeta y revisa las técnicas equipadas tras actualizar. Los discos necesarios no cambian. Arranca el disco nuevo desde cero y carga la partida de la tarjeta: los estados del emulador de versiones anteriores no son compatibles. No uses partidas guardadas por 0.0.8 con versiones anteriores, incluidos los registros de VS."
       },
@@ -72,7 +74,8 @@
           "Melhorada a estabilidade quando o parceiro sai do banheiro.",
           "As legendas de áreas estão traduzidas, os anúncios de recrutamento tocam no momento certo e os títulos da jukebox não deixam pedaços de nomes anteriores ao rolar a lista.",
           "Os retratos de Status cabem nos painéis; parceiros pequenos aparecem maiores e os ícones de sono ficam desobstruídos.",
-          "Corrigidas falhas do patcher no Windows envolvendo recursos chineses. Os patchers de desktop atualizam pacotes corrigidos da mesma versão em vez de manter downloads antigos."
+          "Corrigidas falhas do patcher no Windows envolvendo recursos chineses. Os patchers de desktop atualizam pacotes corrigidos da mesma versão em vez de manter downloads antigos.",
+          "Conversar com o guardião do Santuário de Gelo (o Angemon atrás da Parede dos Corações) após o degelo não faz mais o jogo travar."
         ],
         "upgrade": "Os saves de 0.0.7 funcionam; faça backup do cartão e confira as técnicas equipadas após atualizar. Os discos necessários não mudaram. Inicie o novo disco do zero e carregue o save do cartão: estados antigos do emulador não funcionam entre versões. Saves gravados por 0.0.8 não devem ser usados em versões anteriores, incluindo registros de VS."
       },
@@ -96,7 +99,8 @@
           "Fiabilité améliorée lorsque le partenaire sort des toilettes.",
           "Les noms de zones sont traduits, les annonces de recrutement se déclenchent au bon moment et les titres du juke-box ne laissent plus de fragments d’anciens noms lors du défilement.",
           "Les portraits de Statut tiennent dans leurs cadres ; les petits partenaires sont agrandis et les icônes de sommeil restent dégagées.",
-          "Correction d’échecs du patcher sous Windows liés aux ressources chinoises. Les patchers de bureau récupèrent les paquets corrigés d’une même version au lieu de conserver des téléchargements périmés."
+          "Correction d’échecs du patcher sous Windows liés aux ressources chinoises. Les patchers de bureau récupèrent les paquets corrigés d’une même version au lieu de conserver des téléchargements périmés.",
+          "Parler au gardien du Sanctuaire de Glace (l’Angemon derrière le Mur des Cœurs) après le dégel ne fait plus planter le jeu."
         ],
         "upgrade": "Les sauvegardes de 0.0.7 fonctionnent ; copiez votre carte mémoire et vérifiez les techniques équipées après la mise à jour. Les disques requis ne changent pas. Démarrez entièrement le nouveau disque et chargez la sauvegarde de la carte : les anciens états d’émulateur ne fonctionnent pas entre versions. N’utilisez pas les sauvegardes écrites par 0.0.8 avec une version antérieure, y compris les inscriptions VS."
       },
@@ -120,7 +124,8 @@
           "Die Zuverlässigkeit beim Verlassen der Toilette wurde verbessert.",
           "Gebietseinblendungen sind übersetzt, Rekrutierungsankündigungen erklingen zum richtigen Zeitpunkt und beim Scrollen der Jukebox bleiben keine Reste älterer Titel stehen.",
           "Statusporträts passen in ihre Felder; kleine Partner werden größer dargestellt und Schlafsymbole bleiben frei.",
-          "Windows-Patchfehler mit chinesischen Ressourcen wurden behoben. Desktop-Patcher laden korrigierte Pakete derselben Version neu, statt veraltete Downloads zu behalten."
+          "Windows-Patchfehler mit chinesischen Ressourcen wurden behoben. Desktop-Patcher laden korrigierte Pakete derselben Version neu, statt veraltete Downloads zu behalten.",
+          "Das Gespräch mit dem Hüter im Eisheiligtum (dem Angemon hinter der Mauer der Herzen) nach dem Auftauen bringt das Spiel nicht mehr zum Absturz."
         ],
         "upgrade": "Spielstände aus 0.0.7 funktionieren; sichere deine Speicherkarte und prüfe nach dem Update die ausgerüsteten Techniken. Die benötigten Discs bleiben gleich. Starte die neue Disc vollständig neu und lade den Speicherkartenspielstand; alte Emulator-Schnellspeicherstände funktionieren nicht versionsübergreifend. Mit 0.0.8 geschriebene Spielstände dürfen nicht mit älteren Versionen verwendet werden, auch nicht für VS-Registrierungen."
       },
@@ -144,7 +149,8 @@
           "Migliorata l’affidabilità quando il compagno esce dal bagno.",
           "I nomi delle aree sono tradotti, gli annunci di reclutamento partono al momento giusto e i titoli del jukebox non lasciano frammenti dei nomi precedenti scorrendo l’elenco.",
           "I ritratti di Stato rientrano nei riquadri; i compagni piccoli appaiono più grandi e le icone del sonno restano libere.",
-          "Corretti errori del patcher su Windows legati alle risorse cinesi. I patcher desktop aggiornano i pacchetti corretti della stessa versione anziché conservare download obsoleti."
+          "Corretti errori del patcher su Windows legati alle risorse cinesi. I patcher desktop aggiornano i pacchetti corretti della stessa versione anziché conservare download obsoleti.",
+          "Parlare con il custode del Santuario di Ghiaccio (l’Angemon dietro il Muro dei Cuori) dopo il disgelo non causa più il blocco del gioco."
         ],
         "upgrade": "I salvataggi di 0.0.7 funzionano; fai una copia della scheda e controlla le tecniche equipaggiate dopo l’aggiornamento. I dischi richiesti non cambiano. Avvia da zero il nuovo disco e carica il salvataggio dalla scheda: i vecchi stati dell’emulatore non funzionano tra versioni diverse. Non usare salvataggi scritti da 0.0.8 con versioni precedenti, incluse le registrazioni VS."
       },
@@ -168,7 +174,8 @@
           "パートナーがトイレから出る際の処理を安定させました。",
           "エリア名の字幕を翻訳し、勧誘時のお知らせが適切に流れるようにしました。ジュークボックスの曲名をスクロールしても、前の名前の文字が残りません。",
           "状態画面のポートレートが枠内に収まり、小さなパートナーは大きく表示され、睡眠アイコンも隠れないようになりました。",
-          "中国語のリソースが原因でWindowsのパッチ処理に失敗する問題を修正しました。デスクトップ版パッチャーは、同じリリースのパッケージが修正された場合も古いダウンロードを使い続けず更新します。"
+          "中国語のリソースが原因でWindowsのパッチ処理に失敗する問題を修正しました。デスクトップ版パッチャーは、同じリリースのパッケージが修正された場合も古いダウンロードを使い続けず更新します。",
+          "解凍後、氷の聖域の番人（心の壁の奥にいるエンジェモン）に話しかけてもゲームがクラッシュしなくなりました。"
         ],
         "upgrade": "0.0.7のセーブは使えます。更新前にメモリーカードをバックアップし、更新後は装備中のわざを確認してください。必要なディスクは変わりません。新しいディスクを最初から起動し、メモリーカードのセーブを読み込んでください。古いエミュレーターのステートセーブは別バージョンでは使えません。0.0.8で保存したデータは、VS登録も含め、古いバージョンで使わないでください。"
       },
@@ -192,7 +199,8 @@
           "Millorada la fiabilitat quan el company surt del lavabo.",
           "Els rètols de zona estan traduïts, els anuncis de reclutament sonen quan toca i els títols de la màquina de discos no deixen restes de noms anteriors en desplaçar-se.",
           "Els retrats d’Estat caben als requadres; els companys petits es veuen més grans i les icones de son queden lliures.",
-          "Corregits errors del pedaç a Windows relacionats amb els recursos xinesos. Els pedaçadors d’escriptori descarreguen els paquets corregits d’una mateixa versió en lloc de conservar còpies obsoletes."
+          "Corregits errors del pedaç a Windows relacionats amb els recursos xinesos. Els pedaçadors d’escriptori descarreguen els paquets corregits d’una mateixa versió en lloc de conservar còpies obsoletes.",
+          "Parlar amb el guardià del Santuari de Gel (l’Angemon darrere del Mur dels Cors) després del desglaç ja no bloqueja el joc."
         ],
         "upgrade": "Les partides de 0.0.7 són compatibles; fes una còpia de la targeta i revisa les tècniques equipades després d’actualitzar. Els discos necessaris no canvien. Arrenca el disc nou des de zero i carrega la partida de la targeta: els estats antics de l’emulador no funcionen entre versions. No facis servir partides desades amb 0.0.8 en versions anteriors, inclosos els registres de VS."
       },
@@ -216,7 +224,8 @@
           "提升搭档离开厕所时的稳定性。",
           "区域名称字幕已翻译，招募公告会在应有的时机播放，滚动点唱机曲名也不再残留旧名称的文字。",
           "状态页肖像能正确放入边框，小型搭档的显示更大，睡眠图标也不会被遮挡。",
-          "修复Windows补丁工具因中文资源而失败的问题。桌面补丁工具会刷新同一版本中已修正的包，不再一直使用过期下载。"
+          "修复Windows补丁工具因中文资源而失败的问题。桌面补丁工具会刷新同一版本中已修正的包，不再一直使用过期下载。",
+          "解冻后，与冰之圣域的守护者（心之墙后面的天使兽）交谈不再导致游戏崩溃。"
         ],
         "upgrade": "0.0.7存档可以继续使用；更新前请备份记忆卡，更新后检查已装备招式。所需光盘没有变化。请完整重启新光盘并读取记忆卡存档；旧版模拟器即时存档不能跨版本使用。0.0.8写入的存档不得用于旧版，包括VS登记数据。"
       }

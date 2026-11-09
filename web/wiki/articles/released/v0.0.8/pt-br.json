@@ -113,7 +113,7 @@
     "summary": "Leia o alvo e conte os quatro grupos.",
     "paragraphs": [
       "A evolução comum pontua erros de cuidado, peso, atributos e bônus. São necessários {pass_points} pontos. Todos os atributos listados formam um grupo; dois atributos não rendem dois pontos. Para alvos Rookie vale o maior atributo.",
-      "Peso aceita uma faixa. Erros podem ter mínimo ou máximo. Qualquer uma das condições de bônus concede o ponto; não são todas obrigatórias.",
+      "Peso aceita uma faixa. Erros podem ter mínimo ou máximo. Qualquer uma das condições de bônus concede o ponto; não são todas obrigatórias. O número máximo de erros de cuidado é inclusivo. Não cumprir esse grupo perde seu ponto; isso não impede a evolução se os outros grupos atingirem a pontuação necessária. Portanto, aumentar apenas os erros não exclui um alvo de forma confiável.",
       "Toque no alvo da árvore para abrir a linha. A linha “Tempo (h)” da janela mostra a condição de tempo, e um aviso vermelho indica vida restante insuficiente. Tempo na forma, gatilhos especiais, NEW DIGIMON e candidatos concorrentes influenciam. HP e MP usam unidades do jogador; felicidade usa a escala 0–100 da tela de status."
     ]
   },
@@ -122,7 +122,7 @@
     "summary": "Os requisitos são apenas parte da escolha.",
     "paragraphs": [
       "As horas abaixo são na forma atual, não idade total. Cumprir os atributos cedo não causa evolução imediata. Rotas temporizadas Ultimate também verificam requisitos; especiais e itens têm outros gatilhos.",
-      "O seletor favorece alvos ainda não criados. Entre Rookie–Champion e Champion–Ultimate com três pontos, compara médias dos atributos pedidos, dividindo HP/MP por dez; a ordem pode influir. In-Training–Rookie mantém a melhor pontuação e o primeiro empate.",
+      "De Rookie para Champion e de Champion para Ultimate, atingir a pontuação necessária torna um alvo elegível; quatro pontos não vencem três automaticamente. Os candidatos são verificados na ordem das rotas. Quando um alvo ainda não criado assume a liderança, os alvos posteriores já criados são ignorados. Os demais competem pelos valores atuais dos atributos exigidos, com HP/MP divididos por dez. Uma média de comparação estritamente maior assume a liderança; empates exatos mantêm o alvo anterior. Um candidato que perde deixa sua média e a contagem de atributos para a próxima comparação, por isso a ordem importa. De In-Training para Rookie, vale a maior pontuação de requisitos, com o primeiro alvo da lista vencendo empates.",
       "A linha “Tempo (h)” da janela compara as horas na forma atual com as horas exigidas pelo alvo. O veredito só mostra “pronto” quando a pontuação dos requisitos, o espaço do modelo e o tempo são suficientes; “Em N h” significa que só falta tempo. O aviso vermelho “A vida acaba antes (N h)” indica que a vida restante é menor que a espera necessária; N é a vida restante. Rotas que não dependem do relógio mostram “Rota especial”. Megas importados também exigem {mega_hours} horas de jogo como Perfeito. Se a vida restante acabar antes, o parceiro morre de velhice. {chain_melon} (Chain Melon) acrescenta {chain_melon_hours} horas de vida; {digiseabass}, {digiseabass_hours}. Eles aumentam a vida restante, não o tempo já passado na forma atual."
     ]
   },
