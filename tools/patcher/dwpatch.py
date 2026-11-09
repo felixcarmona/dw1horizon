@@ -1198,6 +1198,7 @@ def local_holes3(m, v, base, rel, work, a):
 # (derive --record, in a clean tree), every published file of content/ and story/base, tools/derive whole, and the
 # executable's facts (exe-facts.json: the build's settings of the decompilation tree, which the player does not have).
 DERIVE_TREES = ('tools', 'content', 'story', 'mods', 'text', 'docs/data')   # what a clean tree copies of the repository
+PROGRAM_RUNTIME_RESOURCES = ('docs/proposals/technique-coherence.csv',)
 
 
 def copy_program_runtime(out, bundle):
@@ -1210,6 +1211,7 @@ def copy_program_runtime(out, bundle):
                    'tools/localize/executable/bank.py', 'tools/localize/executable/chinese_layout.py',
                    'tools/localize/executable/us-format-codes.json',
                    'tools/patcher/sdk-messages.json', 'tools/patcher/ui-sources.json',
+                   *PROGRAM_RUNTIME_RESOURCES,
                    *(f'text/{lang}/names.json' for lang in ('ours', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca', 'zh-hans'))):
         dest = os.path.join(out, 'bundle', *source.split('/'))
         os.makedirs(os.path.dirname(dest), exist_ok=True)
@@ -1953,6 +1955,7 @@ def recovery_inputs(a, target):
     metadata=json.loads(manifest.read_text())
     native.extend(root/row['source'] for row in metadata.get('plan',{}).get('CHINESE_RESOURCES',[]))
     return dict(recipe=a.recipe,runtime=RELEASE_STATE.hashes.tree([os.path.join(REPO,p) for p in DERIVE_TREES]),
+                program_resources=RELEASE_STATE.hashes.tree([os.path.join(REPO,p) for p in PROGRAM_RUNTIME_RESOURCES]),
                 python=[sys.version,runtime_sources()],environment=release_cache_environment(os.environ),
                 sources=[[item.split('=',1)[0],RELEASE_STATE.hashes.file(item.split('=',1)[1])] for item in a.source_disc],
                 bases=[['us',RELEASE_STATE.hashes.file(a.original)]]+

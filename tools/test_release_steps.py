@@ -221,10 +221,12 @@ class RecoveryTests(unittest.TestCase):
             root=Path(td);native=root/'native';runtime=root/'tools';runtime.mkdir();(runtime/'producer.py').write_text('producer')
             for folder in ('derived','exe','exe-zh-hans'):(native/folder).mkdir(parents=True)
             files={str(Path('tools')/'producer.py'):b'producer','original.bin':b'original','eu.bin':b'europe','source.bin':b'source','native.bin':b'target',
+                   'docs/proposals/technique-coherence.csv':b'reviewed slot records',
                    'native/derived/exe-facts.json':b'{}','native/exe/SLUS.elf.map':b'map',
                    'native/exe/MAIN.BIN':b'program','native/exe-zh-hans/MENU.BIN':b'overlay',
                    'native/chinese-font':b'font','override.map':b'override'}
-            for relative,data in files.items():(root/relative).write_bytes(data)
+            for relative,data in files.items():
+                path=root/relative;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(data)
             manifest=native/'derived/manifest.json';manifest.write_text(json.dumps({'plan':{'CHINESE_RESOURCES':[{'source':'chinese-font'}]}}))
             a=SimpleNamespace(variant=['everything='+str(root/'native.bin')+',map='+str(root/'override.map')],
                               recipe='everything',original=str(root/'original.bin'),base=['eu='+str(root/'eu.bin')],

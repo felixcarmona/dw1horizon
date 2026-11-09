@@ -49,6 +49,9 @@ def authored_recipe(obj, data, tool_root=None, words=()):
     if (obj['source'] == 'src/main/partner_impl.c'
             and obj['section'] == '.rodata.uv.0'):
         choices = [('care_hud_layout', [])]
+    if (obj['source'] == 'src/main/main_menu.c'
+            and obj['section'] == '.rodata.old.0'):
+        choices = [('legacy_technique_slots', [])]
     if (obj['source'] == 'src/main/game_menu.c'
             and re.fullmatch(r'\.(?:sdata|rodata)\.PIECES_(?:\.\d+)?', obj['section'])):
         choices = [('text_piece_origin', [])]

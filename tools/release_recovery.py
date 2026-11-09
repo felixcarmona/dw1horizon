@@ -383,6 +383,7 @@ def locked_driver(a):
     build=Path(context['build']);w=Path(context['w']);package=out/'package';engine=out/'engine'
     base_inputs=list(map(Path,context['bases'].values()));source_inputs=list(map(Path,context['sources'].values()))+[Path(context['variant'])]
     frontend_inputs=[ROOT/name for name in ('LICENSE','THIRD-PARTY.md','docs/release/README-players.md','docs/data/source-releases.md',
+                     'docs/proposals/technique-coherence.csv',
                      'tools/font/japanese-license','tools/font/chinese-license','tools/image-license.txt')]
     web_inputs=[ROOT/name for name in tracked if name.startswith('web/') and not name.startswith(('web/enginebuild/','web/media/'))]
     for candidate in (shutil.which('node'),os.environ.get('CHROMIUM','/snap/bin/chromium'),

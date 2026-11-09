@@ -15,6 +15,35 @@ import tabledata
 
 
 class TableDataTests(unittest.TestCase):
+    def test_legacy_slot_recipe_matches_the_production_c_table(self):
+        import ctypes
+        import re
+        import subprocess
+        import tempfile
+        from tools.test_technique_coherence import production
+        table = re.search(r'static const struct \{ uint16_t type; uint8_t moves\[16\]; \} old\[\] = \{.*?\n\t\};',
+                          production(), re.S).group()
+        with tempfile.TemporaryDirectory() as tmp:
+            source = Path(tmp) / 'table.c'
+            library = Path(tmp) / 'table.so'
+            source.write_text('#include <stdint.h>\n' + table +
+                              '\nconst void *records(void){return old;}\n'
+                              'unsigned int size(void){return sizeof(old);}\n')
+            subprocess.run(['cc', '-shared', '-fPIC', str(source), '-o', str(library)], check=True)
+            code = ctypes.CDLL(str(library))
+            code.records.restype = ctypes.c_void_p
+            data = ctypes.string_at(code.records(), code.size())
+        obj = dict(offset=32, length=len(data), section='.rodata.old.0', source='src/main/main_menu.c')
+        recipe = tabledata.authored_recipe(obj, data)
+        self.assertEqual(recipe['generator'], 'legacy_technique_slots')
+        for base in ('us', 'eu', 'jp1'):
+            self.assertEqual(tabledata.tail([recipe], base, None), data)
+        self.assertIsNone(tabledata.authored_recipe(obj, data[:-1] + bytes([data[-1] ^ 1])))
+        self.assertIsNone(tabledata.authored_recipe(dict(obj, source='other.c'), data))
+        self.assertIsNone(tabledata.authored_recipe(dict(obj, section='.rodata.other.0'), data))
+        with self.assertRaises(ValueError):
+            tabledata.fontcopy.semantic_table('legacy_technique_slots', [data.hex()])
+
     def test_care_hud_layout_has_an_exact_authored_recipe(self):
         data = bytes([144,178,212,144,178,212,110,224,224,224,237,237,237,242,
                       1,1,1,1,39,39,39,72,72,86,86,65,79,93])
@@ -49,10 +78,16 @@ for name,profile in profiles.items():
 sys.path.insert(0,str(root))
 from tools.localize.executable.chinese_layout import align
 assert align('unlisted.label','text')=='text'
+assert fontcopy.semantic_table('legacy_technique_slots',[],root)
 """
             cmd = [sys.executable, '-I', '-B', '-E', '-S', '-c', script, str(root)]
             result = subprocess.run(cmd, cwd=root, capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stderr)
+            (root / 'bundle/docs/proposals/technique-coherence.csv').unlink()
+            result = subprocess.run(cmd, cwd=root, capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('technique-coherence.csv', result.stderr)
+            dw.copy_program_runtime(str(root), bundle)
             (root / 'bundle/tools/patcher/ui-sources.json').unlink()
             result = subprocess.run(cmd, cwd=root, capture_output=True, text=True)
             self.assertNotEqual(result.returncode, 0)
