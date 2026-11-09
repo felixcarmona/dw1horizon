@@ -383,11 +383,24 @@ At most 4 points against `EVOLUTION_REQS[target]`:
    >=); learned techniques (bits of `learnedMoves`) >= `techs`. For Rookies `battles = -2` or `techs = 0` make it
    always true.
 
-3 points are needed. Against an existing better candidate: a target already raised (trigger `0x200+id`) loses to an
-unraised candidate (0 points); a new target over a raised candidate gets +1. For Rookie→Champion and
-Champion→Ultimate, among those scoring 3 the one with the highest average of the stats the table requires wins;
-`statTotal/statCount` are only reset when a new best is found, so later candidates see a diluted average (original bug,
-unverified in play). The mod's score sums the four bits of `evoRequirementsMet`, which the evolution chart also shows.
+3 points are needed; each group is optional if the other three pass. A maximum care value is inclusive, not a
+strict inequality. The mod's score sums the four bits of `evoRequirementsMet`, which the evolution chart also shows.
+
+The ordinary pickers process targets in route order. Against the current best, an already-raised target gets
+0 points if the best is unraised; an unraised target gets +1 if the best is already raised. This adjustment does
+not force an unraised target to replace the current best in the stat pickers: it must still win the comparison.
+In-Training→Rookie keeps the highest adjusted requirement score; an exact tie retains the earlier target.
+For Rookie→Champion and Champion→Ultimate, a score of at least 3 admits a candidate to the stat comparison;
+4 points do not outrank 3. Required current stats are summed (HP/MP divided by 10) and divided by their count using
+integer division. Only a strictly higher result replaces the current best, so exact ties keep the earlier target.
+`statTotal/statCount` are only reset when a new best is found: a qualifying loser leaves its divided total and
+count for the next qualifying candidate. The host-C check below covers selection without claiming an emulator run.
+
+For example, Salamon (221) can become Gatomon (234) with 4 care mistakes: Gatomon asks for **at most 1**, HP 1000,
+Defense 100 and weight 5–15, with Salamon as its bonus parent. Stats + weight + parent bonus give 3 points despite
+failing care. At HP 2000, MP 1000, Offense 100, Defense 200, Speed 100, Brains 100 and weight 10, Gatomon scores 3
+and BlackGatomon scores 4. With neither raised yet, Gatomon's comparison is 200, BlackGatomon's is 166, and Gatomon
+wins. See the [Salamon investigation](../investigations/salamon-evolution.md) for v0.0.7 evidence and limitations.
 
 ### Special evolutions (`handleSpecialEvolutions`, one `rand(100)` per call)
 
