@@ -1,4 +1,5 @@
 """Story-frontier regressions, unsafe-edge mutants, and legacy-save escape paths."""
+import ast
 import json
 from pathlib import Path
 import sys
@@ -16,6 +17,45 @@ class WorldGates(unittest.TestCase):
 
     def profile(self, name):
         return profile_state(next(p for p in self.world.policy['profiles'] if p['name'] == name))
+
+    def test_mushroomon_uses_a_walkable_spore_area_after_the_rockslide(self):
+        source = (ROOT / MOD / 'arcs/residents/mushroomon.py').read_text()
+        tree = ast.parse(source)
+        placement = next(n for n in ast.walk(tree) if isinstance(n, ast.Call)
+                         and isinstance(n.func, ast.Name) and n.func.id == 'screen')
+        screen = self.world.members[placement.args[0].attr]
+        # MIHA03 (21) is an unused original variant: exits out, none in.
+        self.assertFalse(any(e.target == 21 for e in self.horizon))
+        state = self.profile('before-regional-unlocks')
+        state.update({'native_forest_rockslide_cleared': True,
+                      'recruited(Species.Agumon)': True})
+        paths = reachable(self.horizon, state)
+        self.assertIn(screen, paths, 'recruit is stranded in an unused screen')
+        self.assertEqual([109] + [e.target for e in paths[screen]], [109, 111, 18, 233, 234])
+        self.assertTrue(all(e.kind in ('map', 'step') for e in paths[screen]))
+
+    def test_mushroomon_floor_is_reachable_with_chests_from_both_arrivals(self):
+        from dwmap import MapFile
+        from maps.reach import reach
+        path = ROOT / 'extracted/MAP/MAP16/MIHA06.MAP'
+        if not path.exists():
+            self.skipTest('needs extracted/')
+        m = MapFile(path.read_bytes())
+        # Chest collision remains after opening; include every chest footprint.
+        for x, z in ((938, 1239), (985, 856), (1024, -1604)):
+            from maps.reach import col, row
+            tx, tz = col(x), row(z)
+            for dz in range(-2, 2):
+                for dx in range(-2, 2):
+                    m.collision[(tz + dz) * 100 + tx + dx] = 128
+        # Vademon is loaded but only spawned by its UFO cutscene, at arrival 1.
+        footprints = [(-450, -900, 100)]
+        for entry in (0, 1):
+            arrival = m.warps[entry]
+            positions = reach(m, [(arrival['x'], arrival['z'])], footprints=footprints)
+            approach = [(x, z) for x, z in positions
+                        if abs(x + 450) < 300 and abs(z + 900) < 300]
+            self.assertGreater(len(approach), 100, f'no broad talking approach from entry {entry}')
 
     def test_unsafe_sewer_edge_is_detected(self):
         mutant = self.horizon + [Edge(27, 220, 1, 'True', 'test mutant', 'map')]

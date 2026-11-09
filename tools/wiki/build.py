@@ -198,7 +198,7 @@ class Pages:
         places = ' · '.join(escape(self.places[i]) for i in row['screens'])
         service = self.t('data.recruit.service.' + row['service'])
         # Secret identities and locations stay folded; ordinary recruits show a useful summary.
-        details=f'<p>{self.t("data.recruit.when."+str(row["id"]))}</p><p>{self.t("data.recruit.method."+str(row["id"]))}</p>'
+        details=f'<p>{self.t(model.recruits.text_key(row, "when"))}</p><p>{self.t(model.recruits.text_key(row, "method"))}</p>'
         if row['name']=='Bakemon':
             details=self.bakemon(fold=False)
         if row['hp'] is not None:

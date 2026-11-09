@@ -561,8 +561,8 @@
  "data.recruit.when.251": "Enter the Ice Sanctuary with a Vaccine partner.",
  "data.recruit.method.257": "Talk and win the fight.",
  "data.recruit.when.257": "Any time.",
- "data.recruit.method.263": "Talk and win the fight.",
- "data.recruit.when.263": "Any time.",
+ "data.recruit.method.263": "From northern Native Forest, follow Path Thru Mt. Panorama north into the Spore Area, then take the lower exit to the next Spore Area. Mushroomon waits on the left, below the UFO. Talk and win the fight.",
+ "data.recruit.when.263": "Any time. The northern forest route opens after the Drill Tunnel rockslide event; no special item is needed.",
  "data.recruit.method.267": "Talk and win the fight.",
  "data.recruit.when.267": "Any time.",
  "data.recruit.method.273": "Give it one Sweet Nut (consumed).",
@@ -678,5 +678,7 @@
   "wiki.pdfTitle": "Download PDF guide",
   "wiki.pdfWarning": "Everything after this page reveals secrets.",
   "wiki.pdfContents": "Contents",
-  "wiki.pdfSpoilers": "SPOILERS — appendix"
+  "wiki.pdfSpoilers": "SPOILERS — appendix",
+ "data.recruit.method.263.unreachable": "This version places Mushroomon in an unused Spore Area with no walking entrance. Update to a version containing the Mushroomon recruitment fix.",
+ "data.recruit.when.263.unreachable": "Unreachable by normal play in this version; waiting or bringing an item will not make it appear."
 }

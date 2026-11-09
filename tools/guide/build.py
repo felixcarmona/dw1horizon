@@ -190,8 +190,8 @@ def render_recruits(rows, files, lang, strings):
         locations = '<br>'.join(f'{esc(places[screen])} <small>#{screen}</small>'
                                for screen in row['screens'])
         name = recruits.species_name(files, row['name'], lang)
-        method = t(f'method.{row["id"]}')
-        availability = t(f'when.{row["id"]}')
+        method = strings[recruits.text_key(row, 'method')]
+        availability = strings[recruits.text_key(row, 'when')]
         hp_location = f' (#{row["battle"][0]})' if 'battle' in row else ''
         hp = '<br><small>' + esc(t('hp').replace('{n}', str(row['hp'])) + hp_location) + '</small>' if row['hp'] is not None else ''
         if 'rematch_hp' in row:

@@ -1093,10 +1093,10 @@
   {
     "id": 263,
     "screens": [
-      21
+      234
     ],
-    "method": "Talk and win the fight.",
-    "when": "Any time.",
+    "method": "From northern Native Forest, follow Path Thru Mt. Panorama north into the Spore Area, then take the lower exit to the next Spore Area. Mushroomon waits on the left, below the UFO. Talk and win the fight.",
+    "when": "Any time. The northern forest route opens after the Drill Tunnel rockslide event; no special item is needed.",
     "service": "Clinic medicine shop",
     "npc_source": [
       "story/mods/what-the-island-forgot/arcs/residents/mushroomon.py",
@@ -1106,7 +1106,24 @@
       "story/mods/what-the-island-forgot/arcs/residents/mushroomon.py": [
         "species=Species.Mushroomon"
       ]
-    }
+    },
+    "location_variants": [
+      {
+        "source": "Screen.mt_panorama_spore_area_21",
+        "screens": [
+          21
+        ],
+        "text_suffix": ".unreachable",
+        "method": "This version places Mushroomon in an unused Spore Area with no walking entrance. Update to a version containing the Mushroomon recruitment fix.",
+        "when": "Unreachable by normal play in this version; waiting or bringing an item will not make it appear."
+      },
+      {
+        "source": "Screen.mt_panorama_spore_area_234",
+        "screens": [
+          234
+        ]
+      }
+    ]
   },
   {
     "id": 267,

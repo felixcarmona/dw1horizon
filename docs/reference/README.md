@@ -27,6 +27,7 @@ build is in [../building.md](../building.md); how to test is in [../developing.m
 | [ram-map.md](ram-map.md) | the key addresses at a glance and the global state by subsystem; how to list every global |
 | [partner.md](partner.md) | the partner's care values (hunger, sleep, poop, weight, happiness, discipline, sickness, lifetime), training, evolution and its scoring, death and rebirth, technique learning |
 | [world.md](world.md) | the 239 screens with exits and placed Digimon, entering a screen, movement and collision, the camera, NPCs, File City, prosperity, recruitment, transport, chests |
+| [mushroomon-recruitment.md](mushroomon-recruitment.md) | unreachable Spore Area variant, corrected walking route, spawn conditions and 2 MB placement constraints |
 | [cemetery-collision.md](cemetery-collision.md) | the Overdell tree pocket, its 2 MB reproduction and the whole-map static trap check |
 | [liked-regions.md](liked-regions.md) | the nine liked/disliked place patterns, original partner assignments, and the review of new raisable species |
 | [scripts.md](scripts.md) | the script interpreter: triggers and pstats and their meanings, the opcodes, routines, the text box engine |

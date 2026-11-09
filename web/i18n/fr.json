@@ -561,8 +561,8 @@
  "data.recruit.when.251": "Entrez au Sanctuaire de glace avec un partenaire Vaccin.",
  "data.recruit.method.257": "Parlez-lui et remportez le combat.",
  "data.recruit.when.257": "À toute heure.",
- "data.recruit.method.263": "Parlez-lui et remportez le combat.",
- "data.recruit.when.263": "À toute heure.",
+ "data.recruit.method.263": "Depuis le nord de la Forêt Native, suivez le chemin du mont Panorama vers le nord jusqu’à la Zone des spores, puis la sortie du bas vers la suivante. Mushroomon attend à gauche, sous l’OVNI. Parlez-lui et remportez le combat.",
+ "data.recruit.when.263": "À toute heure. La route par le nord de la forêt s’ouvre après l’éboulement de l’histoire du Tunnel Foreur ; aucun objet spécial requis.",
  "data.recruit.method.267": "Parlez-lui et remportez le combat.",
  "data.recruit.when.267": "À toute heure.",
  "data.recruit.method.273": "Donnez-lui une Noix sucrée (consommée).",
@@ -678,5 +678,7 @@
   "wiki.pdfTitle": "Télécharger le guide PDF",
   "wiki.pdfWarning": "Tout ce qui suit cette page révèle des secrets.",
   "wiki.pdfContents": "Sommaire",
-  "wiki.pdfSpoilers": "SPOILERS — annexe"
+  "wiki.pdfSpoilers": "SPOILERS — annexe",
+ "data.recruit.method.263.unreachable": "Cette version place Mushroomon dans une Zone des spores sans accès à pied. Installez une version contenant la correction de son recrutement.",
+ "data.recruit.when.263.unreachable": "Inaccessible en jouant normalement dans cette version ; attendre ou apporter un objet ne le fera pas apparaître."
 }

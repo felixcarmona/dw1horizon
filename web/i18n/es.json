@@ -561,8 +561,8 @@
  "data.recruit.when.251": "Entra en el Santuario de Hielo con un compañero Vacuna.",
  "data.recruit.method.257": "Habla y gana el combate.",
  "data.recruit.when.257": "A cualquier hora.",
- "data.recruit.method.263": "Habla y gana el combate.",
- "data.recruit.when.263": "A cualquier hora.",
+ "data.recruit.method.263": "Desde el norte del Bosque Nativo, sigue el Camino del Monte Panorama hacia el norte hasta la Zona de Esporas. Toma la salida de abajo a la siguiente Zona de Esporas. Mushroomon espera a la izquierda, debajo del ovni. Habla con él y gana el combate.",
+ "data.recruit.when.263": "A cualquier hora. La ruta por el norte del bosque se abre tras el derrumbe de la historia del Túnel Taladro; no hace falta ningún objeto especial.",
  "data.recruit.method.267": "Habla y gana el combate.",
  "data.recruit.when.267": "A cualquier hora.",
  "data.recruit.method.273": "Dale una Nuez dulce (se consume).",
@@ -678,5 +678,7 @@
   "wiki.pdfTitle": "Descargar la guía en PDF",
   "wiki.pdfWarning": "Todo lo que aparece después de esta página revela secretos.",
   "wiki.pdfContents": "Índice",
-  "wiki.pdfSpoilers": "SPOILERS — apéndice"
+  "wiki.pdfSpoilers": "SPOILERS — apéndice",
+ "data.recruit.method.263.unreachable": "Esta versión sitúa a Mushroomon en una Zona de Esporas sin entrada a pie. Actualiza a una versión que incluya la corrección de su reclutamiento.",
+ "data.recruit.when.263.unreachable": "Inaccesible jugando con normalidad en esta versión; esperar o llevar un objeto no hará que aparezca."
 }

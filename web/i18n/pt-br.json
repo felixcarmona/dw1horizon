@@ -561,8 +561,8 @@
  "data.recruit.when.251": "Entre no Santuário de Gelo com um parceiro Vacina.",
  "data.recruit.method.257": "Converse e vença a luta.",
  "data.recruit.when.257": "A qualquer hora.",
- "data.recruit.method.263": "Converse e vença a luta.",
- "data.recruit.when.263": "A qualquer hora.",
+ "data.recruit.method.263": "Do norte da Floresta Nativa, siga o Caminho do Monte Panorama para o norte até a Área de Esporos. Pegue a saída de baixo para a próxima Área de Esporos. Mushroomon espera à esquerda, abaixo do OVNI. Converse e vença a luta.",
+ "data.recruit.when.263": "A qualquer hora. A rota pelo norte da floresta abre após o evento do desmoronamento no Túnel da Broca; não precisa de item especial.",
  "data.recruit.method.267": "Converse e vença a luta.",
  "data.recruit.when.267": "A qualquer hora.",
  "data.recruit.method.273": "Dê uma Noz doce (consumida).",
@@ -678,5 +678,7 @@
   "wiki.pdfTitle": "Baixar guia em PDF",
   "wiki.pdfWarning": "Tudo após esta página revela segredos.",
   "wiki.pdfContents": "Sumário",
-  "wiki.pdfSpoilers": "SPOILERS — apêndice"
+  "wiki.pdfSpoilers": "SPOILERS — apêndice",
+ "data.recruit.method.263.unreachable": "Esta versão coloca Mushroomon em uma Área de Esporos sem entrada a pé. Atualize para uma versão com a correção do recrutamento de Mushroomon.",
+ "data.recruit.when.263.unreachable": "Inacessível jogando normalmente nesta versão; esperar ou levar um item não fará com que apareça."
 }

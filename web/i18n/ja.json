@@ -561,8 +561,8 @@
  "data.recruit.when.251": "ワクチン種を連れてアイスサンクチュアリに入る。",
  "data.recruit.method.257": "話しかけて戦闘に勝つ。",
  "data.recruit.when.257": "時間指定なし。",
- "data.recruit.method.263": "話しかけて戦闘に勝つ。",
- "data.recruit.when.263": "時間指定なし。",
+ "data.recruit.method.263": "ネイティブフォレスト北部からパノラマ山への道を北へ進み、胞子地帯へ。そこから下の出口から次の胞子地帯へ進みます。MushroomonはUFOより下の左側にいます。話しかけて戦闘に勝ちましょう。",
+ "data.recruit.when.263": "時間指定なし。森北部を通るルートは、ドリルトンネルの落石イベント後に開きます。特別なアイテムは不要です。",
  "data.recruit.method.267": "話しかけて戦闘に勝つ。",
  "data.recruit.when.267": "時間指定なし。",
  "data.recruit.method.273": "あまい実を1個渡す（消費する）。",
@@ -678,5 +678,7 @@
   "wiki.pdfTitle": "PDFガイドをダウンロード",
   "wiki.pdfWarning": "このページ以降は秘密の情報を含みます。",
   "wiki.pdfContents": "目次",
-  "wiki.pdfSpoilers": "ネタバレ — 付録"
+  "wiki.pdfSpoilers": "ネタバレ — 付録",
+ "data.recruit.method.263.unreachable": "このバージョンでは、徒歩で入れない未使用の胞子地帯にMushroomonが配置されています。仲間加入の修正を含むバージョンに更新してください。",
+ "data.recruit.when.263.unreachable": "このバージョンでは通常のプレイでは到達できません。待ったりアイテムを持参したりしても出現しません。"
 }

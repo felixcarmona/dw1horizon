@@ -561,8 +561,8 @@
   "data.recruit.when.251": "以疫苗种搭档进入冰之圣域。",
   "data.recruit.method.257": "交谈并赢得战斗。",
   "data.recruit.when.257": "随时。",
-  "data.recruit.method.263": "交谈并赢得战斗。",
-  "data.recruit.when.263": "随时。",
+  "data.recruit.method.263": "从原生森林北部沿全景山通道向北进入孢子区，再沿下方出口进入下一处孢子区。Mushroomon在UFO下方的左侧等候。交谈并赢得战斗。",
+  "data.recruit.when.263": "随时可去。森林北部的路线在钻洞隧道的落石剧情后开放，不需要特殊道具。",
   "data.recruit.method.267": "交谈并赢得战斗。",
   "data.recruit.when.267": "随时。",
   "data.recruit.method.273": "交给它一个甜坚果（会消耗）。",
@@ -678,5 +678,7 @@
   "wiki.pdfTitle": "下载 PDF 指南",
   "wiki.pdfWarning": "本页之后的所有内容都会揭示秘密。",
   "wiki.pdfContents": "目录",
-  "wiki.pdfSpoilers": "剧透 — 附录"
+  "wiki.pdfSpoilers": "剧透 — 附录",
+ "data.recruit.method.263.unreachable": "此版本将Mushroomon放在一处没有步行入口的未使用孢子区。请更新到包含Mushroomon招募修复的版本。",
+ "data.recruit.when.263.unreachable": "此版本中正常游玩无法到达；等待或携带道具都不会使其出现。"
 }
