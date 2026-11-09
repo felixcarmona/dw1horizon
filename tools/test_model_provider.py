@@ -101,7 +101,7 @@ class ModelProvider(unittest.TestCase):
                 self.assertNotIn(sid, selected)
                 selected[sid] = model.OVERLAYS[preceding]
         celebrations = json.load(open('content/models/imports/celebrations.json'))
-        # Magnamon's native binding supersedes its retained authoring recipe.
+        # Magnamon's native binding (with its own field walk and run) supersedes its retained authoring recipe.
         active = dict(model.OVERLAYS)
         previous_magnamon = active.pop('magnamon-field')
         self.assertEqual(previous_magnamon,
@@ -114,7 +114,7 @@ class ModelProvider(unittest.TestCase):
         self.assertEqual(assignments.pop('236'),
                          ('tools.models.field_animations.native_binding', '236-demidevimon-native-flight'))
         self.assertEqual(assignments['197'],
-                         ('tools.models.field_animations.native_binding', '197-magnamon-native'))
+                         ('tools.models.field_animations.magnamon', '197-magnamon-native'))
         assignments['197'] = previous_magnamon[1:]
         # Celebration curves run after the final proportions. Unwrap them to
         # keep guarding all the original field recipes and output names.

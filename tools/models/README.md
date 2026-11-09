@@ -217,3 +217,34 @@ and the run bounded like a cat. `field_animations/halsemon.py` writes a
 lateral-sequence walk, a slower condition walk and a firm-backed trot with
 `quadruped.py`, every foot flat at its own turned-out idle angle and the short
 hock bones above the hind feet holding their angle (`links`).
+Magnamon (197) is bound to native Leomon (`native_binding.py`). Its boots kept
+the source's fighting stance, turned 35 and 93 degrees outward, its fists kept
+the guard pose's forward point, and its broad legs crossed over Leomon's narrow
+hips. The recipe now turns the boots forward (`yaw`), turns each fist with its
+forearm (`follow`) and sets Leomon's hip joints 20 units further apart in every
+program (`spread`, written in each program's start pose). Leomon's walk and run
+did not suit it either: they hunched the torso, crouched the run and pointed the
+long boots into the floor. `field_animations/magnamon.py` runs after the binding
+and replaces the walk, condition walk and run with clips authored on the bound
+skeleton from its own upright idle, the arms let down from the guard: boots
+landing heel first under each hip and rolling flat, legs solved onto them, hips
+turning with the swinging leg and the chest against them, arms swinging opposite
+to the legs. Every curve is eased unevenly, the body moves in overlap (hips
+first, chest, head and forearms later) and the two sides differ a little, with
+amplitudes close to native Leomon's. The source's guard binds the two arms in
+different orientations, so the shoulders read uneven at rest and in every
+program. Its arm pieces are exact mirrors, so the recipe now builds the left arm
+as the mirror of the bound right arm (`mirror`; Leomon's rig is mirror symmetric
+at rest). The shoulder armour hung from the upper arms like sleeves; it now
+rides on the chest at each shoulder, its point rising up and out like a
+pauldron (`aim` sets a piece whole in a given orientation of Leomon's rest
+pose), so it stays up while the arms swing. The cycles are 16, 14 and 10 ticks at
+the binding's field speeds (18.4, 16.25 and 41 a tick, unchanged). Its thigh
+is short, so any change of hip height swings the knee a long way: the planted
+leg keeps one slight bend, the heel peels off where the stride reaches past it,
+the body sinks only by what a leg still cannot reach, and the knee points
+forward along the boot, turned by half the hips' yaw but never by their roll.
+The left leg is built as the mirror of the right one, and the recipe sets the
+shoulders 20 units further out (`spread`) with the arms hanging out and the
+elbows bent, so the arms swing clear of the thigh armour; the run leans in,
+drives the arms and has both boots in the air between steps.
