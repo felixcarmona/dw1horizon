@@ -13,7 +13,7 @@
     "summary": "BIOS, game files, per-game settings and saves.",
     "paragraphs": [
       "Configure your own PlayStation BIOS in DuckStation. Add the directory containing Horizon, keeping the .cue beside its .bin. Launch the .cue; a renamed or missing .bin prevents the cue sheet from finding its track.",
-      "Use per-game settings for Horizon. Enable expanded 8 MB RAM if playing in Simplified Chinese. For automatic 60 fps rendering, enable CPU clock-speed control and set 250%. Other languages can use standard 2 MB RAM; RAM does not choose the frame rate.",
+      "Use per-game settings for Horizon. Enable expanded 8 MB RAM for Simplified Chinese; other languages work with standard 2 MB RAM. AUTO adjusts drawing to the scene, aiming for 60, 30 or 20 fps. More emulated CPU speed can help sustain higher frame rates; it is no longer a prerequisite for AUTO to try them.",
       "Assign a memory card, leaving {save_blocks} free blocks. A per-game card avoids sharing space with other games. When changing disc filenames or updating Horizon, verify the card assignment and load an in-game save after a fresh boot."
     ]
   },
@@ -22,7 +22,7 @@
     "summary": "BIOS, RAM, CPU settings and memory cards.",
     "paragraphs": [
       "Import your own PlayStation BIOS. Give DuckStation access to the folder containing Horizon, keeping .bin and .cue together, then open the .cue. Android storage permissions must allow the emulator to read that folder.",
-      "Open Horizon’s per-game settings. Look for expanded RAM (8 MB), CPU clock-speed control and the overclock percentage. Chinese needs 8 MB; 250% CPU allows the game to select 60 fps when the device keeps up. Restart after changing RAM and check the title’s detected settings. Setting names and availability vary by build.",
+      "Open Horizon’s per-game settings. Chinese needs expanded 8 MB RAM; other languages work with 2 MB. AUTO adjusts to scene cost without requiring a CPU overclock. If your device keeps up, increasing emulated CPU speed can help sustain higher frame rates. Restart after changing RAM. Setting names and availability vary by build.",
       "In memory-card settings, assign a card with {save_blocks} free blocks. A per-game card keeps other games separate. Export a backup. After an update, confirm that the same card is assigned, boot the new disc and load the in-game save.",
       "For stale or overlapping menu text on affected Android builds, try disabling Enable Texture Cache and restart. If it persists, report the Horizon version, DuckStation build, renderer and language, with a screenshot."
     ]
@@ -68,7 +68,7 @@
     "summary": "RAM and emulated CPU speed do different jobs.",
     "paragraphs": [
       "Horizon targets an original 2 MB PlayStation for eight languages. Simplified Chinese loads its extra fonts and language module above 2 MB and requires expanded 8 MB RAM. On a 2 MB system the game refuses that language and keeps the current one.",
-      "The renderer selects 20 fps at normal emulated CPU speed and 60 fps with enough overclock, using 250% as the recommended setting. Logic and controls remain at 20 Hz. Extra RAM does not change the frame rate and there is no in-game frame-rate switch.",
+      "AUTO adapts drawing to the scene, trying 60, then evenly spaced 30 and 20 fps as needed. FRAME RATE in title OPTIONS offers AUTO, 60 or 20. Forced 60 can show fewer frames when the scene is too costly. Logic and controls remain at 20 Hz; extra RAM does not select the frame rate.",
       "Change emulated CPU speed rather than fast-forward speed. The title reports detected settings; use it to check your emulator configuration. The host device must still run the selected emulation speed fast enough. Restart after changing RAM."
     ]
   },

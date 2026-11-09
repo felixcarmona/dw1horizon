@@ -1,0 +1,187 @@
+{
+  "getting-started": {
+    "title": "Primeiros passos no Horizon",
+    "summary": "Discos, primeira inicialização e primeiro save.",
+    "paragraphs": [
+      "Crie Horizon com seus discos compatíveis de Digimon World, Digital Card Battle, Digimon World 2 e World 3/2003. O site ou patcher de computador verifica as edições. Os jogos adicionais fornecem espécies importadas; você joga Digimon World.",
+      "Mantenha .bin e .cue juntos. Abra o .cue no emulador com uma BIOS extraída do seu PlayStation. Escolha idioma e opções no título e confira a RAM e a CPU detectadas.",
+      "Use um cartão com {save_blocks} blocos livres. Salve pelo jogo, reinicie e teste Continuar. Exporte uma cópia do cartão antes de atualizar."
+    ]
+  },
+  "duckstation-desktop": {
+    "title": "DuckStation no computador",
+    "summary": "BIOS, arquivos, configurações por jogo e saves.",
+    "paragraphs": [
+      "Configure sua própria BIOS de PlayStation. Adicione a pasta de Horizon e mantenha o .cue junto do .bin; um arquivo ausente ou renomeado impede que a faixa seja encontrada.",
+      "Use as configurações por jogo do Horizon. Ative 8 MB de RAM expandida para chinês simplificado; os outros idiomas funcionam com 2 MB. AUTO adapta a renderização à cena, buscando 60, 30 ou 20 fps. Aumentar a velocidade da CPU emulada pode ajudar a manter taxas maiores, mas AUTO não exige mais overclock para tentá-las.",
+      "Atribua um cartão com {save_blocks} blocos livres. Um cartão por jogo evita dividir espaço. Após renomear o disco ou atualizar, confira o cartão e carregue o save do jogo depois de uma inicialização limpa."
+    ]
+  },
+  "duckstation-android": {
+    "title": "DuckStation no Android",
+    "summary": "BIOS, RAM, configurações da CPU e cartões de memória.",
+    "paragraphs": [
+      "Importe sua BIOS de PlayStation. Autorize o acesso à pasta de Horizon, mantenha .bin e .cue juntos e abra o .cue. As permissões do Android precisam permitir a leitura.",
+      "Abra as configurações por jogo do Horizon. Chinês precisa de 8 MB de RAM expandida; os outros idiomas funcionam com 2 MB. AUTO se adapta ao custo de cada cena sem exigir overclock. Se o aparelho acompanhar, aumentar a velocidade da CPU emulada pode ajudar a manter taxas maiores. Reinicie após mudar a RAM. Os nomes e a disponibilidade das opções variam conforme a versão.",
+      "Atribua um cartão com {save_blocks} blocos livres, preferencialmente por jogo, e exporte um backup. Após atualizar, confira o mesmo cartão, inicie o novo disco e carregue o save do jogo.",
+      "Para texto antigo ou sobreposto em versões Android afetadas, tente desativar Enable Texture Cache e reinicie. Se persistir, informe versão do Horizon, build do DuckStation, renderizador e idioma, com uma captura."
+    ]
+  },
+  "epsxe": {
+    "title": "Configurar ePSXe",
+    "summary": "BIOS, acesso a pastas no Android e espaço no cartão.",
+    "paragraphs": [
+      "Configure sua BIOS e a pasta com Horizon. Mantenha .cue e .bin juntos. Se o Android exigir uma pasta base do ePSXe, conceda acesso para armazenar cartões e configurações.",
+      "Deixe {save_blocks} blocos livres no cartão atribuído. Teste salvar pelo jogo e Continuar após reiniciar antes de jogar muito tempo. Exporte um backup antes de mudar o armazenamento ou atualizar.",
+      "Nem toda versão do ePSXe oferece RAM expandida ou controles equivalentes de CPU. Oito idiomas usam 2 MB; chinês exige suporte comprovado a 8 MB. Se o título não detectar isso, use outro idioma ou emulador."
+    ]
+  },
+  "retroarch": {
+    "title": "Configurar RetroArch",
+    "summary": "Escolha um núcleo PlayStation e confira suas opções.",
+    "paragraphs": [
+      "O núcleo determina BIOS, cartões e melhorias do RetroArch. Escolha um núcleo PlayStation, leia sua documentação oficial e coloque sua BIOS na pasta de sistema exigida. Carregue o .cue com o .bin presente.",
+      "Confira cartão e diretório de saves. Deixe {save_blocks} blocos livres, salve pelo jogo, feche o conteúdo corretamente e teste Continuar ao reabrir. Faça backup antes de trocar de núcleo; save states não são portáveis entre núcleos.",
+      "RAM expandida e controles de CPU dependem do núcleo. Confira a detecção no título. Oito idiomas funcionam com 2 MB; chinês precisa de 8 MB. Avanço rápido não substitui overclock da CPU emulada."
+    ]
+  },
+  "iphone-web": {
+    "title": "Emulador web no iPhone",
+    "summary": "Verifique o suporte a PlayStation e proteja seus saves.",
+    "paragraphs": [
+      "O site de Horizon cria o disco, mas não executa o jogo. É necessário outro emulador web de PlayStation, como um site com o núcleo PlayStation do EmulatorJS, que aceite seus arquivos e BIOS. Compatibilidade, desempenho e exportação dependem do site e navegador.",
+      "Confira os formatos aceitos. Guarde .bin/.cue e BIOS fora do navegador. Teste exportar e importar cartões e deixe {save_blocks} blocos livres no cartão emulado.",
+      "Teste salvar, fechar a página e recarregar antes de jogar por muito tempo. Exporte o cartão após jogar: limpar os dados do site pode apagar arquivos. Use um idioma comum sem suporte comprovado a 8 MB. Nenhuma combinação de navegador e emulador no iPhone é certificada aqui."
+    ]
+  },
+  "memory-cards": {
+    "title": "Cartões, backups e atualizações",
+    "summary": "Espaço, cartões por jogo e atualização segura.",
+    "paragraphs": [
+      "Horizon precisa de {save_blocks} blocos livres para um novo save. Confira o espaço e o cartão atribuído. Com cartões por jogo, renomear o disco pode selecionar outro cartão; atribua o antigo se Continuar desaparecer.",
+      "Save states guardam o executável antigo e posições do disco em cache. Ao atualizar, faça backup do cartão, crie o disco novo, inicie do zero e carregue o save do jogo. Não continue a nova versão usando um estado antigo.",
+      "Guarde backups fora da pasta ativa do emulador. Ao mudar de aparelho, exporte, importe e teste Continuar. Formatar apaga os saves; use um cartão novo ou reserva para testes."
+    ]
+  },
+  "ram-and-frame-rate": {
+    "title": "2 MB, chinês e 60 fps",
+    "summary": "RAM e velocidade de CPU emulada são coisas diferentes.",
+    "paragraphs": [
+      "Horizon funciona no PlayStation original de 2 MB em oito idiomas. Chinês simplificado carrega fontes e módulo acima de 2 MB e exige 8 MB expandidos. Com 2 MB o jogo recusa o idioma e mantém o atual.",
+      "AUTO adapta a renderização à cena, tentando 60 fps e passando a 30 ou 20 com intervalos regulares quando necessário. FRAME RATE nas OPTIONS do título oferece AUTO, 60 ou 20. Forçar 60 pode exibir menos quadros se a cena exigir demais. A lógica e os controles continuam a 20 Hz; RAM extra não escolhe a taxa de quadros.",
+      "Mude a CPU emulada, não o avanço rápido. Confira as configurações detectadas no título. O aparelho precisa manter a velocidade de emulação escolhida. Reinicie após mudar a RAM."
+    ]
+  },
+  "first-day": {
+    "title": "O primeiro dia do seu parceiro",
+    "summary": "Uma rotina simples para a nova vida em File Island.",
+    "paragraphs": [
+      "Escolha o parceiro nas perguntas de Jijimon. Conheça os indicadores de cuidado, inventário e serviços próximos antes de explorar longe. Leve cura e deixe espaço para itens.",
+      "Alimente quando houver fome, encontre um banheiro e deixe dormir no horário. Consulte comida favorita e sono na página da espécie. Não treine o dia todo sem verificar as necessidades.",
+      "Faça uma sessão curta e confira atributos e cansaço. Explore, volte e salve no cartão. Evolução também depende de peso e cuidados: escolha um alvo antes de treinar todos os atributos sem direção."
+    ]
+  },
+  "care": {
+    "title": "Erros de cuidado e disciplina",
+    "summary": "Entenda os avisos antes de buscar atributos.",
+    "paragraphs": [
+      "Fome, banheiro, sono e cansaço são sistemas distintos. Ignorar fome ou deixar o parceiro fazer no chão pode gerar erros; doença e exaustão têm outras consequências. Confira os indicadores e o painel de cuidados.",
+      "Disciplina e felicidade são diferentes. Elogiar e repreender têm efeitos distintos e não resolvem tudo. Preferências de comida e horários de sono também importam.",
+      "Evoluções podem exigir mínimo ou máximo de erros. Buscar muitos erros é uma escolha específica, não conselho geral de negligência. Os contadores de evolução comum são da forma atual; leia os quatro grupos juntos."
+    ]
+  },
+  "training": {
+    "title": "Treinamento na academia",
+    "summary": "Equilibre ganhos com as necessidades diárias.",
+    "paragraphs": [
+      "Cada academia treina um atributo. Os ganhos básicos abaixo são valores básicos; parceiro, melhorias, itens e resultado do treino podem mudar o prêmio. Treinar inteligência tem limites de aprendizado próprios, separados da batalha.",
+      "Treino avança o tempo e custa comida, cansaço e vida. Confira fome, banheiro e sono antes. Continuar cansado pode causar penalidades; um ganho maior não é tempo grátis.",
+      "O x5 aplica várias recompensas comuns com verificações entre elas. Use x1 perto de metas de peso ou tempo de evolução. Descanse e cuide das necessidades antes de outro bloco."
+    ]
+  },
+  "gym-x5": {
+    "title": "Como funciona o treino x5",
+    "summary": "Várias sessões com custos normais e paradas antecipadas.",
+    "paragraphs": [
+      "Durante uma sessão, R2 alterna x1 e x5. O bloco mostra a animação inicial e aplica as recompensas em sequência. Não é um multiplicador gratuito de cinco vezes.",
+      "Pode parar após causar fome, necessidade de banheiro, sono, cansaço ou mal-estar. Também verifica evolução, vida restante e mensagens da academia. O resultado mostra as sessões realmente concluídas; nem sempre são cinco.",
+      "Bonus Try é separado dos blocos. Resolva a necessidade indicada antes de repetir. Se quiser apenas uma recompensa, selecione x1 antes de confirmar, sem depender de parada emergencial."
+    ]
+  },
+  "evolution-requirements": {
+    "title": "Como funcionam os requisitos de evolução",
+    "summary": "Leia o alvo e conte os quatro grupos.",
+    "paragraphs": [
+      "A evolução comum pontua erros de cuidado, peso, atributos e bônus. São necessários {pass_points} pontos. Todos os atributos listados formam um grupo; dois atributos não rendem dois pontos. Para alvos Rookie vale o maior atributo.",
+      "Peso aceita uma faixa. Erros podem ter mínimo ou máximo. Qualquer uma das condições de bônus concede o ponto; não são todas obrigatórias.",
+      "Toque no alvo da árvore para abrir a linha. A linha “Tempo (h)” da janela mostra a condição de tempo, e um aviso vermelho indica vida restante insuficiente. Tempo na forma, gatilhos especiais, NEW DIGIMON e candidatos concorrentes influenciam. HP e MP usam unidades do jogador; felicidade usa a escala 0–100 da tela de status."
+    ]
+  },
+  "evolution-timing": {
+    "title": "Tempo de evolução e candidatos",
+    "summary": "Os requisitos são apenas parte da escolha.",
+    "paragraphs": [
+      "As horas abaixo são na forma atual, não idade total. Cumprir os atributos cedo não causa evolução imediata. Rotas temporizadas Ultimate também verificam requisitos; especiais e itens têm outros gatilhos.",
+      "O seletor favorece alvos ainda não criados. Entre Rookie–Champion e Champion–Ultimate com três pontos, compara médias dos atributos pedidos, dividindo HP/MP por dez; a ordem pode influir. In-Training–Rookie mantém a melhor pontuação e o primeiro empate.",
+      "A linha “Tempo (h)” da janela compara as horas na forma atual com as horas exigidas pelo alvo. O veredito só mostra “pronto” quando a pontuação dos requisitos, o espaço do modelo e o tempo são suficientes; “Em N h” significa que só falta tempo. O aviso vermelho “A vida acaba antes (N h)” indica que a vida restante é menor que a espera necessária; N é a vida restante. Rotas que não dependem do relógio mostram “Rota especial”. Megas importados também exigem {mega_hours} horas de jogo como Perfeito. Se a vida restante acabar antes, o parceiro morre de velhice. {chain_melon} (Chain Melon) acrescenta {chain_melon_hours} horas de vida; {digiseabass}, {digiseabass_hours}. Eles aumentam a vida restante, não o tempo já passado na forma atual."
+    ]
+  },
+  "learning-techniques": {
+    "title": "Aprender técnicas",
+    "summary": "Listas de espécies, espaços de especialidade e rolagens.",
+    "paragraphs": [
+      "Uma execução inimiga de técnica normal registra a candidata; não precisa acertar. Após a batalha ela precisa estar na lista da espécie, ter especialidade correspondente e ainda não ser conhecida. O primeiro espaço correspondente define a chance.",
+      "Inteligência não altera essa rolagem. Usos repetidos não geram rolagens extras. Se várias candidatas passarem, uma é escolhida ao acaso; a porcentagem não garante o prêmio final.",
+      "Treino de inteligência usa outras regras. As páginas mostram MP básico antes de modificadores; finalizadores não gastam MP. Nomes repetidos mantêm IDs e espécies podem alterar valores do finalizador."
+    ]
+  },
+  "file-city": {
+    "title": "File City e seus moradores",
+    "summary": "Serviços, prosperidade e condições de recrutamento.",
+    "paragraphs": [
+      "O diretório de recrutamento reúne moradores, locais, serviços e contribuições para a prosperidade dentro de spoilers fechados.",
+      "Os passos ficam ocultos até abrir o aviso de spoilers. Horários usam o relógio do jogo. Confira lugar e pré-requisitos: podem depender de um marco da cidade, outro recruta ou evento.",
+      "A tabela de trocas de Mojyamon está no spoiler fechado abaixo: as oito primeiras linhas permitem um item por dia de jogo; a nona, uma vez por save. Se a lista no seu jogo for diferente ou mostrar trocas antigas, você carregou um estado do emulador de uma versão anterior. Inicie o novo disco do zero e carregue o save do cartão de memória. Faça uma cópia do cartão antes."
+    ]
+  },
+  "hidden-mechanics": {
+    "title": "Mecânicas ocultas dos parceiros",
+    "summary": "Mecânicas ocultas dos parceiros.",
+    "paragraphs": [
+      "{bakemon_mechanic}",
+      "Cada parceiro tem preferências e sono próprios. Especialidades determinam técnicas aprendidas em batalha. Espaços vazios ainda contam na chance de aprendizado, embora o resumo não os mostre.",
+      "O guia do jogo e a árvore ajudam a entender os alvos. Transformações especiais e itens têm condições próprias; a linha normal de atributos não descreve todas as formas de obter uma espécie."
+    ]
+  },
+  "new-game-quiz": {
+    "title": "Questionário inicial: pontos e parceiros",
+    "summary": "As sete respostas contribuem para três grupos.",
+    "paragraphs": [
+      "A tabela mostra pontos por posição de resposta nas perguntas de Jijimon, na ordem do jogo. As pontuações escolhem elemento, atributo e temperamento; a combinação define o parceiro na grade.",
+      "Vence a maior pontuação no grupo. Empates favorecem a resposta de apoio mais recente; se a mesma resposta apoiar ambos, vence o primeiro do grupo. Ordem: Luta, Fogo, Gelo, Natureza, Ar; Vacina, Dados, Vírus; Ousado, Calmo, Astuto.",
+      "As colunas mostram NOVOS DIGIMON ligado e desligado. As respostas, os pontos e a tabela de parceiros iniciais estão no spoiler abaixo."
+    ],
+    "spoiler_paragraphs": [
+      0,
+      1
+    ]
+  },
+  "difficulty": {
+    "title": "EASY, NORMAL e HARD",
+    "summary": "EASY, NORMAL e HARD.",
+    "paragraphs": [
+      "NORMAL usa regras comuns. EASY dobra dano causado e divide o recebido por dois, arredondando para cima antes dos limites. Também reduz o veneno no parceiro pela metade. Vale para campo e torneios individuais, não VS de dois jogadores.",
+      "A dificuldade não reescreve atributos salvos. Dano percentual de scripts segue regras próprias. Escolha no título e confira as opções disponíveis.",
+      "Escolha uma das dificuldades nas opções do título. Os ajustes de batalha aparecem abaixo e não alteram o crescimento permanente do parceiro."
+    ]
+  },
+  "faq": {
+    "title": "Perguntas frequentes e problemas",
+    "summary": "Atualizações, saves, patching lento e relatos úteis.",
+    "paragraphs": [
+      "Sem Continuar? Confira cartão, blocos livres e nome do disco com cartões por jogo. Esta versão exige {save_blocks} blocos livres para um novo save. Faça backup, inicie o disco atualizado e carregue pelo jogo.",
+      "Criar o disco no celular pode demorar. Para erros de cota, use janela normal, libere espaço e tente novamente; há também o patcher de computador. Discos extras fornecem espécies; versões modificadas ou incompatíveis não passam na verificação.",
+      "Para texto quebrado, anote versão, disco base, idioma, build do emulador e gráficos. Em versões Android afetadas, tente desativar Enable Texture Cache. Inclua o gatilho exato e captura: o sintoma sozinho não identifica a causa."
+    ]
+  }
+}

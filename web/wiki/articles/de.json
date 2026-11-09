@@ -13,7 +13,7 @@
     "summary": "BIOS, Spieldateien, Spieleinstellungen und Spielstände.",
     "paragraphs": [
       "Richte dein eigenes PlayStation-BIOS ein und füge den Horizon-Ordner hinzu. Die .cue muss bei ihrer .bin bleiben; fehlt diese oder wurde sie umbenannt, wird die Spur nicht gefunden.",
-      "Nutze Einstellungen nur für Horizon. Vereinfachtes Chinesisch braucht 8 MB erweiterten RAM. Aktiviere für automatische 60 fps die CPU-Taktsteuerung mit 250 %. Andere Sprachen laufen mit 2 MB; RAM bestimmt nicht die Bildrate.",
+      "Verwende die spielbezogenen Einstellungen für Horizon. Aktiviere für vereinfachtes Chinesisch 8 MB erweiterten RAM; die anderen Sprachen funktionieren mit 2 MB. AUTO passt die Darstellung an die Szene an und strebt 60, 30 oder 20 fps an. Eine höhere emulierte CPU-Geschwindigkeit kann höhere Bildraten stabilisieren, ist aber keine Voraussetzung mehr dafür, dass AUTO sie versucht.",
       "Weise eine Karte mit {save_blocks} freien Blöcken zu. Karten pro Spiel vermeiden geteilten Platz. Prüfe nach Umbenennen oder Update die Kartenzuweisung und lade nach einem frischen Start im Spiel."
     ]
   },
@@ -22,7 +22,7 @@
     "summary": "BIOS, RAM, CPU-Einstellungen und Speicherkarten.",
     "paragraphs": [
       "Importiere dein eigenes PlayStation-BIOS. Erlaube Zugriff auf Horizons Ordner, lass .bin und .cue zusammen und öffne die .cue. Android muss das Lesen des Ordners erlauben.",
-      "Suche in den Spieleinstellungen nach erweitertem RAM mit 8 MB, CPU-Taktsteuerung und Übertaktungsprozent. Chinesisch braucht 8 MB; 250 % ermöglicht 60 fps, wenn das Gerät mithält. Starte nach RAM-Änderungen neu und prüfe die Erkennung am Titel. Namen und Verfügbarkeit hängen vom Build ab.",
+      "Öffne Horizons spielbezogene Einstellungen. Chinesisch benötigt 8 MB erweiterten RAM; die anderen Sprachen funktionieren mit 2 MB. AUTO passt sich ohne erforderliche CPU-Übertaktung an den Aufwand der Szene an. Wenn dein Gerät mithält, kann eine höhere emulierte CPU-Geschwindigkeit höhere Bildraten stabilisieren. Starte nach einer RAM-Änderung neu. Namen und Verfügbarkeit der Einstellungen hängen von der Emulatorversion ab.",
       "Weise eine Karte mit {save_blocks} freien Blöcken zu, möglichst pro Spiel, und exportiere eine Sicherung. Prüfe nach Updates dieselbe Karte, starte die neue Disc und lade den Spielstand im Spiel.",
       "Bei altem oder überlagertem Text in betroffenen Android-Builds versuche Enable Texture Cache auszuschalten und neu zu starten. Melde bei Fortbestand Horizon-Version, DuckStation-Build, Renderer und Sprache samt Bildschirmfoto."
     ]
@@ -68,7 +68,7 @@
     "summary": "RAM und emulierte CPU-Geschwindigkeit haben andere Aufgaben.",
     "paragraphs": [
       "Horizon unterstützt acht Sprachen auf einer originalen PlayStation mit 2 MB. Vereinfachtes Chinesisch lädt zusätzliche Schrift und Sprachmodul oberhalb von 2 MB und braucht 8 MB. Bei 2 MB lehnt das Spiel diese Sprache ab und behält die aktuelle.",
-      "Das Rendering wählt 20 fps bei normaler CPU und 60 fps bei ausreichender Übertaktung; empfohlen sind 250 %. Logik und Eingaben bleiben bei 20 Hz. Mehr RAM erhöht die Bildrate nicht, und im Spiel gibt es keinen Bildratenschalter.",
+      "AUTO passt die Darstellung an die Szene an: Es versucht 60 fps und wechselt bei Bedarf zu gleichmäßigen 30 oder 20 fps. FRAME RATE in den OPTIONS des Titelbildschirms bietet AUTO, 60 oder 20. Erzwungene 60 können bei aufwendigen Szenen weniger Bilder liefern. Spiellogik und Steuerung bleiben bei 20 Hz; zusätzlicher RAM bestimmt die Bildrate nicht.",
       "Ändere die emulierte CPU statt Schnellvorlauf. Prüfe erkannte Einstellungen am Titel. Das Gerät muss die gewählte Emulationsgeschwindigkeit halten können. Starte nach RAM-Änderungen neu."
     ]
   },
