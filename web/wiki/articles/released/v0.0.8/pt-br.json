@@ -86,7 +86,7 @@
     "summary": "Entenda os avisos antes de buscar atributos.",
     "paragraphs": [
       "Fome, banheiro, sono e cansaço são sistemas distintos. Ignorar fome ou deixar o parceiro fazer no chão pode gerar erros; doença e exaustão têm outras consequências. Confira os indicadores e o painel de cuidados.",
-      "Disciplina e felicidade são diferentes. Elogiar e repreender têm efeitos distintos e não resolvem tudo. Preferências de comida e horários de sono também importam.",
+      "Disciplina e felicidade são diferentes. Elogiar e repreender têm efeitos distintos e não resolvem tudo. Preferências de comida e horários de sono também importam. Em um habitat de que o parceiro não gosta, o rosto de humor volta a alternar entre triste e feliz, como no original.",
       "Evoluções podem exigir mínimo ou máximo de erros. Buscar muitos erros é uma escolha específica, não conselho geral de negligência. Os contadores de evolução comum são da forma atual; leia os quatro grupos juntos."
     ]
   },
@@ -141,7 +141,10 @@
     "paragraphs": [
       "O diretório de recrutamento reúne moradores, locais, serviços e contribuições para a prosperidade dentro de spoilers fechados.",
       "Os passos ficam ocultos até abrir o aviso de spoilers. Horários usam o relógio do jogo. Confira lugar e pré-requisitos: podem depender de um marco da cidade, outro recruta ou evento.",
-      "A tabela de trocas de Mojyamon está no spoiler fechado abaixo: as oito primeiras linhas permitem um item por dia de jogo; a nona, uma vez por save. Se a lista no seu jogo for diferente ou mostrar trocas antigas, você carregou um estado do emulador de uma versão anterior. Inicie o novo disco do zero e carregue o save do cartão de memória. Faça uma cópia do cartão antes."
+      "A tabela de trocas de Mojyamon está no spoiler fechado abaixo: as oito primeiras linhas permitem um item por dia de jogo; a nona, uma vez por save. Se a lista no seu jogo for diferente ou mostrar trocas antigas, você carregou um estado do emulador de uma versão anterior. Inicie o novo disco do zero e carregue o save do cartão de memória. Faça uma cópia do cartão antes. Mushroomon agora pode ser encontrado e recrutado: ele aparece na Área de Esporos do Monte Panorama acessível pelo caminho normal. Os três Soulmon da tela de Haunted/Phantomon voltaram durante o dia (00:00–19:59) e após recrutar Phantomon."
+    ],
+    "spoiler_paragraphs": [
+      2
     ]
   },
   "hidden-mechanics": {
@@ -180,8 +183,8 @@
     "summary": "Atualizações, saves, patching lento e relatos úteis.",
     "paragraphs": [
       "Sem Continuar? Confira cartão, blocos livres e nome do disco com cartões por jogo. Esta versão exige {save_blocks} blocos livres para um novo save. Faça backup, inicie o disco atualizado e carregue pelo jogo.",
-      "Criar o disco no celular pode demorar. Para erros de cota, use janela normal, libere espaço e tente novamente; há também o patcher de computador. Discos extras fornecem espécies; versões modificadas ou incompatíveis não passam na verificação.",
-      "Para texto quebrado, anote versão, disco base, idioma, build do emulador e gráficos. Em versões Android afetadas, tente desativar Enable Texture Cache. Inclua o gatilho exato e captura: o sintoma sozinho não identifica a causa."
+      "Criar o disco no celular pode demorar. Para erros de cota, use janela normal, libere espaço e tente novamente; há também o patcher de computador. Discos extras fornecem espécies; versões modificadas ou incompatíveis não passam na verificação. O criador web em celulares Android não falha mais com um erro de permissão ao copiar o disco.",
+      "Para texto quebrado, anote versão, disco base, idioma, build do emulador e gráficos. Em versões Android afetadas, tente desativar Enable Texture Cache. Inclua o gatilho exato e captura: o sintoma sozinho não identifica a causa. O rosto de WarGrowlmon não tem mais buracos."
     ]
   }
 }

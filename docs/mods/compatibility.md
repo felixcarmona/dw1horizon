@@ -20,7 +20,7 @@ take the tools, the patches and the story from the same commit. Mixing commits i
 | v0.0.5 | `83f99c5` | 0001-0336 | version 4, tagged | `original` |
 | v0.0.6 | `83f99c5` | 352 patches, through `Keep-rebirth-species-fallback-resident.patch` | version 4, tagged | `original` |
 | v0.0.7 | `83f99c5` | 410 patches, through `compact-card-trade-list.patch` | version 4, tagged | `original` |
-| v0.0.8 | `83f99c5` | 434 patches, through `Show-the-title-popup-only-for-detected-enhancements.patch` | version 5, inline tagged, technique layout 1 | `original` |
+| v0.0.8 | `83f99c5` | 438 patches, through `Mix-the-hardware-timers-into-the-evolution-roll.patch` | version 5, inline tagged, technique layout 1 | `original` |
 
 The patch ranges are the numbers the files had until 2026-11-04 (`mods/patches/index.md`, column **was**). Later
 rows name the last patch of `mods/patches/series` and the number of patches. Add a row for each release. A save from

@@ -86,7 +86,7 @@
     "summary": "Entiende los avisos antes de perseguir una estadística.",
     "paragraphs": [
       "El hambre, el retrete, el sueño y el cansancio son sistemas distintos. Ignorar el hambre o dejar que el compañero haga sus necesidades en el suelo puede sumar errores; la enfermedad y el agotamiento tienen sus propias consecuencias. Atiende los indicadores y consulta los cuidados con frecuencia.",
-      "Disciplina y felicidad son valores diferentes. Elogiar y regañar no los modifican igual, así que no resuelven cualquier problema indistintamente. También importan las preferencias de comida y el horario de sueño.",
+      "Disciplina y felicidad son valores diferentes. Elogiar y regañar no los modifican igual, así que no resuelven cualquier problema indistintamente. También importan las preferencias de comida y el horario de sueño. En un hábitat que no le gusta al compañero, su cara de ánimo vuelve a alternar entre triste y feliz, como en el original.",
       "Las evoluciones pueden pedir un máximo o un mínimo de errores. Buscar muchos errores es una decisión para una evolución concreta, no una recomendación general. Los recuentos de la evolución normal corresponden a la forma actual; lee juntos los cuatro grupos."
     ]
   },
@@ -141,7 +141,10 @@
     "paragraphs": [
       "El directorio de reclutamiento reúne habitantes, lugares, servicios y aportaciones a la prosperidad dentro de spoilers plegados.",
       "Los pasos permanecen ocultos hasta abrir el aviso de spoilers. Las horas usan el reloj del juego. Comprueba los requisitos además del lugar: puede hacer falta un hito de ciudad, otro recluta o un suceso.",
-      "La tabla de intercambios de Mojyamon está en el spoiler cerrado de abajo: las ocho primeras filas permiten un objeto por día de juego; la novena, una sola vez por partida guardada. Si en tu juego aparece una lista distinta o antigua, has cargado un estado del emulador de una versión anterior. Arranca el disco nuevo desde cero y carga la partida de la tarjeta de memoria. Haz antes una copia de la tarjeta."
+      "La tabla de intercambios de Mojyamon está en el spoiler cerrado de abajo: las ocho primeras filas permiten un objeto por día de juego; la novena, una sola vez por partida guardada. Si en tu juego aparece una lista distinta o antigua, has cargado un estado del emulador de una versión anterior. Arranca el disco nuevo desde cero y carga la partida de la tarjeta de memoria. Haz antes una copia de la tarjeta. Mushroomon ya se puede encontrar y reclutar: aparece en la Zona de Esporas del Monte Panorama a la que lleva la ruta normal. Los tres Soulmon de la pantalla de Haunted/Phantomon vuelven durante el día (00:00–19:59) y tras reclutar a Phantomon."
+    ],
+    "spoiler_paragraphs": [
+      2
     ]
   },
   "hidden-mechanics": {
@@ -180,8 +183,8 @@
     "summary": "Actualizaciones, partidas perdidas, parcheo lento e informes útiles.",
     "paragraphs": [
       "Si no aparece Continuar, comprueba la tarjeta asignada, sus bloques libres y el nombre del disco en las tarjetas por juego. Horizon necesita {save_blocks} bloques libres para una partida nueva. Haz una copia antes de actualizar, arranca el disco nuevo y carga la partida del juego.",
-      "Parchear en el móvil puede tardar. Ante errores de cuota, usa una ventana normal, libera espacio y repite; también puedes usar el parcheador de escritorio. Las comprobaciones son intencionadas: los discos adicionales aportan especies y una copia modificada o incompatible no coincidirá.",
-      "Si el texto se ve mal, anota versión del juego, disco base, idioma, compilación del emulador y ajustes gráficos. En versiones Android afectadas, prueba a desactivar Enable Texture Cache. Incluye el desencadenante exacto y una captura: el síntoma por sí solo no identifica la causa."
+      "Parchear en el móvil puede tardar. Ante errores de cuota, usa una ventana normal, libera espacio y repite; también puedes usar el parcheador de escritorio. Las comprobaciones son intencionadas: los discos adicionales aportan especies y una copia modificada o incompatible no coincidirá. El creador web en teléfonos Android ya no falla con un error de permisos al copiar el disco.",
+      "Si el texto se ve mal, anota versión del juego, disco base, idioma, compilación del emulador y ajustes gráficos. En versiones Android afectadas, prueba a desactivar Enable Texture Cache. Incluye el desencadenante exacto y una captura: el síntoma por sí solo no identifica la causa. La cara de WarGrowlmon ya no tiene agujeros."
     ]
   }
 }
