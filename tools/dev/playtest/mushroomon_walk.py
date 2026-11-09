@@ -29,6 +29,8 @@ def main():
     p.add_argument('--out', type=Path, default=Path('build/mushroomon-walk'))
     p.add_argument('--port', type=int, default=42831)
     p.add_argument('--new-game', action='store_true')
+    p.add_argument('--difficulty', choices=('normal', 'easy'), default='normal',
+                   help='select through the native title OPTIONS before a new game')
     p.add_argument('--tour', type=Path)
     p.add_argument('--escape-wilds', action='store_true', help='use Run in escapable battles (requires pyelftools)')
     args = p.parse_args()
@@ -69,6 +71,21 @@ def main():
             time.sleep(.5)
         else:
             raise RuntimeError('title timed out')
+        if args.difficulty == 'easy':
+            until = new_game_partner.until
+            while e.peek('MENU_HIGHLIGHTS', 'b') != 4:
+                e.press('DOWN', 12)
+                time.sleep(.3)
+            e.press('CONFIRM', 16)
+            until(e, lambda: e.peek('CURRENT_MENU', 'i') == 4)
+            while e.peek('MENU_HIGHLIGHTS+0x160', 'b') != 4:
+                e.press('DOWN', 12)
+                time.sleep(.3)
+            e.press('LEFT', 16)
+            until(e, lambda: e.peek('MOD_OPT_DIFFICULTY', 'i') == 1)
+            e.run('shot', str(args.out / 'easy-options.png'))
+            e.press('CANCEL', 16)
+            until(e, lambda: e.peek('CURRENT_MENU', 'i') == 0)
         original_press = e.press
         chosen = False
         movie_at = e.A('MOV_playMovie') - 0x80000000
@@ -105,22 +122,15 @@ def main():
             cursor, _ = memory.resolve_expr('COMBAT_DATA.player.hoveredCommand[0]', variables, types)
             e.table['walk_command_cursor'] = cursor
         pad_api = tour.emu.api
-        def running_pad(path, *a, **kw):
-            # R1 is the native run modifier (POLLED_INPUT bit 8); unlike
-            # Triangle, pressing it before a direction cannot open a menu.
-            direction = path.rsplit('=', 1)[-1] in ('UP', 'DOWN', 'LEFT', 'RIGHT')
-            if direction and '/lua/press?' in path:
-                pad_api('/api/v1/lua/press?button=R1')
-            result = pad_api(path, *a, **kw)
-            if direction and '/lua/release?' in path:
-                pad_api('/api/v1/lua/release?button=R1')
-            return result
-        tour.emu.api = running_pad
         tour.move_partner_behind = lambda *a, **kw: None
         tour.freeze_clock = lambda: None
         ordinary_events = tour.handle_events
         def handle_events():
             ram = e.ram()
+            if (e.peek('GAME_STATE', 'H', ram) == 0
+                    and e.peek('TAMER_STATE', 'b', ram) == 0
+                    and not e.peek('IS_IN_MENU', 'B', ram)):
+                return False
             if args.escape_wilds and e.peek('GAME_STATE', 'H', ram) == 1:
                 target = 2 if e.peek('FLEE_DISABLED', 'B', ram) else 1
                 if e.peek('walk_command_cursor', 'b', ram) != target:
