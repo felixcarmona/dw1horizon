@@ -20,7 +20,7 @@ import evo_check as E
 
 
 def function(source, name):
-    match = re.search(r'^(?:static (?:__attribute__\(\(noinline\)\) )?)?(?:void|int32_t|int16_t|int8_t|char \*) ?'
+    match = re.search(r'^(?:static (?:__attribute__\(\(noinline\)\) )?)?(?:void|uint32_t|int32_t|int16_t|int8_t|char \*) ?'
                       + name + r'\([^;]*?\)\s*\{', source, re.M)
     if not match:
         raise ValueError('Missing C function: ' + name)
@@ -89,7 +89,7 @@ RANDOM_CHECKS = r"""
  }
  // The first raw sample is in the rejected tail for a three-target draw.
  for(int i=0;i<6;i++)path.to[i]=i<3?400+i:-1;
- refresh=0;forced=32767;before=draws;
+ refresh=0;forced=32767 TIMING_MASK;before=draws;
  assert(getChampionEvolutionTarget(221,1)>=400);assert(draws==before+2);
  // Same RNG state, different live refresh count: reload is not locked to a result.
  rng=7;refresh=0;int first=getChampionEvolutionTarget(221,1),changed=0;
@@ -149,6 +149,7 @@ def main():
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/mman.h>
 typedef int16_t DigimonId;
 typedef struct {int16_t digimon,hp,mp,offense,defense,speed,brain,care,weight,discipline,happiness,battles,techs; uint8_t flags;} EvoRequirements;
 typedef struct {int16_t hp,mp,off,def,speed,brain;} BaseStats;
@@ -187,6 +188,11 @@ int8_t getNumMasteredMoves(void){return 0;}
 int32_t evoTargetWeight(int cur,DigimonId t){return rows[t].weight;}
 '''
     source = (args.tree / 'src/main/evolution.c').read_text()
+    hardware_entropy = 'evolutionTimingSample' in source
+    if hardware_entropy:
+        code += 'static uint32_t evolutionEntropy, evolutionPad;\nvolatile uint32_t pad_buf;\n#define Vcount (&refresh)\n'
+        for name in ('evolutionTimers', 'mixEvolutionInput', 'evolutionTimingSample'):
+            code += function(source, name)
     randomized = 'chooseQualifiedEvolution' in source
     for name in ('evoAmt', 'evoPassPoints', 'evoPartnerTopStat', 'evoRequirementsMet',
                  'evoRequirementPoints', 'calculateRequirementScore'):
@@ -200,14 +206,87 @@ int32_t evoTargetWeight(int cur,DigimonId t){return rows[t].weight;}
     menu = (args.tree / 'src/main/game_menu.c').read_text()
     code += 'char *chartNumber(char *p,int32_t n){return p+sprintf(p,"%d",n);}\n'
     code += function(menu, 'chartRange')
+    if hardware_entropy:
+        main_source = (args.tree / 'src/main/main.c').read_text()
+        code += r'''
+int32_t POLLED_INPUT, POLLED_INPUT_PREVIOUS, CHANGED_INPUT;
+int32_t GAME_INPUT_REPEAT_TIMER, MENU_INPUT_REPEAT_TIMER, pad;
+int32_t PadRead(int unused){return pad;}
+'''
+        for name in ('pollInput', 'pollInputGame', 'pollInputMenu'):
+            code += function(main_source, name)
     code += 'int main(void){\n'
+    if hardware_entropy:
+        code += r'''
+ assert(mmap((void *)0x1f801000,4096,PROT_READ|PROT_WRITE,
+             MAP_PRIVATE|MAP_ANONYMOUS|MAP_FIXED_NOREPLACE,-1,0)!=(void *)-1);
+ #define TIMER0 (*(volatile uint16_t *)0x1f801100)
+ #define TIMER2 (*(volatile uint16_t *)0x1f801120)
+ TIMER0=12345;TIMER2=54321;refresh=100;
+ uint32_t savedPool=evolutionEntropy;
+ int fixed=evolutionTimingSample();
+ assert(evolutionEntropy==savedPool); // reading / previewing does not update pool
+ // Fixed entropy: exhaustive uniform RNG input gives equal accepted residues.
+ for(int count=2;count<=6;count++){
+  int hist[6]={0},ceiling=32768-32768%count,rejected=0;
+  for(int raw=0;raw<32768;raw++){
+   int sample=raw^evolutionTimingSample();
+   if(sample>=ceiling)rejected++;else hist[sample%count]++;
+  }
+  assert(rejected==32768%count);
+  for(int i=0;i<count;i++)assert(hist[i]==32768/count);
+ }
+ // Restore identical RNG, RAM and roll-time timers; vary only a prior press.
+ int outcomes[6]={0};
+ for(int frame=0;frame<10000;frame++){
+  evolutionEntropy=savedPool;evolutionPad=0;pad_buf=1;refresh=frame;
+  TIMER0=(uint16_t)(12345u+frame*564480u);
+  TIMER2=(uint16_t)(54321u+frame*70560u);
+  mixEvolutionInput();
+  refresh=100;TIMER0=12345;TIMER2=54321;
+  outcomes[evolutionTimingSample()%6]++;
+ }
+ for(int i=0;i<6;i++)assert(outcomes[i]>1400 && outcomes[i]<1900);
+ // Same restored timing and input repeats exactly, with no persistent RNG seed.
+ evolutionEntropy=savedPool;evolutionPad=0;pad_buf=1;mixEvolutionInput();uint32_t same=evolutionEntropy;
+ evolutionEntropy=savedPool;evolutionPad=0;mixEvolutionInput();assert(evolutionEntropy==same);
+ evolutionEntropy=savedPool;assert(evolutionTimingSample()==fixed);
+ // Actual field/menu polling: idle, press, hold, release and repeat cadence.
+ for(int menu=0;menu<2;menu++){
+  evolutionEntropy=0;POLLED_INPUT=0;pad=0;evolutionPad=pad_buf=~0u;
+  GAME_INPUT_REPEAT_TIMER=MENU_INPUT_REPEAT_TIMER=0;
+  void (*poll)(void)=menu?pollInputMenu:pollInputGame;
+  int idleReads=timer_reads;
+  poll();assert(evolutionEntropy==0 && CHANGED_INPUT==0 && timer_reads==idleReads);
+  pad=0x1000;pad_buf=~pad;mixEvolutionInput();poll();assert(CHANGED_INPUT==pad);
+  uint32_t pressed=evolutionEntropy;assert(pressed!=0);
+  int heldReads=timer_reads;
+  for(int frame=1;frame<=32;frame++){
+   mixEvolutionInput();poll();assert(evolutionEntropy==pressed && timer_reads==heldReads);
+   int delay=menu?15:5,step=menu?6:2;
+   assert(CHANGED_INPUT==((frame>=delay && (frame-delay)%step==0)?pad:0));
+  }
+  pad=0;pad_buf=~pad;mixEvolutionInput();poll();assert(evolutionEntropy!=pressed && CHANGED_INPUT==0);
+  uint32_t released=evolutionEntropy;poll();assert(evolutionEntropy==released);
+ }
+ // A one-refresh pulse between 20 Hz game polls still enters the pool.
+ evolutionEntropy=0;evolutionPad=pad_buf=~0u;
+ pad_buf=~0x1000u;mixEvolutionInput();uint32_t pulse=evolutionEntropy;
+ pad_buf=~0u;refresh++;mixEvolutionInput();assert(evolutionEntropy!=pulse);
+ evolutionEntropy=savedPool;
+ puts("PASS: VBlank input sees a one-refresh pulse between game polls");
+ puts("PASS: actual field/menu pad transitions and unchanged repeat cadence");
+ puts("PASS: actual C hardware reads with simulated timers; exhaustive unbiased XOR/tail; 10000 one-frame press offsets");
+'''
+
     for i, t in enumerate(ids + [-1]):
         code += f'path.to[{i}]={t};\n'
     for t, r in reqs.items():
         for key, value in r.items():
             code += f'rows[{t}].{key}={value};\n'
         code += f'para[{t}].level=4;gains[{t}].targetDigimon={t};\n'
-    code += (RANDOM_CHECKS if randomized else r'''
+    checks = RANDOM_CHECKS.replace('TIMING_MASK', '^ evolutionTimingSample()' if hardware_entropy else '')
+    code += (checks if randomized else r'''
  PARTNER_ENTITY.digimonEntity.stats.base=(BaseStats){2000,1000,100,200,100,100};
  PARTNER_PARA.weight=10;PARTNER_PARA.evoTimer=72;
  // Inclusive care boundary: 0 and 1 pass; 2 and 4 lose only the care point.

@@ -80,14 +80,40 @@ def continue_from_title(e):
     raise AssertionError('Continue never loaded the card')
 
 
+def timer_read_site(e, function):
+    """Observe the two actual LHU results even when the compiler inlines timers."""
+    from tools.xref import Elf
+    from tools.langpatch import elf_symbols
+    elf = Elf(e.exe + '.elf')
+    start, size, _ = elf_symbols(e.exe + '.elf')[function]
+    section = next(s for s in elf.sh if s['addr'] <= start < s['addr'] + s['size'])
+    offset = section['off'] + start - section['addr']
+    reads = {}
+    for i in range(0, size, 4):
+        word, = struct.unpack_from('<I', elf.d, offset + i)
+        if word >> 26 == 0x25 and (word & 0xffff) in (0x1100, 0x1120):
+            reads[word & 0xffff] = (start + i, (word >> 16) & 31)
+    assert set(reads) == {0x1100, 0x1120}, (function, reads)
+    assert reads[0x1120][0] == reads[0x1100][0] + 4, reads
+    registers = ('zero at v0 v1 a0 a1 a2 a3 t0 t1 t2 t3 t4 t5 t6 t7 '
+                 's0 s1 s2 s3 s4 s5 s6 s7 t8 t9 k0 k1 gp sp fp ra').split()
+    return (reads[0x1120][0] + 8, registers[reads[0x1100][1]],
+            registers[reads[0x1120][1]])
+
+
 def watch(e):
     a = e.A
+    refresh_hook = ''
+    if e.has('evolutionPad'):
+        site, _, _ = timer_read_site(e, 'chooseQualifiedEvolution')
+        refresh_hook = f"hook({site},function() if RP.active then local m=PCSX.getMemPtr();local p={a('Vcount') & 0x1fffff};RP.refresh=m[p]+256*m[p+1]+65536*m[p+2]+16777216*m[p+3] end end)"
     e.run('lua', f'''
       RP={{active=false,done=false,raw=-1,refresh=-1,chosen=-1,bp={{}}}}
       local function hook(a,f)
         local b=PCSX.addBreakpoint(a,'Exec',4,'random-evolution-proof',f)
         RP.bp[#RP.bp+1]=b;return b
       end
+      {refresh_hook}
       hook({a('rollNaturalEvolutionTarget')},function()
         RP.active=true
         local b;b=hook(PCSX.getRegisters().GPR.n.ra,function()
@@ -224,7 +250,7 @@ def main():
         e.run('shot', str(out / 'screen-207.png'))
         distribution = Counter(row['chosen'] for row in rows)
         assert len(distribution) > 1, ('all reloads chose the same target', distribution)
-        print('PASS: eight card reloads; multiple outcomes; completed evolutions:', dict(distribution), flush=True)
+        print(f'PASS: {a.rolls} card reloads; multiple outcomes; completed evolutions:', dict(distribution), flush=True)
     finally:
         (out / 'result.json').write_text(json.dumps(dict(ram_bytes=0x200000,
             rng_replay=replay, card_sha256=digest, cases=rows, champion_case=champion_case,

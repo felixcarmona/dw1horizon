@@ -395,12 +395,29 @@ An admitted candidate becomes the history anchor independently of the eventual d
 stat averages no longer control that anchor or the choice.
 
 At the evolution tick, `rollNaturalEvolutionTarget` chooses uniformly among this
-pool. It XORs the game's existing 15-bit `randomLimit(32768)` with the low 15 bits
-of the live `VSync(-1)` counter, then rejects the incomplete remainder before
-reducing modulo the pool size. Timing is sampled at evolution, not at new game
-creation or from the partner's saved age. Loading the same memory-card save and
-varying timing can yield a different target; repeated outcomes remain possible.
-There is no persistent pool, allocation or extra saved state. Zero/one candidate
+pool. It XORs the game's existing 15-bit `randomLimit(32768)` with a mixed
+15-bit timing sample, then rejects the incomplete remainder before reducing
+modulo the pool size. The sample combines the live refresh counter, root
+counters 0/2 and a four-byte RAM entropy pool. A VBlank callback samples the
+existing BIOS pad buffer every refresh and
+rotates/XORs those timer values into the pool on physical changes; idle frames
+and held-button repeats leave it alone. This also sees presses between the
+20 Hz field-input polls. At the roll, a small integer hash spreads
+both the pool and live timer bits across the sample.
+
+The volatile 16-bit COUNT reads at `0x1F801100` and `0x1F801120` match the
+decompiled Psy-Q `GetRCnt` implementation. They leave timer modes, targets and
+interrupts untouched. Counter 0 uses the system/pixel clock and counter 2 the
+system clock, optionally divided by eight ([hardware timer reference](https://psx-spx.consoledev.net/timers/)).
+The decompiled `VSync(-1)` returns `Vcount`, which the sampler reads directly.
+VBlank slot 6 is unused by the original game: sound uses slot 4 and the memory
+card library slot 7. `PadInit` gives `pad_buf` to the BIOS as the destination
+updated each VBlank ([BIOS pad reference](https://psx-spx.consoledev.net/kernelbios/#bios-joypad-functions)).
+The four-byte pool and four-byte previous-pad snapshot are never saved to the
+card. An emulator state restores both along with the clocks, but subsequent button timing can change it even if the eventual
+roll happens at the same time. Identical restored state and input timing remain
+deterministic; repeated outcomes are possible. No heap allocation or saved
+format changes are needed. Zero/one candidate
 and `getNaturalEvolutionTarget` training previews consume no randomness. The
 Champion picker reused for ordinary Ultimate path checks uses the same draw;
 timed pair priority, timing gates, special/item routes and Numemon fallback retain
@@ -418,6 +435,9 @@ The [host harness](../../tools/dev/playtest/evolution_selection_host.py) checks
 admission, distribution, exclusions, preview purity and timing variation, while
 [the emulator proof](../../tools/dev/playtest/evolution_random.py) reloads one
 memory-card save with varied timing and completes natural evolutions on 2 MB.
+The [save-state proof](../../tools/dev/playtest/evolution_entropy.py) replays one
+unchanged checkpoint with twelve pad timing patterns, observes the actual timer
+reads and checks two identical no-input controls.
 
 ### Special evolutions (`handleSpecialEvolutions`, one `rand(100)` per call)
 
