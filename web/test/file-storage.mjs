@@ -11,7 +11,7 @@ try {
   const page = await browser.newPage();
   await page.goto(process.argv[2], { waitUntil: 'networkidle0' });
   const results = await page.evaluate(async () => {
-    const { retryFile, snapshotDisc, discFile, buildDirectory } = await import('./js/engine/storage.js');
+    const { retryFile, snapshotDisc, discFile, buildDirectory, selectedFile, InputDiscError } = await import('./js/engine/storage.js');
     const { Build, EngineError, failureKind } = await import('./js/engine/engine.js');
     const results = [];
     const check = (ok, name) => results.push({ ok, name });
@@ -29,13 +29,62 @@ try {
     check(await (await discFile(copy)).text() === 'original disc', 'input snapshot survives changes to selected disc');
     let sourceOpens = 0;
     const current = await handle.getFile();
-    const reopened = await snapshotDisc(current, 'reopened', { handle: { async getFile() {
-      sourceOpens++;
-      if (sourceOpens === 1) throw new DOMException('stale input', 'NotReadableError');
-      return handle.getFile();
-    } } });
-    check(sourceOpens === 2 && await (await discFile(reopened)).text() === 'changed disc!',
-      'input copy reopens the source handle once after invalidation');
+    const refused = { async getFile() { sourceOpens++; throw new DOMException('platform refuses handle', 'NotAllowedError'); } };
+    const retained = await snapshotDisc(current, 'retained', { handle: refused });
+    check(sourceOpens === 0 && await (await discFile(retained)).text() === 'changed disc!',
+      'readable selected File is copied without reopening a refused handle');
+    const stale = { size: current.size, name: current.name, lastModified: current.lastModified,
+      slice() { return { async arrayBuffer() { throw new DOMException('stale input', 'NotReadableError'); } }; } };
+    const events = [];
+    const permitted = {
+      async queryPermission(options) { events.push(`query:${options.mode}`); return 'prompt'; },
+      async requestPermission(options) { events.push(`request:${options.mode}`); return 'granted'; },
+      async getFile() { events.push('getFile'); return current; },
+    };
+    const reopened = await snapshotDisc(stale, 'reopened', { handle: permitted });
+    check(events.join() === 'query:read,request:read,getFile' && await (await discFile(reopened)).text() === 'changed disc!',
+      'stale selected File is recovered with permission before handle read');
+    let reads = 0;
+    const transient = { size: current.size, name: current.name, lastModified: current.lastModified,
+      slice(...args) { return { async arrayBuffer() {
+        if (++reads === 1) throw new DOMException('provider refused read', 'NotAllowedError');
+        return current.slice(...args).arrayBuffer();
+      } }; } };
+    const fallback = await snapshotDisc(transient, 'fallback', { handle: refused });
+    check(reads === 2 && sourceOpens === 2 && await (await discFile(fallback)).text() === 'changed disc!',
+      'refused handle falls back to retained File on the one copy retry');
+    for (const name of ['NotAllowedError', 'NotReadableError', 'InvalidStateError', 'SecurityError', 'NotFoundError']) {
+      let attempts = 0;
+      const unreadable = { size: 1, name: 'disc.bin', slice() { return { async arrayBuffer() {
+        attempts++; throw new DOMException('provider unavailable', name);
+      } }; } };
+      let failure;
+      try { await snapshotDisc(unreadable, 'unreadable'); } catch (e) { failure = e; }
+      check(attempts === 2 && failure instanceof InputDiscError && failure.message.includes(name),
+        `${name}: input reads stop after one retry and preserve the cause`);
+    }
+    for (const permission of ['prompt', 'denied']) {
+      const calls = [];
+      try { await selectedFile({
+        async queryPermission() { calls.push('query'); return permission; },
+        async requestPermission() { calls.push('request'); return permission; },
+        async getFile() { calls.push('getFile'); return current; },
+      }); } catch { /* expected */ }
+      check(calls.join() === 'query,request', `${permission}: refusal never calls getFile`);
+    }
+    let opens = 0;
+    await selectedFile({ async queryPermission() { return 'granted'; }, async getFile() {
+      if (++opens === 1) throw new DOMException('transient refusal', 'NotAllowedError');
+      return current;
+    } });
+    check(opens === 2, 'picker handle refusal is retried once');
+    let changed;
+    try { await snapshotDisc(stale, 'changed', { handle: { async getFile() {
+      return new File(['different!!!'], current.name, { lastModified: current.lastModified + 1 });
+    } } }); } catch (e) { changed = e; }
+    check(changed instanceof InputDiscError && /changed/.test(changed.message), 'changed disc is never silently substituted');
+    const classified = new Build({ us: current }, { workers: 1 }).explain(new EngineError('engine.discLost', {}, 'NotAllowedError'));
+    check(classified.key === 'engine.discLost' && classified.kind === 'file', 'input refusal has disc-specific guidance, not storage advice');
     const large = new File([new Uint8Array((8 << 20) + 3), 'end'], 'large.bin');
     const largeCopy = await snapshotDisc(large, 'large');
     const largeFile = await discFile(largeCopy);

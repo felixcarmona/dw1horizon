@@ -1,4 +1,4 @@
-import { staleFile, retryFile, snapshotDisc } from './storage.js';
+import { staleFile, retryFile, snapshotDisc, InputDiscError } from './storage.js';
 
 // The web engine: builds the "everything" disc from the player's discs, here in the browser.
 //
@@ -368,7 +368,8 @@ export class Build {
         this.cancel();
         // Firefox stacks can omit the exception name/message, including QuotaExceededError.
         const detail = [`${e?.name || 'Error'}: ${e?.message || e}`, e?.stack].filter(Boolean).join('\n');
-        const err = this.explain(e instanceof EngineError ? e : new EngineError('engine.failed', {}, detail));
+        const err = this.explain(e instanceof EngineError ? e
+          : new EngineError(e instanceof InputDiscError ? 'engine.discLost' : 'engine.failed', {}, detail));
         this.state.phase = 'error';
         this.state.error = { key: err.key, vars: err.vars, detail: err.detail, kind: err.kind };
         this.emit();
@@ -389,7 +390,7 @@ export class Build {
     const KEEP = new Set(['build.cancelled', 'engine.otherTab', 'engine.noWasm', 'engine.noOpfs', 'engine.noStreams',
                           'engine.sourceDiffers', 'engine.holesDiffer', 'engine.imageDiffers', 'engine.notDeployed']);
     const OWN = { 'engine.noSpace': 'storage', 'engine.quota': 'storage', 'engine.storageBlocked': 'blocked',
-                  'engine.outOfMemory': 'memory', 'engine.workerFailed': 'memory', 'engine.download': 'network', 'engine.fileLost': 'file' };
+                  'engine.outOfMemory': 'memory', 'engine.workerFailed': 'memory', 'engine.download': 'network', 'engine.fileLost': 'file', 'engine.discLost': 'file' };
     const vars = { ...err.vars, bytes: err.vars.bytes || this.need || 0 };
     if (OWN[err.key]) return Object.assign(new EngineError(err.key, vars, err.detail), { kind: OWN[err.key] });
     if (KEEP.has(err.key) && !staleFile(err.detail)) return Object.assign(err, { kind: null });

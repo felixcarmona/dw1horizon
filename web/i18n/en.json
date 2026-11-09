@@ -194,6 +194,7 @@
  "engine.quota": "This browser ran out of storage space during the build, so it stopped. Nothing was written. The build needs about {gb} GB free.",
  "engine.storageBlocked": "This browser does not let this page keep the files the build needs (private windows and blocked site data do that).",
  "engine.fileLost": "The browser lost access to a disc or a temporary build file, even after reopening it. Select the discs again from local device storage and restart the build. Keep this tab open and the device awake. If it happens again, use the desktop patcher.",
+ "engine.discLost": "The browser could not read the selected disc. Use Add discs to select it again from local device storage, then restart the build. If the file was moved or deleted, restore it first. For cloud files, download a local copy before selecting it.",
  "engine.network": "The connection was lost while getting the builder. What was already downloaded is kept.",
  "fix.private": "If this is a private or incognito window, open the page in a normal window: private windows get very little storage.",
  "fix.freeDisk": "Free at least {gb} GB on this device's disk (empty the bin, remove large downloads) and try again.",

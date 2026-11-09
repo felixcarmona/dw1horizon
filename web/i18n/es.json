@@ -194,6 +194,7 @@
  "engine.quota": "Este navegador se ha quedado sin espacio durante la creación, así que se ha detenido. No se ha escrito nada. La creación necesita unos {gb} GB libres.",
  "engine.storageBlocked": "Este navegador no deja que la página guarde los archivos que necesita la creación (pasa en las ventanas privadas y con los datos de sitios bloqueados).",
  "engine.fileLost": "El navegador perdió el acceso a un disco o a un archivo temporal, incluso tras volver a abrirlo. Selecciona de nuevo los discos desde el almacenamiento local y reinicia la creación. Mantén esta pestaña abierta y el dispositivo despierto. Si vuelve a ocurrir, usa el parcheador de escritorio.",
+ "engine.discLost": "El navegador no ha podido leer el disco seleccionado. Usa Añadir discos para seleccionarlo de nuevo desde el almacenamiento local del dispositivo y reinicia la creación. Si el archivo se ha movido o eliminado, restáuralo primero. Si está en la nube, descarga una copia local antes de seleccionarlo.",
  "engine.network": "Se ha perdido la conexión mientras se descargaba el creador. Lo que ya se había descargado se conserva.",
  "fix.private": "Si es una ventana privada o de incógnito, abre la página en una ventana normal: las ventanas privadas tienen muy poco espacio.",
  "fix.freeDisk": "Libera al menos {gb} GB en el disco de este dispositivo (vacía la papelera, borra descargas grandes) y vuelve a intentarlo.",

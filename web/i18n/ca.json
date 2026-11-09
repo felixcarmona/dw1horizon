@@ -194,6 +194,7 @@
  "engine.quota": "Aquest navegador s'ha quedat sense espai durant la creació, així que s'ha aturat. No s'ha escrit res. La creació necessita uns {gb} GB lliures.",
  "engine.storageBlocked": "Aquest navegador no deixa que la pàgina desi els fitxers que necessita la creació (passa a les finestres privades i amb les dades de llocs bloquejades).",
  "engine.fileLost": "El navegador ha perdut l’accés a un disc o a un fitxer temporal, fins i tot després de tornar-lo a obrir. Torna a seleccionar els discs des de l’emmagatzematge local i reinicia la creació. Mantén aquesta pestanya oberta i el dispositiu despert. Si torna a passar, fes servir l’aplicació d’escriptori.",
+ "engine.discLost": "El navegador no ha pogut llegir el disc seleccionat. Fes servir Afegeix discs per tornar-lo a seleccionar des de l’emmagatzematge local del dispositiu i reinicia la creació. Si el fitxer s’ha mogut o suprimit, restaura’l primer. Si és al núvol, descarrega’n una còpia local abans de seleccionar-lo.",
  "engine.network": "S'ha perdut la connexió mentre es baixava el creador. El que ja s'havia baixat es conserva.",
  "fix.private": "Si és una finestra privada o d'incògnit, obre la pàgina en una finestra normal: les finestres privades tenen molt poc espai.",
  "fix.freeDisk": "Allibera almenys {gb} GB al disc d'aquest dispositiu (buida la paperera, esborra baixades grans) i torna-ho a provar.",
