@@ -374,6 +374,31 @@ def semantic_table(kind, params, tool_root=None):
         spec.loader.exec_module(value)
         return value
 
+    if kind == 'legacy_technique_slots':
+        if params:
+            raise ValueError('legacy technique slots take no parameters')
+        import csv
+        result = bytearray()
+        seen = set()
+        path = root / 'docs/proposals/technique-coherence.csv'
+        with path.open(newline='', encoding='utf-8') as stream:
+            for row in csv.DictReader(stream):
+                current = json.loads(row['current_slots_json'])
+                desired = json.loads(row['option_a_slots_json'])
+                if current == desired:
+                    continue
+                ident = int(row['id'])
+                if (ident in seen or not 0 <= ident <= 0xffff or not isinstance(current, list)
+                        or not 1 <= len(current) <= 16
+                        or any(value is not None and (type(value) is not int or not 0 <= value <= 255)
+                               for value in current)):
+                    raise ValueError('invalid legacy technique slot record')
+                seen.add(ident)
+                moves = [255 if value is None else value for value in current]
+                result.extend(struct.pack('<H16B', ident, *(moves + [255] * (16 - len(moves)))))
+        if not result:
+            raise ValueError('legacy technique slot records are missing')
+        return bytes(result)
     if kind == 'care_hud_layout':
         if params:
             raise ValueError('care HUD layout takes no parameters')

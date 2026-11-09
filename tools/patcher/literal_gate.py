@@ -387,6 +387,8 @@ def check_release(release, manifest, base_paths, source_discs, build_dirs, *, pl
                          for name, plan in (plans or {}).items() if plan is not None},
                   json_files={str(path.relative_to(release)): audit.digest(path)
                               for folder in ('bases', 'bundle') for path in sorted((release/folder).rglob('*.json'))},
+                  generator_resources={str(path.relative_to(release)): audit.digest(path)
+                                       for path in sorted((release/'bundle').rglob('*.csv'))},
                   runtime={name: audit.digest(release/name) for name in ('dwpatch.py', 'isowriter.py', 'fontcopy.py')
                            if (release/name).exists()},
                   audit_tools={name: audit.digest(Path(__file__).with_name(name)) for name in
