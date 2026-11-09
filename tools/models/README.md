@@ -265,3 +265,13 @@ run is an 8-tick cycle with lean, hard arm drive and an airborne phase against
 the 14-tick walk, at the reviewed field speeds (`upright_gait.py` holds the
 pieces both modules share). The result is stored in the plain delta and the
 `flamedramon-field` overlay is no longer applied.
+
+ExVeemon (194) keeps its reviewed clips with two repairs in
+`field_animations/exveemon.py`. The tail turns only about a third as far from
+its mean in the idle, walk, condition walk and run, so it still sways at half
+the size. In the walks the swinging ankle came up almost to the hip and the
+knee flipped up through the belly: the legs are solved again with the knee
+forward and out to its own side, the swing ankle capped in height (its foot
+turned toward standing as far as it was lowered), and the condition walk's
+dragging feet held mostly on their footprints. The body is kept on its claws at
+the ticks and the 60 fps thirds.
