@@ -133,3 +133,9 @@ GARBAGEMON_AFTER=AFTER.MMD PYTHONPATH=tools python3 -W ignore -m unittest
 tools.test_garbagemon_attachment`. It checks the attachment and grounding over
 every occupied clip, unchanged acting and semantic events, absence of wing
 cues, and original-console resident/cold-animation storage limits.
+
+Valkyrimon (255) uses a uniform 0.8 resize and native Angemon field motion,
+with its existing rig and chibi proportions. The offline authoring recipe is
+`field_animations/valkyrimon.py`; player builds replay the plain delta.
+[The motion notes](../../docs/reference/valkyrimon-motion.md) record the source
+mismatch, size comparison, replay commands and original-console checks.
