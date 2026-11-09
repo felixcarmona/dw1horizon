@@ -61,6 +61,13 @@ scene's walking route and its talking approach from both arrivals with chest
 collision present. The guide and wiki tests distinguish old and fixed sources
 in all nine languages. The world audit can additionally compare against built
 maps. `tools/dev/playtest/mushroomon_walk.py` reuses the recorded-walk driver with
-clock/stat writes and partner repositioning disabled; it boots a fresh game
-using only pad input and requires exactly 2 MB RAM. Runtime evidence and any
-remaining limitations are recorded in the investigation report.
+clock/stat writes and partner repositioning disabled and requires exactly 2 MB
+RAM. It can boot a fresh game or load an exact-disc `--checkpoint`. For the
+short route check, `--prepare-rockslide` sets only T106 before walking; the
+checkpoint may contain stat boosts applied through the normal Cheats menu.
+The driver captures each visited screen and logs the walking coordinates.
+`tools/dev/playtest/mushroomon_recruitment.py` attaches at the talking approach
+on 234, checks the unrecruited actor has 1200 HP, and records the conversation,
+real fight, join message and return to field control. It only reads RAM and
+presses the pad. Both drivers write screenshots and structured evidence to
+their output directory.

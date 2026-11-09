@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """Pad-only Mushroomon route checks on original 2 MB RAM.
 
-Boot with --new-game, then supply --tour JSON (the recorded-walk tour format).
+Boot with --new-game, or load an exact-disc --checkpoint, then supply --tour JSON.
 The first seven quiz answers are A,B,A,A,A,A,A (Renamon). All world progress,
-care, battles and gates must be played. No warps, state edits, clock freezes,
-HP refills or partner repositioning are permitted. The emulator stays running.
+care, battles and gates are played unless --prepare-rockslide explicitly sets T106
+before the recorded route. No warps, position edits, clock freezes,
+direct stat refills or partner repositioning are permitted. A checkpoint may
+include boosts made through the normal Cheats menu. The emulator stays running.
 """
 import argparse
 import heapq
@@ -31,9 +33,15 @@ def main():
     p.add_argument('--new-game', action='store_true')
     p.add_argument('--difficulty', choices=('normal', 'easy'), default='normal',
                    help='select through the native title OPTIONS before a new game')
+    p.add_argument('--checkpoint', type=Path, help='control checkpoint from this exact disc')
+    p.add_argument('--prepare-rockslide', action='store_true', help='set only T106 before pad-only verification')
     p.add_argument('--tour', type=Path)
-    p.add_argument('--escape-wilds', action='store_true', help='use Run in escapable battles (requires pyelftools)')
+    p.add_argument('--escape-wilds', action='store_true', help='use Run in escapable battles; this retreats to the previous screen (requires pyelftools)')
     args = p.parse_args()
+    if args.checkpoint and args.new_game:
+        p.error('--checkpoint and --new-game are mutually exclusive')
+    if args.prepare_rockslide and not args.checkpoint:
+        p.error('--prepare-rockslide requires --checkpoint')
     args.out.mkdir(parents=True, exist_ok=True)
     e = Emu(args.disc, args.exe, args.port, str(args.out / 'emu'))
     def read_ram():
@@ -46,6 +54,13 @@ def main():
 
     def forbidden(*a, **kw):
         raise RuntimeError('pad-only run: state writes and partner repositioning are forbidden')
+    if args.checkpoint:
+        e.start(None)
+        e.run('load', str(args.checkpoint))
+        e.run('resume')
+    if args.prepare_rockslide:
+        e.gs('trigger', '106', '1')
+        e.run('save', str(args.out / 'prepared.state'))
     e.poke = forbidden
     radii = {row['id']: row.get('model', {}).get('radius', 100)
              for path in (ROOT / 'content/species').glob('*.json')
@@ -141,6 +156,8 @@ def main():
                     e.press('SQUARE', 8)
                 time.sleep(.3)
                 return True
+            if e.peek('GAME_STATE', 'H', ram) == 1:
+                e.press('SQUARE', 8)  # request the normal finisher when ready
             if e.peek('GAME_STATE', 'H', ram) == 0 and e.peek('IS_IN_MENU', 'B', ram):
                 e.press('CANCEL', 12)
                 time.sleep(.3)
@@ -157,6 +174,8 @@ def main():
         tour.handle_events = handle_events
         class PadRoute(tour.Seg):
             def __init__(self, mapfile):
+                screen = e.peek('CURRENT_SCREEN', 'h')
+                e.run('shot', str(args.out / f'screen-{screen}.png'))
                 self.m = tour.dwmap.MapFile(Path(mapfile).read_bytes())
                 self.vp, self.bx, self.by, self.bz = tour.dwmap.camera_basis(self.m)
                 ram = e.ram()
@@ -187,6 +206,12 @@ def main():
                         return q
                     return min(self.R, key=lambda n: (n[0] - p[0]) ** 2 + (n[1] - p[1]) ** 2)
                 start, goal = snap(a), snap(b)
+                goal_trigger = self.m.collision[tour.reach.row(b[1]) * 100 + tour.reach.col(b[0])]
+                def allowed(point):
+                    trigger = self.m.collision[tour.reach.row(point[1]) * 100 + tour.reach.col(point[0])]
+                    # A physical path through another exit leaves the map
+                    # before the waypoint. Keep those exits out of this leg.
+                    return not 110 <= trigger < 120 or trigger == goal_trigger
                 distance = lambda n: max(abs(n[0] - goal[0]), abs(n[1] - goal[1])) // 10
                 queue = [(distance(start), 0, start)]
                 costs, previous = {start: 0}, {start: None}
@@ -199,7 +224,7 @@ def main():
                     for dx, dz in ((10, 0), (-10, 0), (0, 10), (0, -10),
                                    (10, 10), (10, -10), (-10, 10), (-10, -10)):
                         nxt = (point[0] + dx, point[1] + dz)
-                        if nxt in self.R and cost + 1 < costs.get(nxt, float('inf')):
+                        if nxt in self.R and allowed(nxt) and cost + 1 < costs.get(nxt, float('inf')):
                             costs[nxt], previous[nxt] = cost + 1, point
                             heapq.heappush(queue, (cost + 1 + distance(nxt), cost + 1, nxt))
                 if goal not in previous:
