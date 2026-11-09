@@ -433,3 +433,4 @@ Restore-FRAME-RATE-with-AUTO-and-explicit-60-or-20.patch
 Choose-the-frames-a-tick-shows-from-what-the-last-ticks-cost.patch
 Show-the-title-popup-only-for-detected-enhancements.patch
 Restore-the-v0.0.7-missing-settings-title-notice.patch
+Restore-the-native-disliked-habitat-mood-blink.patch

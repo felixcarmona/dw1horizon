@@ -1,0 +1,51 @@
+From 06a64058c4fc6b3c628ae6f2a2a6ca35f6cb68d5 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Mon, 9 Nov 2026 08:44:19 +0000
+Subject: [PATCH] Restore the native disliked-habitat mood blink
+
+Select the original worse expression for five of every ten play ticks. Keep the atlas on disc, preserve gauge fills and draw packets, and share phase and CLUT calculations to leave the aligned heap unchanged.
+---
+ src/main/partner_impl.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
+
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index df00abf..15e3144 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -2367,7 +2367,7 @@ static void renderCareHUD(void)
+ 		{1,1,1,1,39,39,39},
+ 		{72,72,86,86,65,79,93}
+ 	};
+-	int32_t i, value, max, red, icon, x, y, pixels, active, warn, period, dim;
++	int32_t i, value, max, red, icon, x, y, pixels, active, warn, period, dim, clut;
+ 	for (i = 0; i < 5; i++) {
+ 		max = 100;
+ 		icon = i + 2;
+@@ -2434,14 +2434,19 @@ static void renderCareHUD(void)
+ 		pixels = ((uint32_t)value * 18 + (uint32_t)max / 2) / (uint32_t)max;
+ 		if (value && !pixels)
+ 			pixels = 1;
+-		/* 20 play ticks per phase: one second normal, one second dim. */
+-		dim = !active && warn && PLAYTIME_FRAMES % 40 >= 20 ? 8 : 0;
++		uint32_t phase = PLAYTIME_FRAMES / 5;
++		/* One shared quotient preserves the 5-tick face and 20-tick warning phases. */
++		dim = ((!active) & warn & (phase >> 2)) << 3;
++		clut = getClut(272, 500 + icon + active * 4);
++		/* Native disliked-habitat phase: five worse-face ticks, five normal. */
++		if (i == 0 && MAP_TILE_DATA.partnerAreaResponse == 2 && !(phase & 1))
++			clut = getClut(272, 511) - icon;
+ 		/* Warning dimming affects the outlined bar, never the icon. */
+-		renderRectPolyFT4(x, y, dim ? 13 : 34, 13, uv[0][icon], uv[1][icon], 31, GetClut(272, 500 + icon + active * 4), 14, 0);
++		renderRectPolyFT4(x, y, dim ? 13 : 34, 13, uv[0][icon], uv[1][icon], 31, clut, 14, 0);
+ 		if (dim)
+-			renderRectPolyFT4(x + 14, y + 5, 20, 4, uv[0][icon] + 14, uv[1][icon] + 5, 31, GetClut(272, 500 + icon), 14, dim);
++			renderRectPolyFT4(x + 14, y + 5, 20, 4, uv[0][icon] + 14, uv[1][icon] + 5, 31, clut, 14, dim);
+ 		if (pixels)
+-			renderRectPolyFT4(x + 15, y + 6, pixels, 2, i < 2 ? 144 : 164, i < 2 ? 251 + red * 2 : 251, 31, GetClut(272, 507), 13, dim);
++			renderRectPolyFT4(x + 15, y + 6, pixels, 2, i < 2 ? 144 : 164, i < 2 ? 251 + red * 2 : 251, 31, getClut(272, 507), 13, dim);
+ 	}
+ }
+ 
+-- 
+2.55.0
+
