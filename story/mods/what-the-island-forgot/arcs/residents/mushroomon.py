@@ -1,9 +1,9 @@
-# Mt. Panorama's Spore Area 21: Mushroomon sneezes spores at whoever passes. A fight at the mountain's wild strength; its
+# Mt. Panorama's Spore Area 234: Mushroomon sneezes spores at whoever passes. A fight at the mountain's wild strength; its
 # home is the Clinic (city/centar-clinic.py).
 from dw import *
 
-area = screen(Screen.mt_panorama_spore_area_21)
-mushroomon = area.npc(Species.Mushroomon, at=(-450, 100), hp=1200, mp=2000, offense=300, defense=150, speed=120, brain=100, bits=300,
+area = screen(Screen.mt_panorama_spore_area_234)
+mushroomon = area.npc(Species.Mushroomon, at=(-450, -900), hp=1200, mp=2000, offense=300, defense=150, speed=120, brain=100, bits=300,
                       range=0, still=True, when=not recruited(Species.Mushroomon))
 
 

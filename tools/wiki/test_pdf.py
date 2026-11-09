@@ -66,7 +66,7 @@ class ExtractedTests(unittest.TestCase):
                             self.assertNotIn(prefix,before); self.assertIn(prefix,after)
                 for recruit in self.data['recruits']:
                     if recruit['name']=='Bakemon': continue
-                    method=normalized(strings['data.recruit.method.'+str(recruit['id'])])[:100]
+                    method=normalized(strings[model.recruits.text_key(recruit, 'method')])[:100]
                     if len(method)>30:
                         self.assertNotIn(method,before)
                         self.assertIn(method,after)

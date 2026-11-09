@@ -561,8 +561,8 @@
  "data.recruit.when.251": "Entra al Santuari de Gel amb un company Vacuna.",
  "data.recruit.method.257": "Parla-hi i guanya el combat.",
  "data.recruit.when.257": "A qualsevol hora.",
- "data.recruit.method.263": "Parla-hi i guanya el combat.",
- "data.recruit.when.263": "A qualsevol hora.",
+ "data.recruit.method.263": "Des del nord del Bosc nadiu, segueix el Camí del Panorama cap al nord fins a la Zona d'espores, i després la sortida de baix fins a la següent. Mushroomon espera a l’esquerra, sota l’ovni. Parla-hi i guanya el combat.",
+ "data.recruit.when.263": "A qualsevol hora. La ruta pel nord del bosc s’obre després de l’esllavissada de la història del Túnel del trepant; no cal cap objecte especial.",
  "data.recruit.method.267": "Parla-hi i guanya el combat.",
  "data.recruit.when.267": "A qualsevol hora.",
  "data.recruit.method.273": "Dona-li una Nou dolça (es consumeix).",
@@ -678,5 +678,7 @@
   "wiki.pdfTitle": "Descarrega la guia en PDF",
   "wiki.pdfWarning": "Tot el que apareix després d’aquesta pàgina revela secrets.",
   "wiki.pdfContents": "Índex",
-  "wiki.pdfSpoilers": "ESPÒILERS — apèndix"
+  "wiki.pdfSpoilers": "ESPÒILERS — apèndix",
+ "data.recruit.method.263.unreachable": "Aquesta versió situa Mushroomon en una Zona d’Espores sense entrada a peu. Actualitza a una versió que inclogui la correcció del seu reclutament.",
+ "data.recruit.when.263.unreachable": "Inaccessible jugant amb normalitat en aquesta versió; esperar o dur un objecte no farà que aparegui."
 }

@@ -79,10 +79,27 @@ class RecruitTests(unittest.TestCase):
             self.assertIn(strings['data.recruit.search'], page)
             self.assertIn(strings['data.recruit.table'], page)
             for row in self.rows:
-                self.assertIn(strings[f'data.recruit.method.{row["id"]}'], page)
+                self.assertIn(strings[recruits.text_key(row, 'method')], page)
                 if lang == 'en':
-                    self.assertEqual(strings[f'data.recruit.method.{row["id"]}'], row['method'])
-                    self.assertEqual(strings[f'data.recruit.when.{row["id"]}'], row['when'])
+                    self.assertEqual(strings[recruits.text_key(row, 'method')], row['method'])
+                    self.assertEqual(strings[recruits.text_key(row, 'when')], row['when'])
+
+    def test_mushroomon_location_and_advice_follow_the_game_snapshot(self):
+        self.assertEqual(self.by_id[263]['screens'], [21])
+        self.assertIn('no walking entrance', self.by_id[263]['method'])
+        files = dict(self.files)
+        path = 'story/mods/what-the-island-forgot/arcs/residents/mushroomon.py'
+        files[path] = files[path].replace(b'Screen.mt_panorama_spore_area_21',
+                                        b'Screen.mt_panorama_spore_area_234')
+        row = next(r for r in recruits.load(files, self.species) if r['id'] == 263)
+        self.assertEqual(row['screens'], [234])
+        self.assertIn('northern Native Forest', row['method'])
+        self.assertIn('rockslide', row['when'])
+        self.assertEqual(recruits.text_key(row, 'method'), 'data.recruit.method.263')
+        files[path] = files[path].replace(b'Screen.mt_panorama_spore_area_234',
+                                        b'Screen.mt_panorama_plains')
+        with self.assertRaisesRegex(ValueError, 'known location variant'):
+            recruits.load(files, self.species)
             self.assertNotIn('Search ', page if lang != 'en' else '')
 
     def test_names_follow_runtime_and_places_follow_game_terms(self):

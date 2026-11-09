@@ -561,8 +561,8 @@
  "data.recruit.when.251": "Entra nel Santuario di Ghiaccio con un compagno Vaccino.",
  "data.recruit.method.257": "Parlagli e vinci lo scontro.",
  "data.recruit.when.257": "A qualsiasi ora.",
- "data.recruit.method.263": "Parlagli e vinci lo scontro.",
- "data.recruit.when.263": "A qualsiasi ora.",
+ "data.recruit.method.263": "Dal nord della Foresta natia, segui il Sentiero del Panorama verso nord fino alla Zona spore Panorama, poi l’uscita in basso verso la successiva. Mushroomon aspetta a sinistra, sotto l’UFO. Parlagli e vinci lo scontro.",
+ "data.recruit.when.263": "A qualsiasi ora. La via a nord della foresta si apre dopo l’evento della frana nel Tunnel trivella; non serve alcun oggetto speciale.",
  "data.recruit.method.267": "Parlagli e vinci lo scontro.",
  "data.recruit.when.267": "A qualsiasi ora.",
  "data.recruit.method.273": "Dagli una Noce dolce (consumata).",
@@ -678,5 +678,7 @@
   "wiki.pdfTitle": "Scarica la guida PDF",
   "wiki.pdfWarning": "Tutto ciò che segue questa pagina rivela segreti.",
   "wiki.pdfContents": "Indice",
-  "wiki.pdfSpoilers": "SPOILER — appendice"
+  "wiki.pdfSpoilers": "SPOILER — appendice",
+ "data.recruit.method.263.unreachable": "Questa versione colloca Mushroomon in una Zona delle Spore inutilizzata senza accesso a piedi. Aggiorna a una versione con la correzione del suo reclutamento.",
+ "data.recruit.when.263.unreachable": "Inaccessibile giocando normalmente in questa versione; aspettare o portare un oggetto non lo farà apparire."
 }

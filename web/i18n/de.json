@@ -561,8 +561,8 @@
  "data.recruit.when.251": "Das Eisheiligtum mit einem Impfstoff-Partner betreten.",
  "data.recruit.method.257": "Ansprechen und den Kampf gewinnen.",
  "data.recruit.when.257": "Jederzeit.",
- "data.recruit.method.263": "Ansprechen und den Kampf gewinnen.",
- "data.recruit.when.263": "Jederzeit.",
+ "data.recruit.method.263": "Gehe vom Norden des Urwaldes auf dem Panoramapfad nach Norden ins Panorama-Sporengebiet und dann durch den unteren Ausgang ins nächste Sporengebiet. Mushroomon wartet links unterhalb des UFOs. Sprich es an und gewinne den Kampf.",
+ "data.recruit.when.263": "Jederzeit. Der Weg durch den nördlichen Wald öffnet sich nach dem Erdrutsch-Ereignis im Bohrtunnel. Kein besonderer Gegenstand nötig.",
  "data.recruit.method.267": "Ansprechen und den Kampf gewinnen.",
  "data.recruit.when.267": "Jederzeit.",
  "data.recruit.method.273": "Eine Süße Nuss geben (wird verbraucht).",
@@ -678,5 +678,7 @@
   "wiki.pdfTitle": "PDF-Leitfaden herunterladen",
   "wiki.pdfWarning": "Alles nach dieser Seite verrät Geheimnisse.",
   "wiki.pdfContents": "Inhalt",
-  "wiki.pdfSpoilers": "SPOILER — Anhang"
+  "wiki.pdfSpoilers": "SPOILER — Anhang",
+ "data.recruit.method.263.unreachable": "Diese Version platziert Mushroomon in einem ungenutzten Sporengebiet ohne Zugang zu Fuß. Aktualisiere auf eine Version mit der Korrektur für Mushroomons Rekrutierung.",
+ "data.recruit.when.263.unreachable": "In dieser Version im normalen Spiel unerreichbar. Warten oder ein Gegenstand lässt es nicht erscheinen."
 }

@@ -21,6 +21,18 @@ class WikiTests(unittest.TestCase):
         self.assertIsNone(self.data['facts']['hard'])
         self.assertIsNotNone(model.load('origin/main')['facts']['hard'])
 
+    def test_mushroomon_article_explains_the_unreachable_released_placement(self):
+        spec=importlib.util.spec_from_file_location('wiki_recruit_route',Path(__file__).with_name('build.py'))
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        row=next(r for r in self.data['recruits'] if r['id']==263)
+        for lang in model.LANGS:
+            articles=json.loads((model.ROOT/f'web/wiki/articles/{lang}.json').read_text())
+            pages=module.Pages(Path('unused'),self.data,lang,articles)
+            html=pages.recruit(row)
+            strings=json.loads((model.ROOT/f'web/i18n/{lang}.json').read_text())
+            self.assertIn(strings['data.recruit.method.263.unreachable'], html)
+            self.assertNotIn(strings['data.recruit.method.263'], html)
+
     def test_new_single_block_patch_changes_the_fact(self):
         files=dict(self.data['files'])
         files['mods/patches/series']+=b'\nwiki-save-fixture.patch\n'

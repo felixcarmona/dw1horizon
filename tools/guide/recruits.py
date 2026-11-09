@@ -59,6 +59,14 @@ def load(files, species):
         if 'npc_source' in row:
             source, member = row['npc_source']
             tree = ast.parse(files[source].decode())
+            if 'location_variants' in row:
+                screens = {ast.unparse(n.args[0]) for n in ast.walk(tree)
+                           if isinstance(n, ast.Call) and isinstance(n.func, ast.Name)
+                           and n.func.id == 'screen' and n.args}
+                variants = [v for v in row['location_variants'] if v['source'] in screens]
+                if len(variants) != 1:
+                    raise ValueError(f'Review recruit {ident}: expected one known location variant')
+                row.update({k: v for k, v in variants[0].items() if k != 'source'})
             calls = [n for n in ast.walk(tree) if isinstance(n, ast.Call)
                      and isinstance(n.func, ast.Attribute) and n.func.attr == 'npc'
                      and n.args and isinstance(n.args[0], ast.Attribute) and n.args[0].attr == member]
@@ -68,6 +76,11 @@ def load(files, species):
             row['hp'] = ast.literal_eval(attrs['hp']) if 'hp' in attrs else None
         result.append(row)
     return result
+
+
+def text_key(row, field):
+    """Reviewed text for the placement in this game snapshot."""
+    return f'data.recruit.{field}.{row["id"]}{row.get("text_suffix", "")}'
 
 
 def screen_names(files, lang):

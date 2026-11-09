@@ -20,7 +20,7 @@ more model, so Hawkmon, Pumpkinmon and Triceramon moved too.
 | `knightmon.py` | Knightmon | Mt. Infinity 222 | The hardest fight. |
 | `kotemon.py` | Kotemon | Ogre Fortress 45 | Fight, no escape; only once the fortress has fallen. |
 | `mammothmon.py` | Mammothmon | Freezeland 94 | End-game fight. |
-| `mushroomon.py` | Mushroomon | Mt. Panorama Spore Area 21 | Fight. |
+| `mushroomon.py` | Mushroomon | Mt. Panorama Spore Area 234 | Fight. |
 | `phantomon.py` | Phantomon | Grey Lord's Mansion 56 | Fight, from 20:00. |
 | `pumpkinmon.py` | Pumpkinmon | Toy Mansion 147 | Fight, from 20:00. |
 | `starmon.py` | Starmon | Mt. Panorama Spore Area 233 | Fight. |
