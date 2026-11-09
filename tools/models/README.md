@@ -145,6 +145,14 @@ with its existing rig and chibi proportions. The offline authoring recipe is
 [The motion notes](../../docs/reference/valkyrimon-motion.md) record the source
 mismatch, size comparison, replay commands and original-console checks.
 
+Aquilamon (188) had one 89-tick flight flap in its idle, walk, condition walk
+and run, the whole bird climbing about 300 units on every downstroke and gliding
+back to the floor. `field_animations/aquilamon.py` keeps that flap and holds the
+bird at a steady hover (the climb scaled to 15-22%, the wing tips just clearing
+the floor at the bottom of the downstroke); the walk plays the beat 1.25 times
+faster and the run twice as fast, pitched further nose-down:
+`--source build/everything/imported-models/188.MMD --out AFTER.MMD`, then
+`tools/models/edit.py --from build/everything put 188 AFTER.MMD`.
 Armadillomon (185) held its head level or lowered in the field idle, walk and
 run, so the shell's front rim covered the brow. `field_animations/armadillomon_head.py`
 adds one constant lift to the head joint in those clips (and the condition walk),
