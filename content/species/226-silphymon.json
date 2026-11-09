@@ -22,7 +22,7 @@
                      [59, 55], [60, 52], [52, 55]]
   },
   "texture": {"file": "build/batch4/Sylphymon.TIM", "entry": 0},
-  "voice": 19,
+  "voice": 42,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -93, -19, 3],
   "effect_origins": [[3, 135, -10, 0, 3, 11, 27, -120], [3, 135, -52, 0, 3, 11, 66, -114],
@@ -37,7 +37,7 @@
     "natural": {"height": 450.8, "half_width": 227.9, "half_depth": 250.1}
   },
   "partner": {
-    "voice": 4,
+    "voice": 3,
     "hunger_hours": [2, 7, 12, 17, 21],
     "energy_max": 80,
     "energy_fed": 45,

@@ -585,8 +585,8 @@ collision height alone does not resize the mesh. A uniform 0.80 bake reduces
 the idle to about 467 units while retaining the reviewed chibi proportions.
 Every animation translation, radius, height, bubble, target effect attachment
 and status framing follows that scale. The original donor-side effect lookup
-coordinates stay exact. Field cycles are shortened proportionately to retain
-their follow pace.
+coordinates stay exact. The initial repair shortened field cycles to retain
+follow pace; the Leomon follow-up below uses the native feline cadence.
 
 Seven technique slots previously selected the same imported dive program:
 Megalo Spark, Thunder Justice, Spinning Shot, Wind Cutter, Electric Cloud,
@@ -594,36 +594,64 @@ Buster Dive and Death Claw (slots 46, 48, 49, 51, 52, 55 and 59); Hurricane and 
 Storm share Tremar, and the kick/punch/counter share Static Elect. The dive's
 carrier rises from -231 to -588, explaining the upright launch before shots.
 
-`tools/models/silphymon_attacks.py` replaces all fourteen attacks with authored
-clips using each technique's actual native clock and voice cues. Angemon
-supplies the Air techniques, kick and Counter; Devimon supplies Thunder
-Justice, Megaton Punch and Death Claw; Kokatorimon supplies Tremar; Patamon
-supplies Buster Dive. The recipe maps torso/head/arm acting onto the imported
-rig, eases into and out of its support stance, and adds anticipation, delayed
-ears/tail, a kick and recovery. The boots remain grounded in shots. Buster
-Dive alone retains Patamon's exact entity trajectory, including 825 units of
-travel during collision samples 22–33, after the body is resized.
+The initial attack repair is reproducible with
+`tools/models/silphymon_attacks.py`. The follow-up
+`tools/models/silphymon_leomon.py` fits native Leomon's motion to that resized
+model: field/battle idle, walk, condition walk, run, hit, faint, get up, care
+and attacks. It keeps the reviewed crouch and head/ear silhouette (about 467
+units tall) and loose guard, and solves native foot paths with Silphymon's own
+leg lengths. The unarmed field arm follows Leomon's free-arm motion. Ears respond two ticks behind the head.
 
-The player build replays the ordinary pinned model delta; this is an offline
-authoring tool. No engine patch or main executable bytes are added. The model
-uses 99,504 of the fixed 100,352 resident bytes and cold reads at most 4,096
-of 8,192 bytes. Care rotations, clocks and events remain exact; one-unit carrier rounding
-errors are closed so repeating idles and care clips cannot accumulate drift.
+Leomon supplies the matching physical, Static Elect and Megalo Spark
+references. Its projectile fist supplies the remaining Air casts and Death
+Claw, resampled to the existing technique clocks. Technique durations, effect
+and sound timing, and integer entity-motion programs remain exact. In
+particular, Buster Dive retains Patamon's 825-unit collision-window travel.
+The voice banks are Leomon's 42 / 3, matching SaberLeomon, Lynxmon and Gryphonmon.
+Those three share voice/step choices, but their original motion donors are
+Monochromon, Drimogemon and Unimon respectively; shared voices alone do not
+make them Leomon motion references.
 
-For local review, reconstruct the parent model with `tools/models/edit.py get
-226 build/silphymon/before`, then run:
+Rotation fitting permits twelve angle units (about one degree). The encoded
+support translation is corrected separately with zero fitting tolerance,
+including intermediate display samples, so that compression cannot sink boots
+through the floor. Standing strikes keep the fitted support stance while the
+native pelvis turn carries into the chest. The kick solves Leomon's foot path
+on the shorter legs; Buster Dive uses whole-body contact during its tumble.
+Long hands and tail feathers receive bounded clearance turns, eased around
+the native curves. Clearance tests include the whole mesh, not just the soles.
+The previous blocking clip is retained: the native kneeling guard does not fit
+this rig's long tail cleanly. The resident model uses 94,270 of 100,352 bytes;
+cold reads remain within 8,192 bytes. No C, main executable allocation or engine patch
+is added. The player build replays the ordinary pinned model delta.
+
+Reconstruct the first revision with the previous recipe, then:
 
 ```sh
-python3 tools/models/silphymon_attacks.py \
-  build/silphymon/before/226-Silphymon.MMD \
-  build/silphymon/after/226-Silphymon.MMD
-PYTHONPATH=tools python3 -W ignore -m unittest tools.test_silphymon_attacks
+python3 tools/models/silphymon_leomon.py FIRST-REVISION.MMD AFTER.MMD
+PYTHONPATH=tools python3 -W ignore -m unittest tools.test_silphymon_leomon
 python3 tools/models/edit.py check 226 --species-pins
 ```
 
-The decoded checks cover distinct technique programs, native durations and
-sound events, stationary support at 20 Hz keys and both intervening display
-samples, preserved care acting and scaled mesh data, field pace, dash reach and storage.
-Review frames with `tools/animstudio.py` using a shared world scale for the
-before/after and native reference rows. These local images contain disc assets
-and stay outside the repository.
+The regression assets use `build/silphymon/after/226-Silphymon.MMD` for the
+first revision and `build/silphymon/leomon/226-Silphymon.MMD` for the follow-up.
+Tests verify replay, unchanged resized mesh, fixed buffers, native cadence,
+closed loops, effect clocks/events, exact dash trajectory and encoded support.
+
+Use videos for visual review. `tools/dev/playtest/silphymon_video.py` records
+captioned field slot playback in the actual emulator and separate real battle
+attempts for every technique and the finisher. It accepts the same `EMU_PORT`,
+`DW_SYMS`, disc, archive and card inputs as the species proof. Field slot
+playback holds partner AI and calls the engine's animation entry point; it
+is labelled accordingly and does not prove free following or combat damage.
+Battle mode starts from a fresh card boot, equips the moves in the normal
+combat engine and records damage in `evidence.json`. It uses the standard
+technique-proof setup and starts a short recording when the requested slot
+is first observed; a retry starts a fresh live encounter. HP/MP are test values.
+With `--scripted-counter`, an explicitly captioned fallback calls the combat
+engine's queued-move entry point if natural Counter does not trigger. It proves
+battle playback, not natural Counter selection. Field/follow checkpoints are
+for visual review. Battle videos are silent to retain the standard test driver
+timing; field clips include SPU audio. Compare with native Leomon and use
+`tools/animstudio.py video` for additional donor comparisons. Videos contain
+disc assets and are not committed.
