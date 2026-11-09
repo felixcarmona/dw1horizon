@@ -546,6 +546,14 @@ class Module:
             ent, why = self.claims.talk_section(sc['script'], sc['ids'], slot, key)
             if why:
                 self.notes.append(f'{self.path}:{v.lineno}: note: {name} (slot {slot} of screen {sc["ids"][0]}) answers on talk section {ent}: {why}')
+        if 'section' in kw:
+            if not sc['new']:
+                raise self.err(kw['section'], 'npc(section=) is only for a new screen')
+            ent = self.int_const(kw['section'])
+            if not 5 <= ent <= 50:
+                raise self.err(kw['section'], 'an NPC talk section must be 5-50')
+        if sc['new'] and any(d.get('screen') == scr and d['entity'] == ent for d in self.npcs.values()):
+            raise self.err(v, f'talk section {ent} already belongs to another NPC of this screen')
         self.npcs[name] = {'screen': scr, 'slot': slot, 'species': sp, 'entity': ent, 'kw': kw, 'node': v}
 
     RENAMED = {'appears': 'when', 'like_slot': 'behaves_like', 'off': 'offense', 'exit': 'entry', 'ticks': None}
