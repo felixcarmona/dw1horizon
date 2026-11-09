@@ -121,37 +121,33 @@ existing deadline checks may skip passes that cannot fit. 20 requests one.
 Battle speed and 20 Hz logic are unchanged.
 An `FPS=20` developer build still compiles out extra passes.
 
-At Press Start, a popup appears only when the game detects **8 MB RAM or a
-fast CPU** (at least 8500 polling iterations over 16 scanlines, approximately
-250% in the measured DuckStation configuration). A plain **2 MB / normal-CPU
-boot shows nothing**, even with an explicit 60 FPS request. Both enhancements
-together still show the popup. These settings are optional; the other eight
-languages retain original 2 MB support.
+At Press Start, the v0.0.7 popup appears when **either 8 MB RAM or the CPU
+boost is missing**. A 2 MB / 100% boot shows it; 8 MB / 250% shows nothing.
+Both one-missing cases show it. CPU readiness uses at least 8500 polling
+iterations over 16 scanlines, approximately 250% in the measured DuckStation
+configuration. These settings remain optional; the other eight languages retain
+original 2 MB support.
 
-The earlier 296 × 72 blue-bordered popup and two-column RAM/CPU readiness rows
-return. Its heading identifies detected enhancements; the second line names the
-selected `20 FPS`, `30 FPS` or `60 FPS` cadence from `modFrameRateLevel()`.
-The always-visible panel's AUTO/RAM hints and approximate CPU percentage are
-removed. The rate is a cadence request, not a measurement of frames presented in
-a busy scene, and does not determine popup visibility.
+The v0.0.7 presentation is restored in all nine languages: the 296 × 72 blue
+border, “Emulator settings for smoother play”, “if you turn on these options:”,
+and two columns showing “8 MB RAM” and “CPU overclock at 250%”, each with its own
+red NOT DETECTED or green READY status. There is **no frame-rate line**.
+The workload-based AUTO ladder and OPTIONS choices are unchanged.
 
 The popup uses the boot RAM result and latest CPU sample, redrawing when that
-sample or selected cadence changes. Press Start does not run the idle-wait
-sampler, so a fresh boot uses the boot CPU reading. Drawing and scratch remain
-in the title overlay, loaded after the intro movie before the Press Start
-callback. Localized popup text lives in MENU, loaded alongside the title UI.
+sample changes. Press Start uses the boot CPU reading. Drawing and scratch
+remain in the title overlay; localized text lives in MENU alongside it.
 Texture updates preserve the version's separate atlas row.
 
-Historical detail: before `c9728e12` the notice instead appeared when either
-enhancement was **missing**. The restored presentation follows the requested
-presence rule above; copying that old condition verbatim would still cover a
-standard boot. The AUTO ladder introduced after that commit remains unchanged.
+PR #363 reversed the historical condition and replaced the second advice line
+with a cadence label. The v0.0.7 tag's patch series and localized names establish
+the restored condition, wording, readiness rows and layout.
 
 `python3 tools/test_title_panel.py build/decomp-dev` checks the applied popup's
-visibility, CPU threshold, all three cadence labels, redraws and version atlas
-row. `tools/dev/playtest/title_popup.py` clean-boots normal 2 MB, 8 MB and 250%
-CPU cases in DuckStation using real emulator settings, with a screenshot and
-probe values for each; its docstring gives the command and private-port setup.
+truth table, CPU threshold, advice, readiness rows, redraws and version atlas row,
+independently of frame-rate choices. `tools/dev/playtest/title_popup.py` clean-boots
+all four RAM/CPU combinations in DuckStation using real emulator settings,
+recording screenshots and probe values.
 
 The 16-scanline probe still updates CPU advice during spare waits, but AUTO depends only on the workload.
 Fast cores can select 60 even when their polling-loop result is ordinary. Diagnostic policy 4 retains the old

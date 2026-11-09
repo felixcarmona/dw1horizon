@@ -161,29 +161,26 @@ def confirmation_problems(key, value, font, language):
 
 
 # Match modNoticeDraw crops; the renderer adds one shadow pixel outside each field.
-NOTICE_FIELDS = {'HEAD1': (254, None), 'FPS': (254, (20, 30, 60)),
-                 'RAM': (150, None), 'CPU': (150, None),
-                 'MISSING': (120, None), 'READY': (120, None)}
+NOTICE_FIELDS = {'HEAD1': 254, 'HEAD2': 254, 'RAM': 150, 'CPU': 150,
+                 'MISSING': 120, 'READY': 120}
 
 
 def notice_problems(key, value, font, language):
     field = key.removeprefix('main.MOD_NOTICE_STR_')
     if field not in NOTICE_FIELDS:
         return []
-    limit, values = NOTICE_FIELDS[field]
-    errors = []
-    try:
-        rows = [value % number for number in values] if values else [value]
-    except (TypeError, ValueError):
-        return ['enhancement-popup format must accept exactly one integer']
-    from tools.localize.executable.bank import encoded_len
-    for row in rows:
-        width = fitted_width(row, font, language)
-        if width > limit:
-            errors.append(f'enhancement-popup text {row!r} is {width} px; field is {limit} px')
-        if values and encoded_len(row, font) + 1 > 32:
-            errors.append(f'enhancement-popup text {row!r} exceeds its 32-byte buffer')
-    return errors
+    limit = NOTICE_FIELDS[field]
+    # v0.0.7's German/Portuguese statuses exceed the fitting target by 1–2 px
+    # in cell fonts. The popup renders their measured width, not a fixed crop.
+    # Preserve those exact historical strings and layout; reject new overflows.
+    legacy_width = {('de', 'NICHT ERKANNT'): 121,
+                    ('pt-br', 'NÃO DETECTADO'): 122}
+    if field == 'MISSING' and font in ('original', 'classic'):
+        limit = legacy_width.get((language, value), limit)
+    width = fitted_width(value, font, language)
+    if width > limit:
+        return [f'title-notice text {value!r} is {width} px; field is {limit} px']
+    return []
 
 
 def field_problems(key, value, font, language):

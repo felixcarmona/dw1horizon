@@ -1,5 +1,7 @@
 """Regression cases for cropped UI fields and runtime font fitting."""
 import unittest
+import json
+from pathlib import Path
 
 from tools.localize.ui import audit, bounds, fitted_width, name_problems, tab_problems, field_problems, confirmation_problems, answer_problems
 
@@ -8,12 +10,27 @@ class CroppedUI(unittest.TestCase):
     def test_shipped_fields_fit_every_language_and_font(self):
         self.assertEqual(audit()['errors'], [])
 
-    def test_enhancement_popup_formats_only_the_selected_rate(self):
+    def test_missing_settings_notice_has_two_bounded_advice_lines(self):
         for font in ('b', 'original', 'classic'):
             self.assertFalse(field_problems('main.MOD_NOTICE_STR_CPU', 'CPU overclock at 250%', font, 'en'))
-            self.assertFalse(field_problems('main.MOD_NOTICE_STR_FPS', '%d FPS', font, 'en'))
+            self.assertFalse(field_problems('main.MOD_NOTICE_STR_HEAD2', 'if you turn on these options:', font, 'en'))
         self.assertTrue(field_problems('main.MOD_NOTICE_STR_CPU', 'W' * 40, 'b', 'en'))
-        self.assertTrue(field_problems('main.MOD_NOTICE_STR_FPS', 'FPS', 'b', 'en'))
+        self.assertTrue(field_problems('main.MOD_NOTICE_STR_HEAD2', 'W' * 80, 'b', 'en'))
+
+    def test_notice_keeps_v007_status_words_with_measured_widths(self):
+        for language, word in (('de', 'NICHT ERKANNT'), ('pt-br', 'NÃO DETECTADO')):
+            for font in ('b', 'original', 'classic'):
+                self.assertFalse(field_problems('main.MOD_NOTICE_STR_MISSING', word, font, language))
+                self.assertTrue(field_problems('main.MOD_NOTICE_STR_MISSING', word + 'W' * 30, font, language))
+
+    def test_notice_has_only_the_six_v007_text_rows_in_every_language(self):
+        root = Path(__file__).resolve().parents[1]
+        fields = {'HEAD1', 'HEAD2', 'RAM', 'CPU', 'MISSING', 'READY'}
+        for language in ('ours', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca', 'zh-hans'):
+            names = json.loads((root / 'text' / language / 'names.json').read_text())
+            notice = {key.removeprefix('main.MOD_NOTICE_STR_'): value
+                      for key, value in names.items() if key.startswith('main.MOD_NOTICE_STR_')}
+            self.assertEqual(set(notice), fields, language)
 
     def test_reported_tab_cannot_use_full_portuguese_label(self):
         self.assertTrue(tab_problems('main.MAIN_D_801238A0', 'Estado  Técnicas', 'original', 'pt-br'))
