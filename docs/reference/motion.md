@@ -736,3 +736,18 @@ The reviewed motion is locked by its exact output hash. Reconstruct species
 The checks cover the reviewed bytes, decoded support contact, nine repeating
 cycles, unchanged programs and original-console resident/cold storage. Final
 provider model and texture hashes remain covered by `species-pins.json`.
+
+RedOtamamon 233 (`tools/models/field_animations/redotamamon.py`, test
+`tools.test_redotamamon_gait`) had one shared loop in all four field slots. The
+generator authors four different ones on its own rig, with no donor motion
+stored: a 96-tick idle (breathing, tail and body sway, head looks, claw twitch)
+and a walk, a heavier condition walk and a run at 20, 13 and 38 units a tick.
+The claws are solved with two-bone IK onto planted targets, and a floor pass
+keeps every vertex above the rest ground plane. The eyes blink through
+texture moves (`redotamamon_face.py`): the painted eye plate is copied into
+three frames (open, lid half down, shut) in the free right side of the texture,
+and each clip sets its first face at tick 0 and ends in it, so a clip cut
+mid-blink is repaired by the next clip. The test reads the model
+made by `tools/models/edit.py get 233` at the commit before the clips
+(`REDOTAMAMON_MODEL`); the reviewed-source pin in `celebrations.json` follows
+the new model.
