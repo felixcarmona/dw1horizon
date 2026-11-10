@@ -10,7 +10,11 @@ from ..state import root2
 
 # Keep its body box clear of entry 2 at (482, 165), the desk and the route to the door.
 kotemon208 = lobby208.npc(Species.Kotemon, at=(850, -650), behaves_like=greymon208, bits=100, when=recruited(Species.Kotemon) and clock.hour < 20)
-myotismon208 = lobby208.npc(Species.Myotismon, at=(0, 400), behaves_like=greymon208, when=root2 and clock.hour >= 20)
+# Myotismon's body box (radius 250 + the tamer's 100) must stay off the player's first walks after the lobby loads: a player who
+# crosses the floor before the model is drawn stands inside it, and an overlapping tamer cannot move again. At (0, 400) it sat on
+# the way from the south door to the desk and to the arena stairs; here the box (x 600..1300, z -1350..-650) leaves every
+# entry, the desk, the stairs and the doors clear, and the floor west of it stays open to talk.
+myotismon208 = lobby208.npc(Species.Myotismon, at=(950, -1000), behaves_like=greymon208, when=root2 and clock.hour >= 20)
 
 
 @kotemon208.on_talk
