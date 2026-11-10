@@ -12,4 +12,4 @@ def down_to_the_crypt():
 @basement.on_step(1, when=not root2)
 def the_slab():
     tamer.say("A stone slab in the floor... It won't budge.")
-    tamer.walk(-72, -1598, camera=True)
+    tamer.walk(-50, -1550, camera=True)    # Horizon: tile centre, was (-72, -1598)
