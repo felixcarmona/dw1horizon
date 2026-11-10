@@ -165,12 +165,12 @@
   "skeleton_sha256": "4f8c9bae47768687cb9e104ea7e2441f505c3817fb27d64bca0ce93891d67546",
   "source_sha256": "65d248ab6c95d030e87a44cef70809780cd1e7367a9d617be4773bc1799784f7",
   "base_generator": "tools.models.field_animations.ikkakumon",
-  "post_source_sha256": "1a52ff78d6324f39f610c84f90c33f515c9274de426bf42572b5f52ba078db1a",
+  "post_source_sha256": "2e6cc72f67a95771218c997235560fe30c960b6e671dfc5bba4d3316d76a69d0",
   "slots": {
    "2": {
     "from": 2,
-    "ticks": 22,
-    "speed": 20,
+    "ticks": 32,
+    "speed": 16,
     "slip": [
      125,
      250
@@ -178,7 +178,7 @@
    },
    "4": {
     "from": 4,
-    "ticks": 20,
+    "ticks": 24,
     "speed": 38,
     "slip": [
      190,
@@ -187,8 +187,8 @@
    },
    "3": {
     "from": 2,
-    "ticks": 33,
-    "speed": 13.3,
+    "ticks": 48,
+    "speed": 10.7,
     "slip": [
      190,
      360
