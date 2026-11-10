@@ -418,3 +418,10 @@ tools/test_baronmon.py` checks the floor, the loops, the speeds and the other sl
 Baronmon's skirt is lifted 30 units so the hem clears the shoes (the legs show beneath it), the swing foot flattens early
 and passes under it, and the skirt pitches and rolls with the stride; no shoe vertex is inside the skirt in the idle,
 walk or condition walk. The run is a brisk jog (arms bent about 45 degrees and hanging beside the body, upper arms about vertical on average and swinging 15 to 20 degrees either way, a slight lean).
+Phantomon (229) played one 104-tick levitation in its idle, walk, condition walk and run, so the four looked the same.
+`field_animations/phantomon.py` writes them again for a legless, hovering body: a slow idle (soft bobs, the hood
+looking round, cloak and chains swaying late), a leaning glide in 24 ticks with the free right arm swinging forward and
+back, a lower, bowed 28-tick condition walk and a 20-tick run leaning far forward with the cloak, hem and chains
+streaming back. Hover height, root speed, loop lengths and the voice cue are the importer's; the scythe arm only sways.
+The result is stored in the plain delta (`python3 -m tools.models.field_animations.phantomon --source SRC --out AFTER.MMD`,
+then `tools/models/edit.py put 229 AFTER.MMD`); check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_phantomon_field`.

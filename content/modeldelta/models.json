@@ -1439,9 +1439,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/229-Phantomon.MMD.mdelta",
-        "delta_sha256": "ccb5083d8396a5ef8e6687a4f1c4a5c2e49e3f0baef7965b648db66ef1b1b21d",
-        "sha256": "99d0f64e889a05a098601845ce22c47b11ebace16a4e8452d1947ebf18aeb5ce",
-        "size": 69086
+        "delta_sha256": "5cbf4614d2b62ed81dc000f06b342c48399ffca20d31e9d92fb7476a84aeff9a",
+        "sha256": "137f074ed8ae88ecee74b0681b513e58e965bff0e047065a51318444d71713ae",
+        "size": 76190
       },
       "tim": {
         "sources": [
