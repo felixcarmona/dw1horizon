@@ -265,37 +265,62 @@ def swing_pitch(cfg, front, s):
     return peel * (1 - smooth(s / 0.4)) + curl * (1 - smooth((s - 0.55) / 0.3)) - 3 * smooth((s - 0.7) / 0.25)
 
 
-def body(rig, cfg, phase, pose, hist):
-    """Pelvis height and pitch, spine flex, steady head, late tail and loose parts."""
-    p, rest = rig.p, rig.rest
-    pelvis, chest = p['pelvis'], p['chest']
+def body_terms(cfg, phase):
+    """The body's bob, spine flex, pitch, roll and yaw (degrees, bob in units) at a cycle phase. Optional loosening
+    keys of a gait row (all default to none): `bob2` a second harmonic that sharpens the dips (a landing compression),
+    `side` a cycle-rate share added to bob/pitch/roll so the two sides of the stride differ, `rise` an extra pitch."""
+    side = cfg.get('side', 0.0)
     if cfg['kind'] == 'gallop':   # high in the gathered flight, low between the hind and fore stances
         bob = cfg['bob'] * (math.cos(2 * math.pi * (phase - cfg.get('high', 0.9))) + 0.3 * math.cos(4 * math.pi * (phase - 0.2)))
         flex = cfg['flex'] * wave(phase, 0.95)
         pitch = cfg['pitch'] * math.sin(2 * math.pi * (phase - 0.35))
         roll = cfg['roll'] * math.sin(2 * math.pi * (phase - 0.2))
         yaw = cfg['yaw'] * math.sin(2 * math.pi * (phase - 0.5))
-        rate = 1
     else:                          # two dips a cycle, the weight passing from side to side
-        bob = cfg['bob'] * math.cos(4 * math.pi * (phase - cfg.get('high', 0.12)))
+        high = cfg.get('high', 0.12)
+        bob = cfg['bob'] * (math.cos(4 * math.pi * (phase - high)) + cfg.get('bob2', 0.0) * math.cos(8 * math.pi * (phase - high))
+                            + side * math.cos(2 * math.pi * (phase - high - 0.1)))
         flex = cfg['flex'] * math.cos(4 * math.pi * (phase - 0.3))
-        pitch = cfg['pitch'] * math.cos(4 * math.pi * (phase - 0.2))
-        roll = cfg['roll'] * math.sin(2 * math.pi * (phase - 0.05))
+        pitch = cfg['pitch'] * (math.cos(4 * math.pi * (phase - cfg.get('pitch_at', 0.2)))
+                                + 0.5 * side * math.sin(2 * math.pi * (phase - 0.15)))
+        roll = cfg['roll'] * (math.sin(2 * math.pi * (phase - 0.05)) + 0.35 * side * math.sin(6 * math.pi * (phase - 0.2)))
         yaw = cfg['yaw'] * math.sin(2 * math.pi * (phase - 0.3))
-        rate = 2
+    return bob, flex, pitch, roll, yaw
+
+
+def body(rig, cfg, phase, pose, hist):
+    """Pelvis height and pitch, spine flex, steady head, late tail and loose parts. A gait row may also give `lag`
+    ((neck, head) cycle fractions the neck and head follow the body late by, so they swing on after it), `breath`
+    (degrees of chest pitch once a cycle), `tail_lag` (cycle fraction between tail joints), `tail_whip` (each joint's
+    extra share of swing) and `tail_wag` (a quicker second swing of the tail)."""
+    p, rest = rig.p, rig.rest
+    pelvis, chest = p['pelvis'], p['chest']
+    rate = 1 if cfg['kind'] == 'gallop' else 2
+    bob, flex, pitch, roll, yaw = body_terms(cfg, phase)
     pose[pelvis][7] = rest[pelvis][7] - cfg['height'] - bob
     set_rot(pose, pelvis, mul(mmd.rot_matrix(*rest[pelvis][3:6]), rot([cfg['tilt'] + pitch - flex, yaw, roll])), hist)
-    set_rot(pose, chest, mul(mmd.rot_matrix(*rest[chest][3:6]), rot([2 * flex - cfg['chest_up'], -yaw * 1.4, -roll * 0.6])), hist)
+    breath = cfg.get('breath', 0.0) * math.sin(2 * math.pi * (phase - 0.1))
+    set_rot(pose, chest, mul(mmd.rot_matrix(*rest[chest][3:6]), rot([2 * flex - cfg['chest_up'] + breath, -yaw * 1.4, -roll * 0.6])), hist)
     steady = cfg['head']   # the head keeps most of its gaze while the body pitches
+    lag_neck, lag_head = cfg.get('lag', (0.0, 0.0))
+    _, nflex, npitch, nroll, nyaw = body_terms(cfg, phase - lag_neck)
+    _, hflex, hpitch, hroll, hyaw = body_terms(cfg, phase - lag_head)
     if p.get('neck') is not None:
-        pose[p['neck']][3] = rest[p['neck']][3] - round((steady * 0.5 * (pitch + flex) - cfg['neck']) * DEG)
-    pose[p['head']][3] = rest[p['head']][3] - round((steady * 0.5 * (pitch + flex) + cfg['nod'] * wave(phase, 0.1, 2)) * DEG)
-    pose[p['head']][4] = rest[p['head']][4] + round(yaw * 0.8 * DEG)
+        pose[p['neck']][3] = rest[p['neck']][3] - round((steady * 0.5 * (npitch + nflex) - cfg['neck']) * DEG)
+        if lag_neck:
+            pose[p['neck']][4] = rest[p['neck']][4] + round(nyaw * 0.5 * DEG)
+    pose[p['head']][3] = rest[p['head']][3] - round((steady * 0.5 * (hpitch + hflex) + cfg['nod'] * wave(phase, 0.1, 2)) * DEG)
+    pose[p['head']][4] = rest[p['head']][4] + round(hyaw * 0.8 * DEG)
+    if lag_head:
+        pose[p['head']][5] = rest[p['head']][5] - round(hroll * 0.7 * DEG)
+    step = cfg.get('tail_lag', 0.08)
     for k, b in enumerate(p['tail']):
-        lag = 0.08 * (k + 1)
+        lag = step * (k + 1)
+        whip = 1 + cfg.get('tail_whip', 0.0) * k
         carried = cfg.get('tail_up', 0) if k == 0 else 0    # a tail held up off the ground (degrees at its root)
-        pose[b][3] = rest[b][3] + round((carried + cfg['tail'] * (0.5 + 0.2 * k) * wave(phase, 0.9 + lag, rate)) * DEG)
-        pose[b][4] = rest[b][4] + round(cfg['tail'] * 0.6 * math.sin(2 * math.pi * (phase - 0.3 - lag)) * DEG)
+        wag = cfg.get('tail_wag', 0.0) * whip * wave(phase, 0.9 + 2 * lag, rate * 2)
+        pose[b][3] = rest[b][3] + round((carried + whip * cfg['tail'] * (0.5 + 0.2 * k) * wave(phase, 0.9 + lag, rate) + wag) * DEG)
+        pose[b][4] = rest[b][4] + round(whip * cfg['tail'] * 0.6 * math.sin(2 * math.pi * (phase - 0.3 - lag)) * DEG)
     for b, sign in p.get('loose', ()):
         pose[b][3] = rest[b][3] + round(cfg['loose'] * wave(phase, 0.15, rate) * DEG)
         pose[b][5] = rest[b][5] + round(sign * 0.5 * cfg['loose'] * wave(phase, 0.25, 1) * DEG)
@@ -321,7 +346,9 @@ def gait(rig, cfg):
         up, lo, paw, side, front = p['legs'][name]
         key = 'front' if front else 'hind'
         z = centres[name] - stride(name) / 2 + stride(name) * s
-        world = rig.paw(front, cfg['peel'][key] * smooth((s - 0.55) / 0.45), name)
+        # `settle` (degrees): the paw lands heel first, slaps onto its toes a little past flat and settles
+        landing = -3 * (1 - smooth(s / 0.12)) + cfg.get('settle', 0.0) * math.sin(math.pi * min(1.0, s / 0.3)) if cfg.get('settle') else 0.0
+        world = rig.paw(front, cfg['peel'][key] * smooth((s - 0.55) / 0.45) + landing, name)
         wrist = standing(rig, name, tracks[name], z, world)
         lower, out = rig.solve(pose, name, wrist, hist, None, p.get('aim', {}).get(front))
         set_rot(pose, paw, mul(tr(lower), world), hist)
@@ -363,9 +390,12 @@ def gait(rig, cfg):
             lift_off = standing(rig, name, tracks[name], centres[name] + stride(name) / 2, rig.paw(front, cfg['peel'][key], name))
             landing = standing(rig, name, tracks[name], centres[name] - stride(name) / 2, rig.paw(front, 0, name))
             k = minimum_jerk(s) if cfg['snap'] else smooth(s)
+            if cfg.get('jerk'):      # a share of the quicker ease, so the paw leaves late and arrives braking
+                k = (1 - cfg['jerk']) * smooth(s) + cfg['jerk'] * minimum_jerk(s)
+            mul_ = cfg.get('leg_lift', {}).get(name, 1.0)    # the two sides never step quite alike
             flight = [lift_off[i] + (landing[i] - lift_off[i]) * (k if i == 2 else s) for i in range(3)]
-            flight[2] -= cfg['out'][key] * 6.75 * s * s * (1 - s)    # reaches past the landing, then settles onto it
-            flight[1] -= cfg['lift'][key] * math.sin(math.pi * min(1.0, s ** 0.8))
+            flight[2] -= mul_ * cfg['out'][key] * 6.75 * s * s * (1 - s)    # reaches past the landing, then settles onto it
+            flight[1] -= mul_ * cfg['lift'][key] * math.sin(math.pi * min(1.0, s ** 0.8))
             flight[0] += side * cfg.get('wide', {}).get(key, 0) * math.sin(math.pi * s)    # swings wide of the body
             world = rig.paw(front, swing_pitch(cfg, front, s), name)
             wrist = folded(pose, name, [flight[0], min(flight[1], -p['clear'] - rig.lowest(paw, world, [0, 0, 0])), flight[2]])
