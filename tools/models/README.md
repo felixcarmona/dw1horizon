@@ -308,3 +308,12 @@ unmoved) and a walk, condition walk and run on native Angemon's footfalls (legs 
 whole stance; the run's stride shortened and its lean halved), with arms swinging against the opposite leg, lightly
 fluttering wings that lag the body (swept back in the run) and a tabard kept off the floor. `seraphimon.py`, the chibi
 overlay's base, now only keeps the victory on screen.
+
+VenomMyotismon's (212) native walk and condition walk held both gauntlets out in
+front like a boxer's; only the run does that. `repair_venom_run.polish_walk_arms`
+(applied after its supported-leg recipe and run polish) hangs the arms from the
+shoulders: the shoulders keep the native swing timing in a smaller range (the
+condition walk, whose shoulders hardly move, follows the thighs), the elbows
+bend further a tick or two later as the arm comes forward, and the heavy hands
+trail the elbows. Only those X rotations change; the gauntlets stay clear of the
+floor.
