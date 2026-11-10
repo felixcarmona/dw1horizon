@@ -677,7 +677,7 @@
     },
     "shift": 0,
     "body_gain": 1,
-    "base_generator": "tools.models.field_animations.gliding",
+    "base_generator": "tools.models.field_animations.shakkoumon",
     "skeleton_sha256": "22474e5a3a32baa0dcd6f256130fff4526c6a451db5607b0f07c1727a509032e"
   },
   "233": {

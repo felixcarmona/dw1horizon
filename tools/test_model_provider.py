@@ -176,6 +176,10 @@ class ModelProvider(unittest.TestCase):
                          ('tools.models.field_animations.gesomon', '240-gesomon-terrestrial'))
         self.assertNotIn('gesomon-hops', model.OVERLAYS)
         assignments['240'] = ('tools.models.field_animations.gliding', '240-gesomon-steady-run')
+        # Shakkoumon's own gaits (shakkoumon.py) replace the steady glide it was pinned with.
+        self.assertEqual(assignments['214'],
+                         ('tools.models.field_animations.shakkoumon', '214-shakkoumon-glide'))
+        assignments['214'] = ('tools.models.field_animations.gliding', '214-shakkoumon-glide')
         # All pre-existing bindings outside the repairs stay pinned.
         for sid in ('315', '332', '335'):
             del assignments[sid]
