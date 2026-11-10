@@ -276,33 +276,26 @@
   "skeleton_sha256": "ce1c542a1791db8fcae17ed8ecd8a3646e9f4016584d11c2fe2c59e57b70edcd",
   "source_sha256": "8a02d368ec11fb19ccbf57db20b11368d0670a87ae23b53f9e060b8d9db2868c",
   "base_generator": "tools.models.field_animations.devidramon",
-  "post_source_sha256": "df7c523f70aa536996e1b2bb70fa2bdb01446e8e1f10d72190ea011d58fc2321",
+  "post_source_sha256": "f7ccc32365cf6a3cc39fd379148c3e4fc081b2a3e2a56574179ed6659ed99d93",
   "slots": {
    "2": {
     "from": 2,
     "ticks": 36,
     "speed": 20,
+    "tol": 4,
     "slip": [
-     125,
-     250
-    ]
-   },
-   "4": {
-    "from": 4,
-    "ticks": 20,
-    "speed": 38,
-    "slip": [
-     190,
-     360
+     10,
+     25
     ]
    },
    "3": {
     "from": 2,
     "ticks": 54,
     "speed": 13.3,
+    "tol": 16,
     "slip": [
-     190,
-     360
+     12,
+     30
     ]
    }
   }

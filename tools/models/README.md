@@ -349,3 +349,13 @@ The legs, lengths, travel and sounds stay; the pelvis is raised so no foot
 sinks. The upper bones are fitted at the import's tolerance (8) and the legs
 at 3, through `mmd.encode_anim`'s optional per-bone `tol` dict, to stay inside
 the resident model buffer.
+
+Devidramon (216) walked with its upper body on a different beat from its legs: the walk and run took the
+native upper-body clips (the walk's is the idle's, one beat per loop) while the legs stepped three and two times
+per loop, and pace.py's retime left a planted foot moving at 18 against a body speed of 20 (run 30 against 38),
+14% and 27% slip. `field_animations/devidramon.py` now replays each native upper-body channel at the stride's
+beat (`BEATS`; wings and tail at about half their swing), turns the pelvis with the leading leg, the chest against
+it and the head against the chest, swings the arms (a calm third to half of a first pass's swing) against the legs with the forearms folding late, and writes the
+legs for the field speeds directly (walk 10 a tick in the 72-tick loop, which pace.py plays in 36 at 20; run 38).
+Stance slip is now 4-6% (walk), 6% (run) and 5-8% (condition walk). The storage budget forced coarser keys
+(`tol` in pace.json) on the walk and condition walk.
