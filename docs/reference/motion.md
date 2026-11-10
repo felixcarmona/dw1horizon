@@ -620,8 +620,12 @@ and hopping species read 100 % by construction.
 
 Metrics do not certify the look: check the front view, because a body that bows
 hides the face. Slot 3 of an import is often a tired walk with the head down, so a
-walk's source is the species' own slot 2 wherever it passes. Gomamon, Shurimon and
-Gizamon use slot 3 (the same carriage). Mushroomon's slot 2 has almost no stride, so
+walk's source is the species' own slot 2 wherever it passes. Shurimon and
+Gizamon use slot 3 (the same carriage). Gomamon's idle, walk, condition walk and run are written
+from scratch by `gomamon_scoot.py` (planted flipper steps, body roll and pitch, head, ear, mane and tail
+follow-through) and stored in its model delta. Its face blinks and opens its mouth through texture moves
+(`gomamon_face.py`): the closed-eye, half-shut and open-mouth frames sit in the texture's free rows 80 down and each clip
+copies them over the painted sprites, starting every clip open-eyed and closed-mouthed. Mushroomon's slot 2 has almost no stride, so
 its row takes only the legs from slot 3: `posture` plays every bone above the legs
 from slot 2 and solves each hip to keep its world rotation. Its `loose` block adds acting
 over the stride: arms oppose their legs, elbows arrive late, the torso turns against
