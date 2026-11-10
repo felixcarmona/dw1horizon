@@ -317,3 +317,14 @@ condition walk, whose shoulders hardly move, follows the thighs), the elbows
 bend further a tick or two later as the arm comes forward, and the heavy hands
 trail the elbows. Only those X rotations change; the gauntlets stay clear of the
 floor.
+
+Vikemon's (220) walk, condition walk and run kept the legs' stride (16, 26 and
+13 ticks) but left everything above the pelvis on the idle's one-breath loop.
+`field_animations/vikemon_stride.py` rebuilds the upper body from its own mean
+pose plus terms locked to the stride phase: a pelvis bob, chest twist against
+the hips, roll over the planted foot, a forward lean, neck and head arriving
+later, arms against their own side's leg, and the back rig and tail lagging.
+The legs, lengths, travel and sounds stay; the pelvis is raised so no foot
+sinks. The upper bones are fitted at the import's tolerance (8) and the legs
+at 3, through `mmd.encode_anim`'s optional per-bone `tol` dict, to stay inside
+the resident model buffer.

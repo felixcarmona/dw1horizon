@@ -1164,9 +1164,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/220-Vikemon.MMD.mdelta",
-        "delta_sha256": "c1579c17eebbb4fc1181514b6dd8aa1a432122d1a77c1db1937feaa787e786a4",
-        "sha256": "fe061fb980f684890dd343a9c87d615cefc4b1cfaf93a920a0552ff4b5d778e8",
-        "size": 119756
+        "delta_sha256": "535e3ff3f1a41a4d7af3d0fe4fde74c94f899f95c936ef159d161ef32ca07505",
+        "sha256": "6bc2e83b93d7a2ebb01593df81ff48663bd4c967861aec0ec6cfbcc98bd3ece1",
+        "size": 119600
       },
       "tim": {
         "sources": [
