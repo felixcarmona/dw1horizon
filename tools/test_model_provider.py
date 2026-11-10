@@ -123,6 +123,11 @@ class ModelProvider(unittest.TestCase):
         self.assertEqual(assignments['209'],
                          ('tools.models.field_animations.lillymon_flight', '209-lillymon-native-flight'))
         assignments['209'] = ('tools.models.field_animations.celebrations', '209-lillymon-native-flight')
+
+        # Magnadramon's field flight (magnadramon_flight.py) runs after its steady glide and replays it first.
+        self.assertEqual(assignments['215'],
+                         ('tools.models.field_animations.magnadramon_flight', '215-magnadramon-glide'))
+        assignments['215'] = ('tools.models.field_animations.gliding', '215-magnadramon-glide')
         self.assertEqual(assignments['197'],
                          ('tools.models.field_animations.magnamon', '197-magnamon-native'))
         assignments['197'] = previous_magnamon[1:]

@@ -187,6 +187,13 @@ with a gentle three-beat flutter, a forward-leaning cruise with two wing beats p
 with three, the legs, arms, hair and flower following the body a beat later. Tick counts, distance per loop and footstep
 sounds are kept (the run's travel is spread smoothly over the loop instead of in bursts). Check with
 `tools/models/edit.py get 209` and `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_lillymon_flight`.
+
+Magnadramon (215) had the idle, walk, condition walk and run as one 89-tick wave of the wing blades, body and tail
+that only the root travelled through. `field_animations/magnadramon_flight.py` runs after its steady glide and writes
+those five slots again: a hover with two slow, wide wing beats, a forward-leaning cruise with three beats per loop
+and a streamlined, faster run with four, a beat running from the inner blade pair to the outer, the tail and the limbs
+following the body a beat later. Ticks, distance per loop and the other slots are kept. Check with
+`tools/models/edit.py get 215` and `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_magnadramon_flight`.
 Armadillomon (185) held its head level or lowered in the field idle, walk and
 run, so the shell's front rim covered the brow. `field_animations/armadillomon_head.py`
 adds one constant lift to the head joint in those clips (and the condition walk),
