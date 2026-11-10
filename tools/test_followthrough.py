@@ -103,7 +103,7 @@ class FollowThrough(unittest.TestCase):
     def test_amphibian_steps_bobs_and_keeps_sleep_and_combat(self):
         sk, old, new = self.models(239)
         self.assertEqual(old.tmd.build(), new.tmd.build())
-        self.assertEqual(changed_programs(old, new), [2, 3, 4])
+        self.assertEqual(changed_programs(old, new), [0, 1, 2, 3, 4])   # the idle pair: the mouth opens
         for slot, expected in [(2, 20), (3, 240/18), (4, 40)]:
             frames, loop, _ = animsheet.slot_frames(new, len(sk), slot)
             self.assertEqual(loop, 0)
