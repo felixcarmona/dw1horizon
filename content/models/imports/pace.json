@@ -372,7 +372,8 @@
      360
     ]
    }
-  }
+  },
+  "after_generator": "tools.models.field_animations.rosemon_gait"
  },
  "328": {
   "name": "Snimon",

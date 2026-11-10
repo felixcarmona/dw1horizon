@@ -156,6 +156,30 @@ are stored at tolerance 7 to stay inside the resident animation buffer with the
 Buster Dive clip: `--source build/imported-model-edit/edit/219-Zudomon.MMD
 --out AFTER.MMD`, then `tools/models/edit.py --from build/everything put 219 AFTER.MMD`.
 
+Rosemon's (230) walk, condition walk and run had their legs stepping five, five
+and eight times per loop while the pelvis, chest, head, arms, cape and braid
+replayed the idle's 83-tick performance once per loop, and the planted foot
+slid at 30-40% of the body's speed. `field_animations/rosemon_gait.py` (the
+`after_generator` of its `pace.json` row, run on the paced clips) rewrites slots
+2, 3 and 4 from one step phase: feet fixed in the world while they support, heel
+to toe roll, lifted swing, pelvis height from the reach of both legs, pelvis and
+chest counter-turning, arms against the opposite legs, cape, braid and leaves
+lagging. Every channel holds a whole number of cycles per loop. The arms are a
+pendulum from the shoulder: the elbow trails it by an eighth of a cycle and the
+wrist trails the elbow, the left arm is about a tenth smaller and slightly later,
+and the upper arm twists and the shoulder lifts with each step; they stay clear of
+the hips and skirt at every tick. The run is a light jog, five strides per loop (16 ticks a cycle), shaped
+on the proportions of a native humanoid run (Angewomon's): each foot on the ground about a third
+of the cycle, the foot landing under the body and pushing off far behind it, a low
+heel lift (about 55 units), the legs nearly straight in stance and folding to about 95 degrees in the swing, a pelvis bob of about 10 units, a few degrees of forward lean and arms that swing
+about 30 degrees with the hands between hip and chest height. The
+idle (slot 0) is rewritten too, standing upright instead of leaning back, with the
+feet planted and the same 83-tick loop. Loop lengths and root speeds are
+unchanged; footstep sounds are re-placed at the heel strikes. Leg channels are
+stored at tolerance 2 (the feet stay planted), arms at 9 and the rest at 24, to
+stay inside the resident animation buffer (99952 B).
+`tools.test_rosemon_gait` needs the paced model in `ROSEMON_PACED`.
+
 Valkyrimon (255) uses a uniform 0.8 resize and native Angemon field motion,
 with its existing rig and chibi proportions. The offline authoring recipe is
 `field_animations/valkyrimon.py`; player builds replay the plain delta.
