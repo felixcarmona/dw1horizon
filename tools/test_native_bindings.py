@@ -53,6 +53,9 @@ class NativeBindings(unittest.TestCase):
                                 for channel in group['vals']:
                                     if channel in ('tx', 'ty', 'tz'):
                                         group['vals'][channel] = round(group['vals'][channel]*recipe['scale'])
+                    for bone, offset in binding.spread_offsets(recipe, native).items():
+                        pose = expected.pose[bone - 1]
+                        pose[-3:] = [v + o for v, o in zip(pose[-3:], offset)]
                     expected.instrs = [i for i in expected.instrs if i['op'] != 'tex']
                     expected.tail = b''
                     self.assertEqual(model.anims.anims[model.anims.table[slot]].build(), expected.build())

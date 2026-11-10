@@ -101,11 +101,17 @@ class ModelProvider(unittest.TestCase):
                 self.assertNotIn(sid, selected)
                 selected[sid] = model.OVERLAYS[preceding]
         celebrations = json.load(open('content/models/imports/celebrations.json'))
-        # Magnamon's native binding supersedes its retained authoring recipe.
+        # Magnamon's native binding (with its own field walk and run) supersedes its retained authoring recipe.
         active = dict(model.OVERLAYS)
         previous_magnamon = active.pop('magnamon-field')
         self.assertEqual(previous_magnamon,
                          ('197', 'tools.models.field_animations.gaits', '197-magnamon-field'))
+        # Flamedramon's walk and run authored on its own skeleton (flamedramon.py, baked into its delta) replace the
+        # procedural stride; the profile stays registered as the source that clip was authored from.
+        previous_flamedramon = active.pop('flamedramon-field')
+        self.assertEqual(previous_flamedramon,
+                         ('195', 'tools.models.field_animations.gaits', '195-flamedramon-field'))
+        self.assertNotIn('field_overlay', records['195'])
         self.assertEqual(len(selected)+len(following), len(active))
         self.assertEqual(set(selected.values()) | set(following.values()), set(active.values()))
         for species, (bound_species, _, _) in selected.items():
@@ -114,8 +120,9 @@ class ModelProvider(unittest.TestCase):
         self.assertEqual(assignments.pop('236'),
                          ('tools.models.field_animations.native_binding', '236-demidevimon-native-flight'))
         self.assertEqual(assignments['197'],
-                         ('tools.models.field_animations.native_binding', '197-magnamon-native'))
+                         ('tools.models.field_animations.magnamon', '197-magnamon-native'))
         assignments['197'] = previous_magnamon[1:]
+        assignments['195'] = previous_flamedramon[1:]
         # Celebration curves run after the final proportions. Unwrap them to
         # keep guarding all the original field recipes and output names.
         for sid, row in celebrations.items():

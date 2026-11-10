@@ -15,6 +15,13 @@ nefertimon.py writes Nefertimon's:
   of the two sides mirror exactly), so an imported idle that stands with one leg back does not twist the other.
 - The pelvis and chest bob and pitch with the footfalls, the head steadies against them, the tail and loose parts
   follow a few ticks late.
+- A leg with a short bone between two of its links (a knee cap, a hock spur) names it in `links`; it keeps its
+  standing angle. Paws that stand turned out give `paw_flat` per leg ('RF': angles) instead of per front/hind.
+  A leg that would swing its elbow (knee) into the leg behind (ahead of) it gives `swing_pole` (front/hind: a bend
+  direction): a swinging leg bends towards it, eased in from the standing bend and back out before it lands.
+  A lower bone with a long part along it (a forearm blade) gives `aim` (front/hind: that direction in the bone's
+  space): standing and swinging, the bone rolls about itself to keep it pointing ahead. A gait's `wide`
+  (front/hind: units) carries a swinging paw out from its track and back in by the landing.
 
 Each clip is rewritten where it is stored, so its battle aliases play it too. Footsteps keep the species' own
 sound (bank and note) and land on touchdowns; the clip keeps the eye state (texture events) its source opens with.
@@ -31,7 +38,7 @@ import motionstorage
 from motiondiscidentity import changed_programs
 
 DEG = 4096 / 360
-SPEED_RANGE = {2: (15, 31), 4: (35, 52)}    # the native partners' field speeds (units per tick)
+SPEED_RANGE = {2: (15, 31), 3: (10, 20), 4: (35, 52)}    # the native partners' field speeds (units per tick)
 FLOOR = 3            # a mesh point may dip this far under the floor at a tick or a 60 fps third (rounding)
 STANCE_SLIP = 0.35   # a standing sole may slide this fraction of the body's travel (natives: 0.1-0.8)
 MIRROR = {'LF': 'RF', 'LH': 'RH'}
@@ -132,6 +139,8 @@ class Rig:
         # the profile's 'paw_flat' angles (degrees) per front/hind. Rolls are pitched on top of it.
         flat = profile.get('paw_flat', {})
         self.flat = {front: rot(flat[front]) if front in flat else rot([0, 0, 0]) for front in (True, False)}
+        # 'paw_flat' may also name a leg ('RF': angles), for paws that stand turned out, each side its own way
+        self.flat_leg = {name: rot(angles) for name, angles in flat.items() if isinstance(name, str)}
         # Reference bend planes: each right leg's standing pose; the left legs take it mirrored in the world.
         self.ref = {}
         for name, (up, lo, paw, side, front) in profile['legs'].items():
@@ -142,9 +151,9 @@ class Rig:
             parent = [r[:3] for r in W[skeleton[up][1]][:3]]
             self.ref[name] = [mul(tr(parent), worlds[0]), mul(tr(worlds[0]), worlds[1]), mul(tr(worlds[1]), worlds[2])]
 
-    def paw(self, front, pitch):
+    def paw(self, front, pitch, name=None):
         """A paw's world rotation, pitched by the given degrees from flat."""
-        return mul(rot([pitch, 0, 0]), self.flat[front])
+        return mul(rot([pitch, 0, 0]), self.flat_leg.get(name, self.flat[front]))
 
     def world(self, pose):
         p = [list(v) for v in pose]
@@ -155,15 +164,16 @@ class Rig:
         """Lowest point (largest y) of bone b's mesh at a world rotation and origin."""
         return max(origin[1] + dot(rot_[1], v) for v in self.verts[b])
 
-    def solve(self, pose, name, wrist, hist):
-        """Two-bone solve of a leg for its wrist (hock) position in the reference leg's bend plane; returns the lower
-        bone's world rotation and how far the target was out of reach."""
+    def solve(self, pose, name, wrist, hist, pole=None, aim=None):
+        """Two-bone solve of a leg for its wrist (hock) position in the reference leg's bend plane (or towards the
+        given pole); returns the lower bone's world rotation and how far the target was out of reach. aim (a direction in
+        the lower bone's space) rolls the lower bone about its own axis to turn that direction towards the front."""
         up, lo, paw, side, front = self.p['legs'][name]
         W = self.world(pose)
         parent = [r[:3] for r in W[self.sk[up][1]][:3]]
         shoulder = [W[up][i][3] for i in range(3)]
-        a = [pose[lo][6], pose[lo][7], pose[lo][8]]
-        b = [pose[paw][6], pose[paw][7], pose[paw][8]]
+        a, via_lo = self.link(pose, lo)
+        b, via_paw = self.link(pose, paw)
         ref = self.ref[name]
         ru0 = mul(parent, ref[0])
         rl0 = mul(ru0, ref[1])
@@ -174,7 +184,7 @@ class Rig:
         dist = norm(d)
         reach = max(abs(la - lb) + 2, min(la + lb - 2, dist))
         d = scale(unit(d), reach)
-        pole = self.p['pole'][front]
+        pole = pole or self.p['pole'][front]
         pole = mv(parent, [pole[0] * side] + list(pole[1:]))
         pole = unit(sub(pole, scale(unit(d), dot(pole, unit(d)))))
         along = (la * la - lb * lb + reach * reach) / (2 * reach)
@@ -189,9 +199,33 @@ class Rig:
         else:                                       # the bend plane carries the limb's roll
             ru = mul(mul(frame(sub(elbow, shoulder), n1), tr(frame(sub(e0, shoulder), n0))), ru0)
             rl = mul(mul(frame(sub(wr, elbow), n1), tr(frame(sub(w0, e0), n0))), rl0)
+        if aim:
+            axis = unit(sub(wr, elbow))
+            v, ahead = mv(rl, aim), [0.0, 0.0, -1.0]
+            v, ahead = sub(v, scale(axis, dot(axis, v))), sub(ahead, scale(axis, dot(axis, ahead)))
+            if norm(v) > 1e-6 and norm(ahead) > 1e-6:
+                rl = mul(spin(axis, math.atan2(dot(cross(v, ahead), axis), dot(v, ahead))), rl)
         set_rot(pose, up, mul(tr(parent), ru), hist)
-        set_rot(pose, lo, mul(tr(ru), rl), hist)
-        return rl, dist - reach
+        set_rot(pose, lo, mul(tr(mul(ru, via_lo)), rl), hist)
+        return mul(rl, via_paw), dist - reach
+
+    def link(self, pose, child):
+        """The offset of a leg joint from the joint before it in that one's space, and the rotation of a bone between
+        them. A profile's `links` names a short bone (a knee cap, a hock spur) that sits between two leg bones and
+        holds its standing rotation: {child: bone between}. Without one the child hangs straight off the bone before."""
+        offset = [pose[child][6], pose[child][7], pose[child][8]]
+        via = self.p.get('links', {}).get(child)
+        if via is None:
+            return offset, [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+        turn = mmd.rot_matrix(*self.rest[via][3:6])
+        return add(self.rest[via][6:9], mv(turn, offset)), turn
+
+
+def spin(u, angle):
+    """Rotation by angle (radians) about the unit axis u."""
+    c, s = math.cos(angle), math.sin(angle)
+    k = [[0, -u[2], u[1]], [u[2], 0, -u[0]], [-u[1], u[0], 0]]
+    return [[c * (i == j) + s * k[i][j] + (1 - c) * u[i] * u[j] for j in range(3)] for i in range(3)]
 
 
 def turn_to(a, b):
@@ -284,8 +318,9 @@ def gait(rig, cfg):
         up, lo, paw, side, front = p['legs'][name]
         key = 'front' if front else 'hind'
         z = centres[name] - stride(name) / 2 + stride(name) * s
-        world = rig.paw(front, cfg['peel'][key] * smooth((s - 0.55) / 0.45))
-        lower, out = rig.solve(pose, name, standing(rig, name, tracks[name], z, world), hist)
+        world = rig.paw(front, cfg['peel'][key] * smooth((s - 0.55) / 0.45), name)
+        wrist = standing(rig, name, tracks[name], z, world)
+        lower, out = rig.solve(pose, name, wrist, hist, None, p.get('aim', {}).get(front))
         set_rot(pose, paw, mul(tr(lower), world), hist)
         return out
 
@@ -304,6 +339,14 @@ def gait(rig, cfg):
         least = p['fold'][p['legs'][name][4]]
         return wrist if norm(d) >= least else add(root, scale(unit(d), least))
 
+    def swung_pole(front, s):
+        """A swinging leg's bend direction: eased from the standing pole to the profile's 'swing_pole' and back."""
+        turn = p.get('swing_pole', {}).get(front)
+        if turn is None:
+            return None
+        k = math.sin(math.pi * s) ** 2
+        return [a + (b - a) * k for a, b in zip(p['pole'][front], turn)]
+
     def place(t, drop, hist):
         phase = t / ticks
         pose = body_at(phase, drop, hist)
@@ -314,15 +357,16 @@ def gait(rig, cfg):
                 short = max(short, stand(pose, name, s, hist))
                 continue
             key = 'front' if front else 'hind'
-            lift_off = standing(rig, name, tracks[name], centres[name] + stride(name) / 2, rig.paw(front, cfg['peel'][key]))
-            landing = standing(rig, name, tracks[name], centres[name] - stride(name) / 2, rig.paw(front, 0))
+            lift_off = standing(rig, name, tracks[name], centres[name] + stride(name) / 2, rig.paw(front, cfg['peel'][key], name))
+            landing = standing(rig, name, tracks[name], centres[name] - stride(name) / 2, rig.paw(front, 0, name))
             k = minimum_jerk(s) if cfg['snap'] else smooth(s)
             flight = [lift_off[i] + (landing[i] - lift_off[i]) * (k if i == 2 else s) for i in range(3)]
             flight[2] -= cfg['out'][key] * 6.75 * s * s * (1 - s)    # reaches past the landing, then settles onto it
             flight[1] -= cfg['lift'][key] * math.sin(math.pi * min(1.0, s ** 0.8))
-            world = rig.paw(front, swing_pitch(cfg, front, s))
+            flight[0] += side * cfg.get('wide', {}).get(key, 0) * math.sin(math.pi * s)    # swings wide of the body
+            world = rig.paw(front, swing_pitch(cfg, front, s), name)
             wrist = folded(pose, name, [flight[0], min(flight[1], -p['clear'] - rig.lowest(paw, world, [0, 0, 0])), flight[2]])
-            lower, _ = rig.solve(pose, name, wrist, hist)
+            lower, _ = rig.solve(pose, name, wrist, hist, swung_pole(front, s), p.get('aim', {}).get(front))
             set_rot(pose, paw, mul(tr(lower), world), hist)
         return pose, short
 

@@ -180,3 +180,107 @@ Angewomon's (190) walk and run slid the feet without the legs carrying them.
 run the way `valkyrimon.py` does (legs solved onto his feet, his lean on the
 body), with her own swinging arms (he carries a staff), and the sash ends and
 lowest feathers kept off the ground. Buster Dive is applied after it at build.
+
+Imperialdramon's (192) walk and run swung every limb on its own and slid the
+hands and feet. `field_animations/imperialdramon.py` writes the walk, condition
+walk and run on all fours with `quadruped.py` (a walk with each hand landing
+just before the foot behind it, and a gallop), each hand and foot standing at
+its own turned-out idle angle (per-leg `paw_flat`). The hips sit right behind
+the shoulders: the knees bend out and a lifted arm's elbow swings out past the
+thigh (`swing_pole`), so the legs of a side do not pass through each other. The
+forearm blades always point ahead (`aim`) and the hands swing wide (`wide`), so
+they do not sweep through the head, and the body dips onto each landing in the
+walks and bounds in the run. The idle keeps its crouch and roar with every hand
+and foot planted where it stands at the first tick (the crouch had pushed the
+hind feet into the floor).
+
+Pegasusmon's (200) idle stood on a raised right foreleg and swung the
+hindquarters, and its walk and run crossed and slid the hooves.
+`field_animations/pegasusmon.py` writes them all again: a 24-tick idle square on
+four planted hooves (the right foreleg the left's mirror) that only breathes,
+with the neck, tail and wings answering late, then a four-beat walk, a slower
+condition walk and a gallop from `quadruped.py` (the short caps between the
+upper leg bones and the cannons named in `links`).
+
+Paildramon's (199) walk snapped a foot from one place to another between two
+ticks and slid both feet; the run was the walk sped up.
+`field_animations/paildramon.py` takes native Leomon's walk and run the way
+`angewomon.py` does, on the paildramon-field proportions it now bakes in (the
+overlay is retired; `content/models/authoring/199-paildramon.json` keeps it as
+provenance): the feet are solved onto Leomon's footfalls with each knee bending
+out over the wide stance, the body takes part of his lean, the arms part of his
+swing, and the condition walk is his walk slower and lower (his own slides).
+Buster Dive is applied after it at build.
+
+Halsemon's (196) walk and run threw the feet across each other and slid them,
+and the run bounded like a cat. `field_animations/halsemon.py` writes a
+lateral-sequence walk, a slower condition walk and a firm-backed trot with
+`quadruped.py`, every foot flat at its own turned-out idle angle and the short
+hock bones above the hind feet holding their angle (`links`).
+Magnamon (197) is bound to native Leomon (`native_binding.py`). Its boots kept
+the source's fighting stance, turned 35 and 93 degrees outward, its fists kept
+the guard pose's forward point, and its broad legs crossed over Leomon's narrow
+hips. The recipe now turns the boots forward (`yaw`), turns each fist with its
+forearm (`follow`) and sets Leomon's hip joints 20 units further apart in every
+program (`spread`, written in each program's start pose). Leomon's walk and run
+did not suit it either: they hunched the torso, crouched the run and pointed the
+long boots into the floor. `field_animations/magnamon.py` runs after the binding
+and replaces the walk, condition walk and run with clips authored on the bound
+skeleton from its own upright idle, the arms let down from the guard: boots
+landing heel first under each hip and rolling flat, legs solved onto them, hips
+turning with the swinging leg and the chest against them, arms swinging opposite
+to the legs. Every curve is eased unevenly, the body moves in overlap (hips
+first, chest, head and forearms later) and the two sides differ a little, with
+amplitudes close to native Leomon's. The source's guard binds the two arms in
+different orientations, so the shoulders read uneven at rest and in every
+program. Its arm pieces are exact mirrors, so the recipe now builds the left arm
+as the mirror of the bound right arm (`mirror`; Leomon's rig is mirror symmetric
+at rest). The shoulder armour hung from the upper arms like sleeves; it now
+rides on the chest at each shoulder, its point rising up and out like a
+pauldron (`aim` sets a piece whole in a given orientation of Leomon's rest
+pose), so it stays up while the arms swing. The cycles are 16, 14 and 10 ticks at
+the binding's field speeds (18.4, 16.25 and 41 a tick, unchanged). Its thigh
+is short, so any change of hip height swings the knee a long way: the planted
+leg keeps one slight bend, the heel peels off where the stride reaches past it,
+the body sinks only by what a leg still cannot reach, and the knee points
+forward along the boot, turned by half the hips' yaw but never by their roll.
+The left leg is built as the mirror of the right one, and the recipe sets the
+shoulders 20 units further out (`spread`) with the arms hanging out and the
+elbows bent, so the arms swing clear of the thigh armour; the run leans in,
+drives the arms and has both boots in the air between steps.
+
+Flamedramon (195) walked like a catwalk: the procedural stride (`gaits.py`)
+swung and dropped the hips from side to side, twisted the chest the other way
+and held the arms out wide, and clips on Leomon's footfalls kept Leomon's hunch.
+`field_animations/flamedramon.py` replaces the walk, condition walk and run with
+clips authored on Flamedramon's own bind pose (upright, arms hanging, feet under
+the hips): each foot stays on its own track under the hip, lands flat and peels
+its heel at push-off, the pelvis turns with the swinging leg and the shoulders
+counter it, the arms swing opposite to the legs and the tail follows late.
+Nothing moves on a plain sine or in lockstep: each curve has its own uneven ease
+(`upright_gait.wave`), the chest, head, arms and tail follow the hips one after
+another, and the two sides differ a little, with pelvis, chest and arm
+amplitudes taken from native Agumon's and Leomon's walks and runs. The
+run is an 8-tick cycle with lean, hard arm drive and an airborne phase against
+the 14-tick walk, at the reviewed field speeds (`upright_gait.py` holds the
+pieces both modules share). The result is stored in the plain delta and the
+`flamedramon-field` overlay is no longer applied.
+
+ExVeemon (194) keeps its reviewed clips with two repairs in
+`field_animations/exveemon.py`. The tail turns only about a third as far from
+its mean in the idle, walk, condition walk and run, so it still sways at half
+the size. In the walks the swinging ankle came up almost to the hip and the
+knee flipped up through the belly: the legs are solved again with the knee
+forward and out to its own side, the swing ankle capped in height (its foot
+turned toward standing as far as it was lowered), and the condition walk's
+dragging feet held mostly on their footprints. The body is kept on its claws at
+the ticks and the 60 fps thirds.
+
+Digmon's (193) run was its walk played with twice the travel.
+`field_animations/digmon.py` builds the run from the walk's own poses on a
+14-tick cycle instead of 20, at the same field speed: thighs swing further, the
+upper body leans forward and the body leaves the floor around each of the
+walk's two hops. In the walk, condition walk and run the long toe claws pointed
+through the floor and the right drill dug into it; the ankles and toes turn
+toward standing as far as keeps the claws up and the arm swings up at the
+shoulder just enough to clear its drill, checked at the ticks and the thirds.
