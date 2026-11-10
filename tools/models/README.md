@@ -71,6 +71,14 @@ timing, rotations, scales and controls remain intact. Texture-copy commands
 are removed because the imported atlas has another layout; effect origins
 use the scaled native joints. The imported delta and texture remain pinned.
 
+BomberNanimon (232) wears native Nanimon's (53, `NANI.MMD`) 20-bone skeleton and every animation program, unchanged
+(scale 1): its 13 rigid pieces map one to one onto Nanimon's joints (arms and legs swung joint to joint, gloves and
+boots turned with their forearm and shin, the body and fuse set 4 up and 22 forward of its old place) and its
+techniques play Nanimon's clips (training slot 57 is Nanimon's training clip, hit tick 10). Recipe `232` in
+`native-bindings.json`; the overlay runs on the model of the plain delta, whose earlier boxer clips stay only as
+provenance. `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_bombernanimon_native` (after
+`edit.py get 232`) pins the field slots to Nanimon's.
+
 Replay the native binding checks with the original DW1 extraction present:
 
 ```sh

@@ -55,6 +55,8 @@ class ModelProvider(unittest.TestCase):
         following = {
             '307': ('307', 'tools.models.field_animations.black_king_numemon', '307-blackkingnumemon-slug'),
             '183': ('183', 'tools.models.field_animations.native_binding', '183-wormmon-native-crawl'),
+            # BomberNanimon wears Nanimon's rig and programs; its boxer clips stay as the scale lock's provenance.
+            '232': ('232', 'tools.models.field_animations.native_binding', '232-bombernanimon-native'),
             '187': ('187', 'tools.models.field_animations.followthrough', '187-stingmon-wing-followthrough'),
             '239': ('239', 'tools.models.field_animations.followthrough', '239-gizamon-active-gait'),
             # LadyDevimon's flight (ladydevimon_flight.py) is written over her baked chibi delta.

@@ -110,6 +110,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'candlemon-pedestal-field': ('235', 'tools.models.field_animations.candlemon', '235-candlemon-pedestal-field'),
     'gatomon-supported-field': ('234', 'tools.models.field_animations.gatomon', '234-gatomon-supported-field'),
     'bombernanimon-boxer-field': ('232', 'tools.models.field_animations.bomber_nanimon', '232-bombernanimon-boxer-field'),
+    'bombernanimon-native': ('232', 'tools.models.field_animations.native_binding', '232-bombernanimon-native'),
     'shellnumemon-slug-field': ('231', 'tools.models.field_animations.locomotion', '231-shellnumemon-slug-field'),
     'rosemon-field': ('230', 'tools.models.field_animations.pace', '230-rosemon-field'),
     'phantomon-native-glide': ('229', 'tools.models.field_animations.phantomon', '229-phantomon-native-glide'),
