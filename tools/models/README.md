@@ -461,3 +461,11 @@ back, a lower, bowed 28-tick condition walk and a 20-tick run leaning far forwar
 streaming back. Hover height, root speed, loop lengths and the voice cue are the importer's; the scythe arm only sways.
 The result is stored in the plain delta (`python3 -m tools.models.field_animations.phantomon --source SRC --out AFTER.MMD`,
 then `tools/models/edit.py put 229 AFTER.MMD`); check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_phantomon_field`.
+Candlemon (235) hovered on a steady line with its upper body frozen in the idle pose, so its four clips looked alike.
+`field_animations/candlemon_hop.py` writes them again: it travels in hops on its foot (anticipation crouch, take-off
+stretch, ballistic flight with the flame trailing, a squashing landing with the foot planted), walk 4 x 14 ticks at 20
+units a tick, a heavy, slouched condition walk 3 x 18 at 13, a long flat run 5 x 10 at 38, and a 96-tick idle that
+breathes, sways, looks both ways and flickers. Its face acts through texture moves (`candlemon_face.py`): the source
+game's own blink frames, and mouth frames (half shut, shut, wide) slid from the painted mouth into four spare hand
+drawings. Store with `python3 -m tools.models.field_animations.candlemon_hop --source SRC.MMD --tex SRC.TIM --out-dir
+DIR`, then `tools/models/edit.py put 235 DIR/235.MMD DIR/235.TIM`; check with `tools/test_candlemon_hop.py`.

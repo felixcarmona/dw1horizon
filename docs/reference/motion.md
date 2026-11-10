@@ -365,7 +365,7 @@ A **field overlay** is a reviewed recipe that rewrites the field slots of one sp
 | `fieldnative.py`, `fieldseraph.py`, `fieldangel.py`, `fieldvenom.py`, `fieldaero.py`, `fielddevi.py`, `fieldrose.py`, `fieldsylph.py`, `fieldsorcer.py`, `fieldwizard.py`, `fieldvike.py`, `fieldtuskmon.py`, `fieldshadramon.py`, `fieldshuri.py` | MegaKabuterimon 205, Seraphimon 207, MagnaAngemon 206, VenomMyotismon 212, AeroVeedramon 213, Devidramon 216, Rosemon 230, Silphymon 226, Sorcermon 242, Wizardmon 241, Vikemon 220, Tuskmon 253, Shadramon 250, Shurimon 225 | planted strides solved on the native legs (exact link lengths, the whole boot or claw mesh as support) under the native upper-body performance; Silphymon's walks also carry the upper body (pelvis bob, lean, torso counter-turn, arms against the legs) with strides as long as its boots |
 | `fieldboxer.py`, `fieldstar.py`, `fieldsuperstar.py`, `fieldthundermon.py`, `fieldroll.py`, `fieldkoku.py` | BomberNanimon 232, Starmon 243, SuperStarmon 244, Thundermon 252, Togemon 208, Kokuwamon 247 | short one-link legs with rigid oversized boots that roll over their support vertices; body height follows the planted boot |
 | `fieldgatomon.py`, `fieldcat222.py`, `fieldpup.py`, `fieldgizmo.py`, `fieldape.py`, `fieldscarab.py`, `fieldpaddle.py`, `fieldwalrus.py`, `fielddiaboromon.py` | Gatomon 234, BlackGatomon 222, Gizamon 239, Apemon 227, GranKuwagamon 210, Gomamon 217, Ikkakumon 218, Diaboromon 237 | quadruped and crouched gaits: one-segment limbs pinned through the body carrier instead of stretched, paired bounds, knuckle walks, flipper strokes |
-| `fieldinfermon.py`, `fieldslug.py`, `fieldcandle.py` | Infermon 246, ShellNumemon 231, Candlemon 235 | six legs in alternating tripods; a slug's propulsion clock separate from its face acting (the body slides); a pedestal that hovers on a steady line, bobbing and swaying |
+| `fieldinfermon.py`, `fieldslug.py`, `fieldcandle.py` | Infermon 246, ShellNumemon 231, Candlemon 235 | six legs in alternating tripods; a slug's propulsion clock separate from its face acting (the body slides); a pedestal that hovered on a steady line, bobbing and swaying (Candlemon's clips are now baked hops, see below) |
 | `wargreymonfield.py` | WarGreymon 373 | an anatomical gait replacing the inherited dinosaur one: walk 16 ticks at 22 units/tick (support 0.56 of the cycle), condition walk 20 at 15 (0.64), run 10 at 52 (0.42); pelvis loads onto the support foot, arms oppose their own leg, two-bone IK with feet forward and slight toe-out, back plates clear of the legs; footstep sounds retimed to the new contacts |
 | `monmonupperbody.py` | Monmon 352 | torso and pelvis sway and opposite shoulder swings derived from the native leg cadence (elbows lag 0.65 rad, wrists 1.1 rad); hip roots compensate so the legs keep their world poses |
 
@@ -438,6 +438,15 @@ the dip the short legs force), the chest pitches 5 / 4 / 9 degrees, the head 5 /
 blink is not repeated every few ticks. The face blinks through texture moves (`salamon_face.py`, as Gomamon's): open, half-shut and
 shut frames in rows 80 down, every clip starting and ending open-eyed; the idle keeps its motion and gains three blinks.
 Only the texture rows 80 down and slots 0, 2, 3 and 4 change; the other slots carry no eye moves, so an eye caught half-shut when a clip is cut would stay so until the next one starts (the clips are short, and this was not tested in the game).
+
+Candlemon (235) no longer hovers: `candlemon_hop.py` writes four clips stored in its model delta (the overlay
+`candlemon.py` stays as the provenance of the earlier delta). It hops on its foot, which stays still while down and
+moves only in the air; the root moves all the time (half the foot's travel, half a steady line). Walk 4 hops of 14
+ticks, 20 units per tick, 52 high; condition walk 3 of 18, 13 units, 20 high; run 5 of 10, 38 units, 34 high; a
+96-tick idle. The face acts through texture moves (`candlemon_face.py`): eyes open, half shut, shut (the source game's
+own frames) and a mouth at rest, half shut, shut or wide (slid from the painted mouth). Each of the four clips sets its
+face at tick 0; the other slots carry no face moves, so a face cut mid-change (or the condition walk's half-shut eyes,
+the run's wide mouth) stays until slots 0, 2, 3 or 4 play again. Not tested in the game.
 
 Thundermon uses 20/10/35 units per tick, 4/4/5 gait cycles and
 0.5/0.4/0.25 duty within 16/20/20-tick programs. Tick/thirds floor
