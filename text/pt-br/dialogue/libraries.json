@@ -3776,12 +3776,12 @@
  ],
  "s217.sec51.u5": [
   [
-   "Ataque aumentou 1!",
-   "Inteligência aumentou 1!"
+   "Ataque aumentou 5!",
+   "Velocidade aumentou 3!",
+   "Felicidade aumentou!"
   ],
   [
-   "Felicidade aumentou! Cansaço",
-   "diminuiu!"
+   "Cansaço diminuiu!"
   ]
  ],
  "s217.sec51.u6": "{color 10}{partner}{color 1} não parece com fome.",
@@ -3794,12 +3794,12 @@
  ],
  "s217.sec51.u9": [
   [
-   "Ataque aumentou 3!",
-   "Inteligência aumentou 2!"
+   "Ataque aumentou 10!",
+   "Velocidade aumentou 5!",
+   "Felicidade aumentou!"
   ],
   [
-   "Felicidade aumentou! Cansaço",
-   "diminuiu!"
+   "Cansaço diminuiu!"
   ]
  ],
  "s217.sec51.u10": "{color 10}{partner}{color 1} não parece com fome.",
@@ -3812,12 +3812,13 @@
  ],
  "s217.sec51.u13": [
   [
-   "Ataque aumentou 5!",
-   "Inteligência aumentou 3!"
+   "Ataque aumentou 15!",
+   "Velocidade aumentou 7!",
+   "Felicidade aumentou!"
   ],
   [
-   "Felicidade aumentou! Disciplina",
-   "aumentou! Cansaço diminuiu!"
+   "Disciplina aumentou!",
+   "Cansaço diminuiu!"
   ]
  ],
  "s217.sec51.u14": "{color 10}{partner}{color 1} não parece com fome.",
@@ -3831,12 +3832,12 @@
  ],
  "s217.sec51.u18": [
   [
-   "Defesa aumentou 1! Velocidade",
-   "aumentou 1!"
+   "HP aumentou 50!",
+   "Velocidade aumentou 3!",
+   "Felicidade aumentou!"
   ],
   [
-   "Felicidade aumentou! Cansaço",
-   "diminuiu!"
+   "Cansaço diminuiu!"
   ]
  ],
  "s217.sec51.u19": "{color 10}{partner}{color 1} não parece com fome.",
@@ -3849,12 +3850,12 @@
  ],
  "s217.sec51.u22": [
   [
-   "Defesa aumentou 3! Velocidade",
-   "aumentou 2!"
+   "HP aumentou 100!",
+   "Velocidade aumentou 5!",
+   "Felicidade aumentou!"
   ],
   [
-   "Felicidade aumentou! Cansaço",
-   "diminuiu!"
+   "Cansaço diminuiu!"
   ]
  ],
  "s217.sec51.u23": "{color 10}{partner}{color 1} não parece com fome.",
@@ -3867,12 +3868,13 @@
  ],
  "s217.sec51.u26": [
   [
-   "Defesa aumentou 5! Velocidade",
-   "aumentou 3!"
+   "HP aumentou 150!",
+   "Velocidade aumentou 7!",
+   "Felicidade aumentou!"
   ],
   [
-   "Felicidade aumentou! Disciplina",
-   "aumentou! Cansaço diminuiu!"
+   "Disciplina aumentou!",
+   "Cansaço diminuiu!"
   ]
  ],
  "s217.sec51.u27": "{color 10}{partner}{color 1} não parece com fome.",
@@ -3890,12 +3892,12 @@
  ],
  "s217.sec51.u31": [
   [
-   "HP aumentou 10! Inteligência",
-   "aumentou 1!"
+   "MP aumentou 50!",
+   "Inteligência aumentou 3!",
+   "Disciplina aumentou!"
   ],
   [
-   "Disciplina aumentou! Cansaço",
-   "diminuiu!"
+   "Cansaço diminuiu!"
   ]
  ],
  "s217.sec51.u32": "Parece que {color 10}{partner}{color 1} não está com fome.",
@@ -3912,12 +3914,13 @@
  ],
  "s217.sec51.u35": [
   [
-   "HP aumentou 30! Inteligência",
-   "aumentou 2!"
+   "MP aumentou 100!",
+   "Inteligência aumentou 5!",
+   "Felicidade aumentou!"
   ],
   [
-   "Felicidade aumentou! Disciplina",
-   "aumentou! Cansaço diminuiu!"
+   "Disciplina aumentou!",
+   "Cansaço diminuiu!"
   ]
  ],
  "s217.sec51.u36": "Parece que {color 10}{partner}{color 1} não está com fome.",
@@ -3934,12 +3937,13 @@
  ],
  "s217.sec51.u39": [
   [
-   "HP aumentou 50! Inteligência",
-   "aumentou 3!"
+   "MP aumentou 150!",
+   "Inteligência aumentou 7!",
+   "Felicidade aumentou!"
   ],
   [
-   "Felicidade aumentou! Disciplina",
-   "aumentou! Cansaço diminuiu!"
+   "Disciplina aumentou!",
+   "Cansaço diminuiu!"
   ]
  ],
  "s217.sec51.u40": "Parece que {color 10}{partner}{color 1} não está com fome.",
@@ -3970,12 +3974,12 @@
  ],
  "s218.sec51.u5": [
   [
-   "MP aumentou 10! Velocidade",
-   "aumentou 1!"
+   "Defesa aumentou 5!",
+   "Inteligência aumentou 3!",
+   "Felicidade aumentou!"
   ],
   [
-   "Felicidade aumentou! Cansaço",
-   "diminuiu!"
+   "Cansaço diminuiu!"
   ]
  ],
  "s218.sec51.u6": "{color 10}{partner}{color 1} não está com fome.",
@@ -3987,12 +3991,12 @@
  ],
  "s218.sec51.u9": [
   [
-   "MP aumentou 30! Velocidade",
-   "aumentou 2!"
+   "Defesa aumentou 10!",
+   "Inteligência aumentou 5!",
+   "Felicidade aumentou!"
   ],
   [
-   "Felicidade aumentou! Cansaço",
-   "diminuiu!"
+   "Cansaço diminuiu!"
   ]
  ],
  "s218.sec51.u10": "{color 10}{partner}{color 1} não está com fome.",
@@ -4005,12 +4009,13 @@
  ],
  "s218.sec51.u13": [
   [
-   "MP aumentou 50! Velocidade",
-   "aumentou 2!"
+   "Defesa aumentou 15!",
+   "Inteligência aumentou 7!",
+   "Felicidade aumentou!"
   ],
   [
-   "Felicidade aumentou! Disciplina",
-   "aumentou! Cansaço diminuiu!"
+   "Disciplina aumentou!",
+   "Cansaço diminuiu!"
   ]
  ],
  "s218.sec51.u14": "{color 10}{partner}{color 1} não está com fome.",
@@ -4032,17 +4037,19 @@
  ],
  "s218.sec51.u18": [
   [
-   "HP aumentou 10! MP aumentou",
-   "10! Ataque aumentou 1!"
+   "HP aumentou 20!",
+   "MP aumentou 20!",
+   "Ataque aumentou 2!"
   ],
   [
-   "Defesa aumentou 1! Velocidade",
-   "aumentou 1! Inteligência",
-   "aumentou 1!"
+   "Defesa aumentou 2!",
+   "Velocidade aumentou 2!",
+   "Inteligência aumentou 2!"
   ],
   [
-   "Felicidade aumentou! Disciplina",
-   "aumentou! Cansaço diminuiu!"
+   "Felicidade aumentou!",
+   "Disciplina aumentou!",
+   "Cansaço diminuiu!"
   ]
  ],
  "s218.sec51.u19": "{color 10}{partner}{color 1}... cheio.",
@@ -4059,17 +4066,19 @@
  ],
  "s218.sec51.u22": [
   [
-   "HP aumentou 20! MP aumentou",
-   "20! Ataque aumentou 2!"
+   "HP aumentou 30!",
+   "MP aumentou 30!",
+   "Ataque aumentou 3!"
   ],
   [
-   "Defesa aumentou 2! Velocidade",
-   "aumentou 2! Inteligência",
-   "aumentou 2!"
+   "Defesa aumentou 3!",
+   "Velocidade aumentou 3!",
+   "Inteligência aumentou 3!"
   ],
   [
-   "Felicidade aumentou! Disciplina",
-   "aumentou! Cansaço diminuiu!"
+   "Felicidade aumentou!",
+   "Disciplina aumentou!",
+   "Cansaço diminuiu!"
   ]
  ],
  "s218.sec51.u23": "{color 10}{partner}{color 1}... cheio.",
@@ -4086,17 +4095,19 @@
  ],
  "s218.sec51.u26": [
   [
-   "HP aumentou 30! MP aumentou",
-   "30! Ataque aumentou 3!"
+   "HP aumentou 50!",
+   "MP aumentou 50!",
+   "Ataque aumentou 5!"
   ],
   [
-   "Defesa aumentou 3! Velocidade",
-   "aumentou 3! Inteligência",
-   "aumentou 3!"
+   "Defesa aumentou 5!",
+   "Velocidade aumentou 5!",
+   "Inteligência aumentou 5!"
   ],
   [
-   "Felicidade aumentou! Disciplina",
-   "aumentou! Cansaço diminuiu!"
+   "Felicidade aumentou!",
+   "Disciplina aumentou!",
+   "Cansaço diminuiu!"
   ]
  ],
  "s218.sec51.u27": "{color 10}{partner}{color 1}... cheio.",
@@ -4110,45 +4121,57 @@
  ],
  "s218.sec51.u31": [
   [
-   "HP aumentou 10! Ataque",
-   "aumentou 1! Velocidade",
-   "aumentou 1!"
+   "HP aumentou 10!",
+   "MP aumentou 10!",
+   "Ataque aumentou 1!"
+  ],
+  [
+   "Defesa aumentou 1!",
+   "Velocidade aumentou 1!",
+   "Inteligência aumentou 1!"
   ]
  ],
  "s218.sec51.u32": [
   [
-   "Felicidade aumentou! Cansaço",
-   "diminuiu!"
+   "Felicidade aumentou!",
+   "Cansaço diminuiu!"
   ]
  ],
  "s218.sec51.u33": [
   [
-   "MP aumentou 10! Defesa",
-   "aumentou 1! Inteligência",
-   "aumentou 1!"
+   "HP aumentou 20!",
+   "MP aumentou 20!",
+   "Ataque aumentou 2!"
+  ],
+  [
+   "Defesa aumentou 2!",
+   "Velocidade aumentou 2!",
+   "Inteligência aumentou 2!"
   ]
  ],
  "s218.sec51.u34": [
   [
-   "Felicidade aumentou! Cansaço",
-   "diminuiu!"
+   "Felicidade aumentou!",
+   "Cansaço diminuiu!"
   ]
  ],
  "s218.sec51.u35": [
   [
-   "HP aumentou 20! MP aumentou",
-   "20! Ataque aumentou 2!"
+   "HP aumentou 30!",
+   "MP aumentou 30!",
+   "Ataque aumentou 3!"
   ],
   [
-   "Defesa aumentou 2! Velocidade",
-   "aumentou 2! Inteligência",
-   "aumentou 2!"
+   "Defesa aumentou 3!",
+   "Velocidade aumentou 3!",
+   "Inteligência aumentou 3!"
   ]
  ],
  "s218.sec51.u36": [
   [
-   "Felicidade aumentou! Disciplina",
-   "aumentou! Cansaço diminuiu!"
+   "Felicidade aumentou!",
+   "Disciplina aumentou!",
+   "Cansaço diminuiu!"
   ]
  ],
  "s218.sec51.u37": "...!",
@@ -4161,45 +4184,57 @@
  ],
  "s218.sec51.u40": [
   [
-   "HP aumentou 20! Ataque",
-   "aumentou 2! Velocidade",
-   "aumentou 2!"
+   "HP aumentou 20!",
+   "MP aumentou 20!",
+   "Ataque aumentou 2!"
+  ],
+  [
+   "Defesa aumentou 2!",
+   "Velocidade aumentou 2!",
+   "Inteligência aumentou 2!"
   ]
  ],
  "s218.sec51.u41": [
   [
-   "Felicidade aumentou! Disciplina",
-   "aumentou! Cansaço diminuiu!"
+   "Felicidade aumentou!",
+   "Cansaço diminuiu!"
   ]
  ],
  "s218.sec51.u42": [
   [
-   "MP aumentou 20! Defesa",
-   "aumentou 2! Inteligência",
-   "aumentou 2!"
+   "HP aumentou 30!",
+   "MP aumentou 30!",
+   "Ataque aumentou 3!"
+  ],
+  [
+   "Defesa aumentou 3!",
+   "Velocidade aumentou 3!",
+   "Inteligência aumentou 3!"
   ]
  ],
  "s218.sec51.u43": [
   [
-   "Felicidade aumentou! Cansaço",
-   "diminuiu!"
+   "Felicidade aumentou!",
+   "Cansaço diminuiu!"
   ]
  ],
  "s218.sec51.u44": [
   [
-   "HP aumentou 30! MP aumentou",
-   "30! Ataque aumentou 3!"
+   "HP aumentou 50!",
+   "MP aumentou 50!",
+   "Ataque aumentou 5!"
   ],
   [
-   "Defesa aumentou 3! Velocidade",
-   "aumentou 3! Inteligência",
-   "aumentou 3!"
+   "Defesa aumentou 5!",
+   "Velocidade aumentou 5!",
+   "Inteligência aumentou 5!"
   ]
  ],
  "s218.sec51.u45": [
   [
-   "Felicidade aumentou! Disciplina",
-   "aumentou! Cansaço diminuiu!"
+   "Felicidade aumentou!",
+   "Disciplina aumentou!",
+   "Cansaço diminuiu!"
   ]
  ],
  "s218.sec51.u46": "...!",
@@ -4212,45 +4247,59 @@
  ],
  "s218.sec51.u49": [
   [
-   "HP aumentou 30! Ataque",
-   "aumentou 3! Velocidade",
-   "aumentou 3!"
+   "HP aumentou 30!",
+   "MP aumentou 30!",
+   "Ataque aumentou 3!"
+  ],
+  [
+   "Defesa aumentou 3!",
+   "Velocidade aumentou 3!",
+   "Inteligência aumentou 3!"
   ]
  ],
  "s218.sec51.u50": [
   [
-   "Felicidade aumentou! Disciplina",
-   "aumentou! Cansaço diminuiu!"
+   "Felicidade aumentou!",
+   "Disciplina aumentou!",
+   "Cansaço diminuiu!"
   ]
  ],
  "s218.sec51.u51": [
   [
-   "MP aumentou 30! Defesa",
-   "aumentou 3! Inteligência",
-   "aumentou 3!"
+   "HP aumentou 50!",
+   "MP aumentou 50!",
+   "Ataque aumentou 5!"
+  ],
+  [
+   "Defesa aumentou 5!",
+   "Velocidade aumentou 5!",
+   "Inteligência aumentou 5!"
   ]
  ],
  "s218.sec51.u52": [
   [
-   "Felicidade aumentou! Disciplina",
-   "aumentou! Cansaço diminuiu!"
+   "Felicidade aumentou!",
+   "Disciplina aumentou!",
+   "Cansaço diminuiu!"
   ]
  ],
  "s218.sec51.u53": [
   [
-   "HP aumentou 40! MP aumentou",
-   "40! Ataque aumentou 4!"
+   "HP aumentou 70!",
+   "MP aumentou 70!",
+   "Ataque aumentou 7!"
   ],
   [
-   "Defesa aumentou 4! Velocidade",
-   "aumentou 4! Inteligência",
-   "aumentou 4!"
+   "Defesa aumentou 7!",
+   "Velocidade aumentou 7!",
+   "Inteligência aumentou 7!"
   ]
  ],
  "s218.sec51.u54": [
   [
-   "Felicidade aumentou! Disciplina",
-   "aumentou! Cansaço diminuiu!"
+   "Felicidade aumentou!",
+   "Disciplina aumentou!",
+   "Cansaço diminuiu!"
   ]
  ],
  "s218.sec51.u55": "...!",

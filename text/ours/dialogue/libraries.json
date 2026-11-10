@@ -2917,11 +2917,11 @@
  "s217.sec51.u4": "{color 10}{partner}{color 1} enjoyed the Red Hot Ramen!",
  "s217.sec51.u5": [
   [
-   "Offense went up 1!",
-   "Brains went up 1!"
+   "Offense went up 5!",
+   "Speed went up 3!",
+   "Happiness went up!"
   ],
   [
-   "Happiness went up!",
    "Tiredness went down!"
   ]
  ],
@@ -2930,11 +2930,11 @@
  "s217.sec51.u8": "{color 10}{partner}{color 1} enjoyed the Burning Hot Curry!",
  "s217.sec51.u9": [
   [
-   "Offense went up 3!",
-   "Brains went up 2!"
+   "Offense went up 10!",
+   "Speed went up 5!",
+   "Happiness went up!"
   ],
   [
-   "Happiness went up!",
    "Tiredness went down!"
   ]
  ],
@@ -2943,11 +2943,11 @@
  "s217.sec51.u12": "{color 10}{partner}{color 1} enjoyed the Lava Hot Pot!",
  "s217.sec51.u13": [
   [
-   "Offense went up 5!",
-   "Brains went up 3!"
+   "Offense went up 15!",
+   "Speed went up 7!",
+   "Happiness went up!"
   ],
   [
-   "Happiness went up!",
    "Discipline went up!",
    "Tiredness went down!"
   ]
@@ -2958,11 +2958,11 @@
  "s217.sec51.u17": "{color 10}{partner}{color 1} enjoyed the Wild Dragon Noodle!",
  "s217.sec51.u18": [
   [
-   "Defense went up 1!",
-   "Speed went up 1!"
+   "HP went up 50!",
+   "Speed went up 3!",
+   "Happiness went up!"
   ],
   [
-   "Happiness went up!",
    "Tiredness went down!"
   ]
  ],
@@ -2971,11 +2971,11 @@
  "s217.sec51.u21": "{color 10}{partner}{color 1} enjoyed the Zaurus Pizza!",
  "s217.sec51.u22": [
   [
-   "Defense went up 3!",
-   "Speed went up 2!"
+   "HP went up 100!",
+   "Speed went up 5!",
+   "Happiness went up!"
   ],
   [
-   "Happiness went up!",
    "Tiredness went down!"
   ]
  ],
@@ -2984,11 +2984,11 @@
  "s217.sec51.u25": "{color 10}{partner}{color 1} enjoyed the Jurassic Burger!",
  "s217.sec51.u26": [
   [
-   "Defense went up 5!",
-   "Speed went up 3!"
+   "HP went up 150!",
+   "Speed went up 7!",
+   "Happiness went up!"
   ],
   [
-   "Happiness went up!",
    "Discipline went up!",
    "Tiredness went down!"
   ]
@@ -2999,11 +2999,11 @@
  "s217.sec51.u30": "{color 10}{partner}{color 1} enjoyed the T-bone Steak!",
  "s217.sec51.u31": [
   [
-   "HP went up 10!",
-   "Brains went up 1!"
+   "MP went up 50!",
+   "Brains went up 3!",
+   "Discipline went up!"
   ],
   [
-   "Discipline went up!",
    "Tiredness went down!"
   ]
  ],
@@ -3012,11 +3012,11 @@
  "s217.sec51.u34": "{color 10}{partner}{color 1} enjoyed the DX-bone Steak!",
  "s217.sec51.u35": [
   [
-   "HP went up 30!",
-   "Brains went up 2!"
+   "MP went up 100!",
+   "Brains went up 5!",
+   "Happiness went up!"
   ],
   [
-   "Happiness went up!",
    "Discipline went up!",
    "Tiredness went down!"
   ]
@@ -3026,11 +3026,11 @@
  "s217.sec51.u38": "{color 10}{partner}{color 1} enjoyed the Phantom-bone Steak!",
  "s217.sec51.u39": [
   [
-   "HP went up 50!",
-   "Brains went up 3!"
+   "MP went up 150!",
+   "Brains went up 7!",
+   "Happiness went up!"
   ],
   [
-   "Happiness went up!",
    "Discipline went up!",
    "Tiredness went down!"
   ]
@@ -3053,11 +3053,11 @@
  "s218.sec51.u4": "{color 10}{partner}{color 1} enjoyed the Snow Shake!",
  "s218.sec51.u5": [
   [
-   "MP went up 10!",
-   "Speed went up 1!"
+   "Defense went up 5!",
+   "Brains went up 3!",
+   "Happiness went up!"
   ],
   [
-   "Happiness went up!",
    "Tiredness went down!"
   ]
  ],
@@ -3066,11 +3066,11 @@
  "s218.sec51.u8": "{color 10}{partner}{color 1} enjoyed the Ice Cream!",
  "s218.sec51.u9": [
   [
-   "MP went up 30!",
-   "Speed went up 2!"
+   "Defense went up 10!",
+   "Brains went up 5!",
+   "Happiness went up!"
   ],
   [
-   "Happiness went up!",
    "Tiredness went down!"
   ]
  ],
@@ -3079,11 +3079,11 @@
  "s218.sec51.u12": "{color 10}{partner}{color 1} enjoyed the Snow Cone!",
  "s218.sec51.u13": [
   [
-   "MP went up 50!",
-   "Speed went up 2!"
+   "Defense went up 15!",
+   "Brains went up 7!",
+   "Happiness went up!"
   ],
   [
-   "Happiness went up!",
    "Discipline went up!",
    "Tiredness went down!"
   ]
@@ -3093,26 +3093,6 @@
  "s218.sec51.u16": "BITS... NOT ENOUGH.",
  "s218.sec51.u17": "{color 10}{partner}{color 1} enjoyed the Space Salad!",
  "s218.sec51.u18": [
-  [
-   "HP went up 10!",
-   "MP went up 10!",
-   "Offense went up 1!"
-  ],
-  [
-   "Defense went up 1!",
-   "Speed went up 1!",
-   "Brains went up 1!"
-  ],
-  [
-   "Happiness went up!",
-   "Discipline went up!",
-   "Tiredness went down!"
-  ]
- ],
- "s218.sec51.u19": "{color 10}{partner}{color 1}... FULL.",
- "s218.sec51.u20": "BITS... NOT ENOUGH.",
- "s218.sec51.u21": "{color 10}{partner}{color 1} enjoyed the UFO Soup!",
- "s218.sec51.u22": [
   [
    "HP went up 20!",
    "MP went up 20!",
@@ -3129,10 +3109,10 @@
    "Tiredness went down!"
   ]
  ],
- "s218.sec51.u23": "{color 10}{partner}{color 1}... FULL.",
- "s218.sec51.u24": "BITS... NOT ENOUGH.",
- "s218.sec51.u25": "{color 10}{partner}{color 1} enjoyed the Galaxy Course!",
- "s218.sec51.u26": [
+ "s218.sec51.u19": "{color 10}{partner}{color 1}... FULL.",
+ "s218.sec51.u20": "BITS... NOT ENOUGH.",
+ "s218.sec51.u21": "{color 10}{partner}{color 1} enjoyed the UFO Soup!",
+ "s218.sec51.u22": [
   [
    "HP went up 30!",
    "MP went up 30!",
@@ -3149,6 +3129,26 @@
    "Tiredness went down!"
   ]
  ],
+ "s218.sec51.u23": "{color 10}{partner}{color 1}... FULL.",
+ "s218.sec51.u24": "BITS... NOT ENOUGH.",
+ "s218.sec51.u25": "{color 10}{partner}{color 1} enjoyed the Galaxy Course!",
+ "s218.sec51.u26": [
+  [
+   "HP went up 50!",
+   "MP went up 50!",
+   "Offense went up 5!"
+  ],
+  [
+   "Defense went up 5!",
+   "Speed went up 5!",
+   "Brains went up 5!"
+  ],
+  [
+   "Happiness went up!",
+   "Discipline went up!",
+   "Tiredness went down!"
+  ]
+ ],
  "s218.sec51.u27": "{color 10}{partner}{color 1}... FULL.",
  "s218.sec51.u28": "......UNTIL WE MEET AGAIN, EVERYONE.",
  "s218.sec51.u29": "......",
@@ -3156,8 +3156,13 @@
  "s218.sec51.u31": [
   [
    "HP went up 10!",
-   "Offense went up 1!",
-   "Speed went up 1!"
+   "MP went up 10!",
+   "Offense went up 1!"
+  ],
+  [
+   "Defense went up 1!",
+   "Speed went up 1!",
+   "Brains went up 1!"
   ]
  ],
  "s218.sec51.u32": [
@@ -3168,9 +3173,14 @@
  ],
  "s218.sec51.u33": [
   [
-   "MP went up 10!",
-   "Defense went up 1!",
-   "Brains went up 1!"
+   "HP went up 20!",
+   "MP went up 20!",
+   "Offense went up 2!"
+  ],
+  [
+   "Defense went up 2!",
+   "Speed went up 2!",
+   "Brains went up 2!"
   ]
  ],
  "s218.sec51.u34": [
@@ -3181,14 +3191,14 @@
  ],
  "s218.sec51.u35": [
   [
-   "HP went up 20!",
-   "MP went up 20!",
-   "Offense went up 2!"
+   "HP went up 30!",
+   "MP went up 30!",
+   "Offense went up 3!"
   ],
   [
-   "Defense went up 2!",
-   "Speed went up 2!",
-   "Brains went up 2!"
+   "Defense went up 3!",
+   "Speed went up 3!",
+   "Brains went up 3!"
   ]
  ],
  "s218.sec51.u36": [
@@ -3204,22 +3214,31 @@
  "s218.sec51.u40": [
   [
    "HP went up 20!",
-   "Offense went up 2!",
-   "Speed went up 2!"
+   "MP went up 20!",
+   "Offense went up 2!"
+  ],
+  [
+   "Defense went up 2!",
+   "Speed went up 2!",
+   "Brains went up 2!"
   ]
  ],
  "s218.sec51.u41": [
   [
    "Happiness went up!",
-   "Discipline went up!",
    "Tiredness went down!"
   ]
  ],
  "s218.sec51.u42": [
   [
-   "MP went up 20!",
-   "Defense went up 2!",
-   "Brains went up 2!"
+   "HP went up 30!",
+   "MP went up 30!",
+   "Offense went up 3!"
+  ],
+  [
+   "Defense went up 3!",
+   "Speed went up 3!",
+   "Brains went up 3!"
   ]
  ],
  "s218.sec51.u43": [
@@ -3230,14 +3249,14 @@
  ],
  "s218.sec51.u44": [
   [
-   "HP went up 30!",
-   "MP went up 30!",
-   "Offense went up 3!"
+   "HP went up 50!",
+   "MP went up 50!",
+   "Offense went up 5!"
   ],
   [
-   "Defense went up 3!",
-   "Speed went up 3!",
-   "Brains went up 3!"
+   "Defense went up 5!",
+   "Speed went up 5!",
+   "Brains went up 5!"
   ]
  ],
  "s218.sec51.u45": [
@@ -3253,8 +3272,13 @@
  "s218.sec51.u49": [
   [
    "HP went up 30!",
-   "Offense went up 3!",
-   "Speed went up 3!"
+   "MP went up 30!",
+   "Offense went up 3!"
+  ],
+  [
+   "Defense went up 3!",
+   "Speed went up 3!",
+   "Brains went up 3!"
   ]
  ],
  "s218.sec51.u50": [
@@ -3266,9 +3290,14 @@
  ],
  "s218.sec51.u51": [
   [
-   "MP went up 30!",
-   "Defense went up 3!",
-   "Brains went up 3!"
+   "HP went up 50!",
+   "MP went up 50!",
+   "Offense went up 5!"
+  ],
+  [
+   "Defense went up 5!",
+   "Speed went up 5!",
+   "Brains went up 5!"
   ]
  ],
  "s218.sec51.u52": [
@@ -3280,14 +3309,14 @@
  ],
  "s218.sec51.u53": [
   [
-   "HP went up 40!",
-   "MP went up 40!",
-   "Offense went up 4!"
+   "HP went up 70!",
+   "MP went up 70!",
+   "Offense went up 7!"
   ],
   [
-   "Defense went up 4!",
-   "Speed went up 4!",
-   "Brains went up 4!"
+   "Defense went up 7!",
+   "Speed went up 7!",
+   "Brains went up 7!"
   ]
  ],
  "s218.sec51.u54": [

@@ -5856,9 +5856,12 @@
  ],
  "s217.sec51.u5": [
   [
-   "Angriff +1! Intelligenz +1!",
-   "Zufriedenheit steigt! Müdigkeit",
-   "sinkt!"
+   "Angriff +5!",
+   "Tempo +3!",
+   "Zufriedenheit steigt!"
+  ],
+  [
+   "Müdigkeit sinkt!"
   ]
  ],
  "s217.sec51.u6": [
@@ -5880,9 +5883,12 @@
  ],
  "s217.sec51.u9": [
   [
-   "Angriff +3! Intelligenz +2!",
-   "Zufriedenheit steigt! Müdigkeit",
-   "sinkt!"
+   "Angriff +10!",
+   "Tempo +5!",
+   "Zufriedenheit steigt!"
+  ],
+  [
+   "Müdigkeit sinkt!"
   ]
  ],
  "s217.sec51.u10": [
@@ -5904,9 +5910,13 @@
  ],
  "s217.sec51.u13": [
   [
-   "Angriff +5! Intelligenz +3!",
-   "Zufriedenheit steigt! Disziplin",
-   "steigt! Müdigkeit sinkt!"
+   "Angriff +15!",
+   "Tempo +7!",
+   "Zufriedenheit steigt!"
+  ],
+  [
+   "Disziplin steigt!",
+   "Müdigkeit sinkt!"
   ]
  ],
  "s217.sec51.u14": [
@@ -5930,9 +5940,12 @@
  ],
  "s217.sec51.u18": [
   [
-   "Abwehr +1! Tempo +1!",
-   "Zufriedenheit steigt! Müdigkeit",
-   "sinkt!"
+   "HP +50!",
+   "Tempo +3!",
+   "Zufriedenheit steigt!"
+  ],
+  [
+   "Müdigkeit sinkt!"
   ]
  ],
  "s217.sec51.u19": [
@@ -5950,9 +5963,12 @@
  ],
  "s217.sec51.u22": [
   [
-   "Abwehr +3! Tempo +2!",
-   "Zufriedenheit steigt! Müdigkeit",
-   "sinkt!"
+   "HP +100!",
+   "Tempo +5!",
+   "Zufriedenheit steigt!"
+  ],
+  [
+   "Müdigkeit sinkt!"
   ]
  ],
  "s217.sec51.u23": [
@@ -5970,9 +5986,13 @@
  ],
  "s217.sec51.u26": [
   [
-   "Abwehr +5! Tempo +3!",
-   "Zufriedenheit steigt! Disziplin",
-   "steigt! Müdigkeit sinkt!"
+   "HP +150!",
+   "Tempo +7!",
+   "Zufriedenheit steigt!"
+  ],
+  [
+   "Disziplin steigt!",
+   "Müdigkeit sinkt!"
   ]
  ],
  "s217.sec51.u27": [
@@ -5999,9 +6019,12 @@
  ],
  "s217.sec51.u31": [
   [
-   "HP +10! Intelligenz +1!",
-   "Disziplin steigt! Müdigkeit",
-   "sinkt!"
+   "MP +50!",
+   "Intelligenz +3!",
+   "Disziplin steigt!"
+  ],
+  [
+   "Müdigkeit sinkt!"
   ]
  ],
  "s217.sec51.u32": [
@@ -6023,9 +6046,13 @@
  ],
  "s217.sec51.u35": [
   [
-   "HP +30! Intelligenz +2!",
-   "Zufriedenheit steigt! Disziplin",
-   "steigt! Müdigkeit sinkt!"
+   "MP +100!",
+   "Intelligenz +5!",
+   "Zufriedenheit steigt!"
+  ],
+  [
+   "Disziplin steigt!",
+   "Müdigkeit sinkt!"
   ]
  ],
  "s217.sec51.u36": [
@@ -6047,9 +6074,13 @@
  ],
  "s217.sec51.u39": [
   [
-   "HP +50! Intelligenz +3!",
-   "Zufriedenheit steigt! Disziplin",
-   "steigt! Müdigkeit sinkt!"
+   "MP +150!",
+   "Intelligenz +7!",
+   "Zufriedenheit steigt!"
+  ],
+  [
+   "Disziplin steigt!",
+   "Müdigkeit sinkt!"
   ]
  ],
  "s217.sec51.u40": [
@@ -6097,9 +6128,12 @@
  ],
  "s218.sec51.u5": [
   [
-   "MP +10! Tempo +1!",
-   "Zufriedenheit steigt! Müdigkeit",
-   "sinkt!"
+   "Abwehr +5!",
+   "Intelligenz +3!",
+   "Zufriedenheit steigt!"
+  ],
+  [
+   "Müdigkeit sinkt!"
   ]
  ],
  "s218.sec51.u6": [
@@ -6117,9 +6151,12 @@
  ],
  "s218.sec51.u9": [
   [
-   "MP +30! Tempo +2!",
-   "Zufriedenheit steigt! Müdigkeit",
-   "sinkt!"
+   "Abwehr +10!",
+   "Intelligenz +5!",
+   "Zufriedenheit steigt!"
+  ],
+  [
+   "Müdigkeit sinkt!"
   ]
  ],
  "s218.sec51.u10": [
@@ -6137,9 +6174,13 @@
  ],
  "s218.sec51.u13": [
   [
-   "MP +50! Tempo +2!",
-   "Zufriedenheit steigt! Disziplin",
-   "steigt! Müdigkeit sinkt!"
+   "Abwehr +15!",
+   "Intelligenz +7!",
+   "Zufriedenheit steigt!"
+  ],
+  [
+   "Disziplin steigt!",
+   "Müdigkeit sinkt!"
   ]
  ],
  "s218.sec51.u14": [
@@ -6166,12 +6207,18 @@
  ],
  "s218.sec51.u18": [
   [
-   "HP +10! MP +10! Angriff +1!",
-   "Abwehr +1! Tempo +1!",
-   "Intelligenz +1! Zufriedenheit"
+   "HP +20!",
+   "MP +20!",
+   "Angriff +2!"
   ],
   [
-   "steigt! Disziplin steigt!",
+   "Abwehr +2!",
+   "Tempo +2!",
+   "Intelligenz +2!"
+  ],
+  [
+   "Zufriedenheit steigt!",
+   "Disziplin steigt!",
    "Müdigkeit sinkt!"
   ]
  ],
@@ -6193,12 +6240,18 @@
  ],
  "s218.sec51.u22": [
   [
-   "HP +20! MP +20! Angriff +2!",
-   "Abwehr +2! Tempo +2!",
-   "Intelligenz +2! Zufriedenheit"
+   "HP +30!",
+   "MP +30!",
+   "Angriff +3!"
   ],
   [
-   "steigt! Disziplin steigt!",
+   "Abwehr +3!",
+   "Tempo +3!",
+   "Intelligenz +3!"
+  ],
+  [
+   "Zufriedenheit steigt!",
+   "Disziplin steigt!",
    "Müdigkeit sinkt!"
   ]
  ],
@@ -6220,12 +6273,18 @@
  ],
  "s218.sec51.u26": [
   [
-   "HP +30! MP +30! Angriff +3!",
-   "Abwehr +3! Tempo +3!",
-   "Intelligenz +3! Zufriedenheit"
+   "HP +50!",
+   "MP +50!",
+   "Angriff +5!"
   ],
   [
-   "steigt! Disziplin steigt!",
+   "Abwehr +5!",
+   "Tempo +5!",
+   "Intelligenz +5!"
+  ],
+  [
+   "Zufriedenheit steigt!",
+   "Disziplin steigt!",
    "Müdigkeit sinkt!"
   ]
  ],
@@ -6253,39 +6312,57 @@
  ],
  "s218.sec51.u31": [
   [
-   "HP +10! Angriff +1! Tempo",
-   "+1!"
+   "HP +10!",
+   "MP +10!",
+   "Angriff +1!"
+  ],
+  [
+   "Abwehr +1!",
+   "Tempo +1!",
+   "Intelligenz +1!"
   ]
  ],
  "s218.sec51.u32": [
   [
-   "Zufriedenheit steigt! Müdigkeit",
-   "sinkt!"
+   "Zufriedenheit steigt!",
+   "Müdigkeit sinkt!"
   ]
  ],
  "s218.sec51.u33": [
   [
-   "MP +10! Abwehr +1!",
-   "Intelligenz +1!"
+   "HP +20!",
+   "MP +20!",
+   "Angriff +2!"
+  ],
+  [
+   "Abwehr +2!",
+   "Tempo +2!",
+   "Intelligenz +2!"
   ]
  ],
  "s218.sec51.u34": [
   [
-   "Zufriedenheit steigt! Müdigkeit",
-   "sinkt!"
+   "Zufriedenheit steigt!",
+   "Müdigkeit sinkt!"
   ]
  ],
  "s218.sec51.u35": [
   [
-   "HP +20! MP +20! Angriff +2!",
-   "Abwehr +2! Tempo +2!",
-   "Intelligenz +2!"
+   "HP +30!",
+   "MP +30!",
+   "Angriff +3!"
+  ],
+  [
+   "Abwehr +3!",
+   "Tempo +3!",
+   "Intelligenz +3!"
   ]
  ],
  "s218.sec51.u36": [
   [
-   "Zufriedenheit steigt! Disziplin",
-   "steigt! Müdigkeit sinkt!"
+   "Zufriedenheit steigt!",
+   "Disziplin steigt!",
+   "Müdigkeit sinkt!"
   ]
  ],
  "s218.sec51.u37": [
@@ -6306,39 +6383,57 @@
  ],
  "s218.sec51.u40": [
   [
-   "HP +20! Angriff +2! Tempo",
-   "+2!"
+   "HP +20!",
+   "MP +20!",
+   "Angriff +2!"
+  ],
+  [
+   "Abwehr +2!",
+   "Tempo +2!",
+   "Intelligenz +2!"
   ]
  ],
  "s218.sec51.u41": [
   [
-   "Zufriedenheit steigt! Disziplin",
-   "steigt! Müdigkeit sinkt!"
+   "Zufriedenheit steigt!",
+   "Müdigkeit sinkt!"
   ]
  ],
  "s218.sec51.u42": [
   [
-   "MP +20! Abwehr +2!",
-   "Intelligenz +2!"
+   "HP +30!",
+   "MP +30!",
+   "Angriff +3!"
+  ],
+  [
+   "Abwehr +3!",
+   "Tempo +3!",
+   "Intelligenz +3!"
   ]
  ],
  "s218.sec51.u43": [
   [
-   "Zufriedenheit steigt! Müdigkeit",
-   "sinkt!"
+   "Zufriedenheit steigt!",
+   "Müdigkeit sinkt!"
   ]
  ],
  "s218.sec51.u44": [
   [
-   "HP +30! MP +30! Angriff +3!",
-   "Abwehr +3! Tempo +3!",
-   "Intelligenz +3!"
+   "HP +50!",
+   "MP +50!",
+   "Angriff +5!"
+  ],
+  [
+   "Abwehr +5!",
+   "Tempo +5!",
+   "Intelligenz +5!"
   ]
  ],
  "s218.sec51.u45": [
   [
-   "Zufriedenheit steigt! Disziplin",
-   "steigt! Müdigkeit sinkt!"
+   "Zufriedenheit steigt!",
+   "Disziplin steigt!",
+   "Müdigkeit sinkt!"
   ]
  ],
  "s218.sec51.u46": [
@@ -6359,39 +6454,59 @@
  ],
  "s218.sec51.u49": [
   [
-   "HP +30! Angriff +3! Tempo",
-   "+3!"
+   "HP +30!",
+   "MP +30!",
+   "Angriff +3!"
+  ],
+  [
+   "Abwehr +3!",
+   "Tempo +3!",
+   "Intelligenz +3!"
   ]
  ],
  "s218.sec51.u50": [
   [
-   "Zufriedenheit steigt! Disziplin",
-   "steigt! Müdigkeit sinkt!"
+   "Zufriedenheit steigt!",
+   "Disziplin steigt!",
+   "Müdigkeit sinkt!"
   ]
  ],
  "s218.sec51.u51": [
   [
-   "MP +30! Abwehr +3!",
-   "Intelligenz +3!"
+   "HP +50!",
+   "MP +50!",
+   "Angriff +5!"
+  ],
+  [
+   "Abwehr +5!",
+   "Tempo +5!",
+   "Intelligenz +5!"
   ]
  ],
  "s218.sec51.u52": [
   [
-   "Zufriedenheit steigt! Disziplin",
-   "steigt! Müdigkeit sinkt!"
+   "Zufriedenheit steigt!",
+   "Disziplin steigt!",
+   "Müdigkeit sinkt!"
   ]
  ],
  "s218.sec51.u53": [
   [
-   "HP +40! MP +40! Angriff +4!",
-   "Abwehr +4! Tempo +4!",
-   "Intelligenz +4!"
+   "HP +70!",
+   "MP +70!",
+   "Angriff +7!"
+  ],
+  [
+   "Abwehr +7!",
+   "Tempo +7!",
+   "Intelligenz +7!"
   ]
  ],
  "s218.sec51.u54": [
   [
-   "Zufriedenheit steigt! Disziplin",
-   "steigt! Müdigkeit sinkt!"
+   "Zufriedenheit steigt!",
+   "Disziplin steigt!",
+   "Müdigkeit sinkt!"
   ]
  ],
  "s218.sec51.u55": [
