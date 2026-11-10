@@ -30,6 +30,6 @@ PYTHONPATH=tools python3 -m tools.models.field_animations.sea_serpent_audio BEFO
 
 The helper checks that only sound instructions change and that the original
 resident/cold animation budgets still fit. Store with
-`tools/models/edit.py put 211 AFTER.MMD` and update the steady-glide source pin.
+`tools/models/edit.py put 211 AFTER.MMD` and update the source pin in `metal_seadramon.py` (the swim overlay).
 The final provider pins include that glide. Battle validation must exercise
 ordinary techniques and Mail Strome, with damage and a return to the field.

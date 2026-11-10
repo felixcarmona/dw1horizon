@@ -1662,7 +1662,8 @@ def encode_anim(samples, nb, loop_sample=None, events=(), tol=0, repeats=True):
     loops forever: loop start before frame s+1, a full keyframe there (every channel that
     moves, so the jump resets all speeds) and loop end at frame N = last sample + 1 jumping
     to s+1. `events`: (sample, 'sound'|'tex', instruction dict). With `repeats`, motion that
-    repeats itself is also tried as finite loops (find_repeats) and the smaller result wins."""
+    repeats itself is also tried as finite loops (find_repeats) and the smaller result wins.
+    `tol` may also be a dict {bone: tolerance, None: the others'} for a finer fit of some bones."""
     best = _encode(samples, nb, loop_sample, list(events), tol, [])
     if repeats:
         loops = find_repeats(samples, events, loop_sample)
@@ -1706,7 +1707,7 @@ def _encode(samples, nb, loop_sample, events, tol, loops):
                 Vs.append(V)
         if not chans:
             continue
-        for (s, div), vals in _bone_keys(chans, Vs, forced, tol).items():
+        for (s, div), vals in _bone_keys(chans, Vs, forced, tol.get(b, tol.get(None, 0)) if isinstance(tol, dict) else tol).items():
             for j, val in vals.items():
                 keys.setdefault(s + 1, []).append((b, j, val, div))
     ev = {}

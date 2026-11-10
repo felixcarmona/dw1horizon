@@ -3,7 +3,9 @@
 Keep native chest/head/wing/tail performance. Ground the complete boot and calf
 meshes, temper the carrier bounce, clear the tired fists and distal tail, and
 retain native airborne leg recovery to keep huge boots behind the gauntlets.
-Explicit recipe for the pinned 28-bone source.
+Explicit recipe for the pinned 28-bone source. The walk and tired walk's arms
+are then hung and swung gently by repair_venom_run.polish_walk_arms; only the
+run keeps the gauntlets held forward.
 """
 import copy
 import hashlib
@@ -416,11 +418,13 @@ def build(data, sk):
                            exact_repeat_nine_cycles=True, original_root_XY_exact=True,
                            forward_units_per_tick={0: 0, 2: 20, 3: 14, 4: 52}[slot],
                            original_events_except_walk_tired_step_timing_exact=True))
-    from tools.models.repair_venom_run import polish
+    from tools.models.repair_venom_run import polish, polish_walk_arms
     result = polish(result, sk)
+    result = polish_walk_arms(result, sk)
     storage = motionstorage.audit(result, 28)
     assert storage['fits'], storage
     return result, dict(species=212, source_sha256=SOURCE,
                         output_sha256=hashlib.sha256(result).hexdigest(), changed_slots=[0, 2, 3, 4],
                         mesh_skeleton_private33_care_battle_exact=True,
-                        support_stage_checks=checks, run_arm_polish='shoulders lead elbows by two ticks and wrists by three; non-arm channels exact four cycles', walk_solver=walk_checks, rest_run_solver=other_checks, storage=storage)
+                        support_stage_checks=checks, run_arm_polish='shoulders lead elbows by two ticks and wrists by three; non-arm channels exact four cycles',
+                        walk_arm_polish='walk and tired walk: arms hang and swing against the legs, elbows trail shoulders, hands trail elbows; only the arms\' X rotations change', walk_solver=walk_checks, rest_run_solver=other_checks, storage=storage)

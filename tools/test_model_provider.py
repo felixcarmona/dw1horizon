@@ -123,6 +123,11 @@ class ModelProvider(unittest.TestCase):
         self.assertEqual(assignments['209'],
                          ('tools.models.field_animations.lillymon_flight', '209-lillymon-native-flight'))
         assignments['209'] = ('tools.models.field_animations.celebrations', '209-lillymon-native-flight')
+
+        # Magnadramon's field flight (magnadramon_flight.py) runs after its steady glide and replays it first.
+        self.assertEqual(assignments['215'],
+                         ('tools.models.field_animations.magnadramon_flight', '215-magnadramon-glide'))
+        assignments['215'] = ('tools.models.field_animations.gliding', '215-magnadramon-glide')
         self.assertEqual(assignments['197'],
                          ('tools.models.field_animations.magnamon', '197-magnamon-native'))
         assignments['197'] = previous_magnamon[1:]
@@ -176,6 +181,15 @@ class ModelProvider(unittest.TestCase):
                          ('tools.models.field_animations.gesomon', '240-gesomon-terrestrial'))
         self.assertNotIn('gesomon-hops', model.OVERLAYS)
         assignments['240'] = ('tools.models.field_animations.gliding', '240-gesomon-steady-run')
+        # Shakkoumon's own gaits (shakkoumon.py) replace the steady glide it was pinned with.
+        self.assertEqual(assignments['214'],
+                         ('tools.models.field_animations.shakkoumon', '214-shakkoumon-glide'))
+        assignments['214'] = ('tools.models.field_animations.gliding', '214-shakkoumon-glide')
+
+        # MetalSeadramon swims with Seadramon's clips instead of the steady glide.
+        self.assertEqual(assignments['211'],
+                         ('tools.models.field_animations.metal_seadramon', '211-metalseadramon-swim'))
+        assignments['211'] = ('tools.models.field_animations.gliding', '211-metalseadramon-glide')
         # All pre-existing bindings outside the repairs stay pinned.
         for sid in ('315', '332', '335'):
             del assignments[sid]

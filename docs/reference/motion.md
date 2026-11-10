@@ -358,7 +358,8 @@ A **field overlay** is a reviewed recipe that rewrites the field slots of one sp
 | `fieldarticulation.py` | Puppetmon 181, Kotemon 351 | upper-body acting over the original root and leg programs (wrists counter the swing so a weapon keeps its orientation) |
 | `fieldsecondary.py` | Stingmon 187, Angewomon 190, Paildramon 199 | small delayed secondary motion (arms, feathers, tail tips) with root and leg channels exact |
 | `fieldweight.py` | Ankylomon 189, Lighdramon 201 | step-synchronized body roll, yaw and pitch around the existing paw paths |
-| `fieldglide.py` | MetalSeadramon 211, Shakkoumon 214, Magnadramon 215, Gesomon 240, MarineAngemon 248, Quetzalmon 249, Solarmon 251 | replaces only the root's forward momentum with one steady key per loop (same net travel), removing forward bursts; every pose channel exact |
+| `fieldglide.py` | MetalSeadramon 211, Magnadramon 215, Gesomon 240, MarineAngemon 248, Quetzalmon 249, Solarmon 251 | replaces only the root's forward momentum with one steady key per loop (same net travel), removing forward bursts; every pose channel exact |
+| `shakkoumon.py` | Shakkoumon 214 | idle, walk, condition walk and run authored from the rest pose: breathing and weight shift; a waddle (14 ticks, 20 units/tick) rolling over the standing foot, pelvis against chest, arms and head late, soles carried back at the ground speed (slip 26 %); a slower drooping condition walk (20 ticks, 12); a leaning run (12 ticks, 42) with a short flight; pelvis height set per tick on the lowest sole |
 | `fieldphantom.py`, `fielddolphin.py`, `fieldzudo.py` | Phantomon 229, Dolphmon 238, Zudomon 219 | restore the native performance clock that the retargeted field clips had squeezed |
 | `fieldpiedmon.py`, `fieldfairy.py` | Piedmon 245, Lillymon 209 | keep the native float: Piedmon's leg rotations restored from its native floating cycle; Lillymon's shoulders opened in slot 0x21, the performance the experimental runtime layer (above) shows in the field |
 | `fieldnative.py`, `fieldseraph.py`, `fieldangel.py`, `fieldvenom.py`, `fieldaero.py`, `fielddevi.py`, `fieldrose.py`, `fieldsylph.py`, `fieldsorcer.py`, `fieldwizard.py`, `fieldvike.py`, `fieldtuskmon.py`, `fieldshadramon.py`, `fieldshuri.py` | MegaKabuterimon 205, Seraphimon 207, MagnaAngemon 206, VenomMyotismon 212, AeroVeedramon 213, Devidramon 216, Rosemon 230, Silphymon 226, Sorcermon 242, Wizardmon 241, Vikemon 220, Tuskmon 253, Shadramon 250, Shurimon 225 | planted strides solved on the native legs (exact link lengths, the whole boot or claw mesh as support) under the native upper-body performance; Silphymon's walks also carry the upper body (pelvis bob, lean, torso counter-turn, arms against the legs) with strides as long as its boots |
@@ -619,8 +620,12 @@ and hopping species read 100 % by construction.
 
 Metrics do not certify the look: check the front view, because a body that bows
 hides the face. Slot 3 of an import is often a tired walk with the head down, so a
-walk's source is the species' own slot 2 wherever it passes. Gomamon, Shurimon and
-Gizamon use slot 3 (the same carriage). Mushroomon's slot 2 has almost no stride, so
+walk's source is the species' own slot 2 wherever it passes. Shurimon and
+Gizamon use slot 3 (the same carriage). Gomamon's idle, walk, condition walk and run are written
+from scratch by `gomamon_scoot.py` (planted flipper steps, body roll and pitch, head, ear, mane and tail
+follow-through) and stored in its model delta. Its face blinks and opens its mouth through texture moves
+(`gomamon_face.py`): the closed-eye, half-shut and open-mouth frames sit in the texture's free rows 80 down and each clip
+copies them over the painted sprites, starting every clip open-eyed and closed-mouthed. Mushroomon's slot 2 has almost no stride, so
 its row takes only the legs from slot 3: `posture` plays every bone above the legs
 from slot 2 and solves each hip to keep its world rotation. Its `loose` block adds acting
 over the stride: arms oppose their legs, elbows arrive late, the torso turns against

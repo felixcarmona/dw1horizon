@@ -165,12 +165,12 @@
   "skeleton_sha256": "4f8c9bae47768687cb9e104ea7e2441f505c3817fb27d64bca0ce93891d67546",
   "source_sha256": "65d248ab6c95d030e87a44cef70809780cd1e7367a9d617be4773bc1799784f7",
   "base_generator": "tools.models.field_animations.ikkakumon",
-  "post_source_sha256": "1a52ff78d6324f39f610c84f90c33f515c9274de426bf42572b5f52ba078db1a",
+  "post_source_sha256": "2e6cc72f67a95771218c997235560fe30c960b6e671dfc5bba4d3316d76a69d0",
   "slots": {
    "2": {
     "from": 2,
-    "ticks": 22,
-    "speed": 20,
+    "ticks": 32,
+    "speed": 16,
     "slip": [
      125,
      250
@@ -178,7 +178,7 @@
    },
    "4": {
     "from": 4,
-    "ticks": 20,
+    "ticks": 24,
     "speed": 38,
     "slip": [
      190,
@@ -187,8 +187,8 @@
    },
    "3": {
     "from": 2,
-    "ticks": 33,
-    "speed": 13.3,
+    "ticks": 48,
+    "speed": 10.7,
     "slip": [
      190,
      360
@@ -276,33 +276,26 @@
   "skeleton_sha256": "ce1c542a1791db8fcae17ed8ecd8a3646e9f4016584d11c2fe2c59e57b70edcd",
   "source_sha256": "8a02d368ec11fb19ccbf57db20b11368d0670a87ae23b53f9e060b8d9db2868c",
   "base_generator": "tools.models.field_animations.devidramon",
-  "post_source_sha256": "df7c523f70aa536996e1b2bb70fa2bdb01446e8e1f10d72190ea011d58fc2321",
+  "post_source_sha256": "f7ccc32365cf6a3cc39fd379148c3e4fc081b2a3e2a56574179ed6659ed99d93",
   "slots": {
    "2": {
     "from": 2,
     "ticks": 36,
     "speed": 20,
+    "tol": 4,
     "slip": [
-     125,
-     250
-    ]
-   },
-   "4": {
-    "from": 4,
-    "ticks": 20,
-    "speed": 38,
-    "slip": [
-     190,
-     360
+     10,
+     25
     ]
    },
    "3": {
     "from": 2,
     "ticks": 54,
     "speed": 13.3,
+    "tol": 16,
     "slip": [
-     190,
-     360
+     12,
+     30
     ]
    }
   }
@@ -908,7 +901,7 @@
   "skeleton_sha256": "d7203687becc62c085a7912abb829f28ad16776549dd6f23988286e247d2f8cc",
   "source_sha256": "537ddcde347903c488812ebf8137fe8772001c78f341d96e634f9d0986ebb8f2",
   "base_generator": "tools.models.field_animations.aero_veedramon",
-  "post_source_sha256": "cec6ebd5bd45874ce829f89377d7a0df079d13752357cbaa7054d66b1fcb5f8a",
+  "post_source_sha256": "31be7ead0324891ca223be5e71a6cb302463a583b1900510e3f0ab3f1ca6e075",
   "slots": {
    "2": {
     "from": 2,

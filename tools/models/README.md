@@ -142,6 +142,20 @@ tools.test_garbagemon_attachment`. It checks the attachment and grounding over
 every occupied clip, unchanged acting and semantic events, absence of wing
 cues, and original-console resident/cold-animation storage limits.
 
+Zudomon's (219) walk, condition walk and run took their legs from a gait solver
+but kept the idle's slow 96-tick performance in the chest, head, arms, hammer
+and tail, so the halves moved on different beats (one upper beat per four steps
+in the walk, per eight in the run). `field_animations/zudomon_gait.py` puts the
+upper body on the legs' beat: pelvis and chest counter-rotate (the hips turn
+back so the feet stay), the chest leans over the planted foot, the free arm
+swings against its leg, the hammer arm swings a third as far and lags it, and
+the tail sways against the hips; the run leans forward and the condition walk
+droops. The hammer carry is lifted just enough to keep the head off the floor.
+Legs, root travel, loop lengths and footstep sounds are unchanged; the channels
+are stored at tolerance 7 to stay inside the resident animation buffer with the
+Buster Dive clip: `--source build/imported-model-edit/edit/219-Zudomon.MMD
+--out AFTER.MMD`, then `tools/models/edit.py --from build/everything put 219 AFTER.MMD`.
+
 Valkyrimon (255) uses a uniform 0.8 resize and native Angemon field motion,
 with its existing rig and chibi proportions. The offline authoring recipe is
 `field_animations/valkyrimon.py`; player builds replay the plain delta.
@@ -173,6 +187,13 @@ with a gentle three-beat flutter, a forward-leaning cruise with two wing beats p
 with three, the legs, arms, hair and flower following the body a beat later. Tick counts, distance per loop and footstep
 sounds are kept (the run's travel is spread smoothly over the loop instead of in bursts). Check with
 `tools/models/edit.py get 209` and `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_lillymon_flight`.
+
+Magnadramon (215) had the idle, walk, condition walk and run as one 89-tick wave of the wing blades, body and tail
+that only the root travelled through. `field_animations/magnadramon_flight.py` runs after its steady glide and writes
+those five slots again: a hover with two slow, wide wing beats, a forward-leaning cruise with three beats per loop
+and a streamlined, faster run with four, a beat running from the inner blade pair to the outer, the tail and the limbs
+following the body a beat later. Ticks, distance per loop and the other slots are kept. Check with
+`tools/models/edit.py get 215` and `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_magnadramon_flight`.
 Armadillomon (185) held its head level or lowered in the field idle, walk and
 run, so the shell's front rim covered the brow. `field_animations/armadillomon_head.py`
 adds one constant lift to the head joint in those clips (and the condition walk),
@@ -308,3 +329,33 @@ unmoved) and a walk, condition walk and run on native Angemon's footfalls (legs 
 whole stance; the run's stride shortened and its lean halved), with arms swinging against the opposite leg, lightly
 fluttering wings that lag the body (swept back in the run) and a tabard kept off the floor. `seraphimon.py`, the chibi
 overlay's base, now only keeps the victory on screen.
+
+VenomMyotismon's (212) native walk and condition walk held both gauntlets out in
+front like a boxer's; only the run does that. `repair_venom_run.polish_walk_arms`
+(applied after its supported-leg recipe and run polish) hangs the arms from the
+shoulders: the shoulders keep the native swing timing in a smaller range (the
+condition walk, whose shoulders hardly move, follows the thighs), the elbows
+bend further a tick or two later as the arm comes forward, and the heavy hands
+trail the elbows. Only those X rotations change; the gauntlets stay clear of the
+floor.
+
+Vikemon's (220) walk, condition walk and run kept the legs' stride (16, 26 and
+13 ticks) but left everything above the pelvis on the idle's one-breath loop.
+`field_animations/vikemon_stride.py` rebuilds the upper body from its own mean
+pose plus terms locked to the stride phase: a pelvis bob, chest twist against
+the hips, roll over the planted foot, a forward lean, neck and head arriving
+later, arms against their own side's leg, and the back rig and tail lagging.
+The legs, lengths, travel and sounds stay; the pelvis is raised so no foot
+sinks. The upper bones are fitted at the import's tolerance (8) and the legs
+at 3, through `mmd.encode_anim`'s optional per-bone `tol` dict, to stay inside
+the resident model buffer.
+
+Devidramon (216) walked with its upper body on a different beat from its legs: the walk and run took the
+native upper-body clips (the walk's is the idle's, one beat per loop) while the legs stepped three and two times
+per loop, and pace.py's retime left a planted foot moving at 18 against a body speed of 20 (run 30 against 38),
+14% and 27% slip. `field_animations/devidramon.py` now replays each native upper-body channel at the stride's
+beat (`BEATS`; wings and tail at about half their swing), turns the pelvis with the leading leg, the chest against
+it and the head against the chest, swings the arms (a calm third to half of a first pass's swing) against the legs with the forearms folding late, and writes the
+legs for the field speeds directly (walk 10 a tick in the 72-tick loop, which pace.py plays in 36 at 20; run 38).
+Stance slip is now 4-6% (walk), 6% (run) and 5-8% (condition walk). The storage budget forced coarser keys
+(`tol` in pace.json) on the walk and condition walk.
