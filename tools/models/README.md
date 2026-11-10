@@ -217,6 +217,14 @@ and the run bounded like a cat. `field_animations/halsemon.py` writes a
 lateral-sequence walk, a slower condition walk and a firm-backed trot with
 `quadruped.py`, every foot flat at its own turned-out idle angle and the short
 hock bones above the hind feet holding their angle (`links`).
+
+Raidramon's (201) walk and run crossed the legs through each other and slid the feet
+over the floor. `field_animations/raidramon.py` writes a lateral-sequence walk, a slower
+condition walk and a trot with `quadruped.py`; the shoulder plates hold still above short
+upper arms and the hock bones above the hind feet hold their angle (`links`). The forelegs
+hang from plates stood turned in the rest pose, so the profile gives its bend directions in
+the world (`pole_world`). Its old field overlay (weight transfer and pace retime of a
+73-frame walk) is gone: the gait now lives in the model delta.
 Magnamon (197) is bound to native Leomon (`native_binding.py`). Its boots kept
 the source's fighting stance, turned 35 and 93 degrees outward, its fists kept
 the guard pose's forward point, and its broad legs crossed over Leomon's narrow

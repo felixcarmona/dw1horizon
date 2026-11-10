@@ -20,7 +20,8 @@ nefertimon.py writes Nefertimon's:
   A leg that would swing its elbow (knee) into the leg behind (ahead of) it gives `swing_pole` (front/hind: a bend
   direction): a swinging leg bends towards it, eased in from the standing bend and back out before it lands.
   A lower bone with a long part along it (a forearm blade) gives `aim` (front/hind: that direction in the bone's
-  space): standing and swinging, the bone rolls about itself to keep it pointing ahead. A gait's `wide`
+  space): standing and swinging, the bone rolls about itself to keep it pointing ahead. A profile with `pole_world` gives its pole directions in the world (x towards the leg's side) instead of the parent bone's
+  space, for a leg hung from a bone that stands turned in its rest pose. A gait's `wide`
   (front/hind: units) carries a swinging paw out from its track and back in by the landing.
 
 Each clip is rewritten where it is stored, so its battle aliases play it too. Footsteps keep the species' own
@@ -185,7 +186,9 @@ class Rig:
         reach = max(abs(la - lb) + 2, min(la + lb - 2, dist))
         d = scale(unit(d), reach)
         pole = pole or self.p['pole'][front]
-        pole = mv(parent, [pole[0] * side] + list(pole[1:]))
+        pole = [pole[0] * side] + list(pole[1:])
+        if not self.p.get('pole_world'):
+            pole = mv(parent, pole)
         pole = unit(sub(pole, scale(unit(d), dot(pole, unit(d)))))
         along = (la * la - lb * lb + reach * reach) / (2 * reach)
         h = math.sqrt(max(0.0, la * la - along * along))

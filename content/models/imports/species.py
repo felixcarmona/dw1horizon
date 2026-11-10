@@ -153,7 +153,6 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'demidevimon-native-flight': ('236', 'tools.models.field_animations.native_binding', '236-demidevimon-native-flight'),
     'paildramon-field': ('199', 'tools.models.field_animations.chibi', '199-paildramon-field'),
     'ankylomon-field': ('189', 'tools.models.field_animations.pace', '189-ankylomon-field'),
-    'lighdramon-field': ('201', 'tools.models.field_animations.pace', '201-lighdramon-field'),
     'metalgarurumon-pace': ('191', 'tools.models.field_animations.pace', '191-metalgarurumon-pace'),
 }
 

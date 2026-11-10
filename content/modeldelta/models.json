@@ -614,9 +614,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/201-Lighdramon.MMD.mdelta",
-        "delta_sha256": "fee0be5b18b7ba879b50cabc3f56ce39b7f84a7a588154e84ccc78faf83fe0b7",
-        "sha256": "8b8ddc1eacd0e0c2d96fa99706d374766e75e99ed30542cfe8202e2cb50b2eeb",
-        "size": 107340
+        "delta_sha256": "10a520c84d3f3991b20f470d2a3e083c1cfcc230f32ba2649cf4a9a8c0513039",
+        "sha256": "9f2f12ef5e39a9bb51d07bb167e21dc733aa073f4f4aabd6b62fe97a438ed66b",
+        "size": 101614
       },
       "tim": {
         "sources": [

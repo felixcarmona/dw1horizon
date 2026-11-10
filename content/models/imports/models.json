@@ -19,7 +19,7 @@
  "198": {"movement_sound": {"note": 12, "replace_notes": [13]}, "model": "198-Nefertimon.MMD", "aliases_applied": true, "field_overlay": "nefertimon-pace"},
  "199": {"model": "199-Paildramon.MMD", "aliases_applied": true},
  "200": {"model": "200-Pegasusmon.MMD", "aliases_applied": true},
- "201": {"model": "201-Lighdramon.MMD", "aliases_applied": true, "field_overlay": "lighdramon-field"},
+ "201": {"model": "201-Lighdramon.MMD", "aliases_applied": true},
  "202": {"model": "202-Submarimon.MMD", "aliases_applied": true},
  "203": {"model": "203-Veedramon.MMD", "aliases_applied": true, "field_overlay": "veedramon-field"},
  "205": {"model": "205-MegaKabuterimon.MMD", "aliases_applied": true},
