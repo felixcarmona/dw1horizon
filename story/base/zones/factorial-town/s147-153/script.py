@@ -22,7 +22,7 @@ def enter():    # section 254
 
 @town.on_step(0)
 def step0():    # section 51
-    tamer.walk(1591, 607)
+    tamer.walk(1550, 650)    # Horizon: tile centre, was (1591, 607)
     tamer.walk(1593, -343, wait=False)
     warp(Screen.factorial_town_154, entry=0)
 

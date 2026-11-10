@@ -75,7 +75,7 @@ def step3():    # section 54
         tamer.face(slot0)
         wait(250)
         slot0.say(t54.u0)
-        tamer.run(-824, 1146)
+        tamer.run(-850, 1150)    # Horizon: tile centre, was (-824, 1146)
         camera.on(tamer, speed=10)
         camera.arrived()
         return
@@ -84,7 +84,7 @@ def step3():    # section 54
         tamer.face(slot0)
         wait(250)
         slot0.say(t54.u1)
-        tamer.run(-824, 1146)
+        tamer.run(-850, 1150)    # Horizon: tile centre, was (-824, 1146)
         camera.on(tamer, speed=10)
         camera.arrived()
         return
@@ -93,7 +93,7 @@ def step3():    # section 54
         tamer.face(slot0)
         wait(250)
         slot0.say(t54.u2)
-        tamer.run(-824, 1146)
+        tamer.run(-850, 1150)    # Horizon: tile centre, was (-824, 1146)
         camera.on(tamer, speed=10)
         camera.arrived()
         return

@@ -94,7 +94,7 @@ script 40 {
                 say(agumon, text("s040.sec5.u15"));
                 run(agumon, -356, -1058);
                 wait(2s);
-                run(tamer, -349, -1375);
+                run(tamer, -350, -1350);    // Horizon: tile centre, was (-349, -1375)
                 run(partner, -355, -1761);
                 await tamer;
                 await partner;

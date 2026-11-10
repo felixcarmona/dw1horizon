@@ -163,7 +163,7 @@ def step0():    # section 51
         return
     narrator.say(t51.u0)
     hide_hud()
-    tamer.run(-200, 3658, camera=True, wait=False)
+    tamer.run(-250, 3650, camera=True, wait=False)    # Horizon: tile centre, was (-200, 3658)
     partner.run(100, 3658, wait=False)
     tamer.arrived()
     partner.arrived()

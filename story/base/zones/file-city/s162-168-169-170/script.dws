@@ -396,7 +396,7 @@ script 162 {
 
     on step(4) replace {    // section 55
         unless (is_recruited(species("Whamon"))) return;
-        run(tamer, 2594, 630);
+        run(tamer, 2550, 650);    // Horizon: tile centre, was (2594, 630)
         run(partner, 2189, 545);
         await tamer;
         await partner;
@@ -547,14 +547,14 @@ script 162 {
 
     on step(7) replace {    // section 58
         if (mt_infinity_entrance_found) {
-            run(tamer, 2980, 3318);
+            run(tamer, 2950, 3350);    // Horizon: tile centre, was (2980, 3318)
             await tamer;
         }
     }
 
     on step(8) replace {    // section 59
         if (mt_infinity_entrance_found) {
-            run(tamer, 1780, 3318);
+            run(tamer, 1750, 3350);    // Horizon: tile centre, was (1780, 3318)
             await tamer;
         }
         return;

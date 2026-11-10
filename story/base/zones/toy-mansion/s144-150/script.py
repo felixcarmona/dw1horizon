@@ -22,7 +22,7 @@ def enter():    # section 254
 
 @mansion.on_use(1)
 def use1():    # section 81
-    tamer.walk(-996, 694)
+    tamer.walk(-950, 650)    # Horizon: tile centre, was (-996, 694)
     if random_roll in (0, 3):
         tamer.turn(2048)
         wait(250)

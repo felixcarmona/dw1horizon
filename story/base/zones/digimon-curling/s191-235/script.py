@@ -39,7 +39,7 @@ def step0():    # section 51
 @curling.on_step(1)
 def step1():    # section 52
     tamer.say(t52.u0)
-    tamer.walk(-2, -619, camera=True)
+    tamer.walk(-50, -650, camera=True)    # Horizon: tile centre, was (-2, -619)
     return
 
 # the section table, in the order of the original header

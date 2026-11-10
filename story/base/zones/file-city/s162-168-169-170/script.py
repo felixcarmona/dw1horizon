@@ -358,7 +358,7 @@ def step3():    # section 54
 def step4():    # section 55
     if not recruited(Species.Whamon):
         return
-    tamer.run(2594, 630, wait=False)
+    tamer.run(2550, 650, wait=False)    # Horizon: tile centre, was (2594, 630)
     partner.run(2189, 545, wait=False)
     tamer.arrived()
     partner.arrived()
@@ -499,12 +499,12 @@ def step6():    # section 57
 @city_168.on_step(7)
 def step7():    # section 58
     if mt_infinity_entrance_found:
-        tamer.run(2980, 3318)
+        tamer.run(2950, 3350)    # Horizon: tile centre, was (2980, 3318)
 
 @city_168.on_step(8)
 def step8():    # section 59
     if mt_infinity_entrance_found:
-        tamer.run(1780, 3318)
+        tamer.run(1750, 3350)    # Horizon: tile centre, was (1780, 3318)
     return
 
 # the section table, in the order of the original header

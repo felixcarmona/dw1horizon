@@ -48,7 +48,7 @@ def step0():    # section 51
         wait(1000)
         sound(8, 4)
         wait(500)
-        tamer.run(-1210, -193, wait=False)
+        tamer.run(-1250, -150, wait=False)    # Horizon: tile centre, was (-1210, -193)
         partner.run(-1468, -473, wait=False)
         tamer.arrived()
         partner.arrived()

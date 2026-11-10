@@ -65,7 +65,7 @@ script 132 {
         say(tamer, text("s132.sec51.u9"));
         say(frigimon, text("s132.sec51.u10"));
         say(tamer, text("s132.sec51.u11"));
-        run(tamer, 93, -1700);
+        run(tamer, 50, -1750);    // Horizon: tile centre, was (93, -1700)
         wait(1s);
         run(partner, 93, -1700);
         wait(1s);

@@ -178,7 +178,7 @@ def step0():    # section 51
 def step1():    # section 52
     if not recruited(Species.Agumon):
         tamer.say(t52.u0)
-        tamer.run(-1115, -1503)
+        tamer.run(-1150, -1550)    # Horizon: tile centre, was (-1115, -1503)
         camera.on(tamer, speed=10)
         camera.arrived()
         return

@@ -97,7 +97,7 @@ script 213 {
             face(tamer, slot0);
             wait(5);
             say(slot0, text("s213.sec54.u0"));
-            run(tamer, -824, 1146);
+            run(tamer, -850, 1150);    // Horizon: tile centre, was (-824, 1146)
             await tamer;
             camera_on(tamer, speed: 10);
             await camera;
@@ -108,7 +108,7 @@ script 213 {
             face(tamer, slot0);
             wait(5);
             say(slot0, text("s213.sec54.u1"));
-            run(tamer, -824, 1146);
+            run(tamer, -850, 1150);    // Horizon: tile centre, was (-824, 1146)
             await tamer;
             camera_on(tamer, speed: 10);
             await camera;
@@ -120,7 +120,7 @@ script 213 {
             face(tamer, slot0);
             wait(5);
             say(slot0, text("s213.sec54.u2"));
-            run(tamer, -824, 1146);
+            run(tamer, -850, 1150);    // Horizon: tile centre, was (-824, 1146)
             await tamer;
             camera_on(tamer, speed: 10);
             await camera;

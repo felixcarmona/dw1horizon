@@ -192,7 +192,7 @@ def step0():    # section 51
         partner.face(slot2)
         raw.entity_move_to(slot2, -808, 124, 15, 0)
         wait(2000)
-        tamer.run(-358, 124, camera=True)
+        tamer.run(-350, 150, camera=True)    # Horizon: tile centre, was (-358, 124)
         tamer.say(t51.u39)
         slot2.say(t51.u40)
         raw.entity_walk_to_entity(tamer, 1, slot2)

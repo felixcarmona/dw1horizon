@@ -85,7 +85,7 @@ def L8():    # shared code (the disc's label L8)
         drimogemon.say(t51.u0)
         drimogemon.turn(1900)
         drimogemon.arrived()
-        tamer.walk(2735, 1203, camera=True)
+        tamer.walk(2750, 1250, camera=True)    # Horizon: tile centre, was (2735, 1203)
         drimogemon.play(29)
         return
     if drill_tunnel_progress == 4:
@@ -101,26 +101,26 @@ def L8():    # shared code (the disc's label L8)
         drill_tunnel_progress.set(1)
         drimogemon.turn(1900)
         drimogemon.arrived()
-        tamer.walk(2735, 1203, camera=True)
+        tamer.walk(2750, 1250, camera=True)    # Horizon: tile centre, was (2735, 1203)
         drimogemon.play(29)
         return
     if drill_tunnel_progress == 3:
         drimogemon.say(t51.u3)
-        tamer.walk(2735, 1203, camera=True)
+        tamer.walk(2750, 1250, camera=True)    # Horizon: tile centre, was (2735, 1203)
         drimogemon.turn(1900)
         return
     if drill_tunnel_progress == 2:
         drimogemon.say(t51.u4)
         drimogemon.turn(1900)
         drimogemon.arrived()
-        tamer.walk(2735, 1203, camera=True)
+        tamer.walk(2750, 1250, camera=True)    # Horizon: tile centre, was (2735, 1203)
         drimogemon.play(29)
         return
     if drill_tunnel_progress == 1 and partner.tiredness >= 70:
         drimogemon.say(t51.u5)
         drimogemon.turn(1900)
         drimogemon.arrived()
-        tamer.walk(2735, 1203, camera=True)
+        tamer.walk(2750, 1250, camera=True)    # Horizon: tile centre, was (2735, 1203)
         drimogemon.play(29)
         return
     if drill_tunnel_progress == 1:
@@ -129,13 +129,13 @@ def L8():    # shared code (the disc's label L8)
             raw.set_textbox_size(entity(0), 21, 6)
             raw.show_textbox(t51.u17)
             hide_hud()
-            tamer.walk(2735, 1203, camera=True)
+            tamer.walk(2750, 1250, camera=True)    # Horizon: tile centre, was (2735, 1203)
             drill_tunnel_progress.set(2)
             return
     else:
         if not drimogemon_calmed:
             drimogemon.say(t51.u7)
-            tamer.walk(2735, 1203, camera=True)
+            tamer.walk(2750, 1250, camera=True)    # Horizon: tile centre, was (2735, 1203)
             drimogemon.turn(1900)
             drimogemon.arrived()
             drimogemon.play(29)
@@ -160,13 +160,13 @@ def L8():    # shared code (the disc's label L8)
             raw.set_textbox_size(entity(0), 21, 6)
             raw.show_textbox(t51.u17)
             hide_hud()
-            tamer.walk(2735, 1203, camera=True)
+            tamer.walk(2750, 1250, camera=True)    # Horizon: tile centre, was (2735, 1203)
             drill_tunnel_progress.set(2)
             return
     drimogemon.say(t51.u18)
     drimogemon.turn(1900)
     drimogemon.arrived()
-    tamer.walk(2735, 1203, camera=True)
+    tamer.walk(2750, 1250, camera=True)    # Horizon: tile centre, was (2735, 1203)
     drimogemon.play(29)
 
 # the section table, in the order of the original header

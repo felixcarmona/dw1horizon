@@ -35,7 +35,7 @@ script 145 {
         walk(tamer, 14, -754);
         camera_to(73, 181, speed: 20);
         await camera;
-        walk(tamer, -205, -608);
+        walk(tamer, -250, -650);    // Horizon: tile centre, was (-205, -608)
         walk(partner, 195, -608);
         wait(2s);
         entity_set_rotation(tamer, 2048);
@@ -218,7 +218,7 @@ script 145 {
         await slot0;
         entity_set_rotation(slot0, 0);
         say(slot0, text("s145.sec5.u17"));
-        walk(tamer, -205, -608);
+        walk(tamer, -250, -650);    // Horizon: tile centre, was (-205, -608)
         walk(partner, 195, -608);
         await tamer;
         await partner;
@@ -399,7 +399,7 @@ script 145 {
         remove(nanimon);
         if (key_chains == 0) {
             set_obj_visibility(54, 0);
-            run(tamer, -126, -518);
+            run(tamer, -150, -550);    // Horizon: tile centre, was (-126, -518)
             await tamer;
             animate(tamer, 12);
             wait(10);
@@ -412,7 +412,7 @@ script 145 {
         }
         if (key_chains == 4) {
             set_obj_visibility(53, 0);
-            run(tamer, -126, -518);
+            run(tamer, -150, -550);    // Horizon: tile centre, was (-126, -518)
             await tamer;
             animate(tamer, 12);
             wait(10);

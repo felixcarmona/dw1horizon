@@ -42,7 +42,7 @@ script 191 {
 
     on step(1) replace {    // section 52
         say(tamer, text("s191.sec52.u0"));
-        walk(tamer, -2, -619, camera: true);
+        walk(tamer, -50, -650, camera: true);    // Horizon: tile centre, was (-2, -619)
         await tamer;
         return;
     }

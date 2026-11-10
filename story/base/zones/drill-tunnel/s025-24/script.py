@@ -43,7 +43,7 @@ def step0():    # section 51
 def step1():    # section 52
     if drill_tunnel_progress == 4:
         tamer.say(t52.u0)
-        tamer.run(453, 1815)
+        tamer.run(450, 1850)    # Horizon: tile centre, was (453, 1815)
         camera.on(tamer, speed=10)
         camera.arrived()
     return

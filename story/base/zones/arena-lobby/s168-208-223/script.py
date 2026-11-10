@@ -126,7 +126,7 @@ def step2():    # section 53
     tamer.face(greymon)
     wait(250)
     greymon.say(t53.u0)
-    tamer.run(450, 124)
+    tamer.run(450, 150)    # Horizon: tile centre, was (450, 124)
     camera.on(tamer, speed=10)
     camera.arrived()
 

@@ -36,7 +36,7 @@ def step0():    # section 51
         cherrymon_met.set()
     else:
         return
-    tamer.run(-1606, 166, camera=True, wait=False)
+    tamer.run(-1650, 150, camera=True, wait=False)    # Horizon: tile centre, was (-1606, 166)
     partner.run(-1407, 465)
     tamer.arrived()
     tamer.face(cherrymon)

@@ -71,7 +71,7 @@ script 36 {
             animate(tamer, 15);
             wait(15);
             say(tamer, text("s036.sec52.u0"));
-            run(tamer, -782, 1580, camera: true);
+            run(tamer, -750, 1550, camera: true);    // Horizon: tile centre, was (-782, 1580)
             await tamer;
         }
         goto L7;

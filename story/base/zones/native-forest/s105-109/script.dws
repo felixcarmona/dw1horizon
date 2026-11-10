@@ -211,7 +211,7 @@ script 105 {
     on step(1) replace {    // section 52
         if (!is_recruited(species("Agumon"))) {
             say(tamer, text("s105.sec52.u0"));
-            run(tamer, -1115, -1503);
+            run(tamer, -1150, -1550);    // Horizon: tile centre, was (-1115, -1503)
             await tamer;
             camera_on(tamer, speed: 10);
             await camera;

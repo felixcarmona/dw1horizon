@@ -20,7 +20,7 @@ script 144 {
     }
 
     on use(1) replace {    // section 81
-        walk(tamer, -996, 694);
+        walk(tamer, -950, 650);    // Horizon: tile centre, was (-996, 694)
         await tamer;
         if (random_roll in [0, 3]) {
             entity_set_rotation(tamer, 2048);

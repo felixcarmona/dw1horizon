@@ -50,7 +50,7 @@ script 25 {
     on step(1) replace {    // section 52
         if (drill_tunnel_progress == 4) {
             say(tamer, text("s025.sec52.u0"));
-            run(tamer, 453, 1815);
+            run(tamer, 450, 1850);    // Horizon: tile centre, was (453, 1815)
             await tamer;
             camera_on(tamer, speed: 10);
             await camera;

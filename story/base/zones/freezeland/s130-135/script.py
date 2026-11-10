@@ -88,7 +88,7 @@ def use1():    # section 81
                     wait(3);
                     entity_set_rotation(whamon, 1283);
                     wait(3);
-                    walk(tamer, -2454, 2707);
+                    walk(tamer, -2450, 2750);    // Horizon: tile centre, was (-2454, 2707)
                     await tamer;
                     walk(tamer, -3041, 3042);
                     walk(partner, -2454, 2707);
@@ -214,7 +214,7 @@ def use1():    # section 81
                 wait(3);
                 entity_set_rotation(whamon, 1283);
                 wait(3);
-                walk(tamer, -2454, 2707);
+                walk(tamer, -2450, 2750);    // Horizon: tile centre, was (-2454, 2707)
                 await tamer;
                 walk(tamer, -3041, 3042);
                 walk(partner, -2454, 2707);

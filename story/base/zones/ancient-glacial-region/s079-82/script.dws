@@ -192,7 +192,7 @@ script 79 {
 
     shared L8 {    // code of sec51 that other code jumps to
         say(tyrannomon0, text("s079.sec51.u11"));
-        walk(tamer, -326, 1203, camera: true);
+        walk(tamer, -350, 1250, camera: true);    // Horizon: tile centre, was (-326, 1203)
         await tamer;
     }
 }

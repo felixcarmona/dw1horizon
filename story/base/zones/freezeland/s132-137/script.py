@@ -66,7 +66,7 @@ def step0():    # section 51
     tamer.say(t51.u9)
     frigimon.say(t51.u10)
     tamer.say(t51.u11)
-    tamer.run(93, -1700, wait=False)
+    tamer.run(50, -1750, wait=False)    # Horizon: tile centre, was (93, -1700)
     wait(1000)
     partner.run(93, -1700, wait=False)
     wait(1000)

@@ -37,7 +37,7 @@ script 115 {
         } else {
             return;
         }
-        run(tamer, -1606, 166, camera: true);
+        run(tamer, -1650, 150, camera: true);    // Horizon: tile centre, was (-1606, 166)
         run(partner, -1407, 465);
         await partner;
         await tamer;
