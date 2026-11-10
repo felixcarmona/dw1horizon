@@ -374,3 +374,17 @@ condition walk (8 ticks at 15, 12 at 9.5, the pace manifest's floors) keep a cal
 arm swing, and `field_animations/black_gatomon_calm.py` writes their legs as a planted step: heel strike, flat
 sole, roll over the toes, lift and land, the pelvis rising and falling with the one-segment legs. The legs reach
 about 27 units, which sets the cycle length for the travel; stance slip is 23% (walk) and 18% (condition walk).
+Shurimon's (225) field clips were one native 83-tick gesture loop with only the legs replaced and the whole clip
+re-timed, so chest, head, arms, crest, leaves and star were identical in the walk, condition walk and run and the feet
+slid (40, 40 and 68 percent of the root speed on average). `field_animations/shurimon_gait.py` authors idle, walk,
+condition walk and run again on the model's own skeleton and the result is stored with `tools/models/edit.py put 225`
+(the generator starts from the model of the commit before, see its SOURCE_SHA256). Legs: a two-bone solver per tick
+plants each foot in the world in stance (heel, flat, toe roll about fixed sole points) and flies the ankle on a Hermite
+path in swing, at root speeds of 12 (walk), 8 (condition walk) and 28 (run) per tick, lowered from 20, 13.3 and 38 so that a foot cycle
+can last 20, 24 and 16 ticks (it was 13.3, 15 and 11.4, a pecking cadence) with strides the legs can reach; the clips are
+40, 72 and 80 ticks long (two, three and five foot cycles; the run has a flight phase), with calm foot clearance and knees
+pointing mostly forward. Pelvis bob, a wide sway and roll over the
+stance foot, chest twist and a steady head (drooping in the condition walk), arms swinging against the opposite leg with bending
+elbows, and crest, cloak leaves and back star lagging with second-harmonic ripples all use whole cycles per clip. The idle
+(144 ticks) plants both feet, breathes three times, shifts its weight, looks around and once per loop jerks an arm
+and snaps its head. Run `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_shurimon_gait`.
