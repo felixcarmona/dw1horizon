@@ -405,3 +405,16 @@ a diagonal-sequence walk (tired shamble and run too: sides half a cycle apart, f
 that lifts early, lands toe-up and differs a few percent per side and per stride), a one-stride tired shamble and a gallop with a flight phase, the pelvis and chest twisting
 against each other with the limbs, a forward knuckle lean, a head kept level, and a grounded idle (breathing, weight
 shift, head look and one fist lift, no hop). The staff keeps the pose it was made in, across the back, lowered a few units so it rests on the body in every clip. Other programs are unchanged.
+Baronmon (228) hovered: its idle, walk, condition walk and run were one 94-tick loop (only the root's travel differed)
+whose feet moved as one, 9 to 91 units over the floor, with the hips bouncing 108 units. `field_animations/baronmon.py`
+writes those four slots again from its bind pose, standing on the floor: heel strike, flat sole, heel peel and a swing
+on solved legs (the sole's contact points slip at most a unit or two), the pelvis as high as the leg allows with a small
+bob, chest and pelvis turning against each other, the arms, robe skirt, cloak and plume following later; a 96-tick idle
+with breathing, a weight shift and a look around; a 14-, 18- and 12-tick walk, condition walk and run at the field
+speeds 20, 13.3 and 38. Slots 1 and 18 still share the old idle stream (they stay as they were), so it stays in the
+file. `--source build/imported-model-edit/edit/228-Baronmon.MMD --out AFTER.MMD`, then
+`tools/models/edit.py --from build/everything put 228 AFTER.MMD`; `PYTHONPATH=tools/models:tools python3 -m unittest
+tools/test_baronmon.py` checks the floor, the loops, the speeds and the other slots.
+Baronmon's skirt is lifted 30 units so the hem clears the shoes (the legs show beneath it), the swing foot flattens early
+and passes under it, and the skirt pitches and rolls with the stride; no shoe vertex is inside the skirt in the idle,
+walk or condition walk. The run is a brisk jog (arms bent about 45 degrees and hanging beside the body, upper arms about vertical on average and swinging 15 to 20 degrees either way, a slight lean).

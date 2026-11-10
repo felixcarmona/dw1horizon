@@ -1409,9 +1409,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/228-Baronmon.MMD.mdelta",
-        "delta_sha256": "79ca197e65a2386efdc492d7fc0fc0ae5ad42f5503959c60efa3fd62172ca009",
-        "sha256": "ecd4774809576ce8b4b41fd7f68ae8376a24281c91d1506464f47c66d2cae870",
-        "size": 109528
+        "delta_sha256": "ef76821c83df9c9bbdc7a77ef99a4638dd9d994f38cf6d8de90e61284cfd76a5",
+        "sha256": "edee38994c90ebae52075ca6c3dcc9265410a313548966b1ae668778a0c05d6b",
+        "size": 105594
       },
       "tim": {
         "sources": [
