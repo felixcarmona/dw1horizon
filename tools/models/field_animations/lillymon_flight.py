@@ -8,7 +8,7 @@ writes those five slots again on top of the reviewed celebration overlay (every 
   and breathes, the arms, legs, hair and flower sway behind the body with a lag.
 - Walk (and the tired condition walk, lower and slower): a cruise. The body leans forward, the wings beat twice per
   loop, the legs trail behind with the knees and feet lagging the thighs, the arms sweep back and the head stays level.
-- Run: a faster flight, leaning further, the wings beating three times per loop, the arms and legs streamlined back.
+- Run: a calmer faster flight, leaning further, the wings beating twice per loop, the arms and legs streamlined back and steady.
 
 Each clip repeats its pose cycle exactly (the last tick equals the first). Tick counts, the root travel (the field speed)
 and the footstep sounds of the earlier walk and run clips are kept.
@@ -35,10 +35,10 @@ LEGS = ((12, 13, 14), (15, 16, 17))
 
 #          ticks, wing beats, wing centre, wing swing, bob, lean, head, thigh, knee, arm back, arm swing, sway
 CLIPS = {
-    'idle': dict(n=48, beats=3, centre=.30, swing=.13, bob=16, lean=0, head=0, thigh=3, knee=4, arm=3, arm_swing=4, sway=5, surge=0),
-    'walk': dict(n=None, beats=2, centre=.38, swing=.20, bob=14, lean=12, head=-7, thigh=9, knee=9, arm=12, arm_swing=7, sway=7, surge=.15),
-    'tired': dict(n=None, beats=2, centre=.28, swing=.15, bob=10, lean=6, head=-3, thigh=5, knee=5, arm=5, arm_swing=4, sway=5, surge=.10),
-    'run': dict(n=None, beats=3, centre=.45, swing=.25, bob=12, lean=22, head=-14, thigh=12, knee=12, arm=26, arm_swing=8, sway=9, surge=.25),
+    'idle': dict(n=48, beats=3, centre=.30, swing=.13, bob=16, lean=0, head=0, leg_swing=1, thigh=3, knee=4, arm=3, arm_swing=4, sway=5, surge=0),
+    'walk': dict(n=None, beats=2, centre=.38, swing=.20, bob=14, lean=12, head=-7, leg_swing=1, thigh=9, knee=9, arm=12, arm_swing=7, sway=7, surge=.15),
+    'tired': dict(n=None, beats=2, centre=.28, swing=.15, bob=10, lean=6, head=-3, leg_swing=1, thigh=5, knee=5, arm=5, arm_swing=4, sway=5, surge=.10),
+    'run': dict(n=None, beats=2, centre=.45, swing=.25, bob=12, lean=22, head=-14, leg_swing=.3, thigh=10, knee=8, arm=26, arm_swing=6, sway=6, surge=.12),
 }
 CLIP_OF_SLOT = {0: 'idle', 1: 'idle', 2: 'walk', 3: 'tired', 4: 'run'}
 
@@ -123,9 +123,9 @@ def pose_at(rig, rest, root, name, c, t, n, side_lag=0.):
     # legs trail behind, knees and feet following the thighs one step later
     for k, (th, kn, ft) in enumerate(LEGS):
         off = .06 * k
-        rig.turn(pose, th, x=c['thigh'] + .35 * c['thigh'] * swing(p, .12 + off))
-        rig.turn(pose, kn, x=c['knee'] + .5 * c['knee'] * swing(p, .24 + off))
-        rig.turn(pose, ft, x=-.4 * c['knee'] + .35 * c['knee'] * swing(p, .36 + off))
+        rig.turn(pose, th, x=c['thigh'] + .35 * c['leg_swing'] * c['thigh'] * swing(p, .12 + off))
+        rig.turn(pose, kn, x=c['knee'] + .5 * c['leg_swing'] * c['knee'] * swing(p, .24 + off))
+        rig.turn(pose, ft, x=-.4 * c['knee'] + .35 * c['leg_swing'] * c['knee'] * swing(p, .36 + off))
     return pose
 
 

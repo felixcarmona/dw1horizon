@@ -58,8 +58,8 @@ class LillymonFlight(unittest.TestCase):
             steps = [frames[i + 1][0][8] - frames[i][0][8] for i in range(len(frames) - 1)]
             self.assertTrue(all(s < 0 for s in steps), slot)
         self.assertEqual({f[0][8] for f in after[0][0]}, {0})
-        # the wings beat (idle three times, walk twice, run three times as often per tick) without jumps
-        for slot, beats in ((0, 3), (2, 2), (4, 3)):
+        # the wings beat (idle three, walk and run two beats per tick) without jumps
+        for slot, beats in ((0, 3), (2, 2), (4, 2)):
             wing = [f[18][4] for f in after[slot][0]]
             self.assertGreater(max(wing) - min(wing), 60)
             self.assertLess(max(abs(b - a) for a, b in zip(wing, wing[1:])), 200)
