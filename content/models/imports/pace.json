@@ -196,43 +196,6 @@
    }
   }
  },
- "241": {
-  "name": "Wizardmon",
-  "bones": 20,
-  "skeleton_sha256": "686deaa7cd35c6758b9ec1268eca4902b95c3a7a95ca1544f915cadbbb569e76",
-  "source_sha256": "b403f2dca8d9048696e8e41b0ae933d542c708a3582a31bf46dabb0f2dd1ae78",
-  "base_generator": "tools.models.field_animations.wizardmon",
-  "post_source_sha256": "c4eb542d4c91bcc91c84055f5e4ef57f31a29c944197f4c4a94e875c5d0e5b2a",
-  "slots": {
-   "2": {
-    "from": 2,
-    "ticks": 104,
-    "speed": 20,
-    "slip": [
-     125,
-     250
-    ]
-   },
-   "4": {
-    "from": 4,
-    "ticks": 104,
-    "speed": 35,
-    "slip": [
-     190,
-     360
-    ]
-   },
-   "3": {
-    "from": 3,
-    "ticks": 104,
-    "speed": 10,
-    "slip": [
-     190,
-     360
-    ]
-   }
-  }
- },
  "287": {
   "name": "Tapirmon",
   "bones": 21,

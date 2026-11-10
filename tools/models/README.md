@@ -338,6 +338,23 @@ shoulders 20 units further out (`spread`) with the arms hanging out and the
 elbows bent, so the arms swing clear of the thigh armour; the run leans in,
 drives the arms and has both boots in the air between steps.
 
+Wizardmon (241) is bound to native Angemon (`native_binding.py`, recipe 241) and plays
+Angemon's own idle, walk, condition walk and run, root travel included (21.25, 16.25 and
+37.5 units a tick). Its source stands turned 45 degrees side-on, so the recipe turns the
+whole source forward first (`source_yaw`); the staff is turned from its source direction
+onto a held-out direction clear of the hat brim and thighs (`swing`) and rides Angemon's
+staff hand, bone 9; the free glove is turned 70 degrees about the forearm (`roll`) so its
+palm faces the body, not forward. Angemon's hips are set 22 units further apart
+(`spread`) so the broad trousers never meet. Angemon's wing bones carry no wings here:
+the cape hangs from 10 and 11 and the whole hair tail from 12, set out behind the head
+clear of the cape by `spread`. `field_animations/wizardmon_native.py` runs after the
+binding: in the field clips it holds the upper arms further out from the body
+(`ARMS_OUT`), and in every program it replaces the wing beat on those three bones with
+followers that take part of the head's (cape top, hair) or chest's (cape hem) turn a
+few ticks late and trail back with the root's speed. Techniques and
+the training clip (57, Angemon's 46) are Angemon's; the record's effect points and
+condition bubble are carried onto the new bones (`species_patch`).
+
 Flamedramon (195) walked like a catwalk: the procedural stride (`gaits.py`)
 swung and dropped the hips from side to side, twisted the chest the other way
 and held the arms out wide, and clips on Leomon's footfalls kept Leomon's hunch.

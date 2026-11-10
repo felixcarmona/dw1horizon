@@ -89,6 +89,10 @@ def bind(data, skeleton, recipe):
     native_pose = animsheet.slot_frames(native, len(native_rig), 0)[0][0]
     source_pose[0] = native_pose[0] = [4096]*3 + [0]*6
     sw = np.array(mmd.bone_matrices(mesh, source_pose))
+    if recipe.get('source_yaw'):
+        # a source posed turned about the vertical (a side-on stance) is turned to face forward whole before fitting
+        c, s = math.cos(math.radians(recipe['source_yaw'])), math.sin(math.radians(recipe['source_yaw']))
+        sw = np.array([np.array([[c, 0, s, 0], [0, 1, 0, 0], [-s, 0, c, 0], [0, 0, 0, 1]]) @ m for m in sw])
     nw = np.array(mmd.bone_matrices(native, native_pose))
     nw[:, :3, 3] *= recipe['scale']
     mapping = {int(k): v for k, v in recipe['map'].items()}
@@ -131,10 +135,19 @@ def bind(data, skeleton, recipe):
             a = sw[segments[start], :3, 3] - sw[start, :3, 3]
             b = nw[mapping[segments[start]], :3, 3] - nw[mapping[start], :3, 3]
             transform = np.array(retarget.swing(a.tolist(), b.tolist())) @ transform
+            if 'roll' in rule:
+                # turned about that segment too (a glove whose palm the source posed facing forward)
+                k = b / np.linalg.norm(b)
+                cr, sr = math.cos(math.radians(rule['roll'])), math.sin(math.radians(rule['roll']))
+                cross = np.array([[0, -k[2], k[1]], [k[2], 0, -k[0]], [-k[1], k[0], 0]])
+                transform = (np.eye(3)*cr + sr*cross + (1-cr)*np.outer(k, k)) @ transform
         if 'yaw' in rule:
             # a foot posed turned out in the source's stance, turned about the vertical to face forward
             c, s = math.cos(math.radians(rule['yaw'])), math.sin(math.radians(rule['yaw']))
             transform = np.array([[c, 0, s], [0, 1, 0], [-s, 0, c]]) @ transform
+        if 'swing' in rule:
+            # a held prop (a staff) turned from its direction in the source world onto the donor's own prop direction
+            transform = np.array(retarget.swing(rule['swing']['from'], rule['swing']['to'])) @ transform
         if 'aim' in rule:
             # a piece set whole in a reviewed orientation of the native rest world (shoulder armour moved from the
             # source's swinging upper arm onto the chest): its own y axis along aim y, its x axis turned toward aim x

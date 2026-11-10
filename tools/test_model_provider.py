@@ -57,6 +57,8 @@ class ModelProvider(unittest.TestCase):
             '183': ('183', 'tools.models.field_animations.native_binding', '183-wormmon-native-crawl'),
             # BomberNanimon wears Nanimon's rig and programs; its boxer clips stay as the scale lock's provenance.
             '232': ('232', 'tools.models.field_animations.native_binding', '232-bombernanimon-native'),
+            # Wizardmon wears Angemon's rig and programs (its cape and hair follow); its paced gait was retired with it.
+            '241': ('241', 'tools.models.field_animations.wizardmon_native', '241-wizardmon-native'),
             '187': ('187', 'tools.models.field_animations.followthrough', '187-stingmon-wing-followthrough'),
             '239': ('239', 'tools.models.field_animations.followthrough', '239-gizamon-active-gait'),
             # LadyDevimon's flight (ladydevimon_flight.py) is written over her baked chibi delta.
@@ -210,6 +212,7 @@ class ModelProvider(unittest.TestCase):
         self.assertNotIn('221', assignments)
         self.assertEqual(hashlib.sha1(json.dumps(assignments, sort_keys=True).encode()).hexdigest(),
                          'f822ae98bdb73617630170a0406887e62694a6e0')
+                         'bcc7a4fb7464339689bea0adb55f4b5d1e16a527')
 
 
 if __name__ == '__main__':

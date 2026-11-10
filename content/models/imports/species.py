@@ -102,7 +102,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'superstarmon-supported-field': ('244', 'tools.models.field_animations.celebrations', '244-superstarmon-supported-field'),
     'starmon-boxer-field': ('243', 'tools.models.field_animations.pace', '243-starmon-boxer-field'),
     'sorcermon-supported-field': ('242', 'tools.models.field_animations.pace', '242-sorcermon-supported-field'),
-    'wizardmon-supported-field': ('241', 'tools.models.field_animations.pace', '241-wizardmon-supported-field'),
+    'wizardmon-native': ('241', 'tools.models.field_animations.wizardmon_native', '241-wizardmon-native'),
     'gesomon-terrestrial': ('240', 'tools.models.field_animations.gesomon', '240-gesomon-terrestrial'),
     'gizamon-paired-bound': ('239', 'tools.models.field_animations.pace', '239-gizamon-paired-bound'),
     'dolphmon-gaits': ('238', 'tools.models.field_animations.dolphmon_gaits', '238-dolphmon-gaits'),
