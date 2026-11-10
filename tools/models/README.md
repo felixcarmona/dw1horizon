@@ -388,3 +388,13 @@ stance foot, chest twist and a steady head (drooping in the condition walk), arm
 elbows, and crest, cloak leaves and back star lagging with second-harmonic ripples all use whole cycles per clip. The idle
 (144 ticks) plants both feet, breathes three times, shifts its weight, looks around and once per loop jerks an arm
 and snaps its head. Run `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_shurimon_gait`.
+Silphymon (226) held both wing-arms out and up at shoulder height in every field clip (shoulder joints turned
+100-200 degrees from the rig's rest, where the arms hang at its sides), a chest hunched 57 degrees and feet that slid
+79-99 % of the ground speed in the walk. `field_animations/silphymon_posture.py` writes the idle (48 ticks), walk,
+condition walk and run (16 ticks, two steps per loop, footstep sounds on their ticks) as small turns from that rest
+pose: arms hanging with bent elbows and swinging against the legs, pelvis/chest/head turning on the step beat, wings and
+tail a beat late, each leg solved to a planted foot (walk slip 21 % mean) with a footstep on it: heel strike with the
+toes up, a roll to flat, the heel rising over the ball of the foot, toe-off and a swing with the toes curled down
+(the contact point does not move over the floor; foot pitch spans 46 / 30 / 42 degrees in walk / condition walk / run). Root speeds and slot 1 are unchanged:
+`--source build/imported-model-edit/edit/226-Silphymon.MMD --out AFTER.MMD` on the model before this change, then
+`tools/models/edit.py put 226 AFTER.MMD`; check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_silphymon_posture`.
