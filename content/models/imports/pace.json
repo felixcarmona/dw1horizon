@@ -1076,5 +1076,43 @@
     ]
    }
   }
+ },
+ "234": {
+  "name": "Gatomon",
+  "bones": 19,
+  "skeleton_sha256": "2e1991916143b4dec7230e2ee351d4d251b14974def303fe4c004c37d79c4983",
+  "source_sha256": "340afafa4be66741c7e439ba8670103ed3d6546e37f8078f326a4a402e14137c",
+  "base_generator": "tools.models.field_animations.black_gatomon",
+  "post_source_sha256": "e0ec1f71ad69ae4a0677a4c472285469b07c22ee4ef978ebe23bde460041e5c9",
+  "slots": {
+   "2": {
+    "from": 2,
+    "ticks": 8,
+    "speed": 15,
+    "slip": [
+     140,
+     240
+    ]
+   },
+   "4": {
+    "from": 2,
+    "ticks": 16,
+    "speed": 38,
+    "slip": [
+     100,
+     130
+    ]
+   },
+   "3": {
+    "from": 2,
+    "ticks": 12,
+    "speed": 9.5,
+    "slip": [
+     140,
+     240
+    ]
+   }
+  },
+  "after_generator": "tools.models.field_animations.black_gatomon_calm"
  }
 }

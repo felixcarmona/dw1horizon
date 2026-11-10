@@ -406,6 +406,10 @@ condition walk (8 ticks at 15, 12 at 9.5, the pace manifest's floors) keep a cal
 arm swing, and `field_animations/black_gatomon_calm.py` writes their legs as a planted step: heel strike, flat
 sole, roll over the toes, lift and land, the pelvis rising and falling with the one-segment legs. The legs reach
 about 27 units, which sets the cycle length for the travel; stance slip is 23% (walk) and 18% (condition walk).
+Gatomon (234) has BlackGatomon's rig (same bones and parents, about 3 percent larger), so it moves exactly like it: its pace.json row
+is row 222's with its own source hash, `field_animations/black_gatomon.py` accepts both sources, and `black_gatomon_calm.py` takes the
+species from the pace pass. Idle and care stay the native clips (the old `gatomon.py` layer is gone). Walk, condition walk and
+run are 8, 12 and 16 ticks at 15, 9.5 and 38 per tick; the resident clips take 83004 of 100352 B (BlackGatomon 82018).
 Shurimon's (225) field clips were one native 83-tick gesture loop with only the legs replaced and the whole clip
 re-timed, so chest, head, arms, crest, leaves and star were identical in the walk, condition walk and run and the feet
 slid (40, 40 and 68 percent of the root speed on average). `field_animations/shurimon_gait.py` authors idle, walk,

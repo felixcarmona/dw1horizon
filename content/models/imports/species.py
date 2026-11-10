@@ -108,7 +108,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'dolphmon-native-swim': ('238', 'tools.models.field_animations.dolphmon', '238-dolphmon-native-swim'),
     'diaboromon-supported-field': ('237', 'tools.models.field_animations.pace', '237-diaboromon-supported-field'),
     'candlemon-pedestal-field': ('235', 'tools.models.field_animations.candlemon', '235-candlemon-pedestal-field'),
-    'gatomon-supported-field': ('234', 'tools.models.field_animations.gatomon', '234-gatomon-supported-field'),
+    'gatomon-field': ('234', 'tools.models.field_animations.pace', '234-gatomon-field'),
     'bombernanimon-boxer-field': ('232', 'tools.models.field_animations.bomber_nanimon', '232-bombernanimon-boxer-field'),
     'bombernanimon-native': ('232', 'tools.models.field_animations.native_binding', '232-bombernanimon-native'),
     'shellnumemon-slug-field': ('231', 'tools.models.field_animations.locomotion', '231-shellnumemon-slug-field'),

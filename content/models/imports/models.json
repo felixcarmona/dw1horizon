@@ -51,7 +51,7 @@
  "231": {"model": "231-ShellNumemon.MMD", "aliases_applied": true, "movement_sound": 24, "technique_aliases": {"Water Blit": "Big Poop Toss", "Aqua Magic": "Odor Spray", "Tear Drop": "Odor Spray"}},
  "232": {"model": "232-BomberNanimon.MMD", "aliases_applied": true, "field_overlay": "bombernanimon-native"},
  "233": {"model": "233-RedOtamamon.MMD", "aliases_applied": true, "field_overlay": "redotamamon-celebration"},
- "234": {"movement_sound": 12, "model": "234-Gatomon.MMD", "aliases_applied": true, "field_overlay": "gatomon-supported-field"},
+ "234": {"movement_sound": 12, "model": "234-Gatomon.MMD", "aliases_applied": true, "field_overlay": "gatomon-field"},
  "235": {"model": "235-Candlemon.MMD", "aliases_applied": true},
  "236": {"model": "236-DemiDevimon.MMD", "aliases_applied": true, "texture": "236-DemiDevimon.TIM", "field_overlay": "demidevimon-native-flight"},
  "237": {"model": "237-Diaboromon.MMD", "aliases_applied": true, "buster_dive_clip": {"source_sha256": "e919e9309d14b29278f37fa5f2a59566927a2de6f96035f4887470f93ace138d", "pose_keys": [[0, 0], [22, 22], [44, 22]]}},
