@@ -57,6 +57,8 @@ class ModelProvider(unittest.TestCase):
             '183': ('183', 'tools.models.field_animations.native_binding', '183-wormmon-native-crawl'),
             '187': ('187', 'tools.models.field_animations.followthrough', '187-stingmon-wing-followthrough'),
             '239': ('239', 'tools.models.field_animations.followthrough', '239-gizamon-active-gait'),
+            # LadyDevimon's flight (ladydevimon_flight.py) is written over her baked chibi delta.
+            '223': ('223', 'tools.models.field_animations.ladydevimon_flight', '223-ladydevimon-flight'),
         }
         for sid, expected in following.items():
             self.assertEqual(selected.pop(sid), expected)

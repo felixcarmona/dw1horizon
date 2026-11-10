@@ -188,6 +188,14 @@ with three, the legs, arms, hair and flower following the body a beat later. Tic
 sounds are kept (the run's travel is spread smoothly over the loop instead of in bursts). Check with
 `tools/models/edit.py get 209` and `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_lillymon_flight`.
 
+LadyDevimon (223) had the same frozen field slots: none of her bones moved, only the root travelled.
+`field_animations/ladydevimon_flight.py` (overlay `ladydevimon-flight`) writes the idle, walk, condition walk and run
+again on her reviewed model as four different, easy flights: an upright hover (60 ticks, two slow beats), a glide leaning
+10 degrees with the wings spread and held, a low, heavy tired walk with drooping wings, hanging head and limp legs, and a
+dash leaning 23 degrees with the wings swept back and the legs streamlined. Hair, cloth and chain lag. Tick counts (idle
+excepted), distance per loop, footstep sounds and hover height are kept (the tired walk sits lower on purpose).
+Check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_ladydevimon_flight`.
+
 Magnadramon (215) had the idle, walk, condition walk and run as one 89-tick wave of the wing blades, body and tail
 that only the root travelled through. `field_animations/magnadramon_flight.py` runs after its steady glide and writes
 those five slots again: a hover with two slow, wide wing beats, a forward-leaning cruise with three beats per loop
