@@ -644,9 +644,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/202-Submarimon.MMD.mdelta",
-        "delta_sha256": "a8df6ce391c383c34a0f4a968142268f5e9a4b78372909d16aa79da476e3658a",
-        "sha256": "aad4f6c4252b099e7e173379d1983f8e5fac6f44e63c511ba6394ea0b9cc5861",
-        "size": 63700
+        "delta_sha256": "bbfd47d1807829e7499a12bc1060f7f7f74f315f6c0ba6d686c56a685b5f1eea",
+        "sha256": "703d45eca5c76374647389dfaad48190f91bb12d3b0cfb96351e5bbd98e3f91a",
+        "size": 62226
       },
       "tim": {
         "sources": [

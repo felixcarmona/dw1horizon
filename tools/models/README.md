@@ -46,6 +46,9 @@ The frozen model-delta README retains its historical command spellings. Use
 `tools/models/edit.py --help` describes get/put/check/rebase and source-disc
 options. Earlier editor work directories are now `build/imported-model-edit/`.
 
+Species 202 (Submarimon): `repair_submarimon.py` removes four stencil faces that sit on its body plates and keeps the
+rear screw turning in every clip (see player-model-fixes.md); `python3 -W ignore -m unittest tools.test_submarimon`.
+
 Species 224 uses `metalgreymon.py`: native DW1 MTGR.MMD and ALLTIM entry 12,
 recoloured gold at build time. Its native rig, field and care programs are kept;
 technique slots select unchanged native clips while retaining 224's move list
