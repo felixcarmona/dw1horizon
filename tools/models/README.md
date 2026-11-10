@@ -493,3 +493,18 @@ curl towards the hand's -X side, the palm), so the claws curled up; the planted 
 the floor with the claw points.
 Store it with `python3 -m tools.models.field_animations.diaboromon_gait --source SRC --out AFTER.MMD`, then
 `tools/models/edit.py put 237 AFTER.MMD`; check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_diaboromon_gait`.
+ShellNumemon (231) kept the source's 104-tick clips in its idle, walk, condition walk and run: only the small front
+flaps moved, the head and the eyes stood still and the body slid at a constant speed, so it read as a still lump.
+`field_animations/shell_numemon_gait.py` writes the four clips again as a snail dragging itself: in every wave the
+body rises and leans forward while it surges and the shell lags and tips back, then the shell is dragged forward and
+rocks past its place; the eye stalks swing like pendulums (each joint wider and later than the one under it). The
+head shares a ring of vertices with the front of the foot, so it never turns on it: the body (rear, front and head)
+turns as one piece and the front pitches at most 3 degrees on the rear; no seam opens wider than on the model before.
+The mouth opens and shuts through texture moves (`field_animations/shell_numemon_mouth.py`: the upper and lower teeth
+slide apart over the red inside painted behind them; every clip starts by shutting it). Walk 24 ticks, condition walk
+32 (head and stalks hanging), run 18 (the shell bouncing), each one wave; the idle breathes, turns, looks round with
+each stalk, dips both once, chomps twice and yawns. Root speeds (19.25, 12.84, 35) and the movement cue are the
+importer's; the body's world speed never drops below zero, the belly stays on the floor and no scale changes. The
+result is stored in the plain deltas (`python3 -m tools.models.field_animations.shell_numemon_gait --source SRC.MMD
+--tex SRC.TIM --out AFTER.MMD --out-tex AFTER.TIM`, then `tools/models/edit.py put 231 AFTER.MMD AFTER.TIM`); check
+with `PYTHONPATH=tools/models:tools python3 -W ignore -m unittest tools/test_shell_numemon_gait.py`.
