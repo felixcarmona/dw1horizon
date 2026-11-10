@@ -185,6 +185,11 @@ class ModelProvider(unittest.TestCase):
         self.assertEqual(assignments['214'],
                          ('tools.models.field_animations.shakkoumon', '214-shakkoumon-glide'))
         assignments['214'] = ('tools.models.field_animations.gliding', '214-shakkoumon-glide')
+
+        # MetalSeadramon swims with Seadramon's clips instead of the steady glide.
+        self.assertEqual(assignments['211'],
+                         ('tools.models.field_animations.metal_seadramon', '211-metalseadramon-swim'))
+        assignments['211'] = ('tools.models.field_animations.gliding', '211-metalseadramon-glide')
         # All pre-existing bindings outside the repairs stay pinned.
         for sid in ('315', '332', '335'):
             del assignments[sid]

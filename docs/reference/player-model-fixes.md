@@ -693,3 +693,35 @@ for visual review. Battle videos are silent to retain the standard test driver
 timing; field clips include SPU audio. Compare with native Leomon and use
 `tools/animstudio.py video` for additional donor comparisons. Videos contain
 disc assets and are not committed.
+
+## MetalSeadramon: idle, walk and run were one clip
+
+A player noted that MetalSeadramon looked the same standing, walking and running.
+The import's field slots held one 88-tick undulation, repeated in all three with
+only the forward speed changed.
+
+The overlay `metalseadramon-swim` (`tools/models/field_animations/metal_seadramon.py`)
+authors the clips on MetalSeadramon's own skeleton and keeps its upright S rest pose
+(nothing is copied from Seadramon's bones or horizontal posture). One sine wave
+travels down the body, neck bones 5, 4, 3, 2, then the hips, then tail bones 8-11 and
+tips 12-13, each a fixed phase later than the one before, so the body bends as one
+piece: side-to-side about the bone's vertical axis, forward-back about its pitch axis.
+The head (6) and the part on it (7) follow late and counter-turn to hold the gaze;
+chest plates (14, 15) and hip fins (16, 17) flap about the body axis a beat after
+their bones and sweep back when running. The hips bob twice a cycle and roll, and the
+root sways a few units sideways. Tail bend grows toward the tip (0.7 to 1.6 times)
+while the two tips stay at 3 to 8 degrees, so they never stand out as needles.
+The mouth (bone 7) opens once a cycle, fast, with a brief hold and a slower close
+(12 degrees idle, 22 walk, 18 run) and the head lifts with it; standing, the head
+also looks slowly around and the tail flicks once a cycle. The run is a 40-tick wave (like the walk) with the heave at a single frequency, so it glides
+rather than shaking. Parameters per clip are the
+`CLIPS` table (ticks, lag in degrees of the cycle per bone, bends in degrees); the walk
+is 40 ticks, lag 50, neck 12/6, tail 14/6 degrees (times 0.7 to 1.6 along the tail).
+
+Forward speed per clip is unchanged from the import (27.7, 25.9 and 55.5 units a
+tick), exact over every loop. Slot 1 shares the idle. Mesh, care, battle and every
+other program are exact. Shakkoumon and Magnadramon still use the glide overlay.
+
+Check with `python3 tools/models/edit.py check 211 --species-pins` and
+`DW_SPECIES_REPAIR_FIXTURES=DIR python3 -m unittest tools.test_metal_seadramon_swim`
+(DIR holds the pre-overlay `211-MetalSeadramon.MMD` that `edit.py get 211` writes).
