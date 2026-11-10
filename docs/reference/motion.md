@@ -735,7 +735,8 @@ The `gesomon-terrestrial` overlay changes only walk (2) and run (4) on the
 pinned 29-bone import. Eight small tentacles alternate support groups, with
 rear pairs delayed behind the front. Recoveries ease forward and lift clear;
 mantle bob, sway and delayed long-arm motion follow the supports. Mesh, rig,
-idle, condition, care and battle clips remain unchanged. Native Kunemon
+condition, care and battle clips remain unchanged; the idle and the tired walk
+are described below. Native Kunemon
 supplies the 18-tick cycle and contact timing; walk/run travel is 18/35 units
 per tick.
 
@@ -760,3 +761,18 @@ mid-blink is repaired by the next clip. The test reads the model
 made by `tools/models/edit.py get 233` at the commit before the clips
 (`REDOTAMAMON_MODEL`); the reviewed-source pin in `celebrations.json` follows
 the new model.
+`field_animations/gesomon_rest.py` is written over that model and baked, with
+the walk and run, into the plain delta (the species has no field overlay). The
+import's idle hung the squid 9 to 89 units above the floor (mean 50, a
+79-unit bob) and played again as the tired walk. The idle (slots 0, 1, 18)
+keeps the import's 83 ticks and is lowered per tick so the lowest point of the
+mesh is 0 to 3 units above the floor (bob 4); the long arms are rewritten (a
+shoulder and two hinges solved for the claw) to hang forward and out and sway
+with the breathing, and the arms of the walk and run to a loose counter-swing in step with
+the gait; the claws' palms face in and down (on the floor in the tired walk). The tired walk (slot 3) is a 30-tick loop: mantle
+and head 22 to 25 degrees down, pelvis 107 to 116 (idle 124 to 152), root
+11 units a tick, the eight tentacles planted for 45 % of the cycle and dragged just
+above the floor in between, the long arms stretched out limp behind the body, forearm and claw within a few units of the floor, palm down, dragged along, two footfall sounds per cycle. The loop is one
+cycle because two do not fit the resident animation buffer (98870 of 100352
+bytes used). `tools.test_gesomon_rest` checks the exact bytes, floor contact,
+loop seam, droop, storage and the distance between the four gaits.

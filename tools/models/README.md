@@ -445,6 +445,11 @@ toes up, a roll to flat, the heel rising over the ball of the foot, toe-off and 
 (the contact point does not move over the floor; foot pitch spans 46 / 30 / 42 degrees in walk / condition walk / run). Root speeds and slot 1 are unchanged:
 `--source build/imported-model-edit/edit/226-Silphymon.MMD --out AFTER.MMD` on the model before this change, then
 `tools/models/edit.py put 226 AFTER.MMD`; check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_silphymon_posture`.
+
+Gesomon (240): `field_animations/gesomon_rest.py` lowers the idle onto the floor, rewrites the arms of the idle, walk and run, and writes the tired walk over
+`gesomon.build`'s walk and run; all four are baked into the delta (`python3 -m tools.models.field_animations.gesomon_rest
+--source build/imported-model-edit/edit/240-Gesomon.MMD --out AFTER.MMD`, then `edit.py put 240 AFTER.MMD`;
+check with `tools.test_gesomon_rest`).
 Apemon (227) has no field overlay: its idle, walk, condition walk and run are stored in its plain delta
 (`edit.py put 227`). `field_animations/apemon.py` is the generator that authored them from the model before this
 pass (`APEMON_BEFORE`, see `tools/test_apemon_gait.py`): four limbs solved per tick with fixed planted fists and feet,

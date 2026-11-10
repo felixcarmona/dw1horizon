@@ -1774,9 +1774,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/240-Gesomon.MMD.mdelta",
-        "delta_sha256": "efcd8fbded5de25a03c667e88d7531ed25a15f728a2e7d024adba8e666196a3c",
-        "sha256": "605d75215668121e51e820d468b3864012411ff78d4bf0b4f8caff456258cc54",
-        "size": 104412
+        "delta_sha256": "785e8d5598a93d055581fca8f304ad76528d5dafd417187fd7ea702edc0ae1a1",
+        "sha256": "4409f3a1642988749c7699c93a7928da9ceb65e358fa544ab9234682605118b8",
+        "size": 113490
       },
       "tim": {
         "sources": [
