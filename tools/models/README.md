@@ -469,3 +469,16 @@ breathes, sways, looks both ways and flickers. Its face acts through texture mov
 game's own blink frames, and mouth frames (half shut, shut, wide) slid from the painted mouth into four spare hand
 drawings. Store with `python3 -m tools.models.field_animations.candlemon_hop --source SRC.MMD --tex SRC.TIM --out-dir
 DIR`, then `tools/models/edit.py put 235 DIR/235.MMD DIR/235.TIM`; check with `tools/test_candlemon_hop.py`.
+
+Diaboromon (237) kept the SkullGreymon transfer with a flat-hand contact pass, and its field clips jumped: the hand
+pass switched the claws between curl and flat pad within one tick (up to 138 degrees), the transfer packed the donor's
+strides into 16-28 tick clocks (45-70 degrees a tick on the upper arms and hips), the root stepped unevenly and the
+planted feet slid. `field_animations/diaboromon_gait.py` writes the idle, walk, condition walk and run again on the
+crouched stance: every hand and foot is solved each tick (planted ones keep their place on the floor), loops of 72,
+48, 60 and 36 ticks at 0, 20, 13 and 38 a tick, no Euler angle changing more than 28 degrees between two ticks.
+The limbs are not in lockstep: phase offsets off the quarter and half cycles, and the left limbs stay down a little
+longer and lift less than the right ones. The hand pass had also laid the back of each hand on the floor (the claws
+curl towards the hand's -X side, the palm), so the claws curled up; the planted hands now face palm down and grip
+the floor with the claw points.
+Store it with `python3 -m tools.models.field_animations.diaboromon_gait --source SRC --out AFTER.MMD`, then
+`tools/models/edit.py put 237 AFTER.MMD`; check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_diaboromon_gait`.
