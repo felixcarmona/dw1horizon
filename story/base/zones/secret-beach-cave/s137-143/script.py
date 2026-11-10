@@ -20,7 +20,7 @@ def enter():    # section 254
 def step0():    # section 51
     if not new_ogre_fortress_cleared:
         tamer.say(t51.u0)
-        tamer.run(1104, 243, wait=False)
+        tamer.run(1150, 250, wait=False)    # Horizon: tile centre, was (1104, 243)
         partner.run(675, 290, wait=False)
         tamer.arrived()
         camera.to(1156, -416, speed=20)

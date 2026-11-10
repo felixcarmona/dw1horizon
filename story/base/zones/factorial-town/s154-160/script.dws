@@ -93,7 +93,7 @@ script 154 {
         set_obj_visibility(167, 0);
         set_obj_visibility(168, 0);
         wait(1s);
-        run(tamer, 1743, 309);
+        run(tamer, 1750, 350);    // Horizon: tile centre, was (1743, 309)
         run(partner, 2006, 484);
         await tamer;
         await partner;

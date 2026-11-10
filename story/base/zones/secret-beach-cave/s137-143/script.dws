@@ -19,7 +19,7 @@ script 137 {
     on step(0) replace {    // section 51
         if (!new_ogre_fortress_cleared) {
             say(tamer, text("s137.sec51.u0"));
-            run(tamer, 1104, 243);
+            run(tamer, 1150, 250);    // Horizon: tile centre, was (1104, 243)
             run(partner, 675, 290);
             await tamer;
             camera_to(1156, -416, speed: 20);

@@ -33,7 +33,7 @@ def use1():    # section 81
         wait(500)
         tamer.say(t81.u1)
         if ask(yes=t81.m0.o0, no=t81.m0.o1):
-            tamer.walk(-314, -603, wait=False)
+            tamer.walk(-350, -650, wait=False)    # Horizon: tile centre, was (-314, -603)
             partner.walk(-298, -335, wait=False)
             tamer.arrived()
             partner.arrived()

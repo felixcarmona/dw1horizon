@@ -69,7 +69,7 @@ script 76 {
             say(tyrannomon, text("s076.sec51.u2"));
             say(tamer, text("s076.sec51.u3"));
             battle(foes: [tyrannomon]);
-            walk(tamer, -97, -448);
+            walk(tamer, -50, -450);    // Horizon: tile centre, was (-97, -448)
             walk(partner, -597, -443);
             run(tyrannomon, -421, 374);
             await tamer;

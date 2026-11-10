@@ -64,7 +64,7 @@ def step1():    # section 52
         tamer.play(15)
         wait(750)
         tamer.say(t52.u0)
-        tamer.run(-782, 1580, camera=True)
+        tamer.run(-750, 1550, camera=True)    # Horizon: tile centre, was (-782, 1580)
     return L7()
 
 @entrance.on_step(2)

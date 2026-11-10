@@ -68,7 +68,7 @@ script 43 {
             canyon_cave_in.on_crack = true;
             canyon_cave_in.tremor_felt = true;
             say(tamer, text("s043.sec53.u0"));
-            walk(tamer, -1048, -498, camera: true);
+            walk(tamer, -1050, -450, camera: true);    // Horizon: tile centre, was (-1048, -498)
             wait(1s);
             walk(partner, -1048, -498);
             await tamer;
@@ -88,7 +88,7 @@ script 43 {
         }
         if (!canyon_cave_in.on_crack && canyon_cave_in.tremor_felt) {
             canyon_cave_in.collapsed = true;
-            walk(tamer, -1048, -498, camera: true);
+            walk(tamer, -1050, -450, camera: true);    // Horizon: tile centre, was (-1048, -498)
             wait(1s);
             walk(partner, -1048, -498);
             await tamer;

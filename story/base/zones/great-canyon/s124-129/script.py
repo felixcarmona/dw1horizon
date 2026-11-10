@@ -29,7 +29,7 @@ def step0():    # section 51
     tamer.arrived()
     partner.arrived()
     wait(1000)
-    tamer.walk(578, -695, wait=False)
+    tamer.walk(550, -650, wait=False)    # Horizon: tile centre, was (578, -695)
     partner.walk(58, -920, wait=False)
     tamer.arrived()
     partner.arrived()

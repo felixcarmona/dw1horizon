@@ -175,7 +175,7 @@ script 35 {
         }
         say(narrator, text("s035.sec51.u0"));
         fadeout_hud(0);
-        run(tamer, -200, 3658, camera: true);
+        run(tamer, -250, 3650, camera: true);    // Horizon: tile centre, was (-200, 3658)
         run(partner, 100, 3658);
         await tamer;
         await partner;

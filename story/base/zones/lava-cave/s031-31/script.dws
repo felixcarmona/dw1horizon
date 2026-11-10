@@ -48,7 +48,7 @@ script 31 {
             wait(1s);
             sound(8, 4);
             wait(10);
-            run(tamer, -1210, -193);
+            run(tamer, -1250, -150);    // Horizon: tile centre, was (-1210, -193)
             run(partner, -1468, -473);
             await tamer;
             await partner;

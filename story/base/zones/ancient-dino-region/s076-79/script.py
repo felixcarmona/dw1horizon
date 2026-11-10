@@ -61,7 +61,7 @@ def step0():    # section 51
         tyrannomon.say(t51.u2)
         tamer.say(t51.u3)
         fight(tyrannomon, escape=False)
-        tamer.walk(-97, -448, wait=False)
+        tamer.walk(-50, -450, wait=False)    # Horizon: tile centre, was (-97, -448)
         partner.walk(-597, -443, wait=False)
         tyrannomon.run(-421, 374, wait=False)
         tamer.arrived()

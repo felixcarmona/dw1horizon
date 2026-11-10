@@ -60,12 +60,12 @@ script 49 {
                 set_obj_visibility(19, 0);
                 set_obj_visibility(20, 0);
                 face(monochromon, tamer);
-                walk(tamer, -980, 292);
+                walk(tamer, -950, 250);    // Horizon: tile centre, was (-980, 292)
                 walk(partner, -980, -432);
                 await tamer;
                 await partner;
                 face(monochromon, tamer);
-                walk(tamer, -341, 292);
+                walk(tamer, -350, 250);    // Horizon: tile centre, was (-341, 292)
                 walk(partner, -980, 292);
                 await tamer;
                 await partner;

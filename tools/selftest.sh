@@ -197,6 +197,7 @@ disc dwtables          sh -c 'rm -rf "$2/tables" && "$1" tools/dwtables.py extra
 # Current-image heap validation remains in the archive-backed image build checks.
 disc dws-tests         env DW_HEAP_MAP=/dev/null $PY -W ignore tools/test_dws.py
 disc dws-safety        $PY -W ignore tools/test_dws_safety.py
+run dws-walk-targets  $PY -W ignore tools/test_dws_walk_targets.py
 run dws-authored      $PY -W ignore tools/test_dws_authored.py
 run island-story      $PY -W ignore -m unittest discover -s story/mods/what-the-island-forgot/test
 for d in tools/dws/examples/*.dws; do

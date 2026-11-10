@@ -189,7 +189,7 @@ def L7():    # shared code (the disc's label L7)
 
 def L8():    # shared code (the disc's label L8)
     tyrannomon0.say(t51.u11)
-    tamer.walk(-326, 1203, camera=True)
+    tamer.walk(-350, 1250, camera=True)    # Horizon: tile centre, was (-326, 1203)
 
 # the section table, in the order of the original header
 sections(254, 51, 5, 6, 7, 8)

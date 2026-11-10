@@ -70,7 +70,7 @@ def step2():    # section 53
         canyon_cave_in.on_crack.set()
         canyon_cave_in.tremor_felt.set()
         tamer.say(t53.u0)
-        tamer.walk(-1048, -498, camera=True, wait=False)
+        tamer.walk(-1050, -450, camera=True, wait=False)    # Horizon: tile centre, was (-1048, -498)
         wait(1000)
         partner.walk(-1048, -498, wait=False)
         tamer.arrived()
@@ -89,7 +89,7 @@ def step2():    # section 53
         tamer.say(t53.u1)
     if not canyon_cave_in.on_crack and canyon_cave_in.tremor_felt:
         canyon_cave_in.collapsed.set()
-        tamer.walk(-1048, -498, camera=True, wait=False)
+        tamer.walk(-1050, -450, camera=True, wait=False)    # Horizon: tile centre, was (-1048, -498)
         wait(1000)
         partner.walk(-1048, -498, wait=False)
         tamer.arrived()

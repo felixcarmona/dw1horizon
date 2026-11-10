@@ -77,7 +77,7 @@ script 136 {
         entity_move_to(tamer, 734, 2222, 1, 0);
         entity_move_to(partner, 839, 2689, 1, 0);
         wait(1s);
-        run(tamer, 832, 804);
+        run(tamer, 850, 850);    // Horizon: tile centre, was (832, 804)
         run(partner, 300, 805);
         await tamer;
         await partner;
@@ -135,7 +135,7 @@ script 136 {
         animate(slot1, anim.idle);
         say(slot1, text("s136.sec6.u3"));
         say(tamer, text("s136.sec6.u4"));
-        run(tamer, 830, 813);
+        run(tamer, 850, 850);    // Horizon: tile centre, was (830, 813)
         run(partner, 473, 481);
         await tamer;
         await partner;

@@ -121,7 +121,7 @@ script 26 {
         wait(15);
         say(tamer, text("s026.sec51.u15"));
         animate(tamer, anim.idle);
-        run(tamer, 160, -193, camera: true);
+        run(tamer, 150, -150, camera: true);    // Horizon: tile centre, was (160, -193)
         await tamer;
         rotate(tamer, 100);
         show_textbox(text("s026.sec51.u16"));

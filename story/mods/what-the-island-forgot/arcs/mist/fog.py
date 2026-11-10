@@ -13,7 +13,7 @@ t51 = text.s115.sec51
 @trees.on_step(0, when=not cherrymon_met)
 def the_tale():
     cherrymon_met.set()
-    tamer.run(-1606, 166, camera=True, wait=False)
+    tamer.run(-1650, 150, camera=True, wait=False)    # Horizon: tile centre, was (-1606, 166)
     partner.run(-1407, 465)
     tamer.arrived()
     tamer.face(cherrymon)

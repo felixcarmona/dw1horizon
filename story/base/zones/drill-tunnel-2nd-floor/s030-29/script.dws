@@ -119,7 +119,7 @@ script 30 {
             animate(partner, anim.tired_idle);
             wait(30);
             say(drimogemon, text("s030.sec5.u11"));
-            walk(tamer, -337, 0);
+            walk(tamer, -350, -50);    // Horizon: tile centre, was (-337, 0)
             await tamer;
             return;
         }

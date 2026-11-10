@@ -840,7 +840,7 @@ script 18 {
             sound(8, 2);
             wait(1s);
             set_obj_visibility(38, 1);
-            run(tamer, -1750, 3600, camera: true);
+            run(tamer, -1750, 3650, camera: true);    // Horizon: tile centre, was (-1750, 3600)
             run(partner, -1450, 3600);
             await partner;
             await tamer;
@@ -885,7 +885,7 @@ script 18 {
             sound(8, 2);
             wait(1s);
             set_obj_visibility(39, 1);
-            run(tamer, -241, 3600, camera: true);
+            run(tamer, -250, 3650, camera: true);    // Horizon: tile centre, was (-241, 3600)
             run(partner, 200, 3600);
             await partner;
             await tamer;
@@ -930,7 +930,7 @@ script 18 {
             sound(8, 2);
             wait(1s);
             set_obj_visibility(40, 1);
-            run(tamer, 1450, 3600, camera: true);
+            run(tamer, 1450, 3650, camera: true);    // Horizon: tile centre, was (1450, 3600)
             run(partner, 1667, 3600);
             await partner;
             await tamer;

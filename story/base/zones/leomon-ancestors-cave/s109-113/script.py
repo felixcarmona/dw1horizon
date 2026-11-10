@@ -36,7 +36,7 @@ def step1():    # section 52
         tamer.turn(1900)
         tamer.arrived()
         tamer.say(t52.u0)
-        tamer.walk(-477, 2801, camera=True)
+        tamer.walk(-450, 2850, camera=True)    # Horizon: tile centre, was (-477, 2801)
         tamer.turn(1900)
         wait(500)
         tamer.play(25)
@@ -89,7 +89,7 @@ def talk():    # section 5
     leave()
     if key_chains == 0:
         objects[3].hide()
-        tamer.run(-1878, 2900)
+        tamer.run(-1850, 2950)    # Horizon: tile centre, was (-1878, 2900)
         tamer.play(12)
         wait(500)
         objects[3].show()
@@ -100,7 +100,7 @@ def talk():    # section 5
         inventory_expanded.to_20.set()
     if key_chains == 4:
         objects[4].hide()
-        tamer.run(-1878, 2900)
+        tamer.run(-1850, 2950)    # Horizon: tile centre, was (-1878, 2900)
         tamer.play(12)
         wait(500)
         objects[4].show()

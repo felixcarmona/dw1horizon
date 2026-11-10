@@ -82,7 +82,7 @@ def step0():    # section 51
     objects[167].hide()
     objects[168].hide()
     wait(1000)
-    tamer.run(1743, 309, wait=False)
+    tamer.run(1750, 350, wait=False)    # Horizon: tile centre, was (1743, 309)
     partner.run(2006, 484, wait=False)
     tamer.arrived()
     partner.arrived()

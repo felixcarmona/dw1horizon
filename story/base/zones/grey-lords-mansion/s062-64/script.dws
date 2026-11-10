@@ -32,7 +32,7 @@ script 62 {
             say(tamer, text("s062.sec81.u1"));
             choice {
                 text("s062.sec81.m0.o0") => {
-                    walk(tamer, -314, -603);
+                    walk(tamer, -350, -650);    // Horizon: tile centre, was (-314, -603)
                     walk(partner, -298, -335);
                     await tamer;
                     await partner;

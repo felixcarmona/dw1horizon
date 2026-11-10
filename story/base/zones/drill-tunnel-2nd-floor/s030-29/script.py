@@ -118,7 +118,7 @@ def talk():    # section 5
         partner.play(anim.tired_idle)
         wait(1500)
         say(t5.u11)
-        tamer.walk(-337, 0)
+        tamer.walk(-350, -50)    # Horizon: tile centre, was (-337, 0)
         return
     say(t5.u10)
 

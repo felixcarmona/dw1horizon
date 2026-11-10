@@ -140,7 +140,7 @@ script 168 {
         face(tamer, greymon);
         wait(5);
         say(greymon, text("s168.sec53.u0"));
-        run(tamer, 450, 124);
+        run(tamer, 450, 150);    // Horizon: tile centre, was (450, 124)
         await tamer;
         camera_on(tamer, speed: 10);
         await camera;

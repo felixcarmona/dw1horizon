@@ -72,7 +72,7 @@ script 51 {
             await slot0;
             await tamer;
             remove(slot0);
-            run(tamer, 50, -480);
+            run(tamer, 50, -450);    // Horizon: tile centre, was (50, -480)
             await tamer;
             say(tamer, text("s051.sec57.u12"));
             camera_on(tamer, speed: 10);
@@ -107,7 +107,7 @@ script 51 {
             await tamer;
             await partner;
             say(tamer, text("s051.sec57.u13"));
-            walk(tamer, -6, -1255, camera: true);
+            walk(tamer, -50, -1250, camera: true);    // Horizon: tile centre, was (-6, -1255)
             await tamer;
             animate(tamer, 24);
             wait(15);

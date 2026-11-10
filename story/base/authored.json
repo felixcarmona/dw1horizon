@@ -123,23 +123,23 @@
     },
     "zones/misty-trees/s115-119/script.dws": {
       "original_sha256": "728acc7a8e899e71b61c03342d5deffeae6bf52e0271feb7ec082f121c33cffb",
-      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "42fed884765ddb9c6c56937e13b1da14c299f6e7042efbf2411977e382268e05"
+      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives",
+      "authored_sha256": "ab47d5de9543ea4ba1a201cbe84b1902c29e636868fe625a80651b369cacea1e"
     },
     "zones/misty-trees/s115-119/script.py": {
       "original_sha256": "6ce8424027d0f72bd8567a213277a355183fbb9f2918c3739c4276ffdd8c5a7e",
-      "authored_sha256": "316cea578f3397075f97d35ebe1a077cab4ac583ef53115eda0d92f672d4bf1d",
-      "reason": "Five-session training and narrator choice ownership; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
+      "authored_sha256": "d516fb326ca4c9d235d9c28bbc85d075f4cbafa48340ad31ad2bb3f017981494",
+      "reason": "Five-session training and narrator choice ownership; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
     "zones/monochrome-shop/s049-49/script.dws": {
       "original_sha256": "3e9d6770660fb29e4bb595634cdb633aec5931903cb8a584704d2f581fd641f2",
-      "authored_sha256": "cb6d2b9e6e28b323edea3e0c0958ef04f43f994e261d36d4c4b08c151a7fdd45",
-      "reason": "Hidden-budget Monochromon shift with a finite item deck and one reduced-budget retry; DWS synchronized with the authored Python source"
+      "authored_sha256": "a0eda1f0452916664e9c96894da5b98680feeed19b80b3660e798464d3f2aa65",
+      "reason": "Hidden-budget Monochromon shift with a finite item deck and one reduced-budget retry; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
     },
     "zones/monochrome-shop/s049-49/script.py": {
       "original_sha256": "3f196b431498c56dd4f9677e4c0d6bff1e80351fff4bf78fdb00a080c441d7ed",
-      "authored_sha256": "43b9b863b2d1340efb9c0cacf90886ee288310b83973fd89445d405b921aae84",
-      "reason": "Hidden-budget Monochromon shift with a finite item deck and one reduced-budget retry; DWS synchronized with the authored Python source"
+      "authored_sha256": "f79ccc258e3f205540f4d7c5c67c2f5a4545b0db291e361cd85338663cab7bb6",
+      "reason": "Hidden-budget Monochromon shift with a finite item deck and one reduced-budget retry; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
     },
     "zones/secret-item-shop/s177-217/script.dws": {
       "original_sha256": "f121346af89e298ddc44b22e0bb6b90965660a42aca7f9f8613a092d45225713",
@@ -198,13 +198,13 @@
     },
     "zones/great-canyon-entrance/s036-36/script.py": {
       "original_sha256": "2f43ea5d6e12ba434ef9f44d7a5e6dd5e6c62cdf72c40bcc7e8056f3708ea7cf",
-      "authored_sha256": "feb043a1199f02a0384e48b892bb1543e1006fbc550ef966359c77fa6802f598",
-      "reason": "Recruit the species fought in the balanced map slot; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
+      "authored_sha256": "9099d52359cd6ba0193adb3eeb0fbcc5ca9f3b0e4000245ba7fa54476e9cf350",
+      "reason": "Recruit the species fought in the balanced map slot; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
     "zones/great-canyon-entrance/s036-36/script.dws": {
       "original_sha256": "0c1afc853c917166ad7c5aea0d3fe42b715d923bc5d7888974a2446202371d18",
-      "authored_sha256": "9b7b568cabbe1c75139eaabb09becd210b98c2cdd0103887b1de4c05519de2b6",
-      "reason": "Recruit the species fought in the balanced map slot; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
+      "authored_sha256": "96cd4fb0be427521d1ec29bf9369d169debc0a2610378aa7e3e734cd24754032",
+      "reason": "Recruit the species fought in the balanced map slot; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
     "zones/libraries/s210/script.py": {
       "original_sha256": "cca0a20ad7afaf03631c5ca87382ea83bd9239234439f2cac96433bc51e7b0dd",
@@ -228,13 +228,13 @@
     },
     "zones/overdell-cemetery/s035-35/script.py": {
       "original_sha256": "9db3b59719b13de1886b016d4077435f38ff71fe543d7e91f9edb078f54ade76",
-      "authored_sha256": "6930ab71da291f5ec67a0087aa64db48fde527e7425f1c3ca816dd2e74101061",
-      "reason": "Any partner may enter the Grey Lord's Mansion once Myotismon has joined; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; Bakemon partners (37 and NPC twin 157) understand the three recruitment questions and acceptance while other partners keep ghost speech"
+      "authored_sha256": "7debfbcb88c3ac12f842129f213124f727f30c0b837b11cd8b8d8ed032c31e83",
+      "reason": "Any partner may enter the Grey Lord's Mansion once Myotismon has joined; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; Bakemon partners (37 and NPC twin 157) understand the three recruitment questions and acceptance while other partners keep ghost speech; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
     "zones/overdell-cemetery/s035-35/script.dws": {
       "original_sha256": "72c71fb4b666f1615aab44bdb9b26fe2a96f6b709780e7fbadbbbefe5604d799",
-      "authored_sha256": "6f4a629636924b9d254fea3184b8808dd88971cf3a90b5409c36b076631733b8",
-      "reason": "Any partner may enter the Grey Lord's Mansion once Myotismon has joined; DWS synchronized with the authored Python source; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; Bakemon partners (37 and NPC twin 157) understand the three recruitment questions and acceptance while other partners keep ghost speech"
+      "authored_sha256": "dbcbee754c5616efa7e90a2ef12bcc0fe74a715d5f55cb20aba3409d0b7f4c52",
+      "reason": "Any partner may enter the Grey Lord's Mansion once Myotismon has joined; DWS synchronized with the authored Python source; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; Bakemon partners (37 and NPC twin 157) understand the three recruitment questions and acceptance while other partners keep ghost speech; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
     "zones/freezeland/s088-92/script.py": {
       "original_sha256": "189c4414dc0adc525d8f6b0cfab6d82013b70b21b07fec837322f0f5d56c5700",
@@ -308,23 +308,23 @@
     },
     "zones/underground-pond/s029-28/script.py": {
       "original_sha256": "d012f770c7de474e1754bf81d227042e738c65a86d439761b2ef41a3a5cafb2b",
-      "authored_sha256": "1a595261c890c8aa89cdf8fd5ce4d6f1ca7439652de431e5163c862d80b92de4",
-      "reason": "Keep the final dirt pickup visible until excavation completes at ten units; preserve the separate tunnel opening at eight and completed saves"
+      "authored_sha256": "478f047f3a3b760ac110fa539ab7c5832e265596ee3ad8505c5ccdce0c9d02d3",
+      "reason": "Keep the final dirt pickup visible until excavation completes at ten units; preserve the separate tunnel opening at eight and completed saves; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
     "zones/underground-pond/s029-28/script.dws": {
       "original_sha256": "51689c322ff6158dabcb303b4e53de7e002fcbae337c25f53f952a3190e034b3",
-      "authored_sha256": "a5baabe255d818f5a679c518a04f05de9ad35c5e2d9ba0289b45cb31b86f69e2",
-      "reason": "Keep the final dirt pickup visible until excavation completes at ten units; preserve the separate tunnel opening at eight and completed saves"
+      "authored_sha256": "e2767c55edf8b5bfc00a5b08b22b896bd76182da931df358b0b3ef9c61dd7b3b",
+      "reason": "Keep the final dirt pickup visible until excavation completes at ten units; preserve the separate tunnel opening at eight and completed saves; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
     "zones/file-city/s162-168-169-170/script.py": {
       "original_sha256": "0bbadd3ab80f0b29fc9a8511a0d172eccaded4624ad79d88ede165e290429769",
-      "authored_sha256": "52268c2298a57e5d90044f1b982f08f7838a4da679a1f6bcd8d919b38ba029f5",
-      "reason": "A dirt box carried home counts as one of the five dirt-hauling trips; the Birdra Transport steps run to the centre of their tile so the tamer always arrives"
+      "authored_sha256": "c8d061c4bfe00f0adfd9a830e23be238d2e366fcc165a9fa0b98ebf8d3b999c5",
+      "reason": "A dirt box carried home counts as one of the five dirt-hauling trips; the Birdra Transport steps run to the centre of their tile so the tamer always arrives; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
     "zones/file-city/s162-168-169-170/script.dws": {
       "original_sha256": "6442e3f406a5cce704b6d4e16592344780cf13fb233d8a07432f836d34dfaad6",
-      "authored_sha256": "badc7c1642c9339d9ce9e77daaae01ad5c08cb576f5c2cbf1c37205bd7576acd",
-      "reason": "A dirt box carried home counts as one of the five dirt-hauling trips; the Birdra Transport steps run to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
+      "authored_sha256": "fc3ae084d3f651c7e23573245419b8a4891a10b343e470bcf5c63419bbdc0c03",
+      "reason": "A dirt box carried home counts as one of the five dirt-hauling trips; the Birdra Transport steps run to the centre of their tile so the tamer always arrives; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
     },
     "zones/kunemons-bed/s002-1/script.py": {
       "original_sha256": "67a389b8c6144cc83430c94fbc44748970d717e41be0cbb0033c182418c55a4b",
@@ -338,13 +338,13 @@
     },
     "zones/grey-lords-mansion/s051-52/script.py": {
       "original_sha256": "a512b9eb5131e44c5d9f6814bbec741256024f8017cd4c4f4160a7d5c7315f67",
-      "authored_sha256": "38e5e7bcb3f12d40bba5b1db677ca406c3755691aee06ca9ee5300b0f2cfbfa0",
-      "reason": "The Mansion Key is used up, with a narrator line, once every locked door of the mansion stands open (qol.mansion_key_used_up); an older save still holding it loses it on the hall's arrival tile"
+      "authored_sha256": "77d28432c7a94eadfc5ffef7a3fb4962ed1fd35e8da3331659a94dddb20bdf9d",
+      "reason": "The Mansion Key is used up, with a narrator line, once every locked door of the mansion stands open (qol.mansion_key_used_up); an older save still holding it loses it on the hall's arrival tile; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
     "zones/grey-lords-mansion/s051-52/script.dws": {
       "original_sha256": "1cba7ae91f50e0f583e1f716a75225c2ea04b95aaa59964457b17c868bcd00ae",
-      "authored_sha256": "f4b6ec8c012546f35354a5297742382c7f2ad7315b8957c10b359285ce053272",
-      "reason": "The Mansion Key is used up, with a narrator line, once every locked door of the mansion stands open (qol.mansion_key_used_up); an older save still holding it loses it on the hall's arrival tile; DWS synchronized with the authored Python source"
+      "authored_sha256": "a455ece42dcc55e845858db62ae756aae9f5099fedcb14f70791da36513b14a8",
+      "reason": "The Mansion Key is used up, with a narrator line, once every locked door of the mansion stands open (qol.mansion_key_used_up); an older save still holding it loses it on the hall's arrival tile; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
     },
     "zones/grey-lords-mansion/s052-53/script.py": {
       "original_sha256": "094bd7271a8fcdc1e36d90be6a81f8107b2e024a1f0e74ea9cba17fe6e779d7f",
@@ -408,13 +408,13 @@
     },
     "zones/toy-mansion/s144-150/script.py": {
       "original_sha256": "e2b156c42d9300edb6b3847da6c78387d6fa2a859380dd25524e4a8d39cf6b95",
-      "authored_sha256": "2b1b187c782b910b5fa76fdd69631eeb6550fc93f0f7bed388b102daa6214a2e",
-      "reason": "The left ClearAgumon resolves its touch encounter with a battle like the other guards; dialogue alone immediately restarts while the guard remains in contact"
+      "authored_sha256": "02eef2174f285ffdb5031899a12b571d0045837663176999206627efa8e2251f",
+      "reason": "The left ClearAgumon resolves its touch encounter with a battle like the other guards; dialogue alone immediately restarts while the guard remains in contact; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
     "zones/toy-mansion/s144-150/script.dws": {
       "original_sha256": "568687c2bfe39a7cb3c84bcb70ce520e905d26ceaab582faa9bcfc535482a051",
-      "authored_sha256": "a8a4bd48490a80e25a2097829c677f56bb85582b48badf63b5436a02b1859f53",
-      "reason": "The left ClearAgumon resolves its touch encounter with a battle like the other guards; dialogue alone immediately restarts while the guard remains in contact"
+      "authored_sha256": "682dd6452bb1ad240192b806f39f4cd9f915b189a53fb45e0b3a7bd3dfe7efcf",
+      "reason": "The left ClearAgumon resolves its touch encounter with a battle like the other guards; dialogue alone immediately restarts while the guard remains in contact; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
     "zones/dragon-eye-lake/s009-8/script.py": {
       "original_sha256": "3431895936fbfba1892e92e74d9702303fd4d80dd4a48717b2f3471c4c11f4f5",
@@ -448,33 +448,33 @@
     },
     "zones/amida-forest/s018-17/script.dws": {
       "original_sha256": "9d2cf19426e0a286cb773fb353b26fb4c49a383e53db27670c8cb06e7d74c240",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "f2b35bb6d78ee54ce062a710a53e1c40d5bd3fa47e614997c8748d3c53315ba7"
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives",
+      "authored_sha256": "bef6fef60320165dac06c8bfaf46fb3b1cae4842f6e7cf71ea3546317cde3548"
     },
     "zones/amida-forest/s018-17/script.py": {
       "original_sha256": "e0b7b58ac38f2021b412727c05776e675fde649b4720bfc583695dc6299aa4b7",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "f58eb92d967ff5829172668cf25ed97f20ce146062dfd5cd3902410d8711362f"
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives",
+      "authored_sha256": "793d04066dfdfdb653967ceeee245965ef7c9918adcc7663e008c5269fbf8a04"
     },
     "zones/ancient-dino-region/s076-79/script.dws": {
       "original_sha256": "b48c05733eb947fb28b98e0434dd0003449100fc6c63ca431672a1580c09400e",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "6ed1efccb1db73301d6b7c0e7130a367614ae74238ecfc7cdbeba161a9966fcd"
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives",
+      "authored_sha256": "6c91913ebb29a27d98807063195c916c9f34671e2b345d12a2d17ede0a520e00"
     },
     "zones/ancient-dino-region/s076-79/script.py": {
       "original_sha256": "2aa98c33aaaa658a3bbef0a0263f7dbfd3b7ab8511765370b0c4f6d88698a6f4",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "69494f6c2a02c763714474eaa23687638899d3e61a1c400ba72597685177a1ea"
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives",
+      "authored_sha256": "6267fa3496f6433b57c83d83905ee93debe90a90c34b9e020fd436b0d52dfc74"
     },
     "zones/ancient-glacial-region/s079-82/script.dws": {
       "original_sha256": "46418f2296dc1fe2ee8252b3dd87f66a2aa11b0ea00e659423a16da9a618ad89",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; start each Tyrannomon recruitment movement once and wait for arrival",
-      "authored_sha256": "6f71be26c524e57ae09eb06866eaf104149c34342f435798edd7f8cc8fa05c3e"
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; start each Tyrannomon recruitment movement once and wait for arrival; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives",
+      "authored_sha256": "39795c9b18c6d7e14925a1d24301ac421c53322ba41ef03ff37f39af74866100"
     },
     "zones/ancient-glacial-region/s079-82/script.py": {
       "original_sha256": "edd99d93944c65fbf0bc9821159f23377d51acf37b6795dfe5f73f67372d631b",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; start each Tyrannomon recruitment movement once and wait for arrival",
-      "authored_sha256": "53ef7f1aea720266cfd5d3dda42c77f031d5e0816db1dfbaa84a77dd52c22ae6"
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; start each Tyrannomon recruitment movement once and wait for arrival; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives",
+      "authored_sha256": "175b285bb6eca5d3b86c8c1f6db780552da39c04394d69f174f4279b28646a32"
     },
     "zones/digimon-bridge/s010-9/script.dws": {
       "original_sha256": "56d2505aa8d499ebb9f6fa68121f50be2047ff87f70f39e07028f3795be50f13",
@@ -538,13 +538,13 @@
     },
     "zones/fortress-entrance/s040-40/script.dws": {
       "original_sha256": "b67ab42398222112b1b279c788b41e8ec9bd6f18d68811243a10d8d48194b36a",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "81233fe24115b3d09507f202883460a9de9ae91b50347bd4f5e7f6c049bd528b"
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives",
+      "authored_sha256": "d75f4de6d3ddfe8574712feb471a04516b63eaad1ff8ab9685b17ac77f0e06e3"
     },
     "zones/fortress-entrance/s040-40/script.py": {
       "original_sha256": "d8bcb5ea5aaa2108a4d2921105f313d927fe0cfc26067cd9578251ede7aca617",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "9c6e1c4594024e7c779444dbc26ab9491250ef6a2d135fb1704fc7abb351925f"
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives",
+      "authored_sha256": "c415ba9c17943201b9a6690baed52369af0c79a74fe83294160f8d9c3843dd8c"
     },
     "zones/freezeland/s085-89/script.dws": {
       "original_sha256": "366c56fa54cdca80750c4ea42ffe069a0a2e10edfbc95aed7260ab5a1a2b36cf",
@@ -738,13 +738,13 @@
     },
     "zones/great-canyon-top-area/s043-43/script.dws": {
       "original_sha256": "11899eb78e1010289bed1c0b8cd8509045c2030f77a86cb209a38704798e734e",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "5e7ef855ed4c7a0a183a1fbf5d130b0306f10cc67b582706bf719224c1b80178"
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives",
+      "authored_sha256": "493ee95da450bcb3e6a2638ffe2c85cd11ecacb69fa2a226d4e58f66aa757653"
     },
     "zones/great-canyon-top-area/s043-43/script.py": {
       "original_sha256": "06aa4d7e0ac4d0a7884f877cef5712e1f6b9381b96d04b51570cff78fd957481",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "911e331afeb95354fdce2a952d63ee0934a92fa90482af77f6f581a357ac0987"
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives",
+      "authored_sha256": "295cb9f2f94e7641ec19182b14cf2a47a2d3535134446a8347b4bd1186ecbec3"
     },
     "zones/great-canyon-top-area/s044-44/script.dws": {
       "original_sha256": "fdd9e7fa4a024126718723c2ef3c99b878312f5e49d70769dcfaf1994cbb9407",
@@ -898,13 +898,13 @@
     },
     "zones/native-forest/s105-109/script.dws": {
       "original_sha256": "5f3ff1ba4a98e700f54f70777cbade7afddc88c4307a04c047c519c6393e410f",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "87af66b96a09cc5cbd442c89713d607bcc47c0e2f133ff9fd7e163d9db3be8c7"
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives",
+      "authored_sha256": "61cbccb33329a5ced7c0b61f8d5e793adc5fa86655a24d42afed6a32eb7c59dd"
     },
     "zones/native-forest/s105-109/script.py": {
       "original_sha256": "4f68bfe4bde8c66a02face88d3ea83c30d1a460580067f2930ec890a250e3078",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "c7f015edc4ca32fd82da1f66a0b80d0a001fe83860c4ed76de8984f3e02c2738"
+      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives",
+      "authored_sha256": "28f0c6a87377298692d896e506d21b46aa8e3868e9a1d304c7f7529c4b6644ed"
     },
     "zones/native-forest/s106-110/script.dws": {
       "original_sha256": "b3574ea30dbe3ff1816cd2032a90b4e1b120ccec64bb7639b0b641ab9dba1c63",
@@ -1003,8 +1003,8 @@
     },
     "zones/drill-tunnel-2nd-floor/s026-25/script.py": {
       "original_sha256": "5396f424118f79b0f832596f60bc9226339b6635759a64e1a71b8c9f9ea4d13e",
-      "authored_sha256": "1d10723d5fef148528efaec5db17873ddbf760a3408faf62b06a907ad1e116ae",
-      "reason": "Move the defeated Drill Tunnel combatants clear of battle drops before their defeated poses"
+      "authored_sha256": "efa7ea4684861e875658eb83bf794d2ffe8f04e2bf51c4c848caa3a7a0021a12",
+      "reason": "Move the defeated Drill Tunnel combatants clear of battle drops before their defeated poses; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
     "zones/libraries/s199/script.py": {
       "original_sha256": "be277e11741d98808228fbb5c7b78c87945bd11dfb16242b366074297cdee333",
@@ -1028,8 +1028,8 @@
     },
     "zones/drill-tunnel-2nd-floor/s026-25/script.dws": {
       "original_sha256": "0473375c38bf36101039b1e85c13910a224d29a64b5ac5f3582f7d5bff536269",
-      "authored_sha256": "4c74e979133873f5888246f4f2710eb73b90d8317ed7b3a0f735944cb3debef9",
-      "reason": "Move defeated combatants clear of battle drops before their defeated poses; DWS synchronized with the authored Python source"
+      "authored_sha256": "89d7401a64be637f05510a07fad1bacb18dac1a7e2aa19296290effcebbb32e6",
+      "reason": "Move defeated combatants clear of battle drops before their defeated poses; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
     },
     "zones/libraries/s199/script.dws": {
       "original_sha256": "fa5db5d9ff87320a5ded288e00a9a45259ed8204f408a691fe6e063a895d5328",
@@ -1088,13 +1088,13 @@
     },
     "zones/leomon-ancestors-cave/s109-113/script.py": {
       "original_sha256": "885c3e7957371154a6def05d66445e4944bff33fe4a4a9d787e7104574915655",
-      "authored_sha256": "522b0db239d13b75b8560d5b956c27a949b325215c04bd528c0c131d842366eb",
-      "reason": "; Announce completed city recruitment with localized narration and the regional jingle"
+      "authored_sha256": "0f74b0d6bca3cc3eb17f1b46eb242c60792654a2a58dde113f9a57dc2e64fb3d",
+      "reason": "; Announce completed city recruitment with localized narration and the regional jingle; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
     "zones/leomon-ancestors-cave/s109-113/script.dws": {
       "original_sha256": "203ef09338fb9577d20b5d9c66dbdff9deecbe982fe8890ed88732542efb5306",
-      "authored_sha256": "00909b5df5f1a057b18aa14c6a3d9761646dbe5e5326a7e4ae975c056605ee27",
-      "reason": "; Announce completed city recruitment with localized narration and the regional jingle"
+      "authored_sha256": "e433ea45d409762d4de6432fb790a742fa137f857db9552651dd3687afedfb6a",
+      "reason": "; Announce completed city recruitment with localized narration and the regional jingle; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
     "zones/sewer/s180-220-229-230/script.py": {
       "original_sha256": "d16b82355fa92378724e46078c1921e9a00056aacd99eb5750b78520e5e30121",
@@ -1118,13 +1118,13 @@
     },
     "zones/toy-mansion/s145-151/script.py": {
       "original_sha256": "133a074b6960fc0749556b9e0d408ae3c3ff749224479b98904ffd92d822a9bc",
-      "authored_sha256": "5b3b21034f56f5548cb99e3c801f399511f56637460100ec92dc266c52b8bc06",
-      "reason": "; Announce completed city recruitment with localized narration and the regional jingle"
+      "authored_sha256": "92894c4ad0958f9a5787dd78d0f230e691a5c8ea936f42799f3e10eccc89b34e",
+      "reason": "; Announce completed city recruitment with localized narration and the regional jingle; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
     "zones/toy-mansion/s145-151/script.dws": {
       "original_sha256": "ec7b3232c8b980665b36b8a6d6251c06e698aea7f55462cdeb47ed6784762f25",
-      "authored_sha256": "ee67f3c99a6f842af2d8ca478b825bfbac4f6d64ba8db6562a83f011559e4808",
-      "reason": "; Announce completed city recruitment with localized narration and the regional jingle"
+      "authored_sha256": "9e9447af7058e4b6f51c1709489bfbed02b68b07fe1f31dcb236c36bd9fecc07",
+      "reason": "; Announce completed city recruitment with localized narration and the regional jingle; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
     "zones/underground-lab/s064-67/script.py": {
       "original_sha256": "d1c55cfda521a57e1991e1c57c824828d9d6c1aa30866228d30ae8ad857f7b4d",
@@ -1135,6 +1135,156 @@
       "original_sha256": "5a630f874505a8ddae41162e10c82b818724a6b019129b087930f4e8e3bf73b4",
       "authored_sha256": "062411f6019a6245b913dbc949f4972c7b80fb682e1ac029ab18c23111af8010",
       "reason": "; Announce completed city recruitment with localized narration and the regional jingle"
+    },
+    "zones/arena-lobby/s168-208-223/script.dws": {
+      "original_sha256": "e40df84d29ee23a1f0c242b6888fc47fd773b3a0ca0ce2fd018ead8a60477a9c",
+      "authored_sha256": "4b7cf41793c2f24742c5d976492e78c06a7ab7bfef0187a8d2aebdabaf2dd649",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
+    },
+    "zones/arena-lobby/s168-208-223/script.py": {
+      "original_sha256": "c571c7457ed7187eff0ebd4c3d6c94b4ee8bc0f442023e1717e34a01bdb52eac",
+      "authored_sha256": "88a752ad23117f04a94868480b7550f59e4356cbd10b31553186239d38fd18c0",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
+    },
+    "zones/digimon-curling/s191-235/script.dws": {
+      "original_sha256": "04e218925840d4a5aee677975e2318b2c4472ce7be6ddb3b8d935dfb9e5db671",
+      "authored_sha256": "d522f76dda1ad1c1faf071942722d849476c7e61d0bbbb3e9601b2a96f1f41e4",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
+    },
+    "zones/digimon-curling/s191-235/script.py": {
+      "original_sha256": "e54a31109294d565a79b6f6e476457ac3f096e2d2ab84509998012b81386ee45",
+      "authored_sha256": "8ff359e8954c3a81e273cc4d0d974152a5c9830db996dad7d70419cef77cc863",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
+    },
+    "zones/drill-tunnel-2nd-floor/s030-29/script.dws": {
+      "original_sha256": "c343cfe0338ed2c817de5a6522241990870fce34901b234bf92610b5706f5240",
+      "authored_sha256": "8ed2ce1fb8a8ec8e59c407d9702ba9cbad597dfa4b3df5c82977921a1b1b6967",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
+    },
+    "zones/drill-tunnel-2nd-floor/s030-29/script.py": {
+      "original_sha256": "a681f0f7f5ff1a37ad564012effadffff41388f0abd359def7608541cc9fdccd",
+      "authored_sha256": "02704794524f0fe5b5c6b659d5f5cdfebd52b66c612274e15f3c995a0a7e0696",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
+    },
+    "zones/drill-tunnel/s025-24/script.dws": {
+      "original_sha256": "3678d74612bd8c18bf9568261121ac9826f2e17db5ab4a9aa3fb956c30637a81",
+      "authored_sha256": "4e4a61d4dba0d26b22344673c4b7c747466e9b02b537d9c1ad2537dbc81af495",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
+    },
+    "zones/drill-tunnel/s025-24/script.py": {
+      "original_sha256": "e2e65fb7748ea013a4c16b94476705bdb3fe1f3c1cfea76707aa7bfa3036e3a2",
+      "authored_sha256": "660dba04f9c1edf1d0aeb0be4191a602cd849760f1a276ea3e566f5bba99f07f",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
+    },
+    "zones/factorial-town/s147-153/script.dws": {
+      "original_sha256": "f63d7ab5557c4118f7120aa43fb969612857fbfcfb3f6d1e6320f0ef128f16bf",
+      "authored_sha256": "2adf30b223a00132983f6eb77d7ae71ab8892c0cf79a3e3e10586f860da9497c",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
+    },
+    "zones/factorial-town/s147-153/script.py": {
+      "original_sha256": "de01019f0d71fbb590dd1caa6d987d54f04eaadfa0a72165b8d30af95c6e63e2",
+      "authored_sha256": "461cd663225cfe8c06dbef08585ba3ba332db9d6536ef38344121eaa2456c5df",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
+    },
+    "zones/factorial-town/s154-160/script.dws": {
+      "original_sha256": "e6215651e5dc7e4046ec26bf5273ba99ea4d49108f6de8fd0fe1600ed02bc840",
+      "authored_sha256": "836237f7c0e27d558e13684f6ec87378174258aa09af6d7bc7aeaa18d2954f6a",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
+    },
+    "zones/factorial-town/s154-160/script.py": {
+      "original_sha256": "4f56013abdd22b5fa6e1a3a075f304eb801662e47db296b9d5de07bf0e7271ef",
+      "authored_sha256": "20bd3fcc0efb1820bb5e50747961cd4b049424fc4c72a4a3d11fb0db36281f66",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
+    },
+    "zones/freezeland/s130-135/script.dws": {
+      "original_sha256": "5ce77b8adaf657505c8c47c6556d23a70cada6718f7f1516103a1c3caec73a34",
+      "authored_sha256": "84c53e32e85b5f7ccca4e50f722e3ae733b9b18c1aa030162a23d1b1b0bb6e74",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
+    },
+    "zones/freezeland/s130-135/script.py": {
+      "original_sha256": "d7b4b28cfb91a2be34564357ab43f755baa5fcb34a9f1343efd93edda6fbc6cc",
+      "authored_sha256": "9c98aa9341ef8e074d5d0f7c20a6c37c244644c17f5a9aaa303d2d7d7de783f5",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
+    },
+    "zones/freezeland/s132-137/script.dws": {
+      "original_sha256": "110e72185e4e443e52c88c6091c44ab6b2f896b05267a1a672c13b64f57d8b62",
+      "authored_sha256": "f072fa5ddb0923a67c16bfe73fd371fbb62c175497229d35efe0e6b400772622",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
+    },
+    "zones/freezeland/s132-137/script.py": {
+      "original_sha256": "986660a6975040c66a58f0bb4956d159a19542b54cb3c1e0e3c17edc407798aa",
+      "authored_sha256": "9043fc88bd45272892e3859b129ac72a8b8c2c20a3e0bbe25bd66f0bf45360ac",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
+    },
+    "zones/great-canyon/s124-129/script.dws": {
+      "original_sha256": "d52a668959e9b76a4fc430f79c3abbaf42afe1fd9d0bc03c831a6a82f7be9057",
+      "authored_sha256": "4d53a76884543c34734c201acc919aed29915d80fb5334ef9aa3622dd4a1647f",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
+    },
+    "zones/great-canyon/s124-129/script.py": {
+      "original_sha256": "a37a204eca5626e7461ed10a7bb2dd43dbc9a0bbecc9fac089e8e30e1a8f2aed",
+      "authored_sha256": "56f0fc4629721b067e00367365d50ec62c90a3a187c567663f62bf587ed5a568",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
+    },
+    "zones/grey-lords-mansion/s062-64/script.dws": {
+      "original_sha256": "13a0eeb4728c827ceb2152221c4d4d1f235596a1e56777dc957100b3b314f2ee",
+      "authored_sha256": "ce1c8e22f1fbc3f9a3cfdc0f466527cc21bf6e086e078b1ea8e8ef49b506484e",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
+    },
+    "zones/grey-lords-mansion/s062-64/script.py": {
+      "original_sha256": "8508baf58b67f0af40541152088d51a594f2bdb1dbb1929991d6ae71b365c4f1",
+      "authored_sha256": "5004f86d300d91ac80c5321129f7c5b866be2271fc3cc76f079fe475f23fc63b",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
+    },
+    "zones/lava-cave/s031-31/script.dws": {
+      "original_sha256": "00caed9ec2b274ab1e59a29f4351f1ad92c4e7cce903fb6b75bd244e3c06cba4",
+      "authored_sha256": "2fe5d49e3a9de29421b50a89ca450bf59f9d504ddfea4495156cc8bdf068a083",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
+    },
+    "zones/lava-cave/s031-31/script.py": {
+      "original_sha256": "a7db43c32bad1ded726671cc629102ffc2a468ea278f968293b3d2336a807b89",
+      "authored_sha256": "61e8bd2e8457032f038699eed797ee541248b358e394369ba9ba0988a5ad1ce8",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
+    },
+    "zones/libraries/s213/script.dws": {
+      "original_sha256": "e89ee938109e81add7bdbf214c6addbbf1ce911aec5a663b4069287ecf02a502",
+      "authored_sha256": "0b0543173cd8b99c60107b2354f1a5d17408e535593ea2d0973aa7d843468095",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
+    },
+    "zones/libraries/s213/script.py": {
+      "original_sha256": "1de7be9296f46c9c63231cc9410ff2e7c85e15366265eee47483f1a4bfe292b9",
+      "authored_sha256": "eec592ad144fd5e36e4e2c269594d389ec157a7d9eb607876cbfe37cf2c36e3d",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
+    },
+    "zones/mt-infinity/s184-225/script.dws": {
+      "original_sha256": "fc0591047e6da560706fa90337a60c5469433532258458e5920f397d6b0de1c3",
+      "authored_sha256": "c6f472caad138076a3f5fa022ab5918cd9c8fba2dcf143827944623e446b5a73",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
+    },
+    "zones/mt-infinity/s184-225/script.py": {
+      "original_sha256": "10bbff0d5bc92512fd86e9d879b06f68b60241b988f66c84e67b0cbf5ee6cd4c",
+      "authored_sha256": "9099867be5a61a0c742403b96a9e3109959cecdbdeb424daa7e6e887c2196a9a",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
+    },
+    "zones/secret-beach-cave/s136-142/script.dws": {
+      "original_sha256": "f17964e7b7edbed47855f47d3bda579dfdf56488f3f26aa20b4e713ea4c1825e",
+      "authored_sha256": "6d95ac2a8ecb232b37abd205815525f2f0ed4415500468df870779d954ee6195",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
+    },
+    "zones/secret-beach-cave/s136-142/script.py": {
+      "original_sha256": "bddad903e30b8fdbdd7ac93f5d688a11831f9e1b975ed8302117172cc424cf29",
+      "authored_sha256": "fdfde83ca2bc01eaef18fb3d702a007697bc67b96bd69538dbb1d282a5f88656",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
+    },
+    "zones/secret-beach-cave/s137-143/script.dws": {
+      "original_sha256": "2ad1e4522697755156a0dd70b56f29cbb9b613dded4553e0af1c6fa7568f927b",
+      "authored_sha256": "4385f8241933dcee0564bbee42d27de9f5ef70db3e4bacb7c345331841ed12ab",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
+    },
+    "zones/secret-beach-cave/s137-143/script.py": {
+      "original_sha256": "3fd25f09087e468db96980fa1ee46136cf79b28e61ef11e923cc1c76c371fef3",
+      "authored_sha256": "d33b93f8ab555347c86b2da1348311c1ced1be168606c6c143b87805db652d7d",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     }
   }
 }

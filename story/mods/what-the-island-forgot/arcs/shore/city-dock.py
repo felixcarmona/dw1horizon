@@ -17,7 +17,7 @@ city_docks = screen(168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179)
 WHAMON_HIDDEN_PSTAT = 120
 
 def to_the_dock():
-    tamer.run(2594, 630, camera=True, wait=False)
+    tamer.run(2550, 650, camera=True, wait=False)    # Horizon: tile centre, was (2594, 630)
     partner.run(2189, 545, wait=False)
     tamer.arrived()
     partner.arrived()
@@ -108,7 +108,7 @@ def resting():
 
 @city_168.on_step(4, when=recruited(Species.Whamon) and (seadramon_chased or seadramon_let_go) and not shore_told)
 def the_old_shore():
-    tamer.run(2594, 630, camera=True, wait=False)
+    tamer.run(2550, 650, camera=True, wait=False)    # Horizon: tile centre, was (2594, 630)
     partner.run(2189, 545, wait=False)
     tamer.arrived()
     partner.arrived()
@@ -123,7 +123,7 @@ def the_old_shore():
 
 @city_168.on_step(4, when=recruited(Species.Whamon) and (seadramon_chased or seadramon_let_go) and shore_told)
 def to_the_shore_again():
-    tamer.run(2594, 630, camera=True, wait=False)
+    tamer.run(2550, 650, camera=True, wait=False)    # Horizon: tile centre, was (2594, 630)
     partner.run(2189, 545, wait=False)
     tamer.arrived()
     partner.arrived()

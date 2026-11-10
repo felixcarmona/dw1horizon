@@ -93,7 +93,7 @@ script 29 {
             say(drimogemon, text("s029.sec51.u0"));
             entity_set_rotation(drimogemon, 1900);
             await drimogemon;
-            walk(tamer, 2735, 1203, camera: true);
+            walk(tamer, 2750, 1250, camera: true);    // Horizon: tile centre, was (2735, 1203)
             await tamer;
             animate(drimogemon, 29);
             return;
@@ -112,14 +112,14 @@ script 29 {
             drill_tunnel_progress = 1;
             entity_set_rotation(drimogemon, 1900);
             await drimogemon;
-            walk(tamer, 2735, 1203, camera: true);
+            walk(tamer, 2750, 1250, camera: true);    // Horizon: tile centre, was (2735, 1203)
             await tamer;
             animate(drimogemon, 29);
             return;
         }
         if (drill_tunnel_progress == 3) {
             say(drimogemon, text("s029.sec51.u3"));
-            walk(tamer, 2735, 1203, camera: true);
+            walk(tamer, 2750, 1250, camera: true);    // Horizon: tile centre, was (2735, 1203)
             await tamer;
             entity_set_rotation(drimogemon, 1900);
             return;
@@ -128,7 +128,7 @@ script 29 {
             say(drimogemon, text("s029.sec51.u4"));
             entity_set_rotation(drimogemon, 1900);
             await drimogemon;
-            walk(tamer, 2735, 1203, camera: true);
+            walk(tamer, 2750, 1250, camera: true);    // Horizon: tile centre, was (2735, 1203)
             await tamer;
             animate(drimogemon, 29);
             return;
@@ -137,7 +137,7 @@ script 29 {
             say(drimogemon, text("s029.sec51.u5"));
             entity_set_rotation(drimogemon, 1900);
             await drimogemon;
-            walk(tamer, 2735, 1203, camera: true);
+            walk(tamer, 2750, 1250, camera: true);    // Horizon: tile centre, was (2735, 1203)
             await tamer;
             animate(drimogemon, 29);
             return;
@@ -149,7 +149,7 @@ script 29 {
                     set_textbox_size(entity(0), 21, 6);
                     show_textbox(text("s029.sec51.u17"));
                     fadeout_hud(0);
-                    walk(tamer, 2735, 1203, camera: true);
+                    walk(tamer, 2750, 1250, camera: true);    // Horizon: tile centre, was (2735, 1203)
                     await tamer;
                     drill_tunnel_progress = 2;
                     return;
@@ -159,7 +159,7 @@ script 29 {
         } else {
             if (!drimogemon_calmed) {
                 say(drimogemon, text("s029.sec51.u7"));
-                walk(tamer, 2735, 1203, camera: true);
+                walk(tamer, 2750, 1250, camera: true);    // Horizon: tile centre, was (2735, 1203)
                 await tamer;
                 entity_set_rotation(drimogemon, 1900);
                 await drimogemon;
@@ -187,7 +187,7 @@ script 29 {
                     set_textbox_size(entity(0), 21, 6);
                     show_textbox(text("s029.sec51.u17"));
                     fadeout_hud(0);
-                    walk(tamer, 2735, 1203, camera: true);
+                    walk(tamer, 2750, 1250, camera: true);    // Horizon: tile centre, was (2735, 1203)
                     await tamer;
                     drill_tunnel_progress = 2;
                     return;
@@ -198,7 +198,7 @@ script 29 {
         say(drimogemon, text("s029.sec51.u18"));
         entity_set_rotation(drimogemon, 1900);
         await drimogemon;
-        walk(tamer, 2735, 1203, camera: true);
+        walk(tamer, 2750, 1250, camera: true);    // Horizon: tile centre, was (2735, 1203)
         await tamer;
         animate(drimogemon, 29);
     }

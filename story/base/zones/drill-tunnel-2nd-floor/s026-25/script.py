@@ -126,7 +126,7 @@ def step0():    # section 51
     wait(750)
     tamer.say(t51.u15)
     tamer.play(anim.idle)
-    tamer.run(160, -193, camera=True)
+    tamer.run(150, -150, camera=True)    # Horizon: tile centre, was (160, -193)
     tamer.turn(100)
     raw.show_textbox(t51.u16)
     ogremon.say(t51.u17)

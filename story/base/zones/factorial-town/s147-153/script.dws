@@ -17,7 +17,7 @@ script 147 {
     }
 
     on step(0) replace {    // section 51
-        walk(tamer, 1591, 607);
+        walk(tamer, 1550, 650);    // Horizon: tile centre, was (1591, 607)
         await tamer;
         walk(tamer, 1593, -343);
         warp_to(154, 0, 255);

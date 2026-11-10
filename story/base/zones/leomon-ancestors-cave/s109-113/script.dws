@@ -36,7 +36,7 @@ script 109 {
             entity_set_rotation(tamer, 1900);
             await tamer;
             say(tamer, text("s109.sec52.u0"));
-            walk(tamer, -477, 2801, camera: true);
+            walk(tamer, -450, 2850, camera: true);    // Horizon: tile centre, was (-477, 2801)
             await tamer;
             entity_set_rotation(tamer, 1900);
             wait(10);
@@ -93,7 +93,7 @@ script 109 {
         remove(nanimon);
         if (key_chains == 0) {
             set_obj_visibility(3, 0);
-            run(tamer, -1878, 2900);
+            run(tamer, -1850, 2950);    // Horizon: tile centre, was (-1878, 2900)
             await tamer;
             animate(tamer, 12);
             wait(10);
@@ -106,7 +106,7 @@ script 109 {
         }
         if (key_chains == 4) {
             set_obj_visibility(4, 0);
-            run(tamer, -1878, 2900);
+            run(tamer, -1850, 2950);    // Horizon: tile centre, was (-1878, 2900)
             await tamer;
             animate(tamer, 12);
             wait(10);
