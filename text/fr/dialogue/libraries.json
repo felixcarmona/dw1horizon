@@ -5769,9 +5769,12 @@
  ],
  "s217.sec51.u5": [
   [
-   "Attaque +1 ! Esprit +1 !",
-   "Bonheur en hausse ! Fatigue",
-   "en baisse !"
+   "Attaque +5 !",
+   "Vitesse +3 !",
+   "Bonheur en hausse !"
+  ],
+  [
+   "Fatigue en baisse !"
   ]
  ],
  "s217.sec51.u6": [
@@ -5794,9 +5797,12 @@
  ],
  "s217.sec51.u9": [
   [
-   "Attaque +3 ! Esprit +2 !",
-   "Bonheur en hausse ! Fatigue",
-   "en baisse !"
+   "Attaque +10 !",
+   "Vitesse +5 !",
+   "Bonheur en hausse !"
+  ],
+  [
+   "Fatigue en baisse !"
   ]
  ],
  "s217.sec51.u10": [
@@ -5819,9 +5825,13 @@
  ],
  "s217.sec51.u13": [
   [
-   "Attaque +5 ! Esprit +3 !",
-   "Bonheur en hausse ! Discipline",
-   "en hausse ! Fatigue en baisse !"
+   "Attaque +15 !",
+   "Vitesse +7 !",
+   "Bonheur en hausse !"
+  ],
+  [
+   "Discipline en hausse !",
+   "Fatigue en baisse !"
   ]
  ],
  "s217.sec51.u14": [
@@ -5844,9 +5854,12 @@
  ],
  "s217.sec51.u18": [
   [
-   "Défense +1 ! Vitesse +1 !",
-   "Bonheur en hausse ! Fatigue",
-   "en baisse !"
+   "HP +50 !",
+   "Vitesse +3 !",
+   "Bonheur en hausse !"
+  ],
+  [
+   "Fatigue en baisse !"
   ]
  ],
  "s217.sec51.u19": [
@@ -5864,9 +5877,12 @@
  ],
  "s217.sec51.u22": [
   [
-   "Défense +3 ! Vitesse +2 !",
-   "Bonheur en hausse ! Fatigue",
-   "en baisse !"
+   "HP +100 !",
+   "Vitesse +5 !",
+   "Bonheur en hausse !"
+  ],
+  [
+   "Fatigue en baisse !"
   ]
  ],
  "s217.sec51.u23": [
@@ -5884,9 +5900,13 @@
  ],
  "s217.sec51.u26": [
   [
-   "Défense +5 ! Vitesse +3 !",
-   "Bonheur en hausse ! Discipline",
-   "en hausse ! Fatigue en baisse !"
+   "HP +150 !",
+   "Vitesse +7 !",
+   "Bonheur en hausse !"
+  ],
+  [
+   "Discipline en hausse !",
+   "Fatigue en baisse !"
   ]
  ],
  "s217.sec51.u27": [
@@ -5913,9 +5933,12 @@
  ],
  "s217.sec51.u31": [
   [
-   "HP +10 ! Esprit +1 !",
-   "Discipline en hausse ! Fatigue",
-   "en baisse !"
+   "MP +50 !",
+   "Esprit +3 !",
+   "Discipline en hausse !"
+  ],
+  [
+   "Fatigue en baisse !"
   ]
  ],
  "s217.sec51.u32": [
@@ -5937,9 +5960,13 @@
  ],
  "s217.sec51.u35": [
   [
-   "HP +30 ! Esprit +2 ! Bonheur",
-   "en hausse ! Discipline en",
-   "hausse ! Fatigue en baisse !"
+   "MP +100 !",
+   "Esprit +5 !",
+   "Bonheur en hausse !"
+  ],
+  [
+   "Discipline en hausse !",
+   "Fatigue en baisse !"
   ]
  ],
  "s217.sec51.u36": [
@@ -5961,9 +5988,13 @@
  ],
  "s217.sec51.u39": [
   [
-   "HP +50 ! Esprit +3 ! Bonheur",
-   "en hausse ! Discipline en",
-   "hausse ! Fatigue en baisse !"
+   "MP +150 !",
+   "Esprit +7 !",
+   "Bonheur en hausse !"
+  ],
+  [
+   "Discipline en hausse !",
+   "Fatigue en baisse !"
   ]
  ],
  "s217.sec51.u40": [
@@ -6010,9 +6041,12 @@
  ],
  "s218.sec51.u5": [
   [
-   "MP +10 ! Vitesse +1 !",
-   "Bonheur en hausse ! Fatigue",
-   "en baisse !"
+   "Défense +5 !",
+   "Esprit +3 !",
+   "Bonheur en hausse !"
+  ],
+  [
+   "Fatigue en baisse !"
   ]
  ],
  "s218.sec51.u6": [
@@ -6029,9 +6063,12 @@
  ],
  "s218.sec51.u9": [
   [
-   "MP +30 ! Vitesse +2 !",
-   "Bonheur en hausse ! Fatigue",
-   "en baisse !"
+   "Défense +10 !",
+   "Esprit +5 !",
+   "Bonheur en hausse !"
+  ],
+  [
+   "Fatigue en baisse !"
   ]
  ],
  "s218.sec51.u10": [
@@ -6048,9 +6085,13 @@
  ],
  "s218.sec51.u13": [
   [
-   "MP +50 ! Vitesse +2 !",
-   "Bonheur en hausse ! Discipline",
-   "en hausse ! Fatigue en baisse !"
+   "Défense +15 !",
+   "Esprit +7 !",
+   "Bonheur en hausse !"
+  ],
+  [
+   "Discipline en hausse !",
+   "Fatigue en baisse !"
   ]
  ],
  "s218.sec51.u14": [
@@ -6076,12 +6117,18 @@
  ],
  "s218.sec51.u18": [
   [
-   "HP +10 ! MP +10 ! Attaque",
-   "+1 ! Défense +1 ! Vitesse +1",
-   "! Esprit +1 ! Bonheur en"
+   "HP +20 !",
+   "MP +20 !",
+   "Attaque +2 !"
   ],
   [
-   "hausse ! Discipline en hausse !",
+   "Défense +2 !",
+   "Vitesse +2 !",
+   "Esprit +2 !"
+  ],
+  [
+   "Bonheur en hausse !",
+   "Discipline en hausse !",
    "Fatigue en baisse !"
   ]
  ],
@@ -6103,12 +6150,18 @@
  ],
  "s218.sec51.u22": [
   [
-   "HP +20 ! MP +20 ! Attaque",
-   "+2 ! Défense +2 ! Vitesse +2",
-   "! Esprit +2 ! Bonheur en"
+   "HP +30 !",
+   "MP +30 !",
+   "Attaque +3 !"
   ],
   [
-   "hausse ! Discipline en hausse !",
+   "Défense +3 !",
+   "Vitesse +3 !",
+   "Esprit +3 !"
+  ],
+  [
+   "Bonheur en hausse !",
+   "Discipline en hausse !",
    "Fatigue en baisse !"
   ]
  ],
@@ -6130,12 +6183,18 @@
  ],
  "s218.sec51.u26": [
   [
-   "HP +30 ! MP +30 ! Attaque",
-   "+3 ! Défense +3 ! Vitesse +3",
-   "! Esprit +3 ! Bonheur en"
+   "HP +50 !",
+   "MP +50 !",
+   "Attaque +5 !"
   ],
   [
-   "hausse ! Discipline en hausse !",
+   "Défense +5 !",
+   "Vitesse +5 !",
+   "Esprit +5 !"
+  ],
+  [
+   "Bonheur en hausse !",
+   "Discipline en hausse !",
    "Fatigue en baisse !"
   ]
  ],
@@ -6163,39 +6222,57 @@
  ],
  "s218.sec51.u31": [
   [
-   "HP +10 ! Attaque +1 !",
-   "Vitesse +1 !"
+   "HP +10 !",
+   "MP +10 !",
+   "Attaque +1 !"
+  ],
+  [
+   "Défense +1 !",
+   "Vitesse +1 !",
+   "Esprit +1 !"
   ]
  ],
  "s218.sec51.u32": [
   [
-   "Bonheur en hausse ! Fatigue",
-   "en baisse !"
+   "Bonheur en hausse !",
+   "Fatigue en baisse !"
   ]
  ],
  "s218.sec51.u33": [
   [
-   "MP +10 ! Défense +1 ! Esprit",
-   "+1 !"
+   "HP +20 !",
+   "MP +20 !",
+   "Attaque +2 !"
+  ],
+  [
+   "Défense +2 !",
+   "Vitesse +2 !",
+   "Esprit +2 !"
   ]
  ],
  "s218.sec51.u34": [
   [
-   "Bonheur en hausse ! Fatigue",
-   "en baisse !"
+   "Bonheur en hausse !",
+   "Fatigue en baisse !"
   ]
  ],
  "s218.sec51.u35": [
   [
-   "HP +20 ! MP +20 ! Attaque",
-   "+2 ! Défense +2 ! Vitesse +2",
-   "! Esprit +2 !"
+   "HP +30 !",
+   "MP +30 !",
+   "Attaque +3 !"
+  ],
+  [
+   "Défense +3 !",
+   "Vitesse +3 !",
+   "Esprit +3 !"
   ]
  ],
  "s218.sec51.u36": [
   [
-   "Bonheur en hausse ! Discipline",
-   "en hausse ! Fatigue en baisse !"
+   "Bonheur en hausse !",
+   "Discipline en hausse !",
+   "Fatigue en baisse !"
   ]
  ],
  "s218.sec51.u37": [
@@ -6216,39 +6293,57 @@
  ],
  "s218.sec51.u40": [
   [
-   "HP +20 ! Attaque +2 !",
-   "Vitesse +2 !"
+   "HP +20 !",
+   "MP +20 !",
+   "Attaque +2 !"
+  ],
+  [
+   "Défense +2 !",
+   "Vitesse +2 !",
+   "Esprit +2 !"
   ]
  ],
  "s218.sec51.u41": [
   [
-   "Bonheur en hausse ! Discipline",
-   "en hausse ! Fatigue en baisse !"
+   "Bonheur en hausse !",
+   "Fatigue en baisse !"
   ]
  ],
  "s218.sec51.u42": [
   [
-   "MP +20 ! Défense +2 ! Esprit",
-   "+2 !"
+   "HP +30 !",
+   "MP +30 !",
+   "Attaque +3 !"
+  ],
+  [
+   "Défense +3 !",
+   "Vitesse +3 !",
+   "Esprit +3 !"
   ]
  ],
  "s218.sec51.u43": [
   [
-   "Bonheur en hausse ! Fatigue",
-   "en baisse !"
+   "Bonheur en hausse !",
+   "Fatigue en baisse !"
   ]
  ],
  "s218.sec51.u44": [
   [
-   "HP +30 ! MP +30 ! Attaque",
-   "+3 ! Défense +3 ! Vitesse +3",
-   "! Esprit +3 !"
+   "HP +50 !",
+   "MP +50 !",
+   "Attaque +5 !"
+  ],
+  [
+   "Défense +5 !",
+   "Vitesse +5 !",
+   "Esprit +5 !"
   ]
  ],
  "s218.sec51.u45": [
   [
-   "Bonheur en hausse ! Discipline",
-   "en hausse ! Fatigue en baisse !"
+   "Bonheur en hausse !",
+   "Discipline en hausse !",
+   "Fatigue en baisse !"
   ]
  ],
  "s218.sec51.u46": [
@@ -6269,39 +6364,59 @@
  ],
  "s218.sec51.u49": [
   [
-   "HP +30 ! Attaque +3 !",
-   "Vitesse +3 !"
+   "HP +30 !",
+   "MP +30 !",
+   "Attaque +3 !"
+  ],
+  [
+   "Défense +3 !",
+   "Vitesse +3 !",
+   "Esprit +3 !"
   ]
  ],
  "s218.sec51.u50": [
   [
-   "Bonheur en hausse ! Discipline",
-   "en hausse ! Fatigue en baisse !"
+   "Bonheur en hausse !",
+   "Discipline en hausse !",
+   "Fatigue en baisse !"
   ]
  ],
  "s218.sec51.u51": [
   [
-   "MP +30 ! Défense +3 ! Esprit",
-   "+3 !"
+   "HP +50 !",
+   "MP +50 !",
+   "Attaque +5 !"
+  ],
+  [
+   "Défense +5 !",
+   "Vitesse +5 !",
+   "Esprit +5 !"
   ]
  ],
  "s218.sec51.u52": [
   [
-   "Bonheur en hausse ! Discipline",
-   "en hausse ! Fatigue en baisse !"
+   "Bonheur en hausse !",
+   "Discipline en hausse !",
+   "Fatigue en baisse !"
   ]
  ],
  "s218.sec51.u53": [
   [
-   "HP +40 ! MP +40 ! Attaque",
-   "+4 ! Défense +4 ! Vitesse +4",
-   "! Esprit +4 !"
+   "HP +70 !",
+   "MP +70 !",
+   "Attaque +7 !"
+  ],
+  [
+   "Défense +7 !",
+   "Vitesse +7 !",
+   "Esprit +7 !"
   ]
  ],
  "s218.sec51.u54": [
   [
-   "Bonheur en hausse ! Discipline",
-   "en hausse ! Fatigue en baisse !"
+   "Bonheur en hausse !",
+   "Discipline en hausse !",
+   "Fatigue en baisse !"
   ]
  ],
  "s218.sec51.u55": [

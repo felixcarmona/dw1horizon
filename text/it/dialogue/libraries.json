@@ -5719,9 +5719,12 @@
  ],
  "s217.sec51.u5": [
   [
-   "Attacco +1! Ingegno +1!",
-   "Felicità aumenta! Stanchezza",
-   "diminuisce!"
+   "Attacco +5!",
+   "Velocità +3!",
+   "Felicità aumenta!"
+  ],
+  [
+   "Stanchezza diminuisce!"
   ]
  ],
  "s217.sec51.u6": [
@@ -5743,9 +5746,12 @@
  ],
  "s217.sec51.u9": [
   [
-   "Attacco +3! Ingegno +2!",
-   "Felicità aumenta! Stanchezza",
-   "diminuisce!"
+   "Attacco +10!",
+   "Velocità +5!",
+   "Felicità aumenta!"
+  ],
+  [
+   "Stanchezza diminuisce!"
   ]
  ],
  "s217.sec51.u10": [
@@ -5767,9 +5773,13 @@
  ],
  "s217.sec51.u13": [
   [
-   "Attacco +5! Ingegno +3!",
-   "Felicità aumenta! Disciplina",
-   "aumenta! Stanchezza diminuisce!"
+   "Attacco +15!",
+   "Velocità +7!",
+   "Felicità aumenta!"
+  ],
+  [
+   "Disciplina aumenta!",
+   "Stanchezza diminuisce!"
   ]
  ],
  "s217.sec51.u14": [
@@ -5792,9 +5802,12 @@
  ],
  "s217.sec51.u18": [
   [
-   "Difesa +1! Velocità +1!",
-   "Felicità aumenta! Stanchezza",
-   "diminuisce!"
+   "HP +50!",
+   "Velocità +3!",
+   "Felicità aumenta!"
+  ],
+  [
+   "Stanchezza diminuisce!"
   ]
  ],
  "s217.sec51.u19": [
@@ -5812,9 +5825,12 @@
  ],
  "s217.sec51.u22": [
   [
-   "Difesa +3! Velocità +2!",
-   "Felicità aumenta! Stanchezza",
-   "diminuisce!"
+   "HP +100!",
+   "Velocità +5!",
+   "Felicità aumenta!"
+  ],
+  [
+   "Stanchezza diminuisce!"
   ]
  ],
  "s217.sec51.u23": [
@@ -5832,9 +5848,13 @@
  ],
  "s217.sec51.u26": [
   [
-   "Difesa +5! Velocità +3!",
-   "Felicità aumenta! Disciplina",
-   "aumenta! Stanchezza diminuisce!"
+   "HP +150!",
+   "Velocità +7!",
+   "Felicità aumenta!"
+  ],
+  [
+   "Disciplina aumenta!",
+   "Stanchezza diminuisce!"
   ]
  ],
  "s217.sec51.u27": [
@@ -5861,9 +5881,12 @@
  ],
  "s217.sec51.u31": [
   [
-   "HP +10! Ingegno +1!",
-   "Disciplina aumenta! Stanchezza",
-   "diminuisce!"
+   "MP +50!",
+   "Ingegno +3!",
+   "Disciplina aumenta!"
+  ],
+  [
+   "Stanchezza diminuisce!"
   ]
  ],
  "s217.sec51.u32": [
@@ -5885,8 +5908,12 @@
  ],
  "s217.sec51.u35": [
   [
-   "HP +30! Ingegno +2! Felicità",
-   "aumenta! Disciplina aumenta!",
+   "MP +100!",
+   "Ingegno +5!",
+   "Felicità aumenta!"
+  ],
+  [
+   "Disciplina aumenta!",
    "Stanchezza diminuisce!"
   ]
  ],
@@ -5909,8 +5936,12 @@
  ],
  "s217.sec51.u39": [
   [
-   "HP +50! Ingegno +3! Felicità",
-   "aumenta! Disciplina aumenta!",
+   "MP +150!",
+   "Ingegno +7!",
+   "Felicità aumenta!"
+  ],
+  [
+   "Disciplina aumenta!",
    "Stanchezza diminuisce!"
   ]
  ],
@@ -5958,8 +5989,12 @@
  ],
  "s218.sec51.u5": [
   [
-   "MP +10! Velocità +1! Felicità",
-   "aumenta! Stanchezza diminuisce!"
+   "Difesa +5!",
+   "Ingegno +3!",
+   "Felicità aumenta!"
+  ],
+  [
+   "Stanchezza diminuisce!"
   ]
  ],
  "s218.sec51.u6": [
@@ -5976,8 +6011,12 @@
  ],
  "s218.sec51.u9": [
   [
-   "MP +30! Velocità +2! Felicità",
-   "aumenta! Stanchezza diminuisce!"
+   "Difesa +10!",
+   "Ingegno +5!",
+   "Felicità aumenta!"
+  ],
+  [
+   "Stanchezza diminuisce!"
   ]
  ],
  "s218.sec51.u10": [
@@ -5994,8 +6033,12 @@
  ],
  "s218.sec51.u13": [
   [
-   "MP +50! Velocità +2! Felicità",
-   "aumenta! Disciplina aumenta!",
+   "Difesa +15!",
+   "Ingegno +7!",
+   "Felicità aumenta!"
+  ],
+  [
+   "Disciplina aumenta!",
    "Stanchezza diminuisce!"
   ]
  ],
@@ -6022,13 +6065,19 @@
  ],
  "s218.sec51.u18": [
   [
-   "HP +10! MP +10! Attacco +1!",
-   "Difesa +1! Velocità +1!",
-   "Ingegno +1! Felicità aumenta!"
+   "HP +20!",
+   "MP +20!",
+   "Attacco +2!"
   ],
   [
-   "Disciplina aumenta! Stanchezza",
-   "diminuisce!"
+   "Difesa +2!",
+   "Velocità +2!",
+   "Ingegno +2!"
+  ],
+  [
+   "Felicità aumenta!",
+   "Disciplina aumenta!",
+   "Stanchezza diminuisce!"
   ]
  ],
  "s218.sec51.u19": [
@@ -6049,13 +6098,19 @@
  ],
  "s218.sec51.u22": [
   [
-   "HP +20! MP +20! Attacco +2!",
-   "Difesa +2! Velocità +2!",
-   "Ingegno +2! Felicità aumenta!"
+   "HP +30!",
+   "MP +30!",
+   "Attacco +3!"
   ],
   [
-   "Disciplina aumenta! Stanchezza",
-   "diminuisce!"
+   "Difesa +3!",
+   "Velocità +3!",
+   "Ingegno +3!"
+  ],
+  [
+   "Felicità aumenta!",
+   "Disciplina aumenta!",
+   "Stanchezza diminuisce!"
   ]
  ],
  "s218.sec51.u23": [
@@ -6076,13 +6131,19 @@
  ],
  "s218.sec51.u26": [
   [
-   "HP +30! MP +30! Attacco +3!",
-   "Difesa +3! Velocità +3!",
-   "Ingegno +3! Felicità aumenta!"
+   "HP +50!",
+   "MP +50!",
+   "Attacco +5!"
   ],
   [
-   "Disciplina aumenta! Stanchezza",
-   "diminuisce!"
+   "Difesa +5!",
+   "Velocità +5!",
+   "Ingegno +5!"
+  ],
+  [
+   "Felicità aumenta!",
+   "Disciplina aumenta!",
+   "Stanchezza diminuisce!"
   ]
  ],
  "s218.sec51.u27": [
@@ -6109,39 +6170,57 @@
  ],
  "s218.sec51.u31": [
   [
-   "HP +10! Attacco +1! Velocità",
-   "+1!"
+   "HP +10!",
+   "MP +10!",
+   "Attacco +1!"
+  ],
+  [
+   "Difesa +1!",
+   "Velocità +1!",
+   "Ingegno +1!"
   ]
  ],
  "s218.sec51.u32": [
   [
-   "Felicità aumenta! Stanchezza",
-   "diminuisce!"
+   "Felicità aumenta!",
+   "Stanchezza diminuisce!"
   ]
  ],
  "s218.sec51.u33": [
   [
-   "MP +10! Difesa +1! Ingegno",
-   "+1!"
+   "HP +20!",
+   "MP +20!",
+   "Attacco +2!"
+  ],
+  [
+   "Difesa +2!",
+   "Velocità +2!",
+   "Ingegno +2!"
   ]
  ],
  "s218.sec51.u34": [
   [
-   "Felicità aumenta! Stanchezza",
-   "diminuisce!"
+   "Felicità aumenta!",
+   "Stanchezza diminuisce!"
   ]
  ],
  "s218.sec51.u35": [
   [
-   "HP +20! MP +20! Attacco +2!",
-   "Difesa +2! Velocità +2!",
-   "Ingegno +2!"
+   "HP +30!",
+   "MP +30!",
+   "Attacco +3!"
+  ],
+  [
+   "Difesa +3!",
+   "Velocità +3!",
+   "Ingegno +3!"
   ]
  ],
  "s218.sec51.u36": [
   [
-   "Felicità aumenta! Disciplina",
-   "aumenta! Stanchezza diminuisce!"
+   "Felicità aumenta!",
+   "Disciplina aumenta!",
+   "Stanchezza diminuisce!"
   ]
  ],
  "s218.sec51.u37": [
@@ -6162,39 +6241,57 @@
  ],
  "s218.sec51.u40": [
   [
-   "HP +20! Attacco +2! Velocità",
-   "+2!"
+   "HP +20!",
+   "MP +20!",
+   "Attacco +2!"
+  ],
+  [
+   "Difesa +2!",
+   "Velocità +2!",
+   "Ingegno +2!"
   ]
  ],
  "s218.sec51.u41": [
   [
-   "Felicità aumenta! Disciplina",
-   "aumenta! Stanchezza diminuisce!"
+   "Felicità aumenta!",
+   "Stanchezza diminuisce!"
   ]
  ],
  "s218.sec51.u42": [
   [
-   "MP +20! Difesa +2! Ingegno",
-   "+2!"
+   "HP +30!",
+   "MP +30!",
+   "Attacco +3!"
+  ],
+  [
+   "Difesa +3!",
+   "Velocità +3!",
+   "Ingegno +3!"
   ]
  ],
  "s218.sec51.u43": [
   [
-   "Felicità aumenta! Stanchezza",
-   "diminuisce!"
+   "Felicità aumenta!",
+   "Stanchezza diminuisce!"
   ]
  ],
  "s218.sec51.u44": [
   [
-   "HP +30! MP +30! Attacco +3!",
-   "Difesa +3! Velocità +3!",
-   "Ingegno +3!"
+   "HP +50!",
+   "MP +50!",
+   "Attacco +5!"
+  ],
+  [
+   "Difesa +5!",
+   "Velocità +5!",
+   "Ingegno +5!"
   ]
  ],
  "s218.sec51.u45": [
   [
-   "Felicità aumenta! Disciplina",
-   "aumenta! Stanchezza diminuisce!"
+   "Felicità aumenta!",
+   "Disciplina aumenta!",
+   "Stanchezza diminuisce!"
   ]
  ],
  "s218.sec51.u46": [
@@ -6215,39 +6312,59 @@
  ],
  "s218.sec51.u49": [
   [
-   "HP +30! Attacco +3! Velocità",
-   "+3!"
+   "HP +30!",
+   "MP +30!",
+   "Attacco +3!"
+  ],
+  [
+   "Difesa +3!",
+   "Velocità +3!",
+   "Ingegno +3!"
   ]
  ],
  "s218.sec51.u50": [
   [
-   "Felicità aumenta! Disciplina",
-   "aumenta! Stanchezza diminuisce!"
+   "Felicità aumenta!",
+   "Disciplina aumenta!",
+   "Stanchezza diminuisce!"
   ]
  ],
  "s218.sec51.u51": [
   [
-   "MP +30! Difesa +3! Ingegno",
-   "+3!"
+   "HP +50!",
+   "MP +50!",
+   "Attacco +5!"
+  ],
+  [
+   "Difesa +5!",
+   "Velocità +5!",
+   "Ingegno +5!"
   ]
  ],
  "s218.sec51.u52": [
   [
-   "Felicità aumenta! Disciplina",
-   "aumenta! Stanchezza diminuisce!"
+   "Felicità aumenta!",
+   "Disciplina aumenta!",
+   "Stanchezza diminuisce!"
   ]
  ],
  "s218.sec51.u53": [
   [
-   "HP +40! MP +40! Attacco +4!",
-   "Difesa +4! Velocità +4!",
-   "Ingegno +4!"
+   "HP +70!",
+   "MP +70!",
+   "Attacco +7!"
+  ],
+  [
+   "Difesa +7!",
+   "Velocità +7!",
+   "Ingegno +7!"
   ]
  ],
  "s218.sec51.u54": [
   [
-   "Felicità aumenta! Disciplina",
-   "aumenta! Stanchezza diminuisce!"
+   "Felicità aumenta!",
+   "Disciplina aumenta!",
+   "Stanchezza diminuisce!"
   ]
  ],
  "s218.sec51.u55": [

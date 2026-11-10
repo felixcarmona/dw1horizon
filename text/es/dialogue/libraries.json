@@ -3304,11 +3304,11 @@
  "s217.sec51.u4": "¡A {color 10}{partner}{color 1} le ha encantado el Ramen picante!",
  "s217.sec51.u5": [
   [
-   "¡El Ataque sube 1!",
-   "¡El Intelecto sube 1!"
+   "¡El Ataque sube 5!",
+   "¡La Velocidad sube 3!",
+   "¡La Felicidad sube!"
   ],
   [
-   "¡La Felicidad sube!",
    "¡El Cansancio baja!"
   ]
  ],
@@ -3317,11 +3317,11 @@
  "s217.sec51.u8": "¡A {color 10}{partner}{color 1} le ha encantado el Curry abrasador!",
  "s217.sec51.u9": [
   [
-   "¡El Ataque sube 3!",
-   "¡El Intelecto sube 2!"
+   "¡El Ataque sube 10!",
+   "¡La Velocidad sube 5!",
+   "¡La Felicidad sube!"
   ],
   [
-   "¡La Felicidad sube!",
    "¡El Cansancio baja!"
   ]
  ],
@@ -3330,11 +3330,11 @@
  "s217.sec51.u12": "¡A {color 10}{partner}{color 1} le ha encantado el Puchero de lava!",
  "s217.sec51.u13": [
   [
-   "¡El Ataque sube 5!",
-   "¡El Intelecto sube 3!"
+   "¡El Ataque sube 15!",
+   "¡La Velocidad sube 7!",
+   "¡La Felicidad sube!"
   ],
   [
-   "¡La Felicidad sube!",
    "¡La Disciplina sube!",
    "¡El Cansancio baja!"
   ]
@@ -3345,11 +3345,11 @@
  "s217.sec51.u17": "¡A {color 10}{partner}{color 1} le han encantado los Fideos del dragón!",
  "s217.sec51.u18": [
   [
-   "¡La Defensa sube 1!",
-   "¡La Velocidad sube 1!"
+   "¡Los HP suben 50!",
+   "¡La Velocidad sube 3!",
+   "¡La Felicidad sube!"
   ],
   [
-   "¡La Felicidad sube!",
    "¡El Cansancio baja!"
   ]
  ],
@@ -3358,11 +3358,11 @@
  "s217.sec51.u21": "¡A {color 10}{partner}{color 1} le ha encantado la Pizza Zaurus!",
  "s217.sec51.u22": [
   [
-   "¡La Defensa sube 3!",
-   "¡La Velocidad sube 2!"
+   "¡Los HP suben 100!",
+   "¡La Velocidad sube 5!",
+   "¡La Felicidad sube!"
   ],
   [
-   "¡La Felicidad sube!",
    "¡El Cansancio baja!"
   ]
  ],
@@ -3371,11 +3371,11 @@
  "s217.sec51.u25": "¡A {color 10}{partner}{color 1} le ha encantado la Burger jurásica!",
  "s217.sec51.u26": [
   [
-   "¡La Defensa sube 5!",
-   "¡La Velocidad sube 3!"
+   "¡Los HP suben 150!",
+   "¡La Velocidad sube 7!",
+   "¡La Felicidad sube!"
   ],
   [
-   "¡La Felicidad sube!",
    "¡La Disciplina sube!",
    "¡El Cansancio baja!"
   ]
@@ -3386,11 +3386,11 @@
  "s217.sec51.u30": "¡A {color 10}{partner}{color 1} le ha encantado la Chuleta T-bone!",
  "s217.sec51.u31": [
   [
-   "¡Los HP suben 10!",
-   "¡El Intelecto sube 1!"
+   "¡Los MP suben 50!",
+   "¡El Intelecto sube 3!",
+   "¡La Disciplina sube!"
   ],
   [
-   "¡La Disciplina sube!",
    "¡El Cansancio baja!"
   ]
  ],
@@ -3399,11 +3399,11 @@
  "s217.sec51.u34": "¡A {color 10}{partner}{color 1} le ha encantado la Chuleta DX-bone!",
  "s217.sec51.u35": [
   [
-   "¡Los HP suben 30!",
-   "¡El Intelecto sube 2!"
+   "¡Los MP suben 100!",
+   "¡El Intelecto sube 5!",
+   "¡La Felicidad sube!"
   ],
   [
-   "¡La Felicidad sube!",
    "¡La Disciplina sube!",
    "¡El Cansancio baja!"
   ]
@@ -3413,11 +3413,11 @@
  "s217.sec51.u38": "¡A {color 10}{partner}{color 1} le ha encantado la Chuleta fantasma!",
  "s217.sec51.u39": [
   [
-   "¡Los HP suben 50!",
-   "¡El Intelecto sube 3!"
+   "¡Los MP suben 150!",
+   "¡El Intelecto sube 7!",
+   "¡La Felicidad sube!"
   ],
   [
-   "¡La Felicidad sube!",
    "¡La Disciplina sube!",
    "¡El Cansancio baja!"
   ]
@@ -3440,11 +3440,11 @@
  "s218.sec51.u4": "¡A {color 10}{partner}{color 1} le ha encantado el Batido de nieve!",
  "s218.sec51.u5": [
   [
-   "¡Los MP suben 10!",
-   "¡La Velocidad sube 1!"
+   "¡La Defensa sube 5!",
+   "¡El Intelecto sube 3!",
+   "¡La Felicidad sube!"
   ],
   [
-   "¡La Felicidad sube!",
    "¡El Cansancio baja!"
   ]
  ],
@@ -3453,11 +3453,11 @@
  "s218.sec51.u8": "¡A {color 10}{partner}{color 1} le ha encantado el Helado!",
  "s218.sec51.u9": [
   [
-   "¡Los MP suben 30!",
-   "¡La Velocidad sube 2!"
+   "¡La Defensa sube 10!",
+   "¡El Intelecto sube 5!",
+   "¡La Felicidad sube!"
   ],
   [
-   "¡La Felicidad sube!",
    "¡El Cansancio baja!"
   ]
  ],
@@ -3466,11 +3466,11 @@
  "s218.sec51.u12": "¡A {color 10}{partner}{color 1} le ha encantado el Granizado!",
  "s218.sec51.u13": [
   [
-   "¡Los MP suben 50!",
-   "¡La Velocidad sube 2!"
+   "¡La Defensa sube 15!",
+   "¡El Intelecto sube 7!",
+   "¡La Felicidad sube!"
   ],
   [
-   "¡La Felicidad sube!",
    "¡La Disciplina sube!",
    "¡El Cansancio baja!"
   ]
@@ -3480,26 +3480,6 @@
  "s218.sec51.u16": "BITS... NO SUFICIENTES.",
  "s218.sec51.u17": "¡A {color 10}{partner}{color 1} le ha encantado la Ensalada espacial!",
  "s218.sec51.u18": [
-  [
-   "¡Los HP suben 10!",
-   "¡Los MP suben 10!",
-   "¡El Ataque sube 1!"
-  ],
-  [
-   "¡La Defensa sube 1!",
-   "¡La Velocidad sube 1!",
-   "¡El Intelecto sube 1!"
-  ],
-  [
-   "¡La Felicidad sube!",
-   "¡La Disciplina sube!",
-   "¡El Cansancio baja!"
-  ]
- ],
- "s218.sec51.u19": "{color 10}{partner}{color 1}... LLENO.",
- "s218.sec51.u20": "BITS... NO SUFICIENTES.",
- "s218.sec51.u21": "¡A {color 10}{partner}{color 1} le ha encantado la Sopa OVNI!",
- "s218.sec51.u22": [
   [
    "¡Los HP suben 20!",
    "¡Los MP suben 20!",
@@ -3516,10 +3496,10 @@
    "¡El Cansancio baja!"
   ]
  ],
- "s218.sec51.u23": "{color 10}{partner}{color 1}... LLENO.",
- "s218.sec51.u24": "BITS... NO SUFICIENTES.",
- "s218.sec51.u25": "¡A {color 10}{partner}{color 1} le ha encantado el Menú galaxia!",
- "s218.sec51.u26": [
+ "s218.sec51.u19": "{color 10}{partner}{color 1}... LLENO.",
+ "s218.sec51.u20": "BITS... NO SUFICIENTES.",
+ "s218.sec51.u21": "¡A {color 10}{partner}{color 1} le ha encantado la Sopa OVNI!",
+ "s218.sec51.u22": [
   [
    "¡Los HP suben 30!",
    "¡Los MP suben 30!",
@@ -3536,6 +3516,26 @@
    "¡El Cansancio baja!"
   ]
  ],
+ "s218.sec51.u23": "{color 10}{partner}{color 1}... LLENO.",
+ "s218.sec51.u24": "BITS... NO SUFICIENTES.",
+ "s218.sec51.u25": "¡A {color 10}{partner}{color 1} le ha encantado el Menú galaxia!",
+ "s218.sec51.u26": [
+  [
+   "¡Los HP suben 50!",
+   "¡Los MP suben 50!",
+   "¡El Ataque sube 5!"
+  ],
+  [
+   "¡La Defensa sube 5!",
+   "¡La Velocidad sube 5!",
+   "¡El Intelecto sube 5!"
+  ],
+  [
+   "¡La Felicidad sube!",
+   "¡La Disciplina sube!",
+   "¡El Cansancio baja!"
+  ]
+ ],
  "s218.sec51.u27": "{color 10}{partner}{color 1}... LLENO.",
  "s218.sec51.u28": "......HASTA LA PRÓXIMA, A TODOS.",
  "s218.sec51.u29": "......",
@@ -3543,8 +3543,13 @@
  "s218.sec51.u31": [
   [
    "¡Los HP suben 10!",
-   "¡El Ataque sube 1!",
-   "¡La Velocidad sube 1!"
+   "¡Los MP suben 10!",
+   "¡El Ataque sube 1!"
+  ],
+  [
+   "¡La Defensa sube 1!",
+   "¡La Velocidad sube 1!",
+   "¡El Intelecto sube 1!"
   ]
  ],
  "s218.sec51.u32": [
@@ -3555,9 +3560,14 @@
  ],
  "s218.sec51.u33": [
   [
-   "¡Los MP suben 10!",
-   "¡La Defensa sube 1!",
-   "¡El Intelecto sube 1!"
+   "¡Los HP suben 20!",
+   "¡Los MP suben 20!",
+   "¡El Ataque sube 2!"
+  ],
+  [
+   "¡La Defensa sube 2!",
+   "¡La Velocidad sube 2!",
+   "¡El Intelecto sube 2!"
   ]
  ],
  "s218.sec51.u34": [
@@ -3568,14 +3578,14 @@
  ],
  "s218.sec51.u35": [
   [
-   "¡Los HP suben 20!",
-   "¡Los MP suben 20!",
-   "¡El Ataque sube 2!"
+   "¡Los HP suben 30!",
+   "¡Los MP suben 30!",
+   "¡El Ataque sube 3!"
   ],
   [
-   "¡La Defensa sube 2!",
-   "¡La Velocidad sube 2!",
-   "¡El Intelecto sube 2!"
+   "¡La Defensa sube 3!",
+   "¡La Velocidad sube 3!",
+   "¡El Intelecto sube 3!"
   ]
  ],
  "s218.sec51.u36": [
@@ -3591,22 +3601,31 @@
  "s218.sec51.u40": [
   [
    "¡Los HP suben 20!",
-   "¡El Ataque sube 2!",
-   "¡La Velocidad sube 2!"
+   "¡Los MP suben 20!",
+   "¡El Ataque sube 2!"
+  ],
+  [
+   "¡La Defensa sube 2!",
+   "¡La Velocidad sube 2!",
+   "¡El Intelecto sube 2!"
   ]
  ],
  "s218.sec51.u41": [
   [
    "¡La Felicidad sube!",
-   "¡La Disciplina sube!",
    "¡El Cansancio baja!"
   ]
  ],
  "s218.sec51.u42": [
   [
-   "¡Los MP suben 20!",
-   "¡La Defensa sube 2!",
-   "¡El Intelecto sube 2!"
+   "¡Los HP suben 30!",
+   "¡Los MP suben 30!",
+   "¡El Ataque sube 3!"
+  ],
+  [
+   "¡La Defensa sube 3!",
+   "¡La Velocidad sube 3!",
+   "¡El Intelecto sube 3!"
   ]
  ],
  "s218.sec51.u43": [
@@ -3617,14 +3636,14 @@
  ],
  "s218.sec51.u44": [
   [
-   "¡Los HP suben 30!",
-   "¡Los MP suben 30!",
-   "¡El Ataque sube 3!"
+   "¡Los HP suben 50!",
+   "¡Los MP suben 50!",
+   "¡El Ataque sube 5!"
   ],
   [
-   "¡La Defensa sube 3!",
-   "¡La Velocidad sube 3!",
-   "¡El Intelecto sube 3!"
+   "¡La Defensa sube 5!",
+   "¡La Velocidad sube 5!",
+   "¡El Intelecto sube 5!"
   ]
  ],
  "s218.sec51.u45": [
@@ -3640,8 +3659,13 @@
  "s218.sec51.u49": [
   [
    "¡Los HP suben 30!",
-   "¡El Ataque sube 3!",
-   "¡La Velocidad sube 3!"
+   "¡Los MP suben 30!",
+   "¡El Ataque sube 3!"
+  ],
+  [
+   "¡La Defensa sube 3!",
+   "¡La Velocidad sube 3!",
+   "¡El Intelecto sube 3!"
   ]
  ],
  "s218.sec51.u50": [
@@ -3653,9 +3677,14 @@
  ],
  "s218.sec51.u51": [
   [
-   "¡Los MP suben 30!",
-   "¡La Defensa sube 3!",
-   "¡El Intelecto sube 3!"
+   "¡Los HP suben 50!",
+   "¡Los MP suben 50!",
+   "¡El Ataque sube 5!"
+  ],
+  [
+   "¡La Defensa sube 5!",
+   "¡La Velocidad sube 5!",
+   "¡El Intelecto sube 5!"
   ]
  ],
  "s218.sec51.u52": [
@@ -3667,14 +3696,14 @@
  ],
  "s218.sec51.u53": [
   [
-   "¡Los HP suben 40!",
-   "¡Los MP suben 40!",
-   "¡El Ataque sube 4!"
+   "¡Los HP suben 70!",
+   "¡Los MP suben 70!",
+   "¡El Ataque sube 7!"
   ],
   [
-   "¡La Defensa sube 4!",
-   "¡La Velocidad sube 4!",
-   "¡El Intelecto sube 4!"
+   "¡La Defensa sube 7!",
+   "¡La Velocidad sube 7!",
+   "¡El Intelecto sube 7!"
   ]
  ],
  "s218.sec51.u54": [

@@ -5471,12 +5471,12 @@
  ],
  "s217.sec51.u5": [
   [
-   "Atac puja 1! Intel·lecte puja",
-   "1!"
+   "Atac puja 5!",
+   "Velocitat puja 3!",
+   "Felicitat puja!"
   ],
   [
-   "Felicitat puja! Cansament",
-   "baixa!"
+   "Cansament baixa!"
   ]
  ],
  "s217.sec51.u6": [
@@ -5498,12 +5498,12 @@
  ],
  "s217.sec51.u9": [
   [
-   "Atac puja 3! Intel·lecte puja",
-   "2!"
+   "Atac puja 10!",
+   "Velocitat puja 5!",
+   "Felicitat puja!"
   ],
   [
-   "Felicitat puja! Cansament",
-   "baixa!"
+   "Cansament baixa!"
   ]
  ],
  "s217.sec51.u10": [
@@ -5525,12 +5525,13 @@
  ],
  "s217.sec51.u13": [
   [
-   "Atac puja 5! Intel·lecte puja",
-   "3!"
+   "Atac puja 15!",
+   "Velocitat puja 7!",
+   "Felicitat puja!"
   ],
   [
-   "Felicitat puja! Disciplina",
-   "puja! Cansament baixa!"
+   "Disciplina puja!",
+   "Cansament baixa!"
   ]
  ],
  "s217.sec51.u14": [
@@ -5553,12 +5554,12 @@
  ],
  "s217.sec51.u18": [
   [
-   "Defensa puja 1! Velocitat puja",
-   "1!"
+   "HP puja 50!",
+   "Velocitat puja 3!",
+   "Felicitat puja!"
   ],
   [
-   "Felicitat puja! Cansament",
-   "baixa!"
+   "Cansament baixa!"
   ]
  ],
  "s217.sec51.u19": [
@@ -5576,12 +5577,12 @@
  ],
  "s217.sec51.u22": [
   [
-   "Defensa puja 3! Velocitat puja",
-   "2!"
+   "HP puja 100!",
+   "Velocitat puja 5!",
+   "Felicitat puja!"
   ],
   [
-   "Felicitat puja! Cansament",
-   "baixa!"
+   "Cansament baixa!"
   ]
  ],
  "s217.sec51.u23": [
@@ -5599,12 +5600,13 @@
  ],
  "s217.sec51.u26": [
   [
-   "Defensa puja 5! Velocitat puja",
-   "3!"
+   "HP puja 150!",
+   "Velocitat puja 7!",
+   "Felicitat puja!"
   ],
   [
-   "Felicitat puja! Disciplina",
-   "puja! Cansament baixa!"
+   "Disciplina puja!",
+   "Cansament baixa!"
   ]
  ],
  "s217.sec51.u27": [
@@ -5631,11 +5633,12 @@
  ],
  "s217.sec51.u31": [
   [
-   "HP puja 10! Intel·lecte puja 1!"
+   "MP puja 50!",
+   "Intel·lecte puja 3!",
+   "Disciplina puja!"
   ],
   [
-   "Disciplina puja! Cansament",
-   "baixa!"
+   "Cansament baixa!"
   ]
  ],
  "s217.sec51.u32": [
@@ -5657,11 +5660,13 @@
  ],
  "s217.sec51.u35": [
   [
-   "HP puja 30! Intel·lecte puja 2!"
+   "MP puja 100!",
+   "Intel·lecte puja 5!",
+   "Felicitat puja!"
   ],
   [
-   "Felicitat puja! Disciplina",
-   "puja! Cansament baixa!"
+   "Disciplina puja!",
+   "Cansament baixa!"
   ]
  ],
  "s217.sec51.u36": [
@@ -5683,11 +5688,13 @@
  ],
  "s217.sec51.u39": [
   [
-   "HP puja 50! Intel·lecte puja 3!"
+   "MP puja 150!",
+   "Intel·lecte puja 7!",
+   "Felicitat puja!"
   ],
   [
-   "Felicitat puja! Disciplina",
-   "puja! Cansament baixa!"
+   "Disciplina puja!",
+   "Cansament baixa!"
   ]
  ],
  "s217.sec51.u40": [
@@ -5735,11 +5742,12 @@
  ],
  "s218.sec51.u5": [
   [
-   "MP puja 10! Velocitat puja 1!"
+   "Defensa puja 5!",
+   "Intel·lecte puja 3!",
+   "Felicitat puja!"
   ],
   [
-   "Felicitat puja! Cansament",
-   "baixa!"
+   "Cansament baixa!"
   ]
  ],
  "s218.sec51.u6": [
@@ -5756,11 +5764,12 @@
  ],
  "s218.sec51.u9": [
   [
-   "MP puja 30! Velocitat puja 2!"
+   "Defensa puja 10!",
+   "Intel·lecte puja 5!",
+   "Felicitat puja!"
   ],
   [
-   "Felicitat puja! Cansament",
-   "baixa!"
+   "Cansament baixa!"
   ]
  ],
  "s218.sec51.u10": [
@@ -5777,11 +5786,13 @@
  ],
  "s218.sec51.u13": [
   [
-   "MP puja 50! Velocitat puja 2!"
+   "Defensa puja 15!",
+   "Intel·lecte puja 7!",
+   "Felicitat puja!"
   ],
   [
-   "Felicitat puja! Disciplina",
-   "puja! Cansament baixa!"
+   "Disciplina puja!",
+   "Cansament baixa!"
   ]
  ],
  "s218.sec51.u14": [
@@ -5807,16 +5818,19 @@
  ],
  "s218.sec51.u18": [
   [
-   "HP puja 10! MP puja 10! Atac",
-   "puja 1!"
+   "HP puja 20!",
+   "MP puja 20!",
+   "Atac puja 2!"
   ],
   [
-   "Defensa puja 1! Velocitat puja",
-   "1! Intel·lecte puja 1!"
+   "Defensa puja 2!",
+   "Velocitat puja 2!",
+   "Intel·lecte puja 2!"
   ],
   [
-   "Felicitat puja! Disciplina",
-   "puja! Cansament baixa!"
+   "Felicitat puja!",
+   "Disciplina puja!",
+   "Cansament baixa!"
   ]
  ],
  "s218.sec51.u19": [
@@ -5837,16 +5851,19 @@
  ],
  "s218.sec51.u22": [
   [
-   "HP puja 20! MP puja 20! Atac",
-   "puja 2!"
+   "HP puja 30!",
+   "MP puja 30!",
+   "Atac puja 3!"
   ],
   [
-   "Defensa puja 2! Velocitat puja",
-   "2! Intel·lecte puja 2!"
+   "Defensa puja 3!",
+   "Velocitat puja 3!",
+   "Intel·lecte puja 3!"
   ],
   [
-   "Felicitat puja! Disciplina",
-   "puja! Cansament baixa!"
+   "Felicitat puja!",
+   "Disciplina puja!",
+   "Cansament baixa!"
   ]
  ],
  "s218.sec51.u23": [
@@ -5867,16 +5884,19 @@
  ],
  "s218.sec51.u26": [
   [
-   "HP puja 30! MP puja 30! Atac",
-   "puja 3!"
+   "HP puja 50!",
+   "MP puja 50!",
+   "Atac puja 5!"
   ],
   [
-   "Defensa puja 3! Velocitat puja",
-   "3! Intel·lecte puja 3!"
+   "Defensa puja 5!",
+   "Velocitat puja 5!",
+   "Intel·lecte puja 5!"
   ],
   [
-   "Felicitat puja! Disciplina",
-   "puja! Cansament baixa!"
+   "Felicitat puja!",
+   "Disciplina puja!",
+   "Cansament baixa!"
   ]
  ],
  "s218.sec51.u27": [
@@ -5903,42 +5923,57 @@
  ],
  "s218.sec51.u31": [
   [
-   "HP puja 10! Atac puja 1!",
-   "Velocitat puja 1!"
+   "HP puja 10!",
+   "MP puja 10!",
+   "Atac puja 1!"
+  ],
+  [
+   "Defensa puja 1!",
+   "Velocitat puja 1!",
+   "Intel·lecte puja 1!"
   ]
  ],
  "s218.sec51.u32": [
   [
-   "Felicitat puja! Cansament",
-   "baixa!"
+   "Felicitat puja!",
+   "Cansament baixa!"
   ]
  ],
  "s218.sec51.u33": [
   [
-   "MP puja 10! Defensa puja 1!",
-   "Intel·lecte puja 1!"
+   "HP puja 20!",
+   "MP puja 20!",
+   "Atac puja 2!"
+  ],
+  [
+   "Defensa puja 2!",
+   "Velocitat puja 2!",
+   "Intel·lecte puja 2!"
   ]
  ],
  "s218.sec51.u34": [
   [
-   "Felicitat puja! Cansament",
-   "baixa!"
+   "Felicitat puja!",
+   "Cansament baixa!"
   ]
  ],
  "s218.sec51.u35": [
   [
-   "HP puja 20! MP puja 20! Atac",
-   "puja 2!"
+   "HP puja 30!",
+   "MP puja 30!",
+   "Atac puja 3!"
   ],
   [
-   "Defensa puja 2! Velocitat puja",
-   "2! Intel·lecte puja 2!"
+   "Defensa puja 3!",
+   "Velocitat puja 3!",
+   "Intel·lecte puja 3!"
   ]
  ],
  "s218.sec51.u36": [
   [
-   "Felicitat puja! Disciplina",
-   "puja! Cansament baixa!"
+   "Felicitat puja!",
+   "Disciplina puja!",
+   "Cansament baixa!"
   ]
  ],
  "s218.sec51.u37": [
@@ -5959,42 +5994,57 @@
  ],
  "s218.sec51.u40": [
   [
-   "HP puja 20! Atac puja 2!",
-   "Velocitat puja 2!"
+   "HP puja 20!",
+   "MP puja 20!",
+   "Atac puja 2!"
+  ],
+  [
+   "Defensa puja 2!",
+   "Velocitat puja 2!",
+   "Intel·lecte puja 2!"
   ]
  ],
  "s218.sec51.u41": [
   [
-   "Felicitat puja! Disciplina",
-   "puja! Cansament baixa!"
+   "Felicitat puja!",
+   "Cansament baixa!"
   ]
  ],
  "s218.sec51.u42": [
   [
-   "MP puja 20! Defensa puja 2!",
-   "Intel·lecte puja 2!"
+   "HP puja 30!",
+   "MP puja 30!",
+   "Atac puja 3!"
+  ],
+  [
+   "Defensa puja 3!",
+   "Velocitat puja 3!",
+   "Intel·lecte puja 3!"
   ]
  ],
  "s218.sec51.u43": [
   [
-   "Felicitat puja! Cansament",
-   "baixa!"
+   "Felicitat puja!",
+   "Cansament baixa!"
   ]
  ],
  "s218.sec51.u44": [
   [
-   "HP puja 30! MP puja 30! Atac",
-   "puja 3!"
+   "HP puja 50!",
+   "MP puja 50!",
+   "Atac puja 5!"
   ],
   [
-   "Defensa puja 3! Velocitat puja",
-   "3! Intel·lecte puja 3!"
+   "Defensa puja 5!",
+   "Velocitat puja 5!",
+   "Intel·lecte puja 5!"
   ]
  ],
  "s218.sec51.u45": [
   [
-   "Felicitat puja! Disciplina",
-   "puja! Cansament baixa!"
+   "Felicitat puja!",
+   "Disciplina puja!",
+   "Cansament baixa!"
   ]
  ],
  "s218.sec51.u46": [
@@ -6015,42 +6065,59 @@
  ],
  "s218.sec51.u49": [
   [
-   "HP puja 30! Atac puja 3!",
-   "Velocitat puja 3!"
+   "HP puja 30!",
+   "MP puja 30!",
+   "Atac puja 3!"
+  ],
+  [
+   "Defensa puja 3!",
+   "Velocitat puja 3!",
+   "Intel·lecte puja 3!"
   ]
  ],
  "s218.sec51.u50": [
   [
-   "Felicitat puja! Disciplina",
-   "puja! Cansament baixa!"
+   "Felicitat puja!",
+   "Disciplina puja!",
+   "Cansament baixa!"
   ]
  ],
  "s218.sec51.u51": [
   [
-   "MP puja 30! Defensa puja 3!",
-   "Intel·lecte puja 3!"
+   "HP puja 50!",
+   "MP puja 50!",
+   "Atac puja 5!"
+  ],
+  [
+   "Defensa puja 5!",
+   "Velocitat puja 5!",
+   "Intel·lecte puja 5!"
   ]
  ],
  "s218.sec51.u52": [
   [
-   "Felicitat puja! Disciplina",
-   "puja! Cansament baixa!"
+   "Felicitat puja!",
+   "Disciplina puja!",
+   "Cansament baixa!"
   ]
  ],
  "s218.sec51.u53": [
   [
-   "HP puja 40! MP puja 40! Atac",
-   "puja 4!"
+   "HP puja 70!",
+   "MP puja 70!",
+   "Atac puja 7!"
   ],
   [
-   "Defensa puja 4! Velocitat puja",
-   "4! Intel·lecte puja 4!"
+   "Defensa puja 7!",
+   "Velocitat puja 7!",
+   "Intel·lecte puja 7!"
   ]
  ],
  "s218.sec51.u54": [
   [
-   "Felicitat puja! Disciplina",
-   "puja! Cansament baixa!"
+   "Felicitat puja!",
+   "Disciplina puja!",
+   "Cansament baixa!"
   ]
  ],
  "s218.sec51.u55": [
