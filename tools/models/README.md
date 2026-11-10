@@ -142,6 +142,20 @@ tools.test_garbagemon_attachment`. It checks the attachment and grounding over
 every occupied clip, unchanged acting and semantic events, absence of wing
 cues, and original-console resident/cold-animation storage limits.
 
+Zudomon's (219) walk, condition walk and run took their legs from a gait solver
+but kept the idle's slow 96-tick performance in the chest, head, arms, hammer
+and tail, so the halves moved on different beats (one upper beat per four steps
+in the walk, per eight in the run). `field_animations/zudomon_gait.py` puts the
+upper body on the legs' beat: pelvis and chest counter-rotate (the hips turn
+back so the feet stay), the chest leans over the planted foot, the free arm
+swings against its leg, the hammer arm swings a third as far and lags it, and
+the tail sways against the hips; the run leans forward and the condition walk
+droops. The hammer carry is lifted just enough to keep the head off the floor.
+Legs, root travel, loop lengths and footstep sounds are unchanged; the channels
+are stored at tolerance 7 to stay inside the resident animation buffer with the
+Buster Dive clip: `--source build/imported-model-edit/edit/219-Zudomon.MMD
+--out AFTER.MMD`, then `tools/models/edit.py --from build/everything put 219 AFTER.MMD`.
+
 Valkyrimon (255) uses a uniform 0.8 resize and native Angemon field motion,
 with its existing rig and chibi proportions. The offline authoring recipe is
 `field_animations/valkyrimon.py`; player builds replay the plain delta.
