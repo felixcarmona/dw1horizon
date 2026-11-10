@@ -57,6 +57,8 @@ class ModelProvider(unittest.TestCase):
             '183': ('183', 'tools.models.field_animations.native_binding', '183-wormmon-native-crawl'),
             '187': ('187', 'tools.models.field_animations.followthrough', '187-stingmon-wing-followthrough'),
             '239': ('239', 'tools.models.field_animations.followthrough', '239-gizamon-active-gait'),
+            # LadyDevimon's flight (ladydevimon_flight.py) is written over her baked chibi delta.
+            '223': ('223', 'tools.models.field_animations.ladydevimon_flight', '223-ladydevimon-flight'),
         }
         for sid, expected in following.items():
             self.assertEqual(selected.pop(sid), expected)
@@ -196,8 +198,10 @@ class ModelProvider(unittest.TestCase):
         assignments['351'] = ('tools.models.field_animations.articulation', '351-kotemon-field')
         # Raidramon (201) no longer has a field overlay: its gait is in its model delta (raidramon.py).
         self.assertNotIn('201', assignments)
+        # Salamon (221) neither: its gait and blinking face are in its model delta (salamon.py, salamon_face.py).
+        self.assertNotIn('221', assignments)
         self.assertEqual(hashlib.sha1(json.dumps(assignments, sort_keys=True).encode()).hexdigest(),
-                         '7b07ca5920f928bbe75008e35033132e223e4bbd')
+                         '12f258b97a2204120ae36b2ab3a5ede3139d32cc')
 
 
 if __name__ == '__main__':

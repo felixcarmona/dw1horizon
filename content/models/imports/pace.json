@@ -372,7 +372,8 @@
      360
     ]
    }
-  }
+  },
+  "after_generator": "tools.models.field_animations.rosemon_gait"
  },
  "328": {
   "name": "Snimon",
@@ -742,32 +743,33 @@
   "slots": {
    "2": {
     "from": 2,
-    "ticks": 16,
-    "speed": 20,
+    "ticks": 8,
+    "speed": 15,
     "slip": [
-     125,
-     250
+     140,
+     240
     ]
    },
    "4": {
-    "from": 4,
-    "ticks": 10,
+    "from": 2,
+    "ticks": 16,
     "speed": 38,
     "slip": [
-     190,
-     360
+     100,
+     130
     ]
    },
    "3": {
     "from": 2,
-    "ticks": 24,
-    "speed": 13.3,
+    "ticks": 12,
+    "speed": 9.5,
     "slip": [
-     190,
-     360
+     140,
+     240
     ]
    }
-  }
+  },
+  "after_generator": "tools.models.field_animations.black_gatomon_calm"
  },
  "269": {
   "name": "Garbagemon",

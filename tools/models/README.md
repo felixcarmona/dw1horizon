@@ -156,6 +156,30 @@ are stored at tolerance 7 to stay inside the resident animation buffer with the
 Buster Dive clip: `--source build/imported-model-edit/edit/219-Zudomon.MMD
 --out AFTER.MMD`, then `tools/models/edit.py --from build/everything put 219 AFTER.MMD`.
 
+Rosemon's (230) walk, condition walk and run had their legs stepping five, five
+and eight times per loop while the pelvis, chest, head, arms, cape and braid
+replayed the idle's 83-tick performance once per loop, and the planted foot
+slid at 30-40% of the body's speed. `field_animations/rosemon_gait.py` (the
+`after_generator` of its `pace.json` row, run on the paced clips) rewrites slots
+2, 3 and 4 from one step phase: feet fixed in the world while they support, heel
+to toe roll, lifted swing, pelvis height from the reach of both legs, pelvis and
+chest counter-turning, arms against the opposite legs, cape, braid and leaves
+lagging. Every channel holds a whole number of cycles per loop. The arms are a
+pendulum from the shoulder: the elbow trails it by an eighth of a cycle and the
+wrist trails the elbow, the left arm is about a tenth smaller and slightly later,
+and the upper arm twists and the shoulder lifts with each step; they stay clear of
+the hips and skirt at every tick. The run is a light jog, five strides per loop (16 ticks a cycle), shaped
+on the proportions of a native humanoid run (Angewomon's): each foot on the ground about a third
+of the cycle, the foot landing under the body and pushing off far behind it, a low
+heel lift (about 55 units), the legs nearly straight in stance and folding to about 95 degrees in the swing, a pelvis bob of about 10 units, a few degrees of forward lean and arms that swing
+about 30 degrees with the hands between hip and chest height. The
+idle (slot 0) is rewritten too, standing upright instead of leaning back, with the
+feet planted and the same 83-tick loop. Loop lengths and root speeds are
+unchanged; footstep sounds are re-placed at the heel strikes. Leg channels are
+stored at tolerance 2 (the feet stay planted), arms at 9 and the rest at 24, to
+stay inside the resident animation buffer (99952 B).
+`tools.test_rosemon_gait` needs the paced model in `ROSEMON_PACED`.
+
 Valkyrimon (255) uses a uniform 0.8 resize and native Angemon field motion,
 with its existing rig and chibi proportions. The offline authoring recipe is
 `field_animations/valkyrimon.py`; player builds replay the plain delta.
@@ -187,6 +211,14 @@ with a gentle three-beat flutter, a forward-leaning cruise with two wing beats p
 with three, the legs, arms, hair and flower following the body a beat later. Tick counts, distance per loop and footstep
 sounds are kept (the run's travel is spread smoothly over the loop instead of in bursts). Check with
 `tools/models/edit.py get 209` and `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_lillymon_flight`.
+
+LadyDevimon (223) had the same frozen field slots: none of her bones moved, only the root travelled.
+`field_animations/ladydevimon_flight.py` (overlay `ladydevimon-flight`) writes the idle, walk, condition walk and run
+again on her reviewed model as four different, easy flights: an upright hover (60 ticks, two slow beats), a glide leaning
+10 degrees with the wings spread and held, a low, heavy tired walk with drooping wings, hanging head and limp legs, and a
+dash leaning 23 degrees with the wings swept back and the legs streamlined. Hair, cloth and chain lag. Tick counts (idle
+excepted), distance per loop, footstep sounds and hover height are kept (the tired walk sits lower on purpose).
+Check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_ladydevimon_flight`.
 
 Magnadramon (215) had the idle, walk, condition walk and run as one 89-tick wave of the wing blades, body and tail
 that only the root travelled through. `field_animations/magnadramon_flight.py` runs after its steady glide and writes
@@ -359,3 +391,61 @@ it and the head against the chest, swings the arms (a calm third to half of a fi
 legs for the field speeds directly (walk 10 a tick in the 72-tick loop, which pace.py plays in 36 at 20; run 38).
 Stance slip is now 4-6% (walk), 6% (run) and 5-8% (condition walk). The storage budget forced coarser keys
 (`tol` in pace.json) on the walk and condition walk.
+
+BlackGatomon (222) walked and ran on cycles of 16 and 10 ticks whose legs only swept back and forth while the head,
+gloves and pelvis swung wide. The run is now the donor walk's own gait (16 ticks at the run's travel). The walk and
+condition walk (8 ticks at 15, 12 at 9.5, the pace manifest's floors) keep a calm share of the head, pelvis and
+arm swing, and `field_animations/black_gatomon_calm.py` writes their legs as a planted step: heel strike, flat
+sole, roll over the toes, lift and land, the pelvis rising and falling with the one-segment legs. The legs reach
+about 27 units, which sets the cycle length for the travel; stance slip is 23% (walk) and 18% (condition walk).
+Shurimon's (225) field clips were one native 83-tick gesture loop with only the legs replaced and the whole clip
+re-timed, so chest, head, arms, crest, leaves and star were identical in the walk, condition walk and run and the feet
+slid (40, 40 and 68 percent of the root speed on average). `field_animations/shurimon_gait.py` authors idle, walk,
+condition walk and run again on the model's own skeleton and the result is stored with `tools/models/edit.py put 225`
+(the generator starts from the model of the commit before, see its SOURCE_SHA256). Legs: a two-bone solver per tick
+plants each foot in the world in stance (heel, flat, toe roll about fixed sole points) and flies the ankle on a Hermite
+path in swing, at root speeds of 12 (walk), 8 (condition walk) and 28 (run) per tick, lowered from 20, 13.3 and 38 so that a foot cycle
+can last 20, 24 and 16 ticks (it was 13.3, 15 and 11.4, a pecking cadence) with strides the legs can reach; the clips are
+40, 72 and 80 ticks long (two, three and five foot cycles; the run has a flight phase), with calm foot clearance and knees
+pointing mostly forward. Pelvis bob, a wide sway and roll over the
+stance foot, chest twist and a steady head (drooping in the condition walk), arms swinging against the opposite leg with bending
+elbows, and crest, cloak leaves and back star lagging with second-harmonic ripples all use whole cycles per clip. The idle
+(144 ticks) plants both feet, breathes three times, shifts its weight, looks around and once per loop jerks an arm
+and snaps its head. Run `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_shurimon_gait`.
+Silphymon (226) held both wing-arms out and up at shoulder height in every field clip (shoulder joints turned
+100-200 degrees from the rig's rest, where the arms hang at its sides), a chest hunched 57 degrees and feet that slid
+79-99 % of the ground speed in the walk. `field_animations/silphymon_posture.py` writes the idle (48 ticks), walk,
+condition walk and run (16 ticks, two steps per loop, footstep sounds on their ticks) as small turns from that rest
+pose: arms hanging with bent elbows and swinging against the legs, pelvis/chest/head turning on the step beat, wings and
+tail a beat late, each leg solved to a planted foot (walk slip 21 % mean) with a footstep on it: heel strike with the
+toes up, a roll to flat, the heel rising over the ball of the foot, toe-off and a swing with the toes curled down
+(the contact point does not move over the floor; foot pitch spans 46 / 30 / 42 degrees in walk / condition walk / run). Root speeds and slot 1 are unchanged:
+`--source build/imported-model-edit/edit/226-Silphymon.MMD --out AFTER.MMD` on the model before this change, then
+`tools/models/edit.py put 226 AFTER.MMD`; check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_silphymon_posture`.
+Apemon (227) has no field overlay: its idle, walk, condition walk and run are stored in its plain delta
+(`edit.py put 227`). `field_animations/apemon.py` is the generator that authored them from the model before this
+pass (`APEMON_BEFORE`, see `tools/test_apemon_gait.py`): four limbs solved per tick with fixed planted fists and feet,
+a diagonal-sequence walk (tired shamble and run too: sides half a cycle apart, front and hind a quarter, never paired 2-and-2) with hind feet that strike heel first, roll flat, lift the heel and push off through the toes (a swing
+that lifts early, lands toe-up and differs a few percent per side and per stride), a one-stride tired shamble and a gallop with a flight phase, the pelvis and chest twisting
+against each other with the limbs, a forward knuckle lean, a head kept level, and a grounded idle (breathing, weight
+shift, head look and one fist lift, no hop). The staff keeps the pose it was made in, across the back, lowered a few units so it rests on the body in every clip. Other programs are unchanged.
+Baronmon (228) hovered: its idle, walk, condition walk and run were one 94-tick loop (only the root's travel differed)
+whose feet moved as one, 9 to 91 units over the floor, with the hips bouncing 108 units. `field_animations/baronmon.py`
+writes those four slots again from its bind pose, standing on the floor: heel strike, flat sole, heel peel and a swing
+on solved legs (the sole's contact points slip at most a unit or two), the pelvis as high as the leg allows with a small
+bob, chest and pelvis turning against each other, the arms, robe skirt, cloak and plume following later; a 96-tick idle
+with breathing, a weight shift and a look around; a 14-, 18- and 12-tick walk, condition walk and run at the field
+speeds 20, 13.3 and 38. Slots 1 and 18 still share the old idle stream (they stay as they were), so it stays in the
+file. `--source build/imported-model-edit/edit/228-Baronmon.MMD --out AFTER.MMD`, then
+`tools/models/edit.py --from build/everything put 228 AFTER.MMD`; `PYTHONPATH=tools/models:tools python3 -m unittest
+tools/test_baronmon.py` checks the floor, the loops, the speeds and the other slots.
+Baronmon's skirt is lifted 30 units so the hem clears the shoes (the legs show beneath it), the swing foot flattens early
+and passes under it, and the skirt pitches and rolls with the stride; no shoe vertex is inside the skirt in the idle,
+walk or condition walk. The run is a brisk jog (arms bent about 45 degrees and hanging beside the body, upper arms about vertical on average and swinging 15 to 20 degrees either way, a slight lean).
+Phantomon (229) played one 104-tick levitation in its idle, walk, condition walk and run, so the four looked the same.
+`field_animations/phantomon.py` writes them again for a legless, hovering body: a slow idle (soft bobs, the hood
+looking round, cloak and chains swaying late), a leaning glide in 24 ticks with the free right arm swinging forward and
+back, a lower, bowed 28-tick condition walk and a 20-tick run leaning far forward with the cloak, hem and chains
+streaming back. Hover height, root speed, loop lengths and the voice cue are the importer's; the scythe arm only sways.
+The result is stored in the plain delta (`python3 -m tools.models.field_animations.phantomon --source SRC --out AFTER.MMD`,
+then `tools/models/edit.py put 229 AFTER.MMD`); check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_phantomon_field`.

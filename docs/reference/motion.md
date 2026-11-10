@@ -364,7 +364,7 @@ A **field overlay** is a reviewed recipe that rewrites the field slots of one sp
 | `fieldpiedmon.py`, `fieldfairy.py` | Piedmon 245, Lillymon 209 | keep the native float: Piedmon's leg rotations restored from its native floating cycle; Lillymon's shoulders opened in slot 0x21, the performance the experimental runtime layer (above) shows in the field |
 | `fieldnative.py`, `fieldseraph.py`, `fieldangel.py`, `fieldvenom.py`, `fieldaero.py`, `fielddevi.py`, `fieldrose.py`, `fieldsylph.py`, `fieldsorcer.py`, `fieldwizard.py`, `fieldvike.py`, `fieldtuskmon.py`, `fieldshadramon.py`, `fieldshuri.py` | MegaKabuterimon 205, Seraphimon 207, MagnaAngemon 206, VenomMyotismon 212, AeroVeedramon 213, Devidramon 216, Rosemon 230, Silphymon 226, Sorcermon 242, Wizardmon 241, Vikemon 220, Tuskmon 253, Shadramon 250, Shurimon 225 | planted strides solved on the native legs (exact link lengths, the whole boot or claw mesh as support) under the native upper-body performance; Silphymon's walks also carry the upper body (pelvis bob, lean, torso counter-turn, arms against the legs) with strides as long as its boots |
 | `fieldboxer.py`, `fieldstar.py`, `fieldsuperstar.py`, `fieldthundermon.py`, `fieldroll.py`, `fieldkoku.py` | BomberNanimon 232, Starmon 243, SuperStarmon 244, Thundermon 252, Togemon 208, Kokuwamon 247 | short one-link legs with rigid oversized boots that roll over their support vertices; body height follows the planted boot |
-| `fieldgatomon.py`, `fieldcat222.py`, `fieldpup.py`, `fieldgizmo.py`, `fieldape.py`, `fieldscarab.py`, `fieldpaddle.py`, `fieldwalrus.py`, `fielddiaboromon.py` | Gatomon 234, BlackGatomon 222, Salamon 221, Gizamon 239, Apemon 227, GranKuwagamon 210, Gomamon 217, Ikkakumon 218, Diaboromon 237 | quadruped and crouched gaits: one-segment limbs pinned through the body carrier instead of stretched, paired bounds, knuckle walks, flipper strokes |
+| `fieldgatomon.py`, `fieldcat222.py`, `fieldpup.py`, `fieldgizmo.py`, `fieldape.py`, `fieldscarab.py`, `fieldpaddle.py`, `fieldwalrus.py`, `fielddiaboromon.py` | Gatomon 234, BlackGatomon 222, Gizamon 239, Apemon 227, GranKuwagamon 210, Gomamon 217, Ikkakumon 218, Diaboromon 237 | quadruped and crouched gaits: one-segment limbs pinned through the body carrier instead of stretched, paired bounds, knuckle walks, flipper strokes |
 | `fieldinfermon.py`, `fieldslug.py`, `fieldcandle.py` | Infermon 246, ShellNumemon 231, Candlemon 235 | six legs in alternating tripods; a slug's propulsion clock separate from its face acting (the body slides); a pedestal that hovers on a steady line, bobbing and swaying |
 | `wargreymonfield.py` | WarGreymon 373 | an anatomical gait replacing the inherited dinosaur one: walk 16 ticks at 22 units/tick (support 0.56 of the cycle), condition walk 20 at 15 (0.64), run 10 at 52 (0.42); pelvis loads onto the support foot, arms oppose their own leg, two-bone IK with feet forward and slight toe-out, back plates clear of the legs; footstep sounds retimed to the new contacts |
 | `monmonupperbody.py` | Monmon 352 | torso and pelvis sway and opposite shoulder swings derived from the native leg cadence (elbows lag 0.65 rad, wrists 1.1 rad); hip roots compensate so the legs keep their world poses |
@@ -415,17 +415,29 @@ reach, three-segment legs, a damped tail response to body rotation and accelerat
 
 All existing reach, closure, event and storage assertions remain mandatory and unweakened.
 
-Apemon retains 43/20/20-tick walk/condition/run programs, with 4/2/3 gait cycles,
-0.4/0.5/0.25 duty and 20/14/35 units per tick. Full recipe generation passes;
-mesh floor maxima at ticks and thirds are −0.146/−1.595/+0.711 units.
+Apemon retains 43/20/20-tick walk/condition/run programs, with 3/1/2 gait cycles,
+0.62/0.7/0.32 duty for the hands (0.57/0.6/0.32 for the hind feet) and 20/14/35 units per tick (diagonal-sequence walk, one-stride tired shamble,
+gallop with a flight phase). The hind feet follow a heel-strike, flat, heel-lift, toe-push-off schedule, a swing that lifts
+early and lands toe-up, a knee that trails the foot, and their own per-side and per-stride length, height and timing.
+The idle is a grounded 93-tick loop with a 2-unit hip range.
+Mesh floor maxima stay below the ground in every clip.
 
 Gatomon uses 15/10/35 units per tick, 6/8/2-tick gait periods and
 0.375/0.5/0.25 duty within its existing 48-tick programs. Tick/thirds floor
 maxima are −1.314/−2.337/−4.165 units.
 
-Salamon uses 15/10/35 units per tick, 4/10/4-tick gait periods and
-1.6/2/0.8-tick contacts within 16/20/16-tick programs. Tick/thirds floor
-maxima are −1.198/−0.243/+0.453 units.
+Salamon (221) no longer has a field overlay: `salamon.py` writes its gaits with `quadruped.py` and they are stored in its
+model delta. The earlier retarget from a larger wolf pulled the front paws onto the midline (9-11 units apart, 54 at rest),
+which crossed them and read as a cat. Now every paw stays within 3 units of its rest side (front 49-53 apart, hind 47-53),
+swings straight forward and back, and does not slide while planted: a lateral-sequence walk (9 ticks, 10 units per
+tick), a tired walk (9 ticks, 8 units) and a diagonal trot (8 ticks, 28 units, a flight phase of about 2 ticks). The legs
+are short, so a stride is bounded (about 90 units for the walk, 224 for the trot): a longer cycle needs a lower speed,
+not faster legs. The body bounds gently: the pelvis moves 7 / 4 / 12 units peak to peak (walk / tired / run, much of it
+the dip the short legs force), the chest pitches 5 / 4 / 9 degrees, the head 5 / 5 / 9, at most 4 / 2 / 7 units and
+3 / 2 / 6 degrees per tick; a larger bob at these 8-9 tick cycles read as hyperactive. Ears follow late. The walk, tired walk and run play 3, 3 and 4 cycles in one clip so the
+blink is not repeated every few ticks. The face blinks through texture moves (`salamon_face.py`, as Gomamon's): open, half-shut and
+shut frames in rows 80 down, every clip starting and ending open-eyed; the idle keeps its motion and gains three blinks.
+Only the texture rows 80 down and slots 0, 2, 3 and 4 change; the other slots carry no eye moves, so an eye caught half-shut when a clip is cut would stay so until the next one starts (the clips are short, and this was not tested in the game).
 
 Thundermon uses 20/10/35 units per tick, 4/4/5 gait cycles and
 0.5/0.4/0.25 duty within 16/20/20-tick programs. Tick/thirds floor

@@ -1,140 +1,144 @@
-"""Salamon's repaired idle and Garurumon-based canine locomotion.
+"""Salamon's (species 221) field clips: a small dog's gait and a blinking face.
 
-Transfer the native shoulder, hock, head and four-paw performances onto the
-puppy's own rig. Retiming preserves native footstep placement and paw sounds.
-The collar stays rigid. A native scolding gesture replaces the imported bow
-that buried the face; the mesh and remaining care and battle programs stay intact.
+Offline authoring script (the model it makes is stored with `tools/models/edit.py put 221 MMD TIM`, like Raidramon's).
+The earlier gait was a retarget from a larger wolf whose feet ended up on the midline (the front paws crossed, 9-11 units
+apart where the rest stance is 54), which read as a cat. This one is built with quadruped.py from the rest stance:
+
+  walk   lateral sequence (LH, LF, RH, RF), 9 ticks, 10 units a tick
+  tired  the same sequence, 9 ticks, 8 units a tick
+  run    diagonal trot (LF+RH, RF+LH), 8 ticks, 28 units a tick, a flight phase of about 2 ticks and a bounding body
+
+Every foot stays on its own side of the midline and swings straight forward and back; the planted feet do not slide. The
+ears and the head follow the body with a lag. The walk, tired walk and run play three, three and four cycles in one clip so
+that a blink (salamon_face.py) is not repeated every few ticks; each clip opens and closes with the eyes open. The idle
+keeps its motion and only gains its blinks. All other slots stay as they are.
+
+    python tools/models/field_animations/salamon.py --source SRC.MMD --tex SRC.TIM --out-dir DIR
+where SRC is the previously stored model (sha256 below).
 """
+import argparse
 import copy
 import hashlib
-import math
+import json
+from pathlib import Path
+import sys
 
-import animsheet
-import mmd
-import motioncyclelayer
-import motionstorage
-from motiondiscidentity import changed_programs
-from motiontailspace import interpolate_pose
-from tools.models.field_animations.articulation import replace_channels
-from tools.models.field_animations import native_polish
+ROOT = Path(__file__).resolve().parents[3]
+sys.path[:0] = [str(ROOT), str(ROOT / 'tools')]
+import animsheet  # noqa: E402
+import mmd  # noqa: E402
+import motionstorage  # noqa: E402
+from motiondiscidentity import changed_programs  # noqa: E402
+from tools.models.field_animations import quadruped, salamon_face  # noqa: E402
 
-SOURCE = '29faa5a38d25bdfc7610aef3d840c6211f3df72568a6284ff9c3ae47e6cabb8e'
-DONOR = 'aa30bb3d1994d1c889c660bbd577b8b29971192676d39f4b111a8cdbfa82159f'
-
-
-def _parse(data, skeleton):
-    mmd.exe().add_type(221, skeleton)
-    model = mmd.MMD.parse(data, len(skeleton))
-    model.type = 221
-    return model
+SPECIES = 221
+SOURCE = '136c1c8aafffec151fd9ad83d281056cde4601a9cc4463a8ad4e1513e0f864fa'
+PARENTS = [-1, 13, 1, 2, 3, 2, 5, 1, 7, 8, 1, 10, 11, 0, 13, 14, 15, 13, 17, 18, 2]
+LEGS = ('LH', 'LF', 'RH', 'RF')
 
 
-def _idle(old, skeleton):
-    """Keep the reviewed complete idle and its floor correction unchanged."""
-    frames, loop, _ = animsheet.slot_frames(old, len(skeleton), 33)
-    poses = copy.deepcopy(frames)
-    for pose in poses:
-        pose[0] = [4096] * 3 + [0] * 6
-        matrices = mmd.bone_matrices(old, pose)
-        bottom = max(sum(matrices[b][1][j] * v[j] for j in range(3)) + matrices[b][1][3]
-                     for b, (obj, _) in enumerate(skeleton) if obj >= 0
-                     for v in old.tmd.obj_verts(obj))
-        pose[13][7] -= math.ceil(max(0, bottom + 2))
-    poses[-1][1:] = copy.deepcopy(poses[0][1:])
-    result = copy.deepcopy(old)
-    template = old.anims.anims[old.anims.table[33]]
-    result.anims.table[0] = len(result.anims.anims)
-    result.anims.anims.append(replace_channels(template, poses, loop, len(skeleton), {(13, 7)}))
-    for animation in result.anims.anims:
-        animation.tail = b''
-    result.anims.anims, result.anims.table = motioncyclelayer.share_identical_streams(result.anims.anims, result.anims.table)
-    return result
+def _all(v):
+    return {k: v for k in LEGS}
 
 
-def build(data, skeleton):
-    if hashlib.sha256(data).hexdigest() != SOURCE or len(skeleton) != 21:
-        raise ValueError('Salamon requires the pinned 21-bone source')
-    old = _parse(data, skeleton)
-    idle = _idle(old, skeleton)
-    cfg = dict(donor=22, model='extracted/CHDAT/MMD0/GARU.MMD', donor_sha256=DONOR,
-               carrier=13, scale=.36, rest_slot=0,
-               map={'13': 1, '1': 2, '2': 4, '3': 5, '5': 5},
-               chains=[[7, 8, 7, 8], [8, 9, 8, 9], [10, 11, 11, 12], [11, 12, 12, 13],
-                       [14, 15, 19, 20], [15, 16, 20, 21], [17, 18, 23, 24], [18, 19, 24, 25]],
-               legs=[[7, 8, 9, 9, 9, 9], [10, 11, 12, 12, 13, 13],
-                     [14, 15, 16, 16, 21, 21], [17, 18, 19, 19, 25, 25]],
-               feet=[9, 12, 16, 19], secondary=[4, 6], contact_height=True, native_bend=True,
-               vertical_motion=.3, foot_lift=.7,
-               maximum_support_gap={'2': 2, '3': 2, '4': 2},
-               retime={'2': {'ticks': 6, 'speed': 15}, '3': {'ticks': 10, 'speed': 10},
-                       '4': {'ticks': 6, 'speed': 35}},
-               rotation_weights={'13': .5, '1': .5, '2': .7, '3': .7, '5': .7})
-    output, report = native_polish.author(idle.build(), skeleton, 221, cfg)
-    scold = dict(cfg, slots=[12], ground_contact=True, maximum_support_gap={'12': 2})
-    output, scold_report = native_polish.author(output, skeleton, 221, scold)
-    report['scolding'] = scold_report
-    actual = _parse(output, skeleton)
-    # Retiming can land two native paw contacts on one logic tick. Play the
-    # shared paw cue once rather than restarting it twice on that tick.
-    for slot in (2, 3, 4):
-        animation = actual.anims.anims[actual.anims.table[slot]]
-        seen = set()
-        instructions = []
-        for instruction in animation.instrs:
-            if instruction['op'] == 'sound':
-                cue = (instruction['frame'], instruction['bank'], instruction['note'])
-                if cue in seen:
-                    continue
-                seen.add(cue)
-            instructions.append(instruction)
-        animation.instrs = instructions
-    output = actual.build()
-    # The shorter puppy cadence creates new between-key poses. Clear each
-    # paw after retiming, without lifting the whole body off its contacts.
-    from tools.models.field_animations.animal_refine import clear_interpolated_paws, finish
-    additions = []
-    for slot in (2, 3, 4):
-        frames, loop, events = animsheet.slot_frames(actual, len(skeleton), slot)
-        frames = clear_interpolated_paws(actual, skeleton, frames,
-                                        ((7, 8, 9), (10, 11, 12), (14, 15, 16), (17, 18, 19)))
-        additions.append((slot, frames, loop, events))
-    output = finish(actual, additions, len(skeleton))
-    actual = _parse(output, skeleton)
-    assert changed_programs(old, actual) == [0, 2, 3, 4, 12]
+_BASE = dict(snap=False, slip=0.05, height=0, tilt=0, chest_up=0, neck=0, nod=2, bob=2, pitch=1.5, flex=0.5, roll=2, yaw=2,
+             head=0.9, tail=0, loose=4, lag=(0.05, 0.1), side=0.3, breath=0.5, settle=2, jerk=0.3,
+             lift={'front': 9, 'hind': 8}, curl={'front': 15, 'hind': 10}, peel={'front': 8, 'hind': 8},
+             reach={'front': 0, 'hind': 0}, out={'front': 3, 'hind': 3}, steps=LEGS)
+
+PROFILE = dict(
+    species=SPECIES, name='Salamon', source=SOURCE, parents=PARENTS,
+    pelvis=13, chest=1, neck=None, head=2,
+    legs={'RF': (7, 8, 9, 1, True), 'LF': (10, 11, 12, -1, True), 'RH': (14, 15, 16, 1, False), 'LH': (17, 18, 19, -1, False)},
+    tail=(), loose=((3, 1), (5, -1), (4, 1), (6, -1)), pole_world=True, rest_plane=True,
+    pole={True: [0.1, 0, 1], False: [0.3, 0, -1]},
+    sole={True: [0, 23, -8], False: [0, 25, -6]},       # the underside of each boot (paw bone space)
+    reach={'front': -8, 'hind': -6}, fold={True: 16, False: 16}, clear=2,
+    paw_flat={'RF': [0, -18.6, 0], 'LF': [0, 18.2, 0], 'RH': [0, -3.5, 0], 'LH': [0, 4.2, 0]},
+    speed_range={2: (9, 31), 3: (7, 20), 4: (27, 52)},
+    gaits={
+        2: dict(_BASE, name='walk', kind='walk', ticks=9, cycles=3, speed=10, bob=0.5, pitch=2, flex=0.8, roll=2.5, yaw=3, nod=2,
+                loose=3.5, touchdown={'LH': 0, 'LF': .25, 'RH': .5, 'RF': .75}, duty=_all(.5)),
+        3: dict(_BASE, name='condition walk', kind='walk', ticks=9, cycles=3, speed=8, bob=0, pitch=1.5, flex=0.8, roll=3, yaw=2,
+                nod=2.5, loose=2, touchdown={'LH': 0, 'LF': .25, 'RH': .5, 'RF': .75}, duty=_all(.62),
+                lift={'front': 10, 'hind': 10}, curl={'front': 3, 'hind': 3}, peel={'front': 0, 'hind': 0}, settle=0),
+        4: dict(_BASE, name='run', kind='trot', ticks=8, cycles=4, speed=28, snap=True, jerk=0, bob=5, pitch=3.5, flex=1.5,
+                nod=3, settle=2, loose=5, touchdown={'LF': 0, 'RH': 0, 'RF': .5, 'LH': .5}, duty=_all(.17),
+                steps=('LF', 'RF'), lift={'front': 9, 'hind': 9}),
+    },
+)
+
+# eye states over each clip: (tick, 0 open | 1 half | 2 shut), ending open
+EYES = {
+    0: salamon_face.blink(20) + salamon_face.blink(26) + salamon_face.blink(68, slow=True),
+    2: salamon_face.blink(11),
+    3: salamon_face.blink(10, slow=True),
+    4: salamon_face.blink(13),
+}
+
+
+def _events(slot, ticks):
+    return salamon_face.events(EYES[slot], ticks)
+
+
+PROFILE['events'] = _events
+
+
+def _idle(old, n):
+    """Slot 0 with the same motion and sound, plus the blinks."""
+    frames, loop, events = animsheet.slot_frames(old, n, 0)
+    assert loop == 0
+    events = [e for e in events if e[1] != 'tex'] + _events(0, len(frames))
+    events.sort(key=lambda e: e[0])
+    anim = mmd.encode_anim(frames, n, loop_sample=0, events=events, tol=0)
+    same = mmd.AnimPlayer(anim, n, 0), mmd.AnimPlayer(old.anims.anims[old.anims.table[0]], n, 0)
+    for _ in range(len(frames) * 2):
+        same[0].tick(), same[1].tick()
+        assert [list(v) for v in same[0].pose] == [list(v) for v in same[1].pose] and same[0].root == same[1].root, 'idle moved'
+    return anim
+
+
+def build(data, tex, skeleton):
+    result, report = quadruped.build(data, skeleton, PROFILE)
+    n = len(skeleton)
+    mmd.exe().skeleton[SPECIES] = skeleton
+    mmd.exe().bone_count[SPECIES] = n
+    old = mmd.MMD.parse(data, n)
+    old.type = SPECIES
+    new = mmd.MMD.parse(result, n)
+    new.type = SPECIES
+    index = old.anims.table[0]
+    assert sum(1 for i in old.anims.table if i == index) == 1, 'the idle is shared with another slot'
+    new.anims.anims[new.anims.table[0]] = _idle(old, n)
+    result = new.build()
+    actual = mmd.MMD.parse(result, n)
+    actual.type = SPECIES
     assert old.tmd.build() == actual.tmd.build()
-    for slot in (2, 3, 4):
-        frames, _, _ = animsheet.slot_frames(actual, len(skeleton), slot)
-        assert all(pose[20][3:6] == frames[0][20][3:6] for pose in frames)
-        sounds = [i for i in actual.anims.anims[actual.anims.table[slot]].instrs if i['op'] == 'sound']
-        assert sounds and all((i['bank'], i['note']) == (1, 12) for i in sounds)
-        animation = actual.anims.anims[actual.anims.table[slot]]
-        player = mmd.AnimPlayer(animation, len(skeleton), slot)
-        duration = cfg['retime'][str(slot)]['ticks']
-        cycle = []
-        for tick in range(duration * 9 + 1):
-            assert player.tick()
-            if tick < duration:
-                cycle.append(copy.deepcopy(player.pose))
-            else:
-                assert player.pose == cycle[tick % duration], (slot, tick, 'cyclic drift')
-        assert player.root == [0, 0, -cfg['retime'][str(slot)]['speed'] * duration * 9]
-    clearance = {}
-    for slot in (2, 3, 4, 12):
-        frames, _, _ = animsheet.slot_frames(actual, len(skeleton), slot)
-        bottom = -1000
-        for a, b in zip(frames, frames[1:]):
-            for alpha in (0, 1365, 2730, 4096):
-                pose = interpolate_pose(a, b, alpha)
-                pose[0] = [4096] * 3 + [0] * 6
-                matrices = mmd.bone_matrices(actual, pose)
-                bottom = max(bottom, max(sum(matrices[bone][1][j] * v[j] for j in range(3)) + matrices[bone][1][3]
-                                         for bone, (obj, _) in enumerate(skeleton) if obj >= 0
-                                         for v in actual.tmd.obj_verts(obj)))
-        assert bottom <= 1.5, (slot, 'interpolated floor', bottom)
-        clearance[slot] = bottom
-    report.update(species=221, source_sha256=SOURCE, donor=22, donor_sha256=DONOR,
-                  output_sha256=hashlib.sha256(output).hexdigest(), changed_slots=[0, 2, 3, 4, 12],
-                  mesh_skeleton_other_care_battle_exact=True, collar_rigid=True,
-                  interpolated_floor_max=clearance, nine_cycles_stable=True,
-                  storage=motionstorage.require(output, len(skeleton)))
-    return output, report
+    assert changed_programs(old, actual) == [0, 2, 3, 4], changed_programs(old, actual)
+    face = mmd.Tim4(tex)
+    salamon_face.stamp(face)
+    new_tex = face.to_bytes()
+    used = 8 + face.clen + 12 + 128 * salamon_face.FRAME_Y
+    assert new_tex[:used] == tex[:used] and len(new_tex) == len(tex), 'the used rows of the texture stay'
+    report['changed_slots'] = [0, 2, 3, 4]
+    report['storage'] = motionstorage.require(result, n)
+    report['output_sha256'] = hashlib.sha256(result).hexdigest()
+    return result, new_tex, report
+
+
+def main():
+    p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    p.add_argument('--source', type=Path, required=True)
+    p.add_argument('--tex', type=Path, required=True)
+    p.add_argument('--out-dir', type=Path, required=True)
+    a = p.parse_args()
+    skeleton = json.loads((ROOT / 'content/species/221-salamon.json').read_text())['model']['skeleton']
+    data, tex, proof = build(a.source.read_bytes(), a.tex.read_bytes(), [tuple(b) for b in skeleton])
+    a.out_dir.mkdir(parents=True, exist_ok=True)
+    (a.out_dir / '221.MMD').write_bytes(data)
+    (a.out_dir / '221.TIM').write_bytes(tex)
+    print(json.dumps(proof, indent=2, default=str))
+
+
+if __name__ == '__main__':
+    main()
