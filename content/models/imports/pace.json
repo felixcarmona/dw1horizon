@@ -683,25 +683,6 @@
    }
   }
  },
- "201": {
-  "name": "Lighdramon",
-  "bones": 25,
-  "skeleton_sha256": "ef502a4279da401e375d61fb13992a627be667ceb748cf544ba8f0a0db4a0e57",
-  "source_sha256": "8b8ddc1eacd0e0c2d96fa99706d374766e75e99ed30542cfe8202e2cb50b2eeb",
-  "base_generator": "tools.models.field_animations.weight_shift",
-  "post_source_sha256": "46f09e04058ff74bf2757fbbaa1c4b1e53da56a46ebecde794ec7555cf78b518",
-  "slots": {
-   "2": {
-    "from": 2,
-    "ticks": 48,
-    "speed": 20,
-    "slip": [
-     125,
-     250
-    ]
-   }
-  }
- },
  "219": {
   "name": "Zudomon",
   "bones": 22,

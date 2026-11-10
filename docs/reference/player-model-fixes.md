@@ -110,6 +110,16 @@ Preferred terrain is region 8: Coela Point and both Dragon Eye Lake screens
 carry it in their MAP headers. Region 4, used previously, belongs to Tropical
 Jungle. These region classes are distinct from the map-name indices.
 
+Body and tail screw: four faces of the body (object 0) repeated four plates
+with the same corners and sampled the red diamond stencil that nothing else
+uses (UV 172..195 x 88..111, CLUT row 5). A depth buffer shows them as red
+specks beside the yellow fin, so they are removed and the plates stay. The
+rear screw (bone 8) only jerked its rz in the idle, walk and run, up to 175
+degrees a tick with no net turn. It now turns steadily in every clip that did
+not already spin it, whole turns over each loop (about 14 degrees a tick, as
+the native Vademon's turning part), with the sway and every other channel
+untouched. `tools/models/repair_submarimon.py`, `tools/test_submarimon.py`.
+
 ## Mega size comparison
 
 Size adjustments are baked into vertices and all animation translations,

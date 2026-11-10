@@ -76,7 +76,7 @@ have, and the lint rule for each: [imported-species.md](imported-species.md), "W
   Patch 0291 bounds the wait for the other imported walks and condition walks (slots 2/3) of at least 40 ticks: a pending
   navigation or needs change may yield after 24 completed logic ticks, and a request arriving later yields at once. That
   is not a stride boundary: the existing four-tick field blend hides the cut. Ordinary following still plays the full loop,
-  189 and 201 keep their step-aligned rules, and no timer or allocation is added.
+  189 and 201 keep their step-aligned rules, and no timer or allocation is added. (Lighdramon's walk is now a 15-frame loop, so only its 73-frame idle still uses patch 0232's yield.)
 - **Condition idles depend on the idle's length.** Standing near the tamer, `STOP_DISTANCE_TIMER` counts up each tick
   and `updateConditionAnimation` runs when it is greater than `anim->frameCount × EMOTION_ANIM_TIMEOUT`, the timeout a
   random 1..5 drawn when the idle starts. The timer is a signed 8-bit value (it wraps after 127), so with an idle of

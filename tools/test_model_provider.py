@@ -119,6 +119,10 @@ class ModelProvider(unittest.TestCase):
         assignments = {t: entry[1:] for t, entry in selected.items()}
         self.assertEqual(assignments.pop('236'),
                          ('tools.models.field_animations.native_binding', '236-demidevimon-native-flight'))
+        # Lillymon's field flight (lillymon_flight.py) runs after its celebration overlay and replays it first.
+        self.assertEqual(assignments['209'],
+                         ('tools.models.field_animations.lillymon_flight', '209-lillymon-native-flight'))
+        assignments['209'] = ('tools.models.field_animations.celebrations', '209-lillymon-native-flight')
         self.assertEqual(assignments['197'],
                          ('tools.models.field_animations.magnamon', '197-magnamon-native'))
         assignments['197'] = previous_magnamon[1:]
@@ -176,8 +180,10 @@ class ModelProvider(unittest.TestCase):
         for sid in ('315', '332', '335'):
             del assignments[sid]
         assignments['351'] = ('tools.models.field_animations.articulation', '351-kotemon-field')
+        # Raidramon (201) no longer has a field overlay: its gait is in its model delta (raidramon.py).
+        self.assertNotIn('201', assignments)
         self.assertEqual(hashlib.sha1(json.dumps(assignments, sort_keys=True).encode()).hexdigest(),
-                         'fb34cbd7c510ff8ca340ab9754de89a4c12a43f8')
+                         '7b07ca5920f928bbe75008e35033132e223e4bbd')
 
 
 if __name__ == '__main__':

@@ -614,9 +614,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/201-Lighdramon.MMD.mdelta",
-        "delta_sha256": "fee0be5b18b7ba879b50cabc3f56ce39b7f84a7a588154e84ccc78faf83fe0b7",
-        "sha256": "8b8ddc1eacd0e0c2d96fa99706d374766e75e99ed30542cfe8202e2cb50b2eeb",
-        "size": 107340
+        "delta_sha256": "8ab1a4fa36671e043e3bde7813f66179777198c4f6253dcfa901a459897b960d",
+        "sha256": "3b0caaf2498a8f5d1a455fb9de93181ccdada7b8433ed90e40bcf679a019507a",
+        "size": 102072
       },
       "tim": {
         "sources": [
@@ -644,9 +644,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/202-Submarimon.MMD.mdelta",
-        "delta_sha256": "a8df6ce391c383c34a0f4a968142268f5e9a4b78372909d16aa79da476e3658a",
-        "sha256": "aad4f6c4252b099e7e173379d1983f8e5fac6f44e63c511ba6394ea0b9cc5861",
-        "size": 63700
+        "delta_sha256": "bbfd47d1807829e7499a12bc1060f7f7f74f315f6c0ba6d686c56a685b5f1eea",
+        "sha256": "703d45eca5c76374647389dfaad48190f91bb12d3b0cfb96351e5bbd98e3f91a",
+        "size": 62226
       },
       "tim": {
         "sources": [
@@ -769,9 +769,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/207-Seraphimon.MMD.mdelta",
-        "delta_sha256": "dc347295d91ba979c06316e8f5dc86243392bb06ccc4d0e6a56c3e4541b85475",
-        "sha256": "0224b26e5970794ebdb5511826d5622fdb79c526c5ad5cc441ad56f1aaddb76b",
-        "size": 100160
+        "delta_sha256": "0eb4d4434225378034e61e5980c408802f23c5787c513bd53d55d49725ebad2a",
+        "sha256": "c3aa5e2e317b6a22c0780f800311f592dbd158f15ae35e0df13eb7c75e4cd4b7",
+        "size": 100120
       },
       "tim": {
         "sources": [

@@ -46,6 +46,9 @@ The frozen model-delta README retains its historical command spellings. Use
 `tools/models/edit.py --help` describes get/put/check/rebase and source-disc
 options. Earlier editor work directories are now `build/imported-model-edit/`.
 
+Species 202 (Submarimon): `repair_submarimon.py` removes four stencil faces that sit on its body plates and keeps the
+rear screw turning in every clip (see player-model-fixes.md); `python3 -W ignore -m unittest tools.test_submarimon`.
+
 Species 224 uses `metalgreymon.py`: native DW1 MTGR.MMD and ALLTIM entry 12,
 recoloured gold at build time. Its native rig, field and care programs are kept;
 technique slots select unchanged native clips while retaining 224's move list
@@ -164,6 +167,12 @@ corrects the feet per tick: the right foot turned forward, a foot on the floor l
 reach allows, a foot under the floor raised inside its leg; the idle keeps a
 quarter of its rise.
 
+Lillymon (209) had the idle, walk, condition walk and run as one frozen pose that only the root travelled through.
+`field_animations/lillymon_flight.py` runs after her celebration overlay and writes those five slots again: a hover
+with a gentle three-beat flutter, a forward-leaning cruise with two wing beats per loop and a streamlined, faster run
+with three, the legs, arms, hair and flower following the body a beat later. Tick counts, distance per loop and footstep
+sounds are kept (the run's travel is spread smoothly over the loop instead of in bursts). Check with
+`tools/models/edit.py get 209` and `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_lillymon_flight`.
 Armadillomon (185) held its head level or lowered in the field idle, walk and
 run, so the shell's front rim covered the brow. `field_animations/armadillomon_head.py`
 adds one constant lift to the head joint in those clips (and the condition walk),
@@ -217,6 +226,14 @@ and the run bounded like a cat. `field_animations/halsemon.py` writes a
 lateral-sequence walk, a slower condition walk and a firm-backed trot with
 `quadruped.py`, every foot flat at its own turned-out idle angle and the short
 hock bones above the hind feet holding their angle (`links`).
+
+Raidramon's (201) walk and run crossed the legs through each other and slid the feet
+over the floor. `field_animations/raidramon.py` writes a lateral-sequence walk, a slower
+condition walk and a trot with `quadruped.py`; the shoulder plates hold still above short
+upper arms and the hock bones above the hind feet hold their angle (`links`). The forelegs
+hang from plates stood turned in the rest pose, so the profile gives its bend directions in
+the world (`pole_world`). Its old field overlay (weight transfer and pace retime of a
+73-frame walk) is gone: the gait now lives in the model delta.
 Magnamon (197) is bound to native Leomon (`native_binding.py`). Its boots kept
 the source's fighting stance, turned 35 and 93 degrees outward, its fists kept
 the guard pose's forward point, and its broad legs crossed over Leomon's narrow
@@ -284,3 +301,10 @@ walk's two hops. In the walk, condition walk and run the long toe claws pointed
 through the floor and the right drill dug into it; the ankles and toes turn
 toward standing as far as keeps the claws up and the arm swings up at the
 shoulder just enough to clear its drill, checked at the ticks and the thirds.
+
+Seraphimon's (207) idle beat all ten wing feathers through 60 degrees, and its walk and run slid the feet.
+`field_animations/seraphimon_native.py` stores a calm 48-tick idle (wings, head and arms a few degrees, feet
+unmoved) and a walk, condition walk and run on native Angemon's footfalls (legs solved onto his feet, planted for the
+whole stance; the run's stride shortened and its lean halved), with arms swinging against the opposite leg, lightly
+fluttering wings that lag the body (swept back in the run) and a tabard kept off the floor. `seraphimon.py`, the chibi
+overlay's base, now only keeps the victory on screen.
