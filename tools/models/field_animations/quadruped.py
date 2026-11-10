@@ -189,6 +189,7 @@ class Rig:
         pole = [pole[0] * side] + list(pole[1:])
         if not self.p.get('pole_world'):
             pole = mv(parent, pole)
+        pole0 = pole
         pole = unit(sub(pole, scale(unit(d), dot(pole, unit(d)))))
         along = (la * la - lb * lb + reach * reach) / (2 * reach)
         h = math.sqrt(max(0.0, la * la - along * along))
@@ -196,6 +197,12 @@ class Rig:
         wr = add(shoulder, d)
         n0 = cross(sub(e0, shoulder), sub(w0, e0))
         n1 = cross(sub(elbow, shoulder), sub(wr, elbow))
+        if self.p.get('rest_plane'):
+            # A leg that stands almost straight has no usable bend plane of its own (the cross products above are noise
+            # and can roll the bone half a turn): take the pole as the plane in both the reference and the target.
+            d0 = unit(sub(w0, shoulder))
+            p0 = unit(sub(pole0, scale(d0, dot(pole0, d0))))
+            n0, n1 = cross(p0, d0), cross(pole, unit(d))
         if norm(n0) < 1e-6 or norm(n1) < 1e-6:     # a straight limb: swing it without twist
             ru = mul(turn_to(sub(e0, shoulder), sub(elbow, shoulder)), ru0)
             rl = mul(turn_to(mv(mul(ru, ref[1]), b), sub(wr, elbow)), mul(ru, ref[1]))
@@ -488,33 +495,49 @@ def build(data, skeleton, profile):
     for slot, cfg in sorted(profile['gaits'].items()):
         frames, worst = gait(rig, cfg)
         ticks = cfg['ticks']
+        cycles = cfg.get('cycles', 1)       # a clip may play its cycle several times over (a blink that spans cycles)
+        if cycles > 1:
+            one, step = frames[:ticks], round(cfg['speed'] * ticks)
+            frames = []
+            for c in range(cycles):
+                for pose in one:
+                    pose = [list(b) for b in pose]
+                    pose[0][8] -= step * c
+                    frames.append(pose)
+            closing = [list(b) for b in one[0]]
+            closing[0][8] = -step * cycles
+            frames.append(closing)
+        total = ticks * cycles
         source_events = animsheet.slot_frames(old, n, slot)[2]
         sound = next((dict(e) for _, kind, e in source_events if kind == 'sound'), dict(op='sound', bank=1, note=13))
         events = [(t, kind, e) for t, kind, e in source_events if kind == 'tex' and t == 0]
-        for name in cfg['steps']:
-            tick = round(cfg['touchdown'][name] * ticks) % ticks
-            events.append((tick, 'sound', dict(sound, frame=tick + 1)))
+        if profile.get('events'):           # the species' own texture moves (its face) replace the source's
+            events = list(profile['events'](slot, total))
+        for c in range(cycles):
+            for name in cfg['steps']:
+                tick = round(cfg['touchdown'][name] * ticks) % ticks + c * ticks
+                events.append((tick, 'sound', dict(sound, frame=tick + 1)))
         events.sort(key=lambda e: e[0])
         frames = [[[round(x) for x in bone] for bone in pose] for pose in frames]
         animation = mmd.encode_anim(frames, n, loop_sample=0, events=events, tol=1)
         index = old.anims.table[slot]
         new.anims.anims[index] = animation          # in place: the slot's aliases play it too
         changed |= {s for s, i in enumerate(old.anims.table) if i == index}
-        played, played_events = _played(animation, n, slot, ticks)
-        for tick in range(ticks, ticks * 9 + 1, ticks):
+        played, played_events = _played(animation, n, slot, total)
+        for tick in range(ticks, total * 3 + 1, ticks):
             assert all(abs(a - b) <= 2 for bone, other in zip(played[0][1:], played[tick][1:]) for a, b in zip(bone, other)), \
                 (slot, tick, 'loop drift')
-        loop = played[:ticks + 1]
-        speed = abs(loop[-1][0][8] - loop[0][0][8]) / ticks
+        loop = played[:total + 1]
+        speed = abs(loop[-1][0][8] - loop[0][0][8]) / total
         floor = _floor(rig, loop)
         assert floor <= FLOOR, (slot, 'under the floor', floor)
-        low, high = SPEED_RANGE[slot]
+        low, high = profile.get('speed_range', SPEED_RANGE)[slot]
         assert low <= speed <= high and abs(speed - cfg['speed']) <= 0.5, (slot, speed)
         slips = _stance_slip(rig, cfg, loop)
         assert max(slips.values()) <= STANCE_SLIP, (slot, slips)
-        sounds = sorted({k for k, kind, _ in played_events if kind == 'sound' and k < ticks})
-        assert len(sounds) == len(cfg['steps']), (slot, sounds)
-        checks.append(dict(slot=slot, gait=cfg['name'], ticks=ticks, units_per_tick=round(speed, 2),
+        sounds = sorted({k for k, kind, _ in played_events if kind == 'sound' and k < total})
+        assert len(sounds) == len(cfg['steps']) * cycles, (slot, sounds)
+        checks.append(dict(slot=slot, gait=cfg['name'], ticks=ticks, cycles=cycles, units_per_tick=round(speed, 2),
                            lowest_point=round(floor, 1), touchdown=cfg['touchdown'], duty=cfg['duty'], stance_slip=slips,
                            body_drop=round(worst['drop'], 1), unreached=round(worst['stretch'], 2), sound_ticks=sounds,
                            stream_bytes=len(animation.build()),

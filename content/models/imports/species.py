@@ -116,7 +116,6 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'silphymon-field': ('226', 'tools.models.field_animations.chibi', '226-silphymon-field'),
     'shurimon-field': ('225', 'tools.models.field_animations.chibi', '225-shurimon-field'),
     'blackgatomon-field': ('222', 'tools.models.field_animations.pace', '222-blackgatomon-field'),
-    'salamon-field': ('221', 'tools.models.field_animations.salamon', '221-salamon-field'),
     'vikemon-field': ('220', 'tools.models.field_animations.pace', '220-vikemon-field'),
     'zudomon-field': ('219', 'tools.models.field_animations.pace', '219-zudomon-field'),
     'ikkakumon-field': ('218', 'tools.models.field_animations.pace', '218-ikkakumon-field'),

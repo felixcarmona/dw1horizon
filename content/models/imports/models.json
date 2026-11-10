@@ -38,7 +38,7 @@
  "218": {"model": "218-Ikkakumon.MMD", "aliases_applied": true, "field_overlay": "ikkakumon-field"},
  "219": {"model": "219-Zudomon.MMD", "aliases_applied": true, "buster_dive_clip": {"source_sha256": "c5a2abfa2a0fef85fac363db639e2c521e5a8969deb68e04caafb2e725acc063", "pose_keys": [[0, 0], [22, 22], [33, 22], [44, 52]]}},
  "220": {"model": "220-Vikemon.MMD", "aliases_applied": true},
- "221": {"movement_sound": {"note": 12, "replace_notes": [20]}, "model": "221-Salamon.MMD", "aliases_applied": true, "field_overlay": "salamon-field"},
+ "221": {"movement_sound": {"note": 12, "replace_notes": [20]}, "model": "221-Salamon.MMD", "aliases_applied": true},
  "222": {"movement_sound": 12, "model": "222-BlackGatomon.MMD", "aliases_applied": true, "field_overlay": "blackgatomon-field"},
  "223": {"model": "223-LadyDevimon.MMD", "aliases_applied": true, "texture": "223-LadyDevimon.TIM"},
  "224": {"model": "224-MetalGreymonVaccine.MMD", "aliases_applied": true, "builder": "tools.models.metalgreymon"},
