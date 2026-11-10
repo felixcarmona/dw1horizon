@@ -415,9 +415,12 @@ reach, three-segment legs, a damped tail response to body rotation and accelerat
 
 All existing reach, closure, event and storage assertions remain mandatory and unweakened.
 
-Apemon retains 43/20/20-tick walk/condition/run programs, with 4/2/3 gait cycles,
-0.4/0.5/0.25 duty and 20/14/35 units per tick. Full recipe generation passes;
-mesh floor maxima at ticks and thirds are −0.146/−1.595/+0.711 units.
+Apemon retains 43/20/20-tick walk/condition/run programs, with 3/1/2 gait cycles,
+0.62/0.7/0.32 duty for the hands (0.57/0.6/0.32 for the hind feet) and 20/14/35 units per tick (diagonal-sequence walk, one-stride tired shamble,
+gallop with a flight phase). The hind feet follow a heel-strike, flat, heel-lift, toe-push-off schedule, a swing that lifts
+early and lands toe-up, a knee that trails the foot, and their own per-side and per-stride length, height and timing.
+The idle is a grounded 93-tick loop with a 2-unit hip range.
+Mesh floor maxima stay below the ground in every clip.
 
 Gatomon uses 15/10/35 units per tick, 6/8/2-tick gait periods and
 0.375/0.5/0.25 duty within its existing 48-tick programs. Tick/thirds floor

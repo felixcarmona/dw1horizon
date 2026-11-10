@@ -398,3 +398,10 @@ toes up, a roll to flat, the heel rising over the ball of the foot, toe-off and 
 (the contact point does not move over the floor; foot pitch spans 46 / 30 / 42 degrees in walk / condition walk / run). Root speeds and slot 1 are unchanged:
 `--source build/imported-model-edit/edit/226-Silphymon.MMD --out AFTER.MMD` on the model before this change, then
 `tools/models/edit.py put 226 AFTER.MMD`; check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_silphymon_posture`.
+Apemon (227) has no field overlay: its idle, walk, condition walk and run are stored in its plain delta
+(`edit.py put 227`). `field_animations/apemon.py` is the generator that authored them from the model before this
+pass (`APEMON_BEFORE`, see `tools/test_apemon_gait.py`): four limbs solved per tick with fixed planted fists and feet,
+a diagonal-sequence walk (tired shamble and run too: sides half a cycle apart, front and hind a quarter, never paired 2-and-2) with hind feet that strike heel first, roll flat, lift the heel and push off through the toes (a swing
+that lifts early, lands toe-up and differs a few percent per side and per stride), a one-stride tired shamble and a gallop with a flight phase, the pelvis and chest twisting
+against each other with the limbs, a forward knuckle lean, a head kept level, and a grounded idle (breathing, weight
+shift, head look and one fist lift, no hop). The staff keeps the pose it was made in, across the back, lowered a few units so it rests on the body in every clip. Other programs are unchanged.
