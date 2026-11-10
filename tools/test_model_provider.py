@@ -132,6 +132,9 @@ class ModelProvider(unittest.TestCase):
         self.assertEqual(assignments['215'],
                          ('tools.models.field_animations.magnadramon_flight', '215-magnadramon-glide'))
         assignments['215'] = ('tools.models.field_animations.gliding', '215-magnadramon-glide')
+        # Dolphmon's gaits (dolphmon_gaits.py) run after its native swim (dolphmon.py) and replay it first.
+        self.assertEqual(assignments['238'], ('tools.models.field_animations.dolphmon_gaits', '238-dolphmon-gaits'))
+        assignments['238'] = ('tools.models.field_animations.dolphmon', '238-dolphmon-native-swim')
         self.assertEqual(assignments['197'],
                          ('tools.models.field_animations.magnamon', '197-magnamon-native'))
         assignments['197'] = previous_magnamon[1:]

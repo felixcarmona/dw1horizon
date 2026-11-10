@@ -228,6 +228,17 @@ dash leaning 23 degrees with the wings swept back and the legs streamlined. Hair
 excepted), distance per loop, footstep sounds and hover height are kept (the tired walk sits lower on purpose).
 Check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_ladydevimon_flight`.
 
+Dolphmon (238) had one native 73-tick swim, lifted off the ground, in all four field slots (idle, walk, condition walk,
+run), so they differed only in root speed. `field_animations/dolphmon_gaits.py` (overlay `dolphmon-gaits`) runs after
+`dolphmon.py` (which keeps the sleeping clip) and writes slots 0, 2, 3 and 4 again on the reviewed rig: a belly-resting
+idle (72 ticks: slow left-right turns, head glances, chattering jaw, flipper paddling, a soft tail wave), a flipper
+scoot (20 ticks, 22 units: flippers push alternately along the floor, the body turns over the pushing side, the tail
+wave travels to the fluke), a slower, heavier condition walk (30 ticks, 14 units: short strokes, panting jaw) and a run
+(14 ticks, 40 units: the walk's scoot made quicker and bigger, with longer strokes and a wider sway). Nothing moves
+vertically: the body bone keeps one height, the lowest mesh point stays within a unit of the floor, and the clips only
+turn about the vertical axis, roll a little and stroke the flippers. Resident animation storage 47 556 of 100 352 B.
+Check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_dolphmon_gaits` (needs `edit.py get 238`).
+
 Magnadramon (215) had the idle, walk, condition walk and run as one 89-tick wave of the wing blades, body and tail
 that only the root travelled through. `field_animations/magnadramon_flight.py` runs after its steady glide and writes
 those five slots again: a hover with two slow, wide wing beats, a forward-leaning cruise with three beats per loop
