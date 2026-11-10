@@ -8,13 +8,14 @@
 from pathlib import Path as _DevPath
 import sys as _dev_sys
 _dev_sys.path.insert(0, str(next(p for p in _DevPath(__file__).resolve().parents if (p / "tools").is_dir())))
-import atexit, glob, hashlib, json, os, re, shutil, subprocess, sys, tempfile, unittest
+import atexit, contextlib, glob, hashlib, json, os, re, shutil, subprocess, sys, tempfile, unittest
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 from dws import build as B, textx
 from dws.diag import DwsError
 from dws.fmt import format_source
 from dws.alloc import Allocator
+from dws.checks import walk_targets
 
 TMP = tempfile.mkdtemp(prefix='dws-test-')
 atexit.register(shutil.rmtree, TMP, ignore_errors=True)
@@ -672,7 +673,7 @@ class Constructs(unittest.TestCase):
         self.assertNotIn('SWITCH', sparse); self.assertIn('IF p7 == 9', sparse)
 
     def test_par_awaits_all(self):
-        a = self.asm('par { walk(a, 1, 2); walk(tamer, 3, 4); }')
+        a = self.asm('par { walk(a, 1, 2); walk(tamer, 50, 50); }')
         self.assertLess(a.index('ENTITY_WALK_TO TAMER'), a.index('WAIT_FOR_ENTITY 5')); self.assertIn('WAIT_FOR_ENTITY TAMER', a)
 
     def test_enum_group_array(self):
@@ -1513,7 +1514,8 @@ class StoryBuild(unittest.TestCase):
     def test_no_mod_is_the_disc_section_by_section(self):
         """Without mods, every section of every script and of MAPHEAD runs what the disc's runs (flowcmp from each entry)."""
         base = original_story()
-        dg, mh, rep = self.build('nomod', mods=[], base=base)
+        with walk_targets.off():                  # the disc's own awaited walks by tile edges (checks/walk_targets.py)
+            dg, mh, rep = self.build('nomod', mods=[], base=base)
         self.assertEqual(self.BB.verify(B.BE.DG_SCN, B.BE.MAPHEAD_SCN, dg, mh, log=lambda m: None), 0)
         # the containers are made from story/base alone (step 2): every script, its section table and every section (shared code has
         # its own blocks; 199-202 fit their buffer); the disc gives only DG.SCN's size
@@ -1522,7 +1524,8 @@ class StoryBuild(unittest.TestCase):
         self.assertTrue(open(os.path.join(dis, 'script_102.scn.txt')).readline().startswith('; script 102: generated from the story sources'))
         self.assertEqual(open(os.path.join(dis, 'header.bin'), 'rb').read(), bytes(2048))
         # the negative control: the verifier sees a changed section
-        dg2, mh2, _ = self.build('devsave', [os.path.join(ROOT, 'tools/dws/examples/dev-save.dws')], mods=[], base=base)
+        with walk_targets.off():
+            dg2, mh2, _ = self.build('devsave', [os.path.join(ROOT, 'tools/dws/examples/dev-save.dws')], mods=[], base=base)
         out = []
         self.assertEqual(self.BB.verify(dg, mh, dg2, mh2, log=out.append), 1)
         self.assertIn('script 178 sec5', '\n'.join(out))
@@ -1698,7 +1701,8 @@ class PythonView(unittest.TestCase):
             out = {}
             for k, fp in (('dws', False), ('py', True)):
                 o = os.path.join(d, label, k, 'DG.SCN')
-                _, _, _, mh = BB.build([], o, base=base, mods=[], log=lambda m: None, from_py=fp)
+                with walk_targets.off() if label == 'original' else contextlib.nullcontext():   # the disc's own walks
+                    _, _, _, mh = BB.build([], o, base=base, mods=[], log=lambda m: None, from_py=fp)
                 out[k] = (open(o, 'rb').read(), open(mh, 'rb').read())
             self.assertEqual(out['dws'], out['py'], label)
 

@@ -8,6 +8,7 @@ from .parser import parse, Node
 from .alloc import Allocator, TYPE_BITS
 from . import registry as R
 from .ext import Ext, Elem
+from .checks import walk_targets
 
 REQ = object()
 OPS_FLIP = {'==': '!=', '!=': '==', '>=': '<', '<=': '>', '>': '<=', '<': '>='}
@@ -78,6 +79,7 @@ class Program(Ext):
     def __init__(self, backend, bank, alloc=None, max_opcode_level=0):
         self.b = backend; self.bank = bank; self.alloc = alloc or Allocator()
         self.warn = Warnings(); self.errors = []; self.max_opcode_level = max_opcode_level; self.required_opcode_level = 0
+        self.walk_errors = set()                    # the tamer walks already reported (st_await)
         self.syms = {}; self.script_npcs = {}; self.pending = []; self.loaded = {}
         self.module = None; self.label_n = 0; self.lossless = {}; self.maphead_lossless = None
         self.used_text = set()
@@ -584,11 +586,14 @@ class Program(Ext):
         conds = self.cond(n.cond, env)
         out += env.pre; env.pre.clear()
         out.append(f'    IF {", ".join(conds)}, else {l_else}')
+        before = self.walks(env)
         env.state['speaker'] = None; self.stmt(n.then, env)
+        then = self.walks(env); self.walks(env, [before])
         if n.els is not None: out.append(f'    JUMP_TO {l_end}')
         out.append(f'{l_else}:')
         if n.els is not None:
             env.state['speaker'] = None; self.stmt(n.els, env); out.append(f'{l_end}:')
+        self.walks(env, [then, self.walks(env)])
         env.state['speaker'] = None
 
     def st_while(self, n, env):
@@ -653,13 +658,16 @@ class Program(Ext):
         if len(both) > 1: raise err(n, 'only one option can also be the cancel button')
         # `choice(open)`: no END_SELECTION; the code that follows SET_SELECTION is the first option's, unless the choice has a
         # cancel path (`cancel =>` / `or cancel`), which is then what follows it (some sections of the disc fall into other code)
+        before = self.walks(env); ends = []
         if cancel is not None: env.state['speaker'] = None; self.stmt(cancel, env)      # the triangle button
+        ends.append(self.walks(env))
         # (an empty option that is also the cancel goes on after the choice, as one without `or cancel`: the same code for both)
         empty = [lab for lab, (_, b, x) in zip(labels, opts) if x and b.kind == 'block' and not b.stmts]
         if not openc or cancel is not None or both: out.append(f'    JUMP_TO {both[0] if both and not empty else l_end}')
         for lab, (_, body, _) in zip(labels, opts):
             out.append(f'{lab}:'); env.state['speaker'] = None
-            self.stmt(body, env); out.append(f'    JUMP_TO {l_end}')
+            self.walks(env, [before]); self.stmt(body, env); out.append(f'    JUMP_TO {l_end}'); ends.append(self.walks(env))
+        self.walks(env, ends)
         out.append(f'{l_end}:'); env.state['speaker'] = None
 
     def option_too_wide(self, node, v, text):
@@ -687,7 +695,19 @@ class Program(Ext):
     def st_await(self, n, env):
         v = self.eval(n.expr, env)
         if v.type != 'entity': raise err(n.expr, f'await expects an entity, a handle, `camera` or `all`, got {v.type}')
-        env.out.append(f'    WAIT_FOR_ENTITY {v.val}')
+        env.out.append(f'    WAIT_FOR_ENTITY {v.val}'); self.awaited(env, v.val)
+
+    def awaited(self, env, who):
+        """A wait for `who`: a tamer walk under way that aims by a tile edge may never end (checks/walk_targets.py)."""
+        if who not in ('TAMER', '255'): return      # 255 (narrator, all) waits for every movement, the tamer's too
+        for c, (msg, hint) in env.state.pop('tamer_walks', ()):
+            if c.pos not in self.walk_errors:
+                self.walk_errors.add(c.pos); self.errors.append(err(c, msg, hint))
+
+    # The tamer walks that may still be under way (b_walk); where the paths of a branch meet, those of any path.
+    def walks(self, env, value=None):
+        if value is not None: env.state['tamer_walks'] = tuple(dict.fromkeys(w for end in value for w in end))
+        return env.state.get('tamer_walks', ())
 
     def st_assign(self, n, env):
         if getattr(n, 'target', None) is not None: v = self.eval(n.target, env)
@@ -874,6 +894,9 @@ class Program(Ext):
     def b_walk(self, env, c, a, run=False):
         op = 'ENTITY_WALK_TO_WITH_CAMERA' if a['camera'] else 'ENTITY_WALK_TO'
         env.out.append(f'    {op} {a["who"]}, {a["x"]}, {a["z"]}, {1 if run or a.get("run") else 0}, 0')
+        if a['who'] == 'TAMER':                     # a later `await` checks where it aims (checks/walk_targets.py; constants: the opcode's)
+            why = walk_targets.too_close('run' if run or a.get('run') else 'walk', a['x'], a['z'])
+            env.state['tamer_walks'] = ((c, why),) if why else ()
         return a['who']
 
     def b_run(self, env, c, a): return self.b_walk(env, c, a, run=True)

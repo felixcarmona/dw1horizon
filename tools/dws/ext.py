@@ -399,7 +399,7 @@ class Ext:
                 if r not in handles: handles.append(r)
             elif s.kind != 'expr' or (s.expr.fn.kind == 'id' and s.expr.fn.name in ('walk', 'run')) is False:
                 pass
-        for h in handles: env.out.append(f'    WAIT_FOR_ENTITY {h}')
+        for h in handles: env.out.append(f'    WAIT_FOR_ENTITY {h}'); self.awaited(env, h)
 
     # ------------------------------------------------------------ match
     def st_match(self, n, env):
@@ -423,26 +423,31 @@ class Ext:
         if clamp and (not dense or default is not None):
             raise err(n, 'match (v, clamp): the arms are exactly 0..n-1 (n >= 2) and there is no `_` arm; the last arm takes every larger value')
         env.state['speaker'] = None
+        before = self.walks(env); ends = []        # the tamer walks under way after the match: any arm's (gen.b_walk)
+
+        def arm(body):
+            self.walks(env, [before]); self.stmt(body, env); ends.append(self.walks(env))
         if clamp:                                  # the original's SWITCH as it is: no bound check, values past the end take the last arm
             by = dict(arms); labs = [self.label('case') for _ in arms]
             out.append(f'    SWITCH {p}, ' + ', '.join(labs))
             for i, lab in enumerate(labs):
-                out.append(f'{lab}:'); env.state['speaker'] = None; self.stmt(by[i], env); out.append(f'    JUMP_TO {end}')
+                out.append(f'{lab}:'); env.state['speaker'] = None; arm(by[i]); out.append(f'    JUMP_TO {end}')
         elif dense:
             by = dict(arms); labs = [self.label('case') for _ in arms]; ldef = self.label('mdef')
             out.append(f'    IF {p} < {len(arms)}, else {ldef}')
             out.append(f'    SWITCH {p}, ' + ', '.join(labs))
             for i, lab in enumerate(labs):
-                out.append(f'{lab}:'); env.state['speaker'] = None; self.stmt(by[i], env); out.append(f'    JUMP_TO {end}')
+                out.append(f'{lab}:'); env.state['speaker'] = None; arm(by[i]); out.append(f'    JUMP_TO {end}')
             out.append(f'{ldef}:'); env.state['speaker'] = None
-            if default is not None: self.stmt(default, env)
+            arm(default) if default is not None else ends.append(before)
         else:
             for val, body in arms:
                 nxt = self.label('mnext')
                 out.append(f'    IF {p} == {val}, else {nxt}'); env.state['speaker'] = None
-                self.stmt(body, env); out.append(f'    JUMP_TO {end}'); out.append(f'{nxt}:')
+                arm(body); out.append(f'    JUMP_TO {end}'); out.append(f'{nxt}:')
             env.state['speaker'] = None
-            if default is not None: self.stmt(default, env)
+            arm(default) if default is not None else ends.append(before)
+        self.walks(env, ends)
         out.append(f'{end}:'); env.state['speaker'] = None
 
     # ------------------------------------------------------------ subroutines

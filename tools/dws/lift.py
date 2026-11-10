@@ -18,6 +18,7 @@ import os, re, tempfile
 from . import decomp, flowcmp, anims, build as B
 from . import registry as R
 from .diag import DwsError
+from .checks import walk_targets
 
 ROOT = B.ROOT
 TERMINAL = {'END_SECTION', 'END_SCRIPT', 'JUMP_RETURN', 'JUMP_TO_FILE', 'JUMP_TO'}
@@ -1050,7 +1051,8 @@ def verify(lf, body, npcs, imports, names, tmp):
     src = _header(imports, npcs, names, lf.sid, lf.kind, body, hdr=f'section({lf.sec.sid if lf.kind == "maphead" and lf.sec.sid is not None else 1}) replace')
     path = os.path.join(tmp, 'v.dws'); open(path, 'w', encoding='utf-8').write(src)
     try:
-        prog = B.compile_sources([path])
+        with walk_targets.off():                   # the original's own walk targets (checks/walk_targets.py)
+            prog = B.compile_sources([path])
         sec, rep, code, ents, p = prog.b.mh_events[0] if lf.kind == 'maphead' else prog.b.scripts[sid]['events'][0]
         got = prog.b.gen_event(sec, rep, code, ents, p)
         r = flowcmp.compare(lf.sec.lines, got); lf._got = got

@@ -10,6 +10,7 @@ comparing each event with the disc's section (flowcmp)."""
 import csv, os, re, sys, tempfile
 from . import decomp, layout, lift, textx, build as B, flowcmp
 from .diag import DwsError
+from .checks import walk_targets
 
 ROOT = B.ROOT
 HEAD = ('Readable form of {sid}, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the\n'
@@ -169,7 +170,8 @@ def write_names_dws(path, names):
 # ------------------------------------------------------------------------------------------------ proof of the written files
 def check_file(path, lifted, kind='script', sid=None):
     """Compiles a written file whole and compares each of its events with the original section. -> number of events proven."""
-    prog = B.compile_sources(path if isinstance(path, list) else [path])
+    with walk_targets.off():                       # the original's own walk targets (checks/walk_targets.py)
+        prog = B.compile_sources(path if isinstance(path, list) else [path])
     where = 'MAPHEAD' if isinstance(path, list) else path
     events = getattr(prog.b, 'mh_events', []) if kind == 'maphead' else prog.b.scripts[sid]['events']
     shared = getattr(prog.b, 'mh_shared', []) if kind == 'maphead' else prog.b.scripts[sid].get('shared', [])
