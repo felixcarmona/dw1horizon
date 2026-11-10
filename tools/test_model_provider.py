@@ -119,6 +119,10 @@ class ModelProvider(unittest.TestCase):
         assignments = {t: entry[1:] for t, entry in selected.items()}
         self.assertEqual(assignments.pop('236'),
                          ('tools.models.field_animations.native_binding', '236-demidevimon-native-flight'))
+        # Lillymon's field flight (lillymon_flight.py) runs after its celebration overlay and replays it first.
+        self.assertEqual(assignments['209'],
+                         ('tools.models.field_animations.lillymon_flight', '209-lillymon-native-flight'))
+        assignments['209'] = ('tools.models.field_animations.celebrations', '209-lillymon-native-flight')
         self.assertEqual(assignments['197'],
                          ('tools.models.field_animations.magnamon', '197-magnamon-native'))
         assignments['197'] = previous_magnamon[1:]

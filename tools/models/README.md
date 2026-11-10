@@ -167,6 +167,12 @@ corrects the feet per tick: the right foot turned forward, a foot on the floor l
 reach allows, a foot under the floor raised inside its leg; the idle keeps a
 quarter of its rise.
 
+Lillymon (209) had the idle, walk, condition walk and run as one frozen pose that only the root travelled through.
+`field_animations/lillymon_flight.py` runs after her celebration overlay and writes those five slots again: a hover
+with a gentle three-beat flutter, a forward-leaning cruise with two wing beats per loop and a streamlined, faster run
+with three, the legs, arms, hair and flower following the body a beat later. Tick counts, distance per loop and footstep
+sounds are kept (the run's travel is spread smoothly over the loop instead of in bursts). Check with
+`tools/models/edit.py get 209` and `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_lillymon_flight`.
 Armadillomon (185) held its head level or lowered in the field idle, walk and
 run, so the shell's front rim covered the brow. `field_animations/armadillomon_head.py`
 adds one constant lift to the head joint in those clips (and the condition walk),
