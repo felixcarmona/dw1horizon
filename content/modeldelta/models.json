@@ -769,9 +769,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/207-Seraphimon.MMD.mdelta",
-        "delta_sha256": "dc347295d91ba979c06316e8f5dc86243392bb06ccc4d0e6a56c3e4541b85475",
-        "sha256": "0224b26e5970794ebdb5511826d5622fdb79c526c5ad5cc441ad56f1aaddb76b",
-        "size": 100160
+        "delta_sha256": "0eb4d4434225378034e61e5980c408802f23c5787c513bd53d55d49725ebad2a",
+        "sha256": "c3aa5e2e317b6a22c0780f800311f592dbd158f15ae35e0df13eb7c75e4cd4b7",
+        "size": 100120
       },
       "tim": {
         "sources": [

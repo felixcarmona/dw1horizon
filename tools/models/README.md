@@ -295,3 +295,10 @@ walk's two hops. In the walk, condition walk and run the long toe claws pointed
 through the floor and the right drill dug into it; the ankles and toes turn
 toward standing as far as keeps the claws up and the arm swings up at the
 shoulder just enough to clear its drill, checked at the ticks and the thirds.
+
+Seraphimon's (207) idle beat all ten wing feathers through 60 degrees, and its walk and run slid the feet.
+`field_animations/seraphimon_native.py` stores a calm 48-tick idle (wings, head and arms a few degrees, feet
+unmoved) and a walk, condition walk and run on native Angemon's footfalls (legs solved onto his feet, planted for the
+whole stance; the run's stride shortened and its lean halved), with arms swinging against the opposite leg, lightly
+fluttering wings that lag the body (swept back in the run) and a tabard kept off the floor. `seraphimon.py`, the chibi
+overlay's base, now only keeps the victory on screen.
