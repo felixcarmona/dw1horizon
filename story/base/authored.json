@@ -318,13 +318,13 @@
     },
     "zones/file-city/s162-168-169-170/script.py": {
       "original_sha256": "0bbadd3ab80f0b29fc9a8511a0d172eccaded4624ad79d88ede165e290429769",
-      "authored_sha256": "9c9f834286834528daba63b48a039788474ab447eae45545046c172fc2db452f",
-      "reason": "A dirt box carried home counts as one of the five dirt-hauling trips"
+      "authored_sha256": "52268c2298a57e5d90044f1b982f08f7838a4da679a1f6bcd8d919b38ba029f5",
+      "reason": "A dirt box carried home counts as one of the five dirt-hauling trips; the Birdra Transport steps run to the centre of their tile so the tamer always arrives"
     },
     "zones/file-city/s162-168-169-170/script.dws": {
       "original_sha256": "6442e3f406a5cce704b6d4e16592344780cf13fb233d8a07432f836d34dfaad6",
-      "authored_sha256": "3c7db3232820eec7d3e25233d1b636a5d546eaec5bf2898b18d499331d013716",
-      "reason": "A dirt box carried home counts as one of the five dirt-hauling trips; DWS synchronized with the authored Python source"
+      "authored_sha256": "badc7c1642c9339d9ce9e77daaae01ad5c08cb576f5c2cbf1c37205bd7576acd",
+      "reason": "A dirt box carried home counts as one of the five dirt-hauling trips; the Birdra Transport steps run to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
     },
     "zones/kunemons-bed/s002-1/script.py": {
       "original_sha256": "67a389b8c6144cc83430c94fbc44748970d717e41be0cbb0033c182418c55a4b",

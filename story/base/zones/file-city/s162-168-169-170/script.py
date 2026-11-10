@@ -341,7 +341,9 @@ def step1():    # section 52
 
 @city_168.on_step(2)
 def step2():    # section 53
-    tamer.run(1507, -2574)
+    # Horizon: the tile's centre. The original (1507, -2574) sits by the corner of its tile; a run from the top of the
+    # steps crossed that corner every tick and never arrived, spinning the tamer in place.
+    tamer.run(1550, -2550)
     tamer.walk(2061, -1997, wait=False)
     wait(500)
     warp(Screen.birdra_transport, entry=0)

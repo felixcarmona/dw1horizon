@@ -380,7 +380,7 @@ script 162 {
     }
 
     on step(2) replace {    // section 53
-        run(tamer, 1507, -2574);
+        run(tamer, 1550, -2550);    // Horizon: the tile's centre; the original stopped by its corner forever
         await tamer;
         walk(tamer, 2061, -1997);
         wait(10);
