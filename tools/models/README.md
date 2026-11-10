@@ -359,3 +359,10 @@ it and the head against the chest, swings the arms (a calm third to half of a fi
 legs for the field speeds directly (walk 10 a tick in the 72-tick loop, which pace.py plays in 36 at 20; run 38).
 Stance slip is now 4-6% (walk), 6% (run) and 5-8% (condition walk). The storage budget forced coarser keys
 (`tol` in pace.json) on the walk and condition walk.
+
+BlackGatomon (222) walked and ran on cycles of 16 and 10 ticks whose legs only swept back and forth while the head,
+gloves and pelvis swung wide. The run is now the donor walk's own gait (16 ticks at the run's travel). The walk and
+condition walk (8 ticks at 15, 12 at 9.5, the pace manifest's floors) keep a calm share of the head, pelvis and
+arm swing, and `field_animations/black_gatomon_calm.py` writes their legs as a planted step: heel strike, flat
+sole, roll over the toes, lift and land, the pelvis rising and falling with the one-segment legs. The legs reach
+about 27 units, which sets the cycle length for the travel; stance slip is 23% (walk) and 18% (condition walk).
