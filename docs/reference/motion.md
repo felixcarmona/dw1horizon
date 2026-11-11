@@ -821,6 +821,22 @@ mid-blink is repaired by the next clip. The test reads the model
 made by `tools/models/edit.py get 233` at the commit before the clips
 (`REDOTAMAMON_MODEL`); the reviewed-source pin in `celebrations.json` follows
 the new model.
+Clockmon 290 (`tools/models/field_animations/clockmon_gait.py`, test
+`tools.test_clockmon_gait`) had field clips whose root speeds (tired 23, run 71
+units a tick) lay outside the native ranges, feet that slid at 50-140 % of the
+travel and arms that changed from one clip to the next. The generator rebuilds
+slots 0, 2, 3 and 4 from the world down, with no donor motion stored: the
+chassis (bone 2) is placed per tick (height, sway, lean, roll, yaw) and the
+rider (bone 1, its head, key and hammer arms) swings on after it; each foot is
+a toe point that stays put in the world while the body passes over it; the
+foot block rolls heel to push on a schedule, the hip piece turns towards it, and
+the block may telescope a few units (`EXT`) because the legs are short and
+straight at rest. Chassis yaw carries the stance hip back, which is what lets
+the short legs cover the stride. The clips are a 90-tick idle and a walk, a
+tired walk and a run of 12, 14 and 8 ticks at 15, 10 and 38 units a tick. The
+test reads the model made by `tools/models/edit.py get 290` (`CLOCKMON_MODEL`);
+the reviewed-source pin in `celebrations.json` follows the new model and the
+overlay's celebration slots (11, 42) stay byte-identical.
 `field_animations/gesomon_rest.py` is written over that model and baked, with
 the walk and run, into the plain delta (the species has no field overlay). The
 import's idle hung the squid 9 to 89 units above the floor (mean 50, a

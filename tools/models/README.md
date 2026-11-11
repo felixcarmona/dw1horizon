@@ -46,6 +46,13 @@ The frozen model-delta README retains its historical command spellings. Use
 `tools/models/edit.py --help` describes get/put/check/rebase and source-disc
 options. Earlier editor work directories are now `build/imported-model-edit/`.
 
+Species 290 (Clockmon): `field_animations/clockmon_gait.py` writes slots 0, 2, 3 and 4 again (a 90-tick idle, a 12-tick
+walk, a 14-tick tired walk, an 8-tick run at 15, 10 and 38 units a tick) on the importer's model: the chassis is placed
+per tick, the rider swings on after it, each toe stays planted in stance and the short legs are carried by chassis yaw
+and a scheduled foot roll. `python3 -m tools.models.field_animations.clockmon_gait --source SRC.MMD --out-dir DIR`
+(SRC from `edit.py get 290` before the change), then `edit.py put 290 DIR/290-Clockmon.MMD`; the reviewed-source pin in
+`content/models/imports/celebrations.json` follows the new model. Test: `tools.test_clockmon_gait` (`CLOCKMON_MODEL`).
+
 Species 202 (Submarimon): `repair_submarimon.py` removes four stencil faces that sit on its body plates and keeps the
 rear screw turning in every clip (see player-model-fixes.md); `python3 -W ignore -m unittest tools.test_submarimon`.
 
