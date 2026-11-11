@@ -72,6 +72,13 @@ follow the body a little later, and exact loops. Slots 18 and 33 keep the native
 (`python3 -m tools.models.field_animations.piedmon_levitate --source SRC --out AFTER.MMD`, then
 `tools/models/edit.py put 245 AFTER.MMD`); check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_piedmon_levitate`.
 
+Kiwimon (282): `field_animations/kiwimon_gait.py` rewrites the walk, tired walk and run (slots 2, 3, 4; 36 plays the run)
+with `quadruped.py` on its own legs (3-6 left, 7-10 right: thigh, shin, ankle pad as the planted paw, toes riding on it);
+the imported clips had borrowed another leg length (a 60-unit body bob, one leg swung 85 units, soles sliding up to 100 %).
+The body, head, beak and rump are written by the module's `body` hook, the toes by `extra`; the idle (slots 0 and 33) is a calm 60-tick loop on planted soles. Offline delta:
+`python3 -m tools.models.field_animations.kiwimon_gait --source SRC --out AFTER.MMD`, then `tools/models/edit.py put 282 AFTER.MMD`;
+check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_kiwimon_gait`.
+
 DemiDevimon (236) binds its imported mesh to Birdramon's native skeleton and
 programs through `field_animations/native_binding.py`. The recipe in
 `content/models/imports/native-bindings.json` assigns every rigid piece, fits
