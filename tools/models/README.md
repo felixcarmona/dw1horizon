@@ -127,11 +127,15 @@ measurement as well as an offline speed measurement.
 Imported bone-scale consistency, the complete corrected-species list and the
 replay commands are documented in [the scale audit](../../docs/reference/motion-scale-audit.md).
 
-Vilemon's slow walk keeps its existing footwork, body, wrist poses and mesh.
-The `vilemon` pass after field pace transfers native Ogremon's shoulder and
-elbow motion over each 15-tick stride; every other program, including the run,
-remains exact. `VILEMON_MODEL=MODEL PYTHONPATH=tools python3 -m unittest
- tools.test_vilemon_walk` checks the complete provider layer against its input.
+Vilemon (295) wears native Ogremon's (34, `CHDAT/MMD1/OGRE.MMD`) 18-bone skeleton at scale 0.72, so its hips, shoulders and
+head sit where Vilemon's own do; its 20 bones map by body part (chest, pelvis, thigh, shin, foot, left and right arms, head, jaw).
+The toes ride the foot bone and the fist rides the hand bone. Ogremon has no wing bones, so the two wings sit rigid on the
+chest (placed by `pieces` offsets) and sway with it. Slots below the techniques are Ogremon's own programs (idle 16, walk 22,
+condition walk 24, run 20 ticks); at the scale the walk is 17.6, the condition walk 16.2 and the run 36.1 units per tick, so the
+condition walk stays slower than the walk with no retiming. The 11 techniques play Ogremon's clips by range (punches and
+kicks, claws, fire, quake, war cry) and the training slot 57 plays Sonic Jab's. The wings and jaw are the only parts with a
+different body than Ogremon's: the upper-arm shoulder vertices overlap the chest box by 3 to 4 of 28 in every pose, forearms
+and fists never do. `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_vilemon_native` (after `edit.py get 295`).
 
 Zudomon's reviewed model is uniformly resized to 85% with `resize.py`, including
 mesh vertices and translation tracks in every clip. Its radius, height and

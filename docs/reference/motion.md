@@ -754,6 +754,10 @@ copies in 61 and 62), scaled 2.2 and bound by `native_binding.py`: the idle, wal
 walk and run are 17, 15, 19 and 15 ticks, and Mamemon's stride, root travel and sounds are
 kept. The replay recipe is in `content/models/imports/native-bindings.json`.
 
+Vilemon uses native Ogremon's skeleton (18 bones) and field programs at scale 0.72, bound by `native_binding.py`:
+idle, walk, condition walk and run are Ogremon's own clips (17, 23, 25 and 21 frames at 17.6, 16.2 and 36.1 units per tick
+for the gaits); the wings have no donor bone and ride the chest. The resident model uses 68,322 of 100,352 bytes.
+
 ChaosLord uses Machinedramon's native skeleton (32 bones) and field programs, bound by `native_binding.py`
 at scale 1. Native Machinedramon has no care clips, so the recipe's `donor_builder` takes the partner model
 `content/models/partners/machinedramon.py` makes (its own idle, walk and run plus care clips) as the donor. The

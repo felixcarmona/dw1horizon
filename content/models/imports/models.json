@@ -112,7 +112,7 @@
  "292": {"model": "292-Deltamon.MMD", "aliases_applied": true, "field_overlay": "deltamon-native", "native_animation_donor": 8},
  "293": {"movement_sound": {"note": 12, "replace_notes": [20]}, "model": "293-Gryphonmon.MMD", "aliases_applied": true, "field_overlay": "gryphonmon-celebration"},
  "294": {"model": "294-Datamon.MMD", "aliases_applied": true},
- "295": {"model": "295-Vilemon.MMD", "aliases_applied": true, "field_overlay": "vilemon-pace"},
+ "295": {"model": "295-Vilemon.MMD", "aliases_applied": true, "field_overlay": "vilemon-native", "native_animation_donor": 34},
  "296": {"model": "296-Grizzlymon.MMD", "aliases_applied": true, "field_overlay": "grizzlymon-pace", "technique_aliases": {"Giga Freeze": "Winter Blast"}},
  "297": {"model": "297-Marsmon.MMD", "aliases_applied": true},
  "298": {"model": "298-Dokugumon.MMD", "aliases_applied": true},
