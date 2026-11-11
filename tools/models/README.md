@@ -159,6 +159,14 @@ tools.test_garbagemon_attachment`. It checks the attachment and grounding over
 every occupied clip, unchanged acting and semantic events, absence of wing
 cues, and original-console resident/cold-animation storage limits.
 
+Garbagemon's (269) face acts by texture moves: the eyes blink (open, half shut, shut) and the grin opens (closed, half,
+wide: the upper teeth slide up and the lower ones down over a dark mouth). The frames sit in texels no face samples,
+stored as the small bands that differ from the painted picture, and every clip starts and ends with open eyes and a shut
+mouth. The idle (slots 0, 1, 18 and 33 share it) is the old 19-tick loop repeated seven times so that it holds an
+irregular blink, a double blink and a slow yawn; the walk, tired walk and run keep their lengths. Run
+`python3 -m tools.models.field_animations.garbagemon_face --out AFTER.MMD --tim-out AFTER.TIM` on the model before this change
+(`edit.py get 269`), then `edit.py put 269 AFTER.MMD AFTER.TIM`; check with `tools.test_garbagemon_face`.
+
 Zudomon's (219) walk, condition walk and run took their legs from a gait solver
 but kept the idle's slow 96-tick performance in the chest, head, arms, hammer
 and tail, so the halves moved on different beats (one upper beat per four steps

@@ -470,6 +470,13 @@ boots nor arm parts enter the ball or each other at any tick. The eyes blink by 
 frames in texels no face samples): the idle blinks twice in a row once a loop (ticks 30 and 38), the walk once at tick 9, the
 tired walk slowly at 22 and the run at 12; each clip starts and ends with open eyes. Not tested in the game.
 
+Garbagemon's (269) eyes blink and its grin opens by texture moves (`garbagemon_face.py`; frames in texels no face samples,
+eight moves per change, the poses of every clip unchanged). The idle, shared by slots 0, 1, 18 and 33, is the old 19-tick
+loop repeated seven times (133 ticks): a blink at tick 30, a double blink at 98 and 105, a yawn of 22 ticks at 52 and a
+small gulp at 118. The walk blinks at 11 and chews open on the rise, shutting on the footfall; the tired walk blinks slowly
+(five ticks) and yawns for 10 ticks after the footfall; the run snaps its jaws twice with a blink between. Every clip starts
+and ends with open eyes and a shut mouth. Not tested in the game.
+
 None of these certifies the look of a motion: each recipe was accepted on side-by-side reviews (source against
 candidate, three views) and a game run. Diagnostics that count crossings must be normalised by the number of sampled
 frames before cycles of different lengths are compared, and covering armour against the part it covers is an expected
