@@ -199,7 +199,10 @@ stay inside the resident animation buffer (99952 B).
 
 Valkyrimon (255) uses a uniform 0.8 resize and native Angemon field motion,
 with its existing rig and chibi proportions. The offline authoring recipe is
-`field_animations/valkyrimon.py`; player builds replay the plain delta.
+`field_animations/valkyrimon.py`; `field_animations/valkyrimon_limbs.py` then clears the limbs from the body (elbow and hips turned a few degrees where
+they went through the chest or the other leg), calms the walk and run, keeps the legs apart, hangs the left thigh's
+cloth from the pelvis and gives the idle breathing, keeping the timing (checked by
+`tools/test_valkyrimon_limbs.py`); player builds replay the plain delta.
 [The motion notes](../../docs/reference/valkyrimon-motion.md) record the source
 mismatch, size comparison, replay commands and original-console checks.
 
