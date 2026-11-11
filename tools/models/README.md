@@ -875,3 +875,8 @@ because the rounding of one-unit steps otherwise shows as ticks. Stored in the p
 (`edit.py get 286`, `python3 -m tools.models.field_animations.deramon_gait --source THAT.MMD --out AFTER.MMD`,
 `edit.py put 286 AFTER.MMD`); check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_deramon_gait`.
 The pace row and `deramon-pace` overlay are dormant records (the scale lock still names them).
+Dragomon (291): `field_animations/dragomon_gait.py` writes its idle, walk, condition walk and run (slots 0, 2, 3, 4) on its own 20 bones
+(head-rooted, two-bone legs whose shin is rigid with a flat foot, one plate per wing, a long blade on the left arm, no tail) with planted-foot IK:
+`python3 -m tools.models.field_animations.dragomon_gait --source BEFORE.MMD --out AFTER.MMD --tim-out AFTER.TIM` on the model before this change
+(`edit.py get 291`), then `edit.py put 291 AFTER.MMD AFTER.TIM`; check with `tools.test_dragomon_gait`. The programs are replaced in place, so slot 33
+(battle idle) follows the idle and slot 36 (battle movement) follows the run; the poor and sick idles (slots 1, 14-18, 34) are untouched.

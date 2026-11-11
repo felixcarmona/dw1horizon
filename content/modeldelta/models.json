@@ -3324,9 +3324,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/291-Dragomon.MMD.mdelta",
-        "delta_sha256": "52ae4310566a90c348e98c898070ed8646f79b0657d62dc340fc8e7242b3984c",
-        "sha256": "85d68b5c0eb4e02068214e81f797ecfda970269e0f16b4eace9ce41471412806",
-        "size": 100262
+        "delta_sha256": "dac398ba705e64c6a603a7ff59151e04f24582d00343be073013e244ab7e69b4",
+        "sha256": "af4ad5704690b8408f80693969c46bfba03409b97d63559c385d0e337d1aeca8",
+        "size": 111660
       },
       "tim": {
         "sources": [

@@ -1020,3 +1020,15 @@ its distance from the standing pose, the hips lowered in the pelvis' frame so th
 (about 14 units), and the leg turns at most about 15 degrees. The other bones, the timing, the loop and the blink events are the
 import's. Slot 33 (the battle idle) shared the old program and keeps it. `tools.test_pumpkinmon_idle` checks the exact bytes, that
 only slot 0 changes, that every other bone is identical, the leg and sole ranges, the closed loop and the storage.
+
+Dragomon (291) has its own idle, walk, condition walk and run (`field_animations/dragomon_gait.py`, shipped as the model delta): 96 / 26 / 30 / 20
+ticks at 0 / 15 / 11 / 36 units per tick, a calm breathing and look-around idle, an easy upright walk, a slow heavy tired drag and an eager loose
+lope. A rigid shin with a flat foot caps the stride (a foot's travel per cycle stays under about 200 units), so the cycles cannot be longer at the
+native speeds; each loop holds two cycles plus a slow whole-loop drift (head wander, shoulder roll). The soles are the IK targets and slip at most
+6 % (mean) while supporting (measure on the soles of bones 5 and 7: the studio's `metrics` reads the two lowest rest-pose bones, which here are the
+left blade and one foot; the last step of each contact, the sole rolling off, is left out). The character is large, slow and overlapping: the pelvis
+sinks onto each landing foot and recovers over the step (eased, no pop: a foot taking over from the other does not jolt the pelvis height), hips
+drop and sway over the loaded leg, the chest counter-turns, the head and crest follow a few ticks later on lag springs (zeta .7: one slow settle, no
+ringing), the arms are heavy pendulums with the blade arm slower, the wings rise and fall like breathing. Nothing but the feet moves faster than
+twice the step rate (`tools.test_dragomon_gait`). The idle's 96 ticks follow Thundermon's precedent for the condition-idle draw (idles over 25
+ticks make some draws unreachable); slots 33 and 36 share the idle and run programs.
