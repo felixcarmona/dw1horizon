@@ -486,6 +486,16 @@ metachronal wave, lower shell, claws drooping), run 14 at 38 (alternating tripod
 forward). Feet slip about 1 %. Slots 1 and 18 follow the idle; the resident animation buffer ends at 79,116 of 100,352
 bytes. The eyes are painted on the shell, so there is no glance or blink. `tools/test_crabmon_scuttle.py` covers it.
 
+Dokugumon's (298) idle, walk, condition walk and run (61/25/29/21 ticks) swung the legs as one block (foot slip 90 to
+115 %, the body low). `field_animations/dokugumon_gait.py` is an offline model delta: the six three-bone legs (bones 4-21)
+are solved with damped least squares so every tip stands still on the floor in its stance, the body (bone 1) rides 46
+units above the old height and the feet are set wide, with the middle legs outermost. Two groups of three alternate
+(front right, middle left, rear right, then the others): walk 20 ticks (two strides of 10) at 18 units, condition walk 32
+at 12 (a stalking one-leg-at-a-time step, low body), run 16 at 40 (with a flight phase); the abdomen (2, 3) swings against
+the body's twist, the face and fangs (22, 23) and the two palps (24-27) move softly. Idle 72 ticks (breathing, two front legs and a
+middle leg paw once in place). Stance slip is under 2 % on average; slot 33 follows the idle; the resident animation buffer ends
+at 93,940 of 100,352 bytes. `tools/test_dokugumon_gait.py` covers it.
+
 Magnamon (197) is bound to native Leomon (`native_binding.py`). Its boots kept
 the source's fighting stance, turned 35 and 93 degrees outward, its fists kept
 the guard pose's forward point, and its broad legs crossed over Leomon's narrow
