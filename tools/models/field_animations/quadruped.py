@@ -134,7 +134,10 @@ class Rig:
         self.n = len(skeleton)
         self.idle = animsheet.slot_frames(model, self.n, 0)[0]
         self.rest = [list(v) for v in self.idle[0]]
-        self.verts = {b: [v[:3] for v in model.tmd.obj_verts(o)] for b, (o, _) in enumerate(skeleton) if o >= 0}
+        # `scale` (profile): the uniform size the rest pose gives the body bone and everything under it (an imported
+        # model sized by its idle). Rotations are read with it divided out, link offsets and soles multiplied in.
+        self.S = profile.get('scale', 1.0)
+        self.verts = {b: [[x * self.S for x in v[:3]] for v in model.tmd.obj_verts(o)] for b, (o, _) in enumerate(skeleton) if o >= 0}
         still = [list(v) for v in self.rest]
         still[0] = [4096, 4096, 4096, 0, 0, 0, 0, 0, 0]
         W = self.world(still)
@@ -145,19 +148,39 @@ class Rig:
         self.flat = {front: rot(flat[front]) if front in flat else rot([0, 0, 0]) for front in (True, False)}
         # 'paw_flat' may also name a leg ('RF': angles), for paws that stand turned out, each side its own way
         self.flat_leg = {name: rot(angles) for name, angles in flat.items() if isinstance(name, str)}
+        # 'paw_rest' (profile): paws stand as the rest pose has them, each rolling about its own lateral axis. It names, per
+        # leg, the direction of its toes in the paw bone's space; the paw's world rotation at rest is its flat rotation.
+        self.toe_turn = {}
+        for name, toe in profile.get('paw_rest', {}).items():
+            flat_rest = self.R(W, profile['legs'][name][2])
+            self.flat_leg[name] = flat_rest
+            ahead = mv(flat_rest, toe)
+            self.toe_turn[name] = turn_to([0, 0, -1], [ahead[0], 0.0, ahead[2]])
         # Reference bend planes: each right leg's standing pose; the left legs take it mirrored in the world.
         self.ref = {}
         for name, (up, lo, paw, side, front) in profile['legs'].items():
             src = profile['legs'][MIRROR.get(name, name)]
-            worlds = [[r[:3] for r in W[b][:3]] for b in src[:3]]
+            worlds = [self.R(W, b) for b in src[:3]]
             if name in MIRROR:
                 worlds = [mul(mul(MIRROR_X, w), MIRROR_X) for w in worlds]
-            parent = [r[:3] for r in W[skeleton[up][1]][:3]]
+            parent = self.R(W, skeleton[up][1])
             self.ref[name] = [mul(tr(parent), worlds[0]), mul(tr(worlds[0]), worlds[1]), mul(tr(worlds[1]), worlds[2])]
 
     def paw(self, front, pitch, name=None):
         """A paw's world rotation, pitched by the given degrees from flat."""
-        return mul(rot([pitch, 0, 0]), self.flat_leg.get(name, self.flat[front]))
+        flat = self.flat_leg.get(name, self.flat[front])
+        if name in self.toe_turn:
+            turn = self.toe_turn[name]
+            return mul(mul(turn, mul(rot([pitch, 0, 0]), tr(turn))), flat)
+        return mul(rot([pitch, 0, 0]), flat)
+
+    def R(self, W, b):
+        """A bone's world rotation with the profile's uniform scale divided out."""
+        k = 1.0 if b == 0 else 1.0 / self.S
+        return [[x * k for x in r[:3]] for r in W[b][:3]]
+
+    def sole(self, front):
+        return [x * self.S for x in self.p['sole'][front]]
 
     def world(self, pose):
         p = [list(v) for v in pose]
@@ -174,7 +197,7 @@ class Rig:
         the lower bone's space) rolls the lower bone about its own axis to turn that direction towards the front."""
         up, lo, paw, side, front = self.p['legs'][name]
         W = self.world(pose)
-        parent = [r[:3] for r in W[self.sk[up][1]][:3]]
+        parent = self.R(W, self.sk[up][1])
         shoulder = [W[up][i][3] for i in range(3)]
         a, via_lo = self.link(pose, lo)
         b, via_paw = self.link(pose, paw)
@@ -226,12 +249,12 @@ class Rig:
         """The offset of a leg joint from the joint before it in that one's space, and the rotation of a bone between
         them. A profile's `links` names a short bone (a knee cap, a hock spur) that sits between two leg bones and
         holds its standing rotation: {child: bone between}. Without one the child hangs straight off the bone before."""
-        offset = [pose[child][6], pose[child][7], pose[child][8]]
+        offset = [pose[child][6] * self.S, pose[child][7] * self.S, pose[child][8] * self.S]
         via = self.p.get('links', {}).get(child)
         if via is None:
             return offset, [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
         turn = mmd.rot_matrix(*self.rest[via][3:6])
-        return add(self.rest[via][6:9], mv(turn, offset)), turn
+        return add(scale(self.rest[via][6:9], self.S), mv(turn, offset)), turn
 
 
 def spin(u, angle):
@@ -261,7 +284,7 @@ def leg_phase(cfg, name, phase):
 def standing(rig, name, track, z, world):
     """The wrist (hock) of a paw whose sole pivot stands at z on the floor, at a world rotation."""
     paw, front = rig.p['legs'][name][2], rig.p['legs'][name][4]
-    wrist = sub([track, 0.0, z], mv(world, rig.p['sole'][front]))
+    wrist = sub([track, 0.0, z], mv(world, rig.sole(front)))
     wrist[1] = -rig.p['clear'] - rig.lowest(paw, world, [0, 0, 0])
     return wrist
 
@@ -467,7 +490,7 @@ def _floor(rig, frames):
             for b in rig.verts:
                 if b in rig.p.get('floor_skip', ()):     # parts the idle itself lets hang under the floor (a trunk tip, a tail)
                     continue
-                worst = max(worst, rig.lowest(b, [r[:3] for r in W[b][:3]], [W[b][i][3] for i in range(3)]) + height)
+                worst = max(worst, rig.lowest(b, rig.R(W, b), [W[b][i][3] for i in range(3)]) + height)
     return worst
 
 
@@ -483,7 +506,7 @@ def _stance_slip(rig, cfg, frames):
             here = []
             for pose in (frames[t], frames[t + 1]):
                 W = rig.world(pose)
-                point = add([W[paw][i][3] for i in range(3)], mv([r[:3] for r in W[paw][:3]], rig.p['sole'][front]))
+                point = add([W[paw][i][3] for i in range(3)], mv(rig.R(W, paw), rig.sole(front)))
                 here.append(point[2] + pose[0][8])
             moved += abs(here[1] - here[0])
             travel += abs(frames[t + 1][0][8] - frames[t][0][8])

@@ -402,6 +402,17 @@ claws sway 11 to 20 degrees, each joint a little later than the one above it, an
 planted (the hips turn against the trunk, ankles drift under 4 units). Slots 35 and 36 play the walk
 and run and follow.
 
+Cyclonemon's (281) idle, walk, condition walk and run were rebuilt (old ticks 20/21/21/19, root speeds 25/21/44
+units/tick, feet slipping 103-132 %, a heavy hunch in the condition walk). `field_animations/cyclonemon_gait.py`
+plants the heavy left arm like a crutch and both hind feet with `quadruped.py`: idle 48 ticks (feet planted, slow
+breathing and sway), walk 18 ticks at 15, condition walk 26 at 11 (lower, no exaggerated hunch), run 12 at 38 (forward
+lean, bigger bob). The feet slip under 4 % of the root speed. Bone 1 carries a uniform scale of 1.3 that every bone
+under it inherits, so `quadruped.py` has the opt-in profile keys `scale` (rotations read with it divided out, offsets
+and soles multiplied in), `paw_rest` and `body` (a per-species body pose); the shoulder pad (bone 2) takes the twist
+about the line to the elbow that keeps it nearest its place on the torso. Slots 0 and 33 (the battle idle it plays)
+change with the idle; the resident animation buffer ends at 99,238 of 100,352 bytes. `tools/test_cyclonemon_gait.py`
+covers it.
+
 Magnamon (197) is bound to native Leomon (`native_binding.py`). Its boots kept
 the source's fighting stance, turned 35 and 93 degrees outward, its fists kept
 the guard pose's forward point, and its broad legs crossed over Leomon's narrow
