@@ -2839,9 +2839,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/275-Scorpiomon.MMD.mdelta",
-        "delta_sha256": "02ad5e998f634e1961bf2c87784eafe90e9959e1197b72c9796a8266d5f9c04f",
-        "sha256": "fea39afc76dba5aff74db37b7e31ca0894d69a22c74a5cb36d5c8eb9d21a1ed7",
-        "size": 97140
+        "delta_sha256": "50388be3cc26b0b4be9c8c59e0f504e37148249051b20867f977eb1434a93b79",
+        "sha256": "5cedf12ea38bce6d31c8b55642323abb72fb3cf1eb0f9db8c5f5001ef2dc3224",
+        "size": 82676
       },
       "tim": {
         "sources": [

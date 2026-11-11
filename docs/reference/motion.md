@@ -936,6 +936,21 @@ sways 26, 50, 38 and 23 units sideways relative to the body, the tail tip 33, 79
 the joints stay as close together as they were. Resident animation buffer 83734 of 100352 bytes.
 `tools.test_plesiomon_swim` checks the bytes, the aliases, the lengths and speeds, the seams, the waves, the strokes, the body,
 the absence of jumps, the vertex counts and gaps, the blink and the storage.
+`field_animations/scorpiomon_swim.py` is written over Scorpiomon's model (the Anomalocarimon import: a hovering arthropod with no
+legs; its mesh stays 105 to 220 units above the floor) and baked into the delta. The import's idle, walk, tired walk and run
+(30 samples each) were one and the same pose sequence, only the root faster (29.5, 28.8 and 57.5 units a tick, the last two outside
+the native ranges). The foot slip of 93 to 130 per cent reported for them was measured on the two lowest bones, the mouth plates; there
+is no foot to plant, so the checks are different ones. Rig: carapace (bone 1) carrying the face plate (2), mouth plates (3, 4), eyes
+(5, 6), claws (7 to 9 right, 10 to 12 left), side blades (13, 14 right, 15, 16 left) and the tail chain (17 to 22, fan last).
+Idle 64 ticks (slow breath bob, blades rippling out of step, claws curling and opening with a lag per segment, a small tail wave,
+mouth plates working); walk 32 ticks at 26 units (blades rowing in turn, body roll 9 degrees and sway 16 units toward the stroking
+side, claws carried forward, a tail wave of about 90 units vertical); tired walk 44 ticks at 14 (body 37 units lower, nose and head
+down, claws drooping 60 units lower, blades hanging, tail trailing low, mouth open); run 20 ticks at 42 (nose down, blades fast,
+claws tucked up under the face, tail raised and lashing). Every loop closes, the root step is constant, no joint turns past 2.8 times
+its median in a tick, and the limbs cross no more than the import's rest pose does (its face plate and the claw and blade roots overlap
+by design). The idle's stream is shared with slots 1 and 18, which follow it; no other slot shares the four. Resident animation
+buffer 75194 of 100352 bytes (89648 before). `tools.test_scorpiomon_swim` checks the bytes, the seams, the distance per tick, the
+speed order, the postures, the tail wave, the rowing in turn, the joint speeds, the clashes and the storage.
 
 `field_animations/triceramon_gait.py` replaces the idle, walk, tired walk and run of Triceramon (257) with authored
 clips. The import's clips had walk and tired walk the wrong way round (tired faster than the walk, 18.6 against 15.6 units

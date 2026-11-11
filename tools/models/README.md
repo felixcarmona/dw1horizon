@@ -642,6 +642,7 @@ Tylomon (254): `field_animations/tylomon_swim.py` rewrites idle, walk, condition
 Plesiomon (271): `field_animations/plesiomon_swim.py` rewrites idle (slots 0, 1 and 18), walk, condition walk and run as four swimming movements (neck and tail
 waves, rowing flippers on springs); `python3 -m tools.models.field_animations.plesiomon_swim --source build/imported-model-edit/edit/271-Plesiomon.MMD --out AFTER.MMD`
 on the model before this change, then `edit.py put 271 AFTER.MMD`; it has no overlay pass; check with `tools.test_plesiomon_swim`.
+Scorpiomon (275): `field_animations/scorpiomon_swim.py` rewrites idle (64 ticks), walk (32, 26 units a tick), tired walk (44, 14) and run (20, 42) of a model with no legs that hovers about 150 units above the floor (carapace, face plate, mouth plates, eyes, two three-segment claws, one side blade per flank, a tail chain ending in a fan): blades row in turn, claws curl with a lag per segment, a wave runs down the tail, the body bobs, sways and rolls; `python3 -m tools.models.field_animations.scorpiomon_swim --source build/imported-model-edit/edit/275-Scorpiomon.MMD --out AFTER.MMD` on the model before this change, then `edit.py put 275 AFTER.MMD`; check with `tools.test_scorpiomon_swim`.
 
 
 
