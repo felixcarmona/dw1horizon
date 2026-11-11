@@ -2539,9 +2539,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/265-DarkTyrannomon.MMD.mdelta",
-        "delta_sha256": "4b38f0f636c769460b43d67db8fcf3ac1c9ca53ac0e7b035178eb3d311542223",
-        "sha256": "d9287751a1d91b6c739947a40f8b341f463761263bc0a9114219fded7a7d8e6a",
-        "size": 109964
+        "delta_sha256": "c039dc326577f51afdfc04bbd5b66cbda2c1fc7f38098333e4dc59ffab2dd416",
+        "sha256": "e0e7c12ccdfa3e61a97a7da4e95415abda882fb4842f8109ae4146aff8630c63",
+        "size": 112720
       },
       "tim": {
         "sources": [

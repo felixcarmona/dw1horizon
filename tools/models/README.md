@@ -681,3 +681,15 @@ table (`HEAD_TABLE`) that `fit()` found offline as the smallest smoothed carriag
 crossing. Re-run `fit()` if the mesh, the gait timing or the profile changes (the resident buffer has little room left).
 `tools/models/field_animations/meshclash.py` counts triangle crossings between two bone groups (numpy).
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_saberleomon_gait` (after `edit.py get 258`).
+
+DarkTyrannomon (265): `field_animations/darktyrannomon_idle.py` replaces only the field idle (slot 0). The import's was the
+donor's 21-tick fidget as a loop (head 38 degrees, torso 30, jaw 40, tail 42 degrees every 0.7 s, bones turning up to 8
+degrees a tick, feet hopping 35 units); the new one is 96 ticks of two swelling breaths, a slow glance to one side and a
+shorter one to the other, two yawns a loop, a small and a wide one (the mouth shuts between them), a tail (bones 3-5) that sweeps with a trailing tip, a head (bone 20) that nods and glances,
+the lower jaw (bone 21, pitch only: the chin goes straight down, never sideways) and above all the arms (bones 12-15 and 16-19, the big outer limbs: shoulders, elbows, hands and claws swing free with a
+lag, each with its own phase), all on springs (`follow`, periodic steady state). The feet (bones 6-8 and 9-11) and the
+pelvis are solved onto the floor once and are bit for bit the same in every tick.
+Slot 33 (the battle idle) shared the old program and keeps it; the walk, tired walk and run are untouched. Stored in the
+plain delta: `edit.py get 265` on the commit before this change, `python3 -m tools.models.field_animations.darktyrannomon_idle
+--source THAT.MMD --out AFTER.MMD`, `edit.py put 265 AFTER.MMD`. Check with
+`PYTHONPATH=tools python3 -W ignore -m unittest tools.test_darktyrannomon_idle` (`DARKTYRANNOMON_MODEL=` names the model before).

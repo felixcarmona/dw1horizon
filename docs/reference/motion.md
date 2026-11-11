@@ -904,3 +904,19 @@ first sample. The torso rides the steps instead of gliding: the pelvis rises and
 tired walk and 30 in the run (which dips on each landing and has a short flight), and head, neck and tail answer with
 a lag. Resident animation buffer 99304 of 100352 bytes. `tools.test_triceramon_gait` checks the exact bytes, the
 bob, the speed order, the seams, the planting, the floor, the limb overlaps and the storage.
+
+`field_animations/darktyrannomon_idle.py` replaces the field idle (slot 0) of DarkTyrannomon (265) and nothing else. The
+import's idle was a 21-tick fidget played as a loop: the torso yawed 30 degrees, the head swept 38, the jaw opened 41 and
+the tail swung 42 degrees every 0.7 seconds, bones turned up to 8.3 degrees a tick (a step changed by up to 6.3 degrees),
+and the feet lifted up to 35 units with a 30-unit pelvis bounce, so it read as convulsions. The new idle is 96 ticks: two breaths whose
+depth swells and fades (chest 11 degrees), a tail (bones 3-5, base to tip 25, 28 and 34 degrees) that sways with the glances and
+flicks with the yawns, a head (bone 20) nodding and glancing 17 degrees, a lower jaw (bone 21: only its pitch changes, the chin
+goes straight down in the head's frame, never sideways) that opens twice a loop (a small and a wide yawn, 25 degrees at most, the
+chin 33 and 55 units down) and shuts between them, and, above all, the arms: bones 12-15 and 16-19 (the big outer limbs with
+the long claws) swing free, rotation only (shoulders 13-15 degrees forward/back and outward, elbows 15-17, hands and claws
+17-21, a lag and a different phase per arm). The feet are bones 6-8 and 9-11 (the short limbs at the centre) with the pelvis (1): solved onto the floor
+once and bit for bit the same in every tick. Every bone turns under 2.4
+degrees a tick and its step changes by under 0.8. The battle idle
+(slot 33) shared the old program and keeps it. Resident animation buffer 94786 of 100352 bytes.
+`tools.test_darktyrannomon_idle` checks the exact bytes, the other slots, the seam, the step and frequency bounds, the
+range of every bone, the still feet, the free arms, the overlaps and the storage.
