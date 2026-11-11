@@ -613,3 +613,14 @@ stance points that move back by exactly the root speed, so the planted foot does
 are authored around them with spring followers that close their loops; `python3 -m tools.models.field_animations.triceramon_gait
 --source build/imported-model-edit/edit/257-Triceramon.MMD --out AFTER.MMD` on the model before this change, then
 `edit.py put 257 AFTER.MMD`; check with `tools.test_triceramon_gait`.
+
+SaberLeomon (258): `field_animations/saberleomon_gait.py` runs after the field pace pass (`after_generator`). The imported clips
+were a trot (walk) and a pace (run) with no flight phase, the head and neck still, the tail replaying the idle's swish, and
+the forelegs went through the mane's lower tufts. Now every leg keeps its own foot path but is re-timed with a two-bone IK:
+the walks are a lateral-sequence walk and the run is a bounding gallop with about 3 of 14 ticks airborne. The spine flexes
+(chest pitch against hip pitch, chest rising with the support), the head follows later with a bob, the tail is carried up in
+the run and trails the body on closed lags, the forelegs sit 25 units further back, and the head is carried by a per-tick
+table (`HEAD_TABLE`) that `fit()` found offline as the smallest smoothed carriage with no leg-against-mane/jaw triangle
+crossing. Re-run `fit()` if the mesh, the gait timing or the profile changes (the resident buffer has little room left).
+`tools/models/field_animations/meshclash.py` counts triangle crossings between two bone groups (numpy).
+`PYTHONPATH=tools python3 -W ignore -m unittest tools.test_saberleomon_gait` (after `edit.py get 258`).
