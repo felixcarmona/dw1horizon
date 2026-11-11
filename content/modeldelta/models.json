@@ -1894,9 +1894,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/244-SuperStarmon.MMD.mdelta",
-        "delta_sha256": "98c46da3c1ae28c2f635497d7e9b94d2925eb48dbdea6612471d45fd3b1538a4",
-        "sha256": "eda099f022f5c62aabffe5c833233123012534c03b49c778c2d0232dd809f24b",
-        "size": 87644
+        "delta_sha256": "cb9dc59cac8e3d68d03b7bd7143cef968f382179a055b3a5b3d2f956dfb9720b",
+        "sha256": "24d22a0ffa0cc4487dd4162b66fac8eb2da36239f9392cab121514a9ab2577c9",
+        "size": 88920
       },
       "tim": {
         "sources": [
