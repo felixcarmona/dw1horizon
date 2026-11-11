@@ -499,6 +499,9 @@ Shadramon (250): `field_animations/shadramon_loose.py` rewrites the idle (slot 0
 walk and run over the strides `shadramon.py` made (legs re-solved to the same ankles); `python3 -m tools.models.field_animations.shadramon_loose
 --source build/imported-model-edit/edit/250-Shadramon.MMD --out AFTER.MMD` on the model before this change, then `edit.py put 250 AFTER.MMD`;
 check with `tools.test_shadramon_loose`.
+Tylomon (254): `field_animations/tylomon_swim.py` rewrites idle, walk, condition walk and run as travelling swimming waves; `python3 -m tools.models.field_animations.tylomon_swim
+--source build/imported-model-edit/edit/254-Tylomon.MMD --out AFTER.MMD` on the model before this change, then `edit.py put 254 AFTER.MMD`; the pins of
+`locomotion.json` and `celebrations.json` follow the new model; check with `tools.test_tylomon_swim`.
 
 
 

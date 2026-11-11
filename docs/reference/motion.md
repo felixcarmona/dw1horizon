@@ -846,3 +846,16 @@ speeds do not change. The tired idle (slot 1, head on the floor) keeps its postu
 the chest: their rotation against it is constant (it swung up to 6 to 20 degrees away from its mean before). Resident animation
 buffer 85344 of 100352 bytes. `tools.test_tuskmon_lift` checks the exact bytes, the height, the claws, the floor, the
 horns and the seams.
+
+`field_animations/tylomon_swim.py` is written over Tylomon's model and baked into the delta; the footless post-pass
+(`locomotion.json`) and the celebration pass still run over it with the new pins. The import's four field clips (17, 27, 21
+and 21 samples) held the whole body nearly still for a quarter of the loop (speed under a tenth of its peak), then snapped
+through one yaw with every bone within three ticks of the others (the tail swung 409 units from side to side, the head 75),
+and the condition walk and the run were the same poses. The new clips straighten the spine and run a travelling wave down it
+(yaw per segment, the head leading, growing to the tail tip, a second harmonic of a seventh to a fifth of it, a vertical wave a
+quarter behind, roll, sway, bob), with the fins on springs and the head turning back against the body. Idle 60 ticks; walk 36
+ticks at 15 units; condition walk 48 ticks at 14 (head and tail sag, the body sinks lower, the fins hang); run 18 ticks at 35 (the
+body stretched and tilted forward, the fins swept back). The tail swings 52, 140, 110 and 95 units, the phase falls steadily from
+head to tail, the holds fall to 3 to 8 per cent of the loop and the fastest tick to under twice the mean speed. Resident
+animation buffer 67090 of 100352 bytes. `tools.test_tylomon_swim` checks the bytes, the seams, the distance per tick, the wave,
+the absence of holds and of a short beat, the floor and the storage.
