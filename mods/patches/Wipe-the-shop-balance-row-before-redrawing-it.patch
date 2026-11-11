@@ -1,0 +1,35 @@
+From 16a8c45ab042db19b4b43f23fb549a7f6f2fd5f0 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 11 Nov 2026 19:55:24 +0000
+Subject: [PATCH] Wipe the shop balance row before redrawing it
+
+---
+ src/main/script_textbox.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/src/main/script_textbox.c b/src/main/script_textbox.c
+index 5297a21e..9fea61e2 100644
+--- a/src/main/script_textbox.c
++++ b/src/main/script_textbox.c
+@@ -158,6 +158,7 @@ int32_t drawTextboxStrings(boxId, flag)
+ 	uint8_t *buf;
+ #if FONT_SWITCH
+ 	int32_t cellsRow; /* MOD (language) */
++	RECT balanceRect; /* MOD (shop balance): the row cleared before it is redrawn */
+ 	int8_t fixed;
+ #endif
+ 
+@@ -193,6 +194,10 @@ int32_t drawTextboxStrings(boxId, flag)
+ 		if (box->render == renderShopBitsBox) {
+ 			cellsRow = 1;
+ 			DRAW2_PIECES = BALANCE_PIECES;
++			/* The row is redrawn whenever the balance changes, and drawGlyphPieces only paints the glyphs: a
++			 * shorter number (or a "Merit" after a "Bits") left the old digits to its right. Wipe the whole row. */
++			setRECT(&balanceRect, px, row, 0x90, 0xc);
++			clearTextSubArea(&balanceRect);
+ 		} else {
+ 			cellsRow = boxId + 1 == TEXTBOX_PIECES_BOX &&
+ 			           (box->vramRows != 0 ? box->writeRow % box->vramRows : box->writeRow) == TEXTBOX_PIECES_ROW;
+-- 
+2.55.0
+
