@@ -1,0 +1,42 @@
+From 47e5099b1dd2cbfb56be5a45a1da196cf6c20973 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 11 Nov 2026 20:08:22 +0000
+Subject: [PATCH] Keep staged background rows intact when the window is
+ replaced
+
+A whole-window upload reads each row into the tile ring's memory and frees
+the ring's slots. When the VRAM cells already hold another window, as on
+Continue (the map load uploaded the arrival's window first), each cell's
+leaving tile was copied back into the first free slot, over the staged
+row, before that row reached VRAM. Tiles came up with parts of other tiles:
+shifted bands of ground around the tamer until the screen was entered again.
+
+Skip the copy-back while a row is staged; the row read replaces the ring
+anyway.
+---
+ src/main/tfs_stream.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/src/main/tfs_stream.c b/src/main/tfs_stream.c
+index ffb63e1..74c0cf1 100644
+--- a/src/main/tfs_stream.c
++++ b/src/main/tfs_stream.c
+@@ -803,6 +803,15 @@ static void captureOutgoing(RECT *rect, int32_t incoming)
+ 	}
+ 	old = TFS_CELL[c];
+ 	TFS_CELL[c] = incoming;
++	/*
++	 * A staged row (tfsStageRow) occupies the ring's memory and has freed its
++	 * slots: a capture now would write the leaving tile over the row's pixels
++	 * before they are uploaded (Continue replaces the window the map load
++	 * uploaded, so every cell has a tile leaving).
++	 */
++	if (TFS_SPAN_FIRST >= 0) {
++		return;
++	}
+ 	if (!TFS_ACTIVE || (old < 0) || (old == incoming) || (MOD_TFS_TILE_SEQ[old] < 0) ||
+ 	    (findSlot(old) >= 0)) {
+ 		return;
+-- 
+2.55.0
+
