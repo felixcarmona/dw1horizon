@@ -5,7 +5,8 @@ wing bones carry no wings here: the cape hangs from two of them (10 the shoulder
 tail from another (12). Angemon's own wing beat on those bones would flap the cape, so every program replaces their
 tracks with followers: each takes part of its driver's turn (the chest for the cape, the head for the hair) a few
 ticks late and trails back with the speed the root travels at. The upper arms are held a little further out from the body (ARMS_OUT); every other bone keeps Angemon's track
-tick for tick.
+tick for tick. The trailing speed wraps around each endless loop (`closed`), so a loop ends on the pose it began from
+and the cape and hair do not creep a few degrees further with every pass.
 """
 import copy
 import math
@@ -80,7 +81,7 @@ def _speeds(frames, loop=None):
     return [sum(window(i)) / len(window(i)) for i in range(len(raw))]
 
 
-def follow(frames, loop, rig, rest, closed=False):
+def follow(frames, loop, rig, rest, closed=True):
     rest_rots, rest_pos = R.world_rots(rig, rest), R.world_pos(rig, rest)
     # where each rooted follower hangs, in its anchor's frame
     hang = {b: [sum(rest_rots[a][j][i] * (rest_pos[b][j] - rest_pos[a][j]) for j in range(3)) for i in range(3)]
@@ -109,7 +110,7 @@ def follow(frames, loop, rig, rest, closed=False):
     return out
 
 
-def build(data, skeleton, closed=False):
+def build(data, skeleton, closed=True):
     bound, proof = native_binding.build(data, skeleton)
     rig = proof['generated_skeleton']
     model = mmd.MMD.parse(bound, len(rig))

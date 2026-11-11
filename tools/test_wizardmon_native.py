@@ -71,6 +71,28 @@ class WizardmonNative(unittest.TestCase):
                     values = [f[bone][axis] for f in frames]
                     self.assertLess(max(values) - min(values), 1100, (slot, bone, axis))
 
+    def test_endless_loops_close_on_their_first_pose(self):
+        """The cape and hair followers end each endless loop on the pose it began from, so repeated passes do not
+        creep: the last tick equals the first on those bones (Angemon's own bones keep their own programs) and ten passes of
+        the engine's player end where they began."""
+        import numpy as np
+        for slot, index in enumerate(self.model.anims.table):
+            if index is None:
+                continue
+            frames, loop, _ = animsheet.slot_frames(self.model, 26, slot)
+            if loop is None:
+                continue
+            with self.subTest(slot=slot):
+                self.assertEqual([frames[-1][b] for b in sorted(self.BUILDER.FOLLOWERS)],
+                                 [frames[loop][b] for b in sorted(self.BUILDER.FOLLOWERS)])
+                player = mmd.AnimPlayer(self.model.anims.anims[index], 26, slot)
+                poses = []
+                for _ in range((len(frames) - 1 - loop) * 10 + loop + 1):
+                    player.tick()
+                    poses.append(np.array([list(v) for v in player.pose], float))
+                follow = sorted(self.BUILDER.FOLLOWERS)
+                self.assertLessEqual(np.abs(poses[-1][follow, 3:6] - poses[loop][follow, 3:6]).max(), 2)
+
     def test_staff_rides_the_staff_hand(self):
         self.assertEqual(self.recipe['map']['10'], STAFF)
         self.assertGreaterEqual(self.rig[STAFF][0], 0)

@@ -351,7 +351,8 @@ clear of the cape by `spread`. `field_animations/wizardmon_native.py` runs after
 binding: in the field clips it holds the upper arms further out from the body
 (`ARMS_OUT`), and in every program it replaces the wing beat on those three bones with
 followers that take part of the head's (cape top, hair) or chest's (cape hem) turn a
-few ticks late and trail back with the root's speed. Techniques and
+few ticks late and trail back with the root's speed, which wraps around each endless loop (`closed`) so the
+loop ends on the pose it began from and the cape and hair do not creep further with every pass. Techniques and
 the training clip (57, Angemon's 46) are Angemon's; the record's effect points and
 condition bubble are carried onto the new bones (`species_patch`).
 
@@ -359,8 +360,8 @@ Sorcermon (242) is Wizardmon's body with a crystal staff, and is bound the same 
 `spread` and glove `roll`; `field_animations/sorcermon_native.py` runs the same followers). Its staff differs: the crystal head is
 turned face-on, the staff is held out to the side (`swing`, with a `roll` about its length) and slid 70 units along its length
 (`offset`) so the hand holds its lower part; with Wizardmon's mace direction the crystal touched the hat brim and the butt end
-the left thigh. Sorcermon's followers also close each endless loop on its first pose (`closed`): Wizardmon's trailing
-speed starts each pass from rest, so its cape and hair creep a few degrees further every pass of a walk or run.
+the left thigh. Like Wizardmon's, Sorcermon's followers close each endless loop on its first pose (`closed`), so its cape and hair
+do not creep further with every pass of a walk or run.
 Its techniques play the Angemon clip each shares with Wizardmon (Electric Cloud, Static Elect, Wind Cutter, Confused
 Storm) and a cast clip of its kind for the ice moves (Winter Blast Hurricane's, Aqua Magic War Cry's, the shots Megalo
 Spark's, Spinning Shot's and Static Elect's), the finisher Angemon's. Its effect points are carried by world position onto the head (bone 3) and the staff head (bone 9); the condition bubble
