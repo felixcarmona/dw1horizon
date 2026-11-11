@@ -1082,3 +1082,12 @@ The footstep sounds play on the touchdown ticks (they were two to four ticks off
 (30 to 40 %) of the trunk's turn a few ticks late, so they trail it; the idle breathes (trunk and shoulders, about 1 degree) and the tired
 walk hangs the head 7 degrees lower and leans the trunk 3 further. Slip of the toes during stance, mean / worst as a percentage of the
 body's speed: walk 47 / 182 before and 10 / 23 now, tired walk 141 mean / 460 worst before and 8 / 30 now (`tools.test_hookmon_polish`).
+SlashAngemon (300) has its own walk (`field_animations/slashangemon_gait.py`, shipped as the model delta; the idle, tired walk and run are the import's). The old
+walk planted each foot for about 11 ticks of 16, but the planted knee folded to 93 degrees every time the other foot lifted (thigh -69 to -104 degrees and back
+in two ticks), the swinging foot flew at up to four times the ground speed and stopped dead on landing, and the chest yawed a held +-20 degrees that flipped
+in three ticks (the tired walk and the run turn +-10 on smooth curves), so the wings swivelled in a snap. The new one is 16 ticks at 20 units a tick: each foot is
+planted at the ground's speed, swings on an arc that leaves and meets the floor at the ground's speed, lands heel first and peels off the toe with the toe bone
+flat; the legs are two-bone solves, the body sinks where the legs reach furthest and rises over the planted foot (bob 12 units against 21), the pelvis turns 6 and
+rolls 3 degrees, the chest turns against the hips on a slow S-curve (about 12 degrees peak to peak) and rolls the other way, rising a little with each push-off; the head stays level and follows the chest's turn about three ticks late with a soft tilt and nod; each arm is a delayed pendulum (the blade arm lags a tick more, its hand opening outwards at the end of the swing) with a small shoulder roll; the wings lift softly at each push-off and fold at each landing, each feather section a little later; the skirt trails the hips. The arms ignore the chest's turn (turning with it pushed them into the torso). The upper body is held to the import's penetration per part, and `tools.test_slashangemon_gait` checks the amplitudes and that no part flutters. A short leg
+(the chibi reshape) needs a crouch of about 6 units plus the heel peel to reach the stride (solver reach at most 0.985 of the leg). The stance slip is measured on the
+vertex that is each part's sole at rest: at most 6 % (mean 1-2 %), against 33-56 % in the old walk. The tired walk still folds its planted knee like the old walk did.

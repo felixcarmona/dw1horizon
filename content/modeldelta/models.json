@@ -3604,9 +3604,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/300-SlashAngemon.MMD.mdelta",
-        "delta_sha256": "180c2adbce5ad519aea364216532c2ad535ccb297a267bfbb48ab23bc66fce2d",
-        "sha256": "1f76f61fcb691d22244c5d6ce7c7c8a22f85523a308ff0aa8e862a4cea366f3c",
-        "size": 101218
+        "delta_sha256": "1084856c92a9659be0be4d7332ac7fed123aa1f245fd89990bba887b3233f33a",
+        "sha256": "c097591ae0480a1e66025af073eec3bf8f82bd5b8a83243fede11af732b413a3",
+        "size": 103570
       },
       "tim": {
         "sources": [

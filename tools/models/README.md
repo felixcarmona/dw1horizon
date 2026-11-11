@@ -961,3 +961,7 @@ model: each boot sole is planted in stance and swings through the air on an arc 
 the leg chain is placed by inverse kinematics, and the two big arms hang level with the torso and trail it as lagged pendulums.
 `python3 -m tools.models.field_animations.datamon_gait --source SRC.MMD --out-dir DIR` (SRC from `edit.py get 294` before the
 change), then `edit.py put 294 DIR/294-Datamon.MMD`. Test: `tools.test_datamon_gait` (`DATAMON_MODEL`).
+SlashAngemon (300): `field_animations/slashangemon_gait.py` rewrites only the walk (slot 2, 16 ticks and the closing frame, 20 units a tick) on its 31 bones
+with planted-foot IK; the idle, tired walk, run and every other program stay the import's byte for byte (`tools.test_slashangemon_gait` checks a hash of them):
+`python3 -m tools.models.field_animations.slashangemon_gait --source BEFORE.MMD --out AFTER.MMD` on the model before this change (`edit.py get 300`),
+then `edit.py put 300 AFTER.MMD`. The slot has no aliases, so nothing else follows it. The upper body is authored per part as world rotations on top of the planted legs (a chest counter-turn, arm and blade pendulums, wing breathing, a trailing skirt); `upper_motion` measures it.
