@@ -730,6 +730,7 @@ is fitted offline by `fit`, constant data in the module. Everything else is the 
 programs. `python3 -m tools.models.field_animations.skullmammothmon_clash --source BEFORE.MMD --out AFTER.MMD` on the model before this
 change (`edit.py get 268`), then `edit.py put 268 AFTER.MMD`; check with `tools.test_skullmammothmon_clash`. The resident buffer has 12 B
 to spare, so a change that adds keys to those clips will not fit.
+`field_animations/octomon_scuttle.py` (Octomon 278): an offline model delta over the import. The six tentacle legs are walked by damped least squares IK with planted tips (tripod gait, Hermite swings), the body rises, falls and sways, and the two arms and the idle tentacles follow with a delay. Idle 64 ticks (slots 1, 18 and 33 share it), walk 16 ticks at 15 u/tick, tired walk 20 at 10, run 10 at 35. `python3 -m tools.models.field_animations.octomon_scuttle --source <import MMD> --out <MMD>` rebuilds it; register with `tools/models/edit.py put 278`; check with `tools.test_octomon_scuttle`.
 
 Kokuwamon (247): `field_animations/kokuwamon_arm.py` runs after the field pace pass (`after_generator` in
 `content/models/imports/pace.json`). The source clips left the arm chain 13/14/15/16 stiff; its shoulder 13, forearm 14

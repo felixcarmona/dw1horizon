@@ -2929,9 +2929,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/278-Octomon.MMD.mdelta",
-        "delta_sha256": "4a3747edbb9f13fba1c271224a0a814d082a0e2da7a482aaec5394bd3c8b8c5d",
-        "sha256": "7db03916614b7d6544c083f425d2fa605d6abbb163e889e7a347b58c8455e153",
-        "size": 106040
+        "delta_sha256": "1ad4c03520281de11315ab6582dd483f74de0c27acbf216d174e0ee0c798289e",
+        "sha256": "a4debdfeff66fd8299d03090364dd8bfb512568d9fc2d453f0f29a74c4619986",
+        "size": 100862
       },
       "tim": {
         "sources": [
