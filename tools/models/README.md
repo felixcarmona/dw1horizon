@@ -608,6 +608,9 @@ check with `tools.test_shadramon_loose`.
 Tylomon (254): `field_animations/tylomon_swim.py` rewrites idle, walk, condition walk and run as travelling swimming waves; `python3 -m tools.models.field_animations.tylomon_swim
 --source build/imported-model-edit/edit/254-Tylomon.MMD --out AFTER.MMD` on the model before this change, then `edit.py put 254 AFTER.MMD`; the pins of
 `locomotion.json` and `celebrations.json` follow the new model; check with `tools.test_tylomon_swim`.
+Plesiomon (271): `field_animations/plesiomon_swim.py` rewrites idle (slots 0, 1 and 18), walk, condition walk and run as four swimming movements (neck and tail
+waves, rowing flippers on springs); `python3 -m tools.models.field_animations.plesiomon_swim --source build/imported-model-edit/edit/271-Plesiomon.MMD --out AFTER.MMD`
+on the model before this change, then `edit.py put 271 AFTER.MMD`; it has no overlay pass; check with `tools.test_plesiomon_swim`.
 
 
 

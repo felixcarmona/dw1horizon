@@ -908,6 +908,22 @@ head to tail, the holds fall to 3 to 8 per cent of the loop and the fastest tick
 animation buffer 67090 of 100352 bytes. `tools.test_tylomon_swim` checks the bytes, the seams, the distance per tick, the wave,
 the absence of holds and of a short beat, the floor and the storage.
 
+`field_animations/plesiomon_swim.py` is written over Plesiomon's model (no overlay pass runs on it) and baked into the delta.
+The import's four field clips (40 ticks each) were one pose cycle and differed only in the root's speed (0, 22, 15.5 and 39
+units a tick). Bones: 1 body, 14 to 18 neck, 19 head, 20 jaw, 10 to 13 tail, 6 + 7 and 8 + 9 front flippers (right, left), 2 + 3
+and 4 + 5 hind flippers. The new clips run a travelling wave up the neck (the base held, the yaw and a vertical wave a quarter
+behind growing to the head, which trails on a spring and nods against the wave) and down the tail (the tip on a spring, so it
+lashes), and row the flippers through springs, the outer joint trailing the inner and the hind pair a little behind the front
+pair: a slow figure of eight in the idle (72 ticks), a rowing stroke with left and right half a stroke apart in the walk (40
+ticks at 22 units) and the condition walk (60 ticks at 15, low, the neck and head sagging, the tail dragging, short strokes),
+and a wide stroke of both sides together in the run (24 ticks at 39, the body pitched forward, the neck stretched out low, a
+tail that whips). Speeds are the importer's, rounded to whole units. Slots 1 and 18 shared the idle and follow it. The head
+sways 26, 50, 38 and 23 units sideways relative to the body, the tail tip 33, 79, 51 and 125, the front flipper tips 60, 105,
+41 and 146 up and down; no vertex group goes through another more often than in the import's pose (counted in every pose) and
+the joints stay as close together as they were. Resident animation buffer 83734 of 100352 bytes.
+`tools.test_plesiomon_swim` checks the bytes, the aliases, the lengths and speeds, the seams, the waves, the strokes, the body,
+the absence of jumps, the vertex counts and gaps, the blink and the storage.
+
 `field_animations/triceramon_gait.py` replaces the idle, walk, tired walk and run of Triceramon (257) with authored
 clips. The import's clips had walk and tired walk the wrong way round (tired faster than the walk, 18.6 against 15.6 units
 a tick), stance feet that slid (88 % of the root speed in the walk) and no breathing. The new speeds are 16 (20 ticks),
