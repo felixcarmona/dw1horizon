@@ -428,6 +428,18 @@ walk 9 ticks at 16 units, tired walk 13 at 10; the run is a light gallop of one 
 closed loops; the tired walk keeps the head low and facing forward. The idle (slots 0 and 33) is a 64-tick loop:
 breathing, a look to one side, a sniff, an ear twitch and a tail flick, legs planted. `tools/test_tapirmon_gait.py` covers it.
 
+Gryphonmon's (293) imported clips kept the paws sliding (44 to 53 % mean foot slip, 84 % at worst in the walk) under a
+crouched body, flapped the wings stiffly with every step and repeated the walk as the idle. No native rig matches four
+legs, two wings and a chain tail (Garurumon and Elecmon have no wings, Birdramon and Airdramon are bird or serpent plans),
+so `field_animations/gryphonmon_gait.py` gives `quadruped.py` a profile of the rig: walk 22 ticks at 16 units, tired
+walk 28 at 11 and a gallop of 16 at 38, with the hocks and elbows folding backwards and the long paws planted by their sole
+point (mean sole slip 4 to 6 %). The walk is proud: the neck arched and the head high, a high-stepping eagle paw, a shoulder roll, a heavy lagged
+tail and the wings beating once a stride (each wing is one chain on the chest's z hinge: a quick downstroke and a slower upstroke of
+the arm, the fan on its end a few ticks behind and wider, so it trails; turning the fan about another axis opens a gap between the two mesh pieces); the run
+beats them wider; the tired walk hangs the head and beats low and slow. The idle is a 96-tick loop with a breath, a slow wing stretch, a beak
+scan to each side, a settling dip, a tail flick and three blinks. The old walk-speed overlay is gone: the celebration overlay
+(slot 42) now starts from this model. `tools/test_gryphonmon_gait.py` covers it.
+
 Cyclonemon's (281) idle, walk, condition walk and run were rebuilt (old ticks 20/21/21/19, root speeds 25/21/44
 units/tick, feet slipping 103-132 %, a heavy hunch in the condition walk). `field_animations/cyclonemon_gait.py`
 plants the heavy left arm like a crutch and both hind feet with `quadruped.py`: idle 48 ticks (feet planted, slow

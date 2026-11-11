@@ -415,34 +415,6 @@
    }
   }
  },
- "293": {
-  "name": "Gryphonmon",
-  "bones": 25,
-  "skeleton_sha256": "a050c8a9103125e682194f0561764d7d75b286ac8c0c7a7d712fdc55736d9092",
-  "source_sha256": "3a5ffd5e8fa213f759112da5040264e5c039ab0c05e3d9a8f6cda142ecbf89b6",
-  "base_generator": null,
-  "post_source_sha256": "3a5ffd5e8fa213f759112da5040264e5c039ab0c05e3d9a8f6cda142ecbf89b6",
-  "slots": {
-   "2": {
-    "from": 2,
-    "ticks": 26,
-    "speed": 20,
-    "slip": [
-     125,
-     250
-    ]
-   },
-   "4": {
-    "from": 4,
-    "ticks": 20,
-    "speed": 38,
-    "slip": [
-     190,
-     360
-    ]
-   }
-  }
- },
  "239": {
   "name": "Gizamon",
   "bones": 16,
