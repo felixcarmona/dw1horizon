@@ -58,8 +58,6 @@
  "238": {"model": "238-Dolphmon.MMD", "aliases_applied": true, "field_overlay": "dolphmon-gaits"},
  "239": {"field_overlay": "gizamon-active-gait", "model": "239-Gizamon.MMD", "aliases_applied": true, "technique_aliases": {"Dynamite Kick (44)": "Sonic Jab"}},
  "240": {"model": "240-Gesomon.MMD", "aliases_applied": true, "movement_sound": 17},
- "241": {"model": "241-Wizardmon.MMD", "aliases_applied": true, "field_overlay": "wizardmon-supported-field"},
- "240": {"model": "240-Gesomon.MMD", "aliases_applied": true, "movement_sound": 17, "field_overlay": "gesomon-terrestrial"},
  "241": {"model": "241-Wizardmon.MMD", "aliases_applied": true, "field_overlay": "wizardmon-native"},
  "242": {"model": "242-Sorcermon.MMD", "aliases_applied": true, "field_overlay": "sorcermon-supported-field"},
  "243": {"movement_sound": 12, "model": "243-Starmon.MMD", "aliases_applied": true},

@@ -211,8 +211,7 @@ class ModelProvider(unittest.TestCase):
         # Salamon (221) neither: its gait and blinking face are in its model delta (salamon.py, salamon_face.py).
         self.assertNotIn('221', assignments)
         self.assertEqual(hashlib.sha1(json.dumps(assignments, sort_keys=True).encode()).hexdigest(),
-                         'f822ae98bdb73617630170a0406887e62694a6e0')
-                         'bcc7a4fb7464339689bea0adb55f4b5d1e16a527')
+                         'aef33e6e0eb6ae6a447854bbe2696a1066224d8e')
 
 
 if __name__ == '__main__':
