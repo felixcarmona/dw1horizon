@@ -87,7 +87,7 @@
  "267": {"model": "267-Mammothmon.MMD", "aliases_applied": true},
  "268": {"model": "268-SkullMammothmon.MMD", "aliases_applied": true},
  "269": {"model": "269-Garbagemon.MMD", "aliases_applied": true, "technique_aliases": {"Metal Sprinter": "Power Crane"}},
- "270": {"model": "270-PrinceMamemon.MMD", "aliases_applied": true},
+ "270": {"model": "270-PrinceMamemon.MMD", "aliases_applied": true, "field_overlay": "princemamemon-native", "native_animation_donor": 13},
  "271": {"model": "271-Plesiomon.MMD", "aliases_applied": true},
  "272": {"model": "272-Woodmon.MMD", "aliases_applied": true, "field_overlay": "woodmon-pace"},
  "273": {"model": "273-Floramon.MMD", "aliases_applied": true, "field_overlay": "floramon-pace"},

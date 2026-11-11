@@ -360,6 +360,8 @@ A **field overlay** is a reviewed recipe that rewrites the field slots of one sp
 | `fieldweight.py` | Ankylomon 189, Lighdramon 201 | step-synchronized body roll, yaw and pitch around the existing paw paths |
 | `fieldglide.py` | MetalSeadramon 211, Magnadramon 215, Gesomon 240, MarineAngemon 248, Solarmon 251 | replaces only the root's forward momentum with one steady key per loop (same net travel), removing forward bursts; every pose channel exact |
 | `tortomon.py` | Tortomon 261 | walk, condition walk and trot authored with `quadruped.py` from the shell bone: a lateral-sequence walk (16 ticks, 12 units/tick), a lower slower condition walk (22 ticks, 9) with a hung head, a trot (10 ticks, 36); each foot is planted flat and still for about a quarter of the cycle (duty 0.28, 0.26, 0.17; sole slide 0-4 units) while the shin turns over the ankle, then peels off heel first and swings in an arc (`arc`, `fold_soft`, per-leg `leg_reach`); no tick reaches the IK's stretch or fold limit and no joint jumps between ticks; cuffs up to 30 units under the floor and slip up to 30 % are allowed (profile `floor`, `stance_slip`), because the legs reach only about 70 units of ankle travel; slot 36 shares the run |
+| `extyrannomon_arms.py` | ExTyrannomon 266 | arms only (bones 7, 8) of the walk, condition walk and run: a spring on the opposite-phase pitch of the same-side leg (swing 21, 11 and 36 degrees, a tick or two late), footfall kicks, sway abduction, disc roll; body, legs, tail, events and idle untouched; arm-versus-body and arm-versus-leg vertex counts never above the original; slot 36 shares the run |
+| `mammothmon_gait.py` | Mammothmon 267 | walk, condition walk and run re-authored with `quadruped.py` so the hind (and front) feet plant: walk 20 ticks at 15 units/tick, condition walk 24 at 11, trot 10 at 36, the hind reach (about 150 units planted) setting the short cycles; trunk, ears and jaw follow on lagged closed loops; the idle is kept. Test: `tools/test_mammothmon_gait.py` |
 | `shakkoumon.py` | Shakkoumon 214 | idle, walk, condition walk and run authored from the rest pose: breathing and weight shift; a waddle (14 ticks, 20 units/tick) rolling over the standing foot, pelvis against chest, arms and head late, soles carried back at the ground speed (slip 26 %); a slower drooping condition walk (20 ticks, 12); a leaning run (12 ticks, 42) with a short flight; pelvis height set per tick on the lowest sole |
 | `fieldphantom.py`, `fielddolphin.py`, `fieldzudo.py` | Phantomon 229, Dolphmon 238, Zudomon 219 | restore the native performance clock that the retargeted field clips had squeezed |
 | `fieldpiedmon.py`, `fieldfairy.py` | Piedmon 245, Lillymon 209 | keep the native float: Piedmon (since replaced by `piedmon_levitate.py`, four distinct levitating clips); Lillymon's shoulders opened in slot 0x21, the performance the experimental runtime layer (above) shows in the field |
@@ -371,6 +373,8 @@ A **field overlay** is a reviewed recipe that rewrites the field slots of one sp
 | `saberleomon_gait.py` | SaberLeomon 258 (after the field pace pass) | legs re-timed through IK (lateral-sequence walk, bounding gallop with a flight phase), spine flex and bounce from foot support, delayed head share and bob, closed-loop trailing tail carried up in the run, forelegs set back 25 units, head carried by a fitted per-tick lift/pitch table so no leg triangle crosses the mane or jaw; cycle lengths, root travel, mesh and other programs exact |
 
 | `okuwamon_limbs.py` | Okuwamon 259 | offline model delta: the idle kept as it was (clean limbs, closed-loop wings), the tired rest/walk/tired walk/run written as a four-legged diagonal gait solved per leg (planted flat feet, short steps for the 250-unit feet), pincers carried forward, a side-to-side waddle of pelvis, chest and pincers; cycles 20/10/12/8, root speeds 15/10/36 |
+| `raremon_drag.py` | Raremon 264 | offline model delta: walk, tired walk and run rewritten as a drag-crawl (the idle and its alias stay); each arm is solved by two-bone IK (shoulder and elbow, no clamping) to a flat hand planted in the world during the pull while the hump surges forward on a von Mises burst of speed and the other arm reaches; lower body and tail lie on the floor as lagging springs, head and jaw follow late; cycles 16/24/12 (walk/tired walk/run), root speeds 15/10/35 |
+| `skullmammothmon_clash.py` | SkullMammothmon 268 | offline model delta: walk, tired walk and run (slots 2, 3, 4, 36; 35 shares slot 2) with a per-tick neck pitch/lift and small shoulder/knee/ankle turns of the front legs so no front-leg triangle crosses the head, trunk or tusks; every other bone, timing and program unchanged, idle untouched |
 | `superstar_gait.py` | SuperStarmon 244 | offline model delta: Starmon's refined walk, tired walk and run on the larger body (translations times 1.75, cycles 22, 28 and 25 ticks for 19.5, 13.5 and 37.9 units a tick), idle with the arms hanging |
 | `fieldgatomon.py`, `fieldcat222.py`, `fieldpup.py`, `fieldgizmo.py`, `fieldape.py`, `fieldscarab.py`, `fieldpaddle.py`, `fieldwalrus.py`, `fielddiaboromon.py` | Gatomon 234, BlackGatomon 222, Gizamon 239, Apemon 227, GranKuwagamon 210, Gomamon 217, Ikkakumon 218, Diaboromon 237 | quadruped and crouched gaits: one-segment limbs pinned through the body carrier instead of stretched, paired bounds, knuckle walks, flipper strokes |
 | `fieldinfermon.py`, `fieldslug.py`, `fieldcandle.py` | Infermon 246, ShellNumemon 231, Candlemon 235 | six legs in alternating tripods; a slug's propulsion clock separate from its face acting (the body slides); a pedestal that hovered on a steady line, bobbing and swaying (Candlemon's clips are now baked hops, see below) |
@@ -465,6 +469,13 @@ harmonic so they do not read as one sine. Boot slip while supporting is at most 
 boots nor arm parts enter the ball or each other at any tick. The eyes blink by texture moves (`thundermon_face.py`, the
 frames in texels no face samples): the idle blinks twice in a row once a loop (ticks 30 and 38), the walk once at tick 9, the
 tired walk slowly at 22 and the run at 12; each clip starts and ends with open eyes. Not tested in the game.
+
+Garbagemon's (269) eyes blink and its grin opens by texture moves (`garbagemon_face.py`; frames in texels no face samples,
+eight moves per change, the poses of every clip unchanged). The idle, shared by slots 0, 1, 18 and 33, is the old 19-tick
+loop repeated seven times (133 ticks): a blink at tick 30, a double blink at 98 and 105, a yawn of 22 ticks at 52 and a
+small gulp at 118. The walk blinks at 11 and chews open on the rise, shutting on the footfall; the tired walk blinks slowly
+(five ticks) and yawns for 10 ticks after the footfall; the run snaps its jaws twice with a blink between. Every clip starts
+and ends with open eyes and a shut mouth. Not tested in the game.
 
 None of these certifies the look of a motion: each recipe was accepted on side-by-side reviews (source against
 candidate, three views) and a game run. Diagnostics that count crossings must be normalised by the number of sampled
@@ -716,6 +727,11 @@ programs remain unchanged. The replay recipe and preceding delta are under
 `content/modeldelta/authoring/260-before-native-polish.MMD.mdelta`. The final
 resident model uses 99,406 of 100,352 bytes; each cold read fits 8,192 bytes.
 
+PrinceMamemon uses Mamemon's native skeleton and every program of it (slots 0-59, plus
+copies in 61 and 62), scaled 2.2 and bound by `native_binding.py`: the idle, walk, condition
+walk and run are 17, 15, 19 and 15 ticks, and Mamemon's stride, root travel and sounds are
+kept. The replay recipe is in `content/models/imports/native-bindings.json`.
+
 The foot mesh's sole plane, heel and toe define explicit forward-facing ground
 contacts. Each stride lands on its heel, holds the sole flat in world space,
 and rolls off its toe. Scaled two-bone IK and a cyclic pelvis-height envelope
@@ -833,6 +849,32 @@ to well below it, spread, never swept back.
 The animation buffer holds 91992 of 100352 bytes. `tools.test_quetzalmon_flight` checks the pinned source, the
 speeds, the seams, the beats, the floor clearance, the distance of the wings to the body and the storage.
 
+### Flymon (262): four flights
+The import's idle, walk, condition walk and run (slots 0 and 1, 2, 3, 4) played one 29-tick pose sequence, so the wasp
+read as the same animation at three root speeds (17.9, 13.2 and 38.2 units a tick). `field_animations/flymon_flight.py`
+writes the five slots again on the reviewed 29-bone import and the result is stored in the plain delta (no overlay: the
+generator is run offline, `tools/models/edit.py put 262`); every other slot, the mesh and the rig are unchanged and slot 1
+shares the idle. The wings beat about the front-to-back axis from their own hinge (the hinge offsets never change), a
+quick downstroke and a slower recovery, the beats of a loop a little unequal, the left wing behind the right and the small
+upper pair behind the large pair, chased by a soft spring. The body's rise, the abdomen, the legs, the four small arms and
+the antennae are chains of springs on that stroke, each link later than the one before; the legs hang a few degrees behind
+the rear arms so the two never meet. Every clip repeats its pose exactly and the root travels the same distance every tick.
+The encoder tolerance is 7 units of 1/4096 turn (0.6 degrees) on every bone but the root and the body's offsets (1 unit):
+exact tolerances overflow the resident buffer.
+
+| clip | ticks | beats | wings (degrees down from the folded rest) | body pitch (forward) | body rise | root per tick |
+| --- | --- | --- | --- | --- | --- | --- |
+| idle (0, 1) | 30 | 2 | 6 +- 13 | 1 degree | 15 | 0 |
+| walk (2) | 30 | 3 | 7 +- 17 | 11 degrees | 12 | 18 |
+| condition walk (3) | 40 | 2 | 11 +- 21 (upper pair 5 higher) | 9 degrees, heaving 7, abdomen drooping | 9 | 13 |
+| run (4) | 20 | 4 | 3 +- 9 | 30 degrees, legs and arms trailing | 7 | 38 |
+
+Against the import: the loop lengths (29 ticks each: idle 30, walk 30, condition walk 40, run 20; the idle stays short because a long one hides the condition idles) and the root speeds rounded to
+whole units (17.9, 13.2, 38.2 to 18, 13, 38); the footstep sound stays once per loop. The animation buffer holds 95788
+of 100352 bytes (92076 before). The head is the body's root bone, so its turns are a slight yaw of the whole body.
+`tools.test_flymon_flight` checks the pinned source, the speeds, the seams, the beats, the hinges, that no vertex of a limb
+or wing enters the body or another limb and that the wings of a side never cut each other, the floor and the storage.
+
 `field_animations/shadramon_loose.py` is written over Shadramon's model (the claw strides of `shadramon.py`, baked into
 its plain delta) and baked into the delta in turn. The import's idle (slot 0; the battle idle, slot 33, shared that
 clip and keeps it) hopped: the pelvis rose from 123 to 297 units and the mesh top from 429 to 576. The new idle has the
@@ -866,6 +908,22 @@ head to tail, the holds fall to 3 to 8 per cent of the loop and the fastest tick
 animation buffer 67090 of 100352 bytes. `tools.test_tylomon_swim` checks the bytes, the seams, the distance per tick, the wave,
 the absence of holds and of a short beat, the floor and the storage.
 
+`field_animations/plesiomon_swim.py` is written over Plesiomon's model (no overlay pass runs on it) and baked into the delta.
+The import's four field clips (40 ticks each) were one pose cycle and differed only in the root's speed (0, 22, 15.5 and 39
+units a tick). Bones: 1 body, 14 to 18 neck, 19 head, 20 jaw, 10 to 13 tail, 6 + 7 and 8 + 9 front flippers (right, left), 2 + 3
+and 4 + 5 hind flippers. The new clips run a travelling wave up the neck (the base held, the yaw and a vertical wave a quarter
+behind growing to the head, which trails on a spring and nods against the wave) and down the tail (the tip on a spring, so it
+lashes), and row the flippers through springs, the outer joint trailing the inner and the hind pair a little behind the front
+pair: a slow figure of eight in the idle (72 ticks), a rowing stroke with left and right half a stroke apart in the walk (40
+ticks at 22 units) and the condition walk (60 ticks at 15, low, the neck and head sagging, the tail dragging, short strokes),
+and a wide stroke of both sides together in the run (24 ticks at 39, the body pitched forward, the neck stretched out low, a
+tail that whips). Speeds are the importer's, rounded to whole units. Slots 1 and 18 shared the idle and follow it. The head
+sways 26, 50, 38 and 23 units sideways relative to the body, the tail tip 33, 79, 51 and 125, the front flipper tips 60, 105,
+41 and 146 up and down; no vertex group goes through another more often than in the import's pose (counted in every pose) and
+the joints stay as close together as they were. Resident animation buffer 83734 of 100352 bytes.
+`tools.test_plesiomon_swim` checks the bytes, the aliases, the lengths and speeds, the seams, the waves, the strokes, the body,
+the absence of jumps, the vertex counts and gaps, the blink and the storage.
+
 `field_animations/triceramon_gait.py` replaces the idle, walk, tired walk and run of Triceramon (257) with authored
 clips. The import's clips had walk and tired walk the wrong way round (tired faster than the walk, 18.6 against 15.6 units
 a tick), stance feet that slid (88 % of the root speed in the walk) and no breathing. The new speeds are 16 (20 ticks),
@@ -877,3 +935,19 @@ first sample. The torso rides the steps instead of gliding: the pelvis rises and
 tired walk and 30 in the run (which dips on each landing and has a short flight), and head, neck and tail answer with
 a lag. Resident animation buffer 99304 of 100352 bytes. `tools.test_triceramon_gait` checks the exact bytes, the
 bob, the speed order, the seams, the planting, the floor, the limb overlaps and the storage.
+
+`field_animations/darktyrannomon_idle.py` replaces the field idle (slot 0) of DarkTyrannomon (265) and nothing else. The
+import's idle was a 21-tick fidget played as a loop: the torso yawed 30 degrees, the head swept 38, the jaw opened 41 and
+the tail swung 42 degrees every 0.7 seconds, bones turned up to 8.3 degrees a tick (a step changed by up to 6.3 degrees),
+and the feet lifted up to 35 units with a 30-unit pelvis bounce, so it read as convulsions. The new idle is 96 ticks: two breaths whose
+depth swells and fades (chest 11 degrees), a tail (bones 3-5, base to tip 25, 28 and 34 degrees) that sways with the glances and
+flicks with the yawns, a head (bone 20) nodding and glancing 17 degrees, a lower jaw (bone 21: only its pitch changes, the chin
+goes straight down in the head's frame, never sideways) that opens twice a loop (a small and a wide yawn, 25 degrees at most, the
+chin 33 and 55 units down) and shuts between them, and, above all, the arms: bones 12-15 and 16-19 (the big outer limbs with
+the long claws) swing free, rotation only (shoulders 13-15 degrees forward/back and outward, elbows 15-17, hands and claws
+17-21, a lag and a different phase per arm). The feet are bones 6-8 and 9-11 (the short limbs at the centre) with the pelvis (1): solved onto the floor
+once and bit for bit the same in every tick. Every bone turns under 2.4
+degrees a tick and its step changes by under 0.8. The battle idle
+(slot 33) shared the old program and keeps it. Resident animation buffer 94786 of 100352 bytes.
+`tools.test_darktyrannomon_idle` checks the exact bytes, the other slots, the seam, the step and frequency bounds, the
+range of every bone, the still feet, the free arms, the overlaps and the storage.
