@@ -101,6 +101,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'piedmon-native-float': ('245', 'tools.models.field_animations.piedmon_levitate', '245-piedmon-native-float'),
     'superstarmon-supported-field': ('244', 'tools.models.field_animations.celebrations', '244-superstarmon-supported-field'),
     'starmon-boxer-field': ('243', 'tools.models.field_animations.pace', '243-starmon-boxer-field'),
+    'violetelecmon-native': ('256', 'tools.models.field_animations.native_binding', '256-violetelecmon-native'),
     'sorcermon-native': ('242', 'tools.models.field_animations.sorcermon_native', '242-sorcermon-native'),
     'wizardmon-native': ('241', 'tools.models.field_animations.wizardmon_native', '241-wizardmon-native'),
     'gesomon-terrestrial': ('240', 'tools.models.field_animations.gesomon', '240-gesomon-terrestrial'),

@@ -386,6 +386,17 @@ Storm) and a cast clip of its kind for the ice moves (Winter Blast Hurricane's, 
 Spark's, Spinning Shot's and Static Elect's), the finisher Angemon's. Its effect points are carried by world position onto the head (bone 3) and the staff head (bone 9); the condition bubble
 is Wizardmon's, over the same hat.
 
+VioletElecmon (256) is native Elecmon's (18, `CHDAT/MMD0/ELEC.MMD`) body in other colours: its 22 rigid pieces are
+Elecmon's pieces one to one (object n is object n), so recipe `256` maps them onto Elecmon's 25-bone skeleton, which
+has two extra empty bones (1 and 15) the import lacked, at scale 1 with no stretch. Each piece is moved by a small
+`offset` (at most 15 units, the head 41 forward) so its box lies where Elecmon's does; its ears are 30 units shorter
+than Elecmon's, which stays. Every program below the techniques is Elecmon's own (idle 31 ticks, walk, condition walk
+and run 21 ticks at 15.7, 14.5 and 50 units a tick), the techniques play Elecmon's clip for each move it shares
+(Static Elect, Megalo Spark, Electric Cloud, Wind Cutter, Muscle Charge, Super Thunder Strike), Elecmon's kick
+for Sonic Jab and Muscle Charge's clip for War Cry, and training slot 54 is Elecmon's training clip (46, hit tick 10).
+The record's effects use Elecmon's (`effects_like` 18) and the condition bubble rides the head (bone 3).
+`PYTHONPATH=tools python3 -W ignore -m unittest tools.test_violetelecmon_native` (after `edit.py get 256`).
+
 Flamedramon (195) walked like a catwalk: the procedural stride (`gaits.py`)
 swung and dropped the hips from side to side, twisted the chest the other way
 and held the arms out wide, and clips on Leomon's footfalls kept Leomon's hunch.
