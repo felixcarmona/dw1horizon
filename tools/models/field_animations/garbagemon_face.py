@@ -13,7 +13,10 @@ Texture layout (pixels; the texture is 256x128, 4 bits):
   teeth picture (220, 64)  32x16: the strip of teeth, upper teeth over a zigzag of tooth tips over the lower teeth
   frames        packed into blank texels no face samples (the top rows and a few pockets, EYE_PLACES and MOUTH_PLACES):
                 a frame is stored as the rectangles that hold the texels differing between the states (EYE_BANDS, three
-                rows each; MOUTH_BANDS, eight rows), one texture move each. The game's own eye frames (60..107, 24..39,
+                rows each; MOUTH_BANDS, eight and seven rows), one texture move each. A band that two states paint with
+                the same pixels is stored once. The packing leaves the 17x17 texels at the top left free: the flat sprite
+                (tools/flatsprite.py) needs a 15x15 cell and the build stops with "no room for the flat sprite" without
+                it. The game's own eye frames (60..107, 24..39,
                 its iris-only blink, which the clips already reset at tick 0) are left as they are
 A shut eye covers the white and the iris with the lid's skin and keeps the black outline as the lash; a half shut eye
 has the lid down to the middle with a black edge. An open mouth slides the upper teeth up and the lower teeth down by
@@ -158,11 +161,11 @@ def mouth_frame(rest, state):
 
 # where each state's bands sit: EYE_PLACES[state][band] = (x, y) in pixels (x a multiple of 4)
 EYE_BANDS = [(168, 102, 16, 3), (160, 105, 24, 3), (148, 108, 36, 3), (148, 111, 36, 3), (152, 114, 28, 3), (160, 117, 16, 3)]
-MOUTH_BANDS = [(220, 64, 32, 8), (220, 72, 32, 8)]
-EYE_PLACES = [[(112, 8), (72, 8), (192, 0), (192, 3), (228, 0), (0, 11)],
-              [(64, 11), (228, 9), (192, 6), (0, 8), (228, 3), (80, 11)],
-              [(140, 11), (40, 11), (36, 8), (136, 8), (228, 6), (156, 11)]]
-MOUTH_PLACES = [[(0, 0), (32, 0)], [(64, 0), (96, 0)], [(128, 0), (160, 0)]]
+MOUTH_BANDS = [(220, 64, 32, 8), (220, 72, 32, 7)]      # (the picture's last row never changes)
+EYE_PLACES = [[(80, 8), (220, 0), (184, 0), (136, 9), (20, 10), (80, 11)],
+              [(112, 8), (228, 10), (148, 0), (176, 6), (148, 6), (80, 11)],
+              [(112, 8), (228, 10), (140, 12), (148, 3), (184, 3), (20, 7)]]
+MOUTH_PLACES = [[(84, 0), (52, 0)], [(116, 0), (20, 0)], [(48, 7), (212, 3)]]
 
 
 def _band_rows(rows, origin, band):
