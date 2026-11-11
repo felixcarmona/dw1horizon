@@ -547,6 +547,27 @@ The condition bubble and the effect points are moved onto Mamemon's bones by fit
 landed. `native_animation_donor` keeps Mamemon's own Buster Dive from being replaced.
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_princemamemon_native` (after `edit.py get 270`).
 
+ChaosLord (289) wears native Machinedramon's (115, `CHDAT/MMD3/MUGE.MMD`) 32-bone skeleton at scale 1; its 29 bones
+map almost one to one (waist, chest, arms, three left fingers, cannons, neck, head, jaw, pelvis, legs, tail). The two
+thrusters sit rigid on the chest; Machinedramon's claw hand, second neck bone and cannon tips stay empty, and the right
+forearm and claw are one piece on the forearm bone. Native Machinedramon has no care slots, so `donor_builder` in the
+recipe makes the donor from `content/models/partners/machinedramon.py`; slots below 46 are that model's, the 15
+techniques play Machinedramon's seven clips by kind (Megaton Punch for the punches and kicks) and slot 3 is the walk
+retimed through `pace.retime` (recipe `pace`) so the condition walk is slower than the walk. The idle (slot 0, and slot 33 which shares it, 37 ticks) and the run (slot 4, and slot 36 which shares it) are the species' own clips from before the binding, retargeted in world space (`original_run` in the pace row, `limbs` in the recipe): every tick each source bone's world motion since the bind pose is
+applied to its donor bone's bind placement (the pieces were fitted there), and the donor bones are solved root to
+leaves: the local rotation that gives that world rotation, and for the waist and pelvis (which hang from the height
+bone) the offset that puts the joint where that motion took it. Each limb in `limbs` (legs, arms, tail: base, middle, end
+bone) keeps the end bone's world rotation and has the donor's own bone lengths reach the end joint, bending to the side the
+original's rotations bent it. The root keeps the source's travel (the run: 19 ticks, 47.5 per tick; the idle stands) and donor bones with no
+source bone (the second neck bone, claw hand, cannon tips) hold their pose and follow their parent. A bone whose angles
+end the loop written the other way round is flipped from the tick whose in-between frames stay nearest the true turn.
+The body is lifted per tick only as far as the ground rule needs. Against the original posed by its own run the mean vertex
+distance is 26 (the fitted pieces already differ by 25 at rest); the limbs' base and middle bones (thighs, shins, upper
+arms, tail) turn 8 to 24 degrees from the original's because the donor's legs are shorter and bent, everything else 3
+degrees at most. The condition bubble and
+effect points are moved onto Machinedramon's bones. `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_chaoslord_native`
+(after `edit.py get 289`).
+
 Flamedramon (195) walked like a catwalk: the procedural stride (`gaits.py`)
 swung and dropped the hips from side to side, twisted the chest the other way
 and held the arms out wide, and clips on Leomon's footfalls kept Leomon's hunch.

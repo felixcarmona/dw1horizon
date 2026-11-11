@@ -106,7 +106,7 @@
  "286": {"model": "286-Deramon.MMD", "aliases_applied": true},
  "287": {"model": "287-Tapirmon.MMD", "aliases_applied": true},
  "288": {"model": "288-Boltmon.MMD", "aliases_applied": true},
- "289": {"model": "289-ChaosLord.MMD"},
+ "289": {"model": "289-ChaosLord.MMD", "field_overlay": "chaoslord-native", "native_animation_donor": 115},
  "290": {"model": "290-Clockmon.MMD", "aliases_applied": true, "field_overlay": "clockmon-celebration"},
  "291": {"model": "291-Dragomon.MMD", "aliases_applied": true},
  "292": {"model": "292-Deltamon.MMD", "aliases_applied": true},

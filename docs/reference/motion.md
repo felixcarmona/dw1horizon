@@ -753,6 +753,15 @@ copies in 61 and 62), scaled 2.2 and bound by `native_binding.py`: the idle, wal
 walk and run are 17, 15, 19 and 15 ticks, and Mamemon's stride, root travel and sounds are
 kept. The replay recipe is in `content/models/imports/native-bindings.json`.
 
+ChaosLord uses Machinedramon's native skeleton (32 bones) and field programs, bound by `native_binding.py`
+at scale 1. Native Machinedramon has no care clips, so the recipe's `donor_builder` takes the partner model
+`content/models/partners/machinedramon.py` makes (its own idle, walk and run plus care clips) as the donor. The
+walk and run are 21 and 19 ticks at 25 and 47.5 units per tick; the idle (37 ticks, and slot 33) and the run (and slot 36) are the
+species' own clips retargeted in world space (pace's `original_run`: each bone's world rotation, limbs reaching the original's end joints); the condition walk (slot 3) is the walk
+retimed by `pace.retime` (the recipe's `pace`) to 31 ticks at 16.7, so it stays slower than the walk. The thrusters
+share the chest bone; the claw hand, second neck bone and cannon tips carry no mesh. The resident model uses 84,932
+of 100,352 bytes.
+
 The foot mesh's sole plane, heel and toe define explicit forward-facing ground
 contacts. Each stride lands on its heel, holds the sole flat in world space,
 and rolls off its toe. Scaled two-bone IK and a cyclic pelvis-height envelope

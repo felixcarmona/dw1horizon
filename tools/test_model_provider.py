@@ -63,6 +63,8 @@ class ModelProvider(unittest.TestCase):
             '242': ('242', 'tools.models.field_animations.sorcermon_native', '242-sorcermon-native'),
             # VioletElecmon wears native Elecmon's rig and programs.
             '256': ('256', 'tools.models.field_animations.native_binding', '256-violetelecmon-native'),
+            # ChaosLord wears native Machinedramon's rig and programs.
+            '289': ('289', 'tools.models.field_animations.native_binding', '289-chaoslord-native'),
             # PrinceMamemon wears native Mamemon's rig and programs.
             '270': ('270', 'tools.models.field_animations.native_binding', '270-princemamemon-native'),
 
