@@ -17,5 +17,115 @@
       "ai": [0, -1, -1, -1, -1, -1, -1, -1],
       "path": [[20, 0, 0]]
     }
+  ],
+  "collision": [
+    {
+      "tile": [47, 62],
+      "before": 128,
+      "after": 51,
+      "reason": "South exit of Andromon's room: extend step trigger 0 across the whole bottom edge (it covered only the east five tiles)."
+    },
+    {
+      "tile": [48, 62],
+      "before": 128,
+      "after": 51,
+      "reason": "South exit of Andromon's room: extend step trigger 0 across the whole bottom edge (it covered only the east five tiles)."
+    },
+    {
+      "tile": [49, 62],
+      "before": 128,
+      "after": 51,
+      "reason": "South exit of Andromon's room: extend step trigger 0 across the whole bottom edge (it covered only the east five tiles)."
+    },
+    {
+      "tile": [50, 62],
+      "before": 128,
+      "after": 51,
+      "reason": "South exit of Andromon's room: extend step trigger 0 across the whole bottom edge (it covered only the east five tiles)."
+    },
+    {
+      "tile": [51, 62],
+      "before": 128,
+      "after": 51,
+      "reason": "South exit of Andromon's room: extend step trigger 0 across the whole bottom edge (it covered only the east five tiles)."
+    },
+    {
+      "tile": [52, 62],
+      "before": 128,
+      "after": 51,
+      "reason": "South exit of Andromon's room: extend step trigger 0 across the whole bottom edge (it covered only the east five tiles)."
+    },
+    {
+      "tile": [47, 63],
+      "before": 128,
+      "after": 51,
+      "reason": "South exit of Andromon's room: extend step trigger 0 across the whole bottom edge (it covered only the east five tiles)."
+    },
+    {
+      "tile": [48, 63],
+      "before": 128,
+      "after": 51,
+      "reason": "South exit of Andromon's room: extend step trigger 0 across the whole bottom edge (it covered only the east five tiles)."
+    },
+    {
+      "tile": [49, 63],
+      "before": 128,
+      "after": 51,
+      "reason": "South exit of Andromon's room: extend step trigger 0 across the whole bottom edge (it covered only the east five tiles)."
+    },
+    {
+      "tile": [50, 63],
+      "before": 128,
+      "after": 51,
+      "reason": "South exit of Andromon's room: extend step trigger 0 across the whole bottom edge (it covered only the east five tiles)."
+    },
+    {
+      "tile": [51, 63],
+      "before": 128,
+      "after": 51,
+      "reason": "South exit of Andromon's room: extend step trigger 0 across the whole bottom edge (it covered only the east five tiles)."
+    },
+    {
+      "tile": [52, 63],
+      "before": 128,
+      "after": 51,
+      "reason": "South exit of Andromon's room: extend step trigger 0 across the whole bottom edge (it covered only the east five tiles)."
+    },
+    {
+      "tile": [47, 64],
+      "before": 128,
+      "after": 51,
+      "reason": "South exit of Andromon's room: extend step trigger 0 across the whole bottom edge (it covered only the east five tiles)."
+    },
+    {
+      "tile": [48, 64],
+      "before": 128,
+      "after": 51,
+      "reason": "South exit of Andromon's room: extend step trigger 0 across the whole bottom edge (it covered only the east five tiles)."
+    },
+    {
+      "tile": [49, 64],
+      "before": 128,
+      "after": 51,
+      "reason": "South exit of Andromon's room: extend step trigger 0 across the whole bottom edge (it covered only the east five tiles)."
+    },
+    {
+      "tile": [50, 64],
+      "before": 128,
+      "after": 51,
+      "reason": "South exit of Andromon's room: extend step trigger 0 across the whole bottom edge (it covered only the east five tiles)."
+    },
+    {
+      "tile": [51, 64],
+      "before": 128,
+      "after": 51,
+      "reason": "South exit of Andromon's room: extend step trigger 0 across the whole bottom edge (it covered only the east five tiles)."
+    },
+    {
+      "tile": [52, 64],
+      "before": 128,
+      "after": 51,
+      "reason": "South exit of Andromon's room: extend step trigger 0 across the whole bottom edge (it covered only the east five tiles)."
+    }
   ]
 }
