@@ -476,6 +476,19 @@ Tyrannomon's training clip (hit tick 10, set in the recipe's `partner`). The bor
 pieces and the condition bubble sits over the head (bone 3).
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_metaltyrannomon_native` (after `edit.py get 260`).
 
+PrinceMamemon (270) wears native Mamemon's (13, `CHDAT/MMD0/MAME.MMD`) 19-bone skeleton and programs at scale 2.2, so
+the gold sphere (Mamemon's body, radius 120) keeps the size it has in the source. The sphere, crown, cape and face plane
+are one rigid group on the body bone. Each arm is the epaulette and sleeve stretched along Mamemon's shoulder-to-elbow
+and elbow-to-wrist segments, with cuff, fist and thumb as one rigid glove on the big fist bone; the thigh, shin and boot
+sit on Mamemon's leg bones (the boots `offset` down so the soles stand on the floor as the donor's do, the thighs and shins
+a little to clear the sphere). Mamemon's empty bones (1, 2, 6, 11, 15) stay empty. Every program below the techniques
+is Mamemon's own with its translations scaled (idle 17 ticks, walk 15, condition walk 19 and run 15), each of the 15
+techniques plays Mamemon's clip of its kind (Buster Dive, Counter and Dynamite Kick are Mamemon's own; the three moves it
+lacks borrow the nearest by role) and training slot 61 is Mamemon's training clip (hit tick 8, in the recipe's `partner`).
+The condition bubble and the effect points are moved onto Mamemon's bones by fitting each source piece to where it
+landed. `native_animation_donor` keeps Mamemon's own Buster Dive from being replaced.
+`PYTHONPATH=tools python3 -W ignore -m unittest tools.test_princemamemon_native` (after `edit.py get 270`).
+
 Flamedramon (195) walked like a catwalk: the procedural stride (`gaits.py`)
 swung and dropped the hips from side to side, twisted the chest the other way
 and held the arms out wide, and clips on Leomon's footfalls kept Leomon's hunch.

@@ -216,7 +216,8 @@ def bind(data, skeleton, recipe):
         animation.instrs = [i for i in animation.instrs if i['op'] != 'tex']
         animation.tail = b''
     slots = list(result.anims.table)
-    result.anims.table += [None]*max(0, 61-len(slots))
+    wanted = max([61, 46+len(recipe['technique_slots'])] + [int(k)+1 for k in recipe.get('extra_slots', {})])
+    result.anims.table += [None]*max(0, wanted-len(slots))
     for destination, source in enumerate(recipe['technique_slots'], 46):
         if slots[source] is None:
             raise ValueError(f'Native binding: missing technique {source}')

@@ -727,6 +727,11 @@ programs remain unchanged. The replay recipe and preceding delta are under
 `content/modeldelta/authoring/260-before-native-polish.MMD.mdelta`. The final
 resident model uses 99,406 of 100,352 bytes; each cold read fits 8,192 bytes.
 
+PrinceMamemon uses Mamemon's native skeleton and every program of it (slots 0-59, plus
+copies in 61 and 62), scaled 2.2 and bound by `native_binding.py`: the idle, walk, condition
+walk and run are 17, 15, 19 and 15 ticks, and Mamemon's stride, root travel and sounds are
+kept. The replay recipe is in `content/models/imports/native-bindings.json`.
+
 The foot mesh's sole plane, heel and toe define explicit forward-facing ground
 contacts. Each stride lands on its heel, holds the sole flat in world space,
 and rolls off its toe. Scaled two-bone IK and a cyclic pelvis-height envelope
