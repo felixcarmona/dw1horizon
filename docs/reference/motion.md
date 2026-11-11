@@ -461,6 +461,13 @@ own frames) and a mouth at rest, half shut, shut or wide (slid from the painted 
 face at tick 0; the other slots carry no face moves, so a face cut mid-change (or the condition walk's half-shut eyes,
 the run's wide mouth) stays until slots 0, 2, 3 or 4 play again. Not tested in the game.
 
+Floramon (273) has its own calm idle (a 9 s loop, about 60 % less visible motion than the native one, kept alive by a slow
+breath, a drifting head and lagging petals and tendrils) and a bouncy skipping walk (`field_animations/floramon_gait.py`): a 26-tick loop of two hops of 13 ticks (the run's hops
+are 10) at 16 units per tick, the pelvis rising about 34 units in flight (the run's 61) and crouching on landing, each foot
+planted by IK for 5 ticks (slip 73 % to 13 %); the torso pitches with the hops and twists and sways against the hips, and
+the head rocks side to side (about 27 degrees peak to peak, one side per skip) behind the trunk, and arms, flower, tendrils and tail lag behind. The run keeps its poses and root, the condition walk keeps its legs, arms and root and hangs its head about 25 degrees lower;
+every field clip blinks with the native half and shut eye frames, once per 2.5-3 s in the idle (plus a double blink per loop).
+
 Thundermon (252) has its own idle, walk, condition walk and run (`field_animations/thundermon_gait.py`, written offline and
 shipped as the model delta). They run at 16 / 10 / 36 units per tick in 24 / 40 / 20 tick loops of two gait cycles (12 / 20 /
 10 ticks each; the idle keeps its 97 ticks), with boots 76 units apart that plant and swing high. The ball rocks 14 / 16 / 7

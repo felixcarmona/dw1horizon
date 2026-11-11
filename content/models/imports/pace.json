@@ -25,7 +25,8 @@
      360
     ]
    }
-  }
+  },
+  "after_generator": "tools.models.field_animations.floramon_gait"
  },
  "263": {
   "name": "Mushroomon",

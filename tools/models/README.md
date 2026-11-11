@@ -727,6 +727,13 @@ bobs, boots a boot's width apart that plant and swing, arms on damped springs, b
 --source BEFORE.MMD --out AFTER.MMD` on the model before this change (`edit.py get 252`), then `edit.py put 252 AFTER.MMD`; `field_animations/thundermon_face.py` makes the eyes blink by texture moves over the painted eye disc (frames in unsampled texels, every clip starts and ends
 with open eyes); add `--tim-out AFTER.TIM` and `edit.py put 252 AFTER.MMD AFTER.TIM`; check with `tools.test_thundermon_gait`.
 
+Floramon (273): `field_animations/floramon_gait.py` is an `after_generator` row of `content/models/imports/pace.json`, run on the
+paced model (the delta MMD and its texture are unchanged: the native eye frames are used). The idle (slot 0, a new 180-tick
+program, so slot 33 keeps the old one) is a calm 9 s loop of four breaths with a closed loop; the walk (slot 2) is rewritten
+as a bouncy skip (slot 2: 26 ticks, two hops of 13 ticks against the run's 10, a pelvis rise of about 34 units against the run's 61, 16 units a tick; planted-foot IK, slip 73 % to 13 %); the torso crouches on landing, pitches, twists against the hips and sways, and the head rocks side to side (about 27 degrees peak to peak, one side per skip) a little after the trunk, and petals and tail lag behind it; the run (slot 4, shared with slot 36) keeps its bones and
+root and only gains a blink (three loops long); the condition walk (slot 3) keeps its legs, arms and root, and the chest leans and the head hangs about 25 degrees lower, bobbing slowly, with the blink. Blinks are `tex` events copying the native eye frames (open, half, shut) over the painted eye, every clip starts and
+ends open. Check with `tools.test_floramon_gait` (needs `edit.py get 273`); re-pin 273 in `species-pins.json` after any change.
+
 Tuskmon (253): `field_animations/tuskmon_lift.py` raises the body of the field clips over the strides `tuskmon.py` made (legs re-solved to the same
 ankles) and makes the horns rigid on the chest; `python3 -m tools.models.field_animations.tuskmon_lift --out AFTER.MMD` on the model before this
 change (`edit.py get 253`), then `edit.py put 253 AFTER.MMD`; check with `tools.test_tuskmon_lift`.
