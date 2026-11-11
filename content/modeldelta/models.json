@@ -2509,9 +2509,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/264-Raremon.MMD.mdelta",
-        "delta_sha256": "1f0d201200e0f3141e416657f009c3bea0992b57547dd4c2c56de18b46de2b27",
-        "sha256": "cf2f7bd862baae12ea735d677ccd4782aaae58c698220124bba120dfbb6db646",
-        "size": 104310
+        "delta_sha256": "0a6e6f070de6332786461ef07f4bf9a4bfb02f39783c288b564fc8fbf7996c4b",
+        "sha256": "f32b41ba348fed91179c2bec1e0966b6959a24aba059779605c8c48a82d5b7c5",
+        "size": 94654
       },
       "tim": {
         "sources": [
