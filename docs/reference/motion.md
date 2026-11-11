@@ -980,3 +980,11 @@ degrees a tick and its step changes by under 0.8. The battle idle
 (slot 33) shared the old program and keeps it. Resident animation buffer 94786 of 100352 bytes.
 `tools.test_darktyrannomon_idle` checks the exact bytes, the other slots, the seam, the step and frequency bounds, the
 range of every bone, the still feet, the free arms, the overlaps and the storage.
+
+`field_animations/pumpkinmon_idle.py` changes the field idle (slot 0) of Pumpkinmon (280) and nothing else. The import's idle is a
+27-tick hop in a loop: the pelvis rises 19 units, and both legs fold up and swing, leaving the floor by 33 units (legs turning up to
+45 degrees). The new program is the same idle tick for tick, with only the legs (bones 11-14) attenuated: every channel at a third of
+its distance from the standing pose, the hips lowered in the pelvis' frame so the lowest point of the legs rises a third as much
+(about 14 units), and the leg turns at most about 15 degrees. The other bones, the timing, the loop and the blink events are the
+import's. Slot 33 (the battle idle) shared the old program and keeps it. `tools.test_pumpkinmon_idle` checks the exact bytes, that
+only slot 0 changes, that every other bone is identical, the leg and sole ranges, the closed loop and the storage.

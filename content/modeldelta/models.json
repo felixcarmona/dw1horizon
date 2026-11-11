@@ -2989,9 +2989,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/280-Pumpkinmon.MMD.mdelta",
-        "delta_sha256": "75f377c33da1bdcb247cd5361026d209cb2b73dd1d92842e1588f58757b50ab7",
-        "sha256": "625e0ec247baa95a1fe8894386cd1363c5f72d36f02d6f419b4b69347c3a24d7",
-        "size": 79202
+        "delta_sha256": "9a2567c3a97bf8e4b1166073f6845bc1827d6947841291fd4fb3c1a075623913",
+        "sha256": "8944f680d63d3be0680139c144d99491dc59bf07a814c81e425b2969d7823a34",
+        "size": 80932
       },
       "tim": {
         "sources": [

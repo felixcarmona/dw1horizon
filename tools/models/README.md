@@ -782,3 +782,11 @@ Slot 33 (the battle idle) shared the old program and keeps it; the walk, tired w
 plain delta: `edit.py get 265` on the commit before this change, `python3 -m tools.models.field_animations.darktyrannomon_idle
 --source THAT.MMD --out AFTER.MMD`, `edit.py put 265 AFTER.MMD`. Check with
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_darktyrannomon_idle` (`DARKTYRANNOMON_MODEL=` names the model before).
+
+Pumpkinmon (280): `field_animations/pumpkinmon_idle.py` replaces only the field idle (slot 0): the import's 27-tick hop
+with the legs (bones 11-14) attenuated to a third of their motion (each channel scaled from the standing pose, tick 0) and
+the hips lowered in the pelvis' frame so the soles rise a third as much (33 to about 14 units, leg turns 45 to 15 degrees).
+Every other bone, the timing, the loop and the blink events stay as imported. Slot 33 (the battle idle) shared the old
+program and keeps it; the walk, tired walk and run are untouched. `edit.py get 280` on the commit before this change,
+`python3 -m tools.models.field_animations.pumpkinmon_idle --source THAT.MMD --out AFTER.MMD`, `edit.py put 280 AFTER.MMD`.
+Check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_pumpkinmon_idle` (`PUMPKINMON_MODEL=` names the model before).
