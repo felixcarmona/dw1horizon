@@ -778,3 +778,20 @@ above the floor in between, the long arms stretched out limp behind the body, fo
 cycle because two do not fit the resident animation buffer (98870 of 100352
 bytes used). `tools.test_gesomon_rest` checks the exact bytes, floor contact,
 loop seam, droop, storage and the distance between the four gaits.
+
+MarineAngemon 248 (`tools/models/field_animations/marine_angemon.py`, test
+`tools.test_marineangemon_gait`) held every bone still in all four field slots
+and only the root travelled, so the fairy slid along. The generator authors
+four different loops on its own rig, with no donor motion stored: a 48-tick
+idle hover and a walk, a drooping condition walk and a run at 18, 13 and 38
+units a tick. In every clip the wings beat (two to four beats a loop, with a
+slow swell so no two are alike), the arms swing against each other with the
+wrist lagging the shoulder, the ear ribbons sway and trail with overshoot, and
+the tail and body answer the beat. A constant lift per clip keeps the lowest
+point of the mesh at a hover height. The encoder uses a per-bone tolerance to
+stay inside the resident buffer. The eyes blink through texture moves
+(`marine_angemon_face.py`): the painted eye plate is copied into three frames
+(open, lid half down, shut) in texels no face samples, and each clip sets its
+first face at tick 0 and ends in it. The test reads the model made by
+`tools/models/edit.py get 248` or the commit before the clips
+(`MARINEANGEMON_MODEL`).
