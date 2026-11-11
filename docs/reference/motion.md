@@ -762,6 +762,13 @@ retimed by `pace.retime` (the recipe's `pace`) to 31 ticks at 16.7, so it stays 
 share the chest bone; the claw hand, second neck bone and cannon tips carry no mesh. The resident model uses 84,932
 of 100,352 bytes.
 
+Deltamon uses Tyrannomon's native skeleton (27 bones) and field programs at scale 1.2, bound by `native_binding.py`
+(Greymon's were tried and scored worse). The tails are rigid on the pelvis; the tired walk (30 ticks at 16) and the run
+(24 ticks at 50) are retimed by the recipe's `pace`, `native_arms.py` re-poses the two heavy arms in them, and
+`native_jaws.py` opens the head jaw on the donor's jaw bone with a slow eased curve (one opening per loop, two in the run,
+a held mouth when tired) and replays the source's own skull and metal head jaw turns on the donor's finger bones. The
+resident model uses about 85,400 of 100,352 bytes.
+
 The foot mesh's sole plane, heel and toe define explicit forward-facing ground
 contacts. Each stride lands on its heel, holds the sole flat in world space,
 and rolls off its toe. Scaled two-bone IK and a cyclic pelvis-height envelope

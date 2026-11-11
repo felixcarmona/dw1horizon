@@ -10,6 +10,7 @@ re-posed on every tick of the clip:
   forward, `lag` ticks late, so the elbow and the claws arrive after the shoulder (follow-through);
 * the whole shoulder pump is raised by `lift` degrees so the claw tips clear the floor.
 
+A slot may carry its own numbers (`per_slot`), its aliases (`alias`).
 The clip's period is the clip's own, so the loop closes; legs, tail, head, root travel and every other slot are
 untouched.
 """
@@ -84,6 +85,8 @@ def run_arms(model, sk, spec):
     for slot in spec['slots']:
         frames, loop, events = animsheet.slot_frames(model, n, slot)
         frames = copy.deepcopy(frames)
-        pose_arms(sk, frames, dict(spec, idle=idle))
+        pose_arms(sk, frames, dict(spec, idle=idle, **spec.get('per_slot', {}).get(str(slot), {})))
         additions.append((slot, frames, loop, events))
+        # `alias` names the slots that share a slot's program (36 with 4), so they play the re-posed one too
+        additions += [(alias, frames, loop, events) for alias in spec.get('alias', {}).get(str(slot), [])]
     return A.finish(model, additions, n, charts=False)

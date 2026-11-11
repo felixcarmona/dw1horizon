@@ -575,6 +575,30 @@ degrees at most. The condition bubble and
 effect points are moved onto Machinedramon's bones. `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_chaoslord_native`
 (after `edit.py get 289`).
 
+Deltamon (292) wears native Tyrannomon's (8, `CHDAT/MMD0/TYRA.MMD`) 27-bone skeleton at scale 1.2. Greymon's (5) was
+tried first and left: its own native walk already slips 36 on average (172 at worst) against Tyrannomon's 8 (26), and its
+tired walk dips 171 below the floor. Each source bone goes to the donor bone of the same body part (the chest and the
+belly on the torso bone so they never part, neck and head, the arms, both legs with their three bones, stretched joint
+to joint). The two spiked tails have no counterpart: Tyrannomon's tail swings too far for a ground tail of this length,
+so the six tail pieces sit rigid on the pelvis. The hips are moved 45 forward (`spread`: the donor's hips sit behind
+the belly the source's legs hang from) and the pieces fitted to the unspread rest, feet lifted 22 and shins 20 so the
+soles meet the floor. The skull's back-of-the-arm block rides on the skull so the arm swing cannot expose it. The 11
+techniques play Tyrannomon's clips by kind (`technique_slots`) and the training slot 60 plays its charge clip. `pace`
+retimes the tired walk to 30 ticks at 16 per tick and the run to 24 ticks at 50 (scale 1.2 would give 23 and 65), and
+`arm_pump` (`native_arms.py`) re-poses the two heavy arms in those slots so the heads swing clear of the floor. The
+walk keeps the donor's uneven pace through a stride (22 ticks, 27.3 on average). The mouths come from `jaws`
+(`native_jaws.py`): the head's jaw follows a calm raised-cosine curve written per clip in the recipe (`peak` degrees,
+`cycles` per loop, `base` degrees always open): one slow opening per loop, two in the run, a held-open mouth with a
+4 degree pulse when tired. The skull's and the metal head's jaws replay the source's own jaw turns of the same clip
+(`replay` 1.0: 13-14 degrees, one slow hump per loop, at most 1.8 degrees a tick), stretched over the retimed clip by
+phase. All turn the donor bones that carry the pieces (the head's jaw; the finger bones of the hands, which carry no
+mesh) about the source jaw's own horizontal axis (opening and closing vertically, never swinging sideways; the axis is
+carried with the bone from the bind pose into each tick's pose) and hinge carried onto the fitted piece, so loops close on the clip's own ticks. Known limits: the tired walk keeps a
+stance slip of 30 mean (the donor's own is 5), the run's heel strike sinks 37 against the donor's 14 times the scale, and
+the idle tail tips dip up to 18 below the floor line. The condition bubble and effect point are moved to Tyrannomon's
+head and jaw bones. The resident model uses about 85,400 of 100,352 bytes.
+`PYTHONPATH=tools python3 -W ignore -m unittest tools.test_deltamon_native` (after `edit.py get 292`).
+
 Flamedramon (195) walked like a catwalk: the procedural stride (`gaits.py`)
 swung and dropped the hips from side to side, twisted the chest the other way
 and held the arms out wide, and clips on Leomon's footfalls kept Leomon's hunch.
