@@ -523,6 +523,7 @@
   "source_sha256": "3fcd95f06d2dd1b68cfc57a56d38da6c0fcc1df6f6e74ca731a66e9515a84ca7",
   "base_generator": "tools.models.field_animations.kokuwamon",
   "post_source_sha256": "cf9e380aae3dcdaefebfa012c13da2230d47abee554012483eff510aeb323ff0",
+  "after_generator": "tools.models.field_animations.kokuwamon_arm",
   "slots": {
    "2": {
     "from": 2,
