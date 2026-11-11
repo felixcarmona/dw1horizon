@@ -173,6 +173,9 @@ class ModelProvider(unittest.TestCase):
                 assignments[sid] = (row['base_generator'], assignments[sid][1])
             else:
                 del assignments[sid]
+        # Hookmon's corrected clips (hookmon_polish.py) run on top of its chibi proportions and rebuild them first.
+        self.assertEqual(assignments['299'], ('tools.models.field_animations.hookmon_polish', '299-hookmon-chibi'))
+        assignments['299'] = ('tools.models.field_animations.chibi', '299-hookmon-chibi')
         # The chibi proportions wrap the recipe that came before them; species without one have no other generator.
         chibi = json.load(open('content/models/imports/chibi.json'))
         for sid, row in chibi.items():

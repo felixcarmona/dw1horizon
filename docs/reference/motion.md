@@ -1072,3 +1072,13 @@ speeds are 36, 30 and 71 units a tick at root speeds of 15, 11 and 36. The loops
 28-tick tired walk and a 21-tick run (15, 11 and 36 units a tick). The big arms hang with the hands level with the torso
 (the model's rest pose holds them 35-42 units in front of it) and swing gently around that. The test reads the model made by `tools/models/edit.py get 294`
 (`DATAMON_MODEL`).
+Hookmon (299) keeps its chibi-reshaped idle, walk, tired walk and run (same ticks, root travel, rhythm and silhouette) and gets small
+corrections on top (`field_animations/hookmon_polish.py`). The imported arms were static in the walk, tired walk and run, and the feet crept
+over the floor in each stance, hovered a little above it and skidded in at each landing. Each stance (the ball of the foot staying over one
+spot of the ground) is now planted: the foot lands there, is lowered onto the floor where the clip left it hovering, stays put (the heel
+rises about the ball, the original toe-off) and leaves with the swing eased in and out of the spot. The leg is solved with two bones towards
+the corrected ankle, keeping the clip's own knee direction and the foot's world rotation; a sole that skids low over the floor is lifted.
+The footstep sounds play on the touchdown ticks (they were two to four ticks off). The shoulders, hook, gun arm and head carry on a share
+(30 to 40 %) of the trunk's turn a few ticks late, so they trail it; the idle breathes (trunk and shoulders, about 1 degree) and the tired
+walk hangs the head 7 degrees lower and leans the trunk 3 further. Slip of the toes during stance, mean / worst as a percentage of the
+body's speed: walk 47 / 182 before and 10 / 23 now, tired walk 141 mean / 460 worst before and 8 / 30 now (`tools.test_hookmon_polish`).

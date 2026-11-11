@@ -673,6 +673,9 @@ turned toward standing as far as it was lowered), and the condition walk's
 dragging feet held mostly on their footprints. The body is kept on its claws at
 the ticks and the 60 fps thirds.
 
+Hookmon (299) runs a small post-pass (`field_animations/hookmon_polish.py`) after the chibi proportions: stance feet planted at their touchdown spot with the footstep sounds on those ticks,
+trailing arms, hook and head, a breathing idle. See `docs/reference/motion.md`.
+
 Digmon's (193) run was its walk played with twice the travel.
 `field_animations/digmon.py` builds the run from the walk's own poses on a
 14-tick cycle instead of 20, at the same field speed: thighs swing further, the
