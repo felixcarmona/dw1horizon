@@ -397,6 +397,26 @@ for Sonic Jab and Muscle Charge's clip for War Cry, and training slot 54 is Elec
 The record's effects use Elecmon's (`effects_like` 18) and the condition bubble rides the head (bone 3).
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_violetelecmon_native` (after `edit.py get 256`).
 
+MetalTyrannomon (260) wears native Tyrannomon's (8, `CHDAT/MMD0/TYRA.MMD`) 27-bone skeleton and programs: the
+cyborg's 23 rigid pieces map onto it by role (head, torso, jaw plate, three tail bones, two three-bone legs, and each
+arm's upper arm and forearm), at scale 1 with no stretch. The legs, tail, head and torso are moved by an `offset` onto
+where Tyrannomon's piece sits. The arms are not: the source has no hand, so the forearm block and its three claws are
+one rigid group on Tyrannomon's forearm bone (the claws on the donor's hand and claw bones turned at a wrist the heavy
+forearm does not have, which read as broken wrists). Each arm is fitted by joint: `spread` moves Tyrannomon's shoulder
+and elbow to where the cyborg's are (the right arm mirrors the left) in every program, the pieces stay on those joints,
+and the forearm group is turned (`swing`) so its claws hang along Tyrannomon's forearm instead of out sideways. The hand
+and claw bones stay empty, as does the pelvis; the side pipe with the yellow muzzle has no counterpart and rides the head. The run (slot 4) is the one clip whose arms are not the donor's: the donor's thin arms swing close to the body, which on
+this heavy body reads as arms glued to the torso, so `arm_pump` (`native_arms.py`) re-poses the shoulder and the forearm
+(claws rigid with it) on every tick: held out, pumped front to back against the leg on their side, the elbow closing as the
+arm comes forward and arriving late, and lifted so the claw tips clear the floor. The legs, tail, head, other clips and
+techniques stay the donor's.
+Every program below the techniques is Tyrannomon's own but for the arms' two start translations (idle 21 ticks, walk 23,
+condition walk 27 and run 21 ticks at 22.7, 17.7 and 50 units a tick), each of the 14 techniques plays Tyrannomon's clip of
+its kind (the moves they share their own: Prominence Beam, Megaton Punch, Dynamite Kick), and training slot 60 is
+Tyrannomon's training clip (hit tick 10, set in the recipe's `partner`). The borrowed effect points travel with their
+pieces and the condition bubble sits over the head (bone 3).
+`PYTHONPATH=tools python3 -W ignore -m unittest tools.test_metaltyrannomon_native` (after `edit.py get 260`).
+
 Flamedramon (195) walked like a catwalk: the procedural stride (`gaits.py`)
 swung and dropped the hips from side to side, twisted the chest the other way
 and held the arms out wide, and clips on Leomon's footfalls kept Leomon's hunch.

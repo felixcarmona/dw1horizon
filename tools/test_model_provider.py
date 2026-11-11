@@ -63,6 +63,9 @@ class ModelProvider(unittest.TestCase):
             '242': ('242', 'tools.models.field_animations.sorcermon_native', '242-sorcermon-native'),
             # VioletElecmon wears native Elecmon's rig and programs.
             '256': ('256', 'tools.models.field_animations.native_binding', '256-violetelecmon-native'),
+
+            # MetalTyrannomon wears native Tyrannomon's rig and programs.
+            '260': ('260', 'tools.models.field_animations.native_binding', '260-metaltyrannomon-native'),
             '187': ('187', 'tools.models.field_animations.followthrough', '187-stingmon-wing-followthrough'),
             '239': ('239', 'tools.models.field_animations.followthrough', '239-gizamon-active-gait'),
             # LadyDevimon's flight (ladydevimon_flight.py) is written over her baked chibi delta.

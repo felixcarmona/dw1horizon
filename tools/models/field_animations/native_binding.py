@@ -15,6 +15,7 @@ import mmd
 import motionstorage
 import numeric as np
 import retarget
+from tools.models.field_animations import native_arms
 
 ROOT = Path(__file__).resolve().parents[3]
 MANIFEST = ROOT / 'content/models/imports/native-bindings.json'
@@ -223,6 +224,8 @@ def bind(data, skeleton, recipe):
     for destination, source in recipe.get('extra_slots', {}).items():
         result.anims.table[int(destination)] = slots[source]
     output = result.build()
+    if recipe.get('arm_pump'):
+        output = native_arms.run_arms(mmd.MMD.parse(output, len(rig)), rig, recipe['arm_pump'])
     storage = motionstorage.require(output, len(rig))
     return output, dict(species=sid, source_sha256=digest(data), output_sha256=digest(output),
                         donor=donor_id, generated_skeleton=rig, storage=storage,
