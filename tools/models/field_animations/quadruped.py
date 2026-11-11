@@ -21,7 +21,8 @@ nefertimon.py writes Nefertimon's:
   direction): a swinging leg bends towards it, eased in from the standing bend and back out before it lands.
   A lower bone with a long part along it (a forearm blade) gives `aim` (front/hind: that direction in the bone's
   space): standing and swinging, the bone rolls about itself to keep it pointing ahead. A profile with `pole_world` gives its pole directions in the world (x towards the leg's side) instead of the parent bone's
-  space, for a leg hung from a bone that stands turned in its rest pose. A gait's `wide`
+  space, for a leg hung from a bone that stands turned in its rest pose. A profile's `floor` and `stance_slip` widen the
+under-the-floor and sliding-sole bounds for a rig whose leg plates cannot stay both flat and planted (Tortomon). A gait's `arc` (default 0.8) shapes the lift of a swinging paw: 1 rises as a plain half sine, below 1 it leaves the floor faster. A gait's `clear_ease` (fraction of the swing) brings the clearance under the paw in gradually, so a paw peeled at the end of stance does not jump up at the lift-off. A gait's `fold_soft` (units) replaces the hard minimum distance `fold` of a swinging wrist from its hip by a smooth maximum of that width. A gait's `leg_reach` (per leg: units) moves one leg's stance window fore or aft of the others'. A gait's `wide`
   (front/hind: units) carries a swinging paw out from its track and back in by the landing.
 
 Each clip is rewritten where it is stored, so its battle aliases play it too. Footsteps keep the species' own
@@ -342,7 +343,7 @@ def gait(rig, cfg):
     for name, (up, lo, paw, side, front) in p['legs'].items():
         key = 'front' if front else 'hind'
         ref = p['legs'][MIRROR.get(name, name)]
-        centres[name] = W[up][2][3] + p['reach'][key] + cfg['reach'][key]
+        centres[name] = W[up][2][3] + p['reach'][key] + cfg['reach'][key] + cfg.get('leg_reach', {}).get(name, 0)
         tracks[name] = side * (abs(W[ref[2]][0][3]) + cfg.get('track', {}).get(key, 0))
     worst = dict(stretch=0.0)
 
@@ -374,6 +375,10 @@ def gait(rig, cfg):
         root = [Wp[p['legs'][name][0]][i][3] for i in range(3)]
         d = sub(wrist, root)
         least = p['fold'][p['legs'][name][4]]
+        soft = cfg.get('fold_soft')
+        if soft:       # a smooth maximum: the wrist's distance eases into `least` instead of being capped at it
+            r = norm(d)
+            return add(root, scale(unit(d), 0.5 * (r + least + math.sqrt((r - least) ** 2 + soft ** 2))))
         return wrist if norm(d) >= least else add(root, scale(unit(d), least))
 
     def swung_pole(front, s):
@@ -402,10 +407,13 @@ def gait(rig, cfg):
             mul_ = cfg.get('leg_lift', {}).get(name, 1.0)    # the two sides never step quite alike
             flight = [lift_off[i] + (landing[i] - lift_off[i]) * (k if i == 2 else s) for i in range(3)]
             flight[2] -= mul_ * cfg['out'][key] * 6.75 * s * s * (1 - s)    # reaches past the landing, then settles onto it
-            flight[1] -= mul_ * cfg['lift'][key] * math.sin(math.pi * min(1.0, s ** 0.8))
+            flight[1] -= mul_ * cfg['lift'][key] * math.sin(math.pi * min(1.0, s ** cfg.get('arc', 0.8)))
             flight[0] += side * cfg.get('wide', {}).get(key, 0) * math.sin(math.pi * s)    # swings wide of the body
             world = rig.paw(front, swing_pitch(cfg, front, s), name)
-            wrist = folded(pose, name, [flight[0], min(flight[1], -p['clear'] - rig.lowest(paw, world, [0, 0, 0])), flight[2]])
+            dip = rig.lowest(paw, world, [0, 0, 0])
+            if cfg.get('clear_ease'):      # the clearance under the paw comes in over the first part of the swing
+                dip *= smooth(s / cfg['clear_ease'])
+            wrist = folded(pose, name, [flight[0], min(flight[1], -p['clear'] - dip), flight[2]])
             lower, _ = rig.solve(pose, name, wrist, hist, swung_pole(front, s), p.get('aim', {}).get(front))
             set_rot(pose, paw, mul(tr(lower), world), hist)
         return pose, short
@@ -530,11 +538,11 @@ def build(data, skeleton, profile):
         loop = played[:total + 1]
         speed = abs(loop[-1][0][8] - loop[0][0][8]) / total
         floor = _floor(rig, loop)
-        assert floor <= FLOOR, (slot, 'under the floor', floor)
+        assert floor <= profile.get('floor', FLOOR), (slot, 'under the floor', floor)
         low, high = profile.get('speed_range', SPEED_RANGE)[slot]
         assert low <= speed <= high and abs(speed - cfg['speed']) <= 0.5, (slot, speed)
         slips = _stance_slip(rig, cfg, loop)
-        assert max(slips.values()) <= STANCE_SLIP, (slot, slips)
+        assert max(slips.values()) <= profile.get('stance_slip', STANCE_SLIP), (slot, slips)
         sounds = sorted({k for k, kind, _ in played_events if kind == 'sound' and k < total})
         assert len(sounds) == len(cfg['steps']) * cycles, (slot, sounds)
         checks.append(dict(slot=slot, gait=cfg['name'], ticks=ticks, cycles=cycles, units_per_tick=round(speed, 2),

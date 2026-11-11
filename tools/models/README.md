@@ -325,6 +325,30 @@ upper arms and the hock bones above the hind feet hold their angle (`links`). Th
 hang from plates stood turned in the rest pose, so the profile gives its bend directions in
 the world (`pole_world`). Its old field overlay (weight transfer and pace retime of a
 73-frame walk) is gone: the gait now lives in the model delta.
+Tortomon's (261) walk, condition walk and run were noisy, identical in the last two, slid
+the feet through the whole stance and stepped further than the short legs reach.
+`field_animations/tortomon.py` writes a lateral-sequence walk (16 ticks, 12 units a tick),
+a slower and lower condition walk (22 ticks, 9) with the head hung, and a trot (10 ticks,
+36) with `quadruped.py`; the whole body hangs from the shell bone. Own clips instead of a
+native binding: the 21-bone short-legged rig has one shell bone carrying everything and
+a native donor would stretch the legs. The legs are folded Z shapes, so the profile bends
+the front knee downwards (`pole`) and widens the checks with `floor` and `stance_slip`.
+A planted stride longer than about 55 units (ankle travel against the hip) cannot be reached
+without the IK capping the leg at full stretch or full fold, where the foot sticks and then pops,
+so each foot is planted for only about a quarter of the cycle (duty 0.28, 0.26 and 0.17) and
+each leg's stance window is placed on its own hip (`leg_reach`: the rig's hips are not
+symmetric). In the stance the sole is flat and does not move in the world (0 to 4 units, the
+ankle 2 to 4), the shin and knee turn over the planted ankle, the heel peels off at the end of
+the stance and the foot swings in a high arc (`arc`) and lands flat. The swinging wrist's
+distance from the hip eases into its minimum (`fold_soft`) instead of being capped at it. No
+clip reaches the IK's stretch or fold limit on any tick (the hip-ankle distance stays 30 to 71
+units, limits 25 and 75), and no leg joint moves more than 18 degrees or 14 units a tick in the
+walks (the trot's planted feet move with the body at 36 a tick, so its bounds are wider). The
+thigh swings 45 to 70 degrees and the knee bends about 60 to 90, the foot rises 26 to 34 units;
+weight comes from smooth constant-speed curves, a low bob, the shell's roll and the lagged head
+and tail. Slot 36 shares the run's program and changes with it; slots 27 and 35
+keep the old pattern. `tools/test_tortomon_gait.py` covers it.
+
 Magnamon (197) is bound to native Leomon (`native_binding.py`). Its boots kept
 the source's fighting stance, turned 35 and 93 degrees outward, its fists kept
 the guard pose's forward point, and its broad legs crossed over Leomon's narrow
