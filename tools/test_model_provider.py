@@ -59,10 +59,14 @@ class ModelProvider(unittest.TestCase):
             '232': ('232', 'tools.models.field_animations.native_binding', '232-bombernanimon-native'),
             # Wizardmon wears Angemon's rig and programs (its cape and hair follow); its paced gait was retired with it.
             '241': ('241', 'tools.models.field_animations.wizardmon_native', '241-wizardmon-native'),
+            # Sorcermon is Wizardmon's body: the same rig, programs and followers.
+            '242': ('242', 'tools.models.field_animations.sorcermon_native', '242-sorcermon-native'),
             '187': ('187', 'tools.models.field_animations.followthrough', '187-stingmon-wing-followthrough'),
             '239': ('239', 'tools.models.field_animations.followthrough', '239-gizamon-active-gait'),
             # LadyDevimon's flight (ladydevimon_flight.py) is written over her baked chibi delta.
             '223': ('223', 'tools.models.field_animations.ladydevimon_flight', '223-ladydevimon-flight'),
+            # Quetzalmon's flight (quetzalmon_flight.py) is written over its reviewed import delta.
+            '249': ('249', 'tools.models.field_animations.quetzalmon_flight', '249-quetzalmon-flight'),
         }
         for sid, expected in following.items():
             self.assertEqual(selected.pop(sid), expected)
@@ -73,6 +77,10 @@ class ModelProvider(unittest.TestCase):
         # Gesomon's walk, run, idle and tired walk are baked into its plain delta (gesomon.py, gesomon_rest.py).
         self.assertEqual(records['240'], {'model': '240-Gesomon.MMD', 'aliases_applied': True, 'movement_sound': 17})
         selected['240'] = model.OVERLAYS['gesomon-terrestrial']
+        # Solarmon's whole gears and its four distinct gaits are baked into its plain delta (solarmon_gaits.py); the
+        # recipe chain stays registered as the source they were authored over.
+        self.assertEqual(records['251'], {'model': '251-Solarmon.MMD', 'aliases_applied': True})
+        selected['251'] = model.OVERLAYS['solarmon-steady-hover']
         # Baked deltas retain their effective field generator as authoring provenance.
         for path in [*Path('content/modeldelta/scale-locks').glob('*.json'),
                      *Path('content/modeldelta/resizes').glob('*.json')]:
@@ -211,7 +219,7 @@ class ModelProvider(unittest.TestCase):
         # Salamon (221) neither: its gait and blinking face are in its model delta (salamon.py, salamon_face.py).
         self.assertNotIn('221', assignments)
         self.assertEqual(hashlib.sha1(json.dumps(assignments, sort_keys=True).encode()).hexdigest(),
-                         'aef33e6e0eb6ae6a447854bbe2696a1066224d8e')
+                         '62a9b8ef514e4d64113e867a4fe662ca00f63fdc')
 
 
 if __name__ == '__main__':

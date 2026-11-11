@@ -63,6 +63,15 @@ animations with our mesh and texture, replayed from plain deltas
 Run `python3 -m tools.models.babies check` and
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_native_babies`.
 
+Piedmon (245) played one 104-tick floating gesture in its idle, walk, condition walk and run (the three walks differed
+only in root speed and arm amplitude), and the boots, which never touch the ground, slid with the body.
+`field_animations/piedmon_levitate.py` writes slots 0 and 1 (idle), 2, 3 and 4 again as four levitating clips: a
+breathing idle (104 ticks), a glide (24), a slumped glide (28) and a leaning run (20) with the importer's root speeds,
+the same mean hover height of the body (44 units above the ground, ribbons aside), arms, boots, collar and ribbons that
+follow the body a little later, and exact loops. Slots 18 and 33 keep the native idle. Stored in the plain delta
+(`python3 -m tools.models.field_animations.piedmon_levitate --source SRC --out AFTER.MMD`, then
+`tools/models/edit.py put 245 AFTER.MMD`); check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_piedmon_levitate`.
+
 DemiDevimon (236) binds its imported mesh to Birdramon's native skeleton and
 programs through `field_animations/native_binding.py`. The recipe in
 `content/models/imports/native-bindings.json` assigns every rigid piece, fits
@@ -228,6 +237,13 @@ dash leaning 23 degrees with the wings swept back and the legs streamlined. Hair
 excepted), distance per loop, footstep sounds and hover height are kept (the tired walk sits lower on purpose).
 Check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_ladydevimon_flight`.
 
+Quetzalmon (249) held one frozen pose in all four field clips (not one bone moved, only the root travelled).
+`field_animations/quetzalmon_flight.py` (overlay `quetzalmon-flight`) writes the idle, walk, condition walk and run
+again as four flights: a hover (54 ticks, two beats), a steady flight leaning 15 degrees, a low, heavy tired flight with
+hanging wings and a nodding head, and a leaning flight of three slow beats in 48 ticks for the walk and a lighter flight of two beats in 20 ticks for the run, wings kept low and spread, with the body, neck, tail and crest following the wings through damped springs; neck, tail
+and crest carry a wave and the head stays level. Tick counts, distance per loop and footstep sounds are kept.
+Check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_quetzalmon_flight` (needs `tools/models/edit.py get 249`).
+
 Dolphmon (238) had one native 73-tick swim, lifted off the ground, in all four field slots (idle, walk, condition walk,
 run), so they differed only in root speed. `field_animations/dolphmon_gaits.py` (overlay `dolphmon-gaits`) runs after
 `dolphmon.py` (which keeps the sleeping clip) and writes slots 0, 2, 3 and 4 again on the reviewed rig: a belly-resting
@@ -351,9 +367,21 @@ clear of the cape by `spread`. `field_animations/wizardmon_native.py` runs after
 binding: in the field clips it holds the upper arms further out from the body
 (`ARMS_OUT`), and in every program it replaces the wing beat on those three bones with
 followers that take part of the head's (cape top, hair) or chest's (cape hem) turn a
-few ticks late and trail back with the root's speed. Techniques and
+few ticks late and trail back with the root's speed, which wraps around each endless loop (`closed`) so the
+loop ends on the pose it began from and the cape and hair do not creep further with every pass. Techniques and
 the training clip (57, Angemon's 46) are Angemon's; the record's effect points and
 condition bubble are carried onto the new bones (`species_patch`).
+
+Sorcermon (242) is Wizardmon's body with a crystal staff, and is bound the same way (recipe 242, same map, `source_yaw`,
+`spread` and glove `roll`; `field_animations/sorcermon_native.py` runs the same followers). Its staff differs: the crystal head is
+turned face-on, the staff is held out to the side (`swing`, with a `roll` about its length) and slid 70 units along its length
+(`offset`) so the hand holds its lower part; with Wizardmon's mace direction the crystal touched the hat brim and the butt end
+the left thigh. Like Wizardmon's, Sorcermon's followers close each endless loop on its first pose (`closed`), so its cape and hair
+do not creep further with every pass of a walk or run.
+Its techniques play the Angemon clip each shares with Wizardmon (Electric Cloud, Static Elect, Wind Cutter, Confused
+Storm) and a cast clip of its kind for the ice moves (Winter Blast Hurricane's, Aqua Magic War Cry's, the shots Megalo
+Spark's, Spinning Shot's and Static Elect's), the finisher Angemon's. Its effect points are carried by world position onto the head (bone 3) and the staff head (bone 9); the condition bubble
+is Wizardmon's, over the same hat.
 
 Flamedramon (195) walked like a catwalk: the procedural stride (`gaits.py`)
 swung and dropped the hips from side to side, twisted the chest the other way
@@ -467,6 +495,20 @@ Gesomon (240): `field_animations/gesomon_rest.py` lowers the idle onto the floor
 `gesomon.build`'s walk and run; all four are baked into the delta (`python3 -m tools.models.field_animations.gesomon_rest
 --source build/imported-model-edit/edit/240-Gesomon.MMD --out AFTER.MMD`, then `edit.py put 240 AFTER.MMD`;
 check with `tools.test_gesomon_rest`).
+Shadramon (250): `field_animations/shadramon_loose.py` rewrites the idle (slot 0, no hop, claws planted) and loosens the upper body of the
+walk and run over the strides `shadramon.py` made (legs re-solved to the same ankles); `python3 -m tools.models.field_animations.shadramon_loose
+--source build/imported-model-edit/edit/250-Shadramon.MMD --out AFTER.MMD` on the model before this change, then `edit.py put 250 AFTER.MMD`;
+check with `tools.test_shadramon_loose`.
+
+
+
+Solarmon (251): `field_animations/solarmon_gaits.py` lengthens the three nubs on each gear hand to full teeth and evens the gears (eight identical teeth 45 degrees apart, the same on both hands; vertices only) and writes
+four different clips (idle, walk, tired walk, run) over the recipe chain's model, each with constant root travel and constant whole-step
+ring and gear spins, and `solarmon_face.py` makes the eyes blink by texture moves over the painted eye disc (the frames in texels no face samples; every clip starts
+and ends with open eyes; the mouth stays as painted). Baked into the delta (`python3 -m
+tools.models.field_animations.solarmon_gaits --source build/imported-model-edit/edit/251-Solarmon.MMD --tim build/imported-model-edit/edit/251-Solarmon.TIM
+--out AFTER.MMD --tim-out AFTER.TIM`, then `edit.py put 251 AFTER.MMD AFTER.TIM`; check with `tools.test_solarmon_gaits`).
+
 Apemon (227) has no field overlay: its idle, walk, condition walk and run are stored in its plain delta
 (`edit.py put 227`). `field_animations/apemon.py` is the generator that authored them from the model before this
 pass (`APEMON_BEFORE`, see `tools/test_apemon_gait.py`): four limbs solved per tick with fixed planted fists and feet,
@@ -530,3 +572,11 @@ importer's; the body's world speed never drops below zero, the belly stays on th
 result is stored in the plain deltas (`python3 -m tools.models.field_animations.shell_numemon_gait --source SRC.MMD
 --tex SRC.TIM --out AFTER.MMD --out-tex AFTER.TIM`, then `tools/models/edit.py put 231 AFTER.MMD AFTER.TIM`); check
 with `PYTHONPATH=tools/models:tools python3 -W ignore -m unittest tools/test_shell_numemon_gait.py`.
+
+`field_animations/star_gait_refine.py` (Starmon 243): legs spread so the oversized boots no longer cross, run lean limited to the walk's, and the four ribbon bones hanging with a light damped lag. It is written over a bone map (`RIG`), so SuperStarmon (same 20-bone parent list plus fringe bones 20 to 26) needs only its own rig and profile values. Tested by `tools/test_starmon_gait.py`.
+`field_animations/superstar_gait.py` (SuperStarmon 244): Starmon's refined clips (above) on its 1.75 times larger body, bone for bone (translations times 1.75), the walk, tired walk and run stretched to 22, 28 and 25 ticks so the root keeps about 19.5, 13.5 and 37.9 units a tick with the feet still planted, the idle with the arms hanging instead of the guard. The fringe blades and the back plate hold their rest orientation. `edit.py get 244` and `get 243` (refined), then `python3 -m tools.models.field_animations.superstar_gait --source 244.MMD --starmon 243.MMD --out AFTER.MMD` and `edit.py put 244 AFTER.MMD`; checked by `tools/test_superstarmon_gait.py`.
+
+Kokuwamon (247): `field_animations/kokuwamon_arm.py` runs after the field pace pass (`after_generator` in
+`content/models/imports/pace.json`). The source clips left the arm chain 13/14/15/16 stiff; its shoulder 13, forearm 14
+and cover 12 now swing in the idle, walk, condition walk and run, alternating with the other arm. Everything else stays exact.
+`PYTHONPATH=tools python3 -W ignore -m unittest tools.test_kokuwamon_arm` (after `edit.py get 247`).

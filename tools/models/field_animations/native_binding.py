@@ -148,6 +148,13 @@ def bind(data, skeleton, recipe):
         if 'swing' in rule:
             # a held prop (a staff) turned from its direction in the source world onto the donor's own prop direction
             transform = np.array(retarget.swing(rule['swing']['from'], rule['swing']['to'])) @ transform
+            if 'roll' in rule['swing']:
+                # and turned about its own length (a flat crystal head shown face-on, not edge-on)
+                k = np.array(rule['swing']['to'], dtype=float)
+                k = k / np.linalg.norm(k)
+                cr, sr = math.cos(math.radians(rule['swing']['roll'])), math.sin(math.radians(rule['swing']['roll']))
+                cross = np.array([[0, -k[2], k[1]], [k[2], 0, -k[0]], [-k[1], k[0], 0]])
+                transform = (np.eye(3)*cr + sr*cross + (1-cr)*np.outer(k, k)) @ transform
         if 'aim' in rule:
             # a piece set whole in a reviewed orientation of the native rest world (shoulder armour moved from the
             # source's swinging upper arm onto the chest): its own y axis along aim y, its x axis turned toward aim x
