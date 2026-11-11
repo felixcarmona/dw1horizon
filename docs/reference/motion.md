@@ -672,6 +672,11 @@ and 250 % worst, the upper range measured on the 34 native partners sampled
 (walk mean 22-125 %; the five species in the table above are the low end); hovering
 and hopping species read 100 % by construction.
 
+Blossomon's roots are written as a planted low-duty bound by `blossomon_gait.py` (diagonal groups, flight phase in the run,
+slip under 25 % mean in stance, steps of 16, 20 and 11 ticks) and its trunk pitches, twists and lags the pelvis while the
+vines, leaves and head follow with lag at a slower rate than the steps; its idle shares program 19 with
+slots 1, 18 and 33.
+
 Metrics do not certify the look: check the front view, because a body that bows
 hides the face. Slot 3 of an import is often a tired walk with the head down, so a
 walk's source is the species' own slot 2 wherever it passes. Shurimon and

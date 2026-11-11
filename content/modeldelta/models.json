@@ -2809,9 +2809,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/274-Blossomon.MMD.mdelta",
-        "delta_sha256": "2411a56fc2ee2194a29b84457e3a293e9de387d3fb23fab7f9c51573d395225a",
-        "sha256": "9ab0eb3a754c7bd5a098ab86ee5f142d77ee7364e54c0f2dbc18c5bcf6fd6a87",
-        "size": 98534
+        "delta_sha256": "05ea53ed551c27c7258f7c897c109b1ffb90615ddc15574b6d705e7a144d57ec",
+        "sha256": "4d2419aac0fe22a8b20b133511a55ca510d05074170be1ebabd8f577c4a657e4",
+        "size": 109540
       },
       "tim": {
         "sources": [

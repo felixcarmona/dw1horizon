@@ -604,6 +604,19 @@ stance foot, chest twist and a steady head (drooping in the condition walk), arm
 elbows, and crest, cloak leaves and back star lagging with second-harmonic ripples all use whole cycles per clip. The idle
 (144 ticks) plants both feet, breathes three times, shifts its weight, looks around and once per loop jerks an arm
 and snaps its head. Run `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_shurimon_gait`.
+Blossomon's (274) walk, condition walk and run kept the five stalk roots at their rest pose, only the whole body bobbing
+114-167 units and rolling 25-39 degrees, so the roots slid 90-195 % of the root speed, the root speed was not constant,
+the trunk hardly turned and the vines made the same 15-20 degree gesture in all three.
+`field_animations/blossomon_gait.py` authors idle (96 ticks), walk (48 ticks, 15 per tick), condition walk (60 ticks, 10)
+and run (33 ticks, 36) on the model's own skeleton (bone 1 pelvis, 2 trunk, 8 head, 9 face, 3-7 the five roots, 10-12 and
+13-15 the right upper and lower vines, 16-21 the left ones, 22 and 23 the leaves); the result is stored with
+`tools/models/edit.py put 274`. The roots walk as a low-duty bound in diagonal groups, three steps per loop (16, 20 and 11
+ticks a step, the run with a flight phase), each planted in the world in stance (its local translation and rotation are
+solved from the pelvis each tick, so a tilted root stays above the floor) and swinging on a smoothstep; stance slip is
+under 11 %. The trunk pitches on every step, twists against the pelvis and lags it, the head and face lag the trunk,
+and the vines sway at a third of the step rate, so no vine or head turns faster
+than 6 degrees a tick. The blink and footstep events are carried over. Slots 1, 18 and 33 share the idle's program,
+so they change too. Run `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_blossomon_gait`.
 Silphymon (226) held both wing-arms out and up at shoulder height in every field clip (shoulder joints turned
 100-200 degrees from the rig's rest, where the arms hang at its sides), a chest hunched 57 degrees and feet that slid
 79-99 % of the ground speed in the walk. `field_animations/silphymon_posture.py` writes the idle (48 ticks), walk,
