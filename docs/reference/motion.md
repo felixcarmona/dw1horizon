@@ -837,3 +837,12 @@ and their planting; the pelvis now sways over the stance foot, drops on the swin
 shoulders, the spine and head follow through a spring, the arms swing with a different amplitude each, and each wing lobe
 has its own amplitude, phase and a second harmonic. The tired walk is unchanged. Resident animation buffer 96846 of
 100352 bytes. `tools.test_shadramon_loose` checks the exact bytes, the floor, the seam, the planting and the old feet.
+
+`field_animations/tuskmon_lift.py` is written over Tuskmon's model (the strides of `tuskmon.py`, baked into its plain
+delta) and baked into the delta in turn. In the idle, walk, tired walk and run the pelvis stands 21, 14, 13 and 9 units
+higher (the gaits' legs are nearly straight, which is the limit) and the chest tips up 3 to 4 degrees; every claw keeps
+its world position and orientation, so the planting and foot slide are those of before and the cycle lengths and root
+speeds do not change. The tired idle (slot 1, head on the floor) keeps its posture. The horns (bone 21) are rigid on
+the chest: their rotation against it is constant (it swung up to 6 to 20 degrees away from its mean before). Resident animation
+buffer 85344 of 100352 bytes. `tools.test_tuskmon_lift` checks the exact bytes, the height, the claws, the floor, the
+horns and the seams.
