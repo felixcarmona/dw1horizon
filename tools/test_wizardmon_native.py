@@ -1,4 +1,6 @@
-"""Wizardmon (241) moves like native Angemon: its rig and body programs are Angemon's own; cape and hair follow."""
+"""Wizardmon (241) moves like native Angemon: its rig and body programs are Angemon's own; cape and hair follow.
+
+The cases are parameterised by SPECIES and BUILDER, so test_sorcermon_native.py runs them all on Sorcermon too."""
 import json
 import os
 from pathlib import Path
@@ -18,17 +20,20 @@ TYPE = 941  # a spare type id, so Angemon's own skeleton (type 20) stays as it i
 
 
 class WizardmonNative(unittest.TestCase):
+    SPECIES = 241
+    BUILDER = wizardmon_native
+
     @classmethod
     def setUpClass(cls):
         source = Path(os.environ.get('BINDING_MODELS', 'build/imported-model-edit/edit'))
-        files = list(source.glob('241-*.MMD'))
+        files = list(source.glob(f'{cls.SPECIES}-*.MMD'))
         native_path = Path(mmd.EXTRACTED) / 'CHDAT/MMD0/ANGE.MMD'
         if not files or not native_path.exists():
-            raise unittest.SkipTest('needs the imported 241 model (edit.py get 241) and the player DW1 extraction')
+            raise unittest.SkipTest(f'needs the imported {cls.SPECIES} model (edit.py get {cls.SPECIES}) and the player DW1 extraction')
         cls.files = files
-        cls.recipe = json.loads(binding.MANIFEST.read_text())['241']
-        cls.record = json.loads(next(Path('content/species').glob('241-*.json')).read_text())
-        cls.data, cls.proof = wizardmon_native.build(files[0].read_bytes(), cls.record['model']['skeleton'])
+        cls.recipe = json.loads(binding.MANIFEST.read_text())[str(cls.SPECIES)]
+        cls.record = json.loads(next(Path('content/species').glob(f'{cls.SPECIES}-*.json')).read_text())
+        cls.data, cls.proof = cls.BUILDER.build(files[0].read_bytes(), cls.record['model']['skeleton'])
         cls.rig = cls.proof['generated_skeleton']
         cls.model = mmd.MMD.parse(cls.data, len(cls.rig))
         mmd.exe().add_type(TYPE, cls.rig)
@@ -42,7 +47,7 @@ class WizardmonNative(unittest.TestCase):
 
     def test_field_slots_play_angemons_programs(self):
         spread = binding.spread_offsets(self.recipe, self.native)
-        body = [b for b in range(26) if b not in wizardmon_native.FOLLOWERS and b not in wizardmon_native.ARMS_OUT]
+        body = [b for b in range(26) if b not in self.BUILDER.FOLLOWERS and b not in self.BUILDER.ARMS_OUT]
         for slot in FIELD:
             with self.subTest(slot=slot):
                 before, loop, _ = animsheet.slot_frames(self.native, 26, slot)
@@ -61,7 +66,7 @@ class WizardmonNative(unittest.TestCase):
         """Angemon's wing beat is gone from the follower bones: the cape swings no more than the chest leads it."""
         for slot in FIELD:
             frames, _, _ = animsheet.slot_frames(self.model, 26, slot)
-            for bone in wizardmon_native.FOLLOWERS:
+            for bone in self.BUILDER.FOLLOWERS:
                 for axis in range(3, 6):
                     values = [f[bone][axis] for f in frames]
                     self.assertLess(max(values) - min(values), 1100, (slot, bone, axis))

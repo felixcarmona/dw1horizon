@@ -479,46 +479,6 @@
    }
   }
  },
- "242": {
-  "name": "Sorcermon",
-  "bones": 20,
-  "skeleton_sha256": "686deaa7cd35c6758b9ec1268eca4902b95c3a7a95ca1544f915cadbbb569e76",
-  "source_sha256": "a76462e9ff308015081d0f7fbac8e4fd21e06f9ffba0584c5325636fd0b9bbc2",
-  "base_generator": "tools.models.field_animations.sorcermon",
-  "post_source_sha256": "076260a10b0dd9eb9dd198dde9907631beb5cb3e4a4654278461fca26349c410",
-  "slots": {
-   "2": {
-    "from": 2,
-    "ticks": 70,
-    "speed": 20,
-    "slip": [
-     125,
-     250
-    ],
-    "tol": 3
-   },
-   "4": {
-    "from": 4,
-    "ticks": 110,
-    "speed": 38,
-    "slip": [
-     190,
-     360
-    ],
-    "tol": 3
-   },
-   "3": {
-    "from": 2,
-    "ticks": 105,
-    "speed": 13.3,
-    "slip": [
-     190,
-     360
-    ],
-    "tol": 3
-   }
-  }
- },
  "243": {
   "name": "Starmon",
   "bones": 20,

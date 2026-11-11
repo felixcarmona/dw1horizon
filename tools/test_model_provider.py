@@ -59,6 +59,8 @@ class ModelProvider(unittest.TestCase):
             '232': ('232', 'tools.models.field_animations.native_binding', '232-bombernanimon-native'),
             # Wizardmon wears Angemon's rig and programs (its cape and hair follow); its paced gait was retired with it.
             '241': ('241', 'tools.models.field_animations.wizardmon_native', '241-wizardmon-native'),
+            # Sorcermon is Wizardmon's body: the same rig, programs and followers.
+            '242': ('242', 'tools.models.field_animations.sorcermon_native', '242-sorcermon-native'),
             '187': ('187', 'tools.models.field_animations.followthrough', '187-stingmon-wing-followthrough'),
             '239': ('239', 'tools.models.field_animations.followthrough', '239-gizamon-active-gait'),
             # LadyDevimon's flight (ladydevimon_flight.py) is written over her baked chibi delta.
@@ -211,7 +213,7 @@ class ModelProvider(unittest.TestCase):
         # Salamon (221) neither: its gait and blinking face are in its model delta (salamon.py, salamon_face.py).
         self.assertNotIn('221', assignments)
         self.assertEqual(hashlib.sha1(json.dumps(assignments, sort_keys=True).encode()).hexdigest(),
-                         'aef33e6e0eb6ae6a447854bbe2696a1066224d8e')
+                         'e1a63a32513d862a3589118520a3031eec8dc257')
 
 
 if __name__ == '__main__':

@@ -66,19 +66,27 @@ def _sample(frames, loop, t):
     return interpolate_pose(frames[i], frames[i + 1], round((t - i) * 4096)) if len(frames) > 1 else frames[0]
 
 
-def _speeds(frames):
-    """Root speed per tick in the ground plane, averaged over three ticks."""
+def _speeds(frames, loop=None):
+    """Root speed per tick in the ground plane, averaged over three ticks. With `loop` (an endless loop starting at that
+    tick), a tick of the loop averages over the ticks that precede it as the loop's own end, so its last tick and its
+    first see the same speed and the loop closes on the pose it started from."""
     raw = [0.0] + [math.dist((a[0][6], a[0][8]), (b[0][6], b[0][8])) for a, b in zip(frames, frames[1:])]
-    return [sum(raw[max(0, i - 2):i + 1]) / len(raw[max(0, i - 2):i + 1]) for i in range(len(raw))]
+    period = len(raw) - 1 - loop if loop is not None else 0
+
+    def window(i):
+        if loop is None or i < loop:
+            return raw[max(0, i - 2):i + 1]
+        return [raw[loop + (j - loop - 1) % period + 1] for j in (i - 2, i - 1, i)]
+    return [sum(window(i)) / len(window(i)) for i in range(len(raw))]
 
 
-def follow(frames, loop, rig, rest):
+def follow(frames, loop, rig, rest, closed=False):
     rest_rots, rest_pos = R.world_rots(rig, rest), R.world_pos(rig, rest)
     # where each rooted follower hangs, in its anchor's frame
     hang = {b: [sum(rest_rots[a][j][i] * (rest_pos[b][j] - rest_pos[a][j]) for j in range(3)) for i in range(3)]
             for b, a in ROOTED.items()}
     out = copy.deepcopy(frames)
-    speeds = _speeds(frames)
+    speeds = _speeds(frames, loop if closed else None)
     for tick, pose in enumerate(out):
         for bone, (driver, lag, share, trail, most) in FOLLOWERS.items():
             now_rots = R.world_rots(rig, pose)
@@ -101,7 +109,7 @@ def follow(frames, loop, rig, rest):
     return out
 
 
-def build(data, skeleton):
+def build(data, skeleton, closed=False):
     bound, proof = native_binding.build(data, skeleton)
     rig = proof['generated_skeleton']
     model = mmd.MMD.parse(bound, len(rig))
@@ -115,7 +123,7 @@ def build(data, skeleton):
         frames, loop, events = animsheet.slot_frames(model, len(rig), slot)
         if slot in FIELD:
             frames = arms_out(frames, rig, rest)
-        frames = follow(frames, loop, rig, rest)
+        frames = follow(frames, loop, rig, rest, closed)
         if loop is not None:
             mmd.close_loop(frames, loop)
         frames = [[[round(v) for v in channels] for channels in pose] for pose in frames]
