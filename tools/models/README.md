@@ -542,3 +542,5 @@ importer's; the body's world speed never drops below zero, the belly stays on th
 result is stored in the plain deltas (`python3 -m tools.models.field_animations.shell_numemon_gait --source SRC.MMD
 --tex SRC.TIM --out AFTER.MMD --out-tex AFTER.TIM`, then `tools/models/edit.py put 231 AFTER.MMD AFTER.TIM`); check
 with `PYTHONPATH=tools/models:tools python3 -W ignore -m unittest tools/test_shell_numemon_gait.py`.
+
+`field_animations/star_gait_refine.py` (Starmon 243): legs spread so the oversized boots no longer cross, run lean limited to the walk's, and the four ribbon bones hanging with a light damped lag. It is written over a bone map (`RIG`), so SuperStarmon (same 20-bone parent list plus fringe bones 20 to 26) needs only its own rig and profile values. Tested by `tools/test_starmon_gait.py`.
