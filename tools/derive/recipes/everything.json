@@ -922,6 +922,16 @@
     "writes": [
      "retouch/TROP02.MAP"
     ]
+   },
+   {
+    "script": "maps/ogre02-arrival.py",
+    "args": [
+     "{retouch}"
+    ],
+    "step": "retouch",
+    "writes": [
+     "retouch/OGRE02.MAP"
+    ]
    }
   ],
   "steps_note": "Ordered map recipes; step: the derive step that runs each recipe; {screens} = OUT/screens, {retouch} = OUT/retouch (OUT = build/NAME-maps); writes: the files it makes under OUT (derive checks them); the check runs where it stands"
