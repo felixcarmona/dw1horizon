@@ -66,7 +66,7 @@
  "246": {"model": "246-Infermon.MMD", "aliases_applied": true},
  "247": {"model": "247-Kokuwamon.MMD", "aliases_applied": true, "field_overlay": "kokuwamon-rolling-boots"},
  "248": {"model": "248-MarineAngemon.MMD", "aliases_applied": true, "texture": "248-MarineAngemon.TIM"},
- "249": {"model": "249-Quetzalmon.MMD", "aliases_applied": true, "texture": "249-Quetzalmon.TIM", "field_overlay": "quetzalmon-steady-flight"},
+ "249": {"model": "249-Quetzalmon.MMD", "aliases_applied": true, "texture": "249-Quetzalmon.TIM", "field_overlay": "quetzalmon-flight"},
  "250": {"model": "250-Shadramon.MMD", "aliases_applied": true},
  "251": {"model": "251-Solarmon.MMD", "aliases_applied": true, "field_overlay": "solarmon-steady-hover"},
  "252": {"model": "252-Thundermon.MMD", "aliases_applied": true},

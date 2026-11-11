@@ -65,6 +65,8 @@ class ModelProvider(unittest.TestCase):
             '239': ('239', 'tools.models.field_animations.followthrough', '239-gizamon-active-gait'),
             # LadyDevimon's flight (ladydevimon_flight.py) is written over her baked chibi delta.
             '223': ('223', 'tools.models.field_animations.ladydevimon_flight', '223-ladydevimon-flight'),
+            # Quetzalmon's flight (quetzalmon_flight.py) is written over its reviewed import delta.
+            '249': ('249', 'tools.models.field_animations.quetzalmon_flight', '249-quetzalmon-flight'),
         }
         for sid, expected in following.items():
             self.assertEqual(selected.pop(sid), expected)

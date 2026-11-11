@@ -237,6 +237,13 @@ dash leaning 23 degrees with the wings swept back and the legs streamlined. Hair
 excepted), distance per loop, footstep sounds and hover height are kept (the tired walk sits lower on purpose).
 Check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_ladydevimon_flight`.
 
+Quetzalmon (249) held one frozen pose in all four field clips (not one bone moved, only the root travelled).
+`field_animations/quetzalmon_flight.py` (overlay `quetzalmon-flight`) writes the idle, walk, condition walk and run
+again as four flights: a hover (54 ticks, two beats), a steady flight leaning 15 degrees, a low, heavy tired flight with
+hanging wings and a nodding head, and a leaning flight of three slow beats in 48 ticks for the walk and a lighter flight of two beats in 20 ticks for the run, wings kept low and spread, with the body, neck, tail and crest following the wings through damped springs; neck, tail
+and crest carry a wave and the head stays level. Tick counts, distance per loop and footstep sounds are kept.
+Check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_quetzalmon_flight` (needs `tools/models/edit.py get 249`).
+
 Dolphmon (238) had one native 73-tick swim, lifted off the ground, in all four field slots (idle, walk, condition walk,
 run), so they differed only in root speed. `field_animations/dolphmon_gaits.py` (overlay `dolphmon-gaits`) runs after
 `dolphmon.py` (which keeps the sleeping clip) and writes slots 0, 2, 3 and 4 again on the reviewed rig: a belly-resting

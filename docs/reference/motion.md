@@ -358,7 +358,7 @@ A **field overlay** is a reviewed recipe that rewrites the field slots of one sp
 | `fieldarticulation.py` | Puppetmon 181, Kotemon 351 | upper-body acting over the original root and leg programs (wrists counter the swing so a weapon keeps its orientation) |
 | `fieldsecondary.py` | Stingmon 187, Angewomon 190, Paildramon 199 | small delayed secondary motion (arms, feathers, tail tips) with root and leg channels exact |
 | `fieldweight.py` | Ankylomon 189, Lighdramon 201 | step-synchronized body roll, yaw and pitch around the existing paw paths |
-| `fieldglide.py` | MetalSeadramon 211, Magnadramon 215, Gesomon 240, MarineAngemon 248, Quetzalmon 249, Solarmon 251 | replaces only the root's forward momentum with one steady key per loop (same net travel), removing forward bursts; every pose channel exact |
+| `fieldglide.py` | MetalSeadramon 211, Magnadramon 215, Gesomon 240, MarineAngemon 248, Solarmon 251 | replaces only the root's forward momentum with one steady key per loop (same net travel), removing forward bursts; every pose channel exact |
 | `shakkoumon.py` | Shakkoumon 214 | idle, walk, condition walk and run authored from the rest pose: breathing and weight shift; a waddle (14 ticks, 20 units/tick) rolling over the standing foot, pelvis against chest, arms and head late, soles carried back at the ground speed (slip 26 %); a slower drooping condition walk (20 ticks, 12); a leaning run (12 ticks, 42) with a short flight; pelvis height set per tick on the lowest sole |
 | `fieldphantom.py`, `fielddolphin.py`, `fieldzudo.py` | Phantomon 229, Dolphmon 238, Zudomon 219 | restore the native performance clock that the retargeted field clips had squeezed |
 | `fieldpiedmon.py`, `fieldfairy.py` | Piedmon 245, Lillymon 209 | keep the native float: Piedmon (since replaced by `piedmon_levitate.py`, four distinct levitating clips); Lillymon's shoulders opened in slot 0x21, the performance the experimental runtime layer (above) shows in the field |
@@ -795,3 +795,28 @@ stay inside the resident buffer. The eyes blink through texture moves
 first face at tick 0 and ends in it. The test reads the model made by
 `tools/models/edit.py get 248` or the commit before the clips
 (`MARINEANGEMON_MODEL`).
+
+### Quetzalmon (249): four flights
+The import's idle, walk, condition walk and run (slots 0 and 1, 2, 3, 4) held one frozen pose: every bone's angle and
+offset was constant in all four clips and only the root's travel differed (15.9, 13.6 and 38.1 units a tick), so the
+winged serpent slid like a statue. `field_animations/quetzalmon_flight.py` (overlay `quetzalmon-flight`) writes the five
+slots again on the reviewed 16-bone import; every other slot, the mesh and the rig are unchanged, and slot 1 shares the
+idle. The motion is modelled on how the native flyers (Birdramon, Airdramon) move, not on a repeated sine: each wing beat
+is a held top, a quick power downstroke and a slower recovery, the beats of a loop differ a little in length and depth, and
+the left wing trails the right. The wings drive everything else through damped springs: the body rises through the
+downstroke and peaks as it ends (a soft spring on the stroke), the coil of the neck, the tail and the crest then follow that
+heave link after link, each later and looser than the one before, the head turns back against the neck so it stays level,
+the body pitches nose-up with the rise and rolls with the wings' unevenness, and the neck sways from side to side. Each
+spring runs for several loops and one loop is kept, so every clip repeats its pose exactly. One constant lift per loop sets
+the lowest point of the mesh above the floor (the rest sat 15 units up). The wings flap from just above the horizontal down
+to well below it, spread, never swept back.
+
+| clip | ticks | beats | wings (degrees from the folded rest) | forward lean | body rise | root per tick |
+| --- | --- | --- | --- | --- | --- | --- |
+| idle (0, 1) | 54 | 2 | 44 to 82 | upright | 26 | 0 |
+| walk (2) | 48 (the earlier 24-tick walk twice over) | 3 (one per 16 ticks) | 42 to 84 | 30 degrees, neck 20 more | 28 | 15.9 |
+| condition walk (3) | 28 | 1 | 52 to 88, slow lift | 20 degrees, head nodding 18 | 12 | 13.6 |
+| run (4) | 20 | 2 (one per 10 ticks) | 48 to 84 | 15 degrees, neck 10 more | 30 | 38.1 |
+
+The animation buffer holds 91992 of 100352 bytes. `tools.test_quetzalmon_flight` checks the pinned source, the
+speeds, the seams, the beats, the floor clearance, the distance of the wings to the body and the storage.
