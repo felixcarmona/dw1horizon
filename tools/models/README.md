@@ -916,3 +916,10 @@ Dragomon (291): `field_animations/dragomon_gait.py` writes its idle, walk, condi
 `python3 -m tools.models.field_animations.dragomon_gait --source BEFORE.MMD --out AFTER.MMD --tim-out AFTER.TIM` on the model before this change
 (`edit.py get 291`), then `edit.py put 291 AFTER.MMD AFTER.TIM`; check with `tools.test_dragomon_gait`. The programs are replaced in place, so slot 33
 (battle idle) follows the idle and slot 36 (battle movement) follows the run; the poor and sick idles (slots 1, 14-18, 34) are untouched.
+
+Species 294 (Datamon): `field_animations/datamon_gait.py` writes slots 0, 2, 3 and 4 again (a 72-tick idle, a 36-tick walk,
+a 28-tick tired walk and a 21-tick run at 15, 11 and 36 units a tick, slow 12, 14 and 7 tick strides) on the importer's
+model: each boot sole is planted in stance and swings through the air on an arc that leaves and meets the ground's speed,
+the leg chain is placed by inverse kinematics, and the two big arms hang level with the torso and trail it as lagged pendulums.
+`python3 -m tools.models.field_animations.datamon_gait --source SRC.MMD --out-dir DIR` (SRC from `edit.py get 294` before the
+change), then `edit.py put 294 DIR/294-Datamon.MMD`. Test: `tools.test_datamon_gait` (`DATAMON_MODEL`).

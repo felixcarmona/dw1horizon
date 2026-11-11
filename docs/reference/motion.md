@@ -1040,3 +1040,19 @@ drop and sway over the loaded leg, the chest counter-turns, the head and crest f
 ringing), the arms are heavy pendulums with the blade arm slower, the wings rise and fall like breathing. Nothing but the feet moves faster than
 twice the step rate (`tools.test_dragomon_gait`). The idle's 96 ticks follow Thundermon's precedent for the condition-idle draw (idles over 25
 ticks make some draws unreachable); slots 33 and 36 share the idle and run programs.
+
+Datamon 294 (`tools/models/field_animations/datamon_gait.py`, test `tools.test_datamon_gait`) read as robotic: its field
+clips were 8-25 tick loops that repeated every third of a second, the four boots slid at 63-73 % of the travel, and the
+arms and torso moved in lockstep. The generator rebuilds slots 0, 2, 3 and 4 with no donor motion stored (no native
+model has four boot legs and two big arms on a capsule). The boots keep a pace gait (same-side boots step together, the
+rear pair a little later, because a diagonal trot would drive the 57-long boots into each other): each sole is a point
+that stays put in the world in stance and a Hermite arc through the air that leaves and lands at the ground's own speed,
+with a short push-off backwards, and an inverse-kinematic step places the hip piece, the two small joint pieces and the
+boot block on it, the chain telescoping a few units (`EXT`) because the legs are short. The torso leans onto the side
+it stands on, nods and yaws with the stride and drops a little at each landing; the two big arms are lagged pendulums,
+one joint behind the other and one arm behind the other. A boot's mean speed in the air is the root speed over its swing share (v / (1 - duty)), so the
+step is slowed by a short stance share and a long stride cadence (12, 14 and 7 ticks a stride), not by sliding: peak boot
+speeds are 36, 30 and 71 units a tick at root speeds of 15, 11 and 36. The loops are a 72-tick idle, a 36-tick walk, a
+28-tick tired walk and a 21-tick run (15, 11 and 36 units a tick). The big arms hang with the hands level with the torso
+(the model's rest pose holds them 35-42 units in front of it) and swing gently around that. The test reads the model made by `tools/models/edit.py get 294`
+(`DATAMON_MODEL`).
