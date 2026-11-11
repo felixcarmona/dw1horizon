@@ -366,6 +366,16 @@ weight comes from smooth constant-speed curves, a low bob, the shell's roll and 
 and tail. Slot 36 shares the run's program and changes with it; slots 27 and 35
 keep the old pattern. `tools/test_tortomon_gait.py` covers it.
 
+Mammothmon's (267) hind legs dragged: the old walk, condition walk and run never planted
+a foot and stretched the legs to 167-200 units. `field_animations/mammothmon_gait.py`
+rewrites slots 2, 3 and 4 with `quadruped.py` (front legs included, planted the same way;
+the idle, slot 0, is untouched). The hind leg only reaches about 150 units planted, and
+planted stride is speed x ticks x duty, so the cycles are short: walk 20 ticks at 15, condition
+walk 24 at 11, trot 10 at 36 (before 25 at 30, 25 at 21, 21 at 53). The hind feet slip under
+7 % of the root speed in the walks and about 18 % in the trot's stance, lift 22-32 units and land
+heel first; the trunk, ears and jaw nod on lagged closed loops (profile `extra`). `heel`,
+`floor_skip` and `extra` are opt-in profile keys. `tools/test_mammothmon_gait.py` covers it.
+
 Magnamon (197) is bound to native Leomon (`native_binding.py`). Its boots kept
 the source's fighting stance, turned 35 and 93 degrees outward, its fists kept
 the guard pose's forward point, and its broad legs crossed over Leomon's narrow

@@ -21,7 +21,7 @@ nefertimon.py writes Nefertimon's:
   direction): a swinging leg bends towards it, eased in from the standing bend and back out before it lands.
   A lower bone with a long part along it (a forearm blade) gives `aim` (front/hind: that direction in the bone's
   space): standing and swinging, the bone rolls about itself to keep it pointing ahead. A profile with `pole_world` gives its pole directions in the world (x towards the leg's side) instead of the parent bone's
-  space, for a leg hung from a bone that stands turned in its rest pose. A profile's `floor` and `stance_slip` widen the
+  space, for a leg hung from a bone that stands turned in its rest pose. A profile's `extra` (a function of the rig, the gait row, the cycle phase and the pose) moves the parts the module has no row for (Mammothmon's trunk, ears and jaw). A profile's `floor_skip` (bones) leaves out of the floor check the parts the source's own idle hangs under the floor (Mammothmon's trunk tip and tail). A profile's `floor` and `stance_slip` widen the
 under-the-floor and sliding-sole bounds for a rig whose leg plates cannot stay both flat and planted (Tortomon). A gait's `arc` (default 0.8) shapes the lift of a swinging paw: 1 rises as a plain half sine, below 1 it leaves the floor faster. A gait's `clear_ease` (fraction of the swing) brings the clearance under the paw in gradually, so a paw peeled at the end of stance does not jump up at the lift-off. A gait's `fold_soft` (units) replaces the hard minimum distance `fold` of a swinging wrist from its hip by a smooth maximum of that width. A gait's `leg_reach` (per leg: units) moves one leg's stance window fore or aft of the others'. A gait's `wide`
   (front/hind: units) carries a swinging paw out from its track and back in by the landing.
 
@@ -270,7 +270,7 @@ def swing_pitch(cfg, front, s):
     key = 'front' if front else 'hind'
     peel = cfg['peel'][key]
     curl = cfg['curl'][key] * math.sin(math.pi * min(1.0, s / 0.8)) if s < 0.8 else 0.0
-    return peel * (1 - smooth(s / 0.4)) + curl * (1 - smooth((s - 0.55) / 0.3)) - 3 * smooth((s - 0.7) / 0.25)
+    return peel * (1 - smooth(s / 0.4)) + curl * (1 - smooth((s - 0.55) / 0.3)) - cfg.get('heel', 3) * smooth((s - 0.7) / 0.25)
 
 
 def body_terms(cfg, phase):
@@ -354,8 +354,8 @@ def gait(rig, cfg):
         up, lo, paw, side, front = p['legs'][name]
         key = 'front' if front else 'hind'
         z = centres[name] - stride(name) / 2 + stride(name) * s
-        # `settle` (degrees): the paw lands heel first, slaps onto its toes a little past flat and settles
-        landing = -3 * (1 - smooth(s / 0.12)) + cfg.get('settle', 0.0) * math.sin(math.pi * min(1.0, s / 0.3)) if cfg.get('settle') else 0.0
+        # `settle` (degrees): the paw lands heel first (`heel` degrees heel-down at touchdown, default 3, carried through the end of the swing), slaps onto its toes a little past flat and settles
+        landing = -cfg.get('heel', 3) * (1 - smooth(s / 0.12)) + cfg.get('settle', 0.0) * math.sin(math.pi * min(1.0, s / 0.3)) if cfg.get('settle') else 0.0
         world = rig.paw(front, cfg['peel'][key] * smooth((s - 0.55) / 0.45) + landing, name)
         wrist = standing(rig, name, tracks[name], z, world)
         lower, out = rig.solve(pose, name, wrist, hist, None, p.get('aim', {}).get(front))
@@ -416,6 +416,8 @@ def gait(rig, cfg):
             wrist = folded(pose, name, [flight[0], min(flight[1], -p['clear'] - dip), flight[2]])
             lower, _ = rig.solve(pose, name, wrist, hist, swung_pole(front, s), p.get('aim', {}).get(front))
             set_rot(pose, paw, mul(tr(lower), world), hist)
+        if p.get('extra'):       # a species' own parts (trunk, ears, jaw) follow the body: extra(rig, cfg, phase, pose)
+            p['extra'](rig, cfg, phase, pose)
         return pose, short
 
     # a standing leg that cannot reach brings the body down to it, along a smooth cyclic dip
@@ -461,6 +463,8 @@ def _floor(rig, frames):
             height = pose[0][7]
             W = rig.world(pose)
             for b in rig.verts:
+                if b in rig.p.get('floor_skip', ()):     # parts the idle itself lets hang under the floor (a trunk tip, a tail)
+                    continue
                 worst = max(worst, rig.lowest(b, [r[:3] for r in W[b][:3]], [W[b][i][3] for i in range(3)]) + height)
     return worst
 
