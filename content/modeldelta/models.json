@@ -2359,9 +2359,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/259-Okuwamon.MMD.mdelta",
-        "delta_sha256": "85178090ee5b657df77e3dc9a6114aac7d444dc2e8e6e4c8041875ce160b74b8",
-        "sha256": "06b1ba3deed7c6a8579a83d7cc9ae084423f1605e9fed27667c589ea40f7c8f4",
-        "size": 92204
+        "delta_sha256": "c9b0cff510cdda6ecbee7a27574b253b32ac8b4e7c701a9e5e07849ebc87ec83",
+        "sha256": "079fbe4eeb5bdbfb03bb8cdfd3d7165a3203ac85d86f3f2f260242da1d57b3bc",
+        "size": 90512
       },
       "tim": {
         "sources": [
