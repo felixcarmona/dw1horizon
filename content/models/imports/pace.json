@@ -971,6 +971,7 @@
   "source_sha256": "e54e2abb913e4de5a02522218531a2202210a65ab45ab470ffae090f74ae6574",
   "base_generator": null,
   "post_source_sha256": "e54e2abb913e4de5a02522218531a2202210a65ab45ab470ffae090f74ae6574",
+  "after_generator": "tools.models.field_animations.saberleomon_gait",
   "slots": {
    "2": {
     "from": 2,

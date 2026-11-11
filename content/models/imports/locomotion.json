@@ -23,13 +23,13 @@
   },
   "254": {
     "name": "Tylomon",
-    "source_sha256": "37ea84f657d1ba815408a5637ca638916260e241373daf95d7c418eb9d36c444",
+    "source_sha256": "1be1bd4c4e935bf62cd3aab08a2116ff1c5d72212175ae53d1bc191e83ba1a52",
     "bones": 20,
     "base_generator": null,
-    "post_source_sha256": "37ea84f657d1ba815408a5637ca638916260e241373daf95d7c418eb9d36c444",
+    "post_source_sha256": "1be1bd4c4e935bf62cd3aab08a2116ff1c5d72212175ae53d1bc191e83ba1a52",
     "speeds": {
       "2": 15,
-      "3": 14.7,
+      "3": 14,
       "4": 35
     },
     "skeleton_sha256": "4e31eb1bcc20b3543bdb4385d32c72b8acc5ed921206057956b146d6c892598e"

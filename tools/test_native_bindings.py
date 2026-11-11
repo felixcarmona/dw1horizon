@@ -58,7 +58,8 @@ class NativeBindings(unittest.TestCase):
                         pose[-3:] = [v + o for v, o in zip(pose[-3:], offset)]
                     expected.instrs = [i for i in expected.instrs if i['op'] != 'tex']
                     expected.tail = b''
-                    self.assertEqual(model.anims.anims[model.anims.table[slot]].build(), expected.build())
+                    if slot not in recipe.get('arm_pump', {}).get('slots', ()):  # re-posed arms: test_<species>_native
+                        self.assertEqual(model.anims.anims[model.anims.table[slot]].build(), expected.build())
                     before, loop, _ = animsheet.slot_frames(native, len(proof['generated_skeleton']), slot)
                     after, new_loop, _ = animsheet.slot_frames(model, len(proof['generated_skeleton']), slot)
                     self.assertEqual((len(after), new_loop), (len(before), loop))
