@@ -362,8 +362,12 @@ A **field overlay** is a reviewed recipe that rewrites the field slots of one sp
 | `tortomon.py` | Tortomon 261 | walk, condition walk and trot authored with `quadruped.py` from the shell bone: a lateral-sequence walk (16 ticks, 12 units/tick), a lower slower condition walk (22 ticks, 9) with a hung head, a trot (10 ticks, 36); each foot is planted flat and still for about a quarter of the cycle (duty 0.28, 0.26, 0.17; sole slide 0-4 units) while the shin turns over the ankle, then peels off heel first and swings in an arc (`arc`, `fold_soft`, per-leg `leg_reach`); no tick reaches the IK's stretch or fold limit and no joint jumps between ticks; cuffs up to 30 units under the floor and slip up to 30 % are allowed (profile `floor`, `stance_slip`), because the legs reach only about 70 units of ankle travel; slot 36 shares the run |
 | `extyrannomon_arms.py` | ExTyrannomon 266 | arms only (bones 7, 8) of the walk, condition walk and run: a spring on the opposite-phase pitch of the same-side leg (swing 21, 11 and 36 degrees, a tick or two late), footfall kicks, sway abduction, disc roll; body, legs, tail, events and idle untouched; arm-versus-body and arm-versus-leg vertex counts never above the original; slot 36 shares the run |
 | `mammothmon_gait.py` | Mammothmon 267 | walk, condition walk and run re-authored with `quadruped.py` so the hind (and front) feet plant: walk 20 ticks at 15 units/tick, condition walk 24 at 11, trot 10 at 36, the hind reach (about 150 units planted) setting the short cycles; trunk, ears and jaw follow on lagged closed loops; the idle is kept. Test: `tools/test_mammothmon_gait.py` |
+| `kiwimon_gait.py` | Kiwimon 282 | offline model delta: walk (14 ticks, 17 units/tick), tired walk (18, 12) and run (10, 38) rewritten with `quadruped.py` on its own two legs (thigh, shin, ankle pad as the planted paw, the toes riding on it): each foot stands flat and still for half the walk (duty 0.52, 0.62 tired, 0.34 run; sole slide under 1 % of the travel) and swings with 18-48 units of clearance, the knees pointing out and back so the thighs stay out of the rump; the body crouches a little, bobs twice a cycle, shifts, rolls and yaws over the loaded foot and leans into the run; the head holds still in the world and snaps forward every step (`saw`), pecks once a cycle in the walk, swings low in the tired walk with a panting jaw, thrusts in the run; the rump trails late and rocks with the breath; the toes lift in the swing. The idle (slots 0 and 33, 60 ticks) is rewritten too: both soles planted, slow breathing, a weight shift, the head looking about and one peck; slot 36 shares the run, every other slot is kept. Test: `tools/test_kiwimon_gait.py` |
 | `woodmon.py` | Woodmon 272 | walk (12 ticks, 15 units/tick), tired walk (16, 11) and trot (10, 38) from the imported rest pose: four root legs with `quadruped.py` (planted flat, slip under 1 %) and a trunk written by the profile's `body` hook: it bobs, rolls, shifts its weight sideways, yaws, leans into the run and slouches when tired, the log arms swing against the legs with the forearm late, the chest claws trail; the idle (slots 0 and 33) is a calm 40-tick loop: slow breathing, arms and claws swaying 11-20 degrees with lag, legs planted; slots 35 and 36 share the walk and run |
+| `tapirmon.py` | Tapirmon 287 | idle (64 ticks, slots 0 and 33), walk (27 ticks = 3 strides of 9, 16 units/tick), tired walk (39 = 3 x 13, 10) and a light gallop (one 14-tick cycle, 38; hind pair pushes together, a flight phase, front pair lands together, spine flexing), each with a layered breath written leg by leg because the rig has two-bone legs with a rear foot plate and no tail or paw bones (`quadruped.py` does not fit): planted flat soles, swing paths that match the stance speed, a per-tick body-height solver that keeps every leg within reach, hind plates counter-rotated flat; the body, rear block, head, snout and ears follow lagged closed loops; the tired walk keeps the head low and facing forward; the idle takes one slow breath, looks aside, sniffs, twitches an ear and flicks the tail; slots 1 and 34-36 are untouched |
 | `cyclonemon_gait.py` | Cyclonemon 281 | idle, walk, condition walk and run authored with `quadruped.py` (opt-in `scale`, `paw_rest`, `body` keys for the 1.3-scaled body): the left arm is a planted crutch and both hind feet plant; idle 48 ticks, walk 18 at 15 units/tick, condition walk 26 at 11 (lower), run 12 at 38 (forward lean); feet slip under 4 %; the shoulder pad keeps its place on the torso. Test: `tools/test_cyclonemon_gait.py` |
+| `crabmon_scuttle.py` | Crabmon 284 | offline model delta: six legs solved with damped least squares so each tip stands still in its stance (soles on the floor), the shell rides above them; idle 84 ticks (shared with slots 1 and 18), walk 22 at 15 units/tick (tetrapod pairs), condition walk 28 at 10 (a wave, low shell, drooping claws), run 14 at 38 (tripods with a flight phase); feet slip about 1 %; claws swing, snap and pull in |
+| `deramon_gait.py` | Deramon 286 | idle (120 ticks, shared by slot 33), walk (16 ticks, 16 units/tick), tired walk (20, 10) and run (10, 38) for an 8-bone rig whose shell (bone 1) parents every other bone: each pose is written in the world and turned into local values, so the feet are placed (flat and still in stance, slip under 10 %, lift 16-38 units, ankle height set by the lowest sole point), the body, head and wings move as one group about a floor point (roll over the loaded foot, yaw, lean, bob, sway), and the shell takes the same motion through a damped spring per harmonic: it lags, rocks and bounces, and is kept off the floor; the idle keeps the original blink; slots 35 and 36 play other programs and are untouched. Test: `tools/test_deramon_gait.py` |
 | `shakkoumon.py` | Shakkoumon 214 | idle, walk, condition walk and run authored from the rest pose: breathing and weight shift; a waddle (14 ticks, 20 units/tick) rolling over the standing foot, pelvis against chest, arms and head late, soles carried back at the ground speed (slip 26 %); a slower drooping condition walk (20 ticks, 12); a leaning run (12 ticks, 42) with a short flight; pelvis height set per tick on the lowest sole |
 | `fieldphantom.py`, `fielddolphin.py`, `fieldzudo.py` | Phantomon 229, Dolphmon 238, Zudomon 219 | restore the native performance clock that the retargeted field clips had squeezed |
 | `fieldpiedmon.py`, `fieldfairy.py` | Piedmon 245, Lillymon 209 | keep the native float: Piedmon (since replaced by `piedmon_levitate.py`, four distinct levitating clips); Lillymon's shoulders opened in slot 0x21, the performance the experimental runtime layer (above) shows in the field |
@@ -378,6 +382,7 @@ A **field overlay** is a reviewed recipe that rewrites the field slots of one sp
 | `raremon_drag.py` | Raremon 264 | offline model delta: walk, tired walk and run rewritten as a drag-crawl (the idle and its alias stay); each arm is solved by two-bone IK (shoulder and elbow, no clamping) to a flat hand planted in the world during the pull while the hump surges forward on a von Mises burst of speed and the other arm reaches; lower body and tail lie on the floor as lagging springs, head and jaw follow late; cycles 16/24/12 (walk/tired walk/run), root speeds 15/10/35 |
 | `skullmammothmon_clash.py` | SkullMammothmon 268 | offline model delta: walk, tired walk and run (slots 2, 3, 4, 36; 35 shares slot 2) with a per-tick neck pitch/lift and small shoulder/knee/ankle turns of the front legs so no front-leg triangle crosses the head, trunk or tusks; every other bone, timing and program unchanged, idle untouched |
 | `octomon_scuttle.py` | Octomon 278 | offline model delta: idle (64 ticks, shared with slots 1, 18, 33), walk (16 ticks, 15 u/tick), tired walk (20, 10) and run (10, 35) as a tripod crawl of the six tentacles with planted tips (IK), a bobbing and swaying body and delayed arms; checked by `tools.test_octomon_scuttle` |
+| `syakomon_hop.py` | Syakomon 283 | offline model delta: idle (96 ticks, shared with slots 1, 18, 33; breathing, mouth, fin), walk (28 ticks, 16 u/tick, planted hops), tired walk (36, 11, low dragging hops) and run (27, 38, bounds) of a legless clam: shell lowest point solved onto the floor, mouth and fin driven by damped springs; checked by `tools.test_syakomon_hop` |
 | `superstar_gait.py` | SuperStarmon 244 | offline model delta: Starmon's refined walk, tired walk and run on the larger body (translations times 1.75, cycles 22, 28 and 25 ticks for 19.5, 13.5 and 37.9 units a tick), idle with the arms hanging |
 | `fieldgatomon.py`, `fieldcat222.py`, `fieldpup.py`, `fieldgizmo.py`, `fieldape.py`, `fieldscarab.py`, `fieldpaddle.py`, `fieldwalrus.py`, `fielddiaboromon.py` | Gatomon 234, BlackGatomon 222, Gizamon 239, Apemon 227, GranKuwagamon 210, Gomamon 217, Ikkakumon 218, Diaboromon 237 | quadruped and crouched gaits: one-segment limbs pinned through the body carrier instead of stretched, paired bounds, knuckle walks, flipper strokes |
 | `fieldinfermon.py`, `fieldslug.py`, `fieldcandle.py` | Infermon 246, ShellNumemon 231, Candlemon 235 | six legs in alternating tripods; a slug's propulsion clock separate from its face acting (the body slides); a pedestal that hovered on a steady line, bobbing and swaying (Candlemon's clips are now baked hops, see below) |
@@ -542,6 +547,7 @@ skeleton and, when present, the preceding reviewed recipe's output. Only root TZ
 changes in the named field slots. Nine-cycle comparisons keep all poses, events,
 loop durations and lateral/vertical root movement exact, so tick and interpolated
 mesh-floor positions are unchanged. The final resident and cold reads must fit.
+Syakomon's four clips were later replaced by the hop of `syakomon_hop.py`, written over this post-pass's output.
 
 This post-pass deliberately covers footless locomotion. A general planted-gait
 retime needs separate contact and thirds checks: resampling can cut across the
@@ -747,6 +753,15 @@ copies in 61 and 62), scaled 2.2 and bound by `native_binding.py`: the idle, wal
 walk and run are 17, 15, 19 and 15 ticks, and Mamemon's stride, root travel and sounds are
 kept. The replay recipe is in `content/models/imports/native-bindings.json`.
 
+ChaosLord uses Machinedramon's native skeleton (32 bones) and field programs, bound by `native_binding.py`
+at scale 1. Native Machinedramon has no care clips, so the recipe's `donor_builder` takes the partner model
+`content/models/partners/machinedramon.py` makes (its own idle, walk and run plus care clips) as the donor. The
+walk and run are 21 and 19 ticks at 25 and 47.5 units per tick; the idle (37 ticks, and slot 33) and the run (and slot 36) are the
+species' own clips retargeted in world space (pace's `original_run`: each bone's world rotation, limbs reaching the original's end joints); the condition walk (slot 3) is the walk
+retimed by `pace.retime` (the recipe's `pace`) to 31 ticks at 16.7, so it stays slower than the walk. The thrusters
+share the chest bone; the claw hand, second neck bone and cannon tips carry no mesh. The resident model uses 84,932
+of 100,352 bytes.
+
 The foot mesh's sole plane, heel and toe define explicit forward-facing ground
 contacts. Each stride lands on its heel, holds the sole flat in world space,
 and rolls off its toe. Scaled two-bone IK and a cyclic pelvis-height envelope
@@ -806,6 +821,22 @@ mid-blink is repaired by the next clip. The test reads the model
 made by `tools/models/edit.py get 233` at the commit before the clips
 (`REDOTAMAMON_MODEL`); the reviewed-source pin in `celebrations.json` follows
 the new model.
+Clockmon 290 (`tools/models/field_animations/clockmon_gait.py`, test
+`tools.test_clockmon_gait`) had field clips whose root speeds (tired 23, run 71
+units a tick) lay outside the native ranges, feet that slid at 50-140 % of the
+travel and arms that changed from one clip to the next. The generator rebuilds
+slots 0, 2, 3 and 4 from the world down, with no donor motion stored: the
+chassis (bone 2) is placed per tick (height, sway, lean, roll, yaw) and the
+rider (bone 1, its head, key and hammer arms) swings on after it; each foot is
+a toe point that stays put in the world while the body passes over it; the
+foot block rolls heel to push on a schedule, the hip piece turns towards it, and
+the block may telescope a few units (`EXT`) because the legs are short and
+straight at rest. Chassis yaw carries the stance hip back, which is what lets
+the short legs cover the stride. The clips are a 90-tick idle and a walk, a
+tired walk and a run of 12, 14 and 8 ticks at 15, 10 and 38 units a tick. The
+test reads the model made by `tools/models/edit.py get 290` (`CLOCKMON_MODEL`);
+the reviewed-source pin in `celebrations.json` follows the new model and the
+overlay's celebration slots (11, 42) stay byte-identical.
 `field_animations/gesomon_rest.py` is written over that model and baked, with
 the walk and run, into the plain delta (the species has no field overlay). The
 import's idle hung the squid 9 to 89 units above the floor (mean 50, a
@@ -989,3 +1020,15 @@ its distance from the standing pose, the hips lowered in the pelvis' frame so th
 (about 14 units), and the leg turns at most about 15 degrees. The other bones, the timing, the loop and the blink events are the
 import's. Slot 33 (the battle idle) shared the old program and keeps it. `tools.test_pumpkinmon_idle` checks the exact bytes, that
 only slot 0 changes, that every other bone is identical, the leg and sole ranges, the closed loop and the storage.
+
+Dragomon (291) has its own idle, walk, condition walk and run (`field_animations/dragomon_gait.py`, shipped as the model delta): 96 / 26 / 30 / 20
+ticks at 0 / 15 / 11 / 36 units per tick, a calm breathing and look-around idle, an easy upright walk, a slow heavy tired drag and an eager loose
+lope. A rigid shin with a flat foot caps the stride (a foot's travel per cycle stays under about 200 units), so the cycles cannot be longer at the
+native speeds; each loop holds two cycles plus a slow whole-loop drift (head wander, shoulder roll). The soles are the IK targets and slip at most
+6 % (mean) while supporting (measure on the soles of bones 5 and 7: the studio's `metrics` reads the two lowest rest-pose bones, which here are the
+left blade and one foot; the last step of each contact, the sole rolling off, is left out). The character is large, slow and overlapping: the pelvis
+sinks onto each landing foot and recovers over the step (eased, no pop: a foot taking over from the other does not jolt the pelvis height), hips
+drop and sway over the loaded leg, the chest counter-turns, the head and crest follow a few ticks later on lag springs (zeta .7: one slow settle, no
+ringing), the arms are heavy pendulums with the blade arm slower, the wings rise and fall like breathing. Nothing but the feet moves faster than
+twice the step rate (`tools.test_dragomon_gait`). The idle's 96 ticks follow Thundermon's precedent for the condition-idle draw (idles over 25
+ticks make some draws unreachable); slots 33 and 36 share the idle and run programs.

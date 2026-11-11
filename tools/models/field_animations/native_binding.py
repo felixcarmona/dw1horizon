@@ -7,7 +7,10 @@ Texture-copy commands are removed because the imported atlas has another layout.
 import copy
 import math
 import hashlib
+import importlib
+import importlib.util
 import json
+import tempfile
 from pathlib import Path
 
 import animsheet
@@ -73,14 +76,30 @@ def mirror_piece(mesh, skeleton, sb, twin, fitted, frame):
     return original, local, normals @ frame[:3, :3]
 
 
-def bind(data, skeleton, recipe):
+def donor_model(recipe):
+    """The donor's bytes: its extracted file, or (`donor_builder`) the model a builder script (a path from the repository root with `build(out_path)`) writes from the extraction
+    (a boss whose own file lacks the care slots a partner plays: its partner copy has them)."""
+    if recipe.get('donor_builder'):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'donor.MMD'
+            spec = importlib.util.spec_from_file_location('donor_builder', ROOT / recipe['donor_builder'])
+            builder = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(builder)
+            builder.build(str(path))
+            return path.read_bytes()
+    return (Path(mmd.EXTRACTED) / recipe['model']).read_bytes()
+
+
+def bind(data, skeleton, recipe, placements=None):
+    """(model bytes, proof). `placements`, when given, receives {source bone: (anchor, transform, destination)}: how each
+    piece was moved, for the authoring step that carries effect points and the condition bubble along with their piece."""
     if digest(data) != recipe['source_sha256'] or digest(json.dumps(skeleton).encode()) != recipe['skeleton_sha256']:
         raise ValueError('Native binding: source model or skeleton differs')
     sid, donor_id = recipe['species'], recipe['donor']
     mmd.exe().add_type(sid, skeleton)
     mesh = mmd.MMD.parse(data, len(skeleton))
     mesh.type = sid
-    donor_bytes = (Path(mmd.EXTRACTED) / recipe['model']).read_bytes()
+    donor_bytes = donor_model(recipe)
     if digest(donor_bytes) != recipe['donor_sha256']:
         raise ValueError('Native binding: donor model differs')
     native = mmd.MMD.parse(donor_bytes, mmd.exe().bone_count[donor_id])
@@ -169,6 +188,8 @@ def bind(data, skeleton, recipe):
         anchor = np.array(rule.get('anchor', sw[sb, :3, 3].tolist()))
         destination = nw[rule.get('joint', tb), :3, 3] + np.array(rule.get('offset', [0, 0, 0]))
         points = (points-anchor) @ transform.T + destination
+        if placements is not None:
+            placements[sb] = (anchor, transform, destination)
         local = (points-nw[tb, :3, 3]) @ np.linalg.inv(nw[tb, :3, :3]).T
         normals = np.array(mesh.tmd.obj_norms(obj)[:original.nnorm]).reshape(-1, 4)[:, :3]
         normals = normals @ np.linalg.inv(sw[sb, :3, :3]) @ np.linalg.inv(transform) @ nw[tb, :3, :3]
@@ -227,6 +248,13 @@ def bind(data, skeleton, recipe):
     output = result.build()
     if recipe.get('arm_pump'):
         output = native_arms.run_arms(mmd.MMD.parse(output, len(rig)), rig, recipe['arm_pump'])
+    if recipe.get('pace'):
+        # slots the donor lacks or shares (a condition walk that is the walk) rebuilt from one of its own clips, retimed
+        # by pace.py with its speed, slip and floor checks (the rows are pace.json rows)
+        from tools.models.field_animations import pace
+        rows = {slot: dict(row, original_run=dict(map=recipe['map'], limbs=recipe['limbs'], bind_slot=recipe.get('bind_slot', 33)))
+                if row.get('original_run') else row for slot, row in recipe['pace'].items()}
+        output = pace.retime(output, rig, 9000+sid, rows, (data, skeleton))[0]
     storage = motionstorage.require(output, len(rig))
     return output, dict(species=sid, source_sha256=digest(data), output_sha256=digest(output),
                         donor=donor_id, generated_skeleton=rig, storage=storage,
