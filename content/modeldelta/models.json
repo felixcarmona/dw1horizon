@@ -3079,9 +3079,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/283-Syakomon.MMD.mdelta",
-        "delta_sha256": "c71bede40cca68e1f0ceaa5a5b0cc1082ef02140b5a3916f042ed0214fa011f5",
-        "sha256": "1a819e38e826c50cfe7083568bf6165fb20e2c4955d698754376e2202572f75e",
-        "size": 34168
+        "delta_sha256": "ba36c1440b2c7910a11e2ce061aa0d81a3f14f9980f910c67de0087ef7f75c0e",
+        "sha256": "3666a13964b02cc562cd1b19c4b145e1a74e1d9b8ccde9462475cc7561e9ad06",
+        "size": 35400
       },
       "tim": {
         "sources": [
