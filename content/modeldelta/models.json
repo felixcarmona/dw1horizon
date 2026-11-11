@@ -2084,9 +2084,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/250-Shadramon.MMD.mdelta",
-        "delta_sha256": "9158a3bfa1ab981a78da12a48fc730a421619a71188dc59291affe4fa7021cf0",
-        "sha256": "7c07a92fdc3c0d342f35e7d68e881518535f4762fd59ad1c51524c10897ebf8f",
-        "size": 104734
+        "delta_sha256": "d3f0d0d8689c1e90d8f70ef6e999224f28dfe65a9b22437fcdd571abdbefd31d",
+        "sha256": "e01d04f9b618b712301ac6945328131e4e66d447505a97e3cf5dc29bb06acfa0",
+        "size": 109640
       },
       "tim": {
         "sources": [

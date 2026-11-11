@@ -495,6 +495,10 @@ Gesomon (240): `field_animations/gesomon_rest.py` lowers the idle onto the floor
 `gesomon.build`'s walk and run; all four are baked into the delta (`python3 -m tools.models.field_animations.gesomon_rest
 --source build/imported-model-edit/edit/240-Gesomon.MMD --out AFTER.MMD`, then `edit.py put 240 AFTER.MMD`;
 check with `tools.test_gesomon_rest`).
+Shadramon (250): `field_animations/shadramon_loose.py` rewrites the idle (slot 0, no hop, claws planted) and loosens the upper body of the
+walk and run over the strides `shadramon.py` made (legs re-solved to the same ankles); `python3 -m tools.models.field_animations.shadramon_loose
+--source build/imported-model-edit/edit/250-Shadramon.MMD --out AFTER.MMD` on the model before this change, then `edit.py put 250 AFTER.MMD`;
+check with `tools.test_shadramon_loose`.
 Apemon (227) has no field overlay: its idle, walk, condition walk and run are stored in its plain delta
 (`edit.py put 227`). `field_animations/apemon.py` is the generator that authored them from the model before this
 pass (`APEMON_BEFORE`, see `tools/test_apemon_gait.py`): four limbs solved per tick with fixed planted fists and feet,

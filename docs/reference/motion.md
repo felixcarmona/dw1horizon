@@ -820,3 +820,14 @@ to well below it, spread, never swept back.
 
 The animation buffer holds 91992 of 100352 bytes. `tools.test_quetzalmon_flight` checks the pinned source, the
 speeds, the seams, the beats, the floor clearance, the distance of the wings to the body and the storage.
+
+`field_animations/shadramon_loose.py` is written over Shadramon's model (the claw strides of `shadramon.py`, baked into
+its plain delta) and baked into the delta in turn. The import's idle (slot 0; the battle idle, slot 33, shared that
+clip and keeps it) hopped: the pelvis rose from 123 to 297 units and the mesh top from 429 to 576. The new idle has the
+same 73 samples, both claws on the floor on every one (lowest vertex 0.3 to 2.6 units up, pelvis 148 to 152), the weight
+shifting from foot to foot, the chest, head, arms and the four wing lobes moving at their own phases. The walk and run
+keep every ankle position and foot orientation of the strides (largest difference 0.35 units), their speeds (16 and 38)
+and their planting; the pelvis now sways over the stance foot, drops on the swinging side and turns against the
+shoulders, the spine and head follow through a spring, the arms swing with a different amplitude each, and each wing lobe
+has its own amplitude, phase and a second harmonic. The tired walk is unchanged. Resident animation buffer 96846 of
+100352 bytes. `tools.test_shadramon_loose` checks the exact bytes, the floor, the seam, the planting and the old feet.
