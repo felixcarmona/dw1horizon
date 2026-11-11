@@ -59,6 +59,32 @@ class CollisionEdits(unittest.TestCase):
         for x, z in (e['tile'] for e in edits):
             self.assertTrue(edited.collision[z*100+x] & 128)
 
+    @unittest.skipUnless((ROOT / 'extracted/MAP/MAP11/FACT06.MAP').exists(), 'needs USA extraction')
+    def test_andromon_room_exit_spans_the_whole_bottom_edge(self):
+        import json
+        import dwmap
+        from maps import reach
+        original = dwmap.MapFile((ROOT / 'extracted/MAP/MAP11/FACT06.MAP').read_bytes())
+        edited = dwmap.MapFile(original.build())
+        edits = json.loads((ROOT / 'content/maps/FACT06.json').read_text())['collision']
+        content.apply_map_collision(edited, edits, 'FACT06')
+        # Only wall bytes beside the existing exit become the same exit trigger.
+        changed = [i for i, (a, b) in enumerate(zip(original.collision, edited.collision)) if a != b]
+        self.assertEqual(len(changed), len(edits))
+        self.assertTrue(all(original.collision[i] == 128 and edited.collision[i] == 51 for i in changed))
+        self.assertEqual(original.warps, edited.warps)
+        self.assertEqual(original.digimon, edited.digimon)
+        self.assertEqual(reach.check_arrivals(edited), [])
+        # Every floor tile on the bottom row of the room (tiles 47-57) now ends in the exit.
+        floor_edge = 61
+        for x in range(47, 58):
+            self.assertEqual(edited.collision[floor_edge*100+x], 0)
+            self.assertEqual(edited.collision[(floor_edge+1)*100+x], 51, x)
+        # A tamer walking south from the arrival at any column reaches the trigger.
+        area = reach.reach(edited, seed_policy='spawn_coordinates')
+        trigger_tiles = {reach.model_tile(x, z) for x, z in area if edited.collision[reach.model_tile(x, z)[1]*100+reach.model_tile(x, z)[0]] == 51}
+        self.assertTrue({(x, 62) for x in range(47, 58)} <= trigger_tiles)
+
 
 if __name__ == '__main__':
     unittest.main()
