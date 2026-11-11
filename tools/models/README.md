@@ -383,6 +383,35 @@ walk 24 at 11, trot 10 at 36 (before 25 at 30, 25 at 21, 21 at 53). The hind fee
 7 % of the root speed in the walks and about 18 % in the trot's stance, lift 22-32 units and land
 heel first; the trunk, ears and jaw nod on lagged closed loops (profile `extra`). `heel`,
 `floor_skip` and `extra` are opt-in profile keys. `tools/test_mammothmon_gait.py` covers it.
+Woodmon's (272) imported gaits left the trunk bone still, replayed the idle's arm curve in
+every gait and slid the feet (85 to 98 % of the body's travel), so the limbs worked on a
+frozen trunk. `field_animations/woodmon.py` keeps `quadruped.py` for the four root legs (a
+lateral-sequence walk of 12 ticks at 15 units a tick, a slower tired walk of 16 ticks at 11
+and a trot of 10 ticks at 38; each foot flat and still in stance, slip under 1 %) and moves
+everything above them with the footfalls through the new profile key `body`: a function that
+replaces the shared chest and head motion for a rig with neither. The trunk bone (1) bobs
+twice a cycle with a landing weight, rolls over the loaded side, shifts its weight
+sideways, yaws against the hips, leans into the run and slouches in the tired walk; the
+log arms (2-3, 4-5) swing opposite to the legs of their side, the forearm following the
+shoulder late and folding as the arm comes forward; the claw hands on the chest (6-11) trail
+the trunk. A native donor was rejected: the nearest one (Cherrymon) is a 26-bone biped
+whose feet slip 89 to 112 %. The old pace overlay is removed. The imported idle (slots 0 and 33,
+the same pose list) flailed the log arms 45 to 90 degrees and the claws 40 to 100 on a still body;
+it is rewritten as a calm 40-tick loop: slow breathing and a small turn of the trunk, the arms and
+claws sway 11 to 20 degrees, each joint a little later than the one above it, and the legs stay
+planted (the hips turn against the trunk, ankles drift under 4 units). Slots 35 and 36 play the walk
+and run and follow.
+
+Cyclonemon's (281) idle, walk, condition walk and run were rebuilt (old ticks 20/21/21/19, root speeds 25/21/44
+units/tick, feet slipping 103-132 %, a heavy hunch in the condition walk). `field_animations/cyclonemon_gait.py`
+plants the heavy left arm like a crutch and both hind feet with `quadruped.py`: idle 48 ticks (feet planted, slow
+breathing and sway), walk 18 ticks at 15, condition walk 26 at 11 (lower, no exaggerated hunch), run 12 at 38 (forward
+lean, bigger bob). The feet slip under 4 % of the root speed. Bone 1 carries a uniform scale of 1.3 that every bone
+under it inherits, so `quadruped.py` has the opt-in profile keys `scale` (rotations read with it divided out, offsets
+and soles multiplied in), `paw_rest` and `body` (a per-species body pose); the shoulder pad (bone 2) takes the twist
+about the line to the elbow that keeps it nearest its place on the torso. Slots 0 and 33 (the battle idle it plays)
+change with the idle; the resident animation buffer ends at 99,238 of 100,352 bytes. `tools/test_cyclonemon_gait.py`
+covers it.
 
 Magnamon (197) is bound to native Leomon (`native_binding.py`). Its boots kept
 the source's fighting stance, turned 35 and 93 degrees outward, its fists kept
@@ -586,6 +615,19 @@ stance foot, chest twist and a steady head (drooping in the condition walk), arm
 elbows, and crest, cloak leaves and back star lagging with second-harmonic ripples all use whole cycles per clip. The idle
 (144 ticks) plants both feet, breathes three times, shifts its weight, looks around and once per loop jerks an arm
 and snaps its head. Run `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_shurimon_gait`.
+Blossomon's (274) walk, condition walk and run kept the five stalk roots at their rest pose, only the whole body bobbing
+114-167 units and rolling 25-39 degrees, so the roots slid 90-195 % of the root speed, the root speed was not constant,
+the trunk hardly turned and the vines made the same 15-20 degree gesture in all three.
+`field_animations/blossomon_gait.py` authors idle (96 ticks), walk (48 ticks, 15 per tick), condition walk (60 ticks, 10)
+and run (33 ticks, 36) on the model's own skeleton (bone 1 pelvis, 2 trunk, 8 head, 9 face, 3-7 the five roots, 10-12 and
+13-15 the right upper and lower vines, 16-21 the left ones, 22 and 23 the leaves); the result is stored with
+`tools/models/edit.py put 274`. The roots walk as a low-duty bound in diagonal groups, three steps per loop (16, 20 and 11
+ticks a step, the run with a flight phase), each planted in the world in stance (its local translation and rotation are
+solved from the pelvis each tick, so a tilted root stays above the floor) and swinging on a smoothstep; stance slip is
+under 11 %. The trunk pitches on every step, twists against the pelvis and lags it, the head and face lag the trunk,
+and the vines sway at a third of the step rate, so no vine or head turns faster
+than 6 degrees a tick. The blink and footstep events are carried over. Slots 1, 18 and 33 share the idle's program,
+so they change too. Run `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_blossomon_gait`.
 Silphymon (226) held both wing-arms out and up at shoulder height in every field clip (shoulder joints turned
 100-200 degrees from the rig's rest, where the arms hang at its sides), a chest hunched 57 degrees and feet that slid
 79-99 % of the ground speed in the walk. `field_animations/silphymon_posture.py` writes the idle (48 ticks), walk,
@@ -611,6 +653,7 @@ Tylomon (254): `field_animations/tylomon_swim.py` rewrites idle, walk, condition
 Plesiomon (271): `field_animations/plesiomon_swim.py` rewrites idle (slots 0, 1 and 18), walk, condition walk and run as four swimming movements (neck and tail
 waves, rowing flippers on springs); `python3 -m tools.models.field_animations.plesiomon_swim --source build/imported-model-edit/edit/271-Plesiomon.MMD --out AFTER.MMD`
 on the model before this change, then `edit.py put 271 AFTER.MMD`; it has no overlay pass; check with `tools.test_plesiomon_swim`.
+Scorpiomon (275): `field_animations/scorpiomon_swim.py` rewrites idle (64 ticks), walk (32, 26 units a tick), tired walk (44, 14) and run (20, 42) of a model with no legs that hovers about 150 units above the floor (carapace, face plate, mouth plates, eyes, two three-segment claws, one side blade per flank, a tail chain ending in a fan): blades row in turn, claws curl with a lag per segment, a wave runs down the tail, the body bobs, sways and rolls; `python3 -m tools.models.field_animations.scorpiomon_swim --source build/imported-model-edit/edit/275-Scorpiomon.MMD --out AFTER.MMD` on the model before this change, then `edit.py put 275 AFTER.MMD`; check with `tools.test_scorpiomon_swim`.
 
 
 
@@ -698,6 +741,7 @@ is fitted offline by `fit`, constant data in the module. Everything else is the 
 programs. `python3 -m tools.models.field_animations.skullmammothmon_clash --source BEFORE.MMD --out AFTER.MMD` on the model before this
 change (`edit.py get 268`), then `edit.py put 268 AFTER.MMD`; check with `tools.test_skullmammothmon_clash`. The resident buffer has 12 B
 to spare, so a change that adds keys to those clips will not fit.
+`field_animations/octomon_scuttle.py` (Octomon 278): an offline model delta over the import. The six tentacle legs are walked by damped least squares IK with planted tips (tripod gait, Hermite swings), the body rises, falls and sways, and the two arms and the idle tentacles follow with a delay. Idle 64 ticks (slots 1, 18 and 33 share it), walk 16 ticks at 15 u/tick, tired walk 20 at 10, run 10 at 35. `python3 -m tools.models.field_animations.octomon_scuttle --source <import MMD> --out <MMD>` rebuilds it; register with `tools/models/edit.py put 278`; check with `tools.test_octomon_scuttle`.
 
 Kokuwamon (247): `field_animations/kokuwamon_arm.py` runs after the field pace pass (`after_generator` in
 `content/models/imports/pace.json`). The source clips left the arm chain 13/14/15/16 stiff; its shoulder 13, forearm 14
@@ -708,6 +752,13 @@ Thundermon (252): `field_animations/thundermon_gait.py` writes its idle, walk, c
 bobs, boots a boot's width apart that plant and swing, arms on damped springs, bolt lag); `python3 -m tools.models.field_animations.thundermon_gait
 --source BEFORE.MMD --out AFTER.MMD` on the model before this change (`edit.py get 252`), then `edit.py put 252 AFTER.MMD`; `field_animations/thundermon_face.py` makes the eyes blink by texture moves over the painted eye disc (frames in unsampled texels, every clip starts and ends
 with open eyes); add `--tim-out AFTER.TIM` and `edit.py put 252 AFTER.MMD AFTER.TIM`; check with `tools.test_thundermon_gait`.
+
+Floramon (273): `field_animations/floramon_gait.py` is an `after_generator` row of `content/models/imports/pace.json`, run on the
+paced model (the delta MMD and its texture are unchanged: the native eye frames are used). The idle (slot 0, a new 180-tick
+program, so slot 33 keeps the old one) is a calm 9 s loop of four breaths with a closed loop; the walk (slot 2) is rewritten
+as a bouncy skip (slot 2: 26 ticks, two hops of 13 ticks against the run's 10, a pelvis rise of about 34 units against the run's 61, 16 units a tick; planted-foot IK, slip 73 % to 13 %); the torso crouches on landing, pitches, twists against the hips and sways, and the head rocks side to side (about 27 degrees peak to peak, one side per skip) a little after the trunk, and petals and tail lag behind it; the run (slot 4, shared with slot 36) keeps its bones and
+root and only gains a blink (three loops long); the condition walk (slot 3) keeps its legs, arms and root, and the chest leans and the head hangs about 25 degrees lower, bobbing slowly, with the blink. Blinks are `tex` events copying the native eye frames (open, half, shut) over the painted eye, every clip starts and
+ends open. Check with `tools.test_floramon_gait` (needs `edit.py get 273`); re-pin 273 in `species-pins.json` after any change.
 
 Tuskmon (253): `field_animations/tuskmon_lift.py` raises the body of the field clips over the strides `tuskmon.py` made (legs re-solved to the same
 ankles) and makes the horns rigid on the chest; `python3 -m tools.models.field_animations.tuskmon_lift --out AFTER.MMD` on the model before this
@@ -742,3 +793,11 @@ Slot 33 (the battle idle) shared the old program and keeps it; the walk, tired w
 plain delta: `edit.py get 265` on the commit before this change, `python3 -m tools.models.field_animations.darktyrannomon_idle
 --source THAT.MMD --out AFTER.MMD`, `edit.py put 265 AFTER.MMD`. Check with
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_darktyrannomon_idle` (`DARKTYRANNOMON_MODEL=` names the model before).
+
+Pumpkinmon (280): `field_animations/pumpkinmon_idle.py` replaces only the field idle (slot 0): the import's 27-tick hop
+with the legs (bones 11-14) attenuated to a third of their motion (each channel scaled from the standing pose, tick 0) and
+the hips lowered in the pelvis' frame so the soles rise a third as much (33 to about 14 units, leg turns 45 to 15 degrees).
+Every other bone, the timing, the loop and the blink events stay as imported. Slot 33 (the battle idle) shared the old
+program and keeps it; the walk, tired walk and run are untouched. `edit.py get 280` on the commit before this change,
+`python3 -m tools.models.field_animations.pumpkinmon_idle --source THAT.MMD --out AFTER.MMD`, `edit.py put 280 AFTER.MMD`.
+Check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_pumpkinmon_idle` (`PUMPKINMON_MODEL=` names the model before).

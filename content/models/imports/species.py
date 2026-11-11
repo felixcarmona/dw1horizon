@@ -75,7 +75,6 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'snimon-pace': ('328', 'tools.models.field_animations.pace', '328-snimon-pace'),
     'grizzlymon-pace': ('296', 'tools.models.field_animations.pace', '296-grizzlymon-pace'),
     'gryphonmon-pace': ('293', 'tools.models.field_animations.celebrations', '293-gryphonmon-pace'),
-    'woodmon-pace': ('272', 'tools.models.field_animations.pace', '272-woodmon-pace'),
     'wormmon-pace': ('183', 'tools.models.field_animations.pace', '183-wormmon-pace'),
     'datamon-field': ('294', 'tools.models.field_animations.datamon', '294-datamon-field'),
     'deramon-pace': ('286', 'tools.models.field_animations.pace', '286-deramon-pace'),
