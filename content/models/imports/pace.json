@@ -554,34 +554,6 @@
    }
   }
  },
- "272": {
-  "name": "Woodmon",
-  "bones": 24,
-  "skeleton_sha256": "1ad0cb620a2e3035e2cc6a73fdac7a11a1bc7259c85cbbe49be625ca3821d7a4",
-  "source_sha256": "e7e2d7e6e9a34c41dcb283b3ffb9eb227a16ce7a2eef0bbda11b49ac6907a4e0",
-  "base_generator": null,
-  "post_source_sha256": "e7e2d7e6e9a34c41dcb283b3ffb9eb227a16ce7a2eef0bbda11b49ac6907a4e0",
-  "slots": {
-   "2": {
-    "from": 2,
-    "ticks": 13,
-    "speed": 20,
-    "slip": [
-     125,
-     250
-    ]
-   },
-   "4": {
-    "from": 4,
-    "ticks": 20,
-    "speed": 38,
-    "slip": [
-     190,
-     360
-    ]
-   }
-  }
- },
  "183": {
   "name": "Wormmon",
   "bones": 24,

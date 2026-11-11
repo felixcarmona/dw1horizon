@@ -383,6 +383,24 @@ walk 24 at 11, trot 10 at 36 (before 25 at 30, 25 at 21, 21 at 53). The hind fee
 7 % of the root speed in the walks and about 18 % in the trot's stance, lift 22-32 units and land
 heel first; the trunk, ears and jaw nod on lagged closed loops (profile `extra`). `heel`,
 `floor_skip` and `extra` are opt-in profile keys. `tools/test_mammothmon_gait.py` covers it.
+Woodmon's (272) imported gaits left the trunk bone still, replayed the idle's arm curve in
+every gait and slid the feet (85 to 98 % of the body's travel), so the limbs worked on a
+frozen trunk. `field_animations/woodmon.py` keeps `quadruped.py` for the four root legs (a
+lateral-sequence walk of 12 ticks at 15 units a tick, a slower tired walk of 16 ticks at 11
+and a trot of 10 ticks at 38; each foot flat and still in stance, slip under 1 %) and moves
+everything above them with the footfalls through the new profile key `body`: a function that
+replaces the shared chest and head motion for a rig with neither. The trunk bone (1) bobs
+twice a cycle with a landing weight, rolls over the loaded side, shifts its weight
+sideways, yaws against the hips, leans into the run and slouches in the tired walk; the
+log arms (2-3, 4-5) swing opposite to the legs of their side, the forearm following the
+shoulder late and folding as the arm comes forward; the claw hands on the chest (6-11) trail
+the trunk. A native donor was rejected: the nearest one (Cherrymon) is a 26-bone biped
+whose feet slip 89 to 112 %. The old pace overlay is removed. The imported idle (slots 0 and 33,
+the same pose list) flailed the log arms 45 to 90 degrees and the claws 40 to 100 on a still body;
+it is rewritten as a calm 40-tick loop: slow breathing and a small turn of the trunk, the arms and
+claws sway 11 to 20 degrees, each joint a little later than the one above it, and the legs stay
+planted (the hips turn against the trunk, ankles drift under 4 units). Slots 35 and 36 play the walk
+and run and follow.
 
 Magnamon (197) is bound to native Leomon (`native_binding.py`). Its boots kept
 the source's fighting stance, turned 35 and 93 degrees outward, its fists kept

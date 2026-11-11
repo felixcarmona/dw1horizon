@@ -225,6 +225,8 @@ class ModelProvider(unittest.TestCase):
         self.assertNotIn('201', assignments)
         # Salamon (221) neither: its gait and blinking face are in its model delta (salamon.py, salamon_face.py).
         self.assertNotIn('221', assignments)
+        # Woodmon (272) neither: its walk, tired walk and run are in its model delta (woodmon.py).
+        self.assertNotIn('field_overlay', records['272'])
         self.assertEqual(hashlib.sha1(json.dumps(assignments, sort_keys=True).encode()).hexdigest(),
                          '62a9b8ef514e4d64113e867a4fe662ca00f63fdc')
 

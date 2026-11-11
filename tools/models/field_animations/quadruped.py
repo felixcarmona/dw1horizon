@@ -23,7 +23,9 @@ nefertimon.py writes Nefertimon's:
   space): standing and swinging, the bone rolls about itself to keep it pointing ahead. A profile with `pole_world` gives its pole directions in the world (x towards the leg's side) instead of the parent bone's
   space, for a leg hung from a bone that stands turned in its rest pose. A profile's `extra` (a function of the rig, the gait row, the cycle phase and the pose) moves the parts the module has no row for (Mammothmon's trunk, ears and jaw). A profile's `floor_skip` (bones) leaves out of the floor check the parts the source's own idle hangs under the floor (Mammothmon's trunk tip and tail). A profile's `floor` and `stance_slip` widen the
 under-the-floor and sliding-sole bounds for a rig whose leg plates cannot stay both flat and planted (Tortomon). A gait's `arc` (default 0.8) shapes the lift of a swinging paw: 1 rises as a plain half sine, below 1 it leaves the floor faster. A gait's `clear_ease` (fraction of the swing) brings the clearance under the paw in gradually, so a paw peeled at the end of stance does not jump up at the lift-off. A gait's `fold_soft` (units) replaces the hard minimum distance `fold` of a swinging wrist from its hip by a smooth maximum of that width. A gait's `leg_reach` (per leg: units) moves one leg's stance window fore or aft of the others'. A gait's `wide`
-  (front/hind: units) carries a swinging paw out from its track and back in by the landing.
+  (front/hind: units) carries a swinging paw out from its track and back in by the landing. A profile's `body` (a function
+  of (rig, cfg, phase, pose, hist), default `body` below) writes the trunk and everything above the legs instead, for a rig
+  with no chest or head bone and parts of its own (Woodmon's swinging log arms).
 
 Each clip is rewritten where it is stored, so its battle aliases play it too. Footsteps keep the species' own
 sound (bank and note) and land on touchdowns; the clip keeps the eye state (texture events) its source opens with.
@@ -365,7 +367,7 @@ def gait(rig, cfg):
     def body_at(phase, drop, hist):
         pose = [list(v) for v in rest]
         pose[0] = [4096, 4096, 4096, 0, 0, 0, 0, 0, -round(speed * phase * ticks)]
-        body(rig, cfg, phase, pose, hist)
+        (p.get('body') or body)(rig, cfg, phase, pose, hist)
         pose[p['pelvis']][7] += drop
         return pose
 
