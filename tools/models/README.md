@@ -342,6 +342,14 @@ a slower and lower condition walk (22 ticks, 9) with the head hung, and a trot (
 native binding: the 21-bone short-legged rig has one shell bone carrying everything and
 a native donor would stretch the legs. The legs are folded Z shapes, so the profile bends
 the front knee downwards (`pole`) and widens the checks with `floor` and `stance_slip`.
+ExTyrannomon's (266) arms hung almost still in the walk, condition walk and run.
+`field_animations/extyrannomon_arms.py` rewrites only the two arm bones (7 and 8, one rigid
+piece each: shoulder disc, cannon and claws) of slots 2, 3 and 4 and leaves every other bone,
+the cycle lengths, the events and the idle byte for byte. Each arm is a damped spring driven
+by the pitch of the leg on its side, in opposite phase, so it trails the leg by a tick or two
+and closes the loop on integers; footfall kicks, a slight sway-driven abduction and a roll of
+the disc come on top. The ticks where an arm would sink into the body or a leg are bounded
+inside the swing, never worse than the original clip. Slot 36 shares the run program.
 A planted stride longer than about 55 units (ankle travel against the hip) cannot be reached
 without the IK capping the leg at full stretch or full fold, where the foot sticks and then pops,
 so each foot is planted for only about a quarter of the cycle (duty 0.28, 0.26 and 0.17) and

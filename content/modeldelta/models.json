@@ -2569,9 +2569,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/266-ExTyrannomon.MMD.mdelta",
-        "delta_sha256": "6eddce2fe170f9017a3a025401571a9198e94e90487f3faccd497806e35e34ec",
-        "sha256": "4ac9d27b348f7f097433405ff2bb7e9f9f283e25c0570d2971089384d73dfd46",
-        "size": 66002
+        "delta_sha256": "2e3faf1a17ff91a3f362eb73cf989454bfc4e5b34e8a0c4be11855169e3c9c0e",
+        "sha256": "6aae86c7b16b64f6b740e7586c03152fa4d23f9e2375730cc97fa8fb399ce853",
+        "size": 67676
       },
       "tim": {
         "sources": [
