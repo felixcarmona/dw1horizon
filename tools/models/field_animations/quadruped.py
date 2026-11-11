@@ -25,7 +25,10 @@ nefertimon.py writes Nefertimon's:
 under-the-floor and sliding-sole bounds for a rig whose leg plates cannot stay both flat and planted (Tortomon). A gait's `arc` (default 0.8) shapes the lift of a swinging paw: 1 rises as a plain half sine, below 1 it leaves the floor faster. A gait's `clear_ease` (fraction of the swing) brings the clearance under the paw in gradually, so a paw peeled at the end of stance does not jump up at the lift-off. A gait's `fold_soft` (units) replaces the hard minimum distance `fold` of a swinging wrist from its hip by a smooth maximum of that width. A gait's `leg_reach` (per leg: units) moves one leg's stance window fore or aft of the others'. A gait's `wide`
   (front/hind: units) carries a swinging paw out from its track and back in by the landing. A profile's `body` (a function
   of (rig, cfg, phase, pose, hist), default `body` below) writes the trunk and everything above the legs instead, for a rig
-  with no chest or head bone and parts of its own (Woodmon's swinging log arms).
+  with no chest or head bone and parts of its own (Woodmon's swinging log arms). A profile's `flat_shin` (front/hind: 0 to 1)
+  carries the hock that share of the way to straight above the ankle and stretches the links to match, for a leg whose
+  shin plate would dig into the floor as it tilts (Grizzlymon's hind legs). A gait with speed 0 is an idle: the feet stay where
+  they are and only the body and the parts above it move.
 
 Each clip is rewritten where it is stored, so its battle aliases play it too. Footsteps keep the species' own
 sound (bank and note) and land on touchdowns; the clip keeps the eye state (texture events) its source opens with.
@@ -221,6 +224,12 @@ class Rig:
         h = math.sqrt(max(0.0, la * la - along * along))
         elbow = add(shoulder, add(scale(unit(d), along), scale(pole, h)))
         wr = add(shoulder, d)
+        flat = self.p.get('flat_shin', {}).get(front, 0.0)
+        if flat:
+            # a lower bone with a broad plate under it (a hock block) would dig its front or rear edge into the floor as soon
+            # as it tilts: `flat_shin` carries the elbow (hock) that share of the way to straight above the wrist, and the two
+            # links' offsets stretch or shrink with it (the upper mesh overlaps the lower one by far more than that)
+            elbow = add(scale(elbow, 1 - flat), scale(add(wr, [0.0, -lb, 0.0]), flat))
         n0 = cross(sub(e0, shoulder), sub(w0, e0))
         n1 = cross(sub(elbow, shoulder), sub(wr, elbow))
         if self.p.get('rest_plane'):
@@ -241,6 +250,9 @@ class Rig:
             v, ahead = sub(v, scale(axis, dot(axis, v))), sub(ahead, scale(axis, dot(axis, ahead)))
             if norm(v) > 1e-6 and norm(ahead) > 1e-6:
                 rl = mul(spin(axis, math.atan2(dot(cross(v, ahead), axis), dot(v, ahead))), rl)
+        if flat:
+            for child, k in ((lo, norm(sub(elbow, shoulder)) / la), (paw, norm(sub(wr, elbow)) / lb)):
+                pose[child][6:9] = [x * k for x in pose[child][6:9]]
         set_rot(pose, up, mul(tr(parent), ru), hist)
         set_rot(pose, lo, mul(tr(mul(ru, via_lo)), rl), hist)
         return mul(rl, via_paw), dist - reach
@@ -568,8 +580,11 @@ def build(data, skeleton, profile):
         speed = abs(loop[-1][0][8] - loop[0][0][8]) / total
         floor = _floor(rig, loop)
         assert floor <= profile.get('floor', FLOOR), (slot, 'under the floor', floor)
-        low, high = profile.get('speed_range', SPEED_RANGE)[slot]
-        assert low <= speed <= high and abs(speed - cfg['speed']) <= 0.5, (slot, speed)
+        if cfg['speed']:
+            low, high = profile.get('speed_range', SPEED_RANGE)[slot]
+            assert low <= speed <= high and abs(speed - cfg['speed']) <= 0.5, (slot, speed)
+        else:                               # an idle: the feet stay where they are
+            assert speed == 0, (slot, speed)
         slips = _stance_slip(rig, cfg, loop)
         assert max(slips.values()) <= profile.get('stance_slip', STANCE_SLIP), (slot, slips)
         sounds = sorted({k for k, kind, _ in played_events if kind == 'sound' and k < total})

@@ -359,34 +359,6 @@
   },
   "after_generator": "tools.models.field_animations.snimon"
  },
- "296": {
-  "name": "Grizzlymon",
-  "bones": 20,
-  "skeleton_sha256": "5109b23e484f8da598ea852c142afcd55a57823ba9ae1ebb4790182fc65e9aeb",
-  "source_sha256": "12607d3bc0410bf6383d28aca68f42b20df64205b31ab084d17b754e20d3106b",
-  "base_generator": null,
-  "post_source_sha256": "12607d3bc0410bf6383d28aca68f42b20df64205b31ab084d17b754e20d3106b",
-  "slots": {
-   "2": {
-    "from": 2,
-    "ticks": 30,
-    "speed": 20,
-    "slip": [
-     125,
-     250
-    ]
-   },
-   "4": {
-    "from": 4,
-    "ticks": 64,
-    "speed": 38,
-    "slip": [
-     190,
-     360
-    ]
-   }
-  }
- },
  "189": {
   "name": "Ankylomon",
   "bones": 19,

@@ -3484,9 +3484,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/296-Grizzlymon.MMD.mdelta",
-        "delta_sha256": "d3ba4ab046f8ec1bb08be3a0c1ee4eba2cb241ca0f85a789369af0e10399b4b5",
-        "sha256": "12607d3bc0410bf6383d28aca68f42b20df64205b31ab084d17b754e20d3106b",
-        "size": 108480
+        "delta_sha256": "360b7398797413565116e52cd88c36b0794f7fd23c9d104696930001f56d16a8",
+        "sha256": "7b5a9d8a8c80f899ee319e14f5492b4ede5161b805c1c0174ee668149bb74e0e",
+        "size": 97140
       },
       "tim": {
         "sources": [

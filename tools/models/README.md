@@ -443,6 +443,21 @@ the arm, the fan on its end a few ticks behind and wider, so it trails; turning 
 beats them wider; the tired walk hangs the head and beats low and slow. The idle is a 96-tick loop with a breath, a slow wing stretch, a beak
 scan to each side, a settling dip, a tail flick and three blinks. The old walk-speed overlay is gone: the celebration overlay
 (slot 42) now starts from this model. `tools/test_gryphonmon_gait.py` covers it.
+Grizzlymon's (296) imported walk and run slid every foot (slip 39 to 63 % of the body's travel, a 64-tick run) on a
+stiff trunk, which read as a robot. `field_animations/grizzlymon_gait.py` rebuilds the idle (slots 0, 1 and 18), walk,
+tired walk and run with `quadruped.py`: the walk (24 ticks, 15 units/tick) is a bear's lateral sequence with every paw
+planted flat and still in stance (slip about 10 %), the body rolls and shifts its weight over the loaded paw while
+shoulders and hips turn against each other, the shoulder rises over the planted fore paw and the head hangs low and swings
+slowly; the tired walk (28 ticks, 11) drags the same way with the head and tail hanging; the run (15 ticks, 38) is a low
+rotary lope with the spine flexing; the idle (96 ticks) breathes, shifts its weight and sniffs with the feet planted.
+The character is menacing: the head is pushed 10-28 units out ahead of the shoulders, hangs low and lunges with every
+fore step (`thrust`, `lunge`, `head_drop` in the gait rows), each fore landing drops the body (`impact`), the chest rolls
+over the loaded paw by 8-13 degrees peak to peak, and the idle sweeps the head wide, lowers it over the loop, growls
+(`jaw_open`, `swell`) and lifts and sets down a fore paw. The
+fore legs are nearly straight at rest (102 + 32 units), which limits the fore stride, so the cycles are short; the hind shin
+plates dig into the floor when they tilt, so the profile gives `flat_shin` (a new `quadruped.py` key that straightens the
+hock above the ankle). A gait with speed 0 is an idle: the feet stay put. The old pace overlay is removed.
+`tools/test_grizzlymon_gait.py` covers it.
 
 Cyclonemon's (281) idle, walk, condition walk and run were rebuilt (old ticks 20/21/21/19, root speeds 25/21/44
 units/tick, feet slipping 103-132 %, a heavy hunch in the condition walk). `field_animations/cyclonemon_gait.py`

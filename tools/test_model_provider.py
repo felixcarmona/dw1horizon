@@ -235,6 +235,8 @@ class ModelProvider(unittest.TestCase):
         self.assertNotIn('field_overlay', records['272'])
         # Gryphonmon (293) keeps only its celebration overlay: the gaits are in its model delta (gryphonmon_gait.py).
         self.assertEqual(records['293']['field_overlay'], 'gryphonmon-celebration')
+        # Grizzlymon (296) neither: its idle, walk, tired walk and run are in its model delta (grizzlymon_gait.py).
+        self.assertNotIn('field_overlay', records['296'])
         self.assertEqual(hashlib.sha1(json.dumps(assignments, sort_keys=True).encode()).hexdigest(),
                          '62a9b8ef514e4d64113e867a4fe662ca00f63fdc')
 
