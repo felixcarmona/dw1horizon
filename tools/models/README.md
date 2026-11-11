@@ -53,6 +53,12 @@ and a scheduled foot roll. `python3 -m tools.models.field_animations.clockmon_ga
 (SRC from `edit.py get 290` before the change), then `edit.py put 290 DIR/290-Clockmon.MMD`; the reviewed-source pin in
 `content/models/imports/celebrations.json` follows the new model. Test: `tools.test_clockmon_gait` (`CLOCKMON_MODEL`).
 
+Species 297 (Marsmon): `field_animations/marsmon_gait.py` writes slots 0, 2, 3 and 4 again (a 150-tick idle, a 22-tick walk, a 26-tick tired
+walk and a 14-tick run at 16, 11 and 38 units a tick) with `quadruped.py` on the model's own two legs: planted boots
+with their outward splay, hips against shoulders, swinging, opening fists and a trailing cape, and a swaggering, proud character (the idle shifts the weight, looks aside, raises a fist and flicks the cape).
+`python3 -m tools.models.field_animations.marsmon_gait --source SRC.MMD --out AFTER.MMD` (SRC from `edit.py get 297`
+before the change), then `edit.py put 297 AFTER.MMD`. Test: `tools.test_marsmon_gait` (`MARSMON_MODEL`).
+
 Species 202 (Submarimon): `repair_submarimon.py` removes four stencil faces that sit on its body plates and keeps the
 rear screw turning in every clip (see player-model-fixes.md); `python3 -W ignore -m unittest tools.test_submarimon`.
 

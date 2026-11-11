@@ -850,6 +850,16 @@ tired walk and a run of 12, 14 and 8 ticks at 15, 10 and 38 units a tick. The
 test reads the model made by `tools/models/edit.py get 290` (`CLOCKMON_MODEL`);
 the reviewed-source pin in `celebrations.json` follows the new model and the
 overlay's celebration slots (11, 42) stay byte-identical.
+Marsmon 297 (`tools/models/field_animations/marsmon_gait.py`, test `tools.test_marsmon_gait`) had a walk, tired
+walk and run whose leg rotations came from another rig: the right foot crossed to the left side of the body (the
+feet only 2-39 units apart, the right one at x = -47 to -17), the soles slid and the legs hung together. The
+generator plants each foot with `quadruped.py` (two-bone IK on hip and knee, the heel flat, the boot keeping its
+30 degree outward splay, a track of 43 units a side; the new gait option `world_ease` eases a swinging paw in the world, so it leaves and lands at rest) and writes the body by hand: the hips yaw and roll against the
+shoulders, the upper body shifts over the loaded foot, the fists swing against the legs and open at the end of the swing, and the cape trails late, a link behind the last.
+The character is a proud, heavy warlord: the walk is a swagger (chest out, chin up, a wider hip sway), the tired walk a slouch with the head down and the cape hanging, the run a lean-in with the cape streaming. The idle is redone as a 150-tick (5 s) loop on planted boots: the weight rolls from one to the other, a breath, a look aside with a head tilt, one fist raised to the chest and a flick of the cape.
+The body bobs hard with each step (the pelvis falls on every landing and rises over the planted foot: 16, 18 and 21 units peak to peak in the walk, tired walk and run, two bobs a cycle; the clips before had 10, 10 and 13), the boots stay flat through the stride (a toe-up peel at lift-off had turned the trailing run foot backwards) and the run's world ease is a share (`world_ease` 0.85) so the trailing foot does not hang so far behind.
+The walk, tired walk and run are 22, 26 and 14 ticks at 16, 11 and 38 units a tick (a long unhurried step like the native biped's, with the heel peeling at toe-off, a high knee lift and a leaning run). The test
+reads the model made by `tools/models/edit.py get 297` (`MARSMON_MODEL`).
 `field_animations/gesomon_rest.py` is written over that model and baked, with
 the walk and run, into the plain delta (the species has no field overlay). The
 import's idle hung the squid 9 to 89 units above the floor (mean 50, a

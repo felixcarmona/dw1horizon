@@ -22,7 +22,7 @@ nefertimon.py writes Nefertimon's:
   A lower bone with a long part along it (a forearm blade) gives `aim` (front/hind: that direction in the bone's
   space): standing and swinging, the bone rolls about itself to keep it pointing ahead. A profile with `pole_world` gives its pole directions in the world (x towards the leg's side) instead of the parent bone's
   space, for a leg hung from a bone that stands turned in its rest pose. A profile's `extra` (a function of the rig, the gait row, the cycle phase and the pose) moves the parts the module has no row for (Mammothmon's trunk, ears and jaw). A profile's `floor_skip` (bones) leaves out of the floor check the parts the source's own idle hangs under the floor (Mammothmon's trunk tip and tail). A profile's `floor` and `stance_slip` widen the
-under-the-floor and sliding-sole bounds for a rig whose leg plates cannot stay both flat and planted (Tortomon). A gait's `arc` (default 0.8) shapes the lift of a swinging paw: 1 rises as a plain half sine, below 1 it leaves the floor faster. A gait's `clear_ease` (fraction of the swing) brings the clearance under the paw in gradually, so a paw peeled at the end of stance does not jump up at the lift-off. A gait's `fold_soft` (units) replaces the hard minimum distance `fold` of a swinging wrist from its hip by a smooth maximum of that width. A gait's `leg_reach` (per leg: units) moves one leg's stance window fore or aft of the others'. A gait's `wide`
+under-the-floor and sliding-sole bounds for a rig whose leg plates cannot stay both flat and planted (Tortomon). A gait's `arc` (default 0.8) shapes the lift of a swinging paw: 1 rises as a plain half sine, below 1 it leaves the floor faster. A gait's `clear_ease` (fraction of the swing) brings the clearance under the paw in gradually, so a paw peeled at the end of stance does not jump up at the lift-off. A gait's `world_ease` (true, or a share from 0 to 1 of it) eases a swinging paw's fore-aft travel in the world instead of in the body's frame, so it leaves and lands at rest over the floor (its slip is then small even while it is within a few units of the floor). A gait's `fold_soft` (units) replaces the hard minimum distance `fold` of a swinging wrist from its hip by a smooth maximum of that width. A gait's `leg_reach` (per leg: units) moves one leg's stance window fore or aft of the others'. A gait's `wide`
   (front/hind: units) carries a swinging paw out from its track and back in by the landing. A profile's `body` (a function
   of (rig, cfg, phase, pose, hist), default `body` below) writes the trunk and everything above the legs instead, for a rig
   with no chest or head bone and parts of its own (Woodmon's swinging log arms). A profile's `flat_shin` (front/hind: 0 to 1)
@@ -443,6 +443,11 @@ def gait(rig, cfg):
                 k = (1 - cfg['jerk']) * smooth(s) + cfg['jerk'] * minimum_jerk(s)
             mul_ = cfg.get('leg_lift', {}).get(name, 1.0)    # the two sides never step quite alike
             flight = [lift_off[i] + (landing[i] - lift_off[i]) * (k if i == 2 else s) for i in range(3)]
+            if cfg.get('world_ease'):     # the ease is made in the world: the paw leaves and lands at rest over the floor
+                swing_ticks = ticks * (1 - cfg['duty'][name])
+                z_world = lift_off[2] + (landing[2] - speed * swing_ticks - lift_off[2]) * minimum_jerk(s)
+                share = 1.0 if cfg['world_ease'] is True else cfg['world_ease']     # a share < 1 keeps the paw nearer the body
+                flight[2] = share * (z_world + speed * swing_ticks * s) + (1 - share) * flight[2]
             flight[2] -= mul_ * cfg['out'][key] * 6.75 * s * s * (1 - s)    # reaches past the landing, then settles onto it
             flight[1] -= mul_ * cfg['lift'][key] * math.sin(math.pi * min(1.0, s ** cfg.get('arc', 0.8)))
             flight[0] += side * cfg.get('wide', {}).get(key, 0) * math.sin(math.pi * s)    # swings wide of the body
