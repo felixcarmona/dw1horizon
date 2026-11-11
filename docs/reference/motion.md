@@ -362,10 +362,10 @@ A **field overlay** is a reviewed recipe that rewrites the field slots of one sp
 | `shakkoumon.py` | Shakkoumon 214 | idle, walk, condition walk and run authored from the rest pose: breathing and weight shift; a waddle (14 ticks, 20 units/tick) rolling over the standing foot, pelvis against chest, arms and head late, soles carried back at the ground speed (slip 26 %); a slower drooping condition walk (20 ticks, 12); a leaning run (12 ticks, 42) with a short flight; pelvis height set per tick on the lowest sole |
 | `fieldphantom.py`, `fielddolphin.py`, `fieldzudo.py` | Phantomon 229, Dolphmon 238, Zudomon 219 | restore the native performance clock that the retargeted field clips had squeezed |
 | `fieldpiedmon.py`, `fieldfairy.py` | Piedmon 245, Lillymon 209 | keep the native float: Piedmon's leg rotations restored from its native floating cycle; Lillymon's shoulders opened in slot 0x21, the performance the experimental runtime layer (above) shows in the field |
-| `fieldnative.py`, `fieldseraph.py`, `fieldangel.py`, `fieldvenom.py`, `fieldaero.py`, `fielddevi.py`, `fieldrose.py`, `fieldsylph.py`, `fieldsorcer.py`, `fieldwizard.py`, `fieldvike.py`, `fieldtuskmon.py`, `fieldshadramon.py`, `fieldshuri.py` | MegaKabuterimon 205, Seraphimon 207, MagnaAngemon 206, VenomMyotismon 212, AeroVeedramon 213, Devidramon 216, Rosemon 230, Silphymon 226, Sorcermon 242, Wizardmon 241, Vikemon 220, Tuskmon 253, Shadramon 250, Shurimon 225 | planted strides solved on the native legs (exact link lengths, the whole boot or claw mesh as support) under the native upper-body performance; Silphymon's walks also carry the upper body (pelvis bob, lean, torso counter-turn, arms against the legs) with strides as long as its boots |
+| `fieldnative.py`, `fieldseraph.py`, `fieldangel.py`, `fieldvenom.py`, `fieldaero.py`, `fielddevi.py`, `fieldrose.py`, `fieldsylph.py`, `fieldsorcer.py`, `fieldvike.py`, `fieldtuskmon.py`, `fieldshadramon.py`, `fieldshuri.py` | MegaKabuterimon 205, Seraphimon 207, MagnaAngemon 206, VenomMyotismon 212, AeroVeedramon 213, Devidramon 216, Rosemon 230, Silphymon 226, Sorcermon 242, Vikemon 220, Tuskmon 253, Shadramon 250, Shurimon 225 | planted strides solved on the native legs (exact link lengths, the whole boot or claw mesh as support) under the native upper-body performance; Silphymon's walks also carry the upper body (pelvis bob, lean, torso counter-turn, arms against the legs) with strides as long as its boots |
 | `fieldboxer.py`, `fieldstar.py`, `fieldsuperstar.py`, `fieldthundermon.py`, `fieldroll.py`, `fieldkoku.py` | BomberNanimon 232, Starmon 243, SuperStarmon 244, Thundermon 252, Togemon 208, Kokuwamon 247 | short one-link legs with rigid oversized boots that roll over their support vertices; body height follows the planted boot |
 | `fieldgatomon.py`, `fieldcat222.py`, `fieldpup.py`, `fieldgizmo.py`, `fieldape.py`, `fieldscarab.py`, `fieldpaddle.py`, `fieldwalrus.py`, `fielddiaboromon.py` | Gatomon 234, BlackGatomon 222, Gizamon 239, Apemon 227, GranKuwagamon 210, Gomamon 217, Ikkakumon 218, Diaboromon 237 | quadruped and crouched gaits: one-segment limbs pinned through the body carrier instead of stretched, paired bounds, knuckle walks, flipper strokes |
-| `fieldinfermon.py`, `fieldslug.py`, `fieldcandle.py` | Infermon 246, ShellNumemon 231, Candlemon 235 | six legs in alternating tripods; a slug's propulsion clock separate from its face acting (the body slides); a pedestal that hovers on a steady line, bobbing and swaying |
+| `fieldinfermon.py`, `fieldslug.py`, `fieldcandle.py` | Infermon 246, ShellNumemon 231, Candlemon 235 | six legs in alternating tripods; a slug's propulsion clock separate from its face acting (the body slides); a pedestal that hovered on a steady line, bobbing and swaying (Candlemon's clips are now baked hops, see below) |
 | `wargreymonfield.py` | WarGreymon 373 | an anatomical gait replacing the inherited dinosaur one: walk 16 ticks at 22 units/tick (support 0.56 of the cycle), condition walk 20 at 15 (0.64), run 10 at 52 (0.42); pelvis loads onto the support foot, arms oppose their own leg, two-bone IK with feet forward and slight toe-out, back plates clear of the legs; footstep sounds retimed to the new contacts |
 | `monmonupperbody.py` | Monmon 352 | torso and pelvis sway and opposite shoulder swings derived from the native leg cadence (elbows lag 0.65 rad, wrists 1.1 rad); hip roots compensate so the legs keep their world poses |
 
@@ -438,6 +438,15 @@ the dip the short legs force), the chest pitches 5 / 4 / 9 degrees, the head 5 /
 blink is not repeated every few ticks. The face blinks through texture moves (`salamon_face.py`, as Gomamon's): open, half-shut and
 shut frames in rows 80 down, every clip starting and ending open-eyed; the idle keeps its motion and gains three blinks.
 Only the texture rows 80 down and slots 0, 2, 3 and 4 change; the other slots carry no eye moves, so an eye caught half-shut when a clip is cut would stay so until the next one starts (the clips are short, and this was not tested in the game).
+
+Candlemon (235) no longer hovers: `candlemon_hop.py` writes four clips stored in its model delta (the overlay
+`candlemon.py` stays as the provenance of the earlier delta). It hops on its foot, which stays still while down and
+moves only in the air; the root moves all the time (half the foot's travel, half a steady line). Walk 4 hops of 14
+ticks, 20 units per tick, 52 high; condition walk 3 of 18, 13 units, 20 high; run 5 of 10, 38 units, 34 high; a
+96-tick idle. The face acts through texture moves (`candlemon_face.py`): eyes open, half shut, shut (the source game's
+own frames) and a mouth at rest, half shut, shut or wide (slid from the painted mouth). Each of the four clips sets its
+face at tick 0; the other slots carry no face moves, so a face cut mid-change (or the condition walk's half-shut eyes,
+the run's wide mouth) stays until slots 0, 2, 3 or 4 play again. Not tested in the game.
 
 Thundermon uses 20/10/35 units per tick, 4/4/5 gait cycles and
 0.5/0.4/0.25 duty within 16/20/20-tick programs. Tick/thirds floor
@@ -726,7 +735,8 @@ The `gesomon-terrestrial` overlay changes only walk (2) and run (4) on the
 pinned 29-bone import. Eight small tentacles alternate support groups, with
 rear pairs delayed behind the front. Recoveries ease forward and lift clear;
 mantle bob, sway and delayed long-arm motion follow the supports. Mesh, rig,
-idle, condition, care and battle clips remain unchanged. Native Kunemon
+condition, care and battle clips remain unchanged; the idle and the tired walk
+are described below. Native Kunemon
 supplies the 18-tick cycle and contact timing; walk/run travel is 18/35 units
 per tick.
 
@@ -736,3 +746,33 @@ The reviewed motion is locked by its exact output hash. Reconstruct species
 The checks cover the reviewed bytes, decoded support contact, nine repeating
 cycles, unchanged programs and original-console resident/cold storage. Final
 provider model and texture hashes remain covered by `species-pins.json`.
+
+RedOtamamon 233 (`tools/models/field_animations/redotamamon.py`, test
+`tools.test_redotamamon_gait`) had one shared loop in all four field slots. The
+generator authors four different ones on its own rig, with no donor motion
+stored: a 96-tick idle (breathing, tail and body sway, head looks, claw twitch)
+and a walk, a heavier condition walk and a run at 20, 13 and 38 units a tick.
+The claws are solved with two-bone IK onto planted targets, and a floor pass
+keeps every vertex above the rest ground plane. The eyes blink through
+texture moves (`redotamamon_face.py`): the painted eye plate is copied into
+three frames (open, lid half down, shut) in the free right side of the texture,
+and each clip sets its first face at tick 0 and ends in it, so a clip cut
+mid-blink is repaired by the next clip. The test reads the model
+made by `tools/models/edit.py get 233` at the commit before the clips
+(`REDOTAMAMON_MODEL`); the reviewed-source pin in `celebrations.json` follows
+the new model.
+`field_animations/gesomon_rest.py` is written over that model and baked, with
+the walk and run, into the plain delta (the species has no field overlay). The
+import's idle hung the squid 9 to 89 units above the floor (mean 50, a
+79-unit bob) and played again as the tired walk. The idle (slots 0, 1, 18)
+keeps the import's 83 ticks and is lowered per tick so the lowest point of the
+mesh is 0 to 3 units above the floor (bob 4); the long arms are rewritten (a
+shoulder and two hinges solved for the claw) to hang forward and out and sway
+with the breathing, and the arms of the walk and run to a loose counter-swing in step with
+the gait; the claws' palms face in and down (on the floor in the tired walk). The tired walk (slot 3) is a 30-tick loop: mantle
+and head 22 to 25 degrees down, pelvis 107 to 116 (idle 124 to 152), root
+11 units a tick, the eight tentacles planted for 45 % of the cycle and dragged just
+above the floor in between, the long arms stretched out limp behind the body, forearm and claw within a few units of the floor, palm down, dragged along, two footfall sounds per cycle. The loop is one
+cycle because two do not fit the resident animation buffer (98870 of 100352
+bytes used). `tools.test_gesomon_rest` checks the exact bytes, floor contact,
+loop seam, droop, storage and the distance between the four gaits.

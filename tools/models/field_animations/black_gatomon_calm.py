@@ -1,4 +1,4 @@
-"""BlackGatomon's field gaits, applied after the field pace pass.
+"""BlackGatomon's field gaits (and Gatomon's, the same rig), applied after the field pace pass.
 
 The pace pass plays the walk and condition walk on a stride-sized cycle (one arm swing
 for each pair of steps) and the run on the donor walk's own 16 ticks. This layer:
@@ -221,12 +221,15 @@ def _legs(model, skeleton, poses, spec, speed):
     return report
 
 
-def build(data, skeleton):
+TAKES_SPECIES = True
+
+
+def build(data, skeleton, species=SPECIES):
     n = len(skeleton)
-    mmd.exe().skeleton[SPECIES] = skeleton
-    mmd.exe().bone_count[SPECIES] = n
+    mmd.exe().skeleton[species] = skeleton
+    mmd.exe().bone_count[species] = n
     old = mmd.MMD.parse(data, n)
-    old.type = SPECIES
+    old.type = species
     new = copy.deepcopy(old)
     channels = {(b, c) for b in list(UPPER) + list(LEGS) for c in (3, 4, 5)} | {(2, 7)}
     checks = []
@@ -251,7 +254,7 @@ def build(data, skeleton):
     new.anims.anims, new.anims.table = motioncyclelayer.share_identical_streams(new.anims.anims, new.anims.table)
     result = new.build()
     actual = mmd.MMD.parse(result, n)
-    actual.type = SPECIES
+    actual.type = species
     assert old.tmd.build() == actual.tmd.build()
     assert changed_programs(old, actual) == sorted(GAITS), changed_programs(old, actual)
-    return result, dict(species=SPECIES, checks=checks, storage=motionstorage.require(result, n))
+    return result, dict(species=species, checks=checks, storage=motionstorage.require(result, n))

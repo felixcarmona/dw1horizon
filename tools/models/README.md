@@ -71,6 +71,14 @@ timing, rotations, scales and controls remain intact. Texture-copy commands
 are removed because the imported atlas has another layout; effect origins
 use the scaled native joints. The imported delta and texture remain pinned.
 
+BomberNanimon (232) wears native Nanimon's (53, `NANI.MMD`) 20-bone skeleton and every animation program, unchanged
+(scale 1): its 13 rigid pieces map one to one onto Nanimon's joints (arms and legs swung joint to joint, gloves and
+boots turned with their forearm and shin, the body and fuse set 4 up and 22 forward of its old place) and its
+techniques play Nanimon's clips (training slot 57 is Nanimon's training clip, hit tick 10). Recipe `232` in
+`native-bindings.json`; the overlay runs on the model of the plain delta, whose earlier boxer clips stay only as
+provenance. `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_bombernanimon_native` (after
+`edit.py get 232`) pins the field slots to Nanimon's.
+
 Replay the native binding checks with the original DW1 extraction present:
 
 ```sh
@@ -220,6 +228,17 @@ dash leaning 23 degrees with the wings swept back and the legs streamlined. Hair
 excepted), distance per loop, footstep sounds and hover height are kept (the tired walk sits lower on purpose).
 Check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_ladydevimon_flight`.
 
+Dolphmon (238) had one native 73-tick swim, lifted off the ground, in all four field slots (idle, walk, condition walk,
+run), so they differed only in root speed. `field_animations/dolphmon_gaits.py` (overlay `dolphmon-gaits`) runs after
+`dolphmon.py` (which keeps the sleeping clip) and writes slots 0, 2, 3 and 4 again on the reviewed rig: a belly-resting
+idle (72 ticks: slow left-right turns, head glances, chattering jaw, flipper paddling, a soft tail wave), a flipper
+scoot (20 ticks, 22 units: flippers push alternately along the floor, the body turns over the pushing side, the tail
+wave travels to the fluke), a slower, heavier condition walk (30 ticks, 14 units: short strokes, panting jaw) and a run
+(14 ticks, 40 units: the walk's scoot made quicker and bigger, with longer strokes and a wider sway). Nothing moves
+vertically: the body bone keeps one height, the lowest mesh point stays within a unit of the floor, and the clips only
+turn about the vertical axis, roll a little and stroke the flippers. Resident animation storage 47 556 of 100 352 B.
+Check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_dolphmon_gaits` (needs `edit.py get 238`).
+
 Magnadramon (215) had the idle, walk, condition walk and run as one 89-tick wave of the wing blades, body and tail
 that only the root travelled through. `field_animations/magnadramon_flight.py` runs after its steady glide and writes
 those five slots again: a hover with two slow, wide wing beats, a forward-leaning cruise with three beats per loop
@@ -319,6 +338,23 @@ shoulders 20 units further out (`spread`) with the arms hanging out and the
 elbows bent, so the arms swing clear of the thigh armour; the run leans in,
 drives the arms and has both boots in the air between steps.
 
+Wizardmon (241) is bound to native Angemon (`native_binding.py`, recipe 241) and plays
+Angemon's own idle, walk, condition walk and run, root travel included (21.25, 16.25 and
+37.5 units a tick). Its source stands turned 45 degrees side-on, so the recipe turns the
+whole source forward first (`source_yaw`); the staff is turned from its source direction
+onto a held-out direction clear of the hat brim and thighs (`swing`) and rides Angemon's
+staff hand, bone 9; the free glove is turned 70 degrees about the forearm (`roll`) so its
+palm faces the body, not forward. Angemon's hips are set 22 units further apart
+(`spread`) so the broad trousers never meet. Angemon's wing bones carry no wings here:
+the cape hangs from 10 and 11 and the whole hair tail from 12, set out behind the head
+clear of the cape by `spread`. `field_animations/wizardmon_native.py` runs after the
+binding: in the field clips it holds the upper arms further out from the body
+(`ARMS_OUT`), and in every program it replaces the wing beat on those three bones with
+followers that take part of the head's (cape top, hair) or chest's (cape hem) turn a
+few ticks late and trail back with the root's speed. Techniques and
+the training clip (57, Angemon's 46) are Angemon's; the record's effect points and
+condition bubble are carried onto the new bones (`species_patch`).
+
 Flamedramon (195) walked like a catwalk: the procedural stride (`gaits.py`)
 swung and dropped the hips from side to side, twisted the chest the other way
 and held the arms out wide, and clips on Leomon's footfalls kept Leomon's hunch.
@@ -398,6 +434,10 @@ condition walk (8 ticks at 15, 12 at 9.5, the pace manifest's floors) keep a cal
 arm swing, and `field_animations/black_gatomon_calm.py` writes their legs as a planted step: heel strike, flat
 sole, roll over the toes, lift and land, the pelvis rising and falling with the one-segment legs. The legs reach
 about 27 units, which sets the cycle length for the travel; stance slip is 23% (walk) and 18% (condition walk).
+Gatomon (234) has BlackGatomon's rig (same bones and parents, about 3 percent larger), so it moves exactly like it: its pace.json row
+is row 222's with its own source hash, `field_animations/black_gatomon.py` accepts both sources, and `black_gatomon_calm.py` takes the
+species from the pace pass. Idle and care stay the native clips (the old `gatomon.py` layer is gone). Walk, condition walk and
+run are 8, 12 and 16 ticks at 15, 9.5 and 38 per tick; the resident clips take 83004 of 100352 B (BlackGatomon 82018).
 Shurimon's (225) field clips were one native 83-tick gesture loop with only the legs replaced and the whole clip
 re-timed, so chest, head, arms, crest, leaves and star were identical in the walk, condition walk and run and the feet
 slid (40, 40 and 68 percent of the root speed on average). `field_animations/shurimon_gait.py` authors idle, walk,
@@ -422,6 +462,11 @@ toes up, a roll to flat, the heel rising over the ball of the foot, toe-off and 
 (the contact point does not move over the floor; foot pitch spans 46 / 30 / 42 degrees in walk / condition walk / run). Root speeds and slot 1 are unchanged:
 `--source build/imported-model-edit/edit/226-Silphymon.MMD --out AFTER.MMD` on the model before this change, then
 `tools/models/edit.py put 226 AFTER.MMD`; check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_silphymon_posture`.
+
+Gesomon (240): `field_animations/gesomon_rest.py` lowers the idle onto the floor, rewrites the arms of the idle, walk and run, and writes the tired walk over
+`gesomon.build`'s walk and run; all four are baked into the delta (`python3 -m tools.models.field_animations.gesomon_rest
+--source build/imported-model-edit/edit/240-Gesomon.MMD --out AFTER.MMD`, then `edit.py put 240 AFTER.MMD`;
+check with `tools.test_gesomon_rest`).
 Apemon (227) has no field overlay: its idle, walk, condition walk and run are stored in its plain delta
 (`edit.py put 227`). `field_animations/apemon.py` is the generator that authored them from the model before this
 pass (`APEMON_BEFORE`, see `tools/test_apemon_gait.py`): four limbs solved per tick with fixed planted fists and feet,
@@ -449,3 +494,39 @@ back, a lower, bowed 28-tick condition walk and a 20-tick run leaning far forwar
 streaming back. Hover height, root speed, loop lengths and the voice cue are the importer's; the scythe arm only sways.
 The result is stored in the plain delta (`python3 -m tools.models.field_animations.phantomon --source SRC --out AFTER.MMD`,
 then `tools/models/edit.py put 229 AFTER.MMD`); check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_phantomon_field`.
+Candlemon (235) hovered on a steady line with its upper body frozen in the idle pose, so its four clips looked alike.
+`field_animations/candlemon_hop.py` writes them again: it travels in hops on its foot (anticipation crouch, take-off
+stretch, ballistic flight with the flame trailing, a squashing landing with the foot planted), walk 4 x 14 ticks at 20
+units a tick, a heavy, slouched condition walk 3 x 18 at 13, a long flat run 5 x 10 at 38, and a 96-tick idle that
+breathes, sways, looks both ways and flickers. Its face acts through texture moves (`candlemon_face.py`): the source
+game's own blink frames, and mouth frames (half shut, shut, wide) slid from the painted mouth into four spare hand
+drawings. Store with `python3 -m tools.models.field_animations.candlemon_hop --source SRC.MMD --tex SRC.TIM --out-dir
+DIR`, then `tools/models/edit.py put 235 DIR/235.MMD DIR/235.TIM`; check with `tools/test_candlemon_hop.py`.
+
+Diaboromon (237) kept the SkullGreymon transfer with a flat-hand contact pass, and its field clips jumped: the hand
+pass switched the claws between curl and flat pad within one tick (up to 138 degrees), the transfer packed the donor's
+strides into 16-28 tick clocks (45-70 degrees a tick on the upper arms and hips), the root stepped unevenly and the
+planted feet slid. `field_animations/diaboromon_gait.py` writes the idle, walk, condition walk and run again on the
+crouched stance: every hand and foot is solved each tick (planted ones keep their place on the floor), loops of 72,
+48, 60 and 36 ticks at 0, 20, 13 and 38 a tick, no Euler angle changing more than 28 degrees between two ticks.
+The limbs are not in lockstep: phase offsets off the quarter and half cycles, and the left limbs stay down a little
+longer and lift less than the right ones. The hand pass had also laid the back of each hand on the floor (the claws
+curl towards the hand's -X side, the palm), so the claws curled up; the planted hands now face palm down and grip
+the floor with the claw points.
+Store it with `python3 -m tools.models.field_animations.diaboromon_gait --source SRC --out AFTER.MMD`, then
+`tools/models/edit.py put 237 AFTER.MMD`; check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_diaboromon_gait`.
+ShellNumemon (231) kept the source's 104-tick clips in its idle, walk, condition walk and run: only the small front
+flaps moved, the head and the eyes stood still and the body slid at a constant speed, so it read as a still lump.
+`field_animations/shell_numemon_gait.py` writes the four clips again as a snail dragging itself: in every wave the
+body rises and leans forward while it surges and the shell lags and tips back, then the shell is dragged forward and
+rocks past its place; the eye stalks swing like pendulums (each joint wider and later than the one under it). The
+head shares a ring of vertices with the front of the foot, so it never turns on it: the body (rear, front and head)
+turns as one piece and the front pitches at most 3 degrees on the rear; no seam opens wider than on the model before.
+The mouth opens and shuts through texture moves (`field_animations/shell_numemon_mouth.py`: the upper and lower teeth
+slide apart over the red inside painted behind them; every clip starts by shutting it). Walk 24 ticks, condition walk
+32 (head and stalks hanging), run 18 (the shell bouncing), each one wave; the idle breathes, turns, looks round with
+each stalk, dips both once, chomps twice and yawns. Root speeds (19.25, 12.84, 35) and the movement cue are the
+importer's; the body's world speed never drops below zero, the belly stays on the floor and no scale changes. The
+result is stored in the plain deltas (`python3 -m tools.models.field_animations.shell_numemon_gait --source SRC.MMD
+--tex SRC.TIM --out AFTER.MMD --out-tex AFTER.TIM`, then `tools/models/edit.py put 231 AFTER.MMD AFTER.TIM`); check
+with `PYTHONPATH=tools/models:tools python3 -W ignore -m unittest tools/test_shell_numemon_gait.py`.

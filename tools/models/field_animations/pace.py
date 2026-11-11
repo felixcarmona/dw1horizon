@@ -243,7 +243,8 @@ def build(data, skeleton):
     storage = motionstorage.require(result, len(skeleton))
     following = None
     if profile.get('after_generator'):
-        result, following = importlib.import_module(profile['after_generator']).build(result, skeleton)
+        after = importlib.import_module(profile['after_generator'])
+        result, following = after.build(result, skeleton, **({'species': sid} if getattr(after, 'TAKES_SPECIES', False) else {}))
         storage = following['storage']
     return result, dict(species=sid, source_sha256=digest, output_sha256=hashlib.sha256(result).hexdigest(),
                         preceding_recipe=previous, following_recipe=following, checks=checks, storage=storage, changed_slots=changed,

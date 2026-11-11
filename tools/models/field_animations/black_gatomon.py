@@ -1,4 +1,7 @@
-"""BlackGatomon's forward gaze and controlled heavy glove swing.
+"""BlackGatomon's and Gatomon's forward gaze and controlled heavy glove swing.
+
+Gatomon (234) has the same 19-bone rig as BlackGatomon (222) about 3 percent larger, so both get the same
+layer with the same parameters.
 
 Use with the separately validated native-tail private engine adapter. The
 visible grooming idle, tired action, feet, torso and root remain original.
@@ -13,20 +16,23 @@ import motionstorage
 from tools.models.field_animations.articulation import replace_channels
 from motiondiscidentity import changed_programs
 
-SOURCE = '711f533c858a75fa638b74f11e0e525908a22d7b85f04507bc1ff68c74d1dfda'
+SOURCES = {'711f533c858a75fa638b74f11e0e525908a22d7b85f04507bc1ff68c74d1dfda': 222,
+           '340afafa4be66741c7e439ba8670103ed3d6546e37f8078f326a4a402e14137c': 234}
 PARENTS = [-1, 2, 0, 1, 1, 2, 5, 2, 7, 2, 9, 2, 11, 2, 13, 14, 15, 16, 17]
 
 
 def build(data, skeleton):
-    if hashlib.sha256(data).hexdigest() != SOURCE:
+    source = hashlib.sha256(data).hexdigest()
+    if source not in SOURCES:
         raise ValueError('BlackGatomon requires the reviewed source')
+    species = SOURCES[source]
     if [b[1] for b in skeleton] != PARENTS:
-        raise ValueError('BlackGatomon rig differs')
+        raise ValueError('Gatomon rig differs')
     n = len(skeleton)
-    mmd.exe().skeleton[222] = skeleton
-    mmd.exe().bone_count[222] = n
+    mmd.exe().skeleton[species] = skeleton
+    mmd.exe().bone_count[species] = n
     old = mmd.MMD.parse(data, n)
-    old.type = 222
+    old.type = species
     new = copy.deepcopy(old)
     channels = {(1, 3)} | {(b, c) for b in [5, 6, 7, 8] for c in [3, 4, 5]}
     checks = []
@@ -70,7 +76,7 @@ def build(data, skeleton):
     assert old.tmd.build() == parsed.tmd.build()
     storage = motionstorage.audit(result, n)
     assert storage['fits'], storage
-    return result, dict(species=222, source_sha256=SOURCE,
+    return result, dict(species=species, source_sha256=source,
                         output_sha256=hashlib.sha256(result).hexdigest(), changed_slots=[2, 4],
                         mesh_exact=True, other_programs_exact=True, checks=checks, storage=storage,
                         required_private_engine='blackgatomon222_native_appendages_private_engine_v1.py')

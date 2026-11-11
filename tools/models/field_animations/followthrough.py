@@ -11,6 +11,7 @@ import motionstorage
 import retarget as R
 from motiontailspace import interpolate_pose
 from tools.models.field_animations import animal_refine as A
+from tools.models.field_animations import gizamon_hind, gizamon_mouth
 from tools.models.field_animations.pace import _retimed_events
 
 MANIFEST = Path(__file__).resolve().parents[3] / 'content/models/imports/followthrough.json'
@@ -69,7 +70,7 @@ def amphibian(model, sk, cfg):
         old, loop, events = animsheet.slot_frames(model, len(sk), slot)
         ticks, speed, lift, bob = cfg['timing'][str(slot)]
         duty = .5 if slot != 4 else .42
-        frames, history = [], {}
+        frames, history, hind_history = [], {}, {}
         for tick in range(ticks+1):
             phase = tick/ticks
             pose = copy.deepcopy(reference)
@@ -80,6 +81,8 @@ def amphibian(model, sk, cfg):
             # counteracting them into a static silhouette.
             for bone, amplitude, delay, axis in [(2, 24, .1, 3), (3, 14, .17, 3), (8, 65, .15, 4), (9, 85, .25, 4)]:
                 pose[bone][axis] += round(amplitude*math.sin(2*math.pi*(phase-delay)))
+            if 'mouth' in cfg:
+                gizamon_mouth.gait(pose, phase, cfg['mouth'][str(slot)])
             for chain, offset, sign in zip(chains, (0, .5, .5, 0), (1, -1, 1, -1)):
                 foot = chain[-1]
                 q = (phase+offset)%1
@@ -117,11 +120,20 @@ def amphibian(model, sk, cfg):
                 foot=chain[-1]
                 A.solve_leg(sk,pose,reference,chain,[R.world_pos(sk,pose)[foot][0],-max(v[1]for v in model.tmd.obj_verts(sk[foot][0]))-1,R.world_pos(sk,pose)[foot][2]],refrot[foot],history,[.35 if foot==12 else -.35,-.35,1])
             pose[1][7] -= 1  # small margin for interpolated toe clearance
+            if 'hind' in cfg:
+                gizamon_hind.solve(model, sk, pose, reference, phase, ticks, speed, cfg['hind'][str(slot)], hind_history)
             pose[0][8] = -round(speed*tick)
             frames.append(pose)
 
         events = _retimed_events(events, len(old)-1, ticks)
         additions.append((slot, frames, loop, events))
+    if 'mouth' in cfg:
+        old, loop, events = animsheet.slot_frames(model, len(sk), 1)
+        frames = gizamon_mouth.idle(old, cfg['mouth']['idle'])
+        for slot in (0, 1):          # the two idle slots share one clip
+            additions.append((slot, copy.deepcopy(frames), loop, events))
+    if 'hind' in cfg:
+        return A.finish(model, additions, len(sk), after_charts=lambda f: gizamon_hind.rest_chart(f, reference))
     return A.finish(model, additions, len(sk))
 
 

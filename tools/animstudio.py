@@ -28,7 +28,7 @@ Runs under the card-game venv (numpy, OpenCV).
 import sys as _image_sys
 from pathlib import Path as _ImagePath
 _image_sys.path.insert(0, str(next(p for p in _ImagePath(__file__).resolve().parents if (p / 'tools').is_dir())))
-import argparse, math, os, subprocess, sys, tempfile, shutil
+import argparse, json, math, os, subprocess, sys, tempfile, shutil
 HERE = os.path.dirname(os.path.abspath(__file__))
 try:
     import numpy as np
@@ -54,8 +54,16 @@ class Model:
         self.tex = f[2] if len(f) > 2 and f[2] else None
         self.slot = int(f[3], 0) if len(f) > 3 and f[3] else slot
         self.name = (f[4] if len(f) > 4 and f[4] else os.path.basename(os.path.dirname(os.path.abspath(self.path))) + '/' + os.path.basename(self.path))
-        self.m = mmd.MMD.load(self.path, self.type)
         e = mmd.exe()
+        # A field overlay that rebinds the mesh to another rig (a native binding) writes that rig next to the model as
+        # NAME-report.json "generated_skeleton"; the executable's table for the species id is not its skeleton.
+        report = os.path.splitext(self.path)[0] + '-report.json'
+        if os.path.isfile(report):
+            with open(report) as fh:
+                generated = json.load(fh).get('generated_skeleton')
+            if generated:
+                e.add_type(self.type, generated)
+        self.m = mmd.MMD.load(self.path, self.type)
         self.nb, self.skel = e.bone_count[self.type], e.skeleton[self.type]
         if self.tex:
             self.tim = mmd.Tim4(open(self.tex, 'rb').read())

@@ -38,12 +38,13 @@ def floor(model, sk, pose, feet):
                for b in feet for v in model.tmd.obj_verts(sk[b][0]))
 
 
-def finish(model, additions, nb, charts=True):
+def finish(model, additions, nb, charts=True, after_charts=None):
     result = copy.deepcopy(model)
     for slot, frames, loop, events in additions:
         if loop is not None:
             mmd.close_loop(frames, loop)
             if charts:cyclic_eulers(frames)
+            if after_charts:after_charts(frames)
         frames = [[[round(v) for v in bone] for bone in pose] for pose in frames]
         result.anims.table[slot] = len(result.anims.anims)
         result.anims.anims.append(mmd.encode_anim(frames, nb, loop, events, tol=0, repeats=False))

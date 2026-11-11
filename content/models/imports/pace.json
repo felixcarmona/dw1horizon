@@ -196,43 +196,6 @@
    }
   }
  },
- "241": {
-  "name": "Wizardmon",
-  "bones": 20,
-  "skeleton_sha256": "686deaa7cd35c6758b9ec1268eca4902b95c3a7a95ca1544f915cadbbb569e76",
-  "source_sha256": "b403f2dca8d9048696e8e41b0ae933d542c708a3582a31bf46dabb0f2dd1ae78",
-  "base_generator": "tools.models.field_animations.wizardmon",
-  "post_source_sha256": "c4eb542d4c91bcc91c84055f5e4ef57f31a29c944197f4c4a94e875c5d0e5b2a",
-  "slots": {
-   "2": {
-    "from": 2,
-    "ticks": 104,
-    "speed": 20,
-    "slip": [
-     125,
-     250
-    ]
-   },
-   "4": {
-    "from": 4,
-    "ticks": 104,
-    "speed": 35,
-    "slip": [
-     190,
-     360
-    ]
-   },
-   "3": {
-    "from": 3,
-    "ticks": 104,
-    "speed": 10,
-    "slip": [
-     190,
-     360
-    ]
-   }
-  }
- },
  "287": {
   "name": "Tapirmon",
   "bones": 21,
@@ -1076,5 +1039,43 @@
     ]
    }
   }
+ },
+ "234": {
+  "name": "Gatomon",
+  "bones": 19,
+  "skeleton_sha256": "2e1991916143b4dec7230e2ee351d4d251b14974def303fe4c004c37d79c4983",
+  "source_sha256": "340afafa4be66741c7e439ba8670103ed3d6546e37f8078f326a4a402e14137c",
+  "base_generator": "tools.models.field_animations.black_gatomon",
+  "post_source_sha256": "e0ec1f71ad69ae4a0677a4c472285469b07c22ee4ef978ebe23bde460041e5c9",
+  "slots": {
+   "2": {
+    "from": 2,
+    "ticks": 8,
+    "speed": 15,
+    "slip": [
+     140,
+     240
+    ]
+   },
+   "4": {
+    "from": 2,
+    "ticks": 16,
+    "speed": 38,
+    "slip": [
+     100,
+     130
+    ]
+   },
+   "3": {
+    "from": 2,
+    "ticks": 12,
+    "speed": 9.5,
+    "slip": [
+     140,
+     240
+    ]
+   }
+  },
+  "after_generator": "tools.models.field_animations.black_gatomon_calm"
  }
 }

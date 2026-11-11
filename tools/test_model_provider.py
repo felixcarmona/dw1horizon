@@ -55,6 +55,10 @@ class ModelProvider(unittest.TestCase):
         following = {
             '307': ('307', 'tools.models.field_animations.black_king_numemon', '307-blackkingnumemon-slug'),
             '183': ('183', 'tools.models.field_animations.native_binding', '183-wormmon-native-crawl'),
+            # BomberNanimon wears Nanimon's rig and programs; its boxer clips stay as the scale lock's provenance.
+            '232': ('232', 'tools.models.field_animations.native_binding', '232-bombernanimon-native'),
+            # Wizardmon wears Angemon's rig and programs (its cape and hair follow); its paced gait was retired with it.
+            '241': ('241', 'tools.models.field_animations.wizardmon_native', '241-wizardmon-native'),
             '187': ('187', 'tools.models.field_animations.followthrough', '187-stingmon-wing-followthrough'),
             '239': ('239', 'tools.models.field_animations.followthrough', '239-gizamon-active-gait'),
             # LadyDevimon's flight (ladydevimon_flight.py) is written over her baked chibi delta.
@@ -66,6 +70,9 @@ class ModelProvider(unittest.TestCase):
         # preceding field recipe covered without applying it over that repair.
         self.assertEqual(records['226'], {'model': '226-Silphymon.MMD', 'aliases_applied': True})
         selected['226'] = model.OVERLAYS['silphymon-field']
+        # Gesomon's walk, run, idle and tired walk are baked into its plain delta (gesomon.py, gesomon_rest.py).
+        self.assertEqual(records['240'], {'model': '240-Gesomon.MMD', 'aliases_applied': True, 'movement_sound': 17})
+        selected['240'] = model.OVERLAYS['gesomon-terrestrial']
         # Baked deltas retain their effective field generator as authoring provenance.
         for path in [*Path('content/modeldelta/scale-locks').glob('*.json'),
                      *Path('content/modeldelta/resizes').glob('*.json')]:
@@ -130,6 +137,9 @@ class ModelProvider(unittest.TestCase):
         self.assertEqual(assignments['215'],
                          ('tools.models.field_animations.magnadramon_flight', '215-magnadramon-glide'))
         assignments['215'] = ('tools.models.field_animations.gliding', '215-magnadramon-glide')
+        # Dolphmon's gaits (dolphmon_gaits.py) run after its native swim (dolphmon.py) and replay it first.
+        self.assertEqual(assignments['238'], ('tools.models.field_animations.dolphmon_gaits', '238-dolphmon-gaits'))
+        assignments['238'] = ('tools.models.field_animations.dolphmon', '238-dolphmon-native-swim')
         self.assertEqual(assignments['197'],
                          ('tools.models.field_animations.magnamon', '197-magnamon-native'))
         assignments['197'] = previous_magnamon[1:]
@@ -201,7 +211,7 @@ class ModelProvider(unittest.TestCase):
         # Salamon (221) neither: its gait and blinking face are in its model delta (salamon.py, salamon_face.py).
         self.assertNotIn('221', assignments)
         self.assertEqual(hashlib.sha1(json.dumps(assignments, sort_keys=True).encode()).hexdigest(),
-                         '12f258b97a2204120ae36b2ab3a5ede3139d32cc')
+                         'aef33e6e0eb6ae6a447854bbe2696a1066224d8e')
 
 
 if __name__ == '__main__':
