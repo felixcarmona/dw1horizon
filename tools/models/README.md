@@ -499,6 +499,16 @@ Shadramon (250): `field_animations/shadramon_loose.py` rewrites the idle (slot 0
 walk and run over the strides `shadramon.py` made (legs re-solved to the same ankles); `python3 -m tools.models.field_animations.shadramon_loose
 --source build/imported-model-edit/edit/250-Shadramon.MMD --out AFTER.MMD` on the model before this change, then `edit.py put 250 AFTER.MMD`;
 check with `tools.test_shadramon_loose`.
+
+
+
+Solarmon (251): `field_animations/solarmon_gaits.py` lengthens the three nubs on each gear hand to full teeth and evens the gears (eight identical teeth 45 degrees apart, the same on both hands; vertices only) and writes
+four different clips (idle, walk, tired walk, run) over the recipe chain's model, each with constant root travel and constant whole-step
+ring and gear spins, and `solarmon_face.py` makes the eyes blink by texture moves over the painted eye disc (the frames in texels no face samples; every clip starts
+and ends with open eyes; the mouth stays as painted). Baked into the delta (`python3 -m
+tools.models.field_animations.solarmon_gaits --source build/imported-model-edit/edit/251-Solarmon.MMD --tim build/imported-model-edit/edit/251-Solarmon.TIM
+--out AFTER.MMD --tim-out AFTER.TIM`, then `edit.py put 251 AFTER.MMD AFTER.TIM`; check with `tools.test_solarmon_gaits`).
+
 Apemon (227) has no field overlay: its idle, walk, condition walk and run are stored in its plain delta
 (`edit.py put 227`). `field_animations/apemon.py` is the generator that authored them from the model before this
 pass (`APEMON_BEFORE`, see `tools/test_apemon_gait.py`): four limbs solved per tick with fixed planted fists and feet,

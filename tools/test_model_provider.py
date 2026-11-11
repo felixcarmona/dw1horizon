@@ -77,6 +77,10 @@ class ModelProvider(unittest.TestCase):
         # Gesomon's walk, run, idle and tired walk are baked into its plain delta (gesomon.py, gesomon_rest.py).
         self.assertEqual(records['240'], {'model': '240-Gesomon.MMD', 'aliases_applied': True, 'movement_sound': 17})
         selected['240'] = model.OVERLAYS['gesomon-terrestrial']
+        # Solarmon's whole gears and its four distinct gaits are baked into its plain delta (solarmon_gaits.py); the
+        # recipe chain stays registered as the source they were authored over.
+        self.assertEqual(records['251'], {'model': '251-Solarmon.MMD', 'aliases_applied': True})
+        selected['251'] = model.OVERLAYS['solarmon-steady-hover']
         # Baked deltas retain their effective field generator as authoring provenance.
         for path in [*Path('content/modeldelta/scale-locks').glob('*.json'),
                      *Path('content/modeldelta/resizes').glob('*.json')]:
