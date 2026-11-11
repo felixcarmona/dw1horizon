@@ -108,7 +108,7 @@ def fixture(e, base, screen, prefix, food=310, gym="Hp", sessions=5):
     settle(e)
 
 
-def capture(e, out, name, screen, prefix, count=5, cancel=False, food=310, gym="Hp"):
+def capture(e, out, name, screen, prefix, count=5, cancel=False, food=310, gym="Hp", mash=False):
     fixture(e, out / 'boot.state', screen, prefix, food, gym)
     result = {'name': name, 'screen': screen, 'prefix': prefix, 'frames': []}
     def shot(session):
@@ -131,19 +131,28 @@ def capture(e, out, name, screen, prefix, count=5, cancel=False, food=310, gym="
             e.api('/api/v1/lua/release?button=' + btn)
             shot(session)
             if session != count:
-                e.run('lua', 'GH.paused=false;PCSX.resumeEmulator()')
+                e.run('lua', 'GH.paused=false')
+                if mash:
+                    # Cancel also skips the animation and the tally: a tap in a wait must not end the block.
+                    e.api('/api/v1/lua/press?button=' + btn)
+                    settle(e, 6)
+                    e.api('/api/v1/lua/release?button=' + btn)
+                e.run('lua', 'PCSX.resumeEmulator()')
     finally:
         e.api('/api/v1/lua/release?button=' + btn)
     if cancel:
-        # Let native input poll the release before the fresh cancel press.
-        # No third award is allowed.
+        # Let native input poll the release, then a fresh cancel press held for
+        # half a second (ten ticks) inside the wait. No third award is allowed.
         settle(e, 9)
         e.run('lua', 'GH.paused=false')
         e.api('/api/v1/lua/press?button=' + btn)
-        settle(e, 9)
+        settle(e, 36)
         e.api('/api/v1/lua/release?button=' + btn)
         assert int(e.run('lua', 'return GH.count').strip()) == count
         assert e.peek(prefix + '_MOD_QUIET', 'b') == 0
+        # The stop is never silent: the box under the stats says how many sessions ran.
+        settle(e, 24)
+        assert e.peek('UI_BOX_DATA+90', 'h') != 0, 'held stop opened no sessions box'
     elif count < 5:
         assert e.peek(prefix + '_MOD_QUIET', 'b') == 0, 'native need stop failed'
     else:
@@ -220,6 +229,7 @@ def main():
             e.run('save', str(out / 'boot.state'))
             rows.append(capture(e,out,prefix+'-five',screen,prefix))
         rows.append(capture(e,out,'TRN-cancel-two',112,'TRN',count=2,cancel=True))
+        rows.append(capture(e,out,'TRN-mash-five',112,'TRN',mash=True))
         rows.append(capture(e,out,'TRN-hunger-stop',112,'TRN',count=2,food=110))
         rows.append(capture(e,out,'TRN-new-orders',112,'TRN',count=1,gym='Brains'))
         for run in rows[:2]:
@@ -247,7 +257,7 @@ def main():
                 previous_energy = fills[2]
                 row['visible_fill_pixels'] = dict(zip(('hunger','toilet','tiredness'),fills))
         (out/'result.json').write_text(json.dumps({'ram_bytes':2097152,'runs':rows},indent=2)+'\n')
-        print('PASS: 2 MB, both gym overlays, live five-session frames, cancel and native hunger stop',flush=True)
+        print('PASS: 2 MB, both gym overlays, live five-session frames, taps keep the block, held cancel and native hunger stop',flush=True)
     finally:
         e.stop(); xvfb.terminate(); xvfb.wait(timeout=10); log.close()
 
