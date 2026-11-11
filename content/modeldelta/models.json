@@ -2449,9 +2449,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/262-Flymon.MMD.mdelta",
-        "delta_sha256": "f9513040b0d8d42ce80589bd8e2412d0164998e5365c4be34dde05875117e7e7",
-        "sha256": "74d2ac255768b1de7320fbbb3f087d0b40d38fa83e372f17fd7bc34bee337e5e",
-        "size": 109724
+        "delta_sha256": "ae5a4ed6b9473a2b032c51452699a3d5f7ea09823a09a8fed9b3dc96819b194b",
+        "sha256": "35d960acbab89c60a85ccb2e61867e58e823c37406e756c728a78c0fcac0e204",
+        "size": 113436
       },
       "tim": {
         "sources": [

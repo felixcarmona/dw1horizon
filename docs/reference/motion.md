@@ -833,6 +833,32 @@ to well below it, spread, never swept back.
 The animation buffer holds 91992 of 100352 bytes. `tools.test_quetzalmon_flight` checks the pinned source, the
 speeds, the seams, the beats, the floor clearance, the distance of the wings to the body and the storage.
 
+### Flymon (262): four flights
+The import's idle, walk, condition walk and run (slots 0 and 1, 2, 3, 4) played one 29-tick pose sequence, so the wasp
+read as the same animation at three root speeds (17.9, 13.2 and 38.2 units a tick). `field_animations/flymon_flight.py`
+writes the five slots again on the reviewed 29-bone import and the result is stored in the plain delta (no overlay: the
+generator is run offline, `tools/models/edit.py put 262`); every other slot, the mesh and the rig are unchanged and slot 1
+shares the idle. The wings beat about the front-to-back axis from their own hinge (the hinge offsets never change), a
+quick downstroke and a slower recovery, the beats of a loop a little unequal, the left wing behind the right and the small
+upper pair behind the large pair, chased by a soft spring. The body's rise, the abdomen, the legs, the four small arms and
+the antennae are chains of springs on that stroke, each link later than the one before; the legs hang a few degrees behind
+the rear arms so the two never meet. Every clip repeats its pose exactly and the root travels the same distance every tick.
+The encoder tolerance is 7 units of 1/4096 turn (0.6 degrees) on every bone but the root and the body's offsets (1 unit):
+exact tolerances overflow the resident buffer.
+
+| clip | ticks | beats | wings (degrees down from the folded rest) | body pitch (forward) | body rise | root per tick |
+| --- | --- | --- | --- | --- | --- | --- |
+| idle (0, 1) | 30 | 2 | 6 +- 13 | 1 degree | 15 | 0 |
+| walk (2) | 30 | 3 | 7 +- 17 | 11 degrees | 12 | 18 |
+| condition walk (3) | 40 | 2 | 11 +- 21 (upper pair 5 higher) | 9 degrees, heaving 7, abdomen drooping | 9 | 13 |
+| run (4) | 20 | 4 | 3 +- 9 | 30 degrees, legs and arms trailing | 7 | 38 |
+
+Against the import: the loop lengths (29 ticks each: idle 30, walk 30, condition walk 40, run 20; the idle stays short because a long one hides the condition idles) and the root speeds rounded to
+whole units (17.9, 13.2, 38.2 to 18, 13, 38); the footstep sound stays once per loop. The animation buffer holds 95788
+of 100352 bytes (92076 before). The head is the body's root bone, so its turns are a slight yaw of the whole body.
+`tools.test_flymon_flight` checks the pinned source, the speeds, the seams, the beats, the hinges, that no vertex of a limb
+or wing enters the body or another limb and that the wings of a side never cut each other, the floor and the storage.
+
 `field_animations/shadramon_loose.py` is written over Shadramon's model (the claw strides of `shadramon.py`, baked into
 its plain delta) and baked into the delta in turn. The import's idle (slot 0; the battle idle, slot 33, shared that
 clip and keeps it) hopped: the pelvis rose from 123 to 297 units and the mesh top from 429 to 576. The new idle has the

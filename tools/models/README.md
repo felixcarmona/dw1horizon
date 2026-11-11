@@ -247,6 +247,15 @@ hanging wings and a nodding head, and a leaning flight of three slow beats in 48
 and crest carry a wave and the head stays level. Tick counts, distance per loop and footstep sounds are kept.
 Check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_quetzalmon_flight` (needs `tools/models/edit.py get 249`).
 
+Flymon (262) played one 29-tick pose sequence in its idle, walk, condition walk and run (they differed only in root
+speed). `field_animations/flymon_flight.py` writes them again as four flights, stored in the plain delta
+(`python3 -m tools.models.field_animations.flymon_flight --source build/imported-model-edit/edit/262-Flymon.MMD --out AFTER.MMD`,
+then `tools/models/edit.py put 262 AFTER.MMD`): a hover (30 ticks, two small beats; the import's loops were 29 ticks), a relaxed flight leaning 11 degrees
+(30 ticks, three beats), a heavy, low flight with two big slow beats (40 ticks) and a dash leaning 30 degrees with four
+quick small beats and the limbs streamlined back (20 ticks). Wings stay on their hinges; abdomen, legs, arms and antennae
+follow through springs. Root speeds are 18, 13 and 38 units per tick. Check with
+`PYTHONPATH=tools python3 -W ignore -m unittest tools.test_flymon_flight` (needs `tools/models/edit.py get 262`).
+
 Dolphmon (238) had one native 73-tick swim, lifted off the ground, in all four field slots (idle, walk, condition walk,
 run), so they differed only in root speed. `field_animations/dolphmon_gaits.py` (overlay `dolphmon-gaits`) runs after
 `dolphmon.py` (which keeps the sleeping clip) and writes slots 0, 2, 3 and 4 again on the reviewed rig: a belly-resting
