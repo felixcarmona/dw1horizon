@@ -409,6 +409,18 @@ claws sway 11 to 20 degrees, each joint a little later than the one above it, an
 planted (the hips turn against the trunk, ankles drift under 4 units). Slots 35 and 36 play the walk
 and run and follow.
 
+Tapirmon's (287) imported gaits slid every foot (slip 112 to 232 % of the body's travel), swung the head
+sideways in the tired walk and left the idle hopping. Its rig has no tail, knee or paw bones: four short
+two-bone legs (hind 8-9 and 3-4, front 17-18 and 19-20; the lower bone of each front leg includes the paw, the
+hind lower bone carries a long rear foot plate 10-12 and 5-7 pointing backwards), a rear block (2) behind the
+body (1), the head (13), snout (14) and two ears (15, 16). `quadruped.py` needs three-bone legs, and no native
+quadruped has this leg shape, so `field_animations/tapirmon.py` solves each leg itself: planted flat soles slide back
+at the body's speed in stance, a swing path matches that speed at lift-off and landing, and a per-tick body-height
+solver keeps every leg inside its reach (the short legs limit a stride to about 75 units, so the cycles are short:
+walk 9 ticks at 16 units, tired walk 13 at 10; the run is a light gallop of one 14-tick cycle at 38 units: the hind pair pushes off together, both pairs leave the floor for a few ticks while the feet stay near the body, the front pair reaches and lands together, and the back arches and stretches with the chest and rear block pitching in turn; each clip has its own attitude: the tired head hangs low with drooping ears and a low rear block, the run carries the body and head low with the ears swept back). The body, rear block, head, snout and ears move on lagged
+closed loops; the tired walk keeps the head low and facing forward. The idle (slots 0 and 33) is a 64-tick loop:
+breathing, a look to one side, a sniff, an ear twitch and a tail flick, legs planted. `tools/test_tapirmon_gait.py` covers it.
+
 Cyclonemon's (281) idle, walk, condition walk and run were rebuilt (old ticks 20/21/21/19, root speeds 25/21/44
 units/tick, feet slipping 103-132 %, a heavy hunch in the condition walk). `field_animations/cyclonemon_gait.py`
 plants the heavy left arm like a crutch and both hind feet with `quadruped.py`: idle 48 ticks (feet planted, slow
