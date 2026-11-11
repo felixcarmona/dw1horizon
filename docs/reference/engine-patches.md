@@ -319,6 +319,10 @@ R2 switches x1 / x2 in every battle: field (BTL), arena and tournaments (STD), V
   own box open (a technique or new orders), end of life, a real natural evolution target at the due hour (patch 0300),
   hurt or sick, hungry, needing the toilet, sleepy time inside the session, tired (past the gym's `MOD_TR_TIRED_AT`). A
   box under the stats says how many sessions ran and why it stopped (`TRN_BLOCK_*` texts).
+  The player can stop a block between sessions by pressing Cancel inside a wait and holding it for ten ticks
+  (`TB_STOP_HELD`, half a second); the box then shows only the sessions done. Taps never stop it: Cancel also skips
+  the first animation and the tally, and until this rule a tap in the one-second wait ended the block after one
+  session without any box, which players read as x5 doing a normal session.
   The due-hour window stays `evoTimer >= MOD_EVO_TIMING[level]` below Champion and `==` for Champion/Ultimate;
   later Champion/Ultimate field checks still run each hour. Both the stop preview and `tickConditions` use
   `getNaturalEvolutionTarget` (`evolution.c`), including Rookie's Numemon fallback and the Ultimate pair/path/Mega

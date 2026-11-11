@@ -1,0 +1,87 @@
+From beebe0e968b1800da01510df7cf54a554ded68a3 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 11 Nov 2026 21:07:38 +0000
+Subject: [PATCH] Stop a gym training block only on a held Cancel, and say so
+
+---
+ src/trn/trn_block.h | 28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
+
+diff --git a/src/trn/trn_block.h b/src/trn/trn_block.h
+index f749a7a5..8068137f 100644
+--- a/src/trn/trn_block.h
++++ b/src/trn/trn_block.h
+@@ -24,6 +24,7 @@
+ #include <dw/mod_options.h>
+ 
+ extern uint32_t CHANGED_INPUT;
++extern uint32_t POLLED_INPUT;
+ #include <dw/ui.h>
+ 
+ extern int16_t INITIAL_COMBAT_STATS[][6];
+@@ -48,7 +49,7 @@ static char *const TB_REASONS[] = {
+ };
+ 
+ int8_t TB(MOD_QUIET); /* the stats box waits for the block's last session */
+-static int8_t TB_x5; /* the menu's x5 row */
++static int8_t TB_x5; /* the menu's x5 row; during a block's waits, the ticks Cancel has been held (TB_STOP_HELD) */
+ static int8_t TB_count;
+ static int8_t TB_done;
+ static int8_t TB_reason;
+@@ -130,6 +131,7 @@ void TB(modBlockBegin)(void)
+ 	int32_t i;
+ 
+ 	TB_count = TB_x5 ? 5 : 1;
++	TB_x5 = 0;
+ 	TB_done = 0;
+ 	TB_reason = MOD_TB_GO;
+ 	TB_box1Seen = 0;
+@@ -167,7 +169,7 @@ static void TB_finishBlock(void)
+ 		clearTextArea();
+ 	}
+ 	TB(modOpenStatsBox)();
+-	if (TB_reason != MOD_TB_GO && TB_reason != MOD_TB_LEARNED) {
++	if (TB_reason != MOD_TB_GO && TB_reason != MOD_TB_LEARNED) { /* a reason, or TB_STOPPED */
+ 		/* the first one-byte 0 (not the second byte of a two-byte glyph) is the number */
+ 		s = TRN_BLOCK_DONE;
+ 		d = TB_doneText;
+@@ -184,19 +186,31 @@ static void TB_finishBlock(void)
+ 		*d = 0;
+ 		setTextColor(1);
+ 		drawString(TB_doneText, 0, 120);
+-		drawString(TB_REASONS[TB_reason], 0, 132);
++		if (TB_reason > 0) {
++			drawString(TB_REASONS[TB_reason], 0, 132);
++		}
+ 		TB_box1Seen = 0;
+ 		createMenuBox(2, TB_box2X(), TB_box2Y(), 188, 0x23, 2, TB_tickMessage, TB_renderMessage);
+ 	}
+ }
+ 
+ /* One second at the native 20 Hz tick gives each care change a visible interval.
+-   A fresh cancel press stops before the next hour is awarded. No new state is needed. */
++   Cancel pressed during a wait and held for TB_STOP_HELD ticks stops before the next hour is awarded, and the box
++   says how many sessions ran. Taps never stop it: Cancel also skips the first animation and the tally, and players
++   tap it through the block (a tap used to end it after one session, silently). A hold carried over from the
++   animation's skip has no press inside the wait and does not count. */
++#define TB_STOPPED	(-1) /* TB_reason: the player held Cancel */
++#define TB_STOP_HELD	10   /* half a second */
+ int32_t TB(modBlockWait)(void)
+ {
+-	if (CHANGED_INPUT & CANCEL_BUTTON) {
+-		TB_finishBlock();
+-		return 1;
++	if (!(POLLED_INPUT & CANCEL_BUTTON)) {
++		TB_x5 = 0;
++	} else if (TB_x5 || (CHANGED_INPUT & CANCEL_BUTTON)) {
++		if (++TB_x5 >= TB_STOP_HELD) {
++			TB_reason = TB_STOPPED;
++			TB_finishBlock();
++			return 1;
++		}
+ 	}
+ 	if (TB_box1Seen > 0) {
+ 		TB_box1Seen--;
+-- 
+2.55.0
+
