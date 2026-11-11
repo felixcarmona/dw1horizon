@@ -606,3 +606,10 @@ with open eyes); add `--tim-out AFTER.TIM` and `edit.py put 252 AFTER.MMD AFTER.
 Tuskmon (253): `field_animations/tuskmon_lift.py` raises the body of the field clips over the strides `tuskmon.py` made (legs re-solved to the same
 ankles) and makes the horns rigid on the chest; `python3 -m tools.models.field_animations.tuskmon_lift --out AFTER.MMD` on the model before this
 change (`edit.py get 253`), then `edit.py put 253 AFTER.MMD`; check with `tools.test_tuskmon_lift`.
+
+Triceramon (257): `field_animations/triceramon_gait.py` writes four clips from scratch over the imported model (idle, walk,
+tired walk and run; the battle idle, the care and the technique clips keep the old ones). The legs are two-bone solves onto
+stance points that move back by exactly the root speed, so the planted foot does not slide; the body, head, tail and arms
+are authored around them with spring followers that close their loops; `python3 -m tools.models.field_animations.triceramon_gait
+--source build/imported-model-edit/edit/257-Triceramon.MMD --out AFTER.MMD` on the model before this change, then
+`edit.py put 257 AFTER.MMD`; check with `tools.test_triceramon_gait`.

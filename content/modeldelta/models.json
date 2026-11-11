@@ -2294,9 +2294,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/257-Triceramon.MMD.mdelta",
-        "delta_sha256": "cd82e9347d7f9dd50ab8002492e6b77a3efe2f2db6f3e5c241e81293c5037751",
-        "sha256": "68c4d0b6071eed2ce63959310b262eece2f280593502a96a13724234dad8b066",
-        "size": 104296
+        "delta_sha256": "15ff97816fad4d5300985f044271f2aaba7bf8729098d95cab5055fa135b0bc3",
+        "sha256": "35f2feb64f59bb842dcaef2b4839110e2e40611df47b42193ad22b3592e3c3ab",
+        "size": 109920
       },
       "tim": {
         "sources": [

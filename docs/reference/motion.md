@@ -860,3 +860,15 @@ body stretched and tilted forward, the fins swept back). The tail swings 52, 140
 head to tail, the holds fall to 3 to 8 per cent of the loop and the fastest tick to under twice the mean speed. Resident
 animation buffer 67090 of 100352 bytes. `tools.test_tylomon_swim` checks the bytes, the seams, the distance per tick, the wave,
 the absence of holds and of a short beat, the floor and the storage.
+
+`field_animations/triceramon_gait.py` replaces the idle, walk, tired walk and run of Triceramon (257) with authored
+clips. The import's clips had walk and tired walk the wrong way round (tired faster than the walk, 18.6 against 15.6 units
+a tick), stance feet that slid (88 % of the root speed in the walk) and no breathing. The new speeds are 16 (20 ticks),
+11 (23 ticks) and 38 (16 ticks) units a tick, so the tired walk is the slowest and the run the fastest with a shorter,
+lower, more leaning stride; the idle is 64 ticks. Stance feet are solved onto points moving back with the root, so the
+mean slip is 6 to 14 % of the root speed. The arms swing against the legs of the same side (the import pushed up to 106
+points of the arm mesh through the leg), the head, neck and tail follow through springs and the loops close on their
+first sample. The torso rides the steps instead of gliding: the pelvis rises and falls 17 units peak to peak in the walk, 11 in the
+tired walk and 30 in the run (which dips on each landing and has a short flight), and head, neck and tail answer with
+a lag. Resident animation buffer 99304 of 100352 bytes. `tools.test_triceramon_gait` checks the exact bytes, the
+bob, the speed order, the seams, the planting, the floor, the limb overlaps and the storage.
