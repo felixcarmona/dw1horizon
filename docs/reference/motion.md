@@ -363,7 +363,7 @@ A **field overlay** is a reviewed recipe that rewrites the field slots of one sp
 | `fieldphantom.py`, `fielddolphin.py`, `fieldzudo.py` | Phantomon 229, Dolphmon 238, Zudomon 219 | restore the native performance clock that the retargeted field clips had squeezed |
 | `fieldpiedmon.py`, `fieldfairy.py` | Piedmon 245, Lillymon 209 | keep the native float: Piedmon (since replaced by `piedmon_levitate.py`, four distinct levitating clips); Lillymon's shoulders opened in slot 0x21, the performance the experimental runtime layer (above) shows in the field |
 | `fieldnative.py`, `fieldseraph.py`, `fieldangel.py`, `fieldvenom.py`, `fieldaero.py`, `fielddevi.py`, `fieldrose.py`, `fieldsylph.py`, `fieldvike.py`, `fieldtuskmon.py`, `fieldshadramon.py`, `fieldshuri.py` | MegaKabuterimon 205, Seraphimon 207, MagnaAngemon 206, VenomMyotismon 212, AeroVeedramon 213, Devidramon 216, Rosemon 230, Silphymon 226, Vikemon 220, Tuskmon 253, Shadramon 250, Shurimon 225 | planted strides solved on the native legs (exact link lengths, the whole boot or claw mesh as support) under the native upper-body performance; Silphymon's walks also carry the upper body (pelvis bob, lean, torso counter-turn, arms against the legs) with strides as long as its boots |
-| `fieldboxer.py`, `fieldstar.py`, `fieldsuperstar.py`, `fieldthundermon.py`, `fieldroll.py`, `fieldkoku.py` | BomberNanimon 232, Starmon 243, SuperStarmon 244, Thundermon 252, Togemon 208, Kokuwamon 247 | short one-link legs with rigid oversized boots that roll over their support vertices; body height follows the planted boot |
+| `fieldboxer.py`, `fieldstar.py`, `fieldsuperstar.py`, `fieldroll.py`, `fieldkoku.py` | BomberNanimon 232, Starmon 243, SuperStarmon 244, Togemon 208, Kokuwamon 247 | short one-link legs with rigid oversized boots that roll over their support vertices; body height follows the planted boot |
 | `star_gait_refine.py` | Starmon 243 (SuperStarmon 244 by a rig dict) | offline model delta over the walk/run: ankles pushed out sideways so the boots clear each other, run pelvis pitch cut from 71-79 to about 36 degrees, ribbons hung down and back with a damped periodic pendulum lag; speeds and planting kept |
 | `superstar_gait.py` | SuperStarmon 244 | offline model delta: Starmon's refined walk, tired walk and run on the larger body (translations times 1.75, cycles 22, 28 and 25 ticks for 19.5, 13.5 and 37.9 units a tick), idle with the arms hanging |
 | `fieldgatomon.py`, `fieldcat222.py`, `fieldpup.py`, `fieldgizmo.py`, `fieldape.py`, `fieldscarab.py`, `fieldpaddle.py`, `fieldwalrus.py`, `fielddiaboromon.py` | Gatomon 234, BlackGatomon 222, Gizamon 239, Apemon 227, GranKuwagamon 210, Gomamon 217, Ikkakumon 218, Diaboromon 237 | quadruped and crouched gaits: one-segment limbs pinned through the body carrier instead of stretched, paired bounds, knuckle walks, flipper strokes |
@@ -450,9 +450,15 @@ own frames) and a mouth at rest, half shut, shut or wide (slid from the painted 
 face at tick 0; the other slots carry no face moves, so a face cut mid-change (or the condition walk's half-shut eyes,
 the run's wide mouth) stays until slots 0, 2, 3 or 4 play again. Not tested in the game.
 
-Thundermon uses 20/10/35 units per tick, 4/4/5 gait cycles and
-0.5/0.4/0.25 duty within 16/20/20-tick programs. Tick/thirds floor
-maxima are −4.587/−5.849/−3.654 units; run slip reaches 123.75% mean.
+Thundermon (252) has its own idle, walk, condition walk and run (`field_animations/thundermon_gait.py`, written offline and
+shipped as the model delta). They run at 16 / 10 / 36 units per tick in 24 / 40 / 20 tick loops of two gait cycles (12 / 20 /
+10 ticks each; the idle keeps its 97 ticks), with boots 76 units apart that plant and swing high. The ball rocks 14 / 16 / 7
+degrees side to side, twists against the stride, bounces 12 / 13 / 14 units with a hard landing and a settle (the native
+Agumon turns 9 to 18 degrees and bounces 20 to 36), and the arms and the bolt follow it late on damped springs with a second
+harmonic so they do not read as one sine. Boot slip while supporting is at most 6 / 5 / 4 % of the root speed (mean); neither
+boots nor arm parts enter the ball or each other at any tick. The eyes blink by texture moves (`thundermon_face.py`, the
+frames in texels no face samples): the idle blinks twice in a row once a loop (ticks 30 and 38), the walk once at tick 9, the
+tired walk slowly at 22 and the run at 12; each clip starts and ends with open eyes. Not tested in the game.
 
 None of these certifies the look of a motion: each recipe was accepted on side-by-side reviews (source against
 candidate, three views) and a game run. Diagnostics that count crossings must be normalised by the number of sampled

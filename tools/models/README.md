@@ -580,3 +580,8 @@ Kokuwamon (247): `field_animations/kokuwamon_arm.py` runs after the field pace p
 `content/models/imports/pace.json`). The source clips left the arm chain 13/14/15/16 stiff; its shoulder 13, forearm 14
 and cover 12 now swing in the idle, walk, condition walk and run, alternating with the other arm. Everything else stays exact.
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_kokuwamon_arm` (after `edit.py get 247`).
+
+Thundermon (252): `field_animations/thundermon_gait.py` writes its idle, walk, condition walk and run on its own 13 bones (ball body that
+bobs, boots a boot's width apart that plant and swing, arms on damped springs, bolt lag); `python3 -m tools.models.field_animations.thundermon_gait
+--source BEFORE.MMD --out AFTER.MMD` on the model before this change (`edit.py get 252`), then `edit.py put 252 AFTER.MMD`; `field_animations/thundermon_face.py` makes the eyes blink by texture moves over the painted eye disc (frames in unsampled texels, every clip starts and ends
+with open eyes); add `--tim-out AFTER.TIM` and `edit.py put 252 AFTER.MMD AFTER.TIM`; check with `tools.test_thundermon_gait`.
