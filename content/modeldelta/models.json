@@ -3109,9 +3109,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/284-Crabmon.MMD.mdelta",
-        "delta_sha256": "c803ebf8d939c6163a2aa3fd001ddb1f8cfd6249c79be15f469e24f5d181dd40",
-        "sha256": "8550d165106d1f64c51b8075f4ac1070276e11a772768bab600f763df88fa8dc",
-        "size": 87782
+        "delta_sha256": "95b7b7db09bc390db3a176e8c5309f16600233c02cc314af260284c05a486f3b",
+        "sha256": "46dac812afb8742f792f27c682f92fd295634343b318bddb8e8df91f31b7b58d",
+        "size": 93830
       },
       "tim": {
         "sources": [

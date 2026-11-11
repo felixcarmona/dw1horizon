@@ -420,6 +420,16 @@ about the line to the elbow that keeps it nearest its place on the torso. Slots 
 change with the idle; the resident animation buffer ends at 99,238 of 100,352 bytes. `tools/test_cyclonemon_gait.py`
 covers it.
 
+Crabmon's (284) idle, walk, condition walk and run were one pose cycle with only the root faster (23/25/25/25 ticks,
+speeds 16/10/48, no leg ever stepped, the shell lay almost on the floor). `field_animations/crabmon_scuttle.py` is an
+offline model delta: six two-bone legs (bones 2-13) are solved with damped least squares so every tip stands still on the
+floor in its stance (a leg's lowest vertex is put on the floor, not only its tip), the shell (bone 1) rides 20 to 40 units
+above them, and the two claws (14-16 small, 17-20 big with its finger) carry on. Idle 84 ticks (slow breath, claws
+shifting with lag, one finger snap), walk 22 ticks at 15 (two strides, tetrapod pairs), condition walk 28 at 10 (a
+metachronal wave, lower shell, claws drooping), run 14 at 38 (alternating tripods with a flight phase, shell pitched
+forward). Feet slip about 1 %. Slots 1 and 18 follow the idle; the resident animation buffer ends at 79,116 of 100,352
+bytes. The eyes are painted on the shell, so there is no glance or blink. `tools/test_crabmon_scuttle.py` covers it.
+
 Magnamon (197) is bound to native Leomon (`native_binding.py`). Its boots kept
 the source's fighting stance, turned 35 and 93 degrees outward, its fists kept
 the guard pose's forward point, and its broad legs crossed over Leomon's narrow
