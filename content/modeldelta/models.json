@@ -3169,9 +3169,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/286-Deramon.MMD.mdelta",
-        "delta_sha256": "8a6dd131d02821d86840f2d00c8c074c499d806e3b0cdab4e2ca64ed18ccc28a",
-        "sha256": "032754b6ebd489e6a143cfbd6c53c7c7f0570352a0ba6a408ce8a54a262e3ad3",
-        "size": 48146
+        "delta_sha256": "0ac146a31f718faa0a9c47b2de72ba7f0a5e35acdcd4124b94536715ef478718",
+        "sha256": "7d51320b1e73bc167591d4a8a97ae7a9aca748c7af06d5d981e47ad4272090b8",
+        "size": 59204
       },
       "tim": {
         "sources": [

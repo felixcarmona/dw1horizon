@@ -820,3 +820,18 @@ program and keeps it; the walk, tired walk and run are untouched. `edit.py get 2
 Check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_pumpkinmon_idle` (`PUMPKINMON_MODEL=` names the model before).
 
 `field_animations/syakomon_hop.py` (Syakomon 283): an offline model delta over the import, which had one 43-tick pose cycle in all four clips (the shell sliding at 99-135 % of the root). Bone 1 is the lower shell (the body), bone 6 the upper shell with the eyes and teeth, bone 2 the tail fin, all hinged at the back; bones 3-5 are tiny hidden pieces. Walk is a planted hop (28 ticks, 2 hops at 16 u/tick, about 34 units high), tired walk a low dragging shuffle (36 ticks, 11, hops of 14), run long bounds (27 ticks, 3 hops at 38, about 52 high), idle three slow breaths (96 ticks); the mouth and the fin follow the body through damped springs, and the shell's lowest point is solved onto the floor every tick (clear of it in flight). The fin never yaws (a yawed fan cuts the shell deeper than the import does). Slots 1, 18 and 33 share the idle. `python3 -m tools.models.field_animations.syakomon_hop --source <import MMD> --out <MMD>` rebuilds it; register with `tools/models/edit.py put 283`; check with `tools.test_syakomon_hop`.
+Deramon's (286) imported idle, walk, tired walk and run (32/23/22/21 ticks, root speeds 20/11/38) pitched the two
+feet about their ankles by 45 to 70 degrees without lifting them, so the grey sole texture faced the camera (the same
+render with and without back-face culling shows it: a sole face, not a back face or a texture defect), the feet slid at
+79 to 100 % of the body's speed, and the shell never moved against the body because bone 1, the shell, is the parent of
+the other seven bones. A native binding was not used: the natives nearest to a bird (Biyomon, Kokatorimon, Birdramon)
+have 21 to 24 bones with legs, Deramon has eight and its feet are single rigid pieces. `field_animations/deramon_gait.py`
+writes each pose in the world and derives the local values from the (rounded) shell bone: idle 120 ticks (slow breath,
+looking about, wings hanging with lag, the original blink twice; slot 33 shares it), walk 16 ticks at 16 (a waddle),
+tired walk 20 at 10 (lower lean, hanging head and wings), run 10 at 38 (forward lean, wings out, a flight phase).
+Feet slip under 6 % of the root speed in stance (under 20 % worst), the shell's lowest point is kept at the floor,
+and a shell spring (`spring`) delays and overshoots the body's bob, sway and roll. The idle is stored at tolerance 0
+because the rounding of one-unit steps otherwise shows as ticks. Stored in the plain delta
+(`edit.py get 286`, `python3 -m tools.models.field_animations.deramon_gait --source THAT.MMD --out AFTER.MMD`,
+`edit.py put 286 AFTER.MMD`); check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_deramon_gait`.
+The pace row and `deramon-pace` overlay are dormant records (the scale lock still names them).
