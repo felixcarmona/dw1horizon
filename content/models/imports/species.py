@@ -98,7 +98,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'quetzalmon-steady-flight': ('249', 'tools.models.field_animations.gliding', '249-quetzalmon-steady-flight'),
     'kokuwamon-rolling-boots': ('247', 'tools.models.field_animations.pace', '247-kokuwamon-rolling-boots'),
     'infermon-tripod-field': ('246', 'tools.models.field_animations.pace', '246-infermon-tripod-field'),
-    'piedmon-native-float': ('245', 'tools.models.field_animations.piedmon', '245-piedmon-native-float'),
+    'piedmon-native-float': ('245', 'tools.models.field_animations.piedmon_levitate', '245-piedmon-native-float'),
     'superstarmon-supported-field': ('244', 'tools.models.field_animations.celebrations', '244-superstarmon-supported-field'),
     'starmon-boxer-field': ('243', 'tools.models.field_animations.pace', '243-starmon-boxer-field'),
     'sorcermon-native': ('242', 'tools.models.field_animations.sorcermon_native', '242-sorcermon-native'),

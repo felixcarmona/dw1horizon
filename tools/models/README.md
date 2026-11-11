@@ -63,6 +63,15 @@ animations with our mesh and texture, replayed from plain deltas
 Run `python3 -m tools.models.babies check` and
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_native_babies`.
 
+Piedmon (245) played one 104-tick floating gesture in its idle, walk, condition walk and run (the three walks differed
+only in root speed and arm amplitude), and the boots, which never touch the ground, slid with the body.
+`field_animations/piedmon_levitate.py` writes slots 0 and 1 (idle), 2, 3 and 4 again as four levitating clips: a
+breathing idle (104 ticks), a glide (24), a slumped glide (28) and a leaning run (20) with the importer's root speeds,
+the same mean hover height of the body (44 units above the ground, ribbons aside), arms, boots, collar and ribbons that
+follow the body a little later, and exact loops. Slots 18 and 33 keep the native idle. Stored in the plain delta
+(`python3 -m tools.models.field_animations.piedmon_levitate --source SRC --out AFTER.MMD`, then
+`tools/models/edit.py put 245 AFTER.MMD`); check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_piedmon_levitate`.
+
 DemiDevimon (236) binds its imported mesh to Birdramon's native skeleton and
 programs through `field_animations/native_binding.py`. The recipe in
 `content/models/imports/native-bindings.json` assigns every rigid piece, fits
