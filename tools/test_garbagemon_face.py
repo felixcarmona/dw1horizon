@@ -16,8 +16,8 @@ import mmd
 import motionstorage
 from tools.models.field_animations import garbagemon_face as face
 
-EXPECTED = '6a570342969faef7fd4b8a443d24a84f2d8f8ff3352a5d31951af7bf9bb04616'
-EXPECTED_TIM = '23ac84e723e4dc2b429425bec064c358184f7d648d4025455e8cb71e022fbf2c'
+EXPECTED = 'd79cfceaf4dbe7464aa6fc33253291ce34ddcbbf7a66d350566acb91661f53b0'
+EXPECTED_TIM = 'd3fee9e74072b8602447a52765bcfe01c47dfd6a80114c37a7095b0427eca3d6'
 NB = face.NB
 BUFFER = 100352
 SLOTS = (0, 2, 3, 4)
@@ -48,13 +48,13 @@ def sampled_texels(model, pad=1):
 
 
 def place_boxes():
-    """(x, y, w, h) of every stored frame band."""
+    """(x, y, w, h) of every stored frame band (bands with identical pixels in two states share one place)."""
     boxes = []
     for places in face.EYE_PLACES:
         boxes += [(at[0], at[1], b[2], b[3]) for at, b in zip(places, face.EYE_BANDS)]
     for places in face.MOUTH_PLACES:
         boxes += [(at[0], at[1], b[2], b[3]) for at, b in zip(places, face.MOUTH_BANDS)]
-    return boxes
+    return list(dict.fromkeys(boxes))
 
 
 def overlap(a, b):
@@ -136,6 +136,20 @@ class GarbagemonFace(unittest.TestCase):
         dark = lambda rows: sum(v == face.INSIDE for row in rows for v in row)
         self.assertGreater(dark(face.mouth_frame(mouth, face.WIDE)), dark(face.mouth_frame(mouth, face.AJAR)) + 30)
         self.assertGreater(dark(face.mouth_frame(mouth, face.AJAR)), dark(mouth) + 20)
+
+    def test_bands_sharing_a_place_hold_the_same_pixels(self):
+        tim = self.tim0 if self.tim0 is not None else None
+        if tim is None:
+            self.skipTest('needs the texture before the change')
+        eye, mouth = face._grab(tim, face.EYE_AT, face.EYE_SIZE), face._grab(tim, face.MOUTH_AT, face.MOUTH_SIZE)
+        seen = {}
+        for bands, places, frames, origin in (
+                (face.EYE_BANDS, face.EYE_PLACES, [face.eye_frame(eye, s) for s in range(3)], face.EYE_AT),
+                (face.MOUTH_BANDS, face.MOUTH_PLACES, [face.mouth_frame(mouth, s) for s in range(3)], face.MOUTH_AT)):
+            for state, frame in enumerate(frames):
+                for band, at in zip(bands, places[state]):
+                    pixels = face._band_rows(frame, origin, band)
+                    self.assertEqual(seen.setdefault(at + tuple(band[2:]), pixels), pixels, at)
 
     def test_the_frames_lie_in_texels_no_prim_samples(self):
         used = sampled_texels(self.new)
