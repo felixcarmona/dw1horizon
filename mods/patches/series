@@ -441,3 +441,4 @@ Keep-staged-background-rows-intact-when-the-window-i.patch
 Stop-a-gym-training-block-only-on-a-held-Cancel.patch
 Wipe-the-shop-balance-row-before-redrawing-it.patch
 Move-a-battle-drop-out-of-a-wall-to-where-the-tamer-.patch
+Keep-battle-drawing-inside-the-GPU-packet-area.patch

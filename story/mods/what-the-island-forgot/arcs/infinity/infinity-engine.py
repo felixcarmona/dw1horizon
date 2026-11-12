@@ -7,7 +7,9 @@ from dw.names import *
 from ...state import notebook3, m5_notebook, m6_notebook, root2, devimon_fought
 
 engine_room = new_screen(312, map="build/what-the-island-forgot-maps/screens/INFE01.MAP")
-devimon = engine_room.npc(Species.Devimon130, at=(1000, 800), range=0, when=root2 and mt_infinity_devimon_beaten and not devimon_fought)
+# Mt. Infinity's own Devimon fight (MGEN06 slot 5), moved here: its stats, not the species' plain wild row.
+devimon = engine_room.npc(Species.Devimon130, at=(1000, 800), range=0, hp=6800, mp=6000, offense=780, defense=550,
+                     speed=340, brain=250, bits=4800, when=root2 and mt_infinity_devimon_beaten and not devimon_fought)
 t53 = text.s194.sec53
 
 @devimon.on_talk(scene=True)
