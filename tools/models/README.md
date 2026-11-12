@@ -225,6 +225,13 @@ kicks, claws, fire, quake, war cry) and the training slot 57 plays Sonic Jab's. 
 different body than Ogremon's: the upper-arm shoulder vertices overlap the chest box by 3 to 4 of 28 in every pose, forearms
 and fists never do. `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_vilemon_native` (after `edit.py get 295`).
 
+Minotarumon (330) wears native Ogremon's (34, `CHDAT/MMD1/OGRE.MMD`) 18-bone skeleton at scale 0.88: its 20 bones map by body
+part (pieces 17, 19 and 20 to Ogremon's head, 5 and 6 and 9 and 10 each pair to one foot), pieces 6, 10, 19 and 20 share a
+donor bone and are placed by `pieces` offsets, and the recipe's `spread` fits the pieces on the donor's joints. The idle is
+Ogremon's own (16 ticks); the walk, condition walk and run are its clips retimed by `pace` (22 ticks at 18, 30 at 13, 20 at 41 units
+per tick). Species pin: `edit.py put 330 ... --force`; its model delta is unchanged, so only the provider pin in
+`species-pins.json` changed. `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_minotarumon_native` (after `edit.py get 330`).
+
 HiAndromon (302) wears native Andromon's (40, `CHDAT/MMD1/ANDR.MMD`) 21-bone skeleton at scale 1.2 (mesh pieces scaled by
 0.857 so the chibi proportions stay): its 25 bones map by body part (chest and chest plates to the torso, each shoulder
 armour to its own side's shoulder pivot, wrist and hand to the hand, heel and toes to the foot). Slots below the techniques

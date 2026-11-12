@@ -778,6 +778,14 @@ Vilemon uses native Ogremon's skeleton (18 bones) and field programs at scale 0.
 idle, walk, condition walk and run are Ogremon's own clips (17, 23, 25 and 21 frames at 17.6, 16.2 and 36.1 units per tick
 for the gaits); the wings have no donor bone and ride the chest. The resident model uses 68,322 of 100,352 bytes.
 
+Minotarumon uses native Ogremon's skeleton (18 bones, `CHDAT/MMD1/OGRE.MMD`) and field programs at scale 0.88, bound by
+`native_binding.py`: its 20 bones map by body part onto Ogremon's 18 (pieces 17, 19 and 20 onto the head, 5 and 6 onto one foot, 9 and 10 onto the other),
+and pieces 6, 10, 19 and 20 share a donor bone and are placed by `pieces` offsets. Idle is Ogremon's own
+16-tick loop; walk, condition walk and run are Ogremon's clips retimed by the recipe's `pace` with `ground` (22 ticks at 18.0,
+30 at 13.0 and 20 at 41.0 units per tick). Stance slip is 38 %, 37 % and 28 % mean in the walk, condition walk and run (worst 212,
+274 and 41 %). The 11 techniques play Ogremon's clips 46 to 56; slots 57, 58 and 60 play Ogremon's
+clips 51, 49 and 46, and slot 33 the idle. The resident model uses 76,934 of 100,352 bytes.
+
 HiAndromon uses native Andromon's skeleton (21 bones) and field programs at scale 1.2, bound by `native_binding.py`: its
 25 bones map by body part onto Andromon's torso, shoulder pivots, arms, one hand and one foot per limb, and the chibi
 proportions (head, arms, torso) are re-applied as piece scales, so the figure is about 14% shorter than before (497

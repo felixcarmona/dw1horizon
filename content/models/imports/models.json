@@ -146,7 +146,7 @@
  "327": {"model": "327-Gargoylemon.MMD", "aliases_applied": true, "field_overlay": "gargoylemon-chibi"},
  "328": {"model": "328-Snimon.MMD", "aliases_applied": true, "field_overlay": "snimon-pace", "technique_aliases": {"Spinning Shot": "Wind Cutter", "Counter": "Sonic Jab"}},
  "329": {"model": "329-Ghoulmon.MMD"},
- "330": {"model": "330-Minotarumon.MMD", "aliases_applied": true},
+ "330": {"model": "330-Minotarumon.MMD", "aliases_applied": true, "field_overlay": "minotarumon-native"},
  "331": {"model": "331-Snatchmon.MMD", "aliases_applied": true, "field_overlay": "snatchmon-chibi"},
  "332": {"model": "332-Roachmon.MMD", "aliases_applied": true, "technique_aliases": {"Bug": "Insect Plague", "Big Poop Toss": "Poop Rnd Toss", "Megaton Punch": "Dynamite Kick (44)"}},
  "333": {"model": "333-Raijinmon.MMD", "aliases_applied": true, "field_overlay": "raijinmon-celebration", "technique_timing": {"Megaton Punch": {"source": "Power Crane", "source_sha256": "bfd89b1fd5c0de4d01d08aa242ab4f2c5b3bcbfa64149ee38602043c933f398d", "samples": [[0, 0], [11, 35], [14, 38], [60, 60]]}}},
