@@ -4329,9 +4329,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/325-Musyamon.MMD.mdelta",
-        "delta_sha256": "f7767f78a97800b7fa9ead7c80566aeff0333257e5f6688ad4476fd423a36163",
-        "sha256": "60a4ff152006d22426ba15cc9cfc4e3be7380c7c3f1f45d1b87ba6773b37ba16",
-        "size": 100548
+        "delta_sha256": "7c85a4ba12bad364f56b9f76e5324882ebf84d3cfc28c364674fdd2f0a6f4852",
+        "sha256": "c5ce4e6947e9eb31d7180a96c5c64552034fdfc0c71cf154335e2574c7aab587",
+        "size": 102748
       },
       "tim": {
         "sources": [
