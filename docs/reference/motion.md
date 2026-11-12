@@ -1269,6 +1269,25 @@ plants each foot with `quadruped.py`: walk, tired walk and run are 32, 60 and 28
 (slip under 4 % mean), the idle 96 ticks with breathing, weight shifts and a raised arm. The posture is a low, forward-leaning warrior's: short weighted steps, the chest turning hard against the hips, the arms bent and held out of lockstep with the legs, a hunched dragging tired walk with the head low, a committed forward-leaning run. The pelvis bobs twice a cycle
 and the arms and feather follow with delay. The run's loincloth overlaps a leg slightly more than before (14 against 8).
 
+WarGreymon 373 (`tools/models/field_animations/wargreymon_gait.py`, test `tools.test_wargreymon_gait`) walked like a
+wind-up toy: `war_greymon.py` wrote one 22-tick cycle of plain sines of a single phase (the arms two mirrored 34 degree
+pendulums locked to the legs, a bob with a fourth-harmonic spring, the chest and head only counter-pitching, the back plates
+under a degree, an idle of 1 to 2 degrees) and every step repeated the last. The overlay runs the chibi reshape and then
+`quadruped.py` on the two legs with a body hook driven by one shared gait phase: the pelvis drops onto the loaded foot and
+shifts over it, the hips and chest counter-turn (yaw, roll, lean) with the chest lagging, the head holds its gaze and
+follows late, each arm swings against its own leg from the shoulder with the claw trailing and bending at the elbow, the back
+plates lift and settle after the chest, and the loincloth and thigh plates follow the thighs. Springs (`FOLLOW`) give the claws,
+head, plates and cloth their follow-through. The walk and the run are two different cycles each (44 and 24 ticks: other
+lifts, landings, settle and bob) that ease from one into the other; the tired walk is one slumped, heavy cycle of 28 ticks
+(the right leg lands late and lifts less); the run leans into a flight phase; the idle (96 ticks, shared by slot 33) breathes,
+shifts its weight, glances and raises a claw. Before / after: ticks idle, walk, tired walk, run 73, 23, 21, 13 / 96, 44, 28, 24;
+root speeds 17.2, 13.6, 40.8 / 16, 10, 40 units a tick (a constant step); stance slip 9-72 % mean-worst on the walk, 13-109 % on
+the tired walk, 5-6 % on the run / 5.7-14 %, 4.8-15 %, 4.9-15 %; resident buffer 98486 bytes. Mesh crossings stay within the
+chibi clips' on arms against head, torso and legs (and drop a lot on the arms against the head); the head against the chest
+(37 triangles before) rises to 40 to 49 and a thigh plate against its leg (22 before) to 48 on the tired walk, both shallow.
+This is a hand-built overlay, not a native donor binding; the chibi row (`chibi.json` 373) is applied first and its
+proportions are unchanged.
+
 Taomon (315): the walk, tired walk and run held both arms in the idle's hanging pose while the torso leans 40 to 80 degrees and the legs swing, so
 the wide sleeves hung at thigh height and each leg passed through its sleeve at every step (up to 30 units deep; the aprons and, in the tired walk, the
 tail crossed them too, and the idle's right sleeve brushed the leg for a dozen ticks). `field_animations/taomon_arms.py` runs on the chibi overlay's output

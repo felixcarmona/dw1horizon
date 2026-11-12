@@ -84,6 +84,8 @@ pants in the run and droops when tired; `--tex SRC.TIM --out-tex AFTER.TIM` writ
 `python3 -m tools.models.field_animations.divermon_gait --source SRC.MMD --out AFTER.MMD` (SRC from `edit.py get 304`
 before the change), then `edit.py put 304 AFTER.MMD`. Test: `tools.test_divermon_gait` (`DIVERMON_MODEL`).
 
+Species 373 (WarGreymon): `field_animations/wargreymon_gait.py` is a field overlay in the same way: the chibi proportions, then slots 0 (also 33), 2, 3 and 4 written again with `quadruped.py` and a body hook on one shared gait phase (pelvis weight shift, hip/chest counter-turn, lagging head, arms swinging against the legs with trailing claws, back plates, cloth and thigh plates, springs for the follow-through); walk and run are two cycles each (44 and 24 ticks), the tired walk one slumped cycle of 28, the idle 96 ticks. Test: `tools.test_wargreymon_gait` (`WARGREYMON_MODEL`). `quadruped.py` profiles may now set `tol` (the encoder tolerance, one value or one per bone) and a gait's `plateau`.
+
 Species 308 (Dinohyumon): `field_animations/dinohyumon_gait.py` is a field overlay (like Hookmon's): it applies the chibi
 proportions and then writes slots 0 (also 33), 2, 3 and 4 again with `quadruped.py` on the two legs: a 96-tick idle, a
 walk, tired walk and run of two different cycles each (32, 60 and 28 ticks) at 17, 11 and 38 units a tick, each foot planted with a constant

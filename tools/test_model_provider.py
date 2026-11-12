@@ -196,6 +196,8 @@ class ModelProvider(unittest.TestCase):
         # So are Dinohyumon's (dinohyumon_gait.py).
         self.assertEqual(assignments['308'], ('tools.models.field_animations.dinohyumon_gait', '308-dinohyumon-chibi'))
         assignments['308'] = ('tools.models.field_animations.chibi', '308-dinohyumon-chibi')
+        self.assertEqual(assignments['373'], ('tools.models.field_animations.wargreymon_gait', '373-wargreymon-field'))
+        assignments['373'] = ('tools.models.field_animations.chibi', '373-wargreymon-field')
         # Knightmon's tired walk and run (knightmon_gait.py) are the celebration's base generator and rebuild its chibi proportions first.
         self.assertEqual(assignments['321'], ('tools.models.field_animations.knightmon_gait', '321-knightmon-chibi'))
         assignments['321'] = ('tools.models.field_animations.chibi', '321-knightmon-chibi')
