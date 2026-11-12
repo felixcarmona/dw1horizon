@@ -1045,3 +1045,11 @@ SlashAngemon (300): `field_animations/slashangemon_gait.py` rewrites only the wa
 with planted-foot IK; the idle, tired walk, run and every other program stay the import's byte for byte (`tools.test_slashangemon_gait` checks a hash of them):
 `python3 -m tools.models.field_animations.slashangemon_gait --source BEFORE.MMD --out AFTER.MMD` on the model before this change (`edit.py get 300`),
 then `edit.py put 300 AFTER.MMD`. The slot has no aliases, so nothing else follows it. The upper body is authored per part as world rotations on top of the planted legs (a chest counter-turn, arm and blade pendulums, wing breathing, a trailing skirt); `upper_motion` measures it.
+
+Taomon (315): `field_animations/taomon_arms.py` is a post-chibi stage (`post_generator` in `content/models/imports/chibi.json` row 315): it turns only the two
+sleeves' first bones (20, 25; rotation) tick by tick in slots 0 (and 33), 2, 3 and 4 so no sleeve piece goes through a leg, an apron or the tail. The turns are
+stored in `content/models/imports/taomon-arms.json`, found offline with `python3 -m tools.models.field_animations.taomon_arms --source CHIBI_OUTPUT.MMD
+--search content/models/imports/taomon-arms.json` (about two minutes) and applied by every build (`--out AFTER.MMD` applies them to a file). It refuses any input
+but the chibi output it was reviewed on. Because it sits after the chibi overlay, the importer delta and the chibi/animation-repair pins do not move; only
+`tools/derive/recipes/species-pins.json` `imports["315"]` does. `tools.test_taomon_arms` (needs `edit.py get 315`) bounds the sleeve-against-leg,
+apron and tail clash on every tick of the four clips and checks that only the two bones' rotation changed.
