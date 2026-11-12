@@ -221,6 +221,7 @@ run map-reach-policies $PY tools/test_reach_policies.py
 disc jungle-exit-body-box $PY -m unittest tools.test_trop02_exit
 disc ogre-arrival-body-box $PY -m unittest tools.test_ogre02_arrival
 disc cemetery-collision-body-box $PY tools/test_collision_pockets.py
+run old-gallery-neck $PY tools/test_old_gallery_neck.py
 run developer-contracts $PY tools/test_dev_contracts.py
 run presented-frame-video $PY tools/test_presented_frames.py
 run duckstation-protocol $PY -m unittest tools.test_duckstation_protocol
