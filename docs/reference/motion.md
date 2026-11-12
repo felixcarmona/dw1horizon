@@ -1260,6 +1260,13 @@ The footstep sounds play on the touchdown ticks (they were two to four ticks off
 (30 to 40 %) of the trunk's turn a few ticks late, so they trail it; the idle breathes (trunk and shoulders, about 1 degree) and the tired
 walk hangs the head 7 degrees lower and leans the trunk 3 further. Slip of the toes during stance, mean / worst as a percentage of the
 body's speed: walk 47 / 182 before and 10 / 23 now, tired walk 141 mean / 460 worst before and 8 / 30 now (`tools.test_hookmon_polish`).
+Snatchmon (331) keeps its chibi-reshaped idle byte for byte and gets a light touch-up of the walk, tired walk and run (same 16 ticks, root travel, rhythm and
+silhouette; `field_animations/snatchmon_polish.py`). The import's upper arms were static and its stance feet hovered above the floor and crept over it; the
+tired walk was a deep hunch and the run a long low stretch with the hind legs close together. Each stance is now planted (the ball of the foot stays over its touchdown
+spot and a hovering sole is lowered to the floor, as for Hookmon) and the footstep sounds sit on the touchdowns. The upper arms swing against the hind leg
+of their side (about 16, 8 and 24 degrees in the walk, tired walk and run), the head, arms and chain trail the trunk a tick late, the trunk lifts a little
+(the run by 20 degrees) and the run pulls in the hind foot's long kick back. Pelvis, legs and tail do not move with the trunk edit (bones 1 and 2 turn about
+one origin). Checked by `tools.test_snatchmon_polish`.
 Antylamon (309) keeps its chibi-reshaped idle, tired walk and run byte for byte and gets a smoother walk (slot 2: same 16 ticks, root travel, sounds
 and silhouette; `field_animations/antylamon_polish.py`). Each shoulder had one stray key in the import (the left one at tick 14, the right one at tick 6, half a
 loop apart): all three angles about 24 degrees off the middle of its neighbours, so the arm snapped out and back in two ticks (the hand moved 130 to 145 units a

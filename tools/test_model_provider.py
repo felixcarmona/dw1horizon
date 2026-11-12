@@ -194,6 +194,9 @@ class ModelProvider(unittest.TestCase):
                 assignments[sid] = (row['base_generator'], assignments[sid][1])
             else:
                 del assignments[sid]
+        # Snatchmon's touched-up walk, tired walk and run (snatchmon_polish.py) run on top of its chibi proportions.
+        self.assertEqual(assignments['331'], ('tools.models.field_animations.snatchmon_polish', '331-snatchmon-chibi'))
+        assignments['331'] = ('tools.models.field_animations.chibi', '331-snatchmon-chibi')
         # Hookmon's corrected clips (hookmon_polish.py) run on top of its chibi proportions and rebuild them first.
         self.assertEqual(assignments['299'], ('tools.models.field_animations.hookmon_polish', '299-hookmon-chibi'))
         assignments['299'] = ('tools.models.field_animations.chibi', '299-hookmon-chibi')
