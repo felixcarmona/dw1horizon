@@ -176,6 +176,13 @@ recipe: `bones` {source bone: spin axis in its own frame, `sign`}, `quarters` {s
 their own axis in the four field clips while the donor bones carry them along. `PYTHONPATH=tools python3 -W ignore -m unittest
 tools.test_grapleomon_native` (after `edit.py get 306`).
 
+Assaultmon (310) wears native Centarumon's (36, `CHDAT/MMD1/CENT.MMD`) 27-bone skeleton at scale 1.45 with the recipe flag
+`spread_fit` (pieces fit on the donor joints after the `spread` offsets). Four legs go onto four legs (front 4 bones on 3, hind 3
+on 4), arms and guns on the arm bones, the shoulder cannons rigid on the torso. `pace` rows with `ground` retime the walk (20 ticks,
+25.4), tired walk (30, 17.0) and run (21, 48.2) and keep the soles on the floor. Stance slip stays above the usual limits and the
+run's closing tick jumps; the notes are in `docs/reference/motion.md`.
+`PYTHONPATH=tools python3 -W ignore -m unittest tools.test_assaultmon_native` (after `edit.py get 310`).
+
 Zudomon's reviewed model is uniformly resized to 85% with `resize.py`, including
 mesh vertices and translation tracks in every clip. Its radius, height and
 bone-local effect/bubble offsets use the same factor. Rotation, visibility,

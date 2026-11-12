@@ -159,6 +159,7 @@
   "groups": {"0": "carrier", "1": "carrier", "2": "pelvis", "3": "thigh", "4": "shin", "5": "foot", "6": "footpart", "7": "thigh", "8": "shin", "9": "foot", "10": "footpart", "11": "neck", "12": "chest", "13": "shoulder", "14": "arm", "15": "hand", "16": "shoulder", "17": "arm", "18": "hand", "19": "head", "20": "headpart", "21": "headpart"}
  },
  "310": {
+  "applied_by": "native_binding",
   "source_sha256": "5792652f20b3c29d2ef6ab24329c4c4961f6484c9de8bf77167f396f78b20ca2",
   "skeleton_sha256": "f98e2db55c015d16fc66aad1d933c543bb09c2a00b3a8ea7768beddcfcfc0033",
   "base_generator": null,

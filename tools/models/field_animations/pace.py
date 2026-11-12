@@ -353,7 +353,7 @@ def _author(old, skeleton, slot, spec, feet, source=None):
             pose[0][c] -= d * t / source_ticks
     ticks, speed = spec['ticks'], spec['speed']
     assert speed >= SPEED_FLOOR.get(slot, 0), (slot, speed)      # an idle stands: no floor
-    if spec['from'] == slot and ticks == source_ticks and 'original_run' not in spec and 'smooth' not in spec and 'lift' not in spec:      # same clock: poses exact, only the travel changes
+    if spec['from'] == slot and ticks == source_ticks and 'original_run' not in spec and 'smooth' not in spec and 'lift' not in spec and not spec.get('ground'):      # same clock: poses exact, only the travel changes
         return _forward(old.anims.anims[old.anims.table[slot]], -round(speed * ticks), ticks), dict(
             slot=slot, source_slot=slot, source_ticks=ticks, ticks=ticks, units_per_tick=round(speed * ticks) / ticks,
             slip_mean=_checked_slip(old, frames, feet, speed, spec), floor='exact')
@@ -370,8 +370,8 @@ def _author(old, skeleton, slot, spec, feet, source=None):
     if 'posture' in spec:
         _keep_posture(old, samples, animsheet.slot_frames(old, n, spec['posture']['from'])[0], spec['posture'])
     before = max(_floors(old, skeleton, frames))
-    limit = FLOOR_MARGIN if 'original_run' in spec else max(before, FLOOR_MARGIN)    # an original run is held to the ground rule
-    tight = 'original_run' in spec     # the original's feet keep its timing: lift each tick by what it needs, no more
+    limit = FLOOR_MARGIN if ('original_run' in spec or spec.get('ground')) else max(before, FLOOR_MARGIN)    # an original run is held to the ground rule
+    tight = 'original_run' in spec or bool(spec.get('ground'))     # the original's feet keep its timing: lift each tick by what it needs, no more
     raised = _clear_floor(old, skeleton, samples, limit, tight)
     raised += _clear_floor(old, skeleton, samples, limit, tight)
     for _ in range(6 if tight else 0):          # a tick's thirds between two lifts: what is left is lifted again

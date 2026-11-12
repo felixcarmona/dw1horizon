@@ -151,6 +151,12 @@ def bind(data, skeleton, recipe, placements=None):
         sw = np.array([np.array([[c, 0, s, 0], [0, 1, 0, 0], [-s, 0, c, 0], [0, 0, 0, 1]]) @ m for m in sw])
     nw = np.array(mmd.bone_matrices(native, native_pose))
     nw[:, :3, 3] *= recipe['scale']
+    if recipe.get('spread_fit'):
+        # pieces are fitted to the donor's joints where `spread` puts them (a body on proportions the donor lacks)
+        moved = np.zeros((len(native_rig), 3))
+        for b, (_, up) in enumerate(native_rig):
+            moved[b] = (moved[up] if b and up >= 0 else 0) + np.array(recipe['spread'].get(str(b), [0, 0, 0]), dtype=float)
+        nw[:, :3, 3] += moved
     mapping = {int(k): v for k, v in recipe['map'].items()}
     segments = {int(k): v for k, v in recipe['segments'].items()}
     if set(mapping) != {b for b, (obj, _) in enumerate(skeleton) if obj >= 0}:

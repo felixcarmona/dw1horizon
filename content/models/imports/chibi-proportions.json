@@ -153,7 +153,12 @@
   "head_width": 0.273,
   "foot": 0.558,
   "hand": 0.525,
-  "legs": 0.394
+  "legs": 0.394,
+  "accepted": {
+   "foot": 0.754,
+   "hand": 0.535,
+   "why": "the donor's own feet and hands (native Centarumon rig)"
+  }
  },
  "312": {
   "head": 0.324,

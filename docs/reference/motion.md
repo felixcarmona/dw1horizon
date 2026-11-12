@@ -794,6 +794,16 @@ child of the donor's forearm or shin, its z axis along the drum), so the bound m
 facets repeat every quarter turn, so every loop closes), written last into the first key of each loop; the left drums turn
 the other way. The resident model uses 88,130 of 100,352 bytes.
 
+Assaultmon uses native Centarumon's skeleton (27 bones, `CHDAT/MMD1/CENT.MMD`) at scale 1.45, bound by `native_binding.py`
+(an experiment: its chibi row is applied as the last stage of the binding, `"chibi"` in the recipe). Both are four-legged, so the legs map one
+to one (Assaultmon's four-bone front legs on Centarumon's three, its three-bone hind legs on the four, the spare donor bone
+carries no mesh); the gun arms ride the arm bones, the guns the forearms, the two shoulder cannons the torso, and the tail the
+tail bones. The recipe's `spread_fit` fits the pieces on the spread-shifted donor joints. Walk, tired walk and run are the donor's
+walk and run retimed by `pace.retime` with `ground` (the checked soles stay on the floor) and then given the chibi row (shorter legs, so a
+shorter stride): 20 ticks at 19.3, 30 at 12.9 and 21 at 36.6 units per tick; the tired walk is cut from the walk because the donor's own is faster. Stance slip is about 35 to 75 % mean
+(the donor's own heel-toe roll slips as much), above the usual target, and the run's closing tick turns the chest through a
+gimbal pose, as the donor's file does. The resident model uses 96,118 of 100,352 bytes.
+
 ChaosLord uses Machinedramon's native skeleton (32 bones) and field programs, bound by `native_binding.py`
 at scale 1. Native Machinedramon has no care clips, so the recipe's `donor_builder` takes the partner model
 `content/models/partners/machinedramon.py` makes (its own idle, walk and run plus care clips) as the donor. The

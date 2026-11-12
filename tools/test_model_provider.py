@@ -75,6 +75,8 @@ class ModelProvider(unittest.TestCase):
             '302': ('302', 'tools.models.field_animations.native_binding', '302-hiandromon-native'),
             # KingEtemon wears native Etemon's rig and programs.
             '303': ('303', 'tools.models.field_animations.native_binding', '303-kingetemon-native'),
+            # Assaultmon wears native Centarumon's rig and programs.
+            '310': ('310', 'tools.models.field_animations.native_binding', '310-assaultmon-native'),
             # PrinceMamemon wears native Mamemon's rig and programs.
             '270': ('270', 'tools.models.field_animations.native_binding', '270-princemamemon-native'),
 
@@ -191,6 +193,8 @@ class ModelProvider(unittest.TestCase):
         # The chibi proportions wrap the recipe that came before them; species without one have no other generator.
         chibi = json.load(open('content/models/imports/chibi.json'))
         for sid, row in chibi.items():
+            if row.get('applied_by') == 'native_binding':        # the row is the last stage of the species' native binding
+                continue
             self.assertEqual(assignments[sid][0], 'tools.models.field_animations.chibi')
             if row['base_generator']:
                 assignments[sid] = (row['base_generator'], assignments[sid][1])
