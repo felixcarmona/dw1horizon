@@ -159,6 +159,14 @@ class Rig:
             self.flat_leg[name] = flat_rest
             ahead = mv(flat_rest, toe)
             self.toe_turn[name] = turn_to([0, 0, -1], [ahead[0], 0.0, ahead[2]])
+        # 'mirror_paws' (profile): the left paws stand as the right ones mirrored in the world, for a rig whose rest pose
+        # (an idle caught mid-stride) tilts the left paws differently from the right ones
+        if profile.get('mirror_paws'):
+            for left, right in MIRROR.items():
+                if right in self.flat_leg:
+                    self.flat_leg[left] = mul(mul(MIRROR_X, self.flat_leg[right]), MIRROR_X)
+                    if right in self.toe_turn:
+                        self.toe_turn[left] = mul(mul(MIRROR_X, self.toe_turn[right]), MIRROR_X)
         # Reference bend planes: each right leg's standing pose; the left legs take it mirrored in the world.
         self.ref = {}
         for name, (up, lo, paw, side, front) in profile['legs'].items():

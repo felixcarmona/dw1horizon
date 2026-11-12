@@ -1311,3 +1311,19 @@ lift 55, slip under 1 %), constant root speed, the head hung in the tired walk, 
 free arm so the giant sword moves through 13 degrees of pitch (tired walk) and 22 (run) instead of 17 and 75. Idle, walk and
 the celebration slots are unchanged. Slightly worse than before: the thigh and hip plates overlap the torso a few vertices more
 (19 against 6 in the tired walk).
+
+Lynxmon 323 (`tools/models/field_animations/lynxmon_gait.py`, test `tools.test_lynxmon_gait`) had a walk, tired walk and run in which
+the four legs could not be told apart from each other or from the body. The texture paints legs, body and tufts with the same flame
+pattern, so only the silhouette and the open floor under the belly can separate the limbs, and the imported clips threw both away:
+the paws swung 146 to 263 units up into a belly 165 units over the floor, the feet came in towards the midline (fore paws from x 209
+at rest to 95-164, hind paws from 140 to 74-155) so near and far legs and fore and hind legs stood on the same ground, the cycles were
+16, 16 and 14 ticks, the soles slid (46 % of the body's travel at worst, 115 % in the run) and the tired walk and the run were faster
+than any native partner (23.6 and 69.4 units a tick). The generator plants each paw with `quadruped.py` (opt-in profile key
+`mirror_paws`: the left paws take the mirror of the right ones' rest rotation, because this rig's idle frame is not symmetric) and
+keeps the limbs apart in the picture: a lateral-sequence walk, a low swing that stays under the belly (paw heights 40 to 95 units over the floor, 125 in
+the run), a stance that stays about as wide as the rest pose (the paws stand 184 to 197 units out for the fore pair and 129 to 143 for the hind pair, against 209 to 212 and 134 to 140 at rest; the fore paws stand 41 to 65 units outside the hind ones and clear of them mostly along the body, 99 to 184 units apart) and a rotary
+lope for the run. The walk is 36 ticks (two different cycles of 18) at 26 units a tick, the tired walk 48 (2 x 24) at 15, the run 32
+(2 x 16) at 46; the idle is untouched. The body is written by hand (chest roll and bob, hips against the shoulders, a neck, head,
+jaw and two-link tail that follow by a spring each). The studio measures a stance slip of 11 % on average and 26 % at worst in the walks and 11 % on average and 35 % at worst in the run (the imported clips: up to 46 % and 115 %). Parts penetrate (vertices and triangle centres inside another part, worst tick of each pair) 736 times over all pairs in the imported clips and 387 in the new ones, less in every pair but three: the left foreleg against the left hind leg (3 to 12; the idle already has 12 there and the run 11, the walk 6), the left foreleg against the left hind leg the other way round (6 to 8) and the head against the left arm (5 to 7). In triangle crossings (`meshclash.py`) the walk goes from 1464 to 543, the tired walk from 935 to 411 and the run from 810 to 643, with a few pairs slightly higher (the right foreleg against the right hind leg in the run, 91 to 94).
+Nothing but the clips changes: the mesh and texture are exact and the species has no chibi row. The test reads the model made by
+`tools/models/edit.py get 323` (`LYNXMON_MODEL`).
