@@ -91,6 +91,13 @@ walk, tired walk and run of two different cycles each (32, 60 and 28 ticks) at 1
 `quadruped.py`), and the arms, head, feather and loincloth follow through on loose springs (the chibi clips flipped the feet by up to 167 degrees and slid the tired walk's soles 172 %).
 Bound in `content/models/imports/species.py`; test `tools.test_dinohyumon_gait` (`DINOHYUMON_MODEL`, from `edit.py get 308`).
 
+Species 334 (Mummymon): `field_animations/mummymon_gait.py` is a field overlay of the same kind: after the chibi proportions it
+rewrites slots 2, 3 and 4 (the idle is the chibi's own: it does not slide) with `quadruped.py` on its two hind legs, the soles pivoting
+at the ball of the foot: a walk, tired walk and run of two cycles each (30, 40 and 28 ticks) at 16, 11 and 38 units a tick, eased one into the other,
+with the arms, head, hat, strips and rifle following on loose springs and the rifle arm carried bent so the gun stays off the floor (the chibi clips
+slid the soles 65 to 202 % of the travel). `quadruped.py` takes a per-bone `tol` from the profile to keep the clips inside the resident buffer.
+Bound in `content/models/imports/species.py`; test `tools.test_mummymon_gait` (`MUMMYMON_MODEL`, from `edit.py get 334`).
+
 Species 319 (Pharaohmon): `field_animations/pharaohmon_gait.py` is a field overlay on top of the celebrations recipe: it
 rewrites slots 3 (tired walk, 56 ticks at 11 units a tick) and 4 (run, 24 ticks at 36) with `quadruped.py` on the two legs,
 planted soles and two different cycles each (the `compose` hook); the idle and the walk are the celebrations build's, untouched.

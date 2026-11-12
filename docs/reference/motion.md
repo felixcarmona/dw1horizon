@@ -1269,6 +1269,16 @@ plants each foot with `quadruped.py`: walk, tired walk and run are 32, 60 and 28
 (slip under 4 % mean), the idle 96 ticks with breathing, weight shifts and a raised arm. The posture is a low, forward-leaning warrior's: short weighted steps, the chest turning hard against the hips, the arms bent and held out of lockstep with the legs, a hunched dragging tired walk with the head low, a committed forward-leaning run. The pelvis bobs twice a cycle
 and the arms and feather follow with delay. The run's loincloth overlaps a leg slightly more than before (14 against 8).
 
+Mummymon 334 (`tools/models/field_animations/mummymon_gait.py`, test `tools.test_mummymon_gait`): the chibi build's walk, tired walk and run
+were 16-tick loops whose soles slid 65 %, 202 % and 95 % of the travel (458 % worst in the tired walk), at 16.6, 14.7 and 36.9 units a tick (the tired walk
+nearly as fast as the walk), with the rifle arm swinging the gun under the floor. The overlay runs the chibi reshape and then plants each foot with
+`quadruped.py` (sole pivot at the ball of the foot): walk, tired walk and run are 30, 40 and 28 ticks, two cycles each with other lifts, heel strikes and
+bob eased into one another, at 16, 11 and 38 units a tick (slip 2 to 4 % mean, 17 % worst), the pelvis tilting against the stride, the chest turning
+against the hips, and the arms, head, hat, strips and rifle following on loose springs. The tired walk is a low, dragging one with the head down; the run
+leans forward with the hind feet lifting to different heights. The rifle arm is carried bent (16 to 32 degrees extra elbow) so the gun stays above the floor
+instead of being slung. The idle was not changed. The resident buffer is about 98.3 KB of 100.35 KB, so the clips use a per-bone encoding tolerance
+(`tol` in the profile) and there is little room left for more ticks.
+
 Taomon (315): the walk, tired walk and run held both arms in the idle's hanging pose while the torso leans 40 to 80 degrees and the legs swing, so
 the wide sleeves hung at thigh height and each leg passed through its sleeve at every step (up to 30 units deep; the aprons and, in the tired walk, the
 tail crossed them too, and the idle's right sleeve brushed the leg for a dozen ticks). `field_animations/taomon_arms.py` runs on the chibi overlay's output
