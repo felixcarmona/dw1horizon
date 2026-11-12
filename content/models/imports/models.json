@@ -122,7 +122,7 @@
  "303": {"model": "303-KingEtemon.MMD", "aliases_applied": true, "field_overlay": "kingetemon-native", "native_animation_donor": 42},
  "304": {"model": "304-Divermon.MMD", "aliases_applied": true},
  "305": {"model": "305-Ebidramon.MMD", "aliases_applied": true},
- "306": {"model": "306-GrapLeomon.MMD", "aliases_applied": true},
+ "306": {"model": "306-GrapLeomon.MMD", "aliases_applied": true, "field_overlay": "grapleomon-native", "native_animation_donor": 48},
  "307": {"model": "307-BlackKingNumemon.MMD", "aliases_applied": true, "movement_sound": 24, "field_overlay": "blackkingnumemon-slug", "technique_aliases": {"Water Blit": "Big Poop Toss", "Aqua Magic": "Odor Spray", "Tear Drop": "Odor Spray", "Ice Needle": "Odor Spray", "Winter Blast": "Odor Spray", "Giga Freeze": "Odor Spray"}},
  "308": {"model": "308-Dinohyumon.MMD", "aliases_applied": true, "field_overlay": "dinohyumon-chibi"},
  "309": {"model": "309-Antylamon.MMD", "field_overlay": "antylamon-chibi"},

@@ -80,6 +80,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'garbagemon-pace': ('269', 'tools.models.field_animations.pace', '269-garbagemon-pace'),
     'gazimon-field': ('285', 'tools.models.field_animations.gazimon', '285-gazimon-field'),
     'dokugumon-pace': ('298', 'tools.models.field_animations.pace', '298-dokugumon-pace'),
+    'grapleomon-native': ('306', 'tools.models.field_animations.native_binding', '306-grapleomon-native'),
     'vilemon-native': ('295', 'tools.models.field_animations.native_binding', '295-vilemon-native'),
     'armageddemon-pace': ('407', 'tools.models.field_animations.pace', '407-armageddemon-pace'),
     'nefertimon-pace': ('198', 'tools.models.field_animations.pace', '198-nefertimon-pace'),

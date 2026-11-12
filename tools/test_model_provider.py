@@ -67,6 +67,8 @@ class ModelProvider(unittest.TestCase):
             '292': ('292', 'tools.models.field_animations.native_binding', '292-deltamon-native'),
             # ChaosLord wears native Machinedramon's rig and programs.
             '289': ('289', 'tools.models.field_animations.native_binding', '289-chaoslord-native'),
+            # GrapLeomon wears native Leomon's rig and programs, with four turning drums.
+            '306': ('306', 'tools.models.field_animations.native_binding', '306-grapleomon-native'),
             # Vilemon wears native Ogremon's rig and programs.
             '295': ('295', 'tools.models.field_animations.native_binding', '295-vilemon-native'),
             # HiAndromon wears native Andromon's rig and programs.

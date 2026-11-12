@@ -162,6 +162,12 @@ are Andromon's own programs (idle 20, walk 20 ticks; the condition walk, 22 tick
 and 40 units per tick. Andromon's left foot slides in its own stance, so foot slip is native, not repaired.
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_hiandromon_native` (after `edit.py get 302`).
 
+GrapLeomon (306) wears native Leomon's (48, `CHDAT/MMD1/LEOM.MMD`) skeleton at scale 0.98 and its idle, walk, condition walk, run and
+technique clips; the mesh is unchanged. The forearm and shin drums sit on four extra bones appended to the rig (`spin` in the
+recipe: `bones` {source bone: spin axis in its own frame, `sign`}, `quarters` {slot: quarter turns per loop}) that turn about
+their own axis in the four field clips while the donor bones carry them along. `PYTHONPATH=tools python3 -W ignore -m unittest
+tools.test_grapleomon_native` (after `edit.py get 306`).
+
 Zudomon's reviewed model is uniformly resized to 85% with `resize.py`, including
 mesh vertices and translation tracks in every clip. Its radius, height and
 bone-local effect/bubble offsets use the same factor. Rotation, visibility,

@@ -785,6 +785,14 @@ since Andromon's run closes only within a unit or two). The 15 techniques play A
 stance (about 29% mean in the walk), and the retimed run stays near 29% mean and 77% max. The resident model uses
 86,492 of 100,352 bytes.
 
+GrapLeomon uses native Leomon's skeleton (23 bones) and field programs at scale 0.98, bound by `native_binding.py`: idle, walk,
+condition walk and run are Leomon's own 16-tick loops (22.0, 19.8 and 48.9 units per tick for the gaits, Leomon's own foot slip).
+Its four striped drums (forearms and shins) are four bones of their own after the donor's (`spin` in the recipe: each is a
+child of the donor's forearm or shin, its z axis along the drum), so the bound model has 27 bones. Their rz turns a steady
+1, 3, 2 and 4 quarter turns per loop in the idle, walk, condition walk and run (5.6, 16.9, 11.3 and 22.5 degrees a tick; the
+facets repeat every quarter turn, so every loop closes), written last into the first key of each loop; the left drums turn
+the other way. The resident model uses 88,130 of 100,352 bytes.
+
 ChaosLord uses Machinedramon's native skeleton (32 bones) and field programs, bound by `native_binding.py`
 at scale 1. Native Machinedramon has no care clips, so the recipe's `donor_builder` takes the partner model
 `content/models/partners/machinedramon.py` makes (its own idle, walk and run plus care clips) as the donor. The
