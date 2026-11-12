@@ -958,6 +958,27 @@ is a 120-tick loop with the left foot back like the original stance (the chibi f
 and run are 24, 30 and 18 ticks at 16, 11 and 38 units a tick (constant root step, stance slip 5 % or less on average and 25 % at worst, the run airborne for a short
 part of the cycle). Slots 33, 35 and 36 alias the new idle, walk and run; the old battle-movement programs 35 and 36 are dropped (96500 of 100352 B resident, from 94102).
 The test reads the model made by `tools/models/edit.py get 318` (`GALLANTMON_MODEL`).
+
+Growlmon 320 (`tools/models/field_animations/growlmon_gait.py`, test `tools.test_growlmon_gait`) had a walk, tired
+walk and run that slid on the floor (the soles moved 98 % and 119 % of the body's travel in the walk and tired walk, 340 % at
+worst) and threw the swinging feet 80 to 130 units up. The generator plants each foot with `quadruped.py` on the model's
+own big-creature proportions (no overlay, no chibi reshape): the walk is 32 ticks (two different cycles of 16) at 16 units a
+tick, the tired walk 44 (2 x 22) at 11, the run 28 (2 x 14) at 36, and the 96-tick idle keeps both feet planted. The
+studio measures a stance slip of 3 to 7 % on average and 29 % at worst in the walk and tired walk and 27 % in the run
+(the imported clips: 98 to 340 %); the soles stay within 4 units of the floor (7 in the run, whose feet move fast between
+60 fps thirds, hence the profile's `floor` 9). The body is written by hand: the hips turn against the shoulders, the upper
+body rolls over the loaded foot, the arms hang bent and swing late, the neck, head and jaw follow by a spring each and
+the three-link tail trails a few ticks behind link by link. The character is a heavy brute: a slow wide plod, a low tired
+drag with the head hung, a committed run with the jaw open and the tail streaming. The hind legs stand 20 units wide
+and the left foot lands a tenth of a cycle after its turn in the run, which keeps the legs out of the hips (the imported
+clips: 646 penetrating vertices over all pairs of parts, the new ones about 498). Growlmon also blinks
+(`growlmon_face.py`): its eyes are painted in the head texture (no eyelid bone or piece), so frames of the open, half-shut and shut eye
+are stamped into spare texels (rows 96 and below, 28x24 each at x 0, 28 and 56) and the clips paste them over the painted eye
+with texture-move events through the profile's `events` hook, as Divermon does: the texture only, no mesh or skeleton change. The
+idle blinks four times at irregular intervals (one quick double blink), the walk twice, the run once and the tired walk twice with
+a slower, heavier blink; each plan ends with the open eye so the loop closes cleanly. Slot 36, a separate 21-tick copy of
+the old run, plays the new run too (and the copy goes). The test reads the model made by
+`tools/models/edit.py get 320` (`GROWLMON_MODEL`).
 `field_animations/gesomon_rest.py` is written over that model and baked, with
 the walk and run, into the plain delta (the species has no field overlay). The
 import's idle hung the squid 9 to 89 units above the floor (mean 50, a

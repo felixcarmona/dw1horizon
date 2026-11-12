@@ -65,6 +65,13 @@ knight's body (hips against shoulders, the lance arm and the shield arm swinging
 play the new idle, walk and run. `python3 -m tools.models.field_animations.gallantmon_gait --source SRC.MMD --out AFTER.MMD` (SRC from `edit.py get 318`
 before the change), then `edit.py put 318 AFTER.MMD`. Test: `tools.test_gallantmon_gait` (`GALLANTMON_MODEL`).
 
+Species 320 (Growlmon): `field_animations/growlmon_gait.py` writes slots 0, 2, 3 and 4 again (a 96-tick idle, a 32-tick walk, a 44-tick tired
+walk and a 28-tick run at 16, 11 and 36 units a tick, each walking clip two different cycles) with `quadruped.py` on the model's own two
+legs: planted feet, hips against shoulders, swinging arms, springs on neck, head and jaw and a three-link tail that trails the hips; a heavy
+brute's character, and blinking eyes (`growlmon_face.py`: eye frames in spare texels, pasted over the painted eye by texture-move events).
+`python3 -m tools.models.field_animations.growlmon_gait --source SRC.MMD --out AFTER.MMD --tex SRC.TIM --out-tex AFTER.TIM` (SRC from
+`edit.py get 320` before the change), then `edit.py put 320 AFTER.MMD AFTER.TIM`. Test: `tools.test_growlmon_gait` (`GROWLMON_MODEL`).
+
 
 Species 304 (Divermon): `field_animations/divermon_gait.py` writes slots 0, 2, 3 and 4 again (a 240-tick idle; a walk, tired walk and
 run of two different strides each, 32, 36 and 24 ticks at 18, 12 and 36 units a tick) with `quadruped.py` on the model's two legs: boots flat with a 7 degree splay,
