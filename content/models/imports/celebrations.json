@@ -115,7 +115,7 @@
     },
     "shift": 0.8,
     "body_gain": 1,
-    "base_generator": "tools.models.field_animations.chibi",
+    "base_generator": "tools.models.field_animations.knightmon_gait",
     "no_reverse": [
       2,
       3,

@@ -1292,3 +1292,14 @@ ankle), so a flat-footed stride must be bought with a crouch and the heel peel: 
 its lift (it counted as sliding). The posture follows the walk: a modest lean (head over hips: tired 9 to 15 degrees,
 run 17 to 22, the walk 0 to 17), the head hung when tired, the arms swung clear of the thighs (negative `arm_out`, the old ones lay inside them) as delayed pendulums
 with the forearm and fist later each, the cape and the loincloth trailing, everything above the legs on loose springs.
+
+Knightmon 321 (`tools/models/field_animations/knightmon_gait.py`, test `tools.test_knightmon_gait`) limped in the tired walk
+and ran unevenly: the left foot stood 10 ticks of 23 sliding 79 % (worst 120 %) and lifted 74 units, the right one stood 5
+and lifted 58; the run (17 ticks) slid its feet 61 and 26 % (worst 203 %), the root step went 26 to 50 units, and the
+joint curves had spikes of 50 to 240 times their median second difference. The base generator of its celebration overlay
+now runs the chibi reshape and plants each foot with `quadruped.py`: tired walk 22 ticks at 11.5 units (the two feet's
+heights within 5 % half a cycle apart, stance 11 and 11 ticks, lift 26 units, slip 5 %), run 16 ticks at 38 (stance 6 and 6,
+lift 55, slip under 1 %), constant root speed, the head hung in the tired walk, the sword arm swinging half as much as the
+free arm so the giant sword moves through 13 degrees of pitch (tired walk) and 22 (run) instead of 17 and 75. Idle, walk and
+the celebration slots are unchanged. Slightly worse than before: the thigh and hip plates overlap the torso a few vertices more
+(19 against 6 in the tired walk).

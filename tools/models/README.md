@@ -97,6 +97,16 @@ planted soles and two different cycles each (the `compose` hook); the idle and t
 `python3 -m tools.models.field_animations.pharaohmon_gait --source EDIT.MMD --out AFTER.MMD` (EDIT.MMD from `edit.py get 319`).
 Bound in `content/models/imports/species.py`; test `tools.test_pharaohmon_gait` (`PHARAOHMON_MODEL`, from `edit.py get 319`).
 
+Species 321 (Knightmon): `field_animations/knightmon_gait.py` is the base generator of its celebration overlay (the one
+that keeps slots 11 and 42): it applies the chibi proportions and then writes the tired walk (slot 3, 22 ticks at 11.5
+units a tick) and the run (slots 4 and 36, 16 ticks at 38) again with `quadruped.py` on the two legs (thigh, knee guard that
+follows, knee, foot, toe plate). The two legs step half a cycle apart with the same lift and stance, so the tired walk is
+even (the previous clip stood the left foot 10 ticks and the right 5, slid 79 % and lifted 74 against 58 units: a limp; the
+previous run slid 61 and 26 %, 17 ticks a cycle, root steps 26 to 50). The arms swing as pendulums (the sword arm half as much),
+the forearm and the sword late, head, cloak, scabbard and loincloth on loose springs. The idle and the walk are untouched
+byte for byte. Bound in `content/models/imports/celebrations.json` (`base_generator`); test `tools.test_knightmon_gait`
+(`KNIGHTMON_MODEL`, from `edit.py get 321`).
+
 Species 202 (Submarimon): `repair_submarimon.py` removes four stencil faces that sit on its body plates and keeps the
 rear screw turning in every clip (see player-model-fixes.md); `python3 -W ignore -m unittest tools.test_submarimon`.
 
