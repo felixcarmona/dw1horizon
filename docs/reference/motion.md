@@ -948,6 +948,16 @@ The character is a proud, heavy warlord: the walk is a swagger (chest out, chin 
 The body bobs hard with each step (the pelvis falls on every landing and rises over the planted foot: 16, 18 and 21 units peak to peak in the walk, tired walk and run, two bobs a cycle; the clips before had 10, 10 and 13), the boots stay flat through the stride (a toe-up peel at lift-off had turned the trailing run foot backwards) and the run's world ease is a share (`world_ease` 0.85) so the trailing foot does not hang so far behind.
 The walk, tired walk and run are 22, 26 and 14 ticks at 16, 11 and 38 units a tick (a long unhurried step like the native biped's, with the heel peeling at toe-off, a high knee lift and a leaning run). The test
 reads the model made by `tools/models/edit.py get 297` (`MARSMON_MODEL`).
+Gallantmon 318 (`tools/models/field_animations/gallantmon_gait.py`, test `tools.test_gallantmon_gait`) had a walk and tired walk whose feet barely
+stood (stance 9 / 3 of 21 ticks, the soles slipping 80 % of the body's speed on average and 260 % at worst; tired walk 104 % / 163 %), a run that
+averaged 53 units a tick (over the native 52) and stepped between 35 and 67 (stance 4 and 1 ticks of 17, slip 62 % / 84 %), and a walk whose root moved in uneven steps
+(6 to 30). The generator plants each sole with `quadruped.py` (two-bone IK, the pole of the knee set outward 0.58 of its forward, the sole pivoting on the toe point)
+and writes the body by hand: the pelvis and upper body yaw and roll against each other, the lance arm swings against the shield arm (the shield arm holds the
+shield up as the body sinks so it never reaches the floor, and in the run swings it out clear of the legs), the pauldrons counter-turn, the plume and the cape trail late. The idle
+is a 120-tick loop with the left foot back like the original stance (the chibi foot proportion measures both feet in the first idle frame). The walk, tired walk
+and run are 24, 30 and 18 ticks at 16, 11 and 38 units a tick (constant root step, stance slip 5 % or less on average and 25 % at worst, the run airborne for a short
+part of the cycle). Slots 33, 35 and 36 alias the new idle, walk and run; the old battle-movement programs 35 and 36 are dropped (96500 of 100352 B resident, from 94102).
+The test reads the model made by `tools/models/edit.py get 318` (`GALLANTMON_MODEL`).
 `field_animations/gesomon_rest.py` is written over that model and baked, with
 the walk and run, into the plain delta (the species has no field overlay). The
 import's idle hung the squid 9 to 89 units above the floor (mean 50, a
