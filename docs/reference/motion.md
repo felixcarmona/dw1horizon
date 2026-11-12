@@ -1269,6 +1269,14 @@ plants each foot with `quadruped.py`: walk, tired walk and run are 32, 60 and 28
 (slip under 4 % mean), the idle 96 ticks with breathing, weight shifts and a raised arm. The posture is a low, forward-leaning warrior's: short weighted steps, the chest turning hard against the hips, the arms bent and held out of lockstep with the legs, a hunched dragging tired walk with the head low, a committed forward-leaning run. The pelvis bobs twice a cycle
 and the arms and feather follow with delay. The run's loincloth overlaps a leg slightly more than before (14 against 8).
 
+Kyukimon 322 (`tools/models/field_animations/kyukimon_gait.py`, test `tools.test_kyukimon_gait`): the walk (80 ticks), tired walk (72) and run (72)
+only rewrote the legs; every bone above the hips (body, chest, shoulders, arms, the five tail segments) played the idle's 74-tick loop, copied
+(equal rotation ranges to a tenth of a degree), and head, hands, strap and wing spikes never moved, so the upper body neither moved much nor
+belonged to the stride. The legs slid their soles 28 / 20 / 49 % of the travel on average (136 / 72 / 180 % worst) with a lift of 13 units. Now
+one gait phase writes everything: planted feet (slip under 3 % mean in the studio's measure), hips against body against chest, arms against legs,
+head steadying and late, a wave down the tail, trailing strap and wing spikes; the clips are two cycles each (32, 44, 28 ticks, 18 / 13 / 36
+units a tick), cycle B unlike A, with loose springs on the upper bones. The idle is unchanged.
+
 Taomon (315): the walk, tired walk and run held both arms in the idle's hanging pose while the torso leans 40 to 80 degrees and the legs swing, so
 the wide sleeves hung at thigh height and each leg passed through its sleeve at every step (up to 30 units deep; the aprons and, in the tired walk, the
 tail crossed them too, and the idle's right sleeve brushed the leg for a dozen ticks). `field_animations/taomon_arms.py` runs on the chibi overlay's output
