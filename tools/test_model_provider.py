@@ -75,6 +75,8 @@ class ModelProvider(unittest.TestCase):
             '302': ('302', 'tools.models.field_animations.native_binding', '302-hiandromon-native'),
             # KingEtemon wears native Etemon's rig and programs.
             '303': ('303', 'tools.models.field_animations.native_binding', '303-kingetemon-native'),
+            # SkullSatamon wears a native donor's rig and programs.
+            '314': ('314', 'tools.models.field_animations.native_binding', '314-skullsatamon-native'),
             # Assaultmon wears native Centarumon's rig and programs.
             '310': ('310', 'tools.models.field_animations.native_binding', '310-assaultmon-native'),
             # PrinceMamemon wears native Mamemon's rig and programs.

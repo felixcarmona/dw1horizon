@@ -160,12 +160,13 @@
   "groups": {"0": "carrier", "1": "carrier", "2": "shoulder", "3": "arm", "4": "arm", "5": "hand", "6": "wing", "7": "head", "8": "shoulder", "9": "arm", "10": "arm", "11": "hand", "12": "wing", "13": "pelvis", "14": "thigh", "15": "shin", "16": "foot", "17": "thigh", "18": "shin", "19": "foot"}
  },
  "314": {
+  "applied_by": "native_binding",
   "source_sha256": "afb39893faf31487d0a808bdc6d6c05a8989e2aa9dd890c3bf39d185362927fc",
   "skeleton_sha256": "03ca3361ce35993bde8d493b64aa155f8674a1e658b88116cd9dc788bdfecb1b",
   "base_generator": null,
   "post_source_sha256": "afb39893faf31487d0a808bdc6d6c05a8989e2aa9dd890c3bf39d185362927fc",
   "height": 490,
-  "fit": {"10": 0.82, "9": 0.82, "8": 0.82},
+  "fit": {"10": 0.82, "9": 0.82, "8": 0.82, "6": 0.7},
   "factors": {"head": 1.711, "hand": 1.0, "foot": 1.051, "leg_axial": 0.719, "leg_radial": 1.6, "arm_radial": 1.5, "torso": 1.0},
   "groups": {"0": "carrier", "1": "carrier", "2": "arm", "3": "arm", "4": "hand", "5": "neck", "6": "head", "7": "headpart", "8": "arm", "9": "arm", "10": "hand", "11": "wing", "12": "wing", "13": "pelvis", "14": "thigh", "15": "shin", "16": "foot", "17": "footpart", "18": "thigh", "19": "shin", "20": "foot", "21": "footpart", "22": "cloth", "23": "cloth", "24": "cloth"}
  },

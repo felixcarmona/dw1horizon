@@ -805,6 +805,19 @@ shorter stride): 20 ticks at 19.3, 30 at 12.9 and 21 at 36.6 units per tick; the
 (the donor's own heel-toe roll slips as much), above the usual target, and the run's closing tick turns the chest through a
 gimbal pose, as the donor's file does. The resident model uses 96,118 of 100,352 bytes.
 
+SkullSatamon uses native Ogremon's skeleton (18 bones, `CHDAT/MMD1/OGRE.MMD`) at scale 1, bound by `native_binding.py`, with the
+chibi row as the last stage of the binding (`"chibi"` in the recipe) so its proportions stay the ones pinned in
+`chibi-proportions.json`. Ogremon has no wings, so both wings ride the donor's mane bone (4, a child of the head that swings
+behind it): they lag the head in every clip and, as a bone of their own, stay out of the back (about 1,900 penetration counts in
+the walk against 18,000 with the wings rigid on the torso). The cape's three pieces ride the pelvis bone, and the hip piece
+rides the root, so the pelvis bone belongs to the cloth group and the chibi stage's shorter legs no longer sink it. The recipe
+gives the head factor 1.6 and the hand factor 1.35, and the row's `fit` shortens the head bone to 0.7 along its axis so the head
+comes out wider than tall (the pinned 0.376 wide against 0.267 tall). Walk and run are the donor's, retimed by `pace` with `ground`
+(22 ticks at 30 and 20 ticks at 50 before the chibi stage, 21.6 and 36.0 units a tick after it); the tired walk is the donor's
+own (24 ticks, 16.2). Stance slip is 27 % mean and 36 % max in the walk, 10 % and 21 % in the run, and 42 % and 103 % in the
+tired walk (the donor's own stoop), above the usual target there. The walk's step turns 2.7 times the median step (the bar is
+2.5). The resident model uses 85,256 of 100,352 bytes.
+
 ChaosLord uses Machinedramon's native skeleton (32 bones) and field programs, bound by `native_binding.py`
 at scale 1. Native Machinedramon has no care clips, so the recipe's `donor_builder` takes the partner model
 `content/models/partners/machinedramon.py` makes (its own idle, walk and run plus care clips) as the donor. The
