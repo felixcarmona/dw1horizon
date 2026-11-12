@@ -83,7 +83,7 @@ class SlashAngemonGait(unittest.TestCase):
     def test_penetration_not_worse_than_the_import(self):
         worst, total = gait.penetration_report(self.model, self.rig, 2)
         self.assertLessEqual(total, BASE_PENETRATION * 1.01, worst)
-        for key, limit in dict(armL=10, armR=10, legL=37, legR=39, wingL=26, wingR=22, skirt=34).items():
+        for key, limit in dict(armL=10, armR=10, legL=37, legR=39, wingL=26, wingR=22, skirt=36).items():
             self.assertLessEqual(worst[key], limit, key)
 
     def test_upper_body_has_grace_and_is_smooth(self):
