@@ -59,6 +59,12 @@ with their outward splay, hips against shoulders, swinging, opening fists and a 
 `python3 -m tools.models.field_animations.marsmon_gait --source SRC.MMD --out AFTER.MMD` (SRC from `edit.py get 297`
 before the change), then `edit.py put 297 AFTER.MMD`. Test: `tools.test_marsmon_gait` (`MARSMON_MODEL`).
 
+Species 352 (Monmon): `field_animations/monmon_gait.py` writes slots 0, 2, 3 and 4 again (a 60-tick idle; a 24-tick skipping walk, a 28-tick tired walk and a 20-tick run, two different ground cycles each, at 16, 11 and
+36 units a tick) with `quadruped.py` on the model's two legs after mirroring the import's lopsided rest pose onto the left side (`rest_fix`): planted feet on short quick steps (a long-short skip, a bouncing body), a head that tilts from side to side, the
+gloves swinging against the feet and the leaf, club and tail trailing on springs. It blinks: the eye is painted on the head texture, so `field_animations/monmon_face.py` stamps a half-shut and a shut frame into the texture's free rows and each clip copies them over the eye (texture moves).
+`python3 -m tools.models.field_animations.monmon_gait --source SRC.MMD --out AFTER.MMD --tex SRC.TIM --out-tex AFTER.TIM` (SRC from `edit.py get 352` before the change), then
+`edit.py put 352 AFTER.MMD AFTER.TIM`. Test: `tools.test_monmon_gait` (`MONMON_MODEL`).
+
 Species 318 (Gallantmon): `field_animations/gallantmon_gait.py` writes slots 0, 2, 3 and 4 again (a 120-tick idle, a 24-tick walk, a 30-tick tired
 walk and an 18-tick run with a flight phase, at 16, 11 and 38 units a tick) with `quadruped.py` on the model's own two legs: planted soles, a weighted
 knight's body (hips against shoulders, the lance arm and the shield arm swinging apart, pauldrons following, plume and cape trailing late). Slots 33, 35 and 36
