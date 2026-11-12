@@ -182,6 +182,9 @@ class ModelProvider(unittest.TestCase):
         # Hookmon's corrected clips (hookmon_polish.py) run on top of its chibi proportions and rebuild them first.
         self.assertEqual(assignments['299'], ('tools.models.field_animations.hookmon_polish', '299-hookmon-chibi'))
         assignments['299'] = ('tools.models.field_animations.chibi', '299-hookmon-chibi')
+        # So are Dinohyumon's (dinohyumon_gait.py).
+        self.assertEqual(assignments['308'], ('tools.models.field_animations.dinohyumon_gait', '308-dinohyumon-chibi'))
+        assignments['308'] = ('tools.models.field_animations.chibi', '308-dinohyumon-chibi')
         # The chibi proportions wrap the recipe that came before them; species without one have no other generator.
         chibi = json.load(open('content/models/imports/chibi.json'))
         for sid, row in chibi.items():

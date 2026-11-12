@@ -70,6 +70,14 @@ at each footfall) and a wobble (hip and chest roll, a pelvis sway across the fee
 pants in the run and droops when tired; `--tex SRC.TIM --out-tex AFTER.TIM` writes the stamped texture, `edit.py put 304 AFTER.MMD AFTER.TIM`.
 `python3 -m tools.models.field_animations.divermon_gait --source SRC.MMD --out AFTER.MMD` (SRC from `edit.py get 304`
 before the change), then `edit.py put 304 AFTER.MMD`. Test: `tools.test_divermon_gait` (`DIVERMON_MODEL`).
+
+Species 308 (Dinohyumon): `field_animations/dinohyumon_gait.py` is a field overlay (like Hookmon's): it applies the chibi
+proportions and then writes slots 0 (also 33), 2, 3 and 4 again with `quadruped.py` on the two legs: a 96-tick idle, a
+walk, tired walk and run of two different cycles each (32, 60 and 28 ticks) at 17, 11 and 38 units a tick, each foot planted with a constant
+30 degree outward splay; cycle B lifts, lands and bobs unlike cycle A and the clip eases from one into the other (`compose` hook in
+`quadruped.py`), and the arms, head, feather and loincloth follow through on loose springs (the chibi clips flipped the feet by up to 167 degrees and slid the tired walk's soles 172 %).
+Bound in `content/models/imports/species.py`; test `tools.test_dinohyumon_gait` (`DINOHYUMON_MODEL`, from `edit.py get 308`).
+
 Species 202 (Submarimon): `repair_submarimon.py` removes four stencil faces that sit on its body plates and keeps the
 rear screw turning in every clip (see player-model-fixes.md); `python3 -W ignore -m unittest tools.test_submarimon`.
 

@@ -550,7 +550,10 @@ def build(data, skeleton, profile):
         frames, worst = gait(rig, cfg)
         ticks = cfg['ticks']
         cycles = cfg.get('cycles', 1)       # a clip may play its cycle several times over (a blink that spans cycles)
-        if cycles > 1:
+        if cfg.get('compose'):      # the species composes its own loop of `cycles` cycles that differ from each other
+            frames = cfg['compose'](rig, cfg, frames)
+            assert len(frames) == ticks * cycles + 1, (slot, len(frames))
+        elif cycles > 1:
             one, step = frames[:ticks], round(cfg['speed'] * ticks)
             frames = []
             for c in range(cycles):
