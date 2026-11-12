@@ -979,6 +979,19 @@ idle blinks four times at irregular intervals (one quick double blink), the walk
 a slower, heavier blink; each plan ends with the open eye so the loop closes cleanly. Slot 36, a separate 21-tick copy of
 the old run, plays the new run too (and the copy goes). The test reads the model made by
 `tools/models/edit.py get 320` (`GROWLMON_MODEL`).
+
+Maildramon 324 wears the native rig and programs of Unimon (a native binding, donor 33) reshaped by the chibi stage. The bound
+clips kept the donor's lively trunk, wings and tail, but its legs slid over the floor (mean 68 % of the body's travel in the walk,
+47 % tired, 95 % in the run, up to 257 / 159 / 400 %), the tired walk was as fast as the walk, the head hung forward with the horn
+pointing back, the run's tail stuck up and the run jumped 3.4 times the usual step between two ticks. `maildramon_gait.py` is a
+post-chibi stage (the recipe key `gait` in `native-bindings.json`, run after `chibi` and before `spin`, off for every other species)
+that writes slots 2, 3 and 4 again: the trunk, neck, wings and tail are the donor's own clip resampled to a new cycle (a four-beat walk of 16
+ticks at 16 units per tick, tired 20 at 10.5, a rotary gallop of 12 at 37 with a flight phase), their bob, wing, neck and tail swing toned down (calm, weighted, not frantic), the head and tail
+carriage corrected, a neck nod, spine flex and tail stream added that follow the stride; the legs come from `quadruped.py` (profile key `claws` folds each foot's claw bone into its foot piece so
+the claws land flat). Measured on the sole of each foot (mean / worst % of the body's travel): walk 11 / 14, tired 13 / 27, run
+10 / 13; the largest step between ticks 1.5 times the median (run 1.2); the footsteps stay on the new touchdowns; the resident buffer
+is 98322 B of 100352. The idle (slot 0, so the chibi pins) and the technique slots are the donor's and unchanged. The test is
+`tools.test_maildramon_gait` (`MAILDRAMON_MODELS`).
 `field_animations/gesomon_rest.py` is written over that model and baked, with
 the walk and run, into the plain delta (the species has no field overlay). The
 import's idle hung the squid 9 to 89 units above the floor (mean 50, a

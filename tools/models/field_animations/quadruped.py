@@ -141,6 +141,11 @@ class Rig:
         # model sized by its idle). Rotations are read with it divided out, link offsets and soles multiplied in.
         self.S = profile.get('scale', 1.0)
         self.verts = {b: [[x * self.S for x in v[:3]] for v in model.tmd.obj_verts(o)] for b, (o, _) in enumerate(skeleton) if o >= 0}
+        # A profile's `claws` ({foot bone: claws bone}) puts the claws' points (a bone that stays at its rest turn under the foot)
+        # into the foot's own, so the floor stands under the claws and not under the foot's sole plate (Maildramon).
+        for paw, toe in profile.get('claws', {}).items():
+            offset = [x * self.S for x in self.rest[toe][6:9]]
+            self.verts[paw] = self.verts[paw] + [add(v, offset) for v in self.verts.pop(toe)]
         still = [list(v) for v in self.rest]
         still[0] = [4096, 4096, 4096, 0, 0, 0, 0, 0, 0]
         W = self.world(still)

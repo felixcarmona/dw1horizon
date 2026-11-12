@@ -330,6 +330,10 @@ def bind(data, skeleton, recipe, placements=None):
         patch = dict(patch, **chibi.species_patch(patch, scales, k))
         chibi_proof = dict(factors=used['factors'], fit=used['fit'], trim=used['trim'], final_scale=report['final_scale'],
                            speeds=report['speeds'], floors=report['floors'])
+    if recipe.get('gait'):
+        # the legs planted on the floor under the donor's own trunk, wings and tail, written over the final (chibi) shape
+        gait = importlib.import_module(f"tools.models.field_animations.{recipe['gait']}")
+        output, gait_proof = gait.build(output, rig)
     if spin:
         # drums that turn about their own axis (their bones below the donor's), written last: no step above reshapes them
         output = add_spin(output, rig, spin)
@@ -338,6 +342,8 @@ def bind(data, skeleton, recipe, placements=None):
                  donor=donor_id, generated_skeleton=rig, storage=storage, species_patch=patch)
     if chibi_proof:
         proof['chibi'] = chibi_proof
+    if recipe.get('gait'):
+        proof['gait'] = gait_proof['checks']
     return output, proof
 
 

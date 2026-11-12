@@ -72,6 +72,12 @@ brute's character, and blinking eyes (`growlmon_face.py`: eye frames in spare te
 `python3 -m tools.models.field_animations.growlmon_gait --source SRC.MMD --out AFTER.MMD --tex SRC.TIM --out-tex AFTER.TIM` (SRC from
 `edit.py get 320` before the change), then `edit.py put 320 AFTER.MMD AFTER.TIM`. Test: `tools.test_growlmon_gait` (`GROWLMON_MODEL`).
 
+Species 324 (Maildramon): a native binding (Unimon donor) whose recipe asks for the post-chibi stage `field_animations/maildramon_gait.py`
+(`"gait": "maildramon_gait"` in `content/models/imports/native-bindings.json`), which writes slots 2, 3 and 4 again with planted
+legs under the donor's own trunk, wings and tail (`quadruped.py`, profile key `claws`). It runs in the build; offline:
+`python -m tools.models.field_animations.maildramon_gait --source BOUND.MMD --rig 324-report.json --out OUT.MMD`. After changing it,
+`edit.py put 324 MMD TIM --force` rewrites the species pin. Test: `tools.test_maildramon_gait` (`MAILDRAMON_MODELS`).
+
 
 Species 304 (Divermon): `field_animations/divermon_gait.py` writes slots 0, 2, 3 and 4 again (a 240-tick idle; a walk, tired walk and
 run of two different strides each, 32, 36 and 24 ticks at 18, 12 and 36 units a tick) with `quadruped.py` on the model's two legs: boots flat with a 7 degree splay,

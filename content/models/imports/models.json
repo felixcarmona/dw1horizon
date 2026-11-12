@@ -140,7 +140,7 @@
  "321": {"model": "321-Knightmon.MMD", "aliases_applied": true, "field_overlay": "knightmon-chibi", "technique_aliases": {"Megaton Punch": "Pulse Laser"}},
  "322": {"model": "322-Kyukimon.MMD", "field_overlay": "kyukimon-chibi"},
  "323": {"movement_sound": {"note": 12, "replace_notes": [13]}, "model": "323-Lynxmon.MMD", "aliases_applied": true},
- "324": {"model": "324-Maildramon.MMD", "aliases_applied": true, "field_overlay": "maildramon-chibi"},
+ "324": {"model": "324-Maildramon.MMD", "aliases_applied": true, "field_overlay": "maildramon-native", "native_animation_donor": 33},
  "325": {"model": "325-Musyamon.MMD", "aliases_applied": true},
  "326": {"model": "326-WarGrowlmon.MMD", "aliases_applied": true},
  "327": {"model": "327-Gargoylemon.MMD", "aliases_applied": true, "field_overlay": "gargoylemon-chibi"},
