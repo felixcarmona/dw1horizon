@@ -199,6 +199,9 @@ class ModelProvider(unittest.TestCase):
         # Knightmon's tired walk and run (knightmon_gait.py) are the celebration's base generator and rebuild its chibi proportions first.
         self.assertEqual(assignments['321'], ('tools.models.field_animations.knightmon_gait', '321-knightmon-chibi'))
         assignments['321'] = ('tools.models.field_animations.chibi', '321-knightmon-chibi')
+        # Renamon's walk, tired walk, run and idle (renamon_gait.py) run on top of its chibi proportions the same way.
+        self.assertEqual(assignments['354'], ('tools.models.field_animations.renamon_gait', '354-renamon-field'))
+        assignments['354'] = ('tools.models.field_animations.chibi', '354-renamon-field')
         # Antylamon's smoothed walk (antylamon_polish.py) runs on top of its chibi proportions the same way.
         self.assertEqual(assignments['309'], ('tools.models.field_animations.antylamon_polish', '309-antylamon-chibi'))
         assignments['309'] = ('tools.models.field_animations.chibi', '309-antylamon-chibi')
