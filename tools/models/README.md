@@ -545,6 +545,16 @@ the body's twist, the face and fangs (22, 23) and the two palps (24-27) move sof
 middle leg paw once in place). Stance slip is under 2 % on average; slot 33 follows the idle; the resident animation buffer ends
 at 93,940 of 100,352 bytes. `tools/test_dokugumon_gait.py` covers it.
 
+Arukenimon's (311) idle, walk, condition walk and run (70/22/20/18 ticks) swung the six legs as rigid posts (foot slip 75 to
+120 %), the condition walk rolled the body 40 degrees and folded three legs 100 to 280 units off the floor (109 vertices of
+an arm inside the body), the sleeves flailed 110 degrees in every clip and the run travelled at 66 units a tick.
+`field_animations/arukenimon_gait.py` is an offline model delta on the same planted-tip solver: the six two-bone legs
+(bones 13-24) are solved so each tip stands still in its stance, two alternating groups of three; walk 24 ticks at 24 units,
+condition walk 36 at 13 (one leg at a time, low and hunched), run 16 at 44 (with a flight phase), idle 96 (breathing, glances,
+one arm lifting, a front paw). The torso turns against the pelvis, the head stays level and lags it, the arms and sleeves are
+delayed pendulums. Slots 33, 35 and 36 follow the idle, walk and run; the celebration overlay keeps its own slots and its
+reviewed-source pin now names this model. `tools/test_arukenimon_gait.py` covers it.
+
 Magnamon (197) is bound to native Leomon (`native_binding.py`). Its boots kept
 the source's fighting stance, turned 35 and 93 degrees outward, its fists kept
 the guard pose's forward point, and its broad legs crossed over Leomon's narrow

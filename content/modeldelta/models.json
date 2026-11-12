@@ -3904,9 +3904,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/311-Arukenimon.MMD.mdelta",
-        "delta_sha256": "6408d27037a051b26c7d7ba9240ad5d1024ffcbb1e7dfd671f8c06b0d9f2aabc",
-        "sha256": "f4b1d78f075f39717881b13cdd2ab75056defcb9621cb65e8f17b2370c8f0cdb",
-        "size": 98578
+        "delta_sha256": "7f8ab8263d39aba255078979de6578936daad455ff604c580c17fc5fa8577b9f",
+        "sha256": "cdcb0414abc32eeefe264513a12c38fb1e8f3f502915a980106a21baf9d380d8",
+        "size": 100838
       },
       "tim": {
         "sources": [
