@@ -4054,9 +4054,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/316-Sakuyamon.MMD.mdelta",
-        "delta_sha256": "14591f409b09eae2f54f91cbef678f9c8bfaf0624f483ad8ad6ade29c9d90ea0",
-        "sha256": "edacbd328e73eb021fc2107bf46343c5a8e777c9f4daf5353aec08d8b2d1d518",
-        "size": 103592
+        "delta_sha256": "7c4f156be57f490bc1893f3c4dcf4cf6aaf70ec1e100772be10fd4a9e5ca3411",
+        "sha256": "a06759cb3d0d2e88d6d0a327e791689b7c8b5678295e491ad1f42490a7019488",
+        "size": 104076
       },
       "tim": {
         "sources": [
