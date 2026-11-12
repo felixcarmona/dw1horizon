@@ -728,6 +728,9 @@ the ticks and the 60 fps thirds.
 Hookmon (299) runs a small post-pass (`field_animations/hookmon_polish.py`) after the chibi proportions: stance feet planted at their touchdown spot with the footstep sounds on those ticks,
 trailing arms, hook and head, a breathing idle. See `docs/reference/motion.md`.
 
+Antylamon (309) runs a small post-pass (`field_animations/antylamon_polish.py`) after the chibi proportions: its walk's two stray shoulder keys replaced by a curve and the leg
+lift-off kinks eased where the foot is off the floor (stance ticks untouched). See `docs/reference/motion.md`.
+
 Digmon's (193) run was its walk played with twice the travel.
 `field_animations/digmon.py` builds the run from the walk's own poses on a
 14-tick cycle instead of 20, at the same field speed: thighs swing further, the

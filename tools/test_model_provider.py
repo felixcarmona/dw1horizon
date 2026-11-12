@@ -185,6 +185,9 @@ class ModelProvider(unittest.TestCase):
         # So are Dinohyumon's (dinohyumon_gait.py).
         self.assertEqual(assignments['308'], ('tools.models.field_animations.dinohyumon_gait', '308-dinohyumon-chibi'))
         assignments['308'] = ('tools.models.field_animations.chibi', '308-dinohyumon-chibi')
+        # Antylamon's smoothed walk (antylamon_polish.py) runs on top of its chibi proportions the same way.
+        self.assertEqual(assignments['309'], ('tools.models.field_animations.antylamon_polish', '309-antylamon-chibi'))
+        assignments['309'] = ('tools.models.field_animations.chibi', '309-antylamon-chibi')
         # The chibi proportions wrap the recipe that came before them; species without one have no other generator.
         chibi = json.load(open('content/models/imports/chibi.json'))
         for sid, row in chibi.items():

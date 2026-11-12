@@ -1169,6 +1169,16 @@ The footstep sounds play on the touchdown ticks (they were two to four ticks off
 (30 to 40 %) of the trunk's turn a few ticks late, so they trail it; the idle breathes (trunk and shoulders, about 1 degree) and the tired
 walk hangs the head 7 degrees lower and leans the trunk 3 further. Slip of the toes during stance, mean / worst as a percentage of the
 body's speed: walk 47 / 182 before and 10 / 23 now, tired walk 141 mean / 460 worst before and 8 / 30 now (`tools.test_hookmon_polish`).
+Antylamon (309) keeps its chibi-reshaped idle, tired walk and run byte for byte and gets a smoother walk (slot 2: same 16 ticks, root travel, sounds
+and silhouette; `field_animations/antylamon_polish.py`). Each shoulder had one stray key in the import (the left one at tick 14, the right one at tick 6, half a
+loop apart): all three angles about 24 degrees off the middle of its neighbours, so the arm snapped out and back in two ticks (the hand moved 130 to 145 units a
+tick against a median of 12; arm vertices 6.4 times the median). Those keys, and the neighbours pulled off with them (three ticks), are now a cubic curve through
+the keys around them (arm 1.7 times the median, shoulder turn-rate change 48 down to 9 degrees per tick per tick). The legs lifted off with a kink (shin 70, foot
+52 and thigh 38 degrees per tick per tick, median 12) and the foot hopped 38 units for one tick in a swing that otherwise skims 10 to 15 above the floor. The thighs,
+shins and ankles are now eased towards the middle of their neighbours' turns (half way) by a weight that is zero while the foot is on the floor and one away from
+it, so the stance ticks are the clip's own, to the byte, and the toes slip as much as before (mean / worst 29.6 / 55.5 % of the body's speed over the same steps); shin
+28 and 33, thigh 21, foot hop 21 units, leg vertices 1.5 times the median (1.75 before). The root still moves 18 to 42 units a tick (it surges where a foot lands):
+that is the import's and was left as it is. `tools.test_antylamon_polish` (`ANTYLAMON_MODEL`, from `tools/models/edit.py get 309`).
 SlashAngemon (300) has its own walk (`field_animations/slashangemon_gait.py`, shipped as the model delta; the idle, tired walk and run are the import's). The old
 walk planted each foot for about 11 ticks of 16, but the planted knee folded to 93 degrees every time the other foot lifted (thigh -69 to -104 degrees and back
 in two ticks), the swinging foot flew at up to four times the ground speed and stopped dead on landing, and the chest yawed a held +-20 degrees that flipped
