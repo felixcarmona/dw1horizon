@@ -561,6 +561,8 @@ def build(data, skeleton, profile):
             closing = [list(b) for b in one[0]]
             closing[0][8] = -step * cycles
             frames.append(closing)
+            if profile.get('vary'):         # a species may vary its loose parts from one cycle to the next
+                frames = profile['vary'](rig, cfg, frames)
         total = ticks * cycles
         source_events = animsheet.slot_frames(old, n, slot)[2]
         sound = next((dict(e) for _, kind, e in source_events if kind == 'sound'), dict(op='sound', bank=1, note=13))
@@ -578,7 +580,7 @@ def build(data, skeleton, profile):
         new.anims.anims[index] = animation          # in place: the slot's aliases play it too
         changed |= {s for s, i in enumerate(old.anims.table) if i == index}
         played, played_events = _played(animation, n, slot, total)
-        for tick in range(ticks, total * 3 + 1, ticks):
+        for tick in range(total, total * 3 + 1, total):
             assert all(abs(a - b) <= 2 for bone, other in zip(played[0][1:], played[tick][1:]) for a, b in zip(bone, other)), \
                 (slot, tick, 'loop drift')
         loop = played[:total + 1]

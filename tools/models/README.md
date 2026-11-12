@@ -59,6 +59,17 @@ with their outward splay, hips against shoulders, swinging, opening fists and a 
 `python3 -m tools.models.field_animations.marsmon_gait --source SRC.MMD --out AFTER.MMD` (SRC from `edit.py get 297`
 before the change), then `edit.py put 297 AFTER.MMD`. Test: `tools.test_marsmon_gait` (`MARSMON_MODEL`).
 
+
+Species 304 (Divermon): `field_animations/divermon_gait.py` writes slots 0, 2, 3 and 4 again (a 240-tick idle; a walk, tired walk and
+run of two different strides each, 32, 36 and 24 ticks at 18, 12 and 36 units a tick) with `quadruped.py` on the model's two legs: boots flat with a 7 degree splay,
+pelvis against chest, a level harpoon arm, and head, arms, ears, tank and tail as damped springs that differ from one stride to the next (the
+profile's `vary` hook; the legs repeat so the feet stay planted). v3 adds a little hop (an extra aerial lift and a springier landing squash
+at each footfall) and a wobble (hip and chest roll, a pelvis sway across the feet, a head cock, swinging tank and ears), and a face:
+`field_animations/divermon_face.py` pastes spare-texel frames over the painted eye and the strip of teeth with texture moves (the profile's
+`events` hook replaces the source clip's own), so the eyes blink (3-5 ticks, a few per idle, one per stride) and the mouth breathes in the idle,
+pants in the run and droops when tired; `--tex SRC.TIM --out-tex AFTER.TIM` writes the stamped texture, `edit.py put 304 AFTER.MMD AFTER.TIM`.
+`python3 -m tools.models.field_animations.divermon_gait --source SRC.MMD --out AFTER.MMD` (SRC from `edit.py get 304`
+before the change), then `edit.py put 304 AFTER.MMD`. Test: `tools.test_divermon_gait` (`DIVERMON_MODEL`).
 Species 202 (Submarimon): `repair_submarimon.py` removes four stencil faces that sit on its body plates and keeps the
 rear screw turning in every clip (see player-model-fixes.md); `python3 -W ignore -m unittest tools.test_submarimon`.
 

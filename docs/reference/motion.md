@@ -928,6 +928,32 @@ cycle because two do not fit the resident animation buffer (98870 of 100352
 bytes used). `tools.test_gesomon_rest` checks the exact bytes, floor contact,
 loop seam, droop, storage and the distance between the four gaits.
 
+
+Divermon 304 (`tools/models/field_animations/divermon_gait.py`, test `tools.test_divermon_gait`) had a rigid body,
+boots turned sideways, ears that flapped and a run that clamped. The import's rest pose turns the left ankle 77 degrees
+outward, and its clips asked 230-480 unit steps of 123 unit legs: the soles slid (110-160 %), the knees (bones 19 and 23),
+ears and tail were one constant value over the whole run (the "clamp": the legs only swung from the hip and the soles hung at the
+end of their reach) and the pelvis fell 100 units in it. The generator plants each foot with `quadruped.py` (two-bone IK,
+the sole flat, a 7 degree outward splay, `world_ease` and `arc` so a swinging foot leaves and lands at rest over the floor) and
+writes the body by hand: the pelvis falls on every landing (18-20 units peak to peak, two bobs a cycle, a small extra dip as each
+foot lands, one step heavier than the other), yaws and rolls against a chest that lags it, and the harpoon arm is held
+level while it swings. The walk, tired walk and run play two strides over (32, 36 and 24 ticks at 18, 12 and 36 units a
+tick; `cycles` 2 and the profile's `vary` hook of `quadruped.py`): the legs, pelvis and chest are the same in both, so the
+feet stay planted, and the head, arms, ears, tank and tail each have their own slow swell of amplitude and drift of timing
+over the whole loop (a spring per part, run over the loop), so no two strides are alike. Ears, tank and tail are damped springs
+fed by the body's own bob with a 1-3 tick lag, low damping (they overshoot and settle) and a period of their own; the right
+ear is slower and later than the left and the free arm swings further than the one that holds the harpoon. The idle is a
+240-tick (8 s) loop: breathing, four slow weight shifts, five looks and head tilts, ear flicks and a tail swish at uneven times;
+the tired walk is lower and leaning. Fewer, longer swings (duty 0.46 / 0.58 / 0.30) keep a leg's lift-off to 30-55 degrees
+a tick in the walks and 70-80 in the run (the first version had 75-90). Slots 33, 35 and 36 follow their clips. The studio's
+slide measure is 3 % mean and 20 % worst in the walk, 1 and 3 % in the tired walk and 0 and 1 % in the run. The test
+reads the model made by `tools/models/edit.py get 304` (`DIVERMON_MODEL`).
+Second pass: the face and some charm. The face is texture-only (`divermon_face.py`): texture moves paste frames (open, half, shut eye;
+rest, shut, ajar, open, wide mouth) kept in unsampled texels over the painted eye and teeth, on every clip and its alias. Blinks last 3-5
+ticks (a slow one when tired), the idle has four, a stride one. The pelvis gets a small hop at each footfall and the body a wobble; peak to
+peak, walk / tired / run: pelvis height 19 -> 22 / 18 -> 20 / 20 -> 23, side sway 16 -> 24 / 16 -> 20 / 8 -> 16, hip roll 15 -> 22 / 16 -> 20
+/ 18 -> 23, head roll 3.4 -> 7 / 2.7 -> 6.3 / 4.3 -> 4.8 degrees. The knee turns up to 4 times its median per-tick step in the walk (3 before):
+the hop's price within the narrow pelvis-height window the legs can reach.
 MarineAngemon 248 (`tools/models/field_animations/marine_angemon.py`, test
 `tools.test_marineangemon_gait`) held every bone still in all four field slots
 and only the root travelled, so the fairy slid along. The generator authors
