@@ -53,6 +53,12 @@ and a scheduled foot roll. `python3 -m tools.models.field_animations.clockmon_ga
 (SRC from `edit.py get 290` before the change), then `edit.py put 290 DIR/290-Clockmon.MMD`; the reviewed-source pin in
 `content/models/imports/celebrations.json` follows the new model. Test: `tools.test_clockmon_gait` (`CLOCKMON_MODEL`).
 
+Species 329 (Ghoulmon): `field_animations/ghoulmon_gait.py` writes slots 2, 3 and 4 again (a 26-tick walk, a 34-tick tired walk and a
+14-tick run at 17, 11 and 38 units a tick; the idle is kept) with `quadruped.py` on the model's own two legs: planted flat soles with heel
+strike and toe-off, hips against torso, swinging arms with late forearms and claws, flapping wing membranes and a whipping three-link tail.
+`python3 -m tools.models.field_animations.ghoulmon_gait --source SRC.MMD --out AFTER.MMD` (SRC from `edit.py get 329` before the change),
+then `edit.py put 329 AFTER.MMD`. Test: `tools.test_ghoulmon_gait` (`GHOULMON_MODEL`).
+
 Species 297 (Marsmon): `field_animations/marsmon_gait.py` writes slots 0, 2, 3 and 4 again (a 150-tick idle, a 22-tick walk, a 26-tick tired
 walk and a 14-tick run at 16, 11 and 38 units a tick) with `quadruped.py` on the model's own two legs: planted boots
 with their outward splay, hips against shoulders, swinging, opening fists and a trailing cape, and a swaggering, proud character (the idle shifts the weight, looks aside, raises a fist and flicks the cape).
@@ -71,6 +77,12 @@ legs: planted feet, hips against shoulders, swinging arms, springs on neck, head
 brute's character, and blinking eyes (`growlmon_face.py`: eye frames in spare texels, pasted over the painted eye by texture-move events).
 `python3 -m tools.models.field_animations.growlmon_gait --source SRC.MMD --out AFTER.MMD --tex SRC.TIM --out-tex AFTER.TIM` (SRC from
 `edit.py get 320` before the change), then `edit.py put 320 AFTER.MMD AFTER.TIM`. Test: `tools.test_growlmon_gait` (`GROWLMON_MODEL`).
+
+Species 324 (Maildramon): a native binding (Unimon donor) whose recipe asks for the post-chibi stage `field_animations/maildramon_gait.py`
+(`"gait": "maildramon_gait"` in `content/models/imports/native-bindings.json`), which writes slots 2, 3 and 4 again with planted
+legs under the donor's own trunk, wings and tail (`quadruped.py`, profile key `claws`). It runs in the build; offline:
+`python -m tools.models.field_animations.maildramon_gait --source BOUND.MMD --rig 324-report.json --out OUT.MMD`. After changing it,
+`edit.py put 324 MMD TIM --force` rewrites the species pin. Test: `tools.test_maildramon_gait` (`MAILDRAMON_MODELS`).
 
 
 Species 304 (Divermon): `field_animations/divermon_gait.py` writes slots 0, 2, 3 and 4 again (a 240-tick idle; a walk, tired walk and
@@ -91,6 +103,14 @@ walk, tired walk and run of two different cycles each (32, 60 and 28 ticks) at 1
 `quadruped.py`), and the arms, head, feather and loincloth follow through on loose springs (the chibi clips flipped the feet by up to 167 degrees and slid the tired walk's soles 172 %).
 Bound in `content/models/imports/species.py`; test `tools.test_dinohyumon_gait` (`DINOHYUMON_MODEL`, from `edit.py get 308`).
 
+Species 322 (Kyukimon): `field_animations/kyukimon_gait.py` is a field overlay (like Dinohyumon's): it applies the chibi
+proportions and then writes slots 2, 3 and 4 again with `quadruped.py` on the two legs, in two different cycles each (32, 44 and 28
+ticks) at 18, 13 and 36 units a tick with planted feet. One gait phase drives the whole body: hips, body and chest wind against each
+other, the arms swing against the legs, the head steadies and follows late, the five tail segments pass a wave down the tail, the strap
+and the wing spikes trail (the chibi clips played the idle's own 74-tick loop on every bone above the hips and left head, hands, strap
+and wing spikes still). The idle (slot 0, also 33) is the chibi build's. Bound in `content/models/imports/species.py`; test
+`tools.test_kyukimon_gait` (`KYUKIMON_MODEL`, from `edit.py get 322`; the test applies the species' slot aliases like the build).
+
 Species 319 (Pharaohmon): `field_animations/pharaohmon_gait.py` is a field overlay on top of the celebrations recipe: it
 rewrites slots 3 (tired walk, 56 ticks at 11 units a tick) and 4 (run, 24 ticks at 36) with `quadruped.py` on the two legs,
 planted soles and two different cycles each (the `compose` hook); the idle and the walk are the celebrations build's, untouched.
@@ -106,6 +126,14 @@ previous run slid 61 and 26 %, 17 ticks a cycle, root steps 26 to 50). The arms 
 the forearm and the sword late, head, cloak, scabbard and loincloth on loose springs. The idle and the walk are untouched
 byte for byte. Bound in `content/models/imports/celebrations.json` (`base_generator`); test `tools.test_knightmon_gait`
 (`KNIGHTMON_MODEL`, from `edit.py get 321`).
+
+Species 327 (Gargoylemon): `field_animations/gargoylemon_gait.py` is a field overlay in the same way: it applies the chibi
+proportions and then writes slots 0 (also 33, now one animation), 2, 3 and 4 again with `quadruped.py` on its two hind legs
+(a profile `toes` entry merges the toe bone into each foot's sole): a 120-tick idle with breathing, glances and a raised arm, and a
+walk, tired walk and run of two different cycles each (36, 52 and 24 ticks) at 16, 10 and 36 units a tick, each foot planted
+(slip under 6 %). The long arms swing from the shoulder with the claws late, the wings follow the body's rise and fall on a
+spring (each wing is one bone: no tip lag), the tail and head trail. Bound in `content/models/imports/species.py`; test
+`tools.test_gargoylemon_gait` (`GARGOYLEMON_MODEL`, from `edit.py get 327`).
 
 Species 202 (Submarimon): `repair_submarimon.py` removes four stencil faces that sit on its body plates and keeps the
 rear screw turning in every clip (see player-model-fixes.md); `python3 -W ignore -m unittest tools.test_submarimon`.
@@ -147,6 +175,12 @@ the wing spars and trailing web, and scales native translations once. Native
 timing, rotations, scales and controls remain intact. Texture-copy commands
 are removed because the imported atlas has another layout; effect origins
 use the scaled native joints. The imported delta and texture remain pinned.
+
+WarGrowlmon (326) wears Growlmon's (320) skeleton and field programs: recipe `326` in `native-bindings.json`, with `donor_species` 320 (the
+donor is an imported species, so `native_binding.py` reads its model from the imported base models, `BASE_MODELS`, instead of the DW1
+extraction, and `edit.py` hands that model to the provider pin and `chibi_proportions.py` to its check). The `stretch` piece rule scales a
+piece unevenly along the world axes. After Growlmon's delta changes, renew `donor_sha256` in the recipe and re-pin 326
+(`edit.py put 326 FILE --force`). Test: `tools.test_native_bindings` (needs `edit.py get 320`).
 
 BomberNanimon (232) wears native Nanimon's (53, `NANI.MMD`) 20-bone skeleton and every animation program, unchanged
 (scale 1): its 13 rigid pieces map one to one onto Nanimon's joints (arms and legs swung joint to joint, gloves and
@@ -190,6 +224,13 @@ condition walk stays slower than the walk with no retiming. The 11 techniques pl
 kicks, claws, fire, quake, war cry) and the training slot 57 plays Sonic Jab's. The wings and jaw are the only parts with a
 different body than Ogremon's: the upper-arm shoulder vertices overlap the chest box by 3 to 4 of 28 in every pose, forearms
 and fists never do. `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_vilemon_native` (after `edit.py get 295`).
+
+Minotarumon (330) wears native Ogremon's (34, `CHDAT/MMD1/OGRE.MMD`) 18-bone skeleton at scale 0.88: its 20 bones map by body
+part (pieces 17, 19 and 20 to Ogremon's head, 5 and 6 and 9 and 10 each pair to one foot), pieces 6, 10, 19 and 20 share a
+donor bone and are placed by `pieces` offsets, and the recipe's `spread` fits the pieces on the donor's joints. The idle is
+Ogremon's own (16 ticks); the walk, condition walk and run are its clips retimed by `pace` (22 ticks at 18, 30 at 13, 20 at 41 units
+per tick). Species pin: `edit.py put 330 ... --force`; its model delta is unchanged, so only the provider pin in
+`species-pins.json` changed. `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_minotarumon_native` (after `edit.py get 330`).
 
 HiAndromon (302) wears native Andromon's (40, `CHDAT/MMD1/ANDR.MMD`) 21-bone skeleton at scale 1.2 (mesh pieces scaled by
 0.857 so the chibi proportions stay): its 25 bones map by body part (chest and chest plates to the torso, each shoulder
@@ -787,6 +828,9 @@ the ticks and the 60 fps thirds.
 Hookmon (299) runs a small post-pass (`field_animations/hookmon_polish.py`) after the chibi proportions: stance feet planted at their touchdown spot with the footstep sounds on those ticks,
 trailing arms, hook and head, a breathing idle. See `docs/reference/motion.md`.
 
+Snatchmon (331) runs a small post-pass (`field_animations/snatchmon_polish.py`) after the chibi proportions: planted stance feet with the footstep sounds on the touchdowns,
+an arm swing against the hind legs, a trailing head and chain, a raised trunk. See `docs/reference/motion.md`.
+
 Antylamon (309) runs a small post-pass (`field_animations/antylamon_polish.py`) after the chibi proportions: its walk's two stray shoulder keys replaced by a curve and the leg
 lift-off kinks eased where the foot is off the floor (stance ticks untouched). See `docs/reference/motion.md`.
 
@@ -1101,3 +1145,9 @@ onto two steady lanes with a toe-out, keeping the import's ankle heights and for
 lane gaps): `python3 -m tools.models.field_animations.sakuyamon_gait --source BEFORE.MMD --out AFTER.MMD` on the model before this change (`edit.py get 316`), then `edit.py put 316 AFTER.MMD`.
 `lane_gaps` measures the sideways gap of the thigh, shin, foot and toe meshes, the knee and ankle distance and the leg-on-leg penetration per tick.
 Its run is stood up by a second step, `field_animations/sakuyamon_posture.py` (the chest's forward lean cut to 30 %, the pelvis and head turned back by the same so the legs keep their pose; `edit.py get 316`, `python3 -m tools.models.field_animations.sakuyamon_posture --source BEFORE.MMD --out AFTER.MMD`). Its hair is a third step, `field_animations/sakuyamon_hair.py`, on the posture step's output (`edit.py get 316` on the commit before, then `python3 -m tools.models.field_animations.sakuyamon_hair --source BEFORE.MMD --out AFTER.MMD` and `edit.py put 316 AFTER.MMD`): bones 15-18 only (the root of 16 shifted back along the chest's back and 16, 17, 18 turned back, per tick, the least that clears the chest, pelvis, legs, arms and staff, softened over the loop; the hair in the run needs only a shift and a few degrees), the idle included. `hair.measure` counts the hair's vertices inside each part group per tick, and `tools.test_sakuyamon_gait` bounds them and pins the leg gait.
+Species 323 (Lynxmon): `field_animations/lynxmon_gait.py` writes slots 2, 3 and 4 again (a 36-tick walk, a 48-tick tired walk and a
+32-tick run at 26, 15 and 46 units a tick, each two different cycles) with `quadruped.py` on the model's own four legs, so that the legs
+read as four legs on a texture that paints legs and body alike: planted paws, a low swing under the belly, a stance about as wide as the rest pose, a lateral-sequence
+walk and a rotary lope, springs on neck, head, jaw and tail. `python3 -m tools.models.field_animations.lynxmon_gait --source SRC.MMD --out
+AFTER.MMD` (SRC from `edit.py get 323` before the change), then `edit.py put 323 AFTER.MMD`. Test: `tools.test_lynxmon_gait` (`LYNXMON_MODEL`).
+Musyamon (325): `field_animations/musyamon_posture.py` turns the chest back and gives the head the inverse turn in the walk, tired walk and run (slots 2, 3, 4), the pelvis and the cape bones keeping their world orientation; `field_animations/musyamon_hair.py` then moves the mane (bone 24) per tick off the cape and back in the idle and those three, softened over the loop (about 8 minutes). `edit.py get 325` on the commit before this change, `python3 -m tools.models.field_animations.musyamon_posture --source BEFORE.MMD --out MID.MMD`, `python3 -m tools.models.field_animations.musyamon_hair --source MID.MMD --out AFTER.MMD`, then `edit.py put 325 AFTER.MMD`. `tools.test_musyamon_gait` hashes everything else and bounds the lean and the mane's crossings per tick.

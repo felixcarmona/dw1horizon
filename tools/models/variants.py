@@ -226,9 +226,28 @@ def cmd_make(a):
             with edit.importing(games):
                 made, _ = gen.build(mine, skeleton)
             record['reviewed_as'][sha256(made)] = row['post_source_sha256']
+    # a native binding whose donor is an imported species that differs on this release (WarGrowlmon wears Growlmon's rig)
+    # runs on this release's donor with its reviewed recipe: the donor's SHA-256 here stands for the reference donor's
+    dependents = {}
+    for dep, recipe in json.loads((ROOT / 'content/models/imports/native-bindings.json').read_text()).items():
+        if recipe.get('donor_species') in pins:
+            carried, _, target = pins[recipe['donor_species']]
+            record['reviewed_as'][sha256(carried)] = sha256(target)
+            dependents[int(dep)] = recipe['donor_species']
     write(path, record)
     reviewed._table = None
     step, allpins = edit.species_pins()
+    for dep, donor in dependents.items():
+        # it must come out as on the reference release (which pins it): nothing of its own to pin
+        row = rows[dep]
+        with edit.importing(ref_games):
+            models = {k: edit.decoded(row[k], edit.sources_of(edit.Sources(ref_games, work / 'reference' / str(dep)), row[k]))
+                      for k in ('mmd', 'tim')}
+        made = edit.provider_pin(dep, models['mmd'], models['tim'], {donor: pins[donor][0]})
+        if made != allpins['imports'][str(dep)]:
+            raise SystemExit(f'{dep} {row["name"]}: on this release its donor {donor} gives other bytes than the reference pins '
+                             f'({made}): it needs pins of its own (imports@{release})')
+        print(f'{dep} {row["name"]}: the same on this release (donor {donor} stands for the reference one)')
     section = allpins.setdefault(f'imports@{release}', {})
     section.clear()
     for sid, (carried, tim, _) in sorted(pins.items()):
@@ -287,6 +306,22 @@ def cmd_check(a):
         except (SystemExit, ValueError) as e:
             bad += 1
             print(f'{sid}: FAILED: {e}', flush=True)
+    for dep, recipe in json.loads((ROOT / 'content/models/imports/native-bindings.json').read_text()).items():
+        donor = recipe.get('donor_species')
+        if str(donor) not in record['models']:
+            continue
+        prov = Provider(games, Path(tempfile.mkdtemp(prefix='model-variants-check-')))
+        try:
+            with edit.importing(games):
+                model, tim = prov.model(int(dep))
+                donor_model = prov.model(int(donor))[0]
+            got = edit.provider_pin(int(dep), model, tim, {donor: donor_model})
+            if got != allpins['imports'][dep]:
+                raise SystemExit(f'species provider pins {got}, the reference pins {allpins["imports"][dep]}')
+            print(f'{dep}: provider pins verified (donor {donor} of this release)', flush=True)
+        except (SystemExit, ValueError) as e:
+            bad += 1
+            print(f'{dep}: FAILED: {e}', flush=True)
     return 1 if bad else 0
 
 

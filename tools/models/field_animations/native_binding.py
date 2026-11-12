@@ -19,9 +19,13 @@ import motionstorage
 import numeric as np
 import retarget
 from tools.models.field_animations import native_arms, native_hands, native_jaws
+from tools.models.field_animations.reviewed import reviewed
 
 ROOT = Path(__file__).resolve().parents[3]
 MANIFEST = ROOT / 'content/models/imports/native-bindings.json'
+# the folder of the imported base models (`<id>.MMD`, or `<id>-<name>.MMD` as tools/models/edit.py get writes them) that a
+# donor which is itself an imported species is read from (`donor_species`); content/models/imports/species.py sets it
+BASE_MODELS = None
 
 
 def digest(data):
@@ -113,7 +117,15 @@ def mirror_piece(mesh, skeleton, sb, twin, fitted, frame):
 
 def donor_model(recipe):
     """The donor's bytes: its extracted file, or (`donor_builder`) the model a builder script (a path from the repository root with `build(out_path)`) writes from the extraction
-    (a boss whose own file lacks the care slots a partner plays: its partner copy has them)."""
+    (a boss whose own file lacks the care slots a partner plays: its partner copy has them), or (`donor_species`) the
+    model of another imported species with its own field programs, read from BASE_MODELS."""
+    if recipe.get('donor_species'):
+        if BASE_MODELS is None:
+            raise ValueError('Native binding: the imported donor needs BASE_MODELS (the imported base models folder)')
+        found = sorted(Path(BASE_MODELS).glob(f"{recipe['donor_species']}.MMD")) + sorted(Path(BASE_MODELS).glob(f"{recipe['donor_species']}-*.MMD"))
+        if not found:
+            raise ValueError(f"Native binding: no model of the donor species {recipe['donor_species']} in {BASE_MODELS}")
+        return found[0].read_bytes()
     if recipe.get('donor_builder'):
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / 'donor.MMD'
@@ -133,10 +145,13 @@ def bind(data, skeleton, recipe, placements=None):
     sid, donor_id = recipe['species'], recipe['donor']
     placements = {} if placements is None else placements
     mmd.exe().add_type(sid, skeleton)
+    if recipe.get('donor_species'):
+        # an imported donor's skeleton is its species file's, not the executable's
+        mmd.exe().add_type(donor_id, json.loads(next((ROOT / 'content/species').glob(f'{donor_id}-*.json')).read_text())['model']['skeleton'])
     mesh = mmd.MMD.parse(data, len(skeleton))
     mesh.type = sid
     donor_bytes = donor_model(recipe)
-    if digest(donor_bytes) != recipe['donor_sha256']:
+    if reviewed(digest(donor_bytes)) != recipe['donor_sha256']:
         raise ValueError('Native binding: donor model differs')
     native = mmd.MMD.parse(donor_bytes, mmd.exe().bone_count[donor_id])
     native.type = donor_id
@@ -211,6 +226,9 @@ def bind(data, skeleton, recipe, placements=None):
             # a foot posed turned out in the source's stance, turned about the vertical to face forward
             c, s = math.cos(math.radians(rule['yaw'])), math.sin(math.radians(rule['yaw']))
             transform = np.array([[c, 0, s], [0, 1, 0], [-s, 0, c]]) @ transform
+        if 'stretch' in rule:
+            # a piece scaled unevenly along the world axes (a boot widened and lengthened, not made taller)
+            transform = np.diag(np.array(rule['stretch'], dtype=float)) @ transform
         if 'swing' in rule:
             # a held prop (a staff) turned from its direction in the source world onto the donor's own prop direction
             transform = np.array(retarget.swing(rule['swing']['from'], rule['swing']['to'])) @ transform
@@ -330,6 +348,10 @@ def bind(data, skeleton, recipe, placements=None):
         patch = dict(patch, **chibi.species_patch(patch, scales, k))
         chibi_proof = dict(factors=used['factors'], fit=used['fit'], trim=used['trim'], final_scale=report['final_scale'],
                            speeds=report['speeds'], floors=report['floors'])
+    if recipe.get('gait'):
+        # the legs planted on the floor under the donor's own trunk, wings and tail, written over the final (chibi) shape
+        gait = importlib.import_module(f"tools.models.field_animations.{recipe['gait']}")
+        output, gait_proof = gait.build(output, rig)
     if spin:
         # drums that turn about their own axis (their bones below the donor's), written last: no step above reshapes them
         output = add_spin(output, rig, spin)
@@ -338,6 +360,8 @@ def bind(data, skeleton, recipe, placements=None):
                  donor=donor_id, generated_skeleton=rig, storage=storage, species_patch=patch)
     if chibi_proof:
         proof['chibi'] = chibi_proof
+    if recipe.get('gait'):
+        proof['gait'] = gait_proof['checks']
     return output, proof
 
 

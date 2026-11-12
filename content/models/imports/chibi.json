@@ -255,6 +255,7 @@
   "groups": {"0": "carrier", "1": "carrier", "2": "pelvis", "3": "thigh", "4": "shin", "5": "foot", "6": "footpart", "7": "tail", "8": "tail", "9": "tail", "10": "tail", "11": "tail", "12": "thigh", "13": "shin", "14": "foot", "15": "footpart", "16": "shoulder", "17": "arm", "18": "hand", "19": "shoulder", "20": "arm", "21": "hand", "22": "chest", "23": "head", "24": "wing", "25": "wing", "26": "cloth"}
  },
  "324": {
+  "applied_by": "native_binding",
   "source_sha256": "cd9798347f4c21e3de8b1afd69332de23e074e5c8d125cb38865cbcae1099650",
   "skeleton_sha256": "9d1d03a57260dfe22b8f0f2ba1f805300173cb2b385ff14cf7314f372f6c6856",
   "base_generator": null,
@@ -276,6 +277,7 @@
   "groups": {"0": "carrier", "1": "carrier", "2": "pelvis", "3": "wing", "4": "wing", "5": "thigh", "6": "shin", "7": "foot", "8": "footpart", "9": "thigh", "10": "shin", "11": "foot", "12": "footpart", "13": "shoulder", "14": "arm", "15": "hand", "16": "other", "17": "tail", "18": "other", "19": "shoulder", "20": "arm", "21": "arm", "22": "hand", "23": "head", "24": "headpart", "25": "tail", "26": "other", "27": "other"}
  },
  "326": {
+  "applied_by": "native_binding",
   "source_sha256": "45b4bafd5ac72e5cb35e3c33e8aa124a1cbafef37a2ee3f6e938a79f91d07553",
   "skeleton_sha256": "1669f116ee2171d91e992fa98f9275f56a1dda3bed6eec1d392746b854e8297f",
   "base_generator": null,

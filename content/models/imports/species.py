@@ -42,12 +42,12 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'malomyotismon-chibi': ('406', 'tools.models.field_animations.chibi', '406-malomyotismon-chibi'),
     'neocrimson-chibi': ('402', 'tools.models.field_animations.chibi', '402-neocrimson-chibi'),
     'mummymon-chibi': ('334', 'tools.models.field_animations.chibi', '334-mummymon-chibi'),
-    'snatchmon-chibi': ('331', 'tools.models.field_animations.chibi', '331-snatchmon-chibi'),
-    'gargoylemon-chibi': ('327', 'tools.models.field_animations.chibi', '327-gargoylemon-chibi'),
+    'snatchmon-chibi': ('331', 'tools.models.field_animations.snatchmon_polish', '331-snatchmon-chibi'),
+    'gargoylemon-chibi': ('327', 'tools.models.field_animations.gargoylemon_gait', '327-gargoylemon-chibi'),
     'wargrowlmon-chibi': ('326', 'tools.models.field_animations.chibi', '326-wargrowlmon-chibi'),
     'musyamon-chibi': ('325', 'tools.models.field_animations.chibi', '325-musyamon-chibi'),
-    'maildramon-chibi': ('324', 'tools.models.field_animations.chibi', '324-maildramon-chibi'),
-    'kyukimon-chibi': ('322', 'tools.models.field_animations.chibi', '322-kyukimon-chibi'),
+    'maildramon-native': ('324', 'tools.models.field_animations.native_binding', '324-maildramon-native'),
+    'kyukimon-chibi': ('322', 'tools.models.field_animations.kyukimon_gait', '322-kyukimon-chibi'),
     'knightmon-chibi': ('321', 'tools.models.field_animations.celebrations', '321-knightmon-chibi'),
     'growlmon-chibi': ('320', 'tools.models.field_animations.chibi', '320-growlmon-chibi'),
     'pharaohmon-chibi': ('319', 'tools.models.field_animations.pharaohmon_gait', '319-pharaohmon-chibi'),
@@ -80,6 +80,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'garbagemon-pace': ('269', 'tools.models.field_animations.pace', '269-garbagemon-pace'),
     'gazimon-field': ('285', 'tools.models.field_animations.gazimon', '285-gazimon-field'),
     'dokugumon-pace': ('298', 'tools.models.field_animations.pace', '298-dokugumon-pace'),
+    'minotarumon-native': ('330', 'tools.models.field_animations.native_binding', '330-minotarumon-native'),
     'grapleomon-native': ('306', 'tools.models.field_animations.native_binding', '306-grapleomon-native'),
     'vilemon-native': ('295', 'tools.models.field_animations.native_binding', '295-vilemon-native'),
     'armageddemon-pace': ('407', 'tools.models.field_animations.pace', '407-armageddemon-pace'),
@@ -105,6 +106,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'kingetemon-native': ('303', 'tools.models.field_animations.native_binding', '303-kingetemon-native'),
     'chaoslord-native': ('289', 'tools.models.field_animations.native_binding', '289-chaoslord-native'),
     'princemamemon-native': ('270', 'tools.models.field_animations.native_binding', '270-princemamemon-native'),
+    'wargrowlmon-native': ('326', 'tools.models.field_animations.native_binding', '326-wargrowlmon-native'),
     'violetelecmon-native': ('256', 'tools.models.field_animations.native_binding', '256-violetelecmon-native'),
     'sorcermon-native': ('242', 'tools.models.field_animations.sorcermon_native', '242-sorcermon-native'),
     'wizardmon-native': ('241', 'tools.models.field_animations.wizardmon_native', '241-wizardmon-native'),
@@ -212,6 +214,8 @@ def overlay(out, t, recs=None, names=None, s=None):
     if tools not in sys.path: sys.path.insert(0, tools)
     import species as species_tools
     generator = __import__(recipe[1], fromlist=['build'])
+    if hasattr(generator, 'BASE_MODELS'):      # a generator that reads another imported species' model (native_binding's `donor_species`)
+        generator.BASE_MODELS = BASE_MODELS
     s['_path'] = os.path.join(ROOT, 'content/species', name)
     model, proof = generator.build(species_tools.species_model(s)[0], s['model']['skeleton'])
     model_path, report = overlay_paths(out, t, e)
