@@ -4084,9 +4084,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/317-Fujinmon.MMD.mdelta",
-        "delta_sha256": "eb3800905acf422b8b5c50854c29ecefcf150fb3c5d34cd8f90d3f57e2a978d3",
-        "sha256": "bba322999fc9542975925c7153ec0d654e5deebc613e9f0135d3683fd496737d",
-        "size": 95926
+        "delta_sha256": "aee66f0844cec920224194232949344a58f7e6bd86889c2b3dc1d0b174e519d1",
+        "sha256": "7d93b256ceb7ea25399d779cd7b5ca700769441e837ad059e0403edd09a8442a",
+        "size": 96584
       },
       "tim": {
         "sources": [

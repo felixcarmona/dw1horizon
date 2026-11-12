@@ -555,6 +555,19 @@ one arm lifting, a front paw). The torso turns against the pelvis, the head stay
 delayed pendulums. Slots 33, 35 and 36 follow the idle, walk and run; the celebration overlay keeps its own slots and its
 reviewed-source pin now names this model. `tools/test_arukenimon_gait.py` covers it.
 
+Fujinmon's (317) walk, tired walk and run (26/29/16 ticks at 21.9/17.3/52.8 units a tick) drove the legs with rotations from
+another rig: the soles slid over the floor (44, 120 and 83 % of the body's speed on average, 460 % at worst), the run kicked a
+foot 200 units up for one tick and the chest turned 56 degrees against the pelvis in a walk. `field_animations/fujinmon_gait.py`
+is an offline model delta on the planted-foot solver (`quadruped.py`): both legs are solved so each sole stands still in its
+stance, and a hand-written body drives everything above them (pelvis and chest turning against each other, the body sinking on
+each landing, the cannon arms swinging against the legs as delayed pendulums, the head steady, the scarf trailing). Walk 20 ticks
+at 18 units, tired walk 28 at 12 (low, chest and head down), run 14 at 40 (a flight phase, 10 degrees more lean, arms pumping).
+The spiked pauldrons (bones 6 and 10) are rotors: the model's own idle and run turn them about the local x axle, but its walk
+and tired walk did not, and the first version of this gait stopped them; now they turn one whole turn each loop at 18, 13 and
+26 degrees a tick (walk, tired walk, run). Only slots 2, 3 and 4 (and the battle run, slot 36, which aliases the run) change; the idle is the model's own and slot 35, a
+battle program of its own, is untouched. Stance slip is 3 to 6 % on average and 32 % at worst; the resident animation buffer
+ends at 78,620 of 100,352 bytes. `tools/test_fujinmon_gait.py` covers it.
+
 Magnamon (197) is bound to native Leomon (`native_binding.py`). Its boots kept
 the source's fighting stance, turned 35 and 93 degrees outward, its fists kept
 the guard pose's forward point, and its broad legs crossed over Leomon's narrow
