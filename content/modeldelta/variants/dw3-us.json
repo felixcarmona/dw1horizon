@@ -33,16 +33,16 @@
      }
     ],
     "delta": "content/modeldelta/deltas/dw3-us/305-Ebidramon.MMD.mdelta",
-    "delta_sha256": "82cf056cde416b3a5044ddd753ead5f39fc81c51c53ac9dc9b6812903932d3a9",
-    "sha256": "0a03d1458801ace3f9fafca0e1465a38f5456526c3490716a697106953c633e7",
-    "size": 103456
+    "delta_sha256": "60709367ab0468d4d95775b15e2ebe56d5241945a76b13b7cbc23e66f99b1a10",
+    "sha256": "7dc22646fe9e5396d3f03ee2aa31079f158aebe2d0a93771ebdda02f674130af",
+    "size": 102208
    },
    "from": {
-    "sha256": "370979059d38866118424d3c887295789afb6d141cfbc1beb6ef204c74655898",
-    "delta_sha256": "d4fe29158092bc8533621d237aeb22a64fcf63537090903f4e491248b900f79a",
+    "sha256": "c37d141bfd4faac30a15c9ca5231aeddd41544e42efabded587677f093119841",
+    "delta_sha256": "d71842340e039528b9245edaec3890fd364e1f7c829a15e2b15736dd3953e849",
     "add_bytes": [
-     1746,
-     1746
+     11755,
+     11755
     ],
     "foreign_windows": 0,
     "objects_other": [
@@ -56,20 +56,14 @@
      17
     ],
     "slots_ours": [
-     33,
-     48,
-     53,
-     54,
-     59,
      0,
      1,
      18,
+     33,
      2,
      3,
      4,
-     8,
-     11,
-     13
+     36
     ]
    }
   },

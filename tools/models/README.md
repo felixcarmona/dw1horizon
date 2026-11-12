@@ -59,6 +59,25 @@ with their outward splay, hips against shoulders, swinging, opening fists and a 
 `python3 -m tools.models.field_animations.marsmon_gait --source SRC.MMD --out AFTER.MMD` (SRC from `edit.py get 297`
 before the change), then `edit.py put 297 AFTER.MMD`. Test: `tools.test_marsmon_gait` (`MARSMON_MODEL`).
 
+
+Species 304 (Divermon): `field_animations/divermon_gait.py` writes slots 0, 2, 3 and 4 again (a 240-tick idle; a walk, tired walk and
+run of two different strides each, 32, 36 and 24 ticks at 18, 12 and 36 units a tick) with `quadruped.py` on the model's two legs: boots flat with a 7 degree splay,
+pelvis against chest, a level harpoon arm, and head, arms, ears, tank and tail as damped springs that differ from one stride to the next (the
+profile's `vary` hook; the legs repeat so the feet stay planted). v3 adds a little hop (an extra aerial lift and a springier landing squash
+at each footfall) and a wobble (hip and chest roll, a pelvis sway across the feet, a head cock, swinging tank and ears), and a face:
+`field_animations/divermon_face.py` pastes spare-texel frames over the painted eye and the strip of teeth with texture moves (the profile's
+`events` hook replaces the source clip's own), so the eyes blink (3-5 ticks, a few per idle, one per stride) and the mouth breathes in the idle,
+pants in the run and droops when tired; `--tex SRC.TIM --out-tex AFTER.TIM` writes the stamped texture, `edit.py put 304 AFTER.MMD AFTER.TIM`.
+`python3 -m tools.models.field_animations.divermon_gait --source SRC.MMD --out AFTER.MMD` (SRC from `edit.py get 304`
+before the change), then `edit.py put 304 AFTER.MMD`. Test: `tools.test_divermon_gait` (`DIVERMON_MODEL`).
+
+Species 308 (Dinohyumon): `field_animations/dinohyumon_gait.py` is a field overlay (like Hookmon's): it applies the chibi
+proportions and then writes slots 0 (also 33), 2, 3 and 4 again with `quadruped.py` on the two legs: a 96-tick idle, a
+walk, tired walk and run of two different cycles each (32, 60 and 28 ticks) at 17, 11 and 38 units a tick, each foot planted with a constant
+30 degree outward splay; cycle B lifts, lands and bobs unlike cycle A and the clip eases from one into the other (`compose` hook in
+`quadruped.py`), and the arms, head, feather and loincloth follow through on loose springs (the chibi clips flipped the feet by up to 167 degrees and slid the tired walk's soles 172 %).
+Bound in `content/models/imports/species.py`; test `tools.test_dinohyumon_gait` (`DINOHYUMON_MODEL`, from `edit.py get 308`).
+
 Species 202 (Submarimon): `repair_submarimon.py` removes four stencil faces that sit on its body plates and keeps the
 rear screw turning in every clip (see player-model-fixes.md); `python3 -W ignore -m unittest tools.test_submarimon`.
 
@@ -142,6 +161,27 @@ condition walk stays slower than the walk with no retiming. The 11 techniques pl
 kicks, claws, fire, quake, war cry) and the training slot 57 plays Sonic Jab's. The wings and jaw are the only parts with a
 different body than Ogremon's: the upper-arm shoulder vertices overlap the chest box by 3 to 4 of 28 in every pose, forearms
 and fists never do. `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_vilemon_native` (after `edit.py get 295`).
+
+HiAndromon (302) wears native Andromon's (40, `CHDAT/MMD1/ANDR.MMD`) 21-bone skeleton at scale 1.2 (mesh pieces scaled by
+0.857 so the chibi proportions stay): its 25 bones map by body part (chest and chest plates to the torso, each shoulder
+armour to its own side's shoulder pivot, wrist and hand to the hand, heel and toes to the foot). Slots below the techniques
+are Andromon's own programs (idle 20, walk 20 ticks; the condition walk, 22 ticks, rounded off by `pace`'s `smooth`: a cyclic [1, 2, 1] filter, repeated, over rotations and the root's travel per tick) and the run retimed to 18 ticks by `pace` (its
+`close` key makes the last pose the first, for a donor loop that closes only within a unit or two). Speeds are 25.2, 19.7
+and 40 units per tick. Andromon's left foot slides in its own stance, so foot slip is native, not repaired.
+`PYTHONPATH=tools python3 -W ignore -m unittest tools.test_hiandromon_native` (after `edit.py get 302`).
+
+GrapLeomon (306) wears native Leomon's (48, `CHDAT/MMD1/LEOM.MMD`) skeleton at scale 0.98 and its idle, walk, condition walk, run and
+technique clips; the mesh is unchanged. The forearm and shin drums sit on four extra bones appended to the rig (`spin` in the
+recipe: `bones` {source bone: spin axis in its own frame, `sign`}, `quarters` {slot: quarter turns per loop}) that turn about
+their own axis in the four field clips while the donor bones carry them along. `PYTHONPATH=tools python3 -W ignore -m unittest
+tools.test_grapleomon_native` (after `edit.py get 306`).
+
+Assaultmon (310) wears native Centarumon's (36, `CHDAT/MMD1/CENT.MMD`) 27-bone skeleton at scale 1.45 with the recipe flag
+`spread_fit` (pieces fit on the donor joints after the `spread` offsets). Four legs go onto four legs (front 4 bones on 3, hind 3
+on 4), arms and guns on the arm bones, the shoulder cannons rigid on the torso. `pace` rows with `ground` retime the walk (20 ticks,
+25.4), tired walk (30, 17.0) and run (21, 48.2) and keep the soles on the floor. Stance slip stays above the usual limits and the
+run's closing tick jumps; the notes are in `docs/reference/motion.md`.
+`PYTHONPATH=tools python3 -W ignore -m unittest tools.test_assaultmon_native` (after `edit.py get 310`).
 
 Zudomon's reviewed model is uniformly resized to 85% with `resize.py`, including
 mesh vertices and translation tracks in every clip. Its radius, height and
@@ -476,6 +516,15 @@ about the line to the elbow that keeps it nearest its place on the torso. Slots 
 change with the idle; the resident animation buffer ends at 99,238 of 100,352 bytes. `tools/test_cyclonemon_gait.py`
 covers it.
 
+Ebidramon's (305) idle, walk, tired walk and run were four streams with the same keys (a 60-tick tail curl, only the root
+faster) and its battle idle (slot 33) was that curl sunk 40 units into the floor. Nothing but the tail fan can reach the
+floor (the six swimmerets end 200 units above it), so `field_animations/ebidramon_swim.py` (offline model delta) makes every
+clip a hover like Piedmon's, slow and smooth (one stroke per loop): the fan skims the floor at its lowest and never goes through it. Idle 96 ticks (slots 1, 18, 33
+follow it), walk 48 ticks at 22 units a tick, tired walk 64 at 14, run 32 at 40 (slot 36 follows it). The abdomen flexes as a
+wave that ends in the fan, the swimmerets row front to back, the arms and antennae lag the body. Stance slip does not apply
+(no foot is planted). The resident animation buffer ends at 85,254 of 100,352 bytes; the encoder tolerance is 8 except for
+the body bone (1), which keeps the small bob. `tools/test_ebidramon_swim.py` covers it.
+
 Crabmon's (284) idle, walk, condition walk and run were one pose cycle with only the root faster (23/25/25/25 ticks,
 speeds 16/10/48, no leg ever stepped, the shell lay almost on the floor). `field_animations/crabmon_scuttle.py` is an
 offline model delta: six two-bone legs (bones 2-13) are solved with damped least squares so every tip stands still on the
@@ -495,6 +544,16 @@ at 12 (a stalking one-leg-at-a-time step, low body), run 16 at 40 (with a flight
 the body's twist, the face and fangs (22, 23) and the two palps (24-27) move softly. Idle 72 ticks (breathing, two front legs and a
 middle leg paw once in place). Stance slip is under 2 % on average; slot 33 follows the idle; the resident animation buffer ends
 at 93,940 of 100,352 bytes. `tools/test_dokugumon_gait.py` covers it.
+
+Arukenimon's (311) idle, walk, condition walk and run (70/22/20/18 ticks) swung the six legs as rigid posts (foot slip 75 to
+120 %), the condition walk rolled the body 40 degrees and folded three legs 100 to 280 units off the floor (109 vertices of
+an arm inside the body), the sleeves flailed 110 degrees in every clip and the run travelled at 66 units a tick.
+`field_animations/arukenimon_gait.py` is an offline model delta on the same planted-tip solver: the six two-bone legs
+(bones 13-24) are solved so each tip stands still in its stance, two alternating groups of three; walk 24 ticks at 24 units,
+condition walk 36 at 13 (one leg at a time, low and hunched), run 16 at 44 (with a flight phase), idle 96 (breathing, glances,
+one arm lifting, a front paw). The torso turns against the pelvis, the head stays level and lags it, the arms and sleeves are
+delayed pendulums. Slots 33, 35 and 36 follow the idle, walk and run; the celebration overlay keeps its own slots and its
+reviewed-source pin now names this model. `tools/test_arukenimon_gait.py` covers it.
 
 Magnamon (197) is bound to native Leomon (`native_binding.py`). Its boots kept
 the source's fighting stance, turned 35 and 93 degrees outward, its fists kept
@@ -646,6 +705,16 @@ the idle tail tips dip up to 18 below the floor line. The condition bubble and e
 head and jaw bones. The resident model uses about 85,400 of 100,352 bytes.
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_deltamon_native` (after `edit.py get 292`).
 
+KingEtemon (303) wears native Etemon's skeleton and field programs: `species 303` in `native-bindings.json`, donor 42
+(`CHDAT/MMD1/ETEM.MMD`), scale 1.2. The cape has no donor bones, so its pieces ride the pelvis and chest; the tired
+walk and run are retimed by `pace` (with its `lift` key for the floor), and `hands` (`native_hands.py`) sets the gloves on the forearms. The two gloves (pieces 13 and 16) are not twins
+(a fist across the belly, an open hand hanging) and carried that pose into Etemon's hand frame, which sits 81-97
+degrees off its forearm: an `aim` rule per glove now lays it along the hand bone's x with 8 degrees of droop, palm on
+`palm`; `hands` then turns the palm to the thigh, bends the wrist (not a roll about the forearm) by the forearm's late
+swing, and `clear` leans the whole arm from the shoulder, then the wrist, on the ticks a forearm or glove enters a leg,
+foot or the body. The idles (0, 33) keep part of the donor's own hand turn (`keep`). The resident model uses about 89,600 of
+100,352 bytes. `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_kingetemon_native` (after `edit.py get 303`).
+
 Flamedramon (195) walked like a catwalk: the procedural stride (`gaits.py`)
 swung and dropped the hips from side to side, twisted the chest the other way
 and held the arms out wide, and clips on Leomon's footfalls kept Leomon's hunch.
@@ -675,6 +744,9 @@ the ticks and the 60 fps thirds.
 
 Hookmon (299) runs a small post-pass (`field_animations/hookmon_polish.py`) after the chibi proportions: stance feet planted at their touchdown spot with the footstep sounds on those ticks,
 trailing arms, hook and head, a breathing idle. See `docs/reference/motion.md`.
+
+Antylamon (309) runs a small post-pass (`field_animations/antylamon_polish.py`) after the chibi proportions: its walk's two stray shoulder keys replaced by a curve and the leg
+lift-off kinks eased where the foot is off the floor (stance ticks untouched). See `docs/reference/motion.md`.
 
 Digmon's (193) run was its walk played with twice the travel.
 `field_animations/digmon.py` builds the run from the walk's own poses on a
@@ -858,6 +930,14 @@ importer's; the body's world speed never drops below zero, the belly stays on th
 result is stored in the plain deltas (`python3 -m tools.models.field_animations.shell_numemon_gait --source SRC.MMD
 --tex SRC.TIM --out AFTER.MMD --out-tex AFTER.TIM`, then `tools/models/edit.py put 231 AFTER.MMD AFTER.TIM`); check
 with `PYTHONPATH=tools/models:tools python3 -W ignore -m unittest tools/test_shell_numemon_gait.py`.
+
+BlackKingNumemon (307): `field_animations/black_king_numemon.py` gives the two front pads (the little front legs, bones 2/3 and 4/5) a
+traction stroke in the walk, tired walk and run (slots 2, 3, 4); every other bone and slot stays byte for byte (build with
+`paddle=False, face=False` for the earlier clips). The eyes are rubbery: every stalk joint (bones 7, 8, 10, 11 and the eyeballs 9, 12) follows the body's bob and roll through a chain of three damped springs, so each joint lags and overshoots more than the one under it; the two eyes have their own stiffness and delay and roll opposite ways (a see-saw); the lower stalk stretches and thins with the bob. The idle sways at a different rate for each eye (the clip is re-encoded losslessly, so every other bone keeps its keys; slots 0, 1 and 18 share it); the run swings widest; in the tired walk the swing is slow, the head and stalks sag and the brows (13, 14) droop; in the run the brows set. The eyes never close. Per tick no joint turns more than 130 units or scales more than 300. The mouth is painted on the head's texture: opening it would need texture moves and a texture delta, as `shell_numemon_mouth.py` does. Each pad reaches forward, plants (the sole moves back in the body's frame at the clip's
+root speed, so it does not slip: mean 8 to 14 percent, at most 40), pushes off with a short recoil, lifts and eases forward again;
+the hip yaw and height are solved per tick, the outer pad's yaw is countered, and the right pad lags the left (2, 3 and 1 ticks),
+so the stroke alternates and is slower and shorter when tired and quicker and flatter in the run. Check with
+`PYTHONPATH=tools python3 -W ignore -m unittest tools.test_black_king_numemon_paddle`.
 
 `field_animations/star_gait_refine.py` (Starmon 243): legs spread so the oversized boots no longer cross, run lean limited to the walk's, and the four ribbon bones hanging with a light damped lag. It is written over a bone map (`RIG`), so SuperStarmon (same 20-bone parent list plus fringe bones 20 to 26) needs only its own rig and profile values. Tested by `tools/test_starmon_gait.py`.
 `field_animations/superstar_gait.py` (SuperStarmon 244): Starmon's refined clips (above) on its 1.75 times larger body, bone for bone (translations times 1.75), the walk, tired walk and run stretched to 22, 28 and 25 ticks so the root keeps about 19.5, 13.5 and 37.9 units a tick with the feet still planted, the idle with the arms hanging instead of the guard. The fringe blades and the back plate hold their rest orientation. `edit.py get 244` and `get 243` (refined), then `python3 -m tools.models.field_animations.superstar_gait --source 244.MMD --starmon 243.MMD --out AFTER.MMD` and `edit.py put 244 AFTER.MMD`; checked by `tools/test_superstarmon_gait.py`.

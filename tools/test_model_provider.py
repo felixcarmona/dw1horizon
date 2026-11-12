@@ -67,8 +67,16 @@ class ModelProvider(unittest.TestCase):
             '292': ('292', 'tools.models.field_animations.native_binding', '292-deltamon-native'),
             # ChaosLord wears native Machinedramon's rig and programs.
             '289': ('289', 'tools.models.field_animations.native_binding', '289-chaoslord-native'),
+            # GrapLeomon wears native Leomon's rig and programs, with four turning drums.
+            '306': ('306', 'tools.models.field_animations.native_binding', '306-grapleomon-native'),
             # Vilemon wears native Ogremon's rig and programs.
             '295': ('295', 'tools.models.field_animations.native_binding', '295-vilemon-native'),
+            # HiAndromon wears native Andromon's rig and programs.
+            '302': ('302', 'tools.models.field_animations.native_binding', '302-hiandromon-native'),
+            # KingEtemon wears native Etemon's rig and programs.
+            '303': ('303', 'tools.models.field_animations.native_binding', '303-kingetemon-native'),
+            # Assaultmon wears native Centarumon's rig and programs.
+            '310': ('310', 'tools.models.field_animations.native_binding', '310-assaultmon-native'),
             # PrinceMamemon wears native Mamemon's rig and programs.
             '270': ('270', 'tools.models.field_animations.native_binding', '270-princemamemon-native'),
 
@@ -176,9 +184,17 @@ class ModelProvider(unittest.TestCase):
         # Hookmon's corrected clips (hookmon_polish.py) run on top of its chibi proportions and rebuild them first.
         self.assertEqual(assignments['299'], ('tools.models.field_animations.hookmon_polish', '299-hookmon-chibi'))
         assignments['299'] = ('tools.models.field_animations.chibi', '299-hookmon-chibi')
+        # So are Dinohyumon's (dinohyumon_gait.py).
+        self.assertEqual(assignments['308'], ('tools.models.field_animations.dinohyumon_gait', '308-dinohyumon-chibi'))
+        assignments['308'] = ('tools.models.field_animations.chibi', '308-dinohyumon-chibi')
+        # Antylamon's smoothed walk (antylamon_polish.py) runs on top of its chibi proportions the same way.
+        self.assertEqual(assignments['309'], ('tools.models.field_animations.antylamon_polish', '309-antylamon-chibi'))
+        assignments['309'] = ('tools.models.field_animations.chibi', '309-antylamon-chibi')
         # The chibi proportions wrap the recipe that came before them; species without one have no other generator.
         chibi = json.load(open('content/models/imports/chibi.json'))
         for sid, row in chibi.items():
+            if row.get('applied_by') == 'native_binding':        # the row is the last stage of the species' native binding
+                continue
             self.assertEqual(assignments[sid][0], 'tools.models.field_animations.chibi')
             if row['base_generator']:
                 assignments[sid] = (row['base_generator'], assignments[sid][1])
@@ -240,8 +256,9 @@ class ModelProvider(unittest.TestCase):
         self.assertEqual(records['293']['field_overlay'], 'gryphonmon-celebration')
         # Grizzlymon (296) neither: its idle, walk, tired walk and run are in its model delta (grizzlymon_gait.py).
         self.assertNotIn('field_overlay', records['296'])
+        # KingEtemon (303) and GrapLeomon (306) wear native rigs and have no chibi row any more: their two entries left the pin.
         self.assertEqual(hashlib.sha1(json.dumps(assignments, sort_keys=True).encode()).hexdigest(),
-                         '62a9b8ef514e4d64113e867a4fe662ca00f63fdc')
+                         '8764754788ba014350734de7873ba449567913f3')
 
 
 if __name__ == '__main__':

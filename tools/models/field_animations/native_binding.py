@@ -18,7 +18,7 @@ import mmd
 import motionstorage
 import numeric as np
 import retarget
-from tools.models.field_animations import native_arms, native_jaws
+from tools.models.field_animations import native_arms, native_hands, native_jaws
 
 ROOT = Path(__file__).resolve().parents[3]
 MANIFEST = ROOT / 'content/models/imports/native-bindings.json'
@@ -44,6 +44,41 @@ def spread_offsets(recipe, native):
         parent = parent / np.linalg.norm(parent, axis=0)
         out[int(b)] = [round(v) for v in (parent.T @ np.array(offset)).tolist()]
     return out
+
+
+def spin_frame(axis, parent_rotation):
+    """(rx, ry) in 1/4096 turn that make the bone's own z axis (the axis rz turns about: M = Rx·Ry·Rz) point along `axis`
+    in the world, for a parent whose world rotation is `parent_rotation`, and the bone's world rotation (rz = 0)."""
+    a = parent_rotation.T @ (axis / np.linalg.norm(axis))
+    ry = math.asin(max(-1.0, min(1.0, a[0])))
+    rx = math.atan2(-a[1], a[2])
+    k = 4096 / (2 * math.pi)
+    rx, ry = round(rx * k), round(ry * k)
+    return rx, ry, parent_rotation @ np.array(mmd.rot_matrix(rx, ry, 0))
+
+
+def add_spin(output, rig, spin):
+    """Turn the recipe's spinning pieces in the field programs: each bone of `spin['bones']` (their own bones, after the donor's)
+    gets a steady rz in the slots of `spin['quarters']` ({slot: quarter turns per loop body}; 90 degrees is one quarter, the
+    facets of a drum repeat every quarter, so every loop closes). The momentum is set once a loop, at its first frame."""
+    import animsheet
+    model = mmd.MMD.parse(output, len(rig))
+    first = len(rig) - len(spin['bones'])
+    seen = set()
+    for slot, quarters in spin['quarters'].items():
+        slot = int(slot)
+        index = model.anims.table[slot]
+        if index in seen:
+            raise ValueError(f'Native binding: slot {slot} shares its program')
+        seen.add(index)
+        anim = model.anims.anims[index]
+        loop = [i for i in anim.instrs if i['op'] == 'loop_end']
+        starts = [i for i in anim.instrs if i['op'] == 'key' and i['frame'] == 1 and i['bones']]
+        length = loop[0]['frame'] - loop[0]['jump']
+        for number, (bone, row) in enumerate(spin['bones'].items()):
+            sign = row.get('sign', 1)
+            starts[-1]['bones'].append(dict(bone=first + number, div=length, vals=dict(rz=sign * quarters * 1024)))
+    return model.build()
 
 
 def _mirror_order(own, other, tolerance):
@@ -116,12 +151,22 @@ def bind(data, skeleton, recipe, placements=None):
         sw = np.array([np.array([[c, 0, s, 0], [0, 1, 0, 0], [-s, 0, c, 0], [0, 0, 0, 1]]) @ m for m in sw])
     nw = np.array(mmd.bone_matrices(native, native_pose))
     nw[:, :3, 3] *= recipe['scale']
+    if recipe.get('spread_fit'):
+        # pieces are fitted to the donor's joints where `spread` puts them (a body on proportions the donor lacks)
+        moved = np.zeros((len(native_rig), 3))
+        for b, (_, up) in enumerate(native_rig):
+            moved[b] = (moved[up] if b and up >= 0 else 0) + np.array(recipe['spread'].get(str(b), [0, 0, 0]), dtype=float)
+        nw[:, :3, 3] += moved
     mapping = {int(k): v for k, v in recipe['map'].items()}
     segments = {int(k): v for k, v in recipe['segments'].items()}
     if set(mapping) != {b for b, (obj, _) in enumerate(skeleton) if obj >= 0}:
         raise ValueError('Native binding: every source mesh must be assigned once')
-    items = {b: [] for b in range(len(native_rig))}
+    spin = recipe.get('spin')
+    spun = [int(b) for b in spin['bones']] if spin else []
+    extended = list(native_rig) + [(-1, mapping[b]) for b in spun]
+    items = {b: [] for b in range(len(extended))}
     fitted = {}
+    spin_poses = {}
     mirrors = {int(k): v for k, v in recipe.get('mirror', {}).items()}
     for sb, tb in sorted(mapping.items(), key=lambda item: item[0] in mirrors):
         if sb in mirrors:
@@ -191,13 +236,23 @@ def bind(data, skeleton, recipe, placements=None):
         points = (points-anchor) @ transform.T + destination
         if placements is not None:
             placements[sb] = (anchor, transform, destination)
-        local = (points-nw[tb, :3, 3]) @ np.linalg.inv(nw[tb, :3, :3]).T
         normals = np.array(mesh.tmd.obj_norms(obj)[:original.nnorm]).reshape(-1, 4)[:, :3]
-        normals = normals @ np.linalg.inv(sw[sb, :3, :3]) @ np.linalg.inv(transform) @ nw[tb, :3, :3]
-        items[tb].append((original, local, normals))
-        fitted[sb] = (points, normals @ np.linalg.inv(nw[tb, :3, :3]))
+        normals = normals @ np.linalg.inv(sw[sb, :3, :3]) @ np.linalg.inv(transform)
+        if sb in spun:
+            # a drum that turns about its own axis: its own bone below the donor's, at the drum's centre, its z axis along the drum
+            axis = transform @ sw[sb, :3, :3] @ np.array(spin['bones'][str(sb)]['axis'], dtype=float)
+            centre = points.mean(axis=0)
+            rx, ry, frame = spin_frame(axis, nw[tb, :3, :3])
+            bone = len(native_rig) + spun.index(sb)
+            offset = (centre-nw[tb, :3, 3]) @ nw[tb, :3, :3]
+            spin_poses[bone] = [rx, ry, 0] + [round(v) for v in offset]
+            items[bone].append((original, (points-centre) @ frame, normals @ frame))
+            fitted[sb] = (points, normals)
+            continue
+        items[tb].append((original, (points-nw[tb, :3, 3]) @ np.linalg.inv(nw[tb, :3, :3]).T, normals @ nw[tb, :3, :3]))
+        fitted[sb] = (points, normals)
     tmd, rig = mmd.TMD(), []
-    for bone, (_, parent) in enumerate(native_rig):
+    for bone, (_, parent) in enumerate(extended):
         if not items[bone]:
             rig.append([-1, parent])
             continue
@@ -237,6 +292,8 @@ def bind(data, skeleton, recipe, placements=None):
                             group['vals'][channel] = round(group['vals'][channel]*recipe['scale'])
         animation.instrs = [i for i in animation.instrs if i['op'] != 'tex']
         animation.tail = b''
+        for bone in sorted(spin_poses):
+            animation.pose.append(([4096]*3 if animation.has_scale else []) + spin_poses[bone])
     slots = list(result.anims.table)
     wanted = max([61, 46+len(recipe['technique_slots'])] + [int(k)+1 for k in recipe.get('extra_slots', {})])
     result.anims.table += [None]*max(0, wanted-len(slots))
@@ -256,13 +313,32 @@ def bind(data, skeleton, recipe, placements=None):
         rows = {slot: dict(row, original_run=dict(map=recipe['map'], limbs=recipe['limbs'], bind_slot=recipe.get('bind_slot', 33)))
                 if row.get('original_run') else row for slot, row in recipe['pace'].items()}
         output = pace.retime(output, rig, 9000+sid, rows, (data, skeleton))[0]
+    if recipe.get('hands'):
+        # hands that trail the forearm's swing, for a donor whose hand is rigid with it (native_hands.py)
+        output = native_hands.run_hands(mmd.MMD.parse(output, len(rig)), rig, recipe['hands'])
     if recipe.get('jaws'):
         # the source's own mouth work replayed on the donor bones that carry the jaw pieces (native_jaws.py)
         output = native_jaws.run_jaws(mmd.MMD.parse(output, len(rig)), rig, recipe['jaws'], mesh, skeleton, source_pose, placements)
+    patch, chibi_proof = recipe['species_patch'], None
+    if recipe.get('chibi'):
+        # the chibi proportions of the species' row (chibi.json), as the last stage: its head, hands and feet grow and its
+        # legs shorten on the donor's rig, the floor and the speeds are checked again, the effect points ride along
+        from tools.models.field_animations import chibi
+        spec = recipe['chibi']
+        row = json.loads(chibi.MANIFEST.read_text())[str(spec.get('row', sid))]
+        output, report, scales, k, used = chibi.reshape_bound(output, rig, 9000+sid, recipe['map'], row, spec.get('factors'))
+        patch = dict(patch, **chibi.species_patch(patch, scales, k))
+        chibi_proof = dict(factors=used['factors'], fit=used['fit'], trim=used['trim'], final_scale=report['final_scale'],
+                           speeds=report['speeds'], floors=report['floors'])
+    if spin:
+        # drums that turn about their own axis (their bones below the donor's), written last: no step above reshapes them
+        output = add_spin(output, rig, spin)
     storage = motionstorage.require(output, len(rig))
-    return output, dict(species=sid, source_sha256=digest(data), output_sha256=digest(output),
-                        donor=donor_id, generated_skeleton=rig, storage=storage,
-                        species_patch=recipe['species_patch'])
+    proof = dict(species=sid, source_sha256=digest(data), output_sha256=digest(output),
+                 donor=donor_id, generated_skeleton=rig, storage=storage, species_patch=patch)
+    if chibi_proof:
+        proof['chibi'] = chibi_proof
+    return output, proof
 
 
 def build(data, skeleton):
