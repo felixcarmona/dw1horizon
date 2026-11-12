@@ -372,6 +372,18 @@ def body(rig, cfg, phase, pose, hist):
 
 
 def gait(rig, cfg):
+    """One cycle of the gait row `cfg`. A row's own `clear` (units) replaces the profile's: a fast run whose feet turn a long
+    way between two ticks lets its soles ride that far above the floor, so that the in-between poses of the 60 fps player
+    stay above it."""
+    base = rig.p['clear']
+    rig.p['clear'] = cfg.get('clear', base)
+    try:
+        return _gait(rig, cfg)
+    finally:
+        rig.p['clear'] = base
+
+
+def _gait(rig, cfg):
     p = rig.p
     ticks, speed = cfg['ticks'], cfg['speed']
     rest = rig.rest
@@ -578,7 +590,7 @@ def build(data, skeleton, profile):
                 events.append((tick, 'sound', dict(sound, frame=tick + 1)))
         events.sort(key=lambda e: e[0])
         frames = [[[round(x) for x in bone] for bone in pose] for pose in frames]
-        animation = mmd.encode_anim(frames, n, loop_sample=0, events=events, tol=1)
+        animation = mmd.encode_anim(frames, n, loop_sample=0, events=events, tol=profile.get('tol', 1))
         index = old.anims.table[slot]
         new.anims.anims[index] = animation          # in place: the slot's aliases play it too
         changed |= {s for s, i in enumerate(old.anims.table) if i == index}

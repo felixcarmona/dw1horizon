@@ -1269,6 +1269,19 @@ plants each foot with `quadruped.py`: walk, tired walk and run are 32, 60 and 28
 (slip under 4 % mean), the idle 96 ticks with breathing, weight shifts and a raised arm. The posture is a low, forward-leaning warrior's: short weighted steps, the chest turning hard against the hips, the arms bent and held out of lockstep with the legs, a hunched dragging tired walk with the head low, a committed forward-leaning run. The pelvis bobs twice a cycle
 and the arms and feather follow with delay. The run's loincloth overlaps a leg slightly more than before (14 against 8).
 
+MegaGargomon 335 (`tools/models/field_animations/megagargomon_gait.py`, test `tools.test_megagargomon_gait`, `MEGAGARGOMON_MODEL`) moved like a
+machine: walk, tired walk and run were one clip at three lengths, only the legs (46 to 49 degrees) and the upper arms (32 degrees, both
+alike) turned, while torso, hips, cannons, forearms, fists, head and fins stayed at 0 degrees, the body bobbed 3 units, the tired walk
+ran below the native range (8.6 units a tick) and the feet slid 35 to 95 % of the travel. The celebrations' base generator is now this module:
+it runs the chibi reshape and writes slots 0 (also 1, 18 and 33), 2, 3 and 4 with `quadruped.py` on the two legs (flat feet, the ankle
+under the hip): an 80-tick idle (breathing, weight shift, a look, a raised hand) and walk, tired walk and run of two different cycles
+(20, 24 and 20 ticks each) at 17, 11 and 36 units a tick. The hips turn and roll against a counter-turning torso, the body sinks into
+each footfall and rises slower, and the cannons, arms (upper arm, forearm, fist, each later than the last), head, face plate, fins and
+hip flaps follow on loose springs. Foot slip in the studio: 6 to 10 % mean, 41 % at worst (run). `quadruped.py` takes a per-gait `clear`
+(the floor margin of the 60 fps check; the fast run needs 7) and the profile an optional `tol` (encoder tolerance, per bone) to fit the
+resident buffer. The pairs of parts that cross by mesh clash are listed in the test; the legs against the hips and the hip flaps against the legs
+cross a little more than before.
+
 Taomon (315): the walk, tired walk and run held both arms in the idle's hanging pose while the torso leans 40 to 80 degrees and the legs swing, so
 the wide sleeves hung at thigh height and each leg passed through its sleeve at every step (up to 30 units deep; the aprons and, in the tired walk, the
 tail crossed them too, and the idle's right sleeve brushed the leg for a dozen ticks). `field_animations/taomon_arms.py` runs on the chibi overlay's output

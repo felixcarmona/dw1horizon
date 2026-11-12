@@ -1491,7 +1491,7 @@
     },
     "shift": 0.8,
     "body_gain": 1,
-    "base_generator": "tools.models.field_animations.chibi",
+    "base_generator": "tools.models.field_animations.megagargomon_gait",
     "skeleton_sha256": "7e432b6bbde2c831b4f41d3041b60ca2b7be8a671371c85d04fa906b20041291",
     "hanging": [
       [
