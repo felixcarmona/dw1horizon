@@ -1200,6 +1200,8 @@ rolls 3 degrees, the chest turns against the hips on a slow S-curve (about 12 de
 (the chibi reshape) needs a crouch of about 6 units plus the heel peel to reach the stride (solver reach at most 0.985 of the leg). The stance slip is measured on the
 vertex that is each part's sole at rest: at most 6 % (mean 1-2 %), against 33-56 % in the old walk. The tired walk still folds its planted knee like the old walk did.
 
+Creepymon 312 (`tools/models/field_animations/creepymon_gait.py`, test `tools.test_creepymon_gait`) slid its feet in every gait (stance slip 96-104 % mean, 100-170 % worst) and ran at 56 u/tick, above the native range. The overlay builds the celebration model and replaces the idle, walk, tired walk and run: flat soles planted by leg IK at a constant ground speed (walk 20 ticks at 16 u/tick, tired 24 at 12, run 14 at 38 with a short hop, idle 72), the body sinking where the legs reach furthest, the pelvis and robe lagging behind the stride, the chest turning against the hips, and the arms and wings swinging with delay. Stance slip is 4-6 % mean and at most 28 %; the mesh and the chibi proportions are untouched.
+
 Dinohyumon 308 (`tools/models/field_animations/dinohyumon_gait.py`, test `tools.test_dinohyumon_gait`) had clips whose
 feet flipped (toe yaw up to 167 degrees), a tired walk that slid its soles (172 % mean, 446 % worst), only one to four
 ticks of stance in 17, uneven root steps and a run whose arms hardly moved. The overlay runs the chibi reshape and then
