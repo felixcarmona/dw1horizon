@@ -1038,7 +1038,7 @@
     "skeleton_sha256": "2d3228e678e82ca3834c35d78dff42316f257282925069090fa04812f8c54c8f"
   },
   "293": {
-    "source_sha256": "3a5ffd5e8fa213f759112da5040264e5c039ab0c05e3d9a8f6cda142ecbf89b6",
+    "source_sha256": "bc8a53dd61671470dd3918cf7c5c6e85906d66d4f3af020184a57dbf7867e807",
     "slots": [
       42
     ],
@@ -1119,7 +1119,6 @@
     },
     "shift": 0.8,
     "body_gain": 1,
-    "base_generator": "tools.models.field_animations.pace",
     "skeleton_sha256": "a050c8a9103125e682194f0561764d7d75b286ac8c0c7a7d712fdc55736d9092"
   },
   "311": {

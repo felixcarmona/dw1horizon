@@ -359,34 +359,6 @@
   },
   "after_generator": "tools.models.field_animations.snimon"
  },
- "296": {
-  "name": "Grizzlymon",
-  "bones": 20,
-  "skeleton_sha256": "5109b23e484f8da598ea852c142afcd55a57823ba9ae1ebb4790182fc65e9aeb",
-  "source_sha256": "12607d3bc0410bf6383d28aca68f42b20df64205b31ab084d17b754e20d3106b",
-  "base_generator": null,
-  "post_source_sha256": "12607d3bc0410bf6383d28aca68f42b20df64205b31ab084d17b754e20d3106b",
-  "slots": {
-   "2": {
-    "from": 2,
-    "ticks": 30,
-    "speed": 20,
-    "slip": [
-     125,
-     250
-    ]
-   },
-   "4": {
-    "from": 4,
-    "ticks": 64,
-    "speed": 38,
-    "slip": [
-     190,
-     360
-    ]
-   }
-  }
- },
  "189": {
   "name": "Ankylomon",
   "bones": 19,
@@ -398,34 +370,6 @@
    "2": {
     "from": 2,
     "ticks": 48,
-    "speed": 20,
-    "slip": [
-     125,
-     250
-    ]
-   },
-   "4": {
-    "from": 4,
-    "ticks": 20,
-    "speed": 38,
-    "slip": [
-     190,
-     360
-    ]
-   }
-  }
- },
- "293": {
-  "name": "Gryphonmon",
-  "bones": 25,
-  "skeleton_sha256": "a050c8a9103125e682194f0561764d7d75b286ac8c0c7a7d712fdc55736d9092",
-  "source_sha256": "3a5ffd5e8fa213f759112da5040264e5c039ab0c05e3d9a8f6cda142ecbf89b6",
-  "base_generator": null,
-  "post_source_sha256": "3a5ffd5e8fa213f759112da5040264e5c039ab0c05e3d9a8f6cda142ecbf89b6",
-  "slots": {
-   "2": {
-    "from": 2,
-    "ticks": 26,
     "speed": 20,
     "slip": [
      125,
@@ -773,26 +717,6 @@
     ]
    }
   }
- },
- "295": {
-  "name": "Vilemon",
-  "bones": 21,
-  "skeleton_sha256": "011539b42ad04e3fdd99a450c08c30d6c001a9a97e087a3ee590eed43c7aab03",
-  "source_sha256": "39ae6783885841a9974e1741e5da8dd4a16604bb66864b66e3721b448906b246",
-  "base_generator": null,
-  "post_source_sha256": "39ae6783885841a9974e1741e5da8dd4a16604bb66864b66e3721b448906b246",
-  "slots": {
-   "2": {
-    "from": 2,
-    "ticks": 60,
-    "speed": 20,
-    "slip": [
-     125,
-     250
-    ]
-   }
-  },
-  "after_generator": "tools.models.field_animations.vilemon"
  },
  "213": {
   "name": "AeroVeedramon",

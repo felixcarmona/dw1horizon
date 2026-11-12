@@ -63,8 +63,12 @@ class ModelProvider(unittest.TestCase):
             '242': ('242', 'tools.models.field_animations.sorcermon_native', '242-sorcermon-native'),
             # VioletElecmon wears native Elecmon's rig and programs.
             '256': ('256', 'tools.models.field_animations.native_binding', '256-violetelecmon-native'),
+            # Deltamon wears native Tyrannomon's rig and programs.
+            '292': ('292', 'tools.models.field_animations.native_binding', '292-deltamon-native'),
             # ChaosLord wears native Machinedramon's rig and programs.
             '289': ('289', 'tools.models.field_animations.native_binding', '289-chaoslord-native'),
+            # Vilemon wears native Ogremon's rig and programs.
+            '295': ('295', 'tools.models.field_animations.native_binding', '295-vilemon-native'),
             # PrinceMamemon wears native Mamemon's rig and programs.
             '270': ('270', 'tools.models.field_animations.native_binding', '270-princemamemon-native'),
 
@@ -169,6 +173,9 @@ class ModelProvider(unittest.TestCase):
                 assignments[sid] = (row['base_generator'], assignments[sid][1])
             else:
                 del assignments[sid]
+        # Hookmon's corrected clips (hookmon_polish.py) run on top of its chibi proportions and rebuild them first.
+        self.assertEqual(assignments['299'], ('tools.models.field_animations.hookmon_polish', '299-hookmon-chibi'))
+        assignments['299'] = ('tools.models.field_animations.chibi', '299-hookmon-chibi')
         # The chibi proportions wrap the recipe that came before them; species without one have no other generator.
         chibi = json.load(open('content/models/imports/chibi.json'))
         for sid, row in chibi.items():
@@ -229,6 +236,10 @@ class ModelProvider(unittest.TestCase):
         self.assertNotIn('221', assignments)
         # Woodmon (272) neither: its walk, tired walk and run are in its model delta (woodmon.py).
         self.assertNotIn('field_overlay', records['272'])
+        # Gryphonmon (293) keeps only its celebration overlay: the gaits are in its model delta (gryphonmon_gait.py).
+        self.assertEqual(records['293']['field_overlay'], 'gryphonmon-celebration')
+        # Grizzlymon (296) neither: its idle, walk, tired walk and run are in its model delta (grizzlymon_gait.py).
+        self.assertNotIn('field_overlay', records['296'])
         self.assertEqual(hashlib.sha1(json.dumps(assignments, sort_keys=True).encode()).hexdigest(),
                          '62a9b8ef514e4d64113e867a4fe662ca00f63fdc')
 
