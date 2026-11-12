@@ -162,6 +162,12 @@ timing, rotations, scales and controls remain intact. Texture-copy commands
 are removed because the imported atlas has another layout; effect origins
 use the scaled native joints. The imported delta and texture remain pinned.
 
+WarGrowlmon (326) wears Growlmon's (320) skeleton and field programs: recipe `326` in `native-bindings.json`, with `donor_species` 320 (the
+donor is an imported species, so `native_binding.py` reads its model from the imported base models, `BASE_MODELS`, instead of the DW1
+extraction, and `edit.py` hands that model to the provider pin and `chibi_proportions.py` to its check). The `stretch` piece rule scales a
+piece unevenly along the world axes. After Growlmon's delta changes, renew `donor_sha256` in the recipe and re-pin 326
+(`edit.py put 326 FILE --force`). Test: `tools.test_native_bindings` (needs `edit.py get 320`).
+
 BomberNanimon (232) wears native Nanimon's (53, `NANI.MMD`) 20-bone skeleton and every animation program, unchanged
 (scale 1): its 13 rigid pieces map one to one onto Nanimon's joints (arms and legs swung joint to joint, gloves and
 boots turned with their forearm and shin, the body and fuse set 4 up and 22 forward of its old place) and its

@@ -105,6 +105,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'kingetemon-native': ('303', 'tools.models.field_animations.native_binding', '303-kingetemon-native'),
     'chaoslord-native': ('289', 'tools.models.field_animations.native_binding', '289-chaoslord-native'),
     'princemamemon-native': ('270', 'tools.models.field_animations.native_binding', '270-princemamemon-native'),
+    'wargrowlmon-native': ('326', 'tools.models.field_animations.native_binding', '326-wargrowlmon-native'),
     'violetelecmon-native': ('256', 'tools.models.field_animations.native_binding', '256-violetelecmon-native'),
     'sorcermon-native': ('242', 'tools.models.field_animations.sorcermon_native', '242-sorcermon-native'),
     'wizardmon-native': ('241', 'tools.models.field_animations.wizardmon_native', '241-wizardmon-native'),
@@ -212,6 +213,8 @@ def overlay(out, t, recs=None, names=None, s=None):
     if tools not in sys.path: sys.path.insert(0, tools)
     import species as species_tools
     generator = __import__(recipe[1], fromlist=['build'])
+    if hasattr(generator, 'BASE_MODELS'):      # a generator that reads another imported species' model (native_binding's `donor_species`)
+        generator.BASE_MODELS = BASE_MODELS
     s['_path'] = os.path.join(ROOT, 'content/species', name)
     model, proof = generator.build(species_tools.species_model(s)[0], s['model']['skeleton'])
     model_path, report = overlay_paths(out, t, e)

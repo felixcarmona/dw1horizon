@@ -77,6 +77,8 @@ class ModelProvider(unittest.TestCase):
             '303': ('303', 'tools.models.field_animations.native_binding', '303-kingetemon-native'),
             # SkullSatamon wears a native donor's rig and programs.
             '314': ('314', 'tools.models.field_animations.native_binding', '314-skullsatamon-native'),
+            # WarGrowlmon wears Growlmon's rig and programs (the donor is an imported species: `donor_species`).
+            '326': ('326', 'tools.models.field_animations.native_binding', '326-wargrowlmon-native'),
             # Assaultmon wears native Centarumon's rig and programs.
             '310': ('310', 'tools.models.field_animations.native_binding', '310-assaultmon-native'),
             # PrinceMamemon wears native Mamemon's rig and programs.
@@ -272,8 +274,9 @@ class ModelProvider(unittest.TestCase):
         # Grizzlymon (296) neither: its idle, walk, tired walk and run are in its model delta (grizzlymon_gait.py).
         self.assertNotIn('field_overlay', records['296'])
         # KingEtemon (303) and GrapLeomon (306) wear native rigs and have no chibi row any more: their two entries left the pin.
+        # WarGrowlmon (326) wears Growlmon's rig; its row stays for the proportions guard and its baked chibi recipe stays as provenance.
         self.assertEqual(hashlib.sha1(json.dumps(assignments, sort_keys=True).encode()).hexdigest(),
-                         '8764754788ba014350734de7873ba449567913f3')
+                         'ada12a6db27f1f55c83b6e27f247df97a0e3dd2c')
 
 
 if __name__ == '__main__':

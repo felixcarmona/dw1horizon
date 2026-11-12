@@ -19,14 +19,20 @@ class NativeBindings(unittest.TestCase):
     def setUpClass(cls):
         cls.cases = []
         source = Path(os.environ.get('BINDING_MODELS', 'build/angels/source'))
+        binding.BASE_MODELS = str(source)      # an imported donor (`donor_species`) is read from the same folder
         for sid, recipe in json.loads(binding.MANIFEST.read_text()).items():
             files = list(source.glob(f'{sid}-*.MMD')) or list(source.glob(f'{sid}.MMD'))
-            if not files or not (Path(mmd.EXTRACTED)/recipe['model']).exists():
+            donor_files = list(source.glob(f"{recipe['donor_species']}-*.MMD")) if recipe.get('donor_species') else None
+            if not files or not (donor_files if recipe.get('donor_species') else (Path(mmd.EXTRACTED)/recipe['model']).exists()):
                 raise unittest.SkipTest('needs imported models and the player DW1 extraction')
             record = json.loads(next(Path('content/species').glob(f'{sid}-*.json')).read_text())
             data, proof = binding.bind(files[0].read_bytes(), record['model']['skeleton'], recipe)
             model = mmd.MMD.parse(data, len(proof['generated_skeleton']))
-            native = mmd.MMD.load(str(Path(mmd.EXTRACTED)/recipe['model']), recipe['donor'])
+            if recipe.get('donor_species'):
+                native = mmd.MMD.parse(binding.donor_model(recipe), mmd.exe().bone_count[recipe['donor']])
+                native.type = recipe['donor']
+            else:
+                native = mmd.MMD.load(str(Path(mmd.EXTRACTED)/recipe['model']), recipe['donor'])
             cls.cases.append((recipe, record, data, proof, model, native))
 
     def test_full_native_hierarchy_and_mesh_coverage(self):

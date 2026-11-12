@@ -820,6 +820,19 @@ own (24 ticks, 16.2). Stance slip is 27 % mean and 36 % max in the walk, 10 % an
 tired walk (the donor's own stoop), above the usual target there. The walk's step turns 2.7 times the median step (the bar is
 2.5). The resident model uses 85,256 of 100,352 bytes.
 
+WarGrowlmon wears Growlmon's skeleton (25 bones) and field programs, bound by `native_binding.py` at scale 1.4 (recipe `326`; the donor is
+another imported species, so the recipe names it with `donor_species` and pins its model by SHA-256: the binding reads Growlmon's model
+from the imported base models, and a change to Growlmon's delta stops the build until the pin is renewed and WarGrowlmon's provider pin
+is made again). The 26 mesh pieces map onto Growlmon's bones (the four back-whip pieces ride the upper body with the pods), so the walk,
+tired walk and run are Growlmon's planted-foot clips (32 ticks at 16, 44 at 11, 28 at 36) and the idle is its 96-tick one; the technique
+slots (14 of them) alias Growlmon's 46, 47 and 48 in the donor's order. Growlmon's blink is not carried (the binding drops texture moves, and WarGrowlmon's eyes are in
+another atlas). The recipe's piece rules were found against the pinned chibi proportions: the four back-whip pieces keep the place of their own
+source joint, the shoulders are spread 24 units apart so the armour clears the head, the foot pieces are lowered onto the floor and stretched
+wider and longer without growing taller (`stretch`, an uneven scale along the world axes), the shin and thigh pieces are slid up their own
+segments (the offsets in the recipe are those slides, resolved) so the knee mesh sits above the foot mesh, and the hand pieces are scaled to 0.9.
+Proportions: head 0.358, head width 0.403, foot 1.001, hand 0.226, legs 0.370 (pins 0.363, 0.408, 1.001, 0.249, 0.366, inside the guard's
+tolerance). The resident model uses 99,574 of 100,352 bytes.
+
 ChaosLord uses Machinedramon's native skeleton (32 bones) and field programs, bound by `native_binding.py`
 at scale 1. Native Machinedramon has no care clips, so the recipe's `donor_builder` takes the partner model
 `content/models/partners/machinedramon.py` makes (its own idle, walk and run plus care clips) as the donor. The

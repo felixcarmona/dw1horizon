@@ -207,8 +207,19 @@ def import_records():
     return json.loads((IMPORTED_MODELS_SCRIPT.parent / 'models.json').read_text())
 
 
-def provider_pin(species, model, tim):
-    """Hash the final provider files, including native builders, field overlays and battle repairs."""
+def donor_models(a, species):
+    """{donor species: its current model} of a species whose native binding takes an imported species as its donor
+    (native-bindings.json `donor_species`): the overlay reads that model from the imported base models too."""
+    recipe = json.loads((IMPORTED_MODELS_SCRIPT.parent / 'native-bindings.json').read_text()).get(str(species), {})
+    if not recipe.get('donor_species'):
+        return {}
+    donor = recipe['donor_species']
+    return {donor: build(a, rows(load(MODELS), [str(donor)])[0])[0]}
+
+
+def provider_pin(species, model, tim, donors=None):
+    """Hash the final provider files, including native builders, field overlays and battle repairs. `donors` are the
+    other imported species' models the species' overlay reads (donor_models)."""
     sha1 = lambda b: hashlib.sha1(b).hexdigest()  # noqa: E731
     builder = import_records()[str(species)].get('builder')
     if builder:
@@ -218,6 +229,8 @@ def provider_pin(species, model, tim):
         base.mkdir()
         (base / f'{species}.MMD').write_bytes(model)
         (base / f'{species}.TIM').write_bytes(tim)
+        for donor, data in (donors or {}).items():
+            (base / f'{donor}.MMD').write_bytes(data)
         spec = importlib.util.spec_from_file_location('imported_species_edit', IMPORTED_MODELS_SCRIPT)
         imported_models = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(imported_models)
@@ -280,7 +293,7 @@ def cmd_put(a):
     # Field overlays can refuse an edited model (no reviewed acting profile). Validate them before
     # replacing any delta or manifest pin, so a rejected put leaves the current models usable.
     step, pins = species_pins()
-    new = None if a.no_species_pins else provider_pin(row['id'], files['mmd'], tim)
+    new = None if a.no_species_pins else provider_pin(row['id'], files['mmd'], tim, donor_models(a, row['id']))
     pinned = {k: row[k]['sha256'] for k in changed}
     for kind, data in changed.items():
         record = row[kind]
@@ -320,7 +333,7 @@ def cmd_check(a):
             model, tim, _ = build(a, row)
             note = ''
             if pins is not None:
-                got = provider_pin(row['id'], model, tim)
+                got = provider_pin(row['id'], model, tim, donor_models(a, row['id']))
                 if got != pins.get(str(row['id'])):
                     raise SystemExit(f'species-pins.json has {pins.get(str(row["id"]))}, made {got}')
                 note = ', provider pins'
