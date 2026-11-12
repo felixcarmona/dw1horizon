@@ -1101,3 +1101,10 @@ onto two steady lanes with a toe-out, keeping the import's ankle heights and for
 lane gaps): `python3 -m tools.models.field_animations.sakuyamon_gait --source BEFORE.MMD --out AFTER.MMD` on the model before this change (`edit.py get 316`), then `edit.py put 316 AFTER.MMD`.
 `lane_gaps` measures the sideways gap of the thigh, shin, foot and toe meshes, the knee and ankle distance and the leg-on-leg penetration per tick.
 Its run is stood up by a second step, `field_animations/sakuyamon_posture.py` (the chest's forward lean cut to 30 %, the pelvis and head turned back by the same so the legs keep their pose; `edit.py get 316`, `python3 -m tools.models.field_animations.sakuyamon_posture --source BEFORE.MMD --out AFTER.MMD`). Its hair is a third step, `field_animations/sakuyamon_hair.py`, on the posture step's output (`edit.py get 316` on the commit before, then `python3 -m tools.models.field_animations.sakuyamon_hair --source BEFORE.MMD --out AFTER.MMD` and `edit.py put 316 AFTER.MMD`): bones 15-18 only (the root of 16 shifted back along the chest's back and 16, 17, 18 turned back, per tick, the least that clears the chest, pelvis, legs, arms and staff, softened over the loop; the hair in the run needs only a shift and a few degrees), the idle included. `hair.measure` counts the hair's vertices inside each part group per tick, and `tools.test_sakuyamon_gait` bounds them and pins the leg gait.
+
+Species 333 (Raijinmon): a native binding (Ogremon donor) whose recipe asks for the stage `field_animations/raijinmon_gait.py`
+(`"gait": "raijinmon_gait"` in `content/models/imports/native-bindings.json`), which writes slots 0, 2, 3 and 4 again with planted legs
+under the donor's own trunk and arms (`quadruped.py`). It runs in the build; offline:
+`python -m tools.models.field_animations.raijinmon_gait --source BOUND.MMD --rig 333-report.json --out OUT.MMD`. After changing it,
+`edit.py check 333 --species-pins` prints the new provider pin for `tools/derive/recipes/species-pins.json`. Test: `tools.test_raijinmon_gait`
+(`RAIJINMON_MODELS`).

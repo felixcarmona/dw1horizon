@@ -257,6 +257,8 @@ class ModelProvider(unittest.TestCase):
         # All pre-existing bindings outside the repairs stay pinned.
         for sid in ('315', '332', '335'):
             del assignments[sid]
+        # Raijinmon (333) wears Ogremon's rig and programs with planted legs (raijinmon_gait.py): a native binding, no celebration row.
+        self.assertEqual(assignments.pop('333'), ('tools.models.field_animations.native_binding', '333-raijinmon-native'))
         assignments['351'] = ('tools.models.field_animations.articulation', '351-kotemon-field')
         # Raidramon (201) no longer has a field overlay: its gait is in its model delta (raidramon.py).
         self.assertNotIn('201', assignments)

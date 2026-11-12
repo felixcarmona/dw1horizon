@@ -1303,3 +1303,14 @@ lift 55, slip under 1 %), constant root speed, the head hung in the tired walk, 
 free arm so the giant sword moves through 13 degrees of pitch (tired walk) and 22 (run) instead of 17 and 75. Idle, walk and
 the celebration slots are unchanged. Slightly worse than before: the thigh and hip plates overlap the torso a few vertices more
 (19 against 6 in the tired walk).
+
+Raijinmon 333 wears the native rig and programs of Ogremon (a native binding, donor 34). The bound clips kept the donor's heavy arm swing and
+trunk roll, but its legs slid over the floor (mean 79 % of the body's travel in the walk, 115 % tired, 56 % in the run, 297 / 376 / 159 % at
+worst), the walk was a 22-tick lunge at 28 units per tick, the idle a 16-tick loop and the run lifted the feet up to 116 units off the floor.
+`raijinmon_gait.py` is a stage of the binding (the recipe key `gait` in `native-bindings.json`, run after the last reshaping and before
+`spin`, off for every other species) that writes slots 0, 2, 3 and 4 again: the trunk, head and arms are the donor's own clip resampled to a
+new cycle (an idle of 60 ticks, a walk of 30 at 18 units per tick, tired 36 at 12, a run of 20 at 40 with a flight phase), their swing kept
+and eased; the legs come from `quadruped.py` (a biped: two planted soles on a narrow track, a low lift). Measured on the sole of each foot
+(mean / worst % of the body's travel): walk 2.5 / 24, tired 2.3 / 9, run 5.6 / 43; the largest step between ticks 1.9 times the median (idle 2.4,
+run 2.4); the resident buffer is 85.8 KB of 100352 B. The technique and care slots are the donor's; the old Megaton Punch timing pin on
+the retired Power Crane clip is gone. The test is `tools.test_raijinmon_gait` (`RAIJINMON_MODELS`).
