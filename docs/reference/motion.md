@@ -261,8 +261,8 @@ pins its effective source, skeleton size, hidden bones and changed slots. It
 restores the native hidden-part scales in donor clips that have no scale header:
 Kotemon's two spare swords, Taomon's brush, Roachmon's alternate hand and
 MegaGargomon's missile panels. Explicit native scale tracks remain intact,
-including Roachmon's native hand swap. Kotemon first receives its existing
-walking articulation; its two native hit clips then recoil within three ticks
+including Roachmon's native hand swap. Kotemon first receives its own
+walk, tired walk and run (`kotemon_gait.py`); its two native hit clips then recoil within three ticks
 and recover, keeping their 20-tick duration and root programs.
 
 These are generated overlays, so the frozen import specs and model deltas stay
@@ -355,7 +355,7 @@ A **field overlay** is a reviewed recipe that rewrites the field slots of one sp
 | Generator | Species | What it does |
 |---|---|---|
 | `fieldacting.py` | Veemon 180, Magnamon 197, Veedramon 203, Renamon 354, Beelzemon 403, BlackWarGreymon 404, Bastemon 432, ExVeemon 194, Flamedramon 195, Omnimon 461 | per-species biped profiles (an explicit bone map: carrier, pelvis, chest, head, legs, arms, capes, wings): support-foot paths synchronized with root travel, weight shift towards the supporting leg, torso counter-rotation, delayed arms; native head, wing, tail and equipment acting kept; idle kept |
-| `fieldarticulation.py` | Puppetmon 181, Kotemon 351 | upper-body acting over the original root and leg programs (wrists counter the swing so a weapon keeps its orientation) |
+| `fieldarticulation.py` | Puppetmon 181 | upper-body acting over the original root and leg programs (wrists counter the swing so a weapon keeps its orientation) |
 | `fieldsecondary.py` | Stingmon 187, Angewomon 190, Paildramon 199 | small delayed secondary motion (arms, feathers, tail tips) with root and leg channels exact |
 | `fieldweight.py` | Ankylomon 189, Lighdramon 201 | step-synchronized body roll, yaw and pitch around the existing paw paths |
 | `fieldglide.py` | MetalSeadramon 211, Magnadramon 215, Gesomon 240, MarineAngemon 248, Solarmon 251 | replaces only the root's forward momentum with one steady key per loop (same net travel), removing forward bursts; every pose channel exact |
@@ -1268,6 +1268,23 @@ ticks of stance in 17, uneven root steps and a run whose arms hardly moved. The 
 plants each foot with `quadruped.py`: walk, tired walk and run are 32, 60 and 28 ticks (two cycles, the second with other leg lifts, heel strikes, landing times and bob, eased into and out of the first so no step repeats; arms, head, feather and loincloth follow the body on loose springs) at 17, 11 and 38 units a tick
 (slip under 4 % mean), the idle 96 ticks with breathing, weight shifts and a raised arm. The posture is a low, forward-leaning warrior's: short weighted steps, the chest turning hard against the hips, the arms bent and held out of lockstep with the legs, a hunched dragging tired walk with the head low, a committed forward-leaning run. The pelvis bobs twice a cycle
 and the arms and feather follow with delay. The run's loincloth overlaps a leg slightly more than before (14 against 8).
+
+Kotemon 351 (`tools/models/field_animations/kotemon_gait.py`, test `tools.test_kotemon_gait`): the donor's walk, tired walk and
+run slid the soles (46, 129 and 48-59 % mean, up to 278 %), turned the claw plate 285 degrees and the foot block 143 degrees in a
+cycle, and the upper body hardly moved. The legs are very short (the hip is 51 above the floor, the thigh link 20, the foot long),
+so a foot cannot stride far from the hip: the steps are short and quick (a step every 6.5, 7.5 and 5.5 ticks in the walk, tired walk
+and run) and each foot is placed first (flat on the floor, a small heel strike and peel, then a swing eased in the world). The
+thigh stub stays under the skirt: it slides 3, 4 and 10 units at most (x, y, z) and the leg turns (up to 40 degrees, 60 in the run)
+to reach the foot, so the stub's mesh stays within 11 units of the skirt's footprint (an earlier version slid it 40 to 70 units and
+up into the torso, and the legs came out of the body; `test_the_legs_stay_attached_under_the_skirt` guards it). Walk, tired walk
+and run are 26, 30 and 22 ticks (two cycles, the second with other touchdown times, stance lengths and bob) at 16, 11 and 36 units a
+tick; the skirt and torso turn against each other, the head and the two shoulder plates follow on springs, and the tail trails.
+Both hands hold the shinai, so the shoulders move as one rigid unit about the grip. The upper body bounces on each beat: the skirt, torso, head and shinai ride a spring that is kicked by a rectified sine
+(`hop`, 5-6 units in the walk, 2 in the tired walk, 8 in the run), so the body lands and rebounds on every step, while the
+hips and legs keep their height; the skirt rises and falls 10 units in the walk, 6 in the tired walk and 13 in the run and the head 5 to 10. The test `test_the_walk_and_run_bounce_and_the_tired_walk_bounces_less` guards the amplitudes
+and that the arc stays smooth. Slip: walk 6-13 % mean and 40 % worst, tired walk
+2-7 % and 29 %, run 8-13 % and 20 % (studio metric). The feet lift 15 to 20 units (the donor's 31 to 54: short legs cannot kick higher). The feet carry weight: the outer edge lands first and settles, the toe pushes off and the foot flexes up to land heel first, the claw plate trails; the two feet and the two cycles lift and time a little differently; every touchdown presses the hips down and over the landing foot (`squash`, `sway`) and the skirt follows on its spring. The stances are shorter than before (duty 0.22, 0.24 and 0.08 of a step): the leg is only 20 long, so the ankle can stay under the hip for about three ticks, and a planted foot kept longer was dragged along at body speed. The idle is
+unchanged. The recipe keeps the overlay's hit-clip and hidden-sword repairs.
 
 Taomon (315): the walk, tired walk and run held both arms in the idle's hanging pose while the torso leans 40 to 80 degrees and the legs swing, so
 the wide sleeves hung at thigh height and each leg passed through its sleeve at every step (up to 30 units deep; the aprons and, in the tired walk, the
