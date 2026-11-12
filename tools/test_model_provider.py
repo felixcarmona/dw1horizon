@@ -81,6 +81,8 @@ class ModelProvider(unittest.TestCase):
             '314': ('314', 'tools.models.field_animations.native_binding', '314-skullsatamon-native'),
             # WarGrowlmon wears Growlmon's rig and programs (the donor is an imported species: `donor_species`).
             '326': ('326', 'tools.models.field_animations.native_binding', '326-wargrowlmon-native'),
+            # Maildramon wears native Unimon's rig and programs, its legs planted by a gait stage (maildramon_gait.py).
+            '324': ('324', 'tools.models.field_animations.native_binding', '324-maildramon-native'),
             # Assaultmon wears native Centarumon's rig and programs.
             '310': ('310', 'tools.models.field_animations.native_binding', '310-assaultmon-native'),
             # PrinceMamemon wears native Mamemon's rig and programs.
