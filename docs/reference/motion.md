@@ -800,6 +800,33 @@ Deltamon uses Tyrannomon's native skeleton (27 bones) and field programs at scal
 a held mouth when tired) and replays the source's own skull and metal head jaw turns on the donor's finger bones. The
 resident model uses about 85,400 of 100,352 bytes.
 
+KingEtemon uses Etemon's native skeleton (27 bones) and field programs at scale 1.2, bound by `native_binding.py`. The
+torso is stretched and leaned onto the donor's chest so the head stays on it, the cape's four pieces ride the pelvis and
+chest (Etemon has no cape bones), the head is pitched 30 degrees forward so it looks ahead, `native_hands.py` keeps the arms near the body (the donor's
+diagonal swing leaned them up to 59 degrees outward; now at most 21) and sets the gloves on the forearms, and the soles are lowered 5 units onto the floor. The walk (16 ticks at 26), the tired
+walk (20 ticks at 19) and the run (14 ticks at 50) are retimed by the recipe's `pace`, whose `lift` key holds a whole
+clip higher or lower so the donor's crouch stands on the floor. Known limits: the stance slip is 100 mean for the walk,
+230 for the tired walk and 100 for the run (the donor's own boxer steps slide against this root speed), and the swinging
+foot lifts up to 21 above the floor in the tired walk. Body-part penetration is about half the previous model's. The
+resident model uses about 89,600 of 100,352 bytes.
+
+KingEtemon's hands. The source's gloves are not twins (a closed fist posed across the belly, an open hand hanging with
+the wrist bent about 50 degrees) and, with no rule of their own, kept that pose inside Etemon's idle hand frame, which
+sits 81-97 degrees off the forearm: one hand read as turned sideways (palm rolled 82-127 degrees in the walk), the other
+folded far in (83 degrees at rest). Etemon's own hand turns also change per clip (walk 40 degrees about the forearm on
+one side and none on the other, run 41-80 and swings up to 112), invisible on its round fist but not on a glove, and a
+follow-through that rolled the hand about the forearm (Etemon's hand x runs along the limb) twisted the glove instead
+of bending the wrist. Now each glove has an `aim` rule that lays it along its hand bone (8 degrees of droop toward the
+palm, palm on the `palm` axis); in the gaits `hands` drops the donor's hand turns, turns the palm to the thigh, bends
+the wrist about the line of the shoulders by the forearm's swing two ticks late, and `clear` leans the whole arm out
+from the shoulder (then the wrist, for what is left) on the ticks a forearm or glove would enter a leg, foot, the cape
+or the body, eased over the neighbouring ticks. Per tick in walk, tired walk and run: bend 8-34 degrees, palm roll
+within 17, at most 15 a tick (the test allows 18); in those and in both idles no glove vertex inside a leg, foot, the
+cape or the body and no forearm more than 2 (`tools/test_kingetemon_native.py`). The idles are gestures and keep part
+of the donor's own turn of the hand (`keep`: the fist at the chest half, 41 degrees instead of 83; the hanging hand a
+fifth, palm still about 45 degrees off the thigh; idle 33's raised hands half). Techniques keep the donor's hand turns
+(up to 85 degrees off the forearm).
+
 The foot mesh's sole plane, heel and toe define explicit forward-facing ground
 contacts. Each stride lands on its heel, holds the sole flat in world space,
 and rolls off its toe. Scaled two-bone IK and a cyclic pelvis-height envelope

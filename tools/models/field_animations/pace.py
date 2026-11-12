@@ -353,7 +353,7 @@ def _author(old, skeleton, slot, spec, feet, source=None):
             pose[0][c] -= d * t / source_ticks
     ticks, speed = spec['ticks'], spec['speed']
     assert speed >= SPEED_FLOOR.get(slot, 0), (slot, speed)      # an idle stands: no floor
-    if spec['from'] == slot and ticks == source_ticks and 'original_run' not in spec and 'smooth' not in spec:      # same clock: poses exact, only the travel changes
+    if spec['from'] == slot and ticks == source_ticks and 'original_run' not in spec and 'smooth' not in spec and 'lift' not in spec:      # same clock: poses exact, only the travel changes
         return _forward(old.anims.anims[old.anims.table[slot]], -round(speed * ticks), ticks), dict(
             slot=slot, source_slot=slot, source_ticks=ticks, ticks=ticks, units_per_tick=round(speed * ticks) / ticks,
             slip_mean=_checked_slip(old, frames, feet, speed, spec), floor='exact')
@@ -363,6 +363,10 @@ def _author(old, skeleton, slot, spec, feet, source=None):
             samples[-1][bone] = list(first)
     if spec.get('smooth'):
         _smooth(samples, frames, spec['smooth'])
+    for pose in samples:        # a row's `lift`: the whole clip held that much higher (a rig whose native crouch sinks the soles)
+        for bone, (_, parent) in enumerate(skeleton):
+            if bone and parent == 0:
+                pose[bone][7] -= spec.get('lift', 0)
     if 'posture' in spec:
         _keep_posture(old, samples, animsheet.slot_frames(old, n, spec['posture']['from'])[0], spec['posture'])
     before = max(_floors(old, skeleton, frames))

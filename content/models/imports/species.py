@@ -101,6 +101,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'superstarmon-supported-field': ('244', 'tools.models.field_animations.celebrations', '244-superstarmon-supported-field'),
     'starmon-boxer-field': ('243', 'tools.models.field_animations.pace', '243-starmon-boxer-field'),
     'deltamon-native': ('292', 'tools.models.field_animations.native_binding', '292-deltamon-native'),
+    'kingetemon-native': ('303', 'tools.models.field_animations.native_binding', '303-kingetemon-native'),
     'chaoslord-native': ('289', 'tools.models.field_animations.native_binding', '289-chaoslord-native'),
     'princemamemon-native': ('270', 'tools.models.field_animations.native_binding', '270-princemamemon-native'),
     'violetelecmon-native': ('256', 'tools.models.field_animations.native_binding', '256-violetelecmon-native'),

@@ -654,6 +654,16 @@ the idle tail tips dip up to 18 below the floor line. The condition bubble and e
 head and jaw bones. The resident model uses about 85,400 of 100,352 bytes.
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_deltamon_native` (after `edit.py get 292`).
 
+KingEtemon (303) wears native Etemon's skeleton and field programs: `species 303` in `native-bindings.json`, donor 42
+(`CHDAT/MMD1/ETEM.MMD`), scale 1.2. The cape has no donor bones, so its pieces ride the pelvis and chest; the tired
+walk and run are retimed by `pace` (with its `lift` key for the floor), and `hands` (`native_hands.py`) sets the gloves on the forearms. The two gloves (pieces 13 and 16) are not twins
+(a fist across the belly, an open hand hanging) and carried that pose into Etemon's hand frame, which sits 81-97
+degrees off its forearm: an `aim` rule per glove now lays it along the hand bone's x with 8 degrees of droop, palm on
+`palm`; `hands` then turns the palm to the thigh, bends the wrist (not a roll about the forearm) by the forearm's late
+swing, and `clear` leans the whole arm from the shoulder, then the wrist, on the ticks a forearm or glove enters a leg,
+foot or the body. The idles (0, 33) keep part of the donor's own hand turn (`keep`). The resident model uses about 89,600 of
+100,352 bytes. `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_kingetemon_native` (after `edit.py get 303`).
+
 Flamedramon (195) walked like a catwalk: the procedural stride (`gaits.py`)
 swung and dropped the hips from side to side, twisted the chest the other way
 and held the arms out wide, and clips on Leomon's footfalls kept Leomon's hunch.

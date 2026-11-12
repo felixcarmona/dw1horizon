@@ -18,7 +18,7 @@ import mmd
 import motionstorage
 import numeric as np
 import retarget
-from tools.models.field_animations import native_arms, native_jaws
+from tools.models.field_animations import native_arms, native_hands, native_jaws
 
 ROOT = Path(__file__).resolve().parents[3]
 MANIFEST = ROOT / 'content/models/imports/native-bindings.json'
@@ -256,6 +256,9 @@ def bind(data, skeleton, recipe, placements=None):
         rows = {slot: dict(row, original_run=dict(map=recipe['map'], limbs=recipe['limbs'], bind_slot=recipe.get('bind_slot', 33)))
                 if row.get('original_run') else row for slot, row in recipe['pace'].items()}
         output = pace.retime(output, rig, 9000+sid, rows, (data, skeleton))[0]
+    if recipe.get('hands'):
+        # hands that trail the forearm's swing, for a donor whose hand is rigid with it (native_hands.py)
+        output = native_hands.run_hands(mmd.MMD.parse(output, len(rig)), rig, recipe['hands'])
     if recipe.get('jaws'):
         # the source's own mouth work replayed on the donor bones that carry the jaw pieces (native_jaws.py)
         output = native_jaws.run_jaws(mmd.MMD.parse(output, len(rig)), rig, recipe['jaws'], mesh, skeleton, source_pose, placements)
