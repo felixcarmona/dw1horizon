@@ -1365,3 +1365,13 @@ the chibi clips is not met everywhere: the walk's thigh still grazes the tail ro
 11-21; none before), the run's head touches the forearms (3 crossings, depth 3) and the torso overlaps the legs by 2 more
 crossings than the chibi pose (18 against 15-16); the test's bounds record those numbers. Each wing is a single bone, so the beat
 follows the body with a spring but its tip cannot lag.
+Ghoulmon 329 (`tools/models/field_animations/ghoulmon_gait.py`, test `tools.test_ghoulmon_gait`) had a walk, tired walk and run of 71 ticks
+like its idle, written from another Digimon's rig: the feet lifted 27 units, the soles slid 37-44 % of the travel (207 % at worst) and the
+stills looked like the idle, with legs that read as mechanical and an upper body that did not move. `quadruped.py` now plants each foot
+(two-bone IK, heel strike and toe-off, flat soles) and `body` writes the rest as one overlapped motion: the pelvis bobs twice a cycle and
+sways over the loaded foot, the hips turn against the torso, which rolls and pitches a little later, each arm swings against the leg on its
+side with forearm, hand and claws each later, the wing membranes flap at each push-off and fold at each landing, and the three tail links
+whip behind. Walk 26 ticks at 17 units a tick, tired walk 34 at 11 (slumped, arms low, wings drooping, tail dragging, torso leaning 14
+degrees), run 14 at 38 with a flight phase and the wings streaming; slip under 3 % mean. The arms roll inwards about 12 degrees (an
+outward roll put them through the legs) and the wing roots stay put (turning them put the wings through the body): the clips cross no
+more mesh than the rest pose does. The idle is kept. No footstep sounds (the imported clips had none).

@@ -53,6 +53,12 @@ and a scheduled foot roll. `python3 -m tools.models.field_animations.clockmon_ga
 (SRC from `edit.py get 290` before the change), then `edit.py put 290 DIR/290-Clockmon.MMD`; the reviewed-source pin in
 `content/models/imports/celebrations.json` follows the new model. Test: `tools.test_clockmon_gait` (`CLOCKMON_MODEL`).
 
+Species 329 (Ghoulmon): `field_animations/ghoulmon_gait.py` writes slots 2, 3 and 4 again (a 26-tick walk, a 34-tick tired walk and a
+14-tick run at 17, 11 and 38 units a tick; the idle is kept) with `quadruped.py` on the model's own two legs: planted flat soles with heel
+strike and toe-off, hips against torso, swinging arms with late forearms and claws, flapping wing membranes and a whipping three-link tail.
+`python3 -m tools.models.field_animations.ghoulmon_gait --source SRC.MMD --out AFTER.MMD` (SRC from `edit.py get 329` before the change),
+then `edit.py put 329 AFTER.MMD`. Test: `tools.test_ghoulmon_gait` (`GHOULMON_MODEL`).
+
 Species 297 (Marsmon): `field_animations/marsmon_gait.py` writes slots 0, 2, 3 and 4 again (a 150-tick idle, a 22-tick walk, a 26-tick tired
 walk and a 14-tick run at 16, 11 and 38 units a tick) with `quadruped.py` on the model's own two legs: planted boots
 with their outward splay, hips against shoulders, swinging, opening fists and a trailing cape, and a swaggering, proud character (the idle shifts the weight, looks aside, raises a fist and flicks the cape).
