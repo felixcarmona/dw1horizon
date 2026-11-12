@@ -118,26 +118,6 @@
   "factors": {"head": 1.9, "hand": 1.0, "foot": 1.0, "leg_axial": 0.727, "leg_radial": 1.098, "arm_radial": 1.0, "torso": 1.25},
   "groups": {"0": "carrier", "1": "carrier", "2": "shoulder", "3": "arm", "4": "hand", "5": "shoulder", "6": "arm", "7": "hand", "8": "wing", "9": "wing", "10": "wing", "11": "wing", "12": "wing", "13": "wing", "14": "wing", "15": "wing", "16": "wing", "17": "wing", "18": "head", "19": "pelvis", "20": "thigh", "21": "shin", "22": "foot", "23": "footpart", "24": "cloth", "25": "cloth", "26": "cloth", "27": "thigh", "28": "shin", "29": "foot", "30": "footpart"}
  },
- "303": {
-  "source_sha256": "cd82beb9585d4ae4b7b2e9429284a7d2d81e0219b657ee0ed3edbcc33b9412c1",
-  "skeleton_sha256": "5c6f9ecf7e7af29dc402b394e951efdc4dc9d5a91008f23a32147312d9d95761",
-  "base_generator": null,
-  "post_source_sha256": "cd82beb9585d4ae4b7b2e9429284a7d2d81e0219b657ee0ed3edbcc33b9412c1",
-  "height": 558,
-  "fit": {"16": 0.9, "15": 0.9, "14": 0.9},
-  "factors": {"head": 1.722, "hand": 1.35, "foot": 1.052, "leg_axial": 0.897, "leg_radial": 1.0, "arm_radial": 1.0, "torso": 1.0},
-  "groups": {"0": "carrier", "1": "carrier", "2": "pelvis", "3": "thigh", "4": "shin", "5": "foot", "6": "footpart", "7": "thigh", "8": "shin", "9": "foot", "10": "footpart", "11": "shoulder", "12": "arm", "13": "hand", "14": "shoulder", "15": "arm", "16": "hand", "17": "head", "18": "headpart", "19": "cloth", "20": "cloth", "21": "cloth", "22": "cloth"}
- },
- "306": {
-  "source_sha256": "43aea7b282572cc995e578f981430755834088a38d4ba10d3afd7d2bde7a4ccf",
-  "skeleton_sha256": "967f3add572c632311d719814c1b94485d984eadc28778ad9a5e225651c2849e",
-  "base_generator": null,
-  "post_source_sha256": "43aea7b282572cc995e578f981430755834088a38d4ba10d3afd7d2bde7a4ccf",
-  "height": 452,
-  "fit": {"22": 0.9, "21": 0.9, "20": 0.9, "4": 0.9, "3": 0.81, "2": 0.81, "5": 0.9, "8": 0.9, "7": 0.81, "6": 0.81, "9": 0.9},
-  "factors": {"head": 1.639, "hand": 1.068, "foot": 1.0, "leg_axial": 0.7, "leg_radial": 1.0, "arm_radial": 1.0, "torso": 1.25},
-  "groups": {"0": "carrier", "1": "carrier", "2": "shoulder", "3": "arm", "4": "hand", "5": "arm", "6": "shoulder", "7": "arm", "8": "hand", "9": "arm", "10": "head", "11": "headpart", "12": "headpart", "13": "headpart", "14": "pelvis", "15": "thigh", "16": "shin", "17": "other", "18": "foot", "19": "footpart", "20": "tail", "21": "tail", "22": "tail", "23": "thigh", "24": "shin", "25": "other", "26": "foot", "27": "footpart"}
- },
  "308": {
   "source_sha256": "d4c1923dd61f591e353e17ed38fb306c4f68f24c0d0ad59262c0d00e6b3596c8",
   "skeleton_sha256": "63076d8bcd3e93a8ce7c8047fb0a30fd705699990e7b098ee5f4cb3daca7fa38",

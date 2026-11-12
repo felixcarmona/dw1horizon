@@ -113,26 +113,17 @@
   "hand": 0.495,
   "legs": 0.362
  },
- "303": {
-  "head": 0.412,
-  "head_width": 0.337,
-  "foot": 0.303,
-  "hand": 0.226,
-  "legs": 0.36
- },
- "306": {
-  "head": 0.385,
-  "head_width": 0.454,
-  "foot": 0.736,
-  "hand": 0.182,
-  "legs": 0.414
- },
  "308": {
   "head": 0.201,
   "head_width": 0.065,
   "foot": 0.528,
   "hand": 0.28,
-  "legs": 0.387
+  "legs": 0.387,
+  "accepted": {
+   "hand": 0.342,
+   "legs": 0.353,
+   "why": "the low warrior's gait (dinohyumon_gait) builds its own bigger hands and shorter legs for its planted, splayed feet (both on the chibi side)"
+  }
  },
  "309": {
   "head": 0.179,
