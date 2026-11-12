@@ -1,0 +1,258 @@
+From 0029cdf42e0541974f901563fc106ec161e8744a Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 12 Nov 2026 10:30:49 +0000
+Subject: [PATCH] Keep battle drawing inside the GPU packet area
+
+A triple battle with a big partner and an all-range technique (Machinedramon's All Range Beam on three Vermilimon or Golemon at Mt. Infinity) froze the game. Four large models, the technique's EFE models, then its particles and damage numbers wrote past the 81,920-byte packet area of the frame: into the other frame's packets while the GPU drew them, or into the ordering-table headers. Nothing in the original checks that area. modPacketFits (world_object.c) now answers whether a draw fits, keeping 8 KB for the unchecked HUD renderers, and the renderers that can emit many packets skip the draw (never the logic) when it does not: model bones, EFE models and sprites, FX particles, particle flashes, entity particles, damage digits and numbers. A cursor outside the frame's area always fits, so loops that draw elsewhere are unchanged.
+---
+ include/dw/world_object.h | 13 +++++++++++++
+ src/btl/battle_effect.c   | 22 +++++++++++++++++-----
+ src/main/efe.c            |  8 ++++++++
+ src/main/map.c            |  6 ++++++
+ src/main/model.c          |  5 +++++
+ src/main/utils.c          |  6 ++++++
+ src/main/utils2.c         | 10 ++++++++++
+ src/main/world_object.c   | 19 +++++++++++++++++++
+ 8 files changed, 84 insertions(+), 5 deletions(-)
+
+diff --git a/include/dw/world_object.h b/include/dw/world_object.h
+index 3ba16b6..0fb9833 100644
+--- a/include/dw/world_object.h
++++ b/include/dw/world_object.h
+@@ -39,4 +39,17 @@ int32_t removeObject(/* int32_t objectId, int32_t instanceId */);
+ void tickObjects(void);
+ void renderObjects(void);
+ 
++/* MOD (packet budget): each framebuffer has an 81,920-byte GPU packet area
++ * (GS_WORK_BASES) and nothing in the original checks it. A triple battle with
++ * a big partner and an all-range technique (four large models, the EFE, then
++ * particles and damage numbers) wrote past it: into the other frame's packets
++ * while the GPU drew them, or into the ordering-table headers, and the game
++ * froze. Renderers that can emit many packets ask first and skip the draw
++ * (never the logic) when it would not fit. MOD_PACKET_RESERVE is kept for the
++ * unchecked HUD renderers, about 6.3 KB in that battle, wherever they fall in
++ * the object order. A cursor outside this frame's area (a loop drawing
++ * elsewhere) always fits. */
++#define MOD_PACKET_RESERVE	0x2000
++int32_t modPacketFits(int32_t bytes);
++
+ #endif
+diff --git a/src/btl/battle_effect.c b/src/btl/battle_effect.c
+index 3e9e251..dcd9e25 100644
+--- a/src/btl/battle_effect.c
++++ b/src/btl/battle_effect.c
+@@ -3708,7 +3708,10 @@ void BTL_drawTMDScreenSpace(void)
+ 	GsLinkObject4((unsigned long)EFE_DATA_ITERATOR->model->modelPtr->obj, &EFE_SCRATCH->obj, EFE_SCRATCH->id);
+ 	EFE_SCRATCH->obj.coord2 = NULL;
+ 	EFE_SCRATCH->obj.attribute = 0;
+-	GsSortObject4(&EFE_SCRATCH->obj, ACTIVE_ORDERING_TABLE, 2, EFE_SORT_WORKSPACE);
++	/* MOD (packet budget): at most one POLY_GT4 per primitive (attribute 0) */
++	if (modPacketFits(((struct TMD_STRUCT *)EFE_SCRATCH->obj.tmd)->primn * sizeof(POLY_GT4))) {
++		GsSortObject4(&EFE_SCRATCH->obj, ACTIVE_ORDERING_TABLE, 2, EFE_SORT_WORKSPACE);
++	}
+ }
+ 
+ void BTL_loadClutColors(void)
+@@ -3767,7 +3770,10 @@ void BTL_drawTMDYXZ(void)
+ 	GsLinkObject4((unsigned long)EFE_DATA_ITERATOR->model->modelPtr->obj, &EFE_SCRATCH->obj, EFE_SCRATCH->id);
+ 	EFE_SCRATCH->obj.coord2 = NULL;
+ 	EFE_SCRATCH->obj.attribute = 0;
+-	GsSortObject4(&EFE_SCRATCH->obj, ACTIVE_ORDERING_TABLE, 2, EFE_SORT_WORKSPACE);
++	/* MOD (packet budget): at most one POLY_GT4 per primitive (attribute 0) */
++	if (modPacketFits(((struct TMD_STRUCT *)EFE_SCRATCH->obj.tmd)->primn * sizeof(POLY_GT4))) {
++		GsSortObject4(&EFE_SCRATCH->obj, ACTIVE_ORDERING_TABLE, 2, EFE_SORT_WORKSPACE);
++	}
+ }
+ 
+ void BTL_getCameraRotation(void)
+@@ -5091,7 +5097,9 @@ void BTL_renderProjectedSprite(void)
+ 		EFE_SPRITE_SCRATCH->sprite.scalex = ((uint32_t)(EFE_SPRITE_SCRATCH->sprite.scalex * VIEWPORT_DISTANCE) << 5) / (uint32_t)EFE_SPRITE_SCRATCH->otz;
+ 		EFE_SPRITE_SCRATCH->sprite.scaley = ((uint32_t)(EFE_SPRITE_SCRATCH->sprite.scaley * VIEWPORT_DISTANCE) << 5) / (uint32_t)EFE_SPRITE_SCRATCH->otz;
+ 		EFE_SPRITE_SCRATCH->otz = (EFE_SPRITE_SCRATCH->otz - 0xa) >> 2;
+-		if (EFE_SPRITE_SCRATCH->otz >= 0x20 && EFE_SPRITE_SCRATCH->otz < 0x1000) {
++		/* MOD (packet budget): a sprite is a POLY_FT4 plus a DR_MODE at most */
++		if (EFE_SPRITE_SCRATCH->otz >= 0x20 && EFE_SPRITE_SCRATCH->otz < 0x1000 &&
++		    modPacketFits(sizeof(POLY_FT4) + sizeof(DR_MODE))) {
+ 			GsSortSprite(&EFE_SPRITE_SCRATCH->sprite, ACTIVE_ORDERING_TABLE, (uint16_t)EFE_SPRITE_SCRATCH->otz);
+ 		}
+ 	}
+@@ -5202,7 +5210,8 @@ void BTL_renderScreenSprite(void)
+ #if VERSION_EQUAL_OR_OLDER(JP_TRIAL)
+ 	GsSortSprite(&sprite, ACTIVE_ORDERING_TABLE, (uint16_t)depth);
+ #else
+-	if ((depth >= 0) && (depth < 0x1000)) {
++	/* MOD (packet budget): a sprite is a POLY_FT4 plus a DR_MODE at most */
++	if ((depth >= 0) && (depth < 0x1000) && modPacketFits(sizeof(POLY_FT4) + sizeof(DR_MODE))) {
+ 		GsSortSprite(&sprite, ACTIVE_ORDERING_TABLE, (uint16_t)depth);
+ 	}
+ #endif
+@@ -5584,7 +5593,10 @@ void BTL_drawTMD(void)
+ 	GsLinkObject4((unsigned long)EFE_DATA_ITERATOR->model->modelPtr->obj, &EFE_SCRATCH->obj, EFE_SCRATCH->id);
+ 	EFE_SCRATCH->obj.coord2 = NULL;
+ 	EFE_SCRATCH->obj.attribute = 0;
+-	GsSortObject4(&EFE_SCRATCH->obj, ACTIVE_ORDERING_TABLE, 2, EFE_SORT_WORKSPACE);
++	/* MOD (packet budget): at most one POLY_GT4 per primitive (attribute 0) */
++	if (modPacketFits(((struct TMD_STRUCT *)EFE_SCRATCH->obj.tmd)->primn * sizeof(POLY_GT4))) {
++		GsSortObject4(&EFE_SCRATCH->obj, ACTIVE_ORDERING_TABLE, 2, EFE_SORT_WORKSPACE);
++	}
+ }
+ 
+ void BTL_initializeSubEffectInstructions(void)
+diff --git a/src/main/efe.c b/src/main/efe.c
+index 9df7623..4d4e8be 100644
+--- a/src/main/efe.c
++++ b/src/main/efe.c
+@@ -647,6 +647,10 @@ void renderEntityParticleFX(int32_t id)
+ 	fx = &ENTITY_PARTICLE_FX_DATA[id];
+ 	owner = fx->owner;
+ 	owner = fx->owner;
++	/* MOD (packet budget): see dw/world_object.h */
++	if (!modPacketFits(sizeof(POLY_FT4))) {
++		return;
++	}
+ 	prim = (POLY_FT4 *)GsGetWorkBase();
+ 	boneId = fx->boneId;
+ 	sprite = &ENTITY_PARTICLE_FX_MODES[fx->unk8];
+@@ -1121,6 +1125,10 @@ void renderParticleFlash(ParticleFlashData *params)
+ 	cellH = (sy + 1) / (rows + 1);
+ 	uStep = (w1 + 1) / (cols + 1);
+ 	vStep = (h1 + 1) / (rows + 1);
++	/* MOD (packet budget): four mirrored grids of (rows+1)*(cols+1) quads */
++	if (!modPacketFits((rows + 1) * (cols + 1) * 4 * (int32_t)sizeof(POLY_FT4))) {
++		return;
++	}
+ 	prim = (POLY_FT4 *)GsGetWorkBase();
+ 
+ 	for (j = 0; j <= rows; j++) {
+diff --git a/src/main/map.c b/src/main/map.c
+index c842ec2..3ec13b2 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -29,6 +29,8 @@
+ #include <dw/utils.h>
+ #include <dw/vecmath.h>
+ #include <dw/version.h>
++
++int32_t modPacketFits(int32_t bytes); /* MOD (packet budget): dw/world_object.h */
+ #include <text/main/map.h>
+ 
+ typedef struct {
+@@ -6675,6 +6677,10 @@ void renderFXParticle(SVECTOR *pos, int32_t size, RGB8 *color)
+ 	int32_t depth;
+ 	DVECTOR screenPos;
+ 
++	/* MOD (packet budget): see dw/world_object.h */
++	if (!modPacketFits(sizeof(POLY_FT4))) {
++		return;
++	}
+ 	prim = (POLY_FT4 *)GsGetWorkBase();
+ 	depth = worldPosToScreenPos(pos, &screenPos);
+ 	SetPolyFT4(prim);
+diff --git a/src/main/model.c b/src/main/model.c
+index 101bd25..37d7b87 100644
+--- a/src/main/model.c
++++ b/src/main/model.c
+@@ -2966,6 +2966,11 @@ void renderDigimon(instanceId)
+ 		if (ENTITY_TABLE[instanceId]->flatSprite != -1) {
+ 			continue;
+ 		}
++		/* MOD (packet budget): a bone emits at most one POLY_GT4 (52 B)
++		 * per primitive (attribute 0, no subdivision) */
++		if (!modPacketFits(((struct TMD_STRUCT *)pos->obj.tmd)->primn * sizeof(POLY_GT4))) {
++			continue;
++		}
+ 		if (instanceId == 1) {
+ 			if (PARTNER_WIREFRAME_TOTAL != 0x10) {
+ 				renderWireframed(&pos->obj, PARTNER_WIREFRAME_TOTAL);
+diff --git a/src/main/utils.c b/src/main/utils.c
+index ca4c043..a903f88 100644
+--- a/src/main/utils.c
++++ b/src/main/utils.c
+@@ -15,6 +15,8 @@
+ #include <dw/utils.h>
+ #include <dw/version.h>
+ 
++int32_t modPacketFits(int32_t bytes); /* MOD (packet budget): dw/world_object.h */
++
+ #if !VERSION_IS(US)
+ #define DIGIT_WIDTH 12
+ #else
+@@ -240,6 +242,10 @@ void renderNumber(int32_t color, int16_t x, int16_t y, int32_t n,
+ 	 * right edge stays); the original drew only the first n digits */
+ 	x -= CAPS_SHIFT(n, value, DIGIT_WIDTH);
+ 	n = CAPS_DIGITS(n, value);
++	/* MOD (packet budget): see dw/world_object.h */
++	if (!modPacketFits(n * (int32_t)sizeof(POLY_FT4))) {
++		return;
++	}
+ 	prim = (POLY_FT4 *)GsGetWorkBase();
+ 
+ 	convertValueToDigits(n, value, &count, buf);
+diff --git a/src/main/utils2.c b/src/main/utils2.c
+index 8574979..70ec721 100644
+--- a/src/main/utils2.c
++++ b/src/main/utils2.c
+@@ -25,6 +25,8 @@
+ #include <dw/ui.h>
+ #include <dw/utils.h>
+ #include <dw/version.h>
++
++int32_t modPacketFits(int32_t bytes); /* MOD (packet budget): dw/world_object.h */
+ #include <text/main/utils2.h>
+ 
+ #define shop_START		((char *)OVL_SHOP_BASE)
+@@ -209,6 +211,10 @@ void drawEntityText(int32_t color, int16_t n, int16_t x, int16_t y,
+ 	 * right edge stays); the original drew only the first n digits */
+ 	x -= CAPS_SHIFT(n, value, 7);
+ 	n = CAPS_DIGITS(n, value);
++	/* MOD (packet budget): see dw/world_object.h */
++	if (!modPacketFits(n * (int32_t)sizeof(POLY_FT4))) {
++		return;
++	}
+ 	convertValueToDigits(n, value, &count, buf);
+ 
+ 	for (i = count - 1; i >= 0; i--) {
+@@ -381,6 +387,10 @@ void drawEntityTextIcon(int16_t x, int16_t y, uint8_t u, int32_t otOffset)
+ {
+ 	POLY_FT4 *prim;
+ 
++	/* MOD (packet budget): see dw/world_object.h */
++	if (!modPacketFits(sizeof(POLY_FT4))) {
++		return;
++	}
+ 	prim = (POLY_FT4 *)GsGetWorkBase();
+ 	setEntityTextDigit(prim, 0x100, 0x1E6);
+ 	setRGB0(prim, 0x80, 0x80, 0x80);
+diff --git a/src/main/world_object.c b/src/main/world_object.c
+index eba168f..d880fd2 100644
+--- a/src/main/world_object.c
++++ b/src/main/world_object.c
+@@ -1,6 +1,25 @@
++#include <libgs.h>
++
+ #include <dw/world_object.h>
+ #include <dw/mod_fps.h>
+ 
++extern PACKET GS_WORK_BASES[2][0x14000];
++extern int32_t ACTIVE_FRAMEBUFFER;
++
++/* MOD (packet budget): see dw/world_object.h */
++int32_t modPacketFits(int32_t bytes)
++{
++	uint8_t *cursor;
++	uint8_t *base;
++
++	cursor = (uint8_t *)GsGetWorkBase();
++	base = (uint8_t *)GS_WORK_BASES[ACTIVE_FRAMEBUFFER & 1];
++	if (cursor < base || cursor > base + 0x14000) {
++		return 1;
++	}
++	return (base + 0x14000 - MOD_PACKET_RESERVE) - cursor >= bytes;
++}
++
+ 
+ WorldObject WORLD_OBJECTS[NUM_WORLD_OBJECTS + 1];
+ 
+-- 
+2.55.0
+

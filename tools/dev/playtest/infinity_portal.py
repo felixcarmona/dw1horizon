@@ -7,6 +7,7 @@ Strong partner stats bound the encounter; --cleanup may zero enemy HP after
 observing battle progress, so that mode proves loading rather than combat AI.
 """
 import argparse
+import bisect
 import json
 from pathlib import Path
 import struct
@@ -62,7 +63,67 @@ def sample(e):
     return row
 
 
-def encounter(e, out, species, quick, cleanup, video_seconds=35, all_join=False, city_entrance=False):
+def equip_only(e, technique):
+    """Leave the partner one learned and equipped technique (as seam_movesets' fixture)."""
+    ram = e.ram()
+    species = e.peek('PARTNER_ENTITY', 'i', ram)
+    para = e.A('DIGIMON_DATA') - 0x80000000 + species * 52
+    moves = list(ram[para + 35:para + 51])
+    assert technique in moves, f'species {species} cannot use technique {technique}: {moves}'
+    e.poke('PARTNER_ENTITY+0x40', bytes([100, 0, 0, 0, 46 + moves.index(technique), 255, 255, 255]))
+    e.poke('PARTNER_ENTITY+0x58', (1 << technique).to_bytes(16, 'little'))
+
+
+def gpu_monitor(e):
+    """Per render pass: packet-area peak and violations; every write to the ordering-table headers in battle."""
+    out = e.run('lua', f'''
+      local ffi=require('ffi')
+      local function word(a) return tonumber(ffi.cast('uint32_t*',PCSX.getMemPtr()+a-0x80000000)[0]) end
+      local function battle() return word({e.A('GAME_STATE')})%65536==1 end
+      IP.gpu={{passes=0,peak=0,violations=0,first=nil,writers={{}},moves={{}}}}
+      IP.bp[3]=PCSX.addBreakpoint({e.A('applyDrawOffset')},'Exec',4,'portal-packets',function()
+        local frame=word({e.A('ACTIVE_FRAMEBUFFER')})
+        if frame~=0 and frame~=1 then IP.gpu.violations=IP.gpu.violations+1; return end
+        local used=word({e.A('GsOUT_PACKET_P')})-({e.A('GS_WORK_BASES')}+frame*0x14000)
+        IP.gpu.passes=IP.gpu.passes+1
+        if used>IP.gpu.peak then IP.gpu.peak=used end
+        if used<0 or used>0x14000 or word({e.A('GS_ORDERING_TABLE')}+frame*20)~=12 then
+          IP.gpu.violations=IP.gpu.violations+1
+          if not IP.gpu.first then IP.gpu.first=string.format('used=%d frame=%d',used,frame) end
+        end
+      end)
+      IP.bp[4]=PCSX.addBreakpoint({e.A('GS_ORDERING_TABLE')},'Write',40,'portal-ot',function(address,width,cause)
+        if not battle() then return end
+        local pc=string.format('%08x',PCSX.getRegisters().pc)
+        IP.gpu.writers[pc]=(IP.gpu.writers[pc] or 0)+1
+      end)
+      return 'armed' ''').strip()
+    assert out == 'armed', f'GPU monitor: {out!r}'
+
+
+def gpu_report(e):
+    raw = e.run('lua', '''
+      local w={} for k,v in pairs(IP.gpu.writers) do w[#w+1]=string.format('"%s":%d',k,v) end
+      return string.format('{"passes":%d,"peak":%d,"violations":%d,"first":"%s","writers":{%s}}',
+        IP.gpu.passes,IP.gpu.peak,IP.gpu.violations,IP.gpu.first or '',table.concat(w,','))''').strip()
+    try:
+        report = json.loads(raw)
+    except ValueError:
+        raise AssertionError(f'GPU monitor report: {raw!r}') from None
+    # Only the ordering-table clear may write its headers; any other writer is a packet run past the area
+    # (a pass that crashes mid-frame never reaches the peak sample).
+    names = sorted((a, n) for n, a in e.table.items()
+                   if isinstance(a, int) and 0x80010000 <= a < 0x80200000 and '.' not in n)
+    def owner(pc):
+        i = bisect.bisect_right(names, (pc, chr(0x10ffff))) - 1
+        return names[i][1] if i >= 0 else '?'
+    report['strangers'] = {f'{pc}:{owner(int(pc, 16))}': n for pc, n in report['writers'].items()
+                           if owner(int(pc, 16)) not in ('GsClearOt', '_otc')}
+    return report
+
+
+def encounter(e, out, species, quick, cleanup, video_seconds=35, all_join=False, city_entrance=False,
+              technique=None, offense=999):
     evolve_fixture(e, species)
     # The type changes before the EVL scene releases its overlay and objects.
     # Wait for partner field control before starting another map or overlay.
@@ -79,9 +140,11 @@ def encounter(e, out, species, quick, cleanup, video_seconds=35, all_join=False,
     e.gs('set', 'gametime_running=0', 'partner.para.condition=0', 'partner.para.age=1',
          'partner.para.evoTimer=0', 'partner.para.remainingLifetime=1000',
          'partner.stats.hp=9999', 'partner.stats.mp=9999',
-         'partner.stats.currentHP=9999', 'partner.stats.currentMP=9999', 'partner.stats.off=999',
+         'partner.stats.currentHP=9999', 'partner.stats.currentMP=9999', f'partner.stats.off={offense}',
          'partner.stats.def=999', 'partner.stats.speed=999', 'partner.stats.brain=999')
     e.poke('MOD_OPT_QUICK_BATTLE', struct.pack('<i', quick))
+    if technique is not None:
+        equip_only(e, technique)
     if all_join:
         # Seed only the join roll; visibility, collision and the three-enemy
         # limit still choose the participants through native encounter code.
@@ -96,7 +159,7 @@ def encounter(e, out, species, quick, cleanup, video_seconds=35, all_join=False,
         e.wait(.2)
     e.poke('PAUSE_STATE', b'\0')
     assert e.warp(168 if city_entrance else 167, 0), 'source room did not load'
-    stem=f'partner-{species}-quick-{quick}'
+    stem=f'partner-{species}-quick-{quick}'+(f'-tech-{technique}' if technique is not None else '')
     before=sample(e)
     e.run('save', str(out/(stem+'-source.state')))
     rows=[before]
@@ -115,7 +178,9 @@ def encounter(e, out, species, quick, cleanup, video_seconds=35, all_join=False,
         while time.monotonic()<end:
             row=sample(e);rows.append(row)
             (out/(stem+'-samples.json')).write_text(json.dumps(rows,indent=2)+'\n')
+            row['gpu_monitor']=gpu_report(e)
             assert row['heap']['corrupt'] is None, row['heap']
+            assert row['gpu_monitor']['violations']==0 and not row['gpu_monitor']['strangers'], row['gpu_monitor']
             assert row['running'] and row['stream_failures'] == 0 and row['battle_cold_reads'] == 0, row
             assert row['gpu']['ot_lengths']==12 and row['gpu']['ot1_length']==12, row['gpu']
             if row['CURRENT_SCREEN']==166 and row['GAME_STATE']==1:
@@ -153,7 +218,8 @@ def encounter(e, out, species, quick, cleanup, video_seconds=35, all_join=False,
         assert any(len([n for n in r['enemies'] if n['species']==88])>=3 for r in rows), 'three Vermilimon absent'
         if video is not None:
             video.result()
-    result=dict(species=species,quick=quick,forced_cleanup=cleaned,all_join=all_join,city_entrance=city_entrance,samples=rows)
+    result=dict(species=species,quick=quick,technique=technique,forced_cleanup=cleaned,all_join=all_join,
+                city_entrance=city_entrance,gpu=gpu_report(e),samples=rows)
     (out/(stem+'.json')).write_text(json.dumps(result,indent=2)+'\n')
     print('PASS',stem,flush=True)
 
@@ -168,6 +234,9 @@ def main():
     p.add_argument('--ram8', action='store_true', help='repeat the same encounter with expanded emulator RAM')
     p.add_argument('--video-seconds', type=int, default=35, help='set 0 to keep samples and screenshots only')
     p.add_argument('--all-join', action='store_true', help='seed bystander join chances to require a triple battle')
+    p.add_argument('--technique', type=int, help='leave the partner only this learned and equipped technique')
+    p.add_argument('--offense', type=int, default=999, help='partner Offense (lower keeps the battle going longer)')
+    p.add_argument('--repeat', type=int, default=1, help='run every combination this many times')
     a=p.parse_args();out=a.out.resolve();out.mkdir(parents=True,exist_ok=True)
     e=ProofEmu(a.disc,a.exe,a.port,str(out/'emu'))
     e.expanded_ram = a.ram8
@@ -190,13 +259,19 @@ def main():
           IP.bp[2]=PCSX.addBreakpoint({e.A('loadColdAnimation')},'Exec',4,'portal-cold',function()
             if battle() then IP.coldReads=IP.coldReads+1 end
           end)''')
+        gpu_monitor(e)
         base=out/'base.state';e.run('save',str(base))
-        for species in a.species:
+        for run in range(a.repeat):
+          for species in a.species:
             for quick in a.quick:
                 e.run('load',str(base));e.run('resume')
-                encounter(e,out,species,quick,a.cleanup,a.video_seconds,a.all_join,a.city_entrance)
+                e.run('lua','IP.gpu.passes=0;IP.gpu.peak=0;IP.gpu.violations=0;IP.gpu.first=nil;IP.gpu.writers={}')
+                encounter(e,out,species,quick,a.cleanup,a.video_seconds,a.all_join,a.city_entrance,a.technique,a.offense)
+                print('gpu', json.dumps(gpu_report(e)), flush=True)
     except BaseException:
         e.run('shot',str(out/'failure.png'),check=False)
+        try:print('gpu at failure', json.dumps(gpu_report(e)), flush=True)
+        except Exception as error:print('gpu report failed', error, flush=True)
         e.run('save',str(out/'failure.state'),check=False)
         raise
     finally:e.stop()
