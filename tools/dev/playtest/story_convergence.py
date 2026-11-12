@@ -320,6 +320,35 @@ def postgame(r):
     return out
 
 
+def lobby_postgame(r):
+    # After the ending every way in loads the Arena lobby's screen 223: Myotismon keeps it at night after R2, beside Greymon,
+    # Airdramon and MetalGreymon. By day there is no Kotemon (223 has no heap for it: it trains on 208 only).
+    r.set(game_beaten=True, root2=True, myotismon_joined_city=True)
+    r.recruit(Kotemon=True, Myotismon=True, Airdramon=True, MetalGreymonVirus=True)
+    kotemon, myotismon = r.number('Kotemon'), r.number('Myotismon')
+
+    def cast():
+        return {slot: r.npc(slot) for slot in range(8) if r.npc(slot) is not None}
+    r.e.gs('set', 'hour=10', 'minute=0')
+    r.go(223, entry=1)
+    day = cast(); r.shot('lobby-223-day')
+    assert {178, 131, 179} <= set(day.values()) and not {kotemon, 351} & set(day.values()), day    # Greymon, Airdramon, MetalGreymon models
+    r.e.gs('set', 'hour=21', 'minute=0')
+    r.go(223, entry=2)    # the stairs: the camera there looks at the east corner, so the pad walks below are camera-true
+    night = cast(); r.shot('lobby-223-night')
+    added = {s: v for s, v in night.items() if day.get(s) != v}
+    assert len(night) == len(day) + 1 and len(added) == 1 and set(added.values()) & {myotismon, 177}, (day, night)
+    # Stand on the open floor west of it, 400 away, and walk up to it with the pad as a player does (RIGHT runs toward it
+    # under this screen's camera) before talking.
+    r.e.gs('move', '700', '-450'); r.e.gs('approach', str(next(iter(added))), '400'); r.e.wait(.5)
+    r.e.press('RIGHT', 40); r.e.wait(.5); r.shot('lobby-223-myotismon')
+    r.e.press('CONFIRM', 6); r.e.wait(1.5)
+    talked = r.e.peek('TAMER_STATE', 'b') != 0; r.shot('lobby-223-myotismon-talk')
+    r.settle(223)
+    assert talked, 'Myotismon did not answer'
+    return dict(day=day, night=night)
+
+
 def old_saves(r):
     # 4.4: game beaten, nobody came, no rewards, Airdramon dead, no portal.
     r.set(game_beaten=True, airdramon_killed=True, trigger355=False, myotismon_joined_city=True, myotismon_missing=True)
@@ -337,7 +366,8 @@ def old_saves(r):
 
 
 CASES = dict(skullgreymon=skullgreymon, lab_corridor=lab_corridor, angemon=angemon, monzaemon=monzaemon, gear_old_save=gear_old_save,
-             post=post, factory=factory, motor=motor, devimon=devimon, postgame=postgame, old_saves=old_saves)
+             post=post, factory=factory, motor=motor, devimon=devimon, postgame=postgame, lobby_postgame=lobby_postgame,
+             old_saves=old_saves)
 
 
 def main():
