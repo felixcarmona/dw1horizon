@@ -175,15 +175,13 @@ class ModelProvider(unittest.TestCase):
                          ('tools.models.field_animations.magnamon', '197-magnamon-native'))
         assignments['197'] = previous_magnamon[1:]
         assignments['195'] = previous_flamedramon[1:]
-<<<<<<< HEAD
         # Creepymon's clips (creepymon_gait.py) run on the celebration build and replace its field slots.
         self.assertEqual(assignments['312'], ('tools.models.field_animations.creepymon_gait', '312-creepymon-chibi'))
         assignments['312'] = ('tools.models.field_animations.celebrations', '312-creepymon-chibi')
-=======
+
         # Pharaohmon's tired walk and run (pharaohmon_gait.py) run on top of the celebrations recipe.
         self.assertEqual(assignments['319'], ('tools.models.field_animations.pharaohmon_gait', '319-pharaohmon-chibi'))
         assignments['319'] = ('tools.models.field_animations.celebrations', '319-pharaohmon-chibi')
->>>>>>> 17416644 (Give Pharaohmon a tired walk and a run on planted feet)
         # Celebration curves run after the final proportions. Unwrap them to
         # keep guarding all the original field recipes and output names.
         for sid, row in celebrations.items():
