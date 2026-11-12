@@ -103,13 +103,13 @@
     },
     "zones/libraries/s209/script.dws": {
       "original_sha256": "6a27f351779457ff546a842794e5cabf0597c379866ff22d29dcd3e6028bf371",
-      "reason": "Horizon bulk card purchase menu; DWS synchronized with the authored Python source",
-      "authored_sha256": "397f6b147af965583ae6c7645ea7d35ef54005de29545107d58ef2a7b3a17816"
+      "reason": "Horizon bulk card purchase menu; the raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; DWS synchronized with the authored Python source",
+      "authored_sha256": "07562f83d1f1e7cbeafbb38450e9010d76bd44bf77bffadf75a14b7ee1cb23bf"
     },
     "zones/libraries/s209/script.py": {
       "original_sha256": "4afe64213b7bff228ea0ac4875b969fc33cd86cf2bdcd9992ade449a07ad366a",
-      "authored_sha256": "516eb35fb21111538e74e983a0ce0cd666364dea04122af75af91c330fade116",
-      "reason": "Horizon bulk card purchase menu"
+      "authored_sha256": "5a1e8a94620ffb3f2dacab55240e2e268bb970541d8b270ca3d2862b5ca152e3",
+      "reason": "Horizon bulk card purchase menu; the raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's"
     },
     "zones/libraries/s219/script.dws": {
       "original_sha256": "a66ba54da72f04a01196c435723097b04fe5f5d64ff723fd31fbba2602b691c7",
@@ -1138,13 +1138,13 @@
     },
     "zones/arena-lobby/s168-208-223/script.dws": {
       "original_sha256": "e40df84d29ee23a1f0c242b6888fc47fd773b3a0ca0ce2fd018ead8a60477a9c",
-      "authored_sha256": "4b7cf41793c2f24742c5d976492e78c06a7ab7bfef0187a8d2aebdabaf2dd649",
-      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
+      "authored_sha256": "98b3f23d28a8a7661e22599f22e46fecbd4f90a0e886a3a8c16dffaad0808c40",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; the raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; DWS synchronized with the authored Python source"
     },
     "zones/arena-lobby/s168-208-223/script.py": {
       "original_sha256": "c571c7457ed7187eff0ebd4c3d6c94b4ee8bc0f442023e1717e34a01bdb52eac",
-      "authored_sha256": "88a752ad23117f04a94868480b7550f59e4356cbd10b31553186239d38fd18c0",
-      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
+      "authored_sha256": "db1550b95e0fe47a620e7a8781f50cf99ea02c5ccc2d5c922a66c1d1f27363e0",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; the raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's"
     },
     "zones/digimon-curling/s191-235/script.dws": {
       "original_sha256": "04e218925840d4a5aee677975e2318b2c4472ce7be6ddb3b8d935dfb9e5db671",
@@ -1248,13 +1248,13 @@
     },
     "zones/libraries/s213/script.dws": {
       "original_sha256": "e89ee938109e81add7bdbf214c6addbbf1ce911aec5a663b4069287ecf02a502",
-      "authored_sha256": "0b0543173cd8b99c60107b2354f1a5d17408e535593ea2d0973aa7d843468095",
-      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
+      "authored_sha256": "9f6a7589906d3bb5b3f7747939d8d89f6ac6de330c70c488f9eb4410c9f9e749",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; the raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; DWS synchronized with the authored Python source"
     },
     "zones/libraries/s213/script.py": {
       "original_sha256": "1de7be9296f46c9c63231cc9410ff2e7c85e15366265eee47483f1a4bfe292b9",
-      "authored_sha256": "eec592ad144fd5e36e4e2c269594d389ec157a7d9eb607876cbfe37cf2c36e3d",
-      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
+      "authored_sha256": "89157081bbee5b6b00c35b1a7797d172d99eaad13755bea6a0f8e76891776ec4",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; the raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's"
     },
     "zones/mt-infinity/s184-225/script.dws": {
       "original_sha256": "fc0591047e6da560706fa90337a60c5469433532258458e5920f397d6b0de1c3",
@@ -1285,6 +1285,16 @@
       "original_sha256": "3fd25f09087e468db96980fa1ee46136cf79b28e61ef11e923cc1c76c371fef3",
       "authored_sha256": "d33b93f8ab555347c86b2da1348311c1ced1be168606c6c143b87805db652d7d",
       "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
+    },
+    "zones/beetle-land/s102-106/script.py": {
+      "original_sha256": "2662c702ae7d0e2ef643469a0e9e5f314448e4f073858d1ce37fffa91e59176c",
+      "authored_sha256": "cb1c61ba7daec02bf81521e0c61e9984c816d81323183f9068870b8cf1c55e68",
+      "reason": "The raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's"
+    },
+    "zones/beetle-land/s102-106/script.dws": {
+      "original_sha256": "ab4a7cb6b3cb114a13fb53142b5dac4b322f8c91b05b89a213bb04d62e34a6c7",
+      "authored_sha256": "152d18c68890e5f6e82cf1613c0c8542c63ec20980c39f26e13bea457bd4baf5",
+      "reason": "The raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; DWS synchronized with the authored Python source"
     }
   }
 }
