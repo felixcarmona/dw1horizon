@@ -495,6 +495,15 @@ about the line to the elbow that keeps it nearest its place on the torso. Slots 
 change with the idle; the resident animation buffer ends at 99,238 of 100,352 bytes. `tools/test_cyclonemon_gait.py`
 covers it.
 
+Ebidramon's (305) idle, walk, tired walk and run were four streams with the same keys (a 60-tick tail curl, only the root
+faster) and its battle idle (slot 33) was that curl sunk 40 units into the floor. Nothing but the tail fan can reach the
+floor (the six swimmerets end 200 units above it), so `field_animations/ebidramon_swim.py` (offline model delta) makes every
+clip a hover like Piedmon's, slow and smooth (one stroke per loop): the fan skims the floor at its lowest and never goes through it. Idle 96 ticks (slots 1, 18, 33
+follow it), walk 48 ticks at 22 units a tick, tired walk 64 at 14, run 32 at 40 (slot 36 follows it). The abdomen flexes as a
+wave that ends in the fan, the swimmerets row front to back, the arms and antennae lag the body. Stance slip does not apply
+(no foot is planted). The resident animation buffer ends at 85,254 of 100,352 bytes; the encoder tolerance is 8 except for
+the body bone (1), which keeps the small bob. `tools/test_ebidramon_swim.py` covers it.
+
 Crabmon's (284) idle, walk, condition walk and run were one pose cycle with only the root faster (23/25/25/25 ticks,
 speeds 16/10/48, no leg ever stepped, the shell lay almost on the floor). `field_animations/crabmon_scuttle.py` is an
 offline model delta: six two-bone legs (bones 2-13) are solved with damped least squares so every tip stands still on the
