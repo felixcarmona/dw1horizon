@@ -113,6 +113,11 @@ try {
       await page.waitForFunction(() => document.querySelector('[id="changelog-0.0.1"]').getBoundingClientRect().top >= 0);
       assert.equal(await visible(), true, `${lang}/${size}: hash-change target visible`);
       assert.deepEqual(await page.$$eval('#changelog details', (els) => els.map((el) => el.open)), [false, true]);
+      // A re-render with the hash still set (a disc chosen, a language change) must not scroll back to the target.
+      await page.evaluate(() => { document.documentElement.style.scrollBehavior = 'auto'; scrollTo(0, 0); });
+      await page.evaluate((l) => { const m = document.querySelector('#lang'); m.value = l; m.dispatchEvent(new Event('change')); }, lang);
+      await new Promise((r) => setTimeout(r, 300));
+      assert.equal(await page.evaluate(() => scrollY), 0, `${lang}/${size}: re-render keeps the scroll position`);
       // A link inside a summary also works with the keyboard and never collapses it.
       const link = '[id="changelog-0.0.1"] .changelog-link';
       await page.focus(link);

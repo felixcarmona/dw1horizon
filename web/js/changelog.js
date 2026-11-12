@@ -15,13 +15,13 @@ export function releasedVersions(versions, releaseTag) {
 }
 
 let entries = null;
-function revealVersion() {
+function revealVersion(scroll = true) {
   // Match IDs directly: arbitrary or unavailable hashes leave the page alone.
   const target = [...document.querySelectorAll('.changelog-version')]
     .find((entry) => `#${entry.id}` === location.hash);
   if (!target) return;
   target.open = true;
-  target.scrollIntoView({ block: 'start', behavior: 'instant' });
+  if (scroll) target.scrollIntoView({ block: 'start', behavior: 'instant' });
 }
 
 export async function setupChangelog(currentRelease) {
@@ -30,11 +30,13 @@ export async function setupChangelog(currentRelease) {
     currentRelease,
   ]);
   entries = releasedVersions(data.versions, current?.release_tag);
-  window.addEventListener('hashchange', revealVersion);
-  renderChangelog();
+  window.addEventListener('hashchange', () => revealVersion());
+  renderChangelog(true);
 }
 
-export function renderChangelog() {
+// Only the first render (page load) may scroll to a #changelog-x hash; later renders (a disc chosen, a language
+// change) keep the player where they are.
+export function renderChangelog(scroll = false) {
   if (!entries) return;
   const section = document.querySelector('#changelog'), list = document.querySelector('#changelog-list');
   const make = (name, text) => Object.assign(document.createElement(name), { textContent: text });
@@ -79,5 +81,5 @@ export function renderChangelog() {
     list.append(details);
   });
   section.hidden = entries.length === 0;
-  revealVersion();
+  revealVersion(scroll);
 }
