@@ -91,6 +91,7 @@ if [ -f "$PATCHED/src/main/main_menu.c" ]; then
     run save-capacity $PY tools/dev/saves/capacity.py "$PATCHED"
     run save-inline $PY tools/dev/saves/inline.py "$PATCHED"
     run dirt-pile-collision $PY tools/dev/playtest/dirt_pile_collision.py "$PATCHED"
+    run drop-reach-host $PY tools/dev/playtest/drop_reach_host.py "$PATCHED"
 else
     skip save-capacity "needs prepared patched decompilation"
 fi
