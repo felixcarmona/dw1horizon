@@ -75,6 +75,8 @@ class ModelProvider(unittest.TestCase):
             '302': ('302', 'tools.models.field_animations.native_binding', '302-hiandromon-native'),
             # KingEtemon wears native Etemon's rig and programs.
             '303': ('303', 'tools.models.field_animations.native_binding', '303-kingetemon-native'),
+            # SkullSatamon wears a native donor's rig and programs.
+            '314': ('314', 'tools.models.field_animations.native_binding', '314-skullsatamon-native'),
             # Assaultmon wears native Centarumon's rig and programs.
             '310': ('310', 'tools.models.field_animations.native_binding', '310-assaultmon-native'),
             # PrinceMamemon wears native Mamemon's rig and programs.
@@ -173,6 +175,13 @@ class ModelProvider(unittest.TestCase):
                          ('tools.models.field_animations.magnamon', '197-magnamon-native'))
         assignments['197'] = previous_magnamon[1:]
         assignments['195'] = previous_flamedramon[1:]
+        # Creepymon's clips (creepymon_gait.py) run on the celebration build and replace its field slots.
+        self.assertEqual(assignments['312'], ('tools.models.field_animations.creepymon_gait', '312-creepymon-chibi'))
+        assignments['312'] = ('tools.models.field_animations.celebrations', '312-creepymon-chibi')
+
+        # Pharaohmon's tired walk and run (pharaohmon_gait.py) run on top of the celebrations recipe.
+        self.assertEqual(assignments['319'], ('tools.models.field_animations.pharaohmon_gait', '319-pharaohmon-chibi'))
+        assignments['319'] = ('tools.models.field_animations.celebrations', '319-pharaohmon-chibi')
         # Celebration curves run after the final proportions. Unwrap them to
         # keep guarding all the original field recipes and output names.
         for sid, row in celebrations.items():
@@ -187,6 +196,9 @@ class ModelProvider(unittest.TestCase):
         # So are Dinohyumon's (dinohyumon_gait.py).
         self.assertEqual(assignments['308'], ('tools.models.field_animations.dinohyumon_gait', '308-dinohyumon-chibi'))
         assignments['308'] = ('tools.models.field_animations.chibi', '308-dinohyumon-chibi')
+        # Knightmon's tired walk and run (knightmon_gait.py) are the celebration's base generator and rebuild its chibi proportions first.
+        self.assertEqual(assignments['321'], ('tools.models.field_animations.knightmon_gait', '321-knightmon-chibi'))
+        assignments['321'] = ('tools.models.field_animations.chibi', '321-knightmon-chibi')
         # Antylamon's smoothed walk (antylamon_polish.py) runs on top of its chibi proportions the same way.
         self.assertEqual(assignments['309'], ('tools.models.field_animations.antylamon_polish', '309-antylamon-chibi'))
         assignments['309'] = ('tools.models.field_animations.chibi', '309-antylamon-chibi')

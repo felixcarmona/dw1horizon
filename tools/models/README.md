@@ -59,6 +59,19 @@ with their outward splay, hips against shoulders, swinging, opening fists and a 
 `python3 -m tools.models.field_animations.marsmon_gait --source SRC.MMD --out AFTER.MMD` (SRC from `edit.py get 297`
 before the change), then `edit.py put 297 AFTER.MMD`. Test: `tools.test_marsmon_gait` (`MARSMON_MODEL`).
 
+Species 318 (Gallantmon): `field_animations/gallantmon_gait.py` writes slots 0, 2, 3 and 4 again (a 120-tick idle, a 24-tick walk, a 30-tick tired
+walk and an 18-tick run with a flight phase, at 16, 11 and 38 units a tick) with `quadruped.py` on the model's own two legs: planted soles, a weighted
+knight's body (hips against shoulders, the lance arm and the shield arm swinging apart, pauldrons following, plume and cape trailing late). Slots 33, 35 and 36
+play the new idle, walk and run. `python3 -m tools.models.field_animations.gallantmon_gait --source SRC.MMD --out AFTER.MMD` (SRC from `edit.py get 318`
+before the change), then `edit.py put 318 AFTER.MMD`. Test: `tools.test_gallantmon_gait` (`GALLANTMON_MODEL`).
+
+Species 320 (Growlmon): `field_animations/growlmon_gait.py` writes slots 0, 2, 3 and 4 again (a 96-tick idle, a 32-tick walk, a 44-tick tired
+walk and a 28-tick run at 16, 11 and 36 units a tick, each walking clip two different cycles) with `quadruped.py` on the model's own two
+legs: planted feet, hips against shoulders, swinging arms, springs on neck, head and jaw and a three-link tail that trails the hips; a heavy
+brute's character, and blinking eyes (`growlmon_face.py`: eye frames in spare texels, pasted over the painted eye by texture-move events).
+`python3 -m tools.models.field_animations.growlmon_gait --source SRC.MMD --out AFTER.MMD --tex SRC.TIM --out-tex AFTER.TIM` (SRC from
+`edit.py get 320` before the change), then `edit.py put 320 AFTER.MMD AFTER.TIM`. Test: `tools.test_growlmon_gait` (`GROWLMON_MODEL`).
+
 
 Species 304 (Divermon): `field_animations/divermon_gait.py` writes slots 0, 2, 3 and 4 again (a 240-tick idle; a walk, tired walk and
 run of two different strides each, 32, 36 and 24 ticks at 18, 12 and 36 units a tick) with `quadruped.py` on the model's two legs: boots flat with a 7 degree splay,
@@ -77,6 +90,22 @@ walk, tired walk and run of two different cycles each (32, 60 and 28 ticks) at 1
 30 degree outward splay; cycle B lifts, lands and bobs unlike cycle A and the clip eases from one into the other (`compose` hook in
 `quadruped.py`), and the arms, head, feather and loincloth follow through on loose springs (the chibi clips flipped the feet by up to 167 degrees and slid the tired walk's soles 172 %).
 Bound in `content/models/imports/species.py`; test `tools.test_dinohyumon_gait` (`DINOHYUMON_MODEL`, from `edit.py get 308`).
+
+Species 319 (Pharaohmon): `field_animations/pharaohmon_gait.py` is a field overlay on top of the celebrations recipe: it
+rewrites slots 3 (tired walk, 56 ticks at 11 units a tick) and 4 (run, 24 ticks at 36) with `quadruped.py` on the two legs,
+planted soles and two different cycles each (the `compose` hook); the idle and the walk are the celebrations build's, untouched.
+`python3 -m tools.models.field_animations.pharaohmon_gait --source EDIT.MMD --out AFTER.MMD` (EDIT.MMD from `edit.py get 319`).
+Bound in `content/models/imports/species.py`; test `tools.test_pharaohmon_gait` (`PHARAOHMON_MODEL`, from `edit.py get 319`).
+
+Species 321 (Knightmon): `field_animations/knightmon_gait.py` is the base generator of its celebration overlay (the one
+that keeps slots 11 and 42): it applies the chibi proportions and then writes the tired walk (slot 3, 22 ticks at 11.5
+units a tick) and the run (slots 4 and 36, 16 ticks at 38) again with `quadruped.py` on the two legs (thigh, knee guard that
+follows, knee, foot, toe plate). The two legs step half a cycle apart with the same lift and stance, so the tired walk is
+even (the previous clip stood the left foot 10 ticks and the right 5, slid 79 % and lifted 74 against 58 units: a limp; the
+previous run slid 61 and 26 %, 17 ticks a cycle, root steps 26 to 50). The arms swing as pendulums (the sword arm half as much),
+the forearm and the sword late, head, cloak, scabbard and loincloth on loose springs. The idle and the walk are untouched
+byte for byte. Bound in `content/models/imports/celebrations.json` (`base_generator`); test `tools.test_knightmon_gait`
+(`KNIGHTMON_MODEL`, from `edit.py get 321`).
 
 Species 202 (Submarimon): `repair_submarimon.py` removes four stencil faces that sit on its body plates and keeps the
 rear screw turning in every clip (see player-model-fixes.md); `python3 -W ignore -m unittest tools.test_submarimon`.
@@ -554,6 +583,19 @@ condition walk 36 at 13 (one leg at a time, low and hunched), run 16 at 44 (with
 one arm lifting, a front paw). The torso turns against the pelvis, the head stays level and lags it, the arms and sleeves are
 delayed pendulums. Slots 33, 35 and 36 follow the idle, walk and run; the celebration overlay keeps its own slots and its
 reviewed-source pin now names this model. `tools/test_arukenimon_gait.py` covers it.
+
+Fujinmon's (317) walk, tired walk and run (26/29/16 ticks at 21.9/17.3/52.8 units a tick) drove the legs with rotations from
+another rig: the soles slid over the floor (44, 120 and 83 % of the body's speed on average, 460 % at worst), the run kicked a
+foot 200 units up for one tick and the chest turned 56 degrees against the pelvis in a walk. `field_animations/fujinmon_gait.py`
+is an offline model delta on the planted-foot solver (`quadruped.py`): both legs are solved so each sole stands still in its
+stance, and a hand-written body drives everything above them (pelvis and chest turning against each other, the body sinking on
+each landing, the cannon arms swinging against the legs as delayed pendulums, the head steady, the scarf trailing). Walk 20 ticks
+at 18 units, tired walk 28 at 12 (low, chest and head down), run 14 at 40 (a flight phase, 10 degrees more lean, arms pumping).
+The spiked pauldrons (bones 6 and 10) are rotors: the model's own idle and run turn them about the local x axle, but its walk
+and tired walk did not, and the first version of this gait stopped them; now they turn one whole turn each loop at 18, 13 and
+26 degrees a tick (walk, tired walk, run). Only slots 2, 3 and 4 (and the battle run, slot 36, which aliases the run) change; the idle is the model's own and slot 35, a
+battle program of its own, is untouched. Stance slip is 3 to 6 % on average and 32 % at worst; the resident animation buffer
+ends at 78,620 of 100,352 bytes. `tools/test_fujinmon_gait.py` covers it.
 
 Magnamon (197) is bound to native Leomon (`native_binding.py`). Its boots kept
 the source's fighting stance, turned 35 and 93 degrees outward, its fists kept
@@ -1045,3 +1087,17 @@ SlashAngemon (300): `field_animations/slashangemon_gait.py` rewrites only the wa
 with planted-foot IK; the idle, tired walk, run and every other program stay the import's byte for byte (`tools.test_slashangemon_gait` checks a hash of them):
 `python3 -m tools.models.field_animations.slashangemon_gait --source BEFORE.MMD --out AFTER.MMD` on the model before this change (`edit.py get 300`),
 then `edit.py put 300 AFTER.MMD`. The slot has no aliases, so nothing else follows it. The upper body is authored per part as world rotations on top of the planted legs (a chest counter-turn, arm and blade pendulums, wing breathing, a trailing skirt); `upper_motion` measures it.
+
+Taomon (315): `field_animations/taomon_arms.py` is a post-chibi stage (`post_generator` in `content/models/imports/chibi.json` row 315): it turns only the two
+sleeves' first bones (20, 25; rotation) tick by tick in slots 0 (and 33), 2, 3 and 4 so no sleeve piece goes through a leg, an apron or the tail. The turns are
+stored in `content/models/imports/taomon-arms.json`, found offline with `python3 -m tools.models.field_animations.taomon_arms --source CHIBI_OUTPUT.MMD
+--search content/models/imports/taomon-arms.json` (about two minutes) and applied by every build (`--out AFTER.MMD` applies them to a file). It refuses any input
+but the chibi output it was reviewed on. Because it sits after the chibi overlay, the importer delta and the chibi/animation-repair pins do not move; only
+`tools/derive/recipes/species-pins.json` `imports["315"]` does. `tools.test_taomon_arms` (needs `edit.py get 315`) bounds the sleeve-against-leg,
+apron and tail clash on every tick of the four clips and checks that only the two bones' rotation changed.
+
+Sakuyamon (316): `field_animations/sakuyamon_gait.py` re-solves only the legs (thigh, shin, ankle rotations and the body's height by a few units) of the walk, tired walk and run (slots 2, 3, 4)
+onto two steady lanes with a toe-out, keeping the import's ankle heights and fore-aft positions, root motion and every other channel (`tools.test_sakuyamon_gait` hashes the other programs and bounds the per-tick
+lane gaps): `python3 -m tools.models.field_animations.sakuyamon_gait --source BEFORE.MMD --out AFTER.MMD` on the model before this change (`edit.py get 316`), then `edit.py put 316 AFTER.MMD`.
+`lane_gaps` measures the sideways gap of the thigh, shin, foot and toe meshes, the knee and ankle distance and the leg-on-leg penetration per tick.
+Its run is stood up by a second step, `field_animations/sakuyamon_posture.py` (the chest's forward lean cut to 30 %, the pelvis and head turned back by the same so the legs keep their pose; `edit.py get 316`, `python3 -m tools.models.field_animations.sakuyamon_posture --source BEFORE.MMD --out AFTER.MMD`). Its hair is a third step, `field_animations/sakuyamon_hair.py`, on the posture step's output (`edit.py get 316` on the commit before, then `python3 -m tools.models.field_animations.sakuyamon_hair --source BEFORE.MMD --out AFTER.MMD` and `edit.py put 316 AFTER.MMD`): bones 15-18 only (the root of 16 shifted back along the chest's back and 16, 17, 18 turned back, per tick, the least that clears the chest, pelvis, legs, arms and staff, softened over the loop; the hair in the run needs only a shift and a few degrees), the idle included. `hair.measure` counts the hair's vertices inside each part group per tick, and `tools.test_sakuyamon_gait` bounds them and pins the leg gait.

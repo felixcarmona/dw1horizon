@@ -115,16 +115,16 @@
      }
     ],
     "delta": "content/modeldelta/deltas/dw3-us/320-Growlmon.MMD.mdelta",
-    "delta_sha256": "fb2344599238120e046183e127b5f61fcc0ea0860c72e550fa289deb23d46bb5",
-    "sha256": "3873b4488c9ae5e16adb19cc2ae40baa28e813cae60cfd30c46d0e656ebba079",
-    "size": 102774
+    "delta_sha256": "7a5938ff22540030a200e55b2e9a7ff488041cb70fb6ad39786bd8a877695aeb",
+    "sha256": "6d4dd774bec153edbd155fa02ea66e41697a3a988d1d1fbb5ca9687ae75da36a",
+    "size": 113196
    },
    "from": {
-    "sha256": "a407d8adc1f47dab2ffcebd03d6ee568d85930c55bfeb0aa8a7c774b0e764142",
-    "delta_sha256": "e5fb3f948102e5923b2b5cfebefc1672b1c611dda7144f5e273f5c2459d04663",
+    "sha256": "3b08396a8ac6f82b3ee0a143802f379cef7d06339418c9e920bb803d45b69958",
+    "delta_sha256": "e581cf58bc1c0699b689a85a44897a39a3b2255d49bde132ea6263485e2d1ef3",
     "add_bytes": [
-     13509,
-     13495
+     26554,
+     26540
     ],
     "foreign_windows": 0,
     "objects_ours": [
@@ -163,7 +163,6 @@
      2,
      35,
      3,
-     36,
      15,
      16,
      17,
@@ -194,6 +193,7 @@
      50,
      56,
      4,
+     36,
      5,
      7,
      8,

@@ -371,6 +371,7 @@ A **field overlay** is a reviewed recipe that rewrites the field slots of one sp
 | `crabmon_scuttle.py` | Crabmon 284 | offline model delta: six legs solved with damped least squares so each tip stands still in its stance (soles on the floor), the shell rides above them; idle 84 ticks (shared with slots 1 and 18), walk 22 at 15 units/tick (tetrapod pairs), condition walk 28 at 10 (a wave, low shell, drooping claws), run 14 at 38 (tripods with a flight phase); feet slip about 1 %; claws swing, snap and pull in |
 | `dokugumon_gait.py` | Dokugumon 298 | offline model delta: six three-bone legs solved with damped least squares so each tip stands still in its stance (soles on the floor), the body raised and the feet wide; two alternating groups of three; idle 72 ticks (shared with slot 33), walk 20 at 18 units/tick, condition walk 32 at 12 (stalking, low body), run 16 at 40 (flight phase); the abdomen swings against the body, fangs and palps move softly; stance slip under 2 % |
 | `arukenimon_gait.py` | Arukenimon 311 | offline model delta: six two-bone legs solved with damped least squares so each tip stands still in its stance, the body raised and the feet wide; two alternating groups of three; idle 96 ticks (shared with slot 33, breathing, glances, a lifting arm and a paw), walk 24 at 24 units/tick, condition walk 36 at 13 (one leg at a time, low hunched body), run 16 at 44 (flight phase); the torso turns against the pelvis, the head stays level and lags, the sleeves are delayed pendulums; the torso turns 15-26 degrees, pitches 10-18 and rolls 11-17 over a loop; stance slip 1 % (walk), 2 % (condition walk), 0.4 % (run) |
+| `fujinmon_gait.py` | Fujinmon 317 | offline model delta: two two-bone legs planted in stance, a hand-written body (pelvis and chest turn against each other, the body sinks on each landing, the cannon arms are delayed pendulums, the scarf trails, the pauldron rotors turn one whole turn a loop: 18, 13 and 26 degrees a tick); walk 20 ticks at 18 units/tick, condition walk 28 at 12, run 14 at 40 (flight phase, forward lean); the idle and slot 35 are untouched; stance slip 3 to 6 % on average |
 | `deramon_gait.py` | Deramon 286 | idle (120 ticks, shared by slot 33), walk (16 ticks, 16 units/tick), tired walk (20, 10) and run (10, 38) for an 8-bone rig whose shell (bone 1) parents every other bone: each pose is written in the world and turned into local values, so the feet are placed (flat and still in stance, slip under 10 %, lift 16-38 units, ankle height set by the lowest sole point), the body, head and wings move as one group about a floor point (roll over the loaded foot, yaw, lean, bob, sway), and the shell takes the same motion through a damped spring per harmonic: it lags, rocks and bounces, and is kept off the floor; the idle keeps the original blink; slots 35 and 36 play other programs and are untouched. Test: `tools/test_deramon_gait.py` |
 | `ebidramon_swim.py` | Ebidramon 305 | offline model delta: the shrimp dragon has no limb that reaches the floor but its tail fan, so every clip is a hover (the fan skims the floor at its lowest, never through it): idle 96 ticks (breathing, claw and pincer gestures; slots 1, 18 and 33 follow it), walk 48 at 22 units/tick, tired walk 64 at 14 (low, nose down), run 32 at 40 (pitched forward, big bounce; slot 36 follows it); the abdomen flexes as a wave with the fan last, swimmerets row front to back, arms swing as delayed pendulums, antennae trail. Test: `tools/test_ebidramon_swim.py` |
 | `shakkoumon.py` | Shakkoumon 214 | idle, walk, condition walk and run authored from the rest pose: breathing and weight shift; a waddle (14 ticks, 20 units/tick) rolling over the standing foot, pelvis against chest, arms and head late, soles carried back at the ground speed (slip 26 %); a slower drooping condition walk (20 ticks, 12); a leaning run (12 ticks, 42) with a short flight; pelvis height set per tick on the lowest sole |
@@ -383,6 +384,7 @@ A **field overlay** is a reviewed recipe that rewrites the field slots of one sp
 
 | `saberleomon_gait.py` | SaberLeomon 258 (after the field pace pass) | legs re-timed through IK (lateral-sequence walk, bounding gallop with a flight phase), spine flex and bounce from foot support, delayed head share and bob, closed-loop trailing tail carried up in the run, forelegs set back 25 units, head carried by a fitted per-tick lift/pitch table so no leg triangle crosses the mane or jaw; cycle lengths, root travel, mesh and other programs exact |
 
+| `taomon_arms.py` | Taomon 315 (after the chibi overlay, its `post_generator` stage) | turns the two sleeves' first bones (rotation only) tick by tick in the idle, walk, tired walk and run so no sleeve piece crosses a leg, apron or the tail; the turns (outward about the world's fore-aft axis, a swing back about the side axis on the run's raised knee) are the smallest clear ones, smoothed and periodic, stored in `content/models/imports/taomon-arms.json`; nothing else changes (`tools.test_taomon_arms`) |
 | `okuwamon_limbs.py` | Okuwamon 259 | offline model delta: the idle kept as it was (clean limbs, closed-loop wings), the tired rest/walk/tired walk/run written as a four-legged diagonal gait solved per leg (planted flat feet, short steps for the 250-unit feet), pincers carried forward, a side-to-side waddle of pelvis, chest and pincers; cycles 20/10/12/8, root speeds 15/10/36 |
 | `raremon_drag.py` | Raremon 264 | offline model delta: walk, tired walk and run rewritten as a drag-crawl (the idle and its alias stay); each arm is solved by two-bone IK (shoulder and elbow, no clamping) to a flat hand planted in the world during the pull while the hump surges forward on a von Mises burst of speed and the other arm reaches; lower body and tail lie on the floor as lagging springs, head and jaw follow late; cycles 16/24/12 (walk/tired walk/run), root speeds 15/10/35 |
 | `skullmammothmon_clash.py` | SkullMammothmon 268 | offline model delta: walk, tired walk and run (slots 2, 3, 4, 36; 35 shares slot 2) with a per-tick neck pitch/lift and small shoulder/knee/ankle turns of the front legs so no front-leg triangle crosses the head, trunk or tusks; every other bone, timing and program unchanged, idle untouched |
@@ -805,6 +807,19 @@ shorter stride): 20 ticks at 19.3, 30 at 12.9 and 21 at 36.6 units per tick; the
 (the donor's own heel-toe roll slips as much), above the usual target, and the run's closing tick turns the chest through a
 gimbal pose, as the donor's file does. The resident model uses 96,118 of 100,352 bytes.
 
+SkullSatamon uses native Ogremon's skeleton (18 bones, `CHDAT/MMD1/OGRE.MMD`) at scale 1, bound by `native_binding.py`, with the
+chibi row as the last stage of the binding (`"chibi"` in the recipe) so its proportions stay the ones pinned in
+`chibi-proportions.json`. Ogremon has no wings, so both wings ride the donor's mane bone (4, a child of the head that swings
+behind it): they lag the head in every clip and, as a bone of their own, stay out of the back (about 1,900 penetration counts in
+the walk against 18,000 with the wings rigid on the torso). The cape's three pieces ride the pelvis bone, and the hip piece
+rides the root, so the pelvis bone belongs to the cloth group and the chibi stage's shorter legs no longer sink it. The recipe
+gives the head factor 1.6 and the hand factor 1.35, and the row's `fit` shortens the head bone to 0.7 along its axis so the head
+comes out wider than tall (the pinned 0.376 wide against 0.267 tall). Walk and run are the donor's, retimed by `pace` with `ground`
+(22 ticks at 30 and 20 ticks at 50 before the chibi stage, 21.6 and 36.0 units a tick after it); the tired walk is the donor's
+own (24 ticks, 16.2). Stance slip is 27 % mean and 36 % max in the walk, 10 % and 21 % in the run, and 42 % and 103 % in the
+tired walk (the donor's own stoop), above the usual target there. The walk's step turns 2.7 times the median step (the bar is
+2.5). The resident model uses 85,256 of 100,352 bytes.
+
 ChaosLord uses Machinedramon's native skeleton (32 bones) and field programs, bound by `native_binding.py`
 at scale 1. Native Machinedramon has no care clips, so the recipe's `donor_builder` takes the partner model
 `content/models/partners/machinedramon.py` makes (its own idle, walk and run plus care clips) as the donor. The
@@ -933,6 +948,37 @@ The character is a proud, heavy warlord: the walk is a swagger (chest out, chin 
 The body bobs hard with each step (the pelvis falls on every landing and rises over the planted foot: 16, 18 and 21 units peak to peak in the walk, tired walk and run, two bobs a cycle; the clips before had 10, 10 and 13), the boots stay flat through the stride (a toe-up peel at lift-off had turned the trailing run foot backwards) and the run's world ease is a share (`world_ease` 0.85) so the trailing foot does not hang so far behind.
 The walk, tired walk and run are 22, 26 and 14 ticks at 16, 11 and 38 units a tick (a long unhurried step like the native biped's, with the heel peeling at toe-off, a high knee lift and a leaning run). The test
 reads the model made by `tools/models/edit.py get 297` (`MARSMON_MODEL`).
+Gallantmon 318 (`tools/models/field_animations/gallantmon_gait.py`, test `tools.test_gallantmon_gait`) had a walk and tired walk whose feet barely
+stood (stance 9 / 3 of 21 ticks, the soles slipping 80 % of the body's speed on average and 260 % at worst; tired walk 104 % / 163 %), a run that
+averaged 53 units a tick (over the native 52) and stepped between 35 and 67 (stance 4 and 1 ticks of 17, slip 62 % / 84 %), and a walk whose root moved in uneven steps
+(6 to 30). The generator plants each sole with `quadruped.py` (two-bone IK, the pole of the knee set outward 0.58 of its forward, the sole pivoting on the toe point)
+and writes the body by hand: the pelvis and upper body yaw and roll against each other, the lance arm swings against the shield arm (the shield arm holds the
+shield up as the body sinks so it never reaches the floor, and in the run swings it out clear of the legs), the pauldrons counter-turn, the plume and the cape trail late. The idle
+is a 120-tick loop with the left foot back like the original stance (the chibi foot proportion measures both feet in the first idle frame). The walk, tired walk
+and run are 24, 30 and 18 ticks at 16, 11 and 38 units a tick (constant root step, stance slip 5 % or less on average and 25 % at worst, the run airborne for a short
+part of the cycle). Slots 33, 35 and 36 alias the new idle, walk and run; the old battle-movement programs 35 and 36 are dropped (96500 of 100352 B resident, from 94102).
+The test reads the model made by `tools/models/edit.py get 318` (`GALLANTMON_MODEL`).
+
+Growlmon 320 (`tools/models/field_animations/growlmon_gait.py`, test `tools.test_growlmon_gait`) had a walk, tired
+walk and run that slid on the floor (the soles moved 98 % and 119 % of the body's travel in the walk and tired walk, 340 % at
+worst) and threw the swinging feet 80 to 130 units up. The generator plants each foot with `quadruped.py` on the model's
+own big-creature proportions (no overlay, no chibi reshape): the walk is 32 ticks (two different cycles of 16) at 16 units a
+tick, the tired walk 44 (2 x 22) at 11, the run 28 (2 x 14) at 36, and the 96-tick idle keeps both feet planted. The
+studio measures a stance slip of 3 to 7 % on average and 29 % at worst in the walk and tired walk and 27 % in the run
+(the imported clips: 98 to 340 %); the soles stay within 4 units of the floor (7 in the run, whose feet move fast between
+60 fps thirds, hence the profile's `floor` 9). The body is written by hand: the hips turn against the shoulders, the upper
+body rolls over the loaded foot, the arms hang bent and swing late, the neck, head and jaw follow by a spring each and
+the three-link tail trails a few ticks behind link by link. The character is a heavy brute: a slow wide plod, a low tired
+drag with the head hung, a committed run with the jaw open and the tail streaming. The hind legs stand 20 units wide
+and the left foot lands a tenth of a cycle after its turn in the run, which keeps the legs out of the hips (the imported
+clips: 646 penetrating vertices over all pairs of parts, the new ones about 498). Growlmon also blinks
+(`growlmon_face.py`): its eyes are painted in the head texture (no eyelid bone or piece), so frames of the open, half-shut and shut eye
+are stamped into spare texels (rows 96 and below, 28x24 each at x 0, 28 and 56) and the clips paste them over the painted eye
+with texture-move events through the profile's `events` hook, as Divermon does: the texture only, no mesh or skeleton change. The
+idle blinks four times at irregular intervals (one quick double blink), the walk twice, the run once and the tired walk twice with
+a slower, heavier blink; each plan ends with the open eye so the loop closes cleanly. Slot 36, a separate 21-tick copy of
+the old run, plays the new run too (and the copy goes). The test reads the model made by
+`tools/models/edit.py get 320` (`GROWLMON_MODEL`).
 `field_animations/gesomon_rest.py` is written over that model and baked, with
 the walk and run, into the plain delta (the species has no field overlay). The
 import's idle hung the squid 9 to 89 units above the floor (mean 50, a
@@ -1200,9 +1246,60 @@ rolls 3 degrees, the chest turns against the hips on a slow S-curve (about 12 de
 (the chibi reshape) needs a crouch of about 6 units plus the heel peel to reach the stride (solver reach at most 0.985 of the leg). The stance slip is measured on the
 vertex that is each part's sole at rest: at most 6 % (mean 1-2 %), against 33-56 % in the old walk. The tired walk still folds its planted knee like the old walk did.
 
+Creepymon 312 (`tools/models/field_animations/creepymon_gait.py`, test `tools.test_creepymon_gait`) slid its feet in every gait (stance slip 96-104 % mean, 100-170 % worst) and ran at 56 u/tick, above the native range. The overlay builds the celebration model and replaces the idle, walk, tired walk and run: flat soles planted by leg IK at a constant ground speed (walk 20 ticks at 16 u/tick, tired 24 at 12, run 14 at 38 with a short hop, idle 72), the body sinking where the legs reach furthest, the pelvis and robe lagging behind the stride, the chest turning against the hips, and the arms and wings swinging with delay. Stance slip is 4-6 % mean and at most 28 %; the mesh and the chibi proportions are untouched.
+
+Sakuyamon (316) has its legs put back on two lanes in the walk, tired walk and run (`field_animations/sakuyamon_gait.py`, shipped as the model delta; every other program
+and every non-leg, non-hair channel are the import's byte for byte, and the root motion, stride, lift and timing too). The import maps Angemon's gait, whose hips
+and feet sit 130-160 units apart, onto hips 33 apart: the knees closed to 41 (52 at rest; 32 in the run), the ankles crossed the body's midline in their lane (the feet's
+meshes overlapped sideways by up to 20 units and the toes by 33, against a clear 14 and 48 at rest), up to 48 vertices of one shin or foot were inside the other leg, and each foot turned in to
+about -10 degrees from the idle's toe-out of 30, so it looked knock-kneed and pigeon-toed. Each tick now keeps the ankle's height and fore-aft position and takes its sideways place
+on a fixed lane (42 units either side of the centre line, 44 in the run), solved by position with the knee pointing forward and a little outwards in the pelvis' frame and the idle's
+bend plane as the twist; the body sinks where a planted leg would be over-straight (3.6 units at most, a tent of 1.5 units a tick) rather than the foot moving in; the foot is turned back to a
+toe-out of 14-16 degrees plus a quarter of the import's own foot swing. Now the feet are 7-28 units clear sideways (4 for the toes in the run: -2) and the legs never touch (0 vertices inside), the knees are 59-82 apart, and the
+thigh and shin turn at most 32 degrees a tick (41 in the import) with no 90 degree twist flips. The import's stance slip (28-79 % mean by the foot bones' paths) is not changed.
+
+Its run stands up (`field_animations/sakuyamon_posture.py`, a step between the leg gait and the hair): the import leans the chest 39 degrees forward (bone 1) while the pelvis and the head turn back by almost as much, so the legs and the head keep straight and the shoulders ride up, a hump (the spine from the pelvis to the middle of the shoulders leans 14..27 degrees forward, the pelvis-to-head line 20..34). Each tick the chest's forward lean over the idle's is cut to 30 % of itself (about 12 degrees), a turn about the shared pivot that the pelvis and the head take back in front of their own rotation, so the pelvis, the legs, the feet and the head keep exactly their world orientation (the leg gait is byte for byte the same) and only the chest, shoulders, arms and staff stand up: the spine now leans -4..-2 and the head line 2..5, the walk's being -13..-9 and -7..-2. The chest's own sway and the timing are the import's.
+
+Its hair (bones 15 the cap, 16 the mass down the back, 17 and 18 the two long locks; `field_animations/sakuyamon_hair.py`, the last step, on the posture step's output) swung in one spring-like sway on every clip written without a look at the body, with the mass rooted inside the chest's upper back (with the chest leaning 39 degrees in the run the back rises into the hair): the hair's vertices inside the body were up to 32 in the idle, 22 in the walk, 25 in the tired walk and 183 in the run (122 in the chest, 31 in the arms, 37 in the legs, 7 in the staff; 203 after the lane change, which put 59 in the legs). Per tick the root of the mass is now shifted back along the chest's back (20-28 units in the idle and walks, up to 52 in the run, in whole units of its own frame) and, where needed, the mass and each lock are turned back a few degrees, the least that clears the chest, pelvis, legs, arms and staff, with the requirement widened by two ticks and filtered over the loop (so the hair moves back smoothly and early) plus a margin. Left: the cap's corners on the shoulders (3 vertices each side in every tick, the import's too) and, in the run, an arm swung back into the hair (at most 5; 6 vertices in all). The leg gait, the root motion and the other programs are untouched (`tools.test_sakuyamon_gait` pins them and bounds the hair and the run's lean per tick).
+
 Dinohyumon 308 (`tools/models/field_animations/dinohyumon_gait.py`, test `tools.test_dinohyumon_gait`) had clips whose
 feet flipped (toe yaw up to 167 degrees), a tired walk that slid its soles (172 % mean, 446 % worst), only one to four
 ticks of stance in 17, uneven root steps and a run whose arms hardly moved. The overlay runs the chibi reshape and then
 plants each foot with `quadruped.py`: walk, tired walk and run are 32, 60 and 28 ticks (two cycles, the second with other leg lifts, heel strikes, landing times and bob, eased into and out of the first so no step repeats; arms, head, feather and loincloth follow the body on loose springs) at 17, 11 and 38 units a tick
 (slip under 4 % mean), the idle 96 ticks with breathing, weight shifts and a raised arm. The posture is a low, forward-leaning warrior's: short weighted steps, the chest turning hard against the hips, the arms bent and held out of lockstep with the legs, a hunched dragging tired walk with the head low, a committed forward-leaning run. The pelvis bobs twice a cycle
 and the arms and feather follow with delay. The run's loincloth overlaps a leg slightly more than before (14 against 8).
+
+Taomon (315): the walk, tired walk and run held both arms in the idle's hanging pose while the torso leans 40 to 80 degrees and the legs swing, so
+the wide sleeves hung at thigh height and each leg passed through its sleeve at every step (up to 30 units deep; the aprons and, in the tired walk, the
+tail crossed them too, and the idle's right sleeve brushed the leg for a dozen ticks). `field_animations/taomon_arms.py` runs on the chibi overlay's output
+(the manifest row's `post_generator`) and rewrites only the rotation of the two sleeves' first bones (20 and 25), per tick, in slots 0 (shared with 33),
+2, 3 and 4: a turn outward (22 degrees at most, about 23 on the run) and, on the run's raised-knee ticks, a swing back (about 11 degrees at most). Every
+tick is checked by mesh clash and by vertex votes. Left over on the run: where the leaning torso puts the shoulder inside the thigh's top (bone 3 or 11)
+no sleeve turn can clear it, so there the sleeve only keeps out of the leg no deeper than before; the run's sleeve-leg pairs fell from 486 to 72 and the deepest
+overlap from 30 to 16 units. `python3 -m tools.models.field_animations.taomon_arms --source CHIBI_OUTPUT.MMD --search TURNS.json` finds the turns
+(about two minutes), `--out AFTER.MMD` applies them. Speeds, ticks, feet, root, proportions and the other programs are the overlay's, to the byte.
+
+Pharaohmon 319 (`tools/models/field_animations/pharaohmon_gait.py`, test `tools.test_pharaohmon_gait`): the chibi build kept
+the import's tired walk and run, retargeted. The tired walk slid its soles 138 % of the travel (466 % at worst), leaning
+the head 16 to 37 degrees past the idle's stance; the run threw the torso up to 65 degrees forward with the feet folded
+behind it and on the floor for one or two ticks of 24. The overlay runs the celebrations recipe (and so the chibi reshape)
+and then writes only slots 3 and 4 with `quadruped.py` on the two legs: the idle and the walk (slot 2) stay byte for byte
+(the test compares every other slot's program). Tired walk: 56 ticks (two different cycles of 28) at 11 units a tick,
+run: 24 ticks (two of 12) at 36, both with planted soles (slip 2 to 5 % mean, 8 to 18 % worst in the studio's measure) and the cycle B
+lifting, bobbing and swinging unlike cycle A. The legs are almost straight at rest (198 units long, the hip 192 above the
+ankle), so a flat-footed stride must be bought with a crouch and the heel peel: the pelvis moves about 45 units peak to peak in the tired walk
+(`peel` -8 degrees, a low rounded foot lift of 26 to 28 units over 8 ticks, no toe kick) and 23 in the run. A late `arc` of 1.2 keeps the landing foot's slowing out of the studio's lowest quarter of
+its lift (it counted as sliding). The posture follows the walk: a modest lean (head over hips: tired 9 to 15 degrees,
+run 17 to 22, the walk 0 to 17), the head hung when tired, the arms swung clear of the thighs (negative `arm_out`, the old ones lay inside them) as delayed pendulums
+with the forearm and fist later each, the cape and the loincloth trailing, everything above the legs on loose springs.
+
+Knightmon 321 (`tools/models/field_animations/knightmon_gait.py`, test `tools.test_knightmon_gait`) limped in the tired walk
+and ran unevenly: the left foot stood 10 ticks of 23 sliding 79 % (worst 120 %) and lifted 74 units, the right one stood 5
+and lifted 58; the run (17 ticks) slid its feet 61 and 26 % (worst 203 %), the root step went 26 to 50 units, and the
+joint curves had spikes of 50 to 240 times their median second difference. The base generator of its celebration overlay
+now runs the chibi reshape and plants each foot with `quadruped.py`: tired walk 22 ticks at 11.5 units (the two feet's
+heights within 5 % half a cycle apart, stance 11 and 11 ticks, lift 26 units, slip 5 %), run 16 ticks at 38 (stance 6 and 6,
+lift 55, slip under 1 %), constant root speed, the head hung in the tired walk, the sword arm swinging half as much as the
+free arm so the giant sword moves through 13 degrees of pitch (tired walk) and 22 (run) instead of 17 and 75. Idle, walk and
+the celebration slots are unchanged. Slightly worse than before: the thigh and hip plates overlap the torso a few vertices more
+(19 against 6 in the tired walk).

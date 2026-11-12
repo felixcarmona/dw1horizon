@@ -745,9 +745,19 @@ def build(data, skeleton):
         storage = motionstorage.require(result, len(skeleton))
         report['bytes'][1] = len(result)
         report['resident_bytes'] = [storage['resident_bytes'], storage['resident_limit']]
+    after = None
+    if row.get('post_generator'):
+        # A repair that needs the reshaped geometry (arms posed against the final legs): runs on this overlay's own
+        # output, which it pins by SHA-256.
+        result, after = importlib.import_module(row['post_generator']).build(result, skeleton)
+        report['bytes'][1] = len(result)
+        storage = motionstorage.require(result, len(skeleton))
+        report['resident_bytes'] = [storage['resident_bytes'], storage['resident_limit']]
     record = json.loads(next((ROOT / 'content/species').glob(f'{sid}-*.json')).read_text())
     proof = dict(report, source_sha256=digest, output_sha256=hashlib.sha256(result).hexdigest(),
                  preceding_recipe=previous, species_patch=species_patch(record, scales, k))
+    if after:
+        proof['post_generator'] = after
     if previous and 'generated_skeleton' in previous:
         proof['generated_skeleton'] = previous['generated_skeleton']
     return result, proof
