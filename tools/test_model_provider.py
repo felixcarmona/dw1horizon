@@ -256,8 +256,9 @@ class ModelProvider(unittest.TestCase):
         self.assertEqual(records['293']['field_overlay'], 'gryphonmon-celebration')
         # Grizzlymon (296) neither: its idle, walk, tired walk and run are in its model delta (grizzlymon_gait.py).
         self.assertNotIn('field_overlay', records['296'])
+        # KingEtemon (303) and GrapLeomon (306) wear native rigs and have no chibi row any more: their two entries left the pin.
         self.assertEqual(hashlib.sha1(json.dumps(assignments, sort_keys=True).encode()).hexdigest(),
-                         '62a9b8ef514e4d64113e867a4fe662ca00f63fdc')
+                         '8764754788ba014350734de7873ba449567913f3')
 
 
 if __name__ == '__main__':
