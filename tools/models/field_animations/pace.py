@@ -49,6 +49,36 @@ def _root_channels(frames, ticks, speed):
     return out
 
 
+def _smooth(samples, frames, passes):
+    """Round off a clip that keys every second tick: `passes` times a cyclic [1, 2, 1] / 4 filter over each bone's rotation
+    and translation channels (an angle is unwrapped first, so it never spins the long way) and over the root's travel
+    per tick (the total travel stays). The loop stays closed: the last tick is the first."""
+    ticks = len(samples) - 1
+    def cyclic(values):
+        for _ in range(passes):
+            values = [(values[i - 1] + 2 * values[i] + values[(i + 1) % ticks]) / 4 for i in range(ticks)]
+        return values
+    for bone in range(1, len(samples[0])):
+        for c in range(3, 9):
+            raw = [samples[t][bone][c] for t in range(ticks)]
+            near = [raw[0]]
+            for v in raw[1:]:
+                near.append(v - 4096 * round((v - near[-1]) / 4096) if c < 6 else v)
+            for t, v in enumerate(cyclic(near)):
+                samples[t][bone][c] = int(round(v))
+            samples[ticks][bone][c] = samples[0][bone][c]
+    steps = [frames[min(t * (len(frames) - 1) // ticks, len(frames) - 2)][0][8] - frames[min(t * (len(frames) - 1) // ticks, len(frames) - 2) + 1][0][8]
+             for t in range(ticks)]
+    total = samples[0][0][8] - samples[ticks][0][8]
+    steps = cyclic(steps)
+    scale = total / sum(steps)
+    z = samples[0][0][8]
+    for t in range(ticks + 1):
+        samples[t][0][8] = int(round(z))
+        if t < ticks:
+            z -= steps[t] * scale
+
+
 def _matmul(a, b):
     return [[sum(a[i][k] * b[k][j] for k in range(3)) for j in range(3)] for i in range(3)]
 
@@ -323,11 +353,16 @@ def _author(old, skeleton, slot, spec, feet, source=None):
             pose[0][c] -= d * t / source_ticks
     ticks, speed = spec['ticks'], spec['speed']
     assert speed >= SPEED_FLOOR.get(slot, 0), (slot, speed)      # an idle stands: no floor
-    if spec['from'] == slot and ticks == source_ticks and 'original_run' not in spec:      # same clock: poses exact, only the travel changes
+    if spec['from'] == slot and ticks == source_ticks and 'original_run' not in spec and 'smooth' not in spec:      # same clock: poses exact, only the travel changes
         return _forward(old.anims.anims[old.anims.table[slot]], -round(speed * ticks), ticks), dict(
             slot=slot, source_slot=slot, source_ticks=ticks, ticks=ticks, units_per_tick=round(speed * ticks) / ticks,
             slip_mean=_checked_slip(old, frames, feet, speed, spec), floor='exact')
     samples = _root_channels(frames, ticks, speed)
+    if spec.get('close'):       # a donor loop that closes within a unit or two: the last pose is the first, so the units do not add up loop after loop
+        for bone, first in enumerate(samples[0][1:], 1):
+            samples[-1][bone] = list(first)
+    if spec.get('smooth'):
+        _smooth(samples, frames, spec['smooth'])
     if 'posture' in spec:
         _keep_posture(old, samples, animsheet.slot_frames(old, n, spec['posture']['from'])[0], spec['posture'])
     before = max(_floors(old, skeleton, frames))

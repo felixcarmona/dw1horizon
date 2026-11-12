@@ -69,6 +69,8 @@ class ModelProvider(unittest.TestCase):
             '289': ('289', 'tools.models.field_animations.native_binding', '289-chaoslord-native'),
             # Vilemon wears native Ogremon's rig and programs.
             '295': ('295', 'tools.models.field_animations.native_binding', '295-vilemon-native'),
+            # HiAndromon wears native Andromon's rig and programs.
+            '302': ('302', 'tools.models.field_animations.native_binding', '302-hiandromon-native'),
             # PrinceMamemon wears native Mamemon's rig and programs.
             '270': ('270', 'tools.models.field_animations.native_binding', '270-princemamemon-native'),
 

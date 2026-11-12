@@ -143,6 +143,14 @@ kicks, claws, fire, quake, war cry) and the training slot 57 plays Sonic Jab's. 
 different body than Ogremon's: the upper-arm shoulder vertices overlap the chest box by 3 to 4 of 28 in every pose, forearms
 and fists never do. `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_vilemon_native` (after `edit.py get 295`).
 
+HiAndromon (302) wears native Andromon's (40, `CHDAT/MMD1/ANDR.MMD`) 21-bone skeleton at scale 1.2 (mesh pieces scaled by
+0.857 so the chibi proportions stay): its 25 bones map by body part (chest and chest plates to the torso, each shoulder
+armour to its own side's shoulder pivot, wrist and hand to the hand, heel and toes to the foot). Slots below the techniques
+are Andromon's own programs (idle 20, walk 20 ticks; the condition walk, 22 ticks, rounded off by `pace`'s `smooth`: a cyclic [1, 2, 1] filter, repeated, over rotations and the root's travel per tick) and the run retimed to 18 ticks by `pace` (its
+`close` key makes the last pose the first, for a donor loop that closes only within a unit or two). Speeds are 25.2, 19.7
+and 40 units per tick. Andromon's left foot slides in its own stance, so foot slip is native, not repaired.
+`PYTHONPATH=tools python3 -W ignore -m unittest tools.test_hiandromon_native` (after `edit.py get 302`).
+
 Zudomon's reviewed model is uniformly resized to 85% with `resize.py`, including
 mesh vertices and translation tracks in every clip. Its radius, height and
 bone-local effect/bubble offsets use the same factor. Rotation, visibility,

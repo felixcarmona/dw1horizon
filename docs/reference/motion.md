@@ -773,6 +773,17 @@ Vilemon uses native Ogremon's skeleton (18 bones) and field programs at scale 0.
 idle, walk, condition walk and run are Ogremon's own clips (17, 23, 25 and 21 frames at 17.6, 16.2 and 36.1 units per tick
 for the gaits); the wings have no donor bone and ride the chest. The resident model uses 68,322 of 100,352 bytes.
 
+HiAndromon uses native Andromon's skeleton (21 bones) and field programs at scale 1.2, bound by `native_binding.py`: its
+25 bones map by body part onto Andromon's torso, shoulder pivots, arms, one hand and one foot per limb, and the chibi
+proportions (head, arms, torso) are re-applied as piece scales, so the figure is about 14% shorter than before (497
+against 582). Idle and walk are Andromon's own clips (21 frames each at 25.2 units per tick); the condition walk is Andromon's too
+(23 frames, 19.6 per tick) with `pace`'s `smooth` (3 passes of a cyclic [1, 2, 1] filter over every rotation and the
+root's travel per tick, since the donor keys every second tick and its root speed jumps from 30 to 5 and back); the run is retimed by the recipe's `pace` to 18 ticks at 40 (`close` makes the last pose the first,
+since Andromon's run closes only within a unit or two). The 15 techniques play Andromon's clips of the same name
+(Dynamite Kick plays Tremar) and the training slot 61 plays Megaton Punch. Andromon's left foot slides on its own
+stance (about 29% mean in the walk), and the retimed run stays near 29% mean and 77% max. The resident model uses
+86,492 of 100,352 bytes.
+
 ChaosLord uses Machinedramon's native skeleton (32 bones) and field programs, bound by `native_binding.py`
 at scale 1. Native Machinedramon has no care clips, so the recipe's `donor_builder` takes the partner model
 `content/models/partners/machinedramon.py` makes (its own idle, walk and run plus care clips) as the donor. The
