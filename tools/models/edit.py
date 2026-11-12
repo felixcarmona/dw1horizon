@@ -306,6 +306,9 @@ def cmd_put(a):
             print(f'{step.PINS}: imports {row["id"]} unchanged')
     if any(sha256(d) != pinned[k] for k, d in changed.items()):
         print('also: content/modeldelta/verification.json records the last full verification (not rewritten)')
+    if str(row['id']) in load(ROOT / 'content/models/imports/chibi.json'):
+        print(f'chibi: {row["id"]} {row["name"]} has a chibi row: every batch keeps its proportions; check them with '
+              f'tools/models/chibi_proportions.py check {row["id"]} --models {Path(a.mmd).resolve().parent}')
 
 
 def cmd_check(a):

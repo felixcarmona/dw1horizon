@@ -1,0 +1,369 @@
+{
+ "199": {
+  "head": 0.408,
+  "head_width": 0.455,
+  "foot": 1.343,
+  "hand": 0.56,
+  "legs": 0.502
+ },
+ "207": {
+  "head": 0.414,
+  "head_width": 0.353,
+  "foot": 0.937,
+  "hand": 0.222,
+  "legs": 0.356,
+  "accepted": {
+   "head": 0.289,
+   "head_width": 0.244,
+   "foot": 0.827,
+   "hand": 0.161,
+   "legs": 0.424,
+   "why": "reduced strength approved by the owner"
+  }
+ },
+ "209": {
+  "head": 0.234,
+  "head_width": 0.124,
+  "foot": 0.468,
+  "hand": 0.128,
+  "legs": 0.387
+ },
+ "223": {
+  "head": 0.356,
+  "head_width": 0.29,
+  "foot": 0.506,
+  "hand": 0.36,
+  "legs": 0.436,
+  "accepted": {
+   "foot": 0.615,
+   "hand": 0.4,
+   "why": "drift from a later batch, left as is: within about 12 % and on the chibi side (restoring it cost the animation more than it gained)"
+  }
+ },
+ "225": {
+  "head": 0.235,
+  "head_width": 0.568,
+  "foot": 0.799,
+  "hand": 0.391,
+  "legs": 0.266,
+  "accepted": {
+   "foot": 0.728,
+   "why": "drift from a later batch, left as is: within about 12 % and on the chibi side (restoring it cost the animation more than it gained)"
+  }
+ },
+ "226": {
+  "head": 0.417,
+  "head_width": 0.098,
+  "foot": 0.749,
+  "hand": 0.265,
+  "legs": 0.349,
+  "accepted": {
+   "head_width": 0.451,
+   "foot": 0.674,
+   "why": "head width: the reference measure (0.098) came from a narrower head group before the ear rebuild; foot within 10 %"
+  }
+ },
+ "260": {
+  "head": 0.34,
+  "head_width": 0.423,
+  "foot": 1.463,
+  "hand": 0.17,
+  "legs": 0.378,
+  "accepted": {
+   "head": 0.414,
+   "head_width": 0.516,
+   "foot": 1.631,
+   "hand": 0.62,
+   "legs": 0.449,
+   "why": "drift from a later batch, not yet restored"
+  }
+ },
+ "277": {
+  "head": 0.316,
+  "head_width": 0.512,
+  "foot": 0.67,
+  "hand": 0.177,
+  "legs": 0.386
+ },
+ "288": {
+  "head": 0.433,
+  "head_width": 0.359,
+  "foot": 0.777,
+  "hand": 0.216,
+  "legs": 0.355
+ },
+ "297": {
+  "head": 0.406,
+  "head_width": 0.379,
+  "foot": 0.494,
+  "hand": 0.17,
+  "legs": 0.406
+ },
+ "299": {
+  "head": 0.344,
+  "head_width": 0.467,
+  "foot": 0.447,
+  "hand": 0.472,
+  "legs": 0.38
+ },
+ "300": {
+  "head": 0.375,
+  "head_width": 0.25,
+  "foot": 0.475,
+  "hand": 0.495,
+  "legs": 0.362
+ },
+ "302": {
+  "head": 0.233,
+  "head_width": 0.189,
+  "foot": 0.576,
+  "hand": 0.23,
+  "legs": 0.443
+ },
+ "303": {
+  "head": 0.412,
+  "head_width": 0.337,
+  "foot": 0.303,
+  "hand": 0.226,
+  "legs": 0.36
+ },
+ "306": {
+  "head": 0.385,
+  "head_width": 0.454,
+  "foot": 0.736,
+  "hand": 0.182,
+  "legs": 0.414
+ },
+ "308": {
+  "head": 0.201,
+  "head_width": 0.065,
+  "foot": 0.528,
+  "hand": 0.28,
+  "legs": 0.387
+ },
+ "309": {
+  "head": 0.179,
+  "head_width": 0.176,
+  "foot": 0.429,
+  "hand": 0.152,
+  "legs": 0.364
+ },
+ "310": {
+  "head": 0.307,
+  "head_width": 0.273,
+  "foot": 0.558,
+  "hand": 0.525,
+  "legs": 0.394
+ },
+ "312": {
+  "head": 0.324,
+  "head_width": 0.38,
+  "foot": 0.594,
+  "hand": 0.111,
+  "legs": 0.411
+ },
+ "314": {
+  "head": 0.267,
+  "head_width": 0.376,
+  "foot": 0.786,
+  "hand": 0.719,
+  "legs": 0.394
+ },
+ "315": {
+  "head": 0.434,
+  "head_width": 0.261,
+  "foot": 0.567,
+  "hand": 0.247,
+  "legs": 0.353,
+  "accepted": {
+   "head": 0.32,
+   "head_width": 0.191,
+   "legs": 0.478,
+   "why": "reduced strength approved by the owner"
+  }
+ },
+ "316": {
+  "head": 0.309,
+  "head_width": 0.305,
+  "foot": 0.518,
+  "hand": 0.295,
+  "legs": 0.367
+ },
+ "317": {
+  "head": 0.519,
+  "head_width": 0.325,
+  "foot": 0.642,
+  "hand": 0.0,
+  "legs": 0.422
+ },
+ "318": {
+  "head": 0.299,
+  "head_width": 0.338,
+  "foot": 0.801,
+  "hand": 0.647,
+  "legs": 0.427
+ },
+ "319": {
+  "head": 0.318,
+  "head_width": 0.253,
+  "foot": 0.77,
+  "hand": 0.224,
+  "legs": 0.475
+ },
+ "320": {
+  "head": 0.409,
+  "head_width": 0.386,
+  "foot": 0.919,
+  "hand": 0.334,
+  "legs": 0.366
+ },
+ "321": {
+  "head": 0.35,
+  "head_width": 0.263,
+  "foot": 0.716,
+  "hand": 0.502,
+  "legs": 0.43
+ },
+ "322": {
+  "head": 0.337,
+  "head_width": 0.425,
+  "foot": 0.51,
+  "hand": 0.395,
+  "legs": 0.364
+ },
+ "324": {
+  "head": 0.453,
+  "head_width": 0.281,
+  "foot": 0.598,
+  "hand": 0.04,
+  "legs": 0.353
+ },
+ "325": {
+  "head": 0.464,
+  "head_width": 0.323,
+  "foot": 0.644,
+  "hand": 0.169,
+  "legs": 0.363
+ },
+ "326": {
+  "head": 0.363,
+  "head_width": 0.408,
+  "foot": 1.001,
+  "hand": 0.249,
+  "legs": 0.366
+ },
+ "327": {
+  "head": 0.37,
+  "head_width": 0.359,
+  "foot": 0.747,
+  "hand": 0.18,
+  "legs": 0.372
+ },
+ "331": {
+  "head": 0.412,
+  "head_width": 0.344,
+  "foot": 0.721,
+  "hand": 0.14,
+  "legs": 0.389
+ },
+ "332": {
+  "head": 0.297,
+  "head_width": 0.437,
+  "foot": 0.836,
+  "hand": 0.176,
+  "legs": 0.328
+ },
+ "334": {
+  "head": 0.265,
+  "head_width": 0.243,
+  "foot": 0.628,
+  "hand": 0.518,
+  "legs": 0.429
+ },
+ "335": {
+  "head": 0.253,
+  "head_width": 0.285,
+  "foot": 0.939,
+  "hand": 0.301,
+  "legs": 0.408
+ },
+ "354": {
+  "head": 0.42,
+  "head_width": 0.32,
+  "foot": 0.456,
+  "hand": 0.141,
+  "legs": 0.347,
+  "accepted": {
+   "head": 0.344,
+   "head_width": 0.264,
+   "legs": 0.433,
+   "why": "reduced strength approved by the owner"
+  }
+ },
+ "373": {
+  "head": 0.349,
+  "head_width": 0.442,
+  "foot": 0.837,
+  "hand": 0.368,
+  "legs": 0.373,
+  "accepted": {
+   "head": 0.307,
+   "head_width": 0.385,
+   "legs": 0.43,
+   "why": "reduced strength approved by the owner"
+  }
+ },
+ "402": {
+  "head": 0.371,
+  "head_width": 0.503,
+  "foot": 1.567,
+  "hand": 0.669,
+  "legs": 0.455
+ },
+ "403": {
+  "head": 0.321,
+  "head_width": 0.254,
+  "foot": 0.487,
+  "hand": 0.421,
+  "legs": 0.396,
+  "accepted": {
+   "head_width": 0.288,
+   "why": "drift from a later batch, left as is: within about 12 % and on the chibi side (restoring it cost the animation more than it gained)"
+  }
+ },
+ "404": {
+  "head": 0.4,
+  "head_width": 0.376,
+  "foot": 0.519,
+  "hand": 0.0,
+  "legs": 0.394,
+  "accepted": {
+   "head": 0.31,
+   "head_width": 0.295,
+   "foot": 0.563,
+   "legs": 0.485,
+   "why": "reduced strength approved by the owner"
+  }
+ },
+ "406": {
+  "head": 0.182,
+  "head_width": 0.165,
+  "foot": 0.646,
+  "hand": 0.127,
+  "legs": 0.372
+ },
+ "432": {
+  "head": 0.366,
+  "head_width": 0.456,
+  "foot": 0.471,
+  "hand": 0.296,
+  "legs": 0.424
+ },
+ "461": {
+  "head": 0.432,
+  "head_width": 0.352,
+  "foot": 0.534,
+  "hand": 0.353,
+  "legs": 0.351
+ }
+}

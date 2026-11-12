@@ -259,10 +259,23 @@ def bind(data, skeleton, recipe, placements=None):
     if recipe.get('jaws'):
         # the source's own mouth work replayed on the donor bones that carry the jaw pieces (native_jaws.py)
         output = native_jaws.run_jaws(mmd.MMD.parse(output, len(rig)), rig, recipe['jaws'], mesh, skeleton, source_pose, placements)
+    patch, chibi_proof = recipe['species_patch'], None
+    if recipe.get('chibi'):
+        # the chibi proportions of the species' row (chibi.json), as the last stage: its head, hands and feet grow and its
+        # legs shorten on the donor's rig, the floor and the speeds are checked again, the effect points ride along
+        from tools.models.field_animations import chibi
+        spec = recipe['chibi']
+        row = json.loads(chibi.MANIFEST.read_text())[str(spec.get('row', sid))]
+        output, report, scales, k, used = chibi.reshape_bound(output, rig, 9000+sid, recipe['map'], row, spec.get('factors'))
+        patch = dict(patch, **chibi.species_patch(patch, scales, k))
+        chibi_proof = dict(factors=used['factors'], fit=used['fit'], trim=used['trim'], final_scale=report['final_scale'],
+                           speeds=report['speeds'], floors=report['floors'])
     storage = motionstorage.require(output, len(rig))
-    return output, dict(species=sid, source_sha256=digest(data), output_sha256=digest(output),
-                        donor=donor_id, generated_skeleton=rig, storage=storage,
-                        species_patch=recipe['species_patch'])
+    proof = dict(species=sid, source_sha256=digest(data), output_sha256=digest(output),
+                 donor=donor_id, generated_skeleton=rig, storage=storage, species_patch=patch)
+    if chibi_proof:
+        proof['chibi'] = chibi_proof
+    return output, proof
 
 
 def build(data, skeleton):

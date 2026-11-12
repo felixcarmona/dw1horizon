@@ -22,6 +22,7 @@ import hashlib
 import importlib
 import json
 import math
+import re
 from pathlib import Path
 
 import animsheet
@@ -82,6 +83,15 @@ def _principal(points):
 
 def _translation(animation):
     return (6, 7, 8) if animation.has_scale else (3, 4, 5)
+
+
+def _register(sid, skeleton):
+    """The skeleton of type `sid` for the interpreter: a species' own, or a rig the executable does not know (9000 + id)."""
+    if sid < len(mmd.exe().skeleton):
+        mmd.exe().skeleton[sid] = skeleton
+        mmd.exe().bone_count[sid] = len(skeleton)
+    else:
+        mmd.exe().add_type(sid, skeleton)
 
 
 def _clamp16(value):
@@ -553,8 +563,7 @@ def species_patch(record, scales, k):
 def reshape(data, skeleton, sid, row):
     """The reshaped model of a row (groups, factors, height) -> (bytes, report, the bone scales and the final k).
     Raises Refused when a check fails."""
-    mmd.exe().skeleton[sid] = skeleton
-    mmd.exe().bone_count[sid] = len(skeleton)
+    _register(sid, skeleton)
     model = mmd.MMD.parse(data, len(skeleton))
     model.type = sid
     rig = Rig(model, skeleton)
@@ -628,6 +637,89 @@ def reshape(data, skeleton, sid, row):
                   floors={f'{s:#x}': v for s, v in floors.items()},
                   resident_bytes=[storage['resident_bytes'], storage['resident_limit']])
     return result, report, scales, k
+
+
+# ------------------------------------------------------------------ proportions, and the bake over another rig
+RANK = ('head', 'foot', 'footpart', 'hand', 'shin', 'thigh', 'arm', 'shoulder', 'chest', 'pelvis', 'neck', 'headpart',
+        'wing', 'tail', 'cloth', 'hipjoint', 'other', 'carrier')
+FIT_GROUPS = ('arm', 'shoulder', 'hand', 'thigh', 'shin', 'tail', 'cloth', 'wing')
+FIT_STEP = 0.9
+MAX_ATTEMPTS = 40
+
+
+def donor_groups(mapping, groups):
+    """The group of every bone of a rig the mesh was bound to: the first of its source pieces' groups in RANK order.
+    mapping: {source bone: bound bone} (a native binding's `map`), groups: {source bone: group}."""
+    out = {}
+    for source, bound in mapping.items():
+        group = groups.get(int(source), 'other')
+        if bound not in out or RANK.index(group) < RANK.index(out[bound]):
+            out[bound] = group
+    return out
+
+
+def proportions(data, skeleton, groups, sid):
+    """What makes a body chibi, as ratios of its height at rest: the head's height and width, the feet's width plus depth,
+    the hands' height and the length of the legs (thigh, shin and foot together). groups: {bone: group}."""
+    _register(sid, skeleton)
+    model = mmd.MMD.parse(data, len(skeleton))
+    model.type = sid
+    rig = Rig(model, skeleton)
+    group = [groups.get(b, 'other') for b in range(rig.nb)]
+    feet = [b for b in range(rig.nb) if group[b] in ('foot', 'footpart', 'shin', 'thigh', 'hipjoint')]
+    top, floor = rig.bounds(feet)
+    _, mats = rig.rest()
+
+    def extent(names, axis):
+        values = []
+        for b, vs in rig.verts.items():
+            if group[b] in names:
+                row = mats[b][axis]
+                values += [row[0] * x + row[1] * y + row[2] * z + row[3] for x, y, z in vs]
+        return max(values) - min(values) if values else 0.0
+    height = top + floor
+    return dict(height=round(height), head=round(extent(('head',), 1) / height, 3), head_width=round(extent(('head',), 0) / height, 3),
+                foot=round((extent(('foot',), 0) + extent(('foot',), 2)) / height, 3), hand=round(extent(('hand',), 1) / height, 3),
+                legs=round(extent(('thigh', 'shin', 'foot'), 1) / height, 3))
+
+
+def reshape_bound(data, rig, sid, mapping, row, overrides=None):
+    """The chibi bake over a mesh already bound to another rig (a native binding): the row's groups and fit follow the
+    `mapping` onto the bound bones, its factors apply as they are (`overrides` replaces some), and the height it
+    keeps is the bound model's own. A limb that the shorter legs leave crossing the floor is shortened a step at a
+    time, and the uniform rescale is trimmed until the height holds. -> (bytes, report, scales, k, the row used)."""
+    groups = donor_groups(mapping, {int(b): g for b, g in row['groups'].items()})
+    used = dict(row, groups={str(b): g for b, g in groups.items()}, factors=dict(row['factors'], **(overrides or {})))
+    used.pop('rest_slots', None)
+    fit = {}
+    for source, factor in (row.get('fit') or {}).items():
+        bound = mapping.get(source)
+        if bound is not None:
+            fit[str(bound)] = min(fit.get(str(bound), 1.0), factor)
+    used['fit'] = fit
+    used['trim'] = 1.0
+    used['height'] = proportions(data, rig, groups, sid)['height']
+    for _ in range(MAX_ATTEMPTS):
+        try:
+            return (*reshape(data, rig, sid, used), used)
+        except Refused as refusal:
+            sunk = re.search(r'bone (\d+) goes', str(refusal))
+            height = re.match(r'height (\d+) against (\d+)', str(refusal))
+            if sunk:
+                chain, b = [], int(sunk.group(1))
+                while b > 0:
+                    if used['groups'].get(str(b)) in FIT_GROUPS:
+                        chain.append(b)
+                    b = rig[b][1]
+                if not chain:
+                    raise
+                for b in chain[:3]:
+                    used['fit'][str(b)] = round(used['fit'].get(str(b), 1.0) * FIT_STEP, 3)
+            elif height:
+                used['trim'] = round(used['trim'] * int(height.group(2)) / int(height.group(1)), 4)
+            else:
+                raise
+    raise Refused('the bake over the bound rig did not settle')
 
 
 def build(data, skeleton):

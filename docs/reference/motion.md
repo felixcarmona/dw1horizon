@@ -608,6 +608,19 @@ heads are already large and whose four legs the single rule does not cover; form
 humanoid legs (fish, serpents, blobs, plants, machines, insects); and bipeds already at
 the game's proportions, or that would gain too little to be worth a resident byte.
 
+Every batch keeps the chibi proportions of the species that carry a row, whatever it rebuilds: the clips, the rig,
+the gait recipe. `content/models/imports/chibi-proportions.json` holds the approved ratios of each (head, head width,
+feet, hands and legs against the height) and `tools/models/chibi_proportions.py check [ID ...]` measures the final
+model against them, as `tools/test_chibi_proportions.py` does for all rows; `edit.py put` reminds of it. The pins are the
+reference ratios, the species as approved before the animation batches; a deliberate change (another strength, a new rig)
+is recorded with `accept ID "why"`, which keeps the reference and lists the accepted keys and the reason, so a drift nobody
+decided stays visible. A species bound to a
+native donor's rig (`native-bindings.json`) keeps its row by one more recipe field, `"chibi": {"row": "<id>"}` (optional
+`"factors"` overrides): after the binding, the pace retime and the jaws, `chibi.reshape_bound` carries the row's groups
+onto the donor's bones through the recipe's `map`, bakes the factors and the limb `fit`, grounds every clip again and
+checks the floor, the speed floors and the buffer as for any row. The row's factors apply as they are; `factors`
+overrides some (the leg shortening of a donor whose legs are short already).
+
 ### Field pace pass
 
 `tools/models/field_animations/pace.py`, with the manifest
