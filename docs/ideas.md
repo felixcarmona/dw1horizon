@@ -114,3 +114,9 @@ against, leave this list.
 | Back Dimension and the other late dungeons with different enemies per Chaos General's theme (marine, machine, undead) instead of the same enemies three or four times | 🆕 | New enemy rosters on existing maps are the cheap version; new maps are large. |
 | A general map page on the wiki showing every area and how they connect, with the less visible new exits marked | ✨ | The wiki already has route data; needs a drawn overview. |
 | Footstep sounds and sleep animation of Kokuwamon, and the review list of other imports from the footstep audit (docs/investigations/imported-footsteps.md, starting with Gryphonmon) | ✨ | Data-only changes, species by species. |
+| New Light and Darkness techniques, so Light/Darkness Digimon get more distinct movesets | 🆕 ⚖️ | Several players support it; needs new technique data, effects and a balance audit. |
+| A "Satan mode" Lucemon form | 🆕 | A player wish; no design yet. |
+| Status bars layout: keep happiness and discipline on the right and add the three new bars on the left, so turning them off leaves the original bars where they were | 🎭 ✨ | Poll feedback; the status panel is tight (see the 50/50 panel decision). |
+| A list of which original walking style each new Digimon can reuse (for example GrapLeomon from Leomon with bigger hands and feet) | ✨ | A player offered to write it; useful input for the animation work. |
+| Chimeramon-style bosses for the Chaos Generals' dungeons | 🆕 | Already suggested by players; see the Back Dimension row. |
+| Fix for "easy mode" strategies: a fast Dinohyumon, Grapleomon or Marsmon with early Megaton Punch clears the game | ⚖️ | Player report (2026-11-12); part of the balance audit, not a change of its own. |
