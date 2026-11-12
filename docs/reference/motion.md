@@ -1354,3 +1354,14 @@ lope for the run. The walk is 36 ticks (two different cycles of 18) at 26 units 
 jaw and two-link tail that follow by a spring each). The studio measures a stance slip of 11 % on average and 26 % at worst in the walks and 11 % on average and 35 % at worst in the run (the imported clips: up to 46 % and 115 %). Parts penetrate (vertices and triangle centres inside another part, worst tick of each pair) 736 times over all pairs in the imported clips and 387 in the new ones, less in every pair but three: the left foreleg against the left hind leg (3 to 12; the idle already has 12 there and the run 11, the walk 6), the left foreleg against the left hind leg the other way round (6 to 8) and the head against the left arm (5 to 7). In triangle crossings (`meshclash.py`) the walk goes from 1464 to 543, the tired walk from 935 to 411 and the run from 810 to 643, with a few pairs slightly higher (the right foreleg against the right hind leg in the run, 91 to 94).
 Nothing but the clips changes: the mesh and texture are exact and the species has no chibi row. The test reads the model made by
 `tools/models/edit.py get 323` (`LYNXMON_MODEL`).
+Gargoylemon 327 (`tools/models/field_animations/gargoylemon_gait.py`, test `tools.test_gargoylemon_gait`) had clips whose soles
+slid (64-94 % mean, 121-236 % worst), feet lifted about 100 units, a tired walk almost as fast as the walk (19 against 21 units
+a tick) and a slot 33 that was a separate copy of the old idle. The overlay runs the chibi reshape and then plants each hind foot
+with `quadruped.py`: walk, tired walk and run are 36, 52 and 24 ticks (two cycles each, the second with other lifts, heel strikes
+and landing times) at 16, 10 and 36 units a tick (slip under 6 %), the idle 120 ticks. The hips must stay up: a crouch deeper than
+about 12 units (walk and tired) or 14 (run) leaves no room to fold a leg under the hip and the soles sink below the floor.
+The hind track is 72 units in the moving gaits (44 in the idle) so the swinging thigh clears the tail root. Penetration against
+the chibi clips is not met everywhere: the walk's thigh still grazes the tail root for 1-3 ticks per step (4 crossings, depth
+11-21; none before), the run's head touches the forearms (3 crossings, depth 3) and the torso overlaps the legs by 2 more
+crossings than the chibi pose (18 against 15-16); the test's bounds record those numbers. Each wing is a single bone, so the beat
+follows the body with a spring but its tip cannot lag.

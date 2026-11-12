@@ -121,6 +121,14 @@ the forearm and the sword late, head, cloak, scabbard and loincloth on loose spr
 byte for byte. Bound in `content/models/imports/celebrations.json` (`base_generator`); test `tools.test_knightmon_gait`
 (`KNIGHTMON_MODEL`, from `edit.py get 321`).
 
+Species 327 (Gargoylemon): `field_animations/gargoylemon_gait.py` is a field overlay in the same way: it applies the chibi
+proportions and then writes slots 0 (also 33, now one animation), 2, 3 and 4 again with `quadruped.py` on its two hind legs
+(a profile `toes` entry merges the toe bone into each foot's sole): a 120-tick idle with breathing, glances and a raised arm, and a
+walk, tired walk and run of two different cycles each (36, 52 and 24 ticks) at 16, 10 and 36 units a tick, each foot planted
+(slip under 6 %). The long arms swing from the shoulder with the claws late, the wings follow the body's rise and fall on a
+spring (each wing is one bone: no tip lag), the tail and head trail. Bound in `content/models/imports/species.py`; test
+`tools.test_gargoylemon_gait` (`GARGOYLEMON_MODEL`, from `edit.py get 327`).
+
 Species 202 (Submarimon): `repair_submarimon.py` removes four stencil faces that sit on its body plates and keeps the
 rear screw turning in every clip (see player-model-fixes.md); `python3 -W ignore -m unittest tools.test_submarimon`.
 
