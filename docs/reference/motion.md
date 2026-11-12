@@ -1257,3 +1257,17 @@ tick is checked by mesh clash and by vertex votes. Left over on the run: where t
 no sleeve turn can clear it, so there the sleeve only keeps out of the leg no deeper than before; the run's sleeve-leg pairs fell from 486 to 72 and the deepest
 overlap from 30 to 16 units. `python3 -m tools.models.field_animations.taomon_arms --source CHIBI_OUTPUT.MMD --search TURNS.json` finds the turns
 (about two minutes), `--out AFTER.MMD` applies them. Speeds, ticks, feet, root, proportions and the other programs are the overlay's, to the byte.
+
+Pharaohmon 319 (`tools/models/field_animations/pharaohmon_gait.py`, test `tools.test_pharaohmon_gait`): the chibi build kept
+the import's tired walk and run, retargeted. The tired walk slid its soles 138 % of the travel (466 % at worst), leaning
+the head 16 to 37 degrees past the idle's stance; the run threw the torso up to 65 degrees forward with the feet folded
+behind it and on the floor for one or two ticks of 24. The overlay runs the celebrations recipe (and so the chibi reshape)
+and then writes only slots 3 and 4 with `quadruped.py` on the two legs: the idle and the walk (slot 2) stay byte for byte
+(the test compares every other slot's program). Tired walk: 56 ticks (two different cycles of 28) at 11 units a tick,
+run: 24 ticks (two of 12) at 36, both with planted soles (slip 2 to 5 % mean, 8 to 18 % worst in the studio's measure) and the cycle B
+lifting, bobbing and swinging unlike cycle A. The legs are almost straight at rest (198 units long, the hip 192 above the
+ankle), so a flat-footed stride must be bought with a crouch and the heel peel: the pelvis moves about 45 units peak to peak in the tired walk
+(`peel` -8 degrees, a low rounded foot lift of 26 to 28 units over 8 ticks, no toe kick) and 23 in the run. A late `arc` of 1.2 keeps the landing foot's slowing out of the studio's lowest quarter of
+its lift (it counted as sliding). The posture follows the walk: a modest lean (head over hips: tired 9 to 15 degrees,
+run 17 to 22, the walk 0 to 17), the head hung when tired, the arms swung clear of the thighs (negative `arm_out`, the old ones lay inside them) as delayed pendulums
+with the forearm and fist later each, the cape and the loincloth trailing, everything above the legs on loose springs.

@@ -84,6 +84,12 @@ walk, tired walk and run of two different cycles each (32, 60 and 28 ticks) at 1
 `quadruped.py`), and the arms, head, feather and loincloth follow through on loose springs (the chibi clips flipped the feet by up to 167 degrees and slid the tired walk's soles 172 %).
 Bound in `content/models/imports/species.py`; test `tools.test_dinohyumon_gait` (`DINOHYUMON_MODEL`, from `edit.py get 308`).
 
+Species 319 (Pharaohmon): `field_animations/pharaohmon_gait.py` is a field overlay on top of the celebrations recipe: it
+rewrites slots 3 (tired walk, 56 ticks at 11 units a tick) and 4 (run, 24 ticks at 36) with `quadruped.py` on the two legs,
+planted soles and two different cycles each (the `compose` hook); the idle and the walk are the celebrations build's, untouched.
+`python3 -m tools.models.field_animations.pharaohmon_gait --source EDIT.MMD --out AFTER.MMD` (EDIT.MMD from `edit.py get 319`).
+Bound in `content/models/imports/species.py`; test `tools.test_pharaohmon_gait` (`PHARAOHMON_MODEL`, from `edit.py get 319`).
+
 Species 202 (Submarimon): `repair_submarimon.py` removes four stencil faces that sit on its body plates and keeps the
 rear screw turning in every clip (see player-model-fixes.md); `python3 -W ignore -m unittest tools.test_submarimon`.
 
