@@ -668,7 +668,7 @@
   "wiki.counterSource": "Contra-ataque reativo: deixe este inimigo responder a um ataque corpo a corpo que errou.",
   "wiki.groupSource": "Requer outro inimigo vivo na batalha.",
   "wiki.brainsGym": "Ginásio de Inteligência",
-  "wiki.brainsRule": "Ultrapasse um limite de Inteligência: {marks}. O ginásio verifica a primeira técnica compatível desconhecida na ordem de cada especialidade, escolhe a candidata de maior peso e sorteia essa porcentagem. Um limite de comandos ({orders}) ultrapassado na mesma sessão tem prioridade. O aprendizado não é garantido.",
+  "wiki.brainsRule": "Ultrapasse um limite de Inteligência: {marks}. O ginásio verifica a primeira técnica compatível desconhecida na ordem de cada especialidade, escolhe a candidata de maior peso e sorteia essa porcentagem. Um limite de comandos ({orders}) ultrapassado na mesma sessão tem prioridade. O aprendizado não é garantido. Se essa primeira técnica tiver peso 0 na sua posição, Inteligência não pode ensinar nenhuma outra técnica dessa especialidade até o Digimon aprendê-la de outra forma, por exemplo observando-a em combate.",
   "wiki.brainsWeights": "Pesos desta técnica pela posição da especialidade: {weights}. Peso zero impede aprendê-la nessa posição.",
   "wiki.trainingOrder": "Ordem de treinamento",
   "wiki.noBrains": "Esta técnica não pode ser aprendida treinando Inteligência.",

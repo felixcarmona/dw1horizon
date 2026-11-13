@@ -668,7 +668,7 @@
   "wiki.counterSource": "Reaktiver Konter: Lass diesen Gegner auf einen verfehlten Nahkampfangriff mit einem Konter reagieren.",
   "wiki.groupSource": "Ein weiterer lebender Gegner muss am Kampf teilnehmen.",
   "wiki.brainsGym": "Intelligenztraining",
-  "wiki.brainsRule": "Überschreite einen Intelligenz-Schwellenwert: {marks}. Das Training prüft die erste unbekannte, passende Technik in der Trainingsreihenfolge jeder Spezialität, wählt den Kandidaten mit dem höchsten Gewicht und würfelt mit diesem Prozentsatz. Ein in derselben Einheit überschrittener Befehlsschwellenwert ({orders}) hat Vorrang. Das Lernen ist nicht garantiert.",
+  "wiki.brainsRule": "Überschreite einen Intelligenz-Schwellenwert: {marks}. Das Training prüft die erste unbekannte, passende Technik in der Trainingsreihenfolge jeder Spezialität, wählt den Kandidaten mit dem höchsten Gewicht und würfelt mit diesem Prozentsatz. Ein in derselben Einheit überschrittener Befehlsschwellenwert ({orders}) hat Vorrang. Das Lernen ist nicht garantiert. Hat diese erste Technik an ihrer Position das Gewicht 0, kann Intelligenz keine andere Technik dieser Spezialität lehren, bis das Digimon sie anders lernt, etwa durch Beobachten im Kampf.",
   "wiki.brainsWeights": "Gewichte dieser Technik nach Spezialitätsposition: {weights}. Bei Gewicht null kann sie an dieser Position nicht gelernt werden.",
   "wiki.trainingOrder": "Trainingsreihenfolge",
   "wiki.noBrains": "Diese Technik lässt sich nicht durch Intelligenztraining lernen.",
