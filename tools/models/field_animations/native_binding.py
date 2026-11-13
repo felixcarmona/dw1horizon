@@ -137,6 +137,17 @@ def donor_model(recipe):
     return (Path(mmd.EXTRACTED) / recipe['model']).read_bytes()
 
 
+def bind_pose(mesh, skeleton, recipe):
+    """The source pose the pieces are fitted in: a frame of the bind slot, or, where the source only stands in a fighting
+    stance, a reviewed pose of its own (`bind_pose`: per bone the local rotation, or rotation and translation, in 4096ths),
+    such as the symmetric pose its mesh is modelled in (every rotation zero) with the knees and arms eased."""
+    pose = animsheet.slot_frames(mesh, len(skeleton), recipe.get('bind_slot', 33))[0][recipe.get('bind_frame', 0)]
+    for b, channels in recipe.get('bind_pose', {}).items():
+        start = len(pose[int(b)]) - 6       # after the scale channels, when the pose has them
+        pose[int(b)][start:start+len(channels)] = channels
+    return pose
+
+
 def bind(data, skeleton, recipe, placements=None):
     """(model bytes, proof). `placements`, when given, receives {source bone: (anchor, transform, destination)}: how each
     piece was moved, for the authoring step that carries effect points and the condition bubble along with their piece."""
@@ -156,7 +167,7 @@ def bind(data, skeleton, recipe, placements=None):
     native = mmd.MMD.parse(donor_bytes, mmd.exe().bone_count[donor_id])
     native.type = donor_id
     native_rig = mmd.exe().skeleton[donor_id]
-    source_pose = animsheet.slot_frames(mesh, len(skeleton), recipe.get('bind_slot', 33))[0][0]
+    source_pose = bind_pose(mesh, skeleton, recipe)
     native_pose = animsheet.slot_frames(native, len(native_rig), 0)[0][0]
     source_pose[0] = native_pose[0] = [4096]*3 + [0]*6
     sw = np.array(mmd.bone_matrices(mesh, source_pose))

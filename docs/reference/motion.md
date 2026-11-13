@@ -1587,3 +1587,28 @@ swing step is not sampled at full speed. The studio measures a stance slip of 1 
 below the floor in the studio's measure (the walk and tired walk have their own `clear`, 17 and 21). The body: hips against shoulders, the upper body rolling over the loaded foot, the arms carried
 tucked in and bent with a swing of 15 degrees in the walk (wider, or with the elbows pushed out, they cut into the thighs and the torso), the elbow and hand late and a gesture or two in the idle, neck, head, jaw, ears and the three-link tail following by a spring each; a low tired slump with the head hung and the
 tail down, a hunched run with the jaw open, an idle that breathes, shifts its weight, looks about, swishes the tail, flexes the claws and opens the jaw for a snort. The walk stands higher than before (a little more spring in the step). Guilmon also blinks (`guilmon_face.py`, the way Growlmon does; idle 3 blinks, walk 2, tired 2 slow, run 1, each lid, 3-4 shut ticks, lid; the studio's own renderer ignores texture moves, so check it with a player that applies them): the eye is painted in the head texture, so three frames (open, half shut, shut) are stamped into spare texels of the texture (rows 96 and below) and the clips paste them with texture-move events; the texture delta changes too. Offline: `edit.py get 433`, the generator with `--tex`/`--out-tex`, `edit.py put 433 AFTER.MMD AFTER.TIM`.
+
+Garudamon 460 wears the native rig and programs of Angemon (26 bones, `CHDAT/MMD0/ANGE.MMD`, a native binding at scale 1.24). The imported
+mesh only ever stands in a fighting stance (hips turned, one leg forward, fists up), and the binding fits the pieces in the source pose, so
+every clip inherited it. The recipe key `bind_pose` (per source bone a local rotation, or rotation and translation, in 4096ths) gives the
+binding a pose of its own instead of a frame of the bind slot (`bind_slot`, `bind_frame`): Garudamon's is the pose its mesh is modelled in
+(every rotation zero, upright, feet pointing forward) with the legs a little apart, knees and elbows eased, head level and wings folded back.
+`garudamon_donor_gait.py` (the recipe key `gait`) writes slots 0, 2, 3 and 4 again on two planted soles from `quadruped.py` (idle 76 ticks,
+walk 14 at 18 units per tick, tired walk 22 at 11, run 11 at 44). Angemon's left leg, arm and wing bones are not its right ones mirrored (their
+axes are turned half a turn about the vertical), so the profile names a sole point per leg (`sole` keyed by leg name) and the arm swing and
+wing breath are written as world rotations carried into each bone's space. Angemon's pelvis bone sits at the gimbal pole of its
+Euler angles (a turn through it makes the angles jump between ticks, and its own axes are not the world's), so it never turns: it only
+carries the body down and up twice a stride (2.5 units in the walk) and 3 units over each standing foot. The trunk is written as world
+turns on the bones under it: the hips (the legs' and loin's parent) turn at most 3 degrees about the vertical with the stride (4 in the run)
+and roll at most 1, the chest turns back against them a little later (at most 4) and leans (2 degrees in the walk, 9 tired, 11 in the run),
+and the head is held steady in the world. Chest, hips and feet face the way it walks: the feet do not turn at all and travel straight.
+The limbs stay loose rather than mirrored:
+each arm swings with the opposite leg on an eased wave, the right arm later and further than the left;
+the forearm trails, so the elbow bends most (30 to 56 degrees in the walk, about 80 to 100 pumping in the run) just after the arm
+reaches its back, and the loose hand trails the forearm; the knees fold high on the swing and the soles roll heel to toe. The head
+nods late, hangs in the tired walk (torso slumped, shoulders rolled forward, arms dragging) and looks about in the idle,
+which also breathes, sways its arms and shifts its weight unevenly; the wings drift and flap behind on loose springs, unevenly in
+the idle, and close back in the run. Stance slip is 10 / 9 / 11 % mean in the walk, tired walk and run (worst 26 / 27 / 25 %), the
+lowest sole sits 3 to 6 units above the floor line, the largest step between ticks is at most 2.1 times the median, triangle
+crossings are 84 / 85 / 109 / 100 (idle, walk, tired, run), and the resident buffer is 85,474 of 100,352 bytes. The test is
+`tools.test_garudamon_native`.

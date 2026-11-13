@@ -67,6 +67,8 @@ class ModelProvider(unittest.TestCase):
             '292': ('292', 'tools.models.field_animations.native_binding', '292-deltamon-native'),
             # ChaosLord wears native Machinedramon's rig and programs.
             '289': ('289', 'tools.models.field_animations.native_binding', '289-chaoslord-native'),
+            # Garudamon wears native Angemon's rig and programs, planted by its own gait stage.
+            '460': ('460', 'tools.models.field_animations.native_binding', '460-garudamon-native'),
             # GrapLeomon wears native Leomon's rig and programs, with four turning drums.
             '306': ('306', 'tools.models.field_animations.native_binding', '306-grapleomon-native'),
             # Kyubimon wears native Garurumon's rig and a planted-sole gait on it.
