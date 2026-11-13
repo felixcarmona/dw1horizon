@@ -177,12 +177,13 @@ def angemon(r):
     r.shot('angemon-home')
     r.go(311)
     assert r.npc(0) != keeper, 'Angemon has left the wall'
-    # "Come to the city" is asked again.
-    r.set(root3=False, vault_kept=True); r.recruit(Angemon=True)
+    # "Come to the city" is answered: the statue room's band no longer drags the tamer down (the Sanctuary beyond it
+    # stays reachable); only an unanswered offer descends.
+    r.set(root3=False, vault_kept=False); r.recruit(Angemon=True)
     r.go(97); call_section(r.e, 93, 52)
     r.advance(lambda: r.e.peek('CURRENT_SCREEN', 'h') == 310, name='down to the wall')
     r.settle(310)
-    assert not r.flag('vault_kept') and r.npc(0) is not None
+    assert r.npc(0) is not None
     return dict(keeper=keeper)
 
 
