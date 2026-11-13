@@ -10,9 +10,9 @@
    "donor_texture_sha256": "54d185e3354e83659961e4a16fae82fa5d2d2bed04222db521dc780e14605ee3",
    "mmd": {
     "delta": "content/modeldelta/babies/470-Pabumon.MMD.mdelta",
-    "delta_sha256": "06cc612c4e6ecaadf13d8c03576fcad517f133493891dd6a5f39701226957a19",
-    "sha256": "c8e8df005a3b074fef2895976618e1f94f210b25d582beae97c9561dac249de3",
-    "size": 27108
+    "delta_sha256": "b6d0e4b4569a53064f28afa81f5dc5cf964926484c6b98e76c768e0392aeb471",
+    "sha256": "38e60d9b92db8c79af94c91cd280ab8cafcdf28ac68754fdcdfaa74c95d743a5",
+    "size": 31862
    },
    "tim": {
     "delta": "content/modeldelta/babies/470-Pabumon.TIM.mdelta",

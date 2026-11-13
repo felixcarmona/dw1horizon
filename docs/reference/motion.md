@@ -1623,3 +1623,12 @@ the idle, and close back in the run. Stance slip is 10 / 9 / 11 % mean in the wa
 lowest sole sits 3 to 6 units above the floor line, the largest step between ticks is at most 2.1 times the median, triangle
 crossings are 84 / 85 / 109 / 100 (idle, walk, tired, run), and the resident buffer is 85,474 of 100,352 bytes. The test is
 `tools.test_garudamon_native`.
+
+Pabumon (470, a hand-made baby) no longer plays Punimon's frantic clips (a blob squashed to half and stretched to one and a half
+times its height, spun and thrown about). `pabumon_calm.py` writes slots 0, 2, 3 and 4 into its model delta: a 96-tick idle (four breaths,
+two curious look-arounds, a crouch and a small hop that lands with an overshoot, two blinks), a walk of two 20-tick hops at 16 units per
+tick (22 units high), a tired walk of two 24-tick scoots at 12 (6 units high, a heavy droop, half-shut eyes) and a run of four 12-tick hops
+at 38 (24 high). Squash runs 0.74 to 1.25 with an anticipation crouch before each take-off, and the body leans into the movement. A blink
+moves the eye texture to half-lidded, then to the closed arc for three ticks (six when tired), then back; blinks are not tied to the hops.
+The body stays where it lands while it is down (the root follows the foot 60 % and a steady line 40 %, the body bone takes up the
+difference), and its lowest point is solved every tick so the mesh never goes under the floor. The test is `tools.test_pabumon_calm`.
