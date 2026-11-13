@@ -467,7 +467,7 @@ def gait(rig, cfg):
                 share = 1.0 if cfg['world_ease'] is True else cfg['world_ease']     # a share < 1 keeps the paw nearer the body
                 flight[2] = share * (z_world + speed * swing_ticks * s) + (1 - share) * flight[2]
             flight[2] -= mul_ * cfg['out'][key] * 6.75 * s * s * (1 - s)    # reaches past the landing, then settles onto it
-            flight[1] -= mul_ * cfg['lift'][key] * math.sin(math.pi * min(1.0, s ** cfg.get('arc', 0.8)))
+            flight[1] -= mul_ * cfg['lift'][key] * math.sin(math.pi * min(1.0, s ** cfg.get('arc', 0.8))) ** cfg.get('plateau', 1.0)
             flight[0] += side * cfg.get('wide', {}).get(key, 0) * math.sin(math.pi * s)    # swings wide of the body
             world = rig.paw(front, swing_pitch(cfg, front, s), name)
             dip = rig.lowest(paw, world, [0, 0, 0])
@@ -596,7 +596,7 @@ def build(data, skeleton, profile):
                 events.append((tick, 'sound', dict(sound, frame=tick + 1)))
         events.sort(key=lambda e: e[0])
         frames = [[[round(x) for x in bone] for bone in pose] for pose in frames]
-        animation = mmd.encode_anim(frames, n, loop_sample=0, events=events, tol=1)
+        animation = mmd.encode_anim(frames, n, loop_sample=0, events=events, tol=profile.get('tol', 1))
         index = old.anims.table[slot]
         new.anims.anims[index] = animation          # in place: the slot's aliases play it too
         changed |= {s for s, i in enumerate(old.anims.table) if i == index}

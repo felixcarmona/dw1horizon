@@ -143,6 +143,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'megakabuterimon-field': ('205', 'tools.models.field_animations.mega_kabuterimon', '205-megakabuterimon-field'),
     'veedramon-field': ('203', 'tools.models.field_animations.gaits', '203-veedramon-field'),
     'monmon-upperbody': ('352', 'tools.models.field_animations.monmon', '352-monmon-upperbody'),
+    'neocrimson-native': ('402', 'tools.models.field_animations.native_binding', '402-neocrimson-native'),
     'wargreymon-field': ('373', 'tools.models.field_animations.chibi', '373-wargreymon-field'),
     'blackwargreymon-field': ('404', 'tools.models.field_animations.celebrations', '404-blackwargreymon-field'),
     'omnimon-field': ('461', 'tools.models.field_animations.celebrations', '461-omnimon-field'),
