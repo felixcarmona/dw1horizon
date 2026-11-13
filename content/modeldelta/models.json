@@ -4659,9 +4659,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/336-Raidenmon.MMD.mdelta",
-        "delta_sha256": "7b00283d0ccd27f43d1cac53ec865e49ae8142317e0a2c84aeab7843aba339ad",
-        "sha256": "0a3fb06f8b3ff035d18ff7b3eb5bd8879a63151a367c35092693eaa9bfcccd23",
-        "size": 90516
+        "delta_sha256": "5421be820b317824db4740d32b052749f6ef5eccc185f789a2e7bddbaadab735",
+        "sha256": "00742ad6a09e0b381365d203046aece36b45c8c12c94d90f91a09c76c7ef0c9d",
+        "size": 94450
       },
       "tim": {
         "sources": [
@@ -4719,9 +4719,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/352-Monmon.MMD.mdelta",
-        "delta_sha256": "c7db121da4b05d36afb3faee4495fc1005efda3f4b7fc2d12d658728470c1006",
-        "sha256": "371098f2c404da5ee55a2307e9b55c6dce61d7efc648f7e2bb7c747c850086f5",
-        "size": 124474
+        "delta_sha256": "430fc9a6f66f475b8bb104a55575df4f36c2acd413eda3988623ebb00a697be9",
+        "sha256": "ae0af8ef2dbfb3d4d8dcc7da71679cefc9d49a3f5b623759d68a0620423cd5bd",
+        "size": 120052
       },
       "tim": {
         "sources": [
@@ -4732,8 +4732,8 @@
           }
         ],
         "delta": "content/modeldelta/deltas/352-Monmon.TIM.mdelta",
-        "delta_sha256": "b219317e945f94323bc6b8f92d32a5c6504800008adf0eee34268c7315134082",
-        "sha256": "d68cfc46969b2f8cc12d9cc2cd06d225e0672a890a838cc2023396bbfd8e681c",
+        "delta_sha256": "b8e90c572ad2e7b370a4c667e2d392362e3004c8b74dc1ba1be6cd95cb6b23cb",
+        "sha256": "fb1b2a94078e6a71c51a51e4e1e7947a3b58c7d1cc5c841d6fdcf64bf3d3b274",
         "size": 18432
       }
     },
@@ -4749,9 +4749,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/353-Bearmon.MMD.mdelta",
-        "delta_sha256": "71ff83e157183ce6f1c56aac45f3c20de932fe99d801650bd1a7d4e05d932451",
-        "sha256": "2e5bb8152b1449599fc4f08e744fd991bf12aacd55b3e3510eaa815b410ff602",
-        "size": 90670
+        "delta_sha256": "51de1a83b223a0aef8f46a31f726effcfc00f95893750eff366dbc1386f2c804",
+        "sha256": "894ee1e1fb8660be3821d858dbc30584edd190ae61ba85e4bb6e8bedc6a2104f",
+        "size": 98270
       },
       "tim": {
         "sources": [

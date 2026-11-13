@@ -208,12 +208,26 @@ class ModelProvider(unittest.TestCase):
         # So are Dinohyumon's (dinohyumon_gait.py).
         self.assertEqual(assignments['308'], ('tools.models.field_animations.dinohyumon_gait', '308-dinohyumon-chibi'))
         assignments['308'] = ('tools.models.field_animations.chibi', '308-dinohyumon-chibi')
+        # Mummymon's walk, tired walk and run (mummymon_gait.py) run on top of its chibi proportions the same way.
+        self.assertEqual(assignments['334'], ('tools.models.field_animations.mummymon_gait', '334-mummymon-chibi'))
+        assignments['334'] = ('tools.models.field_animations.chibi', '334-mummymon-chibi')
+
+        self.assertEqual(assignments['373'], ('tools.models.field_animations.wargreymon_gait', '373-wargreymon-field'))
+        assignments['373'] = ('tools.models.field_animations.chibi', '373-wargreymon-field')
         # Knightmon's tired walk and run (knightmon_gait.py) are the celebration's base generator and rebuild its chibi proportions first.
         self.assertEqual(assignments['321'], ('tools.models.field_animations.knightmon_gait', '321-knightmon-chibi'))
         assignments['321'] = ('tools.models.field_animations.chibi', '321-knightmon-chibi')
         # And Gargoylemon's (gargoylemon_gait.py).
         self.assertEqual(assignments['327'], ('tools.models.field_animations.gargoylemon_gait', '327-gargoylemon-chibi'))
         assignments['327'] = ('tools.models.field_animations.chibi', '327-gargoylemon-chibi')
+
+        # MegaGargomon's idle, walk, tired walk and run (megagargomon_gait.py) are the celebrations' base generator and rebuild its chibi proportions first.
+        self.assertEqual(assignments['335'], ('tools.models.field_animations.megagargomon_gait', '335-megagargomon-equipment'))
+        assignments['335'] = ('tools.models.field_animations.chibi', '335-megagargomon-equipment')
+
+        # Renamon's walk, tired walk, run and idle (renamon_gait.py) run on top of its chibi proportions the same way.
+        self.assertEqual(assignments['354'], ('tools.models.field_animations.renamon_gait', '354-renamon-field'))
+        assignments['354'] = ('tools.models.field_animations.chibi', '354-renamon-field')
         # Antylamon's smoothed walk (antylamon_polish.py) runs on top of its chibi proportions the same way.
         self.assertEqual(assignments['309'], ('tools.models.field_animations.antylamon_polish', '309-antylamon-chibi'))
         assignments['309'] = ('tools.models.field_animations.chibi', '309-antylamon-chibi')
@@ -272,6 +286,8 @@ class ModelProvider(unittest.TestCase):
         # All pre-existing bindings outside the repairs stay pinned.
         for sid in ('315', '332', '335'):
             del assignments[sid]
+        # Raijinmon (333) wears Ogremon's rig and programs with planted legs (raijinmon_gait.py): a native binding, no celebration row.
+        self.assertEqual(assignments.pop('333'), ('tools.models.field_animations.native_binding', '333-raijinmon-native'))
         assignments['351'] = ('tools.models.field_animations.articulation', '351-kotemon-field')
         # Raidramon (201) no longer has a field overlay: its gait is in its model delta (raidramon.py).
         self.assertNotIn('201', assignments)

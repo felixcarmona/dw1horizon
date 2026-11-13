@@ -1352,67 +1352,6 @@
       ]
     ]
   },
-  "333": {
-    "source_sha256": "4515e19e20eec03764581af19a87620728634e6595cb1bda3f619d8bbea03133",
-    "slots": [
-      11,
-      42
-    ],
-    "pelvis": 1,
-    "chest": 2,
-    "head": 3,
-    "legs": [
-      [
-        12,
-        13,
-        14
-      ],
-      [
-        20,
-        21,
-        22
-      ]
-    ],
-    "locked": [
-      15,
-      23
-    ],
-    "lower": [
-      12,
-      13,
-      14,
-      15,
-      20,
-      21,
-      22,
-      23
-    ],
-    "secondary": [
-      [
-        [
-          16,
-          17,
-          18,
-          19
-        ],
-        1,
-        2
-      ]
-    ],
-    "delays": {
-      "4": 0.8,
-      "5": 1.4,
-      "6": 2,
-      "7": 2.6,
-      "8": 1.1,
-      "9": 1.8,
-      "10": 2.7,
-      "3": 2.3
-    },
-    "shift": 0.8,
-    "body_gain": 1,
-    "skeleton_sha256": "0e1949700cbd30a4f1e17f74514f2113db3c27d3a489baf04b71482331dd03c9"
-  },
   "335": {
     "source_sha256": "903c8d5492d91680921946fd7f4c27a3a480107d71cd2315443a11f31c129705",
     "slots": [
@@ -1491,7 +1430,7 @@
     },
     "shift": 0.8,
     "body_gain": 1,
-    "base_generator": "tools.models.field_animations.chibi",
+    "base_generator": "tools.models.field_animations.megagargomon_gait",
     "skeleton_sha256": "7e432b6bbde2c831b4f41d3041b60ca2b7be8a671371c85d04fa906b20041291",
     "hanging": [
       [

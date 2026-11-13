@@ -39,7 +39,6 @@ def replace_channels(original,samples,loop,nb,channels,*,tolerance=1):
 
 def build(data,sk):
     digest=hashlib.sha256(data).hexdigest()
-    if digest=='5b043a68ea1b12698d95ac1296030e80a4c2e8853c9f9d9f3c5d42f9be82fea1':return kotemon(data,sk)
     if digest!='2834a5f401362586a350ab6c4839c9231542dbfdec420b594fad964f13753572':raise ValueError('Puppetmon recipe requires its reviewed effective imported source')
     sid=181;nb=len(sk);assert nb==18;mmd.exe().skeleton[sid]=sk;mmd.exe().bone_count[sid]=nb
     old=mmd.MMD.parse(data,nb);old.type=sid;new=copy.deepcopy(old);report=[]
@@ -85,50 +84,6 @@ def build(data,sk):
     result=new.build();parsed=mmd.MMD.parse(result,nb);assert changed_programs(old,parsed)==[2,3,4];assert old.tmd.build()==parsed.tmd.build()
     storage=motionstorage.audit(result,nb);assert storage['fits'],storage
     return result,dict(species=sid,source_sha256=digest,output_sha256=hashlib.sha256(result).hexdigest(),changed_slots=[2,3,4],mesh_exact=True,other_programs_exact=True,checks=report,storage=storage)
-
-
-def kotemon(data,sk):
-    sid=351;nb=len(sk);assert nb==24;mmd.exe().skeleton[sid]=sk;mmd.exe().bone_count[sid]=nb
-    old=mmd.MMD.parse(data,nb);old.type=sid;new=copy.deepcopy(old);report=[]
-    channels={(b,c)for b in [1,2,3,4,5,17]for c in [3,4,5]}|{(b,c)for b in [13,18]for c in range(3,9)}
-    for slot in [2,3,4]:
-        fs,loop,_=animsheet.slot_frames(old,nb,slot);duration=len(fs)-1;assert loop==0
-        worlds=np.array([mmd.bone_matrices(old,p)for p in fs]);sep=worlds[:,8,2,3]-worlds[:,11,2,3];drive=sep[:-1]-np.mean(sep[:-1]);drive/=max(1,np.max(np.abs(drive)))
-        t=2*np.pi*np.arange(duration)/duration;a,b=np.linalg.lstsq(np.column_stack([np.sin(t),np.cos(t)]),drive,rcond=None)[0];phase=math.atan2(b,a)
-        frames=[];hist={}
-        for tick,source in enumerate(fs):
-            theta=2*math.pi*tick/duration+phase;p=copy.deepcopy(source);original=np.array(mmd.bone_matrices(old,source))
-            r=np.array(mmd.rot_matrix(*source[1][3:6]))@rotation([.8*math.cos(2*theta),3*math.sin(theta),1.6*math.cos(theta-.3)])
-            set_rotation(p,1,r,hist)
-            parent=np.array(mmd.bone_matrices(old,p))[1]
-            set_rotation(p,2,parent[:3,:3].T@original[2,:3,:3],hist)
-            assert source[2][6:9]==[0,0,0]
-            guard=rotation([3*math.sin(theta-.4),0,.6*math.cos(theta-.8)]);pivot=(np.array(source[13][6:9])+np.array(source[18][6:9]))/2
-            for shoulder in [13,18]:
-                set_rotation(p,shoulder,guard@np.array(mmd.rot_matrix(*source[shoulder][3:6])),hist)
-                p[shoulder][6:9]=np.round(pivot+guard@(np.array(source[shoulder][6:9])-pivot)+[0,-2,-8]).astype(int).tolist()
-            for bone,delay in [(3,.5),(4,.9),(5,1.3)]:p[bone][3]+=round(1.5*math.sin(theta-delay)*4096/360)
-            parent=np.array(mmd.bone_matrices(old,p))[1,:3,:3]
-            set_rotation(p,17,parent.T@original[17,:3,:3]@rotation([.6*math.cos(2*theta-.7),0,0]),hist)
-            frames.append(p)
-        frames[-1][1:]=copy.deepcopy(frames[0][1:]);anim=replace_channels(old.anims.anims[old.anims.table[slot]],frames,loop,nb,channels)
-        new.anims.anims.append(anim);new.anims.table[slot]=len(new.anims.anims)-1
-        before=mmd.AnimPlayer(old.anims.anims[old.anims.table[slot]],nb,slot);after=mmd.AnimPlayer(anim,nb,slot);max_foot=0;max_grip=0
-        for tick in range(duration*4):
-            assert before.tick()and after.tick();assert before.base==after.base
-            for bone in range(nb):
-                for c in range(9):
-                    if(bone,c)not in channels:assert before.pose[bone][c]==after.pose[bone][c],(slot,tick,bone,c)
-            wa=np.array(mmd.bone_matrices(old,before.pose));wb=np.array(mmd.bone_matrices(old,after.pose))
-            max_foot=max(max_foot,float(np.linalg.norm(wa[[7,8,10,11],:3,3]-wb[[7,8,10,11],:3,3],axis=1).max()))
-            max_grip=max(max_grip,abs(float(np.linalg.norm(wa[16,:3,3]-wa[21,:3,3])-np.linalg.norm(wb[16,:3,3]-wb[21,:3,3]))))
-        assert max_foot<.5 and max_grip<1.5,(slot,max_foot,max_grip)
-        report.append(dict(slot=slot,period=duration,root_and_leg_channels_exact_for_four_cycles=True,max_foot_world_error=max_foot,max_grip_distance_error=max_grip,original_events_and_controls_preserved=True))
-    import motioncyclelayer
-    for a in new.anims.anims:a.tail=b''
-    new.anims.anims,new.anims.table=motioncyclelayer.share_identical_streams(new.anims.anims,new.anims.table)
-    result=new.build();parsed=mmd.MMD.parse(result,nb);assert changed_programs(old,parsed)==[2,3,4];assert old.tmd.build()==parsed.tmd.build();storage=motionstorage.audit(result,nb);assert storage['fits'],storage
-    return result,dict(species=sid,source_sha256=hashlib.sha256(data).hexdigest(),output_sha256=hashlib.sha256(result).hexdigest(),changed_slots=[2,3,4],mesh_exact=True,other_programs_exact=True,checks=report,storage=storage)
 
 
 def main():
