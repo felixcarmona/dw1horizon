@@ -1575,3 +1575,15 @@ walk 18 at 12.5, run 12 at 40; stance slip 7, 5 and 4 % mean, worst 31, 18 and 1
 mount's beat: the torso bobs, sways against the hips and twists against them through damped springs, the head and arms follow later and
 looser, the cloak and crests trail on their own springs, the rider leans into the run, slumps when tired and breathes and looks about in the
 idle. The pivots never slide on the mount. The resident model uses 97,890 of 100,352 bytes.
+
+Guilmon 433 (`tools/models/field_animations/guilmon_gait.py`, test `tools.test_guilmon_gait`) had a walk and tired walk that
+slid (the soles moved 49 to 85 % of the body's travel on average and 417 % at worst), sank up to 25 units under the floor and
+let the arms flail out wide. The generator plants each foot with `quadruped.py` on the model's own legs (no overlay; Guilmon has no
+chibi row): the walk is 24 ticks (two different cycles of 12) at 15 units a tick, the tired walk 32 (2 x 16) at 10, the run 24 (2 x 12) at 36 and the
+96-tick idle keeps both feet planted (slots 33, 35 and 36 play the new idle, walk and run). Guilmon's legs are short, so the cycles are
+shorter than Growlmon's: a stance covers about 100 units, which the legs reach without sinking the body. The profile's `clear` is 13 because the claw
+bone hangs under the ankle mesh the module measures, and the left foot lifts a little before its tick (duty 6.4 / 12 against 6.5 / 12, 10.5 / 16 in the tired walk) so the first
+swing step is not sampled at full speed. The studio measures a stance slip of 1 to 3 % on average and 18 % at worst (the imported clips: 26 to 85 %, 418 % at worst), the soles never go
+below the floor in the studio's measure (the walk and tired walk have their own `clear`, 17 and 21). The body: hips against shoulders, the upper body rolling over the loaded foot, the arms carried
+tucked in and bent with a swing of 15 degrees in the walk (wider, or with the elbows pushed out, they cut into the thighs and the torso), the elbow and hand late and a gesture or two in the idle, neck, head, jaw, ears and the three-link tail following by a spring each; a low tired slump with the head hung and the
+tail down, a hunched run with the jaw open, an idle that breathes, shifts its weight, looks about, swishes the tail, flexes the claws and opens the jaw for a snort. The walk stands higher than before (a little more spring in the step). Guilmon also blinks (`guilmon_face.py`, the way Growlmon does; idle 3 blinks, walk 2, tired 2 slow, run 1, each lid, 3-4 shut ticks, lid; the studio's own renderer ignores texture moves, so check it with a player that applies them): the eye is painted in the head texture, so three frames (open, half shut, shut) are stamped into spare texels of the texture (rows 96 and below) and the clips paste them with texture-move events; the texture delta changes too. Offline: `edit.py get 433`, the generator with `--tex`/`--out-tex`, `edit.py put 433 AFTER.MMD AFTER.TIM`.
