@@ -1222,3 +1222,5 @@ under the donor's own trunk and arms (`quadruped.py`). It runs in the build; off
 `python -m tools.models.field_animations.raijinmon_gait --source BOUND.MMD --rig 333-report.json --out OUT.MMD`. After changing it,
 `edit.py check 333 --species-pins` prints the new provider pin for `tools/derive/recipes/species-pins.json`. Test: `tools.test_raijinmon_gait`
 (`RAIJINMON_MODELS`).
+
+Species 402 (NeoCrimson): the `neocrimson-native` overlay is `native_binding.py` with a recipe (`native-bindings.json`, id 402) that binds its 33 rigid parts to WarGreymon's 20-bone rig (`donor_species` 373: the legs, arms, neck and head by their joints, the wings, back spikes and ribbons on the chest, the hip block and skirts on the pelvis, the thin tail chain shortened to a quarter), and then `field_animations/neocrimson_wg_gait.py`, WarGreymon's own planted-sole gait (copy of the WarGreymon recipe with the foot plant relaxed to the claws' reach) written over slots 0, 2, 3 and 4. Test: `tools.test_neocrimson_gait` (`NEOCRIMSON_MODEL`, `WARGREYMON_MODEL`).
