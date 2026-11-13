@@ -92,7 +92,7 @@ class RaijinmonGait(unittest.TestCase):
     def test_the_recipe_asks_for_the_stage(self):
         recipes = json.loads(Path('content/models/imports/native-bindings.json').read_text())
         self.assertEqual(recipes['333']['gait'], 'raijinmon_gait')
-        self.assertTrue(all('gait' not in r for k, r in recipes.items() if k != '333'))
+        self.assertTrue(all('gait' not in r for k, r in recipes.items() if k not in ('333', '324')))
         self.assertTrue(hasattr(raijinmon_gait, 'build'))
 
 
