@@ -784,6 +784,13 @@ Vilemon uses native Ogremon's skeleton (18 bones) and field programs at scale 0.
 idle, walk, condition walk and run are Ogremon's own clips (17, 23, 25 and 21 frames at 17.6, 16.2 and 36.1 units per tick
 for the gaits); the wings have no donor bone and ride the chest. The resident model uses 68,322 of 100,352 bytes.
 
+Kyubimon uses native Garurumon's skeleton (26 bones, `CHDAT/MMD0/GARU.MMD`) at scale 1.0, bound by `native_binding.py`: its 26 bones
+map by body part (face and ears onto the head, the three tail pairs onto the last two tail bones) and the recipe's `spread` puts the donor's joints on the
+source's. The donor's own clips carry the techniques (slots 46 to 56, slot 57 plays 57). `kyubimon_donor_gait.py` (the recipe's `gait`) then writes the
+idle, walk, condition walk and run again: the trunk, neck, head and tail chain are the donor's own clip, resampled and softened, a tail wave runs down the chain
+with a lag, and the four legs are planted-paw solves from `quadruped.py` (40, 16, 22 and 14 ticks; 17.0, 11.5 and 40.0 units per tick). Stance slip is 18 %, 17 %
+and 19 % mean (worst 36, 37 and 42 %), the lowest sole 2 units under the idle's floor. The resident model uses 95,352 of 100,352 bytes.
+
 Minotarumon uses native Ogremon's skeleton (18 bones, `CHDAT/MMD1/OGRE.MMD`) and field programs at scale 0.88, bound by
 `native_binding.py`: its 20 bones map by body part onto Ogremon's 18 (pieces 17, 19 and 20 onto the head, 5 and 6 onto one foot, 9 and 10 onto the other),
 and pieces 6, 10, 19 and 20 share a donor bone and are placed by `pieces` offsets. Idle is Ogremon's own

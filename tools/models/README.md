@@ -282,6 +282,12 @@ kicks, claws, fire, quake, war cry) and the training slot 57 plays Sonic Jab's. 
 different body than Ogremon's: the upper-arm shoulder vertices overlap the chest box by 3 to 4 of 28 in every pose, forearms
 and fists never do. `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_vilemon_native` (after `edit.py get 295`).
 
+Kyubimon (409) wears native Garurumon's (22, `CHDAT/MMD0/GARU.MMD`) 26-bone skeleton at scale 1.0: its bones map by body part, pieces that share a donor bone sit by
+`pieces` offsets, and `spread` fits the pieces on the donor's joints. The recipe's `gait` stage, `kyubimon_donor_gait.py`, keeps the donor's trunk, neck, head and
+tail clips (softened, with a lagged tail wave) and writes the idle, walk, condition walk and run with planted paws (`quadruped.py`); per-rig rows in its `RIGS`
+(Garurumon, Unimon, Monochromon bone numbers) make it reusable. Species pin: only the provider pin in `species-pins.json` (its model delta is unchanged).
+`PYTHONPATH=tools python3 -W ignore -m unittest tools.test_kyubimon_native` (after `edit.py get 409`).
+
 Minotarumon (330) wears native Ogremon's (34, `CHDAT/MMD1/OGRE.MMD`) 18-bone skeleton at scale 0.88: its 20 bones map by body
 part (pieces 17, 19 and 20 to Ogremon's head, 5 and 6 and 9 and 10 each pair to one foot), pieces 6, 10, 19 and 20 share a
 donor bone and are placed by `pieces` offsets, and the recipe's `spread` fits the pieces on the donor's joints. The idle is
