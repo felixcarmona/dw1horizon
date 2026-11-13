@@ -63,21 +63,21 @@
   },
   "473": {
    "name": "Nyokimon",
-   "donor": 43,
-   "bones": 9,
-   "donor_model": "MMD1/YURA.MMD",
-   "donor_model_sha256": "29a7a688a0a936aef1a484266ea70987b91ac6b570e51ba956da7a147ddf2efa",
-   "donor_texture_sha256": "dd406159410fad2ef5e0996a9ade9221857f4e33e4f03aaacbebe22df7f6c389",
+   "donor": 1,
+   "bones": 3,
+   "donor_model": "MMD0/BOTA.MMD",
+   "donor_model_sha256": "30517faf54fcd0fab64ce20ef6d9f79c5043d9eecf634edf57388a52994287c2",
+   "donor_texture_sha256": "b0ad57afaae2242db397e88cf1027cf04210038101977803985621d3bb322a87",
    "mmd": {
     "delta": "content/modeldelta/babies/473-Nyokimon.MMD.mdelta",
-    "delta_sha256": "7eb1b37edef8c880369338a796c4cb92d870a89603328574ec9a2e4f9909cf28",
-    "sha256": "299f6e10a7435ba3655b56117dc861302af8712bb3eb383286b2b727903c4398",
-    "size": 31072
+    "delta_sha256": "ff5732f2f7e5cba9a8888976eae0d72b3bcdd034cd573c4018834db4596b5704",
+    "sha256": "5c0a1bc3b7ae2f9d5496157520caa2df59a7d4b28b91129ae984ff86fe0e1aa2",
+    "size": 34102
    },
    "tim": {
     "delta": "content/modeldelta/babies/473-Nyokimon.TIM.mdelta",
-    "delta_sha256": "ef001e625cbde74a003aa33ae6d278685a590088c5a837edac5cd6d3b8272218",
-    "sha256": "2b80a59ad99a2efa403ee1b6ce754f49d2f5bc4c559f5479c75571281c5e722e",
+    "delta_sha256": "0049688965514a03a90599efd93c20516c5202f11af8d3d118a806d13a37055a",
+    "sha256": "b870521f1608517b8b26c7b492fb77844271d49c0b658d9a7b9d7b3d65e107fb",
     "size": 18432
    }
   },

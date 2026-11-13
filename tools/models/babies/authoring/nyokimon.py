@@ -1,42 +1,78 @@
-"""Yuramon (type 43) -> Nyokimon, round 3: geometry and texture page rebuilt from scratch, sized for the field.
+"""Botamon (type 1) -> Nyokimon, round 4: the same drop, sprout and face on Botamon's skeleton and animations.
 
-Coordinates: everything is designed in GROUND space (world units, y negative = up, the ground at y = 0) and written
-into bone 2's local space by adding LOCAL_OFF = 150 (bone 1 holds bone 2 at world y -150: round 2 wrote ground
-coordinates straight into the object and the drop hung 150 units too high). The donor's idle/walk keys bob bone 1 by
-about +-25 (Yuramon hovers), so the rest bottom sits at -22: the drop touches the ground at the low point of the bob
-and never sinks in idle/walk; the stretch slots (happy, eat, hit, techniques: scale up to 1.8 about the pivot 150 above
-the ground) would push a ground-resting body 50-120 units into the floor, which is the trade-off of this skeleton.
+Rounds 1-3 used Yuramon (type 43), whose body bone hovers 150 units up: the drop had to float 22 units to survive the
+idle bob, and the walk, tired walk and run sank 35, 37 and 3 units. Botamon's body bone rests on the ground (its idle
+bob is +-1, its walk and run are hops that leave the ground and land on it), the three field clips measure walk 21.0,
+tired 16.7 and run 35.0 units per tick, and the mesh is one object on bone 2 (the other objects of the donor do not
+exist), so the whole drop, stem and leaves move with the body bone: the donor's squash and stretch deforms them as a
+unit.
+
+Coordinates: everything is designed in GROUND space (world units, y negative = up, the ground at y = 0, the donor's
+rest floor) and written into bone 2's local space by subtracting its rest translation (BONE_T, read from the donor;
+bone 2 is not rotated at rest). The rest bottom (BOT) is 0: the drop touches the ground at rest and in idle.
 
 Shape: body 100 wide x 100 tall (native Fresh babies are 106-133), the profile measured on the reference (widest at
 35 %, a thin neck over the top 18 %); 16 columns x 9 rings + pole, an 8-column stem, two 6-station double-sided
 leaves (the long one to the right, tip 0.9 body widths from the axis; the short steep one to the left, tip at 0.6):
-sprout span 1.5 x the body width, total 170 tall, 390 primitives. Objects 1..6 (tuft bones, which swing 15-100 deg)
-hold one degenerate triangle each.
+sprout span 1.5 x the body width, total 161 tall (the size review then scales the whole model by 0.8, shrink.py), 384
+primitives. The donor's other objects (none for Botamon) are collapsed to one degenerate triangle each.
 
 Texture: clear skin baked into the body map (grey-clear neck cone and a thin grey bottom rim, both the same all
 around so no seam or wall shows under per-vertex lighting, one small glass highlight at the upper left); short low-contrast
-hair strokes radiating from the face centre with hairs sticking out into the pale zones; nine 24x24 face frames (the
-right half of the face, mirrored): solid yellow discs with a darker rim, a pink tongue mouth under a grey wavy
-upper-lip line (open / looking down / drowsy / closed / blink / happy / two chewing frames); yellow-green leaves with
-darker edges and a pale mid-vein; a 15x15 tournament sprite in CLUT row 15.
+hair strokes radiating from the face centre with hairs sticking out into the pale zones; yellow-green leaves with
+darker edges and a pale mid-vein; a 15x15 tournament sprite in CLUT row 15. The face lives in two WINDOWS, the page
+rectangles Botamon's texture animations overwrite: the eyes (24x16 at (8, 8): open, looking down, closed, drowsy,
+happy, open again) and the mouth (24x16 at (0, 24): none, small, open, big). Each window shows a stretch of the drop
+(theta -45..45 degrees between two body rings, so the eyes and the mouth are drawn on the whole face, both eyes in one
+frame): solid yellow discs with a darker rim and a grey wavy upper-lip line over a pink tongue. CONFIG says where the
+windows and their frames sit and what each frame draws; another donor needs its own entry (three were tried in
+the donor review: Botamon, Tsunomon with 32x24 eye frames, Tokomon with one 72x48 window).
 
 Traps: the engine culls back faces (front = clockwise on screen with y down: cross(v1-v0, v2-v0) . n_out < 0),
 animstudio does not; the TIM is encoded here directly (fixed palette per region/CLUT row) because palette_map hands
-uncovered texels to row 0 by block majority and tex_import would then pollute the face palette.
+uncovered texels to row 0 by block majority and tex_import would then pollute the face palette; the body map, the
+windows, their frames, the leaves and the flat sprite must not overlap (asserted).
 """
 from lib import *
 import math
 
-b = Baby('Nyokimon', 43)
+DONOR = 1                            # Botamon (MMD0/BOTA): three bones, the whole body one object on bone 2
+# Per donor: the rest height of the drop's bottom above the ground (negative = up) and where its texture page keeps the
+# face. A face WINDOW is the rectangle of the page that the donor's texture animation overwrites (`dst`) and the frames
+# it copies there (`src`, each with the eye and mouth drawing it shows; None = that layer is not in the window). The
+# windows are laid over the drop: 'rings' = the body rings (index into RING_S) its top and bottom edge sit on.
+# Body, leaves and stem take free rectangles of the page; the flat sprite stays at u 224/240, v 96/112.
+CONFIG = {
+    1: dict(bot=0.0, body=(0, 192, 41, 103), leaf=(0, 47, 104, 127), stem=(48, 63, 104, 127), windows=[
+        dict(rings=(4, 6), dst=(8, 8, 24, 16), base=('open', None), frames=[
+            (48, 0, 'open', None), (72, 0, 'down', None), (96, 0, 'closed', None), (120, 0, 'drowsy', None),
+            (144, 0, 'happy', None), (168, 0, 'open', None)]),
+        dict(rings=(2, 4), dst=(0, 24, 24, 16), base=(None, 'closed'), frames=[
+            (48, 16, None, 'closed'), (72, 16, None, 'down'), (96, 16, None, 'open'), (120, 16, None, 'happy')])]),
+}
+CFG = CONFIG[DONOR]
+b = Baby('Nyokimon', DONOR)
 m = b.m
 rng = np.random.default_rng(11)
 NAME = 'Nyokimon'
-LOCAL_OFF = 150.0                    # bone 2 world y = -150: local y = ground y + 150
+
+
+def _rest_translation():
+    """Bone 2's rest translation (donor world units): the drop is designed in ground space and written into the local space."""
+    e = mmd.exe()
+    frames, _ = mmd.simulate(m.anims.anims[m.anims.table[0]], e.bone_count[DONOR])
+    pose = frames[0]; pose[0] = [4096, 4096, 4096, 0, 0, 0, 0, 0, 0]
+    M = np.array(mmd.bone_matrices(m, pose)[2], float)
+    assert np.allclose(M[:3, :3], np.eye(3)), 'the drop bone is rotated at rest'
+    return M[:3, 3]
+
+
+BONE_T = _rest_translation()
 
 # ---------------------------------------------------------------- the drop profile (ground y, negative = up)
 H = 100.0                            # body height
 RMAX = 50.0                          # half width
-BOT = -22.0                          # rest bottom (the idle bob brings it to the ground)
+BOT = CFG['bot']                     # rest bottom above the ground (negative = up), tuned per donor
 APEX = BOT - H
 PROFILE = [(0.0, 0.0), (0.05, 0.52), (0.095, 0.69), (0.137, 0.79), (0.18, 0.88), (0.22, 0.93), (0.26, 0.97), (0.35, 1.0),
            (0.43, 0.98), (0.52, 0.915), (0.56, 0.86), (0.60, 0.79), (0.64, 0.68), (0.68, 0.54), (0.73, 0.40), (0.77, 0.30),
@@ -87,17 +123,14 @@ def r_of_y(y):
 
 
 # ---------------------------------------------------------------- texture page layout
-BODY_U0, BODY_U1 = 0, 192            # u 0..192 (193 columns, the last duplicates the first) <-> theta -180..180
-BODY_V0, BODY_V1 = 25, 103           # v 25 (apex ring) .. 103 (bottom pole)
+BODY_U0, BODY_U1, BODY_V0, BODY_V1 = CFG['body']      # the last column duplicates the first <-> theta -180..180; v0 = apex ring, v1 = bottom pole
+COLPX = (BODY_U1 - BODY_U0) / 16.0
 FACE_HALF_DEG = 45.0
-FRAME = 24
-LEAF_U0, LEAF_U1, LEAF_V0, LEAF_V1 = 0, 47, 104, 127
-STEM_U0, STEM_U1, STEM_V0, STEM_V1 = 48, 63, 104, 127
+LEAF_U0, LEAF_U1, LEAF_V0, LEAF_V1 = CFG['leaf']
+STEM_U0, STEM_U1, STEM_V0, STEM_V1 = CFG['stem']
 SEG = 16
-RING_S = [0.0, 0.06, 0.14, 0.22, 0.35, 0.48, 0.60, 0.70, 0.82, 1.0]     # 0 = bottom pole, 1 = apex ring
-FACE_RING_BOT, FACE_RING_TOP = 3, 7  # rings bounding the face patch (22 % .. 70 % of the height)
+RING_S = [0.0, 0.06, 0.15, 0.27, 0.39, 0.51, 0.62, 0.72, 0.84, 1.0]     # 0 = bottom pole, 1 = apex ring (face windows sit on .15 / .39 / .62)
 RING_V = [int(round(BODY_V0 + (BODY_V1 - BODY_V0) * t_of_s(s))) for s in RING_S]
-V_BOT_FACE, V_TOP_FACE = RING_V[FACE_RING_BOT], RING_V[FACE_RING_TOP]
 ROW_FACE, ROW_BODY, ROW_SPROUT = 0, 1, 2
 
 
@@ -108,7 +141,7 @@ class Mesh:
     def vert(self, p, n):
         """p in ground space; stored in bone-2 local space."""
         n = np.asarray(n, float); n = n / (np.linalg.norm(n) or 1)
-        self.v.append((int(round(p[0])), int(round(p[1] + LOCAL_OFF)), int(round(p[2])), 0))
+        self.v.append((int(round(p[0] - BONE_T[0])), int(round(p[1] - BONE_T[1])), int(round(p[2] - BONE_T[2])), 0))
         self.n.append(tuple(int(round(c * 4096)) for c in n) + (0,))
         return len(self.v) - 1
 
@@ -149,28 +182,40 @@ for ri, s in enumerate(RING_S):
 
 
 def body_uv(k, ri):
-    return (BODY_U0 + 12 * k, RING_V[ri])
+    return (BODY_U0 + int(round(COLPX * k)), RING_V[ri])
 
 
-def face_uv(k, ri):
+def window_of(k, ri):
+    """The face window that quad (k, ri) lies in (its rings and its columns inside it), or None."""
     th = -180 + 360 * k / SEG
-    return (int(round(23 * abs(th) / FACE_HALF_DEG)), int(round(23 * (RING_V[ri] - V_TOP_FACE) / (V_BOT_FACE - V_TOP_FACE))))
+    if not -FACE_HALF_DEG - 1e-6 <= th <= FACE_HALF_DEG - 22.5 + 1e-6:
+        return None
+    for w in CFG['windows']:
+        if w['rings'][0] <= ri and ri + 1 <= w['rings'][1]:
+            return w
+    return None
 
 
-def in_face(k, ri):
+def face_uv(w, k, ri):
+    """Page position of vertex (k, ring ri) inside window w: theta and the arc position of the ring spread linearly over
+    the window (the texture mapping of the engine is affine, so a window crossing several rings stays straight)."""
     th = -180 + 360 * k / SEG
-    return FACE_RING_BOT <= ri <= FACE_RING_TOP and -FACE_HALF_DEG - 1e-6 <= th <= FACE_HALF_DEG + 1e-6
+    x, y, ww, hh = w['dst']
+    t0, t1 = float(t_of_s(RING_S[w['rings'][1]])), float(t_of_s(RING_S[w['rings'][0]]))
+    return (x + int(round((th + FACE_HALF_DEG) / (2 * FACE_HALF_DEG) * (ww - 1))),
+            y + int(round((float(t_of_s(RING_S[ri])) - t0) / (t1 - t0) * (hh - 1))))
 
 
 for k in range(SEG):
     body.tri(ring_ids[0][k], ring_ids[1][k], ring_ids[1][k + 1],
-             ((BODY_U0 + 12 * k + 6, BODY_V1), body_uv(k, 1), body_uv(k + 1, 1)), ROW_BODY)
+             ((BODY_U0 + int(round(COLPX * (k + 0.5))), BODY_V1), body_uv(k, 1), body_uv(k + 1, 1)), ROW_BODY)
 for ri in range(1, len(RING_S) - 1):
     for k in range(SEG):
         a, bb = ring_ids[ri][k], ring_ids[ri][k + 1]
         c, d = ring_ids[ri + 1][k + 1], ring_ids[ri + 1][k]
-        if in_face(k, ri) and in_face(k + 1, ri + 1):
-            body.quad(a, bb, c, d, face_uv(k, ri), face_uv(k + 1, ri), face_uv(k + 1, ri + 1), face_uv(k, ri + 1), ROW_FACE)
+        win = window_of(k, ri)
+        if win:
+            body.quad(a, bb, c, d, face_uv(win, k, ri), face_uv(win, k + 1, ri), face_uv(win, k + 1, ri + 1), face_uv(win, k, ri + 1), ROW_FACE)
         else:
             body.quad(a, bb, c, d, body_uv(k, ri), body_uv(k + 1, ri), body_uv(k + 1, ri + 1), body_uv(k, ri + 1), ROW_BODY)
 
@@ -188,7 +233,7 @@ for (q, r) in STEM[1:]:
     stem_rings.append(ids)
 FORK = np.array([0.0, APEX - STEM_LEN, 0.0]) + LEAN
 cap = body.vert(FORK + [0, -2.5, 0], (0, -1, 0))
-SV = [STEM_V1, 116, 105]
+SV = [STEM_V1, STEM_V0 + 12, STEM_V0 + 1]
 
 
 def stem_uv(k, j):
@@ -242,7 +287,7 @@ tmd = m.tmd
 verts, norms = list(body.v), list(body.n)
 ob0 = tmd.objects[0]
 ob0.vert_start, ob0.nvert, ob0.norm_start, ob0.nnorm, ob0.prims = 0, len(body.v), 0, len(body.n), list(body.prims)
-for oi in range(1, 7):
+for oi in range(1, len(tmd.objects)):
     ob = tmd.objects[oi]
     ob.vert_start, ob.nvert, ob.norm_start, ob.nnorm = len(verts), 3, len(norms), 1
     verts += [(0, 0, 0, 0)] * 3; norms += [(0, -4096, 0, 0)]
@@ -251,7 +296,7 @@ for oi in range(1, 7):
 tmd.verts, tmd.norms = verts, norms
 V0 = np.array([v[:3] for v in body.v], float)
 print(f'body: {len(body.v)} verts, {len(body.prims)} tris (+6); local y {V0[:, 1].min():.0f}..{V0[:, 1].max():.0f} '
-      f'(ground {V0[:, 1].min() - LOCAL_OFF:.0f}..{V0[:, 1].max() - LOCAL_OFF:.0f}), x {V0[:, 0].min():.0f}..{V0[:, 0].max():.0f}; '
+      f'(ground {V0[:, 1].min() + BONE_T[1]:.0f}..{V0[:, 1].max() + BONE_T[1]:.0f}), x {V0[:, 0].min():.0f}..{V0[:, 0].max():.0f}; '
       f'MMD {len(m.build())} B', file=sys.stderr)
 
 # ---------------------------------------------------------------- texture page
@@ -433,17 +478,20 @@ col = paint_body(theta, yy, body_slicer).mean(axis=(2, 3))
 t[BODY_V0:BODY_V1 + 1, BODY_U0:BODY_U1 + 1, :3] = snap(col, PAL_BODY).astype(np.uint8)
 
 # ---- face frames: solid yellow discs (12 % of the width, gap 1.5 widths), tongue mouth under a grey wave
-EYE_Y, EYE_R = hy(0.48), 0.06 * 2 * RMAX
+EYE_Y, EYE_R = hy(0.505), 0.06 * 2 * RMAX
 EYE_X = 1.25 * 2 * EYE_R                    # centre offset from the axis: gap 1.5 eye widths
 EYE = np.array([EYE_X, EYE_Y])
-MOUTH_Y = hy(0.28)
+MOUTH_Y = hy(0.27)
 
 
-def frame_coords(fx):
-    U, V = grid(fx, fx + FRAME - 1, 0, FRAME - 1)
-    theta = (U - fx) / 23.0 * FACE_HALF_DEG
-    vb = V_TOP_FACE + V / 23.0 * (V_BOT_FACE - V_TOP_FACE)
-    return theta, y_of_t(np.clip((vb - BODY_V0) / (BODY_V1 - BODY_V0), 0, 1))
+def window_coords(w, sx, sy):
+    """(theta, ground y) of every sub-sample of the frame copied to page position (sx, sy) of window w."""
+    _, _, ww, hh = w['dst']
+    U, V = grid(sx, sx + ww - 1, sy, sy + hh - 1)
+    t0, t1 = float(t_of_s(RING_S[w['rings'][1]])), float(t_of_s(RING_S[w['rings'][0]]))
+    theta = -FACE_HALF_DEG + (U - sx - 0.5) / (ww - 1) * 2 * FACE_HALF_DEG
+    tt = t0 + (V - sy - 0.5) / (hh - 1) * (t1 - t0)
+    return theta, y_of_t(np.clip(tt, 0, 1))
 
 
 def soft(x, w=0.7):
@@ -452,7 +500,7 @@ def soft(x, w=0.7):
 
 def eye_layer(theta, yy, kind):
     xu, yu = unroll(theta, yy)
-    dx, dy = xu - EYE[0], yu - EYE[1]
+    dx, dy = np.abs(xu) - EYE[0], yu - EYE[1]
     d = np.hypot(dx, dy)
     yellow = np.array((248, 208, 32), float); rim = np.array((200, 160, 24), float)
     colr = np.full(theta.shape + (3,), yellow)
@@ -474,16 +522,17 @@ def eye_layer(theta, yy, kind):
     else:
         ax = EYE[0] - 3.5 if kind == 'strain' else EYE[0] - 2.8
         ay = 0.0 if kind == 'strain' else 0.8
-        arm = np.abs((xu - ax) - 0.85 * np.abs(dy - ay))
-        shape = soft(1.3 - arm) * soft(5.5 - np.abs(dy - ay)) * soft(xu - ax + 0.4)
-    halo = np.clip((2.2 * EYE_R - d) / EYE_R, 0, 1) ** 1.6 * (0.55 if kind not in ('closed', 'drowsy') else 0.3)
+        arm = np.abs((np.abs(xu) - ax) - 0.85 * np.abs(dy - ay))
+        shape = soft(1.3 - arm) * soft(5.5 - np.abs(dy - ay)) * soft(np.abs(xu) - ax + 0.4)
+    halo = np.clip((1.9 * EYE_R - d) / (0.9 * EYE_R), 0, 1) ** 1.6 * (0.55 if kind not in ('closed', 'drowsy') else 0.3)
     return shape, colr, halo
 
 
 def mouth_layer(theta, yy, kind):
-    """Pink tongue (rx, ry) with a flat top under a grey wavy upper-lip line (the 'moustache' of the art)."""
+    """The closed mouth is a grey wavy upper-lip line (the 'moustache' of the art). An open mouth REPLACES it (no line
+    above it): a dark cavity with a pink tongue at the bottom, so only one mouth is ever on the face."""
     xu, yu = unroll(theta, yy)
-    dx, dy = xu, yu - MOUTH_Y
+    dx, dy = np.abs(xu), yu - MOUTH_Y
     PINKC, DARK = np.array((240, 128, 160), float), np.array((176, 64, 96), float)
     W_HW = 0.15 * 2 * RMAX                                      # wave half width
     wave_y = -0.065 * H + 0.025 * H * np.cos(np.pi * np.clip(dx, 0, W_HW) / W_HW)
@@ -494,27 +543,41 @@ def mouth_layer(theta, yy, kind):
         shape = np.zeros(theta.shape); colr = np.full(theta.shape + (3,), PINKC)
     else:
         rx, ry = sizes
-        rr = np.hypot(dx / rx, dy / ry)
+        cy = -0.03 * H                                           # the cavity sits where the line was
+        rr = np.hypot(dx / rx, (dy - cy) / ry)
         shape = soft(1 - rr, 0.12)
-        if kind != 'strain': shape = shape * soft(dy + 0.8)       # flat top (tongue); the chewing 'o' is a full oval
-        colr = np.where((dy > 0.55 * ry)[..., None], DARK, PINKC)
+        if kind == 'happy': shape = shape * soft(dy - cy + 0.8)  # a D: flat top
+        tongue = soft(1 - np.hypot(dx / (0.62 * rx), (dy - cy - 0.5 * ry) / (0.5 * ry)), 0.2)
+        colr = DARK * (1 - tongue[..., None]) + PINKC * tongue[..., None]
+        wave = wave * 0
     return shape, colr, wave
 
 
-FRAMES = {0: 'open', 24: 'down', 48: 'drowsy', 72: 'closed', 96: 'blink', 120: 'happy', 144: 'strain', 168: 'strain2',
-          192: 'open'}
 HALO_C = np.array((88, 76, 16), float)
 WAVE_C = np.array(WAVE, float)
-for fx, kind in FRAMES.items():
-    theta, yy = frame_coords(fx)
+FACE_RECTS = []                      # every page rectangle that holds face pixels (the windows' own and every frame's)
+
+
+def paint_window(w, sx, sy, eye_kind, mouth_kind):
+    theta, yy = window_coords(w, sx, sy)
     base = paint_body(theta, yy)
-    eshape, ecol, halo = eye_layer(theta, yy, kind)
-    base = base * (1 - halo[..., None]) + HALO_C * halo[..., None]
-    base = base * (1 - eshape[..., None]) + ecol * eshape[..., None]
-    mshape, mcol, wave = mouth_layer(theta, yy, kind)
-    base = base * (1 - wave[..., None]) + WAVE_C * wave[..., None]
-    base = base * (1 - mshape[..., None]) + mcol * mshape[..., None]
-    t[0:FRAME, fx:fx + FRAME, :3] = snap(base.mean(axis=(2, 3)), PAL_FACE).astype(np.uint8)
+    if eye_kind:
+        eshape, ecol, halo = eye_layer(theta, yy, eye_kind)
+        base = base * (1 - halo[..., None]) + HALO_C * halo[..., None]
+        base = base * (1 - eshape[..., None]) + ecol * eshape[..., None]
+    if mouth_kind:
+        mshape, mcol, wave = mouth_layer(theta, yy, mouth_kind)
+        base = base * (1 - wave[..., None]) + WAVE_C * wave[..., None]
+        base = base * (1 - mshape[..., None]) + mcol * mshape[..., None]
+    _, _, ww, hh = w['dst']
+    t[sy:sy + hh, sx:sx + ww, :3] = snap(base.mean(axis=(2, 3)), PAL_FACE).astype(np.uint8)
+    FACE_RECTS.append((sx, sx + ww, sy, sy + hh))
+
+
+for w in CFG['windows']:
+    paint_window(w, w['dst'][0], w['dst'][1], *w['base'])
+    for sx, sy, ek, mk in w['frames']:
+        paint_window(w, sx, sy, ek, mk)
 
 # ---- leaf texture: yellow-green, darker edges, pale mid-vein, slightly lighter towards the tip
 U, V = grid(LEAF_U0, LEAF_U1, LEAF_V0, LEAF_V1)
@@ -534,7 +597,7 @@ col = ramp(np.clip(sh, 0, 1), [(0, (60, 112, 36)), (0.6, (112, 168, 48)), (1, (1
 t[STEM_V0:STEM_V1 + 1, STEM_U0:STEM_U1 + 1, :3] = snap(col.mean(axis=(2, 3)), PAL_SPROUT).astype(np.uint8)
 
 # ---- encode the TIM ourselves: each region has its own CLUT row and a fixed palette
-REGIONS = [(ROW_FACE, PAL_FACE, (0, 9 * FRAME, 0, FRAME)), (ROW_BODY, PAL_BODY, (BODY_U0, BODY_U1 + 1, BODY_V0, BODY_V1 + 1)),
+REGIONS = [(ROW_FACE, PAL_FACE, r) for r in FACE_RECTS] + [(ROW_BODY, PAL_BODY, (BODY_U0, BODY_U1 + 1, BODY_V0, BODY_V1 + 1)),
            (ROW_SPROUT, PAL_SPROUT, (LEAF_U0, STEM_U1 + 1, LEAF_V0, LEAF_V1 + 1))]
 # the tournament's flat sprite (renderFlatDigimon): CLUT row 15, four 15x15 frames at u 224/240, v 96/112
 ICON = ['......L........',
@@ -554,6 +617,13 @@ ICON = ['......L........',
         '......WWW......']
 ICON_PAL = {'.': None, 'F': (8, 8, 8), 'f': (48, 48, 56), 'W': (200, 206, 216), 'w': (248, 248, 248), 'Y': (248, 208, 32),
             'o': (88, 76, 16), 'L': (160, 204, 58), 'R': (136, 188, 52), 'S': (72, 128, 40), 'P': (240, 128, 160)}
+
+
+_used = np.zeros(t.shape[:2], int)
+for _row, _pal, (_u0, _u1, _v0, _v1) in REGIONS:
+    _used[_v0:_v1, _u0:_u1] += 1
+_used[96:128, 224:256] += 1
+assert _used.max() == 1, 'two page regions overlap (donor %d)' % DONOR
 
 
 def encode_tim():
@@ -584,7 +654,7 @@ def save():
     cv2.imwrite(os.path.join(OUT, NAME + '-tex.png'),
                 cv2.resize(cv2.cvtColor(t, cv2.COLOR_RGBA2BGRA), None, fx=3, fy=3, interpolation=cv2.INTER_NEAREST))
     print(f'MMD {os.path.getsize(mp)} B', file=sys.stderr)
-    return f'{mp}:43:{tp}:0:{NAME}'
+    return f'{mp}:{DONOR}:{tp}:0:{NAME}'
 
 
 spec = save()

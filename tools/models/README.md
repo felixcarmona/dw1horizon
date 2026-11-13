@@ -228,10 +228,14 @@ for palette selections, technique routing and storage. Run
 
 Species 470-477 are the hand-made babies (`babies/`): a DW1 donor baby's rig and
 animations with our mesh and texture, replayed from plain deltas
-(`content/modeldelta/babies.json`); `babies/authoring/` holds the drawing scripts.
+(`content/modeldelta/babies.json`); `babies/authoring/` holds the drawing scripts. Nyokimon's face is painted as
+windows over the donor's texture animations (Botamon's), so a different donor needs its own window layout.
 YukimiBotamon (472) plays its own calm clips: `field_animations/yukimibotamon_calm.py` replaces Botamon's slots 0, 2, 3 and 4
 (`python3 -m tools.models.field_animations.yukimibotamon_calm SRC OUT.MMD`, then `python3 -m tools.models.babies encode 472 OUT.MMD TIM`);
 check with `tools.test_yukimibotamon_calm`.
+Nyokimon (473) also plays its own clips: `field_animations/nyokimon_calm.py` replaces Botamon's slots 0, 2, 3 and 4 with a calm
+idle (looks, tilts, blinks, a happy bounce) and soft hops (`python3 -m tools.models.field_animations.nyokimon_calm SRC OUT.MMD`, then
+`python3 -m tools.models.babies encode 473 OUT.MMD TIM`); check with `tools.test_nyokimon_calm`.
 Run `python3 -m tools.models.babies check` and
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_native_babies`.
 

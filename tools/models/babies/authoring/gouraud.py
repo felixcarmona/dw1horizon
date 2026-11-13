@@ -4,7 +4,7 @@ Shows what the in-game look is, unlike animstudio's flat per-triangle shading.""
 import sys, os, math, argparse
 import numpy as np
 from lib import mmd, OUT
-DONOR = {'Pabumon': 15, 'Pichimon': 2, 'YukimiBotamon': 1, 'Nyokimon': 43, 'Motimon': 2, 'Bukamon': 2, 'Nyaromon': 30,
+DONOR = {'Pabumon': 15, 'Pichimon': 2, 'YukimiBotamon': 1, 'Nyokimon': 1, 'Motimon': 2, 'Bukamon': 2, 'Nyaromon': 30,
          'Yokomon': 44}
 LIGHT = np.array([0.35, -0.75, 0.55]); LIGHT /= np.linalg.norm(LIGHT)   # from above, front-left (y negative = up)
 

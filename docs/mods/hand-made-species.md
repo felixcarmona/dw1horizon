@@ -21,7 +21,7 @@ the texture page are new. Pick the donor by what the target needs to move, not b
 | Pabumon | Punimon 15 | one-bone squash-and-stretch blob: reads as a bouncing slime |
 | Pichimon, Motimon, Bukamon | Koromon 2 | body bone inside the body (grounded hop), two 2-segment ear chains for feelers or flippers |
 | YukimiBotamon | Botamon 1 | the same character family |
-| Nyokimon | Yuramon 43 | seed body; mind that its body bone hovers 150 units up (the mesh must be offset down) |
+| Nyokimon | Botamon 1 | seed body on the plain baby rig; Yuramon (43) was dropped: its hop and tuft junk objects made the clips unusable. Tsunomon (16) and Tokomon (30) also fit (hops taller than the body) |
 | Nyaromon | Tokomon 30 | ears plus four feet |
 | Yokomon | Tanemon 44 | bulb, stem, two leaf bones (petals) and four feet (roots) |
 
