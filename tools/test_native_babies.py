@@ -17,6 +17,12 @@ from tools.derive.importers import Provider
 
 ROOT = Path(__file__).resolve().parents[1]
 BABY_IDS = list(range(470, 478))
+CALM_CLIPS = {
+    470: (0, 2, 3, 4),      # Pabumon's idle, walk, tired walk and run (field_animations/pabumon_calm.py)
+    471: (0, 2, 3, 4),      # Pichimon's four field clips (field_animations/pichimon_hop.py)
+    472: (0, 2, 3, 4),      # Yukimibotamon's idle, walk, tired walk and run (field_animations/yukimibotamon_calm.py)
+    473: (0, 2, 3, 4),      # Nyokimon's idle, walk, tired walk and run (field_animations/nyokimon_calm.py)
+}
 
 
 def adds(delta):
@@ -97,8 +103,21 @@ class Replay(unittest.TestCase):
             record = self.records[sid]
             donor = (ROOT / 'extracted/CHDAT' / record['donor_model']).read_bytes()
             with self.subTest(baby=record['name']):
+                if sid in CALM_CLIPS:
+                    continue                                 # its four field clips are ours: see the next test
                 self.assertEqual(model[struct.unpack_from('<I', model, 4)[0]:],
                                  donor[struct.unpack_from('<I', donor, 4)[0]:])
+
+    def test_pabumon_keeps_every_donor_program_but_its_four_field_clips(self):
+        record = self.records[470]
+        parsed = mmd.MMD.parse(self.built[470][0], record['bones'])
+        donor = mmd.MMD.load(str(ROOT / 'extracted/CHDAT' / record['donor_model']), record['donor'])
+        self.assertEqual(len(parsed.anims.table), len(donor.anims.table))
+        for slot, (a, b) in enumerate(zip(parsed.anims.table, donor.anims.table)):
+            self.assertEqual(a is None, b is None)
+            if a is not None and slot not in CALM_CLIPS[470]:
+                self.assertEqual(vars(parsed.anims.anims[a]), vars(donor.anims.anims[b]), slot)
+        self.assertIsNotNone(parsed.anims.table[0x2E])
 
     def test_partner_limits_and_animation_storage(self):
         for sid, (model, texture) in self.built.items():
@@ -108,7 +127,8 @@ class Replay(unittest.TestCase):
                 parsed = mmd.MMD.parse(model, record['bones'])
                 self.assertLessEqual(record['bones'], 34)
                 donor = mmd.MMD.load(str(ROOT / 'extracted/CHDAT' / record['donor_model']), record['donor'])
-                self.assertEqual(parsed.anims.table, donor.anims.table)   # the donor baby's slots, Bubble at 0x2E
+                if sid not in CALM_CLIPS:
+                    self.assertEqual(parsed.anims.table, donor.anims.table)   # the donor baby's slots, Bubble at 0x2E
                 self.assertIsNotNone(parsed.anims.table[0x2E])
                 motionstorage.require(model, record['bones'])
                 tim = mmd.Tim4(texture)

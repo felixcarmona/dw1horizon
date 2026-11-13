@@ -67,6 +67,8 @@ class ModelProvider(unittest.TestCase):
             '292': ('292', 'tools.models.field_animations.native_binding', '292-deltamon-native'),
             # ChaosLord wears native Machinedramon's rig and programs.
             '289': ('289', 'tools.models.field_animations.native_binding', '289-chaoslord-native'),
+            # Garudamon wears native Angemon's rig and programs, planted by its own gait stage.
+            '460': ('460', 'tools.models.field_animations.native_binding', '460-garudamon-native'),
             # GrapLeomon wears native Leomon's rig and programs, with four turning drums.
             '306': ('306', 'tools.models.field_animations.native_binding', '306-grapleomon-native'),
             # Kyubimon wears native Garurumon's rig and a planted-sole gait on it.
@@ -78,6 +80,8 @@ class ModelProvider(unittest.TestCase):
 
             # Cannondramon wears native Monochromon's rig and programs, planted by its own gait stage.
             '405': ('405', 'tools.models.field_animations.native_binding', '405-cannondramon-native'),
+            # Zanbamon wears a native quadruped's rig and programs, planted by its own gait stage.
+            '430': ('430', 'tools.models.field_animations.native_binding', '430-zanbamon-native'),
             # Vilemon wears native Ogremon's rig and programs.
             '295': ('295', 'tools.models.field_animations.native_binding', '295-vilemon-native'),
             # HiAndromon wears native Andromon's rig and programs.
@@ -195,6 +199,9 @@ class ModelProvider(unittest.TestCase):
         # Pharaohmon's tired walk and run (pharaohmon_gait.py) run on top of the celebrations recipe.
         self.assertEqual(assignments['319'], ('tools.models.field_animations.pharaohmon_gait', '319-pharaohmon-chibi'))
         assignments['319'] = ('tools.models.field_animations.celebrations', '319-pharaohmon-chibi')
+        # Bastemon's idle, walk, tired walk and run (bastemon_gait.py) run on top of the celebrations' own build (chibi proportions first).
+        self.assertEqual(assignments['432'], ('tools.models.field_animations.bastemon_gait', '432-bastemon-field'))
+        assignments['432'] = ('tools.models.field_animations.celebrations', '432-bastemon-field')
         # Celebration curves run after the final proportions. Unwrap them to
         # keep guarding all the original field recipes and output names.
         for sid, row in celebrations.items():
