@@ -197,6 +197,9 @@ class ModelProvider(unittest.TestCase):
         # Pharaohmon's tired walk and run (pharaohmon_gait.py) run on top of the celebrations recipe.
         self.assertEqual(assignments['319'], ('tools.models.field_animations.pharaohmon_gait', '319-pharaohmon-chibi'))
         assignments['319'] = ('tools.models.field_animations.celebrations', '319-pharaohmon-chibi')
+        # Bastemon's idle, walk, tired walk and run (bastemon_gait.py) run on top of the celebrations' own build (chibi proportions first).
+        self.assertEqual(assignments['432'], ('tools.models.field_animations.bastemon_gait', '432-bastemon-field'))
+        assignments['432'] = ('tools.models.field_animations.celebrations', '432-bastemon-field')
         # Celebration curves run after the final proportions. Unwrap them to
         # keep guarding all the original field recipes and output names.
         for sid, row in celebrations.items():
