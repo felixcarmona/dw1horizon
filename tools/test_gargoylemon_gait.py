@@ -96,11 +96,12 @@ class GargoylemonGait(unittest.TestCase):
 
     def test_chibi_proportions_and_the_record_patch_are_kept(self):
         self.assertIn('species_patch', self.report)
-        self.assertEqual(self.report['gait']['changed_slots'], [0, 2, 3, 4, 35, 36])    # slot 33 shares the idle's animation; 35 and 36 follow the walk and run
+        self.assertEqual(self.report['gait']['changed_slots'], [0, 2, 3, 4, 35, 36])    # 35 and 36 follow the walk and run
 
-    def test_slot_33_plays_the_idle_animation(self):
-        table = self.new.anims.table
-        self.assertEqual(table[33], table[0])
+    def test_the_battle_idles_are_the_source_games_own(self):
+        table = self.new.anims.table             # 0x21 and 0x22 play the source's clips, not the field idle
+        self.assertNotEqual(table[33], table[0])
+        self.assertNotEqual(table[34], table[0])
 
     def test_storage_fits_the_resident_buffer(self):
         from motionstorage import audit
