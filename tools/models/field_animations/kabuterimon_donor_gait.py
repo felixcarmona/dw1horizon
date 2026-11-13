@@ -160,8 +160,7 @@ def make_profile(model, rig, data, gaits=None):
     zc = sum(w[2] for w in near) / len(near)
     sole_w = [0.0, low - pos(paw)[1], zc - pos(paw)[2]]
     profile['sole'][False] = [round(v, 1) for v in quadruped.mv(quadruped.tr(R), sole_w)]
-    for name, (u, l, p_, s, f) in legs.items():
-        profile['sole'][name] = [round(v, 1) for v in quadruped.mv(quadruped.tr(Rm(p_)), sole_w)]
+    # one sole point for both legs (no per-leg 'sole' entries): the reviewed clips were made with it
     profile['reach']['hind'] = round(sole_w[2] + 8)
     la = quadruped.norm(quadruped.sub(pos(lo), pos(up)))
     lb = quadruped.norm(quadruped.sub(pos(paw), pos(lo)))
