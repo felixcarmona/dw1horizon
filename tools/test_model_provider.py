@@ -71,6 +71,8 @@ class ModelProvider(unittest.TestCase):
             '306': ('306', 'tools.models.field_animations.native_binding', '306-grapleomon-native'),
             # Minotarumon wears native Ogremon's rig and programs.
             '330': ('330', 'tools.models.field_animations.native_binding', '330-minotarumon-native'),
+            # Cannondramon wears native Monochromon's rig and programs, planted by its own gait stage.
+            '405': ('405', 'tools.models.field_animations.native_binding', '405-cannondramon-native'),
             # Vilemon wears native Ogremon's rig and programs.
             '295': ('295', 'tools.models.field_animations.native_binding', '295-vilemon-native'),
             # HiAndromon wears native Andromon's rig and programs.

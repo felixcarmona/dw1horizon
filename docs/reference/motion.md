@@ -1390,3 +1390,11 @@ whip behind. Walk 26 ticks at 17 units a tick, tired walk 34 at 11 (slumped, arm
 degrees), run 14 at 38 with a flight phase and the wings streaming; slip under 3 % mean. The arms roll inwards about 12 degrees (an
 outward roll put them through the legs) and the wing roots stay put (turning them put the wings through the body): the clips cross no
 more mesh than the rest pose does. The idle is kept. No footstep sounds (the imported clips had none).
+
+Cannondramon uses native Monochromon's skeleton (24 bones, `CHDAT/MMD1/MONO.MMD`) and programs at scale 0.85, bound by
+`native_binding.py` with `spread_fit`: the body, neck, head, tail and four three-piece legs map by part onto Monochromon's rig, and the five
+cannon and weapon pieces ride its chest. Idle (47 ticks) and the techniques are Monochromon's own; the walk, condition walk and run are
+rebuilt by `cannondramon_gait.py` on planted soles (14 ticks at 15 units per tick, 20 at 10.5, 12 at 36), so the run no longer sinks
+under the floor or slides. Stance slip is 15, 17 and 24 % mean (worst 32, 42 and 50 %). The resident model uses 87,984 of 100,352 bytes.
+The gait stage reads soles, reach and knee direction from the rest pose, so it also fits the Unimon (27-bone) and
+Garurumon (26-bone) rigs, which were tried as the other donors.

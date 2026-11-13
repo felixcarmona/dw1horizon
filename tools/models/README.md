@@ -1151,3 +1151,8 @@ read as four legs on a texture that paints legs and body alike: planted paws, a 
 walk and a rotary lope, springs on neck, head, jaw and tail. `python3 -m tools.models.field_animations.lynxmon_gait --source SRC.MMD --out
 AFTER.MMD` (SRC from `edit.py get 323` before the change), then `edit.py put 323 AFTER.MMD`. Test: `tools.test_lynxmon_gait` (`LYNXMON_MODEL`).
 Musyamon (325): `field_animations/musyamon_posture.py` turns the chest back and gives the head the inverse turn in the walk, tired walk and run (slots 2, 3, 4), the pelvis and the cape bones keeping their world orientation; `field_animations/musyamon_hair.py` then moves the mane (bone 24) per tick off the cape and back in the idle and those three, softened over the loop (about 8 minutes). `edit.py get 325` on the commit before this change, `python3 -m tools.models.field_animations.musyamon_posture --source BEFORE.MMD --out MID.MMD`, `python3 -m tools.models.field_animations.musyamon_hair --source MID.MMD --out AFTER.MMD`, then `edit.py put 325 AFTER.MMD`. `tools.test_musyamon_gait` hashes everything else and bounds the lean and the mane's crossings per tick.
+
+Cannondramon (405) wears native Monochromon's (47, `CHDAT/MMD1/MONO.MMD`) 24-bone skeleton at scale 0.85: its pieces map by body part,
+the recipe's `spread` fits them on the donor's joints, and the post-stage `cannondramon_gait` re-plants the walk, condition walk
+and run on four soles (14, 20 and 12 ticks at 15, 10.5 and 36 units per tick). Species pin: the provider pin in
+`species-pins.json`. `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_cannondramon_native` (after `edit.py get 405`).
