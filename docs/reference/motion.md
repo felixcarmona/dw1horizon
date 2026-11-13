@@ -1530,14 +1530,21 @@ follows late, each arm swings against its own leg from the shoulder with the cla
 plates lift and settle after the chest, and the loincloth and thigh plates follow the thighs. Springs (`FOLLOW`) give the claws,
 head, plates and cloth their follow-through. The walk and the run are two different cycles each (44 and 24 ticks: other
 lifts, landings, settle and bob) that ease from one into the other; the tired walk is one slumped, heavy cycle of 28 ticks
-(the right leg lands late and lifts less); the run leans into a flight phase; the idle (96 ticks, shared by slot 33) breathes,
+(the right leg lands late and lifts less); the run leans into a flight phase; the idle (96 ticks) breathes,
 shifts its weight, glances and raises a claw. Before / after: ticks idle, walk, tired walk, run 73, 23, 21, 13 / 96, 44, 28, 24;
 root speeds 17.2, 13.6, 40.8 / 16, 10, 40 units a tick (a constant step); stance slip 9-72 % mean-worst on the walk, 13-109 % on
 the tired walk, 5-6 % on the run / 5.7-14 %, 4.8-15 %, 4.9-15 %; resident buffer 98486 bytes. Mesh crossings stay within the
 chibi clips' on arms against head, torso and legs (and drop a lot on the arms against the head); the head against the chest
 (37 triangles before) rises to 40 to 49 and a thigh plate against its leg (22 before) to 48 on the tired walk, both shallow.
 This is a hand-built overlay, not a native donor binding; the chibi row (`chibi.json` 373) is applied first and its
-proportions are unchanged.
+proportions are unchanged. The battle idle (slot 33) is the source game's own 73-tick clip again, not the field idle: its deep
+crouch put the still hip plates through the raised thighs (156 crossings a tick against main's 40) and the chest 28 degrees
+over the field idle's, so `battle_idle` lets the hip plates take their thigh's turn, gives the back plates the field idle's
+and leans the chest back 5 degrees (`battle_qa.py` lists the slot as polished); it then passes. Slot 34 keeps main's clip:
+the source's own crosses the claws through each other (362 a tick against main's 74). The extra program would leave no
+room for Buster Dive's dash (slot 0x35, `buster_dive.py` keeps the plain clip when the resident buffer would overflow), so
+the overlay encodes the care, condition and technique clips again exactly (`battle_restore.compact`, tolerance 0):
+resident buffer 98138 bytes with the dash.
 
 Taomon (315): the walk, tired walk and run held both arms in the idle's hanging pose while the torso leans 40 to 80 degrees and the legs swing, so
 the wide sleeves hung at thigh height and each leg passed through its sleeve at every step (up to 30 units deep; the aprons and, in the tired walk, the
