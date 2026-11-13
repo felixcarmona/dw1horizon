@@ -1669,6 +1669,25 @@ the root speed on walk, tired and run, lowest sole 0 on every clip (before -25 /
 100352 B (the stored model 34.1 KB, from 28.8 KB). Tsunomon (16) and Tokomon (30) were built as alternatives and fit the same face
 windows, but their hops are taller than the body. The tests are `tools.test_nyokimon_calm` and `tools.test_native_babies`.
 
+Nyaromon 476 (a hand-made baby on Tokomon's rig, donor 30) played Tokomon's own clips: hops 126-133 units high, the lowest point of the mesh
+0 to 133 units above the floor, and the body sliding 91-93 % of the root's travel (worst 133 %). Its mesh was one rigid object (head, ears and
+tail), so nothing could swing on its own; `field_animations/nyaromon_calm.py` first moves the tail into two objects on a bone chain (bones 3 and 4,
+split at the top of the arch, the base taking one extra row of quads so a bent joint shows no gap) and each ear into an object of its own
+(bones 7 and 8), the very same triangles, UVs and colours (the build asserts the rest look), then writes slots 0, 2, 3, 4 and the aliases 33, 35, 36
+again. Tokomon's other slots swing those bones 50-127 degrees, so every other program holds them at rest (the tail is as stiff as before there).
+The tail is a two-segment wave with the tip lagging: a slow sway and now and then a flick in the idle, a sway opposite to the waddle's roll and a pitch
+that follows the hop with a delay in the walk, hanging low and slow when tired, streaming behind in the run; the ears twitch in the idle and splay a
+little with each hop. The head still does most of the work: a 96-tick idle (two breaths, a look and a head tilt each way, a small mew, four blinks, one of
+them a double), a walk of two 16-tick steps at 20 units per tick (5 high: a weight shift and soft squash before each step, a roll and a twist
+that alternate, a landing wobble, the back of the head lagging the rise), a tired walk of two 24-tick steps at 12 (2.5 high, head low and
+forward, heavy slanted lids, two slow blinks) and a run of three 14-tick steps at 37 (9 high, mouth open, one blink). The page gets three eye windows
+(lid, heavy lid, closed arc: 40 x 28 texels, each overwriting the whole open eye) at x 184 and 216, y 48 and 76, and a blink is a lid, two or
+three ticks of the closed eye, a lid, the open eye (`tex` events); the mouth changes with windows of its own (shut, half, wide) so it never
+reopens a closed eye. The body stays where it lands while it is down: mean slip 7.5 / 1.6 / 3.4 % of the root speed on the planted ticks
+(worst 30 / 10 / 6 %), lowest sole 0 on every clip (before -0.9), highest 5.1 / 3.2 / 9.5 units (the body only), resident buffer 34,996 of 100,352 bytes (from
+31,432), the stored model 40.5 KB. The studio's slip metric reads a fixed bone on this rig and is meaningless here. The tests are
+`tools.test_nyaromon_calm` and `tools.test_native_babies`.
+
 Veedramon (203) jaw: the walk, tired walk and run take the jaw (bone 4) from `gaits.py`'s `jaw` profile key, a damped spring on the stride
 that turns about the jaw's own X axis only (walk 5 to 8 degrees, tired walk 11 to 15, hanging a little open, run 7 to 11; yaw and roll
 exactly 0). Before, the profile copied the jaw out of the source tired and run clips (`source_aux`), which carried yaw to 24 degrees, roll to 15

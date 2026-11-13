@@ -130,14 +130,14 @@
    "donor_texture_sha256": "f3a7df731892889bf92ad9ae36a372b3209374e119ad4440f1d38c01438cabaf",
    "mmd": {
     "delta": "content/modeldelta/babies/476-Nyaromon.MMD.mdelta",
-    "delta_sha256": "245d7147c635be79ea7acdd7ee3381b2681f0bfb8c3b1875b8115400a69383a4",
-    "sha256": "7d56e7c0c92be8bee26fd9fb93e5c0e0c73ed3a67d70e7a6c9bcdce2034822ef",
-    "size": 38880
+    "delta_sha256": "5a94cc60ad3e151e29da209d8368fec4e5760586927e814f93dd935a775c6710",
+    "sha256": "d719f4ce9c3b2eeb3f92d5b36b53af6797bdcefd270617c53b6cf88b4b87c7df",
+    "size": 40468
    },
    "tim": {
     "delta": "content/modeldelta/babies/476-Nyaromon.TIM.mdelta",
-    "delta_sha256": "3f2fc7bd3e6a7bbb2f5e6f00a3b27c39edbd2eab0d78464f464bec715acda6af",
-    "sha256": "d90f79a67124ae84438f0fa0cff3b1dc29102f6e2cf99a24e04e144211701519",
+    "delta_sha256": "6265a747290d33097d0aa8536031f0716408d2822786b4611eea91ed8f3f3517",
+    "sha256": "c3a78063e724c068a9b4997507d6d64d31b5ab3e42113824c7853e24419c95e5",
     "size": 18432
    }
   },

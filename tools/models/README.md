@@ -236,6 +236,11 @@ check with `tools.test_yukimibotamon_calm`.
 Nyokimon (473) also plays its own clips: `field_animations/nyokimon_calm.py` replaces Botamon's slots 0, 2, 3 and 4 with a calm
 idle (looks, tilts, blinks, a happy bounce) and soft hops (`python3 -m tools.models.field_animations.nyokimon_calm SRC OUT.MMD`, then
 `python3 -m tools.models.babies encode 473 OUT.MMD TIM`); check with `tools.test_nyokimon_calm`.
+Nyaromon (476) too: `field_animations/nyaromon_calm.py` replaces Tokomon's slots 0, 2, 3, 4 and their aliases 33, 35, 36 with a
+breathing idle and low waddling steps, and paints four eye windows (lid, heavy lid, closed) beside the face so it blinks
+(`python3 -m tools.models.field_animations.nyaromon_calm SRC.MMD OUT.MMD SRC.TIM OUT.TIM`, then
+`python3 -m tools.models.babies encode 476 OUT.MMD OUT.TIM`, then the 476 entry of `species-pins.json` from `edit.provider_pin`);
+check with `tools.test_nyaromon_calm`. `split_mesh` first moves the tail (two segments, bones 3 and 4) and the ears (bones 7 and 8) out of the one rigid object into objects of their own, the same triangles with the same UVs and colours (asserted at rest), the tail overlapping its joint by one row of quads; every other program holds those four bones at rest.
 Run `python3 -m tools.models.babies check` and
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_native_babies`.
 
