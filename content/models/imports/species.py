@@ -336,6 +336,22 @@ def species_file(out, t, recs=None, names=None, generate=False):
         s['model']['file'] = str(model_path)
         s['model'].pop('slot_aliases', None)
         s.pop('_path', None)
+    from tools.models.field_animations import care_idles
+    care = care_idles.rows().get(str(t))
+    if care:
+        # the condition idles (slots 1, 14-19) made from the final field idle: last, so every other stage's slots stay
+        from pathlib import Path
+        import species as species_tools
+        generated = Path(os.path.abspath(out) + '-models')
+        generated.mkdir(parents=True, exist_ok=True)
+        s['_path'] = os.path.join(ROOT, 'content/species', name)
+        model, proof = care_idles.apply(species_tools.species_model(s)[0], s['model']['skeleton'], care)
+        model_path = generated / f'{t}-care-idles.MMD'
+        model_path.write_bytes(model)
+        (generated / f'{t}-care-idles-report.json').write_text(json.dumps(proof, indent=2) + '\n')
+        s['model']['file'] = str(model_path)
+        s['model'].pop('slot_aliases', None)
+        s.pop('_path', None)
     return name, s
 
 

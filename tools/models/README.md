@@ -156,6 +156,17 @@ moved onto the empty objects of bones 4 and 6 and solved about their shoulders, 
 (`python3 -m tools.models.field_animations.baby_calm ID SRC.MMD SRC.TIM OUT.MMD OUT.TIM`, `--source` being the baby before the change, then `python3 -m tools.models.babies encode ID OUT.MMD OUT.TIM`); check with
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_baby_calm`.
 
+Condition idles (slots 1, 14-19) of imported species: `field_animations/care_idles.py` is the provider's last stage
+(`content/models/imports/species.py`, after the overlay, buster dive, technique timing, aliases and movement sounds), run
+for the species listed in `content/models/imports/care-idles.json`. It rebuilds the listed slots from the final field idle
+with a posture and timing per condition (tired, sick, hungry, toilet, sleepy, unhappy) and proves every other slot's
+program unchanged; a row's `tame` also narrows the swing of named bones in retargeted care clips that turn them far past
+the species' range. The rows come from the planner, `python -m tools.models.field_animations.care_idles_plan ID FINAL.MMD
+MAIN.MMD [BASE.MMD] --slots 1 18 [--body biped] [--write]` (FINAL the provider output without the stage, MAIN origin/main's
+final model, BASE the importer's), which keeps only slots passing `care_qa.py` and fitting the buffer. Check a species
+with `python tools/models/care_qa.py check FINAL BASE MAIN content/species/ID-name.json` and
+`python -m unittest tools.test_care_qa`.
+
 Species 334 (Mummymon): `field_animations/mummymon_gait.py` is a field overlay of the same kind: after the chibi proportions it
 rewrites slots 2, 3 and 4 (the idle is the chibi's own: it does not slide) with `quadruped.py` on its two hind legs, the soles pivoting
 at the ball of the foot: a walk, tired walk and run of two cycles each (30, 40 and 28 ticks) at 16, 11 and 38 units a tick, eased one into the other,
