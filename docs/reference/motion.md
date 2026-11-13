@@ -1728,3 +1728,14 @@ the lowest point of the mesh is at most 8 units under the floor line (a toe), an
 On top of the donor's clips the stage adds slow overlapped motion: the waist, chest and head (the horn rides it) pitch with the stride, each lagging the one before, the
 low arms trail, the walk and run are slow and heavy (long cycles, small swings of the arms and trunk) and the body leans forward in the run and slumps in the tired walk, and the idle (60 ticks) breathes, shifts its weight from foot to foot and flicks the head. The shell is one rigid piece
 with the chest (the wing bones carry no mesh), so there is no wing spring to add. The test is `tools.test_megakabuterimon_native`.
+
+Yokomon 477 (a hand-made baby on Tanemon's rig, donor 44) plays Tanemon's clips. Its four petal blades sit on bones 4 and 5, which hinge about z: idle, walk and
+run swing them below the rest angle (rz down to -364, -728 and -499), so the flower is open, but Tanemon's tired walk holds them at +340 to +400, standing against the
+neck like a closed bud. `field_animations/yokomon_petals.py` rewrites only the rz of those two bones in slot 3 (the initial pose and the values of the keys; the key frames,
+spans, every other channel, the eye and sound events and the other slots are the donor's, byte for byte): the petals hang at -230 and follow the head's nod (bone 3, rx) three
+ticks late with a quarter of its swing, from -310 to -152, bone 5 the mirror. Triangle crossings between the petals, neck and bulb fall from 110 to 63 of the 21 tired ticks.
+The test is `tools.test_yokomon_petals`.
+Yokomon's neck came off the bulb in every moving clip: Tanemon's head bone (3) nods about a pivot 51 units above the base of the stem, so a 30-degree nod swings the base 20 to 30 units
+forward or back of the bulb's top (15 in the idle, 29 in the walk and run, 27 in the tired walk). `field_animations/yokomon_neck.py` adds to bone 3 the translation (ty, tz: one extra key entry per rx span and the initial pose) that cancels
+that swing, so the nod turns about the base of the stem; rx, every other bone, the root, the events and the mesh are untouched, and the idle, walk and run aliases (slots 27, 33, 35, 36) share the change.
+The base of the stem stays within 5 units of its rest place in every tick of every clip (test: `tools.test_yokomon_petals`).
