@@ -163,7 +163,7 @@
  "402": {"model": "402-NeoCrimson.MMD", "aliases_applied": true, "field_overlay": "neocrimson-native", "native_animation_donor": 373},
  "403": {"model": "403-Beelzemon.MMD", "aliases_applied": true, "buster_dive_clip": {"source_sha256": "84165d2cd93258fa23a9257c8e4e80ded5069bd0596a1a3f39379a2c1265ee04", "pose_keys": [[0, 0], [22, 22], [33, 22], [44, 43]]}},
  "404": {"movement_sound": 12, "model": "404-BlackWarGreymon.MMD", "aliases_applied": true},
- "405": {"model": "405-Cannondramon.MMD", "aliases_applied": true},
+ "405": {"model": "405-Cannondramon.MMD", "aliases_applied": true, "field_overlay": "cannondramon-native", "native_animation_donor": 47},
  "406": {"model": "406-MaloMyotismon.MMD", "aliases_applied": true},
  "407": {"model": "407-Armageddemon.MMD", "aliases_applied": true},
  "408": {"model": "408-Suijinmon.MMD", "aliases_applied": true, "field_overlay": "suijinmon-centaur-field", "technique_aliases": {"Full Potential": "Aqua Magic", "Thunder Justice": "Pulse Laser", "Infinity Cannon": "Pulse Laser"}},

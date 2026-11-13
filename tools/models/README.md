@@ -1230,3 +1230,8 @@ under the donor's own trunk and arms (`quadruped.py`). It runs in the build; off
 (`RAIJINMON_MODELS`).
 
 Species 402 (NeoCrimson): the `neocrimson-native` overlay is `native_binding.py` with a recipe (`native-bindings.json`, id 402) that binds its 33 rigid parts to WarGreymon's 20-bone rig (`donor_species` 373: the legs, arms, neck and head by their joints, the wings, back spikes and ribbons on the chest, the hip block and skirts on the pelvis, the thin tail chain shortened to a quarter), and then `field_animations/neocrimson_wg_gait.py`, WarGreymon's own planted-sole gait (copy of the WarGreymon recipe with the foot plant relaxed to the claws' reach) written over slots 0, 2, 3 and 4. Test: `tools.test_neocrimson_gait` (`NEOCRIMSON_MODEL`, `WARGREYMON_MODEL`).
+
+Cannondramon (405) wears native Monochromon's (47, `CHDAT/MMD1/MONO.MMD`) 24-bone skeleton at scale 0.85: its pieces map by body part,
+the recipe's `spread` fits them on the donor's joints, and the post-stage `cannondramon_gait` re-plants the walk, condition walk
+and run on four soles (14, 20 and 12 ticks at 15, 10.5 and 36 units per tick). Species pin: the provider pin in
+`species-pins.json`. `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_cannondramon_native` (after `edit.py get 405`).

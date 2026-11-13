@@ -1514,3 +1514,11 @@ run 2.4); the resident buffer is 85.8 KB of 100352 B. The technique and care slo
 the retired Power Crane clip is gone. The test is `tools.test_raijinmon_gait` (`RAIJINMON_MODELS`).
 
 NeoCrimson 402 (`neocrimson_wg_gait.py`, test `tools.test_neocrimson_gait`) wore Tyrannomon's clips through a hand map: the soles slid 32 % mean (143 % at worst) in the walk and the toes hung 40 units above the floor. Its parts now sit on WarGreymon's rig (native binding, `donor_species` 373) and the clips are WarGreymon's gait with each foot planted (`quadruped.py`): walk 22 ticks two cycles at 16 units a tick, tired walk 28 at 10, run 12 two cycles at 40, idle 96 ticks with breathing and glances; stance slip 10 % mean (36 % at worst) in the walk. `quadruped.py` now also reads a gait's `plateau` and a profile's `tol`. The run's left claw dips up to about 18 units under the floor in the swing (the foot mesh's spikes reach past the sole), the walk up to 4.
+
+Cannondramon uses native Monochromon's skeleton (24 bones, `CHDAT/MMD1/MONO.MMD`) and programs at scale 0.85, bound by
+`native_binding.py` with `spread_fit`: the body, neck, head, tail and four three-piece legs map by part onto Monochromon's rig, and the five
+cannon and weapon pieces ride its chest. Idle (47 ticks) and the techniques are Monochromon's own; the walk, condition walk and run are
+rebuilt by `cannondramon_gait.py` on planted soles (14 ticks at 15 units per tick, 20 at 10.5, 12 at 36), so the run no longer sinks
+under the floor or slides. Stance slip is 15, 17 and 24 % mean (worst 32, 42 and 50 %). The resident model uses 87,984 of 100,352 bytes.
+The gait stage reads soles, reach and knee direction from the rest pose, so it also fits the Unimon (27-bone) and
+Garurumon (26-bone) rigs, which were tried as the other donors.
