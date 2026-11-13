@@ -146,7 +146,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'wargreymon-field': ('373', 'tools.models.field_animations.chibi', '373-wargreymon-field'),
     'blackwargreymon-field': ('404', 'tools.models.field_animations.celebrations', '404-blackwargreymon-field'),
     'omnimon-field': ('461', 'tools.models.field_animations.celebrations', '461-omnimon-field'),
-    'renamon-field': ('354', 'tools.models.field_animations.chibi', '354-renamon-field'),
+    'renamon-field': ('354', 'tools.models.field_animations.renamon_gait', '354-renamon-field'),
     'beelzemon-field': ('403', 'tools.models.field_animations.chibi', '403-beelzemon-field'),
     'magnamon-native': ('197', 'tools.models.field_animations.magnamon', '197-magnamon-native'),
     'magnamon-field': ('197', 'tools.models.field_animations.gaits', '197-magnamon-field'),

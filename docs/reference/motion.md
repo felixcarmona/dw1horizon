@@ -1456,3 +1456,15 @@ at duty 0.30) and a second cycle with other lifts and touchdown times is eased i
 import's (343 / 485 / 565 / 481 triangle hits to 340 / 402 / 448 / 473 in the idle / walk / tired / run) but a few pairs are slightly higher
 (arm_l against torso, hips against arm_l in the run, tail against leg_r in the run).
 A second pass gave Bearmon the personality of a starter: see the table row above.
+
+Species 354 (Renamon): `field_animations/renamon_gait.py` (test `tools.test_renamon_gait`, `RENAMON_MODEL` from `edit.py get 354`)
+is the overlay generator of its import ('renamon-field' in `content/models/imports/species.py`): it applies the chibi
+proportions and then writes the idle, walk, tired walk and run again from one gait phase per clip. The chibi clips replayed the
+idle's loop on the tail and hands (equal to the idle's ranges to a tenth of a degree), left head and body nearly still and
+turned each shoulder in one channel, so only the legs followed the stride. Now the hips and body wind against each other, the
+arms swing against the legs on their sides with a soft elbow and a late hand, the head follows late and the four tail segments
+carry a wave, the torso undulates in an S, the hands flick a little paw every stride, with two eased cycles per clip and loose springs on arms, head and tail. Feet stay planted (`quadruped.py`); the step is a cat's line: a low smooth lift, a quiet heel-first landing, hind feet almost in front of each other (`step_style` in the generator: `lift`, `arc`, `heel`, `settle`, `track`).
+Walk 28 ticks at 16 units a tick (stance slip 6 % mean, 37 % worst; before 48 ticks at 13, 3-4 and 8 %), tired walk 40 at 11
+(4 and 34 %; before 48 ticks, 5 and 16 %), run 24 at 40 (7 and 27 %; before 56 ticks, 3 and 6 %), idle 60 ticks (before 53),
+root speed constant. Slightly worse than before: the run's stance slip is higher (worst 27 against 6 % in the studio metric) and
+its second difference peaks higher on the short cycle (59 against 69 degrees per tick squared on a leg bone).
