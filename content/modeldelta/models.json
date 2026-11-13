@@ -4659,9 +4659,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/336-Raidenmon.MMD.mdelta",
-        "delta_sha256": "7b00283d0ccd27f43d1cac53ec865e49ae8142317e0a2c84aeab7843aba339ad",
-        "sha256": "0a3fb06f8b3ff035d18ff7b3eb5bd8879a63151a367c35092693eaa9bfcccd23",
-        "size": 90516
+        "delta_sha256": "5421be820b317824db4740d32b052749f6ef5eccc185f789a2e7bddbaadab735",
+        "sha256": "00742ad6a09e0b381365d203046aece36b45c8c12c94d90f91a09c76c7ef0c9d",
+        "size": 94450
       },
       "tim": {
         "sources": [
