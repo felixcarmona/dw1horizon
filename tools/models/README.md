@@ -1265,3 +1265,15 @@ extra bones after the donor's, each with a list of source pieces and a pivot pie
 and drives the rider bones (`rider_frames`, rows `RIDER_ROWS` in degrees). The alternative donors (Centarumon, Garurumon) work with the same
 stage without the rider bones. Species pin: `species-pins.json`. `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_zanbamon_native`
 (after `edit.py get 430`, `BINDING_MODELS` to its folder).
+
+Kurisarimon's (431) walk, condition walk and run were one 60-tick pose sequence played at three speeds (23, 20 and 47 units
+a tick) with all six legs flailing. `field_animations/kurisarimon_gait.py` is an offline model delta over slots 0, 1, 2, 3, 4,
+18 and 33 (the other slots stay): the model is an upright shell (bone 1) with the horned head (33) on top and a segmented abdomen
+(30-32) hanging below; the six legs (right 20-24 front, 15-19 middle, 25-29 rear; left 6-10 front, 2-5 middle, 11-14 rear) end in
+a long flat blade. The creature hovers, so no foot is planted: every leg bone turns by two sine harmonics a growing lag behind
+its parent, each leg with its own phase (`LEG_PHASE`), so that the motion follows through. Idle 72 ticks (shared with slots 1,
+18, 33): slow bob, glances, a blade flick. Walk 32 ticks at 18 units: a glide with a slight lean, two bobs a loop, the legs
+paddling loosely. Condition walk 48 at 12: the body hangs low, the legs droop. Run 20 at 38: strong lean, legs and abdomen
+stream back. The body is lifted per clip (`clear`) so that its lowest vertex is that far over the floor, about 18, 57, 4 and
+93 units of body lift for idle, walk, condition walk and run. The resident animation buffer ends at about 89,500 of 100,352 bytes.
+`tools/test_kurisarimon_gait.py` covers it.
