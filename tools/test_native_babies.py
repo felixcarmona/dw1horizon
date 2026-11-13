@@ -22,6 +22,7 @@ CALM_CLIPS = {
     471: (0, 2, 3, 4),      # Pichimon's four field clips (field_animations/pichimon_hop.py)
     472: (0, 2, 3, 4),      # Yukimibotamon's idle, walk, tired walk and run (field_animations/yukimibotamon_calm.py)
     473: (0, 2, 3, 4),      # Nyokimon's idle, walk, tired walk and run (field_animations/nyokimon_calm.py)
+    477: (3,),              # Yokomon's tired walk: the petals hang open (field_animations/yokomon_petals.py)
 }
 
 

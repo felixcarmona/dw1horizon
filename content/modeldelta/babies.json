@@ -150,9 +150,9 @@
    "donor_texture_sha256": "872098f3af8238facbb0de7b79aafb4ce6c98f6a456331295ebddcb5de6be9dd",
    "mmd": {
     "delta": "content/modeldelta/babies/477-Yokomon.MMD.mdelta",
-    "delta_sha256": "fba8df1926a5e1343d2bab43972c7a6a273ccd4617edcd71f7aa540ef1947c56",
-    "sha256": "e58da5a884013d77a709486a5e90231e764aacc9104c2516daea694a06383e99",
-    "size": 47168
+    "delta_sha256": "e26e7041b74c10a54cb7496af03aaff781cc3fd4a2cd0f6e1c809c7fdc3ec00d",
+    "sha256": "6b430656f708c369fb57522fc5450e14ec37624ac6e9d298ab7d7c0f94bdc477",
+    "size": 47446
    },
    "tim": {
     "delta": "content/modeldelta/babies/477-Yokomon.TIM.mdelta",
