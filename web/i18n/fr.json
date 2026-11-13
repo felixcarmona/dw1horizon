@@ -668,7 +668,7 @@
   "wiki.counterSource": "Contre-attaque réactive : laissez cet ennemi répondre à une attaque de mêlée manquée.",
   "wiki.groupSource": "Nécessite un autre ennemi vivant dans le combat.",
   "wiki.brainsGym": "Gymnase des Méninges",
-  "wiki.brainsRule": "Franchissez un seuil de Méninges : {marks}. Le gymnase examine la première technique compatible inconnue dans l’ordre de chaque spécialité, retient la candidate au poids le plus élevé et effectue le tirage selon ce pourcentage. Un seuil d’ordres ({orders}) franchi pendant la même séance est prioritaire. L’apprentissage n’est pas garanti.",
+  "wiki.brainsRule": "Franchissez un seuil de Méninges : {marks}. Le gymnase examine la première technique compatible inconnue dans l’ordre de chaque spécialité, retient la candidate au poids le plus élevé et effectue le tirage selon ce pourcentage. Un seuil d’ordres ({orders}) franchi pendant la même séance est prioritaire. L’apprentissage n’est pas garanti. Si cette première technique a un poids nul à sa position, les Méninges ne peuvent enseigner aucune autre technique de cette spécialité tant que le Digimon ne l’a pas apprise autrement, par exemple en l’observant en combat.",
   "wiki.brainsWeights": "Poids de cette technique selon la position de la spécialité : {weights}. Un poids nul empêche de l’apprendre à cette position.",
   "wiki.trainingOrder": "Ordre d’entraînement",
   "wiki.noBrains": "Cette technique ne s’apprend pas par l’entraînement des Méninges.",

@@ -668,7 +668,7 @@
   "wiki.counterSource": "Contrattacco reattivo: lascia che questo nemico risponda a un attacco in mischia mancato.",
   "wiki.groupSource": "Richiede un altro nemico vivo in battaglia.",
   "wiki.brainsGym": "Palestra del Cervello",
-  "wiki.brainsRule": "Supera una soglia di Cervello: {marks}. La palestra controlla la prima tecnica compatibile sconosciuta nell’ordine di ogni specialità, sceglie la candidata con il peso maggiore e tenta l’apprendimento con quella percentuale. Una soglia dei comandi ({orders}) superata nella stessa sessione ha la precedenza. L’apprendimento non è garantito.",
+  "wiki.brainsRule": "Supera una soglia di Cervello: {marks}. La palestra controlla la prima tecnica compatibile sconosciuta nell’ordine di ogni specialità, sceglie la candidata con il peso maggiore e tenta l’apprendimento con quella percentuale. Una soglia dei comandi ({orders}) superata nella stessa sessione ha la precedenza. L’apprendimento non è garantito. Se questa prima tecnica ha peso 0 nella sua posizione, il Cervello non può insegnare nessun’altra tecnica di quella specialità finché il Digimon non la impara in un altro modo, per esempio osservandola in battaglia.",
   "wiki.brainsWeights": "Pesi di questa tecnica secondo la posizione della specialità: {weights}. Un peso nullo impedisce di impararla in quella posizione.",
   "wiki.trainingOrder": "Ordine di allenamento",
   "wiki.noBrains": "Questa tecnica non si può imparare allenando il Cervello.",

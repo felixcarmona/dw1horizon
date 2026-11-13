@@ -668,7 +668,7 @@
   "wiki.counterSource": "Contraatac reactiu: deixa que aquest enemic respongui a un atac cos a cos fallit.",
   "wiki.groupSource": "Cal un altre enemic viu al combat.",
   "wiki.brainsGym": "Gimnàs d’Intel·ligència",
-  "wiki.brainsRule": "Supera un llindar d’Intel·ligència: {marks}. El gimnàs comprova la primera tècnica compatible desconeguda segons l’ordre de cada especialitat, tria la candidata amb més pes i fa la tirada amb aquest percentatge. Si a la mateixa sessió superes un llindar d’ordres ({orders}), les ordres tenen prioritat. L’aprenentatge no està garantit.",
+  "wiki.brainsRule": "Supera un llindar d’Intel·ligència: {marks}. El gimnàs comprova la primera tècnica compatible desconeguda segons l’ordre de cada especialitat, tria la candidata amb més pes i fa la tirada amb aquest percentatge. Si a la mateixa sessió superes un llindar d’ordres ({orders}), les ordres tenen prioritat. L’aprenentatge no està garantit. Si aquesta primera tècnica té pes 0 a la seva posició, la intel·ligència no pot ensenyar cap altra tècnica d’aquella especialitat fins que el Digimon l’aprengui d’una altra manera, per exemple observant-la en combat.",
   "wiki.brainsWeights": "Pesos d’aquesta tècnica segons la posició de l’especialitat: {weights}. Un pes de zero impedeix aprendre-la en aquella posició.",
   "wiki.trainingOrder": "Ordre d’entrenament",
   "wiki.noBrains": "Aquesta tècnica no es pot aprendre entrenant Intel·ligència.",

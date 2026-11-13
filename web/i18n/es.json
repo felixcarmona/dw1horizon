@@ -668,7 +668,7 @@
   "wiki.counterSource": "Contraataque reactivo: deja que este enemigo responda a un ataque cuerpo a cuerpo fallido.",
   "wiki.groupSource": "Requiere otro enemigo vivo en el combate.",
   "wiki.brainsGym": "Gimnasio de Inteligencia",
-  "wiki.brainsRule": "Supera un umbral de Inteligencia: {marks}. El gimnasio comprueba la primera técnica compatible que desconozcas según el orden de cada especialidad, elige la candidata con mayor probabilidad y realiza la tirada. Si en la misma sesión superas un umbral de órdenes ({orders}), las órdenes tienen prioridad. El aprendizaje no está garantizado.",
+  "wiki.brainsRule": "Supera un umbral de Inteligencia: {marks}. El gimnasio comprueba la primera técnica compatible que desconozcas según el orden de cada especialidad, elige la candidata con mayor probabilidad y realiza la tirada. Si en la misma sesión superas un umbral de órdenes ({orders}), las órdenes tienen prioridad. El aprendizaje no está garantizado. Si esa primera técnica tiene peso 0 en su posición, la Inteligencia no puede enseñar ninguna otra técnica de esa especialidad hasta que el Digimon la aprenda de otra forma, por ejemplo observándola en batalla.",
   "wiki.brainsWeights": "Probabilidades de esta técnica según la posición de la especialidad: {weights}. Una probabilidad de cero impide aprenderla en esa posición.",
   "wiki.trainingOrder": "Orden de entrenamiento",
   "wiki.noBrains": "Esta técnica no se puede aprender entrenando Inteligencia.",

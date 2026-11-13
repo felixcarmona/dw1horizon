@@ -668,7 +668,7 @@
   "wiki.counterSource": "Reactive Counter: let this enemy counter a missed melee attack.",
   "wiki.groupSource": "Requires another living enemy in the battle.",
   "wiki.brainsGym": "Brains gym",
-  "wiki.brainsRule": "Cross a Brains threshold: {marks}. The gym checks the first unknown, compatible technique in each specialty’s training order, keeps the candidate with the highest weight and rolls that percentage. Crossing a command threshold ({orders}) in the same session takes priority. Learning is not guaranteed.",
+  "wiki.brainsRule": "Cross a Brains threshold: {marks}. The gym checks the first unknown, compatible technique in each specialty’s training order, keeps the candidate with the highest weight and rolls that percentage. Crossing a command threshold ({orders}) in the same session takes priority. Learning is not guaranteed. If that first technique has weight 0 in its slot, Brains cannot teach any other technique of that specialty until the Digimon learns it another way, for example by observing it in battle.",
   "wiki.brainsWeights": "This technique’s weights by specialty slot: {weights}. A zero weight cannot teach it in that slot.",
   "wiki.trainingOrder": "Training order",
   "wiki.noBrains": "This technique cannot be learned through Brains training.",
