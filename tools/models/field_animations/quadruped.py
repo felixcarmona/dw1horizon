@@ -204,8 +204,10 @@ class Rig:
         k = 1.0 if b == 0 else 1.0 / self.S
         return [[x * k for x in r[:3]] for r in W[b][:3]]
 
-    def sole(self, front):
-        return [x * self.S for x in self.p['sole'][front]]
+    def sole(self, front, name=None):
+        # 'sole' may also name a leg ('L': point), for a rig whose left paw bone is not the right one mirrored (its axes
+        # turned half a turn about the vertical, Angemon's), so the same sole point sits elsewhere in its space
+        return [x * self.S for x in self.p['sole'].get(name, self.p['sole'][front])]
 
     def world(self, pose):
         p = [list(v) for v in pose]
@@ -318,7 +320,7 @@ def leg_phase(cfg, name, phase):
 def standing(rig, name, track, z, world):
     """The wrist (hock) of a paw whose sole pivot stands at z on the floor, at a world rotation."""
     paw, front = rig.p['legs'][name][2], rig.p['legs'][name][4]
-    wrist = sub([track, 0.0, z], mv(world, rig.sole(front)))
+    wrist = sub([track, 0.0, z], mv(world, rig.sole(front, name)))
     wrist[1] = -rig.p['clear'] - rig.lowest(paw, world, [0, 0, 0])
     return wrist
 
@@ -557,7 +559,7 @@ def _stance_slip(rig, cfg, frames):
             here = []
             for pose in (frames[t], frames[t + 1]):
                 W = rig.world(pose)
-                point = add([W[paw][i][3] for i in range(3)], mv(rig.R(W, paw), rig.sole(front)))
+                point = add([W[paw][i][3] for i in range(3)], mv(rig.R(W, paw), rig.sole(front, name)))
                 here.append(point[2] + pose[0][8])
             moved += abs(here[1] - here[0])
             travel += abs(frames[t + 1][0][8] - frames[t][0][8])

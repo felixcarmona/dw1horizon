@@ -1213,3 +1213,9 @@ under the donor's own trunk and arms (`quadruped.py`). It runs in the build; off
 `python -m tools.models.field_animations.raijinmon_gait --source BOUND.MMD --rig 333-report.json --out OUT.MMD`. After changing it,
 `edit.py check 333 --species-pins` prints the new provider pin for `tools/derive/recipes/species-pins.json`. Test: `tools.test_raijinmon_gait`
 (`RAIJINMON_MODELS`).
+
+Garudamon (460) wears native Angemon's (20, `CHDAT/MMD0/ANGE.MMD`) 26-bone skeleton at scale 1.24: pieces map by body part and are fitted
+in the recipe's `bind_pose` (a standing pose of the source's own, since its mesh only stands in a fighting stance), and the post-stage
+`garudamon_donor_gait` re-plants the idle, walk, condition walk and run on two soles (one sole point per leg: the donor's left leg is not its
+right one mirrored) with the trunk facing forward (the pelvis bone never turns; the hips and chest turn a few degrees against each other), arms swinging against the legs and wings breathing behind. Species pin: the provider pin in `species-pins.json`.
+`PYTHONPATH=tools python3 -W ignore -m unittest tools.test_garudamon_native` (after `edit.py get 460`).
