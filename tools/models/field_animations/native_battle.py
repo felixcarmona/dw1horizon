@@ -28,6 +28,8 @@ from tools.models import battle_restore
 
 IDLES, MOVES = (33, 34), (35, 36)
 TECHNIQUES = 0x2E          # slots from here on are the species' techniques
+FIELD, BATTLE = range(5), range(33, 37)
+MAX_TOL = 5                # compaction tolerance, units of 1/4096 turn: 5 is 0.44 degrees
 
 
 def _mul(a, b):
@@ -222,6 +224,27 @@ def apply(output, ctx, slots):
     model.anims.table = [None if i is None else renumber[i] for i in model.anims.table]
     model.anims.anims, model.anims.table = motioncyclelayer.share_identical_streams(model.anims.anims, model.anims.table)
     return model.build(), proof
+
+
+def compact(output, nb, spec):
+    """Room in the resident buffer for the restored clips (the recipe's `battle_originals.compact`): every resident
+    clip encoded again exactly where that is smaller (battle_restore.compact, tolerance 0), then, with `tol` (at most
+    MAX_TOL), the clips that are neither field (0-4) nor battle (0x21-0x24) slots re-encoded within that many units;
+    identical streams shared and unread stream tails dropped. -> (bytes, {slot: [old, new bytes]})"""
+    tol = int(spec.get('tol', 0))
+    if not 0 <= tol <= MAX_TOL:
+        raise ValueError(f'battle originals: compaction tolerance {tol} is over {MAX_TOL}')
+    output, report = battle_restore.compact(output, nb, 0)
+    if tol:
+        model = mmd.MMD.parse(output, nb)
+        loose = set(range(len(model.anims.table))) - set(FIELD) - set(BATTLE)
+        output, more = battle_restore.compact(output, nb, tol, loose)
+        report.update(more)
+    model = mmd.MMD.parse(output, nb)
+    for animation in model.anims.anims:
+        animation.tail = b''
+    model.anims.anims, model.anims.table = motioncyclelayer.share_identical_streams(model.anims.anims, model.anims.table)
+    return model.build(), {str(k): list(v) for k, v in sorted(report.items())}
 
 
 def context(mesh, skeleton, source_pose, yaw, rig, rest, pieces, leads, mapping, lows):

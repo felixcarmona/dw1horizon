@@ -144,6 +144,16 @@ MaloMyotismon 0x21-0x24 and Kurisarimon 0x21 are the source's again (the Ebidram
 longer write the idle twin); Ebidramon's 0x24 (its body tipped 35 degrees, main 18) and Renamon's 0x21 (26 triangle
 crossings a tick on the reshaped rig, main 1) stay main's.
 
+Room is made by `"compact": {"tol": N}` in the same entry (`native_battle.compact`, after the retarget; Wizardmon's
+and Sorcermon's builder runs it once, after its cape and hair followers, which skip the restored slots):
+`battle_restore.compact` re-encodes every clip with repeats losslessly, then, at N units of 1/4096 turn (at most 5,
+0.44 degrees), every clip that is neither a field slot 0-4 nor a battle slot 0x21-0x24; identical streams are shared
+and dead tails dropped. Field and battle slots decode exactly as before. Wizardmon 241 (tol 5): 0x21-0x23,
+0x28-0x2B, 0x34, 0x35, 0x37 (99,770 B; its training clip 0x39 stays Angemon's). Sorcermon 242 (tol 2): 0x21, 0x22,
+0x2E, 0x30, 0x33, 0x38 (98,358 B). Assaultmon 310 (tol 5): 0x21, 0x22, 0x28, 0x29, 0x2B, 0x2C, 0x2E-0x35, 0x3B
+(99,076 B). Maildramon 324 (tol 5): 0x21, 0x23, 0x24, 0x2B, 0x2C, 0x2F, 0x32 (99,862 B). WarGrowlmon 326 (tol 4):
+0x22, 0x28-0x2C (100,108 B).
+
 Slots 6, 0x14, 0x1A, 0x1C-0x20, 0x26 and 0x27 are the tamer's, NPCs' and the kart race's. Which slots a partner must
 have, and the lint rule for each: [imported-species.md](imported-species.md), "What the game asks of every partner".
 

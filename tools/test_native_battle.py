@@ -34,6 +34,11 @@ class NativeBattle(unittest.TestCase):
     def test_mean_lies_between(self):
         self.close(native_battle.mean_rotation([_rz(0.2), _rz(0.6)], [1.0, 1.0]), _rz(0.4))
 
+    def test_compaction_stays_within_half_a_degree(self):
+        self.assertLess(native_battle.MAX_TOL * 360 / 4096, 0.5)
+        with self.assertRaises(ValueError):
+            native_battle.compact(b'', 1, {'tol': native_battle.MAX_TOL + 1})
+
     def test_order_puts_parents_first(self):
         skeleton = [(0, -1), (1, 2), (2, 0)]        # bone 1's parent comes after it
         order = native_battle.order(skeleton)
