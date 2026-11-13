@@ -3,12 +3,11 @@
 # Record Keeper's hints (script 211, section 8: the library Angemon's talk in the city jumps to), until the water keeps
 # the door by itself and Angemon goes home (city/jijimons-house.py).
 from dw import *
-from ...state import root3
+from ...state import root3, thaw_told
 
 melted = new_screen(311, map="build/what-the-island-forgot-maps/screens/VALT02.MAP")
 # The shared city hints address script speaker 6, including the name lookup.
 keeper = melted.npc(Species.Angemon, section=6, at=(0, 800), range=0, when=root3 and not recruited(Species.Angemon))
-thaw_told = flag()
 
 @melted.on_enter
 def the_thaw():
