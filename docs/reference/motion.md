@@ -1668,3 +1668,15 @@ bone on this rig and is meaningless here, so the test measures the lowest points
 the root speed on walk, tired and run, lowest sole 0 on every clip (before -25 / -35 / -37 / -3), resident motion buffer about 28.8 KB of
 100352 B (the stored model 34.1 KB, from 28.8 KB). Tsunomon (16) and Tokomon (30) were built as alternatives and fit the same face
 windows, but their hops are taller than the body. The tests are `tools.test_nyokimon_calm` and `tools.test_native_babies`.
+
+Veedramon (203) jaw: the walk, tired walk and run take the jaw (bone 4) from `gaits.py`'s `jaw` profile key, a damped spring on the stride
+that turns about the jaw's own X axis only (walk 5 to 8 degrees, tired walk 11 to 15, hanging a little open, run 7 to 11; yaw and roll
+exactly 0). Before, the profile copied the jaw out of the source tired and run clips (`source_aux`), which carried yaw to 24 degrees, roll to 15
+and a pitch of -22 (through the upper jaw) because the source head stood still while the jaw acted; under the authored head the jaw slid off
+to one side. Jaw vertices inside the head in the run 11 -> 1. The battle slots 33, 35, 36 keep the source clips. Test: `tools/test_veedramon_jaw.py`.
+
+Veedramon (203) liveliness: the walk, tired walk and run add lagging follow-through on top of the native tail, neck and arm acting (`waves` and `head_bob`
+in the profile: tail yaw wave travelling to the tip with a small pitch flick, loose shoulders, elbows and neck on their own phase, a head bob, a slow
+`vary` modulation over the macro cycle so no two strides match), wider and larger arm swings (34 / 10 / 56 degrees, elbows bent 38 / 12 / 72), a bouncier
+body (11 / 3 / 12) and leans of 5 / 16 / 22 degrees. The non-leg bones are fitted with a looser keyframe tolerance (`loose`, 6) which pays for it:
+resident buffer 98532 B (was 98826). Speeds, soles and the jaw's hinge unchanged; the idle stays the native one.

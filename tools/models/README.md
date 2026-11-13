@@ -1334,3 +1334,11 @@ Puppetmon (181) has its own field stage, `field_animations/puppetmon_field.py` (
 pelvis over planted-sole legs, and the chest, head, arms and hammer driven by damped springs so they lag, overshoot and settle.
 Its resident motion buffer is 98,890 B. `species-pins.json` changed.
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_puppetmon_field` (after `edit.py get 181`).
+
+Veedramon (203) jaw: `field_animations/gaits.py` drives the jaw (bone 4) with its `jaw` profile key (a lagging damped spring on the stride,
+pitch only: walk 5 to 8 degrees, tired walk 11 to 15, run 7 to 11, yaw and roll 0) instead of copying it from the source tired and run
+clips, whose jaw yawed to 24 degrees, rolled to 15 and pushed up through the upper jaw. Only bone 4 differs from before. Test:
+`tools/test_veedramon_jaw.py` (after `edit.py get 203`).
+
+Veedramon (203) liveliness: `gaits.py` profile keys `waves` (extra lagging sinusoids on chosen bones and axes), `head_bob`, `vary` and `loose` (per-slot
+keyframe tolerance for every bone except the legs, carrier and pelvis) make the tail, arms, neck and head follow through; see docs/reference/motion.md.
