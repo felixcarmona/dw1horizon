@@ -57,6 +57,8 @@ class ModelProvider(unittest.TestCase):
             '183': ('183', 'tools.models.field_animations.native_binding', '183-wormmon-native-crawl'),
             # BomberNanimon wears Nanimon's rig and programs; its boxer clips stay as the scale lock's provenance.
             '232': ('232', 'tools.models.field_animations.native_binding', '232-bombernanimon-native'),
+            # MegaKabuterimon wears Hercules Kabuterimon's rig and programs, planted by its own gait stage.
+            '205': ('205', 'tools.models.field_animations.native_binding', '205-megakabuterimon-native'),
             # Wizardmon wears Angemon's rig and programs (its cape and hair follow); its paced gait was retired with it.
             '241': ('241', 'tools.models.field_animations.wizardmon_native', '241-wizardmon-native'),
             # Sorcermon is Wizardmon's body: the same rig, programs and followers.
