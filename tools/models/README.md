@@ -1184,3 +1184,10 @@ tail, arms and claws stay the donor's own channels, kept as the first three harm
 noise) with the arm and body swing eased, a closed-loop lift of any arm that would hang under the floor, and the run's arms turned a
 little outward. `python3 -m tools.models.field_animations.raidenmon_gait --source SRC.MMD --out AFTER.MMD` (SRC from `edit.py get 336`
 before the change), then `edit.py put 336 AFTER.MMD`. Test: `tools.test_raidenmon_gait` (`RAIDENMON_MODEL`).
+
+
+Bearmon (353): `field_animations/bearmon_gait.py` is an offline model delta for the idle (slots 0 and 33), walk, tired walk and run (slots 2, 3, 4). It builds them with `quadruped.py` plus a body hook that moves the whole body from one gait phase: hips
+against chest, chest roll and shift over the stance foot, hands against the legs on their sides, head, jaw and tail on springs,
+and two eased cycles per clip, with a happy hop in one cycle, a stumble wobble in the other and a yawn in the tired walk. The idle (96 ticks, import legs kept) breathes, looks round, flicks an ear, wags the tail and waves a paw. Walk 20 ticks at 16 units, tired walk 28 at 10, run 16 at 36; resident buffer 81,800 of 100,352
+bytes. Regenerate with `edit.py get 353`, `python3 -m tools.models.field_animations.bearmon_gait --source BEFORE.MMD --out AFTER.MMD`
+and `edit.py put 353 AFTER.MMD`; `tools/test_bearmon_gait.py` covers it.

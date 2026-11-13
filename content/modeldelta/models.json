@@ -4749,9 +4749,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/353-Bearmon.MMD.mdelta",
-        "delta_sha256": "71ff83e157183ce6f1c56aac45f3c20de932fe99d801650bd1a7d4e05d932451",
-        "sha256": "2e5bb8152b1449599fc4f08e744fd991bf12aacd55b3e3510eaa815b410ff602",
-        "size": 90670
+        "delta_sha256": "51de1a83b223a0aef8f46a31f726effcfc00f95893750eff366dbc1386f2c804",
+        "sha256": "894ee1e1fb8660be3821d858dbc30584edd190ae61ba85e4bb6e8bedc6a2104f",
+        "size": 98270
       },
       "tim": {
         "sources": [
