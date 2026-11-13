@@ -1372,6 +1372,23 @@ in a slow sway in the idle, hang low and nearly still in the tired walk and stre
 idle, 8 tired). The feelers keep their own motion on bones 3 and 5 (the tip bending was dropped). The stored
 model grows from 43 to 56 KB (animation and the fin split; resident 50.6 KB of 100 KB). The test is `tools.test_pichimon_hop`.
 
+Motimon (474, a hand-made baby) no longer plays Koromon's lunge: a 40 % squash and a 59-unit leap every 18 ticks (the body rose 80, 52 and 160 units in the
+walk, tired walk and run), a tired walk as fast as the walk (20.5 against 20.9 units a tick), a slip of 124 % mean and 225 % worst, soles up to 15 units under the floor,
+and arms and eyes that never moved. `baby_calm.py` writes slots 0, 2, 3 and 4: a 128-tick idle (two slow breaths, a slow look to each side, the arms drifting a little
+behind the breath, four blinks at uneven intervals, one of them a double blink), a walk of two 22-tick hops at 16 units a tick (6 units of flight, a 4.5-degree waddle), a tired walk of two
+30-tick hops at 11 (2.5 units, leaning forward, lids half down, one slow blink) and a run of three 15-tick hops at 37 (9 units). The body rises 17, 13 and 24 units (squash included) against 80, 52 and 160.
+Slip is 0 % mean and worst in the walk, 9 % in the tired walk, 1 % mean and 3 % worst in the run; the lowest sole is 0 in every clip. The little arms were two 66-primitive cones inside the body object. They now sit
+in the two empty objects of the bones 4 and 6 (vertices in the bone's rest frame, so the mesh is vertex for vertex the old one; the old rest pose had one arm stretched out and the other raised like an ear, so every clip first turns both to hang relaxed below their shoulders, about 40 degrees under the horizontal, and swings them about that), and every tick the bone is solved as
+`inverse(ear base) . arm motion . rest offset`, so each arm turns about its own shoulder (the arm tip travels 16 units in the idle, 24 in the walk, 11 tired, 22 in the run) behind a damped spring that
+lags the hop and overshoots a little on a landing, alternating from one hop to the next. The blink is a texture copy: the donor's closed-eye frame at (34, 0), with a half-closed lid frame either side that
+the texture did not have: it is drawn into the unused block at (44, 32) (the open eye squashed to its lower half), copied in two rects because the last four rows of that block belong to the arm patch. The
+stored model grows from 33.8 to 42.7 KB (resident 38.2 KB of 100 KB). The test is `tools.test_baby_calm`.
+
+Bukamon (475) gets the same treatment from the same generator (its flippers already sat on the objects of bones 3 and 5, so those bones turn about the shoulder; the
+flipper tip travels 16, 30, 10 and 24 units in the four clips): the old clips left the soles 7 to 11 units under the floor, and the lowest sole is now 0. Its blink uses the donor's half-lid frame at (24, 0)
+and the closed-eye frame at (34, 0), and the tired walk keeps the half-lid frame as its base eye. The model grows from 31.6 to 38.7 KB (resident 34.4 KB). Both babies share the clips' structure and differ
+in their numbers (`CONFIGS` in the module).
+
 Kyukimon 322 (`tools/models/field_animations/kyukimon_gait.py`, test `tools.test_kyukimon_gait`): the walk (80 ticks), tired walk (72) and run (72)
 only rewrote the legs; every bone above the hips (body, chest, shoulders, arms, the five tail segments) played the idle's 74-tick loop, copied
 (equal rotation ranges to a tenth of a degree), and head, hands, strap and wing spikes never moved, so the upper body neither moved much nor
