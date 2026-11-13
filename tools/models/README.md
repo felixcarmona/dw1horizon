@@ -1327,3 +1327,8 @@ in the recipe's `bind_pose` (a standing pose of the source's own, since its mesh
 `garudamon_donor_gait` re-plants the idle, walk, condition walk and run on two soles (one sole point per leg: the donor's left leg is not its
 right one mirrored) with the trunk facing forward (the pelvis bone never turns; the hips and chest turn a few degrees against each other), arms swinging against the legs and wings breathing behind. Species pin: the provider pin in `species-pins.json`.
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_garudamon_native` (after `edit.py get 460`).
+
+Puppetmon (181) has its own field stage, `field_animations/puppetmon_field.py` (the `puppetmon-field` overlay): the original's
+pelvis over planted-sole legs, and the chest, head, arms and hammer driven by damped springs so they lag, overshoot and settle.
+Its resident motion buffer is 98,890 B. `species-pins.json` changed.
+`PYTHONPATH=tools python3 -W ignore -m unittest tools.test_puppetmon_field` (after `edit.py get 181`).

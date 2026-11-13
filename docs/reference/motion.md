@@ -355,7 +355,7 @@ A **field overlay** is a reviewed recipe that rewrites the field slots of one sp
 | Generator | Species | What it does |
 |---|---|---|
 | `fieldacting.py` | Veemon 180, Magnamon 197, Veedramon 203, Renamon 354, Beelzemon 403, BlackWarGreymon 404, Bastemon 432, ExVeemon 194, Flamedramon 195, Omnimon 461 | per-species biped profiles (an explicit bone map: carrier, pelvis, chest, head, legs, arms, capes, wings): support-foot paths synchronized with root travel, weight shift towards the supporting leg, torso counter-rotation, delayed arms; native head, wing, tail and equipment acting kept; idle kept |
-| `fieldarticulation.py` | Puppetmon 181 | upper-body acting over the original root and leg programs (wrists counter the swing so a weapon keeps its orientation) |
+| `puppetmon_field.py` | Puppetmon 181 | the original's pelvis lean and twist over planted-sole legs (`quadruped.py`), then chest, head, both arms and the hammer from damped springs; two-stride loops (the second differs), an idle that breathes and shifts weight; walk 14 ticks at 22, tired 18 at 12, run 10 at 42; stance slip at most 29 % (the original slid up to 90, 209 and 47 % in the walk, tired walk and run) |
 | `fieldsecondary.py` | Stingmon 187, Angewomon 190, Paildramon 199 | small delayed secondary motion (arms, feathers, tail tips) with root and leg channels exact |
 | `fieldweight.py` | Ankylomon 189, Lighdramon 201 | step-synchronized body roll, yaw and pitch around the existing paw paths |
 | `fieldglide.py` | MetalSeadramon 211, Magnadramon 215, Gesomon 240, MarineAngemon 248, Solarmon 251 | replaces only the root's forward momentum with one steady key per loop (same net travel), removing forward bursts; every pose channel exact |
