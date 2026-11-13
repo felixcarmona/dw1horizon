@@ -1164,3 +1164,12 @@ read as four legs on a texture that paints legs and body alike: planted paws, a 
 walk and a rotary lope, springs on neck, head, jaw and tail. `python3 -m tools.models.field_animations.lynxmon_gait --source SRC.MMD --out
 AFTER.MMD` (SRC from `edit.py get 323` before the change), then `edit.py put 323 AFTER.MMD`. Test: `tools.test_lynxmon_gait` (`LYNXMON_MODEL`).
 Musyamon (325): `field_animations/musyamon_posture.py` turns the chest back and gives the head the inverse turn in the walk, tired walk and run (slots 2, 3, 4), the pelvis and the cape bones keeping their world orientation; `field_animations/musyamon_hair.py` then moves the mane (bone 24) per tick off the cape and back in the idle and those three, softened over the loop (about 8 minutes). `edit.py get 325` on the commit before this change, `python3 -m tools.models.field_animations.musyamon_posture --source BEFORE.MMD --out MID.MMD`, `python3 -m tools.models.field_animations.musyamon_hair --source MID.MMD --out AFTER.MMD`, then `edit.py put 325 AFTER.MMD`. `tools.test_musyamon_gait` hashes everything else and bounds the lean and the mane's crossings per tick.
+
+Species 336 (Raidenmon): `field_animations/raidenmon_gait.py` writes slots 2, 3 and 4 again (a 24-tick walk, a 30-tick tired walk and a
+14-tick run at 17, 11 and 40 units a tick) and raises the idle's pelvis on the few ticks where its soles sank 5 units. The imported clips
+turned the foot blocks up to 50 degrees about their floor point instead of bending the legs, so the soles went 88, 81 and 183 units under
+the floor and slid; now `quadruped.py` plants both feet (hip and knee solves, the foot block flat and still in stance). The trunk, head,
+tail, arms and claws stay the donor's own channels, kept as the first three harmonics of its loop (no sawtooth sweeps, no tick-to-tick
+noise) with the arm and body swing eased, a closed-loop lift of any arm that would hang under the floor, and the run's arms turned a
+little outward. `python3 -m tools.models.field_animations.raidenmon_gait --source SRC.MMD --out AFTER.MMD` (SRC from `edit.py get 336`
+before the change), then `edit.py put 336 AFTER.MMD`. Test: `tools.test_raidenmon_gait` (`RAIDENMON_MODEL`).
