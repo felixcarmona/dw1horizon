@@ -115,16 +115,16 @@
      }
     ],
     "delta": "content/modeldelta/deltas/dw3-us/320-Growlmon.MMD.mdelta",
-    "delta_sha256": "7a5938ff22540030a200e55b2e9a7ff488041cb70fb6ad39786bd8a877695aeb",
-    "sha256": "6d4dd774bec153edbd155fa02ea66e41697a3a988d1d1fbb5ca9687ae75da36a",
-    "size": 113196
+    "delta_sha256": "cbdc3dbddf8e77aacba22701a2fe553f8a12b33a24b5c16178c6d208035d46f5",
+    "sha256": "6a6cc23f33ce15d63843c4e5de2a7833caced2d1a7c9024649f5c368b21a3b61",
+    "size": 118368
    },
    "from": {
-    "sha256": "3b08396a8ac6f82b3ee0a143802f379cef7d06339418c9e920bb803d45b69958",
-    "delta_sha256": "e581cf58bc1c0699b689a85a44897a39a3b2255d49bde132ea6263485e2d1ef3",
+    "sha256": "7716a2a169a13e93a328a95e6f9ac357bfb7725d83c099ed7fbad05e606f1d2e",
+    "delta_sha256": "08372839acb1ccf104c15aac264b2de633d7965fe8cdd7767d630bc860647aae",
     "add_bytes": [
-     26554,
-     26540
+     33658,
+     33644
     ],
     "foreign_windows": 0,
     "objects_ours": [
@@ -161,7 +161,6 @@
      18,
      34,
      2,
-     35,
      3,
      15,
      16,
@@ -183,7 +182,6 @@
      54,
      55,
      0,
-     33,
      40,
      41,
      43,
@@ -193,7 +191,6 @@
      50,
      56,
      4,
-     36,
      5,
      7,
      8,
@@ -201,7 +198,10 @@
      10,
      11,
      12,
-     13
+     13,
+     33,
+     35,
+     36
     ]
    }
   },
@@ -621,6 +621,7 @@
   "dde68b04079e20c830b9b0e268c04d9881cd7d3bd207e822138f7123d6f00431": "8084c949a12fc8c6225ec6d070b45e0b69f8e0ab99e1ec8ceec8e2d8942c6fbd",
   "2cdfcf7a857a69edc85adbea4b7f3455b8c5d324406f8af25529a41199187edd": "2ed6036bb45479090f9417bd62f041928d516dffb65b4daeae30b5d9e33d604b",
   "d1d538b5591c362f927244782c39af0dbce376327ebb722ad744b2555255d959": "41c85848a4886d9b8d9bc07df8d1584bd1a2890384cf4969ded96fc233fb68db",
-  "6d4dd774bec153edbd155fa02ea66e41697a3a988d1d1fbb5ca9687ae75da36a": "3b08396a8ac6f82b3ee0a143802f379cef7d06339418c9e920bb803d45b69958"
+  "1c06236db26cc8f3460e0892b5d0c2f4311637de1f84ac86075a370603bccacc": "234348cb00b8724fbc66d1e4e9900a57255ba0da07b3cccb003ca9dd53b07468",
+  "6a6cc23f33ce15d63843c4e5de2a7833caced2d1a7c9024649f5c368b21a3b61": "7716a2a169a13e93a328a95e6f9ac357bfb7725d83c099ed7fbad05e606f1d2e"
  }
 }

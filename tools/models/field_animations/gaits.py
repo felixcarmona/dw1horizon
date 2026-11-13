@@ -36,11 +36,11 @@ PROFILES={
 }
 
 PROFILES.update({
- 203:dict(source='e1d4c6ba6085661d315a2922120c126f999e31e95f1f6357678e6bde730dd747',bones=21,
+ 203:dict(source='3e1ac36b7f6754f796b05d54c83e1f237baefe4d53cee7bc9bebf2ae52e9b12b',bones=21,
           carrier=11,pelvis=11,chest=1,head=3,
           legs=[(15,16,17,[17],1,0),(18,19,20,[20],-1,.5)],arms=[(5,6,1),(8,9,-1)],
           slots=[2,3,4],periods={2:14,3:18,4:8},duties={4:.38},lifts={2:14,3:10,4:24},
-          tracks=62,height_bias=-8,support_blend=.5,knee_out_by_slot={4:1.0},validate_ik=True,
+          tracks=62,height_bias=-8,support_blend=.5,knee_out_by_slot={4:1.0},validate_ik=True,native_slot=0,
           arm_base=20,arm_spread=22,arm_amplitudes={2:34,3:10,4:56},arm_bends={2:38,3:12,4:72},
           native_aux=[2,4,7,10,12,13,14],native_head=True,
           jaw=dict(bone=4,base={2:6.5,3:13,4:9},amp={2:1.6,3:2.4,4:3.2},second={2:.8,3:0,4:1.1},lag={2:.9,3:1.4,4:.7},omega={2:.55,3:.38,4:.6},zeta={2:.55,3:.75,4:.5}),
@@ -56,7 +56,7 @@ PROFILES.update({
                  (2,0,{2:2.5,3:1.5,4:3},2,.4)],
           native_world_rest={7:[45,-8,0],10:[45,8,0]},native_rest_gain=.2,loose={2:6,3:6,4:6},
           style='cheerful upright dragon steps with loose, lagging arms, tail and neck; native jaw-free head, hands and tail acting retained; original idle preserved'),
- 180:dict(source='db9d7b42f0384f1fbb0fd008cacb0fff894b1b0f659de33d481ebaf6a81c110c',bones=20,
+ 180:dict(source='038ad56e88934b91ab040fbb24a03b918a21dc5d6fbeb217b08dd62755c05a61',bones=20,
           carrier=1,pelvis=1,chest=2,head=3,
           legs=[(14,15,16,[16],1,0),(17,18,19,[19],-1,.5)],arms=[(5,6,1),(8,9,-1)],
           slots=[2,3,4],periods={2:10,3:14,4:6},speeds={2:20,3:14,4:50},duties={4:.38},
@@ -81,7 +81,7 @@ PROFILES.update({
           static_offsets={2:[0,0,-10]},
           leans={2:3,3:8,4:22},
           style='upright armored stride, relaxed claw arms and delayed tail; original idle preserved'),
- 432:dict(source='13dfccc3ba05cfebd13b35d4bcf4e5a28e86d2c364186b8cd81f34afe0183130',bones=26,carrier=1,pelvis=11,chest=1,head=8,
+ 432:dict(source='f9af68bced4e24ae7dc5653a96d9aa1e961180d3e44494d0935d49276398c11f',bones=26,carrier=1,pelvis=11,chest=1,head=8,
           legs=[(12,13,14,[14,15],1,0),(16,17,18,[18,19],-1,.5)],arms=[(2,3,-1),(5,6,1)],
           slots=[2,3,4],periods={2:16,3:20,4:10},duties={4:.36},
           lifts={2:16,3:10,4:30},tracks=50,height_bias=-10,sway={2:7,3:5,4:5},bounce={2:3,3:3,4:6},
@@ -176,7 +176,7 @@ def build_profile(data,sk,sid,cfg):
     assert reviewed(digest)==cfg['source']
     n=len(sk);assert n==cfg['bones'];mmd.exe().skeleton[sid]=sk;mmd.exe().bone_count[sid]=n
     old=mmd.MMD.parse(data,n);old.type=sid;new=copy.deepcopy(old)
-    native=copy.deepcopy(animsheet.slot_frames(old,n,33)[0][0]);bind=copy.deepcopy(native);bind[0]=[4096]*3+[0]*6
+    native=copy.deepcopy(animsheet.slot_frames(old,n,cfg.get('native_slot',33))[0][0]);bind=copy.deepcopy(native);bind[0]=[4096]*3+[0]*6
     selected={cfg[k]for k in ['carrier','pelvis','chest','head']}
     selected.update(b for hip,knee,foot,_,_,_ in cfg['legs']for b in [hip,knee,foot])
     selected.update(b for a,e,_ in cfg['arms']for b in [a,e]);selected.update(b for b,_ in cfg.get('wings',[]));selected.update(cfg.get('cape',[]))
@@ -187,7 +187,7 @@ def build_profile(data,sk,sid,cfg):
     carrier,pelvis,chest=cfg['carrier'],cfg['pelvis'],cfg['chest'];bind[carrier][6:9]=[0,0,0]
     neutral=np.array(mmd.bone_matrices(old,bind));clouds={foot:support_cloud(old,sk,bind,foot,bones)for _,_,foot,bones,_,_ in cfg['legs']}
     native_world_head=np.array(mmd.bone_matrices(old,native))[cfg['head'],:3,:3]
-    native_frames,_,_=animsheet.slot_frames(old,n,33)
+    native_frames,_,_=animsheet.slot_frames(old,n,cfg.get('native_slot',33))
     slots=cfg.get('slots',SLOTS);report=[]
     for slot in slots:
         source_frames,_,events=animsheet.slot_frames(old,n,slot);idle=slot==0;tired=slot==3;running=slot==4

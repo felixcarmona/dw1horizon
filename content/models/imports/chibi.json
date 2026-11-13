@@ -1218,10 +1218,10 @@
     }
   },
   "322": {
-    "source_sha256": "df6988142c1e9244b31b3763fd524a44924f06e2dcb6c6af4f66376be5b96e58",
+    "source_sha256": "ea6c9640ee77c5491003898212d1f922b3b4b1b9c25cd8c70d1cf5a50b50e579",
     "skeleton_sha256": "ddb24f1356e725f9747cbea4c07bebe0d9df7ef2babb649e964dcb911b9ced9c",
     "base_generator": null,
-    "post_source_sha256": "df6988142c1e9244b31b3763fd524a44924f06e2dcb6c6af4f66376be5b96e58",
+    "post_source_sha256": "ea6c9640ee77c5491003898212d1f922b3b4b1b9c25cd8c70d1cf5a50b50e579",
     "height": 448,
     "fit": {
       "8": 0.9,
@@ -2002,10 +2002,10 @@
     }
   },
   "432": {
-    "source_sha256": "13dfccc3ba05cfebd13b35d4bcf4e5a28e86d2c364186b8cd81f34afe0183130",
+    "source_sha256": "f9af68bced4e24ae7dc5653a96d9aa1e961180d3e44494d0935d49276398c11f",
     "skeleton_sha256": "064a19ece04ae248732e94160941e968905ed94274915c87a0982f53d3858ebb",
     "base_generator": "tools.models.field_animations.gaits",
-    "post_source_sha256": "8db5c810a754579127dc48b41c3a9017d7c319c4735c70deb9f4749e99c76ece",
+    "post_source_sha256": "e3a0becacb38de6e3bd154a7626b636228dec01da4adb9a558f3c2f29a360980",
     "height": 500,
     "fit": {
       "22": 0.9,

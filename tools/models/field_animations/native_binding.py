@@ -151,7 +151,7 @@ def bind_pose(mesh, skeleton, recipe):
 def bind(data, skeleton, recipe, placements=None):
     """(model bytes, proof). `placements`, when given, receives {source bone: (anchor, transform, destination)}: how each
     piece was moved, for the authoring step that carries effect points and the condition bubble along with their piece."""
-    if digest(data) != recipe['source_sha256'] or digest(json.dumps(skeleton).encode()) != recipe['skeleton_sha256']:
+    if reviewed(digest(data)) != recipe['source_sha256'] or digest(json.dumps(skeleton).encode()) != recipe['skeleton_sha256']:
         raise ValueError('Native binding: source model or skeleton differs')
     sid, donor_id = recipe['species'], recipe['donor']
     placements = {} if placements is None else placements
@@ -367,6 +367,13 @@ def bind(data, skeleton, recipe, placements=None):
         result.anims.table[destination] = slots[source]
     for destination, source in recipe.get('extra_slots', {}).items():
         result.anims.table[int(destination)] = slots[source]
+    if recipe.get('prune_unused'):
+        # the donor's own clips of the slots `extra_slots` points elsewhere stay out of the model (they would be resident
+        # and unused: WarGrowlmon's battle slots share its field clips, not Growlmon's restored battle clips)
+        used = sorted({i for i in result.anims.table if i is not None})
+        index = {old: new for new, old in enumerate(used)}
+        result.anims.anims = [result.anims.anims[i] for i in used]
+        result.anims.table = [None if i is None else index[i] for i in result.anims.table]
     output = result.build()
     if recipe.get('battle_originals'):
         rest = animsheet.slot_frames(mmd.MMD.parse(output, len(rig)), len(rig), 0)[0][0]
@@ -428,7 +435,7 @@ def bind(data, skeleton, recipe, placements=None):
 
 def build(data, skeleton):
     recipes = json.loads(MANIFEST.read_text())
-    matches = [r for r in recipes.values() if r['source_sha256'] == digest(data)]
+    matches = [r for r in recipes.values() if r['source_sha256'] == reviewed(digest(data))]
     if len(matches) != 1:
         raise ValueError('Native binding: no unique reviewed source')
     return bind(data, skeleton, matches[0])
