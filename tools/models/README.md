@@ -1283,6 +1283,8 @@ little outward. `python3 -m tools.models.field_animations.raidenmon_gait --sourc
 before the change), then `edit.py put 336 AFTER.MMD`. Test: `tools.test_raidenmon_gait` (`RAIDENMON_MODEL`).
 
 
+Veemon (180): `field_animations/veemon_gait.py` is the generator of the `veemon-field` overlay (content/models/imports/species.py). It rewrites the idle (slots 0 and 33), walk (2, 35), tired walk (3) and run (4, 36) with `quadruped.py` legs and a body hook that moves hips, chest, head, jaw, arms and a three-segment tail from one phase, two eased cycles per clip and a second-order spring on the loose parts. Walk 12 ticks at 16 units, tired walk 18 at 11, run 8 at 38, idle 96; resident buffer 98,706 of 100,352 bytes. The feet roll (the toes lift at touchdown, the heel rises at the push-off with the toes planted, the toes curl in the swing: the walk's foot pitch swings through 23 degrees, the tired walk's 15, the run's 14). Veemon blinks: `field_animations/veemon_face.py` stamps two eye frames (half shut, shut) and a copy of the open eye into spare texels (x 200-255, y 36-115) and every clip carries texture-move events over the eye block (x 20-47, y 0-39, palette row 7; the same block is drawn on both sides of the face), irregular and with a double blink in the idle, heavier and longer lids in the tired walk. The texture is part of the change (`edit.py put 180 MMD TIM`). Offline: `python3 -m tools.models.field_animations.veemon_gait --source BASE.MMD --out AFTER.MMD [--tex BEFORE.TIM --out-tex AFTER.TIM]`; `tools/test_veemon_gait.py` covers it (VEEMON_MODEL names the imported base).
+
 Bearmon (353): `field_animations/bearmon_gait.py` is an offline model delta for the idle (slots 0 and 33), walk, tired walk and run (slots 2, 3, 4). It builds them with `quadruped.py` plus a body hook that moves the whole body from one gait phase: hips
 against chest, chest roll and shift over the stance foot, hands against the legs on their sides, head, jaw and tail on springs,
 and two eased cycles per clip, with a happy hop in one cycle, a stumble wobble in the other and a yawn in the tired walk. The idle (96 ticks, import legs kept) breathes, looks round, flicks an ear, wags the tail and waves a paw. Walk 20 ticks at 16 units, tired walk 28 at 10, run 16 at 36; resident buffer 81,800 of 100,352
@@ -1327,3 +1329,22 @@ in the recipe's `bind_pose` (a standing pose of the source's own, since its mesh
 `garudamon_donor_gait` re-plants the idle, walk, condition walk and run on two soles (one sole point per leg: the donor's left leg is not its
 right one mirrored) with the trunk facing forward (the pelvis bone never turns; the hips and chest turn a few degrees against each other), arms swinging against the legs and wings breathing behind. Species pin: the provider pin in `species-pins.json`.
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_garudamon_native` (after `edit.py get 460`).
+
+Puppetmon (181) has its own field stage, `field_animations/puppetmon_field.py` (the `puppetmon-field` overlay): the original's
+pelvis over planted-sole legs, and the chest, head, arms and hammer driven by damped springs so they lag, overshoot and settle.
+Its resident motion buffer is 98,890 B. `species-pins.json` changed.
+`PYTHONPATH=tools python3 -W ignore -m unittest tools.test_puppetmon_field` (after `edit.py get 181`).
+
+Veedramon (203) jaw: `field_animations/gaits.py` drives the jaw (bone 4) with its `jaw` profile key (a lagging damped spring on the stride,
+pitch only: walk 5 to 8 degrees, tired walk 11 to 15, run 7 to 11, yaw and roll 0) instead of copying it from the source tired and run
+clips, whose jaw yawed to 24 degrees, rolled to 15 and pushed up through the upper jaw. Only bone 4 differs from before. Test:
+`tools/test_veedramon_jaw.py` (after `edit.py get 203`).
+
+Veedramon (203) liveliness: `gaits.py` profile keys `waves` (extra lagging sinusoids on chosen bones and axes), `head_bob`, `vary` and `loose` (per-slot
+keyframe tolerance for every bone except the legs, carrier and pelvis) make the tail, arms, neck and head follow through; see docs/reference/motion.md.
+
+MegaKabuterimon (205) wears native Kabuterimon's (19, `CHDAT/MMD0/KABU.MMD`) 28-bone skeleton at scale 1.0: pieces map by body part
+(chest, head, four arms, hips, two legs) and the post-stage `kabuterimon_donor_gait` keeps the donor's trunk, arms, head and wings and
+re-plants the idle, walk, tired walk and run on two soles. The same stage fits the Kabuterimon (19) and Kuwagamon (51) skeletons (by bone count).
+Species pin: the provider pin in `species-pins.json`.
+`PYTHONPATH=tools python3 -W ignore -m unittest tools.test_megakabuterimon_native` (after `edit.py get 205`).

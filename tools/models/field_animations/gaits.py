@@ -41,10 +41,21 @@ PROFILES.update({
           legs=[(15,16,17,[17],1,0),(18,19,20,[20],-1,.5)],arms=[(5,6,1),(8,9,-1)],
           slots=[2,3,4],periods={2:14,3:18,4:8},duties={4:.38},lifts={2:14,3:10,4:24},
           tracks=62,height_bias=-8,support_blend=.5,knee_out_by_slot={4:1.0},validate_ik=True,
-          arm_base=20,arm_spread=15,arm_amplitudes={2:18,3:11,4:25},arm_bends={2:20,3:15,4:35},
-          native_aux=[2,4,7,10,12,13,14],source_aux=[4],native_head=True,gaze_pitch=3,aux_translation={3:[0,-8,0]},
-          native_world_rest={7:[45,-8,0],10:[45,8,0]},native_rest_gain=.2,leans={2:4,3:8,4:14},
-          style='upright dragon steps and relaxed claw arms; native neck, jaw, hands and tail acting retained; original idle preserved'),
+          arm_base=20,arm_spread=22,arm_amplitudes={2:34,3:10,4:56},arm_bends={2:38,3:12,4:72},
+          native_aux=[2,4,7,10,12,13,14],native_head=True,
+          jaw=dict(bone=4,base={2:6.5,3:13,4:9},amp={2:1.6,3:2.4,4:3.2},second={2:.8,3:0,4:1.1},lag={2:.9,3:1.4,4:.7},omega={2:.55,3:.38,4:.6},zeta={2:.55,3:.75,4:.5}),
+          gaze_pitch_by_slot={2:3,3:9,4:2},aux_translation={3:[0,-8,0]},
+          sway={2:11,3:9,4:7},bounce={2:11,3:3,4:12},leans={2:5,3:16,4:22},vary=.16,
+          head_bob={2:(3.5,4,3),3:(2,2.5,2),4:(4,5,3)},
+          # lagging follow-through: tail (yaw wave travelling to the tip, pitch flick), loose shoulders, elbows and claws, neck
+          waves=[(12,1,{2:4,3:3,4:5},1,.5),(13,1,{2:7,3:4,4:8},1,1.1),(14,1,{2:9,3:5,4:10},1,1.7),
+                 (13,0,{2:3,3:1.5,4:2},2,.9),(14,0,{2:4,3:2,4:2},2,1.4),
+                 (5,2,{2:5,3:2,4:7},1,.3),(8,2,{2:5,3:2,4:7},1,3.44),
+                 (6,0,{2:5,3:2,4:8},1,.9),(9,0,{2:5,3:2,4:8},1,4.04),
+                 (7,0,{2:7,3:3,4:10},1,1.5),(10,0,{2:7,3:3,4:10},1,4.64),
+                 (2,0,{2:2.5,3:1.5,4:3},2,.4)],
+          native_world_rest={7:[45,-8,0],10:[45,8,0]},native_rest_gain=.2,loose={2:6,3:6,4:6},
+          style='cheerful upright dragon steps with loose, lagging arms, tail and neck; native jaw-free head, hands and tail acting retained; original idle preserved'),
  180:dict(source='db9d7b42f0384f1fbb0fd008cacb0fff894b1b0f659de33d481ebaf6a81c110c',bones=20,
           carrier=1,pelvis=1,chest=2,head=3,
           legs=[(14,15,16,[16],1,0),(17,18,19,[19],-1,.5)],arms=[(5,6,1),(8,9,-1)],
@@ -133,6 +144,31 @@ def build(data,sk):
     return build_profile(data,sk,*matches[0])
 
 
+def jaw_series(cfg,slot,period,duration):
+    """Jaw pitch in degrees per tick: a lagging damped spring driven by the stride, hinged about the jaw's own X axis only.
+
+    The source clips for the tired and run slots carry a jaw that yaws and rolls sideways (and pushes up through the upper
+    jaw), because their head stood still while the jaw did the acting; under the authored head that read as a jaw sliding
+    off to one side. This keeps the pitch and nothing else; the steady state of the periodic drive is returned so the loop closes."""
+    j=cfg['jaw'];w=j['omega'][slot];z=j['zeta'][slot];x=v=0.;out=[]
+    for tick in range(duration*8+duration+1):
+        th=2*math.pi*tick/period
+        target=j['base'][slot]+j['amp'][slot]*math.cos(th-j['lag'][slot])+j['second'][slot]*math.cos(2*th-j['lag'][slot]*1.7)
+        if tick==0:x=target
+        for _ in range(4):
+            v+=(w*w*(target-x)-2*z*w*v)/4;x+=v/4
+        out.append(x)
+    return out[-(duration+1):]
+
+def encoding_tolerance(cfg,slot):
+    """Keyframe fit tolerance: the legs and the carrier stay at the base tolerance (planted soles), the other bones may
+    be fitted looser (`loose`, per slot) so their lagging follow-through costs fewer keyframe bytes."""
+    base=cfg.get('encoding_tol_by_slot',{}).get(slot,cfg.get('encoding_tol',1));loose=cfg.get('loose',{}).get(slot)
+    if loose is None:return base
+    tight={cfg['carrier'],cfg['pelvis']}|{b for leg in cfg['legs']for b in leg[:3]}
+    return {**{b:base for b in tight},None:loose}
+
+
 def build_profile(data,sk,sid,cfg):
     """Author one explicitly pinned profile, including edits to a baked model."""
     from tools.models.field_animations.reviewed import reviewed
@@ -167,6 +203,7 @@ def build_profile(data,sk,sid,cfg):
         sole=float(clouds[foot][:,1].max());offset_y=float(neutral[hip,1,3])
         height=length-18+offset_y+sole if idle else math.sqrt((length-(14 if running else 4))**2-stride**2)+offset_y+sole+3
         height+=cfg.get('height_bias',0)
+        jaw=jaw_series(cfg,slot,period,duration) if cfg.get('jaw') and not idle else None
         frames=[];hist={};unreachable=0;max_foot_error=0.
         for tick in range(duration+1):
             theta=2*math.pi*tick/period;wave=math.sin(theta);p=copy.deepcopy(bind)
@@ -189,6 +226,8 @@ def build_profile(data,sk,sid,cfg):
                 source_i=min(int(source_t),len(source_frames)-2)
                 source_pose=interpolate_pose(source_frames[source_i],source_frames[source_i+1],round((source_t-source_i)*4096))
                 for b in cfg['source_aux']:p[b][3:6]=source_pose[b][3:6]
+            if jaw:
+                jb=cfg['jaw']['bone'];p[jb][3:6]=[round(jaw[tick]*4096/360),0,0]
             sway=cfg.get('sway',{}).get(slot,1.3 if idle else 5 if running else 7 if tired else 9)*math.sin(theta-.18)
             bounce=2*math.cos(theta-.2)if idle else cfg.get('bounce',{}).get(slot,9 if running else 5 if tired else 6)*math.cos(2*theta-(.9 if running else .25))+1.5*math.cos(4*theta-.5)
             p[carrier][6:9]=[round(first_side*sway),round(-height+bounce),0]
@@ -202,7 +241,9 @@ def build_profile(data,sk,sid,cfg):
                 set_rotation(p,pelvis,pelvis_r,hist);set_rotation(p,chest,pelvis_r.T@chest_r,hist)
             if cfg.get('native_head'):
                 reference_world=np.array(mmd.bone_matrices(old,reference))[cfg['head'],:3,:3]
-                desired=reference_world@native_world_head.T@rotation([cfg.get('gaze_pitch_by_slot',{}).get(slot,cfg.get('gaze_pitch',2)),0,0])
+                hb=cfg.get('head_bob',{}).get(slot,(0,0,0));vary=1+cfg.get('vary',0)*math.sin(2*math.pi*tick/duration+2.1)
+                bob=rotation([hb[0]*vary*math.cos(2*theta-.9),hb[1]*vary*math.sin(theta-.7),hb[2]*vary*math.sin(theta-.4)])
+                desired=reference_world@native_world_head.T@rotation([cfg.get('gaze_pitch_by_slot',{}).get(slot,cfg.get('gaze_pitch',2)),0,0])@bob
                 parent=np.array(mmd.bone_matrices(old,p))[sk[cfg['head']][1],:3,:3]
                 set_rotation(p,cfg['head'],parent.T@desired,hist)
             else:set_rotation(p,cfg['head'],rotation([-chest_pitch*.7,-chest_yaw*.7,.4*math.sin(theta-.6)]),hist)
@@ -222,6 +263,11 @@ def build_profile(data,sk,sid,cfg):
                     arm_spread=cfg.get('arm_spread_by_slot',{}).get(slot,{}).get(sign,arm_spread)
                     p[shoulder][3:6]=[round((base+amp*phase)*4096/360),0,round(spread*arm_spread*4096/360)]
                     p[elbow][3:6]=[round((-bend+(2 if idle else 8)*lag)*4096/360),0,round(spread*12*4096/360)]
+            if cfg.get('waves'):
+                vary=1+cfg.get('vary',0)*math.sin(2*math.pi*tick/duration+.7)
+                for b,axis,amps,freq,lag in cfg['waves']:
+                    amp=amps.get(slot,0)
+                    if amp:p[b][3+axis]+=round(amp*vary*math.sin(freq*theta-lag)*4096/360)
             for b,sign in cfg.get('wings',[]):
                 p[b][3:6]=[round((26+.7*math.sin(theta-.9))*4096/360),round(-sign*14*4096/360),0]
             for b,sign in cfg.get('wrists',[]):
@@ -275,7 +321,7 @@ def build_profile(data,sk,sid,cfg):
             p[0][6:9]=[0,0,-speed*tick];frames.append(p)
         frames[-1][1:]=copy.deepcopy(frames[0][1:]);assert unreachable==0,(sid,slot,unreachable,height)
         if cfg.get('validate_ik'):assert max_foot_error<1,(sid,slot,max_foot_error)
-        anim=mmd.encode_anim(frames,n,loop_sample=0,events=authored_events,tol=cfg.get('encoding_tol',1),repeats=False)
+        anim=mmd.encode_anim(frames,n,loop_sample=0,events=authored_events,tol=encoding_tolerance(cfg,slot),repeats=False)
         new.anims.anims.append(anim);new.anims.table[slot]=len(new.anims.anims)-1
         player=mmd.AnimPlayer(anim,n,slot)
         for tick in range(duration*4):

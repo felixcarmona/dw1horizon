@@ -57,6 +57,8 @@ class ModelProvider(unittest.TestCase):
             '183': ('183', 'tools.models.field_animations.native_binding', '183-wormmon-native-crawl'),
             # BomberNanimon wears Nanimon's rig and programs; its boxer clips stay as the scale lock's provenance.
             '232': ('232', 'tools.models.field_animations.native_binding', '232-bombernanimon-native'),
+            # MegaKabuterimon wears Hercules Kabuterimon's rig and programs, planted by its own gait stage.
+            '205': ('205', 'tools.models.field_animations.native_binding', '205-megakabuterimon-native'),
             # Wizardmon wears Angemon's rig and programs (its cape and hair follow); its paced gait was retired with it.
             '241': ('241', 'tools.models.field_animations.wizardmon_native', '241-wizardmon-native'),
             # Sorcermon is Wizardmon's body: the same rig, programs and followers.
@@ -303,6 +305,10 @@ class ModelProvider(unittest.TestCase):
         # Raijinmon (333) wears Ogremon's rig and programs with planted legs (raijinmon_gait.py): a native binding, no celebration row.
         self.assertEqual(assignments.pop('333'), ('tools.models.field_animations.native_binding', '333-raijinmon-native'))
         assignments['351'] = ('tools.models.field_animations.articulation', '351-kotemon-field')
+        # Puppetmon (181) has its own field stage: planted soles under the original's pelvis, spring-driven chest, head, arms and hammer.
+        self.assertEqual(assignments['181'], ('tools.models.field_animations.puppetmon_field', '181-puppetmon-field'))
+        # Veemon (180) has its own generator: planted soles, rolling feet and blinks (veemon_gait.py, veemon_face.py).
+        self.assertEqual(assignments['180'], ('tools.models.field_animations.veemon_gait', '180-veemon-field'))
         # Raidramon (201) no longer has a field overlay: its gait is in its model delta (raidramon.py).
         self.assertNotIn('201', assignments)
         # Salamon (221) neither: its gait and blinking face are in its model delta (salamon.py, salamon_face.py).
@@ -316,7 +322,7 @@ class ModelProvider(unittest.TestCase):
         # KingEtemon (303) and GrapLeomon (306) wear native rigs and have no chibi row any more: their two entries left the pin.
         # WarGrowlmon (326) wears Growlmon's rig; its row stays for the proportions guard and its baked chibi recipe stays as provenance.
         self.assertEqual(hashlib.sha1(json.dumps(assignments, sort_keys=True).encode()).hexdigest(),
-                         'ada12a6db27f1f55c83b6e27f247df97a0e3dd2c')
+                         'f018a892b549b28afc2ef56af8c0b3f01a378a7c')
 
 
 if __name__ == '__main__':

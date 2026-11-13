@@ -38,7 +38,7 @@ class Put(unittest.TestCase):
     def test_rejected_field_overlay_preserves_deltas_and_manifest(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
-            row = dict(id=180, name='Veemon')  # a field overlay with reviewed source pins
+            row = dict(id=203, name='Veedramon')  # a gaits.py field overlay with reviewed source pins
             for kind, data in (('mmd', b'previous model'), ('tim', b'previous texture')):
                 delta = v.modeldelta.encode(data, [b'source'])
                 (root / (kind + '.mdelta')).write_bytes(delta)
@@ -49,7 +49,7 @@ class Put(unittest.TestCase):
             edited = root / 'edited.MMD'
             edited.write_bytes(b'not a reviewed field model')
             before = {p.name: p.read_bytes() for p in root.iterdir()}
-            a = SimpleNamespace(id='180', mmd=str(edited), tim=None, force=False,
+            a = SimpleNamespace(id='203', mmd=str(edited), tim=None, force=False,
                                 games_dir=td, no_species_pins=False)
             with patch.object(v, 'ROOT', root), patch.object(v, 'MODELS', manifest), \
                     patch.object(v, 'provider', return_value=SimpleNamespace(keep=lambda: None)), \
