@@ -24,6 +24,7 @@ CALM_CLIPS = {
     473: (0, 2, 3, 4),      # Nyokimon's idle, walk, tired walk and run (field_animations/nyokimon_calm.py)
     474: (0, 2, 3, 4),      # Motimon's idle, walk, tired walk and run (field_animations/baby_calm.py)
     475: (0, 2, 3, 4),      # Bukamon's idle, walk, tired walk and run (field_animations/baby_calm.py)
+    476: (0, 2, 3, 4, 33, 35, 36),      # Nyaromon's idle, walk, tired walk and run, and their aliases (field_animations/nyaromon_calm.py)
 }
 
 
