@@ -1645,3 +1645,10 @@ at 38 (24 high). Squash runs 0.74 to 1.25 with an anticipation crouch before eac
 moves the eye texture to half-lidded, then to the closed arc for three ticks (six when tired), then back; blinks are not tied to the hops.
 The body stays where it lands while it is down (the root follows the foot 60 % and a steady line 40 %, the body bone takes up the
 difference), and its lowest point is solved every tick so the mesh never goes under the floor. The test is `tools.test_pabumon_calm`.
+
+Yukimibotamon 472 (a hand-made baby on Botamon's rig, donor 1) played Botamon's own clips, which lunge hard (squash 30 %, 60-unit jumps,
+stance slip up to 360 % of the body's travel) and flatten the wide body like paper. `field_animations/yukimibotamon_calm.py` writes slots 0, 2,
+3 and 4 again, like Nyokimon's: a 96-tick idle (two breaths, slow looks to each side, three blinks: the half-closed lid frame, four ticks of the closed-eye frame, the lid again; walk has one, tired two slow ones, run one), a walk of two 22-tick hops at 17 units per tick (11 high), a tired walk of two 30-tick hops at 11 (4 high, leaning forward, half-closed
+eyes) and a run of three 16-tick hops at 38 (18 high). The squash stays within 0.84 to 1.08, the body stays where it lands while it is down and
+its lowest point is solved to the floor every tick. The test is `tools.test_yukimibotamon_calm`.
+The open mouth frames (small, mid, wide) are one rounded mouth with its cavity and tongue, no omega lobes, because the mouth window is copied whole over the closed omega mouth; a lobe left in an open frame read as two mouths (`test_an_open_mouth_replaces_the_closed_one`).

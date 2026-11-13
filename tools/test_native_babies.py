@@ -17,7 +17,11 @@ from tools.derive.importers import Provider
 
 ROOT = Path(__file__).resolve().parents[1]
 BABY_IDS = list(range(470, 478))
-CALM_CLIPS = {470: (0, 2, 3, 4)}       # Pabumon's idle, walk, tired walk and run (field_animations/pabumon_calm.py)
+CALM_CLIPS = {
+    470: (0, 2, 3, 4),      # Pabumon's idle, walk, tired walk and run (field_animations/pabumon_calm.py)
+    471: (0, 2, 3, 4),      # Pichimon's four field clips (field_animations/pichimon_hop.py)
+    472: (0, 2, 3, 4),      # Yukimibotamon's idle, walk, tired walk and run (field_animations/yukimibotamon_calm.py)
+}
 
 
 def adds(delta):
@@ -84,9 +88,6 @@ class Registry(unittest.TestCase):
                 data = (ROOT / record[kind]['delta']).read_bytes()
                 self.assertEqual(hashlib.sha256(data).hexdigest(), record[kind]['delta_sha256'])
                 self.assertEqual(data[:5], modeldelta.MAGIC + b'\0')
-
-
-CALM_CLIPS[471] = (0, 2, 3, 4)          # Pichimon's four field clips (field_animations/pichimon_hop.py)
 
 
 @unittest.skipUnless((ROOT / 'extracted/CHDAT/MMD0/KORO.MMD').exists(), 'needs the player extraction')
