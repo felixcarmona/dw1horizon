@@ -1324,6 +1324,19 @@ plants each foot with `quadruped.py`: walk, tired walk and run are 32, 60 and 28
 (slip under 4 % mean), the idle 96 ticks with breathing, weight shifts and a raised arm. The posture is a low, forward-leaning warrior's: short weighted steps, the chest turning hard against the hips, the arms bent and held out of lockstep with the legs, a hunched dragging tired walk with the head low, a committed forward-leaning run. The pelvis bobs twice a cycle
 and the arms and feather follow with delay. The run's loincloth overlaps a leg slightly more than before (14 against 8).
 
+Pichimon (471, a hand-made baby) no longer plays Koromon's lunge: a 40 % squash and a 59-unit leap every 18 ticks, the tired walk
+as fast as the walk (20.5 against 20.9 units a tick) and a slip of 124 % mean, 225 % worst. `pichimon_hop.py` writes slots 0, 2, 3
+and 4: a 96-tick idle (two breaths of about 8 % squash, slow looks to each side, three blinks about 32 ticks apart, the feelers trailing), a walk of two
+22-tick hops at 16 units per tick (14 high), a tired walk of two 30-tick hops at 11 (5 high, leaning forward, drooping feelers
+eyes) and a run of three 16-tick hops at 38 (24 high). The squash is 0.84 to 1.08, the feelers lag the body. The face blinks through texture moves (the closed-eye frame at (54, 0), a half-lid frame on each side of it, shut for 4 ticks, 6 with the lids): three times a loop in the idle, once in the walk, twice in the tired walk, never in the run; every clip starts and ends on its own base eye. The body stays where it lands
+while it is down and its lowest point is solved every tick: slip 0 % mean and worst on the three gaits, the lowest sole 0. The little arms (the two pectoral fins) used to be part of the body object, so they could not move on their own. The twelve fin quads now sit in the two
+objects that were empty (the feeler-tip bones, 4 and 6), their vertices and normals expressed in that bone's rest frame, so the rest pose is vertex for vertex
+the old one (the six degenerate points of the empty objects are gone). Each tick the tip bone is solved as `inverse(feeler base) . fin motion . rest offset`, so the fin turns
+about its shoulder whatever the feeler does: a damped spring follows the hop height and squash, so the arms lag the body and overshoot on a landing, rest
+in a slow sway in the idle, hang low and nearly still in the tired walk and stream back in the run (the tip travels 20 units in the walk, 15 in the run, 12 in the
+idle, 8 tired). The feelers keep their own motion on bones 3 and 5 (the tip bending was dropped). The stored
+model grows from 43 to 56 KB (animation and the fin split; resident 50.6 KB of 100 KB). The test is `tools.test_pichimon_hop`.
+
 Kyukimon 322 (`tools/models/field_animations/kyukimon_gait.py`, test `tools.test_kyukimon_gait`): the walk (80 ticks), tired walk (72) and run (72)
 only rewrote the legs; every bone above the hips (body, chest, shoulders, arms, the five tail segments) played the idle's 74-tick loop, copied
 (equal rotation ranges to a tenth of a degree), and head, hands, strap and wing spikes never moved, so the upper body neither moved much nor
