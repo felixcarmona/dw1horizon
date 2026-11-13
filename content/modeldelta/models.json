@@ -4869,9 +4869,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/401-Pukumon.MMD.mdelta",
-        "delta_sha256": "262c87a3b1c50ca8f8791ecc03b05ff81ac877a973c13d28c9e862f99c2f37d9",
-        "sha256": "277100ba2719cc8d80c4eeb9141162a269885aefed99b4f1d5f8d62cdac0e6f7",
-        "size": 63440
+        "delta_sha256": "7aa9a587a92f420c5bee611f0c2e55a9ef4294ce64e43c34362883c466eec00c",
+        "sha256": "6cedc3337a045d7a93e413f89e2de972e953479a504b4b3a2f22951eed3d0b81",
+        "size": 75502
       },
       "tim": {
         "sources": [
