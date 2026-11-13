@@ -17,6 +17,7 @@ from tools.derive.importers import Provider
 
 ROOT = Path(__file__).resolve().parents[1]
 BABY_IDS = list(range(470, 478))
+CALM_CLIPS = {473: (0, 2, 3, 4)}       # Nyokimon's idle, walk, tired walk and run (field_animations/nyokimon_calm.py)
 
 
 def adds(delta):
@@ -97,6 +98,8 @@ class Replay(unittest.TestCase):
             record = self.records[sid]
             donor = (ROOT / 'extracted/CHDAT' / record['donor_model']).read_bytes()
             with self.subTest(baby=record['name']):
+                if sid in CALM_CLIPS:
+                    continue                                 # its four field clips are ours: see the next test
                 self.assertEqual(model[struct.unpack_from('<I', model, 4)[0]:],
                                  donor[struct.unpack_from('<I', donor, 4)[0]:])
 
@@ -108,7 +111,8 @@ class Replay(unittest.TestCase):
                 parsed = mmd.MMD.parse(model, record['bones'])
                 self.assertLessEqual(record['bones'], 34)
                 donor = mmd.MMD.load(str(ROOT / 'extracted/CHDAT' / record['donor_model']), record['donor'])
-                self.assertEqual(parsed.anims.table, donor.anims.table)   # the donor baby's slots, Bubble at 0x2E
+                if sid not in CALM_CLIPS:
+                    self.assertEqual(parsed.anims.table, donor.anims.table)   # the donor baby's slots, Bubble at 0x2E
                 self.assertIsNotNone(parsed.anims.table[0x2E])
                 motionstorage.require(model, record['bones'])
                 tim = mmd.Tim4(texture)

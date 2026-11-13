@@ -9,7 +9,7 @@ import numpy as np
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../../../tools'))
 import mmd  # noqa: E402
 
-SCALES = {'Nyokimon': (43, 0.80), 'Nyaromon': (30, 0.85), 'Yokomon': (44, 0.88)}
+SCALES = {'Nyokimon': (1, 0.80), 'Nyaromon': (30, 0.85), 'Yokomon': (44, 0.88)}
 
 
 def shrink(path, t, s):

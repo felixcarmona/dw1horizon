@@ -1498,3 +1498,18 @@ and eased; the legs come from `quadruped.py` (a biped: two planted soles on a na
 (mean / worst % of the body's travel): walk 2.5 / 24, tired 2.3 / 9, run 5.6 / 43; the largest step between ticks 1.9 times the median (idle 2.4,
 run 2.4); the resident buffer is 85.8 KB of 100352 B. The technique and care slots are the donor's; the old Megaton Punch timing pin on
 the retired Power Crane clip is gone. The test is `tools.test_raijinmon_gait` (`RAIJINMON_MODELS`).
+
+Nyokimon 473 (a hand-made baby, `tools/models/babies/authoring/nyokimon.py`) moved on Yuramon's rig (donor 43): the hop clips sank the soles
+up to 37 units under the rest bottom and the walk, tired walk and run slid 107 to 142 % of the body's travel at worst. It now wears Botamon's
+rig (donor 1, three bones, the body object alone; face windows painted over Botamon's texture animations), but Botamon's own clips lunged
+too hard (squash 30 %, 60-unit jumps), so `field_animations/nyokimon_calm.py` writes slots 0, 2, 3 and 4 again, with some character:
+a 120-tick idle (two slow breaths, curious looks with a head tilt each way, two blinks, a happy bounce-wiggle with smiling eyes at the
+end), a walk of two 22-tick hops at 17 units per tick (11 high; a higher and a lower hop, a crouch and wiggle before take-off, a tilt in
+the air, a damped wobble on landing, a lagging lean of the sprout end, one blink), a tired walk of two 34-tick hops at 11 (4 high, a sleepy
+rocking waddle, half-shut lids, one slow blink) and a run of three 16-tick hops at 38 (18 high). An open, smiling or sad mouth replaces the grey lip line of the closed mouth in its whole 24 x 16 window (they used to show both, two mouths at once; `test_an_open_mouth_replaces_the_closed_one`). A blink is a half lid, two or three ticks of
+the closed eye (texture window x 24 words, `tex` events the field-clip programs run), a half lid. The squash stays within 0.86 to 1.10, the
+body stays where it lands while it is down and its lowest point is solved to the floor every tick. The studio's slip metric reads a fixed
+bone on this rig and is meaningless here, so the test measures the lowest points of the mesh: mean slip 4 / 7 / 2 %, worst 9 / 19 / 5 % of
+the root speed on walk, tired and run, lowest sole 0 on every clip (before -25 / -35 / -37 / -3), resident motion buffer about 28.8 KB of
+100352 B (the stored model 34.1 KB, from 28.8 KB). Tsunomon (16) and Tokomon (30) were built as alternatives and fit the same face
+windows, but their hops are taller than the body. The tests are `tools.test_nyokimon_calm` and `tools.test_native_babies`.
