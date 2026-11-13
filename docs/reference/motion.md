@@ -1498,3 +1498,12 @@ and eased; the legs come from `quadruped.py` (a biped: two planted soles on a na
 (mean / worst % of the body's travel): walk 2.5 / 24, tired 2.3 / 9, run 5.6 / 43; the largest step between ticks 1.9 times the median (idle 2.4,
 run 2.4); the resident buffer is 85.8 KB of 100352 B. The technique and care slots are the donor's; the old Megaton Punch timing pin on
 the retired Power Crane clip is gone. The test is `tools.test_raijinmon_gait` (`RAIJINMON_MODELS`).
+
+Pabumon (470, a hand-made baby) no longer plays Punimon's frantic clips (a blob squashed to half and stretched to one and a half
+times its height, spun and thrown about). `pabumon_calm.py` writes slots 0, 2, 3 and 4 into its model delta: a 96-tick idle (four breaths,
+two curious look-arounds, a crouch and a small hop that lands with an overshoot, two blinks), a walk of two 20-tick hops at 16 units per
+tick (22 units high), a tired walk of two 24-tick scoots at 12 (6 units high, a heavy droop, half-shut eyes) and a run of four 12-tick hops
+at 38 (24 high). Squash runs 0.74 to 1.25 with an anticipation crouch before each take-off, and the body leans into the movement. A blink
+moves the eye texture to half-lidded, then to the closed arc for three ticks (six when tired), then back; blinks are not tied to the hops.
+The body stays where it lands while it is down (the root follows the foot 60 % and a steady line 40 %, the body bone takes up the
+difference), and its lowest point is solved every tick so the mesh never goes under the floor. The test is `tools.test_pabumon_calm`.

@@ -190,6 +190,13 @@ animations with our mesh and texture, replayed from plain deltas
 Run `python3 -m tools.models.babies check` and
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_native_babies`.
 
+Pabumon (470) is the exception to the donor's animations: `field_animations/pabumon_calm.py` replaces slots 0, 2, 3 and 4
+(Punimon's clips squash the blob to half its height and fling it about) with a breathing idle with slow looks and
+blinks, a soft walk of 20-tick hops, a low scooting tired walk and a flatter run, with the body planted while it is down
+and its lowest point on the floor. It is stored in the plain delta (`--source` is the model before the change, then
+`python3 -m tools.models.babies encode 470 AFTER.MMD TIM`); check with
+`PYTHONPATH=tools python3 -W ignore -m unittest tools.test_pabumon_calm`.
+
 Piedmon (245) played one 104-tick floating gesture in its idle, walk, condition walk and run (the three walks differed
 only in root speed and arm amplitude), and the boots, which never touch the ground, slid with the body.
 `field_animations/piedmon_levitate.py` writes slots 0 and 1 (idle), 2, 3 and 4 again as four levitating clips: a
