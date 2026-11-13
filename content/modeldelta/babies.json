@@ -90,14 +90,14 @@
    "donor_texture_sha256": "360d8fbf34889e08c86c9cba288b93420bcd79d66e4dbc30bba3d929c3ab7f51",
    "mmd": {
     "delta": "content/modeldelta/babies/474-Motimon.MMD.mdelta",
-    "delta_sha256": "09bb5933537d9a8193d6f08187574a618f4a2ce7ee2d1455ff4a3968a7476add",
-    "sha256": "9c138707ab3a9a0efe4ceb3cae78f91e1c5195f73290e5f29930314db82e413c",
-    "size": 33784
+    "delta_sha256": "5d6f3f78d321940395c2c48fd947656090947f2d8a525954d077a1795e4e7ec9",
+    "sha256": "40b0251dab4b19aae795b26622e35e615df48b6a3f40fcaf5d6c14cc69a72072",
+    "size": 42838
    },
    "tim": {
     "delta": "content/modeldelta/babies/474-Motimon.TIM.mdelta",
-    "delta_sha256": "68fda053d378bd9baafe3aea1d1a643f407eb60284acecddd7af6d425cd531bd",
-    "sha256": "dd703be8ed45ba8f8f4aa252edfdcba2b0e0531a0379886e1302e6a410e5af5a",
+    "delta_sha256": "6a5d239ca87d9487b91e0f1ce7a9a29aa264f79631a210e91e4c7c71c0a74e79",
+    "sha256": "f119e4391930aa1028fd57afc40571ee3bc29071015320cc474643eeaf257dfe",
     "size": 18432
    }
   },
