@@ -53,6 +53,12 @@ and a scheduled foot roll. `python3 -m tools.models.field_animations.clockmon_ga
 (SRC from `edit.py get 290` before the change), then `edit.py put 290 DIR/290-Clockmon.MMD`; the reviewed-source pin in
 `content/models/imports/celebrations.json` follows the new model. Test: `tools.test_clockmon_gait` (`CLOCKMON_MODEL`).
 
+Species 408 (Suijinmon): `field_animations/suijinmon.py` writes slots 2, 3 and 4 (a 14-tick diagonal walk, a 21-tick tired walk and a 14-tick
+run at 18, 12 and 40 units a tick) with `quadruped.py` on its four legs, as a diagonal walk (each diagonal pair lands 0.22 of a cycle apart), the front tracks
+12 units in and the hind 12 out, reach 30 apart, so the thick legs of one side do not pass through each other (the earlier four-beat walk crossed
+them 2307, 3437 and 2014 triangle pairs over the loops; now 122, 155 and 98); the soles stand with the profile's `sink` (3.2 units, a gait row may
+override it) under the rig's floor line, where the source's own idle rests. Test: `tools.test_suijinmon_gait` (`SUIJINMON_MODEL`).
+
 Species 329 (Ghoulmon): `field_animations/ghoulmon_gait.py` writes slots 2, 3 and 4 again (a 26-tick walk, a 34-tick tired walk and a
 14-tick run at 17, 11 and 38 units a tick; the idle is kept) with `quadruped.py` on the model's own two legs: planted flat soles with heel
 strike and toe-off, hips against torso, swinging arms with late forearms and claws, flapping wing membranes and a whipping three-link tail.

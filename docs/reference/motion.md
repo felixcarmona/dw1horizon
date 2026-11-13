@@ -1523,3 +1523,25 @@ rebuilt by `cannondramon_gait.py` on planted soles (14 ticks at 15 units per tic
 under the floor or slides. Stance slip is 15, 17 and 24 % mean (worst 32, 42 and 50 %). The resident model uses 87,984 of 100,352 bytes.
 The gait stage reads soles, reach and knee direction from the rest pose, so it also fits the Unimon (27-bone) and
 Garurumon (26-bone) rigs, which were tried as the other donors.
+
+### Suijinmon (408): legs through legs
+
+The centaur's four legs are thick (about 80 units across) and hang from the body one behind the other, front hips 96 units ahead of the hind
+ones. The first four-beat walk and gallop swung each side's front leg back while the hind leg swung forward, so the two thighs and the
+lower legs crossed on nearly every tick: `meshclash.py` counted 2307 (walk), 3437 (tired walk) and 2014 (run) crossing triangle pairs between
+the front and hind leg of the same side over the loops, 40 to 51 units deep. Fixes, all in `suijinmon.py` and the planted-sole IK's opt-in keys:
+
+- the walk is a diagonal walk: each diagonal pair (left hind with right front, right hind with left front) lands 0.22 of a cycle apart, so the
+  pairs overlap as in a horse's walk and one side's front and hind legs are rarely at opposite ends of their strides; 14-tick cycle, 60 % stance, 18 units
+  a tick, body roll 2.4 degrees for the weight shift. (A first version used a pace, each side stepping together: 27 crossings, but the owner did not
+  like the amble and its splayed 25-unit tracks.) The tired walk is the same stride played in 21 ticks at 12;
+- the front tracks stand 12 units in and the hind 12 out (`track`), the centres 60 apart further (`reach` -30 / +30), and the swinging paw is carried
+  25 units wide of its track and back (`wide`);
+- the knees' bend poles turn to the side and a little back for the hind legs, so the knees do not meet between the legs (`pole`);
+- `world_ease` 0.5 lets the swinging paw leave and land at rest over the floor, which also keeps the tired walk's lift-off under 33 % slip;
+- the soles stood 5 to 21 units over the idle's floor (the rig's floor line is 3 to 5 units over where the source's idle rests): the new `sink` key of
+  `quadruped.py` (profile or gait row, units) stands them lower; the walk's lowest sole now reads 1 (idle -1).
+
+Leg-leg crossings now (all six leg pairs): walk 122, tired walk 155, run 98 (deepest 24 to 34 units); stance slip 6/10 % (walk), 9/35 % (tired),
+17/37 % (run) mean/max. Legs against the body already crossed in the idle (the body is built from overlapping blocks); they are a little denser per
+tick in the gaits now (102 against 72 triangle pairs a tick in the walk) because the hind legs stand wider. Test: `tools.test_suijinmon_gait`.
