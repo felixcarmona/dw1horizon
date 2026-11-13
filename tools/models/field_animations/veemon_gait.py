@@ -27,7 +27,7 @@ lean, the arms pumping in big arcs with the forearms driving, the head up, the t
 feet planted) breathes, shifts its weight from foot to foot, looks round with the head tilted, wags the tail in bursts,
 bounces on the spot with its fists up, pumps a fist and stretches both arms, each at its own moment in the loop.
 
-The battle slots 33, 35 and 36 share these clips (the idle, the walk and the run). The feet roll: the toes lift at touchdown, the heel
+The battle slots 35 and 36 share the walk and the run (slot 33 keeps the source game's own idle). The feet roll: the toes lift at touchdown, the heel
 rises at the push-off with the toes still planted, and the toes curl in the swing (the run's roll is the curl only). Veemon blinks:
 `veemon_face.py` stamps the eye frames into spare texels and every clip plays irregular texture-move blinks (a double one in the
 idle, slow heavy lids in the tired walk). Nothing else changes: the mesh and every other program are exact; the texture only gains
@@ -52,7 +52,7 @@ from tools.models.field_animations.quadruped import mul, tr, rot, set_rot  # noq
 
 SPECIES = 180
 SOURCE_TIM = '80fef9316ae20ba45cf13a3cb1e5652cd60dd7706bc54c89993332a5932b5469'     # the texture before the eye frames
-SOURCE = 'db9d7b42f0384f1fbb0fd008cacb0fff894b1b0f659de33d481ebaf6a81c110c'     # the imported base model
+SOURCE = '038ad56e88934b91ab040fbb24a03b918a21dc5d6fbeb217b08dd62755c05a61'     # the imported base model
 TAU = 2 * math.pi
 DEG = 4096 / 360
 PELVIS, CHEST, HEAD, JAW = 1, 2, 3, 4
@@ -86,7 +86,7 @@ def texture(tim):
     return out
 
 
-ALIASES = {33: 0, 35: 2, 36: 4}      # the battle idle, walk and run play the field clips
+ALIASES = {35: 2, 36: 4}      # the battle walk and run play the field clips (slot 33 keeps the source game's own idle: tools/models/battle_restore.py)
 
 
 def harm(phase, *terms):
@@ -377,7 +377,7 @@ for slot, spec in OTHER.items():
 
 
 def aliased(data, n):
-    """The model with its battle idle, walk and run (33, 35, 36) playing the field clips' programs."""
+    """The model with its battle walk and run (35, 36) playing the field clips' programs."""
     m = mmd.MMD.parse(data, n)
     for alias, slot in ALIASES.items():
         m.anims.table[alias] = m.anims.table[slot]
@@ -387,7 +387,7 @@ def aliased(data, n):
 
 
 def build(data, skeleton):
-    """The model with the four clips written on it (and the battle aliases made to share them) -> (bytes, report)."""
+    """The model with the four clips written on it -> (bytes, report)."""
     from tools.models.field_animations.reviewed import reviewed
     if reviewed(hashlib.sha256(data).hexdigest()) != SOURCE:
         raise ValueError("Veemon's gait requires the reviewed source")

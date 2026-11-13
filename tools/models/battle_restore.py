@@ -21,6 +21,14 @@ asked keeps its own length). Movement clips (35, 36) are resampled in time as th
 taken out, so the clip's own swing, timing and root travel are untouched): for an original whose torso or head sits far
 off the species' natural stance. `copy` makes a slot share another slot's clip (a species whose source game had no clip
 of its own for it).
+
+A restored clip is one more program in the resident model (the field idle used to serve as the battle idle), so a model
+near the resident limit (motionstorage, 100352 B) makes room with `compact(data, nb, tol, slots)`: every resident clip is
+encoded again from its own decoded ticks, kept only when smaller and decoded within `tol` units (1/4096 turn) of the
+original, same length, loop and events. Tolerance 0 is exact (the same ticks in fewer bytes); the species that needed more
+used 4-5 units (0.35-0.45 degrees) on clips other than the field slots 0-4 and the battle slots, which are never loosened. An idle that
+would be repeated to the field idle's length (`SLOT=TICKS`) can instead keep its own length (`SLOT` alone): the repeats do not
+fold (the clip's own loop uses the engine's one loop register), so the repeated clip costs several times the bytes.
 """
 import copy
 import json
@@ -101,6 +109,44 @@ def restore(b_data, a_data, nb, slots):
     out = model.build()
     motionstorage.require(out, nb)
     return out, report
+
+
+def compact(data, nb, tol=0, slots=None):
+    """B re-encoded where a clip gets smaller, the same animation: each resident clip of `slots` (default every slot
+    outside the cold ones, which are not resident) is encoded again from its decoded ticks with tolerance `tol` (units of
+    1/4096 turn; 0 is exact) and kept when it is smaller and decodes to the same ticks (within `tol`), loop and events.
+    -> (bytes, {slot: (old bytes, new bytes)})"""
+    import coldsplit
+    model = mmd.MMD.parse(data, nb)
+    cold = set(coldsplit.cold_set(model, coldsplit.COLD_SLOTS))
+    done, report = {}, {}
+    for slot, index in enumerate(list(model.anims.table)):
+        if index is None or slot in cold or (slots is not None and any(
+                s not in slots for s, i in enumerate(model.anims.table) if i == index)):
+            continue
+        if index in done:
+            continue
+        old = model.anims.anims[index]
+        try:
+            frames, loop, events = animsheet.slot_frames(model, nb, slot)
+            samples = [[[int(v) for v in bone] for bone in pose] for pose in frames]
+            new = mmd.encode_anim(samples, nb, loop, events, tol=tol, repeats=True)
+            if len(new.build()) >= len(old.build()):
+                done[index] = None
+                continue
+            model.anims.anims[index] = new
+            again, loop2, events2 = animsheet.slot_frames(model, nb, slot)
+            ok = len(again) == len(samples) and loop2 == loop and list(events2) == list(events) and all(
+                abs(int(x) - y) <= tol for pa, pb in zip(again, samples) for ba, bb in zip(pa, pb) for x, y in zip(ba, bb))
+        except (ValueError, TypeError, IndexError):
+            ok = False
+        if ok:
+            report[slot] = (len(old.build()), len(new.build()))
+            done[index] = new
+        else:
+            model.anims.anims[index] = old
+            done[index] = None
+    return model.build(), report
 
 
 def _mul(a, b):

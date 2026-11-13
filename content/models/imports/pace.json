@@ -846,9 +846,9 @@
   "name": "MetalGarurumon",
   "bones": 23,
   "skeleton_sha256": "9f02557f6d97eff22598f695be6b093f33e128c0574ba35b2871a8df4854a0a4",
-  "source_sha256": "40dc5354af4b00f3d2991db08be5b6835aa0fef8e40f258d6b76285116945aef",
+  "source_sha256": "8cbe945c684b3108f69f4161e4614a36bb3a20d30aef9dd4149dc03a8604422f",
   "base_generator": "tools.models.field_animations.metal_garurumon",
-  "post_source_sha256": "7fe4b09f9ad553743c632d9763a4ceb4a0fe4925eda56e8aae7eb0cb43d20a72",
+  "post_source_sha256": "fce9f4ff297b20fd3c7cab6fe3313b9f7a037069813cbfa719fa91fd6e5df185",
   "slots": {
    "3": {
     "from": 2,

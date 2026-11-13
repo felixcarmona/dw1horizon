@@ -4997,7 +4997,7 @@
     "skeleton_sha256": "1669f116ee2171d91e992fa98f9275f56a1dda3bed6eec1d392746b854e8297f",
     "donor": 320,
     "donor_species": 320,
-    "donor_sha256": "3b08396a8ac6f82b3ee0a143802f379cef7d06339418c9e920bb803d45b69958",
+    "donor_sha256": "7716a2a169a13e93a328a95e6f9ac357bfb7725d83c099ed7fbad05e606f1d2e",
     "scale": 1.4,
     "mesh_scale": 1.0,
     "bind_slot": 0,
@@ -5099,6 +5099,12 @@
       47,
       46
     ],
+    "extra_slots": {
+      "33": 0,
+      "35": 2,
+      "36": 4
+    },
+    "prune_unused": true,
     "species_patch": {
       "effect_origins": [
         [

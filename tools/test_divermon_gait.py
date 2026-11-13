@@ -24,7 +24,7 @@ from motiondiscidentity import changed_programs
 from tools.models.field_animations import divermon_face as face
 from tools.models.field_animations import divermon_gait as gait
 
-EXPECTED = 'd94a9e5d505df58a1d75cd0672b2754e06421c6b60530230bcd97585e99a6c5c'
+EXPECTED = 'd011916e654e61167c661338a370ab8bf93e69b7add0c9526fc0f7348f084348'
 EXPECTED_TIM = '8537831b18b55452cab7038f2da989c2a267ecf6d3129e34c745483d833236be'
 BONES = 26
 TICKS = {2: 32, 3: 36, 4: 24}              # two strides each: no two look alike
@@ -310,7 +310,7 @@ class DivermonGait(unittest.TestCase):
         return eyes, mouths
 
     def test_every_clip_blinks_and_moves_its_mouth_and_ends_as_it_began(self):
-        for slot in (0, *TICKS, 33, 35, 36):
+        for slot in (0, *TICKS, 35, 36):      # 33 is the source game's own battle idle (no face frames)
             eyes, mouths = self.states(slot)
             self.assertEqual((eyes[0], mouths[0]), ((0, face.OPEN), (0, face.REST)), slot)
             self.assertEqual((eyes[-1][1], mouths[-1][1]), (face.OPEN, face.REST), slot)
@@ -340,8 +340,10 @@ class DivermonGait(unittest.TestCase):
         self.assertEqual(sum(1 for _, k in self.states(4)[1] if k == face.WIDE), 2)
 
     def test_the_aliases_play_the_same_face(self):
-        for alias, slot in ((33, 0), (35, 2), (36, 4)):
+        for alias, slot in ((35, 2), (36, 4)):
             self.assertEqual(self.tex_moves(alias), self.tex_moves(slot))
+        # the battle idle is the source game's own clip (docs/reference/motion.md), not the field idle's twin
+        self.assertNotEqual(self.new.anims.table[33], self.new.anims.table[0])
 
     def test_the_face_frames_lie_in_texels_no_prim_samples(self):
         used = set()

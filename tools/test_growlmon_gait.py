@@ -26,7 +26,7 @@ from tools.test_tortomon_gait import inside, DIRS
 
 BONES = 25
 EXPECTED_TIM = '8a29b9530f7792e517ed57b80bfcdcc721916d4fcfa08cb5cd517237493f6fcb'   # the texture after it
-EXPECTED = '3b08396a8ac6f82b3ee0a143802f379cef7d06339418c9e920bb803d45b69958'        # the model after this change (the delta's target)
+EXPECTED = '7716a2a169a13e93a328a95e6f9ac357bfb7725d83c099ed7fbad05e606f1d2e'        # the model after this change (the delta's target)
 TICKS = {2: 32, 3: 44, 4: 28}               # each clip is two different cycles of 16, 22 and 14 ticks
 IDLE_TICKS = 96
 SPEED = {2: 16, 3: 11, 4: 36}
@@ -348,7 +348,7 @@ class GrowlmonGait(unittest.TestCase):
 
     def test_every_clip_blinks_cleanly_and_ends_as_it_began(self):
         counts = {}
-        for slot in (0, *TICKS, 33, 35, 36):
+        for slot in (0, *TICKS):      # 33, 35 and 36 are the source game's own battle clips (no eye frames)
             eyes = self.eyes(slot)
             total = len(self.frames(slot)) - 1
             self.assertEqual(eyes[0], (0, face.OPEN), slot)
@@ -386,9 +386,10 @@ class GrowlmonGait(unittest.TestCase):
                 out.append((start, t2 - start))
         return out
 
-    def test_the_aliases_play_the_same_eyes(self):
-        for alias, slot in ((33, 0), (35, 2), (36, 4)):
-            self.assertEqual(self.tex_moves(alias), self.tex_moves(slot))
+    def test_the_battle_slots_are_the_source_clips(self):
+        # 33, 35 and 36 are the source game's own battle idle and movements (docs/reference/motion.md), not field twins
+        for own, slot in ((33, 0), (35, 2), (36, 4)):
+            self.assertNotEqual(self.new.anims.table[own], self.new.anims.table[slot])
 
     def test_the_eye_frames_lie_in_texels_no_prim_samples(self):
         used = set()
