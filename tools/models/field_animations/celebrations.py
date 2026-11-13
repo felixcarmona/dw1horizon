@@ -105,7 +105,7 @@ def refine(data, skeleton, sid, row):
     model = mmd.MMD.parse(data, len(skeleton))
     model.type = sid
     n = len(skeleton)
-    idle = animsheet.slot_frames(model, n, 0x21)[0][0]
+    idle = animsheet.slot_frames(model, n, row.get('rest_slot', 0x21))[0][0]   # the pose every clip starts and ends on
     idle = [[round(v) for v in b] for b in idle]
     chains = row.get('legs', [])
     lower = set(row.get('lower', []))

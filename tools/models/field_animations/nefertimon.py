@@ -32,7 +32,7 @@ import motionstorage
 from motiondiscidentity import changed_programs
 
 SPECIES = 198
-SOURCE = '2b77a30040762b109ed6c079bfe33a055df6feed6afa91fca312cd2946ed0c70'
+SOURCE = '3b99a5f920b7dd4e473d2314ebad55c5b185d6687b4a3ab6884c8c1afa98cae9'
 PARENTS = [-1, 10, 1, 2, 1, 4, 5, 1, 7, 8, 0, 10, 11, 12, 10, 14, 15, 1, 1, 10, 19, 20, 21, 22]
 PELVIS, CHEST, NECK, HEAD = 10, 1, 2, 3
 WINGS = (17, 18)

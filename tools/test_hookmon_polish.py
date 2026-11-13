@@ -24,7 +24,7 @@ from motiondiscidentity import changed_programs
 from tools.models.field_animations import hookmon_polish as gait, quadruped, chibi
 from tools.test_tortomon_gait import inside, DIRS
 
-BASE = '5bac8bcf1a38625fc03ffd671055e8dab33c58a8566b748ade919fb751c6065a'
+BASE = '2e505cc51f018b53b0616f17f7591b244912e4485832e84a1a8f17836eb08773'
 BONES = 17
 TICKS = {0: 40, 2: 17, 3: 17, 4: 17}              # samples per clip, the closing one included
 FEET = {'RH': 11, 'LH': 15}                  # the ankles: the lowest part of a standing foot

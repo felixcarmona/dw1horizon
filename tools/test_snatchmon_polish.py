@@ -24,7 +24,7 @@ from motiondiscidentity import changed_programs
 from tools.models.field_animations import snatchmon_polish as gait, quadruped, chibi
 from tools.test_tortomon_gait import inside, DIRS
 
-BASE = '30d61fd8bdf51999278c90d484358dd1e324a97305da45734d9e6997566756e9'
+BASE = 'ca9d368b27056977ee749800b801c311bfba69b912ad0b1d9161caaa2bbe24e7'
 BONES = 23
 TICKS = {2: 17, 3: 17, 4: 17}              # samples per clip, the closing one included
 FEET = {'RH': 8, 'LH': 12}                  # the ankles: the lowest part of a standing foot

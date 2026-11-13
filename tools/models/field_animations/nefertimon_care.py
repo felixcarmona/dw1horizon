@@ -17,7 +17,7 @@ from motiondiscidentity import changed_programs
 from tools.models.field_animations.articulation import replace_channels
 from tools.models.field_animations.nefertimon import Rig, mul, rot, set_rot, smooth, standing, tr
 
-SOURCE = '2ba870428f8a785c952aedd93aede9bf25bacdb970db87c2c33a6ffa89fa5d1c'
+SOURCE = 'dc34a702a5fcc090f9df3766a6bbe12c09d98d71d25d6c04ffb46f874f83ac8e'
 IDLE_PHASE = 66
 SLEEP_CHANNELS = {(bone, channel) for bone in (4, 5, 6) for channel in (3, 4, 5)}
 

@@ -39,7 +39,7 @@ from tools.models.field_animations.meshclash import Clash  # noqa: E402
 from tools.models.field_animations.war_greymon import rotation  # noqa: E402
 
 SPECIES, NB = 315, 29
-SOURCE = '41438b5bf88267d514ef368d0f92429979e434d7df0e37fa5e1e6133c1822b62'   # the chibi overlay's output before this
+SOURCE = '50c899cad6939fa4d7c4dee234e1dbf133667c719ba8101df92d4822c6507e89'   # the chibi overlay's output before this
 TURNS = ROOT / 'content/models/imports/taomon-arms.json'
 SLOTS = (0, 2, 3, 4)                                     # slot 33 shares the idle's program
 ARMS = {'R': dict(bone=20, shoulder=19, parts=(20, 21, 22), sign=1), 'L': dict(bone=25, shoulder=24, parts=(25, 26, 27), sign=-1)}
