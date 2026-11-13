@@ -288,22 +288,6 @@ def prepare(model, skeleton):
     PROFILE['sole'][False] = list(pose[TOE_OF['RH']][6:9])
 
 
-def alias_idle(data, skeleton):
-    """Slot 33 played its own copy of the old idle: it plays the new one (slot 0's) and the copy is dropped."""
-    import motionstorage
-    n = len(skeleton)
-    model = mmd.MMD.parse(data, n)
-    table, anims = model.anims.table, model.anims.anims
-    old = table[33]
-    table[33] = table[0]
-    if old not in table:
-        del anims[old]
-        model.anims.table = [None if i is None else i - (i > old) for i in table]
-    result = model.build()
-    motionstorage.require(result, n)
-    return result
-
-
 def build(data, skeleton):
     """The reshaped model with the four clips written on it -> (bytes, proof): chibi's proof (its species patch reaches
     the record) with the clips' checks."""
@@ -321,7 +305,6 @@ def build(data, skeleton):
         result, gait = quadruped.build(reshaped, skeleton, profile)
     finally:
         exe.skeleton[SPECIES], exe.bone_count[SPECIES] = kept
-    result = alias_idle(result, skeleton)
     proof = dict(proof, preceding_recipe=dict(recipe='chibi', output_sha256=proof['output_sha256']),
                  output_sha256=gait['output_sha256'], gait=gait, resident_bytes=[gait['storage']['resident_bytes'],
                                                                                 gait['storage']['resident_limit']])

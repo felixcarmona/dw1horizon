@@ -17,7 +17,7 @@ from tools.models.field_animations.pace import _root_channels, _retimed_events
 
 PROFILE = dict(
     species=408, name='Suijinmon',
-    source='e05c6b25292ca5db0fd494d168f360c6dabd937ec5a3baa1886c05af8cf00668',
+    source='d22fecd28ed5c3c1b4a39007970e7f34f2040ddad3434159106cf3a4b4fefd96',
     parents=[-1,0,1,2,3,1,5,6,1,8,9,1,11,12,1,14,15,1,17,18,18,18,21,22,23,17,25,25,25,28,29,30],
     pelvis=1, chest=17, neck=None, head=17,
     legs={'RF':(11,12,13,1,True),'LF':(8,9,10,-1,True),

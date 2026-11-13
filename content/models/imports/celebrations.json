@@ -50,11 +50,12 @@
     "skeleton_sha256": "cdcf9a9d75bf20f1c5a7ef4d7cd6e98887207f9d2d44e99d8dc9a126286e5932"
   },
   "321": {
-    "source_sha256": "eacb25727644e86cd69c0ef6a54df72fe70e4e78117d7b292ca0f55d302891b9",
+    "source_sha256": "6354f3bf287ef98346b74e28c36c9bcf76fee0fb4da6f69ee51ae73042ea0e2d",
     "slots": [
       11,
       42
     ],
+    "rest_slot": 0,
     "pelvis": 1,
     "chest": 1,
     "head": 6,
@@ -1151,11 +1152,12 @@
     "skeleton_sha256": "6e8859cb94f07a6ebebb3b3586ee563cef024b2955a43b8fd1efe0bd9bfe53f4"
   },
   "312": {
-    "source_sha256": "2ae61d4f09301086f019478e553d68c3e5a2a72f5ba570f103fe6d052b18e6f1",
+    "source_sha256": "01e3dd5f8cba2013e537c31eca7b27bac0248bb77904d2edbdc6f4500d1bd48f",
     "slots": [
       11,
       42
     ],
+    "rest_slot": 0,
     "pelvis": 1,
     "chest": 1,
     "head": 7,
@@ -1272,11 +1274,12 @@
     "skeleton_sha256": "3cfc1dc2cf55aae907aac22a1f531a2a7ff39cb6bb8659a5b8255e06a07b3ddf"
   },
   "319": {
-    "source_sha256": "69964f03939d1ac6ab89cc9a62125dbfa61aa216eae22599cf15426195630ae1",
+    "source_sha256": "c7aa6ffba8b703e760eb61b5e0195979301a7d63e34e78a4afadcb4a62784c20",
     "slots": [
       11,
       42
     ],
+    "rest_slot": 0,
     "pelvis": 1,
     "chest": 1,
     "head": 5,

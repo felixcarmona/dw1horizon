@@ -43,7 +43,7 @@ from motiondiscidentity import changed_programs  # noqa: E402
 from tools.models.field_animations.quadruped import mul, tr, mv, add, sub, rot, set_rot, smooth, minimum_jerk  # noqa: E402
 
 SPECIES = 351
-SOURCE = '5b043a68ea1b12698d95ac1296030e80a4c2e8853c9f9d9f3c5d42f9be82fea1'
+SOURCE = '09dac5d84879187953ce3948863f218f00c7a5616a77a076fa4d969e042b94b1'
 TAU = 2 * math.pi
 DEG = 4096 / 360
 BONES = 24

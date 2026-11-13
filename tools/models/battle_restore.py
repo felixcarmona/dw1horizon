@@ -1,0 +1,190 @@
+#!/usr/bin/env python3
+"""Put the source game's own battle clips back into an imported species' model (developer tool).
+
+The battle slots 0x21 / 0x22 (battle idle, tired battle idle) and 0x23 / 0x24 (battle movement) of an imported species
+are the source game's own animations (the importer's output, `edit.py sources`). A reviewed model delta or a generator
+may have pointed them at the field clips (slots 0-4) instead; this takes the importer's clip back, for the slots asked,
+and leaves every other slot, the mesh, the skeleton and the texture byte for byte as they were.
+
+  tools/models/battle_restore.py restore B.MMD A.MMD BONES OUT.MMD SLOT[=TICKS] ...
+  tools/models/battle_restore.py pitch B.MMD BONES TYPE OUT.MMD SLOT BONE=DEGREES ...
+  tools/models/battle_restore.py copy B.MMD BONES TYPE OUT.MMD SLOT=FROM_SLOT
+
+B is the species' model (`edit.py get`), A the importer output of the same species, BONES the bone count, SLOT a slot
+number (33-36) and TICKS the length (frames, as `animsheet.slot_frames` counts them) the slot has in the final model:
+a clip of that length is copied unchanged; another length is retimed. Idles (33, 34) keep their own speed: the cycle
+repeats a whole number of times and the speed is scaled by the small remainder (a clip more than 1.5 times longer than
+asked keeps its own length). Movement clips (35, 36) are resampled in time as they are (the root's total travel stays).
+
+`pitch` leans bones of one slot's clip by a constant angle about the model's side axis (the parent chain's rotation is
+taken out, so the clip's own swing, timing and root travel are untouched): for an original whose torso or head sits far
+off the species' natural stance. `copy` makes a slot share another slot's clip (a species whose source game had no clip
+of its own for it).
+"""
+import copy
+import json
+import math
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path[:0] = [str(ROOT), str(ROOT / 'tools')]
+
+import animsheet  # noqa: E402
+import mmd  # noqa: E402
+import motioncyclelayer  # noqa: E402
+import motionstorage  # noqa: E402
+from motiontailspace import interpolate_pose  # noqa: E402
+
+IDLES, MOVES = (33, 34), (35, 36)
+MAX_SLOW = 1.5      # an idle longer than this many times the asked length keeps its own
+
+
+def _sample(frames, ticks, source_ticks):
+    """The pose of each tick 0..ticks of a clip of `source_ticks` ticks (frames), resampled."""
+    out = []
+    for t in range(ticks + 1):
+        i, rest = divmod(t * source_ticks * 4096 // ticks, 4096)
+        pose = list(map(list, frames[i])) if not rest else interpolate_pose(frames[i], frames[i + 1], rest)
+        out.append([[int(v) for v in bone] for bone in pose])
+    return out
+
+
+def retimed(frames, events, ticks, tile):
+    """(samples, events) of a clip of len(frames) - 1 ticks as a clip of `ticks` ticks, its cycle `tile` times."""
+    n = len(frames) - 1
+    if tile > 1:
+        frames = [f for _ in range(tile) for f in frames[:-1]] + [frames[-1]]
+        events = [(k + i * n, kind, c) for i in range(tile) for k, kind, c in events]
+        n *= tile
+        ticks = tile * max(1, round(ticks / tile))     # whole cycles of equal length: the encoder folds repeats
+    samples = _sample(frames, ticks, n)
+    events = [(min(ticks - 1, k * ticks // n), kind, c) for k, kind, c in events]
+    return samples, events
+
+
+def plan(slot, a_ticks, want):
+    """(frames count, cycles) the restored clip of `slot` gets for a final clip of `want` frames (None: its own length)."""
+    if want is None or want == a_ticks:
+        return a_ticks, 1
+    if slot in IDLES:
+        tile = max(1, round((want - 1) / (a_ticks - 1)))
+        if (a_ticks - 1) * tile > MAX_SLOW * (want - 1):
+            return a_ticks, 1
+        return want, tile
+    return want, 1
+
+
+def restore(b_data, a_data, nb, slots):
+    """B with the importer's clip of each slot in `slots` ({slot: asked frames or None}) -> (bytes, {slot: report})."""
+    model = mmd.MMD.parse(b_data, nb)
+    source = mmd.MMD.parse(a_data, nb)
+    report = {}
+    for slot, want in sorted(slots.items()):
+        clip = source.anims.anims[source.anims.table[slot]]
+        frames, loop, events = animsheet.slot_frames(source, nb, slot)
+        count, tile = plan(slot, len(frames), want)
+        if count == len(frames):
+            clip = copy.deepcopy(clip)
+            report[slot] = dict(frames=count, source_frames=len(frames), copied=True)
+        else:
+            if loop != 0:
+                raise ValueError(f'slot {slot}: a clip that does not loop from its start cannot be retimed')
+            samples, events = retimed(frames, events, count - 1, tile)
+            clip = mmd.encode_anim(samples, nb, 0, events, tol=1, repeats=tile > 1)
+            report[slot] = dict(frames=len(samples), source_frames=len(frames), cycles=tile, copied=False)
+        model.anims.table[slot] = len(model.anims.anims)
+        model.anims.anims.append(clip)
+    model.anims.anims, model.anims.table = motioncyclelayer.share_identical_streams(model.anims.anims, model.anims.table)
+    out = model.build()
+    motionstorage.require(out, nb)
+    return out, report
+
+
+def _mul(a, b):
+    return [[sum(a[i][k] * b[k][j] for k in range(3)) for j in range(3)] for i in range(3)]
+
+
+def _tr(a):
+    return [[a[j][i] for j in range(3)] for i in range(3)]
+
+
+def pitched(frames, skeleton, lean):
+    """`frames` (poses per tick) with each bone of `lean` ({bone: degrees}, positive: the bone's forward axis dips) pitched
+    about the model's side axis by that angle in every pose; children follow."""
+    out = []
+    for pose in frames:
+        pose = [list(v) for v in pose]
+        world = {}
+
+        def chain(b):               # the pure rotation of a bone's parent, as the pose has it (original angles)
+            if b < 0:
+                return [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+            if b not in world:
+                world[b] = _mul(chain(skeleton[b][1]), mmd.rot_matrix(*orig[b][3:6]))
+            return world[b]
+        orig = [list(v) for v in pose]
+        for b, deg in lean.items():
+            k = -math.radians(deg)
+            c, s = math.cos(k), math.sin(k)
+            pitch = [[1, 0, 0], [0, c, -s], [0, s, c]]
+            parent = chain(skeleton[b][1])
+            local = mmd.rot_matrix(*orig[b][3:6])
+            new = _mul(_tr(parent), _mul(pitch, _mul(parent, local)))
+            pose[b][3:6] = [int(round(v)) for v in mmd.matrix_euler(new, prev=orig[b][3:6])]
+        out.append(pose)
+    return out
+
+
+def pitch(b_data, nb, slot, lean, type_id):
+    """B (a species `type_id`, registered with mmd.exe()) with the clip of `slot` leaned ({bone: degrees}) -> bytes."""
+    model = mmd.MMD.parse(b_data, nb)
+    frames, loop, events = animsheet.slot_frames(model, nb, slot)
+    if loop != 0:
+        raise ValueError(f'slot {slot}: a clip that does not loop from its start cannot be leaned')
+    samples = pitched(frames, mmd.exe().skeleton[type_id], lean)
+    clip = mmd.encode_anim(samples, nb, 0, events, tol=1, repeats=False)
+    model.anims.table[slot] = len(model.anims.anims)
+    model.anims.anims.append(clip)
+    model.anims.anims, model.anims.table = motioncyclelayer.share_identical_streams(model.anims.anims, model.anims.table)
+    out = model.build()
+    motionstorage.require(out, nb)
+    return out
+
+
+def copy_slot(b_data, nb, slot, source):
+    """B with `slot` sharing the clip of `source` -> bytes."""
+    model = mmd.MMD.parse(b_data, nb)
+    model.anims.table[slot] = model.anims.table[source]
+    out = model.build()
+    motionstorage.require(out, nb)
+    return out
+
+
+def main():
+    if len(sys.argv) >= 7 and sys.argv[1] in ('pitch', 'copy'):
+        cmd, b, nb, kind, out, slot = sys.argv[1:7]
+        data = Path(b).read_bytes()
+        if cmd == 'copy':
+            slot, _, source = slot.partition('=')
+            Path(out).write_bytes(copy_slot(data, int(nb), int(slot), int(source)))
+        else:
+            species = json.loads(next((ROOT / 'content/species').glob(f'{int(kind)}-*.json')).read_text())
+            mmd.exe().add_type(int(kind), species['model']['skeleton'], name=species['name'])
+            lean = {int(k): float(v) for k, _, v in (x.partition('=') for x in sys.argv[7:])}
+            Path(out).write_bytes(pitch(data, int(nb), int(slot), lean, int(kind)))
+        return
+    if len(sys.argv) < 7 or sys.argv[1] != 'restore':
+        raise SystemExit(__doc__)
+    b, a, nb, out = sys.argv[2:6]
+    slots = {}
+    for item in sys.argv[6:]:
+        slot, _, ticks = item.partition('=')
+        slots[int(slot)] = int(ticks) if ticks else None
+    data, report = restore(Path(b).read_bytes(), Path(a).read_bytes(), int(nb), slots)
+    Path(out).write_bytes(data)
+    print(report)
+
+
+if __name__ == '__main__':
+    main()
