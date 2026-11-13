@@ -32,6 +32,8 @@ under-the-floor and sliding-sole bounds for a rig whose leg plates cannot stay b
 
 Each clip is rewritten where it is stored, so its battle aliases play it too. Footsteps keep the species' own
 sound (bank and note) and land on touchdowns; the clip keeps the eye state (texture events) its source opens with.
+A profile's `sink` (units, default 0; a gait row may override it) stands every sole that far under the rig's floor line, for a source whose own idle
+rests below it (Suijinmon's idle sits 3 to 5 units under).
 The build refuses another source, a mesh point under the floor at a tick or a 60 fps third, a sole that slides in
 stance, an open loop, a speed outside the native range, another changed program or the storage budget.
 """
@@ -140,6 +142,7 @@ class Rig:
         # `scale` (profile): the uniform size the rest pose gives the body bone and everything under it (an imported
         # model sized by its idle). Rotations are read with it divided out, link offsets and soles multiplied in.
         self.S = profile.get('scale', 1.0)
+        self.sink = profile.get('sink', 0.0)
         self.verts = {b: [[x * self.S for x in v[:3]] for v in model.tmd.obj_verts(o)] for b, (o, _) in enumerate(skeleton) if o >= 0}
         # A profile's `claws` ({foot bone: claws bone}) puts the claws' points (a bone that stays at its rest turn under the foot)
         # into the foot's own, so the floor stands under the claws and not under the foot's sole plate (Maildramon).
@@ -315,7 +318,7 @@ def standing(rig, name, track, z, world):
     """The wrist (hock) of a paw whose sole pivot stands at z on the floor, at a world rotation."""
     paw, front = rig.p['legs'][name][2], rig.p['legs'][name][4]
     wrist = sub([track, 0.0, z], mv(world, rig.sole(front)))
-    wrist[1] = -rig.p['clear'] - rig.lowest(paw, world, [0, 0, 0])
+    wrist[1] = -rig.p['clear'] - rig.lowest(paw, world, [0, 0, 0]) + rig.sink
     return wrist
 
 
@@ -392,6 +395,7 @@ def body(rig, cfg, phase, pose, hist):
 def gait(rig, cfg):
     p = rig.p
     ticks, speed = cfg['ticks'], cfg['speed']
+    rig.sink = cfg.get('sink', p.get('sink', 0.0))      # a gait row may stand its soles deeper or shallower than the profile
     rest = rig.rest
     W = rig.still
     centres, tracks = {}, {}
