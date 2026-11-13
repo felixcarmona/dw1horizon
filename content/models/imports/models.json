@@ -149,7 +149,7 @@
  "330": {"model": "330-Minotarumon.MMD", "aliases_applied": true, "field_overlay": "minotarumon-native"},
  "331": {"model": "331-Snatchmon.MMD", "aliases_applied": true, "field_overlay": "snatchmon-chibi"},
  "332": {"model": "332-Roachmon.MMD", "aliases_applied": true, "technique_aliases": {"Bug": "Insect Plague", "Big Poop Toss": "Poop Rnd Toss", "Megaton Punch": "Dynamite Kick (44)"}},
- "333": {"model": "333-Raijinmon.MMD", "aliases_applied": true, "field_overlay": "raijinmon-celebration", "technique_timing": {"Megaton Punch": {"source": "Power Crane", "source_sha256": "bfd89b1fd5c0de4d01d08aa242ab4f2c5b3bcbfa64149ee38602043c933f398d", "samples": [[0, 0], [11, 35], [14, 38], [60, 60]]}}},
+ "333": {"model": "333-Raijinmon.MMD", "aliases_applied": true, "field_overlay": "raijinmon-native", "native_animation_donor": 34},
  "334": {"model": "334-Mummymon.MMD", "aliases_applied": true, "field_overlay": "mummymon-chibi"},
  "335": {"model": "335-MegaGargomon.MMD", "field_overlay": "megagargomon-equipment"},
  "336": {"model": "336-Raidenmon.MMD", "aliases_applied": true},

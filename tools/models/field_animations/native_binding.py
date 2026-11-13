@@ -350,6 +350,10 @@ def bind(data, skeleton, recipe, placements=None):
                            speeds=report['speeds'], floors=report['floors'])
     if recipe.get('gait'):
         # the legs planted on the floor under the donor's own trunk, wings and tail, written over the final (chibi) shape
+
+    gait_proof = None
+    if recipe.get('gait'):
+        # the legs planted on the floor under the donor's own trunk and arms, written over the final shape
         gait = importlib.import_module(f"tools.models.field_animations.{recipe['gait']}")
         output, gait_proof = gait.build(output, rig)
     if spin:
@@ -361,6 +365,8 @@ def bind(data, skeleton, recipe, placements=None):
     if chibi_proof:
         proof['chibi'] = chibi_proof
     if recipe.get('gait'):
+
+    if gait_proof:
         proof['gait'] = gait_proof['checks']
     return output, proof
 

@@ -1205,3 +1205,11 @@ against chest, chest roll and shift over the stance foot, hands against the legs
 and two eased cycles per clip, with a happy hop in one cycle, a stumble wobble in the other and a yawn in the tired walk. The idle (96 ticks, import legs kept) breathes, looks round, flicks an ear, wags the tail and waves a paw. Walk 20 ticks at 16 units, tired walk 28 at 10, run 16 at 36; resident buffer 81,800 of 100,352
 bytes. Regenerate with `edit.py get 353`, `python3 -m tools.models.field_animations.bearmon_gait --source BEFORE.MMD --out AFTER.MMD`
 and `edit.py put 353 AFTER.MMD`; `tools/test_bearmon_gait.py` covers it.
+
+
+Species 333 (Raijinmon): a native binding (Ogremon donor) whose recipe asks for the stage `field_animations/raijinmon_gait.py`
+(`"gait": "raijinmon_gait"` in `content/models/imports/native-bindings.json`), which writes slots 0, 2, 3 and 4 again with planted legs
+under the donor's own trunk and arms (`quadruped.py`). It runs in the build; offline:
+`python -m tools.models.field_animations.raijinmon_gait --source BOUND.MMD --rig 333-report.json --out OUT.MMD`. After changing it,
+`edit.py check 333 --species-pins` prints the new provider pin for `tools/derive/recipes/species-pins.json`. Test: `tools.test_raijinmon_gait`
+(`RAIJINMON_MODELS`).
