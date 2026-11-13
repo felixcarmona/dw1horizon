@@ -186,6 +186,182 @@ def angemon(r):
     assert r.npc(0) is not None
     return dict(keeper=keeper)
 
+def tamer_at(r):
+    x, _, z = r.e.peek('TAMER_POSITION_DATA+0x78', '3i')
+    return x, z
+
+
+def walk_until(r, button, done, seconds=14):
+    """Hold a pad direction until done() holds (the tamer really walks into the trigger band)."""
+    e = r.e
+    e.api(f'/api/v1/lua/press?button={button}')
+    try:
+        end = time.monotonic() + seconds
+        while time.monotonic() < end:
+            if done(): return True
+            e.wait(.1)
+        return False
+    finally:
+        e.api(f'/api/v1/lua/release?button={button}')
+
+
+def cross_band(r, screen, x, z, button='UP', seconds=14, beyond=400):
+    """Place the tamer in front of a trigger band and walk in. 'fired' when a scene took over (a script waiting over 1.5 s) or the screen changed,
+    'passed' when the tamer walked on beyond the band untouched, else 'stuck'."""
+    e = r.e
+    e.gs('move', str(x), str(z)); e.wait(.5)
+    busy = []
+    def outcome():
+        ram = e.ram()
+        if e.peek('CURRENT_SCREEN', 'h', ram) != screen: return 'fired'
+        if e.peek('IS_SCRIPT_PAUSED', 'i', ram) != 1:     # a handler runs: a box that waits for a button is a scene
+            busy.append(time.monotonic())
+            if time.monotonic() - busy[0] > 1.5: return 'fired'
+        else:
+            busy.clear()
+        return 'passed' if tamer_at(r)[1] > beyond else None
+    got = []
+    walk_until(r, button, lambda: bool(got.append(outcome()) or got[-1]), seconds)
+    r.last = dict(screen=e.peek('CURRENT_SCREEN', 'h'), state=e.peek('GAME_STATE', 'H'), at=tamer_at(r))
+    return got[-1] or 'stuck'
+
+
+def answer_no(r, slot=0, deadline=90):
+    """Talk to an NPC and take the second option of its question (DOWN, then the confirm button), until the box closes."""
+    e = r.e
+    e.poke('TALKED_TO_ENTITY', bytes([5 + slot]))
+    call_section(e, e.peek('CURRENT_SCRIPT_ID', 'H'), 5 + slot)
+    e.wait(1.5)
+    end = time.monotonic() + deadline
+    while time.monotonic() < end:
+        if r.flag('vault_kept'): break
+        if e.peek('GAME_STATE', 'H') != 1: e.press('DOWN', 4); e.press('CONFIRM', 6)
+        e.wait(.4)
+    assert r.flag('vault_kept'), 'the Wall of Hearts never recorded the answer'
+    r.settle(310)
+    e.poke('TALKED_TO_ENTITY', bytes([0]))
+
+
+MAP_FILES = {97: 'ICSA01', 98: 'ICSA02', 99: 'ICSA03', 100: 'ICSA04', 101: 'ICSA05', 102: 'ICSA06', 103: 'ICSA07'}
+
+
+def trigger_centre(screen, section):
+    """The centre of a step-trigger band of a screen's map (collision value = the section number)."""
+    from maps import reach
+    import dwmap, glob
+    m = dwmap.MapFile(open(glob.glob(str(ROOT / f'extracted/MAP/*/{MAP_FILES[screen]}.MAP'))[0], 'rb').read())
+    tiles = [(i % 100, i // 100) for i, v in enumerate(m.collision) if v & 0x7f == section and not v & 0x80]
+    c = sum(t[0] for t in tiles) / len(tiles); rw = sum(t[1] for t in tiles) / len(tiles)
+    return m, round((c - 50) * 100 + 50), round((49 - rw) * 100 - 50 + 100)
+
+
+def route_to(m, start, goal, avoid=()):
+    """Waypoints over the map's walkable lattice (50 units) from start to goal."""
+    from maps import reach
+    from collections import deque
+    snap = lambda p: (round(p[0] / 50) * 50, round(p[1] / 50) * 50)
+    free = reach.reach(m, [snap(start)], step=50, seed_policy='spawn_coordinates')
+    from maps import reach as rr
+    near = lambda p, v: any(m.collision[rr.row(p[1] + dz) * 100 + rr.col(p[0] + dx)] & 0x7f == v
+                            for dx in (0,) for dz in (0,))
+    free = {p for p in free if not any(near(p, v) for v in avoid)} | {snap(start)}   # other bands lead elsewhere
+    s = snap(start)
+    prev = {s: None}; q = deque([s])
+    while q:
+        p = q.popleft()
+        for d in ((50, 0), (-50, 0), (0, 50), (0, -50)):
+            n = (p[0] + d[0], p[1] + d[1])
+            if n in free and n not in prev: prev[n] = p; q.append(n)
+    g = min(prev, key=lambda p: (p[0] - goal[0]) ** 2 + (p[1] - goal[1]) ** 2)
+    path = []
+    while g: path.append(g); g = prev[g]
+    path.reverse()
+    return path[4::4] + [path[-1]]
+
+
+def steer_to(r, goal, until, seconds=40, reach_dist=90):
+    """Walk to a point by pad: the camera is turned a quarter, so UP is (-x, +z) and RIGHT is (+x, +z)."""
+    e = r.e; held = set()
+    def hold(want):
+        for b in held - want: e.api(f'/api/v1/lua/release?button={b}')
+        for b in want - held: e.api(f'/api/v1/lua/press?button={b}')
+        held.clear(); held.update(want)
+    end = time.monotonic() + seconds
+    try:
+        while time.monotonic() < end:
+            if until(): return True
+            x, z = tamer_at(r); dx, dz = goal[0] - x, goal[1] - z
+            up, right = (-dx + dz) / 2 ** .5, (dx + dz) / 2 ** .5
+            if dx * dx + dz * dz < reach_dist ** 2: return until()
+            want = set()
+            if up > 60: want.add('UP')
+            if up < -60: want.add('DOWN')
+            if right > 60: want.add('RIGHT')
+            if right < -60: want.add('LEFT')
+            hold(want); e.wait(.1)
+        return False
+    finally:
+        hold(set())
+
+
+def walk_route(r, screen, section, onward, name):
+    """Walk from where the tamer stands on `screen` to its step band `section`; True when `onward` is the new screen."""
+    m, gx, gz = trigger_centre(screen, section)
+    path = route_to(m, tamer_at(r), (gx, gz), avoid=[v for v in range(51, 56) if v != section])
+    # Arrival points stand beside the band that leads back: place the tamer a few steps before the wanted band.
+    first = next(i for i, p in enumerate(path) if (p[0] - gx) ** 2 + (p[1] - gz) ** 2 <= 600 ** 2)
+    r.e.gs('move', str(path[first][0]), str(path[first][1])); r.e.wait(.5)
+    for goal in path[first:]:
+        if steer_to(r, goal, lambda: r.e.peek('CURRENT_SCREEN', 'h') != screen): break
+    try:
+        r.settle(onward)
+    except AssertionError:
+        r.last = dict(screen=r.e.peek('CURRENT_SCREEN', 'h'), script=r.e.peek('CURRENT_SCRIPT_ID', 'H'), at=tamer_at(r), goal=(gx, gz))
+        return False
+    return True
+
+
+def vault_passage(r):
+    """The Ice Sanctuary stays reachable after Angemon joins (PR 424): the statue room's band (97, step 1) offers the way
+    down once, the melted wall once, and the walk on to 98, 101 and the rest is never taken from the tamer."""
+    BAND = (0, 0)                      # z 100..300 is the band (tiles 47-48); the step-0 door to 98 stands at z 1000..1300
+    r.set(root3=False, vault_kept=False, thaw_told=False, angemon_voice_heard=True, angemon_pedestal_raised=True)
+    r.e.gs('trigger', '324', '1'); r.recruit(Angemon=True)
+    # (a) the unanswered offer descends once...
+    r.go(97); r.shot('vault-97-first')
+    assert cross_band(r, 97, *BAND) == 'fired', 'the unanswered offer did not come'
+    r.advance(lambda: r.e.peek('CURRENT_SCREEN', 'h') == 310, name='down to the wall')
+    r.settle(310); r.shot('vault-310')
+    assert r.npc(0) is not None
+    # ...and "Come to the city" answers it.
+    answer_no(r)
+    assert not r.flag('root3') and r.recruited('Angemon')
+    r.go(97)
+    assert cross_band(r, 97, *BAND) == 'passed', ('the band took over after the answer', r.last)
+    assert r.e.peek('CURRENT_SCREEN', 'h') == 97, tamer_at(r)
+    r.shot('vault-97-past-band')
+    # (b) "Stay": the first crossing shows the melted wall once, the next one does not.
+    r.set(root3=True, thaw_told=False); r.recruit(Angemon=False)
+    r.go(97)
+    assert cross_band(r, 97, *BAND) == 'fired', 'the thaw crossing did not come'
+    r.advance(lambda: r.e.peek('CURRENT_SCREEN', 'h') == 311, name='to the melted wall')
+    r.settle(311); r.shot('vault-311')
+    assert r.flag('thaw_told'), 'the thaw was not told'
+    r.go(97)
+    assert cross_band(r, 97, *BAND) == 'passed', 'the band took over again after the thaw'
+    assert r.e.peek('CURRENT_SCREEN', 'h') == 97
+    # (c) on from 97: door to 98 (step 0, tiles 48-51 x 37-39), then 103, 100, 101 (BlueMeramon) and 102.
+    route = [97]
+    r.e.gs('move', '500', '700'); r.e.wait(.5)   # UP walks up-left on this camera
+    assert walk_until(r, 'UP', lambda: r.e.peek('CURRENT_SCREEN', 'h') == 98), ('no way from 97 to 98', tamer_at(r))
+    r.settle(98); r.shot('vault-98'); route.append(98)
+    # 98 -> 103 (step 2) -> 100 (step 2) -> 101 (step 1, BlueMeramon's screen) -> 102 (step 4)
+    for screen, section, onward in ((98, 53, 103), (103, 53, 100), (100, 52, 101), (101, 55, 102)):
+        assert walk_route(r, screen, section, onward, f'{screen}-{onward}'), ('no way on', screen, onward, r.last)
+        r.settle(onward); r.shot(f'vault-{onward}'); route.append(onward)
+        if onward == 101: bluemeramon = [r.npc(i) for i in range(4)]
+    return dict(route=route, screen101_npcs=bluemeramon)
+
 
 def monzaemon(r):
     r.set(toy_tale_heard=False, gear_for_andromon=True, gear_offered=True, m3_archive=False, island_history_read=True,
@@ -366,7 +542,7 @@ def old_saves(r):
     return result
 
 
-CASES = dict(skullgreymon=skullgreymon, lab_corridor=lab_corridor, angemon=angemon, monzaemon=monzaemon, gear_old_save=gear_old_save,
+CASES = dict(skullgreymon=skullgreymon, lab_corridor=lab_corridor, angemon=angemon, vault_passage=vault_passage, monzaemon=monzaemon, gear_old_save=gear_old_save,
              post=post, factory=factory, motor=motor, devimon=devimon, postgame=postgame, lobby_postgame=lobby_postgame,
              old_saves=old_saves)
 
