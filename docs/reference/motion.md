@@ -1498,3 +1498,10 @@ and eased; the legs come from `quadruped.py` (a biped: two planted soles on a na
 (mean / worst % of the body's travel): walk 2.5 / 24, tired 2.3 / 9, run 5.6 / 43; the largest step between ticks 1.9 times the median (idle 2.4,
 run 2.4); the resident buffer is 85.8 KB of 100352 B. The technique and care slots are the donor's; the old Megaton Punch timing pin on
 the retired Power Crane clip is gone. The test is `tools.test_raijinmon_gait` (`RAIJINMON_MODELS`).
+
+Yukimibotamon 472 (a hand-made baby on Botamon's rig, donor 1) played Botamon's own clips, which lunge hard (squash 30 %, 60-unit jumps,
+stance slip up to 360 % of the body's travel) and flatten the wide body like paper. `field_animations/yukimibotamon_calm.py` writes slots 0, 2,
+3 and 4 again, like Nyokimon's: a 96-tick idle (two breaths, slow looks to each side, three blinks: the half-closed lid frame, four ticks of the closed-eye frame, the lid again; walk has one, tired two slow ones, run one), a walk of two 22-tick hops at 17 units per tick (11 high), a tired walk of two 30-tick hops at 11 (4 high, leaning forward, half-closed
+eyes) and a run of three 16-tick hops at 38 (18 high). The squash stays within 0.84 to 1.08, the body stays where it lands while it is down and
+its lowest point is solved to the floor every tick. The test is `tools.test_yukimibotamon_calm`.
+The open mouth frames (small, mid, wide) are one rounded mouth with its cavity and tongue, no omega lobes, because the mouth window is copied whole over the closed omega mouth; a lobe left in an open frame read as two mouths (`test_an_open_mouth_replaces_the_closed_one`).

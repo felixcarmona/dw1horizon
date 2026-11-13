@@ -50,14 +50,14 @@
    "donor_texture_sha256": "b0ad57afaae2242db397e88cf1027cf04210038101977803985621d3bb322a87",
    "mmd": {
     "delta": "content/modeldelta/babies/472-YukimiBotamon.MMD.mdelta",
-    "delta_sha256": "f6b7124b4b9fe79715165f06d86b1a64c76b1d9eed5e588736e2ba5deef2408a",
-    "sha256": "ebd2e628f27d4cf510084ee5b8a2cb129f06c53f581e90083e90676526a28614",
-    "size": 25252
+    "delta_sha256": "6e44c8d52f0cfa09df084aa2eefcb811f4bf7e1438e5ad6e9c362efb8ef12ddd",
+    "sha256": "fe510894bbff3f7f71427e572ba8469d49af00bade0d10c29207aaaeb5d47841",
+    "size": 29964
    },
    "tim": {
     "delta": "content/modeldelta/babies/472-YukimiBotamon.TIM.mdelta",
-    "delta_sha256": "d392bae6a72e831af1674ab42ec30f09c89bd2022579b7d7865ec507e0203e55",
-    "sha256": "1c4260d9d0b4645ca490ea039b92d1ed15b9e24ceaee2c14587dfe94f4b1d84c",
+    "delta_sha256": "113b05a75bee5b8d790a303b30d168d56c5b1c60aac9e955d720047f3d389112",
+    "sha256": "69cc5c0d0973ed56ff53c9549c775e33629cbf944db2430b22774897d835e48e",
     "size": 18432
    }
   },
