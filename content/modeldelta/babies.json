@@ -30,9 +30,9 @@
    "donor_texture_sha256": "360d8fbf34889e08c86c9cba288b93420bcd79d66e4dbc30bba3d929c3ab7f51",
    "mmd": {
     "delta": "content/modeldelta/babies/471-Pichimon.MMD.mdelta",
-    "delta_sha256": "4ca4479014dbdd343b45863a7fd7cd8c786f3f54d16d636e5ec04370b83f80c1",
-    "sha256": "9e152c9f2e9a83718365f39da647dce3fd1f376826c42e2efe29d50d3b538776",
-    "size": 43184
+    "delta_sha256": "9e25dac1fc4d514b1b2fcf88a04d3b69f50f68a09e116e4c3f89863e10a84aa7",
+    "sha256": "80839e6e01d233a5ddf32937a9f737e419826e92fb6945e13984faa6966375b2",
+    "size": 55852
    },
    "tim": {
     "delta": "content/modeldelta/babies/471-Pichimon.TIM.mdelta",

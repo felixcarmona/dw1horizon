@@ -86,6 +86,9 @@ class Registry(unittest.TestCase):
                 self.assertEqual(data[:5], modeldelta.MAGIC + b'\0')
 
 
+CALM_CLIPS[471] = (0, 2, 3, 4)          # Pichimon's four field clips (field_animations/pichimon_hop.py)
+
+
 @unittest.skipUnless((ROOT / 'extracted/CHDAT/MMD0/KORO.MMD').exists(), 'needs the player extraction')
 class Replay(unittest.TestCase):
     @classmethod

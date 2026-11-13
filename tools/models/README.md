@@ -138,6 +138,15 @@ and the wing spikes trail (the chibi clips played the idle's own 74-tick loop on
 and wing spikes still). The idle (slot 0, also 33) is the chibi build's. Bound in `content/models/imports/species.py`; test
 `tools.test_kyukimon_gait` (`KYUKIMON_MODEL`, from `edit.py get 322`; the test applies the species' slot aliases like the build).
 
+Pichimon (471) also plays its own clips: `field_animations/pichimon_hop.py` replaces Koromon's slots 0, 2, 3 and 4 (a lunge
+every 18 ticks, the tired clip as fast as the walk) with a 96-tick idle (two slow breaths, slow looks, three blinks), a walk of
+two soft hops of 22 ticks at 16 units a tick, a tired walk of two low hops of 30 ticks at 11 and a run of three hops of 16
+ticks at 38, with the body planted while it is down and its lowest point solved on the floor every tick, a blink, and
+the two little arms moving: the fin quads are moved onto the empty feeler-tip objects (rest pose unchanged) and driven by a spring. It is stored in the
+plain delta (`--source` is the model before the change; `python3 -m tools.models.field_animations.pichimon_hop SRC OUT`, then
+`python3 -m tools.models.babies encode 471 OUT.MMD TIM`); check with
+`PYTHONPATH=tools python3 -W ignore -m unittest tools.test_pichimon_hop`.
+
 Species 334 (Mummymon): `field_animations/mummymon_gait.py` is a field overlay of the same kind: after the chibi proportions it
 rewrites slots 2, 3 and 4 (the idle is the chibi's own: it does not slide) with `quadruped.py` on its two hind legs, the soles pivoting
 at the ball of the foot: a walk, tired walk and run of two cycles each (30, 40 and 28 ticks) at 16, 11 and 38 units a tick, eased one into the other,
