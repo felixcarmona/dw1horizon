@@ -4959,9 +4959,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/404-BlackWarGreymon.MMD.mdelta",
-        "delta_sha256": "f804834df2473c172bbc45887512699f6ed90deaf215d59872f1b7a49b417ba4",
-        "sha256": "1249018ca534b6c44398b6b4ee88c1210d343157dee1ae8fbd2fb07d3bab5be2",
-        "size": 101574
+        "delta_sha256": "8c7a9200e7848dbbe285b71241afc76fca18c463913e2af52649ddcda4995d55",
+        "sha256": "1ac73e5ff7de588830efb61d2a2fb8bd5246fc022d64012f0dcb1e396521db4d",
+        "size": 104592
       },
       "tim": {
         "sources": [
