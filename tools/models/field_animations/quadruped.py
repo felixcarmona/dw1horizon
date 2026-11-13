@@ -596,7 +596,7 @@ def build(data, skeleton, profile):
                 events.append((tick, 'sound', dict(sound, frame=tick + 1)))
         events.sort(key=lambda e: e[0])
         frames = [[[round(x) for x in bone] for bone in pose] for pose in frames]
-        animation = mmd.encode_anim(frames, n, loop_sample=0, events=events, tol=1)
+        animation = mmd.encode_anim(frames, n, loop_sample=0, events=events, tol=profile.get('tol', 1))
         index = old.anims.table[slot]
         new.anims.anims[index] = animation          # in place: the slot's aliases play it too
         changed |= {s for s, i in enumerate(old.anims.table) if i == index}
