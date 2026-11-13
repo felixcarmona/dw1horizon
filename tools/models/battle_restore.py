@@ -12,7 +12,8 @@ and leaves every other slot, the mesh, the skeleton and the texture byte for byt
 
 B is the species' model (`edit.py get`), A the importer output of the same species, BONES the bone count, SLOT a slot
 number (33-36) and TICKS the length (frames, as `animsheet.slot_frames` counts them) the slot has in the final model:
-a clip of that length is copied unchanged; another length is retimed. Idles (33, 34) keep their own speed: the cycle
+a clip of that length is copied unchanged; another length is retimed (a one-shot clip, such as a victory or a
+technique, stays one-shot). Idles (33, 34) keep their own speed: the cycle
 repeats a whole number of times and the speed is scaled by the small remainder (a clip more than 1.5 times longer than
 asked keeps its own length). Movement clips (35, 36) are resampled in time as they are (the root's total travel stays).
 
@@ -88,10 +89,11 @@ def restore(b_data, a_data, nb, slots):
             clip = copy.deepcopy(clip)
             report[slot] = dict(frames=count, source_frames=len(frames), copied=True)
         else:
-            if loop != 0:
-                raise ValueError(f'slot {slot}: a clip that does not loop from its start cannot be retimed')
+            if loop not in (0, None):
+                raise ValueError(f'slot {slot}: a clip that loops from the middle cannot be retimed')
             samples, events = retimed(frames, events, count - 1, tile)
-            clip = mmd.encode_anim(samples, nb, 0, events, tol=1, repeats=tile > 1)
+            # a one-shot clip (victory, faint, get up, a technique) stays one-shot: its last pose is held
+            clip = mmd.encode_anim(samples, nb, 0 if loop == 0 else None, events, tol=1, repeats=loop == 0 and tile > 1)
             report[slot] = dict(frames=len(samples), source_frames=len(frames), cycles=tile, copied=False)
         model.anims.table[slot] = len(model.anims.anims)
         model.anims.anims.append(clip)

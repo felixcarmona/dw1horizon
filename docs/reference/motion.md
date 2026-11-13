@@ -65,15 +65,15 @@ matters when writing new clips for an existing rig.
 the source game made for the fight, and our field work (slots 0-4) never aliases them: a generator or delta that wants a
 battle slot to equal a field clip is a defect, and `tools/models/battle_restore.py` takes the importer's clip back
 (retimed to the length the slot has now: idles keep their speed and repeat whole cycles, movement keeps its root travel
-and its no-lunge rule). Byte-identity of slots 0-4 and the mesh is proved per species before the delta is stored. An original that sits far off
+and its no-lunge rule, a one-shot clip such as a victory or a technique stays one-shot and holds its last pose). Byte-identity of slots 0-4 and the mesh is proved per species before the delta is stored. An original that sits far off
 the natural stance (torso tipped back, head looking up) is corrected with a constant pitch of its own bones (`pitch`), which
 keeps its swing and timing; a species whose source had no clip of its own gets a field one, pitched (`copy`, then `pitch`).
-Reference rows that need a rest pose read slot 0 (`rest_slot` in `celebrations.json`) rather than 0x21.
+Reference rows that need a rest pose read slot 0 (`rest_slot` in `celebrations.json`) rather than 0x21 (RedOtamamon's and MegaGargomon's victories do, so giving 0x21 back leaves them as they were).
 
 Every restored slot must pass `tools/models/battle_qa.py` on the final model (the provider's output, not the `edit.py get`
 intermediate), measured against the importer's clip and against main's final model: fidelity to the source, limb liveness
 (a chain that moves in the source, or in the field walk while its siblings move, must move: a missing bone map), bone map
-completeness, mesh integrity (scale, vertex step, loop seam, a piece leaving the body, triangle crossings), posture (body
+completeness, mesh integrity (scale, vertex step, loop seam on looping clips only, a piece leaving the body, triangle crossings), posture (body
 bones tipped off the field idle, under the floor, floating) and motion (movement length equal to main's, root excursion,
 frantic speed). The thresholds are the 99th percentile or the maximum of the 141 native DW1 models' own battle clips
 (564 clips; rates in the tool's header) and catch the known bad cases: Infermon's foot off its leg (0.19 heights against
@@ -84,6 +84,36 @@ reshaped (chibi) rig (Kimeramon, Angewomon 0x21, Infermon 0x22, Sakuyamon, Musya
 timing made too fast (Okuwamon, Nefertimon, Woodmon), the ones that sink, tip or collide more than main's (Imperialdramon,
 Pegasusmon, Raidenmon and others), and Creepymon's 0x23/0x24 and Gazimon's 0x21, which stay the twins of their field
 clips. Tests: `tools/test_battle_qa.py`.
+
+A field overlay writes slots 0-4 and leaves 0x21-0x24 alone, with these documented exceptions: slots whose source clip
+measured worse than main's on the overlay's FINAL output and which therefore keep playing a field clip (main's). Nefertimon
+0x23/0x24 (vertex step 0.45/0.59 heights a tick, under the floor), SaberLeomon 0x22 (crossings 34 a tick against main's 24),
+Knightmon 0x24 (torso tipped 27 degrees against main's 8), Creepymon 0x23/0x24 (crossings 237 against 191, root travel 0.16
+heights off; torso 27 degrees against 14), Gazimon 0x21 (loop seam 0.063 heights), Gargoylemon 0x23/0x24 (60 and 53
+crossings against 3 and 5; as own streams they overflow the resident buffer, 100602 B against 100352) and Suijinmon
+0x23/0x24 (the importer's clip has no bone map for the front legs). Each is noted in its generator. The chibi pass scales the
+root travel of every clip, battle ones included, so a restored movement on a reshaped species differs from the source's in
+root travel only (rotations stay exact).
+
+**Natively bound species get their originals by retargeting.** A native binding (`native_binding.py`) deep-copies the
+donor's skeleton and every clip, so the source game's battle clips are gone. A recipe's `"battle_originals": {"slots":
+[...]}` puts them back for the slots listed (`field_animations/native_battle.py`, stdlib only): each donor bone is turned
+so that its lead piece (a rider's pivot, else the pieces at the top of the group on that bone; siblings are averaged
+by weight) has the world orientation the source bone has in the source clip, relative to the bind pose and the fit's
+rotation; donor bones above the body that carry pieces follow the body; the hips' height follows the source's, scaled by
+the two rigs' hip heights; the root keeps the source's rotation and travel. Lengths follow `battle_restore.plan` (the
+donor slot's length, idles tile or keep their own speed), so technique effects keep their timing. Slots 0-4 and the mesh
+stay byte for byte. The check is `tools/models/battle_qa_native.py check ID FINAL B.MMD MAIN.MMD`: it recovers each
+source piece in the final mesh, measures the orientation error of the lead pieces (mean 8 degrees, any piece of 2 % of
+the weight 25 degrees), end-effector motion about the clip's mean (0.15 heights) and liveness against the source, a
+retime ratio within 1.6 for non-idle slots, and `battle_qa`'s mesh, posture and motion numbers against main's same slot
+(posture only on bones that show; the loop seam and absolute jump only on the looping slots 0x21-0x24). The resident
+buffer decides the rest: retargeted clips are dense (every bone keyed), about 1.5 to 3 times the donor's, so only the
+passing slots that fit, chosen in the order 0x21-0x24, 0x28/0x29, 0x2A-0x2C, techniques, ship. MegaKabuterimon 205:
+0x21, 0x23, 0x24 (99,204 B). Zanbamon 430: 0x21, 0x22, 0x2A (99,204 B; its passing techniques cost 2 to 4.6 KB each
+over a 2,462 B margin). Garudamon 460: 0x21-0x23, 0x28-0x2B, 0x34, 0x36, 0x37 (99,154 B; technique slots keep the donor clip's sound events, other slots the source's banks 1 and 4 only). Wormmon 183: 0x21-0x23 (67,920 B; the other slots miss the tip-of-tail measure, 0x24 by 0.03 heights, and stay the donor's). BomberNanimon 232: 0x21-0x23, 0x28, 0x29, 0x2C, 0x30, 0x31, 0x34, 0x35, 0x37, 0x38 (75,080 B; 0x24, 0x2A, 0x2B, 0x2E, 0x2F, 0x32, 0x33, 0x36 and 0x39 fail: triangle crossings above main's or retimed more than 1.6). VioletElecmon 256: 0x21, 0x22, 0x24, 0x2A, 0x2E-0x31, 0x33, 0x34, 0x36 (79,740 B; 0x23, 0x28, 0x29, 0x2B, 0x2C, 0x32 and 0x35 failed the check and keep Elecmon's clip). MetalTyrannomon 260: 0x21 and 0x2A (81,616 B); every other slot failed the check (tips off the source, still chains, retimed, tipped bones) and stays the donor's. Minotarumon 330: 0x21, 0x22, 0x28, 0x29, 0x2A, 0x2C, 0x2E, 0x33, 0x34, 0x38 (87,818 B; 0x23, 0x24, 0x2B, 0x2F and the other techniques stay the donor's: triangle crossings or a floor sink worse than main, or a retime beyond 1.6). Vilemon 295: 0x21, 0x23, 0x28, 0x29, 0x2E-0x31, 0x33, 0x36 (76,158 B; 0x22, 0x24, 0x2A-0x2C and the other techniques stay the donor's: crossings, retiming or vertex step).
+Test: `tools/test_native_battle.py`
+and the species' tests.
 
 Slots 6, 0x14, 0x1A, 0x1C-0x20, 0x26 and 0x27 are the tamer's, NPCs' and the kart race's. Which slots a partner must
 have, and the lint rule for each: [imported-species.md](imported-species.md), "What the game asks of every partner".

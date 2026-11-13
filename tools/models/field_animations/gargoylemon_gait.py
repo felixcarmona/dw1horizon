@@ -15,6 +15,11 @@ legs: the hips turn against the chest, the whole body rolls its weight over the 
 pendulums with the forearm and the claws late, the head follows the chest late, the tail trails link by link and the
 wings lift on each push-off and sink on each landing, the wing tips behind the roots.
 
+Battle slots: 0x23 and 0x24 stay the twins of the walk and run written here (`quadruped.py` rewrites each clip where it
+is stored). The source's own movements put the claws and legs through the body on this rig (60 and 53 triangle crossings a
+tick against main's 3 and 5, tools/models/battle_qa.py) and storing them as their own streams overflows the resident buffer
+(100602 B against 100352). 0x21 and 0x22 are the source's own.
+
 The character is a heavy stone beast: the walk is a slow, wide, crouching tread with the shoulders rolling and the
 wings riding up and down behind the body, the tired walk a dragging slump with the wings hung low and the head
 down, the run a head-down lunge with the wings swept back and beating once a stride. The idle (120 ticks) keeps both

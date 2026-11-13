@@ -55,6 +55,8 @@ class MetalTyrannomonNative(unittest.TestCase):
         for slot, index in enumerate(self.native.anims.table[:46]):
             if index is None or slot == 4:  # the run's arms are re-posed below
                 continue
+            if slot in self.recipe['battle_originals']['slots']:  # the source game's own clip, see test_battle_originals
+                continue
             with self.subTest(slot=slot):
                 self.assertEqual(self.program(self.model, slot), self.program(self.native, slot))
 
@@ -97,11 +99,21 @@ class MetalTyrannomonNative(unittest.TestCase):
             self.assertGreaterEqual(self.rig[row[4]][0], 0, row)
         self.assertEqual(len(patch['effect_origins']), len(self.record['effect_origins']))
 
+    def test_battle_originals(self):
+        # the source game's own battle clips, retargeted onto the donor rig; the idle loops at its own speed, the one-shot
+        # clip is as long as the donor's clip it replaces, since technique effects are timed to it
+        made = self.proof['battle_originals']
+        self.assertEqual(sorted(int(s) for s in made), self.recipe['battle_originals']['slots'])
+        for slot, row in made.items():
+            if int(slot) not in (33, 34):
+                self.assertEqual(row['frames'], row['donor_frames'])
+
     def test_resident_animation_buffer(self):
         storage = motionstorage.require(self.data, len(self.rig))
         self.assertTrue(storage['fits'])
         self.assertLessEqual(storage['resident_bytes'], storage['resident_limit'])
         self.assertEqual(storage['resident_limit'], 100352)
+        self.assertEqual(storage['resident_bytes'], 81616)
 
     def test_every_piece_is_bound_once_and_the_feet_stand_on_the_floor(self):
         objects = sorted(o for o, _ in self.rig if o >= 0)

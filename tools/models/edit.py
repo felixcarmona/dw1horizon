@@ -217,10 +217,10 @@ def donor_models(a, species):
     return {donor: build(a, rows(load(MODELS), [str(donor)])[0])[0]}
 
 
-def provider_pin(species, model, tim, donors=None):
-    """Hash the final provider files, including native builders, field overlays and battle repairs. `donors` are the
-    other imported species' models the species' overlay reads (donor_models)."""
-    sha1 = lambda b: hashlib.sha1(b).hexdigest()  # noqa: E731
+def provider_output(species, model, tim, donors=None):
+    """The final provider output of a species: (model bytes, texture bytes, the species file it makes, with the generated
+    skeleton of a native binding in model.skeleton). Includes native builders, field overlays and battle repairs. `donors`
+    are the other imported species' models the species' overlay reads (donor_models)."""
     builder = import_records()[str(species)].get('builder')
     if builder:
         model, tim = importlib.import_module(builder).build(ROOT / 'extracted')
@@ -241,13 +241,20 @@ def provider_pin(species, model, tim, donors=None):
         try:
             with contextlib.redirect_stdout(io.StringIO()):
                 _, s = imported_models.species_file(str(Path(tmp) / 'species'), str(species), generate=True)
-            return [sha1(Path(s['model']['file']).read_bytes()), sha1(Path(s['texture']['file']).read_bytes())]
+            return Path(s['model']['file']).read_bytes(), Path(s['texture']['file']).read_bytes(), s
         finally:
             crmath.uninstall()
             crmath.clear()
             pysum.uninstall()
             for n in [n for n in sys.modules if n not in saved and n.split('.')[0] in ('species', 'mmd')]:
                 del sys.modules[n]
+
+
+def provider_pin(species, model, tim, donors=None):
+    """SHA-1 of the final provider files (provider_output)."""
+    sha1 = lambda b: hashlib.sha1(b).hexdigest()  # noqa: E731
+    final_model, final_tim, _ = provider_output(species, model, tim, donors)
+    return [sha1(final_model), sha1(final_tim)]
 
 
 def species_pins():

@@ -25,7 +25,7 @@ from tools.models.field_animations import monmon_gait as gait
 from tools.models.field_animations import monmon_face as face
 
 BONES = 21
-EXPECTED = 'ae0af8ef2dbfb3d4d8dcc7da71679cefc9d49a3f5b623759d68a0620423cd5bd'    # the model after this change (the delta's target)
+EXPECTED = '500a5f5ce4d3c6c38b66385e33d7ec1c2a900f190c1e3fd13ab69e720d1cda60'    # the model after this change (the delta's target)
 TICKS = {2: 24, 3: 28, 4: 20}               # each clip is two different ground cycles of 12, 14 and 10 ticks
 IDLE_TICKS = 60
 SPEED = {2: 16, 3: 11, 4: 36}

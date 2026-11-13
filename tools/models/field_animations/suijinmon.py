@@ -3,6 +3,10 @@
 The lower body is a centaur rig: the four three-bone legs carry the weight,
 while the upright torso, cannon arms and tail follow the footfalls with a lag.
 Feeding retains the upper-body acting without the biped donor's crouch.
+
+Battle slots: 0x23 and 0x24 play the field walk and run (the source game aliased them to its walk too, and the
+importer's clip has no bone map for the front legs, which stay still while the hind legs move, tools/models/battle_qa.py);
+the centaur's four-leg clips are the better battle movement. 0x21 and 0x22 are the source's own.
 """
 import copy
 import hashlib

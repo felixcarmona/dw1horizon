@@ -19,6 +19,11 @@ and texture is checked against the derive species pins.
 import importlib.util, json, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '../../..'))
+# Battle slots 0x21-0x24 stay the source game's own (docs/reference/motion.md): an overlay writes field slots only. Eleven
+# slots of seven species still play the clip of a field slot (main's), because the source's clip measured worse than
+# main's on the final model (tools/models/battle_qa.py, restored by hand on the overlay's output): Nefertimon 0x23/0x24
+# (vertex steps, under the floor), SaberLeomon 0x22 (crossings), Knightmon 0x24 (torso tipped 27 degrees against main's 8),
+# and in their generators' notes Gazimon 0x21, Creepymon 0x23/0x24, Gargoylemon 0x23/0x24 and Suijinmon 0x23/0x24.
 OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'blackkingnumemon-slug': ('307', 'tools.models.field_animations.black_king_numemon', '307-blackkingnumemon-slug'),
     'wormmon-native-crawl': ('183', 'tools.models.field_animations.native_binding', '183-wormmon-native-crawl'),
