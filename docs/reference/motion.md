@@ -1372,6 +1372,23 @@ in a slow sway in the idle, hang low and nearly still in the tired walk and stre
 idle, 8 tired). The feelers keep their own motion on bones 3 and 5 (the tip bending was dropped). The stored
 model grows from 43 to 56 KB (animation and the fin split; resident 50.6 KB of 100 KB). The test is `tools.test_pichimon_hop`.
 
+Motimon (474, a hand-made baby) no longer plays Koromon's lunge: a 40 % squash and a 59-unit leap every 18 ticks (the body rose 80, 52 and 160 units in the
+walk, tired walk and run), a tired walk as fast as the walk (20.5 against 20.9 units a tick), a slip of 124 % mean and 225 % worst, soles up to 15 units under the floor,
+and arms and eyes that never moved. `baby_calm.py` writes slots 0, 2, 3 and 4: a 128-tick idle (two slow breaths, a slow look to each side, the arms drifting a little
+behind the breath, four blinks at uneven intervals, one of them a double blink), a walk of two 22-tick hops at 16 units a tick (6 units of flight, a 4.5-degree waddle), a tired walk of two
+30-tick hops at 11 (2.5 units, leaning forward, lids half down, one slow blink) and a run of three 15-tick hops at 37 (9 units). The body rises 17, 13 and 24 units (squash included) against 80, 52 and 160.
+Slip is 0 % mean and worst in the walk, 9 % in the tired walk, 1 % mean and 3 % worst in the run; the lowest sole is 0 in every clip. The little arms were two 66-primitive cones inside the body object. They now sit
+in the two empty objects of the bones 4 and 6 (vertices in the bone's rest frame, so the mesh is vertex for vertex the old one; the old rest pose had one arm stretched out and the other raised like an ear, so every clip first turns both to hang relaxed below their shoulders, about 40 degrees under the horizontal, and swings them about that), and every tick the bone is solved as
+`inverse(ear base) . arm motion . rest offset`, so each arm turns about its own shoulder (the arm tip travels 16 units in the idle, 24 in the walk, 11 tired, 22 in the run) behind a damped spring that
+lags the hop and overshoots a little on a landing, alternating from one hop to the next. The blink is a texture copy: the donor's closed-eye frame at (34, 0), with a half-closed lid frame either side that
+the texture did not have: it is drawn into the unused block at (44, 32) (the open eye squashed to its lower half), copied in two rects because the last four rows of that block belong to the arm patch. The
+stored model grows from 33.8 to 42.7 KB (resident 38.2 KB of 100 KB). The test is `tools.test_baby_calm`.
+
+Bukamon (475) gets the same treatment from the same generator (its flippers already sat on the objects of bones 3 and 5, so those bones turn about the shoulder; the
+flipper tip travels 16, 30, 10 and 24 units in the four clips): the old clips left the soles 7 to 11 units under the floor, and the lowest sole is now 0. Its blink uses the donor's half-lid frame at (24, 0)
+and the closed-eye frame at (34, 0), and the tired walk keeps the half-lid frame as its base eye. The model grows from 31.6 to 38.7 KB (resident 34.4 KB). Both babies share the clips' structure and differ
+in their numbers (`CONFIGS` in the module).
+
 Kyukimon 322 (`tools/models/field_animations/kyukimon_gait.py`, test `tools.test_kyukimon_gait`): the walk (80 ticks), tired walk (72) and run (72)
 only rewrote the legs; every bone above the hips (body, chest, shoulders, arms, the five tail segments) played the idle's 74-tick loop, copied
 (equal rotation ranges to a tenth of a degree), and head, hands, strap and wing spikes never moved, so the upper body neither moved much nor
@@ -1669,6 +1686,25 @@ the root speed on walk, tired and run, lowest sole 0 on every clip (before -25 /
 100352 B (the stored model 34.1 KB, from 28.8 KB). Tsunomon (16) and Tokomon (30) were built as alternatives and fit the same face
 windows, but their hops are taller than the body. The tests are `tools.test_nyokimon_calm` and `tools.test_native_babies`.
 
+Nyaromon 476 (a hand-made baby on Tokomon's rig, donor 30) played Tokomon's own clips: hops 126-133 units high, the lowest point of the mesh
+0 to 133 units above the floor, and the body sliding 91-93 % of the root's travel (worst 133 %). Its mesh was one rigid object (head, ears and
+tail), so nothing could swing on its own; `field_animations/nyaromon_calm.py` first moves the tail into two objects on a bone chain (bones 3 and 4,
+split at the top of the arch, the base taking one extra row of quads so a bent joint shows no gap) and each ear into an object of its own
+(bones 7 and 8), the very same triangles, UVs and colours (the build asserts the rest look), then writes slots 0, 2, 3, 4 and the aliases 33, 35, 36
+again. Tokomon's other slots swing those bones 50-127 degrees, so every other program holds them at rest (the tail is as stiff as before there).
+The tail is a two-segment wave with the tip lagging: a slow sway and now and then a flick in the idle, a sway opposite to the waddle's roll and a pitch
+that follows the hop with a delay in the walk, hanging low and slow when tired, streaming behind in the run; the ears twitch in the idle and splay a
+little with each hop. The head still does most of the work: a 96-tick idle (two breaths, a look and a head tilt each way, a small mew, four blinks, one of
+them a double), a walk of two 16-tick steps at 20 units per tick (5 high: a weight shift and soft squash before each step, a roll and a twist
+that alternate, a landing wobble, the back of the head lagging the rise), a tired walk of two 24-tick steps at 12 (2.5 high, head low and
+forward, heavy slanted lids, two slow blinks) and a run of three 14-tick steps at 37 (9 high, mouth open, one blink). The page gets three eye windows
+(lid, heavy lid, closed arc: 40 x 28 texels, each overwriting the whole open eye) at x 184 and 216, y 48 and 76, and a blink is a lid, two or
+three ticks of the closed eye, a lid, the open eye (`tex` events); the mouth changes with windows of its own (shut, half, wide) so it never
+reopens a closed eye. The body stays where it lands while it is down: mean slip 7.5 / 1.6 / 3.4 % of the root speed on the planted ticks
+(worst 30 / 10 / 6 %), lowest sole 0 on every clip (before -0.9), highest 5.1 / 3.2 / 9.5 units (the body only), resident buffer 34,996 of 100,352 bytes (from
+31,432), the stored model 40.5 KB. The studio's slip metric reads a fixed bone on this rig and is meaningless here. The tests are
+`tools.test_nyaromon_calm` and `tools.test_native_babies`.
+
 Veedramon (203) jaw: the walk, tired walk and run take the jaw (bone 4) from `gaits.py`'s `jaw` profile key, a damped spring on the stride
 that turns about the jaw's own X axis only (walk 5 to 8 degrees, tired walk 11 to 15, hanging a little open, run 7 to 11; yaw and roll
 exactly 0). Before, the profile copied the jaw out of the source tired and run clips (`source_aux`), which carried yaw to 24 degrees, roll to 15
@@ -1692,3 +1728,14 @@ the lowest point of the mesh is at most 8 units under the floor line (a toe), an
 On top of the donor's clips the stage adds slow overlapped motion: the waist, chest and head (the horn rides it) pitch with the stride, each lagging the one before, the
 low arms trail, the walk and run are slow and heavy (long cycles, small swings of the arms and trunk) and the body leans forward in the run and slumps in the tired walk, and the idle (60 ticks) breathes, shifts its weight from foot to foot and flicks the head. The shell is one rigid piece
 with the chest (the wing bones carry no mesh), so there is no wing spring to add. The test is `tools.test_megakabuterimon_native`.
+
+Yokomon 477 (a hand-made baby on Tanemon's rig, donor 44) plays Tanemon's clips. Its four petal blades sit on bones 4 and 5, which hinge about z: idle, walk and
+run swing them below the rest angle (rz down to -364, -728 and -499), so the flower is open, but Tanemon's tired walk holds them at +340 to +400, standing against the
+neck like a closed bud. `field_animations/yokomon_petals.py` rewrites only the rz of those two bones in slot 3 (the initial pose and the values of the keys; the key frames,
+spans, every other channel, the eye and sound events and the other slots are the donor's, byte for byte): the petals hang at -230 and follow the head's nod (bone 3, rx) three
+ticks late with a quarter of its swing, from -310 to -152, bone 5 the mirror. Triangle crossings between the petals, neck and bulb fall from 110 to 63 of the 21 tired ticks.
+The test is `tools.test_yokomon_petals`.
+Yokomon's neck came off the bulb in every moving clip: Tanemon's head bone (3) nods about a pivot 51 units above the base of the stem, so a 30-degree nod swings the base 20 to 30 units
+forward or back of the bulb's top (15 in the idle, 29 in the walk and run, 27 in the tired walk). `field_animations/yokomon_neck.py` adds to bone 3 the translation (ty, tz: one extra key entry per rx span and the initial pose) that cancels
+that swing, so the nod turns about the base of the stem; rx, every other bone, the root, the events and the mesh are untouched, and the idle, walk and run aliases (slots 27, 33, 35, 36) share the change.
+The base of the stem stays within 5 units of its rest place in every tick of every clip (test: `tools.test_yokomon_petals`).

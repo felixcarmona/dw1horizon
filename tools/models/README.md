@@ -147,6 +147,13 @@ plain delta (`--source` is the model before the change; `python3 -m tools.models
 `python3 -m tools.models.babies encode 471 OUT.MMD TIM`); check with
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_pichimon_hop`.
 
+Motimon (474) and Bukamon (475) share `field_animations/baby_calm.py` (`CONFIGS` holds each baby's numbers): it replaces Koromon's slots 0, 2, 3 and 4 with a
+128-tick idle (breaths, slow looks, four blinks of which one is a double blink), a walk of two low 22-tick hops at 16 units a tick, a tired walk of two 30-tick hops at 11 and a
+run of three 15-tick hops at 37, with the body planted while it is down, the lowest point of the mesh solved on the floor every tick and the little arms moving (Motimon's two arm cones are
+moved onto the empty objects of bones 4 and 6 and solved about their shoulders, both hanging relaxed below them in every clip; Bukamon's flippers turn on bones 3 and 5). Motimon's texture gets a half-closed eye frame at (44, 32) for the blink. The result is stored in the plain deltas
+(`python3 -m tools.models.field_animations.baby_calm ID SRC.MMD SRC.TIM OUT.MMD OUT.TIM`, `--source` being the baby before the change, then `python3 -m tools.models.babies encode ID OUT.MMD OUT.TIM`); check with
+`PYTHONPATH=tools python3 -W ignore -m unittest tools.test_baby_calm`.
+
 Species 334 (Mummymon): `field_animations/mummymon_gait.py` is a field overlay of the same kind: after the chibi proportions it
 rewrites slots 2, 3 and 4 (the idle is the chibi's own: it does not slide) with `quadruped.py` on its two hind legs, the soles pivoting
 at the ball of the foot: a walk, tired walk and run of two cycles each (30, 40 and 28 ticks) at 16, 11 and 38 units a tick, eased one into the other,
@@ -233,9 +240,17 @@ windows over the donor's texture animations (Botamon's), so a different donor ne
 YukimiBotamon (472) plays its own calm clips: `field_animations/yukimibotamon_calm.py` replaces Botamon's slots 0, 2, 3 and 4
 (`python3 -m tools.models.field_animations.yukimibotamon_calm SRC OUT.MMD`, then `python3 -m tools.models.babies encode 472 OUT.MMD TIM`);
 check with `tools.test_yukimibotamon_calm`.
+Yokomon (477) keeps Tanemon's clips but its tired walk, whose petal hinges (bones 4 and 5) are rewritten to hang open: `field_animations/yokomon_petals.py`
+(`python3 -m tools.models.field_animations.yokomon_petals SRC OUT.MMD`, then `python3 -m tools.models.babies encode 477 OUT.MMD TIM`); check with `tools.test_yokomon_petals`.
+The same species' neck is kept on the bulb by `field_animations/yokomon_neck.py` (run it on the petals' output; it translates the head bone so its nod turns about the base of the stem).
 Nyokimon (473) also plays its own clips: `field_animations/nyokimon_calm.py` replaces Botamon's slots 0, 2, 3 and 4 with a calm
 idle (looks, tilts, blinks, a happy bounce) and soft hops (`python3 -m tools.models.field_animations.nyokimon_calm SRC OUT.MMD`, then
 `python3 -m tools.models.babies encode 473 OUT.MMD TIM`); check with `tools.test_nyokimon_calm`.
+Nyaromon (476) too: `field_animations/nyaromon_calm.py` replaces Tokomon's slots 0, 2, 3, 4 and their aliases 33, 35, 36 with a
+breathing idle and low waddling steps, and paints four eye windows (lid, heavy lid, closed) beside the face so it blinks
+(`python3 -m tools.models.field_animations.nyaromon_calm SRC.MMD OUT.MMD SRC.TIM OUT.TIM`, then
+`python3 -m tools.models.babies encode 476 OUT.MMD OUT.TIM`, then the 476 entry of `species-pins.json` from `edit.provider_pin`);
+check with `tools.test_nyaromon_calm`. `split_mesh` first moves the tail (two segments, bones 3 and 4) and the ears (bones 7 and 8) out of the one rigid object into objects of their own, the same triangles with the same UVs and colours (asserted at rest), the tail overlapping its joint by one row of quads; every other program holds those four bones at rest.
 Run `python3 -m tools.models.babies check` and
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_native_babies`.
 
