@@ -103,6 +103,12 @@ walk, tired walk and run of two different cycles each (32, 60 and 28 ticks) at 1
 `quadruped.py`), and the arms, head, feather and loincloth follow through on loose springs (the chibi clips flipped the feet by up to 167 degrees and slid the tired walk's soles 172 %).
 Bound in `content/models/imports/species.py`; test `tools.test_dinohyumon_gait` (`DINOHYUMON_MODEL`, from `edit.py get 308`).
 
+Species 404 (BlackWarGreymon): `field_animations/blackwargreymon_gait.py` rewrites slots 0 (also 33), 2, 3 and 4 of the stored model with
+`quadruped.py` on the two legs (the claw tips are the sole pivot): a 96-tick idle, and walk, tired walk and run of 44, 28 and 24 ticks at 16, 10
+and 40 units a tick, with WarGreymon's kind of gait (planted soles, counter-turning chest, arms against the legs, springs on the wings and plates).
+The ground markers (bones 22, 23) follow the claw fans. Registered with `edit.py put 404`; test `tools.test_blackwargreymon_gait`
+(`BLACKWARGREYMON_MODEL`, from `edit.py get 404` on the commit before the clips).
+
 Species 322 (Kyukimon): `field_animations/kyukimon_gait.py` is a field overlay (like Dinohyumon's): it applies the chibi
 proportions and then writes slots 2, 3 and 4 again with `quadruped.py` on the two legs, in two different cycles each (32, 44 and 28
 ticks) at 18, 13 and 36 units a tick with planted feet. One gait phase drives the whole body: hips, body and chest wind against each
