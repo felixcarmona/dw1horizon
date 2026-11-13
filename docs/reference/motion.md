@@ -1384,6 +1384,11 @@ lags the hop and overshoots a little on a landing, alternating from one hop to t
 the texture did not have: it is drawn into the unused block at (44, 32) (the open eye squashed to its lower half), copied in two rects because the last four rows of that block belong to the arm patch. The
 stored model grows from 33.8 to 42.7 KB (resident 38.2 KB of 100 KB). The test is `tools.test_baby_calm`.
 
+Bukamon (475) gets the same treatment from the same generator (its flippers already sat on the objects of bones 3 and 5, so those bones turn about the shoulder; the
+flipper tip travels 16, 30, 10 and 24 units in the four clips): the old clips left the soles 7 to 11 units under the floor, and the lowest sole is now 0. Its blink uses the donor's half-lid frame at (24, 0)
+and the closed-eye frame at (34, 0), and the tired walk keeps the half-lid frame as its base eye. The model grows from 31.6 to 38.7 KB (resident 34.4 KB). Both babies share the clips' structure and differ
+in their numbers (`CONFIGS` in the module).
+
 Kyukimon 322 (`tools/models/field_animations/kyukimon_gait.py`, test `tools.test_kyukimon_gait`): the walk (80 ticks), tired walk (72) and run (72)
 only rewrote the legs; every bone above the hips (body, chest, shoulders, arms, the five tail segments) played the idle's 74-tick loop, copied
 (equal rotation ranges to a tenth of a degree), and head, hands, strap and wing spikes never moved, so the upper body neither moved much nor

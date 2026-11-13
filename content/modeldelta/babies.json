@@ -110,9 +110,9 @@
    "donor_texture_sha256": "360d8fbf34889e08c86c9cba288b93420bcd79d66e4dbc30bba3d929c3ab7f51",
    "mmd": {
     "delta": "content/modeldelta/babies/475-Bukamon.MMD.mdelta",
-    "delta_sha256": "b11c1645e5736b6e00cb6aff202a9154be06f162f4e36476c8858ab04de26282",
-    "sha256": "c9ed60d323f60c60ed7749951110809d7d8c3735ad3604a4f17663b52bef2bee",
-    "size": 31556
+    "delta_sha256": "a21b94d0110b0d1e9bef57c01e7a5fded8177c5b2e846df0e83d7c5a58899d3d",
+    "sha256": "e239985f9e977b8170f611d9e578b7051b7f2a43260d5ef31518f38589eff405",
+    "size": 38722
    },
    "tim": {
     "delta": "content/modeldelta/babies/475-Bukamon.TIM.mdelta",

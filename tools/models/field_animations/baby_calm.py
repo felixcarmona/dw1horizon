@@ -81,7 +81,7 @@ GAITS = {
             eyes='open'),
 }
 
-# per species: the tables above are shared, the numbers below are its own (Bukamon's join in its own commit)
+# per species: the tables above are shared, the numbers below are its own
 CONFIGS = {
     474: dict(
         name='Motimon', arms='moved',
@@ -101,6 +101,18 @@ CONFIGS = {
         # the arms the mesh was drawn with (one raised, one stretched out) are brought to hang relaxed at the sides:
         # the elevation of each arm's tip in degrees (negative = down) at rest in every clip
         hang={1: -38., -1: -46.},
+    ),
+    475: dict(
+        name='Bukamon', arms='bones',
+        height={2: 5, 3: 2, 4: 8}, roll={2: 4, 3: 3, 4: 2.5}, yaw={2: 3.5, 3: 2.5, 4: 2},
+        blinks={0: [(10, 3), (40, 3), (48, 2), (92, 3)], 2: [(33, 3)], 3: [(9, 6)], 4: [(24, 2)]},
+        eye_states={'open': _eye(54, 32), 'shut': _eye(34, 0), 'tired': _eye(24, 0), 'lid': _eye(24, 0)},
+        arm={2: dict(f0=3, fa=8, fs=-6, sw=13, s0=0, sa=18),
+             3: dict(f0=2, fa=3, fs=-3, sw=4, s0=0, sa=6),
+             4: dict(f0=5, fa=12, fs=-6, sw=7, s0=-14, sa=10),
+             0: dict(f0=3, fa=0, fs=-8, sw=8, s0=0, sa=0)},
+        gain={0: (.28, .30), 2: (.35, .35), 3: (.42, .42), 4: (1.5, .34)},
+        shoulder=None, direction=None,
     ),
 }
 

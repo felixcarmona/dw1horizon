@@ -15,7 +15,7 @@ import numpy as np  # noqa: E402
 from tools.models import babies  # noqa: E402
 from tools.models.field_animations import baby_calm  # noqa: E402
 
-SPECIES = (474,)
+SPECIES = (474, 475)
 ARMS = {474: ((2, 4), (4, 6)), 475: ((1, 3), (3, 5))}      # (object, bone) of the x > 0 and x < 0 arm
 SHUT = {474: (34, 0), 475: (34, 0)}                         # the closed-eye frame of the blink
 BLINKS = {474: {0: 4, 2: 1, 3: 1, 4: 1}, 475: {0: 4, 2: 1, 3: 1, 4: 1}}   # blinks (closed frames shown) per clip

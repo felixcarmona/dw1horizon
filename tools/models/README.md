@@ -147,10 +147,10 @@ plain delta (`--source` is the model before the change; `python3 -m tools.models
 `python3 -m tools.models.babies encode 471 OUT.MMD TIM`); check with
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_pichimon_hop`.
 
-Motimon (474) has `field_animations/baby_calm.py` (a shared generator for the Koromon-rigged babies; `CONFIGS` holds each baby's numbers): it replaces Koromon's slots 0, 2, 3 and 4 with a
+Motimon (474) and Bukamon (475) share `field_animations/baby_calm.py` (`CONFIGS` holds each baby's numbers): it replaces Koromon's slots 0, 2, 3 and 4 with a
 128-tick idle (breaths, slow looks, four blinks of which one is a double blink), a walk of two low 22-tick hops at 16 units a tick, a tired walk of two 30-tick hops at 11 and a
 run of three 15-tick hops at 37, with the body planted while it is down, the lowest point of the mesh solved on the floor every tick and the little arms moving (Motimon's two arm cones are
-moved onto the empty objects of bones 4 and 6 and solved about their shoulders, both hanging relaxed below them in every clip; a baby whose arms already have their own bones turns those). Motimon's texture gets a half-closed eye frame at (44, 32) for the blink. The result is stored in the plain deltas
+moved onto the empty objects of bones 4 and 6 and solved about their shoulders, both hanging relaxed below them in every clip; Bukamon's flippers turn on bones 3 and 5). Motimon's texture gets a half-closed eye frame at (44, 32) for the blink. The result is stored in the plain deltas
 (`python3 -m tools.models.field_animations.baby_calm ID SRC.MMD SRC.TIM OUT.MMD OUT.TIM`, `--source` being the baby before the change, then `python3 -m tools.models.babies encode ID OUT.MMD OUT.TIM`); check with
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_baby_calm`.
 
