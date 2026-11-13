@@ -1342,3 +1342,9 @@ clips, whose jaw yawed to 24 degrees, rolled to 15 and pushed up through the upp
 
 Veedramon (203) liveliness: `gaits.py` profile keys `waves` (extra lagging sinusoids on chosen bones and axes), `head_bob`, `vary` and `loose` (per-slot
 keyframe tolerance for every bone except the legs, carrier and pelvis) make the tail, arms, neck and head follow through; see docs/reference/motion.md.
+
+MegaKabuterimon (205) wears native Kabuterimon's (19, `CHDAT/MMD0/KABU.MMD`) 28-bone skeleton at scale 1.0: pieces map by body part
+(chest, head, four arms, hips, two legs) and the post-stage `kabuterimon_donor_gait` keeps the donor's trunk, arms, head and wings and
+re-plants the idle, walk, tired walk and run on two soles. The same stage fits the Kabuterimon (19) and Kuwagamon (51) skeletons (by bone count).
+Species pin: the provider pin in `species-pins.json`.
+`PYTHONPATH=tools python3 -W ignore -m unittest tools.test_megakabuterimon_native` (after `edit.py get 205`).

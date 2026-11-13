@@ -1680,3 +1680,15 @@ in the profile: tail yaw wave travelling to the tip with a small pitch flick, lo
 `vary` modulation over the macro cycle so no two strides match), wider and larger arm swings (34 / 10 / 56 degrees, elbows bent 38 / 12 / 72), a bouncier
 body (11 / 3 / 12) and leans of 5 / 16 / 22 degrees. The non-leg bones are fitted with a looser keyframe tolerance (`loose`, 6) which pays for it:
 resident buffer 98532 B (was 98826). Speeds, soles and the jaw's hinge unchanged; the idle stays the native one.
+
+MegaKabuterimon 205 wears the native rig and programs of Kabuterimon (28 bones, `CHDAT/MMD0/KABU.MMD`, a native binding at scale 1.0).
+The donors' own legs were made for shorter legs than the mesh has (159 units against about 123): their soles slid over the floor (mean slip above
+100%) and sank under it. `kabuterimon_donor_gait.py` (the recipe key `gait`) writes slots 0, 2, 3 and 4 again: the donor's trunk, arms, head and wings
+are kept (resampled to the new cycle, the lower arms' elbows folded a little more so the hands clear the legs), and each leg is solved by `quadruped.py`
+on its own sole (idle 60 ticks, walk 20 at 16 units per tick, tired walk 22 at 11, run 14 at 38). The knees are asked to bend up and a little
+forward: the first guess, the mesh's own rest bend, took one thigh through the Euler gimbal (a quarter turn about its middle axis), so the
+two legs' angles were not mirror images and the loop could not close in Euler angles. Stance slip is 5 / 9 / 4 % mean in the walk, tired walk and run (worst 19 / 25 / 7 %),
+the lowest point of the mesh is at most 8 units under the floor line (a toe), and the resident buffer is 90,718 of 100,352 bytes.
+On top of the donor's clips the stage adds slow overlapped motion: the waist, chest and head (the horn rides it) pitch with the stride, each lagging the one before, the
+low arms trail, the walk and run are slow and heavy (long cycles, small swings of the arms and trunk) and the body leans forward in the run and slumps in the tired walk, and the idle (60 ticks) breathes, shifts its weight from foot to foot and flicks the head. The shell is one rigid piece
+with the chest (the wing bones carry no mesh), so there is no wing spring to add. The test is `tools.test_megakabuterimon_native`.
