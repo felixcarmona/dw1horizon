@@ -71,6 +71,8 @@ class ModelProvider(unittest.TestCase):
             '306': ('306', 'tools.models.field_animations.native_binding', '306-grapleomon-native'),
             # Minotarumon wears native Ogremon's rig and programs.
             '330': ('330', 'tools.models.field_animations.native_binding', '330-minotarumon-native'),
+            # Zanbamon wears a native quadruped's rig and programs, planted by its own gait stage.
+            '430': ('430', 'tools.models.field_animations.native_binding', '430-zanbamon-native'),
             # Vilemon wears native Ogremon's rig and programs.
             '295': ('295', 'tools.models.field_animations.native_binding', '295-vilemon-native'),
             # HiAndromon wears native Andromon's rig and programs.

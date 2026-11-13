@@ -29,7 +29,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'marinedevimon-field': ('279', 'tools.models.field_animations.marine_devimon', '279-marinedevimon-field'),
     'bulbmon-field': ('313', 'tools.models.field_animations.bulbmon', '313-bulbmon-field'),
     'kurisarimon-celebration': ('431', 'tools.models.field_animations.celebrations', '431-kurisarimon-celebration'),
-    'zanbamon-celebration': ('430', 'tools.models.field_animations.celebrations', '430-zanbamon-celebration'),
+    'zanbamon-native': ('430', 'tools.models.field_animations.native_binding', '430-zanbamon-native'),
     'raijinmon-native': ('333', 'tools.models.field_animations.native_binding', '333-raijinmon-native'),
     'arukenimon-celebration': ('311', 'tools.models.field_animations.celebrations', '311-arukenimon-celebration'),
     'clockmon-celebration': ('290', 'tools.models.field_animations.celebrations', '290-clockmon-celebration'),

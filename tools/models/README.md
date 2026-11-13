@@ -1213,3 +1213,9 @@ under the donor's own trunk and arms (`quadruped.py`). It runs in the build; off
 `python -m tools.models.field_animations.raijinmon_gait --source BOUND.MMD --rig 333-report.json --out OUT.MMD`. After changing it,
 `edit.py check 333 --species-pins` prints the new provider pin for `tools/derive/recipes/species-pins.json`. Test: `tools.test_raijinmon_gait`
 (`RAIJINMON_MODELS`).
+
+Zanbamon (430) wears native Monochromon's (47) 24-bone skeleton at scale 1.35 plus nine rider bones (recipe `riders` in `native-bindings.json`:
+extra bones after the donor's, each with a list of source pieces and a pivot piece); the post-stage `zanbamon_gait` plants the four soles
+and drives the rider bones (`rider_frames`, rows `RIDER_ROWS` in degrees). The alternative donors (Centarumon, Garurumon) work with the same
+stage without the rider bones. Species pin: `species-pins.json`. `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_zanbamon_native`
+(after `edit.py get 430`, `BINDING_MODELS` to its folder).

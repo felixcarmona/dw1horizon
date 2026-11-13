@@ -179,6 +179,20 @@ def bind(data, skeleton, recipe, placements=None):
     spin = recipe.get('spin')
     spun = [int(b) for b in spin['bones']] if spin else []
     extended = list(native_rig) + [(-1, mapping[b]) for b in spun]
+    # riders: parts of the body that sit on a donor bone but move on bones of their own (a human torso, head and arms on a
+    # mount's back), each a bone hung on a donor bone or on an earlier rider, pivoting where its lead piece sits
+    riders = recipe.get('riders', [])
+    rider_bone = {r['name']: len(extended)+k for k, r in enumerate(riders)}
+    rider_of = {sb: rider_bone[r['name']] for r in riders for sb in r['pieces']}
+    extended += [(-1, rider_bone.get(r['parent'], r['parent'])) for r in riders]
+    def rider_pivot(index):
+        r = riders[index-len(native_rig)-len(spun)]
+        rule = recipe.get('pieces', {}).get(str(r['pivot']), {})
+        return nw[rule.get('joint', mapping[r['pivot']]), :3, 3] + np.array(rule.get('offset', [0, 0, 0]))
+    def rider_anchor(index):
+        while index >= len(native_rig):
+            index = extended[index][1]
+        return index
     items = {b: [] for b in range(len(extended))}
     fitted = {}
     spin_poses = {}
@@ -267,8 +281,19 @@ def bind(data, skeleton, recipe, placements=None):
             items[bone].append((original, (points-centre) @ frame, normals @ frame))
             fitted[sb] = (points, normals)
             continue
+        if sb in rider_of:
+            anchor_bone = rider_anchor(rider_of[sb])
+            items[rider_of[sb]].append((original, (points-rider_pivot(rider_of[sb])) @ np.linalg.inv(nw[anchor_bone, :3, :3]).T,
+                                        normals @ nw[anchor_bone, :3, :3]))
+            fitted[sb] = (points, normals)
+            continue
         items[tb].append((original, (points-nw[tb, :3, 3]) @ np.linalg.inv(nw[tb, :3, :3]).T, normals @ nw[tb, :3, :3]))
         fitted[sb] = (points, normals)
+    for r in riders:
+        bone = rider_bone[r['name']]
+        parent = extended[bone][1]
+        origin = rider_pivot(parent) if parent >= len(native_rig) else nw[parent, :3, 3]
+        spin_poses[bone] = [0, 0, 0] + [round(v) for v in (rider_pivot(bone)-origin) @ nw[rider_anchor(bone), :3, :3]]
     tmd, rig = mmd.TMD(), []
     for bone, (_, parent) in enumerate(extended):
         if not items[bone]:

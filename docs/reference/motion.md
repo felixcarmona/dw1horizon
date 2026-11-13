@@ -1498,3 +1498,11 @@ and eased; the legs come from `quadruped.py` (a biped: two planted soles on a na
 (mean / worst % of the body's travel): walk 2.5 / 24, tired 2.3 / 9, run 5.6 / 43; the largest step between ticks 1.9 times the median (idle 2.4,
 run 2.4); the resident buffer is 85.8 KB of 100352 B. The technique and care slots are the donor's; the old Megaton Punch timing pin on
 the retired Power Crane clip is gone. The test is `tools.test_raijinmon_gait` (`RAIJINMON_MODELS`).
+
+Zanbamon wears native Monochromon's skeleton (24 bones, `CHDAT/MMD1/MONO.MMD`) at scale 1.35, bound by `native_binding.py` with `spread_fit`, and
+nine bones of its own for the rider (recipe key `riders`: torso on the hind hub, cape, head and two crests on the torso and head, two
+arms of two bones; each pivots where its lead piece sits). `zanbamon_gait.py` plants the legs (idle 34 ticks, walk 14 at 19 units a tick, tired
+walk 18 at 12.5, run 12 at 40; stance slip 7, 5 and 4 % mean, worst 31, 18 and 19 %; no sole below the floor) and moves the human on the
+mount's beat: the torso bobs, sways against the hips and twists against them through damped springs, the head and arms follow later and
+looser, the cloak and crests trail on their own springs, the rider leans into the run, slumps when tired and breathes and looks about in the
+idle. The pivots never slide on the mount. The resident model uses 97,890 of 100,352 bytes.
