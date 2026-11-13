@@ -1259,3 +1259,11 @@ Cannondramon (405) wears native Monochromon's (47, `CHDAT/MMD1/MONO.MMD`) 24-bon
 the recipe's `spread` fits them on the donor's joints, and the post-stage `cannondramon_gait` re-plants the walk, condition walk
 and run on four soles (14, 20 and 12 ticks at 15, 10.5 and 36 units per tick). Species pin: the provider pin in
 `species-pins.json`. `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_cannondramon_native` (after `edit.py get 405`).
+
+Veedramon (203) jaw: `field_animations/gaits.py` drives the jaw (bone 4) with its `jaw` profile key (a lagging damped spring on the stride,
+pitch only: walk 5 to 8 degrees, tired walk 11 to 15, run 7 to 11, yaw and roll 0) instead of copying it from the source tired and run
+clips, whose jaw yawed to 24 degrees, rolled to 15 and pushed up through the upper jaw. Only bone 4 differs from before. Test:
+`tools/test_veedramon_jaw.py` (after `edit.py get 203`).
+
+Veedramon (203) liveliness: `gaits.py` profile keys `waves` (extra lagging sinusoids on chosen bones and axes), `head_bob`, `vary` and `loose` (per-slot
+keyframe tolerance for every bone except the legs, carrier and pelvis) make the tail, arms, neck and head follow through; see docs/reference/motion.md.
