@@ -124,6 +124,11 @@ cycles, 17, 11 and 36 units a tick), with the torso, hips, cannons, arms, head, 
 `clear` (floor margin for fast legs) and the profile's `tol` (encoder tolerance, per bone). Bound in `content/models/imports/celebrations.json`;
 test `tools.test_megagargomon_gait` (`MEGAGARGOMON_MODEL`: the model the overlay receives).
 
+Species 351 (Kotemon): `field_animations/kotemon_gait.py` writes slots 2, 3 and 4 (26, 30 and 22 ticks at 16, 11 and 36 units a
+tick) inside the `kotemon-field` overlay (`imported_equipment.py`, which then repairs the hidden swords and the hit clips): each
+foot is placed first, the thigh stub slides at most 10 units under the skirt and the leg turns to reach it, the foot rolls (heel strike with the outer edge first, toe push-off, flex before landing) and the two feet and two cycles lift differently, every touchdown presses the hips and skirt down (`squash`, `sway`), the shoulders move as one unit about the shinai's grip, and the upper body bounces on a spring on each beat (`hop`).
+Test `tools.test_kotemon_gait` (`KOTEMON_MODEL`, from `edit.py get 351`); the pin in `species-pins.json` is checked with `edit.py check 351 --species-pins`.
+
 Species 319 (Pharaohmon): `field_animations/pharaohmon_gait.py` is a field overlay on top of the celebrations recipe: it
 rewrites slots 3 (tired walk, 56 ticks at 11 units a tick) and 4 (run, 24 ticks at 36) with `quadruped.py` on the two legs,
 planted soles and two different cycles each (the `compose` hook); the idle and the walk are the celebrations build's, untouched.

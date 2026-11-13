@@ -73,8 +73,8 @@ def build(data, skeleton):
     base = original
     walking = None
     if sid == 351:
-        from tools.models.field_animations import articulation
-        data, walking = articulation.build(data, skeleton)
+        from tools.models.field_animations import kotemon_gait
+        data, walking = kotemon_gait.build_clips(data, skeleton)
         base = mmd.MMD.parse(data, nb)
     result = repair(base, profile['hidden_bones'], profile.get('early_hit', False)).build()
     parsed = mmd.MMD.parse(result, nb)
