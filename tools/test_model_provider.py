@@ -303,6 +303,8 @@ class ModelProvider(unittest.TestCase):
         # Raijinmon (333) wears Ogremon's rig and programs with planted legs (raijinmon_gait.py): a native binding, no celebration row.
         self.assertEqual(assignments.pop('333'), ('tools.models.field_animations.native_binding', '333-raijinmon-native'))
         assignments['351'] = ('tools.models.field_animations.articulation', '351-kotemon-field')
+        # Puppetmon (181) has its own field stage: planted soles under the original's pelvis, spring-driven chest, head, arms and hammer.
+        self.assertEqual(assignments['181'], ('tools.models.field_animations.puppetmon_field', '181-puppetmon-field'))
         # Raidramon (201) no longer has a field overlay: its gait is in its model delta (raidramon.py).
         self.assertNotIn('201', assignments)
         # Salamon (221) neither: its gait and blinking face are in its model delta (salamon.py, salamon_face.py).
@@ -316,7 +318,7 @@ class ModelProvider(unittest.TestCase):
         # KingEtemon (303) and GrapLeomon (306) wear native rigs and have no chibi row any more: their two entries left the pin.
         # WarGrowlmon (326) wears Growlmon's rig; its row stays for the proportions guard and its baked chibi recipe stays as provenance.
         self.assertEqual(hashlib.sha1(json.dumps(assignments, sort_keys=True).encode()).hexdigest(),
-                         'ada12a6db27f1f55c83b6e27f247df97a0e3dd2c')
+                         '108a2b19b0f0c6583b2f3155eed87d27e4bc62b2')
 
 
 if __name__ == '__main__':
