@@ -217,6 +217,10 @@ class ModelProvider(unittest.TestCase):
         # And Gargoylemon's (gargoylemon_gait.py).
         self.assertEqual(assignments['327'], ('tools.models.field_animations.gargoylemon_gait', '327-gargoylemon-chibi'))
         assignments['327'] = ('tools.models.field_animations.chibi', '327-gargoylemon-chibi')
+
+        # MegaGargomon's idle, walk, tired walk and run (megagargomon_gait.py) are the celebrations' base generator and rebuild its chibi proportions first.
+        self.assertEqual(assignments['335'], ('tools.models.field_animations.megagargomon_gait', '335-megagargomon-equipment'))
+        assignments['335'] = ('tools.models.field_animations.chibi', '335-megagargomon-equipment')
         # Antylamon's smoothed walk (antylamon_polish.py) runs on top of its chibi proportions the same way.
         self.assertEqual(assignments['309'], ('tools.models.field_animations.antylamon_polish', '309-antylamon-chibi'))
         assignments['309'] = ('tools.models.field_animations.chibi', '309-antylamon-chibi')

@@ -118,6 +118,12 @@ with the arms, head, hat, strips and rifle following on loose springs and the ri
 slid the soles 65 to 202 % of the travel). `quadruped.py` takes a per-bone `tol` from the profile to keep the clips inside the resident buffer.
 Bound in `content/models/imports/species.py`; test `tools.test_mummymon_gait` (`MUMMYMON_MODEL`, from `edit.py get 334`).
 
+Species 335 (MegaGargomon): `field_animations/megagargomon_gait.py` is the base generator of its celebrations overlay: it applies the chibi
+proportions and writes slots 0 (also 1, 18, 33), 2, 3 and 4 again with `quadruped.py` (80-tick idle; walk, tired walk and run of two
+cycles, 17, 11 and 36 units a tick), with the torso, hips, cannons, arms, head, fins and flaps moving on loose springs. New keys: a gait's
+`clear` (floor margin for fast legs) and the profile's `tol` (encoder tolerance, per bone). Bound in `content/models/imports/celebrations.json`;
+test `tools.test_megagargomon_gait` (`MEGAGARGOMON_MODEL`: the model the overlay receives).
+
 Species 319 (Pharaohmon): `field_animations/pharaohmon_gait.py` is a field overlay on top of the celebrations recipe: it
 rewrites slots 3 (tired walk, 56 ticks at 11 units a tick) and 4 (run, 24 ticks at 36) with `quadruped.py` on the two legs,
 planted soles and two different cycles each (the `compose` hook); the idle and the walk are the celebrations build's, untouched.
