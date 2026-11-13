@@ -137,6 +137,10 @@ class Rig:
         self.n = len(skeleton)
         self.idle = animsheet.slot_frames(model, self.n, 0)[0]
         self.rest = [list(v) for v in self.idle[0]]
+        # 'rest_fix' (profile): a function that straightens the rest pose it is given in place (an idle caught mid-move whose
+        # two sides do not mirror), before anything is derived from it
+        if profile.get('rest_fix'):
+            profile['rest_fix'](self.rest)
         # `scale` (profile): the uniform size the rest pose gives the body bone and everything under it (an imported
         # model sized by its idle). Rotations are read with it divided out, link offsets and soles multiplied in.
         self.S = profile.get('scale', 1.0)
