@@ -1476,6 +1476,20 @@ import's (343 / 485 / 565 / 481 triangle hits to 340 / 402 / 448 / 473 in the id
 (arm_l against torso, hips against arm_l in the run, tail against leg_r in the run).
 A second pass gave Bearmon the personality of a starter: see the table row above.
 
+Species 432 (Bastemon): `field_animations/bastemon_gait.py` (test `tools.test_bastemon_gait`, `BASTEMON_MODEL` from `edit.py get 432`)
+is the overlay generator of its import ('bastemon-field' in `content/models/imports/species.py`): it runs the celebrations' build
+(chibi proportions and the salute) and then writes the idle, walk, tired walk and run again from one gait phase per clip. The
+earlier clips were not planted (stance slip 39 % mean and 141 % worst in the walk, 27 and 184 % tired) and the run went at 38.5 units a tick.
+Now `quadruped.py` plants each sole and the body sits lower on bent knees (the chibi legs are nearly straight at rest, so a planted stride
+needs the bend); the hips and the body wind against each other, the upper arms swing against the legs on their sides with a late
+forearm, the head follows late, the hair and the two hip ribbons carry a wave down each chain (they stream out in the run) and every
+loose part passes through a spring; two eased cycles per clip. Walk 12 ticks a cycle at 15 units a tick (24 ticks), tired walk 14 at 10.5
+(28), run 10 at 36 (20), idle 60. Studio stance slip (mean, worst; the studio counts the foot bone): walk 3 and 7 %, 5 and 43 % (two feet); tired 19 and 40 %, 14 and 33 %; run 12 and 36 %, 12 and 36 % (the
+foot bone is still counted while the heel peels; the soles themselves are planted to under 1 %, as `quadruped.py` measures). Weaker: ten part pairs
+brush a few vertices more than the chibi clips do (ribbon against arm and thigh, forearm and head against the torso, thighs against the hips in
+the tired walk; 344 against 346 in the pair maxima summed, pinned in the test), and the swinging feet of the walk and the tired walk step
+3.4 to 3.6 times their median tick (every other bone stays under 2.5).
+
 Species 354 (Renamon): `field_animations/renamon_gait.py` (test `tools.test_renamon_gait`, `RENAMON_MODEL` from `edit.py get 354`)
 is the overlay generator of its import ('renamon-field' in `content/models/imports/species.py`): it applies the chibi
 proportions and then writes the idle, walk, tired walk and run again from one gait phase per clip. The chibi clips replayed the
