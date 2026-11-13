@@ -1340,6 +1340,17 @@ ground markers, bones 22 and 23, which now follow the claw fans instead of the t
 Parts touch a little more than before (the head and the right arm 24 triangles, the left arm in the head 48 against 32, a leg in the
 torso 58 against 47 in the run). The resident model uses 81,664 of 100,352 bytes.
 
+Omnimon 461 (`tools/models/field_animations/omnimon_gait.py`, test `tools.test_omnimon_gait`) kept its feet and loosened everything above the hips.
+Its walk, tired walk and run were one short cycle of plain sines (a chest turning a clean 10 degrees, a head that hardly moved, two arms
+swinging as mirror images, a cape moving 4 to 10 degrees, a run that leaned no more than the walk). The pelvis, both legs and the root
+motion are byte for byte the stored ones (speeds 16.1, 11.0 and 38.1, slip and soles as before); the three gaits are now two cycles that
+differ (40, 48 and 24 ticks): the chest sinks and nods after each landing (the first of the pair heavier) and trails the hips on a spring,
+the head takes part of the chest's turn late and nods against the landings, the arms swing behind the legs with a lag and an overshoot,
+the forearms later, with different gains per cycle and side, and the cape streams with the speed, swings against the chest and flutters on two
+slow waves, its tail later than its base; the tired walk slumps (chest 6.5 and head 9 degrees forward) and the run leans 7.5 degrees.
+Hands and arm plates are kept 3 units over the floor by turning the shoulder the least needed (the lean put the cannon hand under it).
+The idle gets a slow breath and a cape drift. Baked delta (the generator reads the stored model, pinned by SHA-256); resident 90,074 of 100,352 bytes.
+
 Dinohyumon 308 (`tools/models/field_animations/dinohyumon_gait.py`, test `tools.test_dinohyumon_gait`) had clips whose
 feet flipped (toe yaw up to 167 degrees), a tired walk that slid its soles (172 % mean, 446 % worst), only one to four
 ticks of stance in 17, uneven root steps and a run whose arms hardly moved. The overlay runs the chibi reshape and then

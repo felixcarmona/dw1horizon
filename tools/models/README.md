@@ -125,6 +125,11 @@ and 40 units a tick, with WarGreymon's kind of gait (planted soles, counter-turn
 The ground markers (bones 22, 23) follow the claw fans. Registered with `edit.py put 404`; test `tools.test_blackwargreymon_gait`
 (`BLACKWARGREYMON_MODEL`, from `edit.py get 404` on the commit before the clips).
 
+Species 461 (Omnimon): `field_animations/omnimon_gait.py` rewrites slots 0, 2, 3 and 4 of the stored model: legs, pelvis and root motion untouched,
+the walk, tired walk and run as two different cycles (40, 48 and 24 ticks) with a chest on springs, a head that follows late, arms and cape
+with lag and overshoot, and a shoulder clearance that keeps hands off the floor. Registered with `edit.py put 461`; test `tools.test_omnimon_gait`
+(`OMNIMON_MODEL`, from `edit.py get 461` on the commit before the clips).
+
 Species 322 (Kyukimon): `field_animations/kyukimon_gait.py` is a field overlay (like Dinohyumon's): it applies the chibi
 proportions and then writes slots 2, 3 and 4 again with `quadruped.py` on the two legs, in two different cycles each (32, 44 and 28
 ticks) at 18, 13 and 36 units a tick with planted feet. One gait phase drives the whole body: hips, body and chest wind against each
