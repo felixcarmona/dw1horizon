@@ -491,10 +491,8 @@
     ]
   },
   "209": {
-    "source_sha256": "1076d804c861f905f58a3d4ea9ca290ebe4e29725ec2dab10f962e9810c28c4a",
-    "slots": [
-      42
-    ],
+    "source_sha256": "946402b5de784c8823f10a442b81c79e0734c67a9323b9166dcab075ffc46551",
+    "slots": [],
     "pelvis": 1,
     "chest": 2,
     "head": 3,
@@ -682,10 +680,11 @@
     "skeleton_sha256": "22474e5a3a32baa0dcd6f256130fff4526c6a451db5607b0f07c1727a509032e"
   },
   "233": {
-    "source_sha256": "ecf9cb3d3bca06b3751f51e6b44358b3c70732a262eb3a60b464b370d061f2ab",
+    "source_sha256": "f5056ddda6db4a59d089c0441d828d8d34fef21eb71095fc663859bc64486471",
     "slots": [
       42
     ],
+    "rest_slot": 0,
     "pelvis": 6,
     "chest": 1,
     "head": null,
@@ -1356,11 +1355,12 @@
     ]
   },
   "335": {
-    "source_sha256": "903c8d5492d91680921946fd7f4c27a3a480107d71cd2315443a11f31c129705",
+    "source_sha256": "48e7803c15f852186419bc9e867e90618523ba378a502fc284bcd74b5bf59c6f",
     "slots": [
       11,
       42
     ],
+    "rest_slot": 0,
     "pelvis": 1,
     "chest": 1,
     "head": 17,

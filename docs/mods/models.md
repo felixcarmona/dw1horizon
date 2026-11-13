@@ -257,7 +257,9 @@ Consequences:
 
 Standard library only (own PNG code). It reads names, `boneCount` and
 skeletons from `extracted/SLUS_010.32`; the type comes from the file name
-(`--type` if it is renamed).
+(`--type` if it is renamed). A native-bound species' final model has the bone count of its generated rig (the overlay's
+`NAME-report.json` `generated_skeleton`), not the species file's: `MMD.load` reads that report next to the model and
+`Exe.use_generated_skeleton` takes the count through the build's own `para_from_json`.
 
 ```bash
 python3 tools/mmd.py info extracted/CHDAT/MMD0/AGUM.MMD          # objects, primitives, skeleton, slots

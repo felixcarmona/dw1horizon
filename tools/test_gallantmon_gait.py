@@ -25,7 +25,7 @@ from motiondiscidentity import changed_programs
 from tools.models.field_animations import gallantmon_gait as gait, quadruped
 from tools.test_tortomon_gait import inside, DIRS
 
-EXPECTED = '873883c3e9fe8b7ea69b6ad2c1050891e7576ef707b92278b42ccc3230f7f585'
+EXPECTED = '2a012c8850c10e2f9bd3173941e6436f3187b087c11178f2ad6b3a282a1b8ba9'
 BONES = 28
 TICKS = {2: 24, 3: 30, 4: 18}
 IDLE_TICKS = 120
@@ -320,9 +320,11 @@ class GallantmonGait(unittest.TestCase):
                 world = mesh.world(mmd.bone_matrices(self.new, p)).astype(float).reshape(-1, 3)
                 self.assertGreater(-float(world[:, 1].max()) - pose[0][7], -6, slot)      # the lowest vertex, floor at 0
 
-    def test_battle_slots_play_the_field_clips(self):
-        for twin, slot in ((33, 0), (35, 2), (36, 4)):
-            self.assertEqual(self.new.anims.table[twin], self.new.anims.table[slot], twin)
+    def test_battle_slots(self):
+        # 0x21 and 0x23 are the source game's own battle clips (docs/reference/motion.md); 0x24 stays the run's twin
+        for own, slot in ((33, 0), (35, 2)):
+            self.assertNotEqual(self.new.anims.table[own], self.new.anims.table[slot], own)
+        self.assertEqual(self.new.anims.table[36], self.new.anims.table[4], 36)
 
 
 if __name__ == '__main__':

@@ -3,6 +3,9 @@
 The paced DW2 clip carried the front claws with the body. Both arms now
 fold, lift and reach as forelegs, in a four-beat walk and diagonal trot.
 The compound hind chain keeps its hock articulation and native link lengths.
+
+Battle slot 0x21 stays the twin of the field idle (rewritten here where it is stored): the source's own battle idle
+loops with a seam of 0.063 heights and main's does not (tools/models/battle_qa.py). The other battle slots are the source's.
 """
 from tools.models.field_animations import supported
 

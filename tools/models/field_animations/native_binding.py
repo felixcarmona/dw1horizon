@@ -18,7 +18,7 @@ import mmd
 import motionstorage
 import numeric as np
 import retarget
-from tools.models.field_animations import native_arms, native_hands, native_jaws
+from tools.models.field_animations import native_arms, native_battle, native_hands, native_jaws
 from tools.models.field_animations.reviewed import reviewed
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -206,11 +206,15 @@ def bind(data, skeleton, recipe, placements=None):
         return index
     items = {b: [] for b in range(len(extended))}
     fitted = {}
+    battle_pieces, lows = {}, [-1e9, -1e9]       # the pieces' fitting rotations, for battle_originals (native_battle.py)
     spin_poses = {}
     mirrors = {int(k): v for k, v in recipe.get('mirror', {}).items()}
     for sb, tb in sorted(mapping.items(), key=lambda item: item[0] in mirrors):
         if sb in mirrors:
             items[tb].append(mirror_piece(mesh, skeleton, sb, mirrors[sb], fitted, nw[tb]))
+            twin = next(row for row in battle_pieces.get(mapping[mirrors[sb]], []) if row[0] == mirrors[sb])
+            flip = [[-1, 0, 0], [0, 1, 0], [0, 0, 1]]
+            battle_pieces.setdefault(tb, []).append((sb, native_battle._mul(native_battle._mul(flip, twin[1]), flip), twin[2]))
             continue
         obj = skeleton[sb][0]
         original = mesh.tmd.objects[obj]
@@ -276,7 +280,13 @@ def bind(data, skeleton, recipe, placements=None):
             transform = np.column_stack([x, y, np.cross(x, y)]) @ source.T * factor
         anchor = np.array(rule.get('anchor', sw[sb, :3, 3].tolist()))
         destination = nw[rule.get('joint', tb), :3, 3] + np.array(rule.get('offset', [0, 0, 0]))
+        lows[0] = max(lows[0], float(points[:, 1].max()))
         points = (points-anchor) @ transform.T + destination
+        lows[1] = max(lows[1], float(points[:, 1].max()))
+        joint = rider_pivot(rider_of[sb]) if sb in rider_of else nw[tb, :3, 3]
+        if sb not in spun:
+            battle_pieces.setdefault(rider_of.get(sb, tb), []).append(
+                (sb, native_battle.polar(transform.tolist()), float(((points-joint)**2).sum())))
         if placements is not None:
             placements[sb] = (anchor, transform, destination)
         normals = np.array(mesh.tmd.obj_norms(obj)[:original.nnorm]).reshape(-1, 4)[:, :3]
@@ -358,6 +368,14 @@ def bind(data, skeleton, recipe, placements=None):
     for destination, source in recipe.get('extra_slots', {}).items():
         result.anims.table[int(destination)] = slots[source]
     output = result.build()
+    if recipe.get('battle_originals'):
+        rest = animsheet.slot_frames(mmd.MMD.parse(output, len(rig)), len(rig), 0)[0][0]
+        yaw = None
+        if recipe.get('source_yaw'):
+            cy, sy = math.cos(math.radians(recipe['source_yaw'])), math.sin(math.radians(recipe['source_yaw']))
+            yaw = [[cy, 0, sy], [0, 1, 0], [-sy, 0, cy]]
+        battle = native_battle.context(mesh, skeleton, source_pose, yaw, rig, rest, battle_pieces,
+                                       {rider_bone[r['name']]: r['pivot'] for r in riders}, mapping, lows)
     if recipe.get('arm_pump'):
         output = native_arms.run_arms(mmd.MMD.parse(output, len(rig)), rig, recipe['arm_pump'])
     if recipe.get('pace'):
@@ -392,6 +410,10 @@ def bind(data, skeleton, recipe, placements=None):
     if spin:
         # drums that turn about their own axis (their bones below the donor's), written last: no step above reshapes them
         output = add_spin(output, rig, spin)
+    battle_proof = None
+    if recipe.get('battle_originals'):
+        # the source game's own battle clips on the donor rig, for the slots that measured sound (native_battle.py)
+        output, battle_proof = native_battle.apply(output, battle, recipe['battle_originals']['slots'])
     storage = motionstorage.require(output, len(rig))
     proof = dict(species=sid, source_sha256=digest(data), output_sha256=digest(output),
                  donor=donor_id, generated_skeleton=rig, storage=storage, species_patch=patch)
@@ -399,6 +421,8 @@ def bind(data, skeleton, recipe, placements=None):
         proof['chibi'] = chibi_proof
     if gait_proof:
         proof['gait'] = gait_proof['checks']
+    if battle_proof:
+        proof['battle_originals'] = battle_proof
     return output, proof
 
 

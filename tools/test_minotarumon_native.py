@@ -22,7 +22,7 @@ BONES = 18
 BUFFER = 100352
 TICKS = {0: 16, 2: 22, 3: 30, 4: 20}                     # idle, walk, condition walk, run
 SPEEDS = {2: 18.0, 3: 13.0, 4: 41.0}                     # the recipe's units per tick, kept by the retiming
-TARGET_SHA256 = '77f3a8aabc93c2c7ba911ca14f5e4a372ba3e2e2811a52f4d21198b6b1d2ca89'
+TARGET_SHA256 = '1f80de01a3be6010d70ac4ec49af61cbfeda590991a9511c849555a2fd047e18'
 
 
 class MinotarumonNative(unittest.TestCase):
@@ -126,11 +126,20 @@ class MinotarumonNative(unittest.TestCase):
             self.assertTrue(0 <= row[4] < BONES, row)
             self.assertTrue(0 <= row[0] < BONES, row)
 
+    def test_battle_originals(self):
+        # the source game's own battle clips, retargeted onto the donor rig; all but the idles (which loop at their own
+        # speed) as long as the donor's clip they replace, since technique effects are timed to it
+        made = self.proof['battle_originals']
+        self.assertEqual(sorted(int(s) for s in made), self.recipe['battle_originals']['slots'])
+        for slot, row in made.items():
+            if int(slot) not in (33, 34):
+                self.assertEqual(row['frames'], row['donor_frames'])
+
     def test_the_buffer_holds(self):
         info = motionstorage.require(self.data, BONES)
         self.assertTrue(info['fits'])
         self.assertLess(info['resident_bytes'], BUFFER)
-        self.assertEqual(info['resident_bytes'], 76934)
+        self.assertEqual(info['resident_bytes'], 87818)
         for read in info['cold_reads']:
             self.assertTrue(read['fits'], read)
 

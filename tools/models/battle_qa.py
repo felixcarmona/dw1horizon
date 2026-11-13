@@ -16,9 +16,9 @@ native binding and passes; not the `edit.py get` intermediate) slot by slot agai
              moves is a missing bone map (a static front leg)
   bonemap    a bone that never rotates over the four battle slots while it rotates in the baseline's battle clips
   mesh       the rigid pieces as the engine draws them (one TMD object per bone): non-finite numbers and scale channels,
-             the largest vertex step between ticks, the loop seam (last tick to first), each piece's gap growth to the
-             nearest other piece against the field idle (a foot that leaves its leg, as `meshcheck.tears`), triangle
-             crossings per tick between pieces that are not parent and child against the field idle's
+             the largest vertex step between ticks, the loop seam (last tick to first; a looping clip only), each piece's
+             gap growth to the nearest other piece against the field idle (a foot that leaves its leg, as
+             `meshcheck.tears`), triangle crossings per tick between pieces that are not parent and child against the field idle's
   posture    the forward-axis elevation of the body bones (bones in no limb chain: pelvis, chest) against the field idle
              (a torso tipped back or forward), the lowest vertex under the field idle's floor, the body floating
   motion     the movement slots' length against main's (technique timing), the root's excursion, the bones' mean
@@ -375,7 +375,7 @@ def check(F, A, M, slots=BATTLE, polished=()):
             flag('scale', f'scale of bone {b} off by {oF.max():.2f} (main {oM[3 * b:3 * b + 3].max():.2f})')
         if mF['jump'] > JUMP_MAX[g] or (mA and mF['jump'] > 1.25 * mA['jump'] + 0.05):
             flag('jump', f'vertex step {mF["jump"]:.3f} h a tick (source {mA and round(mA["jump"], 3)})')
-        if mF['seam'] > SEAM_MAX and mF['seam'] > mM['seam'] + 0.01:
+        if fF[1] is not None and mF['seam'] > SEAM_MAX and mF['seam'] > mM['seam'] + 0.01:   # only a looping clip has a seam
             flag('seam', f'loop seam {mF["seam"]:.3f} h')
         if mF['tear'][0] > TEAR_MAX:
             flag('tear', f'piece {mF["tear"][1]} leaves the body by {mF["tear"][0]:.3f} h at tick {mF["tear"][2]} '

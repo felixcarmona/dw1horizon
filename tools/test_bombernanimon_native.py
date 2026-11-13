@@ -68,6 +68,16 @@ class BomberNanimonNative(unittest.TestCase):
         self.assertTrue(storage['fits'])
         self.assertLessEqual(storage['resident_bytes'], storage['resident_limit'])
         self.assertEqual(storage['resident_limit'], 100352)
+        self.assertEqual(storage['resident_bytes'], 75080)
+
+    def test_battle_originals(self):
+        # the source game's own battle clips, retargeted onto the donor rig; all but the idles (which loop at their own
+        # speed) as long as the donor's clip they replace, since technique effects are timed to it
+        made = self.proof['battle_originals']
+        self.assertEqual(sorted(int(s) for s in made), self.recipe['battle_originals']['slots'])
+        for slot, row in made.items():
+            if int(slot) not in (33, 34):
+                self.assertEqual(row['frames'], row['donor_frames'])
 
     def test_every_piece_is_bound_once(self):
         objects = sorted(o for o, _ in self.rig if o >= 0)

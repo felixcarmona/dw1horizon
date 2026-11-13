@@ -22,7 +22,7 @@ BONES = 28
 BUFFER = 100352
 TICKS = {0: 60, 2: 20, 3: 22, 4: 14}                     # idle, walk, condition walk, run
 SPEEDS = {2: 16.0, 3: 11.0, 4: 38.0}                     # the gait stage's units per tick
-TARGET_SHA256 = '86da4e54de9a40cdfe25ada04e72296846d6230a500aacbef8f36e7c5c722b98'
+TARGET_SHA256 = 'ea02a76f545100dd0fca545b5f93ffe113180e099a27441a4ed0818f5f119328'
 
 
 class MegaKabuterimonNative(unittest.TestCase):
@@ -129,11 +129,20 @@ class MegaKabuterimonNative(unittest.TestCase):
             self.assertTrue(0 <= row[4] < BONES, row)
             self.assertTrue(0 <= row[0] < BONES, row)
 
+    def test_battle_originals(self):
+        # the source game's own battle clips, retargeted onto the donor rig; all but the idles (which loop at their own
+        # speed) as long as the donor's clip they replace, since technique effects are timed to it
+        made = self.proof['battle_originals']
+        self.assertEqual(sorted(int(s) for s in made), self.recipe['battle_originals']['slots'])
+        for slot, row in made.items():
+            if int(slot) not in (33, 34):
+                self.assertEqual(row['frames'], row['donor_frames'])
+
     def test_the_buffer_holds(self):
         info = motionstorage.require(self.data, BONES)
         self.assertTrue(info['fits'])
         self.assertLess(info['resident_bytes'], BUFFER)
-        self.assertEqual(info['resident_bytes'], 90718)
+        self.assertEqual(info['resident_bytes'], 99204)
         for read in info['cold_reads']:
             self.assertTrue(read['fits'], read)
 

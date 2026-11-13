@@ -3,7 +3,7 @@
   "name": "LadyDevimon",
   "threshold": 0.02,
   "source_sha256": "a6130fe5d4cb15267011f7c200c455d63511921d0bf049333a56cd9447e6b4bd",
-  "output_sha256": "0090d82f08efb0bfde3c8d35fc51dd7b97931f42c007471111ca5de18d752bec",
+  "output_sha256": "de6d18f67f7f30cbd1662fc505c2106e73335a7962e5399e1d5c1cf2a8a099dc",
   "preceding_provider": {
     "model": "223-LadyDevimon.MMD",
     "aliases_applied": true,

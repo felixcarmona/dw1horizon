@@ -741,9 +741,9 @@
   "name": "MegaGargomon",
   "bones": 27,
   "skeleton_sha256": "7e432b6bbde2c831b4f41d3041b60ca2b7be8a671371c85d04fa906b20041291",
-  "source_sha256": "903c8d5492d91680921946fd7f4c27a3a480107d71cd2315443a11f31c129705",
+  "source_sha256": "48e7803c15f852186419bc9e867e90618523ba378a502fc284bcd74b5bf59c6f",
   "base_generator": "tools.models.field_animations.imported_equipment",
-  "post_source_sha256": "2c909f1527fd491355f22a9c908896f8df9b5c77157ce4edc831d82dc7936ff2",
+  "post_source_sha256": "b51ef353dcfa3194885c40c20fe7fa65d4bfcca0baca83e7a2fb0d592c518d09",
   "slots": {
    "2": {
     "from": 2,
@@ -848,7 +848,7 @@
   "skeleton_sha256": "9f02557f6d97eff22598f695be6b093f33e128c0574ba35b2871a8df4854a0a4",
   "source_sha256": "40dc5354af4b00f3d2991db08be5b6835aa0fef8e40f258d6b76285116945aef",
   "base_generator": "tools.models.field_animations.metal_garurumon",
-  "post_source_sha256": "3ebdc1c0ef4bc4370e3e86341bdec67c94307eb7b92932d4a71d59d2ef26864c",
+  "post_source_sha256": "7fe4b09f9ad553743c632d9763a4ceb4a0fe4925eda56e8aae7eb0cb43d20a72",
   "slots": {
    "3": {
     "from": 2,

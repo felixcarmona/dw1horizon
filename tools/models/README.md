@@ -14,6 +14,8 @@ setup, coverage limits and interpretation.
 ```sh
 python3 tools/models/edit.py get 183
 python3 tools/models/edit.py --from build/everything check 183 --species-pins
+# edit.provider_output(id, model, tim) = the final provider model + species file; its model.skeleton (a native binding's
+# generated rig) is the bone count to parse it with: mmd.MMD.load does it from the NAME-report.json next to the model
 python3 tools/models/verify_deltas.py verify --sources DIR
 python3 tools/models/audit_origins.py --help
 python3 tools/models/audit_textures.py disc DISC_DIR   # faces sampling noise, palettes or empty texels
@@ -298,12 +300,19 @@ extraction, and `edit.py` hands that model to the provider pin and `chibi_propor
 piece unevenly along the world axes. After Growlmon's delta changes, renew `donor_sha256` in the recipe and re-pin 326
 (`edit.py put 326 FILE --force`). Test: `tools.test_native_bindings` (needs `edit.py get 320`).
 
+A recipe's `"battle_originals": {"slots": [...]}` retargets the source game's own battle clips of those slots onto the
+donor rig after the bind (`field_animations/native_battle.py`; the rule is in `docs/reference/motion.md`, "Natively bound
+species"). Prove every slot with `battle_qa_native.py check ID FINAL B.MMD MAIN.MMD [--slots ...] [--json OUT]` (B is
+the binding's source, MAIN main's final model) and list only the passing slots that keep the resident buffer under
+100,352 B. Used by 183, 205, 232, 256, 260, 295, 330, 430 and 460.
+
 BomberNanimon (232) wears native Nanimon's (53, `NANI.MMD`) 20-bone skeleton and every animation program, unchanged
 (scale 1): its 13 rigid pieces map one to one onto Nanimon's joints (arms and legs swung joint to joint, gloves and
 boots turned with their forearm and shin, the body and fuse set 4 up and 22 forward of its old place) and its
 techniques play Nanimon's clips (training slot 57 is Nanimon's training clip, hit tick 10). Recipe `232` in
 `native-bindings.json`; the overlay runs on the model of the plain delta, whose earlier boxer clips stay only as
-provenance. `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_bombernanimon_native` (after
+provenance. Its source battle clips 0x21-0x23, 0x28, 0x29, 0x2C, 0x30, 0x31, 0x34, 0x35, 0x37 and 0x38 are the import's own
+(`battle_originals`, 75,080 B resident); the other slots stay Nanimon's. `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_bombernanimon_native` (after
 `edit.py get 232`) pins the field slots to Nanimon's.
 
 Replay the native binding checks with the original DW1 extraction present:
