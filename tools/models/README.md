@@ -666,6 +666,18 @@ the body's twist, the face and fangs (22, 23) and the two palps (24-27) move sof
 middle leg paw once in place). Stance slip is under 2 % on average; slot 33 follows the idle; the resident animation buffer ends
 at 93,940 of 100,352 bytes. `tools/test_dokugumon_gait.py` covers it.
 
+Armageddemon's (407) walk, condition walk and run (25/25/21 ticks) swung the six long legs as one block (foot slip 75 to
+138 %) and the condition walk sank the body 200 to 390 units. `field_animations/armageddemon_gait.py` is an offline model
+delta over slots 0, 2, 3 and 4 only (the gestures and attacks stay): each three-bone leg (9-11, 12-14, 15-17 right; 18-26
+left) is solved from the middle of its flat sole so the sole stands still on the floor in stance. Two groups of three
+alternate (front right, middle left, rear right, then the others), every swing starts and ends on a whole tick and the
+foot rises first, travels over the ground in the middle of the swing and comes down on its place: walk 24 ticks (two
+strides of 12) at 22 units, condition walk 36 (two of 18) at 14 with the body 40 units lower and one leg lifted every
+three ticks, run 16 (two of 8) at 42 with a flight phase. The neck and head (2, 3) lag the body's twist, the jaw (4) twitches,
+the tail (5-8) follows the body with a travelling wave and droops when tired. Idle 72 ticks (breathing, three legs paw
+once). Stance slip is under 8 % on the studio metric and the resident animation buffer ends at about 73,000 of 100,352
+bytes. `tools/test_armageddemon_gait.py` covers it.
+
 Arukenimon's (311) idle, walk, condition walk and run (70/22/20/18 ticks) swung the six legs as rigid posts (foot slip 75 to
 120 %), the condition walk rolled the body 40 degrees and folded three legs 100 to 280 units off the floor (109 vertices of
 an arm inside the body), the sleeves flailed 110 degrees in every clip and the run travelled at 66 units a tick.
