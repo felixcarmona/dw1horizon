@@ -137,6 +137,13 @@ bytes. A side effect of re-encoding Growlmon's clips: WarGrowlmon's tired walk (
 also reads the reviewed source through `reviewed.py`, so a variant release's own import of a native-bound species
 (Kyubimon on the USA World 3 disc) builds with the reviewed recipe.
 
+Species with a Digimon World 3 (USA) variant (`content/modeldelta/variants/dw3-us.json`) are restored on the PAL
+import and `tools/models/variants.py make` carries the delta: a restored slot is no edit of ours, so the USA model keeps
+that release's own battle clip, and the QA is run on both releases' final models. Ebidramon 0x21, Antylamon 0x21,
+MaloMyotismon 0x21-0x24 and Kurisarimon 0x21 are the source's again (the Ebidramon and Kurisarimon generators no
+longer write the idle twin); Ebidramon's 0x24 (its body tipped 35 degrees, main 18) and Renamon's 0x21 (26 triangle
+crossings a tick on the reshaped rig, main 1) stay main's.
+
 Slots 6, 0x14, 0x1A, 0x1C-0x20, 0x26 and 0x27 are the tamer's, NPCs' and the kart race's. Which slots a partner must
 have, and the lint rule for each: [imported-species.md](imported-species.md), "What the game asks of every partner".
 

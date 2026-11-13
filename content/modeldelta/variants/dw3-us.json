@@ -33,16 +33,16 @@
      }
     ],
     "delta": "content/modeldelta/deltas/dw3-us/305-Ebidramon.MMD.mdelta",
-    "delta_sha256": "60709367ab0468d4d95775b15e2ebe56d5241945a76b13b7cbc23e66f99b1a10",
-    "sha256": "7dc22646fe9e5396d3f03ee2aa31079f158aebe2d0a93771ebdda02f674130af",
-    "size": 102208
+    "delta_sha256": "10b0519689a4934f512bbbb7f6175eae322e529e69e585fa5ae78d02db6d24a6",
+    "sha256": "e36d747d73d35325f19d44c30869a02ed60145ef387912acd6d47a833b346a9c",
+    "size": 103220
    },
    "from": {
-    "sha256": "c37d141bfd4faac30a15c9ca5231aeddd41544e42efabded587677f093119841",
-    "delta_sha256": "d71842340e039528b9245edaec3890fd364e1f7c829a15e2b15736dd3953e849",
+    "sha256": "b3aec6591c4989087c7d0ed3c5fc28921d007523eb9cd525831e6b73c9b80b70",
+    "delta_sha256": "788a3b92c17c29cc824eacf3020a11c9cfe4c6bf54c8fa57f09d9a87433f982f",
     "add_bytes": [
-     11755,
-     11755
+     11752,
+     11752
     ],
     "foreign_windows": 0,
     "objects_other": [
@@ -59,7 +59,6 @@
      0,
      1,
      18,
-     33,
      2,
      3,
      4,
@@ -77,13 +76,13 @@
      }
     ],
     "delta": "content/modeldelta/deltas/dw3-us/309-Antylamon.MMD.mdelta",
-    "delta_sha256": "4d26fbb1c3dc31a1c420fe77d30b3ccd400648a9fd8930490707028a2a82b592",
-    "sha256": "06869d3f8fbeaaf529c405cf02b873385b0261f7727a1df71d629131c1097f90",
-    "size": 102430
+    "delta_sha256": "9bcdd15b56d3424981f00acacff3d49732b9a7ff36830b52008ec2320945a0c2",
+    "sha256": "6a9eded1c6cb105efeead8fb26f61d80864b8219622822a304a04ecfabe1d66d",
+    "size": 103174
    },
    "from": {
-    "sha256": "f4eb05b11edcd7fe11596c778cea5b59c5a27cbef75e3ec02610772d4ee663c4",
-    "delta_sha256": "05aeabdaf69b2bce9bbff873527614c327aeb6c6b0b4fad7c4fe215f9b645614",
+    "sha256": "b55395154ee8498b7933a7a3ff909cf3dca9c1e16cc344362e06802ba623a2d0",
+    "delta_sha256": "91b713aecff51acca6f6874601fd39df1d42bf130d02a6df4901e91b0b3df6f2",
     "add_bytes": [
      8793,
      8793
@@ -95,7 +94,6 @@
     ],
     "slots_ours": [
      0,
-     33,
      1,
      18,
      2,
@@ -257,16 +255,16 @@
      }
     ],
     "delta": "content/modeldelta/deltas/dw3-us/406-MaloMyotismon.MMD.mdelta",
-    "delta_sha256": "849627e8c2c00ad3d8c7412c656fd68e6870dc4153ce556b42b96e258dc27258",
-    "sha256": "9a212f26c602e55f6a8f8253d9e292bb244512a5a21e23602b02df8dc97dd5f7",
-    "size": 100214
+    "delta_sha256": "0f785f0deddaed461c6f10c655015f8689f8e72a9c9c5219dec4242b444844a5",
+    "sha256": "38f2037dca66578bff45ce770f4e0abdec80e966335716e647d6e0b87c0ad004",
+    "size": 104608
    },
    "from": {
-    "sha256": "e911480fee8cde2540ce5facc7186a92bda285353ec2f3ffb40959df1d262a4d",
-    "delta_sha256": "0f1c694090b7d40aac7ec929551bd8042d08189bb9ffc181bff5bad709dfeb47",
+    "sha256": "583622cccd1860d9723de82578c13d14caeb1046677a921e262e920a48724d57",
+    "delta_sha256": "622904c146397f84227345bc373899342557b37d25de8b6ecb052125cc72f95a",
     "add_bytes": [
-     10235,
-     10235
+     10234,
+     10234
     ],
     "foreign_windows": 0,
     "objects_ours": [
@@ -308,12 +306,9 @@
      16,
      17,
      18,
-     34,
      2,
-     35,
      3,
      4,
-     36,
      19,
      21,
      22,
@@ -340,7 +335,6 @@
      48,
      50,
      58,
-     33,
      40,
      41,
      54,
@@ -578,16 +572,16 @@
      }
     ],
     "delta": "content/modeldelta/deltas/dw3-us/431-Kurisarimon.MMD.mdelta",
-    "delta_sha256": "28a10e4bb5d5522d7b8d73887f88588b05e270346c2d7c486728e0382b2dd54e",
-    "sha256": "98337ed9a4a446c91ac91e1bdc06c533f196fbfece051e38639740a38d77d3fc",
-    "size": 113342
+    "delta_sha256": "f26145c15b1790f83a988f0724aa623fe13285a29840f423e101629877232187",
+    "sha256": "8c1f3e5bc4e587e4c9e9228dadd5039656d4efd606725f9f717276f06bee83cd",
+    "size": 114574
    },
    "from": {
-    "sha256": "7d9a6e19ca442929fdc950f7188a2d3927250fbef963e580979902b3f1ceb4c9",
-    "delta_sha256": "a252821a07e8e4b486aa54e409d8723d20db312d6d2cc387670b5ca6fdcc7374",
+    "sha256": "0427df480be2bd29185a1cd0652147b66efe5636f6a96ea55516dae9c4c45fd2",
+    "delta_sha256": "4d5d7ec9bf976f913c549dc2161b8ed65ba09acc81e4b40a546315dd86b9634f",
     "add_bytes": [
-     32198,
-     32198
+     32196,
+     32196
     ],
     "foreign_windows": 0,
     "objects_ours": [
@@ -609,7 +603,6 @@
      0,
      1,
      18,
-     33,
      2,
      3,
      4
@@ -618,7 +611,7 @@
   }
  },
  "reviewed_as": {
-  "dde68b04079e20c830b9b0e268c04d9881cd7d3bd207e822138f7123d6f00431": "8084c949a12fc8c6225ec6d070b45e0b69f8e0ab99e1ec8ceec8e2d8942c6fbd",
+  "4efdf24ad14634d17724d8b40f150064924f74930088914c16470ba7544ca1f9": "15e07d0b929c03ab295a54a4b2dda99d1956db5d5dc1cbe34058c96b2dfc948e",
   "2cdfcf7a857a69edc85adbea4b7f3455b8c5d324406f8af25529a41199187edd": "2ed6036bb45479090f9417bd62f041928d516dffb65b4daeae30b5d9e33d604b",
   "d1d538b5591c362f927244782c39af0dbce376327ebb722ad744b2555255d959": "41c85848a4886d9b8d9bc07df8d1584bd1a2890384cf4969ded96fc233fb68db",
   "1c06236db26cc8f3460e0892b5d0c2f4311637de1f84ac86075a370603bccacc": "234348cb00b8724fbc66d1e4e9900a57255ba0da07b3cccb003ca9dd53b07468",
