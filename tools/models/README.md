@@ -206,6 +206,13 @@ The body, head, beak and rump are written by the module's `body` hook, the toes 
 `python3 -m tools.models.field_animations.kiwimon_gait --source SRC --out AFTER.MMD`, then `tools/models/edit.py put 282 AFTER.MMD`;
 check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_kiwimon_gait`.
 
+Pukumon (401): `field_animations/pukumon_gait.py` rewrites the idle, walk, tired walk and run (slots 0, 2, 3, 4; the battle
+slots 33, 35, 36 keep a copy of the old clips). The imported clips of the whole model hold the left arm up (shoulder and
+forearm pitched back about 180 degrees together) and share one fin, tail and jaw cycle; the rig itself mirrors. The fists are the
+feet: `quadruped.Rig`'s two-bone solve plants each one (the left arm the right one mirrored), the body is written from them.
+`python3 -m tools.models.field_animations.pukumon_gait --source SRC --out AFTER.MMD`, then `tools/models/edit.py put 401 AFTER.MMD`;
+check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_pukumon_gait`.
+
 DemiDevimon (236) binds its imported mesh to Birdramon's native skeleton and
 programs through `field_animations/native_binding.py`. The recipe in
 `content/models/imports/native-bindings.json` assigns every rigid piece, fits
