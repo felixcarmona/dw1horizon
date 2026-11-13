@@ -69,8 +69,15 @@ class ModelProvider(unittest.TestCase):
             '289': ('289', 'tools.models.field_animations.native_binding', '289-chaoslord-native'),
             # GrapLeomon wears native Leomon's rig and programs, with four turning drums.
             '306': ('306', 'tools.models.field_animations.native_binding', '306-grapleomon-native'),
+            # Kyubimon wears native Garurumon's rig and a planted-sole gait on it.
+            '409': ('409', 'tools.models.field_animations.native_binding', '409-kyubimon-native'),
             # Minotarumon wears native Ogremon's rig and programs.
             '330': ('330', 'tools.models.field_animations.native_binding', '330-minotarumon-native'),
+            # NeoCrimson wears WarGreymon's rig, its parts bound by the recipe, and WarGreymon's gait (neocrimson_wg_gait.py).
+            '402': ('402', 'tools.models.field_animations.native_binding', '402-neocrimson-native'),
+
+            # Cannondramon wears native Monochromon's rig and programs, planted by its own gait stage.
+            '405': ('405', 'tools.models.field_animations.native_binding', '405-cannondramon-native'),
             # Vilemon wears native Ogremon's rig and programs.
             '295': ('295', 'tools.models.field_animations.native_binding', '295-vilemon-native'),
             # HiAndromon wears native Andromon's rig and programs.

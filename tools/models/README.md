@@ -53,6 +53,12 @@ and a scheduled foot roll. `python3 -m tools.models.field_animations.clockmon_ga
 (SRC from `edit.py get 290` before the change), then `edit.py put 290 DIR/290-Clockmon.MMD`; the reviewed-source pin in
 `content/models/imports/celebrations.json` follows the new model. Test: `tools.test_clockmon_gait` (`CLOCKMON_MODEL`).
 
+Species 408 (Suijinmon): `field_animations/suijinmon.py` writes slots 2, 3 and 4 (a 14-tick diagonal walk, a 21-tick tired walk and a 14-tick
+run at 18, 12 and 40 units a tick) with `quadruped.py` on its four legs, as a diagonal walk (each diagonal pair lands 0.22 of a cycle apart), the front tracks
+12 units in and the hind 12 out, reach 30 apart, so the thick legs of one side do not pass through each other (the earlier four-beat walk crossed
+them 2307, 3437 and 2014 triangle pairs over the loops; now 122, 155 and 98); the soles stand with the profile's `sink` (3.2 units, a gait row may
+override it) under the rig's floor line, where the source's own idle rests. Test: `tools.test_suijinmon_gait` (`SUIJINMON_MODEL`).
+
 Species 329 (Ghoulmon): `field_animations/ghoulmon_gait.py` writes slots 2, 3 and 4 again (a 26-tick walk, a 34-tick tired walk and a
 14-tick run at 17, 11 and 38 units a tick; the idle is kept) with `quadruped.py` on the model's own two legs: planted flat soles with heel
 strike and toe-off, hips against torso, swinging arms with late forearms and claws, flapping wing membranes and a whipping three-link tail.
@@ -110,6 +116,12 @@ walk, tired walk and run of two different cycles each (32, 60 and 28 ticks) at 1
 30 degree outward splay; cycle B lifts, lands and bobs unlike cycle A and the clip eases from one into the other (`compose` hook in
 `quadruped.py`), and the arms, head, feather and loincloth follow through on loose springs (the chibi clips flipped the feet by up to 167 degrees and slid the tired walk's soles 172 %).
 Bound in `content/models/imports/species.py`; test `tools.test_dinohyumon_gait` (`DINOHYUMON_MODEL`, from `edit.py get 308`).
+
+Species 404 (BlackWarGreymon): `field_animations/blackwargreymon_gait.py` rewrites slots 0 (also 33), 2, 3 and 4 of the stored model with
+`quadruped.py` on the two legs (the claw tips are the sole pivot): a 96-tick idle, and walk, tired walk and run of 44, 28 and 24 ticks at 16, 10
+and 40 units a tick, with WarGreymon's kind of gait (planted soles, counter-turning chest, arms against the legs, springs on the wings and plates).
+The ground markers (bones 22, 23) follow the claw fans. Registered with `edit.py put 404`; test `tools.test_blackwargreymon_gait`
+(`BLACKWARGREYMON_MODEL`, from `edit.py get 404` on the commit before the clips).
 
 Species 322 (Kyukimon): `field_animations/kyukimon_gait.py` is a field overlay (like Dinohyumon's): it applies the chibi
 proportions and then writes slots 2, 3 and 4 again with `quadruped.py` on the two legs, in two different cycles each (32, 44 and 28
@@ -206,6 +218,13 @@ The body, head, beak and rump are written by the module's `body` hook, the toes 
 `python3 -m tools.models.field_animations.kiwimon_gait --source SRC --out AFTER.MMD`, then `tools/models/edit.py put 282 AFTER.MMD`;
 check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_kiwimon_gait`.
 
+Pukumon (401): `field_animations/pukumon_gait.py` rewrites the idle, walk, tired walk and run (slots 0, 2, 3, 4; the battle
+slots 33, 35, 36 keep a copy of the old clips). The imported clips of the whole model hold the left arm up (shoulder and
+forearm pitched back about 180 degrees together) and share one fin, tail and jaw cycle; the rig itself mirrors. The fists are the
+feet: `quadruped.Rig`'s two-bone solve plants each one (the left arm the right one mirrored), the body is written from them.
+`python3 -m tools.models.field_animations.pukumon_gait --source SRC --out AFTER.MMD`, then `tools/models/edit.py put 401 AFTER.MMD`;
+check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_pukumon_gait`.
+
 DemiDevimon (236) binds its imported mesh to Birdramon's native skeleton and
 programs through `field_animations/native_binding.py`. The recipe in
 `content/models/imports/native-bindings.json` assigns every rigid piece, fits
@@ -262,6 +281,12 @@ condition walk stays slower than the walk with no retiming. The 11 techniques pl
 kicks, claws, fire, quake, war cry) and the training slot 57 plays Sonic Jab's. The wings and jaw are the only parts with a
 different body than Ogremon's: the upper-arm shoulder vertices overlap the chest box by 3 to 4 of 28 in every pose, forearms
 and fists never do. `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_vilemon_native` (after `edit.py get 295`).
+
+Kyubimon (409) wears native Garurumon's (22, `CHDAT/MMD0/GARU.MMD`) 26-bone skeleton at scale 1.0: its bones map by body part, pieces that share a donor bone sit by
+`pieces` offsets, and `spread` fits the pieces on the donor's joints. The recipe's `gait` stage, `kyubimon_donor_gait.py`, keeps the donor's trunk, neck, head and
+tail clips (softened, with a lagged tail wave) and writes the idle, walk, condition walk and run with planted paws (`quadruped.py`); per-rig rows in its `RIGS`
+(Garurumon, Unimon, Monochromon bone numbers) make it reusable. Species pin: only the provider pin in `species-pins.json` (its model delta is unchanged).
+`PYTHONPATH=tools python3 -W ignore -m unittest tools.test_kyubimon_native` (after `edit.py get 409`).
 
 Minotarumon (330) wears native Ogremon's (34, `CHDAT/MMD1/OGRE.MMD`) 18-bone skeleton at scale 0.88: its 20 bones map by body
 part (pieces 17, 19 and 20 to Ogremon's head, 5 and 6 and 9 and 10 each pair to one foot), pieces 6, 10, 19 and 20 share a
@@ -652,6 +677,18 @@ at 12 (a stalking one-leg-at-a-time step, low body), run 16 at 40 (with a flight
 the body's twist, the face and fangs (22, 23) and the two palps (24-27) move softly. Idle 72 ticks (breathing, two front legs and a
 middle leg paw once in place). Stance slip is under 2 % on average; slot 33 follows the idle; the resident animation buffer ends
 at 93,940 of 100,352 bytes. `tools/test_dokugumon_gait.py` covers it.
+
+Armageddemon's (407) walk, condition walk and run (25/25/21 ticks) swung the six long legs as one block (foot slip 75 to
+138 %) and the condition walk sank the body 200 to 390 units. `field_animations/armageddemon_gait.py` is an offline model
+delta over slots 0, 2, 3 and 4 only (the gestures and attacks stay): each three-bone leg (9-11, 12-14, 15-17 right; 18-26
+left) is solved from the middle of its flat sole so the sole stands still on the floor in stance. Two groups of three
+alternate (front right, middle left, rear right, then the others), every swing starts and ends on a whole tick and the
+foot rises first, travels over the ground in the middle of the swing and comes down on its place: walk 24 ticks (two
+strides of 12) at 22 units, condition walk 36 (two of 18) at 14 with the body 40 units lower and one leg lifted every
+three ticks, run 16 (two of 8) at 42 with a flight phase. The neck and head (2, 3) lag the body's twist, the jaw (4) twitches,
+the tail (5-8) follows the body with a travelling wave and droops when tired. Idle 72 ticks (breathing, three legs paw
+once). Stance slip is under 8 % on the studio metric and the resident animation buffer ends at about 73,000 of 100,352
+bytes. `tools/test_armageddemon_gait.py` covers it.
 
 Arukenimon's (311) idle, walk, condition walk and run (70/22/20/18 ticks) swung the six legs as rigid posts (foot slip 75 to
 120 %), the condition walk rolled the body 40 degrees and folded three legs 100 to 280 units off the floor (109 vertices of
@@ -1138,6 +1175,8 @@ program and keeps it; the walk, tired walk and run are untouched. `edit.py get 2
 Check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_pumpkinmon_idle` (`PUMPKINMON_MODEL=` names the model before).
 
 `field_animations/syakomon_hop.py` (Syakomon 283): an offline model delta over the import, which had one 43-tick pose cycle in all four clips (the shell sliding at 99-135 % of the root). Bone 1 is the lower shell (the body), bone 6 the upper shell with the eyes and teeth, bone 2 the tail fin, all hinged at the back; bones 3-5 are tiny hidden pieces. Walk is a planted hop (28 ticks, 2 hops at 16 u/tick, about 34 units high), tired walk a low dragging shuffle (36 ticks, 11, hops of 14), run long bounds (27 ticks, 3 hops at 38, about 52 high), idle three slow breaths (96 ticks); the mouth and the fin follow the body through damped springs, and the shell's lowest point is solved onto the floor every tick (clear of it in flight). The fin never yaws (a yawed fan cuts the shell deeper than the import does). Slots 1, 18 and 33 share the idle. `python3 -m tools.models.field_animations.syakomon_hop --source <import MMD> --out <MMD>` rebuilds it; register with `tools/models/edit.py put 283`; check with `tools.test_syakomon_hop`.
+
+`field_animations/apocalymon_float.py` (Apocalymon 400): an offline model delta over the import, which had one 105-tick wave of the tentacles in all four clips (walk, tired walk and run were the idle drifting over the ground). The rig has no legs: bone 1 is the dodecahedron body (root of everything), bone 30 the drill under it, bones 2-5 the neck, torso and hat, 6-8 and 9-11 the small arms, 12-14 the cape, and 15-29 five tentacle chains (two links and a spiked ball); the balls are the lowest points. Idle is a slow hover (120 ticks), walk a hovering glide (60 ticks, 21 u/tick), tired walk low and sagging (84, 13), run a forward surge (40, 44). The body's height, surge, sway and turn are written per clip; the torso counter-leans, and the chains, cape and arms bend joint by joint away from the body's velocity through damped springs (a later joint further and later). Every tick the body is raised where a ball would dip under the floor (the key fit moves the tips by a few units, so the decoded clip is measured and the lift corrected). Every tentacle link (the first included), the cape, both arms, torso, neck, hat and drill move: each chain gets a slightly different phase and period around one shared slow rhythm and a smooth travelling wave down its joints, the torso looms in and out, the head looks about and the hat sways late. Each limb bone moves in its two largest Euler channels with a fine key fit on the tentacles and a coarse one on the other limbs, to keep the resident buffer under its limit; the wide motion grazes the body more than the import's stiff pose did (bounded by the test). Slots 1, 18 and 33 share the idle. `python3 -m tools.models.field_animations.apocalymon_float --source <import MMD> --out <MMD>` rebuilds it; register with `tools/models/edit.py put 400`; check with `tools.test_apocalymon_float`.
 Deramon's (286) imported idle, walk, tired walk and run (32/23/22/21 ticks, root speeds 20/11/38) pitched the two
 feet about their ankles by 45 to 70 degrees without lifting them, so the grey sole texture faced the camera (the same
 render with and without back-face culling shows it: a sole face, not a back face or a texture defect), the feet slid at
@@ -1213,3 +1252,10 @@ under the donor's own trunk and arms (`quadruped.py`). It runs in the build; off
 `python -m tools.models.field_animations.raijinmon_gait --source BOUND.MMD --rig 333-report.json --out OUT.MMD`. After changing it,
 `edit.py check 333 --species-pins` prints the new provider pin for `tools/derive/recipes/species-pins.json`. Test: `tools.test_raijinmon_gait`
 (`RAIJINMON_MODELS`).
+
+Species 402 (NeoCrimson): the `neocrimson-native` overlay is `native_binding.py` with a recipe (`native-bindings.json`, id 402) that binds its 33 rigid parts to WarGreymon's 20-bone rig (`donor_species` 373: the legs, arms, neck and head by their joints, the wings, back spikes and ribbons on the chest, the hip block and skirts on the pelvis, the thin tail chain shortened to a quarter), and then `field_animations/neocrimson_wg_gait.py`, WarGreymon's own planted-sole gait (copy of the WarGreymon recipe with the foot plant relaxed to the claws' reach) written over slots 0, 2, 3 and 4. Test: `tools.test_neocrimson_gait` (`NEOCRIMSON_MODEL`, `WARGREYMON_MODEL`).
+
+Cannondramon (405) wears native Monochromon's (47, `CHDAT/MMD1/MONO.MMD`) 24-bone skeleton at scale 0.85: its pieces map by body part,
+the recipe's `spread` fits them on the donor's joints, and the post-stage `cannondramon_gait` re-plants the walk, condition walk
+and run on four soles (14, 20 and 12 ticks at 15, 10.5 and 36 units per tick). Species pin: the provider pin in
+`species-pins.json`. `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_cannondramon_native` (after `edit.py get 405`).

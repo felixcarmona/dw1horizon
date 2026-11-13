@@ -21,7 +21,7 @@ nefertimon.py writes Nefertimon's:
   direction): a swinging leg bends towards it, eased in from the standing bend and back out before it lands.
   A lower bone with a long part along it (a forearm blade) gives `aim` (front/hind: that direction in the bone's
   space): standing and swinging, the bone rolls about itself to keep it pointing ahead. A profile with `pole_world` gives its pole directions in the world (x towards the leg's side) instead of the parent bone's
-  space, for a leg hung from a bone that stands turned in its rest pose. A profile's `extra` (a function of the rig, the gait row, the cycle phase and the pose) moves the parts the module has no row for (Mammothmon's trunk, ears and jaw). A profile's `floor_skip` (bones) leaves out of the floor check the parts the source's own idle hangs under the floor (Mammothmon's trunk tip and tail). A profile's `floor` and `stance_slip` widen the
+  space, for a leg hung from a bone that stands turned in its rest pose. A profile's `extra` (a function of the rig, the gait row, the cycle phase and the pose) moves the parts the module has no row for (Mammothmon's trunk, ears and jaw). A profile's `toes` ({paw: toe bone}, a toe with no turn of its own in the rest pose) counts the toe's points as the paw's when the paw is put on the floor. A profile's `floor_skip` (bones) leaves out of the floor check the parts the source's own idle hangs under the floor (Mammothmon's trunk tip and tail). A profile's `floor` and `stance_slip` widen the
 under-the-floor and sliding-sole bounds for a rig whose leg plates cannot stay both flat and planted (Tortomon). A gait's `lift_soft` (default 1) raises the sine of that lift to a power, so a paw leaves and lands with no vertical speed. A gait's `arc` (default 0.8) shapes the lift of a swinging paw: 1 rises as a plain half sine, below 1 it leaves the floor faster. A gait's `plateau` (default 1, below 1 flattens the top) raises that sine to a power: the paw leaves and lands more steeply and spends more of the swing near its full height. A gait's `clear_ease` (fraction of the swing) brings the clearance under the paw in gradually, so a paw peeled at the end of stance does not jump up at the lift-off. A gait's `world_ease` (true, or a share from 0 to 1 of it) eases a swinging paw's fore-aft travel in the world instead of in the body's frame, so it leaves and lands at rest over the floor (its slip is then small even while it is within a few units of the floor). A gait's `fold_soft` (units) replaces the hard minimum distance `fold` of a swinging wrist from its hip by a smooth maximum of that width. A gait's `leg_reach` (per leg: units) moves one leg's stance window fore or aft of the others'. A gait's `wide`
   (front/hind: units) carries a swinging paw out from its track and back in by the landing. A profile's `body` (a function
   of (rig, cfg, phase, pose, hist), default `body` below) writes the trunk and everything above the legs instead, for a rig
@@ -32,6 +32,8 @@ under-the-floor and sliding-sole bounds for a rig whose leg plates cannot stay b
 
 Each clip is rewritten where it is stored, so its battle aliases play it too. Footsteps keep the species' own
 sound (bank and note) and land on touchdowns; the clip keeps the eye state (texture events) its source opens with.
+A profile's `sink` (units, default 0; a gait row may override it) stands every sole that far under the rig's floor line, for a source whose own idle
+rests below it (Suijinmon's idle sits 3 to 5 units under).
 The build refuses another source, a mesh point under the floor at a tick or a 60 fps third, a sole that slides in
 stance, an open loop, a speed outside the native range, another changed program or the storage budget.
 """
@@ -144,6 +146,7 @@ class Rig:
         # `scale` (profile): the uniform size the rest pose gives the body bone and everything under it (an imported
         # model sized by its idle). Rotations are read with it divided out, link offsets and soles multiplied in.
         self.S = profile.get('scale', 1.0)
+        self.sink = profile.get('sink', 0.0)
         self.verts = {b: [[x * self.S for x in v[:3]] for v in model.tmd.obj_verts(o)] for b, (o, _) in enumerate(skeleton) if o >= 0}
         # A profile's `claws` ({foot bone: claws bone}) puts the claws' points (a bone that stays at its rest turn under the foot)
         # into the foot's own, so the floor stands under the claws and not under the foot's sole plate (Maildramon).
@@ -319,7 +322,7 @@ def standing(rig, name, track, z, world):
     """The wrist (hock) of a paw whose sole pivot stands at z on the floor, at a world rotation."""
     paw, front = rig.p['legs'][name][2], rig.p['legs'][name][4]
     wrist = sub([track, 0.0, z], mv(world, rig.sole(front)))
-    wrist[1] = -rig.p['clear'] - rig.lowest(paw, world, [0, 0, 0])
+    wrist[1] = -rig.p['clear'] - rig.lowest(paw, world, [0, 0, 0]) + rig.sink
     return wrist
 
 
@@ -408,6 +411,7 @@ def gait(rig, cfg):
 def _gait(rig, cfg):
     p = rig.p
     ticks, speed = cfg['ticks'], cfg['speed']
+    rig.sink = cfg.get('sink', p.get('sink', 0.0))      # a gait row may stand its soles deeper or shallower than the profile
     rest = rig.rest
     W = rig.still
     centres, tracks = {}, {}
