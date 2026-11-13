@@ -64,6 +64,9 @@ class NativeBindings(unittest.TestCase):
                         pose[-3:] = [v + o for v, o in zip(pose[-3:], offset)]
                     expected.instrs = [i for i in expected.instrs if i['op'] != 'tex']
                     expected.tail = b''
+                    paced = {int(k) for k in recipe.get('pace', {})} | {a for row in recipe.get('pace', {}).values() for a in row.get('alias', ())}
+                    if slot in paced:       # retimed field clips: the pace rows below pin their speeds
+                        continue
                     if slot not in recipe.get('arm_pump', {}).get('slots', ()):  # re-posed arms: test_<species>_native
                         self.assertEqual(model.anims.anims[model.anims.table[slot]].build(), expected.build())
                     before, loop, _ = animsheet.slot_frames(native, len(proof['generated_skeleton']), slot)
@@ -85,6 +88,15 @@ class NativeBindings(unittest.TestCase):
         for recipe, record, _, _, _, _ in self.cases:
             with self.assertRaises(ValueError):
                 binding.bind(b'changed', record['model']['skeleton'], recipe)
+
+
+class WormmonPace(unittest.TestCase):
+    def test_walk_condition_walk_and_run_keep_the_native_speed_bars(self):
+        rows = json.loads(binding.MANIFEST.read_text())['183']['pace']
+        self.assertEqual({k: (r['from'], r['alias']) if 'alias' in r else (r['from'],) for k, r in rows.items()},
+                         {'2': (2, [35]), '3': (3,), '4': (4, [36])})
+        walk, tired, run = (rows[k]['speed'] for k in '234')
+        self.assertTrue(15 <= walk <= 31 and 10 <= tired <= 20 and 35 <= run <= 52 and tired < walk < run)
 
 
 if __name__ == '__main__':

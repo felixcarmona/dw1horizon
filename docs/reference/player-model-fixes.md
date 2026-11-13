@@ -330,6 +330,12 @@ Ankle planting and a second support solve keep stance toes on the floor.
 Its source limb lengths, folded hind-leg support pose, sleep and combat
 programs remain intact. The overlays and final provider hashes are pinned.
 
+Wormmon's native clips at the 0.65 resize crawled at 9.7 (walk), 9.0 (tired walk)
+and 22.8 (run) units per tick, under the native bars. Pace rows replay the same
+body wave faster: the walk in 14 ticks at 15.5, the tired walk in 17 at 10.5 and
+the run in 12 at 35.5 (a stride about as long as the body). Height, radius and
+every other program are unchanged; the 0.65 Rookie size stays.
+
 `tools.test_followthrough` guards the wing-only change and active paw/body
 motion; `tools.test_native_bindings` compares Wormmon's hierarchy and all
 native programs against the donor. Review videos also include actual
