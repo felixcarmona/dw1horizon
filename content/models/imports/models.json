@@ -168,7 +168,7 @@
  "407": {"model": "407-Armageddemon.MMD", "aliases_applied": true},
  "408": {"model": "408-Suijinmon.MMD", "aliases_applied": true, "field_overlay": "suijinmon-centaur-field", "technique_aliases": {"Full Potential": "Aqua Magic", "Thunder Justice": "Pulse Laser", "Infinity Cannon": "Pulse Laser"}},
  "409": {"model": "409-Kyubimon.MMD", "aliases_applied": true, "texture": "409-Kyubimon.TIM", "field_overlay": "kyubimon-native"},
- "430": {"model": "430-Zanbamon.MMD", "aliases_applied": true, "field_overlay": "zanbamon-celebration"},
+ "430": {"model": "430-Zanbamon.MMD", "aliases_applied": true, "field_overlay": "zanbamon-native", "native_animation_donor": 47},
  "431": {"model": "431-Kurisarimon.MMD", "aliases_applied": true},
  "432": {"movement_sound": {"note": 16, "replace_notes": [21]}, "model": "432-Bastemon.MMD", "aliases_applied": true, "field_overlay": "bastemon-field", "technique_aliases": {"Megaton Punch": "Muscle Charge"}},
  "433": {"model": "433-Guilmon.MMD", "aliases_applied": true},

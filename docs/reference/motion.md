@@ -1552,3 +1552,11 @@ the front and hind leg of the same side over the loops, 40 to 51 units deep. Fix
 Leg-leg crossings now (all six leg pairs): walk 122, tired walk 155, run 98 (deepest 24 to 34 units); stance slip 6/10 % (walk), 9/35 % (tired),
 17/37 % (run) mean/max. Legs against the body already crossed in the idle (the body is built from overlapping blocks); they are a little denser per
 tick in the gaits now (102 against 72 triangle pairs a tick in the walk) because the hind legs stand wider. Test: `tools.test_suijinmon_gait`.
+
+Zanbamon wears native Monochromon's skeleton (24 bones, `CHDAT/MMD1/MONO.MMD`) at scale 1.35, bound by `native_binding.py` with `spread_fit`, and
+nine bones of its own for the rider (recipe key `riders`: torso on the hind hub, cape, head and two crests on the torso and head, two
+arms of two bones; each pivots where its lead piece sits). `zanbamon_gait.py` plants the legs (idle 34 ticks, walk 14 at 19 units a tick, tired
+walk 18 at 12.5, run 12 at 40; stance slip 7, 5 and 4 % mean, worst 31, 18 and 19 %; no sole below the floor) and moves the human on the
+mount's beat: the torso bobs, sways against the hips and twists against them through damped springs, the head and arms follow later and
+looser, the cloak and crests trail on their own springs, the rider leans into the run, slumps when tired and breathes and looks about in the
+idle. The pivots never slide on the mount. The resident model uses 97,890 of 100,352 bytes.

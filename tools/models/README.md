@@ -1259,3 +1259,9 @@ Cannondramon (405) wears native Monochromon's (47, `CHDAT/MMD1/MONO.MMD`) 24-bon
 the recipe's `spread` fits them on the donor's joints, and the post-stage `cannondramon_gait` re-plants the walk, condition walk
 and run on four soles (14, 20 and 12 ticks at 15, 10.5 and 36 units per tick). Species pin: the provider pin in
 `species-pins.json`. `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_cannondramon_native` (after `edit.py get 405`).
+
+Zanbamon (430) wears native Monochromon's (47) 24-bone skeleton at scale 1.35 plus nine rider bones (recipe `riders` in `native-bindings.json`:
+extra bones after the donor's, each with a list of source pieces and a pivot piece); the post-stage `zanbamon_gait` plants the four soles
+and drives the rider bones (`rider_frames`, rows `RIDER_ROWS` in degrees). The alternative donors (Centarumon, Garurumon) work with the same
+stage without the rider bones. Species pin: `species-pins.json`. `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_zanbamon_native`
+(after `edit.py get 430`, `BINDING_MODELS` to its folder).

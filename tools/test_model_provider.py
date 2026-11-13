@@ -78,6 +78,8 @@ class ModelProvider(unittest.TestCase):
 
             # Cannondramon wears native Monochromon's rig and programs, planted by its own gait stage.
             '405': ('405', 'tools.models.field_animations.native_binding', '405-cannondramon-native'),
+            # Zanbamon wears a native quadruped's rig and programs, planted by its own gait stage.
+            '430': ('430', 'tools.models.field_animations.native_binding', '430-zanbamon-native'),
             # Vilemon wears native Ogremon's rig and programs.
             '295': ('295', 'tools.models.field_animations.native_binding', '295-vilemon-native'),
             # HiAndromon wears native Andromon's rig and programs.
