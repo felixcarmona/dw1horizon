@@ -273,5 +273,13 @@
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.244,
     "hit_scale": 0.1
+  },
+  "156": {
+    "name": "Tentacle Claw",
+    "stands_for": 111,
+    "cast": [[1, "EFFESA/MESA6600.BIN", "EFFESA/AESA6600.BIN"], [2, "EFFESA/MESA6700.BIN", "EFFESA/AESA6700.BIN"]],
+    "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
+    "scale": 0.295,
+    "hit_scale": 0.1
   }
 }
