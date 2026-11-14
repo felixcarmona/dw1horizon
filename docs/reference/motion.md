@@ -133,7 +133,7 @@ play the source's own clips now. SkullMammothmon 0x23 was left out at first (all
 buffer, 101734 B after exact compaction); it now ships too, see "Last gaps" below. Floramon 0x24 is the source's run at the 61 ticks the slot has (row `"36": ticks 61`, shipped). Garbagemon's
 0x22-0x24 are the source's clips with the can held at its attachment (`garbagemon.py`): only the can's bone differs, so there is
 nothing to restore.
-**Last gaps (batch 54).** Datamon 0x21, SkullMammothmon 0x23, Snimon 0x24 and Gallantmon 0x24 are now the source's clips; each passes
+**Last gaps.** Datamon 0x21, SkullMammothmon 0x23, Snimon 0x24 and Gallantmon 0x24 are now the source's clips; each passes
 `battle_qa` on the final model, its field slots 0-4 and every other battle slot decode tick for tick as before, and the mesh is
 unchanged. Resident bytes (limit 100,352): Datamon 0x21 (the source's 27-tick idle with every bone but the root and body damped to
 0.8 of its swing) 99,760 main, 104,628 rebuilt, 102,242 after exact compaction, so the care and technique clips that are neither
@@ -257,7 +257,7 @@ the source's own 22- and 18-tick cycles again (torso yaw, bob, tail spin, sounds
 small swing on one of its own rotation channels (`swing`: arms 10-16 degrees, antennae 6-8, wings 17-20, twice a cycle,
 the right side a little behind the left), and the battle QA passes (0x23: 11 crossings a tick, 0x24: 19).
 
-Batch 54 rebuilt five more from the source's own clip, with a new `clip_repair` op, `follow` (a bone takes another's swing
+Five more were rebuilt from the source's own clip, with a new `clip_repair` op, `follow` (a bone takes another's swing
 about that bone's mean pose, shifted in ticks, scaled and optionally mirrored, over its own pose), and `battle_restore`'s
 `"compact": [SLOT, ...]` key (those clips encoded again exactly to pay for the restored one; a model already over the
 resident limit before the rebuild may stay over it but not grow, the provider checks the final model).
