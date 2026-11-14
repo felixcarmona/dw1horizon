@@ -179,25 +179,25 @@ means no part flies to the target on its own: the effect plays as on the disc an
 | 295 | Vilemon | Dark Fear | 600 | 1 | 9 | 225 | MEFT0335 + 3 sprites | 5416 B, id 196, melee, faithful | Nightmare Shock (beam, 1 hit) |
 | 296 | Grizzlymon | Maul Attack | 300 | 2 | 11 | 305 | 5 sprites | 19796 B, id 223, melee, 4 sprites, faithful | Maul Attack (dash, 1 hit) |
 | 297 | Marsmon | Mugenhadou | 480 | 1 | 11 | 400 | MEFT0097 + 5 sprites | 7652 B, id 197, melee, faithful | Mugen Hadou (beam, 1 hit) |
-| 298 | Dokugumon | (unnamed attack) | 80 | 1 | 5 | 240 | MEFT0328 + 3 sprites | 7896 B, id 198, melee, faithful | Poison Cobweb (shot, 1 hit) |
+| 298 | Dokugumon | (unnamed attack) | 80 | 1 | 5 | 240 | MEFT0328 + 3 sprites | 7888 B, id 198, melee, faithful | Poison Cobweb (shot, 1 hit) |
 | 299 | Hookmon | Captain Cannon | 200 | 1 | 11 | 372 | MEFT0091 + 5 sprites | 7264 B, id 199, melee, faithful | Captain Cannon (shot, 1 hit) |
 | 300 | SlashAngemon | Golden Ripper | 400 | 1 | 11 | 415 | MEFT0100 + 5 sprites | 3608 B, id 200, melee, faithful | Golden Ripper (dash, 1 hit) |
 | 302 | HiAndromon | Atomic Ray | 278 | 1 | 9 | 300 | MEFT0361 + 4 sprites | 13052 B, id 201, melee, faithful | Atomic Ray (beam, 1 hit) |
-| 303 | KingEtemon | (unnamed attack) | 500 | 1 | 5 | 250 | MEFT0324 + 2 sprites | 5492 B, id 202, area, faithful | Dark Spirits DX (area, 1 hit) |
+| 303 | KingEtemon | (unnamed attack) | 500 | 1 | 5 | 250 | MEFT0324 + 2 sprites | 4800 B, id 202, melee, faithful | Dark Spirits DX (area, 1 hit) |
 | 304 | Divermon | (unnamed attack) | 250 | 1 | 5 | 20 | 1 sprite | 4404 B, id 224, melee, 1 sprites, faithful | Striking Fish (shot, 1 hit) |
 | 305 | Ebidramon | (unnamed attack) | 308 | 1 | 5 | 50 | 2 sprites | 9248 B, id 225, melee, 2 sprites, faithful | Pincer Crusher (melee, 1 hit) |
 | 306 | GrapLeomon | Cyclone Turbine | 500 | 3 | 11 | 408 | 5 sprites | 20108 B, id 226, melee, 7 sprites, 36 of 72 frames, FAILS the check (one round of fixes pending) | Cyclone Turbine (dash, 1 hit) |
 | 307 | BlackKingNumemon | Dark Pupil | 198 | 1 | 9 | 280 | 3 sprites | 17120 B, id 227, melee, 4 sprites, faithful | Royal Muck (thrown, 1 hit) |
 | 308 | Dinohyumon | Lizard Dance | 200 | 4 | 11 | 231 | 6 sprites | 11916 B, id 228, melee, 4 sprites, faithful | Lizard Dance (dash, 4 hits) |
 | 309 | Antylamon | Dark Elemental | 700 | 1 | 9 | 230 | 3 sprites | sprites only | Bunny Blades (dash, 2 hits) |
-| 310 | Assaultmon | Justice Strike | 140 | 3 | 11 | 539 | MEFT0093 + 5 sprites | 11924 B, id 203, melee, faithful | Justice Strike (rain, 5 hits) |
+| 310 | Assaultmon | Justice Strike | 140 | 3 | 11 | 539 | MEFT0093 + 5 sprites | 11888 B, id 203, melee, faithful | Justice Strike (rain, 5 hits) |
 | 311 | Arukenimon | (unnamed attack) | 390 | 1 | 5 | 290 | 3 sprites | 19184 B, id 230, melee, 3 sprites, FAILS the check (one round of fixes pending) | Spirit Needle (shot, 1 hit) |
-| 312 | Creepymon | Darkness Chaos | 150 | 1 | 9 | 243 | MEFT0351 + 3 sprites | 12900 B, id 204, area, faithful | Evil Inferno (area, 1 hit) |
+| 312 | Creepymon | Darkness Chaos | 150 | 1 | 9 | 243 | MEFT0351 + 3 sprites | 12208 B, id 204, melee, faithful | Evil Inferno (area, 1 hit) |
 | 313 | Bulbmon | Mad Pump | 580 | 1 | 9 | 269 | MEFT0346 + 2 sprites | 7456 B, id 205, melee, faithful | Bulb Flash (beam, 1 hit) |
 | 314 | SkullSatamon | (unnamed attack) | 410 | 1 | 5 | 296 | 3 sprites | 18504 B, id 231, melee, 3 sprites, FAILS the check (one round of fixes pending) | Nail Bone (beam, 1 hit) |
 | 315 | Taomon | Bonhitsusen | 250 | 1 | 11 | 519 | 6 sprites | 15464 B, id 232, melee, 4 sprites, FAILS the check (one round of fixes pending) | Talisman of Light (shot, 1 hit) |
-| 316 | Sakuyamon | KongouKaimandara | 400 | 1 | 11 | 540 | MEFT0087 + 5 sprites | 20104 B, id 206, area, passes; 5 parts left out | Amethyst Mandala (area, 1 hit) |
-| 317 | Fujinmon | Sylph Storm | 100 | 1 | 9 | 229 | MEFT0370 + 3 sprites | 11800 B, id 207, area, faithful | Divine Wind (area, 1 hit) |
+| 316 | Sakuyamon | KongouKaimandara | 400 | 1 | 11 | 540 | MEFT0087 + 5 sprites | 20328 B, id 206, melee, passes; 5 parts left out | Amethyst Mandala (area, 1 hit) |
+| 317 | Fujinmon | Sylph Storm | 100 | 1 | 9 | 229 | MEFT0370 + 3 sprites | 11104 B, id 207, melee, faithful | Divine Wind (area, 1 hit) |
 | 318 | Gallantmon | Final Purification | 480 | 1 | 11 | 457 | MEFT0095 + 6 sprites | 11508 B, id 208, melee, faithful | Final Purification (beam, 1 hit) |
 | 319 | Pharaohmon | Necro Mist | 133 | 1 | 9 | 330 | 3 sprites | 18540 B, id 233, melee, 3 sprites, faithful | Pyramid Power (beam, 1 hit) |
 | 320 | Growlmon | Plasma Blade | 300 | 3 | 11 | 400 | 7 sprites | 19588 B, id 234, melee, 6 sprites, faithful | Plasma Blade (dash, 1 hit) |
@@ -213,7 +213,7 @@ means no part flies to the target on its own: the effect plays as on the disc an
 | 330 | Minotarumon | (unnamed attack) | 180 | 1 | 5 | 20 | 1 sprite | 5100 B, id 240, area, 1 sprites, faithful | Darkside Quake (area, 1 hit) |
 | 331 | Vemmon | (unnamed attack) | 160 | 1 | 5 | 100 | 3 sprites | 17772 B, id 241, melee, 3 sprites, faithful | Vemmon Crash (melee, 1 hit) |
 | 332 | Roachmon | (unnamed attack) | 320 | 1 | 5 | 10 | 2 sprites | 18220 B, id 242, melee, 2 sprites, faithful | Roach Rush (dash, 1 hit) |
-| 333 | Raijinmon | Electro Ball | 310 | 1 | 9 | 232 | MEFT0363 + 2 sprites | 11540 B, id 213, area, faithful | Raijin Thunder (area, 1 hit) |
+| 333 | Raijinmon | Electro Ball | 310 | 1 | 9 | 232 | MEFT0363 + 2 sprites | 10832 B, id 213, melee, faithful | Raijin Thunder (area, 1 hit) |
 | 334 | Mummymon | Dark Fear | 600 | 1 | 9 | 252 | MEFT0335 + 2 sprites | 5428 B, id 214, melee, faithful | Necrophobia (shot, 1 hit) |
 | 335 | MegaGargomon | Giant Missile | 400 | 1 | 11 | 467 | MEFT0085 + 7 sprites | 7798 B, id 215, melee, faithful | Giant Missile (shot, 1 hit) |
 | 336 | Raidenmon | Gilead Plant | 650 | 1 | 9 | 298 | 4 sprites | 19732 B, id 243, melee, 4 sprites, faithful | Raiden Strike (beam, 1 hit) |
@@ -226,14 +226,15 @@ means no part flies to the target on its own: the effect plays as on the disc an
 | 405 | Cannondramon | DynamoCannon | 320 | 1 | 11 | 423 | MEFT0094 + 5 sprites | 18900 B, id 217, melee, faithful | Dynamo Cannon (beam, 1 hit) |
 | 406 | MaloMyotismon | Melting Blood | 480 | 1 | 11 | 438 | MEFT0092 + 4 sprites | 8780 B, id 218, melee, faithful | Melting Blood (melee, 1 hit) |
 | 407 | Armageddemon | (unnamed attack) | 140 | 1 | 5 | 306 | MEFT0333 + 3 sprites | 12484 B, id 219, melee, faithful | Ultimate Flare (beam, 1 hit) |
-| 408 | Suijinmon | Mugen Cannon | 500 | 4 | 5 | 280 | MEFT0364 + 3 sprites | 18312 B, id 220, melee, faithful | Water Spiral (beam, 1 hit) |
+| 408 | Suijinmon | Mugen Cannon | 500 | 4 | 5 | 280 | MEFT0364 + 3 sprites | 18256 B, id 220, melee, faithful | Water Spiral (beam, 1 hit) |
 | 409 | Kyubimon | Dragon Wheel | 180 | 1 | 11 | 378 | 5 sprites | 18280 B, id 249, melee, 4 sprites, 72 of 85 frames, faithful | Dragon Wheel (dash, 1 hit) |
 | 430 | Zanbamon | Cross Slash | 169 | 1 | 5 | 77 | MEFT0039 + 2 sprites | 8572 B, id 221, melee, faithful | Zanba Blade (dash, 1 hit) |
 | 431 | Kurisarimon | no technique script | | | | | | | Data Crusher (shot) |
 | 432 | Bastemon | (unnamed attack) | 0 | 4 | 5 | 108 | 2 sprites | 10604 B, id 250, melee, 4 sprites, faithful | Cat Laser (beam, 1 hit) |
 | 433 | Guilmon | Pyrosphere | 100 | 1 | 11 | 445 | MEFT0102 + 5 sprites | 4384 B, id 222, melee, faithful | Pyrosphere (shot, 1 hit) |
 Of the 56 imported species, 55 have a technique script; Kurisarimon has none. 27 techniques have a 3D effect.
-Each converts into one chunk, for its whole length; 26 pass the fidelity check. The largest whole one,
+Each converts into one chunk, for its whole length; 26 pass the fidelity check. The sizes are the builds
+the game uses: gameplay-neutral, one enemy and one hit, as the finisher each stands for. The largest whole one,
 Cannondramon's, is 18 900 bytes of the 20 480 a chunk holds. Sakuyamon's leaves five small parts out (below).
 Gargoylemon's Dark Matter fails on timing alone (its coverage curve correlates 0.69): short flashes that this
 game's 20 Hz engine cannot place on the original's 30 fps frames. The conversion is kept out, and the species
