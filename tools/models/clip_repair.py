@@ -176,6 +176,10 @@ def wave(frames, parents, bone, axis, deg, cycles=1.0, phase=0.0, ticks=None):
             parent = _chain(parents, pose, parents[bone], {})
             new = _mul(_tr(parent), _mul(_axis_angle(axis, a), _mul(parent, _rot(*pose[bone][3:6]))))
             pose[bone][3:6] = list(_euler(new, pose[bone][3:6]))
+        out.append(pose)
+    return out
+
+
 def sway(frames, parents, bone, axis, deg, cycles, phase=0.0):
     n = len(frames) - 1
     out = []
@@ -287,6 +291,9 @@ def fit_rig(frames, source_pose, rig_pose):
                         bone[i] = bone[i] + (r0 - s0) if (b == 1 and i == 7) else bone[i] * r0 / s0
             bones.append(bone)
         out.append(bones)
+    return out
+
+
 def _mix(a, b, w):
     """Pose bone a toward pose bone b by w: rotation through quaternions, the other channels linearly."""
     out = [x + (y - x) * w for x, y in zip(a, b)]
