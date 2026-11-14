@@ -10,6 +10,7 @@
                  "Heat Laser", "Spit Fire", "Fire Tower", "Red Inferno", "Mega Flame"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 38,
+  "own_effect": {"technique": "Mega Flame", "chunk": 157},
   "model": {
     "file": "build/sizes-out/models/Deltamon.MMD",
     "radius": 280,

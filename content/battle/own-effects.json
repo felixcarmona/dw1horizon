@@ -281,5 +281,13 @@
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.295,
     "hit_scale": 0.1
+  },
+  "157": {
+    "name": "Triple Forces",
+    "stands_for": 63,
+    "cast": [[1, "EFFEBA/MEBA0200.BIN", "EFFEBA/AEBA0200.BIN"], [2, "EFFEBA/MEBA0300.BIN", "EFFEBA/AEBA0300.BIN"]],
+    "hit": [[1, "EFFESD/MESD6800.BIN", "EFFESD/AESD6800.BIN"]],
+    "scale": 0.268,
+    "hit_scale": 0.1
   }
 }

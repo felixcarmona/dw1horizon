@@ -46,6 +46,7 @@ the moment the attack starts.
 | 289 ChaosLord | Chaos Cannon (DW2) | Energy Bomb | volley: a cannon blast that bursts over the field | 1 | flies at tick 30, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.257) | one enemy, as for Energy Bomb | all enemies |
 | 290 Clockmon | Chrono Breaker (DW2) | Deadly Bomb | at the target: a clock-hand ripple that freezes time | 1 | plays at the target, hits at tick 40 | none (scale 0.244) | one enemy, as for Deadly Bomb | anyone (random) |
 | 291 Dragomon | Tentacle Claw (DW2) | Mail Strome | projectile: throws its trident | 1 | flies at tick 29, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.295) | one enemy, as for Mail Strome | one enemy |
+| 292 Deltamon | Triple Forces (DW2) | Mega Flame | projectile: energy bursts from all three heads | 1 | flies at tick 29, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.268) | one enemy, as for Mega Flame | all enemies, 3 hits |
 
 ## Where the port differs from the source
 
