@@ -108,6 +108,20 @@ class SyntheticDefects(unittest.TestCase):
         rows = run({14: clip(head=35), 15: clip(head=36)}, main={14: clip(head=40), 15: clip(head=50)})
         self.assertIn('pair', rows[14]['keys'])
 
+    def test_importer_on_another_skeleton_is_not_compared(self):
+        # a native binding's importer output has the source's skeleton: its body bones are not the final's, so its
+        # posture explains nothing (the same clip on the same skeleton is the source's posture, noted)
+        f, _ = clip(head=35)
+        f[:, 1, 3] = 70 * TURN
+        main = rig({14: clip(head=40)})
+        same = qa.check(rig({14: (f, 0)}), rig({14: (f, 0)}), main, slots=(14,))
+        self.assertEqual(same[14]['keys'], [])
+        local, tris = rig_parts()
+        extra = lambda g: np.concatenate([g, g[:, :1]], axis=1)  # noqa: E731
+        other = bq.Rig(PARENTS + [1], local, tris, {0: (extra(clip()[0]), 0), 14: (extra(f), 0)})
+        rows = qa.check(rig({14: (f, 0)}), other, main, slots=(14,))
+        self.assertIn('body_off', rows[14]['keys'])
+
 
 class Generator(unittest.TestCase):
     ROW = dict(body='quadruped', keep=[0, 1, 2, 3, 4, 5], lean=[NECK], head=[HEAD],

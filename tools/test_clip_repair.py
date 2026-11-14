@@ -1,4 +1,5 @@
 """tools/models/clip_repair.py: the repair operations of a rebuilt clip leave what they do not name as it was."""
+import math
 import os
 import sys
 import unittest
@@ -154,6 +155,32 @@ class ClipRepairTest(unittest.TestCase):
         self.assertEqual(out[0], clip()[0])
         self.assertEqual(out[-1], clip()[-1])
         self.assertEqual(clip_repair.apply_ops(clip(), PARENTS, [{'op': 'retime', 'ticks': 11}]), clip())
+
+    def test_repeat_continues_the_travel_and_the_events(self):
+        out = clip_repair.apply_ops(clip(), PARENTS, [{'op': 'repeat', 'times': 3}])
+        self.assertEqual(len(out), 34)
+        self.assertEqual(out[:12], clip())
+        for t in range(1, 12):
+            for k in (1, 2):
+                a, b = out[t + 11 * k], clip()[t]
+                self.assertEqual(a[1:], b[1:])
+                self.assertEqual(a[0][6:9], [b[0][6], b[0][7] - 11 * k, b[0][8]])
+        self.assertEqual(clip_repair.apply_ops(clip(), PARENTS, [{'op': 'repeat', 'times': 1}]), clip())
+        ev = [(2, 'sound', {'note': 1})]
+        self.assertEqual(clip_repair.events([{'op': 'retime', 'ticks': 22}], ev, 12), ev)
+        self.assertEqual([k for k, _, _ in clip_repair.events([{'op': 'repeat', 'times': 3}], ev, 12)], [2, 13, 24])
+        self.assertEqual([k for k, _, _ in clip_repair.events(
+            [{'op': 'repeat', 'times': 3}, {'op': 'retime', 'ticks': 66}], ev, 12)], [4, 26, 48])
+
+    def test_swing_moves_one_channel_and_closes_a_loop(self):
+        out = clip_repair.apply_ops(clip(), PARENTS, [{'op': 'swing', 'bone': 2, 'channel': 'y', 'deg': 10,
+                                                       'cycles': 2, 'phase': 0.25}])
+        for t, (a, b) in enumerate(zip(out, clip())):
+            self.assertEqual([v for i, v in enumerate(a) if i != 2], [v for i, v in enumerate(b) if i != 2])
+            self.assertEqual(a[2][:4] + a[2][5:], b[2][:4] + b[2][5:])
+            want = b[2][4] + 10 * 4096 / 360 * math.sin(2 * math.pi * (2 * t / 11 + 0.25))
+            self.assertEqual(a[2][4], round(want))
+        self.assertEqual(out[0][2][4] - clip()[0][2][4], out[-1][2][4] - clip()[-1][2][4])
 
     def test_seam_closes_the_loop_and_leaves_the_rest(self):
         out = clip_repair.apply_ops(clip(), PARENTS, [{'op': 'seam', 'ticks': 4, 'bones': [1, 2]}])

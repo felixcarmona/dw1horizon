@@ -32,6 +32,10 @@ reference of motion, character and timing and changes only what breaks, with the
         the bone swung D degrees either way about a model axis, N sways over the clip (1 by default; a loop's last tick
         repeats its first, so a loop closes), starting P of a sway in (0 to 1): a chain the source never animated (a tail
         left stiff) moving as the species' field walk moves it. Everything else as `turn`.
+  {"op": "swing", "bone": B, "channel": "x"|"y"|"z", "deg": D [, "cycles": N, "phase": P]}
+        `wave` on one of the bone's own rotation channels (its stored Euler angle) instead of a model axis: the other
+        two channels stay as they are, so a limb the source holds still swings for a third of the stored bytes (a
+        species near the resident buffer). N sways over the clip (a loop's last tick repeats its first), P of a sway in.
   {"op": "lift", "bone": B, "up": U [, "ticks": [a, b, c, d]]}
         bone B (the body bone under the root; its translation, in its parent's frame) raised U units: the soles back on
         the floor where the original sinks on our rig. The root's own travel is never touched.
@@ -39,6 +43,11 @@ reference of motion, character and timing and changes only what breaks, with the
   {"op": "retime", "ticks": N}
         the whole clip resampled to N ticks (a slower or faster original: its frantic speed brought into the range of the
         disc's own clips); rotations go through quaternions, offsets and scales linearly. Put it first.
+  {"op": "repeat", "times": K}
+        a looping movement whose last tick repeats its first played K times in a row (its ticks 1 to the end appended
+        K - 1 times), the root's travel continuing from where each cycle ends: a short source cycle filling the length
+        the slot must keep, at the source's own speed (a `retime` after it fits the exact length). The clip's sound and
+        texture events repeat with each cycle and follow a later `retime` (`events`).
   {"op": "seam", "ticks": K [, "bones": [B, ...]]}
         a looping clip whose last pose is not the first: over its last K ticks the bones (default every bone under the root)
         ease toward the first pose, reaching it one tick after the last (the loop's own step), so the seam closes.
@@ -181,6 +190,17 @@ def wave(frames, parents, bone, axis, deg, cycles=1.0, phase=0.0, ticks=None):
             parent = _chain(parents, pose, parents[bone], {})
             new = _mul(_tr(parent), _mul(_axis_angle(axis, a), _mul(parent, _rot(*pose[bone][3:6]))))
             pose[bone][3:6] = list(_euler(new, pose[bone][3:6]))
+        out.append(pose)
+    return out
+
+
+def swing(frames, bone, channel, deg, cycles=1.0, phase=0.0):
+    n = len(frames)
+    i = 3 + 'xyz'.index(channel)
+    out = []
+    for t, pose in enumerate(frames):
+        pose = [list(v) for v in pose]
+        pose[bone][i] = pose[bone][i] + deg * DEG * math.sin(2 * math.pi * (cycles * t / max(n - 1, 1) + phase))
         out.append(pose)
     return out
 
@@ -343,6 +363,35 @@ def retime(frames, ticks):
     return out
 
 
+def repeat(frames, times):
+    if times < 1:
+        raise ValueError('clip repair: repeat a clip at least once')
+    out = [[list(v) for v in pose] for pose in frames]
+    travel = [frames[-1][0][i] - frames[0][0][i] for i in range(6, 9)]
+    for k in range(1, times):
+        for pose in frames[1:]:
+            pose = [list(v) for v in pose]
+            pose[0][6:9] = [v + k * d for v, d in zip(pose[0][6:9], travel)]
+            out.append(pose)
+    return out
+
+
+def events(ops, evs, count):
+    """The events ((tick, kind, instruction), ...) of a clip of `count` ticks after `ops`: unchanged unless the ops
+    `repeat` the clip, in which case they repeat with each cycle and follow every later `retime` (ticks scaled)."""
+    if not any(op['op'] == 'repeat' for op in ops):
+        return list(evs)
+    evs, n = list(evs), count - 1
+    for op in ops:
+        if op['op'] == 'repeat':
+            evs = [(k + c * n, kind, ins) for c in range(op['times']) for k, kind, ins in evs]
+            n *= op['times']
+        elif op['op'] == 'retime':
+            evs = [(min(op['ticks'] - 1, k * op['ticks'] // n), kind, ins) for k, kind, ins in evs]
+            n = op['ticks']
+    return evs
+
+
 def seam(frames, ticks, bones=None):
     n = len(frames)
     first = frames[0]
@@ -377,6 +426,10 @@ def apply_ops(frames, parents, ops):
             frames = sway(frames, parents, op['bone'], op['axis'], op['deg'], op['cycles'], op.get('phase', 0.0))
         elif kind == 'retime':
             frames = retime(frames, op['ticks'])
+        elif kind == 'swing':
+            frames = swing(frames, op['bone'], op['channel'], op['deg'], op.get('cycles', 1.0), op.get('phase', 0.0))
+        elif kind == 'repeat':
+            frames = repeat(frames, op['times'])
         elif kind == 'seam':
             frames = seam(frames, op['ticks'], op.get('bones'))
         elif kind == 'lift':

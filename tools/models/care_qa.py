@@ -35,9 +35,14 @@ condition clips and 65-140 clips of each care slot against their own field idle;
 numbers). A slot whose program is main's is reported with verdict 'main' (pre-existing); a changed slot with a flag
 is kept only when no flagged number is worse than main's same slot, else 'fail' (the slot goes back to main's).
 
-  tools/models/care_qa.py check FINAL.MMD BASE.MMD MAIN.MMD SPECIES_JSON [--slots ...] [--json OUT]
+  tools/models/care_qa.py check FINAL.MMD BASE.MMD MAIN.MMD SPECIES_JSON [--base-skeleton JSON] [--slots ...] [--json OUT]
             FINAL, BASE and MAIN are the species' final model of this tree, its importer output and origin/main's final
-            model; exits 1 when a slot fails
+            model; SPECIES_JSON gives the final model's skeleton (`model.skeleton`); exits 1 when a slot fails
+            --base-skeleton: a species JSON with the importer output's own skeleton, where it is not the final's (a
+            native binding: the final model plays on the donor's rig, the importer output on the source's, the
+            committed content/species/ID-*.json; SPECIES_JSON is then the provider's generated species file). The
+            importer's clips are compared bone by bone only on the same skeleton; on another one they are not used.
+            BASE `-`: no importer output
 
 Not proven by these numbers: how a clip reads (character, taste), what the engine interpolates at 60 fps. Uses numpy.
 """
@@ -111,9 +116,11 @@ def field_ranges(rig):
     return out
 
 
-def source_tip(A, fA, body):
-    """The importer's same clip: its body bones' largest elevation off the importer's own field idle (degrees)."""
-    if A is None or fA is None or not body or max(body) >= A.nb or A.frames(0) is None:
+def source_tip(A, fA, body, nb):
+    """The importer's same clip: its body bones' largest elevation off the importer's own field idle (degrees); None
+    when the importer output has no such clip or another skeleton than the final's (`nb` bones: the body bones are
+    the final's)."""
+    if A is None or fA is None or not body or A.nb != nb or A.frames(0) is None:
         return None
     idle = bq.Clip(A, *A.frames(0))
     c = bq.Clip(A, *fA)
@@ -202,7 +209,7 @@ def check(F, A, M, slots=CONDITION + CARE, final_bytes=None, nb=None):
                 flag('cross', f'crossings {mF["cross"][0]:.0f} a tick (field clips {field_cross:.0f})')
         # posture
         if mF['body_off'] > k['body']:
-            src = source_tip(A, fA, ref['body'])
+            src = source_tip(A, fA, ref['body'], F.nb)
             if src is not None and mF['body_off'] <= src + NO_WORSE['body_off']:
                 notes.append(f'body tipped {mF["body_off"]:.0f} deg as the importer\'s clip ({src:.0f}): the source\'s posture')
             else:
@@ -265,9 +272,18 @@ def verdict(row):
     return 'fail' if worse_than_main(row) else 'kept'
 
 
-def species_check(final, base, main, bones, slots=CONDITION + CARE):
-    R = lambda d: bq.Rig.from_mmd(d, bones)  # noqa: E731
-    return check(R(final), R(base) if base else None, R(main), slots, final_bytes=final, nb=len(bones))
+def species_check(final, base, main, bones, slots=CONDITION + CARE, base_bones=None):
+    """`bones`: the final (and main's) skeleton; `base_bones`: the importer output's, when it is another one (a native
+    binding)."""
+    R = lambda d, b=bones: bq.Rig.from_mmd(d, b)  # noqa: E731
+    A = None
+    if base:
+        try:
+            A = R(base, base_bones or bones)
+        except ValueError as e:
+            raise ValueError(f'the importer output does not parse on the {len(base_bones or bones)}-bone skeleton '
+                             f'({e}): a native binding\'s importer output has the source\'s skeleton (--base-skeleton)')
+    return check(R(final), A, R(main), slots, final_bytes=final, nb=len(bones))
 
 
 def failing(rows):
@@ -283,13 +299,19 @@ def main():
     c.add_argument('base')
     c.add_argument('main')
     c.add_argument('species_json')
+    c.add_argument('--base-skeleton')
     c.add_argument('--slots', nargs='*', type=int, default=list(CONDITION + CARE))
     c.add_argument('--json')
     a = ap.parse_args()
     rd = lambda p: open(p, 'rb').read()  # noqa: E731
     with open(a.species_json) as fh:
         bones = json.load(fh)['model']['skeleton']
-    rows = species_check(rd(a.final), rd(a.base), rd(a.main), bones, tuple(a.slots))
+    base_bones = None
+    if a.base_skeleton:
+        with open(a.base_skeleton) as fh:
+            base_bones = json.load(fh)['model']['skeleton']
+    rows = species_check(rd(a.final), None if a.base == '-' else rd(a.base), rd(a.main), bones, tuple(a.slots),
+                         base_bones)
     for s, r in rows.items():
         if s == 'buffer':
             print(f'buffer: resident {r["resident"]} B, fits {r["fits"]}')

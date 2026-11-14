@@ -237,6 +237,7 @@ def rebuild(b_data, a_data, nb, type_id, row):
             frames = clip_repair.fit_rig(frames, animsheet.slot_frames(source, nb, theirs)[0][0],
                                          animsheet.slot_frames(mmd.MMD.parse(b_data, nb), nb, ours)[0][0])
         samples = clip_repair.apply_ops(frames, parents, row[str(slot)]['ops'])
+        events = clip_repair.events(row[str(slot)]['ops'], events, len(frames))
         clip = mmd.encode_anim(samples, nb, 0 if loop == 0 else None, events, tol=1, repeats=False)
         model.anims.table[slot] = len(model.anims.anims)
         model.anims.anims.append(clip)
