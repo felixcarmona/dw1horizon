@@ -14,6 +14,7 @@ the moment the attack starts.
 | 277 SkullMeramon | Metal Fireball (DW2) | Mega Flame | projectile: a flaming metal ball with a fire ring | 1 | flies at tick 29, hits on contact, up to tick 36 | flies straight at the target up to 1,100 units; the DW2 flight, scaled by 0.266 (its size here against its DW2 size), is cut where it would pass the target | one enemy, the first its path touches | all enemies (one ball each) |
 | 264 Raremon | Buffalo Breath (DW2) | Death Claw | projectile: a breath ball with a ring | 1 | flies at tick 29, hits on contact, up to tick 36 | as Metal Fireball (scale 0.269) | one enemy, the first its path touches | one enemy |
 | 122 Hagurumon | Darkness Gear (DW2) | Electric Shock | projectile: fires a black gear that spins into the target | 1 | flies at tick 29, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.166) | one enemy, as for Electric Shock | one enemy |
+| 182 Kimeramon | Poison Wing (DW2) | Mega Flame | projectile: a heat blast from the wings | 1 | flies at tick 3, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.326) | one enemy, as for Mega Flame | one enemy |
 
 ## Where the port differs from the source
 

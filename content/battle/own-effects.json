@@ -25,5 +25,13 @@
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.166,
     "hit_scale": 0.1
+  },
+  "125": {
+    "name": "Poison Wing",
+    "stands_for": 63,
+    "cast": [[1, "EFFEBA/MEBA1800.BIN", "EFFEBA/AEBA1800.BIN"], [2, "EFFEBA/MEBA1900.BIN", "EFFEBA/AEBA1900.BIN"]],
+    "hit": [[2, "EFFESD/MESD0000.BIN", "EFFESD/AESD0000.BIN"]],
+    "scale": 0.326,
+    "hit_scale": 0.1
   }
 }
