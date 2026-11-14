@@ -158,7 +158,7 @@ class Fidelity(unittest.TestCase):
         self.assertLess(held, E.LIMITS['smooth'])
         ok, why = E.passes(dict(empty=0, area=1, bright=1, corr=1, iou=1, smooth=held))
         self.assertFalse(ok)
-        self.assertIn('poses held', why[0])
+        self.assertIn('as often as the effect engine allows', why[0])
 
     def test_mostly_empty_fails(self):
         from tools import dw3efe as E
