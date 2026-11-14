@@ -241,5 +241,13 @@
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.274,
     "hit_scale": 0.1
+  },
+  "152": {
+    "name": "Waking Dream",
+    "stands_for": 86,
+    "cast": [[1, "EFFEMA/MEMA3100.BIN", "EFFEMA/AEMA3100.BIN"], [2, "EFFEMA/MEMA3200.BIN", "EFFEMA/AEMA3200.BIN"]],
+    "hit": [[2, "EFFESD/MESD3400.BIN", "EFFESD/AESD3400.BIN"]],
+    "scale": 0.201,
+    "hit_scale": 0.1
   }
 }
