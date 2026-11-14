@@ -26,7 +26,10 @@ of its own for it). `rebuild` restores the slots of the species' row in content/
 `"rig": SLOT` or `"rig": [SOURCE_SLOT, OUR_SLOT]` first gives the restored clip our rig's scale and offset channels,
 `clip_repair.fit_rig`, for a species whose model was reshaped offline) and runs the
 row's repair operations (tools/models/clip_repair.py) on each: the source's own clip kept as the reference of poses,
-timing and arc, and repaired where it breaks on our rig (battle_qa.py counts these slots as documented polish).
+timing and arc, and repaired where it breaks on our rig (battle_qa.py counts these slots as documented polish). A slot's
+optional `"compact": [SLOT, ...]` encodes those clips again exactly (`compact` below, tolerance 0) to pay for the restored
+ones. A model already over the resident limit before the rebuild (a later provider stage makes the room: Beelzemon's
+Buster Dive dash replaces a larger technique clip) may stay over it but must not grow; the provider checks its final model.
 
 A restored clip is one more program in the resident model (the field idle used to serve as the battle idle), so a model
 near the resident limit (motionstorage, 100352 B) makes room with `compact(data, nb, tol, slots)`: every resident clip is
@@ -90,8 +93,9 @@ def plan(slot, a_ticks, want):
     return want, 1
 
 
-def restore(b_data, a_data, nb, slots):
-    """B with the importer's clip of each slot in `slots` ({slot: asked frames or None}) -> (bytes, {slot: report})."""
+def restore(b_data, a_data, nb, slots, budget=True):
+    """B with the importer's clip of each slot in `slots` ({slot: asked frames or None}) -> (bytes, {slot: report}).
+    `budget` False skips the animation storage check (rebuild checks the result itself)."""
     model = mmd.MMD.parse(b_data, nb)
     source = mmd.MMD.parse(a_data, nb)
     report = {}
@@ -113,7 +117,8 @@ def restore(b_data, a_data, nb, slots):
         model.anims.anims.append(clip)
     model.anims.anims, model.anims.table = motioncyclelayer.share_identical_streams(model.anims.anims, model.anims.table)
     out = model.build()
-    motionstorage.require(out, nb)
+    if budget:
+        motionstorage.require(out, nb)
     return out, report
 
 
@@ -218,7 +223,7 @@ def rebuild(b_data, a_data, nb, type_id, row):
     """B (a species `type_id`, registered with mmd.exe()) with each slot of `row` restored from A and repaired -> bytes."""
     from tools.models import clip_repair
     slots = {int(k): v.get('ticks') for k, v in row.items()}
-    data, _ = restore(b_data, a_data, nb, slots)
+    data, _ = restore(b_data, a_data, nb, slots, budget=False)
     model = mmd.MMD.parse(data, nb)
     source = mmd.MMD.parse(a_data, nb)
     parents = [p for _, p in mmd.exe().skeleton[type_id]]
@@ -241,7 +246,15 @@ def rebuild(b_data, a_data, nb, type_id, row):
     model.anims.table = [None if i is None else renumber[i] for i in model.anims.table]
     model.anims.anims, model.anims.table = motioncyclelayer.share_identical_streams(model.anims.anims, model.anims.table)
     out = model.build()
-    motionstorage.require(out, nb)
+    packed = {s for v in row.values() for s in v.get('compact', ())}
+    if packed:     # a slot's "compact": [SLOT, ...]: those clips encoded again exactly (`compact`, tolerance 0) to pay for
+        out, _ = compact(out, nb, 0, packed)           # the restored ones; a clip shared with a slot not listed stays
+    if motionstorage.audit(b_data, nb)['fits']:
+        motionstorage.require(out, nb)
+    elif motionstorage.audit(out, nb)['resident_bytes'] > motionstorage.audit(b_data, nb)['resident_bytes']:
+        # a B already over the budget (a later provider stage makes the room: Beelzemon's Buster Dive dash replaces a
+        # larger technique clip) must not grow; the provider's final model is checked against the budget as always
+        raise ValueError('rebuild grows a model that is over the animation storage budget')
     return out
 
 

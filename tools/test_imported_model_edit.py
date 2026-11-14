@@ -134,6 +134,10 @@ class Repin(unittest.TestCase):
                                {path: v.repin_constant(path.read_text(), module.SOURCE, self.NEW)})
         self.assertEqual((moved.SOURCE, module.SOURCE == self.NEW), (self.NEW, False))
 
+    def test_a_generator_without_any_pin_has_nothing_to_move(self):
+        self.assertTrue(v.pins_nothing("TOLERANCE = 14\nSPECIES = 328\n"))
+        self.assertFalse(v.pins_nothing("SOURCE = '" + 'e' * 64 + "'\n"))
+
     def test_source_constant_and_species_keyword_profile_move(self):
         text = "X = 1\nSOURCE='" + 'e' * 64 + "'\nOTHER = 2\n"
         self.assertEqual(v.repin_constant(text, 'e' * 64, self.NEW), text.replace('e' * 64, self.NEW))

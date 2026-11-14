@@ -433,6 +433,12 @@ def repin_constant(text, old, new):
     return text[:found[0].start(1)] + new + text[found[0].end(1):]
 
 
+def pins_nothing(text):
+    """True when a generator module's source holds no sha256 digest at all: it takes any input and has no pin to move."""
+    import re
+    return re.search(r'\b[0-9a-f]{64}\b', text) is None
+
+
 def repin_pace(text, species, old, new, post=None):
     """`text`, content/models/imports/pace.json, with the field pace row of `species` pinned to `new` instead of `old`;
     None when the species has no row. A row without a base generator has its post-source follow (`post` is `new`); a row
@@ -549,10 +555,13 @@ def cmd_repin(a):
             new_paced = paced(new_input, base and stage_module(base, texts))
             path = ROOT / (pace['after_generator'].replace('.', '/') + '.py')
             moved = repin_constant(path.read_text(), old_paced, new_paced)
-            if moved is None:
+            if moved is None and pins_nothing(path.read_text()):
+                pass        # a generator that carries no input pin has none to move (Snimon's)
+            elif moved is None:
                 raise SystemExit(f'{sid}: {pace["after_generator"]} does not pin the paced model {old_paced}')
-            texts[path] = moved
-            stale.append(old_paced)
+            else:
+                texts[path] = moved
+                stale.append(old_paced)
     chibi_rows = load(CHIBI_ROWS)
     chibi = chibi_rows.get(str(sid))
     if chibi:
