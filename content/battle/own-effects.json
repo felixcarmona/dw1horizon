@@ -297,5 +297,13 @@
     "hit": [[1, "EFFESD/MESD0400.BIN", "EFFESD/AESD0400.BIN"]],
     "scale": 0.282,
     "hit_scale": 0.1
+  },
+  "159": {
+    "name": "Digital Bomb",
+    "stands_for": 68,
+    "cast": [[1, "EFFESA/MESA7200.BIN", "EFFESA/AESA7200.BIN"], [2, "EFFESA/MESA7300.BIN", "EFFESA/AESA7300.BIN"]],
+    "hit": [[2, "EFFESD/MESD0000.BIN", "EFFESD/AESD0000.BIN"]],
+    "scale": 0.184,
+    "hit_scale": 0.1
   }
 }

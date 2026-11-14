@@ -48,6 +48,7 @@ the moment the attack starts.
 | 291 Dragomon | Tentacle Claw (DW2) | Mail Strome | projectile: throws its trident | 1 | flies at tick 29, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.295) | one enemy, as for Mail Strome | one enemy |
 | 292 Deltamon | Triple Forces (DW2) | Mega Flame | projectile: energy bursts from all three heads | 1 | flies at tick 29, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.268) | one enemy, as for Mega Flame | all enemies, 3 hits |
 | 293 Gryphonmon | Legendary Blade (DW2) | Death Claw | at the target: a sonic blade over every enemy | 1 | plays at the target, hits at tick 40 | none (scale 0.282) | one enemy, as for Death Claw | all enemies |
+| 294 Datamon | Digital Bomb (DW2) | Smiley Bomb | projectile: small bombs on every enemy | 1 | flies at tick 21, hits on contact (tick 38 at 2,700 units) | flies to the target (scale 0.184) | one enemy, as for Smiley Bomb | all enemies, 4 hits |
 
 ## Where the port differs from the source
 
