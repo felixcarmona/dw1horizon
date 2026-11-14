@@ -161,5 +161,13 @@
     "hit": [[1, "EFFEWD/MEWD0200.BIN", "EFFEWD/AEWD0200.BIN"]],
     "scale": 0.238,
     "hit_scale": 0.1
+  },
+  "142": {
+    "name": "Tail Blade",
+    "stands_for": 111,
+    "cast": [[1, "EFFEUA/MEUA2800.BIN", "EFFEUA/AEUA2800.BIN"], [2, "EFFEUA/MEUA2900.BIN", "EFFEUA/AEUA2900.BIN"]],
+    "hit": [[1, "EFFESD/MESD0200.BIN", "EFFESD/AESD0200.BIN"]],
+    "scale": 0.311,
+    "hit_scale": 0.1
   }
 }
