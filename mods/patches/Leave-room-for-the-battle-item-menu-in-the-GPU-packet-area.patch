@@ -1,0 +1,61 @@
+From fdbb61c9a62c43ae4d6c3a6233084b98ffbbfbfd Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 14 Nov 2026 01:58:48 +0000
+Subject: [PATCH] Leave room for the battle item menu in the GPU packet area
+
+Triangle in a field battle opens the item menu, whose windows, 18 item rows, amounts and cursor are drawn by unchecked renderers: about 4.7 KB for the list and bottom window and 0.8 KB for the option box. They come in the object slots before the HUD, which needs about 6 KB, and modPacketFits kept only 8 KB for that HUD. A frame whose scene already reached the checked limit therefore ran past the 81,920-byte area (into the ordering-table headers, where GsSortSprite then wrote) as soon as the menu opened. While the menu is open in a battle, modPacketFits now keeps MOD_PACKET_ITEM_MENU more for it.
+---
+ include/dw/world_object.h | 4 ++++
+ src/main/world_object.c   | 9 ++++++++-
+ 2 files changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/include/dw/world_object.h b/include/dw/world_object.h
+index 0fb9833..889bdb6 100644
+--- a/include/dw/world_object.h
++++ b/include/dw/world_object.h
+@@ -50,6 +50,10 @@ void renderObjects(void);
+  * the object order. A cursor outside this frame's area (a loop drawing
+  * elsewhere) always fits. */
+ #define MOD_PACKET_RESERVE	0x2000
++/* The battle item menu (Triangle) draws its windows, 18 item rows and cursor with unchecked renderers, about 4.7 KB
++ * for the list and 0.8 KB for the option box, in the object slots before the HUD. While it is open the
++ * scene leaves that room too, or a frame already at the limit overflows the packet area. */
++#define MOD_PACKET_ITEM_MENU	0x1c00
+ int32_t modPacketFits(int32_t bytes);
+ 
+ #endif
+diff --git a/src/main/world_object.c b/src/main/world_object.c
+index d880fd2..6cea723 100644
+--- a/src/main/world_object.c
++++ b/src/main/world_object.c
+@@ -5,19 +5,26 @@
+ 
+ extern PACKET GS_WORK_BASES[2][0x14000];
+ extern int32_t ACTIVE_FRAMEBUFFER;
++extern int32_t IS_INVENTORY_INITIALIZED;
++extern int8_t GAME_STATE;
+ 
+ /* MOD (packet budget): see dw/world_object.h */
+ int32_t modPacketFits(int32_t bytes)
+ {
+ 	uint8_t *cursor;
+ 	uint8_t *base;
++	int32_t reserve;
+ 
+ 	cursor = (uint8_t *)GsGetWorkBase();
+ 	base = (uint8_t *)GS_WORK_BASES[ACTIVE_FRAMEBUFFER & 1];
+ 	if (cursor < base || cursor > base + 0x14000) {
+ 		return 1;
+ 	}
+-	return (base + 0x14000 - MOD_PACKET_RESERVE) - cursor >= bytes;
++	reserve = MOD_PACKET_RESERVE;
++	if (GAME_STATE == 1 && IS_INVENTORY_INITIALIZED == 1) {
++		reserve += MOD_PACKET_ITEM_MENU;
++	}
++	return (base + 0x14000 - reserve) - cursor >= bytes;
+ }
+ 
+ 
+-- 
+2.55.0
+
