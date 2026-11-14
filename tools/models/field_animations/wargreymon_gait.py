@@ -17,7 +17,8 @@ each landing, each arm swings against the leg of its side with the heavy claw la
 stays level, and the back plates, the loincloth and the side plates trail. Each walking clip is two cycles that differ (one
 leg lifts higher or lands earlier, the weight sinks deeper, the arm swings looser) and are eased into one another; arms,
 claws, head, plates and loincloth are then run through loose springs (a lag and a small overshoot each) and the chest
-rides on a spring of the pelvis' height, so it sinks a moment after every landing. The idle shares slot 33.
+rides on a spring of the pelvis' height, so it sinks a moment after every landing. The battle idle (slot 33) plays the
+source game's own clip, fitted to this rig (battle_idle).
 
 The walk is a long, weighted stride of a warrior in no hurry, the tired walk a slumped, dragging step with the claws
 hanging and the head down, the run a leaning charge with both feet off the floor between strides and the claws trailing.
@@ -37,10 +38,13 @@ import sys
 ROOT = Path(__file__).resolve().parents[3]
 sys.path[:0] = [str(ROOT), str(ROOT / 'tools')]
 import mmd  # noqa: E402
+import motionstorage  # noqa: E402
 from tools.models.field_animations import quadruped  # noqa: E402
 from tools.models.field_animations.quadruped import mul, tr, rot, set_rot  # noqa: E402
 
 SPECIES = 373
+BATTLE_LEAN = 5                     # degrees the battle idle's chest leans back (battle_idle)
+EXACT_SLOTS = {0, 1, 2, 3, 4, 0x21, 0x22, 0x23, 0x24, 0x35}   # field, battle and Buster Dive: never re-encoded
 TAU = 2 * math.pi
 DEG = 4096 / 360
 PELVIS, CHEST, NECK, HEAD, HELMET = 1, 2, 3, 4, 5
@@ -290,6 +294,30 @@ def prepare(model, skeleton):
     PROFILE['sole'][False] = [0, float(low[:, 1].mean()), float(low[:, 2].mean())]
 
 
+def battle_idle(data, skeleton):
+    """The source game's battle idle (slot 0x21) fitted to this rig: its deep crouch has the thighs raised 50-80 degrees,
+    and the hip plates, still in the source, cut through them (as the back plates, at the source's rest, cut through the
+    shoulders); the chest, 28 degrees over the field idle's, sits beyond the native range. The hip plates take their
+    thigh's turn, the back plates keep the field idle's, the chest leans back 5 degrees; every other channel is the
+    source's (tools/models/battle_qa.py lists the slot as polished)."""
+    from tools.models import battle_restore
+    import animsheet
+    nb = len(skeleton)
+    model = mmd.MMD.parse(data, nb)
+    rest = animsheet.slot_frames(model, nb, 0)[0][0]
+    frames, loop, events = animsheet.slot_frames(model, nb, 0x21)
+    frames = battle_restore.pitched(frames, skeleton, {CHEST: BATTLE_LEAN})
+    for pose in frames:
+        for plate, thigh in ((TASSET_L, THIGH['LH']), (TASSET_R, THIGH['RH'])):
+            pose[plate][3:6] = pose[thigh][3:6]
+        for plate in (PLATE_L, PLATE_R):
+            pose[plate][3:6] = [int(v) for v in rest[plate][3:6]]
+    if [s for s, i in enumerate(model.anims.table) if i == model.anims.table[0x21]] != [0x21]:
+        raise ValueError('WarGreymon: the battle idle shares its program')
+    model.anims.anims[model.anims.table[0x21]] = mmd.encode_anim(frames, nb, loop, events, tol=0, repeats=True)
+    return model.build()
+
+
 def build(data, skeleton):
     """The reshaped model with the four clips written on it -> (bytes, proof): chibi's proof (its species patch reaches
     the record) with the clips' checks."""
@@ -303,16 +331,23 @@ def build(data, skeleton):
         exe.skeleton[SPECIES] = skeleton
         exe.bone_count[SPECIES] = len(skeleton)
         prepare(old, skeleton)
-        # the battle-side idle (slot 33) played its own older clip: it shares the field idle from here on
-        old.anims.table[33] = old.anims.table[0]
         reshaped = old.build()
         profile = dict(PROFILE, source=hashlib.sha256(reshaped).hexdigest())
         result, gait = quadruped.build(reshaped, skeleton, profile)
     finally:
         exe.skeleton[SPECIES], exe.bone_count[SPECIES] = kept
+    # The source game's own battle idle (0x21) is one program more than when it shared the field idle; the room for it
+    # and for the Buster Dive dash written after this overlay (tools/models/buster_dive.py, slot 0x35) comes
+    # from encoding the care, condition and technique clips again exactly (the same ticks in fewer bytes). Field slots,
+    # battle slots and the dash's slot are not touched.
+    from tools.models import battle_restore
+    result = battle_idle(result, skeleton)
+    result, packed = battle_restore.compact(result, len(skeleton), 0, set(range(80)) - EXACT_SLOTS)
+    storage = motionstorage.audit(result, len(skeleton))
     proof = dict(proof, preceding_recipe=dict(recipe='chibi', output_sha256=proof['output_sha256']),
-                 output_sha256=gait['output_sha256'], gait=gait, resident_bytes=[gait['storage']['resident_bytes'],
-                                                                                gait['storage']['resident_limit']])
+                 output_sha256=hashlib.sha256(result).hexdigest(), gait=gait,
+                 compacted={str(s): list(v) for s, v in sorted(packed.items())},
+                 resident_bytes=[storage['resident_bytes'], gait['storage']['resident_limit']])
     proof['bytes'] = [proof['bytes'][0], len(result)]
     return result, proof
 

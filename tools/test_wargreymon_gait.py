@@ -79,7 +79,11 @@ class WarGreymonGait(unittest.TestCase):
 
     def test_chibi_proportions_and_the_record_patch_are_kept(self):
         self.assertIn('species_patch', self.report)
-        self.assertEqual(self.report['gait']['changed_slots'], [0, 2, 3, 4, 33])    # slot 33 plays the idle as well
+        self.assertEqual(self.report['gait']['changed_slots'], [0, 2, 3, 4])
+
+    def test_the_battle_idle_is_its_own_program(self):
+        table = mmd.MMD.parse(self.data, BONES).anims.table
+        self.assertNotEqual(table[33], table[0])
 
     def test_storage_fits_the_resident_buffer(self):
         from motionstorage import audit

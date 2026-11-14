@@ -137,6 +137,23 @@ bytes. A side effect of re-encoding Growlmon's clips: WarGrowlmon's tired walk (
 also reads the reviewed source through `reviewed.py`, so a variant release's own import of a native-bound species
 (Kyubimon on the USA World 3 disc) builds with the reviewed recipe.
 
+Species with a Digimon World 3 (USA) variant (`content/modeldelta/variants/dw3-us.json`) are restored on the PAL
+import and `tools/models/variants.py make` carries the delta: a restored slot is no edit of ours, so the USA model keeps
+that release's own battle clip, and the QA is run on both releases' final models. Ebidramon 0x21, Antylamon 0x21,
+MaloMyotismon 0x21-0x24 and Kurisarimon 0x21 are the source's again (the Ebidramon and Kurisarimon generators no
+longer write the idle twin); Ebidramon's 0x24 (its body tipped 35 degrees, main 18) and Renamon's 0x21 (26 triangle
+crossings a tick on the reshaped rig, main 1) stay main's.
+
+Room is made by `"compact": {"tol": N}` in the same entry (`native_battle.compact`, after the retarget; Wizardmon's
+and Sorcermon's builder runs it once, after its cape and hair followers, which skip the restored slots):
+`battle_restore.compact` re-encodes every clip with repeats losslessly, then, at N units of 1/4096 turn (at most 5,
+0.44 degrees), every clip that is neither a field slot 0-4 nor a battle slot 0x21-0x24; identical streams are shared
+and dead tails dropped. Field and battle slots decode exactly as before. Wizardmon 241 (tol 5): 0x21-0x23,
+0x28-0x2B, 0x34, 0x35, 0x37 (99,770 B; its training clip 0x39 stays Angemon's). Sorcermon 242 (tol 2): 0x21, 0x22,
+0x2E, 0x30, 0x33, 0x38 (98,358 B). Assaultmon 310 (tol 5): 0x21, 0x22, 0x28, 0x29, 0x2B, 0x2C, 0x2E-0x35, 0x3B
+(99,076 B). Maildramon 324 (tol 5): 0x21, 0x23, 0x24, 0x2B, 0x2C, 0x2F, 0x32 (99,862 B). WarGrowlmon 326 (tol 4):
+0x22, 0x28-0x2C (100,108 B).
+
 Slots 6, 0x14, 0x1A, 0x1C-0x20, 0x26 and 0x27 are the tamer's, NPCs' and the kart race's. Which slots a partner must
 have, and the lint rule for each: [imported-species.md](imported-species.md), "What the game asks of every partner".
 
@@ -1523,14 +1540,21 @@ follows late, each arm swings against its own leg from the shoulder with the cla
 plates lift and settle after the chest, and the loincloth and thigh plates follow the thighs. Springs (`FOLLOW`) give the claws,
 head, plates and cloth their follow-through. The walk and the run are two different cycles each (44 and 24 ticks: other
 lifts, landings, settle and bob) that ease from one into the other; the tired walk is one slumped, heavy cycle of 28 ticks
-(the right leg lands late and lifts less); the run leans into a flight phase; the idle (96 ticks, shared by slot 33) breathes,
+(the right leg lands late and lifts less); the run leans into a flight phase; the idle (96 ticks) breathes,
 shifts its weight, glances and raises a claw. Before / after: ticks idle, walk, tired walk, run 73, 23, 21, 13 / 96, 44, 28, 24;
 root speeds 17.2, 13.6, 40.8 / 16, 10, 40 units a tick (a constant step); stance slip 9-72 % mean-worst on the walk, 13-109 % on
 the tired walk, 5-6 % on the run / 5.7-14 %, 4.8-15 %, 4.9-15 %; resident buffer 98486 bytes. Mesh crossings stay within the
 chibi clips' on arms against head, torso and legs (and drop a lot on the arms against the head); the head against the chest
 (37 triangles before) rises to 40 to 49 and a thigh plate against its leg (22 before) to 48 on the tired walk, both shallow.
 This is a hand-built overlay, not a native donor binding; the chibi row (`chibi.json` 373) is applied first and its
-proportions are unchanged.
+proportions are unchanged. The battle idle (slot 33) is the source game's own 73-tick clip again, not the field idle: its deep
+crouch put the still hip plates through the raised thighs (156 crossings a tick against main's 40) and the chest 28 degrees
+over the field idle's, so `battle_idle` lets the hip plates take their thigh's turn, gives the back plates the field idle's
+and leans the chest back 5 degrees (`battle_qa.py` lists the slot as polished); it then passes. Slot 34 keeps main's clip:
+the source's own crosses the claws through each other (362 a tick against main's 74). The extra program would leave no
+room for Buster Dive's dash (slot 0x35, `buster_dive.py` keeps the plain clip when the resident buffer would overflow), so
+the overlay encodes the care, condition and technique clips again exactly (`battle_restore.compact`, tolerance 0):
+resident buffer 98138 bytes with the dash.
 
 Taomon (315): the walk, tired walk and run held both arms in the idle's hanging pose while the torso leans 40 to 80 degrees and the legs swing, so
 the wide sleeves hung at thigh height and each leg passed through its sleeve at every step (up to 30 units deep; the aprons and, in the tired walk, the

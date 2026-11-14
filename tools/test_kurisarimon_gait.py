@@ -19,7 +19,7 @@ import motionstorage
 from motiondiscidentity import changed_programs
 from tools.models.field_animations import kurisarimon_gait as gen
 
-EXPECTED = '7d9a6e19ca442929fdc950f7188a2d3927250fbef963e580979902b3f1ceb4c9'
+EXPECTED = '0427df480be2bd29185a1cd0652147b66efe5636f6a96ea55516dae9c4c45fd2'
 NB = gen.NB
 TICKS = {0: 72, 2: 32, 3: 48, 4: 20}
 SPEEDS = {2: 18, 3: 12, 4: 38}

@@ -148,7 +148,7 @@ def bind_pose(mesh, skeleton, recipe):
     return pose
 
 
-def bind(data, skeleton, recipe, placements=None):
+def bind(data, skeleton, recipe, placements=None, final=True):
     """(model bytes, proof). `placements`, when given, receives {source bone: (anchor, transform, destination)}: how each
     piece was moved, for the authoring step that carries effect points and the condition bubble along with their piece."""
     if reviewed(digest(data)) != recipe['source_sha256'] or digest(json.dumps(skeleton).encode()) != recipe['skeleton_sha256']:
@@ -417,11 +417,14 @@ def bind(data, skeleton, recipe, placements=None):
     if spin:
         # drums that turn about their own axis (their bones below the donor's), written last: no step above reshapes them
         output = add_spin(output, rig, spin)
-    battle_proof = None
+    battle_proof = compact_proof = None
     if recipe.get('battle_originals'):
         # the source game's own battle clips on the donor rig, for the slots that measured sound (native_battle.py)
         output, battle_proof = native_battle.apply(output, battle, recipe['battle_originals']['slots'])
-    storage = motionstorage.require(output, len(rig))
+        if final and recipe['battle_originals'].get('compact'):
+            output, compact_proof = native_battle.compact(output, len(rig), recipe['battle_originals']['compact'])
+    # a builder that re-encodes the programs afterwards (wizardmon_native.py) compacts and checks the buffer itself
+    storage = (motionstorage.require if final else motionstorage.audit)(output, len(rig))
     proof = dict(species=sid, source_sha256=digest(data), output_sha256=digest(output),
                  donor=donor_id, generated_skeleton=rig, storage=storage, species_patch=patch)
     if chibi_proof:
@@ -430,12 +433,18 @@ def bind(data, skeleton, recipe, placements=None):
         proof['gait'] = gait_proof['checks']
     if battle_proof:
         proof['battle_originals'] = battle_proof
+    if compact_proof is not None:
+        proof['battle_compact'] = compact_proof
     return output, proof
 
 
-def build(data, skeleton):
+def recipe_of(data):
     recipes = json.loads(MANIFEST.read_text())
     matches = [r for r in recipes.values() if r['source_sha256'] == reviewed(digest(data))]
     if len(matches) != 1:
         raise ValueError('Native binding: no unique reviewed source')
-    return bind(data, skeleton, matches[0])
+    return matches[0]
+
+
+def build(data, skeleton, final=True):
+    return bind(data, skeleton, recipe_of(data), final=final)

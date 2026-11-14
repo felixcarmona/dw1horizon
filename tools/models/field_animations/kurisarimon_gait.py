@@ -8,7 +8,8 @@ hover: the legs never step, they dangle and trail.
 
 Offline only (player builds replay the pinned delta): `tools/models/edit.py get 431` on the commit before this change,
 then `python3 -m tools.models.field_animations.kurisarimon_gait --source THAT.MMD --out AFTER.MMD` and
-`edit.py put 431 AFTER.MMD`. Only slots 0, 1, 2, 3, 4, 18 and 33 change (the four clips, the idle's twins); the rest stay.
+`edit.py put 431 AFTER.MMD`. Only slots 0, 1, 2, 3, 4 and 18 change (the four clips, the idle's twins); the rest stay.
+The battle idle (33) was a twin of the idle once; it is the source game's own clip again (tools/models/battle_restore.py).
 
 - Idle: a slow hover bob with the breath, the head glancing about, the legs hanging and swaying a beat behind the body and
   a blade twitching now and then, the abdomen drifting.
@@ -42,8 +43,8 @@ from tools.models.field_animations.lillymon_flight import Rig  # noqa: E402
 
 SPECIES, NB = 431, 34
 SOURCE = "808fe7dcecb47e12d8400b3ab60c7aa3938827a30d17b2b90f295feb8b9753a4"   # edit.py get 431 before this change
-SLOTS = (0, 1, 2, 3, 4, 18, 33)
-TWINS_OF_IDLE = (1, 18, 33)
+SLOTS = (0, 1, 2, 3, 4, 18)
+TWINS_OF_IDLE = (1, 18)                 # the battle idle (33) is the source game's own again (battle_restore.py)
 CLIP_OF_SLOT = {0: 'idle', 2: 'walk', 3: 'tired', 4: 'run'}
 BODY, HEAD = 1, 33
 TAIL = (30, 31, 32)
