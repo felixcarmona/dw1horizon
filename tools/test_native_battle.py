@@ -86,6 +86,21 @@ class NativeBattle(unittest.TestCase):
         carried = {1: {1, 2}, 3: {3}, 4: {4}, 6: {5}, 7: {6, 7}}
         self.assertEqual(battle_qa_native.limb_carriers(carried, parents, limbs), {3, 4, 7})
 
+    def test_qa_measures_the_source_on_the_final_clips_length(self):
+        # a slot given its own length (battle_originals.ticks) is compared tick for tick with the source resampled to
+        # that length, not to main's
+        from unittest import mock
+        sys.path[:0] = [str(ROOT / 'tools' / 'models')]
+        import battle_qa_native
+        asked = []
+
+        def clip(source, ns, slot, ticks):
+            asked.append(ticks)
+            return [[0]] * ticks, None, None, 'tile'
+        with mock.patch.object(native_battle, 'source_clip', clip):
+            sfr, tile = battle_qa_native.source_frames('src', 3, 0x2B, ([[0]] * 41, None))
+        self.assertEqual((asked, len(sfr), tile), ([41], 41, 'tile'))
+
     def test_order_puts_parents_first(self):
         skeleton = [(0, -1), (1, 2), (2, 0)]        # bone 1's parent comes after it
         order = native_battle.order(skeleton)
