@@ -213,8 +213,8 @@ def bind(data, skeleton, recipe, placements=None, final=True):
         if sb in mirrors:
             items[tb].append(mirror_piece(mesh, skeleton, sb, mirrors[sb], fitted, nw[tb]))
             twin = next(row for row in battle_pieces.get(mapping[mirrors[sb]], []) if row[0] == mirrors[sb])
-            flip = [[-1, 0, 0], [0, 1, 0], [0, 0, 1]]
-            battle_pieces.setdefault(tb, []).append((sb, native_battle._mul(native_battle._mul(flip, twin[1]), flip), twin[2]))
+            fit = native_battle.mirrored_fit(twin[1], sw[mirrors[sb], :3, :3].tolist(), sw[sb, :3, :3].tolist())
+            battle_pieces.setdefault(tb, []).append((sb, fit, twin[2]))
             continue
         obj = skeleton[sb][0]
         original = mesh.tmd.objects[obj]
@@ -284,9 +284,10 @@ def bind(data, skeleton, recipe, placements=None, final=True):
         points = (points-anchor) @ transform.T + destination
         lows[1] = max(lows[1], float(points[:, 1].max()))
         joint = rider_pivot(rider_of[sb]) if sb in rider_of else nw[tb, :3, 3]
-        if sb not in spun:
-            battle_pieces.setdefault(rider_of.get(sb, tb), []).append(
-                (sb, native_battle.polar(transform.tolist()), float(((points-joint)**2).sum())))
+        # a spinning drum leads its own bone (below), which then turns as the source's drum does in a battle clip
+        carrier = len(native_rig) + spun.index(sb) if sb in spun else rider_of.get(sb, tb)
+        battle_pieces.setdefault(carrier, []).append(
+            (sb, native_battle.polar(transform.tolist()), float(((points-joint)**2).sum())))
         if placements is not None:
             placements[sb] = (anchor, transform, destination)
         normals = np.array(mesh.tmd.obj_norms(obj)[:original.nnorm]).reshape(-1, 4)[:, :3]
@@ -382,7 +383,8 @@ def bind(data, skeleton, recipe, placements=None, final=True):
             cy, sy = math.cos(math.radians(recipe['source_yaw'])), math.sin(math.radians(recipe['source_yaw']))
             yaw = [[cy, 0, sy], [0, 1, 0], [-sy, 0, cy]]
         battle = native_battle.context(mesh, skeleton, source_pose, yaw, rig, rest, battle_pieces,
-                                       {rider_bone[r['name']]: r['pivot'] for r in riders}, mapping, lows)
+                                       {rider_bone[r['name']]: r['pivot'] for r in riders}, mapping, lows,
+                                       native_battle.fixed_pieces(recipe))
     if recipe.get('arm_pump'):
         output = native_arms.run_arms(mmd.MMD.parse(output, len(rig)), rig, recipe['arm_pump'])
     if recipe.get('pace'):

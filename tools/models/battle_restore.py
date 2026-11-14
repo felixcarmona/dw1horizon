@@ -180,7 +180,7 @@ def pitched(frames, skeleton, lean):
             local = mmd.rot_matrix(*orig[b][3:6])
             new = _mul(_tr(parent), _mul(pitch, _mul(parent, local)))
             pose[b][3:6] = [int(round(v)) for v in mmd.matrix_euler(new, prev=orig[b][3:6])]
-        out.append(pose)
+        out.append([[int(round(v)) for v in bone] for bone in pose])   # the root's travel reads as whole floats
     return out
 
 

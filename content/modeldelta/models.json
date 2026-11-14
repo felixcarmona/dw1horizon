@@ -3724,9 +3724,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/305-Ebidramon.MMD.mdelta",
-        "delta_sha256": "788a3b92c17c29cc824eacf3020a11c9cfe4c6bf54c8fa57f09d9a87433f982f",
-        "sha256": "b3aec6591c4989087c7d0ed3c5fc28921d007523eb9cd525831e6b73c9b80b70",
-        "size": 103328
+        "delta_sha256": "f1b84a3ab2f26bfd155495be87a03a374044be5f755ea1558af27e51be59e578",
+        "sha256": "645dfb1ecc182b1501e2ed5cd87c17664aa70667043ab383d230986bb64834be",
+        "size": 106006
       },
       "tim": {
         "sources": [

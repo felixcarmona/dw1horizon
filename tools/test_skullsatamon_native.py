@@ -120,6 +120,15 @@ class SkullSatamonNative(unittest.TestCase):
         for row in patch['effect_origins']:
             self.assertTrue(0 <= row[4] < BONES, row)
 
+    def test_battle_originals(self):
+        # the source game's own battle clips, retargeted onto the donor rig (native_battle.py); one-shot clips keep the
+        # length of the donor's clip they replace, since technique effects are timed to it
+        made = self.proof['battle_originals']
+        self.assertEqual(sorted(int(s) for s in made), self.recipe['battle_originals']['slots'])
+        for slot, row in made.items():
+            if int(slot) not in (33, 34):
+                self.assertEqual(row['frames'], row['donor_frames'])
+
     def test_the_buffer_holds(self):
         info = motionstorage.require(self.data, BONES)
         self.assertTrue(info['fits'])

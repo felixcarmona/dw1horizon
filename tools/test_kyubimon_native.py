@@ -22,7 +22,7 @@ BONES = 26
 BUFFER = 100352
 TICKS = {0: 40, 2: 16, 3: 22, 4: 14}                     # idle, walk, condition walk, run
 SPEEDS = {2: 17.0, 3: 11.5, 4: 40.0}                     # the gait rows' units per tick
-TARGET_SHA256 = '25f3ff90906351a772aebdabb9ed38bc3304fe0c3dde4f2f2fd4cefdf2f06edd'
+TARGET_SHA256 = '4cec5eb3a69236a4b459a3e1c174b40b431b129050d9a2f36b1378a926dedfb8'
 
 
 class KyubimonNative(unittest.TestCase):
@@ -127,11 +127,20 @@ class KyubimonNative(unittest.TestCase):
             self.assertTrue(0 <= row[4] < BONES, row)
             self.assertTrue(0 <= row[0] < BONES, row)
 
+    def test_battle_originals(self):
+        # the source game's own battle clips, retargeted onto the donor rig (native_battle.py); one-shot clips keep the
+        # length of the donor's clip they replace, since technique effects are timed to it
+        made = self.proof['battle_originals']
+        self.assertEqual(sorted(int(s) for s in made), self.recipe['battle_originals']['slots'])
+        for slot, row in made.items():
+            if int(slot) not in (33, 34):
+                self.assertEqual(row['frames'], row['donor_frames'])
+
     def test_the_buffer_holds(self):
         info = motionstorage.require(self.data, BONES)
         self.assertTrue(info['fits'])
         self.assertLess(info['resident_bytes'], BUFFER)
-        self.assertEqual(info['resident_bytes'], 95352)
+        self.assertEqual(info['resident_bytes'], 99788)
         for read in info['cold_reads']:
             self.assertTrue(read['fits'], read)
 
