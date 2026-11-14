@@ -160,6 +160,11 @@
    "trials": 1,
    "enemy_damage": 1248
   },
+  "41": {
+   "finisher": 74,
+   "trials": 21,
+   "enemy_damage": 522
+  },
   "42": {
    "finisher": 92,
    "trials": 1,
@@ -872,8 +877,8 @@
   },
   "260": {
    "finisher": 74,
-   "trials": 1,
-   "enemy_damage": 1335
+   "trials": 3,
+   "enemy_damage": 623
   },
   "261": {
    "finisher": 89,
@@ -1277,8 +1282,8 @@
   },
   "400": {
    "finisher": 74,
-   "trials": 1,
-   "enemy_damage": 1351
+   "trials": 3,
+   "enemy_damage": 616
   },
   "401": {
    "finisher": 111,
@@ -1361,7 +1366,5 @@
   "25": "Sweet Breath hit in 1 of 4 default trials; the breath goes where the caster faces, so it misses an enemy that is not in front of it",
   "70": "Lovely Attack (Monzaemon donor row) hit in 2 of 4 default trials; the heart flies where the caster faces, so it misses an enemy that is not in front"
  },
- "unproven": {
-  "41": "Deadly Bomb: its hit box (traced at findAABBHitEntity) sits 800 to 3400 units from Giromon, stationary, and moves with the origin row (bone 6, 45,0,0); 0 damage in 17 default trials and with the enemy held on the caster; the effect data equals the original disc, cause not found"
- }
+ "unproven": {}
 }

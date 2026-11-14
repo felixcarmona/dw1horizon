@@ -46,13 +46,92 @@ def exclude_caster(archive):
     return bytes(data)
 
 
+def _instructions(data, base, name):
+    """Script offsets (from the chunk's script head, base + 0x34) of every instruction of the start script."""
+    script, end = struct.unpack_from('<2I', data, base)
+    pc, stop = base + 0x34 + script, base + 0x34 + end
+    if not base + 0x34 <= pc < stop <= base + CHUNK_SIZE:
+        raise ValueError(f'{name}: invalid script bounds')
+    while pc < stop:
+        op = data[pc]
+        if op >= len(SIZES) or pc + SIZES[op] > stop:
+            raise ValueError(f'{name}: invalid script instruction')
+        yield pc - base - 0x34
+        pc += SIZES[op]
+
+
+SIZES = (6, 6, 2, 10, 6, 2, 2, 10, 2, 6, 6, 6, 6, 6, 2, 2, 6, 12)
+DEADLY_BOMB = 74
+THROW = 0x880           # the bomb's throw, at frame 30 of the effect (script offset)
+THROW_LEN = 0x84
+THROW_SOURCE = bytes.fromhex(
+    '01040000adda040400000000' '0acd00000000' '0c0404000000' '0c0410000000' '0e3e'
+    '0c0404000000' '0acd04000000' '0acd0c000000' '0e1a' '00cd00010000' '040410000000'
+    '00cd00080000' '041414000000' '00cd00000000' '040424000000' '00cd00000000' '040428000000'
+    '00cd64000000' '04042c000000' '0c0410000000' '0c0424000000' '0e39' '09cd540cadda')
+THROW_SPEED = 12        # ticks from the throw to the first landing (frames 31-42), so it lands on the target
+LANDING = 0x982         # the first landing's 'speed z / 3' (script offset): becomes 'next phase', the hit check
+LANDING_SOURCE = bytes.fromhex('00cd03000000' '04442c000000')
+LANDING_HIT = bytes.fromhex('00cd01000000' '04141c000000')
+THROW_UP = -38          # the original lob's upward speed, (0, 0, 100) turned 256 units up
+
+
+def _words(*values):
+    return struct.pack('<%dH' % len(values), *[v & 0xffff for v in values])
+
+
+def aimed_throw():
+    """The throw block, aimed: velocity = (target - bomb) / THROW_SPEED, upward speed THROW_UP."""
+    block = THROW_SOURCE[:12]                                          # instance frame = the effect's frame
+    block += _words(0x040c, 4, 0, 0xcd0a, 4, 0, 0xcd0a, 12, 0, 0x1a0e)   # position = the bomb in the hand
+    block += _words(0xcd00, 256, 0, 0x0404, 0x10, 0)                     # spin x = 256, as before
+    block += _words(0x040c, 0x24, 0, 0x0e0e)                             # v = target position (sub 14)
+    block += _words(0x040c, 0x24, 0, 0x040c, 4, 0, 0x320e)               # v -= position (sub 50)
+    block += _words(0x040c, 0x24, 0, 0xcd0a, THROW_SPEED, 0, 0x480e)     # v /= THROW_SPEED (sub 72)
+    block += _words(0xcd00, THROW_UP, 0, 0x0404, 0x28, 0)                # v.y = THROW_UP
+    block += THROW_SOURCE[-6:]                                         # jmp to the routine's return
+    return block + _words(0xcd0f) * ((THROW_LEN - len(block)) // 2)    # unreachable returns
+
+
+def aim_deadly_bomb(archive):
+    """Deadly Bomb's bomb lands on the target and goes off there.
+
+    Chunk 74 throws the bomb at frame 30 with velocity (0, 0, 100) turned by the caster's bone-0 angles (x forced to
+    256, y + 2048), lets it fly and bounce (gravity 10, horizontal speed / 3 per bounce) until frame 77, and only then
+    looks for a Digimon in a +-200 box around it (BTL_findHitEntity, then the box hit) until frame 700. The lob is
+    fixed: it comes to rest about 1400 units out whatever the distance to the enemy, and by frame 77 the enemy has
+    moved on, so it never hits. The aimed throw keeps the bomb, spin, upward speed and gravity and sets the
+    horizontal speed to (target - bomb) / THROW_SPEED, so the first landing is on the target; the landing then
+    starts the box check (phase 3) at once instead of the second bounce's z slowdown. Frame 77 still starts it if
+    the bomb never lands, and a missed bomb waits as a mine until frame 700, as before.
+    """
+    data = bytearray(archive)
+    base = DEADLY_BOMB * CHUNK_SIZE
+    if len(data) < base + CHUNK_SIZE:
+        raise ValueError('Deadly Bomb: missing effect chunk')
+    offsets = set(_instructions(data, base, 'Deadly Bomb'))
+    if THROW not in offsets:
+        raise ValueError('Deadly Bomb: the throw is not an instruction')
+    at = base + 0x34 + THROW
+    if bytes(data[at:at + THROW_LEN]) != THROW_SOURCE:
+        raise ValueError('Deadly Bomb: unexpected throw')
+    data[at:at + THROW_LEN] = aimed_throw()
+    if LANDING not in offsets:
+        raise ValueError('Deadly Bomb: the landing is not an instruction')
+    at = base + 0x34 + LANDING
+    if bytes(data[at:at + len(LANDING_SOURCE)]) != LANDING_SOURCE:
+        raise ValueError('Deadly Bomb: unexpected landing')
+    data[at:at + len(LANDING_HIT)] = LANDING_HIT
+    return bytes(data)
+
+
 def outputs(ctx):
     return [('effects/' + DISC_PATH, DISC_PATH)]
 
 
 def build(ctx):
     with open(os.path.join(ctx.root, 'extracted', DISC_PATH), 'rb') as source:
-        data = exclude_caster(source.read())
+        data = aim_deadly_bomb(exclude_caster(source.read()))
     dest = ctx.path('effects', DISC_PATH)
     os.makedirs(os.path.dirname(dest), exist_ok=True)
     with open(dest, 'wb') as target:
