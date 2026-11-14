@@ -154,6 +154,33 @@ and dead tails dropped. Field and battle slots decode exactly as before. Wizardm
 (99,076 B). Maildramon 324 (tol 5): 0x21, 0x23, 0x24, 0x2B, 0x2C, 0x2F, 0x32 (99,862 B). WarGrowlmon 326 (tol 4):
 0x22, 0x28-0x2C (100,108 B).
 
+The care and condition slots (1 and 14-19 the condition idles; 5, 7-13, 0x16, 0x1B and 0x25 the care clips) are measured
+by `tools/models/care_qa.py` on the final model the same way, against the field idle, the importer's clip and main's
+final model: distinctness (a condition idle's mean body-frame vertex distance to the nearest field idle pose at least
+0.035 heights, the 1st percentile of the 611 native condition clips, whose median is 0.12; two condition idles that are
+different programs at least 0.026 apart; sharing one program is the natives' own habit), liveness, anatomy (a bone
+turning 60 degrees beyond its field and importer range), torso pitch (not flagged when the importer's own clip tips
+as far against its own idle: that is the source's posture), mesh integrity (crossings between pieces are not flagged
+within 1.25 times the importer's same clip: a reworked field idle can cross far less than the source's poses), loop seam, length (condition idles
+under 127 ticks, slot 1 no longer than main's), the floor (under the field idle's own lowest point: a hovering flyer's
+idle dips under its mean floor) and the resident buffer. A flagged clip is kept only when no flagged number is worse
+than main's same slot. Tests: `tools/test_care_qa.py` (`CARE_QA_MODELS` runs it on a folder of real models).
+
+Where a field rework made slot 1 or 18 a copy of the new field idle (24 species; Gazimon's sick idle too), the last provider stage
+`tools/models/field_animations/care_idles.py` makes the condition idles again from the final field idle: only rotation
+channels of the body, head and non-leg limbs change (legs, the bones they hang from, scale and translation channels
+stay the idle's, so the feet and the chibi proportions are kept), the idle's own motion is damped and each condition
+gets its posture and timing (tired: slump, hanging head, drooping arms or wings and a slow heavy breath; sick: a deeper
+hunch, limbs drawn in, two short shudders a loop; hungry: head down to the belly, looking from side to side; toilet:
+restless side to side; sleepy: two slow nods that catch themselves; unhappy: head down and a slow sway). A clip is the
+idle's cycle repeated (slot 1 one cycle, so never longer than main's; an idle cycle over 120 ticks is resampled to 120).
+The rows (`content/models/imports/care-idles.json`: body type, bone roles, slots, gains) are made by
+`care_idles_plan.py`, which reads the roles from the model's geometry, raises a condition's gain until it is 0.05
+heights off the idle with no flag, lets a condition too close to another share its program, and uses a coarser
+encoding when the resident buffer would overflow. A retargeted care clip that turns a bone far beyond anything the
+species does is tamed in the same stage (the row's `tame`: per slot, the fraction of the swing each such bone keeps
+about the clip's own mean pose), with the smallest cut that passes the bone check (`care_qa`'s flag names the bone).
+
 Slots 6, 0x14, 0x1A, 0x1C-0x20, 0x26 and 0x27 are the tamer's, NPCs' and the kart race's. Which slots a partner must
 have, and the lint rule for each: [imported-species.md](imported-species.md), "What the game asks of every partner".
 
