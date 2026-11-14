@@ -257,5 +257,13 @@
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.258,
     "hit_scale": 0.1
+  },
+  "154": {
+    "name": "Chaos Cannon",
+    "stands_for": 77,
+    "cast": [[1, "EFFEBA/MEBA2400.BIN", "EFFEBA/AEBA2400.BIN"], [2, "EFFEBA/MEBA2500.BIN", "EFFEBA/AEBA2500.BIN"]],
+    "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
+    "scale": 0.257,
+    "hit_scale": 0.1
   }
 }

@@ -11,6 +11,7 @@
                  "Dynamite Kick (44)", "Tremar", "Sonic Jab", "Energy Bomb"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 12,
+  "own_effect": {"technique": "Energy Bomb", "chunk": 154},
   "model": {
     "file": "build/sizes-out/models/ChaosLord.MMD",
     "radius": 300,
