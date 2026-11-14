@@ -507,6 +507,8 @@ DW3_EFFECT_RELEASE_FILES = {
     'dw3-us': {'E438RIDN.BIN': '7f1e953081765bb94139cd3c08852d1c32a333fd'},
 }
 DW3_EFFECT_DIRS = {'dw2003': 'AAA/DAT/FIGHT/EFFECT', 'dw3-us': 'AAA/DAT/EFFECT', 'dw3-jp': 'AAA/DAT/FIGHT/EFFECT'}
+# the shared packs' textures (F000COMn.BIN) sit one folder up, but on the USA disc
+DW3_TEXTURE_DIRS = {'dw2003': 'AAA/DAT/FIGHT', 'dw3-us': 'AAA/DAT/EFFECT', 'dw3-jp': 'AAA/DAT/FIGHT'}
 
 
 def release_files():
@@ -532,7 +534,8 @@ def release_files():
             for rid in ('dw2003', f'dw3-{rel}'):
                 files = dict(DW3_EFFECT_FILES, **{n: h for n, h in DW3_EFFECT_RELEASE_FILES.get(rid, {}).items()
                                                    if n in DW3_EFFECT_FILES})
-                out[rid].update({f'{DW3_EFFECT_DIRS[rid]}/{n}': h for n, h in sorted(files.items())})
+                out[rid].update({f'{(DW3_TEXTURE_DIRS if n.startswith("F000COM") else DW3_EFFECT_DIRS)[rid]}/{n}': h
+                                 for n, h in sorted(files.items())})
         elif game == 'dw2':
             files = {f'AAA/4.AAA/MODEL/{f}': h for c in sorted(j['recipes']) for f, h in sorted(j['recipes'][c].items())}
             files.update(DW2_EFFECT_FILES)
