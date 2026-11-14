@@ -67,6 +67,30 @@ class NativeBattle(unittest.TestCase):
         self.assertEqual(calls, [(0, set(range(40)) - set(native_battle.FIELD))])
         self.assertEqual([a.tail for a in model.anims.anims[:6]], [b'tail'] * 5 + [b''])
 
+    def test_care_tolerance_is_not_overwritten_by_bulk_compaction(self):
+        from unittest import mock
+        model = mock.Mock()
+        model.anims.table = list(range(40))
+        model.anims.anims = [mock.Mock() for _ in range(40)]
+        applied = {s: [] for s in range(40)}
+
+        def compact(data, nb, tol, slots=None):
+            for s in range(40) if slots is None else slots:
+                applied[s].append(tol)
+            return data, {}
+
+        with mock.patch.object(native_battle.battle_restore, 'compact', compact), \
+                mock.patch.object(native_battle.mmd.MMD, 'parse', return_value=model), \
+                mock.patch.object(native_battle.motioncyclelayer, 'share_identical_streams', lambda a, t: (a, t)):
+            native_battle.compact(b'm', 1, {'tol': 5, 'slot_tol': {'19': 2}})
+        self.assertEqual(applied[19], [0, 2])
+        self.assertEqual(applied[22], [0, 5])
+        for s in list(native_battle.FIELD) + list(native_battle.BATTLE):
+            self.assertEqual(applied[s], [0])
+        for slot, tol in ((0, 2), (33, 2), (19, 6), (19, -1)):
+            with self.assertRaises(ValueError):
+                native_battle.compact(b'', 1, {'tol': 5, 'slot_tol': {str(slot): tol}})
+
     def test_mirrored_fit_follows_the_twins_bind_poses(self):
         # a mirrored piece's local vertex v is the twin's X.v; its fitted world shape is X.(Q_twin.W_twin.X.v), so the
         # fit from its own source world W_own.v is whatever maps one onto the other, also when the source poses the

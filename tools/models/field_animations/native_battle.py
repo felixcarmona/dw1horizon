@@ -283,10 +283,15 @@ def compact(output, nb, spec):
     clip encoded again exactly where that is smaller (battle_restore.compact, tolerance 0), then, with `tol` (at most
     MAX_TOL), the clips that are neither field (0-4) nor battle (0x21-0x24) slots re-encoded within that many units;
     identical streams shared and unread stream tails dropped. `preserve_field` also keeps the original field
-    programs' encoding and tails. -> (bytes, {slot: [old, new bytes]})"""
+    programs' encoding and tails. `slot_tol` keeps selected non-field, non-battle slots at a smaller tolerance
+    (for example a care clip whose reviewed poses must survive compaction). -> (bytes, {slot: [old, new bytes]})"""
     tol = int(spec.get('tol', 0))
     if not 0 <= tol <= MAX_TOL:
         raise ValueError(f'battle originals: compaction tolerance {tol} is over {MAX_TOL}')
+    slot_tol = {int(s): int(t) for s, t in spec.get('slot_tol', {}).items()}
+    for s, t in slot_tol.items():
+        if s < 0 or s in FIELD or s in BATTLE or not 0 <= t <= tol:
+            raise ValueError(f'battle originals: invalid slot tolerance {s}: {t}')
     # Some bindings have not previously compacted their field programs. Keep their
     # original encoding as well as their poses when the recipe requests it.
     exact_slots = None
@@ -296,7 +301,11 @@ def compact(output, nb, spec):
     if tol:
         model = mmd.MMD.parse(output, nb)
         loose = set(range(len(model.anims.table))) - set(FIELD) - set(BATTLE)
-        output, more = battle_restore.compact(output, nb, tol, loose)
+        for t in sorted(set(slot_tol.values())):
+            selected = {s for s, v in slot_tol.items() if v == t} & loose
+            output, more = battle_restore.compact(output, nb, t, selected)
+            report.update(more)
+        output, more = battle_restore.compact(output, nb, tol, loose - set(slot_tol))
         report.update(more)
     model = mmd.MMD.parse(output, nb)
     protected = {model.anims.table[s] for s in FIELD} if spec.get('preserve_field') else set()
