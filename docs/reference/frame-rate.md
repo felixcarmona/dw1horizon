@@ -415,15 +415,26 @@ ladder of three cadences, from what the last ticks cost and showed, in every loo
 `8 | half`: one frame at 2/3 of an even tick that ends a refresh early, two at 1/3 and 3/3 of the odd tick computed
 in that spare refresh; every frame two refreshes apart) and 20 (`MOD_RENDER_CADENCE` 16: one frame at 3/3, as the
 original). `modCadArm` arms the level at the start of a tick; `modCadRecord` stores the tick's cost (tick + first
-pass, extra pass, in lines) and outcome (frames planned, shown, late) in a 32-tick ring and decides: down from 60 when
-fewer than `MOD_CAD_KEEP60`/32 frames a tick are shown (16 ticks of evidence), down from 30 when more than
-`MOD_CAD_KEEP30` frames per 32 ticks are late or skipped (judged on a full window only, so two lone overruns
-early in a battle do not drop it to 20), up only after a full window whose costs predict the higher
-cadence and a wait that doubles after every failed try (32 ... 1024 ticks). The world and the battle loops remember
-their levels; a map change clears the evidence and the wait. `MOD_CAD_KEEP60` is 90 (2.8 of 3 frames a tick): at
-2 MB and the stock clock File City and Gear Savanna showed 1.6-2.4 frames a tick at 60, an uneven 40-44 fps whose
-2- and 1-refresh intervals read as stutter, and an even 30 replaces it. The battle loop starts at steady 30, since
-no battle measured there fits 60. `MOD_FPS_POLICY` 0 is the ladder, 1/2/3 lock 60 /
+pass, extra pass, in lines) and outcome (frames planned, shown, late) in a 32-tick ring and decides. Since
+`Never-show-a-mixed-frame-rate-enter-screens-at-stead.patch` the rule is that the player never sees a mixed cadence
+(a 60 that misses frames shows 1- and 2-refresh intervals together, which reads as stutter, worse than an even 30):
+
+- a screen is entered at steady 30, or at 60 if 60 held a full window there earlier this session; an entry on an odd
+  tick shows one frame at 3/3 first, so the pair starts on an even tick (never a burst of 60);
+- 60 is reached only from steady 30, after `MOD_CAD_CLIMB` (128) ticks in a row whose tick + first pass and extra
+  pass each leave `MOD_CAD_UP` (64) lines of a refresh spare, and only at the end of a steady pair;
+- at 60 the first late or skipped frame drops to steady 30 at once, and the screen is marked: no second try there
+  this session;
+- steady 30 drops to 20 only on a full 32-tick window with more than `MOD_CAD_KEEP30` late or skipped frames (a world
+  screen is then entered at 20 next time); 20 climbs back after 128 ticks that fit steady 30 with the same spare,
+  waiting longer after every climb that fails (32 ... 1024 ticks).
+
+The facts (60 held, 60 failed, 30 failed) live in a table of 48 screens, world and battle loops apart; failed 60s are
+replaced last. A battle is entered at steady 30 and its screen never remembers a failed 30 (its opponents decide the
+cost). Nothing is remembered before the first map is loaded. `MOD_CAD_RESET` (tools) forgets every fact. At 2 MB and
+the stock clock the measured field maps (File City, Gear Savanna, Freezeland, Toy Town, Factorial Town) and a wild
+battle stay at steady 30; Mt. Infinity and a tournament fight drop once to steady 20, where the tick and its first
+pass alone overrun a refresh. 60 needs a faster CPU (an overclocked core climbs on light screens). `MOD_FPS_POLICY` 0 is the ladder, 1/2/3 lock 60 /
 steady 30 / 20, 4 is the CPU-probe selection below (the only policy in which the probe writes `MOD_FPS_MODE_RUN`,
 which stays at 2 for AUTO/60 and at 0 for the explicit 20 option). The CPU probe still runs for the title notice. Design, measurements and
 the recommendation: [../proposals/frame-rate-excellence.md](../proposals/frame-rate-excellence.md);
@@ -645,7 +656,7 @@ aligned heap falls by 80 bytes. KAR contains the history and tile helper.
 | `MOD_RENDER_MULTIPASS` | set around the passes (removals wait) |
 | `MOD_RENDER_ALPHA` | this pass's fraction of the tick, 0..4096 |
 | `MOD_RENDER_CADENCE` | 0 = inactive; 1/2 = normal/early half of steady 30 FPS; 4 = curling at requested rate with deferred tiles; 8 \| 1/2 and 16 = the ladder's steady 30 halves and its 20 (no curling tile flush); reset at each tick |
-| `MOD_FPS_POLICY`, `MOD_CAD_LEVEL`, `MOD_CAD_KEEP60`, `MOD_CAD_KEEP30`, `MOD_CAD_SWITCHES`, `MOD_CAD_LAST` | the cadence ladder: policy, current level (2/1/0), its two thresholds, level changes, the last tick's record |
+| `MOD_FPS_POLICY`, `MOD_CAD_LEVEL`, `MOD_CAD_KEEP30`, `MOD_CAD_UP`, `MOD_CAD_CLIMB`, `MOD_CAD_RESET`, `MOD_CAD_SWITCHES`, `MOD_CAD_LAST` | the cadence ladder: policy, current level (2/1/0), late frames tolerated at 30, the spare lines and clean ticks a climb needs, forget the per-screen facts (tools), level changes, the last tick's record |
 | `MOD_FPS_INTERP` | interpolation on (1, default) or off; test switch |
 | `MOD_FPS_INTERP_BONES` | 0 / 1 / 2, see above; test switch |
 | `MOD_FPS_TEST_TICK` | test switch: every tick lasts that many refreshes (0 = off) and every pass is rendered at its fraction of the tick |
