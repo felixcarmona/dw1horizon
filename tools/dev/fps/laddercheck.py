@@ -109,6 +109,9 @@ def reset_ladder(e, keep60):
     if not e.has('MOD_FPS_POLICY'):
         w32(e, 'MOD_PERF_RESET', 1)
         return
+    if e.has('MOD_CAD_RESET'):  # facts per screen: forget them; the next tick enters the screen as a fresh session
+        w8(e, 'MOD_CAD_RESET', 1); w32(e, 'MOD_PERF_RESET', 1)
+        return
     w8(e, 'MOD_CAD_LEVEL', 2)
     if e.has('modCadCount'):  # the first build: separate statics
         w8(e, 'modCadCount', 0); w8(e, 'modCadPos', 0); w8(e, 'modCadCtx', -1)

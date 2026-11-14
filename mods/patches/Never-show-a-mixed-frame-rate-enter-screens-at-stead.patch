@@ -1,0 +1,356 @@
+From a89a503fd1e4f92693504a3da50c586d79baaa19 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 14 Nov 2026 21:32:18 +0000
+Subject: [PATCH] Never show a mixed frame rate: enter screens at steady 30 and
+ climb to 60 only with room
+
+AUTO started every scene at 60 and stayed there while 90 of 96 frames were shown, so a heavy map showed
+a window of mixed one- and two-refresh frames at every entry before it settled at steady 30 (Toy Town
+5 to 19 two-refresh frames per segment), and 60 was tried again after a wait. Now:
+- a screen is entered at steady 30, or at 60 where 60 held a full window earlier this session;
+- 60 is reached only from steady 30, after 128 ticks in a row (6.4 s) whose tick + first pass and extra
+  pass each leave 64 lines of a refresh spare, and only at the end of a steady pair;
+- the first late or skipped frame at 60 drops to steady 30 at once and marks the screen: 60 is never
+  tried there again this session;
+- steady 30 drops to 20 only on a full 32-tick window of late frames (a world screen is then entered at
+  20 next time); 20 climbs back after 128 ticks with the same room, waiting longer after a failed climb;
+- an entry on an odd tick shows one frame at 3/3 instead of a tick at 60, so the pair starts on an even tick.
+The facts live in a table of 48 screens (world and battle apart), failed 60s replaced last. A battle is
+entered at steady 30 and battle screens never remember a failed 30 (the opponents decide its cost).
+MOD_CAD_RESET lets the tools forget the facts; MOD_CAD_KEEP60 is gone.
+---
+ include/dw/mod_fps.h |   4 +-
+ src/main/main.c      | 232 +++++++++++++++++++++++++++----------------
+ 2 files changed, 152 insertions(+), 84 deletions(-)
+
+diff --git a/include/dw/mod_fps.h b/include/dw/mod_fps.h
+index a99bc34c..317db09b 100644
+--- a/include/dw/mod_fps.h
++++ b/include/dw/mod_fps.h
+@@ -29,7 +29,9 @@ int32_t modFrameRateLevel(void);
+ #define MOD_FPS_POLICY_CPU 4
+ extern int8_t MOD_FPS_POLICY;
+ extern int8_t MOD_CAD_LEVEL;  /* 2 = 60, 1 = steady 30, 0 = 20 (the current level of the ladder) */
+-extern int8_t MOD_CAD_KEEP60; /* frames per 32 ticks to stay at 60 */
++extern int8_t MOD_CAD_UP;     /* lines each pass must leave spare before the ladder climbs */
++extern int8_t MOD_CAD_RESET;  /* tools: forget every screen's facts at the next tick */
++extern int16_t MOD_CAD_CLIMB; /* ticks in a row that must fit the higher cadence before a climb */
+ extern int8_t MOD_CAD_KEEP30; /* late or skipped frames per 32 ticks tolerated at steady 30 */
+ extern int32_t MOD_CAD_SWITCHES;
+ extern int32_t MOD_CAD_LAST;
+diff --git a/src/main/main.c b/src/main/main.c
+index a7b59c41..49f20cfd 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -5435,27 +5435,38 @@ static void modAutoFrameRatePoll(void)
+ }
+ 
+ /* MOD (fps ladder): how many frames a tick shows is decided from what the last ticks cost, not from a CPU probe.
+- * Three cadences: 60 (three passes, best effort: a pass that does not fit is skipped), steady 30 (the curling pair:
+- * one frame at 2/3 of an even tick, which ends one refresh early, then two frames at 1/3 and 3/3 of the odd tick
+- * computed in that spare refresh; every frame two refreshes apart) and 20 (one frame at 3/3, the original).
+- * Every tick records its cost in lines (tick + first pass, extra pass) and its outcome (frames planned, shown,
+- * late) in a window of the last MOD_CAD_WINDOW ticks. The level steps down as soon as 16 ticks show the cadence
+- * does not pay (60: fewer than MOD_CAD_KEEP60 frames per 32 ticks; 30: more than MOD_CAD_KEEP30 late or skipped
+- * frames) and up only after a full window whose line costs predict the higher cadence (then it is tried; a try that
+- * fails doubles the wait before the next, up to 1024 ticks). The world and the battle loops each remember their
+- * level, so a battle starts from the last battle's level, not from a trial; a map change clears the evidence but
+- * keeps the level. Fast battle ticks, pause frames, battle data loads, the test tick length and curling (which arms
++ * Three cadences: 60 (three passes), steady 30 (the curling pair: one frame at 2/3 of an even tick, which ends one
++ * refresh early, then two frames at 1/3 and 3/3 of the odd tick computed in that spare refresh; every frame two
++ * refreshes apart) and 20 (one frame at 3/3, the original).
++ *
++ * The rule is that the player never sees a mixed cadence. A 60 that misses a frame shows a two-refresh frame among
++ * one-refresh frames, which judders more than an even 30; so:
++ * - a screen is entered at steady 30, or at 60 if 60 held there earlier this session (the facts table below);
++ * - 60 is reached only from steady 30, after MOD_CAD_CLIMB ticks in a row whose tick + first pass and extra pass
++ *   each fit one refresh with MOD_CAD_UP lines to spare, at the end of a steady pair, and never on a screen where
++ *   60 has failed this session;
++ * - at 60 the first late or skipped frame drops to steady 30 at once and marks the screen: no second try there;
++ * - steady 30 drops to 20 only on a full window of MOD_CAD_WINDOW ticks with more than MOD_CAD_KEEP30 late or
++ *   skipped frames (a world screen is marked and entered at 20 next time); 20 climbs back after MOD_CAD_CLIMB
++ *   ticks that fit steady 30 with the same spare, waiting longer after every climb that fails (32 to 1024 ticks).
++ * The world and the battle loops keep separate facts per screen; a battle is entered at steady 30 like any screen.
++ * An entry on an odd tick at steady 30 shows one frame at 3/3 first, so the pair starts on an even tick.
++ * Fast battle ticks, pause frames, battle data loads, the test tick length and curling (which arms
+  * MOD_RENDER_CADENCE itself) neither count nor change anything. The pass budget checks stay: no cadence slows the
+  * logic, which runs at 20 Hz in every cadence. */
+ #define MOD_CAD_WINDOW 32
+ #define MOD_CAD_LINES 263 /* lines per refresh */
+-#define MOD_CAD_MARGIN 12 /* a pass must end this far before the vblank it is shown at */
++#define MOD_CAD_FACTS 48 /* screens remembered (oldest replaced first) */
++#define MOD_CAD_KEY 0x07FF /* a fact: screen | battle << 10 */
++#define MOD_CAD_FAIL20 0x2000 /* steady 30 failed: entered at 20 */
++#define MOD_CAD_GOOD 0x4000 /* 60 held a full window: entered at 60 */
++#define MOD_CAD_FAIL60 0x8000 /* 60 missed a frame: never 60 again this session */
+ int8_t MOD_FPS_POLICY; /* MOD_FPS_POLICY_*: 0 the ladder, 1/2/3 lock 60 / steady 30 / 20, 4 the 0.0.7 CPU probe */
+-int8_t MOD_CAD_LEVEL = 2; /* 2 = 60, 1 = steady 30, 0 = 20 */
+-/* frames per 32 ticks to stay at 60; +4 to step up to it. 90 keeps 60 only while nearly every frame of it is shown:
+- * a 60 that shows 2 of 3 frames a tick (refresh intervals 1, 1, 2 or 1, 2) judders more than an even 30 */
+-int8_t MOD_CAD_KEEP60 = 90;
++int8_t MOD_CAD_LEVEL = 1; /* 2 = 60, 1 = steady 30, 0 = 20 */
+ int8_t MOD_CAD_KEEP30 = 4; /* late or skipped frames per 32 ticks tolerated at steady 30 */
++int8_t MOD_CAD_UP = 64; /* lines each pass must leave spare before a climb (a quarter of a refresh) */
++int8_t MOD_CAD_RESET; /* tools: set to forget everything at the next tick */
++int16_t MOD_CAD_CLIMB = 128; /* ticks in a row that must fit the higher cadence (6.4 s) */
+ int32_t MOD_CAD_SWITCHES;
+ int32_t MOD_CAD_LAST; /* the last recorded tick: cost0 | costX << 12 | shown << 24 | planned << 26 | late << 28 */
+ /* one struct: the compiler reaches every field from one base address */
+@@ -5463,34 +5474,66 @@ static struct {
+ 	uint32_t ring[MOD_CAD_WINDOW];
+ 	int32_t mapGen;
+ 	int16_t since; /* ticks since the level changed */
+-	int16_t cool[2]; /* ticks a context waits before trying a higher level again */
+-	int8_t count, pos, ctx, prev, up;
+-	int8_t ctxLevel[2];
+-} modCad = { { 0 }, 0, 0, { MOD_CAD_WINDOW, MOD_CAD_WINDOW }, 0, 0, -1, -1, 0, { 2, 1 } };
+-/* the world starts at 60; a battle at steady 30: at the stock clock no battle fits 60 (its first pass alone costs about
+- * a refresh), so a first trial at 60 was 16 ticks of late frames at the start of the first battle. A machine fast
+- * enough steps up after a full window, as anywhere. */
+-
+-/* the frames a tick of these costs could show at 60: the first pass is shown at the vblank after it ends, each
+- * extra pass starts at the swap of the one before and is shown at the vblank after it ends, inside the tick */
+-static int32_t modCadPredict60(int32_t c0, int32_t cx)
++	int16_t clean; /* ticks in a row that fit the next level up */
++	int16_t cool[2]; /* ticks a context waits at 20 before climbing to steady 30 again */
++	uint16_t facts[MOD_CAD_FACTS];
++	int8_t count, pos, ctx, prev, up, factPos;
++	int16_t key; /* the fact key of the screen and loop running now */
++} modCad = { { 0 }, 0, 0, 0, { MOD_CAD_WINDOW, MOD_CAD_WINDOW }, { 0 }, 0, 0, -1, -1, 0, 0, 0 };
++
++/* the fact word of a screen and loop (0 if none), or with add a slot for it */
++static uint16_t *modCadFact(int32_t key, int32_t add)
+ {
+-	int32_t frames = 1;
+-	int32_t end = c0 + MOD_CAD_MARGIN; /* where a pass ends, with the margin before its vblank */
+-	int32_t s = end > 2 * MOD_CAD_LINES ? 3 : end > MOD_CAD_LINES ? 2 : 1; /* the refresh the frame is shown at */
++	int32_t i;
++	uint16_t *f;
+ 
+-	if (end > 3 * MOD_CAD_LINES) {
+-		return 1;
++	for (i = 0; i < MOD_CAD_FACTS; i++) {
++		if ((modCad.facts[i] & MOD_CAD_KEY) == key && (modCad.facts[i] & ~MOD_CAD_KEY)) {
++			return &modCad.facts[i];
++		}
++	}
++	if (!add) {
++		return NULL;
+ 	}
+-	while (s < 3) {
+-		end = s * MOD_CAD_LINES + cx + MOD_CAD_MARGIN;
+-		if (end > 3 * MOD_CAD_LINES) {
++	/* the oldest slot that does not hold a failed 60, so a long session does not try 60 again where it failed */
++	for (i = 0; i < MOD_CAD_FACTS; i++) {
++		f = &modCad.facts[modCad.factPos];
++		modCad.factPos = modCad.factPos + 1 < MOD_CAD_FACTS ? modCad.factPos + 1 : 0;
++		if (!(*f & MOD_CAD_FAIL60)) {
+ 			break;
+ 		}
+-		s = end > 2 * MOD_CAD_LINES ? 3 : 2;
+-		frames++;
+ 	}
+-	return frames;
++	*f = key;
++	return f;
++}
++
++static void modCadMark(int32_t set, int32_t clear)
++{
++	uint16_t *f;
++
++	if (!MOD_INTERP_MAP_GEN) {
++		return; /* no map loaded yet (the title): CURRENT_SCREEN is a placeholder that names a real screen */
++	}
++	f = modCadFact(modCad.key, set != 0);
++	if (f != NULL) {
++		*f = (*f | set) & ~clear;
++	}
++}
++
++/* entering a screen or a loop: the level its facts say, no evidence yet */
++static void modCadEnter(int32_t ctx, int32_t key)
++{
++	uint16_t *f;
++
++	modCad.ctx = ctx;
++	modCad.key = key;
++	modCad.prev = 0; /* an entry: an odd first tick at steady 30 shows one frame at 3/3, not a tick at 60 */
++	f = modCadFact(key, 0);
++	MOD_CAD_LEVEL = f == NULL ? 1 : (*f & MOD_CAD_GOOD) ? 2 : (*f & MOD_CAD_FAIL20) ? 0 : 1;
++	modCad.count = modCad.pos = 0;
++	modCad.since = modCad.clean = 0;
++	modCad.up = 0;
++	modCad.cool[ctx] = MOD_CAD_WINDOW;
+ }
+ 
+ /* the level this tick renders with; sets MOD_RENDER_CADENCE for steady 30 (8 | half) and 20 (16); -1 leaves the
+@@ -5499,26 +5542,29 @@ static int32_t modCadArm(int32_t flags, int32_t period, int32_t force)
+ {
+ 	int32_t level;
+ 	int32_t ctx;
++	int32_t key;
+ 
+ 	if (MOD_FPS_MODE <= 0 || period < 3 || force || MOD_RENDER_CADENCE) {
+ 		return -1;
+ 	}
++	if (MOD_CAD_RESET) {
++		MOD_CAD_RESET = 0;
++		for (ctx = 0; ctx < MOD_CAD_FACTS; ctx++) {
++			modCad.facts[ctx] = 0;
++		}
++		modCad.ctx = -1;
++		MOD_CAD_SWITCHES = 0;
++	}
+ 	ctx = (flags & MOD_PRESENT_BATTLE) != 0;
++	key = (CURRENT_SCREEN & 0x3FF) | ctx << 10;
+ 	if (!(flags & MOD_PRESENT_PAUSE)) {
+-		if (ctx != modCad.ctx) {
+-			if (modCad.ctx >= 0) {
+-				modCad.ctxLevel[modCad.ctx] = MOD_CAD_LEVEL;
+-			}
+-			modCad.ctx = ctx;
+-			MOD_CAD_LEVEL = modCad.ctxLevel[ctx];
+-			modCad.count = modCad.pos = 0;
+-			modCad.since = 0;
+-		}
+-		if (MOD_INTERP_MAP_GEN != modCad.mapGen) {
+-			modCad.mapGen = MOD_INTERP_MAP_GEN;
+-			modCad.count = modCad.pos = 0;
+-			modCad.cool[ctx] = MOD_CAD_WINDOW;
++		if (ctx != modCad.ctx || key != modCad.key) {
++			modCadEnter(ctx, key);
++		} else if (MOD_INTERP_MAP_GEN != modCad.mapGen) {
++			modCad.count = modCad.pos = 0; /* the same screen set up again: new evidence, the same level */
++			modCad.clean = 0;
+ 		}
++		modCad.mapGen = MOD_INTERP_MAP_GEN;
+ 	}
+ 	switch (MOD_FPS_POLICY) {
+ 	case MOD_FPS_POLICY_60:
+@@ -5538,8 +5584,11 @@ static int32_t modCadArm(int32_t flags, int32_t period, int32_t force)
+ 	}
+ 	/* the steady pair starts with its early half (an even tick), so the odd tick that follows has its spare refresh */
+ 	if (level == 1 && modCad.prev != 1 && (MOD_FPS_TICKS & 1)) {
+-		modCad.prev = 2;
+-		return -1; /* align at 60 once; this is not evidence that steady 30 failed */
++		if (modCad.prev == 2) {
++			return -1; /* from 60: align at 60 once; this is not evidence that steady 30 failed */
++		}
++		MOD_RENDER_CADENCE = 16; /* an entry: one frame at 3/3, then the pair; never a burst of 60 */
++		return 0;
+ 	}
+ 	modCad.prev = level;
+ 	if (level == 1) {
+@@ -5554,14 +5603,12 @@ static int32_t modCadArm(int32_t flags, int32_t period, int32_t force)
+ static void modCadRecord(int32_t planned, int32_t shown, int32_t late, int32_t c0, int32_t cx)
+ {
+ 	int32_t i;
+-	int32_t n;
+ 	int32_t level;
+ 	int32_t next;
++	int32_t miss;
++	int32_t room;
+ 	int32_t ctx = modCad.ctx;
+-	int32_t sumShown = 0;
+ 	int32_t sumMiss = 0;
+-	int32_t sumPred = 0;
+-	int32_t fit30 = 0;
+ 	uint32_t e;
+ 
+ 	if (c0 > 4095) {
+@@ -5579,45 +5626,64 @@ static void modCadRecord(int32_t planned, int32_t shown, int32_t late, int32_t c
+ 	if (modCad.since < 0x7FFF) {
+ 		modCad.since++;
+ 	}
+-	if (MOD_FPS_POLICY != MOD_FPS_POLICY_AUTO || modCad.count < 16 || ctx < 0 || (modCad.since & 7)) {
++	if (MOD_FPS_POLICY != MOD_FPS_POLICY_AUTO || ctx < 0) {
+ 		return;
+ 	}
+-	n = modCad.count;
+-	for (i = 0; i < n; i++) {
+-		e = modCad.ring[i];
+-		c0 = e & 0xFFF;
+-		cx = (e >> 12) & 0xFFF;
+-		if (cx == 0) {
+-			cx = c0; /* no extra pass measured: as costly as the tick and its first pass (its setup included) */
+-		}
+-		sumShown += (e >> 24) & 3;
+-		sumMiss += ((e >> 26) & 3) - ((e >> 24) & 3) + ((e >> 28) & 3);
+-		sumPred += modCadPredict60(c0, cx);
+-		fit30 += c0 + 2 * MOD_CAD_MARGIN <= 2 * MOD_CAD_LINES && cx + 2 * MOD_CAD_MARGIN <= 2 * MOD_CAD_LINES;
++	if (cx == 0) {
++		cx = c0; /* no extra pass measured: as costly as the tick and its first pass (its setup included) */
+ 	}
++	miss = planned - shown + late;
+ 	level = next = MOD_CAD_LEVEL;
+-	if (level == 2 && sumShown * MOD_CAD_WINDOW < MOD_CAD_KEEP60 * n) {
+-		next = fit30 == n ? 1 : 0;
+-	} else if (level == 1 && n == MOD_CAD_WINDOW && sumMiss > MOD_CAD_KEEP30) {
+-		/* only on a full window: two lone overruns in the first 16 ticks (a battle's AI choosing) dropped a battle that
+-		 * holds steady 30 to 20 for the next 32 ticks or more, a slower and longer judder than the late frames */
+-		next = 0;
+-	} else if (n == MOD_CAD_WINDOW && modCad.since >= modCad.cool[ctx]) {
+-		if (level == 1 && sumPred * MOD_CAD_WINDOW >= (MOD_CAD_KEEP60 + 4) * n) {
+-			next = 2;
+-		} else if (level == 0 && fit30 == n) {
+-			next = 1;
++	/* the lines a pass may take at the next level up, with MOD_CAD_UP to spare: one refresh at 60, two at steady 30 */
++	room = (level == 0 ? 2 * MOD_CAD_LINES : MOD_CAD_LINES) - MOD_CAD_UP;
++	if (miss == 0 && c0 <= room && cx <= room) {
++		if (modCad.clean < 0x7FFF) {
++			modCad.clean++;
++		}
++	} else {
++		modCad.clean = 0;
++	}
++	if (level == 2) {
++		if (miss) {
++			next = 1; /* the first two-refresh frame: steady 30 for good on this screen */
++			modCadMark(MOD_CAD_FAIL60, MOD_CAD_GOOD);
++		} else if (modCad.since == MOD_CAD_WINDOW) {
++			modCadMark(MOD_CAD_GOOD, 0);
++		}
++	} else if (level == 1) {
++		if (modCad.count == MOD_CAD_WINDOW) {
++			for (i = 0; i < MOD_CAD_WINDOW; i++) {
++				e = modCad.ring[i];
++				sumMiss += ((e >> 26) & 3) - ((e >> 24) & 3) + ((e >> 28) & 3);
++			}
++		}
++		if (sumMiss > MOD_CAD_KEEP30) {
++			next = 0;
++			if (!ctx) {
++				modCadMark(MOD_CAD_FAIL20, 0); /* not for battles: their cost is the opponents', not the screen's */
++			}
++		} else if (MOD_RENDER_CADENCE != (8 | 2) && modCad.clean >= MOD_CAD_CLIMB) {
++			/* at the end of a steady pair; never where 60 failed */
++			uint16_t *f = modCadFact(modCad.key, 0);
++
++			if (f == NULL || !(*f & MOD_CAD_FAIL60)) {
++				next = 2;
++			}
++		}
++		if (modCad.since == 2 * MOD_CAD_WINDOW && modCad.up) {
++			modCadMark(0, MOD_CAD_FAIL20); /* a climb from 20 held */
+ 		}
++	} else if (modCad.clean >= MOD_CAD_CLIMB && modCad.since >= modCad.cool[ctx]) {
++		next = 1;
+ 	}
+ 	if (next != level) {
+ 		if (next < level && modCad.up && modCad.since < 2 * MOD_CAD_WINDOW && modCad.cool[ctx] < 1024) {
+-			modCad.cool[ctx] *= 2; /* the try failed: wait longer before the next */
++			modCad.cool[ctx] *= 2; /* the climb failed: wait longer before the next */
+ 		}
+ 		modCad.up = next > level;
+ 		MOD_CAD_LEVEL = next;
+-		modCad.ctxLevel[ctx] = next;
+ 		MOD_CAD_SWITCHES++;
+-		modCad.since = 0;
++		modCad.since = modCad.clean = 0;
+ 		modCad.count = modCad.pos = 0;
+ 	}
+ }
+-- 
+2.55.0
+
