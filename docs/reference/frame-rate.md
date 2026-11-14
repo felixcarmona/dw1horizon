@@ -531,8 +531,13 @@ fast-forward arrows.
   began and is shown, with one render. The second (`MOD_REAL_TICK` 0) is rendered, because render functions advance
   state (effect scripts, gauges), but its frame is thrown away and it waits for no refresh. A tick plus its render take
   about 270 of a refresh's 263 lines in a fight, so one shown frame per fast tick could not pass 30 ticks a second.
+  The thrown-away render skips the Digimon models' `GsSortObject4` (`renderDigimon`) and the tournament arena's
+  (`STD_renderArena0/1`): sorting them changes no state and cost about 35 lines a model and 80 for the arena, which
+  pushed the pair past its 3 refreshes in about one pair in ten (a frame held 4 refreshes).
 - Each fast tick is due from when the one before was due (`modFastDue`), not from when it ended, unless that is more
-  than a pair behind.
+  than a pair behind. A shown tick that starts one refresh early (the thrown-away tick before it was quick) still
+  keeps its due refresh; taking that refresh as its own made the next frame land 2 refreshes after the last one, then
+  4.
 - A fast tick has one pass whatever the frame rate.
 - `tickPlaytime` skips `MOD_REAL_TICK` 0 ticks, so play time stays real time. The fight's logic per tick is unchanged;
   only the real time between ticks changes. A finisher charge press counts twice at x2 (BTL and STD).

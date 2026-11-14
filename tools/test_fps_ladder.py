@@ -300,6 +300,41 @@ int main(void) {
     compile_check(code)
     assert 'if (MOD_RENDER_CADENCE && !(MOD_RENDER_CADENCE & 0x18))' in present
     print('PASS: ladder cadences never call curling overlay helpers')
+    fast_pair_cadence(source)
+
+
+def fast_pair_cadence(source):
+    """Battle x2: modTickStart's due rule, replayed over a fast pair's refresh arithmetic (the shown tick's frame at
+    its due refresh, the thrown-away tick waits for none). Whatever the two ticks cost, as long as the pair fits its 3
+    refreshes, every frame comes 3 refreshes after the last one; a quick thrown-away tick must not pull the next frame
+    a refresh early."""
+    rule = re.search(r'modTickV = (\(now >= modFastDue[^;]*\)) \? modFastDue : now;', source)
+    assert rule, 'modTickStart fast due rule changed: update this test'
+    code = r'''
+#include <assert.h>
+#include <stdint.h>
+static int32_t due_of(int32_t now, int32_t modFastDue) { return %s ? modFastDue : now; }
+int main(void) {
+    int c1, c2, k;
+    for (c1 = 20; c1 <= 500; c1 += 7) for (c2 = 5; c2 <= 760 - c1; c2 += 11) {
+        int32_t t = 263 * 100 + 40, due = 100, last = -1, real = 1;
+        for (k = 0; k < 60; k++) {
+            int32_t now = t / 263, tickV = due_of(now, due), period = real ? 2 : 1;
+            due = tickV + period;
+            t += real ? c1 : c2;
+            if (real) {
+                if (t < due * 263) t = due * 263; /* shown at its due refresh */
+                if (last >= 0 && k > 4) assert(due - last == 3);
+                last = due;
+            }
+            real ^= 1;
+        }
+    }
+    return 0;
+}
+''' % rule.group(1)
+    compile_check(code)
+    print('PASS: battle x2 frames 3 refreshes apart for every pair that fits')
 
 
 if __name__ == '__main__':
