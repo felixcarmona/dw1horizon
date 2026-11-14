@@ -41,5 +41,13 @@
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.307,
     "hit_scale": 0.1
+  },
+  "127": {
+    "name": "Howling Crusher",
+    "stands_for": 62,
+    "cast": [[1, "EFFEUA/MEUA1400.BIN", "EFFEUA/AEUA1400.BIN"], [2, "EFFEUA/MEUA1500.BIN", "EFFEUA/AEUA1500.BIN"]],
+    "hit": [[1, "EFFESD/MESD1500.BIN", "EFFESD/AESD1500.BIN"]],
+    "scale": 0.359,
+    "hit_scale": 0.1
   }
 }
