@@ -624,7 +624,20 @@ MaloMyotismon. `effects_like` controls origins and bones, not this target
 choice; SkullSatamon retains Leomon's donor and its Nightmare Syndromer row.
 The archive length and executable memory layout are unchanged.
 
-`python3 -m unittest tools.test_effect_targets` checks the guarded script edit.
+Deadly Bomb (74, Giromon's finisher) is a thrown bomb that only hurts what
+stands in a ±200 box around it once it has stopped. The original script throws it at
+frame 30 with a fixed velocity (100 forward, turned by bone 0's angles), lets
+it fly and bounce until frame 77, and only then looks for a Digimon there
+until frame 700. The bomb comes to rest about 1400 units ahead whatever the
+distance to the enemy, and by frame 77 the enemy has moved on, so it never hit.
+The same `effects` step rewrites the throw in place: the horizontal speed is
+(target − bomb) / 12, so the first landing (12 ticks later, with the original
+upward speed and gravity) is on the target, and that landing starts the box
+check at once (it replaces the bounce's z slowdown). A bomb that misses still
+waits as a mine until frame 700. Both edits are checked against the exact
+original bytes and keep the chunk's length.
+
+`python3 -m unittest tools.test_effect_targets` checks the guarded script edits.
 `.venv/bin/python -m tools.dev.playtest.finisher_targets` records the finisher and both
 sides' HP; fixed runs require opponent damage without caster damage on 2 MB.
 

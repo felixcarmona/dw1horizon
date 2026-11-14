@@ -8,7 +8,7 @@
   "specialties": ["fire", "mech", "battle"],
   "techniques": ["Prominence Beam", "Inifinity Burn", "Meltdown", "Magma Bomb", "Red Inferno", "Fire Tower",
                  "Pulse Laser", "DG Dimension", "All Range Beam", "Delete Program", "Megaton Punch",
-                 "Counter", "Dynamite Kick (44)", "Energy Bomb"],
+                 "Counter", "Dynamite Kick (44)", "Dark Shot"],
   "drop": {"item": "sm.recovery", "percent": 0},
   "effects_like": 8,
   "model": {

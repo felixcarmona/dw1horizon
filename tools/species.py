@@ -859,25 +859,41 @@ _LOADED = {}      # path -> ((mtime_ns, size), validated file dict): what load_c
 
 
 def _load_cached(path):
-    """load_file(path), but a file that has not changed since it was last read is copied, not parsed and validated
-    again (a build asks for the whole content folder hundreds of times; callers change what they get, so a copy)."""
+    """The validated file at path, read and validated once per version of the file (mtime and size). The dict is shared:
+    a caller that changes what it gets copies it first (_clone)."""
     st = os.stat(path)
     key = (st.st_mtime_ns, st.st_size)
     hit = _LOADED.get(path)
     if hit is None or hit[0] != key:
         hit = _LOADED[path] = (key, load_file(path))
-    return copy.deepcopy(hit[1])
+    return hit[1]
 
 
-def load_content(content=None, ids=None):
-    """{id: file dict} of every species file of the content folders (0..1023)."""
+_JSON_SCALARS = (str, int, float, bool, type(None))
+
+
+def _clone(x):
+    """copy.deepcopy for what a species file holds (ordered dicts, lists and JSON scalars): the same copy several times
+    faster (deepcopy's memo and reconstruction dominated a story pass: 60000 copies of the content folder's files)."""
+    t = type(x)
+    if t in _JSON_SCALARS: return x
+    if t is collections.OrderedDict: return collections.OrderedDict([(k, _clone(v)) for k, v in x.items()])
+    if t is list: return [_clone(v) for v in x]
+    if t is dict: return {k: _clone(v) for k, v in x.items()}
+    return copy.deepcopy(x)
+
+
+def load_content(content=None, ids=None, shared=False):
+    """{id: file dict} of every species file of the content folders (0..1023). The dicts are the caller's own copies;
+    shared=True hands out the cached ones with no copy, for a caller that only reads them (a change would reach every
+    later caller)."""
     out = {}
     for p in content_files(content):
         s = _load_cached(p)
         t = s['id']
         if ids is not None and t not in ids: continue
         if t in out: raise SystemExit(f'{p}: id {t} is also defined in {out[t]["_path"]}')
-        out[t] = s
+        out[t] = s if shared else _clone(s)
     return out
 
 
@@ -1877,14 +1893,14 @@ def extra_rows(content=None):
 
 def wild_stats(t, content=None):
     """Default battle stats of a new species placed on a map ("wild" in its definition)."""
-    s = load_content(content).get(t)
+    s = load_content(content, shared=True).get(t)
     return dict(s.get('wild', {})) if s else {}
 
 
 def model_size(t, content=None):
     """Bytes of the MMD of a new species (0 if unknown)."""
     if t < NUM_ORIGINAL: return 0
-    s = load_content(content).get(t)
+    s = load_content(content, shared=True).get(t)
     if not s: return 0
     try:
         return len(species_model(s)[0])

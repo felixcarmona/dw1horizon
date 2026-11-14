@@ -8,7 +8,7 @@
   "specialties": ["mech", "battle", "fire"],
   "techniques": ["Prominence Beam", "Megaton Punch", "Power Crane", "All Range Beam", "Full Potential",
                  "Metal Sprinter", "Reverse Prog", "Muscle Charge", "War Cry", "Spit Fire",
-                 "Deadly Bomb"],
+                 "Genoside Attack"],
   "drop": {"item": "Off. Disk", "percent": 10},
   "effects_like": 92,
   "model": {

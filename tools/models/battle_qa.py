@@ -90,6 +90,18 @@ FRANTIC = 2.5
 POLISHED = {231: (34,), 259: (34,), 305: (36,), 373: (33,)}
 
 
+def polished_slots(sid):
+    """POLISHED's slots of species `sid` and the slots rebuilt from the source's clip with repairs
+    (content/models/imports/battle-rebuilds.json, `battle_restore.py rebuild`): fidelity does not apply to them; every
+    liveness, mesh, posture and motion check does."""
+    path = os.path.join(ROOT, 'content', 'models', 'imports', 'battle-rebuilds.json')
+    rebuilt = ()
+    if os.path.exists(path):
+        with open(path) as fh:
+            rebuilt = tuple(int(k) for k in json.load(fh).get(str(sid), {}))
+    return tuple(sorted(set(POLISHED.get(sid, ())) | set(rebuilt)))
+
+
 # ------------------------------------------------------------------ geometry
 def euler(P):
     """Rotation matrices (..., 3, 3) of libgte RotMatrix (Rx.Ry.Rz) for angles (..., 3) in 1/4096 turn."""
@@ -488,7 +500,7 @@ def main():
     c.add_argument('main')
     c.add_argument('species_json')
     c.add_argument('--slots', nargs='*', type=int, default=list(BATTLE))
-    c.add_argument('--polished', nargs='*', type=int, help='leaned slots (default: POLISHED of the species json\'s id)')
+    c.add_argument('--polished', nargs='*', type=int, help='leaned or rebuilt slots (default: battle_qa.polished_slots of the species json\'s id)')
     c.add_argument('--json')
     a = ap.parse_args()
     rd = lambda p: open(p, 'rb').read()
@@ -496,7 +508,7 @@ def main():
         species = json.load(fh)
     bones = species['model']['skeleton']
     sid = int(os.path.basename(a.species_json).split('-')[0])
-    polished = a.polished if a.polished is not None else POLISHED.get(sid, ())
+    polished = a.polished if a.polished is not None else polished_slots(sid)
     rows = species_check(rd(a.final), rd(a.base), rd(a.main), bones, a.slots, polished)
     for s, r in rows.items():
         print(f'slot {s:#x}: {r["verdict"]} ({r["cause"]}) ' + '; '.join(r['flags'] + r['notes']))

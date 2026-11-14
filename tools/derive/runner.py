@@ -205,7 +205,9 @@ class Unit:
                        the shared files, so its own outputs are the same whichever units ran before it. Only the version
                        a shared path ends with depends on the order (the last writer of the recorded order). A runner
                        that keeps every unit's writes apart and gives a shared path the last writer's version (the web
-                       engine's registry) may start such units in any order; this runner keeps the sequence.
+                       engine's registry) may start such units in any order; this runner starts them side by side
+                       too (group_waits), the last unit of the group waiting for all the others, and --strict or
+                       --record keep the sequence. The units of a group must write the same shared paths.
     """
     def __init__(self, name, fn, args=(), inputs=(), outputs=(), order_group=None, record_snapshot=False,
                  independent_start=False):
@@ -289,6 +291,29 @@ def start_method():
     return m
 
 
+def group_waits(units):
+    """{unit index: the indices it waits for}: the recorded order of each order_group. A unit waits for every unit before it
+    in its group, except that an independent_start unit does not wait for the other independent_start units: it waits only
+    for the units before it that are not (they may leave what it starts from), and the last unit of a group waits for all
+    the earlier ones, so the shared files end as the last writer of the recorded order wrote them (a unit's own
+    outputs are the same whichever ran before it). Units without a group wait for nothing."""
+    waits, seen, last = {}, {}, {}
+    for i, u in enumerate(units):
+        g = u.order_group
+        if g is None:
+            waits[i] = ()
+            continue
+        last[g] = i
+    for i, u in enumerate(units):
+        g = u.order_group
+        if g is None: continue
+        before = seen.setdefault(g, [])
+        waits[i] = tuple(j for j in before if not (u.independent_start and units[j].independent_start)) \
+            if i != last[g] else tuple(before)
+        before.append(i)
+    return waits
+
+
 def run_units(ctx, units):
     """Runs a step's units -> [Done] in the units' order, whatever order they finished in.
 
@@ -296,8 +321,9 @@ def run_units(ctx, units):
     (the browser has no processes) nor the input recorder (an audit hook sees only this process) on, they run side by
     side in up to ctx.jobs processes, a fresh one per unit (forked: nothing is imported again; its peak memory is the
     unit's, plus the pages it shares with this process; spawned and reused where fork is not safe: start_method); else
-    one after another here, in order. Units in the same order_group always run in recorded order: each waits for its
-    predecessor to finish before starting. The bytes are the same either way. A future web scheduler takes the same list and
+    one after another here, in order. Units in the same order_group run in recorded order (group_waits): each waits for the
+    ones before it, except that independent_start units start side by side and only the last of a group waits for all of
+    them, so the shared files end as the recorded last writer left them. The bytes are the same either way. A future web scheduler takes the same list and
     hands each unit to a Web Worker.
 
     rule: the first unit that fails stops the step: the other workers are stopped and the unit's error is raised here
@@ -311,17 +337,12 @@ def run_units(ctx, units):
         todo.reverse()
     elif order:
         raise StepError(f'DERIVE_UNIT_ORDER={order}: reverse or unset')
-    previous, last = {}, {}
-    for i, u in enumerate(units):
-        if u.order_group is not None:
-            previous[i] = last.get(u.order_group)
-            last[u.order_group] = i
+    waits = group_waits(units)
     results = [None] * len(units)
 
     def ready():
         for k, i in enumerate(todo):
-            before = previous.get(i)
-            if before is None or results[before] is not None:
+            if all(results[j] is not None for j in waits[i]):
                 return todo.pop(k)
         return None
 

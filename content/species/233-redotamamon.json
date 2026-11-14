@@ -7,7 +7,7 @@
   "attribute": "data",
   "specialties": ["fire", "battle", null],
   "techniques": ["Spit Fire", "Heat Laser", "Fire Tower", "Red Inferno", "Sonic Jab", "Muscle Charge", "War Cry",
-                 "Pepper Breath"],
+                 "Fireball"],
   "drop": {"item": "Enemy repel", "percent": 10},
   "effects_like": 39,
   "model": {

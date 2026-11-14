@@ -7,7 +7,7 @@
   "attribute": "data",
   "specialties": ["mech", "battle", null],
   "techniques": ["Power Crane", "Reverse Prog", "Full Potential", "Metal Sprinter", "Pulse Laser", "Delete Program",
-                 "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Deadly Bomb"],
+                 "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Genoside Attack"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 40,
   "model": {

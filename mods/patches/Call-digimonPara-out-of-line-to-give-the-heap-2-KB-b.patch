@@ -1,0 +1,59 @@
+From 90a5139378035a41ef22245ec27bf2451c8789fa Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 14 Nov 2026 14:58:45 +0000
+Subject: [PATCH] Call digimonPara out of line to give the heap 2 KB back
+
+Inlined at each DIGI_PARA site, the species-or-cache branch cost the main executable 2,000 bytes; one function with a tail call to getSpeciesPara does the same lookup.
+---
+ include/dw/params.h    | 11 +++--------
+ src/main/mod_species.c | 10 ++++++++++
+ 2 files changed, 13 insertions(+), 8 deletions(-)
+
+diff --git a/include/dw/params.h b/include/dw/params.h
+index ff3eef0..727fc66 100644
+--- a/include/dw/params.h
++++ b/include/dw/params.h
+@@ -102,16 +102,11 @@ extern DigimonPara DIGIMON_DATA[NUM_ORIGINAL_DIGIMON];
+ /*
+  * MOD (species): a Digimon's parameters by type. The 180 original species
+  * are the resident DIGIMON_DATA; new species (ids NUM_ORIGINAL_DIGIMON and up)
+- * come from DIGI.DAT through a small cache (mod_species.c, species.h).
++ * come from DIGI.DAT through a small cache (mod_species.c, species.h). digimonPara is a function, not inline:
++ * inlined at every call site it cost 2,000 bytes of the main executable's heap.
+  */
+ DigimonPara *getSpeciesPara(int32_t type);
+-static inline DigimonPara *digimonPara(int32_t type)
+-{
+-	if ((uint32_t)type < NUM_ORIGINAL_DIGIMON) {
+-		return &DIGIMON_DATA[type];
+-	}
+-	return getSpeciesPara(type);
+-}
++DigimonPara *digimonPara(int32_t type);
+ #define DIGI_PARA(type) (*digimonPara(type))
+ 
+ #if VERSION_IS(EU)
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index cf7111f..e445bd9 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -614,6 +614,16 @@ SpeciesRecord *getSpeciesRecord(int32_t type)
+ 	return (SPECIES_CACHE[slot].flags & SPECIES_FLAG_DEFINED) ? &SPECIES_CACHE[slot] : NULL;
+ }
+ 
++/* MOD (heap): out of line, not static inline in params.h: inlined at each of its call sites it cost the main
++ * executable 2,000 bytes more (and the overlays more again) */
++DigimonPara *digimonPara(int32_t type)
++{
++	if ((uint32_t)type < NUM_ORIGINAL_DIGIMON) {
++		return &DIGIMON_DATA[type];
++	}
++	return getSpeciesPara(type);
++}
++
+ DigimonPara *getSpeciesPara(int32_t type)
+ {
+ 	SpeciesRecord *rec;
+-- 
+2.55.0
+

@@ -8,7 +8,7 @@
   "specialties": ["battle", "nature", null],
   "techniques": ["Dynamite Kick (44)", "Counter", "Buster Dive", "Megaton Punch", "Tremar", "Sonic Jab",
                  "Muscle Charge", "War Cry", "Charm Perfume", "Bug", "Green Trap", "Danger Sting",
-                 "Poison Powder", "Lovely Attack"],
+                 "Poison Powder", "Death Claw"],
   "drop": {"item": "S.speed.disk", "percent": 30},
   "effects_like": 40,
   "model": {

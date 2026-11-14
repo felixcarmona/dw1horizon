@@ -22,7 +22,7 @@ BONES = 24
 BUFFER = 100352
 TICKS = {0: 47, 2: 14, 3: 20, 4: 12}                     # idle, walk, condition walk, run
 SPEEDS = {2: 15.0, 3: 10.5, 4: 36.0}                     # the gait stage's units per tick
-TARGET_SHA256 = '348c7bb5d17adbf1e566d979e086000eca8f344fbd9a44a6ca0a27e4241cdd97'
+TARGET_SHA256 = 'e7dcec3971fd068badf467e663362914b8e5787be1a8b6e1ca53bf810dbdf53d'
 
 
 class CannondramonNative(unittest.TestCase):
@@ -147,7 +147,7 @@ class CannondramonNative(unittest.TestCase):
         info = motionstorage.require(self.data, BONES)
         self.assertTrue(info['fits'])
         self.assertLess(info['resident_bytes'], BUFFER)
-        self.assertEqual(info['resident_bytes'], 98732)
+        self.assertEqual(info['resident_bytes'], 100030)
         for read in info['cold_reads']:
             self.assertTrue(read['fits'], read)
 

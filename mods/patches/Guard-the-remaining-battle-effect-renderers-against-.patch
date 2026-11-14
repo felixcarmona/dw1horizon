@@ -1,0 +1,194 @@
+From 5bb651e15f75d1b69887f12edbda2852a63ebad0 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 14 Nov 2026 10:03:16 +0000
+Subject: [PATCH] Guard the remaining battle effect renderers against the GPU
+ packet area
+
+modPacketFits (packet budget) covered models, EFE models and sprites, particles and damage digits, but the other effect renderers still wrote packets without asking: ring tubes (their projected points are also kept in the packet area after the quads), radial waves, ribbon strips, parallel lines, wireframe boxes, parallax sprites, the scrolling background, screen fade and overlay, 2D textured quads, palette-load packets and the stun digits. The shared addScreenPolyFT4 and addPolyFT3Prim (finisher and buff sparks, aura bullets, buff trails, 3D textured quads) now check too. Each skips its draw (never its logic) when the packets would not fit; a cursor outside the frame's area still always fits.
+---
+ include/dw/world_object.h |  4 ++--
+ src/btl/battle_effect.c   | 49 ++++++++++++++++++++++++++++++++-------
+ src/main/map.c            |  6 +++--
+ 3 files changed, 47 insertions(+), 12 deletions(-)
+
+diff --git a/include/dw/world_object.h b/include/dw/world_object.h
+index 85044a00..dfbafded 100644
+--- a/include/dw/world_object.h
++++ b/include/dw/world_object.h
+@@ -46,10 +46,10 @@ void renderObjects(void);
+  * while the GPU drew them, or into the ordering-table headers, and the game
+  * froze. Renderers that can emit many packets ask first and skip the draw
+  * (never the logic) when it would not fit. MOD_PACKET_RESERVE is kept for the
+- * unchecked HUD renderers, about 6.3 KB in that battle, wherever they fall in
++ * unchecked HUD renderers, 6.3 KB in that battle and up to 9.2 KB measured under added load, wherever they fall in
+  * the object order. A cursor outside this frame's area (a loop drawing
+  * elsewhere) always fits. */
+-#define MOD_PACKET_RESERVE	0x2000
++#define MOD_PACKET_RESERVE	0x2800
+ /* The battle item menu (Triangle) draws its windows, 18 item rows and cursor with unchecked renderers, about 4.7 KB
+  * for the list and 0.8 KB for the option box, in the object slots before the HUD. While it is open the
+  * scene leaves that room too, or a frame already at the limit overflows the packet area. */
+diff --git a/src/btl/battle_effect.c b/src/btl/battle_effect.c
+index dcd9e259..84e32bc1 100644
+--- a/src/btl/battle_effect.c
++++ b/src/btl/battle_effect.c
+@@ -3216,9 +3216,12 @@ void BTL_renderScreenFade(void)
+ 	setXY4(p, -ofx, -ofy, 0x140 - ofx, -ofy, -ofx, 0xf0 - ofy, 0x140 - ofx, 0xf0 - ofy);
+ 	setUVWH(p, 0, 0x80, 3, 3);
+ 	setRGB0(p, c, c, c);
+-	AddPrim(ACTIVE_ORDERING_TABLE->org + z, p);
+-	p++;
+-	GsSetWorkBase((PACKET *)p);
++	/* MOD (packet budget) */
++	if (modPacketFits(sizeof(POLY_FT4))) {
++		AddPrim(ACTIVE_ORDERING_TABLE->org + z, p);
++		p++;
++		GsSetWorkBase((PACKET *)p);
++	}
+ }
+ 
+ void BTL_applyBoxAttackHit(void)
+@@ -3413,6 +3416,10 @@ void BTL_renderScreenOverlay(void)
+ 	col = EFE_POP1(EfeColor *);
+ 	layer = EFE_POP1(int32_t);
+ 
++	/* MOD (packet budget) */
++	if (!modPacketFits(sizeof(POLY_F4) + sizeof(DR_TPAGE))) {
++		return;
++	}
+ 	p = (POLY_F4 *)GsGetWorkBase();
+ 	setXYWH(p, -0xa0, -0x78, 320, 240);
+ 	setRGB0(p, col->red, col->green, col->blue);
+@@ -3459,6 +3466,11 @@ void BTL_renderRingTube(void)
+ 	if (n < 2) {
+ 		return;
+ 	}
++	/* MOD (packet budget): the quads and, right after them, the n * 10 points (three halfwords each) they are
++	 * built from; n comes from the effect script */
++	if (!modPacketFits((n - 1) * 10 * (int32_t)sizeof(POLY_FT4) + n * 10 * 6)) {
++		return;
++	}
+ 
+ 	p = (POLY_FT4 *)GsGetWorkBase();
+ 	count = (n - 1) * 10;
+@@ -3628,7 +3640,8 @@ void BTL_renderRadialWaves(void)
+ 					&EFE_WAVE_SCRATCH->quad[3], (long *)&prim->x0, (long *)&prim->x1,
+ 					(long *)&prim->x2, (long *)&prim->x3, &EFE_PROJ_SCRATCH->p,
+ 					&EFE_PROJ_SCRATCH->flag);
+-				if ((EFE_PROJ_SCRATCH->flag & 0x80000000) == 0) {
++				/* MOD (packet budget) */
++				if ((EFE_PROJ_SCRATCH->flag & 0x80000000) == 0 && modPacketFits(sizeof(POLY_FT4))) {
+ 					((int32_t *)prim)[1] = BTL_RADIAL_WAVE_COLOR;
+ 					prim->clut = EFE_WAVE_SCRATCH->clut;
+ 					prim->tpage = EFE_WAVE_SCRATCH->tpage;
+@@ -3681,6 +3694,10 @@ void BTL_addClutLoadPrim(void)
+ 	y = EFE_POP1(int32_t);
+ 	z = EFE_POP1(int32_t);
+ 	src += idx * 2;
++	/* MOD (packet budget) */
++	if (!modPacketFits(sizeof(DR_LOAD))) {
++		return;
++	}
+ 	prim = (DR_LOAD *)GsGetWorkBase();
+ 	GsSetWorkBase((PACKET *)(prim + 1));
+ 	setRECT(&rect, (EFE_DATA_ITERATOR->model->clutPage & 0x3f) << 4, ((EFE_DATA_ITERATOR->model->clutPage >> 6) & 0x1ff) + y, 0x10, 1);
+@@ -4015,6 +4032,10 @@ void BTL_renderWireframeBox(void)
+ 	}
+ 
+ 	PopMatrix();
++	/* MOD (packet budget) */
++	if (!modPacketFits(4 * sizeof(LINE_F4))) {
++		return;
++	}
+ 	ot = ACTIVE_ORDERING_TABLE->org;
+ 	prim = (LINE_F4 *)GsGetWorkBase();
+ 	idx = BTL_WIREFRAME_BOX_LINES;
+@@ -4133,7 +4154,8 @@ void BTL_render2DTexturedQuad(void)
+ 	b = EFE_POP1(int32_t);
+ 	a = EFE_POP1(int32_t);
+ 
+-	if ((depth > 0x20) && (depth < 0x1000)) {
++	/* MOD (packet budget) */
++	if ((depth > 0x20) && (depth < 0x1000) && modPacketFits(sizeof(POLY_FT4))) {
+ 		m = EFE_DATA_ITERATOR->model;
+ 		prim = (POLY_FT4 *)GsGetWorkBase();
+ 		SetPolyFT4(prim);
+@@ -4860,7 +4882,8 @@ void BTL_renderParallaxSprites(void)
+ 	prim = (POLY_FT4 *)GsGetWorkBase();
+ 
+ 	while (1) {
+-		if (p->size < 0) {
++		/* MOD (packet budget) */
++		if (p->size < 0 || !modPacketFits(sizeof(POLY_FT4))) {
+ 			break;
+ 		}
+ 		SetPolyFT4(prim);
+@@ -4928,6 +4951,10 @@ void BTL_renderScrollingBackground(void)
+ 		ty += 8;
+ 	}
+ 
++	/* MOD (packet budget): 9 x 11 tiles */
++	if (!modPacketFits(99 * sizeof(POLY_FT4))) {
++		return;
++	}
+ 	model = EFE_DATA_ITERATOR->model;
+ 	prim = (POLY_FT4 *)GsGetWorkBase();
+ 	y0 = (sy & 0x1f) - 0x98;
+@@ -6195,7 +6222,8 @@ void BTL_renderParallelLines(SVECTOR *a, SVECTOR *b, int16_t n, SVECTOR *from, S
+ 			prim->x1 += (int16_t)(0xa0 - ox);
+ 			prim->y0 += (int16_t)(0x78 - oy);
+ 			prim->y1 += (int16_t)(0x78 - oy);
+-			if ((depth > 0x200) && (depth < 0x10000)) {
++			/* MOD (packet budget) */
++			if ((depth > 0x200) && (depth < 0x10000) && modPacketFits(sizeof(LINE_F2))) {
+ 				AddPrim(ACTIVE_ORDERING_TABLE->org + 0xffd, prim);
+ 				prim++;
+ 			}
+@@ -6292,7 +6320,8 @@ void BTL_renderRibbonStrip(void)
+ 			&EFE_RIBBON_SCRATCH->edge[i - 1][1], &EFE_RIBBON_SCRATCH->edge[i][1],
+ 			(long *)&prim->x0, (long *)&prim->x1, (long *)&prim->x2,
+ 			(long *)&prim->x3, &EFE_RIBBON_SCRATCH->proj.p, &EFE_RIBBON_SCRATCH->proj.flag);
+-		if ((EFE_RIBBON_SCRATCH->proj.flag & 0x80000000) == 0) {
++		/* MOD (packet budget) */
++		if ((EFE_RIBBON_SCRATCH->proj.flag & 0x80000000) == 0 && modPacketFits(sizeof(POLY_GT4))) {
+ 			prim->tpage = EFE_RIBBON_SCRATCH->tpage;
+ 			prim->clut = EFE_RIBBON_SCRATCH->clut;
+ 			if (i == 1) {
+@@ -6674,6 +6703,10 @@ void BTL_renderStunEffect(int32_t idx)
+ 	pos.vz = p->entity->posData->location.vz;
+ 	otz = worldPosToScreenPos(&pos, &screen);
+ 
++	/* MOD (packet budget): six sprites per effect, up to 25 effects */
++	if (!modPacketFits(6 * (sizeof(POLY_FT4) + sizeof(DR_MODE)))) {
++		return;
++	}
+ 	BTL_STUN_DIGIT_SPRITE.x = screen.vx;
+ 	BTL_STUN_DIGIT_SPRITE.y = screen.vy;
+ 	BTL_STUN_DIGIT_SPRITE.scalex = scale;
+diff --git a/src/main/map.c b/src/main/map.c
+index 3ec13b26..ac1e6137 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -6368,7 +6368,8 @@ void fadeoutCLUT2(long fade, int16_t *clut)
+ 
+ int32_t addPolyFT3Prim(POLY_FT3 *prim, int32_t order)
+ {
+-	if ((order >= 33) && (order < 0x1000)) {
++	/* MOD (packet budget): see dw/world_object.h */
++	if ((order >= 33) && (order < 0x1000) && modPacketFits(sizeof(POLY_FT3))) {
+ 		AddPrim(&ACTIVE_ORDERING_TABLE->org[order], prim);
+ 		prim++;
+ 		GsSetWorkBase((PACKET *)prim);
+@@ -6407,7 +6408,8 @@ int32_t addScreenPolyFT4(POLY_FT4 *poly, SVECTOR *v0, SVECTOR *v1, SVECTOR *v2,
+ 			    (long *)&poly->x2, (long *)&poly->x3,
+ 			    &p, &flag);
+ 	otz = otz >> 2;
+-	if ((otz > 0x20) && (otz < 0x1000)) {
++	/* MOD (packet budget): see dw/world_object.h */
++	if ((otz > 0x20) && (otz < 0x1000) && modPacketFits(sizeof(POLY_FT4))) {
+ 		AddPrim(ACTIVE_ORDERING_TABLE->org + otz, poly);
+ 		poly++;
+ 		GsSetWorkBase((PACKET *)poly);
+-- 
+2.55.0
+

@@ -27,7 +27,7 @@ from tools.models.field_animations import quadruped
 
 PROFILE = dict(
     species=191, name='MetalGarurumon',
-    source='8cbe945c684b3108f69f4161e4614a36bb3a20d30aef9dd4149dc03a8604422f',
+    source='01f41d998cd05cb7a637580877079fa8f0156dabed3e33e92a4e0e6efe0e052e',
     parents=[-1, 15, 1, 2, 3, 6, 1, 6, 7, 10, 1, 10, 11, 1, 1, 0, 15, 16, 17, 15, 19, 20, 15],
     pelvis=15, chest=1, neck=2, head=3,
     # (upper, lower, paw, side (+1 right), front)

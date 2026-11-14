@@ -205,6 +205,10 @@ def lab_evolve(t, out):
         if tamer == 6: EMU.press('START', 6)
         if tamer == 20: EMU.press('CONFIRM', 6)  # dismiss the tamer-level-up message after evolution
         EMU.wait(3)
+    for _ in range(3):                      # a native species' evolution can leave the Cheats menu paused: START resumes
+        if not mem('PAUSE_STATE').get('PAUSE_STATE'): break
+        press('START')
+        EMU.wait(1)
     seq(f'wait 4, shot {out}/evolved-{t}.png')
 
 

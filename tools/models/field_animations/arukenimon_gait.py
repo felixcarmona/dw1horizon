@@ -26,7 +26,8 @@ out, the shin down to the floor): rear (left 19-20, right 21-22), middle (17-18,
   settles, a front leg paws once and a middle leg shifts.
 
 Every clip repeats its pose cycle exactly, the root travels the same distance every tick, the idle's twin slot 33 follows the
-idle and the walk's and run's twins (slots 35 and 36) follow them.
+idle and the walk's and run's twins (slots 35 and 36) follow them. The battle slots 33, 35 and 36 are then replaced by the
+source game's own clips, repaired (battle-rebuilds.json), after this overlay.
 """
 import argparse
 import copy

@@ -1,0 +1,378 @@
+From be02eba52d5d9b8b835caa3892089bed4d984683 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 14 Nov 2026 12:41:54 +0000
+Subject: [PATCH] Guard the tournament and versus effect renderers and the
+ battle effect TMD models
+
+The tournament (STD) and versus (VS) overlays carry copies of the battle effect renderers that PR 447 guarded: radial waves, screen fade, stun digits and the effect model draws (GsSortObject4 on EFE_SCRATCH) now ask modPacketFits first. renderTMDModel, which draws the stun, confusion and poison effect models in all overlays, does too: it drew 2 to 5.8 KB per frame unchecked in a triple battle (BTL_renderStunSubEffect), which with the HUD made up the 9 to 10 KB the reserve had to cover.
+---
+ src/main/map.c       |  5 +++-
+ src/std/std_effect.c | 64 ++++++++++++++++++++++++++++++++++++--------
+ src/vs/vs_effect.c   | 64 ++++++++++++++++++++++++++++++++++++--------
+ 3 files changed, 110 insertions(+), 23 deletions(-)
+
+diff --git a/src/main/map.c b/src/main/map.c
+index ac1e6137..8b508b62 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -6521,7 +6521,10 @@ void renderTMDModel(buffer, id, coord, super, trans, rot, scale)
+ 	GsGetLs(obj.coord2, &m);
+ 	GsSetLsMatrix(&m);
+ 
+-	GsSortObject4(&obj, ACTIVE_ORDERING_TABLE, 2, getScratchAddr(0));
++	/* MOD (packet budget): at most one POLY_GT4 per primitive (attribute 0) */
++	if (modPacketFits(((struct TMD_STRUCT *)obj.tmd)->primn * sizeof(POLY_GT4))) {
++		GsSortObject4(&obj, ACTIVE_ORDERING_TABLE, 2, getScratchAddr(0));
++	}
+ }
+ 
+ void initializeSomeArenaArrays(int32_t count, int32_t arg1, int32_t arg2,
+diff --git a/src/std/std_effect.c b/src/std/std_effect.c
+index 0adcc237..f18bb945 100644
+--- a/src/std/std_effect.c
++++ b/src/std/std_effect.c
+@@ -2232,9 +2232,12 @@ void STD_renderScreenFade(void)
+ 	setXY4(p, -ofx, -ofy, 0x140 - ofx, -ofy, -ofx, 0xf0 - ofy, 0x140 - ofx, 0xf0 - ofy);
+ 	setUVWH(p, 0, 0x80, 3, 3);
+ 	setRGB0(p, c, c, c);
+-	AddPrim(ACTIVE_ORDERING_TABLE->org + z, p);
+-	p++;
+-	GsSetWorkBase((PACKET *)p);
++	/* MOD (packet budget) */
++	if (modPacketFits(sizeof(POLY_FT4))) {
++		AddPrim(ACTIVE_ORDERING_TABLE->org + z, p);
++		p++;
++		GsSetWorkBase((PACKET *)p);
++	}
+ #else
+ 	int32_t c;
+ 
+@@ -2435,6 +2438,10 @@ void STD_renderScreenOverlay(void)
+ 	col = EFE_POP1(EfeColor *);
+ 	layer = EFE_POP1(int32_t);
+ 
++	/* MOD (packet budget) */
++	if (!modPacketFits(sizeof(POLY_F4) + sizeof(DR_TPAGE))) {
++		return;
++	}
+ 	p = (POLY_F4 *)GsGetWorkBase();
+ 	setXYWH(p, -0xa0, -0x78, 320, 240);
+ 	setRGB0(p, col->red, col->green, col->blue);
+@@ -2481,6 +2488,11 @@ void STD_renderRingTube(void)
+ 	if (n < 2) {
+ 		return;
+ 	}
++	/* MOD (packet budget): the quads and, right after them, the n * 10 points (three halfwords each) they are
++	 * built from; n comes from the effect script */
++	if (!modPacketFits((n - 1) * 10 * (int32_t)sizeof(POLY_FT4) + n * 10 * 6)) {
++		return;
++	}
+ 
+ 	p = (POLY_FT4 *)GsGetWorkBase();
+ 	count = (n - 1) * 10;
+@@ -2640,7 +2652,8 @@ void STD_renderRadialWaves(void)
+ 					&EFE_WAVE_SCRATCH->quad[3], (long *)&prim->x0, (long *)&prim->x1,
+ 					(long *)&prim->x2, (long *)&prim->x3, &EFE_PROJ_SCRATCH->p,
+ 					&EFE_PROJ_SCRATCH->flag);
+-				if ((EFE_PROJ_SCRATCH->flag & 0x80000000) == 0) {
++				/* MOD (packet budget) */
++				if ((EFE_PROJ_SCRATCH->flag & 0x80000000) == 0 && modPacketFits(sizeof(POLY_FT4))) {
+ 					((int32_t *)prim)[1] = STD_RADIAL_WAVE_COLOR;
+ 					prim->clut = EFE_WAVE_SCRATCH->clut;
+ 					prim->tpage = EFE_WAVE_SCRATCH->tpage;
+@@ -2693,6 +2706,10 @@ void STD_addClutLoadPrim(void)
+ 	y = EFE_POP1(int32_t);
+ 	z = EFE_POP1(int32_t);
+ 	src += idx * 2;
++	/* MOD (packet budget) */
++	if (!modPacketFits(sizeof(DR_LOAD))) {
++		return;
++	}
+ 	prim = (DR_LOAD *)GsGetWorkBase();
+ 	GsSetWorkBase((PACKET *)(prim + 1));
+ 	setRECT(&rect, (EFE_DATA_ITERATOR->model->clutPage & 0x3f) << 4, ((EFE_DATA_ITERATOR->model->clutPage >> 6) & 0x1ff) + y, 0x10, 1);
+@@ -2720,7 +2737,10 @@ void STD_drawTMDScreenSpace(void)
+ 	GsLinkObject4((unsigned long)EFE_DATA_ITERATOR->model->modelPtr->obj, &EFE_SCRATCH->obj, EFE_SCRATCH->id);
+ 	EFE_SCRATCH->obj.coord2 = NULL;
+ 	EFE_SCRATCH->obj.attribute = 0;
+-	GsSortObject4(&EFE_SCRATCH->obj, ACTIVE_ORDERING_TABLE, 2, EFE_SORT_WORKSPACE);
++	/* MOD (packet budget): at most one POLY_GT4 per primitive (attribute 0) */
++	if (modPacketFits(((struct TMD_STRUCT *)EFE_SCRATCH->obj.tmd)->primn * sizeof(POLY_GT4))) {
++		GsSortObject4(&EFE_SCRATCH->obj, ACTIVE_ORDERING_TABLE, 2, EFE_SORT_WORKSPACE);
++	}
+ }
+ 
+ void STD_loadClutColors(void)
+@@ -2779,7 +2799,10 @@ void STD_drawTMDYXZ(void)
+ 	GsLinkObject4((unsigned long)EFE_DATA_ITERATOR->model->modelPtr->obj, &EFE_SCRATCH->obj, EFE_SCRATCH->id);
+ 	EFE_SCRATCH->obj.coord2 = NULL;
+ 	EFE_SCRATCH->obj.attribute = 0;
+-	GsSortObject4(&EFE_SCRATCH->obj, ACTIVE_ORDERING_TABLE, 2, EFE_SORT_WORKSPACE);
++	/* MOD (packet budget): at most one POLY_GT4 per primitive (attribute 0) */
++	if (modPacketFits(((struct TMD_STRUCT *)EFE_SCRATCH->obj.tmd)->primn * sizeof(POLY_GT4))) {
++		GsSortObject4(&EFE_SCRATCH->obj, ACTIVE_ORDERING_TABLE, 2, EFE_SORT_WORKSPACE);
++	}
+ }
+ 
+ void STD_getCameraRotation(void)
+@@ -3026,6 +3049,10 @@ void STD_renderWireframeBox(void)
+ 	}
+ 
+ 	PopMatrix();
++	/* MOD (packet budget) */
++	if (!modPacketFits(4 * sizeof(LINE_F4))) {
++		return;
++	}
+ 	ot = ACTIVE_ORDERING_TABLE->org;
+ 	prim = (LINE_F4 *)GsGetWorkBase();
+ 	idx = STD_WIREFRAME_BOX_LINES;
+@@ -3144,7 +3171,8 @@ void STD_render2DTexturedQuad(void)
+ 	b = EFE_POP1(int32_t);
+ 	a = EFE_POP1(int32_t);
+ 
+-	if ((depth > 0x20) && (depth < 0x1000)) {
++	/* MOD (packet budget) */
++	if ((depth > 0x20) && (depth < 0x1000) && modPacketFits(sizeof(POLY_FT4))) {
+ 		m = EFE_DATA_ITERATOR->model;
+ 		prim = (POLY_FT4 *)GsGetWorkBase();
+ 		SetPolyFT4(prim);
+@@ -3890,7 +3918,8 @@ void STD_renderParallaxSprites(void)
+ 	prim = (POLY_FT4 *)GsGetWorkBase();
+ 
+ 	while (1) {
+-		if (p->size < 0) {
++		/* MOD (packet budget) */
++		if (p->size < 0 || !modPacketFits(sizeof(POLY_FT4))) {
+ 			break;
+ 		}
+ 		SetPolyFT4(prim);
+@@ -3958,6 +3987,10 @@ void STD_renderScrollingBackground(void)
+ 		ty += 8;
+ 	}
+ 
++	/* MOD (packet budget): 9 x 11 tiles */
++	if (!modPacketFits(99 * sizeof(POLY_FT4))) {
++		return;
++	}
+ 	model = EFE_DATA_ITERATOR->model;
+ 	prim = (POLY_FT4 *)GsGetWorkBase();
+ 	y0 = (sy & 0x1f) - 0x98;
+@@ -4627,7 +4660,10 @@ void STD_drawTMD(void)
+ 	GsLinkObject4((unsigned long)EFE_DATA_ITERATOR->model->modelPtr->obj, &EFE_SCRATCH->obj, EFE_SCRATCH->id);
+ 	EFE_SCRATCH->obj.coord2 = NULL;
+ 	EFE_SCRATCH->obj.attribute = 0;
+-	GsSortObject4(&EFE_SCRATCH->obj, ACTIVE_ORDERING_TABLE, 2, EFE_SORT_WORKSPACE);
++	/* MOD (packet budget): at most one POLY_GT4 per primitive (attribute 0) */
++	if (modPacketFits(((struct TMD_STRUCT *)EFE_SCRATCH->obj.tmd)->primn * sizeof(POLY_GT4))) {
++		GsSortObject4(&EFE_SCRATCH->obj, ACTIVE_ORDERING_TABLE, 2, EFE_SORT_WORKSPACE);
++	}
+ }
+ 
+ void STD_initializeSubEffectInstructions(void)
+@@ -5231,7 +5267,8 @@ void STD_renderParallelLines(SVECTOR *a, SVECTOR *b, int16_t n, SVECTOR *from, S
+ 			prim->x1 += (int16_t)(0xa0 - ox);
+ 			prim->y0 += (int16_t)(0x78 - oy);
+ 			prim->y1 += (int16_t)(0x78 - oy);
+-			if ((depth > 0x200) && (depth < 0x10000)) {
++			/* MOD (packet budget) */
++			if ((depth > 0x200) && (depth < 0x10000) && modPacketFits(sizeof(LINE_F2))) {
+ 				AddPrim(ACTIVE_ORDERING_TABLE->org + 0xffd, prim);
+ 				prim++;
+ 			}
+@@ -5328,7 +5365,8 @@ void STD_renderRibbonStrip(void)
+ 			&EFE_RIBBON_SCRATCH->edge[i - 1][1], &EFE_RIBBON_SCRATCH->edge[i][1],
+ 			(long *)&prim->x0, (long *)&prim->x1, (long *)&prim->x2,
+ 			(long *)&prim->x3, &EFE_RIBBON_SCRATCH->proj.p, &EFE_RIBBON_SCRATCH->proj.flag);
+-		if ((EFE_RIBBON_SCRATCH->proj.flag & 0x80000000) == 0) {
++		/* MOD (packet budget) */
++		if ((EFE_RIBBON_SCRATCH->proj.flag & 0x80000000) == 0 && modPacketFits(sizeof(POLY_GT4))) {
+ 			prim->tpage = EFE_RIBBON_SCRATCH->tpage;
+ 			prim->clut = EFE_RIBBON_SCRATCH->clut;
+ 			if (i == 1) {
+@@ -5710,6 +5748,10 @@ void STD_renderStunEffect(int32_t idx)
+ 	pos.vz = p->entity->posData->location.vz;
+ 	otz = worldPosToScreenPos(&pos, &screen);
+ 
++	/* MOD (packet budget): six sprites per effect, up to 25 effects */
++	if (!modPacketFits(6 * (sizeof(POLY_FT4) + sizeof(DR_MODE)))) {
++		return;
++	}
+ 	STD_STUN_DIGIT_SPRITE.x = screen.vx;
+ 	STD_STUN_DIGIT_SPRITE.y = screen.vy;
+ 	STD_STUN_DIGIT_SPRITE.scalex = scale;
+diff --git a/src/vs/vs_effect.c b/src/vs/vs_effect.c
+index 5cfd4678..170c80ee 100644
+--- a/src/vs/vs_effect.c
++++ b/src/vs/vs_effect.c
+@@ -1830,9 +1830,12 @@ void VS_renderScreenFade(void)
+ 	setXY4(p, -ofx, -ofy, 0x140 - ofx, -ofy, -ofx, 0xf0 - ofy, 0x140 - ofx, 0xf0 - ofy);
+ 	setUVWH(p, 0, 0x80, 3, 3);
+ 	setRGB0(p, c, c, c);
+-	AddPrim(ACTIVE_ORDERING_TABLE->org + z, p);
+-	p++;
+-	GsSetWorkBase((PACKET *)p);
++	/* MOD (packet budget) */
++	if (modPacketFits(sizeof(POLY_FT4))) {
++		AddPrim(ACTIVE_ORDERING_TABLE->org + z, p);
++		p++;
++		GsSetWorkBase((PACKET *)p);
++	}
+ #else
+ 	int32_t c;
+ 
+@@ -2033,6 +2036,10 @@ void VS_renderScreenOverlay(void)
+ 	col = EFE_POP1(EfeColor *);
+ 	layer = EFE_POP1(int32_t);
+ 
++	/* MOD (packet budget) */
++	if (!modPacketFits(sizeof(POLY_F4) + sizeof(DR_TPAGE))) {
++		return;
++	}
+ 	p = (POLY_F4 *)GsGetWorkBase();
+ 	setXYWH(p, -0xa0, -0x78, 320, 240);
+ 	setRGB0(p, col->red, col->green, col->blue);
+@@ -2079,6 +2086,11 @@ void VS_renderRingTube(void)
+ 	if (n < 2) {
+ 		return;
+ 	}
++	/* MOD (packet budget): the quads and, right after them, the n * 10 points (three halfwords each) they are
++	 * built from; n comes from the effect script */
++	if (!modPacketFits((n - 1) * 10 * (int32_t)sizeof(POLY_FT4) + n * 10 * 6)) {
++		return;
++	}
+ 
+ 	p = (POLY_FT4 *)GsGetWorkBase();
+ 	count = (n - 1) * 10;
+@@ -2238,7 +2250,8 @@ void VS_renderRadialWaves(void)
+ 					&EFE_WAVE_SCRATCH->quad[3], (long *)&prim->x0, (long *)&prim->x1,
+ 					(long *)&prim->x2, (long *)&prim->x3, &EFE_PROJ_SCRATCH->p,
+ 					&EFE_PROJ_SCRATCH->flag);
+-				if ((EFE_PROJ_SCRATCH->flag & 0x80000000) == 0) {
++				/* MOD (packet budget) */
++				if ((EFE_PROJ_SCRATCH->flag & 0x80000000) == 0 && modPacketFits(sizeof(POLY_FT4))) {
+ 					((int32_t *)prim)[1] = VS_RADIAL_WAVE_COLOR;
+ 					prim->clut = EFE_WAVE_SCRATCH->clut;
+ 					prim->tpage = EFE_WAVE_SCRATCH->tpage;
+@@ -2291,6 +2304,10 @@ void VS_addClutLoadPrim(void)
+ 	y = EFE_POP1(int32_t);
+ 	z = EFE_POP1(int32_t);
+ 	src += idx * 2;
++	/* MOD (packet budget) */
++	if (!modPacketFits(sizeof(DR_LOAD))) {
++		return;
++	}
+ 	prim = (DR_LOAD *)GsGetWorkBase();
+ 	GsSetWorkBase((PACKET *)(prim + 1));
+ 	setRECT(&rect, (EFE_DATA_ITERATOR->model->clutPage & 0x3f) << 4, ((EFE_DATA_ITERATOR->model->clutPage >> 6) & 0x1ff) + y, 0x10, 1);
+@@ -2318,7 +2335,10 @@ void VS_drawTMDScreenSpace(void)
+ 	GsLinkObject4((unsigned long)EFE_DATA_ITERATOR->model->modelPtr->obj, &EFE_SCRATCH->obj, EFE_SCRATCH->id);
+ 	EFE_SCRATCH->obj.coord2 = NULL;
+ 	EFE_SCRATCH->obj.attribute = 0;
+-	GsSortObject4(&EFE_SCRATCH->obj, ACTIVE_ORDERING_TABLE, 2, EFE_SORT_WORKSPACE);
++	/* MOD (packet budget): at most one POLY_GT4 per primitive (attribute 0) */
++	if (modPacketFits(((struct TMD_STRUCT *)EFE_SCRATCH->obj.tmd)->primn * sizeof(POLY_GT4))) {
++		GsSortObject4(&EFE_SCRATCH->obj, ACTIVE_ORDERING_TABLE, 2, EFE_SORT_WORKSPACE);
++	}
+ }
+ 
+ void VS_loadClutColors(void)
+@@ -2377,7 +2397,10 @@ void VS_drawTMDYXZ(void)
+ 	GsLinkObject4((unsigned long)EFE_DATA_ITERATOR->model->modelPtr->obj, &EFE_SCRATCH->obj, EFE_SCRATCH->id);
+ 	EFE_SCRATCH->obj.coord2 = NULL;
+ 	EFE_SCRATCH->obj.attribute = 0;
+-	GsSortObject4(&EFE_SCRATCH->obj, ACTIVE_ORDERING_TABLE, 2, EFE_SORT_WORKSPACE);
++	/* MOD (packet budget): at most one POLY_GT4 per primitive (attribute 0) */
++	if (modPacketFits(((struct TMD_STRUCT *)EFE_SCRATCH->obj.tmd)->primn * sizeof(POLY_GT4))) {
++		GsSortObject4(&EFE_SCRATCH->obj, ACTIVE_ORDERING_TABLE, 2, EFE_SORT_WORKSPACE);
++	}
+ }
+ 
+ void VS_getCameraRotation(void)
+@@ -2624,6 +2647,10 @@ void VS_renderWireframeBox(void)
+ 	}
+ 
+ 	PopMatrix();
++	/* MOD (packet budget) */
++	if (!modPacketFits(4 * sizeof(LINE_F4))) {
++		return;
++	}
+ 	ot = ACTIVE_ORDERING_TABLE->org;
+ 	prim = (LINE_F4 *)GsGetWorkBase();
+ 	idx = VS_WIREFRAME_BOX_LINES;
+@@ -2742,7 +2769,8 @@ void VS_render2DTexturedQuad(void)
+ 	b = EFE_POP1(int32_t);
+ 	a = EFE_POP1(int32_t);
+ 
+-	if ((depth > 0x20) && (depth < 0x1000)) {
++	/* MOD (packet budget) */
++	if ((depth > 0x20) && (depth < 0x1000) && modPacketFits(sizeof(POLY_FT4))) {
+ 		m = EFE_DATA_ITERATOR->model;
+ 		prim = (POLY_FT4 *)GsGetWorkBase();
+ 		SetPolyFT4(prim);
+@@ -3488,7 +3516,8 @@ void VS_renderParallaxSprites(void)
+ 	prim = (POLY_FT4 *)GsGetWorkBase();
+ 
+ 	while (1) {
+-		if (p->size < 0) {
++		/* MOD (packet budget) */
++		if (p->size < 0 || !modPacketFits(sizeof(POLY_FT4))) {
+ 			break;
+ 		}
+ 		SetPolyFT4(prim);
+@@ -3556,6 +3585,10 @@ void VS_renderScrollingBackground(void)
+ 		ty += 8;
+ 	}
+ 
++	/* MOD (packet budget): 9 x 11 tiles */
++	if (!modPacketFits(99 * sizeof(POLY_FT4))) {
++		return;
++	}
+ 	model = EFE_DATA_ITERATOR->model;
+ 	prim = (POLY_FT4 *)GsGetWorkBase();
+ 	y0 = (sy & 0x1f) - 0x98;
+@@ -4227,7 +4260,10 @@ void VS_drawTMD(void)
+ 	GsLinkObject4((unsigned long)EFE_DATA_ITERATOR->model->modelPtr->obj, &EFE_SCRATCH->obj, EFE_SCRATCH->id);
+ 	EFE_SCRATCH->obj.coord2 = NULL;
+ 	EFE_SCRATCH->obj.attribute = 0;
+-	GsSortObject4(&EFE_SCRATCH->obj, ACTIVE_ORDERING_TABLE, 2, EFE_SORT_WORKSPACE);
++	/* MOD (packet budget): at most one POLY_GT4 per primitive (attribute 0) */
++	if (modPacketFits(((struct TMD_STRUCT *)EFE_SCRATCH->obj.tmd)->primn * sizeof(POLY_GT4))) {
++		GsSortObject4(&EFE_SCRATCH->obj, ACTIVE_ORDERING_TABLE, 2, EFE_SORT_WORKSPACE);
++	}
+ }
+ 
+ void VS_initializeSubEffectInstructions(void)
+@@ -4831,7 +4867,8 @@ void VS_renderParallelLines(SVECTOR *a, SVECTOR *b, int16_t n, SVECTOR *from, SV
+ 			prim->x1 += (int16_t)(0xa0 - ox);
+ 			prim->y0 += (int16_t)(0x78 - oy);
+ 			prim->y1 += (int16_t)(0x78 - oy);
+-			if ((depth > 0x200) && (depth < 0x10000)) {
++			/* MOD (packet budget) */
++			if ((depth > 0x200) && (depth < 0x10000) && modPacketFits(sizeof(LINE_F2))) {
+ 				AddPrim(ACTIVE_ORDERING_TABLE->org + 0xffd, prim);
+ 				prim++;
+ 			}
+@@ -4928,7 +4965,8 @@ void VS_renderRibbonStrip(void)
+ 			&EFE_RIBBON_SCRATCH->edge[i - 1][1], &EFE_RIBBON_SCRATCH->edge[i][1],
+ 			(long *)&prim->x0, (long *)&prim->x1, (long *)&prim->x2,
+ 			(long *)&prim->x3, &EFE_RIBBON_SCRATCH->proj.p, &EFE_RIBBON_SCRATCH->proj.flag);
+-		if ((EFE_RIBBON_SCRATCH->proj.flag & 0x80000000) == 0) {
++		/* MOD (packet budget) */
++		if ((EFE_RIBBON_SCRATCH->proj.flag & 0x80000000) == 0 && modPacketFits(sizeof(POLY_GT4))) {
+ 			prim->tpage = EFE_RIBBON_SCRATCH->tpage;
+ 			prim->clut = EFE_RIBBON_SCRATCH->clut;
+ 			if (i == 1) {
+@@ -5309,6 +5347,10 @@ void VS_renderStunEffect(int32_t idx)
+ 	pos.vz = p->entity->posData->location.vz;
+ 	otz = worldPosToScreenPos(&pos, &screen);
+ 
++	/* MOD (packet budget): six sprites per effect, up to 25 effects */
++	if (!modPacketFits(6 * (sizeof(POLY_FT4) + sizeof(DR_MODE)))) {
++		return;
++	}
+ 	VS_STUN_DIGIT_SPRITE.x = screen.vx;
+ 	VS_STUN_DIGIT_SPRITE.y = screen.vy;
+ 	VS_STUN_DIGIT_SPRITE.scalex = scale;
+-- 
+2.55.0
+

@@ -179,7 +179,22 @@ def run(method):
     return good
 
 
+def test_group_waits():
+    """The native runner's waits: independent_start units of a group start side by side, the last waits for all."""
+    U = lambda g=None, ind=False: runner.Unit('u', ok, order_group=g, independent_start=ind)
+    units = [U('a', True), U('a', True), U('b'), U('a', False), U('a', True), U('b'), U(), U('a', True)]
+    w = runner.group_waits(units)
+    want = {0: (), 1: (), 2: (), 3: (0, 1), 4: (3,), 5: (2,), 6: (), 7: (0, 1, 3, 4)}
+    if w != want:
+        print(f'group_waits: got {w}, wanted {want}')
+        return False
+    print('group_waits: ok')
+    return True
+
+
 def main():
+    if not test_group_waits():
+        sys.exit(1)
     methods = sys.argv[1:] or ['fork', 'spawn']
     results = [run(m) for m in methods]
     sys.exit(0 if all(results) else 1)

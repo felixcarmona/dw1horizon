@@ -9,6 +9,7 @@ observing battle progress, so that mode proves loading rather than combat AI.
 import argparse
 import bisect
 import json
+import os
 from pathlib import Path
 import struct
 import sys
@@ -67,19 +68,140 @@ def equip_only(e, technique):
     """Leave the partner one learned and equipped technique (as seam_movesets' fixture)."""
     ram = e.ram()
     species = e.peek('PARTNER_ENTITY', 'i', ram)
-    para = e.A('DIGIMON_DATA') - 0x80000000 + species * 52
+    if species < 180:
+        para = e.A('DIGIMON_DATA') - 0x80000000 + species * 52
+    else:
+        # New species come from DIGI.DAT through getSpeciesPara's cache (params.h)
+        para = call(e, 'getSpeciesPara', species) & 0x1fffff
+        e.run('resume')
+        ram = e.ram()
     moves = list(ram[para + 35:para + 51])
-    assert technique in moves, f'species {species} cannot use technique {technique}: {moves}'
+    if technique not in moves:
+        # a technique of a species the fixture cannot be evolved to: lend it to this one (first slot of its RAM copy)
+        assert os.environ.get('PACKET_LEND_TECHNIQUE'), f'species {species} cannot use technique {technique}: {moves}'
+        assert species < 180, 'lending needs the plain species table'
+        e.poke('DIGIMON_DATA+%d' % (species * 52 + 35), bytes([technique]))
+        moves[0] = technique
     e.poke('PARTNER_ENTITY+0x40', bytes([100, 0, 0, 0, 46 + moves.index(technique), 255, 255, 255]))
     e.poke('PARTNER_ENTITY+0x58', (1 << technique).to_bytes(16, 'little'))
 
 
-def gpu_monitor(e, pad=0):
+# Every renderer that writes packets in a battle, by symbol: --profile measures the bytes each one adds
+# (largest single call, largest per-frame total) so the heavy techniques show which path they stress.
+OVERLAY = 'BTL'  # the overlay whose renderers are profiled: BTL, STD (tournament) or VS (versus)
+PROFILE_FUNCS = [
+    'BTL_renderRingTube', 'BTL_renderRadialWaves', 'BTL_renderRibbonStrip', 'BTL_renderParallelLines',
+    'BTL_renderWireframeBox', 'BTL_renderParallaxSprites', 'BTL_renderScrollingBackground',
+    'BTL_render3DTexturedQuad', 'BTL_render2DTexturedQuad', 'BTL_renderScreenFade', 'BTL_renderScreenOverlay',
+    'BTL_renderFinisherAuraSpark', 'BTL_renderAuraProjectile', 'BTL_renderBuffTrails', 'BTL_renderBuffRingsSpark',
+    'BTL_drawTMD', 'BTL_drawTMDYXZ', 'BTL_drawTMDScreenSpace', 'BTL_renderProjectedSprite', 'BTL_renderScreenSprite',
+    'renderEntityParticleFX', 'renderParticleFlash', 'renderFXParticle', 'GsSortSprite', 'GsSortObject4',
+]
+
+
+def profile_lua(e, pad=0):
+    """Lua that wraps every PROFILE_FUNCS renderer in a packet-cursor delta (the return address gets a breakpoint
+    the first time each call site is seen). Per function: calls, largest call, largest per-frame total, and
+    the calls after which the cursor was past the frame's area."""
+    # The tournament (STD_) and versus (VS_) overlays carry copies of the battle (BTL_) effect renderers
+    # (the overlays share one address range, so only the running overlay's names mean anything)
+    funcs = [OVERLAY + '_' + n[4:] if n.startswith('BTL_') else n for n in PROFILE_FUNCS]
+    funcs = [n for i, n in enumerate(funcs) if n in e.table and n not in funcs[:i]]
+    addrs = ','.join(f'["{n}"]={e.A(n)}' for n in funcs)
+    names = ','.join(f'"{n}"' for n in funcs)
+    return f'''
+      local name_addr={{{addrs}}}
+      local function cursor()
+        local frame=word({e.A('ACTIVE_FRAMEBUFFER')})
+        return word({e.A('GsOUT_PACKET_P')})-({e.A('GS_WORK_BASES')}+frame*0x14000)
+      end
+      local function stat(name) local s=IP.prof[name]; if not s then s={{max=0,sum=0,fmax=0,calls=0,over=0}}; IP.prof[name]=s end; return s end
+      local function entry(name)
+        return function()
+          if not battle() then return end
+          local frame=word({e.A('ACTIVE_FRAMEBUFFER')})
+          if frame~=0 and frame~=1 then return end
+          IP.pstart[name]=cursor()
+          local ra=PCSX.getRegisters().GPR.n.ra
+          if not IP.retbps[ra] then
+            IP.retbps[ra]=name
+            IP.bp[#IP.bp+1]=PCSX.addBreakpoint(ra,'Exec',4,'portal-ret-'..name,function()
+              local st=IP.pstart[name]
+              if not st or not battle() then return end
+              IP.pstart[name]=nil
+              local frame=word({e.A('ACTIVE_FRAMEBUFFER')})
+              if frame~=0 and frame~=1 then return end
+              local c=cursor()
+              local d=c-st
+              local s=stat(name)
+              s.calls=s.calls+1; s.sum=s.sum+d
+              if d>s.max then s.max=d end
+              if c>0x14000 then s.over=s.over+1 end
+            end)
+          end
+        end
+      end
+      for _,name in ipairs({{{names}}}) do
+        IP.bp[#IP.bp+1]=PCSX.addBreakpoint(name_addr[name],'Exec',4,'portal-p-'..name,entry(name))
+      end
+      -- Every object render callback: its packet bytes per call and per frame, keyed by the callee's address.
+      IP.rend={{}}; IP.rstart={{}}
+      do
+        local base={e.A('renderObjects')}
+        local mem=PCSX.getMemPtr()
+        for off=0,0x100,4 do
+          local w=word(base+off)
+          if w%64==9 and (w-w%0x4000000)/0x4000000==0 then
+            local rs=math.floor(w/0x200000)%32
+            local pc=base+off
+            IP.bp[#IP.bp+1]=PCSX.addBreakpoint(pc,'Exec',4,'portal-jalr',function()
+              if not battle() then return end
+              IP.rtarget=PCSX.getRegisters().GPR.r[rs]
+              IP.rstart[1]=cursor()
+            end)
+            IP.bp[#IP.bp+1]=PCSX.addBreakpoint(pc+8,'Exec',4,'portal-jalr-ret',function()
+              local st=IP.rstart[1]
+              if not st or not battle() then return end
+              IP.rstart[1]=nil
+              local d=cursor()-st
+              local t=string.format('%08x',IP.rtarget)
+              local s=IP.rend[t]
+              if not s then s={{calls=0,max=0,sum=0,fmax=0}}; IP.rend[t]=s end
+              s.calls=s.calls+1; s.sum=s.sum+d
+              if d>s.max then s.max=d end
+            end)
+          end
+        end
+      end
+      IP.bp[#IP.bp+1]=PCSX.addBreakpoint({e.A('applyDrawOffset')},'Exec',4,'portal-pframe',function()
+        do
+          -- the pass that used most of the area, split by object callback (applyDrawOffset ends the pass)
+          local g=IP.gpu; local used=cursor()
+          if battle() and used>(g.worstUsed or 0) then
+            g.worstUsed=used; g.worst={{}}; local all=0
+            for k,v in pairs(IP.rend) do g.worst[k]=v.sum; all=all+v.sum end
+            g.worstOther=used-{pad}-all
+          end
+        end
+        for _,s in pairs(IP.rend) do
+          if s.sum>s.fmax then s.fmax=s.sum end
+          s.sum=0
+        end
+        for _,s in pairs(IP.prof) do
+          if s.sum>s.fmax then s.fmax=s.sum end
+          s.sum=0
+        end
+      end)
+'''
+
+
+def gpu_monitor(e, pad=0, profile=False):
     """Per render pass: packet-area peak and violations; every write to the ordering-table headers in battle."""
     out = e.run('lua', f'''
       local ffi=require('ffi')
       local function word(a) return tonumber(ffi.cast('uint32_t*',PCSX.getMemPtr()+a-0x80000000)[0]) end
-      local function battle() return word({e.A('GAME_STATE')})%65536==1 end
+      local function battle() local g=word({e.A('GAME_STATE')})%65536; return g==1 or g==4 or g==5 end
+      IP.prof={{}}; IP.pstart={{}}; IP.retbps={{}}
       IP.gpu={{passes=0,peak=0,violations=0,first=nil,writers={{}},moves={{}},
         swaps=0,swapPeak=0,menuSwaps=0,menuPeak=0,pauseSwaps=0,pausePeak=0,itemSwaps=0,itemPeak=0,noItemPeak=0}}
       -- Every presented frame, pause frames included (pauseFrame never calls applyDrawOffset):
@@ -177,7 +299,12 @@ def gpu_monitor(e, pad=0):
         if not battle() then return end
         local pc=string.format('%08x',PCSX.getRegisters().pc)
         IP.gpu.writers[pc]=(IP.gpu.writers[pc] or 0)+1
+        -- the caller of a stranger: the function that drew past the area
+        local ra=string.format('%08x',PCSX.getRegisters().GPR.n.ra)
+        IP.gpu.callers=IP.gpu.callers or {{}}
+        IP.gpu.callers[ra]=(IP.gpu.callers[ra] or 0)+1
       end)
+      {profile_lua(e, pad) if profile else ""}
       return 'armed' ''').strip()
     assert out == 'armed', f'GPU monitor: {out!r}'
 
@@ -194,18 +321,41 @@ def gpu_report(e):
         raise AssertionError(f'GPU monitor report: {raw!r}') from None
     # Only the ordering-table clear may write its headers; any other writer is a packet run past the area
     # (a pass that crashes mid-frame never reaches the peak sample).
+    others = tuple(p + '_' for p in ('BTL', 'STD', 'VS') if p != OVERLAY)
     names = sorted((a, n) for n, a in e.table.items()
-                   if isinstance(a, int) and 0x80010000 <= a < 0x80200000 and '.' not in n)
+                   if isinstance(a, int) and 0x80010000 <= a < 0x80200000 and '.' not in n
+                   and not n.startswith(others))
     def owner(pc):
         i = bisect.bisect_right(names, (pc, chr(0x10ffff))) - 1
         return names[i][1] if i >= 0 else '?'
+    prof = e.run('lua', '''
+      local o={} for k,v in pairs(IP.prof or {}) do
+        o[#o+1]=string.format('"%s":[%d,%d,%d,%d]',k,v.calls,v.max,v.fmax,v.over) end
+      return '{'..table.concat(o,',')..'}' ''').strip()
+    callers = e.run('lua', '''
+      local o={} for k,v in pairs(IP.gpu.callers or {}) do o[#o+1]=string.format('"%s":%d',k,v) end
+      return '{'..table.concat(o,',')..'}' ''').strip()
+    report['callers'] = {f'{ra}:{owner(int(ra, 16))}': n for ra, n in json.loads(callers).items()}
+    rend = e.run('lua', '''
+      local o={} for k,v in pairs(IP.rend or {}) do
+        o[#o+1]=string.format('"%s":[%d,%d,%d]',k,v.calls,v.max,v.fmax) end
+      return '{'..table.concat(o,',')..'}' ''').strip()
+    report['renderers'] = {f'{owner(int(a, 16))}:{a[-6:]}': dict(zip(('calls', 'max_call', 'max_frame'), v))
+                           for a, v in json.loads(rend).items()}
+    worst = e.run('lua', '''
+      local o={} for k,v in pairs((IP.gpu.worst) or {}) do o[#o+1]=string.format('"%s":%d',k,v) end
+      return string.format('{"used":%d,"other":%d,"objects":{%s}}',IP.gpu.worstUsed or 0,IP.gpu.worstOther or 0,table.concat(o,','))''').strip()
+    worst = json.loads(worst)
+    worst['objects'] = {f'{owner(int(a, 16))}:{a[-6:]}': n for a, n in worst['objects'].items() if n}
+    report['worst_frame'] = worst
+    report['profile'] = {k: dict(zip(('calls', 'max_call', 'max_frame', 'over'), v)) for k, v in json.loads(prof).items()}
     report['strangers'] = {f'{pc}:{owner(int(pc, 16))}': n for pc, n in report['writers'].items()
                            if owner(int(pc, 16)) not in ('GsClearOt', '_otc')}
     return report
 
 
-def encounter(e, out, species, quick, cleanup, video_seconds=35, all_join=False, city_entrance=False,
-              technique=None, offense=999, menu=False, items=False):
+def prepare_fixture(e, species, quick, technique, offense, all_join):
+    """Evolve the fixture partner, give it stats and one equipped technique, and hand it back in the field."""
     evolve_fixture(e, species)
     # The type changes before the EVL scene releases its overlay and objects.
     # Wait for partner field control before starting another map or overlay.
@@ -240,6 +390,11 @@ def encounter(e, out, species, quick, cleanup, video_seconds=35, all_join=False,
             break
         e.wait(.2)
     e.poke('PAUSE_STATE', b'\0')
+
+
+def encounter(e, out, species, quick, cleanup, video_seconds=35, all_join=False, city_entrance=False,
+              technique=None, offense=999, menu=False, items=False, cleanup_frames=90, timeout=600):
+    prepare_fixture(e, species, quick, technique, offense, all_join)
     if items:
         e.poke('INVENTORY', struct.pack('<30h', *range(1, 31)) + bytes([99] * 30) + bytes(30) + bytes([30]))
     assert e.warp(168 if city_entrance else 167, 0), 'source room did not load'
@@ -257,7 +412,7 @@ def encounter(e, out, species, quick, cleanup, video_seconds=35, all_join=False,
             e.run('resume')
         else:
             e.gs('move', '1200', '1200')
-        end=time.monotonic()+600
+        end=time.monotonic()+timeout
         started=False; frame_start=None; auto=False; cleaned=False; window=None
         while time.monotonic()<end:
             row=sample(e);rows.append(row)
@@ -276,7 +431,7 @@ def encounter(e, out, species, quick, cleanup, video_seconds=35, all_join=False,
                     if frame_start is None:
                         frame_start=row['BATTLE_FRAME_COUNT']
                         e.run('shot',str(out/(stem+'-battle.png')))
-                    if row['BATTLE_FRAME_COUNT']-frame_start>=90 and cleanup and not cleaned:
+                    if row['BATTLE_FRAME_COUNT']-frame_start>=cleanup_frames and cleanup and not cleaned:
                         for enemy in row['participants']:
                             e.poke(f'NPC_ENTITIES+{104*enemy["slot"]+0x4c}',b'\0\0')
                         cleaned=True
@@ -345,6 +500,9 @@ def main():
     p.add_argument('--menu', action='store_true', help='work the battle command menu (ring moves) and pause with START instead of the usual auto presses')
     p.add_argument('--items', choices=['open','throw'], help='battle item menu (Triangle) with a full bag: open and close it, or throw an item')
     p.add_argument('--pad-packets', type=int, default=0, help='test load: every battle render pass starts this many bytes into the frame packet area')
+    p.add_argument('--profile', action='store_true', help='per-renderer packet bytes (largest call and per-frame total)')
+    p.add_argument('--cleanup-frames', type=int, default=90, help='with --cleanup, battle frames before the enemies are zeroed')
+    p.add_argument('--timeout', type=int, default=600, help='seconds the encounter may take')
     p.add_argument('--repeat', type=int, default=1, help='run every combination this many times')
     a=p.parse_args();out=a.out.resolve();out.mkdir(parents=True,exist_ok=True)
     e=ProofEmu(a.disc,a.exe,a.port,str(out/'emu'))
@@ -359,6 +517,10 @@ def main():
         if a.state:
             e.run('load',str(a.state.resolve()));e.run('resume')
         else:assert e.continue_game()==0, 'Continue failed'
+        if os.environ.get('PACKET_LANG'):
+            # a multi-language build: switch the language the way the options menu does (index as in modSetLanguage)
+            call(e, 'modSetLanguage', int(os.environ['PACKET_LANG']))
+            assert e.peek('MOD_LANG', 'i') == int(os.environ['PACKET_LANG']), 'language did not switch'
         e.run('lua', f'''IP={{streamFailures=0,coldReads=0,bp={{}}}}
           local m=PCSX.getMemPtr()
           local function battle() return tonumber(m[{e.A('GAME_STATE') & 0x1fffff}])~=0 end
@@ -368,14 +530,14 @@ def main():
           IP.bp[2]=PCSX.addBreakpoint({e.A('loadColdAnimation')},'Exec',4,'portal-cold',function()
             if battle() then IP.coldReads=IP.coldReads+1 end
           end)''')
-        gpu_monitor(e, a.pad_packets)
+        gpu_monitor(e, a.pad_packets, a.profile)
         base=out/'base.state';e.run('save',str(base))
         for run in range(a.repeat):
           for species in a.species:
             for quick in a.quick:
                 e.run('load',str(base));e.run('resume')
-                e.run('lua','IP.gpu.passes=0;IP.gpu.peak=0;IP.gpu.violations=0;IP.gpu.first=nil;IP.gpu.writers={};IP.gpu.swaps=0;IP.gpu.swapPeak=0;IP.gpu.menuSwaps=0;IP.gpu.menuPeak=0;IP.gpu.pauseSwaps=0;IP.gpu.pausePeak=0;IP.gpu.itemSwaps=0;IP.gpu.itemPeak=0;IP.gpu.noItemPeak=0;IP.gpu.pItemN=0;IP.gpu.pItemPeak=0;IP.gpu.pNoPeak=0;IP.gpu.invDelta=0;IP.gpu.boxMax={};IP.gpu.frameMax=0;IP.gpu.frameSum=0')
-                encounter(e,out,species,quick,a.cleanup,a.video_seconds,a.all_join,a.city_entrance,a.technique,a.offense,a.menu,a.items)
+                e.run('lua','IP.gpu.passes=0;IP.gpu.peak=0;IP.gpu.violations=0;IP.gpu.first=nil;IP.gpu.writers={};IP.gpu.callers={};IP.gpu.swaps=0;IP.gpu.swapPeak=0;IP.gpu.menuSwaps=0;IP.gpu.menuPeak=0;IP.gpu.pauseSwaps=0;IP.gpu.pausePeak=0;IP.gpu.itemSwaps=0;IP.gpu.itemPeak=0;IP.gpu.noItemPeak=0;IP.gpu.pItemN=0;IP.gpu.pItemPeak=0;IP.gpu.pNoPeak=0;IP.gpu.invDelta=0;IP.gpu.boxMax={};IP.gpu.frameMax=0;IP.gpu.frameSum=0;IP.prof={};IP.pstart={};IP.rend={};IP.rstart={};IP.gpu.worstUsed=0;IP.gpu.worst={};IP.gpu.worstOther=0')
+                encounter(e,out,species,quick,a.cleanup,a.video_seconds,a.all_join,a.city_entrance,a.technique,a.offense,a.menu,a.items,a.cleanup_frames,a.timeout)
                 print('gpu', json.dumps(gpu_report(e)), flush=True)
     except BaseException:
         e.run('shot',str(out/'failure.png'),check=False)

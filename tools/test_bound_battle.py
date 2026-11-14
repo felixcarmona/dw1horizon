@@ -81,6 +81,16 @@ class Recipe(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     bound_battle.compact(b'', 26, native_battle.IDLES[0] - 1)
 
+    def test_drop_npc_slots_leaves_only_their_clips_out(self):
+        # the NPC slots' clips go, a clip an NPC slot shares with a kept slot stays, the order of the rest is kept
+        from tools.models.field_animations import native_binding
+        table = [None] * 0x2D
+        table[0], table[0x14], table[0x1C], table[0x21], table[0x1D], table[0x22] = 0, 1, 2, 3, 3, 4
+        out_table, out_anims = bound_battle.without_npc_slots(table, ['idle', 'npc', 'kart', 'battle', 'battle2'])
+        self.assertTrue(all(out_table[s] is None for s in native_binding.NPC_SLOTS))
+        self.assertEqual(out_anims, ['idle', 'battle', 'battle2'])
+        self.assertEqual([out_anims[out_table[s]] for s in (0, 0x21, 0x22)], ['idle', 'battle', 'battle2'])
+
 
 class Model(unittest.TestCase):
     @classmethod
@@ -106,8 +116,12 @@ class Model(unittest.TestCase):
         self.assertTrue(motionstorage.audit(out, 26)['fits'])
         before, after = mmd.MMD.parse(data, 26), mmd.MMD.parse(out, 26)
         stream = lambda m, s: None if m.anims.table[s] is None else m.anims.anims[m.anims.table[s]].build()  # noqa: E731
+        from tools.models.field_animations import native_binding
+        dropped = set(native_binding.NPC_SLOTS) if row.get('drop_npc_slots') else set()
         for slot in range(len(before.anims.table)):
-            if slot < native_battle.IDLES[0]:
+            if slot in dropped:
+                self.assertIsNone(after.anims.table[slot], f'NPC slot {slot}')
+            elif slot < native_battle.IDLES[0]:
                 self.assertEqual(stream(after, slot), stream(before, slot), f'field/care slot {slot}')
             elif slot not in row['slots'] and before.anims.table[slot] is not None:
                 self.assertEqual(animsheet.slot_frames(after, 26, slot), animsheet.slot_frames(before, 26, slot), slot)

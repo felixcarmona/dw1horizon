@@ -44,12 +44,11 @@ WINGS = {1: 6, -1: 12}
 LEGS = [(14, 15, 16, 1), (17, 18, 19, -1)]
 FLOOR = (16, 19)
 CLIP_OF_SLOT = {0: 'idle', 2: 'walk', 3: 'tired', 4: 'run'}
-# Battle clips stay the source game's own (docs/reference/motion.md) except these twins, kept because the source's clips
-# measured worse than main's on the final model (tools/models/battle_qa.py): the walk, 0x23, puts the chibi rig's legs
-# through each other (237 triangle crossings a tick against main's 191, root travel 0.16 h off) and the run, 0x24, tips the
-# torso 27 degrees where the twin tips it 14 (0x21 and 0x22 are the source's own).
-TWINS = {2: (35,), 4: (36,)}
-SLOTS = (0, 2, 3, 4, 35, 36)
+# Battle clips are the source game's own and are no longer written here: the walk and run twins (0x23, 0x24) were kept
+# while the source's clips measured worse than the field clips on the final model; they are restored from the source and
+# repaired (content/models/imports/battle-rebuilds.json, docs/reference/motion.md).
+TWINS = {}
+SLOTS = (0, 2, 3, 4)
 KNEE_BEND = 20
 DEBUG = False
 NOTE = 21

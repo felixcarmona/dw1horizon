@@ -7,7 +7,7 @@
   "attribute": "virus",
   "specialties": ["fire", "battle", null],
   "techniques": ["Spit Fire", "Prominence Beam", "Heat Laser", "Fire Tower", "Red Inferno", "Magma Bomb",
-                 "Megaton Punch", "Muscle Charge", "War Cry", "Sonic Jab", "High Electro Shocker"],
+                 "Megaton Punch", "Muscle Charge", "War Cry", "Sonic Jab", "Nightmare Syndromer"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 60,
   "model": {

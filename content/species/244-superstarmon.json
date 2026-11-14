@@ -8,7 +8,7 @@
   "specialties": ["fire", "battle", null],
   "techniques": ["Magma Bomb", "Meltdown", "Inifinity Burn", "Prominence Beam", "Red Inferno", "Fire Tower",
                  "Heat Laser", "Spit Fire", "Megaton Punch", "Buster Dive", "Counter",
-                 "Dynamite Kick (44)", "Tremar", "High Electro Shocker"],
+                 "Dynamite Kick (44)", "Tremar", "Fireball"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 54,
   "model": {

@@ -108,6 +108,20 @@ class SyntheticDefects(unittest.TestCase):
         rows = run({14: clip(head=35), 15: clip(head=36)}, main={14: clip(head=40), 15: clip(head=50)})
         self.assertIn('pair', rows[14]['keys'])
 
+    def test_importer_on_another_skeleton_is_not_compared(self):
+        # a native binding's importer output has the source's skeleton: its body bones are not the final's, so its
+        # posture explains nothing (the same clip on the same skeleton is the source's posture, noted)
+        f, _ = clip(head=35)
+        f[:, 1, 3] = 70 * TURN
+        main = rig({14: clip(head=40)})
+        same = qa.check(rig({14: (f, 0)}), rig({14: (f, 0)}), main, slots=(14,))
+        self.assertEqual(same[14]['keys'], [])
+        local, tris = rig_parts()
+        extra = lambda g: np.concatenate([g, g[:, :1]], axis=1)  # noqa: E731
+        other = bq.Rig(PARENTS + [1], local, tris, {0: (extra(clip()[0]), 0), 14: (extra(f), 0)})
+        rows = qa.check(rig({14: (f, 0)}), other, main, slots=(14,))
+        self.assertIn('body_off', rows[14]['keys'])
+
 
 class Generator(unittest.TestCase):
     ROW = dict(body='quadruped', keep=[0, 1, 2, 3, 4, 5], lean=[NECK], head=[HEAD],
@@ -175,6 +189,27 @@ class RealModels(unittest.TestCase):
             rows = qa.species_check(rd(path), rd(os.path.join(MODELS, f'{sid}.A.MMD')), main, bones)
             with self.subTest(species=sid):
                 self.assertEqual(qa.failing(rows), [], {s: rows[s] for s in qa.failing(rows) if s != 'buffer'})
+
+    def test_share_and_compact_rows(self):
+        # a row's `share` points a slot at another slot's program, `compact` re-encodes the rest exactly
+        import animsheet
+        import mmd
+        for path in sorted(glob.glob(os.path.join(MODELS, '*.C.MMD'))):
+            sid = os.path.basename(path).split('.')[0]
+            species = glob.glob(str(ROOT / f'content/species/{sid}-*.json'))[0]
+            bones = json.loads(Path(species).read_text())['model']['skeleton']
+            data = Path(path).read_bytes()
+            row = {'slots': {}, 'share': {'1': 14}, 'compact': True}
+            out, report = care_idles.apply(data, bones, row)
+            before, after = mmd.MMD.parse(data, len(bones)), mmd.MMD.parse(out, len(bones))
+            with self.subTest(species=sid):
+                self.assertEqual(report[1], {'shares': 14})
+                self.assertEqual(after.anims.table[1], after.anims.table[14])
+                for slot, index in enumerate(before.anims.table):
+                    if index is not None and slot != 1:
+                        self.assertEqual(animsheet.slot_frames(before, len(bones), slot),
+                                         animsheet.slot_frames(after, len(bones), slot))
+            break
 
 
 if __name__ == '__main__':

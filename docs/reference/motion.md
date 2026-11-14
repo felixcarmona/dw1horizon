@@ -82,18 +82,94 @@ kept only when no flagged number is worse than main's same slot (the source's ow
 main's); otherwise the slot goes back to main's clip. That rule put back the source clips that collide or tear on the
 reshaped (chibi) rig (Kimeramon, Angewomon 0x21, Infermon 0x22, Sakuyamon, Musyamon), the movements a shorter technique
 timing made too fast (Okuwamon, Nefertimon, Woodmon), the ones that sink, tip or collide more than main's (Imperialdramon,
-Pegasusmon, Raidenmon and others), and Creepymon's 0x23/0x24 and Gazimon's 0x21, which stay the twins of their field
-clips. Tests: `tools/test_battle_qa.py`.
+Pegasusmon, Raidenmon and others), and Creepymon's 0x23/0x24, which stay the twins of their field
+clips (Gazimon's 0x21, the SaberLeomon and WarGreymon 0x22 and Renamon's 0x21 were put back later, rebuilt from the
+source's clip with repairs: see the rebuilt battle clips below). Tests: `tools/test_battle_qa.py`.
+
+**Rebuilt battle clips of imported species (batch 48).** A row in `content/models/imports/battle-rebuilds.json` restores a
+slot from the source game's own clip and repairs only what breaks (`clip_repair.py`: `turn`, `damp`, `lift`); a rebuilt
+slot ships only when `battle_qa.py` passes it on the final output and the resident buffer fits. Fujinmon 0x24 (torso
+turned back 12 degrees, body raised 75 units: tipped 14.6, crossings 91, no sinking), Knightmon 0x24 (hips, shoulders and
+head turned back: tipped 10.8 degrees against 27), Gargoylemon 0x23/0x24 (forelegs turned out: crossings 11 and 8 a tick
+against 60 and 53; the other clips are compacted exactly to fit), Raidenmon 0x23/0x24 (thigh turned out and body raised:
+crossings 108 and 122), Beelzemon 0x22 (the source's own walk, unrepaired: 71 crossings, tipped 25.8) are the source's again. Kept as main's: Armadillomon 0x22-0x24 and 0x2C (main is the source plus the deliberate head lift of `armadillomon_head.py`; not a gap), Gallantmon 0x24 (the source run needs
+the torso turned back 10 degrees and does not fit: 101076 B after exact compaction against 100352), Hawkmon 0x21 (the source's right foot is turned 58 degrees outward; the
+corrected foot is deliberate, see `hawkmon.py`).
 
 A field overlay writes slots 0-4 and leaves 0x21-0x24 alone, with these documented exceptions: slots whose source clip
 measured worse than main's on the overlay's FINAL output and which therefore keep playing a field clip (main's). Nefertimon
-0x23/0x24 (vertex step 0.45/0.59 heights a tick, under the floor), SaberLeomon 0x22 (crossings 34 a tick against main's 24),
+0x23/0x24 (vertex step 0.45/0.59 heights a tick, under the floor), Knightmon 0x24 (torso tipped 27 degrees against main's 8), Creepymon 0x23/0x24 (crossings 237 against 191, root travel 0.16
+heights off; torso 27 degrees against 14), Gargoylemon 0x23/0x24 (60 and 53
+measured worse than main's on the overlay's FINAL output and which therefore keep playing a field clip (main's). SaberLeomon 0x22 (crossings 34 a tick against main's 24),
 Knightmon 0x24 (torso tipped 27 degrees against main's 8), Creepymon 0x23/0x24 (crossings 237 against 191, root travel 0.16
 heights off; torso 27 degrees against 14), Gazimon 0x21 (loop seam 0.063 heights), Gargoylemon 0x23/0x24 (60 and 53
 crossings against 3 and 5; as own streams they overflow the resident buffer, 100602 B against 100352) and Suijinmon
-0x23/0x24 (the importer's clip has no bone map for the front legs). Each is noted in its generator. The chibi pass scales the
+0x23/0x24 (vertex step 0.45/0.59 heights a tick, under the floor), SaberLeomon 0x22 (crossings 34 a tick against main's 24),
+Creepymon 0x23/0x24 (crossings 237 against 191, root travel 0.16
+heights off; torso 27 degrees against 14) and Gazimon 0x21 (loop seam 0.063 heights). Each is noted in its generator. The chibi pass scales the
 root travel of every clip, battle ones included, so a restored movement on a reshaped species differs from the source's in
 root travel only (rotations stay exact).
+
+LadyDevimon (223) has her own tired battle idle (slot 0x22, 61 ticks) and get-up (0x2C, 23 ticks) back, rebuilt from the
+source game's clips (`content/models/imports/battle-rebuilds.json`): the tired idle's torso leans back 38 degrees in the
+original, so the pelvis is turned forward 28 degrees (the right thigh 8 degrees back to keep the leg under it) and the body
+raised 40 units, which keeps the soles off the floor (tipped 22 degrees against main's 10, sink 0.17 heights against main's
+0.10); the get-up, which ends in the battle idle's pose instead of a neutral one, is raised up to 70 units over its middle
+ticks (sink 0.27 heights against main's 0.28). Candlemon's 0x2B (defeat) and ShellNumemon's 0x22 are not restored on
+purpose: Candlemon topples over backwards and lies on the floor where the original only leans the pedestal back 54 degrees,
+and ShellNumemon's tired idle is the torso-leaned one (`battle_qa.POLISHED`).
+**Rebuilt from the original.** A restored clip that fails the checks on our rig is not dropped for a field twin when the original's
+poses, timing and arc can be kept and only what breaks repaired: `content/models/imports/battle-rebuilds.json` lists, per species and
+slot, the length and the repairs (`tools/models/clip_repair.py`: `turn` a bone about a model axis, `damp` its swing, `smooth` a snap
+over the neighbouring ticks, `wave` a chain the source left stiff, `mirror` a leg the source never moved from its twin, `lift` the
+body), and `battle_restore.py rebuild` applies them to the importer's clip. `battle_qa.py` skips only fidelity for these slots; every
+other check applies and each ships only at `pass`. Okuwamon 0x23/0x24 (21 ticks played in 11 and 9: the legs and wing flutter that
+would snap are damped and smoothed, vertex step 0.47/0.92 down to 0.33/0.62 heights a tick, speed 20 down to 15 degrees a tick),
+Tortomon 0x23/0x24 (the front leg the source never moved takes its twin's swing, mirrored), Mammothmon 0x22-0x24 (the tipped
+tired idle leaned back, 49 degrees down to 20; the stiff tail wags 6 degrees), SkullMammothmon 0x22 (the same lean; crossings
+168 down to 20 with the thighs and head turned) and 0x24 (the thighs turned out 25-30 degrees and the tail up: crossings 170
+down to 61 against main's 69), Woodmon 0x23 (the claw's one-tick snap smoothed, 0.38 down to 0.24)
+play the source's own clips now. SkullMammothmon 0x23 was left out at first (all three rebuilt were 1382 B over the resident
+buffer, 101734 B after exact compaction); it now ships too, see "Last gaps" below. Floramon 0x24 is the source's run at the 61 ticks the slot has (row `"36": ticks 61`, shipped). Garbagemon's
+0x22-0x24 are the source's clips with the can held at its attachment (`garbagemon.py`): only the can's bone differs, so there is
+nothing to restore.
+**Last gaps.** Datamon 0x21, SkullMammothmon 0x23, Snimon 0x24 and Gallantmon 0x24 are now the source's clips; each passes
+`battle_qa` on the final model, its field slots 0-4 and every other battle slot decode tick for tick as before, and the mesh is
+unchanged. Resident bytes (limit 100,352): Datamon 0x21 (the source's 27-tick idle with every bone but the root and body damped to
+0.8 of its swing) 99,760 main, 104,628 rebuilt, 102,242 after exact compaction, so the care and technique clips that are neither
+field slots nor 0x21-0x24 took a 5-unit lossy compaction (11/42, 27, 43-61): 100,334. SkullMammothmon 0x23 (25 ticks, the
+neck and tail turned 30 degrees) 99,414 main, 101,740 rebuilt, 101,734 exact; tolerance 4 on the technique clips: 100,318.
+Gallantmon 0x24 (the source's 19-tick run, torso turned back 16 degrees on bone 19: it was tipped 27 degrees off the field idle,
+main 12) 102,256 rebuilt, 101,536 exact; tolerance 3 on clips 21, 43, 44 and 60: 100,252. Snimon 0x24 (23 ticks) 101,930 rebuilt,
+101,874 exact, still 1,010 B over at tolerance 5, so the technique clip in slot 0x3b is dropped: the game reads technique slot
+0x2E + i for the i-th entry of the species' move list (`DIGIMON_DATA[type].moves[queuedAnim - 0x2e]`), Snimon lists 13 moves
+(last slot 0x3a), and scripts only play slots up to 0x2C, so nothing can start 0x3b; resident 97,588 B, no lossy compaction. The
+lossy compaction moves no bone more than 5 units (0.44 degrees) nor any root by more than 5 units. Divermon 0x23 stays main's:
+the source's walk fails `battle_qa` (the rear legs 15-17 are still, 0.000 heights against the field gait's 0.103), and even with
+the 17-tick row it needs 101,426 B (101,204 B at tolerance 5, 852 B over; all 14 technique slots are reachable, nothing to
+drop). Floramon 0x24 already shipped (61 ticks, `battle_qa` pass on main).
+
+Rebuilt battle clips (the source's own movement, repaired with the operations in `tools/models/clip_repair.py`, rows in
+`content/models/imports/battle-rebuilds.json`): the movement and run clips of Veemon (0x23/0x24), MetalGarurumon
+(0x23/0x24), Nefertimon (0x23/0x24), Imperialdramon (0x24), Pegasusmon (0x23) and Lighdramon (0x24), and Halsemon's
+movement (0x23). Each keeps the source's poses and timing and only turns back the bones that crossed the body or tipped
+the torso, damps an over-swinging bone, or lifts the body where the soles sank; every one passes the battle QA on the
+final model. Pegasusmon's 0x24 is the source's buck too: its hindquarters rise 71 degrees on average off the field
+idle (main 3, limit 25), so the pelvis is turned down 60 degrees and the chest and both hind legs turned back by as much,
+which keeps their poses in the world and only levels the hips: 16 degrees, 17 crossings a tick (main 79). Imperialdramon's 0x23 is the source's gallop again: on our rig its forelegs crossed each other and the neck
+dipped into them (262 crossings a tick against a limit of 83, main 65) and its claws went 0.33 h under the floor, so
+the shoulders are turned out 24 degrees and forward 20, the forearms and hind legs out 10-20, the neck and head raised
+60 and 30 degrees and the whole body lifted 40 units: 67 crossings a tick, 0.27 h under the floor.
+Nefertimon's other battle clips were a per-tick repair of the source in its delta (front legs turned up to 82 degrees from
+one tick to the next where a paw went under the floor), which snapped (a vertex step of 0.48 h a tick against a limit of
+0.38). They are rebuilt from the source with eased repairs: the hits 0x28/0x29 lift the body 30-36 units over the four
+ticks where the front paws sink and turn the tail up 35 degrees where it went 0.36 h under the floor, and the tail's whip at
+the end is smoothed (step 0.36, under the floor 0.21 against main's 0.36, 126 crossings a tick against 147); the get-up
+0x2C keeps the folded front legs of main's repair as two eased turns (72 and 68 degrees at the shoulders, 25 at the
+elbows) that let go by tick 36 (under the floor 0.006, step 0.16 against main's 0.26); the victory 0x2A smooths the tail's
+first ticks (step 0.33 against 0.45); the battle idle 0x21 and 0x22 damp the tail to 70 and 75 percent of its swing (steps
+0.40 and 0.25 against 0.57 and 0.28, and 0x21's tail no longer goes 0.22 h under the floor). The defeat 0x2B stays main's:
+the sphinx rears onto its hind legs up to 90 degrees, a mean of 61 against a limit of 41, which is the clip itself.
 
 **Natively bound species get their originals by retargeting.** A native binding (`native_binding.py`) deep-copies the
 donor's skeleton and every clip, so the source game's battle clips are gone. A recipe's `"battle_originals": {"slots":
@@ -101,11 +177,11 @@ donor's skeleton and every clip, so the source game's battle clips are gone. A r
 turned so that its lead piece (a rider's pivot, else the pieces at the top of the group on that bone; siblings are
 averaged by weight) has the world orientation the source bone has in the source clip, relative to the bind pose and the
 fit's rotation (a mirrored piece's fit is its twin's reflected through both twins' bind poses, which a source may pose
-unevenly; pieces set whole in a reviewed orientation, `aim` and their mirrors, ride their bone and never lead it; a
+unevenly; pieces set whole in a reviewed orientation, `aim` and their mirrors, and the pieces `battle_originals.ride` lists (a small piece that moves on its own inside a larger one on the same bone) ride their bone and never lead it; a
 spinning drum leads its own bone, so it turns as the source's drum does); donor bones above the body that carry pieces
 follow the body; the hips' height follows the source's, scaled by the two rigs' hip heights; the root keeps the source's
 rotation and travel. Lengths follow `battle_restore.plan` (the donor slot's length, idles tile or keep their own speed),
-so technique effects keep their timing. Slots 0-4 and the mesh stay byte for byte. The check is
+so technique effects keep their timing; a one-shot slot whose source clip that length would resample by more than 1.6 (slow motion or a rush) can take another length from the recipe's `battle_originals.ticks` `{"<slot>": frames}` (the donor's events of the slot move with the clip; the check resamples the source to the final clip's length). Slots 0-4 and the mesh stay byte for byte. The check is
 `tools/models/battle_qa_native.py check ID FINAL B.MMD MAIN.MMD`: it recovers each source piece in the final mesh,
 measures the orientation error of the lead pieces (mean 8 degrees, any piece of 2 % of the weight 25 degrees),
 end-effector motion about the clip's mean (0.15 heights) and liveness against the source, a retime ratio within 1.6 for
@@ -114,8 +190,16 @@ show and hold the source's body, not a donor hand holding only a source limb; sp
 bones with pieces; the loop seam and absolute jump only on the looping slots 0x21-0x24). The resident buffer decides the
 rest: retargeted clips are dense (every bone keyed), about 1.5 to 3 times the donor's, so only the passing slots that fit,
 chosen in the order 0x21-0x24, 0x28/0x29, 0x2A-0x2C, techniques, ship. MegaKabuterimon 205:
-0x21, 0x23, 0x24 (99,204 B). Zanbamon 430: 0x21, 0x22, 0x2A (99,204 B; its passing techniques cost 2 to 4.6 KB each
-over a 2,462 B margin). Garudamon 460: 0x21-0x23, 0x28-0x2B, 0x34, 0x36, 0x37 (99,154 B; technique slots keep the donor clip's sound events, other slots the source's banks 1 and 4 only). Wormmon 183: 0x21-0x23 (67,920 B; the other slots miss the tip-of-tail measure, 0x24 by 0.03 heights, and stay the donor's). BomberNanimon 232: 0x21-0x23, 0x28, 0x29, 0x2C, 0x30, 0x31, 0x34, 0x35, 0x37, 0x38 (75,080 B; 0x24, 0x2A, 0x2B, 0x2E, 0x2F, 0x32, 0x33, 0x36 and 0x39 fail: triangle crossings above main's or retimed more than 1.6). VioletElecmon 256: 0x21, 0x22, 0x24, 0x2A, 0x2E-0x31, 0x33, 0x34, 0x36 (79,740 B; 0x23, 0x28, 0x29, 0x2B, 0x2C, 0x32 and 0x35 failed the check and keep Elecmon's clip). MetalTyrannomon 260: 0x21 and 0x2A (81,616 B); every other slot failed the check (tips off the source, still chains, retimed, tipped bones) and stays the donor's. Minotarumon 330: 0x21, 0x22, 0x28, 0x29, 0x2A, 0x2C, 0x2E, 0x33, 0x34, 0x38 (87,818 B; 0x23, 0x24, 0x2B, 0x2F and the other techniques stay the donor's: triangle crossings or a floor sink worse than main, or a retime beyond 1.6). Vilemon 295: 0x21, 0x23, 0x28, 0x29, 0x2E-0x31, 0x33, 0x36 (76,158 B; 0x22, 0x24, 0x2A-0x2C and the other techniques stay the donor's: crossings, retiming or vertex step). The rest of the native bindings, with only the slots that pass and fit (the others fail the check, mostly tips off the source, tipped bones or retiming, or no longer fit the buffer): ChaosLord 289: 0x21, 0x2A (87,358 B). HiAndromon 302: 0x21, 0x23, 0x24, 0x28-0x2A, 0x2C, 0x30, 0x34-0x36, 0x38 (98,870 B, exact compaction; 0x37 and 0x3C pass but do not fit). KingEtemon 303: 0x22, 0x33, 0x3D (92,184 B; 0x21 passes but puts a glove inside the body, so it stays the donor's). Magnamon 197: 0x21, 0x23, 0x24, 0x36-0x3A (96,850 B; 0x22 and the rest fail: a thigh shares its donor bone with another piece, tips, retiming). Deltamon 292: 0x21, 0x22 (88,382 B; the others sink under the floor about twice as far as the source, or are retimed beyond 1.6). GrapLeomon 306: 0x21-0x24, 0x2E, 0x30, 0x33 (98,134 B, exact compaction; 0x32 and 0x3A pass but do not fit). SkullSatamon 314: 0x21-0x23 (87,648 B). Raijinmon 333: 0x21, 0x22, 0x24, 0x2F, 0x30 (93,624 B). DemiDevimon 236: 0x21, 0x22, 0x32-0x37 (72,092 B). NeoCrimson 402: 0x22 (91,212 B; elsewhere two source bones that move against each other lead one donor bone, and the battle stance stands 20-30 degrees more upright than the field idle). PrinceMamemon 270 passes no slot (the same shared donor bones). MagnaAngemon 206 (bound offline from a motionless mesh, `field_animations/bound_battle.py`: the imports step makes the same World 2003 mesh with its clips as `imported-models/206.battle.MMD`, content/models/imports/bound-battle.json plays them on Angemon's rig): 0x21, 0x28, 0x29, 0x2E-0x34 (97,408 B, exact compaction of the battle and technique slots only; the hits keep Angemon's impact sounds; 0x2B and 0x2C fail, under the floor 0.32 heights against main's 0.16 and the tip of a leg off the source, and with 0x22-0x24 and 0x2A, which the source has no clip for, stay Angemon's). Renamon 354 keeps its 0x21: it fails the check (26 triangle crossings a tick, main 1). Cannondramon 405: 0x21, 0x22, 0x28, 0x29, 0x2F, 0x36, 0x3A (98,732 B). Kyubimon 409: 0x21, 0x2E-0x31, 0x33, 0x38 (99,788 B, exact compaction; the USA release's model 99,836 B; 0x39 passes but does not fit).
+0x21, 0x23, 0x24 (99,204 B). Zanbamon 430: 0x21-0x23, 0x28-0x2C, 0x32, 0x37-0x39, 0x3C (100,288 B, lossy compaction at 5 units: no bone of another slot moves more than 1.23 degrees; at 4 units even without 0x39 it needs 100,466 B). 0x38 keeps its torso turn (bone 24 back 15 degrees about x), and 0x39, the same source clip at the donor's 42 ticks, takes the same turn: its head was tipped 37 against main's 17, now 26 (at 14 degrees it stays 27, at 16 the tip of piece 21 moves 0.151 heights). 0x23's rider was tipped 38 degrees against main's 3: bone 24 turned back 16 degrees, it passes at 6.6 degrees mean, 16.9 the worst piece. 0x28, 0x29, 0x2B and 0x2C play at 32, 32, 44 and 44 ticks (source 20, 20, 28, 28; the donor's 40 to 46 retimed them past 1.6); 0x37 passes as it is. 0x28's head (bone 26) was tipped 34 degrees against main's 10: turned forward 10 degrees about x it clears, and the donor's bone 2, then tipped 26 against a limit of 25, turned 2 degrees about x passes at 24 (2.0 degrees mean, worst piece 10.1). 0x24 cannot pass: the rider's torso and head are tipped 72 degrees against main's 10, and 25 degrees of turn per piece cannot close 47. 0x2F keeps the donor's: at torso turns of -17 or less the head is still tipped 26 against 4, past -18 the tip of piece 21 moves 0.15 heights off the source. 0x2E, 0x30, 0x31, 0x33-0x35 and 0x3A pass (0x30 and 0x31 only at 61 ticks) but none fits: the smallest (0x2E at the donor's length) needs about 101,960 B even in place of 0x39; 0x36 and 0x3B fail as they are (head tipped 37 against 7 and 14) and were not repaired, as neither would fit (about 101,000 B and 102,570 B in place of 0x39). Garudamon 460: 0x21-0x24, 0x28-0x2C, 0x2F, 0x31, 0x32, 0x34, 0x36, 0x37, 0x39, 0x3B, 0x3D (98,920 B with the donor's NPC clips dropped and lossy compaction at 3 units: no bone of another slot moves more than 0.86 degrees; technique slots keep the donor clip's sound events, other slots the source's banks 1 and 4 only). 0x24, the source's 19-tick run played in 12, stepped 0.350 heights a tick (limit 0.346) and passes with its wing root (bone 19) smoothed one pass (worst piece 9.7 degrees off the source). 0x2C plays at 33 ticks (source 21; the donor's 41 retimed it 1.95). 0x3D is the source's own clip, not the donor clip 0x31 the slot pointed to. 0x2E, 0x30, 0x33, 0x35, 0x38, 0x3A and 0x3C keep the donor's: the donor's length retimes the source 1.84 to 3.0 (effects are timed to it), and only 0x33 would fit (about 99,960 B). Wormmon 183: 0x21-0x23 (67,920 B; the other slots miss the tip-of-tail measure, 0x24 by 0.03 heights, and stay the donor's). BomberNanimon 232: 0x21-0x23, 0x28, 0x29, 0x2C, 0x30, 0x31, 0x34, 0x35, 0x37, 0x38 (75,080 B; 0x24, 0x2A, 0x2B, 0x2E, 0x2F, 0x32, 0x33, 0x36 and 0x39 fail: triangle crossings above main's or retimed more than 1.6). VioletElecmon 256: 0x21, 0x22, 0x24, 0x2A, 0x2E-0x31, 0x33, 0x34, 0x36 (79,740 B; 0x23, 0x28, 0x29, 0x2B, 0x2C, 0x32 and 0x35 failed the check and keep Elecmon's clip). MetalTyrannomon 260: 0x21 and 0x2A (81,616 B); every other slot failed the check (tips off the source, still chains, retimed, tipped bones) and stays the donor's. Minotarumon 330: 0x21, 0x22, 0x28, 0x29, 0x2A, 0x2C, 0x2E, 0x33, 0x34, 0x38, 0x39 (86,714 B; 0x23, 0x24, 0x2B, 0x2F and the other techniques stay the donor's: triangle crossings or a floor sink worse than main, or a retime beyond 1.6). Vilemon 295: 0x21, 0x23, 0x28, 0x29, 0x2E-0x31, 0x33, 0x36, 0x39 (74,586 B; 0x22, 0x24, 0x2A-0x2C and the other techniques stay the donor's: crossings, retiming or vertex step). The rest of the native bindings, with only the slots that pass and fit (the others fail the check, mostly tips off the source, tipped bones or retiming, or no longer fit the buffer): ChaosLord 289: 0x21, 0x23, 0x24, 0x2A (92,426 B; 0x23 and 0x24 sank under the floor, so the hips are lifted 308 and 350 units). HiAndromon 302: 0x21, 0x23, 0x24, 0x28-0x2A, 0x2C, 0x30, 0x31, 0x34-0x36, 0x38, 0x3C (100,306 B, exact compaction and the donor's NPC clips dropped; 0x37 passes but needs 354 B more at exact compaction: with tolerance 5 both 0x37 and 0x3C fit at 94,290 B). KingEtemon 303: 0x21, 0x22, 0x33, 0x3D (94,054 B). 0x21, the battle idle, is the source's clip with `repairs`: on the donor rig the left glove went through the body on every tick (up to 55 triangle crossings, 21.7 units deep); the left upper arm turned 20 degrees forward over the whole clip keeps the glove and forearm clear of the body on every tick (no crossing, no vertex inside). Its other source clips fail a hard check (a body piece 25-86 degrees off the source, or retimed beyond 1.6) and stay the donor's. Magnamon 197: 0x21, 0x23, 0x24, 0x36-0x3A (96,850 B; 0x22 and the rest fail: a thigh shares its donor bone with another piece, tips, retiming). Deltamon 292: 0x21, 0x22, 0x23 (88,906 B; 0x23 sank under the floor and its hips are lifted 125 units; the others sink under the floor about twice as far as the source, or are retimed beyond 1.6). GrapGrapLeomon 306: 0x21-0x24, 0x28, 0x29, 0x2B, 0x2C, 0x2E, 0x30, 0x32, 0x33 (100,330 B, lossy compaction at 3 units: no bone of another slot moves more than 0.79 degrees). 0x28 and 0x29 play at 32 ticks (source 20; the donor's 37 retimed them 1.85), 0x2B at 42 and 0x2C at 40 (source 54; the donor's 27 and 29 retimed them 2.0 and 1.86, and at 34 ticks they still stepped 0.371 and 0.366 heights a tick against 0.361). 0x32's body (bone 16) was tipped 47 degrees (limit 41) and is turned 6 degrees about z: 41, worst piece 6.5. 0x3A (the same tilt, 47 degrees) does not fit. 0x2A, 0x2F, 0x34, 0x35, 0x37-0x39 and 0x3B keep the donor's: a limb tip (bone 4, 5 or 9) moves 0.18 to 0.21 heights off the source (limit 0.15); 0x31 and 0x37 are retimed 1.9 and 2.0; 0x36's body is tipped 47 degrees against main's 30. SkullSatamon 314: 0x21-0x23 (87,648 B). Raijinmon 333: 0x21-0x24, 0x2A, 0x2F, 0x30, 0x3D (97,594 B). 0x23 kept less than half the source's motion of the chain to the head (0.019 heights against 0.039; half is the floor) and waves the head (bone 3) 4 degrees about z twice a cycle: passes, worst piece 4.0 degrees. 0x2A plays at 65 ticks (source 41; the donor's 87 retimed it 2.1). 0x3D, the source's own clip rather than the donor clip the slot pointed to, was as still (0.012 against 0.044) and rocks the body (bone 2) 8 degrees about x twice: worst piece 7.8. 0x28 and 0x29 keep the donor's: the head chain moves 0.049 heights against the source's 0.109 and no turn or wave of bones 1-3 changes that measure. 0x2B, 0x2C, 0x34 and 0x37 keep the donor's: a limb tip (bone 7 or 10) moves 0.19 to 0.28 heights off the source (limit 0.15); 0x35 and 0x36 cross 108 and 110 triangles a tick (limit 56); 0x2E, 0x31-0x33 and 0x38-0x3C are retimed 1.65 to 2.7. DemiDevimon 236: 0x21, 0x22, 0x32-0x37 (72,092 B). NeoCrimson 402: 0x22 (91,212 B; elsewhere two source bones that move against each other lead one donor bone, and the battle stance stands 20-30 degrees more upright than the field idle). PrinceMamemon 270: 0x21, 0x28, 0x29 (72,144 B; 0x21's rotation error 0.4 degrees against main's 40.4, tips 0.033 heights; the hits play the source's 16 ticks at 25 (`ticks`, 1.56; Mamemon's 41 would be 2.56): rotation error 2.5 degrees, the cape 12.6, a tip 0.084 heights). Its sphere, crown, cape and a small spinning quad inside the sphere all ride Mamemon's body bone; the recipe's `battle_originals.ride` lists the quad (piece 23), which then rides that bone without pulling its turn. The quad's spin and the 5-tick twinkle where the source moves it out of the sphere need a bone of their own and are not played (main's idle lacks them too). The other slots stay Mamemon's: in 0x22-0x24, 0x2A and 0x2E the sphere turns 47 to 179 degrees against the crown and cape on the same donor bone (piece 2 27.5 to 113.8 degrees off); the techniques' legs hang from the body bone but swing with the source's arm bone (tip of a foot 0.23 heights off); 0x2C misses by 0.4 degrees (the cape 25.8 degrees off); 0x2B (piece 19 36.9 degrees off, a foot 0.229 heights), 0x33, 0x39-0x3B and 0x3D would also be retimed beyond 1.6. Letting the sphere alone lead its bone (crown and cape riding) and hanging the leg roots from the source's hips were measured and not kept: the crown and cape then turn 30 to 170 degrees off the source with the sphere, and the techniques' feet stay 0.27-0.29 heights off. MagnaAngemon 206 (bound offline from a motionless mesh, `field_animations/bound_battle.py`: the imports step makes the same World 2003 mesh with its clips as `imported-models/206.battle.MMD`, content/models/imports/bound-battle.json plays them on Angemon's rig): 0x21, 0x28, 0x29, 0x2B, 0x2C, 0x2E-0x34 (97,600 B, exact compaction of the battle and technique slots only; the hits keep Angemon's impact sounds). 0x2C, the get-up, is rebuilt from the source's clip with `repairs`: the right thigh turned 15 degrees and the knee 6 over the ticks it lies on the floor (eased out by tick 10), so the foot follows the source's (tip 0.148 heights, was 0.154), and the body lifted 40 units over ticks 3-20, where it sank (under the floor 0.257 heights, was 0.323; the source's own clip 0.23). 0x2B, the faint, plays the source's 54 ticks at 34 (`ticks`, 1.59; the slot's 31 would be 1.74) with `repairs`: the body lifted 60 units from tick 18 (under the floor 0.224 heights, was 0.323; Angemon's 0.156) and the right knee turned 10 degrees over the last ticks (tip of the foot 0.150 heights, was 0.155; Angemon's 0.719; the rest is the rig's shorter thigh). The row's `drop_npc_slots` leaves out Angemon's clips of 0x1C and 0x1D (no partner plays them) for the room: 97,600 B. 0x22-0x24 and 0x2A stay Angemon's: the source has no clip for them. Renamon 354 keeps its 0x21: it fails the check (26 triangle crossings a tick, main 1). Cannondramon 405: 0x21-0x24, 0x28, 0x29, 0x2F-0x32, 0x35, 0x36, 0x38-0x3C (100,030 B, exact compaction and the donor's NPC clips dropped; 0x23, 0x24, 0x30, 0x35, 0x38 and 0x39 sank under the floor and have their hips lifted 146 to 187 units, 0x31, 0x32, 0x3B and 0x3C, 0.43 heights under it against main's 0.22 and 0.30, 190 units: 0.001). 0x2B and 0x2C keep the donor's: the source's own clips cross 284 and 273 triangles a tick (limit 219 and 243; the retargeting is 0.1 degrees off it), and damping any bone breaks a piece's fidelity before it clears them. 0x2A keeps the donor's: the tip of bone 19 moves 0.203 heights off the source (limit 0.15) and it crosses 233 a tick (limit 216). 0x2E, 0x33, 0x34, 0x37 and 0x3D keep the donor's: the donor's length retimes the source 2.0 to 3.1. Kyubimon 409: 0x21, 0x28, 0x29, 0x2E-0x31, 0x33, 0x38, 0x39 (97,744 B, lossy compaction at 3 units: no bone of another slot moves more than 0.96 degrees; at 4 units 1.30). 0x28 and 0x29 play at 38 ticks (source 24; the donor's 41 and 61 retimed them past 1.6); 0x28's body (bone 2) was then tipped 34 degrees against main's 23 and is turned 2 degrees about x: 32. 0x2B and 0x2C (44 ticks) keep the donor's: the source clip tips the body (bone 2) 86 and 87 degrees against main's 32 and 35, past the 41-degree limit, and a turn that large would move every piece off the source. 0x22-0x24, 0x2A, 0x32 and 0x34-0x37 keep the donor's: nine tails sit on two donor bones (pieces 20-22 on bone 16, 23-26 on bone 17) and where the source swings them apart one piece stays 39 to 65 degrees off (95th percentile, limit 25).
+Rebuilt slots (`repairs`, an exact compaction where noted; each passes on the final model, only those slots differ from
+before): Wormmon 183 also 0x24 (`damp` of the tail bone 27, keep 0.5), 0x28 and 0x29 (`damp` bone 24, keep 0), 0x2C
+(`damp` bone 27 keep 0 and a 100-unit `lift` of the body) and 0x30 (`damp` bone 27 keep 0), which its Danger Sting alias
+0x36 plays too (74,418 B). MegaKabuterimon 205 also 0x28 and 0x29 with an exact compaction (100,312 B). Wizardmon 241 also
+0x39 (99,198 B). Sorcermon 242 also 0x28 and 0x29 (`damp` of bone 9, keep 0.5; 99,020 B). VioletElecmon 256 also 0x32
+(`damp` of bone 3, keep 0.75; 77,368 B). The rest of the nine natives of this pass (Magnamon 197, BomberNanimon 232,
+DemiDevimon 236, MetalTyrannomon 260) keep main's clips: their remaining slots fail a hard limit (live base, retime, tip)
+or a posture the clip's own tilt makes irreparable.
+
 Test: `tools/test_native_battle.py`
 and the species' tests.
 
@@ -146,9 +230,65 @@ import and `tools/models/variants.py make` carries the delta: a restored slot is
 that release's own battle clip, and the QA is run on both releases' final models. Ebidramon 0x21 and 0x24, Antylamon 0x21,
 MaloMyotismon 0x21-0x24 and Kurisarimon 0x21 are the source's again (the Ebidramon and Kurisarimon generators no
 longer write the twins). Ebidramon's 0x24 is leaned (`battle_restore.py pitch`, bone 1 by 20 and bone 9 by -5 degrees):
-unleaned its body is tipped 35 degrees off the field idle, main 18; leaned, 15.3. Renamon's 0x21 (26 triangle crossings
-a tick on the reshaped rig, main 1) stays main's: measured with its gait profile on slot 0's bind pose and its pins
-moved by `edit.py repin`, it still fails the check.
+unleaned its body is tipped 35 degrees off the field idle, main 18; leaned, 15.3. Both releases' final models pass the battle QA on 0x21-0x24 with the same numbers (0x21 0.13 h under the floor,
+limit 0.30); the hits 0x28/0x29 curl the abdomen 79 degrees, as the source's own clip does on its own rig (74). Rebuilt battle clips: where the source's own clip fails the QA on our rig, the clip is kept and only the bones that
+break it are repaired (`tools/models/clip_repair.py`, rows in content/models/imports/battle-rebuilds.json, applied by
+`battle_restore.py rebuild`; the slot counts as a documented polish and keeps every other check). Renamon 0x21 (26
+triangle crossings a tick on the reshaped rig, main 1): the two thighs turned 4 degrees apart about their side axis, 1
+crossing a tick. SaberLeomon 0x22 (crossings 34 a tick, main 24, field idle 6): chest turned back 10 and the mane's bone
+6 degrees, 15 a tick. WarGreymon 0x22 (the source's pounce, claws crossed in front of the chest, 443 crossings a tick,
+main 74, field idle 40): shoulders turned out 20 degrees and forearms 25, 50 a tick; the care generator no longer ties 0x22
+to the tired idle. Gazimon 0x21 (loop seam 0.063 heights, limit 0.05): the tail's bone 15 eased back to its first pose over
+the last 8 ticks, seam 0.035; its overlay no longer writes the battle slot, and the exact compaction of the other clips
+(about 2,900 B) pays for the source's longer clip (98,990 B resident). `edit.py repin` moves the pins of these overlays
+(profile modules, the pace rows, a generator's `SOURCE`, the donors' pins of native bindings: NeoCrimson, which takes
+WarGreymon's model as donor, is byte-identical).
+
+Batch 48 rebuilt more imported battle clips from the source's own (`battle-rebuilds.json`, ops in `clip_repair.py`: turn,
+damp, lift, wave, and `rig` to fit the source clip to our rig's scale and offsets). Aquilamon 0x22 and 0x23 (torso
+compensated, wings spread, soles lifted) and its get-up 0x2C (source clip, passes unrepaired and is better than main on
+every number); Infermon 0x22-0x24 (offline-reshaped rig fitted, body lifted 62-100 units); MarineAngemon 0x22 (torso
+compensated); Quetzalmon 0x23, 0x24 (body pitched back and lifted) and its get-up 0x2C (left arm turned, body tipped 48
+degrees against main's 89); GranKuwagamon 0x23 (lifted) and 0x24 (the four wing and limb bones damped to half, lifted);
+Lillymon 0x22-0x24 (0x22 torso compensated). Stay main's: Submarimon (its tail screw spin is deliberate), Lillymon 0x21
+(shoulder opening, deliberate) and MarineAngemon 0x21 (constant scale of bone 25). MarineAngemon's 0x23 and 0x24 are
+the source's own 22- and 18-tick cycles again (torso yaw, bob, tail spin, sounds), played three and four times (the
+`repeat` operation) and resampled to main's 70 ticks; the source holds its arms, antennae and wings still, so each gets a
+small swing on one of its own rotation channels (`swing`: arms 10-16 degrees, antennae 6-8, wings 17-20, twice a cycle,
+the right side a little behind the left), and the battle QA passes (0x23: 11 crossings a tick, 0x24: 19).
+
+Five more were rebuilt from the source's own clip, with a new `clip_repair` op, `follow` (a bone takes another's swing
+about that bone's mean pose, shifted in ticks, scaled and optionally mirrored, over its own pose), and `battle_restore`'s
+`"compact": [SLOT, ...]` key (those clips encoded again exactly to pay for the restored one; a model already over the
+resident limit before the rebuild may stay over it but not grow, the provider checks the final model).
+- Aquilamon 0x24: the source clip with bones 1 and 2 turned 25 degrees against each other, the wings (bones 7, 10)
+  beating on two envelopes, bones 17-20 mirrored from their twins 13-16, a small wave on bone 21: crossings 49.6 a tick (limit 72.9, main 30),
+  pass; 79,024 B.
+- Beelzemon 0x24: the source run with the still wing [29, 30] mirrored from its twin [24, 25], the wings opened 15 degrees
+  and the body turned back 14; 21 other clips compacted exactly (not 0x30, Buster Dive's source, nor 0x3C): crossings 104.3
+  (limit 140.8, main 119.4), wing 0.143 heights, pass; 100,110 B. Its 0x23 keeps main's still wing (verdict main).
+- Suijinmon 0x23/0x24: the source walk and run retimed to 15 ticks; the front legs (no bone map in the importer's clip)
+  `follow` the diagonal hind leg mirrored, a fifth of a stride later, at 0.8; 0x23 smoothed: crossings 37.1 and 30.0, vertex
+  step 0.327 and 0.261 heights a tick (limit 0.40), front legs 0.22 heights, pass; 87,352 B.
+- Kurisarimon 0x23/0x24: the source clips, the body and chain bones eased back to the first pose over the last ticks (the
+  loop jumped 0.81 and 0.11 heights; seam now 0), the still chain bone 25 `follow`s bone 2 mirrored: crossings 1.2 and 3.0
+  (main 1.2 and 5.4), pass; 95,408 B.
+- Apocalymon 0x21 stays main's: the source idle on the fitted rig passes (crossings 99.8 against a limit of 157), but the
+  provider's final model is 102,116 B even with the rest compacted (exactly, and within 5 units as a trial).
+
+Seven imported species have their remaining battle clips rebuilt from the source's own clip (`content/models/imports/battle-rebuilds.json`,
+`battle_restore.py rebuild`, repair operations in `clip_repair.py`: `turn`, `damp`, `lift`, `retime`, `seam`, `sway`); each was
+kept as the older clip only because the source's clip failed the check or the memory budget, and each ships only where the
+check passes on the final model and the resident memory stays under 100352 bytes. Octomon 0x21 (retimed to 32 ticks, loop
+seam closed over 6; 99432 bytes), Cyclonemon 0x21 (bone 3 turned back 45 degrees, seam over 5; 85466), Dragomon 0x24 (21 ticks,
+bone 3 tipped back 22 degrees; 97788), Divermon 0x24 (25 ticks, one tail-leg sway of 12 degrees; 99522; its 0x23 stays the
+older clip, restoring it needs 1940 bytes more than the budget leaves), BlackKingNumemon 0x23, 0x24 and the victory 0x2A (33 and
+25 ticks, arms and tail turned out of the body, victory damped and turned; the generator no longer writes them; 87318),
+Arukenimon 0x21, 0x23 and 0x24 (legs swaying as delayed pendulums; its victory follows the new idle pose; the generator's
+pins moved; 95166) and Creepymon 0x23 and 0x24 (21 and 15 ticks, thighs swung forward 20 degrees and out 8, run torso
+turned back 8; the generator no longer writes the twins; 75858). Divermon's technique clip that aliases 0x24 follows it.
+
+A recipe's `"drop_npc_slots": true` leaves out the donor's clips of the slots only the tamer, the NPCs and the kart race play (6, 0x14, 0x1A, 0x1C-0x20, 0x26, 0x27; the importer's own species ship without them too, and no partner starts them), which frees the room for the source's battle clips (a `bound-battle.json` row takes the same key: MagnaAngemon 206); `battle_originals.repairs` `{"<slot>": [ops]}` runs `clip_repair` operations on the retargeted ticks of a slot (`lift` raises a body bone so the soles stay on the floor, `turn` compensates a tipped torso).
 
 Room is made by `"compact": {"tol": N}` in the same entry (`native_battle.compact`, after the retarget; Wizardmon's
 and Sorcermon's builder runs it once, after its cape and hair followers, which skip the restored slots):
@@ -170,7 +310,18 @@ as far against its own idle: that is the source's posture), mesh integrity (cros
 within 1.25 times the importer's same clip: a reworked field idle can cross far less than the source's poses), loop seam, length (condition idles
 under 127 ticks, slot 1 no longer than main's), the floor (under the field idle's own lowest point: a hovering flyer's
 idle dips under its mean floor) and the resident buffer. A flagged clip is kept only when no flagged number is worse
-than main's same slot. Tests: `tools/test_care_qa.py` (`CARE_QA_MODELS` runs it on a folder of real models).
+than main's same slot. Tests: `tools/test_care_qa.py` (`CARE_QA_MODELS` runs it on a folder of real models). A native
+binding's importer output is on the source's skeleton, not the final rig's: `care_qa.py check FINAL BASE MAIN SPECIES
+--base-skeleton SOURCE_SPECIES_JSON` parses it with that skeleton (its posture is then only compared when the two
+skeletons match), and BASE `-` means there is none (MagnaAngemon 206's bound model).
+
+Datamon 294 0x21 (now shipped, see "Last gaps" below): the source's own 27-tick marching idle is frantic on our rig (6.4 degrees a tick against the 5.4
+limit and main's 0.4), and with every bone but the root and the body damped to 0.8 of its swing (`damp`) it passes `battle_qa`
+(speed 5.2, vertex step 0.09 h, loop seam 0.03 h, crossings 3.3 a tick), but the extra 4.9 KB program brings the resident part to
+102,242 B after exact compaction of every clip, 1,890 B over 100,352 (only a lossy 5-unit compaction of the care and technique clips fits).
+Solarmon 251 0x21 is not a gap: main's clip is the source's 89-tick spinning-disc idle except the last three ticks, which close
+the loop (the source's last pose is 24 degrees from its first: loop seam 0.206 h); `battle_qa` reports it as main's, with the
+source's own vertex step (0.986 h, source 1.006: the disc's spin), so it stays.
 
 Where a field rework made slot 1 or 18 a copy of the new field idle (24 species; Gazimon's sick idle too), the last provider stage
 `tools/models/field_animations/care_idles.py` makes the condition idles again from the final field idle: only rotation
@@ -186,6 +337,24 @@ heights off the idle with no flag, lets a condition too close to another share i
 encoding when the resident buffer would overflow. A retargeted care clip that turns a bone far beyond anything the
 species does is tamed in the same stage (the row's `tame`: per slot, the fraction of the swing each such bone keeps
 about the clip's own mean pose), with the smallest cut that passes the bone check (`care_qa`'s flag names the bone).
+Three species near the resident limit (Snimon 328, Apocalymon 400, MegaGargomon 335) had no row, because a condition clip
+of their own (1.3-3.2 KB at the coarsest encoding the planner tries, 16 units) overflows the buffer. Apocalymon's row sets
+`compact`, which re-encodes its other resident clips exactly first (96,962 B), and keeps its own tired idle for slots 1 and 18
+(tolerance 2; resident 100,198 B; care_qa pass, 0.06 heights off the idle). Snimon and MegaGargomon have no such room
+(exact compaction frees 56 and 162 B; their own tired clip would need 222 and 202 B more even at tolerance 16), so a row's
+`share` points slots 1 and 18 at the program slots 14-17 already play, the donor's own condition clip (0 extra bytes; care_qa
+pass, 0.13 and 0.18 heights off the idle; resident 99,332 and 99,484 B). Their other condition slots stay as they were.
+Snimon's battle slot 0x24 plays the source clip since the technique clip it can never play was dropped (see "Last gaps");
+Apocalymon's 0x21 stays main's (the source idle passes with the rig fitted, but the final model is 102,116 B).
+Bodies whose limbs read as legs (a squid's eight arms, a sun's two hands: every bone is then a leg or hangs from one, so the
+planner found no free bone) name them to the planner (`--limbs` the first bone of each such chain, `--head`, `--lean`): they droop
+like any limb, the head nods, and a body with no leg at all (Solarmon) leans as a whole. A short idle whose slot 1 is one cycle
+(Bulbmon's 24 ticks) plays one cycle in the slots that share its program (the row's `cycles`), because two lengths of one
+motion are two programs 0.004 heights apart. Gesomon 240 (one tired program in 1 and 14-18: a second, sick, does not fit; the delta is first compacted exactly,
+98,870 to 97,442 B, then the stage adds 2.8 KB with the new clip encoded at tolerance 2: 100,278 B; slot 19 stays main's), Solarmon 251 (all seven slots: tired, sick shares tired, hungry shares
+unhappy; 35,542 B, the body leans 13-18 degrees forward in tired) and Bulbmon 313 (the head nods and the two vine arms
+droop: tired in 1 and 15-19, sick in 14; the delta is first compacted exactly, 80,934 to 68,204 B) got condition idles: before, slots 1 and 18
+of Gesomon and Solarmon were the field idle itself and Bulbmon's seven were 0.007 heights off it.
 
 Slots 6, 0x14, 0x1A, 0x1C-0x20, 0x26 and 0x27 are the tamer's, NPCs' and the kart race's. Which slots a partner must
 have, and the lint rule for each: [imported-species.md](imported-species.md), "What the game asks of every partner".

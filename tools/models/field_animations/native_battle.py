@@ -25,6 +25,7 @@ import animsheet
 import mmd
 import motioncyclelayer
 from tools.models import battle_restore
+from tools.models import clip_repair
 
 IDLES, MOVES = (33, 34), (35, 36)
 TECHNIQUES = 0x2E          # slots from here on are the species' techniques
@@ -150,6 +151,13 @@ def plan(slot, source_ticks, want):
     return want, 1
 
 
+def scaled_events(events, frames, want):
+    """Events of a clip of `frames` frames moved to the same moments of a clip of `want` frames."""
+    if want == frames:
+        return list(events)
+    return [(min(want - 2, round(k * (want - 1) / (frames - 1))), kind, c) for k, kind, c in events]
+
+
 def source_clip(source, nb, slot, want):
     """(samples, events, loop sample, cycles) of the source's clip of `slot` for a final clip of `want` frames."""
     frames, loop, events = animsheet.slot_frames(source, nb, slot)
@@ -207,10 +215,14 @@ def retarget(frames, ctx):
     return out
 
 
-def apply(output, ctx, slots, keep_events=()):
+def apply(output, ctx, slots, keep_events=(), repairs=None, ticks=None):
     """`output` (the bound model) with each slot of `slots` playing the source's clip on the donor rig
     -> (bytes, proof). `keep_events`: slots that keep the bound clip's sound events (at its ticks: the clip keeps the
-    slot's length), for a source whose clip of that slot has none."""
+    slot's length), for a source whose clip of that slot has none. `repairs`: {slot (text): operations} of
+    tools/models/clip_repair.py run on a slot's retargeted ticks (a rebuilt clip: the original repaired where it breaks
+    on the donor rig). `ticks`: {slot (text): frames} gives a one-shot slot (hit, victory, faint, get up, technique)
+    another length than the donor's, for a source clip that the donor's length would resample too far (slow motion or
+    a rush); the donor's events of that slot move with the clip (scaled to the new length)."""
     rig = ctx['rig']
     nb = len(rig)
     model = mmd.MMD.parse(output, nb)
@@ -221,12 +233,19 @@ def apply(output, ctx, slots, keep_events=()):
             raise ValueError(f'battle originals: slot {slot} is missing')
         donor, _, donor_events = animsheet.slot_frames(model, nb, slot)
         want = len(donor)
+        if ticks and str(slot) in ticks:
+            if slot in IDLES or slot in MOVES:
+                raise ValueError(f'battle originals: slot {slot} keeps battle_restore\'s length rule')
+            want = int(ticks[str(slot)])
+            donor_events = scaled_events(donor_events, len(donor), want)
         frames, events, loop, tile = source_clip(source, ns, slot, want)
         if slot >= TECHNIQUES or slot in keep_events:
-            events = donor_events       # same length: the species' voice and the swing sounds at the donor's ticks
+            events = donor_events       # the species' voice and the swing sounds at the donor's ticks (scaled with the clip)
         else:                           # the common effects and the species' own voice; not the partner's care voice
             events = [e for e in events if e[1] == 'sound' and e[2]['bank'] in (1, 4)]
         samples = retarget(frames, ctx)
+        if repairs and str(slot) in repairs:
+            samples = clip_repair.apply_ops(samples, [p for _, p in rig], repairs[str(slot)])
         anim = mmd.encode_anim(samples, nb, 0 if loop == 0 else None, events, tol=ctx.get('tol', 1), repeats=tile > 1)
         model.anims.table[slot] = len(model.anims.anims)
         model.anims.anims.append(anim)
@@ -304,9 +323,12 @@ def context(mesh, skeleton, source_pose, yaw, rig, rest, pieces, leads, mapping,
 
 def fixed_pieces(recipe):
     """The source pieces a binding recipe sets whole in a reviewed orientation (a piece rule's `aim`), and their
-    mirrors (`mirror`: a piece placed as the reflection of its twin)."""
+    mirrors (`mirror`: a piece placed as the reflection of its twin), and the pieces `battle_originals.ride` lists: a
+    piece that shares a donor bone with a larger one but moves on its own in the source (a small spinning quad inside a
+    body) rides that bone and does not pull its turn."""
     aimed = {int(k) for k, rule in recipe.get('pieces', {}).items() if 'aim' in rule}
-    return aimed | {int(k) for k, twin in recipe.get('mirror', {}).items() if int(twin) in aimed}
+    ride = {int(b) for b in recipe.get('battle_originals', {}).get('ride', [])}
+    return aimed | {int(k) for k, twin in recipe.get('mirror', {}).items() if int(twin) in aimed} | ride
 
 
 def lead_tops(group, skeleton, fixed=()):

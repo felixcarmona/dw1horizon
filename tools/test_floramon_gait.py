@@ -107,9 +107,9 @@ class FloramonGait(unittest.TestCase):
         self.assertEqual(full, self.out)
 
     def test_changed_slots_and_sharing(self):
-        self.assertEqual(self.report['changed_slots'], [0, 2, 3, 4, 36])
+        self.assertEqual(self.report['changed_slots'], [0, 2, 3, 4])
         shared = {r['slot']: r.get('shared_by') for r in self.report['checks']}
-        self.assertEqual(shared[4], [4, 36])
+        self.assertEqual(shared[4], [4])
         t = self.after.anims.table
         self.assertEqual(t[33], self.before.anims.table[33])          # the old idle stays on slot 33
         self.assertNotEqual(t[0], t[33])
@@ -117,7 +117,7 @@ class FloramonGait(unittest.TestCase):
             self.assertEqual(played(self.before, slot, 40), played(self.after, slot, 40), slot)
 
     def test_run_poses_and_root_are_identical(self):
-        for slot in (4, 36):       # 36 shares the program: it gains the blink too
+        for slot in (4, 36):       # 36 is the source's own rebuilt battle run (battle-rebuilds.json): untouched
             self.assertEqual(played(self.before, slot, 60), played(self.after, slot, 60), slot)
 
     def test_tired_walk_droops_the_head_and_keeps_the_rest(self):

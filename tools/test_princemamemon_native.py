@@ -58,8 +58,9 @@ class PrinceMamemonNative(unittest.TestCase):
 
     def test_every_program_below_the_techniques_is_mamemons_with_scaled_translations(self):
         scale = self.recipe['scale']
+        restored = set(self.recipe.get('battle_originals', {}).get('slots', []))
         for slot, index in enumerate(self.native.anims.table[:46]):
-            if index is None:
+            if index is None or slot in restored:      # the source's own clip (test_battle_originals)
                 continue
             with self.subTest(slot=slot):
                 expected = self.scaled(self.native, slot)
@@ -185,6 +186,15 @@ class PrinceMamemonNative(unittest.TestCase):
             self.assertEqual(worst['arm'], 0, slot)
             self.assertEqual(worst['arm-cape'], 0, slot)
             self.assertLessEqual(worst['leg'], 16, slot)
+
+    def test_battle_originals(self):
+        # the source's own battle idle on Mamemon's rig (native_battle.py); the spinning quad inside the sphere (piece
+        # 23) rides the sphere's bone without leading it; an idle keeps its own 40-tick cycle (battle_restore.plan)
+        self.assertEqual(self.recipe['battle_originals'], {'slots': [33], 'ride': [23]})
+        made = self.proof['battle_originals']
+        self.assertEqual(sorted(int(s) for s in made), [33])
+        self.assertEqual((made[33]['frames'], made[33]['cycles']), (40, 1))
+        self.assertEqual(motionstorage.require(self.data, BONES)['resident_bytes'], 76032)
 
     def test_loops_close(self):
         for slot in (0, 2, 3, 4):

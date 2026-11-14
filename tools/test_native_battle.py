@@ -66,6 +66,11 @@ class NativeBattle(unittest.TestCase):
         self.assertEqual(native_battle.lead_tops({4}, skeleton, {4}), [4])
         recipe = {"pieces": {"4": {"aim": {}}, "3": {"offset": [0, 0, 0]}}, "mirror": {"9": 4, "8": 3}}
         self.assertEqual(native_battle.fixed_pieces(recipe), {4, 9})
+        # a battle_originals `ride` piece rides its bone without leading it
+        recipe["battle_originals"] = {"slots": [33], "ride": [5]}
+        self.assertEqual(native_battle.fixed_pieces(recipe), {4, 5, 9})
+        self.assertEqual(native_battle.lead_tops({2, 5}, [(-1, -1), (0, 0), (1, 1), (2, 1), (3, 1), (4, 1)],
+                                                 native_battle.fixed_pieces(recipe)), [2])
 
     def test_posture_skips_bones_that_hold_only_limbs(self):
         # the QA's body bones exclude a donor bone carrying only source limb bones (a hand holding an arm's head)
@@ -81,10 +86,40 @@ class NativeBattle(unittest.TestCase):
         carried = {1: {1, 2}, 3: {3}, 4: {4}, 6: {5}, 7: {6, 7}}
         self.assertEqual(battle_qa_native.limb_carriers(carried, parents, limbs), {3, 4, 7})
 
+    def test_qa_measures_the_source_on_the_final_clips_length(self):
+        # a slot given its own length (battle_originals.ticks) is compared tick for tick with the source resampled to
+        # that length, not to main's
+        from unittest import mock
+        sys.path[:0] = [str(ROOT / 'tools' / 'models')]
+        import battle_qa_native
+        asked = []
+
+        def clip(source, ns, slot, ticks):
+            asked.append(ticks)
+            return [[0]] * ticks, None, None, 'tile'
+        with mock.patch.object(native_battle, 'source_clip', clip):
+            sfr, tile = battle_qa_native.source_frames('src', 3, 0x2B, ([[0]] * 41, None))
+        self.assertEqual((asked, len(sfr), tile), ([41], 41, 'tile'))
+
     def test_order_puts_parents_first(self):
         skeleton = [(0, -1), (1, 2), (2, 0)]        # bone 1's parent comes after it
         order = native_battle.order(skeleton)
         self.assertLess(order.index(2), order.index(1))
+
+    def test_events_move_with_a_slot_given_another_length(self):
+        # a technique given its own length keeps the donor's swing sound and hit at the same moment of the clip
+        ev = [(0, 'sound', 1), (10, 'sound', 2), (20, 'sound', 3)]
+        self.assertEqual(native_battle.scaled_events(ev, 21, 21), ev)
+        self.assertEqual(native_battle.scaled_events(ev, 21, 41), [(0, 'sound', 1), (20, 'sound', 2), (39, 'sound', 3)])
+        self.assertEqual(native_battle.scaled_events(ev, 21, 11), [(0, 'sound', 1), (5, 'sound', 2), (9, 'sound', 3)])
+
+    def test_dropped_npc_slots_are_the_ones_the_scripts_never_ask_a_partner_for(self):
+        # `drop_npc_slots` leaves out the tamer's, NPCs' and kart race's clips: none may be a slot the species scripts need
+        from tools import species
+        from tools.models.field_animations import native_binding
+        self.assertFalse(set(native_binding.NPC_SLOTS) & set(species.SCRIPT_SLOTS))
+        self.assertEqual(sorted(native_binding.NPC_SLOTS),
+                         [s for s in range(0x2D) if s not in species.SCRIPT_SLOTS])
 
 
 if __name__ == '__main__':

@@ -15,10 +15,10 @@ legs: the hips turn against the chest, the whole body rolls its weight over the 
 pendulums with the forearm and the claws late, the head follows the chest late, the tail trails link by link and the
 wings lift on each push-off and sink on each landing, the wing tips behind the roots.
 
-Battle slots: 0x23 and 0x24 stay the twins of the walk and run written here (`quadruped.py` rewrites each clip where it
-is stored). The source's own movements put the claws and legs through the body on this rig (60 and 53 triangle crossings a
-tick against main's 3 and 5, tools/models/battle_qa.py) and storing them as their own streams overflows the resident buffer
-(100602 B against 100352). 0x21 and 0x22 are the source's own.
+Battle slots: 0x23 and 0x24 are the source's own movements again, rebuilt (content/models/imports/battle-rebuilds.json): the
+forelegs of each clip are turned out of the body (bones 7 and 11 about the side axis, 38 and 25 degrees), which takes the
+crossings from 60 and 53 a tick to 11 and 8, and the exact compaction of the other clips makes the resident buffer fit.
+0x21 and 0x22 are the source's own.
 
 The character is a heavy stone beast: the walk is a slow, wide, crouching tread with the shoulders rolling and the
 wings riding up and down behind the body, the tired walk a dragging slump with the wings hung low and the head
@@ -138,8 +138,13 @@ def body(rig, cfg, phase, pose, hist):
         pose[b][4] = rest[b][4] + round(c['tail_yaw'] * (0.7 + 0.5 * k) * harm(phase - late, (1, 1, 0.05 + 0.5 * c['tail_phase'])) * DEG)
 
 
+LOOSE_TOL = 5          # care and technique clips (not field 0-4, not battle 0x21-0x24): 0.44 degrees
+
 PROFILE = dict(
     species=SPECIES, name='Gargoylemon', source=None,
+    # encoding tolerance of the four clips (1/4096 turn): the legs and what carries them (root, waist, hips, 6-13) as
+    # finely as before, the tail, chest, arms, head and wings within 5 (0.44 degrees): room the screens' heap needs
+    tol={None: 5, 0: 1, 1: 1, 2: 1, **{b: 1 for b in range(6, 14)}},
     parents=[-1, 0, 1, 2, 3, 4, 2, 6, 7, 8, 2, 10, 11, 12, 1, 14, 15, 16, 14, 18, 19, 14, 14, 14, 23, 24],
     pelvis=WAIST, chest=None, neck=None, head=HEAD, tail=(), loose=(),
     legs=LEGS, toes={8: 9, 12: 13}, pole_world=True, rest_plane=True, pole={False: [0.62, 0.0, -0.78]},
@@ -310,9 +315,14 @@ def build(data, skeleton):
         result, gait = quadruped.build(reshaped, skeleton, profile)
     finally:
         exe.skeleton[SPECIES], exe.bone_count[SPECIES] = kept
+    # Gargoylemon and SkullSatamon share the Overdell descent screens, and the heap holds both: every clip encoded again
+    # exactly where that is smaller, the clips that are neither field nor battle slots within LOOSE_TOL, unread stream
+    # tails dropped (native_battle.compact, as a battle-originals recipe's `compact`).
+    from tools.models.field_animations import native_battle
+    result, packed = native_battle.compact(result, len(skeleton), {'tol': LOOSE_TOL})
     proof = dict(proof, preceding_recipe=dict(recipe='chibi', output_sha256=proof['output_sha256']),
-                 output_sha256=gait['output_sha256'], gait=gait, resident_bytes=[gait['storage']['resident_bytes'],
-                                                                                gait['storage']['resident_limit']])
+                 output_sha256=hashlib.sha256(result).hexdigest(), gait=gait, compacted=packed,
+                 resident_bytes=[gait['storage']['resident_bytes'], gait['storage']['resident_limit']])
     proof['bytes'] = [proof['bytes'][0], len(result)]
     return result, proof
 

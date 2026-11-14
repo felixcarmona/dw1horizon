@@ -4,9 +4,9 @@ The lower body is a centaur rig: the four three-bone legs carry the weight,
 while the upright torso, cannon arms and tail follow the footfalls with a lag.
 Feeding retains the upper-body acting without the biped donor's crouch.
 
-Battle slots: 0x23 and 0x24 play the field walk and run (the source game aliased them to its walk too, and the
-importer's clip has no bone map for the front legs, which stay still while the hind legs move, tools/models/battle_qa.py);
-the centaur's four-leg clips are the better battle movement. 0x21 and 0x22 are the source's own.
+Battle slots: 0x21 and 0x22 are the source's own; 0x23 and 0x24 are the source's own battle walk and run, rebuilt
+(content/models/imports/battle-rebuilds.json): the importer's clip has no bone map for the front legs, so each front leg
+takes the swing of the diagonal hind leg a fifth of a stride later (clip_repair `follow`). This gait no longer writes them.
 """
 import copy
 import hashlib
@@ -21,7 +21,7 @@ from tools.models.field_animations.pace import _root_channels, _retimed_events
 
 PROFILE = dict(
     species=408, name='Suijinmon',
-    source='d22fecd28ed5c3c1b4a39007970e7f34f2040ddad3434159106cf3a4b4fefd96',
+    source='bb4633f121d76da43bde9c6a01ec453ad42377e3a010dbcefd17e1d45c01b1dc',
     parents=[-1,0,1,2,3,1,5,6,1,8,9,1,11,12,1,14,15,1,17,18,18,18,21,22,23,17,25,25,25,28,29,30],
     pelvis=1, chest=17, neck=None, head=17,
     legs={'RF':(11,12,13,1,True),'LF':(8,9,10,-1,True),
@@ -87,7 +87,7 @@ def build(data, skeleton):
     actual=mmd.MMD.parse(result,n)
     assert original.tmd.build()==actual.tmd.build()
     changed=changed_programs(original,actual)
-    assert changed==[2,3,4,8,35,36], changed
+    assert changed==[2,3,4,8], changed
     report['changed_slots']=changed
     report['storage']=motionstorage.require(result,n)
     return result,report

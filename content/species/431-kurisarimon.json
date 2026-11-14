@@ -7,7 +7,7 @@
   "attribute": "virus",
   "specialties": ["mech", "nature", null],
   "techniques": ["Power Crane", "Full Potential", "Metal Sprinter", "Reverse Prog", "Pulse Laser", "Delete Program",
-                 "Poison Claw", "Mass Morph", "Insect Plague", "Poison Powder", "Sweet Breath"],
+                 "Poison Claw", "Mass Morph", "Insect Plague", "Poison Powder", "Bit Bomb"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 25,
   "model": {
