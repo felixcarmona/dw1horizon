@@ -144,8 +144,8 @@ class GrapLeomonNative(unittest.TestCase):
         self.assertLess(per_tick[0], per_tick[3])
         self.assertLess(per_tick[3], per_tick[2])
         self.assertLess(per_tick[2], per_tick[4])
-        # the other clips leave them at rest, still
-        for slot in (46, 50):
+        # the other clips leave them at rest, still; a restored battle clip turns them as the source game does
+        for slot in [s for s in (46, 50) if s not in self.recipe['battle_originals']['slots']]:
             frames = self.frames(slot)
             for bone in DRUMS:
                 self.assertEqual(len({f[bone][5] for f in frames}), 1)
@@ -159,6 +159,15 @@ class GrapLeomonNative(unittest.TestCase):
             for ring in sorted(set(np.round(v[:, 2]))):
                 r = radial[np.round(v[:, 2]) == ring]
                 self.assertLess(r.max() - r.min(), 25, (bone, ring))
+
+    def test_battle_originals(self):
+        # the source game's own battle clips, retargeted onto the donor rig (native_battle.py); one-shot clips keep the
+        # length of the donor's clip they replace, since technique effects are timed to it
+        made = self.proof['battle_originals']
+        self.assertEqual(sorted(int(s) for s in made), self.recipe['battle_originals']['slots'])
+        for slot, row in made.items():
+            if int(slot) not in (33, 34):
+                self.assertEqual(row['frames'], row['donor_frames'])
 
     def test_the_buffer_holds(self):
         info = motionstorage.require(self.data, BONES)

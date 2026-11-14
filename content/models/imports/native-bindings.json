@@ -479,6 +479,18 @@
         0,
         0
       ]
+    },
+    "battle_originals": {
+      "slots": [
+        33,
+        35,
+        36,
+        54,
+        55,
+        56,
+        57,
+        58
+      ]
     }
   },
   "232": {
@@ -3100,7 +3112,13 @@
     "species": 292,
     "source_sha256": "e57b04031369346451e06b5b667aecd8361c29caab6572f58b654efcc2bcef49",
     "skeleton_sha256": "de3e7212e61ea716894884eeda2502f1478c38d266fcf08b7d56c9e0fa439d6a",
-    "donor_sha256": "1e3c5d50f35f006574ad5755fe922e57b713f17a86b50cd8f619e96963589b44"
+    "donor_sha256": "1e3c5d50f35f006574ad5755fe922e57b713f17a86b50cd8f619e96963589b44",
+    "battle_originals": {
+      "slots": [
+        33,
+        34
+      ]
+    }
   },
   "295": {
     "species": 295,
@@ -3993,7 +4011,6 @@
     },
     "battle_originals": {
       "slots": [
-        33,
         34,
         51,
         61
@@ -4157,6 +4174,20 @@
         3
       ],
       "effect_origins": []
+    },
+    "battle_originals": {
+      "slots": [
+        33,
+        34,
+        35,
+        36,
+        46,
+        48,
+        51
+      ],
+      "compact": {
+        "tol": 0
+      }
     }
   },
   "310": {
