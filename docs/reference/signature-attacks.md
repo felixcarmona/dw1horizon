@@ -42,6 +42,7 @@ the moment the attack starts.
 | 285 Gazimon | E-Stun Blast (DW2) | Poison Ivy | projectile: an electric blast from the mouth | 1 | flies at tick 29, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.218) | one enemy, as for Poison Ivy | one enemy |
 | 286 Deramon | Royal Smasher (DW2) | Fist of the Beast King | projectile: fires an egg like a shell | 1 | flies at tick 29, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.274) | one enemy, as for Fist of the Beast King | one enemy |
 | 287 Tapirmon | Waking Dream (DW2) | Solar Ray | at the target: a cloud of nightmare smoke | 1 | plays at the target, hits at tick 40 | none (scale 0.201) | one enemy, as for Solar Ray | one enemy |
+| 288 Boltmon | Tomahawk Crunch (DW2) | Giga Scissor Claw | projectile: throws axes at every enemy | 1 | flies at tick 29, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.258) | one enemy, as for Giga Scissor Claw | all enemies, 2 hits |
 
 ## Where the port differs from the source
 

@@ -249,5 +249,13 @@
     "hit": [[2, "EFFESD/MESD3400.BIN", "EFFESD/AESD3400.BIN"]],
     "scale": 0.201,
     "hit_scale": 0.1
+  },
+  "153": {
+    "name": "Tomahawk Crunch",
+    "stands_for": 79,
+    "cast": [[1, "EFFESA/MESA8700.BIN", "EFFESA/AESA8700.BIN"], [2, "EFFESA/MESA8800.BIN", "EFFESA/AESA8800.BIN"]],
+    "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
+    "scale": 0.258,
+    "hit_scale": 0.1
   }
 }

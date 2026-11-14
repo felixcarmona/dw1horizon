@@ -11,6 +11,7 @@
                  "Delete Program", "Pulse Laser", "Reverse Prog", "Giga Scissor Claw"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 48,
+  "own_effect": {"technique": "Giga Scissor Claw", "chunk": 153},
   "model": {
     "file": "build/sizes-out/models/Boltmon.MMD",
     "radius": 136,
