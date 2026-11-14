@@ -387,21 +387,24 @@ def pack_records(disc, tables):
     raise SystemExit('dw3sprite: no sprite pack table')
 
 
-_cache = {}
-
-
 def _pack(disc, tables, p):
-    key = (id(disc), p)
-    if key not in _cache:
-        name = tables.sprite_files[p]
-        if hasattr(tables, 'pack_sections'):          # dw3effect.EffectIds: no fight overlay to read
-            tex, table = tables.pack_sections[p]
-        else:
-            rec = pack_records(disc, tables)[p]
-            tex, table = rec[0], rec[2]
-        com = 'F' + name[1:] if name.startswith('E000COM') else None
-        _cache[key] = Pack(disc, name, tex, table, com)
-    return _cache[key]
+    """Pack p of `tables`, read once per disc: cached on the disc object by file and sections, since pack
+    indices differ between tables (dw3effect.EffectIds numbers only one technique's packs) and an id() of a
+    freed disc can return for another."""
+    cache = disc.__dict__.setdefault('_sprite_packs', {})
+    name = tables.sprite_files[p]
+    if hasattr(tables, 'pack_sections'):          # dw3effect.EffectIds: no fight overlay to read
+        tex, table = tables.pack_sections[p]
+    else:
+        if 'records' not in cache:
+            cache['records'] = pack_records(disc, tables)
+        rec = cache['records'][p]
+        tex, table = rec[0], rec[2]
+    com = 'F' + name[1:] if name.startswith('E000COM') else None
+    key = (name, tex, table)
+    if key not in cache:
+        cache[key] = Pack(disc, name, tex, table, com)
+    return cache[key]
 
 
 def sprite_blocks(disc, tables, sprite_id):
