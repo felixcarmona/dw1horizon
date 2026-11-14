@@ -424,18 +424,19 @@ def repin_donors(text, species, old, new):
 
 
 def repin_constant(text, old, new):
-    """`text`, a generator module's source, with its module-level `SOURCE = 'old'` pin moved to `new`; None when it has none."""
+    """`text`, a generator module's source, with its one input pin (`SOURCE = 'old'` at module level, or the `source='old'`
+    line of its PROFILE) moved to `new`; None when it has not exactly one."""
     import re
-    found = list(re.finditer(rf"^SOURCE\s*=\s*'({old})'", text, re.M))
+    found = list(re.finditer(rf"^(?:SOURCE\s*=\s*|\s+source\s*=\s*)'({old})'", text, re.M))
     if len(found) != 1:
         return None
     return text[:found[0].start(1)] + new + text[found[0].end(1):]
 
 
-def repin_pace(text, species, old, new):
+def repin_pace(text, species, old, new, post=None):
     """`text`, content/models/imports/pace.json, with the field pace row of `species` pinned to `new` instead of `old`;
-    None when the species has no row. Only a row without a base generator (its source is also its post-source) moves;
-    a row pinned to another input is refused."""
+    None when the species has no row. A row without a base generator has its post-source follow (`post` is `new`); a row
+    that follows a base generator needs `post`, the new input after that generator. A row pinned to another input is refused."""
     import re
     start = re.search(rf'^ "{int(species)}": \{{', text, re.M)
     if not start:
@@ -445,9 +446,30 @@ def repin_pace(text, species, old, new):
     block = text[start.start():stop]
     if f'"source_sha256": "{old}"' not in block:
         raise ValueError(f'{species}: its pace row does not pin the current input {old}')
-    if '"base_generator": null' not in block or f'"post_source_sha256": "{old}"' not in block:
-        raise ValueError(f'{species}: its pace row follows a base generator; this command does not move it')
-    return text[:start.start()] + block.replace(old, new) + text[stop:]
+    if '"base_generator": null' in block:
+        post = new
+    elif post is None:
+        raise ValueError(f'{species}: its pace row follows a base generator; give the new input after it')
+    block = re.sub(r'("source_sha256": ")[0-9a-f]{64}', rf'\g<1>{new}', block)
+    block = re.sub(r'("post_source_sha256": ")[0-9a-f]{64}', rf'\g<1>{post}', block)
+    return text[:start.start()] + block + text[stop:]
+
+
+def module_from_text(name, path, text):
+    """A fresh copy of module `name` as `text` (a moved pin, not yet written) reads; the imported one stays as it is."""
+    import types
+    module = types.ModuleType(name)
+    module.__file__ = str(path)
+    exec(compile(text, str(path), 'exec'), module.__dict__)
+    return module
+
+
+def stage_module(name, texts):
+    """Module `name` as the files about to be written read it."""
+    path = ROOT / (name.replace('.', '/') + '.py')
+    return module_from_text(name, path, texts[path]) if path in texts else importlib.import_module(name)
+
+
 def repin_celebration(text, species, old, new):
     """`text`, the celebrations manifest, with the row of `species` pinned to `new` instead of `old` (only that pin's digits
     change, the file keeps its layout); None when the species has no row. Refuses a row pinned to another input."""
@@ -478,7 +500,8 @@ def cmd_repin(a):
     model, tim, _ = build(a, row)
     new_model = Path(a.mmd).read_bytes()
     new_tim = Path(a.tim).read_bytes() if a.tim else tim
-    old, new = sha256(variants.overlay_input(sid, model, tim)), None
+    old_input = variants.overlay_input(sid, model, tim)
+    old, new = sha256(old_input), None
     new_input = variants.overlay_input(sid, new_model, new_tim)
     new = sha256(new_input)
     if old == new:
@@ -489,36 +512,51 @@ def cmd_repin(a):
         moved = repin_profile((ROOT / name).read_text(), sid, old, new)
         if moved is not None:
             texts[ROOT / name] = moved
-    moved = repin_pace(PACE_ROWS.read_text(), sid, old, new)
-    if moved is not None:
-        texts[PACE_ROWS] = moved
     moved = repin_donors(NATIVE_ROWS.read_text(), sid, old, new)
     if moved is not None:
         texts[NATIVE_ROWS] = moved
+    for path in sorted((ROOT / 'tools/models/field_animations').glob('*.py')):      # a generator pins its own input
+        if path not in texts:
+            moved = repin_constant(path.read_text(), old, new)
+            if moved is not None:
+                texts[path] = moved
+    skeleton = json.loads(next((ROOT / 'content/species').glob(f'{sid}-*.json')).read_text())['model']['skeleton']
+    stale = [old]
+
+    def after_base(name, data):
+        """`data` after the base generator `name`, run with the pins as the files about to be written read them."""
+        if ROOT / (name.replace('.', '/') + '.py') not in texts:
+            raise SystemExit(f'{sid}: the base generator {name} does not pin its input in a PROFILES row or a SOURCE '
+                             'constant this command moves')
+        with importing(a.games_dir):
+            return stage_module(name, texts).build(data, skeleton)[0]
+
+    pace = load(PACE_ROWS).get(str(sid))
+    if pace:
+        post = sha256(after_base(pace['base_generator'], new_input)) if pace['base_generator'] else new
+        texts[PACE_ROWS] = repin_pace(PACE_ROWS.read_text(), sid, old, new, post)
+        if pace.get('after_generator'):
+            # the generator after the pace pass pins the paced model: run the pass on the old and the new input
+            from tools.models.field_animations import pace as pacing
+
+            def paced(data, base_gen):
+                with importing(a.games_dir):
+                    if base_gen:
+                        data = base_gen.build(data, skeleton)[0]
+                    return sha256(pacing.retime(data, skeleton, sid, pace['slots'])[0])
+            base = pace['base_generator']
+            old_paced = paced(old_input, base and importlib.import_module(base))
+            new_paced = paced(new_input, base and stage_module(base, texts))
+            path = ROOT / (pace['after_generator'].replace('.', '/') + '.py')
+            moved = repin_constant(path.read_text(), old_paced, new_paced)
+            if moved is None:
+                raise SystemExit(f'{sid}: {pace["after_generator"]} does not pin the paced model {old_paced}')
+            texts[path] = moved
+            stale.append(old_paced)
     chibi_rows = load(CHIBI_ROWS)
     chibi = chibi_rows.get(str(sid))
     if chibi:
-        post = new
-        if chibi.get('base_generator'):
-            # the base generator runs on the new input with its moved pin (in memory, as the rewritten file will read)
-            gen = importlib.import_module(chibi['base_generator'])
-            gen_path = ROOT / (chibi['base_generator'].replace('.', '/') + '.py')
-            profile = getattr(gen, 'PROFILES', {}).get(sid)
-            if getattr(gen, 'SOURCE', None) == old and gen_path not in texts:
-                moved = repin_constant(gen_path.read_text(), old, new)       # `SOURCE = '...'`: one pin for the module
-                if moved is not None:
-                    texts[gen_path] = moved
-                    gen.SOURCE = new
-            elif profile and profile.get('source') == old and gen_path in texts:
-                profile['source'] = new
-            pinned = getattr(gen, 'SOURCE', None) == new or bool(profile and profile.get('source') == new)
-            if gen_path not in texts or not pinned:
-                raise SystemExit(f'{sid}: the chibi row\'s base generator {chibi["base_generator"]} does not pin its input '
-                                 'in a PROFILES row or a SOURCE constant this command moves')
-            skeleton = json.loads(next((ROOT / 'content/species').glob(f'{sid}-*.json')).read_text())['model']['skeleton']
-            with importing(a.games_dir):
-                made, _ = gen.build(new_input, skeleton)
-            post = sha256(made)
+        post = sha256(after_base(chibi['base_generator'], new_input)) if chibi.get('base_generator') else new
         repin_chibi(chibi_rows, sid, old, new, post)
         texts[CHIBI_ROWS] = json.dumps(chibi_rows, indent=2) + '\n'
     celebrations = repin_celebration(CELEBRATION_ROWS.read_text(), sid, old, new)
@@ -527,12 +565,13 @@ def cmd_repin(a):
     if not texts:
         print(f'{sid} {row["name"]}: no overlay pins its input; nothing to move')
         return
-    stray = stray_pins(texts, old)
-    if stray:
-        raise SystemExit(f'{sid}: the input {old} is pinned in {", ".join(stray)} too, which this command does not move')
+    for pin in stale:
+        stray = stray_pins(texts, pin)
+        if stray:
+            raise SystemExit(f'{sid}: the input {pin} is pinned in {", ".join(stray)} too, which this command does not move')
     for path, text in texts.items():
         path.write_text(text)
-        print(f'{path.relative_to(ROOT)}: {sid} {old} -> {new}')
+        print(f'{path.relative_to(ROOT)}: {sid} pins moved (input {old[:12]} -> {new[:12]})')
     print(f'next: tools/models/edit.py put {sid} {a.mmd}{" " + a.tim if a.tim else ""} (the delta and the species pins), '
           'then tools/models/variants.py make for a species with a release variant')
 

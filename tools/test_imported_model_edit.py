@@ -2,6 +2,7 @@
 import contextlib
 import hashlib
 import io
+import importlib
 import json
 from pathlib import Path
 import tempfile
@@ -109,6 +110,29 @@ class Repin(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'does not pin'):
             v.repin_pace(text, 258, 'c' * 64, self.NEW)
         self.assertIsNone(v.repin_pace(text, 999, old, self.NEW))
+
+    def test_pace_row_with_a_base_generator_moves_its_source_and_post_source(self):
+        text = v.PACE_ROWS.read_text()
+        old = json.loads(text)['191']['source_sha256']
+        with self.assertRaisesRegex(ValueError, 'base generator'):
+            v.repin_pace(text, 191, old, self.NEW)
+        moved = json.loads(v.repin_pace(text, 191, old, self.NEW, self.POST))
+        self.assertEqual((moved['191']['source_sha256'], moved['191']['post_source_sha256']), (self.NEW, self.POST))
+        before = json.loads(text)
+        before['191'].update(source_sha256=self.NEW, post_source_sha256=self.POST)
+        self.assertEqual(moved, before)
+
+    def test_profile_line_of_a_generator_module_moves(self):
+        text = "PROFILE = dict(\n    species=191, name='X',\n    source='" + 'e' * 64 + "',\n    parents=[])\n"
+        self.assertEqual(v.repin_constant(text, 'e' * 64, self.NEW), text.replace('e' * 64, self.NEW))
+        self.assertIsNone(v.repin_constant(text + "SOURCE = '" + 'e' * 64 + "'\n", 'e' * 64, self.NEW))   # two pins: not moved
+
+    def test_stage_module_reads_the_moved_pin_without_touching_the_imported_one(self):
+        path = v.ROOT / 'tools/models/field_animations/nefertimon_care.py'
+        module = importlib.import_module('tools.models.field_animations.nefertimon_care')
+        moved = v.stage_module('tools.models.field_animations.nefertimon_care',
+                               {path: v.repin_constant(path.read_text(), module.SOURCE, self.NEW)})
+        self.assertEqual((moved.SOURCE, module.SOURCE == self.NEW), (self.NEW, False))
 
     def test_source_constant_and_species_keyword_profile_move(self):
         text = "X = 1\nSOURCE='" + 'e' * 64 + "'\nOTHER = 2\n"

@@ -244,6 +244,9 @@
       {"op": "smooth", "bone": 4, "passes": 2}
     ]}
   },
+  "273": {
+    "36": {"ticks": 61, "ops": []}
+  },
   "278": {
     "33": {"ticks": null, "ops": [
       {"op": "retime", "ticks": 32},
