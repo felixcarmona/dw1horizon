@@ -97,5 +97,13 @@
     "hit": [[1, "EFFESD/MESD7100.BIN", "EFFESD/AESD7100.BIN"]],
     "scale": 0.287,
     "hit_scale": 0.1
+  },
+  "134": {
+    "name": "Tusk Crusher",
+    "stands_for": 111,
+    "cast": [[1, "EFFEUA/MEUA3900.BIN", "EFFEUA/AEUA3900.BIN"], [2, "EFFEUA/MEUA4000.BIN", "EFFEUA/AEUA4000.BIN"]],
+    "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
+    "scale": 0.294,
+    "hit_scale": 0.1
   }
 }
