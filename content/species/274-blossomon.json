@@ -11,6 +11,7 @@
                  "Dynamite Kick (44)", "Tremar", "Sweet Breath"],
   "drop": {"item": "sm.recovery", "percent": 30},
   "effects_like": 19,
+  "own_effect": {"technique": "Sweet Breath", "chunk": 141},
   "model": {
     "file": "build/batch8/Blossomon.MMD",
     "radius": 144,

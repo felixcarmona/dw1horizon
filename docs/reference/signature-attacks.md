@@ -30,6 +30,7 @@ the moment the attack starts.
 | 271 Plesiomon | Sad Water Blast (DW2) | Mail Strome | at the target: a sad song and a wave of water over every enemy | 1 | plays at the target, hits at tick 40 | none (scale 0.249) | one enemy, as for Mail Strome | all enemies |
 | 272 Woodmon | Twig Tap (DW2) | Sweet Breath | at the target: two swipes with its twig arms | 1 | plays at the target, hits at tick 40 | none (scale 0.198) | one enemy, as for Sweet Breath | one enemy, 2 hits |
 | 273 Floramon | Rain of Pollen (DW2) | Poison Ivy | at the target: blows a cloud of pollen at the target | 1 | plays at the target, hits at tick 40 | none (scale 0.194) | one enemy, as for Poison Ivy | one enemy |
+| 274 Blossomon | Ninja Flower (DW2) | Sweet Breath | volley: flower shuriken over every enemy | 1 | flies at tick 30, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.238) | one enemy, as for Sweet Breath | all enemies, 4 hits |
 
 ## Where the port differs from the source
 

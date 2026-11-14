@@ -153,5 +153,13 @@
     "hit": [[1, "EFFEBD/MEBD0000.BIN", "EFFEBD/AEBD0000.BIN"]],
     "scale": 0.194,
     "hit_scale": 0.1
+  },
+  "141": {
+    "name": "Ninja Flower",
+    "stands_for": 72,
+    "cast": [[1, "EFFESA/MESA6800.BIN", "EFFESA/AESA6800.BIN"], [2, "EFFESA/MESA6900.BIN", "EFFESA/AESA6900.BIN"]],
+    "hit": [[1, "EFFEWD/MEWD0200.BIN", "EFFEWD/AEWD0200.BIN"]],
+    "scale": 0.238,
+    "hit_scale": 0.1
   }
 }
