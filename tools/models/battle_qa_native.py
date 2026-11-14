@@ -216,6 +216,14 @@ def bound(sid, final_data, source_data):
     return skeleton, rig, final, source, blocks, fit, {s for group in leads.values() for s in group}, mapping
 
 
+def source_frames(source, ns, slot, final_frames):
+    """The source clip of a slot resampled tick for tick onto the final clip, whose length a binding may set
+    (battle_originals.ticks): measured on main's length the two timelines would not line up."""
+    from tools.models.field_animations import native_battle
+    sfr, _, _, tile = native_battle.source_clip(source, ns, slot, len(final_frames[0]))
+    return sfr, tile
+
+
 def check(sid, final_data, source_data, main_data, slots=None):
     import animsheet
     import mmd
@@ -296,7 +304,7 @@ def check(sid, final_data, source_data, main_data, slots=None):
     for s in slots:
         fF, fM = Fr.frames(s), Mr.frames(s)
         same_main = np.array_equal(fF[0], fM[0]) if fF[0].shape == fM[0].shape else False
-        sfr, _, _, tile = native_battle.source_clip(source, ns, s, len(fM[0]))
+        sfr, tile = source_frames(source, ns, s, fF)
         sfr = np.array(sfr, float)
         src_len = len(animsheet.slot_frames(source, ns, s)[0])
         src = body_world(sfr, [p for _, p in skeleton], yaw)

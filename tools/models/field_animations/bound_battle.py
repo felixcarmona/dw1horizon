@@ -252,7 +252,8 @@ def build(data, skeleton):
     final.type = int(sid)
     source = source_model(battle, spec)
     ctx = context(recipe, spec, source, final, rig)
-    output, proof = native_battle.apply(data, ctx, recipe['slots'], recipe.get('keep_events', ()), recipe.get('repairs'))
+    output, proof = native_battle.apply(data, ctx, recipe['slots'], recipe.get('keep_events', ()), recipe.get('repairs'),
+                                       recipe.get('ticks'))
     compacted = None
     if 'compact_from' in recipe:
         output, compacted = compact(output, len(rig), recipe['compact_from'])

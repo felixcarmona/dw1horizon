@@ -8,7 +8,7 @@
   "specialties": ["battle", "fire", null],
   "techniques": ["Megaton Punch", "War Cry", "Buster Dive", "Counter", "Dynamite Kick (44)", "Tremar", "Sonic Jab",
                  "Muscle Charge", "Fire Tower", "Inifinity Burn", "Prominence Beam", "Meltdown",
-                 "Magma Bomb", "High Electro Shocker"],
+                 "Magma Bomb", "Fireball"],
   "drop": {"item": "Various", "percent": 30},
   "effects_like": 23,
   "model": {

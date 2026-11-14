@@ -343,9 +343,9 @@
   "name": "Snimon",
   "bones": 30,
   "skeleton_sha256": "58a10c535af1abc801de88e2439f2425eaa8bab90bd73846b4e327a443fb859e",
-  "source_sha256": "5008586eba2ebeff6e8ed0274bbf9deb935e1a0ccb89962d32092d49e7775ed9",
+  "source_sha256": "28ece04632a8a8ca166651287f3628ba900ec2c579ba47c430246f9399064ee0",
   "base_generator": null,
-  "post_source_sha256": "5008586eba2ebeff6e8ed0274bbf9deb935e1a0ccb89962d32092d49e7775ed9",
+  "post_source_sha256": "28ece04632a8a8ca166651287f3628ba900ec2c579ba47c430246f9399064ee0",
   "slots": {
    "2": {
     "from": 2,

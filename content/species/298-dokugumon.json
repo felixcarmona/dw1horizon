@@ -7,7 +7,7 @@
   "attribute": "virus",
   "specialties": ["nature", "battle", null],
   "techniques": ["Danger Sting", "Poison Claw", "Green Trap", "Mass Morph", "Insect Plague", "Poison Powder",
-                 "Muscle Charge", "War Cry", "Sonic Jab", "Tremar", "Sweet Breath"],
+                 "Muscle Charge", "War Cry", "Sonic Jab", "Tremar", "Bit Bomb"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 38,
   "model": {
