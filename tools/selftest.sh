@@ -122,10 +122,14 @@ if [ -f "$PATCHED/src/main/mod_feed.c" ]; then
     run care-badge-host $PY tools/dev/playtest/care_badge_host.py "$PATCHED"
     run hpmp-care-host $PY tools/dev/playtest/hpmp_care_host.py "$PATCHED"
     run quick-care-host $PY tools/dev/playtest/quick_care_host.py "$PATCHED"
+    run care-menu-read-host $PY tools/dev/playtest/care_menu_read_host.py "$PATCHED"
+    run player-menu-read-host $PY tools/dev/playtest/player_menu_read_host.py "$PATCHED"
 else
     skip care-badge-host "needs a prepared developer tree"
     skip hpmp-care-host "needs a prepared developer tree"
     skip quick-care-host "needs a prepared developer tree"
+    skip care-menu-read-host "needs a prepared developer tree"
+    skip player-menu-read-host "needs a prepared developer tree"
 fi
 run systemw-label-tests $PY -m unittest tools.test_systemw
 disc evolution-tree   $PY tools/test_evo_tree.py --practical

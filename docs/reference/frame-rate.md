@@ -419,7 +419,10 @@ pass, extra pass, in lines) and outcome (frames planned, shown, late) in a 32-ti
 fewer than `MOD_CAD_KEEP60`/32 frames a tick are shown (16 ticks of evidence), down from 30 when more than
 `MOD_CAD_KEEP30` frames per 32 ticks are late or skipped, up only after a full window whose costs predict the higher
 cadence and a wait that doubles after every failed try (32 ... 1024 ticks). The world and the battle loops remember
-their levels; a map change clears the evidence and the wait. `MOD_FPS_POLICY` 0 is the ladder, 1/2/3 lock 60 /
+their levels; a map change clears the evidence and the wait. `MOD_CAD_KEEP60` is 90 (2.8 of 3 frames a tick): at
+2 MB and the stock clock File City and Gear Savanna showed 1.6-2.4 frames a tick at 60, an uneven 40-44 fps whose
+2- and 1-refresh intervals read as stutter, and an even 30 replaces it. The battle loop starts at steady 30, since
+no battle measured there fits 60. `MOD_FPS_POLICY` 0 is the ladder, 1/2/3 lock 60 /
 steady 30 / 20, 4 is the CPU-probe selection below (the only policy in which the probe writes `MOD_FPS_MODE_RUN`,
 which stays at 2 for AUTO/60 and at 0 for the explicit 20 option). The CPU probe still runs for the title notice. Design, measurements and
 the recommendation: [../proposals/frame-rate-excellence.md](../proposals/frame-rate-excellence.md);

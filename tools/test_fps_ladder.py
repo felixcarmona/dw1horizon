@@ -7,6 +7,7 @@ fast it drops, that it never flaps within a scene, that a failing trial waits lo
 the battle loops remember their levels, and that fast ticks, the test tick length, curling and the locked policies
 leave it alone."""
 from pathlib import Path
+import re
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from tools.test_cheats import compile_check, function
@@ -15,11 +16,18 @@ from tools.test_cheats import compile_check, function
 def main():
     work = Path(sys.argv[1]) if len(sys.argv) > 1 else Path('build/decomp-int')
     source = (work / 'src/main/main.c').read_text()
+    # the shipped defaults: the 60 threshold and the levels the world and the battle loops start at
+    keep60 = int(re.search(r'int8_t MOD_CAD_KEEP60 = (\d+);', source).group(1))
+    start = re.search(r'modCad = \{ \{ 0 \}, 0, 0, \{ MOD_CAD_WINDOW, MOD_CAD_WINDOW \}, 0, 0, -1, -1, 0, \{ (\d), (\d) \} \};', source)
+    assert start, 'modCad initializer changed: update this test'
     code = r'''
 #include <stdint.h>
 #include <assert.h>
 #include <stdio.h>
 #define MOD_CAD_WINDOW 32
+#define KEEP60_DEFAULT %d
+#define START_WORLD %s
+#define START_BATTLE %s
 #define MOD_CAD_LINES 263
 #define MOD_CAD_MARGIN 12
 #define MOD_FPS_POLICY_AUTO 0
@@ -35,7 +43,7 @@ int32_t MOD_RENDER_CADENCE, MOD_FPS_TICKS, MOD_INTERP_MAP_GEN;
 static int32_t modPassSetupLines = 40;
 int8_t MOD_FPS_POLICY;
 int8_t MOD_CAD_LEVEL = 2;
-int8_t MOD_CAD_KEEP60 = 60;
+int8_t MOD_CAD_KEEP60 = KEEP60_DEFAULT;
 int8_t MOD_CAD_KEEP30 = 4;
 int32_t MOD_CAD_SWITCHES;
 int32_t MOD_CAD_LAST;
@@ -46,8 +54,9 @@ static struct {
 	int16_t cool[2];
 	int8_t count, pos, ctx, prev, up;
 	int8_t ctxLevel[2];
-} modCad = { { 0 }, 0, 0, { MOD_CAD_WINDOW, MOD_CAD_WINDOW }, 0, 0, -1, -1, 0, { 2, 2 } };
+} modCad = { { 0 }, 0, 0, { MOD_CAD_WINDOW, MOD_CAD_WINDOW }, 0, 0, -1, -1, 0, { START_WORLD, START_BATTLE } };
 '''
+    code = code.replace('%d', str(keep60), 1).replace('%s', start.group(1), 1).replace('%s', start.group(2), 1)
     for name in ('modCadPredict60', 'modCadArm', 'modCadRecord'):
         code += '\n' + function(source, name)
     code += r'''
@@ -80,6 +89,21 @@ static void fresh(void) {
 }
 int main(void) {
     int i, sw;
+    /* as shipped: the world starts at 60, a battle at steady 30 (no battle fits 60 at the stock clock: its first
+     * pass alone costs about a refresh), and 60 is kept only while nearly every frame of it is shown */
+    assert(START_WORLD == 2 && START_BATTLE == 1 && KEEP60_DEFAULT >= 88 && KEEP60_DEFAULT + 4 <= 96);
+    MOD_RENDER_CADENCE = 0; MOD_FPS_TICKS = 0;
+    assert(modCadArm(MOD_PRESENT_BATTLE, 3, 0) == 1 && MOD_CAD_LEVEL == 1); /* the first battle: no 60 trial */
+    MOD_RENDER_CADENCE = 0; assert(modCadArm(0, 3, 0) == 2);              /* the world, back at its own level */
+    /* File City (2.3 of 3 frames shown) and Gear Savanna (1,2,1,2): mixed intervals, so steady 30 by default.
+     * File City's line costs predict 60 (the failed-try waits below bound how often it is tried again) */
+    fresh();
+    for (i = 0; i < 16; i++) tick(0, 237, 182, (i % 10) < 3 ? 3 : 2);
+    assert(MOD_CAD_LEVEL == 1 && MOD_CAD_SWITCHES == 1);
+    fresh();
+    for (i = 0; i < 1200; i++) tick(0, 306, 218, -1);
+    assert(MOD_CAD_LEVEL == 1 && MOD_CAD_SWITCHES == 1);
+    MOD_CAD_KEEP60 = 60; /* the cases below were measured against the old threshold */
     /* the frames 60 could show: light, File City, Gear Savanna, a tournament (measured profiles) */
     assert(modCadPredict60(150, 110) == 3);
     assert(modCadPredict60(237, 182) == 3);

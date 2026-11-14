@@ -1107,8 +1107,11 @@ upload rectangles and file-table names remain unchanged. The condition ring has
 eight slots and keeps its existing layout, animation and frontmost Square badge.
 
 The care collector and mutable UI state remain in main. The existing `feedNote`
-routine and immutable captions move to MENU_REL. `feedOpen` loads MENU before
-reading them, and resident closing/giving paths call `closeMenuOverlay` to restore
+routine and immutable captions move to MENU_REL. `feedOpen` stops the tamer and
+queues MENU as an asynchronous file-queue read (once the queue and the tile stream
+are idle); `feedTick` draws the list when the read has landed, so the field keeps
+drawing while it loads (a blocking `readFile` here stood the picture still for about
+20 refreshes on every Square). Resident closing/giving paths call `closeMenuOverlay` to restore
 the curling library. Care callbacks remain resident through item animations.
 
 With the final disc flags and all nine padded language banks, `main_BSS_END`
