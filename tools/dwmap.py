@@ -1102,13 +1102,26 @@ class Requant:
         self.pal = pal; self.cache = {}
         self.skip = {0} if raw is not None and raw[0] == 0 else set()
 
+    @property
+    def skip(self):
+        return self._skip
+
+    @skip.setter
+    def skip(self, indices):
+        """The palette indices never chosen (a caller may set them after construction: `rq.skip = ...`)."""
+        self._skip = indices
+        self._cands = [(i, c) for i, c in enumerate(self.pal) if i not in indices]
+
     def __call__(self, r, g, b):
         k = (r, g, b); v = self.cache.get(k)
         if v is None:
             best = 1 << 30
-            for i, (pr, pg, pb) in enumerate(self.pal):
-                if i in self.skip: continue
-                dd = (pr - r) ** 2 * 3 + (pg - g) ** 2 * 4 + (pb - b) ** 2 * 2
+            for i, (pr, pg, pb) in self._cands:
+                dd = (pr - r) ** 2 * 3
+                if dd >= best: continue          # (the other terms only add: this one cannot be the nearest)
+                dd += (pg - g) ** 2 * 4
+                if dd >= best: continue
+                dd += (pb - b) ** 2 * 2
                 if dd < best: best, v = dd, i
             self.cache[k] = v
         return v
@@ -1126,19 +1139,25 @@ class RequantTimes(Requant):
         self.skip |= set(range(256)) - used            # only colours the screen already shows (others may be reserved)
         self.models = [M for M in time_of_day_model(t, m)[1:]]
         self.pals = [t.palette_rgb(k) for k in range(1, len(t.cluts))]
+        # the colours to compare, per palette index: the day colour (weight 2) and, for each evening/night CLUT that has a model,
+        # its colour (weight 1) against what the model makes of the pixel
+        live = [p for M, p in zip(self.models, self.pals) if M is not None]
+        self._live = [M for M in self.models if M is not None]
+        self._rows = [(i, self.pal[i], tuple(p[i] for p in live)) for i in range(len(self.pal)) if i not in self.skip]
 
     def __call__(self, r, g, b):
         k = (r, g, b); v = self.cache.get(k)
         if v is None:
-            targets = [(2, (r, g, b), self.pal)] + [(1, apply_model(M, (r, g, b)), p)
-                                                    for M, p in zip(self.models, self.pals) if M is not None]
+            targets = [apply_model(M, (r, g, b)) for M in self._live]
             best = None
-            for i in range(len(self.pal)):
-                if i in self.skip: continue
-                dd = 0
-                for w, (tr, tg, tb), p in targets:
-                    pr, pg, pb = p[i]; dd += w * ((pr - tr) ** 2 * 3 + (pg - tg) ** 2 * 4 + (pb - tb) ** 2 * 2)
-                if best is None or dd < best: best, v = dd, i
+            for i, (pr, pg, pb), others in self._rows:
+                dd = 2 * ((pr - r) ** 2 * 3 + (pg - g) ** 2 * 4 + (pb - b) ** 2 * 2)
+                if best is not None and dd >= best: continue      # (what follows only adds)
+                for (tr, tg, tb), (pr, pg, pb) in zip(targets, others):
+                    dd += (pr - tr) ** 2 * 3 + (pg - tg) ** 2 * 4 + (pb - tb) ** 2 * 2
+                    if best is not None and dd >= best: break
+                else:
+                    if best is None or dd < best: best, v = dd, i
             self.cache[k] = v
         return v
 
