@@ -50,7 +50,7 @@ Usage:
 Every key of the format is in docs/mods/species.md. Other tools read species through load_content(),
 species_record(), table_rows(), extra_rows(), model_size(), wild_stats().
 """
-import argparse, collections, csv, glob, json, os, re, struct, subprocess, sys
+import argparse, collections, copy, csv, glob, json, os, re, struct, subprocess, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, 'tools'))
@@ -855,11 +855,25 @@ def load_file(path):
     return validate(s)
 
 
+_LOADED = {}      # path -> ((mtime_ns, size), validated file dict): what load_content already read
+
+
+def _load_cached(path):
+    """load_file(path), but a file that has not changed since it was last read is copied, not parsed and validated
+    again (a build asks for the whole content folder hundreds of times; callers change what they get, so a copy)."""
+    st = os.stat(path)
+    key = (st.st_mtime_ns, st.st_size)
+    hit = _LOADED.get(path)
+    if hit is None or hit[0] != key:
+        hit = _LOADED[path] = (key, load_file(path))
+    return copy.deepcopy(hit[1])
+
+
 def load_content(content=None, ids=None):
     """{id: file dict} of every species file of the content folders (0..1023)."""
     out = {}
     for p in content_files(content):
-        s = load_file(p)
+        s = _load_cached(p)
         t = s['id']
         if ids is not None and t not in ids: continue
         if t in out: raise SystemExit(f'{p}: id {t} is also defined in {out[t]["_path"]}')

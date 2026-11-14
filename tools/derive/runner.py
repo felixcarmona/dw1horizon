@@ -201,12 +201,19 @@ class Unit:
       order_group  optional name of a sequence within this step (shared maps, for example)
       record_snapshot  recording may compute this group from private prepared snapshots, then merge in order;
                        runtime ordering still applies. Only use when earlier group outputs are not inputs.
+      independent_start  the unit never depends on what another unit of its group wrote: it starts from the preimages of
+                       the shared files, so its own outputs are the same whichever units ran before it. Only the version
+                       a shared path ends with depends on the order (the last writer of the recorded order). A runner
+                       that keeps every unit's writes apart and gives a shared path the last writer's version (the web
+                       engine's registry) may start such units in any order; this runner keeps the sequence.
     """
-    def __init__(self, name, fn, args=(), inputs=(), outputs=(), order_group=None, record_snapshot=False):
+    def __init__(self, name, fn, args=(), inputs=(), outputs=(), order_group=None, record_snapshot=False,
+                 independent_start=False):
         self.name, self.fn, self.args = name, fn, tuple(args)
         self.inputs, self.outputs = list(inputs), list(outputs)
         self.order_group = order_group
         self.record_snapshot = record_snapshot
+        self.independent_start = independent_start
 
 
 class Done:

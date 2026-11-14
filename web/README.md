@@ -175,7 +175,10 @@ They are removed on success, cancellation or failure, and by page-load cleanup a
    while another job writes that path (the story passes edit the new screens' .MAP in place); a version is removed
    once a newer one replaced it and no running job reads it. A path several units of one step write ends as the
    last of them in the recorded order wrote it (natively, the story passes do not all write the same bytes there),
-   whichever finished last here.
+   whichever finished last here. So the story passes (`Unit.independent_start`: each starts the new maps from their
+   `.orig`) do not wait for one another in the plan: until 0.0.8 they were a chain of 18 passes in a row, the longest
+   path of the build: by the plan's estimates, four workers took 87 minutes with the chain and 56 without it, two
+   workers 125 and 110.
 4. A fresh worker checks every built file against the release's SHA-1 for that base (a different one stops it and
    names the files) and writes the image (`build_disc3`, `isowriter.write` streaming to an OPFS sync access handle,
    8 MB at a time; the built files are read from OPFS as they are written); the image's SHA-1 is compared with the
@@ -307,8 +310,11 @@ The page's progress: one bar for the whole build (getting the builder, reading t
 and a plain line of what is being done now in the player's words (`now.*` in `i18n/`; while building, the steps most
 workers are on), above the per-step and per-worker detail. The bar is the time spent over the time spent and left:
 left is what is left of this phase plus the estimates of the next ones (the download from the measured rate; the jobs
-from plan.json's estimates, critical path or work over the workers, scaled by how the jobs done so far compared; the
-check and the writer from `write_est`), and it never goes back.
+from plan.json's estimates, scaled by how the jobs done so far compared, by playing the plan's schedule forward on the
+workers there are: longest remaining path first, a job after the ones it waits for, `jobsEstimate`, tested by
+`node web/test/estimate.mjs`; the check and the writer from `write_est`), and it never goes back. (Until 0.0.8 it
+was the longer of the critical path and the work over the workers, which is what a build with no waits would take: the
+time left grew all through the build, from 55 minutes to over an hour and a half on four workers.)
 
 File access: tree reads obtain fresh directories, file handles and Files from OPFS. `InvalidStateError` or
 `NotReadableError` retries the read once from the storage root, preserving the requested job version. A second

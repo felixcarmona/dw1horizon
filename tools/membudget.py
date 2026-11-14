@@ -130,13 +130,19 @@ def model_data(t):
     return open(path, 'rb').read()
 
 
+_MODEL_SIZES = {}      # species id -> bytes of its MMD (cleared by configure)
+
+
 def mmd_size(t):
     if MODEL_ARCHIVE:
         return len(model_data(t))  # explicit target checks must not silently budget missing models as zero
     if t < 180:
         try: return len(model_data(t))
         except FileNotFoundError: return 0
-    return _species.model_size(t) if _species else 0
+    # model_size reads every species file of the content folders: once per species, not once per call (the heap check
+    # asks 2 to 5 times per resident, and a story pass spent most of its time re-reading the same files)
+    if t not in _MODEL_SIZES: _MODEL_SIZES[t] = _species.model_size(t) if _species else 0
+    return _MODEL_SIZES[t]
 
 
 def staged(t):
@@ -758,6 +764,7 @@ def configure(env=None, partner_mmd_max=None, heap_map=None):
     npc_twin_types.cache_clear()
     model_data.cache_clear()
     model_block.cache_clear()
+    _MODEL_SIZES.clear()
     if 'npcanims' in sys.modules:
         sys.modules['npcanims'].trimmed_size.cache_clear()
 
