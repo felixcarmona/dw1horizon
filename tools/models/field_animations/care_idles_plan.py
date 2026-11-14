@@ -18,6 +18,7 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path[:0] = [str(ROOT), str(ROOT / 'tools'), str(ROOT / 'tools/models')]
+import mmd  # noqa: E402
 from tools.models import battle_qa as bq  # noqa: E402
 from tools.models import care_qa  # noqa: E402
 from tools.models.field_animations import care_idles  # noqa: E402
@@ -28,7 +29,10 @@ def skeleton(sid):
     return json.loads(Path(path).read_text())['model']['skeleton']
 
 
-def roles(data, bones, body=None):
+def roles(data, bones, body=None, limbs=(), head_bones=None, lean_bones=None):
+    """The roles of a species' bones. A body whose limbs read as legs (a squid's arms, a sun's side pieces: every bone
+    is then `keep` and the idle cannot be changed) names them in `limbs` (the first bone of each chain: it becomes a
+    drooping limb, not a leg); `head_bones` and `lean_bones` override the geometry's guess of the head and the spine."""
     rig = bq.Rig.from_mmd(data, bones)
     ref = bq.reference(rig)
     c = bq.Clip(rig, *rig.frames(0))
@@ -41,7 +45,7 @@ def roles(data, bones, body=None):
             b = parent[b]
             out.append(b)
         return out
-    legs = [ch for ch in ref['chains'] if ch['kind'] == 'leg']
+    legs = [ch for ch in ref['chains'] if ch['kind'] == 'leg' and ch['bones'][0] not in limbs]
     keep = sorted({0} | {b for ch in legs for b in ch['bones'] + ancestors(ch['bones'][0])})
     cen = {b: c.V[b][0].mean(0) for b in rig.meshed}
     joint = {b: c.Wb[0, b, :3, 3] for b in range(rig.nb)}
@@ -49,13 +53,18 @@ def roles(data, bones, body=None):
     cand = [b for b in rig.meshed if b not in keep and abs(cen[b][0]) < 0.15 * h]
     head = min(cand, key=lambda b: cen[b][1] + 0.3 * cen[b][2]) if cand else None
     lean, heads = [], []
-    if head is not None:
+    if head_bones is not None:
+        heads = list(head_bones)
+        lean = [b for b in (lean_bones or []) if b not in heads]
+    elif head is not None:
         path = [b for b in reversed(ancestors(head)) if b not in keep] + [head]
         heads = [head]
         p = parent[head]
         if p in path and len(rig.children[p]) == 1:
             heads.insert(0, p)
         lean = [b for b in path if b not in heads]
+    if lean_bones is not None and head_bones is None:
+        lean = list(lean_bones)
     head_tree = set(heads)
     for b in range(rig.nb):
         if any(a in head_tree for a in ancestors(b)):
@@ -63,7 +72,7 @@ def roles(data, bones, body=None):
     droop = {}
     for ch in ref['chains']:
         b0 = ch['bones'][0]
-        if ch['kind'] == 'leg' or b0 in head_tree or b0 in lean or b0 in keep:
+        if (ch['kind'] == 'leg' and b0 not in limbs) or b0 in head_tree or b0 in lean or b0 in keep:
             continue
         tip = cen[ch['tip']]
         W = c.Wb[0, b0, :3, :3]
@@ -97,13 +106,13 @@ def _apply(final, bones, row, log):
             row['tol'] = row.get('tol', 1) + 1
 
 
-def plan(sid, final, main, base=None, slots=(1, 18), body=None, conds=None, log=print, compact=False):
+def plan(sid, final, main, base=None, slots=(1, 18), body=None, conds=None, log=print, compact=False, **roles_kw):
     """The row for species `sid`: per condition a gain whose clip is TARGET off the field idle with no flag (stronger
     while too close, weaker while it sinks, tears or tips); a condition whose clip stays too close to another's
     shares that program (as native partners do); slots that do not fit the buffer are dropped from the end of
     SHARE_ORDER; a slot that fails at every gain is left out (it stays main's)."""
     bones = skeleton(sid)
-    row = roles(final, bones, body)
+    row = roles(final, bones, body, **roles_kw)
     if compact:
         row['compact'] = True
     want = {str(s): (conds or care_idles.DEFAULT)[s] for s in slots}
@@ -158,11 +167,19 @@ def plan(sid, final, main, base=None, slots=(1, 18), body=None, conds=None, log=
         worst = max(close, key=lambda sf: SHARE_ORDER.index(use[sf[0]]))[0]
         other = int(next(f for s, f in close if s == worst).rsplit(' ', 1)[1])
         log(f'  {sid} slot {worst} ({use[worst]}) shares slot {other} ({use[str(other)]})')
+        if use[worst] == use[str(other)]:       # one condition at two lengths (a short idle: slot 1 is one cycle)
+            cycles = row.setdefault('cycles', {})
+            p = len(care_idles._cycle(mmd.MMD.parse(final, len(bones)), len(bones), 1)[0]) - 1
+            k = {s: int(cycles.get(str(s)) or care_idles.cycles_for(s, p)) for s in (int(worst), other)}
+            longer = max(k, key=k.get)              # the longer one plays the shorter's cycles: one program
+            cycles[str(longer)] = min(k.values())
         use[worst] = use[str(other)]
     row['slots'] = use
     row['gain'] = {c: g for c, g in row['gain'].items() if c in use.values()}
     if not row['gain']:
         del row['gain']
+    if row.get('cycles'):
+        row['cycles'] = {s: k for s, k in row['cycles'].items() if s in use}
     if not use:
         return row, None, None, None
     out, rep = _apply(final, bones, row, log)
@@ -181,11 +198,15 @@ def main():
     ap.add_argument('--slots', nargs='*', type=int, default=[1, 18])
     ap.add_argument('--body')
     ap.add_argument('--compact', action='store_true')
+    ap.add_argument('--limbs', nargs='*', type=int, default=[], help='first bones of chains that read as legs but are limbs')
+    ap.add_argument('--head', nargs='*', type=int)
+    ap.add_argument('--lean', nargs='*', type=int)
     ap.add_argument('--out')
     ap.add_argument('--write', action='store_true')
     a = ap.parse_args()
     rd = lambda p: open(p, 'rb').read() if p else None  # noqa: E731
-    row, out, rep, rows = plan(a.id, rd(a.final), rd(a.main), rd(a.base), a.slots, a.body, compact=a.compact)
+    row, out, rep, rows = plan(a.id, rd(a.final), rd(a.main), rd(a.base), a.slots, a.body, compact=a.compact,
+                               limbs=set(a.limbs), head_bones=a.head, lean_bones=a.lean)
     print(json.dumps({k: v for k, v in row.items() if k != 'parents'}))
     print(rep)
     for s, r in rows.items():

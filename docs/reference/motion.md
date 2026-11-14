@@ -181,6 +181,14 @@ under 127 ticks, slot 1 no longer than main's), the floor (under the field idle'
 idle dips under its mean floor) and the resident buffer. A flagged clip is kept only when no flagged number is worse
 than main's same slot. Tests: `tools/test_care_qa.py` (`CARE_QA_MODELS` runs it on a folder of real models).
 
+Datamon 294 0x21 stays main's: the source's own 27-tick marching idle is frantic on our rig (6.4 degrees a tick against the 5.4
+limit and main's 0.4), and with every bone but the root and the body damped to 0.8 of its swing (`damp`) it passes `battle_qa`
+(speed 5.2, vertex step 0.09 h, loop seam 0.03 h, crossings 3.3 a tick), but the extra 4.9 KB program brings the resident part to
+102,242 B after exact compaction of every clip, 1,890 B over 100,352 (only a lossy 5-unit compaction of the care and technique clips fits).
+Solarmon 251 0x21 is not a gap: main's clip is the source's 89-tick spinning-disc idle except the last three ticks, which close
+the loop (the source's last pose is 24 degrees from its first: loop seam 0.206 h); `battle_qa` reports it as main's, with the
+source's own vertex step (0.986 h, source 1.006: the disc's spin), so it stays.
+
 Where a field rework made slot 1 or 18 a copy of the new field idle (24 species; Gazimon's sick idle too), the last provider stage
 `tools/models/field_animations/care_idles.py` makes the condition idles again from the final field idle: only rotation
 channels of the body, head and non-leg limbs change (legs, the bones they hang from, scale and translation channels
@@ -204,6 +212,15 @@ of their own (1.3-3.2 KB at the coarsest encoding the planner tries, 16 units) o
 pass, 0.13 and 0.18 heights off the idle; resident 99,332 and 99,484 B). Their other condition slots stay as they were.
 Their battle slots 0x24 (Snimon: the source clip passes `battle_qa`, but 101,884 B resident after exact compaction) and
 0x21 (Apocalymon: crossings 577 a tick against main's 70 on the reshaped rig, and 103,320 B) stay main's.
+Bodies whose limbs read as legs (a squid's eight arms, a sun's two hands: every bone is then a leg or hangs from one, so the
+planner found no free bone) name them to the planner (`--limbs` the first bone of each such chain, `--head`, `--lean`): they droop
+like any limb, the head nods, and a body with no leg at all (Solarmon) leans as a whole. A short idle whose slot 1 is one cycle
+(Bulbmon's 24 ticks) plays one cycle in the slots that share its program (the row's `cycles`), because two lengths of one
+motion are two programs 0.004 heights apart. Gesomon 240 (one tired program in 1 and 14-18: a second, sick, does not fit; the delta is first compacted exactly,
+98,870 to 97,442 B, then the stage adds 2.8 KB with the new clip encoded at tolerance 2: 100,278 B; slot 19 stays main's), Solarmon 251 (all seven slots: tired, sick shares tired, hungry shares
+unhappy; 35,542 B, the body leans 13-18 degrees forward in tired) and Bulbmon 313 (the head nods and the two vine arms
+droop: tired in 1 and 15-19, sick in 14; the delta is first compacted exactly, 80,934 to 68,204 B) got condition idles: before, slots 1 and 18
+of Gesomon and Solarmon were the field idle itself and Bulbmon's seven were 0.007 heights off it.
 
 Slots 6, 0x14, 0x1A, 0x1C-0x20, 0x26 and 0x27 are the tamer's, NPCs' and the kart race's. Which slots a partner must
 have, and the lint rule for each: [imported-species.md](imported-species.md), "What the game asks of every partner".

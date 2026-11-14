@@ -35,7 +35,8 @@ program of another one (the donor's own condition clip that slots 14-17 play), a
 resident clips again first, exactly (tolerance 0), to make room.
 
 Profiles (content/models/imports/care-idles.json), per species: `body` (biped, quadruped, flyer, serpent, legless:
-the degrees below), the bone lists, the slots and their condition, and an optional `gain` per condition. The planner
+the degrees below), the bone lists, the slots and their condition, an optional `gain` per condition and an optional `cycles` {slot: n} (a slot's clip is the
+idle's cycle n times instead of `cycles_for`'s: slots that share one program must share its length). The planner
 (`plan`, a developer command) reads the roles from the final model's geometry, makes the clips, measures them with
 tools/models/care_qa.py and writes the rows; the build only applies the rows. Standard library only (deterministic
 under tools/derive's correctly rounded math).
@@ -301,7 +302,8 @@ def _descends(parents, c, b):
 
 
 def cycles_for(slot, p):
-    """Whole idle cycles in a condition clip: slot 1 keeps the idle's length; the others last about 3-6 seconds."""
+    """Whole idle cycles in a condition clip: slot 1 keeps the idle's length; the others last about 3-6 seconds (a row's
+    `cycles` {slot: n} overrides: a short idle whose slot 18 must be slot 1's program plays one cycle there too)."""
     if slot == 1:
         return 1
     k = max(1, round(72 / p))
@@ -341,7 +343,7 @@ def apply(data, skeleton, row):
     for slot_text, cond in sorted(row['slots'].items(), key=lambda kv: int(kv[0])):
         slot = int(slot_text)
         p = len(_cycle(model, nb, 1)[0]) - 1
-        k = cycles_for(slot, p)
+        k = int(row.get('cycles', {}).get(slot_text) or cycles_for(slot, p))
         key = (cond, k)
         if key not in made:
             samples, events, _ = _cycle(model, nb, k)

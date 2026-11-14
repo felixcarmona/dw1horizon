@@ -1774,9 +1774,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/240-Gesomon.MMD.mdelta",
-        "delta_sha256": "785e8d5598a93d055581fca8f304ad76528d5dafd417187fd7ea702edc0ae1a1",
-        "sha256": "4409f3a1642988749c7699c93a7928da9ceb65e358fa544ab9234682605118b8",
-        "size": 113490
+        "delta_sha256": "610544ce0c2e8110759614bd00009bc77eb15b109608f8dee550bc24e89a2e32",
+        "sha256": "b57f9d750668c4d02f7b443c3d7e0c2c1ef81db0802cd4feeea9cc531416e3bf",
+        "size": 112062
       },
       "tim": {
         "sources": [
@@ -3964,9 +3964,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/313-Bulbmon.MMD.mdelta",
-        "delta_sha256": "d86999fd56c5646169e052a33c713b191ca0a0b2dda3fafa4779c53df34dad63",
-        "sha256": "24e998d8a6d2807c18e008b1884df7afb3d5e50d7d76a2b533aa40a68ac233f8",
-        "size": 93670
+        "delta_sha256": "95ced790f8684abeb7b7b88e94c29da16b11aba0b6d367c02bf38be9d616a94f",
+        "sha256": "db687dd72dda49f2b01d9c97c34c262e0b64cf0fcbcdd8bb08a459ca26d6d260",
+        "size": 80940
       },
       "tim": {
         "sources": [
