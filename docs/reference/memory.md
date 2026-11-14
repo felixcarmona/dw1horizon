@@ -1254,3 +1254,30 @@ target with the same RNG draw and roll refresh. Two no-input controls matched.
 Twelve card reloads gave **5 Gatomon / 7 BlackGatomon**; the Champion→Ultimate
 check, both popup fonts and screen 207 also passed. Physical hardware and
 DuckStation were not tested.
+
+## Overdell descent and Birdra Transport model room
+
+The executable and heap did not move; three imported models grew. Gargoylemon's gait redo
+added 15.3 KB of resident clips, its restored battle idle 1.9 KB, and SkullSatamon's restored
+battle clips 2.4 KB. With both models loaded, screens 330-335 needed 193,440 B, a margin of
+**−8,040 B**. Hawkmon's restored battle clips (+5.7 KB) took screen 207 to **−4,616 B**.
+
+- **Gargoylemon** (`gargoylemon_gait.py`): the four field clips use per-bone tolerance. The
+  legs and what carries them stay at 1. Tail, chest, arms, head and wings use 5 (0.44°).
+  The other non-field, non-battle clips get the recipe compaction used by native bindings
+  (exact, then tol 5): 96,138 → **90,116 B**.
+- **SkullSatamon**: `battle_originals.compact` with tol 5 brings it from 87,648 to **83,760 B**.
+- **Hawkmon**: until imported NPC models are trimmed, its battle clips 0x22-0x24 are its
+  field clips again. Its other clips are compacted: 87,632 → **81,298 B**.
+
+The same change calls `digimonPara`, `raiseRow` and the evolution row lookups out of line
+(three patches): main gives 2,608 B back and the heap goes from 185,408 to **187,984 B**.
+Each lookup costs one call and return more, a few cycles against a 33 MHz frame budget of about 1.1 million.
+
+Result: all 320 setups pass. Screens 330-335 have **+4,456 B**, 207 has **+4,288 B**, and
+217 (Devimon, Ninjamon, Phantomon) is the tightest at **+2,984 B**.
+
+The durable fix is NPC trimming for imported species. `npc_anim_trim.c` stops at type 180,
+so it never trims them. Trimming would drop their resident clips 0x15-0x1B, measured at
+5.4 KB (Hawkmon), 6.7 KB (SkullSatamon) and 7.0 KB (Gargoylemon). It needs a shared keep
+mask, handling for cold-split table entries, and import bone counts for the stub.

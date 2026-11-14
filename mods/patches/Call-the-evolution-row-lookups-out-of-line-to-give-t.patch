@@ -1,0 +1,70 @@
+From ab65ccb85f3a899296622c4647b3e5464b5bf98a Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 14 Nov 2026 15:00:24 +0000
+Subject: [PATCH] Call the evolution row lookups out of line to give the heap
+ 128 B back
+
+evoReqRow and evoGainsRow, inlined at each EVO_REQ_ROW and EVO_GAINS_ROW, cost the main executable 128 bytes; as functions they do the same lookup with a tail call.
+---
+ include/dw/evl.h       | 17 +++--------------
+ src/main/mod_species.c | 16 ++++++++++++++++
+ 2 files changed, 19 insertions(+), 14 deletions(-)
+
+diff --git a/include/dw/evl.h b/include/dw/evl.h
+index 06e8e64..625543b 100644
+--- a/include/dw/evl.h
++++ b/include/dw/evl.h
+@@ -98,20 +98,9 @@ extern EvoRequirements EVOLUTION_REQS[NUM_ORIGINAL_DIGIMON];
+ /* MOD (scale): rows of species >= NUM_ORIGINAL_DIGIMON come from their DIGI.DAT record (partner.h) */
+ EvoStatsGains *getSpeciesEvoGains(int32_t type);
+ EvoRequirements *getSpeciesEvoReqs(int32_t type);
+-static inline EvoStatsGains *evoGainsRow(int32_t type)
+-{
+-	if ((uint32_t)type < NUM_ORIGINAL_DIGIMON) {
+-		return &EVOLUTION_STATS_GAINS[type];
+-	}
+-	return getSpeciesEvoGains(type);
+-}
+-static inline EvoRequirements *evoReqRow(int32_t type)
+-{
+-	if ((uint32_t)type < NUM_ORIGINAL_DIGIMON) {
+-		return &EVOLUTION_REQS[type];
+-	}
+-	return getSpeciesEvoReqs(type);
+-}
++/* MOD (heap): functions, not inline: inlined at every EVO_GAINS_ROW and EVO_REQ_ROW they cost the main executable 128 bytes */
++EvoStatsGains *evoGainsRow(int32_t type);
++EvoRequirements *evoReqRow(int32_t type);
+ #define EVO_GAINS_ROW(type) (*evoGainsRow(type))
+ #define EVO_REQ_ROW(type) (*evoReqRow(type))
+ 
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index 19202c3..d40ca35 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -312,6 +312,22 @@ EvoStatsGains *getSpeciesEvoGains(int32_t type)
+ 	return (rec != NULL && (rec->flags & SPECIES_FLAG_PARTNER)) ? &rec->evoGains : &NO_EVO_GAINS;
+ }
+ 
++EvoRequirements *evoReqRow(int32_t type)
++{
++	if ((uint32_t)type < NUM_ORIGINAL_DIGIMON) {
++		return &EVOLUTION_REQS[type];
++	}
++	return getSpeciesEvoReqs(type);
++}
++
++EvoStatsGains *evoGainsRow(int32_t type)
++{
++	if ((uint32_t)type < NUM_ORIGINAL_DIGIMON) {
++		return &EVOLUTION_STATS_GAINS[type];
++	}
++	return getSpeciesEvoGains(type);
++}
++
+ int32_t getItemTakeDistance(int32_t type)
+ {
+ 	SpeciesRecord *rec;
+-- 
+2.55.0
+
