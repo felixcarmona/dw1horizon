@@ -416,6 +416,9 @@ consumed (`partner.c:497`). "Merit N" = bought in the merit shop for N points;
   `<profit> B  <customer>/20`, plus a blue bar full at 2560 B and a white tick at 1792 B.
   Patch 0280 lowers the recruit target and bar maximum from 3072 B to 2560 B.
   Routine `0x1e` on screen 49 explicitly arms its world object; leaving the screen removes it.
+  The mood bubble (world object `0x1b1`) also removes itself off screen 49: world objects survive map changes and only
+  mood 5 removed it, so a shift left with a bubble up drew a stale-texture square over wild Digimon
+  (`tools/dev/playtest/mood_bubble_leftover.py`).
   The count reads p123 (capped at 20), including the extra step for a customer who storms off.
   Other uses of `SHOP_VARIABLE` do not arm it. Prices, odds and payouts stay in the scripts.
 

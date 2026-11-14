@@ -1,0 +1,34 @@
+From da59dff58ba70f6eda58c4da8e9156a5f349d2a2 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 14 Nov 2026 20:47:13 +0000
+Subject: [PATCH] Drop the Monochromon mood bubble once the player has left the
+ shop
+
+World objects outlive the map and only mood 5 removes the bubble (object 0x1b1), so a shift left with a bubble up
+kept drawing its 32x32 sprite over the entity its script id names on other screens. Its texture page is overwritten
+there, so a wild Digimon got a solid coloured square over its head until a reset. The render now removes the object
+when the screen is not 49.
+---
+ src/main/script_common.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index 410f2e88..90125187 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -1264,6 +1264,12 @@ void renderMonochromonMoodBubble(int32_t instanceId)
+ 	int16_t scale;
+ 	uint8_t mood;
+ 
++	/* Objects outlive the map and only mood 5 removes this one: left up on leaving the shop it drew its sprite, whose
++	 * texture page is gone, over the entity this script id names on other screens (a solid square over a wild Digimon). */
++	if (CURRENT_SCREEN_ID != 49) {
++		removeObject(0x1b1, 0);
++		return;
++	}
+ 	entityId = readPStat(0xf7);
+ 	mood = readPStat(0xf8);
+ 	entityId = scriptIdToEntityId(entityId);
+-- 
+2.55.0
+
