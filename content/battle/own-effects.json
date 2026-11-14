@@ -48,7 +48,7 @@
     "cast": [[1, "EFFEUA/MEUA1400.BIN", "EFFEUA/AEUA1400.BIN"], [2, "EFFEUA/MEUA1500.BIN", "EFFEUA/AEUA1500.BIN"]],
     "hit": [[1, "EFFESD/MESD1500.BIN", "EFFESD/AESD1500.BIN"]],
     "scale": 0.359,
-    "hit_scale": 0.1
+    "hit_scale": 0.25
   },
   "128": {
     "name": "Duo Scissor Claw",
@@ -56,7 +56,7 @@
     "cast": [[1, "EFFEUA/MEUA1400.BIN", "EFFEUA/AEUA1400.BIN"], [2, "EFFEUA/MEUA1500.BIN", "EFFEUA/AEUA1500.BIN"]],
     "hit": [[1, "EFFESD/MESD1500.BIN", "EFFESD/AESD1500.BIN"]],
     "scale": 0.3,
-    "hit_scale": 0.1
+    "hit_scale": 0.25
   },
   "129": {
     "name": "Fire Blast II",
@@ -80,7 +80,7 @@
     "cast": [[1, "EFFESA/MESA4000.BIN", "EFFESA/AESA4000.BIN"], [2, "EFFESA/MESA4100.BIN", "EFFESA/AESA4100.BIN"]],
     "hit": [[1, "EFFESD/MESD7100.BIN", "EFFESD/AESD7100.BIN"]],
     "scale": 0.31,
-    "hit_scale": 0.1
+    "hit_scale": 0.2
   },
   "132": {
     "name": "Fire Blast",
@@ -96,7 +96,7 @@
     "cast": [[1, "EFFEMA/MEMA4500.BIN", "EFFEMA/AEMA4500.BIN"], [2, "EFFEMA/MEMA4600.BIN", "EFFEMA/AEMA4600.BIN"]],
     "hit": [[1, "EFFESD/MESD7100.BIN", "EFFESD/AESD7100.BIN"]],
     "scale": 0.287,
-    "hit_scale": 0.1
+    "hit_scale": 0.2
   },
   "134": {
     "name": "Tusk Crusher",
@@ -104,7 +104,7 @@
     "cast": [[1, "EFFEUA/MEUA3900.BIN", "EFFEUA/AEUA3900.BIN"], [2, "EFFEUA/MEUA4000.BIN", "EFFEUA/AEUA4000.BIN"]],
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.294,
-    "hit_scale": 0.1
+    "hit_scale": 0.2
   },
   "135": {
     "name": "S-Bone Crusher",
@@ -112,7 +112,7 @@
     "cast": [[1, "EFFESA/MESA9100.BIN", "EFFESA/AESA9100.BIN"], [2, "EFFESA/MESA9200.BIN", "EFFESA/AESA9200.BIN"]],
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.256,
-    "hit_scale": 0.1
+    "hit_scale": 0.2
   },
   "136": {
     "name": "Junk Chunker",
@@ -224,7 +224,7 @@
     "cast": [[1, "EFFEUA/MEUA1400.BIN", "EFFEUA/AEUA1400.BIN"], [2, "EFFEUA/MEUA1500.BIN", "EFFEUA/AEUA1500.BIN"]],
     "hit": [[1, "EFFESD/MESD1500.BIN", "EFFESD/AESD1500.BIN"]],
     "scale": 0.391,
-    "hit_scale": 0.1
+    "hit_scale": 0.25
   },
   "150": {
     "name": "E-Stun Blast",
