@@ -10,7 +10,8 @@ species that have one are listed in [the signature attacks](../reference/signatu
   `"own_effect": {"technique": "Mega Flame", "chunk": 122}`. The technique must be one of its own techniques.
   `tools/species.py` writes them to the species record (`ownEffectTech` at 0x1CF, `ownEffectChunk` at 0x1D0).
 - `getSpeciesTechEffect` (src/main/mod_species.c) is where the battle, the arena and the versus mode pick a
-  technique's effect id. It returns `0x100 + chunk` for that species and technique, and `0x100 + technique` for
+  technique's effect id, from the species and a move byte of its stats (it does the `DIGI_PARA` lookup the call
+  sites did). It returns `0x100 + chunk` for that species and technique, and `0x100 + technique` for
   everything else. The technique keeps its number, power, range, cost and name. Only the picture and the hit
   test change.
 - Chunks 122 and up are appended to `ETCHI/EFEDAT.EFE` after the disc's 122 by the derive step `effects`. The
@@ -74,8 +75,9 @@ effects is in [the DW2 effect notes](../reference/dw2-effects.md).
 
 The chunk's data lives in the battle's effect heap (0x41000 bytes), loaded with the battle's other effects: up to
 16 chunks, 4 fighters x 4 techniques. The largest conversions keep about 17 KB; four of them with the twelve largest
-native chunks come to 0x39584, under the heap. The main executable grows only by `getSpeciesTechEffect` and
-its five call sites; the converter needs no engine change.
+native chunks come to 0x39584, under the heap. The main executable grows by 112 B: `getSpeciesTechEffect`'s
+140 less 28 its two resident call sites save (the patches after it, which call `digimonPara`, `raiseRow`
+and the evolution rows out of line, give 2,656 B back); the converter needs no engine change.
 
 Validation: `python3 -m unittest tools.test_dw2efe` converts small made-up effects and runs the chunks in
 `tools/efesim.py`, a model of the effect script interpreter and the sub-opcodes the converter uses: one hit on the
