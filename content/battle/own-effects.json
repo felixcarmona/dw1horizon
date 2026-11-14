@@ -233,5 +233,13 @@
     "hit": [[1, "EFFESD/MESD0200.BIN", "EFFESD/AESD0200.BIN"]],
     "scale": 0.218,
     "hit_scale": 0.1
+  },
+  "151": {
+    "name": "Royal Smasher",
+    "stands_for": 91,
+    "cast": [[1, "EFFESA/MESA7800.BIN", "EFFESA/AESA7800.BIN"], [2, "EFFESA/MESA7900.BIN", "EFFESA/AESA7900.BIN"]],
+    "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
+    "scale": 0.274,
+    "hit_scale": 0.1
   }
 }
