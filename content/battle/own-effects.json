@@ -8,5 +8,14 @@
     "scale": 0.266,
     "hit_scale": 0.1,
     "reach": 1100
+  },
+  "123": {
+    "name": "Buffalo Breath",
+    "stands_for": 62,
+    "cast": ["EFFEWA/MEWA0300.BIN", "EFFEWA/AEWA0300.BIN"],
+    "hit": ["EFFEWD/MEWD0200.BIN", "EFFEWD/AEWD0200.BIN"],
+    "scale": 0.269,
+    "hit_scale": 0.1,
+    "reach": 1100
   }
 }
