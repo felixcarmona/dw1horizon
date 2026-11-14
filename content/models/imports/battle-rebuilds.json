@@ -1,1 +1,10 @@
-{}
+{
+  "223": {
+    "34": {"ticks": null, "ops": [
+      {"op": "turn", "bone": 1, "axis": "x", "deg": -28},
+      {"op": "turn", "bone": 11, "axis": "x", "deg": 8},
+      {"op": "lift", "bone": 1, "up": 40}]},
+    "44": {"ticks": 23, "ops": [
+      {"op": "lift", "bone": 1, "up": 70, "ticks": [0, 5, 16, 22]}]}
+  }
+}

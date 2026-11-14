@@ -95,6 +95,15 @@ crossings against 3 and 5; as own streams they overflow the resident buffer, 100
 root travel of every clip, battle ones included, so a restored movement on a reshaped species differs from the source's in
 root travel only (rotations stay exact).
 
+LadyDevimon (223) has her own tired battle idle (slot 0x22, 61 ticks) and get-up (0x2C, 23 ticks) back, rebuilt from the
+source game's clips (`content/models/imports/battle-rebuilds.json`): the tired idle's torso leans back 38 degrees in the
+original, so the pelvis is turned forward 28 degrees (the right thigh 8 degrees back to keep the leg under it) and the body
+raised 40 units, which keeps the soles off the floor (tipped 22 degrees against main's 10, sink 0.17 heights against main's
+0.10); the get-up, which ends in the battle idle's pose instead of a neutral one, is raised up to 70 units over its middle
+ticks (sink 0.27 heights against main's 0.28). Candlemon's 0x2B (defeat) and ShellNumemon's 0x22 are not restored on
+purpose: Candlemon topples over backwards and lies on the floor where the original only leans the pedestal back 54 degrees,
+and ShellNumemon's tired idle is the torso-leaned one (`battle_qa.POLISHED`).
+
 **Natively bound species get their originals by retargeting.** A native binding (`native_binding.py`) deep-copies the
 donor's skeleton and every clip, so the source game's battle clips are gone. A recipe's `"battle_originals": {"slots":
 [...]}` puts them back for the slots listed (`field_animations/native_battle.py`, stdlib only): each donor bone is
