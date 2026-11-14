@@ -568,6 +568,10 @@ costs 10-14 lines per pass.
   now measures each scene instead. Console timing remains a separate validation target.
 - Background tiles are 12 `POLY_FT4` (negligible CPU); a typical Digimon model is about 400 TMD primitives, about 35
   lines per model with `GsSortObject4`.
+- An animation start (`startAnimation`) zeroes every bone's momentum in `resetMomentumData`. That took six BIOS
+  `memcpy` calls a bone, about 2.5 lines a bone: a battle tick that started two or three animations (an attack, a
+  hit reaction, the tamer) spent 55-160 lines there, and those ticks were nearly all of a steady-30 battle's late
+  frames. It stores the zeros itself now (patch `Clear-the-animation-momentum-without-the-BIOS-memcpy`).
 
 ## Curling (0292)
 
