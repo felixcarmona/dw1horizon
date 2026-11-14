@@ -305,5 +305,13 @@
     "hit": [[2, "EFFESD/MESD0000.BIN", "EFFESD/AESD0000.BIN"]],
     "scale": 0.184,
     "hit_scale": 0.1
+  },
+  "160": {
+    "name": "Needle Squall",
+    "stands_for": 111,
+    "cast": [[1, "EFFESA/MESA9300.BIN", "EFFESA/AESA9300.BIN"], [2, "EFFESA/MESA9400.BIN", "EFFESA/AESA9400.BIN"]],
+    "hit": [[1, "EFFESD/MESD7400.BIN", "EFFESD/AESD7400.BIN"]],
+    "scale": 0.235,
+    "hit_scale": 0.1
   }
 }
