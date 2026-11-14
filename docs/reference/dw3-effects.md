@@ -249,8 +249,11 @@ game's 20 Hz engine cannot place on the original's 30 fps frames. The conversion
 keeps a template chunk. These 3D conversions leave the technique's sprites out.
 
 The other 28 techniques draw only sprites. Converted from their sprites (step 8 above), 11 pass the fidelity check
-and 17 keep a template chunk (their finisher's), after one round of fixes: 11 of them fit a chunk only by holding
-each pose 2-4 ticks, so they move at 5-10 Hz and fail the smoothness check; GrapLeomon and Beelzemon do not fit
+and ship, read through the derive path like the 3D ports (the own effect lists each sprite's pack and sections;
+Maildramon's pack differs on the USA disc, so its chunk has a USA pin of its own). 17 keep a template chunk
+(their finisher's), after one round of fixes: 10 of them fit a chunk only by holding each pose 2-4 ticks, so they
+move at 5-10 Hz and fail the smoothness check (drawing between ticks does not help them: a held pose still stands
+still for its ticks); GrapLeomon and Beelzemon do not fit
 whole; Antylamon, Arukenimon, SkullSatamon and Taomon draw too little or out of time (a screen-space sprite
 drifts, a late burst is missing); Bastemon changes too seldom.
 
