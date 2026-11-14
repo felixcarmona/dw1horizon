@@ -124,6 +124,17 @@ class Repin(unittest.TestCase):
         moved = json.loads(v.repin_donors(text, 5, 'e' * 64, self.NEW))
         self.assertEqual((moved['1']['donor_sha256'], moved['2']['donor_sha256']), (self.NEW, 'e' * 64))
         self.assertIsNone(v.repin_donors(text, 7, 'e' * 64, self.NEW))
+    def test_celebration_row_moves_by_its_digits_only(self):
+        text = v.CELEBRATION_ROWS.read_text()
+        old = json.loads(text)['321']['source_sha256']
+        moved = v.repin_celebration(text, 321, old, self.NEW)
+        changed = [(a, b) for a, b in zip(text.splitlines(), moved.splitlines()) if a != b]
+        self.assertEqual(len(text.splitlines()), len(moved.splitlines()))
+        self.assertEqual(len(changed), 1)
+        self.assertEqual(json.loads(moved)['321']['source_sha256'], self.NEW)
+        with self.assertRaisesRegex(ValueError, 'not the current input'):
+            v.repin_celebration(text, 321, 'c' * 64, self.NEW)
+        self.assertIsNone(v.repin_celebration(text, 999, old, self.NEW))
 
     def test_input_pinned_elsewhere_is_reported(self):
         with tempfile.TemporaryDirectory() as td:

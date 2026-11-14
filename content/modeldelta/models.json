@@ -4084,9 +4084,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/317-Fujinmon.MMD.mdelta",
-        "delta_sha256": "aee66f0844cec920224194232949344a58f7e6bd86889c2b3dc1d0b174e519d1",
-        "sha256": "7d93b256ceb7ea25399d779cd7b5ca700769441e837ad059e0403edd09a8442a",
-        "size": 96584
+        "delta_sha256": "d8f662e212fd856a679174c70dc3710a5f2e433c684df9efe988c351ab1c3d6e",
+        "sha256": "a5be25cd3760177d1ee2435f8637a1ae8d2428738d96ea2dbf9106fa099103dd",
+        "size": 98624
       },
       "tim": {
         "sources": [
@@ -4204,9 +4204,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/321-Knightmon.MMD.mdelta",
-        "delta_sha256": "1128f5cc11217b691624d9968b21fcbe5a85a5521b44e6bd47e6e81e3ab82c08",
-        "sha256": "6354f3bf287ef98346b74e28c36c9bcf76fee0fb4da6f69ee51ae73042ea0e2d",
-        "size": 98482
+        "delta_sha256": "c48b706cd39a236fef76a4ec4897f48fb434f8247d67aec868a094953b3ee46e",
+        "sha256": "e405598cdb9d9f24776cb369a32ad713e2f73a8f7b6ebcf5c339afe07212b1b3",
+        "size": 100594
       },
       "tim": {
         "sources": [
@@ -4389,9 +4389,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/327-Gargoylemon.MMD.mdelta",
-        "delta_sha256": "4fd67451f577070ad4536f48f0bd73a65d2902ec48411de2901defe75de3a5f3",
-        "sha256": "f5e78268ff5aa9027264f9349d5c6d710d1753aa2bc65217b6f9ee565c396568",
-        "size": 94094
+        "delta_sha256": "c94494cb2637a797e702b472913a11f2381d2a27345ef32fbefc2fa7ca941185",
+        "sha256": "7126c16f830513af7bc3f3f91e7c495f844da2bab7b508b54ad9c2151252dfae",
+        "size": 92532
       },
       "tim": {
         "sources": [
@@ -4659,9 +4659,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/336-Raidenmon.MMD.mdelta",
-        "delta_sha256": "5421be820b317824db4740d32b052749f6ef5eccc185f789a2e7bddbaadab735",
-        "sha256": "00742ad6a09e0b381365d203046aece36b45c8c12c94d90f91a09c76c7ef0c9d",
-        "size": 94450
+        "delta_sha256": "b8b3afb956261af4a95d8341db4b5856ab41534b9aeb5f797b09135d4b823144",
+        "sha256": "120c8204f655a708f793942647523218155f62f5e5ecb7b39f73f3905ed9e398",
+        "size": 89196
       },
       "tim": {
         "sources": [
@@ -4929,9 +4929,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/403-Beelzemon.MMD.mdelta",
-        "delta_sha256": "dcd42ee1a66b34ba7f25ddcfabf48c794113f03d8e39e0b138d4437d5f1b06cd",
-        "sha256": "4e4dfa48266df5d2cc6251c31c43e3302db00945379362a5af39ac17593b81cd",
-        "size": 126366
+        "delta_sha256": "ef7b15eec5505d4701160367a5c94b5e993c63f6da0a0cf64428a349f84e2e37",
+        "sha256": "ed39321d0200fac32c3527f09c5cae863de8ba089bb3611f4ebf74127716645d",
+        "size": 127198
       },
       "tim": {
         "sources": [

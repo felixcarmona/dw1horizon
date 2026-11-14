@@ -374,6 +374,7 @@ PROFILE_MODULES = ('tools/models/field_animations/gaits.py', 'tools/models/field
 CHIBI_ROWS = IMPORTED_MODELS_SCRIPT.parent / 'chibi.json'
 PACE_ROWS = IMPORTED_MODELS_SCRIPT.parent / 'pace.json'
 NATIVE_ROWS = IMPORTED_MODELS_SCRIPT.parent / 'native-bindings.json'
+CELEBRATION_ROWS = IMPORTED_MODELS_SCRIPT.parent / 'celebrations.json'
 PIN_FOLDERS = ('content/models/imports', 'tools/models/field_animations')
 
 
@@ -447,6 +448,17 @@ def repin_pace(text, species, old, new):
     if '"base_generator": null' not in block or f'"post_source_sha256": "{old}"' not in block:
         raise ValueError(f'{species}: its pace row follows a base generator; this command does not move it')
     return text[:start.start()] + block.replace(old, new) + text[stop:]
+def repin_celebration(text, species, old, new):
+    """`text`, the celebrations manifest, with the row of `species` pinned to `new` instead of `old` (only that pin's digits
+    change, the file keeps its layout); None when the species has no row. Refuses a row pinned to another input."""
+    row = json.loads(text).get(str(species))
+    if row is None:
+        return None
+    if row['source_sha256'] != old:
+        raise ValueError(f'{species}: its celebrations row pins {row["source_sha256"]}, not the current input {old}')
+    if text.count(old) != 1:
+        raise ValueError(f'{species}: the celebrations manifest names the input {text.count(old)} times')
+    return text.replace(old, new)
 
 
 def stray_pins(texts, old):
@@ -509,6 +521,9 @@ def cmd_repin(a):
             post = sha256(made)
         repin_chibi(chibi_rows, sid, old, new, post)
         texts[CHIBI_ROWS] = json.dumps(chibi_rows, indent=2) + '\n'
+    celebrations = repin_celebration(CELEBRATION_ROWS.read_text(), sid, old, new)
+    if celebrations is not None:
+        texts[CELEBRATION_ROWS] = celebrations
     if not texts:
         print(f'{sid} {row["name"]}: no overlay pins its input; nothing to move')
         return

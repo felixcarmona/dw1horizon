@@ -86,11 +86,27 @@ Pegasusmon, Raidenmon and others), and Creepymon's 0x23/0x24, which stay the twi
 clips (Gazimon's 0x21, the SaberLeomon and WarGreymon 0x22 and Renamon's 0x21 were put back later, rebuilt from the
 source's clip with repairs: see the rebuilt battle clips below). Tests: `tools/test_battle_qa.py`.
 
+**Rebuilt battle clips of imported species (batch 48).** A row in `content/models/imports/battle-rebuilds.json` restores a
+slot from the source game's own clip and repairs only what breaks (`clip_repair.py`: `turn`, `damp`, `lift`); a rebuilt
+slot ships only when `battle_qa.py` passes it on the final output and the resident buffer fits. Fujinmon 0x24 (torso
+turned back 12 degrees, body raised 75 units: tipped 14.6, crossings 91, no sinking), Knightmon 0x24 (hips, shoulders and
+head turned back: tipped 10.8 degrees against 27), Gargoylemon 0x23/0x24 (forelegs turned out: crossings 11 and 8 a tick
+against 60 and 53; the other clips are compacted exactly to fit), Raidenmon 0x23/0x24 (thigh turned out and body raised:
+crossings 108 and 122), Beelzemon 0x22 (the source's own walk, unrepaired: 71 crossings, tipped 25.8) are the source's again. Kept as main's: Armadillomon 0x22-0x24 and 0x2C (main is the source plus the deliberate head lift of `armadillomon_head.py`; not a gap), Gallantmon 0x24 (the source run needs
+the torso turned back 10 degrees and does not fit: 101076 B after exact compaction against 100352), Beelzemon 0x24 (a
+limb is still while its siblings move, 0.000 against 0.279 heights, crossings 203 against 119), Suijinmon 0x23/0x24
+(front legs still, the four-leg field clips are the better movement), Kurisarimon 0x23/0x24 (the source's chains are
+still and the loop jumps 0.81 and 0.11 heights), Hawkmon 0x21 (the source's right foot is turned 58 degrees outward; the
+corrected foot is deliberate, see `hawkmon.py`).
+
 A field overlay writes slots 0-4 and leaves 0x21-0x24 alone, with these documented exceptions: slots whose source clip
 measured worse than main's on the overlay's FINAL output and which therefore keep playing a field clip (main's). Nefertimon
 0x23/0x24 (vertex step 0.45/0.59 heights a tick, under the floor), Knightmon 0x24 (torso tipped 27 degrees against main's 8), Creepymon 0x23/0x24 (crossings 237 against 191, root travel 0.16
 heights off; torso 27 degrees against 14), Gargoylemon 0x23/0x24 (60 and 53
 crossings against 3 and 5; as own streams they overflow the resident buffer, 100602 B against 100352) and Suijinmon
+0x23/0x24 (vertex step 0.45/0.59 heights a tick, under the floor), SaberLeomon 0x22 (crossings 34 a tick against main's 24),
+Creepymon 0x23/0x24 (crossings 237 against 191, root travel 0.16
+heights off; torso 27 degrees against 14), Gazimon 0x21 (loop seam 0.063 heights), and Suijinmon
 0x23/0x24 (the importer's clip has no bone map for the front legs). Each is noted in its generator. The chibi pass scales the
 root travel of every clip, battle ones included, so a restored movement on a reshaped species differs from the source's in
 root travel only (rotations stay exact).
