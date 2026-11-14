@@ -182,6 +182,12 @@ class ClipRepairTest(unittest.TestCase):
             self.assertEqual(a[2][4], round(want))
         self.assertEqual(out[0][2][4] - clip()[0][2][4], out[-1][2][4] - clip()[-1][2][4])
 
+    def test_cut_takes_out_the_ticks_and_keeps_the_rest(self):
+        out = clip_repair.apply_ops(clip(), PARENTS, [{'op': 'cut', 'from': 3, 'to': 6}])
+        self.assertEqual(out, clip()[:3] + clip()[6:])
+        with self.assertRaises(ValueError):
+            clip_repair.apply_ops(clip(), PARENTS, [{'op': 'cut', 'from': 0, 'to': 3}])
+
     def test_seam_closes_the_loop_and_leaves_the_rest(self):
         out = clip_repair.apply_ops(clip(), PARENTS, [{'op': 'seam', 'ticks': 4, 'bones': [1, 2]}])
         self.assertEqual(out[:8], clip()[:8])

@@ -161,6 +161,32 @@ class Generator(unittest.TestCase):
         for a, b in zip(src, out):
             self.assertEqual([x for i, x in enumerate(a) if i != TAIL], [x for i, x in enumerate(b) if i != TAIL])
 
+    def test_repairs_lift_and_retime_the_clip_itself(self):
+        # a row's `repairs`: clip_repair operations on the slot's own clip; a retime scales the loop tick and events
+        src = self.samples()
+        events = [(12, 'sound', {'bank': 0, 'note': 1})]
+        out, loop, ev = care_idles.repaired(src, 0, events, PARENTS, [{'op': 'lift', 'bone': 1, 'up': 30}])
+        self.assertEqual((loop, ev, len(out)), (0, events, len(src)))
+        for a, b in zip(src, out):
+            self.assertEqual(b[1][7], a[1][7] - 30)
+            self.assertEqual(a[2:], b[2:])
+        out, loop, ev = care_idles.repaired(src, 16, events, PARENTS, [{'op': 'retime', 'ticks': 12}])
+        self.assertEqual((len(out), loop, ev[0][0]), (13, 8, 6))
+        self.assertEqual(out[0], src[0])
+        self.assertEqual(out[-1], src[-1])
+
+    def test_repairs_cut_a_repeat(self):
+        # a clip that plays its 6-tick cycle four times loses one repeat: later events move back, earlier ones stay
+        src = [self.samples()[t % 6] for t in range(2)] + [self.samples()[t % 6] for t in range(24)] + [self.samples()[0]]
+        events = [(1, 'sound', {}), (10, 'sound', {}), (20, 'sound', {})]
+        out, loop, ev = care_idles.repaired(src, None, events, PARENTS, [{'op': 'cut', 'from': 20, 'to': 26}])
+        self.assertEqual(len(out), len(src) - 6)
+        self.assertEqual(out[:20], src[:20])
+        self.assertEqual(out[20:], src[26:])
+        self.assertEqual((loop, [t for t, _, _ in ev]), (None, [1, 10]))
+        with self.assertRaises(ValueError):
+            care_idles.repaired(src, None, [], PARENTS, [{'op': 'cut', 'from': 20, 'to': 99}])
+
     def test_condition_idles_pass_qa(self):
         local, tris = rig_parts()
         src = self.samples()
