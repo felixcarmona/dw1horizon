@@ -10,6 +10,7 @@
                  "Winter Blast", "Poison Ivy"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 57,
+  "own_effect": {"technique": "Poison Ivy", "chunk": 140},
   "model": {
     "file": "build/batch8/Floramon.MMD",
     "radius": 100,

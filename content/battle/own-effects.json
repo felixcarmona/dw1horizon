@@ -145,5 +145,13 @@
     "hit": [[1, "EFFESD/MESD7600.BIN", "EFFESD/AESD7600.BIN"]],
     "scale": 0.198,
     "hit_scale": 0.1
+  },
+  "140": {
+    "name": "Rain of Pollen",
+    "stands_for": 98,
+    "cast": [[1, "EFFEMA/MEMA3300.BIN", "EFFEMA/AEMA3300.BIN"], [2, "EFFEMA/MEMA3400.BIN", "EFFEMA/AEMA3400.BIN"]],
+    "hit": [[1, "EFFEBD/MEBD0000.BIN", "EFFEBD/AEBD0000.BIN"]],
+    "scale": 0.194,
+    "hit_scale": 0.1
   }
 }

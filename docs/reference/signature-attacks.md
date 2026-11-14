@@ -29,6 +29,7 @@ the moment the attack starts.
 | 270 PrinceMamemon | Smiley Warhead (DW2) | Smiley Bomb | at the target: a smiling warhead | 1 | plays at the target, hits at tick 40 | none (scale 0.288) | one enemy, as for Smiley Bomb | one enemy |
 | 271 Plesiomon | Sad Water Blast (DW2) | Mail Strome | at the target: a sad song and a wave of water over every enemy | 1 | plays at the target, hits at tick 40 | none (scale 0.249) | one enemy, as for Mail Strome | all enemies |
 | 272 Woodmon | Twig Tap (DW2) | Sweet Breath | at the target: two swipes with its twig arms | 1 | plays at the target, hits at tick 40 | none (scale 0.198) | one enemy, as for Sweet Breath | one enemy, 2 hits |
+| 273 Floramon | Rain of Pollen (DW2) | Poison Ivy | at the target: blows a cloud of pollen at the target | 1 | plays at the target, hits at tick 40 | none (scale 0.194) | one enemy, as for Poison Ivy | one enemy |
 
 ## Where the port differs from the source
 
