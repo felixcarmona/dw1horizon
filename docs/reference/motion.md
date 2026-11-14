@@ -195,6 +195,15 @@ heights off the idle with no flag, lets a condition too close to another share i
 encoding when the resident buffer would overflow. A retargeted care clip that turns a bone far beyond anything the
 species does is tamed in the same stage (the row's `tame`: per slot, the fraction of the swing each such bone keeps
 about the clip's own mean pose), with the smallest cut that passes the bone check (`care_qa`'s flag names the bone).
+Three species near the resident limit (Snimon 328, Apocalymon 400, MegaGargomon 335) had no row, because a condition clip
+of their own (1.3-3.2 KB at the coarsest encoding the planner tries, 16 units) overflows the buffer. Apocalymon's row sets
+`compact`, which re-encodes its other resident clips exactly first (96,962 B), and keeps its own tired idle for slots 1 and 18
+(tolerance 2; resident 100,198 B; care_qa pass, 0.06 heights off the idle). Snimon and MegaGargomon have no such room
+(exact compaction frees 56 and 162 B; their own tired clip would need 222 and 202 B more even at tolerance 16), so a row's
+`share` points slots 1 and 18 at the program slots 14-17 already play, the donor's own condition clip (0 extra bytes; care_qa
+pass, 0.13 and 0.18 heights off the idle; resident 99,332 and 99,484 B). Their other condition slots stay as they were.
+Their battle slots 0x24 (Snimon: the source clip passes `battle_qa`, but 101,884 B resident after exact compaction) and
+0x21 (Apocalymon: crossings 577 a tick against main's 70 on the reshaped rig, and 103,320 B) stay main's.
 
 Slots 6, 0x14, 0x1A, 0x1C-0x20, 0x26 and 0x27 are the tamer's, NPCs' and the kart race's. Which slots a partner must
 have, and the lint rule for each: [imported-species.md](imported-species.md), "What the game asks of every partner".

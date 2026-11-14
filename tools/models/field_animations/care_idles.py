@@ -30,6 +30,10 @@ child adds its own to its parent's (chest, neck and head together make the slump
   droop     the first bone of a limb chain (arm, wing, tail, ear): turned so its tip (a point in the bone's frame)
             goes down by `droop` degrees; a limb already hanging stays as it is
 
+Where the resident buffer has no room for a clip of its own, a row's `share` ({slot: other slot}) points a slot at the
+program of another one (the donor's own condition clip that slots 14-17 play), and `compact` encodes the model's other
+resident clips again first, exactly (tolerance 0), to make room.
+
 Profiles (content/models/imports/care-idles.json), per species: `body` (biped, quadruped, flyer, serpent, legless:
 the degrees below), the bone lists, the slots and their condition, and an optional `gain` per condition. The planner
 (`plan`, a developer command) reads the roles from the final model's geometry, makes the clips, measures them with
@@ -325,6 +329,10 @@ def apply(data, skeleton, row):
     parents = [p for _, p in skeleton]
     if row.get('parents') and row['parents'] != parents:
         raise ValueError('care idles: the skeleton differs from the profile\'s')
+    if row.get('compact'):
+        # room for the new clips: every other resident clip encoded again, the same ticks in fewer bytes (tolerance 0)
+        from tools.models import battle_restore
+        data, _ = battle_restore.compact(data, nb, 0)
     model = mmd.MMD.parse(data, nb)
     table = model.anims.table
     before = {s: model.anims.anims[table[s]].build() if hasattr(model.anims.anims[table[s]], 'build') else None
@@ -342,6 +350,11 @@ def apply(data, skeleton, row):
         table[slot] = len(model.anims.anims)
         model.anims.anims.append(made[key])
         report[slot] = dict(condition=cond, ticks=k * p + 1, cycles=k)
+    for slot_text, source in sorted(row.get('share', {}).items(), key=lambda kv: int(kv[0])):
+        # a slot that plays the program of another (the donor's own condition clip, no bytes of its own)
+        slot = int(slot_text)
+        table[slot] = table[int(source)]
+        report[slot] = dict(shares=int(source))
     for slot_text, factors in sorted(row.get('tame', {}).items(), key=lambda kv: int(kv[0])):
         slot = int(slot_text)
         frames, loop, events = animsheet.slot_frames(model, nb, slot)
@@ -353,7 +366,7 @@ def apply(data, skeleton, row):
     out = model.build()
     check = mmd.MMD.parse(out, nb)
     for s, b in before.items():
-        if str(s) in row['slots'] or str(s) in row.get('tame', {}) or b is None:
+        if str(s) in row['slots'] or str(s) in row.get('share', {}) or str(s) in row.get('tame', {}) or b is None:
             continue
         if check.anims.anims[check.anims.table[s]].build() != b:
             raise ValueError(f'care idles: slot {s} changed')

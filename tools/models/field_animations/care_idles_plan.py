@@ -82,7 +82,7 @@ UP = (1.0, 1.35, 1.7)    # a clip too close to the idle gets stronger
 DOWN = (1.0, 0.7, 0.45)  # a clip that sinks, tears or tips gets weaker
 TARGET = 0.05            # aim a little over care_qa.IDLE_DIST
 SHARE_ORDER = ('tired', 'sick', 'sleepy', 'unhappy', 'hungry', 'toilet')
-TOL_MAX = 8              # coarsest encoding tried (1/4096 turn), when the resident buffer would overflow
+TOL_MAX = 16             # coarsest encoding tried (1/4096 turn), when the resident buffer would overflow
 
 
 def _apply(final, bones, row, log):
@@ -97,13 +97,15 @@ def _apply(final, bones, row, log):
             row['tol'] = row.get('tol', 1) + 1
 
 
-def plan(sid, final, main, base=None, slots=(1, 18), body=None, conds=None, log=print):
+def plan(sid, final, main, base=None, slots=(1, 18), body=None, conds=None, log=print, compact=False):
     """The row for species `sid`: per condition a gain whose clip is TARGET off the field idle with no flag (stronger
     while too close, weaker while it sinks, tears or tips); a condition whose clip stays too close to another's
     shares that program (as native partners do); slots that do not fit the buffer are dropped from the end of
     SHARE_ORDER; a slot that fails at every gain is left out (it stays main's)."""
     bones = skeleton(sid)
     row = roles(final, bones, body)
+    if compact:
+        row['compact'] = True
     want = {str(s): (conds or care_idles.DEFAULT)[s] for s in slots}
     state = {c: dict(ladder=None, i=0) for c in set(want.values())}
     ok = {}
@@ -178,11 +180,12 @@ def main():
     ap.add_argument('base', nargs='?')
     ap.add_argument('--slots', nargs='*', type=int, default=[1, 18])
     ap.add_argument('--body')
+    ap.add_argument('--compact', action='store_true')
     ap.add_argument('--out')
     ap.add_argument('--write', action='store_true')
     a = ap.parse_args()
     rd = lambda p: open(p, 'rb').read() if p else None  # noqa: E731
-    row, out, rep, rows = plan(a.id, rd(a.final), rd(a.main), rd(a.base), a.slots, a.body)
+    row, out, rep, rows = plan(a.id, rd(a.final), rd(a.main), rd(a.base), a.slots, a.body, compact=a.compact)
     print(json.dumps({k: v for k, v in row.items() if k != 'parents'}))
     print(rep)
     for s, r in rows.items():

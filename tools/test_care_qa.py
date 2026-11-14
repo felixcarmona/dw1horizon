@@ -176,6 +176,27 @@ class RealModels(unittest.TestCase):
             with self.subTest(species=sid):
                 self.assertEqual(qa.failing(rows), [], {s: rows[s] for s in qa.failing(rows) if s != 'buffer'})
 
+    def test_share_and_compact_rows(self):
+        # a row's `share` points a slot at another slot's program, `compact` re-encodes the rest exactly
+        import animsheet
+        import mmd
+        for path in sorted(glob.glob(os.path.join(MODELS, '*.C.MMD'))):
+            sid = os.path.basename(path).split('.')[0]
+            species = glob.glob(str(ROOT / f'content/species/{sid}-*.json'))[0]
+            bones = json.loads(Path(species).read_text())['model']['skeleton']
+            data = Path(path).read_bytes()
+            row = {'slots': {}, 'share': {'1': 14}, 'compact': True}
+            out, report = care_idles.apply(data, bones, row)
+            before, after = mmd.MMD.parse(data, len(bones)), mmd.MMD.parse(out, len(bones))
+            with self.subTest(species=sid):
+                self.assertEqual(report[1], {'shares': 14})
+                self.assertEqual(after.anims.table[1], after.anims.table[14])
+                for slot, index in enumerate(before.anims.table):
+                    if index is not None and slot != 1:
+                        self.assertEqual(animsheet.slot_frames(before, len(bones), slot),
+                                         animsheet.slot_frames(after, len(bones), slot))
+            break
+
 
 if __name__ == '__main__':
     unittest.main()
