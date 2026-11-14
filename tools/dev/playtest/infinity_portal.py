@@ -517,6 +517,10 @@ def main():
         if a.state:
             e.run('load',str(a.state.resolve()));e.run('resume')
         else:assert e.continue_game()==0, 'Continue failed'
+        if os.environ.get('PACKET_LANG'):
+            # a multi-language build: switch the language the way the options menu does (index as in modSetLanguage)
+            call(e, 'modSetLanguage', int(os.environ['PACKET_LANG']))
+            assert e.peek('MOD_LANG', 'i') == int(os.environ['PACKET_LANG']), 'language did not switch'
         e.run('lua', f'''IP={{streamFailures=0,coldReads=0,bp={{}}}}
           local m=PCSX.getMemPtr()
           local function battle() return tonumber(m[{e.A('GAME_STATE') & 0x1fffff}])~=0 end
