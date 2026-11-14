@@ -209,5 +209,13 @@
     "hit": [[1, "EFFESD/MESD7400.BIN", "EFFESD/AESD7400.BIN"]],
     "scale": 0.203,
     "hit_scale": 0.1
+  },
+  "148": {
+    "name": "Pearl Shot",
+    "stands_for": 90,
+    "cast": [[1, "EFFESA/MESA2900.BIN", "EFFESA/AESA2900.BIN"]],
+    "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
+    "scale": 0.179,
+    "hit_scale": 0.1
   }
 }
