@@ -56,7 +56,7 @@ PROFILES.update({
                  (2,0,{2:2.5,3:1.5,4:3},2,.4)],
           native_world_rest={7:[45,-8,0],10:[45,8,0]},native_rest_gain=.2,loose={2:6,3:6,4:6},
           style='cheerful upright dragon steps with loose, lagging arms, tail and neck; native jaw-free head, hands and tail acting retained; original idle preserved'),
- 180:dict(source='038ad56e88934b91ab040fbb24a03b918a21dc5d6fbeb217b08dd62755c05a61',bones=20,
+ 180:dict(source='eb42132f083e9cce2cd487f14f74e013782a364d25e08217d4482e6ee22bafb6',bones=20,
           carrier=1,pelvis=1,chest=2,head=3,
           legs=[(14,15,16,[16],1,0),(17,18,19,[19],-1,.5)],arms=[(5,6,1),(8,9,-1)],
           slots=[2,3,4],periods={2:10,3:14,4:6},speeds={2:20,3:14,4:50},duties={4:.38},

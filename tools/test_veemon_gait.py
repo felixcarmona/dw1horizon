@@ -18,7 +18,7 @@ import mmd
 import motionstorage
 from tools.models.field_animations import veemon_gait as gait, quadruped
 
-EXPECTED = '15ec6bc3a01e950eb88abd6c0991c5bca8570c0cc085348f334b849f83677638'
+EXPECTED = 'a19e188c35e85767ab5bac71f6b7d1141520cbc1a3ecbba047866cb8b9777c21'
 NB = 20
 TICKS = {2: 24, 3: 36, 4: 16}
 IDLE = 96
@@ -87,7 +87,7 @@ class VeemonGait(unittest.TestCase):
             self.skipTest('needs the model before this change')
         from motiondiscidentity import changed_programs
         self.assertEqual(changed_programs(self.old, self.new), self.report['changed_slots'])
-        self.assertEqual(self.report['changed_slots'], [0, 2, 3, 4, 35, 36])     # 35 and 36 are the battle walk and run, sharing these clips
+        self.assertEqual(self.report['changed_slots'], [0, 2, 3, 4])     # the battle walk and run (35, 36) are the source game's clips, rebuilt, and stay as the input has them
         self.assertEqual(self.old.tmd.build(), self.new.tmd.build())
 
     def test_storage_fits_the_resident_buffer(self):

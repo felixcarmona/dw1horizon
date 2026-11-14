@@ -16,8 +16,9 @@ recipe writes them again as a cat moves:
 - The idle keeps the imported body, head, wings and tail; its forelegs stand on the floor through the breathing
   instead of riding along with it, the weight drifts between them and one forepaw is lifted and set down again.
 
-The walk is slot 2 (also 0x1B and 0x23), the run slot 4 (also the battle movement 0x24), the idle slot 0 (also the
-battle idle 0x21): each is rewritten where it is stored, so its aliases play it too. The condition walk (slot 3) is
+The walk is slot 2 (also 0x1B), the run slot 4, the idle slot 0 (also the
+battle idle 0x21): each is rewritten where it is stored, so its aliases play it too. The battle movement and run (0x23/0x24) are the source's own clips, rebuilt
+in content/models/imports/battle-rebuilds.json. The condition walk (slot 3) is
 the field pace pass's: this walk played 1.5 times slower at 2/3 of its speed (content/models/imports/pace.json).
 The build refuses any other source, a paw or foot under the floor, a sole that slides in stance, an open loop, a
 speed outside the native range, another changed program or the storage budget.
@@ -32,7 +33,7 @@ import motionstorage
 from motiondiscidentity import changed_programs
 
 SPECIES = 198
-SOURCE = '3b99a5f920b7dd4e473d2314ebad55c5b185d6687b4a3ab6884c8c1afa98cae9'
+SOURCE = 'b51c0124b09a8ead3f9b4ae6d855841f55d26574bb9ca58293acc344165e162c'
 PARENTS = [-1, 10, 1, 2, 1, 4, 5, 1, 7, 8, 0, 10, 11, 12, 10, 14, 15, 1, 1, 10, 19, 20, 21, 22]
 PELVIS, CHEST, NECK, HEAD = 10, 1, 2, 3
 WINGS = (17, 18)

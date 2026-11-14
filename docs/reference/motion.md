@@ -103,6 +103,9 @@ A field overlay writes slots 0-4 and leaves 0x21-0x24 alone, with these document
 measured worse than main's on the overlay's FINAL output and which therefore keep playing a field clip (main's). Nefertimon
 0x23/0x24 (vertex step 0.45/0.59 heights a tick, under the floor), Knightmon 0x24 (torso tipped 27 degrees against main's 8), Creepymon 0x23/0x24 (crossings 237 against 191, root travel 0.16
 heights off; torso 27 degrees against 14), Gargoylemon 0x23/0x24 (60 and 53
+measured worse than main's on the overlay's FINAL output and which therefore keep playing a field clip (main's). SaberLeomon 0x22 (crossings 34 a tick against main's 24),
+Knightmon 0x24 (torso tipped 27 degrees against main's 8), Creepymon 0x23/0x24 (crossings 237 against 191, root travel 0.16
+heights off; torso 27 degrees against 14), Gazimon 0x21 (loop seam 0.063 heights), Gargoylemon 0x23/0x24 (60 and 53
 crossings against 3 and 5; as own streams they overflow the resident buffer, 100602 B against 100352) and Suijinmon
 0x23/0x24 (vertex step 0.45/0.59 heights a tick, under the floor), SaberLeomon 0x22 (crossings 34 a tick against main's 24),
 Creepymon 0x23/0x24 (crossings 237 against 191, root travel 0.16
@@ -136,6 +139,14 @@ ships (99414 B). Floramon 0x24 stays main's: the source's run passes at the 61 t
 have no supported tool to move. Garbagemon's
 0x22-0x24 are the source's clips with the can held at its attachment (`garbagemon.py`): only the can's bone differs, so there is
 nothing to restore.
+Rebuilt battle clips (the source's own movement, repaired with the operations in `tools/models/clip_repair.py`, rows in
+`content/models/imports/battle-rebuilds.json`): the movement and run clips of Veemon (0x23/0x24), MetalGarurumon
+(0x23/0x24), Nefertimon (0x23/0x24), Imperialdramon (0x24), Pegasusmon (0x23) and Lighdramon (0x24), and Halsemon's
+movement (0x23). Each keeps the source's poses and timing and only turns back the bones that crossed the body or tipped
+the torso, damps an over-swinging bone, or lifts the body where the soles sank; every one passes the battle QA on the
+final model. Imperialdramon's 0x23 and Pegasusmon's 0x24 stay main's clips (the best repair of the source's gallop still crosses the body 89 times a tick against main's 65 and a limit of 83; the
+other tips the torso 36 degrees against main's 3). Nefertimon's
+0x28-0x2C already are a reviewed repair of the source (paws flat, left gauntlet fixed) and stay as they are.
 
 **Natively bound species get their originals by retargeting.** A native binding (`native_binding.py`) deep-copies the
 donor's skeleton and every clip, so the source game's battle clips are gone. A recipe's `"battle_originals": {"slots":

@@ -827,9 +827,9 @@
   "after_generator": "tools.models.field_animations.nefertimon_care",
   "bones": 24,
   "skeleton_sha256": "f3939397c46dfe31ba957af2274f0f60cc5fc429e63c3657240828589c38f6ed",
-  "source_sha256": "3b99a5f920b7dd4e473d2314ebad55c5b185d6687b4a3ab6884c8c1afa98cae9",
+  "source_sha256": "b51c0124b09a8ead3f9b4ae6d855841f55d26574bb9ca58293acc344165e162c",
   "base_generator": "tools.models.field_animations.nefertimon",
-  "post_source_sha256": "4b4b724ae96cf237b2b5b2f6e9e7926abf6db4043f30a31205b5940e6e560ff8",
+  "post_source_sha256": "7aecbe1a5bf87b1d5e3950236e6cbb7196213f90d6fab83a5096f32664bd87b2",
   "slots": {
    "3": {
     "from": 2,
@@ -846,9 +846,9 @@
   "name": "MetalGarurumon",
   "bones": 23,
   "skeleton_sha256": "9f02557f6d97eff22598f695be6b093f33e128c0574ba35b2871a8df4854a0a4",
-  "source_sha256": "8cbe945c684b3108f69f4161e4614a36bb3a20d30aef9dd4149dc03a8604422f",
+  "source_sha256": "01f41d998cd05cb7a637580877079fa8f0156dabed3e33e92a4e0e6efe0e052e",
   "base_generator": "tools.models.field_animations.metal_garurumon",
-  "post_source_sha256": "fce9f4ff297b20fd3c7cab6fe3313b9f7a037069813cbfa719fa91fd6e5df185",
+  "post_source_sha256": "222077a7b726aa0775000d0f9d703631a84e79ab78cdd62c73c2fe88d05faf4b",
   "slots": {
    "3": {
     "from": 2,
