@@ -1,0 +1,637 @@
+{
+ "about": "Digital Card Battle attacks converted to EFE chunks (tools/dcbefe.py): per species its chunk id (the DCB range is 251-329) and the two DCB scripts the effect comes from, the card's own and the shared hit.",
+ "effects": [
+  {
+   "species": 62,
+   "species_name": "WereGarurumon",
+   "attack": "Wolf Claw",
+   "chunk": 251,
+   "attack_script": 1009,
+   "hit_script": 415
+  },
+  {
+   "species": 126,
+   "species_name": "Brachiomon",
+   "attack": "Brachio Bubble",
+   "chunk": 252,
+   "attack_script": 569,
+   "hit_script": 437
+  },
+  {
+   "species": 180,
+   "species_name": "Veemon",
+   "attack": "Vee Head Butt",
+   "chunk": 253,
+   "attack_script": 1030,
+   "hit_script": 2000
+  },
+  {
+   "species": 181,
+   "species_name": "Puppetmon",
+   "attack": "Puppet Pummel",
+   "chunk": 254,
+   "attack_script": 1279,
+   "hit_script": 435
+  },
+  {
+   "species": 183,
+   "species_name": "Wormmon",
+   "attack": "Sticky Net",
+   "chunk": 255,
+   "attack_script": 1033,
+   "hit_script": 2021
+  },
+  {
+   "species": 184,
+   "species_name": "Hawkmon",
+   "attack": "Hawk Beam",
+   "chunk": 256,
+   "attack_script": 1036,
+   "hit_script": 474
+  },
+  {
+   "species": 185,
+   "species_name": "Armadillomon",
+   "attack": "Diamond Shell",
+   "chunk": 257,
+   "attack_script": 1039,
+   "hit_script": 2000
+  },
+  {
+   "species": 187,
+   "species_name": "Stingmon",
+   "attack": "Spiking Strike",
+   "chunk": 258,
+   "attack_script": 1063,
+   "hit_script": 2004
+  },
+  {
+   "species": 188,
+   "species_name": "Aquilamon",
+   "attack": "Mach Impulse",
+   "chunk": 259,
+   "attack_script": 1066,
+   "hit_script": 474
+  },
+  {
+   "species": 189,
+   "species_name": "Ankylomon",
+   "attack": "Tail Hammer",
+   "chunk": 260,
+   "attack_script": 1069,
+   "hit_script": 2004
+  },
+  {
+   "species": 190,
+   "species_name": "Angewomon",
+   "attack": "Celestial Arrow",
+   "chunk": 261,
+   "attack_script": 1096,
+   "hit_script": 2015
+  },
+  {
+   "species": 191,
+   "species_name": "MetalGarurumon",
+   "attack": "Metal Wolf Claw",
+   "chunk": 262,
+   "attack_script": 1108,
+   "hit_script": 2041
+  },
+  {
+   "species": 192,
+   "species_name": "Imperialdramon",
+   "attack": "Mega Fire",
+   "chunk": 263,
+   "attack_script": 1129,
+   "hit_script": 2043
+  },
+  {
+   "species": 193,
+   "species_name": "Digmon",
+   "attack": "Gold Rush",
+   "chunk": 264,
+   "attack_script": 1174,
+   "hit_script": 406
+  },
+  {
+   "species": 194,
+   "species_name": "ExVeemon",
+   "attack": "Ex-Laser",
+   "chunk": 265,
+   "attack_script": 1060,
+   "hit_script": 449
+  },
+  {
+   "species": 195,
+   "species_name": "Flamedramon",
+   "attack": "Fire Rocket",
+   "chunk": 266,
+   "attack_script": 1147,
+   "hit_script": 435
+  },
+  {
+   "species": 196,
+   "species_name": "Halsemon",
+   "attack": "Tempest Wing",
+   "chunk": 267,
+   "attack_script": 1165,
+   "hit_script": 2006
+  },
+  {
+   "species": 197,
+   "species_name": "Magnamon",
+   "attack": "Plasma Shot",
+   "chunk": 268,
+   "attack_script": 1153,
+   "hit_script": 450
+  },
+  {
+   "species": 198,
+   "species_name": "Nefertimon",
+   "attack": "Rocking Stone",
+   "chunk": 269,
+   "attack_script": 1180,
+   "hit_script": 435
+  },
+  {
+   "species": 199,
+   "species_name": "Paildramon",
+   "attack": "Desperado Blaster",
+   "chunk": 270,
+   "attack_script": 1084,
+   "hit_script": 435
+  },
+  {
+   "species": 200,
+   "species_name": "Pegasusmon",
+   "attack": "Star Shower",
+   "chunk": 271,
+   "attack_script": 1168,
+   "hit_script": 2037
+  },
+  {
+   "species": 201,
+   "species_name": "Lighdramon",
+   "attack": "Lightning Blast",
+   "chunk": 272,
+   "attack_script": 1150,
+   "hit_script": 2019
+  },
+  {
+   "species": 202,
+   "species_name": "Submarimon",
+   "attack": "Submarine Attack",
+   "chunk": 273,
+   "attack_script": 1177,
+   "hit_script": 2059
+  },
+  {
+   "species": 203,
+   "species_name": "Veedramon",
+   "attack": "V-Nova Blast",
+   "chunk": 274,
+   "attack_script": 824,
+   "hit_script": 449
+  },
+  {
+   "species": 205,
+   "species_name": "MegaKabuterimon",
+   "attack": "Horn Buster",
+   "chunk": 275,
+   "attack_script": 1003,
+   "hit_script": 496
+  },
+  {
+   "species": 206,
+   "species_name": "MagnaAngemon",
+   "attack": "The Gate of Destiny",
+   "chunk": 276,
+   "attack_script": 1018,
+   "hit_script": 498
+  },
+  {
+   "species": 207,
+   "species_name": "Seraphimon",
+   "attack": "Seventh Heaven",
+   "chunk": 277,
+   "attack_script": 1138,
+   "hit_script": 2046
+  },
+  {
+   "species": 208,
+   "species_name": "Togemon",
+   "attack": "Needle Spray",
+   "chunk": 278,
+   "attack_script": 1051,
+   "hit_script": 2003
+  },
+  {
+   "species": 209,
+   "species_name": "Lillymon",
+   "attack": "Flower Cannon",
+   "chunk": 279,
+   "attack_script": 1015,
+   "hit_script": 400
+  },
+  {
+   "species": 210,
+   "species_name": "GranKuwagamon",
+   "attack": "X-Scissor Claw",
+   "chunk": 280,
+   "attack_script": 1132,
+   "hit_script": 2064
+  },
+  {
+   "species": 211,
+   "species_name": "MetalSeadramon",
+   "attack": "River of Power",
+   "chunk": 281,
+   "attack_script": 1273,
+   "hit_script": 2033
+  },
+  {
+   "species": 212,
+   "species_name": "VenomMyotismon",
+   "attack": "Venom Infusion",
+   "chunk": 282,
+   "attack_script": 1117,
+   "hit_script": 435
+  },
+  {
+   "species": 213,
+   "species_name": "AeroVeedramon",
+   "attack": "V Wing Blade",
+   "chunk": 283,
+   "attack_script": 1000,
+   "hit_script": 497
+  },
+  {
+   "species": 214,
+   "species_name": "Shakkoumon",
+   "attack": "Clay Bomb",
+   "chunk": 284,
+   "attack_script": 1093,
+   "hit_script": 498
+  },
+  {
+   "species": 215,
+   "species_name": "Magnadramon",
+   "attack": "Fire Tornado",
+   "chunk": 285,
+   "attack_script": 1144,
+   "hit_script": 2015
+  },
+  {
+   "species": 216,
+   "species_name": "Devidramon",
+   "attack": "Crimson Claw",
+   "chunk": 286,
+   "attack_script": 1054,
+   "hit_script": 415
+  },
+  {
+   "species": 217,
+   "species_name": "Gomamon",
+   "attack": "Marching Fishes",
+   "chunk": 287,
+   "attack_script": 1024,
+   "hit_script": 2002
+  },
+  {
+   "species": 218,
+   "species_name": "Ikkakumon",
+   "attack": "Harpoon Torpedo",
+   "chunk": 288,
+   "attack_script": 1045,
+   "hit_script": 406
+  },
+  {
+   "species": 219,
+   "species_name": "Zudomon",
+   "attack": "Vulcan's Hammer",
+   "chunk": 289,
+   "attack_script": 1012,
+   "hit_script": 443
+  },
+  {
+   "species": 220,
+   "species_name": "Vikemon",
+   "attack": "Arctic Blizzard",
+   "chunk": 290,
+   "attack_script": 1141,
+   "hit_script": 2014
+  },
+  {
+   "species": 221,
+   "species_name": "Salamon",
+   "attack": "Puppy Howling",
+   "chunk": 291,
+   "attack_script": 1021,
+   "hit_script": 2063
+  },
+  {
+   "species": 222,
+   "species_name": "BlackGatomon",
+   "attack": "Lightning Paw",
+   "chunk": 292,
+   "attack_script": 1204,
+   "hit_script": 412
+  },
+  {
+   "species": 223,
+   "species_name": "LadyDevimon",
+   "attack": "Darkness Wave",
+   "chunk": 293,
+   "attack_script": 1078,
+   "hit_script": 2025
+  },
+  {
+   "species": 225,
+   "species_name": "Shurimon",
+   "attack": "Double Stars",
+   "chunk": 294,
+   "attack_script": 1162,
+   "hit_script": 2057
+  },
+  {
+   "species": 226,
+   "species_name": "Silphymon",
+   "attack": "Top Gun",
+   "chunk": 295,
+   "attack_script": 1090,
+   "hit_script": 2048
+  },
+  {
+   "species": 227,
+   "species_name": "Apemon",
+   "attack": "Angry Spike",
+   "chunk": 296,
+   "attack_script": 1222,
+   "hit_script": 2003
+  },
+  {
+   "species": 228,
+   "species_name": "Baronmon",
+   "attack": "Dancing Meteor",
+   "chunk": 297,
+   "attack_script": 1171,
+   "hit_script": 2044
+  },
+  {
+   "species": 229,
+   "species_name": "Phantomon",
+   "attack": "Shadow Scythe",
+   "chunk": 298,
+   "attack_script": 1075,
+   "hit_script": 2075
+  },
+  {
+   "species": 230,
+   "species_name": "Rosemon",
+   "attack": "Throny Whipping",
+   "chunk": 299,
+   "attack_script": 1102,
+   "hit_script": 2054
+  },
+  {
+   "species": 231,
+   "species_name": "ShellNumemon",
+   "attack": "Shell's Attack",
+   "chunk": 300,
+   "attack_script": 1255,
+   "hit_script": 2000
+  },
+  {
+   "species": 232,
+   "species_name": "BomberNanimon",
+   "attack": "Free Throw Bomb",
+   "chunk": 301,
+   "attack_script": 1225,
+   "hit_script": 406
+  },
+  {
+   "species": 233,
+   "species_name": "RedOtamamon",
+   "attack": "Boiling Bubble",
+   "chunk": 302,
+   "attack_script": 1189,
+   "hit_script": 2017
+  },
+  {
+   "species": 234,
+   "species_name": "Gatomon",
+   "attack": "Lightning Paw",
+   "chunk": 303,
+   "attack_script": 1072,
+   "hit_script": 412
+  },
+  {
+   "species": 235,
+   "species_name": "Candlemon",
+   "attack": "Flame Bomber",
+   "chunk": 304,
+   "attack_script": 1186,
+   "hit_script": 400
+  },
+  {
+   "species": 236,
+   "species_name": "DemiDevimon",
+   "attack": "Demi Dart",
+   "chunk": 305,
+   "attack_script": 1027,
+   "hit_script": 2029
+  },
+  {
+   "species": 237,
+   "species_name": "Diaboromon",
+   "attack": "Inferno Missile",
+   "chunk": 306,
+   "attack_script": 1123,
+   "hit_script": 435
+  },
+  {
+   "species": 238,
+   "species_name": "Dolphmon",
+   "attack": "Pulse Blast",
+   "chunk": 307,
+   "attack_script": 1228,
+   "hit_script": 486
+  },
+  {
+   "species": 239,
+   "species_name": "Gizamon",
+   "attack": "Spiral Saw",
+   "chunk": 308,
+   "attack_script": 1207,
+   "hit_script": 2000
+  },
+  {
+   "species": 240,
+   "species_name": "Gesomon",
+   "attack": "Coral Crusher",
+   "chunk": 309,
+   "attack_script": 1231,
+   "hit_script": 2065
+  },
+  {
+   "species": 241,
+   "species_name": "Wizardmon",
+   "attack": "Thunder Ball",
+   "chunk": 310,
+   "attack_script": 1048,
+   "hit_script": 402
+  },
+  {
+   "species": 242,
+   "species_name": "Sorcermon",
+   "attack": "Crystal Cloud",
+   "chunk": 311,
+   "attack_script": 1282,
+   "hit_script": 2068
+  },
+  {
+   "species": 243,
+   "species_name": "Starmon",
+   "attack": "Meteor Stream",
+   "chunk": 312,
+   "attack_script": 1246,
+   "hit_script": 450
+  },
+  {
+   "species": 244,
+   "species_name": "SuperStarmon",
+   "attack": "Comet Cluster",
+   "chunk": 313,
+   "attack_script": 1285,
+   "hit_script": 435
+  },
+  {
+   "species": 245,
+   "species_name": "Piedmon",
+   "attack": "Trump Sword",
+   "chunk": 314,
+   "attack_script": 1099,
+   "hit_script": 2020
+  },
+  {
+   "species": 246,
+   "species_name": "Infermon",
+   "attack": "Hades' Grenade",
+   "chunk": 315,
+   "attack_script": 1081,
+   "hit_script": 435
+  },
+  {
+   "species": 247,
+   "species_name": "Kokuwamon",
+   "attack": "Mini Scissor Claws",
+   "chunk": 316,
+   "attack_script": 1198,
+   "hit_script": 472
+  },
+  {
+   "species": 248,
+   "species_name": "MarineAngemon",
+   "attack": "Ocean Love",
+   "chunk": 317,
+   "attack_script": 1276,
+   "hit_script": 471
+  },
+  {
+   "species": 249,
+   "species_name": "Quetzalmon",
+   "attack": "Freezing Wave",
+   "chunk": 318,
+   "attack_script": 1159,
+   "hit_script": 2039
+  },
+  {
+   "species": 250,
+   "species_name": "Shadramon",
+   "attack": "Flare Buster",
+   "chunk": 319,
+   "attack_script": 1156,
+   "hit_script": 435
+  },
+  {
+   "species": 251,
+   "species_name": "Solarmon",
+   "attack": "Solar Flare",
+   "chunk": 320,
+   "attack_script": 1192,
+   "hit_script": 400
+  },
+  {
+   "species": 252,
+   "species_name": "Thundermon",
+   "attack": "Thunder Volt",
+   "chunk": 321,
+   "attack_script": 1252,
+   "hit_script": 2023
+  },
+  {
+   "species": 253,
+   "species_name": "Tuskmon",
+   "attack": "Slamming Tusk",
+   "chunk": 322,
+   "attack_script": 1057,
+   "hit_script": 2004
+  },
+  {
+   "species": 254,
+   "species_name": "Tylomon",
+   "attack": "Torpedo Attack",
+   "chunk": 323,
+   "attack_script": 1183,
+   "hit_script": 2038
+  },
+  {
+   "species": 255,
+   "species_name": "Valkyrimon",
+   "attack": "Feral Sword",
+   "chunk": 324,
+   "attack_script": 1135,
+   "hit_script": 2001
+  },
+  {
+   "species": 256,
+   "species_name": "VioletElecmon",
+   "attack": "Jamming Thunder",
+   "chunk": 325,
+   "attack_script": 1210,
+   "hit_script": 2080
+  },
+  {
+   "species": 373,
+   "species_name": "WarGreymon",
+   "attack": "Terra Force",
+   "chunk": 326,
+   "attack_script": 1105,
+   "hit_script": 435
+  },
+  {
+   "species": 400,
+   "species_name": "Apocalymon",
+   "attack": "Darkness Zone",
+   "chunk": 327,
+   "attack_script": 1120,
+   "hit_script": 2010
+  },
+  {
+   "species": 460,
+   "species_name": "Garudamon",
+   "attack": "Wing Blade",
+   "chunk": 328,
+   "attack_script": 1006,
+   "hit_script": 495
+  },
+  {
+   "species": 461,
+   "species_name": "Omnimon",
+   "attack": "Transcendent Sword",
+   "chunk": 329,
+   "attack_script": 1126,
+   "hit_script": 2060
+  }
+ ]
+}

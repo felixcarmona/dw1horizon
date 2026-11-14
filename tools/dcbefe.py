@@ -6,7 +6,7 @@ with a motion per step and turns them into a dw2effect.Effect; this module resam
 lengths DW1 allows (a cast object at most CAST_FRAMES frames, a hit object HIT_FRAMES), converts, and renders
 the original next to the converted chunk.
 
-    DCB_IMAGE=<disc.bin> python tools/dcbefe.py convert <attack script> <extra script> <out dir> [name]
+    DCB_IMAGE=<disc.bin> python tools/dcbefe.py convert <species id> <out dir> [--render]
 """
 import json
 import os
@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from tools import dcbeffect as C, dw2effect as D, dw2efe, efesim as S          # noqa: E402
 
 LIKE_CHUNK = 63                 # the EFEDAT chunk whose launch table the converted chunks reuse (as dw2 does)
-EFFECT_ID, SCALE = 0x17a, 0.266          # both DCB scripts are in the same units: one scale for cast and hit
+EFFECT_ID, SCALE = 0x17a, 0.266          # EFFECT_ID: only when no species is given;          # both DCB scripts are in the same units: one scale for cast and hit
 STAGE_DIST = 2700
 
 
@@ -33,6 +33,18 @@ def launch_table(chunk):
     while struct.unpack_from('<h', chunk, end)[0] >= 0:
         end += 10
     return bytes(chunk[at:end + 10])
+
+
+SPECIES_TABLE = os.path.join('content', 'finishers', 'dcb-effects.json')
+
+
+def species_entry(species, root='.'):
+    """The species' row of content/finishers/dcb-effects.json: its chunk id and its two scripts."""
+    with open(os.path.join(root, SPECIES_TABLE)) as f:
+        for r in json.load(f)['effects']:
+            if r['species'] == species:
+                return r
+    raise KeyError(f'species {species} has no DCB effect row')
 
 
 def efedat_table(root='.'):
@@ -101,7 +113,7 @@ class Attack:
         self.notes = notes
         return casts, hits
 
-    def convert(self, table, **kw):
+    def convert(self, table, effect_id=EFFECT_ID, **kw):
         """(chunk, info): down the LADDER (fewer animated sprite frames, smaller textures, fewer alike objects)
         until the chunk fits."""
         last = None
@@ -110,7 +122,7 @@ class Attack:
             if not casts and not hits:
                 raise dw2efe.Unconvertible('effect: nothing is ever drawn')
             try:
-                chunk, info = convert_skill(casts, hits, table, EFFECT_ID, SCALE, hit_scale=SCALE, **kw)
+                chunk, info = convert_skill(casts, hits, table, effect_id, SCALE, hit_scale=SCALE, **kw)
             except dw2efe.Unconvertible as e:
                 last = e
                 if 'slot has' not in str(e) and 'do not fit' not in str(e):
@@ -274,8 +286,13 @@ def fidelity_parts(orig, conv, osplit, csplit):
     for name, o, c in (('cast', orig[:osplit], conv[:csplit]), ('hit', orig[osplit:], conv[csplit:])):
         if o and any(lit(im) for im in o[::max(1, len(o) // 12)]):
             r[name] = fidelity(o, c) if c else {'passed': False, 'failed': ['missing']}
-    r['passed'] = all(v['passed'] for v in r.values() if isinstance(v, dict))
-    r['failed'] = [f'{k} {x}' for k, v in r.items() if isinstance(v, dict) for x in v['failed']]
+    # a part whose original draws very little (a cast that only flashes) is not judged on its own numbers;
+    # a whole that draws very little fails: the trace shows too little to call the conversion faithful
+    judged = {k: v for k, v in r.items() if isinstance(v, dict) and (k == 'whole' or not v.get('thin_source'))}
+    r['passed'] = all(v['passed'] for v in judged.values()) and not r['whole']['thin_source']
+    r['failed'] = [f'{k} {x}' for k, v in judged.items() for x in v['failed']]
+    if r['whole']['thin_source']:
+        r['failed'].append('thin source')
     return r
 
 
@@ -346,10 +363,8 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split('\n')[0])
     sub = ap.add_subparsers(dest='cmd', required=True)
     c = sub.add_parser('convert')
-    c.add_argument('attack', type=int)
-    c.add_argument('extra', type=int)
+    c.add_argument('species', type=int, help='species id (its row in content/finishers/dcb-effects.json)')
     c.add_argument('out')
-    c.add_argument('name', nargs='?', default='')
     c.add_argument('--render', action='store_true', help='also frame sheets and the converted frames as PNGs')
     g = sub.add_parser('grid', help='an mp4 of converted attacks side by side')
     g.add_argument('out')
@@ -361,12 +376,14 @@ def main(argv=None):
         return 0
     disc = C.Disc(os.environ['DCB_IMAGE'])
     os.makedirs(a.out, exist_ok=True)
-    base = os.path.join(a.out, a.name or str(a.attack))
-    atk = Attack(disc, a.attack, a.extra)
+    row = species_entry(a.species)
+    a.name = row['species_name']
+    base = os.path.join(a.out, a.name)
+    atk = Attack(disc, row['attack_script'], row['hit_script'])
     table = efedat_table()
-    rec = {'attack_script': a.attack, 'extra_script': a.extra, 'name': a.name}
+    rec = dict(row)
     try:
-        chunk, info = atk.convert(table)
+        chunk, info = atk.convert(table, effect_id=row['chunk'])
     except dw2efe.Unconvertible as e:
         rec['error'] = str(e)
         rec['source'] = atk.notes

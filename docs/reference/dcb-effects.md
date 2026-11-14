@@ -99,6 +99,8 @@ the input of the DW2 converter (`tools/dw2efe.py`), which writes the 20 KB EFEDA
 - Time: one DCB step is taken as one 30 Hz frame. A DW1 cast object lasts at most 60 frames and a hit
   object 30, so longer timelines are resampled evenly (WarGreymon's cast plays 1.9 times faster, its
   hit 3.8 times).
+- Each species has its own chunk id, from `content/finishers/dcb-effects.json` (the DCB range is
+  251-329), with the two scripts its effect comes from.
 - The attack script becomes the cast (at the attacker, facing the defender); the hit script becomes
   the hit (on the defender).
 - When the chunk is too full, the converter gives up detail in this order: animated sprites keep 4
@@ -109,7 +111,7 @@ the input of the DW2 converter (`tools/dw2efe.py`), which writes the 20 KB EFEDA
 - A sheet named without a frame list is read as 64 x 64 frames (an estimate).
 - Not converted: screen flashes, camera moves, ribbon trails, sounds and banners.
 
-`python tools/dcbefe.py convert <attack> <hit> <out> <name> --render` writes the chunk, a record of
+`python tools/dcbefe.py convert <species> <out> --render` writes the chunk, a record of
 what was kept and dropped, and frame sheets of the traced original and the converted chunk;
 `python tools/dcbefe.py grid <out> <video.mp4> <names...>` puts several side by side.
 
