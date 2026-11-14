@@ -289,5 +289,13 @@
     "hit": [[1, "EFFESD/MESD6800.BIN", "EFFESD/AESD6800.BIN"]],
     "scale": 0.268,
     "hit_scale": 0.1
+  },
+  "158": {
+    "name": "Legendary Blade",
+    "stands_for": 62,
+    "cast": [[1, "EFFESA/MESA2000.BIN", "EFFESA/AESA2000.BIN"]],
+    "hit": [[1, "EFFESD/MESD0400.BIN", "EFFESD/AESD0400.BIN"]],
+    "scale": 0.282,
+    "hit_scale": 0.1
   }
 }
