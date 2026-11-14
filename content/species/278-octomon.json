@@ -10,6 +10,7 @@
                  "Muscle Charge", "War Cry", "Tremar", "Hydro Pressure"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 19,
+  "own_effect": {"technique": "Hydro Pressure", "chunk": 143},
   "model": {
     "file": "build/batch9/Octomon.MMD",
     "radius": 182,

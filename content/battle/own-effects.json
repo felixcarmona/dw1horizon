@@ -169,5 +169,13 @@
     "hit": [[1, "EFFESD/MESD0200.BIN", "EFFESD/AESD0200.BIN"]],
     "scale": 0.311,
     "hit_scale": 0.1
+  },
+  "143": {
+    "name": "Spurting Ink",
+    "stands_for": 87,
+    "cast": [[1, "EFFESA/MESA4800.BIN", "EFFESA/AESA4800.BIN"], [2, "EFFESA/MESA4900.BIN", "EFFESA/AESA4900.BIN"]],
+    "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
+    "scale": 0.284,
+    "hit_scale": 0.1
   }
 }
