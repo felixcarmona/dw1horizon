@@ -446,3 +446,4 @@ Leave-room-for-the-battle-item-menu-in-the-GPU-packet-area.patch
 Read-the-care-menu-s-text-in-the-background-so-Squar.patch
 Keep-the-automatic-frame-rate-on-an-even-cadence.patch
 Read-the-Player-view-s-menu-text-in-the-background.patch
+Leave-steady-30-for-20-only-on-a-full-window-of-late.patch
