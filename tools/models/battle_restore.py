@@ -22,7 +22,9 @@ asked keeps its own length). Movement clips (35, 36) are resampled in time as th
 taken out, so the clip's own swing, timing and root travel are untouched): for an original whose torso or head sits far
 off the species' natural stance. `copy` makes a slot share another slot's clip (a species whose source game had no clip
 of its own for it). `rebuild` restores the slots of the species' row in content/models/imports/battle-rebuilds.json
-(`{"SLOT": {"ticks": N or null, "ops": [...]}}`, SLOT a decimal slot number, `ticks` as SLOT=TICKS above) and runs the
+(`{"SLOT": {"ticks": N or null, "ops": [...]}}`, SLOT a decimal slot number, `ticks` as SLOT=TICKS above; an optional
+`"rig": SLOT` or `"rig": [SOURCE_SLOT, OUR_SLOT]` first gives the restored clip our rig's scale and offset channels,
+`clip_repair.fit_rig`, for a species whose model was reshaped offline) and runs the
 row's repair operations (tools/models/clip_repair.py) on each: the source's own clip kept as the reference of poses,
 timing and arc, and repaired where it breaks on our rig (battle_qa.py counts these slots as documented polish).
 
@@ -218,11 +220,17 @@ def rebuild(b_data, a_data, nb, type_id, row):
     slots = {int(k): v.get('ticks') for k, v in row.items()}
     data, _ = restore(b_data, a_data, nb, slots)
     model = mmd.MMD.parse(data, nb)
+    source = mmd.MMD.parse(a_data, nb)
     parents = [p for _, p in mmd.exe().skeleton[type_id]]
     for slot in sorted(slots):
         frames, loop, events = animsheet.slot_frames(model, nb, slot)
         if loop not in (0, None):
             raise ValueError(f'slot {slot}: a clip that loops from the middle cannot be rebuilt')
+        if 'rig' in row[str(slot)]:      # a species reshaped offline (its delta): the clip takes the rig's scales and offsets
+            ref = row[str(slot)]['rig']      # a slot of both models, or [the source's slot, our slot]
+            theirs, ours = ref if isinstance(ref, list) else (ref, ref)
+            frames = clip_repair.fit_rig(frames, animsheet.slot_frames(source, nb, theirs)[0][0],
+                                         animsheet.slot_frames(mmd.MMD.parse(b_data, nb), nb, ours)[0][0])
         samples = clip_repair.apply_ops(frames, parents, row[str(slot)]['ops'])
         clip = mmd.encode_anim(samples, nb, 0 if loop == 0 else None, events, tol=1, repeats=False)
         model.anims.table[slot] = len(model.anims.anims)

@@ -246,6 +246,30 @@ def lift(frames, bone, up, ticks=None):
     return out
 
 
+def fit_rig(frames, source_pose, rig_pose):
+    """`frames` (a source clip) fitted to a rig that was reshaped after the source: the reshaped species' reference pose
+    (`rig_pose`) against the source's (`source_pose`), poses of the same reference tick of the same slot.
+
+    Each bone takes the rig's scale channels, and its translation (the bone's offset from its parent, which the reshape
+    scales per axis) multiplied by the ratio rig / source at the reference tick (only where the source's offset is at least
+    20 units; smaller offsets stay). The body bone (1), whose height the reshape also moves, instead keeps the source's
+    motion about the offset between the two reference ticks. Rotations and the root bone (0) are not touched."""
+    out = []
+    for pose in frames:
+        bones = []
+        for b, bone in enumerate(pose):
+            bone = list(bone)
+            if b:
+                bone[0:3] = rig_pose[b][0:3]
+                for i in range(6, 9):
+                    s0, r0 = source_pose[b][i], rig_pose[b][i]
+                    if abs(s0) >= 20:
+                        bone[i] = bone[i] + (r0 - s0) if (b == 1 and i == 7) else bone[i] * r0 / s0
+            bones.append(bone)
+        out.append(bones)
+    return out
+
+
 def apply_ops(frames, parents, ops):
     """`frames` (poses per tick) with the repair operations `ops` applied in order, as whole numbers."""
     for op in ops:

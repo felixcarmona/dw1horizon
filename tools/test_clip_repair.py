@@ -22,6 +22,29 @@ class ClipRepairTest(unittest.TestCase):
     def test_no_ops_is_exact(self):
         self.assertEqual(clip_repair.apply_ops(clip(), PARENTS, []), clip())
 
+    def test_wave_moves_only_its_bone_and_closes_the_loop(self):
+        out = clip_repair.apply_ops(clip(13), PARENTS, [{'op': 'wave', 'bone': 3, 'axis': 'y', 'deg': 20, 'cycles': 2}])
+        for a, b in zip(out, clip(13)):
+            for bone in (0, 1, 2):
+                self.assertEqual(a[bone], b[bone])
+            self.assertEqual(a[3][:3] + a[3][6:], b[3][:3] + b[3][6:])
+        self.assertEqual(out[0][3], clip(13)[0][3])
+        self.assertEqual(out[-1][3], clip(13)[-1][3])
+        self.assertNotEqual(out[1][3][3:6], clip(13)[1][3][3:6])
+
+    def test_fit_rig_scales_offsets_and_keeps_rotations(self):
+        frames = clip(4)
+        source = frames[0]
+        rig = [list(b) for b in source]
+        rig[2][0:3] = [10240, 10240, 10240]
+        rig[2][7] = -100          # offset -200 -> -100
+        out = clip_repair.fit_rig(frames, source, rig)
+        for pose, old in zip(out, frames):
+            self.assertEqual(pose[0], old[0])
+            self.assertEqual(pose[2][0:3], [10240, 10240, 10240])
+            self.assertEqual(pose[2][3:6], old[2][3:6])
+            self.assertAlmostEqual(pose[2][7], -100)
+
     def test_turn_changes_only_its_bone(self):
         out = clip_repair.apply_ops(clip(), PARENTS, [{'op': 'turn', 'bone': 2, 'axis': 'x', 'deg': 15}])
         for a, b in zip(out, clip()):

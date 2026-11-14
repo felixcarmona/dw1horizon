@@ -201,6 +201,16 @@ the last 8 ticks, seam 0.035; its overlay no longer writes the battle slot, and 
 (profile modules, the pace rows, a generator's `SOURCE`, the donors' pins of native bindings: NeoCrimson, which takes
 WarGreymon's model as donor, is byte-identical).
 
+Batch 48 rebuilt more imported battle clips from the source's own (`battle-rebuilds.json`, ops in `clip_repair.py`: turn,
+damp, lift, wave, and `rig` to fit the source clip to our rig's scale and offsets). Aquilamon 0x22 and 0x23 (torso
+compensated, wings spread, soles lifted) and its get-up 0x2C (source clip, passes unrepaired and is better than main on
+every number); Infermon 0x22-0x24 (offline-reshaped rig fitted, body lifted 62-100 units); MarineAngemon 0x22 (torso
+compensated); Quetzalmon 0x23, 0x24 (body pitched back and lifted) and its get-up 0x2C (left arm turned, body tipped 48
+degrees against main's 89); GranKuwagamon 0x23 (lifted) and 0x24 (the four wing and limb bones damped to half, lifted);
+Lillymon 0x22-0x24 (0x22 torso compensated). Stay main's: Submarimon (its tail screw spin is deliberate), Lillymon 0x21
+(shoulder opening, deliberate), MarineAngemon 0x21 (constant scale of bone 25) and 0x23, 0x24 (the source's legs and limbs
+are still, the liveness check fails), Aquilamon 0x24 (best rebuild 112 crossings a tick against a limit of 73, main 30).
+
 Room is made by `"compact": {"tol": N}` in the same entry (`native_battle.compact`, after the retarget; Wizardmon's
 and Sorcermon's builder runs it once, after its cape and hair followers, which skip the restored slots):
 `battle_restore.compact` re-encodes every clip with repeats losslessly, then, at N units of 1/4096 turn (at most 5,
