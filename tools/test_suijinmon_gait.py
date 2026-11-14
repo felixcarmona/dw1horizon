@@ -77,7 +77,7 @@ class SuijinmonGait(unittest.TestCase):
             self.assertLessEqual(total, limit, (slot, total))
 
     def test_idle_and_feeding_unchanged_by_the_gait(self):
-        self.assertEqual(self.report['changed_slots'], [2, 3, 4, 8, 35, 36])
+        self.assertEqual(self.report['changed_slots'], [2, 3, 4, 8])
 
 
 if __name__ == '__main__':

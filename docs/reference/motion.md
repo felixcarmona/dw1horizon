@@ -93,10 +93,7 @@ turned back 12 degrees, body raised 75 units: tipped 14.6, crossings 91, no sink
 head turned back: tipped 10.8 degrees against 27), Gargoylemon 0x23/0x24 (forelegs turned out: crossings 11 and 8 a tick
 against 60 and 53; the other clips are compacted exactly to fit), Raidenmon 0x23/0x24 (thigh turned out and body raised:
 crossings 108 and 122), Beelzemon 0x22 (the source's own walk, unrepaired: 71 crossings, tipped 25.8) are the source's again. Kept as main's: Armadillomon 0x22-0x24 and 0x2C (main is the source plus the deliberate head lift of `armadillomon_head.py`; not a gap), Gallantmon 0x24 (the source run needs
-the torso turned back 10 degrees and does not fit: 101076 B after exact compaction against 100352), Beelzemon 0x24 (a
-limb is still while its siblings move, 0.000 against 0.279 heights, crossings 203 against 119), Suijinmon 0x23/0x24
-(front legs still, the four-leg field clips are the better movement), Kurisarimon 0x23/0x24 (the source's chains are
-still and the loop jumps 0.81 and 0.11 heights), Hawkmon 0x21 (the source's right foot is turned 58 degrees outward; the
+the torso turned back 10 degrees and does not fit: 101076 B after exact compaction against 100352), Hawkmon 0x21 (the source's right foot is turned 58 degrees outward; the
 corrected foot is deliberate, see `hawkmon.py`).
 
 A field overlay writes slots 0-4 and leaves 0x21-0x24 alone, with these documented exceptions: slots whose source clip
@@ -109,8 +106,7 @@ heights off; torso 27 degrees against 14), Gazimon 0x21 (loop seam 0.063 heights
 crossings against 3 and 5; as own streams they overflow the resident buffer, 100602 B against 100352) and Suijinmon
 0x23/0x24 (vertex step 0.45/0.59 heights a tick, under the floor), SaberLeomon 0x22 (crossings 34 a tick against main's 24),
 Creepymon 0x23/0x24 (crossings 237 against 191, root travel 0.16
-heights off; torso 27 degrees against 14), Gazimon 0x21 (loop seam 0.063 heights), and Suijinmon
-0x23/0x24 (the importer's clip has no bone map for the front legs). Each is noted in its generator. The chibi pass scales the
+heights off; torso 27 degrees against 14) and Gazimon 0x21 (loop seam 0.063 heights). Each is noted in its generator. The chibi pass scales the
 root travel of every clip, battle ones included, so a restored movement on a reshaped species differs from the source's in
 root travel only (rotations stay exact).
 
@@ -242,7 +238,26 @@ compensated); Quetzalmon 0x23, 0x24 (body pitched back and lifted) and its get-u
 degrees against main's 89); GranKuwagamon 0x23 (lifted) and 0x24 (the four wing and limb bones damped to half, lifted);
 Lillymon 0x22-0x24 (0x22 torso compensated). Stay main's: Submarimon (its tail screw spin is deliberate), Lillymon 0x21
 (shoulder opening, deliberate), MarineAngemon 0x21 (constant scale of bone 25) and 0x23, 0x24 (the source's legs and limbs
-are still, the liveness check fails), Aquilamon 0x24 (best rebuild 112 crossings a tick against a limit of 73, main 30).
+are still, the liveness check fails).
+
+Batch 54 rebuilt five more from the source's own clip, with a new `clip_repair` op, `follow` (a bone takes another's swing
+about that bone's mean pose, shifted in ticks, scaled and optionally mirrored, over its own pose), and `battle_restore`'s
+`"compact": [SLOT, ...]` key (those clips encoded again exactly to pay for the restored one; a model already over the
+resident limit before the rebuild may stay over it but not grow, the provider checks the final model).
+- Aquilamon 0x24: the source clip with bones 1 and 2 turned 25 degrees against each other, the wings (bones 7, 10)
+  beating on two envelopes, bones 17-20 mirrored from their twins 13-16, a small wave on bone 21: crossings 49.6 a tick (limit 72.9, main 30),
+  pass; 79,024 B.
+- Beelzemon 0x24: the source run with the still wing [29, 30] mirrored from its twin [24, 25], the wings opened 15 degrees
+  and the body turned back 14; 21 other clips compacted exactly (not 0x30, Buster Dive's source, nor 0x3C): crossings 104.3
+  (limit 140.8, main 119.4), wing 0.143 heights, pass; 100,110 B. Its 0x23 keeps main's still wing (verdict main).
+- Suijinmon 0x23/0x24: the source walk and run retimed to 15 ticks; the front legs (no bone map in the importer's clip)
+  `follow` the diagonal hind leg mirrored, a fifth of a stride later, at 0.8; 0x23 smoothed: crossings 37.1 and 30.0, vertex
+  step 0.327 and 0.261 heights a tick (limit 0.40), front legs 0.22 heights, pass; 87,352 B.
+- Kurisarimon 0x23/0x24: the source clips, the body and chain bones eased back to the first pose over the last ticks (the
+  loop jumped 0.81 and 0.11 heights; seam now 0), the still chain bone 25 `follow`s bone 2 mirrored: crossings 1.2 and 3.0
+  (main 1.2 and 5.4), pass; 95,408 B.
+- Apocalymon 0x21 stays main's: the source idle on the fitted rig passes (crossings 99.8 against a limit of 157), but the
+  provider's final model is 102,116 B even with the rest compacted (exactly, and within 5 units as a trial).
 
 Seven imported species have their remaining battle clips rebuilt from the source's own clip (`content/models/imports/battle-rebuilds.json`,
 `battle_restore.py rebuild`, repair operations in `clip_repair.py`: `turn`, `damp`, `lift`, `retime`, `seam`, `sway`); each was
@@ -309,8 +324,8 @@ of their own (1.3-3.2 KB at the coarsest encoding the planner tries, 16 units) o
 (exact compaction frees 56 and 162 B; their own tired clip would need 222 and 202 B more even at tolerance 16), so a row's
 `share` points slots 1 and 18 at the program slots 14-17 already play, the donor's own condition clip (0 extra bytes; care_qa
 pass, 0.13 and 0.18 heights off the idle; resident 99,332 and 99,484 B). Their other condition slots stay as they were.
-Their battle slots 0x24 (Snimon: the source clip passes `battle_qa`; it ships since the technique clip the species can never play was dropped, see "Last gaps") and
-0x21 (Apocalymon: crossings 577 a tick against main's 70 on the reshaped rig, and 103,320 B) stay main's.
+Snimon's battle slot 0x24 plays the source clip since the technique clip it can never play was dropped (see "Last gaps");
+Apocalymon's 0x21 stays main's (the source idle passes with the rig fitted, but the final model is 102,116 B).
 Bodies whose limbs read as legs (a squid's eight arms, a sun's two hands: every bone is then a leg or hangs from one, so the
 planner found no free bone) name them to the planner (`--limbs` the first bone of each such chain, `--head`, `--lean`): they droop
 like any limb, the head nods, and a body with no leg at all (Solarmon) leans as a whole. A short idle whose slot 1 is one cycle

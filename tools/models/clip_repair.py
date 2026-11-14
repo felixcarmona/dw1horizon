@@ -23,6 +23,11 @@ reference of motion, character and timing and changes only what breaks, with the
         bone B takes the local rotation of its mirror twin S (the same leg on the other side of the body), mirrored
         left to right (the Euler y and z negated), K ticks later (wrapping on a loop, whose last tick repeats its first;
         the end tick holds on a one-shot): a leg the source never animated, moving as its twin does half a stride on.
+  {"op": "follow", "bone": B, "from": S, "shift": K [, "gain": G, "mirror": true]}
+        bone B keeps its own rotation and adds the swing of bone S: S's local rotation at tick t + K (wrapping as
+        `mirror` does) against S's own mean pose over the clip, scaled by G (1 by default; through quaternions) and, with
+        `mirror`, reflected left to right (the Euler y and z negated). Unlike `mirror` the bone's own pose stays: a front
+        leg that rests otherwise than the hind leg it takes its stride from (a centaur's), half a stride or a diagonal on.
   {"op": "wave", "bone": B, "axis": "x"|"y"|"z"|[x, y, z], "deg": D [, "cycles": N, "phase": P, "ticks": [a, b, c, d]]}
         the bone swung D degrees either way about a model axis, N sways over the clip (1 by default; a loop's last tick
         repeats its first, so a loop closes), starting P of a sway in (0 to 1): a chain the source never animated (a tail
@@ -259,6 +264,31 @@ def mirror(frames, bone, source, shift=0):
     return out
 
 
+def follow(frames, bone, source, shift=0, gain=1.0, mirrored=False):
+    n = len(frames)
+    closed = n > 2 and all(a[3:6] == b[3:6] for a, b in zip(frames[0], frames[-1]))
+    qs = [_quat(_rot(*pose[source][3:6])) for pose in frames]
+    acc = [0.0] * 4
+    for q in (qs[:-1] if closed else qs):
+        s = 1 if sum(p * r for p, r in zip(q, qs[0])) >= 0 else -1
+        acc = [a + s * v for a, v in zip(acc, q)]
+    m = math.sqrt(sum(v * v for v in acc))
+    mean_t = _tr(_matrix([v / m for v in acc]))
+    ident = [1.0, 0.0, 0.0, 0.0]
+    out = []
+    for t in range(n):
+        pose = [list(v) for v in frames[t]]
+        u = (t + shift) % (n - 1) if closed else min(max(t + shift, 0), n - 1)
+        delta = _mul(mean_t, _rot(*frames[u][source][3:6]))
+        if mirrored:                                 # reflected through the side plane: P D P with P = diag(-1, 1, 1)
+            delta = [[delta[i][j] * (-1 if (i == 0) != (j == 0) else 1) for j in range(3)] for i in range(3)]
+        if gain != 1.0:
+            delta = _matrix(_slerp(ident, _quat(delta), gain))
+        pose[bone][3:6] = list(_euler(_mul(_rot(*pose[bone][3:6]), delta), pose[bone][3:6]))
+        out.append(pose)
+    return out
+
+
 def lift(frames, bone, up, ticks=None):
     if bone == 0:
         raise ValueError('clip repair: lift a body bone, not the root (its channels carry the travel)')
@@ -341,6 +371,8 @@ def apply_ops(frames, parents, ops):
             frames = smooth(frames, op['bone'], op.get('passes', 1), op.get('weight', 0.25), op.get('ticks'))
         elif kind == 'mirror':
             frames = mirror(frames, op['bone'], op['from'], op.get('shift', 0))
+        elif kind == 'follow':
+            frames = follow(frames, op['bone'], op['from'], op.get('shift', 0), op.get('gain', 1.0), op.get('mirror', False))
         elif kind == 'sway':
             frames = sway(frames, parents, op['bone'], op['axis'], op['deg'], op['cycles'], op.get('phase', 0.0))
         elif kind == 'retime':

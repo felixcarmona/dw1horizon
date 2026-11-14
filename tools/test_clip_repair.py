@@ -102,6 +102,35 @@ class ClipRepairTest(unittest.TestCase):
         self.assertEqual(out[-1][3][3:6], out[0][3][3:6])
         self.assertEqual(out[len(loop) - 4][3][3:6], [loop[0][2][3], -loop[0][2][4], -loop[0][2][5]])
 
+    def test_follow_adds_the_source_swing_and_keeps_the_own_pose(self):
+        import math
+        n = 13                                       # a loop: its last tick repeats its first
+        frames = [[[4096, 4096, 4096, 0, 0, 0, 0, 0, 0],
+                   [4096, 4096, 4096, 0, 0, 0, 0, -300, 0],
+                   [4096, 4096, 4096, 300 + round(200 * math.sin(2 * math.pi * t / (n - 1))), 0, 0, 0, -200, 0],
+                   [4096, 4096, 4096, 700, 0, 0, 50, -100, 0]] for t in range(n)]
+        out = clip_repair.apply_ops(frames, PARENTS, [{'op': 'follow', 'bone': 3, 'from': 2, 'shift': 3}])
+        for t in range(n):
+            u = (t + 3) % (n - 1)
+            # a pure x swing about its mean (300) moves bone 3 on its own x channel by exactly that much
+            self.assertLessEqual(abs(out[t][3][3] - (700 + frames[u][2][3] - 300)), 1)
+            self.assertEqual(out[t][3][4:6], [0, 0])
+            for bone in (0, 1, 2):
+                self.assertEqual(out[t][bone], frames[t][bone])
+            self.assertEqual(out[t][3][:3] + out[t][3][6:], frames[t][3][:3] + frames[t][3][6:])
+        self.assertEqual(out[-1], out[0])
+        self.assertLessEqual(abs(sum(p[3][3] for p in out[:-1]) / (n - 1) - 700), 1)    # the own mean pose stays
+        half = clip_repair.apply_ops(frames, PARENTS, [{'op': 'follow', 'bone': 3, 'from': 2, 'gain': 0.5}])
+        self.assertLessEqual(abs(half[3][3][3] - (700 + (frames[3][2][3] - 300) / 2)), 1)
+        side = [[list(b) for b in p] for p in frames]
+        for p in side:
+            p[2][4] = p[2][3] - 300                  # a sideways swing on y as well
+        out = clip_repair.apply_ops(side, PARENTS, [{'op': 'follow', 'bone': 3, 'from': 2, 'mirror': True}])
+        plain = clip_repair.apply_ops(side, PARENTS, [{'op': 'follow', 'bone': 3, 'from': 2}])
+        self.assertLessEqual(abs(out[3][3][3] - plain[3][3][3]), 2)
+        self.assertGreater(abs(out[3][3][4] - plain[3][3][4]), 50)
+        self.assertEqual(clip_repair.apply_ops(frames, PARENTS, [{'op': 'follow', 'bone': 3, 'from': 1}]), frames)
+
     def test_wave_sways_one_bone_and_closes_a_loop(self):
         frames = clip(13)
         frames[-1] = [list(b) for b in frames[0]]
