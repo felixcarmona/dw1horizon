@@ -2,1105 +2,1366 @@
  "proven": {
   "3": {
    "finisher": 59,
+   "trials": 1,
    "enemy_damage": 469
   },
   "4": {
    "finisher": 66,
+   "trials": 1,
    "enemy_damage": 679
   },
   "5": {
    "finisher": 63,
-   "enemy_damage": 594
+   "trials": 3,
+   "enemy_damage": 567
   },
   "6": {
    "finisher": 62,
+   "trials": 1,
    "enemy_damage": 1252
   },
   "7": {
    "finisher": 69,
+   "trials": 1,
    "enemy_damage": 1516
   },
   "8": {
    "finisher": 58,
+   "trials": 3,
    "enemy_damage": 512
   },
   "9": {
    "finisher": 61,
+   "trials": 3,
    "enemy_damage": 502
   },
   "10": {
    "finisher": 88,
+   "trials": 1,
    "enemy_damage": 832
   },
   "11": {
    "finisher": 108,
+   "trials": 1,
    "enemy_damage": 1000
   },
   "12": {
    "finisher": 79,
+   "trials": 1,
    "enemy_damage": 1180
   },
   "13": {
    "finisher": 68,
+   "trials": 1,
    "enemy_damage": 1345
-  },
-  "14": {
-   "finisher": 60,
-   "enemy_damage": 1272,
-   "note": "hit in only some emulator trials (1 of 3 to 8): the clip often misses its target"
   },
   "17": {
    "finisher": 99,
-   "enemy_damage": 456
+   "trials": 3,
+   "enemy_damage": 433
   },
   "18": {
    "finisher": 101,
+   "trials": 1,
    "enemy_damage": 1332
   },
   "19": {
    "finisher": 93,
+   "trials": 1,
    "enemy_damage": 279
   },
   "20": {
    "finisher": 82,
+   "trials": 1,
    "enemy_damage": 1553
   },
   "21": {
    "finisher": 94,
+   "trials": 1,
    "enemy_damage": 275
   },
   "22": {
    "finisher": 64,
-   "enemy_damage": 598
+   "trials": 3,
+   "enemy_damage": 511
   },
   "23": {
    "finisher": 105,
+   "trials": 1,
    "enemy_damage": 412
   },
   "24": {
    "finisher": 90,
+   "trials": 1,
    "enemy_damage": 804
-  },
-  "25": {
-   "finisher": 72,
-   "enemy_damage": 1624,
-   "note": "hit in only some emulator trials (1 of 3 to 8): the clip often misses its target"
   },
   "26": {
    "finisher": 80,
+   "trials": 1,
    "enemy_damage": 1241
   },
   "27": {
    "finisher": 77,
+   "trials": 1,
    "enemy_damage": 1203
   },
   "28": {
    "finisher": 67,
+   "trials": 1,
    "enemy_damage": 1193
   },
   "31": {
    "finisher": 71,
+   "trials": 1,
    "enemy_damage": 1317
   },
   "32": {
    "finisher": 76,
+   "trials": 1,
    "enemy_damage": 677
   },
   "33": {
    "finisher": 84,
+   "trials": 1,
    "enemy_damage": 1429
   },
   "34": {
    "finisher": 81,
+   "trials": 1,
    "enemy_damage": 609
   },
   "35": {
    "finisher": 87,
+   "trials": 1,
    "enemy_damage": 822
   },
   "36": {
    "finisher": 86,
+   "trials": 1,
    "enemy_damage": 1375
   },
   "37": {
    "finisher": 83,
+   "trials": 1,
    "enemy_damage": 774
   },
   "38": {
    "finisher": 75,
+   "trials": 1,
    "enemy_damage": 517
   },
   "39": {
    "finisher": 65,
+   "trials": 1,
    "enemy_damage": 930
   },
   "40": {
    "finisher": 102,
+   "trials": 1,
    "enemy_damage": 1248
   },
   "42": {
    "finisher": 92,
+   "trials": 1,
    "enemy_damage": 1216
   },
   "45": {
    "finisher": 70,
+   "trials": 1,
    "enemy_damage": 458
   },
   "46": {
    "finisher": 98,
-   "enemy_damage": 1786
+   "trials": 3,
+   "enemy_damage": 801
   },
   "47": {
    "finisher": 104,
+   "trials": 1,
    "enemy_damage": 490
   },
   "48": {
    "finisher": 91,
+   "trials": 1,
    "enemy_damage": 1083
   },
   "49": {
    "finisher": 103,
+   "trials": 1,
    "enemy_damage": 372
   },
   "50": {
    "finisher": 97,
+   "trials": 1,
    "enemy_damage": 254
   },
   "51": {
    "finisher": 100,
+   "trials": 1,
    "enemy_damage": 572
   },
   "52": {
    "finisher": 85,
+   "trials": 1,
    "enemy_damage": 810
   },
   "53": {
    "finisher": 107,
+   "trials": 1,
    "enemy_damage": 900
   },
   "54": {
    "finisher": 78,
+   "trials": 1,
    "enemy_damage": 1272
   },
   "55": {
    "finisher": 73,
+   "trials": 1,
    "enemy_damage": 2148
   },
   "56": {
    "finisher": 96,
+   "trials": 1,
    "enemy_damage": 620
   },
   "57": {
    "finisher": 95,
+   "trials": 1,
    "enemy_damage": 385
   },
   "58": {
    "finisher": 89,
+   "trials": 1,
    "enemy_damage": 990
   },
   "59": {
    "finisher": 109,
+   "trials": 1,
    "enemy_damage": 333
   },
   "60": {
    "finisher": 93,
+   "trials": 1,
    "enemy_damage": 529
   },
   "61": {
    "finisher": 111,
+   "trials": 1,
    "enemy_damage": 958
   },
   "62": {
    "finisher": 64,
+   "trials": 1,
    "enemy_damage": 255
   },
   "63": {
    "finisher": 91,
+   "trials": 1,
    "enemy_damage": 1348
   },
   "64": {
    "finisher": 78,
+   "trials": 1,
    "enemy_damage": 1272
   },
   "65": {
    "finisher": 92,
+   "trials": 1,
    "enemy_damage": 1323
   },
   "66": {
    "finisher": 62,
+   "trials": 1,
    "enemy_damage": 1194
   },
   "67": {
    "finisher": 86,
+   "trials": 1,
    "enemy_damage": 1375
   },
   "68": {
    "finisher": 81,
+   "trials": 1,
    "enemy_damage": 1174
   },
   "69": {
    "finisher": 61,
+   "trials": 1,
    "enemy_damage": 518
-  },
-  "70": {
-   "finisher": 60,
-   "enemy_damage": 1335,
-   "note": "hit in only some emulator trials (1 of 3 to 8): the clip often misses its target"
   },
   "71": {
    "finisher": 95,
+   "trials": 1,
    "enemy_damage": 363
   },
   "72": {
    "finisher": 105,
+   "trials": 1,
    "enemy_damage": 824
   },
   "74": {
    "finisher": 76,
+   "trials": 1,
    "enemy_damage": 677
   },
   "76": {
    "finisher": 61,
+   "trials": 1,
    "enemy_damage": 569
   },
   "80": {
    "finisher": 81,
+   "trials": 1,
    "enemy_damage": 1219
   },
   "82": {
    "finisher": 75,
+   "trials": 1,
    "enemy_damage": 1034
   },
   "84": {
    "finisher": 59,
+   "trials": 1,
    "enemy_damage": 497
   },
   "85": {
    "finisher": 82,
+   "trials": 1,
    "enemy_damage": 1553
   },
   "87": {
    "finisher": 65,
+   "trials": 1,
    "enemy_damage": 920
   },
   "88": {
    "finisher": 104,
+   "trials": 1,
    "enemy_damage": 547
   },
   "89": {
    "finisher": 81,
+   "trials": 1,
    "enemy_damage": 1219
   },
   "90": {
    "finisher": 102,
+   "trials": 1,
    "enemy_damage": 1170
   },
   "91": {
    "finisher": 75,
+   "trials": 1,
    "enemy_damage": 1056
   },
   "92": {
    "finisher": 78,
+   "trials": 1,
    "enemy_damage": 616
   },
   "93": {
    "finisher": 95,
+   "trials": 1,
    "enemy_damage": 385
   },
   "94": {
    "finisher": 105,
+   "trials": 1,
    "enemy_damage": 824
   },
   "96": {
    "finisher": 71,
+   "trials": 1,
    "enemy_damage": 1175
   },
   "100": {
    "finisher": 62,
+   "trials": 1,
    "enemy_damage": 1194
   },
   "104": {
    "finisher": 88,
+   "trials": 1,
    "enemy_damage": 917
   },
   "105": {
    "finisher": 88,
+   "trials": 1,
    "enemy_damage": 799
   },
   "106": {
    "finisher": 94,
+   "trials": 1,
    "enemy_damage": 488
   },
   "107": {
    "finisher": 83,
+   "trials": 1,
    "enemy_damage": 760
   },
   "108": {
    "finisher": 81,
+   "trials": 1,
    "enemy_damage": 1219
   },
   "109": {
    "finisher": 95,
+   "trials": 1,
    "enemy_damage": 741
   },
   "110": {
    "finisher": 87,
+   "trials": 1,
    "enemy_damage": 870
   },
   "111": {
    "finisher": 98,
+   "trials": 1,
    "enemy_damage": 1720
   },
   "112": {
    "finisher": 111,
+   "trials": 1,
    "enemy_damage": 806
   },
   "113": {
    "finisher": 61,
+   "trials": 1,
    "enemy_damage": 588
   },
   "115": {
    "finisher": 106,
+   "trials": 1,
    "enemy_damage": 1351
   },
   "116": {
    "finisher": 102,
+   "trials": 1,
    "enemy_damage": 1330
   },
   "117": {
    "finisher": 81,
+   "trials": 1,
    "enemy_damage": 695
   },
   "119": {
    "finisher": 90,
+   "trials": 1,
    "enemy_damage": 830
   },
   "120": {
    "finisher": 65,
+   "trials": 1,
    "enemy_damage": 1104
   },
   "121": {
    "finisher": 73,
+   "trials": 1,
    "enemy_damage": 2042
   },
   "122": {
    "finisher": 66,
+   "trials": 1,
    "enemy_damage": 1390
   },
   "123": {
    "finisher": 111,
+   "trials": 1,
    "enemy_damage": 878
   },
   "124": {
    "finisher": 58,
+   "trials": 1,
    "enemy_damage": 576
   },
   "126": {
    "finisher": 63,
+   "trials": 1,
    "enemy_damage": 505
   },
   "180": {
    "finisher": 99,
+   "trials": 1,
    "enemy_damage": 428
   },
   "181": {
    "finisher": 73,
+   "trials": 1,
    "enemy_damage": 2148
   },
   "182": {
    "finisher": 63,
+   "trials": 1,
    "enemy_damage": 556
   },
   "183": {
    "finisher": 98,
+   "trials": 1,
    "enemy_damage": 1603
   },
   "184": {
    "finisher": 71,
+   "trials": 1,
    "enemy_damage": 1369
   },
   "185": {
    "finisher": 75,
+   "trials": 1,
    "enemy_damage": 517
   },
   "187": {
    "finisher": 62,
+   "trials": 1,
    "enemy_damage": 1194
   },
   "188": {
    "finisher": 84,
+   "trials": 1,
    "enemy_damage": 1415
   },
   "189": {
    "finisher": 75,
+   "trials": 1,
    "enemy_damage": 506
   },
   "190": {
    "finisher": 62,
+   "trials": 1,
    "enemy_damage": 1113
   },
   "191": {
    "finisher": 78,
+   "trials": 1,
    "enemy_damage": 1193
   },
   "192": {
    "finisher": 77,
+   "trials": 1,
    "enemy_damage": 1203
   },
   "193": {
    "finisher": 75,
+   "trials": 1,
    "enemy_damage": 1122
   },
   "194": {
    "finisher": 63,
+   "trials": 1,
    "enemy_damage": 505
   },
   "195": {
    "finisher": 61,
+   "trials": 1,
    "enemy_damage": 518
   },
   "196": {
    "finisher": 69,
+   "trials": 1,
    "enemy_damage": 1427
   },
   "197": {
    "finisher": 77,
+   "trials": 1,
    "enemy_damage": 1334
   },
   "198": {
    "finisher": 86,
+   "trials": 1,
    "enemy_damage": 1391
   },
   "199": {
    "finisher": 78,
+   "trials": 1,
    "enemy_damage": 1272
   },
   "200": {
    "finisher": 84,
+   "trials": 1,
    "enemy_damage": 1415
   },
   "201": {
    "finisher": 86,
+   "trials": 1,
    "enemy_damage": 1632
   },
   "202": {
    "finisher": 90,
+   "trials": 1,
    "enemy_damage": 773
   },
   "203": {
    "finisher": 63,
+   "trials": 1,
    "enemy_damage": 567
   },
   "205": {
    "finisher": 73,
+   "trials": 1,
    "enemy_damage": 2106
   },
   "206": {
    "finisher": 62,
+   "trials": 1,
    "enemy_damage": 1067
   },
   "207": {
    "finisher": 61,
+   "trials": 1,
    "enemy_damage": 518
   },
   "208": {
    "finisher": 91,
+   "trials": 1,
    "enemy_damage": 1219
   },
   "209": {
    "finisher": 73,
+   "trials": 1,
    "enemy_damage": 2106
   },
   "210": {
    "finisher": 73,
+   "trials": 1,
    "enemy_damage": 2042
   },
   "211": {
    "finisher": 111,
+   "trials": 1,
    "enemy_damage": 860
   },
   "212": {
    "finisher": 96,
+   "trials": 1,
    "enemy_damage": 522
   },
   "213": {
    "finisher": 96,
+   "trials": 1,
    "enemy_damage": 620
   },
   "214": {
    "finisher": 73,
+   "trials": 1,
    "enemy_damage": 2042
   },
   "215": {
    "finisher": 109,
+   "trials": 1,
    "enemy_damage": 612
   },
   "216": {
    "finisher": 62,
+   "trials": 1,
    "enemy_damage": 1160
   },
   "217": {
    "finisher": 95,
+   "trials": 1,
    "enemy_damage": 345
   },
   "218": {
    "finisher": 85,
+   "trials": 1,
    "enemy_damage": 826
   },
   "219": {
    "finisher": 111,
+   "trials": 1,
    "enemy_damage": 869
   },
   "220": {
    "finisher": 111,
+   "trials": 1,
    "enemy_damage": 448
   },
   "221": {
    "finisher": 71,
+   "trials": 1,
    "enemy_damage": 633
   },
   "222": {
    "finisher": 83,
+   "trials": 1,
    "enemy_damage": 1433
   },
   "223": {
    "finisher": 75,
+   "trials": 1,
    "enemy_damage": 550
   },
   "224": {
    "finisher": 79,
+   "trials": 1,
    "enemy_damage": 1193
   },
   "225": {
    "finisher": 89,
+   "trials": 1,
    "enemy_damage": 1056
   },
   "226": {
    "finisher": 62,
+   "trials": 1,
    "enemy_damage": 1067
   },
   "227": {
    "finisher": 81,
+   "trials": 1,
    "enemy_damage": 1197
   },
   "228": {
    "finisher": 94,
+   "trials": 1,
    "enemy_damage": 561
   },
   "229": {
    "finisher": 111,
+   "trials": 1,
    "enemy_damage": 430
   },
   "230": {
    "finisher": 73,
+   "trials": 1,
    "enemy_damage": 2106
   },
   "231": {
    "finisher": 89,
+   "trials": 1,
    "enemy_damage": 1111
   },
   "232": {
    "finisher": 89,
+   "trials": 1,
    "enemy_damage": 1166
   },
   "233": {
    "finisher": 61,
+   "trials": 1,
    "enemy_damage": 518
   },
   "234": {
    "finisher": 83,
+   "trials": 1,
    "enemy_damage": 680
   },
   "235": {
    "finisher": 99,
+   "trials": 1,
    "enemy_damage": 414
   },
   "236": {
    "finisher": 69,
+   "trials": 1,
    "enemy_damage": 1516
   },
   "237": {
    "finisher": 80,
+   "trials": 1,
    "enemy_damage": 1228
   },
   "238": {
    "finisher": 90,
+   "trials": 1,
    "enemy_damage": 773
   },
   "239": {
    "finisher": 95,
+   "trials": 1,
    "enemy_damage": 349
   },
   "240": {
    "finisher": 87,
+   "trials": 1,
    "enemy_damage": 838
   },
   "241": {
    "finisher": 86,
+   "trials": 1,
    "enemy_damage": 733
   },
   "242": {
    "finisher": 88,
+   "trials": 1,
    "enemy_damage": 799
   },
   "243": {
    "finisher": 94,
+   "trials": 1,
    "enemy_damage": 520
   },
   "244": {
    "finisher": 61,
+   "trials": 1,
    "enemy_damage": 543
   },
   "245": {
    "finisher": 62,
+   "trials": 1,
    "enemy_damage": 1194
   },
   "246": {
    "finisher": 78,
+   "trials": 1,
    "enemy_damage": 1351
   },
   "247": {
    "finisher": 66,
+   "trials": 1,
    "enemy_damage": 656
   },
   "248": {
    "finisher": 60,
+   "trials": 1,
    "enemy_damage": 1255
   },
   "249": {
    "finisher": 69,
+   "trials": 1,
    "enemy_damage": 1413
   },
   "250": {
    "finisher": 61,
+   "trials": 1,
    "enemy_damage": 518
   },
   "251": {
    "finisher": 70,
+   "trials": 1,
    "enemy_damage": 247
   },
   "252": {
    "finisher": 86,
+   "trials": 1,
    "enemy_damage": 1481
   },
   "253": {
    "finisher": 75,
+   "trials": 1,
    "enemy_damage": 1034
   },
   "254": {
    "finisher": 87,
+   "trials": 1,
    "enemy_damage": 838
   },
   "255": {
    "finisher": 111,
+   "trials": 1,
    "enemy_damage": 815
   },
   "256": {
    "finisher": 101,
+   "trials": 1,
    "enemy_damage": 1332
   },
   "257": {
    "finisher": 73,
+   "trials": 1,
    "enemy_damage": 2106
   },
   "258": {
    "finisher": 62,
+   "trials": 1,
    "enemy_damage": 1171
   },
   "259": {
    "finisher": 73,
+   "trials": 1,
    "enemy_damage": 2274
   },
   "260": {
    "finisher": 74,
+   "trials": 1,
    "enemy_damage": 1335
   },
   "261": {
    "finisher": 89,
+   "trials": 1,
    "enemy_damage": 1067
   },
   "262": {
    "finisher": 69,
+   "trials": 1,
    "enemy_damage": 1413
   },
   "263": {
    "finisher": 75,
+   "trials": 1,
    "enemy_damage": 1188
   },
   "264": {
    "finisher": 62,
+   "trials": 1,
    "enemy_damage": 1136
   },
   "265": {
    "finisher": 96,
+   "trials": 1,
    "enemy_damage": 512
   },
   "266": {
    "finisher": 60,
+   "trials": 1,
    "enemy_damage": 1102
   },
   "267": {
    "finisher": 111,
+   "trials": 1,
    "enemy_damage": 860
   },
   "268": {
    "finisher": 111,
+   "trials": 1,
    "enemy_damage": 860
   },
   "269": {
    "finisher": 77,
+   "trials": 1,
    "enemy_damage": 1203
   },
   "270": {
    "finisher": 68,
+   "trials": 1,
    "enemy_damage": 679
   },
   "271": {
    "finisher": 111,
+   "trials": 1,
    "enemy_damage": 860
   },
   "272": {
    "finisher": 72,
+   "trials": 1,
    "enemy_damage": 1607
   },
   "273": {
    "finisher": 98,
+   "trials": 1,
    "enemy_damage": 1603
   },
   "274": {
    "finisher": 72,
+   "trials": 1,
    "enemy_damage": 1660
   },
   "275": {
    "finisher": 111,
+   "trials": 1,
    "enemy_damage": 922
   },
   "276": {
    "finisher": 78,
+   "trials": 1,
    "enemy_damage": 1272
   },
   "277": {
    "finisher": 63,
+   "trials": 1,
    "enemy_damage": 522
   },
   "278": {
    "finisher": 87,
+   "trials": 1,
    "enemy_damage": 789
   },
   "279": {
    "finisher": 62,
+   "trials": 1,
    "enemy_damage": 556
   },
   "280": {
    "finisher": 61,
+   "trials": 1,
    "enemy_damage": 549
   },
   "281": {
    "finisher": 61,
+   "trials": 1,
    "enemy_damage": 549
   },
   "282": {
    "finisher": 72,
+   "trials": 1,
    "enemy_damage": 1889
   },
   "283": {
    "finisher": 90,
+   "trials": 1,
    "enemy_damage": 781
   },
   "284": {
    "finisher": 100,
+   "trials": 1,
    "enemy_damage": 549
   },
   "285": {
    "finisher": 98,
+   "trials": 1,
    "enemy_damage": 860
   },
   "286": {
    "finisher": 91,
+   "trials": 1,
    "enemy_damage": 1197
   },
   "287": {
    "finisher": 86,
+   "trials": 1,
    "enemy_damage": 1481
   },
   "288": {
    "finisher": 79,
+   "trials": 1,
    "enemy_damage": 1259
   },
   "289": {
    "finisher": 77,
+   "trials": 1,
    "enemy_damage": 1229
   },
   "290": {
    "finisher": 78,
+   "trials": 1,
    "enemy_damage": 1272
   },
   "291": {
    "finisher": 111,
+   "trials": 1,
    "enemy_damage": 430
   },
   "292": {
    "finisher": 63,
+   "trials": 1,
    "enemy_damage": 567
   },
   "293": {
    "finisher": 62,
+   "trials": 1,
    "enemy_damage": 1055
   },
   "294": {
    "finisher": 68,
+   "trials": 1,
    "enemy_damage": 1438
   },
   "295": {
    "finisher": 62,
+   "trials": 1,
    "enemy_damage": 1160
   },
   "296": {
    "finisher": 111,
+   "trials": 1,
    "enemy_damage": 461
   },
   "297": {
    "finisher": 63,
+   "trials": 1,
    "enemy_damage": 561
   },
   "298": {
    "finisher": 73,
+   "trials": 1,
    "enemy_damage": 2042
   },
   "299": {
    "finisher": 80,
+   "trials": 1,
    "enemy_damage": 1228
   },
   "300": {
    "finisher": 62,
+   "trials": 1,
    "enemy_damage": 1113
   },
   "302": {
    "finisher": 102,
+   "trials": 1,
    "enemy_damage": 1261
   },
   "303": {
    "finisher": 92,
+   "trials": 1,
    "enemy_damage": 616
   },
   "304": {
    "finisher": 85,
+   "trials": 1,
    "enemy_damage": 769
   },
   "305": {
    "finisher": 100,
+   "trials": 1,
    "enemy_damage": 589
   },
   "306": {
    "finisher": 62,
+   "trials": 1,
    "enemy_damage": 556
   },
   "307": {
    "finisher": 62,
+   "trials": 1,
    "enemy_damage": 1113
   },
   "308": {
    "finisher": 100,
+   "trials": 1,
    "enemy_damage": 1098
   },
   "309": {
    "finisher": 62,
+   "trials": 1,
    "enemy_damage": 1194
   },
   "310": {
    "finisher": 78,
+   "trials": 1,
    "enemy_damage": 1259
   },
   "311": {
    "finisher": 73,
+   "trials": 1,
    "enemy_damage": 2106
   },
   "312": {
    "finisher": 96,
+   "trials": 1,
    "enemy_damage": 585
   },
   "313": {
    "finisher": 80,
+   "trials": 1,
    "enemy_damage": 1292
   },
   "314": {
    "finisher": 96,
+   "trials": 1,
    "enemy_damage": 620
   },
   "315": {
    "finisher": 63,
+   "trials": 1,
    "enemy_damage": 550
   },
   "316": {
    "finisher": 63,
+   "trials": 1,
    "enemy_damage": 522
   },
   "317": {
    "finisher": 102,
+   "trials": 1,
    "enemy_damage": 1248
   },
   "318": {
    "finisher": 102,
+   "trials": 1,
    "enemy_damage": 1248
   },
   "319": {
    "finisher": 73,
+   "trials": 1,
    "enemy_damage": 947
   },
   "320": {
    "finisher": 58,
+   "trials": 1,
    "enemy_damage": 555
   },
   "321": {
    "finisher": 102,
+   "trials": 1,
    "enemy_damage": 624
   },
   "322": {
    "finisher": 62,
+   "trials": 1,
    "enemy_damage": 597
   },
   "323": {
    "finisher": 109,
+   "trials": 1,
    "enemy_damage": 583
   },
   "324": {
    "finisher": 62,
+   "trials": 1,
    "enemy_damage": 1194
   },
   "325": {
    "finisher": 62,
+   "trials": 1,
    "enemy_damage": 1194
   },
   "326": {
    "finisher": 80,
+   "trials": 1,
    "enemy_damage": 1318
   },
   "327": {
    "finisher": 81,
+   "trials": 1,
    "enemy_damage": 1197
   },
   "328": {
    "finisher": 73,
+   "trials": 1,
    "enemy_damage": 2042
   },
   "329": {
    "finisher": 80,
+   "trials": 1,
    "enemy_damage": 1228
   },
   "330": {
    "finisher": 81,
+   "trials": 1,
    "enemy_damage": 1071
   },
   "331": {
    "finisher": 100,
+   "trials": 1,
    "enemy_damage": 1109
   },
   "332": {
    "finisher": 93,
+   "trials": 1,
    "enemy_damage": 553
   },
   "333": {
    "finisher": 78,
+   "trials": 1,
    "enemy_damage": 1351
   },
   "334": {
    "finisher": 80,
+   "trials": 1,
    "enemy_damage": 659
   },
   "335": {
    "finisher": 78,
+   "trials": 1,
    "enemy_damage": 1351
   },
   "336": {
    "finisher": 61,
+   "trials": 1,
    "enemy_damage": 523
   },
   "351": {
    "finisher": 99,
+   "trials": 1,
    "enemy_damage": 207
   },
   "352": {
    "finisher": 71,
+   "trials": 1,
    "enemy_damage": 1201
   },
   "353": {
    "finisher": 95,
+   "trials": 1,
    "enemy_damage": 691
   },
   "354": {
    "finisher": 70,
+   "trials": 1,
    "enemy_damage": 494
   },
   "373": {
    "finisher": 109,
+   "trials": 1,
    "enemy_damage": 572
   },
   "400": {
    "finisher": 74,
+   "trials": 1,
    "enemy_damage": 1351
   },
   "401": {
    "finisher": 111,
+   "trials": 1,
    "enemy_damage": 922
   },
   "402": {
    "finisher": 109,
+   "trials": 1,
    "enemy_damage": 583
   },
   "403": {
    "finisher": 80,
+   "trials": 1,
    "enemy_damage": 640
   },
   "404": {
    "finisher": 96,
+   "trials": 1,
    "enemy_damage": 585
   },
   "405": {
    "finisher": 78,
+   "trials": 1,
    "enemy_damage": 636
   },
   "406": {
    "finisher": 96,
+   "trials": 1,
    "enemy_damage": 620
   },
   "407": {
    "finisher": 109,
+   "trials": 1,
    "enemy_damage": 583
   },
   "408": {
    "finisher": 106,
+   "trials": 1,
    "enemy_damage": 1192
   },
   "409": {
    "finisher": 61,
+   "trials": 1,
    "enemy_damage": 518
   },
   "430": {
    "finisher": 62,
+   "trials": 1,
    "enemy_damage": 1113
   },
   "431": {
    "finisher": 73,
+   "trials": 1,
    "enemy_damage": 2106
   },
   "432": {
    "finisher": 62,
+   "trials": 1,
    "enemy_damage": 1113
   },
   "433": {
    "finisher": 59,
+   "trials": 1,
    "enemy_damage": 239
   },
   "460": {
    "finisher": 63,
+   "trials": 1,
    "enemy_damage": 252
   },
   "461": {
    "finisher": 111,
+   "trials": 1,
    "enemy_damage": 488
   }
  },
+ "conditional": {
+  "14": "Lovely Attack hit in 2 of 8 default trials and in 3 of 4 trials with the enemy held 60 units from the caster (0 damage only on one side); the heart flies where the caster faces, so it misses an enemy that is not in front",
+  "25": "Sweet Breath hit in 1 of 4 default trials; the breath goes where the caster faces, so it misses an enemy that is not in front of it",
+  "70": "Lovely Attack (Monzaemon donor row) hit in 2 of 4 default trials; the heart flies where the caster faces, so it misses an enemy that is not in front"
+ },
  "unproven": {
-  "41": "Deadly Bomb (its only technique with an origin row) is a burst centred on Giromon: 0 damage in 17 emulator trials, also with the enemy moved beside it; cause not found"
+  "41": "Deadly Bomb: its hit box (traced at findAABBHitEntity) sits 800 to 3400 units from Giromon, stationary, and moves with the origin row (bone 6, 45,0,0); 0 damage in 17 default trials and with the enemy held on the caster; the effect data equals the original disc, cause not found"
  }
 }
