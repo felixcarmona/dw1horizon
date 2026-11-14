@@ -103,6 +103,15 @@ int main(void) {
     fresh();
     for (i = 0; i < 1200; i++) tick(0, 306, 218, -1);
     assert(MOD_CAD_LEVEL == 1 && MOD_CAD_SWITCHES == 1);
+    /* a battle at steady 30 with three lone overruns early in its window (the AI choosing) stays at steady 30;
+     * one that overruns every fourth tick goes to 20 once the window is full */
+    fresh(); modCad.ctxLevel[1] = 1;
+    for (i = 0; i < 600; i++) assert(tick(MOD_PRESENT_BATTLE, (i == 3 || i == 7 || i == 12) ? 520 : 330, 240, -1) == 1);
+    assert(MOD_CAD_SWITCHES == 0);
+    fresh(); modCad.ctxLevel[1] = 1;
+    for (i = 0; i < 31; i++) assert(tick(MOD_PRESENT_BATTLE, (i % 4) == 3 ? 520 : 330, 240, -1) == 1);
+    for (i = 0; i < 40; i++) tick(MOD_PRESENT_BATTLE, (i % 4) == 3 ? 520 : 330, 240, -1);
+    assert(MOD_CAD_LEVEL == 0 && MOD_CAD_SWITCHES == 1);
     MOD_CAD_KEEP60 = 60; /* the cases below were measured against the old threshold */
     /* the frames 60 could show: light, File City, Gear Savanna, a tournament (measured profiles) */
     assert(modCadPredict60(150, 110) == 3);
