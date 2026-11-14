@@ -113,5 +113,13 @@
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.256,
     "hit_scale": 0.1
+  },
+  "136": {
+    "name": "Junk Chunker",
+    "stands_for": 77,
+    "cast": [[1, "EFFESA/MESA6200.BIN", "EFFESA/AESA6200.BIN"], [2, "EFFESA/MESA6300.BIN", "EFFESA/AESA6300.BIN"]],
+    "hit": [[2, "EFFESD/MESD3800.BIN", "EFFESD/AESD3800.BIN"]],
+    "scale": 0.267,
+    "hit_scale": 0.1
   }
 }
