@@ -356,6 +356,36 @@ unhappy; 35,542 B, the body leans 13-18 degrees forward in tired) and Bulbmon 31
 droop: tired in 1 and 15-19, sick in 14; the delta is first compacted exactly, 80,934 to 68,204 B) got condition idles: before, slots 1 and 18
 of Gesomon and Solarmon were the field idle itself and Bulbmon's seven were 0.007 heights off it.
 
+A row's `repairs` (`{"slot": [clip_repair ops]}`, applied after slots, share and tame, encoded at the row's `tol`) mends a
+care or condition clip the species already has, judged by `care_qa` on the final provider output: `lift` a clip whose
+lowest vertex sinks below the floor, `turn` a tail or head that dips through it, `damp`/`smooth` a jittery chain (vertex
+jumps), `seam` a loop joint, `retime` or `cut` (ticks `from`..`to` taken out, loop and events moved with them) a clip longer
+than 126 ticks, and a head `turn` plus a slow `sway` of the head or the free limbs (one cycle, ends unchanged) where a
+condition stood within 0.035 heights of the field idle or its chains did not move. Per species (care-idles.json):
+- sinks lifted or turned: Ankylomon 189 0x13 (tail), Lighdramon 201 1/14-19, Submarimon 202 0x13, Magnadramon 215 14-17,
+  BlackGatomon 222 and Gatomon 234 0x10/0x13, Quetzalmon 249 8 and 14-19, Scorpiomon 275 care and 14-17 (tail), Crabmon 284
+  14-17/0x13/0x16/0x25, Tapirmon 287 1/14-18, BlackKingNumemon 307 9, Cannondramon 405 1/14-18, Armageddemon 407 14-17/0x13;
+- jumps damped or smoothed: Imperialdramon 192 1/14-18, BlackGatomon 222 and Gatomon 234 14, Silphymon 226 0x13 (seam),
+  Diaboromon 237 14-18, Tylomon 254 14-18, Kotemon 351 14/16; tear: Valkyrimon 255 0x13 (damp);
+- longer than 126 ticks, cut 104..128: VenomMyotismon 212, Starmon 243, MetalTyrannomon 260, Deltamon 292, Growlmon 320,
+  WarGrowlmon 326, Guilmon 433 (slot 15); Armageddemon 407 1 and 18 retimed to 125;
+- too close to the field idle, new condition programs from the planner: Halsemon 196, Gomamon 217, Piedmon 245, MarineDevimon
+  279, Beelzemon 403 (tired 1/18), Togemon 208 and Salamon 221 (unhappy 19), Mushroomon 263,
+  Okuwamon 259, Deramon 286, Musyamon 325 (14-17/19 as listed in their rows);
+- head turn and sway or limb sway: Diaboromon 237 1, Infermon 246 1, Kokuwamon 247 1, Okuwamon 259 1/18, Gazimon 285 1, Deramon 286 1/14/16/18,
+  Marsmon 297, Hookmon 299, SlashAngemon 300, Sakuyamon 316, Musyamon 325, Bearmon 353 (1/18), BlackKingNumemon 307 19,
+  SlashAngemon 300 0x16, GranKuwagamon 210 0x16, Salamon 221 5/0x16;
+- two condition programs closer than 0.026 heights, shared instead: MetalGarurumon 191, Starmon 243, Cyclonemon 281,
+  Kyukimon 322 (1/18 share 14), MarineAngemon 248 (1 shares tired 18: a tired program of its own needs
+  102,954 B, over 100,352), RedOtamamon 233 (19 shares 14), MarineDevimon 279 (14-17/19 share tired 1), Gazimon 285
+  (15-19 share sick 14), Kyubimon 409 (19 shares 1: re-encoding 19 alone needs 100,652 B, over 100,352).
+Left as they are: tipped bodies that are the condition's posture (crouch, hunch, lying down: contact sheets checked),
+Solarmon 251's care slots (its only chains are three one-bone legs, so `live` reads 0.000), Garbagemon 269 piece 21 and
+Baihumon 276 piece 22 tears (0.139 and 0.18 against 0.08: the piece hangs from the root, damp and turn do not reach it),
+MaloMyotismon 406's conditions 1 and 14-18 (0.031 heights off the idle against 0.035, as main; a 30 degree head turn or a
+wing sway reaches 0.033 at most, and its slot 19 raises the wings, which does not read as tired or sick), and
+the native bindings' own game clips (the pair and distance flags of 236, 295 and 324 are their source clips).
+
 Slots 6, 0x14, 0x1A, 0x1C-0x20, 0x26 and 0x27 are the tamer's, NPCs' and the kart race's. Which slots a partner must
 have, and the lint rule for each: [imported-species.md](imported-species.md), "What the game asks of every partner".
 

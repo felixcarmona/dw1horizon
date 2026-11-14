@@ -34,6 +34,13 @@ Where the resident buffer has no room for a clip of its own, a row's `share` ({s
 program of another one (the donor's own condition clip that slots 14-17 play), and `compact` encodes the model's other
 resident clips again first, exactly (tolerance 0), to make room.
 
+A row's `repairs` ({slot: [operations]}) keeps a care or condition slot's own clip (the donor's, as the importer gave it)
+and puts right only what breaks on the final rig, with the operations of tools/models/clip_repair.py: a `turn` of a tail
+or limb that sinks through the floor (with `ticks`, only while it sinks), a `smooth` of a one-tick snap, a `cut` of one
+repeat of a cycle the clip plays several times, or a `retime`, where it is too long for the condition timer (the loop tick
+and the events shifted or scaled with it). A row may hold only `repairs`
+(`slots` empty).
+
 Profiles (content/models/imports/care-idles.json), per species: `body` (biped, quadruped, flyer, serpent, legless:
 the degrees below), the bone lists, the slots and their condition, an optional `gain` per condition and an optional `cycles` {slot: n} (a slot's clip is the
 idle's cycle n times instead of `cycles_for`'s: slots that share one program must share its length). The planner
@@ -325,6 +332,27 @@ def tame(frames, factors):
     return poses
 
 
+def repaired(frames, loop, events, parents, ops):
+    """(poses, loop, events) of a clip after clip_repair operations; a retime scales the loop tick and the events', a
+    cut shifts those after it (an event in the cut ticks is dropped)."""
+    from tools.models import clip_repair
+    poses = [[list(map(int, b)) for b in f] for f in frames]
+    events = list(events)
+    for op in ops:
+        n = len(poses)
+        poses = clip_repair.apply_ops(poses, parents, [op])
+        if op['op'] == 'cut':
+            a, b = op['from'], op['to']
+            shift = lambda t: t if t < a else t - (b - a)  # noqa: E731
+            loop = loop if loop is None or loop < a else max(a, shift(loop))
+            events = [(shift(t), kind, c) for t, kind, c in events if not a <= t < b]
+        elif len(poses) != n:
+            k = (len(poses) - 1) / max(1, n - 1)
+            loop = loop if loop in (0, None) else min(len(poses) - 1, int(round(loop * k)))
+            events = [(min(len(poses) - 1, int(round(t * k))), kind, c) for t, kind, c in events]
+    return poses, loop, events
+
+
 def apply(data, skeleton, row):
     """The final model with the condition idles of `row` (and its tamed care clips) -> (bytes, report)."""
     nb = len(skeleton)
@@ -340,7 +368,7 @@ def apply(data, skeleton, row):
     before = {s: model.anims.anims[table[s]].build() if hasattr(model.anims.anims[table[s]], 'build') else None
               for s in range(len(table)) if table[s] is not None}
     made, report = {}, {}
-    for slot_text, cond in sorted(row['slots'].items(), key=lambda kv: int(kv[0])):
+    for slot_text, cond in sorted(row.get('slots', {}).items(), key=lambda kv: int(kv[0])):
         slot = int(slot_text)
         p = len(_cycle(model, nb, 1)[0]) - 1
         k = int(row.get('cycles', {}).get(slot_text) or cycles_for(slot, p))
@@ -364,11 +392,21 @@ def apply(data, skeleton, row):
         table[slot] = len(model.anims.anims)
         model.anims.anims.append(mmd.encode_anim(poses, nb, loop, events, tol=1, repeats=False))
         report[slot] = dict(tamed=factors, ticks=len(poses))
+    for slot_text, ops in sorted(row.get('repairs', {}).items(), key=lambda kv: int(kv[0])):
+        # the slot's own clip with tools/models/clip_repair.py operations (a lift where its soles sink, a retime under
+        # the condition timer, a damped or smoothed bone): the clip's poses and timing stay its own
+        slot = int(slot_text)
+        frames, loop, events = animsheet.slot_frames(model, nb, slot)
+        poses, loop, events = repaired(frames, loop, events, parents, ops)
+        table[slot] = len(model.anims.anims)
+        model.anims.anims.append(mmd.encode_anim(poses, nb, loop, events, tol=row.get('tol', 1), repeats=True))
+        report[slot] = dict(repaired=[op['op'] for op in ops], ticks=len(poses))
     model.anims.anims, model.anims.table = motioncyclelayer.share_identical_streams(model.anims.anims, model.anims.table)
     out = model.build()
     check = mmd.MMD.parse(out, nb)
     for s, b in before.items():
-        if str(s) in row['slots'] or str(s) in row.get('share', {}) or str(s) in row.get('tame', {}) or b is None:
+        if (str(s) in row.get('slots', {}) or str(s) in row.get('share', {}) or str(s) in row.get('tame', {})
+                or str(s) in row.get('repairs', {}) or b is None):
             continue
         if check.anims.anims[check.anims.table[s]].build() != b:
             raise ValueError(f'care idles: slot {s} changed')

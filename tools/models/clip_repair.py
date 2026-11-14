@@ -48,6 +48,9 @@ reference of motion, character and timing and changes only what breaks, with the
         K - 1 times), the root's travel continuing from where each cycle ends: a short source cycle filling the length
         the slot must keep, at the source's own speed (a `retime` after it fits the exact length). The clip's sound and
         texture events repeat with each cycle and follow a later `retime` (`events`).
+  {"op": "cut", "from": A, "to": B}
+        ticks A to B - 1 taken out (the clip a whole cycle shorter where the original repeats one: from the start of a
+        repeat to the start of the next, the poses meet exactly). Events and loop ticks are the caller's to shift.
   {"op": "seam", "ticks": K [, "bones": [B, ...]]}
         a looping clip whose last pose is not the first: over its last K ticks the bones (default every bone under the root)
         ease toward the first pose, reaching it one tick after the last (the loop's own step), so the seam closes.
@@ -430,6 +433,10 @@ def apply_ops(frames, parents, ops):
             frames = swing(frames, op['bone'], op['channel'], op['deg'], op.get('cycles', 1.0), op.get('phase', 0.0))
         elif kind == 'repeat':
             frames = repeat(frames, op['times'])
+        elif kind == 'cut':
+            if not 0 < op['from'] < op['to'] < len(frames):
+                raise ValueError(f'clip repair: cut {op["from"]}..{op["to"]} outside the clip\'s {len(frames)} ticks')
+            frames = frames[:op['from']] + frames[op['to']:]
         elif kind == 'seam':
             frames = seam(frames, op['ticks'], op.get('bones'))
         elif kind == 'lift':
