@@ -201,5 +201,13 @@
     "hit": [[2, "EFFEFD/MEFD0400.BIN", "EFFEFD/AEFD0400.BIN"]],
     "scale": 0.209,
     "hit_scale": 0.1
+  },
+  "147": {
+    "name": "Pummel Peck",
+    "stands_for": 72,
+    "cast": [[1, "EFFESA/MESA4200.BIN", "EFFESA/AESA4200.BIN"], [2, "EFFESA/MESA4300.BIN", "EFFESA/AESA4300.BIN"]],
+    "hit": [[1, "EFFESD/MESD7400.BIN", "EFFESD/AESD7400.BIN"]],
+    "scale": 0.203,
+    "hit_scale": 0.1
   }
 }

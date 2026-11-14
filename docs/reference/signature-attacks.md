@@ -36,6 +36,7 @@ the moment the attack starts.
 | 279 MarineDevimon | Evil Wind (DW2) | Death Claw | projectile: a dark gust over every enemy | 1 | flies at tick 29, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.182) | one enemy, as for Death Claw | all enemies |
 | 280 Pumpkinmon | Trick or Treat (DW2) | High Electro Shocker | projectile: pumpkin bombs over every enemy | 1 | flies at tick 20, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.329) | one enemy, as for High Electro Shocker | all enemies |
 | 281 Cyclonemon | Hyper Heat (DW2) | Mega Flame | at the target: a super-hot blast from its arm | 1 | plays at the target, hits at tick 40 | none (scale 0.209) | one enemy, as for Mega Flame | one enemy |
+| 282 Kiwimon | Pummel Peck (DW2) | Sweet Breath | volley: sends a mini Kiwimon running at the target | 1 | flies at tick 29, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.203) | one enemy, as for Sweet Breath | one enemy |
 
 ## Where the port differs from the source
 
