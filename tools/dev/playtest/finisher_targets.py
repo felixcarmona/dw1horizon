@@ -69,7 +69,7 @@ def main():
         initial = P.mem(PARTNER_HP, *P.ENEMY_HP)
         samples, enemy_damage, self_damage = [], 0, 0
         with open(folder / 'recorder.log', 'w') as log:
-            recorder = subprocess.Popen(P.E + ['record', str(folder / 'finisher.mp4'), '18', '20'],
+            recorder = subprocess.Popen(P.E + ['record', str(folder / 'finisher.mp4'), '18'],
                                         stdout=log, stderr=subprocess.STDOUT)
         deadline = time.monotonic() + seconds
         errors = []
@@ -92,7 +92,7 @@ def main():
                 time.sleep(0.05)
         finally:
             try:
-                recorder.wait(timeout=25)
+                recorder.wait(timeout=300)   # 18 emulated seconds, whatever the host load
             except subprocess.TimeoutExpired:
                 recorder.terminate()
                 recorder.wait(timeout=5)
