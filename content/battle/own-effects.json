@@ -225,5 +225,13 @@
     "hit": [[1, "EFFESD/MESD1500.BIN", "EFFESD/AESD1500.BIN"]],
     "scale": 0.391,
     "hit_scale": 0.1
+  },
+  "150": {
+    "name": "E-Stun Blast",
+    "stands_for": 98,
+    "cast": [[1, "EFFESA/MESA2500.BIN", "EFFESA/AESA2500.BIN"]],
+    "hit": [[1, "EFFESD/MESD0200.BIN", "EFFESD/AESD0200.BIN"]],
+    "scale": 0.218,
+    "hit_scale": 0.1
   }
 }

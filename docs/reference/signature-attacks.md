@@ -39,6 +39,7 @@ the moment the attack starts.
 | 282 Kiwimon | Pummel Peck (DW2) | Sweet Breath | volley: sends a mini Kiwimon running at the target | 1 | flies at tick 29, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.203) | one enemy, as for Sweet Breath | one enemy |
 | 283 Syakomon | Pearl Shot (DW2) | Blasting Spout | projectile: fires a pearl from its shell | 1 | flies at tick 29, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.179) | one enemy, as for Blasting Spout | one enemy |
 | 284 Crabmon | Scissor Magic (DW2) | Scissor Claw | at the target: a double snip of the claws | 1 | plays at the target, hits at tick 40 | none (scale 0.391) | one enemy, as for Scissor Claw | one enemy, 2 hits |
+| 285 Gazimon | E-Stun Blast (DW2) | Poison Ivy | projectile: an electric blast from the mouth | 1 | flies at tick 29, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.218) | one enemy, as for Poison Ivy | one enemy |
 
 ## Where the port differs from the source
 
