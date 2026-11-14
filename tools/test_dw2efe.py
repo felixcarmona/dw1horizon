@@ -1,11 +1,13 @@
 """tools/dw2efe.py on small made-up DW2 effects (no disc data): a flat ring that charges and a dart that flies,
 checked by layout, by disassembly and by running the chunk's scripts in tools/efesim.py."""
 import math
+import os
 import struct
 import unittest
 
 from tools import dw2effect as D
 from tools import dw2efe as C
+from tools import efecheck
 from tools import efescript
 from tools import efesim as S
 
@@ -232,6 +234,47 @@ class Convert(unittest.TestCase):
     def test_first_form_still_converts(self):
         chunk, info = C.convert(cast(), hit(), TABLE, 0x17A, 0.5, reach=3000)
         self.assertEqual(chunk, self.chunk)
+
+
+DW2_IMAGE = os.environ.get('DW2_IMAGE', '')
+
+
+@unittest.skipUnless(os.path.isfile(DW2_IMAGE), 'needs the Digimon World 2 disc (DW2_IMAGE)')
+class Fidelity(unittest.TestCase):
+    """tools/efecheck.py on Metal Fireball (a ball and a ring, then a burst at the target): the conversion shows
+    what DW2 shows; one that loses the burst or draws everything far smaller fails."""
+
+    @classmethod
+    def setUpClass(cls):
+        disc = D.Disc(DW2_IMAGE)
+
+        def load(m, a):
+            return D.parse_effect(*(disc.image.read(*disc.files['AAA/4.AAA/EFFECT/' + n]) for n in (m, a)))
+        cls.casts = [(1, load('EFFEWA/MEWA0200.BIN', 'EFFEWA/AEWA0200.BIN'))]
+        cls.hits = [(1, load('EFFEWD/MEWD0100.BIN', 'EFFEWD/AEWD0100.BIN'))]
+
+    def fidelity(self, casts, hits, scale=0.266, hit_scale=0.1, claimed=None):
+        chunk, info = C.convert_skill(casts, hits, TABLE, 0x17A, scale, hit_scale=hit_scale)
+        placed = efecheck.place(self.casts, self.hits)
+        return efecheck.check(placed, chunk, info, TABLE, *(claimed or (scale, hit_scale)), size=(96, 60))
+
+    def test_conversion_passes(self):
+        rep = self.fidelity(self.casts, self.hits)
+        self.assertEqual(rep['fails'], [])
+        for phase in rep['phases'].values():
+            self.assertGreater(phase['energy'], 0.7)
+            self.assertGreater(phase['box'], 0.7)
+
+    def test_lost_hit_fails(self):
+        rep = self.fidelity(self.casts, [])
+        self.assertTrue(any(f.startswith('hit: mostly empty') for f in rep['fails']), rep['fails'])
+        self.assertTrue(any('hit slot 1 bone' in f and 'dropped' in f for f in rep['fails']), rep['fails'])
+        self.assertFalse(any(f.startswith('cast') for f in rep['fails']), rep['fails'])
+
+    def test_shrunk_conversion_fails(self):
+        rep = self.fidelity(self.casts, self.hits, 0.06, 0.025, claimed=(0.266, 0.1))
+        self.assertTrue(any('box collapsed' in f for f in rep['fails']), rep['fails'])
+        self.assertTrue(any('mostly empty' in f for f in rep['fails']), rep['fails'])
 
 
 if __name__ == '__main__':

@@ -1147,7 +1147,8 @@ def _convert_skill(casts, hits, origin_table, effect_id, scale, hit_scale=None, 
                 factors=','.join(f'{f}{"T" if t else ""}' for f, t in factors),
                 behaviour=behaviour(cast_objs, area, self_target), launch=lead.launch if lead else None,
                 hit_tick=hit_tick, hit_events=events, cast_ticks=cast_end, hit_ticks=hit_len,
-                travel=lead.travel if lead else 0, instances=n_inst)
+                travel=lead.travel if lead else 0, instances=n_inst,
+                parts={o.name: {part.bone: list(part.ids) for part in o.parts} for o in objs})
     return chunk + bytes([0xcd]) * (CHUNK - len(chunk)), info
 
 

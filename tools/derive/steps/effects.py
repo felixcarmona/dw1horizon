@@ -182,7 +182,7 @@ def own_effects(ctx, archive):
         out[int(key)], info = dw2efe.convert_skill(lists[0], lists[1], launch_table(like), 0x100 + int(key),
                                                    e['scale'], hit_scale=e.get('hit_scale'),
                                                    area=e.get('area', False), n_hits=e.get('hits', 1))
-        ctx.log(f'own effect {key} {e["name"]}: ' + ', '.join(f'{k} {v}' for k, v in info.items()))
+        ctx.log(f'own effect {key} {e["name"]}: ' + ', '.join(f'{k} {v}' for k, v in info.items() if k != 'parts'))
     return out
 
 
