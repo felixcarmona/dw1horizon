@@ -265,5 +265,13 @@
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.257,
     "hit_scale": 0.1
+  },
+  "155": {
+    "name": "Chrono Breaker",
+    "stands_for": 74,
+    "cast": [[1, "EFFEMA/MEMA5300.BIN", "EFFEMA/AEMA5300.BIN"], [2, "EFFEMA/MEMA5400.BIN", "EFFEMA/AEMA5400.BIN"]],
+    "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
+    "scale": 0.244,
+    "hit_scale": 0.1
   }
 }
