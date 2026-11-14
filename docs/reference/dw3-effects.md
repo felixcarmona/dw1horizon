@@ -132,7 +132,8 @@ reuses the Digimon World 2 converter (`tools/dw2efe.py`):
 ### The fidelity check
 
 `python3 tools/dw3efe.py --disc DW3.bin compare M372SGRG 11 --like 63 --mp4 out.mp4` renders the original
-and the conversion side by side from the same camera, scaled with the field. The camera holds both fighters
+and the conversion side by side from the same camera, scaled with the field, at 60 fps: a frame per DW2003
+tick, the conversion showing each 20 Hz engine tick for three frames, as the game does. The camera holds both fighters
 and the effect. It measures the two frame by frame and exits with an error when the conversion is not
 faithful. A pixel counts as drawn when it differs from that side's scenery. A conversion fails when any of
 these is true:
@@ -141,7 +142,13 @@ these is true:
 - it draws less than half or more than twice the original's area;
 - its bright area is less than half or more than three times the original's;
 - its coverage over time correlates below 0.7 with the original's;
-- its drawn box overlaps the original's below 0.5 on average.
+- its drawn box overlaps the original's below 0.5 on average;
+- its picture changes less than 65% as often as the original's, capped at the engine's 20 Hz (smoothness).
+  An effect that holds each pose two ticks to fit a chunk moves at 10 Hz and scores about 0.5.
+
+The frame measures run on every second frame (30 fps), smoothness on all of them. To fit a chunk the converter
+(tools/dw2efe.py `LEVELS`) first coarsens translations, narrows the texture and draws flat parts one-sided,
+and holds poses only when nothing else fits; `info['held_ticks']` reports it.
 
 The box and the coverage curve may be one video frame early or late, since this game's effect engine runs at
 20 frames a second. The original's sprites are drawn by a separate renderer from the disc's sprite blocks
@@ -177,7 +184,7 @@ means no part flies to the target on its own: the effect plays as on the disc an
 | Key | Species | Technique (disc) | Power | Hits | Slot | Ticks | Effect | Converted | Finisher design |
 |---|---|---|---|---|---|---|---|---|---|
 | 295 | Vilemon | Dark Fear | 600 | 1 | 9 | 225 | MEFT0335 + 3 sprites | 5416 B, id 196, melee, faithful | Nightmare Shock (beam, 1 hit) |
-| 296 | Grizzlymon | Maul Attack | 300 | 2 | 11 | 305 | 5 sprites | 19796 B, id 223, melee, 4 sprites, faithful | Maul Attack (dash, 1 hit) |
+| 296 | Grizzlymon | Maul Attack | 300 | 2 | 11 | 305 | 5 sprites | falls back to template chunk 111 (fits a chunk only holding each pose 4 ticks: it moves 30% as often as the effect engine allows) | Maul Attack (dash, 1 hit) |
 | 297 | Marsmon | Mugenhadou | 480 | 1 | 11 | 400 | MEFT0097 + 5 sprites | 7652 B, id 197, melee, faithful | Mugen Hadou (beam, 1 hit) |
 | 298 | Dokugumon | (unnamed attack) | 80 | 1 | 5 | 240 | MEFT0328 + 3 sprites | 7888 B, id 198, melee, faithful | Poison Cobweb (shot, 1 hit) |
 | 299 | Hookmon | Captain Cannon | 200 | 1 | 11 | 372 | MEFT0091 + 5 sprites | 7264 B, id 199, melee, faithful | Captain Cannon (shot, 1 hit) |
@@ -187,7 +194,7 @@ means no part flies to the target on its own: the effect plays as on the disc an
 | 304 | Divermon | (unnamed attack) | 250 | 1 | 5 | 20 | 1 sprite | 4404 B, id 224, melee, 1 sprites, faithful | Striking Fish (shot, 1 hit) |
 | 305 | Ebidramon | (unnamed attack) | 308 | 1 | 5 | 50 | 2 sprites | 9248 B, id 225, melee, 2 sprites, faithful | Pincer Crusher (melee, 1 hit) |
 | 306 | GrapLeomon | Cyclone Turbine | 500 | 3 | 11 | 408 | 5 sprites | falls back to template chunk 62 (too large for a chunk: 36 of 72 frames fit, empty in half of the original's; leaving the repeated sprites out still fails) | Cyclone Turbine (dash, 1 hit) |
-| 307 | BlackKingNumemon | Dark Pupil | 198 | 1 | 9 | 280 | 3 sprites | 17120 B, id 227, melee, 4 sprites, faithful | Royal Muck (thrown, 1 hit) |
+| 307 | BlackKingNumemon | Dark Pupil | 198 | 1 | 9 | 280 | 3 sprites | falls back to template chunk 62 (fits a chunk only holding each pose 3 ticks: it moves 23% as often as the effect engine allows) | Royal Muck (thrown, 1 hit) |
 | 308 | Dinohyumon | Lizard Dance | 200 | 4 | 11 | 231 | 6 sprites | 11916 B, id 228, melee, 4 sprites, faithful | Lizard Dance (dash, 4 hits) |
 | 309 | Antylamon | Dark Elemental | 700 | 1 | 9 | 230 | 3 sprites | falls back to template chunk 62 (coverage over time correlates 0.35: its screen-space sprite (2060) drifts; leaving it out empties 54% of the frames) | Bunny Blades (dash, 2 hits) |
 | 310 | Assaultmon | Justice Strike | 140 | 3 | 11 | 539 | MEFT0093 + 5 sprites | 11888 B, id 203, melee, faithful | Justice Strike (rain, 5 hits) |
@@ -196,13 +203,13 @@ means no part flies to the target on its own: the effect plays as on the disc an
 | 313 | Bulbmon | Mad Pump | 580 | 1 | 9 | 269 | MEFT0346 + 2 sprites | 7456 B, id 205, melee, faithful | Bulb Flash (beam, 1 hit) |
 | 314 | SkullSatamon | (unnamed attack) | 410 | 1 | 5 | 296 | 3 sprites | falls back to template chunk 96 (empty in 26% of the original's frames, 28% with the full texture) | Nail Bone (beam, 1 hit) |
 | 315 | Taomon | Bonhitsusen | 250 | 1 | 11 | 519 | 6 sprites | falls back to template chunk 63 (coverage over time correlates 0.57, also with the full texture: its last burst of growing sprites is missing) | Talisman of Light (shot, 1 hit) |
-| 316 | Sakuyamon | KongouKaimandara | 400 | 1 | 11 | 540 | MEFT0087 + 5 sprites | 20328 B, id 206, melee, passes; 5 parts left out | Amethyst Mandala (area, 1 hit) |
+| 316 | Sakuyamon | KongouKaimandara | 400 | 1 | 11 | 540 | MEFT0087 + 5 sprites | 20216 B, id 206, melee, passes; 5 parts left out | Amethyst Mandala (area, 1 hit) |
 | 317 | Fujinmon | Sylph Storm | 100 | 1 | 9 | 229 | MEFT0370 + 3 sprites | 11104 B, id 207, melee, faithful | Divine Wind (area, 1 hit) |
 | 318 | Gallantmon | Final Purification | 480 | 1 | 11 | 457 | MEFT0095 + 6 sprites | 11508 B, id 208, melee, faithful | Final Purification (beam, 1 hit) |
-| 319 | Pharaohmon | Necro Mist | 133 | 1 | 9 | 330 | 3 sprites | 18540 B, id 233, melee, 3 sprites, faithful | Pyramid Power (beam, 1 hit) |
-| 320 | Growlmon | Plasma Blade | 300 | 3 | 11 | 400 | 7 sprites | 19588 B, id 234, melee, 6 sprites, faithful | Plasma Blade (dash, 1 hit) |
+| 319 | Pharaohmon | Necro Mist | 133 | 1 | 9 | 330 | 3 sprites | falls back to template chunk 73 (fits a chunk only holding each pose 2 ticks: it moves 36% as often as the effect engine allows) | Pyramid Power (beam, 1 hit) |
+| 320 | Growlmon | Plasma Blade | 300 | 3 | 11 | 400 | 7 sprites | falls back to template chunk 62 (fits a chunk only holding each pose 2 ticks: it moves 47% as often as the effect engine allows) | Plasma Blade (dash, 1 hit) |
 | 321 | Knightmon | (unnamed attack) | 435 | 1 | 5 | 40 | 1 sprite | 4384 B, id 235, melee, 1 sprites, faithful | Berserk Sword (dash, 1 hit) |
-| 322 | Kyukimon | Blade Twister | 140 | 3 | 11 | 419 | 6 sprites | 19856 B, id 236, melee, 6 sprites, faithful | Blade Twister (dash, 1 hit) |
+| 322 | Kyukimon | Blade Twister | 140 | 3 | 11 | 419 | 6 sprites | falls back to template chunk 62 (fits a chunk only holding each pose 4 ticks: it moves 29% as often as the effect engine allows) | Blade Twister (dash, 1 hit) |
 | 323 | Lynxmon | (unnamed attack) | 480 | 1 | 5 | 250 | MEFT0332 + 3 sprites | 6792 B, id 209, melee, faithful | Blazing Mane (breath, 1 hit) |
 | 324 | Maildramon | Thunder Bolt | 200 | 1 | 9 | 293 | 3 sprites | 20464 B, id 237, melee, 3 sprites, faithful | Mail Bomber (shot, 1 hit) |
 | 325 | Musyamon | (unnamed attack) | 410 | 1 | 5 | 20 | 2 sprites | 18280 B, id 238, melee, 2 sprites, faithful | Ura Sword (dash, 1 hit) |
@@ -211,26 +218,26 @@ means no part flies to the target on its own: the effect plays as on the disc an
 | 328 | Snimon | (unnamed attack) | 390 | 1 | 5 | 20 | 1 sprite | 4396 B, id 239, melee, 1 sprites, faithful | Twin Sickles (thrown, 2 hits) |
 | 329 | Ghoulmon | Darkness Chaos | 150 | 1 | 9 | 216 | MEFT0349 + 3 sprites | 12016 B, id 212, melee, faithful | Necro Eye (beam, 1 hit) |
 | 330 | Minotarumon | (unnamed attack) | 180 | 1 | 5 | 20 | 1 sprite | 5100 B, id 240, area, 1 sprites, faithful | Darkside Quake (area, 1 hit) |
-| 331 | Vemmon | (unnamed attack) | 160 | 1 | 5 | 100 | 3 sprites | 17772 B, id 241, melee, 3 sprites, faithful | Vemmon Crash (melee, 1 hit) |
+| 331 | Vemmon | (unnamed attack) | 160 | 1 | 5 | 100 | 3 sprites | falls back to template chunk 100 (fits a chunk only holding each pose 2 ticks: it moves 30% as often as the effect engine allows) | Vemmon Crash (melee, 1 hit) |
 | 332 | Roachmon | (unnamed attack) | 320 | 1 | 5 | 10 | 2 sprites | 18220 B, id 242, melee, 2 sprites, faithful | Roach Rush (dash, 1 hit) |
 | 333 | Raijinmon | Electro Ball | 310 | 1 | 9 | 232 | MEFT0363 + 2 sprites | 10832 B, id 213, melee, faithful | Raijin Thunder (area, 1 hit) |
 | 334 | Mummymon | Dark Fear | 600 | 1 | 9 | 252 | MEFT0335 + 2 sprites | 5428 B, id 214, melee, faithful | Necrophobia (shot, 1 hit) |
 | 335 | MegaGargomon | Giant Missile | 400 | 1 | 11 | 467 | MEFT0085 + 7 sprites | 7798 B, id 215, melee, faithful | Giant Missile (shot, 1 hit) |
-| 336 | Raidenmon | Gilead Plant | 650 | 1 | 9 | 298 | 4 sprites | 19732 B, id 243, melee, 4 sprites, faithful | Raiden Strike (beam, 1 hit) |
-| 351 | Kotemon | Hot Head | 80 | 1 | 11 | 320 | 6 sprites | 19340 B, id 244, melee, 5 sprites, faithful | Hot Head (dash, 1 hit) |
+| 336 | Raidenmon | Gilead Plant | 650 | 1 | 9 | 298 | 4 sprites | falls back to template chunk 112 (fits a chunk only holding each pose 2 ticks: it moves 49% as often as the effect engine allows) | Raiden Strike (beam, 1 hit) |
+| 351 | Kotemon | Hot Head | 80 | 1 | 11 | 320 | 6 sprites | 19012 B, id 244, melee, 5 sprites, faithful | Hot Head (dash, 1 hit) |
 | 352 | Monmon | Swing Swing | 100 | 1 | 11 | 406 | MEFT0089 + 4 sprites | 7596 B, id 216, melee, faithful | Swing Swing (melee, 2 hits) |
 | 353 | Bearmon | Bear Fist | 100 | 1 | 11 | 355 | 4 sprites | 11400 B, id 245, melee, 2 sprites, faithful | Bear Fist (melee, 1 hit) |
-| 354 | Renamon | Diamond Storm | 100 | 1 | 11 | 542 | 5 sprites | 19044 B, id 246, melee, 4 sprites, faithful | Diamond Storm (rain, 6 hits) |
+| 354 | Renamon | Diamond Storm | 100 | 1 | 11 | 542 | 5 sprites | falls back to template chunk 70 (fits a chunk only holding each pose 4 ticks: it moves 28% as often as the effect engine allows) | Diamond Storm (rain, 6 hits) |
 | 403 | Beelzemon | Blast Mode | 800 | 3 | 11 | 471 | 7 sprites | falls back to template chunk 80 (too large for a chunk: 84 of 102 frames fit, empty in 43%; leaving the repeated sprites out still fails) | Corona Blaster (beam, 1 hit) |
-| 404 | BlackWarGreymon | Terra Destroyer | 640 | 1 | 11 | 593 | 4 sprites | 19668 B, id 248, melee, 3 sprites, faithful | Terra Destroyer (shot, 1 hit) |
+| 404 | BlackWarGreymon | Terra Destroyer | 640 | 1 | 11 | 593 | 4 sprites | falls back to template chunk 96 (fits a chunk only holding each pose 3 ticks: it moves 41% as often as the effect engine allows) | Terra Destroyer (shot, 1 hit) |
 | 405 | Cannondramon | DynamoCannon | 320 | 1 | 11 | 423 | MEFT0094 + 5 sprites | 18900 B, id 217, melee, faithful | Dynamo Cannon (beam, 1 hit) |
 | 406 | MaloMyotismon | Melting Blood | 480 | 1 | 11 | 438 | MEFT0092 + 4 sprites | 8780 B, id 218, melee, faithful | Melting Blood (melee, 1 hit) |
 | 407 | Armageddemon | (unnamed attack) | 140 | 1 | 5 | 306 | MEFT0333 + 3 sprites | 12484 B, id 219, melee, faithful | Ultimate Flare (beam, 1 hit) |
 | 408 | Suijinmon | Mugen Cannon | 500 | 4 | 5 | 280 | MEFT0364 + 3 sprites | 18256 B, id 220, melee, faithful | Water Spiral (beam, 1 hit) |
-| 409 | Kyubimon | Dragon Wheel | 180 | 1 | 11 | 378 | 5 sprites | 18280 B, id 249, melee, 4 sprites, 72 of 85 frames, faithful | Dragon Wheel (dash, 1 hit) |
+| 409 | Kyubimon | Dragon Wheel | 180 | 1 | 11 | 378 | 5 sprites | falls back to template chunk 61 (fits a chunk only holding each pose 4 ticks: it moves 23% as often as the effect engine allows) | Dragon Wheel (dash, 1 hit) |
 | 430 | Zanbamon | Cross Slash | 169 | 1 | 5 | 77 | MEFT0039 + 2 sprites | 8572 B, id 221, melee, faithful | Zanba Blade (dash, 1 hit) |
 | 431 | Kurisarimon | no technique script | | | | | | | Data Crusher (shot) |
-| 432 | Bastemon | (unnamed attack) | 0 | 4 | 5 | 108 | 2 sprites | 10604 B, id 250, melee, 4 sprites, faithful | Cat Laser (beam, 1 hit) |
+| 432 | Bastemon | (unnamed attack) | 0 | 4 | 5 | 108 | 2 sprites | falls back to template chunk 60 (moves 57% as often as the effect engine allows) | Cat Laser (beam, 1 hit) |
 | 433 | Guilmon | Pyrosphere | 100 | 1 | 11 | 445 | MEFT0102 + 5 sprites | 4384 B, id 222, melee, faithful | Pyrosphere (shot, 1 hit) |
 Of the 56 imported species, 55 have a technique script; Kurisarimon has none. 27 techniques have a 3D effect.
 Each converts into one chunk, for its whole length; 26 pass the fidelity check. The sizes are the builds
@@ -243,10 +250,11 @@ Gargoylemon's Dark Matter fails on timing alone (its coverage curve correlates 0
 game's 20 Hz engine cannot place on the original's 30 fps frames. The conversion is kept out, and the species
 keeps a template chunk. These 3D conversions leave the technique's sprites out.
 
-The other 28 techniques draw only sprites. Converted from their sprites (step 8 above), 22 pass the fidelity check. Six fail
-it after one round of fixes and keep a template chunk (their finisher's): GrapLeomon and Beelzemon do not fit a
-chunk whole (leaving their repeated sprites out still fails), and Antylamon, Arukenimon, SkullSatamon and Taomon
-draw too little or out of time against the original (a screen-space sprite drifts, a late burst is missing).
+The other 28 techniques draw only sprites. Converted from their sprites (step 8 above), 11 pass the fidelity check
+and 17 keep a template chunk (their finisher's), after one round of fixes: 11 of them fit a chunk only by holding
+each pose 2-4 ticks, so they move at 5-10 Hz and fail the smoothness check; GrapLeomon and Beelzemon do not fit
+whole; Antylamon, Arukenimon, SkullSatamon and Taomon draw too little or out of time (a screen-space sprite
+drifts, a late burst is missing); Bastemon changes too seldom.
 
 ## What the conversion does not keep yet
 
