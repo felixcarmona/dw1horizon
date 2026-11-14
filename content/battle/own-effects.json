@@ -105,5 +105,13 @@
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.294,
     "hit_scale": 0.1
+  },
+  "135": {
+    "name": "S-Bone Crusher",
+    "stands_for": 111,
+    "cast": [[1, "EFFESA/MESA9100.BIN", "EFFESA/AESA9100.BIN"], [2, "EFFESA/MESA9200.BIN", "EFFESA/AESA9200.BIN"]],
+    "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
+    "scale": 0.256,
+    "hit_scale": 0.1
   }
 }

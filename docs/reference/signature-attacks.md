@@ -24,6 +24,7 @@ the moment the attack starts.
 | 265 DarkTyrannomon | Fire Blast (DW2) | High Electro Shocker | at the target: sweeps a stream of flame over every enemy | 1 | plays at the target, hits at tick 40 | none (scale 0.246) | one enemy, as for High Electro Shocker | all enemies |
 | 266 ExTyrannomon | Pretty Attack (DW2) | Lovely Attack | projectile: blows a heart kiss | 1 | flies at tick 20, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.287) | one enemy, as for Lovely Attack | one enemy |
 | 267 Mammothmon | Tusk Crusher (DW2) | Mail Strome | at the target: charges tusks first | 1 | plays at the target, hits at tick 40 | none (scale 0.294) | one enemy, as for Mail Strome | one enemy |
+| 268 SkullMammothmon | S-Bone Crusher (DW2) | Mail Strome | projectile: a spinning bone hits every enemy | 1 | flies at tick 30, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.256) | one enemy, as for Mail Strome | all enemies |
 
 ## Where the port differs from the source
 
