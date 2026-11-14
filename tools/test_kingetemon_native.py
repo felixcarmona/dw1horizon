@@ -80,8 +80,12 @@ class KingEtemonNative(unittest.TestCase):
         self.assertEqual(len(own), len(native))
         self.assertEqual(self.speed(own), 0)
         self.assertEqual([len(self.frames(s)) for s in (0, 2, 3, 4)], [17, 17, 21, 15])
-        # the donor's own slots 27, 33, 35 and 36 are the programs the rows alias or repeat
+        # the donor's own slots 27, 33, 35 and 36 are the programs the rows alias or repeat, unless the source's battle
+        # clip took the battle slot (the field row then keeps its own program, its lengths checked above)
+        restored = set(self.recipe.get('battle_originals', {}).get('slots', ()))
         for slot, alias in ((2, 35), (3, 27), (4, 36)):
+            if alias in restored:
+                continue
             self.assertEqual(self.model.anims.table[slot], self.model.anims.table[alias], slot)
         for slot in list(range(46, 46 + len(self.record['techniques']))) + [self.record['partner']['training']['animation']]:
             self.assertIsNotNone(self.model.anims.table[slot], slot)
