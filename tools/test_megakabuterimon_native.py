@@ -22,7 +22,7 @@ BONES = 28
 BUFFER = 100352
 TICKS = {0: 60, 2: 20, 3: 22, 4: 14}                     # idle, walk, condition walk, run
 SPEEDS = {2: 16.0, 3: 11.0, 4: 38.0}                     # the gait stage's units per tick
-TARGET_SHA256 = 'ea02a76f545100dd0fca545b5f93ffe113180e099a27441a4ed0818f5f119328'
+TARGET_SHA256 = 'ec1d7e344d7d35d7ccf488472d7363d444591f13728aa7eba0275aaa8ace9b80'
 
 
 class MegaKabuterimonNative(unittest.TestCase):
@@ -142,7 +142,7 @@ class MegaKabuterimonNative(unittest.TestCase):
         info = motionstorage.require(self.data, BONES)
         self.assertTrue(info['fits'])
         self.assertLess(info['resident_bytes'], BUFFER)
-        self.assertEqual(info['resident_bytes'], 99204)
+        self.assertEqual(info['resident_bytes'], 100244)
         for read in info['cold_reads']:
             self.assertTrue(read['fits'], read)
 

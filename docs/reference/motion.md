@@ -194,10 +194,27 @@ chosen in the order 0x21-0x24, 0x28/0x29, 0x2A-0x2C, techniques, ship. MegaKabut
 Rebuilt slots (`repairs`, an exact compaction where noted; each passes on the final model, only those slots differ from
 before): Wormmon 183 also 0x24 (`damp` of the tail bone 27, keep 0.5), 0x28 and 0x29 (`damp` bone 24, keep 0), 0x2C
 (`damp` bone 27 keep 0 and a 100-unit `lift` of the body) and 0x30 (`damp` bone 27 keep 0), which its Danger Sting alias
-0x36 plays too (74,418 B). MegaKabuterimon 205 also 0x28 and 0x29 with an exact compaction (100,312 B). Wizardmon 241 also
+0x36 plays too (74,418 B). MegaKabuterimon 205 also 0x28 and 0x29 (100,312 B at an exact compaction; 5 units since 0x2B and 0x2E, below). Wizardmon 241 also
 0x39 (99,198 B). Sorcermon 242 also 0x28 and 0x29 (`damp` of bone 9, keep 0.5; 99,020 B). VioletElecmon 256 also 0x32
 (`damp` of bone 3, keep 0.75; 77,368 B). MetalTyrannomon 260 keeps main's clips: its remaining slots fail a hard limit (live base, retime, tip)
 or a posture the clip's own tilt makes irreparable.
+
+More slots at their own lengths (`ticks`; a technique slot keeps at least 20, since the effect starts at clip frame 17) and with repairs, each passing on the final
+model: MegaKabuterimon 205 also 0x2B and 0x2E with a 5-unit compaction (100,244 B; no other slot moves more than
+0.44 degrees); 0x2A passes at 40 ticks but alone needs 100,544 B, the passing techniques 0x31-0x3A and 0x3C need
+100,860 to 105,090 B, 0x22 and 0x2C keep crossings over the limit (297 and 291 a tick, limit 245). ChaosLord 289 also
+0x22 (bone 14 turned 8 degrees about x: 106 crossings a tick, limit 128), 0x28 and 0x29 (one source clip at 32 ticks
+instead of 37) and 0x2C (32 ticks, body lifted 100 units: under the floor 0.41 heights against main's 0.36; 93,150 B);
+0x2B stays: its body bone tips 68 degrees (limit 29) and turning it back moves a piece 40 degrees off the source; every
+technique puts piece 3 112-116 degrees off the source. Deltamon 292 also 0x31, 0x35 and 0x38, one source clip
+with the head bone 4 turned 8 degrees about x (tip of the head 0.142-0.144 heights off the source, limit 0.15; was
+0.156-0.159), with a 5-unit compaction (98,626 B; no other slot moves more than 0.44 degrees); 0x36 passes with the same
+turn but needs 103,160 B with the other three. Vilemon 295 also 0x22 (head bone 4 turned 10 degrees and the shin bone 13
+14 degrees: 109 crossings a tick, limit 123; was 261), 0x24 (hip bone 11 turned 12 degrees: 96 crossings, was 126),
+0x2A at 43 ticks, 0x2B and 0x2C, one source clip, at 38 ticks, and the techniques
+0x34 at 34 ticks and 0x35 and 0x38, one source clip, at 20 ticks (81,878 B). Sorcermon 242 also 0x34 with the hip bone 7 turned 8
+degrees about z (148 crossings a tick, limit 170; was 173; 99,726 B). VioletElecmon 256 also 0x2B at 38 ticks (78,606 B). Wizardmon 241 also the technique 0x33 at 68 ticks (99,222 B);
+0x32, the same source clip, passes at 68 ticks but the two need 101,024 B.
 
 Test: `tools/test_native_battle.py`
 and the species' tests.
