@@ -45,8 +45,14 @@ converters referenced by frozen recipes keep their recorded entry paths.
 
 The frozen model-delta README retains its historical command spellings. Use
 `tools/models/delta.py` for the codec and `tools/models/edit.py` for the editor;
-`tools/models/edit.py --help` describes get/put/check/rebase and source-disc
+`tools/models/edit.py --help` describes get/put/check/repin/rebase and source-disc
 options. Earlier editor work directories are now `build/imported-model-edit/`.
+`edit.py repin ID MMD` runs before `put` of an edit that changes a field overlay's input (a restored battle slot): it
+moves the overlay's reviewed-input pins (gaits.py / secondary_motion.py `source`, chibi.json `source_sha256` and
+`post_source_sha256`) to the new input, and refuses when that input is pinned anywhere else.
+
+A model bound offline from a motionless mesh (MagnaAngemon 206) gets the source game's battle clips from
+`field_animations/bound_battle.py` (content/models/imports/bound-battle.json; docs/reference/magnaangemon-native-rig.md).
 
 Species 290 (Clockmon): `field_animations/clockmon_gait.py` writes slots 0, 2, 3 and 4 again (a 90-tick idle, a 12-tick
 walk, a 14-tick tired walk, an 8-tick run at 15, 10 and 38 units a tick) on the importer's model: the chassis is placed

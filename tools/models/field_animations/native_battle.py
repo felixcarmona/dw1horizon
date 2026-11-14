@@ -207,9 +207,10 @@ def retarget(frames, ctx):
     return out
 
 
-def apply(output, ctx, slots):
+def apply(output, ctx, slots, keep_events=()):
     """`output` (the bound model) with each slot of `slots` playing the source's clip on the donor rig
-    -> (bytes, proof)."""
+    -> (bytes, proof). `keep_events`: slots that keep the bound clip's sound events (at its ticks: the clip keeps the
+    slot's length), for a source whose clip of that slot has none."""
     rig = ctx['rig']
     nb = len(rig)
     model = mmd.MMD.parse(output, nb)
@@ -221,7 +222,7 @@ def apply(output, ctx, slots):
         donor, _, donor_events = animsheet.slot_frames(model, nb, slot)
         want = len(donor)
         frames, events, loop, tile = source_clip(source, ns, slot, want)
-        if slot >= TECHNIQUES:
+        if slot >= TECHNIQUES or slot in keep_events:
             events = donor_events       # same length: the species' voice and the swing sounds at the donor's ticks
         else:                           # the common effects and the species' own voice; not the partner's care voice
             events = [e for e in events if e[1] == 'sound' and e[2]['bank'] in (1, 4)]

@@ -25,8 +25,10 @@ A slot with a fidelity, liveness or retime flag fails; a mesh, posture or motion
 is no better (battle_qa.worse_than_main). A failing slot stays the donor's clip.
 
   tools/models/battle_qa_native.py check ID FINAL.MMD SOURCE.MMD MAIN.MMD [--slots ...] [--json OUT]
-            SOURCE is the binding's source (the species' model before the binding, `edit.py get`), FINAL and MAIN the
-            provider's final model of this tree and of origin/main; exits 1 when a slot fails
+            SOURCE is the binding's source (the species' model before the binding, `edit.py get`; for a model bound
+            offline, content/models/imports/bound-battle.json, the battle source the imports step writes as
+            imported-models/ID.battle.MMD), FINAL and MAIN the provider's final model of this tree and of origin/main;
+            exits 1 when a slot fails
 
 Not proven by these numbers: how a clip reads, contact with the opponent, what the engine interpolates at 60 fps,
 technique effects' timing beyond the slot length. Uses numpy.
@@ -197,46 +199,69 @@ def lead_pieces(blocks, skeleton, recipe, first_rider):
     return out
 
 
+def bound(sid, final_data, source_data):
+    """The pieces of a model bound offline (bound_battle.py, content/models/imports/bound-battle.json) -> (source
+    skeleton, final rig, parsed final and source, blocks, fits, lead pieces, source-to-final map)."""
+    import mmd
+    from tools.models.field_animations import bound_battle
+    recipe = bound_battle.rows()[str(sid)]
+    spec = bound_battle.binding_spec(recipe)
+    rig = [list(b) for b in json.load(open(glob.glob(os.path.join(ROOT, f'content/species/{sid}-*.json'))[0]))['model']['skeleton']]
+    mmd.exe().add_type(int(sid), rig)
+    final = mmd.MMD.parse(final_data, len(rig))
+    source = bound_battle.source_model(source_data, spec)
+    blocks, fit, leads, mapping, skeleton, _ = bound_battle.binding(recipe, spec, source, final, rig)
+    blocks = {sb: (tb, slice(start, start + n)) for sb, (tb, start, n) in blocks.items()}
+    fit = {sb: (np.array(q), w, np.array(y, float), np.array(x, float)) for sb, (q, w, y, x) in fit.items()}
+    return skeleton, rig, final, source, blocks, fit, {s for group in leads.values() for s in group}, mapping
+
+
 def check(sid, final_data, source_data, main_data, slots=None):
     import animsheet
     import mmd
-    from tools.models.field_animations import native_battle
-    recipe = recipe_of(sid)
-    skeleton = source_skeleton(sid)
-    ns = len(skeleton)
-    # the final rig: the donor's (plus riders and spinning bones) as the binding writes it
-    mmd.exe().add_type(int(sid), skeleton)
-    donor_rig = list(mmd.exe().skeleton[recipe['donor']])
-    extra = []
-    if recipe.get('spin'):
-        extra += [(-1, recipe['map'][b]) for b in recipe['spin']['bones']]
-    names = {}
-    for k, r in enumerate(recipe.get('riders', [])):
-        names[r['name']] = len(donor_rig) + len(extra) + k
-    for r in recipe.get('riders', []):
-        extra.append((-1, names.get(r['parent'], r['parent'])))
-    parents = [p for _, p in donor_rig] + [p for _, p in extra]
-    final = mmd.MMD.parse(final_data, len(parents))
-    main = mmd.MMD.parse(main_data, len(parents))
-    source = mmd.MMD.parse(source_data, ns)
-    # the object of each bone, as the final model's TMD numbers them (bones with pieces, in order)
-    objs, k = [], 0
-    counts = {}
-    mapping = {int(a): b for a, b in recipe['map'].items()}
-    riders = recipe.get('riders', [])
-    first_rider = len(parents) - len(riders)
-    rider_of = {sb: first_rider + i for i, r in enumerate(riders) for sb in r['pieces']}
-    spun = [int(b) for b in recipe['spin']['bones']] if recipe.get('spin') else []
-    spin_of = {sb: len(donor_rig) + i for i, sb in enumerate(spun)}    # spinning drums: bones of their own
-    for sb, tb in mapping.items():
-        counts[rider_of.get(sb, spin_of.get(sb, tb))] = 1
-    for b in range(len(parents)):
-        objs.append(k if b in counts else -1)
-        k += b in counts
-    final_rig = [[o, p] for o, p in zip(objs, parents)]
-    blocks = piece_blocks(recipe, skeleton, source, final_rig, final)
-    fit = fits(blocks, skeleton, source, final_rig, final)
-    leads = lead_pieces(blocks, skeleton, recipe, first_rider)
+    from tools.models.field_animations import bound_battle, native_battle
+    if str(sid) in bound_battle.rows():
+        recipe = {}
+        skeleton, final_rig, final, source, blocks, fit, leads, mapping = bound(sid, final_data, source_data)
+        ns, parents, rider_of = len(skeleton), [p for _, p in final_rig], {}
+        main = mmd.MMD.parse(main_data, len(parents))
+    else:
+        recipe = recipe_of(sid)
+        skeleton = source_skeleton(sid)
+        ns = len(skeleton)
+        # the final rig: the donor's (plus riders and spinning bones) as the binding writes it
+        mmd.exe().add_type(int(sid), skeleton)
+        donor_rig = list(mmd.exe().skeleton[recipe['donor']])
+        extra = []
+        if recipe.get('spin'):
+            extra += [(-1, recipe['map'][b]) for b in recipe['spin']['bones']]
+        names = {}
+        for k, r in enumerate(recipe.get('riders', [])):
+            names[r['name']] = len(donor_rig) + len(extra) + k
+        for r in recipe.get('riders', []):
+            extra.append((-1, names.get(r['parent'], r['parent'])))
+        parents = [p for _, p in donor_rig] + [p for _, p in extra]
+        final = mmd.MMD.parse(final_data, len(parents))
+        main = mmd.MMD.parse(main_data, len(parents))
+        source = mmd.MMD.parse(source_data, ns)
+        # the object of each bone, as the final model's TMD numbers them (bones with pieces, in order)
+        objs, k = [], 0
+        counts = {}
+        mapping = {int(a): b for a, b in recipe['map'].items()}
+        riders = recipe.get('riders', [])
+        first_rider = len(parents) - len(riders)
+        rider_of = {sb: first_rider + i for i, r in enumerate(riders) for sb in r['pieces']}
+        spun = [int(b) for b in recipe['spin']['bones']] if recipe.get('spin') else []
+        spin_of = {sb: len(donor_rig) + i for i, sb in enumerate(spun)}    # spinning drums: bones of their own
+        for sb, tb in mapping.items():
+            counts[rider_of.get(sb, spin_of.get(sb, tb))] = 1
+        for b in range(len(parents)):
+            objs.append(k if b in counts else -1)
+            k += b in counts
+        final_rig = [[o, p] for o, p in zip(objs, parents)]
+        blocks = piece_blocks(recipe, skeleton, source, final_rig, final)
+        fit = fits(blocks, skeleton, source, final_rig, final)
+        leads = lead_pieces(blocks, skeleton, recipe, first_rider)
     tip_bones = tips(skeleton)
     bones_final = final_rig
     Fr = Q.Rig.from_mmd(final_data, bones_final)

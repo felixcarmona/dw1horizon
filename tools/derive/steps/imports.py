@@ -26,27 +26,42 @@ def ids(ctx):
     return out
 
 
+def bound(species):
+    """The species bound offline whose overlay plays a battle source (content/models/imports/bound-battle.json)."""
+    with open(os.path.join(runner.ROOT, 'content/models/imports/bound-battle.json')) as f:
+        return str(species) in json.load(f)
+
+
+def files(species):
+    return [f'imported-models/{species}.{ext}' for ext in ('MMD', 'TIM')] + \
+        ([f'imported-models/{species}.battle.MMD'] if bound(species) else [])
+
+
 def make_model(out, species):
     log = io.StringIO()
     with species_tools(), contextlib.redirect_stdout(log):
-        m, x = Provider(os.path.join(out, 'source-games'), os.path.join(out, 'import-work', str(species))).model(species)
+        provider = Provider(os.path.join(out, 'source-games'), os.path.join(out, 'import-work', str(species)))
+        m, x = provider.model(species)
+        battle = provider.battle_source(species)
         target = os.path.join(out, 'imported-models')
         os.makedirs(target, exist_ok=True)
-        for ext, data in (('MMD', m), ('TIM', x)):
+        made = [('MMD', m), ('TIM', x)] + ([('battle.MMD', battle)] if battle is not None else [])
+        for ext, data in made:
             with open(os.path.join(target, f'{species}.{ext}'), 'wb') as f:
                 f.write(data)
-    return f'{species}: imported MMD/TIM SHA-256 verified ({len(m)}/{len(x)} bytes)'
+    return f'{species}: imported MMD/TIM SHA-256 verified ({len(m)}/{len(x)} bytes)' + \
+        (f', battle source {len(battle)} bytes' if battle is not None else '')
 
 
 def units(ctx):
     return [runner.Unit(str(t), make_model, (ctx.out, t),
                         ['tools', 'content/modeldelta', 'content/models', 'content/species',
                          'content/imports/specs', 'extracted', ctx.path('source-games')],
-                        [f'imported-models/{t}.MMD', f'imported-models/{t}.TIM']) for t in ids(ctx)]
+                        files(t)) for t in ids(ctx)]
 
 
 def outputs(ctx):
-    return [(f'imported-models/{t}.{ext}', None) for t in ids(ctx) for ext in ('MMD', 'TIM')]
+    return [(path, None) for t in ids(ctx) for path in files(t)]
 
 
 def prepare(ctx):

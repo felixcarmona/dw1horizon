@@ -13,6 +13,11 @@ step does (the import Provider, crmath and pysum installed), so an animation can
                                       entry (--no-species-pins: leave it to a developer build with --write-locks)
   tools/models/edit.py check [ID ...]           decode and verify every pin (all 175 without IDs); --species-pins also the
                                       provider pins (the 65 field overlays are made again: slower)
+  tools/models/edit.py repin ID MMD [TIM]       before `put` of an edit that changes a field overlay's input (a battle slot
+                                      restored): move the overlay's reviewed-input pins (the species' PROFILES row
+                                      `source` in gaits.py / secondary_motion.py, its chibi.json `source_sha256` and
+                                      `post_source_sha256`) from the current model's input to MMD's; refuses when that
+                                      input is pinned anywhere else
   tools/models/edit.py sources OUT [ID ...]     write the importer outputs (the delta sources) at their pinned paths under OUT;
                                       --unchecked after an importer change (no pins, no cache)
   tools/models/edit.py rebase OLD NEW [ID ...]  the importer changed: decode each delta against OLD's sources, re-encode against
@@ -98,6 +103,8 @@ class Sources(Provider):
         for r in self.sizes.values():
             self.known.setdefault(r['source'], r['source_sha256'])
             self.known.setdefault(r['target'], r['sha256'])
+        for r in json.loads((IMPORTED_MODELS_SCRIPT.parent / 'bound-battle.json').read_text()).values():
+            self.known.setdefault(r['battle_source']['path'], r['battle_source']['sha256'])
 
     def source(self, name):
         if name not in self.cache and not self.unchecked:
@@ -209,8 +216,13 @@ def import_records():
 
 def donor_models(a, species):
     """{donor species: its current model} of a species whose native binding takes an imported species as its donor
-    (native-bindings.json `donor_species`): the overlay reads that model from the imported base models too."""
+    (native-bindings.json `donor_species`): the overlay reads that model from the imported base models too; for a
+    model bound offline (bound-battle.json), {'ID.battle': its battle source}."""
     recipe = json.loads((IMPORTED_MODELS_SCRIPT.parent / 'native-bindings.json').read_text()).get(str(species), {})
+    if json.loads((IMPORTED_MODELS_SCRIPT.parent / 'bound-battle.json').read_text()).get(str(species)):
+        # a model bound offline: its overlay plays the battle source the imports step writes next to it
+        with importing(a.games_dir):
+            return {f'{species}.battle': provider(a, a.games_dir, species).battle_source(species)}
     if not recipe.get('donor_species'):
         return {}
     donor = recipe['donor_species']
@@ -352,6 +364,102 @@ def cmd_check(a):
     return 1 if bad else 0
 
 
+# ------------------------------------------------------------------ the field overlays' reviewed-input pins
+# A field overlay is reviewed on one input model and pins it by SHA-256: a generator's profile (`source='...'` in the
+# species' row of PROFILES) and the chibi row (content/models/imports/chibi.json `source_sha256`, and
+# `post_source_sha256`: the input after its base generator). An edit stored with `put` that changes the overlay's input
+# (a battle slot given back to the source game's clip) moves those pins with `repin`, before `put`.
+PROFILE_MODULES = ('tools/models/field_animations/gaits.py', 'tools/models/field_animations/secondary_motion.py')
+CHIBI_ROWS = IMPORTED_MODELS_SCRIPT.parent / 'chibi.json'
+PIN_FOLDERS = ('content/models/imports', 'tools/models/field_animations')
+
+
+def repin_profile(text, species, old, new):
+    """`text`, an overlay module's source, with the profile of `species` pinned to `new` instead of `old`; None when the
+    module has no profile of the species. Refuses a profile pinned to another input."""
+    import re
+    found = list(re.finditer(rf"^\s*{int(species)}\s*:\s*dict\(\s*source\s*=\s*'([0-9a-f]{{64}})'", text, re.M))
+    if not found:
+        return None
+    if len(found) != 1:
+        raise ValueError(f'{species}: {len(found)} profiles of the species')
+    pin = found[0]
+    if pin.group(1) != old:
+        raise ValueError(f'{species}: its profile pins {pin.group(1)}, not the current input {old}')
+    return text[:pin.start(1)] + new + text[pin.end(1):]
+
+
+def repin_chibi(chibi_rows, species, old, new, post):
+    """Move the chibi row of `species` from input `old` to `new` (`post`: the new input after the row's base generator);
+    False when the species has no chibi row. Refuses a row pinned to another input."""
+    row = chibi_rows.get(str(species))
+    if row is None:
+        return False
+    if row['source_sha256'] != old:
+        raise ValueError(f'{species}: its chibi row pins {row["source_sha256"]}, not the current input {old}')
+    row['source_sha256'], row['post_source_sha256'] = new, post
+    return True
+
+
+def stray_pins(texts, old):
+    """Paths (in PIN_FOLDERS) that still name `old`, the files about to be written read from `texts` {path: text}."""
+    out = []
+    for folder in PIN_FOLDERS:
+        for path in sorted((ROOT / folder).iterdir()):
+            if path.suffix in ('.py', '.json') and old in texts.get(path, path.read_text()):
+                out.append(str(path.relative_to(ROOT)))
+    return out
+
+
+def cmd_repin(a):
+    from tools.models import variants
+    row, = rows(load(MODELS), [a.id])
+    sid = row['id']
+    model, tim, _ = build(a, row)
+    new_model = Path(a.mmd).read_bytes()
+    new_tim = Path(a.tim).read_bytes() if a.tim else tim
+    old, new = sha256(variants.overlay_input(sid, model, tim)), None
+    new_input = variants.overlay_input(sid, new_model, new_tim)
+    new = sha256(new_input)
+    if old == new:
+        print(f'{sid} {row["name"]}: the overlays\' input is unchanged ({old}); nothing to move')
+        return
+    texts = {}
+    for name in PROFILE_MODULES:
+        moved = repin_profile((ROOT / name).read_text(), sid, old, new)
+        if moved is not None:
+            texts[ROOT / name] = moved
+    chibi_rows = load(CHIBI_ROWS)
+    chibi = chibi_rows.get(str(sid))
+    if chibi:
+        post = new
+        if chibi.get('base_generator'):
+            # the base generator runs on the new input with its moved pin (in memory, as the rewritten file will read)
+            gen = importlib.import_module(chibi['base_generator'])
+            profile = getattr(gen, 'PROFILES', {}).get(sid)
+            if not profile or profile.get('source') != old or ROOT / (chibi['base_generator'].replace('.', '/') + '.py') not in texts:
+                raise SystemExit(f'{sid}: the chibi row\'s base generator {chibi["base_generator"]} does not pin its input '
+                                 'in a PROFILES row this command moves')
+            profile['source'] = new
+            skeleton = json.loads(next((ROOT / 'content/species').glob(f'{sid}-*.json')).read_text())['model']['skeleton']
+            with importing(a.games_dir):
+                made, _ = gen.build(new_input, skeleton)
+            post = sha256(made)
+        repin_chibi(chibi_rows, sid, old, new, post)
+        texts[CHIBI_ROWS] = json.dumps(chibi_rows, indent=2) + '\n'
+    if not texts:
+        print(f'{sid} {row["name"]}: no overlay pins its input; nothing to move')
+        return
+    stray = stray_pins(texts, old)
+    if stray:
+        raise SystemExit(f'{sid}: the input {old} is pinned in {", ".join(stray)} too, which this command does not move')
+    for path, text in texts.items():
+        path.write_text(text)
+        print(f'{path.relative_to(ROOT)}: {sid} {old} -> {new}')
+    print(f'next: tools/models/edit.py put {sid} {a.mmd}{" " + a.tim if a.tim else ""} (the delta and the species pins), '
+          'then tools/models/variants.py make for a species with a release variant')
+
+
 def cmd_sources(a):
     out = Path(a.out)
     for row in rows(load(MODELS), a.ids):
@@ -440,6 +548,10 @@ def main():
     c = sub.add_parser('check')
     c.add_argument('ids', nargs='*')
     c.add_argument('--species-pins', action='store_true')
+    m = sub.add_parser('repin')
+    m.add_argument('id')
+    m.add_argument('mmd')
+    m.add_argument('tim', nargs='?')
     s = sub.add_parser('sources')
     s.add_argument('out')
     s.add_argument('ids', nargs='*')
@@ -469,7 +581,7 @@ def main():
     if a.command != 'rebase':
         a.games_dir = games_dir(a)
     return {'get': cmd_get, 'put': cmd_put, 'check': cmd_check, 'sources': cmd_sources,
-            'rebase': cmd_rebase}[a.command](a) or 0
+            'rebase': cmd_rebase, 'repin': cmd_repin}[a.command](a) or 0
 
 
 if __name__ == '__main__':

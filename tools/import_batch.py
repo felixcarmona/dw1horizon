@@ -1087,9 +1087,10 @@ def replay_model(entry, level, spec, out_dir, log=print, frozen_mesh=True):
     This path needs only the source discs and the explicit recipes.
     """
     entry = dict(entry)
-    if entry.get('mesh_only'):
-        if entry.get('game') != 'dw3' or spec.get('format') != 'native-mesh-source-v1':
-            raise ValueError('mesh_only requires a frozen native mesh source spec')
+    if entry.get('mesh_only') or entry.get('battle_source'):
+        want = 'native-battle-source-v1' if entry.get('battle_source') else 'native-mesh-source-v1'
+        if entry.get('game') != 'dw3' or spec.get('format') != want:
+            raise ValueError('mesh_only/battle_source requires a frozen native mesh/battle source spec')
         from tools.models import native_mesh
         return native_mesh.write(spec, out_dir, log)
     params = spec.get('meshfix')
