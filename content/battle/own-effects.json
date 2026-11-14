@@ -17,5 +17,13 @@
     "scale": 0.269,
     "hit_scale": 0.1,
     "reach": 1100
+  },
+  "124": {
+    "name": "Darkness Gear",
+    "stands_for": 66,
+    "cast": [[1, "EFFESA/MESA2700.BIN", "EFFESA/AESA2700.BIN"]],
+    "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
+    "scale": 0.166,
+    "hit_scale": 0.1
   }
 }
