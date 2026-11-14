@@ -89,5 +89,13 @@
     "hit": [[2, "EFFEFD/MEFD0400.BIN", "EFFEFD/AEFD0400.BIN"]],
     "scale": 0.246,
     "hit_scale": 0.1
+  },
+  "133": {
+    "name": "Pretty Attack",
+    "stands_for": 60,
+    "cast": [[1, "EFFEMA/MEMA4500.BIN", "EFFEMA/AEMA4500.BIN"], [2, "EFFEMA/MEMA4600.BIN", "EFFEMA/AEMA4600.BIN"]],
+    "hit": [[1, "EFFESD/MESD7100.BIN", "EFFESD/AESD7100.BIN"]],
+    "scale": 0.287,
+    "hit_scale": 0.1
   }
 }
