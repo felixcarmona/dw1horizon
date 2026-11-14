@@ -1,0 +1,30 @@
+From 78d4d528f32b8646d0fc71fbec8b836a8e616b53 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 14 Nov 2026 12:16:01 +0000
+Subject: [PATCH] Leave steady 30 for 20 only on a full window of late frames
+
+Two lone overruns in the first 16 ticks of a window (a battle's AI choosing)
+dropped a battle that holds steady 30 to 20 for 32 ticks or more. The drop now
+waits for a full 32-tick window with more than KEEP30 late frames.
+---
+ src/main/main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/main.c b/src/main/main.c
+index 99cbf15..a7b59c4 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -5598,7 +5598,9 @@ static void modCadRecord(int32_t planned, int32_t shown, int32_t late, int32_t c
+ 	level = next = MOD_CAD_LEVEL;
+ 	if (level == 2 && sumShown * MOD_CAD_WINDOW < MOD_CAD_KEEP60 * n) {
+ 		next = fit30 == n ? 1 : 0;
+-	} else if (level == 1 && sumMiss * MOD_CAD_WINDOW > MOD_CAD_KEEP30 * n) {
++	} else if (level == 1 && n == MOD_CAD_WINDOW && sumMiss > MOD_CAD_KEEP30) {
++		/* only on a full window: two lone overruns in the first 16 ticks (a battle's AI choosing) dropped a battle that
++		 * holds steady 30 to 20 for the next 32 ticks or more, a slower and longer judder than the late frames */
+ 		next = 0;
+ 	} else if (n == MOD_CAD_WINDOW && modCad.since >= modCad.cool[ctx]) {
+ 		if (level == 1 && sumPred * MOD_CAD_WINDOW >= (MOD_CAD_KEEP60 + 4) * n) {
+-- 
+2.55.0
+

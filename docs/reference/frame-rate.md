@@ -417,7 +417,8 @@ in that spare refresh; every frame two refreshes apart) and 20 (`MOD_RENDER_CADE
 original). `modCadArm` arms the level at the start of a tick; `modCadRecord` stores the tick's cost (tick + first
 pass, extra pass, in lines) and outcome (frames planned, shown, late) in a 32-tick ring and decides: down from 60 when
 fewer than `MOD_CAD_KEEP60`/32 frames a tick are shown (16 ticks of evidence), down from 30 when more than
-`MOD_CAD_KEEP30` frames per 32 ticks are late or skipped, up only after a full window whose costs predict the higher
+`MOD_CAD_KEEP30` frames per 32 ticks are late or skipped (judged on a full window only, so two lone overruns
+early in a battle do not drop it to 20), up only after a full window whose costs predict the higher
 cadence and a wait that doubles after every failed try (32 ... 1024 ticks). The world and the battle loops remember
 their levels; a map change clears the evidence and the wait. `MOD_CAD_KEEP60` is 90 (2.8 of 3 frames a tick): at
 2 MB and the stock clock File City and Gear Savanna showed 1.6-2.4 frames a tick at 60, an uneven 40-44 fps whose
