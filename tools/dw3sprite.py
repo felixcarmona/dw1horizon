@@ -393,10 +393,14 @@ _cache = {}
 def _pack(disc, tables, p):
     key = (id(disc), p)
     if key not in _cache:
-        rec = pack_records(disc, tables)[p]
         name = tables.sprite_files[p]
-        com = 'F000COM%d.BIN' % (p + 1) if name.startswith('E000COM') else None
-        _cache[key] = Pack(disc, name, rec[0], rec[2], com)
+        if hasattr(tables, 'pack_sections'):          # dw3effect.EffectIds: no fight overlay to read
+            tex, table = tables.pack_sections[p]
+        else:
+            rec = pack_records(disc, tables)[p]
+            tex, table = rec[0], rec[2]
+        com = 'F' + name[1:] if name.startswith('E000COM') else None
+        _cache[key] = Pack(disc, name, tex, table, com)
     return _cache[key]
 
 

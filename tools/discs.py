@@ -472,7 +472,7 @@ DW2_EFFECT_FILES = {
 }
 
 
-# The DW2003 3D effect files the species' own effects are converted from (content/battle/own-effects.json "dw3",
+# The DW2003 3D effect and sprite pack files the species' own effects are converted from (content/battle/own-effects.json "dw3",
 # tools/derive/steps/effects.py), by name: equal on the European, USA and Japanese discs, in AAA/DAT/FIGHT/EFFECT
 # (AAA/DAT/EFFECT on the USA disc)
 DW3_EFFECT_FILES = {
@@ -502,6 +502,10 @@ DW3_EFFECT_FILES = {
     'MEFT0364.BIN': 'e4edfe4e3012d8871c7a309312b0dc76a7ff8bc9',
     'MEFT0370.BIN': 'bb38984492ffc4edf64bf252e7c83ee89b8a779c',
 }
+# the few that differ on one release: {release id: {name: SHA-1}} (the USA disc's Raidenmon sprite pack)
+DW3_EFFECT_RELEASE_FILES = {
+    'dw3-us': {'E438RIDN.BIN': '7f1e953081765bb94139cd3c08852d1c32a333fd'},
+}
 DW3_EFFECT_DIRS = {'dw2003': 'AAA/DAT/FIGHT/EFFECT', 'dw3-us': 'AAA/DAT/EFFECT', 'dw3-jp': 'AAA/DAT/FIGHT/EFFECT'}
 
 
@@ -526,7 +530,9 @@ def release_files():
             own = j.get('own', {})
             out[f'dw3-{rel}'] = {f'{own_dir}/{c}.BIN': own.get(c, h) for c, h in sorted(j['recipes'].items())}
             for rid in ('dw2003', f'dw3-{rel}'):
-                out[rid].update({f'{DW3_EFFECT_DIRS[rid]}/{n}': h for n, h in sorted(DW3_EFFECT_FILES.items())})
+                files = dict(DW3_EFFECT_FILES, **{n: h for n, h in DW3_EFFECT_RELEASE_FILES.get(rid, {}).items()
+                                                   if n in DW3_EFFECT_FILES})
+                out[rid].update({f'{DW3_EFFECT_DIRS[rid]}/{n}': h for n, h in sorted(files.items())})
         elif game == 'dw2':
             files = {f'AAA/4.AAA/MODEL/{f}': h for c in sorted(j['recipes']) for f, h in sorted(j['recipes'][c].items())}
             files.update(DW2_EFFECT_FILES)
