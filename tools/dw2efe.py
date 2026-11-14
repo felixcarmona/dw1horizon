@@ -559,7 +559,8 @@ def convert_skill(*args, **kw):
         try:
             chunk, info = _convert_skill(*args, step=step, quant=quant, width=width, sides=sides, **kw)
         except Unconvertible as e:
-            if 'slot has' not in str(e) or n == len(LEVELS) - 1:
+            fit = 'slot has' in str(e) or 'texture blocks do not fit' in str(e)    # too large at this level
+            if not fit or n == len(LEVELS) - 1:
                 raise
             continue
         info['detail'] = (f'step {step} quant {quant}' + ('' if width == STRIP_W else f' texture {width}')
