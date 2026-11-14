@@ -1270,8 +1270,12 @@ battle clips 2.4 KB. With both models loaded, screens 330-335 needed 193,440 B, 
 - **Hawkmon**: until imported NPC models are trimmed, its battle clips 0x22-0x24 are its
   field clips again. Its other clips are compacted: 87,632 → **81,298 B**.
 
-Result: all 320 setups pass. Screens 330-335 have **+1,872 B**, 207 has **+1,712 B**, and
-217 (Devimon, Ninjamon, Phantomon) is the tightest at **+408 B**.
+The same change calls `digimonPara`, `raiseRow` and the evolution row lookups out of line
+(three patches): main gives 2,608 B back and the heap goes from 185,408 to **187,984 B**.
+Each lookup costs one call and return more, a few cycles against a 33 MHz frame budget of about 1.1 million.
+
+Result: all 320 setups pass. Screens 330-335 have **+4,456 B**, 207 has **+4,288 B**, and
+217 (Devimon, Ninjamon, Phantomon) is the tightest at **+2,984 B**.
 
 The durable fix is NPC trimming for imported species. `npc_anim_trim.c` stops at type 180,
 so it never trims them. Trimming would drop their resident clips 0x15-0x1B, measured at
