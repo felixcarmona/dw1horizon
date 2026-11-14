@@ -17,8 +17,9 @@ Counted over the signature scripts of the imported Digimon, the objects the scri
 |---|---|---|---|
 | 3D model (kind 15) | 227 | 153 | a model, with its own texture |
 | animated sprite (kind 16) | 206 | 115 | a flat sprite that steps through its frames |
-| sprite from a sheet (kinds 1, 12) | 114 | 40 | a flat sprite |
-| sprite burst (kind 13) | 377 | 232 | one sprite (the burst is approximated) |
+| glowing copy of a model (kind 1) | 66 | 36 | the model, blended |
+| kind 12 | 48 | 4 | the model it names, else a flat sprite |
+| kind 13 | 377 | 232 | the model it names (blended), else its sheet animated, else a flat sprite |
 | ribbon trail (kind 17) | 78 | 118 | not drawn |
 | screen flash (kind 0) | 163 | 111 | not drawn |
 | camera move (kind 3) | 60 | 48 | not used: DW1 keeps its battle camera |
@@ -100,16 +101,36 @@ the input of the DW2 converter (`tools/dw2efe.py`), which writes the 20 KB EFEDA
   hit 3.8 times).
 - The attack script becomes the cast (at the attacker, facing the defender); the hit script becomes
   the hit (on the defender).
-- Animated sprites keep 4 of their frames; when the textures do not fit the chunk, 2, then 1.
+- When the chunk is too full, the converter gives up detail in this order: animated sprites keep 4
+  frames, then 2, then 1; the textures shrink to a half, then a quarter (on top of the halving the DW2
+  converter always does); groups of alike objects (a swarm of sixty sparks) keep an evenly spread few.
+- Object scale is applied in each model bone's own frame (DW1 cannot draw a sheared bone).
 - Sprite colours are baked into the palette; sprites tinted black are left out.
+- A sheet named without a frame list is read as 64 x 64 frames (an estimate).
 - Not converted: screen flashes, camera moves, ribbon trails, sounds and banners.
 
 `python tools/dcbefe.py convert <attack> <hit> <out> <name> --render` writes the chunk, a record of
 what was kept and dropped, and frame sheets of the traced original and the converted chunk;
 `python tools/dcbefe.py grid <out> <video.mp4> <names...>` puts several side by side.
 
+## Fidelity check
+
+Every rendered conversion is compared with the traced original on the same stage and camera, the cast
+and the hit apart (`fidelity_parts` in `tools/dcbefe.py`):
+
+| number | what it measures | must be at least |
+|---|---|---|
+| area | mean drawn area, converted / original | 0.3 |
+| shown | share of the original's busy moments in which the conversion draws something | 0.5 |
+| box | overlap of where they draw (intersection / the smaller area) | 0.3 |
+| curve | correlation of the drawn area over time | 0 |
+
+A conversion that fails any part is not counted as converted and is left out of comparison videos.
+`thin_source` marks originals that draw very little, where the numbers say less.
+
 ## Open questions
 
 - The step rate (30 Hz) and the size of a sprite texel in the world (16 units) are estimates.
 - Bone-attached objects (motion types 90 and up) are held still at their start.
-- A sprite burst (kind 13) spawns many small sprites in the game; it is drawn as one.
+- What kinds 1, 12 and 13 do exactly is read from the variables they use, not from the executable's
+  drawing code: they are drawn as the model or sheet they name.

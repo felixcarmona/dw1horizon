@@ -202,6 +202,7 @@ def original_frames(atk, w=320, h=200, every=2):
 
 
 BG, POST = (28, 30, 40), (110, 110, 130)
+THIN = 300                              # mean drawn pixels of a 320x200 picture
 FIDELITY = {'area': 0.3, 'shown': 0.5, 'box': 0.3, 'curve': 0.0}
 
 
@@ -262,6 +263,7 @@ def fidelity(orig, conv, bins=20):
          'shown': round(shown, 3), 'box': round(box, 3), 'curve': round(_corr(oa, ca), 3)}
     r['failed'] = [k for k, lim in FIDELITY.items() if r[k] < lim]
     r['passed'] = not r['failed']
+    r['thin_source'] = mo < THIN        # the traced original itself draws little: the numbers say less
     return r
 
 

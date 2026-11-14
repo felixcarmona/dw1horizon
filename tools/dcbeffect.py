@@ -701,13 +701,18 @@ def to_effect(tr, packs, steps, origin=(0, 0, 0), turn=False, vram_tims=(), note
                 bones.append(D.Bone(-1, verts, prims))
             per_bone_pose.append((inst, 'model', first, len(bones), mframes))
             drawn.models += 1
-        elif inst.kind == FLIPBOOK_KIND:
+        elif inst.kind == FLIPBOOK_KIND or (inst.kind == 13 and p0[V_RECT + 2] <= 0 and
+                                            any(p0[V_MODEL] in pk.tims for pk in packs)):
             sd = next((pk.sprites[p0[V_MODEL]] for pk in packs if p0[V_MODEL] in pk.sprites), None)
             stim = next((pk.tims[p0[V_MODEL]] for pk in packs if p0[V_MODEL] in pk.tims), None)
-            if sd is None or stim is None:
+            if stim is None:
                 drawn.dropped['flipbook without its sheet'] = drawn.dropped.get('flipbook without its sheet', 0) + 1
                 continue
-            sheet = parse_sprite(sd)
+            if sd is not None:
+                sheet = parse_sprite(sd)
+            else:
+                sheet = grid_sheet(stim)
+                drawn.notes.append(f'object {inst.slot}: sheet {stim.id} has no frame list, read as 64x64 frames')
             use = sheet.frames
             if len(use) > max_flip:
                 use = [use[round(i * len(use) / max_flip)] for i in range(max_flip)]
@@ -777,10 +782,13 @@ def to_effect(tr, packs, steps, origin=(0, 0, 0), turn=False, vram_tims=(), note
                     r = D._mul(_rot((ang[2], 0, 0)), [[sc[0], 0, 0], [0, sc[0], 0], [0, 0, sc[0]]])
                     m, t = r, pos
                 else:
-                    ro = D._mul(_rot(ang), [[sc[0], 0, 0], [0, sc[1], 0], [0, 0, sc[2]]])
+                    sm = [[sc[0], 0, 0], [0, sc[1], 0], [0, 0, sc[2]]]
+                    ro = D._mul(_rot(ang), sm)
                     age = step - inst.start
                     br, bt = mframes[age % len(mframes)][b - b0]
-                    m = D._mul(ro, br)
+                    # the object's scale applied in the bone's own frame: the same when the bone does not turn,
+                    # and never a shear (DW1 draws a rotation times a per-axis scale)
+                    m = D._mul(D._mul(_rot(ang), br), sm)
                     t = [pos[i] + sum(ro[i][k] * bt[k] * UNITS for k in range(3)) for i in range(3)]
                 if turn:
                     flip = [[-1, 0, 0], [0, 1, 0], [0, 0, -1]]
@@ -863,6 +871,16 @@ def parse_sprite(d):
         dur, u0, _u1, v0, _v1, w, h = struct.unpack_from('<I4B2H', d, q)
         frames.append(Frame(max(1, dur), u0, v0, w, h))
     return Sheet(loop == -1, (cx, cy), (tx, ty), frames)
+
+
+def grid_sheet(tim, cell=64, ticks=4):
+    """A sheet without a frame list (its id names only a TIM): cells of 64 x 64 texels, row by row, 4 steps each
+    (an estimate), or the whole TIM when it is not a grid of such cells."""
+    w, h = len(tim.words[0]) * 4, len(tim.words)
+    if w % cell or h % cell or w > 256:
+        return Sheet(True, tim.clut_xy, tim.xy, [Frame(ticks, 0, 0, min(w, 128), min(h, 128))])
+    return Sheet(True, tim.clut_xy, tim.xy,
+                 [Frame(ticks, x, y, cell, cell) for y in range(0, h, cell) for x in range(0, w, cell)])
 
 
 def _flip_frame(sheet, age, kept):
