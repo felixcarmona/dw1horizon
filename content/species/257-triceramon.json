@@ -10,6 +10,7 @@
                  "Muscle Charge", "War Cry", null, null, null, null, null, "Bit Bomb"],
   "drop": {"item": "Restore", "percent": 20},
   "effects_like": 12,
+  "own_effect": {"technique": "Bit Bomb", "chunk": 126},
   "model": {
     "file": "build/sizes-out/models/Triceramon.MMD",
     "radius": 259,

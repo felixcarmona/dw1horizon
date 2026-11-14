@@ -33,5 +33,13 @@
     "hit": [[2, "EFFESD/MESD0000.BIN", "EFFESD/AESD0000.BIN"]],
     "scale": 0.326,
     "hit_scale": 0.1
+  },
+  "126": {
+    "name": "Tri-Horn Attack",
+    "stands_for": 73,
+    "cast": [[1, "EFFEUA/MEUA3900.BIN", "EFFEUA/AEUA3900.BIN"], [2, "EFFEUA/MEUA4000.BIN", "EFFEUA/AEUA4000.BIN"]],
+    "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
+    "scale": 0.307,
+    "hit_scale": 0.1
   }
 }
