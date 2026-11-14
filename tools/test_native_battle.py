@@ -136,6 +136,16 @@ class NativeBattle(unittest.TestCase):
         self.assertEqual(native_battle.scaled_events(ev, 21, 41), [(0, 'sound', 1), (20, 'sound', 2), (39, 'sound', 3)])
         self.assertEqual(native_battle.scaled_events(ev, 21, 11), [(0, 'sound', 1), (5, 'sound', 2), (9, 'sound', 3)])
 
+    def test_a_technique_shares_the_clip_the_source_plays_for_both(self):
+        # `share`: slot 0x2F plays 0x2E's restored program where the source has one program in both slots
+        table = [None] * 46 + [7, 3, 4]
+        source = [None] * 46 + [2, 2, 5]
+        self.assertEqual(native_battle.shared(table, source, {'47': 46}, {46, 48})[46:], [7, 7, 4])
+        self.assertEqual(native_battle.shared(table, source, None, {46}), table)
+        for bad, restored in (({'48': 46}, {46}), ({'47': 46}, {47}), ({'47': 46}, {46, 47})):
+            with self.assertRaises(ValueError):
+                native_battle.shared(table, source, bad, restored)
+
     def test_dropped_npc_slots_are_the_ones_the_scripts_never_ask_a_partner_for(self):
         # `drop_npc_slots` leaves out the tamer's, NPCs' and kart race's clips: none may be a slot the species scripts need
         from tools import species

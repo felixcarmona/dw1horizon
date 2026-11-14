@@ -158,6 +158,21 @@ def scaled_events(events, frames, want):
     return [(min(want - 2, round(k * (want - 1) / (frames - 1))), kind, c) for k, kind, c in events]
 
 
+def shared(table, source_table, share, restored):
+    """`table` with each slot of `share` ({slot (text): leader}) playing its leader's restored clip, for a source that
+    plays one clip for both slots (the same program in its table); the leader is restored, the slot is not."""
+    table = list(table)
+    for slot, leader in sorted((int(k), int(v)) for k, v in (share or {}).items()):
+        if leader not in restored or slot in restored:
+            raise ValueError(f'battle originals: slot {slot} shares slot {leader}, which must be restored instead of it')
+        if slot < TECHNIQUES or leader < TECHNIQUES:
+            raise ValueError(f'battle originals: only technique slots share a clip ({slot}, {leader})')
+        if source_table[slot] is None or source_table[slot] != source_table[leader]:
+            raise ValueError(f'battle originals: the source plays other clips in slots {slot} and {leader}')
+        table[slot] = table[leader]
+    return table
+
+
 def source_clip(source, nb, slot, want):
     """(samples, events, loop sample, cycles) of the source's clip of `slot` for a final clip of `want` frames."""
     frames, loop, events = animsheet.slot_frames(source, nb, slot)
@@ -215,14 +230,16 @@ def retarget(frames, ctx):
     return out
 
 
-def apply(output, ctx, slots, keep_events=(), repairs=None, ticks=None):
+def apply(output, ctx, slots, keep_events=(), repairs=None, ticks=None, share=None):
     """`output` (the bound model) with each slot of `slots` playing the source's clip on the donor rig
     -> (bytes, proof). `keep_events`: slots that keep the bound clip's sound events (at its ticks: the clip keeps the
     slot's length), for a source whose clip of that slot has none. `repairs`: {slot (text): operations} of
     tools/models/clip_repair.py run on a slot's retargeted ticks (a rebuilt clip: the original repaired where it breaks
     on the donor rig). `ticks`: {slot (text): frames} gives a one-shot slot (hit, victory, faint, get up, technique)
     another length than the donor's, for a source clip that the donor's length would resample too far (slow motion or
-    a rush); the donor's events of that slot move with the clip (scaled to the new length)."""
+    a rush); the donor's events of that slot move with the clip (scaled to the new length). `share`: {slot (text):
+    leader} a technique slot plays the restored clip of another technique slot (its length and sound events) where the
+    source plays one clip for both, so the resident buffer holds it once."""
     rig = ctx['rig']
     nb = len(rig)
     model = mmd.MMD.parse(output, nb)
@@ -250,6 +267,9 @@ def apply(output, ctx, slots, keep_events=(), repairs=None, ticks=None):
         model.anims.table[slot] = len(model.anims.anims)
         model.anims.anims.append(anim)
         proof[slot] = dict(frames=len(samples), donor_frames=want, cycles=tile)
+    model.anims.table = shared(model.anims.table, source.anims.table, share, set(slots))
+    for slot, leader in (share or {}).items():
+        proof[int(slot)] = dict(proof[int(leader)], shares=int(leader))
     used = sorted({i for i in model.anims.table if i is not None})
     renumber = {old: new for new, old in enumerate(used)}
     model.anims.anims = [model.anims.anims[i] for i in used]
