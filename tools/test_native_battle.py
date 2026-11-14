@@ -44,6 +44,29 @@ class NativeBattle(unittest.TestCase):
         with self.assertRaises(ValueError):
             native_battle.compact(b'', 1, {'tol': native_battle.MAX_TOL + 1})
 
+    def test_preserve_field_leaves_the_field_programs_alone(self):
+        from unittest import mock
+
+        class Anim:
+            def __init__(self):
+                self.tail = b'tail'
+
+        class Model:
+            def __init__(self):
+                self.anims = mock.Mock(table=list(range(40)), anims=[Anim() for _ in range(40)])
+
+            def build(self):
+                return b'built'
+
+        model, calls = Model(), []
+        exact = lambda out, nb, tol, slots=None: (calls.append((tol, slots)), (out, {}))[1]
+        with mock.patch.object(native_battle.battle_restore, 'compact', exact), \
+                mock.patch.object(native_battle.mmd.MMD, 'parse', lambda data, nb: model), \
+                mock.patch.object(native_battle.motioncyclelayer, 'share_identical_streams', lambda a, t: (a, t)):
+            native_battle.compact(b'm', 1, {'tol': 0, 'preserve_field': True})
+        self.assertEqual(calls, [(0, set(range(40)) - set(native_battle.FIELD))])
+        self.assertEqual([a.tail for a in model.anims.anims[:6]], [b'tail'] * 5 + [b''])
+
     def test_mirrored_fit_follows_the_twins_bind_poses(self):
         # a mirrored piece's local vertex v is the twin's X.v; its fitted world shape is X.(Q_twin.W_twin.X.v), so the
         # fit from its own source world W_own.v is whatever maps one onto the other, also when the source poses the
