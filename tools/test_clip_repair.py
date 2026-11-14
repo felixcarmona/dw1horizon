@@ -41,6 +41,13 @@ class ClipRepairTest(unittest.TestCase):
         out = clip_repair.apply_ops(clip(), PARENTS, [{'op': 'damp', 'bone': 1, 'keep': 0.0, 'to': 'first'}])
         self.assertTrue(all(p[1][3:6] == [0, 0, 0] for p in out))
 
+    def test_damp_to_the_first_pose_closes_a_loop_seam(self):
+        n = 12
+        out = clip_repair.apply_ops(clip(n), PARENTS, [{'op': 'damp', 'bone': 2, 'keep': 0.0, 'to': 'first',
+                                                       'ticks': [6, n - 1, n - 1, n - 1]}])
+        self.assertEqual(out[-1][2][3:6], out[0][2][3:6])
+        self.assertTrue(all(a == b for a, b in zip(out[:6], clip(n))))
+
     def test_lift_moves_a_body_bone_only(self):
         out = clip_repair.apply_ops(clip(), PARENTS, [{'op': 'lift', 'bone': 1, 'up': 25}])
         self.assertTrue(all(a[1][7] == b[1][7] - 25 and a[0] == b[0] for a, b in zip(out, clip())))

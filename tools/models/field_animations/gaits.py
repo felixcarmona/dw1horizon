@@ -89,7 +89,7 @@ PROFILES.update({
           native_aux=[4,7,9,10,20,21,22,23,24,25],native_head=True,gaze_pitch=0,support_blend=.5,
           aux_rotation_offsets={9:[30,0,0]},
           style='supple feline weight transfer with native hair, wrists and streamers; original idle preserved'),
- 354:dict(source='2ed6036bb45479090f9417bd62f041928d516dffb65b4daeae30b5d9e33d604b',bones=22,
+ 354:dict(source='cb8e4661d7ee8491805e30f6fc34e058eaf023bc89c6fe18ed5f013ba713a2eb',bones=22,
           carrier=1,pelvis=2,chest=1,head=15,
           legs=[(3,4,5,[5,6],1,0),(7,8,9,[9,10],-1,.5)],arms=[(16,17,-1),(19,20,1)],
           slots=[2,3,4],periods={2:12,3:16,4:8},speeds={2:20,3:14,4:52},duties={4:.36},

@@ -97,6 +97,34 @@ class Repin(unittest.TestCase):
             v.repin_chibi(rows, 354, old, self.NEW, self.POST)
         self.assertFalse(v.repin_chibi(rows, 999, old, self.NEW, self.POST))
 
+    def test_pace_row_moves_in_its_block_only(self):
+        old = json.loads(v.PACE_ROWS.read_text())['258']['source_sha256']
+        text = v.PACE_ROWS.read_text()
+        moved = v.repin_pace(text, 258, old, self.NEW)
+        self.assertEqual(json.loads(moved)['258']['source_sha256'], self.NEW)
+        self.assertEqual(json.loads(moved)['258']['post_source_sha256'], self.NEW)
+        after = json.loads(moved)
+        after['258'] = json.loads(text)['258']
+        self.assertEqual(after, json.loads(text))
+        with self.assertRaisesRegex(ValueError, 'does not pin'):
+            v.repin_pace(text, 258, 'c' * 64, self.NEW)
+        self.assertIsNone(v.repin_pace(text, 999, old, self.NEW))
+
+    def test_source_constant_and_species_keyword_profile_move(self):
+        text = "X = 1\nSOURCE='" + 'e' * 64 + "'\nOTHER = 2\n"
+        self.assertEqual(v.repin_constant(text, 'e' * 64, self.NEW), text.replace('e' * 64, self.NEW))
+        self.assertIsNone(v.repin_constant(text, 'f' * 64, self.NEW))
+        profile = "PROFILE = dict(\n    species=285, source='" + 'e' * 64 + "',\n    parents=[])\n"
+        self.assertEqual(v.repin_profile(profile, 285, 'e' * 64, self.NEW), profile.replace('e' * 64, self.NEW))
+        self.assertIsNone(v.repin_profile(profile, 286, 'e' * 64, self.NEW))
+
+    def test_donor_pin_of_a_native_binding_moves(self):
+        text = ('{\n  "1": {\n    "donor_species": 5,\n    "donor_sha256": "' + 'e' * 64 + '"\n  },\n'
+                '  "2": {\n    "donor_species": 6,\n    "donor_sha256": "' + 'e' * 64 + '"\n  }\n}\n')
+        moved = json.loads(v.repin_donors(text, 5, 'e' * 64, self.NEW))
+        self.assertEqual((moved['1']['donor_sha256'], moved['2']['donor_sha256']), (self.NEW, 'e' * 64))
+        self.assertIsNone(v.repin_donors(text, 7, 'e' * 64, self.NEW))
+
     def test_input_pinned_elsewhere_is_reported(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)

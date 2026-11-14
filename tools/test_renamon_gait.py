@@ -115,7 +115,7 @@ class RenamonGait(unittest.TestCase):
     def test_chibi_proportions_and_the_record_patch_are_kept(self):
         self.assertEqual(self.report['factors']['leg_axial'], 0.9484)
         self.assertIn('species_patch', self.report)
-        self.assertEqual(self.report['gait']['changed_slots'], [0, 2, 3, 4, 33])    # the idle (0, 33) is the chibi build's
+        self.assertEqual(self.report['gait']['changed_slots'], [0, 2, 3, 4])    # the idle 0 is the chibi build's; 0x21 is the rebuilt source clip
 
     def test_storage_fits_the_resident_buffer(self):
         from motionstorage import audit

@@ -1681,10 +1681,10 @@
     }
   },
   "354": {
-    "source_sha256": "2ed6036bb45479090f9417bd62f041928d516dffb65b4daeae30b5d9e33d604b",
+    "source_sha256": "cb8e4661d7ee8491805e30f6fc34e058eaf023bc89c6fe18ed5f013ba713a2eb",
     "skeleton_sha256": "87c5d15b3ee47f51b7572bda12af574096ca59969a293db744b805da3d60622e",
     "base_generator": "tools.models.field_animations.gaits",
-    "post_source_sha256": "41c85848a4886d9b8d9bc07df8d1584bd1a2890384cf4969ded96fc233fb68db",
+    "post_source_sha256": "5e2a9b21c7b3ccbc162d04334a1b2c04950c2108a4a81e578cd50a2889d4d685",
     "height": 320.017,
     "fit": {
       "14": 0.97,
@@ -1727,10 +1727,10 @@
     }
   },
   "373": {
-    "source_sha256": "67d6d20e00fb34a60e88dd28ad4c171de1e5d21d805603158c8ca7326ec4b51b",
+    "source_sha256": "391ca793a8557f01eeaf7b5f2f7bae7f0f79bd19255907a9a78c340d022864f0",
     "skeleton_sha256": "b8d196eefa7f3b3eea4307ca03757b2637669353134361722fdbf6cb006bfa78",
     "base_generator": "tools.models.field_animations.war_greymon",
-    "post_source_sha256": "ae50cd1d71c8369419ca58b1ad3cb70587897278b4e6b9b1256366b51351007c",
+    "post_source_sha256": "1e0a1b0dde7cfeae4e65439fda0751806a7485c007f9d55c143c9993d65c8336",
     "height": 457.098,
     "factors": {
       "head": 1.2455,

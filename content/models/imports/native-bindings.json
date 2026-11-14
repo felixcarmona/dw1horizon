@@ -6007,7 +6007,7 @@
     "source_sha256": "04afa859573b6f7569174326bdc65e4d349ac882e7be79065346b55d44102a4e",
     "skeleton_sha256": "da9969cae3ee60db788ac78166642dda3b97aaac68daf70b6809c41e0db71b1f",
     "donor": 373,
-    "donor_sha256": "67d6d20e00fb34a60e88dd28ad4c171de1e5d21d805603158c8ca7326ec4b51b",
+    "donor_sha256": "391ca793a8557f01eeaf7b5f2f7bae7f0f79bd19255907a9a78c340d022864f0",
     "scale": 1.805,
     "mesh_scale": 1.0,
     "bind_slot": 1,

@@ -369,8 +369,11 @@ def cmd_check(a):
 # species' row of PROFILES) and the chibi row (content/models/imports/chibi.json `source_sha256`, and
 # `post_source_sha256`: the input after its base generator). An edit stored with `put` that changes the overlay's input
 # (a battle slot given back to the source game's clip) moves those pins with `repin`, before `put`.
-PROFILE_MODULES = ('tools/models/field_animations/gaits.py', 'tools/models/field_animations/secondary_motion.py')
+PROFILE_MODULES = ('tools/models/field_animations/gaits.py', 'tools/models/field_animations/secondary_motion.py',
+                   'tools/models/field_animations/gazimon.py')
 CHIBI_ROWS = IMPORTED_MODELS_SCRIPT.parent / 'chibi.json'
+PACE_ROWS = IMPORTED_MODELS_SCRIPT.parent / 'pace.json'
+NATIVE_ROWS = IMPORTED_MODELS_SCRIPT.parent / 'native-bindings.json'
 PIN_FOLDERS = ('content/models/imports', 'tools/models/field_animations')
 
 
@@ -378,15 +381,17 @@ def repin_profile(text, species, old, new):
     """`text`, an overlay module's source, with the profile of `species` pinned to `new` instead of `old`; None when the
     module has no profile of the species. Refuses a profile pinned to another input."""
     import re
-    found = list(re.finditer(rf"^\s*{int(species)}\s*:\s*dict\(\s*source\s*=\s*'([0-9a-f]{{64}})'", text, re.M))
+    found = list(re.finditer(rf"^\s*{int(species)}\s*:\s*dict\(\s*source\s*=\s*'([0-9a-f]{{64}})'"
+                             rf"|^\s*species\s*=\s*{int(species)}\s*,\s*source\s*=\s*'([0-9a-f]{{64}})'", text, re.M))
     if not found:
         return None
     if len(found) != 1:
         raise ValueError(f'{species}: {len(found)} profiles of the species')
     pin = found[0]
-    if pin.group(1) != old:
-        raise ValueError(f'{species}: its profile pins {pin.group(1)}, not the current input {old}')
-    return text[:pin.start(1)] + new + text[pin.end(1):]
+    group = 1 if pin.group(1) else 2
+    if pin.group(group) != old:
+        raise ValueError(f'{species}: its profile pins {pin.group(group)}, not the current input {old}')
+    return text[:pin.start(group)] + new + text[pin.end(group):]
 
 
 def repin_chibi(chibi_rows, species, old, new, post):
@@ -399,6 +404,49 @@ def repin_chibi(chibi_rows, species, old, new, post):
         raise ValueError(f'{species}: its chibi row pins {row["source_sha256"]}, not the current input {old}')
     row['source_sha256'], row['post_source_sha256'] = new, post
     return True
+
+
+def repin_donors(text, species, old, new):
+    """`text`, content/models/imports/native-bindings.json, with the donor pin of every recipe that takes imported species
+    `species` as its donor (`donor_species`) moved from `old` to `new`; None when no recipe does. A native binding of such a
+    donor is checked against the donor's current model, so an edit of the donor moves the pin (its output is verified apart)."""
+    import re
+    moved = None
+    for match in list(re.finditer(r'^  "(\d+)": \{', text, re.M))[::-1]:
+        end = re.search(r'^  "\d+": \{', text[match.end():], re.M)
+        stop = match.end() + end.start() if end else len(text)
+        block = text[match.start():stop]
+        if f'"donor_species": {int(species)},' in block and f'"donor_sha256": "{old}"' in block:
+            moved = moved or text
+            moved = moved[:match.start()] + block.replace(f'"donor_sha256": "{old}"', f'"donor_sha256": "{new}"') + moved[stop:]
+    return moved
+
+
+def repin_constant(text, old, new):
+    """`text`, a generator module's source, with its module-level `SOURCE = 'old'` pin moved to `new`; None when it has none."""
+    import re
+    found = list(re.finditer(rf"^SOURCE\s*=\s*'({old})'", text, re.M))
+    if len(found) != 1:
+        return None
+    return text[:found[0].start(1)] + new + text[found[0].end(1):]
+
+
+def repin_pace(text, species, old, new):
+    """`text`, content/models/imports/pace.json, with the field pace row of `species` pinned to `new` instead of `old`;
+    None when the species has no row. Only a row without a base generator (its source is also its post-source) moves;
+    a row pinned to another input is refused."""
+    import re
+    start = re.search(rf'^ "{int(species)}": \{{', text, re.M)
+    if not start:
+        return None
+    end = re.search(r'^ "\d+": \{', text[start.end():], re.M)
+    stop = start.end() + end.start() if end else len(text)
+    block = text[start.start():stop]
+    if f'"source_sha256": "{old}"' not in block:
+        raise ValueError(f'{species}: its pace row does not pin the current input {old}')
+    if '"base_generator": null' not in block or f'"post_source_sha256": "{old}"' not in block:
+        raise ValueError(f'{species}: its pace row follows a base generator; this command does not move it')
+    return text[:start.start()] + block.replace(old, new) + text[stop:]
 
 
 def stray_pins(texts, old):
@@ -429,6 +477,12 @@ def cmd_repin(a):
         moved = repin_profile((ROOT / name).read_text(), sid, old, new)
         if moved is not None:
             texts[ROOT / name] = moved
+    moved = repin_pace(PACE_ROWS.read_text(), sid, old, new)
+    if moved is not None:
+        texts[PACE_ROWS] = moved
+    moved = repin_donors(NATIVE_ROWS.read_text(), sid, old, new)
+    if moved is not None:
+        texts[NATIVE_ROWS] = moved
     chibi_rows = load(CHIBI_ROWS)
     chibi = chibi_rows.get(str(sid))
     if chibi:
@@ -436,11 +490,19 @@ def cmd_repin(a):
         if chibi.get('base_generator'):
             # the base generator runs on the new input with its moved pin (in memory, as the rewritten file will read)
             gen = importlib.import_module(chibi['base_generator'])
+            gen_path = ROOT / (chibi['base_generator'].replace('.', '/') + '.py')
             profile = getattr(gen, 'PROFILES', {}).get(sid)
-            if not profile or profile.get('source') != old or ROOT / (chibi['base_generator'].replace('.', '/') + '.py') not in texts:
+            if getattr(gen, 'SOURCE', None) == old and gen_path not in texts:
+                moved = repin_constant(gen_path.read_text(), old, new)       # `SOURCE = '...'`: one pin for the module
+                if moved is not None:
+                    texts[gen_path] = moved
+                    gen.SOURCE = new
+            elif profile and profile.get('source') == old and gen_path in texts:
+                profile['source'] = new
+            pinned = getattr(gen, 'SOURCE', None) == new or bool(profile and profile.get('source') == new)
+            if gen_path not in texts or not pinned:
                 raise SystemExit(f'{sid}: the chibi row\'s base generator {chibi["base_generator"]} does not pin its input '
-                                 'in a PROFILES row this command moves')
-            profile['source'] = new
+                                 'in a PROFILES row or a SOURCE constant this command moves')
             skeleton = json.loads(next((ROOT / 'content/species').glob(f'{sid}-*.json')).read_text())['model']['skeleton']
             with importing(a.games_dir):
                 made, _ = gen.build(new_input, skeleton)

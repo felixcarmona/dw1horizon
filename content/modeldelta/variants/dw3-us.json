@@ -213,16 +213,16 @@
      }
     ],
     "delta": "content/modeldelta/deltas/dw3-us/354-Renamon.MMD.mdelta",
-    "delta_sha256": "2fbb2852baf7e3d3f45eef5acb9d5a4f30982ebc5d16b85c341168a1f871482e",
-    "sha256": "2cdfcf7a857a69edc85adbea4b7f3455b8c5d324406f8af25529a41199187edd",
-    "size": 99812
+    "delta_sha256": "cd29d8ea015460122c882e6d9bd4f32e96f1a0a787ec2ae6d0bfbcfdf3f21738",
+    "sha256": "631fce26218caac5cd145680230f126652b3e4ccefb42ec438f3f57d34e105eb",
+    "size": 100966
    },
    "from": {
-    "sha256": "2ed6036bb45479090f9417bd62f041928d516dffb65b4daeae30b5d9e33d604b",
-    "delta_sha256": "dc9f0b62f9c0fd27d3d599b3bc68f45472b724d2b68c6037c5062724ede36d3f",
+    "sha256": "cb8e4661d7ee8491805e30f6fc34e058eaf023bc89c6fe18ed5f013ba713a2eb",
+    "delta_sha256": "9cdd4d475f49e6ea0a84eaf67a1d0570f1a340320213d87b6fdc031324a5d3b0",
     "add_bytes": [
-     10005,
-     10005
+     10903,
+     10903
     ],
     "foreign_windows": 0,
     "objects_other": [
@@ -230,7 +230,6 @@
     ],
     "slots_ours": [
      0,
-     33,
      1,
      18,
      2,
@@ -241,7 +240,8 @@
      7,
      8,
      9,
-     13
+     13,
+     33
     ]
    }
   },
@@ -612,8 +612,8 @@
  },
  "reviewed_as": {
   "4efdf24ad14634d17724d8b40f150064924f74930088914c16470ba7544ca1f9": "15e07d0b929c03ab295a54a4b2dda99d1956db5d5dc1cbe34058c96b2dfc948e",
-  "2cdfcf7a857a69edc85adbea4b7f3455b8c5d324406f8af25529a41199187edd": "2ed6036bb45479090f9417bd62f041928d516dffb65b4daeae30b5d9e33d604b",
-  "d1d538b5591c362f927244782c39af0dbce376327ebb722ad744b2555255d959": "41c85848a4886d9b8d9bc07df8d1584bd1a2890384cf4969ded96fc233fb68db",
+  "631fce26218caac5cd145680230f126652b3e4ccefb42ec438f3f57d34e105eb": "cb8e4661d7ee8491805e30f6fc34e058eaf023bc89c6fe18ed5f013ba713a2eb",
+  "25f77dfe45c53c442d985715d4db48d6c9d9deca4793b14841958c0fbe079305": "5e2a9b21c7b3ccbc162d04334a1b2c04950c2108a4a81e578cd50a2889d4d685",
   "1c06236db26cc8f3460e0892b5d0c2f4311637de1f84ac86075a370603bccacc": "234348cb00b8724fbc66d1e4e9900a57255ba0da07b3cccb003ca9dd53b07468",
   "6a6cc23f33ce15d63843c4e5de2a7833caced2d1a7c9024649f5c368b21a3b61": "7716a2a169a13e93a328a95e6f9ac357bfb7725d83c099ed7fbad05e606f1d2e"
  }

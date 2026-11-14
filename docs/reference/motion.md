@@ -82,14 +82,14 @@ kept only when no flagged number is worse than main's same slot (the source's ow
 main's); otherwise the slot goes back to main's clip. That rule put back the source clips that collide or tear on the
 reshaped (chibi) rig (Kimeramon, Angewomon 0x21, Infermon 0x22, Sakuyamon, Musyamon), the movements a shorter technique
 timing made too fast (Okuwamon, Nefertimon, Woodmon), the ones that sink, tip or collide more than main's (Imperialdramon,
-Pegasusmon, Raidenmon and others), and Creepymon's 0x23/0x24 and Gazimon's 0x21, which stay the twins of their field
-clips. Tests: `tools/test_battle_qa.py`.
+Pegasusmon, Raidenmon and others), and Creepymon's 0x23/0x24, which stay the twins of their field
+clips (Gazimon's 0x21, the SaberLeomon and WarGreymon 0x22 and Renamon's 0x21 were put back later, rebuilt from the
+source's clip with repairs: see the rebuilt battle clips below). Tests: `tools/test_battle_qa.py`.
 
 A field overlay writes slots 0-4 and leaves 0x21-0x24 alone, with these documented exceptions: slots whose source clip
 measured worse than main's on the overlay's FINAL output and which therefore keep playing a field clip (main's). Nefertimon
-0x23/0x24 (vertex step 0.45/0.59 heights a tick, under the floor), SaberLeomon 0x22 (crossings 34 a tick against main's 24),
-Knightmon 0x24 (torso tipped 27 degrees against main's 8), Creepymon 0x23/0x24 (crossings 237 against 191, root travel 0.16
-heights off; torso 27 degrees against 14), Gazimon 0x21 (loop seam 0.063 heights), Gargoylemon 0x23/0x24 (60 and 53
+0x23/0x24 (vertex step 0.45/0.59 heights a tick, under the floor), Knightmon 0x24 (torso tipped 27 degrees against main's 8), Creepymon 0x23/0x24 (crossings 237 against 191, root travel 0.16
+heights off; torso 27 degrees against 14), Gargoylemon 0x23/0x24 (60 and 53
 crossings against 3 and 5; as own streams they overflow the resident buffer, 100602 B against 100352) and Suijinmon
 0x23/0x24 (the importer's clip has no bone map for the front legs). Each is noted in its generator. The chibi pass scales the
 root travel of every clip, battle ones included, so a restored movement on a reshaped species differs from the source's in
@@ -155,9 +155,18 @@ import and `tools/models/variants.py make` carries the delta: a restored slot is
 that release's own battle clip, and the QA is run on both releases' final models. Ebidramon 0x21 and 0x24, Antylamon 0x21,
 MaloMyotismon 0x21-0x24 and Kurisarimon 0x21 are the source's again (the Ebidramon and Kurisarimon generators no
 longer write the twins). Ebidramon's 0x24 is leaned (`battle_restore.py pitch`, bone 1 by 20 and bone 9 by -5 degrees):
-unleaned its body is tipped 35 degrees off the field idle, main 18; leaned, 15.3. Renamon's 0x21 (26 triangle crossings
-a tick on the reshaped rig, main 1) stays main's: measured with its gait profile on slot 0's bind pose and its pins
-moved by `edit.py repin`, it still fails the check.
+unleaned its body is tipped 35 degrees off the field idle, main 18; leaned, 15.3. Rebuilt battle clips: where the source's own clip fails the QA on our rig, the clip is kept and only the bones that
+break it are repaired (`tools/models/clip_repair.py`, rows in content/models/imports/battle-rebuilds.json, applied by
+`battle_restore.py rebuild`; the slot counts as a documented polish and keeps every other check). Renamon 0x21 (26
+triangle crossings a tick on the reshaped rig, main 1): the two thighs turned 4 degrees apart about their side axis, 1
+crossing a tick. SaberLeomon 0x22 (crossings 34 a tick, main 24, field idle 6): chest turned back 10 and the mane's bone
+6 degrees, 15 a tick. WarGreymon 0x22 (the source's pounce, claws crossed in front of the chest, 443 crossings a tick,
+main 74, field idle 40): shoulders turned out 20 degrees and forearms 25, 50 a tick; the care generator no longer ties 0x22
+to the tired idle. Gazimon 0x21 (loop seam 0.063 heights, limit 0.05): the tail's bone 15 eased back to its first pose over
+the last 8 ticks, seam 0.035; its overlay no longer writes the battle slot, and the exact compaction of the other clips
+(about 2,900 B) pays for the source's longer clip (98,990 B resident). `edit.py repin` moves the pins of these overlays
+(profile modules, the pace rows, a generator's `SOURCE`, the donors' pins of native bindings: NeoCrimson, which takes
+WarGreymon's model as donor, is byte-identical).
 
 Room is made by `"compact": {"tol": N}` in the same entry (`native_battle.compact`, after the retarget; Wizardmon's
 and Sorcermon's builder runs it once, after its cape and hair followers, which skip the restored slots):
