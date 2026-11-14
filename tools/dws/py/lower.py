@@ -215,13 +215,15 @@ def script_sections(sid):
 
 
 _BASE_NPCS = {}
+_BASE_NAMES = []       # (stubs.base_names(): read from the base's MAPHEAD once, not once per script)
 
 
 def base_npcs(sid):
     """{name: (entity, species id)} of a base script, as the view and its stub name them."""
     if sid not in _BASE_NPCS:
         from . import stubs
-        names = stubs.base_names()
+        if not _BASE_NAMES: _BASE_NAMES.append(stubs.base_names())
+        names = _BASE_NAMES[0]
         _BASE_NPCS[sid] = {nm: (e, sp) for e, nm, sp in stubs.base_npcs(sid, names)}
     return _BASE_NPCS[sid]
 

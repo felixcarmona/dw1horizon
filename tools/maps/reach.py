@@ -17,6 +17,28 @@ def row(z): return 49 - tdiv(z) + (1 if z < 0 else 0)
 def blocked(m, tx, tz):
     return not (0 <= tx < 100 and 0 <= tz < 100) or (m.collision[tz * 100 + tx] & 0x80) != 0
 
+def _table(m):
+    """The map's blocking tiles as one list, tile index tz * 100 + tx (outside the map is handled by the callers)."""
+    return [(c & 0x80) != 0 for c in m.collision]
+
+
+def _free_row(blk, e, a, b):
+    """True when no tile of column e is blocked over rows a..b (inclusive); outside the map blocks."""
+    if not (0 <= e < 100) or a < 0 or b > 99: return False if a <= b else True
+    for t in range(a, b + 1):
+        if blk[t * 100 + e]: return False
+    return True
+
+
+def _free_col(blk, e, a, b):
+    """The same along a row: no tile of row e blocked over columns a..b."""
+    if not (0 <= e < 100) or a < 0 or b > 99: return False if a <= b else True
+    base = e * 100
+    for t in range(a, b + 1):
+        if blk[base + t]: return False
+    return True
+
+
 def can_x(m, x, z, d, r):                              # checkMapCollisionZ
     e = col(x + d * r)
     return not any(blocked(m, e, t) for t in range(row(z + r // 2), row(z - r // 2) + 1))
@@ -33,7 +55,18 @@ def reach(m, starts=None, r=100, step=10, *, seed_policy="used_free_arrivals", f
     """
     # map.c entityCheckEntityCollision/entityIsInEntity: inclusive AABB overlap.
     # Footprints are (x, z, model radius) for visible, living stationary NPCs.
+    blk = _table(m)
+    boxes = set()                                       # the lattice points inside some footprint's box, made once
+    exact = all(isinstance(v, int) for fp in footprints for v in fp)
+    for nx, nz, nr in footprints:
+        if not exact: break
+        lim = r + nr
+        for bx in range(-(-(nx - lim) // step) * step, nx + lim + 1, step):
+            for bz in range(-(-(nz - lim) // step) * step, nz + lim + 1, step):
+                boxes.add((bx, bz))
+
     def entity_blocked(x, z):
+        if exact: return (x, z) in boxes
         return any(abs(x - nx) <= r + nr and abs(z - nz) <= r + nr
                    for nx, nz, nr in footprints)
 
@@ -53,8 +86,8 @@ def reach(m, starts=None, r=100, step=10, *, seed_policy="used_free_arrivals", f
             n = (x + dx * step, z + dz * step)
             if n in seen or not (-5000 <= n[0] < 5000 and -5000 <= n[1] < 5000): continue
             if entity_blocked(*n): continue
-            if dx and not can_x(m, x, z, dx, r): continue
-            if dz and not can_z(m, x, z, dz, r): continue
+            if dx and not _free_row(blk, col(x + dx * r), row(z + r // 2), row(z - r // 2)): continue
+            if dz and not _free_col(blk, row(z + dz * r), col(x - r // 2), col(x + r // 2)): continue
             seen.add(n); q.append(n)
     return seen
 
@@ -76,9 +109,11 @@ def _moves():
     return _MOVES
 
 
-def _step_ok(m, x, z, dx, dz, r=100):
+def _step_ok(m, x, z, dx, dz, r=100, blk=None):
     """map.c checkMapCollision for a step that ends at (x, z): only the destination's leading edges, by the step's signs."""
-    return (not dx or _edge_x(m, x, z, dx, r)) and (not dz or _edge_z(m, x, z, dz, r))
+    if blk is None: blk = _table(m)
+    return ((not dx or _free_row(blk, col(x + r if dx > 0 else x - r), row(z + r // 2), row(z - r // 2)))
+            and (not dz or _free_col(blk, row(z + r if dz > 0 else z - r), col(x - r // 2), col(x + r // 2))))
 
 
 def _edge_x(m, x, z, dx, r):
@@ -91,15 +126,16 @@ def _edge_z(m, x, z, dz, r):
     return not any(blocked(m, t, e) for t in range(col(x - r // 2), col(x + r // 2) + 1))
 
 
-def dead_points(m, tx, tz, r=100, lattice=5):
+def dead_points(m, tx, tz, r=100, lattice=5, blk=None):
     """Points of free tile (tx, tz) where no step in any of 32 directions is allowed: a tamer standing there can never
     move again (walking a strip one tile wide between two props leaves him in one)."""
     out = []
+    if blk is None: blk = _table(m)
     x0, z0 = (tx - 50) * 100, (49 - tz) * 100
     for x in range(x0, x0 + 100, lattice):
         for z in range(z0, z0 + 100, lattice):
             if (col(x), row(z)) != (tx, tz): continue
-            if not any(_step_ok(m, x + mx, z + mz, mx, mz, r) for mx, mz in _moves()):
+            if not any(_step_ok(m, x + mx, z + mz, mx, mz, r, blk) for mx, mz in _moves()):
                 out.append((x, z))
     return out
 
@@ -112,12 +148,13 @@ def trap_tiles(m, reached=None):
     it, and a script trigger is the script's business."""
     if reached is None: reached = reach(m)
     visited = {(col(x), row(z)) for x, z in reached}
+    blk = _table(m)
     out = []
     for tz in range(100):
         for tx in range(100):
             if m.collision[tz * 100 + tx] != 0 or (tx, tz) in visited: continue
             if all(not blocked(m, tx + a, tz + b) for a in range(-2, 3) for b in range(-2, 3)): continue
-            if dead_points(m, tx, tz): out.append((tx, tz))
+            if dead_points(m, tx, tz, blk=blk): out.append((tx, tz))
     return out
 
 

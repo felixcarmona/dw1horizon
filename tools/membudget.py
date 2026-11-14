@@ -97,7 +97,7 @@ def model_file(t):
     """CHDAT/MMDn/NAME.MMD of Digimon type t: the model name of its species file (content/species `model.name`, the name the
     executable's table holds; any release's disc has the same files)."""
     if not _MODELS:
-        _MODELS.update({i: (s.get('model') or {}).get('name') for i, s in _species.load_content().items()} if _species else {})
+        _MODELS.update({i: (s.get('model') or {}).get('name') for i, s in _species.load_content(shared=True).items()} if _species else {})
     name = _MODELS.get(t)
     if not name:
         raise ValueError(f'species {t}: no species file with a model.name (content/species): its model cannot be measured')
@@ -707,12 +707,16 @@ def setup_paths(text, screen, hour=None):
     return sorted(set(paths))
 
 
+_TWIN_SOURCES = {}     # species id -> its `_npc_original` (the content folders' twin species; cleared by configure)
+
+
 @lru_cache(None)
 def npc_twin_types(archive):
     """Field model identities present in this target archive; legacy builds keep theirs."""
     _, rows, _ = archive_models(archive)
-    return {s['_npc_original']: t for t, s in _species.load_content().items()
-            if '_npc_original' in s and t < len(rows) and rows[t]['modelSize']}
+    if not _TWIN_SOURCES and _species:      # (one read of the content folders, not one per archive)
+        _TWIN_SOURCES.update({t: s['_npc_original'] for t, s in _species.load_content(shared=True).items() if '_npc_original' in s})
+    return {orig: t for t, orig in _TWIN_SOURCES.items() if t < len(rows) and rows[t]['modelSize']}
 
 
 def path_cost(loads, sets):
@@ -762,6 +766,7 @@ def configure(env=None, partner_mmd_max=None, heap_map=None):
     TARGET_FACTS = json.load(open(path)) if path else {}
     NPC_STAGE_MAX = TARGET_FACTS.get('npc_stage_max') or 0
     npc_twin_types.cache_clear()
+    _TWIN_SOURCES.clear()
     model_data.cache_clear()
     model_block.cache_clear()
     _MODEL_SIZES.clear()
