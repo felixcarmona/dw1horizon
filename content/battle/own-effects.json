@@ -81,5 +81,13 @@
     "hit": [[1, "EFFESD/MESD7100.BIN", "EFFESD/AESD7100.BIN"]],
     "scale": 0.31,
     "hit_scale": 0.1
+  },
+  "132": {
+    "name": "Fire Blast",
+    "stands_for": 112,
+    "cast": [[1, "EFFEFA/MEFA0900.BIN", "EFFEFA/AEFA0900.BIN"], [2, "EFFEFA/MEFA1000.BIN", "EFFEFA/AEFA1000.BIN"]],
+    "hit": [[2, "EFFEFD/MEFD0400.BIN", "EFFEFD/AEFD0400.BIN"]],
+    "scale": 0.246,
+    "hit_scale": 0.1
   }
 }

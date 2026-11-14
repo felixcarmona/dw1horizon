@@ -10,6 +10,7 @@
                  "Megaton Punch", "Muscle Charge", "War Cry", "Sonic Jab", "Nightmare Syndromer"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 60,
+  "own_effect": {"technique": "High Electro Shocker", "chunk": 132},
   "model": {
     "file": "build/sizes-out/models/DarkTyrannomon.MMD",
     "radius": 286,
