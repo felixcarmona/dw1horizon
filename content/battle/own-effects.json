@@ -193,5 +193,13 @@
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.329,
     "hit_scale": 0.1
+  },
+  "146": {
+    "name": "Hyper Heat",
+    "stands_for": 63,
+    "cast": [[1, "EFFEBA/MEBA0600.BIN", "EFFEBA/AEBA0600.BIN"], [2, "EFFEBA/MEBA0700.BIN", "EFFEBA/AEBA0700.BIN"]],
+    "hit": [[2, "EFFEFD/MEFD0400.BIN", "EFFEFD/AEFD0400.BIN"]],
+    "scale": 0.209,
+    "hit_scale": 0.1
   }
 }
