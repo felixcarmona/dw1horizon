@@ -1,0 +1,297 @@
+# Unique finishers for the imported species
+
+Every imported species gets its own finisher: its own name, behaviour, element, status and
+look, taken from its signature attack in the game it comes from. The battle still uses the
+finisher id the species has today (58..112), so saves, menus and the technique tables keep
+working. Only the numbers the battle reads and the name the player sees change, per species.
+
+- Data: `content/finishers/imports.json`, one entry per imported species (179 entries: the 178
+  imports plus MetalGreymonVaccine, the recoloured native that borrowed MetalGreymon's finisher).
+- Check: `python3 -m tools.finisher_balance` (table and problems, exit 1 on a problem) and
+  `python3 -m unittest tools.test_finisher_balance` (in `tools/selftest.sh`).
+- Effects: the visual effect of each finisher is the species JSON `own_effect`
+  (`docs/mods/signature-effects.md`); this file decides what the finisher does.
+
+Status: design data. The runtime part (record bytes, `modSpeciesMove` hook, names) is not built
+yet; see "What the engine change touches".
+
+## Rules the data follows
+
+1. **Same behaviour as the source.** Kind (shot, beam, breath, dash, melee, area...), target,
+   hit pattern and status come from the source attack. Digimon World 2 entries use the decoded
+   skill record (element nibble, target, cast clip, status flags). Digital Card Battle attacks
+   always hit the one opponent, so they are single target. Digimon World 2003 attacks are not
+   decoded yet; their kind follows the canon attack.
+2. **DW1 power, not source power.** Power sits inside the DW1 finisher band of the species'
+   level. Inside the band the entry's place follows its source power's rank among same-game,
+   same-level signatures (middle of the band when there is no source number).
+3. **Element is one of the species' specialties.** The source element is used when it is one
+   of them; otherwise the closest specialty (electric and sound are Air in DW1).
+4. **Area costs power.** An attack that hits every enemy takes the band floor.
+5. **Status costs power.** An entry with a status is capped at the band middle, chance at most
+   20 %. Statuses come only from a decoded source status or a name that clearly implies one.
+6. **Support moves become buffs** (power 0), with a damaging fallback for as long as the engine
+   cannot apply a buff from data. Buff total at most 70 % (Full Potential gives 55 %), heal at
+   most 25 %.
+7. **Unique names.** No name repeats, and no name equals a DW1 technique name or a name players
+   see in `text/ours/names.json` (`main.MOVE_NAMES.*`). Every English name fits the 136-pixel
+   finisher field in all three fonts (widest: Transcendent Sword, 109 px).
+8. **No economy effect.** A finisher deals damage, applies a status or a buff. None gives bits,
+   items or merit, so there is no repeatable bits-for-bits loop (`docs/mods/balance.md`, economy
+   rule; `tools/economy_audit.py` is not affected).
+
+### Bands
+
+From `content/tables/species-mode-balance.json` (`bands.*.finisher_power`):
+
+| Level | Finisher power | Offense used by the check |
+|---|---|---|
+| Rookie | 85..101 | 72.5 |
+| Champion | 130..196 (100 is only the filth Party Time) | 175 |
+| Ultimate | 196..260 | 600 |
+| Mega | 250..260 | 650 |
+
+The Champion-level finishers the Rookie imports carried until now (decision of 2026-11-03,
+"until an effect fits the model") are replaced by Rookie-band power, because every entry here
+comes with its own effect. This is one of the owner decisions in the summary.
+
+## The check: expected damage
+
+`tools/finisher_balance.py` scores every finisher with the battle formula
+(`docs/reference/combat.md`): `(Off + P) * m / 30`, where Off is the middle of the level's
+offense band and `m` is the type factor (`content/tables/type-factors.json`) averaged over every
+species' three specialties. A status multiplies by `1 + chance * weight` (poison and confusion
+0.15, stun and flatten 0.25); an area hit counts 1.3 times. The score of each import must lie
+inside the score range of the same-level native finishers that sit inside the band, with 10 %
+slack. It also checks the band, the area floor, the status cap, the buff cap, the element,
+range and distance per kind, and the names.
+
+### Imports against same-level natives
+
+Expected damage (min / median / max). Natives with mode scalars use their scalar power.
+
+| Level | Natives in band | Native power | Native score | Imports | Import power | Import score |
+|---|---|---|---|---|---|---|
+| Rookie | 22 | 85..101 | 159 / 172 / 193 | 25 (+1 buff) | 86..100 | 161 / 170 / 184 |
+| Champion | 51 | 130..196 | 324 / 339 / 372 | 58 | 130..195 | 313 / 357 / 406 |
+| Ultimate | 31 | 200..260 | 808 / 884 / 1061 | 46 (+1 buff) | 196..258 | 814 / 899 / 1153 |
+| Mega | 6 | 250..260 | 885 / 982 / 1197 | 47 (+1 buff) | 250..260 | 889 / 981 / 1274 |
+
+The import maxima above the native maxima are Air and Mech single-target finishers: Air hits
+three of the seven specialties hard, and the natives have few Air finishers at those levels.
+They stay within the 10 % slack.
+
+Natives outside their band (left as they are, listed for reference): Goblimon and Gotsumon
+Pummel Whack 170 and Psychemon Drill Spin 150 (Rookie); Guardromon Deadly Bomb 260 and the
+Party Time line at 100 (Champion); MasterTyrannomon Blaze Blast 174, Myotismon Death Claw 180
+and ShogunGekomon Blasting Spout 150 (Ultimate).
+
+## Entry format
+
+```json
+{
+ "species": 264, "species_name": "Raremon", "level": "champion",
+ "name": "Buffalo Breath",
+ "source": {"game": "dw2", "basis": "disc", "name": "Buffalo Breath", "power": 45,
+            "dw2_element": "darkness", "dw2_target": "one enemy",
+            "description": "Confuses foe in Counter", "cast_clip": "F0",
+            "status_flags": "0x400", "voice_xa": [3230, 3]},
+ "replaces": {"id": 62, "name": "Death Claw"},
+ "behavior": {"kind": "breath", "target": "one", "hits": 1, "look": "A foul green breath.",
+              "dash": false, "clip": "F0"},
+ "effect": {"files": ["EFFECT/EFFEWA/MEWA0300.BIN", "..."], "file_ids": [967, 929, 970, 932],
+            "logic": "...", "status": "source", "template": {"id": 62, "name": "Death Claw"}},
+ "move": {"power": 163, "element": "filth", "range": 2, "distance": 90000, "accuracy": 100,
+          "status": 2, "statusChance": 20, "iframes": 15, "flags": ["T"], "mpCost": 40},
+ "notes": "Source confuses."
+}
+```
+
+| Field | Meaning |
+|---|---|
+| `species`, `species_name`, `level` | The species and its level (must match `content/species`). |
+| `name` | The finisher name players see. Goes to the text banks as `species.<id>.finisher`. |
+| `source.game` | `dcb` (Digital Card Battle), `dw2`, `dw3` (Digimon World 2003), `dw1` (recolour). |
+| `source.basis` | `disc`: decoded from the source disc. `canon`: the species' attack in the series, not on these discs. `proposed`: no canon attack found; name and behaviour proposed. |
+| `source.*` | The raw source data: name as the disc spells it, power, and for DW2 the decoded element, target, description, cast clip, status flags and voice. |
+| `replaces` | The finisher id the species uses today. It stays the id in saves and menus. |
+| `behavior.kind` | `shot`, `thrown`, `rain` (several projectiles from above or in a volley), `breath`, `beam`, `dash` (the attacker travels), `melee`, `area` (every enemy), `buff`. |
+| `behavior.target` | `one`, `all`, `random` (Blind Attack, like Nightmare Syndromer), `self`. |
+| `behavior.hits` | Hits the effect shows. Damage is applied once, as for every DW1 finisher. |
+| `behavior.look` | What the effect shows, in words, for whoever builds it. |
+| `behavior.clip` | The attack clip: DW2 cast slot (`F0`, `G0`, `H0`) or `by eye`. |
+| `effect.status` | `source`: the source effect files are known (DW2 files, DCB `E.DRV` pack). `source-undecoded`: a DW2003 signature whose effect mapping is not decoded yet. `dw1-template`: no source effect; build it from DW1 effects, starting from `effect.template`. |
+| `effect.files`, `file_ids`, `file`, `shared_by_cards` | Where the source effect lives; for DCB, how many other cards share the pack. |
+| `move` | What the battle reads, field by field as in `content/techniques/*.json`. `range` 1 melee, 2 ranged (including dashes), 3 area, 4 buff. `distance` is squared. `flags` `T` = needs a target. Accuracy is always 100 and the stored cost 40: finishers use the gauge. |
+| `buff`, `fallback` | Only for the three support moves; see below. |
+| `notes` | Spelling fixes, status proxies, open questions. |
+
+Kind decides range, distance and iframes:
+
+| Kind | Range | Distance (squared) | Iframes |
+|---|---|---|---|
+| shot, thrown | 2 | 360000 (600) | 1 |
+| rain | 2 | 360000 | 15 |
+| breath | 2 | 90000 (300, as Mega Flame) | 15 |
+| beam | 2 | 640000 (800) | 1 |
+| dash | 2 | 160000 (400) | 1 |
+| melee | 1 | 0 | 1 |
+| area | 3 | 160000 (as Dark Network) | 1 |
+| buff | 4 | 0 | 1 |
+
+## Where the numbers come from (179 entries)
+
+| | Count |
+|---|---|
+| Source decoded from the disc | 145 (79 DCB, 43 DW2, 23 DW2003) |
+| Canon attack, not on the discs | 17 |
+| Proposed (no canon attack found) | 17 |
+| Effect from the source files | 122 |
+| Effect still to decode (DW2003) | 23 |
+| Effect to build from DW1 templates | 34 |
+
+Kinds: 39 shot, 36 dash, 36 beam, 21 area, 14 thrown, 13 rain, 11 melee, 6 breath, 3 buff.
+
+The 37 species without a distinct source signature (DW2003 enemy-only species, plus
+BlackGatomon, whose card shares Lightning Paw with Gatomon) have `basis` `canon` or `proposed`.
+Lightning Paw stays with Gatomon; BlackGatomon takes its own card's third attack, Cat's Eyes.
+
+### Support moves
+
+| Species | Source | Buff | Fallback |
+|---|---|---|---|
+| Baihumon | Kongou: unbeatable during its own turn | Defense +50 %, Offense +10 % | dash, Battle, 255 |
+| Mushroomon | Fungus Cruncher: its attacks poison | Offense +10 %, Speed +10 %, its hits poison at 15 % | spore shot, Nature, 93, poison 20 % |
+| Tinmon | Recovery Power: cures confusion, poison, stun | Cures them, heals 20 % of max HP, Defense +15 % | beam, Ice, 228 |
+
+DW1 applies buffs by technique id (`BTL_applyBuffMove` switches on the id), so a buff
+finisher needs a small engine change: read the buff numbers from the record instead. Until
+it is built the fallback is what ships. The poison-on-hit part needs one more check in the hit
+path; the owner may drop it.
+
+## Data model: per-species override on the existing id
+
+Chosen with the effects work (option B): no new technique ids. Finisher ids are 58..112 and
+every slot is spoken for (110 Glacial Blast is an empty entry, 107 and 108 are a duplicate
+Party Time, but taking them would change what those ids mean in saves and tables). The
+override lives in the species record in `DIGI.DAT` (`tools/species.py`, 0x200 bytes):
+
+| Offset | Type | Field |
+|---|---|---|
+| 0x1CF | u8 | `own_effect` technique (effects work) |
+| 0x1D0 | i16 | `own_effect` chunk (effects work) |
+| 0x1D2 | u16 | power |
+| 0x1D4 | u8 | element |
+| 0x1D5 | u8 | status |
+| 0x1D6 | u8 | status chance |
+| 0x1D7 | u8 | range |
+| 0x1D8 | u8 | iframes |
+| 0x1D9 | u8 | flags: bit0 present, bit1 needs target, bit2 buff |
+| 0x1DA | u8 | accuracy |
+| 0x1DB | u8 | hits (shown only) |
+| 0x1DC | i32 | distance (squared) |
+| 0x1E0 | u16 | name reference |
+
+0x1E2..0x1FF stays free (buff numbers fit there: Offense, Defense, Speed, heal, on-hit status
+and chance, one byte each).
+
+### Reading it in battle
+
+`modSpeciesMove(type, move)` (patch `Apply-species-mode-moves-and-finisher-scalars.patch`)
+already returns a per-species copy of a move and is called by the MP check, the charge
+requirement, the move setup cost, the menus, the STD damage and charge paths and VS. For a
+finisher id of an imported species with the present flag, it copies the override over that
+copy. The natives' mode scalars stay as they are and take precedence for natives (imports have
+no scalar rows: they stop at `NUM_ORIGINAL_DIGIMON`).
+
+Places in `battle_main.c` that still read `MOVE_DATA` directly and must go through
+`modSpeciesMove` for the override to show everywhere: AI launch distance; hit chance
+(accuracy); damage power and element (the patch already moves these); the particle effect
+call (element, iframes); the invulnerability timer (iframes); the melee counter and block
+checks (range 1); the buff path (range 4); the needs-target and lock flags; the speed buffer;
+the AI scores; and `BTL_applyMoveStatus` (status, chance).
+
+Records are read through `getSpeciesRecord`, a 16-slot cache that can miss and read a CD
+sector. To keep that out of the battle tick, battle load copies the override of each fighter
+(at most four, 16 bytes each) into a small resident table, as `SPECIES_MOVE_BALANCE` does.
+
+### Names and translations
+
+The name is a text-bank entry, `species.<id>.finisher`, in `text/ours/names.json` and every
+`text/<language>/names.json`. Battle load copies the fighters' names into a four-slot scratch
+(about 100 bytes). Menus that show a finisher name ask for the species' name first and fall
+back to `MOVE_NAMES`. Every language translates `MOVE_NAMES`, so these 179 names need the same:
+translating them into all eight banks is a follow-up, and
+`python3 -m tools.localize.ui --json build/ui-widths.json` must then also measure the new keys
+against the 136-pixel finisher field.
+
+### NEW DIGIMON off
+
+With NEW DIGIMON off an imported species shows as its `vanilla_as` native, which has no
+override: its finisher is the native one. Nothing to do.
+
+### What the engine change touches
+
+| Area | Effect |
+|---|---|
+| Saves | None. The finisher keeps its id and its slot in the move list. |
+| Menus | Name and power of a finisher come from the species (status, evolution and Brains screens). |
+| Origin and effect tables (`effects_like`) | Unchanged. |
+| Species record | 0x1D2..0x1E1 written by `tools/species.py` from this file. |
+| Main executable | About 160 bytes of code plus 64 bytes of table and 100 of names (estimate; measure `main_BSS_END` per the heap rule). |
+| Free ids | None needed. |
+
+## How it plugs into the effects and Buster Dive
+
+- The effect of a finisher is the species JSON `own_effect` on `replaces.id`, for example
+  SkullMeramon's Metal Fireball: `own_effect` chunk 122 on Mega Flame (63); Raremon's Buffalo
+  Breath on Death Claw (62). This file adds what the move does: Metal Fireball hits every enemy
+  (DW2 target "all enemies"), so it becomes an area finisher at the Ultimate floor; Buffalo
+  Breath turns Death Claw's melee into a 300-unit breath with confusion.
+- Dash finishers (36 entries, `behavior.dash`) need the attacker to travel. The Buster Dive
+  pass (`tools/models/buster_dive.py`, `docs/mods/buster-dive.md`) already copies a native dash
+  root track into a technique clip when the clip's own travel is under 500. The same pass can
+  run on the finisher clip (slot 0x2E plus the finisher's index) with a reviewed recipe key
+  such as `finisher_clip` in the imports registry, under the same resident (100352 bytes) and
+  streamed (8192 bytes) buffer checks.
+- For DW2 entries, `behavior.clip` names the source attack clip (cast 0, 1, 2 = F0, G0, H0).
+
+## Natives that share a finisher
+
+Left as they are. Fifteen of them already differ in power through mode scalars, and changing a
+native finisher would change the original game.
+
+| Id | Finisher | Natives |
+|---|---|---|
+| 58 | Blaze Blast | MasterTyrannomon, Tyrannomon |
+| 59 | Pepper Breath | Agumon, ClearAgumon, ToyAgumon |
+| 60 | Lovely Attack | Monzaemon, WaruMonzaemon |
+| 61 | Fireball | Flarerizamon, Meramon, Meteormon |
+| 62 | Death Claw | Devimon, IceDevimon, Myotismon |
+| 66 | Electric Shock | Betamon, ModokiBetamon |
+| 71 | Boom Bubble | Patamon, Tsukaimon |
+| 73 | Bit Bomb | Cherrymon, Piximon |
+| 74 | Deadly Bomb | Giromon, Guardromon |
+| 75 | Drill Spin | Drimogemon, MoriShellmon, Psychemon |
+| 76 | Electric Thread | Dokunemon, Kunemon |
+| 78 | Genocide Attack | Gigadramon, Megadramon |
+| 81 | Pummel Whack | Fugamon, Goblimon, Golemon, Gotsumon, Jijimon, Ogremon |
+| 82 | Hand of Fate | Angemon, Piddomon |
+| 83 | Dark Claw | Bakemon, Soulmon |
+| 86 | Solar Ray | Centarumon, Yanmamon |
+| 87 | Hydro Pressure | Gekomon, Shellmon |
+| 88 | Ice Blast | BlueMeramon, Gururumon, Seadramon |
+| 90 | Blasting Spout | ShogunGekomon, Whamon |
+| 92 | Love Serenade | Etemon, MetalEtemon |
+| 93 | Electro Shocker | HerculesKabuterimon, Kabuterimon |
+| 94 | Meteor Wing | Birdramon, Saberdramon |
+| 95 | Super Slap | Muchomon, Otamamon, Penguinmon, SnowAgumon |
+| 102 | Spiral Sword | Analogman, Andromon, Tekkamon |
+| 104 | Volcanic Strike | Monochromon, Tankmon, Vermilimon |
+| 105 | Subzero Ice Punch | Frigimon, Hyogamon, Icemon |
+| 107 | Party Time | Nanimon, Numemon, Sukamon |
+| 111 | Maelstrom | MegaSeadramon, WaruSeadramon |
+
+Most pairs are canon: the series gives these species the same attack (Agumon's line, the
+Gekomon line, Andromon and its kin). The same override could later give a native its own
+finisher if wanted.

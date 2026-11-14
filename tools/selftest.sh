@@ -85,6 +85,7 @@ run caption-translations $PY -m tools.localize.captions
 run caption-translation-tests $PY -m unittest tools.test_caption_translations
 run technique-timing-tests $PY -m unittest tools.test_technique_timing
 run buster-dive-tests $PY -m unittest tools.test_buster_dive
+run finisher-balance-tests $PY -m unittest tools.test_finisher_balance
 run patch-series-tests $PY tools/test_patch_series.py
 if [ -f "$PATCHED/src/main/main_menu.c" ]; then
     run training-bonus-host $PY tools/dev/playtest/training_bonus_host.py "$PATCHED"
