@@ -234,7 +234,10 @@ means no part flies to the target on its own: the effect plays as on the disc an
 | 433 | Guilmon | Pyrosphere | 100 | 1 | 11 | 445 | MEFT0102 + 5 sprites | 4384 B, id 222, melee, faithful | Pyrosphere (shot, 1 hit) |
 Of the 56 imported species, 55 have a technique script; Kurisarimon has none. 27 techniques have a 3D effect.
 Each converts into one chunk, for its whole length; 26 pass the fidelity check. The sizes are the builds
-the game uses: gameplay-neutral, one enemy and one hit, as the finisher each stands for. The largest whole one,
+the game uses: gameplay-neutral, one enemy and one hit, as the finisher each stands for. Twenty of them ship
+(the [signature attacks](signature-attacks.md)): Dokugumon, KingEtemon, Lynxmon and Armageddemon (unnamed
+slot-5 attacks) and Mummymon and Ghoulmon (the second species of a shared attack) keep their composed effects,
+and their ids stay empty. The largest whole one,
 Cannondramon's, is 18 900 bytes of the 20 480 a chunk holds. Sakuyamon's leaves five small parts out (below).
 Gargoylemon's Dark Matter fails on timing alone (its coverage curve correlates 0.69): short flashes that this
 game's 20 Hz engine cannot place on the original's 30 fps frames. The conversion is kept out, and the species
