@@ -382,6 +382,16 @@ def flips_of(effect):
     return out
 
 
+def flipbook_of(flips, box):
+    """The flipbook destination a prim's UV box lies in, or None. A prim need not use its whole destination
+    (Pretty Attack's blue squares stop a row short of it), and the texels it shows are the flipbook's frames, not
+    what the destination holds before the first copy."""
+    for dst in flips:
+        if dst[0] <= box[0] and dst[1] <= box[1] and box[2] <= dst[2] and box[3] <= dst[3]:
+            return dst
+    return None
+
+
 def flip_ticks(m):
     """Engine ticks per flipbook frame (a DW2 frame lasts two 60 Hz ticks with a period, else eight)."""
     return max(1, round((2 if m.period else 8) / 3))
@@ -501,7 +511,7 @@ def build(objs, step=1, quant=1):
                 if k in seen:                # the same face twice
                     continue
                 seen.add(k)
-                rect = blocks_of(e, uv_box(p))
+                rect = flipbook_of(flips, uv_box(p)) or blocks_of(e, uv_box(p))
                 if invisible(e, p, rect, flips[rect][0] if rect in flips else (rect,)):
                     continue
                 if rect in flips:

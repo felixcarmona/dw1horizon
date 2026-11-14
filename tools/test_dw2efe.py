@@ -205,6 +205,16 @@ class Convert(unittest.TestCase):
         offsets = {d[5] for d in sim.draws if d[1] == 0}
         self.assertGreater(len(offsets), 1)
 
+    def test_flipbook_used_in_part(self):
+        # the ring's quad stops a row short of the flipbook's destination (8..15): it still shows the frames,
+        # not what the destination holds before the first copy
+        move = D.TexMove((0, 8), (2, 8), [(2, 0), (4, 0), (6, 0)], 2, 2)
+        ring = [D.Prim((0, 1, 2, 3), ((0, 8), (7, 8), (0, 14), (7, 14)), 255 << 6, 1)]
+        chunk, info = C.convert_skill([(1, cast(ring_prims=ring, moves=[move]))], [], TABLE, 0x17A, 0.5)
+        self.assertEqual(info['flipbooks'], 1)
+        sim = play(chunk)
+        self.assertGreater(len({d[5] for d in sim.draws if d[1] == 0}), 1)
+
     def test_gradient_palette_made_blending(self):
         # a palette with no transparent and no blending colour: colour 0 turns transparent, the others blend
         image = [[0x5c00 + i for i in range(16)] + [0] * 16]
