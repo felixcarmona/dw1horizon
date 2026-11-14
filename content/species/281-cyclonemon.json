@@ -10,7 +10,7 @@
                  "Megaton Punch", "Muscle Charge", "War Cry", "Sonic Jab", "Fireball"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 49,
-  "own_effect": {"technique": "Mega Flame", "chunk": 146},
+  "own_effect": {"technique": "Fireball", "chunk": 146},
   "model": {
     "file": "build/sizes-out/models/Cyclonemon.MMD",
     "radius": 217,

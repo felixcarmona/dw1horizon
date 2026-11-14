@@ -10,7 +10,7 @@
                  "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Genoside Attack"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 40,
-  "own_effect": {"technique": "Deadly Bomb", "chunk": 155},
+  "own_effect": {"technique": "Genoside Attack", "chunk": 155},
   "model": {
     "file": "build/sizes-out/models/Clockmon.MMD",
     "radius": 180,

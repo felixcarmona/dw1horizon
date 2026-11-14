@@ -21,7 +21,7 @@ the moment the attack starts.
 | 260 MetalTyrannomon | Fire Blast II (DW2) | Deadly Bomb | projectile: fires an organic missile from the arm | 1 | flies at tick 37, hits on contact (tick 38 at 2,700 units) | flies to the target (scale 0.205) | one enemy, as for Deadly Bomb | one enemy |
 | 261 Tortomon | Strong Carapace (DW2) | Iga School Knife Throw | projectile: shoots the horns of its shell at every enemy | 1 | flies at tick 29, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.241) | one enemy, as for Iga School Knife Throw | all enemies, 3 hits |
 | 262 Flymon | Brown Stinger (DW2) | Spnning Needle | projectile: shoots poisoned needles | 1 | flies at tick 30, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.31) | one enemy, as for Spnning Needle | one enemy, 3 hits |
-| 265 DarkTyrannomon | Fire Blast (DW2) | High Electro Shocker | at the target: sweeps a stream of flame over every enemy | 1 | plays at the target, hits at tick 40 | none (scale 0.246) | one enemy, as for High Electro Shocker | all enemies |
+| 265 DarkTyrannomon | Fire Blast (DW2) | Nightmare Syndromer | at the target: sweeps a stream of flame over every enemy | 1 | plays at the target, hits at tick 40 | none (scale 0.246) | one enemy, as for Nightmare Syndromer | all enemies |
 | 266 ExTyrannomon | Pretty Attack (DW2) | Lovely Attack | projectile: blows a heart kiss | 1 | flies at tick 20, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.287) | one enemy, as for Lovely Attack | one enemy |
 | 267 Mammothmon | Tusk Crusher (DW2) | Mail Strome | at the target: charges tusks first | 1 | plays at the target, hits at tick 40 | none (scale 0.294) | one enemy, as for Mail Strome | one enemy |
 | 268 SkullMammothmon | S-Bone Crusher (DW2) | Mail Strome | projectile: a spinning bone hits every enemy | 1 | flies at tick 30, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.256) | one enemy, as for Mail Strome | all enemies |
@@ -34,8 +34,8 @@ the moment the attack starts.
 | 275 Scorpiomon | Tail Blade (DW2) | Mail Strome | projectile: lunges with its tail blade | 1 | flies at tick 27, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.311) | one enemy, as for Mail Strome | one enemy |
 | 278 Octomon | Spurting Ink (DW2) | Hydro Pressure | projectile: fires black ink shots | 1 | flies at tick 30, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.284) | one enemy, as for Hydro Pressure | one enemy, 3 hits |
 | 279 MarineDevimon | Evil Wind (DW2) | Death Claw | projectile: a dark gust over every enemy | 1 | flies at tick 29, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.182) | one enemy, as for Death Claw | all enemies |
-| 280 Pumpkinmon | Trick or Treat (DW2) | High Electro Shocker | projectile: pumpkin bombs over every enemy | 1 | flies at tick 20, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.329) | one enemy, as for High Electro Shocker | all enemies |
-| 281 Cyclonemon | Hyper Heat (DW2) | Mega Flame | at the target: a super-hot blast from its arm | 1 | plays at the target, hits at tick 40 | none (scale 0.209) | one enemy, as for Mega Flame | one enemy |
+| 280 Pumpkinmon | Trick or Treat (DW2) | Fireball | projectile: pumpkin bombs over every enemy | 1 | flies at tick 20, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.329) | one enemy, as for Fireball | all enemies |
+| 281 Cyclonemon | Hyper Heat (DW2) | Fireball | at the target: a super-hot blast from its arm | 1 | plays at the target, hits at tick 40 | none (scale 0.209) | one enemy, as for Fireball | one enemy |
 | 282 Kiwimon | Pummel Peck (DW2) | Sweet Breath | volley: sends a mini Kiwimon running at the target | 1 | flies at tick 29, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.203) | one enemy, as for Sweet Breath | one enemy |
 | 283 Syakomon | Pearl Shot (DW2) | Blasting Spout | projectile: fires a pearl from its shell | 1 | flies at tick 29, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.179) | one enemy, as for Blasting Spout | one enemy |
 | 284 Crabmon | Scissor Magic (DW2) | Scissor Claw | at the target: a double snip of the claws | 1 | plays at the target, hits at tick 40 | none (scale 0.391) | one enemy, as for Scissor Claw | one enemy, 2 hits |
@@ -44,7 +44,7 @@ the moment the attack starts.
 | 287 Tapirmon | Waking Dream (DW2) | Solar Ray | at the target: a cloud of nightmare smoke | 1 | plays at the target, hits at tick 40 | none (scale 0.201) | one enemy, as for Solar Ray | one enemy |
 | 288 Boltmon | Tomahawk Crunch (DW2) | Giga Scissor Claw | projectile: throws axes at every enemy | 1 | flies at tick 29, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.258) | one enemy, as for Giga Scissor Claw | all enemies, 2 hits |
 | 289 ChaosLord | Chaos Cannon (DW2) | Energy Bomb | volley: a cannon blast that bursts over the field | 1 | flies at tick 30, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.257) | one enemy, as for Energy Bomb | all enemies |
-| 290 Clockmon | Chrono Breaker (DW2) | Deadly Bomb | at the target: a clock-hand ripple that freezes time | 1 | plays at the target, hits at tick 40 | none (scale 0.244) | one enemy, as for Deadly Bomb | anyone (random) |
+| 290 Clockmon | Chrono Breaker (DW2) | Genoside Attack | at the target: a clock-hand ripple that freezes time | 1 | plays at the target, hits at tick 40 | none (scale 0.244) | one enemy, as for Genoside Attack | anyone (random) |
 | 291 Dragomon | Tentacle Claw (DW2) | Mail Strome | projectile: throws its trident | 1 | flies at tick 29, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.295) | one enemy, as for Mail Strome | one enemy |
 | 292 Deltamon | Triple Forces (DW2) | Mega Flame | projectile: energy bursts from all three heads | 1 | flies at tick 29, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.268) | one enemy, as for Mega Flame | all enemies, 3 hits |
 | 293 Gryphonmon | Legendary Blade (DW2) | Death Claw | at the target: a sonic blade over every enemy | 1 | plays at the target, hits at tick 40 | none (scale 0.282) | one enemy, as for Death Claw | all enemies |
@@ -72,7 +72,7 @@ the moment the attack starts.
   or above the head) and all of them are kept.
 - **Bit Bomb** (Triceramon, Okuwamon) picks its enemy at random; the signature attacks that stand in for it hit the
   enemy the attack was aimed at.
-- **Mega Flame and Electric Shock** (Kimeramon, Cyclonemon, Deltamon, Hagurumon) are streams that can hit more
+- **Mega Flame and Electric Shock** (Kimeramon, Deltamon, Hagurumon) are streams that can hit more
   than once while the target stands in them; the signature attacks that stand in for them hit once.
 - **Close-range finishers.** MarineDevimon (Death Claw) and Gazimon (Poison Ivy) walk up to their target first,
   as for those finishers, so their projectiles fly only a short way.

@@ -84,7 +84,7 @@
   },
   "132": {
     "name": "Fire Blast",
-    "stands_for": 112,
+    "stands_for": 96,
     "cast": [[1, "EFFEFA/MEFA0900.BIN", "EFFEFA/AEFA0900.BIN"], [2, "EFFEFA/MEFA1000.BIN", "EFFEFA/AEFA1000.BIN"]],
     "hit": [[2, "EFFEFD/MEFD0400.BIN", "EFFEFD/AEFD0400.BIN"]],
     "scale": 0.246,
@@ -188,7 +188,7 @@
   },
   "145": {
     "name": "Trick or Treat",
-    "stands_for": 112,
+    "stands_for": 61,
     "cast": [[1, "EFFEMA/MEMA4200.BIN", "EFFEMA/AEMA4200.BIN"], [2, "EFFEMA/MEMA4400.BIN", "EFFEMA/AEMA4400.BIN"]],
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.329,
@@ -196,7 +196,7 @@
   },
   "146": {
     "name": "Hyper Heat",
-    "stands_for": 63,
+    "stands_for": 61,
     "cast": [[1, "EFFEBA/MEBA0600.BIN", "EFFEBA/AEBA0600.BIN"], [2, "EFFEBA/MEBA0700.BIN", "EFFEBA/AEBA0700.BIN"]],
     "hit": [[2, "EFFEFD/MEFD0400.BIN", "EFFEFD/AEFD0400.BIN"]],
     "scale": 0.209,
@@ -268,7 +268,7 @@
   },
   "155": {
     "name": "Chrono Breaker",
-    "stands_for": 74,
+    "stands_for": 78,
     "cast": [[1, "EFFEMA/MEMA5300.BIN", "EFFEMA/AEMA5300.BIN"], [2, "EFFEMA/MEMA5400.BIN", "EFFEMA/AEMA5400.BIN"]],
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.244,
