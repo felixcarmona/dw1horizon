@@ -140,12 +140,18 @@ class HiAndromonNative(unittest.TestCase):
 
     def test_battle_originals(self):
         # the source game's own battle clips, retargeted onto the donor rig (native_battle.py); one-shot clips keep the
-        # length of the donor's clip they replace, since technique effects are timed to it
+        # length of the donor's clip they replace (or the recipe's `ticks`), since technique effects are timed to it;
+        # a slot of `share` plays its leader's clip
         made = self.proof['battle_originals']
-        self.assertEqual(sorted(int(s) for s in made), self.recipe['battle_originals']['slots'])
+        spec = self.recipe['battle_originals']
+        self.assertEqual(sorted(int(s) for s in made), sorted(spec['slots'] + [int(s) for s in spec.get('share', {})]))
         for slot, row in made.items():
             if int(slot) not in (33, 34):
                 self.assertEqual(row['frames'], row['donor_frames'])
+            if str(slot) in spec.get('ticks', {}):
+                self.assertEqual(row['frames'], spec['ticks'][str(slot)])
+            if str(slot) in spec.get('share', {}):
+                self.assertEqual(row['shares'], spec['share'][str(slot)])
 
     def test_the_buffer_holds(self):
         info = motionstorage.require(self.data, BONES)

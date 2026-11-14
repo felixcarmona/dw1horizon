@@ -44,6 +44,29 @@ class NativeBattle(unittest.TestCase):
         with self.assertRaises(ValueError):
             native_battle.compact(b'', 1, {'tol': native_battle.MAX_TOL + 1})
 
+    def test_preserve_field_leaves_the_field_programs_alone(self):
+        from unittest import mock
+
+        class Anim:
+            def __init__(self):
+                self.tail = b'tail'
+
+        class Model:
+            def __init__(self):
+                self.anims = mock.Mock(table=list(range(40)), anims=[Anim() for _ in range(40)])
+
+            def build(self):
+                return b'built'
+
+        model, calls = Model(), []
+        exact = lambda out, nb, tol, slots=None: (calls.append((tol, slots)), (out, {}))[1]
+        with mock.patch.object(native_battle.battle_restore, 'compact', exact), \
+                mock.patch.object(native_battle.mmd.MMD, 'parse', lambda data, nb: model), \
+                mock.patch.object(native_battle.motioncyclelayer, 'share_identical_streams', lambda a, t: (a, t)):
+            native_battle.compact(b'm', 1, {'tol': 0, 'preserve_field': True})
+        self.assertEqual(calls, [(0, set(range(40)) - set(native_battle.FIELD))])
+        self.assertEqual([a.tail for a in model.anims.anims[:6]], [b'tail'] * 5 + [b''])
+
     def test_mirrored_fit_follows_the_twins_bind_poses(self):
         # a mirrored piece's local vertex v is the twin's X.v; its fitted world shape is X.(Q_twin.W_twin.X.v), so the
         # fit from its own source world W_own.v is whatever maps one onto the other, also when the source poses the
@@ -112,6 +135,16 @@ class NativeBattle(unittest.TestCase):
         self.assertEqual(native_battle.scaled_events(ev, 21, 21), ev)
         self.assertEqual(native_battle.scaled_events(ev, 21, 41), [(0, 'sound', 1), (20, 'sound', 2), (39, 'sound', 3)])
         self.assertEqual(native_battle.scaled_events(ev, 21, 11), [(0, 'sound', 1), (5, 'sound', 2), (9, 'sound', 3)])
+
+    def test_a_technique_shares_the_clip_the_source_plays_for_both(self):
+        # `share`: slot 0x2F plays 0x2E's restored program where the source has one program in both slots
+        table = [None] * 46 + [7, 3, 4]
+        source = [None] * 46 + [2, 2, 5]
+        self.assertEqual(native_battle.shared(table, source, {'47': 46}, {46, 48})[46:], [7, 7, 4])
+        self.assertEqual(native_battle.shared(table, source, None, {46}), table)
+        for bad, restored in (({'48': 46}, {46}), ({'47': 46}, {47}), ({'47': 46}, {46, 47})):
+            with self.assertRaises(ValueError):
+                native_battle.shared(table, source, bad, restored)
 
     def test_dropped_npc_slots_are_the_ones_the_scripts_never_ask_a_partner_for(self):
         # `drop_npc_slots` leaves out the tamer's, NPCs' and kart race's clips: none may be a slot the species scripts need

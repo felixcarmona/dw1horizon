@@ -22,7 +22,7 @@ BONES = 26
 BUFFER = 100352
 TICKS = {0: 76, 2: 14, 3: 22, 4: 11}                     # idle, walk, condition walk, run
 SPEEDS = {2: 18.0, 3: 11.0, 4: 44.0}                     # the gait stage's units per tick
-TARGET_SHA256 = 'add5a8e8de038eff31837ba1b7af6941e2437a2d98d90413bc1a8f2515c67f1f'
+TARGET_SHA256 = '55c63e6e31bebf944774ec3df1a90f3a4a6d953e2cc0d69253d3e9371226a3e5'
 
 
 class GarudamonNative(unittest.TestCase):
@@ -147,7 +147,7 @@ class GarudamonNative(unittest.TestCase):
         info = motionstorage.require(self.data, BONES)
         self.assertTrue(info['fits'])
         self.assertLess(info['resident_bytes'], BUFFER)
-        self.assertEqual(info['resident_bytes'], 98920)
+        self.assertEqual(info['resident_bytes'], 99986)
         for read in info['cold_reads']:
             self.assertTrue(read['fits'], read)
 
