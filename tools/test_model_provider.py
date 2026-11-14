@@ -101,6 +101,8 @@ class ModelProvider(unittest.TestCase):
             # PrinceMamemon wears native Mamemon's rig and programs.
             '270': ('270', 'tools.models.field_animations.native_binding', '270-princemamemon-native'),
 
+            # MagnaAngemon's rig is bound offline (its scale lock); this plays its source game's battle clips on it.
+            '206': ('206', 'tools.models.field_animations.bound_battle', '206-magnaangemon-battle'),
             # MetalTyrannomon wears native Tyrannomon's rig and programs.
             '260': ('260', 'tools.models.field_animations.native_binding', '260-metaltyrannomon-native'),
             '187': ('187', 'tools.models.field_animations.followthrough', '187-stingmon-wing-followthrough'),

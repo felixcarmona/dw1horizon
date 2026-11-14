@@ -1,0 +1,43 @@
+{
+  "206": {
+    "name": "MagnaAngemon",
+    "source_sha256": "f4f92ac05ad49560e2682db524a7df12a31b23f2f40ab58702f1fdac28f77eab",
+    "binding": {
+      "spec": "content/imports/specs/MagnaAngemon.json",
+      "sha256": "268c64b6a5b355d9d946dc01f803e7be3d023a2623c97458f07c2930da91e00d"
+    },
+    "battle_source": {
+      "path": "build/native-battle/MagnaAngemon-battle.MMD",
+      "sha256": "73cb4fc924b2fe1edc940c567f62215574dd7e047e78dcef684af452b982f51e"
+    },
+    "mirror": {
+      "13": 19,
+      "14": 20,
+      "15": 21,
+      "16": 22
+    },
+    "leads": {
+      "18": 1
+    },
+    "extra_vertices": [
+      9
+    ],
+    "keep_events": [
+      40,
+      41
+    ],
+    "slots": [
+      33,
+      40,
+      41,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52
+    ],
+    "compact_from": 33
+  }
+}

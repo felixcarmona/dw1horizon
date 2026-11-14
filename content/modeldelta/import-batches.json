@@ -2671,6 +2671,18 @@
       "spec": "content/imports/specs/MagnaAngemon-dw3-mesh.json",
       "spec_sha256": "12997c739eae943e897fd7be4e566e43967fe15a4d8b401d653f113e54199885",
       "out": "build/native-mesh"
+    },
+    {
+      "entry": {
+        "name": "MagnaAngemon-battle",
+        "game": "dw3",
+        "model": "M211HANG",
+        "battle_source": true
+      },
+      "level": 5,
+      "spec": "content/imports/specs/MagnaAngemon-dw3-battle.json",
+      "spec_sha256": "38b6871a9460d6b7b0c1e29268cdb3413ce7cdcf28bf0ffc833f43636df88012",
+      "out": "build/native-battle"
     }
   ]
 }

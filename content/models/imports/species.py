@@ -19,7 +19,8 @@ and texture is checked against the derive species pins.
 import importlib.util, json, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '../../..'))
-# Battle slots 0x21-0x24 stay the source game's own (docs/reference/motion.md): an overlay writes field slots only. Eleven
+# Battle slots 0x21-0x24 stay the source game's own (docs/reference/motion.md): an overlay writes field slots only (but
+# magnaangemon-battle, which gives a model bound offline its source game's battle clips: bound_battle.py). Eleven
 # slots of seven species still play the clip of a field slot (main's), because the source's clip measured worse than
 # main's on the final model (tools/models/battle_qa.py, restored by hand on the overlay's output): Nefertimon 0x23/0x24
 # (vertex steps, under the floor), SaberLeomon 0x22 (crossings), Knightmon 0x24 (torso tipped 27 degrees against main's 8),
@@ -147,6 +148,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'togemon-field': ('208', 'tools.models.field_animations.togemon', '208-togemon-field'),
     'seraphimon-field': ('207', 'tools.models.field_animations.chibi', '207-seraphimon-field'),
     'magnaangemon-field': ('206', 'tools.models.field_animations.celebrations', '206-magnaangemon-field'),
+    'magnaangemon-battle': ('206', 'tools.models.field_animations.bound_battle', '206-magnaangemon-battle'),
     'megakabuterimon-field': ('205', 'tools.models.field_animations.mega_kabuterimon', '205-megakabuterimon-field'),
     'megakabuterimon-native': ('205', 'tools.models.field_animations.native_binding', '205-megakabuterimon-native'),
     'veedramon-field': ('203', 'tools.models.field_animations.gaits', '203-veedramon-field'),
