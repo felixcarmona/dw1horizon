@@ -186,16 +186,16 @@ means no part flies to the target on its own: the effect plays as on the disc an
 | 303 | KingEtemon | (unnamed attack) | 500 | 1 | 5 | 250 | MEFT0324 + 2 sprites | 4800 B, id 202, melee, faithful | Dark Spirits DX (area, 1 hit) |
 | 304 | Divermon | (unnamed attack) | 250 | 1 | 5 | 20 | 1 sprite | 4404 B, id 224, melee, 1 sprites, faithful | Striking Fish (shot, 1 hit) |
 | 305 | Ebidramon | (unnamed attack) | 308 | 1 | 5 | 50 | 2 sprites | 9248 B, id 225, melee, 2 sprites, faithful | Pincer Crusher (melee, 1 hit) |
-| 306 | GrapLeomon | Cyclone Turbine | 500 | 3 | 11 | 408 | 5 sprites | 20108 B, id 226, melee, 7 sprites, 36 of 72 frames, FAILS the check (one round of fixes pending) | Cyclone Turbine (dash, 1 hit) |
+| 306 | GrapLeomon | Cyclone Turbine | 500 | 3 | 11 | 408 | 5 sprites | falls back to template chunk 62 (too large for a chunk: 36 of 72 frames fit, empty in half of the original's; leaving the repeated sprites out still fails) | Cyclone Turbine (dash, 1 hit) |
 | 307 | BlackKingNumemon | Dark Pupil | 198 | 1 | 9 | 280 | 3 sprites | 17120 B, id 227, melee, 4 sprites, faithful | Royal Muck (thrown, 1 hit) |
 | 308 | Dinohyumon | Lizard Dance | 200 | 4 | 11 | 231 | 6 sprites | 11916 B, id 228, melee, 4 sprites, faithful | Lizard Dance (dash, 4 hits) |
-| 309 | Antylamon | Dark Elemental | 700 | 1 | 9 | 230 | 3 sprites | sprites only | Bunny Blades (dash, 2 hits) |
+| 309 | Antylamon | Dark Elemental | 700 | 1 | 9 | 230 | 3 sprites | falls back to template chunk 62 (coverage over time correlates 0.35: its screen-space sprite (2060) drifts from the original) | Bunny Blades (dash, 2 hits) |
 | 310 | Assaultmon | Justice Strike | 140 | 3 | 11 | 539 | MEFT0093 + 5 sprites | 11888 B, id 203, melee, faithful | Justice Strike (rain, 5 hits) |
-| 311 | Arukenimon | (unnamed attack) | 390 | 1 | 5 | 290 | 3 sprites | 19184 B, id 230, melee, 3 sprites, FAILS the check (one round of fixes pending) | Spirit Needle (shot, 1 hit) |
+| 311 | Arukenimon | (unnamed attack) | 390 | 1 | 5 | 290 | 3 sprites | falls back to template chunk 73 (draws 40% of the original's area; coverage over time correlates 0.40) | Spirit Needle (shot, 1 hit) |
 | 312 | Creepymon | Darkness Chaos | 150 | 1 | 9 | 243 | MEFT0351 + 3 sprites | 12208 B, id 204, melee, faithful | Evil Inferno (area, 1 hit) |
 | 313 | Bulbmon | Mad Pump | 580 | 1 | 9 | 269 | MEFT0346 + 2 sprites | 7456 B, id 205, melee, faithful | Bulb Flash (beam, 1 hit) |
-| 314 | SkullSatamon | (unnamed attack) | 410 | 1 | 5 | 296 | 3 sprites | 18504 B, id 231, melee, 3 sprites, FAILS the check (one round of fixes pending) | Nail Bone (beam, 1 hit) |
-| 315 | Taomon | Bonhitsusen | 250 | 1 | 11 | 519 | 6 sprites | 15464 B, id 232, melee, 4 sprites, FAILS the check (one round of fixes pending) | Talisman of Light (shot, 1 hit) |
+| 314 | SkullSatamon | (unnamed attack) | 410 | 1 | 5 | 296 | 3 sprites | falls back to template chunk 96 (empty in 26% of the original's frames) | Nail Bone (beam, 1 hit) |
+| 315 | Taomon | Bonhitsusen | 250 | 1 | 11 | 519 | 6 sprites | falls back to template chunk 63 (coverage over time correlates 0.57: its last burst of growing sprites is missing) | Talisman of Light (shot, 1 hit) |
 | 316 | Sakuyamon | KongouKaimandara | 400 | 1 | 11 | 540 | MEFT0087 + 5 sprites | 20328 B, id 206, melee, passes; 5 parts left out | Amethyst Mandala (area, 1 hit) |
 | 317 | Fujinmon | Sylph Storm | 100 | 1 | 9 | 229 | MEFT0370 + 3 sprites | 11104 B, id 207, melee, faithful | Divine Wind (area, 1 hit) |
 | 318 | Gallantmon | Final Purification | 480 | 1 | 11 | 457 | MEFT0095 + 6 sprites | 11508 B, id 208, melee, faithful | Final Purification (beam, 1 hit) |
@@ -221,7 +221,7 @@ means no part flies to the target on its own: the effect plays as on the disc an
 | 352 | Monmon | Swing Swing | 100 | 1 | 11 | 406 | MEFT0089 + 4 sprites | 7596 B, id 216, melee, faithful | Swing Swing (melee, 2 hits) |
 | 353 | Bearmon | Bear Fist | 100 | 1 | 11 | 355 | 4 sprites | 11400 B, id 245, melee, 2 sprites, faithful | Bear Fist (melee, 1 hit) |
 | 354 | Renamon | Diamond Storm | 100 | 1 | 11 | 542 | 5 sprites | 19044 B, id 246, melee, 4 sprites, faithful | Diamond Storm (rain, 6 hits) |
-| 403 | Beelzemon | Blast Mode | 800 | 3 | 11 | 471 | 7 sprites | 20272 B, id 247, melee, 9 sprites, 84 of 102 frames, FAILS the check (one round of fixes pending) | Corona Blaster (beam, 1 hit) |
+| 403 | Beelzemon | Blast Mode | 800 | 3 | 11 | 471 | 7 sprites | falls back to template chunk 80 (too large for a chunk: 84 of 102 frames fit, empty in 43%; leaving the repeated sprites out still fails) | Corona Blaster (beam, 1 hit) |
 | 404 | BlackWarGreymon | Terra Destroyer | 640 | 1 | 11 | 593 | 4 sprites | 19668 B, id 248, melee, 3 sprites, faithful | Terra Destroyer (shot, 1 hit) |
 | 405 | Cannondramon | DynamoCannon | 320 | 1 | 11 | 423 | MEFT0094 + 5 sprites | 18900 B, id 217, melee, faithful | Dynamo Cannon (beam, 1 hit) |
 | 406 | MaloMyotismon | Melting Blood | 480 | 1 | 11 | 438 | MEFT0092 + 4 sprites | 8780 B, id 218, melee, faithful | Melting Blood (melee, 1 hit) |
@@ -240,9 +240,10 @@ Gargoylemon's Dark Matter fails on timing alone (its coverage curve correlates 0
 game's 20 Hz engine cannot place on the original's 30 fps frames. The conversion is kept out, and the species
 keeps a template chunk. These 3D conversions leave the technique's sprites out.
 
-The other 28 techniques draw only sprites. Converted from their sprites (step 8 above), 22 pass the fidelity check. Five fail
-and are in a round of fixes (GrapLeomon, Arukenimon, SkullSatamon, Taomon and Beelzemon), and Antylamon's is
-still being checked. One that still fails after that round keeps a template chunk.
+The other 28 techniques draw only sprites. Converted from their sprites (step 8 above), 22 pass the fidelity check. Six fail
+it after one round of fixes and keep a template chunk (their finisher's): GrapLeomon and Beelzemon do not fit a
+chunk whole (leaving their repeated sprites out still fails), and Antylamon, Arukenimon, SkullSatamon and Taomon
+draw too little or out of time against the original (a screen-space sprite drifts, a late burst is missing).
 
 ## What the conversion does not keep yet
 
