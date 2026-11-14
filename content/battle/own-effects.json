@@ -1,0 +1,12 @@
+{
+  "note": "Effect chunks of a species' own, appended to ETCHI/EFEDAT.EFE after the disc's 122 (tools/derive/steps/effects.py). Each is a Digimon World 2 technique converted from the player's DW2 disc (tools/dw2efe.py): its cast and hit effect objects, under the disc folder AAA/4.AAA/EFFECT. stands_for: the chunk whose launch point (origin table) it takes. scale: DW2 units to this game's (the caster's height here against its DW2 head height); hit_scale: the hit object's, when DW2's close camera made it larger than a battle here shows well. reach: no longer used (the projectile flies to its target). area (optional): hit every enemy, for a range-3 technique; hits (optional): damage events per target. A species plays one with own_effect in its JSON.",
+  "122": {
+    "name": "Metal Fireball",
+    "stands_for": 63,
+    "cast": ["EFFEWA/MEWA0200.BIN", "EFFEWA/AEWA0200.BIN"],
+    "hit": ["EFFEWD/MEWD0100.BIN", "EFFEWD/AEWD0100.BIN"],
+    "scale": 0.266,
+    "hit_scale": 0.1,
+    "reach": 1100
+  }
+}

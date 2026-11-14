@@ -96,11 +96,15 @@ The engine can draw a DW2 effect object:
 
 - Effect op `drawTMD` draws one object of the chunk's own TMD with the running instance's position, Euler
   rotation and a per-axis scale.
-- Every pose in the DW2 effects checked is exactly a rotation times a positive per-axis scale: no shear and no
-  mirroring. A flattened axis (zero scale) takes its direction from the other two.
-- So a converter can turn each drawn bone into a TMD object and each distinct pose into an 18-byte record, then
-  write a script that picks the pose of the current frame from a table, turns it by the caster's facing and draws
-  it.
+- Effect op `drawTMDYXZ` (sub-op 77) does the same with the rotation applied as Y, then X, then Z
+  (RotMatrixYXZ), the order a decomposition of DW2's matrices gives most directly.
+- Across the 43 DW2 skills imported for finishers, every pose is a rotation times a per-axis scale; some scales
+  are negative (mirrored parts) and some poses translate sideways and up as well as forward. A flattened axis (zero
+  scale) takes its direction from the other two. Only a true shear could not be drawn, and none was found.
+- So a converter can turn each drawn bone into a TMD object and each distinct pose into nine fields (three angles,
+  three scales, three translations), then write a script that picks the pose of the current tick from a table,
+  turns it by the caster's facing and draws it. `tools/dw2efe.py` does this; see
+  [signature effects](../mods/signature-effects.md).
 
 What the converter has to rebuild around the drawing, shown on Mega Flame (chunk 63), the ranged fire that
 SkullMeramon and Cyclonemon use in this game:
@@ -120,26 +124,22 @@ SkullMeramon and Cyclonemon use in this game:
   sub-effects that draw the DW2 poses. The converter must scale the DW2 travel so the picture reaches as far as
   the puffs, about 1,000 units here against about 9,000 in DW2. Otherwise the picture and the damage disagree.
 
-The limits come from the chunk, not the engine:
+The limits come from the chunk, not the engine. The first estimates (`tools/dw2effect.py budget SKILL`) had
+most DW2 skills over a chunk: Hyper Heat at about 31,300 bytes, 11 palettes and 19,488 texels. The converter fits
+them with reductions instead:
 
-| Limit | Room in one chunk | Metal Fireball (SkullMeramon) | Hyper Heat (Cyclonemon) |
-|---|---|---|---|
-| Chunk size | 20,480 bytes | about 16,600 | about 31,300 |
-| Kept in battle memory (scripts, tables, TMD) | inside the battle's effect area | about 12,300 | about 26,800 |
-| Texture | one strip of 256x32 texels | blocks 344 texels wide, one 40 rows tall | 19,488 texels |
-| Palettes | 6 | 6 | 11 |
-| Texture animation | scrolling UVs only | one 3-frame flipbook | two flipbooks |
+| Limit | Room in one chunk | What the converter does |
+|---|---|---|
+| Chunk size | 20,480 bytes | flipbooks as UV animations (not one object per frame), only used vertices, repeated cards shared, transparent and repeated prims left out, then coarser poses and texture when still over |
+| Kept in battle memory (scripts, tables, TMD) | the battle's effect heap, 0x41000 for 16 chunks | 7,776 to 17,224 bytes per conversion |
+| Texture | one strip of 256x32 texels | blocks reduced 2x (more, or turned, when needed) |
+| Palettes | 6 | merged by the colours used, keeping transparent, solid and blending colours apart |
+| Texture animation | UV animations (`initializeUVAnim`) | flipbook frames side by side, stepped by UV offsets |
 
-`tools/dw2effect.py budget SKILL` prints these figures for any skill. The figures are estimates of what a
-converter would write. The texture check packs every UV block (overlapping prims kept together, and every
-flipbook frame, because a flipbook becomes UV switching) into the strip.
+Of the 43 DW2 skills imported for finishers, 42 convert. Fungus Cruncher (Mushroomon) is 616 bytes over even at
+the coarsest level: about 400 prims, 13 KB of TMD, none of them repeated cards. Without its hit object (a
+128-prim mark played on the caster) it fits, at 19,728 bytes.
 
-- Metal Fireball fits in size and palettes, but its texture does not fit one strip. It fits if the hit texture
-  is halved and the cast's 40-row block is cut in two, with the rows the prims share copied into both halves.
-  Or it fits with an engine change that gives an effect two strips.
-- Large effects such as Hyper Heat need that engine change, more palette rows and a bigger chunk. Or their
-  parts must be cut down.
 - Swapping a chunk's content changes the technique for every Digimon that uses it. A per-species effect needs
   new chunk ids and a species check where the battle picks the chunk.
-- The effect engine's tick rate against DW2's 60 Hz has not been measured. The pose table should be stepped by
-  the engine's own frame counter once it is.
+- The effect engine runs its scripts at 20 Hz (one tick per 1.5 DW2 frames): a DW2 cast of 60 frames is 40 ticks.

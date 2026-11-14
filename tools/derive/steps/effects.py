@@ -125,13 +125,73 @@ def aim_deadly_bomb(archive):
     return bytes(data)
 
 
+EFFECT_ID = 0x30        # the chunk's header word the loader compares with the effect id it asked for
+DISC_CHUNKS = 122
+OWN_EFFECTS = 'content/battle/own-effects.json'
+DW2_EFFECTS = ('source-games', 'dw2', 'disc', 'AAA', '4.AAA', 'EFFECT')
+
+
+def launch_table(chunk):
+    """The origin table (10-byte rows to the type -1 row) the chunk's start script hands checkTechCompatibility."""
+    start = struct.unpack_from('<i', chunk, 0)[0]
+    pc = 0x34 + start + 12                  # after the start script's first spawn
+    if struct.unpack_from('<H', chunk, pc - 12)[0] & 0xFF != 17 or struct.unpack_from('<H', chunk, pc)[0] & 0xFF != 12:
+        raise ValueError('own effect: the chunk it stands for does not start with spawn, pusha table')
+    at = 0x34 + struct.unpack_from('<h', chunk, pc + 2)[0]
+    end = at
+    while struct.unpack_from('<h', chunk, end)[0] >= 0:
+        end += 10
+    return bytes(chunk[at:end + 10])
+
+
+def own_effects(ctx, archive):
+    """{chunk index: chunk} of the species' own effects (content/battle/own-effects.json; getSpeciesTechEffect)."""
+    import json
+    from tools import dw2effect, dw2efe
+    with open(os.path.join(ctx.root, OWN_EFFECTS)) as f:
+        spec = json.load(f)
+    out = {}
+    for key, e in spec.items():
+        if key == 'note':
+            continue
+        like = bytes(archive[e['stands_for'] * CHUNK_SIZE:(e['stands_for'] + 1) * CHUNK_SIZE])
+        paths = [ctx.path(*DW2_EFFECTS, *p.split('/')) for p in e['cast'] + e['hit']]
+        missing = [p for p in paths if not os.path.isfile(p)]
+        if missing:
+            raise ValueError(f'own effect {key} {e["name"]}: source discs required: dw2 (missing {missing[0]}); '
+                             'derive build --source-disc dw2=IMAGE')
+        files = []
+        for p in paths:
+            with open(p, 'rb') as f:
+                files.append(f.read())
+        cast, hit = dw2effect.parse_effect(*files[:2]), dw2effect.parse_effect(*files[2:])
+        out[int(key)], info = dw2efe.convert(cast, hit, launch_table(like), 0x100 + int(key), e['scale'],
+                                              hit_scale=e.get('hit_scale'), area=e.get('area', False),
+                                              hits=e.get('hits', 1))
+        ctx.log(f'own effect {key} {e["name"]}: ' + ', '.join(f'{k} {v}' for k, v in info.items()))
+    return out
+
+
+def append_own_effects(ctx, archive):
+    data = bytearray(archive)
+    if len(data) != DISC_CHUNKS * CHUNK_SIZE:
+        raise ValueError(f'effect archive: {len(data):#x} bytes, expected {DISC_CHUNKS} chunks')
+    for index, chunk in sorted(own_effects(ctx, archive).items()):
+        if index * CHUNK_SIZE != len(data) or len(chunk) != CHUNK_SIZE:
+            raise ValueError(f'own effect {index}: chunks must follow each other, {CHUNK_SIZE:#x} bytes each')
+        chunk = bytearray(chunk)
+        struct.pack_into('<i', chunk, EFFECT_ID, 0x100 + index)
+        data += chunk
+    return bytes(data)
+
+
 def outputs(ctx):
     return [('effects/' + DISC_PATH, DISC_PATH)]
 
 
 def build(ctx):
     with open(os.path.join(ctx.root, 'extracted', DISC_PATH), 'rb') as source:
-        data = aim_deadly_bomb(exclude_caster(source.read()))
+        data = append_own_effects(ctx, aim_deadly_bomb(exclude_caster(source.read())))
     dest = ctx.path('effects', DISC_PATH)
     os.makedirs(os.path.dirname(dest), exist_ok=True)
     with open(dest, 'wb') as target:

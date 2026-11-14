@@ -304,6 +304,16 @@ def identify(path):
     return best, 'partial' if best else 'unknown', kh
 
 
+# The DW2 effect files the species' own effects are converted from (content/battle/own-effects.json,
+# tools/derive/steps/effects.py), equal on the USA and Japanese discs
+DW2_EFFECT_FILES = {
+    'AAA/4.AAA/EFFECT/EFFEWA/MEWA0200.BIN': '0b61553c992d492673b7cbc3d9772a94a944b3eb',
+    'AAA/4.AAA/EFFECT/EFFEWA/AEWA0200.BIN': '223b421d4b99b568c73f02618c106f1665c9f678',
+    'AAA/4.AAA/EFFECT/EFFEWD/MEWD0100.BIN': 'c4e54f49dc8ba2541a017abcb07eb771b3d1e8ff',
+    'AAA/4.AAA/EFFECT/EFFEWD/AEWD0100.BIN': 'e089604f7241622820339c7ee5e63259d072d01c',
+}
+
+
 def release_files():
     """{disc or release id: {path on the disc: SHA-1}} of the files the import converters read, so the web page can
     check an image whose whole-image checksum cannot match redump (a 2048-byte .iso, a PBP, another rip) by the
@@ -326,6 +336,7 @@ def release_files():
             out[f'dw3-{rel}'] = {f'{own_dir}/{c}.BIN': own.get(c, h) for c, h in sorted(j['recipes'].items())}
         elif game == 'dw2':
             files = {f'AAA/4.AAA/MODEL/{f}': h for c in sorted(j['recipes']) for f, h in sorted(j['recipes'][c].items())}
+            files.update(DW2_EFFECT_FILES)
             out['dw2'] = files                  # the check made them equal to the USA disc's
             out[f'dw2-{rel}'] = files
         elif 'files' in j:

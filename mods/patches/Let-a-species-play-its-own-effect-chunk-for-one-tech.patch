@@ -1,0 +1,129 @@
+From b7986b4d2f0fc81e7cddf1c194f2ac2730c19d20 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 14 Nov 2026 10:31:41 +0000
+Subject: [PATCH] Let a species play its own effect chunk for one technique
+
+---
+ include/dw/species.h   |  9 ++++++++-
+ src/main/btl.c         |  4 ++--
+ src/main/mod_species.c | 11 +++++++++++
+ src/std/std_main.c     |  2 +-
+ src/vs/vs_combat.c     |  4 ++--
+ 5 files changed, 24 insertions(+), 6 deletions(-)
+
+diff --git a/include/dw/species.h b/include/dw/species.h
+index 0ba072a..5022cce 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -118,6 +118,8 @@ int32_t modNativeItemTargetLevel(int32_t type);
+ int32_t isVanillaSpecies(int32_t type);
+ /* the vanilla species a new partner species becomes with NEW DIGIMON off (its record's vanillaAs), 0 none */
+ int32_t getSpeciesVanillaAs(int32_t type);
++/* MOD (signature effects): the EFEDAT.EFE effect id that technique `tech` loads for species `type` */
++int32_t getSpeciesTechEffect(int32_t type, int32_t tech);
+ /* 1 if the original type is carried by its DIGI.DAT record (always 0 for ids >= NUM_ORIGINAL_DIGIMON) */
+ int32_t isRecordOriginal(int32_t type);
+ 
+@@ -194,7 +196,11 @@ typedef struct {
+ 	int16_t effectDefault[4];	/* 0x1C4 */
+ 	int16_t vanillaAs;		/* 0x1CC MOD (options): NEW DIGIMON off, the vanilla species a loaded partner becomes */
+ 	uint8_t statusAnchorBone;	/* 0x1CE: Status-only camera follows this bone; 0 keeps the native view */
+-	uint8_t reserved1CF[SPECIES_RECORD_SIZE - 0x1CF];
++	/* MOD (signature effects): technique ownEffectTech of this species plays EFEDAT.EFE chunk ownEffectChunk, an
++	 * effect of its own, instead of the chunk the technique shares (0: none); getSpeciesTechEffect */
++	uint8_t ownEffectTech;		/* 0x1CF */
++	int16_t ownEffectChunk;		/* 0x1D0 */
++	uint8_t reserved1D2[SPECIES_RECORD_SIZE - 0x1D2];
+ } SpeciesRecord;
+ 
+ #define SPECIES_LAYOUT_CHECK(name, cond) typedef char species_layout_##name[(cond) ? 1 : -1]
+@@ -212,6 +218,7 @@ SPECIES_LAYOUT_CHECK(origins, __builtin_offsetof(SpeciesRecord, effectOrigins) =
+ SPECIES_LAYOUT_CHECK(header, sizeof(SpeciesHeader) == 0x20);
+ SPECIES_LAYOUT_CHECK(portrait, __builtin_offsetof(SpeciesRecord, portrait) == 0x1C0);
+ SPECIES_LAYOUT_CHECK(effectDefault, __builtin_offsetof(SpeciesRecord, effectDefault) == 0x1C4);
++SPECIES_LAYOUT_CHECK(ownEffect, __builtin_offsetof(SpeciesRecord, ownEffectChunk) == 0x1D0);
+ SPECIES_LAYOUT_CHECK(partnerList, sizeof(SpeciesPartnerList) == 0x800);
+ SPECIES_LAYOUT_CHECK(links, sizeof(SpeciesLinks) <= 0x800);
+ 
+diff --git a/src/main/btl.c b/src/main/btl.c
+index 99ddcff..3d33a9c 100644
+--- a/src/main/btl.c
++++ b/src/main/btl.c
+@@ -551,7 +551,7 @@ void modBattleLoadStep(void)
+ 			e = (DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]];
+ 			for (j = 0; j < 4; j++) {
+ 				if (e->stats.base.moves[j] != 0xff) {
+-					modMoveList[n++] = DIGI_PARA(e->entity.type).moves[e->stats.base.moves[j] - 0x2e] + 0x100;
++					modMoveList[n++] = getSpeciesTechEffect(e->entity.type, DIGI_PARA(e->entity.type).moves[e->stats.base.moves[j] - 0x2e]);
+ 				}
+ 			}
+ 		}
+@@ -763,7 +763,7 @@ void loadBattleData(int32_t entityId, int32_t count)
+ 				if (entityGetTechFromAnim(&e->entity, e->stats.base.moves[j]) == 0xff) {
+ 					e->stats.base.moves[j] = 0xff;
+ 				} else {
+-					move = DIGI_PARA(e->entity.type).moves[e->stats.base.moves[j] - 0x2e] + 0x100;
++					move = getSpeciesTechEffect(e->entity.type, DIGI_PARA(e->entity.type).moves[e->stats.base.moves[j] - 0x2e]);
+ 					moveList[n++] = move;
+ 				}
+ 			}
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index f31f209..e2870ac 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -186,6 +186,17 @@ int32_t getSpeciesVanillaAs(int32_t type)
+ 	return (rec != NULL && (rec->flags & SPECIES_FLAG_PARTNER)) ? rec->vanillaAs : 0;
+ }
+ 
++int32_t getSpeciesTechEffect(int32_t type, int32_t tech)
++{
++	SpeciesRecord *rec;
++
++	rec = getSpeciesRecord(type);
++	if (rec != NULL && rec->ownEffectChunk != 0 && rec->ownEffectTech == tech) {
++		return rec->ownEffectChunk + 0x100;
++	}
++	return tech + 0x100;
++}
++
+ int32_t isRecordOriginal(int32_t type)
+ {
+ 	if ((uint32_t)type >= NUM_ORIGINAL_DIGIMON) {
+diff --git a/src/std/std_main.c b/src/std/std_main.c
+index 473fcdb..8ad15b8 100644
+--- a/src/std/std_main.c
++++ b/src/std/std_main.c
+@@ -3839,7 +3839,7 @@ void STD_combatSetup(void)
+ 
+ 		for (j = 0; j < 4; ++j) {
+ 			if (entity->stats.base.moves[j] != 0xff) {
+-				effect = DIGI_PARA(entity->entity.type).moves[entity->stats.base.moves[j] - 0x2e] + 0x100;
++				effect = getSpeciesTechEffect(entity->entity.type, DIGI_PARA(entity->entity.type).moves[entity->stats.base.moves[j] - 0x2e]);
+ 				moves[moveCount++] = effect;
+ 			}
+ 		}
+diff --git a/src/vs/vs_combat.c b/src/vs/vs_combat.c
+index 18f06d0..5e8601d 100644
+--- a/src/vs/vs_combat.c
++++ b/src/vs/vs_combat.c
+@@ -458,7 +458,7 @@ void VS_setupDemoCombat(void)
+ 
+ 		for (j = 0; j < 4; ++j) {
+ 			if (entity->stats.base.moves[j] != 0xff) {
+-				effect = DIGI_PARA(entity->entity.type).moves[entity->stats.base.moves[j] - 0x2e] + 0x100;
++				effect = getSpeciesTechEffect(entity->entity.type, DIGI_PARA(entity->entity.type).moves[entity->stats.base.moves[j] - 0x2e]);
+ 				moves[moveCount++] = effect;
+ 			}
+ 		}
+@@ -789,7 +789,7 @@ void VS__combatSetup(void)
+ 
+ 		for (j = 0; j < 4; ++j) {
+ 			if (entity->stats.base.moves[j] != 0xff) {
+-				effect = DIGI_PARA(entity->entity.type).moves[entity->stats.base.moves[j] - 0x2e] + 0x100;
++				effect = getSpeciesTechEffect(entity->entity.type, DIGI_PARA(entity->entity.type).moves[entity->stats.base.moves[j] - 0x2e]);
+ 				moves[moveCount++] = effect;
+ 			}
+ 		}
+-- 
+2.55.0
+

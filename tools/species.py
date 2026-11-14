@@ -492,7 +492,7 @@ def stats_json(v):
 
 
 # ------------------------------------------------------------------ the file format: dict <-> JSON
-KEY_ORDER = ['id', 'name', '_source', 'level', 'vanilla', 'vanilla_as', 'off', 'attribute', 'specialties', 'techniques', 'finisher', 'drop', 'effects_like', 'model',
+KEY_ORDER = ['id', 'name', '_source', 'level', 'vanilla', 'vanilla_as', 'off', 'attribute', 'specialties', 'techniques', 'finisher', 'drop', 'effects_like', 'own_effect', 'model',
              'texture', 'voice', 'battle_music', 'reincarnation_stats', 'new_game_technique', 'status_screen_position',
              'partner_voice', 'item_distance', 'training', 'condition_bubble', 'effect_origins', 'effect_origin_fallback', 'effect_origin_fallback_always', 'wild', 'sizing', 'size', 'needs_ram_mb',
              'partner', 'care', 'evolution']
@@ -1027,6 +1027,10 @@ def apply_slot_aliases(data, s):
 EVOLUTION_KEYS = ['from', 'to', 'requirements', 'gains']
 
 
+# EFEDAT.EFE chunks of our own come after the disc's 122; the battle loaders take chunk indices below 0x17A
+OWN_EFFECT_CHUNKS = (122, 0x17A)
+
+
 def species_record(s):
     """A species file as a DIGI.DAT record dict (also the shape tools read: para, bones, raise, ...)."""
     w = s.get('_path', f'species {s["id"]}'); t = s['id']
@@ -1083,6 +1087,14 @@ def species_record(s):
             raise SystemExit(f'{w}: Status anchor must name a bone of an imported partner')
         r['statusAnchorBone'] = anchor
     if rows['battleMusic'] is not None: r['battleMusic'] = rows['battleMusic']
+    own = s.get('own_effect')
+    if own is not None:     # one technique plays an EFEDAT.EFE chunk of this species' own (getSpeciesTechEffect)
+        if not isinstance(own, dict) or set(own) != {'technique', 'chunk'} or not isinstance(own['chunk'], int):
+            raise SystemExit(f'{w}.own_effect: {{"technique": name, "chunk": EFEDAT.EFE chunk index}}')
+        tech = id_of('techs', own['technique'], f'{w}.own_effect.technique')
+        if tech not in techniques_from_json(s['techniques'], w) or not OWN_EFFECT_CHUNKS[0] <= own['chunk'] < OWN_EFFECT_CHUNKS[1]:
+            raise SystemExit(f'{w}.own_effect: a technique of its own list and a chunk in {OWN_EFFECT_CHUNKS}')
+        r['ownEffect'] = [tech, own['chunk']]
     if len(r['bones']) > MAX_BONES: raise SystemExit(f'{w}: more than {MAX_BONES} bones')
     eo = []
     for e in s.get('effect_origins', []):
@@ -1241,6 +1253,7 @@ def pack_record(r):
         struct.pack_into('<4h', b, 0x136, *r['conditionFx'])
     struct.pack_into('<I', b, 0x1C0, r.get('portrait', 0))      # sector | slot << 24 of its icon (tools/portraits.py)
     b[0x1CE] = r.get('statusAnchorBone', 0)  # Status-only camera anchor; record size is unchanged
+    if r.get('ownEffect'): b[0x1CF] = r['ownEffect'][0]; struct.pack_into('<h', b, 0x1D0, r['ownEffect'][1])
     struct.pack_into('<h', b, 0x1CC, r.get('vanillaAs', 0))     # NEW DIGIMON off: the vanilla species it becomes
     if r['flags'] & FLAG_EFFECT_DEFAULT:                         # where a technique without an origin row starts (efe.c)
         struct.pack_into('<4h', b, 0x1C4, *r['effectDefault'])
@@ -1258,6 +1271,7 @@ def unpack_record(b, t):
              texSector=tsec, texFile=tfile, texSectors=tsecs, originalType=ot, vball=vball, vlall=vlall, flags=flags,
              bones=[list(struct.unpack_from('<bb', b, 0x54 + 2 * i)) for i in range(max(0, min(para['boneCount'], MAX_BONES)))])
     if b[0x1CE]: r['statusAnchorBone'] = b[0x1CE]
+    if struct.unpack_from('<h', b, 0x1D0)[0]: r['ownEffect'] = [b[0x1CF], struct.unpack_from('<h', b, 0x1D0)[0]]
     if music: r['battleMusic'] = music
     if flags & FLAG_PARTNER:
         r['raise'] = unpack(RAISE_FIELDS, b, 0xD4)
