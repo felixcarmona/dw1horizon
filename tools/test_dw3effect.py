@@ -140,6 +140,26 @@ class Fidelity(unittest.TestCase):
         self.assertLess(E._corr(src[:-1], src[1:]), 0)
         self.assertAlmostEqual(E._corr_near(src[:-1], src[1:]), 1.0)
 
+    def test_held_poses_are_not_smooth(self):
+        from tools import dw3efe as E
+        from tools import image as img
+
+        def video(rate):            # a box moving one pixel every `rate` frames of 60
+            out = []
+            for k in range(60):
+                f = img.new('RGB', (64, 36), (0, 0, 0))
+                x = k // rate
+                img.ImageDraw.Draw(f).rectangle((x, 10, x + 8, 20), fill=(250, 220, 255))
+                out.append(f)
+            return out
+        src = video(2)                                          # DW2003 at 30 Hz
+        self.assertAlmostEqual(E.smoothness(src, video(3)), 1.0, delta=0.05)   # every 20 Hz engine tick
+        held = E.smoothness(src, video(6))                      # each pose held two ticks
+        self.assertLess(held, E.LIMITS['smooth'])
+        ok, why = E.passes(dict(empty=0, area=1, bright=1, corr=1, iou=1, smooth=held))
+        self.assertFalse(ok)
+        self.assertIn('poses held', why[0])
+
     def test_mostly_empty_fails(self):
         from tools import dw3efe as E
         src = self.frames([None, (10, 10, 30, 20), (12, 8, 40, 30), (20, 10, 50, 30), (0, 0, 63, 35)])

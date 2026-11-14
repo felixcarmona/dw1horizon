@@ -259,7 +259,25 @@ def fidelity(src, dst, active=0.002):
                 iou=sum(max(iou(r['box'][0], q) for q in r['near']) for r in act) / len(act), rows=rows)
 
 
-LIMITS = dict(empty=0.25, area=0.5, area_max=2.0, bright=0.5, bright_max=3.0, corr=0.7, iou=0.5)
+def smoothness(src, dst, active=0.002, engine_rate=1 / 3):
+    """How often the conversion's picture changes against the original's, both 60 fps (one frame a DW2003
+    tick): over the pairs of frames where the original draws, the share in which each picture changes, the
+    conversion's over the original's, capped at the effect engine's rate (20 Hz: a third of the frames). 1.0
+    is as smooth as the engine can be; an effect that holds each pose two ticks scores about 0.5."""
+    import numpy as np
+    n = min(len(src), len(dst))
+    a = [np.asarray(f, dtype=np.int16) for f in src[:n]]
+    b = [np.asarray(f, dtype=np.int16) for f in dst[:n]]
+    pairs = [k for k in range(1, n) if (a[k].max(axis=2) > 8).mean() > active]
+    if not pairs:
+        return 1.0
+    moved = lambda fr, k: np.abs(fr[k] - fr[k - 1]).max() > 8
+    rs = sum(moved(a, k) for k in pairs) / len(pairs)
+    rd = sum(moved(b, k) for k in pairs) / len(pairs)
+    return min(1.0, rd / min(rs, engine_rate)) if rs else 1.0
+
+
+LIMITS = dict(empty=0.25, area=0.5, area_max=2.0, bright=0.5, bright_max=3.0, corr=0.7, iou=0.5, smooth=0.75)
 
 
 def passes(f, limits=LIMITS):
@@ -278,6 +296,8 @@ def passes(f, limits=LIMITS):
         why.append(f"coverage over time correlates {f['corr']:.2f}")
     if f['iou'] < limits['iou']:
         why.append(f"drawn boxes overlap {f['iou']:.2f}")
+    if f.get('smooth', 1.0) < limits['smooth']:
+        why.append(f"moves {f['smooth']:.0%} as often as the effect engine allows (poses held)")
     return not why, why
 
 
@@ -442,8 +462,10 @@ def sprite_overlay(frames, disc, tables, tech, cam, ticks, pixel=None):
 
 
 def compare(disc, tables, tech, chunk, title, width=480, height=270, sprites=None):
-    """(frames, fidelity): source | converted at 30 fps, the DW2003 effect on its own field and the chunk in
-    efesim, from the same camera scaled with the field. The camera frames the fighters and the effect."""
+    """(frames, fidelity): source | converted at 60 fps (a frame per DW2003 tick; the converted side shows each
+    20 Hz engine tick three frames, as the game does), the DW2003 effect on its own field and the chunk in
+    efesim, from the same camera scaled with the field. The camera frames the fighters and the effect. The
+    frame measures run on every second frame (30 fps), smoothness on all of them."""
     from tools import image as img
     sprites = not X.staged_effects(disc, tables, tech) if sprites is None else sprites
     objs = X.stage(disc, tables, tech)
@@ -452,17 +474,18 @@ def compare(disc, tables, tech, chunk, title, width=480, height=270, sprites=Non
     end = max(o.start + o.ticks for o in allobjs)
     eye, look = framing(allobjs, width, height)           # the caster's frame, the whole effect in view
     src_cam = D.Camera(width, height, eye=eye, look=look)
-    src = X.render_frames(objs, range(begin, end, 2), width, height, src_cam)
+    src = X.render_frames(objs, range(begin, end), width, height, src_cam)
     if sprites:
-        src = sprite_overlay(src, disc, tables, tech, src_cam, list(range(begin, end, 2)))
+        src = sprite_overlay(src, disc, tables, tech, src_cam, list(range(begin, end)))
     n = len(src)
     k = DW1_ROWS / (2 * X.FIELD_HALF)
     dst_cam = D.Camera(width, height, eye=tuple(v * k for v in eye), look=tuple(v * k for v in look))
     D.HOME_DISTANCE = DW1_ROWS
-    dst, _sim = converted_frames(chunk, list(range(1, int(n * 2 / 3) + 2)), width, height, dst_cam)
-    # the effect engine ticks at 20 Hz: show each of its frames for 1.5 video frames
-    dst = [dst[min(len(dst) - 1, int(k * 2 / 3))] for k in range(n)]
-    fid = fidelity(src, dst)
+    dst, _sim = converted_frames(chunk, list(range(1, n // 3 + 2)), width, height, dst_cam)
+    # the effect engine ticks at 20 Hz: each of its frames shows for three DW2003 ticks
+    dst = [dst[min(len(dst) - 1, k // 3)] for k in range(n)]
+    fid = fidelity(src[::2], dst[::2])
+    fid['smooth'] = smoothness(src, dst)
     out = []
     for k in range(n):
         f = img.new('RGB', (2 * width + 4, height), (0, 0, 0))
@@ -517,7 +540,7 @@ def main(argv=None):
               ('PASS' + (' (parts left out: ' + ', '.join(info['left_out']) + ')' if info.get('left_out') else '')
                if ok else 'FAIL: ' + '; '.join(why)))
         if a.mp4:
-            X.write_mp4(frames, a.mp4)
+            X.write_mp4(frames, a.mp4, fps=60)
         if not ok:
             sys.exit(1)
 
