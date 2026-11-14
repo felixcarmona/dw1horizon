@@ -12,13 +12,19 @@ a few tens of degrees from it, except the legs, which are solved to the floor.
 - Idle (slot 0, 48 ticks): feet planted, a slow weight shift, a breath in the chest, the head drifting a few
   degrees, arms hanging with a slight forward bend and swaying a beat late, the tail following.
 - Walk (2), condition walk (3) and run (4): 16 ticks, two steps per loop (the footstep sounds keep their ticks) and
-  the whole body on that beat. Each foot is planted over the ground (its stance moves back at the clip's root speed)
+  the whole body on that beat. Each foot is planted over the ground (in stance it moves back exactly as far as the
+  clip's own root travels, which is uneven in the condition walk and the run)
   and swings forward in an arc, with a footstep: heel strike (toes up), roll to flat, heel lift pivoting on the ball of
   the foot, toe-off, toes curled down in the swing and the foot flexing up for the next heel strike; the pelvis turns with the leading leg, the chest against it, the head against the
   chest; the free arm swings against its leg with the elbow folding as it comes forward and the wing a beat late.
   The condition walk droops (the head low, the arms hanging, a shallow stride); the run leans forward with the
   elbows bent, bounds with a short flight between the steps and sweeps the tail back.
 Tick counts and the root travel (the field speed) of the earlier clips are kept; slot 1 and every other slot too.
+
+Since the chibi bake shortened the legs (a quarter shorter, the root travel scaled by its k, 0.82, to 18.4 / 16.4 / 40.9
+units a tick: the old run stride would need 104 % of the new legs), the clips are written on that rig: pelvis heights,
+bob and swing lift scaled with it, the run carried a little higher with the chest more upright so the long wings clear
+the floor, the tail lifted a few degrees off the legs, and every sole solved SOLE_CLEAR over the floor.
 """
 import argparse
 import copy
@@ -36,7 +42,7 @@ import motioncyclelayer  # noqa: E402
 import motionstorage  # noqa: E402
 from motiondiscidentity import changed_programs  # noqa: E402
 
-SOURCE = 'f9ccc558316989c5c8cb4d2b8167136890a7a8b2bb848ef353ab1b22d6891dcc'
+SOURCE = 'bcaeca11615a02dd86ed045c4a31a3b3a3601658b5235d4916d496a14c8c4803'
 SPECIES = 226
 NB = 21
 SLOTS = (0, 2, 3, 4)
@@ -47,20 +53,24 @@ ARMS = ((6, 7, 8, 1), (9, 10, 11, -1))      # shoulder, elbow, hand, side (+1 ri
 LEGS = ((12, 13, 14, 15, 1), (16, 17, 18, 19, -1))   # hip, knee, ankle, toe, side
 TAIL = 20
 ANKLE_UP = 0.0
+SOLE_CLEAR = 1.2      # the solved sole stays this far over the floor, so rounding never puts it under
 
 # Clip parameters, degrees unless noted. hp: pelvis height above the floor (units); bob: its rise per step.
 # stance: fraction of a foot's 16-tick cycle on the floor; lift: swing height; first: the tick of the right foot's
 # landing (the footstep sound). lean_*: forward turns of pelvis, chest, head (head's is added to cancel the rest).
 CLIPS = {
-    0: dict(n=48, hp=202, width=36, speed=0),
-    2: dict(n=16, hp=196, bob=9, width=30, stance=.55, lift=28, first=2, pelvis_yaw=5, chest_yaw=6, head_yaw=3,
+    0: dict(n=48, hp=164, width=36, speed=0),
+    2: dict(n=16, hp=159, bob=7.3, width=30, stance=.55, lift=23, first=2, pelvis_yaw=5, chest_yaw=6, head_yaw=3,
             lean_p=5, lean_c=3, head_pitch=0, arm=17, elbow0=30, elbow1=20, out=7, tail_yaw=6, roll=2.5,
+            tail_lift=6,
             foot=dict(strike=16, roll=.22, heel_up=.5, off=30, mid=-2, curl=14, power=.75)),
-    3: dict(n=16, hp=182, bob=6, width=30, stance=.60, lift=22, first=0, pelvis_yaw=4, chest_yaw=5, head_yaw=2,
+    3: dict(n=16, hp=148, bob=4.9, width=30, stance=.60, lift=18, first=0, pelvis_yaw=4, chest_yaw=5, head_yaw=2,
             lean_p=9, lean_c=8, head_pitch=11, arm=8, elbow0=42, elbow1=12, out=6, tail_yaw=4, roll=3.5,
+            tail_lift=6,
             foot=dict(strike=9, roll=.25, heel_up=.6, off=22, mid=7, curl=11, power=1.2)),
-    4: dict(n=16, hp=176, bob=26, width=26, stance=.22, lift=62, first=2, pelvis_yaw=9, chest_yaw=12, head_yaw=4,
-            lean_p=12, lean_c=5, head_pitch=-3, arm=42, elbow0=62, elbow1=24, out=6, tail_yaw=8, roll=3,
+    4: dict(n=16, hp=151, bob=21.1, width=26, stance=.22, lift=50, first=2, pelvis_yaw=9, chest_yaw=12, head_yaw=4,
+            lean_p=12, lean_c=3, head_pitch=-3, arm=42, elbow0=62, elbow1=24, out=6, tail_yaw=8, roll=3,
+            tail_lift=3,
             foot=dict(strike=8, roll=.4, heel_up=.55, off=34, mid=16, curl=10, power=.75)),
 }
 
@@ -193,11 +203,27 @@ def sole_depth(rig, ankle, toe, verts):
     return low
 
 
-def stance_path(c, rho, speed, f):
-    """Foot z in the body frame, along its 16-tick cycle (0 = landing): stance moves back at the ground speed."""
-    zf, zb = c - speed * 16 * f / 2, c + speed * 16 * f / 2
+def travel(track, t):
+    """The root's forward travel at tick t (any real t) of a loop whose per-tick root z is `track` (n + 1 values)."""
+    n = len(track) - 1
+    k, u = divmod(t, n)
+    i = min(int(u), n - 1)
+    z = track[i] + (track[i + 1] - track[i]) * (u - i)
+    return -(z - track[0]) + k * -(track[-1] - track[0])
+
+
+def stance_path(c, rho, speed, f, track=None, land=0.):
+    """Foot z in the body frame, along its 16-tick cycle (0 = landing): in stance the foot moves back exactly as far as
+    the root travels forward (the clip's own root, uneven in the condition walk and the run), so it stays put on the
+    ground; `land` is the tick of the landing."""
+    if track is None:
+        done = lambda r: speed * 16 * r
+    else:
+        done = lambda r: travel(track, land + 16 * r) - travel(track, land)
+    stride = done(f)
+    zf, zb = c - stride / 2, c + stride / 2
     if rho < f:
-        return zf + speed * 16 * rho, 0.
+        return zf + done(rho), 0.
     q = (rho - f) / (1 - f)
     span = (1 - f) * 16
     m = speed * span
@@ -294,7 +320,7 @@ def pose_at(model_t, verts, rest_pose, slot, t, c, speed, state):  # noqa: C901
         rig.rl[elbow] = rot(-(c['elbow0'] + c['elbow1'] * fold) + 2.5 * math.sin(ph - 1.0), 0, 0)
         rig.rl[hand] = rot(-.25 * (c['elbow0'] + c['elbow1'] * fold) * (1 if run else .6) + 4 * math.sin(ph - 1.4), 0, -side * 2 * math.sin(ph - 1.8))
     # tail: sways against the hips, a beat late, and drops a little with the bounce
-    rig.rl[TAIL] = rot(-c['lean_p'] * .8 + (12 if run else 2) + 2.2 * math.sin(2 * sig - 1.2), -c['tail_yaw'] * cs(.2), 2 * sn(.3))
+    rig.rl[TAIL] = rot(-c['lean_p'] * .8 + (12 if run else 2) + c.get('tail_lift', 0) + 2.2 * math.sin(2 * sig - 1.2), -c['tail_yaw'] * cs(.2), 2 * sn(.3))
     # legs
     errs = []
     root_speed = speed
@@ -302,7 +328,7 @@ def pose_at(model_t, verts, rest_pose, slot, t, c, speed, state):  # noqa: C901
         offset = 0 if side > 0 else .5
         rho = ((t - c['first']) / n - offset) % 1.
         center = 6.
-        z, q = stance_path(center, rho, root_speed, c['stance'])
+        z, q = stance_path(center, rho, root_speed, c['stance'], state.get('track'), t - rho * n)
         fo = c['foot']
         theta, tau, dz, lift, pivot_info = foot_cycle(rig, verts, (hip, knee, ankle, toe, side), fo, c, rho, z)
         z += dz
@@ -313,7 +339,7 @@ def pose_at(model_t, verts, rest_pose, slot, t, c, speed, state):  # noqa: C901
         rig_probe = copy.deepcopy(rig)
         solve_leg(rig_probe, (hip, knee, ankle, toe, side), [x, -30., z], foot, tau, [0., 0., -1.], verts)
         depth = sole_depth(rig_probe, ankle, toe, verts)
-        goal[1] = -depth - lift
+        goal[1] = -depth - lift - SOLE_CLEAR
         pole = [side * .18, 0., -1.]
         errs.append(solve_leg(rig, (hip, knee, ankle, toe, side), goal, foot, tau, pole, verts))
         state.setdefault('foot', {})[(t, side)] = (theta, tau, theta + tau)
@@ -344,7 +370,7 @@ def idle_pose(rig, verts, pose, c, t):
         probe = copy.deepcopy(rig)
         solve_leg(probe, (hip, knee, ankle, toe, side), [goal[0], -30., 6.], foot, 0, [0., 0., -1.], verts)
         depth = sole_depth(probe, ankle, toe, verts)
-        goal[1] = -depth
+        goal[1] = -depth - SOLE_CLEAR
         errs.append(solve_leg(rig, (hip, knee, ankle, toe, side), goal, foot, 0, [side * .12, 0., -1.], verts))
     return rig
 
@@ -371,7 +397,7 @@ def author(model, skeleton):
             speed = -total / n
         else:
             speed = 0.
-        out, prev, state = [], {}, {}
+        out, prev, state = [], {}, {'track': [f[0][8] for f in frames] if slot else None}
         for t in range(n + 1):
             rig = pose_at(local_t, verts, rest, slot, t % n if t < n else 0, c, speed, state)
             pose = copy.deepcopy(rest)

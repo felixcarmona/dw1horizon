@@ -16,7 +16,9 @@ import mmd
 SOURCE = Path(os.environ.get('SILPHYMON_MODEL', 'build/imported-model-edit/edit/226-Silphymon.MMD'))
 NB = 21
 TICKS = {0: 48, 2: 16, 3: 16, 4: 16}
-SPEED = {0: 0, 2: 22.5, 3: 20, 4: 50}
+# the root travel the chibi bake left (the earlier 22.5 / 20 / 50 scaled by its k, 0.82, with the legs): the shortened
+# legs cannot reach the old run stride (it needs 104 % of their length)
+SPEED = {0: 0, 2: 18.4375, 3: 16.375, 4: 40.9375}
 
 
 class SilphymonPosture(unittest.TestCase):
