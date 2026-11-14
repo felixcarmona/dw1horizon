@@ -153,6 +153,43 @@ def synthetic_pack(model_id=7):
     return C.Pack(1, {}, {1: tim}, {}, {})
 
 
+def picture(boxes, size=(64, 40)):
+    from PIL import Image, ImageDraw
+    im = Image.new('RGB', size, dcbefe.BG)
+    d = ImageDraw.Draw(im)
+    d.line((5, 10, 5, 39), fill=dcbefe.POST)
+    for b in boxes:
+        d.rectangle(b, fill=(250, 200, 60))
+    return im
+
+
+class Fidelity(unittest.TestCase):
+    def moving(self, n, shift=0):
+        return [picture([(10 + k + shift, 10, 20 + k + shift, 20)]) for k in range(n)]
+
+    def test_same_passes(self):
+        r = dcbefe.fidelity(self.moving(30), self.moving(15))
+        self.assertTrue(r['passed'], r)
+
+    def test_empty_fails(self):
+        r = dcbefe.fidelity(self.moving(30), [picture([]) for _ in range(15)])
+        self.assertFalse(r['passed'])
+        self.assertIn('area', r['failed'])
+
+    def test_dropped_part_fails(self):
+        orig = [picture([(10, 10, 20, 20)]) for _ in range(10)] + [picture([(30, 5, 60, 35)]) for _ in range(10)]
+        conv = [picture([(10, 10, 20, 20)]) for _ in range(10)] + [picture([]) for _ in range(10)]
+        self.assertFalse(dcbefe.fidelity(orig, conv)['passed'])
+
+    def test_elsewhere_fails(self):
+        orig = [picture([(2, 2, 12, 12)]) for _ in range(10)]
+        conv = [picture([(45, 25, 60, 38)]) for _ in range(10)]
+        self.assertIn('box', dcbefe.fidelity(orig, conv)['failed'])
+
+    def test_posts_ignored(self):
+        self.assertEqual(dcbefe.lit(picture([])), [])
+
+
 class Effect(unittest.TestCase):
     def test_sprite_object_converts(self):
         s = Script()

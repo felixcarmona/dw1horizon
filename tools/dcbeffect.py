@@ -535,7 +535,8 @@ class Atlas:
     """The effect's own texture: every model TIM and sprite rectangle it uses, stacked, with their palettes
     as extra rows (the layout tools/dw2effect.py reads: a prim's clut is row << 6 | x / 16)."""
 
-    def __init__(self):
+    def __init__(self, shrink=1):
+        self.shrink = shrink # every texture is drawn at 1/shrink of its size (to fit the chunk)
         self.blocks = []     # (rows of halfwords)
         self.pals = []       # 16-colour palettes
         self.where = {}
@@ -544,6 +545,7 @@ class Atlas:
     def image(self, key, rows):
         if key not in self.where:
             self.where[key] = self.y
+            rows = list(rows) + [[0] * len(rows[0])] * (-len(rows) % self.shrink) if rows else rows
             self.blocks.append(rows)
             self.y += len(rows)
         return self.where[key]
@@ -557,6 +559,10 @@ class Atlas:
     def tim(self):
         width = max([16] + [len(r[0]) for r in self.blocks if r])
         rows = [list(r) + [0] * (width - len(r)) for b in self.blocks for r in b]
+        if self.shrink > 1:
+            rows = [_shrink_row(r, self.shrink) for r in rows[::self.shrink]]
+            width = max(16, len(rows[0]) if rows else 16)
+            rows = [r + [0] * (width - len(r)) for r in rows]
         self.pal_row = len(rows)
         for p in self.pals:
             rows.append(list(p) + [0] * (width - 16))
@@ -571,7 +577,18 @@ class Atlas:
         return (self.pal_row_of(pal) << 6)
 
     def pal_row_of(self, pal):
-        return sum(len(b) for b in self.blocks) + pal
+        return sum(len(b) for b in self.blocks) // self.shrink + pal
+
+    def uv(self, uvs):
+        s = self.shrink
+        return tuple((u // s, v // s) for u, v in uvs)
+
+
+def _shrink_row(row, s):
+    """Every s-th 4-bit texel of a row of halfwords, packed again."""
+    tex = [(w >> (4 * k)) & 15 for w in row for k in range(4)][::s]
+    tex += [0] * (-len(tex) % 4)
+    return [tex[i] | tex[i + 1] << 4 | tex[i + 2] << 8 | tex[i + 3] << 12 for i in range(0, len(tex), 4)]
 
 
 class Vram:
@@ -633,12 +650,13 @@ def _plain(m4):
     return ([[float(m4[i, j]) for j in range(3)] for i in range(3)], [float(m4[i, 3]) for i in range(3)])
 
 
-def to_effect(tr, packs, steps, origin=(0, 0, 0), turn=False, vram_tims=(), notes=None, max_flip=4):
+def to_effect(tr, packs, steps, origin=(0, 0, 0), turn=False, vram_tims=(), notes=None, max_flip=4, shrink=1,
+              max_objects=None):
     """A dw2effect.Effect (in Digimon World 2 effect units, one frame per step) that draws the traced objects at
     the chosen steps. origin: subtracted from every position (the defender's place for a hit); turn: face the
     other way (a hit object faces the attacker)."""
     drawn = notes if notes is not None else Drawn()
-    atlas = Atlas()
+    atlas = Atlas(shrink)
     vram = Vram()
     for t in vram_tims:
         vram.put(*t)
@@ -647,9 +665,11 @@ def to_effect(tr, packs, steps, origin=(0, 0, 0), turn=False, vram_tims=(), note
     for inst in tr.instances:
         by_slot.setdefault(inst.slot, inst)
     cache = {}
-    for inst in tr.instances:
+    for inst in thin(tr.instances, max_objects, drawn):
         p0 = inst.segments[0].p
-        if inst.kind in MODEL_KINDS:
+        as_model = inst.kind in MODEL_KINDS or (inst.kind in SPRITE_KINDS and _model_for(packs, p0[V_MODEL])[0])
+        glow = inst.kind in SPRITE_KINDS and p0[V_SEMI]
+        if as_model:
             m, pk = _model_for(packs, p0[V_MODEL])
             if m is None:
                 drawn.dropped[f'model {p0[V_MODEL]} missing'] = drawn.dropped.get(f'model {p0[V_MODEL]} missing', 0) + 1
@@ -676,8 +696,8 @@ def to_effect(tr, packs, steps, origin=(0, 0, 0), turn=False, vram_tims=(), note
                     crow = pr.clut[1] - tim.clut_xy[1]
                     cx = (pr.clut[0] - tim.clut_xy[0])
                     pal = tim.clut[crow][cx:cx + 16] if 0 <= crow < len(tim.clut) else [0] * 16
-                    prims.append((tuple(pr.verts), uvs, atlas.palette(pal),
-                                  ((pr.tpage >> 5) & 3) if pr.semi else None))
+                    blend = ((pr.tpage >> 5) & 3) if pr.semi else (1 if glow else None)
+                    prims.append((tuple(pr.verts), uvs, atlas.palette(pal), blend))
                 bones.append(D.Bone(-1, verts, prims))
             per_bone_pose.append((inst, 'model', first, len(bones), mframes))
             drawn.models += 1
@@ -706,7 +726,8 @@ def to_effect(tr, packs, steps, origin=(0, 0, 0), turn=False, vram_tims=(), note
         elif inst.kind in SPRITE_KINDS:
             x, y, w, h = (p0[V_RECT + i] for i in range(4))
             cx, cy = p0[V_CLUT], p0[V_CLUT + 1]
-            if w <= 0 or h <= 0:
+            if w <= 0 or h <= 0 or w > 128 or h > 128:
+                drawn.dropped['sprite without a frame'] = drawn.dropped.get('sprite without a frame', 0) + 1
                 continue
             hw = (w + 3) // 4
             rows = vram.rect(x, y, hw, h)
@@ -732,7 +753,7 @@ def to_effect(tr, packs, steps, origin=(0, 0, 0), turn=False, vram_tims=(), note
 
     tim = atlas.tim()
     for b in bones:
-        b.prims = [D.Prim(v, u, atlas.pal_row_of(pal) << 6, bl) for v, u, pal, bl in b.prims]
+        b.prims = [D.Prim(v, atlas.uv(u), atlas.pal_row_of(pal) << 6, bl) for v, u, pal, bl in b.prims]
     keys = [dict() for _ in bones]
     frames = []
     zero = ((0,) * 9, (0, 0, 0))
@@ -776,6 +797,29 @@ def to_effect(tr, packs, steps, origin=(0, 0, 0), turn=False, vram_tims=(), note
     e = D.Effect(bones, tim, keys, frames)
     e._drawn = drawn
     return e
+
+
+DRAWN_KINDS = MODEL_KINDS | {FLIPBOOK_KIND} | SPRITE_KINDS
+
+
+def thin(instances, max_objects, drawn=None):
+    """The instances to draw: all of them, or when more than max_objects are drawn, an evenly spread share of
+    each group of alike objects (same kind and model), at least one per group. A swarm of sixty identical
+    sparks keeps a few."""
+    drawable = [i for i in instances if i.kind in DRAWN_KINDS]
+    if not max_objects or len(drawable) <= max_objects:
+        return instances
+    groups = {}
+    for i in drawable:
+        groups.setdefault((i.kind, i.segments[0].p[V_MODEL]), []).append(i)
+    quota = {k: max(1, len(g) * max_objects // len(drawable)) for k, g in groups.items()}
+    keep = set()
+    for k, g in groups.items():
+        n = quota[k]
+        keep.update(id(g[(j * len(g)) // n]) for j in range(n))
+    if drawn is not None:
+        drawn.notes.append(f'{len(drawable)} objects thinned to {len(keep)}')
+    return [i for i in instances if i.kind not in DRAWN_KINDS or id(i) in keep]
 
 
 def _quad(atlas, key, rows, w, h, pal, blend):

@@ -58,6 +58,12 @@ def sample(first, last, frames):
     return [first + (k * n) // frames for k in range(frames)], n / frames
 
 
+# what to give up, in order, until the chunk fits: (animated sprite frames, texture shrink, objects per script)
+LADDER = ((4, 1, 24), (2, 1, 16), (2, 2, 12), (1, 2, 8), (1, 4, 6))
+# the DW2 converter's own pose detail levels, fewer of them (each try costs a full conversion)
+LEVELS = (dw2efe.LEVELS[0], dw2efe.LEVELS[2], dw2efe.LEVELS[5], dw2efe.LEVELS[-1])
+
+
 class Attack:
     """One DCB attack traced and turned into the cast and hit effects of a DW2-style technique."""
 
@@ -70,7 +76,8 @@ class Attack:
         self.max_flip = max_flip
         self.notes = {}
 
-    def effects(self, max_flip=None, cast_frames=dw2efe.CAST_FRAMES, hit_frames=dw2efe.HIT_FRAMES):
+    def effects(self, max_flip=None, shrink=1, max_objects=None, cast_frames=dw2efe.CAST_FRAMES,
+                hit_frames=dw2efe.HIT_FRAMES):
         mf = self.max_flip if max_flip is None else max_flip
         f0, f1 = window(self.cast_tr)
         steps, k = sample(f0, f1, cast_frames)
@@ -78,7 +85,7 @@ class Attack:
         notes = {'cast_steps': [f0, f1], 'cast_compression': round(k, 2)}
         if steps:
             e = C.to_effect(self.cast_tr, self.packs, steps, vram_tims=C.sheet_tims(self.cast_tr, self.packs),
-                            max_flip=mf)
+                            max_flip=mf, shrink=shrink, max_objects=max_objects)
             casts.append((1, e))
             notes['cast'] = e._drawn.__dict__
         if self.hit_tr is not None:
@@ -87,29 +94,44 @@ class Attack:
             notes.update(hit_steps=[h0, h1], hit_compression=round(hk, 2))
             if hsteps:
                 packs = self.packs[1:] + self.packs[:1]
-                e = C.to_effect(self.hit_tr, packs, hsteps, vram_tims=C.sheet_tims(self.hit_tr, packs), max_flip=mf)
+                e = C.to_effect(self.hit_tr, packs, hsteps, vram_tims=C.sheet_tims(self.hit_tr, packs), max_flip=mf,
+                                shrink=shrink, max_objects=max_objects)
                 hits.append((1, e))
                 notes['hit'] = e._drawn.__dict__
         self.notes = notes
         return casts, hits
 
     def convert(self, table, **kw):
-        """(chunk, info), dropping flipbook frames until the textures fit the chunk."""
+        """(chunk, info): down the LADDER (fewer animated sprite frames, smaller textures, fewer alike objects)
+        until the chunk fits."""
         last = None
-        for mf in (self.max_flip, 2, 1):
-            casts, hits = self.effects(max_flip=mf)
+        for mf, shrink, objs in LADDER:
+            casts, hits = self.effects(max_flip=mf, shrink=shrink, max_objects=objs)
             if not casts and not hits:
                 raise dw2efe.Unconvertible('effect: nothing is ever drawn')
             try:
-                chunk, info = dw2efe.convert_skill(casts, hits, table, EFFECT_ID, SCALE, hit_scale=SCALE, **kw)
+                chunk, info = convert_skill(casts, hits, table, EFFECT_ID, SCALE, hit_scale=SCALE, **kw)
             except dw2efe.Unconvertible as e:
                 last = e
-                if 'slot has' not in str(e):
+                if 'slot has' not in str(e) and 'do not fit' not in str(e):
                     raise
                 continue
-            info = dict(info, flipbook_frames=mf, source=self.notes)
+            info = dict(info, flipbook_frames=mf, texture_shrink=shrink, max_objects=objs, source=self.notes)
             return chunk, info
         raise last
+
+
+def convert_skill(*args, **kw):
+    """dw2efe.convert_skill over LEVELS only."""
+    for n, (step, quant, width, sides) in enumerate(LEVELS):
+        try:
+            chunk, info = dw2efe._convert_skill(*args, step=step, quant=quant, width=width, sides=sides, **kw)
+        except dw2efe.Unconvertible as e:
+            if 'slot has' not in str(e) or n == len(LEVELS) - 1:
+                raise
+            continue
+        info['detail'] = f'step {step} quant {quant} texture {width}'
+        return chunk, info
 
 
 def stage(table, n_enemies=1, dist=STAGE_DIST):
@@ -159,6 +181,7 @@ def original_frames(atk, w=320, h=200, every=2):
         e = C.to_effect(atk.cast_tr, atk.packs, steps, vram_tims=C.sheet_tims(atk.cast_tr, atk.packs), max_flip=99)
         placed.append(D.Placed(e, (0, 0, 0), False, 0, 2 * len(steps)))
     hits_at = 2 * len(steps)
+    cast_end = hits_at
     if atk.hit_tr is not None:
         h0, h1 = window(atk.hit_tr)
         hsteps = list(range(h0, h1))
@@ -170,11 +193,95 @@ def original_frames(atk, w=320, h=200, every=2):
     objs = D.prepare(placed)
     cam = D.Camera(w, h, eye=(14000, -4200, -STAGE_DIST / SCALE / 2), look=(0, -1400, -STAGE_DIST / SCALE / 2))
     out = []
+    original_frames.split = (cast_end + 2 * every - 1) // (2 * every)
     for t in range(0, hits_at, 2 * every):
         im = Image.new('RGB', (w, h))
         im.putdata(D.render_tick(objs, t, cam))
         out.append(im)
     return out
+
+
+BG, POST = (28, 30, 40), (110, 110, 130)
+FIDELITY = {'area': 0.3, 'shown': 0.5, 'box': 0.3, 'curve': 0.0}
+
+
+def lit(im):
+    """Where an effect is drawn in a picture: the pixels that are neither the background nor a fighter post."""
+    out = []
+    w = im.size[0]
+    for i, px in enumerate(im.get_flattened_data() if hasattr(im, "get_flattened_data") else im.getdata()):
+        if max(abs(a - b) for a, b in zip(px, BG)) > 40 and max(abs(a - b) for a, b in zip(px, POST)) > 12:
+            out.append((i % w, i // w, sum(px)))
+    return out
+
+
+def _bins(values, n):
+    if not values:
+        return [0.0] * n
+    return [sum(values[len(values) * k // n:max(len(values) * k // n + 1, len(values) * (k + 1) // n)]) /
+            max(1, len(values[len(values) * k // n:max(len(values) * k // n + 1, len(values) * (k + 1) // n)]))
+            for k in range(n)]
+
+
+def _corr(a, b):
+    ma, mb = sum(a) / len(a), sum(b) / len(b)
+    va = sum((x - ma) ** 2 for x in a) ** .5
+    vb = sum((y - mb) ** 2 for y in b) ** .5
+    return sum((x - ma) * (y - mb) for x, y in zip(a, b)) / (va * vb) if va and vb else 0.0
+
+
+def fidelity(orig, conv, bins=20):
+    """How much of the original the converted chunk shows, both rendered on the same stage and camera.
+    area: mean drawn area (converted / original); shown: the share of the original's busy moments in which the
+    converted chunk draws something too; box: overlap of the areas they ever cover (intersection / the smaller one; sizes are judged by area);
+    curve: correlation of the drawn area over (normalised) time; energy: like area, weighted by brightness.
+    passed is False when the converted chunk is mostly empty, drops parts or draws elsewhere."""
+    def stats(frames):
+        area, energy, box = [], [], None
+        for im in frames:
+            pts = lit(im)
+            area.append(len(pts))
+            energy.append(sum(p[2] for p in pts))
+            if pts:
+                xs, ys = [p[0] for p in pts], [p[1] for p in pts]
+                b = (min(xs), min(ys), max(xs), max(ys))
+                box = b if box is None else (min(box[0], b[0]), min(box[1], b[1]), max(box[2], b[2]), max(box[3], b[3]))
+        return _bins(area, bins), _bins(energy, bins), box
+    oa, oe, ob = stats(orig)
+    ca, ce, cb = stats(conv)
+    mo, mc = sum(oa) / bins, sum(ca) / bins
+    busy = [k for k in range(bins) if oa[k] > 0.1 * max(oa)] if max(oa) else []
+    shown = sum(1 for k in busy if ca[k] > 0.05 * max(oa)) / len(busy) if busy else 0.0
+    box = 0.0
+    if ob and cb:
+        ix = max(0, min(ob[2], cb[2]) - max(ob[0], cb[0])) * max(0, min(ob[3], cb[3]) - max(ob[1], cb[1]))
+        u = min((ob[2] - ob[0]) * (ob[3] - ob[1]), (cb[2] - cb[0]) * (cb[3] - cb[1]))
+        box = min(1.0, ix / u) if u else 0.0
+    r = {'area': round(mc / mo, 3) if mo else 0.0,
+         'energy': round(sum(ce) / sum(oe), 3) if sum(oe) else 0.0,
+         'shown': round(shown, 3), 'box': round(box, 3), 'curve': round(_corr(oa, ca), 3)}
+    r['failed'] = [k for k, lim in FIDELITY.items() if r[k] < lim]
+    r['passed'] = not r['failed']
+    return r
+
+
+def fidelity_parts(orig, conv, osplit, csplit):
+    """fidelity() of the whole, the cast (before the hit) and the hit, compared part with part: a chunk passes
+    only when every part the original draws is drawn too."""
+    r = {'whole': fidelity(orig, conv)}
+    for name, o, c in (('cast', orig[:osplit], conv[:csplit]), ('hit', orig[osplit:], conv[csplit:])):
+        if o and any(lit(im) for im in o[::max(1, len(o) // 12)]):
+            r[name] = fidelity(o, c) if c else {'passed': False, 'failed': ['missing']}
+    r['passed'] = all(v['passed'] for v in r.values() if isinstance(v, dict))
+    r['failed'] = [f'{k} {x}' for k, v in r.items() if isinstance(v, dict) for x in v['failed']]
+    return r
+
+
+def pick(frames, split, n=8):
+    """n pictures of the cast and n of the hit, evenly spread."""
+    def even(f):
+        return [f[len(f) * k // n] for k in range(n)] if len(f) >= n else list(f)
+    return even(frames[:split]) + even(frames[split:])
 
 
 def sheet(frames, cols=8, label=None):
@@ -272,16 +379,20 @@ def main(argv=None):
         sim = simulate(chunk, table)
         conv = converted_frames(chunk, sim)
         orig = original_frames(atk)
-        sheet(orig[::max(1, len(orig) // 16)][:16], label=f'{a.name} DCB (traced)').save(base + '-dcb.png')
-        sheet(conv[::max(1, len(conv) // 16)][:16], label=f'{a.name} DW1 (converted)').save(base + '-dw1.png')
+        osplit = original_frames.split
+        csplit = min((h[0] for h in sim.hits), default=rec.get('cast_ticks', len(conv)))
+        rec['fidelity'] = fidelity_parts(orig, conv, osplit, csplit)
+        json.dump(rec, open(base + '.json', 'w'), indent=1, default=str)
+        sheet(pick(orig, osplit), label=f'{a.name} DCB (traced)').save(base + '-dcb.png')
+        sheet(pick(conv, csplit), label=f'{a.name} DW1 (converted)').save(base + '-dw1.png')
         fd = base + '-frames'
         os.makedirs(fd, exist_ok=True)
         for i, im in enumerate(conv):
             im.save(os.path.join(fd, f'dw1-{i:03d}.png'))
         for i, im in enumerate(orig):
             im.save(os.path.join(fd, f'dcb-{i:03d}.png'))
-    print(a.name, len(chunk), rec.get('detail'), rec.get('flipbook_frames'))
-    return 0
+    print(a.name, len(chunk), rec.get('detail'), rec.get('flipbook_frames'), rec.get('fidelity'))
+    return 0 if rec.get('fidelity', {}).get('passed', True) else 2
 
 
 if __name__ == '__main__':
