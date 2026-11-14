@@ -84,11 +84,11 @@ class HiAndromonNative(unittest.TestCase):
             self.assertEqual(len(own), len(native), slot)
             self.assertAlmostEqual(self.speed(own), self.speed(native)*scale, delta=.3)
 
-    def test_the_run_is_retimed_to_the_native_range_and_follows_the_battle_run(self):
+    def test_the_run_is_retimed_to_the_native_range(self):
         own = self.frames(4)
         self.assertEqual(len(own) - 1, self.recipe['pace']['4']['ticks'])
         self.assertAlmostEqual(self.speed(own), self.recipe['pace']['4']['speed'], delta=.5)
-        self.assertEqual(self.model.anims.table[36], self.model.anims.table[4])
+        self.assertIn(36, self.recipe['battle_originals']['slots'])     # the battle run is the source's own
         # at this scale the donor's own run would be faster than the range: its stride is kept over more ticks
         native = self.frames(4, self.native)
         self.assertGreater(self.speed(native)*self.recipe['scale'], 52)
@@ -137,6 +137,15 @@ class HiAndromonNative(unittest.TestCase):
         self.assertTrue(0 <= patch['condition_bubble'][3] < BONES)
         for row in patch['effect_origins']:
             self.assertTrue(0 <= row[4] < BONES, row)
+
+    def test_battle_originals(self):
+        # the source game's own battle clips, retargeted onto the donor rig (native_battle.py); one-shot clips keep the
+        # length of the donor's clip they replace, since technique effects are timed to it
+        made = self.proof['battle_originals']
+        self.assertEqual(sorted(int(s) for s in made), self.recipe['battle_originals']['slots'])
+        for slot, row in made.items():
+            if int(slot) not in (33, 34):
+                self.assertEqual(row['frames'], row['donor_frames'])
 
     def test_the_buffer_holds(self):
         info = motionstorage.require(self.data, BONES)

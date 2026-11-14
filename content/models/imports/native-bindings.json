@@ -910,7 +910,19 @@
         -55
       ]
     },
-    "bind_slot": 0
+    "bind_slot": 0,
+    "battle_originals": {
+      "slots": [
+        33,
+        34,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ]
+    }
   },
   "241": {
     "species": 241,
@@ -2634,9 +2646,7 @@
           0
         ],
         "original_run": true,
-        "alias": [
-          33
-        ]
+        "alias": []
       },
       "3": {
         "from": 2,
@@ -2729,6 +2739,12 @@
           9,
           28
         ]
+      ]
+    },
+    "battle_originals": {
+      "slots": [
+        33,
+        42
       ]
     }
   },
@@ -3508,6 +3524,26 @@
           -4
         ]
       ]
+    },
+    "battle_originals": {
+      "slots": [
+        33,
+        35,
+        36,
+        40,
+        41,
+        42,
+        44,
+        48,
+        49,
+        52,
+        53,
+        54,
+        56
+      ],
+      "compact": {
+        "tol": 0
+      }
     }
   },
   "303": {
@@ -3953,6 +3989,14 @@
         67,
         7,
         4
+      ]
+    },
+    "battle_originals": {
+      "slots": [
+        33,
+        34,
+        51,
+        61
       ]
     }
   },
@@ -4734,6 +4778,13 @@
           0,
           0
         ]
+      ]
+    },
+    "battle_originals": {
+      "slots": [
+        33,
+        34,
+        35
       ]
     }
   },
@@ -5805,7 +5856,6 @@
       56
     ],
     "extra_slots": {
-      "33": 0,
       "57": 49,
       "58": 49,
       "59": 49,
@@ -5849,9 +5899,7 @@
         ],
         "ground": true,
         "smooth": 1,
-        "alias": [
-          36
-        ]
+        "alias": []
       }
     },
     "gait": "raijinmon_gait",
@@ -5903,6 +5951,15 @@
           -23,
           77
         ]
+      ]
+    },
+    "battle_originals": {
+      "slots": [
+        33,
+        34,
+        36,
+        47,
+        48
       ]
     }
   },
@@ -6250,6 +6307,11 @@
           -87
         ]
       ]
+    },
+    "battle_originals": {
+      "slots": [
+        34
+      ]
     }
   },
   "405": {
@@ -6528,7 +6590,18 @@
         ]
       ]
     },
-    "gait": "cannondramon_gait"
+    "gait": "cannondramon_gait",
+    "battle_originals": {
+      "slots": [
+        33,
+        34,
+        40,
+        41,
+        47,
+        54,
+        58
+      ]
+    }
   },
   "409": {
     "species": 409,
@@ -6759,7 +6832,21 @@
       ],
       "effect_origins": []
     },
-    "gait": "kyubimon_donor_gait"
+    "gait": "kyubimon_donor_gait",
+    "battle_originals": {
+      "slots": [
+        33,
+        46,
+        47,
+        48,
+        49,
+        51,
+        56
+      ],
+      "compact": {
+        "tol": 0
+      }
+    }
   },
   "430": {
     "species": 430,

@@ -121,17 +121,19 @@ class ChaosLordNative(unittest.TestCase):
         return [[4096]*3 + pose[0][3:6] + [0, 0, 0]] + [list(v) for v in pose[1:]]
 
     def test_run_and_idle_are_the_original_ones_in_world_space(self):
-        for slot, alias in ((4, 36), (0, 33)):
+        for slot, alias in ((4, 36), (0, None)):     # the battle idle 33 is the source's own (battle_originals)
             with self.subTest(slot=slot):
                 self.world_space(slot, alias)
 
     def world_space(self, slot, alias):
         original, skeleton, old, rest_source = self.original_run(slot)
         new = animsheet.slot_frames(self.model, BONES, slot)[0]
-        self.assertEqual(self.model.anims.table[alias], self.model.anims.table[slot])
+        if alias is not None:
+            self.assertEqual(self.model.anims.table[alias], self.model.anims.table[slot])
         self.assertEqual(len(old), len(new))
         row = self.recipe['pace'][str(slot)]
-        self.assertEqual((row['ticks'], row['alias'], row['original_run']), (len(old) - 1, [alias], True))
+        aliases = [] if alias is None else [alias]
+        self.assertEqual((row['ticks'], row['alias'], row['original_run']), (len(old) - 1, aliases, True))
         rest_donor = self.donor_idle()[0]
         rest_source = self.still(rest_source)
         rest_donor = self.still(rest_donor)
@@ -206,6 +208,15 @@ class ChaosLordNative(unittest.TestCase):
         self.assertTrue(0 <= patch['condition_bubble'][3] < BONES)
         for row in patch['effect_origins']:
             self.assertTrue(0 <= row[0] < BONES and 0 <= row[4] < BONES, row)
+
+    def test_battle_originals(self):
+        # the source game's own battle clips, retargeted onto the donor rig (native_battle.py); one-shot clips keep the
+        # length of the donor's clip they replace, since technique effects are timed to it
+        made = self.proof['battle_originals']
+        self.assertEqual(sorted(int(s) for s in made), self.recipe['battle_originals']['slots'])
+        for slot, row in made.items():
+            if int(slot) not in (33, 34):
+                self.assertEqual(row['frames'], row['donor_frames'])
 
     def test_the_buffer_holds(self):
         info = motionstorage.require(self.data, BONES)

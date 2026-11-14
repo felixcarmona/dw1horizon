@@ -22,7 +22,7 @@ BONES = 24
 BUFFER = 100352
 TICKS = {0: 47, 2: 14, 3: 20, 4: 12}                     # idle, walk, condition walk, run
 SPEEDS = {2: 15.0, 3: 10.5, 4: 36.0}                     # the gait stage's units per tick
-TARGET_SHA256 = '9ae2236f464d0f0852f969dd401b15b6c60badee2a20f7914b77aec3d2c1b9cb'
+TARGET_SHA256 = '348c7bb5d17adbf1e566d979e086000eca8f344fbd9a44a6ca0a27e4241cdd97'
 
 
 class CannondramonNative(unittest.TestCase):
@@ -134,11 +134,20 @@ class CannondramonNative(unittest.TestCase):
             self.assertTrue(0 <= row[4] < BONES, row)
             self.assertTrue(0 <= row[0] < BONES, row)
 
+    def test_battle_originals(self):
+        # the source game's own battle clips, retargeted onto the donor rig (native_battle.py); one-shot clips keep the
+        # length of the donor's clip they replace, since technique effects are timed to it
+        made = self.proof['battle_originals']
+        self.assertEqual(sorted(int(s) for s in made), self.recipe['battle_originals']['slots'])
+        for slot, row in made.items():
+            if int(slot) not in (33, 34):
+                self.assertEqual(row['frames'], row['donor_frames'])
+
     def test_the_buffer_holds(self):
         info = motionstorage.require(self.data, BONES)
         self.assertTrue(info['fits'])
         self.assertLess(info['resident_bytes'], BUFFER)
-        self.assertEqual(info['resident_bytes'], 87984)
+        self.assertEqual(info['resident_bytes'], 98732)
         for read in info['cold_reads']:
             self.assertTrue(read['fits'], read)
 
