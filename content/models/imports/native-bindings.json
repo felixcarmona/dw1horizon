@@ -2392,6 +2392,14 @@
       "61": 46,
       "62": 48
     },
+    "battle_originals": {
+      "slots": [
+        33
+      ],
+      "ride": [
+        23
+      ]
+    },
     "species_patch": {
       "condition_bubble": [
         -151,

@@ -66,6 +66,11 @@ class NativeBattle(unittest.TestCase):
         self.assertEqual(native_battle.lead_tops({4}, skeleton, {4}), [4])
         recipe = {"pieces": {"4": {"aim": {}}, "3": {"offset": [0, 0, 0]}}, "mirror": {"9": 4, "8": 3}}
         self.assertEqual(native_battle.fixed_pieces(recipe), {4, 9})
+        # a battle_originals `ride` piece rides its bone without leading it
+        recipe["battle_originals"] = {"slots": [33], "ride": [5]}
+        self.assertEqual(native_battle.fixed_pieces(recipe), {4, 5, 9})
+        self.assertEqual(native_battle.lead_tops({2, 5}, [(-1, -1), (0, 0), (1, 1), (2, 1), (3, 1), (4, 1)],
+                                                 native_battle.fixed_pieces(recipe)), [2])
 
     def test_posture_skips_bones_that_hold_only_limbs(self):
         # the QA's body bones exclude a donor bone carrying only source limb bones (a hand holding an arm's head)

@@ -309,9 +309,12 @@ def context(mesh, skeleton, source_pose, yaw, rig, rest, pieces, leads, mapping,
 
 def fixed_pieces(recipe):
     """The source pieces a binding recipe sets whole in a reviewed orientation (a piece rule's `aim`), and their
-    mirrors (`mirror`: a piece placed as the reflection of its twin)."""
+    mirrors (`mirror`: a piece placed as the reflection of its twin), and the pieces `battle_originals.ride` lists: a
+    piece that shares a donor bone with a larger one but moves on its own in the source (a small spinning quad inside a
+    body) rides that bone and does not pull its turn."""
     aimed = {int(k) for k, rule in recipe.get('pieces', {}).items() if 'aim' in rule}
-    return aimed | {int(k) for k, twin in recipe.get('mirror', {}).items() if int(twin) in aimed}
+    ride = {int(b) for b in recipe.get('battle_originals', {}).get('ride', [])}
+    return aimed | {int(k) for k, twin in recipe.get('mirror', {}).items() if int(twin) in aimed} | ride
 
 
 def lead_tops(group, skeleton, fixed=()):

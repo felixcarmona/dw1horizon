@@ -321,7 +321,8 @@ A recipe's `"battle_originals": {"slots": [...]}` retargets the source game's ow
 donor rig after the bind (`field_animations/native_battle.py`; the rule is in `docs/reference/motion.md`, "Natively bound
 species"). Prove every slot with `battle_qa_native.py check ID FINAL B.MMD MAIN.MMD [--slots ...] [--json OUT]` (B is
 the binding's source, MAIN main's final model) and list only the passing slots that keep the resident buffer under
-100,352 B; `"compact": {"tol": N}` (N at most 5) makes room without touching field or battle slots. Used by 183, 205, 232,
+100,352 B; `"compact": {"tol": N}` (N at most 5) makes room without touching field or battle slots; `"ride": [pieces]`
+lists source pieces that ride their donor bone without leading its turn (PrinceMamemon's quad inside the sphere). Used by 183, 205, 232,
 241, 242, 256, 260, 295, 310, 324, 326, 330, 430 and 460.
 
 BomberNanimon (232) wears native Nanimon's (53, `NANI.MMD`) 20-bone skeleton and every animation program, unchanged
