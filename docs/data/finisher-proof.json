@@ -10,7 +10,7 @@
   },
   "5": {
    "finisher": 63,
-   "enemy_damage": 583
+   "enemy_damage": 594
   },
   "6": {
    "finisher": 62,
@@ -22,11 +22,11 @@
   },
   "8": {
    "finisher": 58,
-   "enemy_damage": 550
+   "enemy_damage": 512
   },
   "9": {
    "finisher": 61,
-   "enemy_damage": 518
+   "enemy_damage": 502
   },
   "10": {
    "finisher": 88,
@@ -44,9 +44,14 @@
    "finisher": 68,
    "enemy_damage": 1345
   },
+  "14": {
+   "finisher": 60,
+   "enemy_damage": 1272,
+   "note": "hit in only some emulator trials (1 of 3 to 8): the clip often misses its target"
+  },
   "17": {
    "finisher": 99,
-   "enemy_damage": 497
+   "enemy_damage": 456
   },
   "18": {
    "finisher": 101,
@@ -66,7 +71,7 @@
   },
   "22": {
    "finisher": 64,
-   "enemy_damage": 549
+   "enemy_damage": 598
   },
   "23": {
    "finisher": 105,
@@ -75,6 +80,11 @@
   "24": {
    "finisher": 90,
    "enemy_damage": 804
+  },
+  "25": {
+   "finisher": 72,
+   "enemy_damage": 1624,
+   "note": "hit in only some emulator trials (1 of 3 to 8): the clip often misses its target"
   },
   "26": {
    "finisher": 80,
@@ -138,7 +148,7 @@
   },
   "46": {
    "finisher": 98,
-   "enemy_damage": 1503
+   "enemy_damage": 1786
   },
   "47": {
    "finisher": 104,
@@ -231,6 +241,11 @@
   "69": {
    "finisher": 61,
    "enemy_damage": 518
+  },
+  "70": {
+   "finisher": 60,
+   "enemy_damage": 1335,
+   "note": "hit in only some emulator trials (1 of 3 to 8): the clip often misses its target"
   },
   "71": {
    "finisher": 95,
@@ -1086,9 +1101,6 @@
   }
  },
  "unproven": {
-  "14": "every finisher tried (Lovely Attack, Death Claw, Pummel Whack) deals 0 damage in the emulator; cause not found",
-  "25": "every finisher tried (Sweet Breath, Bit Bomb, Poison Ivy) deals 0 damage in the emulator; cause not found",
-  "41": "every finisher tried (Deadly Bomb, Genoside Attack) deals 0 damage in the emulator; cause not found",
-  "70": "every finisher tried (Lovely Attack, Fireball, Death Claw, Genoside Attack, Pummel Whack, Nightmare Syndromer, Bit Bomb) deals 0 damage in the emulator; cause not found"
+  "41": "Deadly Bomb (its only technique with an origin row) is a burst centred on Giromon: 0 damage in 17 emulator trials, also with the enemy moved beside it; cause not found"
  }
 }
