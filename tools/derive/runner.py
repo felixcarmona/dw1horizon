@@ -205,7 +205,9 @@ class Unit:
                        the shared files, so its own outputs are the same whichever units ran before it. Only the version
                        a shared path ends with depends on the order (the last writer of the recorded order). A runner
                        that keeps every unit's writes apart and gives a shared path the last writer's version (the web
-                       engine's registry) may start such units in any order; this runner keeps the sequence.
+                       engine's registry) may start such units in any order; this runner starts them side by side
+                       too (group_waits), the last unit of the group waiting for all the others, and --strict or
+                       --record keep the sequence. The units of a group must write the same shared paths.
     """
     def __init__(self, name, fn, args=(), inputs=(), outputs=(), order_group=None, record_snapshot=False,
                  independent_start=False):
