@@ -233,6 +233,10 @@
       {"op": "turn", "bone": 18, "axis": "x", "deg": 20.0},
       {"op": "turn", "bone": 19, "axis": "x", "deg": 20.0}
     ]},
+    "35": {"ticks": 25, "ops": [
+      {"op": "turn", "bone": 23, "axis": "z", "deg": 30.0},
+      {"op": "turn", "bone": 26, "axis": "z", "deg": -30.0}
+    ]},
     "36": {"ticks": 21, "ops": [
       {"op": "turn", "bone": 23, "axis": "z", "deg": 25.0},
       {"op": "turn", "bone": 26, "axis": "z", "deg": -25.0}
@@ -267,6 +271,36 @@
   "291": {
     "36": {"ticks": 21, "ops": [
       {"op": "turn", "bone": 3, "axis": "x", "deg": -22}
+    ]}
+  },
+  "294": {
+    "33": {"ticks": null, "ops": [
+      {"op": "damp", "bone": 2, "keep": 0.8, "to": "mean"},
+      {"op": "damp", "bone": 3, "keep": 0.8, "to": "mean"},
+      {"op": "damp", "bone": 4, "keep": 0.8, "to": "mean"},
+      {"op": "damp", "bone": 5, "keep": 0.8, "to": "mean"},
+      {"op": "damp", "bone": 6, "keep": 0.8, "to": "mean"},
+      {"op": "damp", "bone": 7, "keep": 0.8, "to": "mean"},
+      {"op": "damp", "bone": 8, "keep": 0.8, "to": "mean"},
+      {"op": "damp", "bone": 9, "keep": 0.8, "to": "mean"},
+      {"op": "damp", "bone": 10, "keep": 0.8, "to": "mean"},
+      {"op": "damp", "bone": 11, "keep": 0.8, "to": "mean"},
+      {"op": "damp", "bone": 12, "keep": 0.8, "to": "mean"},
+      {"op": "damp", "bone": 13, "keep": 0.8, "to": "mean"},
+      {"op": "damp", "bone": 14, "keep": 0.8, "to": "mean"},
+      {"op": "damp", "bone": 15, "keep": 0.8, "to": "mean"},
+      {"op": "damp", "bone": 16, "keep": 0.8, "to": "mean"},
+      {"op": "damp", "bone": 17, "keep": 0.8, "to": "mean"},
+      {"op": "damp", "bone": 18, "keep": 0.8, "to": "mean"},
+      {"op": "damp", "bone": 19, "keep": 0.8, "to": "mean"},
+      {"op": "damp", "bone": 20, "keep": 0.8, "to": "mean"},
+      {"op": "damp", "bone": 21, "keep": 0.8, "to": "mean"},
+      {"op": "damp", "bone": 22, "keep": 0.8, "to": "mean"},
+      {"op": "damp", "bone": 23, "keep": 0.8, "to": "mean"},
+      {"op": "damp", "bone": 24, "keep": 0.8, "to": "mean"},
+      {"op": "damp", "bone": 25, "keep": 0.8, "to": "mean"},
+      {"op": "damp", "bone": 26, "keep": 0.8, "to": "mean"},
+      {"op": "damp", "bone": 27, "keep": 0.8, "to": "mean"}
     ]}
   },
   "304": {
@@ -327,6 +361,11 @@
       {"op": "lift", "bone": 1, "up": 75}
     ]}
   },
+  "318": {
+    "36": {"ticks": 19, "ops": [
+      {"op": "turn", "bone": 19, "axis": "x", "deg": -16}
+    ]}
+  },
   "321": {
     "36": {"ticks": 17, "ops": [
       {"op": "turn", "bone": 13, "axis": "x", "deg": -17},
@@ -343,6 +382,10 @@
     "36": {"ticks": 25, "ops": [
       {"op": "turn", "bone": 7, "axis": "x", "deg": -25},
       {"op": "turn", "bone": 11, "axis": "x", "deg": -25}
+    ]}
+  },
+  "328": {
+    "36": {"ticks": 23, "ops": [
     ]}
   },
   "336": {

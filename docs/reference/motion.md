@@ -133,12 +133,26 @@ Tortomon 0x23/0x24 (the front leg the source never moved takes its twin's swing,
 tired idle leaned back, 49 degrees down to 20; the stiff tail wags 6 degrees), SkullMammothmon 0x22 (the same lean; crossings
 168 down to 20 with the thighs and head turned) and 0x24 (the thighs turned out 25-30 degrees and the tail up: crossings 170
 down to 61 against main's 69), Woodmon 0x23 (the claw's one-tick snap smoothed, 0.38 down to 0.24)
-play the source's own clips now. SkullMammothmon 0x23 stays main's: with all three rebuilt the species is 1382 B over the resident
-buffer (101734 B against 100352 B, after exact compaction, which is the only room allowed), so the pair with the biggest gain
-ships (99414 B). Floramon 0x24 stays main's: the source's run passes at the 61 ticks the slot has, but the field pace's pins
-have no supported tool to move. Garbagemon's
+play the source's own clips now. SkullMammothmon 0x23 was left out at first (all three rebuilt were 1382 B over the resident
+buffer, 101734 B after exact compaction); it now ships too, see "Last gaps" below. Floramon 0x24 is the source's run at the 61 ticks the slot has (row `"36": ticks 61`, shipped). Garbagemon's
 0x22-0x24 are the source's clips with the can held at its attachment (`garbagemon.py`): only the can's bone differs, so there is
 nothing to restore.
+**Last gaps (batch 54).** Datamon 0x21, SkullMammothmon 0x23, Snimon 0x24 and Gallantmon 0x24 are now the source's clips; each passes
+`battle_qa` on the final model, its field slots 0-4 and every other battle slot decode tick for tick as before, and the mesh is
+unchanged. Resident bytes (limit 100,352): Datamon 0x21 (the source's 27-tick idle with every bone but the root and body damped to
+0.8 of its swing) 99,760 main, 104,628 rebuilt, 102,242 after exact compaction, so the care and technique clips that are neither
+field slots nor 0x21-0x24 took a 5-unit lossy compaction (11/42, 27, 43-61): 100,334. SkullMammothmon 0x23 (25 ticks, the
+neck and tail turned 30 degrees) 99,414 main, 101,740 rebuilt, 101,734 exact; tolerance 4 on the technique clips: 100,318.
+Gallantmon 0x24 (the source's 19-tick run, torso turned back 16 degrees on bone 19: it was tipped 27 degrees off the field idle,
+main 12) 102,256 rebuilt, 101,536 exact; tolerance 3 on clips 21, 43, 44 and 60: 100,252. Snimon 0x24 (23 ticks) 101,930 rebuilt,
+101,874 exact, still 1,010 B over at tolerance 5, so the technique clip in slot 0x3b is dropped: the game reads technique slot
+0x2E + i for the i-th entry of the species' move list (`DIGIMON_DATA[type].moves[queuedAnim - 0x2e]`), Snimon lists 13 moves
+(last slot 0x3a), and scripts only play slots up to 0x2C, so nothing can start 0x3b; resident 97,588 B, no lossy compaction. The
+lossy compaction moves no bone more than 5 units (0.44 degrees) nor any root by more than 5 units. Divermon 0x23 stays main's:
+the source's walk fails `battle_qa` (the rear legs 15-17 are still, 0.000 heights against the field gait's 0.103), and even with
+the 17-tick row it needs 101,426 B (101,204 B at tolerance 5, 852 B over; all 14 technique slots are reachable, nothing to
+drop). Floramon 0x24 already shipped (61 ticks, `battle_qa` pass on main).
+
 Rebuilt battle clips (the source's own movement, repaired with the operations in `tools/models/clip_repair.py`, rows in
 `content/models/imports/battle-rebuilds.json`): the movement and run clips of Veemon (0x23/0x24), MetalGarurumon
 (0x23/0x24), Nefertimon (0x23/0x24), Imperialdramon (0x24), Pegasusmon (0x23) and Lighdramon (0x24), and Halsemon's
@@ -266,7 +280,7 @@ under 127 ticks, slot 1 no longer than main's), the floor (under the field idle'
 idle dips under its mean floor) and the resident buffer. A flagged clip is kept only when no flagged number is worse
 than main's same slot. Tests: `tools/test_care_qa.py` (`CARE_QA_MODELS` runs it on a folder of real models).
 
-Datamon 294 0x21 stays main's: the source's own 27-tick marching idle is frantic on our rig (6.4 degrees a tick against the 5.4
+Datamon 294 0x21 (now shipped, see "Last gaps" below): the source's own 27-tick marching idle is frantic on our rig (6.4 degrees a tick against the 5.4
 limit and main's 0.4), and with every bone but the root and the body damped to 0.8 of its swing (`damp`) it passes `battle_qa`
 (speed 5.2, vertex step 0.09 h, loop seam 0.03 h, crossings 3.3 a tick), but the extra 4.9 KB program brings the resident part to
 102,242 B after exact compaction of every clip, 1,890 B over 100,352 (only a lossy 5-unit compaction of the care and technique clips fits).
@@ -295,7 +309,7 @@ of their own (1.3-3.2 KB at the coarsest encoding the planner tries, 16 units) o
 (exact compaction frees 56 and 162 B; their own tired clip would need 222 and 202 B more even at tolerance 16), so a row's
 `share` points slots 1 and 18 at the program slots 14-17 already play, the donor's own condition clip (0 extra bytes; care_qa
 pass, 0.13 and 0.18 heights off the idle; resident 99,332 and 99,484 B). Their other condition slots stay as they were.
-Their battle slots 0x24 (Snimon: the source clip passes `battle_qa`, but 101,884 B resident after exact compaction) and
+Their battle slots 0x24 (Snimon: the source clip passes `battle_qa`; it ships since the technique clip the species can never play was dropped, see "Last gaps") and
 0x21 (Apocalymon: crossings 577 a tick against main's 70 on the reshaped rig, and 103,320 B) stay main's.
 Bodies whose limbs read as legs (a squid's eight arms, a sun's two hands: every bone is then a leg or hangs from one, so the
 planner found no free bone) name them to the planner (`--limbs` the first bone of each such chain, `--head`, `--lean`): they droop
