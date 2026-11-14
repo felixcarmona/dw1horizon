@@ -313,7 +313,7 @@ and Sorcermon's builder runs it once, after its cape and hair followers, which s
 and dead tails dropped. Field and battle slots decode exactly as before. Wizardmon 241 (tol 5): 0x21-0x23,
 0x28-0x2B, 0x34, 0x35, 0x37 (99,770 B; its training clip 0x39 stays Angemon's). Sorcermon 242 (tol 2): 0x21, 0x22,
 0x2E, 0x30, 0x33, 0x38 (98,358 B). Assaultmon 310 (tol 5): 0x21, 0x22, 0x28, 0x29, 0x2B, 0x2C, 0x2E-0x35, 0x3B
-(99,076 B). Maildramon 324 (tol 5): 0x21, 0x23, 0x24, 0x2B, 0x2C, 0x2F, 0x32 (99,862 B). WarGrowlmon 326 (tol 4):
+(99,076 B). Maildramon 324: every battle slot (89,726 B at exact compaction): 0x30, 0x31, 0x33-0x36 play 0x32's clip and 0x37 0x2F's (`share`, as in the source); 0x28 and 0x29 at 32 ticks and 0x2A at 49 (`ticks`: the donor's lengths would resample the source's 20 and 31 ticks by 3.3, 3.0 and 2.2; 0x35's own 81 ticks would be 2.0, so it plays 0x32's 35). Repairs: in 0x22 the body turned 10 degrees (bone 8 x) off the leg, 18 crossings a tick against main's 0, now 2; in 0x38 the body turned back 4 degrees, its mean elevation 44 off the idle (limit 41), now 40. WarGrowlmon 326 (tol 4):
 0x22, 0x28-0x2C (100,108 B).
 
 The care and condition slots (1 and 14-19 the condition idles; 5, 7-13, 0x16, 0x1B and 0x25 the care clips) are measured
