@@ -1500,8 +1500,8 @@
     "power": 900
    },
    "replaces": {
-    "id": 112,
-    "name": "High Electro Shocker"
+    "id": 61,
+    "name": "Fireball"
    },
    "behavior": {
     "kind": "rain",
@@ -2269,8 +2269,8 @@
     "power": 620
    },
    "replaces": {
-    "id": 62,
-    "name": "Death Claw"
+    "id": 75,
+    "name": "Drill Spin"
    },
    "behavior": {
     "kind": "rain",
@@ -2749,8 +2749,8 @@
     "power": 300
    },
    "replaces": {
-    "id": 59,
-    "name": "Pepper Breath"
+    "id": 61,
+    "name": "Fireball"
    },
    "behavior": {
     "kind": "shot",
@@ -3278,8 +3278,8 @@
     "power": 730
    },
    "replaces": {
-    "id": 112,
-    "name": "High Electro Shocker"
+    "id": 61,
+    "name": "Fireball"
    },
    "behavior": {
     "kind": "rain",
@@ -3374,8 +3374,8 @@
     "power": 610
    },
    "replaces": {
-    "id": 74,
-    "name": "Deadly Bomb"
+    "id": 78,
+    "name": "Genoside Attack"
    },
    "behavior": {
     "kind": "shot",
@@ -4503,8 +4503,8 @@
     ]
    },
    "replaces": {
-    "id": 112,
-    "name": "High Electro Shocker"
+    "id": 96,
+    "name": "Nightmare Syndromer"
    },
    "behavior": {
     "kind": "area",
@@ -5588,8 +5588,8 @@
     ]
    },
    "replaces": {
-    "id": 112,
-    "name": "High Electro Shocker"
+    "id": 61,
+    "name": "Fireball"
    },
    "behavior": {
     "kind": "area",
@@ -5659,8 +5659,8 @@
     ]
    },
    "replaces": {
-    "id": 63,
-    "name": "Mega Flame"
+    "id": 61,
+    "name": "Fireball"
    },
    "behavior": {
     "kind": "breath",
@@ -6291,8 +6291,8 @@
     ]
    },
    "replaces": {
-    "id": 74,
-    "name": "Deadly Bomb"
+    "id": 78,
+    "name": "Genoside Attack"
    },
    "behavior": {
     "kind": "shot",
@@ -6773,8 +6773,8 @@
     "name": null
    },
    "replaces": {
-    "id": 72,
-    "name": "Sweet Breath"
+    "id": 73,
+    "name": "Bit Bomb"
    },
    "behavior": {
     "kind": "shot",
@@ -8016,8 +8016,8 @@
     "name": "Atomic Blaster"
    },
    "replaces": {
-    "id": 77,
-    "name": "Energy Bomb"
+    "id": 80,
+    "name": "Dark Shot"
    },
    "behavior": {
     "kind": "beam",
@@ -8336,8 +8336,8 @@
     "name": null
    },
    "replaces": {
-    "id": 74,
-    "name": "Deadly Bomb"
+    "id": 78,
+    "name": "Genoside Attack"
    },
    "behavior": {
     "kind": "area",
@@ -8475,8 +8475,8 @@
     "name": null
    },
    "replaces": {
-    "id": 112,
-    "name": "High Electro Shocker"
+    "id": 61,
+    "name": "Fireball"
    },
    "behavior": {
     "kind": "beam",
@@ -9307,8 +9307,8 @@
     "name": null
    },
    "replaces": {
-    "id": 72,
-    "name": "Sweet Breath"
+    "id": 73,
+    "name": "Bit Bomb"
    },
    "behavior": {
     "kind": "shot",
@@ -9353,8 +9353,8 @@
     "name": null
    },
    "replaces": {
-    "id": 60,
-    "name": "Lovely Attack"
+    "id": 62,
+    "name": "Death Claw"
    },
    "behavior": {
     "kind": "beam",

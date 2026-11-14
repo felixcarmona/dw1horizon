@@ -1,47 +1,38 @@
-From 7bcdf660684a78163d828a58b84ea711c88bd916 Mon Sep 17 00:00:00 2001
+From d635d60f20b2cc980e8772ebf0efce8e24cf73da Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Sat, 14 Nov 2026 14:00:35 +0000
 Subject: [PATCH] Give each species its own finisher numbers and name
 
 ---
- include/dw/species.h      | 30 ++++++++++++-
- src/btl/battle_hud.c      |  3 +-
- src/btl/battle_main.c     | 89 ++++++++++++++++++++++++++++-----------
- src/btl/command_shout.c   |  5 ++-
- src/main/btl.c            |  4 ++
- src/main/game_menu.c      | 14 +++---
- src/main/mod_species.c    | 54 ++++++++++++++++++++++++
- src/main/script_textbox.c |  6 ++-
- src/std/std_main.c        | 68 ++++++++++++++++--------------
- src/vs/vs_combat.c        | 10 +++--
- src/vs/vs_main.c          | 52 ++++++++++++-----------
- 11 files changed, 241 insertions(+), 94 deletions(-)
+ include/dw/species.h    | 23 ++++++++++-
+ src/btl/battle_hud.c    |  3 +-
+ src/btl/battle_main.c   | 85 +++++++++++++++++++++++++++++------------
+ src/btl/command_shout.c |  5 ++-
+ src/main/btl.c          |  2 +
+ src/main/game_menu.c    | 14 ++++---
+ src/main/mod_species.c  | 30 +++++++++++++++
+ src/std/std_main.c      | 67 +++++++++++++++++---------------
+ src/vs/vs_combat.c      |  8 ++--
+ src/vs/vs_main.c        | 52 +++++++++++++------------
+ 10 files changed, 197 insertions(+), 92 deletions(-)
 
 diff --git a/include/dw/species.h b/include/dw/species.h
-index a9d7354..4e5e17b 100644
+index a9d7354..a1c8520 100644
 --- a/include/dw/species.h
 +++ b/include/dw/species.h
-@@ -121,6 +121,19 @@ int32_t getSpeciesVanillaAs(int32_t type);
+@@ -121,6 +121,11 @@ int32_t getSpeciesVanillaAs(int32_t type);
  /* MOD (signature effects): the EFEDAT.EFE effect id that species `type` loads for `move`, a move byte of its stats
   * (0x2e + an index into its DIGI_PARA moves) */
  int32_t getSpeciesTechEffect(int32_t type, int32_t move);
 +#define SPECIES_FINISHER_PRESENT 1	/* finisherFlags: finisherMove replaces the shared Move */
 +#define SPECIES_FINISHER_SPREADS 2	/* finisherFlags: an area finisher over a one-target effect (BTL_spreadAreaHit) */
-+/* MOD (unique finishers): the fighters' own finishers, filled at battle load (tech 0: a free slot) */
-+typedef struct {
-+	int16_t type;
-+	uint8_t tech;
-+	uint8_t flags;	/* finisherFlags */
-+	Move move;
-+} SpeciesFinisher;
-+extern SpeciesFinisher SPECIES_FINISHERS[4];
 +/* MOD (unique finishers): the name technique `move` shows for species `type` (its own finisher name, else MOVE_NAMES);
 + * a new species or language reads DIGI.DAT once: never call it in the battle tick for anyone but a loaded partner */
 +char *modMoveName(int32_t type, int32_t move);
  /* 1 if the original type is carried by its DIGI.DAT record (always 0 for ids >= NUM_ORIGINAL_DIGIMON) */
  int32_t isRecordOriginal(int32_t type);
  
-@@ -201,9 +214,23 @@ typedef struct {
+@@ -201,9 +206,24 @@ typedef struct {
  	 * effect of its own, instead of the chunk the technique shares (0: none); getSpeciesTechEffect */
  	uint8_t ownEffectTech;		/* 0x1CF */
  	int16_t ownEffectChunk;		/* 0x1D0 */
@@ -60,13 +51,14 @@ index a9d7354..4e5e17b 100644
 +	uint8_t reserved1EE[SPECIES_RECORD_SIZE - 0x1EE];
  } SpeciesRecord;
  
-+/* MOD (unique finishers): battle load (or a menu) keeps fighter `slot`'s finisher resident (0..3); its record */
-+SpeciesRecord *modLoadFinisher(int32_t slot, int32_t type);
++/* MOD (unique finishers): the cached record of species `type` when it carries its own finisher for technique `move`
++ * (finisherFlags `flag`), else NULL. A fighter's record is cached from its battle load on, so no DIGI.DAT read. */
++SpeciesRecord *modFinisherRecord(int32_t type, int32_t move, int32_t flag);
 +
  #define SPECIES_LAYOUT_CHECK(name, cond) typedef char species_layout_##name[(cond) ? 1 : -1]
  SPECIES_LAYOUT_CHECK(size, sizeof(SpeciesRecord) == SPECIES_RECORD_SIZE);
  SPECIES_LAYOUT_CHECK(para, sizeof(DigimonPara) == 0x34);
-@@ -220,6 +247,7 @@ SPECIES_LAYOUT_CHECK(header, sizeof(SpeciesHeader) == 0x20);
+@@ -220,6 +240,7 @@ SPECIES_LAYOUT_CHECK(header, sizeof(SpeciesHeader) == 0x20);
  SPECIES_LAYOUT_CHECK(portrait, __builtin_offsetof(SpeciesRecord, portrait) == 0x1C0);
  SPECIES_LAYOUT_CHECK(effectDefault, __builtin_offsetof(SpeciesRecord, effectDefault) == 0x1C4);
  SPECIES_LAYOUT_CHECK(ownEffect, __builtin_offsetof(SpeciesRecord, ownEffectChunk) == 0x1D0);
@@ -96,7 +88,7 @@ index c86cae2..dd9bdf3 100644
  		drawString(BTL_COMMAND_NAMES[cmd - 1], 0, 0xd8);
  	}
 diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
-index c9f4afa..82b960d 100644
+index c9f4afa..5f194c9 100644
 --- a/src/btl/battle_main.c
 +++ b/src/btl/battle_main.c
 @@ -94,6 +94,8 @@ int32_t BTL_addFinisherAura(Entity *entity, int32_t arg1);
@@ -143,7 +135,7 @@ index c9f4afa..82b960d 100644
  	if (result < 0) {
  		result = 0;
  	}
-@@ -2143,7 +2145,41 @@ void BTL_startHitAnimation(Entity *entity, AttackObject *attack, uint8_t animId)
+@@ -2143,7 +2145,37 @@ void BTL_startHitAnimation(Entity *entity, AttackObject *attack, uint8_t animId)
  
  	tech = BTL_getAttackTech(attack);
  	startAnimation(entity, animId);
@@ -161,13 +153,9 @@ index c9f4afa..82b960d 100644
 +	int32_t k;
 +	SVECTOR pos;
 +	Entity *e;
-+	SpeciesFinisher *f;
 +
-+	for (f = SPECIES_FINISHERS; f->tech == 0 || f->tech != tech || f->type != ENTITY_TABLE[attack->casterId]->type ||
-+	                            !(f->flags & SPECIES_FINISHER_SPREADS); f++) {
-+		if (f == SPECIES_FINISHERS + 3) {
-+			return;
-+		}
++	if (modFinisherRecord(ENTITY_TABLE[attack->casterId]->type, tech, SPECIES_FINISHER_SPREADS) == NULL) {
++		return;
 +	}
 +	for (k = 0; k <= ENEMY_COUNT; k++) {
 +		e = ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[k]];
@@ -186,7 +174,7 @@ index c9f4afa..82b960d 100644
  }
  
  void BTL_tickAttackHits(void)
-@@ -2178,6 +2214,9 @@ void BTL_tickAttackHits(void)
+@@ -2178,6 +2210,9 @@ void BTL_tickAttackHits(void)
  		}
  		entity = ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]];
  		tech = BTL_getAttackTech(&attack);
@@ -196,7 +184,7 @@ index c9f4afa..82b960d 100644
  		if (DIGI_PARA(entity->type).moves[(uint32_t)(entity->anim.animId - 0x2e)] == 0x2d) {
  			if (COMBAT_DATA_PTR->player.entityIds[fighter->targetId] == attack.casterId) {
  				((DigimonEntity *)entity)->stats.current.isHit = 0;
-@@ -2216,13 +2255,15 @@ void BTL_tickAttackHits(void)
+@@ -2216,13 +2251,15 @@ void BTL_tickAttackHits(void)
  			fighter->flags |= FIGHTER_FLAG_KNOCKED_BACK;
  			BTL_handleHitReaction(entity, fighter, &attack, i);
  			addEntityText(entity, i, 0, dmg, 0);
@@ -214,7 +202,7 @@ index c9f4afa..82b960d 100644
  			moves = ((DigimonEntity *)entity)->stats.base.moves;
  			for (j = 0; j < 4; j++) {
  				if (((DigimonEntity *)entity)->stats.current.currentMP < BM(BLOCK_MIN_MP)) {
-@@ -2251,7 +2292,7 @@ void BTL_tickAttackHits(void)
+@@ -2251,7 +2288,7 @@ void BTL_tickAttackHits(void)
  		if ((fighter->flags & FIGHTER_FLAG_BLOCKING) && (fighter->invulnerableTimer > 0)) {
  			goto blocked;
  		}
@@ -223,7 +211,7 @@ index c9f4afa..82b960d 100644
  			dmg = BTL_calculateDamage((DigimonEntity *)attacker, (DigimonEntity *)entity, tech);
  			blockPercent = randomLimit(BMS(BLOCK_DMG_SPAN)) + BM(BLOCK_DMG_MIN);
  			dmg = modHardBlockedFloor(dmg * blockPercent / 100, BTL_HARD_ZERO_DAMAGE, blockPercent);
-@@ -2334,11 +2375,11 @@ int32_t BTL_isMoveUsable(DigimonEntity *digimon, FighterData *fighter, int16_t s
+@@ -2334,11 +2371,11 @@ int32_t BTL_isMoveUsable(DigimonEntity *digimon, FighterData *fighter, int16_t s
  		return 0;
  	}
  
@@ -237,7 +225,7 @@ index c9f4afa..82b960d 100644
  		return 0;
  	}
  
-@@ -2381,7 +2422,7 @@ void BTL_setupQueuedMove(DigimonEntity *digimon, FighterData *fighter, int16_t a
+@@ -2381,7 +2418,7 @@ void BTL_setupQueuedMove(DigimonEntity *digimon, FighterData *fighter, int16_t a
  	stats = &digimon->stats;
  	fighter->queuedAnim = stats->base.moves[moveIndex];
  	tech = entityGetTechFromAnim(&digimon->entity, fighter->queuedAnim);
@@ -246,7 +234,7 @@ index c9f4afa..82b960d 100644
  	BTL_applyChargeRequirement(digimon, fighter, tech);
  	fighter->flags |= FIGHTER_FLAG_TRANSFORMING;
  }
-@@ -2459,7 +2500,7 @@ void BTL_startQueuedMove(DigimonEntity *digimon, DigimonEntity *target, FighterD
+@@ -2459,7 +2496,7 @@ void BTL_startQueuedMove(DigimonEntity *digimon, DigimonEntity *target, FighterD
  		}
  	}
  
@@ -255,7 +243,7 @@ index c9f4afa..82b960d 100644
  		FLEE_DISABLED[1] = BM(FLEE_LOCK);
  	}
  
-@@ -2477,7 +2518,7 @@ int32_t BTL_isMoveOnCooldown(Entity *entity, FighterData *fighter)
+@@ -2477,7 +2514,7 @@ int32_t BTL_isMoveOnCooldown(Entity *entity, FighterData *fighter)
  	int16_t tech;
  
  	tech = entityGetTechFromAnim(entity, fighter->queuedAnim);
@@ -264,7 +252,7 @@ index c9f4afa..82b960d 100644
  		return 1;
  	}
  
-@@ -2496,7 +2537,7 @@ void BTL_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
+@@ -2496,7 +2533,7 @@ void BTL_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
  	if (fighter->moveRange != 4) {
  		BATTLE_TARGETED_DIGIMON = target;
  		if (target == NULL) {
@@ -273,7 +261,7 @@ index c9f4afa..82b960d 100644
  				if (digimon != (DigimonEntity *)ENTITY_TABLE[1]) {
  					BATTLE_TARGETED_DIGIMON = (DigimonEntity *)ENTITY_TABLE[1];
  					fighter->targetId = 0;
-@@ -2556,7 +2597,7 @@ void BTL_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
+@@ -2556,7 +2593,7 @@ void BTL_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
  		fighter->activeEffectSlot = fighter->effectSlot[i];
  	}
  
@@ -282,7 +270,7 @@ index c9f4afa..82b960d 100644
  		fighter->buffsRemaining--;
  	}
  
-@@ -3203,13 +3244,13 @@ void BTL_applyMoveStatus(DigimonEntity *digimon, FighterData *fighter, int32_t m
+@@ -3203,13 +3240,13 @@ void BTL_applyMoveStatus(DigimonEntity *digimon, FighterData *fighter, int32_t m
  		return;
  	}
  
@@ -299,7 +287,7 @@ index c9f4afa..82b960d 100644
  		case 1:
  			if (!(fighter->flags & FIGHTER_FLAG_POISONED)) {
  				fighter->flags |= FIGHTER_FLAG_POISONED;
-@@ -3547,12 +3588,12 @@ void BTL_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+@@ -3547,12 +3584,12 @@ void BTL_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
  			continue;
  		}
  		tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
@@ -314,7 +302,7 @@ index c9f4afa..82b960d 100644
  			continue;
  		}
  		count = BTL_countLivingEnemies();
-@@ -3576,7 +3617,7 @@ void BTL_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+@@ -3576,7 +3613,7 @@ void BTL_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
  						values[i] = -1;
  					} else {
  						tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
@@ -323,7 +311,7 @@ index c9f4afa..82b960d 100644
  					}
  				}
  				BTL_sortScoresDescending(values, keys, groups, 3);
-@@ -3895,12 +3936,12 @@ void BTL_selectEnemyMove(DigimonEntity *digimon, FighterData *fighter, int16_t i
+@@ -3895,12 +3932,12 @@ void BTL_selectEnemyMove(DigimonEntity *digimon, FighterData *fighter, int16_t i
  		}
  		if (j != (ENEMY_COUNT + 1)) {
  			if (NPC_ENTITIES[BTL_getNpcEntityIndex(&digimon->entity)].unk1 == 0) {
@@ -362,33 +350,25 @@ index e8258fa..b195d7f 100644
  		drawString(BTL_SHOUTS[(int32_t)command - 1], 0, 204);
  		length = strlen(BTL_SHOUTS[(int32_t)command - 1]);
 diff --git a/src/main/btl.c b/src/main/btl.c
-index ded15ee..cce9035 100644
+index ded15ee..7255d51 100644
 --- a/src/main/btl.c
 +++ b/src/main/btl.c
-@@ -547,8 +547,10 @@ void modBattleLoadStep(void)
+@@ -547,6 +547,7 @@ void modBattleLoadStep(void)
  		}
  		BTL_initializeEFEEngine((char *)GENERAL_BUFFER_PTR);
  		n = 0;
-+		modMoveName(PARTNER_ENTITY.digimonEntity.entity.type, 0); /* MOD (unique finishers): the name first, then the fighters */
++		modMoveName(PARTNER_ENTITY.digimonEntity.entity.type, 0); /* MOD (unique finishers): the name read before the battle ticks */
  		for (i = 0; i <= ENEMY_COUNT; i++) {
  			e = (DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]];
-+			modLoadFinisher(i, e->entity.type); /* MOD (unique finishers): no DIGI.DAT reads in the battle tick */
  			for (j = 0; j < 4; j++) {
- 				if (e->stats.base.moves[j] != 0xff) {
- 					modMoveList[n++] = getSpeciesTechEffect(e->entity.type, e->stats.base.moves[j]);
-@@ -754,10 +756,12 @@ void loadBattleData(int32_t entityId, int32_t count)
+@@ -754,6 +755,7 @@ void loadBattleData(int32_t entityId, int32_t count)
  		partnerTickCollision();
  	}
  	loadBattleDataTick();
-+	modMoveName(PARTNER_ENTITY.digimonEntity.entity.type, 0); /* MOD (unique finishers): the name first, then the fighters */
++	modMoveName(PARTNER_ENTITY.digimonEntity.entity.type, 0); /* MOD (unique finishers): the name read before the battle ticks */
  	for (i = 0; i <= ENEMY_COUNT; i++) {
  		e = (DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]];
  		e->stats.current.unk1 = -1;
- 		e->stats.current.efeSubEffect = -1;
-+		modLoadFinisher(i, e->entity.type); /* MOD (unique finishers) */
- 		for (j = 0; j < 4; j++) {
- 			if (e->stats.base.moves[j] != 0xff) {
- 				if (entityGetTechFromAnim(&e->entity, e->stats.base.moves[j]) == 0xff) {
 diff --git a/src/main/game_menu.c b/src/main/game_menu.c
 index 52f4e1a..38c74be 100644
 --- a/src/main/game_menu.c
@@ -433,100 +413,52 @@ index 52f4e1a..38c74be 100644
  			EQUIPPED_MOVES[3] = 0xff;
  		}
 diff --git a/src/main/mod_species.c b/src/main/mod_species.c
-index d40ca35..f2e9ec2 100644
+index d40ca35..d7e43ad 100644
 --- a/src/main/mod_species.c
 +++ b/src/main/mod_species.c
-@@ -78,10 +78,64 @@ static SpeciesMoveBalance SPECIES_MOVE_BALANCE[SPECIES_BALANCE_SWAP_MAX];
+@@ -78,10 +78,40 @@ static SpeciesMoveBalance SPECIES_MOVE_BALANCE[SPECIES_BALANCE_SWAP_MAX];
  static int32_t SPECIES_MOVE_BALANCES;
  static Move SPECIES_MOVE_COPY;
  
-+SpeciesFinisher SPECIES_FINISHERS[4];
 +/* the partner's finisher name in the current language: key (type + 1) | MOD_LANG << 12 */
 +static int32_t SPECIES_FINISHER_NAME_KEY;
-+static uint8_t SPECIES_FINISHER_NAME_TECH;
 +static char SPECIES_FINISHER_NAME[28];
 +extern char *MOVE_NAMES[];
 +
-+SpeciesRecord *modLoadFinisher(int32_t slot, int32_t type)
++SpeciesRecord *modFinisherRecord(int32_t type, int32_t move, int32_t flag)
 +{
-+	SpeciesFinisher *f = &SPECIES_FINISHERS[slot];
 +	SpeciesRecord *rec = getSpeciesRecord(type);
 +
-+	f->tech = 0;
-+	if (rec != NULL && (rec->finisherFlags & SPECIES_FINISHER_PRESENT)) {
-+		f->type = type;
-+		f->tech = rec->finisherTech;
-+		f->flags = rec->finisherFlags;
-+		f->move = rec->finisherMove;
-+	}
-+	return rec;
-+}
-+
-+static SpeciesFinisher *findFinisher(int32_t type, int32_t move)
-+{
-+	SpeciesFinisher *f;
-+
-+	for (f = SPECIES_FINISHERS; f < SPECIES_FINISHERS + 4; f++) {
-+		if (f->tech != 0 && f->tech == move && f->type == type) return f;
-+	}
-+	return NULL;
++	return (rec != NULL && rec->finisherTech == move && (rec->finisherFlags & flag)) ? rec : NULL;
 +}
 +
 +char *modMoveName(int32_t type, int32_t move)
 +{
-+	SpeciesRecord *rec;
++	SpeciesRecord *rec = getSpeciesRecord(type);
 +	int32_t key = (type + 1) | MOD_LANG << 12;
 +
++	/* any move reads the name (battle load primes it with 0), only the finisher's shows it */
++	if (rec == NULL || rec->finisherName == 0) return MOVE_NAMES[move];
 +	if (SPECIES_FINISHER_NAME_KEY != key) {
 +		SPECIES_FINISHER_NAME_KEY = key;
-+		SPECIES_FINISHER_NAME_TECH = 0;
-+		rec = modLoadFinisher(0, type);
-+		if (rec != NULL && rec->finisherName != 0) {
-+			SPECIES_FINISHER_NAME_TECH = rec->finisherTech;
-+			key = rec->finisherNameOffset;
-+			readSpeciesSector(rec->finisherNameSector + MOD_LANG * rec->finisherNameStride);
-+			memcpy(SPECIES_FINISHER_NAME, (uint8_t *)SPECIES_SECTOR + key, sizeof(SPECIES_FINISHER_NAME));
-+		}
++		readSpeciesSector(rec->finisherNameSector + MOD_LANG * rec->finisherNameStride);
++		memcpy(SPECIES_FINISHER_NAME, (uint8_t *)SPECIES_SECTOR + rec->finisherNameOffset, sizeof(SPECIES_FINISHER_NAME));
 +	}
-+	return (move == SPECIES_FINISHER_NAME_TECH && move != 0) ? SPECIES_FINISHER_NAME : MOVE_NAMES[move];
++	return rec->finisherTech == move ? SPECIES_FINISHER_NAME : MOVE_NAMES[move];
 +}
 +
  Move *modSpeciesMove(int32_t type, int32_t move)
  {
  	int32_t i;
  	SpeciesMoveBalance *b;
-+	SpeciesFinisher *f = findFinisher(type, move);
++	SpeciesRecord *rec = modFinisherRecord(type, move, SPECIES_FINISHER_PRESENT);
 +
-+	if (f != NULL) return &f->move;
++	if (rec != NULL) return &rec->finisherMove;
  	for (i = 0; i < SPECIES_MOVE_BALANCES; i++) {
  		b = &SPECIES_MOVE_BALANCE[i];
  		if (b->type != type || b->move != move) continue;
-diff --git a/src/main/script_textbox.c b/src/main/script_textbox.c
-index 9fea61e..4d344bd 100644
---- a/src/main/script_textbox.c
-+++ b/src/main/script_textbox.c
-@@ -14,6 +14,8 @@
- #include <dw/sound.h>
- #include <dw/tamer.h>
- #include <dw/ui.h>
-+#include <dw/entity.h>
-+#include <dw/species.h>
- #include <dw/version.h>
- 
- extern uint8_t TEXTBOX_OPEN_TIMER;
-@@ -1432,8 +1434,8 @@ top: {
- 			ctrl = *SCRIPT_POINTER++;
- 			{
- 				ctrl = readPStat(ctrl);
--				strcpy(out, MOVE_NAMES[ctrl]);
--				lines = strlen(MOVE_NAMES[ctrl]);
-+				strcpy(out, modMoveName(PARTNER_ENTITY.digimonEntity.entity.type, ctrl)); /* MOD (unique finishers) */
-+				lines = strlen(out);
- 				out += lines;
- 				col += (uint16_t)(lines >> 1);
- 			}
 diff --git a/src/std/std_main.c b/src/std/std_main.c
-index 8180b6d..482285c 100644
+index 8180b6d..12bb24c 100644
 --- a/src/std/std_main.c
 +++ b/src/std/std_main.c
 @@ -180,6 +180,8 @@ void STD_startWalkingAnimation2(Entity *entity, Stats *stats, uint16_t flags);
@@ -538,18 +470,15 @@ index 8180b6d..482285c 100644
  int16_t STD_getFighterSlot(int16_t entityId);
  int32_t STD_addBlockedAttack(FighterData *fighter, FighterData *other);
  void STD_buffStats(DigimonEntity *digimon, int32_t slot, int32_t value, int16_t *stat, int32_t color, int32_t flag);
-@@ -3832,8 +3834,10 @@ void STD_combatSetup(void)
+@@ -3832,6 +3834,7 @@ void STD_combatSetup(void)
  	moveCount = 0;
  	STD_initializeEFEEngine((char *)GENERAL_BUFFER_PTR);
  
-+	modMoveName(PARTNER_ENTITY.digimonEntity.entity.type, 0); /* MOD (unique finishers): the name first, then the fighters */
++	modMoveName(PARTNER_ENTITY.digimonEntity.entity.type, 0); /* MOD (unique finishers): the name read before the battle ticks */
  	for (i = 0; i <= ENEMY_COUNT; ++i) {
  		entity = (DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]];
-+		modLoadFinisher(i, entity->entity.type); /* MOD (unique finishers) */
  		entity->stats.current.unk1 = -1;
- 		entity->stats.current.efeSubEffect = -1;
- 
-@@ -4997,7 +5001,7 @@ void STD_tickDigimonAttackRanged(DigimonEntity *entity, DigimonEntity *other,
+@@ -4997,7 +5000,7 @@ void STD_tickDigimonAttackRanged(DigimonEntity *entity, DigimonEntity *other,
  
  	distance = STD_getDistanceSquared(&entity->entity, &other->entity);
  	total = DIGI_PARA(entity->entity.type).radius + DIGI_PARA(other->entity.type).radius;
@@ -558,7 +487,7 @@ index 8180b6d..482285c 100644
  
  	if (distance > total + total * 3 / 10) {
  		STD_setWalking(&entity->entity, &entity->stats, data->flags);
-@@ -5038,8 +5042,8 @@ uint32_t STD_getMoveWithHighestDistance(DigimonEntity *digimon)
+@@ -5038,8 +5041,8 @@ uint32_t STD_getMoveWithHighestDistance(DigimonEntity *digimon)
  		anim = digimon->stats.base.moves[i];
  		if (anim != 0xff) {
  			tech = entityGetTechFromAnim(&digimon->entity, anim);
@@ -569,7 +498,7 @@ index 8180b6d..482285c 100644
  			}
  		}
  	}
-@@ -5633,8 +5637,8 @@ void STD_tickAttackHits(void)
+@@ -5633,8 +5636,8 @@ void STD_tickAttackHits(void)
  			FINISHING_ENTITY = NULL;
  		}
  		if (randomLimit(100) < chance) {
@@ -580,7 +509,7 @@ index 8180b6d..482285c 100644
  					goto skipViewpoint;
  				}
  			}
-@@ -5651,13 +5655,15 @@ skipViewpoint:
+@@ -5651,13 +5654,15 @@ skipViewpoint:
  			fighter->flags |= FIGHTER_FLAG_KNOCKED_BACK;
  			STD_handleHitReaction(entity, fighter, &attack, i);
  			addEntityText(entity, i, 0, dmg, 0);
@@ -598,7 +527,7 @@ index 8180b6d..482285c 100644
  			moves = ((DigimonEntity *)entity)->stats.base.moves;
  			for (j = 0; j < 4; j++) {
  				if (((DigimonEntity *)entity)->stats.current.currentMP < BM(BLOCK_MIN_MP)) {
-@@ -5686,7 +5692,7 @@ skipViewpoint:
+@@ -5686,7 +5691,7 @@ skipViewpoint:
  		if ((fighter->flags & FIGHTER_FLAG_BLOCKING) && (fighter->invulnerableTimer > 0)) {
  			goto blocked;
  		}
@@ -607,7 +536,7 @@ index 8180b6d..482285c 100644
  			dmg = STD_calculateDamage((DigimonEntity *)attacker, (DigimonEntity *)entity, tech);
  			blockPercent = randomLimit(BMS(BLOCK_DMG_SPAN)) + BM(BLOCK_DMG_MIN);
  			dmg = modHardBlockedFloor(dmg * blockPercent / 100, STD_HARD_ZERO_DAMAGE, blockPercent);
-@@ -5806,12 +5812,12 @@ int16_t STD_applyPartnerStatsToFighter(DigimonEntity *attacker, DigimonEntity *d
+@@ -5806,12 +5811,12 @@ int16_t STD_applyPartnerStatsToFighter(DigimonEntity *attacker, DigimonEntity *d
  		return 0;
  	}
  
@@ -622,7 +551,7 @@ index 8180b6d..482285c 100644
  	if (result < 0) {
  		result = 0;
  	}
-@@ -5948,13 +5954,13 @@ void STD_applyMoveStatus(DigimonEntity *digimon, FighterData *fighter, int32_t m
+@@ -5948,13 +5953,13 @@ void STD_applyMoveStatus(DigimonEntity *digimon, FighterData *fighter, int32_t m
  		return;
  	}
  
@@ -639,7 +568,7 @@ index 8180b6d..482285c 100644
  		case 1:
  			if (!(fighter->flags & FIGHTER_FLAG_POISONED)) {
  				fighter->flags |= FIGHTER_FLAG_POISONED;
-@@ -6047,7 +6053,7 @@ void STD_startHitAnimation(Entity *entity, AttackObject *attack, uint8_t animId)
+@@ -6047,7 +6052,7 @@ void STD_startHitAnimation(Entity *entity, AttackObject *attack, uint8_t animId)
  
  	tech = STD_getAttackTech(attack);
  	startAnimation(entity, animId);
@@ -648,7 +577,7 @@ index 8180b6d..482285c 100644
  }
  
  void STD_tickFrames(int16_t count)
-@@ -6239,11 +6245,11 @@ int32_t STD_isMoveUsable(DigimonEntity *digimon, FighterData *fighter, int16_t s
+@@ -6239,11 +6244,11 @@ int32_t STD_isMoveUsable(DigimonEntity *digimon, FighterData *fighter, int16_t s
  		return 0;
  	}
  
@@ -662,7 +591,7 @@ index 8180b6d..482285c 100644
  		return 0;
  	}
  
-@@ -6375,12 +6381,12 @@ void STD_selectEnemyMove(DigimonEntity *digimon, FighterData *fighter, int16_t i
+@@ -6375,12 +6380,12 @@ void STD_selectEnemyMove(DigimonEntity *digimon, FighterData *fighter, int16_t i
  		}
  		if (j != (ENEMY_COUNT + 1)) {
  			if (NPC_ENTITIES[STD_getNpcEntityIndex(&digimon->entity)].unk1 == 0) {
@@ -677,7 +606,7 @@ index 8180b6d..482285c 100644
  			weights[i] += fighter->buffPrioTimer;
  		}
  	}
-@@ -6493,12 +6499,12 @@ void STD_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+@@ -6493,12 +6498,12 @@ void STD_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
  			continue;
  		}
  		tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
@@ -692,7 +621,7 @@ index 8180b6d..482285c 100644
  			continue;
  		}
  		count = STD_countLivingEnemies();
-@@ -6522,7 +6528,7 @@ void STD_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+@@ -6522,7 +6527,7 @@ void STD_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
  						values[i] = -1;
  					} else {
  						tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
@@ -701,7 +630,7 @@ index 8180b6d..482285c 100644
  					}
  				}
  				STD_sortScoresDescending(values, keys, groups, 3);
-@@ -6573,7 +6579,7 @@ void STD_setupQueuedMove(DigimonEntity *digimon, FighterData *fighter, int16_t a
+@@ -6573,7 +6578,7 @@ void STD_setupQueuedMove(DigimonEntity *digimon, FighterData *fighter, int16_t a
  	stats = &digimon->stats;
  	fighter->queuedAnim = stats->base.moves[moveIndex];
  	tech = entityGetTechFromAnim(&digimon->entity, fighter->queuedAnim);
@@ -710,7 +639,7 @@ index 8180b6d..482285c 100644
  	STD_applyChargeRequirement(digimon, fighter, tech);
  	fighter->flags |= FIGHTER_FLAG_TRANSFORMING;
  }
-@@ -6644,7 +6650,7 @@ void STD_startQueuedMove(DigimonEntity *digimon, DigimonEntity *target, FighterD
+@@ -6644,7 +6649,7 @@ void STD_startQueuedMove(DigimonEntity *digimon, DigimonEntity *target, FighterD
  			entityLookAtLocation(&digimon->entity, &target->entity.posData->location);
  		}
  	}
@@ -719,7 +648,7 @@ index 8180b6d..482285c 100644
  		if (&digimon->entity == ENTITY_TABLE[1]) {
  			FLEE_DISABLED[1] = BM(FLEE_LOCK);
  		} else {
-@@ -6669,7 +6675,7 @@ int32_t STD_selectMoveTarget(Entity *entity, FighterData *fighter)
+@@ -6669,7 +6674,7 @@ int32_t STD_selectMoveTarget(Entity *entity, FighterData *fighter)
  	FighterData *f;
  
  	tech = entityGetTechFromAnim(entity, fighter->queuedAnim);
@@ -728,7 +657,7 @@ index 8180b6d..482285c 100644
  		if (entity == ENTITY_TABLE[1]) {
  			if (FLEE_DISABLED[1] > 0) {
  				return 1;
-@@ -6689,7 +6695,7 @@ int32_t STD_selectMoveTarget(Entity *entity, FighterData *fighter)
+@@ -6689,7 +6694,7 @@ int32_t STD_selectMoveTarget(Entity *entity, FighterData *fighter)
  				continue;
  			}
  			otherTech = entityGetTechFromAnim(e, e->anim.animId);
@@ -737,7 +666,7 @@ index 8180b6d..482285c 100644
  				continue;
  			}
  			return 1;
-@@ -6713,7 +6719,7 @@ void STD_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
+@@ -6713,7 +6718,7 @@ void STD_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
  	if (fighter->moveRange != 4) {
  		BATTLE_TARGETED_DIGIMON = target;
  		if (target == NULL) {
@@ -746,7 +675,7 @@ index 8180b6d..482285c 100644
  				if (digimon != (DigimonEntity *)ENTITY_TABLE[1]) {
  					BATTLE_TARGETED_DIGIMON = (DigimonEntity *)ENTITY_TABLE[1];
  					fighter->targetId = 0;
-@@ -6777,7 +6783,7 @@ void STD_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
+@@ -6777,7 +6782,7 @@ void STD_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
  		fighter->activeEffectSlot = fighter->effectSlot[i];
  	}
  
@@ -755,7 +684,7 @@ index 8180b6d..482285c 100644
  		fighter->buffsRemaining--;
  	}
  
-@@ -6787,7 +6793,7 @@ void STD_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
+@@ -6787,7 +6792,7 @@ void STD_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
  	}
  
  	if (STD_CAMERA_STATE == 3) {
@@ -764,7 +693,7 @@ index 8180b6d..482285c 100644
  			return;
  		}
  	}
-@@ -6801,13 +6807,13 @@ void STD_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
+@@ -6801,13 +6806,13 @@ void STD_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
  		}
  	}
  
@@ -780,7 +709,7 @@ index 8180b6d..482285c 100644
  }
  
  void STD_removeMoveEffect(DigimonEntity *digimon, FighterData *fighter)
-@@ -7477,7 +7483,7 @@ void STD_renderMoveName(uint8_t i)
+@@ -7477,7 +7482,7 @@ void STD_renderMoveName(uint8_t i)
  	if ((cmd >= 8) && (cmd < 0xc)) {
  		tech = entityGetTechFromAnim(ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]],
  		                             PARTNER_ENTITY.digimonEntity.stats.base.moves[cmd - 8]);
@@ -790,32 +719,26 @@ index 8180b6d..482285c 100644
  		drawString(STD_COMMAND_NAMES[cmd - 1], 0, (i * 12) + 0xd8);
  	}
 diff --git a/src/vs/vs_combat.c b/src/vs/vs_combat.c
-index 8b898b3..525465f 100644
+index 8b898b3..4b66949 100644
 --- a/src/vs/vs_combat.c
 +++ b/src/vs/vs_combat.c
-@@ -451,8 +451,10 @@ void VS_setupDemoCombat(void)
+@@ -451,6 +451,7 @@ void VS_setupDemoCombat(void)
  	moveCount = 0;
  	VS_initializeEFEEngine((char *)GENERAL_BUFFER_PTR);
  
-+	modMoveName(PARTNER_ENTITY.digimonEntity.entity.type, 0); /* MOD (unique finishers): the name first, then the fighters */
++	modMoveName(PARTNER_ENTITY.digimonEntity.entity.type, 0); /* MOD (unique finishers): the name read before the battle ticks */
  	for (i = 0; i <= ENEMY_COUNT; ++i) {
  		entity = (DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]];
-+		modLoadFinisher(i, entity->entity.type); /* MOD (unique finishers) */
  		entity->stats.current.unk1 = -1;
- 		entity->stats.current.efeSubEffect = -1;
- 
-@@ -782,8 +784,10 @@ void VS__combatSetup(void)
+@@ -782,6 +783,7 @@ void VS__combatSetup(void)
  	moveCount = 0;
  	VS_initializeEFEEngine((char *)GENERAL_BUFFER_PTR);
  
-+	modMoveName(PARTNER_ENTITY.digimonEntity.entity.type, 0); /* MOD (unique finishers): the name first, then the fighters */
++	modMoveName(PARTNER_ENTITY.digimonEntity.entity.type, 0); /* MOD (unique finishers): the name read before the battle ticks */
  	for (i = 0; i <= ENEMY_COUNT; ++i) {
  		entity = (DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]];
-+		modLoadFinisher(i, entity->entity.type); /* MOD (unique finishers) */
  		entity->stats.current.unk1 = -1;
- 		entity->stats.current.efeSubEffect = -1;
- 
-@@ -1952,7 +1956,7 @@ void VS__tickDigimonAttackRanged(DigimonEntity *entity, DigimonEntity *other,
+@@ -1952,7 +1954,7 @@ void VS__tickDigimonAttackRanged(DigimonEntity *entity, DigimonEntity *other,
  
  	distance = VS_getDistanceSquared(&entity->entity, &other->entity);
  	total = DIGI_PARA(entity->entity.type).radius + DIGI_PARA(other->entity.type).radius;
@@ -824,7 +747,7 @@ index 8b898b3..525465f 100644
  
  	if (distance > total + total * 3 / 10) {
  		VS__setWalking(&entity->entity, &entity->stats, data->flags);
-@@ -1993,8 +1997,8 @@ uint32_t VS__entityGetMoveWithHighestDistance(DigimonEntity *entity)
+@@ -1993,8 +1995,8 @@ uint32_t VS__entityGetMoveWithHighestDistance(DigimonEntity *entity)
  		move = entity->stats.base.moves[i];
  		if (move != 0xff) {
  			tech = entityGetTechFromAnim(&entity->entity, move);

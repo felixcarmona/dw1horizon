@@ -227,11 +227,11 @@ checks (range 1); the buff path (range 4); the needs-target and lock flags; the 
 the AI scores; and `BTL_applyMoveStatus` (status, chance).
 
 Records are read through `getSpeciesRecord`, a 16-slot cache that can miss and read a CD
-sector. To keep that out of the battle tick, battle load (`modBattleLoadStep`,
-`loadBattleData`, `STD_combatSetup`, the VS setups) copies the override of each fighter into a
-four-slot resident table (`modLoadFinisher`): the record's `Move`, copied whole.
-`modSpeciesMove` answers from that table first, so all of the sites above read it,
-`BTL_applyMoveStatus` included (the attacker is passed through a static beside it).
+sector. A fighter's record is already cached from its battle load on and is not evicted while
+the species is in use, so `modSpeciesMove` answers from the cached record itself
+(`modFinisherRecord`: the record's own `Move`, no copy and no table in the executable). All of
+the sites above read it, `BTL_applyMoveStatus` included (the attacker is passed through a
+static beside it). A native without a record original answers NULL at once, with no read.
 
 **Area finishers.** DW1 range 3 is not an area on its own: the native area finishers hit
 everything inside their effect's radius. An import whose designed range is 3 on a finisher
@@ -253,7 +253,8 @@ font codes, Shift-JIS otherwise; at most 27 bytes) and appends them to `DIGI.DAT
 partner's in the current language (28 bytes): `modMoveName(species, move)` reads it when the
 partner or the language changes (outside battle, or at battle load) and otherwise returns
 `MOVE_NAMES[move]`. Every place that shows a finisher name uses it: the status page, the
-battle command bar and its shout, STD and VS, and the `{tech}` script reference.
+battle command bar and its shout, STD and VS. Script text that names a technique (`{tech}`)
+keeps the shared `MOVE_NAMES` entry, to keep the executable small.
 `python3 -m tools.localize.ui` measures the names against the 136-pixel finisher field.
 
 ### NEW DIGIMON off
@@ -269,7 +270,7 @@ override: its finisher is the native one. Nothing to do.
 | Menus | Name and power of a finisher come from the species (status, evolution and Brains screens). |
 | Origin and effect tables (`effects_like`) | Unchanged. |
 | Species record | 0x1D2..0x1E9 written by `tools/species.py` from this file; the names after the records in `DIGI.DAT` (27 sectors). |
-| Main executable | Measured 620 bytes (`main_BSS_END` 0x801ced8c against 0x801ceb20 without it): the loader, the resident table, the name fetch with its 28-byte buffer, the Move lookup and the menu and textbox call sites. The battle code (spread, Move routing) lives in the BTL, STD and VS overlays. |
+| Main executable | About 340 bytes: `modFinisherRecord` (96), `modMoveName` (216) with its 28-byte name buffer, 40 more in `modSpeciesMove`, fewer in the status page. Measured with the whole batch on origin/main 4b8a2e15 in the nine-language dev build: `main_BSS_END` 0x801ce0a0 to 0x801ce248, heap 187,984 to 187,568 B, no screen short (tightest 217, 2,568 B to spare). The battle code (spread, Move routing) lives in the BTL, STD and VS overlays. |
 | Free ids | None needed. |
 
 ## How it plugs into the effects and Buster Dive
