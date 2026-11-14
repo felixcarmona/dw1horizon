@@ -17,6 +17,7 @@ the moment the attack starts.
 | 182 Kimeramon | Poison Wing (DW2) | Mega Flame | projectile: a heat blast from the wings | 1 | flies at tick 3, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.326) | one enemy, as for Mega Flame | one enemy |
 | 257 Triceramon | Tri-Horn Attack (DW2) | Bit Bomb | at the target: charges horns first | 1 | plays at the target, hits at tick 40 | none (scale 0.307) | the enemy it was aimed at (Bit Bomb picks one at random) | one enemy |
 | 258 SaberLeomon | Howling Crusher (DW2) | Death Claw | at the target: a claw strike from a leap | 1 | plays at the target, hits at tick 40 | none (scale 0.359) | one enemy, as for Death Claw | one enemy |
+| 259 Okuwamon | Duo Scissor Claw (DW2) | Bit Bomb | at the target: two crossing slash arcs over every enemy | 1 | plays at the target, hits at tick 40 | none (scale 0.3) | the enemy it was aimed at (Bit Bomb picks one at random) | all enemies, 2 hits |
 
 ## Where the port differs from the source
 
