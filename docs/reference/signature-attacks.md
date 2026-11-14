@@ -33,6 +33,7 @@ the moment the attack starts.
 | 274 Blossomon | Ninja Flower (DW2) | Sweet Breath | volley: flower shuriken over every enemy | 1 | flies at tick 30, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.238) | one enemy, as for Sweet Breath | all enemies, 4 hits |
 | 275 Scorpiomon | Tail Blade (DW2) | Mail Strome | projectile: lunges with its tail blade | 1 | flies at tick 27, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.311) | one enemy, as for Mail Strome | one enemy |
 | 278 Octomon | Spurting Ink (DW2) | Hydro Pressure | projectile: fires black ink shots | 1 | flies at tick 30, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.284) | one enemy, as for Hydro Pressure | one enemy, 3 hits |
+| 279 MarineDevimon | Evil Wind (DW2) | Death Claw | projectile: a dark gust over every enemy | 1 | flies at tick 29, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.182) | one enemy, as for Death Claw | all enemies |
 
 ## Where the port differs from the source
 

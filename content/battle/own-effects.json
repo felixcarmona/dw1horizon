@@ -177,5 +177,13 @@
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.284,
     "hit_scale": 0.1
+  },
+  "144": {
+    "name": "Evil Wind",
+    "stands_for": 62,
+    "cast": [[1, "EFFESA/MESA2600.BIN", "EFFESA/AESA2600.BIN"]],
+    "hit": [[1, "EFFEWD/MEWD0300.BIN", "EFFEWD/AEWD0300.BIN"]],
+    "scale": 0.182,
+    "hit_scale": 0.1
   }
 }
