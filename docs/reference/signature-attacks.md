@@ -38,6 +38,7 @@ the moment the attack starts.
 | 281 Cyclonemon | Hyper Heat (DW2) | Mega Flame | at the target: a super-hot blast from its arm | 1 | plays at the target, hits at tick 40 | none (scale 0.209) | one enemy, as for Mega Flame | one enemy |
 | 282 Kiwimon | Pummel Peck (DW2) | Sweet Breath | volley: sends a mini Kiwimon running at the target | 1 | flies at tick 29, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.203) | one enemy, as for Sweet Breath | one enemy |
 | 283 Syakomon | Pearl Shot (DW2) | Blasting Spout | projectile: fires a pearl from its shell | 1 | flies at tick 29, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.179) | one enemy, as for Blasting Spout | one enemy |
+| 284 Crabmon | Scissor Magic (DW2) | Scissor Claw | at the target: a double snip of the claws | 1 | plays at the target, hits at tick 40 | none (scale 0.391) | one enemy, as for Scissor Claw | one enemy, 2 hits |
 
 ## Where the port differs from the source
 
