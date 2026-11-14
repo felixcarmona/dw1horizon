@@ -38,9 +38,14 @@ bound rig with `native_battle.py`'s retarget: the pieces of each bone are fitted
 from their vertices, the mirrored left wing from the right wing's, the hips
 follow the body and not the sash. Only the slots that pass
 `tools/models/battle_qa_native.py` on the final model are listed (0x21, 0x28,
-0x29, 0x2E-0x34); the hits keep Angemon's impact sounds, and the battle and
-technique slots are compacted exactly for room. Field and care slots stay
-Angemon's byte for byte.
+0x29, 0x2C, 0x2E-0x34); the hits keep Angemon's impact sounds, and the battle and
+technique slots are compacted exactly for room (98,664 of 100,352 bytes). Field
+and care slots stay Angemon's byte for byte. The get-up (0x2C) is the source's
+clip with `repairs` (tools/models/clip_repair.py): while it lies on the floor
+one thigh turns 15 degrees and its knee 6, so the foot follows the source's,
+and the body is lifted 40 units where it sank under the floor. The faint (0x2B)
+would be retimed from 54 ticks to 31, beyond the check's 1.6, and stays
+Angemon's.
 
 ```sh
 python3 tools/models/battle_qa_native.py check 206 FINAL.MMD imported-models/206.battle.MMD MAIN.MMD
