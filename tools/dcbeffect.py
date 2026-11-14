@@ -796,6 +796,9 @@ def to_effect(tr, packs, steps, origin=(0, 0, 0), turn=False, vram_tims=(), note
                     m = D._mul(flip, m)
                     t = [-t[0], t[1], -t[2]]
                 mi = tuple(max(-32768, min(32767, round(x * 4096))) for rr in m for x in rr)
+                if max(abs(x) for x in t) > FAR:
+                    keys[b][fi] = zero
+                    continue
                 keys[b][fi] = (mi, tuple(round(x) for x in t))
             for b in range(b0, b1):
                 row[b] = fi
@@ -831,12 +834,21 @@ def thin(instances, max_objects, drawn=None):
     return [i for i in instances if i.kind not in DRAWN_KINDS or id(i) in keep]
 
 
+MIN_SCALE = 0.06
+FAR = 100000                # DW2 units: farther than this an object is off any battle screen (and past int16)
+
+
 def unshear(m):
     """The nearest rotation times per-axis scale (DW1 draws only those): Gram-Schmidt on the columns."""
     cols = [[m[r][c] for r in range(3)] for c in range(3)]
     sc = [math.sqrt(sum(x * x for x in c)) for c in cols]
+    if max(sc) < MIN_SCALE:
+        return [[0.0] * 3 for _ in range(3)]            # too small to see: hidden
     if min(sc) < 1e-9:
         return m
+    # an axis scaled almost to nothing loses its direction in 4.12 fixed point (and reads as a shear): keep it
+    # at the smallest scale that still holds one
+    sc = [max(x, MIN_SCALE) for x in sc]
     q = []
     for c, n in zip(cols, sc):
         v = [x / n for x in c]
