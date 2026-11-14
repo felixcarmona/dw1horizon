@@ -121,14 +121,15 @@ class ChaosLordNative(unittest.TestCase):
         return [[4096]*3 + pose[0][3:6] + [0, 0, 0]] + [list(v) for v in pose[1:]]
 
     def test_run_and_idle_are_the_original_ones_in_world_space(self):
-        for slot, alias in ((4, 36), (0, None)):     # the battle idle 33 is the source's own (battle_originals)
+        # the battle idle 33 and the battle run 36 are the source's own (battle_originals), so the run no longer shares its clip
+        for slot, alias in ((4, 36), (0, None)):
             with self.subTest(slot=slot):
-                self.world_space(slot, alias)
+                self.world_space(slot, alias, shared=alias not in self.recipe['battle_originals']['slots'])
 
-    def world_space(self, slot, alias):
+    def world_space(self, slot, alias, shared=True):
         original, skeleton, old, rest_source = self.original_run(slot)
         new = animsheet.slot_frames(self.model, BONES, slot)[0]
-        if alias is not None:
+        if alias is not None and shared:
             self.assertEqual(self.model.anims.table[alias], self.model.anims.table[slot])
         self.assertEqual(len(old), len(new))
         row = self.recipe['pace'][str(slot)]

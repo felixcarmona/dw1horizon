@@ -22,7 +22,7 @@ BONES = 18
 BUFFER = 100352
 TICKS = {0: 16, 2: 22, 3: 30, 4: 20}                     # idle, walk, condition walk, run
 SPEEDS = {2: 18.0, 3: 13.0, 4: 41.0}                     # the recipe's units per tick, kept by the retiming
-TARGET_SHA256 = '1f80de01a3be6010d70ac4ec49af61cbfeda590991a9511c849555a2fd047e18'
+TARGET_SHA256 = 'd82d16e4661ee7d0d242a0b10673ece140e3b981de34ad414e19320e31fc409d'
 
 
 class MinotarumonNative(unittest.TestCase):
@@ -139,7 +139,7 @@ class MinotarumonNative(unittest.TestCase):
         info = motionstorage.require(self.data, BONES)
         self.assertTrue(info['fits'])
         self.assertLess(info['resident_bytes'], BUFFER)
-        self.assertEqual(info['resident_bytes'], 87818)
+        self.assertEqual(info['resident_bytes'], 86714)
         for read in info['cold_reads']:
             self.assertTrue(read['fits'], read)
 

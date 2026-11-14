@@ -48,8 +48,10 @@ The frozen model-delta README retains its historical command spellings. Use
 `tools/models/edit.py --help` describes get/put/check/repin/rebase and source-disc
 options. Earlier editor work directories are now `build/imported-model-edit/`.
 `edit.py repin ID MMD` runs before `put` of an edit that changes a field overlay's input (a restored battle slot): it
-moves the overlay's reviewed-input pins (gaits.py / secondary_motion.py `source`, chibi.json `source_sha256` and
-`post_source_sha256`) to the new input, and refuses when that input is pinned anywhere else.
+moves the overlay's reviewed-input pins (gaits.py / secondary_motion.py / gazimon.py `source`, pace.json rows, chibi.json
+`source_sha256` and `post_source_sha256` with a base generator's `SOURCE` constant or profile, and the `donor_sha256` of
+native bindings that take the species as `donor_species`) to the new input, and refuses when that input is pinned anywhere
+else.
 
 A model bound offline from a motionless mesh (MagnaAngemon 206) gets the source game's battle clips from
 `field_animations/bound_battle.py` (content/models/imports/bound-battle.json; docs/reference/magnaangemon-native-rig.md).
@@ -321,7 +323,8 @@ A recipe's `"battle_originals": {"slots": [...]}` retargets the source game's ow
 donor rig after the bind (`field_animations/native_battle.py`; the rule is in `docs/reference/motion.md`, "Natively bound
 species"). Prove every slot with `battle_qa_native.py check ID FINAL B.MMD MAIN.MMD [--slots ...] [--json OUT]` (B is
 the binding's source, MAIN main's final model) and list only the passing slots that keep the resident buffer under
-100,352 B; `"compact": {"tol": N}` (N at most 5) makes room without touching field or battle slots. Used by 183, 205, 232,
+100,352 B; `"compact": {"tol": N}` (N at most 5) makes room without touching field or battle slots; `"ride": [pieces]`
+lists source pieces that ride their donor bone without leading its turn (PrinceMamemon's quad inside the sphere). Used by 183, 205, 232,
 241, 242, 256, 260, 295, 310, 324, 326, 330, 430 and 460.
 
 BomberNanimon (232) wears native Nanimon's (53, `NANI.MMD`) 20-bone skeleton and every animation program, unchanged

@@ -9,6 +9,7 @@ and leaves every other slot, the mesh, the skeleton and the texture byte for byt
   tools/models/battle_restore.py restore B.MMD A.MMD BONES OUT.MMD SLOT[=TICKS] ...
   tools/models/battle_restore.py pitch B.MMD BONES TYPE OUT.MMD SLOT BONE=DEGREES ...
   tools/models/battle_restore.py copy B.MMD BONES TYPE OUT.MMD SLOT=FROM_SLOT
+  tools/models/battle_restore.py rebuild B.MMD A.MMD TYPE OUT.MMD
 
 B is the species' model (`edit.py get`), A the importer output of the same species, BONES the bone count, SLOT a slot
 number (33-36) and TICKS the length (frames, as `animsheet.slot_frames` counts them) the slot has in the final model:
@@ -20,7 +21,12 @@ asked keeps its own length). Movement clips (35, 36) are resampled in time as th
 `pitch` leans bones of one slot's clip by a constant angle about the model's side axis (the parent chain's rotation is
 taken out, so the clip's own swing, timing and root travel are untouched): for an original whose torso or head sits far
 off the species' natural stance. `copy` makes a slot share another slot's clip (a species whose source game had no clip
-of its own for it).
+of its own for it). `rebuild` restores the slots of the species' row in content/models/imports/battle-rebuilds.json
+(`{"SLOT": {"ticks": N or null, "ops": [...]}}`, SLOT a decimal slot number, `ticks` as SLOT=TICKS above; an optional
+`"rig": SLOT` or `"rig": [SOURCE_SLOT, OUR_SLOT]` first gives the restored clip our rig's scale and offset channels,
+`clip_repair.fit_rig`, for a species whose model was reshaped offline) and runs the
+row's repair operations (tools/models/clip_repair.py) on each: the source's own clip kept as the reference of poses,
+timing and arc, and repaired where it breaks on our rig (battle_qa.py counts these slots as documented polish).
 
 A restored clip is one more program in the resident model (the field idle used to serve as the battle idle), so a model
 near the resident limit (motionstorage, 100352 B) makes room with `compact(data, nb, tol, slots)`: every resident clip is
@@ -200,6 +206,45 @@ def pitch(b_data, nb, slot, lean, type_id):
     return out
 
 
+REBUILDS = ROOT / 'content/models/imports/battle-rebuilds.json'
+
+
+def rebuilds():
+    """{species id (text): {slot (text): {'ticks': N or None, 'ops': [...]}}} of content/models/imports/battle-rebuilds.json."""
+    return json.loads(REBUILDS.read_text()) if REBUILDS.exists() else {}
+
+
+def rebuild(b_data, a_data, nb, type_id, row):
+    """B (a species `type_id`, registered with mmd.exe()) with each slot of `row` restored from A and repaired -> bytes."""
+    from tools.models import clip_repair
+    slots = {int(k): v.get('ticks') for k, v in row.items()}
+    data, _ = restore(b_data, a_data, nb, slots)
+    model = mmd.MMD.parse(data, nb)
+    source = mmd.MMD.parse(a_data, nb)
+    parents = [p for _, p in mmd.exe().skeleton[type_id]]
+    for slot in sorted(slots):
+        frames, loop, events = animsheet.slot_frames(model, nb, slot)
+        if loop not in (0, None):
+            raise ValueError(f'slot {slot}: a clip that loops from the middle cannot be rebuilt')
+        if 'rig' in row[str(slot)]:      # a species reshaped offline (its delta): the clip takes the rig's scales and offsets
+            ref = row[str(slot)]['rig']      # a slot of both models, or [the source's slot, our slot]
+            theirs, ours = ref if isinstance(ref, list) else (ref, ref)
+            frames = clip_repair.fit_rig(frames, animsheet.slot_frames(source, nb, theirs)[0][0],
+                                         animsheet.slot_frames(mmd.MMD.parse(b_data, nb), nb, ours)[0][0])
+        samples = clip_repair.apply_ops(frames, parents, row[str(slot)]['ops'])
+        clip = mmd.encode_anim(samples, nb, 0 if loop == 0 else None, events, tol=1, repeats=False)
+        model.anims.table[slot] = len(model.anims.anims)
+        model.anims.anims.append(clip)
+    used = sorted({i for i in model.anims.table if i is not None})
+    renumber = {old: new for new, old in enumerate(used)}
+    model.anims.anims = [model.anims.anims[i] for i in used]
+    model.anims.table = [None if i is None else renumber[i] for i in model.anims.table]
+    model.anims.anims, model.anims.table = motioncyclelayer.share_identical_streams(model.anims.anims, model.anims.table)
+    out = model.build()
+    motionstorage.require(out, nb)
+    return out
+
+
 def copy_slot(b_data, nb, slot, source):
     """B with `slot` sharing the clip of `source` -> bytes."""
     model = mmd.MMD.parse(b_data, nb)
@@ -210,6 +255,14 @@ def copy_slot(b_data, nb, slot, source):
 
 
 def main():
+    if len(sys.argv) == 6 and sys.argv[1] == 'rebuild':
+        b, a, kind, out = sys.argv[2:6]
+        species = json.loads(next((ROOT / 'content/species').glob(f'{int(kind)}-*.json')).read_text())
+        skeleton = species['model']['skeleton']
+        mmd.exe().add_type(int(kind), skeleton, name=species['name'])
+        row = rebuilds()[str(int(kind))]
+        Path(out).write_bytes(rebuild(Path(b).read_bytes(), Path(a).read_bytes(), len(skeleton), int(kind), row))
+        return
     if len(sys.argv) >= 7 and sys.argv[1] in ('pitch', 'copy'):
         cmd, b, nb, kind, out, slot = sys.argv[1:7]
         data = Path(b).read_bytes()

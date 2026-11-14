@@ -9,6 +9,9 @@ again low over the ground with a small arc; the left and right pads do it almost
 the left (the lag the old pad swing already had), starting as the body begins to rise out of its hump. Only the pads'
 own channels (bone 2 and 4: yaw, pitch, height and fore-aft slide) are written; the body, the stalks, the crown and every
 other clip are the same bytes as before (`build(..., paddle=False)` makes those older clips).
+
+The battle movements and the victory (slots 35, 36 and 42) are no longer written here: the input carries the source game's own clips for them
+(content/models/imports/battle-rebuilds.json), so the slug wave and the care joy that used to stand in for them are gone.
 """
 import copy
 import hashlib
@@ -22,7 +25,7 @@ import motionstorage
 from motioncyclelayer import share_identical_streams
 from motiondiscidentity import changed_programs
 
-SOURCE = '608e1ce8ffd194e7b666f661b1b48d5732654935e282a0a831eb50df7480ebf5'
+SOURCE = 'fee8456cdfff331cd67bbeeffa82792001da60afba5d1d85fe992880ee73c18d'
 # Pad bones: (hip, outer pad) of the left and of the right front pad.
 PADS = {'L': (2, 3), 'R': (4, 5)}
 FLOOR = -.7      # the encoder keeps each channel within a unit: aim a little above the floor
@@ -249,14 +252,14 @@ def build(data, skeleton, paddle=True, face=True):
     reports = []
     pads = None
     vertices = [(b, old.tmd.obj_verts(obj)) for b,(obj,_) in enumerate(skeleton) if obj >= 0]
-    for slot in (2, 3, 4, 11, 12, 25, 27, 35, 36, 42):
+    for slot in (2, 3, 4, 11, 12, 25, 27):
         source, loop, events = animsheet.slot_frames(old, 18, slot)
-        locomotion = slot in (2, 3, 4, 27, 35, 36)
-        period = {2: 32, 3: 40, 4: 24, 27: 32, 35: 32, 36: 24}.get(slot, len(source) - 1)
+        locomotion = slot in (2, 3, 4, 27)
+        period = {2: 32, 3: 40, 4: 24, 27: 32}.get(slot, len(source) - 1)
         speed = {2: 20, 3: 14, 4: 38}.get(slot, 0)
         distance = -speed * period
-        if slot in (27, 35, 36):
-            # Battle/flee controllers keep their existing average travel.
+        if slot == 27:
+            # The flee controller keep their existing average travel.
             distance = round((source[-1][0][8] - source[0][0][8]) * period / (len(source) - 1))
             speed = -distance / period
         poses = []
@@ -287,7 +290,7 @@ def build(data, skeleton, paddle=True, face=True):
                 # vanishes at both endpoints so care returns to the idle pose.
                 envelope = math.sin(math.pi * tick / period) ** 2
                 wave = math.sin(phase * 2)
-                happy = slot in (11, 42)
+                happy = slot == 11
                 lift = round((14 if happy else -4) * envelope)
                 f[1][7] -= lift
                 for b in (2, 4, 15):
@@ -334,10 +337,10 @@ def build(data, skeleton, paddle=True, face=True):
     new.anims.anims, new.anims.table = share_identical_streams(new.anims.anims, new.anims.table)
     result = new.build()
     actual = mmd.MMD.parse(result, 18)
-    assert changed_programs(old, actual) == sorted([2, 3, 4, 11, 12, 25, 27, 35, 36, 42] + (list(IDLE_SLOTS) if face else []))
+    assert changed_programs(old, actual) == sorted([2, 3, 4, 11, 12, 25, 27] + (list(IDLE_SLOTS) if face else []))
     assert old.tmd.build() == actual.tmd.build()
     for row in reports:
-        if row['slot'] not in (2, 3, 4, 27, 35, 36):
+        if row['slot'] not in (2, 3, 4, 27):
             continue
         slot, period = row['slot'], row['period']
         player = mmd.AnimPlayer(actual.anims.anims[actual.anims.table[slot]], 18, slot)

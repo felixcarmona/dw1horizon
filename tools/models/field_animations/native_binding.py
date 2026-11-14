@@ -23,6 +23,7 @@ from tools.models.field_animations.reviewed import reviewed
 
 ROOT = Path(__file__).resolve().parents[3]
 MANIFEST = ROOT / 'content/models/imports/native-bindings.json'
+NPC_SLOTS = (0x06, 0x14, 0x1A, 0x1C, 0x1D, 0x1E, 0x1F, 0x20, 0x26, 0x27)    # the tamer's, NPCs' and the kart race's
 # the folder of the imported base models (`<id>.MMD`, or `<id>-<name>.MMD` as tools/models/edit.py get writes them) that a
 # donor which is itself an imported species is read from (`donor_species`); content/models/imports/species.py sets it
 BASE_MODELS = None
@@ -368,7 +369,14 @@ def bind(data, skeleton, recipe, placements=None, final=True):
         result.anims.table[destination] = slots[source]
     for destination, source in recipe.get('extra_slots', {}).items():
         result.anims.table[int(destination)] = slots[source]
-    if recipe.get('prune_unused'):
+    if recipe.get('drop_npc_slots'):
+        # the donor's clips of the slots only the tamer, the NPCs and the kart race play (6, 0x14, 0x1A, 0x1C-0x20, 0x26,
+        # 0x27: tools/species.py SCRIPT_SLOTS leaves them out) are not carried: no partner starts them, and the imported
+        # species never had them; the resident buffer gets the room for the source's battle clips
+        for slot in NPC_SLOTS:
+            if slot < len(result.anims.table):
+                result.anims.table[slot] = None
+    if recipe.get('prune_unused') or recipe.get('drop_npc_slots'):
         # the donor's own clips of the slots `extra_slots` points elsewhere stay out of the model (they would be resident
         # and unused: WarGrowlmon's battle slots share its field clips, not Growlmon's restored battle clips)
         used = sorted({i for i in result.anims.table if i is not None})
@@ -422,7 +430,8 @@ def bind(data, skeleton, recipe, placements=None, final=True):
     battle_proof = compact_proof = None
     if recipe.get('battle_originals'):
         # the source game's own battle clips on the donor rig, for the slots that measured sound (native_battle.py)
-        output, battle_proof = native_battle.apply(output, battle, recipe['battle_originals']['slots'])
+        output, battle_proof = native_battle.apply(output, battle, recipe['battle_originals']['slots'],
+                                                   repairs=recipe['battle_originals'].get('repairs'))
         if final and recipe['battle_originals'].get('compact'):
             output, compact_proof = native_battle.compact(output, len(rig), recipe['battle_originals']['compact'])
     # a builder that re-encodes the programs afterwards (wizardmon_native.py) compacts and checks the buffer itself

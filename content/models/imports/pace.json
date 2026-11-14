@@ -3,9 +3,9 @@
   "name": "Floramon",
   "bones": 20,
   "skeleton_sha256": "a49e5d546851c7acf7b9925c407f16915a67bd3891ec45b60e17da934adb28ad",
-  "source_sha256": "ccc82cfe19185394c6205457273c902e403f79e774159b18ee958ac1c2c3ffe3",
+  "source_sha256": "75bc36efca7cd26b464d7ce04a245a27c70335f19c831af842f535356d3ffbd3",
   "base_generator": null,
-  "post_source_sha256": "ccc82cfe19185394c6205457273c902e403f79e774159b18ee958ac1c2c3ffe3",
+  "post_source_sha256": "75bc36efca7cd26b464d7ce04a245a27c70335f19c831af842f535356d3ffbd3",
   "slots": {
    "2": {
     "from": 2,
@@ -827,9 +827,9 @@
   "after_generator": "tools.models.field_animations.nefertimon_care",
   "bones": 24,
   "skeleton_sha256": "f3939397c46dfe31ba957af2274f0f60cc5fc429e63c3657240828589c38f6ed",
-  "source_sha256": "3b99a5f920b7dd4e473d2314ebad55c5b185d6687b4a3ab6884c8c1afa98cae9",
+  "source_sha256": "b51c0124b09a8ead3f9b4ae6d855841f55d26574bb9ca58293acc344165e162c",
   "base_generator": "tools.models.field_animations.nefertimon",
-  "post_source_sha256": "4b4b724ae96cf237b2b5b2f6e9e7926abf6db4043f30a31205b5940e6e560ff8",
+  "post_source_sha256": "7aecbe1a5bf87b1d5e3950236e6cbb7196213f90d6fab83a5096f32664bd87b2",
   "slots": {
    "3": {
     "from": 2,
@@ -846,9 +846,9 @@
   "name": "MetalGarurumon",
   "bones": 23,
   "skeleton_sha256": "9f02557f6d97eff22598f695be6b093f33e128c0574ba35b2871a8df4854a0a4",
-  "source_sha256": "8cbe945c684b3108f69f4161e4614a36bb3a20d30aef9dd4149dc03a8604422f",
+  "source_sha256": "01f41d998cd05cb7a637580877079fa8f0156dabed3e33e92a4e0e6efe0e052e",
   "base_generator": "tools.models.field_animations.metal_garurumon",
-  "post_source_sha256": "fce9f4ff297b20fd3c7cab6fe3313b9f7a037069813cbfa719fa91fd6e5df185",
+  "post_source_sha256": "222077a7b726aa0775000d0f9d703631a84e79ab78cdd62c73c2fe88d05faf4b",
   "slots": {
    "3": {
     "from": 2,
@@ -865,9 +865,9 @@
   "name": "SaberLeomon",
   "bones": 23,
   "skeleton_sha256": "41b8ccc7ac9915b88fa8b1da83746e0c1f20525c9e2b381cafcbc5b87837bece",
-  "source_sha256": "e54e2abb913e4de5a02522218531a2202210a65ab45ab470ffae090f74ae6574",
+  "source_sha256": "13712813cae0b3f14854c83b7e86cff3e4667f0da67055bf0ff2ddaa806e55f1",
   "base_generator": null,
-  "post_source_sha256": "e54e2abb913e4de5a02522218531a2202210a65ab45ab470ffae090f74ae6574",
+  "post_source_sha256": "13712813cae0b3f14854c83b7e86cff3e4667f0da67055bf0ff2ddaa806e55f1",
   "after_generator": "tools.models.field_animations.saberleomon_gait",
   "slots": {
    "2": {
