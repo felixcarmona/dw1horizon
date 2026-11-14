@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Merge finisher_targets runs into docs/data/finisher-proof.json (species -> finisher id and enemy HP lost).
+"""Merge finisher_targets runs into docs/data/finisher-proof.json.
 
 Usage: .venv/bin/python -m tools.dev.playtest.finisher_proof_merge DIGI.DAT RESULT_DIR...
-Each RESULT_DIR holds result.json files, directly or one level down (one folder per species). Only runs that passed
-(finisher played, enemy damaged, no self damage) are recorded, against the finisher id the DIGI.DAT record has.
-'unproven' holds species whose finisher fails in the emulator and is not fixed yet (id -> reason), edited by hand.
-tools/test_finisher_proof.py fails when a raisable species' finisher is in neither list.
+Each RESULT_DIR holds result.json files, directly or one level down. A species is recorded under "proven" only when
+every trial of the runs given for it passed (finisher played, enemy damaged, no self damage): {finisher, trials,
+enemy_damage}. A species with a miss is left alone: say why in "conditional" (it hits, but only where the enemy stands;
+the reason carries the numbers) or "unproven" (it never hit), both edited by hand (id -> reason).
+tools/test_finisher_proof.py fails when a raisable species' finisher is in none of the three lists.
 """
 import json
 import os
@@ -26,15 +27,20 @@ def main(argv):
     digi, dirs = argv[0], argv[1:]
     _, _, records = species.read_archive(digi)
     data = json.load(open(PROOF)) if os.path.exists(PROOF) else {}
-    table = data.get('proven', {})
+    proven = data.get('proven', {})
+    runs = {}
     for d in dirs:
         for dirpath, _, files in os.walk(d):
             if 'result.json' not in files: continue
             for run in json.load(open(os.path.join(dirpath, 'result.json'))):
                 t = run.get('species')
-                if t is None or not run.get('ok') or not 0 <= t < len(records): continue
-                table[str(t)] = {'finisher': finisher_of(records[t]), 'enemy_damage': run['enemy_damage']}
-    out = {'proven': {k: table[k] for k in sorted(table, key=int)}, 'unproven': data.get('unproven', {})}
+                if t is not None and 0 <= t < len(records): runs.setdefault(t, []).append(run)
+    for t, rs in runs.items():
+        if not all(r.get('ok') for r in rs): continue
+        proven[str(t)] = {'finisher': finisher_of(records[t]), 'trials': len(rs),
+                          'enemy_damage': min(r['enemy_damage'] for r in rs)}
+    out = {'proven': {k: proven[k] for k in sorted(proven, key=int)},
+           'conditional': data.get('conditional', {}), 'unproven': data.get('unproven', {})}
     with open(PROOF, 'w') as f:
         json.dump(out, f, indent=1)
         f.write('\n')
