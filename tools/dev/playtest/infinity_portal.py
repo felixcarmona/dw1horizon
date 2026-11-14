@@ -74,19 +74,100 @@ def equip_only(e, technique):
     e.poke('PARTNER_ENTITY+0x58', (1 << technique).to_bytes(16, 'little'))
 
 
-def gpu_monitor(e):
+def gpu_monitor(e, pad=0):
     """Per render pass: packet-area peak and violations; every write to the ordering-table headers in battle."""
     out = e.run('lua', f'''
       local ffi=require('ffi')
       local function word(a) return tonumber(ffi.cast('uint32_t*',PCSX.getMemPtr()+a-0x80000000)[0]) end
       local function battle() return word({e.A('GAME_STATE')})%65536==1 end
-      IP.gpu={{passes=0,peak=0,violations=0,first=nil,writers={{}},moves={{}}}}
+      IP.gpu={{passes=0,peak=0,violations=0,first=nil,writers={{}},moves={{}},
+        swaps=0,swapPeak=0,menuSwaps=0,menuPeak=0,pauseSwaps=0,pausePeak=0,itemSwaps=0,itemPeak=0,noItemPeak=0}}
+      -- Every presented frame, pause frames included (pauseFrame never calls applyDrawOffset):
+      -- the packets used when the buffer is swapped, split by command menu shown and game paused.
+      IP.bp[5]=PCSX.addBreakpoint({e.A('GsSwapDispBuff')},'Exec',4,'portal-swap',function()
+        if not battle() then return end
+        local frame=word({e.A('ACTIVE_FRAMEBUFFER')})
+        if frame~=0 and frame~=1 then return end
+        local used=word({e.A('GsOUT_PACKET_P')})-({e.A('GS_WORK_BASES')}+frame*0x14000)
+        local g=IP.gpu
+        g.swaps=g.swaps+1
+        if used>g.swapPeak then g.swapPeak=used end
+        if word({e.A('BTL_COMMAND_MENU_ACTIVE')})==1 then
+          g.menuSwaps=g.menuSwaps+1
+          if used>g.menuPeak then g.menuPeak=used end
+        end
+        if word({e.A('IS_INVENTORY_INITIALIZED')})%256==1 then
+          g.itemSwaps=g.itemSwaps+1
+          if used>g.itemPeak then g.itemPeak=used end
+        elseif used>g.noItemPeak then g.noItemPeak=used end
+        if word({e.A('PAUSE_STATE')})%256~=0 then
+          g.pauseSwaps=g.pauseSwaps+1
+          if used>g.pausePeak then g.pausePeak=used end
+        end
+        if used<0 or used>0x14000 then g.violations=g.violations+1 end
+      end)
+      IP.bp[6]=PCSX.addBreakpoint({e.A('renderInventoryTop')},'Exec',4,'portal-inv-top',function()
+        local frame=word({e.A('ACTIVE_FRAMEBUFFER')})
+        if frame~=0 and frame~=1 then return end
+        IP.gpu.invStart=word({e.A('GsOUT_PACKET_P')})-({e.A('GS_WORK_BASES')}+frame*0x14000)
+      end)
+      local function boxStart()
+        local frame=word({e.A('ACTIVE_FRAMEBUFFER')})
+        if frame~=0 and frame~=1 or IP.gpu.bs then return end
+        local r=PCSX.getRegisters()
+        IP.gpu.bs=word({e.A('GsOUT_PACKET_P')})-({e.A('GS_WORK_BASES')}+frame*0x14000)
+        IP.gpu.bi=r.GPR.n.a0
+        if not IP.raBp then
+          IP.raBp=r.GPR.n.ra
+          IP.bp[9]=PCSX.addBreakpoint(IP.raBp,'Exec',4,'portal-box-end',function()
+            local g=IP.gpu
+            if not g.bs then return end
+            local frame=word({e.A('ACTIVE_FRAMEBUFFER')})
+            local used=word({e.A('GsOUT_PACKET_P')})-({e.A('GS_WORK_BASES')}+frame*0x14000)
+            local d=used-g.bs
+            local i=g.bi
+            g.boxMax=g.boxMax or {{}}
+            if word({e.A('IS_INVENTORY_INITIALIZED')})%256==1 and i>=0 and i<4 then
+              if d>(g.boxMax[i] or 0) then g.boxMax[i]=d end
+              g.frameSum=(g.frameSum or 0)+d
+            end
+            g.bs=nil
+          end)
+        end
+      end
+      IP.bp[7]=PCSX.addBreakpoint({e.A('renderUIBoxStatic')},'Exec',4,'portal-box-s',boxStart)
+      IP.bp[8]=PCSX.addBreakpoint({e.A('renderUIBoxAnimated')},'Exec',4,'portal-box-a',boxStart)
+      if {pad}>0 then
+        -- Test load: a battle scene that has already used {pad} bytes of the frame's packet area, as the
+        -- heaviest technique frames do. Every render pass starts that far in; nothing else changes.
+        IP.bp[10]=PCSX.addBreakpoint({e.A('renderObjects')},'Exec',4,'portal-pad',function()
+          if not battle() then return end
+          local frame=word({e.A('ACTIVE_FRAMEBUFFER')})
+          if frame~=0 and frame~=1 then return end
+          local p=ffi.cast('uint32_t*',PCSX.getMemPtr()+{e.A('GsOUT_PACKET_P')}-0x80000000)
+          p[0]=p[0]+{pad}
+        end)
+      end
       IP.bp[3]=PCSX.addBreakpoint({e.A('applyDrawOffset')},'Exec',4,'portal-packets',function()
         local frame=word({e.A('ACTIVE_FRAMEBUFFER')})
         if frame~=0 and frame~=1 then IP.gpu.violations=IP.gpu.violations+1; return end
         local used=word({e.A('GsOUT_PACKET_P')})-({e.A('GS_WORK_BASES')}+frame*0x14000)
         IP.gpu.passes=IP.gpu.passes+1
         if used>IP.gpu.peak then IP.gpu.peak=used end
+        local g=IP.gpu
+        if (g.frameSum or 0)>(g.frameMax or 0) then g.frameMax=g.frameSum end
+        g.frameSum=0
+        if word({e.A('IS_INVENTORY_INITIALIZED')})%256==1 then
+          g.pItemN=(g.pItemN or 0)+1
+          if g.invStart then
+            local d=used-g.invStart
+            if d>(g.invDelta or 0) then g.invDelta=d end
+            g.invStart=nil
+          end
+          if used>(g.pItemPeak or 0) then g.pItemPeak=used end
+        else
+          if used>(g.pNoPeak or 0) then g.pNoPeak=used end
+        end
         if used<0 or used>0x14000 or word({e.A('GS_ORDERING_TABLE')}+frame*20)~=12 then
           IP.gpu.violations=IP.gpu.violations+1
           if not IP.gpu.first then IP.gpu.first=string.format('used=%d frame=%d',used,frame) end
@@ -104,8 +185,9 @@ def gpu_monitor(e):
 def gpu_report(e):
     raw = e.run('lua', '''
       local w={} for k,v in pairs(IP.gpu.writers) do w[#w+1]=string.format('"%s":%d',k,v) end
-      return string.format('{"passes":%d,"peak":%d,"violations":%d,"first":"%s","writers":{%s}}',
-        IP.gpu.passes,IP.gpu.peak,IP.gpu.violations,IP.gpu.first or '',table.concat(w,','))''').strip()
+      local g=IP.gpu
+      return string.format('{"passes":%d,"peak":%d,"violations":%d,"first":"%s","swaps":%d,"swap_peak":%d,"menu_swaps":%d,"menu_peak":%d,"pause_swaps":%d,"pause_peak":%d,"item_swaps":%d,"item_peak":%d,"no_item_peak":%d,"pass_item_n":%d,"pass_item_peak":%d,"pass_no_item_peak":%d,"inv_delta":%d,"box0":%d,"box1":%d,"box2":%d,"box3":%d,"boxes_frame_max":%d,"writers":{%s}}',
+        g.passes,g.peak,g.violations,g.first or '',g.swaps,g.swapPeak,g.menuSwaps,g.menuPeak,g.pauseSwaps,g.pausePeak,g.itemSwaps,g.itemPeak,g.noItemPeak,g.pItemN or 0,g.pItemPeak or 0,g.pNoPeak or 0,g.invDelta or 0,(g.boxMax or {})[0] or 0,(g.boxMax or {})[1] or 0,(g.boxMax or {})[2] or 0,(g.boxMax or {})[3] or 0,g.frameMax or 0,table.concat(w,','))''').strip()
     try:
         report = json.loads(raw)
     except ValueError:
@@ -123,7 +205,7 @@ def gpu_report(e):
 
 
 def encounter(e, out, species, quick, cleanup, video_seconds=35, all_join=False, city_entrance=False,
-              technique=None, offense=999):
+              technique=None, offense=999, menu=False, items=False):
     evolve_fixture(e, species)
     # The type changes before the EVL scene releases its overlay and objects.
     # Wait for partner field control before starting another map or overlay.
@@ -158,6 +240,8 @@ def encounter(e, out, species, quick, cleanup, video_seconds=35, all_join=False,
             break
         e.wait(.2)
     e.poke('PAUSE_STATE', b'\0')
+    if items:
+        e.poke('INVENTORY', struct.pack('<30h', *range(1, 31)) + bytes([99] * 30) + bytes(30) + bytes([30]))
     assert e.warp(168 if city_entrance else 167, 0), 'source room did not load'
     stem=f'partner-{species}-quick-{quick}'+(f'-tech-{technique}' if technique is not None else '')
     before=sample(e)
@@ -196,7 +280,29 @@ def encounter(e, out, species, quick, cleanup, video_seconds=35, all_join=False,
                         for enemy in row['participants']:
                             e.poke(f'NPC_ENTITIES+{104*enemy["slot"]+0x4c}',b'\0\0')
                         cleaned=True
-                if not auto:
+                if items:
+                    # The battle item menu (Triangle): full bag, open it, scroll, close it, repeat.
+                    e.press('TRIANGLE',8)
+                    e.wait(.7)
+                    e.press('DOWN',8); e.press('DOWN',8); e.press('RIGHT',8)
+                    e.wait(.3)
+                    if items == 'throw':
+                        e.press('CONFIRM',8); e.wait(.4); e.press('CONFIRM',8); e.wait(.8)
+                    e.press('CANCEL',8)
+                    e.wait(.4)
+                    if row['participants'] and all(n['hp'] <= 0 for n in row['participants']):
+                        e.press('CONFIRM',8)
+                elif menu:
+                    # A player working the battle menu: move along the command ring and pause with
+                    # START (the pause box is drawn over the same frame). Pausing re-renders the
+                    # whole scene, so the pause frames are what could exceed a normal frame.
+                    e.press('RIGHT',8)
+                    e.press('START',8)
+                    e.wait(.4)
+                    e.press('START',8)
+                    if row['participants'] and all(n['hp'] <= 0 for n in row['participants']):
+                        e.press('CONFIRM',8)
+                elif not auto:
                     e.press('CONFIRM',8);auto=True
                 elif row['participants'] and all(n['hp'] <= 0 for n in row['participants']):
                     e.press('CONFIRM',8)
@@ -236,6 +342,9 @@ def main():
     p.add_argument('--all-join', action='store_true', help='seed bystander join chances to require a triple battle')
     p.add_argument('--technique', type=int, help='leave the partner only this learned and equipped technique')
     p.add_argument('--offense', type=int, default=999, help='partner Offense (lower keeps the battle going longer)')
+    p.add_argument('--menu', action='store_true', help='work the battle command menu (ring moves) and pause with START instead of the usual auto presses')
+    p.add_argument('--items', choices=['open','throw'], help='battle item menu (Triangle) with a full bag: open and close it, or throw an item')
+    p.add_argument('--pad-packets', type=int, default=0, help='test load: every battle render pass starts this many bytes into the frame packet area')
     p.add_argument('--repeat', type=int, default=1, help='run every combination this many times')
     a=p.parse_args();out=a.out.resolve();out.mkdir(parents=True,exist_ok=True)
     e=ProofEmu(a.disc,a.exe,a.port,str(out/'emu'))
@@ -259,14 +368,14 @@ def main():
           IP.bp[2]=PCSX.addBreakpoint({e.A('loadColdAnimation')},'Exec',4,'portal-cold',function()
             if battle() then IP.coldReads=IP.coldReads+1 end
           end)''')
-        gpu_monitor(e)
+        gpu_monitor(e, a.pad_packets)
         base=out/'base.state';e.run('save',str(base))
         for run in range(a.repeat):
           for species in a.species:
             for quick in a.quick:
                 e.run('load',str(base));e.run('resume')
-                e.run('lua','IP.gpu.passes=0;IP.gpu.peak=0;IP.gpu.violations=0;IP.gpu.first=nil;IP.gpu.writers={}')
-                encounter(e,out,species,quick,a.cleanup,a.video_seconds,a.all_join,a.city_entrance,a.technique,a.offense)
+                e.run('lua','IP.gpu.passes=0;IP.gpu.peak=0;IP.gpu.violations=0;IP.gpu.first=nil;IP.gpu.writers={};IP.gpu.swaps=0;IP.gpu.swapPeak=0;IP.gpu.menuSwaps=0;IP.gpu.menuPeak=0;IP.gpu.pauseSwaps=0;IP.gpu.pausePeak=0;IP.gpu.itemSwaps=0;IP.gpu.itemPeak=0;IP.gpu.noItemPeak=0;IP.gpu.pItemN=0;IP.gpu.pItemPeak=0;IP.gpu.pNoPeak=0;IP.gpu.invDelta=0;IP.gpu.boxMax={};IP.gpu.frameMax=0;IP.gpu.frameSum=0')
+                encounter(e,out,species,quick,a.cleanup,a.video_seconds,a.all_join,a.city_entrance,a.technique,a.offense,a.menu,a.items)
                 print('gpu', json.dumps(gpu_report(e)), flush=True)
     except BaseException:
         e.run('shot',str(out/'failure.png'),check=False)
