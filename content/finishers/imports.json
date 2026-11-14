@@ -1,6 +1,7 @@
 {
- "_comment": "Unique finisher of every imported species, keyed by species id. Authored design data: docs/mods/unique-finishers.md explains every field. \"move\" is what the battle uses (written to the species record, read through modSpeciesMove); the name goes to the text banks as species.<id>.finisher. The effect chunk itself is the species JSON \"own_effect\".",
+ "_comment": "Unique finisher of every imported species, keyed by species id. Authored design data: docs/mods/unique-finishers.md explains every field. \"move\" is what the battle uses (written to the species record, read through modSpeciesMove); the name goes to the text banks as species.<id>.finisher. The effect chunk itself is the species JSON \"own_effect\". \"neutral\": true writes no numbers: every import keeps the DW1 numbers of the finisher it replaces, while its name and own effect still apply.",
  "format": 1,
+ "neutral": true,
  "finishers": [
   {
    "species": 62,
@@ -2796,8 +2797,8 @@
     "power": 410
    },
    "replaces": {
-    "id": 82,
-    "name": "Hand of Fate"
+    "id": 83,
+    "name": "Dark Claw"
    },
    "behavior": {
     "kind": "dash",

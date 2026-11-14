@@ -12,8 +12,19 @@ working. Only the numbers the battle reads and the name the player sees change, 
 - Effects: the visual effect of each finisher is the species JSON `own_effect`
   (`docs/mods/signature-effects.md`, on branch `dw2-signature-skullmeramon` until it merges); this file decides what the finisher does.
 
-Status: design data. The runtime part (record bytes, `modSpeciesMove` hook, names) is not built
-yet; see "What the engine change touches".
+Status: built. `tools/species.py` writes every entry into its species record and the names into
+`DIGI.DAT`; patch `Give-each-species-its-own-finisher-numbers-and-name.patch` reads them in
+battle and in the menus. The shipped data is **neutral** (below): names and effects are the
+species' own, the numbers are still DW1's.
+
+### The neutral switch
+
+`"neutral": true` at the top of `content/finishers/imports.json` (the default) writes the
+technique and the name reference but not the numbers: the record's present flag stays clear and
+every import fights with the numbers of the DW1 finisher it replaces (`replaces`), as before.
+Its own name and its own effect (`own_effect`) still apply. Set it to `false` and rebuild to
+play the designed numbers of this file: power, element, status, range, iframes, accuracy,
+distance and the needs-target flag.
 
 ## Rules the data follows
 
@@ -182,20 +193,22 @@ override lives in the species record in `DIGI.DAT` (`tools/species.py`, 0x200 by
 |---|---|---|
 | 0x1CF | u8 | `own_effect` technique (effects work) |
 | 0x1D0 | i16 | `own_effect` chunk (effects work) |
-| 0x1D2 | u16 | power |
-| 0x1D4 | u8 | element |
-| 0x1D5 | u8 | status |
-| 0x1D6 | u8 | status chance |
-| 0x1D7 | u8 | range |
-| 0x1D8 | u8 | iframes |
-| 0x1D9 | u8 | flags: bit0 present, bit1 needs target, bit2 buff |
-| 0x1DA | u8 | accuracy |
-| 0x1DB | u8 | hits (shown only) |
-| 0x1DC | i32 | distance (squared) |
-| 0x1E0 | u16 | name reference |
+| 0x1D2 | u8 | the finisher id it overrides (`replaces.id`, also written when neutral) |
+| 0x1D3 | u8 | flags: bit0 present (the numbers apply), bit1 spreads (below) |
+| 0x1D4 | `Move` | the whole 16-byte `Move` the battle reads (`dw/move.h`) |
+| 0x1E4 | u16 | name reference (1-based entry of this file, 0 none) |
+| 0x1E6 | u16 | byte of this name in its sector |
+| 0x1E8 | u32 | sector of this name in the first language |
+| 0x1EC | u8 | name sectors per language |
+| 0x1ED | u8 | hits (shown only) |
 
-0x1E2..0x1FF stays free (buff numbers fit there: Offense, Defense, Speed, heal, on-hit status
-and chance, one byte each).
+The `Move` is the native technique's (`content/techniques`, the source of `MOVE_DATA`) with this
+file's power, element (`special`: the index in `fire, battle, air, nature, ice, mech, filth`),
+status, status chance, range, iframes, accuracy and distance on top, and the needs-target flag
+in `unk3` bit 0. Its cost and the other bytes stay native. The build stops if a number is out of
+range or if `replaces.id` is not the finisher in the species' `techniques`. A support move
+(Baihumon, Mushroomon, Tinmon) ships its `fallback.move`. 0x1EE..0x1FF stays free (buff numbers
+fit there: Offense, Defense, Speed, heal, on-hit status and chance, one byte each).
 
 ### Reading it in battle
 
@@ -214,18 +227,34 @@ checks (range 1); the buff path (range 4); the needs-target and lock flags; the 
 the AI scores; and `BTL_applyMoveStatus` (status, chance).
 
 Records are read through `getSpeciesRecord`, a 16-slot cache that can miss and read a CD
-sector. To keep that out of the battle tick, battle load copies the override of each fighter
-(at most four, 16 bytes each) into a small resident table, as `SPECIES_MOVE_BALANCE` does.
+sector. To keep that out of the battle tick, battle load (`modBattleLoadStep`,
+`loadBattleData`, `STD_combatSetup`, the VS setups) copies the override of each fighter into a
+four-slot resident table (`modLoadFinisher`): the record's `Move`, copied whole.
+`modSpeciesMove` answers from that table first, so all of the sites above read it,
+`BTL_applyMoveStatus` included (the attacker is passed through a static beside it).
+
+**Area finishers.** DW1 range 3 is not an area on its own: the native area finishers hit
+everything inside their effect's radius. An import whose designed range is 3 on a finisher
+whose DW1 range is not gets the spreads flag from the build and spreads each landing hit
+to every other living fighter of the victim's side (`BTL_spreadAreaHit`, battle overlay only),
+once per hit and never back to the caster's side. A species whose finisher plays its own
+effect chunk (SkullMeramon's Metal Fireball on Mega Flame) gets no spreads flag: the chunk picks
+its own targets, and with the designed numbers the effects step converts it with `area` (`finisher_area_chunks` in `tools/derive/steps/effects.py`),
+so Metal Fireball's chunk 122 hits every enemy itself. With neutral on nothing spreads and no
+chunk is made an area one.
 
 ### Names and translations
 
 The name is a text-bank entry, `species.<id>.finisher`, in `text/ours/names.json` and every
-`text/<language>/names.json`. Battle load copies the fighters' names into a four-slot scratch
-(about 100 bytes). Menus that show a finisher name ask for the species' name first and fall
-back to `MOVE_NAMES`. Every language translates `MOVE_NAMES`, so these 179 names need the same:
-translating them into all eight banks is a follow-up, and
-`python3 -m tools.localize.ui --json build/ui-widths.json` must then also measure the new keys
-against the 136-pixel finisher field.
+`text/<language>/names.json` (all 179, in every language). `tools/species.py` encodes each
+one exactly as the executable compiler encodes `MOVE_NAMES` in that language (the language's
+font codes, Shift-JIS otherwise; at most 27 bytes) and appends them to `DIGI.DAT`, 64 names of
+32 bytes per sector, one block per language in `MOD_LANG` order. The engine keeps one name, the
+partner's in the current language (28 bytes): `modMoveName(species, move)` reads it when the
+partner or the language changes (outside battle, or at battle load) and otherwise returns
+`MOVE_NAMES[move]`. Every place that shows a finisher name uses it: the status page, the
+battle command bar and its shout, STD and VS, and the `{tech}` script reference.
+`python3 -m tools.localize.ui` measures the names against the 136-pixel finisher field.
 
 ### NEW DIGIMON off
 
@@ -239,8 +268,8 @@ override: its finisher is the native one. Nothing to do.
 | Saves | None. The finisher keeps its id and its slot in the move list. |
 | Menus | Name and power of a finisher come from the species (status, evolution and Brains screens). |
 | Origin and effect tables (`effects_like`) | Unchanged. |
-| Species record | 0x1D2..0x1E1 written by `tools/species.py` from this file. |
-| Main executable | About 160 bytes of code plus 64 bytes of table and 100 of names (estimate; measure `main_BSS_END` per the heap rule). |
+| Species record | 0x1D2..0x1E9 written by `tools/species.py` from this file; the names after the records in `DIGI.DAT` (27 sectors). |
+| Main executable | Measured 620 bytes (`main_BSS_END` 0x801ced8c against 0x801ceb20 without it): the loader, the resident table, the name fetch with its 28-byte buffer, the Move lookup and the menu and textbox call sites. The battle code (spread, Move routing) lives in the BTL, STD and VS overlays. |
 | Free ids | None needed. |
 
 ## How it plugs into the effects and Buster Dive

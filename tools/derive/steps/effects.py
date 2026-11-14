@@ -153,6 +153,26 @@ def effect_objects(files):
     return [(int(slot), model, anim) for slot, model, anim in files]
 
 
+def finisher_area_chunks(root):
+    """Own chunks that play an area finisher (range 3) of content/finishers/imports.json: none while it is neutral
+    (docs/mods/unique-finishers.md), since the chunk's targets are gameplay."""
+    import glob, json
+    with open(os.path.join(root, 'content', 'finishers', 'imports.json'), encoding='utf-8') as f:
+        data = json.load(f)
+    if data.get('neutral', True):
+        return set()
+    out = set()
+    for e in data['finishers']:
+        if 'buff' in e or e['move']['range'] != 3:
+            continue
+        for path in glob.glob(os.path.join(root, 'content', 'species', f'{e["species"]}-*.json')):
+            with open(path, encoding='utf-8') as f:
+                own = json.load(f).get('own_effect')
+            if own and own.get('technique') == e['replaces']['name']:
+                out.add(own['chunk'])
+    return out
+
+
 def own_effects(ctx, archive):
     """{chunk index: chunk} of the species' own effects (content/battle/own-effects.json; getSpeciesTechEffect)."""
     import json
@@ -160,6 +180,7 @@ def own_effects(ctx, archive):
     with open(os.path.join(ctx.root, OWN_EFFECTS)) as f:
         spec = json.load(f)
     out = {}
+    area = finisher_area_chunks(ctx.root)
     for key, e in spec.items():
         if key == 'note':
             continue
@@ -181,7 +202,7 @@ def own_effects(ctx, archive):
             lists.append(objs)
         out[int(key)], info = dw2efe.convert_skill(lists[0], lists[1], launch_table(like), 0x100 + int(key),
                                                    e['scale'], hit_scale=e.get('hit_scale'),
-                                                   area=e.get('area', False), n_hits=e.get('hits', 1))
+                                                   area=e.get('area', False) or int(key) in area, n_hits=e.get('hits', 1))
         ctx.log(f'own effect {key} {e["name"]}: ' + ', '.join(f'{k} {v}' for k, v in info.items() if k != 'parts'))
     return out
 

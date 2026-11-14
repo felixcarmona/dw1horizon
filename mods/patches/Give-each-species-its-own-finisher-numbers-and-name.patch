@@ -1,0 +1,1047 @@
+From 7bcdf660684a78163d828a58b84ea711c88bd916 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 14 Nov 2026 14:00:35 +0000
+Subject: [PATCH] Give each species its own finisher numbers and name
+
+---
+ include/dw/species.h      | 30 ++++++++++++-
+ src/btl/battle_hud.c      |  3 +-
+ src/btl/battle_main.c     | 89 ++++++++++++++++++++++++++++-----------
+ src/btl/command_shout.c   |  5 ++-
+ src/main/btl.c            |  4 ++
+ src/main/game_menu.c      | 14 +++---
+ src/main/mod_species.c    | 54 ++++++++++++++++++++++++
+ src/main/script_textbox.c |  6 ++-
+ src/std/std_main.c        | 68 ++++++++++++++++--------------
+ src/vs/vs_combat.c        | 10 +++--
+ src/vs/vs_main.c          | 52 ++++++++++++-----------
+ 11 files changed, 241 insertions(+), 94 deletions(-)
+
+diff --git a/include/dw/species.h b/include/dw/species.h
+index a9d7354..4e5e17b 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -121,6 +121,19 @@ int32_t getSpeciesVanillaAs(int32_t type);
+ /* MOD (signature effects): the EFEDAT.EFE effect id that species `type` loads for `move`, a move byte of its stats
+  * (0x2e + an index into its DIGI_PARA moves) */
+ int32_t getSpeciesTechEffect(int32_t type, int32_t move);
++#define SPECIES_FINISHER_PRESENT 1	/* finisherFlags: finisherMove replaces the shared Move */
++#define SPECIES_FINISHER_SPREADS 2	/* finisherFlags: an area finisher over a one-target effect (BTL_spreadAreaHit) */
++/* MOD (unique finishers): the fighters' own finishers, filled at battle load (tech 0: a free slot) */
++typedef struct {
++	int16_t type;
++	uint8_t tech;
++	uint8_t flags;	/* finisherFlags */
++	Move move;
++} SpeciesFinisher;
++extern SpeciesFinisher SPECIES_FINISHERS[4];
++/* MOD (unique finishers): the name technique `move` shows for species `type` (its own finisher name, else MOVE_NAMES);
++ * a new species or language reads DIGI.DAT once: never call it in the battle tick for anyone but a loaded partner */
++char *modMoveName(int32_t type, int32_t move);
+ /* 1 if the original type is carried by its DIGI.DAT record (always 0 for ids >= NUM_ORIGINAL_DIGIMON) */
+ int32_t isRecordOriginal(int32_t type);
+ 
+@@ -201,9 +214,23 @@ typedef struct {
+ 	 * effect of its own, instead of the chunk the technique shares (0: none); getSpeciesTechEffect */
+ 	uint8_t ownEffectTech;		/* 0x1CF */
+ 	int16_t ownEffectChunk;		/* 0x1D0 */
+-	uint8_t reserved1D2[SPECIES_RECORD_SIZE - 0x1D2];
++	/* MOD (unique finishers, docs/mods/unique-finishers.md): finisherMove is what technique finisherTech does for this
++	 * species (finisherFlags SPECIES_FINISHER_PRESENT; the build's neutral switch leaves it clear); language L's name is
++	 * at byte finisherNameOffset of sector finisherNameSector + L * finisherNameStride (finisherName 0: none) */
++	uint8_t finisherTech;		/* 0x1D2: the technique id it replaces (58..112), 0 none */
++	uint8_t finisherFlags;		/* 0x1D3 */
++	Move finisherMove;		/* 0x1D4: the native Move with the designed numbers (unk3 bit 0: needs a target) */
++	uint16_t finisherName;		/* 0x1E4: 1-based name reference */
++	uint16_t finisherNameOffset;	/* 0x1E6 */
++	uint32_t finisherNameSector;	/* 0x1E8 */
++	uint8_t finisherNameStride;	/* 0x1EC */
++	uint8_t finisherHits;		/* 0x1ED: shown only */
++	uint8_t reserved1EE[SPECIES_RECORD_SIZE - 0x1EE];
+ } SpeciesRecord;
+ 
++/* MOD (unique finishers): battle load (or a menu) keeps fighter `slot`'s finisher resident (0..3); its record */
++SpeciesRecord *modLoadFinisher(int32_t slot, int32_t type);
++
+ #define SPECIES_LAYOUT_CHECK(name, cond) typedef char species_layout_##name[(cond) ? 1 : -1]
+ SPECIES_LAYOUT_CHECK(size, sizeof(SpeciesRecord) == SPECIES_RECORD_SIZE);
+ SPECIES_LAYOUT_CHECK(para, sizeof(DigimonPara) == 0x34);
+@@ -220,6 +247,7 @@ SPECIES_LAYOUT_CHECK(header, sizeof(SpeciesHeader) == 0x20);
+ SPECIES_LAYOUT_CHECK(portrait, __builtin_offsetof(SpeciesRecord, portrait) == 0x1C0);
+ SPECIES_LAYOUT_CHECK(effectDefault, __builtin_offsetof(SpeciesRecord, effectDefault) == 0x1C4);
+ SPECIES_LAYOUT_CHECK(ownEffect, __builtin_offsetof(SpeciesRecord, ownEffectChunk) == 0x1D0);
++SPECIES_LAYOUT_CHECK(finisher, __builtin_offsetof(SpeciesRecord, finisherMove) == 0x1D4 && __builtin_offsetof(SpeciesRecord, finisherNameSector) == 0x1E8);
+ SPECIES_LAYOUT_CHECK(partnerList, sizeof(SpeciesPartnerList) == 0x800);
+ SPECIES_LAYOUT_CHECK(links, sizeof(SpeciesLinks) <= 0x800);
+ 
+diff --git a/src/btl/battle_hud.c b/src/btl/battle_hud.c
+index c86cae2..dd9bdf3 100644
+--- a/src/btl/battle_hud.c
++++ b/src/btl/battle_hud.c
+@@ -25,6 +25,7 @@
+ #include <dw/lang.h>
+ #include <dw/version.h>
+ #include <dw/world_object.h>
++#include <dw/species.h>
+ #include <text/btl/battle_hud.h>
+ 
+ extern GsRVIEW2 GS_VIEWPOINT;
+@@ -278,7 +279,7 @@ void BTL_drawHoveredCommandName(void)
+ 	cmd = COMBAT_DATA_PTR->player.availableCommands[0][COMBAT_DATA_PTR->player.hoveredCommand[0]];
+ 	if ((cmd >= 8) && (cmd < 0xc)) {
+ 		tech = entityGetTechFromAnim(ENTITY_TABLE[1], PARTNER_ENTITY.digimonEntity.stats.base.moves[cmd - 8]);
+-		drawString(MOVE_NAMES[tech], 0, 0xd8);
++		drawString(modMoveName(PARTNER_ENTITY.digimonEntity.entity.type, tech), 0, 0xd8);
+ 	} else {
+ 		drawString(BTL_COMMAND_NAMES[cmd - 1], 0, 0xd8);
+ 	}
+diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
+index c9f4afa..82b960d 100644
+--- a/src/btl/battle_main.c
++++ b/src/btl/battle_main.c
+@@ -94,6 +94,8 @@ int32_t BTL_addFinisherAura(Entity *entity, int32_t arg1);
+ void BTL_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, FighterData *fighter);
+ int16_t BTL_calculateHitChance(DigimonEntity *attacker, DigimonEntity *defender, FighterData *fighter, int16_t move);
+ void BTL_applyMoveStatus(DigimonEntity *digimon, FighterData *fighter, int32_t move);
++/* MOD (unique finishers): the species whose technique BTL_applyMoveStatus applies (-1: the shared numbers) */
++static int16_t BTL_STATUS_CASTER = -1;
+ int32_t BTL_battleMain(void);
+ void BTL_getWeakestEnemy(Entity *self, FighterData *fighter, int16_t *outScore, int16_t *outIndex);
+ int16_t BTL_calculateTargetScore(DigimonEntity *self, DigimonEntity *other);
+@@ -1358,7 +1360,7 @@ void BTL_tickRangedAttack(DigimonEntity *digimon, DigimonEntity *target, Fighter
+ 
+ 	dist = BTL_getDistanceSquared(&digimon->entity, &target->entity);
+ 	total = DIGI_PARA(digimon->entity.type).radius + DIGI_PARA(target->entity.type).radius;
+-	total = *(uint32_t *)&MOVE_DATA[move].distance + (total * total);
++	total = *(uint32_t *)&modSpeciesMove(digimon->entity.type, move)->distance + (total * total);
+ 	if (dist > (total + (total * 3 / 10))) {
+ 		BTL_setWalking(&digimon->entity, &digimon->stats, fighter->flags);
+ 		BTL_moveTowardLocation(digimon, &target->entity.posData->location, 0x118, 0xc8);
+@@ -1417,8 +1419,8 @@ uint32_t BTL_getMoveWithHighestDistance(DigimonEntity *digimon)
+ 		anim = digimon->stats.base.moves[i];
+ 		if (anim != 0xff) {
+ 			tech = entityGetTechFromAnim(&digimon->entity, anim);
+-			if (best < MOVE_DATA[tech].distance) {
+-				best = MOVE_DATA[tech].distance;
++			if (best < modSpeciesMove(digimon->entity.type, tech)->distance) {
++				best = modSpeciesMove(digimon->entity.type, tech)->distance;
+ 			}
+ 		}
+ 	}
+@@ -2012,12 +2014,12 @@ int16_t BTL_calculateHitChance(DigimonEntity *attacker, DigimonEntity *defender,
+ 	if (speedDiff < -BM(HIT_SPEED_CLAMP)) {
+ 		speedDiff = -BM(HIT_SPEED_CLAMP);
+ 	}
+-	x = BMD(BMD(MOVE_DATA[move].accuracy, HIT_ACC_DIV) * speedDiff, HIT_SPEED_NORM);
++	x = BMD(BMD(modSpeciesMove(attacker->entity.type, move)->accuracy, HIT_ACC_DIV) * speedDiff, HIT_SPEED_NORM);
+ 	if ((defender->entity.anim.animId == 0x21) || (defender->entity.anim.animId == 0x22)) {
+ 		x = x * BM(HIT_MOVING_PCT) / 100;
+ 	}
+ 
+-	result = MOVE_DATA[move].accuracy - x;
++	result = modSpeciesMove(attacker->entity.type, move)->accuracy - x;
+ 	if (result < 0) {
+ 		result = 0;
+ 	}
+@@ -2143,7 +2145,41 @@ void BTL_startHitAnimation(Entity *entity, AttackObject *attack, uint8_t animId)
+ 
+ 	tech = BTL_getAttackTech(attack);
+ 	startAnimation(entity, animId);
+-	createParticleFX(modSpeciesMove(ENTITY_TABLE[attack->casterId]->type, tech)->special, 1, &attack->position, entity, MOVE_DATA[tech].iframes + 0x10);
++	createParticleFX(modSpeciesMove(ENTITY_TABLE[attack->casterId]->type, tech)->special, 1, &attack->position, entity, modSpeciesMove(ENTITY_TABLE[attack->casterId]->type, tech)->iframes + 0x10);
++}
++
++int16_t BTL_calculateAttackHitPosition(SVECTOR *out, Entity *self, Entity *other, int32_t y);
++
++/* MOD (unique finishers): a species' own area finisher (range 3) over a technique whose effect hits one fighter
++ * (SPECIES_FINISHER_SPREADS): the first hit reaches every other living fighter on the victim's side too, as DW1's own area
++ * effects do */
++static void BTL_spreadAreaHit(int32_t victim, AttackObject *attack, int32_t tech)
++{
++	int32_t k;
++	SVECTOR pos;
++	Entity *e;
++	SpeciesFinisher *f;
++
++	for (f = SPECIES_FINISHERS; f->tech == 0 || f->tech != tech || f->type != ENTITY_TABLE[attack->casterId]->type ||
++	                            !(f->flags & SPECIES_FINISHER_SPREADS); f++) {
++		if (f == SPECIES_FINISHERS + 3) {
++			return;
++		}
++	}
++	for (k = 0; k <= ENEMY_COUNT; k++) {
++		e = ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[k]];
++		if (k == victim || (k == 0) != (victim == 0) || (COMBAT_DATA_PTR->fighter[k].flags & FIGHTER_FLAG_DEAD) ||
++		    ((DigimonEntity *)e)->stats.current.isHit != 0) {
++			continue;
++		}
++		BTL_calculateAttackHitPosition(&pos, e, ENTITY_TABLE[attack->casterId], DIGI_PARA(e->type).radius);
++		pos.vy = -DIGI_PARA(e->type).height / 2;
++		/* active 2: a spread hit spreads no further */
++		if (addAttackObject(COMBAT_DATA_PTR->player.entityIds[k], 2, &pos, attack->effectId, attack->subEffectIndex,
++		                    attack->casterId)) {
++			((DigimonEntity *)e)->stats.current.isHit = 1;
++		}
++	}
+ }
+ 
+ void BTL_tickAttackHits(void)
+@@ -2178,6 +2214,9 @@ void BTL_tickAttackHits(void)
+ 		}
+ 		entity = ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]];
+ 		tech = BTL_getAttackTech(&attack);
++		if (attack.active == 1) {
++			BTL_spreadAreaHit(i, &attack, tech);
++		}
+ 		if (DIGI_PARA(entity->type).moves[(uint32_t)(entity->anim.animId - 0x2e)] == 0x2d) {
+ 			if (COMBAT_DATA_PTR->player.entityIds[fighter->targetId] == attack.casterId) {
+ 				((DigimonEntity *)entity)->stats.current.isHit = 0;
+@@ -2216,13 +2255,15 @@ void BTL_tickAttackHits(void)
+ 			fighter->flags |= FIGHTER_FLAG_KNOCKED_BACK;
+ 			BTL_handleHitReaction(entity, fighter, &attack, i);
+ 			addEntityText(entity, i, 0, dmg, 0);
+-			fighter->invulnerableTimer = MOVE_DATA[tech].iframes;
++			fighter->invulnerableTimer = modSpeciesMove(attacker->type, tech)->iframes;
+ 			entity->anim.animFlag &= 0xfe;
++			BTL_STATUS_CASTER = attacker->type; /* MOD (unique finishers): whose numbers the status uses */
+ 			BTL_applyMoveStatus((DigimonEntity *)entity, fighter, tech);
++			BTL_STATUS_CASTER = -1;
+ 			continue;
+ 		}
+ 		handled = 0;
+-		if (!(fighter->flags & FIGHTER_FLAG_BLOCKING) && (MOVE_DATA[tech].range == 1) && (DIGI_PARA(entity->type).moves[(uint32_t)(entity->anim.animId - 0x2e)] != 0x2d)) {
++		if (!(fighter->flags & FIGHTER_FLAG_BLOCKING) && (modSpeciesMove(attacker->type, tech)->range == 1) && (DIGI_PARA(entity->type).moves[(uint32_t)(entity->anim.animId - 0x2e)] != 0x2d)) {
+ 			moves = ((DigimonEntity *)entity)->stats.base.moves;
+ 			for (j = 0; j < 4; j++) {
+ 				if (((DigimonEntity *)entity)->stats.current.currentMP < BM(BLOCK_MIN_MP)) {
+@@ -2251,7 +2292,7 @@ void BTL_tickAttackHits(void)
+ 		if ((fighter->flags & FIGHTER_FLAG_BLOCKING) && (fighter->invulnerableTimer > 0)) {
+ 			goto blocked;
+ 		}
+-		if (MOVE_DATA[tech].range == 1) {
++		if (modSpeciesMove(attacker->type, tech)->range == 1) {
+ 			dmg = BTL_calculateDamage((DigimonEntity *)attacker, (DigimonEntity *)entity, tech);
+ 			blockPercent = randomLimit(BMS(BLOCK_DMG_SPAN)) + BM(BLOCK_DMG_MIN);
+ 			dmg = modHardBlockedFloor(dmg * blockPercent / 100, BTL_HARD_ZERO_DAMAGE, blockPercent);
+@@ -2334,11 +2375,11 @@ int32_t BTL_isMoveUsable(DigimonEntity *digimon, FighterData *fighter, int16_t s
+ 		return 0;
+ 	}
+ 
+-	if ((MOVE_DATA[tech].range == 4) && (fighter->buffsRemaining == 0)) {
++	if ((modSpeciesMove(digimon->entity.type, tech)->range == 4) && (fighter->buffsRemaining == 0)) {
+ 		return 0;
+ 	}
+ 
+-	if ((fighter->targetId == 0xff) && ((MOVE_DATA[tech].unk3 & 1) == 1)) {
++	if ((fighter->targetId == 0xff) && ((modSpeciesMove(digimon->entity.type, tech)->unk3 & 1) == 1)) {
+ 		return 0;
+ 	}
+ 
+@@ -2381,7 +2422,7 @@ void BTL_setupQueuedMove(DigimonEntity *digimon, FighterData *fighter, int16_t a
+ 	stats = &digimon->stats;
+ 	fighter->queuedAnim = stats->base.moves[moveIndex];
+ 	tech = entityGetTechFromAnim(&digimon->entity, fighter->queuedAnim);
+-	fighter->moveRange = MOVE_DATA[tech].range;
++	fighter->moveRange = modSpeciesMove(digimon->entity.type, tech)->range;
+ 	BTL_applyChargeRequirement(digimon, fighter, tech);
+ 	fighter->flags |= FIGHTER_FLAG_TRANSFORMING;
+ }
+@@ -2459,7 +2500,7 @@ void BTL_startQueuedMove(DigimonEntity *digimon, DigimonEntity *target, FighterD
+ 		}
+ 	}
+ 
+-	if (MOVE_DATA[tech].unk3 & 2) {
++	if (modSpeciesMove(digimon->entity.type, tech)->unk3 & 2) {
+ 		FLEE_DISABLED[1] = BM(FLEE_LOCK);
+ 	}
+ 
+@@ -2477,7 +2518,7 @@ int32_t BTL_isMoveOnCooldown(Entity *entity, FighterData *fighter)
+ 	int16_t tech;
+ 
+ 	tech = entityGetTechFromAnim(entity, fighter->queuedAnim);
+-	if ((MOVE_DATA[tech].unk3 & 2) && (FLEE_DISABLED[1] > 0)) {
++	if ((modSpeciesMove(entity->type, tech)->unk3 & 2) && (FLEE_DISABLED[1] > 0)) {
+ 		return 1;
+ 	}
+ 
+@@ -2496,7 +2537,7 @@ void BTL_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
+ 	if (fighter->moveRange != 4) {
+ 		BATTLE_TARGETED_DIGIMON = target;
+ 		if (target == NULL) {
+-			if (MOVE_DATA[tech].unk3 & 1) {
++			if (modSpeciesMove(digimon->entity.type, tech)->unk3 & 1) {
+ 				if (digimon != (DigimonEntity *)ENTITY_TABLE[1]) {
+ 					BATTLE_TARGETED_DIGIMON = (DigimonEntity *)ENTITY_TABLE[1];
+ 					fighter->targetId = 0;
+@@ -2556,7 +2597,7 @@ void BTL_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
+ 		fighter->activeEffectSlot = fighter->effectSlot[i];
+ 	}
+ 
+-	if ((MOVE_DATA[tech].range == 4) && (fighter->buffsRemaining != 0)) {
++	if ((modSpeciesMove(digimon->entity.type, tech)->range == 4) && (fighter->buffsRemaining != 0)) {
+ 		fighter->buffsRemaining--;
+ 	}
+ 
+@@ -3203,13 +3244,13 @@ void BTL_applyMoveStatus(DigimonEntity *digimon, FighterData *fighter, int32_t m
+ 		return;
+ 	}
+ 
+-	if (MOVE_DATA[move].statusChance == 0) {
++	if (modSpeciesMove(BTL_STATUS_CASTER, move)->statusChance == 0) {
+ 		return;
+ 	}
+ 
+-	chance = MOVE_DATA[move].statusChance;
++	chance = modSpeciesMove(BTL_STATUS_CASTER, move)->statusChance;
+ 	if (randomLimit(100) < chance) {
+-		switch (MOVE_DATA[move].status) {
++		switch (modSpeciesMove(BTL_STATUS_CASTER, move)->status) {
+ 		case 1:
+ 			if (!(fighter->flags & FIGHTER_FLAG_POISONED)) {
+ 				fighter->flags |= FIGHTER_FLAG_POISONED;
+@@ -3547,12 +3588,12 @@ void BTL_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 			continue;
+ 		}
+ 		tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
+-		if (MOVE_DATA[tech].range == 4) {
++		if (modSpeciesMove(digimon->entity.type, tech)->range == 4) {
+ 			weights[i] += fighter->buffPrioTimer + BTL_calculateElementBonus(modSpeciesMove(digimon->entity.type, tech)->special, DIGI_PARA(digimon->entity.type).special[0]);
+ 			continue;
+ 		}
+ 		weights[i] += BTL_calculateElementBonus(modSpeciesMove(digimon->entity.type, tech)->special, DIGI_PARA(ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[fighter->targetId]]->type).special[0]);
+-		if (MOVE_DATA[tech].range != 3) {
++		if (modSpeciesMove(digimon->entity.type, tech)->range != 3) {
+ 			continue;
+ 		}
+ 		count = BTL_countLivingEnemies();
+@@ -3576,7 +3617,7 @@ void BTL_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 						values[i] = -1;
+ 					} else {
+ 						tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
+-						values[i] = MOVE_DATA[tech].distance;
++						values[i] = modSpeciesMove(digimon->entity.type, tech)->distance;
+ 					}
+ 				}
+ 				BTL_sortScoresDescending(values, keys, groups, 3);
+@@ -3895,12 +3936,12 @@ void BTL_selectEnemyMove(DigimonEntity *digimon, FighterData *fighter, int16_t i
+ 		}
+ 		if (j != (ENEMY_COUNT + 1)) {
+ 			if (NPC_ENTITIES[BTL_getNpcEntityIndex(&digimon->entity)].unk1 == 0) {
+-				if (MOVE_DATA[tech].range == 3) {
++				if (modSpeciesMove(digimon->entity.type, tech)->range == 3) {
+ 					weights[i] += BM(AI_ENEMY_GROUP_WEIGHT);
+ 				}
+ 			}
+ 		}
+-		if (MOVE_DATA[tech].range == 4) {
++		if (modSpeciesMove(digimon->entity.type, tech)->range == 4) {
+ 			weights[i] += fighter->buffPrioTimer;
+ 		}
+ 	}
+diff --git a/src/btl/command_shout.c b/src/btl/command_shout.c
+index e8258fa..b195d7f 100644
+--- a/src/btl/command_shout.c
++++ b/src/btl/command_shout.c
+@@ -6,6 +6,7 @@
+ #include <dw/btl.h>
+ #include <dw/mod_present.h>
+ #include <dw/script.h>
++#include <dw/species.h>
+ #include <dw/version.h>
+ #include <dw/world_object.h>
+ #include <text/btl/command_shout.h>
+@@ -61,8 +62,8 @@ void BTL_drawCommandShout(uint32_t command)
+ 
+ 	if ((command >= 8) && (command < 12)) {
+ 		tech = entityGetTechFromAnim(ENTITY_TABLE[1], PARTNER_ENTITY.digimonEntity.stats.base.moves[(int32_t)command - 8]);
+-		drawString(MOVE_NAMES[tech], 0, 204);
+-		length = strlen(MOVE_NAMES[tech]);
++		drawString(modMoveName(PARTNER_ENTITY.digimonEntity.entity.type, tech), 0, 204);
++		length = strlen(modMoveName(PARTNER_ENTITY.digimonEntity.entity.type, tech));
+ 	} else {
+ 		drawString(BTL_SHOUTS[(int32_t)command - 1], 0, 204);
+ 		length = strlen(BTL_SHOUTS[(int32_t)command - 1]);
+diff --git a/src/main/btl.c b/src/main/btl.c
+index ded15ee..cce9035 100644
+--- a/src/main/btl.c
++++ b/src/main/btl.c
+@@ -547,8 +547,10 @@ void modBattleLoadStep(void)
+ 		}
+ 		BTL_initializeEFEEngine((char *)GENERAL_BUFFER_PTR);
+ 		n = 0;
++		modMoveName(PARTNER_ENTITY.digimonEntity.entity.type, 0); /* MOD (unique finishers): the name first, then the fighters */
+ 		for (i = 0; i <= ENEMY_COUNT; i++) {
+ 			e = (DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]];
++			modLoadFinisher(i, e->entity.type); /* MOD (unique finishers): no DIGI.DAT reads in the battle tick */
+ 			for (j = 0; j < 4; j++) {
+ 				if (e->stats.base.moves[j] != 0xff) {
+ 					modMoveList[n++] = getSpeciesTechEffect(e->entity.type, e->stats.base.moves[j]);
+@@ -754,10 +756,12 @@ void loadBattleData(int32_t entityId, int32_t count)
+ 		partnerTickCollision();
+ 	}
+ 	loadBattleDataTick();
++	modMoveName(PARTNER_ENTITY.digimonEntity.entity.type, 0); /* MOD (unique finishers): the name first, then the fighters */
+ 	for (i = 0; i <= ENEMY_COUNT; i++) {
+ 		e = (DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]];
+ 		e->stats.current.unk1 = -1;
+ 		e->stats.current.efeSubEffect = -1;
++		modLoadFinisher(i, e->entity.type); /* MOD (unique finishers) */
+ 		for (j = 0; j < 4; j++) {
+ 			if (e->stats.base.moves[j] != 0xff) {
+ 				if (entityGetTechFromAnim(&e->entity, e->stats.base.moves[j]) == 0xff) {
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 52f4e1a..38c74be 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -3303,14 +3303,15 @@ void renderDigimonMovesView(void)
+ 		renderRectPolyFT4(0x75, 4, 4, 4, 0x78, 0x8c, 5, 0x7b06, 5, 0);
+ 		renderSeparatorLines(&MOVES_TECHSET_LINES[3], 3, 5);
+ 		if (EQUIPPED_MOVES[3] != 0xff) {
++			Move *finisher = modSpeciesMove(PARTNER_ENTITY.digimonEntity.entity.type, EQUIPPED_MOVES[3]); /* MOD (unique finishers): the species' own */
+ 			renderString(3, TECH_TITLE_CROPS[1].x, -0xf, TECH_TITLE_CROPS[1].w, 0xc, TECH_TITLE_CROPS[1].u, 0x48, 5, 1);
+ 			renderString(0, -0x7c, 1, FINISHER_NAME_WIDTH, 0xc, 0, 0x3c, 5, 1);
+-			renderNumber(0, 0x10, 0, 3, modSpeciesMove(PARTNER_ENTITY.digimonEntity.entity.type, EQUIPPED_MOVES[3])->power, 5);
++			renderNumber(0, 0x10, 0, 3, finisher->power, 5);
+ 			renderString(0, 0x65, 1, 0xc, 0xc,
+-			             (MOVE_DATA[EQUIPPED_MOVES[3]].range - 1) * 0xc + 0x48, 0x6c, 5, 1);
+-			if (MOVE_DATA[EQUIPPED_MOVES[3]].status != 0) {
++			             (finisher->range - 1) * 0xc + 0x48, 0x6c, 5, 1);
++			if (finisher->status != 0) {
+ 				renderRectPolyFT4(0x7d, 0, 0xc, 0xc,
+-				                  (MOVE_DATA[EQUIPPED_MOVES[3]].status - 1) * 0xc, 0x8c, 5,
++				                  (finisher->status - 1) * 0xc, 0x8c, 5,
+ 				                  0x7a06, 5, 0);
+ 			}
+ 		}
+@@ -6031,6 +6032,7 @@ void renderDigiviceMedals(void)
+ int32_t drawDigimonMovesText(void)
+ {
+ 	RECT rect;
++	char *name;
+ 
+ 	rect = MOVES_VIEW_TEXT_AREA;
+ 	switch (MENU_SUB_STATE) {
+@@ -6081,8 +6083,8 @@ int32_t drawDigimonMovesText(void)
+ 		if (PARTNER_ENTITY.digimonEntity.stats.base.moves[3] != 0xff) {
+ 			EQUIPPED_MOVES[3] = entityGetTechFromAnim(ENTITY_TABLE[1],
+ 			                                          PARTNER_ENTITY.digimonEntity.stats.base.moves[3]);
+-			drawStringMode(MOVE_NAMES[EQUIPPED_MOVES[3]], 0, 0x3c,
+-		              fitStringMode(MOVE_NAMES[EQUIPPED_MOVES[3]], FINISHER_NAME_WIDTH));
++			name = modMoveName(PARTNER_ENTITY.digimonEntity.entity.type, EQUIPPED_MOVES[3]);
++			drawStringMode(name, 0, 0x3c, fitStringMode(name, FINISHER_NAME_WIDTH));
+ 		} else {
+ 			EQUIPPED_MOVES[3] = 0xff;
+ 		}
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index d40ca35..f2e9ec2 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -78,10 +78,64 @@ static SpeciesMoveBalance SPECIES_MOVE_BALANCE[SPECIES_BALANCE_SWAP_MAX];
+ static int32_t SPECIES_MOVE_BALANCES;
+ static Move SPECIES_MOVE_COPY;
+ 
++SpeciesFinisher SPECIES_FINISHERS[4];
++/* the partner's finisher name in the current language: key (type + 1) | MOD_LANG << 12 */
++static int32_t SPECIES_FINISHER_NAME_KEY;
++static uint8_t SPECIES_FINISHER_NAME_TECH;
++static char SPECIES_FINISHER_NAME[28];
++extern char *MOVE_NAMES[];
++
++SpeciesRecord *modLoadFinisher(int32_t slot, int32_t type)
++{
++	SpeciesFinisher *f = &SPECIES_FINISHERS[slot];
++	SpeciesRecord *rec = getSpeciesRecord(type);
++
++	f->tech = 0;
++	if (rec != NULL && (rec->finisherFlags & SPECIES_FINISHER_PRESENT)) {
++		f->type = type;
++		f->tech = rec->finisherTech;
++		f->flags = rec->finisherFlags;
++		f->move = rec->finisherMove;
++	}
++	return rec;
++}
++
++static SpeciesFinisher *findFinisher(int32_t type, int32_t move)
++{
++	SpeciesFinisher *f;
++
++	for (f = SPECIES_FINISHERS; f < SPECIES_FINISHERS + 4; f++) {
++		if (f->tech != 0 && f->tech == move && f->type == type) return f;
++	}
++	return NULL;
++}
++
++char *modMoveName(int32_t type, int32_t move)
++{
++	SpeciesRecord *rec;
++	int32_t key = (type + 1) | MOD_LANG << 12;
++
++	if (SPECIES_FINISHER_NAME_KEY != key) {
++		SPECIES_FINISHER_NAME_KEY = key;
++		SPECIES_FINISHER_NAME_TECH = 0;
++		rec = modLoadFinisher(0, type);
++		if (rec != NULL && rec->finisherName != 0) {
++			SPECIES_FINISHER_NAME_TECH = rec->finisherTech;
++			key = rec->finisherNameOffset;
++			readSpeciesSector(rec->finisherNameSector + MOD_LANG * rec->finisherNameStride);
++			memcpy(SPECIES_FINISHER_NAME, (uint8_t *)SPECIES_SECTOR + key, sizeof(SPECIES_FINISHER_NAME));
++		}
++	}
++	return (move == SPECIES_FINISHER_NAME_TECH && move != 0) ? SPECIES_FINISHER_NAME : MOVE_NAMES[move];
++}
++
+ Move *modSpeciesMove(int32_t type, int32_t move)
+ {
+ 	int32_t i;
+ 	SpeciesMoveBalance *b;
++	SpeciesFinisher *f = findFinisher(type, move);
++
++	if (f != NULL) return &f->move;
+ 	for (i = 0; i < SPECIES_MOVE_BALANCES; i++) {
+ 		b = &SPECIES_MOVE_BALANCE[i];
+ 		if (b->type != type || b->move != move) continue;
+diff --git a/src/main/script_textbox.c b/src/main/script_textbox.c
+index 9fea61e..4d344bd 100644
+--- a/src/main/script_textbox.c
++++ b/src/main/script_textbox.c
+@@ -14,6 +14,8 @@
+ #include <dw/sound.h>
+ #include <dw/tamer.h>
+ #include <dw/ui.h>
++#include <dw/entity.h>
++#include <dw/species.h>
+ #include <dw/version.h>
+ 
+ extern uint8_t TEXTBOX_OPEN_TIMER;
+@@ -1432,8 +1434,8 @@ top: {
+ 			ctrl = *SCRIPT_POINTER++;
+ 			{
+ 				ctrl = readPStat(ctrl);
+-				strcpy(out, MOVE_NAMES[ctrl]);
+-				lines = strlen(MOVE_NAMES[ctrl]);
++				strcpy(out, modMoveName(PARTNER_ENTITY.digimonEntity.entity.type, ctrl)); /* MOD (unique finishers) */
++				lines = strlen(out);
+ 				out += lines;
+ 				col += (uint16_t)(lines >> 1);
+ 			}
+diff --git a/src/std/std_main.c b/src/std/std_main.c
+index 8180b6d..482285c 100644
+--- a/src/std/std_main.c
++++ b/src/std/std_main.c
+@@ -180,6 +180,8 @@ void STD_startWalkingAnimation2(Entity *entity, Stats *stats, uint16_t flags);
+ int16_t STD_getAttackTech(AttackObject *attack);
+ int32_t STD_applyBuffMove(DigimonEntity *digimon, int32_t slot, int16_t anim);
+ void STD_applyMoveStatus(DigimonEntity *digimon, FighterData *fighter, int32_t move);
++/* MOD (unique finishers): the species whose technique STD_applyMoveStatus applies (-1: the shared numbers) */
++static int16_t STD_STATUS_CASTER = -1;
+ int16_t STD_getFighterSlot(int16_t entityId);
+ int32_t STD_addBlockedAttack(FighterData *fighter, FighterData *other);
+ void STD_buffStats(DigimonEntity *digimon, int32_t slot, int32_t value, int16_t *stat, int32_t color, int32_t flag);
+@@ -3832,8 +3834,10 @@ void STD_combatSetup(void)
+ 	moveCount = 0;
+ 	STD_initializeEFEEngine((char *)GENERAL_BUFFER_PTR);
+ 
++	modMoveName(PARTNER_ENTITY.digimonEntity.entity.type, 0); /* MOD (unique finishers): the name first, then the fighters */
+ 	for (i = 0; i <= ENEMY_COUNT; ++i) {
+ 		entity = (DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]];
++		modLoadFinisher(i, entity->entity.type); /* MOD (unique finishers) */
+ 		entity->stats.current.unk1 = -1;
+ 		entity->stats.current.efeSubEffect = -1;
+ 
+@@ -4997,7 +5001,7 @@ void STD_tickDigimonAttackRanged(DigimonEntity *entity, DigimonEntity *other,
+ 
+ 	distance = STD_getDistanceSquared(&entity->entity, &other->entity);
+ 	total = DIGI_PARA(entity->entity.type).radius + DIGI_PARA(other->entity.type).radius;
+-	total = *(uint32_t *)&MOVE_DATA[move].distance + total * total;
++	total = *(uint32_t *)&modSpeciesMove(entity->entity.type, move)->distance + total * total;
+ 
+ 	if (distance > total + total * 3 / 10) {
+ 		STD_setWalking(&entity->entity, &entity->stats, data->flags);
+@@ -5038,8 +5042,8 @@ uint32_t STD_getMoveWithHighestDistance(DigimonEntity *digimon)
+ 		anim = digimon->stats.base.moves[i];
+ 		if (anim != 0xff) {
+ 			tech = entityGetTechFromAnim(&digimon->entity, anim);
+-			if (best < MOVE_DATA[tech].distance) {
+-				best = MOVE_DATA[tech].distance;
++			if (best < modSpeciesMove(digimon->entity.type, tech)->distance) {
++				best = modSpeciesMove(digimon->entity.type, tech)->distance;
+ 			}
+ 		}
+ 	}
+@@ -5633,8 +5637,8 @@ void STD_tickAttackHits(void)
+ 			FINISHING_ENTITY = NULL;
+ 		}
+ 		if (randomLimit(100) < chance) {
+-			if (STD_CAMERA_STATE == 6 && MOVE_DATA[tech].range == 1 && STD_CAMERA_STATE == 3) {
+-				if (MOVE_DATA[entityGetTechFromAnim(STD_FOCUSED_ENTITY, STD_FOCUSED_ENTITY->anim.animId)].range == 3) {
++			if (STD_CAMERA_STATE == 6 && modSpeciesMove(attacker->type, tech)->range == 1 && STD_CAMERA_STATE == 3) {
++				if (modSpeciesMove(STD_FOCUSED_ENTITY->type, entityGetTechFromAnim(STD_FOCUSED_ENTITY, STD_FOCUSED_ENTITY->anim.animId))->range == 3) {
+ 					goto skipViewpoint;
+ 				}
+ 			}
+@@ -5651,13 +5655,15 @@ skipViewpoint:
+ 			fighter->flags |= FIGHTER_FLAG_KNOCKED_BACK;
+ 			STD_handleHitReaction(entity, fighter, &attack, i);
+ 			addEntityText(entity, i, 0, dmg, 0);
+-			fighter->invulnerableTimer = MOVE_DATA[tech].iframes;
++			fighter->invulnerableTimer = modSpeciesMove(attacker->type, tech)->iframes;
+ 			entity->anim.animFlag &= 0xfe;
++			STD_STATUS_CASTER = attacker->type;
+ 			STD_applyMoveStatus((DigimonEntity *)entity, fighter, tech);
++			STD_STATUS_CASTER = -1;
+ 			continue;
+ 		}
+ 		handled = 0;
+-		if (!(fighter->flags & FIGHTER_FLAG_BLOCKING) && (MOVE_DATA[tech].range == 1) && (DIGI_PARA(entity->type).moves[(uint32_t)(entity->anim.animId - 0x2e)] != 0x2d)) {
++		if (!(fighter->flags & FIGHTER_FLAG_BLOCKING) && (modSpeciesMove(attacker->type, tech)->range == 1) && (DIGI_PARA(entity->type).moves[(uint32_t)(entity->anim.animId - 0x2e)] != 0x2d)) {
+ 			moves = ((DigimonEntity *)entity)->stats.base.moves;
+ 			for (j = 0; j < 4; j++) {
+ 				if (((DigimonEntity *)entity)->stats.current.currentMP < BM(BLOCK_MIN_MP)) {
+@@ -5686,7 +5692,7 @@ skipViewpoint:
+ 		if ((fighter->flags & FIGHTER_FLAG_BLOCKING) && (fighter->invulnerableTimer > 0)) {
+ 			goto blocked;
+ 		}
+-		if (MOVE_DATA[tech].range == 1) {
++		if (modSpeciesMove(attacker->type, tech)->range == 1) {
+ 			dmg = STD_calculateDamage((DigimonEntity *)attacker, (DigimonEntity *)entity, tech);
+ 			blockPercent = randomLimit(BMS(BLOCK_DMG_SPAN)) + BM(BLOCK_DMG_MIN);
+ 			dmg = modHardBlockedFloor(dmg * blockPercent / 100, STD_HARD_ZERO_DAMAGE, blockPercent);
+@@ -5806,12 +5812,12 @@ int16_t STD_applyPartnerStatsToFighter(DigimonEntity *attacker, DigimonEntity *d
+ 		return 0;
+ 	}
+ 
+-	x = BMD(BMD(MOVE_DATA[move].accuracy, HIT_ACC_DIV) * (defender->stats.base.speed - BMD(attacker->stats.base.speed, HIT_SPEED_DIV)), HIT_SPEED_NORM);
++	x = BMD(BMD(modSpeciesMove(attacker->entity.type, move)->accuracy, HIT_ACC_DIV) * (defender->stats.base.speed - BMD(attacker->stats.base.speed, HIT_SPEED_DIV)), HIT_SPEED_NORM);
+ 	if ((defender->entity.anim.animId == 0x21) || (defender->entity.anim.animId == 0x22)) {
+ 		x = x * BM(HIT_MOVING_PCT) / 100;
+ 	}
+ 
+-	result = (int16_t)(MOVE_DATA[move].accuracy - x);
++	result = (int16_t)(modSpeciesMove(attacker->entity.type, move)->accuracy - x);
+ 	if (result < 0) {
+ 		result = 0;
+ 	}
+@@ -5948,13 +5954,13 @@ void STD_applyMoveStatus(DigimonEntity *digimon, FighterData *fighter, int32_t m
+ 		return;
+ 	}
+ 
+-	if (MOVE_DATA[move].statusChance == 0) {
++	if (modSpeciesMove(STD_STATUS_CASTER, move)->statusChance == 0) {
+ 		return;
+ 	}
+ 
+-	chance = MOVE_DATA[move].statusChance;
++	chance = modSpeciesMove(STD_STATUS_CASTER, move)->statusChance;
+ 	if (randomLimit(100) < chance) {
+-		switch (MOVE_DATA[move].status) {
++		switch (modSpeciesMove(STD_STATUS_CASTER, move)->status) {
+ 		case 1:
+ 			if (!(fighter->flags & FIGHTER_FLAG_POISONED)) {
+ 				fighter->flags |= FIGHTER_FLAG_POISONED;
+@@ -6047,7 +6053,7 @@ void STD_startHitAnimation(Entity *entity, AttackObject *attack, uint8_t animId)
+ 
+ 	tech = STD_getAttackTech(attack);
+ 	startAnimation(entity, animId);
+-	createParticleFX(modSpeciesMove(ENTITY_TABLE[attack->casterId]->type, tech)->special, 1, &attack->position, entity, MOVE_DATA[tech].iframes + 0x10);
++	createParticleFX(modSpeciesMove(ENTITY_TABLE[attack->casterId]->type, tech)->special, 1, &attack->position, entity, modSpeciesMove(ENTITY_TABLE[attack->casterId]->type, tech)->iframes + 0x10);
+ }
+ 
+ void STD_tickFrames(int16_t count)
+@@ -6239,11 +6245,11 @@ int32_t STD_isMoveUsable(DigimonEntity *digimon, FighterData *fighter, int16_t s
+ 		return 0;
+ 	}
+ 
+-	if ((MOVE_DATA[tech].range == 4) && (fighter->buffsRemaining == 0)) {
++	if ((modSpeciesMove(digimon->entity.type, tech)->range == 4) && (fighter->buffsRemaining == 0)) {
+ 		return 0;
+ 	}
+ 
+-	if ((fighter->targetId == 0xff) && ((MOVE_DATA[tech].unk3 & 1) == 1)) {
++	if ((fighter->targetId == 0xff) && ((modSpeciesMove(digimon->entity.type, tech)->unk3 & 1) == 1)) {
+ 		return 0;
+ 	}
+ 
+@@ -6375,12 +6381,12 @@ void STD_selectEnemyMove(DigimonEntity *digimon, FighterData *fighter, int16_t i
+ 		}
+ 		if (j != (ENEMY_COUNT + 1)) {
+ 			if (NPC_ENTITIES[STD_getNpcEntityIndex(&digimon->entity)].unk1 == 0) {
+-				if (MOVE_DATA[tech].range == 3) {
++				if (modSpeciesMove(digimon->entity.type, tech)->range == 3) {
+ 					weights[i] += BM(AI_ENEMY_GROUP_WEIGHT);
+ 				}
+ 			}
+ 		}
+-		if (MOVE_DATA[tech].range == 4) {
++		if (modSpeciesMove(digimon->entity.type, tech)->range == 4) {
+ 			weights[i] += fighter->buffPrioTimer;
+ 		}
+ 	}
+@@ -6493,12 +6499,12 @@ void STD_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 			continue;
+ 		}
+ 		tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
+-		if (MOVE_DATA[tech].range == 4) {
++		if (modSpeciesMove(digimon->entity.type, tech)->range == 4) {
+ 			weights[i] += fighter->buffPrioTimer + STD_calculateElementBonus(modSpeciesMove(digimon->entity.type, tech)->special, DIGI_PARA(digimon->entity.type).special[0]);
+ 			continue;
+ 		}
+ 		weights[i] += STD_calculateElementBonus(modSpeciesMove(digimon->entity.type, tech)->special, DIGI_PARA(ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[fighter->targetId]]->type).special[0]);
+-		if (MOVE_DATA[tech].range != 3) {
++		if (modSpeciesMove(digimon->entity.type, tech)->range != 3) {
+ 			continue;
+ 		}
+ 		count = STD_countLivingEnemies();
+@@ -6522,7 +6528,7 @@ void STD_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 						values[i] = -1;
+ 					} else {
+ 						tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
+-						values[i] = MOVE_DATA[tech].distance;
++						values[i] = modSpeciesMove(digimon->entity.type, tech)->distance;
+ 					}
+ 				}
+ 				STD_sortScoresDescending(values, keys, groups, 3);
+@@ -6573,7 +6579,7 @@ void STD_setupQueuedMove(DigimonEntity *digimon, FighterData *fighter, int16_t a
+ 	stats = &digimon->stats;
+ 	fighter->queuedAnim = stats->base.moves[moveIndex];
+ 	tech = entityGetTechFromAnim(&digimon->entity, fighter->queuedAnim);
+-	fighter->moveRange = MOVE_DATA[tech].range;
++	fighter->moveRange = modSpeciesMove(digimon->entity.type, tech)->range;
+ 	STD_applyChargeRequirement(digimon, fighter, tech);
+ 	fighter->flags |= FIGHTER_FLAG_TRANSFORMING;
+ }
+@@ -6644,7 +6650,7 @@ void STD_startQueuedMove(DigimonEntity *digimon, DigimonEntity *target, FighterD
+ 			entityLookAtLocation(&digimon->entity, &target->entity.posData->location);
+ 		}
+ 	}
+-	if ((MOVE_DATA[tech].unk3 & 2) != 0) {
++	if ((modSpeciesMove(digimon->entity.type, tech)->unk3 & 2) != 0) {
+ 		if (&digimon->entity == ENTITY_TABLE[1]) {
+ 			FLEE_DISABLED[1] = BM(FLEE_LOCK);
+ 		} else {
+@@ -6669,7 +6675,7 @@ int32_t STD_selectMoveTarget(Entity *entity, FighterData *fighter)
+ 	FighterData *f;
+ 
+ 	tech = entityGetTechFromAnim(entity, fighter->queuedAnim);
+-	if ((MOVE_DATA[tech].unk3 & 2) != 0) {
++	if ((modSpeciesMove(entity->type, tech)->unk3 & 2) != 0) {
+ 		if (entity == ENTITY_TABLE[1]) {
+ 			if (FLEE_DISABLED[1] > 0) {
+ 				return 1;
+@@ -6689,7 +6695,7 @@ int32_t STD_selectMoveTarget(Entity *entity, FighterData *fighter)
+ 				continue;
+ 			}
+ 			otherTech = entityGetTechFromAnim(e, e->anim.animId);
+-			if ((MOVE_DATA[otherTech].unk3 & 2) == 0) {
++			if ((modSpeciesMove(e->type, otherTech)->unk3 & 2) == 0) {
+ 				continue;
+ 			}
+ 			return 1;
+@@ -6713,7 +6719,7 @@ void STD_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
+ 	if (fighter->moveRange != 4) {
+ 		BATTLE_TARGETED_DIGIMON = target;
+ 		if (target == NULL) {
+-			if (MOVE_DATA[tech].unk3 & 1) {
++			if (modSpeciesMove(digimon->entity.type, tech)->unk3 & 1) {
+ 				if (digimon != (DigimonEntity *)ENTITY_TABLE[1]) {
+ 					BATTLE_TARGETED_DIGIMON = (DigimonEntity *)ENTITY_TABLE[1];
+ 					fighter->targetId = 0;
+@@ -6777,7 +6783,7 @@ void STD_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
+ 		fighter->activeEffectSlot = fighter->effectSlot[i];
+ 	}
+ 
+-	if ((MOVE_DATA[tech].range == 4) && (fighter->buffsRemaining != 0)) {
++	if ((modSpeciesMove(digimon->entity.type, tech)->range == 4) && (fighter->buffsRemaining != 0)) {
+ 		fighter->buffsRemaining--;
+ 	}
+ 
+@@ -6787,7 +6793,7 @@ void STD_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
+ 	}
+ 
+ 	if (STD_CAMERA_STATE == 3) {
+-		if (MOVE_DATA[entityGetTechFromAnim(STD_FOCUSED_ENTITY, STD_FOCUSED_ENTITY->anim.animId)].range == 3) {
++		if (modSpeciesMove(STD_FOCUSED_ENTITY->type, entityGetTechFromAnim(STD_FOCUSED_ENTITY, STD_FOCUSED_ENTITY->anim.animId))->range == 3) {
+ 			return;
+ 		}
+ 	}
+@@ -6801,13 +6807,13 @@ void STD_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
+ 		}
+ 	}
+ 
+-	if ((MOVE_DATA[tech].range == 1) || (MOVE_DATA[tech].range == 4)) {
++	if ((modSpeciesMove(digimon->entity.type, tech)->range == 1) || (modSpeciesMove(digimon->entity.type, tech)->range == 4)) {
+ 		n = 2;
+ 	} else {
+ 		n = 5;
+ 	}
+ 
+-	STD_selectRandomCamera((DigimonEntity *)digimon, randomLimit(n), MOVE_DATA[tech].range);
++	STD_selectRandomCamera((DigimonEntity *)digimon, randomLimit(n), modSpeciesMove(digimon->entity.type, tech)->range);
+ }
+ 
+ void STD_removeMoveEffect(DigimonEntity *digimon, FighterData *fighter)
+@@ -7477,7 +7483,7 @@ void STD_renderMoveName(uint8_t i)
+ 	if ((cmd >= 8) && (cmd < 0xc)) {
+ 		tech = entityGetTechFromAnim(ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]],
+ 		                             PARTNER_ENTITY.digimonEntity.stats.base.moves[cmd - 8]);
+-		drawString(MOVE_NAMES[tech], 0, (i * 12) + 0xd8);
++		drawString(modMoveName(PARTNER_ENTITY.digimonEntity.entity.type, tech), 0, (i * 12) + 0xd8);
+ 	} else {
+ 		drawString(STD_COMMAND_NAMES[cmd - 1], 0, (i * 12) + 0xd8);
+ 	}
+diff --git a/src/vs/vs_combat.c b/src/vs/vs_combat.c
+index 8b898b3..525465f 100644
+--- a/src/vs/vs_combat.c
++++ b/src/vs/vs_combat.c
+@@ -451,8 +451,10 @@ void VS_setupDemoCombat(void)
+ 	moveCount = 0;
+ 	VS_initializeEFEEngine((char *)GENERAL_BUFFER_PTR);
+ 
++	modMoveName(PARTNER_ENTITY.digimonEntity.entity.type, 0); /* MOD (unique finishers): the name first, then the fighters */
+ 	for (i = 0; i <= ENEMY_COUNT; ++i) {
+ 		entity = (DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]];
++		modLoadFinisher(i, entity->entity.type); /* MOD (unique finishers) */
+ 		entity->stats.current.unk1 = -1;
+ 		entity->stats.current.efeSubEffect = -1;
+ 
+@@ -782,8 +784,10 @@ void VS__combatSetup(void)
+ 	moveCount = 0;
+ 	VS_initializeEFEEngine((char *)GENERAL_BUFFER_PTR);
+ 
++	modMoveName(PARTNER_ENTITY.digimonEntity.entity.type, 0); /* MOD (unique finishers): the name first, then the fighters */
+ 	for (i = 0; i <= ENEMY_COUNT; ++i) {
+ 		entity = (DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]];
++		modLoadFinisher(i, entity->entity.type); /* MOD (unique finishers) */
+ 		entity->stats.current.unk1 = -1;
+ 		entity->stats.current.efeSubEffect = -1;
+ 
+@@ -1952,7 +1956,7 @@ void VS__tickDigimonAttackRanged(DigimonEntity *entity, DigimonEntity *other,
+ 
+ 	distance = VS_getDistanceSquared(&entity->entity, &other->entity);
+ 	total = DIGI_PARA(entity->entity.type).radius + DIGI_PARA(other->entity.type).radius;
+-	total = *(uint32_t *)&MOVE_DATA[move].distance + total * total;
++	total = *(uint32_t *)&modSpeciesMove(entity->entity.type, move)->distance + total * total;
+ 
+ 	if (distance > total + total * 3 / 10) {
+ 		VS__setWalking(&entity->entity, &entity->stats, data->flags);
+@@ -1993,8 +1997,8 @@ uint32_t VS__entityGetMoveWithHighestDistance(DigimonEntity *entity)
+ 		move = entity->stats.base.moves[i];
+ 		if (move != 0xff) {
+ 			tech = entityGetTechFromAnim(&entity->entity, move);
+-			if (highest < MOVE_DATA[tech].distance) {
+-				highest = MOVE_DATA[tech].distance;
++			if (highest < modSpeciesMove(entity->entity.type, tech)->distance) {
++				highest = modSpeciesMove(entity->entity.type, tech)->distance;
+ 			}
+ 		}
+ 	}
+diff --git a/src/vs/vs_main.c b/src/vs/vs_main.c
+index 2d54230..f615a7f 100644
+--- a/src/vs/vs_main.c
++++ b/src/vs/vs_main.c
+@@ -62,6 +62,8 @@ int16_t VS_applyPartnerStatsToFighter(DigimonEntity *attacker, DigimonEntity *de
+ int32_t VS_rollAttackOutcome(DigimonEntity *attacker, DigimonEntity *defender, int16_t move);
+ void VS_handleHitReaction(Entity *entity, FighterData *fighter, AttackObject *attack, int16_t index);
+ void VS_applyMoveStatus(DigimonEntity *digimon, FighterData *fighter, int32_t move);
++/* MOD (unique finishers): the species whose technique VS_applyMoveStatus applies (-1: the shared numbers) */
++static int16_t VS_STATUS_CASTER = -1;
+ int16_t VS_getFighterSlot(int16_t entityId);
+ int32_t VS_addBlockedAttack(FighterData *fighter, FighterData *other);
+ void VS_buffStats(DigimonEntity *digimon, int32_t slot, int32_t value, int16_t *stat, int32_t color, int32_t flag);
+@@ -322,12 +324,12 @@ int16_t VS_applyPartnerStatsToFighter(DigimonEntity *attacker, DigimonEntity *de
+ 		return 0;
+ 	}
+ 
+-	x = BMD(BMD(MOVE_DATA[move].accuracy, HIT_ACC_DIV) * (defender->stats.base.speed - BMD(attacker->stats.base.speed, HIT_SPEED_DIV)), HIT_SPEED_NORM);
++	x = BMD(BMD(modSpeciesMove(attacker->entity.type, move)->accuracy, HIT_ACC_DIV) * (defender->stats.base.speed - BMD(attacker->stats.base.speed, HIT_SPEED_DIV)), HIT_SPEED_NORM);
+ 	if ((defender->entity.anim.animId == 0x21) || (defender->entity.anim.animId == 0x22)) {
+ 		x = x * BM(HIT_MOVING_PCT) / 100;
+ 	}
+ 
+-	result = (int16_t)(MOVE_DATA[move].accuracy - x);
++	result = (int16_t)(modSpeciesMove(attacker->entity.type, move)->accuracy - x);
+ 	if (result < 0) {
+ 		result = 0;
+ 	}
+@@ -447,13 +449,13 @@ void VS_applyMoveStatus(DigimonEntity *digimon, FighterData *fighter, int32_t mo
+ 		return;
+ 	}
+ 
+-	if (MOVE_DATA[move].statusChance == 0) {
++	if (modSpeciesMove(VS_STATUS_CASTER, move)->statusChance == 0) {
+ 		return;
+ 	}
+ 
+-	chance = MOVE_DATA[move].statusChance;
++	chance = modSpeciesMove(VS_STATUS_CASTER, move)->statusChance;
+ 	if (randomLimit(100) < chance) {
+-		switch (MOVE_DATA[move].status) {
++		switch (modSpeciesMove(VS_STATUS_CASTER, move)->status) {
+ 		case 1:
+ 			if (!(fighter->flags & FIGHTER_FLAG_POISONED)) {
+ 				fighter->flags |= FIGHTER_FLAG_POISONED;
+@@ -601,7 +603,7 @@ void VS_resolveAttack(void)
+ 			FINISHING_ENTITY = NULL;
+ 		}
+ 		if (randomLimit(100) < chance) {
+-			if (VS_CAMERA_STATE == 6 && MOVE_DATA[tech].range == 1) {
++			if (VS_CAMERA_STATE == 6 && modSpeciesMove(attacker->type, tech)->range == 1) {
+ 				goto skipViewpoint;
+ 			}
+ 			VS_setRandomViewpoint(entity, randomLimit(4));
+@@ -614,13 +616,15 @@ skipViewpoint:
+ 			fighter->flags |= FIGHTER_FLAG_KNOCKED_BACK;
+ 			VS_handleHitReaction(entity, fighter, &attack, i);
+ 			addEntityText(entity, i, 0, dmg, 0);
+-			fighter->invulnerableTimer = MOVE_DATA[tech].iframes;
++			fighter->invulnerableTimer = modSpeciesMove(attacker->type, tech)->iframes;
+ 			entity->anim.animFlag &= 0xfe;
++			VS_STATUS_CASTER = attacker->type;
+ 			VS_applyMoveStatus((DigimonEntity *)entity, fighter, tech);
++			VS_STATUS_CASTER = -1;
+ 			continue;
+ 		}
+ 		handled = 0;
+-		if (!(fighter->flags & FIGHTER_FLAG_BLOCKING) && (MOVE_DATA[tech].range == 1) && (DIGI_PARA(entity->type).moves[(uint32_t)(entity->anim.animId - 0x2e)] != 0x2d)) {
++		if (!(fighter->flags & FIGHTER_FLAG_BLOCKING) && (modSpeciesMove(attacker->type, tech)->range == 1) && (DIGI_PARA(entity->type).moves[(uint32_t)(entity->anim.animId - 0x2e)] != 0x2d)) {
+ 			moves = ((DigimonEntity *)entity)->stats.base.moves;
+ 			for (j = 0; j < 4; j++) {
+ 				if (((DigimonEntity *)entity)->stats.current.currentMP < BM(BLOCK_MIN_MP)) {
+@@ -649,7 +653,7 @@ skipViewpoint:
+ 		if ((fighter->flags & FIGHTER_FLAG_BLOCKING) && (fighter->invulnerableTimer > 0)) {
+ 			goto blocked;
+ 		}
+-		if (MOVE_DATA[tech].range == 1) {
++		if (modSpeciesMove(attacker->type, tech)->range == 1) {
+ 			dmg = VS_rollAttackOutcome((DigimonEntity *)attacker, (DigimonEntity *)entity, tech);
+ 			dmg = dmg * (randomLimit(BMS(BLOCK_DMG_SPAN)) + BM(BLOCK_DMG_MIN)) / 100;
+ 			if (dmg <= 0) {
+@@ -704,11 +708,11 @@ int32_t VS_isMoveUsable(DigimonEntity *digimon, FighterData *fighter, int16_t sl
+ 		return 0;
+ 	}
+ 
+-	if ((MOVE_DATA[tech].range == 4) && (fighter->buffsRemaining == 0)) {
++	if ((modSpeciesMove(digimon->entity.type, tech)->range == 4) && (fighter->buffsRemaining == 0)) {
+ 		return 0;
+ 	}
+ 
+-	if ((fighter->targetId == 0xff) && ((MOVE_DATA[tech].unk3 & 1) == 1)) {
++	if ((fighter->targetId == 0xff) && ((modSpeciesMove(digimon->entity.type, tech)->unk3 & 1) == 1)) {
+ 		return 0;
+ 	}
+ 
+@@ -756,7 +760,7 @@ void VS_setupQueuedMove(DigimonEntity *digimon, FighterData *fighter, int16_t ar
+ 	stats = &digimon->stats;
+ 	fighter->queuedAnim = stats->base.moves[moveIndex];
+ 	tech = entityGetTechFromAnim(&digimon->entity, fighter->queuedAnim);
+-	fighter->moveRange = MOVE_DATA[tech].range;
++	fighter->moveRange = modSpeciesMove(digimon->entity.type, tech)->range;
+ 	VS_applyChargeRequirement(digimon, fighter, tech);
+ 	fighter->flags |= FIGHTER_FLAG_TRANSFORMING;
+ }
+@@ -825,7 +829,7 @@ void VS_startFighterMove(DigimonEntity *digimon, DigimonEntity *target, FighterD
+ 			entityLookAtLocation(&digimon->entity, &target->entity.posData->location);
+ 		}
+ 	}
+-	if ((MOVE_DATA[tech].unk3 & 2) != 0) {
++	if ((modSpeciesMove(digimon->entity.type, tech)->unk3 & 2) != 0) {
+ 		if (&digimon->entity == ENTITY_TABLE[1]) {
+ 			FLEE_DISABLED[1] = BM(FLEE_LOCK);
+ 		} else {
+@@ -850,7 +854,7 @@ int32_t VS_selectMoveTarget(Entity *entity, FighterData *fighter)
+ 	FighterData *f;
+ 
+ 	tech = entityGetTechFromAnim(entity, fighter->queuedAnim);
+-	if ((MOVE_DATA[tech].unk3 & 2) != 0) {
++	if ((modSpeciesMove(entity->type, tech)->unk3 & 2) != 0) {
+ 		if (entity == ENTITY_TABLE[1]) {
+ 			if (FLEE_DISABLED[1] > 0) {
+ 				return 1;
+@@ -870,7 +874,7 @@ int32_t VS_selectMoveTarget(Entity *entity, FighterData *fighter)
+ 				continue;
+ 			}
+ 			otherTech = entityGetTechFromAnim(e, e->anim.animId);
+-			if ((MOVE_DATA[otherTech].unk3 & 2) == 0) {
++			if ((modSpeciesMove(e->type, otherTech)->unk3 & 2) == 0) {
+ 				continue;
+ 			}
+ 			return 1;
+@@ -896,7 +900,7 @@ void VS_playMoveEffect(DigimonEntity *digimon, DigimonEntity *target, FighterDat
+ 	if (fighter->moveRange != 4) {
+ 		BATTLE_TARGETED_DIGIMON = target;
+ 		if (target == NULL) {
+-			if (MOVE_DATA[tech].unk3 & 1) {
++			if (modSpeciesMove(digimon->entity.type, tech)->unk3 & 1) {
+ 				if (digimon != (DigimonEntity *)ENTITY_TABLE[1]) {
+ 					BATTLE_TARGETED_DIGIMON = (DigimonEntity *)ENTITY_TABLE[1];
+ 					fighter->targetId = 0;
+@@ -944,7 +948,7 @@ void VS_playMoveEffect(DigimonEntity *digimon, DigimonEntity *target, FighterDat
+ 		fighter->activeEffectSlot = fighter->effectSlot[i];
+ 	}
+ 
+-	if ((MOVE_DATA[tech].range == 4) && (fighter->buffsRemaining != 0)) {
++	if ((modSpeciesMove(digimon->entity.type, tech)->range == 4) && (fighter->buffsRemaining != 0)) {
+ 		fighter->buffsRemaining--;
+ 	}
+ 
+@@ -954,7 +958,7 @@ void VS_playMoveEffect(DigimonEntity *digimon, DigimonEntity *target, FighterDat
+ 	}
+ 
+ 	if (VS_CAMERA_STATE == 3) {
+-		if (MOVE_DATA[entityGetTechFromAnim(VS_FOCUSED_ENTITY, VS_FOCUSED_ENTITY->anim.animId)].range == 3) {
++		if (modSpeciesMove(VS_FOCUSED_ENTITY->type, entityGetTechFromAnim(VS_FOCUSED_ENTITY, VS_FOCUSED_ENTITY->anim.animId))->range == 3) {
+ 			return;
+ 		}
+ 	}
+@@ -963,13 +967,13 @@ void VS_playMoveEffect(DigimonEntity *digimon, DigimonEntity *target, FighterDat
+ 		return;
+ 	}
+ 
+-	if ((MOVE_DATA[tech].range == 1) || (MOVE_DATA[tech].range == 4)) {
++	if ((modSpeciesMove(digimon->entity.type, tech)->range == 1) || (modSpeciesMove(digimon->entity.type, tech)->range == 4)) {
+ 		n = 2;
+ 	} else {
+ 		n = 5;
+ 	}
+ 
+-	VS_selectRandomCamera(digimon, randomLimit(n), MOVE_DATA[tech].range);
++	VS_selectRandomCamera(digimon, randomLimit(n), modSpeciesMove(digimon->entity.type, tech)->range);
+ }
+ 
+ void VS_removeMoveEffect(DigimonEntity *digimon, FighterData *fighter)
+@@ -1673,12 +1677,12 @@ void VS_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 			continue;
+ 		}
+ 		tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
+-		if (MOVE_DATA[tech].range == 4) {
++		if (modSpeciesMove(digimon->entity.type, tech)->range == 4) {
+ 			weights[i] += fighter->buffPrioTimer + VS_calculateElementBonus(modSpeciesMove(digimon->entity.type, tech)->special, DIGI_PARA(digimon->entity.type).special[0]);
+ 			continue;
+ 		}
+ 		weights[i] += VS_calculateElementBonus(modSpeciesMove(digimon->entity.type, tech)->special, DIGI_PARA(ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[fighter->targetId]]->type).special[0]);
+-		if (MOVE_DATA[tech].range != 3) {
++		if (modSpeciesMove(digimon->entity.type, tech)->range != 3) {
+ 			continue;
+ 		}
+ 		count = VS_countLivingEnemies();
+@@ -1702,7 +1706,7 @@ void VS_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 						values[i] = -1;
+ 					} else {
+ 						tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
+-						values[i] = MOVE_DATA[tech].distance;
++						values[i] = modSpeciesMove(digimon->entity.type, tech)->distance;
+ 					}
+ 				}
+ 				VS_sortScoresDescending(values, keys, groups, 3);
+@@ -1877,7 +1881,7 @@ void VS_renderMoveName(uint8_t i)
+ 	if ((cmd >= 8) && (cmd < 0xc)) {
+ 		tech = entityGetTechFromAnim(ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]],
+ 		                             ((DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]])->stats.base.moves[cmd - 8]);
+-		drawString(MOVE_NAMES[tech], 0, (i * 12) + 0xd8);
++		drawString(modMoveName(PARTNER_ENTITY.digimonEntity.entity.type, tech), 0, (i * 12) + 0xd8);
+ 	} else {
+ 		drawString(VS_COMMAND_NAMES[cmd - 1], 0, (i * 12) + 0xd8);
+ 	}
+-- 
+2.55.0
+
