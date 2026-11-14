@@ -59,6 +59,31 @@
     ]}
   },
   "192": {
+    "35": {"ticks": 17, "ops": [
+      {"op": "turn", "bone": 11, "axis": "y", "deg": 24, "ticks": null},
+      {"op": "turn", "bone": 14, "axis": "y", "deg": -24, "ticks": null},
+      {"op": "turn", "bone": 21, "axis": "z", "deg": -20, "ticks": null},
+      {"op": "turn", "bone": 24, "axis": "z", "deg": 20, "ticks": null},
+      {"op": "lift", "bone": 17, "up": 40, "ticks": null},
+      {"op": "turn", "bone": 12, "axis": "y", "deg": 10, "ticks": null},
+      {"op": "turn", "bone": 15, "axis": "y", "deg": -10, "ticks": null},
+      {"op": "turn", "bone": 21, "axis": "y", "deg": -20, "ticks": null},
+      {"op": "turn", "bone": 24, "axis": "y", "deg": 20, "ticks": null},
+      {"op": "turn", "bone": 11, "axis": "x", "deg": -10, "ticks": null},
+      {"op": "turn", "bone": 14, "axis": "x", "deg": -10, "ticks": null},
+      {"op": "turn", "bone": 2, "axis": "x", "deg": -20, "ticks": null},
+      {"op": "turn", "bone": 11, "axis": "x", "deg": -10, "ticks": null},
+      {"op": "turn", "bone": 14, "axis": "x", "deg": -10, "ticks": null},
+      {"op": "turn", "bone": 12, "axis": "z", "deg": -10, "ticks": null},
+      {"op": "turn", "bone": 15, "axis": "z", "deg": 10, "ticks": null},
+      {"op": "turn", "bone": 2, "axis": "x", "deg": -20, "ticks": null},
+      {"op": "turn", "bone": 12, "axis": "y", "deg": -10, "ticks": null},
+      {"op": "turn", "bone": 15, "axis": "y", "deg": 10, "ticks": null},
+      {"op": "turn", "bone": 2, "axis": "x", "deg": -20, "ticks": null},
+      {"op": "turn", "bone": 3, "axis": "x", "deg": -10, "ticks": null},
+      {"op": "turn", "bone": 3, "axis": "x", "deg": -20, "ticks": null},
+      {"op": "turn", "bone": 3, "axis": "z", "deg": -10, "ticks": null}
+    ]},
     "36": {"ticks": 13, "ops": [
       {"op": "turn", "bone": 2, "axis": "x", "deg": -30.0},
       {"op": "turn", "bone": 1, "axis": "x", "deg": -10.0},
@@ -79,6 +104,16 @@
     ]}
   },
   "198": {
+    "33": {"ticks": null, "ops": [
+      {"op": "damp", "bone": 19, "keep": 0.7},
+      {"op": "damp", "bone": 20, "keep": 0.7},
+      {"op": "damp", "bone": 21, "keep": 0.7}
+    ]},
+    "34": {"ticks": null, "ops": [
+      {"op": "damp", "bone": 19, "keep": 0.75},
+      {"op": "damp", "bone": 20, "keep": 0.75},
+      {"op": "damp", "bone": 21, "keep": 0.75}
+    ]},
     "35": {"ticks": 17, "ops": [
       {"op": "damp", "bone": 22, "keep": 0.343},
       {"op": "damp", "bone": 21, "keep": 0.7},
@@ -91,12 +126,51 @@
       {"op": "lift", "bone": 10, "up": 11},
       {"op": "turn", "bone": 8, "axis": "x", "deg": 10.0},
       {"op": "turn", "bone": 1, "axis": "z", "deg": -10.0}
+    ]},
+    "40": {"ticks": null, "ops": [
+      {"op": "lift", "bone": 10, "up": 36, "ticks": [11, 13, 14, 16]},
+      {"op": "lift", "bone": 10, "up": 36, "ticks": [16, 18, 20, 22]},
+      {"op": "lift", "bone": 10, "up": 36, "ticks": [22, 24, 25, 27]},
+      {"op": "lift", "bone": 10, "up": 30, "ticks": [27, 29, 31, 33]},
+      {"op": "lift", "bone": 10, "up": 10, "ticks": [34, 36, 37, 39]},
+      {"op": "turn", "bone": 20, "axis": "x", "deg": 35, "ticks": [24, 29, 33, 38]},
+      {"op": "smooth", "bone": 20, "passes": 2, "ticks": [36, 38, 42, 42]},
+      {"op": "smooth", "bone": 21, "passes": 2, "ticks": [36, 38, 42, 42]},
+      {"op": "smooth", "bone": 22, "passes": 2, "ticks": [36, 38, 42, 42]}
+    ]},
+    "41": {"ticks": null, "ops": [
+      {"op": "lift", "bone": 10, "up": 36, "ticks": [11, 13, 14, 16]},
+      {"op": "lift", "bone": 10, "up": 36, "ticks": [16, 18, 20, 22]},
+      {"op": "lift", "bone": 10, "up": 36, "ticks": [22, 24, 25, 27]},
+      {"op": "lift", "bone": 10, "up": 30, "ticks": [27, 29, 31, 33]},
+      {"op": "lift", "bone": 10, "up": 10, "ticks": [34, 36, 37, 39]},
+      {"op": "turn", "bone": 20, "axis": "x", "deg": 35, "ticks": [24, 29, 33, 38]},
+      {"op": "smooth", "bone": 20, "passes": 2, "ticks": [36, 38, 42, 42]},
+      {"op": "smooth", "bone": 21, "passes": 2, "ticks": [36, 38, 42, 42]},
+      {"op": "smooth", "bone": 22, "passes": 2, "ticks": [36, 38, 42, 42]}
+    ]},
+    "42": {"ticks": null, "ops": [
+      {"op": "smooth", "bone": 20, "passes": 2, "ticks": [0, 0, 3, 5]},
+      {"op": "smooth", "bone": 21, "passes": 2, "ticks": [0, 0, 3, 5]},
+      {"op": "smooth", "bone": 22, "passes": 2, "ticks": [0, 0, 3, 5]}
+    ]},
+    "44": {"ticks": null, "ops": [
+      {"op": "turn", "bone": 11, "axis": [0.6, -0.23, -0.77], "deg": 72, "ticks": [0, 0, 18, 36]},
+      {"op": "turn", "bone": 14, "axis": [0.76, 0.17, 0.63], "deg": 68, "ticks": [0, 0, 18, 36]},
+      {"op": "turn", "bone": 12, "axis": "x", "deg": 25, "ticks": [0, 0, 18, 36]},
+      {"op": "turn", "bone": 15, "axis": "x", "deg": 25, "ticks": [0, 0, 18, 36]}
     ]}
   },
   "200": {
     "35": {"ticks": 17, "ops": [
       {"op": "turn", "bone": 8, "axis": "x", "deg": -20},
       {"op": "turn", "bone": 1, "axis": "z", "deg": 10}
+    ]},
+    "36": {"ticks": 13, "ops": [
+      {"op": "turn", "bone": 8, "axis": "x", "deg": -60},
+      {"op": "turn", "bone": 1, "axis": "x", "deg": 60},
+      {"op": "turn", "bone": 20, "axis": "x", "deg": 60},
+      {"op": "turn", "bone": 24, "axis": "x", "deg": 60}
     ]}
   },
   "201": {
@@ -163,6 +237,28 @@
       {"op": "turn", "bone": 2, "axis": "x", "deg": -23.5},
       {"op": "turn", "bone": 3, "axis": "x", "deg": -22},
       {"op": "lift", "bone": 1, "up": 30}
+    ]},
+    "35": {"ticks": null, "ops": [
+      {"op": "swing", "bone": 4, "channel": "y", "deg": 16, "cycles": 1, "phase": 0.7},
+      {"op": "swing", "bone": 5, "channel": "y", "deg": 12, "cycles": 1, "phase": 0.6},
+      {"op": "swing", "bone": 7, "channel": "y", "deg": 15, "cycles": 1, "phase": 0.72},
+      {"op": "swing", "bone": 8, "channel": "y", "deg": 11, "cycles": 1, "phase": 0.62},
+      {"op": "swing", "bone": 10, "channel": "z", "deg": 7, "cycles": 2, "phase": 0.1},
+      {"op": "swing", "bone": 13, "channel": "z", "deg": -6.5, "cycles": 2, "phase": 0.12},
+      {"op": "swing", "bone": 16, "channel": "z", "deg": 20, "cycles": 2, "phase": 0.2},
+      {"op": "swing", "bone": 18, "channel": "z", "deg": -19, "cycles": 2, "phase": 0.21},
+      {"op": "repeat", "times": 3},
+      {"op": "retime", "ticks": 69}
+    ]},
+    "36": {"ticks": null, "ops": [
+      {"op": "swing", "bone": 4, "channel": "y", "deg": 17.6, "cycles": 1, "phase": 0.45},
+      {"op": "swing", "bone": 7, "channel": "y", "deg": 16.6, "cycles": 1, "phase": 0.47},
+      {"op": "swing", "bone": 10, "channel": "z", "deg": 8, "cycles": 2, "phase": 0.1},
+      {"op": "swing", "bone": 13, "channel": "z", "deg": -7.5, "cycles": 2, "phase": 0.12},
+      {"op": "swing", "bone": 16, "channel": "z", "deg": 18.0, "cycles": 2, "phase": 0.19},
+      {"op": "swing", "bone": 18, "channel": "z", "deg": -17.2, "cycles": 2, "phase": 0.2},
+      {"op": "repeat", "times": 4},
+      {"op": "retime", "ticks": 69}
     ]}
   },
   "249": {

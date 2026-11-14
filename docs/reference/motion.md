@@ -154,9 +154,22 @@ Rebuilt battle clips (the source's own movement, repaired with the operations in
 (0x23/0x24), Nefertimon (0x23/0x24), Imperialdramon (0x24), Pegasusmon (0x23) and Lighdramon (0x24), and Halsemon's
 movement (0x23). Each keeps the source's poses and timing and only turns back the bones that crossed the body or tipped
 the torso, damps an over-swinging bone, or lifts the body where the soles sank; every one passes the battle QA on the
-final model. Imperialdramon's 0x23 and Pegasusmon's 0x24 stay main's clips (the best repair of the source's gallop still crosses the body 89 times a tick against main's 65 and a limit of 83; the
-other tips the torso 36 degrees against main's 3). Nefertimon's
-0x28-0x2C already are a reviewed repair of the source (paws flat, left gauntlet fixed) and stay as they are.
+final model. Pegasusmon's 0x24 is the source's buck too: its hindquarters rise 71 degrees on average off the field
+idle (main 3, limit 25), so the pelvis is turned down 60 degrees and the chest and both hind legs turned back by as much,
+which keeps their poses in the world and only levels the hips: 16 degrees, 17 crossings a tick (main 79). Imperialdramon's 0x23 is the source's gallop again: on our rig its forelegs crossed each other and the neck
+dipped into them (262 crossings a tick against a limit of 83, main 65) and its claws went 0.33 h under the floor, so
+the shoulders are turned out 24 degrees and forward 20, the forearms and hind legs out 10-20, the neck and head raised
+60 and 30 degrees and the whole body lifted 40 units: 67 crossings a tick, 0.27 h under the floor.
+Nefertimon's other battle clips were a per-tick repair of the source in its delta (front legs turned up to 82 degrees from
+one tick to the next where a paw went under the floor), which snapped (a vertex step of 0.48 h a tick against a limit of
+0.38). They are rebuilt from the source with eased repairs: the hits 0x28/0x29 lift the body 30-36 units over the four
+ticks where the front paws sink and turn the tail up 35 degrees where it went 0.36 h under the floor, and the tail's whip at
+the end is smoothed (step 0.36, under the floor 0.21 against main's 0.36, 126 crossings a tick against 147); the get-up
+0x2C keeps the folded front legs of main's repair as two eased turns (72 and 68 degrees at the shoulders, 25 at the
+elbows) that let go by tick 36 (under the floor 0.006, step 0.16 against main's 0.26); the victory 0x2A smooths the tail's
+first ticks (step 0.33 against 0.45); the battle idle 0x21 and 0x22 damp the tail to 70 and 75 percent of its swing (steps
+0.40 and 0.25 against 0.57 and 0.28, and 0x21's tail no longer goes 0.22 h under the floor). The defeat 0x2B stays main's:
+the sphinx rears onto its hind legs up to 90 degrees, a mean of 61 against a limit of 41, which is the clip itself.
 
 **Natively bound species get their originals by retargeting.** A native binding (`native_binding.py`) deep-copies the
 donor's skeleton and every clip, so the source game's battle clips are gone. A recipe's `"battle_originals": {"slots":
@@ -217,7 +230,8 @@ import and `tools/models/variants.py make` carries the delta: a restored slot is
 that release's own battle clip, and the QA is run on both releases' final models. Ebidramon 0x21 and 0x24, Antylamon 0x21,
 MaloMyotismon 0x21-0x24 and Kurisarimon 0x21 are the source's again (the Ebidramon and Kurisarimon generators no
 longer write the twins). Ebidramon's 0x24 is leaned (`battle_restore.py pitch`, bone 1 by 20 and bone 9 by -5 degrees):
-unleaned its body is tipped 35 degrees off the field idle, main 18; leaned, 15.3. Rebuilt battle clips: where the source's own clip fails the QA on our rig, the clip is kept and only the bones that
+unleaned its body is tipped 35 degrees off the field idle, main 18; leaned, 15.3. Both releases' final models pass the battle QA on 0x21-0x24 with the same numbers (0x21 0.13 h under the floor,
+limit 0.30); the hits 0x28/0x29 curl the abdomen 79 degrees, as the source's own clip does on its own rig (74). Rebuilt battle clips: where the source's own clip fails the QA on our rig, the clip is kept and only the bones that
 break it are repaired (`tools/models/clip_repair.py`, rows in content/models/imports/battle-rebuilds.json, applied by
 `battle_restore.py rebuild`; the slot counts as a documented polish and keeps every other check). Renamon 0x21 (26
 triangle crossings a tick on the reshaped rig, main 1): the two thighs turned 4 degrees apart about their side axis, 1
@@ -237,8 +251,11 @@ every number); Infermon 0x22-0x24 (offline-reshaped rig fitted, body lifted 62-1
 compensated); Quetzalmon 0x23, 0x24 (body pitched back and lifted) and its get-up 0x2C (left arm turned, body tipped 48
 degrees against main's 89); GranKuwagamon 0x23 (lifted) and 0x24 (the four wing and limb bones damped to half, lifted);
 Lillymon 0x22-0x24 (0x22 torso compensated). Stay main's: Submarimon (its tail screw spin is deliberate), Lillymon 0x21
-(shoulder opening, deliberate), MarineAngemon 0x21 (constant scale of bone 25) and 0x23, 0x24 (the source's legs and limbs
-are still, the liveness check fails).
+(shoulder opening, deliberate) and MarineAngemon 0x21 (constant scale of bone 25). MarineAngemon's 0x23 and 0x24 are
+the source's own 22- and 18-tick cycles again (torso yaw, bob, tail spin, sounds), played three and four times (the
+`repeat` operation) and resampled to main's 70 ticks; the source holds its arms, antennae and wings still, so each gets a
+small swing on one of its own rotation channels (`swing`: arms 10-16 degrees, antennae 6-8, wings 17-20, twice a cycle,
+the right side a little behind the left), and the battle QA passes (0x23: 11 crossings a tick, 0x24: 19).
 
 Batch 54 rebuilt five more from the source's own clip, with a new `clip_repair` op, `follow` (a bone takes another's swing
 about that bone's mean pose, shifted in ticks, scaled and optionally mirrored, over its own pose), and `battle_restore`'s
