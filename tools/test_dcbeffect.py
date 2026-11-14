@@ -138,6 +138,17 @@ class Sprites(unittest.TestCase):
         self.assertEqual(C.tint(pal, [64, 128, 128], True), [0, 15 | 0x8000, (31 << 5) | 0x8000])
 
 
+class Unshear(unittest.TestCase):
+    def test_keeps_rotation_scale(self):
+        m = [[0, -2, 0], [1, 0, 0], [0, 0, 3]]
+        self.assertEqual([[round(x, 6) for x in r] for r in C.unshear(m)], m)
+
+    def test_removes_shear(self):
+        u = C.unshear([[1, 0.5, 0], [0, 1, 0], [0, 0, 1]])
+        cols = [[u[r][c] for r in range(3)] for c in range(3)]
+        self.assertAlmostEqual(sum(a * b for a, b in zip(cols[0], cols[1])), 0, places=6)
+
+
 class Sampling(unittest.TestCase):
     def test_fits(self):
         self.assertEqual(dcbefe.sample(10, 20, 60), (list(range(10, 20)), 1.0))

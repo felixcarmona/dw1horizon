@@ -790,6 +790,7 @@ def to_effect(tr, packs, steps, origin=(0, 0, 0), turn=False, vram_tims=(), note
                     # and never a shear (DW1 draws a rotation times a per-axis scale)
                     m = D._mul(D._mul(_rot(ang), br), sm)
                     t = [pos[i] + sum(ro[i][k] * bt[k] * UNITS for k in range(3)) for i in range(3)]
+                m = unshear(m)
                 if turn:
                     flip = [[-1, 0, 0], [0, 1, 0], [0, 0, -1]]
                     m = D._mul(flip, m)
@@ -828,6 +829,25 @@ def thin(instances, max_objects, drawn=None):
     if drawn is not None:
         drawn.notes.append(f'{len(drawable)} objects thinned to {len(keep)}')
     return [i for i in instances if i.kind not in DRAWN_KINDS or id(i) in keep]
+
+
+def unshear(m):
+    """The nearest rotation times per-axis scale (DW1 draws only those): Gram-Schmidt on the columns."""
+    cols = [[m[r][c] for r in range(3)] for c in range(3)]
+    sc = [math.sqrt(sum(x * x for x in c)) for c in cols]
+    if min(sc) < 1e-9:
+        return m
+    q = []
+    for c, n in zip(cols, sc):
+        v = [x / n for x in c]
+        for u in q:
+            d = sum(a * b for a, b in zip(v, u))
+            v = [a - d * b for a, b in zip(v, u)]
+        k = math.sqrt(sum(x * x for x in v))
+        if k < 1e-6:
+            return m
+        q.append([x / k for x in v])
+    return [[q[c][r] * sc[c] for c in range(3)] for r in range(3)]
 
 
 def _quad(atlas, key, rows, w, h, pal, blend):
