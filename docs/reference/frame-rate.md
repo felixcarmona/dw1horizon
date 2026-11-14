@@ -432,8 +432,9 @@ pass, extra pass, in lines) and outcome (frames planned, shown, late) in a 32-ti
 The facts (60 held, 60 failed, 30 failed) live in a table of 48 screens, world and battle loops apart; failed 60s are
 replaced last. A battle is entered at steady 30 and its screen never remembers a failed 30 (its opponents decide the
 cost). Nothing is remembered before the first map is loaded. `MOD_CAD_RESET` (tools) forgets every fact. At 2 MB and
-the stock clock every field map and battle measured stays at steady 30; 60 needs a faster CPU (an overclocked core
-climbs on light screens). `MOD_FPS_POLICY` 0 is the ladder, 1/2/3 lock 60 /
+the stock clock the measured field maps (File City, Gear Savanna, Freezeland, Toy Town, Factorial Town) and a wild
+battle stay at steady 30; Mt. Infinity and a tournament fight drop once to steady 20, where the tick and its first
+pass alone overrun a refresh. 60 needs a faster CPU (an overclocked core climbs on light screens). `MOD_FPS_POLICY` 0 is the ladder, 1/2/3 lock 60 /
 steady 30 / 20, 4 is the CPU-probe selection below (the only policy in which the probe writes `MOD_FPS_MODE_RUN`,
 which stays at 2 for AUTO/60 and at 0 for the explicit 20 option). The CPU probe still runs for the title notice. Design, measurements and
 the recommendation: [../proposals/frame-rate-excellence.md](../proposals/frame-rate-excellence.md);
