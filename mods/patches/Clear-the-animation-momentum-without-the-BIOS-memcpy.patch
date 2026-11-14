@@ -1,0 +1,44 @@
+From 5a7c653e382f393902a44966f482e6c186cd17cc Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 14 Nov 2026 21:56:10 +0000
+Subject: [PATCH] Clear the animation momentum without the BIOS memcpy
+
+resetMomentumData zeroed each bone's deltas with six 6-byte memcpy() calls, and memcpy is the BIOS one, which runs from ROM: about 2.5 scanlines a bone. An animation start in battle reset 20 to 60 bones in one tick, up to 160 lines, and was behind nearly every late frame of steady 30. The same zeros are now plain stores.
+---
+ src/main/anim.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/src/main/anim.c b/src/main/anim.c
+index 628de81..6abd84c 100644
+--- a/src/main/anim.c
++++ b/src/main/anim.c
+@@ -63,17 +63,17 @@ void calculatePosMatrix(PositionData *posData, int32_t unused1,
+ 	matrix->flg = 0;
+ }
+ 
++/* MOD (fps): the six 6-byte memcpy() calls went to the BIOS memcpy, which runs from
++ * ROM: about 2.5 scanlines a bone, so one animation start cost up to 60 lines and was
++ * the most frequent cause of the battles' late frames. The same zeros, stored here. */
+ void resetMomentumData(MomentumData *momentum)
+ {
+-	AnimVec zero;
+-
+-	zero.x = zero.y = zero.z = 0;
+-	memcpy(&momentum->delta[3], &zero, 6);
+-	memcpy(&momentum->delta[6], &zero, 6);
+-	memcpy(&momentum->delta[0], &zero, 6);
+-	memcpy(&momentum->subDelta[3], &zero, 6);
+-	memcpy(&momentum->subDelta[6], &zero, 6);
+-	memcpy(&momentum->subDelta[0], &zero, 6);
++	int32_t i;
++
++	for (i = 0; i < 9; i++) {
++		momentum->delta[i] = 0;
++		momentum->subDelta[i] = 0;
++	}
+ }
+ 
+ void animateEntityTexture(Entity *entity, EntityAnim *anim)
+-- 
+2.55.0
+
