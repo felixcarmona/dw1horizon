@@ -2,8 +2,12 @@
 import struct
 import unittest
 
-from tools.derive.steps.effects import (CHUNK_SIZE, DEADLY_BOMB, LANDING, LANDING_HIT, LANDING_SOURCE, NIGHTMARE, SIZES,
-                                       THROW, THROW_LEN, THROW_SOURCE, aim_deadly_bomb, aimed_throw, exclude_caster)
+from unittest import mock
+
+from tools.derive.steps import effects
+from tools.derive.steps.effects import (CHUNK_SIZE, DEADLY_BOMB, DISC_CHUNKS, LANDING, LANDING_HIT, LANDING_SOURCE,
+                                       NIGHTMARE, SIZES, THROW, THROW_LEN, THROW_SOURCE, aim_deadly_bomb, aimed_throw,
+                                       effect_objects, exclude_caster)
 
 
 def archive(script):
@@ -40,6 +44,20 @@ class EffectTargets(unittest.TestCase):
     def test_truncated_archive_fails(self):
         with self.assertRaises(ValueError):
             exclude_caster(b'')
+
+    def test_own_effect_object_forms(self):
+        self.assertEqual(effect_objects(['A/M1.BIN', 'A/A1.BIN']), [(1, 'A/M1.BIN', 'A/A1.BIN')])
+        self.assertEqual(effect_objects([[0, 'A/M1.BIN', 'A/A1.BIN'], [2, 'A/M2.BIN', 'A/A2.BIN']]),
+                         [(0, 'A/M1.BIN', 'A/A1.BIN'), (2, 'A/M2.BIN', 'A/A2.BIN')])
+
+    def test_own_effect_gaps_stay_empty(self):
+        chunk = bytes([7]) * CHUNK_SIZE
+        with mock.patch.object(effects, 'own_effects', return_value={DISC_CHUNKS + 2: chunk}):
+            data = effects.append_own_effects(None, bytes(DISC_CHUNKS * CHUNK_SIZE))
+        self.assertEqual(len(data), (DISC_CHUNKS + 3) * CHUNK_SIZE)
+        self.assertEqual(data[DISC_CHUNKS * CHUNK_SIZE:(DISC_CHUNKS + 2) * CHUNK_SIZE], bytes(2 * CHUNK_SIZE))
+        self.assertEqual(data[-1], 7)
+        self.assertEqual(data[(DISC_CHUNKS + 2) * CHUNK_SIZE + effects.EFFECT_ID], 0x100 + DISC_CHUNKS + 2 & 0xFF)
 
 
 

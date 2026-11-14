@@ -144,6 +144,15 @@ def launch_table(chunk):
     return bytes(chunk[at:end + 10])
 
 
+def effect_objects(files):
+    """[(DW2 slot, model path, anim path)] of an own effect's "cast" or "hit": ["M", "A"] (one object, slot 1) or
+    [[slot, "M", "A"], ...] (every object of the DW2 technique, slot 0 above the head, 1 the launch point or mid
+    height, 2 the feet)."""
+    if files and isinstance(files[0], str):
+        return [(1, files[0], files[1])]
+    return [(int(slot), model, anim) for slot, model, anim in files]
+
+
 def own_effects(ctx, archive):
     """{chunk index: chunk} of the species' own effects (content/battle/own-effects.json; getSpeciesTechEffect)."""
     import json
@@ -155,19 +164,24 @@ def own_effects(ctx, archive):
         if key == 'note':
             continue
         like = bytes(archive[e['stands_for'] * CHUNK_SIZE:(e['stands_for'] + 1) * CHUNK_SIZE])
-        paths = [ctx.path(*DW2_EFFECTS, *p.split('/')) for p in e['cast'] + e['hit']]
-        missing = [p for p in paths if not os.path.isfile(p)]
-        if missing:
-            raise ValueError(f'own effect {key} {e["name"]}: source discs required: dw2 (missing {missing[0]}); '
-                             'derive build --source-disc dw2=IMAGE')
-        files = []
-        for p in paths:
-            with open(p, 'rb') as f:
-                files.append(f.read())
-        cast, hit = dw2effect.parse_effect(*files[:2]), dw2effect.parse_effect(*files[2:])
-        out[int(key)], info = dw2efe.convert(cast, hit, launch_table(like), 0x100 + int(key), e['scale'],
-                                              hit_scale=e.get('hit_scale'), area=e.get('area', False),
-                                              hits=e.get('hits', 1))
+        lists = []
+        for part in ('cast', 'hit'):
+            objs = []
+            for slot, *names in effect_objects(e[part]):
+                paths = [ctx.path(*DW2_EFFECTS, *p.split('/')) for p in names]
+                missing = [p for p in paths if not os.path.isfile(p)]
+                if missing:
+                    raise ValueError(f'own effect {key} {e["name"]}: source discs required: dw2 (missing '
+                                     f'{missing[0]}); derive build --source-disc dw2=IMAGE')
+                files = []
+                for p in paths:
+                    with open(p, 'rb') as f:
+                        files.append(f.read())
+                objs.append((slot, dw2effect.parse_effect(*files)))
+            lists.append(objs)
+        out[int(key)], info = dw2efe.convert_skill(lists[0], lists[1], launch_table(like), 0x100 + int(key),
+                                                   e['scale'], hit_scale=e.get('hit_scale'),
+                                                   area=e.get('area', False), n_hits=e.get('hits', 1))
         ctx.log(f'own effect {key} {e["name"]}: ' + ', '.join(f'{k} {v}' for k, v in info.items()))
     return out
 
@@ -177,8 +191,9 @@ def append_own_effects(ctx, archive):
     if len(data) != DISC_CHUNKS * CHUNK_SIZE:
         raise ValueError(f'effect archive: {len(data):#x} bytes, expected {DISC_CHUNKS} chunks')
     for index, chunk in sorted(own_effects(ctx, archive).items()):
-        if index * CHUNK_SIZE != len(data) or len(chunk) != CHUNK_SIZE:
-            raise ValueError(f'own effect {index}: chunks must follow each other, {CHUNK_SIZE:#x} bytes each')
+        if index * CHUNK_SIZE < len(data) or len(chunk) != CHUNK_SIZE:
+            raise ValueError(f'own effect {index}: one chunk per index after the disc\'s, {CHUNK_SIZE:#x} bytes each')
+        data += bytes(index * CHUNK_SIZE - len(data))       # indices no species plays: empty, never loaded
         chunk = bytearray(chunk)
         struct.pack_into('<i', chunk, EFFECT_ID, 0x100 + index)
         data += chunk

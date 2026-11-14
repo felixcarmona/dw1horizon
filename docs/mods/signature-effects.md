@@ -1,7 +1,8 @@
 # Signature effects
 
 A species can play an effect of its own for one of its techniques, while every other Digimon that knows the
-technique keeps the shared effect. SkullMeramon's Mega Flame plays Digimon World 2's Metal Fireball this way.
+technique keeps the shared effect. SkullMeramon's Mega Flame plays Digimon World 2's Metal Fireball this way; the
+species that have one are listed in [the signature attacks](../reference/signature-attacks.md).
 
 ## How a species gets one
 
@@ -15,15 +16,18 @@ technique keeps the shared effect. SkullMeramon's Mega Flame plays Digimon World
 - Chunks 122 and up are appended to `ETCHI/EFEDAT.EFE` after the disc's 122 by the derive step `effects`. The
   loader takes chunk ids up to 0x179 (index 377).
 - `content/battle/own-effects.json` lists the chunks: their name, the DW2 files they are converted from, the chunk
-  they stand for, a scale, and optionally `hit_scale`, `area` (hit every enemy) and `hits` (damage events).
+  they stand for, a scale, and optionally `hit_scale`, `area` (hit every enemy) and `hits` (damage events). The
+  files are `"cast"` and `"hit"`, each either `[model, anim]` (one object at DW2 slot 1) or
+  `[[slot, model, anim], ...]` (every object of the technique). `stands_for` is the species' finisher, whose launch
+  point the chunk takes; `scale` is the species' model height here over its DW2 head height.
 
 ## Converting a DW2 technique
 
 `tools/dw2efe.py` turns a DW2 technique's effect objects into one chunk: every cast object (DW2 slots 0 above the
 head, 1 the launch point, 2 the feet) and every hit object. `convert_skill(casts, hits, ...)` takes them as
-`(slot, effect)` lists; `convert(cast, hit, ...)` is the one-cast, one-hit form the build uses. It reads them from
-the player's DW2 disc (`derive build --source-disc dw2=IMAGE`). The format of DW2 effects is in
-[the DW2 effect notes](../reference/dw2-effects.md).
+`(slot, effect)` lists, and the build uses it for every own effect; `convert(cast, hit, ...)` is its one-cast,
+one-hit form. It reads them from the player's DW2 disc (`derive build --source-disc dw2=IMAGE`). The format of DW2
+effects is in [the DW2 effect notes](../reference/dw2-effects.md).
 
 - **Model.** Every drawn bone becomes TMD objects of flat, textured, unlit prims, semi-transparent with the DW2
   prim's blend mode. A flat or mirrored part is written with both windings, so it shows from behind as well. Prims
