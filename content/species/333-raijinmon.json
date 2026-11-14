@@ -8,7 +8,7 @@
   "specialties": ["air", "mech", "battle"],
   "techniques": ["Thunder Justice", "Megalo Spark", "Spinning Shot", "Hurricane", "Confused Storm", "Wind Cutter",
                  "Power Crane", "DG Dimension", "All Range Beam", "Delete Program", "Megaton Punch",
-                 "Counter", "Dynamite Kick (44)", "Sonic Jab", "Deadly Bomb"],
+                 "Counter", "Dynamite Kick (44)", "Sonic Jab", "Genoside Attack"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 40,
   "model": {

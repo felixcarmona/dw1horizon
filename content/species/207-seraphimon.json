@@ -8,7 +8,7 @@
   "specialties": ["air", "fire", "battle"],
   "techniques": ["Thunder Justice", "Spinning Shot", "Megalo Spark", "Hurricane", "Confused Storm", "Wind Cutter",
                  "Inifinity Burn", "Prominence Beam", "Meltdown", "Magma Bomb", "Megaton Punch",
-                 "Counter", "Dynamite Kick (44)", "Sonic Jab", "High Electro Shocker"],
+                 "Counter", "Dynamite Kick (44)", "Sonic Jab", "Fireball"],
   "drop": {"item": "sm.recovery", "percent": 30},
   "effects_like": 34,
   "model": {
