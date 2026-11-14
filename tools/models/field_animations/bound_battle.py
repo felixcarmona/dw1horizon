@@ -15,6 +15,9 @@ battle slots (a `native-battle-source-v1` spec, tools/models/native_mesh.py) nex
 - `keep_events`: slots that keep the bound clip's sound events (same length: the hits' impact sounds), where the
   source clip has none;
 - `repairs`: {slot: operations} of tools/models/clip_repair.py run on a slot's retargeted ticks (a rebuilt clip).
+- `drop_npc_slots`: the bound model's clips of the slots only the tamer, the NPCs and the kart race play
+  (native_binding.NPC_SLOTS) are left out, as a native binding's `drop_npc_slots` does: no partner starts them, and the
+  resident buffer gets the room for the source's battle clips;
 - `compact_from`: the resident clips of the slots from this one on (battle and techniques) encoded again exactly
   where that is smaller, for room in the resident buffer (field and care slots stay byte for byte).
 
@@ -254,6 +257,8 @@ def build(data, skeleton):
     ctx = context(recipe, spec, source, final, rig)
     output, proof = native_battle.apply(data, ctx, recipe['slots'], recipe.get('keep_events', ()), recipe.get('repairs'),
                                        recipe.get('ticks'))
+    if recipe.get('drop_npc_slots'):
+        output = drop_npc_slots(output, len(rig))
     compacted = None
     if 'compact_from' in recipe:
         output, compacted = compact(output, len(rig), recipe['compact_from'])
@@ -263,6 +268,23 @@ def build(data, skeleton):
     if compacted is not None:
         out['battle_compact'] = compacted
     return output, out
+
+
+def drop_npc_slots(output, nb):
+    """`output` without the clips of the slots only the tamer, the NPCs and the kart race play (native_binding.NPC_SLOTS;
+    tools/species.py SCRIPT_SLOTS leaves them out); a clip no other slot plays leaves the model."""
+    model = mmd.MMD.parse(output, nb)
+    model.anims.table, model.anims.anims = without_npc_slots(model.anims.table, model.anims.anims)
+    return model.build()
+
+
+def without_npc_slots(table, anims):
+    """(slot table, clips) with the NPC slots emptied and the clips no slot plays any more left out (order kept)."""
+    from tools.models.field_animations import native_binding
+    table = [None if slot in native_binding.NPC_SLOTS else i for slot, i in enumerate(table)]
+    used = sorted({i for i in table if i is not None})
+    index = {old: new for new, old in enumerate(used)}
+    return [None if i is None else index[i] for i in table], [anims[i] for i in used]
 
 
 def compact(output, nb, first):

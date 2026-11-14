@@ -38,14 +38,20 @@ bound rig with `native_battle.py`'s retarget: the pieces of each bone are fitted
 from their vertices, the mirrored left wing from the right wing's, the hips
 follow the body and not the sash. Only the slots that pass
 `tools/models/battle_qa_native.py` on the final model are listed (0x21, 0x28,
-0x29, 0x2C, 0x2E-0x34); the hits keep Angemon's impact sounds, and the battle and
-technique slots are compacted exactly for room (98,664 of 100,352 bytes). Field
-and care slots stay Angemon's byte for byte. The get-up (0x2C) is the source's
-clip with `repairs` (tools/models/clip_repair.py): while it lies on the floor
-one thigh turns 15 degrees and its knee 6, so the foot follows the source's,
-and the body is lifted 40 units where it sank under the floor. The faint (0x2B)
-would be retimed from 54 ticks to 31, beyond the check's 1.6, and stays
-Angemon's.
+0x29, 0x2B, 0x2C, 0x2E-0x34); the hits keep Angemon's impact sounds, and the
+battle and technique slots are compacted exactly for room. The row's
+`drop_npc_slots` leaves out Angemon's clips of the slots only the tamer, the NPCs
+and the kart race play (0x1C and 0x1D here), which no partner starts: 97,600 of
+100,352 bytes. Field and care slots stay Angemon's byte for byte. The get-up
+(0x2C) is the source's clip with `repairs` (tools/models/clip_repair.py): while
+it lies on the floor one thigh turns 15 degrees and its knee 6, so the foot
+follows the source's, and the body is lifted 40 units where it sank under the
+floor. The faint (0x2B) plays the source's 54 ticks at 34 (`ticks`, 1.59; the
+slot's own 31 would be 1.74), with the body lifted 60 units from tick 18, where
+it sank (under the floor 0.224 heights, was 0.323), and the right knee turned 10
+degrees over the last ticks (tip of the foot 0.150 heights, was 0.155; Angemon's
+clip 0.719). The rest of its tip error is the rig's proportions (Angemon's thigh
+is shorter than the source's), not a turn.
 
 ```sh
 python3 tools/models/battle_qa_native.py check 206 FINAL.MMD imported-models/206.battle.MMD MAIN.MMD

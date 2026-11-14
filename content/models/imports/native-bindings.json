@@ -2470,11 +2470,17 @@
     },
     "battle_originals": {
       "slots": [
-        33
+        33,
+        40,
+        41
       ],
       "ride": [
         23
-      ]
+      ],
+      "ticks": {
+        "40": 25,
+        "41": 25
+      }
     },
     "species_patch": {
       "condition_bubble": [
