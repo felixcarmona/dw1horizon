@@ -83,9 +83,10 @@ the moment the attack starts.
   they end: nothing flies to the target on its own. They leave out the attack's flat sprites (sparks, flashes,
   the finisher emblem) and DW2003's camera moves. Most of those that stand in a projectile or beam finisher are
   beams or bursts that reach the target in DW2003 too.
-- **DW2003 enemy attacks.** Fifteen of the imports are DW2003 enemies with no signature of their own: their
-  attack is the enemy's move 1 or its plain attack. Vilemon and Mummymon (Dark Fear), and Creepymon and Ghoulmon
-  (Darkness Chaos), share theirs.
+- **DW2003 enemy attacks.** Several of the imports are DW2003 enemies with no signature of their own: their
+  attack is the enemy's move 1. Vilemon and Mummymon share Dark Fear, and Creepymon and Ghoulmon Darkness
+  Chaos: Vilemon and Creepymon play it, and Mummymon and Ghoulmon keep composed effects, so no two species
+  show the same attack. Species whose DW2003 attack is an unnamed slot-5 move keep a composed effect too.
 
 ## Kept on the DW1 finisher
 
