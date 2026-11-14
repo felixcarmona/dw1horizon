@@ -11,8 +11,12 @@ import dwmap
 
 def tdiv(a): return int(a / 100)                       # C division truncates toward zero
 
-def col(x): return tdiv(x) + 50 - (1 if x < 0 else 0)
-def row(z): return 49 - tdiv(z) + (1 if z < 0 else 0)
+def col(x):
+    if type(x) is int: return x // 100 + 50 if x >= 0 else 49 - (-x) // 100      # (the same without the float division)
+    return tdiv(x) + 50 - (1 if x < 0 else 0)
+def row(z):
+    if type(z) is int: return 49 - z // 100 if z >= 0 else 50 + (-z) // 100
+    return 49 - tdiv(z) + (1 if z < 0 else 0)
 
 def blocked(m, tx, tz):
     return not (0 <= tx < 100 and 0 <= tz < 100) or (m.collision[tz * 100 + tx] & 0x80) != 0
