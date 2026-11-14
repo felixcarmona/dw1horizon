@@ -93,6 +93,16 @@ class Convert(unittest.TestCase):
         self.assertEqual(struct.unpack_from('<3I', tmd, 0), (0x41, 0, self.info['objects']))
         self.assertEqual(self.info['resident'], 0x34 + h['tmdEnd'])
         self.assertEqual(self.info['detail'], 'step 1 quant 1')
+        self.assertEqual(self.info['held_ticks'], 1)
+
+    def test_poses_are_held_only_as_the_last_resort(self):
+        steps = [step for step, _quant, _width, _sides in C.LEVELS]
+        self.assertEqual(C.LEVELS[0], (1, 1, C.STRIP_W, 2))
+        self.assertEqual(steps, sorted(steps), 'every per-tick level before any that holds poses')
+        held = [lv for lv in C.LEVELS if lv[0] > 1]
+        self.assertTrue(held and all(lv[0] == 1 for lv in C.LEVELS[:len(C.LEVELS) - len(held)]))
+        coarsest = (1, max(q for st, q, _w, _s in C.LEVELS if st == 1), min(w for st, _q, w, _s in C.LEVELS if st == 1), 1)
+        self.assertIn(coarsest, C.LEVELS, 'the coarsest per-tick level is tried before holding a pose')
 
     def test_scripts_disassemble(self):
         text = efescript.listing(self.chunk)
