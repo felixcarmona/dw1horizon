@@ -14,6 +14,7 @@ battle slots (a `native-battle-source-v1` spec, tools/models/native_mesh.py) nex
   sash on the hips);
 - `keep_events`: slots that keep the bound clip's sound events (same length: the hits' impact sounds), where the
   source clip has none;
+- `repairs`: {slot: operations} of tools/models/clip_repair.py run on a slot's retargeted ticks (a rebuilt clip).
 - `compact_from`: the resident clips of the slots from this one on (battle and techniques) encoded again exactly
   where that is smaller, for room in the resident buffer (field and care slots stay byte for byte).
 
@@ -251,7 +252,7 @@ def build(data, skeleton):
     final.type = int(sid)
     source = source_model(battle, spec)
     ctx = context(recipe, spec, source, final, rig)
-    output, proof = native_battle.apply(data, ctx, recipe['slots'], recipe.get('keep_events', ()))
+    output, proof = native_battle.apply(data, ctx, recipe['slots'], recipe.get('keep_events', ()), recipe.get('repairs'))
     compacted = None
     if 'compact_from' in recipe:
         output, compacted = compact(output, len(rig), recipe['compact_from'])

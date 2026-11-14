@@ -125,7 +125,7 @@ class RealModels(unittest.TestCase):
                 bones = json.loads(Path(glob.glob(str(ROOT / f'content/species/{sid}-*.json'))[0]).read_text())
                 rd = lambda kind: (folder / f'{sid}.{kind}.MMD').read_bytes()
                 rows = qa.species_check(rd('C'), rd('A'), rd('main'), bones['model']['skeleton'],
-                                        polished=qa.POLISHED.get(int(sid), ()))
+                                        polished=qa.polished_slots(int(sid)))
                 self.assertEqual([s for s, r in rows.items() if r['verdict'] == 'fail'], [],
                                  {s: r['flags'] for s, r in rows.items()})
 

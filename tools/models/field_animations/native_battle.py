@@ -25,6 +25,7 @@ import animsheet
 import mmd
 import motioncyclelayer
 from tools.models import battle_restore
+from tools.models import clip_repair
 
 IDLES, MOVES = (33, 34), (35, 36)
 TECHNIQUES = 0x2E          # slots from here on are the species' techniques
@@ -207,10 +208,12 @@ def retarget(frames, ctx):
     return out
 
 
-def apply(output, ctx, slots, keep_events=()):
+def apply(output, ctx, slots, keep_events=(), repairs=None):
     """`output` (the bound model) with each slot of `slots` playing the source's clip on the donor rig
     -> (bytes, proof). `keep_events`: slots that keep the bound clip's sound events (at its ticks: the clip keeps the
-    slot's length), for a source whose clip of that slot has none."""
+    slot's length), for a source whose clip of that slot has none. `repairs`: {slot (text): operations} of
+    tools/models/clip_repair.py run on a slot's retargeted ticks (a rebuilt clip: the original repaired where it breaks
+    on the donor rig)."""
     rig = ctx['rig']
     nb = len(rig)
     model = mmd.MMD.parse(output, nb)
@@ -227,6 +230,8 @@ def apply(output, ctx, slots, keep_events=()):
         else:                           # the common effects and the species' own voice; not the partner's care voice
             events = [e for e in events if e[1] == 'sound' and e[2]['bank'] in (1, 4)]
         samples = retarget(frames, ctx)
+        if repairs and str(slot) in repairs:
+            samples = clip_repair.apply_ops(samples, [p for _, p in rig], repairs[str(slot)])
         anim = mmd.encode_anim(samples, nb, 0 if loop == 0 else None, events, tol=ctx.get('tol', 1), repeats=tile > 1)
         model.anims.table[slot] = len(model.anims.anims)
         model.anims.anims.append(anim)

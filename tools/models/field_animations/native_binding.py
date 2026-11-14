@@ -422,7 +422,8 @@ def bind(data, skeleton, recipe, placements=None, final=True):
     battle_proof = compact_proof = None
     if recipe.get('battle_originals'):
         # the source game's own battle clips on the donor rig, for the slots that measured sound (native_battle.py)
-        output, battle_proof = native_battle.apply(output, battle, recipe['battle_originals']['slots'])
+        output, battle_proof = native_battle.apply(output, battle, recipe['battle_originals']['slots'],
+                                                   repairs=recipe['battle_originals'].get('repairs'))
         if final and recipe['battle_originals'].get('compact'):
             output, compact_proof = native_battle.compact(output, len(rig), recipe['battle_originals']['compact'])
     # a builder that re-encodes the programs afterwards (wizardmon_native.py) compacts and checks the buffer itself

@@ -1,0 +1,188 @@
+"""Repairs of a source game's clip on our rig: the original's poses, timing and arc kept, the bones that break it put right.
+
+A battle clip given back from the source game (`battle_restore.py`, `field_animations/native_battle.py`,
+`field_animations/bound_battle.py`) can fail tools/models/battle_qa.py on our rig: a torso tipped further than the
+species' stance, a limb through the body, claws crossing, the soles under the floor. A rebuild keeps the original as the
+reference of motion, character and timing and changes only what breaks, with these operations on the decoded ticks
+(poses of `nb` bones: scale x/y/z, rotation x/y/z in 1/4096 turn, translation x/y/z; bone 0 carries the root's travel):
+
+  {"op": "turn", "bone": B, "axis": "x"|"y"|"z"|[x, y, z], "deg": D [, "ticks": [a, b, c, d]]}
+        the bone (and everything hanging from it) turned D degrees about a model axis at its joint (x the side, y down,
+        z back: a positive x turn tips the bone's front down). The parent chain's own rotation is taken out, so the
+        clip's swing, timing and travel stay. With `ticks`, the turn eases in from tick a to b, holds to c and eases
+        out to d (smoothstep): a limb moved out of the body only where it would cross it.
+  {"op": "damp", "bone": B, "keep": K [, "to": "mean"|"first", "ticks": [a, b, c, d]]}
+        the bone's local rotation pulled toward its own mean (or first) pose of the clip: K = 1 is the clip as it is,
+        0 the bone held still. Its children keep their own local motion.
+  {"op": "lift", "bone": B, "up": U [, "ticks": [a, b, c, d]]}
+        bone B (the body bone under the root; its translation, in its parent's frame) raised U units: the soles back on
+        the floor where the original sinks on our rig. The root's own travel is never touched.
+
+Operations run in the order given. Only the rotation channels of the bones named (and a lifted bone's height) change; scale
+channels (the chibi reshape) and every other bone stay as they were. Standard library only (deterministic under
+tools/derive's correctly rounded math), so a derive stage can apply a recipe's repairs.
+"""
+import math
+
+DEG = 4096 / 360
+AXES = {'x': (1.0, 0.0, 0.0), 'y': (0.0, 1.0, 0.0), 'z': (0.0, 0.0, 1.0)}
+
+
+def _rot(rx, ry, rz):
+    """libgte RotMatrix: M = Rx.Ry.Rz, angles in 1/4096 turn (as mmd.rot_matrix)."""
+    k = 2 * math.pi / 4096
+    cx, sx, cy, sy, cz, sz = (math.cos(rx * k), math.sin(rx * k), math.cos(ry * k), math.sin(ry * k),
+                              math.cos(rz * k), math.sin(rz * k))
+    return [[cy * cz, -cy * sz, sy],
+            [sx * sy * cz + cx * sz, -sx * sy * sz + cx * cz, -sx * cy],
+            [-cx * sy * cz + sx * sz, cx * sy * sz + sx * cz, cx * cy]]
+
+
+def _euler(m, prev):
+    """(rx, ry, rz) in 1/4096 turn with m = Rx.Ry.Rz, the solution closest to `prev` (mmd.matrix_euler)."""
+    import mmd
+    return mmd.matrix_euler(m, prev=prev)
+
+
+def _mul(a, b):
+    return [[sum(a[i][k] * b[k][j] for k in range(3)) for j in range(3)] for i in range(3)]
+
+
+def _tr(a):
+    return [[a[j][i] for j in range(3)] for i in range(3)]
+
+
+def _axis_angle(axis, deg):
+    x, y, z = AXES[axis] if isinstance(axis, str) else axis
+    n = math.sqrt(x * x + y * y + z * z)
+    x, y, z = x / n, y / n, z / n
+    k = math.radians(deg)
+    c, s, t = math.cos(k), math.sin(k), 1 - math.cos(k)
+    return [[t * x * x + c, t * x * y - s * z, t * x * z + s * y],
+            [t * x * y + s * z, t * y * y + c, t * y * z - s * x],
+            [t * x * z - s * y, t * y * z + s * x, t * z * z + c]]
+
+
+def _quat(m):
+    tr = m[0][0] + m[1][1] + m[2][2]
+    if tr > 0:
+        s = math.sqrt(tr + 1.0) * 2
+        q = [0.25 * s, (m[2][1] - m[1][2]) / s, (m[0][2] - m[2][0]) / s, (m[1][0] - m[0][1]) / s]
+    elif m[0][0] > m[1][1] and m[0][0] > m[2][2]:
+        s = math.sqrt(1.0 + m[0][0] - m[1][1] - m[2][2]) * 2
+        q = [(m[2][1] - m[1][2]) / s, 0.25 * s, (m[0][1] + m[1][0]) / s, (m[0][2] + m[2][0]) / s]
+    elif m[1][1] > m[2][2]:
+        s = math.sqrt(1.0 + m[1][1] - m[0][0] - m[2][2]) * 2
+        q = [(m[0][2] - m[2][0]) / s, (m[0][1] + m[1][0]) / s, 0.25 * s, (m[1][2] + m[2][1]) / s]
+    else:
+        s = math.sqrt(1.0 + m[2][2] - m[0][0] - m[1][1]) * 2
+        q = [(m[1][0] - m[0][1]) / s, (m[0][2] + m[2][0]) / s, (m[1][2] + m[2][1]) / s, 0.25 * s]
+    return q
+
+
+def _matrix(q):
+    w, x, y, z = q
+    return [[1 - 2 * (y * y + z * z), 2 * (x * y - z * w), 2 * (x * z + y * w)],
+            [2 * (x * y + z * w), 1 - 2 * (x * x + z * z), 2 * (y * z - x * w)],
+            [2 * (x * z - y * w), 2 * (y * z + x * w), 1 - 2 * (x * x + y * y)]]
+
+
+def _slerp(a, b, t):
+    d = sum(p * q for p, q in zip(a, b))
+    if d < 0:
+        b, d = [-v for v in b], -d
+    if d > 0.9995:
+        q = [p + t * (r - p) for p, r in zip(a, b)]
+    else:
+        th = math.acos(d)
+        sa, sb = math.sin((1 - t) * th) / math.sin(th), math.sin(t * th) / math.sin(th)
+        q = [sa * p + sb * r for p, r in zip(a, b)]
+    n = math.sqrt(sum(v * v for v in q))
+    return [v / n for v in q]
+
+
+def envelope(ticks, t):
+    """Weight 0..1 of tick t for a trapezoid [a, b, c, d] eased with smoothstep (None: 1 everywhere)."""
+    if not ticks:
+        return 1.0
+    a, b, c, d = ticks
+
+    def ease(u):
+        u = max(0.0, min(1.0, u))
+        return u * u * (3 - 2 * u)
+    if t < a or t > d:
+        return 0.0
+    if t < b:
+        return ease((t - a) / (b - a)) if b > a else 1.0
+    if t <= c:
+        return 1.0
+    return ease((d - t) / (d - c)) if d > c else 1.0
+
+
+def _chain(parents, pose, b, cache):
+    """World rotation of bone b's parent chain (b included) for `pose`'s original angles."""
+    if b < 0:
+        return [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
+    if b not in cache:
+        cache[b] = _mul(_chain(parents, pose, parents[b], cache), _rot(*pose[b][3:6]))
+    return cache[b]
+
+
+def turn(frames, parents, bone, axis, deg, ticks=None):
+    out = []
+    for t, pose in enumerate(frames):
+        pose = [list(v) for v in pose]
+        w = envelope(ticks, t)
+        if w > 0:
+            parent = _chain(parents, pose, parents[bone], {})
+            new = _mul(_tr(parent), _mul(_axis_angle(axis, deg * w), _mul(parent, _rot(*pose[bone][3:6]))))
+            pose[bone][3:6] = list(_euler(new, pose[bone][3:6]))
+        out.append(pose)
+    return out
+
+
+def damp(frames, bone, keep, to='mean', ticks=None):
+    qs = [_quat(_rot(*pose[bone][3:6])) for pose in frames]
+    if to == 'first':
+        ref = qs[0]
+    else:
+        acc = [0.0] * 4
+        for q in qs:
+            s = 1 if sum(p * r for p, r in zip(q, qs[0])) >= 0 else -1
+            acc = [a + s * v for a, v in zip(acc, q)]
+        n = math.sqrt(sum(v * v for v in acc))
+        ref = [v / n for v in acc]
+    out = []
+    for t, pose in enumerate(frames):
+        pose = [list(v) for v in pose]
+        k = 1 - (1 - keep) * envelope(ticks, t)
+        if k < 1:
+            pose[bone][3:6] = list(_euler(_matrix(_slerp(ref, qs[t], k)), pose[bone][3:6]))
+        out.append(pose)
+    return out
+
+
+def lift(frames, bone, up, ticks=None):
+    if bone == 0:
+        raise ValueError('clip repair: lift a body bone, not the root (its channels carry the travel)')
+    out = []
+    for t, pose in enumerate(frames):
+        pose = [list(v) for v in pose]
+        pose[bone][7] = pose[bone][7] - up * envelope(ticks, t)     # y points down
+        out.append(pose)
+    return out
+
+
+def apply_ops(frames, parents, ops):
+    """`frames` (poses per tick) with the repair operations `ops` applied in order, as whole numbers."""
+    for op in ops:
+        kind = op['op']
+        if kind == 'turn':
+            frames = turn(frames, parents, op['bone'], op['axis'], op['deg'], op.get('ticks'))
+        elif kind == 'damp':
+            frames = damp(frames, op['bone'], op['keep'], op.get('to', 'mean'), op.get('ticks'))
+        elif kind == 'lift':
+            frames = lift(frames, op['bone'], op['up'], op.get('ticks'))
+        else:
+            raise ValueError(f'clip repair: unknown operation {kind!r}')
+    return [[[int(round(v)) for v in bone] for bone in pose] for pose in frames]
