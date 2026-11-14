@@ -87,7 +87,7 @@ FRANTIC = 2.5
 # fidelity to the source does not apply: ShellNumemon's and Okuwamon's tired battle idles; WarGreymon's battle idle (its
 # chest leaned back 5 degrees, the hip plates riding on the thighs, the back plates as in the field idle:
 # tools/models/field_animations/wargreymon_gait.py)
-POLISHED = {231: (34,), 259: (34,), 373: (33,)}
+POLISHED = {231: (34,), 259: (34,), 305: (36,), 373: (33,)}
 
 
 # ------------------------------------------------------------------ geometry

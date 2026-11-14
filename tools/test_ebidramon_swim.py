@@ -19,7 +19,7 @@ import motionstorage
 from motiondiscidentity import changed_programs
 from tools.models.field_animations import ebidramon_swim as gen
 
-EXPECTED = "b3aec6591c4989087c7d0ed3c5fc28921d007523eb9cd525831e6b73c9b80b70"
+EXPECTED = "645dfb1ecc182b1501e2ed5cd87c17664aa70667043ab383d230986bb64834be"
 NB = gen.NB
 TICKS = {0: 96, 2: 48, 3: 64, 4: 32}
 SPEEDS = {2: 22, 3: 14, 4: 40}

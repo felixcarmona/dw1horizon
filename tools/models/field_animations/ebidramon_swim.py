@@ -24,8 +24,9 @@ every clip is a way of swimming in the air. Its parts hang and trail, each a lit
   and antennae swept back, the swimmerets blurring.
 
 Every clip repeats its pose cycle exactly, the root travels the same distance every tick, and slots 1 and 18 follow the
-idle and slot 36 the run. This generator once made the battle idle (33) a twin of the idle too; the source game's own
-battle idle is back in that slot (tools/models/battle_restore.py), and the generator no longer writes it.
+idle. This generator once made the battle idle (33) and the battle run (36) twins of the field clips; the source game's own
+clips are back in both slots (tools/models/battle_restore.py; the run's body leaned 20 degrees back to the species' stance),
+and the generator no longer writes them.
 """
 import argparse
 import copy
@@ -49,9 +50,9 @@ from tools.models.field_animations.lillymon_flight import Rig  # noqa: E402
 
 SPECIES, NB = 305, 31
 SOURCE = "370979059d38866118424d3c887295789afb6d141cfbc1beb6ef204c74655898"   # sha256 of the import this was written over
-SLOTS = (0, 1, 2, 3, 4, 18, 36)
+SLOTS = (0, 1, 2, 3, 4, 18)
 TWINS_OF_IDLE = (1, 18)                 # the battle idle (33) is the source game's own again (battle_restore.py)
-TWINS_OF_RUN = (36,)
+TWINS_OF_RUN = ()                       # the battle run (36) is the source game's own again, leaned (battle_restore.py)
 CLIP_OF_SLOT = {0: 'idle', 2: 'walk', 3: 'tired', 4: 'run'}
 BODY, CHEST, HEAD, JAW = 1, 5, 13, 14
 TAIL = (2, 3, 4)
