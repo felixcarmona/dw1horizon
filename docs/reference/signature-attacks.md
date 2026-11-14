@@ -20,6 +20,7 @@ the moment the attack starts.
 | 259 Okuwamon | Duo Scissor Claw (DW2) | Bit Bomb | at the target: two crossing slash arcs over every enemy | 1 | plays at the target, hits at tick 40 | none (scale 0.3) | the enemy it was aimed at (Bit Bomb picks one at random) | all enemies, 2 hits |
 | 260 MetalTyrannomon | Fire Blast II (DW2) | Deadly Bomb | projectile: fires an organic missile from the arm | 1 | flies at tick 37, hits on contact (tick 38 at 2,700 units) | flies to the target (scale 0.205) | one enemy, as for Deadly Bomb | one enemy |
 | 261 Tortomon | Strong Carapace (DW2) | Iga School Knife Throw | projectile: shoots the horns of its shell at every enemy | 1 | flies at tick 29, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.241) | one enemy, as for Iga School Knife Throw | all enemies, 3 hits |
+| 262 Flymon | Brown Stinger (DW2) | Spnning Needle | projectile: shoots poisoned needles | 1 | flies at tick 30, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.31) | one enemy, as for Spnning Needle | one enemy, 3 hits |
 
 ## Where the port differs from the source
 

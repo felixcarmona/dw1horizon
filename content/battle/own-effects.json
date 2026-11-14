@@ -73,5 +73,13 @@
     "hit": [[1, "EFFESD/MESD7400.BIN", "EFFESD/AESD7400.BIN"]],
     "scale": 0.241,
     "hit_scale": 0.1
+  },
+  "131": {
+    "name": "Brown Stinger",
+    "stands_for": 69,
+    "cast": [[1, "EFFESA/MESA4000.BIN", "EFFESA/AESA4000.BIN"], [2, "EFFESA/MESA4100.BIN", "EFFESA/AESA4100.BIN"]],
+    "hit": [[1, "EFFESD/MESD7100.BIN", "EFFESD/AESD7100.BIN"]],
+    "scale": 0.31,
+    "hit_scale": 0.1
   }
 }

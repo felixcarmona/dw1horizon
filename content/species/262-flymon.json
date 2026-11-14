@@ -11,6 +11,7 @@
                  "Spnning Needle", "Bug", "Spinning Shot"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 33,
+  "own_effect": {"technique": "Spnning Needle", "chunk": 131},
   "model": {
     "file": "build/batch7/Flymon.MMD",
     "radius": 179,
