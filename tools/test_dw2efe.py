@@ -122,6 +122,17 @@ class Convert(unittest.TestCase):
         sim = play(chunk, enemies=2)
         self.assertEqual(sorted(i for _t, i, _p in sim.hits), [2, 3])
 
+    def test_hits_face_back_along_the_fighters_line(self):
+        # DW2 turns every hit object half round in the battle's frame: the side enemies' bursts face the same
+        # way as the middle one's, not the point their projectile came from
+        burst = effect([[0, 0] for _ in range(30)], [{0: key()}, {0: key((0, 0, 0))}],
+                       ring_prims=[prim((0, 1, 2, 3), u=8)])
+        chunk, info = C.convert_skill([(1, cast())], [(1, burst)], TABLE, 0x17A, 0.5, area=True)
+        sim = play(chunk)
+        ids = {i for b in info['parts']['hit slot 1'].values() for i in b}
+        yaws = {d[2][1] & 0xFFF for d in sim.draws if d[1] in ids}
+        self.assertEqual(yaws, {0x800})
+
     def test_several_hits(self):
         chunk, info = C.convert_skill([(1, cast())], [(1, hit())], TABLE, 0x17A, 0.5, n_hits=3)
         sim = play(chunk)

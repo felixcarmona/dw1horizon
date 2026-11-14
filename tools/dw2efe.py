@@ -1016,30 +1016,16 @@ def _convert_skill(casts, hits, origin_table, effect_id, scale, hit_scale=None, 
         set_var(I_KN, 1)
         set_var(I_KD, 1)
         set_var(I_COPY, 0)
-        # turned toward the caster: the parent's position is the caster's side
-        for k in range(3):
-            copy(I_ORIGIN + 4 * k, I_POS + 4 * k)
+        # DW2 turns every hit object half round in the battle's fixed frame (Stg30_SpawnSkillCastFx / HitFx), not
+        # toward where a projectile came from: here, half round from the caster's facing (it faces its target)
         set_var(I_YAW, 0)
         set_var(I_YAW + 8, 0)
-        if self_target:
-            copy(I_YAW + 4, I_ROT + 4)
-            a.ld(0x800)
-            a.op('add', I_YAW + 4, 0)
-        else:
-            a.pusha(I_VEC, 0)
-            a.sub('copyTargetEntityPosition')
-            for k in range(3):
-                copy(I_TMP + 4 * k, I_ORIGIN + 4 * k)
-            a.pusha(I_TMP, 0)
-            a.pusha(I_VEC, 0)
-            a.sub('subtractVectors')
-            set_var(I_TMP + 4, 0)
-            a.pusha(I_SCALE, 0)
-            a.pusha(I_TMP, 0)
-            a.sub('vectorEulerAngles')
-            copy(I_YAW + 4, I_SCALE + 4)
-            a.ld(0x800)
-            a.op('add', I_YAW + 4, 0)
+        if not self_target:
+            a.push(0)
+            a.sub('setTransformToSourceBone')
+        copy(I_YAW + 4, I_ROT + 4)
+        a.ld(0x800)
+        a.op('add', I_YAW + 4, 0)
         at_target(o.slot, hit_scale)
         a.ret()
         a.label(f'hit{i}_update')

@@ -17,7 +17,7 @@ on this game's 20 Hz ticks against DW2's 60 Hz, palettes squeezed into six rows 
 a different renderer, so a faithful conversion still lands between about 0.5 and 3 on energy and coverage;
 0.35 sits under that spread and far above what an empty, lost or shrunk effect gives (0.10 or less).
 
-    python -m tools.efecheck --disc DW2.bin [--archive EFEDAT.EFE] [keys]   own effects (content/battle/own-effects.json)
+    python -m tools.efecheck --disc DW2.bin [--archive EFEDAT.EFE] [keys]   (content/battle/own-effects.json)
 """
 import math
 import struct
