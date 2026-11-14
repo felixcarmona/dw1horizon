@@ -22,7 +22,7 @@ BONES = 26
 BUFFER = 100352
 TICKS = {0: 76, 2: 14, 3: 22, 4: 11}                     # idle, walk, condition walk, run
 SPEEDS = {2: 18.0, 3: 11.0, 4: 44.0}                     # the gait stage's units per tick
-TARGET_SHA256 = 'b1a3f3a987f81d5750d8c96bc67e994bb6985e45242bff126aa424ff86ad10ab'
+TARGET_SHA256 = 'add5a8e8de038eff31837ba1b7af6941e2437a2d98d90413bc1a8f2515c67f1f'
 
 
 class GarudamonNative(unittest.TestCase):
@@ -134,18 +134,20 @@ class GarudamonNative(unittest.TestCase):
 
     def test_battle_originals(self):
         # the source game's own battle clips, retargeted onto the donor rig; all but the idles (which loop at their own
-        # speed) as long as the donor's clip they replace, since technique effects are timed to it
+        # speed) as long as the donor's clip they replace, since technique effects are timed to it, or the length the
+        # recipe's battle_originals.ticks gives a hit whose source clip the donor's length would retime past 1.6
         made = self.proof['battle_originals']
+        ticks = self.recipe['battle_originals'].get('ticks', {})
         self.assertEqual(sorted(int(s) for s in made), self.recipe['battle_originals']['slots'])
         for slot, row in made.items():
             if int(slot) not in (33, 34):
-                self.assertEqual(row['frames'], row['donor_frames'])
+                self.assertEqual(row['frames'], ticks.get(str(int(slot)), row['donor_frames']), slot)
 
     def test_the_buffer_holds(self):
         info = motionstorage.require(self.data, BONES)
         self.assertTrue(info['fits'])
         self.assertLess(info['resident_bytes'], BUFFER)
-        self.assertEqual(info['resident_bytes'], 100222)
+        self.assertEqual(info['resident_bytes'], 98920)
         for read in info['cold_reads']:
             self.assertTrue(read['fits'], read)
 
