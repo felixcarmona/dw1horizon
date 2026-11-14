@@ -192,9 +192,10 @@ def alias_source_paths(plan):
 def plan_jobs(recs, bundle_files):
     """The jobs of the records (one per --disc; the same jobs) with their inputs and the jobs they wait for."""
     ref = recs[0]
-    names = [(j['name'], j.get('order_group'), j.get('record_snapshot', False)) for j in ref['jobs']]
+    policy = lambda j: (j['name'], j.get('order_group'), j.get('record_snapshot', False), j.get('independent_start', False))
+    names = [policy(j) for j in ref['jobs']]
     for r in recs[1:]:
-        if [(j['name'], j.get('order_group'), j.get('record_snapshot', False)) for j in r['jobs']] != names:
+        if [policy(j) for j in r['jobs']] != names:
             raise SystemExit('the records have different jobs or ordering policies between bases')
     tree = ref['tree']
     jobs = []
@@ -280,7 +281,8 @@ def plan_jobs(recs, bundle_files):
             absent.discard(MANIFEST)
         jobs.append(dict(id=i, step=j['step'], part=j['part'], index=j['index'], name=j['name'],
                          argv=[a.replace(tree, '{ROOT}') for a in j['argv']],
-                         seconds=max(x['seconds'] for x in js), order_group=j.get('order_group'), deps=sorted(deps), tree=tree_in, bundle=bundle_in,
+                         seconds=max(x['seconds'] for x in js), order_group=j.get('order_group'),
+                         independent_start=bool(j.get('independent_start')), deps=sorted(deps), tree=tree_in, bundle=bundle_in,
                          lists={d: [sorted(x for x in n if f'{d}/{x}' in existed),
                                     sorted(x for x in n if f'{d}/{x}' not in existed)] for d, n in lists.items()
                                 if not RANDOM.search(d) and not any(RANDOM.search(f'{d}/{x}') for x in n)},
@@ -334,7 +336,11 @@ def schedule_deps(jobs, order, after):
                 d |= {x['id'] for x in js if x['part'] != 'finish'}
             group = j.get('order_group') if j['part'] == 'unit' else None
             if group is not None:
-                if group in groups:
+                # The browser's registry gives a path several units write the version of the last one in the
+                # recorded order (engine.js `later`), whichever finishes last, so units that start from the shared
+                # files' preimages (Unit.independent_start) need no sequence. (The story passes were a chain of 18
+                # one after another: the longest path of the plan, whatever the number of workers.)
+                if group in groups and not j.get('independent_start'):
                     d.add(groups[group])
                 groups[group] = j['id']
             j['deps'] = sorted(d)

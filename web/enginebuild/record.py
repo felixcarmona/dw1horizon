@@ -239,7 +239,8 @@ def main():
             found = json.loads(text[text.index('['):])
             specs = [spec(step, 'unit', args + ['--index', str(u['index']), '--strict'], u['index'],
                           f"{step} {u['index']} {u['name']}",
-                          order_group=u.get('order_group'), record_snapshot=u.get('record_snapshot', False)) for u in found]
+                          order_group=u.get('order_group'), record_snapshot=u.get('record_snapshot', False),
+                          independent_start=u.get('independent_start', False)) for u in found]
             if specs:
                 if step == 'story':
                     # Story snapshots have not passed the real merge proof.

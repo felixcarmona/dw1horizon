@@ -51,7 +51,7 @@ const OTHERS = process.env.OTHERS ?? [`dcb=${ISOS}/digital-card-battle/Digimon D
   `dw2003=${ISOS}/digimon-world-2003/Digimon World 2003 (E) [SLES-03936].bin`].join(';');
 const others = (OTHERS === 'none' ? '' : OTHERS).split(';').filter(Boolean).map((kv) => kv.slice(kv.indexOf('=') + 1));
 await (await p.waitForSelector('#add-input')).uploadFile(disc, ...others);
-await p.waitForFunction(() => !document.querySelector('#patch-button').disabled, { timeout: 300000, polling: 500 }).catch(async (e) => { console.log(await p.evaluate(() => document.querySelector("#patch-status").textContent + " | " + [...document.querySelectorAll(".slot:not([data-state=\"empty\"]), #problems-list li")].map((s) => s.innerText.replace(/\s+/g, ' ')).join(" ; "))); throw e; });
+await p.waitForFunction(() => !document.querySelector('#patch-button').disabled, { timeout: Number(process.env.CHECK_TIMEOUT_MS || 300000), polling: 500 }).catch(async (e) => { console.log(await p.evaluate(() => document.querySelector("#patch-status").textContent + " | " + [...document.querySelectorAll(".slot:not([data-state=\"empty\"]), #problems-list li")].map((s) => s.innerText.replace(/\s+/g, ' ')).join(" ; "))); throw e; });
 const tb = Date.now();
 console.log(`disc checked in ${((tb - t0) / 1000).toFixed(1)} s; building`);
 await p.click('#patch-button');

@@ -35,6 +35,29 @@ class PlanTests(unittest.TestCase):
         with self.assertRaisesRegex(SystemExit,'ordering policies'):
             engine.plan_jobs([record,other],set())
 
+    def test_independent_start_units_need_no_sequence_but_keep_the_recorded_order(self):
+        def row(name, part, group=None, independent=False):
+            return dict(name=name, step='story', part=part, index=0, argv=[], seconds=1,
+                        existed=[], lists={}, absent=[], writes={}, removes=[], order_group=group,
+                        record_snapshot=False, independent_start=independent)
+        rows = [row('prepare', 'prepare'), row('list', 'units')]
+        rows += [row(f'pass {i}', 'unit', 'maps', True) for i in range(3)]
+        rows += [row('stateful', 'unit', 'locks'), row('stateful 2', 'unit', 'locks'), row('finish', 'finish')]
+        jobs, warnings = engine.plan_jobs([dict(tree='{ROOT}', jobs=rows)], set())
+        self.assertEqual(warnings, [])
+        by_name = {j['name']: j for j in engine.schedule_deps(jobs, ['story'], {'story': []})}
+        prep = by_name['prepare']['id']
+        for i in range(3):
+            self.assertEqual(by_name[f'pass {i}']['deps'], [prep])
+            self.assertIn(by_name[f'pass {i}']['id'], by_name['finish']['deps'])
+        # a group that is not independent keeps its sequence
+        self.assertIn(by_name['stateful']['id'], by_name['stateful 2']['deps'])
+        # the policy is part of what two records must agree on
+        other = dict(tree='{ROOT}', jobs=[dict(j) for j in rows])
+        other['jobs'][2]['independent_start'] = False
+        with self.assertRaisesRegex(SystemExit, 'ordering policies'):
+            engine.plan_jobs([dict(tree='{ROOT}', jobs=rows), other], set())
+
     def test_cold_writer_can_regenerate_authored_executable_text(self):
         root = Path(__file__).resolve().parents[1]
         with tempfile.TemporaryDirectory() as work:

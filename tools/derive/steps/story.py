@@ -283,7 +283,10 @@ def units(ctx):
                         ctx.path('DIGI.DAT') if os.path.isfile(ctx.path('DIGI.DAT')) else None,
                         ctx.path('derived/exe-facts.json') if os.path.isfile(ctx.path('derived/exe-facts.json')) else None),
                         inputs, outs, order_group='story maps and locks' if ordered else None,
-                        record_snapshot=False))
+                        record_snapshot=False,
+                        # (a pass that only reads the locks starts each new map from its .orig, backend.keep_orig: what
+                        # it makes never depends on an earlier pass; a pass that may write a lock does)
+                        independent_start=ordered and ctx.locks_read_only))
     return out
 
 
