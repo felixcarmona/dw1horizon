@@ -91,6 +91,14 @@ class NativeBattle(unittest.TestCase):
         order = native_battle.order(skeleton)
         self.assertLess(order.index(2), order.index(1))
 
+    def test_dropped_npc_slots_are_the_ones_the_scripts_never_ask_a_partner_for(self):
+        # `drop_npc_slots` leaves out the tamer's, NPCs' and kart race's clips: none may be a slot the species scripts need
+        from tools import species
+        from tools.models.field_animations import native_binding
+        self.assertFalse(set(native_binding.NPC_SLOTS) & set(species.SCRIPT_SLOTS))
+        self.assertEqual(sorted(native_binding.NPC_SLOTS),
+                         [s for s in range(0x2D) if s not in species.SCRIPT_SLOTS])
+
 
 if __name__ == '__main__':
     unittest.main()
