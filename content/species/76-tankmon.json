@@ -7,7 +7,7 @@
   "attribute": "data",
   "specialties": ["fire", "mech", null],
   "techniques": ["Spit Fire", "Fire Tower", "Magma Bomb", "Heat Laser", "Red Inferno", "Prominence Beam",
-                 "Pulse Laser", "Delete Program", "Volcanic Strike"],
+                 "Pulse Laser", "Delete Program", "Fireball"],
   "drop": {"item": "lrg.recovery", "percent": 20},
   "effects_like": 76,
   "model": {
