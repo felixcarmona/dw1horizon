@@ -102,6 +102,22 @@ def natives(species, imports, band, factor):
     return out
 
 
+def native_shapes():
+    """What DW1's own techniques use: (range, distance, iframes) and which ranges need a target.
+
+    Finishers come first; the buff class (range 4) only exists among the learnable techniques.
+    """
+    move, target = set(), set()
+    for t in (load_json(f) for f in glob.glob(str(ROOT / 'content/techniques/*.json'))):
+        if t['id'] > LAST_FINISHER or (t['range'] != 4 and t['id'] < FIRST_FINISHER):
+            continue
+        move.add((t['range'], t['distance'], t['iframes']))
+        target.add((t['range'], bool(t.get('unk3', 0) & 1)))
+    move |= {(4, 0, 1)}   # buffs ignore distance and iframes
+    target.add((4, False))
+    return dict(move=move, target=target)
+
+
 def check(data=None):
     data = data or load_json(DATA)
     species = species_table()
@@ -112,6 +128,7 @@ def check(data=None):
     native_names = {t['name'].lower() for t in (load_json(f) for f in glob.glob(str(ROOT / 'content/techniques/*.json')))}
     native_names |= {v.lower() for k, v in load_json(ROOT / 'text/ours/names.json').items()
                      if k.startswith('main.MOVE_NAMES.')}   # the names players see
+    shapes = native_shapes()
     reference = {}
     for level in LEVELS:
         scores = [n['score'] for n in native[level] if n['in_band']]
@@ -145,6 +162,10 @@ def check(data=None):
         rng, distance = KINDS[kind]
         if (m['range'], m['distance']) != (rng, distance):
             bad(e, f"{kind} needs range {rng} distance {distance}, has {m['range']} {m['distance']}")
+        if (m['range'], m['distance'], m['iframes']) not in shapes['move']:
+            bad(e, f"no DW1 technique has range {m['range']}, distance {m['distance']} and iframes {m['iframes']}")
+        if ('T' in m['flags']) and (m['range'], True) not in shapes['target']:
+            bad(e, f"no DW1 technique of range {m['range']} needs a target")
         if m['accuracy'] != 100 or m['mpCost'] != 40:
             bad(e, 'finishers keep accuracy 100 and the stored cost 40')
         status = STATUS_NAMES.get(m['status'], '?')

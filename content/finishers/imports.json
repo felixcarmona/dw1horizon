@@ -901,7 +901,7 @@
     "accuracy": 100,
     "status": 0,
     "statusChance": 0,
-    "iframes": 15,
+    "iframes": 1,
     "flags": [
      "T"
     ],
@@ -1093,7 +1093,7 @@
     "accuracy": 100,
     "status": 0,
     "statusChance": 0,
-    "iframes": 15,
+    "iframes": 1,
     "flags": [
      "T"
     ],
@@ -1190,7 +1190,7 @@
     "accuracy": 100,
     "status": 0,
     "statusChance": 0,
-    "iframes": 15,
+    "iframes": 1,
     "flags": [
      "T"
     ],
@@ -1238,7 +1238,7 @@
     "accuracy": 100,
     "status": 0,
     "statusChance": 0,
-    "iframes": 15,
+    "iframes": 1,
     "flags": [
      "T"
     ],
@@ -1528,7 +1528,7 @@
     "accuracy": 100,
     "status": 0,
     "statusChance": 0,
-    "iframes": 15,
+    "iframes": 1,
     "flags": [
      "T"
     ],
@@ -1576,7 +1576,7 @@
     "accuracy": 100,
     "status": 0,
     "statusChance": 0,
-    "iframes": 15,
+    "iframes": 1,
     "flags": [
      "T"
     ],
@@ -2008,7 +2008,7 @@
     "accuracy": 100,
     "status": 0,
     "statusChance": 0,
-    "iframes": 15,
+    "iframes": 1,
     "flags": [
      "T"
     ],
@@ -2297,7 +2297,7 @@
     "accuracy": 100,
     "status": 0,
     "statusChance": 0,
-    "iframes": 15,
+    "iframes": 1,
     "flags": [
      "T"
     ],
@@ -2537,7 +2537,7 @@
     "accuracy": 100,
     "status": 0,
     "statusChance": 0,
-    "iframes": 15,
+    "iframes": 1,
     "flags": [
      "T"
     ],
@@ -3258,7 +3258,7 @@
     "accuracy": 100,
     "status": 0,
     "statusChance": 0,
-    "iframes": 15,
+    "iframes": 1,
     "flags": [
      "T"
     ],
@@ -3306,7 +3306,7 @@
     "accuracy": 100,
     "status": 0,
     "statusChance": 0,
-    "iframes": 15,
+    "iframes": 1,
     "flags": [
      "T"
     ],
@@ -4170,7 +4170,7 @@
     ],
     "mpCost": 40
    },
-   "notes": "Canon \"Giga Destroyer II\" if the owner prefers."
+   "notes": "Reads like DarkTyrannomon's Fire Blast; canon alternative \"Nuclear Laser\" (\"Giga Destroyer\" is already MetalGreymon's name)."
   },
   {
    "species": 261,
@@ -7304,7 +7304,7 @@
     "accuracy": 100,
     "status": 0,
     "statusChance": 0,
-    "iframes": 15,
+    "iframes": 1,
     "flags": [
      "T"
     ],
@@ -7870,7 +7870,7 @@
    "species": 323,
    "species_name": "Lynxmon",
    "level": "champion",
-   "name": "Corona Blaze",
+   "name": "Blazing Mane",
    "source": {
     "game": "dw3",
     "basis": "proposed",
@@ -7884,7 +7884,7 @@
     "kind": "breath",
     "target": "one",
     "hits": 1,
-    "look": "A breath of fire.",
+    "look": "Its mane flares and it breathes a cone of fire.",
     "dash": false,
     "clip": "by eye"
    },
@@ -8682,7 +8682,7 @@
     "accuracy": 100,
     "status": 0,
     "statusChance": 0,
-    "iframes": 15,
+    "iframes": 1,
     "flags": [
      "T"
     ],

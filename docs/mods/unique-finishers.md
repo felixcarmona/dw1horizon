@@ -10,7 +10,7 @@ working. Only the numbers the battle reads and the name the player sees change, 
 - Check: `python3 -m tools.finisher_balance` (table and problems, exit 1 on a problem) and
   `python3 -m unittest tools.test_finisher_balance` (in `tools/selftest.sh`).
 - Effects: the visual effect of each finisher is the species JSON `own_effect`
-  (`docs/mods/signature-effects.md`); this file decides what the finisher does.
+  (`docs/mods/signature-effects.md`, on branch `dw2-signature-skullmeramon` until it merges); this file decides what the finisher does.
 
 Status: design data. The runtime part (record bytes, `modSpeciesMove` hook, names) is not built
 yet; see "What the engine change touches".
@@ -64,7 +64,8 @@ species' three specialties. A status multiplies by `1 + chance * weight` (poison
 0.15, stun and flatten 0.25); an area hit counts 1.3 times. The score of each import must lie
 inside the score range of the same-level native finishers that sit inside the band, with 10 %
 slack. It also checks the band, the area floor, the status cap, the buff cap, the element,
-range and distance per kind, and the names.
+range and distance per kind, that DW1 itself has a technique with the same range, distance and
+iframes (and that only ranges whose DW1 techniques need a target set the target flag), and the names.
 
 ### Imports against same-level natives
 
@@ -126,12 +127,13 @@ and ShogunGekomon Blasting Spout 150 (Ultimate).
 | `buff`, `fallback` | Only for the three support moves; see below. |
 | `notes` | Spelling fixes, status proxies, open questions. |
 
-Kind decides range, distance and iframes:
+Kind decides range, distance and iframes. Every combination is one DW1's own finishers use
+(Deadly Bomb, Genocide Attack, Mega Flame, Drill Spin, Death Claw, Dark Network):
 
 | Kind | Range | Distance (squared) | Iframes |
 |---|---|---|---|
 | shot, thrown | 2 | 360000 (600) | 1 |
-| rain | 2 | 360000 | 15 |
+| rain | 2 | 360000 | 1 |
 | breath | 2 | 90000 (300, as Mega Flame) | 15 |
 | beam | 2 | 640000 (800) | 1 |
 | dash | 2 | 160000 (400) | 1 |

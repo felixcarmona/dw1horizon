@@ -41,7 +41,8 @@ finisher keeps its id, so saves do not change; natives keep their finishers.
    Corona Blaster for Beelzemon's "Blast Mode" (or Double Impact), Thorny Whipping, Duo Scissor
    Claw, Dynamo Cannon, Gate of Destiny, Shell Attack, Needle Squall, Pearl Shot. Imperialdramon's
    Mega Fire is close to DW1's Mega Flame: keep or use "Positron Laser". Kongou
-   could read "Diamond Guard".
+   could read "Diamond Guard". DarkTyrannomon's Fire Blast and MetalTyrannomon's Fire Blast II
+   (both DW2 names) read alike: keep, or use the canon "Nuclear Laser" for the second.
 9. **17 proposed names** for DW2003 Digimon with no known attack (Ebidramon, BlackKingNumemon,
    Bulbmon, Fujinmon, Pharaohmon, Lynxmon, Maildramon, Musyamon, Gargoylemon, Ghoulmon,
    Vemmon, Roachmon, Raijinmon, Raidenmon, Suijinmon, Zanbamon, Bastemon). Change any you dislike.

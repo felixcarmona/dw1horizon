@@ -82,6 +82,15 @@ class FinisherBalance(unittest.TestCase):
             e['move']['distance'] = 640000
         self.assertTrue(any('distance' in p for p in self.problems_after('Raremon', far_breath)))
 
+    def test_move_shape_exists_in_dw1(self):
+        def odd_iframes(e):
+            e['move']['iframes'] = 9
+        self.assertTrue(any('no DW1 technique' in p for p in self.problems_after('Veemon', odd_iframes)))
+
+        def targeted_melee(e):
+            e['move']['flags'] = ['T']
+        self.assertTrue(any('needs a target' in p for p in self.problems_after('Woodmon', targeted_melee)))
+
     def test_native_names_are_not_reused(self):
         def native(e):
             e['name'] = 'Mega Flame'
