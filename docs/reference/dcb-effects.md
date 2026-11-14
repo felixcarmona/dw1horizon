@@ -1,0 +1,115 @@
+# Digimon Digital Card Battle: attack effects
+
+How Digital Card Battle (DCB, SLUS-01328) draws the attacks of its Digimon, and how
+`tools/dcbeffect.py` and `tools/dcbefe.py` turn them into Digimon World effects. Nothing here comes
+from the disc into the repository: the tools read the player's own image (`DCB_IMAGE`).
+
+## Short answer: 3D, not card art
+
+A DCB attack is not a 2D card animation. It is a small 3D scene: textured models (balls, rings, claws,
+beams) and camera-facing sprites placed in the same world as the two fighters, moved by a script every
+step. That is why the attacks can become real Digimon World effects (moving models in the battle
+field) instead of flat pictures.
+
+Counted over the signature scripts of the imported Digimon, the objects the scripts start are:
+
+| object | attack scripts | hit scripts | how it is drawn in DW1 |
+|---|---|---|---|
+| 3D model (kind 15) | 227 | 153 | a model, with its own texture |
+| animated sprite (kind 16) | 206 | 115 | a flat sprite that steps through its frames |
+| sprite from a sheet (kinds 1, 12) | 114 | 40 | a flat sprite |
+| sprite burst (kind 13) | 377 | 232 | one sprite (the burst is approximated) |
+| ribbon trail (kind 17) | 78 | 118 | not drawn |
+| screen flash (kind 0) | 163 | 111 | not drawn |
+| camera move (kind 3) | 60 | 48 | not used: DW1 keeps its battle camera |
+
+## Where the data is
+
+- `F.DRV`: one pack per card Digimon. Besides the fighter's model it holds a type 2 record, the
+  attack's script (`MSCD`).
+- `E.DRV/<n>.PAK`: one effect pack per script. A pack is a model file whose record list adds more
+  models (type 0, a model file without its 8-byte header), model animations (type 1), animated sprite
+  definitions (type 3) and textures (type 5, TIM). A model's texture follows from its texture name
+  (`1105_2.tim` is TIM 11052).
+- Every attack plays two scripts: the card's own (the scene at the attacker and what flies to the
+  defender) and a shared hit script (435, 437, 2000, ...: the impact on the defender).
+
+## The script language
+
+A script is `MSCD`, u32 3, u32 size, u32 variable count, then 4-byte aligned instructions, each
+starting with u16 op, u16 a:
+
+| op | meaning |
+|---|---|
+| 5 | jump; the target counts from the code (after the 16-byte header) |
+| 6, 8 | inline data blocks |
+| 7 | variable a = / += / -= / *= / /= / %= / random below the value (or another variable) |
+| 9 | skip the next instruction when variable a == <= >= != > < the value |
+| 0xA-0xE | commands with 0-4 arguments (each a constant or a variable) |
+
+Commands the tools use:
+
+| command | meaning |
+|---|---|
+| C 0 (slot, kind) | define the object in a slot from the current variables |
+| C 1 (slot, type) | change its motion type |
+| C 2, 3, 4 | atan2, sin, cos into variable 1 |
+| B 8 / B 9 (slot) | start / stop the object |
+| B 6 (slot) | give a running object new variables (a new motion segment) |
+| B 15 (slot) | copy an object's variables back into 400-453 |
+| B 10 (n) | wait n steps (when variable 0 is -1) |
+| D 0 (TIM, column, half) | load a sprite sheet into VRAM (x = column x 64 halfwords, y + 256 per half) |
+| B 0, 2, 3, 7 | banner, attacker animation, sounds (kept as events, not converted) |
+
+An object's variables: 407-409 start, 410-412 end, 413 speed, 414 acceleration, 415-417 rotation,
+418-420 its speed, 421-423 its acceleration (/64), 424-426 scale, 427-429 the scale it grows to,
+430-432 the growth per step (4096 = 1), 433 arrival radius, 434 delay before it shows, 437 motion
+type, 438-440 wave phase, amplitude and frequency, 441 and 446 what it is attached to, 442 model or
+sprite definition, 41-43 colour (128 = unchanged), 29-30 blending, 84-87 the sprite's VRAM rectangle,
+88-89 its palette.
+
+## Motion
+
+The executable's table at 0x800108B0 gives each motion type a class:
+
+- S: stays at the start.
+- L: from start toward end at speed v and acceleration a (distance v t + a t^2).
+- A: L plus a jump arc on y.
+- W / V: L plus a sine wave on x / y.
+- T / U: L plus an arc tilted by the z rotation.
+- Types 11-28 also say what happens on arrival, in threes: stop, snap to the end and freeze, vanish.
+
+Rotation is start + speed t + acceleration t^2 / 64; the scale moves toward its end value and stops
+there. Types 90 and up do not use this table (bone-attached objects); the tools hold them still.
+
+## Animated sprites (type 3 records)
+
+char[16] texture name, u32 1, u32 frame count, i16 loop (-1 loops), u16 0, palette x, y, sheet x, y,
+then 20 bytes per frame: u32 steps, u8 u0, u1, v0, v1, u16 width, height, u16 flags, u16 0x80, i16 0,
+i16 offset.
+
+## Conversion to a DW1 effect
+
+`tools/dcbefe.py` traces both scripts, keeps the steps in which something is drawn and turns them into
+the input of the DW2 converter (`tools/dw2efe.py`), which writes the 20 KB EFEDAT chunk:
+
+- Units: DCB's fighters stand 5000 apart, DW2's 10240, so positions are scaled by 2.048 and then by
+  the DW2 converter's own 0.266.
+- Time: one DCB step is taken as one 30 Hz frame. A DW1 cast object lasts at most 60 frames and a hit
+  object 30, so longer timelines are resampled evenly (WarGreymon's cast plays 1.9 times faster, its
+  hit 3.8 times).
+- The attack script becomes the cast (at the attacker, facing the defender); the hit script becomes
+  the hit (on the defender).
+- Animated sprites keep 4 of their frames; when the textures do not fit the chunk, 2, then 1.
+- Sprite colours are baked into the palette; sprites tinted black are left out.
+- Not converted: screen flashes, camera moves, ribbon trails, sounds and banners.
+
+`python tools/dcbefe.py convert <attack> <hit> <out> <name> --render` writes the chunk, a record of
+what was kept and dropped, and frame sheets of the traced original and the converted chunk;
+`python tools/dcbefe.py grid <out> <video.mp4> <names...>` puts several side by side.
+
+## Open questions
+
+- The step rate (30 Hz) and the size of a sprite texel in the world (16 units) are estimates.
+- Bone-attached objects (motion types 90 and up) are held still at their start.
+- A sprite burst (kind 13) spawns many small sprites in the game; it is drawn as one.
