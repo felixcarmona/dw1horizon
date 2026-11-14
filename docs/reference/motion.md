@@ -158,7 +158,7 @@ unevenly; pieces set whole in a reviewed orientation, `aim` and their mirrors, a
 spinning drum leads its own bone, so it turns as the source's drum does); donor bones above the body that carry pieces
 follow the body; the hips' height follows the source's, scaled by the two rigs' hip heights; the root keeps the source's
 rotation and travel. Lengths follow `battle_restore.plan` (the donor slot's length, idles tile or keep their own speed),
-so technique effects keep their timing. Slots 0-4 and the mesh stay byte for byte. The check is
+so technique effects keep their timing; a one-shot slot whose source clip that length would resample by more than 1.6 (slow motion or a rush) can take another length from the recipe's `battle_originals.ticks` `{"<slot>": frames}` (the donor's events of the slot move with the clip). Slots 0-4 and the mesh stay byte for byte. The check is
 `tools/models/battle_qa_native.py check ID FINAL B.MMD MAIN.MMD`: it recovers each source piece in the final mesh,
 measures the orientation error of the lead pieces (mean 8 degrees, any piece of 2 % of the weight 25 degrees),
 end-effector motion about the clip's mean (0.15 heights) and liveness against the source, a retime ratio within 1.6 for

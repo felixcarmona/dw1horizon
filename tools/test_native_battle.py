@@ -91,6 +91,13 @@ class NativeBattle(unittest.TestCase):
         order = native_battle.order(skeleton)
         self.assertLess(order.index(2), order.index(1))
 
+    def test_events_move_with_a_slot_given_another_length(self):
+        # a technique given its own length keeps the donor's swing sound and hit at the same moment of the clip
+        ev = [(0, 'sound', 1), (10, 'sound', 2), (20, 'sound', 3)]
+        self.assertEqual(native_battle.scaled_events(ev, 21, 21), ev)
+        self.assertEqual(native_battle.scaled_events(ev, 21, 41), [(0, 'sound', 1), (20, 'sound', 2), (39, 'sound', 3)])
+        self.assertEqual(native_battle.scaled_events(ev, 21, 11), [(0, 'sound', 1), (5, 'sound', 2), (9, 'sound', 3)])
+
     def test_dropped_npc_slots_are_the_ones_the_scripts_never_ask_a_partner_for(self):
         # `drop_npc_slots` leaves out the tamer's, NPCs' and kart race's clips: none may be a slot the species scripts need
         from tools import species

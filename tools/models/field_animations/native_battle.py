@@ -151,6 +151,13 @@ def plan(slot, source_ticks, want):
     return want, 1
 
 
+def scaled_events(events, frames, want):
+    """Events of a clip of `frames` frames moved to the same moments of a clip of `want` frames."""
+    if want == frames:
+        return list(events)
+    return [(min(want - 2, round(k * (want - 1) / (frames - 1))), kind, c) for k, kind, c in events]
+
+
 def source_clip(source, nb, slot, want):
     """(samples, events, loop sample, cycles) of the source's clip of `slot` for a final clip of `want` frames."""
     frames, loop, events = animsheet.slot_frames(source, nb, slot)
@@ -208,12 +215,14 @@ def retarget(frames, ctx):
     return out
 
 
-def apply(output, ctx, slots, keep_events=(), repairs=None):
+def apply(output, ctx, slots, keep_events=(), repairs=None, ticks=None):
     """`output` (the bound model) with each slot of `slots` playing the source's clip on the donor rig
     -> (bytes, proof). `keep_events`: slots that keep the bound clip's sound events (at its ticks: the clip keeps the
     slot's length), for a source whose clip of that slot has none. `repairs`: {slot (text): operations} of
     tools/models/clip_repair.py run on a slot's retargeted ticks (a rebuilt clip: the original repaired where it breaks
-    on the donor rig)."""
+    on the donor rig). `ticks`: {slot (text): frames} gives a one-shot slot (hit, victory, faint, get up, technique)
+    another length than the donor's, for a source clip that the donor's length would resample too far (slow motion or
+    a rush); the donor's events of that slot move with the clip (scaled to the new length)."""
     rig = ctx['rig']
     nb = len(rig)
     model = mmd.MMD.parse(output, nb)
@@ -224,9 +233,14 @@ def apply(output, ctx, slots, keep_events=(), repairs=None):
             raise ValueError(f'battle originals: slot {slot} is missing')
         donor, _, donor_events = animsheet.slot_frames(model, nb, slot)
         want = len(donor)
+        if ticks and str(slot) in ticks:
+            if slot in IDLES or slot in MOVES:
+                raise ValueError(f'battle originals: slot {slot} keeps battle_restore\'s length rule')
+            want = int(ticks[str(slot)])
+            donor_events = scaled_events(donor_events, len(donor), want)
         frames, events, loop, tile = source_clip(source, ns, slot, want)
         if slot >= TECHNIQUES or slot in keep_events:
-            events = donor_events       # same length: the species' voice and the swing sounds at the donor's ticks
+            events = donor_events       # the species' voice and the swing sounds at the donor's ticks (scaled with the clip)
         else:                           # the common effects and the species' own voice; not the partner's care voice
             events = [e for e in events if e[1] == 'sound' and e[2]['bank'] in (1, 4)]
         samples = retarget(frames, ctx)
