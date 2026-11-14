@@ -137,5 +137,13 @@
     "hit": [[2, "EFFESD/MESD3200.BIN", "EFFESD/AESD3200.BIN"]],
     "scale": 0.249,
     "hit_scale": 0.1
+  },
+  "139": {
+    "name": "Twig Tap",
+    "stands_for": 72,
+    "cast": [[1, "EFFEUA/MEUA3100.BIN", "EFFEUA/AEUA3100.BIN"], [2, "EFFEUA/MEUA3200.BIN", "EFFEUA/AEUA3200.BIN"]],
+    "hit": [[1, "EFFESD/MESD7600.BIN", "EFFESD/AESD7600.BIN"]],
+    "scale": 0.198,
+    "hit_scale": 0.1
   }
 }

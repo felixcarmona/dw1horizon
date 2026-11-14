@@ -28,6 +28,7 @@ the moment the attack starts.
 | 269 Garbagemon | Junk Chunker (DW2) | Energy Bomb | projectile: throws junk from its can | 1 | flies at tick 20, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.267) | one enemy, as for Energy Bomb | one enemy, 3 hits |
 | 270 PrinceMamemon | Smiley Warhead (DW2) | Smiley Bomb | at the target: a smiling warhead | 1 | plays at the target, hits at tick 40 | none (scale 0.288) | one enemy, as for Smiley Bomb | one enemy |
 | 271 Plesiomon | Sad Water Blast (DW2) | Mail Strome | at the target: a sad song and a wave of water over every enemy | 1 | plays at the target, hits at tick 40 | none (scale 0.249) | one enemy, as for Mail Strome | all enemies |
+| 272 Woodmon | Twig Tap (DW2) | Sweet Breath | at the target: two swipes with its twig arms | 1 | plays at the target, hits at tick 40 | none (scale 0.198) | one enemy, as for Sweet Breath | one enemy, 2 hits |
 
 ## Where the port differs from the source
 
