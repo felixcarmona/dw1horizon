@@ -119,9 +119,33 @@ def body_world(frames, parents, yaw=None):
     return R, P
 
 
-def tips(skeleton):
+def _source_chains(skeleton):
     rig = Q.Rig([p for _, p in skeleton], {b: [[0, 0, 0]] for b, (o, _) in enumerate(skeleton) if o >= 0}, [], {})
-    return [c['tip'] for c in rig.chains()]
+    return rig.chains()
+
+
+def tips(skeleton):
+    return [c['tip'] for c in _source_chains(skeleton)]
+
+
+def limb_bones(skeleton):
+    """{source bone: its limb chain (battle_qa.Rig.chains: legs, arms, tails, necks)} for the bones on one."""
+    return {b: k for k, c in enumerate(_source_chains(skeleton)) for b in c['bones']}
+
+
+def limb_carriers(carried, parents, limbs):
+    """The final bones that hold only source limbs: every piece on the bone and on the bones below it that carry
+    pieces comes from the same source limb chains (a donor hand holding an arm's head and its jaw; not a donor pelvis
+    carrying a tail and the legs). `carried`: {final bone: source pieces}, `limbs`: limb_bones."""
+    out = set()
+    for b, pieces in carried.items():
+        if not all(s in limbs for s in pieces):
+            continue
+        chains = {limbs[s] for s in pieces}
+        below = [d for d in carried if b in _chain(parents, d)]
+        if all(s in limbs and limbs[s] in chains for d in below for s in carried[d]):
+            out.add(b)
+    return out
 
 
 def fidelity(F, S, fit, blocks, leads, tip_bones, hips, heights):
@@ -161,13 +185,15 @@ def fidelity(F, S, fit, blocks, leads, tip_bones, hips, heights):
 
 def lead_pieces(blocks, skeleton, recipe, first_rider):
     """The source pieces their final bone follows (native_battle.context's rule)."""
+    from tools.models.field_animations import native_battle
     pivots = {first_rider + i: r['pivot'] for i, r in enumerate(recipe.get('riders', []))}
     groups = {}
     for sb, (dest, _) in blocks.items():
         groups.setdefault(dest, set()).add(sb)
+    fixed = native_battle.fixed_pieces(recipe)
     out = set()
     for dest, group in groups.items():
-        out |= {pivots[dest]} if dest in pivots else {s for s in group if skeleton[s][1] not in group}
+        out |= {pivots[dest]} if dest in pivots else set(native_battle.lead_tops(group, skeleton, fixed))
     return out
 
 
@@ -200,8 +226,10 @@ def check(sid, final_data, source_data, main_data, slots=None):
     riders = recipe.get('riders', [])
     first_rider = len(parents) - len(riders)
     rider_of = {sb: first_rider + i for i, r in enumerate(riders) for sb in r['pieces']}
+    spun = [int(b) for b in recipe['spin']['bones']] if recipe.get('spin') else []
+    spin_of = {sb: len(donor_rig) + i for i, sb in enumerate(spun)}    # spinning drums: bones of their own
     for sb, tb in mapping.items():
-        counts[rider_of.get(sb, tb)] = 1
+        counts[rider_of.get(sb, spin_of.get(sb, tb))] = 1
     for b in range(len(parents)):
         objs.append(k if b in counts else -1)
         k += b in counts
@@ -217,7 +245,14 @@ def check(sid, final_data, source_data, main_data, slots=None):
     ref, ref_s = Q.reference(Mr), Q.reference(Sr)
     # posture: only body bones that draw something or carry bones that do (a donor bone left without pieces is not
     # seen); the reference elevations are recomputed for them
-    seen = set(Fr.meshed)
+    # nor bones that hold only source limbs, or lead only to such bones: a hand with fingers is no chain of the donor
+    # rig (it branches) but holds what the source swings as a limb (an arm's head), whose clip the fidelity numbers
+    # measure
+    limbs = limb_bones(skeleton)
+    carried = {}
+    for sb, (dest, _) in blocks.items():
+        carried.setdefault(dest, set()).add(sb)
+    seen = set(Fr.meshed) - limb_carriers(carried, parents, limbs)
     shown = [b for b in ref['body'] if b in seen or any(b in _chain(parents, d) for d in seen)]
     idle = Q.Clip(Mr, *Mr.frames(0))
     ref['body'] = shown

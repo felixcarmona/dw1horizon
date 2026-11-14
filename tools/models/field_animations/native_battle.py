@@ -61,6 +61,18 @@ def polar(m):
     return x
 
 
+FLIP = [[-1., 0, 0], [0, 1., 0], [0, 0, 1.]]
+
+
+def mirrored_fit(twin_fit, twin_bind, own_bind):
+    """The fitting rotation of a piece placed as the mirror of its twin's fitted piece (native_binding.mirror_piece):
+    its local vertex v is the reflection of the twin's local vertex X.v, so its world shape is
+    X.Q_twin.W_twin.X.v, and the rotation from its own source world (W_own.v) is X.Q_twin.W_twin.X.W_own^T. Only when the
+    source poses the twins as mirrors of each other (W_twin = X.W_own.X) is it X.Q_twin.X."""
+    bind = _mul(_mul(polar(twin_bind), FLIP), _tr(polar(own_bind)))
+    return _mul(_mul(FLIP, twin_fit), bind)
+
+
 def _quat(m):
     """(w, x, y, z) of a rotation matrix."""
     t = m[0][0] + m[1][1] + m[2][2]
@@ -247,12 +259,13 @@ def compact(output, nb, spec):
     return model.build(), {str(k): list(v) for k, v in sorted(report.items())}
 
 
-def context(mesh, skeleton, source_pose, yaw, rig, rest, pieces, leads, mapping, lows):
+def context(mesh, skeleton, source_pose, yaw, rig, rest, pieces, leads, mapping, lows, fixed=()):
     """The retargeting context of a binding: the source model and its bind pose, the generated rig and its rest pose
     (slot 0's first tick of the bound model before any pass), {donor or rider bone: [(source bone, fitting rotation,
     weight)]}, {rider bone: its pivot piece}, the source-to-donor bone map and `lows`, the lowest vertex (y down) of the
     source in its bind pose and of the fitted pieces: the body joint travels by the ratio of the two hip heights over
-    them."""
+    them. `fixed`: source pieces the recipe set whole in a reviewed orientation on another bone (a piece rule's `aim`,
+    shoulder armour moved from a swinging upper arm onto the chest); they ride their bone and never lead it."""
     bind_rot, bind_pos = world(skeleton, source_pose, yaw)
     rest = [list(v) for v in rest]
     rest[0] = [4096]*3 + [0]*6
@@ -263,7 +276,7 @@ def context(mesh, skeleton, source_pose, yaw, rig, rest, pieces, leads, mapping,
         # the bone follows its lead piece: the rider's pivot, else the pieces at the top of the group (a piece whose
         # parent is on the same bone rides along rigidly; sibling tops are averaged)
         group = {s for s, _, _ in rows}
-        tops = [leads[t]] if t in leads else [s for s in group if skeleton[s][1] not in group]
+        tops = [leads[t]] if t in leads else lead_tops(group, skeleton, fixed)
         table[t] = [(s, _mul(_mul(_tr(bind_rot[s]), _tr(q)), rest_rot[t]), w) for s, q, w in rows if s in tops]
     depth = lambda b, sk: 0 if sk[b][1] < 0 else 1 + depth(sk[b][1], sk)
     hips_source = min(mapping, key=lambda s: (depth(s, skeleton), s))
@@ -286,6 +299,20 @@ def context(mesh, skeleton, source_pose, yaw, rig, rest, pieces, leads, mapping,
     return dict(source=mesh, skeleton=skeleton, yaw=yaw, rig=rig, rest=rest, rest_rot=rest_rot, rest_pos=rest_pos,
                 pieces=table, bind_rot=bind_rot, bind_pos=bind_pos, hips=(hips_source, hips_target), top=top,
                 lifted=lifted, k=k)
+
+
+def fixed_pieces(recipe):
+    """The source pieces a binding recipe sets whole in a reviewed orientation (a piece rule's `aim`), and their
+    mirrors (`mirror`: a piece placed as the reflection of its twin)."""
+    aimed = {int(k) for k, rule in recipe.get('pieces', {}).items() if 'aim' in rule}
+    return aimed | {int(k) for k, twin in recipe.get('mirror', {}).items() if int(twin) in aimed}
+
+
+def lead_tops(group, skeleton, fixed=()):
+    """The pieces a bone carrying the source pieces `group` follows: those at the top of the group (a piece whose
+    parent is on the same bone rides along rigidly), not counting the `fixed` ones unless nothing else is left."""
+    tops = [s for s in group if skeleton[s][1] not in group]
+    return [s for s in tops if s not in fixed] or tops
 
 
 def _ancestors(rig, b):
