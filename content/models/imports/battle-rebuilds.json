@@ -15,6 +15,75 @@
       {"op": "turn", "bone": 3, "axis": "x", "deg": -6}
     ]}
   },
+  "259": {
+    "35": {"ticks": 11, "ops": [
+      {"op": "damp", "bone": 13, "keep": 0.6},
+      {"op": "damp", "bone": 14, "keep": 0.6},
+      {"op": "smooth", "bone": 23, "passes": 1},
+      {"op": "smooth", "bone": 22, "passes": 1},
+      {"op": "smooth", "bone": 21, "passes": 1},
+      {"op": "smooth", "bone": 20, "passes": 1},
+      {"op": "smooth", "bone": 17, "passes": 1},
+      {"op": "smooth", "bone": 16, "passes": 1}
+    ]},
+    "36": {"ticks": 9, "ops": [
+      {"op": "smooth", "bone": 17, "passes": 3},
+      {"op": "smooth", "bone": 21, "passes": 3},
+      {"op": "smooth", "bone": 23, "passes": 3},
+      {"op": "smooth", "bone": 16, "passes": 2},
+      {"op": "smooth", "bone": 20, "passes": 2},
+      {"op": "smooth", "bone": 22, "passes": 2},
+      {"op": "smooth", "bone": 19, "passes": 2},
+      {"op": "smooth", "bone": 18, "passes": 2}
+    ]}
+  },
+  "261": {
+    "36": {"ticks": 11, "ops": [
+      {"op": "mirror", "bone": 5, "from": 8, "shift": 0},
+      {"op": "mirror", "bone": 6, "from": 9, "shift": 0}
+    ]},
+    "35": {"ticks": 11, "ops": [
+      {"op": "mirror", "bone": 5, "from": 8, "shift": 5},
+      {"op": "mirror", "bone": 6, "from": 9, "shift": 5}
+    ]}
+  },
+  "267": {
+    "34": {"ticks": 30, "ops": [
+      {"op": "turn", "bone": 1, "axis": "x", "deg": -8.0},
+      {"op": "turn", "bone": 14, "axis": "x", "deg": -20.0},
+      {"op": "turn", "bone": 13, "axis": "x", "deg": -15.0}
+    ]},
+    "35": {"ticks": 21, "ops": [
+      {"op": "wave", "bone": 15, "axis": "y", "deg": 6.0, "cycles": 2.0, "phase": 0.0},
+      {"op": "wave", "bone": 16, "axis": "y", "deg": 6.0, "cycles": 2.0, "phase": 0.1},
+      {"op": "wave", "bone": 17, "axis": "y", "deg": 5.0, "cycles": 2.0, "phase": 0.2}
+    ]},
+    "36": {"ticks": 21, "ops": [
+      {"op": "wave", "bone": 15, "axis": "y", "deg": 6.0, "cycles": 2.0, "phase": 0.0},
+      {"op": "wave", "bone": 16, "axis": "y", "deg": 6.0, "cycles": 2.0, "phase": 0.1},
+      {"op": "wave", "bone": 17, "axis": "y", "deg": 5.0, "cycles": 2.0, "phase": 0.2}
+    ]}
+  },
+  "268": {
+    "34": {"ticks": 30, "ops": [
+      {"op": "turn", "bone": 1, "axis": "x", "deg": -8.0},
+      {"op": "turn", "bone": 14, "axis": "x", "deg": -20.0},
+      {"op": "turn", "bone": 13, "axis": "x", "deg": -15.0},
+      {"op": "turn", "bone": 15, "axis": "x", "deg": -20.0},
+      {"op": "turn", "bone": 18, "axis": "x", "deg": 20.0},
+      {"op": "turn", "bone": 19, "axis": "x", "deg": 20.0}
+    ]},
+    "36": {"ticks": 21, "ops": [
+      {"op": "turn", "bone": 23, "axis": "z", "deg": 25.0},
+      {"op": "turn", "bone": 26, "axis": "z", "deg": -25.0}
+    ]}
+  },
+  "272": {
+    "35": {"ticks": 13, "ops": [
+      {"op": "smooth", "bone": 5, "passes": 1},
+      {"op": "smooth", "bone": 4, "passes": 2}
+    ]}
+  },
   "285": {
     "33": {"ticks": 25, "ops": [
       {"op": "damp", "bone": 15, "keep": 0, "to": "first", "ticks": [16, 24, 24, 24]}

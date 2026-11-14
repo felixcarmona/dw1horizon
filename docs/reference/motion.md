@@ -119,6 +119,23 @@ raised 40 units, which keeps the soles off the floor (tipped 22 degrees against 
 ticks (sink 0.27 heights against main's 0.28). Candlemon's 0x2B (defeat) and ShellNumemon's 0x22 are not restored on
 purpose: Candlemon topples over backwards and lies on the floor where the original only leans the pedestal back 54 degrees,
 and ShellNumemon's tired idle is the torso-leaned one (`battle_qa.POLISHED`).
+**Rebuilt from the original.** A restored clip that fails the checks on our rig is not dropped for a field twin when the original's
+poses, timing and arc can be kept and only what breaks repaired: `content/models/imports/battle-rebuilds.json` lists, per species and
+slot, the length and the repairs (`tools/models/clip_repair.py`: `turn` a bone about a model axis, `damp` its swing, `smooth` a snap
+over the neighbouring ticks, `wave` a chain the source left stiff, `mirror` a leg the source never moved from its twin, `lift` the
+body), and `battle_restore.py rebuild` applies them to the importer's clip. `battle_qa.py` skips only fidelity for these slots; every
+other check applies and each ships only at `pass`. Okuwamon 0x23/0x24 (21 ticks played in 11 and 9: the legs and wing flutter that
+would snap are damped and smoothed, vertex step 0.47/0.92 down to 0.33/0.62 heights a tick, speed 20 down to 15 degrees a tick),
+Tortomon 0x23/0x24 (the front leg the source never moved takes its twin's swing, mirrored), Mammothmon 0x22-0x24 (the tipped
+tired idle leaned back, 49 degrees down to 20; the stiff tail wags 6 degrees), SkullMammothmon 0x22 (the same lean; crossings
+168 down to 20 with the thighs and head turned) and 0x24 (the thighs turned out 25-30 degrees and the tail up: crossings 170
+down to 61 against main's 69), Woodmon 0x23 (the claw's one-tick snap smoothed, 0.38 down to 0.24)
+play the source's own clips now. SkullMammothmon 0x23 stays main's: with all three rebuilt the species is 1382 B over the resident
+buffer (101734 B against 100352 B, after exact compaction, which is the only room allowed), so the pair with the biggest gain
+ships (99414 B). Floramon 0x24 stays main's: the source's run passes at the 61 ticks the slot has, but the field pace's pins
+have no supported tool to move. Garbagemon's
+0x22-0x24 are the source's clips with the can held at its attachment (`garbagemon.py`): only the can's bone differs, so there is
+nothing to restore.
 
 **Natively bound species get their originals by retargeting.** A native binding (`native_binding.py`) deep-copies the
 donor's skeleton and every clip, so the source game's battle clips are gone. A recipe's `"battle_originals": {"slots":

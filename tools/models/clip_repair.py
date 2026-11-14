@@ -14,6 +14,19 @@ reference of motion, character and timing and changes only what breaks, with the
   {"op": "damp", "bone": B, "keep": K [, "to": "mean"|"first", "ticks": [a, b, c, d]]}
         the bone's local rotation pulled toward its own mean (or first) pose of the clip: K = 1 is the clip as it is,
         0 the bone held still. Its children keep their own local motion.
+  {"op": "smooth", "bone": B [, "passes": N, "weight": W, "ticks": [a, b, c, d]]}
+        the bone's local rotation low-pass filtered along the ticks (each pass: the tick's rotation blended with its two
+        neighbours', weights W, 1 - 2W, W; W 0.25 by default; a loop, whose last tick repeats its first, wraps round; the ends of a one-shot keep their own side): a one-tick snap spread over
+        its neighbours, where a clip played faster than the source's own speed makes a leg flick. Poses stay on the
+        path the clip already takes; with `ticks`, only where the envelope is.
+  {"op": "mirror", "bone": B, "from": S, "shift": K}
+        bone B takes the local rotation of its mirror twin S (the same leg on the other side of the body), mirrored
+        left to right (the Euler y and z negated), K ticks later (wrapping on a loop, whose last tick repeats its first;
+        the end tick holds on a one-shot): a leg the source never animated, moving as its twin does half a stride on.
+  {"op": "wave", "bone": B, "axis": "x"|"y"|"z"|[x, y, z], "deg": D [, "cycles": N, "phase": P, "ticks": [a, b, c, d]]}
+        the bone swung D degrees either way about a model axis, N sways over the clip (1 by default; a loop's last tick
+        repeats its first, so a loop closes), starting P of a sway in (0 to 1): a chain the source never animated (a tail
+        left stiff) moving as the species' field walk moves it. Everything else as `turn`.
   {"op": "lift", "bone": B, "up": U [, "ticks": [a, b, c, d]]}
         bone B (the body bone under the root; its translation, in its parent's frame) raised U units: the soles back on
         the floor where the original sinks on our rig. The root's own travel is never touched.
@@ -141,6 +154,21 @@ def turn(frames, parents, bone, axis, deg, ticks=None):
     return out
 
 
+def wave(frames, parents, bone, axis, deg, cycles=1.0, phase=0.0, ticks=None):
+    n = len(frames)
+    out = []
+    for t, pose in enumerate(frames):
+        pose = [list(v) for v in pose]
+        w = envelope(ticks, t)
+        a = deg * w * math.sin(2 * math.pi * (cycles * t / max(n - 1, 1) + phase))
+        if abs(a) > 1e-9:
+            parent = _chain(parents, pose, parents[bone], {})
+            new = _mul(_tr(parent), _mul(_axis_angle(axis, a), _mul(parent, _rot(*pose[bone][3:6]))))
+            pose[bone][3:6] = list(_euler(new, pose[bone][3:6]))
+        out.append(pose)
+    return out
+
+
 def damp(frames, bone, keep, to='mean', ticks=None):
     qs = [_quat(_rot(*pose[bone][3:6])) for pose in frames]
     if to == 'first':
@@ -162,6 +190,51 @@ def damp(frames, bone, keep, to='mean', ticks=None):
     return out
 
 
+def smooth(frames, bone, passes=1, weight=0.25, ticks=None):
+    qs = [_quat(_rot(*pose[bone][3:6])) for pose in frames]
+    for i in range(1, len(qs)):                      # one hemisphere along the clip
+        if sum(p * r for p, r in zip(qs[i], qs[i - 1])) < 0:
+            qs[i] = [-v for v in qs[i]]
+    closed = len(frames) > 2 and all(a[3:6] == b[3:6] for a, b in zip(frames[0], frames[-1]))
+    if closed:                                       # a loop: its last tick repeats its first, the cycle wraps
+        qs = qs[:-1]
+    n = len(qs)
+    for _ in range(passes):
+        new = []
+        for t in range(n):
+            lo, hi = (qs[(t - 1) % n], qs[(t + 1) % n]) if closed else (qs[max(t - 1, 0)], qs[min(t + 1, n - 1)])
+            q = [weight * a + (1 - 2 * weight) * c + weight * b for a, c, b in zip(lo, qs[t], hi)]
+            m = math.sqrt(sum(v * v for v in q))
+            new.append([v / m for v in q])
+        qs = new
+    if closed:
+        qs.append(qs[0])
+    out = []
+    for t, pose in enumerate(frames):
+        pose = [list(v) for v in pose]
+        w = envelope(ticks, t)
+        if w > 0:
+            orig = _quat(_rot(*pose[bone][3:6]))
+            if sum(p * r for p, r in zip(orig, qs[t])) < 0:
+                orig = [-v for v in orig]
+            pose[bone][3:6] = list(_euler(_matrix(_slerp(orig, qs[t], w)), pose[bone][3:6]))
+        out.append(pose)
+    return out
+
+
+def mirror(frames, bone, source, shift=0):
+    n = len(frames)
+    closed = n > 2 and all(a[3:6] == b[3:6] for a, b in zip(frames[0], frames[-1]))
+    out = []
+    for t in range(n):
+        pose = [list(v) for v in frames[t]]
+        u = (t + shift) % (n - 1) if closed else min(max(t + shift, 0), n - 1)
+        rx, ry, rz = frames[u][source][3:6]
+        pose[bone][3:6] = [rx, -ry, -rz]
+        out.append(pose)
+    return out
+
+
 def lift(frames, bone, up, ticks=None):
     if bone == 0:
         raise ValueError('clip repair: lift a body bone, not the root (its channels carry the travel)')
@@ -179,8 +252,15 @@ def apply_ops(frames, parents, ops):
         kind = op['op']
         if kind == 'turn':
             frames = turn(frames, parents, op['bone'], op['axis'], op['deg'], op.get('ticks'))
+        elif kind == 'wave':
+            frames = wave(frames, parents, op['bone'], op['axis'], op['deg'], op.get('cycles', 1.0), op.get('phase', 0.0),
+                          op.get('ticks'))
         elif kind == 'damp':
             frames = damp(frames, op['bone'], op['keep'], op.get('to', 'mean'), op.get('ticks'))
+        elif kind == 'smooth':
+            frames = smooth(frames, op['bone'], op.get('passes', 1), op.get('weight', 0.25), op.get('ticks'))
+        elif kind == 'mirror':
+            frames = mirror(frames, op['bone'], op['from'], op.get('shift', 0))
         elif kind == 'lift':
             frames = lift(frames, op['bone'], op['up'], op.get('ticks'))
         else:

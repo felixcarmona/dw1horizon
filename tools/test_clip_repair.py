@@ -47,6 +47,48 @@ class ClipRepairTest(unittest.TestCase):
                                                        'ticks': [6, n - 1, n - 1, n - 1]}])
         self.assertEqual(out[-1][2][3:6], out[0][2][3:6])
         self.assertTrue(all(a == b for a, b in zip(out[:6], clip(n))))
+    def test_smooth_spreads_a_snap_and_keeps_the_rest(self):
+        frames = clip()
+        for t in range(6, 12):
+            frames[t][1][3] += 600                   # a one-tick snap on bone 1 between ticks 5 and 6
+        out = clip_repair.apply_ops(frames, PARENTS, [{'op': 'smooth', 'bone': 1, 'passes': 2}])
+        step = lambda f: max(abs(f[t + 1][1][3] - f[t][1][3]) for t in range(len(f) - 1))
+        self.assertLess(step(out), step(frames))
+        for a, b in zip(out, frames):
+            for bone in (0, 2, 3):
+                self.assertEqual(a[bone], b[bone])
+        self.assertEqual(clip_repair.apply_ops(frames, PARENTS, [{'op': 'smooth', 'bone': 1, 'weight': 0.0}]), frames)
+        ops = [{'op': 'smooth', 'bone': 1, 'passes': 2, 'ticks': [4, 5, 6, 8]}]
+        out = clip_repair.apply_ops(frames, PARENTS, ops)
+        self.assertEqual(out[:4], frames[:4])
+        self.assertEqual(out[9:], frames[9:])
+
+    def test_mirror_copies_the_twin_mirrored_and_shifted(self):
+        frames = clip()
+        out = clip_repair.apply_ops(frames, PARENTS, [{'op': 'mirror', 'bone': 3, 'from': 2, 'shift': 2}])
+        for t in range(len(frames)):
+            u = min(t + 2, len(frames) - 1)
+            rx, ry, rz = frames[u][2][3:6]
+            self.assertEqual(out[t][3][3:6], [rx, -ry, -rz])
+            for bone in (0, 1, 2):
+                self.assertEqual(out[t][bone], frames[t][bone])
+            self.assertEqual(out[t][3][:3] + out[t][3][6:], frames[t][3][:3] + frames[t][3][6:])
+        loop = [[list(b) for b in p] for p in frames]
+        loop[-1] = [list(b) for b in loop[0]]
+        out = clip_repair.apply_ops(loop, PARENTS, [{'op': 'mirror', 'bone': 3, 'from': 2, 'shift': 3}])
+        self.assertEqual(out[-1][3][3:6], out[0][3][3:6])
+        self.assertEqual(out[len(loop) - 4][3][3:6], [loop[0][2][3], -loop[0][2][4], -loop[0][2][5]])
+
+    def test_wave_sways_one_bone_and_closes_a_loop(self):
+        frames = clip(13)
+        frames[-1] = [list(b) for b in frames[0]]
+        out = clip_repair.apply_ops(frames, PARENTS, [{'op': 'wave', 'bone': 2, 'axis': 'y', 'deg': 8, 'cycles': 2}])
+        self.assertEqual(out[0], frames[0])
+        self.assertEqual(out[-1], frames[-1])
+        for bone in (0, 1, 3):
+            self.assertEqual([p[bone] for p in out], [p[bone] for p in frames])
+        self.assertNotEqual([p[2] for p in out[1:-1]], [p[2] for p in frames[1:-1]])
+        self.assertEqual(clip_repair.apply_ops(frames, PARENTS, [{'op': 'wave', 'bone': 2, 'axis': 'y', 'deg': 0}]), frames)
 
     def test_lift_moves_a_body_bone_only(self):
         out = clip_repair.apply_ops(clip(), PARENTS, [{'op': 'lift', 'bone': 1, 'up': 25}])
