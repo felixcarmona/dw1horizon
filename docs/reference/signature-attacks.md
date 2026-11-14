@@ -3,7 +3,8 @@
 Some imported Digimon play the signature attack of the game they come from in place of the shared finisher
 picture. This page says, for each of them, what the attack does in a battle here and where it differs from the
 original game. How the effects are converted is in [the signature effects notes](../mods/signature-effects.md);
-the DW2 effect format is in [the DW2 effect notes](dw2-effects.md).
+the DW2 effect format is in [the DW2 effect notes](dw2-effects.md), and the DW2003 one in
+[the DW2003 effect notes](dw3-effects.md).
 
 The damage, the element, the cost and when the Digimon chooses the attack are the finisher's (the technique the
 attack stands in for), unless the species' finisher data says otherwise. Times are battle ticks (20 a second) from
@@ -77,6 +78,14 @@ the moment the attack starts.
 - **Close-range finishers.** MarineDevimon (Death Claw) and Gazimon (Poison Ivy) walk up to their target first,
   as for those finishers, so their projectiles fly only a short way.
 - **Hagurumon** plays Darkness Gear in battle (species 122); its field twin 465 has no techniques.
+
+- **DW2003 attacks** play their 3D effects as on the disc, at the caster, for their whole length, and hit when
+  they end: nothing flies to the target on its own. They leave out the attack's flat sprites (sparks, flashes,
+  the finisher emblem) and DW2003's camera moves. Most of those that stand in a projectile or beam finisher are
+  beams or bursts that reach the target in DW2003 too.
+- **DW2003 enemy attacks.** Fifteen of the imports are DW2003 enemies with no signature of their own: their
+  attack is the enemy's move 1 or its plain attack. Vilemon and Mummymon (Dark Fear), and Creepymon and Ghoulmon
+  (Darkness Chaos), share theirs.
 
 ## Kept on the DW1 finisher
 

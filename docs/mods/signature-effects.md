@@ -21,6 +21,9 @@ species that have one are listed in [the signature attacks](../reference/signatu
   files are `"cast"` and `"hit"`, each either `[model, anim]` (one object at DW2 slot 1) or
   `[[slot, model, anim], ...]` (every object of the technique). `stands_for` is the species' finisher, whose launch
   point the chunk takes; `scale` is the species' model height here over its DW2 head height.
+- An entry converted from a DW2003 technique has `"dw3"` in place of the DW2 files: `{"model": "M170IVRU",
+  "slot": 9, "meft": [335], "pin": SHA-1}`, plus `leave_out` when parts do not fit (below). It has no scale,
+  `area` or `hits`: it is gameplay-neutral, one target and one hit, as the finisher it stands for.
 
 ## Converting a DW2 technique
 
@@ -68,6 +71,20 @@ effects is in [the DW2 effect notes](../reference/dw2-effects.md).
   shouts the technique's name: a voice line streamed from the disc as XA audio (Metal Fireball:
   `AAA/2.XAP/SHOT0011.XAP`, channel 1). This game's battles have no voice lines, so it is not carried.
 - The build needs the DW2 disc for these chunks, as it does for the imported species.
+
+## Converting a DW2003 technique
+
+`tools/dw3efe.py` turns a DW2003 technique's 3D effects (the `MEFT####.BIN` files its battle model's script
+spawns) into one chunk through the same converter: each effect placed where the script spawns it, in the caster's
+frame, at the field's scale (this game's fighters stand 2700 units apart, DW2003's 10 752), for its whole length,
+played as on the disc with the hit when it ends. The format and the conversion are in
+[the DW2003 effect notes](../reference/dw3-effects.md). The build reads the model and the effect files from the
+player's DW2003 or Digimon World 3 disc (`derive build --source-disc dw2003=IMAGE`; `tools/discs.py`
+`DW3_EFFECT_FILES` pins them, equal on all three releases). The models' scripts and the effect files give the same
+chunks on the European, USA and Japanese discs, and `pin` records that chunk's SHA-1.
+`tools/test_dw3_ports.py` checks the wiring, and with the discs (`DW3_IMAGE`, `DW3_US_IMAGE`, `DW3_JP_IMAGE`)
+builds every port to its pin and runs the fidelity check against the original technique. Chunks 196 to 222 are the
+3D effects' (`EFFECT_IDS`).
 
 | Chunk | DW2 technique | Species | Stands for | Kept in battle memory | Texture |
 |---|---|---|---|---|---|

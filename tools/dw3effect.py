@@ -92,6 +92,36 @@ class Disc:
         return name.rsplit('/', 1)[-1] if name else None
 
 
+class Files:
+    """The extracted files of a source disc (a derive's source-games/dw2003/disc), read by base name, in place of
+    a Disc where there is no image: no file table, so a 3D effect is read by its own name (MEFT####.BIN, the
+    name the file table gives it on every release)."""
+
+    def __init__(self, root):
+        self.base = {}
+        for folder, _dirs, names in sorted(os.walk(root)):
+            for n in sorted(names):
+                self.base.setdefault(n, os.path.join(folder, n))
+
+    def read(self, base):
+        if base not in self.base:
+            raise KeyError(f'{base}: not among the extracted source files')
+        with open(self.base[base], 'rb') as f:
+            return f.read()
+
+    def name_of(self, index):
+        return None
+
+
+class EffectIds:
+    """The tables a conversion of 3D effects needs, without the fight overlay: the 3D effect ids the technique
+    may spawn (each read as MEFT####.BIN) and no sprites."""
+
+    def __init__(self, meft_ids):
+        self.meft = {int(n): (0, None) for n in meft_ids}
+        self.sprites = {}
+
+
 def locate_file_table(exe, lbas):
     """The u32 LBA table of the executable: the longest run of words that are all file starts (or 0)."""
     n = len(exe) // 4
