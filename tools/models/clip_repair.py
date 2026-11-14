@@ -31,6 +31,17 @@ reference of motion, character and timing and changes only what breaks, with the
         bone B (the body bone under the root; its translation, in its parent's frame) raised U units: the soles back on
         the floor where the original sinks on our rig. The root's own travel is never touched.
 
+  {"op": "retime", "ticks": N}
+        the whole clip resampled to N ticks (a slower or faster original: its frantic speed brought into the range of the
+        disc's own clips); rotations go through quaternions, offsets and scales linearly. Put it first.
+  {"op": "seam", "ticks": K [, "bones": [B, ...]]}
+        a looping clip whose last pose is not the first: over its last K ticks the bones (default every bone under the root)
+        ease toward the first pose, reaching it one tick after the last (the loop's own step), so the seam closes.
+
+  {"op": "sway", "bone": B, "axis": ..., "deg": D, "cycles": C [, "phase": P]}
+        a bone the original never moves (a limb left out of its bone map) swung D degrees about a model axis, C whole
+        cycles over the clip (sine from tick 0 to the last tick, P in turns), so it starts and ends where it was.
+
 Operations run in the order given. Only the rotation channels of the bones named (and a lifted bone's height) change; scale
 channels (the chibi reshape) and every other bone stay as they were. Standard library only (deterministic under
 tools/derive's correctly rounded math), so a derive stage can apply a recipe's repairs.
@@ -165,6 +176,15 @@ def wave(frames, parents, bone, axis, deg, cycles=1.0, phase=0.0, ticks=None):
             parent = _chain(parents, pose, parents[bone], {})
             new = _mul(_tr(parent), _mul(_axis_angle(axis, a), _mul(parent, _rot(*pose[bone][3:6]))))
             pose[bone][3:6] = list(_euler(new, pose[bone][3:6]))
+def sway(frames, parents, bone, axis, deg, cycles, phase=0.0):
+    n = len(frames) - 1
+    out = []
+    for t, pose in enumerate(frames):
+        pose = [list(v) for v in pose]
+        a = deg * (math.sin(2 * math.pi * (cycles * t / n + phase)) - math.sin(2 * math.pi * phase))
+        parent = _chain(parents, pose, parents[bone], {})
+        new = _mul(_tr(parent), _mul(_axis_angle(axis, a), _mul(parent, _rot(*pose[bone][3:6]))))
+        pose[bone][3:6] = list(_euler(new, pose[bone][3:6]))
         out.append(pose)
     return out
 
@@ -267,6 +287,35 @@ def fit_rig(frames, source_pose, rig_pose):
                         bone[i] = bone[i] + (r0 - s0) if (b == 1 and i == 7) else bone[i] * r0 / s0
             bones.append(bone)
         out.append(bones)
+def _mix(a, b, w):
+    """Pose bone a toward pose bone b by w: rotation through quaternions, the other channels linearly."""
+    out = [x + (y - x) * w for x, y in zip(a, b)]
+    out[3:6] = list(_euler(_matrix(_slerp(_quat(_rot(*a[3:6])), _quat(_rot(*b[3:6])), w)), a[3:6]))
+    return out
+
+
+def retime(frames, ticks):
+    n = len(frames) - 1
+    out = []
+    for t in range(ticks + 1):
+        x = t * n / ticks
+        i = min(int(x), n - 1) if n else 0
+        w = x - i
+        out.append([list(v) for v in frames[i]] if w == 0 or n == 0 else
+                   [_mix(a, b, w) for a, b in zip(frames[i], frames[i + 1])])
+    return out
+
+
+def seam(frames, ticks, bones=None):
+    n = len(frames)
+    first = frames[0]
+    out = [[list(v) for v in pose] for pose in frames]
+    for k in range(ticks):
+        t = n - ticks + k
+        u = (k + 1) / (ticks + 1)
+        w = u * u * (3 - 2 * u)
+        for b in (bones if bones is not None else range(1, len(first))):
+            out[t][b] = _mix(frames[t][b], first[b], w)
     return out
 
 
@@ -285,6 +334,12 @@ def apply_ops(frames, parents, ops):
             frames = smooth(frames, op['bone'], op.get('passes', 1), op.get('weight', 0.25), op.get('ticks'))
         elif kind == 'mirror':
             frames = mirror(frames, op['bone'], op['from'], op.get('shift', 0))
+        elif kind == 'sway':
+            frames = sway(frames, parents, op['bone'], op['axis'], op['deg'], op['cycles'], op.get('phase', 0.0))
+        elif kind == 'retime':
+            frames = retime(frames, op['ticks'])
+        elif kind == 'seam':
+            frames = seam(frames, op['ticks'], op.get('bones'))
         elif kind == 'lift':
             frames = lift(frames, op['bone'], op['up'], op.get('ticks'))
         else:

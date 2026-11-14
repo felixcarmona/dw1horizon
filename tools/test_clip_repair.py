@@ -119,6 +119,29 @@ class ClipRepairTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             clip_repair.apply_ops(clip(), PARENTS, [{'op': 'lift', 'bone': 0, 'up': 5}])
 
+    def test_retime_keeps_the_ends_and_the_length(self):
+        out = clip_repair.apply_ops(clip(), PARENTS, [{'op': 'retime', 'ticks': 22}])
+        self.assertEqual(len(out), 23)
+        self.assertEqual(out[0], clip()[0])
+        self.assertEqual(out[-1], clip()[-1])
+        self.assertEqual(clip_repair.apply_ops(clip(), PARENTS, [{'op': 'retime', 'ticks': 11}]), clip())
+
+    def test_seam_closes_the_loop_and_leaves_the_rest(self):
+        out = clip_repair.apply_ops(clip(), PARENTS, [{'op': 'seam', 'ticks': 4, 'bones': [1, 2]}])
+        self.assertEqual(out[:8], clip()[:8])
+        for b in (0, 3):
+            self.assertEqual([p[b] for p in out], [p[b] for p in clip()])
+        gap = lambda c: abs(c[-1][1][3] - c[0][1][3])
+        self.assertLess(gap(out), gap(clip()) / 3)
+
+    def test_sway_starts_and_ends_where_it_was(self):
+        out = clip_repair.apply_ops(clip(), PARENTS, [{'op': 'sway', 'bone': 2, 'axis': 'x', 'deg': 10, 'cycles': 2}])
+        self.assertEqual(out[0], clip()[0])
+        self.assertEqual(out[-1][2], clip()[-1][2])
+        self.assertNotEqual(out[3][2], clip()[3][2])
+        for b in (0, 1, 3):
+            self.assertEqual([p[b] for p in out], [p[b] for p in clip()])
+
 
 if __name__ == '__main__':
     unittest.main()

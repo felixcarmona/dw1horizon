@@ -11,7 +11,8 @@ tip of a crutch that is planted ahead of the body, stays put while the body pass
 the two legs step in turn with it (a three-beat walk, a bound in the run). The light right arm swings freely against
 the crutch. `quadruped.py` plants every sole and solves the three limbs with two-bone IK; this module adds what the
 framework has no row for: the torso, hips, neck and head, jaw, tail and right arm (`body`), the second claw following the
-first (`extra`), and the idle (slot 0, also the battle idle, slot 33).
+first (`extra`), and the idle (slot 0, also the battle idle, slot 33,
+which battle-rebuilds.json replaces afterwards with the source game's own idle, repaired).
 
 Offline: `tools/models/edit.py get 281` on the commit before this change, then
 `python3 -m tools.models.field_animations.cyclonemon_gait --source THAT.MMD --out AFTER.MMD` and `edit.py put 281 AFTER.MMD`.

@@ -211,6 +211,18 @@ Lillymon 0x22-0x24 (0x22 torso compensated). Stay main's: Submarimon (its tail s
 (shoulder opening, deliberate), MarineAngemon 0x21 (constant scale of bone 25) and 0x23, 0x24 (the source's legs and limbs
 are still, the liveness check fails), Aquilamon 0x24 (best rebuild 112 crossings a tick against a limit of 73, main 30).
 
+Seven imported species have their remaining battle clips rebuilt from the source's own clip (`content/models/imports/battle-rebuilds.json`,
+`battle_restore.py rebuild`, repair operations in `clip_repair.py`: `turn`, `damp`, `lift`, `retime`, `seam`, `sway`); each was
+kept as the older clip only because the source's clip failed the check or the memory budget, and each ships only where the
+check passes on the final model and the resident memory stays under 100352 bytes. Octomon 0x21 (retimed to 32 ticks, loop
+seam closed over 6; 99432 bytes), Cyclonemon 0x21 (bone 3 turned back 45 degrees, seam over 5; 85466), Dragomon 0x24 (21 ticks,
+bone 3 tipped back 22 degrees; 97788), Divermon 0x24 (25 ticks, one tail-leg sway of 12 degrees; 99522; its 0x23 stays the
+older clip, restoring it needs 1940 bytes more than the budget leaves), BlackKingNumemon 0x23, 0x24 and the victory 0x2A (33 and
+25 ticks, arms and tail turned out of the body, victory damped and turned; the generator no longer writes them; 87318),
+Arukenimon 0x21, 0x23 and 0x24 (legs swaying as delayed pendulums; its victory follows the new idle pose; the generator's
+pins moved; 95166) and Creepymon 0x23 and 0x24 (21 and 15 ticks, thighs swung forward 20 degrees and out 8, run torso
+turned back 8; the generator no longer writes the twins; 75858). Divermon's technique clip that aliases 0x24 follows it.
+
 Room is made by `"compact": {"tol": N}` in the same entry (`native_battle.compact`, after the retarget; Wizardmon's
 and Sorcermon's builder runs it once, after its cape and hair followers, which skip the restored slots):
 `battle_restore.compact` re-encodes every clip with repeats losslessly, then, at N units of 1/4096 turn (at most 5,

@@ -48,6 +48,7 @@ from tools.models.field_animations.lillymon_flight import Rig  # noqa: E402
 SPECIES, NB = 278, 24
 SOURCE = '7db03916614b7d6544c083f425d2fa605d6abbb163e889e7a347b58c8455e153'   # edit.py get 278 before this change
 SLOTS = (0, 1, 2, 3, 4)
+# slot 33 is replaced afterwards by the source game's own battle idle (content/models/imports/battle-rebuilds.json)
 SHARED_WITH_IDLE = (1, 18, 33)
 CLIP_OF_SLOT = {0: 'idle', 2: 'walk', 3: 'tired', 4: 'run'}
 BODY, DISC, TUFT = 1, 2, 23
