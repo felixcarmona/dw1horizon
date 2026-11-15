@@ -486,5 +486,10 @@
     "name": "Twin Sickles",
     "stands_for": 73,
     "dw3": {"model": "M238SNAI", "slot": 5, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38]}, "pin": "3e54226b66424d06295631fd61464f867f30af3a"}
+  },
+  "240": {
+    "name": "Darkside Quake",
+    "stands_for": 81,
+    "dw3": {"model": "M172MTAR", "slot": 5, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38]}, "pin": "496cbca34ea930da59fa747a6c872a1abfab68ac"}
   }
 }

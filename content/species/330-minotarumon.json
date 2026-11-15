@@ -10,6 +10,7 @@
                  null, null, "Pummel Whack"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 34,
+  "own_effect": {"technique": "Pummel Whack", "chunk": 240},
   "model": {
     "file": "build/batch13/Minotarumon.MMD",
     "radius": 157,
