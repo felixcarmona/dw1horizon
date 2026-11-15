@@ -441,5 +441,10 @@
     "name": "Mugen Cannon",
     "stands_for": 106,
     "dw3": {"model": "M440SIJN", "slot": 5, "meft": [364], "pin": "d537ea9eaa568c736f1b3c2ab1a2fed7c90ad20e"}
+  },
+  "221": {
+    "name": "Cross Slash",
+    "stands_for": 62,
+    "dw3": {"model": "M337ZAMB", "slot": 5, "meft": [39], "pin": "db297f0d6a698c95ed5a7f0aefd34ab2d85ae6f4"}
   }
 }

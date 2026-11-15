@@ -76,6 +76,7 @@ the moment the attack starts.
 | 406 MaloMyotismon | Melting Blood (DW2003) | Nightmare Syndromer | 3D effect at the caster (MEFT0092) | 1 | plays its whole length (69 frames at 30 fps), hits when it ends | none | one enemy, as for Nightmare Syndromer | one enemy |
 | 407 Armageddemon | Ultimate Flare (DW2003) | Crimson Flare | 3D effect at the caster (MEFT0333) | 1 | plays its whole length (61 frames at 30 fps), hits when it ends | none | one enemy, as for Crimson Flare | one enemy |
 | 408 Suijinmon | Mugen Cannon (DW2003) | Infinity Cannon | 3D effect at the caster (MEFT0364) | 1 | plays its whole length (51 frames at 30 fps), hits when it ends | none | one enemy, as for Infinity Cannon | one enemy, 4 hits |
+| 430 Zanbamon | Cross Slash (DW2003) | Death Claw | 3D effect at the caster (MEFT0039) | 1 | plays its whole length (30 frames at 30 fps), hits when it ends | none | one enemy, as for Death Claw | one enemy |
 
 ## Where the port differs from the source
 

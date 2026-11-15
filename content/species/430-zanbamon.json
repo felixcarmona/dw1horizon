@@ -11,6 +11,7 @@
                  "Megalo Spark", "Hurricane", "Confused Storm", "Death Claw"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 33,
+  "own_effect": {"technique": "Death Claw", "chunk": 221},
   "model": {
     "file": "build/rigfix/Zanbamon.MMD",
     "radius": 228,
