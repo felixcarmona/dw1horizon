@@ -114,6 +114,13 @@ reuses the Digimon World 2 converter (`tools/dw2efe.py`):
    scaled by a quarter and covers the same share of the field. A beam that crosses DW2003's field crosses this
    game's. (Scaling by the species' import size instead left the large species' effects a quarter of the
    way across.)
+   Where a part starts on the caster's half follows the caster instead. A spawn's position is a fixed point
+   of DW2003's field (Assaultmon's muzzle fire is 3328 units up), and the field's scale put it about twice as
+   high and far as the caster here. So the spawn's position and each part's first-frame offset are scaled
+   by the caster's model (its height here over its DW2003 model's), and the parts' size and their flight
+   from there keep the field's scale. The build passes the species' height (`caster_height`); the fidelity
+   check compares the conversion without it. `python -m tools.efecheck --anchors --archive BUILT_EFEDAT`
+   checks that every own effect's parts that start on the caster's half start inside the caster's box.
 5. Parts are not re-aimed. Digimon World 2's rule of re-aiming a far-flying part at the target and hiding it at
    the hit would cut a DW2003 beam, which keeps drawing through its hit. So the effect plays as on the disc,
    drawn for a target 2700 units away, and the hit comes when the converter's cast ends.
