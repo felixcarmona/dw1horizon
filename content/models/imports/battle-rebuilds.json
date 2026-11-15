@@ -59,6 +59,13 @@
     ]}
   },
   "192": {
+    "34": {"ticks": null, "ops": [
+      {"op": "smooth", "bone": 6, "passes": 1},
+      {"op": "smooth", "bone": 7, "passes": 1},
+      {"op": "smooth", "bone": 8, "passes": 1},
+      {"op": "smooth", "bone": 9, "passes": 1},
+      {"op": "smooth", "bone": 10, "passes": 1}
+    ]},
     "35": {"ticks": 17, "rig": [0, 0], "body": "scale", "ops": [
       {"op": "turn", "bone": 11, "axis": "y", "deg": 24, "ticks": null},
       {"op": "turn", "bone": 14, "axis": "y", "deg": -24, "ticks": null},
