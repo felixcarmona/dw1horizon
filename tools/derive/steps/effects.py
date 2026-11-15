@@ -215,7 +215,7 @@ def own_effects(ctx, archive):
 
 def dw3_effect(games, key, e, origin_table):
     """(chunk, info) of an own effect converted from a DW2003 technique (tools/dw3efe.py): its "dw3" names the
-    battle model, the technique's action slot and the 3D effects it spawns, read from the player's extracted
+    battle model, the technique's action slot and the 3D effects and sprites it spawns, read from the player's extracted
     DW2003 or Digimon World 3 disc (`games`: the build's source-games/dw2003). Gameplay stays the technique's it
     stands for: one target, one hit."""
     from tools.derive.importers import source_context
@@ -224,12 +224,14 @@ def dw3_effect(games, key, e, origin_table):
     with source_context(os.path.dirname(games)):
         from tools import dw3effect as X, dw3efe as E
         files = X.Files(disc)
-        missing = [n for n in [d['model'] + '.BIN'] + [f'MEFT{n:04d}.BIN' for n in d['meft']] if n not in files.base]
+        sprites = d.get('sprites', {})
+        missing = [n for n in [d['model'] + '.BIN'] + [f'MEFT{n:04d}.BIN' for n in d['meft']] + X.sprite_files(sprites)
+                   if n not in files.base]
         if missing:
             raise ValueError(f'own effect {key} {e["name"]}: source discs required: dw2003 (missing {missing[0]}); '
                              'derive build --source-disc dw2003=IMAGE')
         tech = X.model_scripts(files, d['model'])[d['slot']]
-        return E.convert(files, X.EffectIds(d['meft']), tech, E.FIELD_SCALE, origin_table, 0x100 + int(key),
+        return E.convert(files, X.EffectIds(d['meft'], sprites), tech, E.FIELD_SCALE, origin_table, 0x100 + int(key),
                          leave_out=[tuple(x) for x in d.get('leave_out', [])])
 
 

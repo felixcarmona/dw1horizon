@@ -114,12 +114,27 @@ class Files:
 
 
 class EffectIds:
-    """The tables a conversion of 3D effects needs, without the fight overlay: the 3D effect ids the technique
-    may spawn (each read as MEFT####.BIN) and no sprites."""
+    """The tables a conversion needs, without the fight overlay: the 3D effect ids the technique may spawn (each
+    read as MEFT####.BIN) and its sprites, {sprite id: [pack file, section, texture section, frame table
+    section]} as the overlay's sprite and pack tables give them (equal on every release)."""
 
-    def __init__(self, meft_ids):
+    def __init__(self, meft_ids, sprites=None):
         self.meft = {int(n): (0, None) for n in meft_ids}
-        self.sprites = {}
+        packs = sorted({v[0] for v in (sprites or {}).values()})
+        self.sprite_files = dict(enumerate(packs))
+        self.sprites = {int(i): (packs.index(v[0]), v[1]) for i, v in (sprites or {}).items()}
+        self.pack_sections = {packs.index(v[0]): (v[2], v[3]) for v in (sprites or {}).values()}
+
+
+def sprite_files(sprites):
+    """The files a technique's sprites ({id: [pack file, ...]}) are read from: each pack, and a shared pack's
+    textures (E000COMn.BIN draws from F000COMn.BIN)."""
+    out = set()
+    for v in sprites.values():
+        out.add(v[0])
+        if v[0].startswith('E000COM'):
+            out.add('F' + v[0][1:])
+    return sorted(out)
 
 
 def locate_file_table(exe, lbas):

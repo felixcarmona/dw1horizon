@@ -11,6 +11,7 @@
                  "Dynamite Kick (44)", "Tremar", "Bone Boomerang"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 52,
+  "own_effect": {"technique": "Bone Boomerang", "chunk": 224},
   "model": {
     "file": "build/batch11/Hangyomon.MMD",
     "radius": 159,

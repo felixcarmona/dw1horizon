@@ -78,6 +78,17 @@ the moment the attack starts.
 | 408 Suijinmon | Mugen Cannon (DW2003) | Infinity Cannon | 3D effect at the caster (MEFT0364) | 1 | plays its whole length (51 frames at 30 fps), hits when it ends | none | one enemy, as for Infinity Cannon | one enemy, 4 hits |
 | 430 Zanbamon | Cross Slash (DW2003) | Death Claw | 3D effect at the caster (MEFT0039) | 1 | plays its whole length (30 frames at 30 fps), hits when it ends | none | one enemy, as for Death Claw | one enemy |
 | 433 Guilmon | Pyrosphere (DW2003) | Pepper Breath | 3D effect at the caster (MEFT0102) | 1 | plays its whole length (45 frames at 30 fps), hits when it ends | none | one enemy, as for Pepper Breath | one enemy |
+| 304 Divermon | Striking Fish (DW2003) | Bone Boomerang | sprites at the caster as flat quads (E000COM1 #2) | 1 | plays its whole length (6 frames at 30 fps), hits when it ends | none | one enemy, as for Bone Boomerang | one enemy |
+| 305 Ebidramon | Pincer Crusher (DW2003) | Scissor Claw | sprites at the caster as flat quads (E000COM1 #2, E000COM3 #9) | 1 | plays its whole length (33 frames at 30 fps), hits when it ends | none | one enemy, as for Scissor Claw | one enemy |
+| 308 Dinohyumon | Lizard Dance (DW2003) | Scissor Claw | sprites at the caster as flat quads (E000COM1 #2, E386DINO #2021, E386DINO #2022, E386DINO #2023) | 1 | plays its whole length (77 frames at 30 fps), hits when it ends | none | one enemy, as for Scissor Claw | one enemy, 4 hits |
+| 321 Knightmon | Berserk Sword (DW2003) | Spiral Sword | sprites at the caster as flat quads (E000COM1 #2) | 1 | plays its whole length (6 frames at 30 fps), hits when it ends | none | one enemy, as for Spiral Sword | one enemy |
+| 324 Maildramon | Thunder Bolt (DW2003) | Death Claw | sprites at the caster as flat quads (E000COM1 #2, E000COM2 #64, E438RIDN #1011) | 1 | plays its whole length (68 frames at 30 fps), hits when it ends | none | one enemy, as for Death Claw | one enemy |
+| 325 Musyamon | Ura Sword (DW2003) | Death Claw | sprites at the caster as flat quads (E000COM1 #2, E000COM3 #7) | 1 | plays its whole length (31 frames at 30 fps), hits when it ends | none | one enemy, as for Death Claw | one enemy |
+| 328 Snimon | Twin Sickles (DW2003) | Bit Bomb | sprites at the caster as flat quads (E000COM1 #2) | 1 | plays its whole length (6 frames at 30 fps), hits when it ends | none | one enemy, as for Bit Bomb | one enemy |
+| 330 Minotarumon | Darkside Quake (DW2003) | Pummel Whack | sprites at the caster as flat quads (E000COM1 #2) | 1 | plays its whole length (6 frames at 30 fps), hits when it ends | none | one enemy, as for Pummel Whack | all enemies |
+| 332 Roachmon | Roach Rush (DW2003) | Electro Shocker | sprites at the caster as flat quads (E000COM1 #2, E000COM3 #7) | 1 | plays its whole length (36 frames at 30 fps), hits when it ends | none | one enemy, as for Electro Shocker | one enemy |
+| 351 Kotemon | Hot Head (DW2003) | Blue Blaster | sprites at the caster as flat quads (E000COM1 #0, E000COM1 #2, E000COM3 #4, E383PKEN #2003) | 1 | plays its whole length (47 frames at 30 fps), hits when it ends | none | one enemy, as for Blue Blaster | one enemy |
+| 353 Bearmon | Bear Fist (DW2003) | Super Slap | sprites at the caster as flat quads (E000COM1 #0, E145VMON #2014) | 1 | plays its whole length (10 frames at 30 fps), hits when it ends | none | one enemy, as for Super Slap | one enemy |
 
 ## Where the port differs from the source
 

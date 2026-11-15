@@ -11,6 +11,7 @@
                  "Electro Shocker", "Bug", "Big Poop Toss", "Megaton Punch"],
   "drop": {"item": "Giant Meat", "percent": 30},
   "effects_like": 5,
+  "own_effect": {"technique": "Electro Shocker", "chunk": 242},
   "model": {
     "file": "build/batch13/Gokimon.MMD",
     "radius": 136,

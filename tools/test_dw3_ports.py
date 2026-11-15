@@ -18,7 +18,7 @@ import tempfile
 import unittest
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CHUNKS_3D = range(196, 223)          # tools/dw3efe.py EFFECT_IDS: the 3D effects' chunks
+CHUNKS = range(196, 251)             # tools/dw3efe.py EFFECT_IDS: 196-222 3D effects, 223-250 sprite techniques
 
 
 def _json(rel):
@@ -61,7 +61,7 @@ class Wiring(unittest.TestCase):
         from tools.dw3efe import EFFECT_IDS
         for chunk, e in sorted(ports().items()):
             with self.subTest(chunk=chunk, name=e['name']):
-                self.assertIn(chunk, CHUNKS_3D)
+                self.assertIn(chunk, CHUNKS)
                 self.assertFalse({'area', 'hits', 'cast', 'hit', 'scale'} & set(e), 'no gameplay, no DW2 fields')
                 s = species_of(chunk)
                 self.assertIsNotNone(s, 'a species plays it')
@@ -73,6 +73,23 @@ class Wiring(unittest.TestCase):
                 self.assertRegex(d['pin'], r'^[0-9a-f]{40}$')
                 for n in d['meft']:
                     self.assertIn(f'MEFT{n:04d}.BIN', discs.DW3_EFFECT_FILES)
+                from tools.dw3effect import sprite_files
+                for n in sprite_files(d.get('sprites', {})):
+                    self.assertIn(n, discs.DW3_EFFECT_FILES)
+                for rid, pin in d.get('pins', {}).items():
+                    self.assertIn(rid, ('dw3-us', 'dw3-jp'))
+                    self.assertRegex(pin, r'^[0-9a-f]{40}$')
+
+
+class SpriteTables(unittest.TestCase):
+    def test_sprites_read_without_the_fight_overlay(self):
+        from tools.dw3effect import EffectIds, sprite_files
+        sprites = {'2': ['E000COM1.BIN', 2, 0, 38], '2021': ['E386DINO.BIN', 2, 1, 0]}
+        self.assertEqual(sprite_files(sprites), ['E000COM1.BIN', 'E386DINO.BIN', 'F000COM1.BIN'])
+        t = EffectIds([97], sprites)
+        self.assertEqual(set(t.meft), {97})
+        p, section = t.sprites[2021]
+        self.assertEqual((t.sprite_files[p], section, t.pack_sections[p]), ('E386DINO.BIN', 2, (1, 0)))
 
 
 IMAGES = {rid: os.environ.get(var) for rid, var in
@@ -111,7 +128,8 @@ class Discs(unittest.TestCase):
             for chunk, e in sorted(ports().items()):
                 with self.subTest(release=rid, chunk=chunk, name=e['name']):
                     data, _info = self.build(rid, chunk, e)
-                    self.assertEqual(hashlib.sha1(data).hexdigest(), e['dw3']['pin'])
+                    pin = e['dw3'].get('pins', {}).get(rid, e['dw3']['pin'])   # a release whose files differ
+                    self.assertEqual(hashlib.sha1(data).hexdigest(), pin)
 
     @unittest.skipUnless('dw2003' in IMAGES and IMAGES['dw2003'] and os.path.isfile(IMAGES['dw2003']),
                          'the fidelity check renders the originals from the European disc (DW3_IMAGE)')

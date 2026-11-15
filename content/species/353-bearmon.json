@@ -10,6 +10,7 @@
                  "Super Slap"],
   "drop": {"item": "sm.recovery", "percent": 50},
   "effects_like": 3,
+  "own_effect": {"technique": "Super Slap", "chunk": 245},
   "model": {
     "file": "build/batch16/Bearmon.MMD",
     "radius": 100,

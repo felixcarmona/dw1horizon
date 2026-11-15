@@ -11,6 +11,7 @@
                  "Delete Program", "Pulse Laser", "Spiral Sword"],
   "drop": {"item": "S.speed.disk", "percent": 30},
   "effects_like": 40,
+  "own_effect": {"technique": "Spiral Sword", "chunk": 235},
   "model": {
     "file": "build/sizes-out/models/Knightmon.MMD",
     "radius": 279,

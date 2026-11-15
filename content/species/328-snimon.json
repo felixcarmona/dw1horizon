@@ -11,6 +11,7 @@
                  "Spinning Shot", "Counter"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 26,
+  "own_effect": {"technique": "Bit Bomb", "chunk": 239},
   "model": {
     "file": "build/sizes-out/models/Snimon.MMD",
     "radius": 229,
