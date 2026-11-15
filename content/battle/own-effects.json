@@ -416,5 +416,10 @@
     "name": "Giant Missile",
     "stands_for": 78,
     "dw3": {"model": "M372SGRG", "slot": 11, "meft": [85], "pin": "eb5aeb01fdfdf061e20266dbfc185b505abb4172"}
+  },
+  "216": {
+    "name": "Swing Swing",
+    "stands_for": 71,
+    "dw3": {"model": "M384KOET", "slot": 11, "meft": [89], "pin": "aa5a060b4d532c5e6621b396d5a38578e5f99b2a"}
   }
 }
