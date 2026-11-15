@@ -9,6 +9,7 @@
   "techniques": ["Wind Cutter", "Electric Cloud", "Static Elect", "Confused Storm", "Sonic Jab", "Muscle Charge",
                  "War Cry", "Boom Bubble"],
   "drop": {"item": "sm.recovery", "percent": 10},
+  "own_effect": {"technique": "Boom Bubble", "chunk": 256},
   "effects_like": 45,
   "model": {
     "file": "build/batch/Hawkmon.MMD",

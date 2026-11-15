@@ -1040,5 +1040,77 @@
     "sounds": [],
     "hit_sound": 41,
     "dcb": {"attack": 1006, "hit": 495, "fit": [2, 1, 16], "pin": "da4ac27adf27c02b1d29f11bc4f91edceaa1dba8"}
+  },
+  "256": {
+    "name": "Hawk Beam",
+    "stands_for": 71,
+    "compose": {"texture": [
+      {"from": 9, "rect": [116, 0, 32, 32], "to": [0, 0], "palettes": [[0, 0]]},
+      {"from": 9, "rect": [116, 0, 32, 32], "to": [32, 0], "palettes": []},
+      {"from": 9, "rect": [116, 0, 32, 32], "to": [64, 0], "palettes": []},
+      {"from": 9, "rect": [116, 0, 32, 32], "to": [96, 0], "palettes": []},
+      {"from": 9, "rect": [116, 0, 32, 32], "to": [128, 0], "palettes": []},
+      {"from": 9, "rect": [116, 0, 32, 32], "to": [160, 0], "palettes": []}],
+      "recolour": {"ramp": ["#000000", "#8a0a0a", "#ff4030", "#fff0e0"]}},
+    "check": {"hue": 5}
+  },
+  "265": {
+    "name": "Ex-Laser",
+    "stands_for": 63,
+    "compose": {"texture": [
+      {"from": 29, "rect": [32, 0, 32, 32], "to": [0, 0], "palettes": [[0, 0]]},
+      {"from": 29, "rect": [32, 0, 32, 32], "to": [32, 0], "palettes": []},
+      {"from": 29, "rect": [32, 0, 32, 32], "to": [64, 0], "palettes": []},
+      {"from": 29, "rect": [32, 0, 32, 32], "to": [96, 0], "palettes": []},
+      {"from": 29, "rect": [32, 0, 32, 32], "to": [128, 0], "palettes": []},
+      {"from": 29, "rect": [32, 0, 32, 32], "to": [160, 0], "palettes": []}],
+      "recolour": {"ramp": ["#000000", "#0a3a80", "#3a90e0", "#d0ecff"]}},
+    "check": {"hue": 210}
+  },
+  "232": {
+    "name": "Talisman of Light",
+    "stands_for": 63,
+    "compose": {"texture": [
+      {"from": 82, "rect": [68, 0, 32, 32], "to": [0, 0], "palettes": [[0, 0]]},
+      {"from": 82, "rect": [68, 0, 32, 32], "to": [32, 0], "palettes": []},
+      {"from": 82, "rect": [68, 0, 32, 32], "to": [64, 0], "palettes": []},
+      {"from": 82, "rect": [68, 0, 32, 32], "to": [96, 0], "palettes": []},
+      {"from": 82, "rect": [68, 0, 32, 32], "to": [128, 0], "palettes": []},
+      {"from": 82, "rect": [68, 0, 32, 32], "to": [160, 0], "palettes": []}],
+      "recolour": {"ramp": ["#000000", "#604008", "#d0a040", "#fff4c0"]}},
+    "check": {"hue": 48}
+  },
+  "321": {
+    "name": "Thunder Volt",
+    "stands_for": 86,
+    "compose": {"texture": [
+      {"from": 66, "rect": [0, 0, 128, 32], "to": [0, 0], "palettes": [[0, 0]]},
+      {"from": 66, "rect": [224, 0, 32, 32], "to": [128, 0], "palettes": []}],
+      "recolour": {"ramp": ["#000000", "#1a40a0", "#80c0ff", "#ffffff"]}, "scale": 1.3},
+    "check": {"hue": 215}
+  },
+  "226": {
+    "name": "Cyclone Turbine",
+    "stands_for": 62,
+    "compose": {"texture": [
+      {"from": 15, "rect": [0, 0, 40, 24], "to": [0, 0], "palettes": [[0, 0]]}],
+      "recolour": {"ramp": ["#000000", "#1a7a6a", "#80ffe0", "#f0fffa"]}, "scale": [1.8, 4, 1.8]},
+    "check": {"hue": 165}
+  },
+  "236": {
+    "name": "Blade Twister",
+    "stands_for": 62,
+    "compose": {"texture": [
+      {"from": 13, "rect": [32, 0, 32, 32], "to": [0, 0], "palettes": [[0, 0]]}],
+      "recolour": {"ramp": ["#000000", "#4a7a10", "#c0ff60", "#fafff0"]}, "scale": [1.5, 1, 1.5]},
+    "check": {"hue": 90}
+  },
+  "262": {
+    "name": "Metal Wolf Claw",
+    "stands_for": 78,
+    "compose": {"texture": [
+      {"from": 20, "rect": [96, 0, 32, 32], "to": [80, 0], "palettes": [[0, 0]]}],
+      "recolour": {"ramp": ["#000000", "#1a5a9a", "#90d8ff", "#ffffff"]}, "scale": 1.2},
+    "check": {"hue": 205}
   }
 }

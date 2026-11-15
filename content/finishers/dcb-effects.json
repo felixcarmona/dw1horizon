@@ -57,7 +57,8 @@
    "attack_script": 1036,
    "hit_script": 474,
    "result": "fidelity failed",
-   "fallback": "template",
+   "fallback": "composed",
+   "composed": "DW1 chunk 71 with chunk 9's streak, red: a beam where the template (71) is an air puff",
    "why": "whole shown, hit shown"
   },
   {
@@ -119,7 +120,8 @@
    "attack_script": 1108,
    "hit_script": 2041,
    "result": "render timed out",
-   "fallback": "template",
+   "fallback": "composed",
+   "composed": "DW1 chunk 78 with chunk 20's ice crystal, icy blue: frost where the template (78) bursts in fire",
    "why": "no verdict within 40 minutes"
   },
   {
@@ -148,7 +150,8 @@
    "attack_script": 1060,
    "hit_script": 449,
    "result": "fidelity failed",
-   "fallback": "template",
+   "fallback": "composed",
+   "composed": "DW1 chunk 63 with chunk 29's ring, blue-white: a laser disc where the template (63) is a fireball",
    "why": "cast shown, cast box"
   },
   {
@@ -705,7 +708,8 @@
    "attack_script": 1252,
    "hit_script": 2023,
    "result": "fidelity failed",
-   "fallback": "template",
+   "fallback": "composed",
+   "composed": "DW1 chunk 86 with chunk 66's lightning, electric blue: lightning where the template (86) is a sun ray",
    "why": "whole shown, cast area, cast shown, cast box"
   },
   {
