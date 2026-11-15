@@ -240,7 +240,9 @@ def dw3_effect(games, key, e, origin_table, area=False):
     """(chunk, info) of an own effect converted from a DW2003 technique (tools/dw3efe.py): its "dw3" names the
     battle model, the technique's action slot and the 3D effects and sprites it spawns, read from the player's extracted
     DW2003 or Digimon World 3 disc (`games`: the build's source-games/dw2003). One hit; one target unless `area`
-    (an area finisher of content/finishers/imports.json: finisher_area_chunks), which hits every other fighter."""
+    (an area finisher of content/finishers/imports.json: finisher_area_chunks), which hits every other fighter.
+    Its optional "scale" multiplies the field scale, for a technique that reads small on this game's battle camera
+    (tools/efepresence.py)."""
     from tools.derive.importers import source_context
     d = e['dw3']
     disc = os.path.join(games, 'disc')
@@ -254,7 +256,7 @@ def dw3_effect(games, key, e, origin_table, area=False):
             raise ValueError(f'own effect {key} {e["name"]}: source discs required: dw2003 (missing {missing[0]}); '
                              'derive build --source-disc dw2003=IMAGE')
         tech = X.model_scripts(files, d['model'])[d['slot']]
-        return E.convert(files, X.EffectIds(d['meft'], sprites), tech, E.FIELD_SCALE, origin_table, 0x100 + int(key), area=area,
+        return E.convert(files, X.EffectIds(d['meft'], sprites), tech, E.FIELD_SCALE * d.get('scale', 1), origin_table, 0x100 + int(key), area=area,
                          leave_out=[tuple(x) for x in d.get('leave_out', [])], sounds=e.get('sounds'))
 
 
