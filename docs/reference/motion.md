@@ -2104,3 +2104,9 @@ landing; head, jaw, arms and tail follow at different delays. A small rebound
 settles into the fallen pose. Recovery loads the arms before transferring weight
 to both planted feet, then eases into its battle stance. Sound ticks follow the
 longer clips; field motion and all other battle programs stay unchanged.
+
+PrinceMamemon gives a small warning sway, bends its knees and pitches forward
+onto its round body. The hands reach after the weight shift and relax beside the
+landing, with a slight recoil and quiet settle. The cape stays with its fitted
+attachment as the sphere rolls. The sound follows the longer fall; its existing
+recovery, field motion and every other battle program stay unchanged.
