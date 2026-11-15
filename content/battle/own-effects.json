@@ -326,5 +326,10 @@
     "name": "Dark Fear",
     "stands_for": 62,
     "dw3": {"model": "M170IVRU", "slot": 9, "meft": [335], "pin": "f3cc0193086ceef729f9bd6efdb0163c7291a646"}
+  },
+  "197": {
+    "name": "Mugenhadou",
+    "stands_for": 63,
+    "dw3": {"model": "M394MARS", "slot": 11, "meft": [97], "pin": "62547a785d90a659196028b0104610caa5f5b27e"}
   }
 }

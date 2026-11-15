@@ -476,6 +476,7 @@ DW2_EFFECT_FILES = {
 # tools/derive/steps/effects.py), by name: equal on the European, USA and Japanese discs, in AAA/DAT/FIGHT/EFFECT
 # (AAA/DAT/EFFECT on the USA disc)
 DW3_EFFECT_FILES = {
+    'MEFT0097.BIN': '5a0a37bc6e4898d9f3e7cb1dd2846b228e541cd9',
     'MEFT0335.BIN': '1c856b0ba8f7adc753b7af88f083d3d3707dfb78',
 }
 DW3_EFFECT_DIRS = {'dw2003': 'AAA/DAT/FIGHT/EFFECT', 'dw3-us': 'AAA/DAT/EFFECT', 'dw3-jp': 'AAA/DAT/FIGHT/EFFECT'}

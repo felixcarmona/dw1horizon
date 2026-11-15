@@ -53,6 +53,7 @@ the moment the attack starts.
 | 401 Pukumon | Needle Squall (DW2) | Mail Strome | volley: spines in every direction | 1 | flies at tick 30, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.235) | one enemy, as for Mail Strome | all enemies, 6 hits |
 | 402 NeoCrimson | Blind Attack (DW2) | Crimson Flare | at the target: a blind charge at a random fighter | 1 | plays at the target, hits at tick 40 | none (scale 0.187) | one enemy, as for Crimson Flare | one enemy (random) |
 | 295 Vilemon | Dark Fear (DW2003) | Death Claw | 3D effect at the caster (MEFT0335) | 1 | plays its whole length (31 frames at 30 fps), hits when it ends | none | one enemy, as for Death Claw | one enemy |
+| 297 Marsmon | Mugenhadou (DW2003) | Mega Flame | 3D effect at the caster (MEFT0097) | 1 | plays its whole length (31 frames at 30 fps), hits when it ends | none | one enemy, as for Mega Flame | one enemy |
 
 ## Where the port differs from the source
 
