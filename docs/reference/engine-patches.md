@@ -355,10 +355,11 @@ An amount box (`modAmountStep`, `script_common.c`): up/down change the amount by
 and wrap; square jumps to the most; confirm takes it, cancel takes nothing. The shop's own amount boxes follow the same
 rule.
 
-- **Mojyamon trades** (`openMojyamonShop`, `script_menu.c`): the box replaces the yes/no, showing the item given and the
-  item got with icons. The most is what the player has of the given item, limited by the got item's stack room (99). The
-  given items are removed first, so a trade that empties a stack works with a full inventory; if the got items do not
-  fit, the given ones come back.
+- **Mojyamon trades** (`openMojyamonShop`, `script_menu.c`): no box. The box once replaced the yes/no, but every trade
+  is one a day, so it could only show 1 and looked stuck; choosing a row now makes the trade of one item at once, after
+  the daily or once-per-save refusal, the check that the player has the item and the check of the got item's stack room
+  (99). The given item is removed first, so a trade that empties a stack works with a full inventory; if the got item
+  does not fit, the given one comes back. The amount box's Mojyamon kind (1) was removed.
 - **Card packs** (`rollCardPack`): the price is `cardPack.price` in `content/tables/economy.json`
   (`MOD_ECON_PACK_PRICE`), charged by the C code, not the script. Several packs open at once into a list of the cards
   received, rarest first, with counts and a mark for cards new to the collection; the card under the cursor is shown at

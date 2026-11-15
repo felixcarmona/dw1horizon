@@ -46,8 +46,8 @@ typedef struct { uint8_t smth[6]; } ScriptState;
 Box left, right, *ITEM_MENU_LEFT=&left, *ITEM_MENU_RIGHT=&right;
 ScriptState state, *SCRIPT_STATE_PTR=&state;
 int SCRIPT_STATE_2, SCRIPT_NEXT_STATE_2, SCRIPT_TEXTBOX_MODE, ACTIVE_INSTRUCTION;
-int ITEM_MENU_TYPE, SHOP_ITEM_TYPE, MOJYA_GOT, MAX_SHOP_AMOUNT, SHOP_AMOUNT;
-int inventory[128], pstats[256], flags[800], shown, amountOpened, rejectGive;
+int ITEM_MENU_TYPE, SHOP_ITEM_TYPE, MOJYA_GOT, MAX_SHOP_AMOUNT;
+int inventory[128], pstats[256], flags[800], shown, rejectGive;
 int16_t MOD_DAILY[7]={0,0,0,-1,0,-1,-1};
 int readPStat(int n) { return pstats[n]; }
 void writePStat(int n,int v) { pstats[n]=v; }
@@ -59,7 +59,6 @@ int getItemCount(int n) { return inventory[n]; }
 void setInputRepeatMask(int n) {}
 void triggerBoxCloseFlag(int n) {}
 void showMapHeadTextbox(int n,int a,int b,int c) { shown=n; }
-void openAmountBox(int n) { amountOpened++; }
 void removeItem(int n,int count) { inventory[n]-=count; }
 int giveItem(int n,int count) { if(rejectGive && n==MOJYA_GOT) return 0; inventory[n]+=count; return 1; }
 void allocateItemMenuBox(Box **a,int b,int c,int d,int e,int f,int g) {}
@@ -82,21 +81,21 @@ int main(void) {
  for(row=0;row<9;row++) {
   ITEM_MENU_TYPE=(row/3)*3; left.cursor=row%3; right.buf[(row%3)*2]=outputs[row];
   pstats[249]=inputs[row]; inventory[inputs[row]]=5; inventory[outputs[row]]=0;
-  SCRIPT_STATE_2=4; openMojyamonShop(); assert(MAX_SHOP_AMOUNT==1);
+  SCRIPT_STATE_2=4; openMojyamonShop(); assert(SCRIPT_STATE_2==5); /* no amount box: straight to the exchange */
   /* Opening and cancelling must leave the saved allowance available. */
   assert(!flags[MOJYA_DAILY_FIRST+row]);
   SCRIPT_STATE_2=6; openMojyamonShop(); assert(!flags[MOJYA_DAILY_FIRST+row]);
   SCRIPT_STATE_2=4; openMojyamonShop();
-  rejectGive=1; SHOP_AMOUNT=1; SCRIPT_STATE_2=5; openMojyamonShop();
+  rejectGive=1; SCRIPT_STATE_2=5; openMojyamonShop();
   assert(inventory[inputs[row]]==5 && inventory[outputs[row]]==0);
   assert(!flags[MOJYA_DAILY_FIRST+row]); rejectGive=0;
-  SCRIPT_STATE_2=4; openMojyamonShop(); SHOP_AMOUNT=1; SCRIPT_STATE_2=5; openMojyamonShop();
+  SCRIPT_STATE_2=4; openMojyamonShop(); assert(SCRIPT_STATE_2==5); openMojyamonShop();
   assert(inventory[inputs[row]]==4 && inventory[outputs[row]]==1);
   assert(flags[MOJYA_DAILY_FIRST+row] && flags[5+row]);
   /* The saved trigger array survives a round trip without a transient cache. */
   memcpy(saved,flags,sizeof flags); memset(flags,0,sizeof flags); memcpy(flags,saved,sizeof flags);
-  i=amountOpened; SCRIPT_STATE_2=4; openMojyamonShop();
-  assert(shown==(row==8 ? 10 : 12) && amountOpened==i);
+  SCRIPT_STATE_2=4; openMojyamonShop();
+  assert(shown==(row==8 ? 10 : 12) && SCRIPT_STATE_2==1);
   assert(inventory[inputs[row]]==4 && inventory[outputs[row]]==1);
  }
  assert(flags[14]); flags[788]=1; flags[798]=flags[799]=1;
@@ -106,17 +105,16 @@ int main(void) {
  for(row=0;row<9;row++) {
   ITEM_MENU_TYPE=(row/3)*3; left.cursor=row%3; right.buf[(row%3)*2]=outputs[row];
   pstats[249]=inputs[row]; inventory[inputs[row]]=5; inventory[outputs[row]]=0;
-  i=amountOpened; SCRIPT_STATE_2=4; openMojyamonShop();
+  SCRIPT_STATE_2=4; openMojyamonShop();
   if(row==8) {
-   assert(shown==10 && amountOpened==i);
+   assert(shown==10 && SCRIPT_STATE_2==1);
    assert(inventory[inputs[row]]==5 && inventory[outputs[row]]==0);
   } else {
-   assert(MAX_SHOP_AMOUNT==1);
-   SHOP_AMOUNT=1; SCRIPT_STATE_2=5; openMojyamonShop();
+   assert(SCRIPT_STATE_2==5); openMojyamonShop();
    assert(inventory[inputs[row]]==4 && inventory[outputs[row]]==1);
   }
  }
- puts("PASS actual C: eight daily rows and one permanent row, cap 1, cancel, failed give rollback, saved flags, same-day refusal, day reset, Dolph Fin still refused next day, recruitment history retained");
+ puts("PASS actual C: eight daily rows and one permanent row, one at a time with no amount box, cancel, failed give rollback, saved flags, same-day refusal, day reset, Dolph Fin still refused next day, recruitment history retained");
 }
 '''
     with tempfile.TemporaryDirectory() as folder:
@@ -135,7 +133,7 @@ def check_texts():
             value = maphead[f'm1238.u{n}']
             assert isinstance(value, str) and value
             assert value == script[f's000.sec1238.u{n}'], (lang, n)
-        assert '{item 249}' in str(maphead['m1238.u11']), 'keep the live amount-box question'
+        assert '{item 249}' in str(maphead['m1238.u11']), 'keep the question text'
     import sys
     sys.path.insert(0, str(ROOT / 'tools'))
     from dws import backend as BE
@@ -151,7 +149,7 @@ def check_texts():
                     assert len(pages) == 1, (lang, font, key, pages)
     finally:
         BE.FONT.clear(); BE.FONT.update(original)
-    print('PASS eight languages: both dialogue copies match; intro and limits fit one box in both fonts; amount question retained')
+    print('PASS eight languages: both dialogue copies match; intro and limits fit one box in both fonts; question text retained')
 
 
 def check_recruitment():

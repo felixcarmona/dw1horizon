@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Play daily/permanent Mojyamon limits and Dolph Fin evolution on 2 MB."""
+"""Play daily/permanent Mojyamon limits (no amount box: choosing a row exchanges one item) and Dolph Fin evolution on 2 MB."""
 import argparse
 import json
 from pathlib import Path
@@ -41,21 +41,13 @@ def talk(e, script=129, section=7):
 
 def select_offer(e):
     # A short wall-time tap can miss a logic tick under interpreter load.
-    events = ('amounts', 'refused', 'onceRefused')
+    events = ('trades', 'refused', 'onceRefused')
     before = sum(trace(e, n) for n in events)
     for _ in range(6):
         e.press('CONFIRM', 12); e.wait(1)
         if sum(trace(e, n) for n in events) > before:
             return
     raise AssertionError('trade selection did not receive Confirm')
-
-
-def accept_amount(e, expected):
-    for _ in range(6):
-        e.press('CONFIRM', 12); e.wait(1)
-        if trace(e, 'trades') >= expected:
-            return
-    raise AssertionError(f'amount confirmation did not complete trade {expected}')
 
 
 def main():
@@ -95,25 +87,24 @@ def main():
         assert e.warp(134), 'Freezeland screen did not load'
         assert e.in_control()
         e.run('lua', f'''
-MT={{lists=0,amounts=0,trades=0,refused=0,onceRefused=0,bp={{}}}}
+MT={{lists=0,amounts=0,trades=0,refused=0,onceRefused=0,noItem=0,bp={{}}}}
 local function hook(a,f) MT.bp[#MT.bp+1]=PCSX.addBreakpoint(a,'Exec',4,'mojyamon-proof',f) end
 hook({e.A('createMojyaTradeMenu')},function() MT.lists=MT.lists+1 end)
 hook({e.A('openAmountBox')},function() if tonumber(PCSX.getRegisters().GPR.n.a0)==1 then MT.amounts=MT.amounts+1 end end)
 hook({e.A('setMojyaItemTradedTrigger')},function() MT.trades=MT.trades+1 end)
 hook({e.A('showMapHeadTextbox')},function() local r=PCSX.getRegisters().GPR.n
  if tonumber(r.a0)==12 and tonumber(r.a3)==1238 then MT.refused=MT.refused+1 end
- if tonumber(r.a0)==10 and tonumber(r.a3)==1238 then MT.onceRefused=MT.onceRefused+1 end end)
+ if tonumber(r.a0)==10 and tonumber(r.a3)==1238 then MT.onceRefused=MT.onceRefused+1 end
+ end)
+hook({e.A('playSound')},function() local r=PCSX.getRegisters().GPR.n
+ if tonumber(r.a0)==0 and tonumber(r.a1)==11 then MT.noItem=MT.noItem+1 end end)
 ''')
         talk(e)
         e.run('shot', str(out / '01-trade-list.png'))
         select_offer(e)
-        assert trace(e, 'amounts') == 1
-        assert e.peek('MAX_SHOP_AMOUNT', 'B') == 1
-        e.press('RIGHT', 6); e.wait(.5)
-        assert e.peek('SHOP_AMOUNT', 'B') == 1
-        e.run('shot', str(out / '02-one-per-day.png'))
-        accept_amount(e, 1)
-        assert trace(e, 'trades') == 1 and bit(e, 789)
+        e.run('shot', str(out / '02-exchanged-at-once.png'))
+        assert trace(e, 'trades') == 1 and trace(e, 'amounts') == 0, 'no amount box: the exchange happens at once'
+        assert bit(e, 789)
         after = counts(e)
         assert after.get(69, 0) == before.get(69, 0)-1
         assert after.get(46, 0) == before.get(46, 0)+1
@@ -121,7 +112,7 @@ hook({e.A('showMapHeadTextbox')},function() local r=PCSX.getRegisters().GPR.n
         assert e.in_control()
         results['first_trade'] = dict(input_item=69, reward_item=46, input_before=before.get(69), input_after=after.get(69), reward_after=after.get(46), daily_bit=bit(e,789))
         talk(e); select_offer(e)
-        assert trace(e, 'refused') == 1 and trace(e, 'amounts') == 1 and trace(e, 'trades') == 1, {n:trace(e,n) for n in ('lists','refused','amounts','trades')}
+        assert trace(e, 'refused') == 1 and trace(e, 'amounts') == 0 and trace(e, 'trades') == 1, {n:trace(e,n) for n in ('lists','refused','amounts','trades')}
         assert counts(e) == after
         e.run('shot', str(out / '03-same-day-refused.png'))
         assert e.in_control()
@@ -133,14 +124,29 @@ hook({e.A('showMapHeadTextbox')},function() local r=PCSX.getRegisters().GPR.n
         results['day_after'] = e.peek('DAY', 'h')
         assert not bit(e, 789) and bit(e,5)
         talk(e); select_offer(e)
-        assert trace(e, 'amounts') == 2
-        accept_amount(e, 2)
-        assert trace(e, 'trades') == 2 and bit(e,789)
+        assert trace(e, 'trades') == 2 and trace(e, 'amounts') == 0 and bit(e,789)
         final = counts(e)
         assert final.get(69,0) == after.get(69,0)-1
         assert final.get(46,0) == after.get(46,0)+1
         e.run('shot', str(out / '04-next-day-allowed.png'))
         results['next_day_allowed'] = True
+        # A player with nothing to give gets the list's usual refusal (the buzzer, the list stays open) and no
+        # exchange, with the day's allowance unspent.
+        e.gs('set', 'hour=10', 'minute=0', 'gametime_running=0')
+        call(e, 'advanceToTime', [9, 0])
+        assert not bit(e, 789)
+        e.poke('INVENTORY', struct.pack('<30h', 46, *([-1]*29)) + bytes([1]+[0]*29) + bytes(30) + bytes([10]))
+        talk(e)
+        buzz = trace(e, 'noItem')
+        for _ in range(6):
+            e.press('CONFIRM', 12); e.wait(1)
+            if trace(e, 'noItem') > buzz: break
+        assert trace(e, 'noItem') > buzz and trace(e, 'trades') == 2 and trace(e, 'amounts') == 0
+        assert not bit(e, 789) and counts(e) == {46: 1}
+        e.run('shot', str(out / '04b-no-item.png'))
+        e.press('CANCEL', 12); e.wait(1)  # the list is still open: leave it
+        assert e.in_control()
+        results['no_item_message'] = True
         results['final_inventory'] = final
         assert e.in_control()
         if a.daily_only:
@@ -155,22 +161,19 @@ hook({e.A('showMapHeadTextbox')},function() local r=PCSX.getRegisters().GPR.n
                 e.press('DOWN', 6); e.wait(.5)
             select_offer(e)
         dolph_fin_offer()
-        assert trace(e, 'amounts') == 3
-        assert e.peek('SHOP_ITEM_TYPE', 'B') == 0 and e.peek('MAX_SHOP_AMOUNT', 'B') == 1
         e.run('shot', str(out / '05-dolph-fin-once-offer.png'))
-        accept_amount(e, 3)
-        assert trace(e, 'trades') == 3 and bit(e,13)
+        assert trace(e, 'trades') == 3 and trace(e, 'amounts') == 0 and bit(e,13)
         once = counts(e)
         assert once.get(0)==4 and once.get(124)==1
         assert e.in_control()
         dolph_fin_offer()
-        assert trace(e, 'onceRefused') == 1 and trace(e,'amounts') == 3
+        assert trace(e, 'onceRefused') == 1 and trace(e,'trades') == 3
         assert counts(e) == once and e.in_control()
         e.gs('set', 'hour=10', 'minute=0', 'gametime_running=0')
         call(e, 'advanceToTime', [9, 0])
         assert bit(e,13) and not bit(e,797)
         dolph_fin_offer()
-        assert trace(e,'onceRefused') == 2 and trace(e,'amounts') == 3
+        assert trace(e,'onceRefused') == 2 and trace(e,'trades') == 3
         assert counts(e) == once
         e.run('shot', str(out / '06-dolph-fin-next-day-refused.png'))
         assert e.in_control()
