@@ -322,6 +322,54 @@
     "scale": 0.187,
     "hit_scale": 0.1
   },
+  "164": {
+    "name": "Trident Arm",
+    "stands_for": 79,
+    "compose": {"recolour": {"ramp": ["#080c12", "#34445a", "#8aa4c0", "#d4e4f4"]}, "scale": 1.2, "texture": [{"from": 24, "rect": [32, 0, 64, 32], "to": [128, 0], "palettes": []}]},
+    "check": {"hue": 210}
+  },
+  "170": {
+    "name": "Bunny Blades",
+    "stands_for": 62,
+    "compose": {"recolour": {"ramp": ["#1e0a00", "#8a3c0a", "#f09030", "#fff0c0"]}, "scale": 0.9},
+    "check": {"hue": 30}
+  },
+  "176": {
+    "name": "Pyramid Power",
+    "stands_for": 73,
+    "compose": {"recolour": {"ramp": ["#1a1400", "#7a6010", "#f0d040", "#fffbd0"]}, "scale": 1.2, "texture": [{"from": 24, "rect": [32, 0, 96, 32], "to": [0, 0], "palettes": [[0, 0], [1, 1]]}, {"from": 24, "rect": [4, 4, 24, 24], "to": [128, 0], "palettes": [[0, 2]]}, {"from": 24, "rect": [4, 4, 24, 24], "to": [152, 0], "palettes": []}, {"from": 24, "rect": [4, 4, 24, 24], "to": [176, 0], "palettes": []}]},
+    "check": {"hue": 50}
+  },
+  "194": {"name": "Data Crusher", "stands_for": 73, "compose": {"recolour": {"ramp": ["#001420", "#0a5a8a", "#30c0f0", "#e0faff"]}, "texture": [{"from": 28, "rect": [132, 4, 24, 24], "to": [128, 0], "palettes": [[0, 2]]}, {"from": 28, "rect": [164, 4, 24, 24], "to": [152, 0], "palettes": []}, {"from": 28, "rect": [196, 4, 24, 24], "to": [176, 0], "palettes": []}, {"from": 28, "rect": [132, 4, 24, 24], "to": [200, 0], "palettes": [[0, 4]]}]}, "check": {"hue": 195}},
+  "171": {"name": "Spirit Needle", "stands_for": 73, "compose": {"recolour": {"ramp": ["#0a0018", "#4a2a8c", "#a080ff", "#f0e8ff"]}, "scale": [0.2, 0.2, 3.5], "texture": [{"from": 8, "rect": [0, 0, 96, 32], "palettes": [[0, 0]]}, {"from": 22, "rect": [0, 0, 24, 24], "to": [200, 0], "palettes": [[0, 4]]}, {"from": 22, "rect": [0, 0, 24, 24], "to": [128, 0], "palettes": [[0, 2]]}, {"from": 22, "rect": [0, 0, 24, 24], "to": [152, 0], "palettes": [[0, 2]]}, {"from": 22, "rect": [0, 0, 24, 24], "to": [176, 0], "palettes": [[0, 2]]}]}, "check": {"hue": 260}},
+  "189": {"name": "Raiden Strike", "stands_for": 61, "compose": {"recolour": {"ramp": ["#180800", "#8a4800", "#ffb000", "#fff0c0"]}, "texture": [{"from": 86, "rect": [16, 0, 32, 32], "to": [0, 0], "palettes": [[0, 0]]}, {"from": 86, "rect": [56, 0, 32, 32], "to": [32, 0], "palettes": [[0, 1]]}]}, "check": {"hue": 42}},
+  "195": {"name": "Cat Laser", "stands_for": 62, "compose": {"recolour": {"ramp": ["#001810", "#00905a", "#40ffa0", "#e8fff4"]}, "scale": [3.5, 1, 0.12]}, "check": {"hue": 150}},
+  "190": {
+    "name": "Corona Blaster",
+    "stands_for": 80,
+    "compose": {"recolour": {"ramp": ["#0c0014", "#640a78", "#e038d0", "#ffe0f8"]}},
+    "check": {"hue": 305}
+  },
+  "185": {"name":"Vemmon Crash","stands_for":100,"compose":{"recolour":{"ramp":["#000000","#8a3008","#f07828","#fff0d0"]},"scale":1.6},"check":{"hue":25}},
+  "174": {
+    "name": "Nail Bone",
+    "stands_for": 96,
+    "compose": {"texture": [{"from": 3, "rect": [0, 0, 32, 32], "to": [160, 0], "palettes": [[0, 3]]}],
+                 "recolour": {"ramp": ["#1c0400", "#8c2008", "#ff7a20", "#fff0c0"]}, "scale": 1.2},
+    "check": {"hue": 20}
+  },
+  "169": {
+    "name": "Royal Muck",
+    "stands_for": 62,
+    "compose": {"texture": [{"from": 56, "rect": [0, 0, 32, 32], "palettes": [[0, 0], [1, 1]]}], "recolour": {"ramp": ["#1a1000", "#6a4a10", "#c89a30", "#f4dc90"]}, "scale": 1.5},
+    "check": {"hue": 40}
+  },
+  "181": {
+    "name": "Gargoyle Rush",
+    "stands_for": 81,
+    "compose": {"recolour": {"ramp": ["#180800", "#6a2a08", "#e08030", "#fff0c8"]}, "scale": 1.3},
+    "check": {"hue": 25}
+  },
   "196": {
     "name": "Dark Fear",
     "stands_for": 62,

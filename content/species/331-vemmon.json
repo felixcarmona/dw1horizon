@@ -10,6 +10,7 @@
                  "Metal Sprinter", "Scissor Claw"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 48,
+  "own_effect": {"technique": "Scissor Claw", "chunk": 185},
   "model": {
     "file": "build/batch13/Snatchmon.MMD",
     "radius": 161,

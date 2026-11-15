@@ -175,7 +175,9 @@ def finisher_area_chunks(root):
 
 
 def own_effects(ctx, archive):
-    """{chunk index: chunk} of the species' own effects (content/battle/own-effects.json; getSpeciesTechEffect)."""
+    """{chunk index: chunk} of the species' own effects (content/battle/own-effects.json; getSpeciesTechEffect):
+    DW2 techniques converted from the player's DW2 disc, or, with "compose", the disc's own chunk the entry
+    stands for with a look of its own (tools/efecompose.py)."""
     import json
     from tools import dw2effect, dw2efe
     with open(os.path.join(ctx.root, OWN_EFFECTS)) as f:
@@ -190,6 +192,12 @@ def own_effects(ctx, archive):
             out[int(key)], info = dw3_effect(ctx.path(*DW3_SOURCE), key, e, launch_table(like))
             ctx.log(f'own effect {key} {e["name"]}: ' + ', '.join(f'{k} {v}' for k, v in info.items()
                                                                   if k in ('chunk', 'objects', 'behaviour', 'kept')))
+            continue
+        if 'compose' in e:              # the disc's own chunk recoloured and resized (tools/efecompose.py)
+            from tools import efecompose
+            out[int(key)], info = efecompose.compose(like, e['compose'], archive)
+            ctx.log(f'own effect {key} {e["name"]}: composed on chunk {e["stands_for"]}, '
+                    + ', '.join(f'{k} {v}' for k, v in info.items()))
             continue
         lists = []
         for part in ('cast', 'hit'):

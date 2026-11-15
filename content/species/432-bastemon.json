@@ -11,6 +11,7 @@
                  "Poison Powder", "Death Claw"],
   "drop": {"item": "S.speed.disk", "percent": 30},
   "effects_like": 40,
+  "own_effect": {"technique": "Death Claw", "chunk": 195},
   "model": {
     "file": "build/bastemon/Bastemon.MMD",
     "radius": 147,

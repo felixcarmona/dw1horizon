@@ -11,6 +11,7 @@
                  "Counter", "Dynamite Kick (44)", "Giga Scissor Claw"],
   "drop": {"item": "Omni Disk", "percent": 30},
   "effects_like": 12,
+  "own_effect": {"technique": "Giga Scissor Claw", "chunk": 164},
   "model": {
     "file": "build/imported-models/224.MMD",
     "radius": 280,

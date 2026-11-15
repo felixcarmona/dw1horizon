@@ -18,6 +18,13 @@ a different renderer, so a faithful conversion still lands between about 0.5 and
 0.35 sits under that spread and far above what an empty, lost or shrunk effect gives (0.10 or less).
 
     python -m tools.efecheck --disc DW2.bin [--archive EFEDAT.EFE] [keys]   (content/battle/own-effects.json)
+    python -m tools.efecheck --composed [--archive EFEDAT.EFE] [keys]       (its composed entries)
+
+A composed entry (tools/efecompose.py) is checked against its template, both run by the same script: it must
+leave the technique as it is (launch table, bytes outside the palette, copied texels, vertices and script colours, and the
+run's draws, hits and sounds all the template's), keep at least 35% of the template's energy and coverage per
+phase with a box between 0.5 and 3 times the template's, show its declared hue (within 35 degrees), and differ
+from the template (summed RGB difference at least 0.25 of the summed RGB of both). See check_composed.
 """
 import math
 import struct
@@ -269,25 +276,161 @@ def run(tables, model, casts, hits, like, scale, hit_scale=None, key=0x17A, **kw
     return info, check(placed, chunk, info, like, scale, hs)
 
 
+# ----------------------------------------------------------------- composed effects (tools/efecompose.py)
+
+# Failure thresholds of a composed effect, against its template run by the same script in tools/efesim
+MIN_COMPOSED = 0.35                     # energy and coverage of a phase, against the template's
+BOX_RANGE = (0.5, 3.0)                  # box diagonal of a phase (median over lit frames), against the template's
+MAX_HUE = 35.0                          # degrees between the main hue and the entry's check.hue
+MIN_DISTINCT = 0.25                     # summed RGB difference over the summed RGB of both, all frames
+SATURATED = 0.25                        # a pixel counts toward the hue when its saturation is above this
+
+
+def hue_of(frames_):
+    """The main hue in degrees: the chroma-weighted circular mean over the saturated pixels, or None."""
+    sx = sy = 0.0
+    for px in frames_:
+        for r, g, b in px:
+            hi, lo = max(r, g, b), min(r, g, b)
+            if hi < 26 or (hi - lo) / hi <= SATURATED:
+                continue
+            c = hi - lo
+            if hi == r:
+                h = ((g - b) / c) % 6
+            elif hi == g:
+                h = (b - r) / c + 2
+            else:
+                h = (r - g) / c + 4
+            a = h * math.pi / 3
+            sx += c * math.cos(a)
+            sy += c * math.sin(a)
+    if not sx and not sy:
+        return None
+    return math.degrees(math.atan2(sy, sx)) % 360
+
+
+def hue_distance(a, b):
+    d = abs(a - b) % 360
+    return min(d, 360 - d)
+
+
+def _motion(sim):
+    """What a run does, colours and shapes aside: every draw's object and transform, every sprite's and quad's
+    place and size, the hits, the hit tests and the sounds."""
+    return ([d[:5] for d in sim.draws], [s[:8] + s[9:11] for s in sim.sprites], [q[:6] + q[7:] for q in sim.quads],
+            sim.hits, sim.tests, sim.sounds)
+
+
+def check_composed(template, ours, spec, target_hue=None, size=(W, H)):
+    """The report of a composed chunk against its template: 'neutral' (the launch table, the bytes changed only
+    where a composition may change them, the same run: draws, hits, sounds), per phase (cast before the
+    template's first hit, hit after; 'all' when the simulation deals none) energy, coverage and box against the
+    template's, the main hue against target_hue, 'distinct' (frame difference); 'fails' (empty when it passes)."""
+    from tools import efecompose as X
+    w, h = size
+    rep = dict(phases={}, fails=[], fx=[])
+    lt = X.launch_table(template)
+    if X.launch_table(ours) != lt:
+        rep['fails'].append('launch table changed')
+    allowed = X.allowed_bytes(template, spec)
+    changed = [i for i in range(len(template)) if template[i] != ours[i] and i not in allowed]
+    if changed:
+        rep['fails'].append(f'{len(changed)} bytes changed outside the palette, texels, vertices and colours '
+                            f'(first at {changed[0]:#x})')
+    a, b = X.run(template, lt), X.run(ours, lt)
+    if _motion(a) != _motion(b):
+        rep['fails'].append('the run differs from the template\'s (draws, hits or sounds)')
+    rep['hits'] = [(t, f) for t, f, _p in a.hits]
+    rep['fx'] = sorted({k for _t, k, *_ in a.fx})          # drawn by the engine with its own colours: not checked
+    lit = X.lit_ticks(a)
+    if not lit:
+        rep['fails'].append('the template draws nothing in the simulation')
+        return rep
+    ticks = range(1, max(lit) + 1)
+    fa, fb = X.frames(template, a, w, h, ticks), X.frames(ours, b, w, h, ticks)
+    first = min((t for t, _f in rep['hits']), default=None)
+    phases = {'all': list(ticks)} if first is None else {'cast': [t for t in ticks if t < first],
+                                                        'hit': [t for t in ticks if t >= first]}
+    global W, H
+    W, H = w, h
+    for ph, ts in phases.items():
+        sa, sb = [_stats(fa[t]) for t in ts], [_stats(fb[t]) for t in ts]
+        ea, eb = sum(x['energy'] for x in sa), sum(x['energy'] for x in sb)
+        ca, cb = sum(x['cover'] for x in sa), sum(x['cover'] for x in sb)
+        if not ea:
+            continue
+        r = dict(frames=len(ts), energy=eb / ea, cover=cb / ca if ca else None, box=_box_ratio(sa, sb, 1.0))
+        rep['phases'][ph] = r
+        if r['energy'] < MIN_COMPOSED or (r['cover'] or 0) < MIN_COMPOSED:
+            rep['fails'].append(f'{ph}: mostly empty (energy {r["energy"]:.2f}, coverage {r["cover"] or 0:.2f} '
+                                f'of the template)')
+        if r['box'] is not None and not BOX_RANGE[0] <= r['box'] <= BOX_RANGE[1]:
+            rep['fails'].append(f'{ph}: box {r["box"]:.2f} of the template\'s, outside {BOX_RANGE}')
+    rep['template_hue'], rep['hue'] = hue_of(fa.values()), hue_of(fb.values())
+    if target_hue is not None:
+        if rep['hue'] is None:
+            rep['fails'].append('no saturated colour to take a hue from')
+        elif hue_distance(rep['hue'], target_hue) > MAX_HUE:
+            rep['fails'].append(f'hue {rep["hue"]:.0f}, {hue_distance(rep["hue"], target_hue):.0f} degrees from '
+                                f'the intended {target_hue}')
+    num = den = 0
+    for t in ticks:
+        for p, q in zip(fa[t], fb[t]):
+            if p != q:
+                num += sum(abs(x - y) for x, y in zip(p, q))
+            den += sum(p) + sum(q)
+    rep['distinct'] = num / den if den else 0.0
+    if rep['distinct'] < MIN_DISTINCT:
+        rep['fails'].append(f'too close to the template (difference {rep["distinct"]:.2f}, needs {MIN_DISTINCT})')
+    return rep
+
+
+def composed_summary(rep):
+    f = lambda x: '-' if x is None else f'{x:.2f}'
+    out = [f'{ph} {r["frames"]}f energy {f(r["energy"])} cover {f(r["cover"])} box {f(r["box"])}'
+           for ph, r in rep['phases'].items()]
+    g = lambda x: '-' if x is None else f'{x:.0f}'
+    out.append(f'hue {g(rep.get("hue"))} (template {g(rep.get("template_hue"))}), distinct '
+               f'{rep.get("distinct", 0):.2f}, hits {len(rep.get("hits", []))}')
+    if rep['fx']:
+        out.append('engine fx unchecked: ' + ', '.join(rep['fx']))
+    return '; '.join(out)
+
+
 def main():
     import argparse
     import json
     from tools.derive.steps import effects as E
     ap = argparse.ArgumentParser(description=__doc__.split('\n\n')[0])
-    ap.add_argument('--disc', required=True, help='the Digimon World 2 (USA) disc image')
+    ap.add_argument('--disc', help='the Digimon World 2 (USA) disc image (converted entries)')
+    ap.add_argument('--composed', action='store_true', help='check the composed entries (no DW2 disc needed)')
     ap.add_argument('--archive', default='extracted/ETCHI/EFEDAT.EFE', help="this game's effect archive")
     ap.add_argument('keys', nargs='*', help='own-effects.json keys (default: all)')
     a = ap.parse_args()
-    disc = D.Disc(a.disc)
-    tables = D.Tables(disc)
     with open(a.archive, 'rb') as f:
         archive = f.read()
     with open('content/battle/own-effects.json') as f:
         spec = json.load(f)
     bad = 0
+    if a.composed:
+        from tools import efecompose as X
+        for key, e in spec.items():
+            if key == 'note' or 'compose' not in e or (a.keys and key not in a.keys):
+                continue
+            template = X.template_of(archive, e)
+            ours, _info = X.compose(template, e['compose'], archive)
+            rep = check_composed(template, ours, e['compose'], e.get('check', {}).get('hue'))
+            bad += bool(rep['fails'])
+            print(f'{key} {e["name"]}: {"FAIL" if rep["fails"] else "pass"}; {composed_summary(rep)}'
+                  + ''.join(f'\n    {x}' for x in rep['fails']), flush=True)
+        raise SystemExit(1 if bad else 0)
+    if not a.disc:
+        ap.error('--disc is needed for the converted entries (or --composed)')
+    disc = D.Disc(a.disc)
+    tables = D.Tables(disc)
     for key, e in spec.items():
-        if key == 'note' or 'dw3' in e or (a.keys and key not in a.keys):
-            continue                    # DW2003 ports: tools/test_dw3_ports.py checks them
+        if key == 'note' or 'dw3' in e or 'compose' in e or (a.keys and key not in a.keys):
+            continue                    # DW2003 ports: tools/test_dw3_ports.py; composed: --composed
         like = E.launch_table(archive[e['stands_for'] * E.CHUNK_SIZE:(e['stands_for'] + 1) * E.CHUNK_SIZE])
         lists = [[(s, D.parse_effect(*(disc.image.read(*disc.files['AAA/4.AAA/EFFECT/' + n]) for n in names)))
                   for s, *names in E.effect_objects(e[p])] for p in ('cast', 'hit')]

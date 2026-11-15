@@ -89,6 +89,18 @@ the moment the attack starts.
 | 332 Roachmon | Roach Rush (DW2003) | Electro Shocker | sprites at the caster as flat quads (E000COM1 #2, E000COM3 #7) | 1 | plays its whole length (36 frames at 30 fps), hits when it ends | none | one enemy, as for Electro Shocker | one enemy |
 | 351 Kotemon | Hot Head (DW2003) | Blue Blaster | sprites at the caster as flat quads (E000COM1 #0, E000COM1 #2, E000COM3 #4, E383PKEN #2003) | 1 | plays its whole length (47 frames at 30 fps), hits when it ends | none | one enemy, as for Blue Blaster | one enemy |
 | 353 Bearmon | Bear Fist (DW2003) | Super Slap | sprites at the caster as flat quads (E000COM1 #0, E145VMON #2014) | 1 | plays its whole length (10 frames at 30 fps), hits when it ends | none | one enemy, as for Super Slap | one enemy |
+| 224 MetalGreymonVaccine | Trident Arm (composed) | Giga Scissor Claw | Giga Scissor Claw's play in steel blue, its fireballs read as cold metal | as Giga Scissor Claw | as Giga Scissor Claw | as Giga Scissor Claw | as Giga Scissor Claw | - |
+| 309 Antylamon | Bunny Blades (composed) | Death Claw | Death Claw's ring and slashes in orange, a little smaller | as Death Claw | as Death Claw | as Death Claw | as Death Claw | - |
+| 319 Pharaohmon | Pyramid Power (composed) | Bit Bomb | Bit Bomb's play in gold: gold-plated head, golden star bursts, 1.2 times larger | as Bit Bomb | as Bit Bomb | as Bit Bomb | as Bit Bomb | - |
+| 431 Kurisarimon | Data Crusher (composed) | Bit Bomb | Bit Bomb's play in cyan, its bomb sprites and blast drawn as columns of binary digits | as Bit Bomb | as Bit Bomb | as Bit Bomb | as Bit Bomb | - |
+| 311 Arukenimon | Spirit Needle (composed) | Bit Bomb | Bit Bomb's play with its projectile drawn as a thin violet-white needle and its burst as sharp violet sparkles | as Bit Bomb | as Bit Bomb | as Bit Bomb | as Bit Bomb | - |
+| 336 Raidenmon | Raiden Strike (composed) | Fireball | Fireball's play with its fireballs drawn as crackling amber-gold lightning | as Fireball | as Fireball | as Fireball | as Fireball | - |
+| 432 Bastemon | Cat Laser (composed) | Death Claw | Death Claw's play in green, its ring squeezed into a long thin laser beam | as Death Claw | as Death Claw | as Death Claw | as Death Claw | - |
+| 403 Beelzemon | Corona Blaster (composed) | Dark Shot | Dark Shot's play in hot magenta | as Dark Shot | as Dark Shot | as Dark Shot | as Dark Shot | - |
+| 331 Vemmon | Vemmon Crash (composed) | Scissor Claw | Scissor Claw's play as a heavy orange shock ring, 1.6 times larger | as Scissor Claw | as Scissor Claw | as Scissor Claw | as Scissor Claw | - |
+| 314 SkullSatamon | Nail Bone (composed) | Nightmare Syndromer | Nightmare Syndromer's play, its flying shapes drawn as fireballs in flame orange, 1.2 times larger | as Nightmare Syndromer | as Nightmare Syndromer | as Nightmare Syndromer | as Nightmare Syndromer | - |
+| 307 BlackKingNumemon | Royal Muck (composed) | Death Claw | Death Claw's play as a crown of muck lumps in brown-gold, its ring 1.5 times larger | as Death Claw | as Death Claw | as Death Claw | as Death Claw | - |
+| 327 Gargoylemon | Gargoyle Rush (composed) | Pummel Whack | Pummel Whack's play as an orange fist, its ring 1.3 times larger | as Pummel Whack | as Pummel Whack | as Pummel Whack | as Pummel Whack | - |
 
 ## Where the port differs from the source
 
