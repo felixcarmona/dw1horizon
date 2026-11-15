@@ -2124,3 +2124,10 @@ support knee compresses before the body settles. Sound ticks follow the longer
 gesture. Recovery keeps its existing clip: the source still misses an arm by
 42 degrees and 0.201 heights, and the keyed study loses too much arm motion.
 Field movement and every other battle clip remain unchanged.
+
+Kyubimon celebrates with its source motion, reaching forward and lifting its
+forelegs while the tails follow. Small eased tail turns keep the gesture within
+the native motion checks at 100,184 bytes. Its formerly shared care animation
+keeps every original pose. Faint and recovery keep their existing clips: the
+44-tick source versions need 101,228 and 102,602 bytes and still tip the body
+86–87 degrees; the keyed alternatives need 104,686 and 106,696 bytes.

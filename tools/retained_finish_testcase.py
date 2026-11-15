@@ -15,6 +15,7 @@ import motionstorage
 class RetainedFinishCase(unittest.TestCase):
     sid = None
     slots = ()
+    changed_slots = ()
 
     def test_retained_finishes_and_field_programs(self):
         if self.sid is None:
@@ -27,7 +28,10 @@ class RetainedFinishCase(unittest.TestCase):
         nb = len(sk)
         before, after = [mmd.MMD.parse(p.read_bytes(), nb) for p in files]
         self.assertEqual(before.tmd.build(), after.tmd.build())
+        self.assertFalse(set(self.slots) & set(self.changed_slots))
         for slot, program in enumerate(before.anims.table):
+            if slot in self.changed_slots:
+                continue
             if program is None:
                 self.assertIsNone(after.anims.table[slot], slot)
             else:
