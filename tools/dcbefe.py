@@ -38,6 +38,14 @@ def launch_table(chunk):
 SPECIES_TABLE = os.path.join('content', 'finishers', 'dcb-effects.json')
 
 
+def build(disc, d, origin_table, effect_id):
+    """(chunk, info) of an own effect's "dcb" entry (content/battle/own-effects.json): the attack and hit scripts
+    converted at the fit the entry records ([animated sprite frames, texture shrink, objects per script]), gameplay
+    neutral (one target, one hit) with the launch table of the chunk it stands for."""
+    fit = tuple(d['fit'])
+    return Attack(disc, d['attack'], d['hit']).convert(origin_table, effect_id=effect_id, ladder=(fit,))
+
+
 def species_entry(species, root='.'):
     """The species' row of content/finishers/dcb-effects.json: its chunk id and its two scripts."""
     with open(os.path.join(root, SPECIES_TABLE)) as f:
@@ -47,9 +55,19 @@ def species_entry(species, root='.'):
     raise KeyError(f'species {species} has no DCB effect row')
 
 
-def efedat_table(root='.'):
+def stands_for(species, root='.'):
+    """The disc chunk the species' finisher plays (content/finishers/imports.json "replaces"): its launch table is
+    the converted chunk's."""
+    with open(os.path.join(root, 'content', 'finishers', 'imports.json')) as f:
+        for e in json.load(f)['finishers']:
+            if e['species'] == species:
+                return e['replaces']['id']
+    return LIKE_CHUNK
+
+
+def efedat_table(root='.', chunk=LIKE_CHUNK):
     with open(os.path.join(root, 'extracted', 'ETCHI', 'EFEDAT.EFE'), 'rb') as f:
-        f.seek(LIKE_CHUNK * 0x5000)
+        f.seek(chunk * 0x5000)
         return launch_table(f.read(0x5000))
 
 
@@ -130,7 +148,8 @@ class Attack:
                 if 'slot has' not in str(e) and 'do not fit' not in str(e):
                     raise
                 continue
-            info = dict(info, flipbook_frames=mf, texture_shrink=shrink, max_objects=objs, source=self.notes)
+            info = dict(info, flipbook_frames=mf, texture_shrink=shrink, max_objects=objs, fit=[mf, shrink, objs],
+                        source=self.notes)
             return chunk, info
         raise last
 
@@ -382,10 +401,13 @@ def main(argv=None):
     a.name = row['species_name']
     base = os.path.join(a.out, a.name)
     atk = Attack(disc, row['attack_script'], row['hit_script'])
-    table = efedat_table()
+    table = efedat_table(chunk=stands_for(a.species))
     rec = dict(row)
+    import time
+    started = time.monotonic()
     try:
         chunk, info = atk.convert(table, effect_id=row['chunk'])
+        rec['seconds'] = round(time.monotonic() - started, 1)
     except dw2efe.Unconvertible as e:
         rec['error'] = str(e)
         rec['source'] = atk.notes
@@ -407,10 +429,12 @@ def main(argv=None):
             # One more round: denser fits, keeping the one with the fewest failed checks.
             best = len(rec['fidelity']['failed'])
             for rung in DENSER:
+                t2 = time.monotonic()
                 try:
                     c2, i2 = atk.convert(table, effect_id=row['chunk'], ladder=(rung,))
                 except dw2efe.Unconvertible:
                     continue
+                i2['seconds'] = round(time.monotonic() - t2, 1)
                 s2 = simulate(c2, table)
                 v2 = converted_frames(c2, s2)
                 sp2 = min((h[0] for h in s2.hits), default=i2.get('cast_ticks', len(v2)))

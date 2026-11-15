@@ -137,12 +137,17 @@ Results for the 79 attacks are in `content/finishers/dcb-effects.json` (`result`
 
 | result | attacks |
 |---|---|
-| converted (passes every check) | 48 |
-| fidelity failed after the second round | 28 |
+| converted (passes every check) | 45 |
+| fidelity failed after the second round | 31 |
 | render did not finish in 40 minutes (MetalGarurumon) | 1 |
 | does not fit the 0x5000 slot even at the smallest fit (MarineAngemon: its models alone are bigger than the slot; Gomamon: about 2 KB over) | 2 |
 
-The 31 that did not pass carry `"fallback": "template"` and a `why` (the checks they failed). Most
+Each conversion is measured against the launch table of the finisher it stands for (the one the game plays it
+with); Angewomon, Omnimon and VioletElecmon passed against the shared table and fail against their own. The 34
+that did not pass carry a `why` (the checks they failed) and a `"fallback"`: `"template"` plays the finisher it
+stands for, unchanged; `"composed"` (12 of them) is a DW1 chunk of the attack's kind recoloured
+(docs/mods/signature-effects.md, "Composed effects"), used where the template's look contradicted the attack (a
+projectile for a slam, a whirlpool for a sword cut). Most
 failures are a cast that draws much less than the original: many alike objects (star showers, feathers)
 thinned to what the slot holds. The check has a floor and no ceiling and does not compare colour: a pass
 means the conversion draws in the same places and moments, not that it looks the same.

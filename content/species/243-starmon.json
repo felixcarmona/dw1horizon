@@ -8,6 +8,7 @@
   "specialties": ["fire", "battle", null],
   "techniques": ["Spit Fire", "Magma Bomb", "Heat Laser", "Fire Tower", "Red Inferno", "Meltdown",
                  "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Meteor Wing"],
+  "own_effect": {"technique": "Meteor Wing", "chunk": 312},
   "drop": {"item": "sm.recovery", "percent": 0},
   "effects_like": 8,
   "model": {

@@ -59,10 +59,24 @@ def drv(image, name):
 class Disc:
     """The Card Battle disc's battle models (F.DRV) and effect packs (E.DRV)."""
 
-    def __init__(self, image):
-        self.f = {k.split('/')[-1]: v for k, v in drv(image, 'F.DRV').items()}
-        self.e = {k: v for k, v in drv(image, 'E.DRV').items()}
+    def __init__(self, image=None, f=None, e=None):
+        self.f = f if f is not None else {k.split('/')[-1]: v for k, v in drv(image, 'F.DRV').items()}
+        self.e = e if e is not None else {k: v for k, v in drv(image, 'E.DRV').items()}
         self._scripts = None
+
+    @classmethod
+    def extracted(cls, games):
+        """The disc as the build extracts it (`games`: source-games/dcb, with drv/F and drv/E)."""
+        def folder(name):
+            d = os.path.join(games, 'drv', name)
+            if not os.path.isdir(d):
+                raise FileNotFoundError(d)
+            out = {}
+            for n in sorted(os.listdir(d)):
+                with open(os.path.join(d, n), 'rb') as fh:
+                    out[n] = fh.read()
+            return out
+        return cls(f=folder('F'), e=folder('E'))
 
     def pack(self, pid):
         data = self.e.get(f'{pid}.PAK')

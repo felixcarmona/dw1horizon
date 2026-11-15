@@ -8,6 +8,7 @@
   "specialties": ["air", "fire", null],
   "techniques": ["Wind Cutter", "Spinning Shot", "Static Elect", "Electric Cloud", "Confused Storm", "Hurricane",
                  "Heat Laser", "Spit Fire", "Fire Tower", "Red Inferno", "Solar Ray"],
+  "own_effect": {"technique": "Solar Ray", "chunk": 269},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 47,
   "model": {

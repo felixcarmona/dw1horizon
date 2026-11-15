@@ -9,6 +9,7 @@
   "techniques": ["Green Trap", "Charm Perfume", "Poison Powder", "Bug", "Danger Sting", "Poison Claw",
                  "Insect Plague", "Mass Morph", "Thunder Justice", "Spinning Shot", "Megalo Spark",
                  "Hurricane", "Confused Storm", "Wind Cutter", "Bit Bomb"],
+  "own_effect": {"technique": "Bit Bomb", "chunk": 299},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 46,
   "model": {

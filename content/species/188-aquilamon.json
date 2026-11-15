@@ -8,6 +8,7 @@
   "specialties": ["air", "battle", null],
   "techniques": ["Wind Cutter", "Hurricane", "Static Elect", "Electric Cloud", "Confused Storm", "Megalo Spark",
                  "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Aerial Attack"],
+  "own_effect": {"technique": "Aerial Attack", "chunk": 259},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 21,
   "model": {

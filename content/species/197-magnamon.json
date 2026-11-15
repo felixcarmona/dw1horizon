@@ -9,6 +9,7 @@
   "techniques": ["Megaton Punch", "Dynamite Kick (44)", "Buster Dive", "Counter", "Tremar", "Sonic Jab",
                  "Muscle Charge", "War Cry", "Pulse Laser", "DG Dimension", "All Range Beam",
                  "Delete Program", "Reverse Prog", "Energy Bomb"],
+  "own_effect": {"technique": "Energy Bomb", "chunk": 268},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 8,
   "model": {

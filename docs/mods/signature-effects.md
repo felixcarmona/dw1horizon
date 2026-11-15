@@ -92,6 +92,23 @@ builds every port to its pin and runs the fidelity check against the original te
 | 162 | Nightmare Shock (composed) | 295 Vilemon | 62 Death Claw | 5,804 bytes (as Death Claw) | Death Claw's, purple |
 | 163 | Poison Cobweb (composed) | 298 Dokugumon | 72 Sweet Breath | 7,724 bytes (as Sweet Breath) | Sweet Breath's cloud replaced by chunk 105's web, green |
 
+## Converting a Digital Card Battle attack
+
+`tools/dcbefe.py` turns a Card Battle attack (the card's own script and the shared hit script, with their effect
+packs) into one chunk through the same converter; the format and the conversion are in
+[the Card Battle effect notes](../reference/dcb-effects.md). An entry has `"dcb"`: `{"attack": 1105, "hit": 435,
+"fit": [4, 1, 24], "pin": SHA-1}`, `fit` being the animated sprite frames, the texture reduction and the alike
+objects per script it was converted at (`null`: all). Like a DW2003 port it is gameplay-neutral: one target, one hit,
+as the finisher it stands for. The build reads `F.DRV` (the scripts) and `E.DRV` (the packs) from the player's Card
+Battle disc, which it already reads for the imported species (`derive build --source-disc dcb=IMAGE`); both are
+pinned per release in `content/imports/releases/dcb-*.json`. The USA and European discs give the same chunks; the
+Japanese one has its own `pins` where it differs.
+
+Chunks 251-329 are the Card Battle attacks', one per species of `content/finishers/dcb-effects.json`. Only the
+attacks whose conversion passed the fidelity check are entries here; the others keep their technique's own effect
+(`"fallback": "template"` and `why` in that file). `tools/test_dcb_ports.py` checks the wiring, and with the discs
+(`DCB_IMAGE`, `DCB_EU_IMAGE`, `DCB_JP_IMAGE`) builds every port to its pin.
+
 ## Composed effects
 
 A species with no DW2 technique to convert gets a composed effect: one of the disc's own chunks (its template)

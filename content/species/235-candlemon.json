@@ -8,6 +8,7 @@
   "specialties": ["fire", "battle", null],
   "techniques": ["Spit Fire", "Heat Laser", "Fire Tower", "Red Inferno", "Muscle Charge", "War Cry", "Sonic Jab",
                  "Blue Blaster"],
+  "own_effect": {"technique": "Blue Blaster", "chunk": 304},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 17,
   "model": {

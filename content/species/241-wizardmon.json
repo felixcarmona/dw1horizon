@@ -8,6 +8,7 @@
   "specialties": ["air", "battle", null],
   "techniques": ["Electric Cloud", "Megalo Spark", "Wind Cutter", "Static Elect", "Confused Storm", "Hurricane",
                  "Muscle Charge", "War Cry", "Sonic Jab", "Tremar", "Solar Ray"],
+  "own_effect": {"technique": "Solar Ray", "chunk": 310},
   "drop": {"item": "Off. Disk", "percent": 20},
   "effects_like": 9,
   "model": {

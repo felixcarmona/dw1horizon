@@ -8,6 +8,7 @@
   "specialties": ["fire", "battle", null],
   "techniques": ["Spit Fire", "Heat Laser", "Fire Tower", "Red Inferno", "Sonic Jab", "Muscle Charge", "War Cry",
                  "Fireball"],
+  "own_effect": {"technique": "Fireball", "chunk": 302},
   "drop": {"item": "Enemy repel", "percent": 10},
   "effects_like": 39,
   "model": {

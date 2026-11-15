@@ -8,6 +8,7 @@
   "specialties": ["ice", "battle", null],
   "techniques": ["Water Blit", "Ice Needle", "Dynamite Kick (44)", "Tear Drop", "Sonic Jab", "Muscle Charge",
                  "War Cry", "Super Slap"],
+  "own_effect": {"technique": "Super Slap", "chunk": 308},
   "drop": {"item": "MP Floppy", "percent": 30},
   "effects_like": 4,
   "model": {

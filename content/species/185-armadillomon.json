@@ -7,6 +7,7 @@
   "attribute": "vaccine",
   "specialties": ["battle", "nature", null],
   "techniques": ["Tremar", "Sonic Jab", "Muscle Charge", "War Cry", null, "Mass Morph", null, "Drill Spin"],
+  "own_effect": {"technique": "Drill Spin", "chunk": 257},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 47,
   "model": {

@@ -8,6 +8,7 @@
   "specialties": ["ice", "battle", null],
   "techniques": ["Ice Needle", "Giga Freeze", "Winter Blast", "Aqua Magic", "Tear Drop", "Water Blit",
                  "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Bone Boomerang"],
+  "own_effect": {"technique": "Bone Boomerang", "chunk": 288},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 35,
   "model": {

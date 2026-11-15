@@ -8,6 +8,7 @@
   "specialties": ["fire", "battle", null],
   "techniques": ["Spit Fire", "Prominence Beam", "Heat Laser", "Fire Tower", "Red Inferno", "Magma Bomb",
                  "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Blaze Blast"],
+  "own_effect": {"technique": "Blaze Blast", "chunk": 234},
   "drop": {"item": "sm.recovery", "percent": 0},
   "effects_like": 8,
   "model": {

@@ -8,6 +8,7 @@
   "specialties": ["ice", "battle", null],
   "techniques": ["Water Blit", "Tear Drop", "Giga Freeze", "Aqua Magic", "Winter Blast", "Ice Needle",
                  "Buster Dive", "Muscle Charge", "War Cry", "Sonic Jab", "Blasting Spout"],
+  "own_effect": {"technique": "Blasting Spout", "chunk": 273},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 24,
   "model": {
