@@ -2577,6 +2577,7 @@
       "slots": [
         33,
         34,
+        35,
         36,
         42,
         43,
@@ -2757,6 +2758,85 @@
               62,
               62
             ]
+          }
+        ],
+        "35": [
+          {
+            "op": "wave",
+            "bone": 16,
+            "axis": "x",
+            "deg": 6,
+            "phase": 0,
+            "cycles": 1
+          },
+          {
+            "op": "wave",
+            "bone": 17,
+            "axis": "x",
+            "deg": 6,
+            "phase": 0,
+            "cycles": 1
+          },
+          {
+            "op": "wave",
+            "bone": 18,
+            "axis": "x",
+            "deg": 6,
+            "phase": 0,
+            "cycles": 1
+          },
+          {
+            "op": "wave",
+            "bone": 19,
+            "axis": "x",
+            "deg": 6,
+            "phase": 0,
+            "cycles": 1
+          },
+          {
+            "op": "wave",
+            "bone": 20,
+            "axis": "x",
+            "deg": 6,
+            "phase": 0,
+            "cycles": 1
+          },
+          {
+            "op": "wave",
+            "bone": 21,
+            "axis": "x",
+            "deg": 6,
+            "phase": 0,
+            "cycles": 1
+          },
+          {
+            "op": "wave",
+            "bone": 22,
+            "axis": "x",
+            "deg": 6,
+            "phase": 0,
+            "cycles": 1
+          },
+          {
+            "op": "wave",
+            "bone": 23,
+            "axis": "x",
+            "deg": 6,
+            "phase": 0,
+            "cycles": 1
+          },
+          {
+            "op": "wave",
+            "bone": 24,
+            "axis": "x",
+            "deg": 6,
+            "phase": 0,
+            "cycles": 1
+          },
+          {
+            "op": "damp",
+            "bone": 10,
+            "keep": 0.9
           }
         ]
       }
