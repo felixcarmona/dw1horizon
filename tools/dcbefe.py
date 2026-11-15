@@ -192,8 +192,8 @@ def simulate(chunk, table, max_ticks=200):
 
 
 def converted_frames(chunk, sim, w=320, h=200):
-    """The converted chunk's picture at every engine tick (PIL images)."""
-    from PIL import Image
+    """The converted chunk's picture at every engine tick (tools.image rasters)."""
+    from tools.image import Image
     cam = camera(w, h)
     out = []
     for t in range(sim.tick + 1):
@@ -206,7 +206,7 @@ def converted_frames(chunk, sim, w=320, h=200):
 def original_frames(atk, w=320, h=200, every=2):
     """The DCB scene as traced (every `every` steps, 30 Hz), the attack at the attacker and the extra script at
     the defender, on the same stage and camera as the converted chunk (DCB units scaled to DW1 units)."""
-    from PIL import Image
+    from tools.image import Image
     placed = []
     f0, f1 = window(atk.cast_tr)
     steps = list(range(f0, f1))
@@ -325,7 +325,7 @@ def pick(frames, split, n=8):
 
 
 def sheet(frames, cols=8, label=None):
-    from PIL import Image, ImageDraw
+    from tools.image import Image, ImageDraw
     if not frames:
         return Image.new('RGB', (320, 200))
     w, h = frames[0].size
@@ -342,7 +342,7 @@ def grid_video(out_dir, names, path, w=320, h=200, fps=20, ffmpeg='ffmpeg'):
     """An mp4 of several converted attacks side by side: the traced DCB scene above (15 pictures a second, 30 Hz
     steps two at a time), the DW1 chunk below (20 Hz engine ticks), both at real speed."""
     import subprocess
-    from PIL import Image, ImageDraw
+    from tools.image import Image, ImageDraw
     cols = []
     for n in names:
         d = os.path.join(out_dir, f'{n}-frames')
