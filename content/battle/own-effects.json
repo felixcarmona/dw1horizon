@@ -321,5 +321,10 @@
     "hit": [[1, "EFFESD/MESD1500.BIN", "EFFESD/AESD1500.BIN"]],
     "scale": 0.187,
     "hit_scale": 0.1
+  },
+  "196": {
+    "name": "Dark Fear",
+    "stands_for": 62,
+    "dw3": {"model": "M170IVRU", "slot": 9, "meft": [335], "pin": "f3cc0193086ceef729f9bd6efdb0163c7291a646"}
   }
 }
