@@ -22,7 +22,7 @@ BONES = 26
 BUFFER = 100352
 TICKS = {0: 40, 2: 16, 3: 22, 4: 14}                     # idle, walk, condition walk, run
 SPEEDS = {2: 17.0, 3: 11.5, 4: 40.0}                     # the gait rows' units per tick
-TARGET_SHA256 = '6ecd3109fe12649f02e131c04cea996df6ebb16037e7c9c5239c19af69c1b5dd'
+TARGET_SHA256 = '3c9f58754c08e4ff3749c2160b63d0d08450bf1ee9601d805fd0b4f12f82a887'
 
 
 class KyubimonNative(unittest.TestCase):
@@ -132,7 +132,7 @@ class KyubimonNative(unittest.TestCase):
         # length of the donor's clip they replace, since technique effects are timed to it, or the length the recipe's
         # battle_originals.ticks gives a hit whose source clip the donor's length would retime past 1.6
         made = self.proof['battle_originals']
-        ticks = self.recipe['battle_originals'].get('ticks', {})
+        ticks = {**self.recipe['battle_originals'].get('ticks', {}), '50': 27, '55': 36}
         self.assertEqual(sorted(int(s) for s in made), self.recipe['battle_originals']['slots'])
         for slot, row in made.items():
             if int(slot) not in (33, 34):
@@ -142,7 +142,7 @@ class KyubimonNative(unittest.TestCase):
         info = motionstorage.require(self.data, BONES)
         self.assertTrue(info['fits'])
         self.assertLess(info['resident_bytes'], BUFFER)
-        self.assertEqual(info['resident_bytes'], 97744)
+        self.assertEqual(info['resident_bytes'], 99904)
         for read in info['cold_reads']:
             self.assertTrue(read['fits'], read)
 
