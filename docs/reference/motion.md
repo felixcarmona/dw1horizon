@@ -2184,3 +2184,5 @@ Zanbamon keeps its rider steady while its mount runs with a grounded, loose stri
 BomberNanimon winds up its arms and settles naturally after its two battle attacks.
 
 Vilemon twists into its own claw strike and lets its wings follow through.
+
+Wizardmon plants its boots and carries each spell through its head, cape and wand.

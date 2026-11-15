@@ -42,6 +42,10 @@ class BattleTechniqueCase(BattleRetryCase):
                 self.assertEqual(animsheet.slot_frames(new, nb, slot),
                                  animsheet.slot_frames(replay, nb, slot))
                 self.assertTrue(audit(final, skeleton, slot)['passed'])
+                if profile.get('grounded_feet'):
+                    band = support_band(final, skeleton, slot, profile['grounded_feet'])
+                    self.assertGreaterEqual(band[0], -8)
+                    self.assertLessEqual(band[1], 3)
                 if profile.get('support_feet'):
                     old_support = support_band(before, skeleton, slot, profile['support_feet'])
                     new_support = support_band(final, skeleton, slot, profile['support_feet'])

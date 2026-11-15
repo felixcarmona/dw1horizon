@@ -12,7 +12,9 @@ from tools.models.battle_finishes import _ground_frames
 from tools.models.field_animations import quadruped as q
 from tools.models.field_animations import native_battle
 
-PROFILES = {232: {47: dict(factor=1, mix=.25, source_ticks=31,
+PROFILES = {241: {slot: dict(factor=1, final_frames=26, source_ticks=27,
+                                grounded_feet=(21, 24)) for slot in (46, 47, 48, 56)},
+            232: {47: dict(factor=1, mix=.25, source_ticks=31,
                                 tolerance=5, ops=[dict(op='wave', bone=17, axis='x', deg=-6, cycles=1,
                                           phase=.15, ticks=[0, 3, 27, 30])], floor_offset=1),
                   54: dict(factor=1.4, mix=.12, source_ticks=45, tolerance=5)},
@@ -21,6 +23,9 @@ PROFILES = {232: {47: dict(factor=1, mix=.25, source_ticks=31,
 
 
 def author(data, skeleton, sid, raw):
+    if sid == 241:
+        from tools.models import wizardmon_cast
+        return wizardmon_cast.author(data, skeleton, PROFILES[sid])
     nb = len(skeleton)
     mmd.exe().add_type(9400, skeleton)
     model, source = [mmd.MMD.parse(blob, nb) for blob in (data, raw)]
@@ -107,6 +112,8 @@ def build(data, skeleton, sid, context):
     profiles = PROFILES[sid]
     raw, _ = native_battle.apply(data, context, profiles,
                                 ticks={str(s): p['source_ticks'] for s, p in profiles.items()})
+    if sid == 241:
+        raw, _ = native_battle.compact(raw, len(skeleton), dict(tol=5))
     if sid == 242:
         raw, _ = native_battle.compact(raw, len(skeleton), dict(tol=5, slot_tol={'19': 2}))
     output = author(data, skeleton, sid, raw)
