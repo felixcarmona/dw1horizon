@@ -86,6 +86,7 @@ the moment the attack starts.
 | 325 Musyamon | Ura Sword (DW2003) | Death Claw | sprites at the caster as flat quads (E000COM1 #2, E000COM3 #7) | 1 | plays its whole length (31 frames at 30 fps), hits when it ends | none | one enemy, as for Death Claw | one enemy |
 | 328 Snimon | Twin Sickles (DW2003) | Bit Bomb | sprites at the caster as flat quads (E000COM1 #2) | 1 | plays its whole length (6 frames at 30 fps), hits when it ends | none | one enemy, as for Bit Bomb | one enemy |
 | 330 Minotarumon | Darkside Quake (DW2003) | Pummel Whack | sprites at the caster as flat quads (E000COM1 #2) | 1 | plays its whole length (6 frames at 30 fps), hits when it ends | none | one enemy, as for Pummel Whack | all enemies |
+| 332 Roachmon | Roach Rush (DW2003) | Electro Shocker | sprites at the caster as flat quads (E000COM1 #2, E000COM3 #7) | 1 | plays its whole length (36 frames at 30 fps), hits when it ends | none | one enemy, as for Electro Shocker | one enemy |
 
 ## Where the port differs from the source
 

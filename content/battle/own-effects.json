@@ -491,5 +491,10 @@
     "name": "Darkside Quake",
     "stands_for": 81,
     "dw3": {"model": "M172MTAR", "slot": 5, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38]}, "pin": "496cbca34ea930da59fa747a6c872a1abfab68ac"}
+  },
+  "242": {
+    "name": "Roach Rush",
+    "stands_for": 93,
+    "dw3": {"model": "M171GOKI", "slot": 5, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38], "7": ["E000COM3.BIN", 5, 0, 0]}, "pin": "24e139ee7d9442a402f26889f0f18c12b587a2e9"}
   }
 }
