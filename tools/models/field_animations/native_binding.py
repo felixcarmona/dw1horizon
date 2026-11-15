@@ -428,14 +428,20 @@ def bind(data, skeleton, recipe, placements=None, final=True):
         # drums that turn about their own axis (their bones below the donor's), written last: no step above reshapes them
         output = add_spin(output, rig, spin)
     battle_proof = compact_proof = None
+    preserved_aliases = {}
     if recipe.get('battle_originals'):
         # the source game's own battle clips on the donor rig, for the slots that measured sound (native_battle.py)
+        if recipe['battle_originals'].get('preserve_aliases'):
+            from tools.models import native_aliases
+            preserved_aliases = native_aliases.snapshot(output, rig, recipe['battle_originals'])
         output, battle_proof = native_battle.apply(output, battle, recipe['battle_originals']['slots'],
                                                    repairs=recipe['battle_originals'].get('repairs'),
                                                    ticks=recipe['battle_originals'].get('ticks'),
                                                    share=recipe['battle_originals'].get('share'))
         if final and recipe['battle_originals'].get('compact'):
             output, compact_proof = native_battle.compact(output, len(rig), recipe['battle_originals']['compact'])
+    if preserved_aliases:
+        output = native_aliases.restore(output, rig, preserved_aliases)
     finish_proof = None
     if recipe.get('authored_finishes'):
         from tools.models import battle_finishes
@@ -446,6 +452,8 @@ def bind(data, skeleton, recipe, placements=None, final=True):
     storage = (motionstorage.require if final else motionstorage.audit)(output, len(rig))
     proof = dict(species=sid, source_sha256=digest(data), output_sha256=digest(output),
                  donor=donor_id, generated_skeleton=rig, storage=storage, species_patch=patch)
+    if preserved_aliases:
+        proof['preserved_aliases'] = {str(slot): digest(program.build()) for slot, program in preserved_aliases.items()}
     if finish_proof:
         proof['authored_finishes'] = finish_proof
     if chibi_proof:

@@ -2110,3 +2110,60 @@ onto its round body. The hands reach after the weight shift and relax beside the
 landing, with a slight recoil and quiet settle. The cape stays with its fitted
 attachment as the sphere rolls. The sound follows the longer fall; its existing
 recovery, field motion and every other battle program stay unchanged.
+
+Nefertimon keeps her existing collapse and recovery. A low, chest-first fall fits
+at 98,886 bytes and clears the floor and motion checks, but cannot meet the
+unchanged recovery without a pose jump: that opening has 220 crossings against
+the faint's maximum of 129. Holding its pose through the fall raises crossings to
+122 per tick against 55, with too little wing motion. The source still rears
+before falling, tipping the body 61 degrees from its standing pose.
+
+NeoCrimson shifts onto one planted foot, lifts the other leg and opens its claws
+in a forward victory stretch. The head and claws trail the weight shift, and the
+support knee compresses before the body settles. Sound ticks follow the longer
+gesture. Recovery keeps its existing clip: the source still misses an arm by
+42 degrees and 0.201 heights, and the keyed study loses too much arm motion.
+Field movement and every other battle clip remain unchanged.
+
+Kyubimon celebrates with its source motion, reaching forward and lifting its
+forelegs while the tails follow. Small eased tail turns keep the gesture within
+the native motion checks at 100,184 bytes. Its formerly shared care animation
+keeps every original pose. Faint and recovery keep their existing clips: the
+44-tick source versions need 101,228 and 102,602 bytes and still tip the body
+86–87 degrees; the keyed alternatives need 104,686 and 106,696 bytes.
+
+Assaultmon raises its guns in its own victory salute. An eased preparation and
+small shoulder turns keep the arms clear enough to pass the native motion
+checks: 7.6 degrees mean rotation error, 21.8 degrees for the worst piece and
+0.057 heights at the tips. It uses 99,132 bytes. The care animation that shared
+the old victory keeps its exact motion, as do the field and other battle clips.
+
+ChaosLord keeps its existing fall and recovery. At 41 ticks the source fall still
+has 166 crossings per tick against 60, with the body tipped 68 degrees against
+19. Giving the keyed fall enough wing motion needs 100,902 bytes and raises
+crossings to 85.44 per tick, peaking at 207 against 97. It stays out; field motion
+and the other battle clips remain unchanged.
+
+Cannondramon keeps its existing cannon-raising celebration. The source-length
+retry needs 100,882 bytes and still misses a tip by 0.180 heights, with 234
+crossings per tick against 198 and too much sinking. The keyed alternative
+needs 103,244 bytes and loses too much limb motion. Its field animation and
+every battle program remain unchanged.
+
+Sorcermon keeps its existing wand-assisted rise. Playing the source at 33 ticks
+fixes its timing, but the tip still misses by 0.289 heights and the arms cross
+the body too often. Counter-turns reduce crossings to 192 per tick against 164
+without fixing the tip. The keyed rise needs 107,274 bytes and steps its vertices
+0.541 heights in one tick. Field motion and the other clips stay unchanged.
+
+Deltamon keeps its three-headed cheer, forward fall and recovery. The source
+victory fits but still turns a head piece 28.1 degrees off its intended pose and
+misses a tip by 0.171 heights. The source fall and recovery need 100,608 and
+101,476 bytes. The keyed alternatives need 105,720, 102,396 and 103,334 bytes;
+field motion and every existing battle program remain unchanged.
+
+DemiDevimon keeps its existing aerial victory. Source counter-turns reduce the
+tip error from 0.200 to 0.193 heights, but it still floats 0.460 heights above its
+usual hover. A revised hover clears the motion checks at 88,888 bytes, yet has
+65.84 crossings per tick against 65.03, so it stays out. Field motion and every
+battle program remain unchanged.
