@@ -366,5 +366,10 @@
     "name": "Darkness Chaos",
     "stands_for": 96,
     "dw3": {"model": "M247DEMN", "slot": 9, "meft": [351], "pin": "cf7543e8b0c14929606178cee3d8175d4532f37d"}
+  },
+  "205": {
+    "name": "Mad Pump",
+    "stands_for": 80,
+    "dw3": {"model": "M436VALV", "slot": 9, "meft": [346], "pin": "c19cb35ec220ecb89457056c98621c6d3caf564f"}
   }
 }
