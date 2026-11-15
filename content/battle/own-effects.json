@@ -436,5 +436,10 @@
     "name": "Ultimate Flare",
     "stands_for": 109,
     "dw3": {"model": "M382ARMG", "slot": 5, "meft": [333], "pin": "e59777fd56be73779e6594c9375f9a2d94df2b80"}
+  },
+  "220": {
+    "name": "Mugen Cannon",
+    "stands_for": 106,
+    "dw3": {"model": "M440SIJN", "slot": 5, "meft": [364], "pin": "d537ea9eaa568c736f1b3c2ab1a2fed7c90ad20e"}
   }
 }

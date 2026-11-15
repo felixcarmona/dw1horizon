@@ -12,6 +12,7 @@
                  "Infinity Cannon"],
   "drop": {"item": "sm.recovery", "percent": 30},
   "effects_like": 115,
+  "own_effect": {"technique": "Infinity Cannon", "chunk": 220},
   "model": {
     "file": "build/meshfix2-out/Suijinmon.MMD",
     "radius": 252,

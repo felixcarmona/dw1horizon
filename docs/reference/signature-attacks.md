@@ -75,6 +75,7 @@ the moment the attack starts.
 | 405 Cannondramon | DynamoCannon (DW2003) | Genoside Attack | 3D effect at the caster (MEFT0094) | 1 | plays its whole length (58 frames at 30 fps), hits when it ends | none | one enemy, as for Genoside Attack | one enemy |
 | 406 MaloMyotismon | Melting Blood (DW2003) | Nightmare Syndromer | 3D effect at the caster (MEFT0092) | 1 | plays its whole length (69 frames at 30 fps), hits when it ends | none | one enemy, as for Nightmare Syndromer | one enemy |
 | 407 Armageddemon | Ultimate Flare (DW2003) | Crimson Flare | 3D effect at the caster (MEFT0333) | 1 | plays its whole length (61 frames at 30 fps), hits when it ends | none | one enemy, as for Crimson Flare | one enemy |
+| 408 Suijinmon | Mugen Cannon (DW2003) | Infinity Cannon | 3D effect at the caster (MEFT0364) | 1 | plays its whole length (51 frames at 30 fps), hits when it ends | none | one enemy, as for Infinity Cannon | one enemy, 4 hits |
 
 ## Where the port differs from the source
 
