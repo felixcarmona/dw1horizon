@@ -3,10 +3,12 @@ import contextlib
 import io
 from pathlib import Path
 import struct
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
 
+sys.path[:0] = [str(Path(__file__).resolve().parent), str(Path(__file__).resolve().parents[1])]
 import npcanims as n
 from derive.facts import npc_keep
 
