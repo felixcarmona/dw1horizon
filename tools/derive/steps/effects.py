@@ -333,8 +333,12 @@ def build(ctx):
     import shutil
     shutil.rmtree(ctx.path(*DCB_UNITS), ignore_errors=True)
     units = dcb_units(ctx)
-    if units:
-        ctx.run_units(units)
+    if units:       # the step as a whole is what the build cache captures: its units run without a capture of their own
+        from tools.derive import runner
+        for d in runner.run_units(ctx, units):
+            ctx.log(f'unit {d.unit.name}  ({d.seconds:.2f} s)')
+            if d.out:
+                ctx.log(d.out.rstrip('\n'))
     with open(os.path.join(ctx.root, 'extracted', DISC_PATH), 'rb') as source:
         data = append_own_effects(ctx, aim_deadly_bomb(exclude_caster(source.read())))
     shutil.rmtree(ctx.path(*DCB_UNITS), ignore_errors=True)
