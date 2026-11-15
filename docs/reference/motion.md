@@ -92,7 +92,7 @@ slot ships only when `battle_qa.py` passes it on the final output and the reside
 turned back 12 degrees, body raised 75 units: tipped 14.6, crossings 91, no sinking), Knightmon 0x24 (hips, shoulders and
 head turned back: tipped 10.8 degrees against 27), Gargoylemon 0x23/0x24 (forelegs turned out: crossings 11 and 8 a tick
 against 60 and 53; the other clips are compacted exactly to fit), Raidenmon 0x23/0x24 (thigh turned out and body raised:
-crossings 108 and 122), Beelzemon 0x22 (the source's own walk, unrepaired: 71 crossings, tipped 25.8) are the source's again. Kept as main's: Armadillomon 0x22-0x24 and 0x2C (main is the source plus the deliberate head lift of `armadillomon_head.py`; not a gap), Gallantmon 0x24 (the source run needs
+crossings 108 and 122), Beelzemon 0x22 (the source's own walk, unrepaired: 71 crossings, tipped 25.8) and 0x23 (source battle walk with a 12-degree lower-wing swing; 99,726 B, mean fidelity 0.4 degrees, worst piece 12.0 degrees, tips 0.063 heights; every other decoded clip and field program unchanged) are the source's again. Kept as main's: Armadillomon 0x22-0x24 and 0x2C (main is the source plus the deliberate head lift of `armadillomon_head.py`; not a gap), Gallantmon 0x24 (the source run needs
 the torso turned back 10 degrees and does not fit: 101076 B after exact compaction against 100352), Hawkmon 0x21 (the source's right foot is turned 58 degrees outward; the
 corrected foot is deliberate, see `hawkmon.py`).
 

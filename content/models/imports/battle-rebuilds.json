@@ -524,20 +524,111 @@
     ]}
   },
   "403": {
-    "34": {"ticks": 17, "ops": [
-    ]},
-    "36": {"ticks": null, "rig": [36, 36], "compact": [22, 24, 27, 35, 37, 40, 41, 46, 47, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 61], "ops": [
-      {"op": "turn", "bone": 1, "axis": "x", "deg": -14},
-      {"op": "mirror", "bone": 29, "from": 24},
-      {"op": "mirror", "bone": 30, "from": 25},
-      {"op": "turn", "bone": 24, "axis": "z", "deg": 15},
-      {"op": "turn", "bone": 29, "axis": "z", "deg": -15},
-      {"op": "turn", "bone": 24, "axis": "x", "deg": -10},
-      {"op": "turn", "bone": 29, "axis": "x", "deg": -10},
-      {"op": "turn", "bone": 28, "axis": "x", "deg": 12},
-      {"op": "turn", "bone": 9, "axis": "z", "deg": 8},
-      {"op": "turn", "bone": 5, "axis": "z", "deg": -8}
-    ]}
+    "34": {
+      "ticks": 17,
+      "ops": []
+    },
+    "36": {
+      "ticks": null,
+      "rig": [
+        36,
+        36
+      ],
+      "compact": [
+        22,
+        24,
+        27,
+        35,
+        37,
+        40,
+        41,
+        46,
+        47,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        61
+      ],
+      "ops": [
+        {
+          "op": "turn",
+          "bone": 1,
+          "axis": "x",
+          "deg": -14
+        },
+        {
+          "op": "mirror",
+          "bone": 29,
+          "from": 24
+        },
+        {
+          "op": "mirror",
+          "bone": 30,
+          "from": 25
+        },
+        {
+          "op": "turn",
+          "bone": 24,
+          "axis": "z",
+          "deg": 15
+        },
+        {
+          "op": "turn",
+          "bone": 29,
+          "axis": "z",
+          "deg": -15
+        },
+        {
+          "op": "turn",
+          "bone": 24,
+          "axis": "x",
+          "deg": -10
+        },
+        {
+          "op": "turn",
+          "bone": 29,
+          "axis": "x",
+          "deg": -10
+        },
+        {
+          "op": "turn",
+          "bone": 28,
+          "axis": "x",
+          "deg": 12
+        },
+        {
+          "op": "turn",
+          "bone": 9,
+          "axis": "z",
+          "deg": 8
+        },
+        {
+          "op": "turn",
+          "bone": 5,
+          "axis": "z",
+          "deg": -8
+        }
+      ]
+    },
+    "35": {
+      "ticks": null,
+      "ops": [
+        {
+          "op": "wave",
+          "bone": 30,
+          "axis": "z",
+          "deg": 12
+        }
+      ]
+    }
   },
   "408": {
     "35": {"ticks": 15, "ops": [

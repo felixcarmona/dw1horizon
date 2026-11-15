@@ -4929,9 +4929,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/403-Beelzemon.MMD.mdelta",
-        "delta_sha256": "9a383672407f0906139d8e185220668d1b024b073e337e67f5986ac30225044e",
-        "sha256": "3b13a2f14ed6ae287df553d8f7f372a470201ffdd11c01375839d2d1ccf681be",
-        "size": 126996
+        "delta_sha256": "e5beaab297af39d7b044b217d1962c6a7e8012f722ed2618cffb5cff5bd09430",
+        "sha256": "3d518055e4d26152ca226e576347cee96fd0cdf245dc74ad400017d4a1d212d4",
+        "size": 127096
       },
       "tim": {
         "sources": [
