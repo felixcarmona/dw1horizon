@@ -12404,7 +12404,10 @@
         "58": 55
       }
     },
-    "drop_npc_slots": true
+    "drop_npc_slots": true,
+    "authored_battle": [
+      36
+    ]
   },
   "460": {
     "species": 460,

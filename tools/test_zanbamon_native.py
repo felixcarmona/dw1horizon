@@ -24,7 +24,7 @@ BONES = DONOR_BONES + RIDER_BONES
 BUFFER = 100352
 TICKS = {0: 34, 2: 14, 3: 18, 4: 12}                     # idle, walk, condition walk, run
 SPEEDS = {2: 19.0, 3: 12.5, 4: 40.0}                     # the gait stage's units per tick
-TARGET_SHA256 = 'f2f010d5d13b356e154e5095ef121d4dde91d490cc5125570a529600fbc77489'
+TARGET_SHA256 = '44503b1ac9eb25cf51524afea4fd949687976da9d8df035818a1f0ae5e80f607'
 
 
 class ZanbamonNative(unittest.TestCase):
@@ -175,7 +175,7 @@ class ZanbamonNative(unittest.TestCase):
         info = motionstorage.require(self.data, BONES)
         self.assertTrue(info['fits'])
         self.assertLess(info['resident_bytes'], BUFFER)
-        self.assertEqual(info['resident_bytes'], 93028)
+        self.assertEqual(info['resident_bytes'], 95060)
         for read in info['cold_reads']:
             self.assertTrue(read['fits'], read)
 

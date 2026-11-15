@@ -2178,3 +2178,5 @@ NeoCrimson keeps its recovery because a grounded replacement would jump away fro
 Imperialdramon eases its wing tips through its tired battle idle.
 
 Divermon keeps its feet planted while its harpoon and ears follow its battle stride.
+
+Zanbamon keeps its rider steady while its mount runs with a grounded, loose stride.
