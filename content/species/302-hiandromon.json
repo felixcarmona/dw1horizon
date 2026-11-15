@@ -11,6 +11,7 @@
                  "Dynamite Kick (44)", "Tremar", "Sonic Jab", "Spiral Sword"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 48,
+  "own_effect": {"technique": "Spiral Sword", "chunk": 201},
   "model": {
     "file": "build/sizes-out/models/HiAndromon.MMD",
     "radius": 145,

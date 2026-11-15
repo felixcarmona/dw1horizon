@@ -11,6 +11,7 @@
                  "Prominence Beam", "Magma Bomb", "Red Inferno", "Fire Tower", "Genoside Attack"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 22,
+  "own_effect": {"technique": "Genoside Attack", "chunk": 217},
   "model": {
     "file": "build/sizes-out/models/Cannondramon.MMD",
     "radius": 300,

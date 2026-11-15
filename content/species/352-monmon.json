@@ -10,6 +10,7 @@
                  "Electric Cloud", "Boom Bubble"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 17,
+  "own_effect": {"technique": "Boom Bubble", "chunk": 216},
   "model": {
     "file": "build/batch16/Monmon.MMD",
     "radius": 100,

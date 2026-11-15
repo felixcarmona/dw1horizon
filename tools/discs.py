@@ -472,6 +472,39 @@ DW2_EFFECT_FILES = {
 }
 
 
+# The DW2003 3D effect files the species' own effects are converted from (content/battle/own-effects.json "dw3",
+# tools/derive/steps/effects.py), by name: equal on the European, USA and Japanese discs, in AAA/DAT/FIGHT/EFFECT
+# (AAA/DAT/EFFECT on the USA disc)
+DW3_EFFECT_FILES = {
+    'MEFT0039.BIN': 'aa755f346627524fcd6f93068f96a62bd2370166',
+    'MEFT0085.BIN': '60918c93f664c9785eae7730de758c164d34bba5',
+    'MEFT0087.BIN': '1848667d8c4a8322d440ef54264a86863bb4f7e6',
+    'MEFT0089.BIN': '948f7838af63802f176318f6bad05eab185fac49',
+    'MEFT0091.BIN': 'f308eb007b8c4a2189acbe0a8c124da327f505b0',
+    'MEFT0092.BIN': '552825aaf1d78da4fc2858890012e3e35c9fbf4a',
+    'MEFT0093.BIN': 'b67773a88f4d90ab810437ef0845af07380efbc2',
+    'MEFT0094.BIN': 'f6b1a6d725207d120aa38382202087b08480776d',
+    'MEFT0095.BIN': 'a49bc1dbee659cb12c8d5c6a28d8ecc7f39da100',
+    'MEFT0096.BIN': '968426fa628b6294fa66d2c92dde1df1a9ff4f2e',
+    'MEFT0097.BIN': '5a0a37bc6e4898d9f3e7cb1dd2846b228e541cd9',
+    'MEFT0100.BIN': '1f414c76afbe771929581a02e8f301adcb492767',
+    'MEFT0102.BIN': 'c1cfe4c5b904df3b268a45d96143052463e146f4',
+    'MEFT0324.BIN': '0715ed980ca5367513768c625281a50f90fa03e0',
+    'MEFT0328.BIN': '723204db2701e459ac800ae759c5a0bed6dd76a1',
+    'MEFT0332.BIN': '936dd6203c3638b49b503a3951327ccdc1c4df0b',
+    'MEFT0333.BIN': '05d7a2726ba9252ae0a8d1a6b27d975f0960554b',
+    'MEFT0335.BIN': '1c856b0ba8f7adc753b7af88f083d3d3707dfb78',
+    'MEFT0346.BIN': 'fc86ad1def5237e90b0bf8d709e34676a602be73',
+    'MEFT0349.BIN': 'b7096539326b7577c20a30e485242c734e7d9511',
+    'MEFT0351.BIN': '871a05c329edeb18cacff78186bbb82f97f0be20',
+    'MEFT0361.BIN': 'df25b37b2fa18538caaf155d734d260854bdaa5f',
+    'MEFT0363.BIN': '9a828203f25811cae297931a968023cf4d7d440a',
+    'MEFT0364.BIN': 'e4edfe4e3012d8871c7a309312b0dc76a7ff8bc9',
+    'MEFT0370.BIN': 'bb38984492ffc4edf64bf252e7c83ee89b8a779c',
+}
+DW3_EFFECT_DIRS = {'dw2003': 'AAA/DAT/FIGHT/EFFECT', 'dw3-us': 'AAA/DAT/EFFECT', 'dw3-jp': 'AAA/DAT/FIGHT/EFFECT'}
+
+
 def release_files():
     """{disc or release id: {path on the disc: SHA-1}} of the files the import converters read, so the web page can
     check an image whose whole-image checksum cannot match redump (a 2048-byte .iso, a PBP, another rip) by the
@@ -492,6 +525,8 @@ def release_files():
             out['dw2003'] = {f'{pal_dir}/{c}.BIN': h for c, h in sorted(j['recipes'].items())}
             own = j.get('own', {})
             out[f'dw3-{rel}'] = {f'{own_dir}/{c}.BIN': own.get(c, h) for c, h in sorted(j['recipes'].items())}
+            for rid in ('dw2003', f'dw3-{rel}'):
+                out[rid].update({f'{DW3_EFFECT_DIRS[rid]}/{n}': h for n, h in sorted(DW3_EFFECT_FILES.items())})
         elif game == 'dw2':
             files = {f'AAA/4.AAA/MODEL/{f}': h for c in sorted(j['recipes']) for f, h in sorted(j['recipes'][c].items())}
             files.update(DW2_EFFECT_FILES)

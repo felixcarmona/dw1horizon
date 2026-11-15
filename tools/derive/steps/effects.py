@@ -129,6 +129,7 @@ EFFECT_ID = 0x30        # the chunk's header word the loader compares with the e
 DISC_CHUNKS = 122
 OWN_EFFECTS = 'content/battle/own-effects.json'
 DW2_EFFECTS = ('source-games', 'dw2', 'disc', 'AAA', '4.AAA', 'EFFECT')
+DW3_SOURCE = ('source-games', 'dw2003')
 
 
 def launch_table(chunk):
@@ -185,6 +186,11 @@ def own_effects(ctx, archive):
         if key == 'note':
             continue
         like = bytes(archive[e['stands_for'] * CHUNK_SIZE:(e['stands_for'] + 1) * CHUNK_SIZE])
+        if 'dw3' in e:
+            out[int(key)], info = dw3_effect(ctx.path(*DW3_SOURCE), key, e, launch_table(like))
+            ctx.log(f'own effect {key} {e["name"]}: ' + ', '.join(f'{k} {v}' for k, v in info.items()
+                                                                  if k in ('chunk', 'objects', 'behaviour', 'kept')))
+            continue
         lists = []
         for part in ('cast', 'hit'):
             objs = []
@@ -205,6 +211,26 @@ def own_effects(ctx, archive):
                                                    area=e.get('area', False) or int(key) in area, n_hits=e.get('hits', 1))
         ctx.log(f'own effect {key} {e["name"]}: ' + ', '.join(f'{k} {v}' for k, v in info.items() if k != 'parts'))
     return out
+
+
+def dw3_effect(games, key, e, origin_table):
+    """(chunk, info) of an own effect converted from a DW2003 technique (tools/dw3efe.py): its "dw3" names the
+    battle model, the technique's action slot and the 3D effects it spawns, read from the player's extracted
+    DW2003 or Digimon World 3 disc (`games`: the build's source-games/dw2003). Gameplay stays the technique's it
+    stands for: one target, one hit."""
+    from tools.derive.importers import source_context
+    d = e['dw3']
+    disc = os.path.join(games, 'disc')
+    with source_context(os.path.dirname(games)):
+        from tools import dw3effect as X, dw3efe as E
+        files = X.Files(disc)
+        missing = [n for n in [d['model'] + '.BIN'] + [f'MEFT{n:04d}.BIN' for n in d['meft']] if n not in files.base]
+        if missing:
+            raise ValueError(f'own effect {key} {e["name"]}: source discs required: dw2003 (missing {missing[0]}); '
+                             'derive build --source-disc dw2003=IMAGE')
+        tech = X.model_scripts(files, d['model'])[d['slot']]
+        return E.convert(files, X.EffectIds(d['meft']), tech, E.FIELD_SCALE, origin_table, 0x100 + int(key),
+                         leave_out=[tuple(x) for x in d.get('leave_out', [])])
 
 
 def append_own_effects(ctx, archive):

@@ -11,6 +11,7 @@
                  "Spinning Shot", "Confused Storm", "Wind Cutter", "Dark Shot"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 5,
+  "own_effect": {"technique": "Dark Shot", "chunk": 212},
   "model": {
     "file": "build/sizes-out/models/Ghoulmon.MMD",
     "radius": 252,

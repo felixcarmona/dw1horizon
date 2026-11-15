@@ -3,7 +3,8 @@
 Some imported Digimon play the signature attack of the game they come from in place of the shared finisher
 picture. This page says, for each of them, what the attack does in a battle here and where it differs from the
 original game. How the effects are converted is in [the signature effects notes](../mods/signature-effects.md);
-the DW2 effect format is in [the DW2 effect notes](dw2-effects.md).
+the DW2 effect format is in [the DW2 effect notes](dw2-effects.md), and the DW2003 one in
+[the DW2003 effect notes](dw3-effects.md).
 
 The damage, the element, the cost and when the Digimon chooses the attack are the finisher's (the technique the
 attack stands in for), unless the species' finisher data says otherwise. Times are battle ticks (20 a second) from
@@ -51,6 +52,32 @@ the moment the attack starts.
 | 294 Datamon | Digital Bomb (DW2) | Smiley Bomb | projectile: small bombs on every enemy | 1 | flies at tick 21, hits on contact (tick 38 at 2,700 units) | flies to the target (scale 0.184) | one enemy, as for Smiley Bomb | all enemies, 4 hits |
 | 401 Pukumon | Needle Squall (DW2) | Mail Strome | volley: spines in every direction | 1 | flies at tick 30, hits on contact (tick 39 at 2,700 units) | flies to the target (scale 0.235) | one enemy, as for Mail Strome | all enemies, 6 hits |
 | 402 NeoCrimson | Blind Attack (DW2) | Crimson Flare | at the target: a blind charge at a random fighter | 1 | plays at the target, hits at tick 40 | none (scale 0.187) | one enemy, as for Crimson Flare | one enemy (random) |
+| 295 Vilemon | Dark Fear (DW2003) | Death Claw | 3D effect at the caster (MEFT0335) | 1 | plays its whole length (31 frames at 30 fps), hits when it ends | none | one enemy, as for Death Claw | one enemy |
+| 297 Marsmon | Mugenhadou (DW2003) | Mega Flame | 3D effect at the caster (MEFT0097) | 1 | plays its whole length (31 frames at 30 fps), hits when it ends | none | one enemy, as for Mega Flame | one enemy |
+| 298 Dokugumon | Poison Cobweb (DW2003) | Bit Bomb | 3D effect at the caster (MEFT0328) | 1 | plays its whole length (31 frames at 30 fps), hits when it ends | none | one enemy, as for Bit Bomb | one enemy |
+| 299 Hookmon | Captain Cannon (DW2003) | Dark Shot | 3D effect at the caster (MEFT0091) | 1 | plays its whole length (46 frames at 30 fps), hits when it ends | none | one enemy, as for Dark Shot | one enemy |
+| 300 SlashAngemon | Golden Ripper (DW2003) | Death Claw | 3D effect at the caster (MEFT0100) | 1 | plays its whole length (51 frames at 30 fps), hits when it ends | none | one enemy, as for Death Claw | one enemy |
+| 302 HiAndromon | Atomic Ray (DW2003) | Spiral Sword | 3D effect at the caster (MEFT0361) | 1 | plays its whole length (46 frames at 30 fps), hits when it ends | none | one enemy, as for Spiral Sword | one enemy |
+| 303 KingEtemon | Dark Spirits DX (DW2003) | Dark Network & Concert Crush | 3D effect at the caster (MEFT0324) | 1 | plays its whole length (31 frames at 30 fps), hits when it ends | none | one enemy, as for Dark Network & Concert Crush | all enemies |
+| 310 Assaultmon | Justice Strike (DW2003) | Genoside Attack | 3D effect at the caster (MEFT0093) | 1 | plays its whole length (56 frames at 30 fps), hits when it ends | none | one enemy, as for Genoside Attack | one enemy, 3 hits |
+| 312 Creepymon | Darkness Chaos (DW2003) | Nightmare Syndromer | 3D effect at the caster (MEFT0351) | 1 | plays its whole length (36 frames at 30 fps), hits when it ends | none | one enemy, as for Nightmare Syndromer | all enemies |
+| 313 Bulbmon | Mad Pump (DW2003) | Dark Shot | 3D effect at the caster (MEFT0346) | 1 | plays its whole length (38 frames at 30 fps), hits when it ends | none | one enemy, as for Dark Shot | one enemy |
+| 316 Sakuyamon | KongouKaimandara (DW2003) | Mega Flame | 3D effect at the caster (MEFT0087), 5 parts left out to fit | 1 | plays its whole length (148 frames at 30 fps), hits when it ends | none | one enemy, as for Mega Flame | all enemies |
+| 317 Fujinmon | Sylph Storm (DW2003) | Spiral Sword | 3D effect at the caster (MEFT0370) | 1 | plays its whole length (38 frames at 30 fps), hits when it ends | none | one enemy, as for Spiral Sword | all enemies |
+| 318 Gallantmon | Final Purification (DW2003) | Spiral Sword | 3D effect at the caster (MEFT0095) | 1 | plays its whole length (51 frames at 30 fps), hits when it ends | none | one enemy, as for Spiral Sword | one enemy |
+| 323 Lynxmon | Blazing Mane (DW2003) | Crimson Flare | 3D effect at the caster (MEFT0332) | 1 | plays its whole length (36 frames at 30 fps), hits when it ends | none | one enemy, as for Crimson Flare | one enemy |
+| 326 WarGrowlmon | Atomic Blaster (DW2003) | Dark Shot | 3D effect at the caster (MEFT0096) | 1 | plays its whole length (61 frames at 30 fps), hits when it ends | none | one enemy, as for Dark Shot | one enemy |
+| 329 Ghoulmon | Darkness Chaos (DW2003) | Dark Shot | 3D effect at the caster (MEFT0349) | 1 | plays its whole length (38 frames at 30 fps), hits when it ends | none | one enemy, as for Dark Shot | one enemy |
+| 333 Raijinmon | Electro Ball (DW2003) | Genoside Attack | 3D effect at the caster (MEFT0363) | 1 | plays its whole length (41 frames at 30 fps), hits when it ends | none | one enemy, as for Genoside Attack | all enemies |
+| 334 Mummymon | Dark Fear (DW2003) | Dark Shot | 3D effect at the caster (MEFT0335) | 1 | plays its whole length (31 frames at 30 fps), hits when it ends | none | one enemy, as for Dark Shot | one enemy |
+| 335 MegaGargomon | Giant Missile (DW2003) | Genoside Attack | 3D effect at the caster (MEFT0085) | 1 | plays its whole length (35 frames at 30 fps), hits when it ends | none | one enemy, as for Genoside Attack | one enemy |
+| 352 Monmon | Swing Swing (DW2003) | Boom Bubble | 3D effect at the caster (MEFT0089) | 1 | plays its whole length (46 frames at 30 fps), hits when it ends | none | one enemy, as for Boom Bubble | one enemy |
+| 405 Cannondramon | DynamoCannon (DW2003) | Genoside Attack | 3D effect at the caster (MEFT0094) | 1 | plays its whole length (58 frames at 30 fps), hits when it ends | none | one enemy, as for Genoside Attack | one enemy |
+| 406 MaloMyotismon | Melting Blood (DW2003) | Nightmare Syndromer | 3D effect at the caster (MEFT0092) | 1 | plays its whole length (69 frames at 30 fps), hits when it ends | none | one enemy, as for Nightmare Syndromer | one enemy |
+| 407 Armageddemon | Ultimate Flare (DW2003) | Crimson Flare | 3D effect at the caster (MEFT0333) | 1 | plays its whole length (61 frames at 30 fps), hits when it ends | none | one enemy, as for Crimson Flare | one enemy |
+| 408 Suijinmon | Mugen Cannon (DW2003) | Infinity Cannon | 3D effect at the caster (MEFT0364) | 1 | plays its whole length (51 frames at 30 fps), hits when it ends | none | one enemy, as for Infinity Cannon | one enemy, 4 hits |
+| 430 Zanbamon | Cross Slash (DW2003) | Death Claw | 3D effect at the caster (MEFT0039) | 1 | plays its whole length (30 frames at 30 fps), hits when it ends | none | one enemy, as for Death Claw | one enemy |
+| 433 Guilmon | Pyrosphere (DW2003) | Pepper Breath | 3D effect at the caster (MEFT0102) | 1 | plays its whole length (45 frames at 30 fps), hits when it ends | none | one enemy, as for Pepper Breath | one enemy |
 
 ## Where the port differs from the source
 
@@ -77,6 +104,15 @@ the moment the attack starts.
 - **Close-range finishers.** MarineDevimon (Death Claw) and Gazimon (Poison Ivy) walk up to their target first,
   as for those finishers, so their projectiles fly only a short way.
 - **Hagurumon** plays Darkness Gear in battle (species 122); its field twin 465 has no techniques.
+
+- **DW2003 attacks** play their 3D effects as on the disc, at the caster, for their whole length, and hit when
+  they end: nothing flies to the target on its own. They leave out the attack's flat sprites (sparks, flashes,
+  the finisher emblem) and DW2003's camera moves. Most of those that stand in a projectile or beam finisher are
+  beams or bursts that reach the target in DW2003 too.
+- **DW2003 enemy attacks.** Several of the imports are DW2003 enemies with no signature of their own: their
+  attack is the enemy's move 1. Vilemon and Mummymon share Dark Fear, and Creepymon and Ghoulmon Darkness
+  Chaos, and each plays it: the source effect wins over a composed look of its own. Species whose DW2003
+  attack is an unnamed slot-5 move play that move's effect.
 
 ## Kept on the DW1 finisher
 

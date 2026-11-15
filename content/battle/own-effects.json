@@ -321,5 +321,135 @@
     "hit": [[1, "EFFESD/MESD1500.BIN", "EFFESD/AESD1500.BIN"]],
     "scale": 0.187,
     "hit_scale": 0.1
+  },
+  "196": {
+    "name": "Dark Fear",
+    "stands_for": 62,
+    "dw3": {"model": "M170IVRU", "slot": 9, "meft": [335], "pin": "f3cc0193086ceef729f9bd6efdb0163c7291a646"}
+  },
+  "197": {
+    "name": "Mugenhadou",
+    "stands_for": 63,
+    "dw3": {"model": "M394MARS", "slot": 11, "meft": [97], "pin": "62547a785d90a659196028b0104610caa5f5b27e"}
+  },
+  "198": {
+    "name": "Poison Cobweb",
+    "stands_for": 73,
+    "dw3": {"model": "M166DKGM", "slot": 5, "meft": [328], "pin": "592f3767c8595ee3664250372d3e0ba3fd47a834"}
+  },
+  "199": {
+    "name": "Captain Cannon",
+    "stands_for": 80,
+    "dw3": {"model": "M387PIRT", "slot": 11, "meft": [91], "pin": "00abe117e496baa0bc75aaa00d54bdbc56a7c45a"}
+  },
+  "200": {
+    "name": "Golden Ripper",
+    "stands_for": 62,
+    "dw3": {"model": "M392SLAG", "slot": 11, "meft": [100], "pin": "729709691b220aebef9b31c7041a1d7ea3785a90"}
+  },
+  "201": {
+    "name": "Atomic Ray",
+    "stands_for": 102,
+    "dw3": {"model": "M356HAND", "slot": 9, "meft": [361], "pin": "f0eae509d38460b917a1dc2ffae344b4d4f1b332"}
+  },
+  "202": {
+    "name": "Dark Spirits DX",
+    "stands_for": 92,
+    "dw3": {"model": "M250KGET", "slot": 5, "meft": [324], "pin": "f225d7293ac2fd1033aff1a26236f91b8b003395"}
+  },
+  "203": {
+    "name": "Justice Strike",
+    "stands_for": 78,
+    "dw3": {"model": "M390ASLT", "slot": 11, "meft": [93], "pin": "d998529d970e3109762f645bff8ded4df72d16cd"}
+  },
+  "204": {
+    "name": "Darkness Chaos",
+    "stands_for": 96,
+    "dw3": {"model": "M247DEMN", "slot": 9, "meft": [351], "pin": "cf7543e8b0c14929606178cee3d8175d4532f37d"}
+  },
+  "205": {
+    "name": "Mad Pump",
+    "stands_for": 80,
+    "dw3": {"model": "M436VALV", "slot": 9, "meft": [346], "pin": "c19cb35ec220ecb89457056c98621c6d3caf564f"}
+  },
+  "206": {
+    "name": "KongouKaimandara",
+    "stands_for": 63,
+    "dw3": {"model": "M376SKYA", "slot": 11, "meft": [87], "leave_out": [[0, 2], [0, 3], [0, 4], [0, 5], [0, 8]], "pin": "8d655fe60ea29e20bfa15482a75825f03aeaef40"}
+  },
+  "207": {
+    "name": "Sylph Storm",
+    "stands_for": 102,
+    "dw3": {"model": "M439FUJI", "slot": 9, "meft": [370], "pin": "9a3748db46b52c7b4022ea792ffc6ccb1e0288d6"}
+  },
+  "208": {
+    "name": "Final Purification",
+    "stands_for": 102,
+    "dw3": {"model": "M369DUKE", "slot": 11, "meft": [95], "pin": "368f7e48a3d858181854cad9e004a1e997f3a13b"}
+  },
+  "209": {
+    "name": "Blazing Mane",
+    "stands_for": 109,
+    "dw3": {"model": "M327RUNX", "slot": 5, "meft": [332], "pin": "8c3e75b6a974eddd06daa41ed26762079a45e74e"}
+  },
+  "210": {
+    "name": "Atomic Blaster",
+    "stands_for": 80,
+    "dw3": {"model": "M368MGRW", "slot": 11, "meft": [96], "pin": "a24e81bf7fddaf84fc7228352fa53394c2e45d8a"}
+  },
+  "212": {
+    "name": "Darkness Chaos",
+    "stands_for": 80,
+    "dw3": {"model": "M312DETH", "slot": 9, "meft": [349], "pin": "02f937a5715a9f31e5569235dab7ed1474be9d93"}
+  },
+  "213": {
+    "name": "Electro Ball",
+    "stands_for": 78,
+    "dw3": {"model": "M441RAIZ", "slot": 9, "meft": [363], "pin": "e9500eb580f6c3c8f9e310fd2f2b681c26e98745"}
+  },
+  "214": {
+    "name": "Dark Fear",
+    "stands_for": 80,
+    "dw3": {"model": "M364MUMY", "slot": 9, "meft": [335], "pin": "4570e2d1a2dc2135b66822863ed9ed9d7a9cbc9c"}
+  },
+  "215": {
+    "name": "Giant Missile",
+    "stands_for": 78,
+    "dw3": {"model": "M372SGRG", "slot": 11, "meft": [85], "pin": "eb5aeb01fdfdf061e20266dbfc185b505abb4172"}
+  },
+  "216": {
+    "name": "Swing Swing",
+    "stands_for": 71,
+    "dw3": {"model": "M384KOET", "slot": 11, "meft": [89], "pin": "aa5a060b4d532c5e6621b396d5a38578e5f99b2a"}
+  },
+  "217": {
+    "name": "DynamoCannon",
+    "stands_for": 78,
+    "dw3": {"model": "M393CNND", "slot": 11, "meft": [94], "pin": "2f1641e4eff39991d15adc962ea56458f1cbc553"}
+  },
+  "218": {
+    "name": "Melting Blood",
+    "stands_for": 96,
+    "dw3": {"model": "M378BVND", "slot": 11, "meft": [92], "pin": "e84038247a533e3c5c8c728df2177cd74f4125ed"}
+  },
+  "219": {
+    "name": "Ultimate Flare",
+    "stands_for": 109,
+    "dw3": {"model": "M382ARMG", "slot": 5, "meft": [333], "pin": "e59777fd56be73779e6594c9375f9a2d94df2b80"}
+  },
+  "220": {
+    "name": "Mugen Cannon",
+    "stands_for": 106,
+    "dw3": {"model": "M440SIJN", "slot": 5, "meft": [364], "pin": "d537ea9eaa568c736f1b3c2ab1a2fed7c90ad20e"}
+  },
+  "221": {
+    "name": "Cross Slash",
+    "stands_for": 62,
+    "dw3": {"model": "M337ZAMB", "slot": 5, "meft": [39], "pin": "db297f0d6a698c95ed5a7f0aefd34ab2d85ae6f4"}
+  },
+  "222": {
+    "name": "Pyrosphere",
+    "stands_for": 59,
+    "dw3": {"model": "M366GIRU", "slot": 11, "meft": [102], "pin": "7bdb922c4dc4dc8708bc45e9d2319556d51d58d4"}
   }
 }

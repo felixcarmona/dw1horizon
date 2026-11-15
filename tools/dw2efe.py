@@ -545,22 +545,27 @@ class Chunk:
         return at
 
 
-# (pose step, pose quantum, texture width, back faces), finest first: the first that fits the slot is used
-LEVELS = ((1, 1, 256, 2), (2, 1, 256, 2), (2, 2, 256, 2), (3, 2, 256, 2), (3, 4, 256, 2), (4, 4, 256, 2),
-          (2, 2, 128, 2), (4, 4, 128, 2), (2, 2, 128, 1), (4, 4, 128, 1))
+# (pose step, pose quantum, texture width, back faces), finest first: the first that fits the slot is used.
+# Every level that keeps a pose per tick (step 1: coarser translations, a narrower texture, one-sided flat parts)
+# comes before any that holds poses, which makes the effect move at 20 / step Hz: the last resort.
+LEVELS = ((1, 1, 256, 2), (1, 2, 256, 2), (1, 4, 256, 2), (1, 2, 128, 2), (1, 4, 128, 2), (1, 4, 128, 1),
+          (2, 1, 256, 2), (2, 2, 256, 2), (2, 4, 128, 1), (3, 4, 128, 1), (4, 4, 128, 1))
 
 
 def convert_skill(*args, **kw):
-    """_convert_skill at the finest pose detail whose chunk fits the slot; info['detail'] names the level."""
+    """_convert_skill at the finest pose detail whose chunk fits the slot; info['detail'] names the level and
+    info['held_ticks'] the ticks each pose is held (1: a pose every 20 Hz tick)."""
     for n, (step, quant, width, sides) in enumerate(LEVELS):
         try:
             chunk, info = _convert_skill(*args, step=step, quant=quant, width=width, sides=sides, **kw)
         except Unconvertible as e:
-            if 'slot has' not in str(e) or n == len(LEVELS) - 1:
+            fit = 'slot has' in str(e) or 'texture blocks do not fit' in str(e)    # too large at this level
+            if not fit or n == len(LEVELS) - 1:
                 raise
             continue
         info['detail'] = (f'step {step} quant {quant}' + ('' if width == STRIP_W else f' texture {width}')
                           + ('' if sides == 2 else ' one-sided'))
+        info['held_ticks'] = step
         return chunk, info
 
 

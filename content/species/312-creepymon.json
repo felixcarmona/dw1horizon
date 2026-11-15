@@ -11,6 +11,7 @@
                  "Megalo Spark", "Confused Storm", "Wind Cutter", "Nightmare Syndromer"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 40,
+  "own_effect": {"technique": "Nightmare Syndromer", "chunk": 204},
   "model": {
     "file": "build/sizes-out/models/Daemon.MMD",
     "radius": 149,

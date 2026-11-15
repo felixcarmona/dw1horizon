@@ -286,8 +286,8 @@ def main():
         spec = json.load(f)
     bad = 0
     for key, e in spec.items():
-        if key == 'note' or (a.keys and key not in a.keys):
-            continue
+        if key == 'note' or 'dw3' in e or (a.keys and key not in a.keys):
+            continue                    # DW2003 ports: tools/test_dw3_ports.py checks them
         like = E.launch_table(archive[e['stands_for'] * E.CHUNK_SIZE:(e['stands_for'] + 1) * E.CHUNK_SIZE])
         lists = [[(s, D.parse_effect(*(disc.image.read(*disc.files['AAA/4.AAA/EFFECT/' + n]) for n in names)))
                   for s, *names in E.effect_objects(e[p])] for p in ('cast', 'hit')]
