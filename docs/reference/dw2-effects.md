@@ -163,5 +163,6 @@ instead:
   their ticks.
 - The loudest onset after the cut becomes `hit_sound`, played with the first damage event, since the port
   hits without DW2's cut and wait.
-- Sad Water Blast's track has no clear onset, so it keeps the generic sounds. Digital Bomb keeps only its
+- Sad Water Blast's track has no clear onset, so it keeps the generic start sound and hits with sound 28, the water
+  sound of chunk 111, the technique it stands for. Digital Bomb keeps only its
   loudest cue: more push its chunk to coarser poses.

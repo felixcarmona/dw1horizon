@@ -164,6 +164,8 @@
   "138": {
     "name": "Sad Water Blast",
     "stands_for": 111,
+    "sounds": [[0, 2]],
+    "hit_sound": 28,
     "cast": [[1, "EFFEMA/MEMA6100.BIN", "EFFEMA/AEMA6100.BIN"], [2, "EFFEMA/MEMA6200.BIN", "EFFEMA/AEMA6200.BIN"]],
     "hit": [[2, "EFFESD/MESD3200.BIN", "EFFESD/AESD3200.BIN"]],
     "scale": 0.249,
