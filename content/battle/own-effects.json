@@ -361,5 +361,10 @@
     "name": "Justice Strike",
     "stands_for": 78,
     "dw3": {"model": "M390ASLT", "slot": 11, "meft": [93], "pin": "d998529d970e3109762f645bff8ded4df72d16cd"}
+  },
+  "204": {
+    "name": "Darkness Chaos",
+    "stands_for": 96,
+    "dw3": {"model": "M247DEMN", "slot": 9, "meft": [351], "pin": "cf7543e8b0c14929606178cee3d8175d4532f37d"}
   }
 }

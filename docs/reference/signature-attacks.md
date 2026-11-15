@@ -60,6 +60,7 @@ the moment the attack starts.
 | 302 HiAndromon | Atomic Ray (DW2003) | Spiral Sword | 3D effect at the caster (MEFT0361) | 1 | plays its whole length (46 frames at 30 fps), hits when it ends | none | one enemy, as for Spiral Sword | one enemy |
 | 303 KingEtemon | Dark Spirits DX (DW2003) | Dark Network & Concert Crush | 3D effect at the caster (MEFT0324) | 1 | plays its whole length (31 frames at 30 fps), hits when it ends | none | one enemy, as for Dark Network & Concert Crush | all enemies |
 | 310 Assaultmon | Justice Strike (DW2003) | Genoside Attack | 3D effect at the caster (MEFT0093) | 1 | plays its whole length (56 frames at 30 fps), hits when it ends | none | one enemy, as for Genoside Attack | one enemy, 3 hits |
+| 312 Creepymon | Darkness Chaos (DW2003) | Nightmare Syndromer | 3D effect at the caster (MEFT0351) | 1 | plays its whole length (36 frames at 30 fps), hits when it ends | none | one enemy, as for Nightmare Syndromer | all enemies |
 
 ## Where the port differs from the source
 
