@@ -46,6 +46,50 @@ class ClipRepairTest(unittest.TestCase):
             self.assertEqual(pose[2][3:6], old[2][3:6])
             self.assertAlmostEqual(pose[2][7], -100)
 
+    def test_fit_rig_keeps_visibility_and_animated_scale(self):
+        frames = clip(4)
+        source = [list(b) for b in frames[0]]
+        rig = [list(b) for b in source]
+        rig[2][:3] = [0, 8192, 4096]
+        frames[1][2][:3] = [0, 6144, 2048]
+        out = clip_repair.fit_rig(frames, source, rig)
+        self.assertEqual(out[0][2][:3], [4096, 8192, 4096])
+        self.assertEqual(out[1][2][:3], [0, 12288, 2048])
+
+    def test_fit_rig_body_scale_preserves_proportional_height_motion(self):
+        frames = clip(4)
+        frames[0][1][7] = -200
+        frames[1][1][7] = -160
+        source = frames[0]
+        rig = [list(b) for b in source]
+        rig[1][7] = -100
+        scaled = clip_repair.fit_rig(frames, source, rig, body='scale')
+        shifted = clip_repair.fit_rig(frames, source, rig)
+        self.assertEqual([p[1][7] for p in scaled[:2]], [-100, -80])
+        self.assertEqual([p[1][7] for p in shifted[:2]], [-100, -60])
+        for old, new in zip(frames, scaled):
+            self.assertEqual(old[0], new[0])
+            self.assertEqual(old[1][3:6], new[1][3:6])
+
+    def test_offset_keeps_the_original_motion_and_other_bones(self):
+        frames = clip(4)
+        out = clip_repair.apply_ops(frames, PARENTS, [{'op': 'offset', 'bone': 2, 'delta': [10, -5, 3]}])
+        for old, new in zip(frames, out):
+            self.assertEqual(new[:2] + new[3:], old[:2] + old[3:])
+            self.assertEqual(new[2][:6], old[2][:6])
+            self.assertEqual(new[2][6:9], [old[2][6] + 10, old[2][7] - 5, old[2][8] + 3])
+
+    def test_offset_motion_preserves_first_position_rotations_and_root(self):
+        frames = clip(4)
+        for i, pose in enumerate(frames):
+            pose[2][6] = 100 + 10 * i
+        out = clip_repair.apply_ops(frames, PARENTS,
+                                   [{'op': 'offset_motion', 'bone': 2, 'axis': 'x', 'keep': .5}])
+        self.assertEqual([p[2][6] for p in out], [100 + 5 * i for i in range(len(frames))])
+        for old, new in zip(frames, out):
+            self.assertEqual(new[0], old[0])
+            self.assertEqual(new[2][:6], old[2][:6])
+
     def test_turn_changes_only_its_bone(self):
         out = clip_repair.apply_ops(clip(), PARENTS, [{'op': 'turn', 'bone': 2, 'axis': 'x', 'deg': 15}])
         for a, b in zip(out, clip()):

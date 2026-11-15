@@ -82,7 +82,12 @@
       {"op": "turn", "bone": 2, "axis": "x", "deg": -20, "ticks": null},
       {"op": "turn", "bone": 3, "axis": "x", "deg": -10, "ticks": null},
       {"op": "turn", "bone": 3, "axis": "x", "deg": -20, "ticks": null},
-      {"op": "turn", "bone": 3, "axis": "z", "deg": -10, "ticks": null}
+      {"op": "turn", "bone": 3, "axis": "z", "deg": -10, "ticks": null},
+      {"op": "offset", "bone": 12, "delta": [0, 10, 0]},
+      {"op": "offset", "bone": 1, "delta": [0, -10, -30]},
+      {"op": "offset", "bone": 3, "delta": [0, 0, -30]},
+      {"op": "offset", "bone": 4, "delta": [0, 0, -15]},
+      {"op": "offset", "bone": 15, "delta": [0, 22, 0]}
     ]},
     "36": {"ticks": 13, "ops": [
       {"op": "turn", "bone": 2, "axis": "x", "deg": -30.0},
@@ -91,7 +96,20 @@
       {"op": "turn", "bone": 11, "axis": "y", "deg": -10.0},
       {"op": "turn", "bone": 2, "axis": "y", "deg": 10.0},
       {"op": "turn", "bone": 14, "axis": "y", "deg": -10.0},
-      {"op": "turn", "bone": 14, "axis": "z", "deg": 45.0}
+      {"op": "turn", "bone": 14, "axis": "z", "deg": 45.0},
+      {"op": "lift", "bone": 17, "up": 7},
+      {"op": "offset", "bone": 1, "delta": [0, 0, -30]},
+      {"op": "offset", "bone": 21, "delta": [0, 10, 0]},
+      {"op": "offset", "bone": 4, "delta": [0, 0, -20]},
+      {"op": "offset", "bone": 12, "delta": [0, 10, 0]},
+      {"op": "offset", "bone": 3, "delta": [0, 0, -10]}
+    ]},
+    "34": {"ticks": 17, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "lift", "bone": 17, "up": 21},
+      {"op": "offset", "bone": 11, "delta": [30, 0, 0]},
+      {"op": "offset", "bone": 14, "delta": [-30, 0, 0]},
+      {"op": "offset", "bone": 2, "delta": [0, 0, -20]},
+      {"op": "offset", "bone": 4, "delta": [0, 0, -15]}
     ]}
   },
   "196": {
@@ -188,15 +206,24 @@
     ]}
   },
   "209": {
-    "34": {"ticks": 65, "ops": [
+    "34": {"ticks": 65, "rig": [0, 0], "body": "scale", "ops": [
       {"op": "turn", "bone": 1, "axis": "x", "deg": -15},
       {"op": "turn", "bone": 2, "axis": "x", "deg": -30},
       {"op": "turn", "bone": 3, "axis": "x", "deg": 15},
-      {"op": "lift", "bone": 1, "up": 40}
+      {"op": "lift", "bone": 1, "up": 40},
+      {"op": "lift", "bone": 1, "up": -7}
     ]},
-    "35": {"ticks": 65, "ops": [
+    "35": {"ticks": 65, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "lift", "bone": 1, "up": -16}
     ]},
-    "36": {"ticks": 65, "ops": [
+    "36": {"ticks": 65, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "lift", "bone": 1, "up": -16}
+    ]},
+    "42": {"ticks": 54, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "lift", "bone": 1, "up": -13}
+    ]},
+    "44": {"ticks": 23, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "lift", "bone": 1, "up": -7}
     ]}
   },
   "210": {
@@ -220,6 +247,20 @@
     "44": {"ticks": 23, "ops": [
       {"op": "lift", "bone": 1, "up": 70, "ticks": [0, 5, 16, 22]}
     ]}
+  },
+  "225": {
+    "34": {"ticks": 17, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 7, "delta": [10, 0, 0]}
+    ]}
+  },
+  "226": {
+    "33": {"ticks": 81, "rig": [0, 0], "body": "scale", "ops": [{"op": "lift", "bone": 1, "up": -14}]},
+    "34": {"ticks": 17, "rig": [0, 0], "body": "scale", "ops": [{"op": "lift", "bone": 1, "up": -8}]},
+    "35": {"ticks": 17, "rig": [0, 0], "body": "scale", "ops": []},
+    "36": {"ticks": 17, "rig": [0, 0], "body": "scale", "ops": []},
+    "40": {"ticks": 37, "rig": [0, 0], "body": "scale", "ops": []},
+    "41": {"ticks": 37, "rig": [0, 0], "body": "scale", "ops": []},
+    "58": {"ticks": 35, "rig": [0, 0], "body": "scale", "ops": []}
   },
   "246": {
     "34": {"ticks": 30, "rig": 33, "ops": [
@@ -274,14 +315,242 @@
       {"op": "turn", "bone": 3, "axis": "x", "deg": 26},
       {"op": "lift", "bone": 1, "up": 130}
     ]},
-    "44": {"ticks": 27, "ops": [
+    "44": {"ticks": 27, "rig": [0, 0], "body": "scale", "ops": [
       {"op": "turn", "bone": 7, "axis": "x", "deg": 20}
+    ]},
+    "34": {"ticks": 91, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "lift", "bone": 1, "up": -8}
+    ]},
+    "58": {"ticks": 61, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "lift", "bone": 1, "up": -34},
+      {"op": "smooth", "bone": 3, "weight": 0.15}
     ]}
+  },
+  "251": {
+    "5": {"current": true, "ticks": 41, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -23}
+    ]},
+    "7": {"current": true, "ticks": 41, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -12}
+    ]},
+    "8": {"current": true, "ticks": 41, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -23}
+    ]},
+    "9": {"current": true, "ticks": 51, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -25}
+    ]},
+    "10": {"current": true, "ticks": 41, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -20}
+    ]},
+    "11": {"current": true, "ticks": 41, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -18}
+    ]},
+    "12": {"current": true, "ticks": 41, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -23}
+    ]},
+    "13": {"current": true, "ticks": 41, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -19}
+    ]},
+    "14": {"current": true, "ticks": 17, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -19}
+    ]},
+    "15": {"current": true, "ticks": 17, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -19}
+    ]},
+    "16": {"current": true, "ticks": 17, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -19}
+    ]},
+    "17": {"current": true, "ticks": 17, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -19}
+    ]},
+    "19": {"current": true, "ticks": 9, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -20}
+    ]},
+    "21": {"current": true, "ticks": 17, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -23}
+    ]},
+    "22": {"current": true, "ticks": 31, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -21}
+    ]},
+    "23": {"current": true, "ticks": 21, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -12}
+    ]},
+    "24": {"current": true, "ticks": 10, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -19}
+    ]},
+    "25": {"current": true, "ticks": 10, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -20}
+    ]},
+    "27": {"current": true, "ticks": 21, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -16}
+    ]},
+    "28": {"current": true, "ticks": 61, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -18}
+    ]},
+    "29": {"current": true, "ticks": 25, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -25}
+    ]},
+    "30": {"current": true, "ticks": 81, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -18}
+    ]},
+    "33": {"current": true, "ticks": 89, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -17}
+    ]},
+    "34": {"current": true, "ticks": 17, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -23}
+    ]},
+    "35": {"current": true, "ticks": 17, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -25}
+    ]},
+    "36": {"current": true, "ticks": 17, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -24}
+    ]},
+    "37": {"current": true, "ticks": 6, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -20}
+    ]},
+    "40": {"current": true, "ticks": 46, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "offset_motion", "bone": 3, "axis": "x", "keep": 0.66},
+      {"op": "offset_motion", "bone": 4, "axis": "x", "keep": 0.66},
+      {"op": "lift", "bone": 1, "up": -28}
+    ]},
+    "41": {"current": true, "ticks": 46, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "offset_motion", "bone": 3, "axis": "x", "keep": 0.66},
+      {"op": "offset_motion", "bone": 4, "axis": "x", "keep": 0.66},
+      {"op": "lift", "bone": 1, "up": -28}
+    ]},
+    "42": {"current": true, "ticks": 54, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -19}
+    ]},
+    "43": {"current": true, "ticks": 40, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -30}
+    ]},
+    "44": {"current": true, "ticks": 21, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -12}
+    ]},
+    "46": {"current": true, "ticks": 41, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -23}
+    ]},
+    "47": {"current": true, "ticks": 61, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -24}
+    ]},
+    "48": {"current": true, "ticks": 41, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -23}
+    ]},
+    "49": {"current": true, "ticks": 61, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -24}
+    ]},
+    "50": {"current": true, "ticks": 41, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -23}
+    ]},
+    "51": {"current": true, "ticks": 61, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -24}
+    ]},
+    "52": {"current": true, "ticks": 61, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -24}
+    ]},
+    "53": {"current": true, "ticks": 41, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -23}
+    ]},
+    "54": {"current": true, "ticks": 33, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -21}
+    ]},
+    "55": {"current": true, "ticks": 61, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "offset", "bone": 3, "delta": [-12, 5, 0]},
+      {"op": "offset", "bone": 4, "delta": [12, 5, 0]},
+      {"op": "lift", "bone": 1, "up": -24}
+    ]}
+  },
+  "255": {
+    "34": {"ticks": 21, "rig": [0, 0], "body": "scale", "ops": [{"op": "lift", "bone": 1, "up": 16}]}
   },
   "258": {
     "34": {"ticks": null, "ops": [
       {"op": "turn", "bone": 2, "axis": "x", "deg": -10},
-      {"op": "turn", "bone": 3, "axis": "x", "deg": -6}
+      {"op": "turn", "bone": 3, "axis": "x", "deg": -6},
+      {"op": "lift", "bone": 1, "up": -3},
+      {"op": "offset", "bone": 3, "delta": [0, -5, 0]}
     ]}
   },
   "259": {
@@ -377,6 +646,16 @@
       {"op": "damp", "bone": 15, "keep": 0, "to": "first", "ticks": [16, 24, 24, 24]}
     ]}
   },
+  "288": {
+    "33": {"ticks": 32, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "lift", "bone": 1, "up": 8}
+    ]},
+    "34": {"ticks": 17, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "lift", "bone": 1, "up": 11},
+      {"op": "turn", "bone": 10, "axis": "z", "deg": -15},
+      {"op": "turn", "bone": 13, "axis": "z", "deg": 15}
+    ]}
+  },
   "291": {
     "36": {"ticks": 21, "ops": [
       {"op": "turn", "bone": 3, "axis": "x", "deg": -22}
@@ -410,6 +689,11 @@
       {"op": "damp", "bone": 25, "keep": 0.8, "to": "mean"},
       {"op": "damp", "bone": 26, "keep": 0.8, "to": "mean"},
       {"op": "damp", "bone": 27, "keep": 0.8, "to": "mean"}
+    ]}
+  },
+  "297": {
+    "33": {"ticks": 151, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "lift", "bone": 1, "up": 28}
     ]}
   },
   "304": {
@@ -495,6 +779,18 @@
   },
   "328": {
     "36": {"ticks": 23, "ops": [
+    ]}
+  },
+  "332": {
+    "33": {"ticks": 68, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "lift", "bone": 1, "up": 8}
+    ]},
+    "34": {"ticks": 21, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "lift", "bone": 1, "up": 17},
+      {"op": "offset", "bone": 25, "delta": [0, -20, 0]},
+      {"op": "offset", "bone": 10, "delta": [25, 0, 0]},
+      {"op": "offset", "bone": 14, "delta": [-25, 0, 0]},
+      {"op": "offset", "bone": 13, "delta": [-10, 0, 0]}
     ]}
   },
   "336": {

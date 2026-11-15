@@ -297,6 +297,12 @@ def cmd_put(a):
     manifest = load(MODELS)
     row, = rows(manifest, [a.id])
     files = {'mmd': Path(a.mmd).read_bytes()}
+    donor_text = None
+    if getattr(a, 'repin_donors_from', None):
+        donor_text = repin_donors(NATIVE_ROWS.read_text(), row['id'],
+                                  sha256(Path(a.repin_donors_from).read_bytes()), sha256(files['mmd']))
+        if donor_text is None:
+            raise ValueError(f"{row['id']}: no native binding pins that donor input")
     if a.tim:
         files['tim'] = Path(a.tim).read_bytes()
     changed = {k: d for k, d in files.items() if a.force or sha256(d) != row[k]['sha256']}
@@ -324,6 +330,9 @@ def cmd_put(a):
         record.update(delta_sha256=sha256(delta), sha256=sha256(data), size=len(data))
         same = 'byte-identical' if delta == old else f'{len(old)} -> {len(delta)} B'
         print(f'{record["delta"]}: {same}; target sha256 {record["sha256"]}')
+    if donor_text is not None:
+        NATIVE_ROWS.write_text(donor_text)
+        print(f'{NATIVE_ROWS.relative_to(ROOT)}: donor pins of {row["id"]} updated')
     save(MODELS, manifest)
     print(f'{MODELS.relative_to(ROOT)}: pins of {row["id"]} {row["name"]} updated')
     if a.no_species_pins:
@@ -670,6 +679,8 @@ def main():
     u.add_argument('tim', nargs='?')
     u.add_argument('--force', action='store_true', help='re-encode even when the target is the pinned one')
     u.add_argument('--no-species-pins', action='store_true')
+    u.add_argument('--repin-donors-from', metavar='OLD_MMD',
+                   help='move native bindings that pin OLD_MMD as this species donor to the new model')
     c = sub.add_parser('check')
     c.add_argument('ids', nargs='*')
     c.add_argument('--species-pins', action='store_true')

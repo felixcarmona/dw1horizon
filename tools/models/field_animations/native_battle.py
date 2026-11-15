@@ -281,6 +281,14 @@ def apply(output, ctx, slots, keep_events=(), repairs=None, ticks=None, share=No
         else:                           # the common effects and the species' own voice; not the partner's care voice
             events = [e for e in events if e[1] == 'sound' and e[2]['bank'] in (1, 4)]
         samples = retarget(frames, ctx)
+        # Binding can reshape the field rig after context() captured the donor rest pose.
+        # Every restored clip must inherit that final rig, including future restored slots.
+        final_rest = animsheet.slot_frames(model, nb, 0)[0][0]
+        # Changes to the idle's stance or a hand placement do not resize the body.
+        # Fit every restored slot when the binding changed the apparent body size.
+        if not 0.92 <= clip_repair.relative_size(ctx['rest'], final_rest) <= 1.08:
+            samples = [[[int(round(v)) for v in bone] for bone in pose]
+                       for pose in clip_repair.fit_rig(samples, ctx['rest'], final_rest)]
         if repairs and str(slot) in repairs:
             samples = clip_repair.apply_ops(samples, [p for _, p in rig], repairs[str(slot)])
             events = repaired_events(events, len(frames), repairs[str(slot)])

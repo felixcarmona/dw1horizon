@@ -171,7 +171,7 @@ class NativeBattle(unittest.TestCase):
         model.anims.anims = [mock.Mock()]
         source = mock.Mock()
         source.anims.table = [0] * 64
-        ctx = dict(rig=[(0, -1), (1, 0)], source=source, skeleton=[(0, -1), (1, 0)])
+        ctx = dict(rig=[(0, -1), (1, 0)], source=source, skeleton=[(0, -1), (1, 0)], rest=frames[0])
         ops = [{'op': 'cut', 'from': 1, 'to': 3}, {'op': 'retime', 'ticks': 10}]
         with mock.patch.object(native_battle.mmd.MMD, 'parse', return_value=model), \
                 mock.patch.object(native_battle.animsheet, 'slot_frames', return_value=(frames, None, events)), \
@@ -184,6 +184,39 @@ class NativeBattle(unittest.TestCase):
         self.assertEqual(len(samples), 11)
         self.assertEqual(actual_events, [(0, 'sound', {'bank': 1, 'note': 1}),
                                          (8, 'sound', {'bank': 4, 'note': 3})])
+
+    def test_restored_clips_take_the_final_field_rig(self):
+        import copy
+        from unittest import mock
+        original = [[4096] * 3 + [0] * 6 for _ in range(3)]
+        original[2][7] = -100
+        final = copy.deepcopy(original)
+        final[2][7] = -125
+        frames = [copy.deepcopy(original) for _ in range(3)]
+        frames[1][2][3] = 200
+        model = mock.Mock()
+        model.anims.table = [0] * 64
+        model.anims.anims = [mock.Mock()]
+        source = mock.Mock()
+        source.anims.table = [0] * 64
+        ctx = dict(rig=[(-1, -1), (0, 0), (1, 1)], source=source,
+                   skeleton=[(-1, -1), (0, 0), (1, 1)], rest=original)
+        events = [(1, 'sound', {'bank': 1, 'note': 2})]
+        with mock.patch.object(native_battle.mmd.MMD, 'parse', return_value=model), \
+                mock.patch.object(native_battle.animsheet, 'slot_frames',
+                                  side_effect=lambda m, nb, slot: ([final] * 3, 0, events)), \
+                mock.patch.object(native_battle, 'source_clip', return_value=(frames, events, 0, 1)), \
+                mock.patch.object(native_battle, 'retarget', side_effect=lambda poses, context: poses), \
+                mock.patch.object(native_battle.mmd, 'encode_anim') as encode, \
+                mock.patch.object(native_battle.motioncyclelayer, 'share_identical_streams', side_effect=lambda a, t: (a, t)):
+            for slot in (33, 58):
+                native_battle.apply(b'model', ctx, [slot])
+                samples, _, loop, actual_events = encode.call_args.args
+                self.assertEqual([p[2][7] for p in samples], [-125] * 3)
+                self.assertEqual([p[2][3] for p in samples], [0, 200, 0])
+                self.assertEqual([p[0] for p in samples], [p[0] for p in frames])
+                self.assertEqual(loop, 0)
+                self.assertEqual(actual_events, events)
 
     def test_a_technique_shares_the_clip_the_source_plays_for_both(self):
         # `share`: slot 0x2F plays 0x2E's restored program where the source has one program in both slots
