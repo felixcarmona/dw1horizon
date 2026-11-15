@@ -461,6 +461,11 @@ def bind(data, skeleton, recipe, placements=None, final=True, battle_context=Non
         if tuple(recipe['authored_battle']) != authored_battle.SLOTS[sid]:
             raise ValueError('Native binding: unreviewed authored battle slots')
         output, authored_battle_proof = authored_battle.build(output, rig, sid, battle)
+    if final and recipe.get('authored_techniques'):
+        from tools.models import authored_techniques
+        if tuple(recipe['authored_techniques']) != tuple(authored_techniques.PROFILES[sid]):
+            raise ValueError('Native binding: unreviewed authored techniques')
+        output, _ = authored_techniques.build(output, rig, sid, battle)
     # a builder that re-encodes the programs afterwards (wizardmon_native.py) compacts and checks the buffer itself
     storage = (motionstorage.require if final else motionstorage.audit)(output, len(rig))
     proof = dict(species=sid, source_sha256=digest(data), output_sha256=digest(output),

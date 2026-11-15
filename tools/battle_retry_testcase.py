@@ -13,13 +13,14 @@ import motionstorage
 
 
 class BattleRetryCase(unittest.TestCase):
+    review_env = "BATTLE_RETRY_REVIEW"
     sid = None
     changed_slots = ()
 
     def test_final_programs_and_field_bytes(self):
         if self.sid is None:
             self.skipTest('shared case')
-        review = os.environ.get('BATTLE_RETRY_REVIEW')
+        review = os.environ.get(self.review_env)
         if not review:
             self.skipTest('needs before/after provider fixtures')
         review = Path(review)

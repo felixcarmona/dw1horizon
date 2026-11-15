@@ -2180,3 +2180,5 @@ Imperialdramon eases its wing tips through its tired battle idle.
 Divermon keeps its feet planted while its harpoon and ears follow its battle stride.
 
 Zanbamon keeps its rider steady while its mount runs with a grounded, loose stride.
+
+BomberNanimon winds up its arms and settles naturally after its two battle attacks.
