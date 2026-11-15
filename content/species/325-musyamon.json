@@ -10,6 +10,7 @@
                  "Static Elect", "Electric Cloud", "Confused Storm", "Death Claw"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 34,
+  "own_effect": {"technique": "Death Claw", "chunk": 238},
   "model": {
     "file": "build/sizes-out/models/Musyamon.MMD",
     "radius": 210,

@@ -476,5 +476,10 @@
     "name": "Thunder Bolt",
     "stands_for": 62,
     "dw3": {"model": "M334MLDR", "slot": 9, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38], "64": ["E000COM2.BIN", 8, 0, 0], "1011": ["E438RIDN.BIN", 1, 2, 0]}, "pin": "c2b53a337eb635b1b4bdc858bd3d0a944add3c1a", "pins": {"dw3-us": "08145ac3c52da7985dd56b8590c41bb6f7e12401"}}
+  },
+  "238": {
+    "name": "Ura Sword",
+    "stands_for": 62,
+    "dw3": {"model": "M173MSHA", "slot": 5, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38], "7": ["E000COM3.BIN", 5, 0, 0]}, "pin": "2ee3cbfc692016d9c87ed3a1a1fdcd9166a44ac6"}
   }
 }
