@@ -11,6 +11,7 @@
                  "Dynamite Kick (44)", "Megaton Punch", "Counter", "Sonic Jab", "Mega Flame"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 48,
+  "own_effect": {"technique": "Mega Flame", "chunk": 206},
   "model": {
     "file": "build/sizes-out/models/Sakuyamon.MMD",
     "radius": 139,
