@@ -11,6 +11,7 @@
                  "Dynamite Kick (44)", "Tremar", "Sonic Jab", "Mail Strome"],
   "drop": {"item": "sm.recovery", "percent": 30},
   "effects_like": 41,
+  "own_effect": {"technique": "Mail Strome", "chunk": 160},
   "model": {
     "file": "build/meshfix2-out/Pukumon.MMD",
     "radius": 100,

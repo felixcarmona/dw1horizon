@@ -455,3 +455,5 @@ Leave-steady-30-for-20-only-on-a-full-window-of-late.patch
 Drop-the-Monochromon-mood-bubble-once-the-player-has.patch
 Never-show-a-mixed-frame-rate-enter-screens-at-stead.patch
 Clear-the-animation-momentum-without-the-BIOS-memcpy.patch
+Let-a-species-play-its-own-effect-chunk-for-one-tech.patch
+Give-each-species-its-own-finisher-numbers-and-name.patch

@@ -10,6 +10,7 @@
                  "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Sweet Breath"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 48,
+  "own_effect": {"technique": "Sweet Breath", "chunk": 147},
   "model": {
     "file": "build/batch9/Kiwimon.MMD",
     "radius": 151,

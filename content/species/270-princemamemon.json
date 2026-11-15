@@ -11,6 +11,7 @@
                  "Delete Program", "Reverse Prog", "Power Crane", "Smiley Bomb"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 53,
+  "own_effect": {"technique": "Smiley Bomb", "chunk": 137},
   "model": {
     "file": "build/sizes-out/models/PrinceMamemon.MMD",
     "radius": 187,

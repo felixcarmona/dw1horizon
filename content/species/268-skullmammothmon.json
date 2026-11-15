@@ -11,6 +11,7 @@
                  "Dynamite Kick (44)", "Tremar", "Sonic Jab", "Mail Strome"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 47,
+  "own_effect": {"technique": "Mail Strome", "chunk": 135},
   "model": {
     "file": "build/sizes-out/models/SkullMammothmon.MMD",
     "radius": 291,

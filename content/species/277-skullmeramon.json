@@ -11,6 +11,7 @@
                  "Dynamite Kick (44)", "Tremar", "Mega Flame"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 48,
+  "own_effect": {"technique": "Mega Flame", "chunk": 122},
   "model": {
     "file": "build/sizes-out/models/SkullMeramon.MMD",
     "radius": 142,

@@ -11,6 +11,7 @@
                  "Iga School Knife Throw"],
   "drop": {"item": "MP Floppy", "percent": 30},
   "effects_like": 4,
+  "own_effect": {"technique": "Iga School Knife Throw", "chunk": 130},
   "model": {
     "file": "build/batch7/Tortomon.MMD",
     "radius": 193,
