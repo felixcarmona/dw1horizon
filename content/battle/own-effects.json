@@ -356,5 +356,10 @@
     "name": "Dark Spirits DX",
     "stands_for": 92,
     "dw3": {"model": "M250KGET", "slot": 5, "meft": [324], "pin": "f225d7293ac2fd1033aff1a26236f91b8b003395"}
+  },
+  "203": {
+    "name": "Justice Strike",
+    "stands_for": 78,
+    "dw3": {"model": "M390ASLT", "slot": 11, "meft": [93], "pin": "d998529d970e3109762f645bff8ded4df72d16cd"}
   }
 }
