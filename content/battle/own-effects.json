@@ -351,5 +351,10 @@
     "name": "Atomic Ray",
     "stands_for": 102,
     "dw3": {"model": "M356HAND", "slot": 9, "meft": [361], "pin": "f0eae509d38460b917a1dc2ffae344b4d4f1b332"}
+  },
+  "202": {
+    "name": "Dark Spirits DX",
+    "stands_for": 92,
+    "dw3": {"model": "M250KGET", "slot": 5, "meft": [324], "pin": "f225d7293ac2fd1033aff1a26236f91b8b003395"}
   }
 }

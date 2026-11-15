@@ -58,6 +58,7 @@ the moment the attack starts.
 | 299 Hookmon | Captain Cannon (DW2003) | Dark Shot | 3D effect at the caster (MEFT0091) | 1 | plays its whole length (46 frames at 30 fps), hits when it ends | none | one enemy, as for Dark Shot | one enemy |
 | 300 SlashAngemon | Golden Ripper (DW2003) | Death Claw | 3D effect at the caster (MEFT0100) | 1 | plays its whole length (51 frames at 30 fps), hits when it ends | none | one enemy, as for Death Claw | one enemy |
 | 302 HiAndromon | Atomic Ray (DW2003) | Spiral Sword | 3D effect at the caster (MEFT0361) | 1 | plays its whole length (46 frames at 30 fps), hits when it ends | none | one enemy, as for Spiral Sword | one enemy |
+| 303 KingEtemon | Dark Spirits DX (DW2003) | Dark Network & Concert Crush | 3D effect at the caster (MEFT0324) | 1 | plays its whole length (31 frames at 30 fps), hits when it ends | none | one enemy, as for Dark Network & Concert Crush | all enemies |
 
 ## Where the port differs from the source
 
