@@ -433,9 +433,9 @@
       }
      ],
      "storage": {
-      "resident_bytes": 90740,
+      "resident_bytes": 81294,
       "resident_limit": 100352,
-      "cold_bytes": 17268,
+      "cold_bytes": 26724,
       "cold_buffer_bytes": 8192,
       "cold_reads": [
        {
@@ -485,6 +485,41 @@
         "offset": 15276,
         "length": 1992,
         "sector_read_bytes": 4096,
+        "fits": true
+       },
+       {
+        "slot": 21,
+        "offset": 17268,
+        "length": 1688,
+        "sector_read_bytes": 4096,
+        "fits": true
+       },
+       {
+        "slot": 22,
+        "offset": 18956,
+        "length": 948,
+        "sector_read_bytes": 2048,
+        "fits": true
+       },
+       {
+        "slot": 23,
+        "offset": 19904,
+        "length": 3828,
+        "sector_read_bytes": 6144,
+        "fits": true
+       },
+       {
+        "slot": 25,
+        "offset": 23732,
+        "length": 700,
+        "sector_read_bytes": 2048,
+        "fits": true
+       },
+       {
+        "slot": 27,
+        "offset": 24432,
+        "length": 2292,
+        "sector_read_bytes": 6144,
         "fits": true
        }
       ],
@@ -497,9 +532,9 @@
      "source_sha256": "b1c4411519f05df555d2262bd48232cec184e802ff99e970da10d749ad6f259d",
      "output_sha256": "1c06236db26cc8f3460e0892b5d0c2f4311637de1f84ac86075a370603bccacc",
      "storage": {
-      "resident_bytes": 88096,
+      "resident_bytes": 78650,
       "resident_limit": 100352,
-      "cold_bytes": 17268,
+      "cold_bytes": 26724,
       "cold_buffer_bytes": 8192,
       "cold_reads": [
        {
@@ -549,6 +584,41 @@
         "offset": 15276,
         "length": 1992,
         "sector_read_bytes": 4096,
+        "fits": true
+       },
+       {
+        "slot": 21,
+        "offset": 17268,
+        "length": 1688,
+        "sector_read_bytes": 4096,
+        "fits": true
+       },
+       {
+        "slot": 22,
+        "offset": 18956,
+        "length": 948,
+        "sector_read_bytes": 2048,
+        "fits": true
+       },
+       {
+        "slot": 23,
+        "offset": 19904,
+        "length": 3828,
+        "sector_read_bytes": 6144,
+        "fits": true
+       },
+       {
+        "slot": 25,
+        "offset": 23732,
+        "length": 700,
+        "sector_read_bytes": 2048,
+        "fits": true
+       },
+       {
+        "slot": 27,
+        "offset": 24432,
+        "length": 2292,
+        "sector_read_bytes": 6144,
         "fits": true
        }
       ],

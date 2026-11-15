@@ -302,7 +302,8 @@ every 2 frames for types 0x09/0x15/0x45/0x65/0x68/0x6A/
 | 12, 13 | partner: after pooping; rejects the item [inferred] | `partner.c:611`, `466` |
 | 14 | tamer: give an order in combat | `battle_tick.c:129` |
 | 0x1C | only type 0x98 (no collision while it lasts) | `map.c:4007` |
-| 0x1B | partner: HP training motion; external training code controls playback pauses | `trn2_hp_map99.c:73`, `trn2_hp_map107.c:52` |
+| 0x16 | partner: brains training; the NPC opponent uses 0x1E | `trn/trn_brain.c:98`, `104-105`, `131` |
+| 0x1B | partner: HP training motion; training code toggles root movement with `animFlag` bit 1 | `trn2_hp_map99.c:74`, `84-86`, `trn2_hp_map107.c:53`, `63-65` |
 | 0x21 / 0x22 | combat idle; 0x22 also used when stunned | `btl.c:186-194`, `battle_main.c:BTL_tickStunState` |
 | 0x23 / 0x24 | battle walk / run (walk when flagged or HP is at most 20%); 0x24 also fleeing. No X root motion or map collision | `battle_main.c:BTL_startWalkingAnimation`, `anim.c:458`, `map.c:3576` |
 | 0x25 | finite block reaction; sets blocking flag before starting the animation | `battle_main.c:2220` |

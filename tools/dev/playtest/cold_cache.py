@@ -3,12 +3,13 @@
 
 DISPLAY=:141 python3 tools/dev/playtest/cold_cache.py DISC --exe EXE --out build/cold --port 41146 [--ram8]
 
-2 MB: the cache stays off and every cold clip is read without stopping the game. 8 MB: the partner's cold part is read
-once, into 0x80200000, and no cold clip reads the disc. Both: every cold clip of the partner starts, also
+2 MB: the last cold clip stays in the 8 KB buffer until overwritten. 8 MB: the partner's whole cold part
+(up to 64 KB) is read once into 0x80200000. Both: every cold clip of the partner starts, also
 when another clip replaces it while it is being read.
 """
 import argparse
 import json
+import csv
 from pathlib import Path
 import socket
 import struct
@@ -18,6 +19,7 @@ import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from partner_walk import ROOT, WalkTest
+from tools.coldsplit import COLD_SLOTS
 
 CACHE = 0x80200000
 
@@ -63,7 +65,7 @@ return 'armed'
             time.sleep(.2)
         return False
 
-    def start_clips(self, state, *slots):
+    def start_clips(self, state, *slots, training=False):
         e = self.e
         e.run('load', str(state))
         e.run('pause')
@@ -72,20 +74,94 @@ return 'armed'
         partner = e.A('PARTNER_ENTITY')
         self.calls([('startAnimation', (partner, slot)) for slot in slots])
         e.run('resume')
+        if training:
+            # Training clips may loop; the gym's timer ends the session.
+            # Check playback itself here, and full sessions in cold_training.py.
+            end = time.time() + 12
+            while time.time() < end:
+                ram = e.ram()
+                if (e.peek('MOD_COLD_PENDING', 'I', ram) == 0 and
+                    e.peek('PARTNER_ENTITY+0x2e', 'B', ram) == slots[-1] and
+                    e.peek('PARTNER_ENTITY+0x1c', 'h', ram) > 1):
+                    return True
+                time.sleep(.05)
+            return False
         return self.wait_clip()
 
     def every_clip(self, species):
         state = self.out / f'field-{species}.state'
         model = self.e.peek('PARTNER_ENTITY+8', 'I')
         ram = self.e.ram()
-        cold = [s for s in (5, 7, 8, 9, 10, 11, 12, 13)
+        cold = [s for s in COLD_SLOTS
                 if struct.unpack_from('<I', ram, model - 0x80000000 + 4 * s)[0] & 0x80000000]
-        got = {s: self.start_clips(state, s) for s in cold}
-        got['replaced by a cold clip'] = self.start_clips(state, cold[0], cold[-1])
+        got = {s: self.start_clips(state, s, training=s >= 0x14) for s in cold}
+        care = [s for s in cold if s < 0x14]
+        got['replaced by a cold clip'] = self.start_clips(state, care[0], care[-1])
         got['replaced by a resident clip'] = self.start_clips(state, cold[0], 0)
-        got['again after that'] = self.start_clips(state, cold[0], 0, cold[-1])
+        got['again after that'] = self.start_clips(state, care[0], 0, care[-1])
         print(json.dumps({str(k): v for k, v in got.items()}))
         assert all(got.values()), got
+
+    def eating(self, species):
+        """Run the actual item-feeding states through consumption and food effects."""
+        e, a = self.e, self.e.A
+        e.run('load', str(self.out / f'field-{species}.state'))
+        e.run('pause')
+        self.place('PARTNER_ENTITY', -800, -900)
+        self.place('TAMER_ENTITY', -600, -900)
+        e.gs('set', 'partner.para.condition=4', 'partner.para.energyLevel=0',
+             'partner.para.foodLevel=0', 'partner.para.discipline=100')
+        # An isolated fixture bag slot containing two pieces of meat.
+        e.poke('INVENTORY', struct.pack('<h', 38))
+        e.poke('INVENTORY+60', b'\2')
+        e.poke('INVENTORY_POINTER', b'\0')
+        e.poke('TAMER_ITEM+8', struct.pack('<i', -1))
+        e.poke('PARTNER_STATE', b'\1')
+        e.poke('PARTNER_SUB_STATE', b'\0')
+        e.poke('TAMER_STATE', b'\0')
+        self.count_reads()
+        self.lua(f'''
+if CE then CE.v:remove() end
+CE={{n=0,seen=false,played=false,done=false,wait=0,maxwait=0,lines={{'vsync,state,substate,anim,frame,frames,flags,pending'}}}}
+local m=PCSX.getMemPtr()
+local function u8(a) return tonumber(m[a%0x200000]) end
+local function u16(a) return u8(a)+256*u8(a+1) end
+local function u32(a) return u16(a)+65536*u16(a+2) end
+CE.v=PCSX.Events.createEventListener('GPU::Vsync',function()
+ CE.n=CE.n+1
+ local st=u8({a('PARTNER_STATE')});local sub=u8({a('PARTNER_SUB_STATE')})
+ local p={a('PARTNER_ENTITY')};local anim=u8(p+46);local frame=u16(p+28)
+ local pending=u32({a('MOD_COLD_PENDING')})
+ if st==5 then CE.seen=true end
+ if st==5 and anim==8 and frame>1 and pending==0 then CE.played=true end
+ if pending~=0 then CE.wait=CE.wait+1;CE.maxwait=math.max(CE.maxwait,CE.wait) else CE.wait=0 end
+ CE.lines[#CE.lines+1]=table.concat({{CE.n,st,sub,anim,frame,u16(p+30),u8(p+48),pending}},',')
+ if CE.seen and st==1 and u8({a('TAMER_STATE')})==0 then
+  CE.done=true;CE.v:remove();PCSX.pauseEmulator()
+ end
+end)
+return true
+''')
+        e.run('save', str(self.out / 'eating-before.state'))
+        self.calls([('startFeedingItem', (38,))])
+        e.run('resume')
+        self.until('CE.done', 120)
+        e.run('save', str(self.out / 'eating-after.state'))
+        e.run('shot', str(self.out / 'eating-after.png'))
+        trace = self.lua("return table.concat(CE.lines,'\\n')") + '\n'
+        (self.out / 'eating.csv').write_text(trace)
+        rows = list(csv.DictReader(trace.splitlines()))
+        pending = [r for r in rows if int(r['pending'])]
+        result = dict(played=self.lua('return CE.played') == 'true',
+                      vsyncs=int(self.lua('return CE.n')), max_queued_wait_vsyncs=int(self.lua('return CE.maxwait')),
+                      reads=self.counts(), remaining=e.peek('INVENTORY+60', 'B'),
+                      energy=e.peek('PARTNER_PARA+0x3c', 'h'))
+        assert result['played'] and result['remaining'] == 1 and result['energy'] > 0, result
+        assert result['reads']['clip_reads'] == 0, result
+        assert all(int(r['frames']) == 0x7fff and not int(r['flags']) & 1 for r in pending)
+        assert (not pending and result['reads']['async'] == 0) if self.args.ram8 else (pending and result['reads']['async'] == 1), result
+        (self.out / 'eating.json').write_text(json.dumps(result, indent=2) + '\n')
+        print(json.dumps(dict(eating=result)), flush=True)
 
 
 def main():
@@ -114,6 +190,7 @@ def main():
         got['cached'] = e.peek('MOD_COLD_CACHE_TYPE', 'i')
         print(json.dumps(got))
         test.every_clip(args.species)
+        test.eating(args.species)
         assert got['clips'] > 0, 'no cold clip started'
         if args.ram8:
             assert got['cached'] == args.species and got['fills'] >= 1 and got['clip_reads'] == 0, got

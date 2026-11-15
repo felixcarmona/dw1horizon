@@ -7,10 +7,45 @@ import motionstorage as S
 
 
 class ColdCapacity(unittest.TestCase):
+    def test_training_slots_split_and_join_without_cooling_shared_battle_clips(self):
+        m=S.M.mmd.MMD();m.tmd=S.M.mmd.TMD();m.anims=S.M.mmd.AnimSection()
+        pose=[[4096,4096,4096,0,0,0,0,0,0],[4096,4096,4096,0,0,0,0,-20,0]]
+        a=S.M.mmd.encode_anim([pose,copy.deepcopy(pose)],2,loop_sample=None,tol=0,repeats=False)
+        m.anims.anims=[copy.deepcopy(a) for _ in range(9)]
+        m.anims.table=[None]*0x2f
+        m.anims.table[0]=0
+        for i,slot in enumerate(range(0x14,0x1c),1):m.anims.table[slot]=i
+        # Training and a technique can share a stream: both must stay resident.
+        m.anims.table[0x2e]=m.anims.table[0x14]
+        resident,cold=S.C.split(m.build(),2)
+        self.assertEqual(set(S.C.entries(resident)),set(range(0x15,0x1c)))
+        self.assertTrue(all(r['fits'] for r in S.cold_reads(resident)))
+        back=S.M.mmd.MMD.parse(S.C.join(resident,cold,2,len(m.anims.table)),2)
+        for slot,index in enumerate(m.anims.table):
+            if index is None:self.assertIsNone(back.anims.table[slot])
+            else:self.assertTrue(S.C.same_anim(m.anims.anims[index],back.anims.anims[back.anims.table[slot]]))
+
     def test_target_capacities_come_from_the_linked_engine(self):
         text=' .bss.COLD_ANIM_BUFFER\n 0x80100000 0x2000 file.o\n .bss.PARTNER_MODEL_BUFFER\n 0x80102000 0x18800 other.o\n'
         self.assertEqual(S.linker_limits(text),dict(cold_limit=8192,resident_limit=100352))
         with self.assertRaisesRegex(ValueError,'PARTNER_MODEL_BUFFER'):S.linker_limits(text.split(' .bss.PARTNER_MODEL_BUFFER')[0])
+
+    def test_oversized_training_and_its_care_alias_stay_resident(self):
+        m=S.M.mmd.MMD();m.tmd=S.M.mmd.TMD();m.anims=S.M.mmd.AnimSection()
+        pose=[[4096,4096,4096,0,0,0,0,0,0],[4096,4096,4096,0,0,0,0,-20,0]]
+        a=S.M.mmd.encode_anim([pose,copy.deepcopy(pose)],2,loop_sample=None,tol=0,repeats=False)
+        large=copy.deepcopy(a);large.tail+=b'\0'*(11632-len(large.build()))
+        m.anims.anims=[a,large,copy.deepcopy(a)]
+        m.anims.table=[None]*0x1c
+        m.anims.table[0]=0;m.anims.table[5]=1;m.anims.table[0x1b]=1;m.anims.table[0x16]=2
+        resident,cold=S.C.split(m.build(),2)
+        self.assertEqual(set(S.C.entries(resident)),{0x16})
+        back=S.M.mmd.MMD.parse(S.C.join(resident,cold,2,len(m.anims.table)),2)
+        for slot in (0,5,0x16,0x1b):
+            self.assertTrue(S.C.same_anim(m.anims.anims[m.anims.table[slot]],back.anims.anims[back.anims.table[slot]]))
+        # Existing care capacity errors still fail; only training is optional.
+        m.anims.table[0x1b]=None
+        with self.assertRaisesRegex(ValueError,'exceeds buffer'):S.C.split(m.build(),2)
 
     def test_split_aligns_large_stream_and_join_preserves_every_animation(self):
         m=S.M.mmd.MMD();m.tmd=S.M.mmd.TMD();m.anims=S.M.mmd.AnimSection()
