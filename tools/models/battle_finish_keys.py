@@ -21,6 +21,13 @@ def author_keys(data, sk, sid, raw, slots, factor=1.4, mix=0.12):
     delayed = {b: 1 + b % 3 for b in range(3, nb) if not children[b] or len(children[b]) == 1}
     times = [0, 0.12, 0.28, 0.48, 0.66, 0.82, 1]
     target_floor = 0.0
+    if sid == 236:
+        levels = []
+        for pose in animsheet.slot_frames(m, nb, 0)[0]:
+            world = mmd.bone_matrices(m, pose)
+            levels.append(max(sum(world[b][1][j] * v[j] for j in range(3)) + world[b][1][3]
+                              for b in local for v in local[b]))
+        target_floor = sum(levels) / len(levels)
     end = None
     for slot in slots:
         original, loop, events = animsheet.slot_frames(m, nb, slot)
@@ -48,6 +55,9 @@ def author_keys(data, sk, sid, raw, slots, factor=1.4, mix=0.12):
                     d = (src[b][ax] - p[b][ax] + 2048) % 4096 - 2048
                     p[b][ax] += round(d * mix * env)
                 p[b][3] += round(1.0 * q.DEG * env * math.sin((t - delayed[b]) * 0.42))
+            if sid == 236:
+                p[6][5] -= round(12 * q.DEG * env)
+                p[9][5] += round(12 * q.DEG * env)
             p[0] = [4096] * 3 + [0] * 6
             w = mmd.bone_matrices(m, p)
             low = max((sum((w[b][1][j] * v[j] for j in range(3))) + w[b][1][3] for b in local for v in local[b]))
