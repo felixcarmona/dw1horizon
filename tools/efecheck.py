@@ -19,12 +19,15 @@ a different renderer, so a faithful conversion still lands between about 0.5 and
 
     python -m tools.efecheck --disc DW2.bin [--archive EFEDAT.EFE] [keys]   (content/battle/own-effects.json)
     python -m tools.efecheck --composed [--archive EFEDAT.EFE] [keys]       (its composed entries)
+    python -m tools.efecheck --presence                                     (every entry's in-game size)
 
 A composed entry (tools/efecompose.py) is checked against its template, both run by the same script: it must
 leave the technique as it is (launch table, bytes outside the palette, copied texels, vertices and script colours, and the
 run's draws, hits and sounds all the template's), keep at least 35% of the template's energy and coverage per
 phase with a box between 0.5 and 3 times the template's, show its declared hue (within 35 degrees), and differ
 from the template (summed RGB difference at least 0.25 of the summed RGB of both). See check_composed.
+Every entry must also read big enough in the game: --presence checks the emulator measurements of
+content/battle/effect-presence.json against vanilla's smallest and biggest finishers (tools/efepresence.py).
 """
 import math
 import struct
@@ -405,8 +408,12 @@ def main():
     ap.add_argument('--disc', help='the Digimon World 2 (USA) disc image (converted entries)')
     ap.add_argument('--composed', action='store_true', help='check the composed entries (no DW2 disc needed)')
     ap.add_argument('--archive', default='extracted/ETCHI/EFEDAT.EFE', help="this game's effect archive")
+    ap.add_argument('--presence', action='store_true', help='check the measured in-game size of every entry')
     ap.add_argument('keys', nargs='*', help='own-effects.json keys (default: all)')
     a = ap.parse_args()
+    if a.presence:
+        from tools import efepresence
+        efepresence.main(['check'])
     with open(a.archive, 'rb') as f:
         archive = f.read()
     with open('content/battle/own-effects.json') as f:
