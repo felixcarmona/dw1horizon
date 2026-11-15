@@ -482,7 +482,7 @@
     "name": "Dark Spirits DX",
     "stands_for": 92,
     "sounds": [[0, 50], [80, 15], [150, 45]],
-    "dw3": {"model": "M250KGET", "slot": 5, "meft": [324], "pin": "8205449d27270f2158b084a0c65c0fb5825e07e1"}
+    "dw3": {"model": "M250KGET", "slot": 5, "meft": [324], "pin": "7bd9b80e929a3c14f309145c1cacb8fa3e4b4e88"}
   },
   "203": {
     "name": "Justice Strike",
@@ -494,7 +494,7 @@
     "name": "Darkness Chaos",
     "stands_for": 96,
     "sounds": [[0, 50], [0, 41], [60, 40], [143, 10]],
-    "dw3": {"model": "M247DEMN", "slot": 9, "meft": [351], "pin": "149d091040165871d3f050eeab60bfbc11ca051f"}
+    "dw3": {"model": "M247DEMN", "slot": 9, "meft": [351], "pin": "473d80334eedb3a59785166a15ecf43e1e03caff"}
   },
   "205": {
     "name": "Mad Pump",
@@ -506,13 +506,13 @@
     "name": "KongouKaimandara",
     "stands_for": 63,
     "sounds": [[59, 41], [90, 12], [360, 45], [380, 12]],
-    "dw3": {"model": "M376SKYA", "slot": 11, "meft": [87], "leave_out": [[0, 2], [0, 3], [0, 4], [0, 5], [0, 8]], "pin": "c4011f31791dfe91c850744dce625895d7744236"}
+    "dw3": {"model": "M376SKYA", "slot": 11, "meft": [87], "leave_out": [[0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 8]], "pin": "e3cd1220b2d9e6106d33f4998b3a9a95fe8bb32d"}
   },
   "207": {
     "name": "Sylph Storm",
     "stands_for": 102,
     "sounds": [[0, 50], [0, 41], [78, 40], [169, 35]],
-    "dw3": {"model": "M439FUJI", "slot": 9, "meft": [370], "pin": "80ffca26e6858dd0f2ccc431d8ac619bfa9554da"}
+    "dw3": {"model": "M439FUJI", "slot": 9, "meft": [370], "pin": "7c87f1e6da6f9e5b69669d5f975945200f07400c"}
   },
   "208": {
     "name": "Final Purification",
@@ -542,7 +542,7 @@
     "name": "Electro Ball",
     "stands_for": 78,
     "sounds": [[0, 50], [0, 22], [40, 29], [132, 40]],
-    "dw3": {"model": "M441RAIZ", "slot": 9, "meft": [363], "pin": "943bd2037ffdc2c3cd3ffa797746897100a56c5a"}
+    "dw3": {"model": "M441RAIZ", "slot": 9, "meft": [363], "pin": "ef1fba4c64c69690d9deac50553e13a5080f3d90"}
   },
   "214": {
     "name": "Dark Fear",
@@ -644,7 +644,7 @@
     "name": "Darkside Quake",
     "stands_for": 81,
     "sounds": [[0, 56], [0, 4], [5, 56], [10, 45], [20, 56], [20, 4], [25, 56]],
-    "dw3": {"model": "M172MTAR", "slot": 5, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38]}, "pin": "a6ee9c2b58f092882f04c53bce557e95d97b4e79"}
+    "dw3": {"model": "M172MTAR", "slot": 5, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38]}, "pin": "6e7777d24ecfa9de1aa44b5a05742ea06d66873a"}
   },
   "242": {
     "name": "Roach Rush",

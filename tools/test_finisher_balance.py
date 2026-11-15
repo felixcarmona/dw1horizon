@@ -64,13 +64,16 @@ class FinisherBalance(unittest.TestCase):
         self.assertTrue(any('band middle' in p for p in self.problems_after('Raremon', status_on_top)))
 
     def test_buff_is_capped_and_has_a_fallback(self):
-        def big(e):
-            e['buff']['defense'] = 90
-        self.assertTrue(self.problems_after('Baihumon', big))
-
-        def no_fallback(e):
-            del e['fallback']
-        self.assertTrue(any('fallback' in p for p in self.problems_after('Baihumon', no_fallback)))
+        # no shipped entry is a buff (the engine has no buff code); the check still holds one to its limits
+        def as_buff(e, defense=15, fallback=True):
+            if fallback:
+                e['fallback'] = dict(kind=e['behavior']['kind'], target='one', look='', move=dict(e['move']))
+            e['behavior']['kind'] = 'buff'
+            e['buff'] = dict(offense=0, defense=defense, speed=0, heal_percent=0)
+            e['move'] = dict(e['move'], power=0, range=4, distance=0, flags=[])
+        self.assertFalse(self.problems_after('Baihumon', as_buff))
+        self.assertTrue(self.problems_after('Baihumon', lambda e: as_buff(e, defense=90)))
+        self.assertTrue(any('fallback' in p for p in self.problems_after('Baihumon', lambda e: as_buff(e, fallback=False))))
 
     def test_element_must_be_a_specialty(self):
         def wrong(e):

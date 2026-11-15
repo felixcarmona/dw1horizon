@@ -82,7 +82,6 @@ class Record(unittest.TestCase):
                 self.assertEqual(fins[e['species']]['range'], e['fallback']['move']['range'])
 
     def test_neutral_writes_no_numbers(self):
-        self.assertTrue(DATA.get('neutral', True), 'the shipped data keeps the DW1 numbers (docs/mods/unique-finishers.md)')
         fins, _ = moves_with(neutral=True)
         for t, f in fins.items():
             self.assertEqual(set(f), {'tech', 'name'})
@@ -109,11 +108,14 @@ class AreaChunks(unittest.TestCase):
         """An own effect chunk picks its own targets: it hits every enemy only when the designed numbers play."""
         from unittest import mock
         from tools.derive.steps import effects
-        self.assertEqual(effects.finisher_area_chunks(ROOT), set())
         real = json.load
-        with mock.patch('json.load', lambda f, **k: (lambda d: dict(d, neutral=False) if 'finishers' in d else d)(real(f, **k))):
-            self.assertIn(122, effects.finisher_area_chunks(ROOT))          # SkullMeramon's Metal Fireball
-            self.assertNotIn(123, effects.finisher_area_chunks(ROOT))       # Raremon's Buffalo Breath: one target
+
+        def chunks(neutral):
+            with mock.patch('json.load', lambda f, **k: (lambda d: dict(d, neutral=neutral) if 'finishers' in d else d)(real(f, **k))):
+                return effects.finisher_area_chunks(ROOT)
+        self.assertEqual(chunks(True), set())
+        self.assertIn(122, chunks(False))          # SkullMeramon's Metal Fireball
+        self.assertNotIn(123, chunks(False))       # Raremon's Buffalo Breath: one target
 
 
 class Names(unittest.TestCase):

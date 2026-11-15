@@ -1,7 +1,7 @@
 {
- "_comment": "Unique finisher of every imported species, keyed by species id. Authored design data: docs/mods/unique-finishers.md explains every field. \"move\" is what the battle uses (written to the species record, read through modSpeciesMove); the name goes to the text banks as species.<id>.finisher. The effect chunk itself is the species JSON \"own_effect\". \"neutral\": true writes no numbers: every import keeps the DW1 numbers of the finisher it replaces, while its name and own effect still apply.",
+ "_comment": "Unique finisher of every imported species, keyed by species id. Authored design data: docs/mods/unique-finishers.md explains every field. \"move\" is what the battle uses (written to the species record, read through modSpeciesMove); the name goes to the text banks as species.<id>.finisher. The effect chunk itself is the species JSON \"own_effect\". \"neutral\": false plays these numbers; true writes none: every import keeps the DW1 numbers of the finisher it replaces, while its name and own effect still apply.",
  "format": 1,
- "neutral": true,
+ "neutral": false,
  "finishers": [
   {
    "species": 62,
@@ -143,10 +143,10 @@
     "name": "Mail Strome"
    },
    "behavior": {
-    "kind": "buff",
-    "target": "self",
+    "kind": "beam",
+    "target": "one",
     "hits": 1,
-    "look": "A green glow over itself.",
+    "look": "A cold beam.",
     "dash": false,
     "clip": "G0"
    },
@@ -175,49 +175,20 @@
     }
    },
    "move": {
-    "power": 0,
+    "power": 228,
     "element": "ice",
-    "range": 4,
-    "distance": 0,
+    "range": 2,
+    "distance": 640000,
     "accuracy": 100,
     "status": 0,
     "statusChance": 0,
     "iframes": 1,
-    "flags": [],
+    "flags": [
+     "T"
+    ],
     "mpCost": 40
    },
-   "buff": {
-    "offense": 0,
-    "defense": 15,
-    "speed": 0,
-    "cure": [
-     "poison",
-     "confusion",
-     "stun"
-    ],
-    "heal_percent": 20,
-    "note": "Recovery Power: cures confusion, poison and stun -> cures them, heals 20 % of max HP, Defense +15 %."
-   },
-   "fallback": {
-    "kind": "beam",
-    "target": "one",
-    "look": "A cold beam.",
-    "move": {
-     "power": 228,
-     "element": "ice",
-     "range": 2,
-     "distance": 640000,
-     "accuracy": 100,
-     "status": 0,
-     "statusChance": 0,
-     "iframes": 1,
-     "flags": [
-      "T"
-     ],
-     "mpCost": 40
-    }
-   },
-   "notes": "Source cures confusion, poison and stun; see buff."
+   "notes": "Source cures confusion, poison and stun and heals; a buff would need engine code, so this damaging beam is the finisher."
   },
   {
    "species": 126,
@@ -816,7 +787,7 @@
    "species": 192,
    "species_name": "Imperialdramon",
    "level": "mega",
-   "name": "Mega Fire",
+   "name": "Positron Laser",
    "source": {
     "game": "dcb",
     "basis": "disc",
@@ -859,7 +830,7 @@
     ],
     "mpCost": 40
    },
-   "notes": "Close to DW1 \"Mega Flame\": consider the canon \"Positron Laser\"."
+   "notes": "Canon \"Positron Laser\": the source's \"Mega Fire\" read too close to DW1's Mega Flame."
   },
   {
    "species": 193,
@@ -2247,15 +2218,15 @@
     "range": 2,
     "distance": 640000,
     "accuracy": 100,
-    "status": 2,
-    "statusChance": 20,
+    "status": 0,
+    "statusChance": 0,
     "iframes": 1,
     "flags": [
      "T"
     ],
     "mpCost": 40
    },
-   "notes": "Lightning Paw stays with Gatomon (canon owner). Confusion is a proposal: the card data has no status field."
+   "notes": "Lightning Paw stays with Gatomon (canon owner). No status: the card data has none."
   },
   {
    "species": 223,
@@ -4109,7 +4080,7 @@
    "species": 260,
    "species_name": "MetalTyrannomon",
    "level": "ultimate",
-   "name": "Fire Blast II",
+   "name": "Nuclear Laser",
    "source": {
     "game": "dw2",
     "basis": "disc",
@@ -4171,7 +4142,7 @@
     ],
     "mpCost": 40
    },
-   "notes": "Reads like DarkTyrannomon's Fire Blast; canon alternative \"Nuclear Laser\" (\"Giga Destroyer\" is already MetalGreymon's name)."
+   "notes": "Canon \"Nuclear Laser\": the source's \"Fire Blast II\" read like DarkTyrannomon's Fire Blast (\"Giga Destroyer\" is already MetalGreymon's name)."
   },
   {
    "species": 261,
@@ -4342,10 +4313,10 @@
     "name": "Drill Spin"
    },
    "behavior": {
-    "kind": "buff",
-    "target": "self",
+    "kind": "shot",
+    "target": "one",
     "hits": 1,
-    "look": "Spores puff around itself.",
+    "look": "A cloud of poison spores (poison 20 %).",
     "dash": false,
     "clip": "G0"
    },
@@ -4374,45 +4345,20 @@
     }
    },
    "move": {
-    "power": 0,
+    "power": 93,
     "element": "nature",
-    "range": 4,
-    "distance": 0,
+    "range": 2,
+    "distance": 360000,
     "accuracy": 100,
-    "status": 0,
-    "statusChance": 0,
+    "status": 1,
+    "statusChance": 20,
     "iframes": 1,
-    "flags": [],
+    "flags": [
+     "T"
+    ],
     "mpCost": 40
    },
-   "buff": {
-    "offense": 10,
-    "defense": 0,
-    "speed": 10,
-    "on_hit_status": "poison",
-    "on_hit_chance": 15,
-    "note": "Fungus Cruncher: its own attacks poison for the battle -> Offense +10 %, Speed +10 %, hits poison at 15 %."
-   },
-   "fallback": {
-    "kind": "shot",
-    "target": "one",
-    "look": "A cloud of poison spores (poison 20 %).",
-    "move": {
-     "power": 93,
-     "element": "nature",
-     "range": 2,
-     "distance": 360000,
-     "accuracy": 100,
-     "status": 1,
-     "statusChance": 20,
-     "iframes": 1,
-     "flags": [
-      "T"
-     ],
-     "mpCost": 40
-    }
-   },
-   "notes": "Source: its attacks poison for the battle; see buff."
+   "notes": "Source: its attacks poison for the battle; a buff would need engine code, so this damaging shot is the finisher."
   },
   {
    "species": 264,
@@ -5290,10 +5236,10 @@
     "name": "Genoside Attack"
    },
    "behavior": {
-    "kind": "buff",
-    "target": "self",
+    "kind": "dash",
+    "target": "one",
     "hits": 1,
-    "look": "A diamond-white glow.",
+    "look": "A diamond-hard charge.",
     "dash": false,
     "clip": "G0"
    },
@@ -5322,43 +5268,20 @@
     }
    },
    "move": {
-    "power": 0,
+    "power": 255,
     "element": "battle",
-    "range": 4,
-    "distance": 0,
+    "range": 2,
+    "distance": 160000,
     "accuracy": 100,
     "status": 0,
     "statusChance": 0,
     "iframes": 1,
-    "flags": [],
+    "flags": [
+     "T"
+    ],
     "mpCost": 40
    },
-   "buff": {
-    "offense": 10,
-    "defense": 50,
-    "speed": 0,
-    "note": "Kongou: unbeatable during its own turn -> Defense +50 %, Offense +10 % for the battle."
-   },
-   "fallback": {
-    "kind": "dash",
-    "target": "one",
-    "look": "A diamond-hard charge.",
-    "move": {
-     "power": 255,
-     "element": "battle",
-     "range": 2,
-     "distance": 160000,
-     "accuracy": 100,
-     "status": 0,
-     "statusChance": 0,
-     "iframes": 1,
-     "flags": [
-      "T"
-     ],
-     "mpCost": 40
-    }
-   },
-   "notes": "Source: unbeatable during its own turn; see buff. Japanese word: consider \"Diamond Guard\"."
+   "notes": "Source: unbeatable during its own turn; a buff would need engine code, so this damaging dash is the finisher."
   },
   {
    "species": 277,
