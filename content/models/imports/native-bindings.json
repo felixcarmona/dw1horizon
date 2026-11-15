@@ -3908,7 +3908,11 @@
       "compact": {
         "tol": 0
       }
-    }
+    },
+    "authored_finishes": [
+      43,
+      44
+    ]
   },
   "270": {
     "species": 270,

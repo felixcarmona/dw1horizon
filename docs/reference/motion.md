@@ -2097,3 +2097,10 @@ turn clears the victory's native motion check (24.5 degrees for the worst piece,
 the 100,352-byte buffer. Shorter versions still need at least 101,050 bytes.
 The newly keyed faint and recovery need 108,898 bytes together, so they also stay
 out; its field motion and every battle program remain unchanged.
+
+MetalTyrannomon braces, recoils onto its haunches, then folds forward onto its jaw
+and chest. The cannons open away from the body and the toes fold clear of the
+landing; head, jaw, arms and tail follow at different delays. A small rebound
+settles into the fallen pose. Recovery loads the arms before transferring weight
+to both planted feet, then eases into its battle stance. Sound ticks follow the
+longer clips; field motion and all other battle programs stay unchanged.
