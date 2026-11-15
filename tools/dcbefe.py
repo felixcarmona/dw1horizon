@@ -38,12 +38,14 @@ def launch_table(chunk):
 SPECIES_TABLE = os.path.join('content', 'finishers', 'dcb-effects.json')
 
 
-def build(disc, d, origin_table, effect_id):
+def build(disc, d, origin_table, effect_id, sounds=None, hit_sound=None):
     """(chunk, info) of an own effect's "dcb" entry (content/battle/own-effects.json): the attack and hit scripts
     converted at the fit the entry records ([animated sprite frames, texture shrink, objects per script]), gameplay
-    neutral (one target, one hit) with the launch table of the chunk it stands for."""
+    neutral (one target, one hit) with the launch table of the chunk it stands for. sounds uses engine ticks,
+    relative to the first drawn spawn, before cast compression; hit_sound plays with the first damage event."""
     fit = tuple(d['fit'])
-    return Attack(disc, d['attack'], d['hit']).convert(origin_table, effect_id=effect_id, ladder=(fit,))
+    return Attack(disc, d['attack'], d['hit']).convert(origin_table, effect_id=effect_id, ladder=(fit,),
+                                                    sounds=sounds, hit_sound=hit_sound)
 
 
 def species_entry(species, root='.'):
@@ -142,7 +144,20 @@ class Attack:
             if not casts and not hits:
                 raise dw2efe.Unconvertible('effect: nothing is ever drawn')
             try:
-                chunk, info = convert_skill(casts, hits, table, effect_id, SCALE, hit_scale=SCALE, **kw)
+                opts = dict(kw)
+                if opts.get('sounds') is not None:
+                    # The source ticks follow the same time compression as the cast poses.
+                    first, last = window(self.cast_tr)
+                    compression = max(1.0, (last - first) / dw2efe.CAST_FRAMES)
+                    cues, ticks = [], {}
+                    for t, sid in sorted(opts['sounds'], key=lambda cue: cue[0]):
+                        tick = max(0, int(t / compression))
+                        here = ticks.setdefault(tick, [])
+                        if sid not in here and len(here) < 2:
+                            here.append(sid)
+                            cues.append((tick, sid))
+                    opts['sounds'] = cues
+                chunk, info = convert_skill(casts, hits, table, effect_id, SCALE, hit_scale=SCALE, **opts)
             except dw2efe.Unconvertible as e:
                 last = e
                 if 'slot has' not in str(e) and 'do not fit' not in str(e):

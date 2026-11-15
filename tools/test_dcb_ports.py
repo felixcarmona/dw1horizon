@@ -5,7 +5,7 @@ its chunk is the species' row of content/finishers/dcb-effects.json, that row pa
 did not pass keep the technique's own effect and say why.
 
 With discs (DCB_IMAGE: the USA disc; DCB_EU_IMAGE, DCB_JP_IMAGE: the others, each optional): the derive path builds
-every port from the disc's extracted files to its pinned SHA-1, so every release gives the same chunks.
+every port from the disc's extracted files to that release's pinned SHA-1.
 
     DCB_IMAGE=DCB.bin [DCB_EU_IMAGE=...] [DCB_JP_IMAGE=...] python3 -m unittest tools.test_dcb_ports
 """
@@ -55,6 +55,17 @@ class Wiring(unittest.TestCase):
                 for rid, pin in d.get('pins', {}).items():
                     self.assertIn(rid, ('dcb-eu', 'dcb-jp'))
                     self.assertRegex(pin, r'^[0-9a-f]{40}$')
+
+    def test_ports_have_explicit_native_sound_cues(self):
+        battle_sounds = set(range(64)) - {9, 58}
+        for chunk, e in ports().items():
+            with self.subTest(chunk=chunk, name=e['name']):
+                for tick, sid in e.get('sounds', []):     # none: a script with no sound call keeps the generic ones
+                    self.assertIsInstance(tick, int)
+                    self.assertGreaterEqual(tick, 0)
+                    self.assertIn(sid, battle_sounds)
+                if 'hit_sound' in e:
+                    self.assertIn(e['hit_sound'], battle_sounds)
 
     def test_rows_that_did_not_pass_keep_the_template(self):
         ported = ports()
