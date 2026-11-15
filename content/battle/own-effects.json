@@ -341,5 +341,10 @@
     "name": "Captain Cannon",
     "stands_for": 80,
     "dw3": {"model": "M387PIRT", "slot": 11, "meft": [91], "pin": "00abe117e496baa0bc75aaa00d54bdbc56a7c45a"}
+  },
+  "200": {
+    "name": "Golden Ripper",
+    "stands_for": 62,
+    "dw3": {"model": "M392SLAG", "slot": 11, "meft": [100], "pin": "729709691b220aebef9b31c7041a1d7ea3785a90"}
   }
 }
