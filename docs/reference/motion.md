@@ -2161,3 +2161,9 @@ victory fits but still turns a head piece 28.1 degrees off its intended pose and
 misses a tip by 0.171 heights. The source fall and recovery need 100,608 and
 101,476 bytes. The keyed alternatives need 105,720, 102,396 and 103,334 bytes;
 field motion and every existing battle program remain unchanged.
+
+DemiDevimon keeps its existing aerial victory. Source counter-turns reduce the
+tip error from 0.200 to 0.193 heights, but it still floats 0.460 heights above its
+usual hover. A revised hover clears the motion checks at 88,888 bytes, yet has
+65.84 crossings per tick against 65.03, so it stays out. Field motion and every
+battle program remain unchanged.
