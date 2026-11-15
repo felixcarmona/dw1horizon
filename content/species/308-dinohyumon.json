@@ -10,6 +10,7 @@
                  "Wind Cutter", "Spinning Shot", "Counter", null, "Scissor Claw"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 48,
+  "own_effect": {"technique": "Scissor Claw", "chunk": 228},
   "model": {
     "file": "build/batch11/Dinohumon.MMD",
     "radius": 115,
