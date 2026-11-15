@@ -20,6 +20,21 @@ def clip(n=12):
 
 
 class ClipRepairTest(unittest.TestCase):
+    def test_parent_space_turn_follows_the_parent_and_keeps_dimensions(self):
+        frames = clip(1)
+        frames[0][1][3:6] = [0, 0, 1024]
+        frames[0][2][3:6] = frames[0][3][3:6] = [0, 0, 0]
+        op = dict(op='turn', bone=3, axis='x', deg=90, space='parent')
+        out = clip_repair.apply_ops(frames, PARENTS, [op])
+        expected = clip_repair._axis_angle('x', 90)
+        actual = clip_repair._rot(*out[0][3][3:6])
+        for a, b in zip(actual, expected):
+            for x, y in zip(a, b):
+                self.assertAlmostEqual(x, y, places=6)
+        self.assertEqual(out[0][:3], frames[0][:3])
+        self.assertEqual(out[0][3][:3] + out[0][3][6:], frames[0][3][:3] + frames[0][3][6:])
+        self.assertNotEqual(out, clip_repair.apply_ops(frames, PARENTS, [dict(op, space='world')]))
+
     def test_no_ops_is_exact(self):
         self.assertEqual(clip_repair.apply_ops(clip(), PARENTS, []), clip())
 

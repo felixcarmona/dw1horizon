@@ -101,7 +101,9 @@ def polished_slots(sid):
     if os.path.exists(path):
         with open(path) as fh:
             rebuilt = tuple(int(k) for k, row in json.load(fh).get(str(sid), {}).items() if not row.get('current'))
-    return tuple(sorted(set(POLISHED.get(sid, ())) | set(rebuilt)))
+    from tools.models.clip_rig import post_fits
+    fitted = map(int, post_fits().get(str(sid), {}))
+    return tuple(sorted(set(POLISHED.get(sid, ())) | set(rebuilt) | set(fitted)))
 
 
 def authored_slots(sid):
@@ -144,6 +146,7 @@ class Rig:
     """A skeleton (parent per bone), its rigid pieces (local vertices and triangles per bone) and its clips."""
 
     def __init__(self, parents, local, tris, clips):
+        self.proportion_groups = {b: 'arm' for b in range(len(parents))}
         self.parent = list(parents)
         self.nb = len(self.parent)
         self.children = {b: [c for c in range(self.nb) if self.parent[c] == b] for b in range(self.nb)}
@@ -163,7 +166,7 @@ class Rig:
         self._clips = clips              # {slot: (frames (F, nb, 9), loop)} or a callable slot -> that or None
 
     @classmethod
-    def from_mmd(cls, data, bones):
+    def from_mmd(cls, data, bones, sid=None):
         import animsheet
         import meshcheck
         mc = meshcheck.Model(data, [tuple(b) for b in bones])
@@ -175,7 +178,18 @@ class Rig:
                 return None
             fr, loop, _ = animsheet.slot_frames(mc.m, nb, slot)
             return np.array(fr, float), loop
-        return cls([p for _, p in bones], mc.local, [(t[0], t[3]) for t in mc.tris], clips)
+        result = cls([p for _, p in bones], mc.local, [(t[0], t[3]) for t in mc.tris], clips)
+        from tools.models.clip_rig import groups_for
+        if sid is None:
+            import glob
+            for path in glob.glob(os.path.join(ROOT, 'content/species', '*.json')):
+                with open(path) as source:
+                    record = json.load(source)
+                if record.get('model', {}).get('skeleton') == [list(b) for b in bones]:
+                    sid = os.path.basename(path).split('-')[0]
+                    break
+        result.proportion_groups = groups_for(sid, bones) or {}
+        return result
 
     def frames(self, slot):
         return self._clips(slot) if callable(self._clips) else self._clips.get(slot)
@@ -300,6 +314,8 @@ def measure(clip, ref):
     out = dict(n=clip.n, finite=bool(np.isfinite(clip.P).all()),
                scale=clip.P[..., 0:3].reshape(clip.n, -1))
     out['size'] = size_ratio(clip.P[0], np.asarray(rig.frames(0)[0][0]))
+    from tools.models import clip_rig
+    out['proportions'] = clip_rig.proportions(clip.P, rig.frames(0)[0][0], rig.parent, rig.proportion_groups)
     out['bone_range'] = [0.0] + [float(angle(clip.local_rot[:, b], mean_rotation(clip.local_rot[:, b])[None]).max())
                                  for b in range(1, rig.nb)]
     out['speed'] = float(angle(clip.local_rot[1:, 1:], clip.local_rot[:-1, 1:]).mean()) if clip.n > 1 else 0.0
@@ -362,6 +378,8 @@ def _value(key, m, ref, tip=None):
         return -m['chain_amp'][tip]
     if key == 'cross':
         return m['cross'][0] / (ref['cross'] + CROSS_ADD)
+    if key == 'proportions':
+        return m['proportions']['deviation']
     if key == 'tear':
         return m['tear'][0]
     if key == 'scale':
@@ -379,10 +397,19 @@ def check(F, A, M, slots=BATTLE, polished=(), authored=()):
     rng_f, rng_a = np.zeros(F.nb), np.zeros(F.nb)
     rows = {}
     for s in slots:
-        source_ref = ref if s in authored else ref_a
-        fF, fA, fM = F.frames(s), (M if s in authored else A).frames(s), M.frames(s)
+        fF, fM = F.frames(s), M.frames(s)
+        # A dimension-only fit of reviewed authored motion keeps main as its
+        # motion reference. Require exact root and rotation ticks: changing
+        # acting still has to match the source (or an explicit authored row).
+        dimensions_only = (fF[0].shape == fM[0].shape and
+                           not np.array_equal(fF[0], fM[0]) and
+                           np.array_equal(fF[0][..., 3:6], fM[0][..., 3:6]) and
+                           np.array_equal(fF[0][:, 0], fM[0][:, 0]))
+        motion_reference = M if s in authored or dimensions_only else A
+        source_ref = ref if motion_reference is M else ref_a
+        fA = motion_reference.frames(s)
         mF, mM = measure(Clip(F, *fF), ref), measure(Clip(M, *fM), ref)
-        mA = measure(Clip(M if s in authored else A, *fA), source_ref) if fA is not None else None      # the source's clip on the source's rig
+        mA = measure(Clip(motion_reference, *fA), source_ref) if fA is not None else None
         rng_f = np.maximum(rng_f, mF['bone_range'])
         if mA:
             rng_a = np.maximum(rng_a, mA['bone_range'])
@@ -391,6 +418,9 @@ def check(F, A, M, slots=BATTLE, polished=(), authored=()):
 
         def flag(key, msg, tip=None):
             flags.append((key, msg, tip))
+        from tools.models import clip_rig
+        if clip_rig.failure(mF['proportions']):
+            flag('proportions', f"bone proportions differ from field idle: {mF['proportions']['deviation']:.6f}")
         if size_failure(mF['size']):
             flag('size', f"body size {mF['size']:.3f} against field idle (allowed 0.92..1.08)")
         same_main = fF[0].shape == fM[0].shape and np.array_equal(fF[0], fM[0])
@@ -518,7 +548,7 @@ def worse_than_main(row):
 
 def verdict(row):
     """'pass', 'main' (main's own clip), 'kept' (flagged, but no worse than main's) or 'fail'."""
-    if 'size' in row['keys']:
+    if {'size', 'proportions'} & set(row['keys']):
         return 'fail'
     if not row['flags']:
         return 'pass'
@@ -527,9 +557,9 @@ def verdict(row):
     return 'fail' if worse_than_main(row) else 'kept'
 
 
-def species_check(final, base, main, bones, slots=BATTLE, polished=(), authored=()):
+def species_check(final, base, main, bones, slots=BATTLE, polished=(), authored=(), sid=None):
     """check() on MMD bytes and the species' skeleton ([[object, parent], ...])."""
-    return check(Rig.from_mmd(final, bones), Rig.from_mmd(base, bones), Rig.from_mmd(main, bones), slots, polished, authored)
+    return check(Rig.from_mmd(final, bones, sid), Rig.from_mmd(base, bones, sid), Rig.from_mmd(main, bones, sid), slots, polished, authored)
 
 
 def main():
@@ -547,6 +577,7 @@ def main():
     c.add_argument('--slots', nargs='*', type=int, default=list(BATTLE))
     c.add_argument('--polished', nargs='*', type=int, help='leaned or rebuilt slots (default: battle_qa.polished_slots of the species json\'s id)')
     c.add_argument('--json')
+    c.add_argument('--species-id', help='species id for a generated or otherwise ambiguous skeleton')
     a = ap.parse_args()
     rd = lambda p: open(p, 'rb').read()
     with open(a.species_json) as fh:
@@ -560,9 +591,9 @@ def main():
             with open(a.json, 'w') as fh:
                 json.dump(rows, fh, indent=1)
         sys.exit(1 if any(r['verdict'] == 'fail' for r in rows.values()) else 0)
-    sid = int(os.path.basename(a.species_json).split('-')[0])
+    sid = int(a.species_id or os.path.basename(a.species_json).split('-')[0])
     polished = a.polished if a.polished is not None else polished_slots(sid)
-    rows = species_check(rd(a.final), rd(a.base), rd(a.main), bones, a.slots, polished, authored_slots(sid))
+    rows = species_check(rd(a.final), rd(a.base), rd(a.main), bones, a.slots, polished, authored_slots(sid), sid=sid)
     for s, r in rows.items():
         print(f'slot {s:#x}: {r["verdict"]} ({r["cause"]}) ' + '; '.join(r['flags'] + r['notes']))
     if a.json:

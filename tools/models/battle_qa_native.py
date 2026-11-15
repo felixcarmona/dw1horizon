@@ -44,9 +44,9 @@ import numpy as np
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path[:0] = [ROOT, os.path.join(ROOT, 'tools'), os.path.join(ROOT, 'tools', 'models')]
 
-import battle_qa as Q  # noqa: E402
+from tools.models import battle_qa as Q  # noqa: E402
 
-HARD = ('fidelity', 'live_base', 'retime', 'finite', 'length', 'size')   # flags that fail a slot outright
+HARD = ('fidelity', 'live_base', 'retime', 'finite', 'length', 'size', 'proportions')   # flags that fail a slot outright
 FID_MEAN = 8.0       # weighted mean piece orientation error over the clip (degrees)
 FID_PIECE = 25.0     # a piece's 95th percentile orientation error (degrees), pieces of 2 % of the weight or more
 FID_TIP = 0.15       # end-effector motion difference (heights)
@@ -272,8 +272,8 @@ def check(sid, final_data, source_data, main_data, slots=None):
         leads = lead_pieces(blocks, skeleton, recipe, first_rider)
     tip_bones = tips(skeleton)
     bones_final = final_rig
-    Fr = Q.Rig.from_mmd(final_data, bones_final)
-    Mr = Q.Rig.from_mmd(main_data, bones_final)
+    Fr = Q.Rig.from_mmd(final_data, bones_final, sid)
+    Mr = Q.Rig.from_mmd(main_data, bones_final, sid)
     Sr = Q.Rig.from_mmd(source_data, skeleton)
     ref, ref_s = Q.reference(Mr), Q.reference(Sr)
     # posture: only body bones that draw something or carry bones that do (a donor bone left without pieces is not
@@ -301,7 +301,18 @@ def check(sid, final_data, source_data, main_data, slots=None):
     slots = slots or [s for s in list(Q.BATTLE) + list(range(40, 45)) + list(range(46, 46 + 15))
                       if s < len(main.anims.table) and main.anims.table[s] is not None
                       and s < len(source.anims.table) and source.anims.table[s] is not None]
+    from tools.models.clip_rig import post_fits
+    clearance = set(map(int, post_fits().get(str(sid), {})))
+    reviewed = [s for s in slots if s >= len(source.anims.table) or source.anims.table[s] is None]
+    if reviewed:
+        # Authored finishes without a source program use main's motion.
+        # Keep the normal size, proportion and physical gates.
+        rows.update(Q.check(Fr, Mr, Mr, reviewed, polished=clearance))
+        for s in reviewed:
+            rows[s]['motion_reference'] = 'reviewed main'
     for s in slots:
+        if s in rows:
+            continue
         fF, fM = Fr.frames(s), Mr.frames(s)
         same_main = np.array_equal(fF[0], fM[0]) if fF[0].shape == fM[0].shape else False
         sfr, tile = source_frames(source, ns, s, fF)
@@ -318,6 +329,9 @@ def check(sid, final_data, source_data, main_data, slots=None):
 
         def flag(key, msg):
             flags.append((key, msg))
+        from tools.models import clip_rig
+        if clip_rig.failure(mF['proportions']):
+            flag('proportions', 'bone proportions differ from field idle')
         if Q.size_failure(mF['size']):
             flag('size', f"body size {mF['size']:.3f} against field idle (allowed 0.92..1.08)")
         if not same_main:
@@ -376,7 +390,7 @@ def check(sid, final_data, source_data, main_data, slots=None):
         others = [(k, m) for k, m in flags if k not in HARD]
         soft = Q.worse_than_main(dict(row, keys=[k for k, _ in others], flags=[m for _, m in others],
                                       own=[False] * len(others)))
-        row['verdict'] = 'fail' if 'size' in row['keys'] else 'main' if same_main else ('fail' if hard or soft else ('kept' if flags else 'pass'))
+        row['verdict'] = 'fail' if {'size', 'proportions'} & set(row['keys']) else 'main' if same_main else ('fail' if hard or soft else ('kept' if flags else 'pass'))
         rows[s] = row
     return rows
 
@@ -407,6 +421,9 @@ def main():
     rd = lambda p: open(p, 'rb').read()
     rows = check(a.sid, rd(a.final), rd(a.source), rd(a.main), a.slots)
     for s, r in rows.items():
+        if r.get('motion_reference'):
+            print(f"slot {s:#x}: {r['verdict']} reviewed motion; " + '; '.join(r['flags']))
+            continue
         f = r['fidelity']
         print(f'slot {s:#x}: {r["verdict"]} rot {f["rot_mean"]:.1f} (main {r["fidelity_main"]["rot_mean"]:.1f}) tip '
               f'{f["tip"]:.3f} (main {r["fidelity_main"]["tip"]:.3f}) ticks {r["source_ticks"]}->{r["ticks"]} '

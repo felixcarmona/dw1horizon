@@ -179,14 +179,17 @@ def _chain(parents, pose, b, cache):
     return cache[b]
 
 
-def turn(frames, parents, bone, axis, deg, ticks=None):
+def turn(frames, parents, bone, axis, deg, ticks=None, space='world'):
+    if space not in ('world', 'parent'):
+        raise ValueError(f'unknown turn space: {space}')
     out = []
     for t, pose in enumerate(frames):
         pose = [list(v) for v in pose]
         w = envelope(ticks, t)
         if w > 0:
             parent = _chain(parents, pose, parents[bone], {})
-            new = _mul(_tr(parent), _mul(_axis_angle(axis, deg * w), _mul(parent, _rot(*pose[bone][3:6]))))
+            new = (_mul(_axis_angle(axis, deg * w), _rot(*pose[bone][3:6])) if space == 'parent' else
+                   _mul(_tr(parent), _mul(_axis_angle(axis, deg * w), _mul(parent, _rot(*pose[bone][3:6])))))
             pose[bone][3:6] = list(_euler(new, pose[bone][3:6]))
         out.append(pose)
     return out
@@ -363,37 +366,8 @@ def relative_size(pose, idle):
     return float(statistics.median(ratios)) if ratios else 1.0
 
 
-def fit_rig(frames, source_pose, rig_pose, body='offset'):
-    """`frames` (a source clip) fitted to a rig that was reshaped after the source: the reshaped species' reference pose
-    (`rig_pose`) against the source's (`source_pose`), poses of the same reference tick of the same slot.
-
-    Each bone's scale channels take the rig / source ratio (zero scale is visibility and stays), and its translation (the bone's offset from its parent, which the reshape
-    scales per axis) multiplied by the ratio rig / source at the reference tick (only where the source's offset is at least
-    20 units; smaller offsets stay). The body bone (1), whose height the reshape also moves, instead keeps the source's
-    motion about the offset between the two reference ticks. Rotations and the root bone (0) are not touched.
-
-    body='scale': the body bone's height is scaled like every other offset, for a model the delta resized as a whole
-    (Silphymon's battle clips came back from the source at the source's size): its soles stay where the source put them
-    when the reference ticks are poses of different stances, where the offset between them would lift or sink the body."""
-    if body not in ('offset', 'scale'):
-        raise ValueError(f'unknown body fit: {body}')
-    out = []
-    for pose in frames:
-        bones = []
-        for b, bone in enumerate(pose):
-            bone = list(bone)
-            if b:
-                # Zero scale hides a piece in a pose; it is not a rig dimension.
-                # Keep that acting, and scale animated channels by the rig's ratio.
-                bone[0:3] = [bone[i] * rig_pose[b][i] / source_pose[b][i]
-                             if source_pose[b][i] and rig_pose[b][i] else bone[i] for i in range(3)]
-                for i in range(6, 9):
-                    s0, r0 = source_pose[b][i], rig_pose[b][i]
-                    if abs(s0) >= 20:
-                        bone[i] = bone[i] + (r0 - s0) if (b == 1 and i == 7) else bone[i] * r0 / s0
-            bones.append(bone)
-        out.append(bones)
-    return out
+# Source, native binding and final provider stages share the same rig transform.
+from tools.models.clip_rig import fit as fit_rig
 
 
 def _mix(a, b, w):
@@ -462,7 +436,7 @@ def apply_ops(frames, parents, ops):
     for op in ops:
         kind = op['op']
         if kind == 'turn':
-            frames = turn(frames, parents, op['bone'], op['axis'], op['deg'], op.get('ticks'))
+            frames = turn(frames, parents, op['bone'], op['axis'], op['deg'], op.get('ticks'), op.get('space', 'world'))
         elif kind == 'wave':
             frames = wave(frames, parents, op['bone'], op['axis'], op['deg'], op.get('cycles', 1.0), op.get('phase', 0.0),
                           op.get('ticks'))

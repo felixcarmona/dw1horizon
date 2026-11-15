@@ -88,6 +88,15 @@ class SyntheticDefects(unittest.TestCase):
                 self.assertIn('size', row['keys'])
                 self.assertEqual(row['verdict'], 'fail')
 
+    def test_unreshaped_head_fails_even_when_size_median_and_main_agree(self):
+        frames, loop = clip(head=35, breath=4)
+        frames[:, HEAD, 7] *= 1.3
+        bad = {1: (frames, loop)}
+        row = run(bad, main=bad)[1]
+        self.assertNotIn('size', row['keys'])
+        self.assertIn('proportions', row['keys'])
+        self.assertEqual(row['verdict'], 'fail')
+
     def test_field_idle_copy_flagged(self):
         rows = run({1: clip()})
         self.assertIn('distinct', rows[1]['keys'])

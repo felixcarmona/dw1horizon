@@ -233,7 +233,12 @@ def rebuild(b_data, a_data, nb, type_id, row):
         for slot, spec in row.items():
             if spec.get('current'):
                 pose = animsheet.slot_frames(original, nb, int(slot))[0][0]
-                if 0.92 <= clip_repair.relative_size(pose, idle) <= 1.08:
+                from tools.models import clip_rig
+                skeleton = mmd.exe().skeleton[type_id]
+                frames = animsheet.slot_frames(original, nb, int(slot))[0]
+                proportions = clip_rig.proportions(frames, idle, [p for _, p in skeleton],
+                                                  clip_rig.groups_for(type_id, skeleton) or {})
+                if 0.92 <= clip_repair.relative_size(pose, idle) <= 1.08 and not clip_rig.failure(proportions):
                     raise ValueError(f'slot {slot}: authored clip is already fitted; use its input before the fit')
     data, _ = restore(b_data, a_data, nb, {s: n for s, n in slots.items() if not row[str(s)].get('current')}, budget=False)
     model = mmd.MMD.parse(data, nb)

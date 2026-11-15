@@ -89,6 +89,22 @@ class SyntheticDefects(unittest.TestCase):
                 self.assertIn('size', row['keys'])
                 self.assertEqual(row['verdict'], 'fail')
 
+    def test_one_unreshaped_limb_fails_even_when_size_median_passes(self):
+        frames, loop = clip(4)
+        frames[:, 2, 6:9] *= 1.3
+        bad = {**sound(), 33: (frames, loop)}
+        row = run(bad, main=bad)[33]
+        self.assertNotIn('size', row['keys'])
+        self.assertIn('proportions', row['keys'])
+        self.assertEqual(row['verdict'], 'fail')
+
+    def test_dimension_only_fit_keeps_reviewed_authored_motion_reference(self):
+        frames, loop = clip(4)
+        frames[:, 2, 6:9] *= 1.05
+        row = run({**sound(), 33: (frames, loop)}, base=quiet(), main=sound())[33]
+        self.assertNotIn('fidelity', row['keys'])
+        self.assertEqual(row['verdict'], 'pass', row['flags'])
+
     def test_size_uses_offset_lengths_times_mean_scale_and_ignores_body(self):
         idle = clip()[0][0]
         pose = idle.copy()

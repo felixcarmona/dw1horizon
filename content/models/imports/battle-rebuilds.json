@@ -790,7 +790,11 @@
       {"op": "offset", "bone": 25, "delta": [0, -20, 0]},
       {"op": "offset", "bone": 10, "delta": [25, 0, 0]},
       {"op": "offset", "bone": 14, "delta": [-25, 0, 0]},
-      {"op": "offset", "bone": 13, "delta": [-10, 0, 0]}
+      {"op": "offset", "bone": 13, "delta": [-10, 0, 0]},
+      {"op": "turn", "bone": 17, "axis": "z", "deg": 12},
+      {"op": "turn", "bone": 17, "axis": "z", "deg": 12},
+      {"op": "turn", "bone": 10, "axis": "y", "deg": -12},
+      {"op": "turn", "bone": 25, "axis": "x", "deg": -12}
     ]}
   },
   "336": {

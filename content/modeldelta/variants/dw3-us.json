@@ -113,16 +113,16 @@
      }
     ],
     "delta": "content/modeldelta/deltas/dw3-us/320-Growlmon.MMD.mdelta",
-    "delta_sha256": "cbdc3dbddf8e77aacba22701a2fe553f8a12b33a24b5c16178c6d208035d46f5",
-    "sha256": "6a6cc23f33ce15d63843c4e5de2a7833caced2d1a7c9024649f5c368b21a3b61",
-    "size": 118368
+    "delta_sha256": "0e670b6ad9c81ca88e06b57bb6e1ef3d4f006411152e57027c1f02820a38af2e",
+    "sha256": "f0733738f81ff24d5f89fc2bc7f3ed43adf9224bd2cd3df1f04ab13faff95acc",
+    "size": 118310
    },
    "from": {
-    "sha256": "7716a2a169a13e93a328a95e6f9ac357bfb7725d83c099ed7fbad05e606f1d2e",
-    "delta_sha256": "08372839acb1ccf104c15aac264b2de633d7965fe8cdd7767d630bc860647aae",
+    "sha256": "8d85a72db1570f3a83fa94a8c438ecbdf7fec12689e76234bcaeeb85908432d5",
+    "delta_sha256": "cc451f2b34a506fa99f7a13eed0e2b5a9eb9a9bfcd1572685bb175ff4fa1e5c0",
     "add_bytes": [
-     33658,
-     33644
+     34026,
+     34012
     ],
     "foreign_windows": 0,
     "objects_ours": [
@@ -255,16 +255,16 @@
      }
     ],
     "delta": "content/modeldelta/deltas/dw3-us/406-MaloMyotismon.MMD.mdelta",
-    "delta_sha256": "0f785f0deddaed461c6f10c655015f8689f8e72a9c9c5219dec4242b444844a5",
-    "sha256": "38f2037dca66578bff45ce770f4e0abdec80e966335716e647d6e0b87c0ad004",
-    "size": 104608
+    "delta_sha256": "b56c751975ee8cc2d3aece4fd7fe9186b30d8fabacecf5af02ca583f2549d463",
+    "sha256": "46f8e8b85f00fd59573e8d747e9c72e305cd78fcede2c17607cda66d31f607eb",
+    "size": 104574
    },
    "from": {
-    "sha256": "583622cccd1860d9723de82578c13d14caeb1046677a921e262e920a48724d57",
-    "delta_sha256": "622904c146397f84227345bc373899342557b37d25de8b6ecb052125cc72f95a",
+    "sha256": "4d95f0e2874325214d4dc5f736284ead35ea54b5a6c14eb1b8131891368f238b",
+    "delta_sha256": "d899a315f8b3272b146846ecfcae3f6fe5d5d4ad5d3bea96c609712a24440c42",
     "add_bytes": [
-     10234,
-     10234
+     11030,
+     11030
     ],
     "foreign_windows": 0,
     "objects_ours": [
@@ -347,7 +347,11 @@
      10,
      11,
      12,
-     13
+     13,
+     33,
+     34,
+     35,
+     36
     ]
    }
   },
@@ -685,6 +689,6 @@
   "631fce26218caac5cd145680230f126652b3e4ccefb42ec438f3f57d34e105eb": "cb8e4661d7ee8491805e30f6fc34e058eaf023bc89c6fe18ed5f013ba713a2eb",
   "25f77dfe45c53c442d985715d4db48d6c9d9deca4793b14841958c0fbe079305": "5e2a9b21c7b3ccbc162d04334a1b2c04950c2108a4a81e578cd50a2889d4d685",
   "1c06236db26cc8f3460e0892b5d0c2f4311637de1f84ac86075a370603bccacc": "234348cb00b8724fbc66d1e4e9900a57255ba0da07b3cccb003ca9dd53b07468",
-  "6a6cc23f33ce15d63843c4e5de2a7833caced2d1a7c9024649f5c368b21a3b61": "7716a2a169a13e93a328a95e6f9ac357bfb7725d83c099ed7fbad05e606f1d2e"
+  "f0733738f81ff24d5f89fc2bc7f3ed43adf9224bd2cd3df1f04ab13faff95acc": "8d85a72db1570f3a83fa94a8c438ecbdf7fec12689e76234bcaeeb85908432d5"
  }
 }
