@@ -10950,6 +10950,10 @@
             "passes": 1
           }
         ]
+      },
+      "share": {
+        "53": 52,
+        "56": 57
       }
     },
     "drop_npc_slots": true
