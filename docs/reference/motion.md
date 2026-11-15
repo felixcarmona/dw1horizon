@@ -2155,3 +2155,9 @@ fixes its timing, but the tip still misses by 0.289 heights and the arms cross
 the body too often. Counter-turns reduce crossings to 192 per tick against 164
 without fixing the tip. The keyed rise needs 107,274 bytes and steps its vertices
 0.541 heights in one tick. Field motion and the other clips stay unchanged.
+
+Deltamon keeps its three-headed cheer, forward fall and recovery. The source
+victory fits but still turns a head piece 28.1 degrees off its intended pose and
+misses a tip by 0.171 heights. The source fall and recovery need 100,608 and
+101,476 bytes. The keyed alternatives need 105,720, 102,396 and 103,334 bytes;
+field motion and every existing battle program remain unchanged.
