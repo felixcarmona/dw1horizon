@@ -60,7 +60,8 @@ Commands the tools use:
 | B 15 (slot) | copy an object's variables back into 400-453 |
 | B 10 (n) | wait n steps (when variable 0 is -1) |
 | D 0 (TIM, column, half) | load a sprite sheet into VRAM (x = column x 64 halfwords, y + 256 per half) |
-| B 0, 2, 3, 7 | banner, attacker animation, sounds (kept as events, not converted) |
+| B 3 (sound id) | play a sound from the shared battle bank |
+| B 0, 2, 7 | banner, attacker animation and other events |
 
 An object's variables: 407-409 start, 410-412 end, 413 speed, 414 acceleration, 415-417 rotation,
 418-420 its speed, 421-423 its acceleration (/64), 424-426 scale, 427-429 the scale it grows to,
@@ -109,11 +110,35 @@ the input of the DW2 converter (`tools/dw2efe.py`), which writes the 20 KB EFEDA
 - Object scale is applied in each model bone's own frame (DW1 cannot draw a sheared bone).
 - Sprite colours are baked into the palette; sprites tinted black are left out.
 - A sheet named without a frame list is read as 64 x 64 frames (an estimate).
-- Not converted: screen flashes, camera moves, ribbon trails, sounds and banners.
+- Not converted: screen flashes, camera moves, ribbon trails and banners.
 
 `python tools/dcbefe.py convert <species> <out> --render` writes the chunk, a record of
 what was kept and dropped, and frame sheets of the traced original and the converted chunk;
 `python tools/dcbefe.py grid <out> <video.mp4> <names...>` puts several side by side.
+
+## Sounds
+
+`cmdB 3` plays a tone from `A.DRV/SE0.PAK`, a VAB header and ADPCM body after two
+header words. Its 161 tones are addressed by program = sound id / 16 (integer division),
+key = 60 + sound id % 16. `tools/dcbsound.py` decodes them with `tools/sound.py` and
+matches each audible note to the closest of the 62 battle sounds the native effects use
+(`SB.VHB`, bank 8), as for the DW2 and DW2003 ports: render the pitch, loop and ADSR,
+then compare duration, loudness shape and spectrum. No samples are added to the game.
+
+Each entry's `sounds` contains (60 Hz tick, native sound id), relative to the first drawn
+spawn: one DCB step is two ticks, and earlier cues land on tick zero. The derive path
+converts to engine ticks as for DW2; the DCB converter compresses these with the cast's
+poses when its timeline exceeds 60 frames. Repeated sounds on one engine tick play once,
+and at most two start (simultaneous source cues are ordered by loudness). The loudest
+hit-script note becomes `hit_sound`, played with the first damage event.
+
+Forty ports replace the generic start and launch sounds with their scripts' cues. Diamond Shell,
+Plasma Shot, Submarine Attack, Double Stars and Throny Whipping have no sound calls in either traced
+script, so they have no `sounds` and keep the generic ones. Silent source tones
+are omitted. The hit keeps one cue even when its script has several or repeats it.
+Meteor Stream (Starmon) keeps only its loudest cast cue: all its sounds make the chunk
+236 bytes too large, even at its existing pose detail. The other ports keep their cast
+cues without giving up pose timing.
 
 ## Fidelity check
 

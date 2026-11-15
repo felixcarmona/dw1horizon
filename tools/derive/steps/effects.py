@@ -272,8 +272,10 @@ def dcb_effect(disc, key, e, origin_table):
     """(chunk, info) of an own effect converted from a Digital Card Battle attack (tools/dcbefe.py): its "dcb"
     names the card's attack script and the shared hit script, and the fit they were converted at. Gameplay stays the
     technique's it stands for: one target, one hit."""
-    from tools import dcbefe
-    return dcbefe.build(disc, e['dcb'], origin_table, 0x100 + int(key))
+    from tools import dcbefe, dw2efe
+    return dcbefe.build(disc, e['dcb'], origin_table, 0x100 + int(key),
+                        sounds=[(t * dw2efe.ENGINE_HZ // 60, i) for t, i in e['sounds']]
+                        if 'sounds' in e else None, hit_sound=e.get('hit_sound'))
 
 
 def append_own_effects(ctx, archive):

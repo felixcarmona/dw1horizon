@@ -753,22 +753,29 @@
   "252": {
     "name": "Brachio Bubble",
     "stands_for": 63,
-    "dcb": {"attack": 569, "hit": 437, "fit": [4, 1, 24], "pin": "29b1dd1acf53eb1d8fb89b2398bc6cca6f221da4"}
+    "sounds": [[0, 24], [0, 41], [0, 50], [12, 24], [12, 41], [12, 50], [24, 24], [24, 41], [24, 50], [36, 24], [36, 41], [36, 50], [48, 24], [48, 41], [48, 50], [60, 24], [60, 41], [60, 50], [72, 24], [72, 41], [72, 50], [84, 24], [84, 41], [84, 50], [96, 24], [96, 41], [96, 50], [108, 24], [108, 41], [108, 50]],
+    "hit_sound": 24,
+    "dcb": {"attack": 569, "hit": 437, "fit": [4, 1, 24], "pin": "4d84daf3fb4eae63a1bc9e024eb80db2688682b9"}
   },
   "253": {
     "name": "Vee Head Butt",
     "stands_for": 99,
-    "dcb": {"attack": 1030, "hit": 2000, "fit": [4, 1, 24], "pin": "98a77e900c61bf7d8ef8ddb3e56acaf688db74e6"}
+    "sounds": [[32, 50], [356, 41]],
+    "dcb": {"attack": 1030, "hit": 2000, "fit": [4, 1, 24], "pin": "d2dec64592f9f458b73c802724e437151da488ca"}
   },
   "254": {
     "name": "Puppet Pummel",
     "stands_for": 73,
-    "dcb": {"attack": 1279, "hit": 435, "fit": [4, 1, 24], "pin": "c6b6f7ad24f5193fe46179992bbd253be20d7f27"}
+    "sounds": [],
+    "hit_sound": 41,
+    "dcb": {"attack": 1279, "hit": 435, "fit": [4, 1, 24], "pin": "6e2810e0b20fb99ecb2ae31b29c2c6c0118d7fb8"}
   },
   "255": {
     "name": "Sticky Net",
     "stands_for": 98,
-    "dcb": {"attack": 1033, "hit": 2021, "fit": [2, 1, 96], "pin": "ba76b1be4e77be916c62dfe72095b6ab36cc42a5"}
+    "sounds": [[18, 24], [216, 22], [216, 0]],
+    "hit_sound": 22,
+    "dcb": {"attack": 1033, "hit": 2021, "fit": [2, 1, 96], "pin": "3825ed7b18273d543b203743e548c76eaeef8ad4"}
   },
   "257": {
     "name": "Diamond Shell",
@@ -778,27 +785,34 @@
   "258": {
     "name": "Spiking Strike",
     "stands_for": 62,
-    "dcb": {"attack": 1063, "hit": 2004, "fit": [2, 2, 12], "pin": "85e1c8d61dbb598deea99ce1f5d9f557c79b4dda"}
+    "sounds": [[180, 22], [180, 50], [240, 20], [276, 20], [366, 41], [366, 20]],
+    "dcb": {"attack": 1063, "hit": 2004, "fit": [2, 2, 12], "pin": "069b731ec54c96eeff64506306f4f4284e111bee"}
   },
   "260": {
     "name": "Tail Hammer",
     "stands_for": 75,
-    "dcb": {"attack": 1069, "hit": 2004, "fit": [4, 1, 24], "pin": "d8b16ecd0687dc10038c42f03a5fa955d6d1d9e5"}
+    "sounds": [[0, 24], [120, 59], [154, 59], [278, 30], [346, 41]],
+    "dcb": {"attack": 1069, "hit": 2004, "fit": [4, 1, 24], "pin": "c10f9087200ef89e8b041cc531edf78b617962d3"}
   },
   "263": {
     "name": "Mega Fire",
     "stands_for": 77,
-    "dcb": {"attack": 1129, "hit": 2043, "fit": [2, 2, 12], "pin": "2b99070a79133ad8732fe5e5a2920f870d186e9c"}
+    "sounds": [[0, 24], [246, 50], [294, 41]],
+    "hit_sound": 30,
+    "dcb": {"attack": 1129, "hit": 2043, "fit": [2, 2, 12], "pin": "2bd98250501d03a51bbe803cc45974df8631eb4b"}
   },
   "264": {
     "name": "Gold Rush",
     "stands_for": 75,
-    "dcb": {"attack": 1174, "hit": 406, "fit": [4, 1, 24], "pin": "4bc28db15814e84c5280c29f2fb52930efd77805"}
+    "sounds": [[0, 24], [0, 50], [10, 50], [20, 50], [30, 50], [40, 50], [50, 50], [60, 50], [70, 50], [80, 50], [90, 50], [170, 41], [170, 0]],
+    "dcb": {"attack": 1174, "hit": 406, "fit": [4, 1, 24], "pin": "2ceb3308b030eb6d575f43c9d5c91b2e8da0a3b7"}
   },
   "266": {
     "name": "Fire Rocket",
     "stands_for": 61,
-    "dcb": {"attack": 1147, "hit": 435, "fit": [2, 2, 12], "pin": "06d0ef5c6cfb982d64401a82602ad00cba903bed"}
+    "sounds": [[0, 0], [144, 41], [144, 0], [144, 50], [230, 20], [230, 50], [300, 24], [300, 56], [300, 41], [300, 0]],
+    "hit_sound": 41,
+    "dcb": {"attack": 1147, "hit": 435, "fit": [2, 2, 12], "pin": "2253bee6933ab82ccaa3aaedd6aa07bf9785b8dd"}
   },
   "268": {
     "name": "Plasma Shot",
@@ -808,12 +822,16 @@
   "269": {
     "name": "Rocking Stone",
     "stands_for": 86,
-    "dcb": {"attack": 1180, "hit": 435, "fit": [4, 1, 24], "pin": "191afa0a883bcc40b2f78a0d0c311faec6eccd86"}
+    "sounds": [[28, 24], [42, 24], [300, 41]],
+    "hit_sound": 41,
+    "dcb": {"attack": 1180, "hit": 435, "fit": [4, 1, 24], "pin": "81e6ec0b93bda3686d521fbd57dd9ff4d2e53a6b"}
   },
   "272": {
     "name": "Lightning Blast",
     "stands_for": 86,
-    "dcb": {"attack": 1150, "hit": 2019, "fit": [4, 1, 24], "pin": "4f828e3ae763211b143e4953470839f2c28a3675"}
+    "sounds": [[20, 23], [40, 23], [100, 23], [160, 23], [210, 23], [250, 20]],
+    "hit_sound": 50,
+    "dcb": {"attack": 1150, "hit": 2019, "fit": [4, 1, 24], "pin": "dfbba9b3894e7a11effe9efe6974fd2341124008"}
   },
   "273": {
     "name": "Submarine Attack",
@@ -823,62 +841,83 @@
   "274": {
     "name": "V-Nova Blast",
     "stands_for": 63,
-    "dcb": {"attack": 824, "hit": 449, "fit": [4, 1, 24], "pin": "3a1a83c739f2a2af292580dad2fbcd1b6d8f7163"}
+    "sounds": [[0, 0], [270, 0]],
+    "dcb": {"attack": 824, "hit": 449, "fit": [4, 1, 24], "pin": "5a0304331fa07cf4bf2f757feb3b2c9ce1cc5271"}
   },
   "275": {
     "name": "Horn Buster",
     "stands_for": 73,
-    "dcb": {"attack": 1003, "hit": 496, "fit": [4, 1, 24], "pin": "0a6bb6d4785e0ae0420613b065b339ae87d66ce6"}
+    "sounds": [[52, 22], [208, 41], [360, 24], [360, 56]],
+    "hit_sound": 24,
+    "dcb": {"attack": 1003, "hit": 496, "fit": [4, 1, 24], "pin": "34d3466383ffc079518a8d2c3c7e18eeadd749ed"}
   },
   "277": {
     "name": "Seventh Heaven",
     "stands_for": 61,
-    "dcb": {"attack": 1138, "hit": 2046, "fit": [4, 1, 24], "pin": "77e8359bfe5c01bcee19ac40db28e9defac3bcd9"}
+    "sounds": [[0, 24], [210, 22]],
+    "hit_sound": 41,
+    "dcb": {"attack": 1138, "hit": 2046, "fit": [4, 1, 24], "pin": "834f5d7f2e22c159aa240731f60d097ed1d1c9ec"}
   },
   "279": {
     "name": "Flower Cannon",
     "stands_for": 73,
-    "dcb": {"attack": 1015, "hit": 400, "fit": [4, 1, 24], "pin": "c99cd889c6ffff98a628685f8e1a2860f9cf4f4e"}
+    "sounds": [[0, 24], [240, 22], [240, 47]],
+    "dcb": {"attack": 1015, "hit": 400, "fit": [4, 1, 24], "pin": "c35219df794300f4261d29d4b97a6db635af5685"}
   },
   "280": {
     "name": "X-Scissor Claw",
     "stands_for": 73,
-    "dcb": {"attack": 1132, "hit": 2064, "fit": [2, 2, 12], "pin": "7e190c12679429deb8070100c310a1ec05aa6996"}
+    "sounds": [[80, 20], [180, 24], [250, 56], [250, 41], [350, 56], [350, 41]],
+    "hit_sound": 56,
+    "dcb": {"attack": 1132, "hit": 2064, "fit": [2, 2, 12], "pin": "9f4ba13875a553b54b317f72e4a14c30fa89dbed"}
   },
   "281": {
     "name": "River of Power",
     "stands_for": 111,
-    "dcb": {"attack": 1273, "hit": 2033, "fit": [2, 1, 16], "pin": "105ea048cb05959f9db68ea5a5d1869b5722fdbb"}
+    "sounds": [[0, 24], [160, 22]],
+    "hit_sound": 41,
+    "dcb": {"attack": 1273, "hit": 2033, "fit": [2, 1, 16], "pin": "ea680e5392a7bac27a53a895b60df324f65f6193"}
   },
   "282": {
     "name": "Venom Infusion",
     "stands_for": 96,
-    "dcb": {"attack": 1117, "hit": 435, "fit": [4, 1, 24], "pin": "05490ee302133d216d75ade846ecfab8e2ddadcb"}
+    "sounds": [[0, 24], [164, 24], [180, 24], [192, 24], [234, 24], [236, 24]],
+    "hit_sound": 41,
+    "dcb": {"attack": 1117, "hit": 435, "fit": [4, 1, 24], "pin": "03cd27387646e595badad0c82ea96d3ceb34bbd9"}
   },
   "285": {
     "name": "Fire Tornado",
     "stands_for": 109,
-    "dcb": {"attack": 1144, "hit": 2015, "fit": [4, 1, 24], "pin": "8439a0c9155fe124a08a7ff0acfc453ed0ed3d24"}
+    "sounds": [[0, 24], [150, 41]],
+    "hit_sound": 22,
+    "dcb": {"attack": 1144, "hit": 2015, "fit": [4, 1, 24], "pin": "d6ea673993fee183c9456c62e184c6891edc11c9"}
   },
   "288": {
     "name": "Harpoon Torpedo",
     "stands_for": 85,
-    "dcb": {"attack": 1045, "hit": 406, "fit": [4, 1, 24], "pin": "cbdc4f0d2955a6a3609c288b5eea49de392f9ce2"}
+    "sounds": [[116, 41], [148, 50], [168, 41], [168, 0]],
+    "dcb": {"attack": 1045, "hit": 406, "fit": [4, 1, 24], "pin": "beb16230bfeacf32c6a15490ace2e9d7e282adf8"}
   },
   "290": {
     "name": "Arctic Blizzard",
     "stands_for": 111,
-    "dcb": {"attack": 1141, "hit": 2014, "fit": [4, 1, 24], "pin": "63b857785e5ec414334e8e5e505f8f76ffbcab1f"}
+    "sounds": [[86, 50], [206, 24], [290, 30]],
+    "hit_sound": 30,
+    "dcb": {"attack": 1141, "hit": 2014, "fit": [4, 1, 24], "pin": "68ad7085129c3811f15fdfc5d06a9e3482aec831"}
   },
   "291": {
     "name": "Puppy Howling",
     "stands_for": 71,
-    "dcb": {"attack": 1021, "hit": 2063, "fit": [4, 1, 24], "pin": "530ba48135aee61c753c0ad6e654e69185d15708"}
+    "sounds": [[222, 50]],
+    "hit_sound": 50,
+    "dcb": {"attack": 1021, "hit": 2063, "fit": [4, 1, 24], "pin": "5b0a60c01f161e662a2077c8d8dd6001d0314807"}
   },
   "293": {
     "name": "Darkness Wave",
     "stands_for": 75,
-    "dcb": {"attack": 1078, "hit": 2025, "fit": [4, 1, 24], "pin": "60906f66fc6af8437b4c07599e210ce8a0a97efa"}
+    "sounds": [[0, 24], [190, 24]],
+    "hit_sound": 50,
+    "dcb": {"attack": 1078, "hit": 2025, "fit": [4, 1, 24], "pin": "fcb2c09d7e33deb403a83adc1524950a1736a609"}
   },
   "294": {
     "name": "Double Stars",
@@ -888,12 +927,15 @@
   "297": {
     "name": "Dancing Meteor",
     "stands_for": 94,
-    "dcb": {"attack": 1171, "hit": 2044, "fit": [4, 1, 24], "pin": "e7c072ec72802516d544a60cb49575a9a1c243e0"}
+    "sounds": [[374, 24]],
+    "hit_sound": 41,
+    "dcb": {"attack": 1171, "hit": 2044, "fit": [4, 1, 24], "pin": "48a9f2d5ed29053250ccaa2908293fb77efa5e76"}
   },
   "298": {
     "name": "Shadow Scythe",
     "stands_for": 111,
-    "dcb": {"attack": 1075, "hit": 2075, "fit": [4, 1, 24], "pin": "d36eededbd78332685532a803148ad5e737605de"}
+    "sounds": [[0, 24], [342, 24]],
+    "dcb": {"attack": 1075, "hit": 2075, "fit": [4, 1, 24], "pin": "d21c17ef57c39c83bdea4966c8ad744275ba8b22"}
   },
   "299": {
     "name": "Throny Whipping",
@@ -903,76 +945,100 @@
   "300": {
     "name": "Shell's Attack",
     "stands_for": 89,
-    "dcb": {"attack": 1255, "hit": 2000, "fit": [4, 1, 24], "pin": "9cd31ef3074285e234ab4c7f45849b7e45d9643e"}
+    "sounds": [[0, 47], [80, 24], [80, 50], [422, 41]],
+    "dcb": {"attack": 1255, "hit": 2000, "fit": [4, 1, 24], "pin": "0af67f8626854d1eb317ef34efe5a08c9af285cc"}
   },
   "302": {
     "name": "Boiling Bubble",
     "stands_for": 61,
-    "dcb": {"attack": 1189, "hit": 2017, "fit": [4, 1, 24], "pin": "f9ebe6c545c3fe548fc2e5882b953f6bc73b80e2"}
+    "sounds": [[0, 24], [20, 24], [40, 24], [60, 24], [80, 24], [100, 24], [120, 24], [140, 24], [160, 24]],
+    "hit_sound": 24,
+    "dcb": {"attack": 1189, "hit": 2017, "fit": [4, 1, 24], "pin": "49573578a004500f0bc92e43c9a360a3b15ebf69"}
   },
   "304": {
     "name": "Flame Bomber",
     "stands_for": 99,
-    "dcb": {"attack": 1186, "hit": 400, "fit": [4, 1, 24], "pin": "1861631b98568cc06f45ccf0545635b8199ebe04"}
+    "sounds": [[0, 24], [40, 24], [40, 20], [60, 22], [60, 20], [60, 24]],
+    "dcb": {"attack": 1186, "hit": 400, "fit": [4, 1, 24], "pin": "33e2acd65eb0fae109852c00a72ed364cdb975de"}
   },
   "306": {
     "name": "Inferno Missile",
     "stands_for": 80,
-    "dcb": {"attack": 1123, "hit": 435, "fit": [4, 1, 24], "pin": "ce1fe729396db1af17f9776b04f72b17742b2952"}
+    "sounds": [[150, 41], [192, 24], [314, 24], [354, 22], [354, 41], [354, 24]],
+    "hit_sound": 41,
+    "dcb": {"attack": 1123, "hit": 435, "fit": [4, 1, 24], "pin": "e9df02cd6129904e7aa5f967fc150bb30871c7a2"}
   },
   "308": {
     "name": "Spiral Saw",
     "stands_for": 95,
-    "dcb": {"attack": 1207, "hit": 2000, "fit": [4, 1, 24], "pin": "c30ffc463f6e68b9cf5216d42ea25ef57bad22dc"}
+    "sounds": [[20, 24], [60, 50], [196, 24], [208, 24], [220, 24], [232, 24]],
+    "dcb": {"attack": 1207, "hit": 2000, "fit": [4, 1, 24], "pin": "a0455e97f9beeb8c8458b6ab51b090de3bdbcf0a"}
   },
   "309": {
     "name": "Coral Crusher",
     "stands_for": 87,
-    "dcb": {"attack": 1231, "hit": 2065, "fit": [4, 1, 24], "pin": "54a8f659cf8308350d2be943c96cc914f2c6d877"}
+    "sounds": [[120, 24], [220, 50], [230, 50]],
+    "hit_sound": 30,
+    "dcb": {"attack": 1231, "hit": 2065, "fit": [4, 1, 24], "pin": "4fa1566be9e3e1763a41f20eb9498940d6a6a9e3"}
   },
   "310": {
     "name": "Thunder Ball",
     "stands_for": 86,
-    "dcb": {"attack": 1048, "hit": 402, "fit": [4, 1, 24], "pin": "18e6fe4c91ab9594ce0707e4da4dc1490eaca4ef"}
+    "sounds": [],
+    "hit_sound": 24,
+    "dcb": {"attack": 1048, "hit": 402, "fit": [4, 1, 24], "pin": "1e5a27cb46393d00f89289a5d73199da3badc817"}
   },
   "312": {
     "name": "Meteor Stream",
     "stands_for": 94,
-    "dcb": {"attack": 1246, "hit": 450, "fit": [2, 1, 16], "pin": "582d5c910329783ed1a6630a2ee8bb4d31446fd7"}
+    "sounds": [[48, 24]],
+    "dcb": {"attack": 1246, "hit": 450, "fit": [2, 1, 16], "pin": "32db2aacc65fb720b91fda5379f2b5252de8c118"}
   },
   "313": {
     "name": "Comet Cluster",
     "stands_for": 61,
-    "dcb": {"attack": 1285, "hit": 435, "fit": [2, 2, 12], "pin": "68a740750ed3229a407258851af858f4c2fc71bd"}
+    "sounds": [[0, 24], [48, 24], [280, 41], [290, 41], [300, 41], [310, 41], [320, 41], [330, 41], [340, 41], [350, 41], [360, 41], [370, 41], [380, 41], [390, 41], [400, 41], [410, 41], [420, 41]],
+    "hit_sound": 41,
+    "dcb": {"attack": 1285, "hit": 435, "fit": [2, 2, 12], "pin": "0366d87c79af52210042a95566ecacda6aa95b27"}
   },
   "316": {
     "name": "Mini Scissor Claws",
     "stands_for": 66,
-    "dcb": {"attack": 1198, "hit": 472, "fit": [4, 1, 24], "pin": "4377622a8671b85d3a25ed33f27718f5852f2ca8"}
+    "sounds": [[0, 24], [88, 30], [108, 30], [228, 41], [282, 41], [328, 41], [378, 41]],
+    "dcb": {"attack": 1198, "hit": 472, "fit": [4, 1, 24], "pin": "3a1d2e5f7a1a55e42d534102868701e17d8f4c51"}
   },
   "318": {
     "name": "Freezing Wave",
     "stands_for": 69,
-    "dcb": {"attack": 1159, "hit": 2039, "fit": [2, 2, 12], "pin": "e0b7d5bd3079fe18de68cec551c3e583c7b95abc"}
+    "sounds": [[0, 24]],
+    "hit_sound": 56,
+    "dcb": {"attack": 1159, "hit": 2039, "fit": [2, 2, 12], "pin": "957adb8e6ed8fcb3a341739bf2dd6c10b3ae6762"}
   },
   "319": {
     "name": "Flare Buster",
     "stands_for": 61,
-    "dcb": {"attack": 1156, "hit": 435, "fit": [4, 1, 24], "pin": "5e3cf52087ad8414d5f3f29969cb4d72e7525fcf"}
+    "sounds": [[0, 41], [44, 41], [224, 41], [244, 41], [264, 41]],
+    "hit_sound": 41,
+    "dcb": {"attack": 1156, "hit": 435, "fit": [4, 1, 24], "pin": "ef1a2e6d915b7c7b1d3a5c0e27f2ca891307420b"}
   },
   "322": {
     "name": "Slamming Tusk",
     "stands_for": 75,
-    "dcb": {"attack": 1057, "hit": 2004, "fit": [4, 1, 24], "pin": "9acd5fa166c54b95d9d625227cae7114fbb72bf6"}
+    "sounds": [[346, 22], [416, 41]],
+    "dcb": {"attack": 1057, "hit": 2004, "fit": [4, 1, 24], "pin": "54cd8220fc708952cf57f500db0f9f47950c833d"}
   },
   "326": {
     "name": "Terra Force",
     "stands_for": 109,
-    "dcb": {"attack": 1105, "hit": 435, "fit": [4, 1, 24], "pin": "17acf90f020862804fb1909f99cb048af945d086"}
+    "sounds": [[4, 50], [20, 50], [150, 41]],
+    "hit_sound": 41,
+    "dcb": {"attack": 1105, "hit": 435, "fit": [4, 1, 24], "pin": "4f27c1c69d65ccfb645616031d1d353712a367b4"}
   },
   "328": {
     "name": "Wing Blade",
     "stands_for": 63,
-    "dcb": {"attack": 1006, "hit": 495, "fit": [2, 1, 16], "pin": "dd30ed5a7155fe8f7564ba9b87aaf39b40756fa5"}
+    "sounds": [],
+    "hit_sound": 41,
+    "dcb": {"attack": 1006, "hit": 495, "fit": [2, 1, 16], "pin": "da4ac27adf27c02b1d29f11bc4f91edceaa1dba8"}
   }
 }
