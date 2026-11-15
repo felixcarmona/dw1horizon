@@ -23,7 +23,7 @@ tools/derive/README.md). Each fact is what tools/build-full.sh reads from the tr
 check only (nothing derived changes with them):
   sound_staging_max        SOUND_STAGING_MAX of include/dw/memmap.h (:246; 0x3E000 without it)
   npc_stage_max            field scratch capacity for compaction before heap allocation (0 without staging)
-  npc_anim_keep            exact animation slots compiled for each original species
+  npc_anim_keep            exact animation slots compiled for each species
   heap_total               the malloc3 heap of the tree's last build (DW_HEAP_MAP, :89; membudget.heap_total_now), or null
 
 ORIG, ALT and SCRN are not stored: they also depend on the recipe (TEXT, EXTRA_STORY, FONT), so the steps work them
@@ -62,7 +62,13 @@ def npc_keep(text):
     words = [tuple(int(x, 16) for x in pair) for pair in
              re.findall(r'\{\s*(0x[0-9A-Fa-f]+),\s*(0x[0-9A-Fa-f]+)\s*\}', masks[1])]
     ids = [int(x) for x in re.findall(r'\b(\d+)\s*,', re.sub(r'/\*.*?\*/', '', index[1], flags=re.S))]
-    return [[slot for slot in range(64) if words[i][slot // 32] >> (slot % 32) & 1] for i in ids]
+    rows = [[slot for slot in range(64) if words[i][slot // 32] >> (slot % 32) & 1] for i in ids]
+    imported = re.search(r'NPC_ANIM_IMPORT_KEEP\[2\] = \{(.*?)\};', text, re.S)
+    if imported:
+        pair = [int(x, 16) for x in re.findall(r'0x[0-9A-Fa-f]+', imported[1])]
+        slots = [slot for slot in range(64) if pair[slot // 32] >> (slot % 32) & 1]
+        rows.extend([slots[:] for _ in range(1024 - len(rows))])
+    return rows
 
 
 def capture(w, heap_map=None):
