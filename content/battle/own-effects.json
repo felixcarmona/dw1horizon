@@ -29,8 +29,8 @@
     "hit_sound": 47,
     "cast": [[1, "EFFESA/MESA2700.BIN", "EFFESA/AESA2700.BIN"]],
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
-    "scale": 0.166,
-    "hit_scale": 0.1
+    "scale": 0.252,
+    "hit_scale": 0.152
   },
   "125": {
     "name": "Poison Wing",
@@ -88,8 +88,8 @@
     "hit_sound": 47,
     "cast": [[1, "EFFESA/MESA6000.BIN", "EFFESA/AESA6000.BIN"], [2, "EFFESA/MESA6100.BIN", "EFFESA/AESA6100.BIN"]],
     "hit": [[1, "EFFESD/MESD7400.BIN", "EFFESD/AESD7400.BIN"]],
-    "scale": 0.241,
-    "hit_scale": 0.1
+    "scale": 0.268,
+    "hit_scale": 0.111
   },
   "131": {
     "name": "Brown Stinger",
@@ -148,8 +148,8 @@
     "hit_sound": 47,
     "cast": [[1, "EFFESA/MESA6200.BIN", "EFFESA/AESA6200.BIN"], [2, "EFFESA/MESA6300.BIN", "EFFESA/AESA6300.BIN"]],
     "hit": [[2, "EFFESD/MESD3800.BIN", "EFFESD/AESD3800.BIN"]],
-    "scale": 0.401,
-    "hit_scale": 0.15
+    "scale": 0.654,
+    "hit_scale": 0.244
   },
   "137": {
     "name": "Smiley Warhead",
@@ -178,8 +178,8 @@
     "hit_sound": 47,
     "cast": [[1, "EFFEUA/MEUA3100.BIN", "EFFEUA/AEUA3100.BIN"], [2, "EFFEUA/MEUA3200.BIN", "EFFEUA/AEUA3200.BIN"]],
     "hit": [[1, "EFFESD/MESD7600.BIN", "EFFESD/AESD7600.BIN"]],
-    "scale": 0.198,
-    "hit_scale": 0.1
+    "scale": 0.263,
+    "hit_scale": 0.133
   },
   "140": {
     "name": "Rain of Pollen",
@@ -228,8 +228,8 @@
     "hit_sound": 47,
     "cast": [[1, "EFFESA/MESA2600.BIN", "EFFESA/AESA2600.BIN"]],
     "hit": [[1, "EFFEWD/MEWD0300.BIN", "EFFEWD/AEWD0300.BIN"]],
-    "scale": 0.182,
-    "hit_scale": 0.1
+    "scale": 0.209,
+    "hit_scale": 0.115
   },
   "145": {
     "name": "Trick or Treat",
@@ -256,8 +256,8 @@
     "sounds": [[55, 27], [90, 47]],
     "cast": [[1, "EFFESA/MESA4200.BIN", "EFFESA/AESA4200.BIN"], [2, "EFFESA/MESA4300.BIN", "EFFESA/AESA4300.BIN"]],
     "hit": [[1, "EFFESD/MESD7400.BIN", "EFFESD/AESD7400.BIN"]],
-    "scale": 0.203,
-    "hit_scale": 0.1
+    "scale": 0.225,
+    "hit_scale": 0.111
   },
   "148": {
     "name": "Pearl Shot",
@@ -266,8 +266,8 @@
     "hit_sound": 47,
     "cast": [[1, "EFFESA/MESA2900.BIN", "EFFESA/AESA2900.BIN"]],
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
-    "scale": 0.179,
-    "hit_scale": 0.1
+    "scale": 0.304,
+    "hit_scale": 0.17
   },
   "149": {
     "name": "Scissor Magic",
@@ -285,8 +285,8 @@
     "sounds": [[3, 47], [69, 45], [91, 44]],
     "cast": [[1, "EFFESA/MESA2500.BIN", "EFFESA/AESA2500.BIN"]],
     "hit": [[1, "EFFESD/MESD0200.BIN", "EFFESD/AESD0200.BIN"]],
-    "scale": 0.281,
-    "hit_scale": 0.129
+    "scale": 0.329,
+    "hit_scale": 0.151
   },
   "151": {
     "name": "Royal Smasher",
@@ -373,8 +373,8 @@
     "sounds": [[89, 47]],
     "cast": [[1, "EFFESA/MESA7200.BIN", "EFFESA/AESA7200.BIN"], [2, "EFFESA/MESA7300.BIN", "EFFESA/AESA7300.BIN"]],
     "hit": [[2, "EFFESD/MESD0000.BIN", "EFFESD/AESD0000.BIN"]],
-    "scale": 0.351,
-    "hit_scale": 0.191
+    "scale": 0.404,
+    "hit_scale": 0.22
   },
   "160": {
     "name": "Needle Squall",
@@ -424,7 +424,7 @@
     "compose": {"recolour": {"ramp": ["#0c0014", "#640a78", "#e038d0", "#ffe0f8"]}},
     "check": {"hue": 305}
   },
-  "185": {"name":"Vemmon Crash","stands_for":100,"compose":{"recolour":{"ramp":["#000000","#8a3008","#f07828","#fff0d0"]},"scale":1.6},"check":{"hue":25}},
+  "185": {"name":"Vemmon Crash","stands_for":100,"compose":{"recolour":{"ramp":["#000000","#8a3008","#f07828","#fff0d0"]},"scale":2.35},"check":{"hue":25}},
   "174": {
     "name": "Nail Bone",
     "stands_for": 96,
@@ -435,7 +435,7 @@
   "169": {
     "name": "Royal Muck",
     "stands_for": 62,
-    "compose": {"texture": [{"from": 56, "rect": [0, 0, 32, 32], "palettes": [[0, 0], [1, 1]]}], "recolour": {"ramp": ["#1a1000", "#6a4a10", "#c89a30", "#f4dc90"]}, "scale": 1.5},
+    "compose": {"texture": [{"from": 56, "rect": [0, 0, 32, 32], "palettes": [[0, 0], [1, 1]]}], "recolour": {"ramp": ["#1a1000", "#6a4a10", "#c89a30", "#f4dc90"]}, "scale": 1.67},
     "check": {"hue": 40}
   },
   "181": {
@@ -448,7 +448,7 @@
     "name": "Dark Fear",
     "stands_for": 62,
     "sounds": [[0, 50], [0, 41], [55, 41], [125, 10]],
-    "dw3": {"model": "M170IVRU", "slot": 9, "meft": [335], "pin": "ad611f4d2a8d21702cfa3a3a773f6edff5c51e4d"}
+    "dw3": {"model": "M170IVRU", "slot": 9, "meft": [335], "scale": 1.31, "pin": "cb86bbec03fbdc4c63822fe919b8498301e9918a"}
   },
   "197": {
     "name": "Mugenhadou",
@@ -484,13 +484,13 @@
     "name": "Dark Spirits DX",
     "stands_for": 92,
     "sounds": [[0, 50], [80, 15], [150, 45]],
-    "dw3": {"model": "M250KGET", "slot": 5, "meft": [324], "pin": "7bd9b80e929a3c14f309145c1cacb8fa3e4b4e88"}
+    "dw3": {"model": "M250KGET", "slot": 5, "meft": [324], "scale": 1.1, "pin": "08d7e6d74b88961cc7b5afb2b8a613560151f23b"}
   },
   "203": {
     "name": "Justice Strike",
     "stands_for": 78,
     "sounds": [[148, 41], [223, 7], [253, 7], [279, 7], [309, 7], [339, 47], [359, 47], [379, 47]],
-    "dw3": {"model": "M390ASLT", "slot": 11, "meft": [93], "pin": "252b2837af931156d9e2c0ae35c913bb16dc666e"}
+    "dw3": {"model": "M390ASLT", "slot": 11, "meft": [93], "scale": 1.13, "pin": "0581c5b4bfa2c69711a2b937675598f5be05d5a1"}
   },
   "204": {
     "name": "Darkness Chaos",
@@ -562,7 +562,7 @@
     "name": "Swing Swing",
     "stands_for": 71,
     "sounds": [[156, 12], [186, 8], [246, 45]],
-    "dw3": {"model": "M384KOET", "slot": 11, "meft": [89], "pin": "69d8e2559c1beadea3f58c1935db35a06cc9d4d6"}
+    "dw3": {"model": "M384KOET", "slot": 11, "meft": [89], "scale": 1.72, "pin": "032ee75a71ec479a27a5962ed63b9ada1f679f3d"}
   },
   "217": {
     "name": "DynamoCannon",
@@ -598,25 +598,25 @@
     "name": "Pyrosphere",
     "stands_for": 59,
     "sounds": [[165, 27], [165, 41], [275, 24]],
-    "dw3": {"model": "M366GIRU", "slot": 11, "meft": [102], "pin": "755ef2c8ad930be8096ca5cd93810d713cfaabba"}
+    "dw3": {"model": "M366GIRU", "slot": 11, "meft": [102], "scale": 1.26, "pin": "83165912e38da9af5f7f65bfa3e169a586bb71cd"}
   },
   "224": {
     "name": "Striking Fish",
     "stands_for": 85,
     "sounds": [[0, 51], [10, 45], [20, 51]],
-    "dw3": {"model": "M241HNGY", "slot": 5, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38]}, "pin": "f7bcc605007be2fa694aa818fe19d6474cb35771"}
+    "dw3": {"model": "M241HNGY", "slot": 5, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38]}, "scale": 1.26, "pin": "94a91d52a09be712747c667bf3ecf9f19b37d6cf"}
   },
   "225": {
     "name": "Pincer Crusher",
     "stands_for": 100,
     "sounds": [[0, 56], [0, 4], [5, 56], [40, 45], [50, 56], [50, 4], [55, 56]],
-    "dw3": {"model": "M165EBDR", "slot": 5, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38], "9": ["E000COM3.BIN", 7, 0, 0]}, "pin": "ee513f226c83773a40c34b5b1742a0378dc23b9a"}
+    "dw3": {"model": "M165EBDR", "slot": 5, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38], "9": ["E000COM3.BIN", 7, 0, 0]}, "scale": 1.33, "pin": "8653c07dbc0bd4be93fad08e7b808032e5e76cef"}
   },
   "228": {
     "name": "Lizard Dance",
     "stands_for": 100,
     "sounds": [[15, 56], [15, 4], [20, 56], [37, 50], [77, 50], [113, 50], [171, 50], [171, 45], [176, 56]],
-    "dw3": {"model": "M386DINO", "slot": 11, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38], "2021": ["E386DINO.BIN", 2, 1, 0], "2022": ["E386DINO.BIN", 3, 1, 0], "2023": ["E386DINO.BIN", 4, 1, 0]}, "pin": "a31cfbd9ce23fd002e9831aa77748a0d8b39b289"}
+    "dw3": {"model": "M386DINO", "slot": 11, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38], "2021": ["E386DINO.BIN", 2, 1, 0], "2022": ["E386DINO.BIN", 3, 1, 0], "2023": ["E386DINO.BIN", 4, 1, 0]}, "scale": 1.17, "pin": "a842fab7a7c9fd2d40748f35d857b6fb189bb1a2"}
   },
   "235": {
     "name": "Berserk Sword",
@@ -646,30 +646,30 @@
     "name": "Darkside Quake",
     "stands_for": 81,
     "sounds": [[0, 56], [0, 4], [5, 56], [10, 45], [20, 56], [20, 4], [25, 56]],
-    "dw3": {"model": "M172MTAR", "slot": 5, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38]}, "pin": "6e7777d24ecfa9de1aa44b5a05742ea06d66873a"}
+    "dw3": {"model": "M172MTAR", "slot": 5, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38]}, "scale": 1.26, "pin": "10bfba2087701bfe2ad0d60fc4263cfa25339b75"}
   },
   "242": {
     "name": "Roach Rush",
     "stands_for": 93,
     "sounds": [[0, 10], [0, 51], [10, 51]],
-    "dw3": {"model": "M171GOKI", "slot": 5, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38], "7": ["E000COM3.BIN", 5, 0, 0]}, "pin": "7b2fc622518f1e2e44fa79456028f210295c56ce"}
+    "dw3": {"model": "M171GOKI", "slot": 5, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38], "7": ["E000COM3.BIN", 5, 0, 0]}, "scale": 1.91, "pin": "36c019576cb41b5becab4b555cb4732c24080356"}
   },
   "244": {
     "name": "Hot Head",
     "stands_for": 99,
     "sounds": [[120, 12], [120, 51], [140, 24], [140, 51], [160, 24]],
-    "dw3": {"model": "M383PKEN", "slot": 11, "meft": [], "sprites": {"0": ["E000COM1.BIN", 0, 0, 38], "2": ["E000COM1.BIN", 2, 0, 38], "4": ["E000COM3.BIN", 2, 0, 0], "2003": ["E383PKEN.BIN", 1, 2, 0]}, "pin": "ee82744ec66ba5d88592515fe4ae371d5ef82bbe"}
+    "dw3": {"model": "M383PKEN", "slot": 11, "meft": [], "sprites": {"0": ["E000COM1.BIN", 0, 0, 38], "2": ["E000COM1.BIN", 2, 0, 38], "4": ["E000COM3.BIN", 2, 0, 0], "2003": ["E383PKEN.BIN", 1, 2, 0]}, "scale": 1.43, "pin": "00c92811968b7d802ff4b54e9d26100e39227a80"}
   },
   "245": {
     "name": "Bear Fist",
     "stands_for": 95,
     "sounds": [[90, 51], [215, 45], [255, 51]],
-    "dw3": {"model": "M385KOGU", "slot": 11, "meft": [], "sprites": {"0": ["E000COM1.BIN", 0, 0, 38], "2014": ["E145VMON.BIN", 1, 2, 0]}, "pin": "772672ec522657b3ab21efdb88b9e768cb782b85"}
+    "dw3": {"model": "M385KOGU", "slot": 11, "meft": [], "sprites": {"0": ["E000COM1.BIN", 0, 0, 38], "2014": ["E145VMON.BIN", 1, 2, 0]}, "scale": 1.84, "pin": "83141bf4762b8561866b5dd03a44f259a14253e1"}
   },
   "223": {
     "name": "Maul Attack",
     "stands_for": 81,
-    "compose": {"recolour": {"ramp": ["#120600", "#6a3010", "#d07030", "#fff0d8"]}, "scale": 1.3},
+    "compose": {"recolour": {"ramp": ["#120600", "#6a3010", "#d07030", "#fff0d8"]}, "scale": 2.2},
     "check": {"hue": 25}
   },
   "249": {
@@ -723,7 +723,7 @@
   "296": {
     "name": "Angry Spike",
     "stands_for": 85,
-    "compose": {"recolour": {"ramp": ["#140c04", "#6a5030", "#d8b880", "#fff4e0"]}, "scale": 1.2},
+    "compose": {"recolour": {"ramp": ["#140c04", "#6a5030", "#d8b880", "#fff4e0"]}, "scale": 1.33},
     "check": {"hue": 35}
   },
   "314": {

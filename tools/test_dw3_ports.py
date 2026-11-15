@@ -141,7 +141,9 @@ class Discs(unittest.TestCase):
             if only and chunk not in only:
                 continue
             with self.subTest(chunk=chunk, name=e['name']):
-                data, _info = self.build('dw2003', chunk, e)
+                # the conversion's fidelity, at the field scale: a "scale" only resizes the faithful conversion
+                unscaled = dict(e, dw3={k: v for k, v in e['dw3'].items() if k != 'scale'})
+                data, _info = self.build('dw2003', chunk, unscaled)
                 with source_context(os.path.dirname(self.games['dw2003'])):
                     from tools import dw3effect as X, dw3efe as E
                     disc = X.Disc(IMAGES['dw2003'])
