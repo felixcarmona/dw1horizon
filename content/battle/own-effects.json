@@ -456,5 +456,10 @@
     "name": "Striking Fish",
     "stands_for": 85,
     "dw3": {"model": "M241HNGY", "slot": 5, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38]}, "pin": "0c1c540f93fba7c29c11a61c19e46682290698be"}
+  },
+  "225": {
+    "name": "Pincer Crusher",
+    "stands_for": 100,
+    "dw3": {"model": "M165EBDR", "slot": 5, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38], "9": ["E000COM3.BIN", 7, 0, 0]}, "pin": "337c9300307bc0568241d4eb11fafb6358bc6e6b"}
   }
 }
