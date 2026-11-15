@@ -672,12 +672,6 @@
     "compose": {"recolour": {"ramp": ["#120600", "#6a3010", "#d07030", "#fff0d8"]}, "scale": 1.3},
     "check": {"hue": 25}
   },
-  "234": {
-    "name": "Plasma Blade",
-    "stands_for": 81,
-    "compose": {"recolour": {"ramp": ["#180200", "#902008", "#ff6830", "#fff0d8"]}, "scale": 1.2},
-    "check": {"hue": 15}
-  },
   "249": {
     "name": "Dragon Wheel",
     "stands_for": 81,
