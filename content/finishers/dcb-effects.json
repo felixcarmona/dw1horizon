@@ -279,7 +279,8 @@
    "attack_script": 1051,
    "hit_script": 2003,
    "result": "fidelity failed",
-   "fallback": "template",
+   "fallback": "composed",
+   "composed": "DW1 chunk 91 with chunk 69's streaks, green and drawn out: needles where the template (91) is a beast's fist",
    "why": "whole curve"
   },
   {
@@ -326,7 +327,8 @@
    "attack_script": 1000,
    "hit_script": 497,
    "result": "fidelity failed",
-   "fallback": "template",
+   "fallback": "composed",
+   "composed": "DW1 chunk 89 with chunk 39's crescent, blue: flung blades where the template (96) is a pair of demon hands",
    "why": "cast area"
   },
   {
@@ -509,7 +511,8 @@
    "attack_script": 1225,
    "hit_script": 406,
    "result": "fidelity failed",
-   "fallback": "template",
+   "fallback": "composed",
+   "composed": "DW1 chunk 73 with chunk 39's ball, orange and larger: a lobbed bomb where the template (89) throws knives",
    "why": "cast area, cast box"
   },
   {
@@ -569,7 +572,8 @@
    "attack_script": 1228,
    "hit_script": 486,
    "result": "fidelity failed",
-   "fallback": "template",
+   "fallback": "composed",
+   "composed": "DW1 chunk 90 with chunk 112's rings, cyan and taller: a sound pulse where the template (90) is a water spout",
    "why": "whole shown, whole curve"
   },
   {
@@ -697,7 +701,8 @@
    "attack_script": 1192,
    "hit_script": 400,
    "result": "fidelity failed",
-   "fallback": "template",
+   "fallback": "composed",
+   "composed": "DW1 chunk 86 with chunk 94's ring, white-gold: a sun where the template (70) is a small flame",
    "why": "cast area, cast shown"
   },
   {
@@ -729,7 +734,8 @@
    "attack_script": 1183,
    "hit_script": 2038,
    "result": "fidelity failed",
-   "fallback": "template",
+   "fallback": "composed",
+   "composed": "DW1 chunk 78 with chunk 23's splash, sea blue and longer: torpedoes where the template (87) is a water jet",
    "why": "whole area, cast area, cast box, hit area"
   },
   {
@@ -772,7 +778,8 @@
    "attack_script": 1120,
    "hit_script": 2010,
    "result": "fidelity failed",
-   "fallback": "template",
+   "fallback": "composed",
+   "composed": "DW1 chunk 97 with chunk 35's dark ball, deep purple and larger: a dark cloud where the template (74) is a small mine",
    "why": "whole shown, cast shown, hit area, hit shown"
   },
   {

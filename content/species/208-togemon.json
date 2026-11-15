@@ -10,6 +10,7 @@
                  "Sonic Jab", "Megaton Punch", "Muscle Charge", "War Cry", "Fist of the Beast King",
                  "Green Trap"],
   "drop": {"item": "Various", "percent": 30},
+  "own_effect": {"technique": "Fist of the Beast King", "chunk": 278},
   "effects_like": 23,
   "model": {
     "file": "build/batch3/Togemon.MMD",

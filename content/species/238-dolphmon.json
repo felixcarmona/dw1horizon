@@ -10,6 +10,7 @@
                  "Electric Cloud", "Static Elect", "Wind Cutter", "Confused Storm",
                  "Blasting Spout", "Ice Statue", "Aurora Freeze"],
   "drop": {"item": "sm.recovery", "percent": 0},
+  "own_effect": {"technique": "Blasting Spout", "chunk": 307},
   "effects_like": 10,
   "model": {
     "file": "build/batch5/Dolphmon.MMD",

@@ -98,6 +98,15 @@ builds every port to its pin and runs the fidelity check against the original te
 | 262 | Metal Wolf Claw (composed) | 191 MetalGarurumon | 78 Genoside Attack | 13,872 bytes (as Genoside Attack) | chunk 20's ice crystal in place of the fire burst, icy blue, model 1.2x |
 | 265 | Ex-Laser (composed) | 194 ExVeemon | 63 Mega Flame | 2,600 bytes (as Mega Flame) | chunk 29's ring in place of the fireball, blue-white |
 | 321 | Thunder Volt (composed) | 252 Thundermon | 86 Solar Ray | 11,244 bytes (as Solar Ray) | chunk 66's lightning on the model and its spark on the orb, electric blue, model 1.3x |
+| 246 | Diamond Storm (composed) | 354 Renamon | 88 Ice Blast | as Ice Blast | Ice Blast's crystals, lilac, model 1.4x; the template (70) is a small flame |
+| 248 | Terra Destroyer (composed) | 404 BlackWarGreymon | 109 Crimson Flare | as Crimson Flare | chunk 94's ring in place of the fireball, crimson to gold, model 1.8x; the template (96) is a pair of demon hands |
+| 278 | Needle Spray (composed) | 208 Togemon | 91 Fist of the Beast King | as the template | chunk 69's streaks, green, model drawn out 1.8x |
+| 283 | V Wing Blade (composed) | 213 AeroVeedramon | 89 Iga School Knife Throw | as the template | chunk 39's crescent, blue, model 1.5x; the template (96) is a pair of demon hands |
+| 301 | Free Throw Bomb (composed) | 232 BomberNanimon | 73 Bit Bomb | as Bit Bomb | chunk 39's ball, orange, model 1.5x; the template (89) throws knives |
+| 307 | Pulse Blast (composed) | 238 Dolphmon | 90 Blasting Spout | as the template | chunk 112's rings, cyan, spout 2.5x taller |
+| 320 | Solar Flare (composed) | 251 Solarmon | 86 Solar Ray | as Solar Ray | chunk 94's ring on the orb, white-gold, model 1.4x; the template (70) is a small flame |
+| 323 | Torpedo Attack (composed) | 254 Tylomon | 78 Genoside Attack | as Genoside Attack | chunk 23's splash in place of the fire burst, sea blue, missiles 1.6x longer; the template (87) is a water jet |
+| 327 | Darkness Zone (composed) | 400 Apocalymon | 97 Frozen Fire Shot | as Frozen Fire Shot | chunk 35's dark ball, deep purple, model 2.8x; the template (74) is a small mine |
 
 ## Converting a Digital Card Battle attack
 
