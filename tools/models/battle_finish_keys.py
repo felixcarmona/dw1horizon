@@ -53,6 +53,24 @@ def author_keys(data, sk, sid, raw, slots, factor=1.4, mix=0.12):
             low = max((sum((w[b][1][j] * v[j] for j in range(3))) + w[b][1][3] for b in local for v in local[b]))
             p[1][7] -= math.ceil(low - target_floor + 2)
             frames.append(p)
+        if sid == 292 and slot == 42:
+            from tools.models import clip_repair
+            from tools.models.battle_finishes import _ground_frames
+            # The skull hand answers the central head, then settles behind it.
+            frames = clip_repair.apply_ops(frames, [parent for _, parent in sk], [
+                dict(op='wave', bone=14, axis='z', deg=55, cycles=1, phase=0,
+                     ticks=[0, 4, n-5, n-1]),
+                dict(op='wave', bone=14, axis='x', deg=30, cycles=1, phase=.25,
+                     ticks=[0, 4, n-5, n-1])])
+
+            def floor(pose):
+                pose = copy.deepcopy(pose)
+                pose[0] = [4096] * 3 + [0] * 6
+                world = mmd.bone_matrices(m, pose)
+                return max(sum(world[b][1][j] * v[j] for j in range(3)) + world[b][1][3]
+                           for b in local for v in local[b])
+
+            _ground_frames(frames, floor)
         if sid == 402 and slot == 42:
             ref = copy.deepcopy(frames[0])
             m.anims.anims[m.anims.table[0]] = mmd.encode_anim([ref, ref], nb)

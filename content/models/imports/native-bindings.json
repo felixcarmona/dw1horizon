@@ -4990,7 +4990,10 @@
       "compact": {
         "tol": 5
       }
-    }
+    },
+    "authored_finishes": [
+      42
+    ]
   },
   "295": {
     "species": 295,
