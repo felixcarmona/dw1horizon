@@ -197,7 +197,7 @@ before): Wormmon 183 also 0x24 (`damp` of the tail bone 27, keep 0.5), 0x28 and 
 0x36 plays too (74,418 B). MegaKabuterimon 205 also 0x28 and 0x29 (100,312 B at an exact compaction; 5 units since 0x2B and 0x2E, below). Wizardmon 241 also
 0x39 (99,198 B). Sorcermon 242 also 0x28 and 0x29 (`damp` of bone 9, keep 0.5; 99,020 B). VioletElecmon 256 also 0x32
 (`damp` of bone 3, keep 0.75; 77,368 B). MetalTyrannomon 260 keeps main's clips: its remaining slots fail a hard limit (live base, retime, tip)
-or a posture the clip's own tilt makes irreparable. MegaKabuterimon also uses its source clips for 0x2F, 0x30, bringing the resident model from 98,002 to 96,752 bytes.
+or a posture the clip's own tilt makes irreparable. MegaKabuterimon also uses its source clips for 0x2F, 0x30, bringing the resident model from 98,002 to 96,752 bytes. KingEtemon also uses its source clips for 0x2E, 0x38, 0x39, 0x3A, bringing the resident model from 94,704 to 100,148 bytes.
 
 More slots at their own lengths (`ticks`; a technique slot keeps at least 20, since the effect starts at clip frame 17) and with repairs, each passing on the final
 model: MegaKabuterimon 205 also 0x2B and 0x2E with a 5-unit compaction (100,244 B; no other slot moves more than

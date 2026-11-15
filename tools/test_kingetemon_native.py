@@ -211,7 +211,7 @@ class KingEtemonNative(unittest.TestCase):
         # the source game's own battle clips, retargeted onto the donor rig (native_battle.py); one-shot clips keep the
         # length of the donor's clip they replace, since technique effects are timed to it
         made = self.proof['battle_originals']
-        self.assertEqual(sorted(int(s) for s in made), self.recipe['battle_originals']['slots'])
+        self.assertEqual(sorted(int(s) for s in made), sorted(set(self.recipe['battle_originals']['slots']) | set(map(int, self.recipe['battle_originals'].get('share', {})))))
         for slot, row in made.items():
             if int(slot) not in (33, 34):
                 self.assertEqual(row['frames'], row['donor_frames'])
