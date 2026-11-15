@@ -2167,3 +2167,5 @@ tip error from 0.200 to 0.193 heights, but it still floats 0.460 heights above i
 usual hover. A revised hover clears the motion checks at 88,888 bytes, yet has
 65.84 crossings per tick against 65.03, so it stays out. Field motion and every
 battle program remain unchanged.
+
+Restored clips carry the source model’s bone offsets and scales. When a species has been resized or reshaped, fit those clips to its own field rig before applying motion repairs, keeping the original timing, rotations and events. Battle and care QA fail any covered clip whose first-tick size is outside 0.92–1.08 of the species’ field idle: the median offset-length ratio times scale ratio over bones from index 2 whose idle offset is at least 20 units. This measures body size independently of a crouch or other pose.

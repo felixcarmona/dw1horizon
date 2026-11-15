@@ -166,6 +166,8 @@ def check(F, A, M, slots=CONDITION + CARE, final_bytes=None, nb=None):
 
         def flag(key, msg):
             flags.append((key, msg))
+        if bq.size_failure(mF['size']):
+            flag('size', f"body size {mF['size']:.3f} against field idle (allowed 0.92..1.08)")
         if s in CONDITION:
             if same(fF[0], program(F, 0)):
                 flag('distinct', 'the field idle itself')
@@ -265,6 +267,8 @@ def worse_than_main(row):
 
 def verdict(row):
     """'pass', 'main' (main's own clip, pre-existing), 'kept' (flagged, no worse than main's) or 'fail'."""
+    if 'size' in row['keys']:
+        return 'fail'
     if not row['flags']:
         return 'pass'
     if row['source'] == 'main':

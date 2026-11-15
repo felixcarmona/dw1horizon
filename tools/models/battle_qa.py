@@ -6,6 +6,8 @@ odd on our model. This tool measures the FINAL model (what ships: the provider o
 native binding and passes; not the `edit.py get` intermediate) slot by slot against the importer's output of the species
 (the baseline: the source game's clip) and against origin/main's final model, and flags with fixed thresholds:
 
+  size       first-tick median bone offset-length ratio times scale ratio against this model’s field idle;
+             bones from index 2 with idle offsets at least 20 units, required range 0.92..1.08
   fidelity   per bone and tick, the local rotation (degrees) and the root's travel (heights) against the baseline clip
              retimed the way `battle_restore.retimed` retimes it (bone offsets and scales are the rig's: the chibi pass
              reshapes them); a slot that differs from main must match it
@@ -98,8 +100,14 @@ def polished_slots(sid):
     rebuilt = ()
     if os.path.exists(path):
         with open(path) as fh:
-            rebuilt = tuple(int(k) for k in json.load(fh).get(str(sid), {}))
+            rebuilt = tuple(int(k) for k, row in json.load(fh).get(str(sid), {}).items() if not row.get('current'))
     return tuple(sorted(set(POLISHED.get(sid, ())) | set(rebuilt)))
+
+
+def authored_slots(sid):
+    """Clips fitted from reviewed authored motion, whose motion baseline is main rather than the importer."""
+    from tools.models import battle_restore
+    return tuple(int(s) for s, row in battle_restore.rebuilds().get(str(sid), {}).items() if row.get('current'))
 
 
 # ------------------------------------------------------------------ geometry
@@ -237,9 +245,36 @@ def crossings(rig, V, n, step=2):
         for a, b in pairs:
             if (box[a][0] > box[b][1]).any() or (box[b][0] > box[a][1]).any():
                 continue
-            total += meshclash.crossing(tri[a], tri[b])[0]
+            total += meshclash.crossing(tri[a], tri[b], depth=False)[0]
         counts.append(total)
     return [float(np.mean(counts)), int(max(counts))] if counts else [0.0, 0]
+
+
+def size_ratio(pose, idle):
+    """Median bone offset length ratio times mean scale ratio at the first engine tick.
+
+    Bones 0 and 1 and idle offsets shorter than 20 units do not measure body size.
+    Rotations, the root and bone 1's height do not enter this measure, so a crouch keeps its size.
+    """
+    from tools.models.clip_repair import relative_size
+    return relative_size(pose, idle)
+
+
+def size_failure(ratio):
+    return ratio < 0.92 or ratio > 1.08
+
+
+def check_sizes(data, bones):
+    """Size of every occupied slot against this model's field idle; independent of pose and main."""
+    import mmd
+    model = mmd.MMD.parse(data, len(bones))
+    def first(slot):
+        player = mmd.AnimPlayer(model.anims.anims[model.anims.table[slot]], len(bones), slot)
+        player.tick(stop_at_infinite_loop=True)
+        return np.asarray(player.pose, float)
+    idle = first(0)
+    return {s: dict(size=(r := size_ratio(first(s), idle)), verdict='fail' if size_failure(r) else 'pass')
+            for s, idx in enumerate(model.anims.table) if idx is not None}
 
 
 def reference(rig):
@@ -264,6 +299,7 @@ def measure(clip, ref):
     rig, h, V = clip.rig, ref['h'], clip.V
     out = dict(n=clip.n, finite=bool(np.isfinite(clip.P).all()),
                scale=clip.P[..., 0:3].reshape(clip.n, -1))
+    out['size'] = size_ratio(clip.P[0], np.asarray(rig.frames(0)[0][0]))
     out['bone_range'] = [0.0] + [float(angle(clip.local_rot[:, b], mean_rotation(clip.local_rot[:, b])[None]).max())
                                  for b in range(1, rig.nb)]
     out['speed'] = float(angle(clip.local_rot[1:, 1:], clip.local_rot[:-1, 1:]).mean()) if clip.n > 1 else 0.0
@@ -333,7 +369,7 @@ def _value(key, m, ref, tip=None):
     return m.get(key, 0.0)
 
 
-def check(F, A, M, slots=BATTLE, polished=()):
+def check(F, A, M, slots=BATTLE, polished=(), authored=()):
     """{slot: row} for a species: F, A, M are the Rigs of the final model, the baseline and main's final model. A row has
     `flags` (measured reasons), `keys` (the rule of each flag), `notes`, `source` ('main': main's own clip, else
     'changed'), `cause` (classify) and the numbers of the final clip, main's and the baseline's."""
@@ -343,9 +379,10 @@ def check(F, A, M, slots=BATTLE, polished=()):
     rng_f, rng_a = np.zeros(F.nb), np.zeros(F.nb)
     rows = {}
     for s in slots:
-        fF, fA, fM = F.frames(s), A.frames(s), M.frames(s)
+        source_ref = ref if s in authored else ref_a
+        fF, fA, fM = F.frames(s), (M if s in authored else A).frames(s), M.frames(s)
         mF, mM = measure(Clip(F, *fF), ref), measure(Clip(M, *fM), ref)
-        mA = measure(Clip(A, *fA), ref_a) if fA is not None else None      # the source's clip on the source's rig
+        mA = measure(Clip(M if s in authored else A, *fA), source_ref) if fA is not None else None      # the source's clip on the source's rig
         rng_f = np.maximum(rng_f, mF['bone_range'])
         if mA:
             rng_a = np.maximum(rng_a, mA['bone_range'])
@@ -354,6 +391,8 @@ def check(F, A, M, slots=BATTLE, polished=()):
 
         def flag(key, msg, tip=None):
             flags.append((key, msg, tip))
+        if size_failure(mF['size']):
+            flag('size', f"body size {mF['size']:.3f} against field idle (allowed 0.92..1.08)")
         same_main = fF[0].shape == fM[0].shape and np.array_equal(fF[0], fM[0])
         fid = fidelity(fF[0], fA[0], s, h) if fA is not None else None
         faithful = fid is not None and fid[0] <= FID_ROT and fid[1] <= FID_TR
@@ -421,7 +460,7 @@ def check(F, A, M, slots=BATTLE, polished=()):
             if key in ('fidelity', 'live_base', 'length') or mA is None:
                 own.append(False)
             else:
-                vF, vA = _value(key, mF, ref, tip), _value(key, mA, ref_a, tip)
+                vF, vA = _value(key, mF, ref, tip), _value(key, mA, source_ref, tip)
                 own.append(vA >= (0.8 * vF if vF > 0 else 1.25 * vF - 0.01))
         for m in (mF, mM, mA):
             if m:
@@ -479,6 +518,8 @@ def worse_than_main(row):
 
 def verdict(row):
     """'pass', 'main' (main's own clip), 'kept' (flagged, but no worse than main's) or 'fail'."""
+    if 'size' in row['keys']:
+        return 'fail'
     if not row['flags']:
         return 'pass'
     if row['source'] == 'main':
@@ -486,14 +527,18 @@ def verdict(row):
     return 'fail' if worse_than_main(row) else 'kept'
 
 
-def species_check(final, base, main, bones, slots=BATTLE, polished=()):
+def species_check(final, base, main, bones, slots=BATTLE, polished=(), authored=()):
     """check() on MMD bytes and the species' skeleton ([[object, parent], ...])."""
-    return check(Rig.from_mmd(final, bones), Rig.from_mmd(base, bones), Rig.from_mmd(main, bones), slots, polished)
+    return check(Rig.from_mmd(final, bones), Rig.from_mmd(base, bones), Rig.from_mmd(main, bones), slots, polished, authored)
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest='cmd', required=True)
+    z = sub.add_parser('sizes', help='check body size in every occupied slot against field idle')
+    z.add_argument('final')
+    z.add_argument('species_json')
+    z.add_argument('--json')
     c = sub.add_parser('check')
     c.add_argument('final')
     c.add_argument('base')
@@ -507,9 +552,17 @@ def main():
     with open(a.species_json) as fh:
         species = json.load(fh)
     bones = species['model']['skeleton']
+    if a.cmd == 'sizes':
+        rows = check_sizes(rd(a.final), bones)
+        for slot, row in rows.items():
+            print(f"slot {slot:#x}: {row['verdict']} size {row['size']:.6f}")
+        if a.json:
+            with open(a.json, 'w') as fh:
+                json.dump(rows, fh, indent=1)
+        sys.exit(1 if any(r['verdict'] == 'fail' for r in rows.values()) else 0)
     sid = int(os.path.basename(a.species_json).split('-')[0])
     polished = a.polished if a.polished is not None else polished_slots(sid)
-    rows = species_check(rd(a.final), rd(a.base), rd(a.main), bones, a.slots, polished)
+    rows = species_check(rd(a.final), rd(a.base), rd(a.main), bones, a.slots, polished, authored_slots(sid))
     for s, r in rows.items():
         print(f'slot {s:#x}: {r["verdict"]} ({r["cause"]}) ' + '; '.join(r['flags'] + r['notes']))
     if a.json:

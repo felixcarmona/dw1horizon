@@ -46,7 +46,7 @@ sys.path[:0] = [ROOT, os.path.join(ROOT, 'tools'), os.path.join(ROOT, 'tools', '
 
 import battle_qa as Q  # noqa: E402
 
-HARD = ('fidelity', 'live_base', 'retime', 'finite', 'length')   # flags that fail a slot outright
+HARD = ('fidelity', 'live_base', 'retime', 'finite', 'length', 'size')   # flags that fail a slot outright
 FID_MEAN = 8.0       # weighted mean piece orientation error over the clip (degrees)
 FID_PIECE = 25.0     # a piece's 95th percentile orientation error (degrees), pieces of 2 % of the weight or more
 FID_TIP = 0.15       # end-effector motion difference (heights)
@@ -318,6 +318,8 @@ def check(sid, final_data, source_data, main_data, slots=None):
 
         def flag(key, msg):
             flags.append((key, msg))
+        if Q.size_failure(mF['size']):
+            flag('size', f"body size {mF['size']:.3f} against field idle (allowed 0.92..1.08)")
         if not same_main:
             if fidF['rot_mean'] > FID_MEAN:
                 flag('fidelity', f'pieces turned {fidF["rot_mean"]:.1f} deg off the source on average (main '
@@ -374,7 +376,7 @@ def check(sid, final_data, source_data, main_data, slots=None):
         others = [(k, m) for k, m in flags if k not in HARD]
         soft = Q.worse_than_main(dict(row, keys=[k for k, _ in others], flags=[m for _, m in others],
                                       own=[False] * len(others)))
-        row['verdict'] = 'main' if same_main else ('fail' if hard or soft else ('kept' if flags else 'pass'))
+        row['verdict'] = 'fail' if 'size' in row['keys'] else 'main' if same_main else ('fail' if hard or soft else ('kept' if flags else 'pass'))
         rows[s] = row
     return rows
 
