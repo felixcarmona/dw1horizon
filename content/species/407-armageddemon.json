@@ -11,6 +11,7 @@
                  "Pulse Laser", "Reverse Prog", "Insect Plague", "Crimson Flare", "Mass Morph"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 47,
+  "own_effect": {"technique": "Crimson Flare", "chunk": 219},
   "model": {
     "file": "build/rescue-armagemon/Armagemon.MMD",
     "radius": 300,

@@ -431,5 +431,10 @@
     "name": "Melting Blood",
     "stands_for": 96,
     "dw3": {"model": "M378BVND", "slot": 11, "meft": [92], "pin": "e84038247a533e3c5c8c728df2177cd74f4125ed"}
+  },
+  "219": {
+    "name": "Ultimate Flare",
+    "stands_for": 109,
+    "dw3": {"model": "M382ARMG", "slot": 5, "meft": [333], "pin": "e59777fd56be73779e6594c9375f9a2d94df2b80"}
   }
 }
