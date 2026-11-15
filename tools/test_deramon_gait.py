@@ -20,6 +20,7 @@ from tools.models.field_animations import deramon_gait as gait
 from test_tortomon_gait import inside, DIRS
 
 EXPECTED = '7d51320b1e73bc167591d4a8a97ae7a9aca748c7af06d5d981e47ad4272090b8'
+FITTED_EXPECTED = '1d003d34ad44f36a5160d285ef888e9d0e0f88cfe9441571adb7082c7f411bbd'
 D = 4096 / 360
 # the most points of one part inside another's mesh over the four old clips (before this change), sampled the same way
 OLD = {'feet>body': 218, 'body>shell': 56, 'head>shell': 114, 'wings>shell': 16, 'head>body': 16, 'wings>body': 58,
@@ -49,7 +50,7 @@ class DeramonGait(unittest.TestCase):
             cls.old = mmd.MMD.parse(data, 8)
             cls.old.type = 286
             data, cls.report = gait.build(data, cls.rig)
-        elif digest != EXPECTED:
+        elif digest not in (EXPECTED, FITTED_EXPECTED):
             raise unittest.SkipTest('the model is neither the one before nor the one after this change')
         cls.data = data
         cls.new = mmd.MMD.parse(data, 8)
@@ -77,7 +78,7 @@ class DeramonGait(unittest.TestCase):
         return -(fr[-1][0][8] - fr[0][0][8]) / (len(fr) - 1)
 
     def test_reviewed_output_is_exact(self):
-        self.assertEqual(hashlib.sha256(self.data).hexdigest(), EXPECTED)
+        self.assertIn(hashlib.sha256(self.data).hexdigest(), (EXPECTED, FITTED_EXPECTED))
 
     def test_only_the_four_clips_and_the_idle_alias_change(self):
         if self.old is None:
@@ -104,7 +105,11 @@ class DeramonGait(unittest.TestCase):
             self.assertNotEqual(a[1:5], b[1:5])
         for fr in (walk, tired, run):          # the root moves the same distance every tick
             self.assertEqual(len({fr[i + 1][0][8] - fr[i][0][8] for i in range(len(fr) - 1)}), 1)
-        self.assertEqual(self.frames(33), idle)
+        if hashlib.sha256(self.data).hexdigest() == FITTED_EXPECTED:
+            self.assertEqual(hashlib.sha256(self.new.anims.anims[self.new.anims.table[33]].build()).hexdigest(),
+                             '7ebebc519864510ad0eac7735eec03c36e9c3a80102024f4b3c087564425c48b')
+        else:
+            self.assertEqual(self.frames(33), idle)
 
     def test_loops_are_seamless(self):
         for slot in (0, 2, 3, 4):

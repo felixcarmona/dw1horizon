@@ -32,6 +32,27 @@ class ModelProvider(unittest.TestCase):
         self.assertEqual(actual, [hashlib.sha1(b'base modeldash repair').hexdigest(),
                                   hashlib.sha1(b'texture').hexdigest()])
 
+    def test_species_pin_check_includes_authored_builders_and_rejects_bad_pins(self):
+        import contextlib
+        import io
+        from tools.models import edit
+        for ids in ([], [470]):
+            for actual, expected_status in ((['model', 'texture'], 0), (['wrong', 'texture'], 1)):
+                with self.subTest(ids=ids, actual=actual):
+                    builder = SimpleNamespace(build=Mock(return_value=(b'model', b'texture')))
+                    output = io.StringIO()
+                    with patch.object(edit, 'load', return_value={'models': []}), \
+                            patch.object(edit, 'import_records', return_value={'470': {'builder': 'example'}}), \
+                            patch.object(edit, 'species_pins', return_value=(None, {'imports': {'470': ['model', 'texture']}})), \
+                            patch.object(edit, 'provider_pin', return_value=actual), \
+                            patch.object(edit, 'donor_models', return_value={}), \
+                            patch.object(edit.importlib, 'import_module', return_value=builder), \
+                            contextlib.redirect_stdout(output):
+                        status = edit.cmd_check(SimpleNamespace(ids=ids, species_pins=True))
+                    self.assertEqual(status, expected_status)
+                    self.assertIn('1/1 verified' if status == 0 else '0/1 verified', output.getvalue())
+                    builder.build.assert_called_once_with(edit.ROOT / 'extracted')
+
     def test_generated_base_folder_is_forwarded_to_the_imported_provider(self):
         make = Mock(return_value={'183': ('/model.MMD', '/model.TIM')})
         module = SimpleNamespace(make=make)

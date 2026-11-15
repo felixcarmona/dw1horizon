@@ -354,6 +354,22 @@ def species_file(out, t, recs=None, names=None, generate=False):
         s['model']['file'] = str(model_path)
         s['model'].pop('slot_aliases', None)
         s.pop('_path', None)
+    # One final rig boundary covers source/donor restores and authored programs,
+    # including care, evolution, training and technique stages above.
+    from tools.models import clip_rig
+    from pathlib import Path
+    import species as species_tools
+    s['_path'] = os.path.join(ROOT, 'content/species', name)
+    model, fitted = clip_rig.conform(species_tools.species_model(s)[0], s['model']['skeleton'], t)
+    if fitted:
+        generated = Path(os.path.abspath(out) + '-models')
+        generated.mkdir(parents=True, exist_ok=True)
+        model_path = generated / f'{t}-rig.MMD'
+        model_path.write_bytes(model)
+        (generated / f'{t}-rig-report.json').write_text(json.dumps(fitted, indent=2) + '\n')
+        s['model']['file'] = str(model_path)
+        s['model'].pop('slot_aliases', None)
+    s.pop('_path', None)
     return name, s
 
 

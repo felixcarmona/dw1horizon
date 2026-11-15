@@ -30,7 +30,7 @@ def _crossings(p0, p1, tris):
     return ok & (u >= 0) & (v >= 0) & (u + v <= 1) & (t >= 0) & (t <= 1)
 
 
-def crossing(a, b):
+def crossing(a, b, *, depth=True):
     """(pairs, deepest) for triangle arrays a (n, 3, 3) and b (m, 3, 3)."""
     hit = np.zeros((len(a), len(b)), bool)
     for k in range(3):
@@ -38,8 +38,8 @@ def crossing(a, b):
         hit |= _crossings(a[:, k], a[:, k2], b)
         hit |= _crossings(b[:, k], b[:, k2], a).T
     pairs = int(hit.sum())
-    if not pairs:
-        return 0, 0.0
+    if not pairs or not depth:
+        return pairs, 0.0
     deepest = 0.0
     for i, j in zip(*np.nonzero(hit)):
         n = np.cross(b[j, 1] - b[j, 0], b[j, 2] - b[j, 0])

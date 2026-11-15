@@ -24,12 +24,17 @@ off the species' natural stance. `copy` makes a slot share another slot's clip (
 of its own for it). `rebuild` restores the slots of the species' row in content/models/imports/battle-rebuilds.json
 (`{"SLOT": {"ticks": N or null, "ops": [...]}}`, SLOT a decimal slot number, `ticks` as SLOT=TICKS above; an optional
 `"rig": SLOT` or `"rig": [SOURCE_SLOT, OUR_SLOT]` first gives the restored clip our rig's scale and offset channels,
-`clip_repair.fit_rig`, for a species whose model was reshaped offline) and runs the
+`clip_repair.fit_rig`, for a species whose model was reshaped offline; `"body": "scale"` also scales the body height
+for a model resized as a whole) and runs the
 row's repair operations (tools/models/clip_repair.py) on each: the source's own clip kept as the reference of poses,
 timing and arc, and repaired where it breaks on our rig (battle_qa.py counts these slots as documented polish). A slot's
 optional `"compact": [SLOT, ...]` encodes those clips again exactly (`compact` below, tolerance 0) to pay for the restored
 ones. A model already over the resident limit before the rebuild (a later provider stage makes the room: Beelzemon's
 Buster Dive dash replaces a larger technique clip) may stay over it but must not grow; the provider checks its final model.
+
+A row's optional `"current": true` fits an already authored clip from B instead of restoring A's clip. It refuses clips already in the target size range to prevent fitting twice, and the
+original root, rotation, event and control programs remain exact; QA compares
+its motion with main's authored clip. This is for species whose field rig changed after their other clips were authored.
 
 A restored clip is one more program in the resident model (the field idle used to serve as the battle idle), so a model
 near the resident limit (motionstorage, 100352 B) makes room with `compact(data, nb, tol, slots)`: every resident clip is
@@ -223,22 +228,49 @@ def rebuild(b_data, a_data, nb, type_id, row):
     """B (a species `type_id`, registered with mmd.exe()) with each slot of `row` restored from A and repaired -> bytes."""
     from tools.models import clip_repair
     slots = {int(k): v.get('ticks') for k, v in row.items()}
-    data, _ = restore(b_data, a_data, nb, slots, budget=False)
+    if any(spec.get('current') for spec in row.values()):
+        original = mmd.MMD.parse(b_data, nb)
+        idle = animsheet.slot_frames(original, nb, 0)[0][0]
+        for slot, spec in row.items():
+            if spec.get('current'):
+                pose = animsheet.slot_frames(original, nb, int(slot))[0][0]
+                from tools.models import clip_rig
+                skeleton = mmd.exe().skeleton[type_id]
+                frames = animsheet.slot_frames(original, nb, int(slot))[0]
+                proportions = clip_rig.proportions(frames, idle, [p for _, p in skeleton],
+                                                  clip_rig.groups_for(type_id, skeleton) or {})
+                if 0.92 <= clip_repair.relative_size(pose, idle) <= 1.08 and not clip_rig.failure(proportions):
+                    raise ValueError(f'slot {slot}: authored clip is already fitted; use its input before the fit')
+    data, _ = restore(b_data, a_data, nb, {s: n for s, n in slots.items() if not row[str(s)].get('current')}, budget=False)
     model = mmd.MMD.parse(data, nb)
     source = mmd.MMD.parse(a_data, nb)
     parents = [p for _, p in mmd.exe().skeleton[type_id]]
     for slot in sorted(slots):
         frames, loop, events = animsheet.slot_frames(model, nb, slot)
-        if loop not in (0, None):
+        if loop not in (0, None) and not row[str(slot)].get('current'):
             raise ValueError(f'slot {slot}: a clip that loops from the middle cannot be rebuilt')
         if 'rig' in row[str(slot)]:      # a species reshaped offline (its delta): the clip takes the rig's scales and offsets
             ref = row[str(slot)]['rig']      # a slot of both models, or [the source's slot, our slot]
             theirs, ours = ref if isinstance(ref, list) else (ref, ref)
             frames = clip_repair.fit_rig(frames, animsheet.slot_frames(source, nb, theirs)[0][0],
-                                         animsheet.slot_frames(mmd.MMD.parse(b_data, nb), nb, ours)[0][0])
+                                         animsheet.slot_frames(mmd.MMD.parse(b_data, nb), nb, ours)[0][0],
+                                         row[str(slot)].get('body', 'offset'))
         samples = clip_repair.apply_ops(frames, parents, row[str(slot)]['ops'])
         events = clip_repair.events(row[str(slot)]['ops'], events, len(frames))
-        clip = mmd.encode_anim(samples, nb, 0 if loop == 0 else None, events, tol=1, repeats=False)
+        if row[str(slot)].get('current'):
+            from tools.models.field_animations.articulation import replace_channels
+            # Authored clips keep their exact rotation, root, event and control programs.
+            original = model.anims.anims[model.anims.table[slot]]
+            channels = {(b, c) for b in range(1, nb) for c in (6, 7, 8)}
+            if original.has_scale or any(v != 4096 for p in samples for bone in p[1:] for v in bone[:3]):
+                if not original.has_scale:
+                    original = copy.deepcopy(original)
+                    original.pose = [[4096] * 3 + list(p) for p in original.pose]
+                    original.has_scale = True
+                channels |= {(b, c) for b in range(1, nb) for c in (0, 1, 2)}
+            clip = replace_channels(original, samples, loop, nb, channels)
+        else:
+            clip = mmd.encode_anim(samples, nb, 0 if loop == 0 else None, events, tol=1, repeats=False)
         model.anims.table[slot] = len(model.anims.anims)
         model.anims.anims.append(clip)
     used = sorted({i for i in model.anims.table if i is not None})

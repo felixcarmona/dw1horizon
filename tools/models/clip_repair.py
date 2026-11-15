@@ -59,11 +59,21 @@ reference of motion, character and timing and changes only what breaks, with the
         a bone the original never moves (a limb left out of its bone map) swung D degrees about a model axis, C whole
         cycles over the clip (sine from tick 0 to the last tick, P in turns), so it starts and ends where it was.
 
-Operations run in the order given. Only the rotation channels of the bones named (and a lifted bone's height) change; scale
+  {"op": "offset", "bone": B, "delta": [X, Y, Z] [, "ticks": [a, b, c, d]]}
+        move a joint in its parent's frame to keep resized pieces attached and clear of one another; rotations,
+        timing and the joint's original motion stay.
+
+  {"op": "offset_motion", "bone": B, "axis": "x"|"y"|"z", "keep": K}
+        keep a fitted joint's first position and scale its translation excursion about that position, so moving
+        a rig's resting joints does not extend an authored part's flight away from the body.
+
+Operations run in the order given. Only the rotation channels of the bones named (and a lifted or offset bone's translation) change; scale
 channels (the chibi reshape) and every other bone stay as they were. Standard library only (deterministic under
 tools/derive's correctly rounded math), so a derive stage can apply a recipe's repairs.
 """
 import math
+import copy
+import statistics
 
 DEG = 4096 / 360
 AXES = {'x': (1.0, 0.0, 0.0), 'y': (0.0, 1.0, 0.0), 'z': (0.0, 0.0, 1.0)}
@@ -169,14 +179,17 @@ def _chain(parents, pose, b, cache):
     return cache[b]
 
 
-def turn(frames, parents, bone, axis, deg, ticks=None):
+def turn(frames, parents, bone, axis, deg, ticks=None, space='world'):
+    if space not in ('world', 'parent'):
+        raise ValueError(f'unknown turn space: {space}')
     out = []
     for t, pose in enumerate(frames):
         pose = [list(v) for v in pose]
         w = envelope(ticks, t)
         if w > 0:
             parent = _chain(parents, pose, parents[bone], {})
-            new = _mul(_tr(parent), _mul(_axis_angle(axis, deg * w), _mul(parent, _rot(*pose[bone][3:6]))))
+            new = (_mul(_axis_angle(axis, deg * w), _rot(*pose[bone][3:6])) if space == 'parent' else
+                   _mul(_tr(parent), _mul(_axis_angle(axis, deg * w), _mul(parent, _rot(*pose[bone][3:6])))))
             pose[bone][3:6] = list(_euler(new, pose[bone][3:6]))
         out.append(pose)
     return out
@@ -323,28 +336,38 @@ def lift(frames, bone, up, ticks=None):
     return out
 
 
-def fit_rig(frames, source_pose, rig_pose):
-    """`frames` (a source clip) fitted to a rig that was reshaped after the source: the reshaped species' reference pose
-    (`rig_pose`) against the source's (`source_pose`), poses of the same reference tick of the same slot.
-
-    Each bone takes the rig's scale channels, and its translation (the bone's offset from its parent, which the reshape
-    scales per axis) multiplied by the ratio rig / source at the reference tick (only where the source's offset is at least
-    20 units; smaller offsets stay). The body bone (1), whose height the reshape also moves, instead keeps the source's
-    motion about the offset between the two reference ticks. Rotations and the root bone (0) are not touched."""
-    out = []
-    for pose in frames:
-        bones = []
-        for b, bone in enumerate(pose):
-            bone = list(bone)
-            if b:
-                bone[0:3] = rig_pose[b][0:3]
-                for i in range(6, 9):
-                    s0, r0 = source_pose[b][i], rig_pose[b][i]
-                    if abs(s0) >= 20:
-                        bone[i] = bone[i] + (r0 - s0) if (b == 1 and i == 7) else bone[i] * r0 / s0
-            bones.append(bone)
-        out.append(bones)
+def offset(frames, bone, delta, ticks=None):
+    """Move one joint by local `delta` units while keeping its original motion."""
+    out = copy.deepcopy(frames)
+    for t, pose in enumerate(out):
+        w = envelope(ticks, t)
+        pose[bone][6:9] = [v + w * d for v, d in zip(pose[bone][6:9], delta)]
     return out
+
+
+def offset_motion(frames, bone, axis, keep):
+    """Keep the fitted joint's first position, scaling its translation excursion about that position."""
+    c = 6 + 'xyz'.index(axis)
+    first = frames[0][bone][c]
+    out = copy.deepcopy(frames)
+    for pose in out:
+        pose[bone][c] = first + keep * (pose[bone][c] - first)
+    return out
+
+
+def relative_size(pose, idle):
+    """First-tick median offset-length ratio times mean scale ratio, against the field idle."""
+    ratios = []
+    for b in range(2, len(idle)):
+        length = math.dist((0, 0, 0), idle[b][6:9])
+        if length >= 20:
+            ratios.append(math.dist((0, 0, 0), pose[b][6:9]) / length
+                          * sum(pose[b][:3]) / max(1, sum(idle[b][:3])))
+    return float(statistics.median(ratios)) if ratios else 1.0
+
+
+# Source, native binding and final provider stages share the same rig transform.
+from tools.models.clip_rig import fit as fit_rig
 
 
 def _mix(a, b, w):
@@ -413,7 +436,7 @@ def apply_ops(frames, parents, ops):
     for op in ops:
         kind = op['op']
         if kind == 'turn':
-            frames = turn(frames, parents, op['bone'], op['axis'], op['deg'], op.get('ticks'))
+            frames = turn(frames, parents, op['bone'], op['axis'], op['deg'], op.get('ticks'), op.get('space', 'world'))
         elif kind == 'wave':
             frames = wave(frames, parents, op['bone'], op['axis'], op['deg'], op.get('cycles', 1.0), op.get('phase', 0.0),
                           op.get('ticks'))
@@ -439,6 +462,10 @@ def apply_ops(frames, parents, ops):
             frames = frames[:op['from']] + frames[op['to']:]
         elif kind == 'seam':
             frames = seam(frames, op['ticks'], op.get('bones'))
+        elif kind == 'offset_motion':
+            frames = offset_motion(frames, op['bone'], op['axis'], op['keep'])
+        elif kind == 'offset':
+            frames = offset(frames, op['bone'], op['delta'], op.get('ticks'))
         elif kind == 'lift':
             frames = lift(frames, op['bone'], op['up'], op.get('ticks'))
         else:

@@ -15,7 +15,9 @@ from tools.models.field_animations.war_greymon import rotation, set_rotation
 def replace_channels(original,samples,loop,nb,channels,*,tolerance=1):
     encoded=mmd.encode_anim(samples,nb,loop_sample=loop,tol=tolerance,repeats=False)
     result=copy.deepcopy(original)
-    for b,c in channels:result.pose[b-1][c if result.has_scale else c-3]=encoded.pose[b-1][c if encoded.has_scale else c-3]
+    for b,c in channels:
+        value = 4096 if c < 3 and not encoded.has_scale else encoded.pose[b-1][c if encoded.has_scale else c-3]
+        result.pose[b-1][c if result.has_scale else c-3] = value
     for ins in result.instrs:
         if ins['op']=='key':
             for group in ins['bones']:group['vals']={k:v for k,v in group['vals'].items()if(group['bone'],mmd.CHANNELS.index(k))not in channels}

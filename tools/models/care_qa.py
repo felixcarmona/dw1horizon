@@ -166,6 +166,11 @@ def check(F, A, M, slots=CONDITION + CARE, final_bytes=None, nb=None):
 
         def flag(key, msg):
             flags.append((key, msg))
+        from tools.models import clip_rig
+        if clip_rig.failure(mF['proportions']):
+            flag('proportions', f"bone proportions differ from field idle: {mF['proportions']['deviation']:.6f}")
+        if bq.size_failure(mF['size']):
+            flag('size', f"body size {mF['size']:.3f} against field idle (allowed 0.92..1.08)")
         if s in CONDITION:
             if same(fF[0], program(F, 0)):
                 flag('distinct', 'the field idle itself')
@@ -265,6 +270,8 @@ def worse_than_main(row):
 
 def verdict(row):
     """'pass', 'main' (main's own clip, pre-existing), 'kept' (flagged, no worse than main's) or 'fail'."""
+    if {'size', 'proportions'} & set(row['keys']):
+        return 'fail'
     if not row['flags']:
         return 'pass'
     if row['source'] == 'main':
@@ -272,10 +279,10 @@ def verdict(row):
     return 'fail' if worse_than_main(row) else 'kept'
 
 
-def species_check(final, base, main, bones, slots=CONDITION + CARE, base_bones=None):
+def species_check(final, base, main, bones, slots=CONDITION + CARE, base_bones=None, sid=None):
     """`bones`: the final (and main's) skeleton; `base_bones`: the importer output's, when it is another one (a native
     binding)."""
-    R = lambda d, b=bones: bq.Rig.from_mmd(d, b)  # noqa: E731
+    R = lambda d, b=bones: bq.Rig.from_mmd(d, b, sid)  # noqa: E731
     A = None
     if base:
         try:
@@ -302,6 +309,7 @@ def main():
     c.add_argument('--base-skeleton')
     c.add_argument('--slots', nargs='*', type=int, default=list(CONDITION + CARE))
     c.add_argument('--json')
+    c.add_argument('--species-id', help='species id for a generated or otherwise ambiguous skeleton')
     a = ap.parse_args()
     rd = lambda p: open(p, 'rb').read()  # noqa: E731
     with open(a.species_json) as fh:
@@ -311,7 +319,7 @@ def main():
         with open(a.base_skeleton) as fh:
             base_bones = json.load(fh)['model']['skeleton']
     rows = species_check(rd(a.final), None if a.base == '-' else rd(a.base), rd(a.main), bones, tuple(a.slots),
-                         base_bones)
+                         base_bones, sid=a.species_id or os.path.basename(a.species_json).split('-')[0])
     for s, r in rows.items():
         if s == 'buffer':
             print(f'buffer: resident {r["resident"]} B, fits {r["fits"]}')

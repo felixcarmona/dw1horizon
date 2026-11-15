@@ -78,6 +78,25 @@ class SyntheticDefects(unittest.TestCase):
         rows = run({1: clip(head=35, breath=4)})
         self.assertEqual(rows[1]['verdict'], 'pass', rows[1]['flags'])
 
+    def test_body_size_fails_even_when_main_has_the_same_clip(self):
+        for factor in (0.8, 1.2):
+            with self.subTest(factor=factor):
+                frames, loop = clip(head=35, breath=4)
+                frames[:, 2:, 6:9] *= factor
+                bad = {1: (frames, loop)}
+                row = run(bad, main=bad)[1]
+                self.assertIn('size', row['keys'])
+                self.assertEqual(row['verdict'], 'fail')
+
+    def test_unreshaped_head_fails_even_when_size_median_and_main_agree(self):
+        frames, loop = clip(head=35, breath=4)
+        frames[:, HEAD, 7] *= 1.3
+        bad = {1: (frames, loop)}
+        row = run(bad, main=bad)[1]
+        self.assertNotIn('size', row['keys'])
+        self.assertIn('proportions', row['keys'])
+        self.assertEqual(row['verdict'], 'fail')
+
     def test_field_idle_copy_flagged(self):
         rows = run({1: clip()})
         self.assertIn('distinct', rows[1]['keys'])

@@ -6959,6 +6959,69 @@
             "bone": 3,
             "axis": "x",
             "deg": 12
+          },
+          {
+            "op": "offset",
+            "bone": 5,
+            "delta": [
+              17,
+              8,
+              -3
+            ]
+          },
+          {
+            "op": "offset",
+            "bone": 8,
+            "delta": [
+              17,
+              -8,
+              -3
+            ]
+          },
+          {
+            "op": "offset",
+            "bone": 10,
+            "delta": [
+              10,
+              5,
+              -3
+            ]
+          },
+          {
+            "op": "offset",
+            "bone": 13,
+            "delta": [
+              10,
+              -5,
+              -3
+            ]
+          },
+          {
+            "op": "offset",
+            "bone": 20,
+            "delta": [
+              6,
+              1,
+              -3
+            ]
+          },
+          {
+            "op": "offset",
+            "bone": 24,
+            "delta": [
+              6,
+              -1,
+              -3
+            ]
+          },
+          {
+            "op": "offset",
+            "bone": 22,
+            "delta": [
+              19,
+              -5,
+              5
+            ]
           }
         ],
         "35": [
@@ -6985,6 +7048,60 @@
             "bone": 5,
             "axis": "z",
             "deg": -10
+          },
+          {
+            "op": "offset",
+            "bone": 5,
+            "delta": [
+              17,
+              8,
+              -3
+            ]
+          },
+          {
+            "op": "offset",
+            "bone": 8,
+            "delta": [
+              17,
+              -8,
+              -3
+            ]
+          },
+          {
+            "op": "offset",
+            "bone": 10,
+            "delta": [
+              10,
+              5,
+              -3
+            ]
+          },
+          {
+            "op": "offset",
+            "bone": 13,
+            "delta": [
+              10,
+              -5,
+              -3
+            ]
+          },
+          {
+            "op": "offset",
+            "bone": 20,
+            "delta": [
+              6,
+              1,
+              -3
+            ]
+          },
+          {
+            "op": "offset",
+            "bone": 24,
+            "delta": [
+              6,
+              -1,
+              -3
+            ]
           }
         ],
         "36": [
@@ -7017,6 +7134,173 @@
             "bone": 8,
             "axis": "x",
             "deg": 20
+          }
+        ],
+        "43": [
+          {
+            "op": "offset",
+            "bone": 5,
+            "delta": [
+              17,
+              8,
+              -3
+            ]
+          },
+          {
+            "op": "offset",
+            "bone": 8,
+            "delta": [
+              17,
+              -8,
+              -3
+            ]
+          },
+          {
+            "op": "offset",
+            "bone": 10,
+            "delta": [
+              10,
+              5,
+              -3
+            ]
+          },
+          {
+            "op": "offset",
+            "bone": 13,
+            "delta": [
+              10,
+              -5,
+              -3
+            ]
+          },
+          {
+            "op": "offset",
+            "bone": 20,
+            "delta": [
+              6,
+              1,
+              -3
+            ]
+          },
+          {
+            "op": "offset",
+            "bone": 24,
+            "delta": [
+              6,
+              -1,
+              -3
+            ]
+          }
+        ],
+        "44": [
+          {
+            "op": "offset",
+            "bone": 5,
+            "delta": [
+              17,
+              8,
+              -3
+            ]
+          },
+          {
+            "op": "offset",
+            "bone": 8,
+            "delta": [
+              17,
+              -8,
+              -3
+            ]
+          },
+          {
+            "op": "offset",
+            "bone": 10,
+            "delta": [
+              10,
+              5,
+              -3
+            ]
+          },
+          {
+            "op": "offset",
+            "bone": 13,
+            "delta": [
+              10,
+              -5,
+              -3
+            ]
+          },
+          {
+            "op": "offset",
+            "bone": 20,
+            "delta": [
+              6,
+              1,
+              -3
+            ]
+          },
+          {
+            "op": "offset",
+            "bone": 24,
+            "delta": [
+              6,
+              -1,
+              -3
+            ]
+          }
+        ],
+        "47": [
+          {
+            "op": "offset",
+            "bone": 17,
+            "delta": [
+              12,
+              0,
+              1
+            ]
+          }
+        ],
+        "48": [
+          {
+            "op": "offset",
+            "bone": 17,
+            "delta": [
+              12,
+              0,
+              1
+            ]
+          }
+        ],
+        "52": [
+          {
+            "op": "offset",
+            "bone": 17,
+            "delta": [
+              12,
+              0,
+              1
+            ]
+          }
+        ],
+        "53": [
+          {
+            "op": "offset",
+            "bone": 17,
+            "delta": [
+              12,
+              0,
+              1
+            ]
+          }
+        ],
+        "55": [
+          {
+            "op": "offset",
+            "bone": 17,
+            "delta": [
+              12,
+              0,
+              1
+            ]
           }
         ]
       },
@@ -8057,7 +8341,7 @@
     "skeleton_sha256": "1669f116ee2171d91e992fa98f9275f56a1dda3bed6eec1d392746b854e8297f",
     "donor": 320,
     "donor_species": 320,
-    "donor_sha256": "7716a2a169a13e93a328a95e6f9ac357bfb7725d83c099ed7fbad05e606f1d2e",
+    "donor_sha256": "8d85a72db1570f3a83fa94a8c438ecbdf7fec12689e76234bcaeeb85908432d5",
     "scale": 1.4,
     "mesh_scale": 1.0,
     "bind_slot": 0,

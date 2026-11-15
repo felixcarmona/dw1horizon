@@ -252,6 +252,7 @@ def assemble(rig, cfg, phase, hist, tick_info=None):
     drel = [sh['sway'], -sh['bob'], c['shell_back']]
     Rs = mul(Rrel, Rus)
     P1 = group(Rrel, c_after, drel, group(Rus, floor_pivot, du, rig.P[SHELL]))
+    P1[1] += c.get('shell_down', 0.0)
     low = rig.lowest(SHELL, mul(Rs, rig.R[SHELL]), P1)
     if low > SHELL_FLOOR:
         P1 = [P1[0], P1[1] - (low - SHELL_FLOOR), P1[2]]
@@ -422,6 +423,38 @@ def blink_events(source, ticks):
             tick = at + t - base
             assert 0 < tick < ticks
             out.append((tick, 'tex', dict(e, frame=tick + 1)))
+    return out
+
+
+def fit_idle_rig(data, skeleton):
+    """Refit tired walk and run to the field idle without moving their planted foot paths.
+
+    Their shell must follow the body's lean instead of letting the children stretch away from its rig.
+    The run's shell placement keeps its original floor clearance. Every other slot and the mesh stay exact.
+    """
+    if [b[1] for b in skeleton] != PARENTS:
+        raise ValueError('Deramon rig differs')
+    import motioncyclelayer
+    mmd.exe().add_type(SPECIES, skeleton)
+    old = mmd.MMD.parse(data, len(skeleton))
+    old.type = SPECIES
+    new = copy.deepcopy(old)
+    rig = Rig(old, skeleton)
+    for slot in (3, 4):
+        cfg = dict(GAITS[slot], shell_follow=.7 if slot == 3 else .5,
+                   shell_down=0 if slot == 3 else 15,
+                   shell_back=GAITS[slot]['shell_back'] + (6 if slot == 4 else 0))
+        frames = clip(rig, cfg)
+        before, loop, events = animsheet.slot_frames(old, len(skeleton), slot)
+        if len(frames) != len(before):
+            raise ValueError('Deramon fit requires the authored clip timing')
+        samples = [[[round(v) for v in bone] for bone in pose] for pose in frames]
+        anim = mmd.encode_anim(samples, len(skeleton), loop, events, tol=1)
+        new.anims.table[slot] = len(new.anims.anims)
+        new.anims.anims.append(anim)
+    new.anims.anims, new.anims.table = motioncyclelayer.share_identical_streams(new.anims.anims, new.anims.table)
+    out = new.build()
+    motionstorage.require(out, len(skeleton))
     return out
 
 

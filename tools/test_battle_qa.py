@@ -79,6 +79,72 @@ class SyntheticDefects(unittest.TestCase):
         rows = run(sound())
         self.assertEqual({s: r['verdict'] for s, r in rows.items()}, {s: 'pass' for s in qa.BATTLE}, rows)
 
+    def test_body_size_is_a_hard_failure_even_when_shared_with_main(self):
+        for factor in (0.8, 1.2):
+            with self.subTest(factor=factor):
+                frames, loop = clip(4)
+                frames[:, 2:, 6:9] *= factor
+                bad = {**sound(), 33: (frames, loop)}
+                row = run(bad, main=bad)[33]
+                self.assertIn('size', row['keys'])
+                self.assertEqual(row['verdict'], 'fail')
+
+    def test_one_unreshaped_limb_fails_even_when_size_median_passes(self):
+        frames, loop = clip(4)
+        frames[:, 2, 6:9] *= 1.3
+        bad = {**sound(), 33: (frames, loop)}
+        row = run(bad, main=bad)[33]
+        self.assertNotIn('size', row['keys'])
+        self.assertIn('proportions', row['keys'])
+        self.assertEqual(row['verdict'], 'fail')
+
+    def test_dimension_only_fit_keeps_reviewed_authored_motion_reference(self):
+        frames, loop = clip(4)
+        frames[:, 2, 6:9] *= 1.05
+        row = run({**sound(), 33: (frames, loop)}, base=quiet(), main=sound())[33]
+        self.assertNotIn('fidelity', row['keys'])
+        self.assertEqual(row['verdict'], 'pass', row['flags'])
+
+    def test_size_uses_offset_lengths_times_mean_scale_and_ignores_body(self):
+        idle = clip()[0][0]
+        pose = idle.copy()
+        pose[0:2, 6:9] *= 10
+        pose[2:, 6:9] *= 0.75
+        pose[2:, :3] *= 1.5
+        self.assertAlmostEqual(qa.size_ratio(pose, idle), 1.125)
+        self.assertTrue(qa.size_failure(qa.size_ratio(pose, idle)))
+        self.assertFalse(qa.size_failure(0.92))
+        self.assertFalse(qa.size_failure(1.08))
+
+    def test_crouch_keeps_body_size(self):
+        frames, loop = clip(4)
+        frames[:, 1, 7] += 40
+        frames[:, 2:, 3] += 10 * TURN
+        row = run({**sound(), 33: (frames, loop)})[33]
+        self.assertNotIn('size', row['keys'])
+        self.assertAlmostEqual(row['final']['size'], 1.0)
+        self.assertEqual(row['verdict'], 'pass', row['flags'])
+
+    def test_crossing_count_does_not_need_penetration_depth(self):
+        from tools.models.field_animations import meshclash
+        a = np.array([[[-1, -1, 0], [1, -1, 0], [0, 1, 0]]], float)
+        b = np.array([[[0, 0, -1], [0, 0, 1], [0, 2, 0]]], float)
+        full = meshclash.crossing(a, b)
+        count = meshclash.crossing(a, b, depth=False)
+        self.assertEqual(full[0], 1)
+        self.assertEqual(count, (full[0], 0.0))
+
+    def test_authored_fit_uses_the_reviewed_motion_and_still_checks_fidelity(self):
+        final = rig(sound())
+        main = rig(sound())
+        source = rig(quiet())
+        rows = qa.check(final, source, main, authored=qa.BATTLE)
+        self.assertTrue(all(r['verdict'] == 'pass' for r in rows.values()), rows)
+        changed = rig({**sound(), 33: clip(20)})
+        rows = qa.check(changed, source, main, authored=qa.BATTLE)
+        self.assertIn('fidelity', rows[33]['keys'])
+        self.assertEqual(rows[33]['verdict'], 'fail')
+
     def test_main_clip_is_main(self):
         rows = run(sound(), main=sound())
         self.assertTrue(all(r['source'] == 'main' for r in rows.values()))
@@ -125,7 +191,7 @@ class RealModels(unittest.TestCase):
                 bones = json.loads(Path(glob.glob(str(ROOT / f'content/species/{sid}-*.json'))[0]).read_text())
                 rd = lambda kind: (folder / f'{sid}.{kind}.MMD').read_bytes()
                 rows = qa.species_check(rd('C'), rd('A'), rd('main'), bones['model']['skeleton'],
-                                        polished=qa.polished_slots(int(sid)))
+                                        polished=qa.polished_slots(int(sid)), authored=qa.authored_slots(int(sid)))
                 self.assertEqual([s for s, r in rows.items() if r['verdict'] == 'fail'], [],
                                  {s: r['flags'] for s, r in rows.items()})
 

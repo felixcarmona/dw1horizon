@@ -247,6 +247,11 @@ def provider_output(species, model, tim, donors=None):
         imported_models = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(imported_models)
         imported_models.BASE_MODELS = str(base)
+        # Generators retain references to these modules. Keep one interpreter
+        # and species catalogue for the whole check, so a later native gait
+        # sees the same registered skeleton as the shared rig fitter.
+        import mmd
+        import species as species_tools
         saved = set(sys.modules)
         crmath.install()
         pysum.install()
@@ -297,6 +302,12 @@ def cmd_put(a):
     manifest = load(MODELS)
     row, = rows(manifest, [a.id])
     files = {'mmd': Path(a.mmd).read_bytes()}
+    donor_text = None
+    if getattr(a, 'repin_donors_from', None):
+        donor_text = repin_donors(NATIVE_ROWS.read_text(), row['id'],
+                                  sha256(Path(a.repin_donors_from).read_bytes()), sha256(files['mmd']))
+        if donor_text is None:
+            raise ValueError(f"{row['id']}: no native binding pins that donor input")
     if a.tim:
         files['tim'] = Path(a.tim).read_bytes()
     changed = {k: d for k, d in files.items() if a.force or sha256(d) != row[k]['sha256']}
@@ -324,6 +335,9 @@ def cmd_put(a):
         record.update(delta_sha256=sha256(delta), sha256=sha256(data), size=len(data))
         same = 'byte-identical' if delta == old else f'{len(old)} -> {len(delta)} B'
         print(f'{record["delta"]}: {same}; target sha256 {record["sha256"]}')
+    if donor_text is not None:
+        NATIVE_ROWS.write_text(donor_text)
+        print(f'{NATIVE_ROWS.relative_to(ROOT)}: donor pins of {row["id"]} updated')
     save(MODELS, manifest)
     print(f'{MODELS.relative_to(ROOT)}: pins of {row["id"]} {row["name"]} updated')
     if a.no_species_pins:
@@ -344,8 +358,17 @@ def cmd_put(a):
 
 
 def cmd_check(a):
-    selected = rows(load(MODELS), a.ids)
+    manifest = load(MODELS)
     pins = species_pins()[1]['imports'] if a.species_pins else None
+    delta_ids = {str(row['id']) for row in manifest['models']}
+    builders = {sid: row for sid, row in import_records().items()
+                if pins is not None and row.get('builder') and sid not in delta_ids}
+    if a.ids:
+        requested = [sid for sid in a.ids if str(sid) not in builders]
+        selected = rows(manifest, requested) if requested else []
+        builders = {sid: row for sid, row in builders.items() if sid in {str(value) for value in a.ids}}
+    else:
+        selected = rows(manifest, [])
     bad = 0
     for row in selected:
         try:
@@ -360,7 +383,18 @@ def cmd_check(a):
         except (SystemExit, ValueError) as e:
             bad += 1
             print(f'{row["id"]} {row["name"]}: FAILED: {e}', flush=True)
-    print(f'{len(selected) - bad}/{len(selected)} verified')
+    for sid, row in sorted(builders.items(), key=lambda pair: int(pair[0])):
+        try:
+            model, tim = importlib.import_module(row['builder']).build(ROOT / 'extracted')
+            got = provider_pin(int(sid), model, tim, donor_models(a, int(sid)))
+            if got != pins.get(sid):
+                raise SystemExit(f'species-pins.json has {pins.get(sid)}, made {got}')
+            print(f'{sid}: authored model, MMD and TIM verified, provider pins', flush=True)
+        except (SystemExit, ValueError) as e:
+            bad += 1
+            print(f'{sid}: FAILED: {e}', flush=True)
+    total = len(selected) + len(builders)
+    print(f'{total - bad}/{total} verified')
     return 1 if bad else 0
 
 
@@ -670,6 +704,8 @@ def main():
     u.add_argument('tim', nargs='?')
     u.add_argument('--force', action='store_true', help='re-encode even when the target is the pinned one')
     u.add_argument('--no-species-pins', action='store_true')
+    u.add_argument('--repin-donors-from', metavar='OLD_MMD',
+                   help='move native bindings that pin OLD_MMD as this species donor to the new model')
     c = sub.add_parser('check')
     c.add_argument('ids', nargs='*')
     c.add_argument('--species-pins', action='store_true')
