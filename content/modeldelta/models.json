@@ -344,9 +344,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/192-Imperialdramon.MMD.mdelta",
-        "delta_sha256": "d6d064b9792320d0eec757c944fc1a1c6505bad237c8b14cc56877261d7a5d60",
-        "sha256": "ca4c08e2631f0fdf3c9de7d389c4720f386cc74cfca119307e341472e8aaf4ab",
-        "size": 112096
+        "delta_sha256": "e4bc123caa00b90954130232a2bc37875719bcc12f0e7781aa56db084e9dad31",
+        "sha256": "226729bbab8f280552bcdfaded32740b5d1cf6512de4704131908418be183b53",
+        "size": 112260
       },
       "tim": {
         "sources": [
