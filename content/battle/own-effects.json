@@ -346,5 +346,10 @@
     "name": "Golden Ripper",
     "stands_for": 62,
     "dw3": {"model": "M392SLAG", "slot": 11, "meft": [100], "pin": "729709691b220aebef9b31c7041a1d7ea3785a90"}
+  },
+  "201": {
+    "name": "Atomic Ray",
+    "stands_for": 102,
+    "dw3": {"model": "M356HAND", "slot": 9, "meft": [361], "pin": "f0eae509d38460b917a1dc2ffae344b4d4f1b332"}
   }
 }
