@@ -571,11 +571,15 @@ def convert_skill(*args, **kw):
 
 def _convert_skill(casts, hits, origin_table, effect_id, scale, hit_scale=None, area=False, n_hits=1,
                    self_target=False, half=True, launch_sound=14, start_sound=2, step=1, quant=1,
-                   width=STRIP_W, sides=2):
+                   width=STRIP_W, sides=2, sounds=None):
     """The chunk (0x5000 bytes) and a summary for a technique: casts and hits are lists of (DW2 slot 0-2,
     dw2effect.Effect). hit_scale: the hit objects' own scale (default: scale). area: hit every other fighter
     (DW1 range 3). n_hits: damage events per target. self_target: a support technique; its hit objects play on
-    the caster and deal no damage."""
+    the caster and deal no damage. sounds: the source technique's own sound cues, (engine tick, battle sound
+    id) pairs played by the controller at those ticks in place of start_sound and launch_sound."""
+    cues = sorted((max(0, int(t)), int(i)) for t, i in sounds) if sounds is not None else None
+    if cues is not None:
+        start_sound = launch_sound = -1
     # a support technique's hit objects play on the caster, seen with the cast: at the cast's scale
     hit_scale = scale if hit_scale is None or self_target else hit_scale
     objs = [Obj('cast', s, e, scale, f'cast slot {s}') for s, e in casts]
@@ -779,8 +783,13 @@ def _convert_skill(casts, hits, origin_table, effect_id, scale, hit_scale=None, 
     a.sub('initializeSubEffectInstructions')
     a.sub('faceTargetEntity')
     a.sub('initializeEFETransform')
-    a.push(start_sound)
-    a.sub('playSound')
+    if start_sound >= 0:
+        a.push(start_sound)
+        a.sub('playSound')
+    for t, i in (cues or ()):
+        if t == 0:
+            a.push(i)
+            a.sub('playSound')
     for oid in uv_tab:                       # the flipbooks: started once, they run while the chunk is loaded
         a.ld(0)
         a.br('!=', uv + 0x20 * oid + 0xc, 1, f'uv{oid}', 'i16')
@@ -806,10 +815,17 @@ def _convert_skill(casts, hits, origin_table, effect_id, scale, hit_scale=None, 
         set_var(g_copy, 0, 1)
         a.call(f'each_{label}')
 
-    ctl_end = max([cast_end + 1, (hit_tick or 0) + 1] + [o.launch + 1 for o in travellers])
+    ctl_end = max([cast_end + 1, (hit_tick or 0) + 1] + [o.launch + 1 for o in travellers]
+                  + [t + 1 for t, _i in (cues or ())])
     a.label('ctl_update')
     a.ld(ctl_end)
     a.br('>=', I_FRAME, 0, 'ctl_kill')
+    for n, (t, i) in enumerate(c for c in (cues or ()) if c[0] > 0):
+        a.ld(t)
+        a.br('!=', I_FRAME, 0, f'cue{n}')
+        a.push(i)
+        a.sub('playSound')
+        a.label(f'cue{n}')
     a.ld(follow_end)
     a.br('>=', I_FRAME, 0, 'ctl_spawn')
     a.sub('faceTargetEntity')
@@ -914,8 +930,9 @@ def _convert_skill(casts, hits, origin_table, effect_id, scale, hit_scale=None, 
             a.op('sub', I_DIST, 0)
             a.ld(0)
             a.br('!=', I_COPY, 0, f'cast{i}_flying')
-            a.push(launch_sound)
-            a.sub('playSound')
+            if launch_sound >= 0:
+                a.push(launch_sound)
+                a.sub('playSound')
             a.label(f'cast{i}_flying')
             if o is lead:
                 p = o.lead
