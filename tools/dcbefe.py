@@ -71,7 +71,9 @@ def sample(first, last, frames):
 
 
 # what to give up, in order, until the chunk fits: (animated sprite frames, texture shrink, objects per script)
-LADDER = ((4, 1, 24), (2, 1, 16), (2, 2, 12), (1, 2, 8), (1, 4, 6))
+LADDER = ((4, 1, 24), (2, 1, 16), (2, 2, 12), (1, 2, 8), (1, 4, 6), (1, 4, 3), (1, 4, 1))
+# Tried when the first fit fails the fidelity check: more alike objects, while the slot still holds them.
+DENSER = ((4, 1, 48), (2, 1, 96), (2, 2, None))
 # the DW2 converter's own pose detail levels, fewer of them (each try costs a full conversion)
 LEVELS = (dw2efe.LEVELS[0], dw2efe.LEVELS[2], dw2efe.LEVELS[5], dw2efe.LEVELS[-1])
 
@@ -113,11 +115,11 @@ class Attack:
         self.notes = notes
         return casts, hits
 
-    def convert(self, table, effect_id=EFFECT_ID, **kw):
+    def convert(self, table, effect_id=EFFECT_ID, ladder=LADDER, **kw):
         """(chunk, info): down the LADDER (fewer animated sprite frames, smaller textures, fewer alike objects)
         until the chunk fits."""
         last = None
-        for mf, shrink, objs in LADDER:
+        for mf, shrink, objs in ladder:
             casts, hits = self.effects(max_flip=mf, shrink=shrink, max_objects=objs)
             if not casts and not hits:
                 raise dw2efe.Unconvertible('effect: nothing is ever drawn')
@@ -401,6 +403,27 @@ def main(argv=None):
         osplit = original_frames.split
         csplit = min((h[0] for h in sim.hits), default=rec.get('cast_ticks', len(conv)))
         rec['fidelity'] = fidelity_parts(orig, conv, osplit, csplit)
+        if not rec['fidelity']['passed']:
+            # One more round: denser fits, keeping the one with the fewest failed checks.
+            best = len(rec['fidelity']['failed'])
+            for rung in DENSER:
+                try:
+                    c2, i2 = atk.convert(table, effect_id=row['chunk'], ladder=(rung,))
+                except dw2efe.Unconvertible:
+                    continue
+                s2 = simulate(c2, table)
+                v2 = converted_frames(c2, s2)
+                sp2 = min((h[0] for h in s2.hits), default=i2.get('cast_ticks', len(v2)))
+                f2 = fidelity_parts(orig, v2, osplit, sp2)
+                if len(f2['failed']) < best:
+                    best = len(f2['failed'])
+                    chunk, sim, conv, csplit = c2, s2, v2, sp2
+                    rec.update(i2)
+                    rec['fidelity'] = f2
+                    with open(base + '.efe', 'wb') as f:
+                        f.write(chunk)
+                if f2['passed']:
+                    break
         json.dump(rec, open(base + '.json', 'w'), indent=1, default=str)
         sheet(pick(orig, osplit), label=f'{a.name} DCB (traced)').save(base + '-dcb.png')
         sheet(pick(conv, csplit), label=f'{a.name} DW1 (converted)').save(base + '-dw1.png')

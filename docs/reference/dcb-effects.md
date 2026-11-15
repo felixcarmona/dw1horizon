@@ -130,6 +130,22 @@ and the hit apart (`fidelity_parts` in `tools/dcbefe.py`):
 A conversion that fails any part is not counted as converted and is left out of comparison videos.
 `thin_source` marks originals that draw very little, where the numbers say less.
 
+When the first fit fails, one more round tries denser fits (more alike objects while the slot holds
+them, `DENSER`) and keeps the one with the fewest failed checks.
+
+Results for the 79 attacks are in `content/finishers/dcb-effects.json` (`result`):
+
+| result | attacks |
+|---|---|
+| converted (passes every check) | 48 |
+| fidelity failed after the second round | 24 |
+| render did not finish in 40 minutes | 5 |
+| does not fit the 0x5000 slot even at the smallest fit (Gomamon, MarineAngemon: their models alone are too big) | 2 |
+
+The 31 that did not pass carry `"fallback": "template"` and a `why` (the checks they failed). Most
+failures are a cast that draws much less than the original: many alike objects (star showers, feathers)
+thinned to what the slot holds.
+
 ## Open questions
 
 - The step rate (30 Hz) and the size of a sprite texel in the world (16 units) are estimates.

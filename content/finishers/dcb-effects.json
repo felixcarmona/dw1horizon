@@ -1,5 +1,5 @@
 {
- "about": "Digital Card Battle attacks converted to EFE chunks (tools/dcbefe.py): per species its chunk id (the DCB range is 251-329) and the two DCB scripts the effect comes from, the card's own and the shared hit.",
+ "about": "Digital Card Battle attacks converted to EFE chunks (tools/dcbefe.py): per species its chunk id (the DCB range is 251-329) and the two DCB scripts the effect comes from, the card's own and the shared hit. 'result' is the conversion's verdict from the fidelity check (docs/reference/dcb-effects.md); a row with 'fallback': 'template' keeps a template effect until its conversion passes.",
  "effects": [
   {
    "species": 62,
@@ -7,7 +7,10 @@
    "attack": "Wolf Claw",
    "chunk": 251,
    "attack_script": 1009,
-   "hit_script": 415
+   "hit_script": 415,
+   "result": "fidelity failed",
+   "fallback": "template",
+   "why": "whole shown, whole curve, cast shown, cast curve, hit area"
   },
   {
    "species": 126,
@@ -15,7 +18,8 @@
    "attack": "Brachio Bubble",
    "chunk": 252,
    "attack_script": 569,
-   "hit_script": 437
+   "hit_script": 437,
+   "result": "converted"
   },
   {
    "species": 180,
@@ -23,7 +27,8 @@
    "attack": "Vee Head Butt",
    "chunk": 253,
    "attack_script": 1030,
-   "hit_script": 2000
+   "hit_script": 2000,
+   "result": "converted"
   },
   {
    "species": 181,
@@ -31,7 +36,8 @@
    "attack": "Puppet Pummel",
    "chunk": 254,
    "attack_script": 1279,
-   "hit_script": 435
+   "hit_script": 435,
+   "result": "converted"
   },
   {
    "species": 183,
@@ -39,7 +45,8 @@
    "attack": "Sticky Net",
    "chunk": 255,
    "attack_script": 1033,
-   "hit_script": 2021
+   "hit_script": 2021,
+   "result": "converted"
   },
   {
    "species": 184,
@@ -47,7 +54,10 @@
    "attack": "Hawk Beam",
    "chunk": 256,
    "attack_script": 1036,
-   "hit_script": 474
+   "hit_script": 474,
+   "result": "fidelity failed",
+   "fallback": "template",
+   "why": "whole shown, hit shown"
   },
   {
    "species": 185,
@@ -55,7 +65,8 @@
    "attack": "Diamond Shell",
    "chunk": 257,
    "attack_script": 1039,
-   "hit_script": 2000
+   "hit_script": 2000,
+   "result": "converted"
   },
   {
    "species": 187,
@@ -63,7 +74,8 @@
    "attack": "Spiking Strike",
    "chunk": 258,
    "attack_script": 1063,
-   "hit_script": 2004
+   "hit_script": 2004,
+   "result": "converted"
   },
   {
    "species": 188,
@@ -71,7 +83,10 @@
    "attack": "Mach Impulse",
    "chunk": 259,
    "attack_script": 1066,
-   "hit_script": 474
+   "hit_script": 474,
+   "result": "fidelity failed",
+   "fallback": "template",
+   "why": "whole shown, cast shown, hit shown"
   },
   {
    "species": 189,
@@ -79,7 +94,8 @@
    "attack": "Tail Hammer",
    "chunk": 260,
    "attack_script": 1069,
-   "hit_script": 2004
+   "hit_script": 2004,
+   "result": "converted"
   },
   {
    "species": 190,
@@ -87,7 +103,8 @@
    "attack": "Celestial Arrow",
    "chunk": 261,
    "attack_script": 1096,
-   "hit_script": 2015
+   "hit_script": 2015,
+   "result": "converted"
   },
   {
    "species": 191,
@@ -95,7 +112,10 @@
    "attack": "Metal Wolf Claw",
    "chunk": 262,
    "attack_script": 1108,
-   "hit_script": 2041
+   "hit_script": 2041,
+   "result": "render timed out",
+   "fallback": "template",
+   "why": "no verdict within 40 minutes"
   },
   {
    "species": 192,
@@ -103,7 +123,8 @@
    "attack": "Mega Fire",
    "chunk": 263,
    "attack_script": 1129,
-   "hit_script": 2043
+   "hit_script": 2043,
+   "result": "converted"
   },
   {
    "species": 193,
@@ -111,7 +132,8 @@
    "attack": "Gold Rush",
    "chunk": 264,
    "attack_script": 1174,
-   "hit_script": 406
+   "hit_script": 406,
+   "result": "converted"
   },
   {
    "species": 194,
@@ -119,7 +141,10 @@
    "attack": "Ex-Laser",
    "chunk": 265,
    "attack_script": 1060,
-   "hit_script": 449
+   "hit_script": 449,
+   "result": "fidelity failed",
+   "fallback": "template",
+   "why": "cast shown, cast box"
   },
   {
    "species": 195,
@@ -127,7 +152,8 @@
    "attack": "Fire Rocket",
    "chunk": 266,
    "attack_script": 1147,
-   "hit_script": 435
+   "hit_script": 435,
+   "result": "converted"
   },
   {
    "species": 196,
@@ -135,7 +161,10 @@
    "attack": "Tempest Wing",
    "chunk": 267,
    "attack_script": 1165,
-   "hit_script": 2006
+   "hit_script": 2006,
+   "result": "fidelity failed",
+   "fallback": "template",
+   "why": "cast area, cast shown, cast box"
   },
   {
    "species": 197,
@@ -143,7 +172,8 @@
    "attack": "Plasma Shot",
    "chunk": 268,
    "attack_script": 1153,
-   "hit_script": 450
+   "hit_script": 450,
+   "result": "converted"
   },
   {
    "species": 198,
@@ -151,7 +181,8 @@
    "attack": "Rocking Stone",
    "chunk": 269,
    "attack_script": 1180,
-   "hit_script": 435
+   "hit_script": 435,
+   "result": "converted"
   },
   {
    "species": 199,
@@ -159,7 +190,10 @@
    "attack": "Desperado Blaster",
    "chunk": 270,
    "attack_script": 1084,
-   "hit_script": 435
+   "hit_script": 435,
+   "result": "render timed out",
+   "fallback": "template",
+   "why": "no verdict within 40 minutes"
   },
   {
    "species": 200,
@@ -167,7 +201,10 @@
    "attack": "Star Shower",
    "chunk": 271,
    "attack_script": 1168,
-   "hit_script": 2037
+   "hit_script": 2037,
+   "result": "fidelity failed",
+   "fallback": "template",
+   "why": "cast area, cast shown"
   },
   {
    "species": 201,
@@ -175,7 +212,8 @@
    "attack": "Lightning Blast",
    "chunk": 272,
    "attack_script": 1150,
-   "hit_script": 2019
+   "hit_script": 2019,
+   "result": "converted"
   },
   {
    "species": 202,
@@ -183,7 +221,8 @@
    "attack": "Submarine Attack",
    "chunk": 273,
    "attack_script": 1177,
-   "hit_script": 2059
+   "hit_script": 2059,
+   "result": "converted"
   },
   {
    "species": 203,
@@ -191,7 +230,8 @@
    "attack": "V-Nova Blast",
    "chunk": 274,
    "attack_script": 824,
-   "hit_script": 449
+   "hit_script": 449,
+   "result": "converted"
   },
   {
    "species": 205,
@@ -199,7 +239,8 @@
    "attack": "Horn Buster",
    "chunk": 275,
    "attack_script": 1003,
-   "hit_script": 496
+   "hit_script": 496,
+   "result": "converted"
   },
   {
    "species": 206,
@@ -207,7 +248,10 @@
    "attack": "The Gate of Destiny",
    "chunk": 276,
    "attack_script": 1018,
-   "hit_script": 498
+   "hit_script": 498,
+   "result": "fidelity failed",
+   "fallback": "template",
+   "why": "cast area"
   },
   {
    "species": 207,
@@ -215,7 +259,8 @@
    "attack": "Seventh Heaven",
    "chunk": 277,
    "attack_script": 1138,
-   "hit_script": 2046
+   "hit_script": 2046,
+   "result": "converted"
   },
   {
    "species": 208,
@@ -223,7 +268,10 @@
    "attack": "Needle Spray",
    "chunk": 278,
    "attack_script": 1051,
-   "hit_script": 2003
+   "hit_script": 2003,
+   "result": "fidelity failed",
+   "fallback": "template",
+   "why": "whole curve"
   },
   {
    "species": 209,
@@ -231,7 +279,8 @@
    "attack": "Flower Cannon",
    "chunk": 279,
    "attack_script": 1015,
-   "hit_script": 400
+   "hit_script": 400,
+   "result": "converted"
   },
   {
    "species": 210,
@@ -239,7 +288,8 @@
    "attack": "X-Scissor Claw",
    "chunk": 280,
    "attack_script": 1132,
-   "hit_script": 2064
+   "hit_script": 2064,
+   "result": "converted"
   },
   {
    "species": 211,
@@ -247,7 +297,8 @@
    "attack": "River of Power",
    "chunk": 281,
    "attack_script": 1273,
-   "hit_script": 2033
+   "hit_script": 2033,
+   "result": "converted"
   },
   {
    "species": 212,
@@ -255,7 +306,8 @@
    "attack": "Venom Infusion",
    "chunk": 282,
    "attack_script": 1117,
-   "hit_script": 435
+   "hit_script": 435,
+   "result": "converted"
   },
   {
    "species": 213,
@@ -263,7 +315,10 @@
    "attack": "V Wing Blade",
    "chunk": 283,
    "attack_script": 1000,
-   "hit_script": 497
+   "hit_script": 497,
+   "result": "fidelity failed",
+   "fallback": "template",
+   "why": "cast area"
   },
   {
    "species": 214,
@@ -271,7 +326,10 @@
    "attack": "Clay Bomb",
    "chunk": 284,
    "attack_script": 1093,
-   "hit_script": 498
+   "hit_script": 498,
+   "result": "render timed out",
+   "fallback": "template",
+   "why": "no verdict within 40 minutes"
   },
   {
    "species": 215,
@@ -279,7 +337,8 @@
    "attack": "Fire Tornado",
    "chunk": 285,
    "attack_script": 1144,
-   "hit_script": 2015
+   "hit_script": 2015,
+   "result": "converted"
   },
   {
    "species": 216,
@@ -287,7 +346,10 @@
    "attack": "Crimson Claw",
    "chunk": 286,
    "attack_script": 1054,
-   "hit_script": 415
+   "hit_script": 415,
+   "result": "fidelity failed",
+   "fallback": "template",
+   "why": "hit area"
   },
   {
    "species": 217,
@@ -295,7 +357,10 @@
    "attack": "Marching Fishes",
    "chunk": 287,
    "attack_script": 1024,
-   "hit_script": 2002
+   "hit_script": 2002,
+   "result": "unconvertible",
+   "fallback": "template",
+   "why": "effect chunk is 0x57c4 bytes; the slot has 0x5000"
   },
   {
    "species": 218,
@@ -303,7 +368,8 @@
    "attack": "Harpoon Torpedo",
    "chunk": 288,
    "attack_script": 1045,
-   "hit_script": 406
+   "hit_script": 406,
+   "result": "converted"
   },
   {
    "species": 219,
@@ -311,7 +377,10 @@
    "attack": "Vulcan's Hammer",
    "chunk": 289,
    "attack_script": 1012,
-   "hit_script": 443
+   "hit_script": 443,
+   "result": "fidelity failed",
+   "fallback": "template",
+   "why": "cast area, hit curve"
   },
   {
    "species": 220,
@@ -319,7 +388,8 @@
    "attack": "Arctic Blizzard",
    "chunk": 290,
    "attack_script": 1141,
-   "hit_script": 2014
+   "hit_script": 2014,
+   "result": "converted"
   },
   {
    "species": 221,
@@ -327,7 +397,8 @@
    "attack": "Puppy Howling",
    "chunk": 291,
    "attack_script": 1021,
-   "hit_script": 2063
+   "hit_script": 2063,
+   "result": "converted"
   },
   {
    "species": 222,
@@ -335,7 +406,10 @@
    "attack": "Lightning Paw",
    "chunk": 292,
    "attack_script": 1204,
-   "hit_script": 412
+   "hit_script": 412,
+   "result": "fidelity failed",
+   "fallback": "template",
+   "why": "whole shown, cast shown, hit area"
   },
   {
    "species": 223,
@@ -343,7 +417,8 @@
    "attack": "Darkness Wave",
    "chunk": 293,
    "attack_script": 1078,
-   "hit_script": 2025
+   "hit_script": 2025,
+   "result": "converted"
   },
   {
    "species": 225,
@@ -351,7 +426,8 @@
    "attack": "Double Stars",
    "chunk": 294,
    "attack_script": 1162,
-   "hit_script": 2057
+   "hit_script": 2057,
+   "result": "converted"
   },
   {
    "species": 226,
@@ -359,7 +435,10 @@
    "attack": "Top Gun",
    "chunk": 295,
    "attack_script": 1090,
-   "hit_script": 2048
+   "hit_script": 2048,
+   "result": "render timed out",
+   "fallback": "template",
+   "why": "no verdict within 40 minutes"
   },
   {
    "species": 227,
@@ -367,7 +446,10 @@
    "attack": "Angry Spike",
    "chunk": 296,
    "attack_script": 1222,
-   "hit_script": 2003
+   "hit_script": 2003,
+   "result": "fidelity failed",
+   "fallback": "template",
+   "why": "whole curve"
   },
   {
    "species": 228,
@@ -375,7 +457,8 @@
    "attack": "Dancing Meteor",
    "chunk": 297,
    "attack_script": 1171,
-   "hit_script": 2044
+   "hit_script": 2044,
+   "result": "converted"
   },
   {
    "species": 229,
@@ -383,7 +466,8 @@
    "attack": "Shadow Scythe",
    "chunk": 298,
    "attack_script": 1075,
-   "hit_script": 2075
+   "hit_script": 2075,
+   "result": "converted"
   },
   {
    "species": 230,
@@ -391,7 +475,8 @@
    "attack": "Throny Whipping",
    "chunk": 299,
    "attack_script": 1102,
-   "hit_script": 2054
+   "hit_script": 2054,
+   "result": "converted"
   },
   {
    "species": 231,
@@ -399,7 +484,8 @@
    "attack": "Shell's Attack",
    "chunk": 300,
    "attack_script": 1255,
-   "hit_script": 2000
+   "hit_script": 2000,
+   "result": "converted"
   },
   {
    "species": 232,
@@ -407,7 +493,10 @@
    "attack": "Free Throw Bomb",
    "chunk": 301,
    "attack_script": 1225,
-   "hit_script": 406
+   "hit_script": 406,
+   "result": "fidelity failed",
+   "fallback": "template",
+   "why": "cast area, cast box"
   },
   {
    "species": 233,
@@ -415,7 +504,8 @@
    "attack": "Boiling Bubble",
    "chunk": 302,
    "attack_script": 1189,
-   "hit_script": 2017
+   "hit_script": 2017,
+   "result": "converted"
   },
   {
    "species": 234,
@@ -423,7 +513,10 @@
    "attack": "Lightning Paw",
    "chunk": 303,
    "attack_script": 1072,
-   "hit_script": 412
+   "hit_script": 412,
+   "result": "fidelity failed",
+   "fallback": "template",
+   "why": "whole shown, cast shown, hit area"
   },
   {
    "species": 235,
@@ -431,7 +524,8 @@
    "attack": "Flame Bomber",
    "chunk": 304,
    "attack_script": 1186,
-   "hit_script": 400
+   "hit_script": 400,
+   "result": "converted"
   },
   {
    "species": 236,
@@ -439,7 +533,10 @@
    "attack": "Demi Dart",
    "chunk": 305,
    "attack_script": 1027,
-   "hit_script": 2029
+   "hit_script": 2029,
+   "result": "fidelity failed",
+   "fallback": "template",
+   "why": "cast area"
   },
   {
    "species": 237,
@@ -447,7 +544,8 @@
    "attack": "Inferno Missile",
    "chunk": 306,
    "attack_script": 1123,
-   "hit_script": 435
+   "hit_script": 435,
+   "result": "converted"
   },
   {
    "species": 238,
@@ -455,7 +553,10 @@
    "attack": "Pulse Blast",
    "chunk": 307,
    "attack_script": 1228,
-   "hit_script": 486
+   "hit_script": 486,
+   "result": "fidelity failed",
+   "fallback": "template",
+   "why": "whole shown, whole curve"
   },
   {
    "species": 239,
@@ -463,7 +564,8 @@
    "attack": "Spiral Saw",
    "chunk": 308,
    "attack_script": 1207,
-   "hit_script": 2000
+   "hit_script": 2000,
+   "result": "converted"
   },
   {
    "species": 240,
@@ -471,7 +573,8 @@
    "attack": "Coral Crusher",
    "chunk": 309,
    "attack_script": 1231,
-   "hit_script": 2065
+   "hit_script": 2065,
+   "result": "converted"
   },
   {
    "species": 241,
@@ -479,7 +582,8 @@
    "attack": "Thunder Ball",
    "chunk": 310,
    "attack_script": 1048,
-   "hit_script": 402
+   "hit_script": 402,
+   "result": "converted"
   },
   {
    "species": 242,
@@ -487,7 +591,10 @@
    "attack": "Crystal Cloud",
    "chunk": 311,
    "attack_script": 1282,
-   "hit_script": 2068
+   "hit_script": 2068,
+   "result": "fidelity failed",
+   "fallback": "template",
+   "why": "hit curve"
   },
   {
    "species": 243,
@@ -495,7 +602,8 @@
    "attack": "Meteor Stream",
    "chunk": 312,
    "attack_script": 1246,
-   "hit_script": 450
+   "hit_script": 450,
+   "result": "converted"
   },
   {
    "species": 244,
@@ -503,7 +611,8 @@
    "attack": "Comet Cluster",
    "chunk": 313,
    "attack_script": 1285,
-   "hit_script": 435
+   "hit_script": 435,
+   "result": "converted"
   },
   {
    "species": 245,
@@ -511,7 +620,10 @@
    "attack": "Trump Sword",
    "chunk": 314,
    "attack_script": 1099,
-   "hit_script": 2020
+   "hit_script": 2020,
+   "result": "fidelity failed",
+   "fallback": "template",
+   "why": "cast shown"
   },
   {
    "species": 246,
@@ -519,7 +631,10 @@
    "attack": "Hades' Grenade",
    "chunk": 315,
    "attack_script": 1081,
-   "hit_script": 435
+   "hit_script": 435,
+   "result": "render timed out",
+   "fallback": "template",
+   "why": "no verdict within 40 minutes"
   },
   {
    "species": 247,
@@ -527,7 +642,8 @@
    "attack": "Mini Scissor Claws",
    "chunk": 316,
    "attack_script": 1198,
-   "hit_script": 472
+   "hit_script": 472,
+   "result": "converted"
   },
   {
    "species": 248,
@@ -535,7 +651,10 @@
    "attack": "Ocean Love",
    "chunk": 317,
    "attack_script": 1276,
-   "hit_script": 471
+   "hit_script": 471,
+   "result": "unconvertible",
+   "fallback": "template",
+   "why": "effect chunk is 0x6ae4 bytes; the slot has 0x5000"
   },
   {
    "species": 249,
@@ -543,7 +662,8 @@
    "attack": "Freezing Wave",
    "chunk": 318,
    "attack_script": 1159,
-   "hit_script": 2039
+   "hit_script": 2039,
+   "result": "converted"
   },
   {
    "species": 250,
@@ -551,7 +671,8 @@
    "attack": "Flare Buster",
    "chunk": 319,
    "attack_script": 1156,
-   "hit_script": 435
+   "hit_script": 435,
+   "result": "converted"
   },
   {
    "species": 251,
@@ -559,7 +680,10 @@
    "attack": "Solar Flare",
    "chunk": 320,
    "attack_script": 1192,
-   "hit_script": 400
+   "hit_script": 400,
+   "result": "fidelity failed",
+   "fallback": "template",
+   "why": "cast area, cast shown"
   },
   {
    "species": 252,
@@ -567,7 +691,10 @@
    "attack": "Thunder Volt",
    "chunk": 321,
    "attack_script": 1252,
-   "hit_script": 2023
+   "hit_script": 2023,
+   "result": "fidelity failed",
+   "fallback": "template",
+   "why": "whole shown, cast area, cast shown, cast box"
   },
   {
    "species": 253,
@@ -575,7 +702,8 @@
    "attack": "Slamming Tusk",
    "chunk": 322,
    "attack_script": 1057,
-   "hit_script": 2004
+   "hit_script": 2004,
+   "result": "converted"
   },
   {
    "species": 254,
@@ -583,7 +711,10 @@
    "attack": "Torpedo Attack",
    "chunk": 323,
    "attack_script": 1183,
-   "hit_script": 2038
+   "hit_script": 2038,
+   "result": "fidelity failed",
+   "fallback": "template",
+   "why": "whole area, cast area, cast box, hit area"
   },
   {
    "species": 255,
@@ -591,7 +722,10 @@
    "attack": "Feral Sword",
    "chunk": 324,
    "attack_script": 1135,
-   "hit_script": 2001
+   "hit_script": 2001,
+   "result": "fidelity failed",
+   "fallback": "template",
+   "why": "whole area, cast area, cast box"
   },
   {
    "species": 256,
@@ -599,7 +733,8 @@
    "attack": "Jamming Thunder",
    "chunk": 325,
    "attack_script": 1210,
-   "hit_script": 2080
+   "hit_script": 2080,
+   "result": "converted"
   },
   {
    "species": 373,
@@ -607,7 +742,8 @@
    "attack": "Terra Force",
    "chunk": 326,
    "attack_script": 1105,
-   "hit_script": 435
+   "hit_script": 435,
+   "result": "converted"
   },
   {
    "species": 400,
@@ -615,7 +751,10 @@
    "attack": "Darkness Zone",
    "chunk": 327,
    "attack_script": 1120,
-   "hit_script": 2010
+   "hit_script": 2010,
+   "result": "fidelity failed",
+   "fallback": "template",
+   "why": "whole shown, cast shown, hit area, hit shown"
   },
   {
    "species": 460,
@@ -623,7 +762,8 @@
    "attack": "Wing Blade",
    "chunk": 328,
    "attack_script": 1006,
-   "hit_script": 495
+   "hit_script": 495,
+   "result": "converted"
   },
   {
    "species": 461,
@@ -631,7 +771,8 @@
    "attack": "Transcendent Sword",
    "chunk": 329,
    "attack_script": 1126,
-   "hit_script": 2060
+   "hit_script": 2060,
+   "result": "converted"
   }
  ]
 }
