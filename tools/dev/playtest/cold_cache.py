@@ -3,8 +3,8 @@
 
 DISPLAY=:141 python3 tools/dev/playtest/cold_cache.py DISC --exe EXE --out build/cold --port 41146 [--ram8]
 
-2 MB: the cache stays off and every cold clip is read without stopping the game. 8 MB: the partner's cold part is read
-once, into 0x80200000, and no cold clip reads the disc. Both: every cold clip of the partner starts, also
+2 MB: the cache stays off and every cold clip is read without stopping the game. 8 MB: up to 32 KB of the partner's cold part
+is read once into 0x80200000; clips beyond it use the blocking fallback. Both: every cold clip of the partner starts, also
 when another clip replaces it while it is being read.
 """
 import argparse
@@ -18,6 +18,7 @@ import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from partner_walk import ROOT, WalkTest
+from tools.coldsplit import COLD_SLOTS
 
 CACHE = 0x80200000
 
@@ -63,7 +64,7 @@ return 'armed'
             time.sleep(.2)
         return False
 
-    def start_clips(self, state, *slots):
+    def start_clips(self, state, *slots, training=False):
         e = self.e
         e.run('load', str(state))
         e.run('pause')
@@ -72,18 +73,31 @@ return 'armed'
         partner = e.A('PARTNER_ENTITY')
         self.calls([('startAnimation', (partner, slot)) for slot in slots])
         e.run('resume')
+        if training:
+            # Training clips may loop; the gym's timer ends the session.
+            # Check playback itself here, and full sessions in cold_training.py.
+            end = time.time() + 12
+            while time.time() < end:
+                ram = e.ram()
+                if (e.peek('MOD_COLD_PENDING', 'I', ram) == 0 and
+                    e.peek('PARTNER_ENTITY+0x2e', 'B', ram) == slots[-1] and
+                    e.peek('PARTNER_ENTITY+0x1c', 'h', ram) > 1):
+                    return True
+                time.sleep(.05)
+            return False
         return self.wait_clip()
 
     def every_clip(self, species):
         state = self.out / f'field-{species}.state'
         model = self.e.peek('PARTNER_ENTITY+8', 'I')
         ram = self.e.ram()
-        cold = [s for s in (5, 7, 8, 9, 10, 11, 12, 13)
+        cold = [s for s in COLD_SLOTS
                 if struct.unpack_from('<I', ram, model - 0x80000000 + 4 * s)[0] & 0x80000000]
-        got = {s: self.start_clips(state, s) for s in cold}
-        got['replaced by a cold clip'] = self.start_clips(state, cold[0], cold[-1])
+        got = {s: self.start_clips(state, s, training=s >= 0x14) for s in cold}
+        care = [s for s in cold if s < 0x14]
+        got['replaced by a cold clip'] = self.start_clips(state, care[0], care[-1])
         got['replaced by a resident clip'] = self.start_clips(state, cold[0], 0)
-        got['again after that'] = self.start_clips(state, cold[0], 0, cold[-1])
+        got['again after that'] = self.start_clips(state, care[0], 0, care[-1])
         print(json.dumps({str(k): v for k, v in got.items()}))
         assert all(got.values()), got
 

@@ -17,7 +17,8 @@ import glob, os, struct, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import mmd
 
-COLD_SLOTS = (5, 7, 8, 9, 10, 11, 12, 13)           # the partner's reactions, eating and pooping; no other entity plays them
+TRAINING_SLOTS = tuple(range(0x14, 0x1C))
+COLD_SLOTS = (5, 7, 8, 9, 10, 11, 12, 13) + TRAINING_SLOTS  # partner reactions, care and training
 FLAG = 0x80000000
 
 
@@ -60,7 +61,17 @@ def cold_length(res):
 
 def split(data, nb, slots=COLD_SLOTS, buffer_bytes=0x2000):
     m = mmd.MMD.parse(data, nb)
+    slots = tuple(slots)
     cold = cold_set(m, slots)
+    if not cold:
+        return bytes(data), b''
+    if buffer_bytes <= 0 or buffer_bytes % 2048:
+        raise ValueError('cold animation buffer must contain whole sectors')
+    # Some training streams exceed the fixed buffer. Keep those resident,
+    # including every alias of them, rather than increasing console RAM use.
+    oversized = {s for s in cold if s in TRAINING_SLOTS and
+                 (len(m.anims.anims[m.anims.table[s]].build()) + 3) // 4 * 4 > buffer_bytes}
+    cold = cold_set(m, set(slots) - oversized)
     if not cold:
         return bytes(data), b''
     streams, entries = [], {}
@@ -71,8 +82,6 @@ def split(data, nb, slots=COLD_SLOTS, buffer_bytes=0x2000):
         if i not in by_idx:
             b = m.anims.anims[i].build()
             b += b'\0' * (-len(b) % 4)
-            if buffer_bytes<=0 or buffer_bytes%2048:
-                raise ValueError('cold animation buffer must contain whole sectors')
             if len(b)>buffer_bytes:
                 raise ValueError(f'cold animation exceeds buffer: slot {s}, {len(b)} > {buffer_bytes}')
             # The engine reads complete sectors, including the bytes before

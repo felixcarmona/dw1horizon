@@ -171,17 +171,21 @@ fixed array, not the heap. The original's is 0x18800 (100 352 bytes; the biggest
 Animations are most of a model (an imported model averages 27 KB of mesh and 64 KB of animations). `tools/coldsplit.py`
 cuts a partner model in two: the resident MMD and a cold part that follows it in `DIGI.DAT` from the next sector. For
 each cold slot the resident animation table holds `0x80000000 | (length in words << 16) | offset in words`.
-`startAnimation` reads such an animation into `COLD_ANIM_BUFFER` (whole sectors, 8 KB; the longest cold animation is
-under 5 KB) with `readFileSectors` and plays it from there (`loadColdAnimation`). Only the partner has cold entries;
+`startAnimation` reads such an animation into `COLD_ANIM_BUFFER` (whole sectors, 8 KB) and plays it from there
+(`loadColdAnimation`). The splitter checks the entire sector read, including the stream's offset within its first
+sector, and pads the cold part when needed. Only the partner can load cold entries;
 any other entity asking for one starts nothing, as with an empty slot.
 
 The species record's `modelSize` is the resident size, so every fit check sees only the resident part. `species.py
-build` with `COLD=1` (the default of `tools/build-full.sh`) cuts the slots in `coldsplit.py`'s `COLD_SLOTS` (5 and 7–13:
-reactions, eating, pooping) of partner species ≥ 180; `species.py check` joins them back and compares. Over the imports
-this moves about 15 KB per model out of the buffer. Techniques are not cold: an enemy of the same species plays them
-in battle. On a real drive the first eating clip may stall briefly for the seek.
+build` with `COLD=1` (the default of `tools/build-full.sh`) cuts the slots in `coldsplit.py`'s `COLD_SLOTS` (5, 7–13 and
+0x14–0x1B: reactions, eating, pooping and training) of partner species ≥ 180; `species.py check` joins them back and
+compares. A stream shared with any resident slot stays resident, including aliases of battle techniques.
+Training streams larger than 8 KB also stay resident with all their aliases; Ghoulmon's HP motion, for example,
+needs 11,632 bytes after word padding. The fixed buffers do not grow to accommodate it.
+Techniques are not cold: an enemy of the same species plays them in battle.
+On a real drive the first eating clip may wait briefly for the seek.
 
-Each read stops the whole game: 0.73 s on an emulated drive for WarGreymon's toilet clip. With RAM above 2 MB (patch 0313,
+Originally each read stopped the whole game: 0.73 s on an emulated drive for WarGreymon's toilet clip. With RAM above 2 MB (patch 0313,
 an emulator's 8 MB setting) the partner's cold part is read once, after its model loads, into 0x80200000 (32 KB,
 `refreshColdCache` in the partner's normal field tick), and the clips start from there; a clip past those 32 KB reads the
 disc as before. `modProbeRam` tells real RAM from the console's mirror. It runs at boot and writes one word and its mirror;
@@ -192,6 +196,29 @@ the clip keeps waiting. `tickAnimation` starts the clip when the queue is done. 
 it. Outside the world the read still blocks: the fight code reads `animFlag` as "the animation ended".
 
 `tools/dev/playtest/cold_cache.py` counts the reads on a real toilet trip in both modes, and starts every cold clip, also when another one replaces it.
+
+Gym training runs in the world, so its cold starts use the same queued path with 2 MB. HP training plays slot 0x1B,
+and brains training plays 0x16 on the partner; the brains opponent uses resident slot 0x1E. Offense uses the species'
+technique slot, defense uses 0x25, speed uses 4, and MP uses idle or 0x0C in the second gym. The training timers keep
+running during a queued read. The HP code toggles `animFlag` bit 1 to control root movement, leaving playback bit 0
+alone; its session does not wait on the partner's frame count. Slot 0x19 also serves the partner's item-scold reaction.
+The script audit (`tools/npcanims.py report`) must stay free of 0x14–0x1B requests on imported NPCs: the cold loader
+accepts only the partner. `tools/dev/playtest/cold_training.py` runs full normal sessions of all six kinds and both
+second-gym HP paths, saving states, per-vsync animation traces, stat gains and read-delay counts for each RAM mode.
+The extra slots need no engine change or additional BSS.
+
+The full import build with these slots moves 1,171,718 more bytes out of 183 resident models (1,562–14,310 bytes
+per species). The largest resident model is 98,002 bytes, below the 100,352-byte default buffer; the largest cold
+sector read remains 8,192 bytes. The old slot set required a 104,448-byte partner buffer for the same import sources.
+Returning it to 100,352 bytes moves `main_BSS_END` from `0x801CF3C4` to `0x801CE3C4`, freeing 4,096 bytes of heap.
+All nine language builds pass the heap/fit audit with zero failing screen setups.
+
+The emulator regression uses Wizardmon for all six normal 1,200-tick sessions and both second-gym HP paths at
+2 MB and 8 MB. With 2 MB, the queued HP/brains reads hold the partner's pose for at most 46 vsyncs while the world
+continues; the cold-start calls consume no whole vsyncs. With 8 MB, brains starts from the cache with no read delay.
+Wizardmon's HP clip lies past its 32 KB cache, exercising the blocking fallback: 41–47 vsyncs before playback.
+Every session finishes, awards stats and returns to the field. The toilet/replacement regression also passes in
+both RAM modes, including every actual cold training slot of WarGreymon.
 
 The title screen's panel (`modNoticeProbe`, patch 0313) reads the same probe and counts reads of the hblank counter over 16
 lines, which grow with an emulated CPU overclock: DuckStation gives 3801 at 100 %, 7389 at 200 %, 9303 at 250 % and 10977 at
