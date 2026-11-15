@@ -2143,3 +2143,9 @@ has 166 crossings per tick against 60, with the body tipped 68 degrees against
 19. Giving the keyed fall enough wing motion needs 100,902 bytes and raises
 crossings to 85.44 per tick, peaking at 207 against 97. It stays out; field motion
 and the other battle clips remain unchanged.
+
+Cannondramon keeps its existing cannon-raising celebration. The source-length
+retry needs 100,882 bytes and still misses a tip by 0.180 heights, with 234
+crossings per tick against 198 and too much sinking. The keyed alternative
+needs 103,244 bytes and loses too much limb motion. Its field animation and
+every battle program remain unchanged.
