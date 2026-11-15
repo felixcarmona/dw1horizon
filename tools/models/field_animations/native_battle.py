@@ -158,6 +158,26 @@ def scaled_events(events, frames, want):
     return [(min(want - 2, round(k * (want - 1) / (frames - 1))), kind, c) for k, kind, c in events]
 
 
+def repaired_events(events, frames, ops):
+    """Keep sounds on the same poses when a repair cuts, repeats or retimes the clip."""
+    events = list(events)
+    for op in ops:
+        if op['op'] == 'cut':
+            a, b = op['from'], op['to']
+            events = [(k if k < a else k - (b - a), kind, c)
+                      for k, kind, c in events if not a <= k < b]
+            frames -= b - a
+        elif op['op'] == 'retime':
+            want = op['ticks'] + 1
+            events = scaled_events(events, frames, want)
+            frames = want
+        elif op['op'] == 'repeat':
+            events = [(k + cycle * (frames - 1), kind, c)
+                      for cycle in range(op['times']) for k, kind, c in events]
+            frames = (frames - 1) * op['times'] + 1
+    return events
+
+
 def shared(table, source_table, share, restored):
     """`table` with each slot of `share` ({slot (text): leader}) playing its leader's restored clip, for a source that
     plays one clip for both slots (the same program in its table); the leader is restored, the slot is not."""
@@ -263,6 +283,7 @@ def apply(output, ctx, slots, keep_events=(), repairs=None, ticks=None, share=No
         samples = retarget(frames, ctx)
         if repairs and str(slot) in repairs:
             samples = clip_repair.apply_ops(samples, [p for _, p in rig], repairs[str(slot)])
+            events = repaired_events(events, len(frames), repairs[str(slot)])
         anim = mmd.encode_anim(samples, nb, 0 if loop == 0 else None, events, tol=ctx.get('tol', 1), repeats=tile > 1)
         model.anims.table[slot] = len(model.anims.anims)
         model.anims.anims.append(anim)
