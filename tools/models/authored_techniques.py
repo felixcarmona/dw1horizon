@@ -19,7 +19,13 @@ PROFILES = {241: {slot: dict(factor=1, final_frames=26, source_ticks=27,
                                           phase=.15, ticks=[0, 3, 27, 30])], floor_offset=1),
                   54: dict(factor=1.4, mix=.12, source_ticks=45, tolerance=5)},
             242: {55: dict(factor=1.4, mix=.12, source_ticks=51, tolerance=5,
-                           final_frames=107, cast_staff=True, support_feet=(21, 24))}}
+                           final_frames=107, cast_staff=True, support_feet=(21, 24))},
+            333: {52: dict(factor=1, mix=.25, source_ticks=61, tolerance=5,
+                           ops=[{'op': 'wave', 'bone': 6, 'axis': 'x', 'deg': 34, 'cycles': 1, 'phase': 0.25, 'ticks': [0, 3, 41, 44]}, {'op': 'wave', 'bone': 7, 'axis': 'x', 'deg': -34, 'cycles': 1, 'phase': 0.25, 'ticks': [0, 3, 41, 44]}], support_feet=(14, 17)),
+                  54: dict(factor=1.2, mix=.25, source_ticks=37, tolerance=5,
+                           ops=[dict(op='smooth', bone=16, passes=1),
+                                dict(op='smooth', bone=17, passes=1)],
+                           support_feet=(14, 17))}}
 
 
 def author(data, skeleton, sid, raw):
@@ -116,5 +122,7 @@ def build(data, skeleton, sid, context):
         raw, _ = native_battle.compact(raw, len(skeleton), dict(tol=5))
     if sid == 242:
         raw, _ = native_battle.compact(raw, len(skeleton), dict(tol=5, slot_tol={'19': 2}))
+    if sid == 333:
+        raw, _ = native_battle.compact(raw, len(skeleton), dict(tol=5, preserve_field=True))
     output = author(data, skeleton, sid, raw)
     return output, dict(slots=sorted(profiles), storage=motionstorage.require(output, len(skeleton)))

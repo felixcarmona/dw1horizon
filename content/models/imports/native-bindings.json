@@ -9794,7 +9794,11 @@
         "tol": 5,
         "preserve_field": true
       }
-    }
+    },
+    "authored_techniques": [
+      52,
+      54
+    ]
   },
   "402": {
     "species": 402,

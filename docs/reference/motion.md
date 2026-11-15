@@ -2186,3 +2186,5 @@ BomberNanimon winds up its arms and settles naturally after its two battle attac
 Vilemon twists into its own claw strike and lets its wings follow through.
 
 Wizardmon plants its boots and carries each spell through its head, cape and wand.
+
+Raijinmon follows its turning strike with a loose arm and settles its second attack over planted feet.
