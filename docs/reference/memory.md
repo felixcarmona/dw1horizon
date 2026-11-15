@@ -1310,46 +1310,44 @@ DuckStation were not tested.
 
 ## Overdell descent and Birdra Transport model room
 
-Imported NPC models now reclaim their unused resident care clips at load time. Hawkmon's reviewed source battle
+Imported NPC models reclaim their unused resident care clips at load time. Hawkmon's reviewed source battle
 clips **0x22–0x24** are restored; its mesh and every other animation program retain their previous bytes.
+SkullSatamon also keeps the source faint, victory and additional techniques on its native binding.
+The existing compaction recipes and battle QA limits remain unchanged.
 
-The existing compression recipes remain in use:
+Partner training clips now stream from disc. Together with the earlier cold care clips, this leaves no additional
+resident care streams to reclaim from these three models. The imported NPC compactor preserves their external
+entries and retained battle programs. Provider file size is not the resident memory budget.
 
-- **Gargoylemon** (`gargoylemon_gait.py`): field legs and their parent bones use tolerance 1; tail, chest, arms,
-  head and wings use 5 (0.44°). Other non-field, non-battle clips use the native recipe's exact and tolerance-5
-  compaction. The provider model is **90,116 B**.
-- **SkullSatamon**: `battle_originals.compact` uses tolerance 5. The provider model is **83,760 B**;
-  the cold-split resident model is **83,752 B**.
-- **Hawkmon**: restoring the three battle programs grows the provider model from **99,416 to 105,130 B**.
-  After cold splitting, its resident size is **81,298 → 87,012 B**, below the unchanged **100,352 B** partner
-  buffer. Its **18,128 B** of cold streams have a largest sector-aligned read of **6,144 B**, within the
-  **8,192 B** cold-animation buffer. Provider file size is not the resident memory budget.
+| Species | Resident model | After NPC compaction | Largest cold read |
+|---|---:|---:|---:|
+| Hawkmon (184) | 81,432 B | 81,432 B | 6,144 B |
+| SkullSatamon (314) | 81,784 B | 81,784 B | 4,096 B |
+| Gargoylemon (327) | 83,006 B | 83,006 B | 6,144 B |
 
-The NPC compactor then retains these sizes. The NPC sizes include the one-frame stub; reclaimed model bytes
-subtract its cost. Heap blocks round to eight bytes.
+SkullSatamon's provider model is **100,444 B** before cold splitting. All three resident models fit the unchanged
+**100,352 B** partner buffer, and their sector-aligned cold reads fit the unchanged **8,192 B** cold buffer.
+The actual-C compactor agrees with the budget calculation for all **369 models**, preserving retained animations
+and geometry under address and undefined-behavior sanitizers.
 
-| Species | After cold split | NPC model | Model bytes reclaimed | Heap bytes reclaimed |
-|---|---:|---:|---:|---:|
-| Hawkmon (184) | 87,012 B | 81,676 B | 5,336 B | 5,336 B |
-| SkullSatamon (314) | 83,752 B | 77,994 B | 5,758 B | 5,752 B |
-| Gargoylemon (327) | 90,116 B | 83,310 B | 6,806 B | 6,808 B |
+The nine-language full build, including six other species' restored source clips, passes **10,350 setup checks**:
+extended and original story, each with both fonts, in every language (**36 combinations**).
+All nine executable layouts have `main_BSS_END = 0x801CE5D0` and **186,648 B** of allocator heap.
 
-The nine-language full build passes **10,350 setup checks**: extended and original story, each with both fonts,
-in every language. Extended story has 320 setup sections; original story has 255. All margins include the
-**32 B** allocator cost of the trimming patch described above.
+| Extended-story screen | Minimum margin across languages and fonts |
+|---|---:|
+| 207, Birdra Transport | **+2,832 B** |
+| 41 | **+4,872 B** |
+| 217, Devimon / Ninjamon / Phantomon | **+5,352 B** |
+| 330–334, Overdell descent, each | **+12,208 B** |
 
-| Screen | Before imported trimming and battle restoration | After |
-|---|---:|---:|
-| 207, Birdra Transport | +3,488 B | **+3,080 B** |
-| 217, Devimon / Ninjamon / Phantomon | +2,184 B | **+5,616 B** |
-| 364 | +3,080 B | **+16,728 B** |
-| 330–335, Overdell descent | +3,656 B | **+16,184 B** |
+Screens 330–334 retain SkullSatamon and Gargoylemon for normal wild battles. Their worst setup peak is
+**174,440 B**, below the **186,648 B** heap. Restoring SkullSatamon's source clips therefore fits alongside
+training streaming and imported NPC trimming; no heap or animation-buffer limits are increased.
 
-The tightest margin moves from **2,184 B on screen 217** to **3,080 B on screen 207**. The next tightest screens
-are 41 (**5,368 B**), 217 (**5,616 B**), 223 (**6,040 B**) and 70 (**9,728 B**).
-
-PCSX-Redux on original 2 MB RAM loaded Hawkmon in Birdra Transport, played its idle and walk, opened and closed
-its dialogue, and completed a battle with all three restored clips observed. The target compactor returned
-**87,012 → 81,676 B**. A normal wild encounter on screen 330 also ended in victory, returned to the same screen
-and allowed pad walking afterward. Both runs recorded **0 stub hits**. Battle QA of Hawkmon extracted from the
-final disc reports **2 pass, 2 kept, 0 fail**; cold splitting preserves every animation program.
+PCSX-Redux on original **2 MB RAM** loaded screen 330 with SkullSatamon, completed its normal wild encounter,
+returned to screen 330 and accepted left/right walking afterward. The animation trace observed slots
+`0x21–0x25`, `0x28–0x29`, `0x2B–0x2C`, `0x2E`, `0x30` and `0x36`; there were **0 stub hits**.
+Hawkmon on screen 207 loaded, idled, walked and opened and closed its dialogue on the same disc.
+Native battle QA of SkullSatamon reports **9 pass, 15 unchanged, 0 fail**. Hawkmon extracted from the final disc
+reports **2 pass, 2 kept, 0 fail**, with its mesh and all non-restored animation programs preserved.
