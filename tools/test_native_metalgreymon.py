@@ -76,7 +76,7 @@ class NativeMetalGreymon(unittest.TestCase):
         for index in range(14):
             self.assertIsNotNone(self.model.anims.table[0x2E + index])
         report = motionstorage.require(self.data, 30)
-        self.assertEqual(report['resident_bytes'], 78480)
+        self.assertEqual(report['resident_bytes'], 71032)  # training clips 0x14-0x1B stream from disc
         self.assertLessEqual(max(row['sector_read_bytes'] for row in report['cold_reads']), 8192)
 
     def test_imports_provider_uses_native_disc_builder_without_source_game_replay(self):
