@@ -411,5 +411,10 @@
     "name": "Dark Fear",
     "stands_for": 80,
     "dw3": {"model": "M364MUMY", "slot": 9, "meft": [335], "pin": "4570e2d1a2dc2135b66822863ed9ed9d7a9cbc9c"}
+  },
+  "215": {
+    "name": "Giant Missile",
+    "stands_for": 78,
+    "dw3": {"model": "M372SGRG", "slot": 11, "meft": [85], "pin": "eb5aeb01fdfdf061e20266dbfc185b505abb4172"}
   }
 }

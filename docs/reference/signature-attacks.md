@@ -70,6 +70,7 @@ the moment the attack starts.
 | 329 Ghoulmon | Darkness Chaos (DW2003) | Dark Shot | 3D effect at the caster (MEFT0349) | 1 | plays its whole length (38 frames at 30 fps), hits when it ends | none | one enemy, as for Dark Shot | one enemy |
 | 333 Raijinmon | Electro Ball (DW2003) | Genoside Attack | 3D effect at the caster (MEFT0363) | 1 | plays its whole length (41 frames at 30 fps), hits when it ends | none | one enemy, as for Genoside Attack | all enemies |
 | 334 Mummymon | Dark Fear (DW2003) | Dark Shot | 3D effect at the caster (MEFT0335) | 1 | plays its whole length (31 frames at 30 fps), hits when it ends | none | one enemy, as for Dark Shot | one enemy |
+| 335 MegaGargomon | Giant Missile (DW2003) | Genoside Attack | 3D effect at the caster (MEFT0085) | 1 | plays its whole length (35 frames at 30 fps), hits when it ends | none | one enemy, as for Genoside Attack | one enemy |
 
 ## Where the port differs from the source
 
