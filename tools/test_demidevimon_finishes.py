@@ -1,4 +1,8 @@
 """Guard DemiDevimon's retained battle finishes and unchanged field motion."""
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent / 'models'))
 from tools.retained_finish_testcase import RetainedFinishCase
 
 

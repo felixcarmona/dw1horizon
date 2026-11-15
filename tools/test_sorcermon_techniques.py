@@ -12,6 +12,8 @@ class SorcermonTechniques(BattleTechniqueCase):
         from pathlib import Path
         import animsheet
         import mmd
+        if not (os.environ.get('BATTLE_RETRY_REVIEW') and os.environ.get('BATTLE_TECHNIQUE_REVIEW')):
+            self.skipTest('needs before/after provider fixtures')
         previous = Path(os.environ['BATTLE_RETRY_REVIEW']) / 'final'
         current = Path(os.environ['BATTLE_TECHNIQUE_REVIEW']) / 'final'
         skeleton = json.loads((current / '242-species.json').read_text())['model']['skeleton']
