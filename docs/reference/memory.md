@@ -186,16 +186,26 @@ Techniques are not cold: an enemy of the same species plays them in battle.
 On a real drive the first eating clip may wait briefly for the seek.
 
 Originally each read stopped the whole game: 0.73 s on an emulated drive for WarGreymon's toilet clip. With RAM above 2 MB (patch 0313,
-an emulator's 8 MB setting) the partner's cold part is read once, after its model loads, into 0x80200000 (32 KB,
-`refreshColdCache` in the partner's normal field tick), and the clips start from there; a clip past those 32 KB reads the
-disc as before. `modProbeRam` tells real RAM from the console's mirror. It runs at boot and writes one word and its mirror;
-with 2 MB the cache stays off and every path is the original's. Nothing may need this RAM: it only removes the wait.
+an emulator's 8 MB setting) the partner's cold part is read once, after its model loads, into 0x80200000 (64 KB,
+`refreshColdCache` in the partner's normal field tick), and all current imported clips start from there. The largest imported cold part is
+61,304 bytes (SkullMammothmon, 268), leaving 4,232 bytes of margin. This region is reserved for the cold cache;
+the Chinese language module and fonts start at 0x80400000. A clip beyond the cache limit retains a blocking fallback.
+`modProbeRam` tells real RAM from the console's mirror. It runs at boot and writes one word and its mirror;
+with 2 MB the expanded cache stays off. Nothing may need this RAM: it only removes the wait.
 With 2 MB in the world (patch 0318) the game no longer stops either: `loadColdAnimation` asks the file queue for the clip and
 the partner holds its pose, with animation off (`animFlag` bit 0) and a frame count of 0x7FFF, so whatever waits for the end of
 the clip keeps waiting. `tickAnimation` starts the clip when the queue is done. A resident clip that starts meanwhile replaces
-it. Outside the world the read still blocks: the fight code reads `animFlag` as "the animation ended".
+it. The last clip stays valid in the 8 KB buffer: restarting the same slot with the same table entry reuses it
+after its read finishes, including after a resident clip cancelled its pending start. Loading any partner model
+(synchronous load, asynchronous load or apply) invalidates both caches, even when the species stays the same.
+Every read into the 8 KB buffer invalidates its previous contents, and waits for any pending write before overwriting it.
+This lets brains training restart 0x16 every 35 ticks after just one queued read per session.
+Outside the world a cache miss still blocks: the fight code reads `animFlag` as "the animation ended".
 
-`tools/dev/playtest/cold_cache.py` counts the reads on a real toilet trip in both modes, and starts every cold clip, also when another one replaces it.
+`tools/dev/playtest/cold_cache.py` counts reads on a real toilet trip and an eating sequence in both modes.
+It also starts every cold clip, including when another clip replaces it.
+`tools/dev/playtest/cold_cache_host.py` compiles the actual loader on the host and checks restarts, slot keys,
+overwrite, cancellation, model invalidation and the expanded-cache HP path.
 
 Gym training runs in the world, so its cold starts use the same queued path with 2 MB. HP training plays slot 0x1B,
 and brains training plays 0x16 on the partner; the brains opponent uses resident slot 0x1E. Offense uses the species'
@@ -205,7 +215,9 @@ alone; its session does not wait on the partner's frame count. Slot 0x19 also se
 The script audit (`tools/npcanims.py report`) must stay free of 0x14–0x1B requests on imported NPCs: the cold loader
 accepts only the partner. `tools/dev/playtest/cold_training.py` runs full normal sessions of all six kinds and both
 second-gym HP paths, saving states, per-vsync animation traces, stat gains and read-delay counts for each RAM mode.
-The extra slots need no engine change or additional BSS.
+The expanded cache uses RAM above 2 MB and the last-clip key reuses existing loader fields.
+The synchronous load and asynchronous apply share their identical partner-model initialization to preserve the
+2 MB heap budget. With all nine languages, `main_BSS_END` is 0x801CE3C0 (four bytes below the previous build).
 
 The full import build with these slots moves 1,171,718 more bytes out of 183 resident models (1,562–14,310 bytes
 per species). The largest resident model is 98,002 bytes, below the 100,352-byte default buffer; the largest cold

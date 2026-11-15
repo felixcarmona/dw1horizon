@@ -137,11 +137,10 @@ return 'armed'
     assert all(int(r['frames'])==0x7fff and not int(r['flags'])&1 for r in pending),pending[:3]
     if name.startswith('hp') or name=='brains':
         if test.args.ram8:
-            # Clips beyond the optional 32 KB cache use the existing blocking fallback.
             assert not pending,result
-            assert result['reads']['clip_reads']==len(result['blocking_read_vsyncs']),result
+            assert result['reads']['clip_reads']==0 and not result['blocking_read_vsyncs'],result
             assert result['cache_type']==test.args.species,result
-        else:assert pending and result['reads']['async']>0,result
+        else:assert pending and result['reads']['async']==1,result
     stat={'hp':8,'mp':9,'offense':0,'defense':1,'speed':2,'brains':3}.get(name,8)
     assert result['stat_deltas'][stat]>0,result
     assert (result['cache_type']>=0)==test.args.ram8,result
