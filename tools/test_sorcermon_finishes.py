@@ -7,8 +7,9 @@ class SorcermonFinishes(RetainedFinishCase):
     slots = (44,)
 
 
-from tools.battle_retry_testcase import BattleRetryCase
+from tools.battle_stride_testcase import BattleStrideCase
 
 
-class SorcermonRetry(BattleRetryCase):
+class SorcermonRetry(BattleStrideCase):
     sid = 242
+    changed_slots = (35,)
