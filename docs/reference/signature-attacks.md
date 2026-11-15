@@ -77,6 +77,7 @@ the moment the attack starts.
 | 407 Armageddemon | Ultimate Flare (DW2003) | Crimson Flare | 3D effect at the caster (MEFT0333) | 1 | plays its whole length (61 frames at 30 fps), hits when it ends | none | one enemy, as for Crimson Flare | one enemy |
 | 408 Suijinmon | Mugen Cannon (DW2003) | Infinity Cannon | 3D effect at the caster (MEFT0364) | 1 | plays its whole length (51 frames at 30 fps), hits when it ends | none | one enemy, as for Infinity Cannon | one enemy, 4 hits |
 | 430 Zanbamon | Cross Slash (DW2003) | Death Claw | 3D effect at the caster (MEFT0039) | 1 | plays its whole length (30 frames at 30 fps), hits when it ends | none | one enemy, as for Death Claw | one enemy |
+| 433 Guilmon | Pyrosphere (DW2003) | Pepper Breath | 3D effect at the caster (MEFT0102) | 1 | plays its whole length (45 frames at 30 fps), hits when it ends | none | one enemy, as for Pepper Breath | one enemy |
 
 ## Where the port differs from the source
 

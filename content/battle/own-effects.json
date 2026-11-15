@@ -446,5 +446,10 @@
     "name": "Cross Slash",
     "stands_for": 62,
     "dw3": {"model": "M337ZAMB", "slot": 5, "meft": [39], "pin": "db297f0d6a698c95ed5a7f0aefd34ab2d85ae6f4"}
+  },
+  "222": {
+    "name": "Pyrosphere",
+    "stands_for": 59,
+    "dw3": {"model": "M366GIRU", "slot": 11, "meft": [102], "pin": "7bdb922c4dc4dc8708bc45e9d2319556d51d58d4"}
   }
 }
