@@ -149,6 +149,12 @@ def build(data, skeleton, closed=True):
         if tuple(recipe['authored_battle']) != authored_battle.SLOTS[sid]:
             raise ValueError('Unreviewed authored battle slots')
         output, proof['authored_battle'] = authored_battle.build(output, rig, sid, battle_context)
+    if recipe.get('authored_techniques'):
+        from tools.models import authored_techniques
+        sid = int(recipe['species'])
+        if tuple(recipe['authored_techniques']) != tuple(authored_techniques.PROFILES[sid]):
+            raise ValueError('Unreviewed authored techniques')
+        output, proof['authored_techniques'] = authored_techniques.build(output, rig, sid, battle_context)
     storage = motionstorage.require(output, len(rig))
     proof.update(output_sha256=native_binding.digest(output), storage=storage,
                  followers={str(b): dict(driver=d, lag=lag, share=s, trail=t, most=m)

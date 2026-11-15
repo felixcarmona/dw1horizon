@@ -16,7 +16,8 @@ PROFILES = {232: {47: dict(factor=1, mix=.25, source_ticks=31,
                                 tolerance=5, ops=[dict(op='wave', bone=17, axis='x', deg=-6, cycles=1,
                                           phase=.15, ticks=[0, 3, 27, 30])], floor_offset=1),
                   54: dict(factor=1.4, mix=.12, source_ticks=45, tolerance=5)},
-            242: {55: dict(factor=1.4, mix=.12, source_ticks=51, tolerance=5)}}
+            242: {55: dict(factor=1.4, mix=.12, source_ticks=51, tolerance=5,
+                           final_frames=107, cast_staff=True, support_feet=(21, 24))}}
 
 
 def author(data, skeleton, sid, raw):
@@ -91,7 +92,15 @@ def author(data, skeleton, sid, raw):
             model.anims.anims.append(mmd.encode_anim(
                 frames, nb, loop, shifted_events,
                 tol={0: 0, 1: 0, None: profile['tolerance']}, repeats=False))
-    return _clean(model)
+    output = _clean(model)
+    for slot, profile in PROFILES[sid].items():
+        if profile.get('cast_staff'):
+            from tools.models.sorcermon_cast import repair
+            output = repair(output, skeleton, slot, profile['final_frames'])
+        if profile.get('support_feet'):
+            from tools.models.battle_support import fit
+            output = fit(output, skeleton, slot, profile['support_feet'], data)
+    return output
 
 
 def build(data, skeleton, sid, context):

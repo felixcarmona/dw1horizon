@@ -31,3 +31,23 @@ def audit(data, skeleton, slot):
     gap = max(math.dist(a, b) for a, b in zip(points(frames[loop]), points(frames[-1]))) if loop is not None else 0
     return dict(passed=min(levels) >= -8 and max(levels) <= 3 and gap <= 3,
                 samples_60fps=len(levels), floor=[min(levels), max(levels)], loop_gap=gap)
+
+
+def support_band(data, skeleton, slot, feet):
+    """Independent decoded sole levels, including the player's display blends."""
+    nb = len(skeleton)
+    mmd.exe().add_type(9508, skeleton)
+    model = mmd.MMD.parse(data, nb)
+    model.type = 9508
+    local = {bone: [v[:3] for v in model.tmd.obj_verts(skeleton[bone][0])]
+             for bone in feet}
+    frames = animsheet.slot_frames(model, nb, slot)[0]
+    levels = []
+    for tick, pose in enumerate(frames):
+        for alpha in ((0, 1365, 2730) if tick+1 < len(frames) else (0,)):
+            current = copy.deepcopy(pose) if not alpha else interpolate_pose(pose, frames[tick+1], alpha)
+            current[0] = [4096]*3 + [0]*6
+            world = mmd.bone_matrices(model, current)
+            levels.append(max(sum(world[b][1][j]*v[j] for j in range(3))+world[b][1][3]
+                              for b in feet for v in local[b]))
+    return [min(levels), max(levels)]

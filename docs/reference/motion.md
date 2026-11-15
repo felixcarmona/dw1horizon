@@ -2171,7 +2171,7 @@ ChaosLord keeps its current fall because the stronger wing follow-through adds t
 
 Cannondramon keeps its cannon-raising victory because the lighter replacement loses too much movement in its limbs.
 
-Sorcermon walks with a lightly swinging staff and trailing cape; it keeps its existing recovery.
+Sorcermon swings its staff while walking and plants both boots for its long casting gesture.
 
 NeoCrimson keeps its recovery because a grounded replacement would jump away from the ending of its existing fall.
 
