@@ -105,8 +105,8 @@ builds every port to its pin and runs the fidelity check against the original te
 | 301 | Free Throw Bomb (composed) | 232 BomberNanimon | 73 Bit Bomb | as Bit Bomb | chunk 39's ball, orange, model 1.5x; the template (89) throws knives |
 | 307 | Pulse Blast (composed) | 238 Dolphmon | 90 Blasting Spout | as the template | chunk 112's rings, cyan, spout 2.5x taller |
 | 320 | Solar Flare (composed) | 251 Solarmon | 86 Solar Ray | as Solar Ray | chunk 94's ring on the orb, white-gold, model 1.4x; the template (70) is a small flame |
-| 323 | Torpedo Attack (composed) | 254 Tylomon | 78 Genoside Attack | as Genoside Attack | chunk 23's splash in place of the fire burst, sea blue, missiles 1.6x longer; the template (87) is a water jet |
-| 327 | Darkness Zone (composed) | 400 Apocalymon | 97 Frozen Fire Shot | as Frozen Fire Shot | chunk 35's dark ball, deep purple, model 2.8x; the template (74) is a small mine |
+| 323 | Torpedo Attack (composed) | 254 Tylomon | 78 Genoside Attack | as Genoside Attack | chunk 23's splash in place of the fire burst, sea blue; the template (87) is a water jet |
+| 327 | Darkness Zone (composed) | 400 Apocalymon | 74 Deadly Bomb | as Deadly Bomb | chunk 35's swirling darkness on the orb and its burst, deep purple, model 1.6x; on Frozen Fire Shot (97) the technique dealt no damage |
 
 ## Converting a Digital Card Battle attack
 

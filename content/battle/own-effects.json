@@ -1157,11 +1157,12 @@
   },
   "327": {
     "name": "Darkness Zone",
-    "stands_for": 97,
+    "stands_for": 74,
     "compose": {"texture": [
-      {"from": 35, "rect": [0, 0, 32, 32], "to": [0, 0], "palettes": [[0, 0]]}],
+      {"from": 35, "rect": [32, 0, 32, 32], "to": [40, 0], "palettes": [[0, 0]]},
+      {"from": 35, "rect": [64, 0, 32, 32], "to": [8, 0], "palettes": []}],
       "recolour": {"ramp": ["#000000", "#10021e", "#5a1890", "#b070f0"]},
-      "scale": 2.8},
+      "scale": 1.6},
     "check": {"hue": 280}
   },
   "320": {
@@ -1194,8 +1195,7 @@
     "stands_for": 78,
     "compose": {"texture": [
       {"from": 23, "rect": [136, 0, 32, 32], "to": [80, 0], "palettes": [[0, 0]]}],
-      "recolour": {"ramp": ["#000000", "#0a3a6a", "#40a0e0", "#e0f4ff"]},
-      "scale": [1, 1, 1.6]},
+      "recolour": {"ramp": ["#000000", "#0a3a6a", "#40a0e0", "#e0f4ff"]}},
     "check": {"hue": 205}
   }
 }
