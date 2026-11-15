@@ -91,6 +91,13 @@ builds every port to its pin and runs the fidelity check against the original te
 | 122 | Metal Fireball | 277 SkullMeramon | 63 Mega Flame | 7,776 bytes (Mega Flame: 2,600) | 158 x 20, 6 palettes |
 | 162 | Nightmare Shock (composed) | 295 Vilemon | 62 Death Claw | 5,804 bytes (as Death Claw) | Death Claw's, purple |
 | 163 | Poison Cobweb (composed) | 298 Dokugumon | 72 Sweet Breath | 7,724 bytes (as Sweet Breath) | Sweet Breath's cloud replaced by chunk 105's web, green |
+| 226 | Cyclone Turbine (composed) | 306 GrapLeomon | 62 Death Claw | 5,804 bytes (as Death Claw) | chunk 15's wind streaks on a wider, taller ring, teal |
+| 232 | Talisman of Light (composed) | 315 Taomon | 63 Mega Flame | 2,600 bytes (as Mega Flame) | chunk 82's written strip in place of the fireball, gold |
+| 236 | Blade Twister (composed) | 322 Kyukimon | 62 Death Claw | 5,804 bytes (as Death Claw) | chunk 13's jagged blades on a wider ring, green |
+| 256 | Hawk Beam (composed) | 184 Hawkmon | 71 Boom Bubble | 6,036 bytes (as Boom Bubble) | chunk 9's streak in place of the air puff, red |
+| 262 | Metal Wolf Claw (composed) | 191 MetalGarurumon | 78 Genoside Attack | 13,872 bytes (as Genoside Attack) | chunk 20's ice crystal in place of the fire burst, icy blue, model 1.2x |
+| 265 | Ex-Laser (composed) | 194 ExVeemon | 63 Mega Flame | 2,600 bytes (as Mega Flame) | chunk 29's ring in place of the fireball, blue-white |
+| 321 | Thunder Volt (composed) | 252 Thundermon | 86 Solar Ray | 11,244 bytes (as Solar Ray) | chunk 66's lightning on the model and its spark on the orb, electric blue, model 1.3x |
 
 ## Converting a Digital Card Battle attack
 
@@ -176,6 +183,24 @@ by the engine with its own colours: a composition cannot recolour them. The chec
      is more than 35 degrees from `check.hue`;
    - **it is the template**: the summed RGB difference of all frames is under 0.25 of their summed RGB.
 5. Add the row to the table above. `python -m unittest tools.test_efecompose` checks every composed entry too.
+
+### Imports that keep their template
+
+These imported finishers have no own effect: their source did not convert (a Card Battle attack that failed the
+fidelity check, a self-cast support technique), and the DW1 effect they play already shows what the name says.
+
+| Species | Finisher | Source | Plays |
+|---|---|---|---|
+| 123 Tinmon | Recovery Power | DW2, a self-cast heal | 111 Mail Strome: an icy beam and crystals |
+| 199 Paildramon | Desperado Blaster | Card Battle, fidelity failed | 78 Genoside Attack: a volley of shots and a burst |
+| 214 Shakkoumon | Clay Bomb | Card Battle, fidelity failed | 73 Bit Bomb: a lobbed bomb that bursts |
+| 216 Devidramon | Crimson Claw | Card Battle, fidelity failed | 62 Death Claw: a red claw rake |
+| 234 Gatomon | Lightning Paw | Card Battle, fidelity failed | 82 Hand of Fate: a glowing punch |
+| 236 DemiDevimon | Demi Dart | Card Battle, fidelity failed | 69 Spinning Needle: thrown needles |
+| 242 Sorcermon | Crystal Cloud | Card Battle, fidelity failed | 88 Ice Blast: a cloud and ice crystals |
+| 246 Infermon | Hades' Grenade | Card Battle, fidelity failed | 74 Deadly Bomb: a dark bomb |
+| 248 MarineAngemon | Ocean Love | Card Battle, larger than the slot | 60 Lovely Attack: hearts |
+| 256 VioletElecmon | Jamming Thunder | Card Battle, fidelity failed | 101 Super Thunder Strike: lightning |
 
 A sheet and a check take about 15 seconds. The chunk keeps the template's size, so the memory the battle keeps is
 the template's.

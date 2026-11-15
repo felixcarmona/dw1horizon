@@ -9,6 +9,7 @@
   "techniques": ["Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Tremar", "Counter", "Fire Tower",
                  "Spit Fire", "Heat Laser", "Red Inferno", "Mega Flame"],
   "drop": {"item": "Giant Meat", "percent": 30},
+  "own_effect": {"technique": "Mega Flame", "chunk": 265},
   "effects_like": 5,
   "model": {
     "file": "build/batch2/ExVeemon.MMD",
