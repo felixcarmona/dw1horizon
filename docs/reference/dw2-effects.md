@@ -66,8 +66,8 @@ hit object 60 ticks (the first 30 frames).
 
 DW2's battles are turn-based. The two rows of fighters stand 0x2800 units apart, facing each other.
 
-1. The camera looks at the caster, the skill's banner shows and the voice line plays (an XA stream, the
-   record's file and channel).
+1. The camera looks at the caster, the skill's banner shows and the skill's sound track starts (an XA
+   stream, the record's file and channel; see [Sounds](#sounds)).
 2. The caster plays its cast clip and the three cast objects start:
    - slot 0 above the head (y = -0x280 - head height);
    - slot 1 at the launch point of the clip's row (x, -y, -(0x100 + z) in the caster's space, where -z points
@@ -143,3 +143,25 @@ the coarsest level: about 400 prims, 13 KB of TMD, none of them repeated cards. 
 - Swapping a chunk's content changes the technique for every Digimon that uses it. A per-species effect needs
   new chunk ids and a species check where the battle picks the chunk.
 - The effect engine runs its scripts at 20 Hz (one tick per 1.5 DW2 frames): a DW2 cast of 60 frames is 40 ticks.
+
+## Sounds
+
+A DW2 skill has no sound calls of its own. Its whole sound is one XA track per skill
+(`AAA/2.XAP/SHOT####.XAP`, the skill record's file and channel), started just before the cast. The track has
+one segment per target count; the one-target segment lasts about 5 seconds and follows the battle script: the
+cast's sounds in its first 2 seconds, then the cut to the target at 180 ticks (150 ticks of cast and a 30-tick
+wait). The only other sounds are the target's generic hurt sounds (`MPVS2P00`, ids 0x204 and 0x205).
+
+This game cannot stream the track during a battle effect, and its sound memory has no room for the samples
+(about 22 KB free at worst, `tools/sound.py spu-budget`). So each port plays battle sounds (`SB.VHB`, bank 8)
+instead:
+
+- The one-target segment's onsets (spectral flux peaks at 60 Hz) are found, and each one, up to the next onset
+  or one second, is matched to the closest of the 62 battle sounds the original effects use. The match uses
+  the same length, loudness shape and spectrum comparison as the DW2003 ports ([DW2003 effects](dw3-effects.md#sounds)).
+- Onsets before 120 ticks (the cast objects' life) become the entry's `sounds`, played by the controller at
+  their ticks.
+- The loudest onset after the cut becomes `hit_sound`, played with the first damage event, since the port
+  hits without DW2's cut and wait.
+- Sad Water Blast's track has no clear onset, so it keeps the generic sounds. Digital Bomb keeps only its
+  loudest cue: more push its chunk to coarser poses.

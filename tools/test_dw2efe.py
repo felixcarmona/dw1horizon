@@ -124,6 +124,16 @@ class Convert(unittest.TestCase):
         self.assertTrue(ring)
         self.assertEqual(sim.live(), 0)
 
+    def test_source_sounds_replace_the_generic_ones(self):
+        chunk, info = C.convert_skill([(1, cast())], [(1, hit())], TABLE, 0x17A, 0.5, sounds=[(0, 45), (8, 27)],
+                                      hit_sound=47)
+        sim = play(chunk)
+        t = sim.hits[0][0]
+        self.assertEqual(sorted(i for _t, i in sim.sounds), [27, 45, 47])
+        self.assertIn((8, 27), [(tick - sim.sounds[0][0], i) for tick, i in sim.sounds])
+        self.assertIn((t, 47), sim.sounds, 'the hit sound plays with the damage')
+        self.assertEqual(sim.live(), 0)
+
     def test_area_hits_every_enemy(self):
         chunk, info = C.convert_skill([(1, cast())], [(1, hit())], TABLE, 0x17A, 0.5, area=True)
         self.assertEqual(info['behaviour'], 'projectile x target')

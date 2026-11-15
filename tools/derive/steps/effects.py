@@ -218,7 +218,7 @@ def own_effects(ctx, archive):
                                                    e['scale'], hit_scale=e.get('hit_scale'),
                                                    area=e.get('area', False) or int(key) in area, n_hits=e.get('hits', 1),
                                                    sounds=[(t * dw2efe.ENGINE_HZ // 60, i) for t, i in e['sounds']]
-                                                   if 'sounds' in e else None)
+                                                   if 'sounds' in e else None, hit_sound=e.get('hit_sound'))
         ctx.log(f'own effect {key} {e["name"]}: ' + ', '.join(f'{k} {v}' for k, v in info.items() if k != 'parts'))
     return out
 
