@@ -18,7 +18,7 @@ from tools.models import clip_repair
 from tools.models.field_animations import quadruped as q
 from tools.models.field_animations.native_battle import scaled_events
 
-SLOTS = {260: (43, 44), 270: (43,)}
+SLOTS = {260: (43, 44), 270: (43,), 402: (42,)}
 
 
 def _ground_frames(frames, floor):
@@ -74,6 +74,9 @@ def author(data, sk, sid, raw):
  Recovery transfers weight from the arms to planted feet. The original donor
  sounds keep their relative times, and only the selected slots are replaced.
  """
+    if sid == 402:
+        from tools.models.battle_finish_keys import author_keys
+        return author_keys(data, sk, sid, raw, SLOTS[sid])
     if sid not in SLOTS:
         raise ValueError(f'No reviewed battle finish for species {sid}')
     nb = len(sk)

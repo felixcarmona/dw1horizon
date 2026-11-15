@@ -2117,3 +2117,10 @@ unchanged recovery without a pose jump: that opening has 220 crossings against
 the faint's maximum of 129. Holding its pose through the fall raises crossings to
 122 per tick against 55, with too little wing motion. The source still rears
 before falling, tipping the body 61 degrees from its standing pose.
+
+NeoCrimson shifts onto one planted foot, lifts the other leg and opens its claws
+in a forward victory stretch. The head and claws trail the weight shift, and the
+support knee compresses before the body settles. Sound ticks follow the longer
+gesture. Recovery keeps its existing clip: the source still misses an arm by
+42 degrees and 0.201 heights, and the keyed study loses too much arm motion.
+Field movement and every other battle clip remain unchanged.
