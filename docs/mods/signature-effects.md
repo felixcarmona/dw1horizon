@@ -106,6 +106,11 @@ builds every port to its pin and runs the fidelity check against the original te
 | 307 | Pulse Blast (composed) | 238 Dolphmon | 90 Blasting Spout | as the template | chunk 112's rings, cyan, spout 2.5x taller |
 | 320 | Solar Flare (composed) | 251 Solarmon | 86 Solar Ray | as Solar Ray | chunk 94's ring on the orb, white-gold, model 1.4x; the template (70) is a small flame |
 | 327 | Darkness Zone (composed) | 400 Apocalymon | 74 Deadly Bomb | as Deadly Bomb | chunk 35's swirling darkness on the orb and its burst, deep purple, model 1.6x; on Frozen Fire Shot (97) the technique dealt no damage |
+| 165 | Fungus Cruncher (composed) | 263 Mushroomon | 72 Sweet Breath | as Sweet Breath | chunk 28's spores in place of the cloud, purple; the DW2 source is a self-cast buff and the template (75) a drill |
+| 166 | Kongou (composed) | 276 Baihumon | 81 Pummel Whack | as Pummel Whack | chunk 105's crystal, white-gold, model 1.4x; the DW2 source is a self-cast guard and the template (78) a missile volley |
+| 234 | Plasma Blade (composed) | 320 Growlmon | 62 Death Claw | as Death Claw | chunk 66's thick bolt on a wider ring, red plasma; the template (58) is a fire breath |
+| 267 | Tempest Wing (composed) | 196 Halsemon | 106 Infinity Cannon | as Infinity Cannon | chunk 15's wind streaks on the beam, pale green, 1.3x wider; the template (69) throws needles |
+| 271 | Star Shower (composed) | 200 Pegasusmon | 93 Electro Shocker | as Electro Shocker | chunk 24's star in place of the spark, gold; the template (84) is a dive |
 
 ## Converting a Digital Card Battle attack
 

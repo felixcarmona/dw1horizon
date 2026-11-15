@@ -9,6 +9,7 @@
   "techniques": ["Spit Fire", "Prominence Beam", "Heat Laser", "Fire Tower", "Red Inferno", "Magma Bomb",
                  "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Blaze Blast"],
   "drop": {"item": "sm.recovery", "percent": 0},
+  "own_effect": {"technique": "Blaze Blast", "chunk": 234},
   "effects_like": 8,
   "model": {
     "file": "build/batch12/Growlmon.MMD",

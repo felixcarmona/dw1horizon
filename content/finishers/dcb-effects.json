@@ -171,7 +171,8 @@
    "attack_script": 1165,
    "hit_script": 2006,
    "result": "fidelity failed",
-   "fallback": "template",
+   "fallback": "composed",
+   "composed": "DW1 chunk 106 with chunk 15's wind streaks, pale green: a drilling gale where the template (69) throws needles",
    "why": "cast area, cast shown, cast box"
   },
   {
@@ -211,7 +212,8 @@
    "attack_script": 1168,
    "hit_script": 2037,
    "result": "fidelity failed",
-   "fallback": "template",
+   "fallback": "composed",
+   "composed": "DW1 chunk 93 with chunk 24's star, gold: a falling star where the template (84) is a dive",
    "why": "cast area, cast shown"
   },
   {

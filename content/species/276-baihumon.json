@@ -10,6 +10,7 @@
                  "Muscle Charge", "War Cry", "DG Dimension", "All Range Beam", "Delete Program",
                  "Pulse Laser", "Reverse Prog", "Power Crane", "Genoside Attack"],
   "drop": {"item": "sm.recovery", "percent": 10},
+  "own_effect": {"technique": "Genoside Attack", "chunk": 166},
   "effects_like": 22,
   "model": {
     "file": "build/sizes-out/models/Baihumon.MMD",

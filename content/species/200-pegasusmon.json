@@ -9,6 +9,7 @@
   "techniques": ["Wind Cutter", "Static Elect", "Electric Cloud", "Confused Storm", "Hurricane", "Megalo Spark",
                  "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Aerial Attack"],
   "drop": {"item": "sm.recovery", "percent": 10},
+  "own_effect": {"technique": "Aerial Attack", "chunk": 271},
   "effects_like": 33,
   "model": {
     "file": "build/batch2/Pegasusmon.MMD",
