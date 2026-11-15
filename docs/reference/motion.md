@@ -2131,3 +2131,9 @@ the native motion checks at 100,184 bytes. Its formerly shared care animation
 keeps every original pose. Faint and recovery keep their existing clips: the
 44-tick source versions need 101,228 and 102,602 bytes and still tip the body
 86–87 degrees; the keyed alternatives need 104,686 and 106,696 bytes.
+
+Assaultmon raises its guns in its own victory salute. An eased preparation and
+small shoulder turns keep the arms clear enough to pass the native motion
+checks: 7.6 degrees mean rotation error, 21.8 degrees for the worst piece and
+0.057 heights at the tips. It uses 99,132 bytes. The care animation that shared
+the old victory keeps its exact motion, as do the field and other battle clips.
