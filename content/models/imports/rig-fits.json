@@ -22,6 +22,12 @@
     "bone": 13,
     "axis": "x",
     "deg": 8
+   },
+   {
+    "op": "turn",
+    "bone": 10,
+    "axis": "z",
+    "deg": -8
    }
   ],
   "42": [
@@ -138,6 +144,14 @@
     "gain": 0.3,
     "shift": 0
    }
+  ],
+  "36": [
+   {
+    "op": "turn",
+    "bone": 5,
+    "axis": "x",
+    "deg": -8
+   }
   ]
  },
  "324": {
@@ -183,6 +197,48 @@
     "axis": "y",
     "deg": 7,
     "space": "parent"
+   }
+  ]
+ },
+ "314": {
+  "49": [
+   {
+    "op": "offset",
+    "bone": 3,
+    "delta": [
+     0,
+     0,
+     -20
+    ]
+   },
+   {
+    "op": "offset",
+    "bone": 5,
+    "delta": [
+     -10,
+     0,
+     0
+    ]
+   }
+  ],
+  "52": [
+   {
+    "op": "turn",
+    "bone": 3,
+    "axis": "x",
+    "deg": 4
+   },
+   {
+    "op": "turn",
+    "bone": 9,
+    "axis": "y",
+    "deg": 4
+   },
+   {
+    "op": "turn",
+    "bone": 6,
+    "axis": "x",
+    "deg": 4
    }
   ]
  }

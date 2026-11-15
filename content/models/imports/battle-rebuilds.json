@@ -59,7 +59,7 @@
     ]}
   },
   "192": {
-    "35": {"ticks": 17, "ops": [
+    "35": {"ticks": 17, "rig": [0, 0], "body": "scale", "ops": [
       {"op": "turn", "bone": 11, "axis": "y", "deg": 24, "ticks": null},
       {"op": "turn", "bone": 14, "axis": "y", "deg": -24, "ticks": null},
       {"op": "turn", "bone": 21, "axis": "z", "deg": -20, "ticks": null},
@@ -89,7 +89,7 @@
       {"op": "offset", "bone": 4, "delta": [0, 0, -15]},
       {"op": "offset", "bone": 15, "delta": [0, 22, 0]}
     ]},
-    "36": {"ticks": 13, "ops": [
+    "36": {"ticks": 13, "rig": [0, 0], "body": "scale", "ops": [
       {"op": "turn", "bone": 2, "axis": "x", "deg": -30.0},
       {"op": "turn", "bone": 1, "axis": "x", "deg": -10.0},
       {"op": "turn", "bone": 12, "axis": "x", "deg": 10.0},
@@ -237,6 +237,9 @@
       {"op": "damp", "bone": 14, "keep": 0.5},
       {"op": "lift", "bone": 1, "up": 60}
     ]}
+  },
+  "219": {
+    "34": {"ticks": 21, "rig": [0, 0], "body": "scale", "ops": [{"op": "lift", "bone": 11, "up": 10}]}
   },
   "223": {
     "34": {"ticks": null, "ops": [
@@ -546,7 +549,7 @@
     "34": {"ticks": 21, "rig": [0, 0], "body": "scale", "ops": [{"op": "lift", "bone": 1, "up": 16}]}
   },
   "258": {
-    "34": {"ticks": null, "ops": [
+    "34": {"ticks": null, "rig": [0, 0], "body": "scale", "ops": [
       {"op": "turn", "bone": 2, "axis": "x", "deg": -10},
       {"op": "turn", "bone": 3, "axis": "x", "deg": -6},
       {"op": "lift", "bone": 1, "up": -3},
@@ -749,15 +752,23 @@
     ]}
   },
   "317": {
-    "36": {"ticks": 15, "ops": [
+    "36": {"ticks": 15, "rig": [0, 0], "body": "scale", "ops": [
       {"op": "turn", "bone": 1, "axis": "x", "deg": -12},
       {"op": "lift", "bone": 1, "up": 75}
     ]}
   },
   "318": {
-    "36": {"ticks": 19, "ops": [
-      {"op": "turn", "bone": 19, "axis": "x", "deg": -16}
-    ]}
+    "36": {"ticks": 19, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "turn", "bone": 19, "axis": "x", "deg": -16},
+      {"op": "lift", "bone": 1, "up": 31}
+    ]},
+    "33": {"ticks": 121, "rig": [0, 0], "body": "scale", "ops": [{"op": "lift", "bone": 1, "up": 12}]},
+    "35": {"ticks": 25, "rig": [0, 0], "body": "scale", "ops": [{"op": "lift", "bone": 1, "up": 35}]}
+  },
+  "320": {
+    "33": {"ticks": 60, "rig": [0, 0], "body": "scale", "ops": [{"op": "lift", "bone": 1, "up": 8}]},
+    "35": {"ticks": 33, "rig": [0, 0], "body": "scale", "ops": [{"op": "lift", "bone": 1, "up": 17}]},
+    "36": {"ticks": 29, "rig": [0, 0], "body": "scale", "ops": [{"op": "lift", "bone": 1, "up": 23}]}
   },
   "321": {
     "36": {"ticks": 17, "ops": [
@@ -930,6 +941,12 @@
       ]
     }
   },
+  "406": {
+    "33": {"ticks": 75, "rig": [0, 0], "body": "scale", "ops": [{"op": "lift", "bone": 1, "up": -47}]},
+    "34": {"ticks": 17, "rig": [0, 0], "body": "scale", "ops": [{"op": "lift", "bone": 1, "up": -45}]},
+    "35": {"ticks": 23, "rig": [0, 0], "body": "scale", "ops": [{"op": "lift", "bone": 1, "up": -33}]},
+    "36": {"ticks": 21, "rig": [0, 0], "body": "scale", "ops": [{"op": "lift", "bone": 1, "up": -35}]}
+  },
   "408": {
     "35": {"ticks": 15, "ops": [
       {"op": "damp", "bone": 8, "keep": 0.0},
@@ -1015,5 +1032,8 @@
       {"op": "damp", "bone": 32, "keep": 0.0, "to": "first", "ticks": [12, 16, 16, 16]},
       {"op": "follow", "bone": 25, "from": 2, "mirror": true}
     ]}
+  },
+  "461": {
+    "34": {"ticks": 21, "rig": [0, 0], "body": "scale", "ops": [{"op": "lift", "bone": 14, "up": -20}]}
   }
 }

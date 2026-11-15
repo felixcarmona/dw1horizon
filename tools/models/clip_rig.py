@@ -43,7 +43,7 @@ def groups_for(sid, skeleton):
 
 @lru_cache(maxsize=1)
 def post_fits():
-    """Reviewed clearance turns after dimension fitting; authored inputs, not exceptions to QA."""
+    """Reviewed clearance placements after dimension fitting; authored inputs, not exceptions to QA."""
     path = ROOT / 'content/models/imports/rig-fits.json'
     return json.loads(path.read_text()) if path.exists() else {}
 
@@ -277,6 +277,7 @@ def conform(data, skeleton, sid):
     from tools.models.field_animations import chibi
     from tools.models.field_animations.articulation import replace_channels
     groups = groups_for(sid, skeleton)
+    clearance = post_fits().get(str(sid), {})
     nb = len(skeleton)
     model = mmd.MMD.parse(data, nb)
     idle = animsheet.slot_frames(model, nb, 0)[0][0]
@@ -286,8 +287,8 @@ def conform(data, skeleton, sid):
             player = mmd.AnimPlayer(model.anims.anims[index], nb, slot)
             player.tick(stop_at_infinite_loop=True)
             return relative_size(player.pose, idle)
-        if all(0.92 <= size(slot, index) <= 1.08
-               for slot, index in enumerate(model.anims.table) if index is not None):
+        if not clearance and all(0.92 <= size(slot, index) <= 1.08
+                                 for slot, index in enumerate(model.anims.table) if index is not None):
             return data, {}
     parents = [p for _, p in skeleton]
     carrier, = [b for b in range(1, nb) if parents[b] == 0]
@@ -307,7 +308,8 @@ def conform(data, skeleton, sid):
         first = mmd.AnimPlayer(model.anims.anims[index], nb, slot)
         first.tick(stop_at_infinite_loop=True)
         size_bad = not 0.92 <= relative_size(first.pose, idle) <= 1.08
-        if groups is None and not size_bad:
+        operations = clearance.get(str(slot), [])
+        if groups is None and not size_bad and not operations:
             continue
         frames, loop, events = animsheet.slot_frames(model, nb, slot)
         report = proportions(frames, idle, parents, groups)
@@ -315,14 +317,18 @@ def conform(data, skeleton, sid):
                if r['part'] != 'other' and bone_failure(r)}
         if size_bad:
             bad.update(int(b) for b in report['bones'])
-        if not bad:
+        if not bad and not operations:
             continue
         samples = fit(frames, idle, idle, dimensions=bad)
         channels = {(b, c) for b in bad for c in (0, 1, 2, 6, 7, 8)}
-        operations = post_fits().get(str(sid), {}).get(str(slot), [])
         if operations:
             from tools.models.clip_repair import apply_ops
-            samples = apply_ops(samples, parents, operations)
+            adjusted = apply_ops(samples, parents, operations)
+            # Reviewed placements can move a joint as well as turn it. Keep
+            # those channels in the encoded clip, even when dimensions pass.
+            channels.update((b, c) for b in range(1, nb) for c in (0, 1, 2, 6, 7, 8)
+                            if any(a[b][c] != z[b][c] for a, z in zip(samples, adjusted)))
+            samples = adjusted
             channels.update((op['bone'], c) for op in operations for c in (3, 4, 5))
 
         # Match the old support surface, in the final mesh. Feet carry standing

@@ -865,9 +865,9 @@
   "name": "SaberLeomon",
   "bones": 23,
   "skeleton_sha256": "41b8ccc7ac9915b88fa8b1da83746e0c1f20525c9e2b381cafcbc5b87837bece",
-  "source_sha256": "13712813cae0b3f14854c83b7e86cff3e4667f0da67055bf0ff2ddaa806e55f1",
+  "source_sha256": "483534f989312a9d906482b431cff80d92bfd1a69e53ae06f5fbcb8721da907e",
   "base_generator": null,
-  "post_source_sha256": "13712813cae0b3f14854c83b7e86cff3e4667f0da67055bf0ff2ddaa806e55f1",
+  "post_source_sha256": "483534f989312a9d906482b431cff80d92bfd1a69e53ae06f5fbcb8721da907e",
   "after_generator": "tools.models.field_animations.saberleomon_gait",
   "slots": {
    "2": {

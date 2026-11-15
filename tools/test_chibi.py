@@ -182,6 +182,41 @@ class ClipProportions(unittest.TestCase):
 
 
 class RigChannels(unittest.TestCase):
+    def test_reviewed_clearance_is_encoded_when_dimensions_already_pass(self):
+        import copy
+        from types import SimpleNamespace
+        from unittest.mock import patch
+        import animsheet
+        from tools.models import clip_rig
+        skeleton = [(-1, -1), (-1, 0), (0, 1)]
+        pose = [[4096, 4096, 4096, 0, 0, 0, 0, 0, 0],
+                [4096, 4096, 4096, 0, 0, 0, 0, -200, 0],
+                [4096, 4096, 4096, 0, 0, 0, 0, -100, 0]]
+        frames = [copy.deepcopy(pose), copy.deepcopy(pose)]
+        frames[1][0][6] = 5
+        animation = mmd.encode_anim(frames, 3, None, tol=0)
+        model = mmd.MMD()
+        model.tmd = mmd.TMD()
+        model.anims = mmd.AnimSection()
+        model.anims.anims = [animation, copy.deepcopy(animation)]
+        model.anims.table = [0] + [None] * 33 + [1]
+        data = model.build()
+        operations = [dict(op='turn', bone=2, axis='z', deg=8),
+                      dict(op='offset', bone=2, delta=[5, 0, 0])]
+        with patch.object(clip_rig, 'groups_for', return_value={2: 'head'}), \
+                patch.object(clip_rig, 'post_fits', return_value={'9897': {'34': operations}}), \
+                patch.object(chibi, 'Rig', return_value=SimpleNamespace(verts={2: [(0, 0, 0)]})), \
+                patch.object(chibi, 'bone_lows', return_value={2: 0}):
+            result, _ = clip_rig.conform(data, skeleton, '9897')
+        before, after = mmd.MMD.parse(data, 3), mmd.MMD.parse(result, 3)
+        self.assertEqual(before.anims.anims[before.anims.table[0]].build(),
+                         after.anims.anims[after.anims.table[0]].build())
+        old_frames = animsheet.slot_frames(before, 3, 34)[0]
+        new_frames = animsheet.slot_frames(after, 3, 34)[0]
+        self.assertEqual(new_frames[0][2][6], 5)
+        self.assertNotEqual(new_frames[0][2][5], old_frames[0][2][5])
+        self.assertEqual([p[0] for p in new_frames], [p[0] for p in old_frames])
+
     def test_unit_scale_is_not_read_from_translation_when_encoding_omits_it(self):
         from tools.models.field_animations.articulation import replace_channels
         original = mmd.Anim()
