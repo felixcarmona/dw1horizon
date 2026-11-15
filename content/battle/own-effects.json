@@ -148,8 +148,8 @@
     "hit_sound": 47,
     "cast": [[1, "EFFESA/MESA6200.BIN", "EFFESA/AESA6200.BIN"], [2, "EFFESA/MESA6300.BIN", "EFFESA/AESA6300.BIN"]],
     "hit": [[2, "EFFESD/MESD3800.BIN", "EFFESD/AESD3800.BIN"]],
-    "scale": 0.267,
-    "hit_scale": 0.1
+    "scale": 0.401,
+    "hit_scale": 0.15
   },
   "137": {
     "name": "Smiley Warhead",
@@ -188,8 +188,8 @@
     "hit_sound": 47,
     "cast": [[1, "EFFEMA/MEMA3300.BIN", "EFFEMA/AEMA3300.BIN"], [2, "EFFEMA/MEMA3400.BIN", "EFFEMA/AEMA3400.BIN"]],
     "hit": [[1, "EFFEBD/MEBD0000.BIN", "EFFEBD/AEBD0000.BIN"]],
-    "scale": 0.194,
-    "hit_scale": 0.1
+    "scale": 0.274,
+    "hit_scale": 0.141
   },
   "141": {
     "name": "Ninja Flower",
@@ -285,8 +285,8 @@
     "sounds": [[3, 47], [69, 45], [91, 44]],
     "cast": [[1, "EFFESA/MESA2500.BIN", "EFFESA/AESA2500.BIN"]],
     "hit": [[1, "EFFESD/MESD0200.BIN", "EFFESD/AESD0200.BIN"]],
-    "scale": 0.218,
-    "hit_scale": 0.1
+    "scale": 0.281,
+    "hit_scale": 0.129
   },
   "151": {
     "name": "Royal Smasher",
@@ -304,8 +304,8 @@
     "sounds": [[25, 0]],
     "cast": [[1, "EFFEMA/MEMA3100.BIN", "EFFEMA/AEMA3100.BIN"], [2, "EFFEMA/MEMA3200.BIN", "EFFEMA/AEMA3200.BIN"]],
     "hit": [[2, "EFFESD/MESD3400.BIN", "EFFESD/AESD3400.BIN"]],
-    "scale": 0.201,
-    "hit_scale": 0.1
+    "scale": 0.39,
+    "hit_scale": 0.194
   },
   "153": {
     "name": "Tomahawk Crunch",
@@ -373,8 +373,8 @@
     "sounds": [[89, 47]],
     "cast": [[1, "EFFESA/MESA7200.BIN", "EFFESA/AESA7200.BIN"], [2, "EFFESA/MESA7300.BIN", "EFFESA/AESA7300.BIN"]],
     "hit": [[2, "EFFESD/MESD0000.BIN", "EFFESD/AESD0000.BIN"]],
-    "scale": 0.184,
-    "hit_scale": 0.1
+    "scale": 0.351,
+    "hit_scale": 0.191
   },
   "160": {
     "name": "Needle Squall",
@@ -383,8 +383,8 @@
     "hit_sound": 47,
     "cast": [[1, "EFFESA/MESA9300.BIN", "EFFESA/AESA9300.BIN"], [2, "EFFESA/MESA9400.BIN", "EFFESA/AESA9400.BIN"]],
     "hit": [[1, "EFFESD/MESD7400.BIN", "EFFESD/AESD7400.BIN"]],
-    "scale": 0.235,
-    "hit_scale": 0.1
+    "scale": 0.489,
+    "hit_scale": 0.208
   },
   "161": {
     "name": "Blind Attack",
