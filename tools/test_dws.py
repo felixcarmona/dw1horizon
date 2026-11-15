@@ -2544,6 +2544,36 @@ class PythonMods(unittest.TestCase):
         self.assertEqual(B.asm_where("script_178.scn.txt:4: character '(' has no glyph", work).split('  (')[0],
                          "x_py.script.dws, script 178 section 5: character '(' has no glyph")
 
+    def test_a_new_baby_stands_for_its_original_in_species_tests(self):
+        """The hand-made babies (470-477) pass every test that names the original baby they stand for (`vanilla_as`): the
+        Freezeland rescue (raw `partner_type in (...)`), the arena's door, the boulder; older levels never expand."""
+        talk = 'from dw import *\nfrom dw.base.jijimons_house import jijimon\n@jijimon.on_talk(when=trigger(760))\ndef t():\n'
+        body = ('    if partner_type in (19, 32, 51, 1, 2):\n        say("a")\n    if partner_type in (15, 16, 29, 30, 43):\n        say("b")\n'
+                '    if partner_type in (44, 21):\n        say("c")\n    if partner.species in (Species.Poyomon, Species.Tokomon):\n        say("d")\n'
+                '    if partner.species != Species.Tanemon and partner.species != Species.Birdramon:\n        say("e")\n'
+                '    if partner.species == Species.Greymon:\n        say("f")\n')
+        root, (p,) = self.mod({'a.py': talk + body})
+        for exe in ('mods', 'species', 'story-state'):       # (mods: the executable of the players' disc)
+            code = '\n'.join(show_code(p, exe))
+            for baby, like in ((470, 15), (471, 1), (472, 1), (473, 43), (474, 2), (475, 2), (476, 30), (477, 44)):
+                self.assertIn(f'w63 == {baby}', code, f'{baby} (as {like}) on {exe}')
+            self.assertIn('w63 != 477', code)                       # the Tanemon test: Yokomon is not "any other Digimon"
+            self.assertNotIn('w63 == 106', code); self.assertNotIn('w63 == 180', code)    # Saberdramon, Veemon: no identity of Birdramon, Agumon
+        self.assertEqual(code.count('w63 == 476'), 2)               # Tokomon: the raw list and the Poyomon/Tokomon test
+        original = '\n'.join(show_code(p))
+        self.assertNotIn('476', original)                           # the original engine: the disc's own tests, byte for byte
+        # the base's own scripts (the Freezeland rescue, Frigimon's talk): lowered for the executable they are compiled for
+        from dws.py import lower as PL
+        base = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'story', 'base')
+        for zone, tests in (('freezeland/s090-94', ('species(476)', 'species(477)', 'species(470)')),
+                            ('freezeland/s132-137', ('species(476)', 'species(477)'))):
+            path = os.path.join(base, 'zones', zone, 'script.py')
+            for exe in ('mods', 'species', 'story-state', 'original'):
+                PL.TARGET['exe'] = exe
+                try: lowered = PL.lower_file(path, base=base)[1]
+                finally: PL.TARGET['exe'] = 'original'
+                for t in tests: (self.assertNotIn if exe == 'original' else self.assertIn)(t, lowered, f'{zone} {exe} {t}')
+
     def test_fifth_review_files(self):
         """dws-python-intuitiveness-5.md 3, 6-8: a sibling file of constants only is importable; importing an NPC or a def
         from another file says what crosses files; a def that speaks as the NPC being talked to is inlined in each talk

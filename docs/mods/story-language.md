@@ -308,7 +308,7 @@ an `IF`'s clauses left to right: `flowcmp` compares one node per clause.)
 - **The partner and the tamer.** `partner.happiness >= 50` and the other stats by name, `partner.species ==
   Species.Agumon`, `partner.level >= Level.champion` (the partner species of those levels: the game's 62 on the original
   engine; on a built executable every species of `content/species` with a `partner` block, the imported ones too; on `--exe species` /
-  story-state every test of the species reads the engine's wide register), its conditions as yes/no (`if partner.sick:`, `hungry`,
+  story-state every test of the species reads the engine's wide register, and a test that names an original baby holds for the new babies that stand for it by `vanilla_as`: Nyaromon is a Tokomon in `partner.species in (...)` and in the disc's raw `partner_type in (...)`), its conditions as yes/no (`if partner.sick:`, `hungry`,
   `injured`...), `tamer.level` (and `tamer.add(level=1)`): read where the line runs, in an `if` (a guard tests saved state
   only). An imported species (`Species.Guilmon`, 433) can be the partner only on those discs: on the original engine
   `check` refuses the test at its line. A counter is a byte there (0-255): `n >= 300` is refused too, as `give(Item.Meat,
