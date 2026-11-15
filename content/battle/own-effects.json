@@ -376,5 +376,10 @@
     "name": "KongouKaimandara",
     "stands_for": 63,
     "dw3": {"model": "M376SKYA", "slot": 11, "meft": [87], "leave_out": [[0, 2], [0, 3], [0, 4], [0, 5], [0, 8]], "pin": "8d655fe60ea29e20bfa15482a75825f03aeaef40"}
+  },
+  "207": {
+    "name": "Sylph Storm",
+    "stands_for": 102,
+    "dw3": {"model": "M439FUJI", "slot": 9, "meft": [370], "pin": "9a3748db46b52c7b4022ea792ffc6ccb1e0288d6"}
   }
 }
