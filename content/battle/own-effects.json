@@ -426,5 +426,10 @@
     "name": "DynamoCannon",
     "stands_for": 78,
     "dw3": {"model": "M393CNND", "slot": 11, "meft": [94], "pin": "2f1641e4eff39991d15adc962ea56458f1cbc553"}
+  },
+  "218": {
+    "name": "Melting Blood",
+    "stands_for": 96,
+    "dw3": {"model": "M378BVND", "slot": 11, "meft": [92], "pin": "e84038247a533e3c5c8c728df2177cd74f4125ed"}
   }
 }

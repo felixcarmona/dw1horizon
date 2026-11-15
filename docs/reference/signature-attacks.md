@@ -73,6 +73,7 @@ the moment the attack starts.
 | 335 MegaGargomon | Giant Missile (DW2003) | Genoside Attack | 3D effect at the caster (MEFT0085) | 1 | plays its whole length (35 frames at 30 fps), hits when it ends | none | one enemy, as for Genoside Attack | one enemy |
 | 352 Monmon | Swing Swing (DW2003) | Boom Bubble | 3D effect at the caster (MEFT0089) | 1 | plays its whole length (46 frames at 30 fps), hits when it ends | none | one enemy, as for Boom Bubble | one enemy |
 | 405 Cannondramon | DynamoCannon (DW2003) | Genoside Attack | 3D effect at the caster (MEFT0094) | 1 | plays its whole length (58 frames at 30 fps), hits when it ends | none | one enemy, as for Genoside Attack | one enemy |
+| 406 MaloMyotismon | Melting Blood (DW2003) | Nightmare Syndromer | 3D effect at the caster (MEFT0092) | 1 | plays its whole length (69 frames at 30 fps), hits when it ends | none | one enemy, as for Nightmare Syndromer | one enemy |
 
 ## Where the port differs from the source
 
