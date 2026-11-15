@@ -11,6 +11,7 @@
                  "DG Dimension", "Power Crane", "Dark Shot"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 48,
+  "own_effect": {"technique": "Dark Shot", "chunk": 214},
   "model": {
     "file": "build/sizes-out/models/Mummymon.MMD",
     "radius": 135,

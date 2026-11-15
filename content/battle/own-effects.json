@@ -406,5 +406,10 @@
     "name": "Electro Ball",
     "stands_for": 78,
     "dw3": {"model": "M441RAIZ", "slot": 9, "meft": [363], "pin": "e9500eb580f6c3c8f9e310fd2f2b681c26e98745"}
+  },
+  "214": {
+    "name": "Dark Fear",
+    "stands_for": 80,
+    "dw3": {"model": "M364MUMY", "slot": 9, "meft": [335], "pin": "4570e2d1a2dc2135b66822863ed9ed9d7a9cbc9c"}
   }
 }
