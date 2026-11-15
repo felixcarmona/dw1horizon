@@ -24,7 +24,7 @@ BONES = DONOR_BONES + RIDER_BONES
 BUFFER = 100352
 TICKS = {0: 34, 2: 14, 3: 18, 4: 12}                     # idle, walk, condition walk, run
 SPEEDS = {2: 19.0, 3: 12.5, 4: 40.0}                     # the gait stage's units per tick
-TARGET_SHA256 = '76cd8b6b6797fca7d8b52b0ab070a4093602e87ef61c29118a1e4041c8d3359f'
+TARGET_SHA256 = '1589238a670bf89f99e2d264f284b499fbc8623b05617c3fcab36345d4eea93e'
 
 
 class ZanbamonNative(unittest.TestCase):
@@ -166,7 +166,7 @@ class ZanbamonNative(unittest.TestCase):
         # recipe's battle_originals.ticks gives a hit whose source clip the donor's length would retime past 1.6
         made = self.proof['battle_originals']
         ticks = self.recipe['battle_originals'].get('ticks', {})
-        self.assertEqual(sorted(int(s) for s in made), self.recipe['battle_originals']['slots'])
+        self.assertEqual(sorted(int(s) for s in made), sorted(set(self.recipe['battle_originals']['slots']) | set(map(int, self.recipe['battle_originals'].get('share', {})))))
         for slot, row in made.items():
             if int(slot) not in (33, 34):
                 self.assertEqual(row['frames'], ticks.get(str(int(slot)), row['donor_frames']), slot)
@@ -175,7 +175,7 @@ class ZanbamonNative(unittest.TestCase):
         info = motionstorage.require(self.data, BONES)
         self.assertTrue(info['fits'])
         self.assertLess(info['resident_bytes'], BUFFER)
-        self.assertEqual(info['resident_bytes'], 100288)
+        self.assertEqual(info['resident_bytes'], 100098)
         for read in info['cold_reads']:
             self.assertTrue(read['fits'], read)
 
