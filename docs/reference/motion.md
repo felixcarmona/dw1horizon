@@ -2137,3 +2137,9 @@ small shoulder turns keep the arms clear enough to pass the native motion
 checks: 7.6 degrees mean rotation error, 21.8 degrees for the worst piece and
 0.057 heights at the tips. It uses 99,132 bytes. The care animation that shared
 the old victory keeps its exact motion, as do the field and other battle clips.
+
+ChaosLord keeps its existing fall and recovery. At 41 ticks the source fall still
+has 166 crossings per tick against 60, with the body tipped 68 degrees against
+19. Giving the keyed fall enough wing motion needs 100,902 bytes and raises
+crossings to 85.44 per tick, peaking at 207 against 97. It stays out; field motion
+and the other battle clips remain unchanged.
