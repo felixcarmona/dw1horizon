@@ -165,7 +165,7 @@ def synthetic_pack(model_id=7):
 
 
 def picture(boxes, size=(64, 40)):
-    from PIL import Image, ImageDraw
+    from tools.image import Image, ImageDraw
     im = Image.new('RGB', size, dcbefe.BG)
     d = ImageDraw.Draw(im)
     d.line((5, 10, 5, 39), fill=dcbefe.POST)
