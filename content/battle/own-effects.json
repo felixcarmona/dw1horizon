@@ -1193,9 +1193,7 @@
   "323": {
     "name": "Torpedo Attack",
     "stands_for": 78,
-    "compose": {"texture": [
-      {"from": 23, "rect": [136, 0, 32, 32], "to": [80, 0], "palettes": [[0, 0]]}],
-      "recolour": {"ramp": ["#000000", "#0a3a6a", "#40a0e0", "#e0f4ff"]}},
-    "check": {"hue": 205}
+    "compose": {"recolour": {"ramp": ["#000000", "#004a40", "#20b0a0", "#e0fff8"]}},
+    "check": {"hue": 172}
   }
 }
