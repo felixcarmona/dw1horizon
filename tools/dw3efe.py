@@ -63,6 +63,13 @@ def import_scale(name, root=ROOT):
     return DEFAULT_SCALE
 
 
+def model_height(disc, model):
+    """The DW2003 battle model's standing height (its first pose), in DW2003 units."""
+    e = X.effect_from_model(X.parse_model(disc.read(model + '.BIN'), model))
+    return -min(sum(r[1][k] * v[k] for k in range(3)) + t[1]
+                for (r, t), b in zip(D.world(e, 0), e.bones) for v in b.vertices)
+
+
 def launch_table(chunk):
     from tools.derive.steps.effects import launch_table as lt
     return lt(chunk)
@@ -130,7 +137,7 @@ def _name(spawn):
 
 
 def convert(disc, tables, tech, scale, origin_table, effect_id, area=False, n_hits=1, half=True, full_length=True,
-            aim=False, leave_out=(), sprites=None, sounds=None):
+            aim=False, leave_out=(), sprites=None, sounds=None, caster_height=None):
     """(chunk, info) of the technique's 3D effects; dw2efe.Unconvertible when they do not fit a chunk.
     full_length: every frame of the effect (else DW2's two seconds); when that does not fit, the longest
     opening that does (info['kept'] frames of info['frames']).
@@ -141,10 +148,13 @@ def convert(disc, tables, tech, scale, origin_table, effect_id, area=False, n_hi
     info['left_out'] names them. A conversion that leaves parts out is a composition, not the whole effect.
     sprites: carry the technique's sprites too, as flat quads (dw3sprite.effect); by default only when it has
     no 3D effect. sounds: (60 Hz script tick, battle sound id) pairs, the technique's own sounds mapped to this
-    game's battle bank, played at their ticks."""
+    game's battle bank, played at their ticks. caster_height: the caster's height in this game (its species'
+    model.height); the parts that start on the caster then start where they do on its model here (a muzzle
+    at its cannons: dw3effect.baked's anchor), the effect itself staying at `scale`. Without it, as on the disc."""
+    anchor = 1.0 if caster_height is None else caster_height / model_height(disc, tech.model) / scale
     if sprites is None:
         sprites = not X.staged_effects(disc, tables, tech)
-    first, staged = X.staged_all(disc, tables, tech, sprites)
+    first, staged = X.staged_all(disc, tables, tech, sprites, anchor)
     # the technique's sound cues (60 Hz script ticks, content/battle/own-effects.json "sounds") on the engine's
     # 20 Hz ticks, counted like the effects from the first spawn. Cues before the first spawn land on tick 0; on any
     # one tick a repeated sound plays once and at most two sounds play.

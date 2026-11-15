@@ -620,16 +620,28 @@ def _mul(a, b):
     return tuple(tuple(sum(a[i][k] * b[k][j] for k in range(3)) for j in range(3)) for i in range(3))
 
 
-def baked(effect, spawn, sign, delay=0):
+def baked(effect, spawn, sign, delay=0, anchor=1.0):
     """The effect in the caster's frame as dw2effect has it (caster at 0, its target toward -z): the spawn's
     position and turn, and the turn from the field's frame to the caster's, put into the root bones' keys.
-    `delay` hidden frames go first (the spawn's start relative to the technique's first object)."""
+    `delay` hidden frames go first (the spawn's start relative to the technique's first object).
+    `anchor` multiplies where the parts of a spawn on the caster's half of the field start (a muzzle, a hand,
+    the caster's head): the spawn's position and each bone's first-frame offset from its parent (two cannons'
+    spacing). The parts' size (their vertices) and their motion from there (a shot's flight to the target)
+    are left as they are."""
     flip = ((-1, 0, 0), (0, 1, 0), (0, 0, -1)) if sign < 0 else ((1, 0, 0), (0, 1, 0), (0, 0, 1))
     R = _mul(flip, _rot(*spawn.rot))
     p = spawn.pos
     o = (flip[0][0] * p[0], p[1], flip[2][2] * p[2] - FIELD_HALF)
+    near = anchor != 1.0 and o[2] > -FIELD_HALF
+    if near:
+        o = tuple(x * anchor for x in o)
     keys = []
-    for bone, ks in zip(effect.bones, effect.keys):
+    for bi, (bone, ks) in enumerate(zip(effect.bones, effect.keys)):
+        if near and ks:
+            first = effect.frames[0][bi] if effect.frames and bi < len(effect.frames[0]) else None
+            t0 = ks[first][1] if first in ks else ks[min(ks)][1]
+            d = tuple(x * (1 - anchor) for x in t0)             # t - t0 + anchor * t0: starts at the caster's size
+            ks = {i: (m9, tuple(a - b for a, b in zip(t, d))) for i, (m9, t) in ks.items()}
         if bone.parent >= 0:
             keys.append(dict(ks))
             continue
@@ -654,7 +666,7 @@ def baked(effect, spawn, sign, delay=0):
     return e
 
 
-def staged_effects(disc, tables, tech, first=None):
+def staged_effects(disc, tables, tech, first=None, anchor=1.0):
     """[(spawn, effect in the caster's frame)] of the technique's 3D effects, each with its start delay
     (counted from `first`, by default the first 3D effect's start)."""
     sign = caster_sign(tech)
@@ -666,7 +678,7 @@ def staged_effects(disc, tables, tech, first=None):
             e = effect_from_model(load_meft(disc, tables, s.id))
         except ValueError:
             continue
-        out.append((s, baked(e, s, sign, (s.tick - first) // (TICKS // FIGHT_FPS))))
+        out.append((s, baked(e, s, sign, (s.tick - first) // (TICKS // FIGHT_FPS), anchor)))
     return out
 
 
@@ -693,7 +705,7 @@ def sprite_spawns(tables, tech):
     return [s for s in tech.spawns if s.kind == 'sprite' and s.id in tables.sprites and s.id not in CUT_IN]
 
 
-def staged_sprites(disc, tables, tech, first=None, pixel=None):
+def staged_sprites(disc, tables, tech, first=None, pixel=None, anchor=1.0):
     """[(spawn, effect in the caster's frame)] of the technique's sprites (dw3sprite.effect: flat quads facing
     the side camera, their right toward the target), each with its start delay counted from `first`."""
     from tools import dw3sprite as P
@@ -709,17 +721,17 @@ def staged_sprites(disc, tables, tech, first=None, pixel=None):
             continue
         # the sprite's right is -z in the field for an enemy caster; a partner's is turned half round
         at = Spawn(s.tick, 'sprite', s.id, sprite_anchor(s, sign, pixel), (0, 2048 if sign < 0 else 0, 0))
-        out.append((s, baked(e, at, sign, (s.tick - first) // (TICKS // FIGHT_FPS))))
+        out.append((s, baked(e, at, sign, (s.tick - first) // (TICKS // FIGHT_FPS), anchor)))
     return out
 
 
-def staged_all(disc, tables, tech, sprites=False):
+def staged_all(disc, tables, tech, sprites=False, anchor=1.0):
     """staged_effects, and with `sprites` staged_sprites too, their delays counted from the first of them."""
     spawns = [s for s in tech.spawns if s.kind == 'meft'] + (sprite_spawns(tables, tech) if sprites else [])
     first = min([s.tick for s in spawns], default=0)
-    out = staged_effects(disc, tables, tech, first)
+    out = staged_effects(disc, tables, tech, first, anchor)
     if sprites:
-        out += staged_sprites(disc, tables, tech, first)
+        out += staged_sprites(disc, tables, tech, first, anchor=anchor)
     return first, out
 
 

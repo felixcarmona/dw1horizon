@@ -448,25 +448,25 @@
     "name": "Dark Fear",
     "stands_for": 62,
     "sounds": [[0, 50], [0, 41], [55, 41], [125, 10]],
-    "dw3": {"model": "M170IVRU", "slot": 9, "meft": [335], "scale": 1.31, "pin": "cb86bbec03fbdc4c63822fe919b8498301e9918a"}
+    "dw3": {"model": "M170IVRU", "slot": 9, "meft": [335], "scale": 1.31, "pin": "15c4ebdbe40c03a33e58079a132de92c515645c8"}
   },
   "197": {
     "name": "Mugenhadou",
     "stands_for": 63,
     "sounds": [[160, 10], [220, 47], [240, 30]],
-    "dw3": {"model": "M394MARS", "slot": 11, "meft": [97], "pin": "41f218e017b9bdaf7cc28258e86f23019d3856c0"}
+    "dw3": {"model": "M394MARS", "slot": 11, "meft": [97], "pin": "9869578ddd7c0e9cba9da6c01ee4189faa19264f"}
   },
   "198": {
     "name": "Poison Cobweb",
     "stands_for": 73,
     "sounds": [[70, 15], [140, 15]],
-    "dw3": {"model": "M166DKGM", "slot": 5, "meft": [328], "pin": "62f821891f502d926b1b23fd96bed7af4cb31fd1"}
+    "dw3": {"model": "M166DKGM", "slot": 5, "meft": [328], "pin": "a918f18a3b16ec6dca01e5450015bef8021f5bc1"}
   },
   "199": {
     "name": "Captain Cannon",
     "stands_for": 80,
     "sounds": [[132, 47], [162, 27], [192, 45], [212, 10]],
-    "dw3": {"model": "M387PIRT", "slot": 11, "meft": [91], "pin": "c3f6a49714dbcb935c6e76e71d52c92d7586ca9f"}
+    "dw3": {"model": "M387PIRT", "slot": 11, "meft": [91], "pin": "246619cc25d461c1947410b55da4ed4c7e6450c5"}
   },
   "200": {
     "name": "Golden Ripper",
@@ -478,127 +478,127 @@
     "name": "Atomic Ray",
     "stands_for": 102,
     "sounds": [[0, 50], [0, 22], [65, 30], [140, 10], [200, 30]],
-    "dw3": {"model": "M356HAND", "slot": 9, "meft": [361], "pin": "d35c30367cb4a814f754e620de628d7ac0731029"}
+    "dw3": {"model": "M356HAND", "slot": 9, "meft": [361], "pin": "9525310064f97ceb4e54d7fb37f17e28731bc09b"}
   },
   "202": {
     "name": "Dark Spirits DX",
     "stands_for": 92,
     "sounds": [[0, 50], [80, 15], [150, 45]],
-    "dw3": {"model": "M250KGET", "slot": 5, "meft": [324], "scale": 1.1, "pin": "08d7e6d74b88961cc7b5afb2b8a613560151f23b"}
+    "dw3": {"model": "M250KGET", "slot": 5, "meft": [324], "scale": 1.1, "pin": "a74df9abfae32323594216946e2a7218e96d88e8"}
   },
   "203": {
     "name": "Justice Strike",
     "stands_for": 78,
     "sounds": [[148, 41], [223, 7], [253, 7], [279, 7], [309, 7], [339, 47], [359, 47], [379, 47]],
-    "dw3": {"model": "M390ASLT", "slot": 11, "meft": [93], "scale": 1.13, "pin": "0581c5b4bfa2c69711a2b937675598f5be05d5a1"}
+    "dw3": {"model": "M390ASLT", "slot": 11, "meft": [93], "scale": 1.13, "pin": "6c8e43ff7b2ec137ccf69764d01a630e95b555f8"}
   },
   "204": {
     "name": "Darkness Chaos",
     "stands_for": 96,
     "sounds": [[0, 50], [0, 41], [60, 40], [143, 10]],
-    "dw3": {"model": "M247DEMN", "slot": 9, "meft": [351], "pin": "473d80334eedb3a59785166a15ecf43e1e03caff"}
+    "dw3": {"model": "M247DEMN", "slot": 9, "meft": [351], "pin": "149cd836cfed4036dbc7b3202de70b9c27b03436"}
   },
   "205": {
     "name": "Mad Pump",
     "stands_for": 80,
     "sounds": [[0, 50], [0, 41], [83, 40], [169, 45]],
-    "dw3": {"model": "M436VALV", "slot": 9, "meft": [346], "pin": "6866579428649f8cf250857ebd207a31c4fa8019"}
+    "dw3": {"model": "M436VALV", "slot": 9, "meft": [346], "pin": "7076e591495045c03a83dc7344d1b7c7b71e6a96"}
   },
   "206": {
     "name": "KongouKaimandara",
     "stands_for": 63,
     "sounds": [[59, 41], [90, 12], [360, 45], [380, 12]],
-    "dw3": {"model": "M376SKYA", "slot": 11, "meft": [87], "leave_out": [[0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 8]], "pin": "e3cd1220b2d9e6106d33f4998b3a9a95fe8bb32d"}
+    "dw3": {"model": "M376SKYA", "slot": 11, "meft": [87], "leave_out": [[0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 8]], "pin": "73cf5d952f9c787db4125733affa6f6692d9cf15"}
   },
   "207": {
     "name": "Sylph Storm",
     "stands_for": 102,
     "sounds": [[0, 50], [0, 41], [78, 40], [169, 35]],
-    "dw3": {"model": "M439FUJI", "slot": 9, "meft": [370], "pin": "7c87f1e6da6f9e5b69669d5f975945200f07400c"}
+    "dw3": {"model": "M439FUJI", "slot": 9, "meft": [370], "pin": "990adebeaa68897dbdb0b17c44085f3045f059a0"}
   },
   "208": {
     "name": "Final Purification",
     "stands_for": 102,
     "sounds": [[123, 10], [152, 21], [277, 10], [297, 10]],
-    "dw3": {"model": "M369DUKE", "slot": 11, "meft": [95], "pin": "d0eb099971dc0a9617b13a41138e71f21fde4c97"}
+    "dw3": {"model": "M369DUKE", "slot": 11, "meft": [95], "pin": "0cfe82fb38df5b3e33fcfa43f7addfb8fe88ef72"}
   },
   "209": {
     "name": "Blazing Mane",
     "stands_for": 109,
     "sounds": [[70, 15], [150, 47]],
-    "dw3": {"model": "M327RUNX", "slot": 5, "meft": [332], "pin": "df12103e1a21d54c24bf620492bef97697ac3d17"}
+    "dw3": {"model": "M327RUNX", "slot": 5, "meft": [332], "pin": "f0a19d4ea0e4221e6734904435735592b8c2e2a1"}
   },
   "210": {
     "name": "Atomic Blaster",
     "stands_for": 80,
     "sounds": [[93, 10], [143, 29], [143, 25], [208, 10], [228, 10]],
-    "dw3": {"model": "M368MGRW", "slot": 11, "meft": [96], "pin": "d672330df5e5aec81721a39818b2176dfd7fd5f2"}
+    "dw3": {"model": "M368MGRW", "slot": 11, "meft": [96], "pin": "ac0cae0b4f23cfcabf29811b56edaba01176fb51"}
   },
   "212": {
     "name": "Darkness Chaos",
     "stands_for": 80,
     "sounds": [[0, 50], [0, 41], [45, 15], [116, 10]],
-    "dw3": {"model": "M312DETH", "slot": 9, "meft": [349], "pin": "7c9c9eea7423eab145feaf3514d5d2fc91f58fbc"}
+    "dw3": {"model": "M312DETH", "slot": 9, "meft": [349], "pin": "93e3abfc421ba5a4d3e86eccf184f6ad0ef1595a"}
   },
   "213": {
     "name": "Electro Ball",
     "stands_for": 78,
     "sounds": [[0, 50], [0, 22], [40, 29], [132, 40]],
-    "dw3": {"model": "M441RAIZ", "slot": 9, "meft": [363], "pin": "ef1fba4c64c69690d9deac50553e13a5080f3d90"}
+    "dw3": {"model": "M441RAIZ", "slot": 9, "meft": [363], "pin": "bc4d3ff86af9aaad183d1c0f9f93601a8ecfa8b4"}
   },
   "214": {
     "name": "Dark Fear",
     "stands_for": 80,
     "sounds": [[0, 50], [0, 41], [82, 41], [152, 10]],
-    "dw3": {"model": "M364MUMY", "slot": 9, "meft": [335], "pin": "0f5ed8378cf88483d624ef731616d063fb52ef11"}
+    "dw3": {"model": "M364MUMY", "slot": 9, "meft": [335], "pin": "5709d5f99d53d99a13b8839d94045069414454ba"}
   },
   "215": {
     "name": "Giant Missile",
     "stands_for": 78,
     "sounds": [[133, 41], [217, 47], [287, 10], [307, 47]],
-    "dw3": {"model": "M372SGRG", "slot": 11, "meft": [85], "pin": "4dc963aa18fb9484ceda6ec017cc7abe2402a7b4"}
+    "dw3": {"model": "M372SGRG", "slot": 11, "meft": [85], "pin": "e53f68ee6a5d173b0c7efafab73b9caa93610ebf"}
   },
   "216": {
     "name": "Swing Swing",
     "stands_for": 71,
     "sounds": [[156, 12], [186, 8], [246, 45]],
-    "dw3": {"model": "M384KOET", "slot": 11, "meft": [89], "scale": 1.72, "pin": "032ee75a71ec479a27a5962ed63b9ada1f679f3d"}
+    "dw3": {"model": "M384KOET", "slot": 11, "meft": [89], "scale": 1.72, "pin": "adc7d3bd454a8c8d97a25cede96d9a882a3f6bc9"}
   },
   "217": {
     "name": "DynamoCannon",
     "stands_for": 78,
     "sounds": [[128, 10], [183, 29], [243, 10], [263, 47]],
-    "dw3": {"model": "M393CNND", "slot": 11, "meft": [94], "pin": "2f7501b9a077b166a811e6ea83c776cb3392cfca"}
+    "dw3": {"model": "M393CNND", "slot": 11, "meft": [94], "pin": "caf9da3fd898a140eab9cdfd48b2a77aff21f21b"}
   },
   "218": {
     "name": "Melting Blood",
     "stands_for": 96,
     "sounds": [[122, 30], [163, 29], [258, 10], [278, 10]],
-    "dw3": {"model": "M378BVND", "slot": 11, "meft": [92], "pin": "968e73dd8c6e193d9e018e90cb0acc23ae191986"}
+    "dw3": {"model": "M378BVND", "slot": 11, "meft": [92], "pin": "893dc60df6a85e2fce1ba286d39d785bea1ce4fd"}
   },
   "219": {
     "name": "Ultimate Flare",
     "stands_for": 109,
     "sounds": [[76, 6], [206, 10]],
-    "dw3": {"model": "M382ARMG", "slot": 5, "meft": [333], "pin": "d4c0b196a6d1e2cd1616755d4e462b6817d710d1"}
+    "dw3": {"model": "M382ARMG", "slot": 5, "meft": [333], "pin": "8974771337c6d7f5fbe951e7d1abdfc232146db4"}
   },
   "220": {
     "name": "Mugen Cannon",
     "stands_for": 106,
     "sounds": [[0, 50], [9, 6], [120, 10], [150, 10], [180, 10], [210, 10]],
-    "dw3": {"model": "M440SIJN", "slot": 5, "meft": [364], "pin": "56b206ecae3b9c4210710ed4a7e3f7417ccf0259"}
+    "dw3": {"model": "M440SIJN", "slot": 5, "meft": [364], "pin": "136b20c3296ccb6dbc97ed4e4bcba7f12948b65e"}
   },
   "221": {
     "name": "Cross Slash",
     "stands_for": 62,
     "sounds": [[17, 24], [57, 47]],
-    "dw3": {"model": "M337ZAMB", "slot": 5, "meft": [39], "pin": "fa8956de9806c9a698fcefe31e216a7c890a0cc5"}
+    "dw3": {"model": "M337ZAMB", "slot": 5, "meft": [39], "pin": "9d4abcefbf8d0d59cb3ac73de570252b043eb614"}
   },
   "222": {
     "name": "Pyrosphere",
     "stands_for": 59,
     "sounds": [[165, 27], [165, 41], [275, 24]],
-    "dw3": {"model": "M366GIRU", "slot": 11, "meft": [102], "scale": 1.26, "pin": "83165912e38da9af5f7f65bfa3e169a586bb71cd"}
+    "dw3": {"model": "M366GIRU", "slot": 11, "meft": [102], "scale": 1.26, "pin": "e52ede128d349fb83378d00456d02d50db7c00b3"}
   },
   "224": {
     "name": "Striking Fish",

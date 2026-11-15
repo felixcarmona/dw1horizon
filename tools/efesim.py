@@ -144,6 +144,7 @@ class Context:
         self.source = None
         self.target = None
         self.bone_offset = None
+        self.anchor = None          # what its position was last set from: 'bone' (a launch point) or 'root' (the feet)
 
 
 class Sim:
@@ -159,6 +160,7 @@ class Sim:
         self.target_index = 1
         self.tick = 0
         self.draws, self.hits, self.sounds, self.log = [], [], [], []
+        self.draw_anchors = []              # per draw: its context's anchor (Context.anchor)
         self.R = 0
         self.seed = seed
         self.sprites, self.quads, self.fx, self.tests = [], [], [], []
@@ -274,7 +276,7 @@ class Sim:
                 break
         else:
             return self.ret(calls)
-        src, tgt = self.ctx.source, self.ctx.target
+        src, tgt, anchor = self.ctx.source, self.ctx.target, self.ctx.anchor
         k = self.contexts.index(self.ctx)
         while self.contexts[k].inst is not None:
             k += 1
@@ -284,9 +286,9 @@ class Sim:
         self.prev, self.cur = self.cur, inst
         self.ctx.instance, self.ctx.parent = inst, self.prev
         if self.prev == 0:
-            self.ctx.source, self.ctx.target = self.caster, self.target
+            self.ctx.source, self.ctx.target, self.ctx.anchor = self.caster, self.target, None
         else:
-            self.ctx.source, self.ctx.target = src, tgt
+            self.ctx.source, self.ctx.target, self.ctx.anchor = src, tgt, anchor
         self.pc += 12
 
     # sub-opcodes
@@ -318,6 +320,7 @@ class Sim:
             self.bone_offset_transform()
         elif name == 'setTransformToSourceBone':
             idx = st.pop()
+            c.anchor = 'root'
             p = c.source.bone(idx)
             yaw = c.source.yaw
             p[0] += (round(math.sin(-(yaw >> 3) * math.pi / 256) * 4096) * 25) >> 12
@@ -364,6 +367,7 @@ class Sim:
             self.draws.append((self.tick, oid, tuple(self.vec(cur + 0x10)), tuple(self.vec(sc)),
                                tuple(self.vec(cur + 4)), tuple(self.uv[oid][3:]) if oid in self.uv else (0, 0),
                                'yxz' if name == 'drawTMDYXZ' else 'xyz', self.model_colours.get(oid)))
+            self.draw_anchors.append(self.ctx.anchor)
         elif name == 'selectNextTargetEntity':
             out = st.pop()
             while self.target_index < 10:
@@ -613,6 +617,7 @@ class Sim:
 
     def bone_offset_transform(self):
         c = self.ctx
+        c.anchor = 'bone'
         s = c.source
         b = s.bone(c.bone_offset[0])
         m = ry(s.yaw)

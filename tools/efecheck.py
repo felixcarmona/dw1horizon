@@ -20,6 +20,7 @@ a different renderer, so a faithful conversion still lands between about 0.5 and
     python -m tools.efecheck --disc DW2.bin [--archive EFEDAT.EFE] [keys]   (content/battle/own-effects.json)
     python -m tools.efecheck --composed [--archive EFEDAT.EFE] [keys]       (its composed entries)
     python -m tools.efecheck --presence                                     (every entry's in-game size)
+    python -m tools.efecheck --anchors --archive BUILT/EFEDAT.EFE [keys]    (objects that start at the caster)
 
 A composed entry (tools/efecompose.py) is checked against its template, both run by the same script: it must
 leave the technique as it is (launch table, bytes outside the palette, copied texels, vertices and script colours, and the
@@ -400,6 +401,99 @@ def composed_summary(rep):
     return '; '.join(out)
 
 
+# Anchors (--anchors): an object that starts on the caster's half of the field must start on the caster, at its
+# size in this game: its first drawn position (the object's origin, or the centre of its vertices for a large
+# mesh whose origin sits elsewhere) inside the caster's box, the species' model.height tall and model.radius
+# wide, with room for cannons, arms and claws that stick out (ANCHOR_REACH radii around, or up to a height in
+# front of it, ANCHOR_HEAD heights up, ANCHOR_FLOOR heights below the ground for a ring or dust at the feet).
+ANCHOR_REACH, ANCHOR_HEAD, ANCHOR_FLOOR = 1.5, 1.2, 0.25
+# Entries whose part starts away from the caster on the disc too (checked against the DW2003 script and model).
+ANCHOR_FAITHFUL = {
+    206: 'KongouKaimandara: the mandala opens 1.2 caster heights in front of Sakuyamon, as on the disc',
+    216: 'Swing Swing: the thrown part first shows halfway through its flight, as on the disc',
+}
+
+
+def first_spawns(chunk, height=600, radius=150, limit=150):
+    """{object: (tick, origin, vertex centre, anchor, origin a tick before)} of the chunk's objects at the first
+    tick each is drawn (scale not zero; the last is where its motion from the second tick puts it before that, for
+    a shot that leaves the muzzle faster than one 20 Hz tick shows), with the caster at the origin and its target DIST away toward -z; anchor is what the
+    object's position was set from (efesim's Context.anchor: 'root', the caster's feet, or 'bone', a launch
+    point, which the game takes from the species' own effect origins and efesim only stands in for)."""
+    from tools.derive.steps import effects as E
+    fighters = stage(E.launch_table(chunk))
+    fighters[1].height, fighters[1].radius = height, radius        # the caster at the species' size
+    sim = S.Sim(chunk, fighters, 1, 2)
+    for _ in range(limit):
+        sim.step(reset_hits=True)
+        if not sim.live():
+            break
+    objs = S.tmd_objects(chunk)
+    out = {}
+    for (t, oid, rot, sc, pos, _uv, *rest), anchor in zip(sim.draws, sim.draw_anchors):
+        if oid in out and out[oid][0] + 1 == t and out[oid][4] is None:
+            p0 = out[oid][1]
+            out[oid] = out[oid][:4] + (tuple(2 * a - b for a, b in zip(p0, pos)),)
+        if oid in out or not any(sc) or oid >= len(objs):
+            continue
+        m = (S.rot_yxz if (rest[0] if rest else 'yxz') == 'yxz' else S.rot_xyz)(*[S._wrap(x, 2) for x in rot])
+        k = [x / 4096 for x in sc]
+        pts = [[pos[i] + sum(m[i][j] * k[j] * v[j] for j in range(3)) for i in range(3)] for v in objs[oid][0]]
+        centre = tuple((min(p[i] for p in pts) + max(p[i] for p in pts)) / 2 for i in range(3)) if pts else pos
+        out[oid] = (t, tuple(pos), centre, anchor, None)
+    return out
+
+
+def anchor_check(chunk, height, radius):
+    """([(object, tick, origin, centre)] of the objects anchored at the caster's feet that start on the caster's
+    half outside its box, the number of objects anchored at a launch point (not checked: see first_spawns))."""
+    def inside(p):
+        x, y, z = p
+        around = math.hypot(x, z) <= ANCHOR_REACH * radius
+        ahead = abs(x) <= ANCHOR_REACH * radius and -height <= z <= 0
+        return (around or ahead) and -ANCHOR_HEAD * height <= y <= ANCHOR_FLOOR * height
+    bad, bone = [], 0
+    for obj, (t, pos, centre, anchor, back) in sorted(first_spawns(chunk, height, radius).items(),
+                                                      key=lambda kv: (kv[1][0], kv[0])):
+        if max(pos[2], centre[2]) < -DIST / 2:
+            continue                    # starts on the target's half: a shot that lands, a hit
+        if anchor == 'bone':
+            bone += 1
+        elif not (inside(pos) or inside(centre) or (back and inside(back))):
+            bad.append((obj, t, pos, centre))
+    return bad, bone
+
+
+def anchors(archive, spec, keys=(), root='.'):
+    """Every own effect's anchor_check against its species' box: (failing species count, report lines)."""
+    import glob
+    import json
+    owner = {}
+    for path in sorted(glob.glob(f'{root}/content/species/*.json')):
+        with open(path, encoding='utf-8') as f:
+            sp = json.load(f)
+        if sp.get('own_effect'):
+            owner[sp['own_effect']['chunk']] = sp
+    lines, bad = [], 0
+    for key, e in spec.items():
+        if key == 'note' or (keys and key not in keys) or int(key) not in owner:
+            continue
+        sp = owner[int(key)]
+        chunk = archive[int(key) * 0x5000:(int(key) + 1) * 0x5000]
+        h, r = sp['model'].get('height', 500), sp['model'].get('radius', 200)
+        out, bone = anchor_check(chunk, h, r)
+        kind = next((k for k in ('dw3', 'dcb', 'compose') if k in e), 'dw2')
+        waived = out and int(key) in ANCHOR_FAITHFUL
+        bad += bool(out) and not waived
+        lines.append(f'{key} {sp["name"]} ({kind}, {e["name"]}): '
+                     f'{"waived (" + ANCHOR_FAITHFUL[int(key)] + ")" if waived else "FAIL" if out else "pass"}; '
+                     f'{len(out)} object(s) off the caster (height {h}, radius {r})'
+                     + (f', {bone} at a launch point' if bone else '')
+                     + ''.join(f'\n    {o} tick {t}: origin {tuple(round(v) for v in p)} centre '
+                               f'{tuple(round(v) for v in c)}' for o, t, p, c in out))
+    return bad, lines
+
+
 def main():
     import argparse
     import json
@@ -409,6 +503,8 @@ def main():
     ap.add_argument('--composed', action='store_true', help='check the composed entries (no DW2 disc needed)')
     ap.add_argument('--archive', default='extracted/ETCHI/EFEDAT.EFE', help="this game's effect archive")
     ap.add_argument('--presence', action='store_true', help='check the measured in-game size of every entry')
+    ap.add_argument('--anchors', action='store_true',
+                    help="check that every entry's objects that start at the caster start on it (a built archive)")
     ap.add_argument('keys', nargs='*', help='own-effects.json keys (default: all)')
     a = ap.parse_args()
     if a.presence:
@@ -418,6 +514,11 @@ def main():
         archive = f.read()
     with open('content/battle/own-effects.json') as f:
         spec = json.load(f)
+    if a.anchors:
+        bad, lines = anchors(archive, spec, a.keys)
+        print('\n'.join(lines))
+        print(f'{bad} species with objects off the caster')
+        raise SystemExit(1 if bad else 0)
     bad = 0
     if a.composed:
         from tools import efecompose as X
