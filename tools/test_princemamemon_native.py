@@ -190,11 +190,12 @@ class PrinceMamemonNative(unittest.TestCase):
     def test_battle_originals(self):
         # the source's own battle idle on Mamemon's rig (native_battle.py); the spinning quad inside the sphere (piece
         # 23) rides the sphere's bone without leading it; an idle keeps its own 40-tick cycle (battle_restore.plan)
-        self.assertEqual(self.recipe['battle_originals'], {'slots': [33], 'ride': [23]})
+        self.assertEqual(self.recipe['battle_originals']['slots'], [33, 40, 41, 44])
+        self.assertEqual(self.recipe['battle_originals']['ride'], [23])
         made = self.proof['battle_originals']
-        self.assertEqual(sorted(int(s) for s in made), [33])
+        self.assertEqual(sorted(int(s) for s in made), [33, 40, 41, 44])
         self.assertEqual((made[33]['frames'], made[33]['cycles']), (40, 1))
-        self.assertEqual(motionstorage.require(self.data, BONES)['resident_bytes'], 76032)
+        self.assertEqual(motionstorage.require(self.data, BONES)['resident_bytes'], 73316)
 
     def test_loops_close(self):
         for slot in (0, 2, 3, 4):
