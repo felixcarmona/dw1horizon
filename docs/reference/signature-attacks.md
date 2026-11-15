@@ -72,6 +72,7 @@ the moment the attack starts.
 | 334 Mummymon | Dark Fear (DW2003) | Dark Shot | 3D effect at the caster (MEFT0335) | 1 | plays its whole length (31 frames at 30 fps), hits when it ends | none | one enemy, as for Dark Shot | one enemy |
 | 335 MegaGargomon | Giant Missile (DW2003) | Genoside Attack | 3D effect at the caster (MEFT0085) | 1 | plays its whole length (35 frames at 30 fps), hits when it ends | none | one enemy, as for Genoside Attack | one enemy |
 | 352 Monmon | Swing Swing (DW2003) | Boom Bubble | 3D effect at the caster (MEFT0089) | 1 | plays its whole length (46 frames at 30 fps), hits when it ends | none | one enemy, as for Boom Bubble | one enemy |
+| 405 Cannondramon | DynamoCannon (DW2003) | Genoside Attack | 3D effect at the caster (MEFT0094) | 1 | plays its whole length (58 frames at 30 fps), hits when it ends | none | one enemy, as for Genoside Attack | one enemy |
 
 ## Where the port differs from the source
 

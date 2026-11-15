@@ -421,5 +421,10 @@
     "name": "Swing Swing",
     "stands_for": 71,
     "dw3": {"model": "M384KOET", "slot": 11, "meft": [89], "pin": "aa5a060b4d532c5e6621b396d5a38578e5f99b2a"}
+  },
+  "217": {
+    "name": "DynamoCannon",
+    "stands_for": 78,
+    "dw3": {"model": "M393CNND", "slot": 11, "meft": [94], "pin": "2f1641e4eff39991d15adc962ea56458f1cbc553"}
   }
 }
