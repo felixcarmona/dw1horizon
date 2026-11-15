@@ -436,10 +436,18 @@ def bind(data, skeleton, recipe, placements=None, final=True):
                                                    share=recipe['battle_originals'].get('share'))
         if final and recipe['battle_originals'].get('compact'):
             output, compact_proof = native_battle.compact(output, len(rig), recipe['battle_originals']['compact'])
+    finish_proof = None
+    if recipe.get('authored_finishes'):
+        from tools.models import battle_finishes
+        if tuple(recipe['authored_finishes']) != battle_finishes.SLOTS[sid]:
+            raise ValueError('Native binding: unreviewed authored finish slots')
+        output, finish_proof = battle_finishes.build(output, rig, sid, battle)
     # a builder that re-encodes the programs afterwards (wizardmon_native.py) compacts and checks the buffer itself
     storage = (motionstorage.require if final else motionstorage.audit)(output, len(rig))
     proof = dict(species=sid, source_sha256=digest(data), output_sha256=digest(output),
                  donor=donor_id, generated_skeleton=rig, storage=storage, species_patch=patch)
+    if finish_proof:
+        proof['authored_finishes'] = finish_proof
     if chibi_proof:
         proof['chibi'] = chibi_proof
     if gait_proof:

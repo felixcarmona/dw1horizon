@@ -3908,7 +3908,11 @@
       "compact": {
         "tol": 0
       }
-    }
+    },
+    "authored_finishes": [
+      43,
+      44
+    ]
   },
   "270": {
     "species": 270,
@@ -4265,7 +4269,10 @@
           "hit_tick": 8
         }
       }
-    }
+    },
+    "authored_finishes": [
+      43
+    ]
   },
   "289": {
     "species": 289,
