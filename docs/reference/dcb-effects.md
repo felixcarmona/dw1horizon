@@ -96,7 +96,11 @@ i16 offset.
 the input of the DW2 converter (`tools/dw2efe.py`), which writes the 20 KB EFEDAT chunk:
 
 - Units: DCB's fighters stand 5000 apart, DW2's 10240, so positions are scaled by 2.048 and then by
-  the DW2 converter's own 0.266.
+  the DW2 converter's own 0.266. An entry's optional `"scale"` in `content/battle/own-effects.json`
+  multiplies that 0.266 for an attack that reads small on the battle camera (`tools/efepresence.py`):
+  Veemon 1.53, Wormmon 1.24, Shurimon 1.16, Wizardmon 1.12, Kokuwamon 1.4. RedOtamamon and Gizamon stay
+  at 1: scaled, a sprite near the camera covered the fighters (an orange block at 1.42, a white flash
+  at 1.53). Kokuwamon's square-root factor, 2.05, threw a yellow block over half the screen.
 - Time: one DCB step is taken as one 30 Hz frame. A DW1 cast object lasts at most 60 frames and a hit
   object 30, so longer timelines are resampled evenly (WarGreymon's cast plays 1.9 times faster, its
   hit 3.8 times).
