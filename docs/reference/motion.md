@@ -2110,3 +2110,10 @@ onto its round body. The hands reach after the weight shift and relax beside the
 landing, with a slight recoil and quiet settle. The cape stays with its fitted
 attachment as the sphere rolls. The sound follows the longer fall; its existing
 recovery, field motion and every other battle program stay unchanged.
+
+Nefertimon keeps her existing collapse and recovery. A low, chest-first fall fits
+at 98,886 bytes and clears the floor and motion checks, but cannot meet the
+unchanged recovery without a pose jump: that opening has 220 crossings against
+the faint's maximum of 129. Holding its pose through the fall raises crossings to
+122 per tick against 55, with too little wing motion. The source still rears
+before falling, tipping the body 61 degrees from its standing pose.
