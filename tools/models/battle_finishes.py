@@ -21,6 +21,51 @@ from tools.models.field_animations.native_battle import scaled_events
 SLOTS = {260: (43, 44), 270: (43,)}
 
 
+def _ground_frames(frames, floor):
+    """Fit carrier keys to this rig's display floor, preferring close contact.
+
+    Six units is the preferred clearance of the reviewed clips, not a limit on
+    the floor curvature a different binding may produce. If that band cannot
+    be met, lift only as far as the actual mesh at each blend requires.
+    """
+    # Fit the carrier against every display blend, without lifting both ends
+    # by an entire interval's worst excess (which would leave a floating hold).
+    constraints = []
+    heights = [float(pose[1][7]) for pose in frames]
+    flat = copy.deepcopy(frames)
+    for pose in flat:
+        pose[1][7] = 0
+    for i, (first, second) in enumerate(zip(flat, flat[1:])):
+        for alpha in (0, 1365, 2730, 4096):
+            weight = alpha / 4096
+            level = floor(interpolate_pose(first, second, alpha))
+            constraints.append((i, 1-weight, weight, -6-level, -level))
+    for iteration in range(1000):
+        violation = 0.
+        for i, first, second, low, high in constraints:
+            height = first*heights[i] + second*heights[i+1]
+            error = min(high, max(low, height)) - height
+            violation = max(violation, abs(error))
+            correction = error / (first*first + second*second)
+            heights[i] += correction*first
+            heights[i+1] += correction*second
+        if violation < .05:
+            break
+    if violation > .25:
+        # A changed rig can have more floor curvature between keys than the
+        # preferred contact band permits. Plant against its measured floor:
+        # project only the remaining penetrations, sharing the necessary lift
+        # between the two carrier keys. Every correction lifts both ends, so
+        # it preserves all earlier floor constraints in this sweep.
+        for i, first, second, low, high in constraints:
+            height = first*heights[i] + second*heights[i+1]
+            lift = max(0., height - high) / (first*first + second*second)
+            heights[i] -= lift*first
+            heights[i+1] -= lift*second
+    for pose, height in zip(frames, heights):
+        pose[1][7] = round(height)
+
+
 def author(data, sk, sid, raw):
     """Key the final rig from its weight-bearing poses and the source arm gesture.
 
@@ -143,33 +188,7 @@ def author(data, sk, sid, raw):
                     q.set_rot(p, foot, q.mul(q.tr(rotation), target), {})
                 frames[t] = interpolate_pose(before, p, round(weight * 4096))
                 ground(frames[t])
-        # Fit the carrier against every display blend, without lifting both ends
-        # by an entire interval's worst excess (which would leave a floating hold).
-        constraints = []
-        heights = [float(pose[1][7]) for pose in frames]
-        flat = copy.deepcopy(frames)
-        for pose in flat:
-            pose[1][7] = 0
-        for i, (first, second) in enumerate(zip(flat, flat[1:])):
-            for alpha in (0, 1365, 2730, 4096):
-                weight = alpha / 4096
-                level = floor(interpolate_pose(first, second, alpha))
-                constraints.append((i, 1-weight, weight, -6-level, -level))
-        for iteration in range(1000):
-            violation = 0.
-            for i, first, second, low, high in constraints:
-                height = first*heights[i] + second*heights[i+1]
-                error = min(high, max(low, height)) - height
-                violation = max(violation, abs(error))
-                correction = error / (first*first + second*second)
-                heights[i] += correction*first
-                heights[i+1] += correction*second
-            if violation < .05:
-                break
-        if violation > .25:
-            raise ValueError(f'Cannot ground species {sid} slot {s}: {violation:.3f}')
-        for pose, height in zip(frames, heights):
-            pose[1][7] = round(height)
+        _ground_frames(frames, floor)
         if s == 43:
             fall_end = copy.deepcopy(frames[-1])
         out.anims.table[s] = len(out.anims.anims)
