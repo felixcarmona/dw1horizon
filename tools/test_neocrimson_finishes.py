@@ -9,3 +9,10 @@ class NeoCrimsonFinishes(FinishCase):
     def test_floor_landing_and_support(self):
         report = audit(self.data, self.sk)
         self.assertTrue(report['passed'], report)
+
+
+from tools.battle_retry_testcase import BattleRetryCase
+
+
+class NeocrimsonRetry(BattleRetryCase):
+    sid = 402

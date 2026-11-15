@@ -109,7 +109,12 @@
       {"op": "offset", "bone": 11, "delta": [30, 0, 0]},
       {"op": "offset", "bone": 14, "delta": [-30, 0, 0]},
       {"op": "offset", "bone": 2, "delta": [0, 0, -20]},
-      {"op": "offset", "bone": 4, "delta": [0, 0, -15]}
+      {"op": "offset", "bone": 4, "delta": [0, 0, -15]},
+      {"op": "smooth", "bone": 6, "passes": 1},
+      {"op": "smooth", "bone": 7, "passes": 1},
+      {"op": "smooth", "bone": 8, "passes": 1},
+      {"op": "smooth", "bone": 9, "passes": 1},
+      {"op": "smooth", "bone": 10, "passes": 1}
     ]}
   },
   "196": {

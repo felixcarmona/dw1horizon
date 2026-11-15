@@ -210,6 +210,8 @@ def retarget(frames, ctx):
     """Donor-rig samples for source poses `frames` (see the module's header)."""
     rig, rest, pieces = ctx['rig'], ctx['rest'], ctx['pieces']
     nb = len(rig)
+    if len(rest) != nb or any(len(pose) != len(ctx['skeleton']) for pose in frames):
+        raise ValueError('native battle: clip and authoring rig bone counts differ')
     rest_local = [mmd.rot_matrix(*rest[b][3:6]) for b in range(nb)]
     lifted, hips, top, k = ctx['lifted'], ctx['hips'], ctx['top'], ctx['k']
     bind_rot, bind_pos = ctx['bind_rot'], ctx['bind_pos']
@@ -384,7 +386,7 @@ def context(mesh, skeleton, source_pose, yaw, rig, rest, pieces, leads, mapping,
             lifted.add(b)
     return dict(source=mesh, skeleton=skeleton, yaw=yaw, rig=rig, rest=rest, rest_rot=rest_rot, rest_pos=rest_pos,
                 pieces=table, bind_rot=bind_rot, bind_pos=bind_pos, hips=(hips_source, hips_target), top=top,
-                lifted=lifted, k=k)
+                lifted=lifted, k=k, source_height=lows[0] - bind_pos[hips_source][1])
 
 
 def fixed_pieces(recipe):

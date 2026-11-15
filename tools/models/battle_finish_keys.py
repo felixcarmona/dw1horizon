@@ -21,6 +21,13 @@ def author_keys(data, sk, sid, raw, slots, factor=1.4, mix=0.12):
     delayed = {b: 1 + b % 3 for b in range(3, nb) if not children[b] or len(children[b]) == 1}
     times = [0, 0.12, 0.28, 0.48, 0.66, 0.82, 1]
     target_floor = 0.0
+    if sid == 236:
+        levels = []
+        for pose in animsheet.slot_frames(m, nb, 0)[0]:
+            world = mmd.bone_matrices(m, pose)
+            levels.append(max(sum(world[b][1][j] * v[j] for j in range(3)) + world[b][1][3]
+                              for b in local for v in local[b]))
+        target_floor = sum(levels) / len(levels)
     end = None
     for slot in slots:
         original, loop, events = animsheet.slot_frames(m, nb, slot)
@@ -48,11 +55,32 @@ def author_keys(data, sk, sid, raw, slots, factor=1.4, mix=0.12):
                     d = (src[b][ax] - p[b][ax] + 2048) % 4096 - 2048
                     p[b][ax] += round(d * mix * env)
                 p[b][3] += round(1.0 * q.DEG * env * math.sin((t - delayed[b]) * 0.42))
+            if sid == 236:
+                p[6][5] -= round(12 * q.DEG * env)
+                p[9][5] += round(12 * q.DEG * env)
             p[0] = [4096] * 3 + [0] * 6
             w = mmd.bone_matrices(m, p)
             low = max((sum((w[b][1][j] * v[j] for j in range(3))) + w[b][1][3] for b in local for v in local[b]))
             p[1][7] -= math.ceil(low - target_floor + 2)
             frames.append(p)
+        if sid == 292 and slot == 42:
+            from tools.models import clip_repair
+            from tools.models.battle_finishes import _ground_frames
+            # The skull hand answers the central head, then settles behind it.
+            frames = clip_repair.apply_ops(frames, [parent for _, parent in sk], [
+                dict(op='wave', bone=14, axis='z', deg=55, cycles=1, phase=0,
+                     ticks=[0, 4, n-5, n-1]),
+                dict(op='wave', bone=14, axis='x', deg=30, cycles=1, phase=.25,
+                     ticks=[0, 4, n-5, n-1])])
+
+            def floor(pose):
+                pose = copy.deepcopy(pose)
+                pose[0] = [4096] * 3 + [0] * 6
+                world = mmd.bone_matrices(m, pose)
+                return max(sum(world[b][1][j] * v[j] for j in range(3)) + world[b][1][3]
+                           for b in local for v in local[b])
+
+            _ground_frames(frames, floor)
         if sid == 402 and slot == 42:
             ref = copy.deepcopy(frames[0])
             m.anims.anims[m.anims.table[0]] = mmd.encode_anim([ref, ref], nb)

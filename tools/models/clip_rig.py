@@ -93,6 +93,8 @@ def fit(frames, source_pose, rig_pose, body='offset', dimensions=()):
     The body can retain its height excursion about its new resting height, or
     scale it with the rig. Both size and proportions use this same transform.
     """
+    if len(source_pose) != len(rig_pose) or any(len(pose) != len(source_pose) for pose in frames):
+        raise ValueError('rig fitting requires the same ordered bones in the clip and both reference poses')
     if body not in ('offset', 'scale'):
         raise ValueError(f'unknown body fit: {body}')
     out = copy.deepcopy(frames)
@@ -137,6 +139,32 @@ def fit(frames, source_pose, rig_pose, body='offset', dimensions=()):
         for pose, point in zip(out, points):
             pose[b][6:9] = point
     return out
+
+
+def fit_context(model, ctx):
+    """Carry the target dimensions through passes performed after mesh binding.
+
+    Fitting rotations describe the mesh at binding time and must stay fixed.
+    Translations and scales instead belong to the final rig: a chibi bake moves
+    joints and grounds the body after the context was captured. Reusing the old
+    offsets recreates the old limb lengths inside the reshaped mesh.
+    """
+    import animsheet
+    from tools.models.field_animations.native_battle import world, _apply
+    nb = len(ctx['rig'])
+    final = animsheet.slot_frames(model, nb, 0)[0][0]
+    if all(list(a[:3]) + list(a[6:9]) == list(b[:3]) + list(b[6:9])
+           for a, b in zip(ctx['rest'][1:], final[1:])):
+        return
+    ctx['rest'] = fit([ctx['rest']], ctx['rest'], final, dimensions=range(1, nb))[0]
+    _, ctx['rest_pos'] = world(ctx['rig'], ctx['rest'])
+    # Measure the new floor in the same reference pose. Do not register a species
+    # type here: that would replace the source rig still used by the importer.
+    rotations, positions = world(ctx['rig'], ctx['rest'])
+    low = max(positions[b][1] + _apply(rotations[b], [v[i]*ctx['rest'][b][i]/4096 for i in range(3)])[1]
+              for b, (obj, _) in enumerate(ctx['rig']) if obj >= 0
+              for v in model.tmd.obj_verts(obj))
+    ctx['k'] = (low - ctx['rest_pos'][ctx['hips'][1]][1]) / ctx['source_height']
 
 
 def _plant_feet(frames, samples, model, skeleton, groups, bad, carrier):

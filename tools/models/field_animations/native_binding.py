@@ -149,7 +149,7 @@ def bind_pose(mesh, skeleton, recipe):
     return pose
 
 
-def bind(data, skeleton, recipe, placements=None, final=True):
+def bind(data, skeleton, recipe, placements=None, final=True, battle_context=None):
     """(model bytes, proof). `placements`, when given, receives {source bone: (anchor, transform, destination)}: how each
     piece was moved, for the authoring step that carries effect points and the condition bubble along with their piece."""
     if reviewed(digest(data)) != recipe['source_sha256'] or digest(json.dumps(skeleton).encode()) != recipe['skeleton_sha256']:
@@ -393,6 +393,8 @@ def bind(data, skeleton, recipe, placements=None, final=True):
         battle = native_battle.context(mesh, skeleton, source_pose, yaw, rig, rest, battle_pieces,
                                        {rider_bone[r['name']]: r['pivot'] for r in riders}, mapping, lows,
                                        native_battle.fixed_pieces(recipe))
+        if battle_context is not None:
+            battle_context.update(battle)
     if recipe.get('arm_pump'):
         output = native_arms.run_arms(mmd.MMD.parse(output, len(rig)), rig, recipe['arm_pump'])
     if recipe.get('pace'):
@@ -419,6 +421,11 @@ def bind(data, skeleton, recipe, placements=None, final=True):
         patch = dict(patch, **chibi.species_patch(patch, scales, k))
         chibi_proof = dict(factors=used['factors'], fit=used['fit'], trim=used['trim'], final_scale=report['final_scale'],
                            speeds=report['speeds'], floors=report['floors'])
+        if recipe.get('battle_originals'):
+            # The mesh now has new joint offsets. The source motion must use
+            # those dimensions too, including authored finishes below.
+            from tools.models import clip_rig
+            clip_rig.fit_context(mmd.MMD.parse(output, len(rig)), battle)
     gait_proof = None
     if recipe.get('gait'):
         # the legs planted on the floor under the donor's own trunk, wings, tail and arms, written over the final (chibi) shape
@@ -448,6 +455,17 @@ def bind(data, skeleton, recipe, placements=None, final=True):
         if tuple(recipe['authored_finishes']) != battle_finishes.SLOTS[sid]:
             raise ValueError('Native binding: unreviewed authored finish slots')
         output, finish_proof = battle_finishes.build(output, rig, sid, battle)
+    authored_battle_proof = None
+    if final and recipe.get('authored_battle'):
+        from tools.models import authored_battle
+        if tuple(recipe['authored_battle']) != authored_battle.SLOTS[sid]:
+            raise ValueError('Native binding: unreviewed authored battle slots')
+        output, authored_battle_proof = authored_battle.build(output, rig, sid, battle)
+    if final and recipe.get('authored_techniques'):
+        from tools.models import authored_techniques
+        if tuple(recipe['authored_techniques']) != tuple(authored_techniques.PROFILES[sid]):
+            raise ValueError('Native binding: unreviewed authored techniques')
+        output, _ = authored_techniques.build(output, rig, sid, battle)
     # a builder that re-encodes the programs afterwards (wizardmon_native.py) compacts and checks the buffer itself
     storage = (motionstorage.require if final else motionstorage.audit)(output, len(rig))
     proof = dict(species=sid, source_sha256=digest(data), output_sha256=digest(output),
@@ -456,12 +474,15 @@ def bind(data, skeleton, recipe, placements=None, final=True):
         proof['preserved_aliases'] = {str(slot): digest(program.build()) for slot, program in preserved_aliases.items()}
     if finish_proof:
         proof['authored_finishes'] = finish_proof
+    if authored_battle_proof:
+        proof['authored_battle'] = authored_battle_proof
     if chibi_proof:
         proof['chibi'] = chibi_proof
     if gait_proof:
         proof['gait'] = gait_proof['checks']
     if battle_proof:
         proof['battle_originals'] = battle_proof
+        proof['battle_rig'] = dict(skeleton=rig, rest=battle['rest'])
     if compact_proof is not None:
         proof['battle_compact'] = compact_proof
     return output, proof
@@ -475,5 +496,5 @@ def recipe_of(data):
     return matches[0]
 
 
-def build(data, skeleton, final=True):
-    return bind(data, skeleton, recipe_of(data), final=final)
+def build(data, skeleton, final=True, battle_context=None):
+    return bind(data, skeleton, recipe_of(data), final=final, battle_context=battle_context)

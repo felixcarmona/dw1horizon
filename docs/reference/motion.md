@@ -311,7 +311,7 @@ and Sorcermon's builder runs it once, after its cape and hair followers, which s
 `battle_restore.compact` re-encodes every clip with repeats losslessly, then, at N units of 1/4096 turn (at most 5,
 0.44 degrees), every clip that is neither a field slot 0-4 nor a battle slot 0x21-0x24; identical streams are shared
 and dead tails dropped. Field and battle slots decode exactly as before. Wizardmon 241 (tol 5): 0x21-0x23,
-0x28-0x2B, 0x34, 0x35, 0x37 (99,770 B; its training clip 0x39 stays Angemon's). Sorcermon 242: 0x21, 0x22, 0x28-0x2B, 0x2E, 0x30, 0x33, 0x34 and 0x38 (99,546 B; compaction tolerance 5, with `slot_tol` keeping unhappy idle 0x13 at its existing tolerance 2; other clips move at most 1.10 degrees and field programs 0-4 remain byte-identical): the source victory and faint keep their 47 and 31 ticks, with eased shoulder, forearm and hand turns and damping bringing tip errors from 0.299 and 0.179 to 0.145 and 0.125 heights (mean rotation errors 7.4 and 4.7 degrees, worst pieces 22.5 and 20.0; crossings 70 and 76 per tick against main's 151 and 150); walk and run remain the donor's for 301 and 210 crossings per tick (limit 169.6), get-up for tip error 0.289 heights, 226 crossings and body tilt 30 degrees against main's 17, and the other techniques for tip errors 0.159-0.297 heights, crossings or retiming. Assaultmon 310: source battle slots 0x21, 0x22, 0x28, 0x29, 0x2B, 0x2C, 0x2E, 0x2F, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x37, 0x38, 0x39, 0x3A, 0x3B, 0x3C (98,320 B resident); this pass restores 0x38, 0x3C with measured body and limb repairs and source-identical technique sharing where listed in the recipe; the added clips reach mean fidelity 2 degrees, worst piece 1.1 degrees and tips 0.025 heights, with legal source retiming and at least 20 frames for added techniques. Field programs 0-4 are byte-identical and every untouched clip retains its decoded ticks. Maildramon 324: every battle slot (89,726 B at exact compaction): 0x30, 0x31, 0x33-0x36 play 0x32's clip and 0x37 0x2F's (`share`, as in the source); 0x28 and 0x29 at 32 ticks and 0x2A at 49 (`ticks`: the donor's lengths would resample the source's 20 and 31 ticks by 3.3, 3.0 and 2.2; 0x35's own 81 ticks would be 2.0, so it plays 0x32's 35). Repairs: in 0x22 the body turned 10 degrees (bone 8 x) off the leg, 18 crossings a tick against main's 0, now 2; in 0x38 the body turned back 4 degrees, its mean elevation 44 off the idle (limit 41), now 40. WarGrowlmon 326 (tol 4):
+0x28-0x2B, 0x34, 0x35, 0x37 (99,770 B; its training clip 0x39 stays Angemon's). Sorcermon 242: 0x21, 0x22, 0x28-0x2B, 0x2E, 0x30, 0x33, 0x34 and 0x38 (99,546 B; compaction tolerance 5, with `slot_tol` keeping unhappy idle 0x13 at its existing tolerance 2; other clips move at most 1.10 degrees and field programs 0-4 remain byte-identical): the source victory and faint keep their 47 and 31 ticks, with eased shoulder, forearm and hand turns and damping bringing tip errors from 0.299 and 0.179 to 0.145 and 0.125 heights (mean rotation errors 7.4 and 4.7 degrees, worst pieces 22.5 and 20.0; crossings 70 and 76 per tick against main's 151 and 150); source walk and run fail at 301 and 210 crossings per tick (limit 169.6), get-up for tip error 0.289 heights, 226 crossings and body tilt 30 degrees against main's 17, and the other techniques for tip errors 0.159-0.297 heights, crossings or retiming. Assaultmon 310: source battle slots 0x21, 0x22, 0x28, 0x29, 0x2B, 0x2C, 0x2E, 0x2F, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x37, 0x38, 0x39, 0x3A, 0x3B, 0x3C (98,320 B resident); this pass restores 0x38, 0x3C with measured body and limb repairs and source-identical technique sharing where listed in the recipe; the added clips reach mean fidelity 2 degrees, worst piece 1.1 degrees and tips 0.025 heights, with legal source retiming and at least 20 frames for added techniques. Field programs 0-4 are byte-identical and every untouched clip retains its decoded ticks. Maildramon 324: every battle slot (89,726 B at exact compaction): 0x30, 0x31, 0x33-0x36 play 0x32's clip and 0x37 0x2F's (`share`, as in the source); 0x28 and 0x29 at 32 ticks and 0x2A at 49 (`ticks`: the donor's lengths would resample the source's 20 and 31 ticks by 3.3, 3.0 and 2.2; 0x35's own 81 ticks would be 2.0, so it plays 0x32's 35). Repairs: in 0x22 the body turned 10 degrees (bone 8 x) off the leg, 18 crossings a tick against main's 0, now 2; in 0x38 the body turned back 4 degrees, its mean elevation 44 off the idle (limit 41), now 40. WarGrowlmon 326 (tol 4):
 0x21, 0x22, 0x28-0x2C, 0x30 (98,846 B): 0x32, 0x38, 0x39 and 0x3A play 0x30's clip (`share`, the same source clip, 53 ticks), whose body is lifted 60 units (`lift` of bone 1: the source's crouch sank it 0.365 h under the floor, now 0.257). The other techniques stay the donor's for memory: 0x2E, 0x2F, 0x31, 0x34, 0x35 and 0x3C cost 2,600 to 3,800 B more each, and 1,506 B are left. Assaultmon also uses its source clips for 0x23, 0x24, 0x36, bringing the resident model from 92,836 to 97,114 bytes. WarGrowlmon also uses its source clips for 0x23, 0x24, 0x2E, 0x2F, 0x31, 0x33, 0x34, 0x35, 0x36, 0x37, 0x3B, 0x3C, bringing the resident model from 89,982 to 95,812 bytes.
 
 The care and condition slots (1 and 14-19 the condition idles; 5, 7-13, 0x16, 0x1B and 0x25 the care clips) are measured
@@ -2156,19 +2156,37 @@ the body too often. Counter-turns reduce crossings to 192 per tick against 164
 without fixing the tip. The keyed rise needs 107,274 bytes and steps its vertices
 0.541 heights in one tick. Field motion and the other clips stay unchanged.
 
-Deltamon keeps its three-headed cheer, forward fall and recovery. The source
-victory fits but still turns a head piece 28.1 degrees off its intended pose and
-misses a tip by 0.171 heights. The source fall and recovery need 100,608 and
-101,476 bytes. The keyed alternatives need 105,720, 102,396 and 103,334 bytes;
-field motion and every existing battle program remain unchanged.
+Deltamon uses short source hit reactions and a planted three-headed cheer, with a delayed turn from its skull hand.
 
-DemiDevimon keeps its existing aerial victory. Source counter-turns reduce the
-tip error from 0.200 to 0.193 heights, but it still floats 0.460 heights above its
-usual hover. A revised hover clears the motion checks at 88,888 bytes, yet has
-65.84 crossings per tick against 65.03, so it stays out. Field motion and every
-battle program remain unchanged.
+DemiDevimon gives a fluttering aerial bow and eases back into its usual hover.
 
 Restored clips carry the source model’s bone offsets and scales. When a species has been resized or reshaped, fit those clips to its own field rig before applying motion repairs, keeping the original timing, rotations and events. Battle and care QA fail any covered clip whose first-tick size is outside 0.92–1.08 of the species’ field idle: the median offset-length ratio times scale ratio over bones from index 2 whose idle offset is at least 20 units. This measures body size independently of a crouch or other pose.
 
 Restored and authored animations must use the same joint dimensions and scales as the species’ field idle, including after a native binding or a chibi reshape. The shared clip rig fit runs after every clip-producing stage, keeping passing field programs intact, preserving acting and placing support back on its original surface. The battle and care checks gate bone proportions alongside the existing 0.92–1.08 size check; the all-slot clip rig check also covers techniques, evolution, training and finishers. Proportions use each visible bone’s offset length times mean scale relative to the first field-idle tick, excluding carrier travel by skeleton parentage. Head, torso, arms, legs, hands and feet, and tail and wings are checked separately: the allowed first-tick deviation is 0.08 and the whole-clip deviation is 0.12, rounded above the 99th-percentile spreads of native models and non-chibi imports. Hidden pieces retain their visibility; clothing and effect attachments are reported separately from anatomy.
 A fit that changes only dimensions uses the reviewed main animation as its motion reference only when every root and rotation tick remains exact; a change to acting still uses the source or an explicit authored recipe. Every mesh, floor, liveness and storage limit continues to apply.
+
+Nefertimon keeps its current fall because the grounded replacement cannot join its recovery without a snap or extra crossings.
+
+ChaosLord keeps its current fall because the stronger wing follow-through adds too many crossings.
+
+Cannondramon keeps its cannon-raising victory because the lighter replacement loses too much movement in its limbs.
+
+Sorcermon swings its staff while walking and plants both boots for its long casting gesture.
+
+NeoCrimson keeps its recovery because a grounded replacement would jump away from the ending of its existing fall.
+
+Imperialdramon eases its wing tips through its tired battle idle.
+
+Divermon keeps its feet planted while its harpoon and ears follow its battle stride.
+
+Zanbamon keeps its rider steady while its mount runs with a grounded, loose stride.
+
+BomberNanimon winds up its arms and settles naturally after its two battle attacks.
+
+Vilemon twists into its own claw strike and lets its wings follow through.
+
+Wizardmon plants its boots and carries each spell through its head, cape and wand.
+
+Raijinmon follows its turning strike with a loose arm and settles its second attack over planted feet.
+
+GrapLeomon keeps its existing techniques because the repaired source attacks exceed memory or motion limits.
