@@ -54,6 +54,7 @@ the moment the attack starts.
 | 402 NeoCrimson | Blind Attack (DW2) | Crimson Flare | at the target: a blind charge at a random fighter | 1 | plays at the target, hits at tick 40 | none (scale 0.187) | one enemy, as for Crimson Flare | one enemy (random) |
 | 295 Vilemon | Dark Fear (DW2003) | Death Claw | 3D effect at the caster (MEFT0335) | 1 | plays its whole length (31 frames at 30 fps), hits when it ends | none | one enemy, as for Death Claw | one enemy |
 | 297 Marsmon | Mugenhadou (DW2003) | Mega Flame | 3D effect at the caster (MEFT0097) | 1 | plays its whole length (31 frames at 30 fps), hits when it ends | none | one enemy, as for Mega Flame | one enemy |
+| 298 Dokugumon | Poison Cobweb (DW2003) | Bit Bomb | 3D effect at the caster (MEFT0328) | 1 | plays its whole length (31 frames at 30 fps), hits when it ends | none | one enemy, as for Bit Bomb | one enemy |
 
 ## Where the port differs from the source
 

@@ -331,5 +331,10 @@
     "name": "Mugenhadou",
     "stands_for": 63,
     "dw3": {"model": "M394MARS", "slot": 11, "meft": [97], "pin": "62547a785d90a659196028b0104610caa5f5b27e"}
+  },
+  "198": {
+    "name": "Poison Cobweb",
+    "stands_for": 73,
+    "dw3": {"model": "M166DKGM", "slot": 5, "meft": [328], "pin": "592f3767c8595ee3664250372d3e0ba3fd47a834"}
   }
 }
