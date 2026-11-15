@@ -72,7 +72,8 @@ class Record(unittest.TestCase):
         own = {t: S.id_of('techs', s['own_effect']['technique'], 'species') for t, s in species.items() if s.get('own_effect')}
         expected = {t for t, f in fins.items() if f['range'] == 3 and f['nativeRange'] != 3 and own.get(t) != f['tech']}
         self.assertEqual(spread, expected)
-        self.assertTrue(spread)
+        # not vacuous: there are area finishers on single-target techniques (each now played by its own chunk)
+        self.assertTrue({t for t, f in fins.items() if f['range'] == 3 and f['nativeRange'] != 3})
 
     def test_support_moves_ship_their_fallback(self):
         fins, _ = moves_with(neutral=False)
