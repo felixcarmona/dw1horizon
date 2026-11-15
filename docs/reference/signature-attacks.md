@@ -67,6 +67,7 @@ the moment the attack starts.
 | 318 Gallantmon | Final Purification (DW2003) | Spiral Sword | 3D effect at the caster (MEFT0095) | 1 | plays its whole length (51 frames at 30 fps), hits when it ends | none | one enemy, as for Spiral Sword | one enemy |
 | 323 Lynxmon | Blazing Mane (DW2003) | Crimson Flare | 3D effect at the caster (MEFT0332) | 1 | plays its whole length (36 frames at 30 fps), hits when it ends | none | one enemy, as for Crimson Flare | one enemy |
 | 326 WarGrowlmon | Atomic Blaster (DW2003) | Dark Shot | 3D effect at the caster (MEFT0096) | 1 | plays its whole length (61 frames at 30 fps), hits when it ends | none | one enemy, as for Dark Shot | one enemy |
+| 329 Ghoulmon | Darkness Chaos (DW2003) | Dark Shot | 3D effect at the caster (MEFT0349) | 1 | plays its whole length (38 frames at 30 fps), hits when it ends | none | one enemy, as for Dark Shot | one enemy |
 
 ## Where the port differs from the source
 

@@ -396,5 +396,10 @@
     "name": "Atomic Blaster",
     "stands_for": 80,
     "dw3": {"model": "M368MGRW", "slot": 11, "meft": [96], "pin": "a24e81bf7fddaf84fc7228352fa53394c2e45d8a"}
+  },
+  "212": {
+    "name": "Darkness Chaos",
+    "stands_for": 80,
+    "dw3": {"model": "M312DETH", "slot": 9, "meft": [349], "pin": "02f937a5715a9f31e5569235dab7ed1474be9d93"}
   }
 }
