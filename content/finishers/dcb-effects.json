@@ -191,9 +191,9 @@
    "chunk": 270,
    "attack_script": 1084,
    "hit_script": 435,
-   "result": "render timed out",
+   "result": "fidelity failed",
    "fallback": "template",
-   "why": "no verdict within 40 minutes"
+   "why": "cast area, cast shown (the denser retry ran past the 40-minute cap)"
   },
   {
    "species": 200,
@@ -327,9 +327,9 @@
    "chunk": 284,
    "attack_script": 1093,
    "hit_script": 498,
-   "result": "render timed out",
+   "result": "fidelity failed",
    "fallback": "template",
-   "why": "no verdict within 40 minutes"
+   "why": "cast area, cast shown, cast box (the denser retry ran past the 40-minute cap)"
   },
   {
    "species": 215,
@@ -436,9 +436,9 @@
    "chunk": 295,
    "attack_script": 1090,
    "hit_script": 2048,
-   "result": "render timed out",
+   "result": "fidelity failed",
    "fallback": "template",
-   "why": "no verdict within 40 minutes"
+   "why": "hit area, hit shown (the denser retry ran past the 40-minute cap)"
   },
   {
    "species": 227,
@@ -632,9 +632,9 @@
    "chunk": 315,
    "attack_script": 1081,
    "hit_script": 435,
-   "result": "render timed out",
+   "result": "fidelity failed",
    "fallback": "template",
-   "why": "no verdict within 40 minutes"
+   "why": "whole shown, cast area, cast shown (the denser retry ran past the 40-minute cap)"
   },
   {
    "species": 247,

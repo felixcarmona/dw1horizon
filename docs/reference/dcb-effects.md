@@ -138,13 +138,14 @@ Results for the 79 attacks are in `content/finishers/dcb-effects.json` (`result`
 | result | attacks |
 |---|---|
 | converted (passes every check) | 48 |
-| fidelity failed after the second round | 24 |
-| render did not finish in 40 minutes | 5 |
-| does not fit the 0x5000 slot even at the smallest fit (Gomamon, MarineAngemon: their models alone are too big) | 2 |
+| fidelity failed after the second round | 28 |
+| render did not finish in 40 minutes (MetalGarurumon) | 1 |
+| does not fit the 0x5000 slot even at the smallest fit (MarineAngemon: its models alone are bigger than the slot; Gomamon: about 2 KB over) | 2 |
 
 The 31 that did not pass carry `"fallback": "template"` and a `why` (the checks they failed). Most
 failures are a cast that draws much less than the original: many alike objects (star showers, feathers)
-thinned to what the slot holds.
+thinned to what the slot holds. The check has a floor and no ceiling and does not compare colour: a pass
+means the conversion draws in the same places and moments, not that it looks the same.
 
 ## Open questions
 
