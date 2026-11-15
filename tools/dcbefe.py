@@ -42,10 +42,13 @@ def build(disc, d, origin_table, effect_id, sounds=None, hit_sound=None):
     """(chunk, info) of an own effect's "dcb" entry (content/battle/own-effects.json): the attack and hit scripts
     converted at the fit the entry records ([animated sprite frames, texture shrink, objects per script]), gameplay
     neutral (one target, one hit) with the launch table of the chunk it stands for. sounds uses engine ticks,
-    relative to the first drawn spawn, before cast compression; hit_sound plays with the first damage event."""
+    relative to the first drawn spawn, before cast compression; hit_sound plays with the first damage event. The
+    entry's optional "scale" multiplies SCALE, for an attack that reads small on this game's battle camera
+    (tools/efepresence.py)."""
     fit = tuple(d['fit'])
     return Attack(disc, d['attack'], d['hit']).convert(origin_table, effect_id=effect_id, ladder=(fit,),
-                                                    sounds=sounds, hit_sound=hit_sound)
+                                                    scale=SCALE * d.get('scale', 1), sounds=sounds,
+                                                    hit_sound=hit_sound)
 
 
 def species_entry(species, root='.'):
@@ -135,7 +138,7 @@ class Attack:
         self.notes = notes
         return casts, hits
 
-    def convert(self, table, effect_id=EFFECT_ID, ladder=LADDER, **kw):
+    def convert(self, table, effect_id=EFFECT_ID, ladder=LADDER, scale=SCALE, **kw):
         """(chunk, info): down the LADDER (fewer animated sprite frames, smaller textures, fewer alike objects)
         until the chunk fits."""
         last = None
@@ -157,7 +160,7 @@ class Attack:
                             here.append(sid)
                             cues.append((tick, sid))
                     opts['sounds'] = cues
-                chunk, info = convert_skill(casts, hits, table, effect_id, SCALE, hit_scale=SCALE, **opts)
+                chunk, info = convert_skill(casts, hits, table, effect_id, scale, hit_scale=scale, **opts)
             except dw2efe.Unconvertible as e:
                 last = e
                 if 'slot has' not in str(e) and 'do not fit' not in str(e):

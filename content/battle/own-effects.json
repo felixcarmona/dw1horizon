@@ -761,7 +761,7 @@
     "name": "Vee Head Butt",
     "stands_for": 99,
     "sounds": [[32, 50], [356, 41]],
-    "dcb": {"attack": 1030, "hit": 2000, "fit": [4, 1, 24], "pin": "d2dec64592f9f458b73c802724e437151da488ca"}
+    "dcb": {"attack": 1030, "hit": 2000, "fit": [4, 1, 24], "scale": 1.53, "pin": "c6e7346363b1bb29695fd8ade14b529e6ef1c451"}
   },
   "254": {
     "name": "Puppet Pummel",
@@ -775,7 +775,7 @@
     "stands_for": 98,
     "sounds": [[18, 24], [216, 22], [216, 0]],
     "hit_sound": 22,
-    "dcb": {"attack": 1033, "hit": 2021, "fit": [2, 1, 96], "pin": "3825ed7b18273d543b203743e548c76eaeef8ad4"}
+    "dcb": {"attack": 1033, "hit": 2021, "fit": [2, 1, 96], "scale": 1.24, "pin": "deae8528abdcf9aa0a5209d59839610b7be7a9f6"}
   },
   "257": {
     "name": "Diamond Shell",
@@ -922,7 +922,7 @@
   "294": {
     "name": "Double Stars",
     "stands_for": 89,
-    "dcb": {"attack": 1162, "hit": 2057, "fit": [4, 1, 24], "pin": "3951a553e05b87cec286d3799cb5e6ceb2905c6d"}
+    "dcb": {"attack": 1162, "hit": 2057, "fit": [4, 1, 24], "scale": 1.16, "pin": "a96f70c5f74fdaf0ebf5671836d9016b87d7dde0"}
   },
   "297": {
     "name": "Dancing Meteor",
@@ -986,7 +986,7 @@
     "stands_for": 86,
     "sounds": [],
     "hit_sound": 24,
-    "dcb": {"attack": 1048, "hit": 402, "fit": [4, 1, 24], "pin": "1e5a27cb46393d00f89289a5d73199da3badc817"}
+    "dcb": {"attack": 1048, "hit": 402, "fit": [4, 1, 24], "scale": 1.12, "pin": "ae6e42bf99dc7213bbb7cbb4ec8a1f69bcfa0a02"}
   },
   "312": {
     "name": "Meteor Stream",
@@ -1005,7 +1005,7 @@
     "name": "Mini Scissor Claws",
     "stands_for": 66,
     "sounds": [[0, 24], [88, 30], [108, 30], [228, 41], [282, 41], [328, 41], [378, 41]],
-    "dcb": {"attack": 1198, "hit": 472, "fit": [4, 1, 24], "pin": "3a1d2e5f7a1a55e42d534102868701e17d8f4c51"}
+    "dcb": {"attack": 1198, "hit": 472, "fit": [4, 1, 24], "scale": 1.4, "pin": "946b027be9b1a7f7d02efb4c1bd4f406684052fb"}
   },
   "318": {
     "name": "Freezing Wave",
