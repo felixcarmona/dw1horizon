@@ -391,5 +391,10 @@
     "name": "Blazing Mane",
     "stands_for": 109,
     "dw3": {"model": "M327RUNX", "slot": 5, "meft": [332], "pin": "8c3e75b6a974eddd06daa41ed26762079a45e74e"}
+  },
+  "210": {
+    "name": "Atomic Blaster",
+    "stands_for": 80,
+    "dw3": {"model": "M368MGRW", "slot": 11, "meft": [96], "pin": "a24e81bf7fddaf84fc7228352fa53394c2e45d8a"}
   }
 }
