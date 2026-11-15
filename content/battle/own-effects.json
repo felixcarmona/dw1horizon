@@ -501,5 +501,10 @@
     "name": "Hot Head",
     "stands_for": 99,
     "dw3": {"model": "M383PKEN", "slot": 11, "meft": [], "sprites": {"0": ["E000COM1.BIN", 0, 0, 38], "2": ["E000COM1.BIN", 2, 0, 38], "4": ["E000COM3.BIN", 2, 0, 0], "2003": ["E383PKEN.BIN", 1, 2, 0]}, "pin": "f40db4e6bca0dbf669775e7fd95d445fe7118625"}
+  },
+  "245": {
+    "name": "Bear Fist",
+    "stands_for": 95,
+    "dw3": {"model": "M385KOGU", "slot": 11, "meft": [], "sprites": {"0": ["E000COM1.BIN", 0, 0, 38], "2014": ["E145VMON.BIN", 1, 2, 0]}, "pin": "0c2e07cf1b172b48f00c8fe3de06f2c9aa71f5bc"}
   }
 }
