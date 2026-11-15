@@ -9,6 +9,7 @@
   "techniques": ["Megalo Spark", "Hurricane", "Thunder Justice", "Spinning Shot", "Confused Storm", "Wind Cutter",
                  "Giga Freeze", "Aurora Freeze", "Ice Statue", "Water Blit", "Megaton Punch",
                  "Counter", "Dynamite Kick (44)", "Mail Strome"],
+  "own_effect": {"technique": "Mail Strome", "chunk": 298},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 54,
   "model": {

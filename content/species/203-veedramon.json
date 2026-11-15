@@ -8,6 +8,7 @@
   "specialties": ["fire", "battle", null],
   "techniques": ["Heat Laser", "Fire Tower", "Spit Fire", "Red Inferno", "Magma Bomb", "Meltdown", "Megaton Punch",
                  "Muscle Charge", "War Cry", "Sonic Jab", "Mega Flame"],
+  "own_effect": {"technique": "Mega Flame", "chunk": 274},
   "drop": {"item": "Giant Meat", "percent": 30},
   "effects_like": 5,
   "model": {

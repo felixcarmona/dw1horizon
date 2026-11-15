@@ -130,6 +130,7 @@ DISC_CHUNKS = 122
 OWN_EFFECTS = 'content/battle/own-effects.json'
 DW2_EFFECTS = ('source-games', 'dw2', 'disc', 'AAA', '4.AAA', 'EFFECT')
 DW3_SOURCE = ('source-games', 'dw2003')
+DCB_SOURCE = ('source-games', 'dcb')
 
 
 def launch_table(chunk):
@@ -182,7 +183,7 @@ def own_effects(ctx, archive):
     from tools import dw2effect, dw2efe
     with open(os.path.join(ctx.root, OWN_EFFECTS)) as f:
         spec = json.load(f)
-    out = {}
+    out, dcb = {}, None
     area = finisher_area_chunks(ctx.root)
     for key, e in spec.items():
         if key == 'note':
@@ -190,6 +191,18 @@ def own_effects(ctx, archive):
         like = bytes(archive[e['stands_for'] * CHUNK_SIZE:(e['stands_for'] + 1) * CHUNK_SIZE])
         if 'dw3' in e:
             out[int(key)], info = dw3_effect(ctx.path(*DW3_SOURCE), key, e, launch_table(like), area=int(key) in area)
+            ctx.log(f'own effect {key} {e["name"]}: ' + ', '.join(f'{k} {v}' for k, v in info.items()
+                                                                  if k in ('chunk', 'objects', 'behaviour', 'kept')))
+            continue
+        if 'dcb' in e:
+            done = ctx.path(*DCB_UNITS, key + '.bin')
+            if os.path.isfile(done):                # converted by its unit (dcb_units), side by side with the others
+                with open(done, 'rb') as f:
+                    out[int(key)] = f.read()
+                continue
+            if dcb is None:
+                dcb = dcb_disc(ctx.path(*DCB_SOURCE), key, e)
+            out[int(key)], info = dcb_effect(dcb, key, e, launch_table(like))
             ctx.log(f'own effect {key} {e["name"]}: ' + ', '.join(f'{k} {v}' for k, v in info.items()
                                                                   if k in ('chunk', 'objects', 'behaviour', 'kept')))
             continue
@@ -245,6 +258,24 @@ def dw3_effect(games, key, e, origin_table, area=False):
                          leave_out=[tuple(x) for x in d.get('leave_out', [])], sounds=e.get('sounds'))
 
 
+def dcb_disc(games, key, e):
+    """The player's Digital Card Battle disc as the build extracted it (`games`: source-games/dcb)."""
+    from tools import dcbeffect
+    try:
+        return dcbeffect.Disc.extracted(games)
+    except FileNotFoundError as missing:
+        raise ValueError(f'own effect {key} {e["name"]}: source discs required: dcb (missing {missing}); '
+                         'derive build --source-disc dcb=IMAGE')
+
+
+def dcb_effect(disc, key, e, origin_table):
+    """(chunk, info) of an own effect converted from a Digital Card Battle attack (tools/dcbefe.py): its "dcb"
+    names the card's attack script and the shared hit script, and the fit they were converted at. Gameplay stays the
+    technique's it stands for: one target, one hit."""
+    from tools import dcbefe
+    return dcbefe.build(disc, e['dcb'], origin_table, 0x100 + int(key))
+
+
 def append_own_effects(ctx, archive):
     data = bytearray(archive)
     if len(data) != DISC_CHUNKS * CHUNK_SIZE:
@@ -263,9 +294,54 @@ def outputs(ctx):
     return [('effects/' + DISC_PATH, DISC_PATH)]
 
 
+DCB_UNITS = ('effects', 'dcb')
+
+
+def dcb_unit(root, games, key, archive_path, dest):
+    """One Digital Card Battle conversion (they take seconds to minutes each, so they run as units side by side):
+    writes the chunk to dest, which own_effects then takes as it is."""
+    import json
+    with open(os.path.join(root, OWN_EFFECTS)) as f:
+        e = json.load(f)[key]
+    with open(archive_path, 'rb') as f:
+        archive = aim_deadly_bomb(exclude_caster(f.read()))
+    like = archive[e['stands_for'] * CHUNK_SIZE:(e['stands_for'] + 1) * CHUNK_SIZE]
+    chunk, info = dcb_effect(dcb_disc(games, key, e), key, e, launch_table(like))
+    os.makedirs(os.path.dirname(dest), exist_ok=True)
+    with open(dest + '.tmp', 'wb') as f:
+        f.write(chunk)
+    os.replace(dest + '.tmp', dest)
+    return f'own effect {key} {e["name"]}: ' + ', '.join(f'{k} {v}' for k, v in info.items()
+                                                         if k in ('chunk', 'objects', 'behaviour', 'kept')) + '\n'
+
+
+def dcb_units(ctx):
+    import json
+    from tools.derive import runner
+    with open(os.path.join(ctx.root, OWN_EFFECTS)) as f:
+        spec = json.load(f)
+    archive = os.path.join(ctx.root, 'extracted', DISC_PATH)
+    return [runner.Unit(f'dcb effect {key}', dcb_unit,
+                        (ctx.root, ctx.path(*DCB_SOURCE), key, archive, ctx.path(*DCB_UNITS, key + '.bin')),
+                        ['tools/dcbefe.py', 'tools/dcbeffect.py', 'tools/dw2efe.py', 'tools/dw2effect.py', OWN_EFFECTS,
+                         'extracted/' + DISC_PATH, 'step:source-discs'],
+                        ['/'.join(DCB_UNITS) + f'/{key}.bin'])
+            for key, e in spec.items() if key != 'note' and 'dcb' in e]
+
+
 def build(ctx):
+    import shutil
+    shutil.rmtree(ctx.path(*DCB_UNITS), ignore_errors=True)
+    units = dcb_units(ctx)
+    if units:       # the step as a whole is what the build cache captures: its units run without a capture of their own
+        from tools.derive import runner
+        for d in runner.run_units(ctx, units):
+            ctx.log(f'unit {d.unit.name}  ({d.seconds:.2f} s)')
+            if d.out:
+                ctx.log(d.out.rstrip('\n'))
     with open(os.path.join(ctx.root, 'extracted', DISC_PATH), 'rb') as source:
         data = append_own_effects(ctx, aim_deadly_bomb(exclude_caster(source.read())))
+    shutil.rmtree(ctx.path(*DCB_UNITS), ignore_errors=True)
     dest = ctx.path('effects', DISC_PATH)
     os.makedirs(os.path.dirname(dest), exist_ok=True)
     with open(dest, 'wb') as target:

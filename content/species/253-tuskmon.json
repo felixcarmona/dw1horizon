@@ -8,6 +8,7 @@
   "specialties": ["battle", "fire", null],
   "techniques": ["Megaton Punch", "Tremar", "Muscle Charge", "War Cry", "Sonic Jab", "Dynamite Kick (44)",
                  "Spit Fire", "Heat Laser", "Fire Tower", "Red Inferno", "Drill Spin"],
+  "own_effect": {"technique": "Drill Spin", "chunk": 322},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 51,
   "model": {

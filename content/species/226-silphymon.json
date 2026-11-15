@@ -9,6 +9,7 @@
   "techniques": ["Megalo Spark", "Hurricane", "Thunder Justice", "Spinning Shot", "Confused Storm", "Wind Cutter",
                  "Electric Cloud", "Static Elect", "Dynamite Kick (44)", "Buster Dive",
                  "Megaton Punch", "Counter", "Tremar", "Death Claw"],
+  "own_effect": {"technique": "Death Claw", "chunk": 295},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 60,
   "model": {

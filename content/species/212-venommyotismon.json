@@ -9,6 +9,7 @@
   "techniques": ["Inifinity Burn", "Meltdown", "Prominence Beam", "Magma Bomb", "Red Inferno", "Fire Tower",
                  "Heat Laser", "Spit Fire", "Megaton Punch", "Buster Dive", "Counter",
                  "Dynamite Kick (44)", "Tremar", "Sonic Jab", "Nightmare Syndromer"],
+  "own_effect": {"technique": "Nightmare Syndromer", "chunk": 282},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 8,
   "model": {

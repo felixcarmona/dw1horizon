@@ -8,6 +8,7 @@
   "specialties": ["battle", "ice", null],
   "techniques": ["Megaton Punch", "Counter", "Muscle Charge", "War Cry", "Sonic Jab", "Tremar", "Ice Needle",
                  "Aqua Magic", "Tear Drop", "Winter Blast", "Mail Strome", "Giga Freeze"],
+  "own_effect": {"technique": "Mail Strome", "chunk": 223},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 35,
   "model": {

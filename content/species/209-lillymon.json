@@ -9,6 +9,7 @@
   "techniques": ["Green Trap", "Charm Perfume", "Poison Powder", "Bug", "Danger Sting", "Poison Claw",
                  "Insect Plague", "Mass Morph", "Dynamite Kick (44)", "Buster Dive",
                  "Megaton Punch", "Counter", "Tremar", "Bit Bomb"],
+  "own_effect": {"technique": "Bit Bomb", "chunk": 279},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 28,
   "model": {

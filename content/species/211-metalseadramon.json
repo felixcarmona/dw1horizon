@@ -9,6 +9,7 @@
   "techniques": ["Aurora Freeze", "Giga Freeze", "Ice Statue", "Water Blit", "Ice Needle", "Winter Blast",
                  "Tear Drop", "Aqua Magic", "All Range Beam", "Pulse Laser", "DG Dimension",
                  "Delete Program", "Reverse Prog", "Power Crane", "Mail Strome"],
+  "own_effect": {"technique": "Mail Strome", "chunk": 281},
   "drop": {"item": "sm.recovery", "percent": 30},
   "effects_like": 61,
   "model": {

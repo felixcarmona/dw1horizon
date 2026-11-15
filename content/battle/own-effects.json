@@ -665,5 +665,314 @@
     "stands_for": 95,
     "sounds": [[90, 51], [215, 45], [255, 51]],
     "dw3": {"model": "M385KOGU", "slot": 11, "meft": [], "sprites": {"0": ["E000COM1.BIN", 0, 0, 38], "2014": ["E145VMON.BIN", 1, 2, 0]}, "pin": "772672ec522657b3ab21efdb88b9e768cb782b85"}
+  },
+  "223": {
+    "name": "Maul Attack",
+    "stands_for": 81,
+    "compose": {"recolour": {"ramp": ["#120600", "#6a3010", "#d07030", "#fff0d8"]}, "scale": 1.3},
+    "check": {"hue": 25}
+  },
+  "249": {
+    "name": "Dragon Wheel",
+    "stands_for": 81,
+    "compose": {"recolour": {"ramp": ["#000818", "#103a9a", "#50a0ff", "#e8f4ff"]}, "scale": 1.3},
+    "check": {"hue": 218}
+  },
+  "251": {
+    "name": "Wolf Claw",
+    "stands_for": 81,
+    "compose": {"recolour": {"ramp": ["#000a1a", "#1a5aa0", "#70d0ff", "#f0fcff"]}, "scale": 1.5},
+    "check": {"hue": 222}
+  },
+  "259": {
+    "name": "Mach Impulse",
+    "stands_for": 81,
+    "compose": {"recolour": {"ramp": ["#06080c", "#4a5a6c", "#c8d8ec", "#ffffff"]}, "scale": 1.2},
+    "check": {"hue": 210}
+  },
+  "276": {
+    "name": "Gate of Destiny",
+    "stands_for": 96,
+    "compose": {"recolour": {"ramp": ["#141000", "#a08018", "#fff080", "#ffffff"]}, "scale": 1.3},
+    "check": {"hue": 52}
+  },
+  "287": {
+    "name": "Marching Fishes",
+    "stands_for": 87,
+    "compose": {"recolour": {"ramp": ["#180800", "#8a3c08", "#ff9a30", "#fff4e0"]}, "scale": 1.3},
+    "check": {"hue": 30}
+  },
+  "289": {
+    "name": "Vulcan's Hammer",
+    "stands_for": 81,
+    "compose": {"recolour": {"ramp": ["#140c00", "#7a5a10", "#f0c840", "#fff8d8"]}, "scale": 1.4},
+    "check": {"hue": 48}
+  },
+  "292": {
+    "name": "Cat's Eyes",
+    "stands_for": 80,
+    "compose": {"recolour": {"ramp": ["#0a0014", "#40107a", "#a060f0", "#f0e4ff"]}},
+    "check": {"hue": 272}
+  },
+  "295": {
+    "name": "Top Gun",
+    "stands_for": 80,
+    "compose": {"recolour": {"ramp": ["#1a0004", "#8a1020", "#ff6070", "#fff0f0"]}},
+    "check": {"hue": 355}
+  },
+  "296": {
+    "name": "Angry Spike",
+    "stands_for": 85,
+    "compose": {"recolour": {"ramp": ["#140c04", "#6a5030", "#d8b880", "#fff4e0"]}, "scale": 1.2},
+    "check": {"hue": 35}
+  },
+  "314": {
+    "name": "Trump Sword",
+    "stands_for": 89,
+    "compose": {"recolour": {"ramp": ["#000418", "#1030a0", "#5090ff", "#e8f0ff"]}, "scale": 1.5},
+    "check": {"hue": 250}
+  },
+  "324": {
+    "name": "Feral Sword",
+    "stands_for": 81,
+    "compose": {"recolour": {"ramp": ["#120c00", "#806020", "#f4d070", "#fffbe8"]}, "scale": 1.2},
+    "check": {"hue": 45}
+  },
+  "261": {
+    "name": "Celestial Arrow",
+    "stands_for": 89,
+    "compose": {"recolour": {"ramp": ["#100c08", "#a08060", "#ffe8c0", "#ffffff"]}, "scale": 1.2},
+    "check": {"hue": 40}
+  },
+  "329": {
+    "name": "Transcendent Sword",
+    "stands_for": 81,
+    "compose": {"recolour": {"ramp": ["#00040c", "#305080", "#c0e0ff", "#ffffff"]}, "scale": 1.6},
+    "check": {"hue": 205}
+  },
+  "252": {
+    "name": "Brachio Bubble",
+    "stands_for": 63,
+    "dcb": {"attack": 569, "hit": 437, "fit": [4, 1, 24], "pin": "29b1dd1acf53eb1d8fb89b2398bc6cca6f221da4"}
+  },
+  "253": {
+    "name": "Vee Head Butt",
+    "stands_for": 99,
+    "dcb": {"attack": 1030, "hit": 2000, "fit": [4, 1, 24], "pin": "98a77e900c61bf7d8ef8ddb3e56acaf688db74e6"}
+  },
+  "254": {
+    "name": "Puppet Pummel",
+    "stands_for": 73,
+    "dcb": {"attack": 1279, "hit": 435, "fit": [4, 1, 24], "pin": "c6b6f7ad24f5193fe46179992bbd253be20d7f27"}
+  },
+  "255": {
+    "name": "Sticky Net",
+    "stands_for": 98,
+    "dcb": {"attack": 1033, "hit": 2021, "fit": [2, 1, 96], "pin": "ba76b1be4e77be916c62dfe72095b6ab36cc42a5"}
+  },
+  "257": {
+    "name": "Diamond Shell",
+    "stands_for": 75,
+    "dcb": {"attack": 1039, "hit": 2000, "fit": [4, 1, 24], "pin": "45523ba117fe3db70956413166a11d96faeee3ca"}
+  },
+  "258": {
+    "name": "Spiking Strike",
+    "stands_for": 62,
+    "dcb": {"attack": 1063, "hit": 2004, "fit": [2, 2, 12], "pin": "85e1c8d61dbb598deea99ce1f5d9f557c79b4dda"}
+  },
+  "260": {
+    "name": "Tail Hammer",
+    "stands_for": 75,
+    "dcb": {"attack": 1069, "hit": 2004, "fit": [4, 1, 24], "pin": "d8b16ecd0687dc10038c42f03a5fa955d6d1d9e5"}
+  },
+  "263": {
+    "name": "Mega Fire",
+    "stands_for": 77,
+    "dcb": {"attack": 1129, "hit": 2043, "fit": [2, 2, 12], "pin": "2b99070a79133ad8732fe5e5a2920f870d186e9c"}
+  },
+  "264": {
+    "name": "Gold Rush",
+    "stands_for": 75,
+    "dcb": {"attack": 1174, "hit": 406, "fit": [4, 1, 24], "pin": "4bc28db15814e84c5280c29f2fb52930efd77805"}
+  },
+  "266": {
+    "name": "Fire Rocket",
+    "stands_for": 61,
+    "dcb": {"attack": 1147, "hit": 435, "fit": [2, 2, 12], "pin": "06d0ef5c6cfb982d64401a82602ad00cba903bed"}
+  },
+  "268": {
+    "name": "Plasma Shot",
+    "stands_for": 77,
+    "dcb": {"attack": 1153, "hit": 450, "fit": [4, 1, 24], "pin": "c6976b22457fa58a9b01c8a92461d71f3da8ea56"}
+  },
+  "269": {
+    "name": "Rocking Stone",
+    "stands_for": 86,
+    "dcb": {"attack": 1180, "hit": 435, "fit": [4, 1, 24], "pin": "191afa0a883bcc40b2f78a0d0c311faec6eccd86"}
+  },
+  "272": {
+    "name": "Lightning Blast",
+    "stands_for": 86,
+    "dcb": {"attack": 1150, "hit": 2019, "fit": [4, 1, 24], "pin": "4f828e3ae763211b143e4953470839f2c28a3675"}
+  },
+  "273": {
+    "name": "Submarine Attack",
+    "stands_for": 90,
+    "dcb": {"attack": 1177, "hit": 2059, "fit": [4, 1, 24], "pin": "eda5e955407178cd251736513f996581bbfd376f"}
+  },
+  "274": {
+    "name": "V-Nova Blast",
+    "stands_for": 63,
+    "dcb": {"attack": 824, "hit": 449, "fit": [4, 1, 24], "pin": "3a1a83c739f2a2af292580dad2fbcd1b6d8f7163"}
+  },
+  "275": {
+    "name": "Horn Buster",
+    "stands_for": 73,
+    "dcb": {"attack": 1003, "hit": 496, "fit": [4, 1, 24], "pin": "0a6bb6d4785e0ae0420613b065b339ae87d66ce6"}
+  },
+  "277": {
+    "name": "Seventh Heaven",
+    "stands_for": 61,
+    "dcb": {"attack": 1138, "hit": 2046, "fit": [4, 1, 24], "pin": "77e8359bfe5c01bcee19ac40db28e9defac3bcd9"}
+  },
+  "279": {
+    "name": "Flower Cannon",
+    "stands_for": 73,
+    "dcb": {"attack": 1015, "hit": 400, "fit": [4, 1, 24], "pin": "c99cd889c6ffff98a628685f8e1a2860f9cf4f4e"}
+  },
+  "280": {
+    "name": "X-Scissor Claw",
+    "stands_for": 73,
+    "dcb": {"attack": 1132, "hit": 2064, "fit": [2, 2, 12], "pin": "7e190c12679429deb8070100c310a1ec05aa6996"}
+  },
+  "281": {
+    "name": "River of Power",
+    "stands_for": 111,
+    "dcb": {"attack": 1273, "hit": 2033, "fit": [2, 1, 16], "pin": "105ea048cb05959f9db68ea5a5d1869b5722fdbb"}
+  },
+  "282": {
+    "name": "Venom Infusion",
+    "stands_for": 96,
+    "dcb": {"attack": 1117, "hit": 435, "fit": [4, 1, 24], "pin": "05490ee302133d216d75ade846ecfab8e2ddadcb"}
+  },
+  "285": {
+    "name": "Fire Tornado",
+    "stands_for": 109,
+    "dcb": {"attack": 1144, "hit": 2015, "fit": [4, 1, 24], "pin": "8439a0c9155fe124a08a7ff0acfc453ed0ed3d24"}
+  },
+  "288": {
+    "name": "Harpoon Torpedo",
+    "stands_for": 85,
+    "dcb": {"attack": 1045, "hit": 406, "fit": [4, 1, 24], "pin": "cbdc4f0d2955a6a3609c288b5eea49de392f9ce2"}
+  },
+  "290": {
+    "name": "Arctic Blizzard",
+    "stands_for": 111,
+    "dcb": {"attack": 1141, "hit": 2014, "fit": [4, 1, 24], "pin": "63b857785e5ec414334e8e5e505f8f76ffbcab1f"}
+  },
+  "291": {
+    "name": "Puppy Howling",
+    "stands_for": 71,
+    "dcb": {"attack": 1021, "hit": 2063, "fit": [4, 1, 24], "pin": "530ba48135aee61c753c0ad6e654e69185d15708"}
+  },
+  "293": {
+    "name": "Darkness Wave",
+    "stands_for": 75,
+    "dcb": {"attack": 1078, "hit": 2025, "fit": [4, 1, 24], "pin": "60906f66fc6af8437b4c07599e210ce8a0a97efa"}
+  },
+  "294": {
+    "name": "Double Stars",
+    "stands_for": 89,
+    "dcb": {"attack": 1162, "hit": 2057, "fit": [4, 1, 24], "pin": "3951a553e05b87cec286d3799cb5e6ceb2905c6d"}
+  },
+  "297": {
+    "name": "Dancing Meteor",
+    "stands_for": 94,
+    "dcb": {"attack": 1171, "hit": 2044, "fit": [4, 1, 24], "pin": "e7c072ec72802516d544a60cb49575a9a1c243e0"}
+  },
+  "298": {
+    "name": "Shadow Scythe",
+    "stands_for": 111,
+    "dcb": {"attack": 1075, "hit": 2075, "fit": [4, 1, 24], "pin": "d36eededbd78332685532a803148ad5e737605de"}
+  },
+  "299": {
+    "name": "Throny Whipping",
+    "stands_for": 73,
+    "dcb": {"attack": 1102, "hit": 2054, "fit": [4, 1, 24], "pin": "07611c73cf80fc80fe67b1f9653fff27c7b2e834"}
+  },
+  "300": {
+    "name": "Shell's Attack",
+    "stands_for": 89,
+    "dcb": {"attack": 1255, "hit": 2000, "fit": [4, 1, 24], "pin": "9cd31ef3074285e234ab4c7f45849b7e45d9643e"}
+  },
+  "302": {
+    "name": "Boiling Bubble",
+    "stands_for": 61,
+    "dcb": {"attack": 1189, "hit": 2017, "fit": [4, 1, 24], "pin": "f9ebe6c545c3fe548fc2e5882b953f6bc73b80e2"}
+  },
+  "304": {
+    "name": "Flame Bomber",
+    "stands_for": 99,
+    "dcb": {"attack": 1186, "hit": 400, "fit": [4, 1, 24], "pin": "1861631b98568cc06f45ccf0545635b8199ebe04"}
+  },
+  "306": {
+    "name": "Inferno Missile",
+    "stands_for": 80,
+    "dcb": {"attack": 1123, "hit": 435, "fit": [4, 1, 24], "pin": "ce1fe729396db1af17f9776b04f72b17742b2952"}
+  },
+  "308": {
+    "name": "Spiral Saw",
+    "stands_for": 95,
+    "dcb": {"attack": 1207, "hit": 2000, "fit": [4, 1, 24], "pin": "c30ffc463f6e68b9cf5216d42ea25ef57bad22dc"}
+  },
+  "309": {
+    "name": "Coral Crusher",
+    "stands_for": 87,
+    "dcb": {"attack": 1231, "hit": 2065, "fit": [4, 1, 24], "pin": "54a8f659cf8308350d2be943c96cc914f2c6d877"}
+  },
+  "310": {
+    "name": "Thunder Ball",
+    "stands_for": 86,
+    "dcb": {"attack": 1048, "hit": 402, "fit": [4, 1, 24], "pin": "18e6fe4c91ab9594ce0707e4da4dc1490eaca4ef"}
+  },
+  "312": {
+    "name": "Meteor Stream",
+    "stands_for": 94,
+    "dcb": {"attack": 1246, "hit": 450, "fit": [2, 1, 16], "pin": "582d5c910329783ed1a6630a2ee8bb4d31446fd7"}
+  },
+  "313": {
+    "name": "Comet Cluster",
+    "stands_for": 61,
+    "dcb": {"attack": 1285, "hit": 435, "fit": [2, 2, 12], "pin": "68a740750ed3229a407258851af858f4c2fc71bd"}
+  },
+  "316": {
+    "name": "Mini Scissor Claws",
+    "stands_for": 66,
+    "dcb": {"attack": 1198, "hit": 472, "fit": [4, 1, 24], "pin": "4377622a8671b85d3a25ed33f27718f5852f2ca8"}
+  },
+  "318": {
+    "name": "Freezing Wave",
+    "stands_for": 69,
+    "dcb": {"attack": 1159, "hit": 2039, "fit": [2, 2, 12], "pin": "e0b7d5bd3079fe18de68cec551c3e583c7b95abc"}
+  },
+  "319": {
+    "name": "Flare Buster",
+    "stands_for": 61,
+    "dcb": {"attack": 1156, "hit": 435, "fit": [4, 1, 24], "pin": "5e3cf52087ad8414d5f3f29969cb4d72e7525fcf"}
+  },
+  "322": {
+    "name": "Slamming Tusk",
+    "stands_for": 75,
+    "dcb": {"attack": 1057, "hit": 2004, "fit": [4, 1, 24], "pin": "9acd5fa166c54b95d9d625227cae7114fbb72bf6"}
+  },
+  "326": {
+    "name": "Terra Force",
+    "stands_for": 109,
+    "dcb": {"attack": 1105, "hit": 435, "fit": [4, 1, 24], "pin": "17acf90f020862804fb1909f99cb048af945d086"}
+  },
+  "328": {
+    "name": "Wing Blade",
+    "stands_for": 63,
+    "dcb": {"attack": 1006, "hit": 495, "fit": [2, 1, 16], "pin": "dd30ed5a7155fe8f7564ba9b87aaf39b40756fa5"}
   }
 }

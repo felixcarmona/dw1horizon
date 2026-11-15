@@ -9,6 +9,7 @@
   "techniques": ["Prominence Beam", "Inifinity Burn", "Meltdown", "Magma Bomb", "Red Inferno", "Fire Tower",
                  "Hurricane", "Thunder Justice", "Spinning Shot", "Megalo Spark", "Megaton Punch",
                  "Counter", "Dynamite Kick (44)", "Mega Flame"],
+  "own_effect": {"technique": "Mega Flame", "chunk": 328},
   "drop": {"item": "Giant Meat", "percent": 30},
   "effects_like": 5,
   "model": {
