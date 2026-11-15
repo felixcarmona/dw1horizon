@@ -49,11 +49,12 @@ import struct
 import sys
 
 import numpy as np
-from PIL import Image
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
+
+from tools.image import Image  # noqa: E402
 
 FPS = 30                # the pictures render() makes
 TICKS = 60              # block entries per second: one per 1/60 s of game time (the script's waits count the same)
@@ -414,7 +415,7 @@ def sprite_blocks(disc, tables, sprite_id):
 
 
 def render(disc, tables, sprite_id, canvas=(640, 480), origin=(320, 240)):
-    """The sprite as a list of RGBA PIL frames at 30 fps: every block drawn each tick (a block that has
+    """The sprite as a list of RGBA frames (tools.image) at 30 fps: every block drawn each tick (a block that has
     ended is hidden), the sprite origin at `origin` on a `canvas` sized image, then all frames cropped
     to the union of what was drawn (the same box for every frame, at least 32 x 32)."""
     pack, blocks = sprite_blocks(disc, tables, sprite_id)

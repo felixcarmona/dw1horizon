@@ -139,6 +139,9 @@ def _read_png(raw):
     return im
 
 
+FLIP_LEFT_RIGHT, FLIP_TOP_BOTTOM = 0, 1
+
+
 class Raster:
     def __init__(self, mode, size, data):
         if mode not in ("L", "LA", "RGB", "RGBA", "P"):
@@ -388,6 +391,48 @@ class Raster:
         # Fixed-point separable filters: preserve rounding and intermediate clipping.
         return _resize(self, size, resample)
 
+    def transpose(self, method):
+        """FLIP_LEFT_RIGHT (0) or FLIP_TOP_BOTTOM (1)."""
+        n, w = self.channels, self.width
+        rows = [self.data[y * w * n : (y + 1) * w * n] for y in range(self.height)]
+        if method == FLIP_LEFT_RIGHT:
+            rows = [b"".join(r[x * n : (x + 1) * n] for x in range(w - 1, -1, -1)) for r in rows]
+        elif method == FLIP_TOP_BOTTOM:
+            rows = rows[::-1]
+        else:
+            raise ValueError(f"unsupported transpose {method}")
+        im = Raster(self.mode, self.size, b"".join(rows))
+        im.palette, im.info = self.palette, self.info.copy()
+        return im
+
+    def rotate(self, angle, resample=Resampling.NEAREST, expand=False):
+        """Counter-clockwise by angle degrees about the centre, nearest pixel; expand grows the image to hold it all."""
+        c, s = round(math.cos(math.radians(angle)), 15), round(math.sin(math.radians(angle)), 15)
+        w, h = self.size
+        if expand and angle % 90 == 0:
+            nw, nh = (h, w) if angle % 180 else (w, h)
+        elif expand:
+            xs = [x * c + y * s for x in (-w / 2, w / 2) for y in (-h / 2, h / 2)]
+            ys = [-x * s + y * c for x in (-w / 2, w / 2) for y in (-h / 2, h / 2)]
+            nw = max(1, math.ceil(max(xs) + w / 2) - math.floor(min(xs) + w / 2))
+            nh = max(1, math.ceil(max(ys) + h / 2) - math.floor(min(ys) + h / 2))
+        else:
+            nw, nh = w, h
+        n = self.channels
+        out = bytearray(bytes(_color(0, self.mode)) * (nw * nh))
+        for y in range(nh):
+            dy = y + 0.5 - nh / 2
+            for x in range(nw):
+                dx = x + 0.5 - nw / 2
+                sx = math.floor(dx * c - dy * s + w / 2)
+                sy = math.floor(dx * s + dy * c + h / 2)
+                if 0 <= sx < w and 0 <= sy < h:
+                    si, di = (sy * w + sx) * n, (y * nw + x) * n
+                    out[di : di + n] = self.data[si : si + n]
+        im = Raster(self.mode, (nw, nh), out)
+        im.palette, im.info = self.palette, self.info.copy()
+        return im
+
     def thumbnail(self, size, resample=Resampling.BICUBIC):
         factor = min(1, size[0] / self.width, size[1] / self.height)
         im = self.resize(
@@ -628,6 +673,8 @@ Image = SimpleNamespace(
     composite=composite,
     Resampling=Resampling,
     MEDIANCUT=0,
+    FLIP_LEFT_RIGHT=FLIP_LEFT_RIGHT,
+    FLIP_TOP_BOTTOM=FLIP_TOP_BOTTOM,
     **{k: v for k, v in Resampling.__members__.items()},
 )
 
