@@ -42,7 +42,9 @@ sys.path.insert(0, os.path.join(ROOT, 'tools'))
 import dwmap; import membudget as mb; from dws import bytecode as bytecode
 
 CACHE = os.path.join(ROOT, 'build/npcanims')
-NUM_TYPES = 180
+NUM_NATIVE_TYPES = 180
+NUM_TYPES = 1024
+COLD_ANIM_FLAG = 0x80000000
 MAX_SLOTS = 64
 ALWAYS = set(range(0, 5)) | {0x13} | set(range(0x1C, 0x21)) | set(range(0x21, MAX_SLOTS))
 FULL = {0}      # types never trimmed: 0 is the tamer's model (BOYS), also used for other boys
@@ -67,10 +69,10 @@ def mmd_slots(d):
     offs, first, i = [], None, 0
     while first is None or 4 * i < first:
         o = struct.unpack_from('<I', d, ta + 4 * i)[0]
-        if o and (first is None or o < first): first = o
+        if o and not o & COLD_ANIM_FLAG and (first is None or o < first): first = o
         offs.append(o); i += 1
     offs = offs[:first // 4]
-    starts = sorted(set(o for o in offs if o))
+    starts = sorted(set(o for o in offs if o and not o & COLD_ANIM_FLAG))
     size = {s: (starts[j + 1] if j + 1 < len(starts) else len(d) - ta) - s for j, s in enumerate(starts)}
     return ta, offs, size
 
@@ -146,6 +148,9 @@ def audit(dg, maphead):
                 else:
                     for t in ts: per_type[t].add(slot)
     keep = {t: set(range(MAX_SLOTS)) if t in FULL else ALWAYS | per_type.get(t, set()) for t in range(NUM_TYPES)}
+    # A shared conservative mask avoids a resident index row for every import.
+    imported = set().union(*(keep[t] for t in range(NUM_NATIVE_TYPES, NUM_TYPES)))
+    keep.update({t: imported for t in range(NUM_NATIVE_TYPES, NUM_TYPES)})
     return keep, per_type, unresolved
 
 
@@ -162,30 +167,39 @@ def trimmed_size(t):
     except FileNotFoundError: return mb.mmd_size(t)
     if _keep_cache is None and not mb.TARGET_FACTS.get('npc_anim_keep'):
         _keep_cache = audit(os.path.join(ROOT, 'extracted/SCN/DG.SCN'), os.path.join(ROOT, 'extracted/SCN/MAPHEAD.SCN'))[0]
-    ta, offs, size = mmd_slots(d)
     target = mb.TARGET_FACTS.get('npc_anim_keep')
+    # An older executable has no shared mask and leaves imported types whole.
+    if target and t >= len(target): return len(d)
     keep = target[t] if target else _keep_cache[t]
-    kept = {o for i, o in enumerate(offs) if o and i in keep}
+    return compacted_size(d, mb.model_bones(t), keep)
+
+
+def compacted_size(d, bones, keep):
+    """Resident bytes after compaction, excluding cold streams and including the stub."""
+    ta, offs, size = mmd_slots(d)
+    kept = {o for i, o in enumerate(offs) if o and not o & COLD_ANIM_FLAG and i in keep}
     dropped = sum(size[o] for o in set(size) - kept)
-    bones = int(mb.DIGI[t]['bone_count']) if t in mb.DIGI else 0
     scale = struct.unpack_from('<H', d, ta + offs[0])[0] & 0x8000
     stub = ((bones - 1) * (9 if scale else 6) + 2) * 2
     return len(d) if dropped < stub + 16 else len(d) - dropped + stub
 
 
 def savings(keep):
-    rows = []
-    for t in range(NUM_TYPES):
-        p, name = mb.model_file(t)
-        if not os.path.exists(p): continue
-        d = open(p, 'rb').read()
+    types = set(mb.DIGI)
+    if mb.MODEL_ARCHIVE:
+        _, rows, _ = mb.archive_models(mb.MODEL_ARCHIVE)
+        types.update(t for t, row in enumerate(rows) if row['modelSize'])
+    out = []
+    for t in sorted(types):
+        try: d = mb.model_data(t)
+        except FileNotFoundError: continue
+        if not d: continue
         ta, offs, size = mmd_slots(d)
-        kept = {o for i, o in enumerate(offs) if o and i in keep[t]}
-        dropped = set(size) - kept
-        rows.append(dict(type=t, name=mb.digi_name(t), file=name, size=len(d), slots=len(offs),
-                         dropped_slots=[i for i, o in enumerate(offs) if o and o not in kept],
-                         saved=sum(size[o] for o in dropped)))
-    return rows
+        kept = {o for i, o in enumerate(offs) if o in size and i in keep[t]}
+        out.append(dict(type=t, name=mb.digi_name(t), size=len(d), slots=len(offs),
+                        dropped_slots=[i for i, o in enumerate(offs) if o in size and o not in kept],
+                        saved=len(d) - compacted_size(d, mb.model_bones(t), keep[t])))
+    return out
 
 
 def main():
@@ -201,13 +215,13 @@ def main():
         print(f'always kept: {sorted(ALWAYS)}')
         print(f'unresolved script actors (slot kept for every type): {len(unresolved)}')
         for u in unresolved: print('  ', u)
-        print(f'{len(rows)} models, {tot} bytes, {sav} bytes of animations dropped ({100 * sav / tot:.1f}%)')
+        print(f'{len(rows)} models, {tot} bytes, {sav} resident bytes freed (stub included) ({100 * sav / tot:.1f}%)')
         for r in sorted(rows, key=lambda r: -r['saved']):
             extra = sorted(per_type.get(r['type'], set()) - ALWAYS)
-            print(f"{r['type']:3} {r['name']:16} {r['file']:5} {r['size']:6} -{r['saved']:6}  dropped {r['dropped_slots']}"
+            print(f"{r['type']:3} {r['name']:16} {r['size']:6} -{r['saved']:6}  dropped {r['dropped_slots']}"
                   f"  script-only kept {extra}")
         return
-    masks = [sum(1 << s for s in keep[t] if s < MAX_SLOTS) for t in range(NUM_TYPES)]
+    masks = [sum(1 << s for s in keep[t] if s < MAX_SLOTS) for t in range(NUM_NATIVE_TYPES)]
     distinct = sorted(set(masks), key=masks.index)
     lines = ['/*', ' * MOD (memreclaim): animation slots each Digimon type keeps when it is', ' * loaded as an NPC (heap model).',
              ' * GENERATED by tools/npcanims.py gen from DG.SCN, MAPHEAD.SCN and the .MAP',
@@ -217,11 +231,15 @@ def main():
              f'const uint32_t NPC_ANIM_KEEP_MASKS[{len(distinct)}][2] = {{']
     for m in distinct:
         lines.append(f'\t{{ 0x{m & 0xFFFFFFFF:08X}, 0x{m >> 32:08X} }},')
-    lines += ['};', '', f'const uint8_t NPC_ANIM_KEEP_INDEX[{NUM_TYPES}] = {{']
-    for t in range(0, NUM_TYPES, 10):
-        lines.append('\t' + ', '.join(f'{distinct.index(masks[u]):2}' for u in range(t, min(t + 10, NUM_TYPES))) +
-                     f',  /* {t}-{min(t + 9, NUM_TYPES - 1)} */')
+    lines += ['};', '', f'const uint8_t NPC_ANIM_KEEP_INDEX[{NUM_NATIVE_TYPES}] = {{']
+    for t in range(0, NUM_NATIVE_TYPES, 10):
+        lines.append('\t' + ', '.join(f'{distinct.index(masks[u]):2}' for u in range(t, min(t + 10, NUM_NATIVE_TYPES))) +
+                     f',  /* {t}-{min(t + 9, NUM_NATIVE_TYPES - 1)} */')
     lines.append('};')
+    imported = sum(1 << slot for slot in keep[NUM_NATIVE_TYPES] if slot < MAX_SLOTS)
+    lines += ['', '/* Shared by imported species, including script-only slots. */',
+              'const uint32_t NPC_ANIM_IMPORT_KEEP[2] = {',
+              f'\t0x{imported & 0xFFFFFFFF:08X}, 0x{imported >> 32:08X}', '};']
     open(a.out, 'w').write('\n'.join(lines) + '\n')
     print(f'{a.out}: {NUM_TYPES} types, {len(unresolved)} unresolved actors')
 

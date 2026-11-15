@@ -179,12 +179,17 @@ def model_block_resident(t):
     return full - spare if spare >= 16 else full
 
 
-def instance_blocks(t):
+def model_bones(t):
     b = int(DIGI[t]['bone_count']) if t in DIGI else 0
     if MODEL_ARCHIVE:
         _, rows, originals = archive_models(MODEL_ARCHIVE)
         if t >= 180 or t in originals:
             b = rows[t]['para']['boneCount']
+    return b
+
+
+def instance_blocks(t):
+    b = model_bones(t)
     return blk(b * POS_DATA) + blk(b * MOMENTUM)
 
 
@@ -770,8 +775,9 @@ def configure(env=None, partner_mmd_max=None, heap_map=None):
     model_data.cache_clear()
     model_block.cache_clear()
     _MODEL_SIZES.clear()
-    if 'npcanims' in sys.modules:
-        sys.modules['npcanims'].trimmed_size.cache_clear()
+    trim = getattr(sys.modules.get('npcanims'), 'trimmed_size', None)
+    if trim is not None:
+        trim.cache_clear()
 
 
 configure()

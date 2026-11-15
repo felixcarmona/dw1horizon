@@ -574,24 +574,38 @@ point where `tfsStreamOpen` runs.
 
 ### NPC models without unused animations (patch 0060, `src/main/npc_anim_trim.c`)
 
-An NPC model (`loadMMD` class 0) is read whole into the heap, but NPCs never play the partner's care animations. After
-the read, `trimNpcModel` keeps the slots listed in the generated `npc_anim_keep.c` (`tools/npcanims.py gen`), packs them,
-moves the model to the top of its block and frees the bottom, which joins the free block below.
+NPC models (`loadMMD` class 0) keep the slots listed in the generated `npc_anim_keep.c`
+(`tools/npcanims.py gen`). Models that fit the staging area are read into world scratch and compacted before
+heap allocation. Larger models are compacted after their heap read: `trimNpcModel` moves the packed model to the
+top of its block and frees the bottom, which joins the free block below. Partner and tamer fixed buffers are not
+compacted.
 
 Kept for every type: 0–4 (idle, alternative idle, walk, run), 0x13, 0x1C–0x20 (curling opponent, training partner,
-scripted gestures) and 0x21 on (every battle animation and technique: any NPC can be fought). Per type, additionally,
-every slot a script plays on an actor that resolves to that type (`PLAY_ANIMATION`, `ENTITY_WALK_TO*`, resolved through
-the screens that load the script, their `.MAP` entries and `SET_DIGIMON` overrides). Script lines whose actor cannot be
-resolved keep their slot for every type. Type 0 (the tamer) and types ≥ 180 (imported species) are not trimmed.
+scripted gestures) and 0x21 on (every battle animation and technique: any NPC can be fought). Per native type,
+additionally, every slot a script plays on an actor that resolves to that type (`PLAY_ANIMATION`,
+`ENTITY_WALK_TO*`, resolved through the screens, their `.MAP` entries and `SET_DIGIMON` overrides). Script lines
+whose actor cannot be resolved keep their slot for every type. Type 0 keeps every slot.
+
+Imported species share one **8-byte mask**, the union of their scripted slots and the common field and battle
+slots. The original 180-entry index stays the same size. Cold-animation table entries retain their packed external
+offsets and lengths: they are neither resident stream boundaries nor destinations for the stub. The stub uses the
+loaded species' bone count through the existing parameter lookup, including imports with a replacement skeleton.
+No per-import bone or keep-index table is added to main.
 
 - A dropped slot points to a one-frame stub (the idle's first pose), not 0: `startAnimation` ignores a 0 slot and the
-  previous animation would go on, hanging a script that waits for it to end. No original animation is one frame long,
-  so stub plays are counted (`MOD_NPC_STUB_HITS`, `MOD_NPC_STUB_LAST` = type << 8 | slot).
-- Effect: about 14% of all MMD bytes. Enemy models (`E*.MMD`) have no care animations (0–6 KB to drop); partner species
-  used as NPCs lose 15–30 KB each.
-- Loading still needs the whole file for a moment: the budget tools count the last model's full size as the peak.
-- Scripts that make an NPC play a new animation need `npcanims.py gen` rerun with their `DG.SCN`/`MAPHEAD.SCN`
-  (`--dg`, `--maphead`), or the NPC plays the stub. `npcanims.py report` lists every model.
+  previous animation would go on, hanging a script that waits for it to end. Original animations are not one frame
+  long; one-frame starts are counted by `MOD_NPC_STUB_HITS`, with `MOD_NPC_STUB_LAST` = type << 8 | slot.
+- Native partner species used as NPCs commonly lose 15–30 KB each. Imported models now reclaim their unused
+  resident care clips too; the reported savings include the stub.
+- The full read still has to fit staging scratch, or the heap for a larger model. The budget tools account for both
+  loading and the compacted resident blocks.
+- Scripts that play a new animation need `npcanims.py gen` rerun with their `DG.SCN`/`MAPHEAD.SCN`
+  (`--dg`, `--maphead`). The build checks every required row, including imports, against the compiled masks.
+  `npcanims.py report` lists the resident savings.
+
+In the nine-language full build, the import-trimming patch moves `main_BSS_END` from **0x801ce3c4 to 0x801ce3ec**
+(**+40 B**, including the shared mask). Heap alignment makes the allocator cost **32 B**:
+**187,184 → 187,152 B**. This is smaller than Hawkmon's **5,336 B** of reclaimed NPC model data.
 
 ### Save extensions (patches 0092, 0093, 0096)
 
@@ -1296,7 +1310,7 @@ DuckStation were not tested.
 
 ## Overdell descent and Birdra Transport model room
 
-The executable and heap did not move; three imported models grew. Gargoylemon's gait redo
+The earlier model-only room fix left the executable and heap in place; three imported models grew. Gargoylemon's gait redo
 added 15.3 KB of resident clips, its restored battle idle 1.9 KB, and SkullSatamon's restored
 battle clips 2.4 KB. With both models loaded, screens 330-335 needed 193,440 B, a margin of
 **−8,040 B**. Hawkmon's restored battle clips (+5.7 KB) took screen 207 to **−4,616 B**.
@@ -1306,8 +1320,7 @@ battle clips 2.4 KB. With both models loaded, screens 330-335 needed 193,440 B, 
   The other non-field, non-battle clips get the recipe compaction used by native bindings
   (exact, then tol 5): 96,138 → **90,116 B**.
 - **SkullSatamon**: `battle_originals.compact` with tol 5 brings it from 87,648 to **83,760 B**.
-- **Hawkmon**: until imported NPC models are trimmed, its battle clips 0x22-0x24 are its
-  field clips again. Its other clips are compacted: 87,632 → **81,298 B**.
+- **Hawkmon**: that room fix used its field clips for battle slots 0x22-0x24. Its other clips are compacted: 87,632 → **81,298 B**.
 
 The same change calls `digimonPara`, `raiseRow` and the evolution row lookups out of line
 (three patches): main gives 2,608 B back and the heap goes from 185,408 to **187,984 B**.
@@ -1316,7 +1329,6 @@ Each lookup costs one call and return more, a few cycles against a 33 MHz frame 
 Result: all 320 setups pass. Screens 330-335 have **+4,456 B**, 207 has **+4,288 B**, and
 217 (Devimon, Ninjamon, Phantomon) is the tightest at **+2,984 B**.
 
-The durable fix is NPC trimming for imported species. `npc_anim_trim.c` stops at type 180,
-so it never trims them. Trimming would drop their resident clips 0x15-0x1B, measured at
-5.4 KB (Hawkmon), 6.7 KB (SkullSatamon) and 7.0 KB (Gargoylemon). It needs a shared keep
-mask, handling for cold-split table entries, and import bone counts for the stub.
+Imported NPC trimming now supplies that model room at load time. A shared keep mask preserves field,
+scripted and battle clips, cold table entries stay intact, and the one-frame stub uses each imported skeleton's
+bone count. The species data remains in the archive and its existing parameter cache.
