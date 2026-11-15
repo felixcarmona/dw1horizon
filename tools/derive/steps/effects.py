@@ -190,7 +190,8 @@ def own_effects(ctx, archive):
             continue
         like = bytes(archive[e['stands_for'] * CHUNK_SIZE:(e['stands_for'] + 1) * CHUNK_SIZE])
         if 'dw3' in e:
-            out[int(key)], info = dw3_effect(ctx.path(*DW3_SOURCE), key, e, launch_table(like), area=int(key) in area)
+            out[int(key)], info = dw3_effect(ctx.path(*DW3_SOURCE), key, e, launch_table(like), area=int(key) in area,
+                                               root=ctx.root)
             ctx.log(f'own effect {key} {e["name"]}: ' + ', '.join(f'{k} {v}' for k, v in info.items()
                                                                   if k in ('chunk', 'objects', 'behaviour', 'kept')))
             continue
@@ -236,7 +237,7 @@ def own_effects(ctx, archive):
     return out
 
 
-def dw3_effect(games, key, e, origin_table, area=False):
+def dw3_effect(games, key, e, origin_table, area=False, root=None):
     """(chunk, info) of an own effect converted from a DW2003 technique (tools/dw3efe.py): its "dw3" names the
     battle model, the technique's action slot and the 3D effects and sprites it spawns, read from the player's extracted
     DW2003 or Digimon World 3 disc (`games`: the build's source-games/dw2003). One hit; one target unless `area`
@@ -256,8 +257,21 @@ def dw3_effect(games, key, e, origin_table, area=False):
             raise ValueError(f'own effect {key} {e["name"]}: source discs required: dw2003 (missing {missing[0]}); '
                              'derive build --source-disc dw2003=IMAGE')
         tech = X.model_scripts(files, d['model'])[d['slot']]
-        return E.convert(files, X.EffectIds(d['meft'], sprites), tech, E.FIELD_SCALE * d.get('scale', 1), origin_table, 0x100 + int(key), area=area,
-                         leave_out=[tuple(x) for x in d.get('leave_out', [])], sounds=e.get('sounds'))
+        species = caster_of(root, int(key)) if root else None
+        return E.convert(files, X.EffectIds(d['meft'], sprites), tech, E.FIELD_SCALE * d.get('scale', 1), origin_table,
+                         0x100 + int(key), area=area, leave_out=[tuple(x) for x in d.get('leave_out', [])],
+                         sounds=e.get('sounds'), caster_height=species['model']['height'] if species else None)
+
+
+def caster_of(root, chunk):
+    """The species record whose own effect is the chunk, or None."""
+    import glob, json
+    for path in sorted(glob.glob(os.path.join(root, 'content', 'species', '*.json'))):
+        with open(path, encoding='utf-8') as f:
+            sp = json.load(f)
+        if (sp.get('own_effect') or {}).get('chunk') == chunk:
+            return sp
+    return None
 
 
 def dcb_disc(games, key, e):

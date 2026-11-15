@@ -117,12 +117,13 @@ class Discs(unittest.TestCase):
     def tearDownClass(cls):
         cls.tmp.cleanup()
 
-    def build(self, rid, chunk, e):
+    def build(self, rid, chunk, e, faithful=False):
+        """The chunk the build makes; faithful: as on the disc, without the anchor at the caster's size."""
         from tools.derive.steps import effects
         size = effects.CHUNK_SIZE
         like = effects.launch_table(self.archive[e['stands_for'] * size:(e['stands_for'] + 1) * size])
         return effects.dw3_effect(self.games[rid], str(chunk), e, like,
-                                  area=chunk in effects.finisher_area_chunks(ROOT))
+                                  area=chunk in effects.finisher_area_chunks(ROOT), root=None if faithful else ROOT)
 
     def test_every_release_builds_the_pinned_chunks(self):
         for rid in self.games:
@@ -141,9 +142,10 @@ class Discs(unittest.TestCase):
             if only and chunk not in only:
                 continue
             with self.subTest(chunk=chunk, name=e['name']):
-                # the conversion's fidelity, at the field scale: a "scale" only resizes the faithful conversion
+                # the conversion's fidelity, at the field scale: a "scale" only resizes the faithful conversion and
+                # the caster height only moves the spawns onto the caster at its size here (dw3efe.convert)
                 unscaled = dict(e, dw3={k: v for k, v in e['dw3'].items() if k != 'scale'})
-                data, _info = self.build('dw2003', chunk, unscaled)
+                data, _info = self.build('dw2003', chunk, unscaled, faithful=True)
                 with source_context(os.path.dirname(self.games['dw2003'])):
                     from tools import dw3effect as X, dw3efe as E
                     disc = X.Disc(IMAGES['dw2003'])

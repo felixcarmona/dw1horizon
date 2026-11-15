@@ -108,6 +108,21 @@ class Placement(unittest.TestCase):
         self.assertEqual(t, (0, -500, -1300))
         self.assertEqual(m[0], 4096)
 
+    def test_anchor_moves_the_start_not_the_motion(self):
+        # at half the caster's size: the spawn 300 ahead and 500 up, and the part's start 1000 ahead, halve;
+        # the part's later 2000 of flight stays as it is
+        e = self.effect()
+        e.keys[0][1] = (e.keys[0][0][0], (0, 0, -3000))
+        e.frames = [[0], [1]]
+        s = X.Spawn(0, 'meft', 1, (0, -500, -X.FIELD_HALF + 300), (0, -2048, 0))
+        b = X.baked(e, s, -1, anchor=0.5)
+        self.assertEqual(b.keys[0][0][1], (0, -250, -650))
+        self.assertEqual(b.keys[0][1][1], (0, -250, -2650))
+
+    def test_anchor_leaves_the_target_side(self):
+        s = X.Spawn(0, 'meft', 1, (0, -500, X.FIELD_HALF - 300), (0, -2048, 0))     # at the enemy's row
+        self.assertEqual(X.baked(self.effect(), s, -1, anchor=0.5).keys[0][0], X.baked(self.effect(), s, -1).keys[0][0])
+
     def test_delay(self):
         s = X.Spawn(0, 'meft', 1, (0, 0, -X.FIELD_HALF), (0, -2048, 0))
         e = X.baked(self.effect(), s, -1, delay=3)
