@@ -84,6 +84,7 @@ the moment the attack starts.
 | 321 Knightmon | Berserk Sword (DW2003) | Spiral Sword | sprites at the caster as flat quads (E000COM1 #2) | 1 | plays its whole length (6 frames at 30 fps), hits when it ends | none | one enemy, as for Spiral Sword | one enemy |
 | 324 Maildramon | Thunder Bolt (DW2003) | Death Claw | sprites at the caster as flat quads (E000COM1 #2, E000COM2 #64, E438RIDN #1011) | 1 | plays its whole length (68 frames at 30 fps), hits when it ends | none | one enemy, as for Death Claw | one enemy |
 | 325 Musyamon | Ura Sword (DW2003) | Death Claw | sprites at the caster as flat quads (E000COM1 #2, E000COM3 #7) | 1 | plays its whole length (31 frames at 30 fps), hits when it ends | none | one enemy, as for Death Claw | one enemy |
+| 328 Snimon | Twin Sickles (DW2003) | Bit Bomb | sprites at the caster as flat quads (E000COM1 #2) | 1 | plays its whole length (6 frames at 30 fps), hits when it ends | none | one enemy, as for Bit Bomb | one enemy |
 
 ## Where the port differs from the source
 
