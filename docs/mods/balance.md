@@ -272,7 +272,7 @@ are reported separately. The existing daily card shop is likewise bounded by six
 
 | What | Disc | Now | Why |
 |---|---|---|---|
-| Mojyamon's exchanges (`shops.json`) | unlimited rewards, including Medium Recovery → S.Def.disk | eight daily exchanges and one once-per-save exchange (table below) | explicit bounded gains; amount box caps at 1; Dolph Fin cannot be farmed by delaying recruitment |
+| Mojyamon's exchanges (`shops.json`) | unlimited rewards, including Medium Recovery → S.Def.disk | eight daily exchanges and one once-per-save exchange (table below) | explicit bounded gains; every exchange is one item, with no amount box; Dolph Fin cannot be farmed by delaying recruitment |
 | sup.recovery / Sup.restore merit | 20 / 100 | 60 / 250 | merit sold through them made a 500-bit card pack worth about 1090 bits |
 | Card machine odds (`economy.json` `cardMachine`, in its script `libraries/s219` before patch 0237), rarity 2 / 4 | 7 / 70 % | 5 / 72 % | the cards' own sale price plus DemiMeramon and ClearAgumon gave back 103 bits a 100-bit card (the price is in its text) |
 | Tekkamon's drop (`90-tekkamon.json`) | S.Def.disk 100 % | 15 % | a wild fight of the Back Dimension, about 4900 bits each, without limit |
@@ -313,7 +313,7 @@ must remain distinct.
 These are finite allowances, not unlimited conversion exits. Item 70 (Chain Melon) is displayed as Overripe Melon
 in the English item-name bank. Double Floppy is item 7, not Restore.
 
-Every amount box caps at one. Daily bits 789–796 gate the eight daily rows; the former ninth daily bit 797 stays
+Every exchange is one item, made at once when the row is chosen (there is no amount box). Daily bits 789–796 gate the eight daily rows; the former ninth daily bit 797 stays
 reserved/cleared for compatibility. Dolph Fin checks historical completion flag **13**, which is never cleared
 at midnight. Its first successful exchange sets that flag, even if recruitment is postponed. Cancellation and
 full-bag failures spend neither type of allowance. Saving/loading retains the flags. Existing saves that already

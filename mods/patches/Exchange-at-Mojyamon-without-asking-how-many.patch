@@ -1,0 +1,192 @@
+From 3f423bf84de34368548b71f79e52313e3ea168da Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 15 Nov 2026 11:54:16 +0000
+Subject: [PATCH] Exchange at Mojyamon without asking how many
+
+Each exchange is one a day, so the amount box could only show 1 and looked
+like a stuck prompt. Selecting a row now checks the daily and once-per-save
+refusals, the items held and the room for the reward as before, then makes
+the exchange of one item. The question and the Mojyamon amount box are gone,
+with the code that drew them.
+---
+ src/shop/script_menu.c | 102 +++++++++++++++--------------------------
+ 1 file changed, 36 insertions(+), 66 deletions(-)
+
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index 2d19407d..f25facce 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -1167,8 +1167,8 @@ void openMojyamonShop(void)
+ 		SCRIPT_TEXTBOX_MODE = 3;
+ 		break;
+ 	case 4: {
+-		/* MOD (amounts): how many, instead of the Yes / No: at most what the player has and the stack of the item got
+-		   holds (a full inventory works when the whole stack given goes, case 5) */
++		/* MOD (amounts): the exchange is one a day, so no amount is asked: it needs the item given and room for the
++		   one got (a full inventory works when the whole stack given goes, case 5) */
+ 		int32_t row;
+ 		int32_t room;
+ 		int32_t trade;
+@@ -1200,23 +1200,20 @@ void openMojyamonShop(void)
+ 			SCRIPT_TEXTBOX_MODE = 1;
+ 			break;
+ 		}
+-		MAX_SHOP_AMOUNT = 1; /* One exchange per row per day. */
+-		openAmountBox(1);
+-		SCRIPT_STATE_2 = 1;
+-		SCRIPT_TEXTBOX_MODE = 3;
++		SCRIPT_STATE_2 = 5;
+ 		break;
+ 	}
+ 	case 5: {
+-		/* MOD (amounts): SHOP_AMOUNT of the item given (SHOP_ITEM_TYPE) for as many of the one got (MOJYA_GOT),
++		/* MOD (amounts): one of the item given (SHOP_ITEM_TYPE) for one of the one got (MOJYA_GOT),
+ 		   the given first so that its slot is free; given back when the got does not fit */
+ 		setInputRepeatMask(0);
+ 		triggerBoxCloseFlag(1);
+-		removeItem(SHOP_ITEM_TYPE, SHOP_AMOUNT);
+-		if (giveItem(MOJYA_GOT, SHOP_AMOUNT) != 0) {
++		removeItem(SHOP_ITEM_TYPE, 1);
++		if (giveItem(MOJYA_GOT, 1) != 0) {
+ 			setMojyaItemTradedTrigger();
+ 			showMapHeadTextbox(0xd, owner, 0, 0x4d6);
+ 		} else {
+-			giveItem(SHOP_ITEM_TYPE, SHOP_AMOUNT);
++			giveItem(SHOP_ITEM_TYPE, 1);
+ 			showMapHeadTextbox(0xe, owner, 0, 0x4d6);
+ 		}
+ 
+@@ -2721,8 +2718,7 @@ void tickMojyaTradeMenu(void)
+ 		item = ITEM_MENU_LEFT->buf[offset];
+ 		if ((item & 0x80) != 0) {
+ 			writePStat(PSTAT_249, (item & 0x7f));
+-			showMapHeadTextbox(0xb, readPStat(PSTAT_254), 0, 0x4d6);
+-			SCRIPT_STATE_2 = 4; /* MOD (amounts): the amount box at once, under the question (was after it, a Yes / No) */
++			SCRIPT_STATE_2 = 4; /* MOD (amounts): no question and no amount box, the exchange is always one (was a Yes / No) */
+ 			playSound(0, 3);
+ 		} else {
+ 			playSound(0, 0xb);
+@@ -3515,17 +3511,16 @@ void renderNamingUnderscore(uint8_t boxId, int16_t x, int16_t y, int16_t w)
+ /*
+  * MOD (amounts): how many, asked in an amount box drawn like the shop's (box 3, script_common.c): UP / DOWN one,
+  * by ten with ALT, round from 1 to the most (modAmountStep), □ the most, CONFIRM_BUTTON (✕) takes it, CANCEL_BUTTON (△) none.
+- *   1, Mojyamon's trades (openMojyamonShop): the item given and its name, the item got and its name, the amount;
+- *      ✕ goes to case 5 (the trade), △ to case 6 (his goodbye, as the original's No)
++ *   (1 was Mojyamon's trades; they are one a day and no longer ask)
+  *   2, card packs (rollCardPack): "Card pack", the price, the amount and what they cost; ✕ goes to case 9, △ to 8
+  *   3, cards for merit and 4, items for merit (openMeritShop): as 2 with the card or the item; ✕ goes to case 8 or 0xc,
+  *      △ back to the list, which stays open behind the box
+- * The text is one row (ITEM_MENU_SUB_TEXTBOX_LINE: the dialogue box's spare page, row 17 for a trade), in columns: names at 0 and
+- * 0x60, the trade's amount at 0xc0; the pack's price at 0x60, amount at 0x9c and cost at 0xb4 (as the shop's).
++ * The text is one row (ITEM_MENU_SUB_TEXTBOX_LINE: the dialogue box's spare page), in columns: the name at 0, the price at
++ * 0x60, the amount at 0x9c and the cost at 0xb4 (as the shop's).
+  */
+ static uint8_t AMOUNT_KIND;
+-static const uint8_t AMOUNT_CONFIRM_STATE[] = { 0, 5, 9, 8, 0xc };
+-static const uint8_t AMOUNT_CANCEL_STATE[] = { 0, 6, 8, 1, 1 };
++static const uint8_t AMOUNT_CONFIRM_STATE[] = { 0, 0, 9, 8, 0xc };
++static const uint8_t AMOUNT_CANCEL_STATE[] = { 0, 0, 8, 1, 1 };
+ 
+ static uint8_t *amountName(uint8_t *out, char *name)
+ {
+@@ -3546,33 +3541,22 @@ static void amountBoxString(void)
+ 	uint8_t *out;
+ 
+ 	out = TEXTBOX_LINES_PTR + (ITEM_MENU_SUB_TEXTBOX_LINE << 6);
+-	if (AMOUNT_KIND == 1) {
+-		out = amountName(out, ITEM_NAME(SHOP_ITEM_TYPE));
+-		*out++ = TEXT_COLUMN;
+-		*out++ = 0x60;
+-		out = amountName(out, ITEM_NAME(MOJYA_GOT));
+-		*out++ = TEXT_COLUMN;
+-		*out++ = 0xc0;
++	if (AMOUNT_KIND == 2) {
++		out = amountName(out, isTriggerSet(TRIGGER_CARD_MACHINE) ? STR_CARD_ONE : STR_CARD_PACK);
++	} else if (AMOUNT_KIND == 3) {
++		out = amountName(out, DIGIMON_NAME(CARD_DATA[SHOP_ITEM_TYPE].digimonId));
+ 	} else {
+-		if (AMOUNT_KIND == 2) {
+-			out = amountName(out, isTriggerSet(TRIGGER_CARD_MACHINE) ? STR_CARD_ONE : STR_CARD_PACK);
+-		} else if (AMOUNT_KIND == 3) {
+-			out = amountName(out, DIGIMON_NAME(CARD_DATA[SHOP_ITEM_TYPE].digimonId));
+-		} else {
+-			out = amountName(out, ITEM_NAME(SHOP_ITEM_TYPE));
+-		}
+-		*out++ = 0x18;
+-		*out++ = 0;
+-		out = intToStringSJIS(out, SHOP_ITEM_PRICE, 5, 0);
+-		*out++ = 0x19;
+-		*out++ = 0;
++		out = amountName(out, ITEM_NAME(SHOP_ITEM_TYPE));
+ 	}
++	*out++ = 0x18;
++	*out++ = 0;
++	out = intToStringSJIS(out, SHOP_ITEM_PRICE, 5, 0);
++	*out++ = 0x19;
++	*out++ = 0;
+ 	out = intToStringSJIS(out, SHOP_AMOUNT, 2, 0);
+-	if (AMOUNT_KIND != 1) {
+-		*out++ = 0x1a;
+-		*out++ = 0;
+-		out = intToStringSJIS(out, SHOP_ITEM_PRICE * SHOP_AMOUNT, 6, 0);
+-	}
++	*out++ = 0x1a;
++	*out++ = 0;
++	out = intToStringSJIS(out, SHOP_ITEM_PRICE * SHOP_AMOUNT, 6, 0);
+ 	*out++ = 0;
+ 	*out = 0;
+ 	TEXTBOX_DATA.box[3].pageReady = 1;
+@@ -3625,24 +3609,17 @@ static void renderAmountBox(void)
+ 	renderHorizontalLine(3, 4, 0x17, 0x7a);
+ 	renderInsetWithoutBox(3, 0x55, 0x2a, 0x1a, 0xe);
+ 	renderString(0, x + 0x1a, y + 7, 0x60, 0xc, 0, v, 3, 1);
+-	if (AMOUNT_KIND == 1) {
+-		renderItemSprite(SHOP_ITEM_TYPE, x + 8, y + 5, 3);
+-		renderItemSprite(MOJYA_GOT, x + 8, y + 0x19, 3);
+-		renderString(0, x + 0x1a, y + 0x1b, 0x60, 0xc, 0x60, v, 3, 1);
+-		renderString(0, x + 0x59, y + 0x2b, 0x18, 0xc, 0xc0, v, 3, 1);
++	renderHorizontalLine(3, 0xc, 0x3c, 0x6a);
++	if (AMOUNT_KIND == 2) {
++		renderCardSprite(0, x + 10, y + 7, 3);
++	} else if (AMOUNT_KIND == 3) {
++		renderCardSprite(CARD_DATA[SHOP_ITEM_TYPE].spriteId, x + 10, y + 7, 3);
+ 	} else {
+-		renderHorizontalLine(3, 0xc, 0x3c, 0x6a);
+-		if (AMOUNT_KIND == 2) {
+-			renderCardSprite(0, x + 10, y + 7, 3);
+-		} else if (AMOUNT_KIND == 3) {
+-			renderCardSprite(CARD_DATA[SHOP_ITEM_TYPE].spriteId, x + 10, y + 7, 3);
+-		} else {
+-			renderItemSprite(SHOP_ITEM_TYPE, x + 8, y + 5, 3);
+-		}
+-		renderString(0, x + 0x4a, y + 0x1b, 0x3c, 0xc, 0x60, v, 3, 1);
+-		renderString(0, x + 0x59, y + 0x2b, 0x18, 0xc, 0x9c, v, 3, 1);
+-		renderString(0, x + 0x40, y + 0x41, 0x48, 0xc, 0xb4, v, 3, 1);
++		renderItemSprite(SHOP_ITEM_TYPE, x + 8, y + 5, 3);
+ 	}
++	renderString(0, x + 0x4a, y + 0x1b, 0x3c, 0xc, 0x60, v, 3, 1);
++	renderString(0, x + 0x59, y + 0x2b, 0x18, 0xc, 0x9c, v, 3, 1);
++	renderString(0, x + 0x40, y + 0x41, 0x48, 0xc, 0xb4, v, 3, 1);
+ }
+ 
+ void openAmountBox(int32_t kind)
+@@ -3656,15 +3633,8 @@ void openAmountBox(int32_t kind)
+ 	setInputRepeatMask(0x5000);
+ 	/* the trade's question changes the dialogue box's page, so its row is past the list's (9..16 with both pages) */
+ 	updateItemMenuSubTextboxLine();
+-	if (kind == 1) {
+-		ITEM_MENU_SUB_TEXTBOX_LINE = 17;
+-	}
+ 	setupBoxOrigin(readPStat(PSTAT_254), &origin);
+-	if (kind == 1) {
+-		setRECT(&rect, -0x41, -0x14, 0x82, 0x3e);
+-	} else {
+-		setRECT(&rect, -0x41, -0x2a, 0x82, 0x53);
+-	}
++	setRECT(&rect, -0x41, -0x2a, 0x82, 0x53);
+ 	createTextbox(3, 0xc1, &rect, &origin, tickAmountBox, renderAmountBox);
+ 	registerTextbox(3, ITEM_MENU_SUB_TEXTBOX_LINE, 1, 0, 0);
+ 	amountBoxString();
+-- 
+2.55.0
+

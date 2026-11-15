@@ -400,7 +400,7 @@ consumed (`partner.c:497`). "Merit N" = bought in the merit shop for N points;
   once (triggers 5–13; all nine set 14, `:1727`). These original flags record first completion,
   rather than limiting repeat trades. Horizon's current [trade table](../mods/balance.md#61-the-economy-rule)
   uses saved daily flags 789–796 for eight rows, permanent completion flag 13 for the Dolph Fin row,
-  and caps every amount box at one. Bit 797 remains reserved/cleared for compatibility. Dolph Fin targets Dolphmon
+  and makes every exchange one item, with no amount box. Bit 797 remains reserved/cleared for compatibility. Dolph Fin targets Dolphmon
   (238) through the fourth custom rule; unavailable imported targets are refused. North Star stays Whamon’s
   arena reward, and the native USA eligibility check reads the owned native target table directly.
 - Routine 10, `tickBirdraTransport` (`:913`): 6 destinations `{map, exit, trigger, cost}`
