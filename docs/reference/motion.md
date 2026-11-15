@@ -2188,3 +2188,5 @@ Vilemon twists into its own claw strike and lets its wings follow through.
 Wizardmon plants its boots and carries each spell through its head, cape and wand.
 
 Raijinmon follows its turning strike with a loose arm and settles its second attack over planted feet.
+
+GrapLeomon keeps its existing techniques because the repaired source attacks exceed memory or motion limits.
