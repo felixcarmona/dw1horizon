@@ -3,8 +3,11 @@
 
 EMU_PORT and DW_SYMS must select this disc's emulator and executable.
 Usage: .venv/bin/python -m tools.dev.playtest.finisher_targets DISC DIGI OUT ID ...
-       [--trials 2] [--baseline] [--card CARD]
+       [--trials 2] [--baseline] [--card CARD] [--sounds]
 Baseline requires a caster hit; fixed runs require enemy damage and no self damage.
+With --sounds (slower: the emulator runs as an interpreter with its debugger, the only mode where Lua
+breakpoints fire) every battle sound the effect plays (bank 8: STD_playEFESound's playSound and
+playSound2) is logged as [sound id, video frame at 60 Hz from the recording's start] in the result's "sounds".
 """
 import argparse
 import functools
@@ -17,6 +20,26 @@ import time
 from tools.dev.playtest import species_proof as P
 
 PARTNER_HP = 'PARTNER_ENTITY.digimonEntity.stats.current.currentHP'
+CYCLES_PER_FRAME = 33868800 / 60
+
+
+def log_sounds(emu):
+    """Starts logging the battle sounds (bank 8) with the CPU cycle they start at."""
+    hooks = ' '.join(
+        f"FT_SND.bp[#FT_SND.bp+1]=PCSX.addBreakpoint({emu.A(name)},'Exec',4,'finisher-sound',function() "
+        "local r=PCSX.getRegisters() if r.GPR.n.a0==8 then "
+        "FT_SND.log[#FT_SND.log+1]=tostring(r.GPR.n.a1)..':'..tostring(PCSX.getCPUCycles()) end end)"
+        for name in ('playSound', 'playSound2'))
+    emu.run('lua', "if FT_SND then for _,b in ipairs(FT_SND.bp) do b:remove() end end "
+                   f"FT_SND={{bp={{}},log={{}}}} {hooks} return PCSX.getCPUCycles()")
+
+
+def logged_sounds(emu, start):
+    """[[id, frame]] of the sounds logged since log_sounds, frames counted from `start` (CPU cycles); stops logging."""
+    out = emu.run('lua', "local s=table.concat(FT_SND.log,',') for _,b in ipairs(FT_SND.bp) do b:remove() end "
+                         "FT_SND.bp={} return s").strip()
+    pairs = [x.split(':') for x in out.split(',') if ':' in x]
+    return [[int(i), round((int(c.rstrip('ULul')) - start) / CYCLES_PER_FRAME)] for i, c in pairs]
 
 
 def bind_memory():
@@ -57,7 +80,15 @@ def main():
     parser.add_argument('--baseline', action='store_true')
     parser.add_argument('--attach', action='store_true', help='use the already running disc on EMU_PORT')
     parser.add_argument('--card', default='build/states/file-city.mcd')
+    parser.add_argument('--sounds', action='store_true', help='log the battle sounds the effect plays')
     args = parser.parse_args()
+    if args.sounds:
+        plain = P.emulator
+        def debugging(cue):
+            emu = plain(cue)
+            emu.env['EMU_ARGS'] = '-interpreter -debugger'
+            return emu
+        P.emulator = debugging
     if not all(P.emulator(args.cue).has(name) for name in ('MOD_BOOT_LANGUAGE', 'labCount', 'labChoices')):
         parser.error('DW_SYMS needs the disc executable, its .elf and .elf.map with local symbols')
     args.out.mkdir(parents=True, exist_ok=True)
@@ -68,6 +99,8 @@ def main():
     def watch(slot, seconds, launch):
         initial = P.mem(PARTNER_HP, *P.ENEMY_HP)
         samples, enemy_damage, self_damage = [], 0, 0
+        start = int(P.EMU.run('lua', 'return PCSX.getCPUCycles()').strip().rstrip('ULul'))
+        if args.sounds: log_sounds(P.EMU)
         with open(folder / 'recorder.log', 'w') as log:
             recorder = subprocess.Popen(P.E + ['record', str(folder / 'finisher.mp4'), '18'],
                                         stdout=log, stderr=subprocess.STDOUT)
@@ -109,6 +142,7 @@ def main():
         enemy_damage = max(enemy_damage, *(initial[k] - final[k] for k in P.ENEMY_HP))
         P.seq(f'shot {folder}/settled.png')
         current.update(self_damage=self_damage, enemy_damage=enemy_damage, hp_before=initial, samples=samples)
+        if args.sounds: current['sounds'] = logged_sounds(P.EMU, start)
         return samples, enemy_damage
 
     def freeze_opponents():

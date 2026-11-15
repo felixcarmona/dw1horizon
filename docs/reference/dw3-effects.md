@@ -54,10 +54,10 @@ lock its frame rate to them.
 | 0 | 1 | end (0xFF also ends) |
 | 2 | varies | plays a clip of the caster (the clip is the third word when the second is 0) |
 | 3 | 3 or 6 | loads or shows a sprite effect: id, x, y, z (not negated) |
-| 4 | 3 or 5 | a cue whose meaning is not yet known |
+| 4 | 3 or 5 | a scene change (background, light and colour), with the scene's own optional sound |
 | 5 | 4 or 17 | a camera preset, or a camera keyframe |
 | 6 | 3 or 9 | spawns a 3D effect: id, x, -y, -z, turn x, -turn y, -turn z |
-| 7 to 10 | 3 | events; event 98 is a hit before the last and 99 the last hit |
+| 7 to 10 | 3 | events; op 10 is a sound (below); event 98 is a hit before the last and 99 the last hit |
 | 11 | 2 | waits so many ticks |
 
 The field's middle is the origin. The partner stands at z = -5376 and the enemy at +5376. A partner's 3D
@@ -170,6 +170,25 @@ Three further faults were in the previews, not in the chunks:
 - the camera was fixed on the field's middle, so effects that rise high were filmed out of view.
 
 The renderers do not cull back faces, and the game does.
+
+### Sounds
+
+A technique's sounds are op 10 events (event id, duration) and the optional sound of an op 4 scene. The fight
+overlay (`FIGHTSTG.PRO`, PAL: 0x8008C454) reads the event's u32 command at 0x800A368C + 4 × event. With bit 31
+set the command is one note of the battle bank `MPCOMMON.BIN` (header) and `MVCOMMON.BIN` (samples, after a 4-byte
+offset word): program (cmd >> 11) & 127, note cmd & 127. Without it, it starts a short SEP score of that bank.
+Events 98 and 99 (the hits) play the move record's impact sound (byte 0x0F of the 18-byte row). Events 28 and 89
+are the shared finisher fanfare that goes with the finisher banner, and 91 fades it out; like the banner, they
+are not carried.
+
+This game cannot load the DW2003 samples: the battle leaves about 22 KB of sound memory free at worst
+(`tools/sound.py spu-budget`). Each source note is played instead as the battle sound (`SB.VHB`, bank 8) that
+sounds closest among the 62 the original effects use: both are rendered as the sound chip plays them (pitch,
+loop, envelope) and compared by length, loudness shape and spectrum. An entry's `sounds` lists the results as
+(60 Hz script tick, sound id); the conversion plays each at its tick, counted like the effects from the first
+spawn (earlier ones on its first tick), in place of the generic start and launch sounds. On one engine tick a
+repeated sound plays once and at most two sounds start. Thunder Bolt
+(Maildramon) keeps only its impact sound, since more would push its chunk to coarser poses.
 
 ## Every imported species
 

@@ -111,7 +111,7 @@ def remap_palettes(pals, hists, rows=C.PALETTE_ROWS):
     return [tuple(g.cols) for g in groups], member
 
 
-def _convert(casts, origin_table, effect_id, scale, area, n_hits, half, cap, aim, remap=False):
+def _convert(casts, origin_table, effect_id, scale, area, n_hits, half, cap, aim, remap=False, sounds=None):
     keep = C.CAST_FRAMES, C.TRAVEL, C.reduce_palettes
     C.CAST_FRAMES = cap
     if not aim:
@@ -120,7 +120,7 @@ def _convert(casts, origin_table, effect_id, scale, area, n_hits, half, cap, aim
         C.reduce_palettes = remap_palettes
     try:
         return C.convert_skill(casts, [], origin_table, effect_id, scale, area=area, n_hits=max(1, n_hits),
-                               half=half)
+                               half=half, sounds=sounds)
     finally:
         C.CAST_FRAMES, C.TRAVEL, C.reduce_palettes = keep
 
@@ -130,7 +130,7 @@ def _name(spawn):
 
 
 def convert(disc, tables, tech, scale, origin_table, effect_id, area=False, n_hits=1, half=True, full_length=True,
-            aim=False, leave_out=(), sprites=None):
+            aim=False, leave_out=(), sprites=None, sounds=None):
     """(chunk, info) of the technique's 3D effects; dw2efe.Unconvertible when they do not fit a chunk.
     full_length: every frame of the effect (else DW2's two seconds); when that does not fit, the longest
     opening that does (info['kept'] frames of info['frames']).
@@ -140,10 +140,23 @@ def convert(disc, tables, tech, scale, origin_table, effect_id, area=False, n_hi
     leave_out: (spawn index, bone) pairs whose faces are not carried, for an effect too large for one chunk;
     info['left_out'] names them. A conversion that leaves parts out is a composition, not the whole effect.
     sprites: carry the technique's sprites too, as flat quads (dw3sprite.effect); by default only when it has
-    no 3D effect."""
+    no 3D effect. sounds: (60 Hz script tick, battle sound id) pairs, the technique's own sounds mapped to this
+    game's battle bank, played at their ticks."""
     if sprites is None:
         sprites = not X.staged_effects(disc, tables, tech)
-    _first, staged = X.staged_all(disc, tables, tech, sprites)
+    first, staged = X.staged_all(disc, tables, tech, sprites)
+    # the technique's sound cues (60 Hz script ticks, content/battle/own-effects.json "sounds") on the engine's
+    # 20 Hz ticks, counted like the effects from the first spawn. Cues before the first spawn land on tick 0; on any
+    # one tick a repeated sound plays once and at most two sounds play.
+    cues = None
+    if sounds is not None:
+        cues, ticks = [], {}
+        for t, i in sorted(sounds, key=lambda cue: cue[0]):
+            tick = max(0, t - first) * C.ENGINE_HZ // 60
+            here = ticks.setdefault(tick, [])
+            if i not in here and len(here) < 2:
+                here.append(i)
+                cues.append((tick, i))
     if not staged:
         raise C.Unconvertible('technique: no 3D effect or sprite')
     left_out = []
@@ -156,14 +169,14 @@ def convert(disc, tables, tech, scale, origin_table, effect_id, area=False, n_hi
     if not full_length:
         frames = min(frames, C.CAST_FRAMES)
     try:
-        chunk, info = _convert(casts, origin_table, effect_id, scale, area, n_hits, half, frames, aim, sprites)
+        chunk, info = _convert(casts, origin_table, effect_id, scale, area, n_hits, half, frames, aim, sprites, cues)
         kept = frames
     except C.Unconvertible:
         lo, hi, best = 1, frames - 1, None          # the longest opening that fits
         while lo <= hi:
             mid = (lo + hi) // 2
             try:
-                best = (mid, _convert(casts, origin_table, effect_id, scale, area, n_hits, half, mid, aim, sprites))
+                best = (mid, _convert(casts, origin_table, effect_id, scale, area, n_hits, half, mid, aim, sprites, cues))
                 lo = mid + 1
             except C.Unconvertible:
                 hi = mid - 1

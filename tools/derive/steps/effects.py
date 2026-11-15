@@ -216,7 +216,9 @@ def own_effects(ctx, archive):
             lists.append(objs)
         out[int(key)], info = dw2efe.convert_skill(lists[0], lists[1], launch_table(like), 0x100 + int(key),
                                                    e['scale'], hit_scale=e.get('hit_scale'),
-                                                   area=e.get('area', False) or int(key) in area, n_hits=e.get('hits', 1))
+                                                   area=e.get('area', False) or int(key) in area, n_hits=e.get('hits', 1),
+                                                   sounds=[(t * dw2efe.ENGINE_HZ // 60, i) for t, i in e['sounds']]
+                                                   if 'sounds' in e else None)
         ctx.log(f'own effect {key} {e["name"]}: ' + ', '.join(f'{k} {v}' for k, v in info.items() if k != 'parts'))
     return out
 
@@ -240,7 +242,7 @@ def dw3_effect(games, key, e, origin_table):
                              'derive build --source-disc dw2003=IMAGE')
         tech = X.model_scripts(files, d['model'])[d['slot']]
         return E.convert(files, X.EffectIds(d['meft'], sprites), tech, E.FIELD_SCALE, origin_table, 0x100 + int(key),
-                         leave_out=[tuple(x) for x in d.get('leave_out', [])])
+                         leave_out=[tuple(x) for x in d.get('leave_out', [])], sounds=e.get('sounds'))
 
 
 def append_own_effects(ctx, archive):
