@@ -1309,7 +1309,7 @@ def finisher_spreads(f, s):
 
 
 def exe_text_bytes(text, font):
-    """A string as the executable stores it (decomp tools/gen_text.py): a glyph of the bank's font as its two-byte
+    """A string as the executable stores it (decomp's gen_text.py): a glyph of the bank's font as its two-byte
     code, anything else as Shift-JIS."""
     out = bytearray()
     for c in text:
