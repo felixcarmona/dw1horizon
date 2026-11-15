@@ -12,7 +12,7 @@ from tools.battle_retry_testcase import BattleRetryCase
 
 class DeltamonRetry(BattleRetryCase):
     sid = 292
-    changed_slots = (42,)
+    changed_slots = (40, 41, 42)
 
     def test_victory_contacts_motion_and_replay(self):
         import json
@@ -51,3 +51,32 @@ class DeltamonRetry(BattleRetryCase):
                           for data in (author(prepass, skeleton, 292, reference), final)]
         self.assertEqual(replay.anims.anims[replay.anims.table[42]].build(),
                          result.anims.anims[result.anims.table[42]].build())
+
+    def test_source_recoil_retiming(self):
+        import os
+        import json
+        from pathlib import Path
+        import animsheet
+        import mmd
+        import battle_qa_native
+        from tools.models.field_animations.native_battle import source_clip
+        review = os.environ.get('BATTLE_RETRY_REVIEW')
+        if not review:
+            self.skipTest('needs before/after provider fixtures')
+        review = Path(review)
+        before, final = [(review / part / '292.C.MMD').read_bytes() for part in ('main', 'final')]
+        source = (review / 'main/292.B.MMD').read_bytes()
+        rows = battle_qa_native.check('292', final, source, before, [40, 41])
+        for row in rows.values():
+            self.assertEqual(row['flags'], [])
+            self.assertEqual(row['verdict'], 'pass')
+            self.assertLessEqual(row['ticks'] / row['source_ticks'], 1.6)
+        nb = len(json.loads((review / 'main/292-species.json').read_text())['model']['skeleton'])
+        ns = len(battle_qa_native.source_skeleton('292'))
+        model, original = mmd.MMD.parse(final, nb), mmd.MMD.parse(source, ns)
+        for slot in (40, 41):
+            frames, loop, events = animsheet.slot_frames(model, nb, slot)
+            self.assertIsNone(loop)
+            _, expected, _, _ = source_clip(original, ns, slot, len(frames))
+            self.assertEqual([(t, k) for t, k, _ in events],
+                             [(t, k) for t, k, p in expected if k == 'sound' and p['bank'] in (1, 4)])

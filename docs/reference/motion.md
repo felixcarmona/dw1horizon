@@ -2156,7 +2156,7 @@ the body too often. Counter-turns reduce crossings to 192 per tick against 164
 without fixing the tip. The keyed rise needs 107,274 bytes and steps its vertices
 0.541 heights in one tick. Field motion and the other clips stay unchanged.
 
-Deltamon plants both feet while its central head cheers and its skull hand answers with a delayed turn; its fall and recovery keep their existing motion.
+Deltamon uses short source hit reactions and a planted three-headed cheer, with a delayed turn from its skull hand.
 
 DemiDevimon gives a fluttering aerial bow and eases back into its usual hover.
 
