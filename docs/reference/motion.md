@@ -2090,3 +2090,10 @@ Yokomon's neck came off the bulb in every moving clip: Tanemon's head bone (3) n
 forward or back of the bulb's top (15 in the idle, 29 in the walk and run, 27 in the tired walk). `field_animations/yokomon_neck.py` adds to bone 3 the translation (ty, tz: one extra key entry per rx span and the initial pose) that cancels
 that swing, so the nod turns about the base of the stem; rx, every other bone, the root, the events and the mesh are untouched, and the idle, walk and run aliases (slots 27, 33, 35, 36) share the change.
 The base of the stem stays within 5 units of its rest place in every tick of every clip (test: `tools.test_yokomon_petals`).
+
+Magnamon keeps its existing victory, forward collapse and recovery. A small eased
+turn clears the victory's native motion check (24.5 degrees for the worst piece,
+0.105 heights at the tips), but needs 101,114 resident bytes after fitting, above
+the 100,352-byte buffer. Shorter versions still need at least 101,050 bytes.
+The newly keyed faint and recovery need 108,898 bytes together, so they also stay
+out; its field motion and every battle program remain unchanged.
