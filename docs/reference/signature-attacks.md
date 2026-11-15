@@ -111,8 +111,8 @@ the moment the attack starts.
   beams or bursts that reach the target in DW2003 too.
 - **DW2003 enemy attacks.** Several of the imports are DW2003 enemies with no signature of their own: their
   attack is the enemy's move 1. Vilemon and Mummymon share Dark Fear, and Creepymon and Ghoulmon Darkness
-  Chaos: Vilemon and Creepymon play it, and Mummymon and Ghoulmon keep composed effects, so no two species
-  show the same attack. Species whose DW2003 attack is an unnamed slot-5 move keep a composed effect too.
+  Chaos, and each plays it: the source effect wins over a composed look of its own. Species whose DW2003
+  attack is an unnamed slot-5 move play that move's effect.
 
 ## Kept on the DW1 finisher
 
