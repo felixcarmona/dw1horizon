@@ -386,5 +386,10 @@
     "name": "Final Purification",
     "stands_for": 102,
     "dw3": {"model": "M369DUKE", "slot": 11, "meft": [95], "pin": "368f7e48a3d858181854cad9e004a1e997f3a13b"}
+  },
+  "209": {
+    "name": "Blazing Mane",
+    "stands_for": 109,
+    "dw3": {"model": "M327RUNX", "slot": 5, "meft": [332], "pin": "8c3e75b6a974eddd06daa41ed26762079a45e74e"}
   }
 }
