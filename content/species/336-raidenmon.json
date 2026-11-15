@@ -11,6 +11,7 @@
                  "Pulse Laser", "Reverse Prog", "Power Crane", "Fireball"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 51,
+  "own_effect": {"technique": "Fireball", "chunk": 189},
   "model": {
     "file": "build/sizes-out/models/Raidenmon.MMD",
     "radius": 300,

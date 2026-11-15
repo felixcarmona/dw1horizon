@@ -10,6 +10,7 @@
                  "Poison Claw", "Mass Morph", "Insect Plague", "Poison Powder", "Bit Bomb"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 25,
+  "own_effect": {"technique": "Bit Bomb", "chunk": 194},
   "model": {
     "file": "build/sizes-out/models/Chrysalimon.MMD",
     "radius": 150,

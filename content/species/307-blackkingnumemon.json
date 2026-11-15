@@ -11,6 +11,7 @@
                  "Tear Drop", "Ice Needle", "Winter Blast", "Death Claw", "Giga Freeze"],
   "drop": {"item": "sm.recovery", "percent": 30},
   "effects_like": 42,
+  "own_effect": {"technique": "Death Claw", "chunk": 169},
   "model": {
     "file": "build/sizes-out/models/BK-KingNumemon.MMD",
     "radius": 242,

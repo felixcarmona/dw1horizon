@@ -11,6 +11,7 @@
                  "Megalo Spark", "Hurricane", "Death Claw"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 48,
+  "own_effect": {"technique": "Death Claw", "chunk": 170},
   "model": {
     "file": "build/sizes-out/models/Antylamon.MMD",
     "radius": 161,

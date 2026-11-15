@@ -11,6 +11,7 @@
                  "Dynamite Kick (44)", "Tremar", "Sonic Jab", "Bit Bomb"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 40,
+  "own_effect": {"technique": "Bit Bomb", "chunk": 176},
   "model": {
     "file": "build/sizes-out/models/Pharaohmon.MMD",
     "radius": 150,
