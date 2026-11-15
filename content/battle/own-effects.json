@@ -336,5 +336,10 @@
     "name": "Poison Cobweb",
     "stands_for": 73,
     "dw3": {"model": "M166DKGM", "slot": 5, "meft": [328], "pin": "592f3767c8595ee3664250372d3e0ba3fd47a834"}
+  },
+  "199": {
+    "name": "Captain Cannon",
+    "stands_for": 80,
+    "dw3": {"model": "M387PIRT", "slot": 11, "meft": [91], "pin": "00abe117e496baa0bc75aaa00d54bdbc56a7c45a"}
   }
 }
