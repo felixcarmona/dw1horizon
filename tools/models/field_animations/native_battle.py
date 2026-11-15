@@ -158,6 +158,26 @@ def scaled_events(events, frames, want):
     return [(min(want - 2, round(k * (want - 1) / (frames - 1))), kind, c) for k, kind, c in events]
 
 
+def repaired_events(events, frames, ops):
+    """Keep sounds on the same poses when a repair cuts, repeats or retimes the clip."""
+    events = list(events)
+    for op in ops:
+        if op['op'] == 'cut':
+            a, b = op['from'], op['to']
+            events = [(k if k < a else k - (b - a), kind, c)
+                      for k, kind, c in events if not a <= k < b]
+            frames -= b - a
+        elif op['op'] == 'retime':
+            want = op['ticks'] + 1
+            events = scaled_events(events, frames, want)
+            frames = want
+        elif op['op'] == 'repeat':
+            events = [(k + cycle * (frames - 1), kind, c)
+                      for cycle in range(op['times']) for k, kind, c in events]
+            frames = (frames - 1) * op['times'] + 1
+    return events
+
+
 def shared(table, source_table, share, restored):
     """`table` with each slot of `share` ({slot (text): leader}) playing its leader's restored clip, for a source that
     plays one clip for both slots (the same program in its table); the leader is restored, the slot is not."""
@@ -263,6 +283,7 @@ def apply(output, ctx, slots, keep_events=(), repairs=None, ticks=None, share=No
         samples = retarget(frames, ctx)
         if repairs and str(slot) in repairs:
             samples = clip_repair.apply_ops(samples, [p for _, p in rig], repairs[str(slot)])
+            events = repaired_events(events, len(frames), repairs[str(slot)])
         anim = mmd.encode_anim(samples, nb, 0 if loop == 0 else None, events, tol=ctx.get('tol', 1), repeats=tile > 1)
         model.anims.table[slot] = len(model.anims.anims)
         model.anims.anims.append(anim)
@@ -283,10 +304,15 @@ def compact(output, nb, spec):
     clip encoded again exactly where that is smaller (battle_restore.compact, tolerance 0), then, with `tol` (at most
     MAX_TOL), the clips that are neither field (0-4) nor battle (0x21-0x24) slots re-encoded within that many units;
     identical streams shared and unread stream tails dropped. `preserve_field` also keeps the original field
-    programs' encoding and tails. -> (bytes, {slot: [old, new bytes]})"""
+    programs' encoding and tails. `slot_tol` keeps selected non-field, non-battle slots at a smaller tolerance
+    (for example a care clip whose reviewed poses must survive compaction). -> (bytes, {slot: [old, new bytes]})"""
     tol = int(spec.get('tol', 0))
     if not 0 <= tol <= MAX_TOL:
         raise ValueError(f'battle originals: compaction tolerance {tol} is over {MAX_TOL}')
+    slot_tol = {int(s): int(t) for s, t in spec.get('slot_tol', {}).items()}
+    for s, t in slot_tol.items():
+        if s < 0 or s in FIELD or s in BATTLE or not 0 <= t <= tol:
+            raise ValueError(f'battle originals: invalid slot tolerance {s}: {t}')
     # Some bindings have not previously compacted their field programs. Keep their
     # original encoding as well as their poses when the recipe requests it.
     exact_slots = None
@@ -296,7 +322,11 @@ def compact(output, nb, spec):
     if tol:
         model = mmd.MMD.parse(output, nb)
         loose = set(range(len(model.anims.table))) - set(FIELD) - set(BATTLE)
-        output, more = battle_restore.compact(output, nb, tol, loose)
+        for t in sorted(set(slot_tol.values())):
+            selected = {s for s, v in slot_tol.items() if v == t} & loose
+            output, more = battle_restore.compact(output, nb, t, selected)
+            report.update(more)
+        output, more = battle_restore.compact(output, nb, tol, loose - set(slot_tol))
         report.update(more)
     model = mmd.MMD.parse(output, nb)
     protected = {model.anims.table[s] for s in FIELD} if spec.get('preserve_field') else set()

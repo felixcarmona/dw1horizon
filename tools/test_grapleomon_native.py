@@ -166,7 +166,7 @@ class GrapLeomonNative(unittest.TestCase):
         # battle_originals.ticks gives a hit whose source clip the donor's length would retime past 1.6
         made = self.proof['battle_originals']
         ticks = self.recipe['battle_originals'].get('ticks', {})
-        self.assertEqual(sorted(int(s) for s in made), self.recipe['battle_originals']['slots'])
+        self.assertEqual(sorted(int(s) for s in made), sorted(set(self.recipe['battle_originals']['slots']) | set(map(int, self.recipe['battle_originals'].get('share', {})))))
         for slot, row in made.items():
             if int(slot) not in (33, 34):
                 self.assertEqual(row['frames'], ticks.get(str(int(slot)), row['donor_frames']), slot)
