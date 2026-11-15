@@ -10,7 +10,7 @@
    "hit_script": 415,
    "result": "fidelity failed",
    "fallback": "composed",
-   "composed": "DW1 chunk 100 recoloured; the template's look (chunk 64) contradicted the attack's kind",
+   "composed": "DW1 chunk 81 recoloured; the template's look (chunk 64) contradicted the attack's kind",
    "why": "whole shown, whole curve, cast shown, cast curve, hit area"
   },
   {
@@ -737,7 +737,7 @@
    "hit_script": 2001,
    "result": "fidelity failed",
    "fallback": "composed",
-   "composed": "DW1 chunk 100 recoloured; the template's look (chunk 111) contradicted the attack's kind",
+   "composed": "DW1 chunk 81 recoloured; the template's look (chunk 111) contradicted the attack's kind",
    "why": "whole area, cast area, cast box"
   },
   {
@@ -789,7 +789,7 @@
    "hit_script": 2060,
    "result": "fidelity failed",
    "fallback": "composed",
-   "composed": "DW1 chunk 100 recoloured; the template's look (chunk 111) contradicted the attack's kind",
+   "composed": "DW1 chunk 81 recoloured; the template's look (chunk 111) contradicted the attack's kind",
    "why": "cast area, cast shown (measured against the launch table of the finisher it stands for)"
   }
  ]
