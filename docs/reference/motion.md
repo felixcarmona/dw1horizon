@@ -2176,3 +2176,5 @@ Sorcermon walks with a lightly swinging staff and trailing cape; it keeps its ex
 NeoCrimson keeps its recovery because a grounded replacement would jump away from the ending of its existing fall.
 
 Imperialdramon eases its wing tips through its tired battle idle.
+
+Divermon keeps its feet planted while its harpoon and ears follow its battle stride.
