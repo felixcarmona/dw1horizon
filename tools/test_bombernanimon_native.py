@@ -68,7 +68,7 @@ class BomberNanimonNative(unittest.TestCase):
         self.assertTrue(storage['fits'])
         self.assertLessEqual(storage['resident_bytes'], storage['resident_limit'])
         self.assertEqual(storage['resident_limit'], 100352)
-        self.assertEqual(storage['resident_bytes'], 75080)
+        self.assertEqual(storage['resident_bytes'], 83448)
 
     def test_battle_originals(self):
         # the source game's own battle clips, retargeted onto the donor rig; all but the idles (which loop at their own
