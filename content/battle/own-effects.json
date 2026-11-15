@@ -3,6 +3,8 @@
   "122": {
     "name": "Metal Fireball",
     "stands_for": 63,
+    "sounds": [[37, 27], [63, 27], [90, 47]],
+    "hit_sound": 47,
     "cast": ["EFFEWA/MEWA0200.BIN", "EFFEWA/AEWA0200.BIN"],
     "hit": ["EFFEWD/MEWD0100.BIN", "EFFEWD/AEWD0100.BIN"],
     "scale": 0.266,
@@ -12,6 +14,8 @@
   "123": {
     "name": "Buffalo Breath",
     "stands_for": 62,
+    "sounds": [[23, 47], [90, 47]],
+    "hit_sound": 47,
     "cast": ["EFFEWA/MEWA0300.BIN", "EFFEWA/AEWA0300.BIN"],
     "hit": ["EFFEWD/MEWD0200.BIN", "EFFEWD/AEWD0200.BIN"],
     "scale": 0.269,
@@ -21,6 +25,8 @@
   "124": {
     "name": "Darkness Gear",
     "stands_for": 66,
+    "sounds": [],
+    "hit_sound": 47,
     "cast": [[1, "EFFESA/MESA2700.BIN", "EFFESA/AESA2700.BIN"]],
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.166,
@@ -29,6 +35,8 @@
   "125": {
     "name": "Poison Wing",
     "stands_for": 63,
+    "sounds": [[6, 47], [90, 47]],
+    "hit_sound": 47,
     "cast": [[1, "EFFEBA/MEBA1800.BIN", "EFFEBA/AEBA1800.BIN"], [2, "EFFEBA/MEBA1900.BIN", "EFFEBA/AEBA1900.BIN"]],
     "hit": [[2, "EFFESD/MESD0000.BIN", "EFFESD/AESD0000.BIN"]],
     "scale": 0.326,
@@ -37,6 +45,7 @@
   "126": {
     "name": "Tri-Horn Attack",
     "stands_for": 73,
+    "sounds": [[56, 0]],
     "cast": [[1, "EFFEUA/MEUA3900.BIN", "EFFEUA/AEUA3900.BIN"], [2, "EFFEUA/MEUA4000.BIN", "EFFEUA/AEUA4000.BIN"]],
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.307,
@@ -45,6 +54,8 @@
   "127": {
     "name": "Howling Crusher",
     "stands_for": 62,
+    "sounds": [[90, 47]],
+    "hit_sound": 47,
     "cast": [[1, "EFFEUA/MEUA1400.BIN", "EFFEUA/AEUA1400.BIN"], [2, "EFFEUA/MEUA1500.BIN", "EFFEUA/AEUA1500.BIN"]],
     "hit": [[1, "EFFESD/MESD1500.BIN", "EFFESD/AESD1500.BIN"]],
     "scale": 0.359,
@@ -53,6 +64,8 @@
   "128": {
     "name": "Duo Scissor Claw",
     "stands_for": 73,
+    "sounds": [[12, 0], [90, 47]],
+    "hit_sound": 47,
     "cast": [[1, "EFFEUA/MEUA1400.BIN", "EFFEUA/AEUA1400.BIN"], [2, "EFFEUA/MEUA1500.BIN", "EFFEUA/AEUA1500.BIN"]],
     "hit": [[1, "EFFESD/MESD1500.BIN", "EFFESD/AESD1500.BIN"]],
     "scale": 0.3,
@@ -61,6 +74,8 @@
   "129": {
     "name": "Fire Blast II",
     "stands_for": 74,
+    "sounds": [[6, 19], [18, 45], [40, 27], [90, 47]],
+    "hit_sound": 47,
     "cast": [[1, "EFFESA/MESA0000.BIN", "EFFESA/AESA0000.BIN"]],
     "hit": [[2, "EFFESD/MESD0000.BIN", "EFFESD/AESD0000.BIN"]],
     "scale": 0.205,
@@ -69,6 +84,8 @@
   "130": {
     "name": "Strong Carapace",
     "stands_for": 89,
+    "sounds": [[6, 0], [76, 56], [92, 47]],
+    "hit_sound": 47,
     "cast": [[1, "EFFESA/MESA6000.BIN", "EFFESA/AESA6000.BIN"], [2, "EFFESA/MESA6100.BIN", "EFFESA/AESA6100.BIN"]],
     "hit": [[1, "EFFESD/MESD7400.BIN", "EFFESD/AESD7400.BIN"]],
     "scale": 0.241,
@@ -77,6 +94,8 @@
   "131": {
     "name": "Brown Stinger",
     "stands_for": 69,
+    "sounds": [[6, 27], [37, 27], [64, 27], [90, 47]],
+    "hit_sound": 47,
     "cast": [[1, "EFFESA/MESA4000.BIN", "EFFESA/AESA4000.BIN"], [2, "EFFESA/MESA4100.BIN", "EFFESA/AESA4100.BIN"]],
     "hit": [[1, "EFFESD/MESD7100.BIN", "EFFESD/AESD7100.BIN"]],
     "scale": 0.31,
@@ -85,6 +104,8 @@
   "132": {
     "name": "Fire Blast",
     "stands_for": 96,
+    "sounds": [[77, 47]],
+    "hit_sound": 47,
     "cast": [[1, "EFFEFA/MEFA0900.BIN", "EFFEFA/AEFA0900.BIN"], [2, "EFFEFA/MEFA1000.BIN", "EFFEFA/AEFA1000.BIN"]],
     "hit": [[2, "EFFEFD/MEFD0400.BIN", "EFFEFD/AEFD0400.BIN"]],
     "scale": 0.246,
@@ -93,6 +114,8 @@
   "133": {
     "name": "Pretty Attack",
     "stands_for": 60,
+    "sounds": [[75, 23], [91, 44]],
+    "hit_sound": 47,
     "cast": [[1, "EFFEMA/MEMA4500.BIN", "EFFEMA/AEMA4500.BIN"], [2, "EFFEMA/MEMA4600.BIN", "EFFEMA/AEMA4600.BIN"]],
     "hit": [[1, "EFFESD/MESD7100.BIN", "EFFESD/AESD7100.BIN"]],
     "scale": 0.287,
@@ -101,6 +124,8 @@
   "134": {
     "name": "Tusk Crusher",
     "stands_for": 111,
+    "sounds": [[25, 54], [40, 45], [90, 47]],
+    "hit_sound": 47,
     "cast": [[1, "EFFEUA/MEUA3900.BIN", "EFFEUA/AEUA3900.BIN"], [2, "EFFEUA/MEUA4000.BIN", "EFFEUA/AEUA4000.BIN"]],
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.294,
@@ -109,6 +134,8 @@
   "135": {
     "name": "S-Bone Crusher",
     "stands_for": 111,
+    "sounds": [],
+    "hit_sound": 47,
     "cast": [[1, "EFFESA/MESA9100.BIN", "EFFESA/AESA9100.BIN"], [2, "EFFESA/MESA9200.BIN", "EFFESA/AESA9200.BIN"]],
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.256,
@@ -117,6 +144,8 @@
   "136": {
     "name": "Junk Chunker",
     "stands_for": 77,
+    "sounds": [[29, 45], [43, 45], [71, 45], [90, 47]],
+    "hit_sound": 47,
     "cast": [[1, "EFFESA/MESA6200.BIN", "EFFESA/AESA6200.BIN"], [2, "EFFESA/MESA6300.BIN", "EFFESA/AESA6300.BIN"]],
     "hit": [[2, "EFFESD/MESD3800.BIN", "EFFESD/AESD3800.BIN"]],
     "scale": 0.267,
@@ -125,6 +154,8 @@
   "137": {
     "name": "Smiley Warhead",
     "stands_for": 68,
+    "sounds": [[5, 47], [60, 45], [89, 47]],
+    "hit_sound": 47,
     "cast": [[1, "EFFEUA/MEUA2000.BIN", "EFFEUA/AEUA2000.BIN"], [2, "EFFEUA/MEUA2100.BIN", "EFFEUA/AEUA2100.BIN"]],
     "hit": [[2, "EFFESD/MESD0000.BIN", "EFFESD/AESD0000.BIN"]],
     "scale": 0.288,
@@ -141,6 +172,8 @@
   "139": {
     "name": "Twig Tap",
     "stands_for": 72,
+    "sounds": [[40, 45], [61, 45], [88, 47]],
+    "hit_sound": 47,
     "cast": [[1, "EFFEUA/MEUA3100.BIN", "EFFEUA/AEUA3100.BIN"], [2, "EFFEUA/MEUA3200.BIN", "EFFEUA/AEUA3200.BIN"]],
     "hit": [[1, "EFFESD/MESD7600.BIN", "EFFESD/AESD7600.BIN"]],
     "scale": 0.198,
@@ -149,6 +182,8 @@
   "140": {
     "name": "Rain of Pollen",
     "stands_for": 98,
+    "sounds": [],
+    "hit_sound": 47,
     "cast": [[1, "EFFEMA/MEMA3300.BIN", "EFFEMA/AEMA3300.BIN"], [2, "EFFEMA/MEMA3400.BIN", "EFFEMA/AEMA3400.BIN"]],
     "hit": [[1, "EFFEBD/MEBD0000.BIN", "EFFEBD/AEBD0000.BIN"]],
     "scale": 0.194,
@@ -157,6 +192,8 @@
   "141": {
     "name": "Ninja Flower",
     "stands_for": 72,
+    "sounds": [[26, 45], [52, 45], [74, 45], [92, 47]],
+    "hit_sound": 47,
     "cast": [[1, "EFFESA/MESA6800.BIN", "EFFESA/AESA6800.BIN"], [2, "EFFESA/MESA6900.BIN", "EFFESA/AESA6900.BIN"]],
     "hit": [[1, "EFFEWD/MEWD0200.BIN", "EFFEWD/AEWD0200.BIN"]],
     "scale": 0.238,
@@ -165,6 +202,8 @@
   "142": {
     "name": "Tail Blade",
     "stands_for": 111,
+    "sounds": [[47, 45], [90, 47]],
+    "hit_sound": 47,
     "cast": [[1, "EFFEUA/MEUA2800.BIN", "EFFEUA/AEUA2800.BIN"], [2, "EFFEUA/MEUA2900.BIN", "EFFEUA/AEUA2900.BIN"]],
     "hit": [[1, "EFFESD/MESD0200.BIN", "EFFESD/AESD0200.BIN"]],
     "scale": 0.311,
@@ -173,6 +212,8 @@
   "143": {
     "name": "Spurting Ink",
     "stands_for": 87,
+    "sounds": [[24, 27], [57, 27], [90, 47]],
+    "hit_sound": 47,
     "cast": [[1, "EFFESA/MESA4800.BIN", "EFFESA/AESA4800.BIN"], [2, "EFFESA/MESA4900.BIN", "EFFESA/AESA4900.BIN"]],
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.284,
@@ -181,6 +222,8 @@
   "144": {
     "name": "Evil Wind",
     "stands_for": 62,
+    "sounds": [[28, 45], [44, 47], [90, 47]],
+    "hit_sound": 47,
     "cast": [[1, "EFFESA/MESA2600.BIN", "EFFESA/AESA2600.BIN"]],
     "hit": [[1, "EFFEWD/MEWD0300.BIN", "EFFEWD/AEWD0300.BIN"]],
     "scale": 0.182,
@@ -189,6 +232,7 @@
   "145": {
     "name": "Trick or Treat",
     "stands_for": 61,
+    "sounds": [[17, 0]],
     "cast": [[1, "EFFEMA/MEMA4200.BIN", "EFFEMA/AEMA4200.BIN"], [2, "EFFEMA/MEMA4400.BIN", "EFFEMA/AEMA4400.BIN"]],
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.329,
@@ -197,6 +241,8 @@
   "146": {
     "name": "Hyper Heat",
     "stands_for": 61,
+    "sounds": [[6, 0], [90, 47]],
+    "hit_sound": 47,
     "cast": [[1, "EFFEBA/MEBA0600.BIN", "EFFEBA/AEBA0600.BIN"], [2, "EFFEBA/MEBA0700.BIN", "EFFEBA/AEBA0700.BIN"]],
     "hit": [[2, "EFFEFD/MEFD0400.BIN", "EFFEFD/AEFD0400.BIN"]],
     "scale": 0.209,
@@ -205,6 +251,7 @@
   "147": {
     "name": "Pummel Peck",
     "stands_for": 72,
+    "sounds": [[55, 27], [90, 47]],
     "cast": [[1, "EFFESA/MESA4200.BIN", "EFFESA/AESA4200.BIN"], [2, "EFFESA/MESA4300.BIN", "EFFESA/AESA4300.BIN"]],
     "hit": [[1, "EFFESD/MESD7400.BIN", "EFFESD/AESD7400.BIN"]],
     "scale": 0.203,
@@ -213,6 +260,8 @@
   "148": {
     "name": "Pearl Shot",
     "stands_for": 90,
+    "sounds": [],
+    "hit_sound": 47,
     "cast": [[1, "EFFESA/MESA2900.BIN", "EFFESA/AESA2900.BIN"]],
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.179,
@@ -221,6 +270,8 @@
   "149": {
     "name": "Scissor Magic",
     "stands_for": 100,
+    "sounds": [[16, 27], [68, 45], [90, 47]],
+    "hit_sound": 47,
     "cast": [[1, "EFFEUA/MEUA1400.BIN", "EFFEUA/AEUA1400.BIN"], [2, "EFFEUA/MEUA1500.BIN", "EFFEUA/AEUA1500.BIN"]],
     "hit": [[1, "EFFESD/MESD1500.BIN", "EFFESD/AESD1500.BIN"]],
     "scale": 0.391,
@@ -229,6 +280,7 @@
   "150": {
     "name": "E-Stun Blast",
     "stands_for": 98,
+    "sounds": [[3, 47], [69, 45], [91, 44]],
     "cast": [[1, "EFFESA/MESA2500.BIN", "EFFESA/AESA2500.BIN"]],
     "hit": [[1, "EFFESD/MESD0200.BIN", "EFFESD/AESD0200.BIN"]],
     "scale": 0.218,
@@ -237,6 +289,8 @@
   "151": {
     "name": "Royal Smasher",
     "stands_for": 91,
+    "sounds": [],
+    "hit_sound": 47,
     "cast": [[1, "EFFESA/MESA7800.BIN", "EFFESA/AESA7800.BIN"], [2, "EFFESA/MESA7900.BIN", "EFFESA/AESA7900.BIN"]],
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.274,
@@ -245,6 +299,7 @@
   "152": {
     "name": "Waking Dream",
     "stands_for": 86,
+    "sounds": [[25, 0]],
     "cast": [[1, "EFFEMA/MEMA3100.BIN", "EFFEMA/AEMA3100.BIN"], [2, "EFFEMA/MEMA3200.BIN", "EFFEMA/AEMA3200.BIN"]],
     "hit": [[2, "EFFESD/MESD3400.BIN", "EFFESD/AESD3400.BIN"]],
     "scale": 0.201,
@@ -253,6 +308,8 @@
   "153": {
     "name": "Tomahawk Crunch",
     "stands_for": 79,
+    "sounds": [[18, 45], [54, 19], [66, 47]],
+    "hit_sound": 47,
     "cast": [[1, "EFFESA/MESA8700.BIN", "EFFESA/AESA8700.BIN"], [2, "EFFESA/MESA8800.BIN", "EFFESA/AESA8800.BIN"]],
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.258,
@@ -261,6 +318,8 @@
   "154": {
     "name": "Chaos Cannon",
     "stands_for": 77,
+    "sounds": [[51, 0]],
+    "hit_sound": 47,
     "cast": [[1, "EFFEBA/MEBA2400.BIN", "EFFEBA/AEBA2400.BIN"], [2, "EFFEBA/MEBA2500.BIN", "EFFEBA/AEBA2500.BIN"]],
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.257,
@@ -269,6 +328,8 @@
   "155": {
     "name": "Chrono Breaker",
     "stands_for": 78,
+    "sounds": [],
+    "hit_sound": 47,
     "cast": [[1, "EFFEMA/MEMA5300.BIN", "EFFEMA/AEMA5300.BIN"], [2, "EFFEMA/MEMA5400.BIN", "EFFEMA/AEMA5400.BIN"]],
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.244,
@@ -277,6 +338,8 @@
   "156": {
     "name": "Tentacle Claw",
     "stands_for": 111,
+    "sounds": [[6, 27], [56, 27], [90, 47]],
+    "hit_sound": 47,
     "cast": [[1, "EFFESA/MESA6600.BIN", "EFFESA/AESA6600.BIN"], [2, "EFFESA/MESA6700.BIN", "EFFESA/AESA6700.BIN"]],
     "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
     "scale": 0.295,
@@ -285,6 +348,8 @@
   "157": {
     "name": "Triple Forces",
     "stands_for": 63,
+    "sounds": [[45, 27], [90, 47]],
+    "hit_sound": 47,
     "cast": [[1, "EFFEBA/MEBA0200.BIN", "EFFEBA/AEBA0200.BIN"], [2, "EFFEBA/MEBA0300.BIN", "EFFEBA/AEBA0300.BIN"]],
     "hit": [[1, "EFFESD/MESD6800.BIN", "EFFESD/AESD6800.BIN"]],
     "scale": 0.268,
@@ -293,6 +358,8 @@
   "158": {
     "name": "Legendary Blade",
     "stands_for": 62,
+    "sounds": [[4, 45], [43, 27], [90, 47]],
+    "hit_sound": 47,
     "cast": [[1, "EFFESA/MESA2000.BIN", "EFFESA/AESA2000.BIN"]],
     "hit": [[1, "EFFESD/MESD0400.BIN", "EFFESD/AESD0400.BIN"]],
     "scale": 0.282,
@@ -301,6 +368,7 @@
   "159": {
     "name": "Digital Bomb",
     "stands_for": 68,
+    "sounds": [[89, 47]],
     "cast": [[1, "EFFESA/MESA7200.BIN", "EFFESA/AESA7200.BIN"], [2, "EFFESA/MESA7300.BIN", "EFFESA/AESA7300.BIN"]],
     "hit": [[2, "EFFESD/MESD0000.BIN", "EFFESD/AESD0000.BIN"]],
     "scale": 0.184,
@@ -309,6 +377,8 @@
   "160": {
     "name": "Needle Squall",
     "stands_for": 111,
+    "sounds": [[41, 27], [90, 47]],
+    "hit_sound": 47,
     "cast": [[1, "EFFESA/MESA9300.BIN", "EFFESA/AESA9300.BIN"], [2, "EFFESA/MESA9400.BIN", "EFFESA/AESA9400.BIN"]],
     "hit": [[1, "EFFESD/MESD7400.BIN", "EFFESD/AESD7400.BIN"]],
     "scale": 0.235,
@@ -317,6 +387,8 @@
   "161": {
     "name": "Blind Attack",
     "stands_for": 109,
+    "sounds": [[90, 47]],
+    "hit_sound": 47,
     "cast": [[1, "EFFEUA/MEUA1400.BIN", "EFFEUA/AEUA1400.BIN"], [2, "EFFEUA/MEUA1500.BIN", "EFFEUA/AEUA1500.BIN"]],
     "hit": [[1, "EFFESD/MESD1500.BIN", "EFFESD/AESD1500.BIN"]],
     "scale": 0.187,

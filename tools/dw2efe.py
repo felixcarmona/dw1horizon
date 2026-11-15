@@ -571,13 +571,16 @@ def convert_skill(*args, **kw):
 
 def _convert_skill(casts, hits, origin_table, effect_id, scale, hit_scale=None, area=False, n_hits=1,
                    self_target=False, half=True, launch_sound=14, start_sound=2, step=1, quant=1,
-                   width=STRIP_W, sides=2, sounds=None):
+                   width=STRIP_W, sides=2, sounds=None, hit_sound=None):
     """The chunk (0x5000 bytes) and a summary for a technique: casts and hits are lists of (DW2 slot 0-2,
     dw2effect.Effect). hit_scale: the hit objects' own scale (default: scale). area: hit every other fighter
     (DW1 range 3). n_hits: damage events per target. self_target: a support technique; its hit objects play on
     the caster and deal no damage. sounds: the source technique's own sound cues, (engine tick, battle sound
-    id) pairs played by the controller at those ticks in place of start_sound and launch_sound."""
+    id) pairs played by the controller at those ticks in place of start_sound and launch_sound. hit_sound: a battle
+    sound id played on the target with the first damage event (also in place of the generic sounds)."""
     cues = sorted((max(0, int(t)), int(i)) for t, i in sounds) if sounds is not None else None
+    if cues is None and hit_sound is not None:
+        cues = []
     if cues is not None:
         start_sound = launch_sound = -1
     # a support technique's hit objects play on the caster, seen with the cast: at the cast's scale
@@ -1019,6 +1022,9 @@ def _convert_skill(casts, hits, origin_table, effect_id, scale, hit_scale=None, 
         for n, t in enumerate(events):
             a.ld(t)
             a.br('!=', I_FRAME, 0, f'dmg_e{n}')
+            if n == 0 and hit_sound is not None:
+                a.push(int(hit_sound))
+                a.sub('playSound')
             a.sub('addAttackObjectToTarget')
             a.label(f'dmg_e{n}')
         a.ld(events[-1])
