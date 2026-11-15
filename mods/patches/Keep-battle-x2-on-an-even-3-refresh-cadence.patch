@@ -1,0 +1,100 @@
+From 296432120a16c6202ed1b9ec418cbcda08462107 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 14 Nov 2026 22:38:42 +0000
+Subject: [PATCH] Keep battle x2 on an even 3-refresh cadence
+
+A fast pair is a shown tick and a thrown-away one. The thrown-away tick no longer sorts the Digimon models (about 170 of its 250 render lines in a wild fight; the frame is never drawn), so the pair fits its 3 refreshes; and a shown tick that starts up to a refresh early, after a quick thrown-away tick, is still due when the pair is, so frames never come 2 refreshes apart.
+---
+ src/main/main.c     | 11 +++++++----
+ src/main/model.c    |  6 ++++++
+ src/std/std_setup.c |  7 +++++++
+ 3 files changed, 20 insertions(+), 4 deletions(-)
+
+diff --git a/src/main/main.c b/src/main/main.c
+index 49f20cfd..2137e8bd 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -5295,8 +5295,9 @@ static ModRollbackSet *modLoopRollback; /* the last loop's set (MOD_PRESENT_PAUS
+  * item in hand, not while the defeat countdown runs). Fast ticks go in pairs over 3 refreshes (40 ticks a second):
+  * the first is due 2 refreshes after the pair began and is shown; the second, MOD_REAL_TICK 0, renders as every tick
+  * does (render functions advance state: effect scripts, gauges) but its frame is thrown away and it waits for no
+- * refresh. A tick and its render take a little more than one refresh in a fight (measured: ~270 of 263 lines), so
+- * one shown frame per tick could not pass 30 ticks a second. Each fast tick is due from when the one before was
++ * refresh; only the Digimon models and the tournament arena, the biggest pure drawing costs, are not sorted in it
++ * (renderDigimon, STD_renderArena0/1), so the pair fits its 3 refreshes. A tick and its render take a little more than one refresh in a fight (measured: ~270 of 263
++ * lines), so one shown frame per tick could not pass 30 ticks a second. Each fast tick is due from when the one before was
+  * due, not from when it ended. What counts real time (the play time) skips MOD_REAL_TICK 0. The fight's logic is the
+  * same per tick: only the real time between ticks changes. */
+ int8_t MOD_BATTLE_FAST;
+@@ -5332,8 +5333,10 @@ void modTickStart(int32_t flags)
+ 		modTickPeriod = 3;
+ 	}
+ 	if (MOD_TICK_FAST) {
+-		/* due when the one before was due plus its period, unless that is more than a pair behind */
+-		modTickV = (now >= modFastDue && now - modFastDue <= 3) ? modFastDue : now;
++		/* due when the one before was due plus its period, unless that is more than a pair behind; a tick that
++		 * starts a refresh early (the pair's second tick ended quickly) is still due then, or the pair's frame
++		 * came 2 refreshes after the last one instead of 3 */
++		modTickV = (now >= modFastDue - 1 && now - modFastDue <= 3) ? modFastDue : now;
+ 		modTickL0 = modLines();
+ 		modFastDue = modTickV + modTickRefreshes();
+ 	} else if (((flags & MOD_PRESENT_BATTLE) | (now < modLastEndV)) &&
+diff --git a/src/main/model.c b/src/main/model.c
+index 37d7b875..abca13f7 100644
+--- a/src/main/model.c
++++ b/src/main/model.c
+@@ -2910,6 +2910,9 @@ static void modFlagBones(PositionData *pos, int32_t boneCount)
+ 
+ #include "smooth_runtime.inc"
+ 
++extern int8_t MOD_TICK_FAST; /* main.c (battle speed) */
++extern int8_t MOD_REAL_TICK;
++
+ void renderDigimon(instanceId)
+ 	int16_t instanceId;
+ {
+@@ -2966,6 +2969,9 @@ void renderDigimon(instanceId)
+ 		if (ENTITY_TABLE[instanceId]->flatSprite != -1) {
+ 			continue;
+ 		}
++		if (MOD_TICK_FAST && !MOD_REAL_TICK) {
++			continue; /* MOD (battle speed): this frame is thrown away; sorting the model only cost time */
++		}
+ 		/* MOD (packet budget): a bone emits at most one POLY_GT4 (52 B)
+ 		 * per primitive (attribute 0, no subdivision) */
+ 		if (!modPacketFits(((struct TMD_STRUCT *)pos->obj.tmd)->primn * sizeof(POLY_GT4))) {
+diff --git a/src/std/std_setup.c b/src/std/std_setup.c
+index cb06b08e..d2c19a2f 100644
+--- a/src/std/std_setup.c
++++ b/src/std/std_setup.c
+@@ -14,6 +14,7 @@
+ #include <dw/ids.h>
+ #include <dw/main.h>
+ #include <dw/math.h>
++#include <dw/mod_present.h>
+ #include <dw/mod_qol.h>
+ #include <dw/mod_hard.h>
+ #include <dw/model.h>
+@@ -680,6 +681,9 @@ void STD_renderArena0(void)
+ 	MATRIX m;
+ 	int32_t i;
+ 
++	if (MOD_TICK_FAST && !MOD_REAL_TICK) {
++		return; /* MOD (battle speed): this frame is thrown away; sorting the arena only cost time */
++	}
+ 	GsGetLw(&STD_ARENA_COORDS[1].coord, &m);
+ 	GsSetLightMatrix(&m);
+ 	GsGetLs(&STD_ARENA_COORDS[1].coord, &m);
+@@ -718,6 +722,9 @@ void STD_renderArena1(void)
+ 	MATRIX m;
+ 	int32_t i;
+ 
++	if (MOD_TICK_FAST && !MOD_REAL_TICK) {
++		return; /* MOD (battle speed): this frame is thrown away; sorting the arena only cost time */
++	}
+ 	if (STD_isBracketFinished() == 1) {
+ 		GsGetLw(&STD_ARENA_COORDS[3].coord, &m);
+ 		GsSetLightMatrix(&m);
+-- 
+2.55.0
+
