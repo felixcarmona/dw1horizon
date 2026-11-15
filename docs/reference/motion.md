@@ -2149,3 +2149,9 @@ retry needs 100,882 bytes and still misses a tip by 0.180 heights, with 234
 crossings per tick against 198 and too much sinking. The keyed alternative
 needs 103,244 bytes and loses too much limb motion. Its field animation and
 every battle program remain unchanged.
+
+Sorcermon keeps its existing wand-assisted rise. Playing the source at 33 ticks
+fixes its timing, but the tip still misses by 0.289 heights and the arms cross
+the body too often. Counter-turns reduce crossings to 192 per tick against 164
+without fixing the tip. The keyed rise needs 107,274 bytes and steps its vertices
+0.541 heights in one tick. Field motion and the other clips stay unchanged.
