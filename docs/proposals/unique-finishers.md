@@ -1,13 +1,14 @@
-# Unique finishers: decisions to make
+# Unique finishers: decisions (decided 2026-11-15)
 
 Every imported Digimon (179, MetalGreymonVaccine included) now has its own finisher in
 `content/finishers/imports.json`: own name, behaviour, element, status and look, from its
 signature attack in its source game, with DW1 power. `docs/mods/unique-finishers.md` explains
 the data and the engine change; `python3 -m tools.finisher_balance` checks it (0 problems).
 
-What is settled: behaviour and look follow the source attack; power sits inside the DW1 band
-of the level; no economy effect; support moves become buffs with a damaging fallback; the
-finisher keeps its id, so saves do not change; natives keep their finishers.
+Every question below is decided, and the designed numbers play (`"neutral": false`). Behaviour
+and look follow the source attack. Power sits inside the DW1 band of the level. There is no
+economy effect. Support moves ship as damaging attacks. The finisher keeps its id, so saves do
+not change. Natives keep their finishers.
 
 | | |
 |---|---|
@@ -18,40 +19,33 @@ finisher keeps its id, so saves do not change; natives keep their finishers.
 
 ## Decisions
 
-1. **Rookie imports drop to Rookie power (85..101).** On 2026-11-03 they kept their Champion
-   finishers until an effect fits the model. Each now has its own effect, so this design puts
-   them in the Rookie band. Alternative: keep their current power until each effect ships.
-2. **One Ultimate band, 196..260.** The 180..195 class for Air and Battle Ultimates goes away;
-   the check compares with every native Ultimate instead.
-3. **Mega stays at 250..260.** A narrow band: Megas differ by element and kind, not power.
-4. **Area attacks.** 21 finishers hit every enemy (DW2 "all enemies" and canon area attacks).
-   They take the band floor. SkullMeramon's Metal Fireball is one of them. Card Battle attacks
-   are single target (the card game has one opponent).
-5. **Statuses.** 8 finishers carry one, at most 20 % and capped at the band middle. Four are
-   proxies for DW2 effects DW1 lacks: ExTyrannomon (seals techniques: confusion), Clockmon
-   (delays: stun), MarineDevimon (slows: stun), BlackGatomon Cat's Eyes (confusion, no source
-   status). Keep or drop each.
-6. **Raremon's Buffalo Breath** turns its Death Claw melee into a short-range breath with
-   confusion.
-7. **Buffs need engine code.** Baihumon (Kongou), Mushroomon (Fungus Cruncher) and Tinmon
-   (Recovery Power) become buffs only with a small engine change; until then their damaging
-   fallback ships. Build it, or ship the fallbacks for good.
-8. **Names to confirm.** Romaji and odd spellings were made readable: Amethyst Mandala
-   (KongouKaimandara), Mugen Hadou (or "Infinite Wave"), Talisman of Light (Bonhitsusen),
-   Corona Blaster for Beelzemon's "Blast Mode" (or Double Impact), Thorny Whipping, Duo Scissor
-   Claw, Dynamo Cannon, Gate of Destiny, Shell Attack, Needle Squall, Pearl Shot. Imperialdramon's
-   Mega Fire is close to DW1's Mega Flame: keep or use "Positron Laser". Kongou
-   could read "Diamond Guard". DarkTyrannomon's Fire Blast and MetalTyrannomon's Fire Blast II
-   (both DW2 names) read alike: keep, or use the canon "Nuclear Laser" for the second.
-9. **17 proposed names** for DW2003 Digimon with no known attack (Ebidramon, BlackKingNumemon,
-   Bulbmon, Fujinmon, Pharaohmon, Lynxmon, Maildramon, Musyamon, Gargoylemon, Ghoulmon,
-   Vemmon, Roachmon, Raijinmon, Raidenmon, Suijinmon, Zanbamon, Bastemon). Change any you dislike.
-10. **Natives keep their shared finishers** (28 shared ids, listed in the format doc). The same
-    override could give a native its own later.
+1. **Rookie imports use Rookie power (85..101).** This replaces the 2026-11-03 entry that kept
+   their Champion finishers until an effect fit the model: each now has its own effect.
+2. **One Ultimate band, 196..260.** The 180..195 class for Air and Battle Ultimates is gone;
+   the check compares with every native Ultimate.
+3. **Mega stays at 250..260.** Megas differ by element and kind, not power.
+4. **Area attacks take the band floor.** 21 finishers hit every enemy (DW2 "all enemies" and
+   canon area attacks), SkullMeramon's Metal Fireball among them. Card Battle attacks stay
+   single target.
+5. **Statuses.** Kept: ExTyrannomon (seals techniques: confusion), Clockmon (delays: stun),
+   MarineDevimon (slows: stun). Dropped: BlackGatomon's Cat's Eyes, which has no source status.
+   A status comes only from a decoded source or a name that implies one.
+6. **Raremon's Buffalo Breath** stays as designed: a short-range breath with confusion.
+7. **No buffs.** Baihumon (Kongou), Mushroomon (Fungus Cruncher) and Tinmon (Recovery Power)
+   keep their damaging attacks for good. A buff would need engine code, and the heap is tight.
+8. **Names.** The official English name is used when one exists, otherwise the readable form:
+   - Imperialdramon: "Positron Laser".
+   - MetalTyrannomon: "Nuclear Laser".
+   - Beelzemon: "Corona Blaster".
+   - SkullMeramon: "Metal Fireball".
+   - The rest as proposed: Amethyst Mandala, Mugen Hadou, Talisman of Light, Thorny Whipping,
+     Duo Scissor Claw, Dynamo Cannon, Gate of Destiny, Shell Attack, Needle Squall, Pearl Shot,
+     Kongou.
+9. **The 17 proposed names** for DW2003 Digimon with no known attack stay as proposed.
+10. **Natives keep their shared finishers** (28 shared ids, listed in the format doc).
 
-## Follow-ups after the decisions
+## Done
 
-Engine: record bytes, `modSpeciesMove` override and the battle read sites, names at battle load
-(about 300 bytes of main executable, to be measured). Text: the 179 names in all eight
-languages, width-checked. Effects: the per-species effect ports, dash finishers through the
-Buster Dive pass.
+The engine work (record bytes, `modSpeciesMove`, names at battle load), the 179 names in all
+eight languages and the per-species effects with their source sounds are built; see
+`docs/mods/unique-finishers.md`.

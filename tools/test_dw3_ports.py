@@ -121,7 +121,8 @@ class Discs(unittest.TestCase):
         from tools.derive.steps import effects
         size = effects.CHUNK_SIZE
         like = effects.launch_table(self.archive[e['stands_for'] * size:(e['stands_for'] + 1) * size])
-        return effects.dw3_effect(self.games[rid], str(chunk), e, like)
+        return effects.dw3_effect(self.games[rid], str(chunk), e, like,
+                                  area=chunk in effects.finisher_area_chunks(ROOT))
 
     def test_every_release_builds_the_pinned_chunks(self):
         for rid in self.games:

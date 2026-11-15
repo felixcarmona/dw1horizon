@@ -14,17 +14,18 @@ working. Only the numbers the battle reads and the name the player sees change, 
 
 Status: built. `tools/species.py` writes every entry into its species record and the names into
 `DIGI.DAT`; patch `Give-each-species-its-own-finisher-numbers-and-name.patch` reads them in
-battle and in the menus. The shipped data is **neutral** (below): names and effects are the
-species' own, the numbers are still DW1's.
+battle and in the menus. Every design question is decided
+(`docs/proposals/unique-finishers.md`) and the designed numbers play: `"neutral": false`.
 
 ### The neutral switch
 
-`"neutral": true` at the top of `content/finishers/imports.json` (the default) writes the
-technique and the name reference but not the numbers: the record's present flag stays clear and
-every import fights with the numbers of the DW1 finisher it replaces (`replaces`), as before.
-Its own name and its own effect (`own_effect`) still apply. Set it to `false` and rebuild to
-play the designed numbers of this file: power, element, status, range, iframes, accuracy,
-distance and the needs-target flag.
+`"neutral"` at the top of `content/finishers/imports.json` is `false`: the build writes the
+designed numbers of this file (power, element, status, range, iframes, accuracy, distance and
+the needs-target flag) and area finishers hit every enemy. Setting it to `true` (the default
+when the key is missing) is the one-line revert: the build then writes the technique and the
+name reference but not the numbers, the record's present flag stays clear and every import
+fights with the numbers of the DW1 finisher it replaces (`replaces`). Its own name and its own
+effect (`own_effect`) still apply, as single-target chunks.
 
 ## Rules the data follows
 
@@ -41,13 +42,14 @@ distance and the needs-target flag.
 4. **Area costs power.** An attack that hits every enemy takes the band floor.
 5. **Status costs power.** An entry with a status is capped at the band middle, chance at most
    20 %. Statuses come only from a decoded source status or a name that clearly implies one.
-6. **Support moves become buffs** (power 0), with a damaging fallback for as long as the engine
-   cannot apply a buff from data. Buff total at most 70 % (Full Potential gives 55 %), heal at
-   most 25 %.
+6. **Support moves ship as attacks.** The engine applies buffs by technique id, and the heap
+   has no room for code that reads them from data, so a source support move becomes a damaging
+   attack of the species' element. The check still accepts a `buff` entry (power 0, buff total
+   at most 70 %, heal at most 25 %, with a `fallback`), but none ships.
 7. **Unique names.** No name repeats, and no name equals a DW1 technique name or a name players
    see in `text/ours/names.json` (`main.MOVE_NAMES.*`). Every English name fits the 136-pixel
    finisher field in all three fonts (widest: Transcendent Sword, 109 px).
-8. **No economy effect.** A finisher deals damage, applies a status or a buff. None gives bits,
+8. **No economy effect.** A finisher deals damage and may apply a status. None gives bits,
    items or merit, so there is no repeatable bits-for-bits loop (`docs/mods/balance.md`, economy
    rule; `tools/economy_audit.py` is not affected).
 
@@ -64,7 +66,7 @@ From `content/tables/species-mode-balance.json` (`bands.*.finisher_power`):
 
 The Champion-level finishers the Rookie imports carried until now (decision of 2026-11-03,
 "until an effect fits the model") are replaced by Rookie-band power, because every entry here
-comes with its own effect. This is one of the owner decisions in the summary.
+comes with its own effect. Decided on 2026-11-15.
 
 ## The check: expected damage
 
@@ -84,10 +86,10 @@ Expected damage (min / median / max). Natives with mode scalars use their scalar
 
 | Level | Natives in band | Native power | Native score | Imports | Import power | Import score |
 |---|---|---|---|---|---|---|
-| Rookie | 22 | 85..101 | 159 / 172 / 193 | 25 (+1 buff) | 86..100 | 161 / 170 / 184 |
+| Rookie | 22 | 85..101 | 159 / 172 / 193 | 26 | 86..100 | 161 / 170 / 184 |
 | Champion | 51 | 130..196 | 324 / 339 / 372 | 58 | 130..195 | 313 / 357 / 406 |
-| Ultimate | 31 | 200..260 | 808 / 884 / 1061 | 46 (+1 buff) | 196..258 | 814 / 899 / 1153 |
-| Mega | 6 | 250..260 | 885 / 982 / 1197 | 47 (+1 buff) | 250..260 | 889 / 981 / 1274 |
+| Ultimate | 31 | 200..260 | 808 / 884 / 1061 | 47 | 196..258 | 814 / 899 / 1153 |
+| Mega | 6 | 250..260 | 885 / 982 / 1197 | 48 | 250..260 | 889 / 981 / 1274 |
 
 The import maxima above the native maxima are Air and Mech single-target finishers: Air hits
 three of the seven specialties hard, and the natives have few Air finishers at those levels.
@@ -135,7 +137,7 @@ and ShogunGekomon Blasting Spout 150 (Ultimate).
 | `effect.status` | `source`: the source effect files are known (DW2 files, DCB `E.DRV` pack). `source-undecoded`: a DW2003 signature whose effect mapping is not decoded yet. `dw1-template`: no source effect; build it from DW1 effects, starting from `effect.template`. |
 | `effect.files`, `file_ids`, `file`, `shared_by_cards` | Where the source effect lives; for DCB, how many other cards share the pack. |
 | `move` | What the battle reads, field by field as in `content/techniques/*.json`. `range` 1 melee, 2 ranged (including dashes), 3 area, 4 buff. `distance` is squared. `flags` `T` = needs a target. Accuracy is always 100 and the stored cost 40: finishers use the gauge. |
-| `buff`, `fallback` | Only for the three support moves; see below. |
+| `buff`, `fallback` | Accepted by the check for a support move; no shipped entry has them (see below). |
 | `notes` | Spelling fixes, status proxies, open questions. |
 
 Kind decides range, distance and iframes. Every combination is one DW1's own finishers use
@@ -163,24 +165,26 @@ Kind decides range, distance and iframes. Every combination is one DW1's own fin
 | Effect still to decode (DW2003) | 23 |
 | Effect to build from DW1 templates | 34 |
 
-Kinds: 39 shot, 36 dash, 36 beam, 21 area, 14 thrown, 13 rain, 11 melee, 6 breath, 3 buff.
+Kinds: 40 shot, 37 dash, 37 beam, 21 area, 14 thrown, 13 rain, 11 melee, 6 breath.
 
 The 37 species without a distinct source signature (DW2003 enemy-only species, plus
 BlackGatomon, whose card shares Lightning Paw with Gatomon) have `basis` `canon` or `proposed`.
-Lightning Paw stays with Gatomon; BlackGatomon takes its own card's third attack, Cat's Eyes.
+Lightning Paw stays with Gatomon; BlackGatomon takes its own card's third attack, Cat's Eyes,
+with no status (the card has none).
 
 ### Support moves
 
-| Species | Source | Buff | Fallback |
+These three ship the attack in the last column for good.
+
+| Species | Source | Buff it would be | Ships |
 |---|---|---|---|
 | Baihumon | Kongou: unbeatable during its own turn | Defense +50 %, Offense +10 % | dash, Battle, 255 |
 | Mushroomon | Fungus Cruncher: its attacks poison | Offense +10 %, Speed +10 %, its hits poison at 15 % | spore shot, Nature, 93, poison 20 % |
 | Tinmon | Recovery Power: cures confusion, poison, stun | Cures them, heals 20 % of max HP, Defense +15 % | beam, Ice, 228 |
 
 DW1 applies buffs by technique id (`BTL_applyBuffMove` switches on the id), so a buff
-finisher needs a small engine change: read the buff numbers from the record instead. Until
-it is built the fallback is what ships. The poison-on-hit part needs one more check in the hit
-path; the owner may drop it.
+finisher would need engine code that reads the buff numbers from the record, and the main
+executable has no heap to spare for it.
 
 ## Data model: per-species override on the existing id
 
@@ -206,9 +210,8 @@ The `Move` is the native technique's (`content/techniques`, the source of `MOVE_
 file's power, element (`special`: the index in `fire, battle, air, nature, ice, mech, filth`),
 status, status chance, range, iframes, accuracy and distance on top, and the needs-target flag
 in `unk3` bit 0. Its cost and the other bytes stay native. The build stops if a number is out of
-range or if `replaces.id` is not the finisher in the species' `techniques`. A support move
-(Baihumon, Mushroomon, Tinmon) ships its `fallback.move`. 0x1EE..0x1FF stays free (buff numbers
-fit there: Offense, Defense, Speed, heal, on-hit status and chance, one byte each).
+range or if `replaces.id` is not the finisher in the species' `techniques`. A `buff` entry would
+ship its `fallback.move`. 0x1EE..0x1FF stays free.
 
 ### Reading it in battle
 
@@ -240,8 +243,8 @@ to every other living fighter of the victim's side (`BTL_spreadAreaHit`, battle 
 once per hit and never back to the caster's side. A species whose finisher plays its own
 effect chunk (SkullMeramon's Metal Fireball on Mega Flame) gets no spreads flag: the chunk picks
 its own targets, and with the designed numbers the effects step converts it with `area` (`finisher_area_chunks` in `tools/derive/steps/effects.py`),
-so Metal Fireball's chunk 122 hits every enemy itself. With neutral on nothing spreads and no
-chunk is made an area one.
+so Metal Fireball's chunk 122 hits every enemy itself. With `"neutral": true` nothing spreads
+and no chunk is made an area one.
 
 ### Names and translations
 
