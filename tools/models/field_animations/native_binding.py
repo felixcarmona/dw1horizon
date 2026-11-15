@@ -419,6 +419,11 @@ def bind(data, skeleton, recipe, placements=None, final=True):
         patch = dict(patch, **chibi.species_patch(patch, scales, k))
         chibi_proof = dict(factors=used['factors'], fit=used['fit'], trim=used['trim'], final_scale=report['final_scale'],
                            speeds=report['speeds'], floors=report['floors'])
+        if recipe.get('battle_originals'):
+            # The mesh now has new joint offsets. The source motion must use
+            # those dimensions too, including authored finishes below.
+            from tools.models import clip_rig
+            clip_rig.fit_context(mmd.MMD.parse(output, len(rig)), battle)
     gait_proof = None
     if recipe.get('gait'):
         # the legs planted on the floor under the donor's own trunk, wings, tail and arms, written over the final (chibi) shape
@@ -462,6 +467,7 @@ def bind(data, skeleton, recipe, placements=None, final=True):
         proof['gait'] = gait_proof['checks']
     if battle_proof:
         proof['battle_originals'] = battle_proof
+        proof['battle_rig'] = dict(skeleton=rig, rest=battle['rest'])
     if compact_proof is not None:
         proof['battle_compact'] = compact_proof
     return output, proof

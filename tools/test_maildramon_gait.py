@@ -91,7 +91,7 @@ class MaildramonGait(unittest.TestCase):
     def test_the_recipe_asks_for_the_stage(self):
         recipes = json.loads(Path('content/models/imports/native-bindings.json').read_text())
         self.assertEqual(recipes['324']['gait'], 'maildramon_gait')
-        self.assertTrue(all('gait' not in r for k, r in recipes.items() if k != '324'))
+        self.assertEqual([k for k, r in recipes.items() if r.get('gait') == 'maildramon_gait'], ['324'])
         self.assertTrue(hasattr(maildramon_gait, 'build'))
 
 
