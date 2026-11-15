@@ -64,6 +64,7 @@ the moment the attack starts.
 | 313 Bulbmon | Mad Pump (DW2003) | Dark Shot | 3D effect at the caster (MEFT0346) | 1 | plays its whole length (38 frames at 30 fps), hits when it ends | none | one enemy, as for Dark Shot | one enemy |
 | 316 Sakuyamon | KongouKaimandara (DW2003) | Mega Flame | 3D effect at the caster (MEFT0087), 5 parts left out to fit | 1 | plays its whole length (148 frames at 30 fps), hits when it ends | none | one enemy, as for Mega Flame | all enemies |
 | 317 Fujinmon | Sylph Storm (DW2003) | Spiral Sword | 3D effect at the caster (MEFT0370) | 1 | plays its whole length (38 frames at 30 fps), hits when it ends | none | one enemy, as for Spiral Sword | all enemies |
+| 318 Gallantmon | Final Purification (DW2003) | Spiral Sword | 3D effect at the caster (MEFT0095) | 1 | plays its whole length (51 frames at 30 fps), hits when it ends | none | one enemy, as for Spiral Sword | one enemy |
 
 ## Where the port differs from the source
 

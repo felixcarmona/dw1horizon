@@ -11,6 +11,7 @@
                  "Megalo Spark", "Confused Storm", "Wind Cutter", "Spiral Sword"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 40,
+  "own_effect": {"technique": "Spiral Sword", "chunk": 208},
   "model": {
     "file": "build/sizes-out/models/Gallantmon.MMD",
     "radius": 300,

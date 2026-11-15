@@ -381,5 +381,10 @@
     "name": "Sylph Storm",
     "stands_for": 102,
     "dw3": {"model": "M439FUJI", "slot": 9, "meft": [370], "pin": "9a3748db46b52c7b4022ea792ffc6ccb1e0288d6"}
+  },
+  "208": {
+    "name": "Final Purification",
+    "stands_for": 102,
+    "dw3": {"model": "M369DUKE", "slot": 11, "meft": [95], "pin": "368f7e48a3d858181854cad9e004a1e997f3a13b"}
   }
 }
