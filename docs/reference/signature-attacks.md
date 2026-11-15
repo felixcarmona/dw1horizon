@@ -82,6 +82,7 @@ the moment the attack starts.
 | 305 Ebidramon | Pincer Crusher (DW2003) | Scissor Claw | sprites at the caster as flat quads (E000COM1 #2, E000COM3 #9) | 1 | plays its whole length (33 frames at 30 fps), hits when it ends | none | one enemy, as for Scissor Claw | one enemy |
 | 308 Dinohyumon | Lizard Dance (DW2003) | Scissor Claw | sprites at the caster as flat quads (E000COM1 #2, E386DINO #2021, E386DINO #2022, E386DINO #2023) | 1 | plays its whole length (77 frames at 30 fps), hits when it ends | none | one enemy, as for Scissor Claw | one enemy, 4 hits |
 | 321 Knightmon | Berserk Sword (DW2003) | Spiral Sword | sprites at the caster as flat quads (E000COM1 #2) | 1 | plays its whole length (6 frames at 30 fps), hits when it ends | none | one enemy, as for Spiral Sword | one enemy |
+| 324 Maildramon | Thunder Bolt (DW2003) | Death Claw | sprites at the caster as flat quads (E000COM1 #2, E000COM2 #64, E438RIDN #1011) | 1 | plays its whole length (68 frames at 30 fps), hits when it ends | none | one enemy, as for Death Claw | one enemy |
 
 ## Where the port differs from the source
 

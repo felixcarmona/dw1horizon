@@ -471,5 +471,10 @@
     "name": "Berserk Sword",
     "stands_for": 102,
     "dw3": {"model": "M178KNGT", "slot": 5, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38]}, "pin": "3cf7ad797cc8b0106dbf764946f829dbb0b14cc5"}
+  },
+  "237": {
+    "name": "Thunder Bolt",
+    "stands_for": 62,
+    "dw3": {"model": "M334MLDR", "slot": 9, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38], "64": ["E000COM2.BIN", 8, 0, 0], "1011": ["E438RIDN.BIN", 1, 2, 0]}, "pin": "c2b53a337eb635b1b4bdc858bd3d0a944add3c1a", "pins": {"dw3-us": "08145ac3c52da7985dd56b8590c41bb6f7e12401"}}
   }
 }
