@@ -184,6 +184,7 @@ both balance-original  $PY tools/balance.py verify --exe-dir extracted        # 
 both balance-check     $PY tools/balance.py check --exe-dir extracted
 run balance-map-outputs $PY -m unittest tools.test_balance_maps
 run ground-pickup-ids $PY tools/test_ground_items.py
+run efe-smooth        $PY tools/test_efe_smooth.py                       # smooth battle effects: the draw table against the handlers, the blend on the host
 run vending-audit     $PY tools/test_vending_audit.py
 run economy-audit     $PY tools/economy_audit.py                            # no repeatable conversion turns bits into more bits
 if [ -f "$DERIVED/exe/SLUS_010.32.elf" ]; then
