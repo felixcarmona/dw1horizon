@@ -213,7 +213,7 @@ def load_source(entry, log=print, card_metadata=True, legacy_face_drop=False):
     if mf is not False and (mf is not None or (over and game != 'dw1')):
         params = mf if isinstance(mf, dict) else {}
         if not legacy_face_drop:
-            params = dict(params,preserve_components=True)
+            params = dict(params,preserve_components=True,preserve_boundaries=True)
         lines = []
         info = meshfix.apply(m, params, log=lines.append)
         m.meshfix = meshfix.spec_params(info, params) or True

@@ -123,3 +123,40 @@ The 713-primitive, 172-vertices-per-object and original resident/cold-buffer
 targets still apply to the WarGrowlmon repair. The audit and authoring changes
 add no runtime allocation or executable data. Other severe findings need their
 own source comparison and storage checks before a repair is accepted.
+
+## Fast final-provider coverage
+
+Use `--from BUILD --no-images` to read a prepared derive build without
+regenerating every native motion overlay. The actual paths in its species
+records select the final files; `imported-models/` alone may only contain an
+intermediate mesh. Every final file is checked against the checkout's provider
+pins; mismatches remain explicit findings. All registered imports are included,
+including native authored builders (their authored mesh is the reference).
+
+The audit recovers verified indexed pools from preceding lossless provider
+passes, handles helper objects and concatenated native carriers, and refuses
+ambiguous transforms. A unanimous affine fit skips the consensus search.
+Geometric source coverage uses the surviving final carrier surface independently
+of exclusive UV attribution: repeated UVs and split quads cannot manufacture
+missing faces. `unassigned_target_triangles` still reports incomplete texture
+lineage. Source-area coverage reports how much could be verified, separately
+from the fraction of verified surface that survived.
+
+Ranking now uses uncovered surface plus 0.35 times the worst substantial part's
+uncovered fraction. Fully verified models precede partially verified models;
+partial results are not evidence of intact unchecked regions. Near-coincident
+source edges shared by parent/child parts are also checked for attachment gaps.
+These gaps are separate from surface coverage and require visual review.
+`--check` applies the documented coverage/attachment thresholds. Contact images
+are optional; JSON retains texture diagnostics even with `--no-images`.
+
+Results finish in completion order and a ranked report is checkpointed after
+the first result and every ten results, so an interrupted run leaves evidence.
+`--resume` still requires identical input fingerprints. The focused findings and
+remaining work are recorded in [the reduction report](../reference/reduction-audit.md).
+
+New authoring additionally records `preserve_boundaries: true`: decimation pins
+open sheet outlines and attachment endpoints, including coincident front/back
+surfaces. Interior vertices can still simplify. Frozen serialized specs without
+the flag retain their previous output. If protected geometry cannot fit, revise
+the authoring rather than removing the sheet.

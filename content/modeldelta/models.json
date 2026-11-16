@@ -4629,9 +4629,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/335-MegaGargomon.MMD.mdelta",
-        "delta_sha256": "02912ef917453cc6088054ea47124c61ed0c00624ced45af48fa5bb1e87ba05d",
-        "sha256": "a5fc951e4a709a5535b89841e304d63fa4d5c3015da94acf1b045c3f5aad918d",
-        "size": 103534
+        "delta_sha256": "638ef6a0a14d0a0b71dd00d67192b1edff47de4273135c9418a0d640c0ae94fb",
+        "sha256": "c30b9e3a220ac0725553a761f8e5b0a051827731eaaf2cad9a4a03c5c61964ed",
+        "size": 103830
       },
       "tim": {
         "sources": [
