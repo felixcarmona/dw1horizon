@@ -29,7 +29,10 @@
    "chunk": 253,
    "attack_script": 1030,
    "hit_script": 2000,
-   "result": "converted"
+   "result": "reads flat",
+   "fallback": "composed",
+   "composed": "DW1 chunk 62 recoloured orange: charge streaks and a ground ring in place of the card art",
+   "why": "flat card art: an opaque puff and ring of sprites that never turn or scale, pasted over the fight"
   },
   {
    "species": 181,
@@ -161,7 +164,10 @@
    "chunk": 266,
    "attack_script": 1147,
    "hit_script": 435,
-   "result": "converted"
+   "result": "reads flat",
+   "fallback": "composed",
+   "composed": "DW1 chunk 81, a charge, recoloured orange: a burning rush at the target in place of the card art (chunk 104 burns around the caster and missed the target)",
+   "why": "flat card art: most of its drawn surface is planar pieces that never turn, scale or fade (outside every DW1 effect's 90th percentile)"
   },
   {
    "species": 196,
@@ -223,7 +229,10 @@
    "chunk": 272,
    "attack_script": 1150,
    "hit_script": 2019,
-   "result": "converted"
+   "result": "reads flat",
+   "fallback": "composed",
+   "composed": "DW1 chunk 93 recoloured blue-white: a spark ring, star and lightning ball in place of the card art",
+   "why": "flat card art: most of its drawn surface is planar pieces that never turn, scale or fade (outside every DW1 effect's 90th percentile)"
   },
   {
    "species": 202,
@@ -250,7 +259,10 @@
    "chunk": 275,
    "attack_script": 1003,
    "hit_script": 496,
-   "result": "converted"
+   "result": "reads flat",
+   "fallback": "composed",
+   "composed": "DW1 chunk 93 recoloured violet: a spark ring, star and lightning ball in place of the card art",
+   "why": "flat card art: most of its drawn surface is planar pieces that never turn, scale or fade (outside every DW1 effect's 90th percentile)"
   },
   {
    "species": 206,
@@ -603,7 +615,10 @@
    "chunk": 310,
    "attack_script": 1048,
    "hit_script": 402,
-   "result": "converted"
+   "result": "reads flat",
+   "fallback": "composed",
+   "composed": "DW1 chunk 93 recoloured yellow: a spark ring, star and lightning ball in place of the card art",
+   "why": "flat card art: most of its drawn surface is planar pieces that never turn, scale or fade (outside every DW1 effect's 90th percentile)"
   },
   {
    "species": 242,

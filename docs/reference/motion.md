@@ -2190,3 +2190,27 @@ Wizardmon plants its boots and carries each spell through its head, cape and wan
 Raijinmon follows its turning strike with a loose arm and settles its second attack over planted feet.
 
 GrapLeomon keeps its existing techniques because the repaired source attacks exceed memory or motion limits.
+
+Finisher lift is checked with `python tools/models/finisher_lift.py check DIGI.DAT
+--json report.json`. It measures the peak rise of the model's lowest vertex,
+including root travel, above the mean field-idle floor, in first-tick field-idle
+heights (h). The finisher slot is 0x2E plus the index of the first move >= 58,
+excluding empty move 255. The bound is 1.13 h: the rounded 99th percentile of
+92 native DW1 partner finishers (median 0.01, p90 0.46, p95 0.85, p99 1.13,
+maximum 1.27 h). Unchanged disc clips are measured as references, including
+MegaSeadramon's 1.27 h rear; they do not fail the regression check. Native NPC
+records without a finisher animation are marked unavailable. Changed models
+above the bound, or with an unreadable/missing finisher, exit 1. Original models
+need the player's `extracted/` files. `FINISHER_LIFT_ARCHIVE` enables the real
+archive test in `tools/test_finisher_lift.py`; synthetic tests need no discs.
+
+The reviewed vertical repairs are declared in `content/models/finisher-lift.json`.
+Run `finisher_lift.py repair ID INPUT.MMD OUTPUT.MMD` on the pinned input, then
+store with `tools/models/edit.py put ID OUTPUT.MMD` (one ID per call). The repair
+scales positive lift to 0.9 h by lowering the body, preserving every rotation,
+scale, root channel, event and other animation. Shurimon's 51-tick throw keeps
+its timing but lands within a 22-tick ninja hop instead of hovering. Yanmamon's
+slot 53 is an alias of slot 48, so its source clip is repaired before aliasing;
+Gizamon's slot 53 is already baked. Gizamon also needs `edit.py repin` before
+`put` to move its active follow-through input pin; the earlier pace recipe stays
+as authoring history. No importer specs or clip-policy pins change.

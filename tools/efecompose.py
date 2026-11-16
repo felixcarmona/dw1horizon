@@ -19,6 +19,9 @@ An entry of content/battle/own-effects.json is composed when it has "compose" (d
   {"from": chunk, "rect": [u, v, w, h], "to": [u, v], "palettes": [[from row, to row]]}: a new picture on the
   sprites or faces that use those texels (efesim's draws say which). It is copied before the recolour.
 - scale: the template's model (TMD vertices) resized, one factor or [x, y, z]. Sprites keep their size.
+- sounds: {template sound id: new sound id}: the sound each of the template's playSound calls plays (the id it
+  pushes just before the call), for an effect that keeps the sounds of the attack it stands for (a Card Battle
+  attack's cues as tools/dcbsound.py matched them). Every key must be a sound the template plays.
 - check: what tools/efecheck.py --composed expects: "hue", the main hue in degrees.
 
     python -m tools.efecompose sheet KEY [--out PNG]     template above, composed below, one tick per column
@@ -152,6 +155,31 @@ def recolour_script(chunk, spec, offsets):
         struct.pack_into('<3i', chunk, HEADER + o, *f(rgb))
 
 
+def sound_sites(chunk):
+    """[(offset of the pushed id from the header's end, sound id)] of every `push N` followed by `sub playSound`."""
+    insts = efescript.disassemble(chunk)
+    out = []
+    for pc, (text, size) in sorted(insts.items()):
+        nxt = insts.get(pc + size)
+        if text.startswith('push ') and nxt and nxt[0] == 'sub playSound':
+            out.append((pc + 2, struct.unpack_from('<h', chunk, HEADER + pc + 2)[0]))
+    return out
+
+
+def remap_sounds(chunk, template, mapping):
+    sites = sound_sites(template)
+    played = {sid for _o, sid in sites}
+    missing = sorted(int(k) for k in mapping if int(k) not in played)
+    if missing:
+        raise ValueError(f'composed effect: the template plays no sound {missing} (it plays {sorted(played)})')
+    n = 0
+    for o, sid in sites:
+        if str(sid) in mapping:
+            struct.pack_into('<h', chunk, HEADER + o, int(mapping[str(sid)]))
+            n += 1
+    return n
+
+
 # ----------------------------------------------------------------- shape
 
 def tmd_vertex_ranges(chunk):
@@ -236,7 +264,9 @@ def compose(template, spec, archive=None):
         info['script colours'] = len(offsets)
     if 'scale' in spec:
         rescale(out, spec['scale'])
-    unknown = set(spec) - {'recolour', 'scale', 'texture'}
+    if 'sounds' in spec:
+        info['sounds'] = remap_sounds(out, template, spec['sounds'])
+    unknown = set(spec) - {'recolour', 'scale', 'texture', 'sounds'}
     if unknown:
         raise ValueError(f'composed effect: unknown fields {sorted(unknown)}')
     info['kept'] = header(out)['tmdEnd'] + HEADER
@@ -258,6 +288,10 @@ def allowed_bytes(chunk, spec):
             out.update(range(at, at + 8 * n))
     for o in script_colours(chunk, launch_table(chunk)):
         out.update(range(HEADER + o, HEADER + o + 12))
+    if 'sounds' in spec:
+        for o, sid in sound_sites(chunk):
+            if str(sid) in spec['sounds']:
+                out.update(range(HEADER + o, HEADER + o + 2))
     return out
 
 

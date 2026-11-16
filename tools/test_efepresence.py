@@ -22,6 +22,8 @@ class Presence(unittest.TestCase):
         self.assertEqual(P.entry_hash(e), P.entry_hash(f))
         self.assertEqual(P.entry_hash({'name': 'B', 'dcb': {'attack': 1, 'pin': 'a'}}),
                          P.entry_hash({'name': 'B', 'dcb': {'attack': 1, 'pin': 'b'}}))
+        self.assertEqual(P.entry_hash({'name': 'C', 'compose': {'scale': 1.2}}),
+                         P.entry_hash({'name': 'C', 'compose': {'scale': 1.2, 'sounds': {'17': 50}}}))
 
     def test_small_and_huge_fail(self):
         spec = {'1': {'name': 'A'}, '2': {'name': 'B'}}

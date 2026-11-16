@@ -68,6 +68,40 @@ class Repin(unittest.TestCase):
     GAITS = v.ROOT / 'tools/models/field_animations/gaits.py'
     NEW, POST = 'a' * 64, 'b' * 64
 
+    def test_followthrough_moves_while_retired_pace_stays_exact(self):
+        from tools.models import variants
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            imports = root / 'content/models/imports'
+            imports.mkdir(parents=True)
+            (root / 'tools/models/field_animations').mkdir(parents=True)
+            (root / 'content/species').mkdir()
+            (root / 'content/species/239-gizamon.json').write_text(json.dumps({'model': {'skeleton': []}}))
+            before, after = b'previous reviewed model', b'new finisher translation'
+            old, new = v.sha256(before), v.sha256(after)
+            manifests = {
+                'MODELS': {'models': [dict(id=239, name='Gizamon')]},
+                'PACE_ROWS': {'239': dict(source_sha256='e' * 64, base_generator='retired.generator')},
+                'FOLLOWTHROUGH_ROWS': {'239': dict(source_sha256=old)},
+                'CHIBI_ROWS': {}, 'CELEBRATION_ROWS': {}, 'NATIVE_ROWS': {}}
+            paths = {}
+            for key, value in manifests.items():
+                path = imports / (key.lower() + '.json')
+                path.write_text(json.dumps(value, indent=2) + '\n')
+                paths[key] = path
+            edited = root / 'edited.MMD'
+            edited.write_bytes(after)
+            pace_before = paths['PACE_ROWS'].read_bytes()
+            args = SimpleNamespace(id='239', mmd=str(edited), tim=None)
+            with patch.object(v, 'ROOT', root), patch.multiple(v, **paths), \
+                    patch.object(v, 'PROFILE_MODULES', ()), \
+                    patch.object(v, 'build', return_value=(before, b'texture', {})), \
+                    patch.object(variants, 'overlay_input', side_effect=lambda sid, model, tim: model), \
+                    contextlib.redirect_stdout(io.StringIO()):
+                v.cmd_repin(args)
+            self.assertEqual(json.loads(paths['FOLLOWTHROUGH_ROWS'].read_text())['239']['source_sha256'], new)
+            self.assertEqual(paths['PACE_ROWS'].read_bytes(), pace_before)
+
     def test_profile_pin_moves_in_its_row_only(self):
         text = self.GAITS.read_text()
         old = json.loads(v.CHIBI_ROWS.read_text())['354']['source_sha256']

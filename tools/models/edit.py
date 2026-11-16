@@ -16,7 +16,7 @@ step does (the import Provider, crmath and pysum installed), so an animation can
   tools/models/edit.py repin ID MMD [TIM]       before `put` of an edit that changes a field overlay's input (a battle slot
                                       restored): move the overlay's reviewed-input pins (the species' PROFILES row
                                       `source` in gaits.py / secondary_motion.py, its chibi.json `source_sha256` and
-                                      `post_source_sha256`) from the current model's input to MMD's; refuses when that
+                                      `post_source_sha256`, or its active follow-through input) from the current model's input to MMD's; refuses when that
                                       input is pinned anywhere else
   tools/models/edit.py sources OUT [ID ...]     write the importer outputs (the delta sources) at their pinned paths under OUT;
                                       --unchecked after an importer change (no pins, no cache)
@@ -409,6 +409,7 @@ CHIBI_ROWS = IMPORTED_MODELS_SCRIPT.parent / 'chibi.json'
 PACE_ROWS = IMPORTED_MODELS_SCRIPT.parent / 'pace.json'
 NATIVE_ROWS = IMPORTED_MODELS_SCRIPT.parent / 'native-bindings.json'
 CELEBRATION_ROWS = IMPORTED_MODELS_SCRIPT.parent / 'celebrations.json'
+FOLLOWTHROUGH_ROWS = IMPORTED_MODELS_SCRIPT.parent / 'followthrough.json'
 PIN_FOLDERS = ('content/models/imports', 'tools/models/field_animations')
 
 
@@ -571,7 +572,10 @@ def cmd_repin(a):
         with importing(a.games_dir):
             return stage_module(name, texts).build(data, skeleton)[0]
 
-    pace = load(PACE_ROWS).get(str(sid))
+    followthrough = load(FOLLOWTHROUGH_ROWS).get(str(sid))
+    # Follow-through replaced these species' earlier pace overlays. Their old
+    # pace recipes remain as authoring history and do not consume this input.
+    pace = None if followthrough else load(PACE_ROWS).get(str(sid))
     if pace:
         post = sha256(after_base(pace['base_generator'], new_input)) if pace['base_generator'] else new
         texts[PACE_ROWS] = repin_pace(PACE_ROWS.read_text(), sid, old, new, post)
@@ -605,6 +609,9 @@ def cmd_repin(a):
     celebrations = repin_celebration(CELEBRATION_ROWS.read_text(), sid, old, new)
     if celebrations is not None:
         texts[CELEBRATION_ROWS] = celebrations
+    followthrough = repin_celebration(FOLLOWTHROUGH_ROWS.read_text(), sid, old, new)
+    if followthrough is not None:
+        texts[FOLLOWTHROUGH_ROWS] = followthrough
     if not texts:
         print(f'{sid} {row["name"]}: no overlay pins its input; nothing to move')
         return

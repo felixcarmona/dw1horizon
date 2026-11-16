@@ -93,6 +93,17 @@ class Composed(unittest.TestCase):
         rep = C.check_composed(self.t, bytes(bad), self.SPEC, 280)
         self.assertTrue(any('outside the palette' in x for x in rep['fails']))
 
+    def test_sounds_remap_the_pushed_ids_only(self):
+        spec = dict(self.SPEC, sounds={'17': 50, '56': 41})
+        ours, info = X.compose(self.t, spec)
+        self.assertEqual(info['sounds'], 2)
+        self.assertEqual([sid for _o, sid in X.sound_sites(ours)], [50, 20, 41])
+        allowed = X.allowed_bytes(self.t, spec)
+        self.assertTrue(all(i in allowed for i in range(X.CHUNK) if ours[i] != self.t[i]))
+        self.assertEqual(C.check_composed(self.t, ours, spec, 280)['fails'], [])
+        with self.assertRaises(ValueError):
+            X.compose(self.t, dict(self.SPEC, sounds={'99': 1}))
+
     def test_texture_copy(self):
         with open(ARCHIVE, 'rb') as f:
             archive = f.read()
