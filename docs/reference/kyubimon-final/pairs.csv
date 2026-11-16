@@ -1,0 +1,108 @@
+bone_pair,before_units,after_units,after_slot,after_frame,status
+2/4,37.848331,37.848331,7,34,unresolved; no unrestricted floor proven
+2/7,30.250817,30.250817,54,25,unresolved; no unrestricted floor proven
+2/8,31.66582,31.66582,4,0,unresolved; no unrestricted floor proven
+2/9,38.16339,38.16339,11,37,unresolved; no unrestricted floor proven
+2/11,28.135931,28.135931,4,12,unresolved; no unrestricted floor proven
+2/12,30.482679,30.482679,9,43,unresolved; no unrestricted floor proven
+2/13,38.448812,38.448812,8,50,unresolved; no unrestricted floor proven
+2/14,48.715931,44.975527,8,39,unresolved; no unrestricted floor proven
+2/15,28.041766,0,,,cleared
+2/19,21.096642,21.096642,11,40,unresolved; no unrestricted floor proven
+2/20,29.9696,29.9696,4,11,unresolved; no unrestricted floor proven
+2/21,36.571044,36.571044,11,40,unresolved; no unrestricted floor proven
+2/23,20.589413,17.249082,4,12,unresolved; no unrestricted floor proven
+2/24,35.843166,35.843166,4,10,unresolved; no unrestricted floor proven
+2/25,32.638008,32.638008,4,11,unresolved; no unrestricted floor proven
+4/7,36.392256,36.392256,21,15,unresolved; no unrestricted floor proven
+4/8,41.229253,41.229253,54,9,unresolved; no unrestricted floor proven
+4/9,41.000083,41.000083,25,6,unresolved; no unrestricted floor proven
+4/11,37.203374,37.203374,2,10,unresolved; no unrestricted floor proven
+4/12,41.530114,41.530114,21,24,unresolved; no unrestricted floor proven
+4/13,38.848909,38.848909,11,41,unresolved; no unrestricted floor proven
+4/14,50.212176,47.985741,13,5,unresolved; no unrestricted floor proven
+4/15,54.368217,0,,,cleared
+4/19,34.326674,27.729099,11,42,unresolved; no unrestricted floor proven
+4/20,39.130726,39.130726,11,40,unresolved; no unrestricted floor proven
+4/21,34.085451,29.742052,11,42,unresolved; no unrestricted floor proven
+4/23,33.368356,33.368356,8,43,unresolved; no unrestricted floor proven
+4/24,30.675651,0,,,cleared
+4/25,30.801723,15.933441,4,12,unresolved; no unrestricted floor proven
+7/8,33.703385,33.703385,1,8,unresolved; no unrestricted floor proven
+7/9,38.249779,38.249779,5,6,unresolved; no unrestricted floor proven
+7/11,25.625961,25.625961,4,0,unresolved; no unrestricted floor proven
+7/12,28.190021,28.190021,43,22,unresolved; no unrestricted floor proven
+7/13,27.00064,27.00064,11,43,unresolved; no unrestricted floor proven
+7/14,33.560878,20.315468,21,20,unresolved; no unrestricted floor proven
+7/15,39.776344,0,,,cleared
+7/19,23.303175,15.461767,11,42,unresolved; no unrestricted floor proven
+7/20,31.729004,31.729004,11,42,unresolved; no unrestricted floor proven
+7/21,35.472985,35.472985,11,40,unresolved; no unrestricted floor proven
+8/9,35.334331,35.334331,12,7,unresolved; no unrestricted floor proven
+8/11,30.931983,30.931983,43,19,unresolved; no unrestricted floor proven
+8/12,31.23183,31.23183,9,29,unresolved; no unrestricted floor proven
+8/13,36.771373,36.771373,21,3,unresolved; no unrestricted floor proven
+8/14,30.759333,30.759333,4,13,unresolved; no unrestricted floor proven
+8/15,23.400358,0,,,cleared
+8/19,26.793135,26.793135,3,10,unresolved; no unrestricted floor proven
+8/20,35.048881,35.048881,4,12,unresolved; no unrestricted floor proven
+8/21,35.090395,35.090395,11,40,unresolved; no unrestricted floor proven
+8/24,13.407321,13.407321,4,13,unresolved; no unrestricted floor proven
+9/11,39.739872,39.739872,21,12,unresolved; no unrestricted floor proven
+9/12,35.228849,35.228849,11,34,unresolved; no unrestricted floor proven
+9/13,34.116172,34.116172,21,5,unresolved; no unrestricted floor proven
+9/14,38.786749,38.786749,4,13,unresolved; no unrestricted floor proven
+9/15,45.294934,0,,,cleared
+9/19,33.742765,33.742765,2,8,unresolved; no unrestricted floor proven
+9/20,35.727589,35.727589,3,9,unresolved; no unrestricted floor proven
+9/21,33.798039,33.798039,11,41,unresolved; no unrestricted floor proven
+9/23,13.873396,13.873396,4,12,unresolved; no unrestricted floor proven
+9/24,16.332768,0,,,cleared
+11/12,32.548278,32.548278,4,2,unresolved; no unrestricted floor proven
+11/13,40.079652,40.079652,21,16,unresolved; no unrestricted floor proven
+11/14,24.921388,21.880757,4,0,unresolved; no unrestricted floor proven
+11/15,34.931382,0,,,cleared
+11/21,27.181235,27.181235,4,0,unresolved; no unrestricted floor proven
+11/23,22.252768,8.957846,4,11,unresolved; no unrestricted floor proven
+11/24,30.854209,30.854209,4,13,unresolved; no unrestricted floor proven
+11/25,34.611312,34.611312,4,11,unresolved; no unrestricted floor proven
+12/13,35.742946,35.742946,12,5,unresolved; no unrestricted floor proven
+12/14,28.19319,25.973742,4,1,unresolved; no unrestricted floor proven
+12/15,18.759648,0,,,cleared
+12/20,15.834741,15.834741,4,1,unresolved; no unrestricted floor proven
+12/21,27.478193,27.478193,11,41,unresolved; no unrestricted floor proven
+12/23,25.848758,25.848758,2,14,unresolved; no unrestricted floor proven
+12/24,33.348435,33.348435,2,0,unresolved; no unrestricted floor proven
+12/25,34.53321,34.53321,4,10,unresolved; no unrestricted floor proven
+13/14,21.197793,15.034572,4,0,unresolved; no unrestricted floor proven
+13/21,29.598225,29.598225,11,40,unresolved; no unrestricted floor proven
+13/23,33.65297,33.65297,4,13,unresolved; no unrestricted floor proven
+13/24,33.880721,33.880721,3,20,unresolved; no unrestricted floor proven
+13/25,34.364287,34.364287,2,14,unresolved; no unrestricted floor proven
+14/15,46.574341,16.605753,52,36,boundary-only; verified separating planes
+14/19,34.820964,34.241718,21,13,unresolved; no unrestricted floor proven
+14/20,33.314013,33.314013,4,11,unresolved; no unrestricted floor proven
+14/21,24.287642,24.287642,4,13,unresolved; no unrestricted floor proven
+14/23,43.619042,43.619042,21,12,unresolved; no unrestricted floor proven
+14/24,36.402838,36.402838,3,19,unresolved; no unrestricted floor proven
+14/25,23.521452,22.817009,4,10,unresolved; no unrestricted floor proven
+15/19,32.787972,0,,,cleared
+15/20,34.168979,0,,,cleared
+15/21,35.426612,0,,,cleared
+15/23,34.707866,0,,,cleared
+15/24,35.699636,0,,,cleared
+15/25,51.736029,0,,,cleared
+19/20,30.942326,30.942326,9,15,unresolved; no unrestricted floor proven
+19/21,33.770353,33.770353,10,2,unresolved; no unrestricted floor proven
+19/24,23.033551,23.033551,43,14,unresolved; no unrestricted floor proven
+19/25,15.283845,15.283845,23,36,unresolved; no unrestricted floor proven
+20/21,32.07225,32.07225,42,38,unresolved; no unrestricted floor proven
+20/23,25.003896,25.003896,43,13,unresolved; no unrestricted floor proven
+20/24,30.493135,30.493135,43,14,unresolved; no unrestricted floor proven
+20/25,25.129811,25.129811,21,10,unresolved; no unrestricted floor proven
+21/23,19.220734,19.220734,23,18,unresolved; no unrestricted floor proven
+21/24,35.327662,35.327662,21,4,unresolved; no unrestricted floor proven
+21/25,28.848129,28.848129,21,9,unresolved; no unrestricted floor proven
+23/24,34.460899,34.460899,4,9,unresolved; no unrestricted floor proven
+23/25,32.512339,32.512339,43,19,unresolved; no unrestricted floor proven
+24/25,29.487307,29.487307,4,6,unresolved; no unrestricted floor proven

@@ -313,16 +313,8 @@ def apply(data, bones, sid):
             raise ValueError('zero-area quad halves no longer match reviewed mesh')
         report['zero_area_halves'] = count
     if sid == 409:
-        # The rebound fan started inside the rear thighs. Move the whole fan
-        # together and lengthen its existing root stalk to retain the socket.
-        if tuple(bones[15]) != (9, 14) or tuple(bones[14]) != (8, 1):
-            raise ValueError('tail repair requires the reviewed fan/socket binding')
-        translate_bone(model, 15, 0, 60)
-        translate_bone(model, 15, 2, -20)
-        transform_piece(model, 8, scale=(144/84, 1, 1), shear_zx=-20/84)
-        report['tail_socket_extension'] = [60, 0, -20]
-        from tools.models import mesh_fan
-        report['tail_fan'] = mesh_fan.apply(model)
+        from tools.models import kyubimon_mesh
+        report.update(kyubimon_mesh.apply(model, bones))
     if sid == 406:
         # Both cannon caps cut through the housings. Advance their rear lip
         # eight local units; their separate animation and material stay intact.

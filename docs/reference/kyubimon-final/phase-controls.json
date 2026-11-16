@@ -1,0 +1,263 @@
+{
+  "rows": [
+    {
+      "slot": 0,
+      "tick": 0,
+      "view": 0,
+      "changed_pixels": 2022,
+      "before_bin_phase_pixels": 3,
+      "after_bin_phase_pixels": 3
+    },
+    {
+      "slot": 0,
+      "tick": 0,
+      "view": 1,
+      "changed_pixels": 1551,
+      "before_bin_phase_pixels": 52,
+      "after_bin_phase_pixels": 58
+    },
+    {
+      "slot": 0,
+      "tick": 0,
+      "view": 2,
+      "changed_pixels": 2063,
+      "before_bin_phase_pixels": 111,
+      "after_bin_phase_pixels": 110
+    },
+    {
+      "slot": 0,
+      "tick": 0,
+      "view": 3,
+      "changed_pixels": 1933,
+      "before_bin_phase_pixels": 34,
+      "after_bin_phase_pixels": 36
+    },
+    {
+      "slot": 0,
+      "tick": 0,
+      "view": 4,
+      "changed_pixels": 4730,
+      "before_bin_phase_pixels": 52,
+      "after_bin_phase_pixels": 0
+    },
+    {
+      "slot": 0,
+      "tick": 0,
+      "view": 5,
+      "changed_pixels": 1919,
+      "before_bin_phase_pixels": 37,
+      "after_bin_phase_pixels": 13
+    },
+    {
+      "slot": 0,
+      "tick": 0,
+      "view": 6,
+      "changed_pixels": 1970,
+      "before_bin_phase_pixels": 93,
+      "after_bin_phase_pixels": 113
+    },
+    {
+      "slot": 0,
+      "tick": 0,
+      "view": 7,
+      "changed_pixels": 1614,
+      "before_bin_phase_pixels": 72,
+      "after_bin_phase_pixels": 69
+    },
+    {
+      "slot": 8,
+      "tick": 10,
+      "view": 0,
+      "changed_pixels": 4068,
+      "before_bin_phase_pixels": 26,
+      "after_bin_phase_pixels": 43
+    },
+    {
+      "slot": 8,
+      "tick": 10,
+      "view": 1,
+      "changed_pixels": 2692,
+      "before_bin_phase_pixels": 17,
+      "after_bin_phase_pixels": 56
+    },
+    {
+      "slot": 8,
+      "tick": 10,
+      "view": 2,
+      "changed_pixels": 3084,
+      "before_bin_phase_pixels": 41,
+      "after_bin_phase_pixels": 32
+    },
+    {
+      "slot": 8,
+      "tick": 10,
+      "view": 3,
+      "changed_pixels": 3542,
+      "before_bin_phase_pixels": 96,
+      "after_bin_phase_pixels": 93
+    },
+    {
+      "slot": 8,
+      "tick": 10,
+      "view": 4,
+      "changed_pixels": 5899,
+      "before_bin_phase_pixels": 79,
+      "after_bin_phase_pixels": 197
+    },
+    {
+      "slot": 8,
+      "tick": 10,
+      "view": 5,
+      "changed_pixels": 3541,
+      "before_bin_phase_pixels": 76,
+      "after_bin_phase_pixels": 36
+    },
+    {
+      "slot": 8,
+      "tick": 10,
+      "view": 6,
+      "changed_pixels": 2821,
+      "before_bin_phase_pixels": 75,
+      "after_bin_phase_pixels": 39
+    },
+    {
+      "slot": 8,
+      "tick": 10,
+      "view": 7,
+      "changed_pixels": 2627,
+      "before_bin_phase_pixels": 80,
+      "after_bin_phase_pixels": 56
+    },
+    {
+      "slot": 42,
+      "tick": 40,
+      "view": 0,
+      "changed_pixels": 7025,
+      "before_bin_phase_pixels": 22,
+      "after_bin_phase_pixels": 30
+    },
+    {
+      "slot": 42,
+      "tick": 40,
+      "view": 1,
+      "changed_pixels": 7475,
+      "before_bin_phase_pixels": 52,
+      "after_bin_phase_pixels": 95
+    },
+    {
+      "slot": 42,
+      "tick": 40,
+      "view": 2,
+      "changed_pixels": 6756,
+      "before_bin_phase_pixels": 113,
+      "after_bin_phase_pixels": 49
+    },
+    {
+      "slot": 42,
+      "tick": 40,
+      "view": 3,
+      "changed_pixels": 7742,
+      "before_bin_phase_pixels": 71,
+      "after_bin_phase_pixels": 53
+    },
+    {
+      "slot": 42,
+      "tick": 40,
+      "view": 4,
+      "changed_pixels": 10701,
+      "before_bin_phase_pixels": 28,
+      "after_bin_phase_pixels": 20
+    },
+    {
+      "slot": 42,
+      "tick": 40,
+      "view": 5,
+      "changed_pixels": 7795,
+      "before_bin_phase_pixels": 126,
+      "after_bin_phase_pixels": 81
+    },
+    {
+      "slot": 42,
+      "tick": 40,
+      "view": 6,
+      "changed_pixels": 6678,
+      "before_bin_phase_pixels": 163,
+      "after_bin_phase_pixels": 50
+    },
+    {
+      "slot": 42,
+      "tick": 40,
+      "view": 7,
+      "changed_pixels": 7404,
+      "before_bin_phase_pixels": 58,
+      "after_bin_phase_pixels": 141
+    },
+    {
+      "slot": 52,
+      "tick": 34,
+      "view": 0,
+      "changed_pixels": 3585,
+      "before_bin_phase_pixels": 3,
+      "after_bin_phase_pixels": 3
+    },
+    {
+      "slot": 52,
+      "tick": 34,
+      "view": 1,
+      "changed_pixels": 3507,
+      "before_bin_phase_pixels": 114,
+      "after_bin_phase_pixels": 47
+    },
+    {
+      "slot": 52,
+      "tick": 34,
+      "view": 2,
+      "changed_pixels": 3030,
+      "before_bin_phase_pixels": 70,
+      "after_bin_phase_pixels": 103
+    },
+    {
+      "slot": 52,
+      "tick": 34,
+      "view": 3,
+      "changed_pixels": 3683,
+      "before_bin_phase_pixels": 68,
+      "after_bin_phase_pixels": 62
+    },
+    {
+      "slot": 52,
+      "tick": 34,
+      "view": 4,
+      "changed_pixels": 4807,
+      "before_bin_phase_pixels": 40,
+      "after_bin_phase_pixels": 16
+    },
+    {
+      "slot": 52,
+      "tick": 34,
+      "view": 5,
+      "changed_pixels": 3403,
+      "before_bin_phase_pixels": 61,
+      "after_bin_phase_pixels": 57
+    },
+    {
+      "slot": 52,
+      "tick": 34,
+      "view": 6,
+      "changed_pixels": 2810,
+      "before_bin_phase_pixels": 116,
+      "after_bin_phase_pixels": 85
+    },
+    {
+      "slot": 52,
+      "tick": 34,
+      "view": 7,
+      "changed_pixels": 2486,
+      "before_bin_phase_pixels": 190,
+      "after_bin_phase_pixels": 101
+    }
+  ],
+  "changed_pixels": 134963,
+  "before_bin_phase_pixels": 2239,
+  "after_bin_phase_pixels": 1947
+}
