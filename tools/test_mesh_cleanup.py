@@ -80,6 +80,42 @@ class CrossingDepth(unittest.TestCase):
 
 
 class PieceRepairs(unittest.TestCase):
+    def test_toe_lip_keeps_tip_height_other_pools_and_materials(self):
+        m, _ = model(box_object(), box_object())
+        vertices = list(m.tmd.obj_verts(0))
+        other = list(m.tmd.obj_verts(1)), list(m.tmd.obj_norms(1))[:m.tmd.objects[1].nnorm]
+        faces = [p.decode() for p in m.tmd.objects[0].prims]
+        C.fit_toe_lip(m, 0)
+        for old, new in zip(vertices, m.tmd.obj_verts(0)):
+            self.assertEqual(new[:2], old[:2])
+            self.assertEqual(new[2], old[2] if old[2] <= -40 else round(-40+(old[2]+40)*.76))
+        self.assertEqual(other, (list(m.tmd.obj_verts(1)), list(m.tmd.obj_norms(1))[:m.tmd.objects[1].nnorm]))
+        for old, new in zip(faces, [p.decode() for p in m.tmd.objects[0].prims]):
+            old.pop('norms'); new.pop('norms')
+            self.assertEqual(old, new)
+
+    def test_clip_rotation_preserves_every_tick_and_other_programs(self):
+        m, bones = model(box_object())
+        frames = [[[4096]*3+[0]*6 for _ in bones] for _ in range(8)]
+        for i, pose in enumerate(frames):
+            pose[1][3:6] = [20+i*3, -30+i*5, i*7]
+        m.anims.anims = [mmd.encode_anim(frames, len(bones), 0, []),
+                         mmd.encode_anim(frames, len(bones), 0, [])]
+        m.anims.table = [0, 1]
+        before, info = mmd.simulate(m.anims.anims[0], len(bones))
+        other = m.anims.anims[1].build()
+        size = len(m.anims.anims[0].build())
+        C.rotate_clip_bone(m, 0, 1, (-10, 10, -5))
+        after, result = mmd.simulate(m.anims.anims[0], len(bones))
+        expected = copy.deepcopy(before)
+        for pose in expected:
+            for k, degrees in enumerate((-10, 10, -5)):
+                pose[1][3+k] += round(degrees*4096/360)
+        self.assertEqual(after, expected)
+        self.assertEqual(result, info)
+        self.assertEqual(len(m.anims.anims[0].build()), size)
+        self.assertEqual(m.anims.anims[1].build(), other)
+
     def test_translation_and_uniform_fit_preserve_authored_normals(self):
         m, _ = model(box_object())
         old = list(m.tmd.norms)

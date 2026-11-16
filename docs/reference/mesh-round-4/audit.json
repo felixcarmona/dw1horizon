@@ -1,0 +1,6942 @@
+{
+ "scope": [
+  409,
+  406,
+  336,
+  335,
+  461
+ ],
+ "all_models_visually_clean": false,
+ "floor_scope": "Continuous bounded rigid translations at one offline pose; not a rotation/deformation proof or visual acceptance.",
+ "depth": "Symmetric; all cross-bone pairs including adjacent joints and shallow contacts; GPU quad diagonal.",
+ "rendering": "Orthographic PSX-rule renderer; not GTE perspective or runtime confirmation.",
+ "tests": {
+  "run": 91,
+  "passed": 90,
+  "skipped": 1
+ },
+ "fresh_source_provider_checks": "5/5 pass",
+ "heap": {
+  "before_peak": 100256,
+  "after_peak": 100256,
+  "allocation": 100352
+ },
+ "changed_provider_model_pins": [
+  336,
+  461
+ ],
+ "textures_alternates_native_pins_unchanged": true,
+ "models": {
+  "409": {
+   "name": "Kyubimon",
+   "stages": {
+    "before": {
+     "slots": 47,
+     "ticks": 1461,
+     "crossing_frames": 1461,
+     "crossing_bone_pairs": 130,
+     "max_triangle_pairs_in_frame": 3818,
+     "max_depth": 56.84392839533534,
+     "pairs": {
+      "2/4": {
+       "max_triangle_pairs": 62,
+       "max_depth": 37.848331,
+       "crossing_frames": 1461,
+       "slot": 7,
+       "tick": 34
+      },
+      "2/7": {
+       "max_triangle_pairs": 33,
+       "max_depth": 30.250817,
+       "crossing_frames": 1461,
+       "slot": 54,
+       "tick": 25
+      },
+      "2/11": {
+       "max_triangle_pairs": 39,
+       "max_depth": 28.135931,
+       "crossing_frames": 1461,
+       "slot": 4,
+       "tick": 12
+      },
+      "2/14": {
+       "max_triangle_pairs": 61,
+       "max_depth": 48.715931,
+       "crossing_frames": 1461,
+       "slot": 42,
+       "tick": 35
+      },
+      "4/7": {
+       "max_triangle_pairs": 84,
+       "max_depth": 36.392256,
+       "crossing_frames": 1456,
+       "slot": 21,
+       "tick": 15
+      },
+      "4/11": {
+       "max_triangle_pairs": 90,
+       "max_depth": 37.203374,
+       "crossing_frames": 1446,
+       "slot": 2,
+       "tick": 10
+      },
+      "7/8": {
+       "max_triangle_pairs": 71,
+       "max_depth": 33.703385,
+       "crossing_frames": 1461,
+       "slot": 1,
+       "tick": 8
+      },
+      "8/9": {
+       "max_triangle_pairs": 201,
+       "max_depth": 35.334331,
+       "crossing_frames": 1461,
+       "slot": 12,
+       "tick": 7
+      },
+      "11/12": {
+       "max_triangle_pairs": 45,
+       "max_depth": 32.548278,
+       "crossing_frames": 1461,
+       "slot": 4,
+       "tick": 2
+      },
+      "12/13": {
+       "max_triangle_pairs": 224,
+       "max_depth": 35.742946,
+       "crossing_frames": 1461,
+       "slot": 12,
+       "tick": 5
+      },
+      "14/15": {
+       "max_triangle_pairs": 194,
+       "max_depth": 48.725788,
+       "crossing_frames": 1461,
+       "slot": 21,
+       "tick": 9
+      },
+      "14/19": {
+       "max_triangle_pairs": 24,
+       "max_depth": 34.820964,
+       "crossing_frames": 1461,
+       "slot": 33,
+       "tick": 12
+      },
+      "14/23": {
+       "max_triangle_pairs": 28,
+       "max_depth": 43.619042,
+       "crossing_frames": 1461,
+       "slot": 21,
+       "tick": 12
+      },
+      "15/16": {
+       "max_triangle_pairs": 304,
+       "max_depth": 54.450476,
+       "crossing_frames": 1461,
+       "slot": 21,
+       "tick": 12
+      },
+      "15/17": {
+       "max_triangle_pairs": 225,
+       "max_depth": 56.843928,
+       "crossing_frames": 1461,
+       "slot": 5,
+       "tick": 29
+      },
+      "16/17": {
+       "max_triangle_pairs": 90,
+       "max_depth": 41.034467,
+       "crossing_frames": 1434,
+       "slot": 7,
+       "tick": 19
+      },
+      "19/20": {
+       "max_triangle_pairs": 36,
+       "max_depth": 30.942326,
+       "crossing_frames": 1461,
+       "slot": 9,
+       "tick": 15
+      },
+      "20/21": {
+       "max_triangle_pairs": 187,
+       "max_depth": 32.07225,
+       "crossing_frames": 1461,
+       "slot": 42,
+       "tick": 38
+      },
+      "20/25": {
+       "max_triangle_pairs": 86,
+       "max_depth": 25.129811,
+       "crossing_frames": 56,
+       "slot": 21,
+       "tick": 10
+      },
+      "23/24": {
+       "max_triangle_pairs": 67,
+       "max_depth": 34.460899,
+       "crossing_frames": 1461,
+       "slot": 4,
+       "tick": 9
+      },
+      "24/25": {
+       "max_triangle_pairs": 160,
+       "max_depth": 29.487307,
+       "crossing_frames": 1461,
+       "slot": 4,
+       "tick": 6
+      },
+      "4/8": {
+       "max_triangle_pairs": 139,
+       "max_depth": 41.229253,
+       "crossing_frames": 792,
+       "slot": 54,
+       "tick": 9
+      },
+      "4/9": {
+       "max_triangle_pairs": 261,
+       "max_depth": 41.000083,
+       "crossing_frames": 1175,
+       "slot": 25,
+       "tick": 6
+      },
+      "4/12": {
+       "max_triangle_pairs": 152,
+       "max_depth": 41.530114,
+       "crossing_frames": 1077,
+       "slot": 21,
+       "tick": 24
+      },
+      "4/13": {
+       "max_triangle_pairs": 225,
+       "max_depth": 38.848909,
+       "crossing_frames": 1170,
+       "slot": 11,
+       "tick": 41
+      },
+      "7/9": {
+       "max_triangle_pairs": 95,
+       "max_depth": 38.249779,
+       "crossing_frames": 1187,
+       "slot": 5,
+       "tick": 6
+      },
+      "11/13": {
+       "max_triangle_pairs": 32,
+       "max_depth": 40.079652,
+       "crossing_frames": 1177,
+       "slot": 21,
+       "tick": 16
+      },
+      "15/25": {
+       "max_triangle_pairs": 201,
+       "max_depth": 54.15598,
+       "crossing_frames": 144,
+       "slot": 8,
+       "tick": 10
+      },
+      "17/21": {
+       "max_triangle_pairs": 132,
+       "max_depth": 39.469285,
+       "crossing_frames": 190,
+       "slot": 21,
+       "tick": 13
+      },
+      "17/23": {
+       "max_triangle_pairs": 56,
+       "max_depth": 41.180788,
+       "crossing_frames": 162,
+       "slot": 42,
+       "tick": 39
+      },
+      "17/24": {
+       "max_triangle_pairs": 125,
+       "max_depth": 45.046274,
+       "crossing_frames": 177,
+       "slot": 1,
+       "tick": 9
+      },
+      "17/25": {
+       "max_triangle_pairs": 140,
+       "max_depth": 45.452973,
+       "crossing_frames": 230,
+       "slot": 1,
+       "tick": 6
+      },
+      "19/21": {
+       "max_triangle_pairs": 38,
+       "max_depth": 33.770353,
+       "crossing_frames": 1173,
+       "slot": 10,
+       "tick": 2
+      },
+      "23/25": {
+       "max_triangle_pairs": 83,
+       "max_depth": 32.512339,
+       "crossing_frames": 1130,
+       "slot": 43,
+       "tick": 19
+      },
+      "14/17": {
+       "max_triangle_pairs": 87,
+       "max_depth": 44.080381,
+       "crossing_frames": 190,
+       "slot": 23,
+       "tick": 15
+      },
+      "2/9": {
+       "max_triangle_pairs": 50,
+       "max_depth": 38.16339,
+       "crossing_frames": 259,
+       "slot": 11,
+       "tick": 37
+      },
+      "15/24": {
+       "max_triangle_pairs": 109,
+       "max_depth": 53.403439,
+       "crossing_frames": 36,
+       "slot": 8,
+       "tick": 10
+      },
+      "15/21": {
+       "max_triangle_pairs": 10,
+       "max_depth": 40.832399,
+       "crossing_frames": 29,
+       "slot": 42,
+       "tick": 39
+      },
+      "17/20": {
+       "max_triangle_pairs": 128,
+       "max_depth": 45.350506,
+       "crossing_frames": 46,
+       "slot": 21,
+       "tick": 12
+      },
+      "2/12": {
+       "max_triangle_pairs": 26,
+       "max_depth": 30.482679,
+       "crossing_frames": 65,
+       "slot": 9,
+       "tick": 43
+      },
+      "2/13": {
+       "max_triangle_pairs": 24,
+       "max_depth": 38.448812,
+       "crossing_frames": 59,
+       "slot": 8,
+       "tick": 50
+      },
+      "2/24": {
+       "max_triangle_pairs": 28,
+       "max_depth": 35.843166,
+       "crossing_frames": 33,
+       "slot": 4,
+       "tick": 10
+      },
+      "11/14": {
+       "max_triangle_pairs": 24,
+       "max_depth": 24.921388,
+       "crossing_frames": 29,
+       "slot": 42,
+       "tick": 40
+      },
+      "11/24": {
+       "max_triangle_pairs": 73,
+       "max_depth": 30.854209,
+       "crossing_frames": 37,
+       "slot": 4,
+       "tick": 13
+      },
+      "12/23": {
+       "max_triangle_pairs": 58,
+       "max_depth": 25.848758,
+       "crossing_frames": 32,
+       "slot": 2,
+       "tick": 14
+      },
+      "12/24": {
+       "max_triangle_pairs": 191,
+       "max_depth": 33.348435,
+       "crossing_frames": 37,
+       "slot": 2,
+       "tick": 0
+      },
+      "12/25": {
+       "max_triangle_pairs": 183,
+       "max_depth": 34.53321,
+       "crossing_frames": 37,
+       "slot": 4,
+       "tick": 10
+      },
+      "13/24": {
+       "max_triangle_pairs": 126,
+       "max_depth": 33.880721,
+       "crossing_frames": 39,
+       "slot": 3,
+       "tick": 20
+      },
+      "13/25": {
+       "max_triangle_pairs": 108,
+       "max_depth": 34.364287,
+       "crossing_frames": 29,
+       "slot": 2,
+       "tick": 14
+      },
+      "14/24": {
+       "max_triangle_pairs": 36,
+       "max_depth": 36.402838,
+       "crossing_frames": 72,
+       "slot": 3,
+       "tick": 19
+      },
+      "11/25": {
+       "max_triangle_pairs": 78,
+       "max_depth": 34.611312,
+       "crossing_frames": 21,
+       "slot": 4,
+       "tick": 11
+      },
+      "7/14": {
+       "max_triangle_pairs": 20,
+       "max_depth": 33.560878,
+       "crossing_frames": 40,
+       "slot": 42,
+       "tick": 38
+      },
+      "9/19": {
+       "max_triangle_pairs": 58,
+       "max_depth": 33.742765,
+       "crossing_frames": 31,
+       "slot": 2,
+       "tick": 8
+      },
+      "8/19": {
+       "max_triangle_pairs": 57,
+       "max_depth": 26.793135,
+       "crossing_frames": 34,
+       "slot": 3,
+       "tick": 10
+      },
+      "8/20": {
+       "max_triangle_pairs": 175,
+       "max_depth": 35.048881,
+       "crossing_frames": 37,
+       "slot": 4,
+       "tick": 12
+      },
+      "9/20": {
+       "max_triangle_pairs": 186,
+       "max_depth": 35.727589,
+       "crossing_frames": 29,
+       "slot": 3,
+       "tick": 9
+      },
+      "9/21": {
+       "max_triangle_pairs": 222,
+       "max_depth": 33.798039,
+       "crossing_frames": 31,
+       "slot": 11,
+       "tick": 41
+      },
+      "21/25": {
+       "max_triangle_pairs": 111,
+       "max_depth": 28.848129,
+       "crossing_frames": 107,
+       "slot": 21,
+       "tick": 9
+      },
+      "2/8": {
+       "max_triangle_pairs": 45,
+       "max_depth": 31.66582,
+       "crossing_frames": 93,
+       "slot": 4,
+       "tick": 0
+      },
+      "2/19": {
+       "max_triangle_pairs": 21,
+       "max_depth": 21.096642,
+       "crossing_frames": 16,
+       "slot": 11,
+       "tick": 40
+      },
+      "2/20": {
+       "max_triangle_pairs": 33,
+       "max_depth": 29.9696,
+       "crossing_frames": 25,
+       "slot": 4,
+       "tick": 11
+      },
+      "7/19": {
+       "max_triangle_pairs": 44,
+       "max_depth": 23.303175,
+       "crossing_frames": 18,
+       "slot": 42,
+       "tick": 42
+      },
+      "7/20": {
+       "max_triangle_pairs": 55,
+       "max_depth": 31.729004,
+       "crossing_frames": 54,
+       "slot": 11,
+       "tick": 42
+      },
+      "8/14": {
+       "max_triangle_pairs": 36,
+       "max_depth": 30.759333,
+       "crossing_frames": 22,
+       "slot": 4,
+       "tick": 13
+      },
+      "8/21": {
+       "max_triangle_pairs": 190,
+       "max_depth": 35.090395,
+       "crossing_frames": 43,
+       "slot": 11,
+       "tick": 40
+      },
+      "9/14": {
+       "max_triangle_pairs": 50,
+       "max_depth": 38.786749,
+       "crossing_frames": 21,
+       "slot": 4,
+       "tick": 13
+      },
+      "14/20": {
+       "max_triangle_pairs": 25,
+       "max_depth": 33.314013,
+       "crossing_frames": 27,
+       "slot": 4,
+       "tick": 11
+      },
+      "11/23": {
+       "max_triangle_pairs": 30,
+       "max_depth": 22.252768,
+       "crossing_frames": 16,
+       "slot": 42,
+       "tick": 39
+      },
+      "2/23": {
+       "max_triangle_pairs": 26,
+       "max_depth": 20.589413,
+       "crossing_frames": 13,
+       "slot": 42,
+       "tick": 40
+      },
+      "12/14": {
+       "max_triangle_pairs": 27,
+       "max_depth": 28.19319,
+       "crossing_frames": 21,
+       "slot": 42,
+       "tick": 40
+      },
+      "13/14": {
+       "max_triangle_pairs": 14,
+       "max_depth": 21.197793,
+       "crossing_frames": 17,
+       "slot": 42,
+       "tick": 40
+      },
+      "13/23": {
+       "max_triangle_pairs": 66,
+       "max_depth": 33.65297,
+       "crossing_frames": 22,
+       "slot": 4,
+       "tick": 13
+      },
+      "21/23": {
+       "max_triangle_pairs": 6,
+       "max_depth": 19.220734,
+       "crossing_frames": 10,
+       "slot": 23,
+       "tick": 18
+      },
+      "7/21": {
+       "max_triangle_pairs": 30,
+       "max_depth": 35.472985,
+       "crossing_frames": 64,
+       "slot": 11,
+       "tick": 40
+      },
+      "2/21": {
+       "max_triangle_pairs": 44,
+       "max_depth": 36.571044,
+       "crossing_frames": 49,
+       "slot": 11,
+       "tick": 40
+      },
+      "7/11": {
+       "max_triangle_pairs": 10,
+       "max_depth": 25.625961,
+       "crossing_frames": 6,
+       "slot": 4,
+       "tick": 0
+      },
+      "8/11": {
+       "max_triangle_pairs": 16,
+       "max_depth": 30.931983,
+       "crossing_frames": 22,
+       "slot": 43,
+       "tick": 19
+      },
+      "11/21": {
+       "max_triangle_pairs": 10,
+       "max_depth": 27.181235,
+       "crossing_frames": 6,
+       "slot": 4,
+       "tick": 0
+      },
+      "20/24": {
+       "max_triangle_pairs": 119,
+       "max_depth": 30.493135,
+       "crossing_frames": 90,
+       "slot": 43,
+       "tick": 14
+      },
+      "12/20": {
+       "max_triangle_pairs": 16,
+       "max_depth": 15.834741,
+       "crossing_frames": 2,
+       "slot": 4,
+       "tick": 1
+      },
+      "12/21": {
+       "max_triangle_pairs": 32,
+       "max_depth": 27.478193,
+       "crossing_frames": 4,
+       "slot": 11,
+       "tick": 41
+      },
+      "21/24": {
+       "max_triangle_pairs": 118,
+       "max_depth": 35.327662,
+       "crossing_frames": 330,
+       "slot": 21,
+       "tick": 4
+      },
+      "2/25": {
+       "max_triangle_pairs": 28,
+       "max_depth": 32.638008,
+       "crossing_frames": 9,
+       "slot": 4,
+       "tick": 11
+      },
+      "14/25": {
+       "max_triangle_pairs": 14,
+       "max_depth": 23.521452,
+       "crossing_frames": 25,
+       "slot": 52,
+       "tick": 34
+      },
+      "4/25": {
+       "max_triangle_pairs": 128,
+       "max_depth": 30.801723,
+       "crossing_frames": 7,
+       "slot": 42,
+       "tick": 41
+      },
+      "9/23": {
+       "max_triangle_pairs": 2,
+       "max_depth": 13.873396,
+       "crossing_frames": 4,
+       "slot": 4,
+       "tick": 12
+      },
+      "14/21": {
+       "max_triangle_pairs": 10,
+       "max_depth": 24.287642,
+       "crossing_frames": 41,
+       "slot": 4,
+       "tick": 13
+      },
+      "8/24": {
+       "max_triangle_pairs": 8,
+       "max_depth": 13.407321,
+       "crossing_frames": 2,
+       "slot": 4,
+       "tick": 13
+      },
+      "4/14": {
+       "max_triangle_pairs": 93,
+       "max_depth": 50.212176,
+       "crossing_frames": 120,
+       "slot": 42,
+       "tick": 15
+      },
+      "17/19": {
+       "max_triangle_pairs": 65,
+       "max_depth": 47.313486,
+       "crossing_frames": 51,
+       "slot": 23,
+       "tick": 21
+      },
+      "4/17": {
+       "max_triangle_pairs": 72,
+       "max_depth": 41.000915,
+       "crossing_frames": 32,
+       "slot": 42,
+       "tick": 38
+      },
+      "4/19": {
+       "max_triangle_pairs": 36,
+       "max_depth": 34.326674,
+       "crossing_frames": 27,
+       "slot": 42,
+       "tick": 42
+      },
+      "4/23": {
+       "max_triangle_pairs": 37,
+       "max_depth": 33.368356,
+       "crossing_frames": 24,
+       "slot": 8,
+       "tick": 43
+      },
+      "4/21": {
+       "max_triangle_pairs": 145,
+       "max_depth": 34.085451,
+       "crossing_frames": 49,
+       "slot": 42,
+       "tick": 41
+      },
+      "9/13": {
+       "max_triangle_pairs": 271,
+       "max_depth": 34.116172,
+       "crossing_frames": 95,
+       "slot": 21,
+       "tick": 5
+      },
+      "9/12": {
+       "max_triangle_pairs": 252,
+       "max_depth": 35.228849,
+       "crossing_frames": 87,
+       "slot": 11,
+       "tick": 34
+      },
+      "2/17": {
+       "max_triangle_pairs": 46,
+       "max_depth": 39.145822,
+       "crossing_frames": 27,
+       "slot": 42,
+       "tick": 39
+      },
+      "7/17": {
+       "max_triangle_pairs": 18,
+       "max_depth": 25.97495,
+       "crossing_frames": 8,
+       "slot": 9,
+       "tick": 30
+      },
+      "11/17": {
+       "max_triangle_pairs": 5,
+       "max_depth": 17.593819,
+       "crossing_frames": 2,
+       "slot": 9,
+       "tick": 25
+      },
+      "8/12": {
+       "max_triangle_pairs": 236,
+       "max_depth": 31.23183,
+       "crossing_frames": 49,
+       "slot": 9,
+       "tick": 29
+      },
+      "7/12": {
+       "max_triangle_pairs": 16,
+       "max_depth": 28.190021,
+       "crossing_frames": 36,
+       "slot": 43,
+       "tick": 22
+      },
+      "7/13": {
+       "max_triangle_pairs": 26,
+       "max_depth": 27.00064,
+       "crossing_frames": 35,
+       "slot": 11,
+       "tick": 43
+      },
+      "9/11": {
+       "max_triangle_pairs": 20,
+       "max_depth": 39.739872,
+       "crossing_frames": 49,
+       "slot": 21,
+       "tick": 12
+      },
+      "4/20": {
+       "max_triangle_pairs": 153,
+       "max_depth": 39.130726,
+       "crossing_frames": 8,
+       "slot": 11,
+       "tick": 40
+      },
+      "13/21": {
+       "max_triangle_pairs": 40,
+       "max_depth": 29.598225,
+       "crossing_frames": 2,
+       "slot": 11,
+       "tick": 40
+      },
+      "8/13": {
+       "max_triangle_pairs": 158,
+       "max_depth": 36.771373,
+       "crossing_frames": 29,
+       "slot": 21,
+       "tick": 3
+      },
+      "19/25": {
+       "max_triangle_pairs": 14,
+       "max_depth": 15.283845,
+       "crossing_frames": 4,
+       "slot": 23,
+       "tick": 36
+      },
+      "4/15": {
+       "max_triangle_pairs": 389,
+       "max_depth": 56.411075,
+       "crossing_frames": 5,
+       "slot": 42,
+       "tick": 40
+      },
+      "2/15": {
+       "max_triangle_pairs": 84,
+       "max_depth": 33.058925,
+       "crossing_frames": 2,
+       "slot": 42,
+       "tick": 39
+      },
+      "4/16": {
+       "max_triangle_pairs": 64,
+       "max_depth": 39.284078,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 39
+      },
+      "4/24": {
+       "max_triangle_pairs": 102,
+       "max_depth": 30.675651,
+       "crossing_frames": 3,
+       "slot": 42,
+       "tick": 41
+      },
+      "7/15": {
+       "max_triangle_pairs": 57,
+       "max_depth": 43.12517,
+       "crossing_frames": 2,
+       "slot": 42,
+       "tick": 39
+      },
+      "9/15": {
+       "max_triangle_pairs": 245,
+       "max_depth": 45.76742,
+       "crossing_frames": 2,
+       "slot": 42,
+       "tick": 40
+      },
+      "11/15": {
+       "max_triangle_pairs": 59,
+       "max_depth": 51.559644,
+       "crossing_frames": 2,
+       "slot": 42,
+       "tick": 39
+      },
+      "12/15": {
+       "max_triangle_pairs": 44,
+       "max_depth": 20.548754,
+       "crossing_frames": 2,
+       "slot": 42,
+       "tick": 39
+      },
+      "15/19": {
+       "max_triangle_pairs": 62,
+       "max_depth": 44.43523,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 39
+      },
+      "15/20": {
+       "max_triangle_pairs": 52,
+       "max_depth": 39.417459,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 39
+      },
+      "15/23": {
+       "max_triangle_pairs": 66,
+       "max_depth": 40.39058,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 39
+      },
+      "16/21": {
+       "max_triangle_pairs": 56,
+       "max_depth": 39.765643,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 39
+      },
+      "16/23": {
+       "max_triangle_pairs": 15,
+       "max_depth": 20.193956,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 39
+      },
+      "16/24": {
+       "max_triangle_pairs": 43,
+       "max_depth": 30.362617,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 39
+      },
+      "16/25": {
+       "max_triangle_pairs": 36,
+       "max_depth": 37.690857,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 39
+      },
+      "2/16": {
+       "max_triangle_pairs": 15,
+       "max_depth": 29.800932,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 40
+      },
+      "7/16": {
+       "max_triangle_pairs": 13,
+       "max_depth": 23.717103,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 40
+      },
+      "8/15": {
+       "max_triangle_pairs": 102,
+       "max_depth": 26.009775,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 40
+      },
+      "11/16": {
+       "max_triangle_pairs": 5,
+       "max_depth": 18.021636,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 40
+      },
+      "14/16": {
+       "max_triangle_pairs": 14,
+       "max_depth": 35.271703,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 40
+      },
+      "9/24": {
+       "max_triangle_pairs": 12,
+       "max_depth": 16.332768,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 41
+      },
+      "19/24": {
+       "max_triangle_pairs": 18,
+       "max_depth": 23.033551,
+       "crossing_frames": 2,
+       "slot": 43,
+       "tick": 14
+      },
+      "20/23": {
+       "max_triangle_pairs": 12,
+       "max_depth": 25.003896,
+       "crossing_frames": 3,
+       "slot": 43,
+       "tick": 13
+      }
+     },
+     "resident_bytes": 94834,
+     "cold_bytes": 27264,
+     "storage_fits": true,
+     "sha256": "a93d83b972c6d5db23c9530ec024c8f8e7c8394392802b14ff68cd953a9667c4",
+     "ledger": "409-before.csv.gz",
+     "ledger_sha256": "6d742cf6fb0b5d10e4aede04ba53f872334db816789ccf1cbad7c95661a62ee0",
+     "records": 42222,
+     "detector": {
+      "verdict": "fail",
+      "envelope_verdict": "fail",
+      "part_candidates": 65,
+      "flags": [
+       "bent_risk",
+       "crossings_max",
+       "part_interpenetration"
+      ],
+      "cofacing_pairs": 1
+     }
+    },
+    "after": {
+     "slots": 47,
+     "ticks": 1461,
+     "crossing_frames": 1461,
+     "crossing_bone_pairs": 130,
+     "max_triangle_pairs_in_frame": 3818,
+     "max_depth": 56.84392839533534,
+     "pairs": {
+      "2/4": {
+       "max_triangle_pairs": 62,
+       "max_depth": 37.848331,
+       "crossing_frames": 1461,
+       "slot": 7,
+       "tick": 34
+      },
+      "2/7": {
+       "max_triangle_pairs": 33,
+       "max_depth": 30.250817,
+       "crossing_frames": 1461,
+       "slot": 54,
+       "tick": 25
+      },
+      "2/11": {
+       "max_triangle_pairs": 39,
+       "max_depth": 28.135931,
+       "crossing_frames": 1461,
+       "slot": 4,
+       "tick": 12
+      },
+      "2/14": {
+       "max_triangle_pairs": 61,
+       "max_depth": 48.715931,
+       "crossing_frames": 1461,
+       "slot": 42,
+       "tick": 35
+      },
+      "4/7": {
+       "max_triangle_pairs": 84,
+       "max_depth": 36.392256,
+       "crossing_frames": 1456,
+       "slot": 21,
+       "tick": 15
+      },
+      "4/11": {
+       "max_triangle_pairs": 90,
+       "max_depth": 37.203374,
+       "crossing_frames": 1446,
+       "slot": 2,
+       "tick": 10
+      },
+      "7/8": {
+       "max_triangle_pairs": 71,
+       "max_depth": 33.703385,
+       "crossing_frames": 1461,
+       "slot": 1,
+       "tick": 8
+      },
+      "8/9": {
+       "max_triangle_pairs": 201,
+       "max_depth": 35.334331,
+       "crossing_frames": 1461,
+       "slot": 12,
+       "tick": 7
+      },
+      "11/12": {
+       "max_triangle_pairs": 45,
+       "max_depth": 32.548278,
+       "crossing_frames": 1461,
+       "slot": 4,
+       "tick": 2
+      },
+      "12/13": {
+       "max_triangle_pairs": 224,
+       "max_depth": 35.742946,
+       "crossing_frames": 1461,
+       "slot": 12,
+       "tick": 5
+      },
+      "14/15": {
+       "max_triangle_pairs": 194,
+       "max_depth": 48.725788,
+       "crossing_frames": 1461,
+       "slot": 21,
+       "tick": 9
+      },
+      "14/19": {
+       "max_triangle_pairs": 24,
+       "max_depth": 34.820964,
+       "crossing_frames": 1461,
+       "slot": 33,
+       "tick": 12
+      },
+      "14/23": {
+       "max_triangle_pairs": 28,
+       "max_depth": 43.619042,
+       "crossing_frames": 1461,
+       "slot": 21,
+       "tick": 12
+      },
+      "15/16": {
+       "max_triangle_pairs": 304,
+       "max_depth": 54.450476,
+       "crossing_frames": 1461,
+       "slot": 21,
+       "tick": 12
+      },
+      "15/17": {
+       "max_triangle_pairs": 225,
+       "max_depth": 56.843928,
+       "crossing_frames": 1461,
+       "slot": 5,
+       "tick": 29
+      },
+      "16/17": {
+       "max_triangle_pairs": 90,
+       "max_depth": 41.034467,
+       "crossing_frames": 1434,
+       "slot": 7,
+       "tick": 19
+      },
+      "19/20": {
+       "max_triangle_pairs": 36,
+       "max_depth": 30.942326,
+       "crossing_frames": 1461,
+       "slot": 9,
+       "tick": 15
+      },
+      "20/21": {
+       "max_triangle_pairs": 187,
+       "max_depth": 32.07225,
+       "crossing_frames": 1461,
+       "slot": 42,
+       "tick": 38
+      },
+      "20/25": {
+       "max_triangle_pairs": 86,
+       "max_depth": 25.129811,
+       "crossing_frames": 56,
+       "slot": 21,
+       "tick": 10
+      },
+      "23/24": {
+       "max_triangle_pairs": 67,
+       "max_depth": 34.460899,
+       "crossing_frames": 1461,
+       "slot": 4,
+       "tick": 9
+      },
+      "24/25": {
+       "max_triangle_pairs": 160,
+       "max_depth": 29.487307,
+       "crossing_frames": 1461,
+       "slot": 4,
+       "tick": 6
+      },
+      "4/8": {
+       "max_triangle_pairs": 139,
+       "max_depth": 41.229253,
+       "crossing_frames": 792,
+       "slot": 54,
+       "tick": 9
+      },
+      "4/9": {
+       "max_triangle_pairs": 261,
+       "max_depth": 41.000083,
+       "crossing_frames": 1175,
+       "slot": 25,
+       "tick": 6
+      },
+      "4/12": {
+       "max_triangle_pairs": 152,
+       "max_depth": 41.530114,
+       "crossing_frames": 1077,
+       "slot": 21,
+       "tick": 24
+      },
+      "4/13": {
+       "max_triangle_pairs": 225,
+       "max_depth": 38.848909,
+       "crossing_frames": 1170,
+       "slot": 11,
+       "tick": 41
+      },
+      "7/9": {
+       "max_triangle_pairs": 95,
+       "max_depth": 38.249779,
+       "crossing_frames": 1187,
+       "slot": 5,
+       "tick": 6
+      },
+      "11/13": {
+       "max_triangle_pairs": 32,
+       "max_depth": 40.079652,
+       "crossing_frames": 1177,
+       "slot": 21,
+       "tick": 16
+      },
+      "15/25": {
+       "max_triangle_pairs": 201,
+       "max_depth": 54.15598,
+       "crossing_frames": 144,
+       "slot": 8,
+       "tick": 10
+      },
+      "17/21": {
+       "max_triangle_pairs": 132,
+       "max_depth": 39.469285,
+       "crossing_frames": 190,
+       "slot": 21,
+       "tick": 13
+      },
+      "17/23": {
+       "max_triangle_pairs": 56,
+       "max_depth": 41.180788,
+       "crossing_frames": 162,
+       "slot": 42,
+       "tick": 39
+      },
+      "17/24": {
+       "max_triangle_pairs": 125,
+       "max_depth": 45.046274,
+       "crossing_frames": 177,
+       "slot": 1,
+       "tick": 9
+      },
+      "17/25": {
+       "max_triangle_pairs": 140,
+       "max_depth": 45.452973,
+       "crossing_frames": 230,
+       "slot": 1,
+       "tick": 6
+      },
+      "19/21": {
+       "max_triangle_pairs": 38,
+       "max_depth": 33.770353,
+       "crossing_frames": 1173,
+       "slot": 10,
+       "tick": 2
+      },
+      "23/25": {
+       "max_triangle_pairs": 83,
+       "max_depth": 32.512339,
+       "crossing_frames": 1130,
+       "slot": 43,
+       "tick": 19
+      },
+      "14/17": {
+       "max_triangle_pairs": 87,
+       "max_depth": 44.080381,
+       "crossing_frames": 190,
+       "slot": 23,
+       "tick": 15
+      },
+      "2/9": {
+       "max_triangle_pairs": 50,
+       "max_depth": 38.16339,
+       "crossing_frames": 259,
+       "slot": 11,
+       "tick": 37
+      },
+      "15/24": {
+       "max_triangle_pairs": 109,
+       "max_depth": 53.403439,
+       "crossing_frames": 36,
+       "slot": 8,
+       "tick": 10
+      },
+      "15/21": {
+       "max_triangle_pairs": 10,
+       "max_depth": 40.832399,
+       "crossing_frames": 29,
+       "slot": 42,
+       "tick": 39
+      },
+      "17/20": {
+       "max_triangle_pairs": 128,
+       "max_depth": 45.350506,
+       "crossing_frames": 46,
+       "slot": 21,
+       "tick": 12
+      },
+      "2/12": {
+       "max_triangle_pairs": 26,
+       "max_depth": 30.482679,
+       "crossing_frames": 65,
+       "slot": 9,
+       "tick": 43
+      },
+      "2/13": {
+       "max_triangle_pairs": 24,
+       "max_depth": 38.448812,
+       "crossing_frames": 59,
+       "slot": 8,
+       "tick": 50
+      },
+      "2/24": {
+       "max_triangle_pairs": 28,
+       "max_depth": 35.843166,
+       "crossing_frames": 33,
+       "slot": 4,
+       "tick": 10
+      },
+      "11/14": {
+       "max_triangle_pairs": 24,
+       "max_depth": 24.921388,
+       "crossing_frames": 29,
+       "slot": 42,
+       "tick": 40
+      },
+      "11/24": {
+       "max_triangle_pairs": 73,
+       "max_depth": 30.854209,
+       "crossing_frames": 37,
+       "slot": 4,
+       "tick": 13
+      },
+      "12/23": {
+       "max_triangle_pairs": 58,
+       "max_depth": 25.848758,
+       "crossing_frames": 32,
+       "slot": 2,
+       "tick": 14
+      },
+      "12/24": {
+       "max_triangle_pairs": 191,
+       "max_depth": 33.348435,
+       "crossing_frames": 37,
+       "slot": 2,
+       "tick": 0
+      },
+      "12/25": {
+       "max_triangle_pairs": 183,
+       "max_depth": 34.53321,
+       "crossing_frames": 37,
+       "slot": 4,
+       "tick": 10
+      },
+      "13/24": {
+       "max_triangle_pairs": 126,
+       "max_depth": 33.880721,
+       "crossing_frames": 39,
+       "slot": 3,
+       "tick": 20
+      },
+      "13/25": {
+       "max_triangle_pairs": 108,
+       "max_depth": 34.364287,
+       "crossing_frames": 29,
+       "slot": 2,
+       "tick": 14
+      },
+      "14/24": {
+       "max_triangle_pairs": 36,
+       "max_depth": 36.402838,
+       "crossing_frames": 72,
+       "slot": 3,
+       "tick": 19
+      },
+      "11/25": {
+       "max_triangle_pairs": 78,
+       "max_depth": 34.611312,
+       "crossing_frames": 21,
+       "slot": 4,
+       "tick": 11
+      },
+      "7/14": {
+       "max_triangle_pairs": 20,
+       "max_depth": 33.560878,
+       "crossing_frames": 40,
+       "slot": 42,
+       "tick": 38
+      },
+      "9/19": {
+       "max_triangle_pairs": 58,
+       "max_depth": 33.742765,
+       "crossing_frames": 31,
+       "slot": 2,
+       "tick": 8
+      },
+      "8/19": {
+       "max_triangle_pairs": 57,
+       "max_depth": 26.793135,
+       "crossing_frames": 34,
+       "slot": 3,
+       "tick": 10
+      },
+      "8/20": {
+       "max_triangle_pairs": 175,
+       "max_depth": 35.048881,
+       "crossing_frames": 37,
+       "slot": 4,
+       "tick": 12
+      },
+      "9/20": {
+       "max_triangle_pairs": 186,
+       "max_depth": 35.727589,
+       "crossing_frames": 29,
+       "slot": 3,
+       "tick": 9
+      },
+      "9/21": {
+       "max_triangle_pairs": 222,
+       "max_depth": 33.798039,
+       "crossing_frames": 31,
+       "slot": 11,
+       "tick": 41
+      },
+      "21/25": {
+       "max_triangle_pairs": 111,
+       "max_depth": 28.848129,
+       "crossing_frames": 107,
+       "slot": 21,
+       "tick": 9
+      },
+      "2/8": {
+       "max_triangle_pairs": 45,
+       "max_depth": 31.66582,
+       "crossing_frames": 93,
+       "slot": 4,
+       "tick": 0
+      },
+      "2/19": {
+       "max_triangle_pairs": 21,
+       "max_depth": 21.096642,
+       "crossing_frames": 16,
+       "slot": 11,
+       "tick": 40
+      },
+      "2/20": {
+       "max_triangle_pairs": 33,
+       "max_depth": 29.9696,
+       "crossing_frames": 25,
+       "slot": 4,
+       "tick": 11
+      },
+      "7/19": {
+       "max_triangle_pairs": 44,
+       "max_depth": 23.303175,
+       "crossing_frames": 18,
+       "slot": 42,
+       "tick": 42
+      },
+      "7/20": {
+       "max_triangle_pairs": 55,
+       "max_depth": 31.729004,
+       "crossing_frames": 54,
+       "slot": 11,
+       "tick": 42
+      },
+      "8/14": {
+       "max_triangle_pairs": 36,
+       "max_depth": 30.759333,
+       "crossing_frames": 22,
+       "slot": 4,
+       "tick": 13
+      },
+      "8/21": {
+       "max_triangle_pairs": 190,
+       "max_depth": 35.090395,
+       "crossing_frames": 43,
+       "slot": 11,
+       "tick": 40
+      },
+      "9/14": {
+       "max_triangle_pairs": 50,
+       "max_depth": 38.786749,
+       "crossing_frames": 21,
+       "slot": 4,
+       "tick": 13
+      },
+      "14/20": {
+       "max_triangle_pairs": 25,
+       "max_depth": 33.314013,
+       "crossing_frames": 27,
+       "slot": 4,
+       "tick": 11
+      },
+      "11/23": {
+       "max_triangle_pairs": 30,
+       "max_depth": 22.252768,
+       "crossing_frames": 16,
+       "slot": 42,
+       "tick": 39
+      },
+      "2/23": {
+       "max_triangle_pairs": 26,
+       "max_depth": 20.589413,
+       "crossing_frames": 13,
+       "slot": 42,
+       "tick": 40
+      },
+      "12/14": {
+       "max_triangle_pairs": 27,
+       "max_depth": 28.19319,
+       "crossing_frames": 21,
+       "slot": 42,
+       "tick": 40
+      },
+      "13/14": {
+       "max_triangle_pairs": 14,
+       "max_depth": 21.197793,
+       "crossing_frames": 17,
+       "slot": 42,
+       "tick": 40
+      },
+      "13/23": {
+       "max_triangle_pairs": 66,
+       "max_depth": 33.65297,
+       "crossing_frames": 22,
+       "slot": 4,
+       "tick": 13
+      },
+      "21/23": {
+       "max_triangle_pairs": 6,
+       "max_depth": 19.220734,
+       "crossing_frames": 10,
+       "slot": 23,
+       "tick": 18
+      },
+      "7/21": {
+       "max_triangle_pairs": 30,
+       "max_depth": 35.472985,
+       "crossing_frames": 64,
+       "slot": 11,
+       "tick": 40
+      },
+      "2/21": {
+       "max_triangle_pairs": 44,
+       "max_depth": 36.571044,
+       "crossing_frames": 49,
+       "slot": 11,
+       "tick": 40
+      },
+      "7/11": {
+       "max_triangle_pairs": 10,
+       "max_depth": 25.625961,
+       "crossing_frames": 6,
+       "slot": 4,
+       "tick": 0
+      },
+      "8/11": {
+       "max_triangle_pairs": 16,
+       "max_depth": 30.931983,
+       "crossing_frames": 22,
+       "slot": 43,
+       "tick": 19
+      },
+      "11/21": {
+       "max_triangle_pairs": 10,
+       "max_depth": 27.181235,
+       "crossing_frames": 6,
+       "slot": 4,
+       "tick": 0
+      },
+      "20/24": {
+       "max_triangle_pairs": 119,
+       "max_depth": 30.493135,
+       "crossing_frames": 90,
+       "slot": 43,
+       "tick": 14
+      },
+      "12/20": {
+       "max_triangle_pairs": 16,
+       "max_depth": 15.834741,
+       "crossing_frames": 2,
+       "slot": 4,
+       "tick": 1
+      },
+      "12/21": {
+       "max_triangle_pairs": 32,
+       "max_depth": 27.478193,
+       "crossing_frames": 4,
+       "slot": 11,
+       "tick": 41
+      },
+      "21/24": {
+       "max_triangle_pairs": 118,
+       "max_depth": 35.327662,
+       "crossing_frames": 330,
+       "slot": 21,
+       "tick": 4
+      },
+      "2/25": {
+       "max_triangle_pairs": 28,
+       "max_depth": 32.638008,
+       "crossing_frames": 9,
+       "slot": 4,
+       "tick": 11
+      },
+      "14/25": {
+       "max_triangle_pairs": 14,
+       "max_depth": 23.521452,
+       "crossing_frames": 25,
+       "slot": 52,
+       "tick": 34
+      },
+      "4/25": {
+       "max_triangle_pairs": 128,
+       "max_depth": 30.801723,
+       "crossing_frames": 7,
+       "slot": 42,
+       "tick": 41
+      },
+      "9/23": {
+       "max_triangle_pairs": 2,
+       "max_depth": 13.873396,
+       "crossing_frames": 4,
+       "slot": 4,
+       "tick": 12
+      },
+      "14/21": {
+       "max_triangle_pairs": 10,
+       "max_depth": 24.287642,
+       "crossing_frames": 41,
+       "slot": 4,
+       "tick": 13
+      },
+      "8/24": {
+       "max_triangle_pairs": 8,
+       "max_depth": 13.407321,
+       "crossing_frames": 2,
+       "slot": 4,
+       "tick": 13
+      },
+      "4/14": {
+       "max_triangle_pairs": 93,
+       "max_depth": 50.212176,
+       "crossing_frames": 120,
+       "slot": 42,
+       "tick": 15
+      },
+      "17/19": {
+       "max_triangle_pairs": 65,
+       "max_depth": 47.313486,
+       "crossing_frames": 51,
+       "slot": 23,
+       "tick": 21
+      },
+      "4/17": {
+       "max_triangle_pairs": 72,
+       "max_depth": 41.000915,
+       "crossing_frames": 32,
+       "slot": 42,
+       "tick": 38
+      },
+      "4/19": {
+       "max_triangle_pairs": 36,
+       "max_depth": 34.326674,
+       "crossing_frames": 27,
+       "slot": 42,
+       "tick": 42
+      },
+      "4/23": {
+       "max_triangle_pairs": 37,
+       "max_depth": 33.368356,
+       "crossing_frames": 24,
+       "slot": 8,
+       "tick": 43
+      },
+      "4/21": {
+       "max_triangle_pairs": 145,
+       "max_depth": 34.085451,
+       "crossing_frames": 49,
+       "slot": 42,
+       "tick": 41
+      },
+      "9/13": {
+       "max_triangle_pairs": 271,
+       "max_depth": 34.116172,
+       "crossing_frames": 95,
+       "slot": 21,
+       "tick": 5
+      },
+      "9/12": {
+       "max_triangle_pairs": 252,
+       "max_depth": 35.228849,
+       "crossing_frames": 87,
+       "slot": 11,
+       "tick": 34
+      },
+      "2/17": {
+       "max_triangle_pairs": 46,
+       "max_depth": 39.145822,
+       "crossing_frames": 27,
+       "slot": 42,
+       "tick": 39
+      },
+      "7/17": {
+       "max_triangle_pairs": 18,
+       "max_depth": 25.97495,
+       "crossing_frames": 8,
+       "slot": 9,
+       "tick": 30
+      },
+      "11/17": {
+       "max_triangle_pairs": 5,
+       "max_depth": 17.593819,
+       "crossing_frames": 2,
+       "slot": 9,
+       "tick": 25
+      },
+      "8/12": {
+       "max_triangle_pairs": 236,
+       "max_depth": 31.23183,
+       "crossing_frames": 49,
+       "slot": 9,
+       "tick": 29
+      },
+      "7/12": {
+       "max_triangle_pairs": 16,
+       "max_depth": 28.190021,
+       "crossing_frames": 36,
+       "slot": 43,
+       "tick": 22
+      },
+      "7/13": {
+       "max_triangle_pairs": 26,
+       "max_depth": 27.00064,
+       "crossing_frames": 35,
+       "slot": 11,
+       "tick": 43
+      },
+      "9/11": {
+       "max_triangle_pairs": 20,
+       "max_depth": 39.739872,
+       "crossing_frames": 49,
+       "slot": 21,
+       "tick": 12
+      },
+      "4/20": {
+       "max_triangle_pairs": 153,
+       "max_depth": 39.130726,
+       "crossing_frames": 8,
+       "slot": 11,
+       "tick": 40
+      },
+      "13/21": {
+       "max_triangle_pairs": 40,
+       "max_depth": 29.598225,
+       "crossing_frames": 2,
+       "slot": 11,
+       "tick": 40
+      },
+      "8/13": {
+       "max_triangle_pairs": 158,
+       "max_depth": 36.771373,
+       "crossing_frames": 29,
+       "slot": 21,
+       "tick": 3
+      },
+      "19/25": {
+       "max_triangle_pairs": 14,
+       "max_depth": 15.283845,
+       "crossing_frames": 4,
+       "slot": 23,
+       "tick": 36
+      },
+      "4/15": {
+       "max_triangle_pairs": 389,
+       "max_depth": 56.411075,
+       "crossing_frames": 5,
+       "slot": 42,
+       "tick": 40
+      },
+      "2/15": {
+       "max_triangle_pairs": 84,
+       "max_depth": 33.058925,
+       "crossing_frames": 2,
+       "slot": 42,
+       "tick": 39
+      },
+      "4/16": {
+       "max_triangle_pairs": 64,
+       "max_depth": 39.284078,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 39
+      },
+      "4/24": {
+       "max_triangle_pairs": 102,
+       "max_depth": 30.675651,
+       "crossing_frames": 3,
+       "slot": 42,
+       "tick": 41
+      },
+      "7/15": {
+       "max_triangle_pairs": 57,
+       "max_depth": 43.12517,
+       "crossing_frames": 2,
+       "slot": 42,
+       "tick": 39
+      },
+      "9/15": {
+       "max_triangle_pairs": 245,
+       "max_depth": 45.76742,
+       "crossing_frames": 2,
+       "slot": 42,
+       "tick": 40
+      },
+      "11/15": {
+       "max_triangle_pairs": 59,
+       "max_depth": 51.559644,
+       "crossing_frames": 2,
+       "slot": 42,
+       "tick": 39
+      },
+      "12/15": {
+       "max_triangle_pairs": 44,
+       "max_depth": 20.548754,
+       "crossing_frames": 2,
+       "slot": 42,
+       "tick": 39
+      },
+      "15/19": {
+       "max_triangle_pairs": 62,
+       "max_depth": 44.43523,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 39
+      },
+      "15/20": {
+       "max_triangle_pairs": 52,
+       "max_depth": 39.417459,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 39
+      },
+      "15/23": {
+       "max_triangle_pairs": 66,
+       "max_depth": 40.39058,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 39
+      },
+      "16/21": {
+       "max_triangle_pairs": 56,
+       "max_depth": 39.765643,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 39
+      },
+      "16/23": {
+       "max_triangle_pairs": 15,
+       "max_depth": 20.193956,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 39
+      },
+      "16/24": {
+       "max_triangle_pairs": 43,
+       "max_depth": 30.362617,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 39
+      },
+      "16/25": {
+       "max_triangle_pairs": 36,
+       "max_depth": 37.690857,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 39
+      },
+      "2/16": {
+       "max_triangle_pairs": 15,
+       "max_depth": 29.800932,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 40
+      },
+      "7/16": {
+       "max_triangle_pairs": 13,
+       "max_depth": 23.717103,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 40
+      },
+      "8/15": {
+       "max_triangle_pairs": 102,
+       "max_depth": 26.009775,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 40
+      },
+      "11/16": {
+       "max_triangle_pairs": 5,
+       "max_depth": 18.021636,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 40
+      },
+      "14/16": {
+       "max_triangle_pairs": 14,
+       "max_depth": 35.271703,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 40
+      },
+      "9/24": {
+       "max_triangle_pairs": 12,
+       "max_depth": 16.332768,
+       "crossing_frames": 1,
+       "slot": 42,
+       "tick": 41
+      },
+      "19/24": {
+       "max_triangle_pairs": 18,
+       "max_depth": 23.033551,
+       "crossing_frames": 2,
+       "slot": 43,
+       "tick": 14
+      },
+      "20/23": {
+       "max_triangle_pairs": 12,
+       "max_depth": 25.003896,
+       "crossing_frames": 3,
+       "slot": 43,
+       "tick": 13
+      }
+     },
+     "resident_bytes": 94834,
+     "cold_bytes": 27264,
+     "storage_fits": true,
+     "sha256": "a93d83b972c6d5db23c9530ec024c8f8e7c8394392802b14ff68cd953a9667c4",
+     "ledger": "409-after.csv.gz",
+     "ledger_sha256": "6d742cf6fb0b5d10e4aede04ba53f872334db816789ccf1cbad7c95661a62ee0",
+     "records": 42222,
+     "detector": {
+      "verdict": "fail",
+      "envelope_verdict": "fail",
+      "part_candidates": 65,
+      "flags": [
+       "bent_risk",
+       "crossings_max",
+       "part_interpenetration"
+      ],
+      "cofacing_pairs": 1
+     }
+    }
+   },
+   "preservation": {
+    "slots": 47,
+    "ticks": 1461,
+    "changed_objects": [],
+    "texture_equal": true,
+    "poses_equal_except_documented_clip": true,
+    "loops_events_root_travel_equal": true,
+    "sha256_before": "a93d83b972c6d5db23c9530ec024c8f8e7c8394392802b14ff68cd953a9667c4",
+    "sha256_after": "a93d83b972c6d5db23c9530ec024c8f8e7c8394392802b14ff68cd953a9667c4"
+   },
+   "renders": {
+    "cases": 40,
+    "changed_pixels": 0,
+    "before_bin_phase_pixels": 2086,
+    "after_bin_phase_pixels": 2086
+   }
+  },
+  "406": {
+   "name": "MaloMyotismon",
+   "stages": {
+    "before": {
+     "slots": 52,
+     "ticks": 1714,
+     "crossing_frames": 1714,
+     "crossing_bone_pairs": 107,
+     "max_triangle_pairs_in_frame": 935,
+     "max_depth": 90.44147215169764,
+     "pairs": {
+      "1/2": {
+       "max_triangle_pairs": 33,
+       "max_depth": 49.346156,
+       "crossing_frames": 1714,
+       "slot": 54,
+       "tick": 1
+      },
+      "1/3": {
+       "max_triangle_pairs": 32,
+       "max_depth": 48.678696,
+       "crossing_frames": 1708,
+       "slot": 54,
+       "tick": 15
+      },
+      "1/10": {
+       "max_triangle_pairs": 36,
+       "max_depth": 55.343536,
+       "crossing_frames": 1714,
+       "slot": 54,
+       "tick": 2
+      },
+      "1/11": {
+       "max_triangle_pairs": 30,
+       "max_depth": 55.982955,
+       "crossing_frames": 1708,
+       "slot": 54,
+       "tick": 8
+      },
+      "1/18": {
+       "max_triangle_pairs": 67,
+       "max_depth": 36.271,
+       "crossing_frames": 1714,
+       "slot": 47,
+       "tick": 39
+      },
+      "2/3": {
+       "max_triangle_pairs": 72,
+       "max_depth": 27.804728,
+       "crossing_frames": 1714,
+       "slot": 54,
+       "tick": 1
+      },
+      "2/4": {
+       "max_triangle_pairs": 30,
+       "max_depth": 48.260154,
+       "crossing_frames": 1714,
+       "slot": 19,
+       "tick": 3
+      },
+      "3/4": {
+       "max_triangle_pairs": 26,
+       "max_depth": 41.391852,
+       "crossing_frames": 1710,
+       "slot": 46,
+       "tick": 18
+      },
+      "4/5": {
+       "max_triangle_pairs": 22,
+       "max_depth": 46.150679,
+       "crossing_frames": 1714,
+       "slot": 54,
+       "tick": 1
+      },
+      "5/6": {
+       "max_triangle_pairs": 7,
+       "max_depth": 16.418816,
+       "crossing_frames": 1714,
+       "slot": 0,
+       "tick": 0
+      },
+      "5/7": {
+       "max_triangle_pairs": 21,
+       "max_depth": 24.92511,
+       "crossing_frames": 1714,
+       "slot": 47,
+       "tick": 27
+      },
+      "5/8": {
+       "max_triangle_pairs": 11,
+       "max_depth": 16.581267,
+       "crossing_frames": 1714,
+       "slot": 33,
+       "tick": 0
+      },
+      "10/11": {
+       "max_triangle_pairs": 67,
+       "max_depth": 27.921554,
+       "crossing_frames": 1714,
+       "slot": 54,
+       "tick": 1
+      },
+      "10/12": {
+       "max_triangle_pairs": 33,
+       "max_depth": 49.302249,
+       "crossing_frames": 1714,
+       "slot": 21,
+       "tick": 7
+      },
+      "11/12": {
+       "max_triangle_pairs": 25,
+       "max_depth": 59.104331,
+       "crossing_frames": 1706,
+       "slot": 21,
+       "tick": 8
+      },
+      "12/13": {
+       "max_triangle_pairs": 35,
+       "max_depth": 36.211975,
+       "crossing_frames": 1714,
+       "slot": 54,
+       "tick": 19
+      },
+      "13/14": {
+       "max_triangle_pairs": 21,
+       "max_depth": 45.398797,
+       "crossing_frames": 1714,
+       "slot": 13,
+       "tick": 27
+      },
+      "13/15": {
+       "max_triangle_pairs": 8,
+       "max_depth": 18.081555,
+       "crossing_frames": 1714,
+       "slot": 33,
+       "tick": 0
+      },
+      "13/16": {
+       "max_triangle_pairs": 8,
+       "max_depth": 25.478397,
+       "crossing_frames": 1714,
+       "slot": 0,
+       "tick": 0
+      },
+      "19/20": {
+       "max_triangle_pairs": 33,
+       "max_depth": 35.442676,
+       "crossing_frames": 1714,
+       "slot": 3,
+       "tick": 4
+      },
+      "19/24": {
+       "max_triangle_pairs": 62,
+       "max_depth": 41.39054,
+       "crossing_frames": 1714,
+       "slot": 9,
+       "tick": 18
+      },
+      "19/27": {
+       "max_triangle_pairs": 67,
+       "max_depth": 36.181993,
+       "crossing_frames": 1714,
+       "slot": 36,
+       "tick": 15
+      },
+      "20/21": {
+       "max_triangle_pairs": 29,
+       "max_depth": 27.151902,
+       "crossing_frames": 1714,
+       "slot": 47,
+       "tick": 24
+      },
+      "21/22": {
+       "max_triangle_pairs": 36,
+       "max_depth": 40.810443,
+       "crossing_frames": 1714,
+       "slot": 42,
+       "tick": 74
+      },
+      "21/23": {
+       "max_triangle_pairs": 38,
+       "max_depth": 55.026857,
+       "crossing_frames": 1618,
+       "slot": 52,
+       "tick": 9
+      },
+      "22/23": {
+       "max_triangle_pairs": 20,
+       "max_depth": 26.130901,
+       "crossing_frames": 1714,
+       "slot": 0,
+       "tick": 0
+      },
+      "24/25": {
+       "max_triangle_pairs": 16,
+       "max_depth": 21.496593,
+       "crossing_frames": 1714,
+       "slot": 40,
+       "tick": 10
+      },
+      "27/28": {
+       "max_triangle_pairs": 25,
+       "max_depth": 28.744631,
+       "crossing_frames": 1714,
+       "slot": 3,
+       "tick": 18
+      },
+      "28/29": {
+       "max_triangle_pairs": 35,
+       "max_depth": 47.745214,
+       "crossing_frames": 1714,
+       "slot": 35,
+       "tick": 11
+      },
+      "28/30": {
+       "max_triangle_pairs": 31,
+       "max_depth": 51.164834,
+       "crossing_frames": 1529,
+       "slot": 9,
+       "tick": 2
+      },
+      "29/30": {
+       "max_triangle_pairs": 30,
+       "max_depth": 26.130901,
+       "crossing_frames": 1714,
+       "slot": 0,
+       "tick": 0
+      },
+      "19/21": {
+       "max_triangle_pairs": 22,
+       "max_depth": 30.836651,
+       "crossing_frames": 86,
+       "slot": 47,
+       "tick": 24
+      },
+      "19/28": {
+       "max_triangle_pairs": 36,
+       "max_depth": 30.355183,
+       "crossing_frames": 76,
+       "slot": 47,
+       "tick": 25
+      },
+      "1/19": {
+       "max_triangle_pairs": 65,
+       "max_depth": 55.311057,
+       "crossing_frames": 378,
+       "slot": 9,
+       "tick": 34
+      },
+      "15/28": {
+       "max_triangle_pairs": 16,
+       "max_depth": 22.922593,
+       "crossing_frames": 49,
+       "slot": 7,
+       "tick": 15
+      },
+      "13/28": {
+       "max_triangle_pairs": 6,
+       "max_depth": 11.917194,
+       "crossing_frames": 6,
+       "slot": 7,
+       "tick": 7
+      },
+      "14/28": {
+       "max_triangle_pairs": 18,
+       "max_depth": 21.569187,
+       "crossing_frames": 45,
+       "slot": 7,
+       "tick": 13
+      },
+      "16/28": {
+       "max_triangle_pairs": 20,
+       "max_depth": 24.876513,
+       "crossing_frames": 45,
+       "slot": 7,
+       "tick": 51
+      },
+      "15/27": {
+       "max_triangle_pairs": 23,
+       "max_depth": 24.677715,
+       "crossing_frames": 43,
+       "slot": 7,
+       "tick": 16
+      },
+      "6/7": {
+       "max_triangle_pairs": 24,
+       "max_depth": 23.777941,
+       "crossing_frames": 114,
+       "slot": 27,
+       "tick": 11
+      },
+      "11/13": {
+       "max_triangle_pairs": 14,
+       "max_depth": 38.287662,
+       "crossing_frames": 19,
+       "slot": 8,
+       "tick": 20
+      },
+      "10/13": {
+       "max_triangle_pairs": 24,
+       "max_depth": 42.173246,
+       "crossing_frames": 10,
+       "slot": 54,
+       "tick": 0
+      },
+      "10/19": {
+       "max_triangle_pairs": 13,
+       "max_depth": 23.953119,
+       "crossing_frames": 65,
+       "slot": 47,
+       "tick": 25
+      },
+      "25/28": {
+       "max_triangle_pairs": 4,
+       "max_depth": 36.267244,
+       "crossing_frames": 2,
+       "slot": 9,
+       "tick": 8
+      },
+      "14/16": {
+       "max_triangle_pairs": 21,
+       "max_depth": 20.02374,
+       "crossing_frames": 114,
+       "slot": 13,
+       "tick": 9
+      },
+      "2/5": {
+       "max_triangle_pairs": 23,
+       "max_depth": 58.602464,
+       "crossing_frames": 48,
+       "slot": 43,
+       "tick": 17
+      },
+      "1/5": {
+       "max_triangle_pairs": 44,
+       "max_depth": 62.958033,
+       "crossing_frames": 32,
+       "slot": 46,
+       "tick": 16
+      },
+      "10/27": {
+       "max_triangle_pairs": 29,
+       "max_depth": 28.057391,
+       "crossing_frames": 19,
+       "slot": 47,
+       "tick": 25
+      },
+      "2/19": {
+       "max_triangle_pairs": 15,
+       "max_depth": 31.700973,
+       "crossing_frames": 45,
+       "slot": 9,
+       "tick": 20
+      },
+      "1/24": {
+       "max_triangle_pairs": 20,
+       "max_depth": 38.719348,
+       "crossing_frames": 50,
+       "slot": 47,
+       "tick": 25
+      },
+      "19/25": {
+       "max_triangle_pairs": 15,
+       "max_depth": 34.787005,
+       "crossing_frames": 27,
+       "slot": 9,
+       "tick": 43
+      },
+      "1/13": {
+       "max_triangle_pairs": 72,
+       "max_depth": 90.441472,
+       "crossing_frames": 39,
+       "slot": 55,
+       "tick": 14
+      },
+      "21/28": {
+       "max_triangle_pairs": 18,
+       "max_depth": 38.706891,
+       "crossing_frames": 20,
+       "slot": 10,
+       "tick": 18
+      },
+      "21/29": {
+       "max_triangle_pairs": 11,
+       "max_depth": 34.913859,
+       "crossing_frames": 9,
+       "slot": 10,
+       "tick": 19
+      },
+      "22/29": {
+       "max_triangle_pairs": 29,
+       "max_depth": 31.897294,
+       "crossing_frames": 9,
+       "slot": 10,
+       "tick": 23
+      },
+      "22/28": {
+       "max_triangle_pairs": 11,
+       "max_depth": 28.798505,
+       "crossing_frames": 8,
+       "slot": 10,
+       "tick": 22
+      },
+      "22/30": {
+       "max_triangle_pairs": 6,
+       "max_depth": 32.029424,
+       "crossing_frames": 6,
+       "slot": 10,
+       "tick": 24
+      },
+      "23/29": {
+       "max_triangle_pairs": 6,
+       "max_depth": 28.694779,
+       "crossing_frames": 6,
+       "slot": 10,
+       "tick": 23
+      },
+      "21/30": {
+       "max_triangle_pairs": 2,
+       "max_depth": 10.556469,
+       "crossing_frames": 5,
+       "slot": 10,
+       "tick": 24
+      },
+      "23/30": {
+       "max_triangle_pairs": 5,
+       "max_depth": 12.941474,
+       "crossing_frames": 5,
+       "slot": 10,
+       "tick": 24
+      },
+      "23/28": {
+       "max_triangle_pairs": 6,
+       "max_depth": 15.687127,
+       "crossing_frames": 4,
+       "slot": 10,
+       "tick": 24
+      },
+      "2/21": {
+       "max_triangle_pairs": 40,
+       "max_depth": 43.448167,
+       "crossing_frames": 67,
+       "slot": 47,
+       "tick": 25
+      },
+      "1/8": {
+       "max_triangle_pairs": 25,
+       "max_depth": 79.753403,
+       "crossing_frames": 17,
+       "slot": 46,
+       "tick": 17
+      },
+      "1/7": {
+       "max_triangle_pairs": 10,
+       "max_depth": 69.196948,
+       "crossing_frames": 16,
+       "slot": 52,
+       "tick": 8
+      },
+      "1/6": {
+       "max_triangle_pairs": 18,
+       "max_depth": 68.556803,
+       "crossing_frames": 14,
+       "slot": 46,
+       "tick": 18
+      },
+      "21/26": {
+       "max_triangle_pairs": 20,
+       "max_depth": 38.41188,
+       "crossing_frames": 58,
+       "slot": 12,
+       "tick": 37
+      },
+      "21/25": {
+       "max_triangle_pairs": 24,
+       "max_depth": 41.183324,
+       "crossing_frames": 118,
+       "slot": 46,
+       "tick": 14
+      },
+      "22/26": {
+       "max_triangle_pairs": 18,
+       "max_depth": 34.566372,
+       "crossing_frames": 56,
+       "slot": 12,
+       "tick": 25
+      },
+      "1/16": {
+       "max_triangle_pairs": 8,
+       "max_depth": 75.840095,
+       "crossing_frames": 6,
+       "slot": 55,
+       "tick": 10
+      },
+      "7/8": {
+       "max_triangle_pairs": 34,
+       "max_depth": 21.223026,
+       "crossing_frames": 150,
+       "slot": 21,
+       "tick": 24
+      },
+      "6/8": {
+       "max_triangle_pairs": 8,
+       "max_depth": 11.419536,
+       "crossing_frames": 136,
+       "slot": 33,
+       "tick": 0
+      },
+      "25/26": {
+       "max_triangle_pairs": 22,
+       "max_depth": 16.70755,
+       "crossing_frames": 166,
+       "slot": 54,
+       "tick": 4
+      },
+      "14/15": {
+       "max_triangle_pairs": 24,
+       "max_depth": 16.25519,
+       "crossing_frames": 48,
+       "slot": 37,
+       "tick": 1
+      },
+      "22/25": {
+       "max_triangle_pairs": 16,
+       "max_depth": 35.494735,
+       "crossing_frames": 24,
+       "slot": 37,
+       "tick": 0
+      },
+      "23/25": {
+       "max_triangle_pairs": 11,
+       "max_depth": 30.744122,
+       "crossing_frames": 1,
+       "slot": 37,
+       "tick": 0
+      },
+      "26/28": {
+       "max_triangle_pairs": 11,
+       "max_depth": 44.091542,
+       "crossing_frames": 1,
+       "slot": 43,
+       "tick": 9
+      },
+      "5/21": {
+       "max_triangle_pairs": 16,
+       "max_depth": 33.055475,
+       "crossing_frames": 15,
+       "slot": 46,
+       "tick": 23
+      },
+      "1/28": {
+       "max_triangle_pairs": 17,
+       "max_depth": 56.539171,
+       "crossing_frames": 27,
+       "slot": 43,
+       "tick": 16
+      },
+      "4/21": {
+       "max_triangle_pairs": 4,
+       "max_depth": 24.48633,
+       "crossing_frames": 1,
+       "slot": 43,
+       "tick": 12
+      },
+      "5/22": {
+       "max_triangle_pairs": 26,
+       "max_depth": 26.732222,
+       "crossing_frames": 1,
+       "slot": 43,
+       "tick": 12
+      },
+      "5/23": {
+       "max_triangle_pairs": 20,
+       "max_depth": 50.3891,
+       "crossing_frames": 13,
+       "slot": 46,
+       "tick": 23
+      },
+      "10/28": {
+       "max_triangle_pairs": 26,
+       "max_depth": 32.360152,
+       "crossing_frames": 89,
+       "slot": 47,
+       "tick": 26
+      },
+      "11/28": {
+       "max_triangle_pairs": 17,
+       "max_depth": 19.348769,
+       "crossing_frames": 10,
+       "slot": 47,
+       "tick": 24
+      },
+      "3/5": {
+       "max_triangle_pairs": 3,
+       "max_depth": 29.298344,
+       "crossing_frames": 5,
+       "slot": 46,
+       "tick": 13
+      },
+      "3/18": {
+       "max_triangle_pairs": 8,
+       "max_depth": 27.273736,
+       "crossing_frames": 34,
+       "slot": 46,
+       "tick": 16
+      },
+      "1/20": {
+       "max_triangle_pairs": 20,
+       "max_depth": 51.463064,
+       "crossing_frames": 27,
+       "slot": 47,
+       "tick": 25
+      },
+      "1/27": {
+       "max_triangle_pairs": 23,
+       "max_depth": 22.081001,
+       "crossing_frames": 35,
+       "slot": 47,
+       "tick": 25
+      },
+      "2/20": {
+       "max_triangle_pairs": 28,
+       "max_depth": 37.022863,
+       "crossing_frames": 27,
+       "slot": 47,
+       "tick": 24
+      },
+      "3/20": {
+       "max_triangle_pairs": 26,
+       "max_depth": 40.860036,
+       "crossing_frames": 27,
+       "slot": 47,
+       "tick": 24
+      },
+      "3/21": {
+       "max_triangle_pairs": 45,
+       "max_depth": 42.451859,
+       "crossing_frames": 27,
+       "slot": 47,
+       "tick": 24
+      },
+      "18/19": {
+       "max_triangle_pairs": 32,
+       "max_depth": 32.399436,
+       "crossing_frames": 18,
+       "slot": 47,
+       "tick": 23
+      },
+      "1/21": {
+       "max_triangle_pairs": 24,
+       "max_depth": 34.29422,
+       "crossing_frames": 18,
+       "slot": 47,
+       "tick": 25
+      },
+      "11/27": {
+       "max_triangle_pairs": 21,
+       "max_depth": 26.31971,
+       "crossing_frames": 18,
+       "slot": 47,
+       "tick": 25
+      },
+      "18/20": {
+       "max_triangle_pairs": 4,
+       "max_depth": 20.430266,
+       "crossing_frames": 9,
+       "slot": 47,
+       "tick": 24
+      },
+      "18/27": {
+       "max_triangle_pairs": 9,
+       "max_depth": 13.966005,
+       "crossing_frames": 9,
+       "slot": 47,
+       "tick": 24
+      },
+      "21/24": {
+       "max_triangle_pairs": 8,
+       "max_depth": 21.006523,
+       "crossing_frames": 9,
+       "slot": 47,
+       "tick": 25
+      },
+      "20/24": {
+       "max_triangle_pairs": 12,
+       "max_depth": 31.290598,
+       "crossing_frames": 9,
+       "slot": 47,
+       "tick": 26
+      },
+      "11/18": {
+       "max_triangle_pairs": 8,
+       "max_depth": 22.907377,
+       "crossing_frames": 9,
+       "slot": 47,
+       "tick": 39
+      },
+      "5/13": {
+       "max_triangle_pairs": 15,
+       "max_depth": 40.961471,
+       "crossing_frames": 4,
+       "slot": 54,
+       "tick": 0
+      },
+      "5/14": {
+       "max_triangle_pairs": 11,
+       "max_depth": 35.547296,
+       "crossing_frames": 4,
+       "slot": 54,
+       "tick": 20
+      },
+      "5/16": {
+       "max_triangle_pairs": 12,
+       "max_depth": 20.000338,
+       "crossing_frames": 4,
+       "slot": 54,
+       "tick": 20
+      },
+      "13/18": {
+       "max_triangle_pairs": 4,
+       "max_depth": 20.420402,
+       "crossing_frames": 2,
+       "slot": 54,
+       "tick": 0
+      },
+      "5/15": {
+       "max_triangle_pairs": 7,
+       "max_depth": 32.751937,
+       "crossing_frames": 2,
+       "slot": 54,
+       "tick": 20
+      },
+      "1/14": {
+       "max_triangle_pairs": 5,
+       "max_depth": 37.239027,
+       "crossing_frames": 1,
+       "slot": 55,
+       "tick": 10
+      },
+      "1/15": {
+       "max_triangle_pairs": 3,
+       "max_depth": 23.116419,
+       "crossing_frames": 1,
+       "slot": 55,
+       "tick": 11
+      },
+      "1/12": {
+       "max_triangle_pairs": 17,
+       "max_depth": 35.472501,
+       "crossing_frames": 3,
+       "slot": 55,
+       "tick": 14
+      },
+      "24/27": {
+       "max_triangle_pairs": 8,
+       "max_depth": 15.043961,
+       "crossing_frames": 1,
+       "slot": 55,
+       "tick": 16
+      }
+     },
+     "resident_bytes": 74402,
+     "cold_bytes": 23720,
+     "storage_fits": true,
+     "sha256": "57e64afc5e67c910611dafe62b54b32cd05ef95ec730e8d27dbc55c24034a863",
+     "ledger": "406-before.csv.gz",
+     "ledger_sha256": "0c6a4859518af543a3895abae84f69472c94e319a69eddf687bda92ce5a8be23",
+     "records": 55550,
+     "detector": {
+      "verdict": "fail",
+      "envelope_verdict": "fail",
+      "part_candidates": 32,
+      "flags": [
+       "bent_risk",
+       "part_interpenetration"
+      ],
+      "cofacing_pairs": 4
+     }
+    },
+    "after": {
+     "slots": 52,
+     "ticks": 1714,
+     "crossing_frames": 1714,
+     "crossing_bone_pairs": 107,
+     "max_triangle_pairs_in_frame": 935,
+     "max_depth": 90.44147215169764,
+     "pairs": {
+      "1/2": {
+       "max_triangle_pairs": 33,
+       "max_depth": 49.346156,
+       "crossing_frames": 1714,
+       "slot": 54,
+       "tick": 1
+      },
+      "1/3": {
+       "max_triangle_pairs": 32,
+       "max_depth": 48.678696,
+       "crossing_frames": 1708,
+       "slot": 54,
+       "tick": 15
+      },
+      "1/10": {
+       "max_triangle_pairs": 36,
+       "max_depth": 55.343536,
+       "crossing_frames": 1714,
+       "slot": 54,
+       "tick": 2
+      },
+      "1/11": {
+       "max_triangle_pairs": 30,
+       "max_depth": 55.982955,
+       "crossing_frames": 1708,
+       "slot": 54,
+       "tick": 8
+      },
+      "1/18": {
+       "max_triangle_pairs": 67,
+       "max_depth": 36.271,
+       "crossing_frames": 1714,
+       "slot": 47,
+       "tick": 39
+      },
+      "2/3": {
+       "max_triangle_pairs": 72,
+       "max_depth": 27.804728,
+       "crossing_frames": 1714,
+       "slot": 54,
+       "tick": 1
+      },
+      "2/4": {
+       "max_triangle_pairs": 30,
+       "max_depth": 48.260154,
+       "crossing_frames": 1714,
+       "slot": 19,
+       "tick": 3
+      },
+      "3/4": {
+       "max_triangle_pairs": 26,
+       "max_depth": 41.391852,
+       "crossing_frames": 1710,
+       "slot": 46,
+       "tick": 18
+      },
+      "4/5": {
+       "max_triangle_pairs": 22,
+       "max_depth": 46.150679,
+       "crossing_frames": 1714,
+       "slot": 54,
+       "tick": 1
+      },
+      "5/6": {
+       "max_triangle_pairs": 7,
+       "max_depth": 16.418816,
+       "crossing_frames": 1714,
+       "slot": 0,
+       "tick": 0
+      },
+      "5/7": {
+       "max_triangle_pairs": 21,
+       "max_depth": 24.92511,
+       "crossing_frames": 1714,
+       "slot": 47,
+       "tick": 27
+      },
+      "5/8": {
+       "max_triangle_pairs": 11,
+       "max_depth": 16.581267,
+       "crossing_frames": 1714,
+       "slot": 33,
+       "tick": 0
+      },
+      "10/11": {
+       "max_triangle_pairs": 67,
+       "max_depth": 27.921554,
+       "crossing_frames": 1714,
+       "slot": 54,
+       "tick": 1
+      },
+      "10/12": {
+       "max_triangle_pairs": 33,
+       "max_depth": 49.302249,
+       "crossing_frames": 1714,
+       "slot": 21,
+       "tick": 7
+      },
+      "11/12": {
+       "max_triangle_pairs": 25,
+       "max_depth": 59.104331,
+       "crossing_frames": 1706,
+       "slot": 21,
+       "tick": 8
+      },
+      "12/13": {
+       "max_triangle_pairs": 35,
+       "max_depth": 36.211975,
+       "crossing_frames": 1714,
+       "slot": 54,
+       "tick": 19
+      },
+      "13/14": {
+       "max_triangle_pairs": 21,
+       "max_depth": 45.398797,
+       "crossing_frames": 1714,
+       "slot": 13,
+       "tick": 27
+      },
+      "13/15": {
+       "max_triangle_pairs": 8,
+       "max_depth": 18.081555,
+       "crossing_frames": 1714,
+       "slot": 33,
+       "tick": 0
+      },
+      "13/16": {
+       "max_triangle_pairs": 8,
+       "max_depth": 25.478397,
+       "crossing_frames": 1714,
+       "slot": 0,
+       "tick": 0
+      },
+      "19/20": {
+       "max_triangle_pairs": 33,
+       "max_depth": 35.442676,
+       "crossing_frames": 1714,
+       "slot": 3,
+       "tick": 4
+      },
+      "19/24": {
+       "max_triangle_pairs": 62,
+       "max_depth": 41.39054,
+       "crossing_frames": 1714,
+       "slot": 9,
+       "tick": 18
+      },
+      "19/27": {
+       "max_triangle_pairs": 67,
+       "max_depth": 36.181993,
+       "crossing_frames": 1714,
+       "slot": 36,
+       "tick": 15
+      },
+      "20/21": {
+       "max_triangle_pairs": 29,
+       "max_depth": 27.151902,
+       "crossing_frames": 1714,
+       "slot": 47,
+       "tick": 24
+      },
+      "21/22": {
+       "max_triangle_pairs": 36,
+       "max_depth": 40.810443,
+       "crossing_frames": 1714,
+       "slot": 42,
+       "tick": 74
+      },
+      "21/23": {
+       "max_triangle_pairs": 38,
+       "max_depth": 55.026857,
+       "crossing_frames": 1618,
+       "slot": 52,
+       "tick": 9
+      },
+      "22/23": {
+       "max_triangle_pairs": 20,
+       "max_depth": 26.130901,
+       "crossing_frames": 1714,
+       "slot": 0,
+       "tick": 0
+      },
+      "24/25": {
+       "max_triangle_pairs": 16,
+       "max_depth": 21.496593,
+       "crossing_frames": 1714,
+       "slot": 40,
+       "tick": 10
+      },
+      "27/28": {
+       "max_triangle_pairs": 25,
+       "max_depth": 28.744631,
+       "crossing_frames": 1714,
+       "slot": 3,
+       "tick": 18
+      },
+      "28/29": {
+       "max_triangle_pairs": 35,
+       "max_depth": 47.745214,
+       "crossing_frames": 1714,
+       "slot": 35,
+       "tick": 11
+      },
+      "28/30": {
+       "max_triangle_pairs": 31,
+       "max_depth": 51.164834,
+       "crossing_frames": 1529,
+       "slot": 9,
+       "tick": 2
+      },
+      "29/30": {
+       "max_triangle_pairs": 30,
+       "max_depth": 26.130901,
+       "crossing_frames": 1714,
+       "slot": 0,
+       "tick": 0
+      },
+      "19/21": {
+       "max_triangle_pairs": 22,
+       "max_depth": 30.836651,
+       "crossing_frames": 86,
+       "slot": 47,
+       "tick": 24
+      },
+      "19/28": {
+       "max_triangle_pairs": 36,
+       "max_depth": 30.355183,
+       "crossing_frames": 76,
+       "slot": 47,
+       "tick": 25
+      },
+      "1/19": {
+       "max_triangle_pairs": 65,
+       "max_depth": 55.311057,
+       "crossing_frames": 378,
+       "slot": 9,
+       "tick": 34
+      },
+      "15/28": {
+       "max_triangle_pairs": 16,
+       "max_depth": 22.922593,
+       "crossing_frames": 49,
+       "slot": 7,
+       "tick": 15
+      },
+      "13/28": {
+       "max_triangle_pairs": 6,
+       "max_depth": 11.917194,
+       "crossing_frames": 6,
+       "slot": 7,
+       "tick": 7
+      },
+      "14/28": {
+       "max_triangle_pairs": 18,
+       "max_depth": 21.569187,
+       "crossing_frames": 45,
+       "slot": 7,
+       "tick": 13
+      },
+      "16/28": {
+       "max_triangle_pairs": 20,
+       "max_depth": 24.876513,
+       "crossing_frames": 45,
+       "slot": 7,
+       "tick": 51
+      },
+      "15/27": {
+       "max_triangle_pairs": 23,
+       "max_depth": 24.677715,
+       "crossing_frames": 43,
+       "slot": 7,
+       "tick": 16
+      },
+      "6/7": {
+       "max_triangle_pairs": 24,
+       "max_depth": 23.777941,
+       "crossing_frames": 114,
+       "slot": 27,
+       "tick": 11
+      },
+      "11/13": {
+       "max_triangle_pairs": 14,
+       "max_depth": 38.287662,
+       "crossing_frames": 19,
+       "slot": 8,
+       "tick": 20
+      },
+      "10/13": {
+       "max_triangle_pairs": 24,
+       "max_depth": 42.173246,
+       "crossing_frames": 10,
+       "slot": 54,
+       "tick": 0
+      },
+      "10/19": {
+       "max_triangle_pairs": 13,
+       "max_depth": 23.953119,
+       "crossing_frames": 65,
+       "slot": 47,
+       "tick": 25
+      },
+      "25/28": {
+       "max_triangle_pairs": 4,
+       "max_depth": 36.267244,
+       "crossing_frames": 2,
+       "slot": 9,
+       "tick": 8
+      },
+      "14/16": {
+       "max_triangle_pairs": 21,
+       "max_depth": 20.02374,
+       "crossing_frames": 114,
+       "slot": 13,
+       "tick": 9
+      },
+      "2/5": {
+       "max_triangle_pairs": 23,
+       "max_depth": 58.602464,
+       "crossing_frames": 48,
+       "slot": 43,
+       "tick": 17
+      },
+      "1/5": {
+       "max_triangle_pairs": 44,
+       "max_depth": 62.958033,
+       "crossing_frames": 32,
+       "slot": 46,
+       "tick": 16
+      },
+      "10/27": {
+       "max_triangle_pairs": 29,
+       "max_depth": 28.057391,
+       "crossing_frames": 19,
+       "slot": 47,
+       "tick": 25
+      },
+      "2/19": {
+       "max_triangle_pairs": 15,
+       "max_depth": 31.700973,
+       "crossing_frames": 45,
+       "slot": 9,
+       "tick": 20
+      },
+      "1/24": {
+       "max_triangle_pairs": 20,
+       "max_depth": 38.719348,
+       "crossing_frames": 50,
+       "slot": 47,
+       "tick": 25
+      },
+      "19/25": {
+       "max_triangle_pairs": 15,
+       "max_depth": 34.787005,
+       "crossing_frames": 27,
+       "slot": 9,
+       "tick": 43
+      },
+      "1/13": {
+       "max_triangle_pairs": 72,
+       "max_depth": 90.441472,
+       "crossing_frames": 39,
+       "slot": 55,
+       "tick": 14
+      },
+      "21/28": {
+       "max_triangle_pairs": 18,
+       "max_depth": 38.706891,
+       "crossing_frames": 20,
+       "slot": 10,
+       "tick": 18
+      },
+      "21/29": {
+       "max_triangle_pairs": 11,
+       "max_depth": 34.913859,
+       "crossing_frames": 9,
+       "slot": 10,
+       "tick": 19
+      },
+      "22/29": {
+       "max_triangle_pairs": 29,
+       "max_depth": 31.897294,
+       "crossing_frames": 9,
+       "slot": 10,
+       "tick": 23
+      },
+      "22/28": {
+       "max_triangle_pairs": 11,
+       "max_depth": 28.798505,
+       "crossing_frames": 8,
+       "slot": 10,
+       "tick": 22
+      },
+      "22/30": {
+       "max_triangle_pairs": 6,
+       "max_depth": 32.029424,
+       "crossing_frames": 6,
+       "slot": 10,
+       "tick": 24
+      },
+      "23/29": {
+       "max_triangle_pairs": 6,
+       "max_depth": 28.694779,
+       "crossing_frames": 6,
+       "slot": 10,
+       "tick": 23
+      },
+      "21/30": {
+       "max_triangle_pairs": 2,
+       "max_depth": 10.556469,
+       "crossing_frames": 5,
+       "slot": 10,
+       "tick": 24
+      },
+      "23/30": {
+       "max_triangle_pairs": 5,
+       "max_depth": 12.941474,
+       "crossing_frames": 5,
+       "slot": 10,
+       "tick": 24
+      },
+      "23/28": {
+       "max_triangle_pairs": 6,
+       "max_depth": 15.687127,
+       "crossing_frames": 4,
+       "slot": 10,
+       "tick": 24
+      },
+      "2/21": {
+       "max_triangle_pairs": 40,
+       "max_depth": 43.448167,
+       "crossing_frames": 67,
+       "slot": 47,
+       "tick": 25
+      },
+      "1/8": {
+       "max_triangle_pairs": 25,
+       "max_depth": 79.753403,
+       "crossing_frames": 17,
+       "slot": 46,
+       "tick": 17
+      },
+      "1/7": {
+       "max_triangle_pairs": 10,
+       "max_depth": 69.196948,
+       "crossing_frames": 16,
+       "slot": 52,
+       "tick": 8
+      },
+      "1/6": {
+       "max_triangle_pairs": 18,
+       "max_depth": 68.556803,
+       "crossing_frames": 14,
+       "slot": 46,
+       "tick": 18
+      },
+      "21/26": {
+       "max_triangle_pairs": 20,
+       "max_depth": 38.41188,
+       "crossing_frames": 58,
+       "slot": 12,
+       "tick": 37
+      },
+      "21/25": {
+       "max_triangle_pairs": 24,
+       "max_depth": 41.183324,
+       "crossing_frames": 118,
+       "slot": 46,
+       "tick": 14
+      },
+      "22/26": {
+       "max_triangle_pairs": 18,
+       "max_depth": 34.566372,
+       "crossing_frames": 56,
+       "slot": 12,
+       "tick": 25
+      },
+      "1/16": {
+       "max_triangle_pairs": 8,
+       "max_depth": 75.840095,
+       "crossing_frames": 6,
+       "slot": 55,
+       "tick": 10
+      },
+      "7/8": {
+       "max_triangle_pairs": 34,
+       "max_depth": 21.223026,
+       "crossing_frames": 150,
+       "slot": 21,
+       "tick": 24
+      },
+      "6/8": {
+       "max_triangle_pairs": 8,
+       "max_depth": 11.419536,
+       "crossing_frames": 136,
+       "slot": 33,
+       "tick": 0
+      },
+      "25/26": {
+       "max_triangle_pairs": 22,
+       "max_depth": 16.70755,
+       "crossing_frames": 166,
+       "slot": 54,
+       "tick": 4
+      },
+      "14/15": {
+       "max_triangle_pairs": 24,
+       "max_depth": 16.25519,
+       "crossing_frames": 48,
+       "slot": 37,
+       "tick": 1
+      },
+      "22/25": {
+       "max_triangle_pairs": 16,
+       "max_depth": 35.494735,
+       "crossing_frames": 24,
+       "slot": 37,
+       "tick": 0
+      },
+      "23/25": {
+       "max_triangle_pairs": 11,
+       "max_depth": 30.744122,
+       "crossing_frames": 1,
+       "slot": 37,
+       "tick": 0
+      },
+      "26/28": {
+       "max_triangle_pairs": 11,
+       "max_depth": 44.091542,
+       "crossing_frames": 1,
+       "slot": 43,
+       "tick": 9
+      },
+      "5/21": {
+       "max_triangle_pairs": 16,
+       "max_depth": 33.055475,
+       "crossing_frames": 15,
+       "slot": 46,
+       "tick": 23
+      },
+      "1/28": {
+       "max_triangle_pairs": 17,
+       "max_depth": 56.539171,
+       "crossing_frames": 27,
+       "slot": 43,
+       "tick": 16
+      },
+      "4/21": {
+       "max_triangle_pairs": 4,
+       "max_depth": 24.48633,
+       "crossing_frames": 1,
+       "slot": 43,
+       "tick": 12
+      },
+      "5/22": {
+       "max_triangle_pairs": 26,
+       "max_depth": 26.732222,
+       "crossing_frames": 1,
+       "slot": 43,
+       "tick": 12
+      },
+      "5/23": {
+       "max_triangle_pairs": 20,
+       "max_depth": 50.3891,
+       "crossing_frames": 13,
+       "slot": 46,
+       "tick": 23
+      },
+      "10/28": {
+       "max_triangle_pairs": 26,
+       "max_depth": 32.360152,
+       "crossing_frames": 89,
+       "slot": 47,
+       "tick": 26
+      },
+      "11/28": {
+       "max_triangle_pairs": 17,
+       "max_depth": 19.348769,
+       "crossing_frames": 10,
+       "slot": 47,
+       "tick": 24
+      },
+      "3/5": {
+       "max_triangle_pairs": 3,
+       "max_depth": 29.298344,
+       "crossing_frames": 5,
+       "slot": 46,
+       "tick": 13
+      },
+      "3/18": {
+       "max_triangle_pairs": 8,
+       "max_depth": 27.273736,
+       "crossing_frames": 34,
+       "slot": 46,
+       "tick": 16
+      },
+      "1/20": {
+       "max_triangle_pairs": 20,
+       "max_depth": 51.463064,
+       "crossing_frames": 27,
+       "slot": 47,
+       "tick": 25
+      },
+      "1/27": {
+       "max_triangle_pairs": 23,
+       "max_depth": 22.081001,
+       "crossing_frames": 35,
+       "slot": 47,
+       "tick": 25
+      },
+      "2/20": {
+       "max_triangle_pairs": 28,
+       "max_depth": 37.022863,
+       "crossing_frames": 27,
+       "slot": 47,
+       "tick": 24
+      },
+      "3/20": {
+       "max_triangle_pairs": 26,
+       "max_depth": 40.860036,
+       "crossing_frames": 27,
+       "slot": 47,
+       "tick": 24
+      },
+      "3/21": {
+       "max_triangle_pairs": 45,
+       "max_depth": 42.451859,
+       "crossing_frames": 27,
+       "slot": 47,
+       "tick": 24
+      },
+      "18/19": {
+       "max_triangle_pairs": 32,
+       "max_depth": 32.399436,
+       "crossing_frames": 18,
+       "slot": 47,
+       "tick": 23
+      },
+      "1/21": {
+       "max_triangle_pairs": 24,
+       "max_depth": 34.29422,
+       "crossing_frames": 18,
+       "slot": 47,
+       "tick": 25
+      },
+      "11/27": {
+       "max_triangle_pairs": 21,
+       "max_depth": 26.31971,
+       "crossing_frames": 18,
+       "slot": 47,
+       "tick": 25
+      },
+      "18/20": {
+       "max_triangle_pairs": 4,
+       "max_depth": 20.430266,
+       "crossing_frames": 9,
+       "slot": 47,
+       "tick": 24
+      },
+      "18/27": {
+       "max_triangle_pairs": 9,
+       "max_depth": 13.966005,
+       "crossing_frames": 9,
+       "slot": 47,
+       "tick": 24
+      },
+      "21/24": {
+       "max_triangle_pairs": 8,
+       "max_depth": 21.006523,
+       "crossing_frames": 9,
+       "slot": 47,
+       "tick": 25
+      },
+      "20/24": {
+       "max_triangle_pairs": 12,
+       "max_depth": 31.290598,
+       "crossing_frames": 9,
+       "slot": 47,
+       "tick": 26
+      },
+      "11/18": {
+       "max_triangle_pairs": 8,
+       "max_depth": 22.907377,
+       "crossing_frames": 9,
+       "slot": 47,
+       "tick": 39
+      },
+      "5/13": {
+       "max_triangle_pairs": 15,
+       "max_depth": 40.961471,
+       "crossing_frames": 4,
+       "slot": 54,
+       "tick": 0
+      },
+      "5/14": {
+       "max_triangle_pairs": 11,
+       "max_depth": 35.547296,
+       "crossing_frames": 4,
+       "slot": 54,
+       "tick": 20
+      },
+      "5/16": {
+       "max_triangle_pairs": 12,
+       "max_depth": 20.000338,
+       "crossing_frames": 4,
+       "slot": 54,
+       "tick": 20
+      },
+      "13/18": {
+       "max_triangle_pairs": 4,
+       "max_depth": 20.420402,
+       "crossing_frames": 2,
+       "slot": 54,
+       "tick": 0
+      },
+      "5/15": {
+       "max_triangle_pairs": 7,
+       "max_depth": 32.751937,
+       "crossing_frames": 2,
+       "slot": 54,
+       "tick": 20
+      },
+      "1/14": {
+       "max_triangle_pairs": 5,
+       "max_depth": 37.239027,
+       "crossing_frames": 1,
+       "slot": 55,
+       "tick": 10
+      },
+      "1/15": {
+       "max_triangle_pairs": 3,
+       "max_depth": 23.116419,
+       "crossing_frames": 1,
+       "slot": 55,
+       "tick": 11
+      },
+      "1/12": {
+       "max_triangle_pairs": 17,
+       "max_depth": 35.472501,
+       "crossing_frames": 3,
+       "slot": 55,
+       "tick": 14
+      },
+      "24/27": {
+       "max_triangle_pairs": 8,
+       "max_depth": 15.043961,
+       "crossing_frames": 1,
+       "slot": 55,
+       "tick": 16
+      }
+     },
+     "resident_bytes": 74402,
+     "cold_bytes": 23720,
+     "storage_fits": true,
+     "sha256": "57e64afc5e67c910611dafe62b54b32cd05ef95ec730e8d27dbc55c24034a863",
+     "ledger": "406-after.csv.gz",
+     "ledger_sha256": "0c6a4859518af543a3895abae84f69472c94e319a69eddf687bda92ce5a8be23",
+     "records": 55550,
+     "detector": {
+      "verdict": "fail",
+      "envelope_verdict": "fail",
+      "part_candidates": 32,
+      "flags": [
+       "bent_risk",
+       "part_interpenetration"
+      ],
+      "cofacing_pairs": 4
+     }
+    }
+   },
+   "preservation": {
+    "slots": 52,
+    "ticks": 1714,
+    "changed_objects": [],
+    "texture_equal": true,
+    "poses_equal_except_documented_clip": true,
+    "loops_events_root_travel_equal": true,
+    "sha256_before": "57e64afc5e67c910611dafe62b54b32cd05ef95ec730e8d27dbc55c24034a863",
+    "sha256_after": "57e64afc5e67c910611dafe62b54b32cd05ef95ec730e8d27dbc55c24034a863"
+   },
+   "renders": {
+    "cases": 48,
+    "changed_pixels": 0,
+    "before_bin_phase_pixels": 309,
+    "after_bin_phase_pixels": 309
+   }
+  },
+  "336": {
+   "name": "Raidenmon",
+   "stages": {
+    "before": {
+     "slots": 51,
+     "ticks": 1684,
+     "crossing_frames": 1684,
+     "crossing_bone_pairs": 67,
+     "max_triangle_pairs_in_frame": 1146,
+     "max_depth": 155.92181291365497,
+     "pairs": {
+      "1/2": {
+       "max_triangle_pairs": 59,
+       "max_depth": 122.115901,
+       "crossing_frames": 1684,
+       "slot": 10,
+       "tick": 4
+      },
+      "1/4": {
+       "max_triangle_pairs": 12,
+       "max_depth": 48.410412,
+       "crossing_frames": 1684,
+       "slot": 0,
+       "tick": 0
+      },
+      "1/9": {
+       "max_triangle_pairs": 102,
+       "max_depth": 137.626924,
+       "crossing_frames": 1684,
+       "slot": 43,
+       "tick": 22
+      },
+      "1/10": {
+       "max_triangle_pairs": 48,
+       "max_depth": 122.033612,
+       "crossing_frames": 1684,
+       "slot": 8,
+       "tick": 10
+      },
+      "1/15": {
+       "max_triangle_pairs": 12,
+       "max_depth": 51.628902,
+       "crossing_frames": 1684,
+       "slot": 2,
+       "tick": 21
+      },
+      "1/19": {
+       "max_triangle_pairs": 11,
+       "max_depth": 52.324364,
+       "crossing_frames": 1684,
+       "slot": 2,
+       "tick": 10
+      },
+      "1/23": {
+       "max_triangle_pairs": 99,
+       "max_depth": 134.344399,
+       "crossing_frames": 1684,
+       "slot": 10,
+       "tick": 17
+      },
+      "2/3": {
+       "max_triangle_pairs": 11,
+       "max_depth": 67.574037,
+       "crossing_frames": 1684,
+       "slot": 40,
+       "tick": 23
+      },
+      "2/19": {
+       "max_triangle_pairs": 37,
+       "max_depth": 53.853053,
+       "crossing_frames": 950,
+       "slot": 43,
+       "tick": 11
+      },
+      "4/5": {
+       "max_triangle_pairs": 16,
+       "max_depth": 23.627092,
+       "crossing_frames": 1684,
+       "slot": 40,
+       "tick": 23
+      },
+      "5/6": {
+       "max_triangle_pairs": 29,
+       "max_depth": 22.684743,
+       "crossing_frames": 1684,
+       "slot": 51,
+       "tick": 24
+      },
+      "6/7": {
+       "max_triangle_pairs": 48,
+       "max_depth": 25.40846,
+       "crossing_frames": 1684,
+       "slot": 51,
+       "tick": 3
+      },
+      "10/11": {
+       "max_triangle_pairs": 35,
+       "max_depth": 49.943659,
+       "crossing_frames": 1684,
+       "slot": 36,
+       "tick": 1
+      },
+      "10/15": {
+       "max_triangle_pairs": 38,
+       "max_depth": 59.784766,
+       "crossing_frames": 953,
+       "slot": 2,
+       "tick": 22
+      },
+      "11/12": {
+       "max_triangle_pairs": 28,
+       "max_depth": 46.939055,
+       "crossing_frames": 1684,
+       "slot": 10,
+       "tick": 37
+      },
+      "11/13": {
+       "max_triangle_pairs": 13,
+       "max_depth": 31.731148,
+       "crossing_frames": 1684,
+       "slot": 40,
+       "tick": 14
+      },
+      "11/14": {
+       "max_triangle_pairs": 13,
+       "max_depth": 31.731148,
+       "crossing_frames": 1684,
+       "slot": 40,
+       "tick": 14
+      },
+      "15/16": {
+       "max_triangle_pairs": 31,
+       "max_depth": 44.91822,
+       "crossing_frames": 1684,
+       "slot": 3,
+       "tick": 16
+      },
+      "16/17": {
+       "max_triangle_pairs": 33,
+       "max_depth": 47.649755,
+       "crossing_frames": 1684,
+       "slot": 4,
+       "tick": 3
+      },
+      "17/18": {
+       "max_triangle_pairs": 99,
+       "max_depth": 88.603771,
+       "crossing_frames": 1684,
+       "slot": 35,
+       "tick": 23
+      },
+      "19/20": {
+       "max_triangle_pairs": 32,
+       "max_depth": 44.821182,
+       "crossing_frames": 1684,
+       "slot": 3,
+       "tick": 1
+      },
+      "20/21": {
+       "max_triangle_pairs": 40,
+       "max_depth": 47.649755,
+       "crossing_frames": 1684,
+       "slot": 4,
+       "tick": 10
+      },
+      "21/22": {
+       "max_triangle_pairs": 99,
+       "max_depth": 93.3384,
+       "crossing_frames": 1681,
+       "slot": 43,
+       "tick": 38
+      },
+      "11/17": {
+       "max_triangle_pairs": 96,
+       "max_depth": 84.997609,
+       "crossing_frames": 515,
+       "slot": 61,
+       "tick": 10
+      },
+      "11/18": {
+       "max_triangle_pairs": 61,
+       "max_depth": 84.106688,
+       "crossing_frames": 478,
+       "slot": 61,
+       "tick": 6
+      },
+      "2/23": {
+       "max_triangle_pairs": 24,
+       "max_depth": 64.572438,
+       "crossing_frames": 304,
+       "slot": 9,
+       "tick": 33
+      },
+      "9/10": {
+       "max_triangle_pairs": 35,
+       "max_depth": 63.368129,
+       "crossing_frames": 266,
+       "slot": 43,
+       "tick": 42
+      },
+      "9/15": {
+       "max_triangle_pairs": 61,
+       "max_depth": 60.208181,
+       "crossing_frames": 284,
+       "slot": 43,
+       "tick": 24
+      },
+      "9/16": {
+       "max_triangle_pairs": 41,
+       "max_depth": 43.314759,
+       "crossing_frames": 237,
+       "slot": 43,
+       "tick": 27
+      },
+      "12/14": {
+       "max_triangle_pairs": 10,
+       "max_depth": 41.209041,
+       "crossing_frames": 247,
+       "slot": 5,
+       "tick": 15
+      },
+      "19/23": {
+       "max_triangle_pairs": 65,
+       "max_depth": 60.187737,
+       "crossing_frames": 330,
+       "slot": 9,
+       "tick": 21
+      },
+      "20/23": {
+       "max_triangle_pairs": 41,
+       "max_depth": 39.50554,
+       "crossing_frames": 274,
+       "slot": 43,
+       "tick": 25
+      },
+      "3/21": {
+       "max_triangle_pairs": 125,
+       "max_depth": 155.921813,
+       "crossing_frames": 148,
+       "slot": 21,
+       "tick": 4
+      },
+      "3/22": {
+       "max_triangle_pairs": 48,
+       "max_depth": 126.468946,
+       "crossing_frames": 113,
+       "slot": 21,
+       "tick": 11
+      },
+      "11/16": {
+       "max_triangle_pairs": 78,
+       "max_depth": 48.636035,
+       "crossing_frames": 130,
+       "slot": 43,
+       "tick": 42
+      },
+      "14/18": {
+       "max_triangle_pairs": 37,
+       "max_depth": 71.920826,
+       "crossing_frames": 63,
+       "slot": 61,
+       "tick": 13
+      },
+      "10/16": {
+       "max_triangle_pairs": 19,
+       "max_depth": 43.415645,
+       "crossing_frames": 50,
+       "slot": 4,
+       "tick": 5
+      },
+      "11/15": {
+       "max_triangle_pairs": 74,
+       "max_depth": 55.692617,
+       "crossing_frames": 133,
+       "slot": 27,
+       "tick": 10
+      },
+      "2/20": {
+       "max_triangle_pairs": 18,
+       "max_depth": 50.705205,
+       "crossing_frames": 58,
+       "slot": 4,
+       "tick": 12
+      },
+      "12/18": {
+       "max_triangle_pairs": 11,
+       "max_depth": 63.305158,
+       "crossing_frames": 6,
+       "slot": 61,
+       "tick": 10
+      },
+      "13/18": {
+       "max_triangle_pairs": 22,
+       "max_depth": 62.335895,
+       "crossing_frames": 6,
+       "slot": 36,
+       "tick": 5
+      },
+      "12/13": {
+       "max_triangle_pairs": 10,
+       "max_depth": 37.925542,
+       "crossing_frames": 26,
+       "slot": 36,
+       "tick": 0
+      },
+      "8/9": {
+       "max_triangle_pairs": 47,
+       "max_depth": 49.118532,
+       "crossing_frames": 229,
+       "slot": 21,
+       "tick": 8
+      },
+      "8/23": {
+       "max_triangle_pairs": 56,
+       "max_depth": 41.293983,
+       "crossing_frames": 140,
+       "slot": 13,
+       "tick": 23
+      },
+      "1/8": {
+       "max_triangle_pairs": 34,
+       "max_depth": 103.050263,
+       "crossing_frames": 214,
+       "slot": 12,
+       "tick": 18
+      },
+      "4/9": {
+       "max_triangle_pairs": 17,
+       "max_depth": 38.101086,
+       "crossing_frames": 21,
+       "slot": 21,
+       "tick": 10
+      },
+      "9/23": {
+       "max_triangle_pairs": 128,
+       "max_depth": 66.538015,
+       "crossing_frames": 38,
+       "slot": 9,
+       "tick": 41
+      },
+      "9/21": {
+       "max_triangle_pairs": 46,
+       "max_depth": 43.13631,
+       "crossing_frames": 15,
+       "slot": 9,
+       "tick": 36
+      },
+      "3/20": {
+       "max_triangle_pairs": 50,
+       "max_depth": 143.770605,
+       "crossing_frames": 63,
+       "slot": 21,
+       "tick": 1
+      },
+      "17/23": {
+       "max_triangle_pairs": 45,
+       "max_depth": 38.444997,
+       "crossing_frames": 14,
+       "slot": 9,
+       "tick": 32
+      },
+      "3/19": {
+       "max_triangle_pairs": 36,
+       "max_depth": 142.747714,
+       "crossing_frames": 44,
+       "slot": 21,
+       "tick": 1
+      },
+      "1/3": {
+       "max_triangle_pairs": 97,
+       "max_depth": 118.374975,
+       "crossing_frames": 52,
+       "slot": 21,
+       "tick": 23
+      },
+      "9/11": {
+       "max_triangle_pairs": 92,
+       "max_depth": 60.917471,
+       "crossing_frames": 47,
+       "slot": 21,
+       "tick": 3
+      },
+      "9/22": {
+       "max_triangle_pairs": 2,
+       "max_depth": 10.409369,
+       "crossing_frames": 1,
+       "slot": 9,
+       "tick": 41
+      },
+      "18/23": {
+       "max_triangle_pairs": 2,
+       "max_depth": 17.244918,
+       "crossing_frames": 1,
+       "slot": 9,
+       "tick": 41
+      },
+      "1/11": {
+       "max_triangle_pairs": 60,
+       "max_depth": 58.929363,
+       "crossing_frames": 35,
+       "slot": 21,
+       "tick": 7
+      },
+      "3/4": {
+       "max_triangle_pairs": 9,
+       "max_depth": 36.669684,
+       "crossing_frames": 5,
+       "slot": 43,
+       "tick": 42
+      },
+      "3/23": {
+       "max_triangle_pairs": 59,
+       "max_depth": 75.058802,
+       "crossing_frames": 18,
+       "slot": 43,
+       "tick": 37
+      },
+      "3/17": {
+       "max_triangle_pairs": 23,
+       "max_depth": 74.365283,
+       "crossing_frames": 8,
+       "slot": 21,
+       "tick": 8
+      },
+      "2/21": {
+       "max_triangle_pairs": 24,
+       "max_depth": 43.552948,
+       "crossing_frames": 16,
+       "slot": 21,
+       "tick": 11
+      },
+      "3/18": {
+       "max_triangle_pairs": 19,
+       "max_depth": 65.610814,
+       "crossing_frames": 6,
+       "slot": 21,
+       "tick": 10
+      },
+      "2/22": {
+       "max_triangle_pairs": 9,
+       "max_depth": 17.141538,
+       "crossing_frames": 4,
+       "slot": 21,
+       "tick": 16
+      },
+      "17/22": {
+       "max_triangle_pairs": 7,
+       "max_depth": 40.970033,
+       "crossing_frames": 6,
+       "slot": 21,
+       "tick": 22
+      },
+      "1/14": {
+       "max_triangle_pairs": 13,
+       "max_depth": 39.976442,
+       "crossing_frames": 6,
+       "slot": 35,
+       "tick": 1
+      },
+      "14/17": {
+       "max_triangle_pairs": 17,
+       "max_depth": 87.328504,
+       "crossing_frames": 11,
+       "slot": 61,
+       "tick": 10
+      },
+      "1/22": {
+       "max_triangle_pairs": 8,
+       "max_depth": 75.537756,
+       "crossing_frames": 1,
+       "slot": 36,
+       "tick": 4
+      },
+      "13/17": {
+       "max_triangle_pairs": 2,
+       "max_depth": 10.533146,
+       "crossing_frames": 1,
+       "slot": 36,
+       "tick": 5
+      }
+     },
+     "resident_bytes": 72622,
+     "cold_bytes": 15916,
+     "storage_fits": true,
+     "sha256": "42957e03536068f686feb89992cc5afeaa02647d2a46485267474f81d30768ee",
+     "ledger": "336-before.csv.gz",
+     "ledger_sha256": "d7329b6059fae9fde7c1729dc2f997096bfd8d6dc0d0e5312bd44b699ac8bed8",
+     "records": 41928,
+     "detector": {
+      "verdict": "review",
+      "envelope_verdict": "pass",
+      "part_candidates": 47,
+      "flags": [
+       "part_interpenetration"
+      ],
+      "cofacing_pairs": 0
+     }
+    },
+    "after": {
+     "slots": 51,
+     "ticks": 1684,
+     "crossing_frames": 1684,
+     "crossing_bone_pairs": 67,
+     "max_triangle_pairs_in_frame": 1146,
+     "max_depth": 155.92181291365497,
+     "pairs": {
+      "1/2": {
+       "max_triangle_pairs": 59,
+       "max_depth": 122.115901,
+       "crossing_frames": 1684,
+       "slot": 10,
+       "tick": 4
+      },
+      "1/4": {
+       "max_triangle_pairs": 12,
+       "max_depth": 48.410412,
+       "crossing_frames": 1684,
+       "slot": 0,
+       "tick": 0
+      },
+      "1/9": {
+       "max_triangle_pairs": 102,
+       "max_depth": 137.626924,
+       "crossing_frames": 1684,
+       "slot": 43,
+       "tick": 22
+      },
+      "1/10": {
+       "max_triangle_pairs": 48,
+       "max_depth": 122.033612,
+       "crossing_frames": 1684,
+       "slot": 8,
+       "tick": 10
+      },
+      "1/15": {
+       "max_triangle_pairs": 12,
+       "max_depth": 51.628902,
+       "crossing_frames": 1684,
+       "slot": 2,
+       "tick": 21
+      },
+      "1/19": {
+       "max_triangle_pairs": 11,
+       "max_depth": 52.324364,
+       "crossing_frames": 1684,
+       "slot": 2,
+       "tick": 10
+      },
+      "1/23": {
+       "max_triangle_pairs": 99,
+       "max_depth": 134.344399,
+       "crossing_frames": 1684,
+       "slot": 10,
+       "tick": 17
+      },
+      "2/3": {
+       "max_triangle_pairs": 11,
+       "max_depth": 67.574037,
+       "crossing_frames": 1684,
+       "slot": 40,
+       "tick": 23
+      },
+      "2/19": {
+       "max_triangle_pairs": 37,
+       "max_depth": 53.853053,
+       "crossing_frames": 950,
+       "slot": 43,
+       "tick": 11
+      },
+      "4/5": {
+       "max_triangle_pairs": 16,
+       "max_depth": 23.627092,
+       "crossing_frames": 1684,
+       "slot": 40,
+       "tick": 23
+      },
+      "5/6": {
+       "max_triangle_pairs": 29,
+       "max_depth": 22.684743,
+       "crossing_frames": 1684,
+       "slot": 51,
+       "tick": 24
+      },
+      "6/7": {
+       "max_triangle_pairs": 48,
+       "max_depth": 25.40846,
+       "crossing_frames": 1684,
+       "slot": 51,
+       "tick": 3
+      },
+      "10/11": {
+       "max_triangle_pairs": 35,
+       "max_depth": 49.943659,
+       "crossing_frames": 1684,
+       "slot": 36,
+       "tick": 1
+      },
+      "10/15": {
+       "max_triangle_pairs": 38,
+       "max_depth": 59.784766,
+       "crossing_frames": 953,
+       "slot": 2,
+       "tick": 22
+      },
+      "11/12": {
+       "max_triangle_pairs": 28,
+       "max_depth": 46.939055,
+       "crossing_frames": 1684,
+       "slot": 10,
+       "tick": 37
+      },
+      "11/13": {
+       "max_triangle_pairs": 13,
+       "max_depth": 31.731148,
+       "crossing_frames": 1684,
+       "slot": 40,
+       "tick": 14
+      },
+      "11/14": {
+       "max_triangle_pairs": 13,
+       "max_depth": 31.731148,
+       "crossing_frames": 1684,
+       "slot": 40,
+       "tick": 14
+      },
+      "15/16": {
+       "max_triangle_pairs": 31,
+       "max_depth": 44.91822,
+       "crossing_frames": 1684,
+       "slot": 3,
+       "tick": 16
+      },
+      "16/17": {
+       "max_triangle_pairs": 33,
+       "max_depth": 47.649755,
+       "crossing_frames": 1684,
+       "slot": 4,
+       "tick": 3
+      },
+      "17/18": {
+       "max_triangle_pairs": 99,
+       "max_depth": 88.603771,
+       "crossing_frames": 1684,
+       "slot": 35,
+       "tick": 23
+      },
+      "19/20": {
+       "max_triangle_pairs": 32,
+       "max_depth": 44.821182,
+       "crossing_frames": 1684,
+       "slot": 3,
+       "tick": 1
+      },
+      "20/21": {
+       "max_triangle_pairs": 40,
+       "max_depth": 47.649755,
+       "crossing_frames": 1684,
+       "slot": 4,
+       "tick": 10
+      },
+      "21/22": {
+       "max_triangle_pairs": 99,
+       "max_depth": 93.3384,
+       "crossing_frames": 1681,
+       "slot": 43,
+       "tick": 38
+      },
+      "11/17": {
+       "max_triangle_pairs": 96,
+       "max_depth": 84.997609,
+       "crossing_frames": 515,
+       "slot": 61,
+       "tick": 10
+      },
+      "11/18": {
+       "max_triangle_pairs": 61,
+       "max_depth": 84.106688,
+       "crossing_frames": 478,
+       "slot": 61,
+       "tick": 6
+      },
+      "2/23": {
+       "max_triangle_pairs": 24,
+       "max_depth": 64.572438,
+       "crossing_frames": 304,
+       "slot": 9,
+       "tick": 33
+      },
+      "9/10": {
+       "max_triangle_pairs": 35,
+       "max_depth": 63.368129,
+       "crossing_frames": 266,
+       "slot": 43,
+       "tick": 42
+      },
+      "9/15": {
+       "max_triangle_pairs": 61,
+       "max_depth": 60.208181,
+       "crossing_frames": 284,
+       "slot": 43,
+       "tick": 24
+      },
+      "9/16": {
+       "max_triangle_pairs": 41,
+       "max_depth": 43.314759,
+       "crossing_frames": 237,
+       "slot": 43,
+       "tick": 27
+      },
+      "12/14": {
+       "max_triangle_pairs": 10,
+       "max_depth": 41.209041,
+       "crossing_frames": 247,
+       "slot": 5,
+       "tick": 15
+      },
+      "19/23": {
+       "max_triangle_pairs": 65,
+       "max_depth": 60.187737,
+       "crossing_frames": 330,
+       "slot": 9,
+       "tick": 21
+      },
+      "20/23": {
+       "max_triangle_pairs": 41,
+       "max_depth": 39.50554,
+       "crossing_frames": 274,
+       "slot": 43,
+       "tick": 25
+      },
+      "3/21": {
+       "max_triangle_pairs": 125,
+       "max_depth": 155.921813,
+       "crossing_frames": 147,
+       "slot": 21,
+       "tick": 4
+      },
+      "3/22": {
+       "max_triangle_pairs": 48,
+       "max_depth": 126.468946,
+       "crossing_frames": 101,
+       "slot": 21,
+       "tick": 11
+      },
+      "11/16": {
+       "max_triangle_pairs": 78,
+       "max_depth": 48.636035,
+       "crossing_frames": 130,
+       "slot": 43,
+       "tick": 42
+      },
+      "14/18": {
+       "max_triangle_pairs": 37,
+       "max_depth": 71.920826,
+       "crossing_frames": 63,
+       "slot": 61,
+       "tick": 13
+      },
+      "10/16": {
+       "max_triangle_pairs": 19,
+       "max_depth": 43.415645,
+       "crossing_frames": 50,
+       "slot": 4,
+       "tick": 5
+      },
+      "11/15": {
+       "max_triangle_pairs": 74,
+       "max_depth": 55.692617,
+       "crossing_frames": 133,
+       "slot": 27,
+       "tick": 10
+      },
+      "2/20": {
+       "max_triangle_pairs": 18,
+       "max_depth": 50.705205,
+       "crossing_frames": 58,
+       "slot": 4,
+       "tick": 12
+      },
+      "12/18": {
+       "max_triangle_pairs": 11,
+       "max_depth": 63.305158,
+       "crossing_frames": 6,
+       "slot": 61,
+       "tick": 10
+      },
+      "13/18": {
+       "max_triangle_pairs": 22,
+       "max_depth": 62.335895,
+       "crossing_frames": 6,
+       "slot": 36,
+       "tick": 5
+      },
+      "12/13": {
+       "max_triangle_pairs": 10,
+       "max_depth": 37.925542,
+       "crossing_frames": 26,
+       "slot": 36,
+       "tick": 0
+      },
+      "8/9": {
+       "max_triangle_pairs": 47,
+       "max_depth": 49.118532,
+       "crossing_frames": 229,
+       "slot": 21,
+       "tick": 8
+      },
+      "8/23": {
+       "max_triangle_pairs": 56,
+       "max_depth": 41.293983,
+       "crossing_frames": 140,
+       "slot": 13,
+       "tick": 23
+      },
+      "1/8": {
+       "max_triangle_pairs": 34,
+       "max_depth": 103.050263,
+       "crossing_frames": 214,
+       "slot": 12,
+       "tick": 18
+      },
+      "4/9": {
+       "max_triangle_pairs": 17,
+       "max_depth": 38.101086,
+       "crossing_frames": 21,
+       "slot": 21,
+       "tick": 10
+      },
+      "9/23": {
+       "max_triangle_pairs": 128,
+       "max_depth": 66.538015,
+       "crossing_frames": 38,
+       "slot": 9,
+       "tick": 41
+      },
+      "9/21": {
+       "max_triangle_pairs": 46,
+       "max_depth": 43.13631,
+       "crossing_frames": 15,
+       "slot": 9,
+       "tick": 36
+      },
+      "3/20": {
+       "max_triangle_pairs": 50,
+       "max_depth": 143.770605,
+       "crossing_frames": 61,
+       "slot": 21,
+       "tick": 1
+      },
+      "17/23": {
+       "max_triangle_pairs": 45,
+       "max_depth": 38.444997,
+       "crossing_frames": 14,
+       "slot": 9,
+       "tick": 32
+      },
+      "3/19": {
+       "max_triangle_pairs": 36,
+       "max_depth": 142.747714,
+       "crossing_frames": 45,
+       "slot": 21,
+       "tick": 1
+      },
+      "1/3": {
+       "max_triangle_pairs": 97,
+       "max_depth": 118.374975,
+       "crossing_frames": 53,
+       "slot": 21,
+       "tick": 23
+      },
+      "9/11": {
+       "max_triangle_pairs": 92,
+       "max_depth": 60.917471,
+       "crossing_frames": 47,
+       "slot": 21,
+       "tick": 3
+      },
+      "9/22": {
+       "max_triangle_pairs": 2,
+       "max_depth": 10.409369,
+       "crossing_frames": 1,
+       "slot": 9,
+       "tick": 41
+      },
+      "18/23": {
+       "max_triangle_pairs": 2,
+       "max_depth": 17.244918,
+       "crossing_frames": 1,
+       "slot": 9,
+       "tick": 41
+      },
+      "1/11": {
+       "max_triangle_pairs": 60,
+       "max_depth": 58.929363,
+       "crossing_frames": 35,
+       "slot": 21,
+       "tick": 7
+      },
+      "3/4": {
+       "max_triangle_pairs": 10,
+       "max_depth": 39.693372,
+       "crossing_frames": 6,
+       "slot": 43,
+       "tick": 41
+      },
+      "3/23": {
+       "max_triangle_pairs": 13,
+       "max_depth": 62.527368,
+       "crossing_frames": 10,
+       "slot": 21,
+       "tick": 7
+      },
+      "3/17": {
+       "max_triangle_pairs": 23,
+       "max_depth": 74.365283,
+       "crossing_frames": 8,
+       "slot": 21,
+       "tick": 8
+      },
+      "2/21": {
+       "max_triangle_pairs": 24,
+       "max_depth": 43.552948,
+       "crossing_frames": 16,
+       "slot": 21,
+       "tick": 11
+      },
+      "3/18": {
+       "max_triangle_pairs": 19,
+       "max_depth": 65.610814,
+       "crossing_frames": 6,
+       "slot": 21,
+       "tick": 10
+      },
+      "2/22": {
+       "max_triangle_pairs": 9,
+       "max_depth": 17.141538,
+       "crossing_frames": 4,
+       "slot": 21,
+       "tick": 16
+      },
+      "17/22": {
+       "max_triangle_pairs": 7,
+       "max_depth": 40.970033,
+       "crossing_frames": 6,
+       "slot": 21,
+       "tick": 22
+      },
+      "1/14": {
+       "max_triangle_pairs": 13,
+       "max_depth": 39.976442,
+       "crossing_frames": 6,
+       "slot": 35,
+       "tick": 1
+      },
+      "14/17": {
+       "max_triangle_pairs": 17,
+       "max_depth": 87.328504,
+       "crossing_frames": 11,
+       "slot": 61,
+       "tick": 10
+      },
+      "1/22": {
+       "max_triangle_pairs": 8,
+       "max_depth": 75.537756,
+       "crossing_frames": 1,
+       "slot": 36,
+       "tick": 4
+      },
+      "13/17": {
+       "max_triangle_pairs": 2,
+       "max_depth": 10.533146,
+       "crossing_frames": 1,
+       "slot": 36,
+       "tick": 5
+      }
+     },
+     "resident_bytes": 72622,
+     "cold_bytes": 15916,
+     "storage_fits": true,
+     "sha256": "093341a9df9bc32d48512623e06c3c9143883479a2c8266edf4eb8ad04fb8a77",
+     "ledger": "336-after.csv.gz",
+     "ledger_sha256": "58d3baba9efb20c943be5618e4091b295bc28904b0743ef75b4d6fe22f050d2f",
+     "records": 41908,
+     "detector": {
+      "verdict": "review",
+      "envelope_verdict": "pass",
+      "part_candidates": 47,
+      "flags": [
+       "part_interpenetration"
+      ],
+      "cofacing_pairs": 0
+     }
+    }
+   },
+   "preservation": {
+    "slots": 51,
+    "ticks": 1684,
+    "changed_objects": [],
+    "texture_equal": true,
+    "poses_equal_except_documented_clip": true,
+    "loops_events_root_travel_equal": true,
+    "sha256_before": "42957e03536068f686feb89992cc5afeaa02647d2a46485267474f81d30768ee",
+    "sha256_after": "093341a9df9bc32d48512623e06c3c9143883479a2c8266edf4eb8ad04fb8a77"
+   },
+   "renders": {
+    "cases": 56,
+    "changed_pixels": 24063,
+    "before_bin_phase_pixels": 1439,
+    "after_bin_phase_pixels": 1198
+   }
+  },
+  "335": {
+   "name": "MegaGargomon",
+   "stages": {
+    "before": {
+     "slots": 52,
+     "ticks": 2009,
+     "crossing_frames": 2009,
+     "crossing_bone_pairs": 78,
+     "max_triangle_pairs_in_frame": 725,
+     "max_depth": 75.23245924415433,
+     "pairs": {
+      "1/2": {
+       "max_triangle_pairs": 18,
+       "max_depth": 41.247505,
+       "crossing_frames": 2009,
+       "slot": 48,
+       "tick": 30
+      },
+      "1/13": {
+       "max_triangle_pairs": 23,
+       "max_depth": 36.097291,
+       "crossing_frames": 2009,
+       "slot": 11,
+       "tick": 9
+      },
+      "1/17": {
+       "max_triangle_pairs": 107,
+       "max_depth": 38.938114,
+       "crossing_frames": 2001,
+       "slot": 46,
+       "tick": 15
+      },
+      "1/18": {
+       "max_triangle_pairs": 18,
+       "max_depth": 21.589912,
+       "crossing_frames": 1052,
+       "slot": 23,
+       "tick": 22
+      },
+      "1/23": {
+       "max_triangle_pairs": 22,
+       "max_depth": 34.795972,
+       "crossing_frames": 2009,
+       "slot": 11,
+       "tick": 30
+      },
+      "2/3": {
+       "max_triangle_pairs": 24,
+       "max_depth": 63.204793,
+       "crossing_frames": 2009,
+       "slot": 8,
+       "tick": 26
+      },
+      "2/4": {
+       "max_triangle_pairs": 47,
+       "max_depth": 70.618528,
+       "crossing_frames": 1968,
+       "slot": 12,
+       "tick": 15
+      },
+      "2/7": {
+       "max_triangle_pairs": 20,
+       "max_depth": 52.255825,
+       "crossing_frames": 1896,
+       "slot": 43,
+       "tick": 10
+      },
+      "2/8": {
+       "max_triangle_pairs": 28,
+       "max_depth": 70.402077,
+       "crossing_frames": 2009,
+       "slot": 3,
+       "tick": 40
+      },
+      "2/9": {
+       "max_triangle_pairs": 51,
+       "max_depth": 75.232459,
+       "crossing_frames": 1992,
+       "slot": 2,
+       "tick": 22
+      },
+      "2/12": {
+       "max_triangle_pairs": 20,
+       "max_depth": 44.99023,
+       "crossing_frames": 1883,
+       "slot": 36,
+       "tick": 8
+      },
+      "3/4": {
+       "max_triangle_pairs": 23,
+       "max_depth": 43.083518,
+       "crossing_frames": 2009,
+       "slot": 9,
+       "tick": 21
+      },
+      "3/7": {
+       "max_triangle_pairs": 22,
+       "max_depth": 59.24176,
+       "crossing_frames": 1180,
+       "slot": 4,
+       "tick": 39
+      },
+      "4/5": {
+       "max_triangle_pairs": 47,
+       "max_depth": 51.757311,
+       "crossing_frames": 2009,
+       "slot": 27,
+       "tick": 15
+      },
+      "4/6": {
+       "max_triangle_pairs": 9,
+       "max_depth": 26.632405,
+       "crossing_frames": 153,
+       "slot": 4,
+       "tick": 6
+      },
+      "4/7": {
+       "max_triangle_pairs": 22,
+       "max_depth": 58.691987,
+       "crossing_frames": 1593,
+       "slot": 46,
+       "tick": 53
+      },
+      "5/6": {
+       "max_triangle_pairs": 20,
+       "max_depth": 29.618533,
+       "crossing_frames": 2009,
+       "slot": 51,
+       "tick": 3
+      },
+      "8/9": {
+       "max_triangle_pairs": 25,
+       "max_depth": 42.213388,
+       "crossing_frames": 2009,
+       "slot": 2,
+       "tick": 25
+      },
+      "8/12": {
+       "max_triangle_pairs": 20,
+       "max_depth": 53.560978,
+       "crossing_frames": 847,
+       "slot": 2,
+       "tick": 37
+      },
+      "9/10": {
+       "max_triangle_pairs": 43,
+       "max_depth": 47.565948,
+       "crossing_frames": 2009,
+       "slot": 43,
+       "tick": 6
+      },
+      "9/12": {
+       "max_triangle_pairs": 16,
+       "max_depth": 56.333985,
+       "crossing_frames": 726,
+       "slot": 2,
+       "tick": 7
+      },
+      "10/11": {
+       "max_triangle_pairs": 21,
+       "max_depth": 26.179108,
+       "crossing_frames": 2009,
+       "slot": 0,
+       "tick": 0
+      },
+      "14/15": {
+       "max_triangle_pairs": 34,
+       "max_depth": 27.457002,
+       "crossing_frames": 2009,
+       "slot": 21,
+       "tick": 24
+      },
+      "15/16": {
+       "max_triangle_pairs": 59,
+       "max_depth": 35.465805,
+       "crossing_frames": 2009,
+       "slot": 13,
+       "tick": 38
+      },
+      "17/18": {
+       "max_triangle_pairs": 38,
+       "max_depth": 35.755986,
+       "crossing_frames": 2009,
+       "slot": 46,
+       "tick": 15
+      },
+      "17/19": {
+       "max_triangle_pairs": 23,
+       "max_depth": 33.770397,
+       "crossing_frames": 2009,
+       "slot": 11,
+       "tick": 28
+      },
+      "17/22": {
+       "max_triangle_pairs": 37,
+       "max_depth": 33.480156,
+       "crossing_frames": 2009,
+       "slot": 11,
+       "tick": 24
+      },
+      "24/25": {
+       "max_triangle_pairs": 26,
+       "max_depth": 23.178922,
+       "crossing_frames": 2009,
+       "slot": 46,
+       "tick": 59
+      },
+      "25/26": {
+       "max_triangle_pairs": 25,
+       "max_depth": 26.050447,
+       "crossing_frames": 2009,
+       "slot": 48,
+       "tick": 24
+      },
+      "9/11": {
+       "max_triangle_pairs": 9,
+       "max_depth": 26.293723,
+       "crossing_frames": 95,
+       "slot": 3,
+       "tick": 29
+      },
+      "11/16": {
+       "max_triangle_pairs": 17,
+       "max_depth": 26.568588,
+       "crossing_frames": 24,
+       "slot": 36,
+       "tick": 2
+      },
+      "3/25": {
+       "max_triangle_pairs": 4,
+       "max_depth": 21.730554,
+       "crossing_frames": 2,
+       "slot": 2,
+       "tick": 35
+      },
+      "4/25": {
+       "max_triangle_pairs": 46,
+       "max_depth": 45.541199,
+       "crossing_frames": 37,
+       "slot": 9,
+       "tick": 23
+      },
+      "2/10": {
+       "max_triangle_pairs": 7,
+       "max_depth": 57.807158,
+       "crossing_frames": 6,
+       "slot": 36,
+       "tick": 2
+      },
+      "2/11": {
+       "max_triangle_pairs": 2,
+       "max_depth": 12.984513,
+       "crossing_frames": 2,
+       "slot": 4,
+       "tick": 23
+      },
+      "9/15": {
+       "max_triangle_pairs": 31,
+       "max_depth": 41.343754,
+       "crossing_frames": 50,
+       "slot": 10,
+       "tick": 23
+      },
+      "2/5": {
+       "max_triangle_pairs": 13,
+       "max_depth": 66.108866,
+       "crossing_frames": 9,
+       "slot": 9,
+       "tick": 15
+      },
+      "4/26": {
+       "max_triangle_pairs": 50,
+       "max_depth": 42.793573,
+       "crossing_frames": 56,
+       "slot": 10,
+       "tick": 23
+      },
+      "4/9": {
+       "max_triangle_pairs": 31,
+       "max_depth": 40.999355,
+       "crossing_frames": 371,
+       "slot": 43,
+       "tick": 9
+      },
+      "17/23": {
+       "max_triangle_pairs": 42,
+       "max_depth": 39.935689,
+       "crossing_frames": 82,
+       "slot": 21,
+       "tick": 4
+      },
+      "5/26": {
+       "max_triangle_pairs": 20,
+       "max_depth": 32.947042,
+       "crossing_frames": 10,
+       "slot": 9,
+       "tick": 14
+      },
+      "5/7": {
+       "max_triangle_pairs": 20,
+       "max_depth": 48.367326,
+       "crossing_frames": 14,
+       "slot": 9,
+       "tick": 12
+      },
+      "10/12": {
+       "max_triangle_pairs": 16,
+       "max_depth": 55.181007,
+       "crossing_frames": 11,
+       "slot": 9,
+       "tick": 16
+      },
+      "3/5": {
+       "max_triangle_pairs": 7,
+       "max_depth": 53.945205,
+       "crossing_frames": 6,
+       "slot": 9,
+       "tick": 15
+      },
+      "5/25": {
+       "max_triangle_pairs": 15,
+       "max_depth": 28.52121,
+       "crossing_frames": 6,
+       "slot": 9,
+       "tick": 14
+      },
+      "8/10": {
+       "max_triangle_pairs": 8,
+       "max_depth": 22.932112,
+       "crossing_frames": 3,
+       "slot": 9,
+       "tick": 15
+      },
+      "9/16": {
+       "max_triangle_pairs": 43,
+       "max_depth": 46.261976,
+       "crossing_frames": 28,
+       "slot": 10,
+       "tick": 25
+      },
+      "8/15": {
+       "max_triangle_pairs": 10,
+       "max_depth": 31.999241,
+       "crossing_frames": 14,
+       "slot": 10,
+       "tick": 33
+      },
+      "2/15": {
+       "max_triangle_pairs": 10,
+       "max_depth": 66.348015,
+       "crossing_frames": 15,
+       "slot": 23,
+       "tick": 18
+      },
+      "3/26": {
+       "max_triangle_pairs": 23,
+       "max_depth": 22.511809,
+       "crossing_frames": 15,
+       "slot": 10,
+       "tick": 34
+      },
+      "7/25": {
+       "max_triangle_pairs": 14,
+       "max_depth": 45.006267,
+       "crossing_frames": 28,
+       "slot": 48,
+       "tick": 51
+      },
+      "7/26": {
+       "max_triangle_pairs": 16,
+       "max_depth": 35.286171,
+       "crossing_frames": 19,
+       "slot": 23,
+       "tick": 21
+      },
+      "2/25": {
+       "max_triangle_pairs": 13,
+       "max_depth": 53.785102,
+       "crossing_frames": 16,
+       "slot": 23,
+       "tick": 20
+      },
+      "23/25": {
+       "max_triangle_pairs": 87,
+       "max_depth": 47.199561,
+       "crossing_frames": 544,
+       "slot": 21,
+       "tick": 11
+      },
+      "23/26": {
+       "max_triangle_pairs": 32,
+       "max_depth": 35.556817,
+       "crossing_frames": 77,
+       "slot": 21,
+       "tick": 17
+      },
+      "1/25": {
+       "max_triangle_pairs": 22,
+       "max_depth": 29.258266,
+       "crossing_frames": 56,
+       "slot": 43,
+       "tick": 29
+      },
+      "19/26": {
+       "max_triangle_pairs": 54,
+       "max_depth": 35.175734,
+       "crossing_frames": 35,
+       "slot": 21,
+       "tick": 18
+      },
+      "17/26": {
+       "max_triangle_pairs": 55,
+       "max_depth": 34.071596,
+       "crossing_frames": 28,
+       "slot": 21,
+       "tick": 3
+      },
+      "13/17": {
+       "max_triangle_pairs": 45,
+       "max_depth": 28.764745,
+       "crossing_frames": 130,
+       "slot": 46,
+       "tick": 9
+      },
+      "15/22": {
+       "max_triangle_pairs": 14,
+       "max_depth": 22.777046,
+       "crossing_frames": 36,
+       "slot": 11,
+       "tick": 14
+      },
+      "19/25": {
+       "max_triangle_pairs": 10,
+       "max_depth": 15.077435,
+       "crossing_frames": 14,
+       "slot": 11,
+       "tick": 15
+      },
+      "23/24": {
+       "max_triangle_pairs": 5,
+       "max_depth": 42.291214,
+       "crossing_frames": 124,
+       "slot": 11,
+       "tick": 30
+      },
+      "14/22": {
+       "max_triangle_pairs": 3,
+       "max_depth": 13.850448,
+       "crossing_frames": 2,
+       "slot": 11,
+       "tick": 14
+      },
+      "13/15": {
+       "max_triangle_pairs": 52,
+       "max_depth": 34.98043,
+       "crossing_frames": 74,
+       "slot": 12,
+       "tick": 19
+      },
+      "1/15": {
+       "max_triangle_pairs": 14,
+       "max_depth": 24.340064,
+       "crossing_frames": 2,
+       "slot": 12,
+       "tick": 20
+      },
+      "1/12": {
+       "max_triangle_pairs": 16,
+       "max_depth": 36.855044,
+       "crossing_frames": 19,
+       "slot": 43,
+       "tick": 28
+      },
+      "17/25": {
+       "max_triangle_pairs": 49,
+       "max_depth": 34.195672,
+       "crossing_frames": 21,
+       "slot": 21,
+       "tick": 1
+      },
+      "2/26": {
+       "max_triangle_pairs": 20,
+       "max_depth": 53.745683,
+       "crossing_frames": 13,
+       "slot": 23,
+       "tick": 29
+      },
+      "19/23": {
+       "max_triangle_pairs": 29,
+       "max_depth": 21.895228,
+       "crossing_frames": 12,
+       "slot": 23,
+       "tick": 10
+      },
+      "13/22": {
+       "max_triangle_pairs": 32,
+       "max_depth": 35.716686,
+       "crossing_frames": 9,
+       "slot": 23,
+       "tick": 21
+      },
+      "12/15": {
+       "max_triangle_pairs": 8,
+       "max_depth": 12.062348,
+       "crossing_frames": 4,
+       "slot": 37,
+       "tick": 0
+      },
+      "5/10": {
+       "max_triangle_pairs": 20,
+       "max_depth": 55.572064,
+       "crossing_frames": 16,
+       "slot": 43,
+       "tick": 9
+      },
+      "6/10": {
+       "max_triangle_pairs": 5,
+       "max_depth": 15.880877,
+       "crossing_frames": 1,
+       "slot": 35,
+       "tick": 11
+      },
+      "10/15": {
+       "max_triangle_pairs": 9,
+       "max_depth": 27.145241,
+       "crossing_frames": 1,
+       "slot": 36,
+       "tick": 2
+      },
+      "10/16": {
+       "max_triangle_pairs": 6,
+       "max_depth": 15.906289,
+       "crossing_frames": 1,
+       "slot": 36,
+       "tick": 2
+      },
+      "11/15": {
+       "max_triangle_pairs": 5,
+       "max_depth": 20.058505,
+       "crossing_frames": 1,
+       "slot": 43,
+       "tick": 6
+      },
+      "5/9": {
+       "max_triangle_pairs": 24,
+       "max_depth": 33.95661,
+       "crossing_frames": 7,
+       "slot": 43,
+       "tick": 9
+      },
+      "13/14": {
+       "max_triangle_pairs": 10,
+       "max_depth": 37.001531,
+       "crossing_frames": 12,
+       "slot": 48,
+       "tick": 5
+      }
+     },
+     "resident_bytes": 95994,
+     "cold_bytes": 28172,
+     "storage_fits": true,
+     "sha256": "5d72b40e1725c5f71b93ea88d0242e242acfcf28a320be69eb23bc2d07d1f3d2",
+     "ledger": "335-before.csv.gz",
+     "ledger_sha256": "96a8b201c37c7c05d837086a2de0d3d41b5327a2471b7898309389b861611c3f",
+     "records": 53611,
+     "detector": {
+      "verdict": "review",
+      "envelope_verdict": "pass",
+      "part_candidates": 30,
+      "flags": [
+       "part_interpenetration"
+      ],
+      "cofacing_pairs": 0
+     }
+    },
+    "after": {
+     "slots": 52,
+     "ticks": 2009,
+     "crossing_frames": 2009,
+     "crossing_bone_pairs": 78,
+     "max_triangle_pairs_in_frame": 725,
+     "max_depth": 75.23245924415433,
+     "pairs": {
+      "1/2": {
+       "max_triangle_pairs": 18,
+       "max_depth": 41.247505,
+       "crossing_frames": 2009,
+       "slot": 48,
+       "tick": 30
+      },
+      "1/13": {
+       "max_triangle_pairs": 23,
+       "max_depth": 36.097291,
+       "crossing_frames": 2009,
+       "slot": 11,
+       "tick": 9
+      },
+      "1/17": {
+       "max_triangle_pairs": 107,
+       "max_depth": 38.938114,
+       "crossing_frames": 2001,
+       "slot": 46,
+       "tick": 15
+      },
+      "1/18": {
+       "max_triangle_pairs": 18,
+       "max_depth": 21.589912,
+       "crossing_frames": 1052,
+       "slot": 23,
+       "tick": 22
+      },
+      "1/23": {
+       "max_triangle_pairs": 22,
+       "max_depth": 34.795972,
+       "crossing_frames": 2009,
+       "slot": 11,
+       "tick": 30
+      },
+      "2/3": {
+       "max_triangle_pairs": 24,
+       "max_depth": 63.204793,
+       "crossing_frames": 2009,
+       "slot": 8,
+       "tick": 26
+      },
+      "2/4": {
+       "max_triangle_pairs": 47,
+       "max_depth": 70.618528,
+       "crossing_frames": 1968,
+       "slot": 12,
+       "tick": 15
+      },
+      "2/7": {
+       "max_triangle_pairs": 20,
+       "max_depth": 52.255825,
+       "crossing_frames": 1896,
+       "slot": 43,
+       "tick": 10
+      },
+      "2/8": {
+       "max_triangle_pairs": 28,
+       "max_depth": 70.402077,
+       "crossing_frames": 2009,
+       "slot": 3,
+       "tick": 40
+      },
+      "2/9": {
+       "max_triangle_pairs": 51,
+       "max_depth": 75.232459,
+       "crossing_frames": 1992,
+       "slot": 2,
+       "tick": 22
+      },
+      "2/12": {
+       "max_triangle_pairs": 20,
+       "max_depth": 44.99023,
+       "crossing_frames": 1883,
+       "slot": 36,
+       "tick": 8
+      },
+      "3/4": {
+       "max_triangle_pairs": 23,
+       "max_depth": 43.083518,
+       "crossing_frames": 2009,
+       "slot": 9,
+       "tick": 21
+      },
+      "3/7": {
+       "max_triangle_pairs": 22,
+       "max_depth": 59.24176,
+       "crossing_frames": 1180,
+       "slot": 4,
+       "tick": 39
+      },
+      "4/5": {
+       "max_triangle_pairs": 47,
+       "max_depth": 51.757311,
+       "crossing_frames": 2009,
+       "slot": 27,
+       "tick": 15
+      },
+      "4/6": {
+       "max_triangle_pairs": 9,
+       "max_depth": 26.632405,
+       "crossing_frames": 153,
+       "slot": 4,
+       "tick": 6
+      },
+      "4/7": {
+       "max_triangle_pairs": 22,
+       "max_depth": 58.691987,
+       "crossing_frames": 1593,
+       "slot": 46,
+       "tick": 53
+      },
+      "5/6": {
+       "max_triangle_pairs": 20,
+       "max_depth": 29.618533,
+       "crossing_frames": 2009,
+       "slot": 51,
+       "tick": 3
+      },
+      "8/9": {
+       "max_triangle_pairs": 25,
+       "max_depth": 42.213388,
+       "crossing_frames": 2009,
+       "slot": 2,
+       "tick": 25
+      },
+      "8/12": {
+       "max_triangle_pairs": 20,
+       "max_depth": 53.560978,
+       "crossing_frames": 847,
+       "slot": 2,
+       "tick": 37
+      },
+      "9/10": {
+       "max_triangle_pairs": 43,
+       "max_depth": 47.565948,
+       "crossing_frames": 2009,
+       "slot": 43,
+       "tick": 6
+      },
+      "9/12": {
+       "max_triangle_pairs": 16,
+       "max_depth": 56.333985,
+       "crossing_frames": 726,
+       "slot": 2,
+       "tick": 7
+      },
+      "10/11": {
+       "max_triangle_pairs": 21,
+       "max_depth": 26.179108,
+       "crossing_frames": 2009,
+       "slot": 0,
+       "tick": 0
+      },
+      "14/15": {
+       "max_triangle_pairs": 34,
+       "max_depth": 27.457002,
+       "crossing_frames": 2009,
+       "slot": 21,
+       "tick": 24
+      },
+      "15/16": {
+       "max_triangle_pairs": 59,
+       "max_depth": 35.465805,
+       "crossing_frames": 2009,
+       "slot": 13,
+       "tick": 38
+      },
+      "17/18": {
+       "max_triangle_pairs": 38,
+       "max_depth": 35.755986,
+       "crossing_frames": 2009,
+       "slot": 46,
+       "tick": 15
+      },
+      "17/19": {
+       "max_triangle_pairs": 23,
+       "max_depth": 33.770397,
+       "crossing_frames": 2009,
+       "slot": 11,
+       "tick": 28
+      },
+      "17/22": {
+       "max_triangle_pairs": 37,
+       "max_depth": 33.480156,
+       "crossing_frames": 2009,
+       "slot": 11,
+       "tick": 24
+      },
+      "24/25": {
+       "max_triangle_pairs": 26,
+       "max_depth": 23.178922,
+       "crossing_frames": 2009,
+       "slot": 46,
+       "tick": 59
+      },
+      "25/26": {
+       "max_triangle_pairs": 25,
+       "max_depth": 26.050447,
+       "crossing_frames": 2009,
+       "slot": 48,
+       "tick": 24
+      },
+      "9/11": {
+       "max_triangle_pairs": 9,
+       "max_depth": 26.293723,
+       "crossing_frames": 95,
+       "slot": 3,
+       "tick": 29
+      },
+      "11/16": {
+       "max_triangle_pairs": 17,
+       "max_depth": 26.568588,
+       "crossing_frames": 24,
+       "slot": 36,
+       "tick": 2
+      },
+      "3/25": {
+       "max_triangle_pairs": 4,
+       "max_depth": 21.730554,
+       "crossing_frames": 2,
+       "slot": 2,
+       "tick": 35
+      },
+      "4/25": {
+       "max_triangle_pairs": 46,
+       "max_depth": 45.541199,
+       "crossing_frames": 37,
+       "slot": 9,
+       "tick": 23
+      },
+      "2/10": {
+       "max_triangle_pairs": 7,
+       "max_depth": 57.807158,
+       "crossing_frames": 6,
+       "slot": 36,
+       "tick": 2
+      },
+      "2/11": {
+       "max_triangle_pairs": 2,
+       "max_depth": 12.984513,
+       "crossing_frames": 2,
+       "slot": 4,
+       "tick": 23
+      },
+      "9/15": {
+       "max_triangle_pairs": 31,
+       "max_depth": 41.343754,
+       "crossing_frames": 50,
+       "slot": 10,
+       "tick": 23
+      },
+      "2/5": {
+       "max_triangle_pairs": 13,
+       "max_depth": 66.108866,
+       "crossing_frames": 9,
+       "slot": 9,
+       "tick": 15
+      },
+      "4/26": {
+       "max_triangle_pairs": 50,
+       "max_depth": 42.793573,
+       "crossing_frames": 56,
+       "slot": 10,
+       "tick": 23
+      },
+      "4/9": {
+       "max_triangle_pairs": 31,
+       "max_depth": 40.999355,
+       "crossing_frames": 371,
+       "slot": 43,
+       "tick": 9
+      },
+      "17/23": {
+       "max_triangle_pairs": 42,
+       "max_depth": 39.935689,
+       "crossing_frames": 82,
+       "slot": 21,
+       "tick": 4
+      },
+      "5/26": {
+       "max_triangle_pairs": 20,
+       "max_depth": 32.947042,
+       "crossing_frames": 10,
+       "slot": 9,
+       "tick": 14
+      },
+      "5/7": {
+       "max_triangle_pairs": 20,
+       "max_depth": 48.367326,
+       "crossing_frames": 14,
+       "slot": 9,
+       "tick": 12
+      },
+      "10/12": {
+       "max_triangle_pairs": 16,
+       "max_depth": 55.181007,
+       "crossing_frames": 11,
+       "slot": 9,
+       "tick": 16
+      },
+      "3/5": {
+       "max_triangle_pairs": 7,
+       "max_depth": 53.945205,
+       "crossing_frames": 6,
+       "slot": 9,
+       "tick": 15
+      },
+      "5/25": {
+       "max_triangle_pairs": 15,
+       "max_depth": 28.52121,
+       "crossing_frames": 6,
+       "slot": 9,
+       "tick": 14
+      },
+      "8/10": {
+       "max_triangle_pairs": 8,
+       "max_depth": 22.932112,
+       "crossing_frames": 3,
+       "slot": 9,
+       "tick": 15
+      },
+      "9/16": {
+       "max_triangle_pairs": 43,
+       "max_depth": 46.261976,
+       "crossing_frames": 28,
+       "slot": 10,
+       "tick": 25
+      },
+      "8/15": {
+       "max_triangle_pairs": 10,
+       "max_depth": 31.999241,
+       "crossing_frames": 14,
+       "slot": 10,
+       "tick": 33
+      },
+      "2/15": {
+       "max_triangle_pairs": 10,
+       "max_depth": 66.348015,
+       "crossing_frames": 15,
+       "slot": 23,
+       "tick": 18
+      },
+      "3/26": {
+       "max_triangle_pairs": 23,
+       "max_depth": 22.511809,
+       "crossing_frames": 15,
+       "slot": 10,
+       "tick": 34
+      },
+      "7/25": {
+       "max_triangle_pairs": 14,
+       "max_depth": 45.006267,
+       "crossing_frames": 28,
+       "slot": 48,
+       "tick": 51
+      },
+      "7/26": {
+       "max_triangle_pairs": 16,
+       "max_depth": 35.286171,
+       "crossing_frames": 19,
+       "slot": 23,
+       "tick": 21
+      },
+      "2/25": {
+       "max_triangle_pairs": 13,
+       "max_depth": 53.785102,
+       "crossing_frames": 16,
+       "slot": 23,
+       "tick": 20
+      },
+      "23/25": {
+       "max_triangle_pairs": 87,
+       "max_depth": 47.199561,
+       "crossing_frames": 544,
+       "slot": 21,
+       "tick": 11
+      },
+      "23/26": {
+       "max_triangle_pairs": 32,
+       "max_depth": 35.556817,
+       "crossing_frames": 77,
+       "slot": 21,
+       "tick": 17
+      },
+      "1/25": {
+       "max_triangle_pairs": 22,
+       "max_depth": 29.258266,
+       "crossing_frames": 56,
+       "slot": 43,
+       "tick": 29
+      },
+      "19/26": {
+       "max_triangle_pairs": 54,
+       "max_depth": 35.175734,
+       "crossing_frames": 35,
+       "slot": 21,
+       "tick": 18
+      },
+      "17/26": {
+       "max_triangle_pairs": 55,
+       "max_depth": 34.071596,
+       "crossing_frames": 28,
+       "slot": 21,
+       "tick": 3
+      },
+      "13/17": {
+       "max_triangle_pairs": 45,
+       "max_depth": 28.764745,
+       "crossing_frames": 130,
+       "slot": 46,
+       "tick": 9
+      },
+      "15/22": {
+       "max_triangle_pairs": 14,
+       "max_depth": 22.777046,
+       "crossing_frames": 36,
+       "slot": 11,
+       "tick": 14
+      },
+      "19/25": {
+       "max_triangle_pairs": 10,
+       "max_depth": 15.077435,
+       "crossing_frames": 14,
+       "slot": 11,
+       "tick": 15
+      },
+      "23/24": {
+       "max_triangle_pairs": 5,
+       "max_depth": 42.291214,
+       "crossing_frames": 124,
+       "slot": 11,
+       "tick": 30
+      },
+      "14/22": {
+       "max_triangle_pairs": 3,
+       "max_depth": 13.850448,
+       "crossing_frames": 2,
+       "slot": 11,
+       "tick": 14
+      },
+      "13/15": {
+       "max_triangle_pairs": 52,
+       "max_depth": 34.98043,
+       "crossing_frames": 74,
+       "slot": 12,
+       "tick": 19
+      },
+      "1/15": {
+       "max_triangle_pairs": 14,
+       "max_depth": 24.340064,
+       "crossing_frames": 2,
+       "slot": 12,
+       "tick": 20
+      },
+      "1/12": {
+       "max_triangle_pairs": 16,
+       "max_depth": 36.855044,
+       "crossing_frames": 19,
+       "slot": 43,
+       "tick": 28
+      },
+      "17/25": {
+       "max_triangle_pairs": 49,
+       "max_depth": 34.195672,
+       "crossing_frames": 21,
+       "slot": 21,
+       "tick": 1
+      },
+      "2/26": {
+       "max_triangle_pairs": 20,
+       "max_depth": 53.745683,
+       "crossing_frames": 13,
+       "slot": 23,
+       "tick": 29
+      },
+      "19/23": {
+       "max_triangle_pairs": 29,
+       "max_depth": 21.895228,
+       "crossing_frames": 12,
+       "slot": 23,
+       "tick": 10
+      },
+      "13/22": {
+       "max_triangle_pairs": 32,
+       "max_depth": 35.716686,
+       "crossing_frames": 9,
+       "slot": 23,
+       "tick": 21
+      },
+      "12/15": {
+       "max_triangle_pairs": 8,
+       "max_depth": 12.062348,
+       "crossing_frames": 4,
+       "slot": 37,
+       "tick": 0
+      },
+      "5/10": {
+       "max_triangle_pairs": 20,
+       "max_depth": 55.572064,
+       "crossing_frames": 16,
+       "slot": 43,
+       "tick": 9
+      },
+      "6/10": {
+       "max_triangle_pairs": 5,
+       "max_depth": 15.880877,
+       "crossing_frames": 1,
+       "slot": 35,
+       "tick": 11
+      },
+      "10/15": {
+       "max_triangle_pairs": 9,
+       "max_depth": 27.145241,
+       "crossing_frames": 1,
+       "slot": 36,
+       "tick": 2
+      },
+      "10/16": {
+       "max_triangle_pairs": 6,
+       "max_depth": 15.906289,
+       "crossing_frames": 1,
+       "slot": 36,
+       "tick": 2
+      },
+      "11/15": {
+       "max_triangle_pairs": 5,
+       "max_depth": 20.058505,
+       "crossing_frames": 1,
+       "slot": 43,
+       "tick": 6
+      },
+      "5/9": {
+       "max_triangle_pairs": 24,
+       "max_depth": 33.95661,
+       "crossing_frames": 7,
+       "slot": 43,
+       "tick": 9
+      },
+      "13/14": {
+       "max_triangle_pairs": 10,
+       "max_depth": 37.001531,
+       "crossing_frames": 12,
+       "slot": 48,
+       "tick": 5
+      }
+     },
+     "resident_bytes": 95994,
+     "cold_bytes": 28172,
+     "storage_fits": true,
+     "sha256": "5d72b40e1725c5f71b93ea88d0242e242acfcf28a320be69eb23bc2d07d1f3d2",
+     "ledger": "335-after.csv.gz",
+     "ledger_sha256": "96a8b201c37c7c05d837086a2de0d3d41b5327a2471b7898309389b861611c3f",
+     "records": 53611,
+     "detector": {
+      "verdict": "review",
+      "envelope_verdict": "pass",
+      "part_candidates": 30,
+      "flags": [
+       "part_interpenetration"
+      ],
+      "cofacing_pairs": 0
+     }
+    }
+   },
+   "preservation": {
+    "slots": 52,
+    "ticks": 2009,
+    "changed_objects": [],
+    "texture_equal": true,
+    "poses_equal_except_documented_clip": true,
+    "loops_events_root_travel_equal": true,
+    "sha256_before": "5d72b40e1725c5f71b93ea88d0242e242acfcf28a320be69eb23bc2d07d1f3d2",
+    "sha256_after": "5d72b40e1725c5f71b93ea88d0242e242acfcf28a320be69eb23bc2d07d1f3d2"
+   },
+   "renders": {
+    "cases": 48,
+    "changed_pixels": 0,
+    "before_bin_phase_pixels": 1011,
+    "after_bin_phase_pixels": 1011
+   }
+  },
+  "461": {
+   "name": "Omnimon",
+   "stages": {
+    "before": {
+     "slots": 52,
+     "ticks": 2116,
+     "crossing_frames": 2116,
+     "crossing_bone_pairs": 85,
+     "max_triangle_pairs_in_frame": 857,
+     "max_depth": 111.77444073143542,
+     "pairs": {
+      "1/2": {
+       "max_triangle_pairs": 89,
+       "max_depth": 70.840743,
+       "crossing_frames": 2116,
+       "slot": 2,
+       "tick": 31
+      },
+      "1/3": {
+       "max_triangle_pairs": 64,
+       "max_depth": 37.467138,
+       "crossing_frames": 2116,
+       "slot": 42,
+       "tick": 18
+      },
+      "1/8": {
+       "max_triangle_pairs": 68,
+       "max_depth": 44.156844,
+       "crossing_frames": 1295,
+       "slot": 46,
+       "tick": 6
+      },
+      "1/9": {
+       "max_triangle_pairs": 41,
+       "max_depth": 27.917054,
+       "crossing_frames": 2116,
+       "slot": 47,
+       "tick": 14
+      },
+      "1/14": {
+       "max_triangle_pairs": 18,
+       "max_depth": 34.088851,
+       "crossing_frames": 2116,
+       "slot": 21,
+       "tick": 0
+      },
+      "2/8": {
+       "max_triangle_pairs": 86,
+       "max_depth": 51.530362,
+       "crossing_frames": 1180,
+       "slot": 46,
+       "tick": 6
+      },
+      "3/4": {
+       "max_triangle_pairs": 26,
+       "max_depth": 41.608471,
+       "crossing_frames": 2116,
+       "slot": 40,
+       "tick": 9
+      },
+      "4/5": {
+       "max_triangle_pairs": 11,
+       "max_depth": 10.060661,
+       "crossing_frames": 2116,
+       "slot": 42,
+       "tick": 5
+      },
+      "5/6": {
+       "max_triangle_pairs": 32,
+       "max_depth": 9.588525,
+       "crossing_frames": 2116,
+       "slot": 42,
+       "tick": 14
+      },
+      "5/7": {
+       "max_triangle_pairs": 32,
+       "max_depth": 78.240163,
+       "crossing_frames": 2116,
+       "slot": 42,
+       "tick": 14
+      },
+      "6/7": {
+       "max_triangle_pairs": 16,
+       "max_depth": 90.554968,
+       "crossing_frames": 2116,
+       "slot": 0,
+       "tick": 0
+      },
+      "8/9": {
+       "max_triangle_pairs": 23,
+       "max_depth": 18.957246,
+       "crossing_frames": 1707,
+       "slot": 46,
+       "tick": 9
+      },
+      "9/10": {
+       "max_triangle_pairs": 20,
+       "max_depth": 38.516239,
+       "crossing_frames": 2116,
+       "slot": 42,
+       "tick": 41
+      },
+      "10/12": {
+       "max_triangle_pairs": 15,
+       "max_depth": 34.039613,
+       "crossing_frames": 2116,
+       "slot": 56,
+       "tick": 5
+      },
+      "10/13": {
+       "max_triangle_pairs": 9,
+       "max_depth": 22.516704,
+       "crossing_frames": 2116,
+       "slot": 34,
+       "tick": 0
+      },
+      "11/12": {
+       "max_triangle_pairs": 42,
+       "max_depth": 44.373662,
+       "crossing_frames": 1976,
+       "slot": 36,
+       "tick": 1
+      },
+      "11/13": {
+       "max_triangle_pairs": 58,
+       "max_depth": 24.613269,
+       "crossing_frames": 2116,
+       "slot": 42,
+       "tick": 5
+      },
+      "12/13": {
+       "max_triangle_pairs": 65,
+       "max_depth": 40.037914,
+       "crossing_frames": 2116,
+       "slot": 56,
+       "tick": 5
+      },
+      "14/15": {
+       "max_triangle_pairs": 26,
+       "max_depth": 26.381562,
+       "crossing_frames": 2116,
+       "slot": 12,
+       "tick": 19
+      },
+      "14/19": {
+       "max_triangle_pairs": 33,
+       "max_depth": 27.514322,
+       "crossing_frames": 2116,
+       "slot": 40,
+       "tick": 19
+      },
+      "15/16": {
+       "max_triangle_pairs": 22,
+       "max_depth": 29.331159,
+       "crossing_frames": 2116,
+       "slot": 7,
+       "tick": 18
+      },
+      "16/17": {
+       "max_triangle_pairs": 18,
+       "max_depth": 33.735839,
+       "crossing_frames": 2116,
+       "slot": 40,
+       "tick": 10
+      },
+      "17/18": {
+       "max_triangle_pairs": 12,
+       "max_depth": 22.234979,
+       "crossing_frames": 2116,
+       "slot": 40,
+       "tick": 21
+      },
+      "19/20": {
+       "max_triangle_pairs": 26,
+       "max_depth": 27.286167,
+       "crossing_frames": 2116,
+       "slot": 36,
+       "tick": 3
+      },
+      "20/21": {
+       "max_triangle_pairs": 19,
+       "max_depth": 32.918119,
+       "crossing_frames": 2116,
+       "slot": 23,
+       "tick": 27
+      },
+      "21/22": {
+       "max_triangle_pairs": 10,
+       "max_depth": 9.68698,
+       "crossing_frames": 2116,
+       "slot": 43,
+       "tick": 33
+      },
+      "23/24": {
+       "max_triangle_pairs": 28,
+       "max_depth": 49.193206,
+       "crossing_frames": 1930,
+       "slot": 27,
+       "tick": 54
+      },
+      "3/5": {
+       "max_triangle_pairs": 30,
+       "max_depth": 25.946688,
+       "crossing_frames": 1803,
+       "slot": 42,
+       "tick": 10
+      },
+      "4/23": {
+       "max_triangle_pairs": 10,
+       "max_depth": 56.434701,
+       "crossing_frames": 1483,
+       "slot": 34,
+       "tick": 18
+      },
+      "6/23": {
+       "max_triangle_pairs": 16,
+       "max_depth": 68.809989,
+       "crossing_frames": 1402,
+       "slot": 46,
+       "tick": 5
+      },
+      "20/22": {
+       "max_triangle_pairs": 7,
+       "max_depth": 32.90844,
+       "crossing_frames": 4,
+       "slot": 4,
+       "tick": 1
+      },
+      "16/18": {
+       "max_triangle_pairs": 20,
+       "max_depth": 30.485053,
+       "crossing_frames": 50,
+       "slot": 4,
+       "tick": 7
+      },
+      "12/23": {
+       "max_triangle_pairs": 29,
+       "max_depth": 69.566299,
+       "crossing_frames": 505,
+       "slot": 12,
+       "tick": 27
+      },
+      "5/16": {
+       "max_triangle_pairs": 42,
+       "max_depth": 50.580552,
+       "crossing_frames": 223,
+       "slot": 56,
+       "tick": 10
+      },
+      "7/18": {
+       "max_triangle_pairs": 38,
+       "max_depth": 51.229143,
+       "crossing_frames": 171,
+       "slot": 47,
+       "tick": 11
+      },
+      "9/12": {
+       "max_triangle_pairs": 18,
+       "max_depth": 29.227705,
+       "crossing_frames": 559,
+       "slot": 42,
+       "tick": 12
+      },
+      "7/16": {
+       "max_triangle_pairs": 28,
+       "max_depth": 90.946136,
+       "crossing_frames": 171,
+       "slot": 47,
+       "tick": 12
+      },
+      "13/22": {
+       "max_triangle_pairs": 47,
+       "max_depth": 42.133524,
+       "crossing_frames": 113,
+       "slot": 35,
+       "tick": 10
+      },
+      "10/23": {
+       "max_triangle_pairs": 14,
+       "max_depth": 51.514216,
+       "crossing_frames": 67,
+       "slot": 35,
+       "tick": 10
+      },
+      "8/11": {
+       "max_triangle_pairs": 42,
+       "max_depth": 43.387009,
+       "crossing_frames": 42,
+       "slot": 46,
+       "tick": 15
+      },
+      "8/12": {
+       "max_triangle_pairs": 34,
+       "max_depth": 34.797744,
+       "crossing_frames": 3,
+       "slot": 9,
+       "tick": 15
+      },
+      "8/10": {
+       "max_triangle_pairs": 14,
+       "max_depth": 24.002709,
+       "crossing_frames": 56,
+       "slot": 46,
+       "tick": 14
+      },
+      "13/23": {
+       "max_triangle_pairs": 33,
+       "max_depth": 60.125234,
+       "crossing_frames": 252,
+       "slot": 56,
+       "tick": 8
+      },
+      "11/23": {
+       "max_triangle_pairs": 24,
+       "max_depth": 62.33415,
+       "crossing_frames": 193,
+       "slot": 16,
+       "tick": 10
+      },
+      "6/16": {
+       "max_triangle_pairs": 30,
+       "max_depth": 44.44058,
+       "crossing_frames": 133,
+       "slot": 56,
+       "tick": 10
+      },
+      "7/17": {
+       "max_triangle_pairs": 28,
+       "max_depth": 65.583416,
+       "crossing_frames": 85,
+       "slot": 27,
+       "tick": 74
+      },
+      "11/24": {
+       "max_triangle_pairs": 16,
+       "max_depth": 63.354001,
+       "crossing_frames": 117,
+       "slot": 43,
+       "tick": 32
+      },
+      "12/24": {
+       "max_triangle_pairs": 8,
+       "max_depth": 26.17202,
+       "crossing_frames": 112,
+       "slot": 56,
+       "tick": 9
+      },
+      "13/20": {
+       "max_triangle_pairs": 29,
+       "max_depth": 34.933709,
+       "crossing_frames": 127,
+       "slot": 57,
+       "tick": 12
+      },
+      "13/21": {
+       "max_triangle_pairs": 31,
+       "max_depth": 32.682447,
+       "crossing_frames": 15,
+       "slot": 56,
+       "tick": 7
+      },
+      "21/23": {
+       "max_triangle_pairs": 8,
+       "max_depth": 55.797464,
+       "crossing_frames": 20,
+       "slot": 36,
+       "tick": 3
+      },
+      "21/24": {
+       "max_triangle_pairs": 6,
+       "max_depth": 104.288126,
+       "crossing_frames": 105,
+       "slot": 46,
+       "tick": 19
+      },
+      "5/17": {
+       "max_triangle_pairs": 38,
+       "max_depth": 33.717709,
+       "crossing_frames": 32,
+       "slot": 27,
+       "tick": 74
+      },
+      "6/17": {
+       "max_triangle_pairs": 19,
+       "max_depth": 34.484113,
+       "crossing_frames": 28,
+       "slot": 27,
+       "tick": 12
+      },
+      "9/11": {
+       "max_triangle_pairs": 28,
+       "max_depth": 36.353033,
+       "crossing_frames": 38,
+       "slot": 40,
+       "tick": 28
+      },
+      "2/5": {
+       "max_triangle_pairs": 35,
+       "max_depth": 32.2076,
+       "crossing_frames": 24,
+       "slot": 46,
+       "tick": 13
+      },
+      "2/7": {
+       "max_triangle_pairs": 16,
+       "max_depth": 78.931639,
+       "crossing_frames": 14,
+       "slot": 40,
+       "tick": 34
+      },
+      "2/6": {
+       "max_triangle_pairs": 29,
+       "max_depth": 21.273642,
+       "crossing_frames": 8,
+       "slot": 40,
+       "tick": 33
+      },
+      "2/3": {
+       "max_triangle_pairs": 23,
+       "max_depth": 41.108473,
+       "crossing_frames": 51,
+       "slot": 42,
+       "tick": 16
+      },
+      "9/13": {
+       "max_triangle_pairs": 2,
+       "max_depth": 17.186245,
+       "crossing_frames": 2,
+       "slot": 42,
+       "tick": 43
+      },
+      "3/6": {
+       "max_triangle_pairs": 6,
+       "max_depth": 21.797046,
+       "crossing_frames": 4,
+       "slot": 42,
+       "tick": 14
+      },
+      "8/23": {
+       "max_triangle_pairs": 20,
+       "max_depth": 30.802153,
+       "crossing_frames": 28,
+       "slot": 43,
+       "tick": 19
+      },
+      "4/16": {
+       "max_triangle_pairs": 14,
+       "max_depth": 25.093734,
+       "crossing_frames": 7,
+       "slot": 43,
+       "tick": 25
+      },
+      "1/23": {
+       "max_triangle_pairs": 19,
+       "max_depth": 46.845758,
+       "crossing_frames": 5,
+       "slot": 43,
+       "tick": 31
+      },
+      "10/24": {
+       "max_triangle_pairs": 14,
+       "max_depth": 55.312513,
+       "crossing_frames": 4,
+       "slot": 43,
+       "tick": 32
+      },
+      "17/24": {
+       "max_triangle_pairs": 6,
+       "max_depth": 105.439683,
+       "crossing_frames": 3,
+       "slot": 43,
+       "tick": 32
+      },
+      "5/24": {
+       "max_triangle_pairs": 4,
+       "max_depth": 28.355792,
+       "crossing_frames": 2,
+       "slot": 46,
+       "tick": 6
+      },
+      "1/4": {
+       "max_triangle_pairs": 22,
+       "max_depth": 28.238407,
+       "crossing_frames": 6,
+       "slot": 46,
+       "tick": 14
+      },
+      "22/24": {
+       "max_triangle_pairs": 4,
+       "max_depth": 105.668018,
+       "crossing_frames": 77,
+       "slot": 46,
+       "tick": 31
+      },
+      "20/24": {
+       "max_triangle_pairs": 4,
+       "max_depth": 59.742437,
+       "crossing_frames": 14,
+       "slot": 46,
+       "tick": 24
+      },
+      "2/10": {
+       "max_triangle_pairs": 36,
+       "max_depth": 42.800266,
+       "crossing_frames": 30,
+       "slot": 47,
+       "tick": 14
+      },
+      "2/11": {
+       "max_triangle_pairs": 53,
+       "max_depth": 64.703744,
+       "crossing_frames": 30,
+       "slot": 47,
+       "tick": 13
+      },
+      "1/10": {
+       "max_triangle_pairs": 32,
+       "max_depth": 33.283043,
+       "crossing_frames": 26,
+       "slot": 47,
+       "tick": 14
+      },
+      "1/11": {
+       "max_triangle_pairs": 20,
+       "max_depth": 38.170404,
+       "crossing_frames": 15,
+       "slot": 47,
+       "tick": 13
+      },
+      "2/9": {
+       "max_triangle_pairs": 15,
+       "max_depth": 33.482343,
+       "crossing_frames": 20,
+       "slot": 47,
+       "tick": 14
+      },
+      "2/13": {
+       "max_triangle_pairs": 10,
+       "max_depth": 19.810957,
+       "crossing_frames": 15,
+       "slot": 47,
+       "tick": 14
+      },
+      "11/19": {
+       "max_triangle_pairs": 24,
+       "max_depth": 21.934847,
+       "crossing_frames": 3,
+       "slot": 56,
+       "tick": 7
+      },
+      "11/20": {
+       "max_triangle_pairs": 19,
+       "max_depth": 23.849193,
+       "crossing_frames": 1,
+       "slot": 56,
+       "tick": 6
+      },
+      "13/19": {
+       "max_triangle_pairs": 15,
+       "max_depth": 34.084054,
+       "crossing_frames": 3,
+       "slot": 56,
+       "tick": 8
+      },
+      "9/23": {
+       "max_triangle_pairs": 4,
+       "max_depth": 23.449167,
+       "crossing_frames": 1,
+       "slot": 56,
+       "tick": 7
+      },
+      "11/14": {
+       "max_triangle_pairs": 6,
+       "max_depth": 26.386005,
+       "crossing_frames": 1,
+       "slot": 56,
+       "tick": 7
+      },
+      "12/14": {
+       "max_triangle_pairs": 5,
+       "max_depth": 11.046523,
+       "crossing_frames": 1,
+       "slot": 56,
+       "tick": 7
+      },
+      "13/14": {
+       "max_triangle_pairs": 7,
+       "max_depth": 12.920768,
+       "crossing_frames": 1,
+       "slot": 56,
+       "tick": 7
+      },
+      "13/24": {
+       "max_triangle_pairs": 24,
+       "max_depth": 111.774441,
+       "crossing_frames": 34,
+       "slot": 56,
+       "tick": 14
+      },
+      "5/18": {
+       "max_triangle_pairs": 20,
+       "max_depth": 19.338088,
+       "crossing_frames": 5,
+       "slot": 56,
+       "tick": 10
+      }
+     },
+     "resident_bytes": 81434,
+     "cold_bytes": 21192,
+     "storage_fits": true,
+     "sha256": "5c80581a538196574f76abd546f1d078834aed938757d24ddbf8ca68b85b27eb",
+     "ledger": "461-before.csv.gz",
+     "ledger_sha256": "09c81f9b25a891e201e240f1fbe48e852cd38c348f006db2e3f9690c855007d3",
+     "records": 62984,
+     "detector": {
+      "verdict": "review",
+      "envelope_verdict": "pass",
+      "part_candidates": 31,
+      "flags": [
+       "part_interpenetration"
+      ],
+      "cofacing_pairs": 0
+     }
+    },
+    "after": {
+     "slots": 52,
+     "ticks": 2116,
+     "crossing_frames": 2116,
+     "crossing_bone_pairs": 82,
+     "max_triangle_pairs_in_frame": 828,
+     "max_depth": 111.77444073143542,
+     "pairs": {
+      "1/2": {
+       "max_triangle_pairs": 89,
+       "max_depth": 70.840743,
+       "crossing_frames": 2116,
+       "slot": 2,
+       "tick": 31
+      },
+      "1/3": {
+       "max_triangle_pairs": 64,
+       "max_depth": 37.467138,
+       "crossing_frames": 2116,
+       "slot": 42,
+       "tick": 18
+      },
+      "1/8": {
+       "max_triangle_pairs": 68,
+       "max_depth": 44.156844,
+       "crossing_frames": 1295,
+       "slot": 46,
+       "tick": 6
+      },
+      "1/9": {
+       "max_triangle_pairs": 41,
+       "max_depth": 27.917054,
+       "crossing_frames": 2116,
+       "slot": 47,
+       "tick": 14
+      },
+      "1/14": {
+       "max_triangle_pairs": 18,
+       "max_depth": 34.088851,
+       "crossing_frames": 2116,
+       "slot": 21,
+       "tick": 0
+      },
+      "2/8": {
+       "max_triangle_pairs": 86,
+       "max_depth": 51.530362,
+       "crossing_frames": 1180,
+       "slot": 46,
+       "tick": 6
+      },
+      "3/4": {
+       "max_triangle_pairs": 26,
+       "max_depth": 41.608471,
+       "crossing_frames": 2116,
+       "slot": 40,
+       "tick": 9
+      },
+      "4/5": {
+       "max_triangle_pairs": 11,
+       "max_depth": 10.060661,
+       "crossing_frames": 2116,
+       "slot": 42,
+       "tick": 5
+      },
+      "5/6": {
+       "max_triangle_pairs": 32,
+       "max_depth": 9.588525,
+       "crossing_frames": 2116,
+       "slot": 42,
+       "tick": 14
+      },
+      "5/7": {
+       "max_triangle_pairs": 32,
+       "max_depth": 78.240163,
+       "crossing_frames": 2116,
+       "slot": 42,
+       "tick": 14
+      },
+      "6/7": {
+       "max_triangle_pairs": 16,
+       "max_depth": 90.554968,
+       "crossing_frames": 2116,
+       "slot": 0,
+       "tick": 0
+      },
+      "8/9": {
+       "max_triangle_pairs": 23,
+       "max_depth": 18.957246,
+       "crossing_frames": 1707,
+       "slot": 46,
+       "tick": 9
+      },
+      "9/10": {
+       "max_triangle_pairs": 20,
+       "max_depth": 38.516239,
+       "crossing_frames": 2116,
+       "slot": 42,
+       "tick": 41
+      },
+      "10/12": {
+       "max_triangle_pairs": 15,
+       "max_depth": 34.039613,
+       "crossing_frames": 2116,
+       "slot": 56,
+       "tick": 5
+      },
+      "10/13": {
+       "max_triangle_pairs": 9,
+       "max_depth": 22.516704,
+       "crossing_frames": 2116,
+       "slot": 34,
+       "tick": 0
+      },
+      "11/12": {
+       "max_triangle_pairs": 42,
+       "max_depth": 44.373662,
+       "crossing_frames": 1976,
+       "slot": 36,
+       "tick": 1
+      },
+      "11/13": {
+       "max_triangle_pairs": 58,
+       "max_depth": 24.613269,
+       "crossing_frames": 2116,
+       "slot": 42,
+       "tick": 5
+      },
+      "12/13": {
+       "max_triangle_pairs": 65,
+       "max_depth": 40.037914,
+       "crossing_frames": 2116,
+       "slot": 56,
+       "tick": 5
+      },
+      "14/15": {
+       "max_triangle_pairs": 26,
+       "max_depth": 26.381562,
+       "crossing_frames": 2116,
+       "slot": 12,
+       "tick": 19
+      },
+      "14/19": {
+       "max_triangle_pairs": 33,
+       "max_depth": 27.514322,
+       "crossing_frames": 2116,
+       "slot": 40,
+       "tick": 19
+      },
+      "15/16": {
+       "max_triangle_pairs": 22,
+       "max_depth": 29.331159,
+       "crossing_frames": 2116,
+       "slot": 7,
+       "tick": 18
+      },
+      "16/17": {
+       "max_triangle_pairs": 18,
+       "max_depth": 33.735839,
+       "crossing_frames": 2116,
+       "slot": 40,
+       "tick": 10
+      },
+      "19/20": {
+       "max_triangle_pairs": 26,
+       "max_depth": 27.286167,
+       "crossing_frames": 2116,
+       "slot": 36,
+       "tick": 3
+      },
+      "20/21": {
+       "max_triangle_pairs": 19,
+       "max_depth": 32.918119,
+       "crossing_frames": 2116,
+       "slot": 23,
+       "tick": 27
+      },
+      "23/24": {
+       "max_triangle_pairs": 28,
+       "max_depth": 49.193206,
+       "crossing_frames": 1930,
+       "slot": 27,
+       "tick": 54
+      },
+      "3/5": {
+       "max_triangle_pairs": 30,
+       "max_depth": 25.946688,
+       "crossing_frames": 1803,
+       "slot": 42,
+       "tick": 10
+      },
+      "4/23": {
+       "max_triangle_pairs": 10,
+       "max_depth": 56.434701,
+       "crossing_frames": 1483,
+       "slot": 34,
+       "tick": 18
+      },
+      "6/23": {
+       "max_triangle_pairs": 16,
+       "max_depth": 68.809989,
+       "crossing_frames": 1402,
+       "slot": 46,
+       "tick": 5
+      },
+      "12/23": {
+       "max_triangle_pairs": 29,
+       "max_depth": 69.566299,
+       "crossing_frames": 505,
+       "slot": 12,
+       "tick": 27
+      },
+      "5/16": {
+       "max_triangle_pairs": 42,
+       "max_depth": 50.580552,
+       "crossing_frames": 223,
+       "slot": 56,
+       "tick": 10
+      },
+      "7/18": {
+       "max_triangle_pairs": 38,
+       "max_depth": 44.310002,
+       "crossing_frames": 104,
+       "slot": 57,
+       "tick": 22
+      },
+      "9/12": {
+       "max_triangle_pairs": 18,
+       "max_depth": 29.227705,
+       "crossing_frames": 559,
+       "slot": 42,
+       "tick": 12
+      },
+      "7/16": {
+       "max_triangle_pairs": 28,
+       "max_depth": 90.946136,
+       "crossing_frames": 171,
+       "slot": 47,
+       "tick": 12
+      },
+      "13/22": {
+       "max_triangle_pairs": 44,
+       "max_depth": 34.342731,
+       "crossing_frames": 108,
+       "slot": 35,
+       "tick": 10
+      },
+      "10/23": {
+       "max_triangle_pairs": 14,
+       "max_depth": 51.514216,
+       "crossing_frames": 67,
+       "slot": 35,
+       "tick": 10
+      },
+      "8/11": {
+       "max_triangle_pairs": 42,
+       "max_depth": 43.387009,
+       "crossing_frames": 42,
+       "slot": 46,
+       "tick": 15
+      },
+      "8/12": {
+       "max_triangle_pairs": 34,
+       "max_depth": 34.797744,
+       "crossing_frames": 3,
+       "slot": 9,
+       "tick": 15
+      },
+      "8/10": {
+       "max_triangle_pairs": 14,
+       "max_depth": 24.002709,
+       "crossing_frames": 56,
+       "slot": 46,
+       "tick": 14
+      },
+      "13/23": {
+       "max_triangle_pairs": 33,
+       "max_depth": 60.125234,
+       "crossing_frames": 252,
+       "slot": 56,
+       "tick": 8
+      },
+      "11/23": {
+       "max_triangle_pairs": 24,
+       "max_depth": 62.33415,
+       "crossing_frames": 193,
+       "slot": 16,
+       "tick": 10
+      },
+      "6/16": {
+       "max_triangle_pairs": 30,
+       "max_depth": 44.44058,
+       "crossing_frames": 133,
+       "slot": 56,
+       "tick": 10
+      },
+      "7/17": {
+       "max_triangle_pairs": 28,
+       "max_depth": 65.583416,
+       "crossing_frames": 85,
+       "slot": 27,
+       "tick": 74
+      },
+      "11/24": {
+       "max_triangle_pairs": 16,
+       "max_depth": 63.354001,
+       "crossing_frames": 117,
+       "slot": 43,
+       "tick": 32
+      },
+      "12/24": {
+       "max_triangle_pairs": 8,
+       "max_depth": 26.17202,
+       "crossing_frames": 112,
+       "slot": 56,
+       "tick": 9
+      },
+      "13/20": {
+       "max_triangle_pairs": 29,
+       "max_depth": 34.933709,
+       "crossing_frames": 127,
+       "slot": 57,
+       "tick": 12
+      },
+      "13/21": {
+       "max_triangle_pairs": 31,
+       "max_depth": 32.682447,
+       "crossing_frames": 15,
+       "slot": 56,
+       "tick": 7
+      },
+      "21/23": {
+       "max_triangle_pairs": 8,
+       "max_depth": 55.797464,
+       "crossing_frames": 20,
+       "slot": 36,
+       "tick": 3
+      },
+      "21/24": {
+       "max_triangle_pairs": 6,
+       "max_depth": 104.288126,
+       "crossing_frames": 105,
+       "slot": 46,
+       "tick": 19
+      },
+      "5/17": {
+       "max_triangle_pairs": 38,
+       "max_depth": 33.717709,
+       "crossing_frames": 32,
+       "slot": 27,
+       "tick": 74
+      },
+      "6/17": {
+       "max_triangle_pairs": 19,
+       "max_depth": 34.484113,
+       "crossing_frames": 28,
+       "slot": 27,
+       "tick": 12
+      },
+      "17/18": {
+       "max_triangle_pairs": 6,
+       "max_depth": 14.84455,
+       "crossing_frames": 74,
+       "slot": 40,
+       "tick": 38
+      },
+      "16/18": {
+       "max_triangle_pairs": 20,
+       "max_depth": 26.315012,
+       "crossing_frames": 46,
+       "slot": 40,
+       "tick": 36
+      },
+      "9/11": {
+       "max_triangle_pairs": 28,
+       "max_depth": 36.353033,
+       "crossing_frames": 38,
+       "slot": 40,
+       "tick": 28
+      },
+      "2/5": {
+       "max_triangle_pairs": 35,
+       "max_depth": 32.2076,
+       "crossing_frames": 24,
+       "slot": 46,
+       "tick": 13
+      },
+      "2/7": {
+       "max_triangle_pairs": 16,
+       "max_depth": 78.931639,
+       "crossing_frames": 14,
+       "slot": 40,
+       "tick": 34
+      },
+      "2/6": {
+       "max_triangle_pairs": 29,
+       "max_depth": 21.273642,
+       "crossing_frames": 8,
+       "slot": 40,
+       "tick": 33
+      },
+      "2/3": {
+       "max_triangle_pairs": 23,
+       "max_depth": 41.108473,
+       "crossing_frames": 51,
+       "slot": 42,
+       "tick": 16
+      },
+      "9/13": {
+       "max_triangle_pairs": 2,
+       "max_depth": 17.186245,
+       "crossing_frames": 2,
+       "slot": 42,
+       "tick": 43
+      },
+      "3/6": {
+       "max_triangle_pairs": 6,
+       "max_depth": 21.797046,
+       "crossing_frames": 4,
+       "slot": 42,
+       "tick": 14
+      },
+      "8/23": {
+       "max_triangle_pairs": 20,
+       "max_depth": 30.802153,
+       "crossing_frames": 28,
+       "slot": 43,
+       "tick": 19
+      },
+      "4/16": {
+       "max_triangle_pairs": 14,
+       "max_depth": 25.093734,
+       "crossing_frames": 7,
+       "slot": 43,
+       "tick": 25
+      },
+      "1/23": {
+       "max_triangle_pairs": 19,
+       "max_depth": 46.845758,
+       "crossing_frames": 5,
+       "slot": 43,
+       "tick": 31
+      },
+      "10/24": {
+       "max_triangle_pairs": 14,
+       "max_depth": 55.312513,
+       "crossing_frames": 4,
+       "slot": 43,
+       "tick": 32
+      },
+      "17/24": {
+       "max_triangle_pairs": 6,
+       "max_depth": 105.439683,
+       "crossing_frames": 3,
+       "slot": 43,
+       "tick": 32
+      },
+      "5/24": {
+       "max_triangle_pairs": 4,
+       "max_depth": 28.355792,
+       "crossing_frames": 2,
+       "slot": 46,
+       "tick": 6
+      },
+      "1/4": {
+       "max_triangle_pairs": 22,
+       "max_depth": 28.238407,
+       "crossing_frames": 6,
+       "slot": 46,
+       "tick": 14
+      },
+      "20/24": {
+       "max_triangle_pairs": 4,
+       "max_depth": 59.742437,
+       "crossing_frames": 14,
+       "slot": 46,
+       "tick": 24
+      },
+      "2/10": {
+       "max_triangle_pairs": 36,
+       "max_depth": 42.800266,
+       "crossing_frames": 30,
+       "slot": 47,
+       "tick": 14
+      },
+      "2/11": {
+       "max_triangle_pairs": 53,
+       "max_depth": 64.703744,
+       "crossing_frames": 30,
+       "slot": 47,
+       "tick": 13
+      },
+      "1/10": {
+       "max_triangle_pairs": 32,
+       "max_depth": 33.283043,
+       "crossing_frames": 26,
+       "slot": 47,
+       "tick": 14
+      },
+      "1/11": {
+       "max_triangle_pairs": 20,
+       "max_depth": 38.170404,
+       "crossing_frames": 15,
+       "slot": 47,
+       "tick": 13
+      },
+      "2/9": {
+       "max_triangle_pairs": 15,
+       "max_depth": 33.482343,
+       "crossing_frames": 20,
+       "slot": 47,
+       "tick": 14
+      },
+      "2/13": {
+       "max_triangle_pairs": 10,
+       "max_depth": 19.810957,
+       "crossing_frames": 15,
+       "slot": 47,
+       "tick": 14
+      },
+      "11/19": {
+       "max_triangle_pairs": 24,
+       "max_depth": 21.934847,
+       "crossing_frames": 3,
+       "slot": 56,
+       "tick": 7
+      },
+      "11/20": {
+       "max_triangle_pairs": 19,
+       "max_depth": 23.849193,
+       "crossing_frames": 1,
+       "slot": 56,
+       "tick": 6
+      },
+      "13/19": {
+       "max_triangle_pairs": 15,
+       "max_depth": 34.084054,
+       "crossing_frames": 3,
+       "slot": 56,
+       "tick": 8
+      },
+      "9/23": {
+       "max_triangle_pairs": 4,
+       "max_depth": 23.449167,
+       "crossing_frames": 1,
+       "slot": 56,
+       "tick": 7
+      },
+      "11/14": {
+       "max_triangle_pairs": 6,
+       "max_depth": 26.386005,
+       "crossing_frames": 1,
+       "slot": 56,
+       "tick": 7
+      },
+      "12/14": {
+       "max_triangle_pairs": 5,
+       "max_depth": 11.046523,
+       "crossing_frames": 1,
+       "slot": 56,
+       "tick": 7
+      },
+      "13/14": {
+       "max_triangle_pairs": 7,
+       "max_depth": 12.920768,
+       "crossing_frames": 1,
+       "slot": 56,
+       "tick": 7
+      },
+      "13/24": {
+       "max_triangle_pairs": 24,
+       "max_depth": 111.774441,
+       "crossing_frames": 34,
+       "slot": 56,
+       "tick": 14
+      },
+      "5/18": {
+       "max_triangle_pairs": 20,
+       "max_depth": 17.420199,
+       "crossing_frames": 5,
+       "slot": 56,
+       "tick": 10
+      }
+     },
+     "resident_bytes": 81434,
+     "cold_bytes": 21192,
+     "storage_fits": true,
+     "sha256": "552882deb512f1c0fab4f8a102bab774453f29c70b12ee72094dfdbf2674a6c4",
+     "ledger": "461-after.csv.gz",
+     "ledger_sha256": "f396e5b8037c479bd58606a5405b42240d645279c05a728ddab8363fdfe838c1",
+     "records": 58669,
+     "detector": {
+      "verdict": "review",
+      "envelope_verdict": "pass",
+      "part_candidates": 31,
+      "flags": [
+       "part_interpenetration"
+      ],
+      "cofacing_pairs": 0
+     }
+    }
+   },
+   "preservation": {
+    "slots": 52,
+    "ticks": 2116,
+    "changed_objects": [
+     17,
+     21
+    ],
+    "texture_equal": true,
+    "poses_equal_except_documented_clip": true,
+    "loops_events_root_travel_equal": true,
+    "sha256_before": "5c80581a538196574f76abd546f1d078834aed938757d24ddbf8ca68b85b27eb",
+    "sha256_after": "552882deb512f1c0fab4f8a102bab774453f29c70b12ee72094dfdbf2674a6c4"
+   },
+   "renders": {
+    "cases": 72,
+    "changed_pixels": 6277,
+    "before_bin_phase_pixels": 2256,
+    "after_bin_phase_pixels": 2244
+   }
+  }
+ },
+ "thresholds": {
+  "bent_risk": 0.003039868562537228,
+  "coplanar_area": 0.35881000000099994,
+  "degenerate": 1.000000000001,
+  "tiny": 84.000000000001,
+  "crossings_max": 595.000000000001,
+  "tie_rate": 0.0768492567648107,
+  "flip_rate": 0.07222306871957383
+ },
+ "coverage": {
+  "slots": 254,
+  "ticks": 8984
+ },
+ "archives": [
+  "certificates.json.gz",
+  "experiments.json.gz",
+  "detector.json.gz",
+  "clips.json.gz",
+  "renders.json"
+ ]
+}

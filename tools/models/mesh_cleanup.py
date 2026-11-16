@@ -79,6 +79,20 @@ def transform_piece(model, oi, scale=(1, 1, 1), offset=(0, 0, 0), shear_zx=0):
         model.tmd.norms[ob.norm_start+i] = tuple(round(x*4096/length) if length else 0 for x in q)+(n[3],)
 
 
+def rotate_clip_bone(model, slot, bone, degrees):
+    """Offset one clip's local rotation, retaining its keys and timing exactly."""
+    anim = model.anims.anims[model.anims.table[slot]]
+    for axis, angle in enumerate(degrees):
+        offset = round(angle*4096/360)
+        anim.pose[bone-1][(3 if anim.has_scale else 0)+axis] += offset
+        channel = ('rx', 'ry', 'rz')[axis]
+        for ins in anim.instrs:
+            if ins['op'] == 'key':
+                for key in ins['bones']:
+                    if key['bone'] == bone and key['div'] == 0 and channel in key['vals']:
+                        key['vals'][channel] += offset
+
+
 def taper_ankle(model, oi):
     """Taper a distal ring and transform its corner normals with the same map."""
     ob = model.tmd.objects[oi]
@@ -129,6 +143,42 @@ def offset_layer(model, oi, primitives, delta):
     for obj, pool in zip(model.tmd.objects, pools):
         obj.vert_start, obj.nvert = len(model.tmd.verts), len(pool)
         model.tmd.verts.extend(pool)
+
+
+def fit_toe_lip(model, oi):
+    """Pull only the rear lip into the boot, keeping the tip and sole height.
+
+    The last 50 local Z units compress by 24%, moving the rearmost corner 12
+    units. Normals receive the inverse of this piecewise affine deformation.
+    The incoming final pools are compact, with object-local normal indices.
+    """
+    obj = model.tmd.objects[oi]
+    vertices = list(model.tmd.obj_verts(oi))
+    old = list(model.tmd.obj_norms(oi))
+    pools = [list(model.tmd.obj_norms(i))[:ob.nnorm] for i, ob in enumerate(model.tmd.objects)]
+    normals, lookup = [], {}
+    for pi, prim in enumerate(obj.prims):
+        d = prim.decode()
+        for k, ni in enumerate(d['norms']):
+            points = [vertices[v] for v in d['verts']] if len(d['norms']) == 1 else [vertices[d['verts'][k]]]
+            z = sum(v[2] for v in points)/len(points)
+            n = old[ni]
+            q = [n[0], n[1], n[2]/(.76 if z > -40 else 1)]
+            length = math.sqrt(sum(v*v for v in q))
+            normal = tuple(round(v*4096/length) if length else 0 for v in q)+(n[3],)
+            if normal not in lookup:
+                lookup[normal] = len(normals)
+                normals.append(normal)
+            d['norms'][k] = lookup[normal]
+        obj.prims[pi] = mmd.Prim.encode(d)
+    pools[oi] = normals
+    model.tmd.norms = []
+    for ob, pool in zip(model.tmd.objects, pools):
+        ob.norm_start, ob.nnorm = len(model.tmd.norms), len(pool)
+        model.tmd.norms.extend(pool)
+    for vi, v in enumerate(vertices):
+        z = round(-40+(v[2]+40)*.76) if v[2] > -40 else v[2]
+        model.tmd.verts[obj.vert_start+vi] = (v[0], v[1], z, v[3])
 
 
 def apply(data, bones, sid):
@@ -192,6 +242,14 @@ def apply(data, bones, sid):
         for oi in (8, 22):
             transform_piece(model, oi, scale=(.6, 1, 1))
         report['shoulder_width_fit'] = .6
+        # Slot 43 drives the left forearm through its shoulder plate. Correct
+        # the clip's elbow pose instead of rotating both plates in every clip,
+        # which introduces plate-to-plate contact in the battle idle.
+        if [s for s, index in enumerate(model.anims.table)
+                if index == model.anims.table[43]] != [43]:
+            raise ValueError('forearm repair requires the reviewed independent slot 43')
+        rotate_clip_bone(model, 43, 3, (-10, 10, -5))
+        report['slot_43_forearm_rotation_degrees'] = [-10, 10, -5]
     if sid == 461:
         # Animated face masks were exactly on the base head. Keep the masks
         # (including currently transparent texels) on one independent front layer.
@@ -200,8 +258,13 @@ def apply(data, bones, sid):
         # its distal ring into the boot, keeping the knee and ankle locations.
         for oi in (15, 19):
             taper_ankle(model, oi)
+        # The toe armour's rear lip swept back through the calf and boot.
+        # Retract that lip without shortening the toe or moving either joint.
+        for oi in (17, 21):
+            fit_toe_lip(model, oi)
         report['face_layer_offset'] = -6
         report['ankle_radial_fit'] = .6
+        report['toe_rear_lip_fit'] = .76
     if sid == 432:
         report['duplicate_packets'] = duplicate_surfaces(model)
     if sid == 323:
