@@ -1442,5 +1442,17 @@ Native controls calibrate the envelope; reuse it with `--thresholds BEFORE.json`
 all occupied slots. Flags are candidates, not a validated visual classifier.
 See [the general investigation](../../docs/reference/mesh-glitch.md).
 The final import provider runs `mesh_stability.apply_provider`: lossless
-compaction funds bent-quad splits without increasing resident data. Pinned
-alternate-release outputs remain unchanged pending their own verification.
+compaction and existing heap headroom fund bent-quad splits up to the fixed
+100,256-byte measured peak, within the 100,352-byte allocation. The packet-format
+growth cap remains 1,024 bytes per model. Pinned alternate-release outputs remain
+unchanged pending their own verification. Additional headroom is restricted to
+the reviewed IDs in `content/models/imports/mesh-headroom.json`; other models
+retain the earlier per-model limit. Record that scope with
+`python3 -m tools.models.mesh_cleanup review-headroom AUDIT.json --include IDS...`.
+`mesh-audit` also locates deep cross-bone intersections, including adjacent
+bones. `verdict=review` and `part_interpenetration` flag these candidates when
+the native envelope passes; `envelope_verdict` retains the comparable envelope
+result. Failures and decode errors exit nonzero; `--strict-parts` additionally
+makes review candidates exit nonzero. `--samples 0 --slots`
+checks every tick in every occupied clip; the default samples four ticks in
+each selected clip. Hidden surfaces and transparent effects require inspection.

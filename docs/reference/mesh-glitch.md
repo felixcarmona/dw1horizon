@@ -292,3 +292,129 @@ Validation: 67 tests, one private-fixture test skipped; Armageddemon run QA pass
 Raw evidence and matched images are under build/mesh/. This follow-up repairs
 specific causes in five models; it does not finish the remaining ten-model
 motion/mesh work or prove the 36 residual imports visually acceptable.
+
+
+## Round 3: located part candidates and fixed-heap repairs
+
+The native envelope alone flagged two of the five reported models in the
+current archive: 406 and 409. The revised detector also locates deep crossings
+between different bones, including adjacent pieces. A pair needs review when
+its penetration exceeds both eight world units (two OT bins) and 2% of the
+drawn pose height. Both directions of penetration are measured so bone numbering
+cannot hide a candidate. Each record includes bones, slot, tick, depth and
+adjacency. Sampling follows `--samples` and `--slots`, including exhaustive
+`--samples 0 --slots`; it does not silently imply full-clip coverage.
+
+`flags` now includes `part_interpenetration`. A model inside the native envelope
+with such candidates receives `verdict: review`, while `envelope_verdict`
+retains its comparable pass/fail result. Failures and errors exit nonzero;
+`--strict-parts` additionally makes review candidates exit nonzero.
+All five reported models are flagged before repair. This policy also exposes
+native joint contacts and hidden or transparent surfaces: 172 of 178 native
+controls also have part-review candidates. This broad probe provides locations,
+not a selective visual-defect classifier or an acceptance threshold. That part
+of the requested detector validation remains unmet. The existing OT ties and order-reversal probes
+remain available alongside these located crossings. Triangle crossing depth is
+vectorized, with a scalar-equivalence and operand-reversal regression test.
+
+The earlier per-species no-growth rule is superseded by a fixed ceiling of
+100,256 resident bytes, below the existing 100,352-byte allocation. This uses
+headroom already present in smaller models; it does not resize any heap buffer.
+Headroom is restricted to the 39 reviewed IDs: the original 36 failures and the
+three additional reported controls. The repository tool records this scope in
+`content/models/imports/mesh-headroom.json`. Unrelated imports retain their
+previous provider pins. The 1,024-byte all-primitives packet-format growth cap remains relative to the
+incoming pre-stability mesh, rather than restarting that allowance on a second
+pass. Quads split by the shared pass increase from 4,817 to 5,568. Alternate
+release outputs retain their existing pins and bypass both final repair passes
+until independently reviewed. Reviewed TMD hashes and provider hashes were
+written with the repository review and pin tools.
+
+The targeted edits retain the texture and material state, skeleton, root motion,
+clip timing, events and loops:
+
+* Vilemon: replace two quads whose second GPU half is exactly collinear with
+  their intact first triangle. This removes two zero-area faces and the fourth
+  corner's incorrect contribution to sorting depth without removing a surface.
+* Kyubimon: move the complete tail fan 60 local units rearward and 20 upward
+  through its socket joint, extending and bending the existing root stalk to
+  retain the connection. Every animation retains its original momentum; only
+  initial translations and absolute assignments receive the constant offset.
+* MaloMyotismon: advance both cannon caps eight local negative-Z units, reducing the lip
+  cutting through each housing. Their independent motion and normals remain.
+* Raidenmon: fit the two wide shoulder plates to 60% of their local width about
+  their existing mounts, clearing the left calf/plate pair throughout all clips.
+* MegaGargomon: fit the shoulder shells uniformly to 70% about their mounts and
+  the calf shells radially to 90%, retaining joints, hands and gun origins.
+* Omnimon: place all six animated face-mask triangles on independent corners
+  six local Z units in front of the head. Retain transparent mask pixels for
+  facial animation. Taper the distal calf rings into the boots and transform
+  their normals with the deformation, retaining knee and ankle positions.
+
+Full-clip targeted measurements cover 254 occupied slots / 8,984 ticks. The
+following depths use the original directed limb-through-plane definition for
+before/after comparison; the new review probe measures both directions.
+
+| Model / pair | Deepest crossing before → after (units) |
+| --- | ---: |
+| 409 tail / thigh, bones 15/19 | 56.16 → 44.44 |
+| 406 left cannon housing / cap, 2/3 | 36.17 → 27.80 |
+| 406 right cannon housing / cap, 10/11 | 36.17 → 27.92 |
+| 336 forearm / shoulder plate, 3/23 | 161.17 → 75.06 |
+| 336 left calf / shoulder plate, 21/23 | 64.54 → 0 |
+| 335 shoulder shell / forearm, 23/25 | 70.01 → 47.20 |
+| 461 left calf / toe armour, 16/18 | 47.29 → 26.32 |
+| 461 right calf / toe armour, 20/22 | 48.67 → 8.46 |
+
+Omnimon's co-facing idle face pairs fall 6 → 0. All five still retain full-clip
+crossings, including poses outside the default eight sampled slots. These are
+partial repairs of located causes, not a declaration that the five models are
+visually resolved. Matched orthographic sheets retain the renderer limitations
+above. Runtime visual confirmation and crowded-scene packet profiling remain
+unperformed; the packet-format cap alone does not prove scene safety.
+
+All 183 canonical provider pairs match their pins. Their final atlas-stamped
+outputs pass resident/cold-read storage checks; texture pins, native-record pins and alternate-release pins are
+unchanged. Peak resident use stays 100,256 → 100,256 bytes. Full animation
+comparison covers 8,971 slots / 351,943 ticks with exact decoded poses, root
+travel, loop and event information, except for the documented constant tail
+translation. Fresh source-to-provider checks verify all five reported models.
+The related suite runs 78 tests: 77 pass and one private-fixture test is skipped.
+
+The [round-three measurements](mesh-round-3-audit.json) record both envelope
+results and part-review candidates, full-clip targeted evidence, hashes and
+resident sizes. Raw tool output, preservation checks and matched atlas-stamped images are in
+`build/` in the worktree. Atlas stamping applies the same flat-sprite UV and
+texture transformation as archive assembly. The 144 unscoped imports retain
+their original provider pins and exact final TMD bytes, so their baseline
+measurements are reused. The 39 scoped outputs receive fresh final geometry
+measurements; their clip probes retain the measured matching geometry/poses.
+
+
+The unchanged native envelope falls **36 → 23** failing imports, with **zero new
+failures** and **zero native envelope failures**. Thirteen of the original 36 now
+pass that envelope: 199 Paildramon, 205 MegaKabuterimon, 215 Magnadramon,
+223 LadyDevimon, 295 Vilemon, 306 GrapLeomon, 311 Arukenimon, 312 Creepymon,
+315 Taomon, 318 Gallantmon, 402 NeoCrimson, 403 Beelzemon and 432 Bastemon.
+Passing the envelope does not clear their independent part-review candidates.
+Vilemon retains all 874 oriented nonzero triangles and their corner attributes.
+
+The remaining 23 of the original 36 are:
+
+183 Wormmon, 193 Digmon, 196 Halsemon, 218 Ikkakumon, 220 Vikemon,
+236 DemiDevimon, 238 Dolphmon, 270 PrinceMamemon, 274 Blossomon,
+275 Scorpiomon, 283 Syakomon, 303 KingEtemon, 307 BlackKingNumemon,
+314 SkullSatamon, 323 Lynxmon, 326 WarGrowlmon, 405 Cannondramon,
+406 MaloMyotismon, 407 Armageddemon, 409 Kyubimon, 471 Pichimon,
+473 Nyokimon and 477 Yokomon.
+
+To scope additional headroom to a baseline audit and the reported controls:
+
+    python3 -m tools.models.mesh_cleanup review-headroom BEFORE.json --include 335 336 461
+    python3 -m tools.derive.steps.species pin BUILD --prepared
+
+TMD review guards use pre-cleanup provider meshes, before atlas stamping.
+Run final comparisons on models after `species.flat_texture`/archive assembly,
+not provider MMDs paired with an already stamped archive TIM. The report records
+both the unchanged envelope result and the broad part-review flag. Runtime
+visibility and a selective detector for the reported symptoms remain unfinished.

@@ -30,8 +30,12 @@ def _crossings(p0, p1, tris):
     return ok & (u >= 0) & (v >= 0) & (u + v <= 1) & (t >= 0) & (t <= 1)
 
 
-def crossing(a, b, *, depth=True):
-    """(pairs, deepest) for triangle arrays a (n, 3, 3) and b (m, 3, 3)."""
+def crossing(a, b, *, depth=True, symmetric=False):
+    """(pairs, deepest) for triangle arrays a (n, 3, 3) and b (m, 3, 3).
+
+    symmetric=True measures penetration through both triangles' planes while
+    reusing the same hit mask; the default retains the limb-side depth metric.
+    """
     hit = np.zeros((len(a), len(b)), bool)
     for k in range(3):
         k2 = (k + 1) % 3
@@ -40,13 +44,19 @@ def crossing(a, b, *, depth=True):
     pairs = int(hit.sum())
     if not pairs or not depth:
         return pairs, 0.0
-    deepest = 0.0
-    for i, j in zip(*np.nonzero(hit)):
-        n = np.cross(b[j, 1] - b[j, 0], b[j, 2] - b[j, 0])
-        n = n / (np.linalg.norm(n) + 1e-9)
-        dist = (a[i] - b[j, 0]) @ n
-        deepest = max(deepest, min(max(dist.max(), 0.0), max(-dist.min(), 0.0)))
-    return pairs, float(deepest)
+    ia, ib = np.nonzero(hit)
+
+    def depths(left, right):
+        n = np.cross(right[:, 1]-right[:, 0], right[:, 2]-right[:, 0]).astype(float)
+        n /= np.linalg.norm(n, axis=1)[:, None] + 1e-9
+        dist = np.einsum('nvi,ni->nv', left-right[:, None, 0], n)
+        return np.minimum(np.maximum(dist.max(1), 0), np.maximum(-dist.min(1), 0))
+
+    deepest = float(depths(a[ia], b[ib]).max())
+    if symmetric:
+        deepest = max(deepest, float(depths(b[ib], a[ia]).max()))
+    return pairs, deepest
+
 
 
 class Clash:

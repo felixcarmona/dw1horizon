@@ -382,9 +382,9 @@ def species_file(out, t, recs=None, names=None, generate=False):
         s['model']['file'] = str(model_path)
         s['model'].pop('slot_aliases', None)
     # Last: grounding and rig fitting above still need the original vertex
-    # pools. This pass preserves their result and cannot grow resident data.
+    # pools. This pass preserves their result within the fixed resident ceiling.
     from tools.models import mesh_stability
-    stable, stability = mesh_stability.apply_provider(model, s['model']['skeleton'])
+    stable, stability = mesh_stability.apply_provider(model, s['model']['skeleton'], t)
     if stability['applied']:
         generated = Path(os.path.abspath(out) + '-models')
         generated.mkdir(parents=True, exist_ok=True)
@@ -394,14 +394,17 @@ def species_file(out, t, recs=None, names=None, generate=False):
         s['model']['file'] = str(model_path)
         s['model'].pop('slot_aliases', None)
     from tools.models import mesh_cleanup
-    cleaned, cleanup = mesh_cleanup.apply(stable, s['model']['skeleton'], t)
+    if stability.get('deferred'):
+        cleaned, cleanup = stable, dict(applied=False, deferred=True)
+    else:
+        cleaned, cleanup = mesh_cleanup.apply(stable, s['model']['skeleton'], t)
     if cleanup['applied']:
         import coldsplit
         nb = len(s['model']['skeleton'])
         before_bytes = len(coldsplit.split(model, nb)[0])
         after_bytes = len(coldsplit.split(cleaned, nb)[0])
-        if after_bytes > before_bytes:
-            raise ValueError(f'{t}: surface repair grew resident bytes {before_bytes} -> {after_bytes}')
+        if after_bytes > mesh_stability.MAX_RESIDENT:
+            raise ValueError(f'{t}: surface repair exceeded resident ceiling: {after_bytes}')
         generated = Path(os.path.abspath(out) + '-models')
         generated.mkdir(parents=True, exist_ok=True)
         model_path = generated / f'{t}-mesh-cleanup.MMD'

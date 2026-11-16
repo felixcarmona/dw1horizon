@@ -49,6 +49,88 @@ def duplicate_surfaces(model):
     return removed
 
 
+def translate_bone(model, bone, axis, distance):
+    """Shift a joint in every program without changing timing or momentum.
+
+    Positive-divisor keys are increments, not absolute positions. Only the
+    initial pose and zero-divisor assignments receive the constant offset.
+    """
+    channel = ('tx', 'ty', 'tz')[axis]
+    for anim in model.anims.anims:
+        anim.pose[bone-1][(6 if anim.has_scale else 3)+axis] += distance
+        for ins in anim.instrs:
+            if ins['op'] == 'key':
+                for key in ins['bones']:
+                    if key['bone'] == bone and key['div'] == 0 and channel in key['vals']:
+                        key['vals'][channel] += distance
+
+
+def transform_piece(model, oi, scale=(1, 1, 1), offset=(0, 0, 0), shear_zx=0):
+    """Fit a rigid shell about its attachment, including inverse-scale normals."""
+    ob = model.tmd.objects[oi]
+    for i, v in enumerate(model.tmd.obj_verts(oi)):
+        model.tmd.verts[ob.vert_start+i] = (round(v[0]*scale[0]+offset[0]), round(v[1]*scale[1]+offset[1]),
+            round(v[2]*scale[2]+v[0]*shear_zx+offset[2]), v[3])
+    if scale[0] == scale[1] == scale[2] and not shear_zx:
+        return
+    for i, n in enumerate(model.tmd.obj_norms(oi)):
+        q = [n[0]/scale[0]-n[2]*shear_zx/(scale[0]*scale[2]), n[1]/scale[1], n[2]/scale[2]]
+        length = math.sqrt(sum(x*x for x in q))
+        model.tmd.norms[ob.norm_start+i] = tuple(round(x*4096/length) if length else 0 for x in q)+(n[3],)
+
+
+def taper_ankle(model, oi):
+    """Taper a distal ring and transform its corner normals with the same map."""
+    ob = model.tmd.objects[oi]
+    vertices = list(model.tmd.obj_verts(oi))
+    old_norms = list(model.tmd.obj_norms(oi))
+    pools = [list(model.tmd.obj_norms(i)) for i in range(len(model.tmd.objects))]
+    normals, lookup = [], {}
+    for pi, prim in enumerate(ob.prims):
+        d = prim.decode()
+        for k, ni in enumerate(d['norms']):
+            points = [vertices[v] for v in d['verts']] if len(d['norms']) == 1 else [vertices[d['verts'][k]]]
+            x, y, z = [sum(v[j] for v in points)/len(points) for j in range(3)]
+            factor = 1-.4*max(0, min(1, (y-50)/40))
+            slope = -.01 if 50 < y < 90 else 0
+            n = old_norms[ni]
+            q = [n[0]/factor, n[1]-slope*(x*n[0]+z*n[2])/factor, n[2]/factor]
+            length = math.sqrt(sum(v*v for v in q))
+            normal = tuple(round(v*4096/length) if length else 0 for v in q)+(n[3],)
+            if normal not in lookup:
+                lookup[normal] = len(normals); normals.append(normal)
+            d['norms'][k] = lookup[normal]
+        ob.prims[pi] = mmd.Prim.encode(d)
+    pools[oi] = normals
+    model.tmd.norms = []
+    for obj, pool in zip(model.tmd.objects, pools):
+        obj.norm_start, obj.nnorm = len(model.tmd.norms), len(pool)
+        model.tmd.norms.extend(pool)
+    for vi, v in enumerate(vertices):
+        factor = 1-.4*max(0, min(1, (v[1]-50)/40))
+        model.tmd.verts[ob.vert_start+vi] = (round(v[0]*factor), v[1], round(v[2]*factor), v[3])
+
+
+def offset_layer(model, oi, primitives, delta):
+    """Give a complete decal independent corners, keeping its base shell fixed."""
+    pools = [list(model.tmd.obj_verts(i)) for i in range(len(model.tmd.objects))]
+    mapping = {}
+    ob = model.tmd.objects[oi]
+    for pi in primitives:
+        d = ob.prims[pi].decode()
+        for k, vi in enumerate(d['verts']):
+            if vi not in mapping:
+                v = pools[oi][vi]
+                mapping[vi] = len(pools[oi])
+                pools[oi].append(tuple(v[j]+delta[j] for j in range(3))+(v[3],))
+            d['verts'][k] = mapping[vi]
+        ob.prims[pi] = mmd.Prim.encode(d)
+    model.tmd.verts = []
+    for obj, pool in zip(model.tmd.objects, pools):
+        obj.vert_start, obj.nvert = len(model.tmd.verts), len(pool)
+        model.tmd.verts.extend(pool)
+
+
 def apply(data, bones, sid):
     sid = int(sid)
     reviewed = json.loads(MANIFEST.read_text())
@@ -59,6 +141,67 @@ def apply(data, bones, sid):
         raise ValueError(f'{sid}: surface repair requires the reviewed final TMD')
     model = mmd.MMD.parse(data, len(bones))
     report = dict(applied=True)
+    if sid == 295:
+        # Two quads end in a collinear second half. Keep their complete first
+        # GPU triangle and discard only the zero-area half, including its bogus
+        # fourth-corner contribution to AVSZ4 sorting depth.
+        count = 0
+        for oi, ob in enumerate(model.tmd.objects):
+            vertices = model.tmd.obj_verts(oi)
+            for pi, prim in enumerate(ob.prims):
+                ids = prim.decode()['verts']
+                if len(ids) != 4:
+                    continue
+                a, b, c, d = [vertices[i] for i in ids]
+                first = mesh_stability._normal(a, b, c)
+                second = mesh_stability._normal(b, d, c)
+                if any(first) and not any(second):
+                    ob.prims[pi] = mesh_stability.split_quad(prim)[0]
+                    count += 1
+        if count != 2:
+            raise ValueError('zero-area quad halves no longer match reviewed mesh')
+        report['zero_area_halves'] = count
+    if sid == 409:
+        # The rebound fan started inside the rear thighs. Move the whole fan
+        # together and lengthen its existing root stalk to retain the socket.
+        if tuple(bones[15]) != (9, 14) or tuple(bones[14]) != (8, 1):
+            raise ValueError('tail repair requires the reviewed fan/socket binding')
+        translate_bone(model, 15, 0, 60)
+        translate_bone(model, 15, 2, -20)
+        transform_piece(model, 8, scale=(144/84, 1, 1), shear_zx=-20/84)
+        report['tail_socket_extension'] = [60, 0, -20]
+    if sid == 406:
+        # Both cannon caps cut through the housings. Advance their rear lip
+        # eight local units; their separate animation and material stay intact.
+        for oi in (2, 9):
+            transform_piece(model, oi, offset=(0, 0, -8))
+        report['cannon_cap_offset'] = -8
+    if sid == 335:
+        # Oversized rigid shoulder shells engulfed the elbow during its swing.
+        # Fit the shell about the shoulder mount; keep the arm and muzzle rig.
+        for oi in (12, 22):
+            transform_piece(model, oi, scale=(.7, .7, .7))
+        # The two calf shells crossed one another in the idle and run poses.
+        for oi in (3, 8):
+            transform_piece(model, oi, scale=(.9, 1, .9))
+        report['shoulder_fit'] = .7
+        report['calf_radial_fit'] = .9
+    if sid == 336:
+        # The wide shoulder plates swept through both forearms and the calves.
+        # Narrow each plate toward its unchanged inner mounting edge.
+        for oi in (8, 22):
+            transform_piece(model, oi, scale=(.6, 1, 1))
+        report['shoulder_width_fit'] = .6
+    if sid == 461:
+        # Animated face masks were exactly on the base head. Keep the masks
+        # (including currently transparent texels) on one independent front layer.
+        offset_layer(model, 1, range(6), (0, 0, -6))
+        # The broadened calf flare pierced the separate toe armour. Taper only
+        # its distal ring into the boot, keeping the knee and ankle locations.
+        for oi in (15, 19):
+            taper_ankle(model, oi)
+        report['face_layer_offset'] = -6
+        report['ankle_radial_fit'] = .6
     if sid == 432:
         report['duplicate_packets'] = duplicate_surfaces(model)
     if sid == 323:
@@ -135,18 +278,32 @@ def apply(data, bones, sid):
 
 
 def main():
-    """Record reviewed final TMD hashes through a repository authoring tool."""
+    """Record reviewed TMD hashes or scope heap headroom from a QA audit."""
     import argparse
     parser = argparse.ArgumentParser(description=main.__doc__)
-    parser.add_argument('command', choices=['review'])
+    parser.add_argument('command', choices=['review', 'review-headroom'])
     parser.add_argument('folder', type=Path)
+    parser.add_argument('--ids', nargs='+', type=int)
+    parser.add_argument('--include', nargs='*', type=int, default=[])
     args = parser.parse_args()
-    rows = {}
-    for sid in (323, 326, 405, 407, 432):
+    if args.command == 'review-headroom':
+        audit = json.loads(args.folder.read_text())
+        imports = set(json.loads(mesh_stability.PINS.read_text())['imports'])
+        ids = {int(sid) for sid, row in audit['rows'].items() if sid in imports
+               and row.get('envelope_verdict', row['verdict']) == 'fail'}
+        ids.update(args.include)
+        if any(str(sid) not in imports for sid in ids):
+            raise ValueError('headroom review includes an unregistered import')
+        record = dict(audit_sha256=hashlib.sha256(args.folder.read_bytes()).hexdigest(), ids=sorted(ids))
+        mesh_stability.HEADROOM.write_text(json.dumps(record, indent=2)+'\n')
+        print(f'{len(ids)} reviewed headroom candidates')
+        return
+    rows = json.loads(MANIFEST.read_text())
+    for sid in args.ids or (295, 323, 326, 335, 336, 405, 406, 407, 409, 432, 461):
         data = (args.folder / f'{sid}.MMD').read_bytes()
         end = int.from_bytes(data[4:8], 'little')
         rows[str(sid)] = hashlib.sha256(data[8:end]).hexdigest()
-    MANIFEST.write_text(json.dumps(rows, indent=2)+'\n')
+    MANIFEST.write_text(json.dumps(dict(sorted(rows.items(), key=lambda kv: int(kv[0]))), indent=2)+'\n')
     print(f'{MANIFEST.relative_to(MANIFEST.parents[3])}: {len(rows)} reviewed meshes')
 
 

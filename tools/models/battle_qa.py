@@ -614,6 +614,7 @@ def main():
     g.add_argument('--samples', type=int, default=4, help='ticks per slot; 0 = all (6000-tick guard)')
     g.add_argument('--jobs', type=int, default=1)
     g.add_argument('--json', required=True)
+    g.add_argument('--strict-parts', action='store_true', help='also exit nonzero for geometric part-review candidates')
     g.add_argument('--details', action='store_true', help='include co-facing surface pairs, including shared vertex IDs')
     g.add_argument('--thresholds', help='reuse native thresholds from an earlier mesh-audit JSON')
     z = sub.add_parser('sizes', help='check body size in every occupied slot against field idle')
@@ -649,8 +650,10 @@ def main():
         with open(a.json, 'w') as fh:
             json.dump(dict(thresholds=thresholds, samples=a.samples, slots=a.slots, rows=rows), fh, indent=1)
         errors = {sid: r['error'] for sid, r in rows.items() if 'error' in r}
-        print(f'{len(rows)} species; {len(errors)} errors: {errors}')
-        sys.exit(bool(errors) or any(r['verdict'] == 'fail' for r in rows.values()))
+        reviews = sum(r['verdict'] == 'review' for r in rows.values())
+        failures = sum(r['verdict'] == 'fail' for r in rows.values())
+        print(f'{len(rows)} species; {failures} envelope failures; {reviews} part reviews; {len(errors)} errors: {errors}')
+        sys.exit(bool(errors) or bool(failures) or (a.strict_parts and bool(reviews)))
     rd = lambda p: open(p, 'rb').read()
     with open(a.species_json) as fh:
         species = json.load(fh)

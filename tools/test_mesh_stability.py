@@ -51,6 +51,32 @@ class Stability(unittest.TestCase):
         self.assertFalse(proof['applied'])
         self.assertEqual(proof['remaining'],1)
 
+    def test_existing_heap_headroom_can_fund_a_split_without_raising_peak(self):
+        m, bones = self.bent()
+        out, proof = S.apply(m.build(), bones, resident_limit=S.MAX_RESIDENT)
+        self.assertTrue(proof['applied'])
+        self.assertGreater(proof['resident_after'], proof['resident_before'])
+        self.assertLessEqual(proof['resident_after'], S.MAX_RESIDENT)
+        self.assertLessEqual(proof['packet_growth'], S.MAX_PACKET_GROWTH)
+
+    def test_deep_adjacent_part_crossing_is_located_and_flagged_for_review(self):
+        m, bones = model(box_object(), copy.deepcopy(box_object()))
+        bones[2] = (1, 1)  # The legacy crossing audit excludes this joint.
+        mc = MC.Model(m, bones)
+        pose = copy.deepcopy(mc.rest()); pose[2][8] = 20
+        pairs = G.part_intersections(mc, [pose], [7])
+        self.assertTrue(pairs)
+        self.assertEqual(pairs[0]['bones'], [1, 2])
+        self.assertEqual(pairs[0]['tick'], 7)
+        self.assertTrue(pairs[0]['adjacent'])
+        row = {k: 0 for k in G.METRICS}
+        result = G.classify(dict(row, part_candidates=len(pairs)), {k: 1 for k in G.METRICS})
+        self.assertEqual(result['verdict'], 'review')
+        self.assertEqual(result['envelope_verdict'], 'pass')
+        self.assertIn('part_interpenetration', result['flags'])
+        pose[2][8] = 300
+        self.assertEqual(G.part_intersections(mc, [pose]), [])
+
     def test_planar_box_keeps_exact_bytes(self):
         m,bones=animated(*model(box_object()))
         data=m.build()
@@ -120,6 +146,14 @@ class Stability(unittest.TestCase):
         ob=mmd.TMDObject(); ob.prims=[mmd.Prim.encode(d)]
         m,bones=model((ob,[(0,0,0,0)]*4,[(0,0,-4096,0)]*3+[(0,4096,0,0)]))
         self.assertEqual(S.flatten_identical_shading(m),0)
+
+    def test_heap_headroom_is_scoped_to_reviewed_candidates(self):
+        m, bones = self.bent()
+        with mock.patch.object(S, 'apply', return_value=(b'', {})) as run:
+            S.apply_provider(m.build(), bones, 335)
+            self.assertEqual(run.call_args.kwargs['resident_limit'], S.MAX_RESIDENT)
+            S.apply_provider(m.build(), bones, 472)
+            self.assertIsNone(run.call_args.kwargs['resident_limit'])
 
     def test_alternate_release_pin_is_preserved_without_species_exceptions(self):
         m,bones=self.bent(20)
