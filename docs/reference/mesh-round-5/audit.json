@@ -1,0 +1,219 @@
+{
+  "coverage": {
+    "slots": 254,
+    "ticks": 8984,
+    "exhaustive": true
+  },
+  "models": {
+    "409": {
+      "before_ledger": "../mesh-round-4/409-after.csv.gz",
+      "after_ledger": "409-after.csv.gz",
+      "before_max_depth": 56.843928,
+      "after_max_depth": 54.3682172394712,
+      "new_deep_bone_pairs": {},
+      "existing_pair_regressions_over_3_units": {},
+      "before_target_pairs": {
+        "15/16": {
+          "depth": 54.450476,
+          "slot": 21,
+          "tick": 12
+        },
+        "15/17": {
+          "depth": 56.843928,
+          "slot": 5,
+          "tick": 29
+        },
+        "16/17": {
+          "depth": 41.034467,
+          "slot": 7,
+          "tick": 19
+        }
+      },
+      "after_target_pairs": {
+        "15/19": {
+          "bones": [
+            15,
+            19
+          ],
+          "objects": [
+            9,
+            12
+          ],
+          "adjacent": false,
+          "count": 65,
+          "depth": 32.7879716573351,
+          "slot": 42,
+          "tick": 39
+        }
+      },
+      "tail_provenance_audit": "fan.json"
+    },
+    "406": {
+      "before_ledger": "../mesh-round-4/406-after.csv.gz",
+      "after_ledger": "406-after.csv.gz",
+      "before_max_depth": 90.441472,
+      "after_max_depth": 90.44147215169764,
+      "new_deep_bone_pairs": {},
+      "existing_pair_regressions_over_3_units": {
+        "11/13": {
+          "before": 38.287662,
+          "after": 49.917864490626044,
+          "increase": 11.630202490626047,
+          "slot": 8,
+          "tick": 20
+        },
+        "3/5": {
+          "before": 29.298344,
+          "after": 44.023934674224876,
+          "increase": 14.725590674224875,
+          "slot": 55,
+          "tick": 16
+        },
+        "3/21": {
+          "before": 42.451859,
+          "after": 48.31667807459263,
+          "increase": 5.864819074592631,
+          "slot": 47,
+          "tick": 23
+        }
+      },
+      "before_target_pairs": {
+        "2/3": {
+          "depth": 27.804728,
+          "slot": 54,
+          "tick": 1
+        },
+        "10/11": {
+          "depth": 27.921554,
+          "slot": 54,
+          "tick": 1
+        }
+      },
+      "after_target_pairs": {
+        "2/3": {
+          "depth": 0,
+          "count": 0
+        },
+        "10/11": {
+          "depth": 0,
+          "count": 0
+        }
+      }
+    },
+    "335": {
+      "before_ledger": "../mesh-round-4/335-after.csv.gz",
+      "after_ledger": "335-after.csv.gz",
+      "before_max_depth": 75.232459,
+      "after_max_depth": 75.23245924415433,
+      "new_deep_bone_pairs": {},
+      "existing_pair_regressions_over_3_units": {},
+      "before_target_pairs": {
+        "13/15": {
+          "depth": 34.98043,
+          "slot": 12,
+          "tick": 19
+        },
+        "23/25": {
+          "depth": 47.199561,
+          "slot": 21,
+          "tick": 11
+        }
+      },
+      "after_target_pairs": {
+        "13/15": {
+          "depth": 0,
+          "count": 0
+        },
+        "23/25": {
+          "depth": 0,
+          "count": 0
+        }
+      }
+    },
+    "461": {
+      "before_ledger": "../mesh-round-4/461-after.csv.gz",
+      "after_ledger": "461-after.csv.gz",
+      "before_max_depth": 111.774441,
+      "after_max_depth": 111.77444073143542,
+      "new_deep_bone_pairs": {},
+      "existing_pair_regressions_over_3_units": {},
+      "before_target_pairs": {
+        "16/18": {
+          "depth": 26.315012,
+          "slot": 40,
+          "tick": 36
+        },
+        "17/18": {
+          "depth": 14.84455,
+          "slot": 40,
+          "tick": 38
+        },
+        "20/22": null
+      },
+      "after_target_pairs": {
+        "16/18": {
+          "depth": 0,
+          "count": 0
+        },
+        "17/18": {
+          "depth": 0,
+          "count": 0
+        },
+        "20/22": {
+          "depth": 0,
+          "count": 0
+        }
+      }
+    },
+    "336": {
+      "before_ledger": "../mesh-round-4/336-after.csv.gz",
+      "after_ledger": "336-after.csv.gz",
+      "before_max_depth": 155.921813,
+      "after_max_depth": 139.21282696169314,
+      "new_deep_bone_pairs": {},
+      "existing_pair_regressions_over_3_units": {},
+      "before_target_pairs": {
+        "3/23": {
+          "depth": 62.527368,
+          "slot": 21,
+          "tick": 7
+        },
+        "3/21": {
+          "depth": 155.921813,
+          "slot": 21,
+          "tick": 4
+        }
+      },
+      "after_target_pairs": {
+        "3/23": {
+          "depth": 0,
+          "count": 0
+        },
+        "3/21": {
+          "bones": [
+            3,
+            21
+          ],
+          "objects": [
+            2,
+            20
+          ],
+          "adjacent": false,
+          "count": 50,
+          "depth": 123.20606741256651,
+          "slot": 43,
+          "tick": 36
+        }
+      }
+    }
+  },
+  "heap": {
+    "peak_before": 100256,
+    "peak_after": 100256,
+    "allocation": 100352
+  },
+  "repaired_pairs_are_not_full_model_clearance": true,
+  "preservation": "preservation.json",
+  "renders": "renders.json",
+  "detector": "detector.json.gz"
+}
