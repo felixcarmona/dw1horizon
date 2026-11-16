@@ -1,0 +1,263 @@
+{
+  "changed_pins": [
+    335,
+    336,
+    406,
+    409,
+    461
+  ],
+  "peak_resident": 100256,
+  "allocation": 100352,
+  "models": {
+    "409": {
+      "slots": 47,
+      "ticks": 1461,
+      "storage": {
+        "before": {
+          "resident_bytes": 94834,
+          "cold_bytes": 27264,
+          "fits": true
+        },
+        "after": {
+          "resident_bytes": 94882,
+          "cold_bytes": 27264,
+          "fits": true
+        }
+      },
+      "hashes": {
+        "before": "a93d83b972c6d5db23c9530ec024c8f8e7c8394392802b14ff68cd953a9667c4",
+        "after": "fe5a9e324b26ea25874678a8fc8b61a07206c2638f8ab746a8679959d0faa5ad"
+      },
+      "changed_rotations": [],
+      "changed_translations": [],
+      "zero_triangles_before_after": [
+        4,
+        4
+      ],
+      "packet_bytes_before_after": [
+        33988,
+        33988
+      ]
+    },
+    "406": {
+      "slots": 52,
+      "ticks": 1714,
+      "storage": {
+        "before": {
+          "resident_bytes": 74402,
+          "cold_bytes": 23720,
+          "fits": true
+        },
+        "after": {
+          "resident_bytes": 74558,
+          "cold_bytes": 23720,
+          "fits": true
+        }
+      },
+      "hashes": {
+        "before": "57e64afc5e67c910611dafe62b54b32cd05ef95ec730e8d27dbc55c24034a863",
+        "after": "b7b40781b019702e098504b9642dedc0579dc89ef47bec06ce3679319f24b03f"
+      },
+      "changed_rotations": [
+        54,
+        61
+      ],
+      "changed_translations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        21,
+        22,
+        23,
+        24,
+        25,
+        27,
+        33,
+        34,
+        35,
+        36,
+        37,
+        40,
+        41,
+        42,
+        43,
+        44,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62
+      ],
+      "zero_triangles_before_after": [
+        0,
+        0
+      ],
+      "packet_bytes_before_after": [
+        33444,
+        33444
+      ]
+    },
+    "335": {
+      "slots": 52,
+      "ticks": 2009,
+      "storage": {
+        "before": {
+          "resident_bytes": 95994,
+          "cold_bytes": 28172,
+          "fits": true
+        },
+        "after": {
+          "resident_bytes": 97536,
+          "cold_bytes": 29152,
+          "fits": true
+        }
+      },
+      "hashes": {
+        "before": "5d72b40e1725c5f71b93ea88d0242e242acfcf28a320be69eb23bc2d07d1f3d2",
+        "after": "5325d911382dca3a2b3e5abfd9c4b0c601bb5e9b3cfb3bf0522a0c5752a297ae"
+      },
+      "changed_rotations": [
+        1,
+        4,
+        5,
+        8,
+        10,
+        12,
+        14,
+        15,
+        16,
+        17,
+        18,
+        21,
+        25,
+        27,
+        34,
+        35,
+        36,
+        37,
+        43,
+        44,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62
+      ],
+      "changed_translations": [],
+      "zero_triangles_before_after": [
+        0,
+        0
+      ],
+      "packet_bytes_before_after": [
+        40232,
+        40232
+      ]
+    },
+    "461": {
+      "slots": 52,
+      "ticks": 2116,
+      "storage": {
+        "before": {
+          "resident_bytes": 81434,
+          "cold_bytes": 21192,
+          "fits": true
+        },
+        "after": {
+          "resident_bytes": 81566,
+          "cold_bytes": 21192,
+          "fits": true
+        }
+      },
+      "hashes": {
+        "before": "552882deb512f1c0fab4f8a102bab774453f29c70b12ee72094dfdbf2674a6c4",
+        "after": "628c15859c560ceb7387a438e45cf65f2041f7c37204997973e20179011fae01"
+      },
+      "changed_rotations": [
+        40,
+        41
+      ],
+      "changed_translations": [],
+      "zero_triangles_before_after": [
+        0,
+        0
+      ],
+      "packet_bytes_before_after": [
+        28632,
+        28632
+      ]
+    },
+    "336": {
+      "slots": 51,
+      "ticks": 1684,
+      "storage": {
+        "before": {
+          "resident_bytes": 72622,
+          "cold_bytes": 15916,
+          "fits": true
+        },
+        "after": {
+          "resident_bytes": 72646,
+          "cold_bytes": 15916,
+          "fits": true
+        }
+      },
+      "hashes": {
+        "before": "093341a9df9bc32d48512623e06c3c9143883479a2c8266edf4eb8ad04fb8a77",
+        "after": "800defdc5595fe6caea615ef56750f1e018d6ed96505d0366800411ec18dc956"
+      },
+      "changed_rotations": [
+        21,
+        44
+      ],
+      "changed_translations": [],
+      "zero_triangles_before_after": [
+        0,
+        0
+      ],
+      "packet_bytes_before_after": [
+        34744,
+        34744
+      ]
+    }
+  }
+}

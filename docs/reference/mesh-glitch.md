@@ -546,3 +546,127 @@ python3 -m tools.models.mesh_round4 AFTER 336 --detector docs/reference/mesh-gli
 python3 -m tools.derive.steps.species pin BUILD --prepared 336 461
 python3 -m unittest tools.test_mesh_round4 tools.test_mesh_cleanup tools.test_psx_blend tools.test_mesh_stability tools.test_meshcheck tools.test_battle_qa tools.test_imported_model_edit tools.test_species_pins tools.test_motionstorage
 ```
+
+## Round 5: fan binding, hinges and eased clip repairs
+
+The five reported models receive geometry and pose repairs beyond the round-four
+translation bounds. The [audit](mesh-round-5/audit.json) records exhaustive after
+ledgers for all 254 occupied slots / 8,984 ticks, including adjacent pieces and
+both penetration directions. Before ledgers are the round-four after ledgers:
+all five incoming provider pairs reproduced their existing pins before editing.
+The five complete models are **not certified visually clean**.
+
+| Model / reported parts | Maximum symmetric depth before → after (world units) |
+| --- | ---: |
+| 409 Kyubimon, tail tiers | 56.844 → 8.355 across retained sections; cross-tail maximum 5.140 |
+| 406 MaloMyotismon, left housing/cap | 27.805 → 0 |
+| 406 MaloMyotismon, right housing/cap | 27.922 → 0 |
+| 335 MegaGargomon, shoulder/forearm 23/25 | 47.200 → 0 |
+| 335 MegaGargomon, opposite shoulder/forearm 13/15 | 34.980 → 0 |
+| 461 Omnimon, left calf/toe 16/18 | 26.315 → 0 |
+| 461 Omnimon, left boot/toe 17/18 | 14.845 → 0 |
+| 336 Raidenmon, forearm/plate 3/23 | 62.527 → 0 |
+| 336 Raidenmon, forearm/calf 3/21 in slots 21/44 | 155.922 → 0; same pair still reaches 123.206 in slot 43 |
+
+* Kyubimon: nine proximal shells were on fan joint 15 while seven end shells
+  were on serial donor joints 16/17. Larger rotations separated the fan into
+  disconnected sections; that trial was rejected. Instead, fit each end onto
+  its matching proximal ray, join attachment rings, and bind the complete tails
+  to the existing swaying fan joint. Narrow each tail's cross section to 45%,
+  retaining its longitudinal extent, all nine tails, flames and every packet.
+  Transform normals with the fit. The original fan sway, socket extension and
+  every decoded animation channel remain; the ends now follow the fan instead
+  of bending about unrelated serial pivots. Cross-tail contacts reach 5.140
+  units at proximal roots; the inclusive detector reports up to 8.355 units at
+  joined base/end rings. Bone-pair counts alone would hide them after rebinding:
+  the [provenance audit](mesh-round-5/fan.json) retains nine disjoint packet
+  groups, tests every cross-tail pair and original base/end join, and verifies
+  rigid ancestry over all 1,461 ticks. Its depth bound therefore applies throughout every clip.
+* MaloMyotismon: seat each cap's upper rear edge at the housing mouth. Move its
+  pivot by local (0, −15, −121), its local Y by 45, and fit its depth to 30%
+  with the rear edge at the hinge. Preserve width and the original eased
+  opening/recoil curve. The lids now open outward. The first fit introduced
+  lid/arm crossings in the firing program; reject that pose. In slots 54/61,
+  brace upper arms at (−20°, 0°, ±20°), elbows at (−15°, 0°, 0°), retaining
+  15% of their original rotational recoil about the first pose. The final firing
+  clip has no cap/arm crossings and adds no deep pair. Other contacts remain.
+* MegaGargomon: fit both shoulder shells to another 55% about their mounts
+  (38.5% of the pre-round-three size). Retain guns, hands, joint positions and
+  upper-arm motion. Keep elbow pitch unchanged through ±70°, ease to ±90°
+  through ±110°, then smoothly open the elbow across a full-turn windup.
+  This periodic map and its derivative agree across a half-turn; a signed clamp
+  was rejected because it snapped by 180°. A constant +5° upper-arm pitch in
+  shared slots 48/49 retains their easing and clears the opposite shell.
+  Both pairs clear in every clip, including integer-rounded final geometry.
+* Omnimon: halve left toe hinge pitch in slots 40/41, keeping authored easing
+  and boot motion. Fit the left rear lip with factor .53 instead of .76,
+  retaining toe tip, sole height and sockets; transform normals with the fit.
+  The right lip keeps .76. Both left calf/toe and boot/toe now clear throughout
+  every clip; the right pairs remain clear.
+* Raidenmon: in shared slots 21/44, offset upper-arm rotation by
+  (−30°, +30°, +30°). Add a +10° local yaw detour with smoothstep ramps over
+  frames 1→4, held through 6, returning by 12. This clears plate and calf through
+  all 35 ticks. A constant correction alone left one pair crossing and was
+  rejected. The slot-43 repair remains. The largest changed existing upper-arm
+  contact grows 3.098 units; there is no new deep pair.
+
+All five retain the broad detector's part-review flag. The unchanged native
+envelope remains fail for 409/406 and pass for 335/461/336. No new deep bone
+pair appears in the exhaustive ledgers, comparing previous global pair maxima
+at an eight-unit boundary. This regression comparison is separate from the
+height-normalized review classifier and can conceal contact moving to another
+frame. All frame rows and every existing pair growing more than three units
+are retained. In particular, MaloMyotismon's other cap/forearm contacts 3/5 and
+11/13 deepen by 14.726 and 11.630 units, and cap/calf 3/21 by 5.865 units.
+These residual contacts are not declared acceptable visual results.
+
+| Model | Whole-model maximum before → after | Located remaining maximum (bones; slot/frame) | Resident bytes before → after |
+| --- | ---: | --- | ---: |
+| 409 | 56.844 → 54.368 | Head/fan 4/15; 42/40. Tail/thigh 15/19 remains 32.788. | 94,834 → 94,882 |
+| 406 | 90.441 → 90.441 | 1/13; 55/14. Other cap contacts above remain. | 74,402 → 74,558 |
+| 335 | 75.232 → 75.232 | Torso/calf 2/9; 2/22. | 95,994 → 97,536 |
+| 461 | 111.774 → 111.774 | 13/24; 56/14. Sword/calf and cape contacts remain. | 81,434 → 81,566 |
+| 336 | 155.922 → 139.213 | Forearm/thigh 3/20; 43/45. | 72,622 → 72,646 |
+
+Matched [PSX-rule measurements](mesh-round-5/renders.json) cover eight azimuths
+at 30° elevation, idle, both walks, run, and repaired and residual poses. Paired
+sheets remain under build/renders/ in the worktree.
+
+| Model | Pose/view cases | Changed pixels | Two-unit OT-bin-phase-sensitive pixels before → after |
+| --- | ---: | ---: | ---: |
+| 409 | 48 | 216,576 | 3,566 → 3,714 |
+| 406 | 40 | 39,163 | 247 → 223 |
+| 335 | 64 | 97,075 | 1,522 → 1,480 |
+| 461 | 64 | 12,181 | 1,938 → 1,920 |
+| 336 | 72 | 71,549 | 1,641 → 1,425 |
+
+Renders retain first-triangle culling, the GPU diagonal, four-unit OT bins,
+reversed tie insertion, affine textures and PSX blend rules. They remain
+orthographic evidence. Phase-sensitive pixels and bent quads remain, including
+additional bends from integer-rounded fan fitting. No additional primitive
+split is funded here: packet-format totals exactly equal round-four totals,
+preserving the cumulative 1,024-byte cap. No runtime buffer or tie-rule changes.
+These pixel counts do not establish complete runtime visual clearance.
+
+[Preservation](mesh-round-5/preservation.json) verifies all 254 slots / 8,984 ticks:
+identical root travel, timing, loops, events, scales, bone indices and aliases;
+only documented local rotations and cannon socket translations differ. Every
+packet and its UV, material and color data survives; no additional triangle
+collapses. All five resident/cold-read checks pass. All other provider pins are
+unchanged and all edited models stay below the unchanged **100,256 / 100,352 B**
+peak. Only five canonical model pins changed, through the scoped repository
+tool. Texture, native-record and alternate-release pins are unchanged. Fresh
+source/delta/provider checks pass 5/5. The related suite runs 98 tests:
+97 pass, one private-fixture test skipped. Changes remain uncommitted.
+
+Reproduce with final atlas-stamped folders containing index.json:
+
+    python3 -m tools.models.mesh_round4 AFTER 409 --out build/ledger-after
+    # Repeat for 406, 335, 461, 336; before ledgers are linked in audit.json.
+    python3 -m tools.models.mesh_fan AFTER --out build/fan.json
+    python3 -m tools.models.mesh_round4 AFTER 409 --detector docs/reference/mesh-glitch-audit.json --out build/409-detector.json
+    # Render slot/frame cases are retained in renders.json.
+    python3 -m tools.models.mesh_round4 BEFORE 409 --after AFTER --cases CASES.json --out build/renders/409
+    python3 -m tools.derive.steps.species pin BUILD --prepared 409 406 335 461 336
+    python3 tools/models/edit.py --from BUILD check 409 406 335 461 336 --species-pins
+    python3 -m unittest tools.test_mesh_round5 tools.test_mesh_round4 tools.test_mesh_cleanup tools.test_psx_blend tools.test_mesh_stability tools.test_meshcheck tools.test_battle_qa tools.test_imported_model_edit tools.test_species_pins tools.test_motionstorage

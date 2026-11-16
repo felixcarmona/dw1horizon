@@ -145,11 +145,11 @@ def offset_layer(model, oi, primitives, delta):
         model.tmd.verts.extend(pool)
 
 
-def fit_toe_lip(model, oi):
+def fit_toe_lip(model, oi, factor=.76):
     """Pull only the rear lip into the boot, keeping the tip and sole height.
 
-    The last 50 local Z units compress by 24%, moving the rearmost corner 12
-    units. Normals receive the inverse of this piecewise affine deformation.
+    By default the last 50 local Z units compress by 24%, moving the
+    rearmost corner 12 units. Reviewed fits may use a different factor. Normals receive the inverse of this piecewise affine deformation.
     The incoming final pools are compact, with object-local normal indices.
     """
     obj = model.tmd.objects[oi]
@@ -163,7 +163,7 @@ def fit_toe_lip(model, oi):
             points = [vertices[v] for v in d['verts']] if len(d['norms']) == 1 else [vertices[d['verts'][k]]]
             z = sum(v[2] for v in points)/len(points)
             n = old[ni]
-            q = [n[0], n[1], n[2]/(.76 if z > -40 else 1)]
+            q = [n[0], n[1], n[2]/(factor if z > -40 else 1)]
             length = math.sqrt(sum(v*v for v in q))
             normal = tuple(round(v*4096/length) if length else 0 for v in q)+(n[3],)
             if normal not in lookup:
@@ -177,7 +177,7 @@ def fit_toe_lip(model, oi):
         ob.norm_start, ob.nnorm = len(model.tmd.norms), len(pool)
         model.tmd.norms.extend(pool)
     for vi, v in enumerate(vertices):
-        z = round(-40+(v[2]+40)*.76) if v[2] > -40 else v[2]
+        z = round(-40+(v[2]+40)*factor) if v[2] > -40 else v[2]
         model.tmd.verts[obj.vert_start+vi] = (v[0], v[1], z, v[3])
 
 
@@ -191,6 +191,107 @@ def apply(data, bones, sid):
         raise ValueError(f'{sid}: surface repair requires the reviewed final TMD')
     model = mmd.MMD.parse(data, len(bones))
     report = dict(applied=True)
+    if sid == 183:
+        # The rebound rear body starts inside the front body and middle legs.
+        # Extend its socket by ten local Z units, retaining the complete crawl
+        # wave, all absolute/incremental keys and the original root trajectory.
+        if tuple(bones[24]) != (12, 1) or tuple(bones[25]) != (13, 24):
+            raise ValueError('rear body repair requires the reviewed crawl binding')
+        translate_bone(model, 24, 2, 10)
+        report['rear_body_socket_extension'] = [0, 0, 10]
+    if sid == 193:
+        # Broad pelvis, thigh/calf and drill-arm shells intersect their adjoining
+        # parts during the source battle swing. Fit those shells about the
+        # existing sockets; leave head, wings, drills, feet and all motion intact.
+        for oi in (0, 1, 2, 5, 6, 14, 17):
+            transform_piece(model, oi, scale=(.8, .8, .8))
+        for oi in (21, 24):
+            transform_piece(model, oi, scale=(.9, .9, .9))
+        report['limb_shell_fit'] = .8
+        report['hand_shell_fit'] = .9
+    if sid == 196:
+        # Front/rear thigh shells overlap in the walk cycle. Fit those shells,
+        # the front shins and rear foot armour about their existing sockets;
+        # retain the front feet, wing span and every joint trajectory.
+        # Six percent at the front thighs also preserves a thin triangle that
+        # would become collinear under five-percent integer rounding.
+        for oi in (11, 14):
+            transform_piece(model, oi, scale=(.94, .94, .94))
+        for oi in (17, 21, 12, 15, 20, 24):
+            transform_piece(model, oi, scale=(.95, .95, .95))
+        report['front_thigh_fit'] = .94
+        report['leg_shell_fit'] = .95
+    if sid == 218:
+        # The whisker roots lie on the head's fur layer. Move each whisker four
+        # units outward, keeping its two windings together and its root embedded.
+        # Opposite-facing fur surfaces are intentional and remain untouched.
+        for oi, dx in ((4, 4), (5, -4)):
+            transform_piece(model, oi, offset=(dx, 0, 0))
+        report['whisker_outward_offset'] = 4
+    if sid == 220:
+        # The stored weapons pass through the shoulder shells in the attack
+        # poses. Move their complete meshes rearward within the existing mount;
+        # the binding and every animation (including root travel) stay exact.
+        for oi in (17, 18):
+            transform_piece(model, oi, offset=(0, 0, 8))
+        # The alternate facial texture occupies the head's exact surface.
+        # Keep its UVs and animated transparency on independent front corners.
+        offset_layer(model, 2, range(88, 92), (0, 0, -4))
+        report['stored_weapon_offset'] = [0, 0, 8]
+        report['face_layer_offset'] = [0, 0, -4]
+    if sid == 236:
+        # Give both wing-tip undersides their own two-unit layer. The opposite
+        # windings are needed for two-sided visibility and must not be deleted.
+        # Move each complete two-quad sheet together, retaining its shared edge.
+        for oi in (3, 6):
+            offset_layer(model, oi, (2, 3), (0, 2, 0))
+        report['wing_underside_offset'] = [0, 2, 0]
+    if sid == 238:
+        # Adjacent tail sections have long overlapping collars. Retract both
+        # ends about local Z=40, retaining the radial silhouette and all sockets.
+        # Inverse-scale normals keep the fitted shells' lighting coherent.
+        for oi in (5, 6, 7, 8):
+            transform_piece(model, oi, scale=(1, 1, .78), offset=(0, 0, 8.8))
+        report['tail_axial_fit'] = dict(scale=.78, center=40)
+    if sid == 270:
+        # Preserve both red cape textures on separate sheets, including the
+        # folded bottom panel. A common offset keeps each sheet's seams exact;
+        # per-packet normal offsets would pull adjacent panels apart.
+        offset_layer(model, 6, (177, 178, 179, 183, 184, 185, 187), (0, 3, 0))
+        report['cape_inner_layer_offset'] = [0, 3, 0]
+    if sid == 275:
+        # The broad tail tiers sweep through one another when curled. Keep
+        # their sockets and longitudinal reach, fitting only the radial shell.
+        for oi in (16, 17, 18):
+            transform_piece(model, oi, scale=(.85, .85, 1))
+        # Integer fitting introduces four small bends. Give their existing
+        # GPU halves independent culling, within the original packet allowance.
+        selected = {(r['object'], r['primitive']) for r in mesh_stability.bent_quads(model)}
+        for oi, obj in enumerate(model.tmd.objects):
+            obj.prims = [half for pi, prim in enumerate(obj.prims)
+                         for half in (mesh_stability.split_quad(prim)
+                                      if (oi, pi) in selected else [prim])]
+        report['tail_radial_fit'] = .85
+        report['fit_quad_splits'] = len(selected)
+    if sid == 283:
+        # Separate the lower shell rim from the upper shell. The inner
+        # creature's tiny closed-shell scale is an intentional visibility mask.
+        transform_piece(model, 5, offset=(0, -8, 0))
+        report['lower_shell_offset'] = [0, -8, 0]
+    if sid == 303:
+        # Two double-sided body-card strips overlap at their inner seam.
+        # Retract only the left strip's five seam corners to local X=2,
+        # keeping its outer edge, both windings and its original UVs/normals.
+        obj = model.tmd.objects[0]
+        vertices = model.tmd.obj_verts(0)
+        seam = sorted({vi for pi in range(151, 159)
+                       for vi in obj.prims[pi].decode()['verts'] if vertices[vi][0] > 0})
+        if seam != [133, 135, 137, 139, 141]:
+            raise ValueError('body-card seam no longer matches reviewed mesh')
+        for vi in seam:
+            vertex = vertices[vi]
+            model.tmd.verts[obj.vert_start+vi] = (2, *vertex[1:])
+        report['body_card_seam_x'] = 2
     if sid == 295:
         # Two quads end in a collinear second half. Keep their complete first
         # GPU triangle and discard only the zero-area half, including its bogus
@@ -220,12 +321,35 @@ def apply(data, bones, sid):
         translate_bone(model, 15, 2, -20)
         transform_piece(model, 8, scale=(144/84, 1, 1), shear_zx=-20/84)
         report['tail_socket_extension'] = [60, 0, -20]
+        from tools.models import mesh_fan
+        report['tail_fan'] = mesh_fan.apply(model)
     if sid == 406:
         # Both cannon caps cut through the housings. Advance their rear lip
         # eight local units; their separate animation and material stay intact.
         for oi in (2, 9):
             transform_piece(model, oi, offset=(0, 0, -8))
         report['cannon_cap_offset'] = -8
+        # The lids were pivoting from inside the housings. Seat their upper
+        # rear edge on the mouth instead: their original negative-pitch opening
+        # now sweeps outward. Keep all recoil keys and the full opening curve.
+        for bone, oi in ((3, 2), (11, 9)):
+            translate_bone(model, bone, 1, -15)
+            translate_bone(model, bone, 2, -121)
+            transform_piece(model, oi, scale=(1, 1, .3), offset=(0, 45, -12))
+        report['cannon_hinge_offset'] = [0, -15, -121]
+        report['cannon_lid_depth_fit'] = .3
+        # The firing program crossed both arms through the mouths. Brace them
+        # beside the cannons, retaining a small eased recoil from their authored
+        # curves; the chest, cannon opening, effects and firing events stay exact.
+        from tools.models import mesh_pose
+        def cannon_brace(slot, tick, poses):
+            targets = {4: (-20, 0, 20), 12: (-20, 0, -20),
+                       5: (-15, 0, 0), 13: (-15, 0, 0)}
+            return {(bone, axis): round(deg*4096/360+
+                        .15*(poses[tick][bone][3+axis]-poses[0][bone][3+axis]))
+                    for bone, angles in targets.items() for axis, deg in enumerate(angles)}
+        report['cannon_brace_slots'] = mesh_pose.edit(model, bones, cannon_brace, {54, 61})
+        report['cannon_brace_recoil_gain'] = .15
     if sid == 335:
         # Oversized rigid shoulder shells engulfed the elbow during its swing.
         # Fit the shell about the shoulder mount; keep the arm and muzzle rig.
@@ -236,6 +360,19 @@ def apply(data, bones, sid):
             transform_piece(model, oi, scale=(.9, 1, .9))
         report['shoulder_fit'] = .7
         report['calf_radial_fit'] = .9
+        # The imported elbow windups fold the gun back through the shell.
+        # A periodic eased arc avoids the half-turn jump of a signed clamp.
+        from tools.models import mesh_pose
+        def elbow_arc(slot, tick, poses):
+            return {(b, 0): mesh_pose.elbow_pitch(poses[tick][b][3]) for b in (15, 25)}
+        report['elbow_arc_slots'] = mesh_pose.edit(model, bones, elbow_arc)
+        for oi in (12, 22):
+            transform_piece(model, oi, scale=(.55, .55, .55))
+        report['additional_shoulder_fit'] = .55
+        # The remaining mirrored shoulder contact is confined to this attack.
+        # Keep its swing and easing with a small constant upper-arm correction.
+        rotate_clip_bone(model, 48, 14, (5, 0, 0))
+        report['slot_48_upper_arm_pitch_degrees'] = 5
     if sid == 336:
         # The wide shoulder plates swept through both forearms and the calves.
         # Narrow each plate toward its unchanged inner mounting edge.
@@ -250,6 +387,17 @@ def apply(data, bones, sid):
             raise ValueError('forearm repair requires the reviewed independent slot 43')
         rotate_clip_bone(model, 43, 3, (-10, 10, -5))
         report['slot_43_forearm_rotation_degrees'] = [-10, 10, -5]
+        # Open the upper arm in the shared recovery pose; a short eased yaw
+        # detour clears the calf during the middle of the movement as well.
+        from tools.models import mesh_pose
+        def recovery_arm(slot, tick, poses):
+            weight = mesh_pose.smoothstep((tick-1)/3)*(1-mesh_pose.smoothstep((tick-6)/6))
+            angles = (-30, 30+10*weight, 30)
+            return {(2, axis): poses[tick][2][3+axis]+round(deg*4096/360)
+                    for axis, deg in enumerate(angles)}
+        report['recovery_arm_slots'] = mesh_pose.edit(model, bones, recovery_arm, {21, 44})
+        report['recovery_arm_degrees'] = [-30, 30, 30]
+        report['recovery_yaw_detour'] = dict(degrees=10, ticks=[1, 4, 6, 12])
     if sid == 461:
         # Animated face masks were exactly on the base head. Keep the masks
         # (including currently transparent texels) on one independent front layer.
@@ -261,10 +409,15 @@ def apply(data, bones, sid):
         # The toe armour's rear lip swept back through the calf and boot.
         # Retract that lip without shortening the toe or moving either joint.
         for oi in (17, 21):
-            fit_toe_lip(model, oi)
+            fit_toe_lip(model, oi, factor=.53 if oi == 17 else .76)
         report['face_layer_offset'] = -6
         report['ankle_radial_fit'] = .6
-        report['toe_rear_lip_fit'] = .76
+        report['toe_rear_lip_fit'] = [.53, .76]
+        from tools.models import mesh_pose
+        def toe_arc(slot, tick, poses):
+            return {(18, 0): round(poses[tick][18][3]*.5)}
+        report['left_toe_arc_slots'] = mesh_pose.edit(model, bones, toe_arc, {40, 41})
+        report['left_toe_arc_gain'] = .5
     if sid == 432:
         report['duplicate_packets'] = duplicate_surfaces(model)
     if sid == 323:
@@ -336,7 +489,13 @@ def apply(data, bones, sid):
         # cover a pixel before projection rounding and has no surface to retain.
         model.tmd.objects[2].prims.pop(0)
         report['zero_surface_packets'] = 1
+    if sid in (405, 407, 473):
+        from tools.models import mesh_ge
+        report.update(mesh_ge.apply(model, bones, sid))
     mesh_stability.compact_pools(model)
+    if sid in (307, 314, 323, 326):
+        from tools.models import mesh_gd
+        report.update(mesh_gd.apply(model, sid))
     return model.build(), report
 
 

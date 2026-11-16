@@ -1,0 +1,1262 @@
+{
+  "name": "MegaGargomon",
+  "slots": {
+    "0": {
+      "ticks": 81,
+      "crossing_frames": 81,
+      "max_depth": 40.544165654139185
+    },
+    "1": {
+      "ticks": 21,
+      "crossing_frames": 21,
+      "max_depth": 55.659722162896855
+    },
+    "2": {
+      "ticks": 41,
+      "crossing_frames": 41,
+      "max_depth": 75.23245924415433
+    },
+    "3": {
+      "ticks": 49,
+      "crossing_frames": 49,
+      "max_depth": 70.40207705533571
+    },
+    "4": {
+      "ticks": 41,
+      "crossing_frames": 41,
+      "max_depth": 71.68282234708819
+    },
+    "5": {
+      "ticks": 61,
+      "crossing_frames": 61,
+      "max_depth": 50.14615534506808
+    },
+    "7": {
+      "ticks": 51,
+      "crossing_frames": 51,
+      "max_depth": 53.7576002501988
+    },
+    "8": {
+      "ticks": 41,
+      "crossing_frames": 41,
+      "max_depth": 63.20479322172757
+    },
+    "9": {
+      "ticks": 51,
+      "crossing_frames": 51,
+      "max_depth": 67.46212685180306
+    },
+    "10": {
+      "ticks": 55,
+      "crossing_frames": 55,
+      "max_depth": 60.40753611249028
+    },
+    "11": {
+      "ticks": 41,
+      "crossing_frames": 41,
+      "max_depth": 43.917928521932296
+    },
+    "12": {
+      "ticks": 25,
+      "crossing_frames": 25,
+      "max_depth": 70.6185281409286
+    },
+    "13": {
+      "ticks": 41,
+      "crossing_frames": 41,
+      "max_depth": 47.134230831906095
+    },
+    "14": {
+      "ticks": 21,
+      "crossing_frames": 21,
+      "max_depth": 55.659722162896855
+    },
+    "15": {
+      "ticks": 21,
+      "crossing_frames": 21,
+      "max_depth": 55.659722162896855
+    },
+    "16": {
+      "ticks": 21,
+      "crossing_frames": 21,
+      "max_depth": 55.659722162896855
+    },
+    "17": {
+      "ticks": 21,
+      "crossing_frames": 21,
+      "max_depth": 55.659722162896855
+    },
+    "18": {
+      "ticks": 21,
+      "crossing_frames": 21,
+      "max_depth": 55.659722162896855
+    },
+    "19": {
+      "ticks": 8,
+      "crossing_frames": 8,
+      "max_depth": 47.134230831906095
+    },
+    "21": {
+      "ticks": 31,
+      "crossing_frames": 31,
+      "max_depth": 61.80721672379213
+    },
+    "22": {
+      "ticks": 21,
+      "crossing_frames": 21,
+      "max_depth": 60.4045558845305
+    },
+    "23": {
+      "ticks": 31,
+      "crossing_frames": 31,
+      "max_depth": 66.3480146819171
+    },
+    "24": {
+      "ticks": 7,
+      "crossing_frames": 7,
+      "max_depth": 47.134230831906095
+    },
+    "25": {
+      "ticks": 7,
+      "crossing_frames": 7,
+      "max_depth": 59.46745176609177
+    },
+    "27": {
+      "ticks": 23,
+      "crossing_frames": 23,
+      "max_depth": 70.97462883778381
+    },
+    "33": {
+      "ticks": 81,
+      "crossing_frames": 81,
+      "max_depth": 50.6785640891746
+    },
+    "34": {
+      "ticks": 21,
+      "crossing_frames": 21,
+      "max_depth": 55.659722162896855
+    },
+    "35": {
+      "ticks": 21,
+      "crossing_frames": 21,
+      "max_depth": 59.60514225673686
+    },
+    "36": {
+      "ticks": 17,
+      "crossing_frames": 17,
+      "max_depth": 63.30132278908435
+    },
+    "37": {
+      "ticks": 7,
+      "crossing_frames": 7,
+      "max_depth": 58.76649103976329
+    },
+    "40": {
+      "ticks": 24,
+      "crossing_frames": 24,
+      "max_depth": 47.45626074344017
+    },
+    "41": {
+      "ticks": 24,
+      "crossing_frames": 24,
+      "max_depth": 47.45626074344017
+    },
+    "42": {
+      "ticks": 41,
+      "crossing_frames": 41,
+      "max_depth": 43.917928521932296
+    },
+    "43": {
+      "ticks": 37,
+      "crossing_frames": 37,
+      "max_depth": 62.1452751683346
+    },
+    "44": {
+      "ticks": 31,
+      "crossing_frames": 31,
+      "max_depth": 61.80721672379213
+    },
+    "46": {
+      "ticks": 61,
+      "crossing_frames": 61,
+      "max_depth": 69.49523571943469
+    },
+    "47": {
+      "ticks": 61,
+      "crossing_frames": 61,
+      "max_depth": 69.49523571943469
+    },
+    "48": {
+      "ticks": 53,
+      "crossing_frames": 53,
+      "max_depth": 57.86820208547957
+    },
+    "49": {
+      "ticks": 53,
+      "crossing_frames": 53,
+      "max_depth": 57.86820208547957
+    },
+    "50": {
+      "ticks": 61,
+      "crossing_frames": 61,
+      "max_depth": 69.49523571943469
+    },
+    "51": {
+      "ticks": 39,
+      "crossing_frames": 39,
+      "max_depth": 56.31841939090934
+    },
+    "52": {
+      "ticks": 61,
+      "crossing_frames": 61,
+      "max_depth": 69.49523571943469
+    },
+    "53": {
+      "ticks": 61,
+      "crossing_frames": 61,
+      "max_depth": 69.49523571943469
+    },
+    "54": {
+      "ticks": 45,
+      "crossing_frames": 45,
+      "max_depth": 56.31841939090934
+    },
+    "55": {
+      "ticks": 39,
+      "crossing_frames": 39,
+      "max_depth": 56.31841939090934
+    },
+    "56": {
+      "ticks": 39,
+      "crossing_frames": 39,
+      "max_depth": 56.31841939090934
+    },
+    "57": {
+      "ticks": 39,
+      "crossing_frames": 39,
+      "max_depth": 56.31841939090934
+    },
+    "58": {
+      "ticks": 61,
+      "crossing_frames": 61,
+      "max_depth": 69.49523571943469
+    },
+    "59": {
+      "ticks": 39,
+      "crossing_frames": 39,
+      "max_depth": 56.31841939090934
+    },
+    "60": {
+      "ticks": 39,
+      "crossing_frames": 39,
+      "max_depth": 56.31841939090934
+    },
+    "61": {
+      "ticks": 61,
+      "crossing_frames": 61,
+      "max_depth": 69.49523571943469
+    },
+    "62": {
+      "ticks": 61,
+      "crossing_frames": 61,
+      "max_depth": 69.49523571943469
+    }
+  },
+  "pairs": {
+    "1/2": {
+      "bones": [
+        1,
+        2
+      ],
+      "objects": [
+        0,
+        1
+      ],
+      "adjacent": true,
+      "count": 16,
+      "depth": 41.247504898653,
+      "slot": 48,
+      "tick": 30
+    },
+    "1/13": {
+      "bones": [
+        1,
+        13
+      ],
+      "objects": [
+        0,
+        12
+      ],
+      "adjacent": true,
+      "count": 21,
+      "depth": 29.530719090086087,
+      "slot": 11,
+      "tick": 9
+    },
+    "1/17": {
+      "bones": [
+        1,
+        17
+      ],
+      "objects": [
+        0,
+        16
+      ],
+      "adjacent": true,
+      "count": 37,
+      "depth": 38.93811355700595,
+      "slot": 46,
+      "tick": 15
+    },
+    "1/18": {
+      "bones": [
+        1,
+        18
+      ],
+      "objects": [
+        0,
+        17
+      ],
+      "adjacent": false,
+      "count": 7,
+      "depth": 21.589912000627795,
+      "slot": 23,
+      "tick": 22
+    },
+    "1/23": {
+      "bones": [
+        1,
+        23
+      ],
+      "objects": [
+        0,
+        22
+      ],
+      "adjacent": true,
+      "count": 20,
+      "depth": 28.663673258210405,
+      "slot": 11,
+      "tick": 9
+    },
+    "2/3": {
+      "bones": [
+        2,
+        3
+      ],
+      "objects": [
+        1,
+        2
+      ],
+      "adjacent": true,
+      "count": 19,
+      "depth": 63.20479322172757,
+      "slot": 8,
+      "tick": 26
+    },
+    "2/4": {
+      "bones": [
+        2,
+        4
+      ],
+      "objects": [
+        1,
+        3
+      ],
+      "adjacent": false,
+      "count": 19,
+      "depth": 70.6185281409286,
+      "slot": 12,
+      "tick": 15
+    },
+    "2/7": {
+      "bones": [
+        2,
+        7
+      ],
+      "objects": [
+        1,
+        6
+      ],
+      "adjacent": true,
+      "count": 18,
+      "depth": 52.255825454807024,
+      "slot": 43,
+      "tick": 10
+    },
+    "2/8": {
+      "bones": [
+        2,
+        8
+      ],
+      "objects": [
+        1,
+        7
+      ],
+      "adjacent": true,
+      "count": 18,
+      "depth": 70.40207705533571,
+      "slot": 3,
+      "tick": 40
+    },
+    "2/9": {
+      "bones": [
+        2,
+        9
+      ],
+      "objects": [
+        1,
+        8
+      ],
+      "adjacent": false,
+      "count": 22,
+      "depth": 75.23245924415433,
+      "slot": 2,
+      "tick": 22
+    },
+    "2/12": {
+      "bones": [
+        2,
+        12
+      ],
+      "objects": [
+        1,
+        11
+      ],
+      "adjacent": true,
+      "count": 14,
+      "depth": 44.99022976904039,
+      "slot": 36,
+      "tick": 8
+    },
+    "3/4": {
+      "bones": [
+        3,
+        4
+      ],
+      "objects": [
+        2,
+        3
+      ],
+      "adjacent": true,
+      "count": 20,
+      "depth": 43.083518338519696,
+      "slot": 9,
+      "tick": 21
+    },
+    "3/7": {
+      "bones": [
+        3,
+        7
+      ],
+      "objects": [
+        2,
+        6
+      ],
+      "adjacent": false,
+      "count": 10,
+      "depth": 59.241760337956904,
+      "slot": 4,
+      "tick": 39
+    },
+    "4/5": {
+      "bones": [
+        4,
+        5
+      ],
+      "objects": [
+        3,
+        4
+      ],
+      "adjacent": true,
+      "count": 38,
+      "depth": 51.75731075283779,
+      "slot": 27,
+      "tick": 15
+    },
+    "4/6": {
+      "bones": [
+        4,
+        6
+      ],
+      "objects": [
+        3,
+        5
+      ],
+      "adjacent": false,
+      "count": 4,
+      "depth": 26.632405315328405,
+      "slot": 4,
+      "tick": 6
+    },
+    "4/7": {
+      "bones": [
+        4,
+        7
+      ],
+      "objects": [
+        3,
+        6
+      ],
+      "adjacent": false,
+      "count": 12,
+      "depth": 58.691986878535374,
+      "slot": 46,
+      "tick": 53
+    },
+    "5/6": {
+      "bones": [
+        5,
+        6
+      ],
+      "objects": [
+        4,
+        5
+      ],
+      "adjacent": true,
+      "count": 14,
+      "depth": 29.61853315211897,
+      "slot": 51,
+      "tick": 3
+    },
+    "8/9": {
+      "bones": [
+        8,
+        9
+      ],
+      "objects": [
+        7,
+        8
+      ],
+      "adjacent": true,
+      "count": 20,
+      "depth": 42.213388264810135,
+      "slot": 2,
+      "tick": 25
+    },
+    "8/12": {
+      "bones": [
+        8,
+        12
+      ],
+      "objects": [
+        7,
+        11
+      ],
+      "adjacent": false,
+      "count": 20,
+      "depth": 53.56097841231049,
+      "slot": 2,
+      "tick": 37
+    },
+    "9/10": {
+      "bones": [
+        9,
+        10
+      ],
+      "objects": [
+        8,
+        9
+      ],
+      "adjacent": true,
+      "count": 28,
+      "depth": 47.56594828493793,
+      "slot": 43,
+      "tick": 6
+    },
+    "9/12": {
+      "bones": [
+        9,
+        12
+      ],
+      "objects": [
+        8,
+        11
+      ],
+      "adjacent": false,
+      "count": 14,
+      "depth": 56.33398475970466,
+      "slot": 2,
+      "tick": 7
+    },
+    "10/11": {
+      "bones": [
+        10,
+        11
+      ],
+      "objects": [
+        9,
+        10
+      ],
+      "adjacent": true,
+      "count": 20,
+      "depth": 26.179108196176067,
+      "slot": 36,
+      "tick": 11
+    },
+    "14/15": {
+      "bones": [
+        14,
+        15
+      ],
+      "objects": [
+        13,
+        14
+      ],
+      "adjacent": true,
+      "count": 14,
+      "depth": 27.118642935017995,
+      "slot": 21,
+      "tick": 14
+    },
+    "15/16": {
+      "bones": [
+        15,
+        16
+      ],
+      "objects": [
+        14,
+        15
+      ],
+      "adjacent": true,
+      "count": 28,
+      "depth": 35.465804992409616,
+      "slot": 13,
+      "tick": 38
+    },
+    "17/18": {
+      "bones": [
+        17,
+        18
+      ],
+      "objects": [
+        16,
+        17
+      ],
+      "adjacent": true,
+      "count": 14,
+      "depth": 35.75598587777119,
+      "slot": 46,
+      "tick": 15
+    },
+    "17/19": {
+      "bones": [
+        17,
+        19
+      ],
+      "objects": [
+        16,
+        18
+      ],
+      "adjacent": true,
+      "count": 20,
+      "depth": 33.770397096420346,
+      "slot": 11,
+      "tick": 28
+    },
+    "17/22": {
+      "bones": [
+        17,
+        22
+      ],
+      "objects": [
+        16,
+        21
+      ],
+      "adjacent": true,
+      "count": 22,
+      "depth": 33.480156484285715,
+      "slot": 11,
+      "tick": 24
+    },
+    "24/25": {
+      "bones": [
+        24,
+        25
+      ],
+      "objects": [
+        23,
+        24
+      ],
+      "adjacent": true,
+      "count": 11,
+      "depth": 17.901097192841515,
+      "slot": 46,
+      "tick": 52
+    },
+    "25/26": {
+      "bones": [
+        25,
+        26
+      ],
+      "objects": [
+        24,
+        25
+      ],
+      "adjacent": true,
+      "count": 21,
+      "depth": 26.0504469644848,
+      "slot": 48,
+      "tick": 24
+    },
+    "9/11": {
+      "bones": [
+        9,
+        11
+      ],
+      "objects": [
+        8,
+        10
+      ],
+      "adjacent": false,
+      "count": 4,
+      "depth": 26.293722627372876,
+      "slot": 3,
+      "tick": 29
+    },
+    "11/16": {
+      "bones": [
+        11,
+        16
+      ],
+      "objects": [
+        10,
+        15
+      ],
+      "adjacent": false,
+      "count": 9,
+      "depth": 26.568587623715256,
+      "slot": 36,
+      "tick": 2
+    },
+    "3/25": {
+      "bones": [
+        3,
+        25
+      ],
+      "objects": [
+        2,
+        24
+      ],
+      "adjacent": false,
+      "count": 4,
+      "depth": 21.730553675329396,
+      "slot": 2,
+      "tick": 35
+    },
+    "4/25": {
+      "bones": [
+        4,
+        25
+      ],
+      "objects": [
+        3,
+        24
+      ],
+      "adjacent": false,
+      "count": 18,
+      "depth": 45.541199476107344,
+      "slot": 9,
+      "tick": 23
+    },
+    "2/10": {
+      "bones": [
+        2,
+        10
+      ],
+      "objects": [
+        1,
+        9
+      ],
+      "adjacent": false,
+      "count": 6,
+      "depth": 57.80715785049634,
+      "slot": 36,
+      "tick": 2
+    },
+    "2/11": {
+      "bones": [
+        2,
+        11
+      ],
+      "objects": [
+        1,
+        10
+      ],
+      "adjacent": false,
+      "count": 2,
+      "depth": 12.984512989351046,
+      "slot": 4,
+      "tick": 23
+    },
+    "9/15": {
+      "bones": [
+        9,
+        15
+      ],
+      "objects": [
+        8,
+        14
+      ],
+      "adjacent": false,
+      "count": 18,
+      "depth": 41.34375367838646,
+      "slot": 10,
+      "tick": 23
+    },
+    "2/5": {
+      "bones": [
+        2,
+        5
+      ],
+      "objects": [
+        1,
+        4
+      ],
+      "adjacent": false,
+      "count": 6,
+      "depth": 66.10886631968675,
+      "slot": 9,
+      "tick": 15
+    },
+    "4/26": {
+      "bones": [
+        4,
+        26
+      ],
+      "objects": [
+        3,
+        25
+      ],
+      "adjacent": false,
+      "count": 23,
+      "depth": 42.79357275632697,
+      "slot": 10,
+      "tick": 23
+    },
+    "4/9": {
+      "bones": [
+        4,
+        9
+      ],
+      "objects": [
+        3,
+        8
+      ],
+      "adjacent": false,
+      "count": 28,
+      "depth": 40.99935535227243,
+      "slot": 43,
+      "tick": 9
+    },
+    "17/23": {
+      "bones": [
+        17,
+        23
+      ],
+      "objects": [
+        16,
+        22
+      ],
+      "adjacent": false,
+      "count": 18,
+      "depth": 25.260774331461363,
+      "slot": 11,
+      "tick": 29
+    },
+    "5/26": {
+      "bones": [
+        5,
+        26
+      ],
+      "objects": [
+        4,
+        25
+      ],
+      "adjacent": false,
+      "count": 17,
+      "depth": 32.94704237210043,
+      "slot": 9,
+      "tick": 14
+    },
+    "5/7": {
+      "bones": [
+        5,
+        7
+      ],
+      "objects": [
+        4,
+        6
+      ],
+      "adjacent": false,
+      "count": 16,
+      "depth": 48.3673256174844,
+      "slot": 9,
+      "tick": 12
+    },
+    "10/12": {
+      "bones": [
+        10,
+        12
+      ],
+      "objects": [
+        9,
+        11
+      ],
+      "adjacent": false,
+      "count": 16,
+      "depth": 55.18100677608796,
+      "slot": 9,
+      "tick": 16
+    },
+    "3/5": {
+      "bones": [
+        3,
+        5
+      ],
+      "objects": [
+        2,
+        4
+      ],
+      "adjacent": false,
+      "count": 7,
+      "depth": 53.94520547592103,
+      "slot": 9,
+      "tick": 15
+    },
+    "5/25": {
+      "bones": [
+        5,
+        25
+      ],
+      "objects": [
+        4,
+        24
+      ],
+      "adjacent": false,
+      "count": 13,
+      "depth": 28.521210383779163,
+      "slot": 9,
+      "tick": 14
+    },
+    "8/10": {
+      "bones": [
+        8,
+        10
+      ],
+      "objects": [
+        7,
+        9
+      ],
+      "adjacent": false,
+      "count": 7,
+      "depth": 22.932111629080474,
+      "slot": 9,
+      "tick": 15
+    },
+    "9/16": {
+      "bones": [
+        9,
+        16
+      ],
+      "objects": [
+        8,
+        15
+      ],
+      "adjacent": false,
+      "count": 21,
+      "depth": 46.261976230611225,
+      "slot": 10,
+      "tick": 25
+    },
+    "8/15": {
+      "bones": [
+        8,
+        15
+      ],
+      "objects": [
+        7,
+        14
+      ],
+      "adjacent": false,
+      "count": 9,
+      "depth": 31.99924101075099,
+      "slot": 10,
+      "tick": 33
+    },
+    "2/15": {
+      "bones": [
+        2,
+        15
+      ],
+      "objects": [
+        1,
+        14
+      ],
+      "adjacent": false,
+      "count": 4,
+      "depth": 66.3480146819171,
+      "slot": 23,
+      "tick": 18
+    },
+    "3/26": {
+      "bones": [
+        3,
+        26
+      ],
+      "objects": [
+        2,
+        25
+      ],
+      "adjacent": false,
+      "count": 7,
+      "depth": 22.511809261864865,
+      "slot": 10,
+      "tick": 34
+    },
+    "7/25": {
+      "bones": [
+        7,
+        25
+      ],
+      "objects": [
+        6,
+        24
+      ],
+      "adjacent": false,
+      "count": 14,
+      "depth": 45.00626654225672,
+      "slot": 48,
+      "tick": 51
+    },
+    "7/26": {
+      "bones": [
+        7,
+        26
+      ],
+      "objects": [
+        6,
+        25
+      ],
+      "adjacent": false,
+      "count": 16,
+      "depth": 35.28617107891904,
+      "slot": 23,
+      "tick": 21
+    },
+    "2/25": {
+      "bones": [
+        2,
+        25
+      ],
+      "objects": [
+        1,
+        24
+      ],
+      "adjacent": false,
+      "count": 9,
+      "depth": 53.78510201809474,
+      "slot": 23,
+      "tick": 20
+    },
+    "13/17": {
+      "bones": [
+        13,
+        17
+      ],
+      "objects": [
+        12,
+        16
+      ],
+      "adjacent": false,
+      "count": 20,
+      "depth": 24.181431388817494,
+      "slot": 23,
+      "tick": 24
+    },
+    "15/22": {
+      "bones": [
+        15,
+        22
+      ],
+      "objects": [
+        14,
+        21
+      ],
+      "adjacent": false,
+      "count": 14,
+      "depth": 22.777045542230155,
+      "slot": 11,
+      "tick": 14
+    },
+    "19/25": {
+      "bones": [
+        19,
+        25
+      ],
+      "objects": [
+        18,
+        24
+      ],
+      "adjacent": false,
+      "count": 4,
+      "depth": 15.077434529447759,
+      "slot": 11,
+      "tick": 15
+    },
+    "14/22": {
+      "bones": [
+        14,
+        22
+      ],
+      "objects": [
+        13,
+        21
+      ],
+      "adjacent": false,
+      "count": 3,
+      "depth": 13.85044835143218,
+      "slot": 11,
+      "tick": 14
+    },
+    "1/12": {
+      "bones": [
+        1,
+        12
+      ],
+      "objects": [
+        0,
+        11
+      ],
+      "adjacent": false,
+      "count": 8,
+      "depth": 36.85504373797829,
+      "slot": 43,
+      "tick": 28
+    },
+    "2/26": {
+      "bones": [
+        2,
+        26
+      ],
+      "objects": [
+        1,
+        25
+      ],
+      "adjacent": false,
+      "count": 20,
+      "depth": 53.74568328429554,
+      "slot": 23,
+      "tick": 29
+    },
+    "13/22": {
+      "bones": [
+        13,
+        22
+      ],
+      "objects": [
+        12,
+        21
+      ],
+      "adjacent": false,
+      "count": 5,
+      "depth": 7.925687466311291,
+      "slot": 23,
+      "tick": 23
+    },
+    "5/10": {
+      "bones": [
+        5,
+        10
+      ],
+      "objects": [
+        4,
+        9
+      ],
+      "adjacent": false,
+      "count": 19,
+      "depth": 55.57206411432537,
+      "slot": 43,
+      "tick": 9
+    },
+    "6/10": {
+      "bones": [
+        6,
+        10
+      ],
+      "objects": [
+        5,
+        9
+      ],
+      "adjacent": false,
+      "count": 5,
+      "depth": 15.880877247557324,
+      "slot": 35,
+      "tick": 11
+    },
+    "10/15": {
+      "bones": [
+        10,
+        15
+      ],
+      "objects": [
+        9,
+        14
+      ],
+      "adjacent": false,
+      "count": 9,
+      "depth": 27.145240619988535,
+      "slot": 36,
+      "tick": 2
+    },
+    "10/16": {
+      "bones": [
+        10,
+        16
+      ],
+      "objects": [
+        9,
+        15
+      ],
+      "adjacent": false,
+      "count": 6,
+      "depth": 15.906288611592265,
+      "slot": 36,
+      "tick": 2
+    },
+    "11/15": {
+      "bones": [
+        11,
+        15
+      ],
+      "objects": [
+        10,
+        14
+      ],
+      "adjacent": false,
+      "count": 5,
+      "depth": 20.058504718493403,
+      "slot": 43,
+      "tick": 6
+    },
+    "5/9": {
+      "bones": [
+        5,
+        9
+      ],
+      "objects": [
+        4,
+        8
+      ],
+      "adjacent": false,
+      "count": 14,
+      "depth": 33.956609756654984,
+      "slot": 43,
+      "tick": 9
+    }
+  },
+  "ticks": 2009,
+  "crossing_frames": 2009,
+  "max_depth": 75.23245924415433,
+  "max_count": 703,
+  "complete": true
+}
