@@ -8,7 +8,7 @@ import copy
 
 sys.path[:0] = [str(Path(__file__).resolve().parent),str(Path(__file__).resolve().parents[1])]
 import numpy as np
-from tools.models.audit_reduction import geometry,compare_parts,triangle_distances,views,robust_affine
+from tools.models.audit_reduction import geometry,compare_parts,triangle_distances,views,robust_affine,source_coverage
 
 
 def surface(points,uv=None,row=0,color=0x7fff):
@@ -59,6 +59,18 @@ class ReductionAuditTests(unittest.TestCase):
         result, = compare_parts(a,a,.001)
         self.assertEqual(result['color_mismatch_area'],0)
 
+    def test_ambiguous_texture_lineage_does_not_invent_missing_carrier_surface(self):
+        source = surface(self.tetra[:2])
+        target = surface(self.tetra[:2])
+        # Two independently fitted source pieces share one final native bone.
+        source.tris[1] = (1,*source.tris[1][1:])
+        fits = [dict(object=i,target_object=0) for i in range(2)]
+        parts = source_coverage(source,target,fits,.001)
+        self.assertEqual([parts[i]['uncovered_fraction'] for i in range(2)],[0,0])
+        target.points = target.points[:1]
+        target.tris = target.tris[:1]
+        self.assertGreater(source_coverage(source,target,fits,.001)[1]['uncovered_fraction'],0)
+
     def test_distance_degenerate_and_projection(self):
         triangles = np.array([[(0,0,0),(10,0,0),(0,10,0)],[(0,0,0)]*3],float)
         np.testing.assert_allclose(triangle_distances(np.array([2,2,3]),triangles),[9,17])
@@ -101,7 +113,7 @@ class ReductionAuditTests(unittest.TestCase):
         bone = dict(parent=-1,offset=(0,0,0),rest=mmdport.IDENTITY_Q,verts=verts,norms=[],
                     prims=[dict(verts=list(t),norms=None,uvs=None,row=0) for t in indices])
         model = mmdport.Model('detail',[bone],bytearray(32768),[[0]*16],{})
-        legacy = meshfix.Mesh(model,0,{},preserve_components=False)
+        legacy = meshfix.Mesh(model,0,{},preserve_components=False,preserve_boundaries=False)
         guarded = meshfix.Mesh(model,0,{})
         # The old per-BONE four-face floor permits this: five total faces,
         # but the fifth face is a whole independent detail component.
@@ -136,6 +148,45 @@ class ReductionAuditTests(unittest.TestCase):
         y = expected.copy()
         y[:20] += 1000
         self.assertIsNone(robust_affine(x,y,x))
+
+
+class ThinSurfaceTests(unittest.TestCase):
+    def test_open_cape_outline_is_pinned_even_on_a_large_component(self):
+        import meshfix,mmdport
+        verts = [(x, y, x*x*.01) for y in range(3) for x in range(3)]
+        faces = []
+        for y in range(2):
+            for x in range(2):
+                a = y*3+x
+                faces += [(a,a+1,a+3),(a+1,a+4,a+3)]
+        bone = dict(parent=-1,offset=(0,0,0),rest=mmdport.IDENTITY_Q,verts=verts,norms=[],
+                    prims=[dict(verts=list(t),norms=None,uvs=None,row=0) for t in faces])
+        model = mmdport.Model('cloth',[bone],bytearray(32768),[[0]*16],{})
+        mesh = meshfix.Mesh(model,0,{})
+        for v in (0,1,2,3,5,6,7,8):
+            self.assertIn(meshfix._pkey(verts[v]),mesh.pinned_positions)
+            index = next(i for i,p in enumerate(mesh.pos) if meshfix._pkey(p) == meshfix._pkey(verts[v]))
+            for neighbor in mesh.nbrs(index):
+                self.assertIsNone(mesh.collapse_cost(index,neighbor,.3,.3))
+        self.assertNotIn(meshfix._pkey(verts[4]),mesh.pinned_positions)
+        # A coincident reverse side must not disguise the cape's perimeter as
+        # a closed volume. Neither side may lose an outline vertex.
+        bone['prims'] += [dict(verts=list(reversed(t)),norms=None,uvs=None,row=0) for t in faces]
+        two_sided = meshfix.Mesh(model,0,{})
+        self.assertEqual(mesh.pinned_positions,two_sided.pinned_positions)
+        with self.assertRaisesRegex(SystemExit,'protected sheet boundaries'):
+            meshfix.apply(model,dict(prims=0,kappa=.3,kmove=.3,quad_angle=25,
+                                     preserve_components=True,preserve_boundaries=True,
+                                     hidden=False),log=lambda *a:None)
+
+    def test_new_authoring_records_boundary_guard_and_frozen_specs_keep_replay(self):
+        import meshfix
+        # An empty model suffices: no search/reduction is needed to record policy.
+        model = SimpleNamespace(bones=[],anims={})
+        info = meshfix.apply(model,log=lambda *a:None)
+        self.assertTrue(meshfix.spec_params(info)['preserve_boundaries'])
+        legacy = meshfix.apply(model,{},log=lambda *a:None)
+        self.assertFalse(meshfix.spec_params(legacy)['preserve_boundaries'])
 
 
 if __name__ == '__main__':

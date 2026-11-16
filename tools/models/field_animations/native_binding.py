@@ -281,6 +281,13 @@ def bind(data, skeleton, recipe, placements=None, final=True, battle_context=Non
             transform = np.column_stack([x, y, np.cross(x, y)]) @ source.T * factor
         anchor = np.array(rule.get('anchor', sw[sb, :3, 3].tolist()))
         destination = nw[rule.get('joint', tb), :3, 3] + np.array(rule.get('offset', [0, 0, 0]))
+        if 'follow_piece' in rule:
+            reference = int(rule['follow_piece'])
+            if reference not in placements or mapping[reference] != tb:
+                raise ValueError('Native binding: continuous surfaces must follow an earlier piece on the same carrier')
+            # Adjacent cloth panels share one world-space fit, including its
+            # anchor. Independent orientations and offsets tear their seams.
+            anchor, transform, destination = placements[reference]
         lows[0] = max(lows[0], float(points[:, 1].max()))
         points = (points-anchor) @ transform.T + destination
         lows[1] = max(lows[1], float(points[:, 1].max()))

@@ -89,7 +89,8 @@ FRANTIC = 2.5
 # fidelity to the source does not apply: ShellNumemon's and Okuwamon's tired battle idles; WarGreymon's battle idle (its
 # chest leaned back 5 degrees, the hip plates riding on the thighs, the back plates as in the field idle:
 # tools/models/field_animations/wargreymon_gait.py)
-POLISHED = {231: (34,), 259: (34,), 305: (36,), 373: (33,)}
+# Armageddemon opens the rear run hip to clear the middle foot (mesh_cleanup.py).
+POLISHED = {231: (34,), 259: (34,), 305: (36,), 373: (33,), 407: (4,)}
 
 
 def polished_slots(sid):
@@ -610,9 +611,10 @@ def main():
     g = sub.add_parser('mesh-audit', help='geometry, penetration and depth-sort candidates on an extracted archive')
     g.add_argument('folder', help='meshcheck extract directory, including index.json')
     g.add_argument('--slots', nargs='*', type=int, default=[0, 2, 3, 4, 33, 34, 35, 36])
-    g.add_argument('--samples', type=int, default=4, help='ticks per slot; 0 = all (up to 400)')
+    g.add_argument('--samples', type=int, default=4, help='ticks per slot; 0 = all (6000-tick guard)')
     g.add_argument('--jobs', type=int, default=1)
     g.add_argument('--json', required=True)
+    g.add_argument('--details', action='store_true', help='include co-facing surface pairs, including shared vertex IDs')
     g.add_argument('--thresholds', help='reuse native thresholds from an earlier mesh-audit JSON')
     z = sub.add_parser('sizes', help='check body size in every occupied slot against field idle')
     z.add_argument('final')
@@ -636,7 +638,7 @@ def main():
         from tools.models.mesh_glitch import audit, calibrate, classify
         if a.samples < 0 or a.jobs < 1:
             ap.error('--samples must be nonnegative and --jobs positive')
-        rows = audit(a.folder, a.slots or None, a.samples, a.jobs)
+        rows = audit(a.folder, a.slots or None, a.samples, a.jobs, details=a.details)
         if a.thresholds:
             with open(a.thresholds) as fh:
                 thresholds = json.load(fh)['thresholds']

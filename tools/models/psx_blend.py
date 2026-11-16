@@ -1,7 +1,7 @@
 """Offline material evidence: affine texture sampling and PSX 5-bit blending.
 
 Neutral lighting; orthographic projection, back-face culling, painter sorting by
-primitive mean depth (no z buffer). This is not a cycle-accurate GPU/OT emulator.
+primitive mean depth quantised into four-unit OT bins (no z buffer). This is not a cycle-accurate GPU/OT emulator.
 The model's ABE, sampled CLUT STP, zero-colour discard and four ABR equations
 are respected. NumPy is only an authoring dependency.
 """
@@ -31,9 +31,10 @@ def composite(background, words, abe, abr):
     return np.where((words != 0)[..., None], result, back).astype(np.uint8)
 
 
-def render(model, yaw=0, pitch=0, size=256, opaque=False, frame=None):
+def render(model, yaw=0, pitch=0, size=256, opaque=False, frame=None,
+           pose=None, depth_offset=0):
     """Render a meshcheck.Model; `opaque` is a diagnostic ABE-off comparison."""
-    xyz = model.tri_array(model.world(model.rest()))
+    xyz = model.tri_array(model.world(model.rest() if pose is None else pose))
     points = meshcheck._rotate(xyz, yaw, pitch)
     if frame is None:
         low, high = points[..., :2].reshape(-1, 2).min(0), points[..., :2].reshape(-1, 2).max(0)
@@ -44,18 +45,36 @@ def render(model, yaw=0, pitch=0, size=256, opaque=False, frame=None):
     yy, xx = np.mgrid[:size, :size]
     checker = ((xx // 24 + yy // 24) % 2)[..., None]
     image = np.broadcast_to(np.where(checker, [7, 11, 14], [14, 17, 20]), (size, size, 3)).astype(np.uint8).copy()
-    # One sorting depth per primitive: the two halves of a quad stay together.
-    depths = {}
+    # libgs culls a whole primitive from its FIRST triangle. Quad AVSZ4
+    # uses four distinct corners, not the diagonal counted twice. OT insertion
+    # prepends packets: later primitives draw first within a depth bin.
+    groups = {}
     for k, tri in enumerate(model.tris):
-        depths.setdefault((tri[1], tri[2]), []).extend(points[k, :, 2])
-    order = sorted(range(len(model.tris)), key=lambda k: -np.mean(depths[model.tris[k][1:3]]))
+        groups.setdefault(tri[:3], []).append(k)
+    visible = []
+    for ordinal, (key, indices) in enumerate(groups.items()):
+        first = xy[indices[0]]
+        a, b = first[1]-first[0], first[2]-first[0]
+        if a[0]*b[1]-a[1]*b[0] <= 1e-9:
+            continue
+        z = points[indices[0], :, 2]
+        if len(indices) == 2:
+            z = np.append(z, points[indices[1], 1, 2])
+        bucket = int(np.floor((float(z.mean()) + depth_offset) / 4))
+        visible.append((bucket, ordinal, indices))
+    order = [k for _, _, indices in sorted(visible, reverse=True) for k in indices]
     for k in order:
         tri = model.tris[k]
-        p = xy[k]
+        p = xy[k].copy()
+        corner_order = [0, 1, 2]
         a, b = p[1] - p[0], p[2] - p[0]
         area = a[0] * b[1] - a[1] * b[0]
-        if area <= 1e-9:
+        if abs(area) <= 1e-9:
             continue
+        if area < 0:  # GPU draws the second half even with opposite winding
+            corner_order = [0, 2, 1]
+            p = p[corner_order]
+            area = -area
         lo = np.maximum(np.floor(p.min(0)).astype(int), 0)
         hi = np.minimum(np.ceil(p.max(0)).astype(int), size - 1)
         if np.any(hi < lo):
@@ -68,15 +87,25 @@ def render(model, yaw=0, pitch=0, size=256, opaque=False, frame=None):
             top_left = b[1] < a[1] or (b[1] == a[1] and b[0] > a[0])
             inside &= (e > 1e-8) | ((np.abs(e) <= 1e-8) & top_left)
             weights.append(e / area)
-        if tri[4] is None:
-            raise ValueError('Evidence renderer currently requires textured primitives')
-        uv = np.asarray(tri[4])
-        texcoord = np.einsum('ihw,ij->hwj', np.asarray(weights), uv).astype(int)
-        idx, palettes, _ = model.tex
-        u, v = texcoord[..., 0].clip(0, idx.shape[1] - 1), texcoord[..., 1].clip(0, idx.shape[0] - 1)
-        words = palettes[tri[5], idx[v, u]]
         prim = model.m.tmd.objects[tri[1]].prims[tri[2]]
-        abr = (prim.decode()['tsb'] >> 5) & 3
+        decoded = prim.decode()
+        if tri[4] is None:
+            colors = decoded['colors']
+            if len(colors) > 1:
+                corners = [decoded['verts'].index(vi) for vi in tri[3]]
+                rgb = np.asarray([colors[c][:3] for c in corners])[corner_order]
+                rgb = np.einsum('ihw,ij->hwj', np.asarray(weights), rgb)
+            else:
+                rgb = np.broadcast_to(colors[0][:3], (*x.shape, 3))
+            rgb = (rgb.clip(0,255).astype(np.uint16) >> 3)
+            words = rgb[..., 0] | (rgb[..., 1] << 5) | (rgb[..., 2] << 10) | 0x8000
+        else:
+            uv = np.asarray(tri[4])[corner_order]
+            texcoord = np.einsum('ihw,ij->hwj', np.asarray(weights), uv).astype(int)
+            idx, palettes, _ = model.tex
+            u, v = texcoord[..., 0].clip(0, idx.shape[1] - 1), texcoord[..., 1].clip(0, idx.shape[0] - 1)
+            words = palettes[tri[5], idx[v, u]]
+        abr = ((decoded['tsb'] or 0) >> 5) & 3
         sub = image[lo[1]:hi[1]+1, lo[0]:hi[0]+1]
         result = composite(sub, words, bool(prim.mode & 2) and not opaque, abr)
         sub[inside] = result[inside]

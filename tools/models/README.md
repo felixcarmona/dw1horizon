@@ -52,6 +52,14 @@ provider registry names their full Python modules. These modules retain direct
 script entry points where the original generator had a CLI. Model codecs and
 converters referenced by frozen recipes keep their recorded entry paths.
 
+Final `field_hover` slot bands in `content/models/imports/models.json` fit
+Magnadramon 215, Scorpiomon 275 and NeoCrimson 402 after condition acting and
+rig conformance. `tools/models/hover.py` changes only carrier Y, preserving
+joint motion and the original bob phase. See the [hover measurements](../../docs/reference/field-hover.md).
+Run `HOVER_BUILD=BUILD PYTHONPATH=tools python3 -m unittest tools.test_imported_hover`
+against a reviewed build to regenerate the changed final providers and verify
+clearance, rendered thirds, preserved acting and storage in `build/hover-qa/`.
+
 The frozen model-delta README retains its historical command spellings. Use
 `tools/models/delta.py` for the codec and `tools/models/edit.py` for the editor;
 `tools/models/edit.py --help` describes get/put/check/repin/rebase and source-disc

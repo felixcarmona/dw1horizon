@@ -512,6 +512,17 @@ def module_from_text(name, path, text):
     return module
 
 
+@contextlib.contextmanager
+def staged_manifests(texts):
+    """Validate generators against proposed JSON pins before writing them."""
+    from unittest.mock import patch
+    original = Path.read_text
+    def read(path, *args, **kwargs):
+        return texts[path] if path in texts else original(path,*args,**kwargs)
+    with patch.object(Path,'read_text',read):
+        yield
+
+
 def stage_module(name, texts):
     """Module `name` as the files about to be written read it."""
     path = ROOT / (name.replace('.', '/') + '.py')
@@ -638,15 +649,21 @@ def cmd_repin(a):
             moved = repin_constant(path.read_text(), old, new)
             if moved is not None:
                 texts[path] = moved
+    equipment_path = IMPORTED_MODELS_SCRIPT.parent / 'animation-repairs.json'
+    equipment = repin_celebration(equipment_path.read_text(), sid, old, new)
+    if equipment is not None:
+        texts[equipment_path] = equipment
     skeleton = json.loads(next((ROOT / 'content/species').glob(f'{sid}-*.json')).read_text())['model']['skeleton']
     stale = [old]
 
     def after_base(name, data):
         """`data` after the base generator `name`, run with the pins as the files about to be written read them."""
-        if ROOT / (name.replace('.', '/') + '.py') not in texts:
+        module = importlib.import_module(name)
+        manifest = getattr(module,'PROFILES',getattr(module,'MANIFEST',None))
+        if ROOT / (name.replace('.', '/') + '.py') not in texts and not (isinstance(manifest,(str,Path)) and Path(manifest) in texts):
             raise SystemExit(f'{sid}: the base generator {name} does not pin its input in a PROFILES row or a SOURCE '
                              'constant this command moves')
-        with importing(a.games_dir):
+        with staged_manifests(texts), importing(a.games_dir):
             return stage_module(name, texts).build(data, skeleton)[0]
 
     followthrough = load(FOLLOWTHROUGH_ROWS).get(str(sid))

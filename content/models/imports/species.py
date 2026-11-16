@@ -370,6 +370,17 @@ def species_file(out, t, recs=None, names=None, generate=False):
         s['model']['file'] = str(model_path)
         s['model'].pop('slot_aliases', None)
     s.pop('_path', None)
+    if e.get('field_hover'):
+        # Fit the actual final mesh, including condition wing/leg droop.
+        from tools.models import hover
+        model, proof = hover.apply(model, s['model']['skeleton'], e['field_hover'])
+        generated = Path(os.path.abspath(out) + '-models')
+        generated.mkdir(parents=True, exist_ok=True)
+        model_path = generated / f'{t}-field-hover.MMD'
+        model_path.write_bytes(model)
+        (generated / f'{t}-field-hover-report.json').write_text(json.dumps(proof, indent=2) + '\n')
+        s['model']['file'] = str(model_path)
+        s['model'].pop('slot_aliases', None)
     # Last: grounding and rig fitting above still need the original vertex
     # pools. This pass preserves their result and cannot grow resident data.
     from tools.models import mesh_stability
@@ -380,6 +391,23 @@ def species_file(out, t, recs=None, names=None, generate=False):
         model_path = generated / f'{t}-mesh-stability.MMD'
         model_path.write_bytes(stable)
         (generated / f'{t}-mesh-stability-report.json').write_text(json.dumps(stability, indent=2) + '\n')
+        s['model']['file'] = str(model_path)
+        s['model'].pop('slot_aliases', None)
+    from tools.models import mesh_cleanup
+    cleaned, cleanup = mesh_cleanup.apply(stable, s['model']['skeleton'], t)
+    if cleanup['applied']:
+        import coldsplit
+        nb = len(s['model']['skeleton'])
+        before_bytes = len(coldsplit.split(model, nb)[0])
+        after_bytes = len(coldsplit.split(cleaned, nb)[0])
+        if after_bytes > before_bytes:
+            raise ValueError(f'{t}: surface repair grew resident bytes {before_bytes} -> {after_bytes}')
+        generated = Path(os.path.abspath(out) + '-models')
+        generated.mkdir(parents=True, exist_ok=True)
+        model_path = generated / f'{t}-mesh-cleanup.MMD'
+        model_path.write_bytes(cleaned)
+        cleanup.update(resident_before=before_bytes, resident_after=after_bytes)
+        (generated / f'{t}-mesh-cleanup-report.json').write_text(json.dumps(cleanup, indent=2) + '\n')
         s['model']['file'] = str(model_path)
         s['model'].pop('slot_aliases', None)
     return name, s
