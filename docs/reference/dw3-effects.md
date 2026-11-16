@@ -197,6 +197,16 @@ spawn (earlier ones on its first tick), in place of the generic start and launch
 repeated sound plays once and at most two sounds start. Thunder Bolt
 (Maildramon) keeps only its impact sound, since more would push its chunk to coarser poses.
 
+### Rebuilt as composed effects
+
+Seven conversions passed the fidelity check but read as flat card art in the 3D fight. Most of the surface they
+draw is planar sprites that never turn, scale or fade, above the 90th percentile of DW1's own effects (4.3 % and
+7.7 %). They are Pincer Crusher (225), Lizard Dance (228), Thunder Bolt (237), Ura Sword (238), Roach Rush (242),
+Hot Head (244) and Bear Fist (245). Each is now a DW1 effect of its kind, recoloured to the attack's element
+(`compose` in `content/battle/own-effects.json`, docs/mods/signature-effects.md). Its `compose.sounds` maps the
+template's sounds to the converted cues above, so the attack keeps its own sounds. The table below still shows
+the conversion as it was measured.
+
 ## Every imported species
 
 The key is the species id, the same key the finisher design uses. "Ticks" is the script's length in 1/60 s.
