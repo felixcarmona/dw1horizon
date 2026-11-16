@@ -13,13 +13,14 @@ These clips keep every channel of that flight as it was (wings, head, tail, legs
 the body's height and the clip's pace:
 
 - Idle (slots 0, 1, 18): the original pace (one beat in 89 ticks), the climb scaled to 15% so it is a gentle bob,
-  the whole bird held up so its lowest point never comes nearer than 50 units to the floor.
+  actual mesh clearance compressed to 30-50 units, including the changing wing and leg poses.
 - Walk (slot 2): the beat played 1.25 times faster (71 ticks), the climb scaled to 20%, 22 units per tick as before.
 - Condition walk (slot 3): the original pace, the climb scaled to 15%, 21 units per tick as before.
 - Run (slot 4): the beat played twice as fast (44 ticks), the climb scaled to 22%, the body pitched 12 degrees further
   nose-down, 44 units per tick as before.
 
-The battle programs and the mesh stay exact.
+The battle programs, care programs and the mesh stay exact. The current-model repair
+also covers slots 1 and 18 independently so their condition acting remains intact.
 """
 import argparse
 import copy
@@ -37,6 +38,7 @@ import motioncyclelayer  # noqa: E402
 import motionstorage  # noqa: E402
 from motiondiscidentity import changed_programs  # noqa: E402
 from motiontailspace import interpolate_pose  # noqa: E402
+from tools.models.hover import MeshHover  # noqa: E402
 
 SOURCE = '9a6fe32113ecef36c603d6a91535b0916d4c575748b1837fff6f962d4e773a4c'
 SPECIES = 188
@@ -45,27 +47,17 @@ BODY = 1
 
 # slot: (pace, share of the original climb, extra nose-down pitch in degrees, clearance of the lowest point)
 FLIGHT = {
-    0: (1.0, 0.15, 0, 20),
-    2: (1.25, 0.20, 0, 30),
-    3: (1.0, 0.15, 0, 20),
-    4: (2.0, 0.22, 12, 30),
+    0: (1.0, 0.15, 0, 30),
+    2: (1.25, 0.20, 0, 80),
+    3: (1.0, 0.15, 0, 30),
+    4: (2.0, 0.22, 12, 80),
 }
 IDLES = (0, 1, 18)
 
 
-class Bird:
+class Bird(MeshHover):
     def __init__(self, model):
-        self.m = model
-        self.sk = mmd.exe().skeleton[SPECIES]
-        self.verts = {b: [v[:3] for v in model.tmd.obj_verts(o)] for b, (o, _) in enumerate(self.sk) if o >= 0}
-
-    def floor(self, pose):
-        """The lowest point of the mesh (y grows downwards; 0 is the floor)."""
-        p = [list(v) for v in pose]
-        p[0] = [4096, 4096, 4096] + p[0][3:6] + [0, 0, 0]
-        W = mmd.bone_matrices(self.m, p)
-        return pose[0][7] + max(W[b][1][3] + sum(W[b][1][j] * v[j] for j in range(3))
-                                for b in self.verts for v in self.verts[b])
+        super().__init__(model, mmd.exe().skeleton[SPECIES])
 
 
 def resample(frames, pace):
@@ -89,10 +81,39 @@ def flight(bird, frames, pace, climb, pitch, clearance):
         pose[0][8] = speed * t
         pose[BODY][7] = rest + climb * (pose[BODY][7] - rest)
         pose[BODY][3] -= pitch * 4096 / 360
-    lift = max(bird.floor(p) for p in out) + clearance
-    for pose in out:
-        pose[BODY][7] -= lift
+    settle(bird, out, clearance, clearance + (20 if pace == 1 else 60))
     return [[[round(x) for x in v] for v in pose] for pose in out]
+
+
+def settle(bird, frames, low, high):
+    """Compress actual mesh clearance, including the wing/leg swing, not just body Y.
+
+    Keep the original flight's phase and every joint rotation. A constant lift
+    only bounds the minimum: the raised wings still carried the toes 437 units up.
+    """
+    bird.settle(frames, low, high, BODY)
+
+
+def lower_current(data, skeleton):
+    """Repair the reviewed delta without replaying the historical importer/battle work."""
+    mmd.exe().add_type(SPECIES, skeleton)
+    model = mmd.MMD.parse(data, len(skeleton))
+    model.type = SPECIES
+    bird = Bird(model)
+    for slot, limits in {0: (30, 50), 1: (30, 50), 2: (80, 140),
+                         3: (30, 70), 4: (80, 140), 18: (30, 50)}.items():
+        frames, loop, events = animsheet.slot_frames(model, len(skeleton), slot)
+        settle(bird, frames, *limits)
+        frames = [[[round(x) for x in bone] for bone in pose] for pose in frames]
+        model.anims.table[slot] = len(model.anims.anims)
+        model.anims.anims.append(mmd.encode_anim(frames, len(skeleton), loop, events, tol=1))
+    for anim in model.anims.anims:
+        anim.tail = b''
+    model.anims.anims, model.anims.table = motioncyclelayer.share_identical_streams(
+        model.anims.anims, model.anims.table)
+    output = model.build()
+    motionstorage.require(output, len(skeleton))
+    return output
 
 
 def build(data, skeleton):
@@ -137,8 +158,12 @@ def main():
     p.add_argument('--source', type=Path, required=True)
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--report', type=Path)
+    p.add_argument('--lower-current', action='store_true', help='repair a current reviewed delta, preserving battle/care')
     a = p.parse_args()
     skeleton = json.loads((ROOT / 'content/species/188-aquilamon.json').read_text())['model']['skeleton']
+    if a.lower_current:
+        a.out.write_bytes(lower_current(a.source.read_bytes(), skeleton))
+        return
     data, proof = build(a.source.read_bytes(), skeleton)
     a.out.write_bytes(data)
     text = json.dumps(proof, indent=2) + '\n'

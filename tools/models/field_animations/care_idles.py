@@ -17,7 +17,9 @@ a posture and timing layer per condition:
   sleepy    the head sinks slowly and catches itself (two nods a loop), eased both ways
   unhappy   the head down and a slow sway of the head and chest
 
-Only rotation channels of non-root bones change. Every channel of the legs and of the bones they hang from (pelvis,
+Only rotation channels of non-root bones change, except an explicit `hover: [low, high]`
+profile: after drooping the wings it fits carrier Y to that mesh-clearance envelope.
+Every channel of the legs and of the bones they hang from (pelvis,
 hips: `keep`) stays the idle's, so the feet stay where the idle plants them; scale and translation channels (bone
 lengths, the chibi reshape) are the idle's everywhere. A clip is the idle's cycle repeated a whole number of times
 (`cycles`), so it closes where the idle closes; slot 1 keeps the idle's length (the condition timer counts against it).
@@ -376,6 +378,11 @@ def apply(data, skeleton, row):
         if key not in made:
             samples, events, _ = _cycle(model, nb, k)
             poses = condition_clip(samples, parents, row, cond, row.get('gain', {}).get(cond, 1.0))
+            if row.get('hover'):
+                # A drooping wing changes the lowest point of a flyer even
+                # when all the leg channels and carrier Y remain untouched.
+                from tools.models.hover import MeshHover
+                MeshHover(model, skeleton).settle(poses, *row['hover'])
             made[key] = mmd.encode_anim(poses, nb, 0, events, tol=row.get('tol', 1), repeats=k > 1)
         table[slot] = len(model.anims.anims)
         model.anims.anims.append(made[key])

@@ -513,12 +513,15 @@ mismatch, size comparison, replay commands and original-console checks.
 
 Aquilamon (188) had one 89-tick flight flap in its idle, walk, condition walk
 and run, the whole bird climbing about 300 units on every downstroke and gliding
-back to the floor. `field_animations/aquilamon.py` keeps that flap and holds the
-bird at a steady hover (the climb scaled to 15-22%, the wing tips just clearing
-the floor at the bottom of the downstroke); the walk plays the beat 1.25 times
-faster and the run twice as fast, pitched further nose-down:
-`--source build/everything/imported-models/188.MMD --out AFTER.MMD`, then
-`tools/models/edit.py --from build/everything put 188 AFTER.MMD`.
+back to the floor. The first carrier-height damping still left the lowest mesh
+point 437 units up in idle. `field_animations/aquilamon.py --lower-current`
+fits the actual mesh clearance to 30–50 idle, 80–140 walk/run (codec tolerance
+about two units), preserving the flap, timings and other programs. The final
+condition overlay fits the drooping wings too. Run with `--source CURRENT.MMD
+--out AFTER.MMD`, then `tools/models/edit.py --from BUILD repin 188 AFTER.MMD`
+and `put 188 AFTER.MMD`. [The hover audit](../../docs/reference/field-hover.md)
+records every field/care slot, native calibration, the other high hoverers and
+the field QA command.
 
 Hawkmon (184) had its right foot bound turned about 58 degrees outward in every
 clip, a walk, condition walk and run that pushed the feet up to 60 units into

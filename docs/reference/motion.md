@@ -15,6 +15,9 @@ matters when writing new clips for an existing rig.
 
 ## Playback facts that shape a clip
 
+Absolute field hover heights, the engine's entity Y, native flyer calibration
+and the imported flyer sweep are recorded in [field-hover.md](field-hover.md).
+
 - **20 logic ticks per second.** Every pose is integer: rotations in 1/4096 turn (one unit = 0.088°), scale 4.12,
   translations in model units. A keyframe sets per-channel momentum `delta/divisor` with the remainder spread out; the
   engine accumulates integers, so a clip is only exact when it is re-played tick by tick (`mmd.AnimPlayer` does what
