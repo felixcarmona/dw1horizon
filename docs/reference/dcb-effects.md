@@ -180,8 +180,9 @@ stands for, unchanged; `"composed"` (29 of them) is a DW1 chunk of the attack's 
 projectile for a slam, a whirlpool for a sword cut), or where a conversion reads as flat card art pasted into the
 3D fight: in the effect simulator, both the share of drawn pieces and the share of drawn surface that are flat cards
 which never turn, scale or fade are above the 90th percentile of DW1's own effects (4.3 % and 7.7 %; Fire Rocket,
-Lightning Blast, Horn Buster, Thunder Ball), plus Vee Head Butt, an opaque white puff over the target. A composed
-effect plays its DW1 template's sounds. Most
+Lightning Blast, Horn Buster, Thunder Ball), plus Vee Head Butt, an opaque white puff over the target. These five
+keep the attack's matched sounds: their `compose.sounds` maps each sound the template plays to one of the attack's
+cues (tools/efecompose.py). Most
 failures are a cast that draws much less than the original: many alike objects (star showers, feathers)
 thinned to what the slot holds. The check has a floor and no ceiling and does not compare colour: a pass
 means the conversion draws in the same places and moments, not that it looks the same.

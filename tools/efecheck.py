@@ -342,6 +342,8 @@ def check_composed(template, ours, spec, target_hue=None, size=(W, H)):
         rep['fails'].append(f'{len(changed)} bytes changed outside the palette, texels, vertices and colours '
                             f'(first at {changed[0]:#x})')
     a, b = X.run(template, lt), X.run(ours, lt)
+    remap = {int(k): int(v) for k, v in spec.get('sounds', {}).items()}
+    a.sounds = [(t, remap.get(sid, sid)) for t, sid in a.sounds]       # the template's run with the sounds asked
     if _motion(a) != _motion(b):
         rep['fails'].append('the run differs from the template\'s (draws, hits or sounds)')
     rep['hits'] = [(t, f) for t, f, _p in a.hits]
