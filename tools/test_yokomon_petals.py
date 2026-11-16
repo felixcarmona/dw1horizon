@@ -1,4 +1,4 @@
-"""Yokomon's (477) tired petals hang open and its neck stays on the bulb; nothing else differs from Tanemon's clips."""
+"""Yokomon's petals and attached neck retain Tanemon's motion at its field cadence."""
 import sys
 import unittest
 from pathlib import Path
@@ -11,6 +11,10 @@ import mmd  # noqa: E402
 import motionstorage  # noqa: E402
 from motiondiscidentity import changed_programs  # noqa: E402
 from tools.models import babies  # noqa: E402
+from motiontailspace import interpolate_pose  # noqa: E402
+from tools.models.field_animations import pace, yokomon_pace, yokomon_petals, yokomon_neck  # noqa: E402
+from tools.models.babies.field_origin import center  # noqa: E402
+from tools.models import battle_qa  # noqa: E402
 
 NB = 10
 
@@ -30,6 +34,13 @@ class YokomonPetals(unittest.TestCase):
         cls.data = babies.build_species(477, ROOT / 'extracted')[0]
         cls.model = parse(cls.data)
         cls.donor = parse((ROOT / 'extracted/CHDAT/MMD1/TANE.MMD').read_bytes())
+        # Reconstruct the centred pre-pace recipe on the current mesh, so the
+        # stride comparison includes the horizontal travel moved onto the root.
+        source = parse(cls.data)
+        source.anims = cls.donor.anims
+        data, _ = yokomon_petals.build(source.build())
+        data, _ = yokomon_neck.build(data)
+        cls.source = parse(center(data, mmd.exe().skeleton[44], 477))
 
     def rz(self, model, slot, bone):
         return [f[bone][5] for f in animsheet.slot_frames(model, NB, slot)[0]]
@@ -45,24 +56,50 @@ class YokomonPetals(unittest.TestCase):
         self.assertEqual(tired[0], tired[-1], 'the loop closes')
         self.assertTrue(all(abs(b - a) <= 25 for a, b in zip(tired, tired[1:])), 'slow follow-through, no snaps')
 
-    def test_only_petals_neck_and_horizontal_registration_differ_from_the_donor(self):
+    def test_only_petals_neck_registration_and_field_cadence_differ_from_the_donor(self):
         self.assertEqual(self.model.anims.table, self.donor.anims.table)
         self.assertEqual(changed_programs(self.donor, self.model), [0, 1, 2, 3, 4, 14, 15, 16, 17, 18, 27, 33, 34, 35, 36])
         for slot in (0, 2, 3, 4):
             a = animsheet.slot_frames(self.model, NB, slot)
             b = animsheet.slot_frames(self.donor, NB, slot)
-            self.assertEqual(a[2], b[2])                              # eyes and sound events
-            self.assertEqual(len(a[0]), len(b[0]))
-            for fa, fb in zip(a[0], b[0]):
+            n, ticks = len(b[0]) - 1, len(a[0]) - 1
+            expected_events = pace._retimed_events(b[2], n, ticks)
+            clean = lambda events: [(t, kind, {k: v for k, v in c.items() if k != 'frame'})
+                                    for t, kind, c in events]
+            self.assertEqual(clean(a[2]), clean(expected_events))
+            for t, fa in enumerate(a[0]):
+                i, rest = divmod(t * n * 4096 // ticks, 4096)
+                fb = b[0][i] if not rest else interpolate_pose(b[0][i], b[0][i + 1], rest)
                 for bone, (pa, pb) in enumerate(zip(fa, fb)):
+                    channels = list(range(9))
                     if bone in (0, 1):
-                        self.assertEqual(pa[:6] + [pa[7]], pb[:6] + [pb[7]])  # only horizontal travel moved to root
+                        channels = list(range(6)) + [7]  # horizontal travel is registered to the root
                     elif slot == 3 and bone in (4, 5):
-                        self.assertEqual(pa[:5] + pa[6:], pb[:5] + pb[6:])     # rz is the only channel that moved
+                        channels.remove(5)
                     elif bone == 3:
-                        self.assertEqual(pa[:7], pb[:7])                     # only ty and tz of the head moved
-                    else:
-                        self.assertEqual(pa, pb)
+                        channels = list(range(7))
+                    for c in channels:
+                        self.assertAlmostEqual(pa[c], pb[c], delta=3, msg=(slot, t, bone, c))
+
+    def test_field_speeds_and_stride_travel(self):
+        from tools.models.audit_field import measure
+        # Preserve travel at every stride phase, rather than only increasing
+        # the root speed while the planted tendrils keep their old clock.
+        for slot, (_, ticks, speed) in yokomon_pace.SLOTS.items():
+            self.assertEqual(measure(self.model, NB, slot)['ticks'], ticks)
+            self.assertAlmostEqual(measure(self.model, NB, slot)['units_per_tick'], speed, delta=.03)
+            own = animsheet.slot_frames(self.model, NB, slot)[0]
+            donor = animsheet.slot_frames(self.source, NB, slot)[0]
+            n = len(donor) - 1
+            start = donor[0][0][8]
+            travel = start - donor[-1][0][8]
+            for t, frame in enumerate(own):
+                i, rest = divmod(t * n * 4096 // ticks, 4096)
+                source = donor[i] if not rest else interpolate_pose(donor[i], donor[i + 1], rest)
+                expected = start + round((int(source[0][8]) - start) * speed * ticks / travel)
+                self.assertAlmostEqual(frame[0][8], expected, delta=2)
+            for bone in range(1, NB):
+                self.assertTrue(all(abs(a - b) <= 2 for a, b in zip(own[0][bone], own[-1][bone])))
 
     def test_the_neck_stays_on_the_bulb_in_every_tick_of_every_clip(self):
         from tools.models.field_animations import yokomon_neck as neck
@@ -77,6 +114,11 @@ class YokomonPetals(unittest.TestCase):
             self.assertLessEqual(worst, limit, (model is self.model, worst))
             if model is self.donor:
                 self.assertGreater(worst, 25, 'the donor swings the stem off the bulb')
+
+    def test_field_mesh_stays_centred_over_the_shadow(self):
+        rows = battle_qa.check_field_origin(self.data, mmd.exe().skeleton[44], tolerance=.7, sid=477)
+        self.assertEqual(set(rows), set(range(5)))
+        self.assertTrue(all(r['verdict'] == 'pass' for r in rows.values()), rows)
 
     def test_the_storage_budget_holds(self):
         self.assertLess(motionstorage.require(self.data, NB)['resident_bytes'], 100352)

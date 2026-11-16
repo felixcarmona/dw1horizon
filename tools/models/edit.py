@@ -18,6 +18,8 @@ step does (the import Provider, crmath and pysum installed), so an animation can
                                       `source` in gaits.py / secondary_motion.py, its chibi.json `source_sha256` and
                                       `post_source_sha256`, or its active follow-through input) from the current model's input to MMD's; refuses when that
                                       input is pinned anywhere else
+                                      Authored builders: after encoding with their own tool, refresh only their final
+                                      provider pins; MMD/TIM must match the current builder output.
   tools/models/edit.py sources OUT [ID ...]     write the importer outputs (the delta sources) at their pinned paths under OUT;
                                       --unchecked after an importer change (no pins, no cache)
   tools/models/edit.py rebase OLD NEW [ID ...]  the importer changed: decode each delta against OLD's sources, re-encode against
@@ -536,7 +538,21 @@ def stray_pins(texts, old):
 
 def cmd_repin(a):
     from tools.models import variants
-    row, = rows(load(MODELS), [a.id])
+    manifest = load(MODELS)
+    # Authored builders store their delta pins in their own manifest. After
+    # encoding there, refresh just this final provider's pins.
+    registration = import_records().get(str(a.id), {})
+    if registration.get('builder') and not any(str(r['id']) == str(a.id) for r in manifest['models']):
+        sid = int(a.id)
+        model, tim = importlib.import_module(registration['builder']).build(ROOT / 'extracted')
+        if Path(a.mmd).read_bytes() != model or (a.tim and Path(a.tim).read_bytes() != tim):
+            raise SystemExit(f'{sid}: encode the authored model first; repin requires the current builder output')
+        step, pins = species_pins()
+        pins['imports'][str(sid)] = provider_pin(sid, model, tim, donor_models(a, sid))
+        step._write_pins(pins)
+        print(f'{step.PINS}: authored imports {sid} repinned')
+        return
+    row, = rows(manifest, [a.id])
     sid = row['id']
     model, tim, _ = build(a, row)
     new_model = Path(a.mmd).read_bytes()

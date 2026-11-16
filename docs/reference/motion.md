@@ -506,6 +506,13 @@ trail and can teleport when both it and the next tile are off screen
 ([world.md](world.md)); matching the tamer's speed is not a native requirement.
 Keep the condition walk slower than the ordinary walk. Cadence and travel must
 change together on planted gaits: increasing root travel alone makes feet skate.
+Yokomon (477) bakes `field_animations/yokomon_pace.py` into its baby delta after
+the petal and neck corrections: walk 14 ticks at 17, condition walk 25 ticks at
+11.52, run 15 ticks at 38 units per tick (previously 17/21/17 ticks at
+13.529/13.476/33). The full poses and uneven root travel are resampled together;
+stride lengths change by at most 3.5%, retaining the roots' sweep and petal lag.
+Apply it to the current centred baby; encode re-centres the resampled poses, then
+rebuild that canonical output before refreshing its provider pins with `edit.py repin`.
 Typical authored values:
 
 | Gait | Cycle (ticks) | Root units per tick |
