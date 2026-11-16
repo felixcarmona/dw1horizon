@@ -1,5 +1,9 @@
 # Motion: how imported species are animated
 
+Garudamon's field wing repair and the all-import bilateral sweep are recorded in
+[Garudamon: field wing clearance](garudamon-wings.md), with per-sample before/after measurements and the other
+species requiring review. `tools/models/field_sides_qa.py` checks opposing chains in final provider models, slots 0–4.
+
 How the partner animation slots are used by the engine, what that asks of a clip, how the imported species get their
 everyday and field animations (retargeting from a DW1 donor, foot-based leg solving, per-species field recipes), the
 engine layers that play them (cold animations, field transitions), and the measurements and rules that decide whether a

@@ -340,6 +340,12 @@ def measure(clip, ref):
     rig, h, V = clip.rig, ref['h'], clip.V
     out = dict(n=clip.n, finite=bool(np.isfinite(clip.P).all()),
                scale=clip.P[..., 0:3].reshape(clip.n, -1))
+    # O(vertices), no triangle tests. Also exposed to care QA through this
+    # measurement. field_sides_qa confirms candidates and samples 60-fps thirds.
+    from tools.models import field_sides_qa
+    sides = field_sides_qa.measure(clip)
+    out['side_depth'] = max((r['max_depth'] for r in sides), default=0.0) / h
+    out['side_centroid'] = max((r['max_centroid'] for r in sides), default=0.0) / h
     out['size'] = size_ratio(clip.P[0], np.asarray(rig.frames(0)[0][0]))
     from tools.models import clip_rig
     out['proportions'] = clip_rig.proportions(clip.P, rig.frames(0)[0][0], rig.parent, rig.proportion_groups)

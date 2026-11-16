@@ -278,4 +278,36 @@ def build(data, rig, tweak=None):
     profile = make_profile(old, rig, data)
     if tweak:
         tweak(profile)
-    return quadruped.build(data, rig, profile)
+    output, proof = quadruped.build(data, rig, profile)
+    # Angemon's folded rest wings put Garudamon's broad feathers through
+    # their opposite chain. Open the shoulders in the rest body's axes,
+    # retaining every spring-driven turn of both joints. The poor-condition
+    # idle is still the donor's clip, and needs the same clearance.
+    from tools.models.field_animations import channels
+    model = mmd.MMD.parse(output, n)
+    basis = rest_world(old, rig)
+    opening = {}
+    for bone, side in ((10, 1), (12, -1)):
+        P = [list(row[:3]) for row in basis[rig[bone][1]][:3]]
+        turn = quadruped.mul(about(Y, side * 45), about(Z, -side * 45))
+        opening[bone] = quadruped.mul(quadruped.mul(quadruped.tr(P), turn), P)
+    for slot in range(5):
+        frames, loop, _ = animsheet.slot_frames(model, n, slot)
+        previous = {}
+        for pose in frames:
+            for bone, local in opening.items():
+                rotation = quadruped.mul(local, mmd.rot_matrix(*pose[bone][3:6]))
+                quadruped.set_rot(pose, bone, rotation, previous)
+        index = model.anims.table[slot]
+        original = model.anims.anims[index]
+        animation = channels.replace_channels(
+            original, frames, loop, n, {(b, c) for b in (10, 12) for c in (3, 4, 5)})
+        # Keep the donor's condition-idle aliases on the same repaired stream.
+        model.anims.anims[index] = animation
+    output = model.build()
+    from motiondiscidentity import changed_programs
+    import motionstorage
+    proof['changed_slots'] = changed_programs(old, model)
+    proof['storage'] = motionstorage.require(output, n)
+    proof['output_sha256'] = hashlib.sha256(output).hexdigest()
+    return output, proof
