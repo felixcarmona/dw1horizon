@@ -127,14 +127,15 @@ def restore(b_data, a_data, nb, slots, budget=True):
     return out, report
 
 
-def compact(data, nb, tol=0, slots=None):
+def compact(data, nb, tol=0, slots=None, include_cold=False):
     """B re-encoded where a clip gets smaller, the same animation: each resident clip of `slots` (default every slot
     outside the cold ones, which are not resident) is encoded again from its decoded ticks with tolerance `tol` (units of
     1/4096 turn; 0 is exact) and kept when it is smaller and decodes to the same ticks (within `tol`), loop and events.
+    include_cold=True also re-encodes care slots for models stored wholly resident.
     -> (bytes, {slot: (old bytes, new bytes)})"""
     import coldsplit
     model = mmd.MMD.parse(data, nb)
-    cold = set(coldsplit.cold_set(model, coldsplit.COLD_SLOTS))
+    cold = set() if include_cold else set(coldsplit.cold_set(model, coldsplit.COLD_SLOTS))
     done, report = {}, {}
     for slot, index in enumerate(list(model.anims.table)):
         if index is None or slot in cold or (slots is not None and any(

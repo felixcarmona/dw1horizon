@@ -338,6 +338,7 @@ def reference(rig):
     low = {b: c.V[b][0][:, 1].max() for b in rig.meshed}
     for ch in chains:
         ch['kind'] = 'leg' if low[ch['tip']] > max(low.values()) - 0.2 * h else 'limb'
+        ch['centroid'] = rig.local[ch['tip']].mean(0)
     in_chain = {b for ch in chains for b in ch['bones']}
     body = [b for b in range(1, rig.nb) if b not in in_chain]
     return dict(h=h, floor=floor, gap=_nearest_gaps(rig, c.V, 0), chains=chains, body=body,
@@ -365,7 +366,10 @@ def measure(clip, ref):
     amps = {}
     for ch in ref['chains']:
         tip, base = ch['tip'], ch['base']
-        p = clip.Wb[:, tip, :3, :3] @ rig.local[tip].mean(0) + clip.Wb[:, tip, :3, 3]
+        # A cleanup can remove an invisible piece while retaining its bone.
+        # Keep the reference probe so its motion remains comparable.
+        centroid = rig.local[tip].mean(0) if tip in rig.local else ch['centroid']
+        p = clip.Wb[:, tip, :3, :3] @ centroid + clip.Wb[:, tip, :3, 3]
         Wp = clip.Wb[:, base]
         q = np.einsum('fji,fj->fi', Wp[:, :3, :3], p - Wp[:, :3, 3])
         amps[tip] = float(np.linalg.norm(q - q.mean(0), axis=1).max() / h)

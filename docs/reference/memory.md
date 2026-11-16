@@ -166,6 +166,12 @@ fixed array, not the heap. The original's is 0x18800 (100 352 bytes; the biggest
   (0x80020000 in the load area): a 0x4800 texture plus the model end at 0x80048800 at the biggest buffer the heap
   allows, below `SAVE_EXT_ADDR` (link assert), the battle prefix and the EVL overlay.
 
+The current peak and sector-rounded transfer audit, including archive-backed originals,
+are measured in [partner buffer headroom](../investigations/partner-buffer-headroom.md).
+The final storage pass keeps all 291 partners within 48 sectors: the largest is
+Raijinmon at 98,266 bytes, leaving 2,086 payload bytes and 2,048 bytes after the
+CD read rounds to sectors. The 49-sector allocation and screen heap do not grow.
+
 ### Cold animations (patch 0113)
 
 Animations are most of a model (an imported model averages 27 KB of mesh and 64 KB of animations). `tools/coldsplit.py`

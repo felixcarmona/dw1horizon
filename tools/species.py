@@ -991,6 +991,9 @@ def flat_texture(s, model, nbones, tex):
 
 def resident_model(s, r, model):
     """(resident part, cold part) of a partner species' model: the whole model and nothing cold unless COLD=1 (and "cold": false opts out)."""
+    if s['id'] < NUM_ORIGINAL and r['flags'] & FLAG_PARTNER:
+        from tools.models import partner_headroom
+        model, _ = partner_headroom.apply(model, r['bones'], s['id'], cold=False)
     if COLD and s['id'] >= NUM_ORIGINAL and r['flags'] & FLAG_PARTNER and s.get('cold', True):   # (the original ids carried by a record keep their file)
         import coldsplit
         return coldsplit.split(model, r['para']['boneCount'])
@@ -1928,15 +1931,19 @@ def select(sel, out, models=None, content=None):
 def disc_files(content=None):
     """[(option, disc path, file)] of the replaced (--file) and partner-only (--add) models of the disc's species:
     build-disc.py's arguments; the file as the species file names it (relative to the repository or absolute)."""
+    from tools.models import partner_headroom
     out = []
     for t, s in sorted(load_content(content).items()):
         if t >= NUM_ORIGINAL: break
         m = s['model']
         if is_record_original(s): continue       # its model is in DIGI.DAT
+        bones = len(m['skeleton']) if 'skeleton' in m else m['bones']
         if 'file' in m:
-            out.append(('--file', f'CHDAT/MMD{t // 30}/{m["name"]}.MMD', m['file']))
+            path = partner_headroom.disc_file(resolve_path(m['file']), bones, t) if t in partner_headroom.SPECIES else m['file']
+            out.append(('--file', f'CHDAT/MMD{t // 30}/{m["name"]}.MMD', path))
         if 'partner_file' in m:
-            out.append(('--add', os.path.basename(m['partner_file']), m['partner_file']))
+            path = partner_headroom.disc_file(resolve_path(m['partner_file']), bones, t) if t in partner_headroom.SPECIES else m['partner_file']
+            out.append(('--add', os.path.basename(m['partner_file']), path))
     return out
 
 

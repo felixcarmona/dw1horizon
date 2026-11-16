@@ -316,55 +316,11 @@ def apply(data, bones, sid):
         from tools.models import kyubimon_mesh
         report.update(kyubimon_mesh.apply(model, bones))
     if sid == 406:
-        # Both cannon caps cut through the housings. Advance their rear lip
-        # eight local units; their separate animation and material stay intact.
-        for oi in (2, 9):
-            transform_piece(model, oi, offset=(0, 0, -8))
-        report['cannon_cap_offset'] = -8
-        # The lids were pivoting from inside the housings. Seat their upper
-        # rear edge on the mouth instead: their original negative-pitch opening
-        # now sweeps outward. Keep all recoil keys and the full opening curve.
-        for bone, oi in ((3, 2), (11, 9)):
-            translate_bone(model, bone, 1, -15)
-            translate_bone(model, bone, 2, -121)
-            transform_piece(model, oi, scale=(1, 1, .3), offset=(0, 45, -12))
-        report['cannon_hinge_offset'] = [0, -15, -121]
-        report['cannon_lid_depth_fit'] = .3
-        # The firing program crossed both arms through the mouths. Brace them
-        # beside the cannons, retaining a small eased recoil from their authored
-        # curves; the chest, cannon opening, effects and firing events stay exact.
-        from tools.models import mesh_pose
-        def cannon_brace(slot, tick, poses):
-            targets = {4: (-20, 0, 20), 12: (-20, 0, -20),
-                       5: (-15, 0, 0), 13: (-15, 0, 0)}
-            return {(bone, axis): round(deg*4096/360+
-                        .15*(poses[tick][bone][3+axis]-poses[0][bone][3+axis]))
-                    for bone, angles in targets.items() for axis, deg in enumerate(angles)}
-        report['cannon_brace_slots'] = mesh_pose.edit(model, bones, cannon_brace, {54, 61})
-        report['cannon_brace_recoil_gain'] = .15
+        from tools.models import malomyotismon_mesh
+        report.update(malomyotismon_mesh.apply(model, bones))
     if sid == 335:
-        # Oversized rigid shoulder shells engulfed the elbow during its swing.
-        # Fit the shell about the shoulder mount; keep the arm and muzzle rig.
-        for oi in (12, 22):
-            transform_piece(model, oi, scale=(.7, .7, .7))
-        # The two calf shells crossed one another in the idle and run poses.
-        for oi in (3, 8):
-            transform_piece(model, oi, scale=(.9, 1, .9))
-        report['shoulder_fit'] = .7
-        report['calf_radial_fit'] = .9
-        # The imported elbow windups fold the gun back through the shell.
-        # A periodic eased arc avoids the half-turn jump of a signed clamp.
-        from tools.models import mesh_pose
-        def elbow_arc(slot, tick, poses):
-            return {(b, 0): mesh_pose.elbow_pitch(poses[tick][b][3]) for b in (15, 25)}
-        report['elbow_arc_slots'] = mesh_pose.edit(model, bones, elbow_arc)
-        for oi in (12, 22):
-            transform_piece(model, oi, scale=(.55, .55, .55))
-        report['additional_shoulder_fit'] = .55
-        # The remaining mirrored shoulder contact is confined to this attack.
-        # Keep its swing and easing with a small constant upper-arm correction.
-        rotate_clip_bone(model, 48, 14, (5, 0, 0))
-        report['slot_48_upper_arm_pitch_degrees'] = 5
+        from tools.models import mesh_megagargomon
+        report.update(mesh_megagargomon.apply(model, bones))
     if sid == 336:
         # The wide shoulder plates swept through both forearms and the calves.
         # Narrow each plate toward its unchanged inner mounting edge.
@@ -391,25 +347,8 @@ def apply(data, bones, sid):
         report['recovery_arm_degrees'] = [-30, 30, 30]
         report['recovery_yaw_detour'] = dict(degrees=10, ticks=[1, 4, 6, 12])
     if sid == 461:
-        # Animated face masks were exactly on the base head. Keep the masks
-        # (including currently transparent texels) on one independent front layer.
-        offset_layer(model, 1, range(6), (0, 0, -6))
-        # The broadened calf flare pierced the separate toe armour. Taper only
-        # its distal ring into the boot, keeping the knee and ankle locations.
-        for oi in (15, 19):
-            taper_ankle(model, oi)
-        # The toe armour's rear lip swept back through the calf and boot.
-        # Retract that lip without shortening the toe or moving either joint.
-        for oi in (17, 21):
-            fit_toe_lip(model, oi, factor=.53 if oi == 17 else .76)
-        report['face_layer_offset'] = -6
-        report['ankle_radial_fit'] = .6
-        report['toe_rear_lip_fit'] = [.53, .76]
-        from tools.models import mesh_pose
-        def toe_arc(slot, tick, poses):
-            return {(18, 0): round(poses[tick][18][3]*.5)}
-        report['left_toe_arc_slots'] = mesh_pose.edit(model, bones, toe_arc, {40, 41})
-        report['left_toe_arc_gain'] = .5
+        from tools.models import mesh_omnimon
+        report.update(mesh_omnimon.apply(model, bones))
     if sid == 432:
         report['duplicate_packets'] = duplicate_surfaces(model)
     if sid == 323:
@@ -488,6 +427,9 @@ def apply(data, bones, sid):
     if sid in (307, 314, 323, 326):
         from tools.models import mesh_gd
         report.update(mesh_gd.apply(model, sid))
+    if sid == 336:
+        from tools.models import mesh_raidenmon
+        report['raidenmon'] = mesh_raidenmon.apply(model, bones)
     return model.build(), report
 
 

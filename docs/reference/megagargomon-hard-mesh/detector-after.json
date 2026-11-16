@@ -1,0 +1,1776 @@
+{
+  "triangles": 1338,
+  "bent_quads": 0,
+  "bent_risk": 0.0,
+  "zero_area": 0,
+  "collapsed_indices": 0,
+  "degenerate": 0,
+  "rest_collapsed": 0,
+  "tiny": 0,
+  "coplanar_pairs": 5,
+  "coplanar_area": 0.006189999999999999,
+  "clips": {
+    "0": {
+      "decoded_ticks": 81,
+      "measured_ticks": 3,
+      "crossings_mean": 34.666666666666664,
+      "crossings_max": 36,
+      "overlaps": 35898,
+      "ties": 229.75,
+      "flips": 92,
+      "comparisons": 16448,
+      "tied_flips": 60.5
+    },
+    "2": {
+      "decoded_ticks": 41,
+      "measured_ticks": 3,
+      "crossings_mean": 42.666666666666664,
+      "crossings_max": 44,
+      "overlaps": 37397,
+      "ties": 256.25,
+      "flips": 22,
+      "comparisons": 23320,
+      "tied_flips": 20.0
+    },
+    "3": {
+      "decoded_ticks": 49,
+      "measured_ticks": 3,
+      "crossings_mean": 39.666666666666664,
+      "crossings_max": 41,
+      "overlaps": 36499,
+      "ties": 260.25,
+      "flips": 14,
+      "comparisons": 23568,
+      "tied_flips": 14.0
+    },
+    "4": {
+      "decoded_ticks": 41,
+      "measured_ticks": 3,
+      "crossings_mean": 10.0,
+      "crossings_max": 10,
+      "overlaps": 37426,
+      "ties": 252.75,
+      "flips": 4,
+      "comparisons": 23226,
+      "tied_flips": 3.5
+    },
+    "33": {
+      "decoded_ticks": 81,
+      "measured_ticks": 3,
+      "crossings_mean": 24.0,
+      "crossings_max": 30,
+      "overlaps": 34902,
+      "ties": 239.0,
+      "flips": 49,
+      "comparisons": 19044,
+      "tied_flips": 39.5
+    },
+    "34": {
+      "decoded_ticks": 21,
+      "measured_ticks": 3,
+      "crossings_mean": 28.0,
+      "crossings_max": 28,
+      "overlaps": 35434,
+      "ties": 173.75,
+      "flips": 22,
+      "comparisons": 18160,
+      "tied_flips": 14.0
+    },
+    "35": {
+      "decoded_ticks": 21,
+      "measured_ticks": 3,
+      "crossings_mean": 18.333333333333332,
+      "crossings_max": 25,
+      "overlaps": 35895,
+      "ties": 242.0,
+      "flips": 146,
+      "comparisons": 12768,
+      "tied_flips": 72.5
+    },
+    "36": {
+      "decoded_ticks": 17,
+      "measured_ticks": 3,
+      "crossings_mean": 24.666666666666668,
+      "crossings_max": 28,
+      "overlaps": 36274,
+      "ties": 210.75,
+      "flips": 198,
+      "comparisons": 4368,
+      "tied_flips": 60.0
+    }
+  },
+  "part_intersections": [
+    {
+      "slot": 0,
+      "bones": [
+        3,
+        7
+      ],
+      "count": 8,
+      "depth": 36.755860968406004,
+      "height_fraction": 0.06332145291714307,
+      "tick": 0,
+      "adjacent": false
+    },
+    {
+      "slot": 0,
+      "bones": [
+        4,
+        5
+      ],
+      "count": 13,
+      "depth": 35.014576248183616,
+      "height_fraction": 0.060258093111123616,
+      "tick": 40,
+      "adjacent": true
+    },
+    {
+      "slot": 0,
+      "bones": [
+        1,
+        2
+      ],
+      "count": 16,
+      "depth": 33.23603255948449,
+      "height_fraction": 0.05725764042575493,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 0,
+      "bones": [
+        17,
+        22
+      ],
+      "count": 35,
+      "depth": 32.93312525437307,
+      "height_fraction": 0.05667603440213715,
+      "tick": 40,
+      "adjacent": true
+    },
+    {
+      "slot": 0,
+      "bones": [
+        8,
+        12
+      ],
+      "count": 16,
+      "depth": 31.27602314742068,
+      "height_fraction": 0.05382425597855689,
+      "tick": 40,
+      "adjacent": false
+    },
+    {
+      "slot": 0,
+      "bones": [
+        5,
+        6
+      ],
+      "count": 18,
+      "depth": 29.241969555810172,
+      "height_fraction": 0.05032376550146195,
+      "tick": 40,
+      "adjacent": true
+    },
+    {
+      "slot": 0,
+      "bones": [
+        9,
+        10
+      ],
+      "count": 14,
+      "depth": 27.929073325662998,
+      "height_fraction": 0.04811503403853203,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 0,
+      "bones": [
+        10,
+        11
+      ],
+      "count": 18,
+      "depth": 26.179108196175992,
+      "height_fraction": 0.04510026764117565,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 0,
+      "bones": [
+        15,
+        16
+      ],
+      "count": 21,
+      "depth": 25.86866841478894,
+      "height_fraction": 0.044518506205826126,
+      "tick": 40,
+      "adjacent": true
+    },
+    {
+      "slot": 0,
+      "bones": [
+        25,
+        26
+      ],
+      "count": 22,
+      "depth": 25.624207126191127,
+      "height_fraction": 0.04414430739290608,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 0,
+      "bones": [
+        1,
+        23
+      ],
+      "count": 18,
+      "depth": 24.91563398174799,
+      "height_fraction": 0.042923607351550104,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 0,
+      "bones": [
+        1,
+        13
+      ],
+      "count": 18,
+      "depth": 22.939373060473773,
+      "height_fraction": 0.03951898807230044,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 0,
+      "bones": [
+        1,
+        17
+      ],
+      "count": 15,
+      "depth": 22.30428332098906,
+      "height_fraction": 0.03842488215347816,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 0,
+      "bones": [
+        17,
+        19
+      ],
+      "count": 21,
+      "depth": 19.47712530275836,
+      "height_fraction": 0.033554373107462405,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 0,
+      "bones": [
+        14,
+        15
+      ],
+      "count": 12,
+      "depth": 16.34385880229023,
+      "height_fraction": 0.02812685090126005,
+      "tick": 40,
+      "adjacent": true
+    },
+    {
+      "slot": 0,
+      "bones": [
+        24,
+        25
+      ],
+      "count": 10,
+      "depth": 15.122859723242243,
+      "height_fraction": 0.026053027318852964,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 0,
+      "bones": [
+        1,
+        18
+      ],
+      "count": 12,
+      "depth": 14.322147075510902,
+      "height_fraction": 0.02467359321262803,
+      "tick": 0,
+      "adjacent": false
+    },
+    {
+      "slot": 2,
+      "bones": [
+        3,
+        7
+      ],
+      "count": 18,
+      "depth": 53.39190502357221,
+      "height_fraction": 0.09905424786161436,
+      "tick": 0,
+      "adjacent": false
+    },
+    {
+      "slot": 2,
+      "bones": [
+        8,
+        12
+      ],
+      "count": 10,
+      "depth": 46.22228682312278,
+      "height_fraction": 0.08575295924891327,
+      "tick": 0,
+      "adjacent": false
+    },
+    {
+      "slot": 2,
+      "bones": [
+        1,
+        2
+      ],
+      "count": 16,
+      "depth": 35.22451814274731,
+      "height_fraction": 0.06525391405984671,
+      "tick": 20,
+      "adjacent": true
+    },
+    {
+      "slot": 2,
+      "bones": [
+        17,
+        22
+      ],
+      "count": 34,
+      "depth": 29.30144233444672,
+      "height_fraction": 0.05436090602906338,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 2,
+      "bones": [
+        5,
+        6
+      ],
+      "count": 12,
+      "depth": 29.241969555810176,
+      "height_fraction": 0.054171158867318034,
+      "tick": 20,
+      "adjacent": true
+    },
+    {
+      "slot": 2,
+      "bones": [
+        4,
+        5
+      ],
+      "count": 13,
+      "depth": 26.292531107660317,
+      "height_fraction": 0.04877868456084438,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 2,
+      "bones": [
+        10,
+        11
+      ],
+      "count": 20,
+      "depth": 26.17910819617598,
+      "height_fraction": 0.048568259006963224,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 2,
+      "bones": [
+        25,
+        26
+      ],
+      "count": 24,
+      "depth": 25.715359167653375,
+      "height_fraction": 0.04763806364487199,
+      "tick": 20,
+      "adjacent": true
+    },
+    {
+      "slot": 2,
+      "bones": [
+        15,
+        16
+      ],
+      "count": 21,
+      "depth": 25.691008680312695,
+      "height_fraction": 0.04759295402543576,
+      "tick": 20,
+      "adjacent": true
+    },
+    {
+      "slot": 2,
+      "bones": [
+        1,
+        23
+      ],
+      "count": 18,
+      "depth": 25.23396151044108,
+      "height_fraction": 0.04681479480610665,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 2,
+      "bones": [
+        17,
+        19
+      ],
+      "count": 21,
+      "depth": 25.213858796949992,
+      "height_fraction": 0.04670902717208782,
+      "tick": 20,
+      "adjacent": true
+    },
+    {
+      "slot": 2,
+      "bones": [
+        9,
+        10
+      ],
+      "count": 16,
+      "depth": 23.51351490587556,
+      "height_fraction": 0.04355911625802748,
+      "tick": 20,
+      "adjacent": true
+    },
+    {
+      "slot": 2,
+      "bones": [
+        1,
+        13
+      ],
+      "count": 18,
+      "depth": 23.383780487370046,
+      "height_fraction": 0.043382284024421264,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 2,
+      "bones": [
+        1,
+        17
+      ],
+      "count": 13,
+      "depth": 21.285494775334385,
+      "height_fraction": 0.03948948205542049,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 2,
+      "bones": [
+        24,
+        25
+      ],
+      "count": 10,
+      "depth": 15.607767971897978,
+      "height_fraction": 0.028955994669461443,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 2,
+      "bones": [
+        14,
+        15
+      ],
+      "count": 12,
+      "depth": 15.404401909701042,
+      "height_fraction": 0.028536870661662675,
+      "tick": 20,
+      "adjacent": true
+    },
+    {
+      "slot": 2,
+      "bones": [
+        1,
+        18
+      ],
+      "count": 12,
+      "depth": 15.168158253772352,
+      "height_fraction": 0.02809922597455348,
+      "tick": 20,
+      "adjacent": false
+    },
+    {
+      "slot": 3,
+      "bones": [
+        3,
+        7
+      ],
+      "count": 18,
+      "depth": 51.829818235873674,
+      "height_fraction": 0.09234172130899498,
+      "tick": 0,
+      "adjacent": false
+    },
+    {
+      "slot": 3,
+      "bones": [
+        1,
+        2
+      ],
+      "count": 16,
+      "depth": 35.26225350818844,
+      "height_fraction": 0.06282439910095083,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 3,
+      "bones": [
+        8,
+        12
+      ],
+      "count": 10,
+      "depth": 34.429164122556784,
+      "height_fraction": 0.06144891800150497,
+      "tick": 24,
+      "adjacent": false
+    },
+    {
+      "slot": 3,
+      "bones": [
+        17,
+        22
+      ],
+      "count": 34,
+      "depth": 29.584467913705062,
+      "height_fraction": 0.052802139967039474,
+      "tick": 24,
+      "adjacent": true
+    },
+    {
+      "slot": 3,
+      "bones": [
+        5,
+        6
+      ],
+      "count": 16,
+      "depth": 29.241969555810158,
+      "height_fraction": 0.052098461757285774,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 3,
+      "bones": [
+        15,
+        16
+      ],
+      "count": 21,
+      "depth": 25.771228805643148,
+      "height_fraction": 0.04599629895279566,
+      "tick": 24,
+      "adjacent": true
+    },
+    {
+      "slot": 3,
+      "bones": [
+        25,
+        26
+      ],
+      "count": 22,
+      "depth": 25.641918146925327,
+      "height_fraction": 0.04568449089625727,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 3,
+      "bones": [
+        1,
+        23
+      ],
+      "count": 18,
+      "depth": 25.539939809961332,
+      "height_fraction": 0.04550280291254433,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 3,
+      "bones": [
+        17,
+        19
+      ],
+      "count": 22,
+      "depth": 24.058209092052834,
+      "height_fraction": 0.042862902375262864,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 3,
+      "bones": [
+        1,
+        13
+      ],
+      "count": 16,
+      "depth": 23.60107293762431,
+      "height_fraction": 0.04204845345745271,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 3,
+      "bones": [
+        9,
+        10
+      ],
+      "count": 15,
+      "depth": 23.18351990575471,
+      "height_fraction": 0.041377775208362666,
+      "tick": 24,
+      "adjacent": true
+    },
+    {
+      "slot": 3,
+      "bones": [
+        4,
+        5
+      ],
+      "count": 13,
+      "depth": 23.020463779192117,
+      "height_fraction": 0.041014020945005905,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 3,
+      "bones": [
+        10,
+        11
+      ],
+      "count": 12,
+      "depth": 22.61500845030938,
+      "height_fraction": 0.04029164829819191,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 3,
+      "bones": [
+        1,
+        17
+      ],
+      "count": 15,
+      "depth": 20.777380180108626,
+      "height_fraction": 0.03708331478594071,
+      "tick": 24,
+      "adjacent": true
+    },
+    {
+      "slot": 3,
+      "bones": [
+        14,
+        15
+      ],
+      "count": 12,
+      "depth": 15.850619649639661,
+      "height_fraction": 0.02823998910435756,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 3,
+      "bones": [
+        24,
+        25
+      ],
+      "count": 10,
+      "depth": 15.21154773283268,
+      "height_fraction": 0.02714945811590034,
+      "tick": 24,
+      "adjacent": true
+    },
+    {
+      "slot": 4,
+      "bones": [
+        3,
+        7
+      ],
+      "count": 10,
+      "depth": 58.62492765850472,
+      "height_fraction": 0.10951001440151349,
+      "tick": 20,
+      "adjacent": false
+    },
+    {
+      "slot": 4,
+      "bones": [
+        1,
+        2
+      ],
+      "count": 16,
+      "depth": 35.967487073280736,
+      "height_fraction": 0.0671864373176727,
+      "tick": 20,
+      "adjacent": true
+    },
+    {
+      "slot": 4,
+      "bones": [
+        4,
+        5
+      ],
+      "count": 22,
+      "depth": 29.903829151153662,
+      "height_fraction": 0.05584046390550579,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 4,
+      "bones": [
+        9,
+        10
+      ],
+      "count": 20,
+      "depth": 29.469100416429058,
+      "height_fraction": 0.05504760073737385,
+      "tick": 20,
+      "adjacent": true
+    },
+    {
+      "slot": 4,
+      "bones": [
+        17,
+        22
+      ],
+      "count": 34,
+      "depth": 29.30144233444673,
+      "height_fraction": 0.054715605977597975,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 4,
+      "bones": [
+        5,
+        6
+      ],
+      "count": 13,
+      "depth": 29.241969555810158,
+      "height_fraction": 0.05460455038227508,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 4,
+      "bones": [
+        2,
+        8
+      ],
+      "count": 8,
+      "depth": 27.900160274223136,
+      "height_fraction": 0.05211685669332286,
+      "tick": 20,
+      "adjacent": true
+    },
+    {
+      "slot": 4,
+      "bones": [
+        10,
+        11
+      ],
+      "count": 19,
+      "depth": 26.179108196175942,
+      "height_fraction": 0.04890197105712095,
+      "tick": 20,
+      "adjacent": true
+    },
+    {
+      "slot": 4,
+      "bones": [
+        25,
+        26
+      ],
+      "count": 23,
+      "depth": 25.77364702550547,
+      "height_fraction": 0.04814457893037882,
+      "tick": 20,
+      "adjacent": true
+    },
+    {
+      "slot": 4,
+      "bones": [
+        1,
+        23
+      ],
+      "count": 18,
+      "depth": 25.233961510441134,
+      "height_fraction": 0.04712025706789291,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 4,
+      "bones": [
+        17,
+        19
+      ],
+      "count": 22,
+      "depth": 25.213858796950014,
+      "height_fraction": 0.04709890741453496,
+      "tick": 20,
+      "adjacent": true
+    },
+    {
+      "slot": 4,
+      "bones": [
+        15,
+        16
+      ],
+      "count": 17,
+      "depth": 24.16566755550534,
+      "height_fraction": 0.045140910321305384,
+      "tick": 20,
+      "adjacent": true
+    },
+    {
+      "slot": 4,
+      "bones": [
+        1,
+        13
+      ],
+      "count": 18,
+      "depth": 23.383780487369947,
+      "height_fraction": 0.04366534946675473,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 4,
+      "bones": [
+        1,
+        17
+      ],
+      "count": 11,
+      "depth": 21.068569831185386,
+      "height_fraction": 0.03934207580080253,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 4,
+      "bones": [
+        14,
+        15
+      ],
+      "count": 12,
+      "depth": 16.200702514885144,
+      "height_fraction": 0.030262539103744778,
+      "tick": 20,
+      "adjacent": true
+    },
+    {
+      "slot": 4,
+      "bones": [
+        24,
+        25
+      ],
+      "count": 10,
+      "depth": 13.896794241854051,
+      "height_fraction": 0.02594996892679058,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 33,
+      "bones": [
+        3,
+        7
+      ],
+      "count": 12,
+      "depth": 50.659515219800255,
+      "height_fraction": 0.08765986527709992,
+      "tick": 40,
+      "adjacent": false
+    },
+    {
+      "slot": 33,
+      "bones": [
+        1,
+        2
+      ],
+      "count": 16,
+      "depth": 32.832408317136384,
+      "height_fraction": 0.056226924692852086,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 33,
+      "bones": [
+        9,
+        10
+      ],
+      "count": 21,
+      "depth": 31.58130190867051,
+      "height_fraction": 0.054084350650397836,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 33,
+      "bones": [
+        17,
+        22
+      ],
+      "count": 26,
+      "depth": 29.39749539097252,
+      "height_fraction": 0.050868636904160595,
+      "tick": 40,
+      "adjacent": true
+    },
+    {
+      "slot": 33,
+      "bones": [
+        5,
+        6
+      ],
+      "count": 17,
+      "depth": 29.24196955581017,
+      "height_fraction": 0.05007814243181952,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 33,
+      "bones": [
+        10,
+        11
+      ],
+      "count": 20,
+      "depth": 26.179108196175935,
+      "height_fraction": 0.04485368930355894,
+      "tick": 80,
+      "adjacent": true
+    },
+    {
+      "slot": 33,
+      "bones": [
+        15,
+        16
+      ],
+      "count": 21,
+      "depth": 25.81561550399159,
+      "height_fraction": 0.04421036235971012,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 33,
+      "bones": [
+        25,
+        26
+      ],
+      "count": 22,
+      "depth": 25.59166037029551,
+      "height_fraction": 0.04382682947003371,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 33,
+      "bones": [
+        1,
+        23
+      ],
+      "count": 23,
+      "depth": 23.3050844177231,
+      "height_fraction": 0.039910968877417005,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 33,
+      "bones": [
+        4,
+        5
+      ],
+      "count": 15,
+      "depth": 23.051728986921617,
+      "height_fraction": 0.03947708670250615,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 33,
+      "bones": [
+        17,
+        19
+      ],
+      "count": 12,
+      "depth": 22.643810018520632,
+      "height_fraction": 0.03877850775893542,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 33,
+      "bones": [
+        1,
+        17
+      ],
+      "count": 13,
+      "depth": 22.24447019890519,
+      "height_fraction": 0.03809462098013171,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 33,
+      "bones": [
+        1,
+        13
+      ],
+      "count": 26,
+      "depth": 21.341368247309653,
+      "height_fraction": 0.03654801967900733,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 33,
+      "bones": [
+        8,
+        12
+      ],
+      "count": 8,
+      "depth": 20.021690831670284,
+      "height_fraction": 0.034303945465446906,
+      "tick": 80,
+      "adjacent": false
+    },
+    {
+      "slot": 33,
+      "bones": [
+        14,
+        15
+      ],
+      "count": 12,
+      "depth": 16.128716807707626,
+      "height_fraction": 0.027633960910237607,
+      "tick": 80,
+      "adjacent": true
+    },
+    {
+      "slot": 33,
+      "bones": [
+        24,
+        25
+      ],
+      "count": 10,
+      "depth": 14.94679579568492,
+      "height_fraction": 0.025608929444026002,
+      "tick": 80,
+      "adjacent": true
+    },
+    {
+      "slot": 33,
+      "bones": [
+        1,
+        18
+      ],
+      "count": 12,
+      "depth": 13.926629156510042,
+      "height_fraction": 0.02386103806711157,
+      "tick": 80,
+      "adjacent": false
+    },
+    {
+      "slot": 34,
+      "bones": [
+        4,
+        7
+      ],
+      "count": 16,
+      "depth": 43.3534713486452,
+      "height_fraction": 0.07915879717496987,
+      "tick": 10,
+      "adjacent": false
+    },
+    {
+      "slot": 34,
+      "bones": [
+        8,
+        12
+      ],
+      "count": 16,
+      "depth": 40.5045535890937,
+      "height_fraction": 0.07123341825838543,
+      "tick": 0,
+      "adjacent": false
+    },
+    {
+      "slot": 34,
+      "bones": [
+        1,
+        2
+      ],
+      "count": 16,
+      "depth": 32.8324083171364,
+      "height_fraction": 0.05774078385879083,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 34,
+      "bones": [
+        17,
+        22
+      ],
+      "count": 34,
+      "depth": 29.944502635349302,
+      "height_fraction": 0.052661962464820467,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 34,
+      "bones": [
+        5,
+        6
+      ],
+      "count": 14,
+      "depth": 29.241969555810154,
+      "height_fraction": 0.05142645118866019,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 34,
+      "bones": [
+        10,
+        11
+      ],
+      "count": 16,
+      "depth": 26.179108196175957,
+      "height_fraction": 0.04780024877955808,
+      "tick": 10,
+      "adjacent": true
+    },
+    {
+      "slot": 34,
+      "bones": [
+        15,
+        16
+      ],
+      "count": 21,
+      "depth": 25.821107149022748,
+      "height_fraction": 0.04714657719575045,
+      "tick": 10,
+      "adjacent": true
+    },
+    {
+      "slot": 34,
+      "bones": [
+        25,
+        26
+      ],
+      "count": 22,
+      "depth": 25.591660370295454,
+      "height_fraction": 0.04500682727125922,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 34,
+      "bones": [
+        4,
+        5
+      ],
+      "count": 18,
+      "depth": 24.270846329691196,
+      "height_fraction": 0.042683974884083556,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 34,
+      "bones": [
+        1,
+        23
+      ],
+      "count": 18,
+      "depth": 23.835083357725182,
+      "height_fraction": 0.04191761941801738,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 34,
+      "bones": [
+        17,
+        19
+      ],
+      "count": 21,
+      "depth": 22.61808885501057,
+      "height_fraction": 0.039777349479247624,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 34,
+      "bones": [
+        1,
+        17
+      ],
+      "count": 13,
+      "depth": 22.253678607756903,
+      "height_fraction": 0.039136478632389275,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 34,
+      "bones": [
+        1,
+        13
+      ],
+      "count": 20,
+      "depth": 21.89606844353418,
+      "height_fraction": 0.03850756676583839,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 34,
+      "bones": [
+        9,
+        10
+      ],
+      "count": 12,
+      "depth": 14.676656165303005,
+      "height_fraction": 0.02581113219672773,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 34,
+      "bones": [
+        14,
+        15
+      ],
+      "count": 15,
+      "depth": 13.869660248421194,
+      "height_fraction": 0.024391907132227088,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 34,
+      "bones": [
+        2,
+        7
+      ],
+      "count": 2,
+      "depth": 12.95317267659335,
+      "height_fraction": 0.023651106515392272,
+      "tick": 10,
+      "adjacent": true
+    },
+    {
+      "slot": 34,
+      "bones": [
+        24,
+        25
+      ],
+      "count": 13,
+      "depth": 12.108631247906263,
+      "height_fraction": 0.021294869781033968,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 35,
+      "bones": [
+        3,
+        7
+      ],
+      "count": 16,
+      "depth": 47.89621408840304,
+      "height_fraction": 0.07190597800609669,
+      "tick": 10,
+      "adjacent": false
+    },
+    {
+      "slot": 35,
+      "bones": [
+        2,
+        7
+      ],
+      "count": 6,
+      "depth": 37.14065731468687,
+      "height_fraction": 0.055758797199974945,
+      "tick": 10,
+      "adjacent": true
+    },
+    {
+      "slot": 35,
+      "bones": [
+        1,
+        2
+      ],
+      "count": 16,
+      "depth": 32.832408317136384,
+      "height_fraction": 0.0492908776877799,
+      "tick": 10,
+      "adjacent": true
+    },
+    {
+      "slot": 35,
+      "bones": [
+        17,
+        22
+      ],
+      "count": 34,
+      "depth": 29.944502635349238,
+      "height_fraction": 0.049124877275116455,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 35,
+      "bones": [
+        5,
+        6
+      ],
+      "count": 11,
+      "depth": 29.241969555810158,
+      "height_fraction": 0.043900597568193755,
+      "tick": 10,
+      "adjacent": true
+    },
+    {
+      "slot": 35,
+      "bones": [
+        9,
+        10
+      ],
+      "count": 19,
+      "depth": 26.899255492135005,
+      "height_fraction": 0.04412905570464229,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 35,
+      "bones": [
+        10,
+        11
+      ],
+      "count": 18,
+      "depth": 26.17910819617595,
+      "height_fraction": 0.039302362702384054,
+      "tick": 10,
+      "adjacent": true
+    },
+    {
+      "slot": 35,
+      "bones": [
+        25,
+        26
+      ],
+      "count": 22,
+      "depth": 25.591660370295465,
+      "height_fraction": 0.04198390570271576,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 35,
+      "bones": [
+        2,
+        12
+      ],
+      "count": 4,
+      "depth": 25.136808090862203,
+      "height_fraction": 0.037737570789810125,
+      "tick": 10,
+      "adjacent": true
+    },
+    {
+      "slot": 35,
+      "bones": [
+        1,
+        23
+      ],
+      "count": 18,
+      "depth": 23.83508335772524,
+      "height_fraction": 0.039102187104226284,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 35,
+      "bones": [
+        15,
+        16
+      ],
+      "count": 27,
+      "depth": 23.314579042731726,
+      "height_fraction": 0.0350018814592276,
+      "tick": 10,
+      "adjacent": true
+    },
+    {
+      "slot": 35,
+      "bones": [
+        17,
+        19
+      ],
+      "count": 21,
+      "depth": 22.618088855010633,
+      "height_fraction": 0.0339562495847062,
+      "tick": 10,
+      "adjacent": true
+    },
+    {
+      "slot": 35,
+      "bones": [
+        1,
+        13
+      ],
+      "count": 20,
+      "depth": 21.896068443534205,
+      "height_fraction": 0.03592117351872066,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 35,
+      "bones": [
+        1,
+        17
+      ],
+      "count": 14,
+      "depth": 21.70344819800921,
+      "height_fraction": 0.03560517408345377,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 35,
+      "bones": [
+        4,
+        5
+      ],
+      "count": 18,
+      "depth": 20.91328633727533,
+      "height_fraction": 0.034308889255860515,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 35,
+      "bones": [
+        14,
+        15
+      ],
+      "count": 13,
+      "depth": 16.852514116188047,
+      "height_fraction": 0.027647067570846968,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 35,
+      "bones": [
+        1,
+        18
+      ],
+      "count": 9,
+      "depth": 15.432800926773718,
+      "height_fraction": 0.023169068059635013,
+      "tick": 10,
+      "adjacent": false
+    },
+    {
+      "slot": 35,
+      "bones": [
+        24,
+        25
+      ],
+      "count": 13,
+      "depth": 15.414898747345905,
+      "height_fraction": 0.025288615355987934,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 35,
+      "bones": [
+        17,
+        18
+      ],
+      "count": 27,
+      "depth": 14.038065811639248,
+      "height_fraction": 0.021075169942174562,
+      "tick": 10,
+      "adjacent": true
+    },
+    {
+      "slot": 36,
+      "bones": [
+        3,
+        7
+      ],
+      "count": 14,
+      "depth": 55.61733446121391,
+      "height_fraction": 0.08409731931155162,
+      "tick": 8,
+      "adjacent": false
+    },
+    {
+      "slot": 36,
+      "bones": [
+        8,
+        12
+      ],
+      "count": 4,
+      "depth": 41.248836778369814,
+      "height_fraction": 0.06237114078524877,
+      "tick": 8,
+      "adjacent": false
+    },
+    {
+      "slot": 36,
+      "bones": [
+        15,
+        16
+      ],
+      "count": 21,
+      "depth": 34.421958593349366,
+      "height_fraction": 0.06361317459214545,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 36,
+      "bones": [
+        1,
+        2
+      ],
+      "count": 16,
+      "depth": 32.83240831713639,
+      "height_fraction": 0.060675621257708943,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 36,
+      "bones": [
+        2,
+        7
+      ],
+      "count": 6,
+      "depth": 31.590848563564556,
+      "height_fraction": 0.04776758369867003,
+      "tick": 8,
+      "adjacent": true
+    },
+    {
+      "slot": 36,
+      "bones": [
+        9,
+        10
+      ],
+      "count": 19,
+      "depth": 30.52553130232742,
+      "height_fraction": 0.05641241903730992,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 36,
+      "bones": [
+        17,
+        22
+      ],
+      "count": 34,
+      "depth": 29.94450263534928,
+      "height_fraction": 0.055338654511817076,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 36,
+      "bones": [
+        5,
+        6
+      ],
+      "count": 15,
+      "depth": 29.241969555810158,
+      "height_fraction": 0.044215913525100715,
+      "tick": 8,
+      "adjacent": true
+    },
+    {
+      "slot": 36,
+      "bones": [
+        4,
+        5
+      ],
+      "count": 24,
+      "depth": 26.963160283252464,
+      "height_fraction": 0.0407701937166828,
+      "tick": 8,
+      "adjacent": true
+    },
+    {
+      "slot": 36,
+      "bones": [
+        10,
+        11
+      ],
+      "count": 20,
+      "depth": 26.179108196175935,
+      "height_fraction": 0.03958465184628364,
+      "tick": 8,
+      "adjacent": true
+    },
+    {
+      "slot": 36,
+      "bones": [
+        25,
+        26
+      ],
+      "count": 22,
+      "depth": 25.591660370295443,
+      "height_fraction": 0.04729442558660889,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 36,
+      "bones": [
+        1,
+        23
+      ],
+      "count": 18,
+      "depth": 23.83508335772528,
+      "height_fraction": 0.04404820007384087,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 36,
+      "bones": [
+        17,
+        19
+      ],
+      "count": 23,
+      "depth": 22.61808885501059,
+      "height_fraction": 0.04179914490840271,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 36,
+      "bones": [
+        1,
+        13
+      ],
+      "count": 20,
+      "depth": 21.89606844353416,
+      "height_fraction": 0.040464821924724,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 36,
+      "bones": [
+        1,
+        17
+      ],
+      "count": 6,
+      "depth": 21.191232318995958,
+      "height_fraction": 0.03204263289853785,
+      "tick": 8,
+      "adjacent": true
+    },
+    {
+      "slot": 36,
+      "bones": [
+        14,
+        15
+      ],
+      "count": 12,
+      "depth": 16.68305257320476,
+      "height_fraction": 0.030830957314388882,
+      "tick": 0,
+      "adjacent": true
+    },
+    {
+      "slot": 36,
+      "bones": [
+        1,
+        18
+      ],
+      "count": 12,
+      "depth": 15.397911820045156,
+      "height_fraction": 0.028455965116181474,
+      "tick": 0,
+      "adjacent": false
+    },
+    {
+      "slot": 36,
+      "bones": [
+        17,
+        18
+      ],
+      "count": 13,
+      "depth": 14.303846817729793,
+      "height_fraction": 0.021628421873634125,
+      "tick": 8,
+      "adjacent": true
+    },
+    {
+      "slot": 36,
+      "bones": [
+        24,
+        25
+      ],
+      "count": 13,
+      "depth": 11.537868544316833,
+      "height_fraction": 0.021322448696241756,
+      "tick": 0,
+      "adjacent": true
+    }
+  ],
+  "part_candidates": 22,
+  "tie_rate": 0.006435412891535076,
+  "flip_rate": 0.0038821308427133753,
+  "crossings_max": 44,
+  "verdict": "review",
+  "envelope_verdict": "pass",
+  "flags": [
+    "part_interpenetration"
+  ],
+  "severity": 0.08374073039157684,
+  "surface_pairs": {
+    "cofacing_pairs": 0,
+    "cofacing_area": 0,
+    "opposite_pairs": 9,
+    "pairs": []
+  }
+}

@@ -75,6 +75,17 @@ def run(final, base=None, main=None):
 
 
 class SyntheticDefects(unittest.TestCase):
+    def test_removed_piece_keeps_reference_tip_motion_probe(self):
+        baseline = rig(sound())
+        local = {b: v for b, v in baseline.local.items() if b != 2}
+        tris = [(b, t) for b, ts in baseline.tris.items() if b != 2 for t in ts]
+        final = qa.Rig(PARENTS, local, tris, baseline._clips)
+        ref = qa.reference(baseline)
+        expected = qa.measure(qa.Clip(baseline, *baseline.frames(35)), ref)
+        actual = qa.measure(qa.Clip(final, *final.frames(35)), ref)
+        self.assertGreater(actual['chain_amp'][2], 0)
+        self.assertEqual(actual['chain_amp'], expected['chain_amp'])
+
     def test_shadow_centroid_includes_body_travel_but_excludes_root_travel(self):
         frames, loop = clip()
         r = rig(sound())
