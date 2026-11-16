@@ -1,7 +1,7 @@
 """Developer-only canonical field origin pass, run by babies.encode before storing plain deltas.
 
 The engine's shadow follows the entity origin, not a body bone. The calm hop authors split travel between a steady
-root and a planted body; inherited clips and asymmetric meshes can have an offset too. Move the horizontal vertex
+root and a planted body; inherited clips and asymmetric meshes can have an offset too. Move the horizontal distinct referenced-point
 centroid onto the origin every tick and transfer its motion to the root. World-space vertex trajectories, including
 ground contact, are unchanged up to a constant translation per clip. No acting, height, scale or event is changed.
 The player's builder still only decodes the resulting deltas (no NumPy dependency).

@@ -370,6 +370,18 @@ def species_file(out, t, recs=None, names=None, generate=False):
         s['model']['file'] = str(model_path)
         s['model'].pop('slot_aliases', None)
     s.pop('_path', None)
+    # Last: grounding and rig fitting above still need the original vertex
+    # pools. This pass preserves their result and cannot grow resident data.
+    from tools.models import mesh_stability
+    stable, stability = mesh_stability.apply_provider(model, s['model']['skeleton'])
+    if stability['applied']:
+        generated = Path(os.path.abspath(out) + '-models')
+        generated.mkdir(parents=True, exist_ok=True)
+        model_path = generated / f'{t}-mesh-stability.MMD'
+        model_path.write_bytes(stable)
+        (generated / f'{t}-mesh-stability-report.json').write_text(json.dumps(stability, indent=2) + '\n')
+        s['model']['file'] = str(model_path)
+        s['model'].pop('slot_aliases', None)
     return name, s
 
 

@@ -281,8 +281,12 @@ def check(ctx):
 
 
 # ------------------------------------------------------------------ the pins
-def pin(out, ids=None):
-    """Writes provider pins from regenerated files in OUT; optional IDs leave other species untouched."""
+def pin(out, ids=None, *, generate=True):
+    """Write provider pins, optionally for only IDs, preserving other species.
+
+    generate=False reuses prepared overlay/record-original outputs while replaying
+    every final pass. Prepare those outputs from the current pinned inputs first.
+    """
     class Ctx:
         def path(self, *p): return os.path.join(out, *p)
     from ..importers import source_variant
@@ -301,8 +305,8 @@ def pin(out, ids=None):
             if selected == set():
                 continue
             provider = cls(S)
-            got = (provider.provide_models(Ctx(), generate=True, ids=selected) if cls is ImportedModels else
-                   provider.provide_models(Ctx(), generate=True))
+            got = (provider.provide_models(Ctx(), generate=generate, ids=selected) if cls is ImportedModels else
+                   provider.provide_models(Ctx(), generate=generate))
             updated = {str(t): [_sha1(m) if os.path.isfile(m) else None, _sha1(x) if x and os.path.isfile(x) else None]
                        for t, (m, x) in sorted(got.items()) if selected is None or t in selected}
             pins[cls.name] = updated if ids is None else dict(sorted(
@@ -318,8 +322,17 @@ def _write_pins(pins):
             for k, d in pins.items()) + '\n}\n')
 
 
-if __name__ == '__main__':
-    if sys.argv[1:2] != ['pin'] or len(sys.argv) < 3:
-        raise SystemExit('python3 -m tools.derive.steps.species pin OUT [ID ...]   (OUT: a derive output with source-games for the imported overlays and record originals)')
-    p = pin(os.path.abspath(sys.argv[2]), sys.argv[3:] or None)
+def main(argv=None):
+    import argparse
+    parser = argparse.ArgumentParser(description='Write provider pins from a derive output.')
+    parser.add_argument('command', choices=['pin'])
+    parser.add_argument('out', help='derive output with source-games and prepared inputs')
+    parser.add_argument('ids', nargs='*', type=int)
+    parser.add_argument('--prepared', action='store_true', help='reuse prepared overlays and record originals')
+    args = parser.parse_intermixed_args(argv)
+    p = pin(os.path.abspath(args.out), args.ids or None, generate=not args.prepared)
     print(f'{PINS}: ' + ', '.join(f'{k} {len(v)}' for k, v in p.items()))
+
+
+if __name__ == '__main__':
+    main()

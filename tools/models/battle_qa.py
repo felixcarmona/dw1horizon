@@ -292,12 +292,21 @@ def check_sizes(data, bones):
 
 
 def horizontal_centroids(clip):
-    """Per-tick mesh vertex centroid relative to the entity (x, z), excluding accumulated root travel.
+    """Per-tick centroid of distinct referenced points per rigid piece (x, z).
 
-    Use every rigid piece, rather than the skeleton or the first pose: a hop can leave the origin between landings.
-    This is a vertex centroid, not a surface-area centroid (a densely meshed asymmetric tail affects it).
+    Exclude accumulated root travel. Duplicate/unused pool entries and splitting
+    a quad cannot move this centre; identical points on different bones remain
+    separate because those bones can move independently.
     """
-    return np.concatenate(list(clip.V.values()), axis=1)[..., [0, 2]].mean(axis=1)
+    pieces = []
+    for bone, vertices in clip.V.items():
+        used = np.unique(clip.rig.tris[bone])
+        if not len(used):
+            continue
+        _, first = np.unique(clip.rig.local[bone][used], axis=0, return_index=True)
+        pieces.append(vertices[:, used[first], :])
+    return np.concatenate(pieces, axis=1)[..., [0, 2]].mean(axis=1)
+
 
 
 def check_field_origin(data, bones, tolerance=1.0, sid=None):
@@ -598,6 +607,13 @@ def species_check(final, base, main, bones, slots=BATTLE, polished=(), authored=
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest='cmd', required=True)
+    g = sub.add_parser('mesh-audit', help='geometry, penetration and depth-sort candidates on an extracted archive')
+    g.add_argument('folder', help='meshcheck extract directory, including index.json')
+    g.add_argument('--slots', nargs='*', type=int, default=[0, 2, 3, 4, 33, 34, 35, 36])
+    g.add_argument('--samples', type=int, default=4, help='ticks per slot; 0 = all (up to 400)')
+    g.add_argument('--jobs', type=int, default=1)
+    g.add_argument('--json', required=True)
+    g.add_argument('--thresholds', help='reuse native thresholds from an earlier mesh-audit JSON')
     z = sub.add_parser('sizes', help='check body size in every occupied slot against field idle')
     z.add_argument('final')
     z.add_argument('species_json')
@@ -616,6 +632,23 @@ def main():
     c.add_argument('--json')
     c.add_argument('--species-id', help='species id for a generated or otherwise ambiguous skeleton')
     a = ap.parse_args()
+    if a.cmd == 'mesh-audit':
+        from tools.models.mesh_glitch import audit, calibrate, classify
+        if a.samples < 0 or a.jobs < 1:
+            ap.error('--samples must be nonnegative and --jobs positive')
+        rows = audit(a.folder, a.slots or None, a.samples, a.jobs)
+        if a.thresholds:
+            with open(a.thresholds) as fh:
+                thresholds = json.load(fh)['thresholds']
+        else:
+            thresholds = calibrate(rows)
+        for row in rows.values():
+            row.update(classify(row, thresholds))
+        with open(a.json, 'w') as fh:
+            json.dump(dict(thresholds=thresholds, samples=a.samples, slots=a.slots, rows=rows), fh, indent=1)
+        errors = {sid: r['error'] for sid, r in rows.items() if 'error' in r}
+        print(f'{len(rows)} species; {len(errors)} errors: {errors}')
+        sys.exit(bool(errors) or any(r['verdict'] == 'fail' for r in rows.values()))
     rd = lambda p: open(p, 'rb').read()
     with open(a.species_json) as fh:
         species = json.load(fh)

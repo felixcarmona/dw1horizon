@@ -136,6 +136,15 @@ class Replay(unittest.TestCase):
                 self.assertTrue(all(r['verdict'] == 'pass' for r in rows.values()), rows)
                 self.assertEqual(center(data, bones, sid), data)
 
+    def test_final_provider_preserves_centering_after_mesh_compaction(self):
+        from tools.models import edit
+        for sid, (model, texture) in self.built.items():
+            with self.subTest(species=sid):
+                final, _, record = edit.provider_output(sid, model, texture)
+                rows = battle_qa.check_field_origin(final, record['model']['skeleton'], sid=sid)
+                self.assertEqual(len(rows), 5)
+                self.assertTrue(all(r['verdict'] == 'pass' for r in rows.values()), rows)
+
     def test_inherited_poor_condition_clip_keeps_donor_acting_and_travel(self):
         import animsheet
         for sid, (data, _) in self.built.items():

@@ -87,7 +87,7 @@ class ModelProvider(unittest.TestCase):
                 patch.object(species.importlib.util, 'module_from_spec', return_value=module):
             actual = species.ImportedModels(None).provide_models(context, generate=False)
         self.assertEqual(module.BASE_MODELS, '/build/imported-models')
-        make.assert_called_once_with('/build/imported-species', generate=False)
+        make.assert_called_once_with('/build/imported-species', generate=False, ids=None)
         self.assertEqual(actual, {'183': ('/model.MMD', '/model.TIM')})
 
     def test_every_reviewed_overlay_keeps_its_species_generator_and_output(self):

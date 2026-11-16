@@ -30,9 +30,9 @@
    "donor_texture_sha256": "360d8fbf34889e08c86c9cba288b93420bcd79d66e4dbc30bba3d929c3ab7f51",
    "mmd": {
     "delta": "content/modeldelta/babies/471-Pichimon.MMD.mdelta",
-    "delta_sha256": "b2edcd56237956e8ff3e9f5142f8d07d85c34c3357a0f05afbda132d37c302b5",
-    "sha256": "5046b25ba10c8d27f3089ea44fd36ede3ba5c7cb13b1e41e1007e2f0444d3880",
-    "size": 55774
+    "delta_sha256": "b67522fdec63fb659737978de2733134ab7ea18bc763afacf7a806895866f7dc",
+    "sha256": "f187611a46e3484bba8a76c26d37871434604091e22faa8f41997e8c5cc09a0a",
+    "size": 55730
    },
    "tim": {
     "delta": "content/modeldelta/babies/471-Pichimon.TIM.mdelta",
@@ -70,9 +70,9 @@
    "donor_texture_sha256": "b0ad57afaae2242db397e88cf1027cf04210038101977803985621d3bb322a87",
    "mmd": {
     "delta": "content/modeldelta/babies/473-Nyokimon.MMD.mdelta",
-    "delta_sha256": "82168f6e99c60411891e52e87b2870d57b246b55c2cd87bed89efe6b98c99374",
-    "sha256": "f6f023d6bc4c3937d181a921d3d5097f909de4268d0dd5f23fddae554b8bf823",
-    "size": 32422
+    "delta_sha256": "b10fe9df33beaf32de5970199a17dfdfc1aec0ae62bfa78a90226b7f8a4a442d",
+    "sha256": "9daa478476f1d4c0959b1bc7e599528a72a8ceaf8b50617908af259fb8bb26ed",
+    "size": 32204
    },
    "tim": {
     "delta": "content/modeldelta/babies/473-Nyokimon.TIM.mdelta",
@@ -90,9 +90,9 @@
    "donor_texture_sha256": "360d8fbf34889e08c86c9cba288b93420bcd79d66e4dbc30bba3d929c3ab7f51",
    "mmd": {
     "delta": "content/modeldelta/babies/474-Motimon.MMD.mdelta",
-    "delta_sha256": "a235ff37fbd8a7dc5a407da8bbc3da51c0b4f9d689237fe155be433bae7bf6dd",
-    "sha256": "b9e7ed986d89a81441531490a278a00648f90cfca545c0a3411ed245719aeafb",
-    "size": 43464
+    "delta_sha256": "12151028351e5416fe94ece18bcbcffdbe95989125efd8074249a60e1f6e4d38",
+    "sha256": "460b9cc76624b1bac39e38d6a021a654a6a2dc6b9266e5f735c970e5827c06b5",
+    "size": 43786
    },
    "tim": {
     "delta": "content/modeldelta/babies/474-Motimon.TIM.mdelta",
@@ -110,9 +110,9 @@
    "donor_texture_sha256": "360d8fbf34889e08c86c9cba288b93420bcd79d66e4dbc30bba3d929c3ab7f51",
    "mmd": {
     "delta": "content/modeldelta/babies/475-Bukamon.MMD.mdelta",
-    "delta_sha256": "19507b14fc1481b8237b9dc2ef1c9240f838e1da9ff28a67311520b094952b53",
-    "sha256": "5e7ff67d07128844a6ddeba675847e9aedb5a377b8bdc3145d004572c8161880",
-    "size": 39246
+    "delta_sha256": "cb068fb93ea7ff38f0f9b2ddf3c29e39d68a77eb5ae1846d4c13c68e090c37d4",
+    "sha256": "48e09c808c3a8d6cc4d5b62ff4daa501c058d54bcdc5f562aa14ec05042ded01",
+    "size": 39344
    },
    "tim": {
     "delta": "content/modeldelta/babies/475-Bukamon.TIM.mdelta",

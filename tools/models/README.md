@@ -19,9 +19,18 @@ python3 tools/models/edit.py --from build/everything check 183 --species-pins
 python3 tools/models/verify_deltas.py verify --sources DIR
 python3 tools/models/audit_origins.py --help
 python3 tools/models/audit_textures.py disc DISC_DIR   # faces sampling noise, palettes or empty texels
+python3 tools/models/meshcheck.py flicker AUDIT_DIR 461 --out flicker.json  # every tick; bent-quad culling, area, jumps
 python3 tools/species.py --content BUILD/species flat-audit BUILD/DIGI.DAT BUILD/ALLTIM.TIM   # every flat sprite
 python3 tools/flatsprite.py sheet OUT.png DISC_DIR      # every species' flat frames on one sheet
 ```
+
+`meshcheck.py flicker` reads the final models and skeletons in `AUDIT_DIR/index.json`
+(made by `meshcheck.py extract BUILD/DIGI.DAT AUDIT_DIR`). With no IDs it audits
+the entire index; pass all import registry IDs to restrict it to imported species.
+It separates ordinary facing changes from divergent halves of a bent quad:
+libgs culls the whole quad using its first three vertices. Omnimon's repair,
+history comparison, thresholds and full imported-species findings are recorded
+in [the mesh investigation](../../docs/reference/omnimon-mesh.md).
 
 `tools/flatsprite.py` gives each texture the frames a flattened Digimon is drawn with (the species' icon in the
 originals' two colours, where the model leaves room); the build runs it for DIGI.DAT and the disc's ALLTIM.TIM.
@@ -1417,3 +1426,13 @@ MegaKabuterimon (205) wears native Kabuterimon's (19, `CHDAT/MMD0/KABU.MMD`) 28-
 re-plants the idle, walk, tired walk and run on two soles. The same stage fits the Kabuterimon (19) and Kuwagamon (51) skeletons (by bone count).
 Species pin: the provider pin in `species-pins.json`.
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_megakabuterimon_native` (after `edit.py get 205`).
+
+`battle_qa.py mesh-audit DIR --json OUT` measures geometry, non-parent piece
+crossings and ordering-table candidates on a `meshcheck extract` directory.
+Native controls calibrate the envelope; reuse it with `--thresholds BEFORE.json`.
+`--samples 0` checks all ticks in the selected slots; an empty `--slots` checks
+all occupied slots. Flags are candidates, not a validated visual classifier.
+See [the general investigation](../../docs/reference/mesh-glitch.md).
+The final import provider runs `mesh_stability.apply_provider`: lossless
+compaction funds bent-quad splits without increasing resident data. Pinned
+alternate-release outputs remain unchanged pending their own verification.
