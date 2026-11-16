@@ -370,6 +370,17 @@ def species_file(out, t, recs=None, names=None, generate=False):
         s['model']['file'] = str(model_path)
         s['model'].pop('slot_aliases', None)
     s.pop('_path', None)
+    if e.get('field_hover'):
+        # Fit the actual final mesh, including condition wing/leg droop.
+        from tools.models import hover
+        model, proof = hover.apply(model, s['model']['skeleton'], e['field_hover'])
+        generated = Path(os.path.abspath(out) + '-models')
+        generated.mkdir(parents=True, exist_ok=True)
+        model_path = generated / f'{t}-field-hover.MMD'
+        model_path.write_bytes(model)
+        (generated / f'{t}-field-hover-report.json').write_text(json.dumps(proof, indent=2) + '\n')
+        s['model']['file'] = str(model_path)
+        s['model'].pop('slot_aliases', None)
     # Last: grounding and rig fitting above still need the original vertex
     # pools. This pass preserves their result and cannot grow resident data.
     from tools.models import mesh_stability

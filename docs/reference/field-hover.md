@@ -54,13 +54,34 @@ No specialty-dependent fixed flight offset is added. Aquilamon has air/battle sp
 
 `tools/models/audit_field.py --from BUILD --hover --native-from EXTRACTED --out REPORT.json` measures every field/care slot and returns failure on high field hover or missing/unreadable models. Absolute peak-clearance limits are 200 for 0/1/18, 160 for 2/3 and 260 for 4; all seven native references pass. Care gestures, sleep and toilet arcs are reported in full but have no locomotion ceiling. Checking only the minimum clearance would miss Aquilamon. Final emitted catalogue skeletons are used after native bindings and late care overlays.
 
-## Other high-hover candidates (listed, not changed)
+## Remaining flyers repaired (2026-11-16)
 
-- Magnadramon 215: idle 207.4–295.9 / top 646.8; walk 286.4–317.5 / 617.8; condition walk 249.6–296.8 / 569.3; run 272.1–303.1 / 622.1; slots 1/18 also exceed 200. Her authored flight keeps a high base hover.
-- Scorpiomon 275: idle 143.8–218.8 / 570.1; walk 142.5–202.9 / 558.9; condition walk 106.0–168.7 / 611.3; run 132.3–197.7 / 641.2. This is an authored floating swimmer, above the native locomotion ceilings in 0/2/3.
-- NeoCrimson 402: grounded idle −0.3–3.4 / 494.8, but slots 1/18 float 188.4–221.1 / 713.6. This is a condition-clip discrepancy, not normal flight.
+The next all-import sweep confirmed exactly three remaining candidates: Magnadramon 215 (slots 0/1/2/3/4/18), Scorpiomon 275 (0/2/3), and NeoCrimson 402 (1/18). Their final provider now applies the shared mesh-floor fit after condition acting and rig conformance, before mesh stability. `field_hover` in `content/models/imports/models.json` selects only those species and slots. The importer deltas and generator input pins stay exact; final provider pins were regenerated through `edit.py put --force`.
 
-## Imported air species and models with airborne field frames
+Only carrier Y changes, compressing the original lowest-point trajectory at its existing phase. Wings, legs, tail, body pitch, travel, timing, sounds and care/battle acting are preserved. NeoCrimson's normal idle and locomotion remain grounded. The authored bands use 32–48 for idles, 82–138 for walks and 82–130 for runs to allow codec rounding and interpolation inside the requested 30–50 / 80–140 bands.
+
+| Species | Slot | Before lowest | Final lowest |
+|---|---|---|---|
+| 215 Magnadramon | 0 | 207.4–295.9 | 30.4–48.9 |
+| 215 | 1 | 207.4–295.7 | 31.0–48.7 |
+| 215 | 2 | 286.4–317.5 | 82.4–113.5 |
+| 215 | 3 | 249.6–296.8 | 80.8–129.4 |
+| 215 | 4 | 272.1–303.1 | 82.1–113.4 |
+| 215 | 18 | 243.9–274.2 | 31.4–48.9 |
+| 275 Scorpiomon | 0 | 143.8–218.8 | 31.8–48.1 |
+| 275 | 1/18 | 117.3–148.9 | 31.0–47.9 |
+| 275 | 2 | 142.5–202.9 | 82.5–137.9 |
+| 275 | 3 | 106.0–168.7 | 81.9–138.2 |
+| 275 | 4 | 132.3–197.7 | 82.3–129.7 |
+| 402 NeoCrimson | 1/18 | 188.4–221.1 | 32.4–48.1 |
+
+Rendered thirds also stay inside the bands: Magnadramon idles 30.5–49.7 and movement 81.1–129.6; Scorpiomon idles 30.7–49.1 and movement 81.6–138.5; NeoCrimson condition idles 32.7–48.1. All vertices, including wings and legs, clear the floor.
+
+Resident bytes before → after: 215 89,794 → 87,834; 275 75,896 → 75,574; 402 88,260 → 88,964. The all-import peak remains 100,256 of the unchanged 100,352-byte partner buffer; cold reads still fit 8,192 bytes.
+
+Validation: the repeated final hover QA measured all 183 imports and seven native references with zero errors and zero high-hover flags. The snapshot uses regenerated final providers for these three and the read-only final build catalogue for unchanged imports. Full frame reports are `build/flight-height-results/before.json` and `after.json`; rendered samples and storage are under `build/hover-qa/`. Three new integration tests verify final/rendered clearance, unchanged non-height channels and unaffected slots, and storage. The related suite ran 41 tests (one existing optional fixture skipped); `edit.py check 215 275 402 --species-pins` passed.
+
+## Initial imported air species and airborne field frames (before repairs)
 
 | Species | Idle | Walk | Condition walk | Run |
 |---|---|---|---|---|
@@ -184,4 +205,4 @@ No specialty-dependent fixed flight offset is added. Aquilamon has air/battle sp
 | 476 Nyaromon | 3.0–4.0 / 171.3 | 3.0–8.2 / 177.5 | 3.0–6.4 / 168.1 | 3.0–12.6 / 178.7 |
 | 477 Yokomon | 1.0–14.0 / 247.2 | -15.3–64.5 / 295.8 | -8.0–20.4 / 256.6 | -16.9–95.5 / 326.8 |
 
-Validation: 32 related unit/integration tests ran (two existing optional model-fixture tests skipped), including final-provider clearance, native reference thresholds, unchanged battle/care frames, preserved joint channels and rendered thirds. `edit.py check 188 --species-pins` and final field QA passed. Git staging/commit is blocked by read-only worktree metadata; a binary patch accompanies the eight-line result.
+Initial Aquilamon validation: 32 related unit/integration tests ran (two existing optional model-fixture tests skipped), including final-provider clearance, native reference thresholds, unchanged battle/care frames, preserved joint channels and rendered thirds. `edit.py check 188 --species-pins` and its scoped final field QA passed.

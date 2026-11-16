@@ -2,6 +2,37 @@
 import mmd
 
 
+def apply(data, skeleton, slots):
+    """Fit final field slots after condition acting and rig conformance.
+
+    Only carrier Y changes. Keep separate slot streams until identical-stream
+    sharing, so aliases to battle/care programs retain their original acting.
+    """
+    import animsheet
+    import motioncyclelayer
+    import motionstorage
+
+    nb = len(skeleton)
+    model = mmd.MMD.parse(data, nb)
+    mesh = MeshHover(model, skeleton)
+    checks = []
+    for slot, limits in slots.items():
+        slot = int(slot)
+        frames, loop, events = animsheet.slot_frames(model, nb, slot)
+        before = [-mesh.floor(p) for p in frames]
+        mesh.settle(frames, *limits)
+        frames = [[[round(v) for v in bone] for bone in pose] for pose in frames]
+        model.anims.table[slot] = len(model.anims.anims)
+        model.anims.anims.append(mmd.encode_anim(frames, nb, loop, events, tol=1))
+        checks.append(dict(slot=slot, before=[min(before), max(before)], target=limits))
+    for anim in model.anims.anims:
+        anim.tail = b''
+    model.anims.anims, model.anims.table = motioncyclelayer.share_identical_streams(
+        model.anims.anims, model.anims.table)
+    output = model.build()
+    return output, dict(clips=checks, storage=motionstorage.require(output, nb))
+
+
 class MeshHover:
     def __init__(self, model, skeleton):
         self.skeleton = skeleton
