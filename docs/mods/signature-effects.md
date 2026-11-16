@@ -105,7 +105,6 @@ builds every port to its pin and runs the fidelity check against the original te
 | 301 | Free Throw Bomb (composed) | 232 BomberNanimon | 73 Bit Bomb | as Bit Bomb | chunk 39's ball, orange, model 1.5x; the template (89) throws knives |
 | 307 | Pulse Blast (composed) | 238 Dolphmon | 90 Blasting Spout | as the template | chunk 112's rings, cyan, spout 2.5x taller |
 | 320 | Solar Flare (composed) | 251 Solarmon | 86 Solar Ray | as Solar Ray | chunk 94's ring on the orb, white-gold, model 1.4x; the template (70) is a small flame |
-| 323 | Torpedo Attack (composed) | 254 Tylomon | 78 Genoside Attack | as Genoside Attack | deep-sea teal; the template (87) is a water jet where Tylomon fires torpedoes |
 | 327 | Darkness Zone (composed) | 400 Apocalymon | 74 Deadly Bomb | as Deadly Bomb | chunk 35's swirling darkness on the orb and its burst, deep purple, model 1.6x; on Frozen Fire Shot (97) the technique dealt no damage |
 
 ## Converting a Digital Card Battle attack
@@ -210,6 +209,7 @@ fidelity check, a self-cast support technique), and the DW1 effect they play alr
 | 246 Infermon | Hades' Grenade | Card Battle, fidelity failed | 74 Deadly Bomb: a dark bomb |
 | 248 MarineAngemon | Ocean Love | Card Battle, larger than the slot | 60 Lovely Attack: hearts |
 | 256 VioletElecmon | Jamming Thunder | Card Battle, fidelity failed | 101 Super Thunder Strike: lightning |
+| 254 Tylomon | Torpedo Attack | Card Battle, fidelity failed | 87 Hydro Pressure: a sea Digimon's water jet; composed on Genoside Attack (78) its burst read bigger than any vanilla finisher |
 
 A sheet and a check take about 15 seconds. The chunk keeps the template's size, so the memory the battle keeps is
 the template's.

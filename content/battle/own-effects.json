@@ -1189,11 +1189,5 @@
       "recolour": {"ramp": ["#000000", "#6a2a10", "#e07030", "#fff0d0"]},
       "scale": 1.5},
     "check": {"hue": 20}
-  },
-  "323": {
-    "name": "Torpedo Attack",
-    "stands_for": 78,
-    "compose": {"recolour": {"ramp": ["#000000", "#004a40", "#20b0a0", "#e0fff8"]}},
-    "check": {"hue": 172}
   }
 }

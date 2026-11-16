@@ -9,7 +9,6 @@
   "techniques": ["Water Blit", "Tear Drop", "Giga Freeze", "Aqua Magic", "Winter Blast", "Ice Needle",
                  "Muscle Charge", "War Cry", "Sonic Jab", "Tremar", "Hydro Pressure"],
   "drop": {"item": "sm.recovery", "percent": 10},
-  "own_effect": {"technique": "Hydro Pressure", "chunk": 323},
   "effects_like": 24,
   "model": {
     "file": "build/batch7/Tylomon.MMD",
