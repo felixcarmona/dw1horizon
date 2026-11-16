@@ -373,7 +373,7 @@ def species_file(out, t, recs=None, names=None, generate=False):
     return name, s
 
 
-def make(out, generate=True):
+def make(out, generate=True, ids=None):
     """The species files of OUT (and the overlays' models in OUT-models); {id: (model file, texture file or None)}.
     generate=False: the overlays' models and reports are already in OUT-models (tools/derive's overlays step made them;
     a missing one stops)."""
@@ -382,6 +382,8 @@ def make(out, generate=True):
     made = {}
     names = os.listdir(os.path.join(ROOT, 'content/species'))
     for t in recs:
+        if ids is not None and int(t) not in ids:
+            continue
         name, s = species_file(out, t, recs, names, generate)
         with open(os.path.join(out, name), 'w') as f:
             json.dump(s, f, indent=1, ensure_ascii=False)

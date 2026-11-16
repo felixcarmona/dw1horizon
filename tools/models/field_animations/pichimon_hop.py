@@ -207,13 +207,15 @@ FIN_UP, FIN_FWD = _fin_axes()
 MIRROR = np.diag([-1., 1., 1.])
 
 
-def fin_motion(flap, sweep, side):
+def fin_motion(flap, sweep, side, shoulder=None):
     """The fin's motion in the body frame (4x4): lifted `flap` degrees and swung forward `sweep` about its shoulder;
     side +1 the x > 0 fin, -1 its mirror image."""
     R = _rodrigues(FIN_FWD, sweep) @ _rodrigues(FIN_UP, flap)
-    P = FIN_SHOULDER
+    P = FIN_SHOULDER if shoulder is None else shoulder
     if side < 0:
-        R, P = MIRROR @ R @ MIRROR, MIRROR @ P
+        R = MIRROR @ R @ MIRROR
+        if shoulder is None:
+            P = MIRROR @ P
     F = np.eye(4)
     F[:3, :3] = R
     F[:3, 3] = P - R @ P
@@ -247,6 +249,24 @@ class Rig:
         self.verts = {oi: [v[:3] for v in model.tmd.obj_verts(oi)] for oi, _ in self.skel if oi >= 0}
         self.offsets = {TIP_L: [self.rest[EAR_L][6 + i] + self.rest[TIP_L][6 + i] for i in range(3)],
                         TIP_R: [self.rest[EAR_R][6 + i] + self.rest[TIP_R][6 + i] for i in range(3)]}
+        # Read each shoulder from the root edge of its authored fin. This also
+        # works after ground-anchored resizing and after move_fins.
+        mats = [np.vstack([np.array(M, float)[:3], [0, 0, 0, 1]])
+                for M in mmd.bone_matrices(model, self.rest)]
+        roots = {1: [], -1: []}
+        for bone, (oi, _) in enumerate(self.skel):
+            if oi < 0:
+                continue
+            prims = [pr.decode() for pr in model.tmd.objects[oi].prims if is_fin(pr)]
+            if not prims:
+                continue
+            umin = min(u for pr in prims for u, _ in pr['uv'])
+            ids = {i for pr in prims for i, (u, _) in zip(pr['verts'], pr['uv']) if u == umin}
+            transform = np.linalg.inv(mats[BODY]) @ mats[bone]
+            for i in ids:
+                point = transform @ np.array(model.tmd.obj_verts(oi)[i][:3] + (1,))
+                roots[1 if point[0] > 0 else -1].append(point[:3])
+        self.shoulders = {side: np.mean(points, axis=0) for side, points in roots.items()}
         self._prev = {}
         self.floor = self._low(self.rest) + 1       # the rest mesh's lowest point as the studio measures it (rest pose, y down)
 
@@ -284,7 +304,7 @@ class Rig:
         L3[:3, 3] = v[6:9]
         O = np.eye(4)
         O[:3, 3] = self.offsets[tip]
-        M = np.linalg.inv(L3) @ fin_motion(flap, sweep, side) @ O
+        M = np.linalg.inv(L3) @ fin_motion(flap, sweep, side, self.shoulders[side]) @ O
         prev = self._prev.get(tip)
         ang = mmd.matrix_euler(M[:3, :3].tolist(), prev)
         self._prev[tip] = ang
@@ -421,6 +441,20 @@ def author(data):
             new.anims.anims[index] = anim
         n = len(frames) - 1
         report.append(dict(slot=slot, ticks=n, root_per_tick=round((frames[0][0][8] - frames[-1][0][8]) / n, 2)))
+    # Reuse exact duplicate normals after the fins have moved to their bones.
+    # Together with authoring's triangle packing this pays for the origin pass.
+    normals = []
+    for oi, obj in enumerate(new.tmd.objects):
+        unique, remap = {}, {}
+        for i, normal in enumerate(new.tmd.obj_norms(oi)[:obj.nnorm]):
+            remap[i] = unique.setdefault(tuple(normal), len(unique))
+        for prim_index, prim in enumerate(obj.prims):
+            decoded = prim.decode()
+            decoded['norms'] = [remap[i] for i in decoded['norms']]
+            obj.prims[prim_index] = mmd.Prim.encode(decoded)
+        obj.norm_start, obj.nnorm = len(normals), len(unique)
+        normals.extend(unique)
+    new.tmd.norms = normals
     for anim in new.anims.anims:
         anim.tail = b''
     new.anims.anims, new.anims.table = motioncyclelayer.share_identical_streams(new.anims.anims, new.anims.table)

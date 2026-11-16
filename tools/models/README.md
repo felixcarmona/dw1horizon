@@ -157,6 +157,17 @@ plain delta (`--source` is the model before the change; `python3 -m tools.models
 `python3 -m tools.models.babies encode 471 OUT.MMD TIM`); check with
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_pichimon_hop`.
 
+All eight hand-made babies (470-477) pass through `babies/field_origin.py` when `babies encode` stores their deltas.
+The calm authors split hop travel between root and body; inherited clips and asymmetric meshes can also sit off the
+origin. The engine's round shadow follows the entity origin (`renderDropShadow`, side `2 * radius`), so encode centres
+the horizontal mesh vertex centroid every tick of slots 0-4 and transfers that motion to the root. It preserves world
+vertex trajectories up to a constant translation per clip, including planted contact, vertical hops, acting and events.
+Aliases keep sharing their program. Radius and height describe size and cannot repair an offset. The developer pass
+uses NumPy; the shipped builders still replay plain deltas with the standard library. Check the final model with
+`python3 tools/models/battle_qa.py field-origin FINAL.MMD content/species/476-nyaromon.json` (one-unit rounding tolerance).
+After replacing the builder outputs in a local derive output, repin just these species with
+`python3 -m tools.derive.steps.species pin OUT 470 471 472 473 474 475 476 477`.
+
 Motimon (474) and Bukamon (475) share `field_animations/baby_calm.py` (`CONFIGS` holds each baby's numbers): it replaces Koromon's slots 0, 2, 3 and 4 with a
 128-tick idle (breaths, slow looks, four blinks of which one is a double blink), a walk of two low 22-tick hops at 16 units a tick, a tired walk of two 30-tick hops at 11 and a
 run of three 15-tick hops at 37, with the body planted while it is down, the lowest point of the mesh solved on the floor every tick and the little arms moving (Motimon's two arm cones are

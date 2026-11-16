@@ -11,8 +11,8 @@
   "effects_like": 1,
   "model": {
     "file": "build/imported-models/473.MMD",
-    "radius": 90,
-    "height": 130,
+    "radius": 100,
+    "height": 175,
     "skeleton": [[-1, -1], [-1, 0], [0, 1]]
   },
   "texture": {"file": "build/imported-models/473.TIM", "entry": 0},

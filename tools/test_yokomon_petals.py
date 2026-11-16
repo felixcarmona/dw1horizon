@@ -45,9 +45,9 @@ class YokomonPetals(unittest.TestCase):
         self.assertEqual(tired[0], tired[-1], 'the loop closes')
         self.assertTrue(all(abs(b - a) <= 25 for a, b in zip(tired, tired[1:])), 'slow follow-through, no snaps')
 
-    def test_only_the_petals_and_the_neck_differ_from_the_donor(self):
+    def test_only_petals_neck_and_horizontal_registration_differ_from_the_donor(self):
         self.assertEqual(self.model.anims.table, self.donor.anims.table)
-        self.assertEqual(changed_programs(self.donor, self.model), [0, 2, 3, 4, 27, 33, 35, 36])
+        self.assertEqual(changed_programs(self.donor, self.model), [0, 1, 2, 3, 4, 14, 15, 16, 17, 18, 27, 33, 34, 35, 36])
         for slot in (0, 2, 3, 4):
             a = animsheet.slot_frames(self.model, NB, slot)
             b = animsheet.slot_frames(self.donor, NB, slot)
@@ -55,7 +55,9 @@ class YokomonPetals(unittest.TestCase):
             self.assertEqual(len(a[0]), len(b[0]))
             for fa, fb in zip(a[0], b[0]):
                 for bone, (pa, pb) in enumerate(zip(fa, fb)):
-                    if slot == 3 and bone in (4, 5):
+                    if bone in (0, 1):
+                        self.assertEqual(pa[:6] + [pa[7]], pb[:6] + [pb[7]])  # only horizontal travel moved to root
+                    elif slot == 3 and bone in (4, 5):
                         self.assertEqual(pa[:5] + pa[6:], pb[:5] + pb[6:])     # rz is the only channel that moved
                     elif bone == 3:
                         self.assertEqual(pa[:7], pb[:7])                     # only ty and tz of the head moved

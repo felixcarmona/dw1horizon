@@ -291,6 +291,33 @@ def check_sizes(data, bones):
             for s, idx in enumerate(model.anims.table) if idx is not None}
 
 
+def horizontal_centroids(clip):
+    """Per-tick mesh vertex centroid relative to the entity (x, z), excluding accumulated root travel.
+
+    Use every rigid piece, rather than the skeleton or the first pose: a hop can leave the origin between landings.
+    This is a vertex centroid, not a surface-area centroid (a densely meshed asymmetric tail affects it).
+    """
+    return np.concatenate(list(clip.V.values()), axis=1)[..., [0, 2]].mean(axis=1)
+
+
+def check_field_origin(data, bones, tolerance=1.0, sid=None):
+    """Ground-shadow registration in field slots 0-4; units, independent of radius and accumulated root travel.
+
+    Intended for centred authored meshes, not as a universal limit on every native character's acting.
+    """
+    rig = Rig.from_mmd(data, bones, sid)
+    rows = {}
+    for slot in range(5):
+        frames = rig.frames(slot)
+        if frames is None:
+            continue
+        c = horizontal_centroids(Clip(rig, *frames))
+        distance = float(np.linalg.norm(c, axis=1).max())
+        rows[slot] = dict(max_distance=distance, min=c.min(0).tolist(), max=c.max(0).tolist(),
+                          verdict='fail' if distance > tolerance else 'pass')
+    return rows
+
+
 def reference(rig):
     """The species' field idle (slot 0 of main's model) as the measuring stick: height, floor, gaps, chains, body."""
     c = Clip(rig, *rig.frames(0))
@@ -569,6 +596,10 @@ def main():
     z.add_argument('final')
     z.add_argument('species_json')
     z.add_argument('--json')
+    o = sub.add_parser('field-origin', help='check authored field meshes stay centred over the ground shadow')
+    o.add_argument('final')
+    o.add_argument('species_json')
+    o.add_argument('--json')
     c = sub.add_parser('check')
     c.add_argument('final')
     c.add_argument('base')
@@ -583,6 +614,14 @@ def main():
     with open(a.species_json) as fh:
         species = json.load(fh)
     bones = species['model']['skeleton']
+    if a.cmd == 'field-origin':
+        rows = check_field_origin(rd(a.final), bones, sid=species['id'])
+        for slot, row in rows.items():
+            print(f"slot {slot}: {row['verdict']} centroid {row['max_distance']:.3f} units from origin")
+        if a.json:
+            with open(a.json, 'w') as fh:
+                json.dump(rows, fh, indent=1)
+        sys.exit(1 if any(r['verdict'] == 'fail' for r in rows.values()) else 0)
     if a.cmd == 'sizes':
         rows = check_sizes(rd(a.final), bones)
         for slot, row in rows.items():

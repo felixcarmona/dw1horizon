@@ -80,14 +80,14 @@ class ImportedModels:
     def folder(self, ctx):
         return ctx.path('imported-species')
 
-    def provide_models(self, ctx, generate=False):
+    def provide_models(self, ctx, generate=False, ids=None):
         """Makes the species files of the imported models in build/NAME/imported-species with the overlays the overlays step made
         in imported-species-models (generate: makes the overlays too, one after another: the pin command)."""
         spec = importlib.util.spec_from_file_location('imported_species', os.path.join(runner.ROOT, IMPORTED_MODELS_SCRIPT))
         imported_models = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(imported_models)
         imported_models.BASE_MODELS = ctx.path('imported-models')
-        made = imported_models.make(self.folder(ctx), generate=generate)
+        made = imported_models.make(self.folder(ctx), generate=generate, ids=ids)
         return {t: (_abs(m), _abs(x) if x else None) for t, (m, x) in made.items()}
 
 
@@ -281,8 +281,8 @@ def check(ctx):
 
 
 # ------------------------------------------------------------------ the pins
-def pin(out):
-    """Writes recipes/species-pins.json from the files the providers hand over now (imported models made into OUT)."""
+def pin(out, ids=None):
+    """Writes provider pins from regenerated files in OUT; optional IDs leave other species untouched."""
     class Ctx:
         def path(self, *p): return os.path.join(out, *p)
     from ..importers import source_variant
@@ -290,11 +290,23 @@ def pin(out):
         raise SystemExit('species pin: OUT was built from a source variant (World 3 USA); pin from the reference '
                          'discs (the variant\'s pins: tools/models/variants.py make)')
     pins = json.load(open(os.path.join(runner.ROOT, PINS)))
+    if ids is not None:
+        ids = set(map(int, ids))
+        unknown = ids - {int(t) for rows in pins.values() for t in rows}
+        if unknown:
+            raise SystemExit(f'species pin: unknown IDs {sorted(unknown)}')
     with species_tools() as S, contextlib.redirect_stdout(io.StringIO()):
         for cls in (ImportedModels, RecordOriginals):
-            got = cls(S).provide_models(Ctx(), generate=True)
-            pins[cls.name] = {str(t): [_sha1(m) if os.path.isfile(m) else None, _sha1(x) if x and os.path.isfile(x) else None]
-                              for t, (m, x) in sorted(got.items())}
+            selected = None if ids is None else ids & {int(t) for t in pins[cls.name]}
+            if selected == set():
+                continue
+            provider = cls(S)
+            got = (provider.provide_models(Ctx(), generate=True, ids=selected) if cls is ImportedModels else
+                   provider.provide_models(Ctx(), generate=True))
+            updated = {str(t): [_sha1(m) if os.path.isfile(m) else None, _sha1(x) if x and os.path.isfile(x) else None]
+                       for t, (m, x) in sorted(got.items()) if selected is None or t in selected}
+            pins[cls.name] = updated if ids is None else dict(sorted(
+                (pins[cls.name] | updated).items(), key=lambda kv: int(kv[0])))
     _write_pins(pins)
     return pins
 
@@ -307,7 +319,7 @@ def _write_pins(pins):
 
 
 if __name__ == '__main__':
-    if sys.argv[1:2] != ['pin'] or len(sys.argv) != 3:
-        raise SystemExit('python3 -m tools.derive.steps.species pin OUT   (OUT: a derive output with source-games for the imported overlays and record originals)')
-    p = pin(os.path.abspath(sys.argv[2]))
+    if sys.argv[1:2] != ['pin'] or len(sys.argv) < 3:
+        raise SystemExit('python3 -m tools.derive.steps.species pin OUT [ID ...]   (OUT: a derive output with source-games for the imported overlays and record originals)')
+    p = pin(os.path.abspath(sys.argv[2]), sys.argv[3:] or None)
     print(f'{PINS}: ' + ', '.join(f'{k} {len(v)}' for k, v in p.items()))

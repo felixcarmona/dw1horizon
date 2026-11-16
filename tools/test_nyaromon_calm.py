@@ -194,9 +194,10 @@ class NyaromonClips(unittest.TestCase):
         for alias, slot in calm.ALIASES.items():
             self.assertEqual(table[alias], table[slot])
         self.assertEqual(len(table), len(donor.anims.table))
+        field_programs = {donor.anims.table[s] for s in range(5)}
         for slot, (a, b) in enumerate(zip(table, donor.anims.table)):
             self.assertEqual(a is None, b is None)
-            if a is not None and slot not in SLOTS + tuple(calm.ALIASES):
+            if a is not None and slot not in SLOTS + tuple(calm.ALIASES) and b not in field_programs:
                 mine, theirs = self.parsed.anims.anims[a], donor.anims.anims[b]
                 for ins in mine.instrs:
                     if ins['op'] == 'key':

@@ -9,8 +9,10 @@ sys.path[:0] = [str(ROOT), str(ROOT / 'tools')]
 import animsheet  # noqa: E402
 import animstudio  # noqa: E402
 import mmd  # noqa: E402
+import motionstorage  # noqa: E402
 import numpy as np  # noqa: E402
 from tools.models import babies  # noqa: E402
+from tools.models.field_animations.nyokimon_calm import GAITS  # noqa: E402
 
 
 @unittest.skipUnless((ROOT / 'extracted/CHDAT/MMD0/BOTA.MMD').exists(), 'needs the player extraction')
@@ -47,10 +49,23 @@ class NyokimonClips(unittest.TestCase):
                 pose, root = m.pose(t)
                 pts = np.array([v for tri in animstudio.animsheet.world_tris(m.m, pose, m.skel) for v in tri[0]])
                 y = pts[:, 1].max()
-                rows.append((floor - (y + root[1]), pts[pts[:, 1] > y - 3][:, 2].mean() + root[2]))
+                rows.append((floor - (y + root[1]), pts + np.array(root)))
             speed = abs((m.pose(len(m.frames) - 1)[1][2] - m.pose(0)[1][2]) / (len(m.frames) - 1))
-            slip = [abs(rows[t + 1][1] - rows[t][1]) / speed * 100 for t in range(len(rows) - 1)
-                    if abs(rows[t][0]) < .6 and abs(rows[t + 1][0]) < .6]
+            slip = []
+            gait = GAITS[slot]
+            for t in range(len(rows) - 1):
+                # The first/last airborne ticks can be within half a unit of
+                # the floor after quantization; they are not planted contact.
+                if any(k % gait['period'] >= gait['contact'] for k in (t, t + 1)):
+                    continue
+                if abs(rows[t][0]) >= .6 or abs(rows[t + 1][0]) >= .6:
+                    continue
+                a, b = rows[t][1], rows[t + 1][1]
+                # Track the same material points across both frames. Taking
+                # two different sets near the floor creates false centroid jumps.
+                contact = (a[:, 1] > a[:, 1].max() - 3) & (b[:, 1] > b[:, 1].max() - 3)
+                if contact.any():
+                    slip.append(abs((b - a)[contact, 2].mean()) / speed * 100)
             self.assertTrue(slip, slot)
             self.assertLess(sum(slip) / len(slip), 12, slot)
             self.assertLess(max(slip), 25, slot)
@@ -94,14 +109,39 @@ class NyokimonClips(unittest.TestCase):
             frames = self.clip(slot).frames
             self.assertTrue(all(.8 <= f[2][1] / 4096 <= 1.1 for f in frames), slot)
 
+    def test_size_has_native_baby_bulk_below_bukamons_height_class(self):
+        model = self.clip(0)
+        pose, _ = model.pose(0)
+        pts = np.array([v for tri in animsheet.world_tris(model.m, pose, model.skel) for v in tri[0]])
+        width, height, _ = np.ptp(pts, axis=0)
+        self.assertTrue(170 <= height <= 180, height)
+        self.assertTrue(160 <= width <= 175, width)
+        # Botamon's rest silhouette is 106 high x 144 wide; Bukamon's idle
+        # is 185-194 high. The sprout must not disguise an undersized body.
+        self.assertGreater(width, 144)
+        for slot in (0, 2, 3, 4):
+            clip = self.clip(slot)
+            for tick in range(len(clip.frames)):
+                pose, _ = clip.pose(tick)
+                pts = np.array([v for tri in animsheet.world_tris(clip.m, pose, clip.skel) for v in tri[0]])
+                self.assertLess(np.ptp(pts[:, 1]), 200, (slot, tick))
+
+    def test_size_and_shadow_fix_do_not_grow_resident_data(self):
+        self.assertLessEqual(motionstorage.require(self.model, 3)['resident_bytes'], 26190)
+        parsed = mmd.MMD.parse(self.model, 3)
+        primitives = [p.decode() for o in parsed.tmd.objects for p in o.prims]
+        self.assertEqual(len(primitives), 208)
+        self.assertEqual(sum(len(p['verts']) - 2 for p in primitives), 384)
+
     def test_every_other_program_is_koromons(self):
         record = babies.records()[473]
         parsed = mmd.MMD.parse(self.model, record['bones'])
         donor = mmd.MMD.load(str(ROOT / 'extracted/CHDAT' / record['donor_model']), record['donor'])
         self.assertEqual(len(parsed.anims.table), len(donor.anims.table))
+        field_programs = {donor.anims.table[s] for s in range(5)}
         for slot, (a, b) in enumerate(zip(parsed.anims.table, donor.anims.table)):
             self.assertEqual(a is None, b is None)
-            if a is not None and slot not in (0, 2, 3, 4):
+            if a is not None and slot not in (0, 2, 3, 4) and b not in field_programs:
                 self.assertEqual(vars(parsed.anims.anims[a]), vars(donor.anims.anims[b]), slot)
 
 

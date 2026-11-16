@@ -14,8 +14,8 @@ bone 2 is not rotated at rest). The rest bottom (BOT) is 0: the drop touches the
 Shape: body 100 wide x 100 tall (native Fresh babies are 106-133), the profile measured on the reference (widest at
 35 %, a thin neck over the top 18 %); 16 columns x 9 rings + pole, an 8-column stem, two 6-station double-sided
 leaves (the long one to the right, tip 0.9 body widths from the axis; the short steep one to the left, tip at 0.6):
-sprout span 1.5 x the body width, total 161 tall (the size review then scales the whole model by 0.8, shrink.py), 384
-primitives. The donor's other objects (none for Botamon) are collapsed to one degenerate triangle each.
+sprout span 1.5 x the body width, total 161 tall (the size review then scales the whole model by 1.08, shrink.py), 208
+primitives (384 rendered triangles). The donor's other objects (none for Botamon) are collapsed to one degenerate triangle each.
 
 Texture: clear skin baked into the body map (grey-clear neck cone and a thin grey bottom rim, both the same all
 around so no seam or wall shows under per-vertex lighting, one small glass highlight at the upper left); short low-contrast
@@ -157,8 +157,18 @@ class Mesh:
         self.prims.append(mmd.Prim.encode(d))
 
     def quad(self, a, bb, c, d, uva, uvb, uvc, uvd, row):
-        self.tri(a, bb, c, (uva, uvb, uvc), row)
-        self.tri(a, c, d, (uva, uvc, uvd), row)
+        # A PS1 quad draws (0,1,2), (1,3,2). Keep the old a-c diagonal,
+        # winding, normals and UVs while saving 20 bytes per triangle pair.
+        P = [np.array(self.v[i][:3], float) for i in (a, bb, c)]
+        N = sum(np.array(self.n[i][:3], float) for i in (a, bb, c))
+        if np.cross(P[1] - P[0], P[2] - P[0]) @ N > 0:
+            ids, uvs = [bb, a, c, d], [uvb, uva, uvc, uvd]
+        else:
+            ids, uvs = [bb, c, a, d], [uvb, uvc, uva, uvd]
+        self.prims.append(mmd.Prim.encode(dict(
+            mode=0x3C, flag=0, olen=12,
+            uv=[(int(u), int(v)) for u, v in uvs], cba=0x7A00 + (row << 6), tsb=5,
+            uvpad=[0, 0], colors=[], norms=ids, verts=ids, pad=[])))
 
 
 body = Mesh()
@@ -295,7 +305,7 @@ for oi in range(1, len(tmd.objects)):
                                      uvpad=[0], colors=[], norms=[0, 0, 0], verts=[0, 1, 2], pad=[]))]
 tmd.verts, tmd.norms = verts, norms
 V0 = np.array([v[:3] for v in body.v], float)
-print(f'body: {len(body.v)} verts, {len(body.prims)} tris (+6); local y {V0[:, 1].min():.0f}..{V0[:, 1].max():.0f} '
+print(f'body: {len(body.v)} verts, {len(body.prims)} primitives; local y {V0[:, 1].min():.0f}..{V0[:, 1].max():.0f} '
       f'(ground {V0[:, 1].min() + BONE_T[1]:.0f}..{V0[:, 1].max() + BONE_T[1]:.0f}), x {V0[:, 0].min():.0f}..{V0[:, 0].max():.0f}; '
       f'MMD {len(m.build())} B', file=sys.stderr)
 

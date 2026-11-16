@@ -8,6 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT), str(ROOT / 'tools')]
 import animstudio  # noqa: E402
 import mmd  # noqa: E402
+import motionstorage  # noqa: E402
 import numpy as np  # noqa: E402
 from tools.models import babies  # noqa: E402
 
@@ -55,14 +56,32 @@ class PichimonClips(unittest.TestCase):
             self.assertTrue(all(.8 <= f[1][1] / 4096 <= 1.1 for f in frames), slot)
             self.assertLess(max(-f[1][7] for f in frames) - 69, 40, slot)
 
+    def test_native_baby_bulk_stays_below_bukamons_height_class(self):
+        height, width, _ = np.ptp(self.clip(0).verts, axis=0)[[1, 0, 2]]
+        self.assertTrue(180 <= height <= 190, height)
+        self.assertTrue(160 <= width <= 175, width)
+        # Botamon is 106 x 144; Bukamon's idle is 185-194 high.
+        self.assertGreater(width, 144)
+        for slot in (0, 2, 3, 4):
+            clip = self.clip(slot)
+            for tick in range(len(clip.frames)):
+                pose, _ = clip.pose(tick)
+                points = np.array([v for tri in animstudio.animsheet.world_tris(clip.m, pose, clip.skel)
+                                   for v in tri[0]])
+                self.assertLess(np.ptp(points[:, 1]), 200, (slot, tick))
+
+    def test_size_and_shadow_fix_do_not_grow_resident_data(self):
+        self.assertLessEqual(motionstorage.require(self.model, 7)['resident_bytes'], 47676)
+
     def test_every_other_program_is_koromons(self):
         record = babies.records()[471]
         parsed = mmd.MMD.parse(self.model, record['bones'])
         donor = mmd.MMD.load(str(ROOT / 'extracted/CHDAT' / record['donor_model']), record['donor'])
         self.assertEqual(len(parsed.anims.table), len(donor.anims.table))
+        field_programs = {donor.anims.table[s] for s in range(5)}
         for slot, (a, b) in enumerate(zip(parsed.anims.table, donor.anims.table)):
             self.assertEqual(a is None, b is None)
-            if a is not None and slot not in (0, 2, 3, 4):
+            if a is not None and slot not in (0, 2, 3, 4) and b not in field_programs:
                 self.assertEqual(vars(parsed.anims.anims[a]), vars(donor.anims.anims[b]), slot)
 
     def test_the_eyes_shut_in_a_blink(self):

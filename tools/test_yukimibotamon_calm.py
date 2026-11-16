@@ -88,9 +88,10 @@ class YukimibotamonClips(unittest.TestCase):
         parsed = mmd.MMD.parse(self.model, record['bones'])
         donor = mmd.MMD.load(str(ROOT / 'extracted/CHDAT' / record['donor_model']), record['donor'])
         self.assertEqual(len(parsed.anims.table), len(donor.anims.table))
+        field_programs = {donor.anims.table[s] for s in range(5)}
         for slot, (a, b) in enumerate(zip(parsed.anims.table, donor.anims.table)):
             self.assertEqual(a is None, b is None)
-            if a is not None and slot not in (0, 2, 3, 4):
+            if a is not None and slot not in (0, 2, 3, 4) and b not in field_programs:
                 self.assertEqual(vars(parsed.anims.anims[a]), vars(donor.anims.anims[b]), slot)
 
 

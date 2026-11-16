@@ -94,8 +94,16 @@ class Part:
         self.prims.append((0x3C, list(ids), [tuple(int(round(x)) for x in uv) for uv in uvs], row))
 
     def encoded(self):
+        # Store eligible triangle pairs as PS1 quads on the same diagonal.
+        # Reuse the importer packer; shared corner UVs and normals stay exact.
+        from dw3mmd import merge_quads
+        mesh = dict(verts=self.v, prims=[dict(verts=ids, norms=ids, uvs=uvs, row=row)
+                                      for _, ids, uvs, row in self.prims])
+        merge_quads(mesh, max_angle=180)
         out = []
-        for mode, ids, uvs, row in self.prims:
+        for face in mesh['prims']:
+            ids, uvs, row = face['verts'], face['uvs'], face['row']
+            mode = 0x3C if len(ids) == 4 else 0x34
             uvs = [(max(0, min(255, u)), max(0, min(127, v))) for u, v in uvs]
             out.append(mmd.Prim.encode(dict(mode=mode, flag=0, uv=uvs, cba=0x7A00 + (row << 6), tsb=5,
                                             uvpad=[0] * (len(ids) - 2), colors=[], norms=list(ids), verts=list(ids), pad=[])))

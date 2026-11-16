@@ -75,6 +75,18 @@ def run(final, base=None, main=None):
 
 
 class SyntheticDefects(unittest.TestCase):
+    def test_shadow_centroid_includes_body_travel_but_excludes_root_travel(self):
+        frames, loop = clip()
+        r = rig(sound())
+        baseline = qa.horizontal_centroids(qa.Clip(r, frames.copy(), loop))
+        frames[:, 0, 8] = np.arange(len(frames)) * 100
+        np.testing.assert_allclose(qa.horizontal_centroids(qa.Clip(r, frames, loop)), baseline)
+        frames[:, 1, 6] += 35  # a persistent mesh/root offset
+        frames[len(frames) // 2, 1, 8] += 80  # drift invisible in the first pose
+        c = qa.horizontal_centroids(qa.Clip(r, frames, loop))
+        np.testing.assert_allclose(c[:, 0] - baseline[:, 0], 35)
+        self.assertEqual(float((c - baseline)[:, 1].max()), 80)
+
     def test_sound_clips_pass(self):
         rows = run(sound())
         self.assertEqual({s: r['verdict'] for s, r in rows.items()}, {s: 'pass' for s in qa.BATTLE}, rows)
