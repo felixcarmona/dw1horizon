@@ -85,16 +85,60 @@ class PharaohmonGait(unittest.TestCase):
             rows.append(row)
         return rows
 
-    def test_only_the_tired_walk_and_the_run_change_and_the_idle_and_walk_stay_byte_identical(self):
-        self.assertEqual(self.report['gait']['changed_slots'], [3, 4])
+    def test_only_field_clips_change_and_idle_and_walk_keep_their_non_cape_channels(self):
+        self.assertEqual(self.report['gait']['changed_slots'], [0, 1, 2, 3, 4])
         for slot in range(len(self.old.anims.table)):
-            if slot in (3, 4):
+            if slot in range(5):
                 continue
             a, b = self.old.anims.table[slot], self.new.anims.table[slot]
             self.assertEqual(a is None, b is None, slot)
             if a is not None:
                 self.assertEqual(self.old.anims.anims[a].build(), self.new.anims.anims[b].build(), slot)
         self.assertEqual(self.old.tmd.build(), self.new.tmd.build())
+        for slot in (0, 1, 2):
+            for a, b in zip(self.frames(slot, self.old), self.frames(slot)):
+                for bone in range(BONES):
+                    if bone not in gait.CAPE:
+                        self.assertEqual(a[bone], b[bone], (slot, bone))
+
+    def test_cape_panels_share_their_complete_join_in_every_field_frame(self):
+        np = self.np
+        verts = {b: np.array([v[:3] for v in self.new.tmd.obj_verts(self.rig[b][0])], float)
+                 for b in gait.CAPE}
+        for slot in range(5):
+            for tick, pose in enumerate(self.frames(slot)):
+                mats = self.world(pose)
+                world = {b: verts[b] @ np.array(mats[b])[:3, :3].T + np.array(mats[b])[:3, 3]
+                         for b in gait.CAPE}
+                for a, b in ((0, 4), (1, 6), (5, 1), (6, 0)):
+                    self.assertLess(np.linalg.norm(world[6][a] - world[7][b]), 2.5, (slot, tick, a, b))
+
+    def test_cape_clears_the_whole_leg_in_every_field_frame(self):
+        from tools.models.field_animations.meshclash import Clash
+        from tools.models.cloth_audit import rear_clearance
+        clash = Clash(self.new, self.rig)
+        for slot in range(5):
+            for tick, pose in enumerate(self.frames(slot)):
+                world = clash.world(pose)
+                self.assertEqual(clash.clash(pose, G['leg_r'] + G['leg_l'], G['cape'], world=world),
+                                 (0, 0.0), (slot, tick))
+                self.assertGreater(rear_clearance(clash.tris(world, G['cape']),
+                                                 clash.tris(world, G['leg_r'] + G['leg_l'])), 15, (slot, tick))
+
+    def test_cape_wave_is_smooth_delayed_and_closes(self):
+        import math
+        for slot in range(5):
+            pitches = []
+            for pose in self.frames(slot):
+                mats = self.world(pose)
+                pitches.append([math.degrees(math.atan2(mats[b][2][1], mats[b][1][1])) for b in gait.CAPE])
+            a = self.np.array(pitches)
+            self.assertLess(abs(a[-1] - a[0]).max(), .15, slot)
+            self.assertLess(abs(self.np.diff(a, axis=0)).max(), 4, slot)
+            # A changing angle between the panels proves this is articulated
+            # follow-through, rather than one rigid cape lifted out of the way.
+            relative = a[:, 1] - a[:, 0]
+            self.assertGreater(float(relative.max() - relative.min()), 2, slot)
 
     def test_storage_fits_the_resident_buffer(self):
         from motionstorage import audit

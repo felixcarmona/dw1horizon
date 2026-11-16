@@ -53,6 +53,11 @@ moves the overlay's reviewed-input pins (gaits.py / secondary_motion.py / gazimo
 native bindings that take the species as `donor_species`) to the new input, and refuses when that input is pinned anywhere
 else.
 
+After changing a proportion recipe, `edit.py repin ID MMD --technique-inputs`
+also rebuilds the complete provider, validates timing and storage, and updates
+that species' downstream technique-source hashes. Then `edit.py put ID MMD
+--force` regenerates the provider pin even when the importer delta is unchanged.
+
 A model bound offline from a motionless mesh (MagnaAngemon 206) gets the source game's battle clips from
 `field_animations/bound_battle.py` (content/models/imports/bound-battle.json; docs/reference/magnaangemon-native-rig.md).
 
@@ -206,7 +211,9 @@ Test `tools.test_kotemon_gait` (`KOTEMON_MODEL`, from `edit.py get 351`); the pi
 
 Species 319 (Pharaohmon): `field_animations/pharaohmon_gait.py` is a field overlay on top of the celebrations recipe: it
 rewrites slots 3 (tired walk, 56 ticks at 11 units a tick) and 4 (run, 24 ticks at 36) with `quadruped.py` on the two legs,
-planted soles and two different cycles each (the `compose` hook); the idle and the walk are the celebrations build's, untouched.
+planted soles and two different cycles each (the `compose` hook). Slots 0-4 receive delayed cape rotations that clear
+the legs; their other idle/walk channels are retained. Explicit cloth length axes in the chibi row keep the two cape
+panels joined. See [the cape audit](../../docs/reference/pharaohmon-cape.md) for source comparison and clearance measurements.
 `python3 -m tools.models.field_animations.pharaohmon_gait --source EDIT.MMD --out AFTER.MMD` (EDIT.MMD from `edit.py get 319`).
 Bound in `content/models/imports/species.py`; test `tools.test_pharaohmon_gait` (`PHARAOHMON_MODEL`, from `edit.py get 319`).
 

@@ -68,6 +68,34 @@ class Repin(unittest.TestCase):
     GAITS = v.ROOT / 'tools/models/field_animations/gaits.py'
     NEW, POST = 'a' * 64, 'b' * 64
 
+    def test_technique_repin_validates_provider_and_preserves_other_species(self):
+        from tools.models import technique_timing
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            registry = root / 'models.json'
+            recipe = dict(source='Punch', source_sha256='a' * 64)
+            row = dict(technique_timing={'Punch': recipe})
+            other = ' "320": ' + json.dumps(row)
+            registry.write_text('{\n "319": ' + json.dumps(row) + ',\n' + other + '\n}\n')
+            source = SimpleNamespace(build=lambda: b'new proportion translations')
+
+            def provider(*args):
+                return technique_timing.program(source, 22, 54, recipe)
+
+            with patch.object(v, 'ROOT', root), patch.object(v, 'IMPORTED_MODELS_SCRIPT', root / 'species.py'), \
+                    patch.object(v, 'import_records', side_effect=lambda: json.loads(registry.read_text())), \
+                    patch.object(v, 'provider_output', side_effect=provider), \
+                    patch.object(technique_timing, 'program', return_value=b'validated clip') as program, \
+                    contextlib.redirect_stdout(io.StringIO()):
+                v.repin_technique_inputs(319, b'model', b'tim')
+                self.assertEqual(program.call_args.args[3]['source_sha256'], v.sha256(source.build()))
+                self.assertIn(other, registry.read_text())
+                before = registry.read_bytes()
+                with patch.object(v, 'provider_output', side_effect=ValueError('heap exceeded')):
+                    with self.assertRaisesRegex(ValueError, 'heap exceeded'):
+                        v.repin_technique_inputs(319, b'model', b'tim')
+                self.assertEqual(before, registry.read_bytes())
+
     def test_followthrough_moves_while_retired_pace_stays_exact(self):
         from tools.models import variants
         with tempfile.TemporaryDirectory() as tmp:

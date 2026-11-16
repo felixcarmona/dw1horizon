@@ -1,4 +1,4 @@
-"""Pharaohmon's field tired walk and run (species 319, slots 3 and 4) on its own two legs with planted feet.
+"""Pharaohmon's planted field gait and a connected, trailing cape (species 319).
 
 Pharaohmon is a golden golem-pharaoh: a heavy torso with a broad collar and a cape down its back (bone 1, rest pitch
 -6 degrees), a big head with the headdress (5), long arms ending in huge fists (2-3-4 on the side x < 0, 8-9-10 on the
@@ -9,7 +9,7 @@ What was wrong. The chibi build keeps the import's tired walk and run, retargete
 the floor by 138 % of the travel on average (466 % at worst), the torso leant 42 degrees past the idle's stance, and the
 run threw the torso 65 degrees forward with the legs folded up behind it and the feet off the floor all but a tick or
 two of 24. Nobody walks that way: the pharaoh looked like a bent statue dragged over the ground. The walk (slot 2) and
-the idle are the chibi build's own and stay byte for byte as they are; they set the character, a low heavy lumber with
+the idle keep the chibi build's non-cape channels; they set the character, a low heavy lumber with
 a modest forward lean, and the two clips here are written to be the same creature slower and faster.
 
 What the clips are now. `quadruped.py` plants each foot (two-bone solve on the thigh and shin, the sole flat on the
@@ -19,6 +19,11 @@ two sides against the legs), the cape and the loincloth trail. Every clip is two
 A (one leg lifts higher, lands a touch earlier, the torso sinks and leans a little more) and the clip eases from one to
 the other and back, so no two steps are alike and the loop still closes; the arms, hands, head, cape and loincloth then
 follow through a loose spring each.
+
+The cape rotations in slots 0-4 are replaced after gait composition: the two panels hang behind the entire leg
+envelope, with a delayed wave reaching the hem. The walk and idle keep all their non-cape channels. The chibi row
+uses explicit length axes on both panels, so shortening the cape no longer narrows just its upper half and tears
+their common edge apart. Source polygons, UVs and rigid bone assignments are retained.
 
 The tired walk is slow (11 units a tick, two cycles of 28 ticks), the body low and the torso rolling with each heavy
 step, the head hung, the arms hanging and swaying late. The run is a controlled forward lean with a drive phase (the
@@ -217,6 +222,44 @@ def prepare(model, skeleton):
     PROFILE['sole'][False] = list(pose[TOE_OF['RH']][6:9])
 
 
+def clear_cape(data, skeleton):
+    """Trail behind the legs in world space, with progressively delayed panel motion.
+
+    The old local cape tracks inherited the torso's forward lean. Only the
+    cape rotations change; the planted gait and root travel stay intact.
+    """
+    import copy
+    import animsheet
+    from tools.models.field_animations.channels import replace_channels
+    model = mmd.MMD.parse(data, len(skeleton))
+    model.type = SPECIES
+    for slot, angle in enumerate((15, 32, 46, 40, 42)):
+        frames, loop, _ = animsheet.slot_frames(model, len(skeleton), slot)
+        samples = copy.deepcopy(frames)
+        period = (len(frames) - 1) / (2 if slot in (3, 4) else 1)
+        amplitude = 2 if slot < 2 else 5
+        history = {}
+        for tick, pose in enumerate(samples):
+            # The hem's periodic response trails the upper panel by .12 cycles.
+            for k, bone in enumerate(CAPE):
+                phase = tick / period - .12 * (k + 1)
+                pitch = angle + 4 * k + amplitude * math.sin(TAU * phase)
+                target = rot([pitch, 0, 0])
+                mats = mmd.bone_matrices(model, pose)
+                parent = [row[:3] for row in mats[skeleton[bone][1]][:3]]
+                set_rot(pose, bone, mul(tr(parent), target), history)
+        index = model.anims.table[slot]
+        updated = replace_channels(model.anims.anims[index], samples, loop, len(skeleton),
+                                   {(b, c) for b in CAPE for c in (3, 4, 5)}, tolerance=0)
+        model.anims.table[slot] = len(model.anims.anims)
+        model.anims.anims.append(updated)
+    used = sorted(set(model.anims.table) - {None})
+    mapping = {old: new for new, old in enumerate(used)}
+    model.anims.anims = [model.anims.anims[i] for i in used]
+    model.anims.table = [mapping[i] if i is not None else None for i in model.anims.table]
+    return model.build()
+
+
 def build(data, skeleton):
     """The celebrations build with the two clips written on it -> (bytes, proof)."""
     from tools.models.field_animations import celebrations
@@ -231,6 +274,14 @@ def build(data, skeleton):
         prepare(old, skeleton)
         profile = dict(PROFILE, source=hashlib.sha256(reshaped).hexdigest())
         result, gait = quadruped.build(reshaped, skeleton, profile)
+        result = clear_cape(result, skeleton)
+        from motionstorage import audit
+        storage = audit(result, len(skeleton))
+        if not storage['fits']:
+            raise ValueError(f'Pharaohmon cape exceeds resident heap: {storage}')
+        gait['storage'] = storage
+        gait['output_sha256'] = hashlib.sha256(result).hexdigest()
+        gait['changed_slots'] = [0, 1, 2, 3, 4]
     finally:
         exe.skeleton[SPECIES], exe.bone_count[SPECIES] = kept
     proof = dict(proof, preceding_recipe=dict(recipe='celebrations', output_sha256=proof['output_sha256']),

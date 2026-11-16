@@ -536,6 +536,41 @@ def stray_pins(texts, old):
     return out
 
 
+def repin_technique_inputs(sid, model, tim, donors=None):
+    """Review current provider inputs through the complete timing/heap checks.
+
+    Proportion recipe changes can change attack translations without changing
+    the overlay input. Explicit --technique-inputs moves those downstream pins.
+    """
+    from unittest.mock import patch
+    from tools.models import technique_timing
+    records = import_records()
+    recipes = records[str(sid)].get('technique_timing', {})
+    if not recipes:
+        return
+    program, hashes = technique_timing.program, {}
+
+    def reviewed(source, bones, slot, recipe):
+        digest = sha256(source.build())
+        hashes[recipe['source']] = digest
+        return program(source, bones, slot, dict(recipe, source_sha256=digest))
+
+    with patch.object(technique_timing, 'program', reviewed):
+        provider_output(sid, model, tim, donors)
+    path = IMPORTED_MODELS_SCRIPT.parent / 'models.json'
+    text = path.read_text()
+    # The registry keeps one species per line; retain its formatting and every
+    # other species' pins, even if two source programs share a hash.
+    line = next(line for line in text.splitlines() if line.startswith(f' "{sid}": '))
+    row = json.loads('{' + line.rstrip(',') + '}')[str(sid)]
+    for recipe in row['technique_timing'].values():
+        recipe['source_sha256'] = hashes[recipe['source']]
+    updated = f' "{sid}": ' + json.dumps(row) + (',' if line.endswith(',') else '')
+    if updated != line:
+        path.write_text(text.replace(line, updated, 1))
+        print(f'{path.relative_to(ROOT)}: {sid} technique input pins updated after provider validation')
+
+
 def cmd_repin(a):
     from tools.models import variants
     manifest = load(MODELS)
@@ -563,6 +598,8 @@ def cmd_repin(a):
     new = sha256(new_input)
     if old == new:
         print(f'{sid} {row["name"]}: the overlays\' input is unchanged ({old}); nothing to move')
+        if getattr(a, 'technique_inputs', False):
+            repin_technique_inputs(sid, new_model, new_tim, donor_models(a, sid))
         return
     texts = {}
     for name in PROFILE_MODULES:
@@ -638,6 +675,8 @@ def cmd_repin(a):
     for path, text in texts.items():
         path.write_text(text)
         print(f'{path.relative_to(ROOT)}: {sid} pins moved (input {old[:12]} -> {new[:12]})')
+    if getattr(a, 'technique_inputs', False):
+        repin_technique_inputs(sid, new_model, new_tim, donor_models(a, sid))
     print(f'next: tools/models/edit.py put {sid} {a.mmd}{" " + a.tim if a.tim else ""} (the delta and the species pins), '
           'then tools/models/variants.py make for a species with a release variant')
 
@@ -736,6 +775,8 @@ def main():
     m.add_argument('id')
     m.add_argument('mmd')
     m.add_argument('tim', nargs='?')
+    m.add_argument('--technique-inputs', action='store_true',
+                   help='also validate and repin downstream technique inputs after a proportion recipe change')
     s = sub.add_parser('sources')
     s.add_argument('out')
     s.add_argument('ids', nargs='*')
