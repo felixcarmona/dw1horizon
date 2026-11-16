@@ -1,3 +1,4 @@
+import { conversionSession } from './convert-storage.js';
 import { setupChangelog, renderChangelog } from './changelog.js';
 import { renderFeatureList } from './features.js';
 import { setupMaps, labels as mapLabels } from './maps.js';
@@ -321,11 +322,13 @@ function remove(id) {
   $('#add-button').focus();      // (the slot has nothing to focus now)
 }
 
-// ---------------------------------------------------------------- archives, ECM, PBP: turned into images first
+// ---------------------------------------------------------------- archives, ECM, PBP, CHD: turned into images first
 
 const JOB_ERROR = { encrypted: 'why.encrypted', parts: 'why.parts', open: 'why.archiveBroken',
                     'not PBP': 'why.notImage', 'PBP multi-disc': 'why.pbpMulti', 'PBP encrypted': 'why.pbpEncrypted',
-                    'ECM checksum': 'why.ecmChecksum', 'not ECM': 'why.notImage', 'ECM file cut short': 'why.ecmChecksum' };
+                    'ECM checksum': 'why.ecmChecksum', 'not ECM': 'why.notImage', 'ECM file cut short': 'why.ecmChecksum',
+                    'why.chd': 'why.chd', 'why.chdFlac': 'why.chdFlac', 'why.chdParent': 'why.chdParent',
+                    'why.chdVersion': 'why.chdVersion', 'why.chdInvalid': 'why.chdInvalid' };
 
 // One line per running job under the list: "file: what is happening, nn %"
 function job(name) {
@@ -392,17 +395,16 @@ async function expand(files, batch, depth = 0, from = { handle: null, converted:
     if (!out.length && !batch.problems.some((p) => r.files.some((f) => f.name === p.name))) problem(batch, file, 'why.emptyArchive');
     return out;
   }
-  if (info.kind === 'ecm' || info.kind === 'pbp') {
+  if (['ecm', 'pbp', 'chd'].includes(info.kind)) {
     const j = job(file.name);
     const format = info.kind.toUpperCase();
     j.set('status.decoding', { format, pct: 0 });
-    const r = await runWorker('./convert-worker.js', { kind: info.kind, file },
+    const r = await runWorker('./convert-worker.js', { kind: info.kind, file, outputDir: info.kind === 'chd' ? await conversionSession() : null },
                               (p) => j.set('status.decoding', { format, pct: Math.floor(p * 100) }));
     j.end();
     if (r.error) { problem(batch, file, JOB_ERROR[r.error] || 'why.unreadable', { error: r.error }); return []; }
     return expand([r.file], batch, depth + 1, { ...from, converted: true });
   }
-  if (info.kind === 'chd') { problem(batch, file, 'why.chd'); return []; }
   if (info.kind === 'unsupported') {
     // one track of a disc with several (the audio of "Game (Track 2).bin"): its data is in track 1, with the .cue
     problem(batch, file, /\(track\s*\d+\)/i.test(file.name) ? 'why.track' : 'why.notImage');
@@ -633,7 +635,7 @@ function setupAdd() {
 //  - a handle (Chromium on a computer: the picker or a drop gives one): kept as soon as the disc is accepted, no copy.
 //    Next time it may need the browser's permission again: one click on "Use my discs from last time".
 //  - a copy in this browser's storage, only if the player asks for it (the option under the drop zone, with its
-//    size): any browser with OPFS, not on phones and tablets. Also for a disc that came out of an archive, ECM or PBP
+//    size): any browser with OPFS, not on phones and tablets. Also for a disc that came out of an archive, ECM, PBP or CHD
 //    (its image is kept: a handle to an archive means unpacking it again).
 // What was remembered is trusted only while the file is the one checked (name, size, date: sameFile) and this
 // release still accepts that release; then it is not hashed again (the build still checks its files and the disc
@@ -1198,6 +1200,7 @@ async function start() {
   setupDesktop(currentRelease, LINKS.github).catch((e) => console.warn('desktop apps:', e));
   setupMaps().catch(() => { $('#maps').hidden = true; });
   tidyStorage().catch(() => {});   // what a stopped or crashed build left, the old engines
+  conversionSession();            // discard converted images left by closed pages
   restore().catch((e) => console.warn('remembered discs:', e));
 }
 
