@@ -335,3 +335,52 @@ The techniques the disc gives each import that differ from the finisher design a
 Fifteen imports use a plain attack (slot 5) with no name on the disc: Dokugumon, KingEtemon, Divermon,
 Ebidramon, Arukenimon, SkullSatamon, Knightmon, Lynxmon, Musyamon, Snimon, Minotarumon, Vemmon, Roachmon,
 Armageddemon and Bastemon. Their names have to come from elsewhere.
+
+## Damage comparison after the seven composed replacements
+
+The 2026-11-16 check found no damage regression from PR #508. The old ports emit
+one damage event per target (`dw3efe.convert` defaults to `n_hits=1`), not a
+sequence of later hits missing from the composed templates. Three valid trials
+per species and version, at charge 80, keep the same damage class:
+
+| Species | Old damage (three trials) | New damage (three trials) | Mean change |
+|---|---|---|---|
+| Maildramon | 1455, 1530, 1635 | 1470, 1530, 1395 | -4.9% |
+| Musyamon | 1103, 1035, 1035 | 1024, 1013, 1013 | -3.9% |
+| Roachmon | 1216, 1114, 1126 | 1114, 1024, 1148 | -4.9% |
+| Ebidramon | 791, 807, 749 | 791, 840, 848 | +5.6% |
+| Dinohyumon | 1114, 1171, 1182 | 1148, 1126, 1238 | +1.3% |
+| Kotemon | 437, 446, 496 | 437, 506, 483 | +3.4% |
+| Bearmon | 1045, 1055, 986 | 1064, 956, 1005 | -2.0% |
+
+The comparison reconstructed the seven old chunks from the first parent of
+#508, verified every historical pin, and changed only those chunks in a copy of
+the current disc. All sectors outside the effect archive, the executable, models,
+save fixture and battle preparation were identical. The new chunks also match
+the current compositions byte for byte. Trials use original 2 MB RAM, offense
+400, partner HP 4,000, enemy HP 2,500, and isolated enemy AI.
+
+The original harness could write charge 80 too late for a short effect, or lose a
+RAM write to a presentation pass's state restoration. The charge bonus is
+`charge / 40` from charge 41 onward: 80 doubles damage, while charge 0 or 12 adds
+no bonus. On the unchanged new Maildramon effect, explicit charge 80 and 0
+produced **1,470 and 735** damage. An uncontrolled new run likewise varied
+1,590 / 1,470 / 780. This explains the apparent halving without changing hits
+or templates; the ordinary damage roll varies only 90–110%.
+
+For future comparisons, use `tools/dev/playtest/finisher_targets.py` with
+`--trials 3 --chargeup 80`. It maintains charge during the active window,
+checks charge during observed HP loss, reapplies enemy isolation after battle
+initialization, and samples the complete recording. HP drains across several
+frames; `hp_updates` are not separate attack hits. Rejected trials with the
+wrong charge were replaced and are retained in the evidence.
+
+All seven fresh presence measurements pass the 0.011–0.45 area bounds, and the
+existing presence table is fresh. All seven effect definitions, colours, scales,
+`compose.sounds` and pins remain unchanged. The resident partner peak remains
+100,256 B in its 100,352 B buffer. The related suites ran 63 tests with three
+fixture-dependent skips and no failures.
+
+[Machine-readable evidence](../data/finisher-damage.json) includes all accepted
+trials, rejected controls, chunk hashes, presence measurements, and the charge
+diagnostic. Full recordings and RAM samples remain under `build/trials/`.

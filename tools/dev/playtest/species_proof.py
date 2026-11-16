@@ -292,7 +292,7 @@ def finisher_watch(slot, secs):
     return out, damage
 
 
-def battle(t, moves, out, r, prepare=None, launch_and_watch=None, warmup=16):
+def battle(t, moves, out, r, prepare=None, launch_and_watch=None, warmup=16, chargeup=80):
     fin = next((0x2E + j for j, x in enumerate(moves) if x != 255 and 58 <= x <= 112), None)
     r['finisher_expected'] = bool(fin)
     techs = [0x2E + j for j, x in enumerate(moves) if x != 255 and not 58 <= x <= 112][:3]
@@ -325,8 +325,12 @@ def battle(t, moves, out, r, prepare=None, launch_and_watch=None, warmup=16):
             g = mem('COMBAT_DATA.fighter[0].finisherGoal').get('COMBAT_DATA.fighter[0].finisherGoal', 0)
             mset(f'COMBAT_DATA.fighter[0].finisherProgress={g}')
             def launch():
-                seq('wait 1'); EMU.press('SQUARE', 8); seq('wait 1, L1 2, R1 2, L1 2, R1 2, L1 2, R1 2')
-                mset('COMBAT_DATA.player.finisherChargeup[0]=80')
+                seq('wait 1'); EMU.press('SQUARE', 8)
+                # A measurement watcher can own the charge window instead of
+                # racing the effect with this ordinary button sequence.
+                if chargeup is not None:
+                    seq('wait 1, L1 2, R1 2, L1 2, R1 2, L1 2, R1 2')
+                    mset(f'COMBAT_DATA.player.finisherChargeup[0]={chargeup}')
             if launch_and_watch is None:
                 launch()
                 watched, r['finisher_damage'] = finisher_watch(fin, 30)

@@ -39,6 +39,14 @@ See [emulator setup](../../docs/developing.md), [story testing](../../docs/devel
 [memory checks](memory/README.md). `tools/selftest.sh` covers offline contracts; emulator
 integration suites require a matching disc, symbols and memory card.
 
+For finisher damage comparisons, run `python3 -m tools.dev.playtest.finisher_targets
+DISC.cue DIGI.DAT OUT ID... --trials 3 --chargeup 80` with matching `EMU_PORT`,
+`DW_SYMS` and `--card`. This sets the charge during its active window and verifies
+it at every observed HP decrease. The ordinary button sequence writes its charge
+after pressing L1/R1; a short effect can hit before that write and lose the full
+charge's twofold damage bonus. Compare settled `enemy_damage`; `hp_updates` are
+the animated HP drain and must not be counted as separate hits.
+
 `playtest/` symbol-driven shell checks accept `DW_SYMS` (default `disc-full`).
 The historical `saves/tagged.sh` and `saves/robust.sh` compare old save formats;
 supply their documented disc/executable fixtures explicitly. They do not build retired engine variants.
