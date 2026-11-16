@@ -228,6 +228,70 @@ def apply(data, bones, sid):
         for oi, dx in ((4, 4), (5, -4)):
             transform_piece(model, oi, offset=(dx, 0, 0))
         report['whisker_outward_offset'] = 4
+    if sid == 220:
+        # The stored weapons pass through the shoulder shells in the attack
+        # poses. Move their complete meshes rearward within the existing mount;
+        # the binding and every animation (including root travel) stay exact.
+        for oi in (17, 18):
+            transform_piece(model, oi, offset=(0, 0, 8))
+        # The alternate facial texture occupies the head's exact surface.
+        # Keep its UVs and animated transparency on independent front corners.
+        offset_layer(model, 2, range(88, 92), (0, 0, -4))
+        report['stored_weapon_offset'] = [0, 0, 8]
+        report['face_layer_offset'] = [0, 0, -4]
+    if sid == 236:
+        # Give both wing-tip undersides their own two-unit layer. The opposite
+        # windings are needed for two-sided visibility and must not be deleted.
+        # Move each complete two-quad sheet together, retaining its shared edge.
+        for oi in (3, 6):
+            offset_layer(model, oi, (2, 3), (0, 2, 0))
+        report['wing_underside_offset'] = [0, 2, 0]
+    if sid == 238:
+        # Adjacent tail sections have long overlapping collars. Retract both
+        # ends about local Z=40, retaining the radial silhouette and all sockets.
+        # Inverse-scale normals keep the fitted shells' lighting coherent.
+        for oi in (5, 6, 7, 8):
+            transform_piece(model, oi, scale=(1, 1, .78), offset=(0, 0, 8.8))
+        report['tail_axial_fit'] = dict(scale=.78, center=40)
+    if sid == 270:
+        # Preserve both red cape textures on separate sheets, including the
+        # folded bottom panel. A common offset keeps each sheet's seams exact;
+        # per-packet normal offsets would pull adjacent panels apart.
+        offset_layer(model, 6, (177, 178, 179, 183, 184, 185, 187), (0, 3, 0))
+        report['cape_inner_layer_offset'] = [0, 3, 0]
+    if sid == 275:
+        # The broad tail tiers sweep through one another when curled. Keep
+        # their sockets and longitudinal reach, fitting only the radial shell.
+        for oi in (16, 17, 18):
+            transform_piece(model, oi, scale=(.85, .85, 1))
+        # Integer fitting introduces four small bends. Give their existing
+        # GPU halves independent culling, within the original packet allowance.
+        selected = {(r['object'], r['primitive']) for r in mesh_stability.bent_quads(model)}
+        for oi, obj in enumerate(model.tmd.objects):
+            obj.prims = [half for pi, prim in enumerate(obj.prims)
+                         for half in (mesh_stability.split_quad(prim)
+                                      if (oi, pi) in selected else [prim])]
+        report['tail_radial_fit'] = .85
+        report['fit_quad_splits'] = len(selected)
+    if sid == 283:
+        # Separate the lower shell rim from the upper shell. The inner
+        # creature's tiny closed-shell scale is an intentional visibility mask.
+        transform_piece(model, 5, offset=(0, -8, 0))
+        report['lower_shell_offset'] = [0, -8, 0]
+    if sid == 303:
+        # Two double-sided body-card strips overlap at their inner seam.
+        # Retract only the left strip's five seam corners to local X=2,
+        # keeping its outer edge, both windings and its original UVs/normals.
+        obj = model.tmd.objects[0]
+        vertices = model.tmd.obj_verts(0)
+        seam = sorted({vi for pi in range(151, 159)
+                       for vi in obj.prims[pi].decode()['verts'] if vertices[vi][0] > 0})
+        if seam != [133, 135, 137, 139, 141]:
+            raise ValueError('body-card seam no longer matches reviewed mesh')
+        for vi in seam:
+            vertex = vertices[vi]
+            model.tmd.verts[obj.vert_start+vi] = (2, *vertex[1:])
+        report['body_card_seam_x'] = 2
     if sid == 295:
         # Two quads end in a collinear second half. Keep their complete first
         # GPU triangle and discard only the zero-area half, including its bogus
@@ -373,7 +437,13 @@ def apply(data, bones, sid):
         # cover a pixel before projection rounding and has no surface to retain.
         model.tmd.objects[2].prims.pop(0)
         report['zero_surface_packets'] = 1
+    if sid in (405, 407, 473):
+        from tools.models import mesh_ge
+        report.update(mesh_ge.apply(model, bones, sid))
     mesh_stability.compact_pools(model)
+    if sid in (307, 314, 323, 326):
+        from tools.models import mesh_gd
+        report.update(mesh_gd.apply(model, sid))
     return model.build(), report
 
 
