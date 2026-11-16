@@ -8,7 +8,7 @@
   "build/batch12/Growlmon.MMD": "2c776307106d6c09df8a19063b6fa22f583eef70a7bf3fd3f315e922effc88c5",
   "build/batch16/Renamon.MMD": "5a49398a00861768203661f389156a81c298fa841396309d18f22b1108c8b0c9",
   "build/meshfix2-out/MaloMyotismon.MMD": "4ac33d108c98052c2cbff46d8bd11bc52c381f93efcd2527ba9ef637377c6a7c",
-  "build/rescue-kyubimon/Kyubimon.MMD": "97dff5e3e23e2a52e3036ab00756c72a85b4c88f4635c3a618862391bb440c9d",
+  "build/rescue-kyubimon/Kyubimon.MMD": "12ec1e8c6cd79639f049c8089c7c9c05de32598c76afa36dd1b08654b1b291ee",
   "build/sizes-out/models/Chrysalimon.MMD": "79c9a8e636f9c7fea88498615960f1227214361b76d356e0986236d4bc36ed64",
   "build/rigfix/Chrysalimon.MMD": "34f721ff396c422e8d6f8c0d92ef9373883aefd51b6a9a9415479e6ed3fe267d"
  },
@@ -360,36 +360,47 @@
     "sources": [
      {
       "path": "build/rescue-kyubimon/Kyubimon.MMD",
-      "sha256": "97dff5e3e23e2a52e3036ab00756c72a85b4c88f4635c3a618862391bb440c9d",
+      "sha256": "12ec1e8c6cd79639f049c8089c7c9c05de32598c76afa36dd1b08654b1b291ee",
       "size": 97950
      }
     ],
     "delta": "content/modeldelta/deltas/dw3-us/409-Kyubimon.MMD.mdelta",
-    "delta_sha256": "1883d0110f5e5b6b630fe35bbf672c209debd630e2e922b5c4f3b4784efef38e",
-    "sha256": "1c06236db26cc8f3460e0892b5d0c2f4311637de1f84ac86075a370603bccacc",
+    "delta_sha256": "f3da74304d4fb9aae493d3278115418f773e6e9edfa984ef1ab0841ef508a4f9",
+    "sha256": "b024245f0f0537401f7d1bb2fc0889ccb438f09b46de99047bbd7c0f20614e4c",
     "size": 105352
    },
    "from": {
-    "sha256": "234348cb00b8724fbc66d1e4e9900a57255ba0da07b3cccb003ca9dd53b07468",
-    "delta_sha256": "dccfd50c851532544cf12622cecf9e28b4522b0340b6182f15bdb34b57add31f",
+    "sha256": "208678ef4d500608a375e37d0b6985aa772174880f17df9996fcc48a2839d60d",
+    "delta_sha256": "d118de3d3412713848bed848277782fdde14dfaa12ab77d14f0c14341836aea7",
     "add_bytes": [
      15447,
      15531
     ],
     "foreign_windows": 0,
     "objects_other": [
+     11,
+     15
+    ],
+    "objects_ours": [
+     13,
+     16,
+     19,
+     20,
+     21,
+     22,
+     23,
+     24,
+     25
+    ],
+    "objects_carried": [
      3,
      4,
      6,
      7,
-     11,
+     8,
      14,
-     15,
      17,
      18
-    ],
-    "objects_carried": [
-     8
     ],
     "slots_ours": [
      0,
@@ -633,6 +644,35 @@
      "recipe": "content/models/authoring/native-polish/409.json",
      "input_sha256": "ee09610415e0464a90a2f360dc61dd08d8a2fd191d86333f1c0c981625ef5059",
      "output_sha256": "1c06236db26cc8f3460e0892b5d0c2f4311637de1f84ac86075a370603bccacc"
+    },
+    "after_polish": {
+     "objects_other": [
+      8,
+      11,
+      15
+     ],
+     "objects_ours": [
+      13,
+      16,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25
+     ],
+     "objects_carried": [
+      3,
+      4,
+      6,
+      7,
+      14,
+      17,
+      18
+     ],
+     "slots_other": [],
+     "slots_ours": []
     }
    }
   },
@@ -688,7 +728,7 @@
   "4efdf24ad14634d17724d8b40f150064924f74930088914c16470ba7544ca1f9": "15e07d0b929c03ab295a54a4b2dda99d1956db5d5dc1cbe34058c96b2dfc948e",
   "631fce26218caac5cd145680230f126652b3e4ccefb42ec438f3f57d34e105eb": "cb8e4661d7ee8491805e30f6fc34e058eaf023bc89c6fe18ed5f013ba713a2eb",
   "25f77dfe45c53c442d985715d4db48d6c9d9deca4793b14841958c0fbe079305": "5e2a9b21c7b3ccbc162d04334a1b2c04950c2108a4a81e578cd50a2889d4d685",
-  "1c06236db26cc8f3460e0892b5d0c2f4311637de1f84ac86075a370603bccacc": "234348cb00b8724fbc66d1e4e9900a57255ba0da07b3cccb003ca9dd53b07468",
+  "b024245f0f0537401f7d1bb2fc0889ccb438f09b46de99047bbd7c0f20614e4c": "208678ef4d500608a375e37d0b6985aa772174880f17df9996fcc48a2839d60d",
   "f0733738f81ff24d5f89fc2bc7f3ed43adf9224bd2cd3df1f04ab13faff95acc": "8d85a72db1570f3a83fa94a8c438ecbdf7fec12689e76234bcaeeb85908432d5"
  }
 }

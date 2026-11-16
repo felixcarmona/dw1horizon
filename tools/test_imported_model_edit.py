@@ -237,5 +237,45 @@ class Repin(unittest.TestCase):
         self.assertEqual(stray, ['pins/other.py'])
 
 
+class Rebase(unittest.TestCase):
+    def test_authoring_snapshot_follows_importer_without_changing_its_target(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            old, new = root / 'old', root / 'new'
+            old.mkdir(); new.mkdir()
+            (old / 'mesh').write_bytes(b'old material source')
+            (new / 'mesh').write_bytes(b'new material source')
+            profiles = root / 'content/models/authoring/native-polish'
+            profiles.mkdir(parents=True)
+
+            def record(name, target):
+                src = (old / 'mesh').read_bytes()
+                delta = v.modeldelta.encode(target, [src])
+                (root / name).write_bytes(delta)
+                return dict(sources=[dict(path='mesh', sha256=v.sha256(src), size=len(src))],
+                            delta=name, delta_sha256=v.sha256(delta), sha256=v.sha256(target), size=len(target))
+
+            main = record('main.mdelta', b'accepted model')
+            preceding = record('preceding.mdelta', b'reviewed historical snapshot')
+            manifest, sizes, rebased = root / 'models.json', root / 'sizes.json', root / 'rebased.json'
+            v.save(manifest, dict(models=[dict(id=409, name='Kyubimon', mmd=main,
+                                              tim=record('texture.mdelta', b'accepted texture'))]))
+            v.save(sizes, dict(files=[])); v.save(rebased, dict(models=[]))
+            profile_path = profiles / '409.json'
+            v.save(profile_path, dict(species=409, preceding_delta=preceding))
+            args = SimpleNamespace(old=old, new=new, ids=['409'])
+            with patch.multiple(v, ROOT=root, MODELS=manifest, SIZES=sizes, REBASED=rebased), \
+                    contextlib.redirect_stdout(io.StringIO()):
+                v.cmd_rebase(args)
+                saved = profile_path.read_bytes()
+                v.cmd_rebase(args)
+            updated = v.load(profile_path)['preceding_delta']
+            self.assertEqual(profile_path.read_bytes(), saved)
+            self.assertEqual(updated['sha256'], preceding['sha256'])
+            self.assertEqual(updated['sources'][0]['sha256'], v.sha256((new / 'mesh').read_bytes()))
+            self.assertEqual(v.modeldelta.decode((root / updated['delta']).read_bytes(), [(new / 'mesh').read_bytes()]),
+                             b'reviewed historical snapshot')
+
+
 if __name__ == '__main__':
     unittest.main()
