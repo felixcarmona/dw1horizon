@@ -289,7 +289,10 @@ def converted_image(path, progress=None, cancel=None):
     except discformats.Cancelled:
         raise Problem('cancelled')
     except discformats.FormatError as e:
-        key = {'PBP multi-disc': 'app.pbpMulti', 'PBP space': 'app.pbpSpace',
+        if str(e).startswith('CHD not supported: '):
+            raise Problem('app.chdUnsupported', reason=str(e).split(': ', 1)[1]) from e
+        key = {'CHD space': 'app.chdSpace', 'CHD changed': 'app.changed',
+               'PBP multi-disc': 'app.pbpMulti', 'PBP space': 'app.pbpSpace',
                'PBP changed': 'app.changed'}.get(str(e), 'app.pbpEncrypted')
         raise Problem(key, **({'path': path} if key == 'app.changed' else {})) from e
 
@@ -301,13 +304,11 @@ def identify(path, progress=None, cancel=None, converting=None):
     if not os.path.isfile(path):
         raise Problem('app.missingFile')
     kind = discformats.sniff(path)
-    if kind == 'chd':
-        raise Problem('why.chd')
     if kind == 'archive':
         raise Problem('app.archive')
     if kind == 'ecm':
         raise Problem('app.convert', format='ECM')
-    if kind == 'pbp':
+    if kind in ('pbp', 'chd'):
         def tick(f):
             if converting:
                 converting(path, f)

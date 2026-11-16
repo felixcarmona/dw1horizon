@@ -101,7 +101,11 @@ Single-disc, unencrypted PSP `.pbp` images also work in the desktop app and comm
 for all four games. They must contain the same raw sectors as a supported dump. Conversion uses
 at least 700 MB of free cache space in the app (temporary space for the CLI), in addition to the
 build space below. Conversions are reused during the session and deleted on exit. Multi-disc or
-encrypted PBPs and CHD images are unsupported; convert those to `.bin`/`.cue` first.
+encrypted PBPs are unsupported. The desktop app and CLI also accept CD-ROM v5 `.chd` images
+using CD zlib/LZMA or plain zlib/LZMA/uncompressed hunks. Tracks are concatenated into one raw
+BIN, with CHD padding and subcode removed. Parent CHDs, older headers, cooked tracks and FLAC
+(`cdfl`) hunks require conversion with `chdman extractcd` first. CHD conversions use the same
+temporary space, session cache and cleanup as PBP. The browser still requires `.bin`/`.cue` for CHD.
 
 ## What you need
 
@@ -126,7 +130,7 @@ encrypted PBPs and CHD images are unsupported; convert those to `.bin`/`.cue` fi
    - Windows: open the folder, click the address bar, type `cmd` and press Enter.
    - macOS: right-click the folder in Finder, "New Terminal at Folder".
    - Linux: right-click, "Open in Terminal".
-3. Run (put the path to **your** `.cue`, `.bin` or `.pbp` between the quotes; you can drag the file into the terminal
+3. Run (put the path to **your** `.cue`, `.bin`, `.chd` or `.pbp` between the quotes; you can drag the file into the terminal
    window to paste its path):
 
    ```
@@ -176,7 +180,8 @@ written once every file has been checked.
 | "the first pressing of SLPS-01797" | That Japanese disc cannot be used (see "Bring your own disc"); any other release can. |
 | "is Digimon World 2" / another game, or "This release needs one of: ..." | Use one of the discs in the table above. |
 | "is a 2048-byte-per-sector ISO" | Dump the disc again as `.bin`/`.cue` (raw, 2352 bytes per sector). |
-| "is a CHD" / "is a 7z archive" / "is a zip archive" ... | Extract or convert it to `.bin`/`.cue` first (for CHD: `chdman extractcd -i game.chd -o game.cue`). |
+| "CHD not supported" / "is a CHD" (browser) | Convert it to `.bin`/`.cue` with `chdman extractcd -i game.chd -o game.cue`. |
+| "is a 7z archive" / "is a zip archive" ... | Extract it to `.bin`/`.cue` first. |
 | "the cue sheet names 2 files" | Digimon World is one data track: use a redump-style single `.bin`. |
 | "points to ..., which does not exist" | The `.cue` names a `.bin` that is not there: rename the `.bin` back, or edit the `.cue`. |
 | "needs Python 3.10 or newer" | Install a newer Python from python.org or your operating system's package manager. |

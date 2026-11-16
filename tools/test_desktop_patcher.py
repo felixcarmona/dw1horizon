@@ -107,7 +107,7 @@ class Images(unittest.TestCase):
         self.assertEqual(e.exception.key, 'why.notYet')
         self.assertEqual(e.exception.params, dict(release='Digimon World 3 (USA)', instead=[
             'Digimon World 2003 (Europe)', 'DigimonWorld 3: Aratanaru Bouken no Tobira (Japan)']))
-        for name, key in (('x.chd', 'why.chd'), ('x.7z', 'app.archive'), ('x.part2.rar', 'app.archive'),
+        for name, key in (('x.chd', 'app.chdUnsupported'), ('x.7z', 'app.archive'), ('x.part2.rar', 'app.archive'),
                           ('x.ecm', 'app.convert'), ('x.pbp', 'app.pbpEncrypted')):
             with self.subTest(name=name), self.assertRaises(desktop.Problem) as e:
                 desktop.identify(self.write(name, b'x'))
