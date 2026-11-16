@@ -418,3 +418,131 @@ Run final comparisons on models after `species.flat_texture`/archive assembly,
 not provider MMDs paired with an already stamped archive TIM. The report records
 both the unchanged envelope result and the broad part-review flag. Runtime
 visibility and a selective detector for the reported symptoms remain unfinished.
+
+## Round 4: two cause repairs and bounded residual floors
+
+Only 409, 406, 336, 335 and 461 were investigated, in that order. None is
+certified visually clean. Exhaustive before/after crossing ledgers cover all
+254 occupied slots / 8,984 decoded ticks, including adjacent pieces and both
+penetration directions. The [round-four report](mesh-round-4/audit.json) links
+compressed CSV ledgers containing every crossing's slot, motion category,
+zero-based frame, bones, objects, reviewed part names, triangle-pair count and
+depth. Unnamed source objects retain their exact object number. Slots 2/3 are
+walk/condition walk, 4 is run, and 33–63 are battle slots. Other occupied slots
+remain explicitly recorded rather than being omitted or called battle poses.
+Depths in this section are symmetric; older directed-depth numbers are not
+interchangeable with them. Crossings include hidden surfaces and joint contacts.
+
+* Raidenmon: slot 43 drives forearm 3 through shoulder plate 23. A constant
+  local rotation correction of −10° pitch, +10° yaw and −5° roll to that
+  forearm clears this pair throughout the clip: maximum 59 triangle pairs /
+  75.059 units becomes zero. Initial rotations and absolute rotation keys receive
+  the offset; incremental keys retain the original motion. Timing, events,
+  loops, root travel, scale, translations, mesh and every other clip are exact.
+  The pair still reaches 62.527 units in slot 21 frame 7. In slot 43, existing
+  contacts with adjoining objects 1 and 3 increase by at most 2.101 and 3.024
+  units; there is no newly crossing bone pair. A proposed global plate rotation
+  was rejected after it worsened plate-to-plate contact in another clip.
+* Omnimon: the toe armour's rear lip sweeps into the boot and calf. Compress
+  only its last 50 local Z units by 24%, retracting the rearmost corner by 12
+  units while retaining toe-tip position, sole height, sockets and animation.
+  Normals receive the inverse deformation. Across every clip, right calf/toe
+  20/22 falls from 7 triangle pairs / 32.908 units to zero; right boot/toe 21/22
+  falls from 10 pairs / 9.687 units to zero. Left calf/toe 16/18 improves from
+  30.485 to 26.315 units. Further calf shortening was rejected because it
+  worsened toe penetration. Face-layer co-facing idle pairs remain zero.
+* Kyubimon, MaloMyotismon and MegaGargomon retain their incoming meshes and
+  animation. Exact opaque duplicate-packet searches found nothing removable in
+  any of the five models. No additional face deletion or layer bias was shipped.
+
+| Model | Slots / ticks | Full-model maximum symmetric depth, before → after | Resident bytes, before → after |
+| --- | ---: | ---: | ---: |
+| 409 Kyubimon | 47 / 1,461 | 56.844 → 56.844 | 94,834 → 94,834 |
+| 406 MaloMyotismon | 52 / 1,714 | 90.441 → 90.441 | 74,402 → 74,402 |
+| 336 Raidenmon | 51 / 1,684 | 155.922 → 155.922 | 72,622 → 72,622 |
+| 335 MegaGargomon | 52 / 2,009 | 75.232 → 75.232 | 95,994 → 95,994 |
+| 461 Omnimon | 52 / 2,116 | 111.774 → 111.774 | 81,434 → 81,434 |
+
+The detector continues to flag all five. Its original eight-slot, three-pose
+probe retains respectively 65, 32, 47, 30 and 31 unique part candidates before
+and after; envelope verdicts remain fail, fail, pass, pass and pass. This is
+separate from the exhaustive CSV measurements and is not a clean bill of health.
+
+The residual floor is **bounded**, not a proof that a model cannot be repaired.
+For each certificate below, every relative rigid translation in a continuous
+world-axis cube preserves at least one strict edge/triangle crossing at the
+specified pose. Each part can move independently by the listed per-axis amount;
+the relative cube is twice as wide. Different crossing witnesses cover different
+subcubes. Five affine orientation determinants certify a strict crossing; their
+extrema occur at cube corners. A separate verifier checks every leaf directly at
+its eight corners and verifies the complete octant partition. Conservative
+numerical margins reject near-zero signs. This is stronger than a finite offset
+sweep, but does not cover rotations, local vertex reshaping, deletion, or larger
+offsets. Natural-motion redesign beyond these bounds remains unproven.
+
+| Model / retained witness | Slot / frame | Depth | Independent translation bound per part, each world axis |
+| --- | ---: | ---: | ---: |
+| 409 tail tiers 15/17 | 5 / 29 | 56.844 | ±8 units |
+| 406 left cannon housing/cap 2/3 | 54 / 1 | 27.805 | ±8 units |
+| 406 right cannon housing/cap 10/11 | 54 / 1 | 27.922 | ±8 units |
+| 336 forearm/calf 3/21 | 21 / 4 | 155.922 | ±8 units |
+| 335 shoulder shell/forearm 23/25 | 21 / 11 | 47.200 | ±8 units |
+| 461 sword/calf 7/16 | 47 / 12 | 90.946 | ±4 units |
+| 461 left calf/toe 16/18 | 40 / 36 | 26.315 | ±2 units |
+
+At each of the tail-tier, cannon-cap, shoulder-shell and left calf/toe witnesses,
+250 local rotation trials (each bone separately; −10°, −5°, 0°, +5°, +10° per
+axis) also fail to clear the pair. These finite trials are not a continuous
+rotation proof. Some other witnesses can clear in a single pose under tested
+rotations; that does not demonstrate a full-clip repair without new contacts.
+Full certificate geometry, verified subdivision trees, and trial results are in
+[the certificate archive](mesh-round-4/certificates.json.gz). Rejected fits and
+clip trials are in [the experiment archive](mesh-round-4/experiments.json.gz).
+
+Matched atlas-stamped PSX-rule renders use first-triangle quad culling, the GPU
+diagonal, four-unit ordering-table bins, reverse insertion for ties, affine
+textures, colour-zero discard and PSX blend rules. Each pose has eight azimuths
+at 30° elevation. Coverage includes idle, walk, condition walk, run and located
+crossing poses. The two changed models additionally show the repaired poses.
+The [render measurements](mesh-round-4/renders.json) retain every case and view.
+Raw paired sheets remain under `build/renders/` in the worktree.
+
+| Model | Matched pose/view cases | Changed pixels before → after | Pixels sensitive to a two-unit OT-bin phase change, before → after |
+| --- | ---: | ---: | ---: |
+| 409 | 40 | 0 | 2,086 → 2,086 |
+| 406 | 48 | 0 | 309 → 309 |
+| 336 | 56 | 24,063 | 1,439 → 1,198 |
+| 335 | 48 | 0 | 1,011 → 1,011 |
+| 461 | 72 | 6,277 | 2,256 → 2,244 |
+
+Pixel differences show the scope of an edit; bin-phase sensitivity locates
+ordering ambiguity. Neither number is a visible-glitch count. These remain
+orthographic, neutral-lighting renders without GTE perspective or runtime
+visibility confirmation. No full visual clearance or unrestricted repair floor
+is established for any model.
+
+Both changed models keep their resident sizes and packet formats. Peak remains
+100,256 / 100,352 bytes: all other provider pins are unchanged and both edited
+models remain below the existing peak. Resident/cold-read checks pass for all
+five. Textures, alternate-release pins and native-record pins are unchanged.
+Only the 336 and 461 canonical model pins changed, through the scoped repository
+pin tool. Fresh source/delta/provider checks pass for all five. Full decoded
+preservation checks cover 254 slots / 8,984 ticks; only the documented slot-43
+rotations differ. The related suite runs 91 tests: 90 pass and one private-fixture
+test is skipped. Changes are uncommitted.
+
+Reproduce from final atlas-stamped model/texture folders with `index.json`:
+
+```sh
+# Repeat in order for 409, 406, 336, 335, 461; retain separate before/after outputs.
+python3 -m tools.models.mesh_round4 BEFORE 409 --out build/round4-before
+python3 -m tools.models.mesh_round4 AFTER 409 --out build/round4-after
+python3 -m tools.models.mesh_round4 AFTER 409 --certificate 15 17 5 29 --trials --out build/409-floor.json
+# For the Omnimon sword/calf certificate use --translation-limit 8 (relative cube).
+python3 -m tools.models.mesh_round4 AFTER 461 --certificate 7 16 47 12 --translation-limit 8 --trials --out build/461-floor.json
+# CASES.json is a list of [slot, zero-based frame] pairs, as retained in renders.json.
+python3 -m tools.models.mesh_round4 BEFORE 336 --after AFTER --cases CASES.json --out build/round4-renders
+python3 -m tools.models.mesh_round4 AFTER 336 --detector docs/reference/mesh-glitch-audit.json --out build/336-detector.json
+python3 -m tools.derive.steps.species pin BUILD --prepared 336 461
+python3 -m unittest tools.test_mesh_round4 tools.test_mesh_cleanup tools.test_psx_blend tools.test_mesh_stability tools.test_meshcheck tools.test_battle_qa tools.test_imported_model_edit tools.test_species_pins tools.test_motionstorage
+```
