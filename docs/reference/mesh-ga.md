@@ -1,0 +1,145 @@
+# Mesh investigation: 183, 193, 196, 218
+
+The unchanged native envelope now passes 183 Wormmon, 193 Digmon and 196
+Halsemon. 218 Ikkakumon retains a **surface-preserving, fixed-idle coplanar
+floor**, described below. All four still receive the separate part-review flag;
+none is certified visually clear. No native limits or detector weights changed.
+
+The [audit](mesh-ga/audit.json), [complete details and verified certificates](mesh-ga/details.json.gz)
+and eight compressed CSV ledgers in `mesh-ga/` retain before/after evidence.
+Ledgers cover **193 occupied slots / 7,000 decoded ticks per stage**. Every
+crossing records clip, zero-based frame, bones, source objects, adjacency,
+triangle-pair count and symmetric depth, including joint contacts and hidden
+surfaces. The `fit-trials.json.gz` and `trial2.json.gz` archives retain the
+tested shell fits and socket offsets, including rejected candidates. The sampled envelope uses the original eight slots and three poses
+per slot; exhaustive peaks are reported separately.
+
+## Cause repairs
+
+* **183 Wormmon:** the rear body socket starts inside the front body and middle
+  legs. Extend bone 24 by ten local Z units, moving its complete descendant
+  chain. Initial poses and absolute keys receive the constant offset;
+  incremental keys retain the complete original crawl wave and easing. The
+  reviewed generated binding is checked before applying the change.
+* **193 Digmon:** fit the pelvis, thigh/calf shells and drill-arm shells
+  (objects 0, 1, 2, 5, 6, 14, 17) uniformly to 80% about their existing mounts;
+  fit hand shells 21/24 to 90%. The smaller shells reduce overlapping surfaces
+  at their neighbours and bent-face area. Head, wings, drills, feet and all
+  bone trajectories retain their incoming data. No bone-size limit is enlarged.
+* **196 Halsemon:** fit front thighs 11/14 to 94%, and rear thighs 17/21,
+  front shins 12/15 and rear foot armour 20/24 to 95%, uniformly about their
+  mounts. A tested 95% front-thigh fit collapsed one thin triangle under integer
+  rounding and was rejected. The final fit has no zero-area faces. Wing span,
+  front feet and all joint trajectories are retained.
+* **218 Ikkakumon:** shift both complete whiskers, including both windings,
+  four local X units outward (objects 4/5, opposite signs). Their roots remain
+  inside the head. This clears the head/whisker co-facing candidate without
+  removing the fur's opposite-facing layers.
+
+Exact opaque duplicate searches found **zero** removable packets in all four,
+before and after. All retain zero degenerate faces, repeated-index masks,
+pose-collapsed idle faces and tiny faces. No face is deleted, no new primitive
+is introduced. The three bent meshes have only 4, 12 and 16 bytes left in
+the incoming shared pass's packet allowance, below the cost of another split. These repairs reshape located overlapping parts;
+they do not flatten arbitrary quads or discard opposing surfaces for a score.
+
+## Detector measurements
+
+| Species | Sampled crossing maximum | Bent quads | Bent risk | Coplanar area | Co-facing pairs | Envelope |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| 183 Wormmon | 722 → 564 | 70 → 70 | .000592636 → .000592636 | 0 → 0 | 0 → 0 | fail → pass |
+| 193 Digmon | 90 → 75 | 201 → 187 | .004183841 → .002969760 | .00751 → .00751 | 0 → 0 | fail → pass |
+| 196 Halsemon | 339 → 305 | 111 → 121 | .003295620 → .003020082 | .08522 → .08266 | 0 → 0 | fail → pass |
+| 218 Ikkakumon | 237 → 237 | 0 → 0 | 0 → 0 | .47082 → .46672 | 1 → 0 | fail → fail |
+
+The crossing limit is 595, bent-risk limit .003039868562537228, and coplanar-area
+limit .35881000000099994. Integer rounding changes the number of quads just
+above the three-degree reporting cutoff; Halsemon's count rises while its total
+bent risk decreases. Counts alone do not measure visible popping.
+
+| Species | Sampled depth tie rate | Sampled order-reversal rate | Full-clip maximum pairs, including adjacent pieces | Full-clip maximum symmetric depth |
+| --- | ---: | ---: | ---: | ---: |
+| 183 | .033713 → .031602 | .012966 → .011807 | 1,156 → 1,127 | 53.923 → 53.200 |
+| 193 | .014574 → .013103 | .024348 → .017879 | 757 → 626 | 70.880 → 70.880 |
+| 196 | .010980 → .011275 | .025047 → .023988 | 1,196 → 1,125 | 92.533 → 92.533 |
+| 218 | .008806 → .008810 | .013184 → .013184 | 828 → 820 | 98.242 → 98.242 |
+
+The ledger also records exhaustive nonadjacent peaks, rather than applying the
+sample-calibrated native limit silently to different coverage. These are
+948 → 935, 277 → 221, 673 → 597 and 477 → 477, respectively. Deep crossings
+outside the sampled envelope remain; the CSVs retain their exact locations.
+
+## Bounded residual floors
+
+Ikkakumon's remaining legacy coplanar area is entirely **98 same-bone,
+opposite-winding pairs**, summing to .46672 at the retained 408.084683-unit idle
+height. Pair geometry, plane gaps, opposing-normal cosines and individual areas
+are retained in the detail archive. No co-facing idle pair remains. Repairs to
+inter-part layers and animation cannot remove these fixed-idle pairs while
+preserving their surfaces and height. Thus .46672 is a surface-preserving
+fixed-idle floor above the .35881 limit. This is not a proof against changing
+fur geometry, separating its opposing sheets, or redesigning the idle rig;
+those changes are outside this certificate. Opposing flat surfaces are normally separated by back-face culling; this
+residual metric alone does not prove that the retained surfaces z-fight visibly.
+
+Each model also has an independently verified continuous translation certificate:
+at the listed pose, every relative translation in a ±8-unit world-axis cube
+retains a strict edge/triangle crossing. This permits **each part to move
+independently by ±4 units per axis**. The verifier checks all subdivision leaves
+at their eight corners and verifies the complete partition. All 250 finite
+local rotation trials per witness retain crossings too; these trials are not a
+continuous rotation proof.
+
+| Species | Retained bone pair | Slot / frame |
+| --- | --- | --- |
+| 183 | 24/26, rear body socket / tail base | 11 / 10 |
+| 193 | 16/19, drill / drill | 37 / 1 |
+| 196 | 1/10, head / tail base | 11 / 37 |
+| 218 | 1/9, body core / object 8 | 36 / 8 |
+
+These are bounded certificates, not proofs that larger rotations, local
+reshaping, reassignment or a broader natural-motion redesign cannot succeed.
+The three envelope passes do not supersede these residual crossings.
+
+## PSX-rule renders and preservation
+
+Matched atlas-stamped sheets cover idle, walk, condition walk, run, full-model
+peak crossings and the edited parts' located walk/battle poses, at eight
+azimuths and 30-degree elevation. They use first-triangle quad culling, the GPU
+diagonal, four-unit OT bins, reverse insertion for ties, affine textures,
+colour-zero discard and PSX blending.
+
+| Species | Pose/view cases | Changed pixels | Pixels sensitive to a two-unit OT-bin phase change |
+| --- | ---: | ---: | ---: |
+| 183 | 56 | 181,978 | 5,845 → 4,662 |
+| 193 | 48 | 116,386 | 2,418 → 1,536 |
+| 196 | 56 | 74,343 | 1,431 → 1,137 |
+| 218 | 40 | 7,744 | 1,014 → 1,008 |
+
+Pixel differences measure edit scope; bin-phase sensitivity measures ordering
+ambiguity. Neither is a count of visible glitches. Sheets remain under
+`build/evidence/renders/`; per-view measurements are in the audit. These are
+orthographic renders, without runtime perspective or device confirmation.
+
+Resident bytes remain **69,194, 85,160, 92,196 and 78,170**, respectively.
+Resident and sector-aligned cold-read checks pass. All other provider pins are
+unchanged, preserving the previous peak **100,256 / 100,352 bytes**. Primitive
+packets, packet-format totals, UVs, materials, textures and skeletons are exact.
+All 7,000 decoded ticks preserve timing, events, loops, scale and root travel;
+only Wormmon bone 24's documented constant translation differs. Field ground
+extents are exact except for Halsemon's fitted rear foot armour, whose greatest
+per-tick change is 2.013 units.
+
+Only these four canonical model pins changed, through scoped repository tools;
+texture, alternate-release and native-record pins are unchanged. Fresh
+source/delta/provider checks pass **4/4**. The related suite runs **94 tests:
+93 pass, one private-fixture test is skipped**. Changes remain uncommitted.
+
+Reproduce from final atlas-stamped folders containing `index.json`:
+
+```sh
+python3 -m tools.models.mesh_ga BEFORE AFTER --out build/evidence
+python3 -m tools.derive.steps.species pin BUILD --prepared 183 193 196 218
+python3 tools/models/edit.py --games BUILD/source-games check --species-pins 183 193 196 218
+python3 -m unittest tools.test_mesh_ga tools.test_mesh_round4 tools.test_mesh_cleanup tools.test_psx_blend tools.test_mesh_stability tools.test_meshcheck tools.test_battle_qa tools.test_imported_model_edit tools.test_species_pins tools.test_motionstorage
+```

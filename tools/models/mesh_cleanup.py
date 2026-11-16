@@ -191,6 +191,43 @@ def apply(data, bones, sid):
         raise ValueError(f'{sid}: surface repair requires the reviewed final TMD')
     model = mmd.MMD.parse(data, len(bones))
     report = dict(applied=True)
+    if sid == 183:
+        # The rebound rear body starts inside the front body and middle legs.
+        # Extend its socket by ten local Z units, retaining the complete crawl
+        # wave, all absolute/incremental keys and the original root trajectory.
+        if tuple(bones[24]) != (12, 1) or tuple(bones[25]) != (13, 24):
+            raise ValueError('rear body repair requires the reviewed crawl binding')
+        translate_bone(model, 24, 2, 10)
+        report['rear_body_socket_extension'] = [0, 0, 10]
+    if sid == 193:
+        # Broad pelvis, thigh/calf and drill-arm shells intersect their adjoining
+        # parts during the source battle swing. Fit those shells about the
+        # existing sockets; leave head, wings, drills, feet and all motion intact.
+        for oi in (0, 1, 2, 5, 6, 14, 17):
+            transform_piece(model, oi, scale=(.8, .8, .8))
+        for oi in (21, 24):
+            transform_piece(model, oi, scale=(.9, .9, .9))
+        report['limb_shell_fit'] = .8
+        report['hand_shell_fit'] = .9
+    if sid == 196:
+        # Front/rear thigh shells overlap in the walk cycle. Fit those shells,
+        # the front shins and rear foot armour about their existing sockets;
+        # retain the front feet, wing span and every joint trajectory.
+        # Six percent at the front thighs also preserves a thin triangle that
+        # would become collinear under five-percent integer rounding.
+        for oi in (11, 14):
+            transform_piece(model, oi, scale=(.94, .94, .94))
+        for oi in (17, 21, 12, 15, 20, 24):
+            transform_piece(model, oi, scale=(.95, .95, .95))
+        report['front_thigh_fit'] = .94
+        report['leg_shell_fit'] = .95
+    if sid == 218:
+        # The whisker roots lie on the head's fur layer. Move each whisker four
+        # units outward, keeping its two windings together and its root embedded.
+        # Opposite-facing fur surfaces are intentional and remain untouched.
+        for oi, dx in ((4, 4), (5, -4)):
+            transform_piece(model, oi, offset=(dx, 0, 0))
+        report['whisker_outward_offset'] = 4
     if sid == 295:
         # Two quads end in a collinear second half. Keep their complete first
         # GPU triangle and discard only the zero-area half, including its bogus
