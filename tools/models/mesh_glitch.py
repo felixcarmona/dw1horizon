@@ -91,6 +91,39 @@ def depth_probe(model, poses):
     return totals
 
 
+def coplanar_details(model):
+    """Locate co-facing surfaces even when they share vertex IDs or UVs.
+
+    Legacy zfight() excludes both cases, including accidentally duplicated
+    packets. Opposite-facing cards cannot compete after libgs culling and are
+    listed separately; these diagnostics do not change the native envelope.
+    """
+    T = model.tri_array(model.world(model.rest()))
+    n = np.cross(T[:, 1]-T[:, 0], T[:, 2]-T[:, 0])
+    lengths = np.linalg.norm(n, axis=1)
+    n /= np.maximum(lengths[:, None], 1e-12)
+    drawn = T[lengths > 1e-8]
+    h = max(float(np.ptp(drawn[:, :, 1])), 1.) if len(drawn) else 1.
+    result, opposite = [], 0
+    for i in np.nonzero(lengths > 1e-8)[0]:
+        cosine = n @ n[i]
+        candidates = np.nonzero((np.arange(len(T)) > i) & (np.abs(cosine) > .998) &
+            (np.max(np.abs((T-T[i, 0]) @ n[i]), axis=1) < .003*h))[0]
+        for j in candidates:
+            if model.tris[i][:3] == model.tris[j][:3]:
+                continue
+            overlap = MC._overlap(T[i], T[j], n[i]) / h**2
+            if overlap <= MC.ZFIGHT_MIN_AREA:
+                continue
+            if cosine[j] < 0:
+                opposite += 1
+                continue
+            result.append(dict(a=list(model.tris[i][:3]), b=list(model.tris[j][:3]),
+                area=float(overlap), gap=float(np.max(np.abs((T[j]-T[i, 0]) @ n[i])))))
+    return dict(cofacing_pairs=len(result), cofacing_area=sum(r['area'] for r in result),
+                opposite_pairs=opposite, pairs=result)
+
+
 def geometry(model):
     W = model.world(model.rest())
     T = model.tri_array(W)
@@ -144,18 +177,21 @@ def measure(model, slots=(0, 2, 3, 4, 33, 34, 35, 36), samples=4):
 
 
 def audit_one(job):
-    folder, sid, row, slots, samples = job
+    folder, sid, row, slots, samples, details = job
     try:
         model = MC.Model((Path(folder) / f'{sid}.MMD').read_bytes(), row['bones'])
-        return sid, dict(name=row['name'], **measure(model, slots, samples))
+        result = dict(name=row['name'], **measure(model, slots, samples))
+        if details:
+            result['surface_pairs'] = coplanar_details(model)
+        return sid, result
     except Exception as exc:
         return sid, dict(name=row['name'], error=repr(exc))
 
 
-def audit(folder, slots, samples, jobs=1):
+def audit(folder, slots, samples, jobs=1, *, details=False):
     from concurrent.futures import ProcessPoolExecutor
     index = json.loads((Path(folder) / 'index.json').read_text())
-    work = [(folder, sid, row, slots, samples) for sid, row in index.items()]
+    work = [(folder, sid, row, slots, samples, details) for sid, row in index.items()]
     if jobs == 1:
         return dict(audit_one(w) for w in work)
     with ProcessPoolExecutor(jobs) as pool:

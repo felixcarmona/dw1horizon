@@ -393,6 +393,23 @@ def species_file(out, t, recs=None, names=None, generate=False):
         (generated / f'{t}-mesh-stability-report.json').write_text(json.dumps(stability, indent=2) + '\n')
         s['model']['file'] = str(model_path)
         s['model'].pop('slot_aliases', None)
+    from tools.models import mesh_cleanup
+    cleaned, cleanup = mesh_cleanup.apply(stable, s['model']['skeleton'], t)
+    if cleanup['applied']:
+        import coldsplit
+        nb = len(s['model']['skeleton'])
+        before_bytes = len(coldsplit.split(model, nb)[0])
+        after_bytes = len(coldsplit.split(cleaned, nb)[0])
+        if after_bytes > before_bytes:
+            raise ValueError(f'{t}: surface repair grew resident bytes {before_bytes} -> {after_bytes}')
+        generated = Path(os.path.abspath(out) + '-models')
+        generated.mkdir(parents=True, exist_ok=True)
+        model_path = generated / f'{t}-mesh-cleanup.MMD'
+        model_path.write_bytes(cleaned)
+        cleanup.update(resident_before=before_bytes, resident_after=after_bytes)
+        (generated / f'{t}-mesh-cleanup-report.json').write_text(json.dumps(cleanup, indent=2) + '\n')
+        s['model']['file'] = str(model_path)
+        s['model'].pop('slot_aliases', None)
     return name, s
 
 

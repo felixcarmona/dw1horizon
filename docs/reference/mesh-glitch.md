@@ -185,3 +185,110 @@ Validation: 97 tests passed, 8 private-fixture tests skipped; subsequent detecto
 normalization/compatibility regressions also pass (12 tests). Fresh
 `edit.py check --species-pins` passes all five reported species. No on-device
 visual or crowded-scene packet confirmation has been obtained.
+
+## Remaining-mesh follow-up
+
+The table above ranks pre-repair severity. The actual ten worst reference
+outputs after PR 511 are 407, 409, 405, 323, 314, 196, 303, 326, 205 and 432.
+Suijinmon, Kurisarimon and YukimiBotamon already pass. A fresh archive audit of
+369 models reproduces 36 failing imports and zero failing native controls using
+the archived, unchanged thresholds and three poses per selected slot.
+
+Five targeted repairs follow final fitting and stability splitting in
+mesh_cleanup.py. Reviewed TMD hashes are recorded by the repository tool,
+python3 -m tools.models.mesh_cleanup review BEFORE_DIR; provider hashes are
+written only by python3 -m tools.derive.steps.species pin.
+
+* Armageddemon: slot 4's rear left foot crosses the middle left foot. Opening
+  rear hip 24's local yaw by 12 degrees keeps the original swing and clears
+  bones 20/26 across every decoded run tick: maximum crossing pairs 20 → 0,
+  penetration 45.78 → 0 units. Whole-model sampled maximum falls 24 → 6.
+  The foot's maximum floor excursion changes from 0.18 to 4.52 units; the clip
+  passes the existing floor, motion, seam and collision QA. Fidelity records the
+  intentional angular change as documented polish. A collinear mouth quad,
+  with no surface in either half, is removed: true degenerate triangles 2 → 0.
+* Cannondramon: both front feet have toe detail only one unit inside the sole.
+  Insetting their existing detail ring another four units separates all three
+  co-facing coplanar candidates while retaining ground-contact vertices.
+* Lynxmon: the pelvis and two tail sections put their longitudinal flame cards
+  on the same plane. Offsetting the latter cards by 4/8 local X units, moving
+  both windings together, removes nine co-facing overlaps. Opposite windings of
+  intentional flame cards remain; the legacy coplanar metric still fails.
+* WarGrowlmon: two differently textured triangles occupy precisely the same
+  armour surface and vertex IDs. Only the decal receives independent corners,
+  offset approximately four units along its normal: co-facing pairs 1 → 0.
+* Bastemon: four opaque packets duplicate their oriented geometry, material,
+  normals and UVs, including cyclic corner permutations. Dropping them removes
+  eight co-facing triangle pairs. Opposite faces and blended packets survive.
+
+The new mesh-audit --details reports co-facing overlaps even when vertex IDs
+or UVs match. The legacy metric excluded these cases, including the armour
+surface and duplicated packets above. It still supplies the original envelope;
+new pair diagnostics do not alter thresholds. Co-facing geometry alone is not
+proof of visible z-fighting: transparent layers, joint contact and occlusion
+still require inspection. mesh_review also attributes sampled crossings to
+bone pairs, slot and tick, including adjacent bones omitted by legacy QA.
+
+| Current priority | Residual evidence after this follow-up |
+| --- | --- |
+| 407 Armageddemon | Bent risk 21.76× native limit; repaired run pair clears; other sampled crossings remain (maximum 6). |
+| 409 Kyubimon | Bent risk 11.36×; maximum 1,327 crossings remains. Tail/hip bones 15/19 reach 50.31 units through each other in slot 34 tick 0; overlapping tail tiers also remain. |
+| 405 Cannondramon | Bent risk 10.88×; toe overlap clears, but bone pair 13/18 still crosses to 42.00 units in slot 3 tick 0. |
+| 323 Lynxmon | Legacy coplanar area 2.10244 → 2.05058 heights² (5.72× limit), dominated by retained opposite flame faces; co-facing pairs 9 → 0. |
+| 314 SkullSatamon | Bent risk 3.56×; pair 4/6 reaches 34.22 units in slot 36 tick 0. |
+| 196 Halsemon | Bent risk 3.25×; pair 9/12 reaches 46.40 units in slot 2 tick 8. |
+| 303 KingEtemon | Bent risk 3.24×; pair 14/21 reaches 30.19 units in slot 2 tick 8. |
+| 326 WarGrowlmon | Bent risk 3.23×; decal clears, but body/arm intersections remain. Sampled maximum 238 → 239: surface separation is not an overall collision repair. |
+| 205 MegaKabuterimon | Bent risk 2.89×; pair 3/11 reaches 85.19 units in slot 33 tick 0. |
+| 432 Bastemon | Bent risk 2.42×; duplicate surfaces clear, but pair 12/14 reaches 37.48 units in slot 36 tick 0. |
+
+These residual crossings are located geometric candidates, not all confirmed
+visible penetrations. Simple rotations tested on Kyubimon's tail reduced some
+pairs without clearing the fan and did not establish a safe natural-motion
+repair; they were not shipped. Remaining rig and clip work is unfinished.
+The additional reported controls were inspected too: Raidenmon and MegaGargomon
+have no co-facing idle pairs but retain part crossings; MaloMyotismon has four
+co-facing pairs between neighbouring parts, and Omnimon has six on the head.
+Omnimon's first four candidate layers sample entirely transparent texels in
+the supplied atlas bounding boxes, demonstrating why these counts alone cannot
+establish the reported visible fault. Neither model is declared visually fixed.
+
+Offline evidence uses the corrected psx_blend renderer: first-triangle culling
+for an entire quad, four distinct corners for quad mean depth, four-unit depth
+bins, reverse insertion within tied bins, affine textures, colour-zero discard,
+and PSX blend rules. The original renderer culled halves independently and
+sorted unquantised depths. Matched sheets cover eight elevated azimuths in idle
+and a sampled deep-crossing pose for all ten plus the four additional reports.
+They are orthographic, neutral-lighting evidence, without GTE perspective,
+integer raster precision, runtime camera depth or device confirmation.
+
+The [follow-up measurements](mesh-remaining-audit.json) retain before/after
+metrics, pair locations, output hashes and preservation results.
+All occupied clips of the five changed models retain timing, events, loops,
+scale, translations and root travel; only Armageddemon slot 4 changes rotation.
+Packet-format totals stay equal or decrease. Peak resident stays
+100,256 → 100,256 / 100,352 bytes. WarGrowlmon uses 24 bytes of its earlier
+504-byte saving; its final 95,332 bytes remain below its incoming 95,812.
+The native envelope remains **36 → 36** failing imports:
+
+183 Wormmon, 193 Digmon, 196 Halsemon, 199 Paildramon, 205 MegaKabuterimon,
+215 Magnadramon, 218 Ikkakumon, 220 Vikemon, 223 LadyDevimon,
+236 DemiDevimon, 238 Dolphmon, 270 PrinceMamemon, 274 Blossomon,
+275 Scorpiomon, 283 Syakomon, 295 Vilemon, 303 KingEtemon,
+306 GrapLeomon, 307 BlackKingNumemon, 311 Arukenimon, 312 Creepymon,
+314 SkullSatamon, 315 Taomon, 318 Gallantmon, 323 Lynxmon,
+326 WarGrowlmon, 402 NeoCrimson, 403 Beelzemon, 405 Cannondramon,
+406 MaloMyotismon, 407 Armageddemon, 409 Kyubimon, 432 Bastemon,
+471 Pichimon, 473 Nyokimon, 477 Yokomon.
+
+Reproduce evidence from extracted before/after directories:
+
+    python3 tools/models/battle_qa.py mesh-audit BEFORE --thresholds docs/reference/mesh-glitch-audit.json --samples 3 --jobs 4 --json before.json
+    python3 tools/models/battle_qa.py mesh-audit AFTER --thresholds before.json --samples 3 --jobs 4 --details --json after.json
+    python3 -m tools.models.mesh_review BEFORE AFTER 407 409 405 323 314 196 303 326 205 432 406 336 335 461 --out build/mesh-review
+    python3 -m unittest tools.test_mesh_cleanup tools.test_psx_blend tools.test_mesh_stability tools.test_meshcheck tools.test_battle_qa tools.test_imported_model_edit
+
+Validation: 67 tests, one private-fixture test skipped; Armageddemon run QA passes.
+Raw evidence and matched images are under build/mesh/. This follow-up repairs
+specific causes in five models; it does not finish the remaining ten-model
+motion/mesh work or prove the 36 residual imports visually acceptable.
