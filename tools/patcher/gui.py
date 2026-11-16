@@ -487,7 +487,7 @@ class App:
 
     # -- discs
     def _filetypes(self):
-        return [(self.t('app.discFiles'), '*.cue *.bin *.iso *.img *.pbp *.PBP'), (self.t('app.allFiles'), '*')]
+        return [(self.t('app.discFiles'), '*.cue *.bin *.iso *.img *.pbp *.PBP *.chd *.CHD'), (self.t('app.allFiles'), '*')]
 
     def _add(self):
         from tkinter import filedialog
@@ -541,7 +541,14 @@ class App:
         self._spawn(job, busy='check')
 
     def _on_converting(self, path, f):
-        self.stage.configure(text=self.t('app.converting', file=os.path.basename(path), pct=int(f * 100)))
+        if getattr(self, '_converting_path', None) != path:
+            self._converting_path = path
+            try:
+                kind = desktop.discformats.sniff(path)
+            except OSError:
+                kind = None  # The worker reports a removed or unreadable source.
+            self._converting_key = 'app.convertingChd' if kind == 'chd' else 'app.converting'
+        self.stage.configure(text=self.t(self._converting_key, file=os.path.basename(path), pct=int(f * 100)))
         self.progress['value'] = int(f * 1000)
 
     def _on_checking_image(self, path, f):

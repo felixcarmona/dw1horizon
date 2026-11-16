@@ -336,16 +336,16 @@ def _discformats():
 
 
 def resolve_bin(path):
-    """Resolve a single-file cue or extract an unencrypted, single-disc PBP."""
+    """Resolve a single-file cue or extract a PBP or CHD CD image."""
     if not os.path.exists(path):
         raise PatchError(f'"{path}" does not exist.')
     formats = _discformats()
     kind = formats.sniff(path)
-    if kind == 'pbp':
+    if kind in ('pbp', 'chd'):
         global _CONVERSIONS
         if _CONVERSIONS is None:
             _CONVERSIONS = formats.ConversionCache()
-        prog = Progress('converting PBP', 1000)
+        prog = Progress('converting ' + kind.upper(), 1000)
         converted = False
         def tick(f):
             nonlocal converted
@@ -360,11 +360,15 @@ def resolve_bin(path):
         except formats.Cancelled:
             raise Stopped('stopped.')
         except formats.FormatError as e:
-            messages = {'PBP multi-disc': 'PBP multi-disc: use a single-disc PBP or .bin/.cue.',
+            if str(e).startswith('CHD not supported: '):
+                raise PatchError(str(e)) from e
+            messages = {'CHD space': 'CHD conversion needs at least 700 MB of free temporary space.',
+                        'CHD changed': 'CHD changed during conversion; add it again.',
+                        'PBP multi-disc': 'PBP multi-disc: use a single-disc PBP or .bin/.cue.',
                         'PBP space': 'PBP conversion needs at least 700 MB of free temporary space.',
                         'PBP changed': 'PBP changed during conversion; add it again.'}
             raise PatchError(messages.get(str(e), 'PBP encrypted or damaged: use an unencrypted single-disc dump.')) from e
-    if kind in ('chd', 'ecm', 'archive'):
+    if kind in ('ecm', 'archive'):
         raise PatchError(f'{path} is a {kind.upper()}. Extract or convert it to .bin/.cue first.')
     if kind == 'cue':
         bins = []
@@ -2662,7 +2666,7 @@ def _main(argv=None):
     ap = argparse.ArgumentParser(description='Digimon World mod patcher (bring your own disc).')
     sub = ap.add_subparsers(dest='cmd')
     p = sub.add_parser('apply', help='patch your disc')
-    p.add_argument('disc', help='your Digimon World .cue, .bin or single-disc unencrypted .pbp')
+    p.add_argument('disc', help='your Digimon World .cue, .bin, .chd or single-disc unencrypted .pbp')
     p.add_argument('-o', '--output', help='folder for the patched disc (default: "patched" next to your disc)')
     p.add_argument('--variant', choices=('everything',), help='everything (the default)')
     p.add_argument('--source-disc', action='append', metavar='GAME=IMAGE',
@@ -2752,7 +2756,7 @@ def status():
 
 
 def apply_disc(disc, source_discs, output=None, release=None):
-    """apply as the command line runs it, for a program that calls it (the desktop app): disc, its .cue, .bin or single-disc unencrypted .pbp;
+    """apply as the command line runs it, for a program that calls it (the desktop app): disc, its .cue, .bin, .chd or single-disc unencrypted .pbp;
     source_discs {game: image}; output the folder (default: "patched" next to the disc); release the package folder
     (default: this file's). Prints nothing. -> {cue, bin, log, base, sha1}. Raises PatchError (Stopped when CANCEL
     was set) with the player's message, or the unexpected exception; either way its `log` attribute names the log

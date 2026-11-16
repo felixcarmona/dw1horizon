@@ -9,7 +9,7 @@ browser (`web/`). The players' guide is [release/README-players.md](release/READ
 ```
 release/
   dwpatch.py          the patcher
-  discformats.py      PBP decoder and disc-container detection
+  discformats.py      PBP/CHD decoders and disc-container detection
   isowriter.py        the disc writer (an ISO 9660 / CD-XA writer in Python)
   manifest.json       the accepted base discs (redump checksums), the files to read from them, every hole's SHA-1
                       (per base where it differs), the output's SHA-1 per base
@@ -94,8 +94,15 @@ every base with every variant, and refuses a source release list that rebuilds o
 ## Checks
 
 - Input: the image is identified by its SYSTEM.CNF and checked against its redump size and SHA-1; a missing file, a
-  `.cue` naming the wrong file, a CHD/ECM or archive, a 2048-byte `.iso`, another game or region, a modified dump:
-  each has its own message. Single-disc, unencrypted PBP images are decoded to raw sectors before these checks.
+  `.cue` naming the wrong file, an unsupported CHD, ECM or archive, a 2048-byte `.iso`, another game or region, a modified dump:
+  each has its own message. Single-disc, unencrypted PBP and supported CD-ROM v5 CHD images are decoded to raw sectors before these checks.
+  The desktop app and CLI accept cdzl/cdlz, zlib/lzma and uncompressed CHD hunks, including self references.
+  They concatenate raw data/audio tracks, swap audio samples to BIN order, discard subcode and
+  four-frame track padding, and preserve stored pregaps (virtual gaps add no BIN sectors).
+  Parent CHDs, v1–v4 headers, cooked tracks, GD-ROM/multisession layouts and hunks using cdfl
+  (FLAC) are explicitly refused. Convert those with `chdman extractcd` first.
+  CHD uses the PBP session cache (source size and mtime), temporary-space check, cancellation
+  and cleanup. The browser continues to refuse CHD.
 - The patch file's SHA-1 against the manifest; every rebuilt file against its SHA-1 for that base (a mismatch names
   the files and writes nothing); the output's SHA-1 against the release's (written as `.part`, renamed only when it
   matches), then a `.cue`.
@@ -205,6 +212,7 @@ python3 -m pip install pyinstaller                   # in a virtual environment:
 python3 tools/patcher/app/build.py                   # -> build/desktop/dist/ (macOS: --universal2)
 "build/desktop/dist/Horizon Patcher/Horizon Patcher" --self-test --download --gui
 (cd tools && python3 -m unittest test_desktop_patcher)
+PYTHONPATH=tools python3 -m unittest tools.test_chd
 ```
 
 `--self-test` (tools/patcher/selftest.py) needs no disc and no window unless `--gui`: UTF-8 mode; the app as Python
