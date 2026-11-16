@@ -166,17 +166,22 @@ Results for the 79 attacks are in `content/finishers/dcb-effects.json` (`result`
 
 | result | attacks |
 |---|---|
-| converted (passes every check) | 45 |
+| converted (passes every check) | 40 |
+| converted but reads flat, rebuilt as a composed DW1 effect | 5 |
 | fidelity failed after the second round | 31 |
 | render did not finish in 40 minutes (MetalGarurumon) | 1 |
 | does not fit the 0x5000 slot even at the smallest fit (MarineAngemon: its models alone are bigger than the slot; Gomamon: about 2 KB over) | 2 |
 
 Each conversion is measured against the launch table of the finisher it stands for (the one the game plays it
 with); Angewomon, Omnimon and VioletElecmon passed against the shared table and fail against their own. The 34
-that did not pass carry a `why` (the checks they failed) and a `"fallback"`: `"template"` plays the finisher it
-stands for, unchanged; `"composed"` (12 of them) is a DW1 chunk of the attack's kind recoloured
+that did not pass, and the 5 that read flat, carry a `why` and a `"fallback"`: `"template"` plays the finisher it
+stands for, unchanged; `"composed"` (29 of them) is a DW1 chunk of the attack's kind recoloured
 (docs/mods/signature-effects.md, "Composed effects"), used where the template's look contradicted the attack (a
-projectile for a slam, a whirlpool for a sword cut). Most
+projectile for a slam, a whirlpool for a sword cut), or where a conversion reads as flat card art pasted into the
+3D fight: in the effect simulator, both the share of drawn pieces and the share of drawn surface that are flat cards
+which never turn, scale or fade are above the 90th percentile of DW1's own effects (4.3 % and 7.7 %; Fire Rocket,
+Lightning Blast, Horn Buster, Thunder Ball), plus Vee Head Butt, an opaque white puff over the target. A composed
+effect plays its DW1 template's sounds. Most
 failures are a cast that draws much less than the original: many alike objects (star showers, feathers)
 thinned to what the slot holds. The check has a floor and no ceiling and does not compare colour: a pass
 means the conversion draws in the same places and moments, not that it looks the same.
