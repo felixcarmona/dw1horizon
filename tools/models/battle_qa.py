@@ -291,6 +291,42 @@ def check_sizes(data, bones):
             for s, idx in enumerate(model.anims.table) if idx is not None}
 
 
+def horizontal_centroids(clip):
+    """Per-tick centroid of distinct referenced points per rigid piece (x, z).
+
+    Exclude accumulated root travel. Duplicate/unused pool entries and splitting
+    a quad cannot move this centre; identical points on different bones remain
+    separate because those bones can move independently.
+    """
+    pieces = []
+    for bone, vertices in clip.V.items():
+        used = np.unique(clip.rig.tris[bone])
+        if not len(used):
+            continue
+        _, first = np.unique(clip.rig.local[bone][used], axis=0, return_index=True)
+        pieces.append(vertices[:, used[first], :])
+    return np.concatenate(pieces, axis=1)[..., [0, 2]].mean(axis=1)
+
+
+
+def check_field_origin(data, bones, tolerance=1.0, sid=None):
+    """Ground-shadow registration in field slots 0-4; units, independent of radius and accumulated root travel.
+
+    Intended for centred authored meshes, not as a universal limit on every native character's acting.
+    """
+    rig = Rig.from_mmd(data, bones, sid)
+    rows = {}
+    for slot in range(5):
+        frames = rig.frames(slot)
+        if frames is None:
+            continue
+        c = horizontal_centroids(Clip(rig, *frames))
+        distance = float(np.linalg.norm(c, axis=1).max())
+        rows[slot] = dict(max_distance=distance, min=c.min(0).tolist(), max=c.max(0).tolist(),
+                          verdict='fail' if distance > tolerance else 'pass')
+    return rows
+
+
 def reference(rig):
     """The species' field idle (slot 0 of main's model) as the measuring stick: height, floor, gaps, chains, body."""
     c = Clip(rig, *rig.frames(0))
@@ -313,6 +349,12 @@ def measure(clip, ref):
     rig, h, V = clip.rig, ref['h'], clip.V
     out = dict(n=clip.n, finite=bool(np.isfinite(clip.P).all()),
                scale=clip.P[..., 0:3].reshape(clip.n, -1))
+    # O(vertices), no triangle tests. Also exposed to care QA through this
+    # measurement. field_sides_qa confirms candidates and samples 60-fps thirds.
+    from tools.models import field_sides_qa
+    sides = field_sides_qa.measure(clip)
+    out['side_depth'] = max((r['max_depth'] for r in sides), default=0.0) / h
+    out['side_centroid'] = max((r['max_centroid'] for r in sides), default=0.0) / h
     out['size'] = size_ratio(clip.P[0], np.asarray(rig.frames(0)[0][0]))
     from tools.models import clip_rig
     out['proportions'] = clip_rig.proportions(clip.P, rig.frames(0)[0][0], rig.parent, rig.proportion_groups)
@@ -565,10 +607,21 @@ def species_check(final, base, main, bones, slots=BATTLE, polished=(), authored=
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest='cmd', required=True)
+    g = sub.add_parser('mesh-audit', help='geometry, penetration and depth-sort candidates on an extracted archive')
+    g.add_argument('folder', help='meshcheck extract directory, including index.json')
+    g.add_argument('--slots', nargs='*', type=int, default=[0, 2, 3, 4, 33, 34, 35, 36])
+    g.add_argument('--samples', type=int, default=4, help='ticks per slot; 0 = all (up to 400)')
+    g.add_argument('--jobs', type=int, default=1)
+    g.add_argument('--json', required=True)
+    g.add_argument('--thresholds', help='reuse native thresholds from an earlier mesh-audit JSON')
     z = sub.add_parser('sizes', help='check body size in every occupied slot against field idle')
     z.add_argument('final')
     z.add_argument('species_json')
     z.add_argument('--json')
+    o = sub.add_parser('field-origin', help='check authored field meshes stay centred over the ground shadow')
+    o.add_argument('final')
+    o.add_argument('species_json')
+    o.add_argument('--json')
     c = sub.add_parser('check')
     c.add_argument('final')
     c.add_argument('base')
@@ -579,10 +632,35 @@ def main():
     c.add_argument('--json')
     c.add_argument('--species-id', help='species id for a generated or otherwise ambiguous skeleton')
     a = ap.parse_args()
+    if a.cmd == 'mesh-audit':
+        from tools.models.mesh_glitch import audit, calibrate, classify
+        if a.samples < 0 or a.jobs < 1:
+            ap.error('--samples must be nonnegative and --jobs positive')
+        rows = audit(a.folder, a.slots or None, a.samples, a.jobs)
+        if a.thresholds:
+            with open(a.thresholds) as fh:
+                thresholds = json.load(fh)['thresholds']
+        else:
+            thresholds = calibrate(rows)
+        for row in rows.values():
+            row.update(classify(row, thresholds))
+        with open(a.json, 'w') as fh:
+            json.dump(dict(thresholds=thresholds, samples=a.samples, slots=a.slots, rows=rows), fh, indent=1)
+        errors = {sid: r['error'] for sid, r in rows.items() if 'error' in r}
+        print(f'{len(rows)} species; {len(errors)} errors: {errors}')
+        sys.exit(bool(errors) or any(r['verdict'] == 'fail' for r in rows.values()))
     rd = lambda p: open(p, 'rb').read()
     with open(a.species_json) as fh:
         species = json.load(fh)
     bones = species['model']['skeleton']
+    if a.cmd == 'field-origin':
+        rows = check_field_origin(rd(a.final), bones, sid=species['id'])
+        for slot, row in rows.items():
+            print(f"slot {slot}: {row['verdict']} centroid {row['max_distance']:.3f} units from origin")
+        if a.json:
+            with open(a.json, 'w') as fh:
+                json.dump(rows, fh, indent=1)
+        sys.exit(1 if any(r['verdict'] == 'fail' for r in rows.values()) else 0)
     if a.cmd == 'sizes':
         rows = check_sizes(rd(a.final), bones)
         for slot, row in rows.items():

@@ -1,7 +1,8 @@
 """Hand-made baby Digimon on native DW1 skeletons (species 470-477).
 
-Each baby keeps a DW1 donor baby's skeleton and every animation program byte for
-byte; its mesh, UVs and texture page are our own. The authoring scripts in
+Each baby keeps a DW1 donor baby's skeleton; its mesh, UVs, texture page and calm field clips are our own.
+Field travel is registered to the entity origin by encode's shared field_origin pass, including inherited slot 1
+and every alias of slots 0-4. The authoring scripts in
 `authoring/` draw them (NumPy/OpenCV, developer only). What the build replays is
 a plain MD3 delta per file against the donor's model and ALLTIM entry, read from
 the player's own extraction: the standard library only, so the browser patcher
@@ -13,10 +14,12 @@ result by SHA-256. How the models were made, as a recipe for the next ones: docs
   python3 -m tools.models.babies encode-dir DIR        # the same for every <Name>.MMD/.TIM pair found in DIR
 
 Re-porting a redrawn baby: replace its authoring/<name>.py (paths through authoring/lib.py), run it (it writes
-build/babies-authoring/<Name>.MMD/.TIM), then authoring/shrink.py on that folder (the size review scales Nyokimon,
-Nyaromon and Yokomon down after their scripts), `encode` or `encode-dir` the folder, then a developer build
+build/babies-authoring/<Name>.MMD/.TIM), then authoring/shrink.py on that folder (the size review scales Pichimon, Nyokimon,
+Nyaromon and Yokomon after their scripts), regenerate the calm field clips for resized meshes, `encode` or `encode-dir` the folder, then a developer build
 (`python3 -m tools.dev build`) rewrites tools/derive/recipes/species-pins.json; commit the script, the deltas,
-babies.json and the pins. Re-measure model.height in the species file if the silhouette changed.
+babies.json and the pins. Encode centres every field frame and moves its horizontal travel to the root, preserving
+world-space trajectories; it requires NumPy, but replaying the deltas does not. Re-measure model.height in the species
+file if the silhouette changed.
 """
 import hashlib
 import json
@@ -71,7 +74,14 @@ def build_species(species, extracted, root=ROOT):
 
 
 def encode(species, mmd_bytes, tim_bytes, extracted, root=ROOT):
-    """Store an authored pair as deltas against the donor and rewrite its pins."""
+    """Centre field meshes over the entity, store plain deltas against the donor and rewrite their pins.
+
+    This developer-only canonicalization keeps the original world-space hop trajectories; see field_origin.py.
+    """
+    from tools.models.babies.field_origin import center
+    species_path = next((Path(root) / 'content/species').glob(f'{species}-*.json'))
+    bones = json.loads(species_path.read_text())['model']['skeleton']
+    mmd_bytes = center(mmd_bytes, bones, int(species))
     path = Path(root) / MANIFEST
     table = json.loads(path.read_text())
     record = table['babies'][str(species)]

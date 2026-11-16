@@ -19,9 +19,18 @@ python3 tools/models/edit.py --from build/everything check 183 --species-pins
 python3 tools/models/verify_deltas.py verify --sources DIR
 python3 tools/models/audit_origins.py --help
 python3 tools/models/audit_textures.py disc DISC_DIR   # faces sampling noise, palettes or empty texels
+python3 tools/models/meshcheck.py flicker AUDIT_DIR 461 --out flicker.json  # every tick; bent-quad culling, area, jumps
 python3 tools/species.py --content BUILD/species flat-audit BUILD/DIGI.DAT BUILD/ALLTIM.TIM   # every flat sprite
 python3 tools/flatsprite.py sheet OUT.png DISC_DIR      # every species' flat frames on one sheet
 ```
+
+`meshcheck.py flicker` reads the final models and skeletons in `AUDIT_DIR/index.json`
+(made by `meshcheck.py extract BUILD/DIGI.DAT AUDIT_DIR`). With no IDs it audits
+the entire index; pass all import registry IDs to restrict it to imported species.
+It separates ordinary facing changes from divergent halves of a bent quad:
+libgs culls the whole quad using its first three vertices. Omnimon's repair,
+history comparison, thresholds and full imported-species findings are recorded
+in [the mesh investigation](../../docs/reference/omnimon-mesh.md).
 
 `tools/flatsprite.py` gives each texture the frames a flattened Digimon is drawn with (the species' icon in the
 originals' two colours, where the model leaves room); the build runs it for DIGI.DAT and the disc's ALLTIM.TIM.
@@ -52,6 +61,11 @@ moves the overlay's reviewed-input pins (gaits.py / secondary_motion.py / gazimo
 `source_sha256` and `post_source_sha256` with a base generator's `SOURCE` constant or profile, and the `donor_sha256` of
 native bindings that take the species as `donor_species`) to the new input, and refuses when that input is pinned anywhere
 else.
+
+After changing a proportion recipe, `edit.py repin ID MMD --technique-inputs`
+also rebuilds the complete provider, validates timing and storage, and updates
+that species' downstream technique-source hashes. Then `edit.py put ID MMD
+--force` regenerates the provider pin even when the importer delta is unchanged.
 
 A model bound offline from a motionless mesh (MagnaAngemon 206) gets the source game's battle clips from
 `field_animations/bound_battle.py` (content/models/imports/bound-battle.json; docs/reference/magnaangemon-native-rig.md).
@@ -157,6 +171,17 @@ plain delta (`--source` is the model before the change; `python3 -m tools.models
 `python3 -m tools.models.babies encode 471 OUT.MMD TIM`); check with
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_pichimon_hop`.
 
+All eight hand-made babies (470-477) pass through `babies/field_origin.py` when `babies encode` stores their deltas.
+The calm authors split hop travel between root and body; inherited clips and asymmetric meshes can also sit off the
+origin. The engine's round shadow follows the entity origin (`renderDropShadow`, side `2 * radius`), so encode centres
+the horizontal mesh vertex centroid every tick of slots 0-4 and transfers that motion to the root. It preserves world
+vertex trajectories up to a constant translation per clip, including planted contact, vertical hops, acting and events.
+Aliases keep sharing their program. Radius and height describe size and cannot repair an offset. The developer pass
+uses NumPy; the shipped builders still replay plain deltas with the standard library. Check the final model with
+`python3 tools/models/battle_qa.py field-origin FINAL.MMD content/species/476-nyaromon.json` (one-unit rounding tolerance).
+After replacing the builder outputs in a local derive output, repin just these species with
+`python3 -m tools.derive.steps.species pin OUT 470 471 472 473 474 475 476 477`.
+
 Motimon (474) and Bukamon (475) share `field_animations/baby_calm.py` (`CONFIGS` holds each baby's numbers): it replaces Koromon's slots 0, 2, 3 and 4 with a
 128-tick idle (breaths, slow looks, four blinks of which one is a double blink), a walk of two low 22-tick hops at 16 units a tick, a tired walk of two 30-tick hops at 11 and a
 run of three 15-tick hops at 37, with the body planted while it is down, the lowest point of the mesh solved on the floor every tick and the little arms moving (Motimon's two arm cones are
@@ -195,7 +220,9 @@ Test `tools.test_kotemon_gait` (`KOTEMON_MODEL`, from `edit.py get 351`); the pi
 
 Species 319 (Pharaohmon): `field_animations/pharaohmon_gait.py` is a field overlay on top of the celebrations recipe: it
 rewrites slots 3 (tired walk, 56 ticks at 11 units a tick) and 4 (run, 24 ticks at 36) with `quadruped.py` on the two legs,
-planted soles and two different cycles each (the `compose` hook); the idle and the walk are the celebrations build's, untouched.
+planted soles and two different cycles each (the `compose` hook). Slots 0-4 receive delayed cape rotations that clear
+the legs; their other idle/walk channels are retained. Explicit cloth length axes in the chibi row keep the two cape
+panels joined. See [the cape audit](../../docs/reference/pharaohmon-cape.md) for source comparison and clearance measurements.
 `python3 -m tools.models.field_animations.pharaohmon_gait --source EDIT.MMD --out AFTER.MMD` (EDIT.MMD from `edit.py get 319`).
 Bound in `content/models/imports/species.py`; test `tools.test_pharaohmon_gait` (`PHARAOHMON_MODEL`, from `edit.py get 319`).
 
@@ -502,12 +529,15 @@ mismatch, size comparison, replay commands and original-console checks.
 
 Aquilamon (188) had one 89-tick flight flap in its idle, walk, condition walk
 and run, the whole bird climbing about 300 units on every downstroke and gliding
-back to the floor. `field_animations/aquilamon.py` keeps that flap and holds the
-bird at a steady hover (the climb scaled to 15-22%, the wing tips just clearing
-the floor at the bottom of the downstroke); the walk plays the beat 1.25 times
-faster and the run twice as fast, pitched further nose-down:
-`--source build/everything/imported-models/188.MMD --out AFTER.MMD`, then
-`tools/models/edit.py --from build/everything put 188 AFTER.MMD`.
+back to the floor. The first carrier-height damping still left the lowest mesh
+point 437 units up in idle. `field_animations/aquilamon.py --lower-current`
+fits the actual mesh clearance to 30–50 idle, 80–140 walk/run (codec tolerance
+about two units), preserving the flap, timings and other programs. The final
+condition overlay fits the drooping wings too. Run with `--source CURRENT.MMD
+--out AFTER.MMD`, then `tools/models/edit.py --from BUILD repin 188 AFTER.MMD`
+and `put 188 AFTER.MMD`. [The hover audit](../../docs/reference/field-hover.md)
+records every field/care slot, native calibration, the other high hoverers and
+the field QA command.
 
 Hawkmon (184) had its right foot bound turned about 58 degrees outward in every
 clip, a walk, condition walk and run that pushed the feet up to 60 units into
@@ -1396,3 +1426,13 @@ MegaKabuterimon (205) wears native Kabuterimon's (19, `CHDAT/MMD0/KABU.MMD`) 28-
 re-plants the idle, walk, tired walk and run on two soles. The same stage fits the Kabuterimon (19) and Kuwagamon (51) skeletons (by bone count).
 Species pin: the provider pin in `species-pins.json`.
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_megakabuterimon_native` (after `edit.py get 205`).
+
+`battle_qa.py mesh-audit DIR --json OUT` measures geometry, non-parent piece
+crossings and ordering-table candidates on a `meshcheck extract` directory.
+Native controls calibrate the envelope; reuse it with `--thresholds BEFORE.json`.
+`--samples 0` checks all ticks in the selected slots; an empty `--slots` checks
+all occupied slots. Flags are candidates, not a validated visual classifier.
+See [the general investigation](../../docs/reference/mesh-glitch.md).
+The final import provider runs `mesh_stability.apply_provider`: lossless
+compaction funds bent-quad splits without increasing resident data. Pinned
+alternate-release outputs remain unchanged pending their own verification.

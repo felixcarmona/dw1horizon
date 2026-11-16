@@ -154,13 +154,16 @@ def _times(A, B):
     return [[sum(A[i][k] * B[k][j] for k in range(3)) for j in range(3)] for i in range(3)]
 
 
-def bone_scales(rig, groups, factors, fit=None):
+def bone_scales(rig, groups, factors, fit=None, axes=None):
     """bone -> (local scale matrix, anchor in the bone's frame). fit: bone -> length factor along the bone's axis."""
     rest, mats = rig.rest()
     F = lambda name: factors.get(name, 1.0)
     out = {}
     for b in range(1, rig.nb):
         g = groups[b]
+        # A broad cloth panel's principal axis can run across its width.
+        # Authored length axes keep adjacent panels' shared edges together.
+        axis = _unit(axes[str(b)]) if axes and str(b) in axes else _axis(rig, rest, b, groups)
         anchor = [0.0, 0.0, 0.0]
         M = None
         if g in ('head', 'headpart') and F('head') != 1:
@@ -172,15 +175,15 @@ def bone_scales(rig, groups, factors, fit=None):
             if g == 'foot':
                 anchor = _sole(rig, mats, b)
         elif g in ('thigh', 'shin', 'hipjoint') and (F('leg_axial') != 1 or F('leg_radial') != 1):
-            M = _scale_matrix(_axis(rig, rest, b, groups), F('leg_axial'), F('leg_radial'))
+            M = _scale_matrix(axis, F('leg_axial'), F('leg_radial'))
         elif g in ('arm', 'shoulder') and F('arm_radial') != 1:
-            M = _scale_matrix(_axis(rig, rest, b, groups), 1.0, F('arm_radial'))
+            M = _scale_matrix(axis, 1.0, F('arm_radial'))
         elif g in ('chest', 'carrier', 'pelvis', 'neck') and F('torso') != 1:
             M = _diagonal(F('torso'))
         elif g == 'cloth' and F('leg_axial') != 1:
-            M = _scale_matrix(_axis(rig, rest, b, groups), F('leg_axial'), 1.0)
+            M = _scale_matrix(axis, F('leg_axial'), 1.0)
         if fit and str(b) in fit:
-            shorter = _scale_matrix(_axis(rig, rest, b, groups), fit[str(b)], 1.0)
+            shorter = _scale_matrix(axis, fit[str(b)], 1.0)
             M = _times(shorter, M) if M is not None else shorter
         if M is not None:
             out[b] = (M, anchor)
@@ -576,7 +579,7 @@ def reshape(data, skeleton, sid, row):
     source_lows = lows(model, rig, feet)
     speeds = {slot: _speed(model, rig.nb, slot) for slot in SPEED_FLOOR}
     standing = rig.bounds(feet)[1]            # a hovering species keeps its clearance
-    scales = bone_scales(rig, groups, factors, row.get('fit'))
+    scales = bone_scales(rig, groups, factors, row.get('fit'), row.get('axes'))
     _bake(rig, scales)
     kl = factors.get('leg_axial', 1.0)
     carrier = rig.carrier

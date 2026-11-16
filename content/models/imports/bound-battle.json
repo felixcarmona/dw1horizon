@@ -1,14 +1,14 @@
 {
   "206": {
     "name": "MagnaAngemon",
-    "source_sha256": "f4f92ac05ad49560e2682db524a7df12a31b23f2f40ab58702f1fdac28f77eab",
+    "source_sha256": "c48c6ea81b7df5c914e29f5e5f8e6f87b0bcfc7e033fb55274363ba74480053e",
     "binding": {
       "spec": "content/imports/specs/MagnaAngemon.json",
       "sha256": "268c64b6a5b355d9d946dc01f803e7be3d023a2623c97458f07c2930da91e00d"
     },
     "battle_source": {
       "path": "build/native-battle/MagnaAngemon-battle.MMD",
-      "sha256": "73cb4fc924b2fe1edc940c567f62215574dd7e047e78dcef684af452b982f51e"
+      "sha256": "c2787bb084d5b8aaf1211af80635d06355046b4f2f30bc9b051b076a23303c36"
     },
     "mirror": {
       "13": 19,

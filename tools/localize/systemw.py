@@ -24,9 +24,11 @@ CHINESE_MENU_SIZE = (24, 13)
 
 def check_chinese_menu_cells():
     from tools.localize.fi_info import overlaps
+    from tools.localize.status_art import TAG_RECT
     protected = [(128,110,38,12), (166,110,28,12), (194,110,34,12),
                  (96,84,64,12), (160,84,38,12), (144,96,37,9), (144,72,29,8)]
     protected += list(CARE_BUTTON_RECTS) + list(CARE_BUTTON_GUARD_RECTS) + [CARE_BUTTON_CLUT_RECT]
+    protected.append(TAG_RECT)
     used = []
     for _, u, v in CHINESE_MENU_CELLS.values():
         rect = (u, v, *CHINESE_MENU_SIZE)
@@ -65,6 +67,8 @@ def crop_tables(source, metadata):
     import re
     for items in metadata.values():
         check_care_button_cells(items)
+        from tools.localize.status_art import check_cells
+        check_cells(items)
     for name in ('MOVES_VIEW_TECHSET_TEXT', 'STATS_VIEW_ELEMENTS',
                  'MOVES_VIEW_ELEMENT_NAMES', 'MOVES_SELECTED_LABELS'):
         begin = source.index('IconRect ' + name + '[')
@@ -111,7 +115,8 @@ def crop_tables(source, metadata):
                             ' MOD_LANG_BUILD == MOD_LANG_' + macro + '\n' +
                             ''.join('\t{ ' + ', '.join('0x%04x' % x for x in r) + ' },\n' for r in rr))
         source = source[:a] + '\n'.join(variants) + '\n' + source[b:]
-    return source
+    from tools.localize.status_art import crop_tables as status_crops
+    return status_crops(source)
 
 
 def main():

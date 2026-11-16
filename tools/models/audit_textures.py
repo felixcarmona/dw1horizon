@@ -22,6 +22,8 @@ own CLUT row, the way the GPU reads it. Findings:
               reaches past its island                                                                       warning
   noise       the face's texels change colour from one texel to the next far more than the model's other
               faces (median neighbour difference over the whole face)                                       warning
+  abe-share   over 16% of all primitives enable semi-transparency; review source ABE, CLUT STP and TPAGE ABR
+              (the four wholly translucent native species are reviewed exceptions)                          warning
 
 Thresholds are set so that no original species of the disc (`originals`) has an error; its warnings are the
 baseline. Back faces are not considered: the game culls every primitive whose screen winding is clockwise (RotNclip),
@@ -44,6 +46,20 @@ HOLES, HOLES_MIN = 0.35, 6
 NOISE = 0.30            # median neighbour difference (0..1 of the RGB diagonal) for a noise warning
 NOISE_MIN_PAIRS = 12
 CLUT_BASE = 488         # CBA row of the model's first CLUT row (model.c)
+ABE_SHARE = 0.16        # native ToyAgumon is 60/397 (15.1%); review, never auto-clear flags
+# Original wholly translucent species. All other natives fall below 16%.
+NATIVE_TRANSLUCENT = {29, 98, 104, 108}  # Poyomon, ClearAgumon, BlueMeramon, Rockmon
+
+
+def transparency(tmd):
+    """Primitive share, including untextured polygons; ABE alone does not imply blending.
+
+    Textured polygons additionally require a sampled CLUT word's bit 15 (STP).
+    Keep this a review warning: never clear flags merely to pass a threshold.
+    """
+    prims = [p for ob in tmd.objects for p in ob.prims]
+    abe = sum(bool(p.mode & 2) for p in prims)
+    return dict(primitives=len(prims), abe=abe, share=abe / len(prims) if prims else 0)
 
 
 def row_of(cba):
@@ -212,9 +228,12 @@ def run(models, show_all=False):
         faces = audit(tmd, tm)
         found = [dict(obj=f['obj'], prim=f['prim'], row=f['row'], uv=f['uv'], find=f['find']) for f in faces if f['find']]
         s = summary(faces)
-        if found or show_all:
+        trans = transparency(tmd)
+        if trans['share'] > ABE_SHARE and t not in NATIVE_TRANSLUCENT:
+            s['abe-share'] = 1
+        if found or s or show_all:
             report[t] = dict(name=name, faces=len(faces), summary=s, errors=sum(v for k, v in s.items() if k in ERRORS),
-                             found=found)
+                             transparency=trans, found=found)
     return report
 
 
@@ -244,6 +263,10 @@ def main():
         if not r['summary']:
             continue
         print(f'{t:4d} {r["name"]}: {r["faces"]} faces; ' + ', '.join(f'{k} {v}' for k, v in sorted(r['summary'].items())))
+        if 'abe-share' in r['summary']:
+            tr = r['transparency']
+            print(f'     ABE {tr["abe"]}/{tr["primitives"]} ({tr["share"]:.1%}) exceeds {ABE_SHARE:.0%}; '
+                  'compare source flags, STP and TPAGE ABR before changing materials')
         bad += bool(r['errors'])
     if a.json:
         Path(a.json).write_text(json.dumps({str(k): v for k, v in sorted(report.items())}, indent=1) + '\n')

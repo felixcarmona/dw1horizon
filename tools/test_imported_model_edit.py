@@ -68,6 +68,34 @@ class Repin(unittest.TestCase):
     GAITS = v.ROOT / 'tools/models/field_animations/gaits.py'
     NEW, POST = 'a' * 64, 'b' * 64
 
+    def test_technique_repin_validates_provider_and_preserves_other_species(self):
+        from tools.models import technique_timing
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            registry = root / 'models.json'
+            recipe = dict(source='Punch', source_sha256='a' * 64)
+            row = dict(technique_timing={'Punch': recipe})
+            other = ' "320": ' + json.dumps(row)
+            registry.write_text('{\n "319": ' + json.dumps(row) + ',\n' + other + '\n}\n')
+            source = SimpleNamespace(build=lambda: b'new proportion translations')
+
+            def provider(*args):
+                return technique_timing.program(source, 22, 54, recipe)
+
+            with patch.object(v, 'ROOT', root), patch.object(v, 'IMPORTED_MODELS_SCRIPT', root / 'species.py'), \
+                    patch.object(v, 'import_records', side_effect=lambda: json.loads(registry.read_text())), \
+                    patch.object(v, 'provider_output', side_effect=provider), \
+                    patch.object(technique_timing, 'program', return_value=b'validated clip') as program, \
+                    contextlib.redirect_stdout(io.StringIO()):
+                v.repin_technique_inputs(319, b'model', b'tim')
+                self.assertEqual(program.call_args.args[3]['source_sha256'], v.sha256(source.build()))
+                self.assertIn(other, registry.read_text())
+                before = registry.read_bytes()
+                with patch.object(v, 'provider_output', side_effect=ValueError('heap exceeded')):
+                    with self.assertRaisesRegex(ValueError, 'heap exceeded'):
+                        v.repin_technique_inputs(319, b'model', b'tim')
+                self.assertEqual(before, registry.read_bytes())
+
     def test_followthrough_moves_while_retired_pace_stays_exact(self):
         from tools.models import variants
         with tempfile.TemporaryDirectory() as tmp:
@@ -207,6 +235,46 @@ class Repin(unittest.TestCase):
             with patch.object(v, 'ROOT', root), patch.object(v, 'PIN_FOLDERS', ('pins',)):
                 stray = v.stray_pins({root / 'pins' / 'moved.json': '"' + self.NEW + '"'}, 'd' * 64)
         self.assertEqual(stray, ['pins/other.py'])
+
+
+class Rebase(unittest.TestCase):
+    def test_authoring_snapshot_follows_importer_without_changing_its_target(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            old, new = root / 'old', root / 'new'
+            old.mkdir(); new.mkdir()
+            (old / 'mesh').write_bytes(b'old material source')
+            (new / 'mesh').write_bytes(b'new material source')
+            profiles = root / 'content/models/authoring/native-polish'
+            profiles.mkdir(parents=True)
+
+            def record(name, target):
+                src = (old / 'mesh').read_bytes()
+                delta = v.modeldelta.encode(target, [src])
+                (root / name).write_bytes(delta)
+                return dict(sources=[dict(path='mesh', sha256=v.sha256(src), size=len(src))],
+                            delta=name, delta_sha256=v.sha256(delta), sha256=v.sha256(target), size=len(target))
+
+            main = record('main.mdelta', b'accepted model')
+            preceding = record('preceding.mdelta', b'reviewed historical snapshot')
+            manifest, sizes, rebased = root / 'models.json', root / 'sizes.json', root / 'rebased.json'
+            v.save(manifest, dict(models=[dict(id=409, name='Kyubimon', mmd=main,
+                                              tim=record('texture.mdelta', b'accepted texture'))]))
+            v.save(sizes, dict(files=[])); v.save(rebased, dict(models=[]))
+            profile_path = profiles / '409.json'
+            v.save(profile_path, dict(species=409, preceding_delta=preceding))
+            args = SimpleNamespace(old=old, new=new, ids=['409'])
+            with patch.multiple(v, ROOT=root, MODELS=manifest, SIZES=sizes, REBASED=rebased), \
+                    contextlib.redirect_stdout(io.StringIO()):
+                v.cmd_rebase(args)
+                saved = profile_path.read_bytes()
+                v.cmd_rebase(args)
+            updated = v.load(profile_path)['preceding_delta']
+            self.assertEqual(profile_path.read_bytes(), saved)
+            self.assertEqual(updated['sha256'], preceding['sha256'])
+            self.assertEqual(updated['sources'][0]['sha256'], v.sha256((new / 'mesh').read_bytes()))
+            self.assertEqual(v.modeldelta.decode((root / updated['delta']).read_bytes(), [(new / 'mesh').read_bytes()]),
+                             b'reviewed historical snapshot')
 
 
 if __name__ == '__main__':

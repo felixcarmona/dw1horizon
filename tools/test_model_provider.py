@@ -12,6 +12,31 @@ from tools.derive.steps.overlays import imported_models as provider
 
 
 class ModelProvider(unittest.TestCase):
+    def test_repin_authored_builder_updates_only_its_provider_pin(self):
+        import tempfile
+        from tools.models import edit
+
+        with tempfile.TemporaryDirectory() as folder:
+            model = Path(folder) / '477.MMD'
+            model.write_bytes(b'model')
+            pins = {'imports': {'470': ['keep', 'keep'], '477': ['old', 'old']}}
+            step = SimpleNamespace(PINS='pins', _write_pins=Mock())
+            builder = SimpleNamespace(build=Mock(return_value=(b'model', b'texture')))
+            args = SimpleNamespace(id='477', mmd=str(model), tim=None)
+            with patch.object(edit, 'load', return_value={'models': []}), \
+                    patch.object(edit, 'import_records', return_value={'477': {'builder': 'example'}}), \
+                    patch.object(edit.importlib, 'import_module', return_value=builder), \
+                    patch.object(edit, 'species_pins', return_value=(step, pins)), \
+                    patch.object(edit, 'provider_pin', return_value=['new', 'texture']), \
+                    patch.object(edit, 'donor_models', return_value={}):
+                edit.cmd_repin(args)
+                step._write_pins.assert_called_once_with(
+                    {'imports': {'470': ['keep', 'keep'], '477': ['new', 'texture']}})
+                model.write_bytes(b'unencoded edit')
+                with self.assertRaisesRegex(SystemExit, 'encode the authored model first'):
+                    edit.cmd_repin(args)
+                self.assertEqual(step._write_pins.call_count, 1)
+
     def test_editor_pins_final_provider_output_without_a_field_overlay(self):
         from tools.models import edit
 
@@ -62,7 +87,7 @@ class ModelProvider(unittest.TestCase):
                 patch.object(species.importlib.util, 'module_from_spec', return_value=module):
             actual = species.ImportedModels(None).provide_models(context, generate=False)
         self.assertEqual(module.BASE_MODELS, '/build/imported-models')
-        make.assert_called_once_with('/build/imported-species', generate=False)
+        make.assert_called_once_with('/build/imported-species', generate=False, ids=None)
         self.assertEqual(actual, {'183': ('/model.MMD', '/model.TIM')})
 
     def test_every_reviewed_overlay_keeps_its_species_generator_and_output(self):

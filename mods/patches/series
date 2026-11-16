@@ -462,3 +462,4 @@ Draw-the-battle-effects-at-the-frame-rate-the-game-r.patch
 Reuse-cold-clips-and-cache-the-whole-partner-bank.patch
 Exchange-at-Mojyamon-without-asking-how-many.patch
 Trim-imported-NPC-models-with-their-species-skeleton.patch
+Bake-the-status-mistakes-tag-and-draw-one-clean-virus-icon.patch

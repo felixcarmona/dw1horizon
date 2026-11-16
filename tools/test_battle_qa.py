@@ -75,6 +75,35 @@ def run(final, base=None, main=None):
 
 
 class SyntheticDefects(unittest.TestCase):
+    def test_shadow_centroid_includes_body_travel_but_excludes_root_travel(self):
+        frames, loop = clip()
+        r = rig(sound())
+        baseline = qa.horizontal_centroids(qa.Clip(r, frames.copy(), loop))
+        frames[:, 0, 8] = np.arange(len(frames)) * 100
+        np.testing.assert_allclose(qa.horizontal_centroids(qa.Clip(r, frames, loop)), baseline)
+        frames[:, 1, 6] += 35  # a persistent mesh/root offset
+        frames[len(frames) // 2, 1, 8] += 80  # drift invisible in the first pose
+        c = qa.horizontal_centroids(qa.Clip(r, frames, loop))
+        np.testing.assert_allclose(c[:, 0] - baseline[:, 0], 35)
+        self.assertEqual(float((c - baseline)[:, 1].max()), 80)
+
+    def test_shadow_centroid_ignores_pool_duplicates_unused_entries_and_face_density(self):
+        frames, loop = clip()
+        original = rig(sound())
+        baseline = qa.horizontal_centroids(qa.Clip(original, frames, loop))
+        local = {b: v.copy() for b, v in original.local.items()}
+        tris = []
+        for bone, faces in original.tris.items():
+            # Use a duplicate of the first corner, add an unused distant point,
+            # and repeat triangles (the centre must not weight face density).
+            duplicate = len(local[bone])
+            local[bone] = np.concatenate([local[bone], local[bone][:1], [[9000, 0, 9000]]])
+            changed = faces.copy()
+            changed[changed == 0] = duplicate
+            tris.extend((bone, t) for t in np.concatenate([changed, changed[:1]]))
+        changed = qa.Rig(original.parent, local, tris, {0: (frames, loop)})
+        np.testing.assert_allclose(qa.horizontal_centroids(qa.Clip(changed, frames, loop)), baseline)
+
     def test_sound_clips_pass(self):
         rows = run(sound())
         self.assertEqual({s: r['verdict'] for s, r in rows.items()}, {s: 'pass' for s in qa.BATTLE}, rows)

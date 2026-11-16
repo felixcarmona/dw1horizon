@@ -6,6 +6,7 @@ import sys
 import tempfile
 import unittest
 import zlib
+import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import mmd
@@ -13,6 +14,8 @@ import motionstorage
 import species
 from tools.models import babies
 from tools.models import delta as modeldelta
+from tools.models import battle_qa
+from tools.models.babies.field_origin import center
 from tools.derive.importers import Provider
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -25,7 +28,7 @@ CALM_CLIPS = {
     474: (0, 2, 3, 4),      # Motimon's idle, walk, tired walk and run (field_animations/baby_calm.py)
     475: (0, 2, 3, 4),      # Bukamon's idle, walk, tired walk and run (field_animations/baby_calm.py)
     476: (0, 2, 3, 4, 33, 35, 36),      # Nyaromon's idle, walk, tired walk and run, and their aliases (field_animations/nyaromon_calm.py)
-    477: (3,),              # Yokomon's tired walk: the petals hang open (field_animations/yokomon_petals.py)
+    477: (0, 2, 3, 4, 27, 33, 35, 36),  # attached neck, open petals and field cadence (yokomon_*.py)
 }
 
 
@@ -112,16 +115,75 @@ class Replay(unittest.TestCase):
                 self.assertEqual(model[struct.unpack_from('<I', model, 4)[0]:],
                                  donor[struct.unpack_from('<I', donor, 4)[0]:])
 
-    def test_pabumon_keeps_every_donor_program_but_its_four_field_clips(self):
+    def test_pabumon_keeps_donor_programs_outside_the_field_and_its_aliases(self):
         record = self.records[470]
         parsed = mmd.MMD.parse(self.built[470][0], record['bones'])
         donor = mmd.MMD.load(str(ROOT / 'extracted/CHDAT' / record['donor_model']), record['donor'])
         self.assertEqual(len(parsed.anims.table), len(donor.anims.table))
+        field_programs = {donor.anims.table[s] for s in range(5)}
         for slot, (a, b) in enumerate(zip(parsed.anims.table, donor.anims.table)):
             self.assertEqual(a is None, b is None)
-            if a is not None and slot not in CALM_CLIPS[470]:
+            if a is not None and slot not in CALM_CLIPS[470] and b not in field_programs:
                 self.assertEqual(vars(parsed.anims.anims[a]), vars(donor.anims.anims[b]), slot)
         self.assertIsNotNone(parsed.anims.table[0x2E])
+
+    def test_every_field_frame_stays_over_the_shadow_and_centering_is_idempotent(self):
+        for sid, (data, _) in self.built.items():
+            bones = json.loads(next((ROOT / 'content/species').glob(f'{sid}-*.json')).read_text())['model']['skeleton']
+            with self.subTest(species=sid):
+                rows = battle_qa.check_field_origin(data, bones, sid=sid)
+                self.assertEqual(len(rows), 5)
+                self.assertTrue(all(r['verdict'] == 'pass' for r in rows.values()), rows)
+                self.assertEqual(center(data, bones, sid), data)
+
+    def test_final_provider_preserves_centering_after_mesh_compaction(self):
+        from tools.models import edit
+        for sid, (model, texture) in self.built.items():
+            with self.subTest(species=sid):
+                final, _, record = edit.provider_output(sid, model, texture)
+                rows = battle_qa.check_field_origin(final, record['model']['skeleton'], sid=sid)
+                self.assertEqual(len(rows), 5)
+                self.assertTrue(all(r['verdict'] == 'pass' for r in rows.values()), rows)
+
+    def test_inherited_poor_condition_clip_keeps_donor_acting_and_travel(self):
+        import animsheet
+        for sid, (data, _) in self.built.items():
+            record = self.records[sid]
+            donor = mmd.MMD.load(str(ROOT / 'extracted/CHDAT' / record['donor_model']), record['donor'])
+            mine = mmd.MMD.parse(data, record['bones'])
+            f, g = [np.asarray(animsheet.slot_frames(m, record['bones'], 1)[0]) for m in (mine, donor)]
+            with self.subTest(species=sid):
+                # Nyaromon's pre-existing split holds its ears/tail at rest in inherited clips.
+                keep = [b for b in range(record['bones']) if sid != 476 or b not in (3, 4, 7, 8)]
+                np.testing.assert_array_equal(f[:, keep, :6], g[:, keep, :6])
+                np.testing.assert_array_equal(f[:, [b for b in keep if b], 7], g[:, [b for b in keep if b], 7])
+                for axis in (6, 8):
+                    a, b = f[:, 0, axis] + f[:, 1, axis], g[:, 0, axis] + g[:, 1, axis]
+                    np.testing.assert_allclose(a - a[0], b - b[0], atol=1e-9)
+
+    def test_centering_preserves_world_trajectories_acting_and_events(self):
+        import animsheet
+        for sid, (data, _) in self.built.items():
+            bones = json.loads(next((ROOT / 'content/species').glob(f'{sid}-*.json')).read_text())['model']['skeleton']
+            nb = len(bones)
+            # Inject both a fixed offset and per-tick hop travel into a real program.
+            model = mmd.MMD.parse(data, nb)
+            frames, loop, events = animsheet.slot_frames(model, nb, 2)
+            for t, pose in enumerate(frames):
+                pose[1][6] += 35
+                pose[1][8] += round(80 * np.sin(2 * np.pi * t / (len(frames) - 1)))
+            frames = [[[int(round(x)) for x in bone] for bone in pose] for pose in frames]
+            model.anims.anims[model.anims.table[2]] = mmd.encode_anim(frames, nb, loop, events)
+            source = model.build()
+            result = center(source, bones, sid)
+            a, b = [battle_qa.Rig.from_mmd(d, bones, sid) for d in (source, result)]
+            ca, cb = [battle_qa.Clip(r, *r.frames(2)) for r in (a, b)]
+            with self.subTest(species=sid):
+                np.testing.assert_array_equal(ca.P[..., :6], cb.P[..., :6])
+                va = np.concatenate(list(ca.V.values()), 1) + ca.root[:, None]
+                vb = np.concatenate(list(cb.V.values()), 1) + cb.root[:, None]
+                np.testing.assert_allclose(va - va[0], vb - vb[0], atol=1e-9)
+                self.assertEqual(animsheet.slot_frames(mmd.MMD.parse(result, nb), nb, 2)[2], events)
 
     def test_partner_limits_and_animation_storage(self):
         for sid, (model, texture) in self.built.items():

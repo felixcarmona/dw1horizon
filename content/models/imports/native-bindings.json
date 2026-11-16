@@ -11236,7 +11236,7 @@
   },
   "409": {
     "species": 409,
-    "source_sha256": "234348cb00b8724fbc66d1e4e9900a57255ba0da07b3cccb003ca9dd53b07468",
+    "source_sha256": "208678ef4d500608a375e37d0b6985aa772174880f17df9996fcc48a2839d60d",
     "skeleton_sha256": "15cf929d908b384a6bd81460a257be368956fa3c3466d7d69e7c907543a4c205",
     "donor": 22,
     "model": "CHDAT/MMD0/GARU.MMD",

@@ -135,7 +135,7 @@
  "316": {"model": "316-Sakuyamon.MMD", "aliases_applied": true},
  "317": {"model": "317-Fujinmon.MMD", "aliases_applied": true, "technique_timing": {"Megaton Punch": {"source": "Power Crane", "source_sha256": "0862fada49d096028e241b6d99a8ad0420068aa7efd82d348165d80cc7c606c8", "samples": [[0, 0], [11, 44], [14, 47], [60, 60]]}}},
  "318": {"model": "318-Gallantmon.MMD", "aliases_applied": true},
- "319": {"model": "319-Pharaohmon.MMD", "aliases_applied": true, "field_overlay": "pharaohmon-chibi", "technique_timing": {"Megaton Punch": {"source": "Megaton Punch", "source_sha256": "cf29dda901d2446ca0152dcfb40cb018a01103693d652c678e909d862375db50", "samples": [[0, 0], [11, 33], [14, 36], [60, 60]]}}},
+ "319": {"model": "319-Pharaohmon.MMD", "aliases_applied": true, "field_overlay": "pharaohmon-chibi", "technique_timing": {"Megaton Punch": {"source": "Megaton Punch", "source_sha256": "65f37f3aef077657b1c3d02ae6dcc1db61c217ae46d0ea8cde7296a8cbe0fc32", "samples": [[0, 0], [11, 33], [14, 36], [60, 60]]}}},
  "320": {"model": "320-Growlmon.MMD", "aliases_applied": true},
  "321": {"model": "321-Knightmon.MMD", "aliases_applied": true, "field_overlay": "knightmon-chibi", "technique_aliases": {"Megaton Punch": "Pulse Laser"}},
  "322": {"model": "322-Kyukimon.MMD", "field_overlay": "kyukimon-chibi"},

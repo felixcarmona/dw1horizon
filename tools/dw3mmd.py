@@ -281,8 +281,9 @@ def merge_quads(bone, max_angle=8.0):
             continue
         for j in range(i + 1, len(tris)):
             q = tris[j]
-            if used[j] or q['row'] != p['row'] or (p['uvs'] is None) != (q['uvs'] is None) \
-                    or (p['norms'] is None) != (q['norms'] is None) or p.get('semi') != q.get('semi'):
+            if (used[j] or q['row'] != p['row'] or (p['uvs'] is None) != (q['uvs'] is None)
+                    or (p['norms'] is None) != (q['norms'] is None) or p.get('semi') != q.get('semi')
+                    or p.get('abr', 0) != q.get('abr', 0)):
                 continue
             if sum(a * b for a, b in zip(norms[i], norms[j])) < cos_max:
                 continue
@@ -332,6 +333,11 @@ def merge_quads(bone, max_angle=8.0):
 UNIT_SCALE = 0.2128         # DW2003 units -> DW1 units (the median piece ratio of the shape comparison, crossgame.md)
 
 
+def blend_state(value):
+    """World 3 register E: zero opaque, otherwise one plus the GPU ABR."""
+    return bool(value), (value - 1) & 3 if value else 0
+
+
 def load(name, height=600.0, fps=30.0, maxp=MAX_PALETTES, quad_angle=8.0, normal_angle=4.0, log=print, scale=None):
     dw3 = _dw3()
     import numeric as np
@@ -364,8 +370,13 @@ def load(name, height=600.0, fps=30.0, maxp=MAX_PALETTES, quad_angle=8.0, normal
             else:
                 uvs, key = None, None
             st = p.state if isinstance(p.state, dict) else {}
+            # FIGHTSTG (SLES_039.36) 0x800853c0 stores register E;
+            # 0x80085484..0x800854a8 writes (E - 1) & 3 into TPAGE ABR.
+            # Zero disables ABE; 1..4 select half/add/subtract/quarter-add.
+            semi, abr = blend_state(st.get(0xe, 0))
             pr = dict(verts=list(p.verts), norms=list(p.normals) if p.normals else None, uvs=uvs, row=key,
-                      semi=bool(st.get(0xe, 0)), abr=0, color=tuple(p.color[:3]) if p.color else (128, 128, 128))
+                      semi=semi, abr=abr,
+                      color=tuple(p.color[:3]) if p.color else (128, 128, 128))
             prims.append(pr)
             if key is not None:
                 by_pal.setdefault(key, []).append(pr)

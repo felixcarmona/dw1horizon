@@ -84,6 +84,7 @@ class CareBadge(unittest.TestCase):
         from tools.derive.steps import localize
         from tools.field_hud_art import PATH as HUD_PATH, build as field_hud_art
         from tools import care_bubble_art
+        from tools.localize.status_art import stamp as status_stamp
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
             # Both field features share the real TIM stack's existing uploads.
@@ -102,6 +103,7 @@ class CareBadge(unittest.TestCase):
                 data = bytearray((out / 'lang-tex/en' / path).read_bytes())
                 expected = bytearray((root / 'extracted' / path).read_bytes())
                 stamp(expected, entry)
+                status_stamp(expected, entry)
                 if path == HUD_PATH:
                     expected = care_bubble_art.build(field_hud_art(expected))
                 self.assertEqual(data, expected)
