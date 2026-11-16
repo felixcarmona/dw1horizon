@@ -322,11 +322,51 @@ def file_hashes(path, label='checking'):
 # ---------------------------------------------------------------- source image paths
 
 
+_CONVERSIONS = None
+_CONVERSION_QUIET = False
+
+
+def _discformats():
+    # Lazy: older browser engines load dwpatch without container conversion.
+    try:
+        from . import discformats
+    except ImportError:
+        import discformats
+    return discformats
+
+
 def resolve_bin(path):
-    """A .cue gives its (only) .bin; anything else is taken as the image."""
+    """Resolve a single-file cue or extract an unencrypted, single-disc PBP."""
     if not os.path.exists(path):
         raise PatchError(f'"{path}" does not exist.')
-    if path.lower().endswith('.cue'):
+    formats = _discformats()
+    kind = formats.sniff(path)
+    if kind == 'pbp':
+        global _CONVERSIONS
+        if _CONVERSIONS is None:
+            _CONVERSIONS = formats.ConversionCache()
+        prog = Progress('converting PBP', 1000)
+        converted = False
+        def tick(f):
+            nonlocal converted
+            converted = True
+            if not _CONVERSION_QUIET:
+                prog(int(f * 1000))
+        try:
+            result = _CONVERSIONS.convert(path, progress=tick, cancel=CANCEL)
+            if not _CONVERSION_QUIET and converted:
+                prog.end()
+            return result
+        except formats.Cancelled:
+            raise Stopped('stopped.')
+        except formats.FormatError as e:
+            messages = {'PBP multi-disc': 'PBP multi-disc: use a single-disc PBP or .bin/.cue.',
+                        'PBP space': 'PBP conversion needs at least 700 MB of free temporary space.',
+                        'PBP changed': 'PBP changed during conversion; add it again.'}
+            raise PatchError(messages.get(str(e), 'PBP encrypted or damaged: use an unencrypted single-disc dump.')) from e
+    if kind in ('chd', 'ecm', 'archive'):
+        raise PatchError(f'{path} is a {kind.upper()}. Extract or convert it to .bin/.cue first.')
+    if kind == 'cue':
         bins = []
         with open(path, 'rb') as f:
             raw = f.read()
@@ -348,12 +388,6 @@ def resolve_bin(path):
         if not os.path.exists(bins[0]):
             raise PatchError(f'{path} points to "{bins[0]}", which does not exist (rename it back or edit the .cue).')
         return bins[0]
-    low = path.lower()
-    for ext, what in (('.chd', 'CHD'), ('.ecm', 'ECM'), ('.pbp', 'PBP (PSP eboot)'), ('.7z', '7z archive'),
-                      ('.zip', 'zip archive'), ('.rar', 'rar archive')):
-        if low.endswith(ext):
-            raise PatchError(f'{path} is a {what}. Extract or convert it to .bin/.cue first '
-                             '(e.g. `chdman extractcd -i game.chd -o game.cue`).')
     return path
 
 
@@ -1627,7 +1661,7 @@ def cmd_apply3(a, rel, m):
         raise PatchError(f'this release needs Python {need[0]}.{need[1]} or newer (you have {sys.version.split()[0]}): '
                          'https://www.python.org/downloads/ (README.md, "What you need")')
     src = resolve_bin(a.disc)
-    out_dir = os.path.abspath(a.output or os.path.join(os.path.dirname(os.path.abspath(src)), 'patched'))
+    out_dir = os.path.abspath(a.output or os.path.join(os.path.dirname(os.path.abspath(a.disc)), 'patched'))
     out_bin = os.path.join(out_dir, v['output']['name'] + '.bin')
     if os.path.normcase(os.path.realpath(out_bin)) == os.path.normcase(os.path.realpath(src)):
         raise PatchError('the output would overwrite your original disc: choose another -o folder.')
@@ -1639,7 +1673,7 @@ def cmd_apply3(a, rel, m):
         raise PatchError(f'cannot write in {out_dir} ({e.strerror}): choose another folder with -o FOLDER.')
     quiet = getattr(a, 'quiet', False)                   # (the desktop app: nothing on stdout)
     if not a.verbose and not quiet:
-        print(f'{release_line(m)}, {vname}: patching {os.path.basename(src)}', flush=True)
+        print(f'{release_line(m)}, {vname}: patching {os.path.basename(a.disc)}', flush=True)
     SCREEN = Screen(apply_phases(m, v), log, verbose=a.verbose, out=_Null() if quiet else None)
     say(f'{release_line(m)} - {vname}: {v["description"]}')
     say(f'release {m["version"]} ({m["commit"]}), Python {sys.version.split()[0]} on {sys.platform}, '
@@ -1647,6 +1681,9 @@ def cmd_apply3(a, rel, m):
     say('1. Checking the disc (' + ', '.join(b['title'] for b in m['bases'].values()) + ')')
     SCREEN.start('check')
     key, src, _ = identify_base(a.disc, m['bases'])
+    if getattr(a, 'source_disc', None):
+        a.source_disc = [game + '=' + resolve_bin(path) for game, path in
+                         (s.split('=', 1) for s in a.source_disc)]
     check_source_discs(getattr(a, 'source_disc', None))
     missing_variant = unrecorded_variant(m, rel, getattr(a, 'source_disc', None))
     if missing_variant:
@@ -1656,6 +1693,7 @@ def cmd_apply3(a, rel, m):
     p = read_payload3(read_patch_file(rel, v))
     work = tempfile.mkdtemp(prefix='dwpatch-')
     partial = None
+    base = None
     try:
         mp = m['bases'][key].get('mapping')
         mapping = json.load(open(os.path.join(rel, mp), encoding='utf-8')) if mp else None
@@ -1685,6 +1723,13 @@ def cmd_apply3(a, rel, m):
         else:
             say(f'   ok: SHA-1 {sha}, the release\'s for {m["bases"][key]["title"]}.')
     finally:
+        # Release image handles before conversion-cache cleanup, including when
+        # an exception traceback still owns BaseDisc (Windows cannot unlink it).
+        if base is not None:
+            images = [getattr(base, 'img', None), *getattr(base, '_copy_images', {}).values()]
+            for image in images:
+                if image is not None:
+                    image.f.close()
         if partial is not None:
             try:
                 os.remove(partial)
@@ -2586,6 +2631,7 @@ def cmd_make_release3(a):
 def copy_release_frontend(out):
     """Add the standalone player entry point, instructions and project notices."""
     shutil.copyfile(os.path.abspath(__file__), os.path.join(out, 'dwpatch.py'))
+    shutil.copyfile(os.path.join(REPO, 'tools', 'patcher', 'discformats.py'), os.path.join(out, 'discformats.py'))
     shutil.copyfile(os.path.join(REPO, 'tools', 'isowriter.py'), os.path.join(out, 'isowriter.py'))
     shutil.copyfile(os.path.join(REPO, 'tools', 'patcher', 'fontcopy.py'), os.path.join(out, 'fontcopy.py'))
     shutil.copyfile(os.path.join(REPO, 'tools', 'patcher', 'chinese_container.py'), os.path.join(out, 'chinese_container.py'))
@@ -2602,13 +2648,21 @@ def copy_release_frontend(out):
 
 # ---------------------------------------------------------------- command line
 def main(argv=None):
+    try:
+        return _main(argv)
+    finally:
+        if _CONVERSIONS is not None:
+            _CONVERSIONS.close()
+
+
+def _main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
     if len(argv) == 1 and os.path.isfile(argv[0]):          # a disc dropped onto the script
         argv = ['apply', argv[0]]
     ap = argparse.ArgumentParser(description='Digimon World mod patcher (bring your own disc).')
     sub = ap.add_subparsers(dest='cmd')
     p = sub.add_parser('apply', help='patch your disc')
-    p.add_argument('disc', help='your Digimon World .cue or .bin')
+    p.add_argument('disc', help='your Digimon World .cue, .bin or single-disc unencrypted .pbp')
     p.add_argument('-o', '--output', help='folder for the patched disc (default: "patched" next to your disc)')
     p.add_argument('--variant', choices=('everything',), help='everything (the default)')
     p.add_argument('--source-disc', action='append', metavar='GAME=IMAGE',
@@ -2698,12 +2752,13 @@ def status():
 
 
 def apply_disc(disc, source_discs, output=None, release=None):
-    """apply as the command line runs it, for a program that calls it (the desktop app): disc, its .cue or .bin;
+    """apply as the command line runs it, for a program that calls it (the desktop app): disc, its .cue, .bin or single-disc unencrypted .pbp;
     source_discs {game: image}; output the folder (default: "patched" next to the disc); release the package folder
     (default: this file's). Prints nothing. -> {cue, bin, log, base, sha1}. Raises PatchError (Stopped when CANCEL
     was set) with the player's message, or the unexpected exception; either way its `log` attribute names the log
     when one was started (the traceback of an unexpected one is in it)."""
-    global SCREEN
+    global SCREEN, _CONVERSION_QUIET
+    old_quiet, _CONVERSION_QUIET = _CONVERSION_QUIET, True
     a = argparse.Namespace(disc=disc, output=output, variant=None, release=release, verbose=False, quiet=True,
                            source_disc=[f'{game}={path}' for game, path in sorted(source_discs.items())])
     try:
@@ -2722,6 +2777,9 @@ def apply_disc(disc, source_discs, output=None, release=None):
         raise
     finally:
         SCREEN = None
+        _CONVERSION_QUIET = old_quiet
+        if _CONVERSIONS is not None:
+            _CONVERSIONS.close()
 
 
 if __name__ == '__main__':

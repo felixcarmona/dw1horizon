@@ -3,7 +3,7 @@
   "app.title": "Horizon Patcher",
   "app.lead": "Makes the Horizon disc from your own four discs, here on this computer. Nothing is uploaded.",
   "app.add": "Add discs…",
-  "app.formats": "Any language · .bin/.cue or .iso",
+  "app.formats": "Any language · .bin/.cue or .iso · .pbp",
   "app.choose": "Choose…",
   "app.empty": "Not added yet",
   "app.moved": "The file used last time is no longer there: {path}. Add it again.",
@@ -55,13 +55,17 @@
   "app.discFiles": "Disc images",
   "app.allFiles": "All files",
   "app.packageFiles": "Horizon package",
-  "app.noRepository": "This copy of the app does not know where Horizon's releases are. Use a package file."
+  "app.noRepository": "This copy of the app does not know where Horizon's releases are. Use a package file.",
+  "app.converting": "Converting {file}: {pct} %",
+  "app.pbpEncrypted": "PBP encrypted or damaged. Use an unencrypted single-disc PBP or .bin/.cue.",
+  "app.pbpMulti": "This PBP contains multiple discs. Use a single-disc PBP or .bin/.cue.",
+  "app.pbpSpace": "PBP conversion needs at least 700 MB of free space in the app cache."
  },
  "es": {
   "app.title": "Horizon Patcher",
   "app.lead": "Crea el disco de Horizon a partir de tus cuatro discos, aquí, en este ordenador. No se sube nada.",
   "app.add": "Añadir discos…",
-  "app.formats": "Cualquier idioma · .bin/.cue o .iso",
+  "app.formats": "Cualquier idioma · .bin/.cue o .iso · .pbp",
   "app.choose": "Elegir…",
   "app.empty": "Sin añadir",
   "app.moved": "El archivo usado la última vez ya no está: {path}. Vuelve a añadirlo.",
@@ -113,13 +117,17 @@
   "app.discFiles": "Imágenes de disco",
   "app.allFiles": "Todos los archivos",
   "app.packageFiles": "Paquete de Horizon",
-  "app.noRepository": "Esta copia de la aplicación no sabe dónde están las versiones de Horizon. Usa un archivo de paquete."
+  "app.noRepository": "Esta copia de la aplicación no sabe dónde están las versiones de Horizon. Usa un archivo de paquete.",
+  "app.converting": "Convirtiendo {file}: {pct} %",
+  "app.pbpEncrypted": "PBP cifrado o dañado. Usa un PBP sin cifrar de un solo disco o .bin/.cue.",
+  "app.pbpMulti": "Este PBP contiene varios discos. Usa un PBP de un solo disco o .bin/.cue.",
+  "app.pbpSpace": "La conversión PBP necesita al menos 700 MB libres en la caché de la aplicación."
  },
  "pt-br": {
   "app.title": "Horizon Patcher",
   "app.lead": "Cria o disco do Horizon a partir dos seus quatro discos, aqui neste computador. Nada é enviado.",
   "app.add": "Adicionar discos…",
-  "app.formats": "Qualquer idioma · .bin/.cue ou .iso",
+  "app.formats": "Qualquer idioma · .bin/.cue ou .iso · .pbp",
   "app.choose": "Escolher…",
   "app.empty": "Ainda não adicionado",
   "app.moved": "O arquivo usado da última vez não está mais lá: {path}. Adicione-o de novo.",
@@ -171,13 +179,17 @@
   "app.discFiles": "Imagens de disco",
   "app.allFiles": "Todos os arquivos",
   "app.packageFiles": "Pacote do Horizon",
-  "app.noRepository": "Esta cópia do aplicativo não sabe onde estão as versões do Horizon. Use um arquivo de pacote."
+  "app.noRepository": "Esta cópia do aplicativo não sabe onde estão as versões do Horizon. Use um arquivo de pacote.",
+  "app.converting": "Convertendo {file}: {pct} %",
+  "app.pbpEncrypted": "PBP criptografado ou danificado. Use um PBP não criptografado de um único disco ou .bin/.cue.",
+  "app.pbpMulti": "Este PBP contém vários discos. Use um PBP de um único disco ou .bin/.cue.",
+  "app.pbpSpace": "A conversão PBP precisa de pelo menos 700 MB livres no cache do aplicativo."
  },
  "fr": {
   "app.title": "Horizon Patcher",
   "app.lead": "Crée le disque Horizon à partir de vos quatre disques, ici, sur cet ordinateur. Rien n'est envoyé.",
   "app.add": "Ajouter des disques…",
-  "app.formats": "Toutes les langues · .bin/.cue ou .iso",
+  "app.formats": "Toutes les langues · .bin/.cue ou .iso · .pbp",
   "app.choose": "Choisir…",
   "app.empty": "Pas encore ajouté",
   "app.moved": "Le fichier utilisé la dernière fois n'est plus là : {path}. Ajoutez-le de nouveau.",
@@ -229,13 +241,17 @@
   "app.discFiles": "Images de disque",
   "app.allFiles": "Tous les fichiers",
   "app.packageFiles": "Paquet Horizon",
-  "app.noRepository": "Cette copie de l'application ne sait pas où se trouvent les versions d'Horizon. Utilisez un fichier de paquet."
+  "app.noRepository": "Cette copie de l'application ne sait pas où se trouvent les versions d'Horizon. Utilisez un fichier de paquet.",
+  "app.converting": "Conversion de {file} : {pct} %",
+  "app.pbpEncrypted": "PBP chiffré ou endommagé. Utilisez un PBP non chiffré à un seul disque ou .bin/.cue.",
+  "app.pbpMulti": "Ce PBP contient plusieurs disques. Utilisez un PBP à un seul disque ou .bin/.cue.",
+  "app.pbpSpace": "La conversion PBP nécessite au moins 700 Mo libres dans le cache de l’application."
  },
  "de": {
   "app.title": "Horizon Patcher",
   "app.lead": "Erstellt die Horizon-Disc aus deinen eigenen vier Discs, hier auf diesem Computer. Nichts wird hochgeladen.",
   "app.add": "Discs hinzufügen…",
-  "app.formats": "Jede Sprache · .bin/.cue oder .iso",
+  "app.formats": "Jede Sprache · .bin/.cue oder .iso · .pbp",
   "app.choose": "Auswählen…",
   "app.empty": "Noch nicht hinzugefügt",
   "app.moved": "Die zuletzt verwendete Datei ist nicht mehr da: {path}. Füge sie erneut hinzu.",
@@ -287,13 +303,17 @@
   "app.discFiles": "Disc-Images",
   "app.allFiles": "Alle Dateien",
   "app.packageFiles": "Horizon-Paket",
-  "app.noRepository": "Diese Kopie der App weiß nicht, wo die Horizon-Versionen liegen. Verwende eine Paketdatei."
+  "app.noRepository": "Diese Kopie der App weiß nicht, wo die Horizon-Versionen liegen. Verwende eine Paketdatei.",
+  "app.converting": "{file} wird konvertiert: {pct} %",
+  "app.pbpEncrypted": "PBP verschlüsselt oder beschädigt. Verwende eine unverschlüsselte PBP mit einer Disc oder .bin/.cue.",
+  "app.pbpMulti": "Diese PBP enthält mehrere Discs. Verwende eine PBP mit einer Disc oder .bin/.cue.",
+  "app.pbpSpace": "Die PBP-Konvertierung benötigt mindestens 700 MB freien Speicher im App-Cache."
  },
  "it": {
   "app.title": "Horizon Patcher",
   "app.lead": "Crea il disco di Horizon dai tuoi quattro dischi, qui su questo computer. Non viene caricato nulla.",
   "app.add": "Aggiungi dischi…",
-  "app.formats": "Qualsiasi lingua · .bin/.cue o .iso",
+  "app.formats": "Qualsiasi lingua · .bin/.cue o .iso · .pbp",
   "app.choose": "Scegli…",
   "app.empty": "Non ancora aggiunto",
   "app.moved": "Il file usato l'ultima volta non c'è più: {path}. Aggiungilo di nuovo.",
@@ -345,13 +365,17 @@
   "app.discFiles": "Immagini disco",
   "app.allFiles": "Tutti i file",
   "app.packageFiles": "Pacchetto di Horizon",
-  "app.noRepository": "Questa copia dell'app non sa dove si trovano le versioni di Horizon. Usa un file di pacchetto."
+  "app.noRepository": "Questa copia dell'app non sa dove si trovano le versioni di Horizon. Usa un file di pacchetto.",
+  "app.converting": "Conversione di {file}: {pct} %",
+  "app.pbpEncrypted": "PBP cifrato o danneggiato. Usa un PBP non cifrato con un solo disco o .bin/.cue.",
+  "app.pbpMulti": "Questo PBP contiene più dischi. Usa un PBP con un solo disco o .bin/.cue.",
+  "app.pbpSpace": "La conversione PBP richiede almeno 700 MB liberi nella cache dell’app."
  },
  "ja": {
   "app.title": "Horizon Patcher",
   "app.lead": "お持ちの4枚のディスクから、このパソコン上で Horizon のディスクを作ります。何もアップロードされません。",
   "app.add": "ディスクを追加…",
-  "app.formats": "どの言語でも可 · .bin/.cue または .iso",
+  "app.formats": "どの言語でも可 · .bin/.cue または .iso · .pbp",
   "app.choose": "選択…",
   "app.empty": "未追加",
   "app.moved": "前回使ったファイルが見つかりません：{path}。もう一度追加してください。",
@@ -403,13 +427,17 @@
   "app.discFiles": "ディスクイメージ",
   "app.allFiles": "すべてのファイル",
   "app.packageFiles": "Horizon パッケージ",
-  "app.noRepository": "このアプリは Horizon のリリースの場所を知りません。パッケージファイルを使ってください。"
+  "app.noRepository": "このアプリは Horizon のリリースの場所を知りません。パッケージファイルを使ってください。",
+  "app.converting": "{file} を変換中: {pct} %",
+  "app.pbpEncrypted": "PBPが暗号化されているか破損しています。暗号化されていない単一ディスクのPBPまたは.bin/.cueを使用してください。",
+  "app.pbpMulti": "このPBPには複数のディスクが含まれています。単一ディスクのPBPまたは.bin/.cueを使用してください。",
+  "app.pbpSpace": "PBPの変換にはアプリのキャッシュに700 MB以上の空き容量が必要です。"
  },
  "ca": {
   "app.title": "Horizon Patcher",
   "app.lead": "Crea el disc d'Horizon a partir dels teus quatre discos, aquí, en aquest ordinador. No es puja res.",
   "app.add": "Afegeix discos…",
-  "app.formats": "Qualsevol idioma · .bin/.cue o .iso",
+  "app.formats": "Qualsevol idioma · .bin/.cue o .iso · .pbp",
   "app.choose": "Tria…",
   "app.empty": "Encara no s'ha afegit",
   "app.moved": "El fitxer que es va fer servir l'última vegada ja no hi és: {path}. Torna'l a afegir.",
@@ -461,13 +489,17 @@
   "app.discFiles": "Imatges de disc",
   "app.allFiles": "Tots els fitxers",
   "app.packageFiles": "Paquet d'Horizon",
-  "app.noRepository": "Aquesta còpia de l'aplicació no sap on són les versions d'Horizon. Fes servir un fitxer de paquet."
+  "app.noRepository": "Aquesta còpia de l'aplicació no sap on són les versions d'Horizon. Fes servir un fitxer de paquet.",
+  "app.converting": "Convertint {file}: {pct} %",
+  "app.pbpEncrypted": "PBP xifrat o malmès. Fes servir un PBP sense xifrar d’un sol disc o .bin/.cue.",
+  "app.pbpMulti": "Aquest PBP conté diversos discs. Fes servir un PBP d’un sol disc o .bin/.cue.",
+  "app.pbpSpace": "La conversió PBP necessita almenys 700 MB lliures a la memòria cau de l’aplicació."
  },
  "zh-hans": {
   "app.title": "Horizon Patcher",
   "app.lead": "在此电脑上，用自己的四张光盘制作Horizon镜像。不上传任何数据。",
   "app.add": "添加光盘……",
-  "app.formats": "各种语言版本 · .bin/.cue或.iso",
+  "app.formats": "各种语言版本 · .bin/.cue或.iso · .pbp",
   "app.choose": "选择……",
   "app.empty": "尚未添加",
   "app.moved": "上次使用的文件已不在原处：{path}。请重新添加。",
@@ -519,6 +551,10 @@
   "app.discFiles": "光盘镜像",
   "app.allFiles": "所有文件",
   "app.packageFiles": "Horizon发布包",
-  "app.noRepository": "此应用副本未配置Horizon发布地址。请使用本地发布包。"
+  "app.noRepository": "此应用副本未配置Horizon发布地址。请使用本地发布包。",
+  "app.converting": "正在转换 {file}：{pct} %",
+  "app.pbpEncrypted": "PBP已加密或损坏。请使用未加密的单碟PBP或.bin/.cue。",
+  "app.pbpMulti": "此PBP包含多张光盘。请使用单碟PBP或.bin/.cue。",
+  "app.pbpSpace": "PBP转换需要在应用缓存中保留至少700 MB可用空间。"
  }
 }

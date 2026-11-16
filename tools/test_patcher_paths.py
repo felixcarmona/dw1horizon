@@ -66,11 +66,13 @@ class Paths(unittest.TestCase):
             manifest = dict(default='everything', variants={'everything': variant}, python_min=[3, 10],
                             version='test', commit='test', bases={'us': {'title': 'test'}})
             screen = types.SimpleNamespace(start=lambda *a: None, log=lambda *a: None)
+            source_handle = stack.enter_context(source.open('rb'))
+            base = types.SimpleNamespace(img=types.SimpleNamespace(f=source_handle), _copy_images={})
             for name, value in (('SCREEN', None), ('Screen', lambda *a, **k: screen),
                                 ('apply_phases', lambda *a: []), ('release_line', lambda *a: 'test'),
                                 ('identify_base', lambda *a: ('us', str(source), {})),
                                 ('read_patch_file', lambda *a: b''), ('read_payload3', lambda *a: {}),
-                                ('BaseDisc', lambda *a, **k: types.SimpleNamespace()), ('local_holes3', lambda *a: {})):
+                                ('BaseDisc', lambda *a, **k: base), ('local_holes3', lambda *a: {})):
                 stack.enter_context(patch.object(dw, name, value))
 
             def interrupted(p, base, holes, path, expect):
@@ -80,6 +82,7 @@ class Paths(unittest.TestCase):
             stack.enter_context(patch.object(dw, 'build_disc3', interrupted))
             with contextlib.redirect_stdout(io.StringIO()), self.assertRaises(KeyboardInterrupt):
                 dw.cmd_apply3(a, td, manifest)
+            self.assertTrue(source_handle.closed)
             self.assertEqual(output.read_bytes(), b'previous complete disc')
             self.assertEqual(source.read_bytes(), b'original')
             self.assertFalse(Path(str(output) + '.part').exists())

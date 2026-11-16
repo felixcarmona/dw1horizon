@@ -10,10 +10,13 @@ import sys
 import tarfile
 import tempfile
 import threading
+import struct
+import zlib
 import unittest
 from unittest.mock import Mock, patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / 'patcher'))
+import discformats  # noqa: E402
 import desktop  # noqa: E402
 import dwpatch as dw  # noqa: E402
 
@@ -39,12 +42,38 @@ def image(boot, sector=RAW, sectors=24, extra=b''):
     return b''.join(data_sector(s) for s in sectors_data)
 
 
+def pbp(data, stored=False, tag=b'PSISOIMG0000'):
+    """Synthetic single-track PBP; last block is padded like popstation."""
+    psar = 0x28
+    header = bytearray(psar + 0x100000)
+    header[:4] = b'\0PBP'
+    struct.pack_into('<I', header, 0x24, psar)
+    header[psar:psar + len(tag)] = tag
+    frames = len(data) // RAW + 150
+    minute, rest = divmod(frames, 60 * 75)
+    second, frame = divmod(rest, 75)
+    header[psar + 0x802] = 0xa2
+    header[psar + 0x807:psar + 0x80a] = bytes((x // 10 * 16 + x % 10) for x in (minute, second, frame))
+    payload = bytearray()
+    for i, start in enumerate(range(0, len(data), discformats.BLOCK)):
+        raw = data[start:start + discformats.BLOCK].ljust(discformats.BLOCK, b'\0')
+        enc = zlib.compressobj(wbits=-15)
+        block = raw if stored is True or (stored == 'mixed' and i % 2 == 0) else enc.compress(raw) + enc.flush()
+        struct.pack_into('<IH', header, psar + 0x4000 + i * 32, len(payload), len(block))
+        payload.extend(block)
+    return header + payload
+
+
 class Images(unittest.TestCase):
     def setUp(self):
         self.td = tempfile.TemporaryDirectory()
         self.dir = Path(self.td.name)
+        self.env = patch.dict(os.environ, HORIZON_PATCHER_HOME=str(self.dir / 'home'))
+        self.env.start()
 
     def tearDown(self):
+        desktop.CONVERSIONS.close()
+        self.env.stop()
         self.td.cleanup()
 
     def write(self, name, data):
@@ -79,7 +108,7 @@ class Images(unittest.TestCase):
         self.assertEqual(e.exception.params, dict(release='Digimon World 3 (USA)', instead=[
             'Digimon World 2003 (Europe)', 'DigimonWorld 3: Aratanaru Bouken no Tobira (Japan)']))
         for name, key in (('x.chd', 'why.chd'), ('x.7z', 'app.archive'), ('x.part2.rar', 'app.archive'),
-                          ('x.ecm', 'app.convert'), ('x.pbp', 'app.convert')):
+                          ('x.ecm', 'app.convert'), ('x.pbp', 'app.pbpEncrypted')):
             with self.subTest(name=name), self.assertRaises(desktop.Problem) as e:
                 desktop.identify(self.write(name, b'x'))
             self.assertEqual(e.exception.key, key)
@@ -128,6 +157,136 @@ class Images(unittest.TestCase):
         with self.assertRaises(desktop.Problem) as e:
             desktop.identify(self.write('a.iso', image('SLUS_013.28', 2048)), cancel=stop)
         self.assertEqual(e.exception.key, 'cancelled')
+
+
+class PbpImages(unittest.TestCase):
+    setUp = Images.setUp
+    tearDown = Images.tearDown
+    write = Images.write
+
+    def test_roundtrip_stored_deflated_and_partial_last_block(self):
+        data = image('SLUS_013.28', sectors=37)
+        for stored in (False, True, 'mixed'):
+            src = self.write('renamed.img', pbp(data, stored))
+            dst = self.dir / 'decoded.bin'
+            progress = []
+            self.assertEqual(discformats.sniff(src), 'pbp')
+            discformats.decode_pbp(src, dst, progress.append)
+            self.assertEqual(dst.read_bytes(), data)
+            self.assertEqual(progress[-1], 1)
+            result = desktop.identify(src)
+            self.assertEqual(result['path'], src)
+            self.assertEqual(Path(result['image']).read_bytes(), data)
+            self.assertEqual(result['game'], 'dcb')
+            self.assertEqual(result['sha1'], hashlib.sha1(data).hexdigest())
+
+    def test_reuse_mtime_and_remembered_source(self):
+        src = self.write('disc.pbp', pbp(image('SLUS_013.28')))
+        first = desktop.identify(src)
+        with patch.object(discformats, 'decode_pbp', wraps=discformats.decode_pbp) as decode:
+            self.assertEqual(desktop.identify(src)['image'], first['image'])
+            decode.assert_not_called()
+            c = desktop.Config(str(self.dir / 'settings.json'))
+            c.remember_disc('dcb', first)
+            self.assertIsNone(c.remembered_discs()['dcb'][1])
+            st = os.stat(src)
+            os.utime(src, ns=(st.st_atime_ns, st.st_mtime_ns + 1000000))
+            self.assertEqual(c.remembered_discs()['dcb'][1], 'changed')
+            second = desktop.identify(src)
+            self.assertEqual(decode.call_count, 1)
+            self.assertFalse(Path(first['image']).exists())
+        desktop.CONVERSIONS.close()
+        self.assertFalse(Path(second['image']).exists())
+        c.remember_disc('dcb', second)
+        self.assertEqual(c.remembered_discs()['dcb'][1], 'convert')
+
+    def test_size_change_invalidates_conversion_even_with_same_mtime(self):
+        src = self.write('disc.pbp', pbp(image('SLUS_013.28')))
+        first = desktop.identify(src)
+        st = os.stat(src)
+        with open(src, 'ab') as f:
+            f.write(b'padding')
+        os.utime(src, ns=(st.st_atime_ns, st.st_mtime_ns))
+        with patch.object(discformats, 'decode_pbp', wraps=discformats.decode_pbp) as decode:
+            desktop.identify(src)
+            decode.assert_called_once()
+        self.assertFalse(Path(first['image']).exists())
+
+    def test_api_conversion_is_quiet_and_cleans_up_on_failure(self):
+        src = self.write('disc.pbp', pbp(image('SLUS_013.28')))
+        paths = []
+        def apply(args):
+            paths.append(dw.resolve_bin(args.disc))
+            raise dw.PatchError('stand-in failure')
+        output = io.StringIO()
+        with patch.object(dw, 'cmd_apply', side_effect=apply), patch.object(sys, 'stdout', output):
+            with self.assertRaisesRegex(dw.PatchError, 'stand-in failure'):
+                dw.apply_disc(src, {})
+        self.assertEqual(output.getvalue(), '')
+        self.assertFalse(Path(paths[0]).exists())
+
+    def test_errors_and_failed_identification_remove_temporaries(self):
+        good = pbp(image('SLUS_013.28'))
+        corrupt = bytearray(good)
+        corrupt[0x28 + 0x100000:] = b'x' * (len(corrupt) - 0x28 - 0x100000)
+        for data, key in ((pbp(image('SLUS_013.28'), tag=b'PSTITLEIMG'), 'app.pbpMulti'),
+                          (pbp(image('SLUS_013.28'), tag=b'ENCRYPTED'), 'app.pbpEncrypted'),
+                          (corrupt, 'app.pbpEncrypted'), (good[:-1], 'app.pbpEncrypted'),
+                          (pbp(image('SCUS_944.26')), 'why.otherGame')):
+            with self.subTest(key=key), self.assertRaises(desktop.Problem) as caught:
+                desktop.identify(self.write('bad.pbp', data))
+            self.assertEqual(caught.exception.key, key)
+            self.assertEqual(list(Path(desktop.cache_dir()).rglob('*.bin')), [])
+
+    def test_space_and_cancel_during_conversion(self):
+        src = self.write('disc.pbp', pbp(image('SLUS_013.28', sectors=50)))
+        with patch.object(discformats.shutil, 'disk_usage', return_value=Mock(free=0)):
+            with self.assertRaises(desktop.Problem) as caught:
+                desktop.identify(src)
+        self.assertEqual(caught.exception.key, 'app.pbpSpace')
+        stop = threading.Event()
+        def progress(path, fraction):
+            stop.set()
+        with self.assertRaises(desktop.Problem) as caught:
+            desktop.identify(src, cancel=stop, converting=progress)
+        self.assertEqual(caught.exception.key, 'cancelled')
+        self.assertEqual(list(Path(desktop.cache_dir()).rglob('*.bin')), [])
+
+    def test_converted_base_still_requires_its_exact_hash(self):
+        data = image('SLUS_010.32')
+        src = self.write('base.pbp', pbp(data))
+        reg = json.loads(json.dumps(desktop.registry()))
+        reg['discs'][0].update(size=len(data), sha1=hashlib.sha1(data).hexdigest())
+        with patch.object(desktop, '_REGISTRY', reg):
+            self.assertEqual(desktop.identify(src)['how'], 'redump')
+        with self.assertRaises(desktop.Problem) as caught:
+            desktop.identify(src)
+        self.assertEqual(caught.exception.key, 'why.badDump')
+        self.assertEqual(list(Path(desktop.cache_dir()).rglob('*.bin')), [])
+
+    def test_magic_for_unsupported_and_cue(self):
+        for magic, kind in ((b'MComprHD', 'chd'), (b'ECM\0', 'ecm'),
+                            (b'FILE "disc.bin" BINARY\n', 'cue')):
+            self.assertEqual(discformats.sniff(self.write('renamed.bin', magic)), kind)
+
+    def test_cli_resolves_pbp_and_shipped_module(self):
+        data = image('SLUS_013.28')
+        src = self.write('disc.pbp', pbp(data))
+        try:
+            converted = dw.resolve_bin(src)
+            self.assertEqual(Path(converted).read_bytes(), data)
+            self.assertEqual(dw.resolve_bin(src), converted)
+            dest = self.dir / 'release'
+            dest.mkdir()
+            dw.copy_release_frontend(str(dest))
+            result = subprocess.run([sys.executable, '-c',
+                                     'import dwpatch; print(dwpatch.boot_name(dwpatch.resolve_bin(' + repr(src) + ')))'],
+                                    cwd=dest, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn('SLUS_013.28', result.stdout)
+        finally:
+            if dw._CONVERSIONS:
+                dw._CONVERSIONS.close()
 
 
 class Settings(unittest.TestCase):
@@ -431,6 +590,46 @@ class Packages(unittest.TestCase):
             self.assertEqual(e.exception.key, 'app.packageOld')
         finally:
             sys.modules['dwpatch'] = saved
+
+
+class PbpGuiFlow(unittest.TestCase):
+    def test_quit_cancels_and_waits_for_conversion_before_cleanup(self):
+        import gui
+        app = gui.App.__new__(gui.App)
+        app.busy = 'check'
+        app.cancel = threading.Event()
+        app.root = Mock()
+        app.worker = Mock()
+        app.worker.is_alive.side_effect = [True, False]
+        with patch.object(desktop.CONVERSIONS, 'close') as cleanup:
+            app.close()
+            self.assertTrue(app.cancel.is_set())
+            cleanup.assert_not_called()
+            app.root.destroy.assert_not_called()
+            app.root.after.assert_called_once_with(100, app.close)
+            app.close()
+            cleanup.assert_called_once()
+            app.root.destroy.assert_called_once()
+
+    def test_original_path_sets_default_output_and_restore_reconverts(self):
+        import gui
+        app = gui.App.__new__(gui.App)
+        app.config = Mock()
+        app.config.get.return_value = None
+        original = os.path.join(tempfile.gettempdir(), 'discs', 'disc.pbp')
+        entry = dict(path=original, image='temporary-cache/disc.bin')
+        app.slots = {'us': entry}
+        self.assertEqual(app.output_folder(), desktop.default_output(original))
+        app.slots = {}
+        app.notes = {}
+        app.config.remembered_discs.return_value = {'us': (entry, 'convert')}
+        app._refresh = Mock()
+        app._check = Mock()
+        with patch.object(desktop, 'cached_packages', return_value=[]):
+            app._restore()
+        app._check.assert_called_once_with([original])
+        self.assertEqual(app.notes, {})
+
 
 
 class CacheRefreshFlow(unittest.TestCase):
