@@ -4,8 +4,8 @@
 //
 // record: {game, kind: 'handle' | 'copy', release (the release id it was accepted as), via ('files' or null),
 //          name, size, lastModified (what the handle or the copy gives back: sameFile in js/app.js),
-//          image: {crc32, sha1, size} (the checked image: a converted archive's, ECM's or PBP's output),
-//          converted (the handle is an archive, ECM or PBP: it is converted again), handle (kind 'handle'), savedAt}
+//          image: {crc32, sha1, size} (the checked image: a converted archive's, ECM's, PBP's or CHD's output),
+//          converted (the handle is an archive, ECM, PBP or CHD: it is converted again), handle (kind 'handle'), savedAt}
 //
 // Nothing here throws: without IndexedDB or OPFS (a private window, an old browser, storage turned off) nothing is
 // remembered and the page works as it did. Copies and deletions in OPFS hold the build's Web Lock (withLock), so a

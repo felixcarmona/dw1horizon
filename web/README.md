@@ -25,7 +25,7 @@ The project's site: a static page with no backend. The patcher runs in the visit
   focus). Files that cannot be used are explained together in one dialog per drop (`why.*`,
   with what works for that game, `works.<game>`): an unsupported release (the first Japanese pressing, PlayStation the
   Best, a fan translation), a modified or bad dump (the game it looks like), another PlayStation game, not a disc
-  image, a .cue without its .bin, one audio track of a multi-track disc, CHD (chdman), an archive with nothing usable,
+  image, a .cue without its .bin, one audio track of a multi-track disc, unsupported CHD variants, an archive with nothing usable,
   a disc given while another of its game from an earlier drop is still being checked. The same disc twice is ignored.
   "Build my disc" waits for the four games; the line under it names the missing ones.
 - Formats, all in the browser:
@@ -35,9 +35,21 @@ The project's site: a static page with no backend. The patcher runs in the visit
   - ECM: `js/ecm.js` (our own, written from the format's description and ECMA-130: EDC/ECC rebuilt, the ECM checksum
     checked; `test/ecm.mjs` in Node, `test/ecm-browser.mjs` through the convert worker in Chromium).
   - PBP (one-disc popstation PBP, not PlayStation Store ones): `js/pbp.js`, raw deflate through `DecompressionStream`.
-    Both run in `js/convert-worker.js`; their output is the original .bin, so redump's checksum applies.
-  - CHD: not decoded (no maintained libchdr build for the browser; CD CHDs need LZMA, zlib and FLAC); the page says
-    how to convert it with `chdman extractcd`.
+    These and CHD run in `js/convert-worker.js`; their output is the original .bin, so redump's checksum applies.
+  - CHD v5 CD-ROM: `js/chd.js`, cdzl/cdlz and zlib/lzma codecs, stored hunks, compressed/uncompressed maps and
+    self references. Raw deflate uses `DecompressionStream`; LZMA1 is a local JavaScript range decoder (no downloads).
+    Input is read in slices, one hunk decoded at a time, with map/hunk CRC16 verification, sync/ECC reconstruction,
+    audio byte swapping and track padding removed. CHD retains EDC bytes, including nonstandard ones.
+    `convert-worker.js` writes to OPFS when available, falling back to the same compacted Blob chunks as PBP.
+    `convert-storage.js` protects temporary Files with a per-page Web Lock; the next page visit removes abandoned
+    sessions. Failed/cancelled conversions delete their output. Parent images, v1–4, FLAC hunks, non-CD/cooked tracks
+    and GD-ROM/multisession layouts explain why they need conversion with `chdman extractcd`.
+    `node web/test/chd.mjs` generates synthetic fixtures with the Python test writer and real chdman when installed;
+    `node web/test/chd-browser.mjs` checks both codecs through the worker, OPFS/Blob output, cancellation and errors.
+    `node web/test/chd-bench.mjs INPUT.chd [OUTPUT.bin]` streams a Node decode and reports SHA-1, time and throughput.
+    `python3 web/test/chd-synthetic.py build/synthetic.chd cdlz 320` makes a 320 MiB benchmark with independent
+    compressed hunks (no self references), using only synthetic sectors. `CHD_REAL=/path/to/usa.chd` additionally
+    runs the real USA image through page selection/validation in `chd-browser.mjs`. No engine build is needed.
   - An image whose whole checksum cannot match redump (a 2048-byte .iso, another rip): Digimon World is refused (its
     movies and XA audio are Mode 2 Form 2 sectors such an image drops); the three source discs are checked by the
     files the import reads, listed per release in `data/discs.json` `files` (`tools/discs.py release_files()`, from
@@ -101,7 +113,7 @@ A returning player builds a new release without giving the four discs again (`js
   `getAsFileSystemHandle()` in the drop event itself. The handle is kept as soon as the disc is accepted.
 - A copy in this browser, only when the player ticks "Keep these discs in this browser for next time (about X GB)",
   shown with the real size under the drop zone whenever an accepted disc has no handle to its image: Firefox, Safari,
-  anything without handles, and a disc that came out of an archive, ECM or PBP (the converted image is kept; its
+  anything without handles, and a disc that came out of an archive, ECM, PBP or CHD (the converted image is kept; its
   handle would mean unpacking it again). Ticking it asks for persistent storage (`navigator.storage.persist()`), checks
   that the copies and a build after them fit (`storage.estimate()` against the copies plus `buildRoom()`), then copies
   one disc after another in a worker (8 MB slices through a sync access handle: never a whole image in memory, the

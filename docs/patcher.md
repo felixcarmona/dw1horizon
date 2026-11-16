@@ -96,13 +96,16 @@ every base with every variant, and refuses a source release list that rebuilds o
 - Input: the image is identified by its SYSTEM.CNF and checked against its redump size and SHA-1; a missing file, a
   `.cue` naming the wrong file, an unsupported CHD, ECM or archive, a 2048-byte `.iso`, another game or region, a modified dump:
   each has its own message. Single-disc, unencrypted PBP and supported CD-ROM v5 CHD images are decoded to raw sectors before these checks.
-  The desktop app and CLI accept cdzl/cdlz, zlib/lzma and uncompressed CHD hunks, including self references.
+  The desktop app, CLI and browser accept cdzl/cdlz, zlib/lzma and uncompressed CHD hunks, including self references.
   They concatenate raw data/audio tracks, swap audio samples to BIN order, discard subcode and
   four-frame track padding, and preserve stored pregaps (virtual gaps add no BIN sectors).
   Parent CHDs, v1–v4 headers, cooked tracks, GD-ROM/multisession layouts and hunks using cdfl
   (FLAC) are explicitly refused. Convert those with `chdman extractcd` first.
   CHD uses the PBP session cache (source size and mtime), temporary-space check, cancellation
-  and cleanup. The browser continues to refuse CHD.
+  and cleanup on desktop. The browser reads CHDs in slices in a conversion worker, decodes one hunk at a time
+  (local JavaScript LZMA1; native raw deflate), and streams output to OPFS or compacted Blobs.
+  Map and hunk CRC16 checks protect extraction; stored EDC bytes are preserved.
+  `node web/test/chd.mjs` and `node web/test/chd-browser.mjs` exercise generated fixtures without disc data.
 - The patch file's SHA-1 against the manifest; every rebuilt file against its SHA-1 for that base (a mismatch names
   the files and writes nothing); the output's SHA-1 against the release's (written as `.part`, renamed only when it
   matches), then a `.cue`.
@@ -155,7 +158,7 @@ side is in [release/README-players.md](release/README-players.md#the-desktop-app
   with progress and cancellation. They are reused while the PBP size and modification time match, and removed
   on failure or app exit. Conversion checks for at least 700 MB free (or the decoded size, if larger);
   the build’s existing temporary/output space checks apply to the remaining free space. Multi-disc and encrypted
-  PBPs are refused. Archives, ECM and CHD are not read here (the browser reads archives and ECM); the app says so.
+  PBPs are refused. Supported CHD v5 images use the same cache. Archives and ECM are not read here (the browser reads both); the app says so.
   No drag and drop (Tk has none without an extension).
 - **Settings** (`settings.json`): Windows `%APPDATA%\Horizon Patcher`, macOS `~/Library/Application Support/Horizon
   Patcher`, Linux `~/.config/horizon-patcher`. The discs are remembered by path, size, modification time and
