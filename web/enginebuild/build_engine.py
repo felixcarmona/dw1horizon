@@ -553,6 +553,8 @@ def main():
         for p in ex_data:
             files[p] = os.path.join(bundle, p)
         rel_files = {'manifest.json', v['patch'], 'dwpatch.py', 'isowriter.py'}
+        if os.path.isfile(os.path.join(rel, 'discformats.py')):
+            rel_files.add('discformats.py')
         if os.path.isfile(os.path.join(rel, 'fontcopy.py')):
             rel_files.add('fontcopy.py')
         if os.path.isfile(os.path.join(rel, 'chinese_container.py')):

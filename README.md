@@ -29,7 +29,7 @@ and it is delivered as a patch that you apply to your own disc. Original disc im
 
 ## Play it
 
-You need your own Digimon World raw `.bin` + `.cue` image and source discs for
+You need your own Digimon World raw `.bin` + `.cue` image (or a single-disc, unencrypted `.pbp`) and source discs for
 Digital Card Battle, Digimon World 2 and Digimon World 2003. The patch accepts the USA base disc
 (SLUS-01032), the five European releases and the Japanese Rev 1 disc, each checked against its redump checksum.
 

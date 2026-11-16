@@ -5,6 +5,7 @@
 *.img
 *.chd
 *.ecm
+*.pbp
 
 # Local environment
 .venv
