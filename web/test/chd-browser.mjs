@@ -21,8 +21,8 @@ try {
     const input=document.createElement('input'); input.type='file'; input.id='chd'; document.body.append(input);
     const {conversionSession}=await import('/js/convert-storage.js');
     window.outputDir=await conversionSession();
-    window.convert=(file,outputDir,cancel=false,kind='chd')=>new Promise((resolve,reject)=> {
-      const worker=new Worker('/js/convert-worker.js',{type:'module'});
+    window.convert=(file,outputDir,cancel=false,kind='chd',script='/js/convert-worker.js')=>new Promise((resolve,reject)=> {
+      const worker=new Worker(script,{type:'module'});
       worker.onerror=e=>{worker.terminate();reject(new Error(e.message));};
       worker.onmessage=({data})=> {
         if(data.progress!=null) { if(cancel) worker.postMessage({cancel:true}); return; }
@@ -66,14 +66,19 @@ try {
     const flac=await window.convert(new File([bad],'flac.chd'),window.outputDir);
     const truncated=await window.convert(file.slice(0,file.size-1),window.outputDir);
     const cancelled=await window.convert(file,window.outputDir,true);
+    const script=URL.createObjectURL(new Blob([`import ${JSON.stringify(new URL('/js/convert-worker.js',location.href).href)};
+      FileSystemSyncAccessHandle.prototype.write=()=>{throw new DOMException('Disk full','QuotaExceededError');};`],{type:'text/javascript'}));
+    const quota=await window.convert(file,window.outputDir,false,'chd',script);
+    URL.revokeObjectURL(script);
     const after=await Array.fromAsync(window.outputDir.keys());
-    return {flac:flac.error,truncated:truncated.error,cancelled:cancelled.error,before:before.length,after:after.length};
+    return {flac:flac.error,truncated:truncated.error,cancelled:cancelled.error,quota:quota.error,before:before.length,after:after.length};
   });
   assert.equal(errors.flac,'why.chdFlac');
   assert.equal(errors.truncated,'why.chdInvalid');
   assert.equal(errors.cancelled,'Cancelled');
+  assert.equal(errors.quota,'why.chdSpace');
   assert.equal(errors.after,errors.before);
-  console.log('ok browser errors, cancel and partial-output cleanup');
+  console.log('ok browser errors, cancel, quota guidance and partial-output cleanup');
   // Stale-session cleanup must leave the current page's locked output alone.
   const cleanup=await page.evaluate(async()=> {
     const root=await (await navigator.storage.getDirectory()).getDirectoryHandle('horizon-conversions');
@@ -88,6 +93,34 @@ try {
   });
   assert(!kept.includes('stale')); assert.equal(kept.length,cleanup);
   console.log('ok browser session cleanup and active-tab protection');
+  for (const lang of ['en','es']) {
+    const app=await browser.newPage();
+    await app.evaluateOnNewDocument(lang=> {
+      localStorage.setItem('horizon.lang',lang);
+      const Original=Worker;
+      window.Worker=class extends Original {
+        constructor(url,options) {
+          if(String(url).endsWith('/js/convert-worker.js')) {
+            url=URL.createObjectURL(new Blob([`import ${JSON.stringify(new URL('/js/convert-worker.js',location.href).href)};
+              FileSystemSyncAccessHandle.prototype.write=()=>{throw new DOMException('Disk full','QuotaExceededError');};`],{type:'text/javascript'}));
+          }
+          super(url,options);
+        }
+      };
+    },lang);
+    await app.goto(`http://127.0.0.1:${port}/`);
+    await app.waitForSelector('.slot');
+    await (await app.waitForSelector('#add-input')).uploadFile(path.join(dir,'real-cdzl.chd'));
+    await app.waitForSelector('#problems[open]');
+    const strings=JSON.parse(readFileSync(`web/i18n/${lang}.json`,'utf8'));
+    assert((await app.$eval('#problems-list',e=>e.textContent)).includes(strings['why.chdSpace']));
+    assert.equal(await app.evaluate(async()=> {
+      const {conversionSession}=await import('/js/convert-storage.js');
+      return (await Array.fromAsync((await conversionSession()).keys())).length;
+    }),0);
+    await app.close();
+    console.log('ok page CHD storage guidance and cleanup',lang);
+  }
   if (process.env.CHD_REAL) {
     const app=await browser.newPage();
     app.on('pageerror',e=>console.error('page error:',e.message));

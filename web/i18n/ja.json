@@ -246,6 +246,7 @@
  "why.chdParent": "このCHDには親イメージが必要です。chdman extractcdでディスク全体を.bin/.cueに変換してください。",
  "why.chdVersion": "対応しているのはCD-ROMのCHDバージョン5のみです。古いCHDはchdman extractcdで.bin/.cueに変換してください。",
  "why.chdInvalid": "このCHDは破損、不完全、またはチェックサムが不正です。お持ちのディスクから新しいイメージを作成してください。",
+ "why.chdSpace": "このCHDの変換中にブラウザの保存容量が不足しました。空き容量を増やしてから再度追加するか、chdman extractcdで.bin/.cueに変換してください。",
  "why.cueOnly": ".cueはイメージの場所を示すだけです。{file}も一緒に追加してください。",
  "why.otherGame": "別のPlayStationゲーム（{serial}）です。このページで使う4作品ではありません。",
  "works.us": "デジモンワールドで使えるもの：北米版、欧州版、フランス語版、ドイツ語版、スペイン語版、イタリア語版、日本版（Rev 1）ディスクのredump .bin/.cue。",

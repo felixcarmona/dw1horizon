@@ -49,6 +49,6 @@ self.onmessage = async ({ data: { kind, file, cancel, outputDir } }) => {
   } catch (e) {
     try { access?.close(); } catch { /* already closed */ }
     if (outputName) await outputDir.removeEntry(outputName).catch(() => {});
-    self.postMessage({ error: String(e && e.message || e) });
+    self.postMessage({ error: kind === 'chd' && e?.name === 'QuotaExceededError' ? 'why.chdSpace' : String(e && e.message || e) });
   }
 };

@@ -246,6 +246,7 @@
  "why.chdParent": "Este CHD necesita una imagen padre. Convierte el disco completo a .bin/.cue con chdman extractcd.",
  "why.chdVersion": "Solo se admite CHD de CD-ROM versión 5. Convierte los CHD antiguos a .bin/.cue con chdman extractcd.",
  "why.chdInvalid": "Este CHD está dañado, incompleto o su suma de comprobación no es válida. Crea una imagen nueva de tu disco.",
+ "why.chdSpace": "Este navegador se ha quedado sin espacio al convertir este CHD. Libera espacio y añádelo de nuevo, o conviértelo a .bin/.cue con chdman extractcd.",
  "why.cueOnly": "El .cue solo apunta a la imagen. Añade también {file}.",
  "why.otherGame": "Es otro juego de PlayStation ({serial}), no uno de los cuatro que usa esta página.",
  "works.us": "Lo que sirve de Digimon World: el .bin/.cue de redump del disco de EE. UU., Europa, Francia, Alemania, España, Italia o Japón (Rev 1).",

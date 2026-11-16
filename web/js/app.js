@@ -328,7 +328,7 @@ const JOB_ERROR = { encrypted: 'why.encrypted', parts: 'why.parts', open: 'why.a
                     'not PBP': 'why.notImage', 'PBP multi-disc': 'why.pbpMulti', 'PBP encrypted': 'why.pbpEncrypted',
                     'ECM checksum': 'why.ecmChecksum', 'not ECM': 'why.notImage', 'ECM file cut short': 'why.ecmChecksum',
                     'why.chd': 'why.chd', 'why.chdFlac': 'why.chdFlac', 'why.chdParent': 'why.chdParent',
-                    'why.chdVersion': 'why.chdVersion', 'why.chdInvalid': 'why.chdInvalid' };
+                    'why.chdVersion': 'why.chdVersion', 'why.chdInvalid': 'why.chdInvalid', 'why.chdSpace': 'why.chdSpace' };
 
 // One line per running job under the list: "file: what is happening, nn %"
 function job(name) {

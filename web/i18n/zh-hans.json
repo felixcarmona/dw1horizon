@@ -246,6 +246,7 @@
   "why.chdParent": "此CHD需要父镜像。请用chdman extractcd将完整光盘转换为.bin/.cue。",
   "why.chdVersion": "仅支持CD-ROM CHD第5版。请用chdman extractcd将旧版CHD转换为.bin/.cue。",
   "why.chdInvalid": "此CHD已损坏、不完整或校验和无效。请从您的光盘重新制作镜像。",
+ "why.chdSpace": "此浏览器在转换此CHD时存储空间不足。请释放空间后重新添加，或使用chdman extractcd将其转换为.bin/.cue。",
   "why.cueOnly": ".cue仅指向镜像数据。请同时添加{file}。",
   "why.otherGame": "这是另一款PlayStation游戏（{serial}），并非本页面使用的四款游戏之一。",
   "works.us": "Digimon World支持：美版、欧版、法版、德版、西班牙版、意版或日版（Rev 1）的redump .bin/.cue镜像。",
