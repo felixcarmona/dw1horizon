@@ -166,7 +166,7 @@
    "hit_script": 435,
    "result": "reads flat",
    "fallback": "composed",
-   "composed": "DW1 chunk 104 recoloured orange: fire pillars and a burning rock in place of the card art",
+   "composed": "DW1 chunk 81, a charge, recoloured orange: a burning rush at the target in place of the card art (chunk 104 burns around the caster and missed the target)",
    "why": "flat card art: most of its drawn surface is planar pieces that never turn, scale or fade (outside every DW1 effect's 90th percentile)"
   },
   {

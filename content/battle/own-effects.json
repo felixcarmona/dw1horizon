@@ -809,8 +809,8 @@
   },
   "266": {
     "name": "Fire Rocket",
-    "stands_for": 104,
-    "compose": {"recolour": {"ramp": ["#1a0400", "#b03000", "#ff9020", "#fff4d0"]}, "scale": 1.3, "sounds": {"18": 50, "14": 20, "21": 24, "15": 41}},
+    "stands_for": 81,
+    "compose": {"recolour": {"ramp": ["#1a0400", "#b03000", "#ff9020", "#fff4d0"]}, "scale": 1.3, "sounds": {"2": 50, "29": 24, "6": 41}},
     "check": {"hue": 25}
   },
   "268": {

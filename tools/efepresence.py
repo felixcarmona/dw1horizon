@@ -68,6 +68,8 @@ def entry_hash(e):
     """SHA-1 of an own-effects.json entry without its sounds (they do not change the picture) and its pins (they
     follow from the rest)."""
     e = {k: v for k, v in json.loads(json.dumps(e)).items() if k not in ('sounds', 'hit_sound')}
+    if isinstance(e.get('compose'), dict):
+        e['compose'].pop('sounds', None)
     for kind in ('dw3', 'dcb'):
         if isinstance(e.get(kind), dict):
             e[kind].pop('pin', None)
