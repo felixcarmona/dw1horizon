@@ -608,15 +608,15 @@
   },
   "225": {
     "name": "Pincer Crusher",
-    "stands_for": 100,
-    "sounds": [[0, 56], [0, 4], [5, 56], [40, 45], [50, 56], [50, 4], [55, 56]],
-    "dw3": {"model": "M165EBDR", "slot": 5, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38], "9": ["E000COM3.BIN", 7, 0, 0]}, "scale": 1.33, "pin": "8653c07dbc0bd4be93fad08e7b808032e5e76cef"}
+    "stands_for": 79,
+    "compose": {"recolour": {"ramp": ["#000a1a", "#18407a", "#60a8e8", "#eaf6ff"]}, "scale": 1.2, "sounds": {"44": 56, "15": 45, "47": 4}},
+    "check": {"hue": 210}
   },
   "228": {
     "name": "Lizard Dance",
-    "stands_for": 100,
-    "sounds": [[15, 56], [15, 4], [20, 56], [37, 50], [77, 50], [113, 50], [171, 50], [171, 45], [176, 56]],
-    "dw3": {"model": "M386DINO", "slot": 11, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38], "2021": ["E386DINO.BIN", 2, 1, 0], "2022": ["E386DINO.BIN", 3, 1, 0], "2023": ["E386DINO.BIN", 4, 1, 0]}, "scale": 1.17, "pin": "a842fab7a7c9fd2d40748f35d857b6fb189bb1a2"}
+    "stands_for": 102,
+    "compose": {"recolour": {"ramp": ["#001a04", "#106a20", "#58e060", "#eaffe0"]}, "scale": 1.2, "sounds": {"6": 56, "19": 4, "47": 50}},
+    "check": {"hue": 120}
   },
   "235": {
     "name": "Berserk Sword",
@@ -626,15 +626,15 @@
   },
   "237": {
     "name": "Thunder Bolt",
-    "stands_for": 62,
-    "sounds": [[193, 40]],
-    "dw3": {"model": "M334MLDR", "slot": 9, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38], "64": ["E000COM2.BIN", 8, 0, 0], "1011": ["E438RIDN.BIN", 1, 2, 0]}, "pin": "cbfd966604d73b3c4bb4bd82b3977c24d441f993", "pins": {"dw3-us": "6fd0ba15386f1e9767047ac4b52f49a4c58a104b"}}
+    "stands_for": 93,
+    "compose": {"recolour": {"ramp": ["#141000", "#8a7000", "#ffe040", "#fffff0"]}, "scale": 1.3, "sounds": {"15": 40}},
+    "check": {"hue": 52}
   },
   "238": {
     "name": "Ura Sword",
-    "stands_for": 62,
-    "sounds": [[0, 56], [0, 4], [5, 56], [10, 10], [20, 56], [20, 4], [25, 56]],
-    "dw3": {"model": "M173MSHA", "slot": 5, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38], "7": ["E000COM3.BIN", 5, 0, 0]}, "pin": "63135c634286622f9e9f3e85bec53b631d3a2369"}
+    "stands_for": 89,
+    "compose": {"recolour": {"ramp": ["#10001a", "#4a0a80", "#b060ff", "#f0e0ff"]}, "scale": 1.3, "sounds": {"0": 56, "44": 4, "27": 10, "47": 56}},
+    "check": {"hue": 310}
   },
   "239": {
     "name": "Twin Sickles",
@@ -650,21 +650,21 @@
   },
   "242": {
     "name": "Roach Rush",
-    "stands_for": 93,
-    "sounds": [[0, 10], [0, 51], [10, 51]],
-    "dw3": {"model": "M171GOKI", "slot": 5, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38], "7": ["E000COM3.BIN", 5, 0, 0]}, "scale": 1.91, "pin": "36c019576cb41b5becab4b555cb4732c24080356"}
+    "stands_for": 81,
+    "compose": {"recolour": {"ramp": ["#120800", "#5a3010", "#b07a40", "#f8ecd8"]}, "scale": 1.2, "sounds": {"2": 10, "29": 51, "6": 51}},
+    "check": {"hue": 30}
   },
   "244": {
     "name": "Hot Head",
-    "stands_for": 99,
-    "sounds": [[120, 12], [120, 51], [140, 24], [140, 51], [160, 24]],
-    "dw3": {"model": "M383PKEN", "slot": 11, "meft": [], "sprites": {"0": ["E000COM1.BIN", 0, 0, 38], "2": ["E000COM1.BIN", 2, 0, 38], "4": ["E000COM3.BIN", 2, 0, 0], "2003": ["E383PKEN.BIN", 1, 2, 0]}, "scale": 1.43, "pin": "00c92811968b7d802ff4b54e9d26100e39227a80"}
+    "stands_for": 62,
+    "compose": {"recolour": {"ramp": ["#1a0000", "#a01000", "#ff5020", "#fff0c0"]}, "scale": 1.3, "sounds": {"17": 12, "20": 51, "56": 24}},
+    "check": {"hue": 12}
   },
   "245": {
     "name": "Bear Fist",
-    "stands_for": 95,
-    "sounds": [[90, 51], [215, 45], [255, 51]],
-    "dw3": {"model": "M385KOGU", "slot": 11, "meft": [], "sprites": {"0": ["E000COM1.BIN", 0, 0, 38], "2014": ["E145VMON.BIN", 1, 2, 0]}, "scale": 1.84, "pin": "83141bf4762b8561866b5dd03a44f259a14253e1"}
+    "stands_for": 91,
+    "compose": {"recolour": {"ramp": ["#140600", "#803a00", "#f09030", "#fff0d8"]}, "scale": 1.3, "sounds": {"2": 51, "20": 45, "15": 51}},
+    "check": {"hue": 30}
   },
   "223": {
     "name": "Maul Attack",
