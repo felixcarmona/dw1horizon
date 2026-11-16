@@ -137,7 +137,16 @@ S: .###/#.../#.../.##./...#/...#/...#/###.
 P: ###./#..#/#..#/###./#.../#.../#.../#...
 C: .###/#.../#.../#.../#.../#.../#.../.###
 ''')
-TAG_NEW='O B R S P C'
+TAG.update(F('''
+U: #..#/#..#/#..#/#..#/#..#/#..#/#..#/.##.
+K: #..#/#.#./##../##../#.#./#..#/#..#/#..#
+F: ###/#../#../###/#../#../#../#..
+L: #../#../#../#../#../#../#../###
+'''))
+TAG_NEW='O B R S P C K F L U'
+# Like NOMBRE's four-pixel N below: keep MISTAKES in its 36-pixel tag
+# without scaling the other letters or changing the eight-row label body.
+TAG_STATUS=dict(TAG,M='#..#/####/####/#..#/#..#/#..#/#..#/#..#'.split('/'))
 
 # TYPE/SPECIAL/ACTIVE: 5-row, no outline; '#' main tone, 'x' darker corner tone. clut row 9.
 TSA=F('''
