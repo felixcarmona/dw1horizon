@@ -1,0 +1,1129 @@
+{
+  "method": "All occupied clips, every decoded tick, eight orthographic elevated views; projected candidates include occluded faces.",
+  "heap": {
+    "peak_before": 100256,
+    "peak_after": 100256,
+    "buffer": 100352
+  },
+  "rows": {
+    "106": {
+      "name": "Saberdramon",
+      "clips": 46,
+      "ticks": 1832,
+      "bent_quads": 16,
+      "discordant_face_tick_views": 5705,
+      "discordance_by_bone": {
+        "4": 609,
+        "7": 482,
+        "10": 494,
+        "17": 970,
+        "18": 589,
+        "19": 525,
+        "21": 954,
+        "22": 607,
+        "23": 475
+      },
+      "geometry": {
+        "triangles": 606,
+        "bent_quads": 16,
+        "bent_risk": 0.00010940868297324669,
+        "zero_area": 0,
+        "collapsed_indices": 0,
+        "degenerate": 0,
+        "rest_collapsed": 0,
+        "tiny": 0,
+        "coplanar_pairs": 3,
+        "coplanar_area": 0.00945
+      },
+      "materials": {
+        "name": "Saberdramon",
+        "abe_packets": 0,
+        "blended_texel_samples": 0,
+        "opaque_duplicate_packets": 0
+      },
+      "repair": {
+        "applied": true,
+        "split": 16,
+        "remaining": 0,
+        "risk_before": 21.144854285312928,
+        "risk_after": 0,
+        "resident_before": 46834,
+        "resident_after": 45738,
+        "packet_growth": 408,
+        "flat_shading": 4,
+        "compacted_clips": {
+          "0": [
+            1070,
+            1056
+          ],
+          "1": [
+            978,
+            936
+          ],
+          "2": [
+            1108,
+            1102
+          ],
+          "4": [
+            1832,
+            1806
+          ],
+          "19": [
+            1276,
+            1010
+          ],
+          "37": [
+            730,
+            594
+          ],
+          "40": [
+            1620,
+            1590
+          ],
+          "41": [
+            1624,
+            1608
+          ],
+          "42": [
+            1878,
+            1854
+          ],
+          "43": [
+            630,
+            606
+          ],
+          "44": [
+            2254,
+            2130
+          ],
+          "46": [
+            1322,
+            1274
+          ],
+          "47": [
+            1240,
+            1226
+          ],
+          "48": [
+            1188,
+            1180
+          ],
+          "49": [
+            1218,
+            1182
+          ],
+          "50": [
+            1378,
+            1314
+          ],
+          "51": [
+            2658,
+            2600
+          ]
+        }
+      },
+      "after": {
+        "bent_quads": 0,
+        "discordant_face_tick_views": 0,
+        "sha256": "59034964bae16d0ff599f212993cdae9b3028d43c703eafca66e6884194fd940",
+        "resident_bytes": 45738
+      }
+    },
+    "26": {
+      "name": "SkullGreymon",
+      "clips": 51,
+      "ticks": 1703,
+      "bent_quads": 2,
+      "discordant_face_tick_views": 211,
+      "discordance_by_bone": {
+        "15": 211
+      },
+      "geometry": {
+        "triangles": 682,
+        "bent_quads": 2,
+        "bent_risk": 3.6624149181714606e-06,
+        "zero_area": 0,
+        "collapsed_indices": 0,
+        "degenerate": 0,
+        "rest_collapsed": 0,
+        "tiny": 0,
+        "coplanar_pairs": 8,
+        "coplanar_area": 0.0057
+      },
+      "materials": {
+        "name": "SkullGreymon",
+        "abe_packets": 0,
+        "blended_texel_samples": 0,
+        "opaque_duplicate_packets": 0
+      },
+      "repair": {
+        "applied": true,
+        "split": 2,
+        "remaining": 0,
+        "risk_before": 1.593476022284804,
+        "risk_after": 0,
+        "resident_before": 66264,
+        "resident_after": 65270,
+        "packet_growth": 56,
+        "flat_shading": 0,
+        "compacted_clips": {
+          "0": [
+            790,
+            744
+          ],
+          "1": [
+            824,
+            786
+          ],
+          "2": [
+            2108,
+            2092
+          ],
+          "3": [
+            2108,
+            2104
+          ],
+          "4": [
+            2108,
+            2106
+          ],
+          "11": [
+            1364,
+            1340
+          ],
+          "19": [
+            904,
+            696
+          ],
+          "28": [
+            426,
+            320
+          ],
+          "33": [
+            766,
+            756
+          ],
+          "37": [
+            648,
+            632
+          ],
+          "43": [
+            1402,
+            1374
+          ],
+          "44": [
+            1286,
+            1236
+          ],
+          "46": [
+            1468,
+            1414
+          ],
+          "47": [
+            1892,
+            1866
+          ],
+          "48": [
+            1308,
+            1278
+          ],
+          "50": [
+            1672,
+            1606
+          ],
+          "52": [
+            1298,
+            1280
+          ],
+          "53": [
+            1896,
+            1826
+          ],
+          "54": [
+            1672,
+            1636
+          ],
+          "56": [
+            2280,
+            2222
+          ],
+          "59": [
+            2374,
+            2310
+          ]
+        }
+      }
+    },
+    "277": {
+      "name": "SkullMeramon",
+      "clips": 53,
+      "ticks": 1459,
+      "bent_quads": 14,
+      "discordant_face_tick_views": 2437,
+      "discordance_by_bone": {
+        "2": 320,
+        "11": 233,
+        "12": 351,
+        "13": 496,
+        "14": 205,
+        "15": 382,
+        "16": 450
+      },
+      "geometry": {
+        "triangles": 590,
+        "bent_quads": 14,
+        "bent_risk": 3.453475127840548e-05,
+        "zero_area": 0,
+        "collapsed_indices": 0,
+        "degenerate": 0,
+        "rest_collapsed": 0,
+        "tiny": 0,
+        "coplanar_pairs": 0,
+        "coplanar_area": 0
+      },
+      "materials": {
+        "name": "SkullMeramon",
+        "abe_packets": 0,
+        "blended_texel_samples": 0,
+        "opaque_duplicate_packets": 0
+      },
+      "repair": {
+        "applied": false,
+        "split": 0,
+        "remaining": 14,
+        "resident_before": 57424,
+        "available_bytes": 2
+      }
+    },
+    "268": {
+      "name": "SkullMammothmon",
+      "clips": 52,
+      "ticks": 1797,
+      "bent_quads": 46,
+      "discordant_face_tick_views": 10612,
+      "discordance_by_bone": {
+        "1": 747,
+        "7": 649,
+        "8": 851,
+        "10": 1414,
+        "11": 1277,
+        "13": 642,
+        "14": 1230,
+        "15": 217,
+        "17": 376,
+        "21": 381,
+        "22": 304,
+        "23": 728,
+        "24": 516,
+        "26": 756,
+        "27": 524
+      },
+      "geometry": {
+        "triangles": 828,
+        "bent_quads": 46,
+        "bent_risk": 0.00029493944726683357,
+        "zero_area": 0,
+        "collapsed_indices": 0,
+        "degenerate": 0,
+        "rest_collapsed": 0,
+        "tiny": 0,
+        "coplanar_pairs": 10,
+        "coplanar_area": 0.034659999999999996
+      },
+      "materials": {
+        "name": "SkullMammothmon",
+        "abe_packets": 0,
+        "blended_texel_samples": 0,
+        "opaque_duplicate_packets": 0
+      },
+      "repair": {
+        "applied": false,
+        "split": 0,
+        "remaining": 46,
+        "resident_before": 89236,
+        "available_bytes": 2
+      }
+    },
+    "241": {
+      "name": "Wizardmon",
+      "clips": 49,
+      "ticks": 1522,
+      "bent_quads": 95,
+      "discordant_face_tick_views": 33614,
+      "discordance_by_bone": {
+        "2": 1413,
+        "3": 6769,
+        "4": 800,
+        "5": 1231,
+        "6": 1478,
+        "7": 697,
+        "8": 1150,
+        "9": 7441,
+        "12": 3451,
+        "18": 711,
+        "19": 305,
+        "20": 4832,
+        "21": 215,
+        "23": 2412,
+        "24": 709
+      },
+      "geometry": {
+        "triangles": 846,
+        "bent_quads": 95,
+        "bent_risk": 0.00040413335059161,
+        "zero_area": 0,
+        "collapsed_indices": 0,
+        "degenerate": 0,
+        "rest_collapsed": 0,
+        "tiny": 0,
+        "coplanar_pairs": 31,
+        "coplanar_area": 0.20246999999999998
+      },
+      "materials": {
+        "name": "Wizardmon",
+        "abe_packets": 40,
+        "blended_texel_samples": 162,
+        "opaque_duplicate_packets": 0
+      },
+      "repair": {
+        "applied": false,
+        "split": 0,
+        "remaining": 95,
+        "resident_before": 97952,
+        "available_bytes": 2
+      }
+    },
+    "242": {
+      "name": "Sorcermon",
+      "clips": 49,
+      "ticks": 1601,
+      "bent_quads": 90,
+      "discordant_face_tick_views": 33501,
+      "discordance_by_bone": {
+        "2": 1420,
+        "3": 7031,
+        "4": 821,
+        "5": 1309,
+        "6": 1630,
+        "7": 787,
+        "8": 1163,
+        "9": 5987,
+        "12": 3488,
+        "18": 881,
+        "19": 350,
+        "20": 5140,
+        "21": 275,
+        "23": 2524,
+        "24": 695
+      },
+      "geometry": {
+        "triangles": 846,
+        "bent_quads": 90,
+        "bent_risk": 0.0003651743057872964,
+        "zero_area": 0,
+        "collapsed_indices": 0,
+        "degenerate": 0,
+        "rest_collapsed": 0,
+        "tiny": 0,
+        "coplanar_pairs": 31,
+        "coplanar_area": 0.20246999999999998
+      },
+      "materials": {
+        "name": "Sorcermon",
+        "abe_packets": 40,
+        "blended_texel_samples": 24,
+        "opaque_duplicate_packets": 0
+      },
+      "repair": {
+        "applied": false,
+        "split": 0,
+        "remaining": 90,
+        "resident_before": 98924,
+        "available_bytes": 0
+      }
+    }
+  },
+  "validation": {
+    "tests": 58,
+    "passed": 58,
+    "skipped": 0,
+    "provider_pin": "verified",
+    "oriented_surface_triangles_preserved": 606,
+    "decoded_motion_loops_events_preserved": true
+  },
+  "render_probe": {
+    "probes": 368,
+    "changed_pixels": 26,
+    "slot": 47,
+    "tick": 13,
+    "view": "above45"
+  },
+  "depth_probe": {
+    "before": {
+      "clips": {
+        "0": {
+          "overlaps": 117329,
+          "ties": 2158.25,
+          "flips": 526,
+          "comparisons": 96548,
+          "tied_flips": 338.0
+        },
+        "1": {
+          "overlaps": 190542,
+          "ties": 3301.0,
+          "flips": 451,
+          "comparisons": 170953,
+          "tied_flips": 372.0
+        },
+        "2": {
+          "overlaps": 115212,
+          "ties": 2232.5,
+          "flips": 587,
+          "comparisons": 95010,
+          "tied_flips": 409.0
+        },
+        "3": {
+          "overlaps": 170163,
+          "ties": 3285.25,
+          "flips": 590,
+          "comparisons": 149358,
+          "tied_flips": 451.5
+        },
+        "4": {
+          "overlaps": 168851,
+          "ties": 2951.75,
+          "flips": 1093,
+          "comparisons": 135228,
+          "tied_flips": 574.25
+        },
+        "5": {
+          "overlaps": 200193,
+          "ties": 2904.5,
+          "flips": 1154,
+          "comparisons": 157277,
+          "tied_flips": 657.25
+        },
+        "7": {
+          "overlaps": 175010,
+          "ties": 2887.5,
+          "flips": 1254,
+          "comparisons": 126554,
+          "tied_flips": 766.25
+        },
+        "8": {
+          "overlaps": 325078,
+          "ties": 5342.75,
+          "flips": 1377,
+          "comparisons": 262807,
+          "tied_flips": 860.5
+        },
+        "9": {
+          "overlaps": 487339,
+          "ties": 8173.75,
+          "flips": 1966,
+          "comparisons": 428345,
+          "tied_flips": 1333.75
+        },
+        "10": {
+          "overlaps": 385178,
+          "ties": 6258.0,
+          "flips": 1523,
+          "comparisons": 331408,
+          "tied_flips": 1009.5
+        },
+        "11": {
+          "overlaps": 166432,
+          "ties": 2577.0,
+          "flips": 1074,
+          "comparisons": 122880,
+          "tied_flips": 673.5
+        },
+        "12": {
+          "overlaps": 220143,
+          "ties": 3922.5,
+          "flips": 1708,
+          "comparisons": 158738,
+          "tied_flips": 1046.5
+        },
+        "13": {
+          "overlaps": 252360,
+          "ties": 4287.75,
+          "flips": 2413,
+          "comparisons": 168406,
+          "tied_flips": 1362.25
+        },
+        "14": {
+          "overlaps": 190546,
+          "ties": 3295.25,
+          "flips": 451,
+          "comparisons": 170957,
+          "tied_flips": 370.25
+        },
+        "15": {
+          "overlaps": 190546,
+          "ties": 3295.25,
+          "flips": 451,
+          "comparisons": 170957,
+          "tied_flips": 370.25
+        },
+        "16": {
+          "overlaps": 190546,
+          "ties": 3295.25,
+          "flips": 451,
+          "comparisons": 170957,
+          "tied_flips": 370.25
+        },
+        "17": {
+          "overlaps": 190546,
+          "ties": 3295.25,
+          "flips": 451,
+          "comparisons": 170957,
+          "tied_flips": 370.25
+        },
+        "18": {
+          "overlaps": 190546,
+          "ties": 3295.25,
+          "flips": 451,
+          "comparisons": 170957,
+          "tied_flips": 370.25
+        },
+        "19": {
+          "overlaps": 197445,
+          "ties": 3280.5,
+          "flips": 454,
+          "comparisons": 174582,
+          "tied_flips": 343.0
+        },
+        "21": {
+          "overlaps": 516242,
+          "ties": 7778.75,
+          "flips": 1808,
+          "comparisons": 455707,
+          "tied_flips": 1202.75
+        },
+        "22": {
+          "overlaps": 113014,
+          "ties": 1896.75,
+          "flips": 789,
+          "comparisons": 80204,
+          "tied_flips": 467.5
+        },
+        "23": {
+          "overlaps": 313152,
+          "ties": 4948.25,
+          "flips": 1013,
+          "comparisons": 267006,
+          "tied_flips": 848.5
+        },
+        "24": {
+          "overlaps": 145354,
+          "ties": 2627.25,
+          "flips": 704,
+          "comparisons": 119492,
+          "tied_flips": 448.5
+        },
+        "25": {
+          "overlaps": 153312,
+          "ties": 2751.75,
+          "flips": 798,
+          "comparisons": 126022,
+          "tied_flips": 542.75
+        },
+        "27": {
+          "overlaps": 168851,
+          "ties": 2951.75,
+          "flips": 1093,
+          "comparisons": 135228,
+          "tied_flips": 574.25
+        },
+        "33": {
+          "overlaps": 117329,
+          "ties": 2158.25,
+          "flips": 526,
+          "comparisons": 96548,
+          "tied_flips": 338.0
+        },
+        "34": {
+          "overlaps": 190542,
+          "ties": 3301.0,
+          "flips": 451,
+          "comparisons": 170953,
+          "tied_flips": 372.0
+        },
+        "35": {
+          "overlaps": 115212,
+          "ties": 2232.5,
+          "flips": 587,
+          "comparisons": 95010,
+          "tied_flips": 409.0
+        },
+        "36": {
+          "overlaps": 168851,
+          "ties": 2951.75,
+          "flips": 1093,
+          "comparisons": 135228,
+          "tied_flips": 574.25
+        },
+        "37": {
+          "overlaps": 97863,
+          "ties": 1674.5,
+          "flips": 421,
+          "comparisons": 74203,
+          "tied_flips": 309.0
+        },
+        "40": {
+          "overlaps": 247450,
+          "ties": 4403.0,
+          "flips": 2231,
+          "comparisons": 177226,
+          "tied_flips": 1065.75
+        },
+        "41": {
+          "overlaps": 250958,
+          "ties": 4735.25,
+          "flips": 2519,
+          "comparisons": 178839,
+          "tied_flips": 1278.5
+        },
+        "42": {
+          "overlaps": 345911,
+          "ties": 5096.75,
+          "flips": 3844,
+          "comparisons": 210481,
+          "tied_flips": 2101.0
+        },
+        "43": {
+          "overlaps": 150936,
+          "ties": 2816.5,
+          "flips": 722,
+          "comparisons": 125340,
+          "tied_flips": 541.0
+        },
+        "44": {
+          "overlaps": 430866,
+          "ties": 7634.75,
+          "flips": 1609,
+          "comparisons": 377591,
+          "tied_flips": 1174.75
+        },
+        "46": {
+          "overlaps": 112549,
+          "ties": 1988.75,
+          "flips": 962,
+          "comparisons": 78390,
+          "tied_flips": 507.5
+        },
+        "47": {
+          "overlaps": 232427,
+          "ties": 4219.0,
+          "flips": 2016,
+          "comparisons": 173289,
+          "tied_flips": 1053.5
+        },
+        "48": {
+          "overlaps": 189699,
+          "ties": 3389.0,
+          "flips": 1273,
+          "comparisons": 143874,
+          "tied_flips": 848.25
+        },
+        "49": {
+          "overlaps": 119137,
+          "ties": 2420.25,
+          "flips": 982,
+          "comparisons": 89058,
+          "tied_flips": 533.25
+        },
+        "50": {
+          "overlaps": 229909,
+          "ties": 4586.5,
+          "flips": 3337,
+          "comparisons": 100317,
+          "tied_flips": 1188.25
+        },
+        "51": {
+          "overlaps": 430188,
+          "ties": 7318.25,
+          "flips": 4331,
+          "comparisons": 318528,
+          "tied_flips": 2297.25
+        },
+        "52": {
+          "overlaps": 189699,
+          "ties": 3389.0,
+          "flips": 1273,
+          "comparisons": 143874,
+          "tied_flips": 848.25
+        },
+        "53": {
+          "overlaps": 232427,
+          "ties": 4219.0,
+          "flips": 2016,
+          "comparisons": 173289,
+          "tied_flips": 1053.5
+        },
+        "54": {
+          "overlaps": 232427,
+          "ties": 4219.0,
+          "flips": 2016,
+          "comparisons": 173289,
+          "tied_flips": 1053.5
+        },
+        "55": {
+          "overlaps": 430188,
+          "ties": 7318.25,
+          "flips": 4331,
+          "comparisons": 318528,
+          "tied_flips": 2297.25
+        },
+        "56": {
+          "overlaps": 232427,
+          "ties": 4219.0,
+          "flips": 2016,
+          "comparisons": 173289,
+          "tied_flips": 1053.5
+        }
+      },
+      "totals": {
+        "overlaps": 10280925,
+        "ties": 177284.0,
+        "flips": 63186,
+        "comparisons": 8143682,
+        "tied_flips": 37030.0
+      }
+    },
+    "after": {
+      "clips": {
+        "0": {
+          "overlaps": 123989,
+          "ties": 2234.75,
+          "flips": 536,
+          "comparisons": 101763,
+          "tied_flips": 345.75
+        },
+        "1": {
+          "overlaps": 202160,
+          "ties": 3441.0,
+          "flips": 457,
+          "comparisons": 181535,
+          "tied_flips": 378.0
+        },
+        "2": {
+          "overlaps": 121795,
+          "ties": 2349.0,
+          "flips": 605,
+          "comparisons": 100095,
+          "tied_flips": 424.5
+        },
+        "3": {
+          "overlaps": 179803,
+          "ties": 3463.25,
+          "flips": 607,
+          "comparisons": 157454,
+          "tied_flips": 467.0
+        },
+        "4": {
+          "overlaps": 177857,
+          "ties": 2998.75,
+          "flips": 1124,
+          "comparisons": 141889,
+          "tied_flips": 596.5
+        },
+        "5": {
+          "overlaps": 211679,
+          "ties": 3007.25,
+          "flips": 1169,
+          "comparisons": 165968,
+          "tied_flips": 673.0
+        },
+        "7": {
+          "overlaps": 184168,
+          "ties": 3014.75,
+          "flips": 1274,
+          "comparisons": 133071,
+          "tied_flips": 782.75
+        },
+        "8": {
+          "overlaps": 341162,
+          "ties": 5615.25,
+          "flips": 1416,
+          "comparisons": 275906,
+          "tied_flips": 894.25
+        },
+        "9": {
+          "overlaps": 513120,
+          "ties": 8807.0,
+          "flips": 2031,
+          "comparisons": 451344,
+          "tied_flips": 1398.0
+        },
+        "10": {
+          "overlaps": 405470,
+          "ties": 6528.5,
+          "flips": 1565,
+          "comparisons": 348561,
+          "tied_flips": 1045.25
+        },
+        "11": {
+          "overlaps": 174252,
+          "ties": 2736.5,
+          "flips": 1115,
+          "comparisons": 128183,
+          "tied_flips": 702.75
+        },
+        "12": {
+          "overlaps": 232762,
+          "ties": 4110.0,
+          "flips": 1759,
+          "comparisons": 167947,
+          "tied_flips": 1087.25
+        },
+        "13": {
+          "overlaps": 265651,
+          "ties": 4544.75,
+          "flips": 2508,
+          "comparisons": 177484,
+          "tied_flips": 1421.0
+        },
+        "14": {
+          "overlaps": 202164,
+          "ties": 3432.25,
+          "flips": 457,
+          "comparisons": 181539,
+          "tied_flips": 376.25
+        },
+        "15": {
+          "overlaps": 202164,
+          "ties": 3432.25,
+          "flips": 457,
+          "comparisons": 181539,
+          "tied_flips": 376.25
+        },
+        "16": {
+          "overlaps": 202164,
+          "ties": 3432.25,
+          "flips": 457,
+          "comparisons": 181539,
+          "tied_flips": 376.25
+        },
+        "17": {
+          "overlaps": 202164,
+          "ties": 3432.25,
+          "flips": 457,
+          "comparisons": 181539,
+          "tied_flips": 376.25
+        },
+        "18": {
+          "overlaps": 202164,
+          "ties": 3432.25,
+          "flips": 457,
+          "comparisons": 181539,
+          "tied_flips": 376.25
+        },
+        "19": {
+          "overlaps": 210121,
+          "ties": 3457.25,
+          "flips": 460,
+          "comparisons": 186274,
+          "tied_flips": 349.25
+        },
+        "21": {
+          "overlaps": 545578,
+          "ties": 8508.5,
+          "flips": 1840,
+          "comparisons": 482322,
+          "tied_flips": 1235.0
+        },
+        "22": {
+          "overlaps": 119530,
+          "ties": 1973.5,
+          "flips": 799,
+          "comparisons": 84934,
+          "tied_flips": 475.0
+        },
+        "23": {
+          "overlaps": 332547,
+          "ties": 5277.25,
+          "flips": 1048,
+          "comparisons": 283370,
+          "tied_flips": 883.0
+        },
+        "24": {
+          "overlaps": 153630,
+          "ties": 2720.75,
+          "flips": 714,
+          "comparisons": 126065,
+          "tied_flips": 456.0
+        },
+        "25": {
+          "overlaps": 161736,
+          "ties": 2845.25,
+          "flips": 808,
+          "comparisons": 132605,
+          "tied_flips": 550.25
+        },
+        "27": {
+          "overlaps": 177857,
+          "ties": 2998.75,
+          "flips": 1124,
+          "comparisons": 141889,
+          "tied_flips": 596.5
+        },
+        "33": {
+          "overlaps": 123989,
+          "ties": 2234.75,
+          "flips": 536,
+          "comparisons": 101763,
+          "tied_flips": 345.75
+        },
+        "34": {
+          "overlaps": 202160,
+          "ties": 3441.0,
+          "flips": 457,
+          "comparisons": 181535,
+          "tied_flips": 378.0
+        },
+        "35": {
+          "overlaps": 121795,
+          "ties": 2349.0,
+          "flips": 605,
+          "comparisons": 100095,
+          "tied_flips": 424.5
+        },
+        "36": {
+          "overlaps": 177857,
+          "ties": 2998.75,
+          "flips": 1124,
+          "comparisons": 141889,
+          "tied_flips": 596.5
+        },
+        "37": {
+          "overlaps": 103116,
+          "ties": 1729.0,
+          "flips": 438,
+          "comparisons": 77965,
+          "tied_flips": 322.5
+        },
+        "40": {
+          "overlaps": 261556,
+          "ties": 4639.5,
+          "flips": 2287,
+          "comparisons": 187639,
+          "tied_flips": 1102.5
+        },
+        "41": {
+          "overlaps": 265011,
+          "ties": 4944.25,
+          "flips": 2577,
+          "comparisons": 188836,
+          "tied_flips": 1310.0
+        },
+        "42": {
+          "overlaps": 366501,
+          "ties": 5374.0,
+          "flips": 3966,
+          "comparisons": 221526,
+          "tied_flips": 2198.25
+        },
+        "43": {
+          "overlaps": 160065,
+          "ties": 2928.25,
+          "flips": 743,
+          "comparisons": 132856,
+          "tied_flips": 560.75
+        },
+        "44": {
+          "overlaps": 455136,
+          "ties": 8124.25,
+          "flips": 1671,
+          "comparisons": 398766,
+          "tied_flips": 1219.5
+        },
+        "46": {
+          "overlaps": 118585,
+          "ties": 2112.75,
+          "flips": 996,
+          "comparisons": 82408,
+          "tied_flips": 535.5
+        },
+        "47": {
+          "overlaps": 246716,
+          "ties": 4491.25,
+          "flips": 2072,
+          "comparisons": 183847,
+          "tied_flips": 1095.0
+        },
+        "48": {
+          "overlaps": 200203,
+          "ties": 3657.25,
+          "flips": 1326,
+          "comparisons": 151697,
+          "tied_flips": 894.75
+        },
+        "49": {
+          "overlaps": 125238,
+          "ties": 2549.25,
+          "flips": 1006,
+          "comparisons": 93404,
+          "tied_flips": 548.75
+        },
+        "50": {
+          "overlaps": 243122,
+          "ties": 4951.0,
+          "flips": 3624,
+          "comparisons": 105112,
+          "tied_flips": 1301.0
+        },
+        "51": {
+          "overlaps": 455571,
+          "ties": 7496.0,
+          "flips": 4401,
+          "comparisons": 335106,
+          "tied_flips": 2329.25
+        },
+        "52": {
+          "overlaps": 200203,
+          "ties": 3657.25,
+          "flips": 1326,
+          "comparisons": 151697,
+          "tied_flips": 894.75
+        },
+        "53": {
+          "overlaps": 246716,
+          "ties": 4491.25,
+          "flips": 2072,
+          "comparisons": 183847,
+          "tied_flips": 1095.0
+        },
+        "54": {
+          "overlaps": 246716,
+          "ties": 4491.25,
+          "flips": 2072,
+          "comparisons": 183847,
+          "tied_flips": 1095.0
+        },
+        "55": {
+          "overlaps": 455571,
+          "ties": 7496.0,
+          "flips": 4401,
+          "comparisons": 335106,
+          "tied_flips": 2329.25
+        },
+        "56": {
+          "overlaps": 246716,
+          "ties": 4491.25,
+          "flips": 2072,
+          "comparisons": 183847,
+          "tied_flips": 1095.0
+        }
+      },
+      "totals": {
+        "overlaps": 10868230,
+        "ties": 186440.5,
+        "flips": 65016,
+        "comparisons": 8599142,
+        "tied_flips": 38313.75
+      }
+    }
+  }
+}
