@@ -1,8 +1,9 @@
-"""Budget-neutral final import pass: independently cull the worst bent quads.
+"""Fixed-heap final import pass: independently cull the worst bent quads.
 
 No vertex, normal, UV, palette, skeleton or decoded animation changes. Splitting
-uses the GPU's original diagonal. Only lossless resident animation compaction
-and final-stage unused/duplicate pool entries may pay for the extra primitives;
+uses the GPU's original diagonal. Lossless resident animation compaction,
+final-stage unused/duplicate pool entries and existing partner-buffer headroom
+pay for extra primitives;
 remaining bent quads are reported, never removed or flattened to meet a budget.
 The original pools must remain available to the earlier grounding/rig passes.
 """
@@ -16,10 +17,13 @@ import mmd
 
 DEGREES = 3.0
 MAX_PACKET_GROWTH = 1024
+# Keep the measured peak below the existing 100,352-byte partner allocation.
+MAX_RESIDENT = 100256
 PINS = Path(__file__).resolve().parents[1] / 'derive/recipes/species-pins.json'
+HEADROOM = Path(__file__).resolve().parents[2] / 'content/models/imports/mesh-headroom.json'
 
 
-def apply_provider(data, skeleton):
+def apply_provider(data, skeleton, sid=None):
     """Preserve already pinned alternate-release outputs until independently
     verified/repinned. This uses the existing release pins, never species rules.
     The developer apply() entry point remains available to audit those inputs."""
@@ -28,7 +32,9 @@ def apply_provider(data, skeleton):
     for provider, rows in pins.items():
         if provider.startswith('imports@') and any(pair[0] == digest for pair in rows.values()):
             return data, dict(applied=False, source_variant=provider, deferred=True)
-    return apply(data, skeleton)
+    reviewed = json.loads(HEADROOM.read_text())['ids']
+    limit = MAX_RESIDENT if sid is not None and int(sid) in reviewed else None
+    return apply(data, skeleton, resident_limit=limit)
 
 
 def split_quad(prim):
@@ -139,8 +145,9 @@ def compact_pools(model):
     t.verts, t.norms = vertices, normals
 
 
-def apply(data, skeleton, packet_growth=MAX_PACKET_GROWTH):
-    """Return unchanged input if no safe repair fits. Resident bytes never grow.
+def apply(data, skeleton, packet_growth=MAX_PACKET_GROWTH, resident_limit=None):
+    """Return unchanged input if no safe repair fits. An explicit resident ceiling
+    permits using existing heap headroom; otherwise resident bytes never grow.
     The sum of all primitives' packet-format sizes is bounded separately.
     This is not a bound on per-frame growth: culling can expose a previously
     absent half. No render buffer is resized; runtime profiling is still needed."""
@@ -159,7 +166,8 @@ def apply(data, skeleton, packet_growth=MAX_PACKET_GROWTH):
     compact_pools(result)
     compact = result.build()
     resident_compact = len(coldsplit.split(compact, nb)[0])
-    allowance = resident_before - resident_compact
+    resident_limit = resident_before if resident_limit is None else resident_limit
+    allowance = resident_limit - resident_compact
     # Pool compaction changes corner indices, never object/primitive indices.
     used, packets, selected = 0, 0, {}
     for row in bent:
@@ -178,8 +186,8 @@ def apply(data, skeleton, packet_growth=MAX_PACKET_GROWTH):
         ob.prims = [p for pi, prim in enumerate(ob.prims) for p in selected.get((oi,pi), [prim])]
     output = result.build()
     resident_after = len(coldsplit.split(output, nb)[0])
-    if resident_after > resident_before:
-        raise ValueError('mesh stability pass grew resident data')
+    if resident_after > resident_limit:
+        raise ValueError('mesh stability pass exceeded resident ceiling')
     return output, dict(applied=True, split=len(selected), remaining=len(bent)-len(selected),
                         risk_before=sum(r['risk'] for r in bent),
                         risk_after=sum(r['risk'] for r in bent if (r['object'],r['primitive']) not in selected),

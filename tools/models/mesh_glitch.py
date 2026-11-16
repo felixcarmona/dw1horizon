@@ -124,6 +124,53 @@ def coplanar_details(model):
                 opposite_pairs=opposite, pairs=result)
 
 
+# A crossing deeper than two OT bins and 2% of the drawn height needs review,
+# even when an aggregate native maximum hides a small pair of moving parts.
+# This is a geometric candidate policy, not a native-calibrated visual verdict.
+PART_DEPTH_UNITS = 8.0
+PART_DEPTH_HEIGHT = .02
+
+
+def part_intersections(model, poses, ticks=None):
+    """Locate deep cross-bone intersections, including parent/child pieces.
+
+    Report the slot/tick at the caller, retaining bone identity and depth rather
+    than diluting a local defect by total model triangle count. Joint contacts,
+    hidden surfaces and transparent effects can also cross: review is required.
+    """
+    from tools.models.field_animations.meshclash import crossing
+    ticks = range(len(poses)) if ticks is None else ticks
+    indices = {b: np.array([t[3] for t in model.tris if t[0] == b], int)
+               for b in model.local}
+    indices = {b: ids for b, ids in indices.items() if len(ids)}
+    if not indices:
+        return []
+    worst = {}
+    for tick, pose in zip(ticks, poses):
+        world = model.world(pose)
+        tri = {b: world[b][ids] for b, ids in indices.items()}
+        drawn = np.concatenate(list(tri.values()))
+        area = np.linalg.norm(np.cross(drawn[:, 1]-drawn[:, 0], drawn[:, 2]-drawn[:, 0]), axis=1)
+        surface = drawn[area > 1e-8]
+        height = max(float(np.ptp(surface[:, :, 1])), 1.) if len(surface) else 1.
+        box = {b: (t.min((0, 1)), t.max((0, 1))) for b, t in tri.items()}
+        for a in tri:
+            for b in tri:
+                if b <= a or (box[a][0] > box[b][1]).any() or (box[b][0] > box[a][1]).any():
+                    continue
+                # Reuse one hit mask for both directions: a bone renumbering
+                # must not change whether the candidate is detected.
+                count, depth = crossing(tri[a], tri[b], symmetric=True)
+                if depth <= max(PART_DEPTH_UNITS, PART_DEPTH_HEIGHT*height):
+                    continue
+                key = (a, b)
+                if depth > worst.get(key, {}).get('depth', -1):
+                    worst[key] = dict(bones=[a, b], count=count, depth=depth,
+                        height_fraction=depth/height, tick=int(tick),
+                        adjacent=model.bones[a][1] == b or model.bones[b][1] == a)
+    return sorted(worst.values(), key=lambda r: (-r['depth'], r['bones']))
+
+
 def geometry(model):
     W = model.world(model.rest())
     T = model.tri_array(W)
@@ -152,6 +199,7 @@ def measure(model, slots=(0, 2, 3, 4, 33, 34, 35, 36), samples=4):
     slots = model.slots() if slots is None else slots
     rig = Q.Rig.from_mmd(model.m, model.bones)
     clips = {}
+    part_pairs = []
     for slot in slots:
         if slot not in model.slots():
             continue
@@ -167,9 +215,12 @@ def measure(model, slots=(0, 2, 3, 4, 33, 34, 35, 36), samples=4):
         clip = Q.Clip(rig, np.array(selected, float))
         cross = Q.crossings(rig, clip.V, len(selected), step=1)
         depth = depth_probe(model, selected)
+        part_pairs.extend(dict(slot=int(slot), **r) for r in part_intersections(model, selected, idx))
         clips[str(slot)] = dict(decoded_ticks=len(poses), measured_ticks=len(selected),
                                 crossings_mean=cross[0], crossings_max=cross[1], **depth)
     out['clips'] = clips
+    out['part_intersections'] = part_pairs
+    out['part_candidates'] = len({tuple(r['bones']) for r in part_pairs})
     out['tie_rate'] = sum(c['ties'] for c in clips.values()) / max(1, sum(c['overlaps'] for c in clips.values()))
     out['flip_rate'] = sum(c['flips'] for c in clips.values()) / max(1, sum(c['comparisons'] for c in clips.values()))
     out['crossings_max'] = max((c['crossings_max'] for c in clips.values()), default=0)
@@ -216,5 +267,7 @@ def classify(row, thresholds):
     if 'error' in row:
         return dict(verdict='error', flags=[row['error']])
     flags = [k for k in METRICS if row[k] > thresholds[k]]
-    return dict(verdict='fail' if flags else 'pass', flags=flags,
+    candidates = ['part_interpenetration'] if row.get('part_candidates', 0) else []
+    return dict(verdict='fail' if flags else ('review' if candidates else 'pass'),
+                envelope_verdict='fail' if flags else 'pass', flags=flags+candidates,
                 severity=max(row[k]/max(thresholds[k], 1 if k in ('degenerate', 'tiny', 'crossings_max') else 1e-12) for k in METRICS))

@@ -55,6 +55,73 @@ class Duplicates(unittest.TestCase):
             C.apply(m.build(), bones, 405)
 
 
+class CrossingDepth(unittest.TestCase):
+    def test_vectorized_depth_matches_scalar_and_symmetric_reversal(self):
+        from tools.models.field_animations import meshclash as X
+        rng = np.random.default_rng(9)
+        a, b = rng.normal(size=(16, 3, 3))*30, rng.normal(size=(12, 3, 3))*30
+        hit = np.zeros((len(a), len(b)), bool)
+        for k in range(3):
+            hit |= X._crossings(a[:, k], a[:, (k+1)%3], b)
+            hit |= X._crossings(b[:, k], b[:, (k+1)%3], a).T
+        expected = 0.
+        for i, j in zip(*np.nonzero(hit)):
+            n = np.cross(b[j, 1]-b[j, 0], b[j, 2]-b[j, 0])
+            n = n/(np.linalg.norm(n)+1e-9)
+            d = (a[i]-b[j, 0])@n
+            expected = max(expected, min(max(d.max(), 0), max(-d.min(), 0)))
+        count, depth = X.crossing(a, b)
+        self.assertEqual(count, int(hit.sum()))
+        self.assertAlmostEqual(depth, expected)
+        reverse = X.crossing(b, a)[1]
+        self.assertAlmostEqual(X.crossing(a, b, symmetric=True)[1], max(depth, reverse))
+        self.assertAlmostEqual(X.crossing(a, b, symmetric=True)[1], X.crossing(b, a, symmetric=True)[1])
+        X.crossing(a.astype(int), b.astype(int), symmetric=True)
+
+
+class PieceRepairs(unittest.TestCase):
+    def test_translation_and_uniform_fit_preserve_authored_normals(self):
+        m, _ = model(box_object())
+        old = list(m.tmd.norms)
+        C.transform_piece(m, 0, offset=(0, 0, -8))
+        self.assertEqual(m.tmd.norms, old)
+        C.transform_piece(m, 0, scale=(.7, .7, .7))
+        self.assertEqual(m.tmd.norms, old)
+
+    def test_layer_offset_leaves_base_and_other_pools_fixed(self):
+        ob, vv, nn = box_object()
+        ob.prims = ob.prims[:1]*2
+        m, _ = model((ob, vv, nn), box_object())
+        base = m.tmd.objects[0].prims[1].decode()['verts']
+        other = list(m.tmd.obj_verts(1))
+        C.offset_layer(m, 0, [0], (0, 0, -6))
+        overlay = m.tmd.objects[0].prims[0].decode()['verts']
+        vertices = m.tmd.obj_verts(0)
+        self.assertEqual(list(m.tmd.obj_verts(1)), other)
+        for a, b in zip(base, overlay):
+            self.assertNotEqual(a, b)
+            self.assertEqual(vertices[b][:3], (vertices[a][0], vertices[a][1], vertices[a][2]-6))
+
+    def test_joint_extension_preserves_momentum_events_and_every_decoded_tick(self):
+        m, bones = model(box_object())
+        pose = [[4096]*3+[0]*6 for _ in bones]
+        frames = [copy.deepcopy(pose) for _ in range(8)]
+        for i, p in enumerate(frames):
+            p[1][6] = 10+i*3
+        m.anims.anims = [mmd.encode_anim(frames, len(bones), 0, [])]
+        m.anims.table = [0]
+        before, info = mmd.simulate(m.anims.anims[0], len(bones))
+        size = len(m.anims.anims[0].build())
+        C.translate_bone(m, 1, 0, 40)
+        after, result = mmd.simulate(m.anims.anims[0], len(bones))
+        expected = copy.deepcopy(before)
+        for p in expected:
+            p[1][6] += 40
+        self.assertEqual(after, expected)
+        self.assertEqual(result, info)
+        self.assertEqual(len(m.anims.anims[0].build()), size)
+
+
 class Renderer(unittest.TestCase):
     def mesh(self, vertices, prims):
         ob = mmd.TMDObject(); ob.prims = prims
