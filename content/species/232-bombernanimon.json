@@ -10,6 +10,7 @@
                  "Power Crane", "Full Potential", "Metal Sprinter", "Reverse Prog",
                  "Iga School Knife Throw"],
   "drop": {"item": "sm.recovery", "percent": 10},
+  "own_effect": {"technique": "Iga School Knife Throw", "chunk": 301},
   "effects_like": 58,
   "model": {
     "file": "build/batch5/BomberNanimon.MMD",

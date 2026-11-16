@@ -1112,5 +1112,82 @@
       {"from": 20, "rect": [96, 0, 32, 32], "to": [80, 0], "palettes": [[0, 0]]}],
       "recolour": {"ramp": ["#000000", "#1a5a9a", "#90d8ff", "#ffffff"]}, "scale": 1.2},
     "check": {"hue": 205}
+  },
+  "278": {
+    "name": "Needle Spray",
+    "stands_for": 91,
+    "compose": {"texture": [
+      {"from": 69, "rect": [0, 0, 64, 32], "to": [0, 0], "palettes": []}],
+      "recolour": {"ramp": ["#000000", "#3a6a10", "#a0e040", "#f8ffe0"]},
+      "scale": [1, 1, 1.8]},
+    "check": {"hue": 90}
+  },
+  "283": {
+    "name": "V Wing Blade",
+    "stands_for": 89,
+    "compose": {"texture": [
+      {"from": 39, "rect": [64, 0, 32, 32], "to": [32, 0], "palettes": []},
+      {"from": 39, "rect": [64, 0, 32, 32], "to": [64, 0], "palettes": []}],
+      "recolour": {"ramp": ["#000000", "#1a4a8a", "#70c0ff", "#f4fbff"]},
+      "scale": 1.5},
+    "check": {"hue": 265}
+  },
+  "248": {
+    "name": "Terra Destroyer",
+    "stands_for": 109,
+    "compose": {"texture": [
+      {"from": 94, "rect": [96, 0, 32, 32], "to": [0, 0], "palettes": [[0, 0]]},
+      {"from": 94, "rect": [96, 0, 32, 32], "to": [32, 0], "palettes": []},
+      {"from": 94, "rect": [96, 0, 32, 32], "to": [64, 0], "palettes": []}],
+      "recolour": {"ramp": ["#000000", "#8a1a00", "#ff8020", "#fff4d0"]},
+      "scale": 1.8},
+    "check": {"hue": 25}
+  },
+  "307": {
+    "name": "Pulse Blast",
+    "stands_for": 90,
+    "compose": {"texture": [
+      {"from": 112, "rect": [4, 4, 24, 24], "to": [0, 0], "palettes": []},
+      {"from": 112, "rect": [4, 4, 24, 24], "to": [24, 0], "palettes": []},
+      {"from": 112, "rect": [32, 0, 32, 32], "to": [48, 0], "palettes": []},
+      {"from": 112, "rect": [32, 0, 32, 32], "to": [80, 0], "palettes": []},
+      {"from": 112, "rect": [32, 0, 32, 32], "to": [112, 0], "palettes": []}],
+      "recolour": {"ramp": ["#000000", "#004a6a", "#20b0e0", "#80f0ff"]}, "scale": [1, 2.5, 1]},
+    "check": {"hue": 190}
+  },
+  "327": {
+    "name": "Darkness Zone",
+    "stands_for": 74,
+    "compose": {"texture": [
+      {"from": 35, "rect": [32, 0, 32, 32], "to": [40, 0], "palettes": [[0, 0]]},
+      {"from": 35, "rect": [64, 0, 32, 32], "to": [8, 0], "palettes": []}],
+      "recolour": {"ramp": ["#000000", "#10021e", "#5a1890", "#b070f0"]},
+      "scale": 1.6},
+    "check": {"hue": 280}
+  },
+  "320": {
+    "name": "Solar Flare",
+    "stands_for": 86,
+    "compose": {"texture": [
+      {"from": 94, "rect": [96, 0, 32, 32], "to": [128, 0], "palettes": [[0, 1]]}],
+      "recolour": {"ramp": ["#000000", "#a03000", "#ffb020", "#fffff0"]},
+      "scale": 1.4},
+    "check": {"hue": 35}
+  },
+  "246": {
+    "name": "Diamond Storm",
+    "stands_for": 88,
+    "compose": {"recolour": {"ramp": ["#000000", "#5a3a8a", "#e0b0ff", "#ffffff"]},
+      "scale": 1.4},
+    "check": {"hue": 280}
+  },
+  "301": {
+    "name": "Free Throw Bomb",
+    "stands_for": 73,
+    "compose": {"texture": [
+      {"from": 39, "rect": [0, 0, 32, 32], "to": [8, 0], "palettes": []}],
+      "recolour": {"ramp": ["#000000", "#6a2a10", "#e07030", "#fff0d0"]},
+      "scale": 1.5},
+    "check": {"hue": 20}
   }
 }

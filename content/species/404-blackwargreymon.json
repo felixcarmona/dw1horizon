@@ -10,6 +10,7 @@
                  "Megaton Punch", "Buster Dive", "Counter", "Dynamite Kick (44)", "Spinning Shot",
                  "Megalo Spark", "Confused Storm", "Wind Cutter", "Nightmare Syndromer"],
   "drop": {"item": "sm.recovery", "percent": 10},
+  "own_effect": {"technique": "Nightmare Syndromer", "chunk": 248},
   "effects_like": 40,
   "model": {
     "file": "build/meshfix2-out/BlackWarGreymon.MMD",

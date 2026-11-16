@@ -10,6 +10,7 @@
                  "Megaton Punch", "Buster Dive", "Counter", "Dynamite Kick (44)", "Heat Laser",
                  "Prominence Beam", "Magma Bomb", "Nightmare Syndromer"],
   "drop": {"item": "Restore", "percent": 20},
+  "own_effect": {"technique": "Nightmare Syndromer", "chunk": 283},
   "effects_like": 12,
   "model": {
     "file": "build/sizes-out/models/AeroVeedramon.MMD",
