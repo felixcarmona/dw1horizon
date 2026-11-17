@@ -37,7 +37,8 @@ class DrownedShore(unittest.TestCase):
         cls.script = (root / 'story/mods/what-the-island-forgot/arcs/shore/drowned-shore.py').read_text()
         cls.whale = tuple(map(int, re.search(r'shore\.npc\(.*at=\((-?\d+), (-?\d+)\)', cls.script).groups()))
         cls.chest = tuple(map(int, re.search(r'spawn_chest\(.*at=\((-?\d+), (-?\d+)\)', cls.script).groups()))
-        cls.radius = json.loads((root / 'content/species/24-whamon.json').read_text())['model']['radius']
+        cls.ferry = data['ferry']
+        cls.radius = json.loads((root / 'content/species/146-whamon.json').read_text())['model']['radius']
         distance, pitch = data['camera']
         camera = dict(vpx=0, vpy=int(-distance*math.sin(math.radians(pitch))/2),
                       vpz=int(-distance*math.cos(math.radians(pitch))/2), vrx=0, vry=0, vrz=0)
@@ -55,14 +56,17 @@ class DrownedShore(unittest.TestCase):
         r = self.reach
         self.assertIn('autotalk=False',self.script)
         self.assertIn('still=True',self.script)
-        self.assertIn('Species.Whamon,',self.script)
+        self.assertIn('Species.Whamon146,',self.script)
+        self.assertEqual(self.radius,400)
+        self.assertIn('whamon.turn(1024)',self.script)
+        self.assertEqual(self.ferry,dict(species=146,at=list(self.whale),radius=self.radius,facing=1024))
         self.assertTrue(all(r.can_x(self.grid,*self.arrival,d,100) and
                             r.can_z(self.grid,*self.arrival,d,100) for d in (-1,1)))
         self.assertGreaterEqual(sum(r.model_tile(x,z)==self.opening for x,z in self.area),50)
         wx,wz = self.whale
         edge = self.radius+100
-        self.assertTrue(any(edge < max(abs(x-wx),abs(z-wz)) <= edge+50 and
-                            abs(x-wx)<=edge+50 and abs(z-wz)<=edge+50 for x,z in self.area))
+        self.assertTrue(any((edge < abs(x-wx) <= edge+50 and abs(z-wz)<=edge) or
+                            (edge < abs(z-wz) <= edge+50 and abs(x-wx)<=edge) for x,z in self.area))
 
     def test_all_sides_and_notebook_are_reachable(self):
         self.assertGreater(len(self.area),120000)
@@ -70,6 +74,15 @@ class DrownedShore(unittest.TestCase):
             x,z = self.cam.world(*pixel)
             point = (round(x/10)*10,round(z/10)*10)
             self.assertIn(point,self.area,pixel)
+
+    def test_ferry_does_not_cut_off_any_beach(self):
+        # Every previously reachable position outside the giant's own collision
+        # box must stay connected to the arrival, even with the closed chest.
+        beach = self.reach.reach(self.grid,seed_policy='spawn_coordinates')
+        wx,wz = self.whale
+        edge = self.radius+100
+        self.assertEqual(self.area,{(x,z) for x,z in beach
+                                   if abs(x-wx)>edge or abs(z-wz)>edge})
 
     def test_ferry_is_the_only_exit(self):
         self.assertTrue(all(w['targetMap']==-1 for w in self.grid.warps))

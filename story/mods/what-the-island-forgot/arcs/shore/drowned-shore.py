@@ -6,12 +6,13 @@ from ...state import memories, m12_shore, memory_news
 
 shore = new_screen(309, map="build/what-the-island-forgot-maps/screens/SHOR01.MAP")
 chest_shore = flag()
-# The ordinary Whamon model fits this small landing. Keep the ferry still at the
-# water's edge: its radius (200) plus the tamer's (100) leaves the beach clear.
-whamon = shore.npc(Species.Whamon, at=(1650, -850), range=0, still=True, autotalk=False)
+# Turn the giant ferry along the water's edge so its model clears the beach. Its radius
+# (400) plus the tamer's (100) leaves the shore and return talk boundary reachable.
+whamon = shore.npc(Species.Whamon146, at=(1560, -1720), range=0, still=True, autotalk=False)
 
 @shore.on_enter
 def the_wreck():
+    whamon.turn(1024)
     # West of the narrow strip by the water: opened from its east side, it leaves the way along the beach free.
     spawn_chest(Item.SupRecovery, at=(-2036, -1152), opened=chest_shore, facing=3072)
     music(15)                     # Freezeland's
