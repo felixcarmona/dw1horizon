@@ -31,11 +31,10 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path[:0] = [str(ROOT), str(ROOT / 'tools')]
 import animsheet  # noqa: E402
 import mmd  # noqa: E402
-import numpy as np  # noqa: E402
+from tools.derive import arraymath as np  # noqa: E402
 import motionstorage  # noqa: E402
 from motiondiscidentity import changed_programs  # noqa: E402
 from tools.models.field_animations.articulation import replace_channels  # noqa: E402
-from tools.models.field_animations.meshclash import Clash  # noqa: E402
 from tools.models.field_animations.war_greymon import rotation  # noqa: E402
 
 SPECIES, NB = 315, 29
@@ -71,7 +70,11 @@ def smooth_over(need, sweeps=12):
 class Arms:
     def __init__(self, model, clash=True):
         self.model = model
-        self.clash = Clash(model, mmd.exe().skeleton[SPECIES]) if clash else None
+        if clash:   # meshclash needs numpy: only the slow search (never the player's build) loads it
+            from tools.models.field_animations.meshclash import Clash
+            self.clash = Clash(model, mmd.exe().skeleton[SPECIES])
+        else:
+            self.clash = None
 
     def pairs(self, pose, arm, world=None):
         world = self.clash.world(pose) if world is None else world
@@ -86,7 +89,7 @@ class Arms:
         axis (the shoulder piece stays where it is)."""
         bone = ARMS[arm]['bone']
         parent = np.array(mmd.bone_matrices(self.model, pose)[ARMS[arm]['shoulder']], float)[:3, :3]
-        parent = parent / np.cbrt(abs(np.linalg.det(parent)))
+        parent = parent / math.cbrt(abs(float(np.linalg.det(parent))))
         sign = ARMS[arm]['sign']
         turn = np.array(rotation([back, 0, -sign * outward]))
         out = copy.deepcopy(pose)
