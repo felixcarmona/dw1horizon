@@ -9,8 +9,8 @@
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Spit Fire", "Heat Laser",
                  "Fire Tower", "Spiral Twister"],
   "drop": {"item": "sm.recovery", "percent": 10},
-  "own_effect": {"technique": "Spiral Twister", "chunk": 246},
   "effects_like": 48,
+  "own_effect": {"technique": "Spiral Twister", "chunk": 246},
   "model": {
     "file": "build/batch16/Renamon.MMD",
     "radius": 123,

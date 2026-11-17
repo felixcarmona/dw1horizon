@@ -3,7 +3,7 @@
 
 python tools/models/audit_translucency.py --from BUILD --after DIR --out build/translucency/evidence
 BUILD is a derive output with source-games and imported-models (read only).
-DIR contains final provider ID.MMD/TIM pairs after the fix. NumPy/Pillow required.
+DIR contains final provider ID.MMD/TIM pairs after the fix. NumPy required.
 """
 import argparse
 from collections import Counter
@@ -103,7 +103,7 @@ def main():
         record['after'] = materials(after_path.read_bytes(), (args.after / f'{sid}.TIM').read_bytes()) if after_path.exists() else final
         report[str(sid)] = record
     (args.out / 'materials.json').write_text(json.dumps(report, indent=2) + '\n')
-    from PIL import Image, ImageDraw
+    from tools.image import Image, ImageDraw
     def final_model(sid, folder):
         record = args.after / f'{sid}.json'
         skeleton = json.loads((record if record.exists() else next((ROOT / 'content/species').glob(f'{sid}-*.json'))).read_text())['model']['skeleton']

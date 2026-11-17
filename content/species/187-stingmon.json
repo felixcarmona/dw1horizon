@@ -9,9 +9,9 @@
   "techniques": ["Danger Sting", "Poison Claw", "Mass Morph", "Insect Plague", "Poison Powder", "Charm Perfume",
                  "Sonic Jab", "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Death Claw", "Bug",
                  "Megaton Punch"],
-  "own_effect": {"technique": "Death Claw", "chunk": 258},
   "drop": {"item": "Medium MP", "percent": 30},
   "effects_like": 6,
+  "own_effect": {"technique": "Death Claw", "chunk": 258},
   "model": {
     "file": "build/batch/Stingmon.MMD",
     "radius": 166,

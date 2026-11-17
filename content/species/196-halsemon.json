@@ -9,8 +9,8 @@
   "techniques": ["Wind Cutter", "Hurricane", "Confused Storm", "Static Elect", "Electric Cloud", "Megalo Spark",
                  "Muscle Charge", "War Cry", "Sonic Jab", "Tremar", "Spnning Needle"],
   "drop": {"item": "sm.recovery", "percent": 10},
-  "own_effect": {"technique": "Spnning Needle", "chunk": 267},
   "effects_like": 22,
+  "own_effect": {"technique": "Spnning Needle", "chunk": 267},
   "model": {
     "file": "build/batch2/Halsemon.MMD",
     "radius": 193,

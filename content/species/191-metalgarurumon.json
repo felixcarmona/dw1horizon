@@ -10,8 +10,8 @@
                  "All Range Beam", "DG Dimension", "Delete Program", "Pulse Laser", "Megaton Punch",
                  "Counter", "Dynamite Kick (44)", "Sonic Jab", "Genoside Attack"],
   "drop": {"item": "sm.recovery", "percent": 10},
-  "own_effect": {"technique": "Genoside Attack", "chunk": 262},
   "effects_like": 22,
+  "own_effect": {"technique": "Genoside Attack", "chunk": 262},
   "model": {
     "file": "build/sizes-out/models/MetalGarurumon.MMD",
     "radius": 300,

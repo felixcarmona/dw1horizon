@@ -8,9 +8,9 @@
   "specialties": ["battle", "air", null],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Electric Cloud", "Static Elect",
                  "Wind Cutter", "Boom Bubble"],
-  "own_effect": {"technique": "Boom Bubble", "chunk": 291},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 33,
+  "own_effect": {"technique": "Boom Bubble", "chunk": 291},
   "model": {
     "file": "build/batch4/Salamon.MMD",
     "radius": 100,

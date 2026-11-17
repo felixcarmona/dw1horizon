@@ -9,9 +9,9 @@
   "techniques": ["Odor Spray", "Big Poop Toss", "Horizontal Kick (55)", "Poop Rnd Toss", "Poop Spd Toss",
                  "Rnd Spd Toss", "Water Blit", "Aqua Magic", "Tear Drop", "Counter",
                  "Iga School Knife Throw"],
-  "own_effect": {"technique": "Iga School Knife Throw", "chunk": 300},
   "drop": {"item": "Giant Meat", "percent": 30},
   "effects_like": 5,
+  "own_effect": {"technique": "Iga School Knife Throw", "chunk": 300},
   "model": {
     "file": "build/batch5/ShellNumemon.MMD",
     "radius": 194,

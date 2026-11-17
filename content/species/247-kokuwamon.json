@@ -8,9 +8,9 @@
   "specialties": ["air", "mech", null],
   "techniques": ["Static Elect", "Electric Cloud", "Wind Cutter", "Confused Storm", "Power Crane", "Full Potential",
                  "Metal Sprinter", "Electric Shock"],
-  "own_effect": {"technique": "Electric Shock", "chunk": 316},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 34,
+  "own_effect": {"technique": "Electric Shock", "chunk": 316},
   "model": {
     "file": "build/batch6/Kokuwamon.MMD",
     "radius": 100,

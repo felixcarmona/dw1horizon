@@ -10,9 +10,9 @@
   "techniques": ["Spit Fire", "Fire Tower", "Magma Bomb", "Heat Laser", "Red Inferno", "Meltdown", "Inifinity Burn",
                  "Prominence Beam", "Buster Dive", "Megaton Punch", "Counter", "Dynamite Kick (44)",
                  "Tremar", "Mega Flame"],
-  "own_effect": {"technique": "Mega Flame", "chunk": 252},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 36,
+  "own_effect": {"technique": "Mega Flame", "chunk": 252},
   "model": {
     "name": "BRAK",
     "bones": 21,

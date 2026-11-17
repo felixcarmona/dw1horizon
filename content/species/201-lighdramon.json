@@ -8,9 +8,9 @@
   "specialties": ["air", "battle", null],
   "techniques": ["Electric Cloud", "Megalo Spark", "Static Elect", "Wind Cutter", "Confused Storm", "Hurricane",
                  "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Solar Ray"],
-  "own_effect": {"technique": "Solar Ray", "chunk": 272},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 22,
+  "own_effect": {"technique": "Solar Ray", "chunk": 272},
   "model": {
     "file": "build/batch2/Raidramon.MMD",
     "radius": 252,

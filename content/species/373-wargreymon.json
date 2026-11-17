@@ -9,9 +9,9 @@
   "techniques": ["Inifinity Burn", "Prominence Beam", "Meltdown", "Magma Bomb", "Red Inferno", "Fire Tower",
                  "Megaton Punch", "Buster Dive", "Counter", "Dynamite Kick (44)", "Spinning Shot",
                  "Megalo Spark", "Confused Storm", "Wind Cutter", "Crimson Flare"],
-  "own_effect": {"technique": "Crimson Flare", "chunk": 326},
   "drop": {"item": "Restore", "percent": 20},
   "effects_like": 5,
+  "own_effect": {"technique": "Crimson Flare", "chunk": 326},
   "model": {
     "file": "build/models/WarGreymon.MMD",
     "radius": 230,

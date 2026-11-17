@@ -8,9 +8,9 @@
   "specialties": ["battle", "fire", null],
   "techniques": ["Megaton Punch", "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Tremar",
                  "Spit Fire", "Heat Laser", "Fire Tower", "Red Inferno", "Pummel Whack"],
-  "own_effect": {"technique": "Pummel Whack", "chunk": 296},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 60,
+  "own_effect": {"technique": "Pummel Whack", "chunk": 296},
   "model": {
     "file": "build/batch4/Apemon.MMD",
     "radius": 150,

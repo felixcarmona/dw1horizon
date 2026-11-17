@@ -9,8 +9,8 @@
   "techniques": ["Spit Fire", "Heat Laser", "Fire Tower", "Red Inferno", "Power Crane", "Full Potential",
                  "Metal Sprinter", "Spiral Twister"],
   "drop": {"item": "Enemy repel", "percent": 10},
-  "own_effect": {"technique": "Spiral Twister", "chunk": 320},
   "effects_like": 39,
+  "own_effect": {"technique": "Spiral Twister", "chunk": 320},
   "model": {
     "file": "build/batch6/Solarmon.MMD",
     "radius": 100,

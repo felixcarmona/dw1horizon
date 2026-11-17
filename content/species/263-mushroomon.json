@@ -9,8 +9,8 @@
   "techniques": ["Poison Powder", "Mass Morph", "Insect Plague", "Poison Claw", "Sonic Jab", "Muscle Charge",
                  "War Cry", "Drill Spin", "Charm Perfume"],
   "drop": {"item": "sm.recovery", "percent": 10},
-  "own_effect": {"technique": "Drill Spin", "chunk": 165},
   "effects_like": 52,
+  "own_effect": {"technique": "Drill Spin", "chunk": 165},
   "model": {
     "file": "build/batch7/Mushroomon.MMD",
     "radius": 100,

@@ -8,9 +8,9 @@
   "specialties": ["ice", "battle", null],
   "techniques": ["Giga Freeze", "Water Blit", "Aqua Magic", "Tear Drop", "Winter Blast", "Ice Needle",
                  "Megaton Punch", "Muscle Charge", "War Cry", "Sonic Jab", "Hydro Pressure"],
-  "own_effect": {"technique": "Hydro Pressure", "chunk": 309},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 26,
+  "own_effect": {"technique": "Hydro Pressure", "chunk": 309},
   "model": {
     "file": "build/batch5/Gesomon.MMD",
     "radius": 216,

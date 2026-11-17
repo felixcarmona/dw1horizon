@@ -9,9 +9,9 @@
   "techniques": ["Megalo Spark", "Thunder Justice", "Spinning Shot", "Hurricane", "Confused Storm", "Wind Cutter",
                  "Electric Cloud", "Static Elect", "Dynamite Kick (44)", "Buster Dive",
                  "Megaton Punch", "Counter", "Tremar", "Death Claw"],
-  "own_effect": {"technique": "Death Claw", "chunk": 261},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 36,
+  "own_effect": {"technique": "Death Claw", "chunk": 261},
   "model": {
     "file": "build/sizes-out/models/Angewomon.MMD",
     "radius": 165,

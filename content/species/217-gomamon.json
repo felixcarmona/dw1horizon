@@ -8,9 +8,9 @@
   "specialties": ["ice", "battle", null],
   "techniques": ["Ice Needle", "Winter Blast", "Giga Freeze", "Tear Drop", "Sonic Jab", "Muscle Charge", "War Cry",
                  "Super Slap"],
-  "own_effect": {"technique": "Super Slap", "chunk": 287},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 45,
+  "own_effect": {"technique": "Super Slap", "chunk": 287},
   "model": {
     "file": "build/batch4/Gomamon.MMD",
     "radius": 100,

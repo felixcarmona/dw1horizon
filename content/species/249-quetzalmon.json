@@ -8,9 +8,9 @@
   "specialties": ["air", "ice", null],
   "techniques": ["Hurricane", "Megalo Spark", "Static Elect", "Electric Cloud", "Wind Cutter", "Confused Storm",
                  "Giga Freeze", "Aqua Magic", "Tear Drop", "Winter Blast", "Spnning Needle"],
-  "own_effect": {"technique": "Spnning Needle", "chunk": 318},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 54,
+  "own_effect": {"technique": "Spnning Needle", "chunk": 318},
   "model": {
     "file": "build/batch6/Quetzalmon.MMD",
     "radius": 170,
