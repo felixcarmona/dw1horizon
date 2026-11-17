@@ -10,7 +10,6 @@ Units: each model is one (units(ctx)); no script reads another's model. derive b
 import os
 
 from .. import runner
-from .species import species_tools
 
 NAME = 'models'
 DESCRIPTION = 'Partner and NPC model generation'
@@ -31,16 +30,10 @@ MODELS = [   # (file, script): the order of build-full.sh
 ]
 
 
-def disc_paths():
-    """{model file name: disc path} of the models made here: species.py's disc_files (the --file/--add list of the disc's
-    species) for the files content/species names under build/models (the bash's $M)."""
-    with species_tools() as S:
-        return {os.path.basename(f): disc for _, disc, f in S.disc_files() if f.startswith('build/models/')}
-
-
 def outputs(ctx):
-    disc = disc_paths()
-    return [(f'models/{f}', disc.get(f)) for f, _ in MODELS]
+    # These are authored intermediates. The plan step owns the disc claims after
+    # applying partner headroom, whose bytes can differ from these model files.
+    return [(f'models/{f}', None) for f, _ in MODELS]
 
 
 def make_model(script, out, reuse):

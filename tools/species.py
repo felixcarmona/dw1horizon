@@ -1928,9 +1928,11 @@ def select(sel, out, models=None, content=None):
     return sorted(t for t in allsp if t >= NUM_ORIGINAL or t in ids)
 
 
-def disc_files(content=None):
+def disc_files(content=None, *, replace_models=False):
     """[(option, disc path, file)] of the replaced (--file) and partner-only (--add) models of the disc's species:
-    build-disc.py's arguments; the file as the species file names it (relative to the repository or absolute)."""
+    Paths only by default, so output discovery never reads generated model bytes.
+    replace_models=True materializes the final headroom replacements for disc assembly
+    or buffer measurement, after the models have been generated."""
     from tools.models import partner_headroom
     out = []
     for t, s in sorted(load_content(content).items()):
@@ -1939,10 +1941,10 @@ def disc_files(content=None):
         if is_record_original(s): continue       # its model is in DIGI.DAT
         bones = len(m['skeleton']) if 'skeleton' in m else m['bones']
         if 'file' in m:
-            path = partner_headroom.disc_file(resolve_path(m['file']), bones, t) if t in partner_headroom.SPECIES else m['file']
+            path = partner_headroom.disc_file(resolve_path(m['file']), bones, t) if replace_models and t in partner_headroom.SPECIES else m['file']
             out.append(('--file', f'CHDAT/MMD{t // 30}/{m["name"]}.MMD', path))
         if 'partner_file' in m:
-            path = partner_headroom.disc_file(resolve_path(m['partner_file']), bones, t) if t in partner_headroom.SPECIES else m['partner_file']
+            path = partner_headroom.disc_file(resolve_path(m['partner_file']), bones, t) if replace_models and t in partner_headroom.SPECIES else m['partner_file']
             out.append(('--add', os.path.basename(m['partner_file']), path))
     return out
 
@@ -2031,7 +2033,7 @@ def cmd_flat_audit(a):
 
 def cmd_disc_files(a):
     """build-disc.py arguments for the replaced and partner-only models of the disc's species."""
-    for opt, disc, f in disc_files(a.content):
+    for opt, disc, f in disc_files(a.content, replace_models=True):
         print(f'{opt}\t{disc}={resolve_path(f)}')
 
 

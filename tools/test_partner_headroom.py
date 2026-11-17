@@ -16,6 +16,68 @@ import animsheet
 from tools.models import partner_headroom as H
 
 
+class DiscPlanning(unittest.TestCase):
+    def test_disc_paths_and_model_outputs_need_no_build_directory(self):
+        import tempfile
+        from unittest.mock import patch
+        from tools import species
+        from tools.derive.steps import models
+
+        content = species.load_content(str(ROOT/'content/species'))
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            # Real content includes generated models of headroom species. Resolve
+            # them against a root with no build/, rather than existing fixtures.
+            with patch.object(species, 'ROOT', td), \
+                 patch.object(species, 'load_content', return_value=content):
+                files = species.disc_files(str(ROOT/'content/species'))
+                self.assertIn(('--file', 'CHDAT/MMD3/INSE.MMD',
+                               'build/models/INSE-partner.MMD'), files)
+                self.assertEqual(models.outputs(None),
+                                 [(f'models/{f}', None) for f, _ in models.MODELS])
+                self.assertFalse((root/'build').exists())
+                with self.assertRaises(FileNotFoundError):
+                    species.disc_files(str(ROOT/'content/species'), replace_models=True)
+
+    def test_disc_assembly_explicitly_uses_headroom_replacement(self):
+        from unittest.mock import patch
+        from tools import species
+
+        content = {113: {'model': {'file': 'build/models/INSE-partner.MMD',
+                                   'name': 'INSE', 'bones': 1}}}
+        with patch.object(species, 'load_content', return_value=content), \
+             patch.object(species, 'is_record_original', return_value=False), \
+             patch.object(H, 'disc_file', return_value='safe.MMD') as replace:
+            self.assertEqual(species.disc_files(replace_models=True),
+                             [('--file', 'CHDAT/MMD3/INSE.MMD', 'safe.MMD')])
+            replace.assert_called_once_with(species.resolve_path(content[113]['model']['file']), 1, 113)
+
+    def test_manifest_pins_the_assembled_replacement_instead_of_the_authored_model(self):
+        import tempfile
+        from types import SimpleNamespace
+        from unittest.mock import patch
+        from tools.derive import manifest, steps
+        from tools.derive.steps import models, plan
+
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            for folder in ('models', 'partner-headroom', 'derived'):
+                (root/folder).mkdir()
+            (root/'models/INSE-partner.MMD').write_bytes(b'authored')
+            safe = root/'partner-headroom/safe.MMD'
+            safe.write_bytes(b'recompressed')
+            disc = 'CHDAT/MMD3/INSE.MMD'
+            (root/'derived/disc.txt').write_text(f'--file\t{disc}={safe}\n')
+            ctx = SimpleNamespace(out=td, path=lambda *p: str(root.joinpath(*p)))
+            with patch.object(steps, 'OWNED', ['models', 'plan']):
+                m = manifest.load(td)
+                manifest.record(m, td, models, models.outputs(ctx), 0, None)
+                manifest.record(m, td, plan, plan.outputs(ctx), 0, None)
+            self.assertEqual(m['files'][disc]['sha1'], manifest.sha1(safe))
+            self.assertEqual(m['files'][disc]['step'], 'plan')
+
+
+
 @unittest.skipUnless(os.environ.get('PARTNER_HEADROOM_FIXTURES'), 'private model fixtures required')
 class PartnerHeadroom(unittest.TestCase):
     def test_actual_models_preserve_mesh_events_timing_and_channel_bound(self):

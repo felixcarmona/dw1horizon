@@ -232,7 +232,7 @@ def build(ctx):
             pmm = int(pmm, 0)
         else:
             need = S.max_partner_model(out)
-            for _, _, f in S.disc_files(out):
+            for _, _, f in S.disc_files(out, replace_models=True):
                 need = max(need, os.path.getsize(S.resolve_path(f)))
             pmm = (max(need, ORIGINAL_BUFFER) + 0x7FF) & ~0x7FF
         max8 = ctx.facts.get('partner_mmd_max_8mb')

@@ -207,7 +207,7 @@ def make(ctx):
             lang_ovl_files.append(f'SCN/{n}')
     from .species import species_tools
     with species_tools() as S:      # the models of the disc's species (species.py disc-files)
-        for opt, dest, x in S.disc_files(O('species')):
+        for opt, dest, x in S.disc_files(O('species'), replace_models=True):
             (P.file if opt == '--file' else P.add)(dest, S.resolve_path(x))
     for x in ('ETCNA/TITLE256.TIM', 'ETCNA/TITLE2.TIM', 'ETCDAT/TAMA.TIM'):
         P.file(x, O('title', x))
