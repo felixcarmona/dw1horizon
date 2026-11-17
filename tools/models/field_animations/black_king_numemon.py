@@ -17,7 +17,7 @@ import copy
 import hashlib
 import math
 
-import numpy as np
+from tools.derive import arraymath as np
 
 import animsheet
 import mmd
@@ -157,6 +157,17 @@ def sole_path(period, speed, planted, start, lift, tick, kick=.63, arrive=.6):
             lift * math.sin(math.pi * u) ** .25)
 
 
+def solve2(matrix, rhs):
+    """Solve the pad fitter's two equations with partial pivoting."""
+    a, b = matrix.tolist()
+    x, y = rhs
+    if abs(b[0]) > abs(a[0]):
+        a, b, x, y = b, a, y, x
+    factor = b[0] / a[0]
+    second = (y - factor * x) / (b[1] - factor * a[1])
+    return np.array([(x - a[1] * second) / a[0], second])
+
+
 class _Pads:
     """Forward kinematics of the pads: hip chain root, body, hip, outer pad; the sole is the middle of the pad's lowest face."""
 
@@ -170,7 +181,7 @@ class _Pads:
             matrix = self.chain(rest, (0, 1, hip, pad))[pad]
             world = np.array(self.vertices[pad], float)[:, :3] @ matrix[:3, :3].T + matrix[:3, 3]
             point = world[np.argsort(-world[:, 1])[:4]].mean(0)
-            self.sole[side] = (np.linalg.inv(matrix) @ np.append(point, 1))[:3]
+            self.sole[side] = (np.linalg.inv(matrix) @ np.concatenate([point, np.array([1])]))[:3]
 
     @staticmethod
     def local(bone):
@@ -205,7 +216,7 @@ class _Pads:
         for _ in range(8):
             r = error(values)
             jac = np.stack([(error(values + e) - r) for e in np.eye(2)], axis=1)
-            values = values + np.clip(np.linalg.solve(jac.T @ jac + 1e-4 * np.eye(2), -jac.T @ r), -80, 80)
+            values = values + np.clip(solve2(jac.T @ jac + 1e-4 * np.eye(2), -jac.T @ r), -80, 80)
         self.error = float(np.abs(error(values)).max())
         # no corner of the pad goes into the floor (the body's own roll tilts the pad a little): lift it by what is left
         error(values)

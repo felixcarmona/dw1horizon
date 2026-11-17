@@ -2,6 +2,307 @@
   "_doc": "Releases, newest first. Each version has a date and text in every page language: new, changed and fixed bullet lists, plus an optional upgrade line in all languages. Empty groups are hidden.",
   "versions": [
     {
+      "version": "0.0.9",
+      "date": "2026-11-17",
+      "en": {
+        "new": [
+          "Imported Digimon gain signature finishers with their own names and effects, including attacks adapted from Digital Card Battle, Digimon World 2 and Digimon World 3. Others use reworked effects from Digimon World, with sounds chosen to suit the attack.",
+          "The website and desktop patchers now read CHD disc images. Supported CHDs use version 5; older versions, parent-dependent images and FLAC audio are not supported.",
+          "Desktop apps and the command-line patcher now also accept unencrypted, single-disc PBP images."
+        ],
+        "changed": [
+          "Many imported partners have reworked idle, walk, tired walk and run animations: steadier feet, distinct flights and swims, moving faces and less rigid limbs. Wormmon moves faster, and the youngest partners have calmer hops.",
+          "More partners use battle movements, attacks, hit reactions and celebrations from their source games. Others have new casts, strikes, falls and recoveries fitted to their bodies.",
+          "Tired, sick, hungry and unhappy partners have more distinct poses. Many care animations have fewer sudden bends, jumps and parts sinking into the ground.",
+          "Imported finishers now have power suited to their evolution stage: lower for Rookies, a shared range for Ultimates, and stronger attacks for Megas. Area finishers hit every enemy. BlackGatomon’s Cat’s Eyes no longer causes confusion.",
+          "AUTO starts scenes at a steady 30 fps and tries 60 only when there is room, reducing uneven frame pacing and repeated switches. Ordinary battles, tournaments and battle x2 run more smoothly; demanding fights can still slow down.",
+          "Battle effects move smoothly at the displayed frame rate while keeping the same damage and hit timing. Finisher effects have revised sizes and launch positions, with excessive jumps lowered.",
+          "Opening quick care or the Player view keeps the field moving while text loads. Mojyamon exchanges an item directly, without asking for an amount that can only be one.",
+          "The opening quiz keeps your starter’s species a surprise until you wake up beside it. Naming your partner remains optional.",
+          "Disc building does less repeated work, and the website’s remaining-time estimate better accounts for the work still waiting to run.",
+          "The ferry Whamon is drawn at its full size again on the shore, instead of looking like a small partner."
+        ],
+        "fixed": [
+          "Repaired finishers that played without damaging the enemy, including Gatomon’s. Giromon’s Deadly Bomb aims at its target and checks for a hit on landing.",
+          "Fixed battle drawing overflows that could freeze crowded fights or the battle item menu, with protections also applied to tournament and VS effects.",
+          "Skipping training animations no longer silently ends a five-session block. Hold Cancel during the pause between sessions to stop it.",
+          "Scripted walks no longer leave the tamer spinning at Birdra Transport or stuck during other conversations and scenes.",
+          "The Ice Sanctuary’s older rooms remain reachable after recruiting Angemon. New baby partners can trigger the same rescue and story checks as the original babies.",
+          "Repaired a trap for large partners in the Old Gallery, widened the exit from Andromon’s room and moved an arrival away from an enemy’s body. Battle drops inside walls move onto reachable ground.",
+          "Myotismon remains in the Arena lobby at night as the story progresses, away from the main walking routes. Previously excluded raisable Digimon can enter grade cups; Machinedramon and Suijinmon can enter the Metalic Cup.",
+          "Continuing a save away from a screen’s entrance no longer scrambles ground tiles.",
+          "Restaurant result text shows the meals’ actual gains in every language. Shop balances leave no stray digits, Monochromon’s mood bubble disappears when you leave, and status labels and the filth icon are clearer.",
+          "Imported models have less flickering, fewer missing faces and fewer parts passing through each other, including Kyubimon, MaloMyotismon, MegaGargomon, Omnimon and Raidenmon. Some contacts remain. Capes, wings, baby shadows and size changes between animations are also corrected.",
+          "Choosing discs or changing language no longer scrolls the website back to an open changelog link. Full browser storage during CHD conversion is reported as a storage error."
+        ],
+        "upgrade": "Saves from v0.0.8 work, and the required discs have not changed. Back up your memory card, boot the new disc from a fresh start and load the memory-card save; emulator save states do not carry across versions."
+      },
+      "es": {
+        "new": [
+          "Los Digimon importados reciben remates característicos con sus propios nombres y efectos, incluidos ataques adaptados de Digital Card Battle, Digimon World 2 y Digimon World 3. Otros usan efectos retocados de Digimon World, con sonidos acordes al ataque.",
+          "La web y los parcheadores de escritorio ya leen imágenes de disco CHD. Se admite la versión 5; no se admiten versiones anteriores, imágenes que dependan de un CHD padre ni audio FLAC.",
+          "Las aplicaciones de escritorio y el parcheador de línea de comandos también aceptan imágenes PBP sin cifrar de un solo disco."
+        ],
+        "changed": [
+          "Muchos compañeros importados tienen nuevas animaciones de reposo, marcha, cansancio y carrera: pies más firmes, vuelos y nados diferenciados, rostros animados y extremidades menos rígidas. Wormmon se mueve más deprisa y los más pequeños dan saltos más tranquilos.",
+          "Más compañeros usan movimientos de combate, ataques, reacciones a golpes y celebraciones de sus juegos de origen. Otros reciben nuevos gestos de hechizo, golpes, caídas y recuperaciones adaptados a sus cuerpos.",
+          "Los compañeros cansados, enfermos, hambrientos o descontentos tienen posturas más diferenciadas. Muchas animaciones de cuidados presentan menos giros bruscos, saltos y partes que se hunden en el suelo.",
+          "La potencia de los remates importados se ajusta a su etapa evolutiva: menor para los Rookie, un rango común para los Ultimate y ataques más potentes para los Mega. Los remates de área alcanzan a todos los enemigos. Cat’s Eyes de BlackGatomon ya no causa confusión.",
+          "AUTO empieza las escenas a 30 fps estables e intenta llegar a 60 solo si hay margen, reduciendo los tirones y los cambios repetidos. Los combates normales, los torneos y el combate x2 van más fluidos; las peleas exigentes aún pueden ralentizarse.",
+          "Los efectos de combate se mueven con fluidez a la tasa de imágenes mostrada y mantienen el daño y el momento del impacto. Se revisan el tamaño y el punto de salida de los remates y se rebajan los saltos excesivos.",
+          "Al abrir los cuidados rápidos o la vista de Jugador, el escenario sigue en movimiento mientras carga el texto. Mojyamon intercambia un objeto directamente, sin pedir una cantidad que solo puede ser uno.",
+          "El cuestionario inicial mantiene en secreto la especie de tu compañero hasta que despiertas a su lado. Ponerle nombre sigue siendo opcional.",
+          "La creación del disco repite menos trabajo y la estimación de tiempo restante de la web tiene más en cuenta las tareas pendientes.",
+          "El Whamon del transbordo vuelve a verse a su tamaño real en la orilla, en lugar de parecer un compañero pequeño."
+        ],
+        "fixed": [
+          "Corregidos remates que se ejecutaban sin dañar al enemigo, incluido el de Gatomon. Deadly Bomb de Giromon apunta al objetivo y comprueba el impacto al aterrizar.",
+          "Corregidos desbordamientos gráficos que podían bloquear combates con varios enemigos o el menú de objetos de combate, con protecciones también para los efectos de torneos y VS.",
+          "Saltar las animaciones de entrenamiento ya no termina sin aviso un bloque de cinco sesiones. Mantén pulsado Cancelar durante la pausa entre sesiones para detenerlo.",
+          "Los desplazamientos de las escenas ya no dejan al domador dando vueltas en Birdra Transport ni atascado en otras conversaciones y escenas.",
+          "Las salas originales del Santuario de Hielo siguen siendo accesibles tras reclutar a Angemon. Los nuevos bebés pueden activar los mismos rescates y comprobaciones de historia que los originales.",
+          "Corregida una trampa para compañeros grandes en la Galería Antigua, ampliada la salida de la sala de Andromon y alejado un punto de llegada del cuerpo de un enemigo. Los objetos de combate que caen dentro de paredes se trasladan a suelo accesible.",
+          "Myotismon permanece de noche en el vestíbulo de la Arena al avanzar la historia, apartado de las rutas principales. Los Digimon criables antes excluidos pueden entrar en las copas por categoría; Machinedramon y Suijinmon pueden entrar en la Copa Metálica.",
+          "Continuar una partida lejos de la entrada de una zona ya no desordena las baldosas del suelo.",
+          "El texto de los restaurantes muestra las mejoras reales de cada plato en todos los idiomas. El saldo de las tiendas no deja dígitos sueltos, la burbuja de ánimo de Monochromon desaparece al salir y las etiquetas de Estado y el icono de suciedad se ven mejor.",
+          "Los modelos importados tienen menos parpadeos, caras ausentes y piezas que se atraviesan, incluidos Kyubimon, MaloMyotismon, MegaGargomon, Omnimon y Raidenmon. Aún quedan algunos contactos. También se corrigen capas, alas, sombras de bebés y cambios de tamaño entre animaciones.",
+          "Elegir discos o cambiar de idioma ya no desplaza la web hasta un enlace abierto del historial de cambios. Si el almacenamiento del navegador se llena al convertir un CHD, se indica como error de espacio."
+        ],
+        "upgrade": "Las partidas guardadas de v0.0.8 funcionan y los discos necesarios no cambian. Haz una copia de la tarjeta de memoria, arranca el disco nuevo desde cero y carga la partida de la tarjeta; los estados del emulador no son compatibles entre versiones."
+      },
+      "pt-br": {
+        "new": [
+          "Os Digimon importados ganham finalizadores característicos com nomes e efeitos próprios, incluindo ataques adaptados de Digital Card Battle, Digimon World 2 e Digimon World 3. Outros usam efeitos retrabalhados de Digimon World, com sons que combinam com o ataque.",
+          "O site e os patchers de desktop agora leem imagens de disco CHD. A versão 5 é aceita; versões anteriores, imagens que dependem de um CHD pai e áudio FLAC não são aceitos.",
+          "Os aplicativos de desktop e o patcher de linha de comando também aceitam imagens PBP não criptografadas de um único disco."
+        ],
+        "changed": [
+          "Muitos parceiros importados têm novas animações de repouso, caminhada, cansaço e corrida: pés mais firmes, voos e nados distintos, rostos animados e membros menos rígidos. Wormmon se move mais rápido, e os menores dão pulinhos mais calmos.",
+          "Mais parceiros usam movimentos de batalha, ataques, reações a golpes e comemorações dos jogos de origem. Outros recebem novos gestos de conjuração, golpes, quedas e recuperações adaptados ao corpo.",
+          "Parceiros cansados, doentes, famintos ou descontentes têm poses mais distintas. Muitas animações de cuidado apresentam menos torções bruscas, saltos e partes afundando no chão.",
+          "A força dos finalizadores importados agora acompanha o estágio evolutivo: menor para Rookie, uma faixa comum para Ultimate e ataques mais fortes para Mega. Finalizadores de área atingem todos os inimigos. Cat’s Eyes de BlackGatomon não causa mais confusão.",
+          "AUTO inicia as cenas a 30 fps estáveis e só tenta 60 quando há folga, reduzindo a cadência irregular e as trocas repetidas. Batalhas comuns, torneios e batalha x2 ficam mais fluidos; lutas exigentes ainda podem ficar lentas.",
+          "Os efeitos de batalha se movem com fluidez na taxa de quadros exibida, mantendo o dano e o momento dos acertos. Os efeitos dos finalizadores têm tamanhos e pontos de saída revistos, com saltos excessivos reduzidos.",
+          "Ao abrir os cuidados rápidos ou a tela de Jogador, o cenário continua em movimento enquanto o texto carrega. Mojyamon troca um item diretamente, sem pedir uma quantidade que só pode ser um.",
+          "O questionário inicial mantém a espécie do parceiro em segredo até você acordar ao lado dele. Dar um nome continua sendo opcional.",
+          "A criação do disco repete menos trabalho, e a estimativa de tempo restante do site considera melhor as tarefas que ainda aguardam execução.",
+          "O Whamon da balsa volta a aparecer no tamanho real na praia, em vez de parecer um parceiro pequeno."
+        ],
+        "fixed": [
+          "Corrigidos finalizadores que eram executados sem causar dano ao inimigo, incluindo o de Gatomon. Deadly Bomb de Giromon mira no alvo e verifica o acerto ao aterrissar.",
+          "Corrigidos excessos na renderização que podiam travar lutas com vários inimigos ou o menu de itens de batalha, com proteções também para efeitos de torneios e VS.",
+          "Pular animações de treino não encerra mais sem aviso um bloco de cinco sessões. Segure Cancelar durante a pausa entre sessões para interrompê-lo.",
+          "Os movimentos das cenas não deixam mais o domador girando em Birdra Transport nem preso em outras conversas e cenas.",
+          "As salas originais do Santuário de Gelo continuam acessíveis após recrutar Angemon. Os novos bebês podem ativar os mesmos resgates e verificações de história que os originais.",
+          "Corrigida uma armadilha para parceiros grandes na Galeria Antiga, ampliada a saída da sala de Andromon e afastado um ponto de chegada do corpo de um inimigo. Itens de batalha que caem dentro de paredes vão para chão acessível.",
+          "Myotismon continua no saguão da Arena à noite conforme a história avança, fora dos caminhos principais. Digimon criáveis antes excluídos podem entrar nas copas por categoria; Machinedramon e Suijinmon podem entrar na Copa Metálica.",
+          "Continuar uma partida longe da entrada de uma área não embaralha mais os blocos do chão.",
+          "O texto dos restaurantes mostra os ganhos reais dos pratos em todos os idiomas. O saldo das lojas não deixa dígitos soltos, o balão de humor de Monochromon desaparece ao sair, e os rótulos de Status e o ícone de sujeira ficam mais claros.",
+          "Os modelos importados têm menos cintilação, faces ausentes e partes se atravessando, incluindo Kyubimon, MaloMyotismon, MegaGargomon, Omnimon e Raidenmon. Alguns contatos permanecem. Capas, asas, sombras dos bebês e mudanças de tamanho entre animações também foram corrigidos.",
+          "Escolher discos ou mudar o idioma não faz mais o site rolar até um link aberto do histórico de mudanças. Armazenamento cheio no navegador durante a conversão de CHD é informado como erro de espaço."
+        ],
+        "upgrade": "Os saves de v0.0.8 funcionam, e os discos necessários não mudaram. Faça uma cópia do cartão de memória, inicie o novo disco do zero e carregue o save do cartão; estados salvos do emulador não funcionam entre versões."
+      },
+      "fr": {
+        "new": [
+          "Les Digimon importés gagnent des attaques finales caractéristiques, avec leurs propres noms et effets, dont des attaques adaptées de Digital Card Battle, Digimon World 2 et Digimon World 3. D’autres utilisent des effets retravaillés de Digimon World, avec des sons adaptés à l’attaque.",
+          "Le site et les patchers de bureau lisent désormais les images de disque CHD. La version 5 est prise en charge ; les anciennes versions, les images dépendant d’un CHD parent et l’audio FLAC ne le sont pas.",
+          "Les applications de bureau et le patcher en ligne de commande acceptent aussi les images PBP non chiffrées contenant un seul disque."
+        ],
+        "changed": [
+          "De nombreux partenaires importés ont des animations revues au repos, en marchant, fatigués et en courant : appuis plus stables, vols et nages distincts, visages animés et membres moins rigides. Wormmon se déplace plus vite et les plus petits font des bonds plus calmes.",
+          "Davantage de partenaires retrouvent les déplacements de combat, attaques, réactions aux coups et célébrations de leur jeu d’origine. D’autres reçoivent de nouveaux gestes de magie, coups, chutes et relèvements adaptés à leur corps.",
+          "Les partenaires fatigués, malades, affamés ou mécontents ont des poses plus distinctes. De nombreuses animations de soins présentent moins de torsions brusques, de sauts et de parties enfoncées dans le sol.",
+          "La puissance des attaques finales importées correspond désormais au stade d’évolution : plus faible pour les Rookie, une plage commune aux Ultimate et des attaques plus puissantes pour les Mega. Les attaques finales de zone touchent tous les ennemis. Cat’s Eyes de BlackGatomon ne provoque plus de confusion.",
+          "AUTO commence les scènes à 30 fps stables et ne tente 60 que si les performances le permettent, limitant les saccades et les changements répétés. Les combats ordinaires, les tournois et le combat x2 sont plus fluides ; les affrontements chargés peuvent encore ralentir.",
+          "Les effets de combat s’animent à la fréquence d’affichage, sans modifier les dégâts ni le moment des impacts. La taille et le point de départ des effets des attaques finales sont revus, et les sauts excessifs sont abaissés.",
+          "Ouvrir les soins rapides ou la vue Joueur laisse le décor s’animer pendant le chargement du texte. Mojyamon échange directement un objet, sans demander une quantité qui ne peut être qu’un.",
+          "Le questionnaire d’ouverture garde l’espèce du premier partenaire secrète jusqu’au réveil à ses côtés. Lui donner un nom reste facultatif.",
+          "La création du disque répète moins de tâches et l’estimation du temps restant sur le site tient mieux compte du travail en attente.",
+          "Le Whamon du bac retrouve sa taille réelle sur la rive, au lieu de ressembler à un petit partenaire."
+        ],
+        "fixed": [
+          "Correction d’attaques finales qui s’exécutaient sans blesser l’ennemi, dont celle de Gatomon. Deadly Bomb de Giromon vise sa cible et vérifie l’impact à l’atterrissage.",
+          "Correction de débordements d’affichage pouvant bloquer les combats chargés ou le menu d’objets de combat, avec des protections également appliquées aux effets des tournois et du mode VS.",
+          "Passer les animations d’entraînement n’interrompt plus sans avertissement un bloc de cinq séances. Maintenez Annuler pendant la pause entre les séances pour l’arrêter.",
+          "Les déplacements des scènes ne laissent plus le dompteur tourner sur place à Birdra Transport ni se bloquer dans d’autres conversations et scènes.",
+          "Les salles d’origine du Sanctuaire de Glace restent accessibles après le recrutement d’Angemon. Les nouveaux bébés peuvent déclencher les mêmes sauvetages et conditions d’histoire que les bébés d’origine.",
+          "Correction d’un piège pour les grands partenaires dans la Vieille Galerie, élargissement de la sortie de la salle d’Andromon et déplacement d’un point d’arrivée hors du corps d’un ennemi. Les objets de combat tombés dans les murs sont replacés sur un sol accessible.",
+          "Myotismon reste dans le hall de l’Arène la nuit au fil de l’histoire, à l’écart des passages principaux. Les Digimon élevables auparavant exclus peuvent participer aux coupes par catégorie ; Machinedramon et Suijinmon peuvent participer à la Coupe Métallique.",
+          "Reprendre une sauvegarde loin de l’entrée d’une zone ne mélange plus les dalles du sol.",
+          "Les textes des restaurants affichent les gains réels des plats dans toutes les langues. Les soldes des boutiques ne laissent plus de chiffres parasites, la bulle d’humeur de Monochromon disparaît en sortant, et les libellés du statut ainsi que l’icône de saleté sont plus lisibles.",
+          "Les modèles importés présentent moins de scintillements, de faces manquantes et de parties qui se traversent, notamment Kyubimon, MaloMyotismon, MegaGargomon, Omnimon et Raidenmon. Certains contacts subsistent. Les capes, ailes, ombres des bébés et changements de taille entre animations sont aussi corrigés.",
+          "Choisir des disques ou changer de langue ne fait plus défiler le site vers un lien ouvert du journal des mises à jour. Un stockage du navigateur plein pendant la conversion CHD est signalé comme une erreur d’espace disponible."
+        ],
+        "upgrade": "Les sauvegardes de v0.0.8 fonctionnent et les disques requis ne changent pas. Faites une copie de votre carte mémoire, démarrez le nouveau disque à froid et chargez la sauvegarde de la carte ; les états de l’émulateur ne sont pas compatibles entre versions."
+      },
+      "de": {
+        "new": [
+          "Importierte Digimon erhalten charakteristische Finisher mit eigenen Namen und Effekten, darunter angepasste Angriffe aus Digital Card Battle, Digimon World 2 und Digimon World 3. Andere nutzen überarbeitete Effekte aus Digimon World mit zum Angriff passenden Geräuschen.",
+          "Die Website und die Desktop-Patcher lesen jetzt CHD-Disc-Abbilder. Unterstützt wird Version 5; ältere Versionen, Abbilder mit benötigtem übergeordnetem CHD und FLAC-Audio werden nicht unterstützt.",
+          "Die Desktop-Apps und der Patcher für die Kommandozeile akzeptieren außerdem unverschlüsselte PBP-Abbilder mit einer einzelnen Disc."
+        ],
+        "changed": [
+          "Viele importierte Partner haben überarbeitete Animationen für Stillstehen, Gehen, müdes Gehen und Laufen: sicherer stehende Füße, unterschiedliche Flug- und Schwimmbewegungen, bewegte Gesichter und weniger steife Gliedmaßen. Wormmon bewegt sich schneller, und die jüngsten Partner hüpfen ruhiger.",
+          "Mehr Partner nutzen Kampfbewegungen, Angriffe, Trefferreaktionen und Siegesgesten aus ihren Herkunftsspielen. Andere erhalten neue Zauberbewegungen, Schläge, Stürze und Aufstehbewegungen, die zu ihrem Körper passen.",
+          "Müde, kranke, hungrige und unzufriedene Partner zeigen deutlichere Haltungen. Viele Pflegeanimationen haben weniger abrupte Verdrehungen, Sprünge und im Boden versinkende Körperteile.",
+          "Die Stärke importierter Finisher passt jetzt zur Evolutionsstufe: niedriger für Rookie, ein gemeinsamer Bereich für Ultimate und stärkere Angriffe für Mega. Flächen-Finisher treffen alle Gegner. BlackGatomons Cat’s Eyes verursacht keine Verwirrung mehr.",
+          "AUTO beginnt Szenen mit stabilen 30 fps und versucht 60 nur bei ausreichenden Reserven. Das verringert ungleichmäßige Bildabstände und wiederholte Wechsel. Gewöhnliche Kämpfe, Turniere und Kampf x2 laufen flüssiger; aufwendige Kämpfe können weiterhin langsamer werden.",
+          "Kampfeffekte bewegen sich flüssig mit der angezeigten Bildrate; Schaden und Trefferzeitpunkt bleiben gleich. Größe und Ausgangspunkte der Finisher-Effekte wurden überarbeitet und übermäßig hohe Sprünge abgesenkt.",
+          "Beim Öffnen der Schnellpflege oder der Spieleransicht läuft die Umgebung weiter, während der Text lädt. Mojyamon tauscht einen Gegenstand direkt, ohne nach einer Menge zu fragen, die nur eins sein kann.",
+          "Das Einstiegsquiz verrät die Art deines ersten Partners erst, wenn du neben ihm aufwachst. Einen Namen zu vergeben bleibt freiwillig.",
+          "Beim Erstellen der Disc wird weniger Arbeit wiederholt. Die Zeitschätzung auf der Website berücksichtigt wartende Aufgaben besser.",
+          "Der Fähr-Whamon wird am Ufer wieder in voller Größe gezeigt und wirkt nicht mehr wie ein kleiner Partner."
+        ],
+        "fixed": [
+          "Finisher, die ohne Schaden am Gegner abliefen, wurden repariert, darunter Gatomons. Giromons Deadly Bomb zielt auf den Gegner und prüft beim Aufkommen, ob es trifft.",
+          "Behoben wurden Zeichenfehler durch überfüllte Grafikpuffer, die Kämpfe mit vielen Beteiligten oder das Kampf-Gegenstandsmenü einfrieren konnten. Schutzmaßnahmen gelten auch für Turnier- und VS-Effekte.",
+          "Das Überspringen von Trainingsanimationen beendet einen Fünferblock nicht mehr ohne Hinweis. Halte Abbrechen in der Pause zwischen zwei Einheiten gedrückt, um ihn zu stoppen.",
+          "Geskriptete Wege lassen den Tamer nicht mehr bei Birdra Transport im Kreis drehen oder in anderen Gesprächen und Szenen feststecken.",
+          "Die ursprünglichen Räume des Eisheiligtums bleiben nach Angemons Rekrutierung erreichbar. Neue Baby-Partner können dieselben Rettungen und Story-Prüfungen auslösen wie die ursprünglichen Babys.",
+          "Eine Falle für große Partner in der Alten Galerie wurde geschlossen, der Ausgang aus Andromons Raum verbreitert und ein Ankunftspunkt aus dem Körper eines Gegners verschoben. Kampfbeute in Wänden wird auf erreichbaren Boden versetzt.",
+          "Myotismon bleibt im Verlauf der Geschichte nachts in der Arena-Lobby, abseits der Hauptwege. Zuvor ausgeschlossene aufziehbare Digimon können an Rang-Cups teilnehmen; Machinedramon und Suijinmon dürfen in den Metall-Cup.",
+          "Beim Fortsetzen eines Spielstands abseits des Gebietseingangs geraten die Bodenkacheln nicht mehr durcheinander.",
+          "Restauranttexte zeigen in allen Sprachen die tatsächlichen Zuwächse der Gerichte. Geldbeträge in Läden hinterlassen keine Ziffernreste, Monochromons Stimmungsblase verschwindet beim Verlassen und Statusbeschriftungen sowie das Schmutzsymbol sind deutlicher.",
+          "Importierte Modelle haben weniger Flackern, fehlende Flächen und ineinander ragende Teile, darunter Kyubimon, MaloMyotismon, MegaGargomon, Omnimon und Raidenmon. Einige Berührungen bleiben. Auch Umhänge, Flügel, Babyschatten und Größenwechsel zwischen Animationen wurden korrigiert.",
+          "Die Auswahl von Discs oder ein Sprachwechsel scrollt die Website nicht mehr zu einem geöffneten Changelog-Link zurück. Voller Browserspeicher bei der CHD-Umwandlung wird als Speicherplatzfehler gemeldet."
+        ],
+        "upgrade": "Spielstände aus v0.0.8 funktionieren; die benötigten Discs bleiben gleich. Sichere deine Speicherkarte, starte die neue Disc vollständig neu und lade den Speicherkartenspielstand. Emulator-Schnellspeicherstände funktionieren nicht versionsübergreifend."
+      },
+      "it": {
+        "new": [
+          "I Digimon importati ricevono mosse finali caratteristiche con nomi ed effetti propri, inclusi attacchi adattati da Digital Card Battle, Digimon World 2 e Digimon World 3. Altri usano effetti rielaborati di Digimon World, con suoni adatti all’attacco.",
+          "Il sito e i patcher desktop ora leggono immagini disco CHD. È supportata la versione 5; le versioni precedenti, le immagini che dipendono da un CHD padre e l’audio FLAC non sono supportati.",
+          "Le applicazioni desktop e il patcher da riga di comando accettano anche immagini PBP non cifrate con un solo disco."
+        ],
+        "changed": [
+          "Molti compagni importati hanno animazioni riviste per riposo, camminata, camminata stanca e corsa: piedi più stabili, voli e nuotate distinti, volti animati e arti meno rigidi. Wormmon si muove più velocemente e i più piccoli saltellano con più calma.",
+          "Più compagni usano movimenti di battaglia, attacchi, reazioni ai colpi e festeggiamenti dei giochi d’origine. Altri ricevono nuovi gesti magici, colpi, cadute e rialzate adattati al loro corpo.",
+          "I compagni stanchi, malati, affamati o scontenti hanno pose più distinte. Molte animazioni di cura hanno meno torsioni brusche, salti e parti che sprofondano nel terreno.",
+          "La potenza delle mosse finali importate ora segue lo stadio evolutivo: inferiore per i Rookie, una fascia comune per gli Ultimate e attacchi più forti per i Mega. Le mosse finali ad area colpiscono tutti i nemici. Cat’s Eyes di BlackGatomon non causa più confusione.",
+          "AUTO avvia le scene a 30 fps stabili e prova i 60 solo quando c’è margine, riducendo la cadenza irregolare e i cambi ripetuti. Battaglie normali, tornei e battaglia x2 sono più fluidi; gli scontri impegnativi possono ancora rallentare.",
+          "Gli effetti di battaglia si muovono in modo fluido alla frequenza d’immagini mostrata, mantenendo danni e tempi dei colpi. Rivisti dimensioni e punti di partenza degli effetti delle mosse finali e abbassati i salti eccessivi.",
+          "Aprendo le cure rapide o la vista Giocatore, lo scenario continua a muoversi mentre si carica il testo. Mojyamon scambia direttamente un oggetto, senza chiedere una quantità che può essere solo uno.",
+          "Il questionario iniziale mantiene segreta la specie del primo compagno finché non ti svegli al suo fianco. Dargli un nome resta facoltativo.",
+          "La creazione del disco ripete meno lavoro e la stima del tempo restante sul sito considera meglio le attività ancora in attesa.",
+          "Il Whamon del traghetto torna a mostrarsi a grandezza reale sulla riva, invece di sembrare un piccolo partner."
+        ],
+        "fixed": [
+          "Corrette mosse finali che venivano eseguite senza danneggiare il nemico, inclusa quella di Gatomon. Deadly Bomb di Giromon mira al bersaglio e controlla il colpo all’atterraggio.",
+          "Corretti sovraccarichi dei buffer grafici che potevano bloccare gli scontri affollati o il menu degli oggetti in battaglia, con protezioni anche per gli effetti dei tornei e del VS.",
+          "Saltare le animazioni di allenamento non termina più senza avviso un blocco di cinque sessioni. Tieni premuto Annulla durante la pausa fra le sessioni per interromperlo.",
+          "I movimenti delle scene non lasciano più il domatore a girare su sé stesso a Birdra Transport o bloccato in altre conversazioni e scene.",
+          "Le stanze originali del Santuario di Ghiaccio restano accessibili dopo aver reclutato Angemon. I nuovi cuccioli possono attivare gli stessi soccorsi e controlli della storia di quelli originali.",
+          "Corretta una trappola per compagni grandi nella Vecchia Galleria, ampliata l’uscita della stanza di Andromon e spostato un punto d’arrivo fuori dal corpo di un nemico. Gli oggetti di battaglia caduti nei muri vengono portati su terreno raggiungibile.",
+          "Myotismon rimane di notte nell’atrio dell’Arena con l’avanzare della storia, lontano dai passaggi principali. I Digimon allevabili prima esclusi possono partecipare alle coppe per categoria; Machinedramon e Suijinmon possono entrare nella Coppa Metallica.",
+          "Caricare un salvataggio lontano dall’ingresso di un’area non mescola più le piastrelle del terreno.",
+          "I testi dei ristoranti mostrano i guadagni reali dei piatti in ogni lingua. Il saldo dei negozi non lascia cifre residue, la bolla dell’umore di Monochromon scompare all’uscita e le etichette di Stato e l’icona della sporcizia sono più chiare.",
+          "I modelli importati hanno meno sfarfallii, facce mancanti e parti che si attraversano, inclusi Kyubimon, MaloMyotismon, MegaGargomon, Omnimon e Raidenmon. Alcuni contatti restano. Corretti anche mantelli, ali, ombre dei cuccioli e cambi di dimensione fra animazioni.",
+          "Scegliere dischi o cambiare lingua non fa più scorrere il sito verso un collegamento aperto del registro delle modifiche. Se lo spazio del browser si esaurisce durante la conversione CHD, viene segnalato un errore di spazio."
+        ],
+        "upgrade": "I salvataggi di v0.0.8 funzionano e i dischi richiesti non cambiano. Fai una copia della scheda di memoria, avvia da zero il nuovo disco e carica il salvataggio dalla scheda; gli stati salvati dell’emulatore non funzionano fra versioni diverse."
+      },
+      "ja": {
+        "new": [
+          "追加デジモンに、固有の名前とエフェクトを持つ必殺技を追加しました。Digital Card Battle、Digimon World 2、Digimon World 3から移植した攻撃に加え、Digimon Worldのエフェクトを作り直した技もあり、攻撃に合う効果音を使っています。",
+          "ウェブ版とデスクトップ版のパッチャーがCHD形式のディスクイメージに対応しました。対応するのはバージョン5です。旧バージョン、親CHDが必要なイメージ、FLAC音声には対応していません。",
+          "デスクトップアプリとコマンドライン版パッチャーは、暗号化されていない単一ディスクのPBPイメージにも対応しました。"
+        ],
+        "changed": [
+          "多くの追加パートナーの待機、歩行、疲れ歩き、走行を見直しました。足元を安定させ、飛行や泳ぎに違いを付け、表情や手足の動きを豊かにしています。ワームモンは移動が速くなり、幼いパートナーは穏やかに跳ねるようになりました。",
+          "より多くのパートナーが、出典となるゲームの戦闘移動、攻撃、被弾、勝利の動作を使うようになりました。体形に合わせて、詠唱、打撃、倒れる動作や起き上がる動作を新しく作ったものもあります。",
+          "疲れ、病気、空腹、不機嫌の姿勢が分かりやすくなりました。多くの世話の動作で、急なねじれや跳ね、体が地面に沈む問題を減らしました。",
+          "追加デジモンの必殺技の威力を進化段階に合わせました。成長期は低めに、完全体は共通の威力帯に、究極体はより強い攻撃にしています。範囲必殺技は敵全体に当たります。ブラックテイルモンのCat’s Eyesは混乱を与えなくなりました。",
+          "AUTOは場面の開始時に安定した30fpsを使い、余裕がある場合だけ60fpsを試します。フレーム間隔の乱れや切り替えの繰り返しを減らしました。通常戦、トーナメント、バトル2倍速も滑らかになりましたが、負荷の高い戦闘では速度が落ちることがあります。",
+          "戦闘エフェクトが表示フレームレートに合わせて滑らかに動きます。ダメージと命中のタイミングは変わりません。必殺技のエフェクトの大きさと発生位置を見直し、高すぎるジャンプを抑えました。",
+          "クイックケアやプレイヤー画面を開くとき、テキストの読み込み中もフィールドの表示が動き続けます。モジャモンの交換では、1個しか選べない個数確認を省いて直接交換します。",
+          "最初の質問では、隣で目覚めるまでパートナーの種類が分からなくなりました。名前を付けるかどうかは引き続き自由です。",
+          "ディスク作成時の重複作業を減らしました。ウェブ版の残り時間表示も、実行待ちの作業をより正確に考慮します。",
+          "渡し舟のホエーモンが、小さなパートナーのようではなく、浜辺で本来の大きさで表示されるようになりました。"
+        ],
+        "fixed": [
+          "テイルモンなど、動作はするのに敵にダメージを与えなかった必殺技を修正しました。ギロモンのDeadly Bombは相手を狙って投げ、着地時に命中を判定します。",
+          "敵の多い戦闘や戦闘中のアイテムメニューが固まる原因となる描画領域の超過を修正しました。トーナメントとVSのエフェクトにも保護を加えました。",
+          "トレーニングの動作をスキップしても、5回連続トレーニングが無言で終了しなくなりました。中断するには、各回の間の待ち時間にキャンセルを長押ししてください。",
+          "イベント中の移動で、バードラ運送の前でテイマーが回り続けたり、ほかの会話や場面で動けなくなったりする問題を修正しました。",
+          "エンジェモンを仲間にした後も、氷の聖域の従来の部屋へ行けます。新しい幼年期パートナーでも、従来の幼年期と同じ救助イベントやストーリーの条件判定が働きます。",
+          "旧ギャラリーで大きなパートナーがはまる場所を修正し、アンドロモンの部屋の出口を広げ、敵の体と重なっていた到着地点を移しました。戦闘で壁の中に落ちたアイテムは、拾える地面に移動します。",
+          "物語が進んだ後も、夜の闘技場ロビーにヴァンデモンが残り、主な通り道をふさがなくなりました。これまで除外されていた育成可能なデジモンもランク別の大会に参加でき、ムゲンドラモンとスイジンモンはメタル系の大会に参加できます。",
+          "マップの入口から離れた場所でセーブを再開しても、地面のタイルが崩れなくなりました。",
+          "レストランの食事後の文章が、全言語で実際の上昇量を表示します。店の所持金表示に数字の残りが出ず、モノクロモンの気分の吹き出しも店を出ると消えます。状態画面の項目名と汚物アイコンも見やすくしました。",
+          "キュウビモン、ベリアルヴァンデモン、セントガルゴモン、オメガモン、ライデンモンなどの追加モデルで、ちらつき、面の欠け、パーツの貫通を減らしました。一部の接触は残っています。マント、翼、幼年期の影、動作間での大きさの変化も修正しました。",
+          "ディスク選択や言語変更のたびに、ウェブサイトが開いている更新履歴のリンクへスクロールしなくなりました。CHD変換中にブラウザーの保存領域がいっぱいになった場合は、容量不足として表示します。"
+        ],
+        "upgrade": "v0.0.8のセーブは使えます。必要なディスクは変わりません。メモリーカードをバックアップし、新しいディスクを最初から起動してカードのセーブを読み込んでください。エミュレーターのステートセーブは別バージョンでは使えません。"
+      },
+      "ca": {
+        "new": [
+          "Els Digimon importats reben atacs finals característics amb noms i efectes propis, inclosos atacs adaptats de Digital Card Battle, Digimon World 2 i Digimon World 3. D’altres fan servir efectes retocats de Digimon World, amb sons adequats a l’atac.",
+          "La web i els pedaçadors d’escriptori ja llegeixen imatges de disc CHD. S’admet la versió 5; no s’admeten versions anteriors, imatges que depenguin d’un CHD pare ni àudio FLAC.",
+          "Les aplicacions d’escriptori i el pedaçador de línia d’ordres també accepten imatges PBP sense xifrar d’un sol disc."
+        ],
+        "changed": [
+          "Molts companys importats tenen animacions refetes de repòs, caminada, cansament i cursa: peus més ferms, vols i nedades diferenciats, cares animades i extremitats menys rígides. Wormmon es mou més de pressa i els més petits fan salts més tranquils.",
+          "Més companys fan servir moviments de combat, atacs, reaccions als cops i celebracions dels jocs d’origen. D’altres reben nous gestos de conjur, cops, caigudes i maneres d’aixecar-se adaptats al cos.",
+          "Els companys cansats, malalts, afamats o descontents tenen postures més diferenciades. Moltes animacions de cures tenen menys girs bruscos, salts i parts que s’enfonsen a terra.",
+          "La potència dels atacs finals importats s’ajusta a l’etapa evolutiva: menor per als Rookie, un rang comú per als Ultimate i atacs més forts per als Mega. Els atacs finals d’àrea arriben a tots els enemics. Cat’s Eyes de BlackGatomon ja no causa confusió.",
+          "AUTO comença les escenes a 30 fps estables i només prova d’arribar a 60 si hi ha marge, reduint els intervals irregulars i els canvis repetits. Els combats normals, els tornejos i el combat x2 van més fluids; les lluites exigents encara poden alentir-se.",
+          "Els efectes de combat es mouen amb fluïdesa a la taxa d’imatges mostrada i mantenen el dany i el moment de l’impacte. Es revisen la mida i el punt de sortida dels efectes dels atacs finals i es rebaixen els salts excessius.",
+          "En obrir les cures ràpides o la vista de Jugador, l’escenari continua en moviment mentre es carrega el text. Mojyamon intercanvia un objecte directament, sense demanar una quantitat que només pot ser un.",
+          "El qüestionari inicial manté en secret l’espècie del primer company fins que et despertes al seu costat. Posar-li nom continua sent opcional.",
+          "La creació del disc repeteix menys feina i l’estimació de temps restant de la web té més en compte les tasques pendents.",
+          "El Whamon del transbordador torna a veure's a la seva mida real a la riba, en lloc de semblar un company petit."
+        ],
+        "fixed": [
+          "Corregits atacs finals que s’executaven sense fer mal a l’enemic, inclòs el de Gatomon. Deadly Bomb de Giromon apunta a l’objectiu i comprova l’impacte en aterrar.",
+          "Corregits desbordaments gràfics que podien bloquejar combats amb molts participants o el menú d’objectes de combat, amb proteccions també per als efectes de tornejos i VS.",
+          "Saltar les animacions d’entrenament ja no acaba sense avís un bloc de cinc sessions. Mantén premut Cancel·lar durant la pausa entre sessions per aturar-lo.",
+          "Els desplaçaments de les escenes ja no deixen el domador girant a Birdra Transport ni encallat en altres converses i escenes.",
+          "Les sales originals del Santuari de Gel continuen accessibles després de reclutar Angemon. Els nous nadons poden activar els mateixos rescats i comprovacions de la història que els originals.",
+          "Corregida una trampa per a companys grans a la Galeria Antiga, ampliada la sortida de la sala d’Andromon i allunyat un punt d’arribada del cos d’un enemic. Els objectes de combat que cauen dins de parets es traslladen a terra accessible.",
+          "Myotismon continua de nit al vestíbul de l’Arena a mesura que avança la història, fora dels camins principals. Els Digimon criables abans exclosos poden entrar a les copes per categoria; Machinedramon i Suijinmon poden entrar a la Copa Metàl·lica.",
+          "Continuar una partida lluny de l’entrada d’una zona ja no desordena les rajoles del terra.",
+          "El text dels restaurants mostra els guanys reals dels plats en tots els idiomes. El saldo de les botigues no deixa dígits solts, la bombolla d’ànim de Monochromon desapareix en sortir i les etiquetes d’Estat i la icona de brutícia es veuen millor.",
+          "Els models importats tenen menys pampallugues, cares absents i peces que es travessen, inclosos Kyubimon, MaloMyotismon, MegaGargomon, Omnimon i Raidenmon. Encara queden alguns contactes. També es corregeixen capes, ales, ombres dels nadons i canvis de mida entre animacions.",
+          "Triar discos o canviar d’idioma ja no desplaça la web fins a un enllaç obert del registre de canvis. Si l’emmagatzematge del navegador s’omple durant la conversió d’un CHD, s’indica com a error d’espai."
+        ],
+        "upgrade": "Les partides desades de v0.0.8 funcionen i els discos necessaris no canvien. Fes una còpia de la targeta de memòria, arrenca el disc nou des de zero i carrega la partida de la targeta; els estats de l’emulador no funcionen entre versions."
+      },
+      "zh-hans": {
+        "new": [
+          "为导入的数码兽加入各自的招牌必杀技，拥有专属名称和效果，其中包括改编自Digital Card Battle、Digimon World 2和Digimon World 3的攻击。其他招式则重新制作了Digimon World的效果，并选用了适合攻击的音效。",
+          "网页版和桌面版补丁工具现可读取CHD光盘镜像。支持版本5，不支持旧版本、依赖父CHD的镜像或FLAC音频。",
+          "桌面应用和命令行补丁工具也支持未加密的单碟PBP镜像。"
+        ],
+        "changed": [
+          "重新制作了许多导入伙伴的待机、行走、疲劳行走和奔跑动画：脚步更稳，飞行与游泳动作有所区分，面部更生动，四肢不再那么僵硬。虫虫兽移动更快，幼小伙伴的跳动也更平缓。",
+          "更多伙伴采用原作游戏中的战斗移动、攻击、受击和庆祝动作。另一些伙伴则有了适合自身体型的新施法、打击、倒地和起身动作。",
+          "疲劳、生病、饥饿和不高兴时的姿势更容易区分。许多照料动画减少了突然扭曲、跳动和身体陷入地面的情况。",
+          "导入必杀技的威力现按进化阶段调整：成长期较低，完全体采用统一的威力范围，究极体的攻击更强。范围必杀技会命中所有敌人。黑迪路兽的Cat’s Eyes不再造成混乱。",
+          "AUTO以稳定的30fps开始场景，仅在性能有余量时尝试60fps，减少画面间隔不均和反复切换。普通战斗、锦标赛和战斗两倍速更加流畅；负荷较高的战斗仍可能变慢。",
+          "战斗特效按实际显示帧率平滑移动，伤害和命中时机保持不变。调整了必杀技特效的大小与发出位置，并降低了过高的跳跃。",
+          "打开快捷照料或玩家界面时，读取文字不会让场景停止。毛人兽会直接交换一个物品，不再询问只能选一的数量。",
+          "开场问答不再提前透露初始伙伴的种类，直到你在它身旁醒来才揭晓。为伙伴起名仍是可选的。",
+          "制作光盘时减少了重复工作，网站的剩余时间估算也更充分地考虑了等待执行的任务。",
+          "渡船的鲸鱼兽在岸边重新以原本的大小显示，不再像一只小型伙伴。"
+        ],
+        "fixed": [
+          "修复了包括迪路兽在内的一些必杀技播放后不伤害敌人的问题。基罗兽的Deadly Bomb会瞄准目标，并在落地时判定命中。",
+          "修复了可能导致多人混战或战斗物品菜单卡死的绘图缓冲区溢出问题，锦标赛和VS特效也加入了相应保护。",
+          "跳过训练动画不再无提示地结束五次连续训练。要中止训练，请在两次训练之间的停顿中按住取消。",
+          "剧情中的自动行走不再让驯兽师在巴多拉运输处原地打转，也不会在其他对话和场景中卡住。",
+          "招募天使兽后，仍能进入冰之圣域原有的房间。新增幼年期伙伴也能触发与原有幼年期相同的救助事件和剧情条件判定。",
+          "修复了旧画廊中会卡住大型伙伴的狭窄区域，拓宽了安杜路兽房间的出口，并将一个到达点移到了敌人身体之外。战斗物品若掉进墙内，会移到可到达的地面。",
+          "随着剧情推进，吸血魔兽夜间仍会留在竞技场大厅，并避开主要通道。先前无法参赛的可培养数码兽现可参加等级杯；机械邪龙兽和水神兽可参加金属杯。",
+          "在远离地图入口的位置继续存档时，地面图块不再错乱。",
+          "所有语言的餐厅结果文字均显示餐点的实际增益。商店余额不再残留多余数字，离开商店后Monochromon的心情气泡会消失，状态栏标签和污物图标也更清晰。",
+          "导入模型的闪烁、缺面和部件穿插现象有所减少，包括九尾狐兽、贝利亚吸血魔兽、圣加鲁哥兽、奥米加兽和雷电兽。部分接触仍然存在。此外还修正了披风、翅膀、幼年期的影子及不同动画之间的大小变化。",
+          "选择光盘或切换语言时，网站不再滚回已打开的更新日志链接。转换CHD时若浏览器存储空间已满，会明确提示空间不足。"
+        ],
+        "upgrade": "v0.0.8的存档可以继续使用，所需光盘没有变化。请先备份记忆卡，重新启动新光盘，再读取记忆卡存档；模拟器的即时存档不能跨版本使用。"
+      }
+    },
+    {
       "version": "0.0.8",
       "date": "2026-11-09",
       "en": {

@@ -9,9 +9,9 @@
   "techniques": ["Inifinity Burn", "Prominence Beam", "Meltdown", "Magma Bomb", "Red Inferno", "Fire Tower",
                  "Heat Laser", "Spit Fire", "Thunder Justice", "Spinning Shot", "Megalo Spark",
                  "Hurricane", "Confused Storm", "Wind Cutter", "Crimson Flare"],
-  "own_effect": {"technique": "Crimson Flare", "chunk": 285},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 24,
+  "own_effect": {"technique": "Crimson Flare", "chunk": 285},
   "model": {
     "file": "build/sizes-out/models/Magnadramon.MMD",
     "radius": 300,

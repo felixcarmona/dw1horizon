@@ -8,9 +8,9 @@
   "specialties": ["nature", "battle", null],
   "techniques": ["Poison Claw", "Mass Morph", "Insect Plague", "Poison Powder", "Sonic Jab", "Muscle Charge",
                  "War Cry", "Poison Ivy", "Danger Sting"],
-  "own_effect": {"technique": "Poison Ivy", "chunk": 255},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 22,
+  "own_effect": {"technique": "Poison Ivy", "chunk": 255},
   "model": {
     "file": "build/batch/Wormmon.MMD",
     "radius": 72,

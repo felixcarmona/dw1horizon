@@ -10,8 +10,8 @@
                  "Muscle Charge", "War Cry", "Hurricane", "Thunder Justice", "Spinning Shot",
                  "Megalo Spark", "Confused Storm", "Death Claw"],
   "drop": {"item": "sm.recovery", "percent": 10},
-  "own_effect": {"technique": "Death Claw", "chunk": 226},
   "effects_like": 48,
+  "own_effect": {"technique": "Death Claw", "chunk": 226},
   "model": {
     "file": "build/sizes-out/models/GrapLeomon.MMD",
     "radius": 136,

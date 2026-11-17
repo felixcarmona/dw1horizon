@@ -10,9 +10,9 @@
   "techniques": ["Megaton Punch", "Dynamite Kick (44)", "Counter", "Buster Dive", "Tremar", "Sonic Jab",
                  "Inifinity Burn", "Prominence Beam", "Meltdown", "Magma Bomb", "Giga Freeze",
                  "Water Blit", "Ice Needle", "Howling Blaster"],
-  "own_effect": {"technique": "Howling Blaster", "chunk": 251},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 22,
+  "own_effect": {"technique": "Howling Blaster", "chunk": 251},
   "model": {
     "name": "wEAG",
     "bones": 0,

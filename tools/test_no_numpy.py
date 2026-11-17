@@ -36,6 +36,26 @@ with source_context(root / 'unused-test-sources'):
 for name, entry in json.load(open(root / 'content/models/imports/models.json')).items():
     if entry.get('builder'):
         importlib.import_module(entry['builder'])
+# Exercise the repaired numeric paths too: an import-only check misses viewer
+# imports inside builders and unsupported operations in the local backend.
+from tools.derive import arraymath as np
+from tools.models.field_animations import antylamon_polish, black_king_numemon, native_hands
+for matrix, rhs, want in (([[2., 1.], [1., 3.]], [5., 10.], [1., 3.]),
+                          ([[1., 3.], [2., 1.]], [10., 5.], [1., 3.])):
+    result = black_king_numemon.solve2(np.array(matrix), np.array(rhs))
+    assert max(abs(a - b) for a, b in zip(result, want)) < 1e-12
+rotation = antylamon_polish.exp_so3(np.array([0., 0., .5]))
+assert abs(antylamon_polish.log_so3(rotation)[2] - .5) < 1e-12
+from types import SimpleNamespace
+points = np.array([[.1, .1, .1], [2., 2., 2.]])
+hand = np.array([[[.1, .1, .1]] * 3])
+tetra = np.array([[[0., 0., 0.], [0., 1., 0.], [1., 0., 0.]],
+                  [[0., 0., 0.], [1., 0., 0.], [0., 0., 1.]],
+                  [[0., 0., 0.], [0., 0., 1.], [0., 1., 0.]],
+                  [[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]])
+mesh = SimpleNamespace(world=lambda pose, bones: {1: (points, hand), 2: (None, tetra)},
+                       parts={2: [np.arange(4)]})
+assert native_hands._Mesh.inside_count(mesh, None, 1, [2]) == 2
 assert 'numpy' not in sys.modules
 assert not any(n == 'PIL' or n.startswith('PIL.') for n in sys.modules)
 '''

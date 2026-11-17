@@ -9,9 +9,9 @@
   "techniques": ["Thunder Justice", "Spinning Shot", "Megalo Spark", "Hurricane", "Confused Storm", "Wind Cutter",
                  "Inifinity Burn", "Prominence Beam", "Meltdown", "Magma Bomb", "Megaton Punch",
                  "Counter", "Dynamite Kick (44)", "Sonic Jab", "Fireball"],
-  "own_effect": {"technique": "Fireball", "chunk": 277},
   "drop": {"item": "sm.recovery", "percent": 30},
   "effects_like": 34,
+  "own_effect": {"technique": "Fireball", "chunk": 277},
   "model": {
     "file": "build/sizes-out/models/Seraphimon.MMD",
     "radius": 227,

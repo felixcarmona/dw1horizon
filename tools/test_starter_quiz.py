@@ -4,6 +4,7 @@ import copy
 import ctypes
 import itertools
 import json
+import os
 from pathlib import Path
 import re
 import shutil
@@ -14,6 +15,12 @@ from unittest.mock import patch
 
 import starter_quiz as Q
 from languages import CODES
+
+
+def engine_source(relative):
+    configured = os.environ.get('DW_SELFTEST_DECOMP')
+    trees = [Path(configured)] if configured else [Q.ROOT / 'build/decomp-dev', Q.ROOT / 'build/decomp-int']
+    return next((tree / relative for tree in trees if (tree / relative).exists()), trees[0] / relative)
 
 
 class QuizTest(unittest.TestCase):
@@ -220,10 +227,7 @@ class QuizTest(unittest.TestCase):
                                                                 last_row=i == 2), row)
 
     def test_production_c_all_paths(self):
-        source = next((Q.ROOT / f'build/{tree}/src/main/main_menu.c'
-                       for tree in ('decomp-dev', 'decomp-int')
-                       if (Q.ROOT / f'build/{tree}/src/main/main_menu.c').exists()),
-                      Q.ROOT / 'build/decomp-dev/src/main/main_menu.c')
+        source = engine_source('src/main/main_menu.c')
         if not source.exists() or not shutil.which('cc'):
             self.skipTest('needs a prepared decomp tree and a host C compiler')
         text = source.read_text()
@@ -258,10 +262,8 @@ class QuizTest(unittest.TestCase):
                     self.assertEqual(fn((ctypes.c_uint8*7)(*path)), Q.result(data, path, option.value != 0), path)
 
     def test_production_naming_flow_keeps_default_private(self):
-        source = next((Q.ROOT / f'build/{tree}/src/shop/script_menu.c'
-                       for tree in ('decomp-int', 'decomp-dev')
-                       if (Q.ROOT / f'build/{tree}/src/shop/script_menu.c').exists()), None)
-        if source is None or not shutil.which('cc'):
+        source = engine_source('src/shop/script_menu.c')
+        if not source.exists() or not shutil.which('cc'):
             self.skipTest('needs a prepared decomp tree and a host C compiler')
         function = re.search(r'int32_t newGameStateMachine\(void\)\n\{.*?\n\}',
                              source.read_text(), re.S)[0]

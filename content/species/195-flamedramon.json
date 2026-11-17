@@ -8,9 +8,9 @@
   "specialties": ["fire", "battle", null],
   "techniques": ["Spit Fire", "Fire Tower", "Heat Laser", "Red Inferno", "Magma Bomb", "Meltdown",
                  "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Fireball"],
-  "own_effect": {"technique": "Fireball", "chunk": 266},
   "drop": {"item": "Off. Disk", "percent": 20},
   "effects_like": 9,
+  "own_effect": {"technique": "Fireball", "chunk": 266},
   "model": {
     "file": "build/batch2/Flamedramon.MMD",
     "radius": 115,

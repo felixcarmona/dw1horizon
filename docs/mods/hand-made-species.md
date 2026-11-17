@@ -135,7 +135,7 @@ World-space rendered triangle bounds over every tick (height × width; root trav
 | Yokomon (before) | 240 / 100 | 232.4–235.4 × 186.0–241.6 | 221.2–248.9 × 186.0–257.7 | 232.1–251.2 × 185.8–238.5 |
 | Nyokimon (after) | 175 / 100 | 159.8–194.8 × 157.7–176.1 | 147.9–190.6 × 160.0–181.5 | 137.2–309.8 × 169.0–169.0 |
 
-Commit `765f6567` pins the earlier scaled-down models; the actual size operation lives in `authoring/shrink.py` (0.80 for Nyokimon). Nyokimon was subsequently rebound to Botamon in `5b7f2f47`, retaining that factor. `content/models/imports/import-sizes.json` does not exist in this tree; the importer size manifest is `content/modeldelta/import-sizes.json`, and it has no Nyokimon entry because the baby uses its own authored delta builder.
+Commit `765f6567` pins the earlier scaled-down models; the actual size operation lives in `authoring/shrink.py` (0.80 for Nyokimon). Nyokimon was subsequently rebound to Botamon in `5b7f2f47`, retaining that factor. `content/modeldelta/import-sizes.json` does not exist in this tree; the importer size manifest is `content/modeldelta/import-sizes.json`, and it has no Nyokimon entry because the baby uses its own authored delta builder.
 
 Use 1.08 of the authored mesh instead: a 108-unit body rather than 80, with a 174-unit neutral silhouette (169 wide). Botamon is 106 high and 144 wide; Nyokimon’s sprout accounts for its extra height. Field idle starts at 175 × 168 and stays under 200, in the Bukamon height class and below Yokomon. Regenerate the calm clips against the resized mesh to solve floor contact again; keep the donor battle programs and native field speeds. Radius 100 matches the other in-training-sized silhouettes. All occupied battle slots were measured, including 33–36, 40–44 and Bubble 46; donor squash and rolls explain their changing bounds.
 
@@ -166,7 +166,7 @@ Final resident data: 24,510 bytes versus 26,190 on main (−1,680), including ce
 
 Use the Nyokimon review's rendered world-space bounds and decision rule above: judge body bulk against native babies, with the neutral silhouette no taller than Bukamon/Yokomon. Pichimon's 92-unit round head was narrower than Botamon's 106-unit body; feelers and tail made its 152-unit neutral height misleading. Apply 1.20 in the same ground-anchored `authoring/shrink.py` pass: head diameter about 110, neutral silhouette 182 × 166, first field idle 185.5 × 167.3. This is above Botamon's bulk, near Koromon, below Bukamon's 191-unit neutral height and Yokomon's 233. JSON height/radius changes from 150/95 to 185/100, matching the shared native-baby radius choice.
 
-Pichimon is absent from `content/modeldelta/import-sizes.json`: its size comes from its authored mesh delta, not the imported-model sizing rules. The requested `content/models/imports/import-sizes.json` path does not exist. Commit `765f6567` actually says “Pin the scaled-down Nyokimon, Nyaromon and Yokomon”; it does not modify Pichimon. The cause here is the small authored mesh, rather than a later import scale pin.
+Pichimon is absent from `content/modeldelta/import-sizes.json`: its size comes from its authored mesh delta, not the imported-model sizing rules. The requested `content/modeldelta/import-sizes.json` path does not exist. Commit `765f6567` actually says “Pin the scaled-down Nyokimon, Nyaromon and Yokomon”; it does not modify Pichimon. The cause here is the small authored mesh, rather than a later import scale pin.
 
 Bounds over every tick, H range × W range in DW1 units (travel changes position, not dimensions):
 

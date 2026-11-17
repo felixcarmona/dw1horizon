@@ -9,9 +9,9 @@
   "techniques": ["Pulse Laser", "Metal Sprinter", "DG Dimension", "All Range Beam", "Delete Program",
                  "Reverse Prog", "Power Crane", "Full Potential", "Poison Claw", "Poison Powder",
                  "Bug", "Megaton Punch", "Buster Dive", "Counter", "Dark Shot"],
-  "own_effect": {"technique": "Dark Shot", "chunk": 306},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 12,
+  "own_effect": {"technique": "Dark Shot", "chunk": 306},
   "model": {
     "file": "build/sizes-out/models/Diaboromon.MMD",
     "radius": 246,

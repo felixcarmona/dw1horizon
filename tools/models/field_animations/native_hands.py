@@ -17,7 +17,7 @@ are untouched. The gloves' own orientation on the hand bones is the binding's `a
 import copy
 import math
 
-import numpy as np
+from tools.derive import arraymath as np
 
 import animsheet
 import retarget as R
@@ -168,19 +168,52 @@ _RAYS = ([1, .3, .2], [0, 1, .1], [.1, .2, 1], [-.7, .2, .5], [.3, -1, .2])
 
 def _inside(points, tris, direction):
     """Points inside the closed mesh `tris` (n, 3, 3) by one ray's parity (Moeller-Trumbore)."""
-    a0, a1, a2 = tris[:, 0], tris[:, 1], tris[:, 2]
-    e1, e2 = a1 - a0, a2 - a0
-    d = np.array(direction, float)
-    h = np.cross(d, e2)
-    det = (e1*h).sum(1)
-    ok = np.abs(det) > 1e-9
-    det = np.where(ok, det, 1)
-    s = points[:, None, :] - a0[None]
-    u = (s*h[None]).sum(2)/det[None]
-    q = np.cross(s, e1[None])
-    v = (q*d).sum(2)/det[None]
-    t = (e2[None]*q).sum(2)/det[None]
-    return ((ok[None] & (u >= 0) & (v >= 0) & (u + v <= 1) & (t > 1e-6)).sum(1) % 2) == 1
+    # Scalar ray tests avoid allocating point-by-triangle arrays in the
+    # standard-library backend. Keep the same cross/dot order and thresholds.
+    dx, dy, dz = direction
+    rows = tris.tolist()
+    if not rows:
+        return np.zeros(len(points), bool)
+    # A ray that misses the whole piece cannot hit any triangle, including
+    # open pieces. Expand the bounds to retain grazing rays despite rounding.
+    bounds = [(min(v[i] for tri in rows for v in tri) - 1e-6,
+               max(v[i] for tri in rows for v in tri) + 1e-6) for i in range(3)]
+    prepared = []
+    for a, b, c in rows:
+        ex, ey, ez = (b[i] - a[i] for i in range(3))
+        fx, fy, fz = (c[i] - a[i] for i in range(3))
+        hx, hy, hz = dy*fz - dz*fy, dz*fx - dx*fz, dx*fy - dy*fx
+        det = (ex*hx + ey*hy) + ez*hz
+        if abs(det) > 1e-9:
+            prepared.append((a, ex, ey, ez, fx, fy, fz, hx, hy, hz, det))
+    result = []
+    for point in points.tolist():
+        near, far = 0., math.inf
+        for coordinate, d, (low, high) in zip(point, direction, bounds):
+            if d == 0:
+                if coordinate < low or coordinate > high:
+                    far = -math.inf
+                    break
+            else:
+                a, b = (low - coordinate) / d, (high - coordinate) / d
+                near, far = max(near, min(a, b)), min(far, max(a, b))
+        if far < near:
+            result.append(False)
+            continue
+        hits = 0
+        for a, ex, ey, ez, fx, fy, fz, hx, hy, hz, det in prepared:
+            sx, sy, sz = (point[i] - a[i] for i in range(3))
+            u = ((sx*hx + sy*hy) + sz*hz) / det
+            if u < 0 or u > 1:
+                continue
+            qx, qy, qz = sy*ez - sz*ey, sz*ex - sx*ez, sx*ey - sy*ex
+            v = ((qx*dx + qy*dy) + qz*dz) / det
+            if v < 0 or u + v > 1:
+                continue
+            t = ((fx*qx + fy*qy) + fz*qz) / det
+            hits += t > 1e-6
+        result.append(hits % 2 == 1)
+    return np.array(result, bool)
 
 
 def _parts(rows):
@@ -233,7 +266,7 @@ class _Mesh:
     def inside_count(self, pose, hand, others):
         w = self.world(pose, [hand] + list(others))
         verts, tris = w[hand]
-        points = np.vstack([verts, tris.mean(1)])
+        points = np.concatenate([verts, tris.mean(1)])
         hit = np.zeros(len(points), bool)
         for b in others:
             for part in self.parts[b]:      # one closed piece at a time: two overlapping pieces cancel each other's parity

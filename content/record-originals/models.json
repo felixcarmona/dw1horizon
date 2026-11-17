@@ -956,10 +956,15 @@
             "path": "extracted/CHDAT/MMD0/BIRD.MMD",
             "size": 84644,
             "sha256": "17c2c781295b291a13ed9a03631664f5eef1acbef0990ce2cc1bbca476c8b832"
+          },
+          {
+            "path": "extracted/CHDAT/MMD1/TOKO.MMD",
+            "size": 34192,
+            "sha256": "3a4b4df9ef9a95713dccaec191ebeb5c2ced6df35fba4e4477adb47a5fed0e62"
           }
         ],
         "delta": "content/record-originals/deltas/106.MMD.mdelta",
-        "delta_sha256": "e78746281d798b81a0fc7134932c2cc751bc7186a97f58480deaf79f48f7e87e",
+        "delta_sha256": "9f9909c7acba5b0b436fbc749eaa2632f331d5bda08a6f2bd5a82f2f7a4a7dab",
         "sha256": "59034964bae16d0ff599f212993cdae9b3028d43c703eafca66e6884194fd940",
         "size": 66390
       }

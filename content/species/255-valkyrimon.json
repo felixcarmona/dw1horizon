@@ -9,9 +9,9 @@
   "techniques": ["Hurricane", "Thunder Justice", "Spinning Shot", "Megalo Spark", "Confused Storm", "Wind Cutter",
                  "Megaton Punch", "Buster Dive", "Counter", "Dynamite Kick (44)", "Giga Freeze",
                  "Water Blit", "Ice Needle", "Winter Blast", "Mail Strome"],
-  "own_effect": {"technique": "Mail Strome", "chunk": 324},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 60,
+  "own_effect": {"technique": "Mail Strome", "chunk": 324},
   "model": {
     "file": "build/sizes-out/models/Valkyrimon.MMD",
     "radius": 169,

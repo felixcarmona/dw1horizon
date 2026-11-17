@@ -10,8 +10,8 @@
                  "Electric Cloud", "Static Elect", "Megaton Punch", "Buster Dive", "Counter",
                  "Dynamite Kick (44)", "Tremar", "Death Claw"],
   "drop": {"item": "Giant Meat", "percent": 30},
-  "own_effect": {"technique": "Death Claw", "chunk": 236},
   "effects_like": 5,
+  "own_effect": {"technique": "Death Claw", "chunk": 236},
   "model": {
     "file": "build/sizes-out/models/Kyukimon.MMD",
     "radius": 300,

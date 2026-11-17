@@ -9,9 +9,9 @@
   "techniques": ["Danger Sting", "Insect Plague", "Bug", "Green Trap", "Charm Perfume", "Poison Powder",
                  "Inifinity Burn", "Prominence Beam", "Meltdown", "Magma Bomb", "Megalo Spark",
                  "Spinning Shot", "Confused Storm", "Bit Bomb"],
-  "own_effect": {"technique": "Bit Bomb", "chunk": 275},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 60,
+  "own_effect": {"technique": "Bit Bomb", "chunk": 275},
   "model": {
     "file": "build/sizes-out/models/MegaKabuterimon.MMD",
     "radius": 248,

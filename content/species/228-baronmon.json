@@ -8,9 +8,9 @@
   "specialties": ["fire", "battle", null],
   "techniques": ["Spit Fire", "Fire Tower", "Red Inferno", "Heat Laser", "Magma Bomb", "Meltdown", "Muscle Charge",
                  "War Cry", "Sonic Jab", "Tremar", "Meteor Wing"],
-  "own_effect": {"technique": "Meteor Wing", "chunk": 297},
   "drop": {"item": "Off. Disk", "percent": 20},
   "effects_like": 9,
+  "own_effect": {"technique": "Meteor Wing", "chunk": 297},
   "model": {
     "file": "build/batch4/Baronmon.MMD",
     "radius": 115,

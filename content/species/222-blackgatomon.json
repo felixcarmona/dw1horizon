@@ -8,9 +8,9 @@
   "specialties": ["battle", "air", null],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Tremar", "Counter", "Wind Cutter",
                  "Static Elect", "Electric Cloud", "Confused Storm", "Dark Claw"],
-  "own_effect": {"technique": "Dark Claw", "chunk": 292},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 17,
+  "own_effect": {"technique": "Dark Claw", "chunk": 292},
   "model": {
     "file": "build/batch4/BlackGatomon.MMD",
     "radius": 145,
