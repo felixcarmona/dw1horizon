@@ -19,7 +19,8 @@
           "Battle effects move smoothly at the displayed frame rate while keeping the same damage and hit timing. Finisher effects have revised sizes and launch positions, with excessive jumps lowered.",
           "Opening quick care or the Player view keeps the field moving while text loads. Mojyamon exchanges an item directly, without asking for an amount that can only be one.",
           "The opening quiz keeps your starter’s species a surprise until you wake up beside it. Naming your partner remains optional.",
-          "Disc building does less repeated work, and the website’s remaining-time estimate better accounts for the work still waiting to run."
+          "Disc building does less repeated work, and the website’s remaining-time estimate better accounts for the work still waiting to run.",
+          "The ferry Whamon is drawn at its full size again on the shore, instead of looking like a small partner."
         ],
         "fixed": [
           "Repaired finishers that played without damaging the enemy, including Gatomon’s. Giromon’s Deadly Bomb aims at its target and checks for a hit on landing.",
@@ -51,7 +52,8 @@
           "Los efectos de combate se mueven con fluidez a la tasa de imágenes mostrada y mantienen el daño y el momento del impacto. Se revisan el tamaño y el punto de salida de los remates y se rebajan los saltos excesivos.",
           "Al abrir los cuidados rápidos o la vista de Jugador, el escenario sigue en movimiento mientras carga el texto. Mojyamon intercambia un objeto directamente, sin pedir una cantidad que solo puede ser uno.",
           "El cuestionario inicial mantiene en secreto la especie de tu compañero hasta que despiertas a su lado. Ponerle nombre sigue siendo opcional.",
-          "La creación del disco repite menos trabajo y la estimación de tiempo restante de la web tiene más en cuenta las tareas pendientes."
+          "La creación del disco repite menos trabajo y la estimación de tiempo restante de la web tiene más en cuenta las tareas pendientes.",
+          "El Whamon del transbordo vuelve a verse a su tamaño real en la orilla, en lugar de parecer un compañero pequeño."
         ],
         "fixed": [
           "Corregidos remates que se ejecutaban sin dañar al enemigo, incluido el de Gatomon. Deadly Bomb de Giromon apunta al objetivo y comprueba el impacto al aterrizar.",
@@ -83,7 +85,8 @@
           "Os efeitos de batalha se movem com fluidez na taxa de quadros exibida, mantendo o dano e o momento dos acertos. Os efeitos dos finalizadores têm tamanhos e pontos de saída revistos, com saltos excessivos reduzidos.",
           "Ao abrir os cuidados rápidos ou a tela de Jogador, o cenário continua em movimento enquanto o texto carrega. Mojyamon troca um item diretamente, sem pedir uma quantidade que só pode ser um.",
           "O questionário inicial mantém a espécie do parceiro em segredo até você acordar ao lado dele. Dar um nome continua sendo opcional.",
-          "A criação do disco repete menos trabalho, e a estimativa de tempo restante do site considera melhor as tarefas que ainda aguardam execução."
+          "A criação do disco repete menos trabalho, e a estimativa de tempo restante do site considera melhor as tarefas que ainda aguardam execução.",
+          "O Whamon da balsa volta a aparecer no tamanho real na praia, em vez de parecer um parceiro pequeno."
         ],
         "fixed": [
           "Corrigidos finalizadores que eram executados sem causar dano ao inimigo, incluindo o de Gatomon. Deadly Bomb de Giromon mira no alvo e verifica o acerto ao aterrissar.",
@@ -115,7 +118,8 @@
           "Les effets de combat s’animent à la fréquence d’affichage, sans modifier les dégâts ni le moment des impacts. La taille et le point de départ des effets des attaques finales sont revus, et les sauts excessifs sont abaissés.",
           "Ouvrir les soins rapides ou la vue Joueur laisse le décor s’animer pendant le chargement du texte. Mojyamon échange directement un objet, sans demander une quantité qui ne peut être qu’un.",
           "Le questionnaire d’ouverture garde l’espèce du premier partenaire secrète jusqu’au réveil à ses côtés. Lui donner un nom reste facultatif.",
-          "La création du disque répète moins de tâches et l’estimation du temps restant sur le site tient mieux compte du travail en attente."
+          "La création du disque répète moins de tâches et l’estimation du temps restant sur le site tient mieux compte du travail en attente.",
+          "Le Whamon du bac retrouve sa taille réelle sur la rive, au lieu de ressembler à un petit partenaire."
         ],
         "fixed": [
           "Correction d’attaques finales qui s’exécutaient sans blesser l’ennemi, dont celle de Gatomon. Deadly Bomb de Giromon vise sa cible et vérifie l’impact à l’atterrissage.",
@@ -147,7 +151,8 @@
           "Kampfeffekte bewegen sich flüssig mit der angezeigten Bildrate; Schaden und Trefferzeitpunkt bleiben gleich. Größe und Ausgangspunkte der Finisher-Effekte wurden überarbeitet und übermäßig hohe Sprünge abgesenkt.",
           "Beim Öffnen der Schnellpflege oder der Spieleransicht läuft die Umgebung weiter, während der Text lädt. Mojyamon tauscht einen Gegenstand direkt, ohne nach einer Menge zu fragen, die nur eins sein kann.",
           "Das Einstiegsquiz verrät die Art deines ersten Partners erst, wenn du neben ihm aufwachst. Einen Namen zu vergeben bleibt freiwillig.",
-          "Beim Erstellen der Disc wird weniger Arbeit wiederholt. Die Zeitschätzung auf der Website berücksichtigt wartende Aufgaben besser."
+          "Beim Erstellen der Disc wird weniger Arbeit wiederholt. Die Zeitschätzung auf der Website berücksichtigt wartende Aufgaben besser.",
+          "Der Fähr-Whamon wird am Ufer wieder in voller Größe gezeigt und wirkt nicht mehr wie ein kleiner Partner."
         ],
         "fixed": [
           "Finisher, die ohne Schaden am Gegner abliefen, wurden repariert, darunter Gatomons. Giromons Deadly Bomb zielt auf den Gegner und prüft beim Aufkommen, ob es trifft.",
@@ -179,7 +184,8 @@
           "Gli effetti di battaglia si muovono in modo fluido alla frequenza d’immagini mostrata, mantenendo danni e tempi dei colpi. Rivisti dimensioni e punti di partenza degli effetti delle mosse finali e abbassati i salti eccessivi.",
           "Aprendo le cure rapide o la vista Giocatore, lo scenario continua a muoversi mentre si carica il testo. Mojyamon scambia direttamente un oggetto, senza chiedere una quantità che può essere solo uno.",
           "Il questionario iniziale mantiene segreta la specie del primo compagno finché non ti svegli al suo fianco. Dargli un nome resta facoltativo.",
-          "La creazione del disco ripete meno lavoro e la stima del tempo restante sul sito considera meglio le attività ancora in attesa."
+          "La creazione del disco ripete meno lavoro e la stima del tempo restante sul sito considera meglio le attività ancora in attesa.",
+          "Il Whamon del traghetto torna a mostrarsi a grandezza reale sulla riva, invece di sembrare un piccolo partner."
         ],
         "fixed": [
           "Corrette mosse finali che venivano eseguite senza danneggiare il nemico, inclusa quella di Gatomon. Deadly Bomb di Giromon mira al bersaglio e controlla il colpo all’atterraggio.",
@@ -211,7 +217,8 @@
           "戦闘エフェクトが表示フレームレートに合わせて滑らかに動きます。ダメージと命中のタイミングは変わりません。必殺技のエフェクトの大きさと発生位置を見直し、高すぎるジャンプを抑えました。",
           "クイックケアやプレイヤー画面を開くとき、テキストの読み込み中もフィールドの表示が動き続けます。モジャモンの交換では、1個しか選べない個数確認を省いて直接交換します。",
           "最初の質問では、隣で目覚めるまでパートナーの種類が分からなくなりました。名前を付けるかどうかは引き続き自由です。",
-          "ディスク作成時の重複作業を減らしました。ウェブ版の残り時間表示も、実行待ちの作業をより正確に考慮します。"
+          "ディスク作成時の重複作業を減らしました。ウェブ版の残り時間表示も、実行待ちの作業をより正確に考慮します。",
+          "渡し舟のホエーモンが、小さなパートナーのようではなく、浜辺で本来の大きさで表示されるようになりました。"
         ],
         "fixed": [
           "テイルモンなど、動作はするのに敵にダメージを与えなかった必殺技を修正しました。ギロモンのDeadly Bombは相手を狙って投げ、着地時に命中を判定します。",
@@ -243,7 +250,8 @@
           "Els efectes de combat es mouen amb fluïdesa a la taxa d’imatges mostrada i mantenen el dany i el moment de l’impacte. Es revisen la mida i el punt de sortida dels efectes dels atacs finals i es rebaixen els salts excessius.",
           "En obrir les cures ràpides o la vista de Jugador, l’escenari continua en moviment mentre es carrega el text. Mojyamon intercanvia un objecte directament, sense demanar una quantitat que només pot ser un.",
           "El qüestionari inicial manté en secret l’espècie del primer company fins que et despertes al seu costat. Posar-li nom continua sent opcional.",
-          "La creació del disc repeteix menys feina i l’estimació de temps restant de la web té més en compte les tasques pendents."
+          "La creació del disc repeteix menys feina i l’estimació de temps restant de la web té més en compte les tasques pendents.",
+          "El Whamon del transbordador torna a veure's a la seva mida real a la riba, en lloc de semblar un company petit."
         ],
         "fixed": [
           "Corregits atacs finals que s’executaven sense fer mal a l’enemic, inclòs el de Gatomon. Deadly Bomb de Giromon apunta a l’objectiu i comprova l’impacte en aterrar.",
@@ -275,7 +283,8 @@
           "战斗特效按实际显示帧率平滑移动，伤害和命中时机保持不变。调整了必杀技特效的大小与发出位置，并降低了过高的跳跃。",
           "打开快捷照料或玩家界面时，读取文字不会让场景停止。毛人兽会直接交换一个物品，不再询问只能选一的数量。",
           "开场问答不再提前透露初始伙伴的种类，直到你在它身旁醒来才揭晓。为伙伴起名仍是可选的。",
-          "制作光盘时减少了重复工作，网站的剩余时间估算也更充分地考虑了等待执行的任务。"
+          "制作光盘时减少了重复工作，网站的剩余时间估算也更充分地考虑了等待执行的任务。",
+          "渡船的鲸鱼兽在岸边重新以原本的大小显示，不再像一只小型伙伴。"
         ],
         "fixed": [
           "修复了包括迪路兽在内的一些必杀技播放后不伤害敌人的问题。基罗兽的Deadly Bomb会瞄准目标，并在落地时判定命中。",
