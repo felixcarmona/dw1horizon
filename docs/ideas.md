@@ -86,7 +86,6 @@ against, leave this list.
 | A Cheats option to unlock the whole evolution chart | 🎭 | For testing; cheats are opt-in. |
 | Reorganise the Rookie routes: add Zurumon (Baby) and Pagumon (In-Training, the Virus line: Gazimon, DemiDevimon, Gizamon...) and give each Rookie a single In-Training parent as in the original, about five Rookies each | ⚖️ 🆕 | A player's full table is in the Discord thread "Rookie evolution path re-balance"; animations could reuse Pabumon's and Koromon's. Changes routes players know. |
 | Multiplayer co-op | 🆕 | Very large: the engine is single-player; would need a link-cable/netplay design from scratch. Player question (2026-11-15). What exists today is the original two-player VS battle mode from the main menu (same console, registered Digimon from each memory card; see the minigames reference). |
-| In File City, a partner that needs the toilet walks straight to it after a map change (no need to hold Up) | 🛠️ | Field AI change for the city toilets only. |
 | A randomizer mode (species, items, encounters) | 🆕 | A different kind of challenge; large. |
 | A "!" over Digimon that can be recruited now or have a quest available (optionally two icons: quest / ready to join) | 🛠️ 🎭 | Similar on-screen hints were tried and dropped on 2026-10-24 in favour of discovery. |
 | The secret ninja town Ninjamon talks about, as a new area, entered through the false door in Vademon's mansion | 🆕 | New maps, residents and a story hook. |
