@@ -32,6 +32,8 @@ SPARS = [[(27,169),(34,162),(282,304),(274,315)],
          [(194,175),(204,181),(97,287),(88,281)],
          [(8,394),(12,405),(133,379),(131,369)]]
 SPAWN_PX = (457,460)
+WHAMON = (1560, -1720)
+WHAMON_RADIUS = json.loads((ROOT / 'content/species/146-whamon.json').read_text())['model']['radius']
 
 
 def layout():
@@ -50,6 +52,11 @@ def layout():
     for i,c in enumerate(m.collision):
         if c == 0 and (i%100,i//100) not in visited:
             m.collision[i] = 128
+    # The compiler requires a floor tile beneath even a stationary water NPC.
+    # This isolated tile is entirely inside the ferry's 500-unit body block;
+    # neither the tamer nor the beach gains a route into the sea.
+    tx, tz = reach.model_tile(*WHAMON)
+    m.collision[tz*100+tx] = 0
     check_arrivals(m,'SHOR01')
     return m
 
@@ -57,17 +64,18 @@ def layout():
 def review(m, out):
     """Reach with the actual stationary ferry and the unopened chest present."""
     cam = Cam(m)
-    whale = (1650, -850)
+    whale = WHAMON
     chest = (-2036, -1152)
     tx, tz = reach.model_tile(*chest)
     grid = type('Grid', (), {'collision': list(m.collision), 'warps': m.warps})()
     for row in range(tz-2,tz+2):
         for col in range(tx-2,tx+2):
             grid.collision[row*100+col] = 128
-    area = reach.reach(grid,seed_policy='spawn_coordinates',footprints=[(*whale,200)])
+    area = reach.reach(grid,seed_policy='spawn_coordinates',footprints=[(*whale,WHAMON_RADIUS)])
     assert any(reach.model_tile(x,z)==(tx+4,tz) for x,z in area), 'chest opening is unreachable'
-    assert any(300 < max(abs(x-whale[0]),abs(z-whale[1])) <= 350
-               and abs(x-whale[0]) <= 350 and abs(z-whale[1]) <= 350
+    edge = WHAMON_RADIUS + 100
+    assert any((edge < abs(x-whale[0]) <= edge+50 and abs(z-whale[1]) <= edge)
+               or (edge < abs(z-whale[1]) <= edge+50 and abs(x-whale[0]) <= edge)
                for x,z in area), 'ferry talk boundary is unreachable'
     image = Image.open(Path(MOD,'art/drowned-shore.png')).convert('RGB')
     w,h = image.size
@@ -87,6 +95,10 @@ def review(m, out):
                 pixels[k+axis] = (pixels[k+axis]*55+green*45)//100
     image = Image.frombytes('RGB',(w,h),bytes(pixels))
     draw = ImageDraw.Draw(image)
+    # The engine uses an inclusive square for NPC/tamer collision, not a circle.
+    corners = [cam.pixel(whale[0]+dx*edge,whale[1]+dz*edge)
+               for dx,dz in [(-1,-1),(1,-1),(1,1),(-1,1),(-1,-1)]]
+    draw.line(corners,fill='yellow',width=2)
     for label,point in [('arrival',(m.warps[0]['x'],m.warps[0]['z'])),
                         ('Whamon',whale),('chest',chest),('notebook',(363,-580))]:
         u,v = cam.pixel(*point)
@@ -94,7 +106,7 @@ def review(m, out):
         draw.text((u+6,v),label,fill='white')
     image.resize((w*2,h*2),Image.NEAREST).save(out/'SHOR01-zones.png')
     result = dict(free_tiles=m.collision.count(0),reachable_positions=len(area),
-                  whale=list(whale),chest=list(chest),chest_opening=[tx+4,tz],
+                  whale=list(whale),whale_radius=WHAMON_RADIUS,tamer_exclusion=edge,chest=list(chest),chest_opening=[tx+4,tz],
                   camera=list(CAMERA),projection=PROJECTION)
     (out/'SHOR01-reach.json').write_text(json.dumps(result,indent=2)+'\n')
     print(json.dumps(result))
@@ -103,7 +115,8 @@ def review(m, out):
 def main(out):
     out.mkdir(parents=True,exist_ok=True)
     m=layout()
-    data=dict(camera=CAMERA,projection=PROJECTION,collision=m.collision,warps=m.warps)
+    data=dict(camera=CAMERA,projection=PROJECTION,collision=m.collision,warps=m.warps,
+              ferry=dict(species=146,at=WHAMON,radius=WHAMON_RADIUS,facing=1024))
     Path(MOD,'maps/drowned-shore-data.json').write_text(json.dumps(data)+'\n')
     (out/'SHOR01.MAP').write_bytes(m.build())
     review(m,out)
