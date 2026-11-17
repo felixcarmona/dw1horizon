@@ -191,6 +191,9 @@ def apply(data, bones, sid):
         raise ValueError(f'{sid}: surface repair requires the reviewed final TMD')
     model = mmd.MMD.parse(data, len(bones))
     report = dict(applied=True)
+    if sid == 373:
+        from tools.models import mesh_wargreymon
+        report.update(mesh_wargreymon.apply(model, bones))
     if sid == 183:
         # The rebound rear body starts inside the front body and middle legs.
         # Extend its socket by ten local Z units, retaining the complete crawl

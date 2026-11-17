@@ -32,8 +32,12 @@ def composite(background, words, abe, abr):
 
 
 def render(model, yaw=0, pitch=0, size=256, opaque=False, frame=None,
-           pose=None, depth_offset=0):
-    """Render a meshcheck.Model; `opaque` is a diagnostic ABE-off comparison."""
+           pose=None, depth_offset=0, return_ids=False):
+    """Render a meshcheck.Model; optionally return winning triangle indices.
+
+    IDs follow texture-zero discard and the same OT order as the colour image.
+    `opaque` is a diagnostic ABE-off comparison.
+    """
     xyz = model.tri_array(model.world(model.rest() if pose is None else pose))
     points = meshcheck._rotate(xyz, yaw, pitch)
     if frame is None:
@@ -45,6 +49,7 @@ def render(model, yaw=0, pitch=0, size=256, opaque=False, frame=None,
     yy, xx = np.mgrid[:size, :size]
     checker = ((xx // 24 + yy // 24) % 2)[..., None]
     image = np.broadcast_to(np.where(checker, [7, 11, 14], [14, 17, 20]), (size, size, 3)).astype(np.uint8).copy()
+    ids = np.full((size, size), -1, dtype=np.int32) if return_ids else None
     # libgs culls a whole primitive from its FIRST triangle. Quad AVSZ4
     # uses four distinct corners, not the diagonal counted twice. OT insertion
     # prepends packets: later primitives draw first within a depth bin.
@@ -109,4 +114,8 @@ def render(model, yaw=0, pitch=0, size=256, opaque=False, frame=None,
         sub = image[lo[1]:hi[1]+1, lo[0]:hi[0]+1]
         result = composite(sub, words, bool(prim.mode & 2) and not opaque, abr)
         sub[inside] = result[inside]
-    return (image.astype(np.uint16) * 255 // 31).astype(np.uint8), frame
+        if return_ids:
+            id_sub = ids[lo[1]:hi[1]+1, lo[0]:hi[0]+1]
+            id_sub[inside & (words != 0)] = k
+    result = (image.astype(np.uint16) * 255 // 31).astype(np.uint8), frame
+    return (*result, ids) if return_ids else result

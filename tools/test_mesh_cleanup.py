@@ -203,6 +203,18 @@ class Renderer(unittest.TestCase):
         image, _ = R.render(m, size=100, frame=frame, depth_offset=2.5)
         self.assertEqual(image[30,30].tolist(), [255,0,0])
 
+    def test_winning_ids_follow_ot_ties_and_leave_colour_identical(self):
+        m = self.paint(self.mesh([(0,0,2),(80,0,2),(0,80,2),
+                                 (0,0,1),(80,0,1),(0,80,1)],
+                                [self.face([0,1,2], 63), self.face([3,4,5], 0)]))
+        expected, frame = R.render(m, size=100)
+        actual, _, ids = R.render(m, size=100, frame=frame, return_ids=True)
+        np.testing.assert_array_equal(expected, actual)
+        self.assertEqual(ids[30,30], 0)
+        _, _, shifted = R.render(m, size=100, frame=frame, depth_offset=2.5, return_ids=True)
+        self.assertEqual(shifted[30,30], 1)
+        self.assertEqual(ids[0,0], -1)
+
 
 if __name__ == '__main__':
     unittest.main()
