@@ -1,0 +1,228 @@
+{
+  "slots": 52,
+  "ticks": 2009,
+  "visible_decoded_poses_exact": true,
+  "root_travel_timing_events_loops_aliases_exact": true,
+  "foot_trajectories_exact": true,
+  "pose_exception": "scales of empty fin objects 19/20 become implicit unit scales",
+  "source_gpu_triangles_and_corner_attributes_preserved": true,
+  "changed_geometry_objects": [
+    1,
+    3,
+    8
+  ],
+  "removed_invisible_objects": [
+    19,
+    20
+  ],
+  "zero_area_visible_triangles": [
+    0,
+    0
+  ],
+  "storage_before_after": [
+    {
+      "resident_bytes": 97536,
+      "resident_limit": 100352,
+      "cold_bytes": 29152,
+      "cold_buffer_bytes": 8192,
+      "cold_reads": [
+        {
+          "slot": 5,
+          "offset": 0,
+          "length": 2852,
+          "sector_read_bytes": 4096,
+          "fits": true
+        },
+        {
+          "slot": 7,
+          "offset": 2852,
+          "length": 2156,
+          "sector_read_bytes": 4096,
+          "fits": true
+        },
+        {
+          "slot": 8,
+          "offset": 5008,
+          "length": 1996,
+          "sector_read_bytes": 4096,
+          "fits": true
+        },
+        {
+          "slot": 9,
+          "offset": 7004,
+          "length": 2432,
+          "sector_read_bytes": 4096,
+          "fits": true
+        },
+        {
+          "slot": 10,
+          "offset": 9436,
+          "length": 2820,
+          "sector_read_bytes": 4096,
+          "fits": true
+        },
+        {
+          "slot": 11,
+          "offset": 12288,
+          "length": 6468,
+          "sector_read_bytes": 8192,
+          "fits": true
+        },
+        {
+          "slot": 12,
+          "offset": 18756,
+          "length": 2264,
+          "sector_read_bytes": 4096,
+          "fits": true
+        },
+        {
+          "slot": 13,
+          "offset": 21020,
+          "length": 1728,
+          "sector_read_bytes": 4096,
+          "fits": true
+        },
+        {
+          "slot": 22,
+          "offset": 22748,
+          "length": 780,
+          "sector_read_bytes": 2048,
+          "fits": true
+        },
+        {
+          "slot": 23,
+          "offset": 23528,
+          "length": 1684,
+          "sector_read_bytes": 4096,
+          "fits": true
+        },
+        {
+          "slot": 24,
+          "offset": 25212,
+          "length": 784,
+          "sector_read_bytes": 2048,
+          "fits": true
+        },
+        {
+          "slot": 25,
+          "offset": 25996,
+          "length": 812,
+          "sector_read_bytes": 4096,
+          "fits": true
+        },
+        {
+          "slot": 27,
+          "offset": 26808,
+          "length": 2344,
+          "sector_read_bytes": 4096,
+          "fits": true
+        }
+      ],
+      "fits": true
+    },
+    {
+      "resident_bytes": 96384,
+      "resident_limit": 100352,
+      "cold_bytes": 27092,
+      "cold_buffer_bytes": 8192,
+      "cold_reads": [
+        {
+          "slot": 5,
+          "offset": 0,
+          "length": 2696,
+          "sector_read_bytes": 4096,
+          "fits": true
+        },
+        {
+          "slot": 7,
+          "offset": 2696,
+          "length": 2000,
+          "sector_read_bytes": 4096,
+          "fits": true
+        },
+        {
+          "slot": 8,
+          "offset": 4696,
+          "length": 1840,
+          "sector_read_bytes": 4096,
+          "fits": true
+        },
+        {
+          "slot": 9,
+          "offset": 6536,
+          "length": 2276,
+          "sector_read_bytes": 4096,
+          "fits": true
+        },
+        {
+          "slot": 10,
+          "offset": 8812,
+          "length": 2664,
+          "sector_read_bytes": 4096,
+          "fits": true
+        },
+        {
+          "slot": 11,
+          "offset": 11476,
+          "length": 6312,
+          "sector_read_bytes": 8192,
+          "fits": true
+        },
+        {
+          "slot": 12,
+          "offset": 17788,
+          "length": 2108,
+          "sector_read_bytes": 4096,
+          "fits": true
+        },
+        {
+          "slot": 13,
+          "offset": 19896,
+          "length": 1572,
+          "sector_read_bytes": 4096,
+          "fits": true
+        },
+        {
+          "slot": 22,
+          "offset": 21468,
+          "length": 624,
+          "sector_read_bytes": 2048,
+          "fits": true
+        },
+        {
+          "slot": 23,
+          "offset": 22092,
+          "length": 1528,
+          "sector_read_bytes": 4096,
+          "fits": true
+        },
+        {
+          "slot": 24,
+          "offset": 23620,
+          "length": 628,
+          "sector_read_bytes": 2048,
+          "fits": true
+        },
+        {
+          "slot": 25,
+          "offset": 24248,
+          "length": 656,
+          "sector_read_bytes": 4096,
+          "fits": true
+        },
+        {
+          "slot": 27,
+          "offset": 24904,
+          "length": 2188,
+          "sector_read_bytes": 4096,
+          "fits": true
+        }
+      ],
+      "fits": true
+    }
+  ],
+  "packet_format_bytes": [
+    40232,
+    43748
+  ]
+}

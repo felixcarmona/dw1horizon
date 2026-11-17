@@ -164,7 +164,7 @@ def main():
     parser.add_argument('after', type=Path)
     parser.add_argument('ids', nargs='*', type=int, choices=IDS)
     parser.add_argument('--out', type=Path, required=True)
-    parser.add_argument('--thresholds', type=Path, default=Path('docs/reference/mesh-glitch-audit.json'))
+    parser.add_argument('--thresholds', type=Path, default=Path('docs/reference/mesh-glitch-thresholds.json'))
     args = parser.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     thresholds = json.loads(args.thresholds.read_text())['thresholds']

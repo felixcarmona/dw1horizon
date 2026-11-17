@@ -1,0 +1,3960 @@
+{
+  "species": 406,
+  "base": "integ5",
+  "complete_clearance": false,
+  "unrestricted_floors_proven": 0,
+  "before": {
+    "slots": 52,
+    "ticks": 1714,
+    "pairs": 92,
+    "max_depth": 90.44147215169764
+  },
+  "after": {
+    "slots": 52,
+    "ticks": 1714,
+    "pairs": 78,
+    "max_depth": 58.60246440966961
+  },
+  "cleared_pairs": [
+    "1/5",
+    "1/6",
+    "1/7",
+    "1/8",
+    "1/12",
+    "1/13",
+    "1/14",
+    "1/15",
+    "1/16",
+    "3/5",
+    "3/21",
+    "10/13",
+    "11/13",
+    "11/28"
+  ],
+  "pairs": {
+    "1/2": {
+      "before_units": 49.346156103518055,
+      "after_units": 49.346156103518055,
+      "before_witness": {
+        "bones": [
+          1,
+          2
+        ],
+        "objects": [
+          0,
+          1
+        ],
+        "adjacent": true,
+        "count": 30,
+        "depth": 49.346156103518055,
+        "slot": 54,
+        "tick": 1
+      },
+      "after_witness": {
+        "bones": [
+          1,
+          2
+        ],
+        "objects": [
+          0,
+          1
+        ],
+        "adjacent": true,
+        "count": 30,
+        "depth": 49.346156103518055,
+        "slot": 54,
+        "tick": 1
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "1/5": {
+      "before_units": 62.95803275394128,
+      "after_units": 0,
+      "before_witness": {
+        "bones": [
+          1,
+          5
+        ],
+        "objects": [
+          0,
+          4
+        ],
+        "adjacent": false,
+        "count": 37,
+        "depth": 62.95803275394128,
+        "slot": 46,
+        "tick": 16
+      },
+      "after_witness": null,
+      "status": "clear_all_frames",
+      "growth_units": -62.95803275394128
+    },
+    "1/6": {
+      "before_units": 68.55680258201211,
+      "after_units": 0,
+      "before_witness": {
+        "bones": [
+          1,
+          6
+        ],
+        "objects": [
+          0,
+          5
+        ],
+        "adjacent": false,
+        "count": 5,
+        "depth": 68.55680258201211,
+        "slot": 46,
+        "tick": 18
+      },
+      "after_witness": null,
+      "status": "clear_all_frames",
+      "growth_units": -68.55680258201211
+    },
+    "1/7": {
+      "before_units": 69.19694846176216,
+      "after_units": 0,
+      "before_witness": {
+        "bones": [
+          1,
+          7
+        ],
+        "objects": [
+          0,
+          6
+        ],
+        "adjacent": false,
+        "count": 10,
+        "depth": 69.19694846176216,
+        "slot": 52,
+        "tick": 8
+      },
+      "after_witness": null,
+      "status": "clear_all_frames",
+      "growth_units": -69.19694846176216
+    },
+    "1/8": {
+      "before_units": 79.75340266586228,
+      "after_units": 0,
+      "before_witness": {
+        "bones": [
+          1,
+          8
+        ],
+        "objects": [
+          0,
+          7
+        ],
+        "adjacent": false,
+        "count": 25,
+        "depth": 79.75340266586228,
+        "slot": 46,
+        "tick": 17
+      },
+      "after_witness": null,
+      "status": "clear_all_frames",
+      "growth_units": -79.75340266586228
+    },
+    "1/10": {
+      "before_units": 55.343535817668226,
+      "after_units": 55.343535817668226,
+      "before_witness": {
+        "bones": [
+          1,
+          10
+        ],
+        "objects": [
+          0,
+          8
+        ],
+        "adjacent": true,
+        "count": 27,
+        "depth": 55.343535817668226,
+        "slot": 54,
+        "tick": 2
+      },
+      "after_witness": {
+        "bones": [
+          1,
+          10
+        ],
+        "objects": [
+          0,
+          8
+        ],
+        "adjacent": true,
+        "count": 27,
+        "depth": 55.343535817668226,
+        "slot": 54,
+        "tick": 2
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "1/12": {
+      "before_units": 35.47250104890406,
+      "after_units": 0,
+      "before_witness": {
+        "bones": [
+          1,
+          12
+        ],
+        "objects": [
+          0,
+          10
+        ],
+        "adjacent": false,
+        "count": 8,
+        "depth": 35.47250104890406,
+        "slot": 55,
+        "tick": 14
+      },
+      "after_witness": null,
+      "status": "clear_all_frames",
+      "growth_units": -35.47250104890406
+    },
+    "1/13": {
+      "before_units": 90.44147215169764,
+      "after_units": 0,
+      "before_witness": {
+        "bones": [
+          1,
+          13
+        ],
+        "objects": [
+          0,
+          11
+        ],
+        "adjacent": false,
+        "count": 62,
+        "depth": 90.44147215169764,
+        "slot": 55,
+        "tick": 14
+      },
+      "after_witness": null,
+      "status": "clear_all_frames",
+      "growth_units": -90.44147215169764
+    },
+    "1/14": {
+      "before_units": 37.239027321137655,
+      "after_units": 0,
+      "before_witness": {
+        "bones": [
+          1,
+          14
+        ],
+        "objects": [
+          0,
+          12
+        ],
+        "adjacent": false,
+        "count": 5,
+        "depth": 37.239027321137655,
+        "slot": 55,
+        "tick": 10
+      },
+      "after_witness": null,
+      "status": "clear_all_frames",
+      "growth_units": -37.239027321137655
+    },
+    "1/15": {
+      "before_units": 23.116418544558343,
+      "after_units": 0,
+      "before_witness": {
+        "bones": [
+          1,
+          15
+        ],
+        "objects": [
+          0,
+          13
+        ],
+        "adjacent": false,
+        "count": 3,
+        "depth": 23.116418544558343,
+        "slot": 55,
+        "tick": 11
+      },
+      "after_witness": null,
+      "status": "clear_all_frames",
+      "growth_units": -23.116418544558343
+    },
+    "1/16": {
+      "before_units": 75.84009471155785,
+      "after_units": 0,
+      "before_witness": {
+        "bones": [
+          1,
+          16
+        ],
+        "objects": [
+          0,
+          14
+        ],
+        "adjacent": false,
+        "count": 8,
+        "depth": 75.84009471155785,
+        "slot": 55,
+        "tick": 10
+      },
+      "after_witness": null,
+      "status": "clear_all_frames",
+      "growth_units": -75.84009471155785
+    },
+    "1/18": {
+      "before_units": 36.27099983738186,
+      "after_units": 36.27099983738186,
+      "before_witness": {
+        "bones": [
+          1,
+          18
+        ],
+        "objects": [
+          0,
+          15
+        ],
+        "adjacent": true,
+        "count": 52,
+        "depth": 36.27099983738186,
+        "slot": 47,
+        "tick": 39
+      },
+      "after_witness": {
+        "bones": [
+          1,
+          18
+        ],
+        "objects": [
+          0,
+          15
+        ],
+        "adjacent": true,
+        "count": 52,
+        "depth": 36.27099983738186,
+        "slot": 47,
+        "tick": 39
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "1/19": {
+      "before_units": 55.311057281031815,
+      "after_units": 55.311057281031815,
+      "before_witness": {
+        "bones": [
+          1,
+          19
+        ],
+        "objects": [
+          0,
+          16
+        ],
+        "adjacent": true,
+        "count": 65,
+        "depth": 55.311057281031815,
+        "slot": 9,
+        "tick": 34
+      },
+      "after_witness": {
+        "bones": [
+          1,
+          19
+        ],
+        "objects": [
+          0,
+          16
+        ],
+        "adjacent": true,
+        "count": 65,
+        "depth": 55.311057281031815,
+        "slot": 9,
+        "tick": 34
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "1/20": {
+      "before_units": 51.46306418771419,
+      "after_units": 51.46306418771419,
+      "before_witness": {
+        "bones": [
+          1,
+          20
+        ],
+        "objects": [
+          0,
+          17
+        ],
+        "adjacent": false,
+        "count": 19,
+        "depth": 51.46306418771419,
+        "slot": 47,
+        "tick": 25
+      },
+      "after_witness": {
+        "bones": [
+          1,
+          20
+        ],
+        "objects": [
+          0,
+          17
+        ],
+        "adjacent": false,
+        "count": 19,
+        "depth": 51.46306418771419,
+        "slot": 47,
+        "tick": 25
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "1/21": {
+      "before_units": 34.29421952645295,
+      "after_units": 34.29421952645295,
+      "before_witness": {
+        "bones": [
+          1,
+          21
+        ],
+        "objects": [
+          0,
+          18
+        ],
+        "adjacent": false,
+        "count": 24,
+        "depth": 34.29421952645295,
+        "slot": 47,
+        "tick": 25
+      },
+      "after_witness": {
+        "bones": [
+          1,
+          21
+        ],
+        "objects": [
+          0,
+          18
+        ],
+        "adjacent": false,
+        "count": 24,
+        "depth": 34.29421952645295,
+        "slot": 47,
+        "tick": 25
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "1/24": {
+      "before_units": 38.71934750532824,
+      "after_units": 38.71934750532824,
+      "before_witness": {
+        "bones": [
+          1,
+          24
+        ],
+        "objects": [
+          0,
+          21
+        ],
+        "adjacent": false,
+        "count": 20,
+        "depth": 38.71934750532824,
+        "slot": 47,
+        "tick": 25
+      },
+      "after_witness": {
+        "bones": [
+          1,
+          24
+        ],
+        "objects": [
+          0,
+          21
+        ],
+        "adjacent": false,
+        "count": 20,
+        "depth": 38.71934750532824,
+        "slot": 47,
+        "tick": 25
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "1/27": {
+      "before_units": 22.081001463798522,
+      "after_units": 22.081001463798522,
+      "before_witness": {
+        "bones": [
+          1,
+          27
+        ],
+        "objects": [
+          0,
+          24
+        ],
+        "adjacent": false,
+        "count": 17,
+        "depth": 22.081001463798522,
+        "slot": 47,
+        "tick": 25
+      },
+      "after_witness": {
+        "bones": [
+          1,
+          27
+        ],
+        "objects": [
+          0,
+          24
+        ],
+        "adjacent": false,
+        "count": 17,
+        "depth": 22.081001463798522,
+        "slot": 47,
+        "tick": 25
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "1/28": {
+      "before_units": 56.539171243676805,
+      "after_units": 56.539171243676805,
+      "before_witness": {
+        "bones": [
+          1,
+          28
+        ],
+        "objects": [
+          0,
+          25
+        ],
+        "adjacent": false,
+        "count": 5,
+        "depth": 56.539171243676805,
+        "slot": 43,
+        "tick": 16
+      },
+      "after_witness": {
+        "bones": [
+          1,
+          28
+        ],
+        "objects": [
+          0,
+          25
+        ],
+        "adjacent": false,
+        "count": 5,
+        "depth": 56.539171243676805,
+        "slot": 43,
+        "tick": 16
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "2/4": {
+      "before_units": 48.260153914725784,
+      "after_units": 48.31392210296162,
+      "before_witness": {
+        "bones": [
+          2,
+          4
+        ],
+        "objects": [
+          1,
+          3
+        ],
+        "adjacent": true,
+        "count": 18,
+        "depth": 48.260153914725784,
+        "slot": 19,
+        "tick": 3
+      },
+      "after_witness": {
+        "bones": [
+          2,
+          4
+        ],
+        "objects": [
+          1,
+          3
+        ],
+        "adjacent": true,
+        "count": 12,
+        "depth": 48.31392210296162,
+        "slot": 21,
+        "tick": 32
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.05376818823583562
+    },
+    "2/5": {
+      "before_units": 58.60246440966961,
+      "after_units": 58.60246440966961,
+      "before_witness": {
+        "bones": [
+          2,
+          5
+        ],
+        "objects": [
+          1,
+          4
+        ],
+        "adjacent": false,
+        "count": 5,
+        "depth": 58.60246440966961,
+        "slot": 43,
+        "tick": 17
+      },
+      "after_witness": {
+        "bones": [
+          2,
+          5
+        ],
+        "objects": [
+          1,
+          4
+        ],
+        "adjacent": false,
+        "count": 5,
+        "depth": 58.60246440966961,
+        "slot": 43,
+        "tick": 17
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "2/19": {
+      "before_units": 31.70097324535524,
+      "after_units": 31.70097324535524,
+      "before_witness": {
+        "bones": [
+          2,
+          19
+        ],
+        "objects": [
+          1,
+          16
+        ],
+        "adjacent": false,
+        "count": 9,
+        "depth": 31.70097324535524,
+        "slot": 9,
+        "tick": 20
+      },
+      "after_witness": {
+        "bones": [
+          2,
+          19
+        ],
+        "objects": [
+          1,
+          16
+        ],
+        "adjacent": false,
+        "count": 9,
+        "depth": 31.70097324535524,
+        "slot": 9,
+        "tick": 20
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "2/20": {
+      "before_units": 37.02286304316737,
+      "after_units": 37.02286304316737,
+      "before_witness": {
+        "bones": [
+          2,
+          20
+        ],
+        "objects": [
+          1,
+          17
+        ],
+        "adjacent": false,
+        "count": 27,
+        "depth": 37.02286304316737,
+        "slot": 47,
+        "tick": 24
+      },
+      "after_witness": {
+        "bones": [
+          2,
+          20
+        ],
+        "objects": [
+          1,
+          17
+        ],
+        "adjacent": false,
+        "count": 27,
+        "depth": 37.02286304316737,
+        "slot": 47,
+        "tick": 24
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "2/21": {
+      "before_units": 43.44816744843257,
+      "after_units": 43.44816744843257,
+      "before_witness": {
+        "bones": [
+          2,
+          21
+        ],
+        "objects": [
+          1,
+          18
+        ],
+        "adjacent": false,
+        "count": 40,
+        "depth": 43.44816744843257,
+        "slot": 47,
+        "tick": 25
+      },
+      "after_witness": {
+        "bones": [
+          2,
+          21
+        ],
+        "objects": [
+          1,
+          18
+        ],
+        "adjacent": false,
+        "count": 40,
+        "depth": 43.44816744843257,
+        "slot": 47,
+        "tick": 25
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "3/5": {
+      "before_units": 44.023934674224876,
+      "after_units": 0,
+      "before_witness": {
+        "bones": [
+          3,
+          5
+        ],
+        "objects": [
+          2,
+          4
+        ],
+        "adjacent": false,
+        "count": 23,
+        "depth": 44.023934674224876,
+        "slot": 55,
+        "tick": 16
+      },
+      "after_witness": null,
+      "status": "clear_all_frames",
+      "growth_units": -44.023934674224876
+    },
+    "3/21": {
+      "before_units": 48.31667807459263,
+      "after_units": 0,
+      "before_witness": {
+        "bones": [
+          3,
+          21
+        ],
+        "objects": [
+          2,
+          18
+        ],
+        "adjacent": false,
+        "count": 22,
+        "depth": 48.31667807459263,
+        "slot": 47,
+        "tick": 23
+      },
+      "after_witness": null,
+      "status": "clear_all_frames",
+      "growth_units": -48.31667807459263
+    },
+    "4/5": {
+      "before_units": 38.303393183100816,
+      "after_units": 38.303393183100816,
+      "before_witness": {
+        "bones": [
+          4,
+          5
+        ],
+        "objects": [
+          3,
+          4
+        ],
+        "adjacent": true,
+        "count": 7,
+        "depth": 38.303393183100816,
+        "slot": 40,
+        "tick": 6
+      },
+      "after_witness": {
+        "bones": [
+          4,
+          5
+        ],
+        "objects": [
+          3,
+          4
+        ],
+        "adjacent": true,
+        "count": 7,
+        "depth": 38.303393183100816,
+        "slot": 40,
+        "tick": 6
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "4/21": {
+      "before_units": 24.48632997491795,
+      "after_units": 24.48632997491795,
+      "before_witness": {
+        "bones": [
+          4,
+          21
+        ],
+        "objects": [
+          3,
+          18
+        ],
+        "adjacent": false,
+        "count": 4,
+        "depth": 24.48632997491795,
+        "slot": 43,
+        "tick": 12
+      },
+      "after_witness": {
+        "bones": [
+          4,
+          21
+        ],
+        "objects": [
+          3,
+          18
+        ],
+        "adjacent": false,
+        "count": 4,
+        "depth": 24.48632997491795,
+        "slot": 43,
+        "tick": 12
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "5/6": {
+      "before_units": 16.418816184077855,
+      "after_units": 16.418816184077855,
+      "before_witness": {
+        "bones": [
+          5,
+          6
+        ],
+        "objects": [
+          4,
+          5
+        ],
+        "adjacent": true,
+        "count": 5,
+        "depth": 16.418816184077855,
+        "slot": 10,
+        "tick": 18
+      },
+      "after_witness": {
+        "bones": [
+          5,
+          6
+        ],
+        "objects": [
+          4,
+          5
+        ],
+        "adjacent": true,
+        "count": 5,
+        "depth": 16.418816184077855,
+        "slot": 10,
+        "tick": 18
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "5/7": {
+      "before_units": 24.92510964590107,
+      "after_units": 24.925109645901045,
+      "before_witness": {
+        "bones": [
+          5,
+          7
+        ],
+        "objects": [
+          4,
+          6
+        ],
+        "adjacent": true,
+        "count": 12,
+        "depth": 24.92510964590107,
+        "slot": 47,
+        "tick": 27
+      },
+      "after_witness": {
+        "bones": [
+          5,
+          7
+        ],
+        "objects": [
+          4,
+          6
+        ],
+        "adjacent": true,
+        "count": 12,
+        "depth": 24.925109645901045,
+        "slot": 47,
+        "tick": 27
+      },
+      "status": "residual_unproven",
+      "growth_units": -2.4868995751603507e-14
+    },
+    "5/8": {
+      "before_units": 16.581267496893286,
+      "after_units": 16.581267496893286,
+      "before_witness": {
+        "bones": [
+          5,
+          8
+        ],
+        "objects": [
+          4,
+          7
+        ],
+        "adjacent": true,
+        "count": 11,
+        "depth": 16.581267496893286,
+        "slot": 33,
+        "tick": 52
+      },
+      "after_witness": {
+        "bones": [
+          5,
+          8
+        ],
+        "objects": [
+          4,
+          7
+        ],
+        "adjacent": true,
+        "count": 11,
+        "depth": 16.581267496893286,
+        "slot": 33,
+        "tick": 52
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "5/21": {
+      "before_units": 33.05547487895788,
+      "after_units": 29.973556830991807,
+      "before_witness": {
+        "bones": [
+          5,
+          21
+        ],
+        "objects": [
+          4,
+          18
+        ],
+        "adjacent": false,
+        "count": 15,
+        "depth": 33.05547487895788,
+        "slot": 46,
+        "tick": 23
+      },
+      "after_witness": {
+        "bones": [
+          5,
+          21
+        ],
+        "objects": [
+          4,
+          18
+        ],
+        "adjacent": false,
+        "count": 13,
+        "depth": 29.973556830991807,
+        "slot": 43,
+        "tick": 13
+      },
+      "status": "residual_unproven",
+      "growth_units": -3.0819180479660737
+    },
+    "5/22": {
+      "before_units": 26.73222244522646,
+      "after_units": 26.73222244522646,
+      "before_witness": {
+        "bones": [
+          5,
+          22
+        ],
+        "objects": [
+          4,
+          19
+        ],
+        "adjacent": false,
+        "count": 26,
+        "depth": 26.73222244522646,
+        "slot": 43,
+        "tick": 12
+      },
+      "after_witness": {
+        "bones": [
+          5,
+          22
+        ],
+        "objects": [
+          4,
+          19
+        ],
+        "adjacent": false,
+        "count": 26,
+        "depth": 26.73222244522646,
+        "slot": 43,
+        "tick": 12
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "5/23": {
+      "before_units": 50.389100405574126,
+      "after_units": 49.41780507868819,
+      "before_witness": {
+        "bones": [
+          5,
+          23
+        ],
+        "objects": [
+          4,
+          20
+        ],
+        "adjacent": false,
+        "count": 20,
+        "depth": 50.389100405574126,
+        "slot": 46,
+        "tick": 23
+      },
+      "after_witness": {
+        "bones": [
+          5,
+          23
+        ],
+        "objects": [
+          4,
+          20
+        ],
+        "adjacent": false,
+        "count": 17,
+        "depth": 49.41780507868819,
+        "slot": 46,
+        "tick": 23
+      },
+      "status": "residual_unproven",
+      "growth_units": -0.9712953268859366
+    },
+    "6/7": {
+      "before_units": 23.777940784807328,
+      "after_units": 23.777940784807374,
+      "before_witness": {
+        "bones": [
+          6,
+          7
+        ],
+        "objects": [
+          5,
+          6
+        ],
+        "adjacent": false,
+        "count": 11,
+        "depth": 23.777940784807328,
+        "slot": 27,
+        "tick": 11
+      },
+      "after_witness": {
+        "bones": [
+          6,
+          7
+        ],
+        "objects": [
+          5,
+          6
+        ],
+        "adjacent": false,
+        "count": 11,
+        "depth": 23.777940784807374,
+        "slot": 27,
+        "tick": 11
+      },
+      "status": "residual_unproven",
+      "growth_units": 4.618527782440651e-14
+    },
+    "6/8": {
+      "before_units": 11.419536288823725,
+      "after_units": 11.419536288823725,
+      "before_witness": {
+        "bones": [
+          6,
+          8
+        ],
+        "objects": [
+          5,
+          7
+        ],
+        "adjacent": false,
+        "count": 8,
+        "depth": 11.419536288823725,
+        "slot": 33,
+        "tick": 74
+      },
+      "after_witness": {
+        "bones": [
+          6,
+          8
+        ],
+        "objects": [
+          5,
+          7
+        ],
+        "adjacent": false,
+        "count": 8,
+        "depth": 11.419536288823725,
+        "slot": 33,
+        "tick": 74
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "7/8": {
+      "before_units": 21.223025718342313,
+      "after_units": 21.22302571834229,
+      "before_witness": {
+        "bones": [
+          7,
+          8
+        ],
+        "objects": [
+          6,
+          7
+        ],
+        "adjacent": false,
+        "count": 26,
+        "depth": 21.223025718342313,
+        "slot": 21,
+        "tick": 24
+      },
+      "after_witness": {
+        "bones": [
+          7,
+          8
+        ],
+        "objects": [
+          6,
+          7
+        ],
+        "adjacent": false,
+        "count": 26,
+        "depth": 21.22302571834229,
+        "slot": 21,
+        "tick": 24
+      },
+      "status": "residual_unproven",
+      "growth_units": -2.4868995751603507e-14
+    },
+    "10/12": {
+      "before_units": 49.302248767240386,
+      "after_units": 48.64253090037167,
+      "before_witness": {
+        "bones": [
+          10,
+          12
+        ],
+        "objects": [
+          8,
+          10
+        ],
+        "adjacent": true,
+        "count": 25,
+        "depth": 49.302248767240386,
+        "slot": 21,
+        "tick": 7
+      },
+      "after_witness": {
+        "bones": [
+          10,
+          12
+        ],
+        "objects": [
+          8,
+          10
+        ],
+        "adjacent": true,
+        "count": 26,
+        "depth": 48.64253090037167,
+        "slot": 43,
+        "tick": 18
+      },
+      "status": "residual_unproven",
+      "growth_units": -0.6597178668687178
+    },
+    "10/13": {
+      "before_units": 18.442843667241277,
+      "after_units": 0,
+      "before_witness": {
+        "bones": [
+          10,
+          13
+        ],
+        "objects": [
+          8,
+          11
+        ],
+        "adjacent": false,
+        "count": 7,
+        "depth": 18.442843667241277,
+        "slot": 8,
+        "tick": 18
+      },
+      "after_witness": null,
+      "status": "clear_all_frames",
+      "growth_units": -18.442843667241277
+    },
+    "10/19": {
+      "before_units": 23.953119324088743,
+      "after_units": 23.953119324088743,
+      "before_witness": {
+        "bones": [
+          10,
+          19
+        ],
+        "objects": [
+          8,
+          16
+        ],
+        "adjacent": false,
+        "count": 6,
+        "depth": 23.953119324088743,
+        "slot": 47,
+        "tick": 25
+      },
+      "after_witness": {
+        "bones": [
+          10,
+          19
+        ],
+        "objects": [
+          8,
+          16
+        ],
+        "adjacent": false,
+        "count": 6,
+        "depth": 23.953119324088743,
+        "slot": 47,
+        "tick": 25
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "10/27": {
+      "before_units": 28.05739073071991,
+      "after_units": 28.05739073071991,
+      "before_witness": {
+        "bones": [
+          10,
+          27
+        ],
+        "objects": [
+          8,
+          24
+        ],
+        "adjacent": false,
+        "count": 29,
+        "depth": 28.05739073071991,
+        "slot": 47,
+        "tick": 25
+      },
+      "after_witness": {
+        "bones": [
+          10,
+          27
+        ],
+        "objects": [
+          8,
+          24
+        ],
+        "adjacent": false,
+        "count": 29,
+        "depth": 28.05739073071991,
+        "slot": 47,
+        "tick": 25
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "10/28": {
+      "before_units": 32.3601517468896,
+      "after_units": 32.3601517468896,
+      "before_witness": {
+        "bones": [
+          10,
+          28
+        ],
+        "objects": [
+          8,
+          25
+        ],
+        "adjacent": false,
+        "count": 6,
+        "depth": 32.3601517468896,
+        "slot": 47,
+        "tick": 26
+      },
+      "after_witness": {
+        "bones": [
+          10,
+          28
+        ],
+        "objects": [
+          8,
+          25
+        ],
+        "adjacent": false,
+        "count": 6,
+        "depth": 32.3601517468896,
+        "slot": 47,
+        "tick": 26
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "11/13": {
+      "before_units": 49.917864490626044,
+      "after_units": 0,
+      "before_witness": {
+        "bones": [
+          11,
+          13
+        ],
+        "objects": [
+          9,
+          11
+        ],
+        "adjacent": false,
+        "count": 33,
+        "depth": 49.917864490626044,
+        "slot": 8,
+        "tick": 20
+      },
+      "after_witness": null,
+      "status": "clear_all_frames",
+      "growth_units": -49.917864490626044
+    },
+    "11/28": {
+      "before_units": 19.180195368840216,
+      "after_units": 0,
+      "before_witness": {
+        "bones": [
+          11,
+          28
+        ],
+        "objects": [
+          9,
+          25
+        ],
+        "adjacent": false,
+        "count": 9,
+        "depth": 19.180195368840216,
+        "slot": 47,
+        "tick": 24
+      },
+      "after_witness": null,
+      "status": "clear_all_frames",
+      "growth_units": -19.180195368840216
+    },
+    "12/13": {
+      "before_units": 36.149541766519405,
+      "after_units": 36.149541766519405,
+      "before_witness": {
+        "bones": [
+          12,
+          13
+        ],
+        "objects": [
+          10,
+          11
+        ],
+        "adjacent": true,
+        "count": 16,
+        "depth": 36.149541766519405,
+        "slot": 34,
+        "tick": 12
+      },
+      "after_witness": {
+        "bones": [
+          12,
+          13
+        ],
+        "objects": [
+          10,
+          11
+        ],
+        "adjacent": true,
+        "count": 16,
+        "depth": 36.149541766519405,
+        "slot": 34,
+        "tick": 12
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "13/14": {
+      "before_units": 45.39879701041478,
+      "after_units": 45.39879701041478,
+      "before_witness": {
+        "bones": [
+          13,
+          14
+        ],
+        "objects": [
+          11,
+          12
+        ],
+        "adjacent": true,
+        "count": 17,
+        "depth": 45.39879701041478,
+        "slot": 13,
+        "tick": 27
+      },
+      "after_witness": {
+        "bones": [
+          13,
+          14
+        ],
+        "objects": [
+          11,
+          12
+        ],
+        "adjacent": true,
+        "count": 17,
+        "depth": 45.39879701041478,
+        "slot": 13,
+        "tick": 27
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "13/15": {
+      "before_units": 18.081555393195167,
+      "after_units": 18.081555393195167,
+      "before_witness": {
+        "bones": [
+          13,
+          15
+        ],
+        "objects": [
+          11,
+          13
+        ],
+        "adjacent": true,
+        "count": 8,
+        "depth": 18.081555393195167,
+        "slot": 33,
+        "tick": 66
+      },
+      "after_witness": {
+        "bones": [
+          13,
+          15
+        ],
+        "objects": [
+          11,
+          13
+        ],
+        "adjacent": true,
+        "count": 8,
+        "depth": 18.081555393195167,
+        "slot": 33,
+        "tick": 66
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "13/16": {
+      "before_units": 25.478396725980723,
+      "after_units": 25.478396725980723,
+      "before_witness": {
+        "bones": [
+          13,
+          16
+        ],
+        "objects": [
+          11,
+          14
+        ],
+        "adjacent": true,
+        "count": 3,
+        "depth": 25.478396725980723,
+        "slot": 43,
+        "tick": 14
+      },
+      "after_witness": {
+        "bones": [
+          13,
+          16
+        ],
+        "objects": [
+          11,
+          14
+        ],
+        "adjacent": true,
+        "count": 3,
+        "depth": 25.478396725980723,
+        "slot": 9,
+        "tick": 33
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "13/28": {
+      "before_units": 11.917194424627493,
+      "after_units": 11.917194424627493,
+      "before_witness": {
+        "bones": [
+          13,
+          28
+        ],
+        "objects": [
+          11,
+          25
+        ],
+        "adjacent": false,
+        "count": 6,
+        "depth": 11.917194424627493,
+        "slot": 7,
+        "tick": 7
+      },
+      "after_witness": {
+        "bones": [
+          13,
+          28
+        ],
+        "objects": [
+          11,
+          25
+        ],
+        "adjacent": false,
+        "count": 6,
+        "depth": 11.917194424627493,
+        "slot": 7,
+        "tick": 7
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "14/15": {
+      "before_units": 16.255190487214133,
+      "after_units": 16.255190487214133,
+      "before_witness": {
+        "bones": [
+          14,
+          15
+        ],
+        "objects": [
+          12,
+          13
+        ],
+        "adjacent": false,
+        "count": 24,
+        "depth": 16.255190487214133,
+        "slot": 37,
+        "tick": 1
+      },
+      "after_witness": {
+        "bones": [
+          14,
+          15
+        ],
+        "objects": [
+          12,
+          13
+        ],
+        "adjacent": false,
+        "count": 24,
+        "depth": 16.255190487214133,
+        "slot": 37,
+        "tick": 1
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "14/16": {
+      "before_units": 20.02373970191055,
+      "after_units": 20.02373970191055,
+      "before_witness": {
+        "bones": [
+          14,
+          16
+        ],
+        "objects": [
+          12,
+          14
+        ],
+        "adjacent": false,
+        "count": 12,
+        "depth": 20.02373970191055,
+        "slot": 13,
+        "tick": 9
+      },
+      "after_witness": {
+        "bones": [
+          14,
+          16
+        ],
+        "objects": [
+          12,
+          14
+        ],
+        "adjacent": false,
+        "count": 12,
+        "depth": 20.02373970191055,
+        "slot": 13,
+        "tick": 9
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "14/28": {
+      "before_units": 21.569187023396328,
+      "after_units": 21.569187023396328,
+      "before_witness": {
+        "bones": [
+          14,
+          28
+        ],
+        "objects": [
+          12,
+          25
+        ],
+        "adjacent": false,
+        "count": 12,
+        "depth": 21.569187023396328,
+        "slot": 7,
+        "tick": 13
+      },
+      "after_witness": {
+        "bones": [
+          14,
+          28
+        ],
+        "objects": [
+          12,
+          25
+        ],
+        "adjacent": false,
+        "count": 12,
+        "depth": 21.569187023396328,
+        "slot": 7,
+        "tick": 13
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "15/27": {
+      "before_units": 24.677715450965355,
+      "after_units": 24.677715450965355,
+      "before_witness": {
+        "bones": [
+          15,
+          27
+        ],
+        "objects": [
+          13,
+          24
+        ],
+        "adjacent": false,
+        "count": 21,
+        "depth": 24.677715450965355,
+        "slot": 7,
+        "tick": 16
+      },
+      "after_witness": {
+        "bones": [
+          15,
+          27
+        ],
+        "objects": [
+          13,
+          24
+        ],
+        "adjacent": false,
+        "count": 21,
+        "depth": 24.677715450965355,
+        "slot": 7,
+        "tick": 16
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "15/28": {
+      "before_units": 22.92259331301597,
+      "after_units": 22.92259331301597,
+      "before_witness": {
+        "bones": [
+          15,
+          28
+        ],
+        "objects": [
+          13,
+          25
+        ],
+        "adjacent": false,
+        "count": 6,
+        "depth": 22.92259331301597,
+        "slot": 7,
+        "tick": 15
+      },
+      "after_witness": {
+        "bones": [
+          15,
+          28
+        ],
+        "objects": [
+          13,
+          25
+        ],
+        "adjacent": false,
+        "count": 6,
+        "depth": 22.92259331301597,
+        "slot": 7,
+        "tick": 15
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "16/28": {
+      "before_units": 24.876513334339048,
+      "after_units": 24.876513334339048,
+      "before_witness": {
+        "bones": [
+          16,
+          28
+        ],
+        "objects": [
+          14,
+          25
+        ],
+        "adjacent": false,
+        "count": 20,
+        "depth": 24.876513334339048,
+        "slot": 7,
+        "tick": 51
+      },
+      "after_witness": {
+        "bones": [
+          16,
+          28
+        ],
+        "objects": [
+          14,
+          25
+        ],
+        "adjacent": false,
+        "count": 20,
+        "depth": 24.876513334339048,
+        "slot": 7,
+        "tick": 51
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "18/19": {
+      "before_units": 32.399436006539545,
+      "after_units": 32.399436006539545,
+      "before_witness": {
+        "bones": [
+          18,
+          19
+        ],
+        "objects": [
+          15,
+          16
+        ],
+        "adjacent": false,
+        "count": 32,
+        "depth": 32.399436006539545,
+        "slot": 47,
+        "tick": 23
+      },
+      "after_witness": {
+        "bones": [
+          18,
+          19
+        ],
+        "objects": [
+          15,
+          16
+        ],
+        "adjacent": false,
+        "count": 32,
+        "depth": 32.399436006539545,
+        "slot": 47,
+        "tick": 23
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "18/20": {
+      "before_units": 20.43026561558593,
+      "after_units": 20.43026561558593,
+      "before_witness": {
+        "bones": [
+          18,
+          20
+        ],
+        "objects": [
+          15,
+          17
+        ],
+        "adjacent": false,
+        "count": 4,
+        "depth": 20.43026561558593,
+        "slot": 47,
+        "tick": 24
+      },
+      "after_witness": {
+        "bones": [
+          18,
+          20
+        ],
+        "objects": [
+          15,
+          17
+        ],
+        "adjacent": false,
+        "count": 4,
+        "depth": 20.43026561558593,
+        "slot": 47,
+        "tick": 24
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "18/27": {
+      "before_units": 13.966005250438416,
+      "after_units": 13.966005250438416,
+      "before_witness": {
+        "bones": [
+          18,
+          27
+        ],
+        "objects": [
+          15,
+          24
+        ],
+        "adjacent": false,
+        "count": 9,
+        "depth": 13.966005250438416,
+        "slot": 47,
+        "tick": 24
+      },
+      "after_witness": {
+        "bones": [
+          18,
+          27
+        ],
+        "objects": [
+          15,
+          24
+        ],
+        "adjacent": false,
+        "count": 9,
+        "depth": 13.966005250438416,
+        "slot": 47,
+        "tick": 24
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "19/20": {
+      "before_units": 35.442675737990655,
+      "after_units": 35.442675737990655,
+      "before_witness": {
+        "bones": [
+          19,
+          20
+        ],
+        "objects": [
+          16,
+          17
+        ],
+        "adjacent": true,
+        "count": 24,
+        "depth": 35.442675737990655,
+        "slot": 3,
+        "tick": 4
+      },
+      "after_witness": {
+        "bones": [
+          19,
+          20
+        ],
+        "objects": [
+          16,
+          17
+        ],
+        "adjacent": true,
+        "count": 24,
+        "depth": 35.442675737990655,
+        "slot": 3,
+        "tick": 4
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "19/21": {
+      "before_units": 30.836651443602573,
+      "after_units": 30.836651443602573,
+      "before_witness": {
+        "bones": [
+          19,
+          21
+        ],
+        "objects": [
+          16,
+          18
+        ],
+        "adjacent": false,
+        "count": 22,
+        "depth": 30.836651443602573,
+        "slot": 47,
+        "tick": 24
+      },
+      "after_witness": {
+        "bones": [
+          19,
+          21
+        ],
+        "objects": [
+          16,
+          18
+        ],
+        "adjacent": false,
+        "count": 22,
+        "depth": 30.836651443602573,
+        "slot": 47,
+        "tick": 24
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "19/24": {
+      "before_units": 41.39053988997527,
+      "after_units": 41.39053988997527,
+      "before_witness": {
+        "bones": [
+          19,
+          24
+        ],
+        "objects": [
+          16,
+          21
+        ],
+        "adjacent": true,
+        "count": 49,
+        "depth": 41.39053988997527,
+        "slot": 9,
+        "tick": 18
+      },
+      "after_witness": {
+        "bones": [
+          19,
+          24
+        ],
+        "objects": [
+          16,
+          21
+        ],
+        "adjacent": true,
+        "count": 49,
+        "depth": 41.39053988997527,
+        "slot": 9,
+        "tick": 18
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "19/25": {
+      "before_units": 34.78700470948447,
+      "after_units": 34.78700470948447,
+      "before_witness": {
+        "bones": [
+          19,
+          25
+        ],
+        "objects": [
+          16,
+          22
+        ],
+        "adjacent": false,
+        "count": 4,
+        "depth": 34.78700470948447,
+        "slot": 9,
+        "tick": 43
+      },
+      "after_witness": {
+        "bones": [
+          19,
+          25
+        ],
+        "objects": [
+          16,
+          22
+        ],
+        "adjacent": false,
+        "count": 4,
+        "depth": 34.78700470948447,
+        "slot": 9,
+        "tick": 43
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "19/27": {
+      "before_units": 36.181992819014376,
+      "after_units": 36.181992819014376,
+      "before_witness": {
+        "bones": [
+          19,
+          27
+        ],
+        "objects": [
+          16,
+          24
+        ],
+        "adjacent": true,
+        "count": 24,
+        "depth": 36.181992819014376,
+        "slot": 36,
+        "tick": 15
+      },
+      "after_witness": {
+        "bones": [
+          19,
+          27
+        ],
+        "objects": [
+          16,
+          24
+        ],
+        "adjacent": true,
+        "count": 24,
+        "depth": 36.181992819014376,
+        "slot": 36,
+        "tick": 15
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "19/28": {
+      "before_units": 30.35518255005102,
+      "after_units": 30.35518255005102,
+      "before_witness": {
+        "bones": [
+          19,
+          28
+        ],
+        "objects": [
+          16,
+          25
+        ],
+        "adjacent": false,
+        "count": 36,
+        "depth": 30.35518255005102,
+        "slot": 47,
+        "tick": 25
+      },
+      "after_witness": {
+        "bones": [
+          19,
+          28
+        ],
+        "objects": [
+          16,
+          25
+        ],
+        "adjacent": false,
+        "count": 36,
+        "depth": 30.35518255005102,
+        "slot": 47,
+        "tick": 25
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "20/21": {
+      "before_units": 27.15190182569594,
+      "after_units": 27.15190182569594,
+      "before_witness": {
+        "bones": [
+          20,
+          21
+        ],
+        "objects": [
+          17,
+          18
+        ],
+        "adjacent": true,
+        "count": 25,
+        "depth": 27.15190182569594,
+        "slot": 47,
+        "tick": 24
+      },
+      "after_witness": {
+        "bones": [
+          20,
+          21
+        ],
+        "objects": [
+          17,
+          18
+        ],
+        "adjacent": true,
+        "count": 25,
+        "depth": 27.15190182569594,
+        "slot": 47,
+        "tick": 24
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "20/24": {
+      "before_units": 31.290598108232373,
+      "after_units": 31.290598108232373,
+      "before_witness": {
+        "bones": [
+          20,
+          24
+        ],
+        "objects": [
+          17,
+          21
+        ],
+        "adjacent": false,
+        "count": 12,
+        "depth": 31.290598108232373,
+        "slot": 47,
+        "tick": 26
+      },
+      "after_witness": {
+        "bones": [
+          20,
+          24
+        ],
+        "objects": [
+          17,
+          21
+        ],
+        "adjacent": false,
+        "count": 12,
+        "depth": 31.290598108232373,
+        "slot": 47,
+        "tick": 26
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "21/22": {
+      "before_units": 40.81044256900948,
+      "after_units": 40.81044256900948,
+      "before_witness": {
+        "bones": [
+          21,
+          22
+        ],
+        "objects": [
+          18,
+          19
+        ],
+        "adjacent": true,
+        "count": 31,
+        "depth": 40.81044256900948,
+        "slot": 42,
+        "tick": 74
+      },
+      "after_witness": {
+        "bones": [
+          21,
+          22
+        ],
+        "objects": [
+          18,
+          19
+        ],
+        "adjacent": true,
+        "count": 31,
+        "depth": 40.81044256900948,
+        "slot": 42,
+        "tick": 74
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "21/23": {
+      "before_units": 55.026857208946325,
+      "after_units": 55.026857208946325,
+      "before_witness": {
+        "bones": [
+          21,
+          23
+        ],
+        "objects": [
+          18,
+          20
+        ],
+        "adjacent": false,
+        "count": 26,
+        "depth": 55.026857208946325,
+        "slot": 52,
+        "tick": 9
+      },
+      "after_witness": {
+        "bones": [
+          21,
+          23
+        ],
+        "objects": [
+          18,
+          20
+        ],
+        "adjacent": false,
+        "count": 26,
+        "depth": 55.026857208946325,
+        "slot": 52,
+        "tick": 9
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "21/24": {
+      "before_units": 21.006523114260954,
+      "after_units": 21.006523114260954,
+      "before_witness": {
+        "bones": [
+          21,
+          24
+        ],
+        "objects": [
+          18,
+          21
+        ],
+        "adjacent": false,
+        "count": 8,
+        "depth": 21.006523114260954,
+        "slot": 47,
+        "tick": 25
+      },
+      "after_witness": {
+        "bones": [
+          21,
+          24
+        ],
+        "objects": [
+          18,
+          21
+        ],
+        "adjacent": false,
+        "count": 8,
+        "depth": 21.006523114260954,
+        "slot": 47,
+        "tick": 25
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "21/25": {
+      "before_units": 41.183323551900344,
+      "after_units": 41.183323551900344,
+      "before_witness": {
+        "bones": [
+          21,
+          25
+        ],
+        "objects": [
+          18,
+          22
+        ],
+        "adjacent": false,
+        "count": 19,
+        "depth": 41.183323551900344,
+        "slot": 46,
+        "tick": 14
+      },
+      "after_witness": {
+        "bones": [
+          21,
+          25
+        ],
+        "objects": [
+          18,
+          22
+        ],
+        "adjacent": false,
+        "count": 19,
+        "depth": 41.183323551900344,
+        "slot": 46,
+        "tick": 14
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "21/26": {
+      "before_units": 38.411880059406656,
+      "after_units": 38.411880059406656,
+      "before_witness": {
+        "bones": [
+          21,
+          26
+        ],
+        "objects": [
+          18,
+          23
+        ],
+        "adjacent": false,
+        "count": 13,
+        "depth": 38.411880059406656,
+        "slot": 12,
+        "tick": 37
+      },
+      "after_witness": {
+        "bones": [
+          21,
+          26
+        ],
+        "objects": [
+          18,
+          23
+        ],
+        "adjacent": false,
+        "count": 13,
+        "depth": 38.411880059406656,
+        "slot": 12,
+        "tick": 37
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "21/28": {
+      "before_units": 38.706890737373556,
+      "after_units": 38.706890737373556,
+      "before_witness": {
+        "bones": [
+          21,
+          28
+        ],
+        "objects": [
+          18,
+          25
+        ],
+        "adjacent": false,
+        "count": 13,
+        "depth": 38.706890737373556,
+        "slot": 10,
+        "tick": 18
+      },
+      "after_witness": {
+        "bones": [
+          21,
+          28
+        ],
+        "objects": [
+          18,
+          25
+        ],
+        "adjacent": false,
+        "count": 13,
+        "depth": 38.706890737373556,
+        "slot": 10,
+        "tick": 18
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "21/29": {
+      "before_units": 34.913858828735215,
+      "after_units": 34.913858828735215,
+      "before_witness": {
+        "bones": [
+          21,
+          29
+        ],
+        "objects": [
+          18,
+          26
+        ],
+        "adjacent": false,
+        "count": 7,
+        "depth": 34.913858828735215,
+        "slot": 10,
+        "tick": 19
+      },
+      "after_witness": {
+        "bones": [
+          21,
+          29
+        ],
+        "objects": [
+          18,
+          26
+        ],
+        "adjacent": false,
+        "count": 7,
+        "depth": 34.913858828735215,
+        "slot": 10,
+        "tick": 19
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "21/30": {
+      "before_units": 10.556469398782678,
+      "after_units": 10.556469398782678,
+      "before_witness": {
+        "bones": [
+          21,
+          30
+        ],
+        "objects": [
+          18,
+          27
+        ],
+        "adjacent": false,
+        "count": 2,
+        "depth": 10.556469398782678,
+        "slot": 10,
+        "tick": 24
+      },
+      "after_witness": {
+        "bones": [
+          21,
+          30
+        ],
+        "objects": [
+          18,
+          27
+        ],
+        "adjacent": false,
+        "count": 2,
+        "depth": 10.556469398782678,
+        "slot": 10,
+        "tick": 24
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "22/23": {
+      "before_units": 26.130901298178372,
+      "after_units": 26.130901298178372,
+      "before_witness": {
+        "bones": [
+          22,
+          23
+        ],
+        "objects": [
+          19,
+          20
+        ],
+        "adjacent": true,
+        "count": 18,
+        "depth": 26.130901298178372,
+        "slot": 3,
+        "tick": 1
+      },
+      "after_witness": {
+        "bones": [
+          22,
+          23
+        ],
+        "objects": [
+          19,
+          20
+        ],
+        "adjacent": true,
+        "count": 18,
+        "depth": 26.130901298178372,
+        "slot": 3,
+        "tick": 1
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "22/25": {
+      "before_units": 35.49473478467203,
+      "after_units": 35.49473478467203,
+      "before_witness": {
+        "bones": [
+          22,
+          25
+        ],
+        "objects": [
+          19,
+          22
+        ],
+        "adjacent": false,
+        "count": 16,
+        "depth": 35.49473478467203,
+        "slot": 37,
+        "tick": 0
+      },
+      "after_witness": {
+        "bones": [
+          22,
+          25
+        ],
+        "objects": [
+          19,
+          22
+        ],
+        "adjacent": false,
+        "count": 16,
+        "depth": 35.49473478467203,
+        "slot": 37,
+        "tick": 0
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "22/26": {
+      "before_units": 34.566371951744465,
+      "after_units": 34.566371951744465,
+      "before_witness": {
+        "bones": [
+          22,
+          26
+        ],
+        "objects": [
+          19,
+          23
+        ],
+        "adjacent": false,
+        "count": 12,
+        "depth": 34.566371951744465,
+        "slot": 12,
+        "tick": 25
+      },
+      "after_witness": {
+        "bones": [
+          22,
+          26
+        ],
+        "objects": [
+          19,
+          23
+        ],
+        "adjacent": false,
+        "count": 12,
+        "depth": 34.566371951744465,
+        "slot": 12,
+        "tick": 25
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "22/28": {
+      "before_units": 28.798505008182637,
+      "after_units": 28.798505008182637,
+      "before_witness": {
+        "bones": [
+          22,
+          28
+        ],
+        "objects": [
+          19,
+          25
+        ],
+        "adjacent": false,
+        "count": 9,
+        "depth": 28.798505008182637,
+        "slot": 10,
+        "tick": 22
+      },
+      "after_witness": {
+        "bones": [
+          22,
+          28
+        ],
+        "objects": [
+          19,
+          25
+        ],
+        "adjacent": false,
+        "count": 9,
+        "depth": 28.798505008182637,
+        "slot": 10,
+        "tick": 22
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "22/29": {
+      "before_units": 31.89729420993593,
+      "after_units": 31.89729420993593,
+      "before_witness": {
+        "bones": [
+          22,
+          29
+        ],
+        "objects": [
+          19,
+          26
+        ],
+        "adjacent": false,
+        "count": 29,
+        "depth": 31.89729420993593,
+        "slot": 10,
+        "tick": 23
+      },
+      "after_witness": {
+        "bones": [
+          22,
+          29
+        ],
+        "objects": [
+          19,
+          26
+        ],
+        "adjacent": false,
+        "count": 29,
+        "depth": 31.89729420993593,
+        "slot": 10,
+        "tick": 23
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "22/30": {
+      "before_units": 32.02942420789423,
+      "after_units": 32.02942420789423,
+      "before_witness": {
+        "bones": [
+          22,
+          30
+        ],
+        "objects": [
+          19,
+          27
+        ],
+        "adjacent": false,
+        "count": 6,
+        "depth": 32.02942420789423,
+        "slot": 10,
+        "tick": 26
+      },
+      "after_witness": {
+        "bones": [
+          22,
+          30
+        ],
+        "objects": [
+          19,
+          27
+        ],
+        "adjacent": false,
+        "count": 6,
+        "depth": 32.02942420789423,
+        "slot": 10,
+        "tick": 26
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "23/25": {
+      "before_units": 30.744122306959973,
+      "after_units": 30.744122306959973,
+      "before_witness": {
+        "bones": [
+          23,
+          25
+        ],
+        "objects": [
+          20,
+          22
+        ],
+        "adjacent": false,
+        "count": 11,
+        "depth": 30.744122306959973,
+        "slot": 37,
+        "tick": 0
+      },
+      "after_witness": {
+        "bones": [
+          23,
+          25
+        ],
+        "objects": [
+          20,
+          22
+        ],
+        "adjacent": false,
+        "count": 11,
+        "depth": 30.744122306959973,
+        "slot": 37,
+        "tick": 0
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "23/28": {
+      "before_units": 15.687126836171299,
+      "after_units": 15.687126836171299,
+      "before_witness": {
+        "bones": [
+          23,
+          28
+        ],
+        "objects": [
+          20,
+          25
+        ],
+        "adjacent": false,
+        "count": 6,
+        "depth": 15.687126836171299,
+        "slot": 10,
+        "tick": 25
+      },
+      "after_witness": {
+        "bones": [
+          23,
+          28
+        ],
+        "objects": [
+          20,
+          25
+        ],
+        "adjacent": false,
+        "count": 6,
+        "depth": 15.687126836171299,
+        "slot": 10,
+        "tick": 25
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "23/29": {
+      "before_units": 28.694778576519425,
+      "after_units": 28.694778576519425,
+      "before_witness": {
+        "bones": [
+          23,
+          29
+        ],
+        "objects": [
+          20,
+          26
+        ],
+        "adjacent": false,
+        "count": 5,
+        "depth": 28.694778576519425,
+        "slot": 10,
+        "tick": 23
+      },
+      "after_witness": {
+        "bones": [
+          23,
+          29
+        ],
+        "objects": [
+          20,
+          26
+        ],
+        "adjacent": false,
+        "count": 5,
+        "depth": 28.694778576519425,
+        "slot": 10,
+        "tick": 23
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "23/30": {
+      "before_units": 12.941473925854735,
+      "after_units": 12.941473925854735,
+      "before_witness": {
+        "bones": [
+          23,
+          30
+        ],
+        "objects": [
+          20,
+          27
+        ],
+        "adjacent": false,
+        "count": 5,
+        "depth": 12.941473925854735,
+        "slot": 10,
+        "tick": 26
+      },
+      "after_witness": {
+        "bones": [
+          23,
+          30
+        ],
+        "objects": [
+          20,
+          27
+        ],
+        "adjacent": false,
+        "count": 5,
+        "depth": 12.941473925854735,
+        "slot": 10,
+        "tick": 26
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "24/25": {
+      "before_units": 21.49659287725778,
+      "after_units": 21.49659287725778,
+      "before_witness": {
+        "bones": [
+          24,
+          25
+        ],
+        "objects": [
+          21,
+          22
+        ],
+        "adjacent": true,
+        "count": 12,
+        "depth": 21.49659287725778,
+        "slot": 40,
+        "tick": 10
+      },
+      "after_witness": {
+        "bones": [
+          24,
+          25
+        ],
+        "objects": [
+          21,
+          22
+        ],
+        "adjacent": true,
+        "count": 12,
+        "depth": 21.49659287725778,
+        "slot": 40,
+        "tick": 10
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "24/27": {
+      "before_units": 15.043960755475002,
+      "after_units": 15.043960755475002,
+      "before_witness": {
+        "bones": [
+          24,
+          27
+        ],
+        "objects": [
+          21,
+          24
+        ],
+        "adjacent": false,
+        "count": 8,
+        "depth": 15.043960755475002,
+        "slot": 55,
+        "tick": 16
+      },
+      "after_witness": {
+        "bones": [
+          24,
+          27
+        ],
+        "objects": [
+          21,
+          24
+        ],
+        "adjacent": false,
+        "count": 8,
+        "depth": 15.043960755475002,
+        "slot": 55,
+        "tick": 16
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "25/26": {
+      "before_units": 16.70754967461358,
+      "after_units": 16.70754967461358,
+      "before_witness": {
+        "bones": [
+          25,
+          26
+        ],
+        "objects": [
+          22,
+          23
+        ],
+        "adjacent": true,
+        "count": 16,
+        "depth": 16.70754967461358,
+        "slot": 54,
+        "tick": 4
+      },
+      "after_witness": {
+        "bones": [
+          25,
+          26
+        ],
+        "objects": [
+          22,
+          23
+        ],
+        "adjacent": true,
+        "count": 16,
+        "depth": 16.70754967461358,
+        "slot": 54,
+        "tick": 4
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "25/28": {
+      "before_units": 36.2672441441112,
+      "after_units": 36.2672441441112,
+      "before_witness": {
+        "bones": [
+          25,
+          28
+        ],
+        "objects": [
+          22,
+          25
+        ],
+        "adjacent": false,
+        "count": 4,
+        "depth": 36.2672441441112,
+        "slot": 9,
+        "tick": 8
+      },
+      "after_witness": {
+        "bones": [
+          25,
+          28
+        ],
+        "objects": [
+          22,
+          25
+        ],
+        "adjacent": false,
+        "count": 4,
+        "depth": 36.2672441441112,
+        "slot": 9,
+        "tick": 8
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "26/28": {
+      "before_units": 44.09154208481984,
+      "after_units": 44.09154208481984,
+      "before_witness": {
+        "bones": [
+          26,
+          28
+        ],
+        "objects": [
+          23,
+          25
+        ],
+        "adjacent": false,
+        "count": 11,
+        "depth": 44.09154208481984,
+        "slot": 43,
+        "tick": 9
+      },
+      "after_witness": {
+        "bones": [
+          26,
+          28
+        ],
+        "objects": [
+          23,
+          25
+        ],
+        "adjacent": false,
+        "count": 11,
+        "depth": 44.09154208481984,
+        "slot": 43,
+        "tick": 9
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "27/28": {
+      "before_units": 28.74463126680661,
+      "after_units": 28.74463126680661,
+      "before_witness": {
+        "bones": [
+          27,
+          28
+        ],
+        "objects": [
+          24,
+          25
+        ],
+        "adjacent": true,
+        "count": 22,
+        "depth": 28.74463126680661,
+        "slot": 3,
+        "tick": 18
+      },
+      "after_witness": {
+        "bones": [
+          27,
+          28
+        ],
+        "objects": [
+          24,
+          25
+        ],
+        "adjacent": true,
+        "count": 22,
+        "depth": 28.74463126680661,
+        "slot": 3,
+        "tick": 18
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "28/29": {
+      "before_units": 47.745214299545,
+      "after_units": 47.745214299545,
+      "before_witness": {
+        "bones": [
+          28,
+          29
+        ],
+        "objects": [
+          25,
+          26
+        ],
+        "adjacent": true,
+        "count": 34,
+        "depth": 47.745214299545,
+        "slot": 35,
+        "tick": 11
+      },
+      "after_witness": {
+        "bones": [
+          28,
+          29
+        ],
+        "objects": [
+          25,
+          26
+        ],
+        "adjacent": true,
+        "count": 34,
+        "depth": 47.745214299545,
+        "slot": 35,
+        "tick": 11
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "28/30": {
+      "before_units": 51.16483396117466,
+      "after_units": 51.16483396117466,
+      "before_witness": {
+        "bones": [
+          28,
+          30
+        ],
+        "objects": [
+          25,
+          27
+        ],
+        "adjacent": false,
+        "count": 25,
+        "depth": 51.16483396117466,
+        "slot": 9,
+        "tick": 2
+      },
+      "after_witness": {
+        "bones": [
+          28,
+          30
+        ],
+        "objects": [
+          25,
+          27
+        ],
+        "adjacent": false,
+        "count": 25,
+        "depth": 51.16483396117466,
+        "slot": 9,
+        "tick": 2
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    },
+    "29/30": {
+      "before_units": 26.1309012981784,
+      "after_units": 26.1309012981784,
+      "before_witness": {
+        "bones": [
+          29,
+          30
+        ],
+        "objects": [
+          26,
+          27
+        ],
+        "adjacent": true,
+        "count": 17,
+        "depth": 26.1309012981784,
+        "slot": 55,
+        "tick": 13
+      },
+      "after_witness": {
+        "bones": [
+          29,
+          30
+        ],
+        "objects": [
+          26,
+          27
+        ],
+        "adjacent": true,
+        "count": 17,
+        "depth": 26.1309012981784,
+        "slot": 55,
+        "tick": 13
+      },
+      "status": "residual_unproven",
+      "growth_units": 0.0
+    }
+  },
+  "preservation": {
+    "slots": {
+      "0": {
+        "ticks": 75,
+        "rotation_channels": []
+      },
+      "1": {
+        "ticks": 17,
+        "rotation_channels": []
+      },
+      "2": {
+        "ticks": 23,
+        "rotation_channels": []
+      },
+      "3": {
+        "ticks": 25,
+        "rotation_channels": [
+          [
+            12,
+            5
+          ]
+        ]
+      },
+      "4": {
+        "ticks": 21,
+        "rotation_channels": []
+      },
+      "5": {
+        "ticks": 71,
+        "rotation_channels": []
+      },
+      "7": {
+        "ticks": 59,
+        "rotation_channels": []
+      },
+      "8": {
+        "ticks": 45,
+        "rotation_channels": [
+          [
+            12,
+            3
+          ],
+          [
+            12,
+            5
+          ]
+        ]
+      },
+      "9": {
+        "ticks": 51,
+        "rotation_channels": [
+          [
+            4,
+            3
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            12,
+            3
+          ]
+        ]
+      },
+      "10": {
+        "ticks": 41,
+        "rotation_channels": []
+      },
+      "11": {
+        "ticks": 31,
+        "rotation_channels": []
+      },
+      "12": {
+        "ticks": 51,
+        "rotation_channels": [
+          [
+            4,
+            3
+          ],
+          [
+            5,
+            3
+          ]
+        ]
+      },
+      "13": {
+        "ticks": 31,
+        "rotation_channels": []
+      },
+      "14": {
+        "ticks": 17,
+        "rotation_channels": []
+      },
+      "15": {
+        "ticks": 17,
+        "rotation_channels": []
+      },
+      "16": {
+        "ticks": 17,
+        "rotation_channels": []
+      },
+      "17": {
+        "ticks": 17,
+        "rotation_channels": []
+      },
+      "18": {
+        "ticks": 17,
+        "rotation_channels": []
+      },
+      "19": {
+        "ticks": 9,
+        "rotation_channels": []
+      },
+      "21": {
+        "ticks": 37,
+        "rotation_channels": [
+          [
+            4,
+            3
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            12,
+            3
+          ]
+        ]
+      },
+      "22": {
+        "ticks": 17,
+        "rotation_channels": []
+      },
+      "23": {
+        "ticks": 33,
+        "rotation_channels": []
+      },
+      "24": {
+        "ticks": 10,
+        "rotation_channels": []
+      },
+      "25": {
+        "ticks": 10,
+        "rotation_channels": []
+      },
+      "27": {
+        "ticks": 25,
+        "rotation_channels": [
+          [
+            4,
+            5
+          ]
+        ]
+      },
+      "33": {
+        "ticks": 75,
+        "rotation_channels": []
+      },
+      "34": {
+        "ticks": 17,
+        "rotation_channels": []
+      },
+      "35": {
+        "ticks": 23,
+        "rotation_channels": []
+      },
+      "36": {
+        "ticks": 21,
+        "rotation_channels": []
+      },
+      "37": {
+        "ticks": 7,
+        "rotation_channels": []
+      },
+      "40": {
+        "ticks": 20,
+        "rotation_channels": []
+      },
+      "41": {
+        "ticks": 20,
+        "rotation_channels": []
+      },
+      "42": {
+        "ticks": 87,
+        "rotation_channels": [
+          [
+            5,
+            3
+          ]
+        ]
+      },
+      "43": {
+        "ticks": 33,
+        "rotation_channels": [
+          [
+            12,
+            3
+          ]
+        ]
+      },
+      "44": {
+        "ticks": 35,
+        "rotation_channels": [
+          [
+            4,
+            3
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            12,
+            3
+          ]
+        ]
+      },
+      "46": {
+        "ticks": 31,
+        "rotation_channels": [
+          [
+            4,
+            3
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            3
+          ],
+          [
+            11,
+            3
+          ]
+        ]
+      },
+      "47": {
+        "ticks": 45,
+        "rotation_channels": [
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            3
+          ],
+          [
+            11,
+            3
+          ],
+          [
+            13,
+            3
+          ]
+        ]
+      },
+      "48": {
+        "ticks": 31,
+        "rotation_channels": [
+          [
+            4,
+            3
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            3
+          ],
+          [
+            11,
+            3
+          ]
+        ]
+      },
+      "49": {
+        "ticks": 45,
+        "rotation_channels": [
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            3
+          ],
+          [
+            11,
+            3
+          ],
+          [
+            13,
+            3
+          ]
+        ]
+      },
+      "50": {
+        "ticks": 31,
+        "rotation_channels": [
+          [
+            4,
+            3
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            3
+          ],
+          [
+            11,
+            3
+          ]
+        ]
+      },
+      "51": {
+        "ticks": 45,
+        "rotation_channels": [
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            3
+          ],
+          [
+            11,
+            3
+          ],
+          [
+            13,
+            3
+          ]
+        ]
+      },
+      "52": {
+        "ticks": 17,
+        "rotation_channels": [
+          [
+            4,
+            3
+          ],
+          [
+            5,
+            3
+          ],
+          [
+            11,
+            3
+          ]
+        ]
+      },
+      "53": {
+        "ticks": 45,
+        "rotation_channels": [
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            3
+          ],
+          [
+            11,
+            3
+          ],
+          [
+            13,
+            3
+          ]
+        ]
+      },
+      "54": {
+        "ticks": 21,
+        "rotation_channels": []
+      },
+      "55": {
+        "ticks": 21,
+        "rotation_channels": [
+          [
+            4,
+            3
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            12,
+            4
+          ],
+          [
+            12,
+            5
+          ],
+          [
+            13,
+            3
+          ],
+          [
+            13,
+            4
+          ],
+          [
+            13,
+            5
+          ]
+        ]
+      },
+      "56": {
+        "ticks": 45,
+        "rotation_channels": [
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            3
+          ],
+          [
+            11,
+            3
+          ],
+          [
+            13,
+            3
+          ]
+        ]
+      },
+      "57": {
+        "ticks": 45,
+        "rotation_channels": [
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            3
+          ],
+          [
+            11,
+            3
+          ],
+          [
+            13,
+            3
+          ]
+        ]
+      },
+      "58": {
+        "ticks": 31,
+        "rotation_channels": [
+          [
+            4,
+            3
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            3
+          ],
+          [
+            11,
+            3
+          ]
+        ]
+      },
+      "59": {
+        "ticks": 45,
+        "rotation_channels": [
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            3
+          ],
+          [
+            11,
+            3
+          ],
+          [
+            13,
+            3
+          ]
+        ]
+      },
+      "60": {
+        "ticks": 45,
+        "rotation_channels": [
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            3
+          ],
+          [
+            11,
+            3
+          ],
+          [
+            13,
+            3
+          ]
+        ]
+      },
+      "61": {
+        "ticks": 21,
+        "rotation_channels": []
+      },
+      "62": {
+        "ticks": 45,
+        "rotation_channels": [
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            3
+          ],
+          [
+            11,
+            3
+          ],
+          [
+            13,
+            3
+          ]
+        ]
+      }
+    },
+    "ticks": 1714,
+    "storage": {
+      "before": {
+        "resident_bytes": 74558,
+        "resident_limit": 100352,
+        "cold_bytes": 23720,
+        "cold_buffer_bytes": 8192,
+        "cold_reads": [
+          {
+            "slot": 5,
+            "offset": 0,
+            "length": 1512,
+            "sector_read_bytes": 2048,
+            "fits": true
+          },
+          {
+            "slot": 7,
+            "offset": 1512,
+            "length": 1540,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 8,
+            "offset": 3052,
+            "length": 1564,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 9,
+            "offset": 4616,
+            "length": 1972,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 10,
+            "offset": 6588,
+            "length": 2252,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 11,
+            "offset": 8840,
+            "length": 2332,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 12,
+            "offset": 11172,
+            "length": 2808,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 13,
+            "offset": 13980,
+            "length": 1632,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 21,
+            "offset": 15612,
+            "length": 2420,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 22,
+            "offset": 18032,
+            "length": 832,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 23,
+            "offset": 18864,
+            "length": 1236,
+            "sector_read_bytes": 2048,
+            "fits": true
+          },
+          {
+            "slot": 24,
+            "offset": 20100,
+            "length": 704,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 25,
+            "offset": 20804,
+            "length": 720,
+            "sector_read_bytes": 2048,
+            "fits": true
+          },
+          {
+            "slot": 27,
+            "offset": 21524,
+            "length": 2196,
+            "sector_read_bytes": 4096,
+            "fits": true
+          }
+        ],
+        "fits": true
+      },
+      "after": {
+        "resident_bytes": 74500,
+        "resident_limit": 100352,
+        "cold_bytes": 23308,
+        "cold_buffer_bytes": 8192,
+        "cold_reads": [
+          {
+            "slot": 5,
+            "offset": 0,
+            "length": 1508,
+            "sector_read_bytes": 2048,
+            "fits": true
+          },
+          {
+            "slot": 7,
+            "offset": 1508,
+            "length": 1516,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 8,
+            "offset": 3024,
+            "length": 1556,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 9,
+            "offset": 4580,
+            "length": 1948,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 10,
+            "offset": 6528,
+            "length": 2216,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 11,
+            "offset": 8744,
+            "length": 2260,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 12,
+            "offset": 11004,
+            "length": 2772,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 13,
+            "offset": 13776,
+            "length": 1620,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 21,
+            "offset": 15396,
+            "length": 2380,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 22,
+            "offset": 17776,
+            "length": 800,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 23,
+            "offset": 18576,
+            "length": 1204,
+            "sector_read_bytes": 2048,
+            "fits": true
+          },
+          {
+            "slot": 24,
+            "offset": 19780,
+            "length": 692,
+            "sector_read_bytes": 2048,
+            "fits": true
+          },
+          {
+            "slot": 25,
+            "offset": 20472,
+            "length": 716,
+            "sector_read_bytes": 4096,
+            "fits": true
+          },
+          {
+            "slot": 27,
+            "offset": 21188,
+            "length": 2120,
+            "sector_read_bytes": 4096,
+            "fits": true
+          }
+        ],
+        "fits": true
+      }
+    },
+    "texture_exact": true,
+    "mesh_exact": true,
+    "leg_poses_exact": true,
+    "windup_entry_exit_exact": true
+  },
+  "provider_pins": {
+    "before": [
+      "6592c0c7c66a73bb59a32c5eab1cdcf6fe38fa07",
+      "2702c2eb2a92820ff1c83b23600c890d96a0a1f7"
+    ],
+    "after": [
+      "612b9a52d6b2f5212f2505c8a733d6433a40f9d3",
+      "2702c2eb2a92820ff1c83b23600c890d96a0a1f7"
+    ],
+    "other_pins_exact": true
+  },
+  "atlas_hashes": {
+    "before": {
+      "MMD": "b7b40781b019702e098504b9642dedc0579dc89ef47bec06ce3679319f24b03f",
+      "TIM": "8df4da524be467152e87f0a8807965fbd0225f64541d7b7b5514877562e2261e"
+    },
+    "after": {
+      "MMD": "b2579087405751d08eac75267e28ef3216a5b9d20db493b3e52b8d89f6d558f3",
+      "TIM": "8df4da524be467152e87f0a8807965fbd0225f64541d7b7b5514877562e2261e"
+    }
+  },
+  "tests": {
+    "run": 101,
+    "passed": 96,
+    "skipped": 5
+  },
+  "limitations": [
+    "78 crossing pairs have no unrestricted floor proof.",
+    "Four idle co-facing sole overlaps and 141 bent quads remain.",
+    "Orthographic renders do not establish runtime visual clearance."
+  ]
+}

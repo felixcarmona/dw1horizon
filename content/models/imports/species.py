@@ -381,7 +381,7 @@ def species_file(out, t, recs=None, names=None, generate=False):
         (generated / f'{t}-field-hover-report.json').write_text(json.dumps(proof, indent=2) + '\n')
         s['model']['file'] = str(model_path)
         s['model'].pop('slot_aliases', None)
-    # Last: grounding and rig fitting above still need the original vertex
+    # Grounding and rig fitting above still need the original vertex
     # pools. This pass preserves their result within the fixed resident ceiling.
     from tools.models import mesh_stability
     stable, stability = mesh_stability.apply_provider(model, s['model']['skeleton'], t)
@@ -411,6 +411,17 @@ def species_file(out, t, recs=None, names=None, generate=False):
         model_path.write_bytes(cleaned)
         cleanup.update(resident_before=before_bytes, resident_after=after_bytes)
         (generated / f'{t}-mesh-cleanup-report.json').write_text(json.dumps(cleanup, indent=2) + '\n')
+        s['model']['file'] = str(model_path)
+        s['model'].pop('slot_aliases', None)
+    # Final storage pass: measure and recompress after every geometry/pose repair.
+    from tools.models import partner_headroom
+    final, headroom = partner_headroom.apply(cleaned, s['model']['skeleton'], t)
+    if headroom['applied']:
+        generated = Path(os.path.abspath(out) + '-models')
+        generated.mkdir(parents=True, exist_ok=True)
+        model_path = generated / f'{t}-partner-headroom.MMD'
+        model_path.write_bytes(final)
+        (generated / f'{t}-partner-headroom-report.json').write_text(json.dumps(headroom, indent=2) + '\n')
         s['model']['file'] = str(model_path)
         s['model'].pop('slot_aliases', None)
     return name, s

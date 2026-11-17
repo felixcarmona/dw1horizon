@@ -16,7 +16,7 @@ def main():
     parser.add_argument('before', type=Path)
     parser.add_argument('after', type=Path)
     parser.add_argument('--out', type=Path, required=True)
-    parser.add_argument('--thresholds', type=Path, default=Path('docs/reference/mesh-glitch-audit.json'))
+    parser.add_argument('--thresholds', type=Path, default=Path('docs/reference/mesh-glitch-thresholds.json'))
     parser.add_argument('--ids', nargs='+', type=int, choices=mesh_gd.IDS, default=mesh_gd.IDS)
     parser.add_argument('--crossings', action='store_true', help='exhaustive slot/frame CSV ledgers')
     parser.add_argument('--renders', action='store_true', help='matched eight-azimuth PSX-rule sheets')
