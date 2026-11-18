@@ -24,7 +24,7 @@ stock, nor the Card Complete medal requirement. Other artwork metadata, such as
 `tools/cards.py` validates these rows and generates `CARD/CARDTAB.BIN`: exactly
 512 little-endian `<HBB` rows, one sector. Its four-byte row keeps the species
 aligned and stores merit in a byte. `tools/balance.py` derives the resident
-64-byte real-card bitmap and the 16-byte replacement-art lookup from the same JSON.
+64-byte real-card bitmap and the 128-byte replacement-art lookup from the same JSON.
 The economy audit includes every authored new card.
 
 The derive `cards` step and `plan` step add `CARDTAB.BIN` and `CARD2.ALL` through
@@ -45,17 +45,16 @@ Each entry is exactly `0x7000` bytes (14 sectors), with the same 150×180 8bpp T
 layout as `CARD.ALL`, pixels at VRAM (576,256), palette at (448,511). Entry `i`
 is card ID `66+i` for new cards. Sparse metadata retains those positions,
 including holes. Rows with `replaces` append their art after the highest new ID,
-in JSON order: the current 240 new slots plus eight replacements use 248 of the
-446 allowed entries. The eight original IDs are 26, 27, 29, 30, 31, 32, 35 and 44;
-their replacement entries are 240–247. Replacement IDs must be unique originals
-1–64; up to eight are supported. Both composed and supplied archives must fit
+in JSON order: the current 240 new slots plus 64 replacements use 304 of the
+446 allowed entries. All original IDs 1–64 have replacement art; their entries
+are 240–303 in JSON order. Replacement IDs must be unique originals 1–64. Both composed and supplied archives must fit
 446 entries; supplied archives must reach and validate every new and replacement
 TIM. Old supplied archives without the appended art fail the build. With an
 empty list, the build writes an empty archive.
 
-`balance.py` generates eight packed u16 lookup entries in `MOD_CARD_ART`: the
-low six bits hold original ID minus one, and the upper bits hold the `CARD2.ALL`
-entry; `0xffff` marks unused slots. The shared viewer/shop/pack-result loader uses
+`balance.py` generates 64 u16 archive entries in `MOD_CARD_ART`, indexed by
+original ID minus one; `0xffff` marks originals without replacement art.
+The direct lookup preserves sparse and arbitrary JSON ordering. The shared viewer/shop/pack-result loader uses
 this lookup only with NEW CARDS ON. OFF reads original art from `CARD.ALL`.
 There is no additional image buffer or allocation. The card builder also removes
 stale generated `CARD.ALL` outputs from the old composer.
@@ -96,7 +95,7 @@ is 1,093/1,120 bytes (27 spare). See [save format](../reference/save-format.md).
 The OPTIONS row **NEW CARDS** defaults to ON. OFF hides IDs 66–511 in every
 collection and acquisition view, preserves their saved counts and existing stock,
 and requires only originals for Card Complete. OFF also restores the original
-full-size artwork for the eight replaced cards; ON selects the authored
+full-size artwork for the 64 replaced cards; ON selects the authored
 replacements. Their eligibility stays the same. See [options](options.md#new-cards).
 
 Validation without an emulator:
@@ -114,7 +113,7 @@ The card host check compiles the production collection functions, navigation,
 pack roll, shop builder/trade, daily stock, record writer/reader and inline
 scatter helper with address/undefined-behaviour sanitizers. It generates a
 temporary archive of 446 distinct flat-colour TIMs and verifies every new image
-offset, all eight OFF/ON replacement/original selections, JSON-driven pack
+offset, all 64 OFF/ON replacement/original selections, JSON-driven pack
 eligibility, IDs 255/256/511, old/short record defaults,
 and the real-card medal rule. It checks the loader's selected bytes, rather than
 GPU presentation. Artwork review and emulator presentation remain separate
@@ -141,7 +140,7 @@ The header retains the selected card ID on the left. Its denominator preserves
 the original album's 65 numbering convention and adds only real new IDs from
 the bitmap: **305 ON, 65 OFF**. There are 64 collectible original bitmap bits
 and 240 new bits; sentinel 65 accounts for the legacy numbering difference.
-The eight replacement-art rows add no collection entries. No new array, cache,
+The 64 replacement-art rows add no collection entries. No new array, cache,
 allocation or resident state is needed.
 
 When there are more than six rows, the right edge shows a cyan thumb over the
@@ -189,3 +188,22 @@ scene. Everything that steers the image is a field of its row in `content/cards/
 - Imported species need their model files: `CARD_MODEL_FOLDERS` lists the folders to search.
 - Anatomy rules for new cards: draw exactly the limbs the model has, never invent legs or arms, and
   stand every creature on the ground unless it visibly flies.
+
+## All-original artwork lookup (cards-opt4, Part A)
+
+The lookup now supports every original, including sparse and unordered replacement
+rows, without scanning packed entries. The archive contract stays at 446 entries;
+240 new cards plus 64 replacements consume 304 entries (8,716,288 bytes).
+Both supplied-archive validation and composition use the identical JSON mapping.
+The derive cards step delegates this mapping to `tools/cards.py`; no separate
+count or hand-maintained mapping lives in the derive pipeline.
+
+Matched executable-only English FONT=b, FPS=60 links with the complete 1,509-file
+plan and shared language padding measure `main_BSS_END` 0x801CEBB8 → 0x801CEC18
+(+96 bytes). The lookup grows 16 → 128 bytes while loader code shrinks.
+Aligned heap is 185,152 → 185,056 bytes; MENU remains 55,204 bytes (27 sectors).
+The original-screen heapcheck passes, tightest projected free heap 28,704 bytes.
+These measurements supersede the historical measurements above for this tree.
+All 55 card/heap/economy/language unit tests, card and merit host checks,
+save capacity/inline checks and economy audit pass. No full disc or emulator
+check was performed.

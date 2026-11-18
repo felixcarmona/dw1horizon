@@ -1,4 +1,4 @@
-"""Generate the card metadata sector and accept the phase-B image archive."""
+"""Generate card metadata and CARD2 art, including all original replacements."""
 from tools import cards
 
 NAME = 'cards'

@@ -201,7 +201,7 @@ TABLES = [
     ('trainingBonus', 'TRN_REL.BIN', 'MOD_TRAIN_BONUS', 60),
 ]
 
-_SMALL_COUNTS = {'cardArt': 8, 'cardReal': 64, 'cards': 66, 'cardPrices': 5, 'shopMaps': 8, 'arenaMaps': 2, 'shopkeepers': 11, 'recyclableItems': 78,
+_SMALL_COUNTS = {'cardArt': 64, 'cardReal': 64, 'cards': 66, 'cardPrices': 5, 'shopMaps': 8, 'arenaMaps': 2, 'shopkeepers': 11, 'recyclableItems': 78,
                  'birdraTransport': 6, 'initialInventoryItems': 30, 'initialInventoryAmounts': 30, 'defaultInventoryItems': 30,
                  'defaultInventoryAmounts': 30, 'sleepPatterns': 8, 'statLimits': 22, 'targetAttackerChance': 4,
                  'statGainEnemyFactors': 4, 'healingValues': 4, 'healEffectVariant': 4, 'mojyamonGives': 12, 'mojyamonTakes': 12,
@@ -868,7 +868,7 @@ def encode(doc, exe):
                               for i, r in enumerate(doc[k]))
     if exe.has('cardArt'):
         import cards
-        out['cardArt'] = struct.pack('<8H', *cards.replacement_table())
+        out['cardArt'] = struct.pack('<64H', *cards.replacement_table())
     if exe.has('cardReal'):
         import cards
         out['cardReal'] = cards.real_mask(cards.load(native=doc['cards']))

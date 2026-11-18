@@ -77,7 +77,7 @@ class CardContent(unittest.TestCase):
             config.write_text(json.dumps([authored(66), authored(70)] +
                               [dict(key=f'art-{n}', replaces=n) for n in (26, 44)]))
             self.assertEqual(cards.replacement_entries(config), {26: 5, 44: 6})
-            self.assertEqual(cards.replacement_table(config), [5 << 6 | 25, 6 << 6 | 43] + [65535] * 6)
+            self.assertEqual(cards.replacement_table(config), [({26: 5, 44: 6}).get(n, 65535) for n in range(1, 65)])
             original = d / 'CARD.ALL'
             original.write_bytes(b'pristine disc art')
             out = d / 'out'
@@ -106,7 +106,6 @@ class CardContent(unittest.TestCase):
     def test_replacement_limits(self):
         for rows in ([dict(key='bad', replaces=n) for n in (26, 26)],
                      [dict(key='bad', replaces=65)],
-                     [dict(key=str(n), replaces=n) for n in range(1, 10)],
                      [authored(511), dict(key='overflow', replaces=26)]):
             with self.subTest(rows=rows), tempfile.TemporaryDirectory() as d:
                 p = Path(d) / 'new.json'
@@ -116,10 +115,11 @@ class CardContent(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             p = Path(d) / 'new.json'
             p.write_text(json.dumps([authored(510), dict(key='last', replaces=64)]))
-            self.assertEqual(cards.replacement_table(p), [(445 << 6) | 63] + [65535] * 7)
+            self.assertEqual(cards.replacement_table(p), [65535] * 63 + [445])
         entries = cards.replacement_entries()
-        self.assertEqual(set(entries), {26, 27, 29, 30, 31, 32, 35, 44})
-        self.assertEqual(sorted(entries.values()), list(range(240, 248)))
+        self.assertEqual(set(entries), set(range(1, 65)))
+        self.assertEqual(sorted(entries.values()), list(range(240, 304)))
+        self.assertEqual(cards.replacement_table(), [entries[n] for n in range(1, 65)])
 
     def test_bad_metadata(self):
         for update in ({'number': 65}, {'number': 512}, {'species': 65536},
@@ -138,6 +138,14 @@ class CardContent(unittest.TestCase):
             card.update(species='Agumon', scene='authoring metadata', frame='red')
             p.write_text(json.dumps({'cards': [card]}))
             self.assertEqual(cards.load(p)[66]['species'], 3)
+
+    def test_low_colour_art_palette(self):
+        from tools import cardmaker
+        image = cardmaker.Image.new('RGB', (16, 16), (248, 0, 0))
+        pixels, clut = cardmaker.to_indexed(image)
+        self.assertEqual(len(pixels), 256)
+        self.assertEqual(len(clut), 256)
+        self.assertEqual(clut[pixels[0]], 0x801f)
 
     def test_save_records_and_capacity(self):
         counts = bytearray(223)

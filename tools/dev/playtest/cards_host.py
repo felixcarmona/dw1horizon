@@ -104,7 +104,7 @@ typedef struct { uint16_t digimonId; uint8_t spriteId,meritValue; } CardData;
 static CardData CARD_DATA[512];
 static int CARD_PRICES[6]={5000,1500,500,100,50,0}, MONEY=99999;
 static uint8_t MOD_CARD_REAL[64], MOD_CARD_EXTRA[223];
-static uint16_t MOD_CARD_ART[8];
+static uint16_t MOD_CARD_ART[64];
 static uint16_t MOD_CARD_STOCK[6];
 typedef struct { uint8_t cards[33],smth[212]; } ScriptState;
 static ScriptState script, *SCRIPT_STATE_PTR=&script;
@@ -168,7 +168,7 @@ int main(int argc,char **argv) {
  assert(argc==6); archive=argv[1];
  FILE *table=fopen(argv[2],"rb");assert(table);assert(fread(CARD_DATA,4,512,table)==512);fclose(table);
  table=fopen(argv[3],"rb");assert(table);assert(fread(MOD_CARD_REAL,1,64,table)==64);fclose(table);
- table=fopen(argv[4],"rb");assert(table);assert(fread(MOD_CARD_ART,2,8,table)==8);fclose(table);
+ table=fopen(argv[4],"rb");assert(table);assert(fread(MOD_CARD_ART,2,64,table)==64);fclose(table);
  assert(CARD_DATA[511].digimonId==300);
  for(int i=-2;i<514;i++){ setCardAmount(i,9); assert(getCardAmount(i)==(modCardIsReal(i)?9:0)); }
  setCardAmount(256,42); assert(getCardAmount(256)==9);
@@ -251,7 +251,7 @@ int main(int argc,char **argv) {
   MOD_OPT_NEW_CARDS=enabled;
   for(int n=0;n<66;n++){
    int entry=-1;
-   for(int i=0;i<8;i++)if(MOD_CARD_ART[i]!=65535 && (MOD_CARD_ART[i]&63)==n-1)entry=MOD_CARD_ART[i]>>6;
+   if(n>=1 && n<=64)entry=MOD_CARD_ART[n-1]==65535?-1:MOD_CARD_ART[n-1];
    assert(modLoadCardImage(n,art));
    assert(lastArchive==(enabled && entry>=0));
    assert(lastOffset==(enabled && entry>=0?entry:n)*14);
@@ -295,7 +295,7 @@ int main(int argc,char **argv) {
         (d / 'real.bin').write_bytes(cards.real_mask(rows))
         (d / 'shipped.bin').write_bytes(cards.real_mask(cards.load()))
         import struct
-        (d / 'art.bin').write_bytes(struct.pack('<8H', *cards.replacement_table()))
+        (d / 'art.bin').write_bytes(struct.pack('<64H', *cards.replacement_table()))
         (d / 'test.c').write_text(prefix + tags + '\n' + production + tests)
         subprocess.run(['cc', '-std=c99', '-Wall', '-Wextra', '-Werror', '-fsanitize=address,undefined',
                         str(d / 'test.c'), '-o', str(d / 'test')], check=True)

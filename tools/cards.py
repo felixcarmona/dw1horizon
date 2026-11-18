@@ -89,7 +89,7 @@ def replaced(path=None):
     return [c for c in authored_cards(path) if 'replaces' in c]
 
 
-REPLACEMENT_LIMIT = 8
+REPLACEMENT_LIMIT = 64
 
 
 def replacement_entries(path=None):
@@ -99,16 +99,16 @@ def replacement_entries(path=None):
     originals = [c['replaces'] for c in authored if 'replaces' in c]
     if (len(originals) > REPLACEMENT_LIMIT or len(set(originals)) != len(originals) or
         any(type(n) is not int or not 1 <= n <= 64 for n in originals)):
-        raise ValueError('replacement art requires up to eight unique original IDs 1..64')
+        raise ValueError('replacement art requires up to 64 unique original IDs 1..64')
     if first + len(originals) > LIMIT - FIRST_NEW:
         raise ValueError('CARD2.ALL exceeds 446 entries including replacement art')
     return dict((n, first + i) for i, n in enumerate(originals))
 
 
 def replacement_table(path=None):
-    # Six bits identify original IDs 1..64; nine bits identify archive entries.
-    entries = [(entry << 6) | (n - 1) for n, entry in replacement_entries(path).items()]
-    return entries + [0xffff] * (REPLACEMENT_LIMIT - len(entries))
+    # Direct original-ID indexing also supports sparse, arbitrarily ordered rows.
+    entries = replacement_entries(path)
+    return [entries.get(n, 0xffff) for n in range(1, REPLACEMENT_LIMIT + 1)]
 
 
 def compose_archives(out, path=None):
