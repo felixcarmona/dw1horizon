@@ -128,6 +128,8 @@ def make(ctx):
     P.add('DIGI.DAT', O('DIGI.DAT'))
     P.add('CARD/CARDTAB.BIN', O('cards', 'CARDTAB.BIN'))
     P.add('CARD/CARD2.ALL', O('cards', 'CARD2.ALL'))
+    if os.path.isfile(O('cards', 'CARD.ALL')):
+        P.add('CARD/CARD.ALL', O('cards', 'CARD.ALL'))
     if s.scrn:   # (:325-336)
         P.add('SCRN.DAT', O('SCRN.DAT'))
         if orig and not same(O('SCRN.DAT'), O('orig', 'SCRN.DAT')):

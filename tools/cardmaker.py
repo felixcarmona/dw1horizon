@@ -14,11 +14,12 @@ Usage (from the repository root, with the repository's venv for the reference re
   cardmaker.py gen KEY                      the older way: Gemini re-imagines the creature from the reference sheet
   cardmaker.py render [KEY ...]             compose the cards of content/cards/new.json into build/cards/
                                             (PNG preview, 8 bpp indices .idx and 15-bit CLUT .clut per card)
+  cardmaker.py reduce [KEY ...]             keep the window's part of the 2K art at 2x card size in content/cards/art/ (what the build uses)
   cardmaker.py prompt KEY                   print the prompt, change nothing
 
 content/cards/new.json lists the cards: {"key", "number", "species", "with": [species...], "rarity", "merit",
 "scene"?, "pose"?, "frame"?, "style"?}. A species may have any number of cards (one per key), and a card may show several Digimon:
-`species` names it, `with` adds the others to the art. Art is content/cards/art/<key>.png.
+`species` names it, `with` adds the others to the art. Generated art is kept as it came in build/cards-originals/<key>.png (CARD_ORIGINALS overrides); `reduce` writes the committed content/cards/art/<key>.png.
 SPECIES is an id or a name of content/species. Standard library plus tools/image.py (cv2 only to decode non-PNG).
 """
 
@@ -40,7 +41,8 @@ import urllib.request
 from tools.image import Image
 
 ROOT = _ImagePath(__file__).resolve().parents[1]
-ART = ROOT / 'content' / 'cards' / 'art'
+ART = _ImagePath(os.environ.get('CARD_ORIGINALS') or ROOT / 'build' / 'cards-originals')   # generated art as it came (2K, not committed)
+KEPT = ROOT / 'content' / 'cards' / 'art'   # reduced copies of it that the build composes (committed)
 CARDS = ROOT / 'content' / 'cards' / 'new.json'
 OUT = ROOT / 'build' / 'cards'
 W, H = 150, 180
@@ -125,6 +127,38 @@ def card_of(key):
 
 def art_path(card):
     return ART / f"{card['key']}.png"
+
+
+def kept_path(card):
+    return KEPT / f"{card['key']}.png"
+
+
+def window_crop(art):
+    """The part of the art that fills the card's window: cover-crop to its proportions, a little above the middle."""
+    x0, y0, x1, y1 = WIN
+    ww, hh = x1 - x0 + 1, y1 - y0 + 1
+    aw, ah = art.size
+    ch = round(aw * hh / ww)
+    if ch <= ah:
+        top = round((ah - ch) * 0.4)
+        return art.crop((0, top, aw, top + ch))
+    cw = round(ah * ww / hh)
+    left = (aw - cw) // 2
+    return art.crop((left, 0, left + cw, ah))
+
+
+def reduce(keys):
+    """Write the kept art: the window's part of each original at twice the card's resolution."""
+    KEPT.mkdir(parents=True, exist_ok=True)
+    ww, hh = WIN[2] - WIN[0] + 1, WIN[3] - WIN[1] + 1
+    for c in json.load(open(CARDS))['cards']:
+        if keys and c['key'] not in keys:
+            continue
+        if not art_path(c).exists():
+            print('no original for', c['key'])
+            continue
+        window_crop(Image.open(art_path(c)).convert('RGB')).resize((ww * 2, hh * 2), Image.Resampling.LANCZOS).save(str(kept_path(c)))
+        print(kept_path(c).name)
 
 
 # ---------------------------------------------------------------- prompt and generation
@@ -370,21 +404,14 @@ def put_text(im, x, y, text, ink=(255, 255, 255), shadow=(40, 24, 24)):
     return w
 
 
-def compose(card_def, number):
+def compose(card_def, number, preview=False):
     sp = species_of(card_def['species'])
-    art = Image.open(art_path(card_def)).convert('RGB')
+    src = kept_path(card_def)
+    if preview and not src.exists():
+        src = art_path(card_def)
+    art = window_crop(Image.open(src).convert('RGB'))
     x0, y0, x1, y1 = WIN
     ww, hh = x1 - x0 + 1, y1 - y0 + 1
-    aw, ah = art.size
-    # cover-crop the art to the window's proportions, centred a little above the middle
-    ch = round(aw * hh / ww)
-    if ch <= ah:
-        top = round((ah - ch) * 0.4)
-        art = art.crop((0, top, aw, top + ch))
-    else:
-        cw = round(ah * ww / hh)
-        left = (aw - cw) // 2
-        art = art.crop((left, 0, left + cw, ah))
     art = art.resize((ww, hh), Image.Resampling.LANCZOS)
     card = Image.new('RGB', (W, H), (0, 0, 0))
     spec = card_def.get('frame') or ELEMENTS[element_of(sp)][0]
@@ -411,13 +438,21 @@ def to_indexed(card):
     return bytes(idx), clut
 
 
+def tim(card_def, number):
+    """The card as one 0x7000-byte entry of a card archive: the 150x180 8 bpp TIM of CARD.ALL."""
+    idx, clut = to_indexed(compose(card_def, number))
+    head = struct.pack('<II', 0x10, 9) + struct.pack('<I4H', 524, 448, 511, 256, 1) + struct.pack('<256H', *clut)
+    head += struct.pack('<I4H', 27012, 576, 256, 75, 180)
+    return (head + idx).ljust(0x7000, b'\0')
+
+
 def render(keys):
     OUT.mkdir(parents=True, exist_ok=True)
     cards = json.load(open(CARDS))['cards']
     for c in cards:
         if keys and c['key'] not in keys:
             continue
-        card = compose(c, c['number'])
+        card = compose(c, c['number'], True)
         base = OUT / f"card-{c['number']:03d}-{c['key']}"
         card.save(str(base) + '.png')
         idx, clut = to_indexed(card)
@@ -428,7 +463,7 @@ def render(keys):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument('cmd', choices=['ref', 'art', 'gen', 'render', 'prompt'])
+    ap.add_argument('cmd', choices=['ref', 'art', 'gen', 'render', 'prompt', 'reduce'])
     ap.add_argument('args', nargs='*')
     ap.add_argument('--ref')
     ap.add_argument('--new-bg', action='store_true')
@@ -436,6 +471,8 @@ def main():
     a = ap.parse_args()
     if a.cmd == 'render':
         return render({x.lower() for x in a.args})
+    if a.cmd == 'reduce':
+        return reduce({x.lower() for x in a.args})
     if a.cmd == 'ref':
         return reference(species_of(a.args[0]), a.args[1])
     card = card_of(a.args[0])

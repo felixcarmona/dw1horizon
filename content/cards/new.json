@@ -341,7 +341,7 @@
    "key": "snowgoblimon",
    "number": 98,
    "species": 103,
-   "rarity": 1,
+   "rarity": 3,
    "merit": 5,
    "scene": "a frozen valley of ice blocks and pine trees under a pale sky",
    "pose": "crouching low, club raised over its shoulder, seen from a high three-quarter angle"
@@ -350,7 +350,7 @@
    "key": "fugamon",
    "number": 99,
    "species": 89,
-   "rarity": 1,
+   "rarity": 3,
    "merit": 5,
    "scene": "a rocky mountain ledge with swirling low-poly clouds below",
    "pose": "leaping forward with a wide kick, seen from a low front angle"
@@ -359,7 +359,7 @@
    "key": "tekkamon",
    "number": 100,
    "species": 90,
-   "rarity": 1,
+   "rarity": 3,
    "merit": 5,
    "scene": "an old rusty factory yard with blocky crates and pipes",
    "pose": "standing with arms spread wide, seen straight from the front, slightly from below"
@@ -368,25 +368,16 @@
    "key": "icemon",
    "number": 101,
    "species": 94,
-   "rarity": 1,
+   "rarity": 3,
    "merit": 5,
    "scene": "a blue glacier cave with chunky ice crystals",
    "pose": "floating sideways, seen in strict side profile"
   },
   {
-   "key": "clearagumon",
-   "number": 102,
-   "species": 98,
-   "rarity": 1,
-   "merit": 5,
-   "scene": "a bright meadow with blocky flowers and a tiny pond",
-   "pose": "sitting on the ground waving, seen from behind-left three-quarter angle"
-  },
-  {
    "key": "weedmon",
    "number": 103,
    "species": 99,
-   "rarity": 1,
+   "rarity": 3,
    "merit": 5,
    "scene": "a swamp with cattails and low-poly lily pads",
    "pose": "rising out of the ground, camera very low looking up"
@@ -395,7 +386,7 @@
    "key": "psychemon",
    "number": 104,
    "species": 82,
-   "rarity": 1,
+   "rarity": 3,
    "merit": 5,
    "scene": "a dark temple hall with blocky pillars and purple torches",
    "pose": "hovering cross-legged high above the floor, seen from the front at eye level"
@@ -404,7 +395,7 @@
    "key": "analogman",
    "number": 105,
    "species": 116,
-   "rarity": 1,
+   "rarity": 3,
    "merit": 5,
    "scene": "a retro computer room with chunky blocky consoles and cables on the floor",
    "pose": "running to the right, seen in side view with a slight top angle"
@@ -413,7 +404,7 @@
    "key": "tinmon",
    "number": 106,
    "species": 123,
-   "rarity": 1,
+   "rarity": 3,
    "merit": 5,
    "scene": "a snowy toy-workshop courtyard with blocky crates",
    "pose": "marching toward the camera, seen from the front at a slight low angle"
@@ -422,7 +413,7 @@
    "key": "shimaunimon",
    "number": 107,
    "species": 75,
-   "rarity": 1,
+   "rarity": 3,
    "merit": 5,
    "scene": "a sunny island beach with blocky palm trees",
    "pose": "rearing up on its hind legs, seen from the side with a low camera"

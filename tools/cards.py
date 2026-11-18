@@ -42,6 +42,8 @@ def load(path=None, native=None):
         raise ValueError('new.json must contain a cards array')
     keys, numbers = set(), set()
     for card in authored:
+        if 'replaces' in card:   # new art for an original card: its row stays as the original table has it
+            continue
         if not {'key', 'number', 'species', 'rarity', 'merit'} <= set(card):
             raise ValueError('new cards require key, number, species, rarity, merit')
         key, number, species, rarity = (card[k] for k in ('key', 'number', 'species', 'rarity'))
@@ -78,7 +80,40 @@ def real_mask(rows):
     return bytes(out)
 
 
-def build(out, art=None, path=None, native=None):
+def authored_cards(path=None):
+    authored = json.loads(Path(path or ROOT / 'content/cards/new.json').read_text())
+    return authored['cards'] if isinstance(authored, dict) else authored
+
+
+def replaced(path=None):
+    return [c for c in authored_cards(path) if 'replaces' in c]
+
+
+def compose_archives(out, source, path=None):
+    """Compose the authored cards from their kept art with the card maker: CARD2.ALL (entry = number - 66, holes zero) and,
+    when cards replace an original, CARD.ALL = the player's own archive with those entries replaced."""
+    from tools import cardmaker
+    cards = authored_cards(path)
+    new = [c for c in cards if 'replaces' not in c]
+    out = Path(out)
+    entries = bytearray(((max(c['number'] for c in new) - FIRST_NEW + 1) if new else 0) * ENTRY_BYTES)
+    for c in new:
+        at = (c['number'] - FIRST_NEW) * ENTRY_BYTES
+        entries[at:at + ENTRY_BYTES] = cardmaker.tim(c, c['number'])
+    (out / 'CARD2.ALL').write_bytes(bytes(entries))
+    replaced = [c for c in cards if 'replaces' in c]
+    if replaced:
+        original = bytearray(Path(source).read_bytes())
+        for c in replaced:
+            n = c['replaces']
+            if not 1 <= n < 65 or (n + 1) * ENTRY_BYTES > len(original):
+                raise ValueError(f"card {c['key']} replaces {n}: not an original card")
+            original[n * ENTRY_BYTES:(n + 1) * ENTRY_BYTES] = cardmaker.tim(c, n)
+        (out / 'CARD.ALL').write_bytes(bytes(original))
+    return len(new), len(replaced)
+
+
+def build(out, art=None, path=None, native=None, source=None):
     rows = load(path, native)
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
@@ -99,8 +134,10 @@ def build(out, art=None, path=None, native=None):
                     struct.unpack_from('<I4H', tim, 532) != (27012, 576, 256, 75, 180)):
                     raise ValueError(f'CARD2.ALL card {number}: expected the CARD.ALL 150x180 8bpp TIM layout')
         shutil.copyfile(art, target)
-    elif needed:
-        raise ValueError('new.json lists cards: set CARD2_ALL to the phase-B CARD2.ALL artifact')
+    elif needed or any('replaces' in c for c in authored_cards(path)):
+        if not source:
+            raise ValueError('new.json lists cards: set CARD2_ALL to a ready CARD2.ALL, or give the disc CARD.ALL to compose them from the kept art')
+        compose_archives(out, source, path)
     else:
         target.write_bytes(b'')
     return rows

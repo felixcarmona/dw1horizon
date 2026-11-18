@@ -30,7 +30,7 @@ class CardContent(unittest.TestCase):
     def test_owned_table(self):
         rows = cards.load()
         self.assertEqual(len(rows), 512)
-        self.assertEqual(sum(x.bit_count() for x in cards.real_mask(rows)), 64)
+        self.assertEqual(sum(x.bit_count() for x in cards.real_mask(rows)), 64 + sum('replaces' not in c for c in cards.authored_cards()))
         self.assertEqual([rows[n]['rarity'] for n in (0, 65, 511)], [5, 5, 5])
 
     def test_archive_and_duplicate_species(self):

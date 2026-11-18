@@ -7,8 +7,12 @@ AFTER = ()
 
 
 def outputs(ctx):
-    return [('cards/CARDTAB.BIN', 'CARD/CARDTAB.BIN'), ('cards/CARD2.ALL', 'CARD/CARD2.ALL')]
+    out = [('cards/CARDTAB.BIN', 'CARD/CARDTAB.BIN'), ('cards/CARD2.ALL', 'CARD/CARD2.ALL')]
+    if cards.replaced():
+        out.append(('cards/CARD.ALL', 'CARD/CARD.ALL'))
+    return out
 
 
 def build(ctx):
-    cards.build(ctx.path('cards'), ctx.env.get('CARD2_ALL'))
+    import os
+    cards.build(ctx.path('cards'), ctx.env.get('CARD2_ALL'), source=os.path.join(ctx.root, 'extracted', 'CARD', 'CARD.ALL'))
