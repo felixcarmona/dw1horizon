@@ -1,0 +1,28 @@
+From 5bde80377127653ed3038c8313d9483bf41a11e1 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 18 Nov 2026 15:09:33 +0000
+Subject: [PATCH] Status shows the partner's battle count with a baked BATTLES
+ tag
+
+---
+ src/main/game_menu.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 4f3ce5b..209acfb 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -3228,6 +3228,10 @@ void renderDigimonStatsView(void)
+ 		/* The baked mistakes tag is element 10, using the profile tags' CLUT. */
+ 		renderNumber(0, 268 - 0xa0 + 1, -0x22, 3, PARTNER_PARA.careMistakes, 5);
+ 		renderInsetBox(268, 84, 0x1a, 14, 5);
++		/* MOD (battles count): a baked BATTLES tag (SYSTEM_W 216,98) and the partner's fights, between WEIGHT and MISTAKES */
++		renderRectPolyFT4(statsPanelX(-6, -34), -34, 36, 10, 216, 98 + 0x80, 5, GetClut(0x60, 9 + 0x1e8), 5, 0);
++		renderNumber(0, 196 - 0xa0 + 1, -0x22, 3, PARTNER_PARA.battles, 5);
++		renderInsetBox(196, 84, 0x1a, 14, 5);
+ 
+ 		for (j = 0; j < 0xd; j++) {
+ 			r = &STATS_VIEW_INSETS[j];
+-- 
+2.55.0
+

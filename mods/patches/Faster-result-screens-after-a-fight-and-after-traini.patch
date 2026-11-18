@@ -1,0 +1,62 @@
+From 020d39d0e5a990b6fec048bda790749f37f391cb Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 18 Nov 2026 14:53:43 +0000
+Subject: [PATCH] Faster result screens after a fight and after training
+
+---
+ src/main/battle_ui.c |  3 ++-
+ src/trn/trn_hud.c    | 10 +++++++---
+ 2 files changed, 9 insertions(+), 4 deletions(-)
+
+diff --git a/src/main/battle_ui.c b/src/main/battle_ui.c
+index f0cb5be..42a35cf 100644
+--- a/src/main/battle_ui.c
++++ b/src/main/battle_ui.c
+@@ -579,7 +579,8 @@ void createPostBattleStatsBox(void)
+ 		DrawSync(0);
+ 	}
+ 
+-	POST_BATTLE_STATS_TIMER = 100;
++	/* MOD (faster results): half the original pause before the gains count */
++	POST_BATTLE_STATS_TIMER = 50;
+ 
+ 	setRECT(&finalPos, -88, -78, 176, 96);
+ 
+diff --git a/src/trn/trn_hud.c b/src/trn/trn_hud.c
+index f40d315..7f23c9f 100644
+--- a/src/trn/trn_hud.c
++++ b/src/trn/trn_hud.c
+@@ -184,7 +184,8 @@ void TRN_modOpenStatsBox(void)
+ 		DrawSync(0);
+ 	}
+ 
+-	MAIN_D_8013539E = 100;
++	/* MOD (faster results): a short pause before the gains count */
++	MAIN_D_8013539E = 30;
+ 
+ 	setRECT(&finalPos, -94, -78, 188, 96);
+ 	/* MOD (skip hint, patch 0333): a row at the bottom for "Press × to skip" while the gains count */
+@@ -247,6 +248,7 @@ void TRN_renderPostTrainingStatsBox(int16_t depth)
+ 	GsBOXF rect;
+ 	int32_t i;
+ 	int32_t first;
++	int32_t step;
+ 	int16_t y;
+ 
+ 	first = 1;
+@@ -256,8 +258,10 @@ void TRN_renderPostTrainingStatsBox(int16_t depth)
+ 		}
+ 		if ((MAIN_D_8013539E == 0) && (STATS_GAINS[i] > 0) && (first == 1)) {
+ 			playSound(0, 0x16);
+-			STATS_GAINS[i] -= 1;
+-			INITIAL_COMBAT_STATS[0][i] += 1;
++			/* MOD (faster results): a row counts in at most 10 frames */
++			step = (STATS_GAINS[i] + 9) / 10;
++			STATS_GAINS[i] -= step;
++			INITIAL_COMBAT_STATS[0][i] += step;
+ 
+ 			/* MOD (caps): the new limits (were 9999 / 999) */
+ 			if (INITIAL_COMBAT_STATS[0][i] > CAP_OF_STAT_INDEX(i)) {
+-- 
+2.55.0
+

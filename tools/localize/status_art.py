@@ -14,6 +14,8 @@ from tools.localize.build import tim_entries, put_indices
 
 ROOT = Path(__file__).resolve().parents[2]
 TAG_RECT = (108, 72, 36, 10)
+# The BATTLES tag sits in blank SYSTEM_W space (all index 15) above the relocated labels.
+BATTLES_RECT = (216, 98, 36, 10)
 ICON_RECT = (44, 116, 11, 11)
 # A shaded, outlined pile: the native virus gauge measures accumulated filth.
 # F is transparent, 1 outline, 2/3/4/5 are native ochre shades (CLUT 10).
@@ -29,14 +31,16 @@ def tag_font():
     return module
 
 
-def wording(language):
+def wording(language, battles=False):
+    if battles:
+        return json.loads((ROOT / 'content/localized/status/battles.json').read_text())[language].upper()
     names = json.loads((ROOT / 'text' / ('ours' if language == 'en' else language) / 'names.json').read_text())
     return names['main.CHART_STR_MISTAKES'].upper()
 
 
-def tag(language):
+def tag(language, battles=False):
     """A right-aligned 36x10 tag: eight ink rows, full eight-neighbour outline."""
-    text = wording(language)
+    text = wording(language, battles)
     font = tag_font()
     if language == 'ja':
         from tools.localize.labels import glyphs
@@ -76,7 +80,7 @@ def stamp(data, entry=0, language='en'):
     if (bpp, w, h) != (0, 256, 128):
         raise ValueError('status art requires SYSTEM_W')
     px = [n for b in data[start:start+w*h//2] for n in (b & 15, b >> 4)]
-    for (u, v, rw, rh), rows in ((TAG_RECT, tag(language)),
+    for (u, v, rw, rh), rows in ((TAG_RECT, tag(language)), (BATTLES_RECT, tag(language, True)),
                                 (ICON_RECT, [[int(c, 16) for c in row] for row in VIRUS])):
         for y, row in enumerate(rows):
             px[(v+y)*w+u:(v+y)*w+u+rw] = row
@@ -111,7 +115,7 @@ def check_cells(items):
         if item['en'] == 'SPEED (alternative)':
             continue  # The unused alternative is deliberately superseded.
         for rect in (tuple(item[k] for k in ('u', 'v', 'w', 'h')), relocated_rect(item)):
-            if rect and overlaps(TAG_RECT, rect):
+            if rect and (overlaps(TAG_RECT, rect) or overlaps(BATTLES_RECT, rect)):
                 raise ValueError(f'SYSTEM_W label overlaps status tag: {item["en"]}')
 
 
@@ -121,6 +125,7 @@ def art_pins():
     from tools.languages import CODES
     digest = lambda rows: hashlib.sha256(bytes(n for row in rows for n in row)).hexdigest()
     return dict(tags={language: digest(tag(language)) for language in CODES},
+                battles={language: digest(tag(language, True)) for language in CODES},
                 virus=digest([[int(c, 16) for c in row] for row in VIRUS]))
 
 
