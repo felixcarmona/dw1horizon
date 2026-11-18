@@ -1,5 +1,20 @@
 {
-  "cards": [
-    {"key": "agumon-lava", "number": 65, "species": 3, "rarity": 4, "merit": 1}
-  ]
+ "cards": [
+  {
+   "key": "agumon-lava",
+   "number": 66,
+   "species": 3,
+   "rarity": 4,
+   "merit": 1
+  },
+  {
+   "key": "gabumon",
+   "number": 67,
+   "species": 17,
+   "rarity": 4,
+   "merit": 1,
+   "frame": "blue",
+   "scene": "a snowy mountain pass with pale blue sky, snow-covered rocks and a frozen lake"
+  }
+ ]
 }

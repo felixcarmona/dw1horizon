@@ -15,7 +15,7 @@ Usage (from the repository root, with the repository's venv for the reference re
   cardmaker.py prompt KEY                   print the prompt, change nothing
 
 content/cards/new.json lists the cards: {"key", "number", "species", "with": [species...], "rarity", "merit",
-"scene"?, "pose"?}. A species may have any number of cards (one per key), and a card may show several Digimon:
+"scene"?, "pose"?, "frame"?, "style"?}. A species may have any number of cards (one per key), and a card may show several Digimon:
 `species` names it, `with` adds the others to the art. Art is content/cards/art/<key>.png.
 SPECIES is an id or a name of content/species. Standard library plus tools/image.py (cv2 only to decode non-PNG).
 """
@@ -71,8 +71,11 @@ ELEMENTS = {
     'battle':  ('red',    'a dramatic arena with dust and warm light'),
 }
 DEFAULT_ELEMENT = 'battle'
-# how the creature is rendered; the game's own look is low-poly, so that is the default
+# how the creature is rendered: 'faithful' (keeps the model's own look) is the default
 STYLES = {
+    'faithful': (
+        "Re-imagine each as a polished, richly detailed, softly shaded 3D-rendered illustration, friendly and "
+        "heroic. Keep the chibi proportions of the models (big head, small body)."),
     'lowpoly': (
         "KEEP the low-poly look: the visible flat polygon facets and angular, chunky shapes of the model, as in a "
         "late-1990s PlayStation 3D game, lit with simple flat shading and a few clean highlights. Make it look like a "
@@ -123,7 +126,7 @@ def prompt_for(card):
         f"The attached image{'s are reference sheets' if many else ' is a reference sheet'} of the 3D game "
         f"model{'s' if many else ''} from three sides (3/4, front, side){', in the order named' if many else ''}. "
         "They are low-polygon PlayStation models: keep each design EXACTLY (proportions, head shape, eyes, claws, "
-        "colours and markings). " + STYLES[card.get('style', 'lowpoly')] + "\n"
+        "colours and markings). " + STYLES[card.get('style', 'faithful')] + "\n"
         f"Pose: {card.get('pose') or 'lively three-quarter view'}, full body visible from head to feet. "
         f"Setting: {scene}, painterly and colourful, with depth behind the creature and a clear single subject.\n"
         "Composition: the creature centred, filling about 70% of the height, with comfortable margins on every side "
@@ -271,7 +274,7 @@ def compose(card_def, number):
         art = art.crop((left, 0, left + cw, ah))
     art = art.resize((ww, hh), Image.Resampling.LANCZOS)
     card = Image.new('RGB', (W, H), (0, 0, 0))
-    spec = ELEMENTS[element_of(sp)][0]
+    spec = card_def.get('frame') or ELEMENTS[element_of(sp)][0]
     draw_frame(card, spec, number, sp['name'])
     card.paste(art, (x0, y0))
     draw_stair(card, spec)
