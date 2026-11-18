@@ -207,3 +207,55 @@ These measurements supersede the historical measurements above for this tree.
 All 55 card/heap/economy/language unit tests, card and merit host checks,
 save capacity/inline checks and economy audit pass. No full disc or emulator
 check was performed.
+
+## Thumbnail budget investigation (cards-opt4, Part B — stopped)
+
+No thumbnail runtime or `CARDTHM.BIN` output is installed. The generic new-card
+sprite remains. The attempted design did not meet the no-heap-regression
+constraint, so the budget probe was removed before committing this assessment.
+This establishes a failure of the tested layout, not that a different overlay
+layout is impossible.
+
+The original `ETCTIM.BIN` TIM at byte 0xA140 has 4bpp pixels at VRAM
+(512,256), 64 words × 256 lines (32,768 bytes), and a 16 × 16 BGR555 CLUT
+block at (112,488) (512 bytes). The album samples 16 × 16 portraits at
+`u=(id%8)*32`, `v=(id/8)*16`; the 32-pixel horizontal stride is real.
+The sheet has other uses, including medal uploads, and cannot be treated as an
+unallocated page. Its UV range cannot address all 240 new cards.
+
+One 16 × 16 4bpp portrait needs 128 pixel bytes and a private 16-colour palette
+needs 32 bytes. All 240 would be 38,400 bytes before headers/padding. The 66
+visible album cells need only 10,560 bytes of pixel/palette payload. A fixed
+sector per card would cost 491,520 disc bytes and allow a single-sector read
+indexed by `id-66`; tighter entries need sector-aware batching. These are
+format calculations, not generated assets or measured VRAM allocations.
+
+`TEXTURE_BUFFER` is already reserved at 0x80088800–0x80090000 (30,720 bytes).
+It can stage a sector without a new heap allocation, but opening a full card
+loads 28,672 bytes there. Card metadata occupies the first 2,048 bytes of
+MENU at 0x80052AE0, and the remaining MENU bytes contain live code/data; the
+battle overlay address is not an independent free thumbnail buffer.
+
+The full-card texture occupies VRAM words x=576–650, y=256–435 (27,000 bytes),
+with its 512-byte palette at x=448–703, y=511. That rectangle has enough raw
+space for a page of 4bpp portraits, but `loadCardImage` overwrites it while
+`renderCardsView` continues to render the album behind the viewer. Reuse would
+need explicit invalidation/reload and transition handling. No new thumbnail
+pixels or palettes have a validated live VRAM allocation in this change.
+
+A temporary executable-only budget probe added a single-sector read, two GPU
+uploads and a portrait draw to the existing owned-new-card branch. It deliberately
+omitted caching, crop tooling and viewer-transition handling; it was never a
+working renderer. MENU grew 55,204 → 55,480 bytes (+276), requiring 28 sectors
+rather than 27. The linker rejected it with `MENU overlay (in whole sectors)
+reaches past ENDI's first sector`. Its path string additionally moved
+`main_BSS_END` 0x801CEC18 → 0x801CEC38 (+32), projecting 185,024 heap bytes
+instead of 185,056. Moving still more loader code resident would further reduce
+heap. Simply increasing MENU's limit would overwrite a neighbouring overlay.
+
+A future implementation needs to reclaim or relocate overlay code, keep new
+strings out of resident memory, and prove viewer/album VRAM lifetimes before
+adding the crop/quantization pipeline. Those changes have not been validated
+here. The restored Part A executable links with its original 27-sector MENU,
+185,056-byte heap, and unchanged VRAM use. No full disc build or emulator test
+was run; the failed probe is retained only under ignored `build/` artifacts.
