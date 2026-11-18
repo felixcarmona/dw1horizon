@@ -3,12 +3,15 @@
   "versions": [
     {
       "version": "0.0.9",
-      "date": "2026-11-17",
+      "date": "2026-11-18",
       "en": {
         "new": [
           "Imported Digimon gain signature finishers with their own names and effects, including attacks adapted from Digital Card Battle, Digimon World 2 and Digimon World 3. Others use reworked effects from Digimon World, with sounds chosen to suit the attack.",
           "The website and desktop patchers now read CHD disc images. Supported CHDs use version 5; older versions, parent-dependent images and FLAC audio are not supported.",
-          "Desktop apps and the command-line patcher now also accept unencrypted, single-disc PBP images."
+          "Desktop apps and the command-line patcher now also accept unencrypted, single-disc PBP images.",
+          "240 new collectible cards, numbered 66 to 305, and new artwork for the 64 original cards so the whole collection looks alike. The album now scrolls and counts the cards that exist. A NEW CARDS row in OPTIONS (on by default) adds them to packs, the machine, the daily shop and merit trades; turned off, the original cards and their artwork are unchanged.",
+          "Status shows your partner's fight count in a new BATTLES row. Pressing Square on the egg choice picks a random egg, with a hint line under the panel.",
+          "Cheats gains rows to learn one or all techniques and to unlock the whole evolution chart, and its lists wrap around from the last row to the first."
         ],
         "changed": [
           "Many imported partners have reworked idle, walk, tired walk and run animations: steadier feet, distinct flights and swims, moving faces and less rigid limbs. Wormmon moves faster, and the youngest partners have calmer hops.",
@@ -20,7 +23,9 @@
           "Opening quick care or the Player view keeps the field moving while text loads. Mojyamon exchanges an item directly, without asking for an amount that can only be one.",
           "The opening quiz keeps your starter’s species a surprise until you wake up beside it. Naming your partner remains optional.",
           "Disc building does less repeated work, and the website’s remaining-time estimate better accounts for the work still waiting to run.",
-          "The ferry Whamon is drawn at its full size again on the shore, instead of looking like a small partner."
+          "The ferry Whamon is drawn at its full size again on the shore, instead of looking like a small partner.",
+          "Guardromon can now also remodel Numemon, Geremon, MegaSeadramon, WaruSeadramon and Virus MetalGreymon into a sibling of the same level, with the same fee and odds.",
+          "The evolution chart remembers its tab and cursor, and the requirements card reopens where you left it. In a fight the item list shows only the items you can use. Result screens after fights and training count in sooner."
         ],
         "fixed": [
           "Repaired finishers that played without damaging the enemy, including Gatomon’s. Giromon’s Deadly Bomb aims at its target and checks for a hit on landing.",
@@ -33,7 +38,8 @@
           "Continuing a save away from a screen’s entrance no longer scrambles ground tiles.",
           "Restaurant result text shows the meals’ actual gains in every language. Shop balances leave no stray digits, Monochromon’s mood bubble disappears when you leave, and status labels and the filth icon are clearer.",
           "Imported models have less flickering, fewer missing faces and fewer parts passing through each other, including Kyubimon, MaloMyotismon, MegaGargomon, Omnimon and Raidenmon. Some contacts remain. Capes, wings, baby shadows and size changes between animations are also corrected.",
-          "Choosing discs or changing language no longer scrolls the website back to an open changelog link. Full browser storage during CHD conversion is reported as a storage error."
+          "Choosing discs or changing language no longer scrolls the website back to an open changelog link. Full browser storage during CHD conversion is reported as a storage error.",
+          "Using a Portable Potty from the item menu plays the toilet animation instead of the eating one."
         ],
         "upgrade": "Saves from v0.0.8 work, and the required discs have not changed. Back up your memory card, boot the new disc from a fresh start and load the memory-card save; emulator save states do not carry across versions."
       },
@@ -41,7 +47,10 @@
         "new": [
           "Los Digimon importados reciben remates característicos con sus propios nombres y efectos, incluidos ataques adaptados de Digital Card Battle, Digimon World 2 y Digimon World 3. Otros usan efectos retocados de Digimon World, con sonidos acordes al ataque.",
           "La web y los parcheadores de escritorio ya leen imágenes de disco CHD. Se admite la versión 5; no se admiten versiones anteriores, imágenes que dependan de un CHD padre ni audio FLAC.",
-          "Las aplicaciones de escritorio y el parcheador de línea de comandos también aceptan imágenes PBP sin cifrar de un solo disco."
+          "Las aplicaciones de escritorio y el parcheador de línea de comandos también aceptan imágenes PBP sin cifrar de un solo disco.",
+          "240 cartas coleccionables nuevas, numeradas del 66 al 305, y arte nuevo para las 64 cartas originales para que toda la colección tenga el mismo aspecto. El álbum ahora se desplaza y cuenta las cartas que existen. Una fila NEW CARDS en OPCIONES (activada por defecto) las añade a los sobres, la máquina, la tienda diaria y los trueques de méritos; desactivada, las cartas originales y su arte no cambian.",
+          "Estado muestra el número de combates de tu compañero en una fila nueva, BATTLES. Pulsar Cuadrado en la elección de huevo elige uno al azar, con una línea de ayuda bajo el panel.",
+          "Trucos añade filas para aprender una o todas las técnicas y para desbloquear todo el gráfico de evoluciones, y sus listas dan la vuelta de la última fila a la primera."
         ],
         "changed": [
           "Muchos compañeros importados tienen nuevas animaciones de reposo, marcha, cansancio y carrera: pies más firmes, vuelos y nados diferenciados, rostros animados y extremidades menos rígidas. Wormmon se mueve más deprisa y los más pequeños dan saltos más tranquilos.",
@@ -53,7 +62,9 @@
           "Al abrir los cuidados rápidos o la vista de Jugador, el escenario sigue en movimiento mientras carga el texto. Mojyamon intercambia un objeto directamente, sin pedir una cantidad que solo puede ser uno.",
           "El cuestionario inicial mantiene en secreto la especie de tu compañero hasta que despiertas a su lado. Ponerle nombre sigue siendo opcional.",
           "La creación del disco repite menos trabajo y la estimación de tiempo restante de la web tiene más en cuenta las tareas pendientes.",
-          "El Whamon del transbordo vuelve a verse a su tamaño real en la orilla, en lugar de parecer un compañero pequeño."
+          "El Whamon del transbordo vuelve a verse a su tamaño real en la orilla, en lugar de parecer un compañero pequeño.",
+          "Guardromon ahora también remodela a Numemon, Geremon, MegaSeadramon, WaruSeadramon y MetalGreymon Virus en un hermano del mismo nivel, con el mismo precio y las mismas probabilidades.",
+          "El gráfico de evoluciones recuerda su pestaña y su cursor, y la tarjeta de requisitos se reabre donde la dejaste. En combate la lista de objetos solo muestra los que puedes usar. Las pantallas de resultados tras combates y entrenamientos cuentan antes."
         ],
         "fixed": [
           "Corregidos remates que se ejecutaban sin dañar al enemigo, incluido el de Gatomon. Deadly Bomb de Giromon apunta al objetivo y comprueba el impacto al aterrizar.",
@@ -66,7 +77,8 @@
           "Continuar una partida lejos de la entrada de una zona ya no desordena las baldosas del suelo.",
           "El texto de los restaurantes muestra las mejoras reales de cada plato en todos los idiomas. El saldo de las tiendas no deja dígitos sueltos, la burbuja de ánimo de Monochromon desaparece al salir y las etiquetas de Estado y el icono de suciedad se ven mejor.",
           "Los modelos importados tienen menos parpadeos, caras ausentes y piezas que se atraviesan, incluidos Kyubimon, MaloMyotismon, MegaGargomon, Omnimon y Raidenmon. Aún quedan algunos contactos. También se corrigen capas, alas, sombras de bebés y cambios de tamaño entre animaciones.",
-          "Elegir discos o cambiar de idioma ya no desplaza la web hasta un enlace abierto del historial de cambios. Si el almacenamiento del navegador se llena al convertir un CHD, se indica como error de espacio."
+          "Elegir discos o cambiar de idioma ya no desplaza la web hasta un enlace abierto del historial de cambios. Si el almacenamiento del navegador se llena al convertir un CHD, se indica como error de espacio.",
+          "Usar un Orinal portátil desde el menú de objetos reproduce la animación del váter en lugar de la de comer."
         ],
         "upgrade": "Las partidas guardadas de v0.0.8 funcionan y los discos necesarios no cambian. Haz una copia de la tarjeta de memoria, arranca el disco nuevo desde cero y carga la partida de la tarjeta; los estados del emulador no son compatibles entre versiones."
       },
@@ -74,7 +86,10 @@
         "new": [
           "Os Digimon importados ganham finalizadores característicos com nomes e efeitos próprios, incluindo ataques adaptados de Digital Card Battle, Digimon World 2 e Digimon World 3. Outros usam efeitos retrabalhados de Digimon World, com sons que combinam com o ataque.",
           "O site e os patchers de desktop agora leem imagens de disco CHD. A versão 5 é aceita; versões anteriores, imagens que dependem de um CHD pai e áudio FLAC não são aceitos.",
-          "Os aplicativos de desktop e o patcher de linha de comando também aceitam imagens PBP não criptografadas de um único disco."
+          "Os aplicativos de desktop e o patcher de linha de comando também aceitam imagens PBP não criptografadas de um único disco.",
+          "240 novas cartas colecionáveis, numeradas de 66 a 305, e arte nova para as 64 cartas originais, para que toda a coleção tenha o mesmo visual. O álbum agora rola e conta as cartas que existem. Uma linha NEW CARDS em OPÇÕES (ativada por padrão) as inclui nos pacotes, na máquina, na loja diária e nas trocas de méritos; desativada, as cartas originais e sua arte ficam como estavam.",
+          "Status mostra o número de lutas do parceiro em uma nova linha, BATTLES. Apertar Quadrado na escolha do ovo escolhe um ao acaso, com uma linha de dica sob o painel.",
+          "Cheats ganha linhas para aprender uma ou todas as técnicas e para liberar todo o gráfico de evoluções, e suas listas voltam da última linha para a primeira."
         ],
         "changed": [
           "Muitos parceiros importados têm novas animações de repouso, caminhada, cansaço e corrida: pés mais firmes, voos e nados distintos, rostos animados e membros menos rígidos. Wormmon se move mais rápido, e os menores dão pulinhos mais calmos.",
@@ -86,7 +101,9 @@
           "Ao abrir os cuidados rápidos ou a tela de Jogador, o cenário continua em movimento enquanto o texto carrega. Mojyamon troca um item diretamente, sem pedir uma quantidade que só pode ser um.",
           "O questionário inicial mantém a espécie do parceiro em segredo até você acordar ao lado dele. Dar um nome continua sendo opcional.",
           "A criação do disco repete menos trabalho, e a estimativa de tempo restante do site considera melhor as tarefas que ainda aguardam execução.",
-          "O Whamon da balsa volta a aparecer no tamanho real na praia, em vez de parecer um parceiro pequeno."
+          "O Whamon da balsa volta a aparecer no tamanho real na praia, em vez de parecer um parceiro pequeno.",
+          "Guardromon agora também remodela Numemon, Geremon, MegaSeadramon, WaruSeadramon e MetalGreymon Vírus em um irmão do mesmo nível, com o mesmo preço e as mesmas chances.",
+          "O gráfico de evoluções lembra a aba e o cursor, e o cartão de requisitos reabre onde você parou. Na luta, a lista de itens mostra só os que podem ser usados. As telas de resultado após lutas e treinos contam mais cedo."
         ],
         "fixed": [
           "Corrigidos finalizadores que eram executados sem causar dano ao inimigo, incluindo o de Gatomon. Deadly Bomb de Giromon mira no alvo e verifica o acerto ao aterrissar.",
@@ -99,7 +116,8 @@
           "Continuar uma partida longe da entrada de uma área não embaralha mais os blocos do chão.",
           "O texto dos restaurantes mostra os ganhos reais dos pratos em todos os idiomas. O saldo das lojas não deixa dígitos soltos, o balão de humor de Monochromon desaparece ao sair, e os rótulos de Status e o ícone de sujeira ficam mais claros.",
           "Os modelos importados têm menos cintilação, faces ausentes e partes se atravessando, incluindo Kyubimon, MaloMyotismon, MegaGargomon, Omnimon e Raidenmon. Alguns contatos permanecem. Capas, asas, sombras dos bebês e mudanças de tamanho entre animações também foram corrigidos.",
-          "Escolher discos ou mudar o idioma não faz mais o site rolar até um link aberto do histórico de mudanças. Armazenamento cheio no navegador durante a conversão de CHD é informado como erro de espaço."
+          "Escolher discos ou mudar o idioma não faz mais o site rolar até um link aberto do histórico de mudanças. Armazenamento cheio no navegador durante a conversão de CHD é informado como erro de espaço.",
+          "Usar um Penico portátil pelo menu de itens toca a animação do banheiro em vez da de comer."
         ],
         "upgrade": "Os saves de v0.0.8 funcionam, e os discos necessários não mudaram. Faça uma cópia do cartão de memória, inicie o novo disco do zero e carregue o save do cartão; estados salvos do emulador não funcionam entre versões."
       },
@@ -107,7 +125,10 @@
         "new": [
           "Les Digimon importés gagnent des attaques finales caractéristiques, avec leurs propres noms et effets, dont des attaques adaptées de Digital Card Battle, Digimon World 2 et Digimon World 3. D’autres utilisent des effets retravaillés de Digimon World, avec des sons adaptés à l’attaque.",
           "Le site et les patchers de bureau lisent désormais les images de disque CHD. La version 5 est prise en charge ; les anciennes versions, les images dépendant d’un CHD parent et l’audio FLAC ne le sont pas.",
-          "Les applications de bureau et le patcher en ligne de commande acceptent aussi les images PBP non chiffrées contenant un seul disque."
+          "Les applications de bureau et le patcher en ligne de commande acceptent aussi les images PBP non chiffrées contenant un seul disque.",
+          "240 nouvelles cartes à collectionner, numérotées de 66 à 305, et de nouveaux visuels pour les 64 cartes d'origine afin que toute la collection ait le même aspect. L'album défile désormais et compte les cartes qui existent. Une ligne NEW CARDS dans OPTIONS (activée par défaut) les ajoute aux paquets, à la machine, à la boutique du jour et aux échanges de mérites ; désactivée, les cartes d'origine et leurs visuels restent inchangés.",
+          "Statut affiche le nombre de combats de votre partenaire dans une nouvelle ligne, BATTLES. Appuyer sur Carré au choix de l'œuf en tire un au hasard, avec une ligne d'aide sous le panneau.",
+          "Cheats gagne des lignes pour apprendre une ou toutes les techniques et pour débloquer tout le tableau des évolutions, et ses listes bouclent de la dernière ligne à la première."
         ],
         "changed": [
           "De nombreux partenaires importés ont des animations revues au repos, en marchant, fatigués et en courant : appuis plus stables, vols et nages distincts, visages animés et membres moins rigides. Wormmon se déplace plus vite et les plus petits font des bonds plus calmes.",
@@ -119,7 +140,9 @@
           "Ouvrir les soins rapides ou la vue Joueur laisse le décor s’animer pendant le chargement du texte. Mojyamon échange directement un objet, sans demander une quantité qui ne peut être qu’un.",
           "Le questionnaire d’ouverture garde l’espèce du premier partenaire secrète jusqu’au réveil à ses côtés. Lui donner un nom reste facultatif.",
           "La création du disque répète moins de tâches et l’estimation du temps restant sur le site tient mieux compte du travail en attente.",
-          "Le Whamon du bac retrouve sa taille réelle sur la rive, au lieu de ressembler à un petit partenaire."
+          "Le Whamon du bac retrouve sa taille réelle sur la rive, au lieu de ressembler à un petit partenaire.",
+          "Guardromon remodèle désormais aussi Numemon, Geremon, MegaSeadramon, WaruSeadramon et MetalGreymon Virus en un frère du même niveau, au même prix et avec les mêmes probabilités.",
+          "Le tableau des évolutions retient son onglet et son curseur, et la carte des conditions se rouvre là où vous l'aviez laissée. En combat, la liste d'objets n'affiche que ceux que vous pouvez utiliser. Les écrans de résultats après les combats et les entraînements comptent plus vite."
         ],
         "fixed": [
           "Correction d’attaques finales qui s’exécutaient sans blesser l’ennemi, dont celle de Gatomon. Deadly Bomb de Giromon vise sa cible et vérifie l’impact à l’atterrissage.",
@@ -132,7 +155,8 @@
           "Reprendre une sauvegarde loin de l’entrée d’une zone ne mélange plus les dalles du sol.",
           "Les textes des restaurants affichent les gains réels des plats dans toutes les langues. Les soldes des boutiques ne laissent plus de chiffres parasites, la bulle d’humeur de Monochromon disparaît en sortant, et les libellés du statut ainsi que l’icône de saleté sont plus lisibles.",
           "Les modèles importés présentent moins de scintillements, de faces manquantes et de parties qui se traversent, notamment Kyubimon, MaloMyotismon, MegaGargomon, Omnimon et Raidenmon. Certains contacts subsistent. Les capes, ailes, ombres des bébés et changements de taille entre animations sont aussi corrigés.",
-          "Choisir des disques ou changer de langue ne fait plus défiler le site vers un lien ouvert du journal des mises à jour. Un stockage du navigateur plein pendant la conversion CHD est signalé comme une erreur d’espace disponible."
+          "Choisir des disques ou changer de langue ne fait plus défiler le site vers un lien ouvert du journal des mises à jour. Un stockage du navigateur plein pendant la conversion CHD est signalé comme une erreur d’espace disponible.",
+          "Utiliser un Pot portable depuis le menu des objets joue l'animation des toilettes au lieu de celle du repas."
         ],
         "upgrade": "Les sauvegardes de v0.0.8 fonctionnent et les disques requis ne changent pas. Faites une copie de votre carte mémoire, démarrez le nouveau disque à froid et chargez la sauvegarde de la carte ; les états de l’émulateur ne sont pas compatibles entre versions."
       },
@@ -140,7 +164,10 @@
         "new": [
           "Importierte Digimon erhalten charakteristische Finisher mit eigenen Namen und Effekten, darunter angepasste Angriffe aus Digital Card Battle, Digimon World 2 und Digimon World 3. Andere nutzen überarbeitete Effekte aus Digimon World mit zum Angriff passenden Geräuschen.",
           "Die Website und die Desktop-Patcher lesen jetzt CHD-Disc-Abbilder. Unterstützt wird Version 5; ältere Versionen, Abbilder mit benötigtem übergeordnetem CHD und FLAC-Audio werden nicht unterstützt.",
-          "Die Desktop-Apps und der Patcher für die Kommandozeile akzeptieren außerdem unverschlüsselte PBP-Abbilder mit einer einzelnen Disc."
+          "Die Desktop-Apps und der Patcher für die Kommandozeile akzeptieren außerdem unverschlüsselte PBP-Abbilder mit einer einzelnen Disc.",
+          "240 neue Sammelkarten mit den Nummern 66 bis 305 und neue Bilder für die 64 Originalkarten, damit die ganze Sammlung einheitlich aussieht. Das Album lässt sich jetzt scrollen und zählt die vorhandenen Karten. Eine Zeile NEW CARDS in den OPTIONEN (standardmäßig an) nimmt sie in Päckchen, Automat, Tagesshop und Verdiensttausch auf; ausgeschaltet bleiben die Originalkarten und ihre Bilder unverändert.",
+          "Status zeigt die Kampfzahl deines Partners in einer neuen Zeile, BATTLES. Wer bei der Eierwahl Quadrat drückt, bekommt ein zufälliges Ei, mit einer Hinweiszeile unter dem Feld.",
+          "Cheats bietet neue Zeilen zum Lernen einer oder aller Techniken und zum Freischalten des ganzen Evolutionsdiagramms; die Listen springen von der letzten Zeile zurück zur ersten."
         ],
         "changed": [
           "Viele importierte Partner haben überarbeitete Animationen für Stillstehen, Gehen, müdes Gehen und Laufen: sicherer stehende Füße, unterschiedliche Flug- und Schwimmbewegungen, bewegte Gesichter und weniger steife Gliedmaßen. Wormmon bewegt sich schneller, und die jüngsten Partner hüpfen ruhiger.",
@@ -152,7 +179,9 @@
           "Beim Öffnen der Schnellpflege oder der Spieleransicht läuft die Umgebung weiter, während der Text lädt. Mojyamon tauscht einen Gegenstand direkt, ohne nach einer Menge zu fragen, die nur eins sein kann.",
           "Das Einstiegsquiz verrät die Art deines ersten Partners erst, wenn du neben ihm aufwachst. Einen Namen zu vergeben bleibt freiwillig.",
           "Beim Erstellen der Disc wird weniger Arbeit wiederholt. Die Zeitschätzung auf der Website berücksichtigt wartende Aufgaben besser.",
-          "Der Fähr-Whamon wird am Ufer wieder in voller Größe gezeigt und wirkt nicht mehr wie ein kleiner Partner."
+          "Der Fähr-Whamon wird am Ufer wieder in voller Größe gezeigt und wirkt nicht mehr wie ein kleiner Partner.",
+          "Guardromon verwandelt jetzt auch Numemon, Geremon, MegaSeadramon, WaruSeadramon und Virus-MetalGreymon in ein Geschwister derselben Stufe, zu gleichem Preis und mit gleichen Chancen.",
+          "Das Evolutionsdiagramm merkt sich Reiter und Cursor, und die Anforderungskarte öffnet sich dort, wo du sie verlassen hast. Im Kampf zeigt die Gegenstandsliste nur nutzbare Gegenstände. Ergebnisbildschirme nach Kämpfen und Training zählen früher."
         ],
         "fixed": [
           "Finisher, die ohne Schaden am Gegner abliefen, wurden repariert, darunter Gatomons. Giromons Deadly Bomb zielt auf den Gegner und prüft beim Aufkommen, ob es trifft.",
@@ -165,7 +194,8 @@
           "Beim Fortsetzen eines Spielstands abseits des Gebietseingangs geraten die Bodenkacheln nicht mehr durcheinander.",
           "Restauranttexte zeigen in allen Sprachen die tatsächlichen Zuwächse der Gerichte. Geldbeträge in Läden hinterlassen keine Ziffernreste, Monochromons Stimmungsblase verschwindet beim Verlassen und Statusbeschriftungen sowie das Schmutzsymbol sind deutlicher.",
           "Importierte Modelle haben weniger Flackern, fehlende Flächen und ineinander ragende Teile, darunter Kyubimon, MaloMyotismon, MegaGargomon, Omnimon und Raidenmon. Einige Berührungen bleiben. Auch Umhänge, Flügel, Babyschatten und Größenwechsel zwischen Animationen wurden korrigiert.",
-          "Die Auswahl von Discs oder ein Sprachwechsel scrollt die Website nicht mehr zu einem geöffneten Changelog-Link zurück. Voller Browserspeicher bei der CHD-Umwandlung wird als Speicherplatzfehler gemeldet."
+          "Die Auswahl von Discs oder ein Sprachwechsel scrollt die Website nicht mehr zu einem geöffneten Changelog-Link zurück. Voller Browserspeicher bei der CHD-Umwandlung wird als Speicherplatzfehler gemeldet.",
+          "Ein tragbares Töpfchen aus dem Itemmenü spielt jetzt die Toilettenanimation statt der Essanimation ab."
         ],
         "upgrade": "Spielstände aus v0.0.8 funktionieren; die benötigten Discs bleiben gleich. Sichere deine Speicherkarte, starte die neue Disc vollständig neu und lade den Speicherkartenspielstand. Emulator-Schnellspeicherstände funktionieren nicht versionsübergreifend."
       },
@@ -173,7 +203,10 @@
         "new": [
           "I Digimon importati ricevono mosse finali caratteristiche con nomi ed effetti propri, inclusi attacchi adattati da Digital Card Battle, Digimon World 2 e Digimon World 3. Altri usano effetti rielaborati di Digimon World, con suoni adatti all’attacco.",
           "Il sito e i patcher desktop ora leggono immagini disco CHD. È supportata la versione 5; le versioni precedenti, le immagini che dipendono da un CHD padre e l’audio FLAC non sono supportati.",
-          "Le applicazioni desktop e il patcher da riga di comando accettano anche immagini PBP non cifrate con un solo disco."
+          "Le applicazioni desktop e il patcher da riga di comando accettano anche immagini PBP non cifrate con un solo disco.",
+          "240 nuove carte collezionabili, numerate da 66 a 305, e nuova grafica per le 64 carte originali, così tutta la collezione ha lo stesso aspetto. L'album ora scorre e conta le carte che esistono. Una riga NEW CARDS in OPZIONI (attiva per impostazione predefinita) le aggiunge a bustine, macchina, negozio giornaliero e scambi di meriti; disattivata, le carte originali e la loro grafica restano invariate.",
+          "Stato mostra il numero di combattimenti del partner in una nuova riga, BATTLES. Premere Quadrato alla scelta dell'uovo ne sceglie uno a caso, con una riga di aiuto sotto il pannello.",
+          "Cheats guadagna righe per imparare una o tutte le tecniche e per sbloccare l'intero grafico delle evoluzioni, e le sue liste tornano dall'ultima riga alla prima."
         ],
         "changed": [
           "Molti compagni importati hanno animazioni riviste per riposo, camminata, camminata stanca e corsa: piedi più stabili, voli e nuotate distinti, volti animati e arti meno rigidi. Wormmon si muove più velocemente e i più piccoli saltellano con più calma.",
@@ -185,7 +218,9 @@
           "Aprendo le cure rapide o la vista Giocatore, lo scenario continua a muoversi mentre si carica il testo. Mojyamon scambia direttamente un oggetto, senza chiedere una quantità che può essere solo uno.",
           "Il questionario iniziale mantiene segreta la specie del primo compagno finché non ti svegli al suo fianco. Dargli un nome resta facoltativo.",
           "La creazione del disco ripete meno lavoro e la stima del tempo restante sul sito considera meglio le attività ancora in attesa.",
-          "Il Whamon del traghetto torna a mostrarsi a grandezza reale sulla riva, invece di sembrare un piccolo partner."
+          "Il Whamon del traghetto torna a mostrarsi a grandezza reale sulla riva, invece di sembrare un piccolo partner.",
+          "Guardromon ora rimodella anche Numemon, Geremon, MegaSeadramon, WaruSeadramon e MetalGreymon Virus in un fratello dello stesso livello, con lo stesso costo e le stesse probabilità.",
+          "Il grafico delle evoluzioni ricorda scheda e cursore, e la scheda dei requisiti si riapre dove l'avevi lasciata. In combattimento l'elenco oggetti mostra solo quelli utilizzabili. Le schermate dei risultati dopo combattimenti e allenamenti contano prima."
         ],
         "fixed": [
           "Corrette mosse finali che venivano eseguite senza danneggiare il nemico, inclusa quella di Gatomon. Deadly Bomb di Giromon mira al bersaglio e controlla il colpo all’atterraggio.",
@@ -198,7 +233,8 @@
           "Caricare un salvataggio lontano dall’ingresso di un’area non mescola più le piastrelle del terreno.",
           "I testi dei ristoranti mostrano i guadagni reali dei piatti in ogni lingua. Il saldo dei negozi non lascia cifre residue, la bolla dell’umore di Monochromon scompare all’uscita e le etichette di Stato e l’icona della sporcizia sono più chiare.",
           "I modelli importati hanno meno sfarfallii, facce mancanti e parti che si attraversano, inclusi Kyubimon, MaloMyotismon, MegaGargomon, Omnimon e Raidenmon. Alcuni contatti restano. Corretti anche mantelli, ali, ombre dei cuccioli e cambi di dimensione fra animazioni.",
-          "Scegliere dischi o cambiare lingua non fa più scorrere il sito verso un collegamento aperto del registro delle modifiche. Se lo spazio del browser si esaurisce durante la conversione CHD, viene segnalato un errore di spazio."
+          "Scegliere dischi o cambiare lingua non fa più scorrere il sito verso un collegamento aperto del registro delle modifiche. Se lo spazio del browser si esaurisce durante la conversione CHD, viene segnalato un errore di spazio.",
+          "Usare un Vasino portatile dal menu oggetti riproduce l'animazione del bagno invece di quella del mangiare."
         ],
         "upgrade": "I salvataggi di v0.0.8 funzionano e i dischi richiesti non cambiano. Fai una copia della scheda di memoria, avvia da zero il nuovo disco e carica il salvataggio dalla scheda; gli stati salvati dell’emulatore non funzionano fra versioni diverse."
       },
@@ -206,7 +242,10 @@
         "new": [
           "追加デジモンに、固有の名前とエフェクトを持つ必殺技を追加しました。Digital Card Battle、Digimon World 2、Digimon World 3から移植した攻撃に加え、Digimon Worldのエフェクトを作り直した技もあり、攻撃に合う効果音を使っています。",
           "ウェブ版とデスクトップ版のパッチャーがCHD形式のディスクイメージに対応しました。対応するのはバージョン5です。旧バージョン、親CHDが必要なイメージ、FLAC音声には対応していません。",
-          "デスクトップアプリとコマンドライン版パッチャーは、暗号化されていない単一ディスクのPBPイメージにも対応しました。"
+          "デスクトップアプリとコマンドライン版パッチャーは、暗号化されていない単一ディスクのPBPイメージにも対応しました。",
+          "番号66〜305の新しいコレクションカード240枚と、元の64枚の新しいイラストを追加し、コレクション全体の見た目をそろえました。アルバムはスクロールでき、実在するカードの枚数を数えます。オプションのNEW CARDS（初期値はオン）で、パック、マシン、日替わりショップ、メリット交換に登場します。オフにすると元のカードとイラストはそのままです。",
+          "ステータスに、パートナーの戦闘回数を表示するBATTLES行が加わりました。たまご選択で□ボタンを押すとランダムに選ばれ、パネルの下にヒント行が出ます。",
+          "チートに、技を1つ覚える／すべて覚える、進化図をすべて解放する行が加わりました。リストは最後の行から最初の行へ戻ります。"
         ],
         "changed": [
           "多くの追加パートナーの待機、歩行、疲れ歩き、走行を見直しました。足元を安定させ、飛行や泳ぎに違いを付け、表情や手足の動きを豊かにしています。ワームモンは移動が速くなり、幼いパートナーは穏やかに跳ねるようになりました。",
@@ -218,7 +257,9 @@
           "クイックケアやプレイヤー画面を開くとき、テキストの読み込み中もフィールドの表示が動き続けます。モジャモンの交換では、1個しか選べない個数確認を省いて直接交換します。",
           "最初の質問では、隣で目覚めるまでパートナーの種類が分からなくなりました。名前を付けるかどうかは引き続き自由です。",
           "ディスク作成時の重複作業を減らしました。ウェブ版の残り時間表示も、実行待ちの作業をより正確に考慮します。",
-          "渡し舟のホエーモンが、小さなパートナーのようではなく、浜辺で本来の大きさで表示されるようになりました。"
+          "渡し舟のホエーモンが、小さなパートナーのようではなく、浜辺で本来の大きさで表示されるようになりました。",
+          "ガードロモンは、ヌメモン、ゲレモン、メガシードラモン、ワルシードラモン、メタルグレイモン（ウイルス）も同じレベルの兄弟種に作り替えられるようになりました。料金と確率は同じです。",
+          "進化図はタブとカーソルを覚え、必要条件カードは前に閉じた位置から開きます。戦闘中のアイテム一覧には使えるアイテムだけが表示されます。戦闘後とトレーニング後のリザルト画面は、数え上げが早くなりました。"
         ],
         "fixed": [
           "テイルモンなど、動作はするのに敵にダメージを与えなかった必殺技を修正しました。ギロモンのDeadly Bombは相手を狙って投げ、着地時に命中を判定します。",
@@ -231,7 +272,8 @@
           "マップの入口から離れた場所でセーブを再開しても、地面のタイルが崩れなくなりました。",
           "レストランの食事後の文章が、全言語で実際の上昇量を表示します。店の所持金表示に数字の残りが出ず、モノクロモンの気分の吹き出しも店を出ると消えます。状態画面の項目名と汚物アイコンも見やすくしました。",
           "キュウビモン、ベリアルヴァンデモン、セントガルゴモン、オメガモン、ライデンモンなどの追加モデルで、ちらつき、面の欠け、パーツの貫通を減らしました。一部の接触は残っています。マント、翼、幼年期の影、動作間での大きさの変化も修正しました。",
-          "ディスク選択や言語変更のたびに、ウェブサイトが開いている更新履歴のリンクへスクロールしなくなりました。CHD変換中にブラウザーの保存領域がいっぱいになった場合は、容量不足として表示します。"
+          "ディスク選択や言語変更のたびに、ウェブサイトが開いている更新履歴のリンクへスクロールしなくなりました。CHD変換中にブラウザーの保存領域がいっぱいになった場合は、容量不足として表示します。",
+          "アイテムメニューからポータブルトイレを使うと、食事のアニメーションではなくトイレのアニメーションが再生されます。"
         ],
         "upgrade": "v0.0.8のセーブは使えます。必要なディスクは変わりません。メモリーカードをバックアップし、新しいディスクを最初から起動してカードのセーブを読み込んでください。エミュレーターのステートセーブは別バージョンでは使えません。"
       },
@@ -239,7 +281,10 @@
         "new": [
           "Els Digimon importats reben atacs finals característics amb noms i efectes propis, inclosos atacs adaptats de Digital Card Battle, Digimon World 2 i Digimon World 3. D’altres fan servir efectes retocats de Digimon World, amb sons adequats a l’atac.",
           "La web i els pedaçadors d’escriptori ja llegeixen imatges de disc CHD. S’admet la versió 5; no s’admeten versions anteriors, imatges que depenguin d’un CHD pare ni àudio FLAC.",
-          "Les aplicacions d’escriptori i el pedaçador de línia d’ordres també accepten imatges PBP sense xifrar d’un sol disc."
+          "Les aplicacions d’escriptori i el pedaçador de línia d’ordres també accepten imatges PBP sense xifrar d’un sol disc.",
+          "240 cartes col·leccionables noves, numerades del 66 al 305, i art nou per a les 64 cartes originals perquè tota la col·lecció tingui el mateix aspecte. L'àlbum ara es desplaça i compta les cartes que existeixen. Una fila NEW CARDS a OPCIONS (activada per defecte) les afegeix als sobres, a la màquina, a la botiga diària i als intercanvis de mèrits; desactivada, les cartes originals i el seu art no canvien.",
+          "Estat mostra el nombre de combats del company en una fila nova, BATTLES. Prémer Quadrat a l'elecció de l'ou en tria un a l'atzar, amb una línia d'ajuda sota el quadre.",
+          "Cheats guanya files per aprendre una o totes les tècniques i per desbloquejar tot el gràfic d'evolucions, i les seves llistes donen la volta de l'última fila a la primera."
         ],
         "changed": [
           "Molts companys importats tenen animacions refetes de repòs, caminada, cansament i cursa: peus més ferms, vols i nedades diferenciats, cares animades i extremitats menys rígides. Wormmon es mou més de pressa i els més petits fan salts més tranquils.",
@@ -251,7 +296,9 @@
           "En obrir les cures ràpides o la vista de Jugador, l’escenari continua en moviment mentre es carrega el text. Mojyamon intercanvia un objecte directament, sense demanar una quantitat que només pot ser un.",
           "El qüestionari inicial manté en secret l’espècie del primer company fins que et despertes al seu costat. Posar-li nom continua sent opcional.",
           "La creació del disc repeteix menys feina i l’estimació de temps restant de la web té més en compte les tasques pendents.",
-          "El Whamon del transbordador torna a veure's a la seva mida real a la riba, en lloc de semblar un company petit."
+          "El Whamon del transbordador torna a veure's a la seva mida real a la riba, en lloc de semblar un company petit.",
+          "Guardromon ara també remodela Numemon, Geremon, MegaSeadramon, WaruSeadramon i MetalGreymon Virus en un germà del mateix nivell, amb el mateix preu i les mateixes probabilitats.",
+          "El gràfic d'evolucions recorda la pestanya i el cursor, i la targeta de requisits es reobre on l'havies deixada. En combat la llista d'objectes només mostra els que pots fer servir. Les pantalles de resultats després de combats i entrenaments compten abans."
         ],
         "fixed": [
           "Corregits atacs finals que s’executaven sense fer mal a l’enemic, inclòs el de Gatomon. Deadly Bomb de Giromon apunta a l’objectiu i comprova l’impacte en aterrar.",
@@ -264,7 +311,8 @@
           "Continuar una partida lluny de l’entrada d’una zona ja no desordena les rajoles del terra.",
           "El text dels restaurants mostra els guanys reals dels plats en tots els idiomes. El saldo de les botigues no deixa dígits solts, la bombolla d’ànim de Monochromon desapareix en sortir i les etiquetes d’Estat i la icona de brutícia es veuen millor.",
           "Els models importats tenen menys pampallugues, cares absents i peces que es travessen, inclosos Kyubimon, MaloMyotismon, MegaGargomon, Omnimon i Raidenmon. Encara queden alguns contactes. També es corregeixen capes, ales, ombres dels nadons i canvis de mida entre animacions.",
-          "Triar discos o canviar d’idioma ja no desplaça la web fins a un enllaç obert del registre de canvis. Si l’emmagatzematge del navegador s’omple durant la conversió d’un CHD, s’indica com a error d’espai."
+          "Triar discos o canviar d’idioma ja no desplaça la web fins a un enllaç obert del registre de canvis. Si l’emmagatzematge del navegador s’omple durant la conversió d’un CHD, s’indica com a error d’espai.",
+          "Fer servir un Orinal portàtil des del menú d'objectes reprodueix l'animació del vàter en lloc de la de menjar."
         ],
         "upgrade": "Les partides desades de v0.0.8 funcionen i els discos necessaris no canvien. Fes una còpia de la targeta de memòria, arrenca el disc nou des de zero i carrega la partida de la targeta; els estats de l’emulador no funcionen entre versions."
       },
@@ -272,7 +320,10 @@
         "new": [
           "为导入的数码兽加入各自的招牌必杀技，拥有专属名称和效果，其中包括改编自Digital Card Battle、Digimon World 2和Digimon World 3的攻击。其他招式则重新制作了Digimon World的效果，并选用了适合攻击的音效。",
           "网页版和桌面版补丁工具现可读取CHD光盘镜像。支持版本5，不支持旧版本、依赖父CHD的镜像或FLAC音频。",
-          "桌面应用和命令行补丁工具也支持未加密的单碟PBP镜像。"
+          "桌面应用和命令行补丁工具也支持未加密的单碟PBP镜像。",
+          "新增240张收藏卡片（编号66至305），并为原有的64张卡片重绘插图，让整套收藏风格统一。相册现在可以滚动，并显示实际存在的卡片数量。选项中新增NEW CARDS一行（默认开启），将这些卡片加入卡包、扭蛋机、每日商店和功勋兑换；关闭后，原有卡片及其插图保持不变。",
+          "状态界面新增BATTLES一行，显示伙伴的战斗次数。在选蛋界面按方块键会随机选一颗蛋，面板下方有提示行。",
+          "作弊菜单新增学会一个或全部技能、解锁整张进化图的选项，列表也可以从最后一行循环回到第一行。"
         ],
         "changed": [
           "重新制作了许多导入伙伴的待机、行走、疲劳行走和奔跑动画：脚步更稳，飞行与游泳动作有所区分，面部更生动，四肢不再那么僵硬。虫虫兽移动更快，幼小伙伴的跳动也更平缓。",
@@ -284,7 +335,9 @@
           "打开快捷照料或玩家界面时，读取文字不会让场景停止。毛人兽会直接交换一个物品，不再询问只能选一的数量。",
           "开场问答不再提前透露初始伙伴的种类，直到你在它身旁醒来才揭晓。为伙伴起名仍是可选的。",
           "制作光盘时减少了重复工作，网站的剩余时间估算也更充分地考虑了等待执行的任务。",
-          "渡船的鲸鱼兽在岸边重新以原本的大小显示，不再像一只小型伙伴。"
+          "渡船的鲸鱼兽在岸边重新以原本的大小显示，不再像一只小型伙伴。",
+          "加德罗兽现在还能把滑溜兽、杰雷兽、巨型海蛇兽、邪恶海蛇兽和钢铁加鲁鲁兽（病毒）改造成同等级的兄弟种，费用和概率不变。",
+          "进化图会记住所在标签页和光标位置，需求卡会在上次离开的位置重新打开。战斗中的道具列表只显示可使用的道具。战斗和训练后的结果界面计数更快。"
         ],
         "fixed": [
           "修复了包括迪路兽在内的一些必杀技播放后不伤害敌人的问题。基罗兽的Deadly Bomb会瞄准目标，并在落地时判定命中。",
@@ -297,7 +350,8 @@
           "在远离地图入口的位置继续存档时，地面图块不再错乱。",
           "所有语言的餐厅结果文字均显示餐点的实际增益。商店余额不再残留多余数字，离开商店后Monochromon的心情气泡会消失，状态栏标签和污物图标也更清晰。",
           "导入模型的闪烁、缺面和部件穿插现象有所减少，包括九尾狐兽、贝利亚吸血魔兽、圣加鲁哥兽、奥米加兽和雷电兽。部分接触仍然存在。此外还修正了披风、翅膀、幼年期的影子及不同动画之间的大小变化。",
-          "选择光盘或切换语言时，网站不再滚回已打开的更新日志链接。转换CHD时若浏览器存储空间已满，会明确提示空间不足。"
+          "选择光盘或切换语言时，网站不再滚回已打开的更新日志链接。转换CHD时若浏览器存储空间已满，会明确提示空间不足。",
+          "从道具菜单使用便携式便盆时，会播放上厕所动画，而不是吃东西动画。"
         ],
         "upgrade": "v0.0.8的存档可以继续使用，所需光盘没有变化。请先备份记忆卡，重新启动新光盘，再读取记忆卡存档；模拟器的即时存档不能跨版本使用。"
       }
