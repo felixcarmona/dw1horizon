@@ -25,7 +25,8 @@ def talk():
 
 # More remodelling (Discord, 2026-11): Guardromon also reworks the species that have a same-level sibling, always one step
 # sideways (never up a stage), for the Mamemon's own fee and odds: 1 in 10 the special form, 5 in 10 the usual one, the rest
-# fails. Species past 255 cannot be a partner (pstats holds one byte), so only ids up to 255 appear. The conversation is the
+# fails. Species past 255 cannot be a partner (pstats holds one byte) and the original engine tests only its own 180 species as the
+# partner, so only those are remodelled; the results may be any id up to 255. The conversation is the
 # base game's, with the species test moved into the result.
 t5 = text.s156.sec5
 
@@ -37,7 +38,7 @@ def remodel():
     say(t5.u0)
     if partner.species == Species.Mamemon or partner.species == Species.Numemon or partner.species == Species.Geremon \
             or partner.species == Species.MegaSeadramon or partner.species == Species.WaruSeadramon \
-            or partner.species == Species.MetalGreymonVirus or partner.species == Species.MetalGreymonVaccine:
+            or partner.species == Species.MetalGreymonVirus:
         match choose(a=t5.m0.o0, b=t5.m0.o1):
             case "a":
                 if bits < 2000:
@@ -57,10 +58,8 @@ def remodel():
                             engine.arg.set(Species.WaruSeadramon)
                         elif partner.species == Species.WaruSeadramon:
                             engine.arg.set(Species.MegaSeadramon)
-                        elif partner.species == Species.MetalGreymonVirus:
-                            engine.arg.set(Species.MetalGreymonVaccine)
                         else:
-                            engine.arg.set(Species.MetalGreymonVirus)
+                            engine.arg.set(Species.MetalGreymonVaccine)
                         raw.call_digimon_routine(DigimonRoutine.forced_evolution)
                         wait(28500)
                         tamer.say("Whoa, it changed form!")
@@ -77,10 +76,8 @@ def remodel():
                             engine.arg.set(Species.WaruSeadramon)
                         elif partner.species == Species.WaruSeadramon:
                             engine.arg.set(Species.MegaSeadramon)
-                        elif partner.species == Species.MetalGreymonVirus:
-                            engine.arg.set(Species.MetalGreymonVaccine)
                         else:
-                            engine.arg.set(Species.MetalGreymonVirus)
+                            engine.arg.set(Species.MetalGreymonVaccine)
                         raw.call_digimon_routine(DigimonRoutine.forced_evolution)
                         wait(28500)
                         tamer.say("Whoa, it changed form!")
