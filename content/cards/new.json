@@ -2327,7 +2327,9 @@
    "species": 26,
    "rarity": 1,
    "merit": 30,
-   "replaces": 9
+   "replaces": 9,
+   "scene": "the dark grounds of Grey Lord's Mansion at dusk: cracked stone paving, dead twisted trees, a broken iron fence and a grey-purple sky",
+   "pose": "standing upright on both feet, facing the viewer slightly turned, jaws open, arms hanging forward, tail on the ground; exactly the model's bone body, nothing added"
   },
   {
    "key": "metalmamemon",
