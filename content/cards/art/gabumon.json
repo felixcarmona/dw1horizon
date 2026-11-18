@@ -1,0 +1,8 @@
+{
+ "key": "gabumon",
+ "species": 17,
+ "with": [],
+ "model": "gemini-3-pro-image-preview",
+ "prompt": "Illustration for a collectible Digimon trading card showing Gabumon.\nThe attached image is a reference sheet of the 3D game model from three sides (3/4, front, side). They are low-polygon PlayStation models: keep each design EXACTLY (proportions, head shape, eyes, claws, colours and markings). Re-imagine each as a polished, richly detailed, softly shaded 3D-rendered illustration, friendly and heroic. Keep the chibi proportions of the models (big head, small body).\nPose: lively three-quarter view, full body visible from head to feet. Setting: a snowy mountain pass with pale blue sky, snow-covered rocks and a frozen lake, painterly and colourful, with depth behind the creature and a clear single subject.\nComposition: the creature centred, filling about 70% of the height, with comfortable margins on every side (the card crops the edges). Soft, even light. No light beams, no god rays, no haze, no glare.\nStrictly: no text, no letters, no numbers, no logos, no watermark, no border, no card frame, no UI. Square image.",
+ "reference": "3D model reference sheet of each species (cardmaker.py ref)"
+}

@@ -1,3 +1,431 @@
 {
-  "cards": []
+ "cards": [
+  {
+   "key": "greymon",
+   "number": 26,
+   "species": 5,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 26,
+   "scene": "a rocky volcanic canyon with lava pools and dark basalt cliffs"
+  },
+  {
+   "key": "devimon",
+   "number": 27,
+   "species": 6,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 27,
+   "scene": "a dark gothic ruin courtyard with broken purple stone pillars, dead trees and a dusky violet sky"
+  },
+  {
+   "key": "tyrannomon",
+   "number": 29,
+   "species": 8,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 29,
+   "scene": "a prehistoric swamp valley with ferns, mud pools and mossy boulders"
+  },
+  {
+   "key": "meramon",
+   "number": 30,
+   "species": 9,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 30,
+   "scene": "a scorched dry wasteland with charred stumps, cracked red earth and glowing vents"
+  },
+  {
+   "key": "seadramon",
+   "number": 31,
+   "species": 10,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 31,
+   "scene": "a shallow tropical sea shore with turquoise water, sand banks and blocky coral rocks"
+  },
+  {
+   "key": "kabuterimon",
+   "number": 32,
+   "species": 19,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 32,
+   "scene": "a green jungle clearing with tall trees, big leaves and a mossy forest floor"
+  },
+  {
+   "key": "garurumon",
+   "number": 35,
+   "species": 22,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 35,
+   "scene": "a frozen pine forest clearing with deep snow and a pale blue sky"
+  },
+  {
+   "key": "monochromon",
+   "number": 44,
+   "species": 47,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 44,
+   "scene": "a dry canyon desert with sandstone mesas, cactus and a warm yellow sky"
+  },
+  {
+   "key": "agumon-lava",
+   "number": 66,
+   "species": 3,
+   "rarity": 4,
+   "merit": 1
+  },
+  {
+   "key": "gabumon",
+   "number": 67,
+   "species": 17,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a snowy mountain pass with pale blue sky, snow-covered rocks and a frozen lake"
+  },
+  {
+   "key": "biyomon",
+   "number": 68,
+   "species": 163,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a sunny cliff top with red rocks, a few trees and a bright sky with blocky clouds"
+  },
+  {
+   "key": "icedevimon",
+   "number": 69,
+   "species": 100,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "an ice cave with blue crystal walls, icicles and a frozen floor"
+  },
+  {
+   "key": "elecmon",
+   "number": 70,
+   "species": 140,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a stormy grassland with dark clouds, golden lightning in the distance and blocky hills"
+  },
+  {
+   "key": "gururumon",
+   "number": 71,
+   "species": 105,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a moonlit snowy pine forest at night with deep blue sky"
+  },
+  {
+   "key": "machinedramon",
+   "number": 72,
+   "species": 115,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a dark industrial machine factory with steel pipes, gears and glowing red lights"
+  },
+  {
+   "key": "bluemeramon",
+   "number": 73,
+   "species": 104,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a ruined stone courtyard at dusk with cold blue flames burning on torches"
+  },
+  {
+   "key": "waruseadramon",
+   "number": 74,
+   "species": 112,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a murky deep sea trench with dark teal water, jagged rocks and sunken ruins"
+  },
+  {
+   "key": "saberdramon",
+   "number": 75,
+   "species": 106,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "high rocky mountain peaks above the clouds with a wide sunset sky"
+  },
+  {
+   "key": "soulmon",
+   "number": 76,
+   "species": 107,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a foggy haunted graveyard with crooked gravestones and bare trees under a purple sky"
+  },
+  {
+   "key": "golemon",
+   "number": 77,
+   "species": 108,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a rocky canyon quarry with giant boulders and cracked sandstone"
+  },
+  {
+   "key": "patamon",
+   "number": 78,
+   "species": 31,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a bright blue sky above blocky white clouds with a grassy floating island"
+  },
+  {
+   "key": "palmon",
+   "number": 79,
+   "species": 46,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a sunny flower meadow with big blocky flowers, a stream and green hills"
+  },
+  {
+   "key": "tsunomon",
+   "number": 80,
+   "species": 16,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a snowy hillside village outskirts with small pine trees and a pale sky"
+  },
+  {
+   "key": "snowagumon",
+   "number": 81,
+   "species": 71,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a frozen tundra with ice blocks, snow drifts and a cold aurora sky"
+  },
+  {
+   "key": "iceleomon",
+   "number": 82,
+   "species": 63,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a snowy mountain ridge with jagged ice cliffs and a stormy white sky"
+  },
+  {
+   "key": "piddomon",
+   "number": 83,
+   "species": 85,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a heavenly temple garden with golden pillars, red fire braziers and a sunset sky"
+  },
+  {
+   "key": "vermilimon",
+   "number": 84,
+   "species": 88,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a hot red-rock desert with lava cracks and a burning orange sky"
+  },
+  {
+   "key": "hyogamon",
+   "number": 85,
+   "species": 72,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a glacier cave valley with giant ice spires and blue crystal light"
+  },
+  {
+   "key": "tsukaimon",
+   "number": 86,
+   "species": 96,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a moonlit haunted forest with twisted trees and a purple night sky"
+  },
+  {
+   "key": "gigadramon",
+   "number": 87,
+   "species": 64,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a dark mountain fortress with icy black spires and a grey stormy sky"
+  },
+  {
+   "key": "betamon",
+   "number": 88,
+   "species": 4,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a quiet pond shore with lily pads, reeds and blocky rocks at golden hour",
+   "pose": "low camera at ground level looking up at it, mid-leap out of the water with a splash frozen in the air"
+  },
+  {
+   "key": "kunemon",
+   "number": 89,
+   "species": 32,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a dim forest floor with giant mushrooms and fallen logs",
+   "pose": "seen from above at a steep high angle, coiled and rearing up from the ground, crackling electricity around its body"
+  },
+  {
+   "key": "darklizardmon",
+   "number": 90,
+   "species": 101,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a desert ruin at dusk with broken sandstone arches",
+   "pose": "side profile view, crouched low and sprinting at full speed, tail stretched out behind"
+  },
+  {
+   "key": "sandyanmamon",
+   "number": 91,
+   "species": 102,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a sandy desert dune landscape with a scorching sun and heat-baked rocks",
+   "pose": "flying toward the camera in strong foreshortening, wings blurred, diving down"
+  },
+  {
+   "key": "meteormon",
+   "number": 92,
+   "species": 113,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a rocky asteroid field in a dark red sky with floating boulders",
+   "pose": "spinning in the air viewed from behind at three-quarters, hurling itself forward"
+  },
+  {
+   "key": "mastertyrannomon",
+   "number": 93,
+   "species": 124,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a ruined volcanic fortress with bone spires under a red sky",
+   "pose": "standing tall viewed from a low angle, one huge foot stomping the ground, cracks spreading, arms thrown wide"
+  },
+  {
+   "key": "shamamon",
+   "number": 94,
+   "species": 97,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a sacred jungle clearing with totem poles and hanging vines",
+   "pose": "sitting cross-legged and meditating, floating a little above the ground, seen straight from the front, calm"
+  },
+  {
+   "key": "metaletemon",
+   "number": 95,
+   "species": 65,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a neon-lit futuristic city rooftop at night",
+   "pose": "striking a showman's pose on one leg, leaning sideways, viewed from slightly below, one arm pointing at the camera"
+  },
+  {
+   "key": "akatorimon",
+   "number": 96,
+   "species": 95,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a frozen cliff top with ice arches and a pale sky",
+   "pose": "perched on a rock seen from behind over its shoulder, head turned back to look at the camera, wings half open"
+  },
+  {
+   "key": "geremon",
+   "number": 97,
+   "species": 87,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a sewer cavern with green water, pipes and moss-covered walls",
+   "pose": "lying back relaxed on the ground seen from the side, lazily scratching its belly, completely at ease"
+  },
+  {
+   "key": "snowgoblimon",
+   "number": 98,
+   "species": 103,
+   "rarity": 1,
+   "merit": 5,
+   "scene": "a frozen valley of ice blocks and pine trees under a pale sky",
+   "pose": "crouching low, club raised over its shoulder, seen from a high three-quarter angle"
+  },
+  {
+   "key": "fugamon",
+   "number": 99,
+   "species": 89,
+   "rarity": 1,
+   "merit": 5,
+   "scene": "a rocky mountain ledge with swirling low-poly clouds below",
+   "pose": "leaping forward with a wide kick, seen from a low front angle"
+  },
+  {
+   "key": "tekkamon",
+   "number": 100,
+   "species": 90,
+   "rarity": 1,
+   "merit": 5,
+   "scene": "an old rusty factory yard with blocky crates and pipes",
+   "pose": "standing with arms spread wide, seen straight from the front, slightly from below"
+  },
+  {
+   "key": "icemon",
+   "number": 101,
+   "species": 94,
+   "rarity": 1,
+   "merit": 5,
+   "scene": "a blue glacier cave with chunky ice crystals",
+   "pose": "floating sideways, seen in strict side profile"
+  },
+  {
+   "key": "clearagumon",
+   "number": 102,
+   "species": 98,
+   "rarity": 1,
+   "merit": 5,
+   "scene": "a bright meadow with blocky flowers and a tiny pond",
+   "pose": "sitting on the ground waving, seen from behind-left three-quarter angle"
+  },
+  {
+   "key": "weedmon",
+   "number": 103,
+   "species": 99,
+   "rarity": 1,
+   "merit": 5,
+   "scene": "a swamp with cattails and low-poly lily pads",
+   "pose": "rising out of the ground, camera very low looking up"
+  },
+  {
+   "key": "psychemon",
+   "number": 104,
+   "species": 82,
+   "rarity": 1,
+   "merit": 5,
+   "scene": "a dark temple hall with blocky pillars and purple torches",
+   "pose": "hovering cross-legged high above the floor, seen from the front at eye level"
+  },
+  {
+   "key": "analogman",
+   "number": 105,
+   "species": 116,
+   "rarity": 1,
+   "merit": 5,
+   "scene": "a retro computer room with chunky blocky consoles and cables on the floor",
+   "pose": "running to the right, seen in side view with a slight top angle"
+  },
+  {
+   "key": "tinmon",
+   "number": 106,
+   "species": 123,
+   "rarity": 1,
+   "merit": 5,
+   "scene": "a snowy toy-workshop courtyard with blocky crates",
+   "pose": "marching toward the camera, seen from the front at a slight low angle"
+  },
+  {
+   "key": "shimaunimon",
+   "number": 107,
+   "species": 75,
+   "rarity": 1,
+   "merit": 5,
+   "scene": "a sunny island beach with blocky palm trees",
+   "pose": "rearing up on its hind legs, seen from the side with a low camera"
+  }
+ ]
 }
