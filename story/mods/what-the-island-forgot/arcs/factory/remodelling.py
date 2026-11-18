@@ -51,15 +51,15 @@ def remodel():
                         say(t5.u4)
                         hide_hud()
                         if partner.species == Species.Mamemon:
-                            engine.arg.set(Species.Giromon)
+                            engine.arg.set(41)
                         elif partner.species == Species.Numemon or partner.species == Species.Geremon:
-                            engine.arg.set(Species.ShellNumemon)
+                            engine.arg.set(231)
                         elif partner.species == Species.MegaSeadramon:
-                            engine.arg.set(Species.WaruSeadramon)
+                            engine.arg.set(112)
                         elif partner.species == Species.WaruSeadramon:
-                            engine.arg.set(Species.MegaSeadramon)
+                            engine.arg.set(61)
                         else:
-                            engine.arg.set(Species.MetalGreymonVaccine)
+                            engine.arg.set(224)
                         raw.call_digimon_routine(DigimonRoutine.forced_evolution)
                         wait(28500)
                         tamer.say("Whoa, it changed form!")
@@ -67,17 +67,17 @@ def remodel():
                         say(t5.u6)
                         hide_hud()
                         if partner.species == Species.Mamemon:
-                            engine.arg.set(Species.MetalMamemon)
+                            engine.arg.set(27)
                         elif partner.species == Species.Numemon:
-                            engine.arg.set(Species.Geremon)
+                            engine.arg.set(87)
                         elif partner.species == Species.Geremon:
-                            engine.arg.set(Species.ShellNumemon)
+                            engine.arg.set(231)
                         elif partner.species == Species.MegaSeadramon:
-                            engine.arg.set(Species.WaruSeadramon)
+                            engine.arg.set(112)
                         elif partner.species == Species.WaruSeadramon:
-                            engine.arg.set(Species.MegaSeadramon)
+                            engine.arg.set(61)
                         else:
-                            engine.arg.set(Species.MetalGreymonVaccine)
+                            engine.arg.set(224)
                         raw.call_digimon_routine(DigimonRoutine.forced_evolution)
                         wait(28500)
                         tamer.say("Whoa, it changed form!")
