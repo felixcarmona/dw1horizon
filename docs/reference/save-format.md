@@ -74,7 +74,7 @@ one-block file. No save is deleted to resize it.
 
 Each `RegisteredDigimon` has 28 unused bytes at record offsets `0x24..0x3F`.
 Across 40 registrations these provide **1,120 bytes per payload copy**. The current
-record list uses at most **850 bytes including framing**, leaving **270 bytes**
+record list uses at most **1,093 bytes including framing**, leaving **27 bytes**
 of margin even with every bit populated. No compression is necessary. Each
 copy's extension is scattered in order through these bytes; no registration
 field or payload offset changes. A compile-time bound includes every written
@@ -161,6 +161,9 @@ An extension counts only when magic, its own checksum and its copy of the v1 che
 | 0x0009 | u8[n] OPTIONS bytes, layout in [../mods/options.md](../mods/options.md); a shorter record leaves the later options at their defaults | 0167 and later |
 | 0x000A | i16 species, i16 vanilla species: NEW DIGIMON off turned the loaded partner from the first into the second; loading with the option on turns it back | 0182 |
 | 0x000B | `{i16 screen, u8 tileX, u8 tileY}[64]`: ground item spots picked up today (screen -1 = empty), forgotten at midnight | 0230 |
+| 0x000C | u8[128] stable daily ground pickup bitset; supersedes the old location list without redefining its tag | 0265 |
+| 0x000D | u8[223] additional card counts: two 4-bit counts per byte, low nibble first, IDs 66–511 | card expansion |
+| 0x000E | u16[6] daily card shop stock, `0xFFFF` = sold; IDs 0–511 | card expansion |
 | 0x8001, 0x8002 | reserved in the registry for required story-state records; not written by this patch series | |
 
 ### Reading rules
@@ -404,3 +407,19 @@ The migrator, old arrays and save builder live in MENU. To retain its 27-sector 
 Registered VS fighters also save animation slots. Continue migrates their equipment before a new save receives the layout marker; the direct VS card loader applies the same migration to legacy entries. Because registrations contain no learned library, removed or incompatible selections become empty and surviving selections retain their identity. Older direct VS loaders did not honor required extension tags; do not use A registrations with an older engine.
 
 BlackKingNumemon has one unavoidable legacy exception. Released v0.0.7 used Battle IDs in indices 8 and 10–13 and no index 15; the unversioned audit baseline had Ice IDs there. Neither format identifies that data revision, and a complete learned library cannot distinguish them. Unmarked saves therefore clear those six ambiguous equipped indices (8, 10, 11, 12, 13, 15), including registrations, instead of guessing. Common Filth selections and finisher index 14 survive; every learned bit remains. The JSON arrays still match A exactly. Once a save has layout 1, its current Ice selections survive later Continues. Host tests cover both historical arrays with a full 128-bit library.
+
+## Additional collectible cards
+
+The v1 `SCRIPT_STATE` prefix stays exactly 0x17C bytes, including the 33 count
+bytes for IDs 0–65. Optional tag `0x000D` adds 446 nibbles (223 bytes), and optional
+`0x000E` adds the six wide daily shop IDs (12 bytes). Together their framing and
+payload use 243 bytes. The conservative inline bound is 1,093 of 1,120 bytes,
+leaving 27 bytes; the compile-time assertion includes both records.
+
+Loading any old payload zeros the extra count bytes before applying records.
+A missing stock record takes its defaults from the v1 shop bytes (`0xFF` = sold).
+Short records update only their present bytes or complete u16 elements; unknown
+trailing elements are ignored. There is no card migration. Counts, stock and
+metadata remain separate: a card number never changes its saved identity when
+several cards name the same species. Old executables that skip these optional
+records lose this additional progress if they save over it.

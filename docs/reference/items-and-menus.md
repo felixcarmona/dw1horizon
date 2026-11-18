@@ -370,17 +370,24 @@ consumed (`partner.c:497`). "Merit N" = bought in the merit shop for N points;
 
 ### Cards and the merit shop
 
-- `CARD_DATA[66]`: rarity (`spriteId`) 0 (ids 1–5, merit 100), 1 (6–25, 30), 2 (26–50,
-  10), 3 (51–60, 5), 4 (61–64, 1); 0 and 65 are sentinels (rarity 5). Collection in
-  `SCRIPT_STATE.cards`, 0–9 per card; ops `GIVE_CARD`/`TAKE_CARD` (`0x2F/0x30`).
-- Routine 14: without `TRIGGER_3` and without `TRIGGER_4`, a 3-card pack (`rollCardPack`):
-  rarity by `randomLimit(100)` → 0: 1 %, 1: 4 %, 2: 15 %, 3: 30 %, 4: 50 %, and a
-  uniform card within the rarity (`rollCard` `script_menu.c:1340`). With `TRIGGER_4`,
-  `openBuyCardMenu`: the day's 6 cards (`smth[0..5]`, `dailyPStatTrigger`
-  `script_common.c:1355`: ids 1–64 without repeats, never 4, on day change in
-  `clock.c:135/186`; a new game starts with 58–63, `main_menu.c:3868`), at `CARD_PRICES[rarity]` =
-  5000/1500/500/100/50, at most 9 copies; the one bought becomes `0xFF`. With `TRIGGER_3`,
-  selling at half price (`:1971`).
+- Card IDs span 0–511. IDs 0 and 65 remain sentinels; 1–64 and the entries authored in
+  `content/cards/new.json` are real cards. Several cards may name the same species.
+  `CARDTAB.BIN` supplies 512 `{u16 species, u8 rarity, u8 merit}` rows during card menus;
+  rarity 0 is rarest (merit 100), then 1/30, 2/10, 3/5, 4/1. Unassigned rows use rarity 5.
+  Collection counts remain capped at 9: the original 33 bytes of `SCRIPT_STATE.cards`
+  retain IDs 0–65, and save record `0x000D` stores the other 223 bytes. Byte script ops
+  `GIVE_CARD`/`TAKE_CARD` retain their encoding; `GIVE_CARD16`/`TAKE_CARD16` and `card16`
+  conditions address the whole range. Sentinels and unassigned IDs cannot gain copies.
+- Routine 14: without `TRIGGER_3` and `TRIGGER_4`, a 3-card pack (`rollCardPack`):
+  rarity by `randomLimit(100)` → 0: 1 %, 1: 4 %, 2: 15 %, 3: 30 %, 4: 50 %, then a
+  uniform real card within that rarity. Every purchase, including one pack and the
+  one-card machine, uses the scrolling results list and its wide card IDs.
+  With `TRIGGER_4`, `openBuyCardMenu` offers six daily cards, sampled without repeats
+  from the real IDs allowed by `daily-rules.json`'s pool and excluded ID.
+  `MOD_CARD_STOCK[6]` holds u16 IDs (`0xFFFF` means sold); save record `0x000E` persists them.
+  Older saves initialize these slots from their original `smth[0..5]` bytes.
+  Prices are `CARD_PRICES[rarity]` = 5000/1500/500/100/50; buying removes that day's slot.
+  With `TRIGGER_3`, cards sell at the configured sell percentage.
 - Routine 1, `openMeritShop` (`script_menu.c`): exchanges cards for their merit (`MERIT` cap 9999) and sells the items
   with `meritValue ≠ 0`, both in any amount through the amount box, the list staying open between trades:
   sup.recovery 20, Sup.restore 100, the six chips 800, Rainbowhorn/Waterbottle/Red
@@ -448,8 +455,12 @@ consumed (`partner.c:497`). "Merit N" = bought in the merit shop for N points;
   Version Cup, Type Cup, Special Cup, 100 Times, Technique Master, Digimon Master, Max
   Abilities, Perfect Curling, 100 Fish, (game finished), Town Flourishing, Card
   Complete, Bits Maxed, 10 Years.
-- Cards (`:1869`, `renderCardsView` `:3253`): 6×11 slots, sprite if
-  `getCardAmount > 0`; ✕ opens the card (`CARD.ALL`, TIM `id×14`) with its amount.
+- Cards (`renderCardsView`): 6×11 visible slots; the cursor scrolls by rows through
+  IDs 0–511, with a numeric `id/511` position indicator. Owned original cards retain
+  their portraits; new cards use the existing rarity-coloured generic card sprite.
+  Confirm opens `CARD.ALL` entry `id` for 0–65, or `CARD2.ALL` entry `id−66` for 66–511,
+  with the owned amount. Both archives use 14-sector entries. Card Complete requires
+  all real authored cards, excluding the two sentinels and all unassigned IDs.
 
 ## Useful writes
 
@@ -466,7 +477,7 @@ text is only drawn when the box opens (`drawInventoryText`, `game_menu.c:1967`).
 | card collection | `SCRIPT_STATE.cards` from `0x801BDFAC`, one nibble per card (0–9); leave the sentinel cards 0 and 65 at 0 |
 | item keeper | stored amount of item `id` at `0x801BDF2C + id` |
 | everything for sale in a normal shop | triggers 0x180..0x1FF = 16 bytes from `0x801BDFFD` set to `0xFF`; on the shop map, before talking (the list is built when the shop opens) |
-| the day's card shop | 6 card ids (1..64) at `0x801BDED8` |
+| the day's card shop | `MOD_CARD_STOCK[6]`, u16 IDs; `0xFFFF` means sold; use the current symbol map |
 | medals | triggers 0x16C..0x17A: byte 45 bits 4–7, byte 46, byte 47 bits 0–2 of `triggers`; OR them in, the same bytes hold other triggers |
 | album (Digimon raised) | triggers `0x200 + id` from `0x801BE00D` |
 

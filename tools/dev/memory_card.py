@@ -178,6 +178,8 @@ def decode_records(recs):
     for tag, d in recs:
         name = TAGS.get(tag, f'unknown{tag:#06x}')
         if name in ('screens', 'inventory', 'registered', 'poopMaps'): out[name] = list(struct.unpack(f'<{len(d) // 2}h', d[:len(d) // 2 * 2]))
+        elif name == 'cardCounts': out[name] = {66 + i * 2 + n: (x >> (4 * n)) & 15 for i, x in enumerate(d) for n in range(2) if (x >> (4 * n)) & 15}
+        elif name == 'cardStock': out[name] = list(struct.unpack(f'<{len(d) // 2}H', d[:len(d) // 2 * 2]))
         elif name == 'wregs': out[name] = list(struct.unpack(f'<{len(d) // 2}H', d[:len(d) // 2 * 2]))
         elif name == 'techniqueLayout': out[name] = list(d)
         elif name == 'partnerType': out[name] = struct.unpack('<i', d[:4])[0]
