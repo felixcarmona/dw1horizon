@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """A partner past 255 must never reach a script as its low byte: the engine's stores and the compiled species tests."""
 import ast
+import os
 from pathlib import Path
 import re
 import unittest
@@ -9,12 +10,16 @@ from tools.dws.py import lower as PL
 from tools.dws.py.lower import Body
 
 ROOT = Path(__file__).resolve().parent.parent
-ENGINE = ROOT / 'build/decomp-int/src'
+if 'DW_SELFTEST_DECOMP' in os.environ:
+    ENGINE = Path(os.environ['DW_SELFTEST_DECOMP']) / 'src'
+else:
+    ENGINE = next((ROOT / 'build' / tree / 'src' for tree in ('decomp-dev', 'decomp-int')
+                   if (ROOT / 'build' / tree / 'src').exists()), ROOT / 'build/decomp-dev/src')
 # p4, the tournament registration: tournament.c compares it with the partner's low byte
 STORED_SPECIES = r'writePStat\((?!4,|PSTAT_TOURNAMENT_DIGIMON)[^;]*entity\.type'
 
 
-@unittest.skipUnless(ENGINE.exists(), 'needs tools/mods.sh prepare int')
+@unittest.skipUnless(ENGINE.exists(), 'needs a prepared decomp tree (DW_SELFTEST_DECOMP)')
 class EngineStores(unittest.TestCase):
     def test_no_species_is_written_to_a_pstat_directly(self):
         found = []

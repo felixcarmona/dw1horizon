@@ -11,6 +11,7 @@
                  "Green Trap"],
   "drop": {"item": "Various", "percent": 30},
   "effects_like": 23,
+  "own_effect": {"technique": "Fist of the Beast King", "chunk": 278},
   "model": {
     "file": "build/batch3/Togemon.MMD",
     "radius": 115,

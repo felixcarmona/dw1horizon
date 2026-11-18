@@ -1,0 +1,126 @@
+From 79baff71299b8c2c0f608d64b2ef6a919250eaf7 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 14 Nov 2026 10:00:24 +0000
+Subject: [PATCH] Read the care menu's text in the background so Square does
+ not stand the field still
+
+feedOpen read MENU_REL with a blocking readFile: the field stopped drawing for about
+20 refreshes (a third of a second) every time Square opened the care list. The list
+now freezes the tamer and plays the sound at once, queues the read when the file queue
+and the tile stream are idle, and opens its boxes when the read has landed; the field
+keeps drawing meanwhile.
+---
+ src/main/mod_feed.c | 43 ++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 34 insertions(+), 9 deletions(-)
+
+diff --git a/src/main/mod_feed.c b/src/main/mod_feed.c
+index 5fc0b14..d8296bd 100644
+--- a/src/main/mod_feed.c
++++ b/src/main/mod_feed.c
+@@ -18,6 +18,7 @@
+ #include <dw/script.h>
+ #include <dw/types.h>
+ #include <dw/ui.h>
++#include <dw/utils.h>
+ #include <dw/version.h>
+ #include <dw/world_object.h>
+ #include <text/main/mod_feed.h>
+@@ -44,7 +45,9 @@
+ /* One tick of care availability; bubble.c clears it after updating the existing badge animation. */
+ int32_t MOD_FEED_HINT = 0;
+ 
+-enum { FEED_OPENING, FEED_OPEN, FEED_CLOSING, FEED_GIVING, FEED_WATCHING };
++/* FEED_QUEUING and FEED_LOADING: MENU is read in the background while the field keeps drawing (a blocking read
++ * stood the picture still for about a third of a second on every Square) */
++enum { FEED_OPENING, FEED_OPEN, FEED_CLOSING, FEED_GIVING, FEED_WATCHING, FEED_QUEUING, FEED_LOADING };
+ 
+ typedef struct {
+ 	char *name;
+@@ -66,8 +69,9 @@ extern uint8_t INVENTORY_POINTER;
+ extern TamerEntity TAMER_ENTITY;
+ extern char *ITEM_DESCS[];
+ 
+-void loadMenuOverlay(void);
+ void closeMenuOverlay(void);
++int32_t isFileReadQueueIdle(void); /* file_queue.c */
++int32_t tfsStreamBusy(void); /* tfs_stream.c */
+ void tamerSetState(int32_t state);
+ void startAnimation(Entity *entity, int32_t animId);
+ void setPartnerIdling(void);
+@@ -110,6 +114,7 @@ static int32_t feedCount;
+ static int32_t feedCursor;
+ static int32_t feedRowOffset;
+ static int32_t feedState;
++static uint8_t feedMenuRead; /* set by the file queue when MENU has landed */
+ 
+ /* the list's order, most urgent first (the cursor starts on it): a rank times 0x100 plus an order inside the rank */
+ #define RANK_SCOLD	1	/* walking away clears it */
+@@ -410,6 +415,7 @@ static void feedMoveCursor(int32_t cursor)
+ }
+ 
+ static int32_t feedOpen(void);
++static void feedShow(void);
+ 
+ static void feedTick(int32_t instanceId)
+ {
+@@ -417,6 +423,20 @@ static void feedTick(int32_t instanceId)
+ 
+ 	(void)instanceId;
+ 	switch (feedState) {
++	case FEED_QUEUING:
++		/* queued behind nothing: a read ahead of the battle would make loadDynamicLibrary wait for it, and a
++		 * background tile read would make the queue wait (tfsStreamCheckTarget) */
++		if (isFileReadQueueIdle() && !tfsStreamBusy()) {
++			feedMenuRead = 0;
++			loadDynamicLibrary(MENU_REL, &feedMenuRead, 1, NULL, NULL);
++			feedState = FEED_LOADING;
++		}
++		break;
++	case FEED_LOADING:
++		if (feedMenuRead) {
++			feedShow();
++		}
++		break;
+ 	case FEED_OPENING:
+ 		if (UI_BOX_DATA[FEED_LIST_BOX].state == 1 && UI_BOX_DATA[FEED_DESC_BOX].state == 1) {
+ 			feedState = FEED_OPEN;
+@@ -486,14 +506,21 @@ static void feedTick(int32_t instanceId)
+ /* the box opens with what the partner's condition asks for: 0 when there is nothing to offer */
+ static int32_t feedOpen(void)
+ {
+-	int32_t i;
+-	int32_t color;
+-
+ 	if (feedCollect(0) == 0) {
+ 		return 0;
+ 	}
+-	/* UI-only notes and command captions live in MENU, not the field heap. */
+-	loadMenuOverlay();
++	/* UI-only notes and command captions live in MENU, not the field heap: the list opens once it is read */
++	feedEnterMenu();
++	feedState = FEED_QUEUING;
++	return 1;
++}
++
++/* MENU is read: draw the list and open its boxes */
++static void feedShow(void)
++{
++	int32_t i;
++	int32_t color;
++
+ 	feedCursor = 0; /* the most urgent */
+ 	feedRowOffset = 0;
+ 	feedState = FEED_OPENING;
+@@ -506,9 +533,7 @@ static int32_t feedOpen(void)
+ 	}
+ 	feedDrawNames();
+ 	feedDrawDescription();
+-	feedEnterMenu();
+ 	feedOpenBoxes();
+-	return 1;
+ }
+ 
+ /* Only ordinary field walking calls this, after map interaction has taken priority. */
+-- 
+2.55.0
+

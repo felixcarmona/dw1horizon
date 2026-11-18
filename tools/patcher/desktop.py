@@ -11,6 +11,11 @@
 
 Standard library only.
 """
+try:
+    from . import discformats
+except ImportError:
+    import discformats
+
 import hashlib
 import importlib.util
 import json
@@ -121,7 +126,8 @@ class Config:
     def remember_disc(self, game, result):
         self.data['discs'][game] = dict(path=result['path'], image=result['image'], size=result['size'],
                                         mtime_ns=result['mtime_ns'], sha1=result.get('sha1'),
-                                        release=result.get('release'), how=result.get('how'))
+                                        release=result.get('release'), how=result.get('how'),
+                                        source_stamp=result.get('source_stamp'))
         self.save()
 
     def forget_disc(self, game):
@@ -130,13 +136,13 @@ class Config:
 
     def remembered_discs(self):
         """{game: (entry, None) when the file is as it was, (entry, reason) when it moved or changed: reason
-        'missing' or 'changed'}. A changed entry is forgotten."""
+        'missing', 'changed' or 'convert' (a PBP needs extraction again)}. A changed entry is forgotten."""
         out = {}
         for game, e in list(self.data['discs'].items()):
             if game not in GAMES or not isinstance(e, dict):
                 self.data['discs'].pop(game); continue
             out[game] = (e, file_changed(e))
-            if out[game][1]:
+            if out[game][1] in ('missing', 'changed'):
                 self.data['discs'].pop(game)
         self.save()
         return out
@@ -149,10 +155,15 @@ def stamp(path):
 
 def file_changed(entry):
     """None when the remembered image is still there with the same size and modification time, else why not."""
-    for key in ('path', 'image'):
-        if not entry.get(key) or not os.path.isfile(entry[key]):
-            return 'missing'
     try:
+        if entry.get('source_stamp') is not None:
+            if list(stamp(entry['path'])) != entry['source_stamp']:
+                return 'changed'
+            if not os.path.isfile(entry['image']):
+                return 'convert'
+        for key in ('path', 'image'):
+            if not entry.get(key) or not os.path.isfile(entry[key]):
+                return 'missing'
         size, mtime = stamp(entry['image'])
     except OSError:
         return 'missing'
@@ -269,24 +280,49 @@ def sha1_file(path, progress=None, cancel=None):
     return h.hexdigest()
 
 
-ARCHIVES = {'.zip': 'zip', '.7z': '7z', '.rar': 'rar', '.gz': 'gz', '.xz': 'xz', '.bz2': 'bz2', '.tar': 'tar'}
+CONVERSIONS = discformats.ConversionCache()
 
 
-def identify(path, progress=None, cancel=None):
+def converted_image(path, progress=None, cancel=None):
+    try:
+        return CONVERSIONS.convert(path, cache_dir(), progress, cancel)
+    except discformats.Cancelled:
+        raise Problem('cancelled')
+    except discformats.FormatError as e:
+        if str(e).startswith('CHD not supported: '):
+            raise Problem('app.chdUnsupported', reason=str(e).split(': ', 1)[1]) from e
+        key = {'CHD space': 'app.chdSpace', 'CHD changed': 'app.changed',
+               'PBP multi-disc': 'app.pbpMulti', 'PBP space': 'app.pbpSpace',
+               'PBP changed': 'app.changed'}.get(str(e), 'app.pbpEncrypted')
+        raise Problem(key, **({'path': path} if key == 'app.changed' else {})) from e
+
+
+def identify(path, progress=None, cancel=None, converting=None):
     """What a file the player gave is -> {game, release, path, image, size, mtime_ns, sha1, how}: how 'redump' (the
     whole image is the release's dump) or 'files' (a source disc that is not the redump dump: the build checks every
     file it reads from it, as the command line does). Problem for anything that cannot be used."""
-    low = path.lower()
-    ext = os.path.splitext(low)[1]
-    if ext == '.chd':
-        raise Problem('why.chd')
-    if ext in ARCHIVES or re.search(r'\.(part\d+\.rar|\d{3}|z\d\d)$', low):
-        raise Problem('app.archive')
-    if ext in ('.ecm', '.pbp'):
-        raise Problem('app.convert', format=ext[1:].upper())
     if not os.path.isfile(path):
         raise Problem('app.missingFile')
-    image = cue_image(path) if ext == '.cue' else path
+    kind = discformats.sniff(path)
+    if kind == 'archive':
+        raise Problem('app.archive')
+    if kind == 'ecm':
+        raise Problem('app.convert', format='ECM')
+    if kind in ('pbp', 'chd'):
+        def tick(f):
+            if converting:
+                converting(path, f)
+        source_stamp = list(stamp(path))
+        try:
+            image = converted_image(path, tick, cancel)
+            result = identify(image, progress, cancel)
+            if list(stamp(path)) != source_stamp:
+                raise Problem('app.changed', path=path)
+            return dict(result, path=path, source_stamp=source_stamp)
+        except BaseException:
+            CONVERSIONS.discard(path)
+            raise
+    image = cue_image(path) if kind == 'cue' else path
     try:
         boot, sector = boot_and_layout(image)
     except OSError as e:
@@ -318,7 +354,7 @@ def identify(path, progress=None, cancel=None):
     return dict(result, release=supported[0][1], how='files')
 
 
-def sort_files(paths, progress=None, cancel=None):
+def sort_files(paths, progress=None, cancel=None, converting=None):
     """Many files at once, as the web page takes them: {game: result} (the last usable file of a game wins) and
     [(path, Problem)]. progress(i, n, fraction) while each is checked. The same image given twice counts once."""
     found, problems, seen = {}, [], set()
@@ -329,7 +365,7 @@ def sort_files(paths, progress=None, cancel=None):
             continue
         seen.add(key)
         try:
-            r = identify(p, (lambda f, i=i: progress(i, len(paths), f)) if progress else None, cancel)
+            r = identify(p, (lambda f, i=i: progress(i, len(paths), f)) if progress else None, cancel, converting)
         except Problem as e:
             if e.key == 'cancelled':
                 raise

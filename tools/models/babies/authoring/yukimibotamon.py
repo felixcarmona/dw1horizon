@@ -370,17 +370,18 @@ def mouth_frame(kind):
     opening = {'small': (3.5, 2.6), 'mid': (6, 4.2), 'wide': (8.5, 6)}.get(kind)
 
     def draw(c):
+        if opening:                                                                   # open: ONE mouth, a rounded bag (the closed lobes are gone)
+            rx, ry = opening
+            cv2.ellipse(c, pt(mx, 1.8 + ry), ax(rx + 1.1, ry + 1.0), 0, 0, 360, K[0], -1)
+            return
         for ox in (-LOBE[0], LOBE[0]):                                               # the ":3" cat mouth, two round lobes
             cv2.ellipse(c, pt(mx + ox, 1.2), ax(*LOBE), 0, 0, 180, K[0], STROKE)
-        if opening:                                                                   # open: a rounded bag under the omega
-            rx, ry = opening
-            cv2.ellipse(c, pt(mx, 1.2 + ry), ax(rx + 1.1, ry + 1.0), 0, 0, 360, K[0], -1)
     f = frame(draw, MOUTH_PAL, MOUTH_BG)
     if opening:                                                                       # the inside, painted after snapping
         rx, ry = opening
-        cv2.ellipse(f, (int(round(mx)), int(round(1.2 + ry))), (int(rx), int(ry)), 0, 0, 360, MOUTH_IN[0] + (255,), -1)
+        cv2.ellipse(f, (int(round(mx)), int(round(1.8 + ry))), (int(rx), int(ry)), 0, 0, 360, MOUTH_IN[0] + (255,), -1)
         if kind != 'small':
-            cv2.ellipse(f, (int(round(mx)), int(round(1.2 + ry * 1.45))), (int(rx - 2.5), max(1, int(ry * 0.45))), 0, 0, 360, MOUTH_IN[2] + (255,), -1)
+            cv2.ellipse(f, (int(round(mx)), int(round(1.8 + ry * 1.45))), (int(rx - 2.5), max(1, int(ry * 0.45))), 0, 0, 360, MOUTH_IN[2] + (255,), -1)
     return f
 
 

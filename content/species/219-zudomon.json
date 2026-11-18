@@ -11,6 +11,7 @@
                  "Water Blit", "Ice Needle", "Mail Strome"],
   "drop": {"item": "Restore", "percent": 20},
   "effects_like": 12,
+  "own_effect": {"technique": "Mail Strome", "chunk": 289},
   "model": {
     "file": "build/sizes-out/models/Zudomon.MMD",
     "radius": 249,

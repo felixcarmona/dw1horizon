@@ -407,7 +407,7 @@ consumed (`partner.c:497`). "Merit N" = bought in the merit shop for N points;
   once (triggers 5–13; all nine set 14, `:1727`). These original flags record first completion,
   rather than limiting repeat trades. Horizon's current [trade table](../mods/balance.md#61-the-economy-rule)
   uses saved daily flags 789–796 for eight rows, permanent completion flag 13 for the Dolph Fin row,
-  and caps every amount box at one. Bit 797 remains reserved/cleared for compatibility. Dolph Fin targets Dolphmon
+  and makes every exchange one item, with no amount box. Bit 797 remains reserved/cleared for compatibility. Dolph Fin targets Dolphmon
   (238) through the fourth custom rule; unavailable imported targets are refused. North Star stays Whamon’s
   arena reward, and the native USA eligibility check reads the owned native target table directly.
 - Routine 10, `tickBirdraTransport` (`:913`): 6 destinations `{map, exit, trigger, cost}`
@@ -423,6 +423,9 @@ consumed (`partner.c:497`). "Merit N" = bought in the merit shop for N points;
   `<profit> B  <customer>/20`, plus a blue bar full at 2560 B and a white tick at 1792 B.
   Patch 0280 lowers the recruit target and bar maximum from 3072 B to 2560 B.
   Routine `0x1e` on screen 49 explicitly arms its world object; leaving the screen removes it.
+  The mood bubble (world object `0x1b1`) also removes itself off screen 49: world objects survive map changes and only
+  mood 5 removed it, so a shift left with a bubble up drew a stale-texture square over wild Digimon
+  (`tools/dev/playtest/mood_bubble_leftover.py`).
   The count reads p123 (capped at 20), including the extra step for a customer who storms off.
   Other uses of `SHOP_VARIABLE` do not arm it. Prices, odds and payouts stay in the scripts.
 

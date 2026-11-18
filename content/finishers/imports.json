@@ -1,0 +1,9457 @@
+{
+ "_comment": "Unique finisher of every imported species, keyed by species id. Authored design data: docs/mods/unique-finishers.md explains every field. \"move\" is what the battle uses (written to the species record, read through modSpeciesMove); the name goes to the text banks as species.<id>.finisher. The effect chunk itself is the species JSON \"own_effect\". \"neutral\": false plays these numbers; true writes none: every import keeps the DW1 numbers of the finisher it replaces, while its name and own effect still apply.",
+ "format": 1,
+ "neutral": false,
+ "finishers": [
+  {
+   "species": 62,
+   "species_name": "WereGarurumon",
+   "level": "ultimate",
+   "name": "Wolf Claw",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Wolf Claw",
+    "power": 670
+   },
+   "replaces": {
+    "id": 64,
+    "name": "Howling Blaster"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 2,
+    "look": "Two fast claw rakes.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/415.PAK",
+    "shared_by_cards": 11,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 64,
+     "name": "Howling Blaster"
+    }
+   },
+   "move": {
+    "power": 220,
+    "element": "battle",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 122,
+   "species_name": "Hagurumon",
+   "level": "rookie",
+   "name": "Darkness Gear",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Darkness Gear",
+    "power": 35,
+    "dw2_element": "machine",
+    "dw2_target": "one enemy",
+    "description": "Fires a Darkness Gear",
+    "cast_clip": "F0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     1670,
+     7
+    ]
+   },
+   "replaces": {
+    "id": 66,
+    "name": "Electric Shock"
+   },
+   "behavior": {
+    "kind": "thrown",
+    "target": "one",
+    "hits": 1,
+    "look": "Fires a black gear that spins into the target.",
+    "dash": false,
+    "clip": "F0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFESA/MESA2700.BIN",
+     "EFFECT/EFFESA/AESA2700.BIN",
+     "EFFECT/EFFESD/MESD0600.BIN",
+     "EFFECT/EFFESD/AESD0600.BIN"
+    ],
+    "file_ids": [
+     1003,
+     1025,
+     956,
+     918
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 66,
+     "name": "Electric Shock"
+    }
+   },
+   "move": {
+    "power": 97,
+    "element": "mech",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 123,
+   "species_name": "Tinmon",
+   "level": "ultimate",
+   "name": "Recovery Power",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Recovery Power",
+    "power": 0,
+    "dw2_element": "neutral",
+    "dw2_target": "all allies",
+    "description": "Cures Mix<49>up<54> Poison<54> Stun",
+    "cast_clip": "G0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3251,
+     0
+    ]
+   },
+   "replaces": {
+    "id": 111,
+    "name": "Mail Strome"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "A cold beam.",
+    "dash": false,
+    "clip": "G0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFEMA/MEMA7600.BIN",
+     "EFFECT/EFFEMA/MEMA7700.BIN",
+     "EFFECT/EFFEMA/AEMA7600.BIN",
+     "EFFECT/EFFEMA/AEMA7700.BIN",
+     "EFFECT/EFFEMD/MEMD1700.BIN",
+     "EFFECT/EFFEMD/AEMD1700.BIN"
+    ],
+    "file_ids": [
+     3006,
+     2992,
+     3056,
+     3038,
+     3002,
+     3046
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 111,
+     "name": "Mail Strome"
+    }
+   },
+   "move": {
+    "power": 228,
+    "element": "ice",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Source cures confusion, poison and stun and heals; a buff would need engine code, so this damaging beam is the finisher."
+  },
+  {
+   "species": 126,
+   "species_name": "Brachiomon",
+   "level": "ultimate",
+   "name": "Brachio Bubble",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Brachio Bubble",
+    "power": 600
+   },
+   "replaces": {
+    "id": 63,
+    "name": "Mega Flame"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "Blows one big bubble.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/437.PAK",
+    "shared_by_cards": 3,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 63,
+     "name": "Mega Flame"
+    }
+   },
+   "move": {
+    "power": 204,
+    "element": "battle",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Its specialties are Fire/Battle, so the bubble is Battle."
+  },
+  {
+   "species": 180,
+   "species_name": "Veemon",
+   "level": "rookie",
+   "name": "Vee Head Butt",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Vee Head Butt",
+    "power": 350
+   },
+   "replaces": {
+    "id": 99,
+    "name": "Blue Blaster"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "Veemon lowers its head and charges; a white V flash on contact.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2000.PAK",
+    "shared_by_cards": 12,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 99,
+     "name": "Blue Blaster"
+    }
+   },
+   "move": {
+    "power": 97,
+    "element": "battle",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 181,
+   "species_name": "Puppetmon",
+   "level": "mega",
+   "name": "Puppet Pummel",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Puppet Pummel",
+    "power": 790
+   },
+   "replaces": {
+    "id": 73,
+    "name": "Bit Bomb"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 3,
+    "look": "Leaps in and hammers the target three times with its mallet; wood-knock hits.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/435.PAK",
+    "shared_by_cards": 33,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 73,
+     "name": "Bit Bomb"
+    }
+   },
+   "move": {
+    "power": 253,
+    "element": "battle",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 182,
+   "species_name": "Kimeramon",
+   "level": "ultimate",
+   "name": "Poison Wing",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Poison Wing",
+    "power": 120,
+    "dw2_element": "fire",
+    "dw2_target": "one enemy",
+    "description": "Shoots a Heat Blast",
+    "cast_clip": "F0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3252,
+     3
+    ]
+   },
+   "replaces": {
+    "id": 63,
+    "name": "Mega Flame"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "A heat blast from the wings.",
+    "dash": false,
+    "clip": "F0"
+   },
+   "effect": {
+    "files": null,
+    "file_ids": [
+     2990,
+     2978,
+     3055,
+     3053,
+     953,
+     915
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 63,
+     "name": "Mega Flame"
+    }
+   },
+   "move": {
+    "power": 258,
+    "element": "fire",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Hand-made import, DW2 skill; canon \"Heat Viper\"."
+  },
+  {
+   "species": 183,
+   "species_name": "Wormmon",
+   "level": "rookie",
+   "name": "Sticky Net",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Sticky Net",
+    "power": 300
+   },
+   "replaces": {
+    "id": 98,
+    "name": "Poison Ivy"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "Spits a white silk net that wraps the target.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2021.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 98,
+     "name": "Poison Ivy"
+    }
+   },
+   "move": {
+    "power": 93,
+    "element": "nature",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 184,
+   "species_name": "Hawkmon",
+   "level": "rookie",
+   "name": "Hawk Beam",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Hawk Beam",
+    "power": 300
+   },
+   "replaces": {
+    "id": 71,
+    "name": "Boom Bubble"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "A thin red beam from the forehead feather.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/474.PAK",
+    "shared_by_cards": 3,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 71,
+     "name": "Boom Bubble"
+    }
+   },
+   "move": {
+    "power": 93,
+    "element": "air",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 185,
+   "species_name": "Armadillomon",
+   "level": "rookie",
+   "name": "Diamond Shell",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Diamond Shell",
+    "power": 280
+   },
+   "replaces": {
+    "id": 75,
+    "name": "Drill Spin"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "Curls into a ball and rolls into the target; dust trail.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2000.PAK",
+    "shared_by_cards": 12,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 75,
+     "name": "Drill Spin"
+    }
+   },
+   "move": {
+    "power": 89,
+    "element": "battle",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 187,
+   "species_name": "Stingmon",
+   "level": "champion",
+   "name": "Spiking Strike",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Spiking Strike",
+    "power": 530
+   },
+   "replaces": {
+    "id": 62,
+    "name": "Death Claw"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "Darts in and stabs with the wrist stinger; green spark.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2004.PAK",
+    "shared_by_cards": 12,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 62,
+     "name": "Death Claw"
+    }
+   },
+   "move": {
+    "power": 185,
+    "element": "nature",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 188,
+   "species_name": "Aquilamon",
+   "level": "champion",
+   "name": "Mach Impulse",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Mach Impulse",
+    "power": 570
+   },
+   "replaces": {
+    "id": 84,
+    "name": "Aerial Attack"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "Dives at sonic speed; white shock rings behind it.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/474.PAK",
+    "shared_by_cards": 3,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 84,
+     "name": "Aerial Attack"
+    }
+   },
+   "move": {
+    "power": 193,
+    "element": "air",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 189,
+   "species_name": "Ankylomon",
+   "level": "champion",
+   "name": "Tail Hammer",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Tail Hammer",
+    "power": 420
+   },
+   "replaces": {
+    "id": 75,
+    "name": "Drill Spin"
+   },
+   "behavior": {
+    "kind": "melee",
+    "target": "one",
+    "hits": 1,
+    "look": "Turns and slams its club tail down; ground shockwave.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2004.PAK",
+    "shared_by_cards": 12,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 75,
+     "name": "Drill Spin"
+    }
+   },
+   "move": {
+    "power": 164,
+    "element": "battle",
+    "range": 1,
+    "distance": 0,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 190,
+   "species_name": "Angewomon",
+   "level": "ultimate",
+   "name": "Celestial Arrow",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Celestial Arrow",
+    "power": 720
+   },
+   "replaces": {
+    "id": 62,
+    "name": "Death Claw"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "Draws a bow of light and fires one shining arrow.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2015.PAK",
+    "shared_by_cards": 3,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 62,
+     "name": "Death Claw"
+    }
+   },
+   "move": {
+    "power": 239,
+    "element": "air",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 191,
+   "species_name": "MetalGarurumon",
+   "level": "mega",
+   "name": "Metal Wolf Claw",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Metal Wolf Claw",
+    "power": 700
+   },
+   "replaces": {
+    "id": 78,
+    "name": "Genoside Attack"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "A freezing blue beam from the mouth; frost on impact.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2041.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 78,
+     "name": "Genoside Attack"
+    }
+   },
+   "move": {
+    "power": 251,
+    "element": "ice",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Canon \"Cocytus Breath\" style beam."
+  },
+  {
+   "species": 192,
+   "species_name": "Imperialdramon",
+   "level": "mega",
+   "name": "Positron Laser",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Mega Fire",
+    "power": 980
+   },
+   "replaces": {
+    "id": 77,
+    "name": "Energy Bomb"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "The arm cannon fires a broad red-orange energy beam.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2043.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 77,
+     "name": "Energy Bomb"
+    }
+   },
+   "move": {
+    "power": 259,
+    "element": "fire",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Canon \"Positron Laser\": the source's \"Mega Fire\" read too close to DW1's Mega Flame."
+  },
+  {
+   "species": 193,
+   "species_name": "Digmon",
+   "level": "champion",
+   "name": "Gold Rush",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Gold Rush",
+    "power": 400
+   },
+   "replaces": {
+    "id": 75,
+    "name": "Drill Spin"
+   },
+   "behavior": {
+    "kind": "rain",
+    "target": "one",
+    "hits": 5,
+    "look": "Fires its drills as a volley of spinning golden spikes.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/406.PAK",
+    "shared_by_cards": 15,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 75,
+     "name": "Drill Spin"
+    }
+   },
+   "move": {
+    "power": 153,
+    "element": "battle",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 194,
+   "species_name": "ExVeemon",
+   "level": "champion",
+   "name": "Ex-Laser",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Ex-Laser",
+    "power": 580
+   },
+   "replaces": {
+    "id": 63,
+    "name": "Mega Flame"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "An X-shaped beam from the chest emblem.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/449.PAK",
+    "shared_by_cards": 3,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 63,
+     "name": "Mega Flame"
+    }
+   },
+   "move": {
+    "power": 195,
+    "element": "fire",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 195,
+   "species_name": "Flamedramon",
+   "level": "champion",
+   "name": "Fire Rocket",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Fire Rocket",
+    "power": 500
+   },
+   "replaces": {
+    "id": 61,
+    "name": "Fireball"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "Wreathed in flame, it rockets into the target.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/435.PAK",
+    "shared_by_cards": 33,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 61,
+     "name": "Fireball"
+    }
+   },
+   "move": {
+    "power": 175,
+    "element": "fire",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 196,
+   "species_name": "Halsemon",
+   "level": "champion",
+   "name": "Tempest Wing",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Tempest Wing",
+    "power": 400
+   },
+   "replaces": {
+    "id": 69,
+    "name": "Spnning Needle"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "Spins into a horizontal whirlwind that drills through the target.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2006.PAK",
+    "shared_by_cards": 8,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 69,
+     "name": "Spnning Needle"
+    }
+   },
+   "move": {
+    "power": 153,
+    "element": "air",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 197,
+   "species_name": "Magnamon",
+   "level": "ultimate",
+   "name": "Plasma Shot",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Plasma Shot",
+    "power": 550
+   },
+   "replaces": {
+    "id": 77,
+    "name": "Energy Bomb"
+   },
+   "behavior": {
+    "kind": "rain",
+    "target": "one",
+    "hits": 4,
+    "look": "Golden plasma missiles burst from the armour.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/450.PAK",
+    "shared_by_cards": 5,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 77,
+     "name": "Energy Bomb"
+    }
+   },
+   "move": {
+    "power": 198,
+    "element": "mech",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 198,
+   "species_name": "Nefertimon",
+   "level": "champion",
+   "name": "Rocking Stone",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Rocking Stone",
+    "power": 500
+   },
+   "replaces": {
+    "id": 86,
+    "name": "Solar Ray"
+   },
+   "behavior": {
+    "kind": "thrown",
+    "target": "one",
+    "hits": 2,
+    "look": "Two carved stone tablets drop onto the target.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/435.PAK",
+    "shared_by_cards": 33,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 86,
+     "name": "Solar Ray"
+    }
+   },
+   "move": {
+    "power": 175,
+    "element": "air",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Element follows the specialties (Air/Fire); stone suits neither."
+  },
+  {
+   "species": 199,
+   "species_name": "Paildramon",
+   "level": "ultimate",
+   "name": "Desperado Blaster",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Desperado Blaster",
+    "power": 800
+   },
+   "replaces": {
+    "id": 78,
+    "name": "Genoside Attack"
+   },
+   "behavior": {
+    "kind": "rain",
+    "target": "one",
+    "hits": 6,
+    "look": "Rapid fire from both hip guns.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/435.PAK",
+    "shared_by_cards": 33,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 78,
+     "name": "Genoside Attack"
+    }
+   },
+   "move": {
+    "power": 258,
+    "element": "mech",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 200,
+   "species_name": "Pegasusmon",
+   "level": "champion",
+   "name": "Star Shower",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Star Shower",
+    "power": 400
+   },
+   "replaces": {
+    "id": 84,
+    "name": "Aerial Attack"
+   },
+   "behavior": {
+    "kind": "rain",
+    "target": "one",
+    "hits": 6,
+    "look": "Golden stars rain from above onto the target.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2037.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 84,
+     "name": "Aerial Attack"
+    }
+   },
+   "move": {
+    "power": 153,
+    "element": "air",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 201,
+   "species_name": "Lighdramon",
+   "level": "champion",
+   "name": "Lightning Blast",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Lightning Blast",
+    "power": 300
+   },
+   "replaces": {
+    "id": 86,
+    "name": "Solar Ray"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "A crackling lightning bolt from the mouth.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2019.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 86,
+     "name": "Solar Ray"
+    }
+   },
+   "move": {
+    "power": 133,
+    "element": "air",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 202,
+   "species_name": "Submarimon",
+   "level": "champion",
+   "name": "Submarine Attack",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Submarine Attack",
+    "power": 400
+   },
+   "replaces": {
+    "id": 90,
+    "name": "Blasting Spout"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "Rams the target like a torpedo; a spray of water.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2059.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 90,
+     "name": "Blasting Spout"
+    }
+   },
+   "move": {
+    "power": 153,
+    "element": "ice",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 203,
+   "species_name": "Veedramon",
+   "level": "champion",
+   "name": "V-Nova Blast",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "V-Nova Blast",
+    "power": 500
+   },
+   "replaces": {
+    "id": 63,
+    "name": "Mega Flame"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "A blazing beam from the chest V.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/449.PAK",
+    "shared_by_cards": 3,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 63,
+     "name": "Mega Flame"
+    }
+   },
+   "move": {
+    "power": 175,
+    "element": "fire",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 205,
+   "species_name": "MegaKabuterimon",
+   "level": "ultimate",
+   "name": "Horn Buster",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Horn Buster",
+    "power": 700
+   },
+   "replaces": {
+    "id": 73,
+    "name": "Bit Bomb"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "Electric energy gathers on the horn and fires as a bolt.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/496.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 73,
+     "name": "Bit Bomb"
+    }
+   },
+   "move": {
+    "power": 234,
+    "element": "air",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Electrical = Air in DW1."
+  },
+  {
+   "species": 206,
+   "species_name": "MagnaAngemon",
+   "level": "ultimate",
+   "name": "Gate of Destiny",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "The Gate of Destiny",
+    "power": 770
+   },
+   "replaces": {
+    "id": 62,
+    "name": "Death Claw"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "Draws a golden gate in the air that pulls the target in.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/498.PAK",
+    "shared_by_cards": 3,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 62,
+     "name": "Death Claw"
+    }
+   },
+   "move": {
+    "power": 254,
+    "element": "air",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Source \"The Gate of Destiny\"; article dropped to fit."
+  },
+  {
+   "species": 207,
+   "species_name": "Seraphimon",
+   "level": "mega",
+   "name": "Seventh Heaven",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Seventh Heaven",
+    "power": 900
+   },
+   "replaces": {
+    "id": 61,
+    "name": "Fireball"
+   },
+   "behavior": {
+    "kind": "rain",
+    "target": "one",
+    "hits": 7,
+    "look": "Seven golden orbs circle and strike in turn.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2046.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 112,
+     "name": "High Electro Shocker"
+    }
+   },
+   "move": {
+    "power": 256,
+    "element": "air",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 208,
+   "species_name": "Togemon",
+   "level": "champion",
+   "name": "Needle Spray",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Needle Spray",
+    "power": 380
+   },
+   "replaces": {
+    "id": 91,
+    "name": "Fist of the Beast King"
+   },
+   "behavior": {
+    "kind": "rain",
+    "target": "one",
+    "hits": 6,
+    "look": "Spins and sprays a burst of needles.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2003.PAK",
+    "shared_by_cards": 3,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 91,
+     "name": "Fist of the Beast King"
+    }
+   },
+   "move": {
+    "power": 145,
+    "element": "nature",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 209,
+   "species_name": "Lillymon",
+   "level": "ultimate",
+   "name": "Flower Cannon",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Flower Cannon",
+    "power": 650
+   },
+   "replaces": {
+    "id": 73,
+    "name": "Bit Bomb"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "A green energy blast from a flower held in both hands.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/400.PAK",
+    "shared_by_cards": 42,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 73,
+     "name": "Bit Bomb"
+    }
+   },
+   "move": {
+    "power": 217,
+    "element": "nature",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 210,
+   "species_name": "GranKuwagamon",
+   "level": "mega",
+   "name": "X-Scissor Claw",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "X-Scissor Claw",
+    "power": 800
+   },
+   "replaces": {
+    "id": 73,
+    "name": "Bit Bomb"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 2,
+    "look": "Two crossing slashes that leave a dark X.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2064.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 73,
+     "name": "Bit Bomb"
+    }
+   },
+   "move": {
+    "power": 254,
+    "element": "battle",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 211,
+   "species_name": "MetalSeadramon",
+   "level": "mega",
+   "name": "River of Power",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "River of Power",
+    "power": 700
+   },
+   "replaces": {
+    "id": 111,
+    "name": "Mail Strome"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "A huge blue beam from the nose cannon.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2033.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 111,
+     "name": "Mail Strome"
+    }
+   },
+   "move": {
+    "power": 251,
+    "element": "ice",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 212,
+   "species_name": "VenomMyotismon",
+   "level": "mega",
+   "name": "Venom Infusion",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Venom Infusion",
+    "power": 920
+   },
+   "replaces": {
+    "id": 96,
+    "name": "Nightmare Syndromer"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "A crimson-black blast from the chest maw.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/435.PAK",
+    "shared_by_cards": 33,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 96,
+     "name": "Nightmare Syndromer"
+    }
+   },
+   "move": {
+    "power": 257,
+    "element": "fire",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 213,
+   "species_name": "AeroVeedramon",
+   "level": "ultimate",
+   "name": "V Wing Blade",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "V Wing Blade",
+    "power": 750
+   },
+   "replaces": {
+    "id": 96,
+    "name": "Nightmare Syndromer"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "A V-shaped blade of light flung from the wings.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/497.PAK",
+    "shared_by_cards": 3,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 96,
+     "name": "Nightmare Syndromer"
+    }
+   },
+   "move": {
+    "power": 251,
+    "element": "air",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 214,
+   "species_name": "Shakkoumon",
+   "level": "ultimate",
+   "name": "Clay Bomb",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Clay Bomb",
+    "power": 680
+   },
+   "replaces": {
+    "id": 73,
+    "name": "Bit Bomb"
+   },
+   "behavior": {
+    "kind": "thrown",
+    "target": "one",
+    "hits": 3,
+    "look": "Lobs clay figurines that burst on impact.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/498.PAK",
+    "shared_by_cards": 3,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 73,
+     "name": "Bit Bomb"
+    }
+   },
+   "move": {
+    "power": 226,
+    "element": "nature",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 215,
+   "species_name": "Magnadramon",
+   "level": "mega",
+   "name": "Fire Tornado",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Fire Tornado",
+    "power": 800
+   },
+   "replaces": {
+    "id": 109,
+    "name": "Crimson Flare"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "A spiralling column of flame.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2015.PAK",
+    "shared_by_cards": 3,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 109,
+     "name": "Crimson Flare"
+    }
+   },
+   "move": {
+    "power": 254,
+    "element": "fire",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 216,
+   "species_name": "Devidramon",
+   "level": "champion",
+   "name": "Crimson Claw",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Crimson Claw",
+    "power": 520
+   },
+   "replaces": {
+    "id": 62,
+    "name": "Death Claw"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "Lunges and rakes with a red-trailed claw.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/415.PAK",
+    "shared_by_cards": 11,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 62,
+     "name": "Death Claw"
+    }
+   },
+   "move": {
+    "power": 182,
+    "element": "battle",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 217,
+   "species_name": "Gomamon",
+   "level": "rookie",
+   "name": "Marching Fishes",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Marching Fishes",
+    "power": 300
+   },
+   "replaces": {
+    "id": 95,
+    "name": "Super Slap"
+   },
+   "behavior": {
+    "kind": "rain",
+    "target": "one",
+    "hits": 5,
+    "look": "A line of fish leaps out of the ground into the target.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2002.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 95,
+     "name": "Super Slap"
+    }
+   },
+   "move": {
+    "power": 93,
+    "element": "ice",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 218,
+   "species_name": "Ikkakumon",
+   "level": "champion",
+   "name": "Harpoon Torpedo",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Harpoon Torpedo",
+    "power": 340
+   },
+   "replaces": {
+    "id": 85,
+    "name": "Bone Boomerang"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "Fires its horn as a harpoon missile.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/406.PAK",
+    "shared_by_cards": 15,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 85,
+     "name": "Bone Boomerang"
+    }
+   },
+   "move": {
+    "power": 137,
+    "element": "ice",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 219,
+   "species_name": "Zudomon",
+   "level": "ultimate",
+   "name": "Vulcan's Hammer",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Vulcan's Hammer",
+    "power": 700
+   },
+   "replaces": {
+    "id": 111,
+    "name": "Mail Strome"
+   },
+   "behavior": {
+    "kind": "melee",
+    "target": "one",
+    "hits": 1,
+    "look": "Brings the hammer down; a ring of energy bursts out.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/443.PAK",
+    "shared_by_cards": 7,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 111,
+     "name": "Mail Strome"
+    }
+   },
+   "move": {
+    "power": 234,
+    "element": "battle",
+    "range": 1,
+    "distance": 0,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [],
+    "mpCost": 40
+   },
+   "notes": "An electric hammer is an open request (ideas.md); Air is not among its specialties."
+  },
+  {
+   "species": 220,
+   "species_name": "Vikemon",
+   "level": "mega",
+   "name": "Arctic Blizzard",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Arctic Blizzard",
+    "power": 760
+   },
+   "replaces": {
+    "id": 111,
+    "name": "Mail Strome"
+   },
+   "behavior": {
+    "kind": "breath",
+    "target": "one",
+    "hits": 1,
+    "look": "Swings its morning stars and blasts the target with a freezing gale.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2014.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 111,
+     "name": "Mail Strome"
+    }
+   },
+   "move": {
+    "power": 253,
+    "element": "ice",
+    "range": 2,
+    "distance": 90000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 15,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 221,
+   "species_name": "Salamon",
+   "level": "rookie",
+   "name": "Puppy Howling",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Puppy Howling",
+    "power": 300
+   },
+   "replaces": {
+    "id": 71,
+    "name": "Boom Bubble"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "A high howl; sound rings fly at the target.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2063.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 71,
+     "name": "Boom Bubble"
+    }
+   },
+   "move": {
+    "power": 93,
+    "element": "air",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 222,
+   "species_name": "BlackGatomon",
+   "level": "champion",
+   "name": "Cat's Eyes",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Cat's Eyes",
+    "power": 240,
+    "note": "BlackGatomon card, triangle... third attack (Lightning Paw is shared with Gatomon)"
+   },
+   "replaces": {
+    "id": 83,
+    "name": "Dark Claw"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "Its eyes flash; a violet ripple hits the target.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2005.PAK",
+    "shared_by_cards": null,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 83,
+     "name": "Dark Claw"
+    }
+   },
+   "move": {
+    "power": 130,
+    "element": "air",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Lightning Paw stays with Gatomon (canon owner). No status: the card data has none."
+  },
+  {
+   "species": 223,
+   "species_name": "LadyDevimon",
+   "level": "ultimate",
+   "name": "Darkness Wave",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Darkness Wave",
+    "power": 620
+   },
+   "replaces": {
+    "id": 75,
+    "name": "Drill Spin"
+   },
+   "behavior": {
+    "kind": "rain",
+    "target": "one",
+    "hits": 6,
+    "look": "A swarm of black bats flies at the target.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2025.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 62,
+     "name": "Death Claw"
+    }
+   },
+   "move": {
+    "power": 213,
+    "element": "air",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 224,
+   "species_name": "MetalGreymonVaccine",
+   "level": "ultimate",
+   "name": "Trident Arm",
+   "source": {
+    "game": "dw1",
+    "basis": "canon",
+    "name": null,
+    "note": "recoloured DW1 MetalGreymon; canon MetalGreymon (Vaccine) attack"
+   },
+   "replaces": {
+    "id": 79,
+    "name": "Giga Scissor Claw"
+   },
+   "behavior": {
+    "kind": "thrown",
+    "target": "one",
+    "hits": 1,
+    "look": "Fires its metal claw arm on a cable; it clamps the target and snaps back.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW1 effects",
+    "status": "dw1-template",
+    "template": {
+     "id": 79,
+     "name": "Giga Scissor Claw"
+    }
+   },
+   "move": {
+    "power": 228,
+    "element": "mech",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Recoloured native: it used MetalGreymon's Giga Destroyer (79)."
+  },
+  {
+   "species": 225,
+   "species_name": "Shurimon",
+   "level": "champion",
+   "name": "Double Stars",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Double Stars",
+    "power": 450
+   },
+   "replaces": {
+    "id": 89,
+    "name": "Iga School Knife Throw"
+   },
+   "behavior": {
+    "kind": "thrown",
+    "target": "one",
+    "hits": 2,
+    "look": "Two giant shuriken flung from its arms.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2057.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 89,
+     "name": "Iga School Knife Throw"
+    }
+   },
+   "move": {
+    "power": 168,
+    "element": "battle",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 226,
+   "species_name": "Silphymon",
+   "level": "ultimate",
+   "name": "Top Gun",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Top Gun",
+    "power": 680
+   },
+   "replaces": {
+    "id": 62,
+    "name": "Death Claw"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "A sphere of red-white energy from both hands.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2048.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 62,
+     "name": "Death Claw"
+    }
+   },
+   "move": {
+    "power": 226,
+    "element": "air",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 227,
+   "species_name": "Apemon",
+   "level": "champion",
+   "name": "Angry Spike",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Angry Spike",
+    "power": 550
+   },
+   "replaces": {
+    "id": 81,
+    "name": "Pummel Whack"
+   },
+   "behavior": {
+    "kind": "thrown",
+    "target": "one",
+    "hits": 1,
+    "look": "Hurls its bone club end over end.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2003.PAK",
+    "shared_by_cards": 3,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 81,
+     "name": "Pummel Whack"
+    }
+   },
+   "move": {
+    "power": 190,
+    "element": "battle",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 228,
+   "species_name": "Baronmon",
+   "level": "champion",
+   "name": "Dancing Meteor",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Dancing Meteor",
+    "power": 550
+   },
+   "replaces": {
+    "id": 94,
+    "name": "Meteor Wing"
+   },
+   "behavior": {
+    "kind": "rain",
+    "target": "one",
+    "hits": 5,
+    "look": "Flaming meteors fall on the target.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2044.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 94,
+     "name": "Meteor Wing"
+    }
+   },
+   "move": {
+    "power": 190,
+    "element": "fire",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 229,
+   "species_name": "Phantomon",
+   "level": "ultimate",
+   "name": "Shadow Scythe",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Shadow Scythe",
+    "power": 600
+   },
+   "replaces": {
+    "id": 111,
+    "name": "Mail Strome"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "Sweeps the scythe; a dark crescent.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2075.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 111,
+     "name": "Mail Strome"
+    }
+   },
+   "move": {
+    "power": 204,
+    "element": "battle",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 230,
+   "species_name": "Rosemon",
+   "level": "mega",
+   "name": "Thorny Whipping",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Throny Whipping",
+    "power": 720
+   },
+   "replaces": {
+    "id": 73,
+    "name": "Bit Bomb"
+   },
+   "behavior": {
+    "kind": "melee",
+    "target": "one",
+    "hits": 3,
+    "look": "Lashes three times with a thorned whip.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2054.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 73,
+     "name": "Bit Bomb"
+    }
+   },
+   "move": {
+    "power": 252,
+    "element": "nature",
+    "range": 1,
+    "distance": 0,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [],
+    "mpCost": 40
+   },
+   "notes": "Source spelling \"Throny\" corrected."
+  },
+  {
+   "species": 231,
+   "species_name": "ShellNumemon",
+   "level": "champion",
+   "name": "Shell Attack",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Shell's Attack",
+    "power": 250
+   },
+   "replaces": {
+    "id": 89,
+    "name": "Iga School Knife Throw"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "Slams the target with its shell.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2000.PAK",
+    "shared_by_cards": 12,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 89,
+     "name": "Iga School Knife Throw"
+    }
+   },
+   "move": {
+    "power": 131,
+    "element": "filth",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Source \"Shell's Attack\"; possessive dropped."
+  },
+  {
+   "species": 232,
+   "species_name": "BomberNanimon",
+   "level": "champion",
+   "name": "Free Throw Bomb",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Free Throw Bomb",
+    "power": 520
+   },
+   "replaces": {
+    "id": 89,
+    "name": "Iga School Knife Throw"
+   },
+   "behavior": {
+    "kind": "thrown",
+    "target": "one",
+    "hits": 1,
+    "look": "Lobs a big round bomb; it explodes on the target.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/406.PAK",
+    "shared_by_cards": 15,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 89,
+     "name": "Iga School Knife Throw"
+    }
+   },
+   "move": {
+    "power": 182,
+    "element": "mech",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 233,
+   "species_name": "RedOtamamon",
+   "level": "rookie",
+   "name": "Boiling Bubble",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Boiling Bubble",
+    "power": 300
+   },
+   "replaces": {
+    "id": 61,
+    "name": "Fireball"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 3,
+    "look": "Blows three boiling bubbles.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2017.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 59,
+     "name": "Pepper Breath"
+    }
+   },
+   "move": {
+    "power": 93,
+    "element": "fire",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 234,
+   "species_name": "Gatomon",
+   "level": "champion",
+   "name": "Lightning Paw",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Lightning Paw",
+    "power": 410
+   },
+   "replaces": {
+    "id": 83,
+    "name": "Dark Claw"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "Darts in with a glowing paw punch.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/412.PAK",
+    "shared_by_cards": 8,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 82,
+     "name": "Hand of Fate"
+    }
+   },
+   "move": {
+    "power": 161,
+    "element": "air",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 235,
+   "species_name": "Candlemon",
+   "level": "rookie",
+   "name": "Flame Bomber",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Flame Bomber",
+    "power": 380
+   },
+   "replaces": {
+    "id": 99,
+    "name": "Blue Blaster"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "Flings its head flame as a fireball.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/400.PAK",
+    "shared_by_cards": 42,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 99,
+     "name": "Blue Blaster"
+    }
+   },
+   "move": {
+    "power": 100,
+    "element": "fire",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 236,
+   "species_name": "DemiDevimon",
+   "level": "rookie",
+   "name": "Demi Dart",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Demi Dart",
+    "power": 360
+   },
+   "replaces": {
+    "id": 69,
+    "name": "Spnning Needle"
+   },
+   "behavior": {
+    "kind": "thrown",
+    "target": "one",
+    "hits": 1,
+    "look": "Throws a syringe dart.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2029.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 69,
+     "name": "Spnning Needle"
+    }
+   },
+   "move": {
+    "power": 99,
+    "element": "battle",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 237,
+   "species_name": "Diaboromon",
+   "level": "mega",
+   "name": "Inferno Missile",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Inferno Missile",
+    "power": 970
+   },
+   "replaces": {
+    "id": 80,
+    "name": "Dark Shot"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "A black-red energy blast from the chest.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/435.PAK",
+    "shared_by_cards": 33,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 80,
+     "name": "Dark Shot"
+    }
+   },
+   "move": {
+    "power": 259,
+    "element": "mech",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 238,
+   "species_name": "Dolphmon",
+   "level": "champion",
+   "name": "Pulse Blast",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Pulse Blast",
+    "power": 330
+   },
+   "replaces": {
+    "id": 90,
+    "name": "Blasting Spout"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "Ultrasonic rings from the head.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/486.PAK",
+    "shared_by_cards": 2,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 90,
+     "name": "Blasting Spout"
+    }
+   },
+   "move": {
+    "power": 135,
+    "element": "air",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Sound = Air."
+  },
+  {
+   "species": 239,
+   "species_name": "Gizamon",
+   "level": "rookie",
+   "name": "Spiral Saw",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Spiral Saw",
+    "power": 260
+   },
+   "replaces": {
+    "id": 95,
+    "name": "Super Slap"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "Spins with its fin like a saw blade.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2000.PAK",
+    "shared_by_cards": 12,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 95,
+     "name": "Super Slap"
+    }
+   },
+   "move": {
+    "power": 86,
+    "element": "battle",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 240,
+   "species_name": "Gesomon",
+   "level": "champion",
+   "name": "Coral Crusher",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Coral Crusher",
+    "power": 400
+   },
+   "replaces": {
+    "id": 87,
+    "name": "Hydro Pressure"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 3,
+    "look": "Fires sharp lumps of coral.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2065.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 87,
+     "name": "Hydro Pressure"
+    }
+   },
+   "move": {
+    "power": 153,
+    "element": "ice",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 241,
+   "species_name": "Wizardmon",
+   "level": "champion",
+   "name": "Thunder Ball",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Thunder Ball",
+    "power": 540
+   },
+   "replaces": {
+    "id": 86,
+    "name": "Solar Ray"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "A ball of lightning from the staff.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/402.PAK",
+    "shared_by_cards": 16,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 86,
+     "name": "Solar Ray"
+    }
+   },
+   "move": {
+    "power": 187,
+    "element": "air",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 242,
+   "species_name": "Sorcermon",
+   "level": "champion",
+   "name": "Crystal Cloud",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Crystal Cloud",
+    "power": 440
+   },
+   "replaces": {
+    "id": 88,
+    "name": "Ice Blast"
+   },
+   "behavior": {
+    "kind": "breath",
+    "target": "one",
+    "hits": 1,
+    "look": "A cloud of ice crystals engulfs the target.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2068.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 88,
+     "name": "Ice Blast"
+    }
+   },
+   "move": {
+    "power": 166,
+    "element": "ice",
+    "range": 2,
+    "distance": 90000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 15,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 243,
+   "species_name": "Starmon",
+   "level": "champion",
+   "name": "Meteor Stream",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Meteor Stream",
+    "power": 470
+   },
+   "replaces": {
+    "id": 94,
+    "name": "Meteor Wing"
+   },
+   "behavior": {
+    "kind": "rain",
+    "target": "one",
+    "hits": 5,
+    "look": "Small burning stars stream down on the target.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/450.PAK",
+    "shared_by_cards": 5,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 94,
+     "name": "Meteor Wing"
+    }
+   },
+   "move": {
+    "power": 170,
+    "element": "fire",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 244,
+   "species_name": "SuperStarmon",
+   "level": "ultimate",
+   "name": "Comet Cluster",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Comet Cluster",
+    "power": 730
+   },
+   "replaces": {
+    "id": 61,
+    "name": "Fireball"
+   },
+   "behavior": {
+    "kind": "rain",
+    "target": "one",
+    "hits": 6,
+    "look": "A cluster of comets falls on the target.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/435.PAK",
+    "shared_by_cards": 33,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 112,
+     "name": "High Electro Shocker"
+    }
+   },
+   "move": {
+    "power": 245,
+    "element": "fire",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 245,
+   "species_name": "Piedmon",
+   "level": "mega",
+   "name": "Trump Sword",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Trump Sword",
+    "power": 800
+   },
+   "replaces": {
+    "id": 62,
+    "name": "Death Claw"
+   },
+   "behavior": {
+    "kind": "thrown",
+    "target": "one",
+    "hits": 4,
+    "look": "Four swords thrown in a fan.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2020.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 62,
+     "name": "Death Claw"
+    }
+   },
+   "move": {
+    "power": 254,
+    "element": "battle",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 246,
+   "species_name": "Infermon",
+   "level": "ultimate",
+   "name": "Hades' Grenade",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Hades' Grenade",
+    "power": 610
+   },
+   "replaces": {
+    "id": 78,
+    "name": "Genoside Attack"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "A dark sphere fired from the mouth.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/435.PAK",
+    "shared_by_cards": 33,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 74,
+     "name": "Deadly Bomb"
+    }
+   },
+   "move": {
+    "power": 209,
+    "element": "mech",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Apostrophe: check every font."
+  },
+  {
+   "species": 247,
+   "species_name": "Kokuwamon",
+   "level": "rookie",
+   "name": "Mini Scissor Claws",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Mini Scissor Claws",
+    "power": 270
+   },
+   "replaces": {
+    "id": 66,
+    "name": "Electric Shock"
+   },
+   "behavior": {
+    "kind": "melee",
+    "target": "one",
+    "hits": 2,
+    "look": "Two quick pincer snips with a spark.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/472.PAK",
+    "shared_by_cards": 5,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 66,
+     "name": "Electric Shock"
+    }
+   },
+   "move": {
+    "power": 88,
+    "element": "mech",
+    "range": 1,
+    "distance": 0,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 248,
+   "species_name": "MarineAngemon",
+   "level": "mega",
+   "name": "Ocean Love",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Ocean Love",
+    "power": 630
+   },
+   "replaces": {
+    "id": 60,
+    "name": "Lovely Attack"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 3,
+    "look": "Pink heart bubbles float into the target.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/471.PAK",
+    "shared_by_cards": 3,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 60,
+     "name": "Lovely Attack"
+    }
+   },
+   "move": {
+    "power": 250,
+    "element": "ice",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Canon calms the target; no status in the card data."
+  },
+  {
+   "species": 249,
+   "species_name": "Quetzalmon",
+   "level": "champion",
+   "name": "Freezing Wave",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Freezing Wave",
+    "power": 400
+   },
+   "replaces": {
+    "id": 69,
+    "name": "Spnning Needle"
+   },
+   "behavior": {
+    "kind": "breath",
+    "target": "one",
+    "hits": 1,
+    "look": "A breath of freezing wind.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2039.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 69,
+     "name": "Spnning Needle"
+    }
+   },
+   "move": {
+    "power": 153,
+    "element": "ice",
+    "range": 2,
+    "distance": 90000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 15,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 250,
+   "species_name": "Shadramon",
+   "level": "champion",
+   "name": "Flare Buster",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Flare Buster",
+    "power": 500
+   },
+   "replaces": {
+    "id": 61,
+    "name": "Fireball"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "A flame blast from the horn.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/435.PAK",
+    "shared_by_cards": 33,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 61,
+     "name": "Fireball"
+    }
+   },
+   "move": {
+    "power": 175,
+    "element": "fire",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 251,
+   "species_name": "Solarmon",
+   "level": "rookie",
+   "name": "Solar Flare",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Solar Flare",
+    "power": 350
+   },
+   "replaces": {
+    "id": 70,
+    "name": "Spiral Twister"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "A bright solar flash from its face.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/400.PAK",
+    "shared_by_cards": 42,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 70,
+     "name": "Spiral Twister"
+    }
+   },
+   "move": {
+    "power": 97,
+    "element": "fire",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 252,
+   "species_name": "Thundermon",
+   "level": "champion",
+   "name": "Thunder Volt",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Thunder Volt",
+    "power": 350
+   },
+   "replaces": {
+    "id": 86,
+    "name": "Solar Ray"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "Lightning shot from both maces.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2023.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 86,
+     "name": "Solar Ray"
+    }
+   },
+   "move": {
+    "power": 140,
+    "element": "air",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 253,
+   "species_name": "Tuskmon",
+   "level": "champion",
+   "name": "Slamming Tusk",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Slamming Tusk",
+    "power": 410
+   },
+   "replaces": {
+    "id": 75,
+    "name": "Drill Spin"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "Charges tusk first.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2004.PAK",
+    "shared_by_cards": 12,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 75,
+     "name": "Drill Spin"
+    }
+   },
+   "move": {
+    "power": 161,
+    "element": "battle",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 254,
+   "species_name": "Tylomon",
+   "level": "champion",
+   "name": "Torpedo Attack",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Torpedo Attack",
+    "power": 350
+   },
+   "replaces": {
+    "id": 87,
+    "name": "Hydro Pressure"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 2,
+    "look": "Two torpedoes from the back.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2038.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 87,
+     "name": "Hydro Pressure"
+    }
+   },
+   "move": {
+    "power": 140,
+    "element": "ice",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 255,
+   "species_name": "Valkyrimon",
+   "level": "mega",
+   "name": "Feral Sword",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Feral Sword",
+    "power": 840
+   },
+   "replaces": {
+    "id": 111,
+    "name": "Mail Strome"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "A single sweeping cut of the sword.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2001.PAK",
+    "shared_by_cards": 2,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 111,
+     "name": "Mail Strome"
+    }
+   },
+   "move": {
+    "power": 256,
+    "element": "battle",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 256,
+   "species_name": "VioletElecmon",
+   "level": "rookie",
+   "name": "Jamming Thunder",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Jamming Thunder",
+    "power": 260
+   },
+   "replaces": {
+    "id": 101,
+    "name": "Super Thunder Strike"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "A jagged violet lightning bolt.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2080.PAK",
+    "shared_by_cards": 2,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 101,
+     "name": "Super Thunder Strike"
+    }
+   },
+   "move": {
+    "power": 86,
+    "element": "air",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 257,
+   "species_name": "Triceramon",
+   "level": "ultimate",
+   "name": "Tri-Horn Attack",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Tri<49>Horn Attack",
+    "power": 70,
+    "dw2_element": "neutral",
+    "dw2_target": "one enemy",
+    "description": "Attacks <f0><41> a Horn",
+    "cast_clip": "H0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3242,
+     3
+    ]
+   },
+   "replaces": {
+    "id": 73,
+    "name": "Bit Bomb"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "Charges horns first.",
+    "dash": true,
+    "clip": "H0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFEUA/MEUA3900.BIN",
+     "EFFECT/EFFEUA/MEUA4000.BIN",
+     "EFFECT/EFFEUA/AEUA3900.BIN",
+     "EFFECT/EFFEUA/AEUA4000.BIN",
+     "EFFECT/EFFESD/MESD0600.BIN",
+     "EFFECT/EFFESD/AESD0600.BIN"
+    ],
+    "file_ids": [
+     3121,
+     3126,
+     3135,
+     3140,
+     956,
+     918
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 73,
+     "name": "Bit Bomb"
+    }
+   },
+   "move": {
+    "power": 247,
+    "element": "battle",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 258,
+   "species_name": "SaberLeomon",
+   "level": "mega",
+   "name": "Howling Crusher",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Howling Crusher",
+    "power": 90,
+    "dw2_element": "neutral",
+    "dw2_target": "one enemy",
+    "description": "No Counter<54> Claw attack",
+    "cast_clip": "H0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3242,
+     7
+    ]
+   },
+   "replaces": {
+    "id": 62,
+    "name": "Death Claw"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "A claw strike from a leap.",
+    "dash": true,
+    "clip": "H0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFEUA/MEUA1400.BIN",
+     "EFFECT/EFFEUA/MEUA1500.BIN",
+     "EFFECT/EFFEUA/AEUA1400.BIN",
+     "EFFECT/EFFEUA/AEUA1500.BIN",
+     "EFFECT/EFFESD/MESD1500.BIN",
+     "EFFECT/EFFESD/AESD1500.BIN"
+    ],
+    "file_ids": [
+     2083,
+     2087,
+     2104,
+     2110,
+     3137,
+     3149
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 62,
+     "name": "Death Claw"
+    }
+   },
+   "move": {
+    "power": 258,
+    "element": "battle",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Source: \"no counter\"; DW1 finishers already cannot be blocked."
+  },
+  {
+   "species": 259,
+   "species_name": "Okuwamon",
+   "level": "ultimate",
+   "name": "Duo Scissor Claw",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Duo ScissorClaw",
+    "power": 40,
+    "dw2_element": "neutral",
+    "dw2_target": "all enemies",
+    "description": "Lowers <f0>Y foes Def<55> Power",
+    "cast_clip": "H0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3244,
+     0
+    ]
+   },
+   "replaces": {
+    "id": 73,
+    "name": "Bit Bomb"
+   },
+   "behavior": {
+    "kind": "area",
+    "target": "all",
+    "hits": 2,
+    "look": "Two crossing slash arcs over every enemy.",
+    "dash": false,
+    "clip": "H0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFEUA/MEUA1400.BIN",
+     "EFFECT/EFFEUA/MEUA1500.BIN",
+     "EFFECT/EFFEUA/AEUA1400.BIN",
+     "EFFECT/EFFEUA/AEUA1500.BIN",
+     "EFFECT/EFFESD/MESD1500.BIN",
+     "EFFECT/EFFESD/AESD1500.BIN"
+    ],
+    "file_ids": [
+     2083,
+     2087,
+     2104,
+     2110,
+     3137,
+     3149
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 73,
+     "name": "Bit Bomb"
+    }
+   },
+   "move": {
+    "power": 196,
+    "element": "battle",
+    "range": 3,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Source also lowers Defense and Power; DW1 has no debuff."
+  },
+  {
+   "species": 260,
+   "species_name": "MetalTyrannomon",
+   "level": "ultimate",
+   "name": "Nuclear Laser",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Fire Blast II",
+    "power": 75,
+    "dw2_element": "machine",
+    "dw2_target": "one enemy",
+    "description": "Fires an Organic Missile",
+    "cast_clip": "F0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3233,
+     7
+    ]
+   },
+   "replaces": {
+    "id": 74,
+    "name": "Deadly Bomb"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "Fires an organic missile from the arm.",
+    "dash": false,
+    "clip": "F0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFESA/MESA0000.BIN",
+     "EFFECT/EFFESA/AESA0000.BIN",
+     "EFFECT/EFFESD/MESD0000.BIN",
+     "EFFECT/EFFESD/AESD0000.BIN"
+    ],
+    "file_ids": [
+     934,
+     896,
+     953,
+     915
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 74,
+     "name": "Deadly Bomb"
+    }
+   },
+   "move": {
+    "power": 254,
+    "element": "mech",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Canon \"Nuclear Laser\": the source's \"Fire Blast II\" read like DarkTyrannomon's Fire Blast (\"Giga Destroyer\" is already MetalGreymon's name)."
+  },
+  {
+   "species": 261,
+   "species_name": "Tortomon",
+   "level": "champion",
+   "name": "Strong Carapace",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Strong Carapace",
+    "power": 20,
+    "dw2_element": "neutral",
+    "dw2_target": "all enemies",
+    "description": "Shoots Horns at <f0>Y foes",
+    "cast_clip": "F0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3235,
+     0
+    ]
+   },
+   "replaces": {
+    "id": 89,
+    "name": "Iga School Knife Throw"
+   },
+   "behavior": {
+    "kind": "area",
+    "target": "all",
+    "hits": 3,
+    "look": "Shoots the horns of its shell at every enemy.",
+    "dash": false,
+    "clip": "F0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFESA/MESA6000.BIN",
+     "EFFECT/EFFESA/MESA6100.BIN",
+     "EFFECT/EFFESA/AESA6000.BIN",
+     "EFFECT/EFFESA/AESA6100.BIN",
+     "EFFECT/EFFESD/MESD7400.BIN",
+     "EFFECT/EFFESD/AESD7400.BIN"
+    ],
+    "file_ids": [
+     2774,
+     2271,
+     2728,
+     2256,
+     1002,
+     1030
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 89,
+     "name": "Iga School Knife Throw"
+    }
+   },
+   "move": {
+    "power": 130,
+    "element": "battle",
+    "range": 3,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Weak in DW2 (20)."
+  },
+  {
+   "species": 262,
+   "species_name": "Flymon",
+   "level": "champion",
+   "name": "Brown Stinger",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Brown Stinger",
+    "power": 40,
+    "dw2_element": "nature",
+    "dw2_target": "one enemy",
+    "description": "Shoots Poison Needles",
+    "cast_clip": "F0",
+    "status_flags": "0x2",
+    "voice_xa": [
+     3229,
+     6
+    ]
+   },
+   "replaces": {
+    "id": 69,
+    "name": "Spnning Needle"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 3,
+    "look": "Shoots poisoned needles.",
+    "dash": false,
+    "clip": "F0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFESA/MESA4000.BIN",
+     "EFFECT/EFFESA/MESA4100.BIN",
+     "EFFECT/EFFESA/AESA4000.BIN",
+     "EFFECT/EFFESA/AESA4100.BIN",
+     "EFFECT/EFFESD/MESD7100.BIN",
+     "EFFECT/EFFESD/AESD7100.BIN"
+    ],
+    "file_ids": [
+     2759,
+     2732,
+     2726,
+     2764,
+     1011,
+     1020
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 69,
+     "name": "Spnning Needle"
+    }
+   },
+   "move": {
+    "power": 160,
+    "element": "nature",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 1,
+    "statusChance": 20,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Source inflicts poison."
+  },
+  {
+   "species": 263,
+   "species_name": "Mushroomon",
+   "level": "rookie",
+   "name": "Fungus Cruncher",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Fungus Cruncher",
+    "power": 0,
+    "dw2_element": "neutral",
+    "dw2_target": "self",
+    "description": "Poison foe during attack",
+    "cast_clip": "G0",
+    "status_flags": "0x8000",
+    "voice_xa": [
+     3245,
+     1
+    ]
+   },
+   "replaces": {
+    "id": 75,
+    "name": "Drill Spin"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "A cloud of poison spores (poison 20 %).",
+    "dash": false,
+    "clip": "G0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFEMA/MEMA4000.BIN",
+     "EFFECT/EFFEMA/MEMA4100.BIN",
+     "EFFECT/EFFEMA/AEMA4000.BIN",
+     "EFFECT/EFFEMA/AEMA4100.BIN",
+     "EFFECT/EFFEMD/MEMD0900.BIN",
+     "EFFECT/EFFEMD/AEMD0900.BIN"
+    ],
+    "file_ids": [
+     2737,
+     2287,
+     2798,
+     2353,
+     3022,
+     3061
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 75,
+     "name": "Drill Spin"
+    }
+   },
+   "move": {
+    "power": 93,
+    "element": "nature",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 1,
+    "statusChance": 20,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Source: its attacks poison for the battle; a buff would need engine code, so this damaging shot is the finisher."
+  },
+  {
+   "species": 264,
+   "species_name": "Raremon",
+   "level": "champion",
+   "name": "Buffalo Breath",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Buffalo Breath",
+    "power": 45,
+    "dw2_element": "darkness",
+    "dw2_target": "one enemy",
+    "description": "Confuses foe in Counter",
+    "cast_clip": "F0",
+    "status_flags": "0x400",
+    "voice_xa": [
+     3230,
+     3
+    ]
+   },
+   "replaces": {
+    "id": 62,
+    "name": "Death Claw"
+   },
+   "behavior": {
+    "kind": "breath",
+    "target": "one",
+    "hits": 1,
+    "look": "A foul green breath.",
+    "dash": false,
+    "clip": "F0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFEWA/MEWA0300.BIN",
+     "EFFECT/EFFEWA/AEWA0300.BIN",
+     "EFFECT/EFFEWD/MEWD0200.BIN",
+     "EFFECT/EFFEWD/AEWD0200.BIN"
+    ],
+    "file_ids": [
+     967,
+     929,
+     970,
+     932
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 62,
+     "name": "Death Claw"
+    }
+   },
+   "move": {
+    "power": 163,
+    "element": "filth",
+    "range": 2,
+    "distance": 90000,
+    "accuracy": 100,
+    "status": 2,
+    "statusChance": 20,
+    "iframes": 15,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Source confuses."
+  },
+  {
+   "species": 265,
+   "species_name": "DarkTyrannomon",
+   "level": "champion",
+   "name": "Fire Blast",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Fire Blast",
+    "power": 35,
+    "dw2_element": "fire",
+    "dw2_target": "all enemies",
+    "description": "Shoots Flame at <f0>Y foes",
+    "cast_clip": "F0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3236,
+     3
+    ]
+   },
+   "replaces": {
+    "id": 96,
+    "name": "Nightmare Syndromer"
+   },
+   "behavior": {
+    "kind": "area",
+    "target": "all",
+    "hits": 1,
+    "look": "Sweeps a stream of flame over every enemy.",
+    "dash": false,
+    "clip": "F0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFEFA/MEFA0900.BIN",
+     "EFFECT/EFFEFA/MEFA1000.BIN",
+     "EFFECT/EFFEFA/AEFA0900.BIN",
+     "EFFECT/EFFEFA/AEFA1000.BIN",
+     "EFFECT/EFFEFD/MEFD0400.BIN",
+     "EFFECT/EFFEFD/AEFD0400.BIN"
+    ],
+    "file_ids": [
+     3016,
+     3024,
+     3028,
+     3045,
+     719,
+     690
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 112,
+     "name": "High Electro Shocker"
+    }
+   },
+   "move": {
+    "power": 130,
+    "element": "fire",
+    "range": 3,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 266,
+   "species_name": "ExTyrannomon",
+   "level": "ultimate",
+   "name": "Pretty Attack",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Pretty Attack",
+    "power": 60,
+    "dw2_element": "neutral",
+    "dw2_target": "one enemy",
+    "description": "Disable foe<56>s strong techs",
+    "cast_clip": "G0",
+    "status_flags": "0x1000",
+    "voice_xa": [
+     3249,
+     3
+    ]
+   },
+   "replaces": {
+    "id": 60,
+    "name": "Lovely Attack"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "Blows a heart kiss.",
+    "dash": false,
+    "clip": "G0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFEMA/MEMA4500.BIN",
+     "EFFECT/EFFEMA/MEMA4600.BIN",
+     "EFFECT/EFFEMA/AEMA4500.BIN",
+     "EFFECT/EFFEMA/AEMA4600.BIN",
+     "EFFECT/EFFESD/MESD7100.BIN",
+     "EFFECT/EFFESD/AESD7100.BIN"
+    ],
+    "file_ids": [
+     2307,
+     2322,
+     2348,
+     2346,
+     1011,
+     1020
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 60,
+     "name": "Lovely Attack"
+    }
+   },
+   "move": {
+    "power": 226,
+    "element": "battle",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 2,
+    "statusChance": 20,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Source seals strong techniques; confusion is the nearest DW1 status."
+  },
+  {
+   "species": 267,
+   "species_name": "Mammothmon",
+   "level": "ultimate",
+   "name": "Tusk Crusher",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Tusk Crusher",
+    "power": 65,
+    "dw2_element": "neutral",
+    "dw2_target": "one enemy",
+    "description": "Crushes <f0>Y foes caught",
+    "cast_clip": "H0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3242,
+     2
+    ]
+   },
+   "replaces": {
+    "id": 111,
+    "name": "Mail Strome"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "Charges tusks first.",
+    "dash": true,
+    "clip": "H0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFEUA/MEUA3900.BIN",
+     "EFFECT/EFFEUA/MEUA4000.BIN",
+     "EFFECT/EFFEUA/AEUA3900.BIN",
+     "EFFECT/EFFEUA/AEUA4000.BIN",
+     "EFFECT/EFFESD/MESD0600.BIN",
+     "EFFECT/EFFESD/AESD0600.BIN"
+    ],
+    "file_ids": [
+     3121,
+     3126,
+     3135,
+     3140,
+     956,
+     918
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 111,
+     "name": "Mail Strome"
+    }
+   },
+   "move": {
+    "power": 239,
+    "element": "battle",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 268,
+   "species_name": "SkullMammothmon",
+   "level": "mega",
+   "name": "S-Bone Crusher",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "S<49>Bone Crusher",
+    "power": 80,
+    "dw2_element": "neutral",
+    "dw2_target": "all enemies",
+    "description": "Spinning Bone hits <f0>Y foe",
+    "cast_clip": "F0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3238,
+     3
+    ]
+   },
+   "replaces": {
+    "id": 111,
+    "name": "Mail Strome"
+   },
+   "behavior": {
+    "kind": "area",
+    "target": "all",
+    "hits": 1,
+    "look": "A spinning bone hits every enemy.",
+    "dash": false,
+    "clip": "F0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFESA/MESA9100.BIN",
+     "EFFECT/EFFESA/MESA9200.BIN",
+     "EFFECT/EFFESA/AESA9100.BIN",
+     "EFFECT/EFFESA/AESA9200.BIN",
+     "EFFECT/EFFESD/MESD0600.BIN",
+     "EFFECT/EFFESD/AESD0600.BIN"
+    ],
+    "file_ids": [
+     2733,
+     2779,
+     2781,
+     2749,
+     956,
+     918
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 111,
+     "name": "Mail Strome"
+    }
+   },
+   "move": {
+    "power": 250,
+    "element": "battle",
+    "range": 3,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Source shows \"S-Bone\"; expand to the canon name if one is confirmed."
+  },
+  {
+   "species": 269,
+   "species_name": "Garbagemon",
+   "level": "ultimate",
+   "name": "Junk Chunker",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Junk Chunker",
+    "power": 60,
+    "dw2_element": "darkness",
+    "dw2_target": "one enemy",
+    "description": "Shoots Poop at enemies",
+    "cast_clip": "F0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3232,
+     1
+    ]
+   },
+   "replaces": {
+    "id": 77,
+    "name": "Energy Bomb"
+   },
+   "behavior": {
+    "kind": "thrown",
+    "target": "one",
+    "hits": 3,
+    "look": "Throws junk from its can.",
+    "dash": false,
+    "clip": "F0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFESA/MESA6200.BIN",
+     "EFFECT/EFFESA/MESA6300.BIN",
+     "EFFECT/EFFESA/AESA6200.BIN",
+     "EFFECT/EFFESA/AESA6300.BIN",
+     "EFFECT/EFFESD/MESD3800.BIN",
+     "EFFECT/EFFESD/AESD3800.BIN"
+    ],
+    "file_ids": [
+     2283,
+     2275,
+     2294,
+     2258,
+     1687,
+     1680
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 77,
+     "name": "Energy Bomb"
+    }
+   },
+   "move": {
+    "power": 226,
+    "element": "filth",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 270,
+   "species_name": "PrinceMamemon",
+   "level": "mega",
+   "name": "Smiley Warhead",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Smiley Warhead",
+    "power": 80,
+    "dw2_element": "machine",
+    "dw2_target": "one enemy",
+    "description": "Counter Attack <f0>Y foes",
+    "cast_clip": "H0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3244,
+     2
+    ]
+   },
+   "replaces": {
+    "id": 68,
+    "name": "Smiley Bomb"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "A smiling warhead.",
+    "dash": false,
+    "clip": "H0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFEUA/MEUA2000.BIN",
+     "EFFECT/EFFEUA/MEUA2100.BIN",
+     "EFFECT/EFFEUA/AEUA2000.BIN",
+     "EFFECT/EFFEUA/AEUA2100.BIN",
+     "EFFECT/EFFESD/MESD0000.BIN",
+     "EFFECT/EFFESD/AESD0000.BIN"
+    ],
+    "file_ids": [
+     2266,
+     2337,
+     2318,
+     2310,
+     953,
+     915
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 68,
+     "name": "Smiley Bomb"
+    }
+   },
+   "move": {
+    "power": 254,
+    "element": "mech",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 271,
+   "species_name": "Plesiomon",
+   "level": "mega",
+   "name": "Sad Water Blast",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Sad Water Blast",
+    "power": 90,
+    "dw2_element": "water",
+    "dw2_target": "all enemies",
+    "description": "Hit <f0>Y foe <f0><41> Sad Water",
+    "cast_clip": "G0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3251,
+     4
+    ]
+   },
+   "replaces": {
+    "id": 111,
+    "name": "Mail Strome"
+   },
+   "behavior": {
+    "kind": "area",
+    "target": "all",
+    "hits": 1,
+    "look": "A sad song and a wave of water over every enemy.",
+    "dash": false,
+    "clip": "G0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFEMA/MEMA6100.BIN",
+     "EFFECT/EFFEMA/MEMA6200.BIN",
+     "EFFECT/EFFEMA/AEMA6100.BIN",
+     "EFFECT/EFFEMA/AEMA6200.BIN",
+     "EFFECT/EFFESD/MESD3200.BIN",
+     "EFFECT/EFFESD/AESD3200.BIN"
+    ],
+    "file_ids": [
+     2091,
+     2099,
+     2103,
+     2106,
+     1675,
+     1690
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 111,
+     "name": "Mail Strome"
+    }
+   },
+   "move": {
+    "power": 250,
+    "element": "ice",
+    "range": 3,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 272,
+   "species_name": "Woodmon",
+   "level": "champion",
+   "name": "Twig Tap",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Twig Tap",
+    "power": 40,
+    "dw2_element": "nature",
+    "dw2_target": "one enemy",
+    "description": "Drains enemy HP",
+    "cast_clip": "H0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3240,
+     2
+    ]
+   },
+   "replaces": {
+    "id": 72,
+    "name": "Sweet Breath"
+   },
+   "behavior": {
+    "kind": "melee",
+    "target": "one",
+    "hits": 2,
+    "look": "Two swipes with its twig arms.",
+    "dash": false,
+    "clip": "H0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFEUA/MEUA3100.BIN",
+     "EFFECT/EFFEUA/MEUA3200.BIN",
+     "EFFECT/EFFEUA/AEUA3100.BIN",
+     "EFFECT/EFFEUA/AEUA3200.BIN",
+     "EFFECT/EFFESD/MESD7600.BIN",
+     "EFFECT/EFFESD/AESD7600.BIN"
+    ],
+    "file_ids": [
+     3122,
+     3125,
+     3153,
+     3152,
+     3595,
+     3596
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 72,
+     "name": "Sweet Breath"
+    }
+   },
+   "move": {
+    "power": 160,
+    "element": "nature",
+    "range": 1,
+    "distance": 0,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [],
+    "mpCost": 40
+   },
+   "notes": "Source drains HP; DW1 has no drain (engine work, not proposed)."
+  },
+  {
+   "species": 273,
+   "species_name": "Floramon",
+   "level": "rookie",
+   "name": "Rain of Pollen",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Rain of Pollen",
+    "power": 30,
+    "dw2_element": "nature",
+    "dw2_target": "one enemy",
+    "description": "Covers enemy <f0><41> Pollen",
+    "cast_clip": "G0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3248,
+     5
+    ]
+   },
+   "replaces": {
+    "id": 98,
+    "name": "Poison Ivy"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "Blows a cloud of pollen at the target.",
+    "dash": false,
+    "clip": "G0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFEMA/MEMA3300.BIN",
+     "EFFECT/EFFEMA/MEMA3400.BIN",
+     "EFFECT/EFFEMA/AEMA3300.BIN",
+     "EFFECT/EFFEMA/AEMA3400.BIN",
+     "EFFECT/EFFEBD/MEBD0000.BIN",
+     "EFFECT/EFFEBD/AEBD0000.BIN"
+    ],
+    "file_ids": [
+     2097,
+     2093,
+     2113,
+     2111,
+     702,
+     673
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 98,
+     "name": "Poison Ivy"
+    }
+   },
+   "move": {
+    "power": 92,
+    "element": "nature",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 274,
+   "species_name": "Blossomon",
+   "level": "ultimate",
+   "name": "Ninja Flower",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Ninja Flower",
+    "power": 50,
+    "dw2_element": "nature",
+    "dw2_target": "all enemies",
+    "description": "Shoots Flower Shurikens",
+    "cast_clip": "F0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3236,
+     5
+    ]
+   },
+   "replaces": {
+    "id": 72,
+    "name": "Sweet Breath"
+   },
+   "behavior": {
+    "kind": "area",
+    "target": "all",
+    "hits": 4,
+    "look": "Flower shuriken over every enemy.",
+    "dash": false,
+    "clip": "F0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFESA/MESA6800.BIN",
+     "EFFECT/EFFESA/MESA6900.BIN",
+     "EFFECT/EFFESA/AESA6800.BIN",
+     "EFFECT/EFFESA/AESA6900.BIN",
+     "EFFECT/EFFEWD/MEWD0200.BIN",
+     "EFFECT/EFFEWD/AEWD0200.BIN"
+    ],
+    "file_ids": [
+     2715,
+     2724,
+     2777,
+     2787,
+     970,
+     932
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 72,
+     "name": "Sweet Breath"
+    }
+   },
+   "move": {
+    "power": 196,
+    "element": "nature",
+    "range": 3,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Canon \"Spiral Flower\"."
+  },
+  {
+   "species": 275,
+   "species_name": "Scorpiomon",
+   "level": "ultimate",
+   "name": "Tail Blade",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Tail Blade",
+    "power": 60,
+    "dw2_element": "neutral",
+    "dw2_target": "one enemy",
+    "description": "Avoid attack while resting",
+    "cast_clip": "H0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3241,
+     6
+    ]
+   },
+   "replaces": {
+    "id": 111,
+    "name": "Mail Strome"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "Lunges with its tail blade.",
+    "dash": true,
+    "clip": "H0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFEUA/MEUA2800.BIN",
+     "EFFECT/EFFEUA/MEUA2900.BIN",
+     "EFFECT/EFFEUA/AEUA2800.BIN",
+     "EFFECT/EFFEUA/AEUA2900.BIN",
+     "EFFECT/EFFESD/MESD0200.BIN",
+     "EFFECT/EFFESD/AESD0200.BIN"
+    ],
+    "file_ids": [
+     2277,
+     2280,
+     2289,
+     2329,
+     954,
+     916
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 111,
+     "name": "Mail Strome"
+    }
+   },
+   "move": {
+    "power": 226,
+    "element": "battle",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 276,
+   "species_name": "Baihumon",
+   "level": "mega",
+   "name": "Kongou",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Kongou",
+    "power": 0,
+    "dw2_element": "neutral",
+    "dw2_target": "self",
+    "description": "Unbeatable during own turn",
+    "cast_clip": "G0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3249,
+     6
+    ]
+   },
+   "replaces": {
+    "id": 78,
+    "name": "Genoside Attack"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "A diamond-hard charge.",
+    "dash": false,
+    "clip": "G0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFEUA/MEUA4500.BIN",
+     "EFFECT/EFFEUA/MEUA4600.BIN",
+     "EFFECT/EFFEUA/AEUA4500.BIN",
+     "EFFECT/EFFEUA/AEUA4600.BIN",
+     "EFFECT/EFFEMD/MEMD2300.BIN",
+     "EFFECT/EFFEMD/AEMD2300.BIN"
+    ],
+    "file_ids": [
+     2966,
+     2967,
+     3008,
+     3020,
+     3215,
+     3201
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 78,
+     "name": "Genoside Attack"
+    }
+   },
+   "move": {
+    "power": 255,
+    "element": "battle",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Source: unbeatable during its own turn; a buff would need engine code, so this damaging dash is the finisher."
+  },
+  {
+   "species": 277,
+   "species_name": "SkullMeramon",
+   "level": "ultimate",
+   "name": "Metal Fireball",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Metal Fireb<f0>Y",
+    "power": 50,
+    "dw2_element": "machine",
+    "dw2_target": "all enemies",
+    "description": "Shoot Hot Metal on <f0>Y foe",
+    "cast_clip": "F0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3237,
+     1
+    ]
+   },
+   "replaces": {
+    "id": 63,
+    "name": "Mega Flame"
+   },
+   "behavior": {
+    "kind": "area",
+    "target": "all",
+    "hits": 1,
+    "look": "Fires hot metal; the DW2 Metal Fireball effect.",
+    "dash": false,
+    "clip": "F0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFEWA/MEWA0200.BIN",
+     "EFFECT/EFFEWA/AEWA0200.BIN",
+     "EFFECT/EFFEWD/MEWD0100.BIN",
+     "EFFECT/EFFEWD/AEWD0100.BIN"
+    ],
+    "file_ids": [
+     966,
+     928,
+     969,
+     931
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 63,
+     "name": "Mega Flame"
+    }
+   },
+   "move": {
+    "power": 196,
+    "element": "fire",
+    "range": 3,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Effect ported (own_effect chunk 122 on Mega Flame 63)."
+  },
+  {
+   "species": 278,
+   "species_name": "Octomon",
+   "level": "champion",
+   "name": "Spurting Ink",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Spurting Ink",
+    "power": 50,
+    "dw2_element": "water",
+    "dw2_target": "one enemy",
+    "description": "Fires <f0>d Ink Shots",
+    "cast_clip": "F0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3231,
+     2
+    ]
+   },
+   "replaces": {
+    "id": 87,
+    "name": "Hydro Pressure"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 3,
+    "look": "Fires black ink shots.",
+    "dash": false,
+    "clip": "F0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFESA/MESA4800.BIN",
+     "EFFECT/EFFESA/MESA4900.BIN",
+     "EFFECT/EFFESA/AESA4800.BIN",
+     "EFFECT/EFFESA/AESA4900.BIN",
+     "EFFECT/EFFESD/MESD0600.BIN",
+     "EFFECT/EFFESD/AESD0600.BIN"
+    ],
+    "file_ids": [
+     2753,
+     2770,
+     2755,
+     2750,
+     956,
+     918
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 87,
+     "name": "Hydro Pressure"
+    }
+   },
+   "move": {
+    "power": 189,
+    "element": "ice",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 279,
+   "species_name": "MarineDevimon",
+   "level": "ultimate",
+   "name": "Evil Wind",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Evil Wind",
+    "power": 40,
+    "dw2_element": "water",
+    "dw2_target": "all enemies",
+    "description": "Slows enemy down",
+    "cast_clip": "F0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3236,
+     7
+    ]
+   },
+   "replaces": {
+    "id": 62,
+    "name": "Death Claw"
+   },
+   "behavior": {
+    "kind": "area",
+    "target": "all",
+    "hits": 1,
+    "look": "A dark gust over every enemy.",
+    "dash": false,
+    "clip": "F0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFESA/MESA2600.BIN",
+     "EFFECT/EFFESA/AESA2600.BIN",
+     "EFFECT/EFFEWD/MEWD0300.BIN",
+     "EFFECT/EFFEWD/AEWD0300.BIN"
+    ],
+    "file_ids": [
+     952,
+     914,
+     3190,
+     3205
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 62,
+     "name": "Death Claw"
+    }
+   },
+   "move": {
+    "power": 196,
+    "element": "ice",
+    "range": 3,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 3,
+    "statusChance": 15,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Source slows; stun is the nearest DW1 status."
+  },
+  {
+   "species": 280,
+   "species_name": "Pumpkinmon",
+   "level": "ultimate",
+   "name": "Trick or Treat",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Trick or Treat",
+    "power": 60,
+    "dw2_element": "nature",
+    "dw2_target": "all enemies",
+    "description": "Hit <f0>Y foe w<46> no defense",
+    "cast_clip": "G0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3251,
+     3
+    ]
+   },
+   "replaces": {
+    "id": 61,
+    "name": "Fireball"
+   },
+   "behavior": {
+    "kind": "area",
+    "target": "all",
+    "hits": 1,
+    "look": "Pumpkin bombs over every enemy.",
+    "dash": false,
+    "clip": "G0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFEMA/MEMA4200.BIN",
+     "EFFECT/EFFEMA/MEMA4400.BIN",
+     "EFFECT/EFFEMA/AEMA4200.BIN",
+     "EFFECT/EFFEMA/AEMA4400.BIN",
+     "EFFECT/EFFESD/MESD0600.BIN",
+     "EFFECT/EFFESD/AESD0600.BIN"
+    ],
+    "file_ids": [
+     2098,
+     2326,
+     2105,
+     2354,
+     956,
+     918
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 112,
+     "name": "High Electro Shocker"
+    }
+   },
+   "move": {
+    "power": 196,
+    "element": "battle",
+    "range": 3,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 281,
+   "species_name": "Cyclonemon",
+   "level": "champion",
+   "name": "Hyper Heat",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Hyper Heat",
+    "power": 45,
+    "dw2_element": "fire",
+    "dw2_target": "one enemy",
+    "description": "Shoots a Super Hot Blast",
+    "cast_clip": "F0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3230,
+     4
+    ]
+   },
+   "replaces": {
+    "id": 61,
+    "name": "Fireball"
+   },
+   "behavior": {
+    "kind": "breath",
+    "target": "one",
+    "hits": 1,
+    "look": "A super-hot blast from its arm.",
+    "dash": false,
+    "clip": "F0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFEBA/MEBA0600.BIN",
+     "EFFECT/EFFEBA/MEBA0700.BIN",
+     "EFFECT/EFFEBA/AEBA0600.BIN",
+     "EFFECT/EFFEBA/AEBA0700.BIN",
+     "EFFECT/EFFEFD/MEFD0400.BIN",
+     "EFFECT/EFFEFD/AEFD0400.BIN"
+    ],
+    "file_ids": [
+     933,
+     1027,
+     895,
+     1035,
+     719,
+     690
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 63,
+     "name": "Mega Flame"
+    }
+   },
+   "move": {
+    "power": 176,
+    "element": "fire",
+    "range": 2,
+    "distance": 90000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 15,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 282,
+   "species_name": "Kiwimon",
+   "level": "champion",
+   "name": "Pummel Peck",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Pummel Peck",
+    "power": 50,
+    "dw2_element": "machine",
+    "dw2_target": "one enemy",
+    "description": "Sends a Mini<49>Kiwimon",
+    "cast_clip": "F0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3230,
+     5
+    ]
+   },
+   "replaces": {
+    "id": 72,
+    "name": "Sweet Breath"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "Sends a mini Kiwimon running at the target.",
+    "dash": false,
+    "clip": "F0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFESA/MESA4200.BIN",
+     "EFFECT/EFFESA/MESA4300.BIN",
+     "EFFECT/EFFESA/AESA4200.BIN",
+     "EFFECT/EFFESA/AESA4300.BIN",
+     "EFFECT/EFFESD/MESD7400.BIN",
+     "EFFECT/EFFESD/AESD7400.BIN"
+    ],
+    "file_ids": [
+     2324,
+     2291,
+     2308,
+     2276,
+     1002,
+     1030
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 72,
+     "name": "Sweet Breath"
+    }
+   },
+   "move": {
+    "power": 189,
+    "element": "nature",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 283,
+   "species_name": "Syakomon",
+   "level": "rookie",
+   "name": "Pearl Shot",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "<f0>dPearl Shot",
+    "power": 40,
+    "dw2_element": "neutral",
+    "dw2_target": "one enemy",
+    "description": "Attacks <f0><41> no defense",
+    "cast_clip": "F0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3228,
+     6
+    ]
+   },
+   "replaces": {
+    "id": 90,
+    "name": "Blasting Spout"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "Fires a pearl from its shell.",
+    "dash": false,
+    "clip": "F0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFESA/MESA2900.BIN",
+     "EFFECT/EFFESA/AESA2900.BIN",
+     "EFFECT/EFFESD/MESD0600.BIN",
+     "EFFECT/EFFESD/AESD0600.BIN"
+    ],
+    "file_ids": [
+     997,
+     1018,
+     956,
+     918
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 90,
+     "name": "Blasting Spout"
+    }
+   },
+   "move": {
+    "power": 100,
+    "element": "ice",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "One source glyph before the name is undecoded."
+  },
+  {
+   "species": 284,
+   "species_name": "Crabmon",
+   "level": "rookie",
+   "name": "Scissor Magic",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Scissor Magic",
+    "power": 30,
+    "dw2_element": "neutral",
+    "dw2_target": "one enemy",
+    "description": "A Scissors attack",
+    "cast_clip": "H0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3239,
+     1
+    ]
+   },
+   "replaces": {
+    "id": 100,
+    "name": "Scissor Claw"
+   },
+   "behavior": {
+    "kind": "melee",
+    "target": "one",
+    "hits": 2,
+    "look": "A double snip of the claws.",
+    "dash": false,
+    "clip": "H0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFEUA/MEUA1400.BIN",
+     "EFFECT/EFFEUA/MEUA1500.BIN",
+     "EFFECT/EFFEUA/AEUA1400.BIN",
+     "EFFECT/EFFEUA/AEUA1500.BIN",
+     "EFFECT/EFFESD/MESD1500.BIN",
+     "EFFECT/EFFESD/AESD1500.BIN"
+    ],
+    "file_ids": [
+     2083,
+     2087,
+     2104,
+     2110,
+     3137,
+     3149
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 100,
+     "name": "Scissor Claw"
+    }
+   },
+   "move": {
+    "power": 92,
+    "element": "battle",
+    "range": 1,
+    "distance": 0,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 285,
+   "species_name": "Gazimon",
+   "level": "rookie",
+   "name": "E-Stun Blast",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "E<49>Stun Blast",
+    "power": 30,
+    "dw2_element": "darkness",
+    "dw2_target": "one enemy",
+    "description": "Stuns foe <f0><41> a Blast",
+    "cast_clip": "F0",
+    "status_flags": "0x10",
+    "voice_xa": [
+     1670,
+     2
+    ]
+   },
+   "replaces": {
+    "id": 98,
+    "name": "Poison Ivy"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "An electric blast from the mouth.",
+    "dash": false,
+    "clip": "F0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFESA/MESA2500.BIN",
+     "EFFECT/EFFESA/AESA2500.BIN",
+     "EFFECT/EFFESD/MESD0200.BIN",
+     "EFFECT/EFFESD/AESD0200.BIN"
+    ],
+    "file_ids": [
+     951,
+     913,
+     954,
+     916
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 98,
+     "name": "Poison Ivy"
+    }
+   },
+   "move": {
+    "power": 92,
+    "element": "battle",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 3,
+    "statusChance": 20,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Source stuns. Its specialties have no Air."
+  },
+  {
+   "species": 286,
+   "species_name": "Deramon",
+   "level": "ultimate",
+   "name": "Royal Smasher",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Royal Smasher",
+    "power": 65,
+    "dw2_element": "nature",
+    "dw2_target": "one enemy",
+    "description": "Shoots Egg at enemies",
+    "cast_clip": "F0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3232,
+     3
+    ]
+   },
+   "replaces": {
+    "id": 91,
+    "name": "Fist of the Beast King"
+   },
+   "behavior": {
+    "kind": "thrown",
+    "target": "one",
+    "hits": 1,
+    "look": "Fires an egg like a shell.",
+    "dash": false,
+    "clip": "F0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFESA/MESA7800.BIN",
+     "EFFECT/EFFESA/MESA7900.BIN",
+     "EFFECT/EFFESA/AESA7800.BIN",
+     "EFFECT/EFFESA/AESA7900.BIN",
+     "EFFECT/EFFESD/MESD0600.BIN",
+     "EFFECT/EFFESD/AESD0600.BIN"
+    ],
+    "file_ids": [
+     2763,
+     2269,
+     2765,
+     2257,
+     956,
+     918
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 91,
+     "name": "Fist of the Beast King"
+    }
+   },
+   "move": {
+    "power": 239,
+    "element": "nature",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 287,
+   "species_name": "Tapirmon",
+   "level": "rookie",
+   "name": "Waking Dream",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Waking Dream",
+    "power": 20,
+    "dw2_element": "darkness",
+    "dw2_target": "one enemy",
+    "description": "Nightm<f0>f attacks a foe",
+    "cast_clip": "G0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3248,
+     4
+    ]
+   },
+   "replaces": {
+    "id": 86,
+    "name": "Solar Ray"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "A cloud of nightmare smoke.",
+    "dash": false,
+    "clip": "G0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFEMA/MEMA3100.BIN",
+     "EFFECT/EFFEMA/MEMA3200.BIN",
+     "EFFECT/EFFEMA/AEMA3100.BIN",
+     "EFFECT/EFFEMA/AEMA3200.BIN",
+     "EFFECT/EFFESD/MESD3400.BIN",
+     "EFFECT/EFFESD/AESD3400.BIN"
+    ],
+    "file_ids": [
+     2085,
+     2092,
+     2109,
+     2108,
+     1650,
+     1653
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 86,
+     "name": "Solar Ray"
+    }
+   },
+   "move": {
+    "power": 86,
+    "element": "air",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Weak in DW2 (20)."
+  },
+  {
+   "species": 288,
+   "species_name": "Boltmon",
+   "level": "mega",
+   "name": "Tomahawk Crunch",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Tomahawk Crunch",
+    "power": 75,
+    "dw2_element": "machine",
+    "dw2_target": "all enemies",
+    "description": "Throws Axes at <f0>Y enemies",
+    "cast_clip": "F0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3237,
+     7
+    ]
+   },
+   "replaces": {
+    "id": 79,
+    "name": "Giga Scissor Claw"
+   },
+   "behavior": {
+    "kind": "area",
+    "target": "all",
+    "hits": 2,
+    "look": "Throws axes at every enemy.",
+    "dash": false,
+    "clip": "F0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFESA/MESA8700.BIN",
+     "EFFECT/EFFESA/MESA8800.BIN",
+     "EFFECT/EFFESA/AESA8700.BIN",
+     "EFFECT/EFFESA/AESA8800.BIN",
+     "EFFECT/EFFESD/MESD0600.BIN",
+     "EFFECT/EFFESD/AESD0600.BIN"
+    ],
+    "file_ids": [
+     2286,
+     2315,
+     2278,
+     2272,
+     956,
+     918
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 79,
+     "name": "Giga Scissor Claw"
+    }
+   },
+   "move": {
+    "power": 250,
+    "element": "battle",
+    "range": 3,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 289,
+   "species_name": "ChaosLord",
+   "level": "mega",
+   "name": "Chaos Cannon",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Chaos Cannon",
+    "power": 50,
+    "dw2_element": "machine",
+    "dw2_target": "all enemies",
+    "description": "Allows repeated attacks",
+    "cast_clip": "F0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3234,
+     6
+    ]
+   },
+   "replaces": {
+    "id": 77,
+    "name": "Energy Bomb"
+   },
+   "behavior": {
+    "kind": "area",
+    "target": "all",
+    "hits": 1,
+    "look": "A cannon blast that bursts over the field.",
+    "dash": false,
+    "clip": "F0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFEBA/MEBA2400.BIN",
+     "EFFECT/EFFEBA/MEBA2500.BIN",
+     "EFFECT/EFFEBA/AEBA2400.BIN",
+     "EFFECT/EFFEBA/AEBA2500.BIN",
+     "EFFECT/EFFESD/MESD0600.BIN",
+     "EFFECT/EFFESD/AESD0600.BIN"
+    ],
+    "file_ids": [
+     2998,
+     3003,
+     3030,
+     3036,
+     956,
+     918
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 77,
+     "name": "Energy Bomb"
+    }
+   },
+   "move": {
+    "power": 250,
+    "element": "mech",
+    "range": 3,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 290,
+   "species_name": "Clockmon",
+   "level": "champion",
+   "name": "Chrono Breaker",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Chrono Breaker",
+    "power": 40,
+    "dw2_element": "machine",
+    "dw2_target": "no target (turn order)",
+    "description": "Delays foe<56>s attack to end",
+    "cast_clip": "G0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3249,
+     0
+    ]
+   },
+   "replaces": {
+    "id": 78,
+    "name": "Genoside Attack"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "A clock-hand ripple that freezes time.",
+    "dash": false,
+    "clip": "G0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFEMA/MEMA5300.BIN",
+     "EFFECT/EFFEMA/MEMA5400.BIN",
+     "EFFECT/EFFEMA/AEMA5300.BIN",
+     "EFFECT/EFFEMA/AEMA5400.BIN",
+     "EFFECT/EFFESD/MESD0600.BIN",
+     "EFFECT/EFFESD/AESD0600.BIN"
+    ],
+    "file_ids": [
+     2784,
+     2735,
+     2802,
+     2800,
+     956,
+     918
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 74,
+     "name": "Deadly Bomb"
+    }
+   },
+   "move": {
+    "power": 160,
+    "element": "mech",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 3,
+    "statusChance": 20,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Source delays the target; stun."
+  },
+  {
+   "species": 291,
+   "species_name": "Dragomon",
+   "level": "ultimate",
+   "name": "Tentacle Claw",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Tentacle Claw",
+    "power": 70,
+    "dw2_element": "neutral",
+    "dw2_target": "one enemy",
+    "description": "Throws a 3 Point Spear",
+    "cast_clip": "F0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3233,
+     2
+    ]
+   },
+   "replaces": {
+    "id": 111,
+    "name": "Mail Strome"
+   },
+   "behavior": {
+    "kind": "thrown",
+    "target": "one",
+    "hits": 1,
+    "look": "Throws its trident.",
+    "dash": false,
+    "clip": "F0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFESA/MESA6600.BIN",
+     "EFFECT/EFFESA/MESA6700.BIN",
+     "EFFECT/EFFESA/AESA6600.BIN",
+     "EFFECT/EFFESA/AESA6700.BIN",
+     "EFFECT/EFFESD/MESD0600.BIN",
+     "EFFECT/EFFESD/AESD0600.BIN"
+    ],
+    "file_ids": [
+     2719,
+     2325,
+     2792,
+     2297,
+     956,
+     918
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 111,
+     "name": "Mail Strome"
+    }
+   },
+   "move": {
+    "power": 247,
+    "element": "battle",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 292,
+   "species_name": "Deltamon",
+   "level": "champion",
+   "name": "Triple Forces",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Triple Forces",
+    "power": 30,
+    "dw2_element": "darkness",
+    "dw2_target": "all enemies",
+    "description": "Energy Bursts at <f0>Y foe",
+    "cast_clip": "F0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3236,
+     2
+    ]
+   },
+   "replaces": {
+    "id": 63,
+    "name": "Mega Flame"
+   },
+   "behavior": {
+    "kind": "area",
+    "target": "all",
+    "hits": 3,
+    "look": "Energy bursts from all three heads.",
+    "dash": false,
+    "clip": "F0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFEBA/MEBA0200.BIN",
+     "EFFECT/EFFEBA/MEBA0300.BIN",
+     "EFFECT/EFFEBA/AEBA0200.BIN",
+     "EFFECT/EFFEBA/AEBA0300.BIN",
+     "EFFECT/EFFESD/MESD6800.BIN",
+     "EFFECT/EFFESD/AESD6800.BIN"
+    ],
+    "file_ids": [
+     698,
+     699,
+     669,
+     670,
+     1004,
+     1023
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 63,
+     "name": "Mega Flame"
+    }
+   },
+   "move": {
+    "power": 130,
+    "element": "fire",
+    "range": 3,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Weak in DW2 (30)."
+  },
+  {
+   "species": 293,
+   "species_name": "Gryphonmon",
+   "level": "mega",
+   "name": "Legendary Blade",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Legendary Blade",
+    "power": 80,
+    "dw2_element": "neutral",
+    "dw2_target": "all enemies",
+    "description": "Sonic attack on <f0>Y foes",
+    "cast_clip": "F0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3238,
+     2
+    ]
+   },
+   "replaces": {
+    "id": 62,
+    "name": "Death Claw"
+   },
+   "behavior": {
+    "kind": "area",
+    "target": "all",
+    "hits": 1,
+    "look": "A sonic blade over every enemy.",
+    "dash": false,
+    "clip": "F0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFESA/MESA2000.BIN",
+     "EFFECT/EFFESA/AESA2000.BIN",
+     "EFFECT/EFFESD/MESD0400.BIN",
+     "EFFECT/EFFESD/AESD0400.BIN"
+    ],
+    "file_ids": [
+     947,
+     909,
+     955,
+     917
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 62,
+     "name": "Death Claw"
+    }
+   },
+   "move": {
+    "power": 250,
+    "element": "air",
+    "range": 3,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 294,
+   "species_name": "Datamon",
+   "level": "ultimate",
+   "name": "Digital Bomb",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Digital Bomb",
+    "power": 45,
+    "dw2_element": "machine",
+    "dw2_target": "all enemies",
+    "description": "Toss sm<55> Bombs on <f0>Y foes",
+    "cast_clip": "F0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3237,
+     0
+    ]
+   },
+   "replaces": {
+    "id": 68,
+    "name": "Smiley Bomb"
+   },
+   "behavior": {
+    "kind": "area",
+    "target": "all",
+    "hits": 4,
+    "look": "Small bombs on every enemy.",
+    "dash": false,
+    "clip": "F0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFESA/MESA7200.BIN",
+     "EFFECT/EFFESA/MESA7300.BIN",
+     "EFFECT/EFFESA/AESA7200.BIN",
+     "EFFECT/EFFESA/AESA7300.BIN",
+     "EFFECT/EFFESD/MESD0000.BIN",
+     "EFFECT/EFFESD/AESD0000.BIN"
+    ],
+    "file_ids": [
+     2754,
+     2263,
+     2740,
+     2292,
+     953,
+     915
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 68,
+     "name": "Smiley Bomb"
+    }
+   },
+   "move": {
+    "power": 196,
+    "element": "mech",
+    "range": 3,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 295,
+   "species_name": "Vilemon",
+   "level": "champion",
+   "name": "Nightmare Shock",
+   "source": {
+    "game": "dw3",
+    "basis": "canon",
+    "name": null
+   },
+   "replaces": {
+    "id": 62,
+    "name": "Death Claw"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "A dark shock from its eye.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 62,
+     "name": "Death Claw"
+    }
+   },
+   "move": {
+    "power": 163,
+    "element": "air",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 296,
+   "species_name": "Grizzlymon",
+   "level": "champion",
+   "name": "Maul Attack",
+   "source": {
+    "game": "dw3",
+    "basis": "disc",
+    "name": "Maul Attack"
+   },
+   "replaces": {
+    "id": 111,
+    "name": "Mail Strome"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "A charging maul.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "source-undecoded",
+    "template": {
+     "id": 111,
+     "name": "Mail Strome"
+    }
+   },
+   "move": {
+    "power": 163,
+    "element": "battle",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 297,
+   "species_name": "Marsmon",
+   "level": "mega",
+   "name": "Mugen Hadou",
+   "source": {
+    "game": "dw3",
+    "basis": "disc",
+    "name": "Mugenhadou"
+   },
+   "replaces": {
+    "id": 63,
+    "name": "Mega Flame"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "A fist-shaped energy wave.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "source-undecoded",
+    "template": {
+     "id": 63,
+     "name": "Mega Flame"
+    }
+   },
+   "move": {
+    "power": 255,
+    "element": "fire",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Source \"Mugenhadou\"; dub-style \"Infinite Wave\" if the owner prefers English."
+  },
+  {
+   "species": 298,
+   "species_name": "Dokugumon",
+   "level": "champion",
+   "name": "Poison Cobweb",
+   "source": {
+    "game": "dw3",
+    "basis": "canon",
+    "name": null
+   },
+   "replaces": {
+    "id": 73,
+    "name": "Bit Bomb"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "A poisoned web.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 72,
+     "name": "Sweet Breath"
+    }
+   },
+   "move": {
+    "power": 163,
+    "element": "nature",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 1,
+    "statusChance": 20,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 299,
+   "species_name": "Hookmon",
+   "level": "champion",
+   "name": "Captain Cannon",
+   "source": {
+    "game": "dw3",
+    "basis": "disc",
+    "name": "Captain Cannon"
+   },
+   "replaces": {
+    "id": 80,
+    "name": "Dark Shot"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "A cannonball from the ship cannon.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "source-undecoded",
+    "template": {
+     "id": 80,
+     "name": "Dark Shot"
+    }
+   },
+   "move": {
+    "power": 163,
+    "element": "mech",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 300,
+   "species_name": "SlashAngemon",
+   "level": "mega",
+   "name": "Golden Ripper",
+   "source": {
+    "game": "dw3",
+    "basis": "disc",
+    "name": "Golden Ripper"
+   },
+   "replaces": {
+    "id": 62,
+    "name": "Death Claw"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "A golden blade cut.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "source-undecoded",
+    "template": {
+     "id": 62,
+     "name": "Death Claw"
+    }
+   },
+   "move": {
+    "power": 255,
+    "element": "battle",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 302,
+   "species_name": "HiAndromon",
+   "level": "mega",
+   "name": "Atomic Ray",
+   "source": {
+    "game": "dw3",
+    "basis": "canon",
+    "name": null
+   },
+   "replaces": {
+    "id": 102,
+    "name": "Spiral Sword"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "A beam from the chest.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 102,
+     "name": "Spiral Sword"
+    }
+   },
+   "move": {
+    "power": 255,
+    "element": "mech",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 303,
+   "species_name": "KingEtemon",
+   "level": "mega",
+   "name": "Dark Spirits DX",
+   "source": {
+    "game": "dw3",
+    "basis": "canon",
+    "name": null
+   },
+   "replaces": {
+    "id": 92,
+    "name": "Dark Network & Concert Crush"
+   },
+   "behavior": {
+    "kind": "area",
+    "target": "all",
+    "hits": 1,
+    "look": "A dark song wave.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 92,
+     "name": "Dark Network & Concert Crush"
+    }
+   },
+   "move": {
+    "power": 250,
+    "element": "battle",
+    "range": 3,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 304,
+   "species_name": "Divermon",
+   "level": "ultimate",
+   "name": "Striking Fish",
+   "source": {
+    "game": "dw3",
+    "basis": "canon",
+    "name": null
+   },
+   "replaces": {
+    "id": 85,
+    "name": "Bone Boomerang"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "A harpoon fish.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 85,
+     "name": "Bone Boomerang"
+    }
+   },
+   "move": {
+    "power": 228,
+    "element": "ice",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 305,
+   "species_name": "Ebidramon",
+   "level": "champion",
+   "name": "Pincer Crusher",
+   "source": {
+    "game": "dw3",
+    "basis": "proposed",
+    "name": null
+   },
+   "replaces": {
+    "id": 100,
+    "name": "Scissor Claw"
+   },
+   "behavior": {
+    "kind": "melee",
+    "target": "one",
+    "hits": 1,
+    "look": "Crushes with its claw.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 100,
+     "name": "Scissor Claw"
+    }
+   },
+   "move": {
+    "power": 163,
+    "element": "ice",
+    "range": 1,
+    "distance": 0,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 306,
+   "species_name": "GrapLeomon",
+   "level": "ultimate",
+   "name": "Cyclone Turbine",
+   "source": {
+    "game": "dw3",
+    "basis": "disc",
+    "name": "Cyclone Turbine"
+   },
+   "replaces": {
+    "id": 62,
+    "name": "Death Claw"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "A spinning cyclone kick.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "source-undecoded",
+    "template": {
+     "id": 62,
+     "name": "Death Claw"
+    }
+   },
+   "move": {
+    "power": 228,
+    "element": "air",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 307,
+   "species_name": "BlackKingNumemon",
+   "level": "mega",
+   "name": "Royal Muck",
+   "source": {
+    "game": "dw3",
+    "basis": "proposed",
+    "name": null
+   },
+   "replaces": {
+    "id": 62,
+    "name": "Death Claw"
+   },
+   "behavior": {
+    "kind": "thrown",
+    "target": "one",
+    "hits": 1,
+    "look": "A crowned lump of muck.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 62,
+     "name": "Death Claw"
+    }
+   },
+   "move": {
+    "power": 255,
+    "element": "filth",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 308,
+   "species_name": "Dinohyumon",
+   "level": "champion",
+   "name": "Lizard Dance",
+   "source": {
+    "game": "dw3",
+    "basis": "disc",
+    "name": "Lizard Dance"
+   },
+   "replaces": {
+    "id": 100,
+    "name": "Scissor Claw"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 4,
+    "look": "A dancing flurry of slashes.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "source-undecoded",
+    "template": {
+     "id": 100,
+     "name": "Scissor Claw"
+    }
+   },
+   "move": {
+    "power": 163,
+    "element": "battle",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 309,
+   "species_name": "Antylamon",
+   "level": "ultimate",
+   "name": "Bunny Blades",
+   "source": {
+    "game": "dw3",
+    "basis": "canon",
+    "name": null
+   },
+   "replaces": {
+    "id": 62,
+    "name": "Death Claw"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 2,
+    "look": "Two axe-arm slashes.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 62,
+     "name": "Death Claw"
+    }
+   },
+   "move": {
+    "power": 228,
+    "element": "battle",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 310,
+   "species_name": "Assaultmon",
+   "level": "ultimate",
+   "name": "Justice Strike",
+   "source": {
+    "game": "dw3",
+    "basis": "disc",
+    "name": "Justice Strike"
+   },
+   "replaces": {
+    "id": 78,
+    "name": "Genoside Attack"
+   },
+   "behavior": {
+    "kind": "rain",
+    "target": "one",
+    "hits": 5,
+    "look": "Gatling and missile barrage.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "source-undecoded",
+    "template": {
+     "id": 78,
+     "name": "Genoside Attack"
+    }
+   },
+   "move": {
+    "power": 228,
+    "element": "mech",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 311,
+   "species_name": "Arukenimon",
+   "level": "ultimate",
+   "name": "Spirit Needle",
+   "source": {
+    "game": "dw3",
+    "basis": "canon",
+    "name": null
+   },
+   "replaces": {
+    "id": 73,
+    "name": "Bit Bomb"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "A needle of spirit.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 73,
+     "name": "Bit Bomb"
+    }
+   },
+   "move": {
+    "power": 228,
+    "element": "nature",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 312,
+   "species_name": "Creepymon",
+   "level": "mega",
+   "name": "Evil Inferno",
+   "source": {
+    "game": "dw3",
+    "basis": "canon",
+    "name": null
+   },
+   "replaces": {
+    "id": 96,
+    "name": "Nightmare Syndromer"
+   },
+   "behavior": {
+    "kind": "area",
+    "target": "all",
+    "hits": 1,
+    "look": "Dark flames over the field.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 96,
+     "name": "Nightmare Syndromer"
+    }
+   },
+   "move": {
+    "power": 250,
+    "element": "fire",
+    "range": 3,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 313,
+   "species_name": "Bulbmon",
+   "level": "ultimate",
+   "name": "Bulb Flash",
+   "source": {
+    "game": "dw3",
+    "basis": "proposed",
+    "name": null
+   },
+   "replaces": {
+    "id": 80,
+    "name": "Dark Shot"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "A bright flash.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 80,
+     "name": "Dark Shot"
+    }
+   },
+   "move": {
+    "power": 228,
+    "element": "mech",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 314,
+   "species_name": "SkullSatamon",
+   "level": "ultimate",
+   "name": "Nail Bone",
+   "source": {
+    "game": "dw3",
+    "basis": "canon",
+    "name": null
+   },
+   "replaces": {
+    "id": 96,
+    "name": "Nightmare Syndromer"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "A beam from its staff.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 96,
+     "name": "Nightmare Syndromer"
+    }
+   },
+   "move": {
+    "power": 228,
+    "element": "fire",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Staff-cast fire identity (decision log 2026-11-04)."
+  },
+  {
+   "species": 315,
+   "species_name": "Taomon",
+   "level": "ultimate",
+   "name": "Talisman of Light",
+   "source": {
+    "game": "dw3",
+    "basis": "disc",
+    "name": "Bonhitsusen"
+   },
+   "replaces": {
+    "id": 63,
+    "name": "Mega Flame"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "Writes a glowing charm and sends it.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "source-undecoded",
+    "template": {
+     "id": 63,
+     "name": "Mega Flame"
+    }
+   },
+   "move": {
+    "power": 228,
+    "element": "fire",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Source \"Bonhitsusen\" (romaji); dub name used."
+  },
+  {
+   "species": 316,
+   "species_name": "Sakuyamon",
+   "level": "mega",
+   "name": "Amethyst Mandala",
+   "source": {
+    "game": "dw3",
+    "basis": "disc",
+    "name": "KongouKaimandara"
+   },
+   "replaces": {
+    "id": 63,
+    "name": "Mega Flame"
+   },
+   "behavior": {
+    "kind": "area",
+    "target": "all",
+    "hits": 1,
+    "look": "A violet mandala over every enemy.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "source-undecoded",
+    "template": {
+     "id": 63,
+     "name": "Mega Flame"
+    }
+   },
+   "move": {
+    "power": 250,
+    "element": "air",
+    "range": 3,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Source \"KongouKaimandara\" (romaji); dub name used."
+  },
+  {
+   "species": 317,
+   "species_name": "Fujinmon",
+   "level": "mega",
+   "name": "Divine Wind",
+   "source": {
+    "game": "dw3",
+    "basis": "proposed",
+    "name": null
+   },
+   "replaces": {
+    "id": 102,
+    "name": "Spiral Sword"
+   },
+   "behavior": {
+    "kind": "area",
+    "target": "all",
+    "hits": 1,
+    "look": "A sacred gale.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 102,
+     "name": "Spiral Sword"
+    }
+   },
+   "move": {
+    "power": 250,
+    "element": "air",
+    "range": 3,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 318,
+   "species_name": "Gallantmon",
+   "level": "mega",
+   "name": "Final Purification",
+   "source": {
+    "game": "dw3",
+    "basis": "disc",
+    "name": "Final Purification"
+   },
+   "replaces": {
+    "id": 102,
+    "name": "Spiral Sword"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "Holy light from the shield.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "source-undecoded",
+    "template": {
+     "id": 102,
+     "name": "Spiral Sword"
+    }
+   },
+   "move": {
+    "power": 255,
+    "element": "air",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 319,
+   "species_name": "Pharaohmon",
+   "level": "mega",
+   "name": "Pyramid Power",
+   "source": {
+    "game": "dw3",
+    "basis": "proposed",
+    "name": null
+   },
+   "replaces": {
+    "id": 73,
+    "name": "Bit Bomb"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "Light from a pyramid.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 73,
+     "name": "Bit Bomb"
+    }
+   },
+   "move": {
+    "power": 255,
+    "element": "nature",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 320,
+   "species_name": "Growlmon",
+   "level": "champion",
+   "name": "Plasma Blade",
+   "source": {
+    "game": "dw3",
+    "basis": "disc",
+    "name": "Plasma Blade"
+   },
+   "replaces": {
+    "id": 58,
+    "name": "Blaze Blast"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "Arm blades charged with plasma.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "source-undecoded",
+    "template": {
+     "id": 58,
+     "name": "Blaze Blast"
+    }
+   },
+   "move": {
+    "power": 163,
+    "element": "fire",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 321,
+   "species_name": "Knightmon",
+   "level": "ultimate",
+   "name": "Berserk Sword",
+   "source": {
+    "game": "dw3",
+    "basis": "canon",
+    "name": null
+   },
+   "replaces": {
+    "id": 102,
+    "name": "Spiral Sword"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "A heavy sword blow.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 102,
+     "name": "Spiral Sword"
+    }
+   },
+   "move": {
+    "power": 228,
+    "element": "battle",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 322,
+   "species_name": "Kyukimon",
+   "level": "ultimate",
+   "name": "Blade Twister",
+   "source": {
+    "game": "dw3",
+    "basis": "disc",
+    "name": "Blade Twister"
+   },
+   "replaces": {
+    "id": 62,
+    "name": "Death Claw"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "Spinning wing blades.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "source-undecoded",
+    "template": {
+     "id": 62,
+     "name": "Death Claw"
+    }
+   },
+   "move": {
+    "power": 228,
+    "element": "air",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 323,
+   "species_name": "Lynxmon",
+   "level": "champion",
+   "name": "Blazing Mane",
+   "source": {
+    "game": "dw3",
+    "basis": "proposed",
+    "name": null
+   },
+   "replaces": {
+    "id": 109,
+    "name": "Crimson Flare"
+   },
+   "behavior": {
+    "kind": "breath",
+    "target": "one",
+    "hits": 1,
+    "look": "Its mane flares and it breathes a cone of fire.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 109,
+     "name": "Crimson Flare"
+    }
+   },
+   "move": {
+    "power": 163,
+    "element": "fire",
+    "range": 2,
+    "distance": 90000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 15,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 324,
+   "species_name": "Maildramon",
+   "level": "champion",
+   "name": "Mail Bomber",
+   "source": {
+    "game": "dw3",
+    "basis": "proposed",
+    "name": null
+   },
+   "replaces": {
+    "id": 62,
+    "name": "Death Claw"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "Arrow bombs.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 62,
+     "name": "Death Claw"
+    }
+   },
+   "move": {
+    "power": 163,
+    "element": "air",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 325,
+   "species_name": "Musyamon",
+   "level": "champion",
+   "name": "Ura Sword",
+   "source": {
+    "game": "dw3",
+    "basis": "proposed",
+    "name": null
+   },
+   "replaces": {
+    "id": 62,
+    "name": "Death Claw"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "A sword cut.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 62,
+     "name": "Death Claw"
+    }
+   },
+   "move": {
+    "power": 163,
+    "element": "battle",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 326,
+   "species_name": "WarGrowlmon",
+   "level": "ultimate",
+   "name": "Atomic Blaster",
+   "source": {
+    "game": "dw3",
+    "basis": "disc",
+    "name": "Atomic Blaster"
+   },
+   "replaces": {
+    "id": 80,
+    "name": "Dark Shot"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "Twin chest cannons.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "source-undecoded",
+    "template": {
+     "id": 77,
+     "name": "Energy Bomb"
+    }
+   },
+   "move": {
+    "power": 228,
+    "element": "mech",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 327,
+   "species_name": "Gargoylemon",
+   "level": "champion",
+   "name": "Gargoyle Rush",
+   "source": {
+    "game": "dw3",
+    "basis": "proposed",
+    "name": null
+   },
+   "replaces": {
+    "id": 81,
+    "name": "Pummel Whack"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "A diving charge.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 81,
+     "name": "Pummel Whack"
+    }
+   },
+   "move": {
+    "power": 163,
+    "element": "battle",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 328,
+   "species_name": "Snimon",
+   "level": "champion",
+   "name": "Twin Sickles",
+   "source": {
+    "game": "dw3",
+    "basis": "canon",
+    "name": null
+   },
+   "replaces": {
+    "id": 73,
+    "name": "Bit Bomb"
+   },
+   "behavior": {
+    "kind": "thrown",
+    "target": "one",
+    "hits": 2,
+    "look": "Two crescent blades.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 73,
+     "name": "Bit Bomb"
+    }
+   },
+   "move": {
+    "power": 163,
+    "element": "air",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 329,
+   "species_name": "Ghoulmon",
+   "level": "mega",
+   "name": "Necro Eye",
+   "source": {
+    "game": "dw3",
+    "basis": "proposed",
+    "name": null
+   },
+   "replaces": {
+    "id": 80,
+    "name": "Dark Shot"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "A red beam from its eye.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 80,
+     "name": "Dark Shot"
+    }
+   },
+   "move": {
+    "power": 255,
+    "element": "mech",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 330,
+   "species_name": "Minotarumon",
+   "level": "champion",
+   "name": "Darkside Quake",
+   "source": {
+    "game": "dw3",
+    "basis": "canon",
+    "name": null
+   },
+   "replaces": {
+    "id": 81,
+    "name": "Pummel Whack"
+   },
+   "behavior": {
+    "kind": "area",
+    "target": "all",
+    "hits": 1,
+    "look": "A ground quake.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 81,
+     "name": "Pummel Whack"
+    }
+   },
+   "move": {
+    "power": 130,
+    "element": "battle",
+    "range": 3,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 331,
+   "species_name": "Vemmon",
+   "level": "rookie",
+   "name": "Vemmon Crash",
+   "source": {
+    "game": "dw3",
+    "basis": "proposed",
+    "name": null
+   },
+   "replaces": {
+    "id": 100,
+    "name": "Scissor Claw"
+   },
+   "behavior": {
+    "kind": "melee",
+    "target": "one",
+    "hits": 1,
+    "look": "A body slam.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 100,
+     "name": "Scissor Claw"
+    }
+   },
+   "move": {
+    "power": 93,
+    "element": "battle",
+    "range": 1,
+    "distance": 0,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 332,
+   "species_name": "Roachmon",
+   "level": "champion",
+   "name": "Roach Rush",
+   "source": {
+    "game": "dw3",
+    "basis": "proposed",
+    "name": null
+   },
+   "replaces": {
+    "id": 93,
+    "name": "Electro Shocker"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "A charge.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 93,
+     "name": "Electro Shocker"
+    }
+   },
+   "move": {
+    "power": 163,
+    "element": "filth",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 333,
+   "species_name": "Raijinmon",
+   "level": "mega",
+   "name": "Raijin Thunder",
+   "source": {
+    "game": "dw3",
+    "basis": "proposed",
+    "name": null
+   },
+   "replaces": {
+    "id": 78,
+    "name": "Genoside Attack"
+   },
+   "behavior": {
+    "kind": "area",
+    "target": "all",
+    "hits": 1,
+    "look": "Drum thunder over the field.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 74,
+     "name": "Deadly Bomb"
+    }
+   },
+   "move": {
+    "power": 250,
+    "element": "air",
+    "range": 3,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 334,
+   "species_name": "Mummymon",
+   "level": "ultimate",
+   "name": "Necrophobia",
+   "source": {
+    "game": "dw3",
+    "basis": "canon",
+    "name": null
+   },
+   "replaces": {
+    "id": 80,
+    "name": "Dark Shot"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "A gunshot.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 80,
+     "name": "Dark Shot"
+    }
+   },
+   "move": {
+    "power": 228,
+    "element": "mech",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Gun identity (decision log 2026-11-04)."
+  },
+  {
+   "species": 335,
+   "species_name": "MegaGargomon",
+   "level": "mega",
+   "name": "Giant Missile",
+   "source": {
+    "game": "dw3",
+    "basis": "disc",
+    "name": "Giant Missile"
+   },
+   "replaces": {
+    "id": 78,
+    "name": "Genoside Attack"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "Two huge missiles from the back.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "source-undecoded",
+    "template": {
+     "id": 78,
+     "name": "Genoside Attack"
+    }
+   },
+   "move": {
+    "power": 255,
+    "element": "mech",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 336,
+   "species_name": "Raidenmon",
+   "level": "mega",
+   "name": "Raiden Strike",
+   "source": {
+    "game": "dw3",
+    "basis": "proposed",
+    "name": null
+   },
+   "replaces": {
+    "id": 61,
+    "name": "Fireball"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "A lightning strike.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 112,
+     "name": "High Electro Shocker"
+    }
+   },
+   "move": {
+    "power": 255,
+    "element": "air",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 351,
+   "species_name": "Kotemon",
+   "level": "rookie",
+   "name": "Hot Head",
+   "source": {
+    "game": "dw3",
+    "basis": "disc",
+    "name": "Hot Head"
+   },
+   "replaces": {
+    "id": 99,
+    "name": "Blue Blaster"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "A flaming head strike.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "source-undecoded",
+    "template": {
+     "id": 99,
+     "name": "Blue Blaster"
+    }
+   },
+   "move": {
+    "power": 93,
+    "element": "fire",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 352,
+   "species_name": "Monmon",
+   "level": "rookie",
+   "name": "Swing Swing",
+   "source": {
+    "game": "dw3",
+    "basis": "disc",
+    "name": "Swing Swing"
+   },
+   "replaces": {
+    "id": 71,
+    "name": "Boom Bubble"
+   },
+   "behavior": {
+    "kind": "melee",
+    "target": "one",
+    "hits": 2,
+    "look": "Swings round and hits twice.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "source-undecoded",
+    "template": {
+     "id": 71,
+     "name": "Boom Bubble"
+    }
+   },
+   "move": {
+    "power": 93,
+    "element": "battle",
+    "range": 1,
+    "distance": 0,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 353,
+   "species_name": "Bearmon",
+   "level": "rookie",
+   "name": "Bear Fist",
+   "source": {
+    "game": "dw3",
+    "basis": "disc",
+    "name": "Bear Fist"
+   },
+   "replaces": {
+    "id": 95,
+    "name": "Super Slap"
+   },
+   "behavior": {
+    "kind": "melee",
+    "target": "one",
+    "hits": 1,
+    "look": "A heavy straight punch.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "source-undecoded",
+    "template": {
+     "id": 95,
+     "name": "Super Slap"
+    }
+   },
+   "move": {
+    "power": 93,
+    "element": "battle",
+    "range": 1,
+    "distance": 0,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 354,
+   "species_name": "Renamon",
+   "level": "rookie",
+   "name": "Diamond Storm",
+   "source": {
+    "game": "dw3",
+    "basis": "disc",
+    "name": "Diamond Storm"
+   },
+   "replaces": {
+    "id": 70,
+    "name": "Spiral Twister"
+   },
+   "behavior": {
+    "kind": "rain",
+    "target": "one",
+    "hits": 6,
+    "look": "A storm of crystal shards.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "source-undecoded",
+    "template": {
+     "id": 70,
+     "name": "Spiral Twister"
+    }
+   },
+   "move": {
+    "power": 93,
+    "element": "battle",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 373,
+   "species_name": "WarGreymon",
+   "level": "mega",
+   "name": "Terra Force",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Terra Force",
+    "power": 900
+   },
+   "replaces": {
+    "id": 109,
+    "name": "Crimson Flare"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "Gathers a giant orange energy sphere overhead and hurls it.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/435.PAK",
+    "shared_by_cards": 33,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 109,
+     "name": "Crimson Flare"
+    }
+   },
+   "move": {
+    "power": 256,
+    "element": "fire",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 400,
+   "species_name": "Apocalymon",
+   "level": "mega",
+   "name": "Darkness Zone",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Darkness Zone",
+    "power": 990
+   },
+   "replaces": {
+    "id": 74,
+    "name": "Deadly Bomb"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "A sphere of darkness swallows the target.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2010.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 74,
+     "name": "Deadly Bomb"
+    }
+   },
+   "move": {
+    "power": 260,
+    "element": "mech",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 401,
+   "species_name": "Pukumon",
+   "level": "mega",
+   "name": "Needle Squall",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Needle Squ<f0>Y",
+    "power": 85,
+    "dw2_element": "machine",
+    "dw2_target": "all enemies",
+    "description": "Shoots Spines at <f0>Y foes",
+    "cast_clip": "F0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3238,
+     4
+    ]
+   },
+   "replaces": {
+    "id": 111,
+    "name": "Mail Strome"
+   },
+   "behavior": {
+    "kind": "area",
+    "target": "all",
+    "hits": 6,
+    "look": "Spines in every direction.",
+    "dash": false,
+    "clip": "F0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFESA/MESA9300.BIN",
+     "EFFECT/EFFESA/MESA9400.BIN",
+     "EFFECT/EFFESA/AESA9300.BIN",
+     "EFFECT/EFFESA/AESA9400.BIN",
+     "EFFECT/EFFESD/MESD7400.BIN",
+     "EFFECT/EFFESD/AESD7400.BIN"
+    ],
+    "file_ids": [
+     2775,
+     2711,
+     2752,
+     2761,
+     1002,
+     1030
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 111,
+     "name": "Mail Strome"
+    }
+   },
+   "move": {
+    "power": 250,
+    "element": "ice",
+    "range": 3,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Last glyph undecoded; \"Squall\" read from the description."
+  },
+  {
+   "species": 402,
+   "species_name": "NeoCrimson",
+   "level": "mega",
+   "name": "Blind Attack",
+   "source": {
+    "game": "dw2",
+    "basis": "disc",
+    "name": "Blind Attack",
+    "power": 120,
+    "dw2_element": "neutral",
+    "dw2_target": "everyone (friend and foe)",
+    "description": "Attacks friend <f0>G foe",
+    "cast_clip": "H0",
+    "status_flags": "0x0",
+    "voice_xa": [
+     3243,
+     2
+    ]
+   },
+   "replaces": {
+    "id": 109,
+    "name": "Crimson Flare"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "random",
+    "hits": 1,
+    "look": "A blind charge at a random fighter.",
+    "dash": true,
+    "clip": "H0"
+   },
+   "effect": {
+    "files": [
+     "EFFECT/EFFEUA/MEUA1400.BIN",
+     "EFFECT/EFFEUA/MEUA1500.BIN",
+     "EFFECT/EFFEUA/AEUA1400.BIN",
+     "EFFECT/EFFEUA/AEUA1500.BIN",
+     "EFFECT/EFFESD/MESD1500.BIN",
+     "EFFECT/EFFESD/AESD1500.BIN"
+    ],
+    "file_ids": [
+     2083,
+     2087,
+     2104,
+     2110,
+     3137,
+     3149
+    ],
+    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
+    "status": "source",
+    "template": {
+     "id": 109,
+     "name": "Crimson Flare"
+    }
+   },
+   "move": {
+    "power": 259,
+    "element": "battle",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [],
+    "mpCost": 40
+   },
+   "notes": "Source hits friend or foe; DW1 version: a random enemy (Nightmare Syndromer rule)."
+  },
+  {
+   "species": 403,
+   "species_name": "Beelzemon",
+   "level": "mega",
+   "name": "Corona Blaster",
+   "source": {
+    "game": "dw3",
+    "basis": "canon",
+    "name": "Blast Mode"
+   },
+   "replaces": {
+    "id": 80,
+    "name": "Dark Shot"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "An energy blast from the arm cannon.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 80,
+     "name": "Dark Shot"
+    }
+   },
+   "move": {
+    "power": 255,
+    "element": "mech",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Source signature \"Blast Mode\" is a form, not an attack."
+  },
+  {
+   "species": 404,
+   "species_name": "BlackWarGreymon",
+   "level": "mega",
+   "name": "Terra Destroyer",
+   "source": {
+    "game": "dw3",
+    "basis": "disc",
+    "name": "Terra Destroyer"
+   },
+   "replaces": {
+    "id": 96,
+    "name": "Nightmare Syndromer"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "A dark energy sphere hurled from overhead.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "source-undecoded",
+    "template": {
+     "id": 96,
+     "name": "Nightmare Syndromer"
+    }
+   },
+   "move": {
+    "power": 255,
+    "element": "fire",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 405,
+   "species_name": "Cannondramon",
+   "level": "mega",
+   "name": "Dynamo Cannon",
+   "source": {
+    "game": "dw3",
+    "basis": "disc",
+    "name": "DynamoCannon"
+   },
+   "replaces": {
+    "id": 78,
+    "name": "Genoside Attack"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "Both back cannons fire.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "source-undecoded",
+    "template": {
+     "id": 78,
+     "name": "Genoside Attack"
+    }
+   },
+   "move": {
+    "power": 255,
+    "element": "mech",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   },
+   "notes": "Source \"DynamoCannon\" spaced."
+  },
+  {
+   "species": 406,
+   "species_name": "MaloMyotismon",
+   "level": "mega",
+   "name": "Melting Blood",
+   "source": {
+    "game": "dw3",
+    "basis": "disc",
+    "name": "Melting Blood"
+   },
+   "replaces": {
+    "id": 96,
+    "name": "Nightmare Syndromer"
+   },
+   "behavior": {
+    "kind": "melee",
+    "target": "one",
+    "hits": 1,
+    "look": "A whip of blood.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "source-undecoded",
+    "template": {
+     "id": 96,
+     "name": "Nightmare Syndromer"
+    }
+   },
+   "move": {
+    "power": 255,
+    "element": "battle",
+    "range": 1,
+    "distance": 0,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 407,
+   "species_name": "Armageddemon",
+   "level": "mega",
+   "name": "Ultimate Flare",
+   "source": {
+    "game": "dw3",
+    "basis": "canon",
+    "name": null
+   },
+   "replaces": {
+    "id": 109,
+    "name": "Crimson Flare"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "A flare from the mouth.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 109,
+     "name": "Crimson Flare"
+    }
+   },
+   "move": {
+    "power": 255,
+    "element": "fire",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 408,
+   "species_name": "Suijinmon",
+   "level": "mega",
+   "name": "Water Spiral",
+   "source": {
+    "game": "dw3",
+    "basis": "proposed",
+    "name": null
+   },
+   "replaces": {
+    "id": 106,
+    "name": "Infinity Cannon"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "A spiral of water.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 106,
+     "name": "Infinity Cannon"
+    }
+   },
+   "move": {
+    "power": 255,
+    "element": "ice",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 409,
+   "species_name": "Kyubimon",
+   "level": "champion",
+   "name": "Dragon Wheel",
+   "source": {
+    "game": "dw3",
+    "basis": "disc",
+    "name": "Dragon Wheel"
+   },
+   "replaces": {
+    "id": 61,
+    "name": "Fireball"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "Spins into a fire dragon.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "source-undecoded",
+    "template": {
+     "id": 61,
+     "name": "Fireball"
+    }
+   },
+   "move": {
+    "power": 163,
+    "element": "fire",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 430,
+   "species_name": "Zanbamon",
+   "level": "mega",
+   "name": "Zanba Blade",
+   "source": {
+    "game": "dw3",
+    "basis": "proposed",
+    "name": null
+   },
+   "replaces": {
+    "id": 62,
+    "name": "Death Claw"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "A long sword cut.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 62,
+     "name": "Death Claw"
+    }
+   },
+   "move": {
+    "power": 255,
+    "element": "battle",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 431,
+   "species_name": "Kurisarimon",
+   "level": "champion",
+   "name": "Data Crusher",
+   "source": {
+    "game": "dw3",
+    "basis": "canon",
+    "name": null
+   },
+   "replaces": {
+    "id": 73,
+    "name": "Bit Bomb"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "A data blast.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 72,
+     "name": "Sweet Breath"
+    }
+   },
+   "move": {
+    "power": 163,
+    "element": "mech",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 432,
+   "species_name": "Bastemon",
+   "level": "ultimate",
+   "name": "Cat Laser",
+   "source": {
+    "game": "dw3",
+    "basis": "proposed",
+    "name": null
+   },
+   "replaces": {
+    "id": 62,
+    "name": "Death Claw"
+   },
+   "behavior": {
+    "kind": "beam",
+    "target": "one",
+    "hits": 1,
+    "look": "A laser from its eyes.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "dw1-template",
+    "template": {
+     "id": 60,
+     "name": "Lovely Attack"
+    }
+   },
+   "move": {
+    "power": 228,
+    "element": "battle",
+    "range": 2,
+    "distance": 640000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 433,
+   "species_name": "Guilmon",
+   "level": "rookie",
+   "name": "Pyrosphere",
+   "source": {
+    "game": "dw3",
+    "basis": "disc",
+    "name": "Pyrosphere"
+   },
+   "replaces": {
+    "id": 59,
+    "name": "Pepper Breath"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "A fireball from the mouth.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "files": null,
+    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
+    "status": "source-undecoded",
+    "template": {
+     "id": 59,
+     "name": "Pepper Breath"
+    }
+   },
+   "move": {
+    "power": 93,
+    "element": "fire",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 460,
+   "species_name": "Garudamon",
+   "level": "ultimate",
+   "name": "Wing Blade",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Wing Blade",
+    "power": 730
+   },
+   "replaces": {
+    "id": 63,
+    "name": "Mega Flame"
+   },
+   "behavior": {
+    "kind": "shot",
+    "target": "one",
+    "hits": 1,
+    "look": "A firebird shape launched from the wings.",
+    "dash": false,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/495.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 63,
+     "name": "Mega Flame"
+    }
+   },
+   "move": {
+    "power": 245,
+    "element": "fire",
+    "range": 2,
+    "distance": 360000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  },
+  {
+   "species": 461,
+   "species_name": "Omnimon",
+   "level": "mega",
+   "name": "Transcendent Sword",
+   "source": {
+    "game": "dcb",
+    "basis": "disc",
+    "name": "Transcendent Sword",
+    "power": 960
+   },
+   "replaces": {
+    "id": 111,
+    "name": "Mail Strome"
+   },
+   "behavior": {
+    "kind": "dash",
+    "target": "one",
+    "hits": 1,
+    "look": "A long glowing cut of the Grey Sword.",
+    "dash": true,
+    "clip": "by eye"
+   },
+   "effect": {
+    "file": "E.DRV/2060.PAK",
+    "shared_by_cards": 1,
+    "logic": "MSCD script of the card model (not decoded)",
+    "status": "source",
+    "template": {
+     "id": 111,
+     "name": "Mail Strome"
+    }
+   },
+   "move": {
+    "power": 258,
+    "element": "battle",
+    "range": 2,
+    "distance": 160000,
+    "accuracy": 100,
+    "status": 0,
+    "statusChance": 0,
+    "iframes": 1,
+    "flags": [
+     "T"
+    ],
+    "mpCost": 40
+   }
+  }
+ ]
+}

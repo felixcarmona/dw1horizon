@@ -4,7 +4,7 @@
 # Solarmon, a sun frozen in the hall (arcs/residents/README.md; its home: district/power-station.py), joins on either answer.
 from dw import *
 from dw.base.ice_sanctuary_97 import sanctuary
-from ...state import root3, vault_kept
+from ...state import root3, vault_kept, thaw_told
 
 solarmon = sanctuary.npc(Species.Solarmon, at=(800, -600), range=0, still=True, when=not recruited(Species.Solarmon))
 
@@ -20,13 +20,14 @@ def talk():
     send_to_city(line="Solarmon joined the city!", species=Species.Solarmon)
 
 
-@sanctuary.on_step(1, when=recruited(Species.Angemon) and not root3)
+# The band across the corridor (step 1) is also the only way on to the Sanctuary proper (BlueMeramon, the gym): the way
+# down is offered until the tamer has answered, and never again stands in the way afterwards.
+@sanctuary.on_step(1, when=recruited(Species.Angemon) and not root3 and not vault_kept)
 def the_voice_below():
     narrator.say("From under the pedestal, a cold voice:", "\"Deeper... The hearts are kept deeper...\"")
     tamer.say("There's more down there! Let's go, {partner}!")
-    vault_kept.clear()            # the choice at the wall is asked again
     warp(310, entry=0)
 
-@sanctuary.on_step(1, when=root3)
+@sanctuary.on_step(1, when=root3 and not thaw_told)
 def to_the_door():
     warp(311, entry=0)

@@ -1,0 +1,1065 @@
+{
+  "model": 461,
+  "baseline": "integ5",
+  "complete_clearance": false,
+  "outcome": "Sword and cape clear; 41 other strict crossing pairs remain without unrestricted floors.",
+  "before": {
+    "resident_bytes": 81566,
+    "cold_bytes": 21192,
+    "fits": true,
+    "provider_sha1": "4d54d97053d3113fd139074d4a3a63e1cbe8e4fd",
+    "atlas_model_sha256": "628c15859c560ceb7387a438e45cf65f2041f7c37204997973e20179011fae01",
+    "atlas_texture_sha256": "de2cfebcfe46a8928bc5eb58824bd454f9291e123250c28154e42ff222487a2e",
+    "slots": 52,
+    "ticks": 2116,
+    "crossing_pairs": 80,
+    "max_depth_units": 111.77444073143542,
+    "primitives": 622,
+    "triangles": 936,
+    "packet_format_bytes": 28632,
+    "bent_quads": 65,
+    "detector": {
+      "envelope_verdict": "pass",
+      "verdict": "review",
+      "part_candidates": 31,
+      "severity": 0.4957983193277302,
+      "crossings_max": 295,
+      "tie_rate": 0.01276946548864017,
+      "flip_rate": 0.007896352084404704,
+      "bent_risk": 0.00021619488865464587
+    }
+  },
+  "after": {
+    "resident_bytes": 81502,
+    "cold_bytes": 21192,
+    "fits": true,
+    "provider_sha1": "b3228af2c2d6d4f4b28e6e106cc842dd42fd12e6",
+    "atlas_model_sha256": "223e910882c9bcaba88ee4aba6ca95a97431e6e78d67d175f9392a91af4e06e4",
+    "atlas_texture_sha256": "de2cfebcfe46a8928bc5eb58824bd454f9291e123250c28154e42ff222487a2e",
+    "slots": 52,
+    "ticks": 2116,
+    "crossing_pairs": 41,
+    "max_depth_units": 70.84074322596433,
+    "primitives": 634,
+    "triangles": 936,
+    "packet_format_bytes": 28968,
+    "bent_quads": 65,
+    "detector": {
+      "envelope_verdict": "pass",
+      "verdict": "review",
+      "part_candidates": 28,
+      "severity": 0.599999999999999,
+      "crossings_max": 357,
+      "tie_rate": 0.012629812801780767,
+      "flip_rate": 0.008677396780965711,
+      "bent_risk": 0.00021619488865464587
+    }
+  },
+  "pairs": {
+    "1/2": {
+      "before_units": 70.84074322596433,
+      "after_units": 70.84074322596433,
+      "before_witness": [
+        2,
+        31
+      ],
+      "after_witness": [
+        2,
+        31
+      ],
+      "status": "unproven residual"
+    },
+    "1/3": {
+      "before_units": 37.46713798867385,
+      "after_units": 30.696808961543866,
+      "before_witness": [
+        42,
+        18
+      ],
+      "after_witness": [
+        46,
+        16
+      ],
+      "status": "unproven residual"
+    },
+    "1/4": {
+      "before_units": 28.238406594236903,
+      "after_units": 24.55001505882791,
+      "before_witness": [
+        46,
+        14
+      ],
+      "after_witness": [
+        46,
+        12
+      ],
+      "status": "unproven residual"
+    },
+    "1/8": {
+      "before_units": 44.1568439430468,
+      "after_units": 40.87471531641552,
+      "before_witness": [
+        46,
+        6
+      ],
+      "after_witness": [
+        35,
+        10
+      ],
+      "status": "unproven residual"
+    },
+    "1/9": {
+      "before_units": 27.91705433823326,
+      "after_units": 28.9279648436291,
+      "before_witness": [
+        47,
+        14
+      ],
+      "after_witness": [
+        47,
+        12
+      ],
+      "status": "unproven residual"
+    },
+    "1/10": {
+      "before_units": 33.28304279558198,
+      "after_units": 33.61242548321366,
+      "before_witness": [
+        47,
+        14
+      ],
+      "after_witness": [
+        47,
+        13
+      ],
+      "status": "unproven residual"
+    },
+    "1/11": {
+      "before_units": 38.170403816474135,
+      "after_units": 0,
+      "before_witness": [
+        47,
+        13
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "1/14": {
+      "before_units": 34.088851061538364,
+      "after_units": 34.088851061538364,
+      "before_witness": [
+        21,
+        0
+      ],
+      "after_witness": [
+        21,
+        0
+      ],
+      "status": "unproven residual"
+    },
+    "1/23": {
+      "before_units": 46.84575817607687,
+      "after_units": 0,
+      "before_witness": [
+        43,
+        31
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "2/3": {
+      "before_units": 41.108473425811866,
+      "after_units": 39.570359327207534,
+      "before_witness": [
+        42,
+        16
+      ],
+      "after_witness": [
+        46,
+        16
+      ],
+      "status": "unproven residual"
+    },
+    "2/5": {
+      "before_units": 32.20760030035625,
+      "after_units": 30.01201888673887,
+      "before_witness": [
+        46,
+        13
+      ],
+      "after_witness": [
+        46,
+        12
+      ],
+      "status": "unproven residual"
+    },
+    "2/6": {
+      "before_units": 21.273642056017756,
+      "after_units": 0,
+      "before_witness": [
+        40,
+        33
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "2/7": {
+      "before_units": 78.93163858137987,
+      "after_units": 0,
+      "before_witness": [
+        40,
+        34
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "2/8": {
+      "before_units": 51.53036196682096,
+      "after_units": 42.7239811844735,
+      "before_witness": [
+        46,
+        6
+      ],
+      "after_witness": [
+        4,
+        2
+      ],
+      "status": "unproven residual"
+    },
+    "2/9": {
+      "before_units": 33.482342604062666,
+      "after_units": 19.406860025951726,
+      "before_witness": [
+        47,
+        14
+      ],
+      "after_witness": [
+        47,
+        14
+      ],
+      "status": "unproven residual"
+    },
+    "2/10": {
+      "before_units": 42.800266267021684,
+      "after_units": 45.50746182469988,
+      "before_witness": [
+        47,
+        14
+      ],
+      "after_witness": [
+        47,
+        13
+      ],
+      "status": "unproven residual"
+    },
+    "2/11": {
+      "before_units": 64.70374409799821,
+      "after_units": 43.053494577482965,
+      "before_witness": [
+        47,
+        13
+      ],
+      "after_witness": [
+        47,
+        13
+      ],
+      "status": "unproven residual"
+    },
+    "2/13": {
+      "before_units": 19.810956856555602,
+      "after_units": 21.131969091344647,
+      "before_witness": [
+        47,
+        14
+      ],
+      "after_witness": [
+        47,
+        14
+      ],
+      "status": "unproven residual"
+    },
+    "3/4": {
+      "before_units": 41.60847055863903,
+      "after_units": 41.608470558638984,
+      "before_witness": [
+        40,
+        9
+      ],
+      "after_witness": [
+        40,
+        9
+      ],
+      "status": "unproven residual"
+    },
+    "3/5": {
+      "before_units": 25.94668753455218,
+      "after_units": 25.94668753455217,
+      "before_witness": [
+        42,
+        10
+      ],
+      "after_witness": [
+        42,
+        10
+      ],
+      "status": "unproven residual"
+    },
+    "3/6": {
+      "before_units": 21.797045525344394,
+      "after_units": 21.797045525344387,
+      "before_witness": [
+        42,
+        14
+      ],
+      "after_witness": [
+        42,
+        14
+      ],
+      "status": "unproven residual"
+    },
+    "4/5": {
+      "before_units": 10.060661286912515,
+      "after_units": 10.060661286912541,
+      "before_witness": [
+        42,
+        5
+      ],
+      "after_witness": [
+        42,
+        5
+      ],
+      "status": "unproven residual"
+    },
+    "4/16": {
+      "before_units": 25.093733694667055,
+      "after_units": 0,
+      "before_witness": [
+        43,
+        25
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "4/23": {
+      "before_units": 56.43470140986446,
+      "after_units": 0,
+      "before_witness": [
+        34,
+        18
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "5/6": {
+      "before_units": 9.588525106834709,
+      "after_units": 9.58852510683471,
+      "before_witness": [
+        42,
+        14
+      ],
+      "after_witness": [
+        42,
+        14
+      ],
+      "status": "unproven residual"
+    },
+    "5/7": {
+      "before_units": 78.24016295840207,
+      "after_units": 0,
+      "before_witness": [
+        42,
+        14
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "5/16": {
+      "before_units": 50.58055236201231,
+      "after_units": 14.802786299090338,
+      "before_witness": [
+        56,
+        10
+      ],
+      "after_witness": [
+        47,
+        4
+      ],
+      "status": "unproven residual"
+    },
+    "5/17": {
+      "before_units": 33.71770897140105,
+      "after_units": 0,
+      "before_witness": [
+        27,
+        74
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "5/18": {
+      "before_units": 19.52684235804071,
+      "after_units": 0,
+      "before_witness": [
+        56,
+        10
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "5/24": {
+      "before_units": 28.35579227117239,
+      "after_units": 0,
+      "before_witness": [
+        46,
+        6
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "6/7": {
+      "before_units": 90.55496781796894,
+      "after_units": 0,
+      "before_witness": [
+        5,
+        18
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "6/16": {
+      "before_units": 44.44058026220981,
+      "after_units": 0,
+      "before_witness": [
+        56,
+        10
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "6/17": {
+      "before_units": 34.48411282636811,
+      "after_units": 0,
+      "before_witness": [
+        27,
+        12
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "6/23": {
+      "before_units": 68.80998861214128,
+      "after_units": 0,
+      "before_witness": [
+        46,
+        5
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "7/16": {
+      "before_units": 90.94613554397903,
+      "after_units": 0,
+      "before_witness": [
+        47,
+        12
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "7/17": {
+      "before_units": 65.58341622219561,
+      "after_units": 0,
+      "before_witness": [
+        27,
+        74
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "7/18": {
+      "before_units": 47.29652080174692,
+      "after_units": 0,
+      "before_witness": [
+        47,
+        11
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "8/9": {
+      "before_units": 18.957246405783625,
+      "after_units": 18.95724640578364,
+      "before_witness": [
+        46,
+        9
+      ],
+      "after_witness": [
+        46,
+        9
+      ],
+      "status": "unproven residual"
+    },
+    "8/10": {
+      "before_units": 24.002708745483375,
+      "after_units": 24.002708745483343,
+      "before_witness": [
+        47,
+        14
+      ],
+      "after_witness": [
+        46,
+        14
+      ],
+      "status": "unproven residual"
+    },
+    "8/11": {
+      "before_units": 43.387009439413724,
+      "after_units": 43.38700943941375,
+      "before_witness": [
+        46,
+        15
+      ],
+      "after_witness": [
+        47,
+        15
+      ],
+      "status": "unproven residual"
+    },
+    "8/12": {
+      "before_units": 34.79774393574324,
+      "after_units": 34.79774393574322,
+      "before_witness": [
+        9,
+        15
+      ],
+      "after_witness": [
+        9,
+        15
+      ],
+      "status": "unproven residual"
+    },
+    "8/23": {
+      "before_units": 30.802152660718747,
+      "after_units": 0,
+      "before_witness": [
+        43,
+        19
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "9/10": {
+      "before_units": 38.51623932445194,
+      "after_units": 38.51623932445193,
+      "before_witness": [
+        42,
+        41
+      ],
+      "after_witness": [
+        42,
+        41
+      ],
+      "status": "unproven residual"
+    },
+    "9/11": {
+      "before_units": 36.353033412631106,
+      "after_units": 36.353033412631106,
+      "before_witness": [
+        40,
+        28
+      ],
+      "after_witness": [
+        40,
+        28
+      ],
+      "status": "unproven residual"
+    },
+    "9/12": {
+      "before_units": 29.22770457014525,
+      "after_units": 29.227704570145157,
+      "before_witness": [
+        42,
+        12
+      ],
+      "after_witness": [
+        42,
+        12
+      ],
+      "status": "unproven residual"
+    },
+    "9/13": {
+      "before_units": 17.18624467690449,
+      "after_units": 17.186244676904476,
+      "before_witness": [
+        42,
+        43
+      ],
+      "after_witness": [
+        42,
+        43
+      ],
+      "status": "unproven residual"
+    },
+    "9/23": {
+      "before_units": 23.44916746453862,
+      "after_units": 0,
+      "before_witness": [
+        56,
+        7
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "10/12": {
+      "before_units": 34.03961293051821,
+      "after_units": 34.03961293051821,
+      "before_witness": [
+        56,
+        5
+      ],
+      "after_witness": [
+        56,
+        5
+      ],
+      "status": "unproven residual"
+    },
+    "10/13": {
+      "before_units": 22.516704470181033,
+      "after_units": 22.516704470181033,
+      "before_witness": [
+        34,
+        9
+      ],
+      "after_witness": [
+        34,
+        9
+      ],
+      "status": "unproven residual"
+    },
+    "10/23": {
+      "before_units": 51.51421567635912,
+      "after_units": 0,
+      "before_witness": [
+        35,
+        10
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "10/24": {
+      "before_units": 55.312512876011894,
+      "after_units": 0,
+      "before_witness": [
+        43,
+        32
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "11/12": {
+      "before_units": 44.37366221612259,
+      "after_units": 44.373662216122625,
+      "before_witness": [
+        36,
+        1
+      ],
+      "after_witness": [
+        36,
+        1
+      ],
+      "status": "unproven residual"
+    },
+    "11/13": {
+      "before_units": 24.61326915588078,
+      "after_units": 24.613269155880793,
+      "before_witness": [
+        42,
+        5
+      ],
+      "after_witness": [
+        42,
+        5
+      ],
+      "status": "unproven residual"
+    },
+    "11/14": {
+      "before_units": 26.38600530343036,
+      "after_units": 0,
+      "before_witness": [
+        56,
+        7
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "11/19": {
+      "before_units": 21.93484749364611,
+      "after_units": 0,
+      "before_witness": [
+        56,
+        7
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "11/20": {
+      "before_units": 23.849192963727905,
+      "after_units": 0,
+      "before_witness": [
+        56,
+        6
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "11/23": {
+      "before_units": 62.334149654558615,
+      "after_units": 0,
+      "before_witness": [
+        16,
+        10
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "11/24": {
+      "before_units": 63.35400110834135,
+      "after_units": 0,
+      "before_witness": [
+        43,
+        32
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "12/13": {
+      "before_units": 40.03791444762984,
+      "after_units": 40.037914447629824,
+      "before_witness": [
+        56,
+        5
+      ],
+      "after_witness": [
+        56,
+        5
+      ],
+      "status": "unproven residual"
+    },
+    "12/14": {
+      "before_units": 11.046522968425535,
+      "after_units": 0,
+      "before_witness": [
+        56,
+        7
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "12/23": {
+      "before_units": 69.56629893169786,
+      "after_units": 0,
+      "before_witness": [
+        12,
+        27
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "12/24": {
+      "before_units": 26.17201982468289,
+      "after_units": 0,
+      "before_witness": [
+        56,
+        9
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "13/14": {
+      "before_units": 12.92076828086511,
+      "after_units": 0,
+      "before_witness": [
+        56,
+        7
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "13/19": {
+      "before_units": 34.08405426553831,
+      "after_units": 0,
+      "before_witness": [
+        56,
+        8
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "13/20": {
+      "before_units": 34.93370897486361,
+      "after_units": 20.33189924288934,
+      "before_witness": [
+        57,
+        12
+      ],
+      "after_witness": [
+        11,
+        23
+      ],
+      "status": "unproven residual"
+    },
+    "13/21": {
+      "before_units": 32.682446954883474,
+      "after_units": 0,
+      "before_witness": [
+        56,
+        7
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "13/22": {
+      "before_units": 34.3427306504874,
+      "after_units": 25.044774813642835,
+      "before_witness": [
+        35,
+        10
+      ],
+      "after_witness": [
+        7,
+        9
+      ],
+      "status": "unproven residual"
+    },
+    "13/23": {
+      "before_units": 60.12523434803053,
+      "after_units": 0,
+      "before_witness": [
+        56,
+        8
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "13/24": {
+      "before_units": 111.77444073143542,
+      "after_units": 0,
+      "before_witness": [
+        56,
+        14
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "14/15": {
+      "before_units": 26.381562126097243,
+      "after_units": 26.381562126097243,
+      "before_witness": [
+        12,
+        19
+      ],
+      "after_witness": [
+        12,
+        19
+      ],
+      "status": "unproven residual"
+    },
+    "14/19": {
+      "before_units": 27.51432178797432,
+      "after_units": 27.51432178797432,
+      "before_witness": [
+        40,
+        19
+      ],
+      "after_witness": [
+        40,
+        19
+      ],
+      "status": "unproven residual"
+    },
+    "15/16": {
+      "before_units": 29.33115863921767,
+      "after_units": 29.33115863921767,
+      "before_witness": [
+        7,
+        18
+      ],
+      "after_witness": [
+        7,
+        18
+      ],
+      "status": "unproven residual"
+    },
+    "16/17": {
+      "before_units": 33.73583913946438,
+      "after_units": 33.73583913946438,
+      "before_witness": [
+        40,
+        10
+      ],
+      "after_witness": [
+        40,
+        10
+      ],
+      "status": "unproven residual"
+    },
+    "17/24": {
+      "before_units": 105.43968339961619,
+      "after_units": 0,
+      "before_witness": [
+        43,
+        32
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "19/20": {
+      "before_units": 27.28616736596637,
+      "after_units": 27.28616736596637,
+      "before_witness": [
+        36,
+        3
+      ],
+      "after_witness": [
+        36,
+        3
+      ],
+      "status": "unproven residual"
+    },
+    "20/21": {
+      "before_units": 32.918118585535005,
+      "after_units": 32.918118585535005,
+      "before_witness": [
+        23,
+        27
+      ],
+      "after_witness": [
+        23,
+        27
+      ],
+      "status": "unproven residual"
+    },
+    "20/24": {
+      "before_units": 59.74243744281646,
+      "after_units": 0,
+      "before_witness": [
+        46,
+        24
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "21/23": {
+      "before_units": 55.79746368295003,
+      "after_units": 0,
+      "before_witness": [
+        36,
+        3
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "21/24": {
+      "before_units": 104.28812557497811,
+      "after_units": 0,
+      "before_witness": [
+        46,
+        19
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    },
+    "23/24": {
+      "before_units": 49.1932058998426,
+      "after_units": 0,
+      "before_witness": [
+        27,
+        54
+      ],
+      "after_witness": null,
+      "status": "clear at every decoded tick"
+    }
+  },
+  "preservation": {
+    "slots": 52,
+    "ticks": 2116,
+    "root_travel": true,
+    "scales": true,
+    "loops": true,
+    "timing": true,
+    "events": true,
+    "aliases": true,
+    "skeleton": true,
+    "texture": true,
+    "changed_rotations": [
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        9,
+        4
+      ],
+      [
+        9,
+        5
+      ],
+      [
+        10,
+        3
+      ],
+      [
+        10,
+        4
+      ],
+      [
+        23,
+        3
+      ],
+      [
+        24,
+        3
+      ]
+    ],
+    "changed_translation": [
+      24,
+      "tz",
+      30
+    ]
+  },
+  "memory": {
+    "peak_resident_bytes": 100256,
+    "allocation_bytes": 100352,
+    "other_species_pins_unchanged": true
+  },
+  "lighting": {
+    "merge_bound_degrees": 4,
+    "actual_maximum_degrees": 3.962029436035667,
+    "merged_normals": 47
+  },
+  "validation": {
+    "tests": 104,
+    "passed": 102,
+    "skipped": 2,
+    "source_delta_provider_check": "1/1 verified",
+    "battle_slots": {
+      "33": "kept",
+      "34": "kept",
+      "35": "kept",
+      "36": "kept"
+    }
+  },
+  "limits": [
+    "No unrestricted floor is established for any retained pair.",
+    "Rendering is orthographic, with neutral lighting; no perspective GTE or runtime certification.",
+    "The extra cape splits add 336 packet-format bytes; crowded-scene packet safety is unprofiled.",
+    "Normal funding changes lighting directions by at most four degrees, in addition to intended cape normal transport."
+  ],
+  "renders": {
+    "complete": false
+  }
+}

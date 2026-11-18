@@ -11,6 +11,7 @@
                  "Megalo Spark", "Confused Storm", "Wind Cutter", "Death Claw"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 54,
+  "own_effect": {"technique": "Death Claw", "chunk": 314},
   "model": {
     "file": "build/sizes-out/models/Piedmon.MMD",
     "radius": 145,

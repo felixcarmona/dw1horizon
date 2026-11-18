@@ -10,6 +10,7 @@
                  "Blasting Spout", "Poison Powder", "Charm Perfume"],
   "drop": {"item": "MP Floppy", "percent": 30},
   "effects_like": 24,
+  "own_effect": {"technique": "Blasting Spout", "chunk": 148},
   "model": {
     "file": "build/batch9/Shakomon.MMD",
     "radius": 100,

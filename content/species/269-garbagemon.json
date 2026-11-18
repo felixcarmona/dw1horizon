@@ -11,6 +11,7 @@
                  "All Range Beam", "Delete Program", "Pulse Laser", "Energy Bomb", "Metal Sprinter"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 55,
+  "own_effect": {"technique": "Energy Bomb", "chunk": 136},
   "model": {
     "file": "build/sizes-out/models/Garbagemon.MMD",
     "radius": 119,

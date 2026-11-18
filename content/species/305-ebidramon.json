@@ -10,6 +10,7 @@
                  "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Scissor Claw"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 49,
+  "own_effect": {"technique": "Scissor Claw", "chunk": 225},
   "model": {
     "file": "build/batch11/Ebidramon.MMD",
     "radius": 136,

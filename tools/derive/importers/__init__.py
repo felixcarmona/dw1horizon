@@ -186,6 +186,18 @@ class Provider:
         for ext in ('MMD', 'TIM'):
             self.cache[f'{key}.{ext}'] = Path(str(stem) + '.' + ext).read_bytes()
 
+    def battle_source(self, species):
+        """The battle source of a species bound offline (content/models/imports/bound-battle.json: the source mesh with
+        the source game's clips, which its overlay plays on the bound rig), checked by SHA-256; None for any other."""
+        row = json.loads((self.repo / 'content/models/imports/bound-battle.json').read_text()).get(str(species))
+        if row is None:
+            return None
+        with source_context(self.games), replay_skeletons():
+            data = self.source(row['battle_source']['path'])
+        if hashlib.sha256(data).hexdigest() != row['battle_source']['sha256']:
+            raise ValueError(f'{species}: {row["battle_source"]["path"]}: battle source SHA-256 mismatch')
+        return data
+
     def model(self, species):
         """Return (MMD, TIM); all sources, deltas and results checked by SHA-256."""
         registry = json.loads((self.repo / 'content/models/imports/models.json').read_text())

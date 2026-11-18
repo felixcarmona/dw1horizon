@@ -10,6 +10,7 @@
                  "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Aerial Attack"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 21,
+  "own_effect": {"technique": "Aerial Attack", "chunk": 259},
   "model": {
     "file": "build/batch/Aquilamon.MMD",
     "radius": 216,

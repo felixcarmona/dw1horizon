@@ -42,6 +42,10 @@ unchanged 30% sickness chance succeeds; no random result is forced. The climate
 case starts with no area exposure and waits in Freezeland with Agumon until the
 normal disliked-area rule causes illness.
 
+`--species N` picks the partner (default 3, Agumon; 476 is Nyaromon, a hand-made baby that stands for Tokomon in the
+story's species tests). `--route fixture` sets the illness directly (a baby cannot be fed or exposed for long) and
+`--expect-no-rescue` documents an unfixed disc, where the sick baby stands on the strip and nothing happens.
+
 The rescue starts from the real section-51 field tile. It must cure the partner,
 set rescue flag 133 and leave recruit flag 223 clear. A fixture evolution loads
 Gabumon for the return visit. The real section-52 door tile opens the house;

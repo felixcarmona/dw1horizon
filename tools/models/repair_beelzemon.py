@@ -105,7 +105,7 @@ def source_mesh(source_data, imported_data, texture_data):
     return bones, texture
 
 
-def pair_triangles(bone):
+def pair_triangles(bone, max_angle=89):
     """Maximum pairing: same diagonal, shared UVs/normals, material and winding.
 
     Existing quads are preferred. New convex pairs may span up to 89 degrees; no triangle, vertex, UV or normal is discarded.
@@ -142,7 +142,7 @@ def pair_triangles(bone):
                    for v in common):
                 continue
             same = p['parent_prim'] == q['parent_prim']
-            if not same and sum(a*b for a, b in zip(normals[i], normals[j])) < math.cos(math.radians(89)):
+            if not same and sum(a*b for a, b in zip(normals[i], normals[j])) < math.cos(math.radians(max_angle)):
                 continue
             a = next(k for k, v in enumerate(p['verts']) if v not in common)
             b, c = (a + 1) % 3, (a + 2) % 3

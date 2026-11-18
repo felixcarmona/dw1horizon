@@ -11,6 +11,7 @@
                  "Dynamite Kick (44)", "Tremar", "Sonic Jab", "Death Claw"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 33,
+  "own_effect": {"technique": "Death Claw", "chunk": 158},
   "model": {
     "file": "build/sizes-out/models/Gryphonmon.MMD",
     "radius": 300,

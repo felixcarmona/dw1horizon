@@ -11,6 +11,7 @@
                  "Iga School Knife Throw", "Spinning Shot", "Dynamite Kick (48)"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 50,
+  "own_effect": {"technique": "Iga School Knife Throw", "chunk": 294},
   "model": {
     "file": "build/batch4/Shurimon.MMD",
     "radius": 122,

@@ -59,6 +59,45 @@ class GateInventoryTests(unittest.TestCase):
             (root/'bases/known.json').write_text(json.dumps({'files': {'UNUSED': {'how': 'needs-usa'}, 'OTHER': {'how': 'differs'}}}))
             self.assertEqual(len(gate.mapping_chunks(root)), 2)
 
+    def test_battle_rebuilds_are_source_frame_transforms_without_literal_payloads(self):
+        # Exercise every checked-in species/slot, not just the first failing turn.
+        recipes = json.loads((Path(__file__).resolve().parents[1] /
+                              'content/models/imports/battle-rebuilds.json').read_text())
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            path = root/'bundle/content/models/imports/battle-rebuilds.json'
+            path.parent.mkdir(parents=True)
+            path.write_text(json.dumps(recipes))
+            self.assertEqual(gate.mapping_chunks(root), [])
+            # A neighbouring byte mapping still has its literals inventoried.
+            (path.parent/'other.json').write_text(json.dumps({'ops': [{'data': '1234'}]}))
+            self.assertEqual([c['data'] for c in gate.mapping_chunks(root)], [b'\x12\x34'])
+
+    def test_battle_rebuilds_cannot_smuggle_literals_or_new_semantics(self):
+        good = {'op': 'turn', 'bone': 8, 'axis': 'z', 'deg': 36.0}
+        bad_ops = [dict(good, data='00112233'), dict(good, deg='00112233'),
+                   dict(good, axis=[0, 0, 1, 255]), dict(good, deg=float('nan')),
+                   dict(good, op='pose'), {'data': '00112233'},
+                   dict(good, source='undeclared.bin'), dict(good, bone=True)]
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            path = root/'bundle/content/models/imports/battle-rebuilds.json'
+            path.parent.mkdir(parents=True)
+            for op in bad_ops:
+                with self.subTest(op=op):
+                    path.write_text(json.dumps({'180': {'35': {'ticks': 25, 'ops': [op]}}}))
+                    with self.assertRaisesRegex(gate.GateFailure, 'source-derived transform audit'):
+                        gate.mapping_chunks(root)
+            for extra in ({'data': '00112233'}, {'rig': 'undeclared.bin'}, {'compact': ['00112233']}):
+                path.write_text(json.dumps({'180': {'35': dict(ticks=25, ops=[good], **extra)}}))
+                with self.assertRaises(gate.GateFailure):
+                    gate.mapping_chunks(root)
+            # The semantic language is valid only for the reviewed consumer.
+            path.unlink()
+            (path.parent/'other.json').write_text(json.dumps({'ops': [good]}))
+            with self.assertRaisesRegex(gate.GateFailure, 'new mapping opcode'):
+                gate.mapping_chunks(root)
+
     def test_new_mapping_encoding_requires_explicit_audit_support(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp); (root/'bases').mkdir()

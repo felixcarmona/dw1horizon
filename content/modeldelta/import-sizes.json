@@ -435,11 +435,11 @@
     },
     {
       "source": "build/batch10/Marsmon.MMD",
-      "source_sha256": "9f5e9ca9d320e3c595cbe7210d1c8fec1bcc0e7d0e03b5065bcf08c6eae80c89",
+      "source_sha256": "41c84433b17cb079533ab878f439cd797f19ff7b875f941fd35e08009118b8bb",
       "bones": 21,
       "scale": 1.1095026765202765,
       "target": "build/sizes-out/models/Marsmon.MMD",
-      "sha256": "285cc1e7ba60d7e3c9c598cb12cb744e46b0206d996da7a0415d28d9f256dd26"
+      "sha256": "d5adc1ced78c66756f1d8c8a6cddf09836708c00464d30c82a523029b6a270e0"
     },
     {
       "source": "build/batch10/GuardiAngemon.MMD",
@@ -551,11 +551,11 @@
     },
     {
       "source": "build/batch12/Fujinmon.MMD",
-      "source_sha256": "e8a2f61d62403096fdd581a599fa525b8e1cfcff332ef31f26ef0c274a80bf8a",
+      "source_sha256": "f03167ce2a8622aee0c0db64fa54fddf854cc4f91ae2f9288cae8c0afdc13d75",
       "bones": 25,
       "scale": 1.1274130236833497,
       "target": "build/sizes-out/models/Fujinmon.MMD",
-      "sha256": "ee996ffbba80e25be4616e5945cf0b32dfbffef27ffbd23bb5888697358a616e"
+      "sha256": "5129f25388f978a2743d3c29ace69e10ad208fcb640cb0caa1f6539e15099a44"
     },
     {
       "source": "build/batch12/Gallantmon.MMD",

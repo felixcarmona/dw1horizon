@@ -11,6 +11,7 @@
                  "Prominence Beam", "Magma Bomb", "Nightmare Syndromer"],
   "drop": {"item": "Restore", "percent": 20},
   "effects_like": 12,
+  "own_effect": {"technique": "Nightmare Syndromer", "chunk": 283},
   "model": {
     "file": "build/sizes-out/models/AeroVeedramon.MMD",
     "radius": 260,

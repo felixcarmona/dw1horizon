@@ -19,7 +19,12 @@ Each module in `steps/` declares its name, description and dependencies. Its
 build function or prepare/unit/finish API writes the declared outputs. Independent
 units can run concurrently. Shared writes require explicit ordering; a finish
 runs after its units and records the step result. The story passes preserve
-their recorded order wherever they overwrite the same files.
+their recorded order wherever they overwrite the same files. A unit that starts
+from the preimages of its group's shared files and never reads what another unit
+of the group wrote declares `independent_start`: such units start side by side (here
+and in the web engine) and only the last unit of the group waits for all the earlier
+ones, so the shared files end as the last writer of the recorded order left them
+(`runner.group_waits`; `--strict` and `--record` still run everything in order).
 
 `runner.py` runs tool code in the caller's process, restores its settings and
 unloads repository modules before another step can inherit their state. A failed

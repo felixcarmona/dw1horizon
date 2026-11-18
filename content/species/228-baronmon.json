@@ -10,6 +10,7 @@
                  "War Cry", "Sonic Jab", "Tremar", "Meteor Wing"],
   "drop": {"item": "Off. Disk", "percent": 20},
   "effects_like": 9,
+  "own_effect": {"technique": "Meteor Wing", "chunk": 297},
   "model": {
     "file": "build/batch4/Baronmon.MMD",
     "radius": 115,

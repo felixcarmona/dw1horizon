@@ -10,6 +10,7 @@
                  "Metal Sprinter", "Electric Shock"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 34,
+  "own_effect": {"technique": "Electric Shock", "chunk": 316},
   "model": {
     "file": "build/batch6/Kokuwamon.MMD",
     "radius": 100,

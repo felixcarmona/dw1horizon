@@ -2,6 +2,7 @@
 
   laddercheck.py prepare  --disc D.cue --exe EXE --port P --out DIR [--ram 8] [--cpu interpreter]
       boots the disc with the corpus card, continues the save and saves scene states under DIR/states
+      (file-city, gear-savanna, freezeland; battles: wild, tournament, infinity = Mt. Infinity's three Vermilimon)
   laddercheck.py capture  --disc D.cue --exe EXE --port P --out DIR [--ram 8] [--cpu interpreter]
                       [--refreshes 1800] [--policies 0,1,2,3] [--keep60 60] SCENE...
       loads each scene state and records every presented frame per policy; JSON per capture in DIR
@@ -52,10 +53,10 @@ def w16(e, name, v): e.poke(name, struct.pack('<h', v))
 def w32(e, name, v): e.poke(name, struct.pack('<i', v))
 
 
-def seed_fight(e):
-    for name in ('PARTNER_ENTITY', 'NPC_ENTITIES'):
-        e.poke(name + '+0x38', struct.pack('<4h', 100, 999, 500, 500))
-        e.poke(name + '+0x48', struct.pack('<4h', 30000, 30000, 30000, 30000))
+def seed_fight(e, enemies=1):
+    for name, base in [('PARTNER_ENTITY', 0)] + [('NPC_ENTITIES', 104 * i) for i in range(enemies)]:
+        e.poke(f'{name}+{base + 0x38:#x}', struct.pack('<4h', 100, 999, 500, 500))
+        e.poke(f'{name}+{base + 0x48:#x}', struct.pack('<4h', 30000, 30000, 30000, 30000))
 
 
 def prepare(a):
@@ -77,7 +78,8 @@ def prepare(a):
                 e.run('save', str(st / f'{label}.state')); e.run('shot', str(st / f'{label}.png'))
     finally:
         e.stop()
-    for kind, screen in [('wild', 0), ('tournament', 208)]:
+    # infinity: the Mt. Infinity portal room's encounter, three enemies (the join rolls seeded as tools/dev/playtest/infinity_portal.py does)
+    for kind, screen in [('wild', 0), ('tournament', 208), ('infinity', 167)]:
         if kind in a.skip: continue
         te = make_emu(a); te.env['EMU_ARGS'] += ' -interpreter -debugger'
         te.start(None)
@@ -86,6 +88,9 @@ def prepare(a):
             assert te.warp(screen) and te.in_control(), kind + ' warp failed'
             if kind == 'tournament':
                 te.gs('pstat', '3', '4'); arm_call(te, 'startTournament', [])
+            elif kind == 'infinity':
+                te.poke('FLEE_CHANCES', bytes([100]) * 12)
+                te.gs('move', '1200', '1200')
             else:
                 # Enter the actual placed enemy's battle through the ordinary start path.
                 for n, v in ((250, 1), (251, 2), (252, 255), (253, 255)):
@@ -96,7 +101,7 @@ def prepare(a):
             while time.monotonic() < deadline:
                 r = te.ram()
                 if te.peek('GAME_STATE', 'B', r) == (4 if kind == 'tournament' else 1) and te.peek('BATTLE_FRAME_COUNT', 'h', r) > 80:
-                    te.run('pause'); seed_fight(te)
+                    te.run('pause')
                     te.run('save', str(st / f'{kind}.state')); te.run('shot', str(st / f'{kind}.png'))
                     print(kind, 'READY', flush=True); break
                 te.press('CONFIRM', 4); time.sleep(0.5)
@@ -108,6 +113,9 @@ def prepare(a):
 def reset_ladder(e, keep60):
     if not e.has('MOD_FPS_POLICY'):
         w32(e, 'MOD_PERF_RESET', 1)
+        return
+    if e.has('MOD_CAD_RESET'):  # facts per screen: forget them; the next tick enters the screen as a fresh session
+        w8(e, 'MOD_CAD_RESET', 1); w32(e, 'MOD_PERF_RESET', 1)
         return
     w8(e, 'MOD_CAD_LEVEL', 2)
     if e.has('modCadCount'):  # the first build: separate statics
@@ -129,6 +137,9 @@ def capture(e, a, label, policy):
     e.run('resume'); time.sleep(0.2)
     e.api('/api/v1/execution-flow?function=pause', data=b'')
     screen_start = e.peek('CURRENT_SCREEN', 'h')
+    if state in ('wild', 'tournament', 'infinity'):
+        # HP written before prepare's save did not reach the state; written here, the fight outlasts the capture
+        seed_fight(e, 3 if state == 'infinity' else 1)
     reset_ladder(e, a.keep60)
     if e.has('MOD_FPS_POLICY'): w8(e, 'MOD_FPS_POLICY', policy)
     else: assert policy == 4, 'baseline executable only supports its original AUTO'
@@ -216,8 +227,8 @@ def capture(e, a, label, policy):
                           p90=sorted(c0)[int(len(c0) * .9)] if c0 else 0, max=max(c0) if c0 else 0),
                costx=dict(n=len(cx), avg=round(sum(cx) / max(1, len(cx)), 1), max=max(cx) if cx else 0),
                shown_per_tick=round(sum(shown) / max(1, len(shown)), 2), raw=rows)
-    expected_state = 4 if state == 'tournament' else 1 if state == 'wild' else 0
-    assert res['game_state'] == expected_state, 'scene ended during capture'
+    expected_state = 4 if state == 'tournament' else 1 if state in ('wild', 'infinity') else 0
+    assert res['game_state'] == expected_state, f"scene ended during capture (game state {res['game_state']}, screen {res['screen']})"
     assert res['screen'] == screen_start, 'walking left the target screen'
     assert bad == 0, 'vblank listener missed a presented frame'
     name = f'{label}-p{policy}-k{a.keep60}-{a.ram}mb-{a.cpu}.json'

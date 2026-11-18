@@ -243,15 +243,13 @@ done
 $PY tools/npcanims.py gen "$O/npc_anim_keep.c" --dg "$O/story/dis" --maphead "$O/story/maphead.scn.txt"
 # the committed table (src/main/npc_anim_keep.c) must keep at least every slot the audit asks for
 $PY - "$O/npc_anim_keep.c" "$W/src/main/npc_anim_keep.c" <<'PYEOF'
-import re, sys
+import sys
+from tools.derive.facts import npc_keep
 def load(p):
-    s = open(p).read()
-    m = re.search(r'NPC_ANIM_KEEP_MASKS\[\d+\]\[2\] = \{(.*?)\};', s, re.S).group(1)
-    masks = [tuple(int(x, 16) for x in r) for r in re.findall(r'\{ (0x[0-9A-Fa-f]+), (0x[0-9A-Fa-f]+) \}', m)]
-    idx = re.search(r'NPC_ANIM_KEEP_INDEX\[\w+\] = \{(.*?)\};', s, re.S).group(1)
-    return [masks[int(i)] for i in re.findall(r'\b(\d+),', re.sub(r'/\*.*?\*/', '', idx))]
+    return npc_keep(open(p).read())
 need, have = load(sys.argv[1]), load(sys.argv[2])
-bad = [t for t, (a, b) in enumerate(zip(need, have)) if (a[0] & ~b[0]) or (a[1] & ~b[1])]
+bad = [t for t, slots in enumerate(need)
+       if t >= len(have) or set(slots) - set(have[t])]
 if bad:
     sys.exit(f'npc_anim_keep.c drops slots the scripts play for types {bad}: '
              f'copy {sys.argv[1]} into the worktree and commit it')

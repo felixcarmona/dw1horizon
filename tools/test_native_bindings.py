@@ -19,14 +19,20 @@ class NativeBindings(unittest.TestCase):
     def setUpClass(cls):
         cls.cases = []
         source = Path(os.environ.get('BINDING_MODELS', 'build/angels/source'))
+        binding.BASE_MODELS = str(source)      # an imported donor (`donor_species`) is read from the same folder
         for sid, recipe in json.loads(binding.MANIFEST.read_text()).items():
             files = list(source.glob(f'{sid}-*.MMD')) or list(source.glob(f'{sid}.MMD'))
-            if not files or not (Path(mmd.EXTRACTED)/recipe['model']).exists():
+            donor_files = list(source.glob(f"{recipe['donor_species']}-*.MMD")) if recipe.get('donor_species') else None
+            if not files or not (donor_files if recipe.get('donor_species') else (Path(mmd.EXTRACTED)/recipe['model']).exists()):
                 raise unittest.SkipTest('needs imported models and the player DW1 extraction')
             record = json.loads(next(Path('content/species').glob(f'{sid}-*.json')).read_text())
             data, proof = binding.bind(files[0].read_bytes(), record['model']['skeleton'], recipe)
             model = mmd.MMD.parse(data, len(proof['generated_skeleton']))
-            native = mmd.MMD.load(str(Path(mmd.EXTRACTED)/recipe['model']), recipe['donor'])
+            if recipe.get('donor_species'):
+                native = mmd.MMD.parse(binding.donor_model(recipe), mmd.exe().bone_count[recipe['donor']])
+                native.type = recipe['donor']
+            else:
+                native = mmd.MMD.load(str(Path(mmd.EXTRACTED)/recipe['model']), recipe['donor'])
             cls.cases.append((recipe, record, data, proof, model, native))
 
     def test_full_native_hierarchy_and_mesh_coverage(self):
@@ -58,6 +64,9 @@ class NativeBindings(unittest.TestCase):
                         pose[-3:] = [v + o for v, o in zip(pose[-3:], offset)]
                     expected.instrs = [i for i in expected.instrs if i['op'] != 'tex']
                     expected.tail = b''
+                    paced = {int(k) for k in recipe.get('pace', {})} | {a for row in recipe.get('pace', {}).values() for a in row.get('alias', ())}
+                    if slot in paced:       # retimed field clips: the pace rows below pin their speeds
+                        continue
                     if slot not in recipe.get('arm_pump', {}).get('slots', ()):  # re-posed arms: test_<species>_native
                         self.assertEqual(model.anims.anims[model.anims.table[slot]].build(), expected.build())
                     before, loop, _ = animsheet.slot_frames(native, len(proof['generated_skeleton']), slot)
@@ -79,6 +88,15 @@ class NativeBindings(unittest.TestCase):
         for recipe, record, _, _, _, _ in self.cases:
             with self.assertRaises(ValueError):
                 binding.bind(b'changed', record['model']['skeleton'], recipe)
+
+
+class WormmonPace(unittest.TestCase):
+    def test_walk_condition_walk_and_run_keep_the_native_speed_bars(self):
+        rows = json.loads(binding.MANIFEST.read_text())['183']['pace']
+        self.assertEqual({k: (r['from'], r['alias']) if 'alias' in r else (r['from'],) for k, r in rows.items()},
+                         {'2': (2, [35]), '3': (3,), '4': (4, [36])})
+        walk, tired, run = (rows[k]['speed'] for k in '234')
+        self.assertTrue(15 <= walk <= 31 and 10 <= tired <= 20 and 35 <= run <= 52 and tired < walk < run)
 
 
 if __name__ == '__main__':

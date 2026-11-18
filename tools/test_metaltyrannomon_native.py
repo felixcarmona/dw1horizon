@@ -1,5 +1,4 @@
 """MetalTyrannomon (260) moves exactly like native Tyrannomon: its rig and every field and care program are Tyrannomon's own."""
-import copy
 import json
 import os
 from pathlib import Path
@@ -37,13 +36,10 @@ class MetalTyrannomonNative(unittest.TestCase):
 
     @staticmethod
     def program(model, slot):
-        clip = copy.deepcopy(model.anims.anims[model.anims.table[slot]])
-        clip.instrs = [i for i in clip.instrs if i['op'] != 'tex']
-        clip.tail = b''
-        for bone in SPREAD:
-            # the arms' joints are moved apart to the heavy body: only those start translations differ
-            clip.pose[bone - 1][-3:] = [0, 0, 0]
-        return clip.build()
+        # the decoded frames: the recipe's exact compaction re-encodes the streams, never what they play
+        frames, loop, _ = animsheet.slot_frames(model, 27, slot)
+        # the arms' joints are moved apart to the heavy body: only those translations differ
+        return loop, [[pose if bone not in SPREAD else pose[:-3] for bone, pose in enumerate(frame)] for frame in frames]
 
     def test_rig_is_tyrannomons(self):
         self.assertEqual([p for _, p in self.rig], [p for _, p in mmd.exe().skeleton[DONOR]])
@@ -54,6 +50,8 @@ class MetalTyrannomonNative(unittest.TestCase):
     def test_every_program_below_the_techniques_is_tyrannomons_unchanged(self):
         for slot, index in enumerate(self.native.anims.table[:46]):
             if index is None or slot == 4:  # the run's arms are re-posed below
+                continue
+            if slot in self.recipe['battle_originals']['slots']:  # the source game's own clip, see test_battle_originals
                 continue
             with self.subTest(slot=slot):
                 self.assertEqual(self.program(self.model, slot), self.program(self.native, slot))
@@ -83,6 +81,8 @@ class MetalTyrannomonNative(unittest.TestCase):
                 self.assertEqual(slots[position], 46 + tyrannomon.index(move), move)
             with self.subTest(move=move):
                 self.assertIn(slots[position], range(46, 46 + len(tyrannomon)))
+                if 46 + position in self.recipe['battle_originals']['slots']:  # the source game's own clip
+                    continue
                 self.assertEqual(self.program(self.model, 46 + position), self.program(self.native, slots[position]))
 
     def test_training_clip_is_tyrannomons_training_clip(self):
@@ -97,11 +97,24 @@ class MetalTyrannomonNative(unittest.TestCase):
             self.assertGreaterEqual(self.rig[row[4]][0], 0, row)
         self.assertEqual(len(patch['effect_origins']), len(self.record['effect_origins']))
 
+    def test_battle_originals(self):
+        # the source game's own battle clips, retargeted onto the donor rig; the idle loops at its own speed, the one-shot
+        # clip is as long as the donor's clip it replaces unless the recipe gives it its own length (`ticks`)
+        made = self.proof['battle_originals']
+        own = self.recipe['battle_originals'].get('ticks', {})
+        self.assertEqual(sorted(int(s) for s in made), self.recipe['battle_originals']['slots'])
+        for slot, row in made.items():
+            if slot in own:
+                self.assertEqual(row['frames'], own[slot])
+            elif int(slot) not in (33, 34):
+                self.assertEqual(row['frames'], row['donor_frames'])
+
     def test_resident_animation_buffer(self):
         storage = motionstorage.require(self.data, len(self.rig))
         self.assertTrue(storage['fits'])
         self.assertLessEqual(storage['resident_bytes'], storage['resident_limit'])
         self.assertEqual(storage['resident_limit'], 100352)
+        self.assertEqual(storage['resident_bytes'], 85102)
 
     def test_every_piece_is_bound_once_and_the_feet_stand_on_the_floor(self):
         objects = sorted(o for o, _ in self.rig if o >= 0)

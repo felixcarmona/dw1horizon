@@ -1,0 +1,851 @@
+{
+  "date": "2026-11-16",
+  "old_effects_revision": "431813b88a373f7508300378603696c0cd71052a",
+  "new_effects_revision": "8d264f32322c2c599985c71bc310f808f74c7ff2",
+  "worktree_base_revision": "bb20c5db927dc40fe512e4a1081e2845447eb365",
+  "conclusion": "No damage regression at equal charge; keep all seven composed effects and their sounds.",
+  "method": {
+    "valid_trials_per_species_per_variant": 3,
+    "ram_bytes": 2097152,
+    "partner_offense": 400,
+    "partner_hp": 4000,
+    "enemy_hp": 2500,
+    "chargeup": 80,
+    "enemy_ai_isolated": true,
+    "old_chunks_match_historical_pins": true,
+    "new_chunks_match_current_compositions": true,
+    "hp_updates_are_animated_drain_not_hit_counts": true,
+    "outside_effect_archive_sha256": "d674d2fce552596b43af159acf3888312ebff534f219fd42102312e96e86d99c",
+    "only_effect_archive_changed": true,
+    "exe_sha256": "bd9128f07ed29fc8fd5d43a38cd9872b32763071028852da8b92a81aee03f7c3",
+    "card_sha1": "adb5c9a882c781681f378cca4dc4580b1d738617"
+  },
+  "species": [
+    {
+      "species": 324,
+      "name": "Maildramon",
+      "chunk": 237,
+      "old_template": 62,
+      "new_template": 93,
+      "old_chunk_sha1": "cbfd966604d73b3c4bb4bd82b3977c24d441f993",
+      "new_chunk_sha1": "6cfffa45dd82724ba4d4825958d18ee8b13e316e",
+      "old_hit_events": [
+        1
+      ],
+      "old": [
+        {
+          "capture": "build/trials/old/324-1",
+          "enemy_damage": 1455,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/old/324-2",
+          "enemy_damage": 1530,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/old/324-3",
+          "enemy_damage": 1635,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        }
+      ],
+      "new": [
+        {
+          "capture": "build/trials/new/324-1",
+          "enemy_damage": 1470,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/new/324-2",
+          "enemy_damage": 1530,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/new/324-3",
+          "enemy_damage": 1395,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        }
+      ],
+      "old_mean": 1540,
+      "new_mean": 1465,
+      "mean_change_percent": -4.87,
+      "presence": {
+        "area": 0.1203,
+        "height": 0.611,
+        "seconds": 9.67,
+        "passes": true
+      }
+    },
+    {
+      "species": 325,
+      "name": "Musyamon",
+      "chunk": 238,
+      "old_template": 62,
+      "new_template": 89,
+      "old_chunk_sha1": "63135c634286622f9e9f3e85bec53b631d3a2369",
+      "new_chunk_sha1": "505539b09b45c87302f132806048e84e9c7353c5",
+      "old_hit_events": [
+        1
+      ],
+      "old": [
+        {
+          "capture": "build/trials/old/325-1",
+          "enemy_damage": 1103,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/old/325-2",
+          "enemy_damage": 1035,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/old/325-3",
+          "enemy_damage": 1035,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        }
+      ],
+      "new": [
+        {
+          "capture": "build/trials/new/325-1",
+          "enemy_damage": 1024,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/new/325-2",
+          "enemy_damage": 1013,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/new/325-3",
+          "enemy_damage": 1013,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        }
+      ],
+      "old_mean": 1057.67,
+      "new_mean": 1016.67,
+      "mean_change_percent": -3.88,
+      "presence": {
+        "area": 0.0407,
+        "height": 0.352,
+        "seconds": 16.37,
+        "passes": true
+      }
+    },
+    {
+      "species": 332,
+      "name": "Roachmon",
+      "chunk": 242,
+      "old_template": 93,
+      "new_template": 81,
+      "old_chunk_sha1": "36c019576cb41b5becab4b555cb4732c24080356",
+      "new_chunk_sha1": "d9dc437c7de2d7edffdf5b770692eae0e479ffca",
+      "old_hit_events": [
+        1
+      ],
+      "old": [
+        {
+          "capture": "build/trials/old/332-2",
+          "enemy_damage": 1216,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/old/332-3",
+          "enemy_damage": 1114,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/old-roachmon-retry/332-1",
+          "enemy_damage": 1126,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        }
+      ],
+      "new": [
+        {
+          "capture": "build/trials/new/332-1",
+          "enemy_damage": 1114,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/new/332-2",
+          "enemy_damage": 1024,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/new/332-3",
+          "enemy_damage": 1148,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        }
+      ],
+      "old_mean": 1152,
+      "new_mean": 1095.33,
+      "mean_change_percent": -4.92,
+      "presence": {
+        "area": 0.0327,
+        "height": 0.463,
+        "seconds": 7.0,
+        "passes": true
+      }
+    },
+    {
+      "species": 305,
+      "name": "Ebidramon",
+      "chunk": 225,
+      "old_template": 100,
+      "new_template": 79,
+      "old_chunk_sha1": "8653c07dbc0bd4be93fad08e7b808032e5e76cef",
+      "new_chunk_sha1": "6f99919d76ea9be136ec467ada762c173add4643",
+      "old_hit_events": [
+        1
+      ],
+      "old": [
+        {
+          "capture": "build/trials/old-other/305-1",
+          "enemy_damage": 791,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/old-other/305-2",
+          "enemy_damage": 807,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/old-ebidramon-retry/305-1",
+          "enemy_damage": 749,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        }
+      ],
+      "new": [
+        {
+          "capture": "build/trials/new-other/305-1",
+          "enemy_damage": 791,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/new-other/305-2",
+          "enemy_damage": 840,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/new-other/305-3",
+          "enemy_damage": 848,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        }
+      ],
+      "old_mean": 782.33,
+      "new_mean": 826.33,
+      "mean_change_percent": 5.62,
+      "presence": {
+        "area": 0.2498,
+        "height": 0.745,
+        "seconds": 1.43,
+        "passes": true
+      }
+    },
+    {
+      "species": 308,
+      "name": "Dinohyumon",
+      "chunk": 228,
+      "old_template": 100,
+      "new_template": 102,
+      "old_chunk_sha1": "a842fab7a7c9fd2d40748f35d857b6fb189bb1a2",
+      "new_chunk_sha1": "9ad2483696643d5c8f106715ae52a4a82377ee3e",
+      "old_hit_events": [
+        1
+      ],
+      "old": [
+        {
+          "capture": "build/trials/old-other/308-1",
+          "enemy_damage": 1114,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/old-other/308-2",
+          "enemy_damage": 1171,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/old-other/308-3",
+          "enemy_damage": 1182,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        }
+      ],
+      "new": [
+        {
+          "capture": "build/trials/new-other/308-1",
+          "enemy_damage": 1148,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/new-other/308-2",
+          "enemy_damage": 1126,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/new-other/308-3",
+          "enemy_damage": 1238,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        }
+      ],
+      "old_mean": 1155.67,
+      "new_mean": 1170.67,
+      "mean_change_percent": 1.3,
+      "presence": {
+        "area": 0.0254,
+        "height": 0.338,
+        "seconds": 7.23,
+        "passes": true
+      }
+    },
+    {
+      "species": 351,
+      "name": "Kotemon",
+      "chunk": 244,
+      "old_template": 99,
+      "new_template": 62,
+      "old_chunk_sha1": "00c92811968b7d802ff4b54e9d26100e39227a80",
+      "new_chunk_sha1": "b61db3d8a93d701b9e4401752461e8d4d5112e19",
+      "old_hit_events": [
+        1
+      ],
+      "old": [
+        {
+          "capture": "build/trials/old-other/351-1",
+          "enemy_damage": 437,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/old-other/351-2",
+          "enemy_damage": 446,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/old-other/351-3",
+          "enemy_damage": 496,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        }
+      ],
+      "new": [
+        {
+          "capture": "build/trials/new-other/351-1",
+          "enemy_damage": 437,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/new-other/351-2",
+          "enemy_damage": 506,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/new-other/351-3",
+          "enemy_damage": 483,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        }
+      ],
+      "old_mean": 459.67,
+      "new_mean": 475.33,
+      "mean_change_percent": 3.41,
+      "presence": {
+        "area": 0.0332,
+        "height": 0.319,
+        "seconds": 5.97,
+        "passes": true
+      }
+    },
+    {
+      "species": 353,
+      "name": "Bearmon",
+      "chunk": 245,
+      "old_template": 95,
+      "new_template": 91,
+      "old_chunk_sha1": "83141bf4762b8561866b5dd03a44f259a14253e1",
+      "new_chunk_sha1": "47d01a0e5aa31f1b511215178e2e631c9b79adbb",
+      "old_hit_events": [
+        1
+      ],
+      "old": [
+        {
+          "capture": "build/trials/old-other/353-1",
+          "enemy_damage": 1045,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/old-bearmon-retry/353-1",
+          "enemy_damage": 1055,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/old-bearmon-retry/353-2",
+          "enemy_damage": 986,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        }
+      ],
+      "new": [
+        {
+          "capture": "build/trials/new-other/353-1",
+          "enemy_damage": 1064,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/new-other/353-2",
+          "enemy_damage": 956,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        },
+        {
+          "capture": "build/trials/new-bearmon-retry/353-1",
+          "enemy_damage": 1005,
+          "self_damage": 0,
+          "ram_bytes": 2097152,
+          "chargeup_requested": 80,
+          "chargeup_set": true,
+          "chargeup_during_hp_drain": [
+            80
+          ],
+          "finisher_played": true,
+          "game_state_after": 0,
+          "ok": true
+        }
+      ],
+      "old_mean": 1028.67,
+      "new_mean": 1008.33,
+      "mean_change_percent": -1.98,
+      "presence": {
+        "area": 0.0221,
+        "height": 0.227,
+        "seconds": 8.2,
+        "passes": true
+      }
+    }
+  ],
+  "rejected_controlled_trials": [
+    {
+      "species": 332,
+      "variant": "old",
+      "capture": "build/trials/old/332-1",
+      "enemy_damage": 551,
+      "self_damage": 0,
+      "ram_bytes": 2097152,
+      "chargeup_requested": 80,
+      "chargeup_set": true,
+      "chargeup_during_hp_drain": [
+        12
+      ],
+      "finisher_played": true,
+      "game_state_after": 0,
+      "ok": false
+    },
+    {
+      "species": 305,
+      "variant": "old",
+      "capture": "build/trials/old-other/305-3",
+      "enemy_damage": 444,
+      "self_damage": 0,
+      "ram_bytes": 2097152,
+      "chargeup_requested": 80,
+      "chargeup_set": true,
+      "chargeup_during_hp_drain": [
+        0
+      ],
+      "finisher_played": true,
+      "game_state_after": 0,
+      "ok": false
+    }
+  ],
+  "charge_diagnostic": [
+    {
+      "species": 324,
+      "variant": "new",
+      "chargeup": 80,
+      "enemy_damage": 1470,
+      "self_damage": 0,
+      "ok": true
+    },
+    {
+      "species": 324,
+      "variant": "new",
+      "chargeup": 0,
+      "enemy_damage": 735,
+      "self_damage": 0,
+      "ok": true
+    }
+  ],
+  "heap": {
+    "resident_limit": 100352,
+    "resident_peak": 100256,
+    "unchanged": true,
+    "all_imported_species_fit": true
+  },
+  "tests": {
+    "run": 63,
+    "skipped": 3,
+    "failures": 0
+  }
+}

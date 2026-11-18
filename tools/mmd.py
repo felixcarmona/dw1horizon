@@ -93,6 +93,19 @@ class Exe:
         except (ImportError, SystemExit, KeyError, OSError):
             pass
 
+    def use_generated_skeleton(self, t, skeleton):
+        """Species t (180..) as the game build has it when its field overlay rebinds the mesh to another rig (a native
+        binding, NAME-report.json "generated_skeleton"): the species file with that skeleton goes through the same
+        para_from_json as the build, so boneCount is the generated rig's, not the file's."""
+        import copy
+        import species
+        s = copy.deepcopy(species.imports()[t])
+        s['model']['skeleton'] = [list(b) for b in skeleton]
+        para = species.para_from_json(s, f'species {t}')
+        self.para[t] = species.pack(species.PARA_FIELDS, dict(para, padding=0))
+        self.bone_count[t] = para['boneCount']
+        self.skeleton[t] = [tuple(b) for b in s['model']['skeleton']]
+
     def add_type(self, t, bones, name=''):
         """Registers (or replaces) a type that is not in the executable: its skeleton
         [(objIndex, parentIndex)...] (tools/dcb2mmd.py, before its species JSON exists)."""
@@ -467,6 +480,13 @@ class MMD:
     def load(cls, path, typ=None):
         e = exe()
         t = e.type_of(path) if typ is None else typ
+        report = os.path.splitext(path)[0] + '-report.json'     # a native binding's rig, next to its model
+        if os.path.isfile(report):
+            with open(report) as f:
+                rig = json.load(f).get('generated_skeleton')
+            import species
+            if rig and t in species.imports():
+                e.use_generated_skeleton(t, rig)
         m = cls.parse(open(path, 'rb').read(), e.bone_count[t])
         m.type = t
         return m

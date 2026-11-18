@@ -125,10 +125,10 @@ def extract(game, path):
             data = read(name)
             if hashlib.sha1(data).hexdigest() != sha:
                 raise ValueError(f'{game}: {name}: source disc checksum mismatch')
-            if game == 'dcb' and name == 'F.DRV':
+            if game == 'dcb' and name in ('F.DRV', 'E.DRV'):     # battle models; attack effect packs
                 for rel, data in drv_files(data):
                     if rel.endswith('.PAK') and rel.split('.')[0].isdigit():
-                        yield f'dcb/drv/F/{rel}', data
+                        yield f'dcb/drv/{name[0]}/{rel}', data
             else:
                 yield f'{game}/disc/{name}', data
     finally:

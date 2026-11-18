@@ -270,10 +270,12 @@ def build(out, extracted, run_with=None, scratch=None, language="es"):
         labels.apply(files, language, work)
 
         from tools.care_badge import FILES, stamp
+        from tools.localize.status_art import stamp as status_stamp
         for lang in ('en', language):
             for path, entry in FILES:
                 data = files.setdefault((lang, path), bytearray(open(os.path.join(ext, path), 'rb').read()))
                 stamp(data, entry)
+                status_stamp(data, entry, lang)
 
         from tools import care_bubble_art
         for lang in ('en', language):

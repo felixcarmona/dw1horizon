@@ -9,6 +9,7 @@ browser (`web/`). The players' guide is [release/README-players.md](release/READ
 ```
 release/
   dwpatch.py          the patcher
+  discformats.py      PBP/CHD decoders and disc-container detection
   isowriter.py        the disc writer (an ISO 9660 / CD-XA writer in Python)
   manifest.json       the accepted base discs (redump checksums), the files to read from them, every hole's SHA-1
                       (per base where it differs), the output's SHA-1 per base
@@ -93,8 +94,18 @@ every base with every variant, and refuses a source release list that rebuilds o
 ## Checks
 
 - Input: the image is identified by its SYSTEM.CNF and checked against its redump size and SHA-1; a missing file, a
-  `.cue` naming the wrong file, a CHD/ECM/PBP or archive, a 2048-byte `.iso`, another game or region, a modified dump:
-  each has its own message.
+  `.cue` naming the wrong file, an unsupported CHD, ECM or archive, a 2048-byte `.iso`, another game or region, a modified dump:
+  each has its own message. Single-disc, unencrypted PBP and supported CD-ROM v5 CHD images are decoded to raw sectors before these checks.
+  The desktop app, CLI and browser accept cdzl/cdlz, zlib/lzma and uncompressed CHD hunks, including self references.
+  They concatenate raw data/audio tracks, swap audio samples to BIN order, discard subcode and
+  four-frame track padding, and preserve stored pregaps (virtual gaps add no BIN sectors).
+  Parent CHDs, v1–v4 headers, cooked tracks, GD-ROM/multisession layouts and hunks using cdfl
+  (FLAC) are explicitly refused. Convert those with `chdman extractcd` first.
+  CHD uses the PBP session cache (source size and mtime), temporary-space check, cancellation
+  and cleanup on desktop. The browser reads CHDs in slices in a conversion worker, decodes one hunk at a time
+  (local JavaScript LZMA1; native raw deflate), and streams output to OPFS or compacted Blobs.
+  Map and hunk CRC16 checks protect extraction; stored EDC bytes are preserved.
+  `node web/test/chd.mjs` and `node web/test/chd-browser.mjs` exercise generated fixtures without disc data.
 - The patch file's SHA-1 against the manifest; every rebuilt file against its SHA-1 for that base (a mismatch names
   the files and writes nothing); the output's SHA-1 against the release's (written as `.part`, renamed only when it
   matches), then a `.cue`.
@@ -142,9 +153,13 @@ side is in [release/README-players.md](release/README-players.md#the-desktop-app
   SYSTEM.CNF boot file, whatever slot it was given to ("Add discs..." takes several). Digimon World must be its redump
   dump (SHA-1); a source game that is not the redump dump (another rip, a 2048-byte `.iso`) is taken and its files
   are checked by the build, as on the command line. Unusable files get the page's own explanations (`why.*`,
-  `works.*`). `.cue` files are resolved to their `.bin` for all four (the importers read images). Archives, ECM, PBP
-  and CHD are not read here (the browser builder reads the first three); the app says so. No drag and drop (Tk has
-  none without an extension).
+  `works.*`). `.cue` files are resolved to their `.bin` for all four (the importers read images).
+  Single-disc, unencrypted `.pbp` images are converted to temporary `.bin` files in the app cache,
+  with progress and cancellation. They are reused while the PBP size and modification time match, and removed
+  on failure or app exit. Conversion checks for at least 700 MB free (or the decoded size, if larger);
+  the build’s existing temporary/output space checks apply to the remaining free space. Multi-disc and encrypted
+  PBPs are refused. Supported CHD v5 images use the same cache. Archives and ECM are not read here (the browser reads both); the app says so.
+  No drag and drop (Tk has none without an extension).
 - **Settings** (`settings.json`): Windows `%APPDATA%\Horizon Patcher`, macOS `~/Library/Application Support/Horizon
   Patcher`, Linux `~/.config/horizon-patcher`. The discs are remembered by path, size, modification time and
   SHA-1; on the next start a disc that moved or changed empties its slot with the reason. Packages are kept in
@@ -200,6 +215,7 @@ python3 -m pip install pyinstaller                   # in a virtual environment:
 python3 tools/patcher/app/build.py                   # -> build/desktop/dist/ (macOS: --universal2)
 "build/desktop/dist/Horizon Patcher/Horizon Patcher" --self-test --download --gui
 (cd tools && python3 -m unittest test_desktop_patcher)
+PYTHONPATH=tools python3 -m unittest tools.test_chd
 ```
 
 `--self-test` (tools/patcher/selftest.py) needs no disc and no window unless `--gui`: UTF-8 mode; the app as Python

@@ -131,8 +131,12 @@ Contents:
 
 The Drowned Shore (309, SHOR01) is a ferry-only stop. Whamon's File City dock
 menu is its entrance; talking to Whamon on the shore returns to the Secret Beach
-Cave. It has no walking exit. The ordinary Whamon model waits still at the water,
-leaving the visible beach around the wreck and the unopened chest accessible.
+Cave. It has no walking exit. The giant ferry (Whamon146, radius 400) waits still
+in the water at (1560, -1720), turned along the water's edge (1024) so its model clears the beach.
+Its 500-unit tamer exclusion leaves the beach around the wreck and unopened chest
+connected, with a reachable talk boundary for the return ride.
+An isolated floor tile under its centre permits NPC setup; the ferry's body keeps
+that water tile inaccessible to the tamer.
 `author/drowned-shore-layout.py OUT` regenerates its collision data and a zones
 image with both the chest and Whamon included in the body-box reach simulation.
 The story tests check the arrival, all sides of the wreck, notebook, chest opening

@@ -34,15 +34,13 @@ import math
 from pathlib import Path
 import sys
 
-import numpy as np
-
 ROOT = Path(__file__).resolve().parents[3]
 sys.path[:0] = [str(ROOT), str(ROOT / 'tools')]
 import animsheet  # noqa: E402
 import mmd  # noqa: E402
 import motionstorage  # noqa: E402
 from motiondiscidentity import changed_programs  # noqa: E402
-from tools.models.field_animations.okuwamon_limbs import exp_so3, log_so3  # noqa: E402
+from tools.derive import arraymath as np  # noqa: E402
 
 SPECIES, NB = 309, 22
 SLOT = 2
@@ -53,6 +51,24 @@ SPAN = 6.0                               # degrees: the keys beside a stray one 
 SMOOTH = 0.5                             # share of the way to the middle of the neighbours' turns, at full weight
 STANCE_Y = 6.0                           # units: a foot whose lowest vertex is within this of the floor is standing
 EASE = 1.0                               # ticks the weight takes to rise from the stance to its full value
+
+
+def log_so3(r):
+    r = np.array(r, float)
+    c = max(-1., min(1., (r[0, 0] + r[1, 1] + r[2, 2] - 1) / 2))
+    angle = math.acos(c)
+    if angle < 1e-9:
+        return np.zeros(3)
+    return angle / (2 * math.sin(angle)) * np.array([r[2, 1] - r[1, 2], r[0, 2] - r[2, 0], r[1, 0] - r[0, 1]])
+
+
+def exp_so3(v):
+    angle = float(np.linalg.norm(v))
+    if angle < 1e-12:
+        return np.eye(3)
+    x, y, z = np.array(v, float) / angle
+    k = np.array([[0, -z, y], [z, 0, -x], [-y, x, 0]])
+    return np.eye(3) + math.sin(angle) * k + (1 - math.cos(angle)) * (k @ k)
 
 
 def rot(pose, bone):
@@ -118,17 +134,25 @@ def repair_stray(frames, bone):
     return out, span
 
 
-def stance_weights(model, frames, bones, mesh):
+def stance_weights(model, frames, bones, skeleton):
     """Per tick, how much of the smoothing a leg takes: 0 while its foot stands flat (the ankle block and the toes both
     within STANCE_Y of the floor), 1 away from it, with a ramp of EASE ticks."""
     n = len(frames) - 1
-    parts = [np.concatenate([np.arange(a, a + k) for b, a, k in mesh.slices if b in bones[2:]])]
+    # Only the ankle and toe vertices are needed. Keep FastMesh's float32
+    # transforms so the reviewed stance decisions stay identical, without
+    # importing the NumPy-based animation viewer into the player build.
+    parts = [(b, np.array([v[:3] for v in model.tmd.obj_verts(skeleton[b][0])], np.float32))
+             for b in bones[2:] if skeleton[b][0] >= 0]
     standing = []
     for pose in frames[:n]:
         p = copy.deepcopy(pose)
         p[0] = [4096] * 3 + [0] * 6
-        world = mesh.world(mmd.bone_matrices(model, p)).astype(float)
-        standing.append(all(float(world[idx][:, 1].max()) > -STANCE_Y for idx in parts))
+        mats = mmd.bone_matrices(model, p)
+        world = []
+        for b, vertices in parts:
+            matrix = np.array(mats[b], np.float32)
+            world.append(vertices @ matrix[:3, :3].T + matrix[:3, 3])
+        standing.append(float(np.concatenate(world)[:, 1].max()) > -STANCE_Y)
     weights = []
     for t in range(n):
         d = min((min((t - s) % n, (s - t) % n) for s in range(n) if standing[s]), default=n)
@@ -156,7 +180,7 @@ def ease_leg(frames, bones, weights, share):
     return out
 
 
-def rewrite(model, frames, mesh):
+def rewrite(model, frames, skeleton):
     out = frames
     fixed = {}
     for b in SHOULDERS:
@@ -164,7 +188,7 @@ def rewrite(model, frames, mesh):
         fixed[b] = span
     n = len(frames) - 1
     for k, bones in enumerate(LEGS):
-        w = stance_weights(model, out, bones, mesh)
+        w = stance_weights(model, out, bones, skeleton)
         out = ease_leg(out, bones[:3], w, SMOOTH)
     # the closing frame repeats the first
     for b in range(1, len(out[0])):
@@ -174,15 +198,13 @@ def rewrite(model, frames, mesh):
 
 def build(data, skeleton):
     from tools.models.field_animations import chibi
-    import animstudio
     result, proof = chibi.build(data, skeleton)
     old = mmd.MMD.parse(result, NB)
     old.type = SPECIES
     new = mmd.MMD.parse(result, NB)
     new.type = SPECIES
-    mesh = animstudio.FastMesh(type('M', (), dict(m=old, skel=skeleton))())
     frames, loop, events = animsheet.slot_frames(old, NB, SLOT)
-    out, fixed = rewrite(old, frames, mesh)
+    out, fixed = rewrite(old, frames, skeleton)
     animation = mmd.encode_anim(out, NB, loop_sample=loop, events=events, tol=0, repeats=False)
     index = old.anims.table[SLOT]
     new.anims.anims[index] = animation

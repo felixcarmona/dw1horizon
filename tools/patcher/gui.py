@@ -367,19 +367,22 @@ class App:
             why = t('app.ready')
         self.why_label.configure(text=why)
         self.build_button.state(['!disabled'] if idle and not missing else ['disabled'])
-        self.stop_button.state(['!disabled'] if self.busy in ('build', 'download') and not self.cancel.is_set()
+        self.stop_button.state(['!disabled'] if self.busy in ('build', 'download', 'check') and not self.cancel.is_set()
                                else ['disabled'])
 
     def output_folder(self):
         if self.config.get('output'):
             return self.config.get('output')
         if 'us' in self.slots:
-            return desktop.default_output(self.slots['us']['image'])
+            return desktop.default_output(self.slots['us']['path'])
         return ''
 
     def _restore(self):
+        reconvert = []
         for game, (entry, reason) in self.config.remembered_discs().items():
-            if reason:
+            if reason == 'convert':
+                reconvert.append(entry['path'])
+            elif reason:
                 self.notes[game] = ('app.' + reason, dict(path=entry.get('path', '')))
             else:
                 self.slots[game] = dict(entry, game=game)
@@ -391,6 +394,8 @@ class App:
             self.package['source'] = 'file'
             self.package['verified'] = self.config.get('package_verified', False)
         self._refresh()
+        if reconvert:
+            self._check(reconvert)
 
     # -- background work: one job at a time, results through self.events
     def _spawn(self, fn, *args, busy=None, quiet=False):
@@ -407,7 +412,8 @@ class App:
             finally:
                 if busy:
                     self.events.put(('idle',))
-        threading.Thread(target=run, daemon=True).start()
+        self.worker = threading.Thread(target=run, daemon=True)
+        self.worker.start()
 
     def _pump(self):
         try:
@@ -437,6 +443,8 @@ class App:
         return text[:1].upper() + text[1:]
 
     def _on_idle(self):
+        if self.busy == 'check':
+            self.checking.clear()
         self.busy = None
         self.cancel.clear()
         self._refresh()
@@ -479,7 +487,7 @@ class App:
 
     # -- discs
     def _filetypes(self):
-        return [(self.t('app.discFiles'), '*.cue *.bin *.iso *.img'), (self.t('app.allFiles'), '*')]
+        return [(self.t('app.discFiles'), '*.cue *.bin *.iso *.img *.pbp *.PBP *.chd *.CHD'), (self.t('app.allFiles'), '*')]
 
     def _add(self):
         from tkinter import filedialog
@@ -508,6 +516,8 @@ class App:
                 g = current.get(i)
                 if g:
                     self.events.put(('checking', g, f))
+                else:
+                    self.events.put(('checking_image', p, f))
             problems = []
             for i, p in enumerate(paths):
                 try:
@@ -519,7 +529,8 @@ class App:
                         self.events.put(('checking', cands[0][0], 0.0))
                 except (desktop.Problem, OSError):
                     pass
-                found, bad = desktop.sort_files([p], lambda _i, n, f, i=i: progress(i, n, f), self.cancel)
+                found, bad = desktop.sort_files([p], lambda _i, n, f, i=i: progress(i, n, f), self.cancel,
+                                                lambda path, f: self.events.put(('converting', path, f)))
                 for game, r in found.items():
                     self.events.put(('disc', game, r))
                 problems += bad
@@ -528,6 +539,22 @@ class App:
             if problems:
                 self.events.put(('problems', problems))
         self._spawn(job, busy='check')
+
+    def _on_converting(self, path, f):
+        if getattr(self, '_converting_path', None) != path:
+            self._converting_path = path
+            try:
+                kind = desktop.discformats.sniff(path)
+            except OSError:
+                kind = None  # The worker reports a removed or unreadable source.
+            self._converting_key = 'app.convertingChd' if kind == 'chd' else 'app.converting'
+        self.stage.configure(text=self.t(self._converting_key, file=os.path.basename(path), pct=int(f * 100)))
+        self.progress['value'] = int(f * 1000)
+
+    def _on_checking_image(self, path, f):
+        words = self.t('disc.checking', pct=int(f * 100))
+        self.stage.configure(text=f'{os.path.basename(path)}: {words}')
+        self.progress['value'] = int(f * 1000)
 
     def _on_checking(self, game, f):
         self.checking[game] = f
@@ -635,8 +662,11 @@ class App:
     def _build_disc(self):
         out = self.output_folder()
         problems = desktop.space_problems(out)
-        for game, r in self.slots.items():
+        for game, r in list(self.slots.items()):
             why = desktop.file_changed(r)
+            if why == 'convert':
+                self._check([r['path']])
+                return
             if why:
                 self.slots.pop(game)
                 self.notes[game] = ('app.' + why, dict(path=r['path']))
@@ -719,14 +749,18 @@ class App:
         self._refresh()
 
     def close(self):
-        if self.busy == 'build':
-            from tkinter import messagebox
-            if not messagebox.askokcancel(self.t('app.title'), self.t('app.quitBuilding'), parent=self.root):
-                return
-            self.cancel.set()
-            deadline = time.time() + 15
-            while self.patcher is not None and time.time() < deadline:   # derive's processes are killed
-                self.root.update(); time.sleep(0.1)
+        if not getattr(self, 'closing', False):
+            if self.busy == 'build':
+                from tkinter import messagebox
+                if not messagebox.askokcancel(self.t('app.title'), self.t('app.quitBuilding'), parent=self.root):
+                    return
+            self.closing = True
+        self.cancel.set()
+        worker = getattr(self, 'worker', None)
+        if worker is not None and worker.is_alive():
+            self.root.after(100, self.close)
+            return
+        desktop.CONVERSIONS.close()
         self.root.destroy()
 
 

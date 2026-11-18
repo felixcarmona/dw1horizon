@@ -110,7 +110,11 @@ class WizardmonNative(unittest.TestCase):
         before, _, _ = animsheet.slot_frames(self.native, 26, 46)
         after, _, _ = animsheet.slot_frames(self.model, 26, 57)
         self.assertEqual(len(after), len(before))
-        self.assertEqual([[f[b][:6] for b in (0, 2, 3, 9)] for f in after], [[f[b][:6] for b in (0, 2, 3, 9)] for f in before])
+        # within the recipe's compaction tolerance (native_battle.compact: not a field or battle slot)
+        tol = self.recipe.get('battle_originals', {}).get('compact', {}).get('tol', 0)
+        for a, b in zip(after, before):
+            for bone in (0, 2, 3, 9):
+                self.assertLessEqual(max(abs(x - y) for x, y in zip(a[bone][:6], b[bone][:6])), tol)
 
     def test_effect_points_stay_on_the_rig(self):
         patch = self.recipe['species_patch']

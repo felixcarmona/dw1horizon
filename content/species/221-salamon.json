@@ -10,6 +10,7 @@
                  "Wind Cutter", "Boom Bubble"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 33,
+  "own_effect": {"technique": "Boom Bubble", "chunk": 291},
   "model": {
     "file": "build/batch4/Salamon.MMD",
     "radius": 100,

@@ -24,7 +24,7 @@ from motiondiscidentity import changed_programs
 from tools.models.field_animations import antylamon_polish as gait, chibi
 from tools.models.field_animations.okuwamon_limbs import Body, exp_so3, log_so3
 
-BASE = '8084c949a12fc8c6225ec6d070b45e0b69f8e0ab99e1ec8ceec8e2d8942c6fbd'   # the overlay's input
+BASE = '15e07d0b929c03ab295a54a4b2dda99d1956db5d5dc1cbe34058c96b2dfc948e'   # the overlay's input
 NB = 22
 LIMIT = 100352
 RIGHT, LEFT = (3, 4, 5, 6), (7, 8, 9, 10)

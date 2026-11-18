@@ -166,11 +166,32 @@ def recruit(e, out):
     return dict(rescued=True, cured=True, recruited=True, prosperity_before=prosperity, prosperity_after=after)
 
 
+def no_rescue(e, out):
+    """An unfixed disc: the sick partner stands on the rescue strip and nothing happens."""
+    assert e.peek('PARTNER_PARA', 'I') & 64
+    if e.peek('CURRENT_SCREEN', 'h') != 94:
+        assert e.warp(94)
+    move(e, -1000, -550)
+    for _ in range(50):          # 25 s on the strip; a sick-partner message is closed like a player would
+        if e.peek('TAMER_STATE', 'b') == 20:
+            e.press('CONFIRM', 12)
+        e.wait(.5)
+    state = dict(screen=e.peek('CURRENT_SCREEN', 'h'), tamer=e.peek('TAMER_STATE', 'b'), game=e.peek('GAME_STATE', 'H'),
+                 script_paused=e.peek('IS_SCRIPT_PAUSED', 'i'), flag133=bool(bit(e, 133)), species=e.peek('PARTNER_ENTITY', 'i'))
+    e.run('shot', str(out / 'no-rescue.png'))
+    assert state['screen'] == 94 and not state['flag133'] and state['tamer'] == 0 and state['game'] == 0, f'a scene or a warp started: {state}'
+    assert not bit(e, 133), 'the rescue ran'
+    assert e.peek('PARTNER_PARA', 'I') & 64, 'the partner was cured'
+    return dict(rescued=False, still_sick=True, state=state)
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('disc'); p.add_argument('--exe', required=True)
     p.add_argument('--out', type=Path, required=True); p.add_argument('--port', type=int, default=42620)
-    p.add_argument('--route', choices=('inventory', 'care', 'climate'), required=True)
+    p.add_argument('--route', choices=('inventory', 'care', 'climate', 'fixture'), required=True)
+    p.add_argument('--species', type=int, default=3, help='the partner (3 Agumon; 476 Nyaromon, a hand-made baby)')
+    p.add_argument('--expect-no-rescue', action='store_true', help='an unfixed disc: the rescue strip must NOT fire')
     a = p.parse_args(); out = a.out.resolve(); out.mkdir(parents=True, exist_ok=True)
     e = emulator(a.disc, a.exe, a.port, out); result = dict(route=a.route); recording = None
     try:
@@ -184,16 +205,23 @@ def main():
         for n in (133, 223):
             e.gs('trigger', str(n), '0')
         e.run('save', str(out / 'base.state'))
-        fixture(e, out / 'base.state', 3)
+        fixture(e, out / 'base.state', a.species)
         e.run('save', str(out / 'ready.state'))
-        if a.route != 'climate':
+        if a.route not in ('climate', 'fixture'):
             recording = subprocess.Popen([sys.executable, 'tools/dev/emulator.py', 'record', str(out / 'feeding.mp4'), '45', '10'], env=e.env)
-        result['sickness'] = climate(e, out) if a.route == 'climate' else food(e, out, a.route)
+        if a.route == 'fixture':      # the illness is set directly: the rescue and the recruit are what is under test
+            e.gs('set', 'partner.para.condition=64', 'partner.para.sicknessCounter=0')
+            watch(e); result['sickness'] = dict(injected=True)
+        else:
+            result['sickness'] = climate(e, out) if a.route == 'climate' else food(e, out, a.route)
         if recording:
             assert recording.wait(timeout=60) == 0; recording = None
         e.run('save', str(out / 'sick.state'))
         recording = subprocess.Popen([sys.executable, 'tools/dev/emulator.py', 'record', str(out / 'recruitment.mp4'), '240', '10'], env=e.env)
-        result.update(recruit(e, out))
+        if a.expect_no_rescue:
+            result.update(no_rescue(e, out))
+        else:
+            result.update(recruit(e, out))
         assert value(e, 'ending') == 0, 'ending routine was entered'
         result.update(ending_calls=0, ram_bytes=len(e.ram()), returned_control=e.in_control())
         assert recording.wait(timeout=260) == 0; recording = None

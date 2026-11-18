@@ -22,12 +22,12 @@ import animsheet
 import motionstorage
 from motiondiscidentity import changed_programs
 
-SOURCE='67d6d20e00fb34a60e88dd28ad4c171de1e5d21d805603158c8ca7326ec4b51b'
+SOURCE='391ca793a8557f01eeaf7b5f2f7bae7f0f79bd19255907a9a78c340d022864f0'
 SLOTS=[0,2,3,4]
 # The care, condition and gesture clips come from Greymon's retargeting: his short arms fold against the chest and, on
 # WarGreymon's long arms, read as stiff, tucked ones. Their arms are rewritten to hang as in the field idle; the clip's
-# own arm movement is kept at a fraction. Slot 0x22 (tired battle idle) shares the clip of slot 1.
-CARE=[1,5,7,8,9,10,11,12,13,14,15,16,17,18,19,0x22]
+# own arm movement is kept at a fraction. Slot 0x22 (tired battle idle) is the source's own clip (battle-rebuilds.json).
+CARE=[1,5,7,8,9,10,11,12,13,14,15,16,17,18,19]
 CHANGED=sorted(SLOTS+CARE)
 ARM_KEEP=.6;ARM_LIMIT=[30,18,18]
 

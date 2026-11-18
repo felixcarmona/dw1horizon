@@ -479,7 +479,10 @@ def compile_base_story(base, work, lang, text, exclude, mh_overrides, mh_gen, re
     if from_py:                                   # the base is built from its Python view (lowered); the .dws is the intermediate
         from .py import lower as PL
         pyd = os.path.join(work, 'base-py'); shutil.rmtree(pyd, ignore_errors=True)
-        scripts, mh_files = PL.lower_base(base, pyd)
+        sexe_py = 'original' if text_source == 'us' else exe       # (the executable the base compiles for, below: which species a partner can be)
+        PL.TARGET['exe'] = sexe_py
+        try: scripts, mh_files = PL.lower_base(base, pyd)
+        finally: PL.TARGET['exe'] = 'original'
         report.append(f'story: built from the Python view: {len(scripts)} scripts and MAPHEAD lowered from story/base/**/*.py')
         drift = maphead_drift(mh_files)
         if drift: report.append(f'warning: story/base/maphead/hooks.py {drift} than the DWS beside it (maphead/*.dws), which the '

@@ -11,6 +11,7 @@
                  "Hurricane", "Confused Storm", "Wind Cutter", "Crimson Flare"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 24,
+  "own_effect": {"technique": "Crimson Flare", "chunk": 285},
   "model": {
     "file": "build/sizes-out/models/Magnadramon.MMD",
     "radius": 300,

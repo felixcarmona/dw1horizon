@@ -11,6 +11,7 @@
                  "Magma Bomb", "Red Inferno", "Fire Tower", "Mail Strome"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 5,
+  "own_effect": {"technique": "Mail Strome", "chunk": 329},
   "model": {
     "file": "build/fitfix/Omnimon.MMD",
     "radius": 204,

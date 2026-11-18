@@ -89,6 +89,7 @@
   "what-the-island-forgot.12a6c443": "giromon-sane.py:18 in_its_right_mind: giromon (Giromon161) says",
   "what-the-island-forgot.9eb45ff6": "giromon-sane.py:19 in_its_right_mind: the tamer says",
   "what-the-island-forgot.f9bd210d": "remodelling.py:14 no_power: guardromon0 (Guardromon) says",
+  "what-the-island-forgot.a301a087": "remodelling.py:66 remodel: guardromon0 (Guardromon) says",
   "what-the-island-forgot.d7acfd33": "remodelling.py:19 talk: datamon (Datamon) says",
   "what-the-island-forgot.7d28aa3a": "remodelling.py:21 talk: datamon (Datamon) says",
   "what-the-island-forgot.5926f9b5": "remodelling.py:22 talk: ? says",
@@ -1003,5 +1004,6 @@
  "what-the-island-forgot.ac9f3a13": "A city needs a real clock.",
  "what-the-island-forgot.98e85238": "Treasure! I swear there's treasure somewhere under this city!",
  "what-the-island-forgot.2af647ac": "This old well goes down a long way. I'm only checking.",
+ "what-the-island-forgot.a301a087": "Whoa, it changed form!",
  "kiwimon.refuse": "Leave it hungry"
 }

@@ -11,6 +11,7 @@
                  "Giga Freeze", "Ice Needle", "Dark Shot"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 55,
+  "own_effect": {"technique": "Dark Shot", "chunk": 205},
   "model": {
     "file": "build/sizes-out/models/Bulbmon.MMD",
     "radius": 173,

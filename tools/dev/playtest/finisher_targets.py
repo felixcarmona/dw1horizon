@@ -3,8 +3,14 @@
 
 EMU_PORT and DW_SYMS must select this disc's emulator and executable.
 Usage: .venv/bin/python -m tools.dev.playtest.finisher_targets DISC DIGI OUT ID ...
-       [--trials 2] [--baseline] [--card CARD]
+       [--trials 2] [--baseline] [--card CARD] [--sounds] [--chargeup 80]
 Baseline requires a caster hit; fixed runs require enemy damage and no self damage.
+Use --chargeup 80 for damage comparisons: the ordinary input sequence can finish
+after a short effect has already hit, leaving that hit without the charge bonus.
+hp_updates records the animated HP drain, not a count of attack hits.
+With --sounds (slower: the emulator runs as an interpreter with its debugger, the only mode where Lua
+breakpoints fire) every battle sound the effect plays (bank 8: STD_playEFESound's playSound and
+playSound2) is logged as [sound id, video frame at 60 Hz from the recording's start] in the result's "sounds".
 """
 import argparse
 import functools
@@ -17,6 +23,28 @@ import time
 from tools.dev.playtest import species_proof as P
 
 PARTNER_HP = 'PARTNER_ENTITY.digimonEntity.stats.current.currentHP'
+CHARGE = 'COMBAT_DATA.player.finisherChargeup[0]'
+CHARGE_TIME = 'COMBAT_DATA.player.remainingChargeupTime[0]'
+CYCLES_PER_FRAME = 33868800 / 60
+
+
+def log_sounds(emu):
+    """Starts logging the battle sounds (bank 8) with the CPU cycle they start at."""
+    hooks = ' '.join(
+        f"FT_SND.bp[#FT_SND.bp+1]=PCSX.addBreakpoint({emu.A(name)},'Exec',4,'finisher-sound',function() "
+        "local r=PCSX.getRegisters() if r.GPR.n.a0==8 then "
+        "FT_SND.log[#FT_SND.log+1]=tostring(r.GPR.n.a1)..':'..tostring(PCSX.getCPUCycles()) end end)"
+        for name in ('playSound', 'playSound2'))
+    emu.run('lua', "if FT_SND then for _,b in ipairs(FT_SND.bp) do b:remove() end end "
+                   f"FT_SND={{bp={{}},log={{}}}} {hooks} return PCSX.getCPUCycles()")
+
+
+def logged_sounds(emu, start):
+    """[[id, frame]] of the sounds logged since log_sounds, frames counted from `start` (CPU cycles); stops logging."""
+    out = emu.run('lua', "local s=table.concat(FT_SND.log,',') for _,b in ipairs(FT_SND.bp) do b:remove() end "
+                         "FT_SND.bp={} return s").strip()
+    pairs = [x.split(':') for x in out.split(',') if ':' in x]
+    return [[int(i), round((int(c.rstrip('ULul')) - start) / CYCLES_PER_FRAME)] for i, c in pairs]
 
 
 def bind_memory():
@@ -57,7 +85,17 @@ def main():
     parser.add_argument('--baseline', action='store_true')
     parser.add_argument('--attach', action='store_true', help='use the already running disc on EMU_PORT')
     parser.add_argument('--card', default='build/states/file-city.mcd')
+    parser.add_argument('--sounds', action='store_true', help='log the battle sounds the effect plays')
+    parser.add_argument('--chargeup', type=int, choices=range(81), metavar='0..80',
+                        help='set charge during the active charge window, before the effect can hit')
     args = parser.parse_args()
+    if args.sounds:
+        plain = P.emulator
+        def debugging(cue):
+            emu = plain(cue)
+            emu.env['EMU_ARGS'] = '-interpreter -debugger'
+            return emu
+        P.emulator = debugging
     if not all(P.emulator(args.cue).has(name) for name in ('MOD_BOOT_LANGUAGE', 'labCount', 'labChoices')):
         parser.error('DW_SYMS needs the disc executable, its .elf and .elf.map with local symbols')
     args.out.mkdir(parents=True, exist_ok=True)
@@ -66,10 +104,19 @@ def main():
     current = {}
 
     def watch(slot, seconds, launch):
+        # Battle initialization can reset the cooldowns set by prepare(). Apply
+        # isolation again after warmup, once the fight is actually running.
+        freeze_opponents()
         initial = P.mem(PARTNER_HP, *P.ENEMY_HP)
         samples, enemy_damage, self_damage = [], 0, 0
+        previous_hp = initial
+        hp_updates = []
+        chargeup_set = False
+        hit_shot = False
+        start = int(P.EMU.run('lua', 'return PCSX.getCPUCycles()').strip().rstrip('ULul'))
+        if args.sounds: log_sounds(P.EMU)
         with open(folder / 'recorder.log', 'w') as log:
-            recorder = subprocess.Popen(P.E + ['record', str(folder / 'finisher.mp4'), '18', '20'],
+            recorder = subprocess.Popen(P.E + ['record', str(folder / 'finisher.mp4'), '18'],
                                         stdout=log, stderr=subprocess.STDOUT)
         deadline = time.monotonic() + seconds
         errors = []
@@ -81,18 +128,32 @@ def main():
         try:
             while time.monotonic() < deadline:
                 values = P.mem(P.ANIM, P.FRAME, 'GAME_STATE', 'NO_AI_FLAG',
-                               'EFE_TARGET_ENTITY_INDEX', PARTNER_HP, *P.ENEMY_HP)
+                               'EFE_TARGET_ENTITY_INDEX', CHARGE, CHARGE_TIME, PARTNER_HP, *P.ENEMY_HP)
                 values['GAME_STATE'] = P.game_state(values)
+                if args.chargeup is not None and values[CHARGE_TIME] > 0:
+                    # A pause can land in a presentation pass whose state is
+                    # subsequently restored. Keep enforcing the charge until
+                    # the real simulation retains it.
+                    if values[CHARGE] != args.chargeup:
+                        P.mset(f'{CHARGE}={args.chargeup}')
+                    chargeup_set = True
                 samples.append(values)
                 self_damage = max(0, initial[PARTNER_HP] - values[PARTNER_HP])
                 enemy_damage = max(0, *(initial[k] - values[k] for k in P.ENEMY_HP))
-                if self_damage or enemy_damage:
+                for key in (PARTNER_HP, *P.ENEMY_HP):
+                    delta = previous_hp[key] - values[key]
+                    if delta > 0:
+                        hp_updates.append(dict(entity=key, damage=delta, chargeup=values[CHARGE]))
+                previous_hp = values
+                if (self_damage or enemy_damage) and not hit_shot:
                     P.seq(f'shot {folder}/hit.png')
+                    hit_shot = True
+                if recorder.poll() is not None:
                     break
                 time.sleep(0.05)
         finally:
             try:
-                recorder.wait(timeout=25)
+                recorder.wait(timeout=300)   # 18 emulated seconds, whatever the host load
             except subprocess.TimeoutExpired:
                 recorder.terminate()
                 recorder.wait(timeout=5)
@@ -102,13 +163,19 @@ def main():
         if launcher.is_alive(): raise RuntimeError('Finisher input did not complete')
         if errors: raise errors[0]
         final = P.mem(P.ANIM, P.FRAME, 'GAME_STATE', 'NO_AI_FLAG',
-                      'EFE_TARGET_ENTITY_INDEX', PARTNER_HP, *P.ENEMY_HP)
+                      'EFE_TARGET_ENTITY_INDEX', CHARGE, CHARGE_TIME, PARTNER_HP, *P.ENEMY_HP)
         final['GAME_STATE'] = P.game_state(final)
         samples.append(final)
+        for key in (PARTNER_HP, *P.ENEMY_HP):
+            delta = previous_hp[key] - final[key]
+            if delta > 0:
+                hp_updates.append(dict(entity=key, damage=delta, chargeup=final[CHARGE]))
         self_damage = max(self_damage, initial[PARTNER_HP] - final[PARTNER_HP])
         enemy_damage = max(enemy_damage, *(initial[k] - final[k] for k in P.ENEMY_HP))
         P.seq(f'shot {folder}/settled.png')
         current.update(self_damage=self_damage, enemy_damage=enemy_damage, hp_before=initial, samples=samples)
+        current.update(hp_updates=hp_updates, chargeup_requested=args.chargeup, chargeup_set=chargeup_set)
+        if args.sounds: current['sounds'] = logged_sounds(P.EMU, start)
         return samples, enemy_damage
 
     def freeze_opponents():
@@ -137,9 +204,13 @@ def main():
                 # during the helper's preparation window. Keep its real slot.
                 moves = [move if 58 <= move <= 112 else 255 for move in records[species]['para']['moves']]
                 P.battle(species, moves, str(folder), current, prepare=freeze_opponents,
-                         launch_and_watch=watch, warmup=6)
+                         launch_and_watch=watch, warmup=6,
+                         chargeup=None if args.chargeup is not None else 80)
                 current['ok'] = (current.get('in_battle', False) and current.get('frames_advance', False) and
                                  current.get('finisher_played', False) and current.get('game_state_after') == 0 and
+                                 (args.chargeup is None or (current.get('chargeup_set', False) and
+                                  bool(current.get('hp_updates')) and
+                                  all(e['chargeup'] == args.chargeup for e in current.get('hp_updates', [])))) and
                                  (args.baseline or (current.get('enemy_damage', 0) > 0 and
                                                    current.get('self_damage', 0) == 0)))
                 results.append(current)

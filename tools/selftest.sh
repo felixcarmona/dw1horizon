@@ -85,6 +85,8 @@ run caption-translations $PY -m tools.localize.captions
 run caption-translation-tests $PY -m unittest tools.test_caption_translations
 run technique-timing-tests $PY -m unittest tools.test_technique_timing
 run buster-dive-tests $PY -m unittest tools.test_buster_dive
+run finisher-balance-tests $PY -m unittest tools.test_finisher_balance
+run unique-finisher-tests $PY -m unittest tools.test_unique_finishers
 run patch-series-tests $PY tools/test_patch_series.py
 if [ -f "$PATCHED/src/main/main_menu.c" ]; then
     run training-bonus-host $PY tools/dev/playtest/training_bonus_host.py "$PATCHED"
@@ -124,10 +126,14 @@ if [ -f "$PATCHED/src/main/mod_feed.c" ]; then
     run care-badge-host $PY tools/dev/playtest/care_badge_host.py "$PATCHED"
     run hpmp-care-host $PY tools/dev/playtest/hpmp_care_host.py "$PATCHED"
     run quick-care-host $PY tools/dev/playtest/quick_care_host.py "$PATCHED"
+    run care-menu-read-host $PY tools/dev/playtest/care_menu_read_host.py "$PATCHED"
+    run player-menu-read-host $PY tools/dev/playtest/player_menu_read_host.py "$PATCHED"
 else
     skip care-badge-host "needs a prepared developer tree"
     skip hpmp-care-host "needs a prepared developer tree"
     skip quick-care-host "needs a prepared developer tree"
+    skip care-menu-read-host "needs a prepared developer tree"
+    skip player-menu-read-host "needs a prepared developer tree"
 fi
 run systemw-label-tests $PY -m unittest tools.test_systemw
 disc evolution-tree   $PY tools/test_evo_tree.py --practical
@@ -154,7 +160,7 @@ else
     skip flat-sprites-built "needs a generated build (DW_SELFTEST_DERIVE)"
 fi
 run heap-tables       $PY tools/test_heap_tables.py                      # compact sector/size records remain lossless
-run effect-targets    $PY -m unittest tools.test_effect_targets          # Nightmare Syndromer excludes its caster
+run effect-targets    $PY -m unittest tools.test_effect_targets          # Nightmare Syndromer excludes its caster, Deadly Bomb is aimed
 run npc-footprints   $PY tools/test_reach_policies.py
 run npc-routes       $PY tools/check_npc_routes.py                     # every authored new-screen visibility state
 run npc-route-mutations $PY tools/test_npc_routes.py
@@ -180,6 +186,7 @@ both balance-original  $PY tools/balance.py verify --exe-dir extracted        # 
 both balance-check     $PY tools/balance.py check --exe-dir extracted
 run balance-map-outputs $PY -m unittest tools.test_balance_maps
 run ground-pickup-ids $PY tools/test_ground_items.py
+run efe-smooth        $PY tools/test_efe_smooth.py                       # smooth battle effects: the draw table against the handlers, the blend on the host
 run vending-audit     $PY tools/test_vending_audit.py
 run economy-audit     $PY tools/economy_audit.py                            # no repeatable conversion turns bits into more bits
 if [ -f "$DERIVED/exe/SLUS_010.32.elf" ]; then
@@ -223,6 +230,7 @@ run map-reach-policies $PY tools/test_reach_policies.py
 disc jungle-exit-body-box $PY -m unittest tools.test_trop02_exit
 disc ogre-arrival-body-box $PY -m unittest tools.test_ogre02_arrival
 disc cemetery-collision-body-box $PY tools/test_collision_pockets.py
+run old-gallery-neck $PY tools/test_old_gallery_neck.py
 run developer-contracts $PY tools/test_dev_contracts.py
 run presented-frame-video $PY tools/test_presented_frames.py
 run duckstation-protocol $PY -m unittest tools.test_duckstation_protocol

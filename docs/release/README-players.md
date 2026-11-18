@@ -86,8 +86,8 @@ exactly as listed on redump.org. The patcher recognises which one you have and c
 | DigimonWorld (Japan) (Rev 1) | SLPS-01797 | http://redump.org/disc/37502/ | `1d10389deee8c9849136623785c256071f2f9473` |
 
 The first Japanese pressing (the disc before Rev 1) does not work: some of its models, effects and maps differ from
-every other release. Already-modified copies (another patch or hack applied) and trimmed or converted images do not
-work either. The mod's features and selected translations are shared across bases.
+every other release. Already-modified copies (another patch or hack applied), trimmed images and conversions
+that change the raw sectors do not work either. The mod's features and selected translations are shared across bases.
 Opening movies and some title artwork keep your disc's regional content.
 
 The package contains build tools, authored changes and binary differences applied to
@@ -96,6 +96,16 @@ program files use differences against your regional disc. Every result is checke
 against the release hashes. Reconstruction and checksum equality do not establish
 copyright provenance: the package's publication audit must pass before distribution.
 See the source repository's patcher guide for the audit's scope and remaining limits.
+
+Single-disc, unencrypted PSP `.pbp` images also work in the desktop app and command-line patcher,
+for all four games. They must contain the same raw sectors as a supported dump. Conversion uses
+at least 700 MB of free cache space in the app (temporary space for the CLI), in addition to the
+build space below. Conversions are reused during the session and deleted on exit. Multi-disc or
+encrypted PBPs are unsupported. The desktop app and CLI also accept CD-ROM v5 `.chd` images
+using CD zlib/LZMA or plain zlib/LZMA/uncompressed hunks. Tracks are concatenated into one raw
+BIN, with CHD padding and subcode removed. Parent CHDs, older headers, cooked tracks and FLAC
+(`cdfl`) hunks require conversion with `chdman extractcd` first. CHD conversions use the same
+temporary space, session cache and cleanup as PBP. The browser still requires `.bin`/`.cue` for CHD.
 
 ## What you need
 
@@ -114,14 +124,14 @@ See the source repository's patcher guide for the audit's scope and remaining li
 
 ## Step by step
 
-1. Unzip the release into a folder. It contains `dwpatch.py`, `isowriter.py`, `manifest.json`, `everything.dwp`, the
-   `bases` and `bundle` folders, `audit.txt` and this README. Keep them together.
+1. Unzip the release into a folder. It contains `dwpatch.py`, `discformats.py`, `isowriter.py`, `manifest.json`,
+   `everything.dwp`, the `bases` and `bundle` folders, `audit.txt` and this README. Keep them together.
 2. Open a terminal in that folder:
    - Windows: open the folder, click the address bar, type `cmd` and press Enter.
    - macOS: right-click the folder in Finder, "New Terminal at Folder".
    - Linux: right-click, "Open in Terminal".
-3. Run (put the path to **your** `.cue` between the quotes; you can drag the file into the terminal window to paste
-   its path):
+3. Run (put the path to **your** `.cue`, `.bin`, `.chd` or `.pbp` between the quotes; you can drag the file into the terminal
+   window to paste its path):
 
    ```
    py dwpatch.py apply "C:\Games\Digimon World (USA).cue" --source-disc "dcb=C:\Games\Card Battle.bin" --source-disc "dw2=C:\Games\World 2.bin" --source-disc "dw2003=C:\Games\World 2003.bin"
@@ -170,7 +180,8 @@ written once every file has been checked.
 | "the first pressing of SLPS-01797" | That Japanese disc cannot be used (see "Bring your own disc"); any other release can. |
 | "is Digimon World 2" / another game, or "This release needs one of: ..." | Use one of the discs in the table above. |
 | "is a 2048-byte-per-sector ISO" | Dump the disc again as `.bin`/`.cue` (raw, 2352 bytes per sector). |
-| "is a CHD" / "is a 7z archive" / "is a zip archive" ... | Extract or convert it to `.bin`/`.cue` first (for CHD: `chdman extractcd -i game.chd -o game.cue`). |
+| "CHD not supported" / "is a CHD" (browser) | Convert it to `.bin`/`.cue` with `chdman extractcd -i game.chd -o game.cue`. |
+| "is a 7z archive" / "is a zip archive" ... | Extract it to `.bin`/`.cue` first. |
 | "the cue sheet names 2 files" | Digimon World is one data track: use a redump-style single `.bin`. |
 | "points to ..., which does not exist" | The `.cue` names a `.bin` that is not there: rename the `.bin` back, or edit the `.cue`. |
 | "needs Python 3.10 or newer" | Install a newer Python from python.org or your operating system's package manager. |

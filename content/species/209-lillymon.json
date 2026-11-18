@@ -11,6 +11,7 @@
                  "Megaton Punch", "Counter", "Tremar", "Bit Bomb"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 28,
+  "own_effect": {"technique": "Bit Bomb", "chunk": 279},
   "model": {
     "file": "build/sizes-out/models/Lillymon.MMD",
     "radius": 156,

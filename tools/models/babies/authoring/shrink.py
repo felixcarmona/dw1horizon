@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""shrink.py OUTDIR (build/babies-authoring): scale three finished babies down (size review 2026-11-03), in place, after their own scripts ran.
+"""shrink.py OUTDIR (build/babies-authoring): size four finished babies in place, after their own scripts ran.
 
 Every vertex is scaled about the ground point under the model in the rest pose (slot 0, tick 0): world = M_b v,
 world' = P + s (world - P), v' = M_b^-1 world'. Animations and normals are untouched (uniform scale keeps directions).
@@ -9,7 +9,10 @@ import numpy as np
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../../../tools'))
 import mmd  # noqa: E402
 
-SCALES = {'Nyokimon': (43, 0.80), 'Nyaromon': (30, 0.85), 'Yokomon': (44, 0.88)}
+# Nyokimon's old 0.80 left an 80-unit body beneath its sprout. At 1.08 its
+# body is 108 units (Botamon: 106), with a 174-unit silhouette below Bukamon.
+# Pichimon: 92-unit head -> 110; 152-unit silhouette -> 182 (below Bukamon).
+SCALES = {'Pichimon': (2, 1.20), 'Nyokimon': (1, 1.08), 'Nyaromon': (30, 0.85), 'Yokomon': (44, 0.88)}
 
 
 def shrink(path, t, s):

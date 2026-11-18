@@ -384,7 +384,65 @@ own variables (the script/data area in front of the effect's TMD) and call `rand
   "finished" mark.
 
 `decomp/src/std/std_effect.c` and `decomp/src/vs/vs_effect.c` get the same changes. Effects therefore appear on every
-frame but move at 20 Hz.
+frame; the next section makes them move on every frame too.
+
+## Smooth effects
+
+For players: at 30 and 60 fps every battle effect moves at the frame rate the game draws at. This covers the original
+techniques and finishers and the imported ones alike. Fireballs, beams, sparks and models glide instead of stepping 20
+times a second. Hits, damage and sounds land on the same frames as before. At 20 fps, or with interpolation off, the
+picture is exactly the original one.
+
+How: the EFE engine still poses its effects once per 20 Hz tick. Every draw sub-opcode a render script runs goes
+through `modSmoothCall` (`include/dw/mod_efe_smooth.h`, included by the BTL, STD and VS effect files, so it is overlay
+code). On a pass that shows a fraction of the tick (`MOD_RENDER_ALPHA` < 4096), the draw is given its operands between
+the values the same draw had one tick earlier and its own. The blended values are positions, scales, colours, angles,
+screen coordinates and, for the model draws, the instance's position and rotation. The particle emitters draw each
+particle back along its last step.
+
+- **Nothing persistent is written.** Value operands are rewritten on the script stack, pointer operands are swapped for
+  local copies, and the instance transform is put back right after the draw. Ticks, hit frames, damage and sounds keep
+  their timing, and pass 0's own writes (which persist) are not affected.
+- **The same draw one tick later** has the same slot, sub-effect and order inside that sub-effect's render script, the
+  same opcode, script, instance, pointer operands and identifiers (model, sprite cell, flip, clut, flags), and its
+  instance's frame is exactly one higher. Each tick's draws are logged (key, hash, frame and raw values; two logs of 3
+  KB in the overlay's bss), and the previous log is matched in key order.
+- **Cuts draw their own pose:** a spawn, a flipbook switch (another cell), a restarted sub-effect (frame not +1), a
+  camera cut (`modInterpSnapshot` counted a snap), a tick with no render before it, and any value that moves further in
+  one tick than its kind allows: 2048 world units, 160 pixels, 64 colour steps, a quarter turn, 90 degrees, a scale of
+  1.0. A sign flip of a scale is therefore a cut. Angles take the short way round.
+- **Values already interpolated** are taken as they are. These are values read from the interpolated bones or camera,
+  found because they differ between the passes of one tick. The mark stays with the draw.
+- A tick with more draws than the log holds draws the rest without blending.
+- **Passes that need nothing are skipped:** an extra pass at 3/3 (steady 30's late pass) shows the tick's own pose, the
+  ladder's 20 fps level (`MOD_RENDER_CADENCE & 16`) shows the original picture, and a battle x2 tick (`MOD_TICK_FAST`)
+  has one pass, so none of them logs or looks anything up. The first tick after them draws its own pose.
+
+The draw table lists each sub-opcode's operands with their kinds. `tools/test_efe_smooth.py` (selftest `efe-smooth`)
+checks every count against the handlers in all three engines. It also compiles the header for the host and drives it
+tick by tick.
+
+Measured in the emulator with every pass forced (`MOD_FPS_TEST_TICK=8`), from one save state per effect, with the
+smoothing off (`modSm.off`, a test switch) and on:
+
+- Spit Fire and Pepper Breath (Agumon) and a finisher effect converted from Digimon World 2: on every tick the effect
+  is drawn, the two in-between frames show new effect poses (60 a second), and the frame that closes the tick is
+  identical with and without the smoothing.
+- `tools/dev/fps/battlecheck.py` over 300 ticks of each finisher: fighters, HP, RNG, sounds and the whole EFE engine
+  are identical with the smoothing on and off, so launches and hits keep their ticks. Only the overlay column differs:
+  it hashes the logs themselves.
+- At 20 fps the frames are byte-identical with the switch on and off.
+- The busiest tick seen logged 564 words (in the converted finisher), against a log of 768.
+- A short bright flash when the enemy is hit, at 60 fps, is not a cut. The hit's glow sprites fade between their two
+  ticks (colour 155 to 111, scale 219 to 268) while the explosion under them spawns on its own pose, so the in-between
+  frames are a little brighter than the closing frame. Every value is a correct in-between.
+- `tools/dev/fps/laddercheck.py`, smoothing off and on: the ladder picks the same levels and switches at the same
+  moments in every scene (wild and tournament hold 30, Mt. Infinity drops once to 20). Smoothing makes the first pass
+  of a tick about 9 lines longer. Over 30 seconds of a wild fight at steady 30 this ran late once: two frames shown for
+  50 ms instead of 33 ms, during an effect, too short to notice. At a forced steady 30 on Mt. Infinity, where the ladder itself
+  runs 20, the late refreshes rose from 15 to 25 in 750; the ladder never runs that scene at 30.
+- Cost: 0 bytes in the executable (`main_BSS_END` unchanged); BTL, STD and VS each grow by about 8 KB (about 2.2 KB of
+  code and 6 KB of logs). STD still ends below `0x80081000` and every overlay check passes.
 
 ## Choosing the frame rate
 
@@ -415,11 +473,26 @@ ladder of three cadences, from what the last ticks cost and showed, in every loo
 `8 | half`: one frame at 2/3 of an even tick that ends a refresh early, two at 1/3 and 3/3 of the odd tick computed
 in that spare refresh; every frame two refreshes apart) and 20 (`MOD_RENDER_CADENCE` 16: one frame at 3/3, as the
 original). `modCadArm` arms the level at the start of a tick; `modCadRecord` stores the tick's cost (tick + first
-pass, extra pass, in lines) and outcome (frames planned, shown, late) in a 32-tick ring and decides: down from 60 when
-fewer than `MOD_CAD_KEEP60`/32 frames a tick are shown (16 ticks of evidence), down from 30 when more than
-`MOD_CAD_KEEP30` frames per 32 ticks are late or skipped, up only after a full window whose costs predict the higher
-cadence and a wait that doubles after every failed try (32 ... 1024 ticks). The world and the battle loops remember
-their levels; a map change clears the evidence and the wait. `MOD_FPS_POLICY` 0 is the ladder, 1/2/3 lock 60 /
+pass, extra pass, in lines) and outcome (frames planned, shown, late) in a 32-tick ring and decides. Since
+`Never-show-a-mixed-frame-rate-enter-screens-at-stead.patch` the rule is that the player never sees a mixed cadence
+(a 60 that misses frames shows 1- and 2-refresh intervals together, which reads as stutter, worse than an even 30):
+
+- a screen is entered at steady 30, or at 60 if 60 held a full window there earlier this session; an entry on an odd
+  tick shows one frame at 3/3 first, so the pair starts on an even tick (never a burst of 60);
+- 60 is reached only from steady 30, after `MOD_CAD_CLIMB` (128) ticks in a row whose tick + first pass and extra
+  pass each leave `MOD_CAD_UP` (64) lines of a refresh spare, and only at the end of a steady pair;
+- at 60 the first late or skipped frame drops to steady 30 at once, and the screen is marked: no second try there
+  this session;
+- steady 30 drops to 20 only on a full 32-tick window with more than `MOD_CAD_KEEP30` late or skipped frames (a world
+  screen is then entered at 20 next time); 20 climbs back after 128 ticks that fit steady 30 with the same spare,
+  waiting longer after every climb that fails (32 ... 1024 ticks).
+
+The facts (60 held, 60 failed, 30 failed) live in a table of 48 screens, world and battle loops apart; failed 60s are
+replaced last. A battle is entered at steady 30 and its screen never remembers a failed 30 (its opponents decide the
+cost). Nothing is remembered before the first map is loaded. `MOD_CAD_RESET` (tools) forgets every fact. At 2 MB and
+the stock clock the measured field maps (File City, Gear Savanna, Freezeland, Toy Town, Factorial Town) and a wild
+battle stay at steady 30; Mt. Infinity and a tournament fight drop once to steady 20, where the tick and its first
+pass alone overrun a refresh. 60 needs a faster CPU (an overclocked core climbs on light screens). `MOD_FPS_POLICY` 0 is the ladder, 1/2/3 lock 60 /
 steady 30 / 20, 4 is the CPU-probe selection below (the only policy in which the probe writes `MOD_FPS_MODE_RUN`,
 which stays at 2 for AUTO/60 and at 0 for the explicit 20 option). The CPU probe still runs for the title notice. Design, measurements and
 the recommendation: [../proposals/frame-rate-excellence.md](../proposals/frame-rate-excellence.md);
@@ -516,8 +589,13 @@ fast-forward arrows.
   began and is shown, with one render. The second (`MOD_REAL_TICK` 0) is rendered, because render functions advance
   state (effect scripts, gauges), but its frame is thrown away and it waits for no refresh. A tick plus its render take
   about 270 of a refresh's 263 lines in a fight, so one shown frame per fast tick could not pass 30 ticks a second.
+  The thrown-away render skips the Digimon models' `GsSortObject4` (`renderDigimon`) and the tournament arena's
+  (`STD_renderArena0/1`): sorting them changes no state and cost about 35 lines a model and 80 for the arena, which
+  pushed the pair past its 3 refreshes in about one pair in ten (a frame held 4 refreshes).
 - Each fast tick is due from when the one before was due (`modFastDue`), not from when it ended, unless that is more
-  than a pair behind.
+  than a pair behind. A shown tick that starts one refresh early (the thrown-away tick before it was quick) still
+  keeps its due refresh; taking that refresh as its own made the next frame land 2 refreshes after the last one, then
+  4.
 - A fast tick has one pass whatever the frame rate.
 - `tickPlaytime` skips `MOD_REAL_TICK` 0 ticks, so play time stays real time. The fight's logic per tick is unchanged;
   only the real time between ticks changes. A finisher charge press counts twice at x2 (BTL and STD).
@@ -553,6 +631,10 @@ costs 10-14 lines per pass.
   now measures each scene instead. Console timing remains a separate validation target.
 - Background tiles are 12 `POLY_FT4` (negligible CPU); a typical Digimon model is about 400 TMD primitives, about 35
   lines per model with `GsSortObject4`.
+- An animation start (`startAnimation`) zeroes every bone's momentum in `resetMomentumData`. That took six BIOS
+  `memcpy` calls a bone, about 2.5 lines a bone: a battle tick that started two or three animations (an attack, a
+  hit reaction, the tamer) spent 55-160 lines there, and those ticks were nearly all of a steady-30 battle's late
+  frames. It stores the zeros itself now (patch `Clear-the-animation-momentum-without-the-BIOS-memcpy`).
 
 ## Curling (0292)
 
@@ -641,7 +723,7 @@ aligned heap falls by 80 bytes. KAR contains the history and tile helper.
 | `MOD_RENDER_MULTIPASS` | set around the passes (removals wait) |
 | `MOD_RENDER_ALPHA` | this pass's fraction of the tick, 0..4096 |
 | `MOD_RENDER_CADENCE` | 0 = inactive; 1/2 = normal/early half of steady 30 FPS; 4 = curling at requested rate with deferred tiles; 8 \| 1/2 and 16 = the ladder's steady 30 halves and its 20 (no curling tile flush); reset at each tick |
-| `MOD_FPS_POLICY`, `MOD_CAD_LEVEL`, `MOD_CAD_KEEP60`, `MOD_CAD_KEEP30`, `MOD_CAD_SWITCHES`, `MOD_CAD_LAST` | the cadence ladder: policy, current level (2/1/0), its two thresholds, level changes, the last tick's record |
+| `MOD_FPS_POLICY`, `MOD_CAD_LEVEL`, `MOD_CAD_KEEP30`, `MOD_CAD_UP`, `MOD_CAD_CLIMB`, `MOD_CAD_RESET`, `MOD_CAD_SWITCHES`, `MOD_CAD_LAST` | the cadence ladder: policy, current level (2/1/0), late frames tolerated at 30, the spare lines and clean ticks a climb needs, forget the per-screen facts (tools), level changes, the last tick's record |
 | `MOD_FPS_INTERP` | interpolation on (1, default) or off; test switch |
 | `MOD_FPS_INTERP_BONES` | 0 / 1 / 2, see above; test switch |
 | `MOD_FPS_TEST_TICK` | test switch: every tick lasts that many refreshes (0 = off) and every pass is rendered at its fraction of the tick |

@@ -11,6 +11,7 @@
                  "Dynamite Kick (44)", "Tremar", "Mega Flame"],
   "drop": {"item": "Restore", "percent": 20},
   "effects_like": 12,
+  "own_effect": {"technique": "Mega Flame", "chunk": 125},
   "model": {
     "file": "build/dw2/Kimeramon.MMD",
     "radius": 263,

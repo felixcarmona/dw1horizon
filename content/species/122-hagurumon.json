@@ -11,6 +11,7 @@
                  "Electric Shock"],
   "drop": {"item": "S.Off.disk", "percent": 30},
   "effects_like": 41,
+  "own_effect": {"technique": "Electric Shock", "chunk": 124},
   "model": {
     "name": "HAGU",
     "bones": 5,

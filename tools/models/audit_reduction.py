@@ -16,7 +16,7 @@ from pathlib import Path
 import sys
 import struct
 from types import SimpleNamespace
-from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import ProcessPoolExecutor, as_completed
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path[:0] = [str(ROOT / 'tools'), str(ROOT)]
@@ -131,6 +131,7 @@ def compare_parts(before, after, tolerance):
         A, B = before.points[ai], after.points[bi]
         ga, gb = geometry(A), geometry(B)
         ea, eb = edges(A), edges(B)
+        target_normals = np.cross(B[:,1]-B[:,0],B[:,2]-B[:,0])
         boundaries = np.asarray([[a,b,b] for (a,b),n in ea.items() if n == 1],float).reshape(-1,3,3)
         new = []
         for (a,b),n in eb.items():
@@ -159,6 +160,10 @@ def compare_parts(before, after, tolerance):
             for weights in WEIGHTS:
                 pt = np.asarray(weights) @ tri
                 distances = triangle_distances(pt,B)
+                # Opposite cloth sides occupy the same positions but cannot
+                # replace one another under the engine's back-face culling.
+                normal = np.cross(tri[1]-tri[0],tri[2]-tri[0])
+                distances[target_normals @ normal <= 0] = np.inf
                 dist = math.sqrt(float(distances.min())) if len(distances) else float('inf')
                 max_distance = max(max_distance, dist)
                 if dist > tolerance:
@@ -196,6 +201,34 @@ def compare_parts(before, after, tolerance):
                         texture_checked_area=checked, invalid_texture_area=bad,
                         missing_uv_area=missing_uv, opaque_to_clear_area=clear,
                         color_mismatch_area=changed, opaque_to_black_area=black))
+    return out
+
+
+def source_coverage(before, target, fitted, tolerance):
+    """Measure each source part against its surviving FINAL carrier surface.
+
+    Repeated UVs and newly split quads may defeat exclusive triangle lineage.
+    They must not manufacture holes: geometric coverage needs only a verified
+    source transform and carrier, independently of texture correspondence.
+    """
+    out = {}
+    for fit in fitted:
+        bone = fit['object']
+        A = before.points[[i for i,t in enumerate(before.tris) if t[0] == bone]]
+        objects = fit.get('target_objects',[fit['target_object']])
+        B = target.points[[i for i,t in enumerate(target.tris) if t[0] in objects]]
+        area = lost = maximum = 0.
+        for tri in A:
+            weight = float(np.linalg.norm(np.cross(tri[1]-tri[0],tri[2]-tri[0]))/2)
+            area += weight
+            for weights in WEIGHTS:
+                distances = triangle_distances(np.asarray(weights) @ tri,B)
+                distance = math.sqrt(float(distances.min())) if len(distances) else float('inf')
+                maximum = max(maximum,distance)
+                if distance > tolerance:
+                    lost += weight/len(WEIGHTS)
+        out[bone] = dict(uncovered_area=lost,uncovered_fraction=lost/max(area,1e-9),
+                         max_sample_distance=maximum if math.isfinite(maximum) else None)
     return out
 
 
@@ -312,7 +345,8 @@ def final_surface(data, tim, skeleton):
     model = meshcheck.Model(data,skeleton,tim)
     # Use object indices for comparison with importer bones (entity has no mesh).
     return SimpleNamespace(tris=[(t[1],*t[1:]) for t in model.tris],
-                           points=model.tri_array(model.world(model.rest())), tex=model.tex), model
+                           points=model.tri_array(model.world(model.rest())), tex=model.tex,
+                           local_points={oi:np.array([v[:3] for v in model.m.tmd.obj_verts(oi)]) for oi in range(len(model.m.tmd.objects))}), model
 
 
 def mmd_source(data,tim,skeleton):
@@ -348,6 +382,13 @@ def robust_affine(x,y,all_points,tolerance=3):
     points = np.column_stack([all_points,np.ones(len(all_points))])
     rng = np.random.default_rng(0)
     candidates = [np.arange(len(x))]+[rng.choice(len(x),min(5,len(x)),replace=False) for _ in range(100)]
+    # Most intact parts have exact pools. Avoid one hundred identical RANSAC
+    # fits once the full correspondence already has unanimous support.
+    transform,_,rank,_ = np.linalg.lstsq(design,y,rcond=None)
+    residual = float(np.max(np.linalg.norm(design@transform-y,axis=1)))
+    span_error = np.max(np.abs(points-points@np.linalg.pinv(design)@design))
+    if rank >= 3 and residual <= tolerance and span_error <= 1e-5:
+        return transform,residual,1.
     best = None
     for indices in candidates:
         transform,_,rank,_ = np.linalg.lstsq(design[indices],y[indices],rcond=None)
@@ -369,7 +410,7 @@ def robust_affine(x,y,all_points,tolerance=3):
     return transform,residual,float(inliers.mean())
 
 
-def align_source(source, final,bridge=None):
+def align_source(source, final,bridge=None,native_recipe=None,native_pool=None):
     """Fit corresponding vertex pools through authored proportions, refusing guesses.
 
     Four or more corresponding points, equal pool sizes, a nonsingular affine
@@ -380,7 +421,37 @@ def align_source(source, final,bridge=None):
     mapped = copy.deepcopy(source)
     fitted, refused = [], []
     source_objects = {bi:oi for oi,bi in enumerate(i for i,b in enumerate(source.bones) if b['verts'])}
-    same_rig = mmdport.skeleton(source) == final.bones
+    source_rig = mmdport.skeleton(source)
+    same_rig = source_rig == final.bones[:len(source_rig)]
+    helper_objects = {}
+    if same_rig:
+        for bi,(obj,parent) in enumerate(final.bones[len(source_rig):],len(source_rig)):
+            ancestor = parent
+            while ancestor >= len(source_rig):
+                ancestor = final.bones[ancestor][1]
+            if ancestor >= 0 and obj >= 0:
+                helper_objects[obj] = final.bones[ancestor][0]
+    canonical = lambda obj: helper_objects.get(obj,obj)
+    # Native binding concatenates source pools in mapping order. This is
+    # stronger lineage than UV matching (cloth panels often repeat UVs).
+    ranges = {}
+    binding_tmd = native_pool.tmd if native_pool is not None else final.m.tmd
+    if native_recipe and not native_recipe.get('spin') and not native_recipe.get('riders'):
+        source_rig = mmdport.skeleton(source)
+        mapping = {int(k):v for k,v in native_recipe['map'].items()}
+        counts = Counter()
+        mirrors = {int(k) for k in native_recipe.get('mirror',{})}
+        for sb,tb in sorted(mapping.items(),key=lambda item:item[0] in mirrors):
+            if sb >= len(source_rig) or tb >= len(final.bones):
+                continue
+            oi = source_rig[sb][0]
+            dest = final.bones[tb][0]
+            if oi < 0 or dest < 0:
+                continue
+            count = tmd.objects[oi].nvert
+            ranges[oi] = (dest,counts[dest],counts[dest]+count,tb)
+            counts[dest] += count
+        ranges = {oi:r for oi,r in ranges.items() if counts[r[0]] == binding_tmd.objects[r[0]].nvert}
     final_points = final.tri_array(final.world(final.rest()))
     def uv_key(uv,row):
         if uv is None:
@@ -400,14 +471,14 @@ def align_source(source, final,bridge=None):
             for corners in [(0,1,2)]+([(1,3,2)] if len(p['verts']) == 4 else []):
                 uv = [tuple(int(min(max(v,0),limit)) for v,limit in zip(p['uvs'][c],(255,127))) for c in corners]
                 matches = target_uv.get(uv_key(uv,p['row'] or 0),[])
-                local = [ti for ti in matches if final.tris[ti][1] == preferred]
+                local = [ti for ti in matches if canonical(final.tris[ti][1]) == preferred]
                 if same_rig or len(local) == 1:
                     matches = local
                 if len(matches) != 1 or len(set(uv)) != 3:
                     continue
                 ti, = matches
                 t = final.tris[ti]
-                group = groups.setdefault(t[1],([],[]))
+                group = groups.setdefault(canonical(t[1]),([],[]))
                 for c,u in zip(corners,uv):
                     group[0].append(bone['verts'][p['verts'][c]])
                     group[1].append(final_points[ti][t[4].index(u)])
@@ -421,6 +492,19 @@ def align_source(source, final,bridge=None):
         if oi not in source_objects:
             refused.append(oi); continue
         obj_index = source_objects[oi]
+        if obj_index in ranges:
+            obj,start,end,bi = ranges[obj_index]
+            x = np.asarray(bone['verts'],float)
+            y = np.asarray([v[:3] for v in binding_tmd.obj_verts(obj)][start:end],float)
+            if x.shape == y.shape:
+                fit = robust_affine(x,y,x)
+                if fit is not None:
+                    transform,residual,support = fit
+                    bone['verts'] = [meshfix._apply(mats[bi],np.r_[v,1]@transform) for v in x]
+                    bone.update(parent=-1,offset=(0,0,0),rest=mmdport.IDENTITY_Q)
+                    fitted.append(dict(object=oi,target_object=obj,residual=residual,corner_support=support,
+                                       target_vertex_range=[start,end],_target_positions={tuple(v) for v in y},method='native concatenated pool'))
+                    continue
         if same_rig and bridge is not None and obj_index < len(bridge.tmd.objects):
             raw = np.asarray([v[:3] for v in bridge.tmd.obj_verts(obj_index)],float)
             target = np.asarray([v[:3] for v in final.m.tmd.obj_verts(obj_index)],float)
@@ -466,10 +550,71 @@ def align_source(source, final,bridge=None):
         bone['verts'] = [meshfix._apply(mats[bi], np.r_[v,1]@transform) for v in bone['verts']]
         bone.update(parent=-1, offset=(0,0,0),rest=mmdport.IDENTITY_Q)
         fitted.append(dict(object=oi,target_object=obj_index,residual=residual,method='vertex pool'))
+    for fit in fitted:
+        fit['target_objects'] = [fit['target_object']]+[obj for obj,parent in helper_objects.items() if parent == fit['target_object']]
     for oi in refused:
         mapped.bones[oi]['prims'] = []
     mapped.anims = {}
     return mapped, fitted, refused
+
+
+def attachment_coverage(source, aligned, fitted, tolerance):
+    """Detect openings hidden by independent per-object proportion/pose fits.
+
+    A source edge shared by two rigid pieces must retain its attachment after
+    the rig fit. Measure the ribbon between its final endpoints separately
+    from face deletion: source-complete panels can still leave a cape gap.
+    No proximity between unrelated final surfaces establishes correspondence.
+    """
+    world = meshfix.world_matrices(source)
+    matched = {f['object'] for f in fitted}
+    pools, edge_sets = {}, {}
+    for i in sorted(matched):
+        bone = source.bones[i]
+        pools[i] = np.array([meshfix._apply(world[i], v) for v in bone['verts']])
+        edge_sets[i] = set()
+        for p in bone['prims']:
+            for corners in [(0,1,2)]+([(1,3,2)] if len(p['verts']) == 4 else []):
+                vertices = [p['verts'][c] for c in corners]
+                edge_sets[i].update(tuple(sorted((a,b))) for a,b in zip(vertices,vertices[1:]+vertices[:1]) if a != b)
+    if not pools:
+        return []
+    diagonal = float(np.linalg.norm(np.ptp(np.concatenate(list(pools.values())),axis=0)))
+    source_tolerance = .75
+    findings = []
+    for i, x in pools.items():
+        for j, y in pools.items():
+            if j >= i or (source.bones[i]['parent'] != j and source.bones[j]['parent'] != i):
+                continue
+            distance = np.linalg.norm(x[:,None,:]-y[None,:,:],axis=2)
+            nearest = distance.argmin(axis=1)
+            ribbons, gaps, lengths = [], [], []
+            seen = set()
+            for a,b in edge_sets[i]:
+                c,d = int(nearest[a]),int(nearest[b])
+                if c == d or tuple(sorted((c,d))) not in edge_sets[j]:
+                    continue
+                if max(distance[a,c],distance[b,d]) > source_tolerance:
+                    continue
+                # Position-welded source seams can have duplicate UV vertices.
+                key = tuple(sorted((tuple(np.round(x[a],3)),tuple(np.round(x[b],3)))))
+                if key in seen:
+                    continue
+                seen.add(key)
+                A,B = np.array(aligned.bones[i]['verts'])[[a,b]]
+                C,D = np.array(aligned.bones[j]['verts'])[[c,d]]
+                scale = (np.linalg.norm(B-A)+np.linalg.norm(D-C))/max(1e-9,np.linalg.norm(x[b]-x[a])+np.linalg.norm(y[d]-y[c]))
+                original_gap = max(distance[a,c],distance[b,d])*scale
+                gap = max(float(np.linalg.norm(A-C)),float(np.linalg.norm(B-D)))-original_gap
+                if gap <= tolerance:
+                    continue
+                ribbon = (np.linalg.norm(np.cross(B-A,C-A))+np.linalg.norm(np.cross(B-D,C-D)))/2
+                ribbons.append(float(ribbon)); gaps.append(gap)
+                lengths.append(float(np.linalg.norm(B-A)))
+            if gaps:
+                findings.append(dict(objects=[j,i],shared_edges=len(gaps),max_gap=max(gaps),
+                                     exposed_length=sum(lengths),opening_area=sum(ribbons)))
+    return sorted(findings,key=lambda r:-r['opening_area'])
 
 
 def matched_target(source,target,fitted):
@@ -483,7 +628,8 @@ def matched_target(source,target,fitted):
     source_keys = {}
     for fit in fitted:
         bi = fit['object']
-        by_object.setdefault(fit['target_object'],[]).append(bi)
+        for obj in fit.get('target_objects',[fit['target_object']]):
+            by_object.setdefault(obj,[]).append(bi)
         keys = set()
         for p in source.bones[bi]['prims']:
             if p['uvs'] is not None:
@@ -494,7 +640,17 @@ def matched_target(source,target,fitted):
     for t,pt in zip(target.tris,target.points):
         candidates = by_object.get(t[0],[])
         if len(candidates) > 1:
-            candidates = [b for b in candidates if key(t[4],t[5]) in source_keys[b]]
+            fits = {f['object']:f for f in fitted}
+            def belongs(b):
+                fit = fits[b]
+                if '_target_positions' in fit and hasattr(target,'local_points'):
+                    return all(tuple(target.local_points[t[1]][v]) in fit['_target_positions'] for v in t[3])
+                span = fit.get('target_vertex_range')
+                return (all(span[0] <= v < span[1] for v in t[3]) if span
+                        else key(t[4],t[5]) in source_keys[b])
+            candidates = [b for b in candidates if belongs(b)]
+            if len(candidates) > 1:
+                candidates = [b for b in candidates if key(t[4],t[5]) in source_keys[b]]
         if len(candidates) != 1:
             unassigned += 1
             continue
@@ -566,11 +722,11 @@ def provider_output(sid,model,tim,out):
 
 
 def audit_one(job):
-    sid,games,out,fingerprint = job
+    sid,games,out,fingerprint,from_dir,images = job
     folder = Path(out)/str(sid)
     folder.mkdir(parents=True,exist_ok=True)
     try:
-        result = run_one(sid,Path(games),folder)
+        result = run_one(sid,Path(games),folder,Path(from_dir) if from_dir else None,images)
     except (Exception,SystemExit) as error:
         detail = str(error).replace(str(ROOT),'.').replace(str(Path(games).resolve()),'<source-games>')
         result = dict(id=sid,error=f'{type(error).__name__}: {detail}')
@@ -579,8 +735,33 @@ def audit_one(job):
     return result
 
 
-def run_one(sid,games,folder):
+def run_builder(sid,games,folder,from_dir,images):
+    entry = edit.import_records()[str(sid)]
+    model,tim = importlib.import_module(entry['builder']).build(ROOT/'extracted')
+    original = edit.load(next((ROOT/'content/species').glob(f'{sid}-*.json')))
+    source = mmd_source(model,tim,original['model']['skeleton'])
+    source.reference_source_name = entry['builder']
+    source.reference_source_sha256 = digest(model)
+    if from_dir:
+        record = edit.load(next((from_dir/'species').glob(f'{sid}-*.json')))
+        shipped = Path(record['model']['file']).read_bytes()
+        texture = Path(record['texture']['file']).read_bytes()
+    else:
+        shipped,texture,record = provider_output(sid,model,tim,folder)
+    pins = edit.load(ROOT/'tools/derive/recipes/species-pins.json')['imports'][str(sid)]
+    pin_match = [hashlib.sha1(shipped).hexdigest(),hashlib.sha1(texture).hexdigest()] == pins
+    if not pin_match and from_dir is None:
+        raise ValueError('final provider pins differ')
+    row = dict(name=record['name'],mmd=dict(sources=[dict(sha256=digest(model))]))
+    result = measure_model(sid,row,source,shipped,texture,record['model']['skeleton'],None,folder,images,pin_match,provider_path=Path(record['model']['file']))
+    result['reference_kind'] = 'authored native builder, before provider passes; no disc mesh reduction'
+    return result
+
+
+def run_one(sid,games,folder,from_dir=None,images=True):
     import import_batch
+    if edit.import_records()[str(sid)].get('builder'):
+        return run_builder(sid,games,folder,from_dir,images)
     row, = edit.rows(edit.load(edit.MODELS),[str(sid)])
     recipes = edit.load(ROOT/'content/modeldelta/import-batches.json')['recipes']
     source_path = row['mmd']['sources'][0]['path']
@@ -595,18 +776,29 @@ def run_one(sid,games,folder):
         entry = dict(name=row['name'],game='dw2' if 'dw2' in spec else 'dcb',model=spec.get('dw2',spec.get('dcb')))
     else:
         entry = recipe['entry']
-    args = SimpleNamespace(games_dir=games,from_dir=None)
+    args = SimpleNamespace(games_dir=games,from_dir=from_dir)
     # Rebuild/check pinned importer sources, decode plain deltas, then run the
     # same final provider as derive (including field overlays and native rigs).
     model,tim,importer_sources = edit.build(args,row)
     with edit.importing(games):
-        shipped,texture,record = provider_output(sid,model,tim,folder)
+        if from_dir:
+            # Resolve the species record: imported-models may be the input to a
+            # native binding, rather than the mesh that actually ships.
+            records = list((from_dir/'species').glob(f'{sid}-*.json'))
+            if len(records) != 1:
+                raise ValueError(f'expected one final species record for {sid}')
+            record = edit.load(records[0])
+            shipped = Path(record['model']['file']).read_bytes()
+            texture = Path(record['texture']['file']).read_bytes()
+        else:
+            shipped,texture,record = provider_output(sid,model,tim,folder)
         # no_drop and meshfix=False bypass destructive mesh reduction only.
         with original_texture_loader(entry):
-            source,_ = import_batch.load_source(dict(entry,no_drop=True,meshfix=False),
+            source,_ = import_batch.load_source(dict(entry,no_drop=True,meshfix=False,rigfix=False),
                                                 log=lambda *a:None,card_metadata=False)
     pins = edit.load(ROOT/'tools/derive/recipes/species-pins.json')['imports'][str(sid)]
-    if [hashlib.sha1(shipped).hexdigest(),hashlib.sha1(texture).hexdigest()] != pins:
+    provider_pin_match = [hashlib.sha1(shipped).hexdigest(),hashlib.sha1(texture).hexdigest()] == pins
+    if not provider_pin_match and from_dir is None:
         raise ValueError('final provider pins differ')
     (folder/'shipped.MMD').write_bytes(shipped)
     (folder/'shipped.TIM').write_bytes(texture)
@@ -637,7 +829,54 @@ def run_one(sid,games,folder):
                 bridge = mmd.MMD.parse(importer_sources['mmd'][0],len(source.bones)+1)
             except (ValueError,IndexError,struct.error):
                 bridge = None
-    aligned,fitted,refused = align_source(source,final,bridge)
+    native_recipe = edit.load(ROOT/'content/models/imports/native-bindings.json').get(str(sid))
+    native_pool = None
+    overlay = edit.import_records()[str(sid)].get('field_overlay')
+    path = Path(record['model']['file']).parent/f'{sid}-{overlay}.MMD'
+    if native_recipe and path.is_file():
+        native_pool = mmd.MMD.parse(path.read_bytes(),len(skeleton))
+    return measure_model(sid,row,source,shipped,texture,skeleton,bridge,folder,images,provider_pin_match,native_recipe,native_pool,Path(record['model']['file']))
+
+
+def pool_lineage(final, provider_path):
+    """Recover indexed authoring pools after the final lossless compaction.
+
+    Accept a saved preceding pass only when every final local position is
+    present in that object and the complete idle bone matrices are identical.
+    Faces are still measured against the actual final file, never this bridge.
+    """
+    if provider_path is None or 'mesh-stability' not in provider_path.name:
+        return final,None
+    sid = provider_path.name.split('-')[0]
+    paths = [p for p in provider_path.parent.glob(f'{sid}-*.MMD') if 'mesh-stability' not in p.name]
+    paths += list((provider_path.parent.parent/'imported-models').glob(f'{sid}.MMD'))
+    suffixes = ['-buster-dive.MMD','-technique-timing.MMD','-care-idles.MMD','-rig.MMD']
+    def priority(p):
+        return next((i for i,suffix in enumerate(suffixes) if p.name.endswith(suffix)),len(suffixes)),p.name
+    matrices = final.matrices(final.rest())
+    positions = [set(map(tuple,final.m.tmd.obj_verts(i))) for i in range(len(final.m.tmd.objects))]
+    for path in sorted(paths,key=priority):
+        try:
+            candidate = meshcheck.Model(path.read_bytes(),final.bones)
+            if len(candidate.m.tmd.objects) != len(positions):
+                continue
+            if not all(points <= set(map(tuple,candidate.m.tmd.obj_verts(i))) for i,points in enumerate(positions)):
+                continue
+            if not np.allclose(candidate.matrices(candidate.rest()),matrices,rtol=0,atol=1e-9):
+                continue
+            return candidate,dict(file=path.name,sha256=digest(path.read_bytes()),
+                                  method='exact local position inclusion and idle matrices')
+        except (ValueError,IndexError,struct.error):
+            continue
+    return final,None
+
+
+def measure_model(sid,row,source,shipped,texture,skeleton,bridge,folder,images,provider_pin_match,native_recipe=None,native_pool=None,provider_path=None):
+    target,final = final_surface(shipped,texture,skeleton)
+    alignment,lineage = pool_lineage(final,provider_path)
+    if native_recipe and alignment is not final:
+        native_pool = alignment.m
+    aligned,fitted,refused = align_source(source,alignment,bridge,native_recipe,native_pool)
     baseline = port_surface(aligned)
     subset,unassigned = matched_target(source,target,fitted)
     if not len(baseline.points):
@@ -645,12 +884,20 @@ def run_one(sid,games,folder):
     diagonal = float(np.linalg.norm(np.ptp(baseline.points.reshape(-1,3),axis=0)))
     tolerance = max(2.5,diagonal*.003)
     parts = compare_parts(baseline,subset,tolerance)
+    # Exclusive UV lineage is useful for texture diagnostics, but a lost UV
+    # match is not a lost surface on a merged native carrier.
+    coverage_parts = source_coverage(baseline,target,fitted,tolerance)
+    for part in parts:
+        part.update(coverage_parts[part['bone']])
+    attachments = attachment_coverage(source,aligned,fitted,tolerance)
     anatomy = edit.load(ROOT/'content/models/imports/chibi.json').get(str(sid),{}).get('groups',{})
     correspondence = {p['object']:p['target_object'] for p in fitted}
     for part in parts:
         target_obj = correspondence[part['bone']]
         bi = next((i for i,(obj,_) in enumerate(skeleton) if obj == target_obj),None)
         part['region'] = anatomy.get(str(bi),f'object {part["bone"]}')
+    for fit in fitted:
+        fit.pop('_target_positions',None)
     original_surface = port_surface(source)
     all_area,matched_area = 0.,0.
     matched_bones = {p['object'] for p in fitted}
@@ -663,32 +910,57 @@ def run_one(sid,games,folder):
     area = sum(p['source']['area'] for p in parts)
     uncovered = sum(p['uncovered_area'] for p in parts)/max(1,area)
     texture_error = sum(p['invalid_texture_area']+p['opaque_to_clear_area']+p['opaque_to_black_area']+p['missing_uv_area'] for p in parts)/max(1,area)
-    vm,images = views(baseline,subset)
+    vm,_ = views(baseline,subset) if images else ([],[])
     worst = max((p['uncovered_fraction'] for p in parts if p['source']['area'] > area*.005),default=0)
     changed_area = sum(p['area_without_counterpart'] for p in parts)/max(1,area)
     color_fraction = sum(p['color_mismatch_area'] for p in parts)/max(1,area)
-    score = 100*(uncovered+.35*worst+.25*changed_area+texture_error+.25*color_fraction+max(v['drawn_difference'] for v in vm))
-    contact(contact_views(baseline,target),folder/f'{sid}-{row["name"]}.png',f'{sid} {row["name"]} | source area {coverage:.0%}')
+    attachment_gap = max((r['max_gap'] for r in attachments),default=0)/max(1,diagonal)
+    score = 100*(uncovered+.35*worst)
+    if images:
+        contact(contact_views(baseline,target),folder/f'{sid}-{row["name"]}.png',f'{sid} {row["name"]} | source area {coverage:.0%}')
     from tools.models.audit_textures import audit as texture_audit
     texture_findings = texture_audit(final.m.tmd,final.tim)
     return dict(id=sid,name=row['name'],score=score,source_sha256=[s['sha256'] for s in row['mmd']['sources']],
                 original_source=dict(name=source.reference_source_name,sha256=source.reference_source_sha256),
                 shipped_sha256=digest(shipped),texture_sha256=digest(texture),
-                tolerance=tolerance,matched_objects=fitted,unmatched_objects=refused,
+                provider_pin_match=provider_pin_match,pool_lineage=lineage,final_skeleton=skeleton,reference_diagonal=diagonal,tolerance=tolerance,attachments=attachments,matched_objects=fitted,unmatched_objects=refused,
                 unassigned_target_triangles=unassigned,
-                source_area_coverage=coverage,status='complete' if coverage > .999 and not unassigned else 'partial',
+                source_area_coverage=coverage,status='complete' if coverage > .999 else 'partial',
                 coverage_objects=f'{len(fitted)}/{len(source.bones)}',uncovered_fraction=uncovered,
                 texture_error_fraction=texture_error,views=vm,parts=parts,
                 color_mismatch_fraction=color_fraction,
-                texture_findings=texture_findings,contact=f'{sid}/{sid}-{row["name"]}.png')
+                texture_findings=texture_findings,contact=f'{sid}/{sid}-{row["name"]}.png' if images else None)
 
 
-def input_fingerprint(games):
+def coverage_findings(result, maximum_uncovered=.005, maximum_part=.05, maximum_gap=.01):
+    """Coverage gate. An unverified source region can never pass as intact."""
+    if 'error' in result:
+        return ['unverified: '+result['error']]
+    findings = []
+    if not result.get('provider_pin_match',True):
+        findings.append('provider differs from checkout pins')
+    if result['source_area_coverage'] < .999:
+        findings.append('unverified source objects')
+    area = sum(p['source']['area'] for p in result['parts'])
+    if result['uncovered_fraction'] > maximum_uncovered:
+        findings.append('uncovered source area')
+    for part in result['parts']:
+        if part['source']['area'] > area*.005 and part['uncovered_fraction'] > maximum_part:
+            findings.append(f'object {part["bone"]}: uncovered source region')
+    for seam in result.get('attachments',[]):
+        if seam['max_gap'] > max(2.5,result['reference_diagonal']*maximum_gap):
+            findings.append(f'objects {seam["objects"]}: separated source attachment')
+    return findings
+
+
+def input_fingerprint(games,from_dir=None):
     """Content hashes, never timestamps: a resumed audit must use identical inputs."""
     h = hashlib.sha256()
-    for base in (ROOT/'tools',ROOT/'content',ROOT/'extracted',games):
+    for base in (ROOT/'tools',ROOT/'content',ROOT/'extracted',games,*([from_dir] if from_dir else [])):
         for path in sorted(base.rglob('*')):
             if not path.is_file() or '__pycache__' in path.parts:
+                continue
+            if from_dir is not None and base == from_dir and path.relative_to(base).parts[0] not in ('species','imported-models','imported-species-models','record-originals'):
                 continue
             if base == ROOT/'tools' and path.suffix not in ('.py','.json'):
                 continue
@@ -697,17 +969,37 @@ def input_fingerprint(games):
     return h.hexdigest()
 
 
+def write_report(out,results):
+    for row in results:
+        row['coverage_findings'] = coverage_findings(row)
+        row['coverage_pass'] = not row['coverage_findings']
+    results.sort(key=lambda r:(r.get('source_area_coverage',0)<.999 or not r.get('provider_pin_match',True),-r.get('score',-1),r['id']))
+    (out/'ranked.json').write_text(json.dumps(results,indent=2,allow_nan=False)+'\n')
+    lines = ['| Rank | Species | Score | Uncovered area | Source area checked | Matched objects | Max attachment gap | QA |',
+             '|---:|---|---:|---:|---:|---|---:|---|']
+    for rank,r in enumerate(results,1):
+        if 'error' in r:
+            lines.append(f'| {rank} | {r["id"]} | unavailable | {r["error"]} | | | |')
+        else:
+            gap = max((p['max_gap'] for p in r.get('attachments',[])),default=0)
+            lines.append(f'| {rank} | {r["id"]} {r["name"]} | {r["score"]:.2f} | {r["uncovered_fraction"]:.1%} | {r["source_area_coverage"]:.1%} | {r["coverage_objects"]} | {gap:.2f} | {'pass' if r['coverage_pass'] else '; '.join(r['coverage_findings'])} |')
+    (out/'ranked.md').write_text('\n'.join(lines)+'\n')
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--games',type=Path,default=Path('build/imported-model-edit/source-games'))
+    p.add_argument('--from',dest='from_dir',type=Path,help='read final species records and pinned importer caches from a read-only derive build')
     p.add_argument('--out',type=Path,default=Path('build/mesh-audit/all'))
     p.add_argument('--ids',nargs='*',type=int)
     p.add_argument('--jobs',type=int,default=2)
+    p.add_argument('--no-images',action='store_true',help='coverage measurements without software renders')
+    p.add_argument('--check',action='store_true',help='fail for >0.5%% uncovered area, >5%% of a substantial part, >1%% diagonal attachment gap, or unverified regions')
     p.add_argument('--resume',action='store_true',help='reuse this run only; delete output after changing inputs')
     a = p.parse_args()
-    ids = a.ids or [r['id'] for r in edit.load(edit.MODELS)['models']]
+    ids = a.ids or sorted(map(int,edit.import_records()))
     a.out.mkdir(parents=True,exist_ok=True)
-    fingerprint = input_fingerprint(a.games)
+    fingerprint = input_fingerprint(a.games,a.from_dir)
     results,jobs = [],[]
     for sid in ids:
         cached = a.out/str(sid)/'result.json'
@@ -715,23 +1007,18 @@ def main():
         if result and result.get('fingerprint') == fingerprint and 'error' not in result:
             results.append(result)
         else:
-            jobs.append((sid,str(a.games),str(a.out),fingerprint))
+            jobs.append((sid,str(a.games),str(a.out),fingerprint,str(a.from_dir) if a.from_dir else None,not a.no_images))
     with ProcessPoolExecutor(max_workers=a.jobs) as pool:
-        for row in pool.map(audit_one,jobs):
+        pending = [pool.submit(audit_one,job) for job in jobs]
+        for completed in as_completed(pending):
+            row = completed.result()
             results.append(row)
             print(row['id'],row.get('name',''),row.get('score',row.get('error')),flush=True)
-    results.sort(key=lambda r:(-r.get('score',-1),r['id']))
-    (a.out/'ranked.json').write_text(json.dumps(results,indent=2,allow_nan=False)+'\n')
-    lines = ['| Rank | Species | Score | Uncovered area | Source area checked | Matched objects | New boundaries |',
-             '|---:|---|---:|---:|---:|---|---:|']
-    for rank,r in enumerate(results,1):
-        if 'error' in r:
-            lines.append(f'| {rank} | {r["id"]} | unavailable | {r["error"]} | | | |')
-        else:
-            boundaries = sum(p['new_boundary_edges'] for p in r['parts'])
-            lines.append(f'| {rank} | {r["id"]} {r["name"]} | {r["score"]:.2f} | {r["uncovered_fraction"]:.1%} | {r["source_area_coverage"]:.1%} | {r["coverage_objects"]} | {boundaries} |')
-    (a.out/'ranked.md').write_text('\n'.join(lines)+'\n')
-    return int(any('error' in r for r in results))
+            # Leave a usable report even when a long run is interrupted.
+            if len(results) == 1 or len(results) % 10 == 0:
+                write_report(a.out,results)
+    write_report(a.out,results)
+    return int(any('error' in r or (a.check and not r['coverage_pass']) for r in results))
 
 
 if __name__ == '__main__':

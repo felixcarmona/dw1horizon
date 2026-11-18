@@ -20,7 +20,7 @@ from motiondiscidentity import changed_programs
 from test_starmon_gait import DIRS, LEFT, RIGHT, inside
 from tools.models.field_animations import superstar_gait as gait
 
-EXPECTED = '24d22a0ffa0cc4487dd4162b66fac8eb2da36239f9392cab121514a9ab2577c9'
+EXPECTED = 'e350b6b890f28d96184c61ad4feb41755e02f228cb2b9dcb6d1cb6ae16c7075d'
 BONES = 27
 
 

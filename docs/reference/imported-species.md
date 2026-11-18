@@ -420,7 +420,7 @@ texture exact, DW2's blink, its tail re-hung under the pelvis) with MetalGreymon
 (tails, extra wings and arms) play the source game's own idle in the looping everyday slots, retimed to whole cycles.
 
 **The hand-made babies 470-477.** Digimon no source game has, drawn on a DW1 baby's rig: Pabumon (on Punimon),
-Pichimon (Koromon), YukimiBotamon (Botamon) and Nyokimon (Yuramon) are Fresh; Motimon (Koromon), Bukamon (Koromon),
+Pichimon (Koromon), YukimiBotamon (Botamon) and Nyokimon (Botamon) are Fresh; Motimon (Koromon), Bukamon (Koromon),
 Nyaromon (Tokomon) and Yokomon (Tanemon) are In-Training. Each keeps the donor's skeleton, animation table and every
 animation program byte for byte (`effects_like` is the donor, so Bubble and the condition bubble are native); the mesh,
 UVs and the whole texture page, eye and mouth frames included, are ours. `tools/models/babies/authoring/` holds the

@@ -50,7 +50,7 @@ Usage:
 Every key of the format is in docs/mods/species.md. Other tools read species through load_content(),
 species_record(), table_rows(), extra_rows(), model_size(), wild_stats().
 """
-import argparse, collections, csv, glob, json, os, re, struct, subprocess, sys
+import argparse, collections, copy, csv, glob, json, os, re, struct, subprocess, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, 'tools'))
@@ -492,7 +492,7 @@ def stats_json(v):
 
 
 # ------------------------------------------------------------------ the file format: dict <-> JSON
-KEY_ORDER = ['id', 'name', '_source', 'level', 'vanilla', 'vanilla_as', 'off', 'attribute', 'specialties', 'techniques', 'finisher', 'drop', 'effects_like', 'model',
+KEY_ORDER = ['id', 'name', '_source', 'level', 'vanilla', 'vanilla_as', 'off', 'attribute', 'specialties', 'techniques', 'finisher', 'drop', 'effects_like', 'own_effect', 'model',
              'texture', 'voice', 'battle_music', 'reincarnation_stats', 'new_game_technique', 'status_screen_position',
              'partner_voice', 'item_distance', 'training', 'condition_bubble', 'effect_origins', 'effect_origin_fallback', 'effect_origin_fallback_always', 'wild', 'sizing', 'size', 'needs_ram_mb',
              'partner', 'care', 'evolution']
@@ -855,15 +855,45 @@ def load_file(path):
     return validate(s)
 
 
-def load_content(content=None, ids=None):
-    """{id: file dict} of every species file of the content folders (0..1023)."""
+_LOADED = {}      # path -> ((mtime_ns, size), validated file dict): what load_content already read
+
+
+def _load_cached(path):
+    """The validated file at path, read and validated once per version of the file (mtime and size). The dict is shared:
+    a caller that changes what it gets copies it first (_clone)."""
+    st = os.stat(path)
+    key = (st.st_mtime_ns, st.st_size)
+    hit = _LOADED.get(path)
+    if hit is None or hit[0] != key:
+        hit = _LOADED[path] = (key, load_file(path))
+    return hit[1]
+
+
+_JSON_SCALARS = (str, int, float, bool, type(None))
+
+
+def _clone(x):
+    """copy.deepcopy for what a species file holds (ordered dicts, lists and JSON scalars): the same copy several times
+    faster (deepcopy's memo and reconstruction dominated a story pass: 60000 copies of the content folder's files)."""
+    t = type(x)
+    if t in _JSON_SCALARS: return x
+    if t is collections.OrderedDict: return collections.OrderedDict([(k, _clone(v)) for k, v in x.items()])
+    if t is list: return [_clone(v) for v in x]
+    if t is dict: return {k: _clone(v) for k, v in x.items()}
+    return copy.deepcopy(x)
+
+
+def load_content(content=None, ids=None, shared=False):
+    """{id: file dict} of every species file of the content folders (0..1023). The dicts are the caller's own copies;
+    shared=True hands out the cached ones with no copy, for a caller that only reads them (a change would reach every
+    later caller)."""
     out = {}
     for p in content_files(content):
-        s = load_file(p)
+        s = _load_cached(p)
         t = s['id']
         if ids is not None and t not in ids: continue
         if t in out: raise SystemExit(f'{p}: id {t} is also defined in {out[t]["_path"]}')
-        out[t] = s
+        out[t] = s if shared else _clone(s)
     return out
 
 
@@ -961,6 +991,9 @@ def flat_texture(s, model, nbones, tex):
 
 def resident_model(s, r, model):
     """(resident part, cold part) of a partner species' model: the whole model and nothing cold unless COLD=1 (and "cold": false opts out)."""
+    if s['id'] < NUM_ORIGINAL and r['flags'] & FLAG_PARTNER:
+        from tools.models import partner_headroom
+        model, _ = partner_headroom.apply(model, r['bones'], s['id'], cold=False)
     if COLD and s['id'] >= NUM_ORIGINAL and r['flags'] & FLAG_PARTNER and s.get('cold', True):   # (the original ids carried by a record keep their file)
         import coldsplit
         return coldsplit.split(model, r['para']['boneCount'])
@@ -995,6 +1028,10 @@ def apply_slot_aliases(data, s):
 
 
 EVOLUTION_KEYS = ['from', 'to', 'requirements', 'gains']
+
+
+# EFEDAT.EFE chunks of our own come after the disc's 122; the battle loaders take chunk indices below 0x17A
+OWN_EFFECT_CHUNKS = (122, 0x17A)
 
 
 def species_record(s):
@@ -1053,6 +1090,14 @@ def species_record(s):
             raise SystemExit(f'{w}: Status anchor must name a bone of an imported partner')
         r['statusAnchorBone'] = anchor
     if rows['battleMusic'] is not None: r['battleMusic'] = rows['battleMusic']
+    own = s.get('own_effect')
+    if own is not None:     # one technique plays an EFEDAT.EFE chunk of this species' own (getSpeciesTechEffect)
+        if not isinstance(own, dict) or set(own) != {'technique', 'chunk'} or not isinstance(own['chunk'], int):
+            raise SystemExit(f'{w}.own_effect: {{"technique": name, "chunk": EFEDAT.EFE chunk index}}')
+        tech = id_of('techs', own['technique'], f'{w}.own_effect.technique')
+        if tech not in techniques_from_json(s['techniques'], w) or not OWN_EFFECT_CHUNKS[0] <= own['chunk'] < OWN_EFFECT_CHUNKS[1]:
+            raise SystemExit(f'{w}.own_effect: a technique of its own list and a chunk in {OWN_EFFECT_CHUNKS}')
+        r['ownEffect'] = [tech, own['chunk']]
     if len(r['bones']) > MAX_BONES: raise SystemExit(f'{w}: more than {MAX_BONES} bones')
     eo = []
     for e in s.get('effect_origins', []):
@@ -1187,6 +1232,135 @@ def materialize(old, from_files=False):
     return s
 
 
+# ------------------------------------------------------------------ unique finishers (docs/mods/unique-finishers.md)
+FINISHERS = os.path.join(ROOT, 'content', 'finishers', 'imports.json')
+FINISHER_ELEMENTS = ['fire', 'battle', 'air', 'nature', 'ice', 'mech', 'filth']   # Move.special (finisher_balance.ELEMENTS)
+FINISHER_PRESENT, FINISHER_SPREADS = 1, 2   # record 0x1D3 (species.h SPECIES_FINISHER_*)
+FINISHER_IDS = (58, 112)
+FINISHER_NAME_SLOT = 32          # bytes per name in the name sectors: the text and its terminator (species.c keeps 28)
+FINISHER_NAME_MAX = 27
+# 0x1D2..0x1ED (include/dw/species.h SpeciesRecord finisher*): tech, flags, the Move the battle reads (dw/move.h),
+# name reference, name offset, name sector, sectors per language, hits
+FINISHER_FIELDS = '<BB' + 'ihBBBBBBBBBB' + 'HHIBB'
+MOVE_KEYS = ('distance', 'power', 'mpCost', 'iframes', 'range', 'special', 'status', 'accuracy', 'statusChance',
+             'unk3', 'unk4', 'unk5')
+FINISHER_KEYS = ('tech', 'flags') + MOVE_KEYS + ('name', 'nameOffset', 'nameSector', 'nameStride', 'hits')
+TECHNIQUES = os.path.join(ROOT, 'content', 'techniques')
+
+
+def pack_finisher(b, f):
+    struct.pack_into(FINISHER_FIELDS, b, 0x1D2, *[f.get(k, 0) for k in FINISHER_KEYS])
+
+
+def unpack_finisher(b):
+    f = dict(zip(FINISHER_KEYS, struct.unpack_from(FINISHER_FIELDS, b, 0x1D2)))
+    return f if f['flags'] & FINISHER_PRESENT else {k: f[k] for k in ('tech', 'flags', 'name', 'nameOffset', 'nameSector', 'nameStride')}
+
+
+def native_move(tech):
+    """The technique as MOVE_DATA has it (content/techniques, written into the executable by tools/content.py)."""
+    path = glob.glob(os.path.join(TECHNIQUES, f'{tech}-*.json'))
+    if len(path) != 1: raise SystemExit(f'content/techniques: no single file for technique {tech}')
+    t = json.load(open(path[0], encoding='utf-8'))
+    return dict({k: t[k] for k in MOVE_KEYS if k != 'special'}, special=FINISHER_ELEMENTS.index(t['element']))
+
+
+def finisher_moves(path=FINISHERS):
+    """{species: the record's finisher fields} from content/finishers/imports.json, and its list of species in name
+    reference order. "neutral": true (the default) writes the technique and the name but no numbers (flags 0): the
+    import keeps the DW1 numbers of the finisher it replaces. Otherwise the record carries the whole Move: the native
+    technique's with the designed numbers on top (unk3 bit 0: needs a target). A support move ships its damaging
+    fallback."""
+    d = json.load(open(path, encoding='utf-8'))
+    w = os.path.relpath(path, ROOT)
+    neutral = d.get('neutral', True)
+    if not isinstance(neutral, bool): raise SystemExit(f'{w}: "neutral" is true or false')
+    out, order = {}, []
+    for ref, e in enumerate(d['finishers'], 1):
+        t = e['species']; at = f'{w}: {e.get("species_name", t)}'
+        if t in out: raise SystemExit(f'{at}: a second finisher')
+        tech = e['replaces']['id']
+        if not FINISHER_IDS[0] <= tech <= FINISHER_IDS[1]: raise SystemExit(f'{at}: replaces.id is a finisher {FINISHER_IDS}')
+        m = e['fallback']['move'] if 'buff' in e else e['move']
+        flags = set(m.get('flags', []))
+        checks = [('power', 0, 0x7FFF), ('range', 1, 3), ('iframes', 0, 255), ('accuracy', 0, 100), ('status', 0, 4),
+                  ('statusChance', 0, 100), ('distance', 0, 0x7FFFFFFF)]
+        bad = [k for k, lo, hi in checks if not isinstance(m.get(k), int) or not lo <= m[k] <= hi]
+        if m.get('element') not in FINISHER_ELEMENTS: bad.append('element')
+        if flags - {'T'}: bad.append('flags')
+        hits = e.get('behavior', {}).get('hits', 1)
+        if not isinstance(hits, int) or not 1 <= hits <= 255: bad.append('behavior.hits')
+        if bad: raise SystemExit(f'{at}: move {", ".join(bad)} out of range')
+        f = dict(tech=tech, name=ref)
+        if not neutral:
+            native = native_move(tech)
+            f.update(native, power=m['power'], special=FINISHER_ELEMENTS.index(m['element']), status=m['status'],
+                     statusChance=m['statusChance'], range=m['range'], iframes=m['iframes'], accuracy=m['accuracy'],
+                     distance=m['distance'], unk3=(native['unk3'] & ~1) | ('T' in flags), hits=hits,
+                     flags=FINISHER_PRESENT, nativeRange=native['range'])
+        out[t] = f
+        order.append(t)
+    return out, order
+
+
+def finisher_spreads(f, s):
+    """An area finisher (range 3) over a technique whose DW1 effect hits one fighter: the battle spreads its hit
+    (BTL_spreadAreaHit). Not when species s plays an own effect chunk for it: the chunk picks its own targets."""
+    if f.get('nativeRange', 3) == 3 or f['range'] != 3: return False
+    own = s.get('own_effect')
+    return not (own and id_of('techs', own['technique'], s.get('_path', 'species')) == f['tech'])
+
+
+def exe_text_bytes(text, font):
+    """A string as the executable stores it (decomp's gen_text.py): a glyph of the bank's font as its two-byte
+    code, anything else as Shift-JIS."""
+    out = bytearray()
+    for c in text:
+        if c in font:
+            code = int(font[c], 16)
+            out += bytes((code >> 8, code & 0xFF))
+        else:
+            out += c.encode('cp932')
+    return bytes(out)
+
+
+def finisher_names(order):
+    """{language: [encoded name per reference]} in MOD_LANG order (include/dw/lang.h): the text bank key
+    species.<id>.finisher of text/<language>/names.json, made exactly as the executable's own strings."""
+    if ROOT not in sys.path: sys.path.insert(0, ROOT)
+    from tools.languages import CODES
+    from tools.localize.executable.bank import exe_bank
+    out = {}
+    for code in CODES:
+        bank, _ = exe_bank('ours' if code == 'en' else code)
+        names = []
+        for t in order:
+            key = f'species.{t}.finisher'
+            if key not in bank['text']: raise SystemExit(f'text/{code}/names.json: {key} is missing')
+            raw = exe_text_bytes(bank['text'][key], bank['font'])
+            if len(raw) > FINISHER_NAME_MAX:
+                raise SystemExit(f'text/{code}/names.json: {key} takes {len(raw)} bytes; at most {FINISHER_NAME_MAX}')
+            names.append(raw)
+        out[code] = names
+    return out
+
+
+def finisher_name_sectors(names):
+    """-> (the name sectors, sectors per language): language L's name reference r is at sector
+    L * stride + (r - 1) // per, byte (r - 1) % per * FINISHER_NAME_SLOT."""
+    per = SECTOR // FINISHER_NAME_SLOT
+    count = max(len(v) for v in names.values())
+    stride = -(-count // per)
+    data = bytearray()
+    for code in names:
+        block = bytearray(stride * SECTOR)
+        for i, raw in enumerate(names[code]):
+            o = (i // per) * SECTOR + (i % per) * FINISHER_NAME_SLOT
+            block[o:o + len(raw)] = raw
+        data += block
+    return bytes(data), stride
+
+
 # ------------------------------------------------------------------ DIGI.DAT records
 def pack_record(r):
     para = dict(r['para']); para.setdefault('padding', 0)
@@ -1211,6 +1385,8 @@ def pack_record(r):
         struct.pack_into('<4h', b, 0x136, *r['conditionFx'])
     struct.pack_into('<I', b, 0x1C0, r.get('portrait', 0))      # sector | slot << 24 of its icon (tools/portraits.py)
     b[0x1CE] = r.get('statusAnchorBone', 0)  # Status-only camera anchor; record size is unchanged
+    if r.get('ownEffect'): b[0x1CF] = r['ownEffect'][0]; struct.pack_into('<h', b, 0x1D0, r['ownEffect'][1])
+    if r.get('finisher'): pack_finisher(b, r['finisher'])
     struct.pack_into('<h', b, 0x1CC, r.get('vanillaAs', 0))     # NEW DIGIMON off: the vanilla species it becomes
     if r['flags'] & FLAG_EFFECT_DEFAULT:                         # where a technique without an origin row starts (efe.c)
         struct.pack_into('<4h', b, 0x1C4, *r['effectDefault'])
@@ -1228,6 +1404,8 @@ def unpack_record(b, t):
              texSector=tsec, texFile=tfile, texSectors=tsecs, originalType=ot, vball=vball, vlall=vlall, flags=flags,
              bones=[list(struct.unpack_from('<bb', b, 0x54 + 2 * i)) for i in range(max(0, min(para['boneCount'], MAX_BONES)))])
     if b[0x1CE]: r['statusAnchorBone'] = b[0x1CE]
+    if struct.unpack_from('<h', b, 0x1D0)[0]: r['ownEffect'] = [b[0x1CF], struct.unpack_from('<h', b, 0x1D0)[0]]
+    if b[0x1D2]: r['finisher'] = unpack_finisher(b)
     if music: r['battleMusic'] = music
     if flags & FLAG_PARTNER:
         r['raise'] = unpack(RAISE_FIELDS, b, 0xD4)
@@ -1559,6 +1737,23 @@ def build(out=OUT, content=None, quiet=False, select=None):
         balance_ref = sector
         blobs.append((struct.pack('<H', len(balance_rows)) + b''.join(balance_rows)).ljust(SECTOR, b'\0'))
         sector += 1
+    fins, order = finisher_moves()
+    fins = {t: f for t, f in fins.items() if t in species and recs[t] is not None}
+    for t, f in fins.items():
+        if f['tech'] not in techniques_from_json(species[t]['techniques'], species[t]['_path']):
+            raise SystemExit(f'{os.path.relpath(FINISHERS, ROOT)}: {species[t]["name"]} ({t}): replaces.id {f["tech"]} is not '
+                             f'the finisher in its techniques')
+    if fins:                                              # the unique finishers: numbers in the record, names after it
+        data, stride = finisher_name_sectors(finisher_names(order))
+        per = SECTOR // FINISHER_NAME_SLOT
+        for t, f in fins.items():
+            f = dict(f)
+            if finisher_spreads(f, species[t]): f['flags'] |= FINISHER_SPREADS
+            f.pop('nativeRange', None)
+            recs[t]['finisher'] = dict(f, nameStride=stride, nameSector=sector + (f['name'] - 1) // per,
+                                       nameOffset=(f['name'] - 1) % per * FINISHER_NAME_SLOT)
+        blobs.append(data)
+        sector += len(data) // SECTOR
     hdr = bytearray(SECTOR)
     struct.pack_into('<I', hdr, HEADER_BALANCE_OFF, balance_ref)
     struct.pack_into(HEADER, hdr, 0, b'DIGI', VERSION, RECORD_SIZE, count, 0, first_records, sector, 1, fallback_ref, chart_ref)
@@ -1733,18 +1928,24 @@ def select(sel, out, models=None, content=None):
     return sorted(t for t in allsp if t >= NUM_ORIGINAL or t in ids)
 
 
-def disc_files(content=None):
+def disc_files(content=None, *, replace_models=False):
     """[(option, disc path, file)] of the replaced (--file) and partner-only (--add) models of the disc's species:
-    build-disc.py's arguments; the file as the species file names it (relative to the repository or absolute)."""
+    Paths only by default, so output discovery never reads generated model bytes.
+    replace_models=True materializes the final headroom replacements for disc assembly
+    or buffer measurement, after the models have been generated."""
+    from tools.models import partner_headroom
     out = []
     for t, s in sorted(load_content(content).items()):
         if t >= NUM_ORIGINAL: break
         m = s['model']
         if is_record_original(s): continue       # its model is in DIGI.DAT
+        bones = len(m['skeleton']) if 'skeleton' in m else m['bones']
         if 'file' in m:
-            out.append(('--file', f'CHDAT/MMD{t // 30}/{m["name"]}.MMD', m['file']))
+            path = partner_headroom.disc_file(resolve_path(m['file']), bones, t) if replace_models and t in partner_headroom.SPECIES else m['file']
+            out.append(('--file', f'CHDAT/MMD{t // 30}/{m["name"]}.MMD', path))
         if 'partner_file' in m:
-            out.append(('--add', os.path.basename(m['partner_file']), m['partner_file']))
+            path = partner_headroom.disc_file(resolve_path(m['partner_file']), bones, t) if replace_models and t in partner_headroom.SPECIES else m['partner_file']
+            out.append(('--add', os.path.basename(m['partner_file']), path))
     return out
 
 
@@ -1832,7 +2033,7 @@ def cmd_flat_audit(a):
 
 def cmd_disc_files(a):
     """build-disc.py arguments for the replaced and partner-only models of the disc's species."""
-    for opt, disc, f in disc_files(a.content):
+    for opt, disc, f in disc_files(a.content, replace_models=True):
         print(f'{opt}\t{disc}={resolve_path(f)}')
 
 
@@ -1863,14 +2064,14 @@ def extra_rows(content=None):
 
 def wild_stats(t, content=None):
     """Default battle stats of a new species placed on a map ("wild" in its definition)."""
-    s = load_content(content).get(t)
+    s = load_content(content, shared=True).get(t)
     return dict(s.get('wild', {})) if s else {}
 
 
 def model_size(t, content=None):
     """Bytes of the MMD of a new species (0 if unknown)."""
     if t < NUM_ORIGINAL: return 0
-    s = load_content(content).get(t)
+    s = load_content(content, shared=True).get(t)
     if not s: return 0
     try:
         return len(species_model(s)[0])

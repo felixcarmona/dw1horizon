@@ -11,6 +11,7 @@
                  "Megalo Spark", "Confused Storm", "Wind Cutter", "Crimson Flare"],
   "drop": {"item": "Restore", "percent": 20},
   "effects_like": 5,
+  "own_effect": {"technique": "Crimson Flare", "chunk": 326},
   "model": {
     "file": "build/models/WarGreymon.MMD",
     "radius": 230,

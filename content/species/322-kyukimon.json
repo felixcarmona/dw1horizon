@@ -11,6 +11,7 @@
                  "Dynamite Kick (44)", "Tremar", "Death Claw"],
   "drop": {"item": "Giant Meat", "percent": 30},
   "effects_like": 5,
+  "own_effect": {"technique": "Death Claw", "chunk": 236},
   "model": {
     "file": "build/sizes-out/models/Kyukimon.MMD",
     "radius": 300,

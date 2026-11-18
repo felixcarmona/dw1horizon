@@ -7,16 +7,16 @@ lower body, 17 the upright torso, 5/6/7 the tail, and 21/22/23/24 and
 
 The reviewed field generator in
 `tools/models/field_animations/suijinmon.py` pins its source model and skeleton.
-It builds a four-beat walk and a staggered gallop with stance and swing phases,
+It builds a diagonal walk (diagonal pairs a little apart, so the thick legs of one side rarely meet) and a staggered gallop with stance and swing phases,
 folding legs, eased reaches, body weight transfer and delayed tail and arm
 motion. The condition walk plays the same supported stride more slowly.
 Centarumon's native walk and run provide the visual reference.
 
 | Clip | Before, units per tick | After | Native Centarumon |
 | --- | ---: | ---: | ---: |
-| Walk | 17.79 | 18 | 17.5 |
-| Condition walk | 15.25 | 12 | — |
-| Run | 38.82 | 40 | 50 |
+| Walk | 17.79 | 18 (14 ticks) | 17.5 |
+| Condition walk | 15.25 | 12 (21 ticks) | — |
+| Run | 38.82 | 40 (14 ticks) | 50 |
 
 The feeding donor crouched its pelvis from -179 to about -99, sinking all four
 legs. Feeding now holds the standing lower body, keeps the arm performance,

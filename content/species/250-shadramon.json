@@ -10,6 +10,7 @@
                  "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Fireball"],
   "drop": {"item": "Off. Disk", "percent": 20},
   "effects_like": 9,
+  "own_effect": {"technique": "Fireball", "chunk": 319},
   "model": {
     "file": "build/batch6/Shadramon.MMD",
     "radius": 201,

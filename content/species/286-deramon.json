@@ -11,6 +11,7 @@
                  "Megaton Punch", "Counter", "Tremar", "Fist of the Beast King"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 12,
+  "own_effect": {"technique": "Fist of the Beast King", "chunk": 151},
   "model": {
     "file": "build/batch9/Deramon.MMD",
     "radius": 194,

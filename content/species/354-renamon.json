@@ -10,6 +10,7 @@
                  "Fire Tower", "Spiral Twister"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 48,
+  "own_effect": {"technique": "Spiral Twister", "chunk": 246},
   "model": {
     "file": "build/batch16/Renamon.MMD",
     "radius": 123,

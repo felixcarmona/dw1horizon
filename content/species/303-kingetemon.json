@@ -11,6 +11,7 @@
                  "Poop Spd Toss", "Rnd Spd Toss", "Odor Spray", "Dark Network & Concert Crush"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 48,
+  "own_effect": {"technique": "Dark Network & Concert Crush", "chunk": 202},
   "model": {
     "file": "build/sizes-out/models/KingEtemon.MMD",
     "radius": 119,

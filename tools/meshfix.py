@@ -38,6 +38,7 @@ rebuild from the spec does the same.
 import sys as _image_sys
 from pathlib import Path as _ImagePath
 _image_sys.path.insert(0, str(next(p for p in _ImagePath(__file__).resolve().parents if (p / 'tools').is_dir())))
+from collections import Counter
 import copy
 import heapq
 import math
@@ -192,7 +193,7 @@ def _mat_key(p):
 class Mesh:
     """One piece (bone) as a triangle mesh with per-corner attributes."""
 
-    def __init__(self, model, bi, cache, wb=2.0, preserve_components=True):
+    def __init__(self, model, bi, cache, wb=2.0, preserve_components=True, preserve_boundaries=True):
         b = model.bones[bi]
         self.bi = bi
         self.s2 = 0.0           # mean triangle area of the whole model (set by decimate)
@@ -233,6 +234,18 @@ class Mesh:
         for f in self.faces:
             for v in f.v:
                 self.vf[v].add(f)
+        if preserve_boundaries:
+            # Thin open sheets (cloth, capes, wings) have no volume for QEM to
+            # defend. Keep their original outline and attachment endpoints;
+            # interior edges can still simplify without eating the silhouette.
+            # Weld coincident front/back triangles before finding a sheet's
+            # outline; a two-sided cape still has an exposed perimeter.
+            sheets = {tuple(sorted(f.v)) for f in self.faces}
+            incidence = Counter(tuple(sorted((a, b))) for face in sheets
+                                for a, b in zip(face, face[1:] + face[:1]))
+            for edge, count in incidence.items():
+                if count == 1:
+                    self.pinned_positions.update(_pkey(self.pos[v]) for v in edge)
         self.preserve_components = preserve_components
         self.component, self.component_remaining, self.component_floor = {}, [], []
         for seed in self.faces:
@@ -603,7 +616,7 @@ def _prim_dicts(mesh, items):
 
 # ------------------------------------------------------------------ decimation
 def decimate(model, budget=MAX_PRIMS, kappa=0.3, kmove=0.3, quad_angle=25.0, min_tris=4, kb=0.0, log=print,
-             preserve_components=True):
+             preserve_components=True, preserve_boundaries=True):
     """Quadric edge collapse until the model has at most `budget` primitives (after the triangle pairs are
     merged into quads again). Returns the number of primitives removed. Pieces of at most `min_tris`
     triangles are left alone."""
@@ -611,7 +624,7 @@ def decimate(model, budget=MAX_PRIMS, kappa=0.3, kmove=0.3, quad_angle=25.0, min
     if n0 <= budget:
         return 0
     cache = {}
-    meshes = [Mesh(model, i, cache,preserve_components=preserve_components) for i, b in enumerate(model.bones) if b['prims']]
+    meshes = [Mesh(model, i, cache,preserve_components=preserve_components,preserve_boundaries=preserve_boundaries) for i, b in enumerate(model.bones) if b['prims']]
     for m in meshes:
         m.component_floor = [min(min_tris,n) for n in m.component_remaining]
     tri_areas = [_len(m.tri_normal(f.v)) / 2 for m in meshes for f in m.faces]
@@ -861,7 +874,7 @@ CANDIDATES = [dict(kappa=0.3, kmove=0.3, quad_angle=25.0), dict(kappa=1.0, kmove
               dict(kappa=0.0, kmove=0.0, quad_angle=40.0), dict(kappa=3.0, kmove=3.0, quad_angle=40.0)]
 
 
-def best_decimation(model, budget, log=print,preserve_components=True):
+def best_decimation(model, budget, log=print,preserve_components=True, preserve_boundaries=True):
     """Runs decimate with every candidate parameter set on a copy and returns the set with the smallest measured
     visual error (compare(): silhouette and colour differences in four views)."""
     before = snapshot(model)
@@ -869,7 +882,7 @@ def best_decimation(model, budget, log=print,preserve_components=True):
     for c in CANDIDATES:
         trial = copy.copy(model)
         trial.bones = copy.deepcopy(model.bones)
-        decimate(trial, budget, log=lambda *a: None,preserve_components=preserve_components, **c)
+        decimate(trial, budget, log=lambda *a: None,preserve_components=preserve_components,preserve_boundaries=preserve_boundaries, **c)
         met, _ = compare(before, snapshot(trial), size=160)
         log(f'  meshfix candidate {c}: prims {prim_count(trial)}, error {met["err"]}')
         if prim_count(trial) <= budget and (best is None or met['err'] < best[0]):
@@ -886,8 +899,9 @@ def apply(model, params=None, log=print):
     # Historical serialized specs lack this field. Preserve their bytes; new
     # authoring records the guard explicitly and direct library calls enable it.
     guard = (params or {}).get('preserve_components',params is None)
+    boundaries = (params or {}).get('preserve_boundaries',params is None)
     params = dict(params or {})
-    info = {}
+    info = {'preserve_boundaries': boundaries}
     if params.get('hidden', True):
         h = drop_hidden(model, log)
         if h:
@@ -899,9 +913,11 @@ def apply(model, params=None, log=print):
     if params.get('decimate', True) and prim_count(model) > budget:
         used = {k: params[k] for k in ('kappa', 'kmove', 'quad_angle') if k in params}
         if len(used) < 3:
-            used, err = best_decimation(model, budget, log,preserve_components=guard)
+            used, err = best_decimation(model, budget, log,preserve_components=guard,preserve_boundaries=boundaries)
             info['error'] = err
-        decimate(model, budget, log=log,preserve_components=guard, **used)
+        decimate(model, budget, log=log,preserve_components=guard,preserve_boundaries=boundaries, **used)
+        if boundaries and prim_count(model) > budget:
+            raise SystemExit('meshfix: protected sheet boundaries prevent reaching the budget; revise authoring')
         info['decimated'] = used
     if params.get('split', True) and any(unique_verts(b) > MAX_VERTS_PER_OBJECT for b in model.bones):
         info['split'] = split_pieces(model, log=log)
@@ -913,6 +929,7 @@ def spec_params(info, params=None):
     used (`apply(model, spec_params(...))` is deterministic)."""
     out = dict(params or {})
     out.update(info.get('decimated') or {})
+    out['preserve_boundaries'] = info.get('preserve_boundaries',False)
     return out
 
 

@@ -10,6 +10,7 @@
                  "War Cry", "Drill Spin", "Charm Perfume"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 52,
+  "own_effect": {"technique": "Drill Spin", "chunk": 165},
   "model": {
     "file": "build/batch7/Mushroomon.MMD",
     "radius": 100,

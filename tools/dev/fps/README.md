@@ -6,6 +6,9 @@ through `tools/dev/emulator.py` and read RAM by symbol; all locate their own wor
 
 The standard `FPS=60` build uses the workload ladder (60 / steady 30 / 20).
 `MOD_CAD_LEVEL` reports AUTO's rung (2/1/0); `modFrameRateLevel()` also accounts for explicit locks.
+AUTO enters each screen at steady 30 and remembers per screen whether 60 held or failed (`docs/reference/frame-rate.md`);
+`laddercheck.py` sets `MOD_CAD_RESET` before each capture so every capture starts as a fresh session (`--keep60` only
+applies to builds before that patch).
 `MOD_FPS_MODE_RUN` stays at 2 for AUTO/60 and 0 for explicit 20, preserving curling’s single-pass path. OPTIONS maps AUTO/60/20 to
 `MOD_FPS_POLICY` 0/1/3 and saves A0/A1/A2 in byte 2; legacy bytes migrate to AUTO.
 Policies 2 and 4 are diagnostic locks at steady 30 and the old CPU probe respectively.

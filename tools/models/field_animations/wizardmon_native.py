@@ -16,7 +16,7 @@ import mmd
 import motionstorage
 import retarget as R
 from motiontailspace import interpolate_pose
-from tools.models.field_animations import native_binding
+from tools.models.field_animations import native_battle, native_binding
 
 CHEST, HEAD = 2, 3
 FIELD = (0, 1, 2, 3, 4)  # idle, its variant, walk, condition walk, run
@@ -111,15 +111,21 @@ def follow(frames, loop, rig, rest, closed=True):
 
 
 def build(data, skeleton, closed=True):
-    bound, proof = native_binding.build(data, skeleton)
+    battle_context = {}
+    bound, proof = native_binding.build(data, skeleton, final=False, battle_context=battle_context)
     rig = proof['generated_skeleton']
     model = mmd.MMD.parse(bound, len(rig))
     model.type = proof['donor']
     rest = animsheet.slot_frames(model, len(rig), 0)[0][0]
     rest[0] = [4096] * 3 + [0] * 6
+    recipe = native_binding.recipe_of(data)
+    originals = set(recipe.get('battle_originals', {}).get('slots', []))
+    # the source's own battle clips (native_battle.py) carry the source's own cape and hair: no followers on them
+    own = {index for index in model.anims.table
+           if index is not None and all(s in originals for s, i in enumerate(model.anims.table) if i == index)}
     done = {}
     for slot, index in enumerate(model.anims.table):
-        if index is None or index in done:
+        if index is None or index in done or index in own:
             continue
         frames, loop, events = animsheet.slot_frames(model, len(rig), slot)
         if slot in FIELD:
@@ -133,6 +139,22 @@ def build(data, skeleton, closed=True):
         model.anims.anims[index] = animation
         animation.tail = b''
     output = model.build()
+    spec = recipe.get('battle_originals', {}).get('compact')
+    if spec:
+        # compacted once, after the followers have re-encoded every program
+        output, proof['battle_compact'] = native_battle.compact(output, len(rig), spec)
+    if recipe.get('authored_battle'):
+        from tools.models import authored_battle
+        sid = int(recipe['species'])
+        if tuple(recipe['authored_battle']) != authored_battle.SLOTS[sid]:
+            raise ValueError('Unreviewed authored battle slots')
+        output, proof['authored_battle'] = authored_battle.build(output, rig, sid, battle_context)
+    if recipe.get('authored_techniques'):
+        from tools.models import authored_techniques
+        sid = int(recipe['species'])
+        if tuple(recipe['authored_techniques']) != tuple(authored_techniques.PROFILES[sid]):
+            raise ValueError('Unreviewed authored techniques')
+        output, proof['authored_techniques'] = authored_techniques.build(output, rig, sid, battle_context)
     storage = motionstorage.require(output, len(rig))
     proof.update(output_sha256=native_binding.digest(output), storage=storage,
                  followers={str(b): dict(driver=d, lag=lag, share=s, trail=t, most=m)

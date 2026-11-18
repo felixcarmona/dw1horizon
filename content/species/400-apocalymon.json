@@ -11,6 +11,7 @@
                  "Water Blit", "Ice Needle", "Winter Blast", "Deadly Bomb"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 54,
+  "own_effect": {"technique": "Deadly Bomb", "chunk": 327},
   "model": {
     "file": "build/meshfix2-out/Apocalymon.MMD",
     "radius": 300,

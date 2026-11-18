@@ -10,6 +10,7 @@
                  "Electric Cloud", "Static Elect", "Wind Cutter", "Confused Storm", "Death Claw"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 36,
+  "own_effect": {"technique": "Death Claw", "chunk": 237},
   "model": {
     "file": "build/sizes-out/models/Maildramon.MMD",
     "radius": 288,

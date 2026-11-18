@@ -1,0 +1,19 @@
+{
+  "67": {
+    "source_sha256": "f93fdad13955ec7ee11f7845080832eb3a05a9e1a1c7daaa67e9de4f37b04949",
+    "slot": 48,
+    "finisher_slot": 53,
+    "max_heights": 0.9
+  },
+  "225": {
+    "source_sha256": "88dbd9aecdd35b2a8980c86b7d041af90260a1df73983fa23bf60bfb54800bed",
+    "slot": 56,
+    "max_heights": 0.9,
+    "hop": [0, 22]
+  },
+  "239": {
+    "source_sha256": "73c0143d223c6a77aea7f98f0c05dda5b4b367b35f24e1209175c818fedc3058",
+    "slot": 53,
+    "max_heights": 0.9
+  }
+}

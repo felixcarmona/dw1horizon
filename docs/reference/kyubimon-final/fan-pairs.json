@@ -1,0 +1,260 @@
+[
+  {
+    "pair": "tail 0/1",
+    "before_units": 2.0652385075578383,
+    "after_units": 0.0,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 0/2",
+    "before_units": 0.0,
+    "after_units": 8.717696984062862,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 0/3",
+    "before_units": 2.0652385075578383,
+    "after_units": 0.0,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 0/4",
+    "before_units": 0.0,
+    "after_units": 8.717696984062862,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 0/5",
+    "before_units": 0.0,
+    "after_units": 0.0,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 0/6",
+    "before_units": 0.0,
+    "after_units": 0.0,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 0/7",
+    "before_units": 0.0,
+    "after_units": 5.0095938687490325,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 0/8",
+    "before_units": 0.0,
+    "after_units": 5.0095938687490325,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 1/2",
+    "before_units": 1.9448228080613856,
+    "after_units": 4.71771953411108,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 1/3",
+    "before_units": 0.0,
+    "after_units": 7.159206843136467,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 1/4",
+    "before_units": 0.0,
+    "after_units": 0.0,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 1/5",
+    "before_units": 0.0,
+    "after_units": 3.6333623777903483,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 1/6",
+    "before_units": 0.0,
+    "after_units": 0.0,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 1/7",
+    "before_units": 4.638071015849057,
+    "after_units": 0.0,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 1/8",
+    "before_units": 0.0,
+    "after_units": 0.0,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 2/3",
+    "before_units": 0.0,
+    "after_units": 0.0,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 2/4",
+    "before_units": 0.0,
+    "after_units": 0.0,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 2/5",
+    "before_units": 2.516638788580685,
+    "after_units": 4.7141995740908325,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 2/6",
+    "before_units": 0.0,
+    "after_units": 0.0,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 2/7",
+    "before_units": 2.9713518599281814,
+    "after_units": 4.179208596812703,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 2/8",
+    "before_units": 0.0,
+    "after_units": 0.0,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 3/4",
+    "before_units": 1.9448228080613856,
+    "after_units": 4.71771953411108,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 3/5",
+    "before_units": 0.0,
+    "after_units": 0.0,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 3/6",
+    "before_units": 0.0,
+    "after_units": 3.6333623777903483,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 3/7",
+    "before_units": 0.0,
+    "after_units": 0.0,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 3/8",
+    "before_units": 5.139864389549914,
+    "after_units": 0.0,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 4/5",
+    "before_units": 0.0,
+    "after_units": 0.0,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 4/6",
+    "before_units": 2.516638788580685,
+    "after_units": 4.7141995740908325,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 4/7",
+    "before_units": 0.0,
+    "after_units": 0.0,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 4/8",
+    "before_units": 2.9713518599281814,
+    "after_units": 4.179208596812703,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 5/6",
+    "before_units": 2.7501980298158415,
+    "after_units": 6.2526692255365255,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 5/7",
+    "before_units": 0.0,
+    "after_units": 7.494620037621484,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 5/8",
+    "before_units": 0.0,
+    "after_units": 0.0,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 6/7",
+    "before_units": 0.0,
+    "after_units": 0.0,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 6/8",
+    "before_units": 0.0,
+    "after_units": 7.494620037621484,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "tail 7/8",
+    "before_units": 0.0,
+    "after_units": 7.084850613268883,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "join 0",
+    "before_units": 5.2429945245512535,
+    "after_units": 2.2713130260498957,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "join 1",
+    "before_units": 4.170046366518992,
+    "after_units": 0.856129566973884,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "join 2",
+    "before_units": 8.293487165864438,
+    "after_units": 9.287445954643172,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "join 3",
+    "before_units": 4.717597011045348,
+    "after_units": 1.4893761138149424,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "join 4",
+    "before_units": 7.842168387192324,
+    "after_units": 10.72130413979373,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "join 5",
+    "before_units": 8.354726569896211,
+    "after_units": 7.1935477673980674,
+    "proven_after_interior_units": 0
+  },
+  {
+    "pair": "join 6",
+    "before_units": 6.9650375871595855,
+    "after_units": 7.808017482208209,
+    "proven_after_interior_units": 0
+  }
+]

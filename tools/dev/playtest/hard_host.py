@@ -24,7 +24,8 @@ def main():
         for rel in ('btl/battle_main.c','std/std_main.c','vs/vs_main.c'):
             target=before/'src'/rel;target.parent.mkdir(parents=True,exist_ok=True)
             shutil.copy2(after/'src'/rel,target)
-        subprocess.run(['git','apply','-R','--include=src/btl/battle_main.c',
+        # -C1: later patches rewrite context lines next to HARD's hunks (MOVE_DATA[tech] became modSpeciesMove)
+        subprocess.run(['git','apply','-R','-C1','--include=src/btl/battle_main.c',
                         '--include=src/std/std_main.c','--include=src/vs/vs_main.c',
                         str(ROOT/'mods/patches/Add-HARD-single-player-difficulty.patch')],
                        cwd=before,check=True)

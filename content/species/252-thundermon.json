@@ -10,6 +10,7 @@
                  "Megaton Punch", "Muscle Charge", "War Cry", "Sonic Jab", "Solar Ray"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 51,
+  "own_effect": {"technique": "Solar Ray", "chunk": 321},
   "model": {
     "file": "build/batch6/Thundermon.MMD",
     "radius": 100,

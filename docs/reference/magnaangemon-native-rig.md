@@ -20,11 +20,43 @@ bound to bone 18. Each wing consists of two broad World 3 fans sharing a shoulde
 hinge, 10/12. One assembly mirrors the other, including polygon winding and
 normals. The redundant upper wing pair is omitted to clear the helmet. Fan size
 is reduced toward Angemon's silhouette so the native wing stroke remains calm.
-No motion curves are authored or retargeted.
+The bound model itself has no authored or retargeted motion curves.
 
 Angemon's staff is held by bone 9, as in its native performances. Only its staff
 faces are copied, with the original small texture strip and palette packed into
 unused World 3 atlas space. Palette row 15 remains reserved for the flat sprite.
+
+## Battle clips from World 2003
+
+`MagnaAngemon-dw3-battle.json` (format `native-battle-source-v1`) freezes the
+clip choices the World 3 importer makes (`import_batch.analyse_clips_dw3`) on the
+same mesh; its import-batches recipe (`battle_source`) makes it on the player's
+discs, and the imports step writes it as `imported-models/206.battle.MMD`. The
+overlay `magnaangemon-battle` (`tools/models/field_animations/bound_battle.py`,
+row 206 of `content/models/imports/bound-battle.json`) plays its clips on the
+bound rig with `native_battle.py`'s retarget: the pieces of each bone are fitted
+from their vertices, the mirrored left wing from the right wing's, the hips
+follow the body and not the sash. Only the slots that pass
+`tools/models/battle_qa_native.py` on the final model are listed (0x21, 0x28,
+0x29, 0x2B, 0x2C, 0x2E-0x34); the hits keep Angemon's impact sounds, and the
+battle and technique slots are compacted exactly for room. The row's
+`drop_npc_slots` leaves out Angemon's clips of the slots only the tamer, the NPCs
+and the kart race play (0x1C and 0x1D here), which no partner starts: 97,600 of
+100,352 bytes. Field and care slots stay Angemon's byte for byte. The get-up
+(0x2C) is the source's clip with `repairs` (tools/models/clip_repair.py): while
+it lies on the floor one thigh turns 15 degrees and its knee 6, so the foot
+follows the source's, and the body is lifted 40 units where it sank under the
+floor. The faint (0x2B) plays the source's 54 ticks at 34 (`ticks`, 1.59; the
+slot's own 31 would be 1.74), with the body lifted 60 units from tick 18, where
+it sank (under the floor 0.224 heights, was 0.323), and the right knee turned 10
+degrees over the last ticks (tip of the foot 0.150 heights, was 0.155; Angemon's
+clip 0.719). The rest of its tip error is the rig's proportions (Angemon's thigh
+is shorter than the source's), not a turn.
+
+```sh
+python3 tools/models/battle_qa_native.py check 206 FINAL.MMD imported-models/206.battle.MMD MAIN.MMD
+DW_BOUND_BATTLE_MODELS=build/everything/imported-models python3 -m unittest tools.test_bound_battle
+```
 
 `MagnaAngemon.json` records the binding and native clip choices.
 `MagnaAngemon-dw3-mesh.json` freezes the source mesh and first pose; the normal

@@ -35,7 +35,7 @@ from tools.models.field_animations.articulation import replace_channels
 from tools.models.field_animations import quadruped as Q
 from motiondiscidentity import changed_programs
 from tools.models.field_animations.war_greymon import rotation, set_rotation, align
-SOURCE = '7aff3957ff3d24b65db422b36b8dd8394155722a8256cf7f6b3f97ac990dfc66'
+SOURCE = '4c074a7139f0624c7a0091628ea86d7871f2d7d3e5bd65df0f2cbe65e4087a50'
 
 def _pack(model):
     for animation in model.anims.anims:

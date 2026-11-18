@@ -328,10 +328,45 @@ export class Build {
     }
   }
 
-  // Seconds the jobs take with n workers: the longer of the critical path and the work shared out.
-  jobsEstimate(jobs, n) {
+  // Seconds the jobs take with n workers: the plan's own schedule played forward (the longest remaining path first, a
+  // job after the ones it waits for, at most n at once; the finishes one at a time, as they run). `ran`: seconds
+  // (in estimate units) the jobs already running have run. The bound of the longer of the critical path and the work
+  // shared out is too short whenever the waits keep workers idle, and the time left then kept growing as they showed.
+  jobsEstimate(jobs, n, ran = new Map()) {
     if (!jobs.length) return 0;
-    return Math.max(Math.max(...jobs.map((j) => j.prio)), jobs.reduce((a, j) => a + j.est, 0) / n);
+    const waits = new Map(), users = new Map();
+    const ids = new Set(jobs.map((j) => j.id));
+    for (const j of jobs) {
+      let w = 0;
+      for (const d of j.deps) if (ids.has(d)) { w++; (users.get(d) || users.set(d, []).get(d)).push(j); }
+      waits.set(j.id, w);
+    }
+    const ready = jobs.filter((j) => !waits.get(j.id));
+    const byPrio = (a, b) => b.prio - a.prio;
+    ready.sort(byPrio);
+    const busy = [];                        // [finish time, job]
+    let t = 0, finishing = false;
+    while (ready.length || busy.length) {
+      for (let i = 0; i < ready.length && busy.length < n;) {
+        const j = ready[i];
+        if (j.part === 'finish' && finishing) { i++; continue; }
+        ready.splice(i, 1);
+        busy.push([t + Math.max(j.est - (ran.get(j.id) || 0), 0.1 * j.est), j]);
+        if (j.part === 'finish') finishing = true;
+      }
+      if (!busy.length) break;               // (nothing can start: the jobs' own error)
+      let k = 0;
+      for (let i = 1; i < busy.length; i++) if (busy[i][0] < busy[k][0]) k = i;
+      const [at, j] = busy.splice(k, 1)[0];
+      t = at;
+      if (j.part === 'finish') finishing = false;
+      for (const u of users.get(j.id) || []) {
+        waits.set(u.id, waits.get(u.id) - 1);
+        if (!waits.get(u.id)) ready.push(u);
+      }
+      ready.sort(byPrio);
+    }
+    return t;
   }
 
   cancel() {
@@ -581,7 +616,9 @@ export class Build {
     this.speed = 1;                          // measured / estimated, of the jobs done
     this.jobsLeft = () => {
       const left = jobs.filter((j) => !done.has(j.id));
-      return this.speed * this.jobsEstimate(left, Math.max(1, this.slots.length));
+      const now = performance.now(), ran = new Map();
+      for (const [id, slot] of running) if (slot.t0) ran.set(id, (now - slot.t0) / 1000 / this.speed);
+      return this.speed * this.jobsEstimate(left, Math.max(1, this.slots.length), ran);
     };
     const ready = (s) => {
       st.workers[st.workers.findIndex((x) => x.id === s.id)] = { id: s.id, job: null, state: 'idle' };
@@ -709,7 +746,7 @@ export class Build {
           const res = j.globs.map((g) => new RegExp(`^${g.split('*').map((x) => x.replace(/[.+?^${}()|[\]\\]/g, '\\$&')).join('[^/]+')}$`));
           for (const [p, t] of this.registry) if (res.some((r) => r.test(p))) inputs.push([p, t]);
         }
-        slot.busy = true; slot.job = j;
+        slot.busy = true; slot.job = j; slot.t0 = performance.now();
         slot.inputs = inputs;
         hold(inputs, 1);
         running.set(j.id, slot);

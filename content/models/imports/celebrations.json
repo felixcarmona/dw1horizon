@@ -50,11 +50,12 @@
     "skeleton_sha256": "cdcf9a9d75bf20f1c5a7ef4d7cd6e98887207f9d2d44e99d8dc9a126286e5932"
   },
   "321": {
-    "source_sha256": "eacb25727644e86cd69c0ef6a54df72fe70e4e78117d7b292ca0f55d302891b9",
+    "source_sha256": "e405598cdb9d9f24776cb369a32ad713e2f73a8f7b6ebcf5c339afe07212b1b3",
     "slots": [
       11,
       42
     ],
+    "rest_slot": 0,
     "pelvis": 1,
     "chest": 1,
     "head": 6,
@@ -115,7 +116,7 @@
     },
     "shift": 0.8,
     "body_gain": 1,
-    "base_generator": "tools.models.field_animations.chibi",
+    "base_generator": "tools.models.field_animations.knightmon_gait",
     "no_reverse": [
       2,
       3,
@@ -490,10 +491,8 @@
     ]
   },
   "209": {
-    "source_sha256": "1076d804c861f905f58a3d4ea9ca290ebe4e29725ec2dab10f962e9810c28c4a",
-    "slots": [
-      42
-    ],
+    "source_sha256": "0ac7f9425aad5ab5d01796c536c9bc29bcecda1c3ff84c3ef556d29786162ed8",
+    "slots": [],
     "pelvis": 1,
     "chest": 2,
     "head": 3,
@@ -681,10 +680,11 @@
     "skeleton_sha256": "22474e5a3a32baa0dcd6f256130fff4526c6a451db5607b0f07c1727a509032e"
   },
   "233": {
-    "source_sha256": "ecf9cb3d3bca06b3751f51e6b44358b3c70732a262eb3a60b464b370d061f2ab",
+    "source_sha256": "f5056ddda6db4a59d089c0441d828d8d34fef21eb71095fc663859bc64486471",
     "slots": [
       42
     ],
+    "rest_slot": 0,
     "pelvis": 6,
     "chest": 1,
     "head": null,
@@ -1122,7 +1122,7 @@
     "skeleton_sha256": "a050c8a9103125e682194f0561764d7d75b286ac8c0c7a7d712fdc55736d9092"
   },
   "311": {
-    "source_sha256": "cdcb0414abc32eeefe264513a12c38fb1e8f3f502915a980106a21baf9d380d8",
+    "source_sha256": "f40ca0d9f3e081dd0f375da76b3990201151dab759a83864d6aeaa09376622ae",
     "slots": [
       42
     ],
@@ -1151,11 +1151,12 @@
     "skeleton_sha256": "6e8859cb94f07a6ebebb3b3586ee563cef024b2955a43b8fd1efe0bd9bfe53f4"
   },
   "312": {
-    "source_sha256": "2ae61d4f09301086f019478e553d68c3e5a2a72f5ba570f103fe6d052b18e6f1",
+    "source_sha256": "cb2c44f105bed9934370f159284e1d46eaa8ed87327cf65afcfa5742add45df5",
     "slots": [
       11,
       42
     ],
+    "rest_slot": 0,
     "pelvis": 1,
     "chest": 1,
     "head": 7,
@@ -1272,11 +1273,12 @@
     "skeleton_sha256": "3cfc1dc2cf55aae907aac22a1f531a2a7ff39cb6bb8659a5b8255e06a07b3ddf"
   },
   "319": {
-    "source_sha256": "69964f03939d1ac6ab89cc9a62125dbfa61aa216eae22599cf15426195630ae1",
+    "source_sha256": "c7aa6ffba8b703e760eb61b5e0195979301a7d63e34e78a4afadcb4a62784c20",
     "slots": [
       11,
       42
     ],
+    "rest_slot": 0,
     "pelvis": 1,
     "chest": 1,
     "head": 5,
@@ -1352,73 +1354,13 @@
       ]
     ]
   },
-  "333": {
-    "source_sha256": "4515e19e20eec03764581af19a87620728634e6595cb1bda3f619d8bbea03133",
-    "slots": [
-      11,
-      42
-    ],
-    "pelvis": 1,
-    "chest": 2,
-    "head": 3,
-    "legs": [
-      [
-        12,
-        13,
-        14
-      ],
-      [
-        20,
-        21,
-        22
-      ]
-    ],
-    "locked": [
-      15,
-      23
-    ],
-    "lower": [
-      12,
-      13,
-      14,
-      15,
-      20,
-      21,
-      22,
-      23
-    ],
-    "secondary": [
-      [
-        [
-          16,
-          17,
-          18,
-          19
-        ],
-        1,
-        2
-      ]
-    ],
-    "delays": {
-      "4": 0.8,
-      "5": 1.4,
-      "6": 2,
-      "7": 2.6,
-      "8": 1.1,
-      "9": 1.8,
-      "10": 2.7,
-      "3": 2.3
-    },
-    "shift": 0.8,
-    "body_gain": 1,
-    "skeleton_sha256": "0e1949700cbd30a4f1e17f74514f2113db3c27d3a489baf04b71482331dd03c9"
-  },
   "335": {
-    "source_sha256": "903c8d5492d91680921946fd7f4c27a3a480107d71cd2315443a11f31c129705",
+    "source_sha256": "6cea0708cd053f55d5a7cf52c9fce331db11e2605834107cf85b403438641f00",
     "slots": [
       11,
       42
     ],
+    "rest_slot": 0,
     "pelvis": 1,
     "chest": 1,
     "head": 17,
@@ -1491,7 +1433,7 @@
     },
     "shift": 0.8,
     "body_gain": 1,
-    "base_generator": "tools.models.field_animations.chibi",
+    "base_generator": "tools.models.field_animations.megagargomon_gait",
     "skeleton_sha256": "7e432b6bbde2c831b4f41d3041b60ca2b7be8a671371c85d04fa906b20041291",
     "hanging": [
       [
@@ -1664,96 +1606,6 @@
     "base_generator": "tools.models.field_animations.chibi",
     "skeleton_sha256": "a94a92709ba7d477d8f01e0deb84e0028075fc6caeca80c87c3eeeaab5fc5d20"
   },
-  "430": {
-    "source_sha256": "80946dd007609eaebf48bf727a825927d53e8f4206f232d493a82dd0956a96bf",
-    "slots": [
-      42
-    ],
-    "pelvis": 1,
-    "chest": 11,
-    "head": 20,
-    "legs": [
-      [
-        5,
-        6,
-        7
-      ],
-      [
-        8,
-        9,
-        10
-      ],
-      [
-        28,
-        29,
-        30
-      ],
-      [
-        31,
-        32,
-        33
-      ]
-    ],
-    "locked": [],
-    "lower": [
-      5,
-      6,
-      7,
-      8,
-      9,
-      10,
-      28,
-      29,
-      30,
-      31,
-      32,
-      33
-    ],
-    "secondary": [
-      [
-        [
-          24,
-          25,
-          26
-        ],
-        1,
-        2
-      ],
-      [
-        [
-          21
-        ],
-        0,
-        2
-      ],
-      [
-        [
-          22
-        ],
-        0,
-        2
-      ],
-      [
-        [
-          23
-        ],
-        0,
-        3
-      ]
-    ],
-    "delays": {
-      "12": 1.0,
-      "13": 1.8,
-      "14": 2.6,
-      "16": 1.4,
-      "17": 2.2,
-      "18": 3.0,
-      "20": 2.3
-    },
-    "shift": 0.8,
-    "body_gain": 1,
-    "skeleton_sha256": "1ad5ccb1891c1205689f5b22b81de87ef98a4b413cccecf686b2bfc8546af157"
-  },
   "431": {
     "source_sha256": "4117b8c9aaeb2b83a115d32f8d0223691169feed5cb096bbd5efac2b9d1148af",
     "slots": [
@@ -1846,7 +1698,7 @@
     "skeleton_sha256": "70235d700826bab7df5e09c4a636eba83456eb8ec2aa220f37bf6986da016b10"
   },
   "432": {
-    "source_sha256": "13dfccc3ba05cfebd13b35d4bcf4e5a28e86d2c364186b8cd81f34afe0183130",
+    "source_sha256": "f9af68bced4e24ae7dc5653a96d9aa1e961180d3e44494d0935d49276398c11f",
     "slots": [
       11,
       42

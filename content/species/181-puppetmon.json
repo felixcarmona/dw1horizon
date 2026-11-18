@@ -11,6 +11,7 @@
                  "Delete Program", "Pulse Laser", "Reverse Prog", "Bit Bomb"],
   "drop": {"item": "sm.recovery", "percent": 30},
   "effects_like": 34,
+  "own_effect": {"technique": "Bit Bomb", "chunk": 254},
   "model": {
     "file": "build/dcb/Puppetmon.MMD",
     "radius": 160,

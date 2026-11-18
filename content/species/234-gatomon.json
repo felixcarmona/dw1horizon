@@ -7,7 +7,7 @@
   "attribute": "vaccine",
   "specialties": ["battle", "air", null],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Tremar", "Counter", "Megalo Spark",
-                 "Static Elect", "Electric Cloud", "Wind Cutter", "Hand of Fate"],
+                 "Static Elect", "Electric Cloud", "Wind Cutter", "Dark Claw"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 17,
   "model": {

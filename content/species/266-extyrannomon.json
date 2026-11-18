@@ -11,6 +11,7 @@
                  "Red Inferno", "Lovely Attack"],
   "drop": {"item": "Giant Meat", "percent": 30},
   "effects_like": 5,
+  "own_effect": {"technique": "Lovely Attack", "chunk": 133},
   "model": {
     "file": "build/sizes-out/models/ExTyrannomon.MMD",
     "radius": 127,

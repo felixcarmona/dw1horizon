@@ -25,7 +25,7 @@ The project's site: a static page with no backend. The patcher runs in the visit
   focus). Files that cannot be used are explained together in one dialog per drop (`why.*`,
   with what works for that game, `works.<game>`): an unsupported release (the first Japanese pressing, PlayStation the
   Best, a fan translation), a modified or bad dump (the game it looks like), another PlayStation game, not a disc
-  image, a .cue without its .bin, one audio track of a multi-track disc, CHD (chdman), an archive with nothing usable,
+  image, a .cue without its .bin, one audio track of a multi-track disc, unsupported CHD variants, an archive with nothing usable,
   a disc given while another of its game from an earlier drop is still being checked. The same disc twice is ignored.
   "Build my disc" waits for the four games; the line under it names the missing ones.
 - Formats, all in the browser:
@@ -35,9 +35,21 @@ The project's site: a static page with no backend. The patcher runs in the visit
   - ECM: `js/ecm.js` (our own, written from the format's description and ECMA-130: EDC/ECC rebuilt, the ECM checksum
     checked; `test/ecm.mjs` in Node, `test/ecm-browser.mjs` through the convert worker in Chromium).
   - PBP (one-disc popstation PBP, not PlayStation Store ones): `js/pbp.js`, raw deflate through `DecompressionStream`.
-    Both run in `js/convert-worker.js`; their output is the original .bin, so redump's checksum applies.
-  - CHD: not decoded (no maintained libchdr build for the browser; CD CHDs need LZMA, zlib and FLAC); the page says
-    how to convert it with `chdman extractcd`.
+    These and CHD run in `js/convert-worker.js`; their output is the original .bin, so redump's checksum applies.
+  - CHD v5 CD-ROM: `js/chd.js`, cdzl/cdlz and zlib/lzma codecs, stored hunks, compressed/uncompressed maps and
+    self references. Raw deflate uses `DecompressionStream`; LZMA1 is a local JavaScript range decoder (no downloads).
+    Input is read in slices, one hunk decoded at a time, with map/hunk CRC16 verification, sync/ECC reconstruction,
+    audio byte swapping and track padding removed. CHD retains EDC bytes, including nonstandard ones.
+    `convert-worker.js` writes to OPFS when available, falling back to the same compacted Blob chunks as PBP.
+    `convert-storage.js` protects temporary Files with a per-page Web Lock; the next page visit removes abandoned
+    sessions. Failed/cancelled conversions delete their output. Parent images, v1–4, FLAC hunks, non-CD/cooked tracks
+    and GD-ROM/multisession layouts explain why they need conversion with `chdman extractcd`.
+    `node web/test/chd.mjs` generates synthetic fixtures with the Python test writer and real chdman when installed;
+    `node web/test/chd-browser.mjs` checks both codecs through the worker, OPFS/Blob output, cancellation and errors.
+    `node web/test/chd-bench.mjs INPUT.chd [OUTPUT.bin]` streams a Node decode and reports SHA-1, time and throughput.
+    `python3 web/test/chd-synthetic.py build/synthetic.chd cdlz 320` makes a 320 MiB benchmark with independent
+    compressed hunks (no self references), using only synthetic sectors. `CHD_REAL=/path/to/usa.chd` additionally
+    runs the real USA image through page selection/validation in `chd-browser.mjs`. No engine build is needed.
   - An image whose whole checksum cannot match redump (a 2048-byte .iso, another rip): Digimon World is refused (its
     movies and XA audio are Mode 2 Form 2 sectors such an image drops); the three source discs are checked by the
     files the import reads, listed per release in `data/discs.json` `files` (`tools/discs.py release_files()`, from
@@ -101,7 +113,7 @@ A returning player builds a new release without giving the four discs again (`js
   `getAsFileSystemHandle()` in the drop event itself. The handle is kept as soon as the disc is accepted.
 - A copy in this browser, only when the player ticks "Keep these discs in this browser for next time (about X GB)",
   shown with the real size under the drop zone whenever an accepted disc has no handle to its image: Firefox, Safari,
-  anything without handles, and a disc that came out of an archive, ECM or PBP (the converted image is kept; its
+  anything without handles, and a disc that came out of an archive, ECM, PBP or CHD (the converted image is kept; its
   handle would mean unpacking it again). Ticking it asks for persistent storage (`navigator.storage.persist()`), checks
   that the copies and a build after them fit (`storage.estimate()` against the copies plus `buildRoom()`), then copies
   one disc after another in a worker (8 MB slices through a sync access handle: never a whole image in memory, the
@@ -175,7 +187,10 @@ They are removed on success, cancellation or failure, and by page-load cleanup a
    while another job writes that path (the story passes edit the new screens' .MAP in place); a version is removed
    once a newer one replaced it and no running job reads it. A path several units of one step write ends as the
    last of them in the recorded order wrote it (natively, the story passes do not all write the same bytes there),
-   whichever finished last here.
+   whichever finished last here. So the story passes (`Unit.independent_start`: each starts the new maps from their
+   `.orig`) do not wait for one another in the plan: until 0.0.8 they were a chain of 18 passes in a row, the longest
+   path of the build: by the plan's estimates, four workers took 87 minutes with the chain and 56 without it, two
+   workers 125 and 110.
 4. A fresh worker checks every built file against the release's SHA-1 for that base (a different one stops it and
    names the files) and writes the image (`build_disc3`, `isowriter.write` streaming to an OPFS sync access handle,
    8 MB at a time; the built files are read from OPFS as they are written); the image's SHA-1 is compared with the
@@ -307,8 +322,11 @@ The page's progress: one bar for the whole build (getting the builder, reading t
 and a plain line of what is being done now in the player's words (`now.*` in `i18n/`; while building, the steps most
 workers are on), above the per-step and per-worker detail. The bar is the time spent over the time spent and left:
 left is what is left of this phase plus the estimates of the next ones (the download from the measured rate; the jobs
-from plan.json's estimates, critical path or work over the workers, scaled by how the jobs done so far compared; the
-check and the writer from `write_est`), and it never goes back.
+from plan.json's estimates, scaled by how the jobs done so far compared, by playing the plan's schedule forward on the
+workers there are: longest remaining path first, a job after the ones it waits for, `jobsEstimate`, tested by
+`node web/test/estimate.mjs`; the check and the writer from `write_est`), and it never goes back. (Until 0.0.8 it
+was the longer of the critical path and the work over the workers, which is what a build with no waits would take: the
+time left grew all through the build, from 55 minutes to over an hour and a half on four workers.)
 
 File access: tree reads obtain fresh directories, file handles and Files from OPFS. `InvalidStateError` or
 `NotReadableError` retries the read once from the storage root, preserving the requested job version. A second

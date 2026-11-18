@@ -215,13 +215,15 @@ def script_sections(sid):
 
 
 _BASE_NPCS = {}
+_BASE_NAMES = []       # (stubs.base_names(): read from the base's MAPHEAD once, not once per script)
 
 
 def base_npcs(sid):
     """{name: (entity, species id)} of a base script, as the view and its stub name them."""
     if sid not in _BASE_NPCS:
         from . import stubs
-        names = stubs.base_names()
+        if not _BASE_NAMES: _BASE_NAMES.append(stubs.base_names())
+        names = _BASE_NAMES[0]
         _BASE_NPCS[sid] = {nm: (e, sp) for e, nm, sp in stubs.base_npcs(sid, names)}
     return _BASE_NPCS[sid]
 
@@ -1396,15 +1398,21 @@ class Body:
         original engine keeps it in a pstat (`partner_type`, the disc's own form: `atom`, None here); on --exe species / story-state
         a partner can be a species past 255, which a pstat would read as its low byte, so there every test reads the wide
         register (`partner.is(species(n))`). An imported species (180 and up) is recorded for `engine_errors`."""
-        if not (isinstance(c, ast.Compare) and len(c.ops) == 1 and isinstance(c.left, ast.Attribute) and isinstance(c.left.value, ast.Name)
-                and c.left.value.id == 'partner' and c.left.attr in ('species', 'level')): return None
+        raw = (isinstance(c, ast.Compare) and len(c.ops) == 1 and isinstance(c.left, ast.Name) and c.left.id == 'partner_type'
+               and TARGET['exe'] != 'original' and not self.guard and self.raw_species_test(c))       # the disc's own `partner_type in (19, 32)`
+        if not raw and not (isinstance(c, ast.Compare) and len(c.ops) == 1 and isinstance(c.left, ast.Attribute)
+                            and isinstance(c.left.value, ast.Name) and c.left.value.id == 'partner'
+                            and c.left.attr in ('species', 'level')): return None
         op, r = c.ops[0], c.comparators[0]
         wide = TARGET['exe'] in WIDE_EXES; neg = False
         if self.guard:                      # (said, and the rest of the file is still checked)
             self.m.errors.append(self.err(c, "a guard (when=) tests saved state; the partner's species is read when a line runs",
                                           'test it with an `if` inside the handler'))
             return ('lit', 'partner_type == 0')
-        if c.left.attr == 'level': ids = self.level_species(c, op, r)
+        if raw:
+            ids = [x.value for x in (r.elts if isinstance(r, (ast.Tuple, ast.List)) else [r])]
+            neg = isinstance(op, ast.NotEq)
+        elif c.left.attr == 'level': ids = self.level_species(c, op, r)
         elif isinstance(op, ast.In):
             if isinstance(r, ast.Name) and r.id in self.m.consts: r = self.m.consts[r.id]
             if not isinstance(r, (ast.Tuple, ast.List)): raise self.err(r, '`x in (a, b)`: a tuple of constants')
@@ -1418,10 +1426,20 @@ class Body:
                 return None
             neg = isinstance(op, ast.NotEq)
         imp = next((sp for sp in ids if sp >= 180), None)
-        if imp is not None and c.left.attr == 'species': self.m.imported.append((c, imp))
+        if imp is not None and not raw and c.left.attr == 'species': self.m.imported.append((c, imp))
+        if TARGET['exe'] != 'original' and (raw or c.left.attr == 'species'):      # a new baby behaves as the original baby it stands for
+            ids = ids + [b for b, like in sorted(baby_species().items()) if like in ids and b not in ids]
         if not wide and all(sp <= 255 for sp in ids): return None            # the original engine: the pstat (atom)
         lits = [('lit', f'{"!" if neg else ""}partner.is(species({sp}))') for sp in ids]
         return lits[0] if len(lits) == 1 else ('and' if neg else 'or', lits)
+
+    @staticmethod
+    def raw_species_test(c):
+        """`partner_type == n`, `!= n`, `in (n, ...)`: the disc's own species tests (plain numbers)."""
+        r = c.comparators[0]
+        ok = lambda x: isinstance(x, ast.Constant) and isinstance(x.value, int) and not isinstance(x.value, bool)
+        if isinstance(c.ops[0], ast.In): return isinstance(r, (ast.Tuple, ast.List)) and all(ok(x) for x in r.elts)
+        return isinstance(c.ops[0], (ast.Eq, ast.NotEq)) and ok(r)
 
     def retired(self, c):
         """`stat(n)` / `condition(n)`: one form, the partner's names."""
@@ -2282,6 +2300,26 @@ def partner_levels():
             except (OSError, ValueError): continue
             if 'partner' in d and d.get('level') in num and isinstance(d.get('id'), int): _PARTNER_LEVELS[d['id']] = num[d['level']]
     return _PARTNER_LEVELS
+
+
+_BABY_SPECIES = {}
+
+
+def baby_species():
+    """{new baby id: the original species it stands for} of every species of content/species that is a Fresh or In-Training
+    partner without "vanilla": true, as its `vanilla_as` names it (docs/mods/options.md: what it turns into with NEW DIGIMON
+    off). A story test that names an original baby (`partner.species in (Species.Tokomon, ...)`: too small for the boulder, the
+    cold of Freezeland, the arena's door) holds for the new babies that stand for it. Only babies: for an older level
+    `vanilla_as` is a level match, not an identity (an ice Champion stands for Kuwagamon)."""
+    if not _BABY_SPECIES:
+        import glob, json
+        for f in glob.glob(os.path.join(ROOT, 'content', 'species', '*.json')):
+            try: d = json.load(open(f, encoding='utf-8'))
+            except (OSError, ValueError): continue
+            if 'partner' in d and not d.get('vanilla') and d.get('level') in ('fresh', 'in-training') \
+                    and isinstance(d.get('id'), int) and isinstance(d.get('vanilla_as'), int):
+                _BABY_SPECIES[d['id']] = d['vanilla_as']
+    return _BABY_SPECIES
 
 
 def read_now(pre):

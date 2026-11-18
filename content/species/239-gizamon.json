@@ -10,6 +10,7 @@
                  "War Cry", "Super Slap"],
   "drop": {"item": "MP Floppy", "percent": 30},
   "effects_like": 4,
+  "own_effect": {"technique": "Super Slap", "chunk": 308},
   "model": {
     "file": "build/batch5/Gizamon.MMD",
     "radius": 108,

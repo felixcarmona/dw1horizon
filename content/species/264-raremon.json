@@ -11,6 +11,7 @@
                  "Death Claw", "Power Crane"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 42,
+  "own_effect": {"technique": "Death Claw", "chunk": 123},
   "model": {
     "file": "build/sizes-out/models/Raremon.MMD",
     "radius": 210,

@@ -46,6 +46,10 @@ Its outputs go to `build/NAME/` at the paths the disc build reads, and `build/NA
 derived file by disc path with its SHA-1: `tools/build-disc.py --derived` refuses any file that is neither in it nor
 authored, and the patcher turns each into a hole.
 
+Model path discovery (`species.disc_files`) reads no generated model bytes. Buffer measurement and disc assembly
+request `replace_models=True` after generation. The models step records authored intermediates; the plan step
+claims the final disc models, including partner-headroom replacements, so its manifest pins the assembled bytes.
+
 ## Rules that keep it reproducible
 
 - **Strict mode** (`--strict`): no subprocesses or threads, as in the browser.

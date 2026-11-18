@@ -11,7 +11,7 @@ Usage:
   emulator.py wait SEC                 waits SEC seconds
   emulator.py shot [output.png]        screenshot (what the GPU displays)
   emulator.py vram [output.bin]        VRAM dump (1 MB; tools/dev/vram_image.py renders it)
-  emulator.py record OUTPUT.mp4 SEC [FPS]  records video of the screen; can run in parallel with 'seq'
+  emulator.py record OUTPUT.mp4 SEC [FPS]  records every game frame at 60 fps (SEC emulated s; FPS ignored); can run alongside 'seq'
                                   to record while playing. With sound if started with EMU_AUDIO=FILE.raw
                                   (SDL 'disk' driver: raw f32le stereo 44.1 kHz of everything played)
   emulator.py peek ADDR [LEN]          reads RAM (hex); ADDR as RAM address (0x80xxxxxx) or offset
@@ -169,55 +169,85 @@ def ram_val(ram, off, n):
     return int.from_bytes(ram[off:off + n], 'little')
 
 
-def record(out, secs, fps=30):
-    """Captures /api/v1/screen/still at ~fps for secs seconds and encodes an MP4 (×2, H.264).
-    If the emulator was started with EMU_AUDIO, the sound of the same span is cut from the raw
-    capture and muxed (AAC); the video is then timed by the audio (emulated time)."""
-    import tempfile, shutil
+FRAME_BYTES = 320 * 240 * 2                      # one displayed frame: 15-bit, 320x240
+GAME_HZ = 60                                     # the PlayStation's vertical refresh: the clip's frame rate
+
+RECORD_LUA = """REC = {n = 0, stop = %(stop)d, done = false}
+REC.f = Support.File.open('%(raw)s', 'TRUNCATE')
+REC.vl = PCSX.Events.createEventListener('GPU::Vsync', function()
+  if REC.done then return end
+  local s = PCSX.GPU.takeScreenShot()
+  if s.width == 320 and s.height == 240 then REC.f:writeMoveSlice(s.data) else REC.f:write(string.rep('\\0', %(size)d)) end
+  REC.n = REC.n + 1
+  if REC.n >= REC.stop then REC.done = true; REC.f:close(); REC.vl:remove() end
+end)
+return 'recording'
+"""
+
+
+def drawn_frames(frames):
+    """For each refresh, the index of the first refresh that showed the same picture as it: a game that draws
+    every second refresh shows each picture twice, and only changes of picture count as newly drawn frames."""
+    out = []
+    for i, frame in enumerate(frames):
+        out.append(out[-1] if i and frame == frames[i - 1] else i)
+    return out
+
+
+def record(out, secs, fps=GAME_HZ):
+    """Records every refresh of the game's display at the console's own rate: 60 per emulated second, whatever
+    the host load. Not a wall-clock screen grab: a Lua listener on the emulator's GPU::Vsync event takes the
+    displayed buffer (the emulator's own screenshot call, 320x240 15-bit) at each refresh, with no pause and no
+    dropped or duplicated frame, and the MP4 is encoded at exactly 60 fps. `secs` are emulated seconds; the
+    `fps` argument is kept for old callers and ignored. If the emulator was started with EMU_AUDIO, the sound of
+    the same span is cut from the raw capture and muxed (AAC).
+    OUT.frames.json lists, for every video frame, its game refresh number (contiguous) and the refresh at which
+    its picture first appeared (`drawn_at`), so the game's own draw rate can be read from it."""
+    import hashlib, tempfile, shutil
+    total = int(round(secs * GAME_HZ))
     tmp = tempfile.mkdtemp(prefix='rec-', dir=os.path.join(ROOT, 'build'))
+    raw = os.path.join(tmp, 'refreshes.raw')
     audio = (state() or {}).get('audio')
-    n = 0; t0 = time.time(); period = 1.0 / fps
-    capture_times = []
     a0 = os.path.getsize(audio) if audio else 0
     try:
-        while time.time() - t0 < secs:
-            t = time.time()
-            open(os.path.join(tmp, f'{n:06d}.png'), 'wb').write(api('/api/v1/screen/still'))
-            capture_times.append((t, time.time()))
-            n += 1
-            time.sleep(max(0.0, period - (time.time() - t)))
+        from tools.dev.lua import write_script
+        script = write_script('record', 'record', RECORD_LUA % dict(stop=total, raw=raw, size=FRAME_BYTES))
+        started = time.time()
+        r = api('/api/v1/lua/eval?file=' + urllib.parse.quote(script)).decode()
+        if r != 'recording': sys.exit(f'record: {r}')
+        while api('/api/v1/lua/eval?code=return%20tostring(REC.done)').decode() != 'true':
+            if time.time() - started > secs * 40 + 60: sys.exit('record: the emulator did not run long enough')
+            time.sleep(0.25)
         a1 = os.path.getsize(audio) if audio else 0
-        real_fps = n / (time.time() - t0)
+        with open(raw, 'rb') as f:
+            data = f.read()
+        frames = [data[i * FRAME_BYTES:(i + 1) * FRAME_BYTES] for i in range(len(data) // FRAME_BYTES)]
+        if len(frames) != total: sys.exit(f'record: {len(frames)} of {total} frames captured')
+        drawn = drawn_frames(frames)
         ffmpeg = os.path.expanduser('~/.local/bin/ffmpeg')
-        cmd = [ffmpeg, '-y', '-loglevel', 'error']
+        cmd = [ffmpeg, '-y', '-loglevel', 'error', '-f', 'rawvideo', '-pix_fmt', 'bgr555le', '-s', '320x240',
+               '-framerate', str(GAME_HZ), '-i', '-']
+        asecs = 0
         if audio:
             a0 -= a0 % 8; a1 -= a1 % 8                     # f32le stereo frames
             with open(audio, 'rb') as f:
                 f.seek(a0); pcm = f.read(a1 - a0)
             open(os.path.join(tmp, 'audio.raw'), 'wb').write(pcm)
             asecs = len(pcm) / 8 / 44100
-            real_fps = n / asecs if asecs else real_fps
-            cmd += ['-framerate', f'{real_fps:.3f}', '-i', os.path.join(tmp, '%06d.png'),
-                    '-f', 'f32le', '-ar', '44100', '-ac', '2', '-i', os.path.join(tmp, 'audio.raw'),
+            cmd += ['-f', 'f32le', '-ar', '44100', '-ac', '2', '-i', os.path.join(tmp, 'audio.raw'),
                     '-c:a', 'aac', '-b:a', '160k', '-shortest']
-        else:
-            cmd += ['-framerate', f'{real_fps:.3f}', '-i', os.path.join(tmp, '%06d.png')]
         cmd += ['-vf', 'scale=iw*2:ih*2:flags=neighbor,pad=ceil(iw/2)*2:ceil(ih/2)*2',
-                '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '20', out]
-        r = subprocess.run(cmd, capture_output=True, text=True)
-        if r.returncode: sys.exit(r.stderr)
-        # Audio determines MP4 duration, so wall time alone cannot identify a
-        # frame. Keep the observed screen-fetch interval beside each frame.
-        import hashlib
+                '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '20', str(out)]
+        enc = subprocess.run(cmd, input=data, capture_output=True)
+        if enc.returncode: sys.exit(enc.stderr.decode())
         with open(str(out) + '.frames.json', 'w') as f:
-            json.dump(dict(schema=1, video=str(out), recorder_sha256=hashlib.sha256(
-                open(__file__, 'rb').read()).hexdigest(), requested_seconds=secs,
-                encoded_fps=round(real_fps, 3),
-                timing_scope='Screen-fetch wall intervals; scalar samples remain independently observed.',
-                frames=[dict(index=i, video_seconds=i / round(real_fps, 3),
-                             wall_start=start, wall_end=end)
-                        for i, (start, end) in enumerate(capture_times)]), f)
-        print(f'{out}: {n} frames, {real_fps:.1f} fps, {secs:.0f} s' + (f', sound {asecs:.1f} s' if audio else ''))
+            json.dump(dict(schema=2, video=str(out), recorder_sha256=hashlib.sha256(
+                open(__file__, 'rb').read()).hexdigest(), requested_seconds=secs, encoded_fps=GAME_HZ,
+                game_hz=GAME_HZ, timing_scope='Game refreshes (GPU vertical syncs): video frame i is refresh '
+                'game_frame i; no wall clock is involved.', distinct_pictures=len(set(drawn)),
+                frames=[dict(index=i, game_frame=i, drawn_at=d, video_seconds=i / GAME_HZ)
+                        for i, d in enumerate(drawn)]), f)
+        print(f'{out}: {total} frames at {GAME_HZ} fps ({len(set(drawn))} distinct pictures), {secs:.0f} s' + (f', sound {asecs:.1f} s' if audio else ''))
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 
@@ -362,7 +392,7 @@ def main():
                 print(response)
             else: sys.exit(f'unknown step: {step}')
     elif cmd == 'record':
-        # record OUTPUT.mp4 SECONDS [FPS]: records the emulator screen to video (no sound)
+        # record OUTPUT.mp4 SECONDS [FPS]: records every drawn game frame at the game rate
         out, secs = rest[0], float(rest[1]); fps = float(rest[2]) if len(rest) > 2 else 30
         record(out, secs, fps)
     elif cmd in ('save', 'load'):

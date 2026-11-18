@@ -11,6 +11,7 @@
                  "Water Blit", "Ice Needle", "Winter Blast", "Mail Strome"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 60,
+  "own_effect": {"technique": "Mail Strome", "chunk": 324},
   "model": {
     "file": "build/sizes-out/models/Valkyrimon.MMD",
     "radius": 169,

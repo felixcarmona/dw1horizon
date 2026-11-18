@@ -21,8 +21,8 @@ nefertimon.py writes Nefertimon's:
   direction): a swinging leg bends towards it, eased in from the standing bend and back out before it lands.
   A lower bone with a long part along it (a forearm blade) gives `aim` (front/hind: that direction in the bone's
   space): standing and swinging, the bone rolls about itself to keep it pointing ahead. A profile with `pole_world` gives its pole directions in the world (x towards the leg's side) instead of the parent bone's
-  space, for a leg hung from a bone that stands turned in its rest pose. A profile's `extra` (a function of the rig, the gait row, the cycle phase and the pose) moves the parts the module has no row for (Mammothmon's trunk, ears and jaw). A profile's `floor_skip` (bones) leaves out of the floor check the parts the source's own idle hangs under the floor (Mammothmon's trunk tip and tail). A profile's `floor` and `stance_slip` widen the
-under-the-floor and sliding-sole bounds for a rig whose leg plates cannot stay both flat and planted (Tortomon). A gait's `arc` (default 0.8) shapes the lift of a swinging paw: 1 rises as a plain half sine, below 1 it leaves the floor faster. A gait's `clear_ease` (fraction of the swing) brings the clearance under the paw in gradually, so a paw peeled at the end of stance does not jump up at the lift-off. A gait's `world_ease` (true, or a share from 0 to 1 of it) eases a swinging paw's fore-aft travel in the world instead of in the body's frame, so it leaves and lands at rest over the floor (its slip is then small even while it is within a few units of the floor). A gait's `fold_soft` (units) replaces the hard minimum distance `fold` of a swinging wrist from its hip by a smooth maximum of that width. A gait's `leg_reach` (per leg: units) moves one leg's stance window fore or aft of the others'. A gait's `wide`
+  space, for a leg hung from a bone that stands turned in its rest pose. A profile's `extra` (a function of the rig, the gait row, the cycle phase and the pose) moves the parts the module has no row for (Mammothmon's trunk, ears and jaw). A profile's `toes` ({paw: toe bone}, a toe with no turn of its own in the rest pose) counts the toe's points as the paw's when the paw is put on the floor. A profile's `floor_skip` (bones) leaves out of the floor check the parts the source's own idle hangs under the floor (Mammothmon's trunk tip and tail). A profile's `floor` and `stance_slip` widen the
+under-the-floor and sliding-sole bounds for a rig whose leg plates cannot stay both flat and planted (Tortomon). A gait's `lift_soft` (default 1) raises the sine of that lift to a power, so a paw leaves and lands with no vertical speed. A gait's `arc` (default 0.8) shapes the lift of a swinging paw: 1 rises as a plain half sine, below 1 it leaves the floor faster. A gait's `plateau` (default 1, below 1 flattens the top) raises that sine to a power: the paw leaves and lands more steeply and spends more of the swing near its full height. A gait's `clear_ease` (fraction of the swing) brings the clearance under the paw in gradually, so a paw peeled at the end of stance does not jump up at the lift-off. A gait's `world_ease` (true, or a share from 0 to 1 of it) eases a swinging paw's fore-aft travel in the world instead of in the body's frame, so it leaves and lands at rest over the floor (its slip is then small even while it is within a few units of the floor). A gait's `fold_soft` (units) replaces the hard minimum distance `fold` of a swinging wrist from its hip by a smooth maximum of that width. A gait's `leg_reach` (per leg: units) moves one leg's stance window fore or aft of the others'. A gait's `wide`
   (front/hind: units) carries a swinging paw out from its track and back in by the landing. A profile's `body` (a function
   of (rig, cfg, phase, pose, hist), default `body` below) writes the trunk and everything above the legs instead, for a rig
   with no chest or head bone and parts of its own (Woodmon's swinging log arms). A profile's `flat_shin` (front/hind: 0 to 1)
@@ -32,6 +32,8 @@ under-the-floor and sliding-sole bounds for a rig whose leg plates cannot stay b
 
 Each clip is rewritten where it is stored, so its battle aliases play it too. Footsteps keep the species' own
 sound (bank and note) and land on touchdowns; the clip keeps the eye state (texture events) its source opens with.
+A profile's `sink` (units, default 0; a gait row may override it) stands every sole that far under the rig's floor line, for a source whose own idle
+rests below it (Suijinmon's idle sits 3 to 5 units under).
 The build refuses another source, a mesh point under the floor at a tick or a 60 fps third, a sole that slides in
 stance, an open loop, a speed outside the native range, another changed program or the storage budget.
 """
@@ -137,10 +139,25 @@ class Rig:
         self.n = len(skeleton)
         self.idle = animsheet.slot_frames(model, self.n, 0)[0]
         self.rest = [list(v) for v in self.idle[0]]
+        # 'rest_fix' (profile): a function that straightens the rest pose it is given in place (an idle caught mid-move whose
+        # two sides do not mirror), before anything is derived from it
+        if profile.get('rest_fix'):
+            profile['rest_fix'](self.rest)
         # `scale` (profile): the uniform size the rest pose gives the body bone and everything under it (an imported
         # model sized by its idle). Rotations are read with it divided out, link offsets and soles multiplied in.
         self.S = profile.get('scale', 1.0)
+        self.sink = profile.get('sink', 0.0)
         self.verts = {b: [[x * self.S for x in v[:3]] for v in model.tmd.obj_verts(o)] for b, (o, _) in enumerate(skeleton) if o >= 0}
+        # A profile's `claws` ({foot bone: claws bone}) puts the claws' points (a bone that stays at its rest turn under the foot)
+        # into the foot's own, so the floor stands under the claws and not under the foot's sole plate (Maildramon).
+        for paw, toe in profile.get('claws', {}).items():
+            offset = [x * self.S for x in self.rest[toe][6:9]]
+            self.verts[paw] = self.verts[paw] + [add(v, offset) for v in self.verts.pop(toe)]
+        for paw, toe in profile.get('toes', {}).items():
+            # a toe bone with no turn of its own rides the paw: its points count as the paw's for the sole and the floor
+            assert not any(self.rest[toe][3:6]), (paw, toe)
+            off = [x * self.S for x in self.rest[toe][6:9]]
+            self.verts[paw] = self.verts[paw] + [[v[i] + off[i] for i in range(3)] for v in self.verts[toe]]
         still = [list(v) for v in self.rest]
         still[0] = [4096, 4096, 4096, 0, 0, 0, 0, 0, 0]
         W = self.world(still)
@@ -159,6 +176,14 @@ class Rig:
             self.flat_leg[name] = flat_rest
             ahead = mv(flat_rest, toe)
             self.toe_turn[name] = turn_to([0, 0, -1], [ahead[0], 0.0, ahead[2]])
+        # 'mirror_paws' (profile): the left paws stand as the right ones mirrored in the world, for a rig whose rest pose
+        # (an idle caught mid-stride) tilts the left paws differently from the right ones
+        if profile.get('mirror_paws'):
+            for left, right in MIRROR.items():
+                if right in self.flat_leg:
+                    self.flat_leg[left] = mul(mul(MIRROR_X, self.flat_leg[right]), MIRROR_X)
+                    if right in self.toe_turn:
+                        self.toe_turn[left] = mul(mul(MIRROR_X, self.toe_turn[right]), MIRROR_X)
         # Reference bend planes: each right leg's standing pose; the left legs take it mirrored in the world.
         self.ref = {}
         for name, (up, lo, paw, side, front) in profile['legs'].items():
@@ -182,8 +207,10 @@ class Rig:
         k = 1.0 if b == 0 else 1.0 / self.S
         return [[x * k for x in r[:3]] for r in W[b][:3]]
 
-    def sole(self, front):
-        return [x * self.S for x in self.p['sole'][front]]
+    def sole(self, front, name=None):
+        # 'sole' may also name a leg ('L': point), for a rig whose left paw bone is not the right one mirrored (its axes
+        # turned half a turn about the vertical, Angemon's), so the same sole point sits elsewhere in its space
+        return [x * self.S for x in self.p['sole'].get(name, self.p['sole'][front])]
 
     def world(self, pose):
         p = [list(v) for v in pose]
@@ -296,8 +323,8 @@ def leg_phase(cfg, name, phase):
 def standing(rig, name, track, z, world):
     """The wrist (hock) of a paw whose sole pivot stands at z on the floor, at a world rotation."""
     paw, front = rig.p['legs'][name][2], rig.p['legs'][name][4]
-    wrist = sub([track, 0.0, z], mv(world, rig.sole(front)))
-    wrist[1] = -rig.p['clear'] - rig.lowest(paw, world, [0, 0, 0])
+    wrist = sub([track, 0.0, z], mv(world, rig.sole(front, name)))
+    wrist[1] = -rig.p['clear'] - rig.lowest(paw, world, [0, 0, 0]) + rig.sink
     return wrist
 
 
@@ -372,8 +399,21 @@ def body(rig, cfg, phase, pose, hist):
 
 
 def gait(rig, cfg):
+    """One cycle of the gait row `cfg`. A row's own `clear` (units) replaces the profile's: a fast run whose feet turn a long
+    way between two ticks lets its soles ride that far above the floor, so that the in-between poses of the 60 fps player
+    stay above it."""
+    base = rig.p['clear']
+    rig.p['clear'] = cfg.get('clear', base)
+    try:
+        return _gait(rig, cfg)
+    finally:
+        rig.p['clear'] = base
+
+
+def _gait(rig, cfg):
     p = rig.p
     ticks, speed = cfg['ticks'], cfg['speed']
+    rig.sink = cfg.get('sink', p.get('sink', 0.0))      # a gait row may stand its soles deeper or shallower than the profile
     rest = rig.rest
     W = rig.still
     centres, tracks = {}, {}
@@ -449,7 +489,7 @@ def gait(rig, cfg):
                 share = 1.0 if cfg['world_ease'] is True else cfg['world_ease']     # a share < 1 keeps the paw nearer the body
                 flight[2] = share * (z_world + speed * swing_ticks * s) + (1 - share) * flight[2]
             flight[2] -= mul_ * cfg['out'][key] * 6.75 * s * s * (1 - s)    # reaches past the landing, then settles onto it
-            flight[1] -= mul_ * cfg['lift'][key] * math.sin(math.pi * min(1.0, s ** cfg.get('arc', 0.8)))
+            flight[1] -= mul_ * cfg['lift'][key] * (math.sin(math.pi * min(1.0, s ** cfg.get('arc', 0.8))) ** cfg.get('plateau', 1.0)) ** cfg.get('lift_soft', 1.0)
             flight[0] += side * cfg.get('wide', {}).get(key, 0) * math.sin(math.pi * s)    # swings wide of the body
             world = rig.paw(front, swing_pitch(cfg, front, s), name)
             dip = rig.lowest(paw, world, [0, 0, 0])
@@ -523,7 +563,7 @@ def _stance_slip(rig, cfg, frames):
             here = []
             for pose in (frames[t], frames[t + 1]):
                 W = rig.world(pose)
-                point = add([W[paw][i][3] for i in range(3)], mv(rig.R(W, paw), rig.sole(front)))
+                point = add([W[paw][i][3] for i in range(3)], mv(rig.R(W, paw), rig.sole(front, name)))
                 here.append(point[2] + pose[0][8])
             moved += abs(here[1] - here[0])
             travel += abs(frames[t + 1][0][8] - frames[t][0][8])
@@ -578,7 +618,7 @@ def build(data, skeleton, profile):
                 events.append((tick, 'sound', dict(sound, frame=tick + 1)))
         events.sort(key=lambda e: e[0])
         frames = [[[round(x) for x in bone] for bone in pose] for pose in frames]
-        animation = mmd.encode_anim(frames, n, loop_sample=0, events=events, tol=1)
+        animation = mmd.encode_anim(frames, n, loop_sample=0, events=events, tol=profile.get('tol', 1))
         index = old.anims.table[slot]
         new.anims.anims[index] = animation          # in place: the slot's aliases play it too
         changed |= {s for s, i in enumerate(old.anims.table) if i == index}

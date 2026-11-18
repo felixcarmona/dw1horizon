@@ -10,6 +10,7 @@
                  "Muscle Charge", "War Cry", "Sonic Jab", "Tremar", "Solar Ray"],
   "drop": {"item": "Off. Disk", "percent": 20},
   "effects_like": 9,
+  "own_effect": {"technique": "Solar Ray", "chunk": 310},
   "model": {
     "file": "build/batch6/Wizardmon.MMD",
     "radius": 133,

@@ -10,6 +10,7 @@
                  "War Cry", "Boom Bubble"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 45,
+  "own_effect": {"technique": "Boom Bubble", "chunk": 256},
   "model": {
     "file": "build/batch/Hawkmon.MMD",
     "radius": 100,

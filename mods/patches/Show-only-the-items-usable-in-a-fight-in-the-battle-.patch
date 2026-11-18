@@ -1,0 +1,214 @@
+From 3e520f5b4e7567b06f8cb3ced85851bbf436dd5a Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 17 Nov 2026 20:52:25 +0000
+Subject: [PATCH] Show only the items usable in a fight in the battle item list
+
+---
+ src/main/inventory.c                          |  10 +++
+ src/main/mod_feed.c                           |  82 ++++++++++++++++++
+ .../gen_lang_files.cpython-312.pyc            | Bin 0 -> 5392 bytes
+ 3 files changed, 92 insertions(+)
+ create mode 100644 tools/__pycache__/gen_lang_files.cpython-312.pyc
+
+diff --git a/src/main/inventory.c b/src/main/inventory.c
+index d3586ce..e277015 100644
+--- a/src/main/inventory.c
++++ b/src/main/inventory.c
+@@ -279,8 +279,14 @@ void drawInventoryTextLine(int16_t startSlot)
+ 	DrawSync(0);
+ }
+ 
++/* MOD (battle item list): modBag* in mod_feed.c */
++void modBagFilterForBattle(void);
++void modBagRestoreAfterBattle(void);
++void modBagForget(void);
++
+ void initializeInventoryUI(void)
+ {
++	modBagForget();
+ 	INVENTORY_ACTION = 0;
+ 	IS_INVENTORY_INITIALIZED = 0;
+ }
+@@ -291,6 +297,9 @@ void addInventoryUI(void)
+ 	    (TAMER_ITEM.worldItem.type == ITEM_NONE)) {
+ 		IS_INVENTORY_INITIALIZED = 1;
+ 		INVENTORY_ACTION = 1;
++		if (GAME_STATE == 1) {
++			modBagFilterForBattle();
++		}
+ 		addObject(0x1a5, 0, tickInventoryUI, 0);
+ 	}
+ }
+@@ -430,6 +439,7 @@ void closeInventoryBoxes(void)
+ 	if (IS_INVENTORY_INITIALIZED != 0) {
+ 		IS_INVENTORY_INITIALIZED = 0;
+ 		INVENTORY_ACTION = 0;
++		modBagRestoreAfterBattle();
+ 		for (i = 0; i < 4; i++) {
+ 			if (UI_BOX_DATA[i].state != 0) {
+ 				removeStaticUIBox(i);
+diff --git a/src/main/mod_feed.c b/src/main/mod_feed.c
+index 7a2a7d8..55ace6e 100644
+--- a/src/main/mod_feed.c
++++ b/src/main/mod_feed.c
+@@ -553,3 +553,85 @@ int32_t modFeedTick(void)
+ 	addObject(FEED_OBJECT_ID, 0, feedTick, NULL);
+ 	return 1;
+ }
++
++/* MOD (battle item list): in a fight the bag shows only what can be thrown. The real bag waits here while the list is
++ * open; closing puts it back, the usable items in the order the list left them (Move and Sort still count). */
++ItemId MOD_BAG_TYPES[30];
++uint8_t MOD_BAG_AMOUNTS[30];
++uint8_t MOD_BAG_HELD;
++
++static int32_t isBattleItem(ItemId type)
++{
++	return (type != ITEM_NONE) && ((ITEM_PARA[type].itemColor == 1) || (ITEM_PARA[type].itemColor == 2));
++}
++
++void modBagFilterForBattle(void)
++{
++	int32_t i;
++	int32_t n;
++
++	if (MOD_BAG_HELD != 0) {
++		return;
++	}
++	MOD_BAG_HELD = 1;
++	n = 0;
++	for (i = 0; i < INVENTORY.size; i++) {
++		MOD_BAG_TYPES[i] = INVENTORY.types.array[i];
++		MOD_BAG_AMOUNTS[i] = INVENTORY.amounts.array[i];
++	}
++	for (i = 0; i < INVENTORY.size; i++) {
++		if (isBattleItem(MOD_BAG_TYPES[i])) {
++			INVENTORY.types.array[n] = MOD_BAG_TYPES[i];
++			INVENTORY.amounts.array[n] = MOD_BAG_AMOUNTS[i];
++			INVENTORY.names.array[n] = n;
++			n++;
++		}
++	}
++	for (; n < INVENTORY.size; n++) {
++		INVENTORY.types.array[n] = ITEM_NONE;
++		INVENTORY.amounts.array[n] = 0;
++		INVENTORY.names.array[n] = 0xff;
++	}
++}
++
++void modBagRestoreAfterBattle(void)
++{
++	int32_t i;
++	int32_t n;
++	ItemId held;
++
++	if (MOD_BAG_HELD == 0) {
++		return;
++	}
++	MOD_BAG_HELD = 0;
++	held = INVENTORY.types.array[INVENTORY_POINTER];
++	n = 0;
++	for (i = 0; i < INVENTORY.size; i++) {
++		if (isBattleItem(MOD_BAG_TYPES[i])) {
++			while ((n < INVENTORY.size) && (INVENTORY.types.array[n] == ITEM_NONE)) {
++				n++;
++			}
++			if (n < INVENTORY.size) {
++				MOD_BAG_TYPES[i] = INVENTORY.types.array[n];
++				MOD_BAG_AMOUNTS[i] = INVENTORY.amounts.array[n];
++				n++;
++			} else {
++				MOD_BAG_TYPES[i] = ITEM_NONE;
++				MOD_BAG_AMOUNTS[i] = 0;
++			}
++		}
++	}
++	for (i = 0; i < INVENTORY.size; i++) {
++		INVENTORY.types.array[i] = MOD_BAG_TYPES[i];
++		INVENTORY.amounts.array[i] = MOD_BAG_AMOUNTS[i];
++		INVENTORY.names.array[i] = (MOD_BAG_TYPES[i] != ITEM_NONE) ? i : 0xff;
++		if ((held != ITEM_NONE) && (MOD_BAG_TYPES[i] == held)) {
++			INVENTORY_POINTER = i; /* the throw that follows reads the slot by number */
++		}
++	}
++}
++
++void modBagForget(void)
++{
++	MOD_BAG_HELD = 0;
++}
+diff --git a/tools/__pycache__/gen_lang_files.cpython-312.pyc b/tools/__pycache__/gen_lang_files.cpython-312.pyc
+new file mode 100644
+index 0000000000000000000000000000000000000000..ab899bda88e0c1ceea2d3e214d7ced339d265f34
+GIT binary patch
+literal 5392
+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
+F{2%cj*rNad
+
+literal 0
+HcmV?d00001
+
+-- 
+2.55.0
+

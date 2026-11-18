@@ -13,6 +13,13 @@ step does (the import Provider, crmath and pysum installed), so an animation can
                                       entry (--no-species-pins: leave it to a developer build with --write-locks)
   tools/models/edit.py check [ID ...]           decode and verify every pin (all 175 without IDs); --species-pins also the
                                       provider pins (the 65 field overlays are made again: slower)
+  tools/models/edit.py repin ID MMD [TIM]       before `put` of an edit that changes a field overlay's input (a battle slot
+                                      restored): move the overlay's reviewed-input pins (the species' PROFILES row
+                                      `source` in gaits.py / secondary_motion.py, its chibi.json `source_sha256` and
+                                      `post_source_sha256`, or its active follow-through input) from the current model's input to MMD's; refuses when that
+                                      input is pinned anywhere else
+                                      Authored builders: after encoding with their own tool, refresh only their final
+                                      provider pins; MMD/TIM must match the current builder output.
   tools/models/edit.py sources OUT [ID ...]     write the importer outputs (the delta sources) at their pinned paths under OUT;
                                       --unchecked after an importer change (no pins, no cache)
   tools/models/edit.py rebase OLD NEW [ID ...]  the importer changed: decode each delta against OLD's sources, re-encode against
@@ -90,6 +97,11 @@ class Sources(Provider):
     def __init__(self, games, work, caches=(), unchecked=False):
         super().__init__(games, work, ROOT)
         self.caches, self.unchecked = [Path(c) for c in caches], unchecked
+        if unchecked:
+            # An intentional importer change cannot match the old source pins.
+            # Replay the frozen mesh choice without invoking the legacy search
+            # merely because a material byte changed.
+            self.source_pins = {}
         self.known = {}
         for row in load(MODELS)['models']:
             for kind in ('mmd', 'tim'):
@@ -98,6 +110,8 @@ class Sources(Provider):
         for r in self.sizes.values():
             self.known.setdefault(r['source'], r['source_sha256'])
             self.known.setdefault(r['target'], r['sha256'])
+        for r in json.loads((IMPORTED_MODELS_SCRIPT.parent / 'bound-battle.json').read_text()).values():
+            self.known.setdefault(r['battle_source']['path'], r['battle_source']['sha256'])
 
     def source(self, name):
         if name not in self.cache and not self.unchecked:
@@ -207,9 +221,25 @@ def import_records():
     return json.loads((IMPORTED_MODELS_SCRIPT.parent / 'models.json').read_text())
 
 
-def provider_pin(species, model, tim):
-    """Hash the final provider files, including native builders, field overlays and battle repairs."""
-    sha1 = lambda b: hashlib.sha1(b).hexdigest()  # noqa: E731
+def donor_models(a, species):
+    """{donor species: its current model} of a species whose native binding takes an imported species as its donor
+    (native-bindings.json `donor_species`): the overlay reads that model from the imported base models too; for a
+    model bound offline (bound-battle.json), {'ID.battle': its battle source}."""
+    recipe = json.loads((IMPORTED_MODELS_SCRIPT.parent / 'native-bindings.json').read_text()).get(str(species), {})
+    if json.loads((IMPORTED_MODELS_SCRIPT.parent / 'bound-battle.json').read_text()).get(str(species)):
+        # a model bound offline: its overlay plays the battle source the imports step writes next to it
+        with importing(a.games_dir):
+            return {f'{species}.battle': provider(a, a.games_dir, species).battle_source(species)}
+    if not recipe.get('donor_species'):
+        return {}
+    donor = recipe['donor_species']
+    return {donor: build(a, rows(load(MODELS), [str(donor)])[0])[0]}
+
+
+def provider_output(species, model, tim, donors=None):
+    """The final provider output of a species: (model bytes, texture bytes, the species file it makes, with the generated
+    skeleton of a native binding in model.skeleton). Includes native builders, field overlays and battle repairs. `donors`
+    are the other imported species' models the species' overlay reads (donor_models)."""
     builder = import_records()[str(species)].get('builder')
     if builder:
         model, tim = importlib.import_module(builder).build(ROOT / 'extracted')
@@ -218,23 +248,37 @@ def provider_pin(species, model, tim):
         base.mkdir()
         (base / f'{species}.MMD').write_bytes(model)
         (base / f'{species}.TIM').write_bytes(tim)
+        for donor, data in (donors or {}).items():
+            (base / f'{donor}.MMD').write_bytes(data)
         spec = importlib.util.spec_from_file_location('imported_species_edit', IMPORTED_MODELS_SCRIPT)
         imported_models = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(imported_models)
         imported_models.BASE_MODELS = str(base)
+        # Generators retain references to these modules. Keep one interpreter
+        # and species catalogue for the whole check, so a later native gait
+        # sees the same registered skeleton as the shared rig fitter.
+        import mmd
+        import species as species_tools
         saved = set(sys.modules)
         crmath.install()
         pysum.install()
         try:
             with contextlib.redirect_stdout(io.StringIO()):
                 _, s = imported_models.species_file(str(Path(tmp) / 'species'), str(species), generate=True)
-            return [sha1(Path(s['model']['file']).read_bytes()), sha1(Path(s['texture']['file']).read_bytes())]
+            return Path(s['model']['file']).read_bytes(), Path(s['texture']['file']).read_bytes(), s
         finally:
             crmath.uninstall()
             crmath.clear()
             pysum.uninstall()
             for n in [n for n in sys.modules if n not in saved and n.split('.')[0] in ('species', 'mmd')]:
                 del sys.modules[n]
+
+
+def provider_pin(species, model, tim, donors=None):
+    """SHA-1 of the final provider files (provider_output)."""
+    sha1 = lambda b: hashlib.sha1(b).hexdigest()  # noqa: E731
+    final_model, final_tim, _ = provider_output(species, model, tim, donors)
+    return [sha1(final_model), sha1(final_tim)]
 
 
 def species_pins():
@@ -265,6 +309,12 @@ def cmd_put(a):
     manifest = load(MODELS)
     row, = rows(manifest, [a.id])
     files = {'mmd': Path(a.mmd).read_bytes()}
+    donor_text = None
+    if getattr(a, 'repin_donors_from', None):
+        donor_text = repin_donors(NATIVE_ROWS.read_text(), row['id'],
+                                  sha256(Path(a.repin_donors_from).read_bytes()), sha256(files['mmd']))
+        if donor_text is None:
+            raise ValueError(f"{row['id']}: no native binding pins that donor input")
     if a.tim:
         files['tim'] = Path(a.tim).read_bytes()
     changed = {k: d for k, d in files.items() if a.force or sha256(d) != row[k]['sha256']}
@@ -280,7 +330,7 @@ def cmd_put(a):
     # Field overlays can refuse an edited model (no reviewed acting profile). Validate them before
     # replacing any delta or manifest pin, so a rejected put leaves the current models usable.
     step, pins = species_pins()
-    new = None if a.no_species_pins else provider_pin(row['id'], files['mmd'], tim)
+    new = None if a.no_species_pins else provider_pin(row['id'], files['mmd'], tim, donor_models(a, row['id']))
     pinned = {k: row[k]['sha256'] for k in changed}
     for kind, data in changed.items():
         record = row[kind]
@@ -292,6 +342,9 @@ def cmd_put(a):
         record.update(delta_sha256=sha256(delta), sha256=sha256(data), size=len(data))
         same = 'byte-identical' if delta == old else f'{len(old)} -> {len(delta)} B'
         print(f'{record["delta"]}: {same}; target sha256 {record["sha256"]}')
+    if donor_text is not None:
+        NATIVE_ROWS.write_text(donor_text)
+        print(f'{NATIVE_ROWS.relative_to(ROOT)}: donor pins of {row["id"]} updated')
     save(MODELS, manifest)
     print(f'{MODELS.relative_to(ROOT)}: pins of {row["id"]} {row["name"]} updated')
     if a.no_species_pins:
@@ -312,15 +365,24 @@ def cmd_put(a):
 
 
 def cmd_check(a):
-    selected = rows(load(MODELS), a.ids)
+    manifest = load(MODELS)
     pins = species_pins()[1]['imports'] if a.species_pins else None
+    delta_ids = {str(row['id']) for row in manifest['models']}
+    builders = {sid: row for sid, row in import_records().items()
+                if pins is not None and row.get('builder') and sid not in delta_ids}
+    if a.ids:
+        requested = [sid for sid in a.ids if str(sid) not in builders]
+        selected = rows(manifest, requested) if requested else []
+        builders = {sid: row for sid, row in builders.items() if sid in {str(value) for value in a.ids}}
+    else:
+        selected = rows(manifest, [])
     bad = 0
     for row in selected:
         try:
             model, tim, _ = build(a, row)
             note = ''
             if pins is not None:
-                got = provider_pin(row['id'], model, tim)
+                got = provider_pin(row['id'], model, tim, donor_models(a, row['id']))
                 if got != pins.get(str(row['id'])):
                     raise SystemExit(f'species-pins.json has {pins.get(str(row["id"]))}, made {got}')
                 note = ', provider pins'
@@ -328,8 +390,339 @@ def cmd_check(a):
         except (SystemExit, ValueError) as e:
             bad += 1
             print(f'{row["id"]} {row["name"]}: FAILED: {e}', flush=True)
-    print(f'{len(selected) - bad}/{len(selected)} verified')
+    for sid, row in sorted(builders.items(), key=lambda pair: int(pair[0])):
+        try:
+            model, tim = importlib.import_module(row['builder']).build(ROOT / 'extracted')
+            got = provider_pin(int(sid), model, tim, donor_models(a, int(sid)))
+            if got != pins.get(sid):
+                raise SystemExit(f'species-pins.json has {pins.get(sid)}, made {got}')
+            print(f'{sid}: authored model, MMD and TIM verified, provider pins', flush=True)
+        except (SystemExit, ValueError) as e:
+            bad += 1
+            print(f'{sid}: FAILED: {e}', flush=True)
+    total = len(selected) + len(builders)
+    print(f'{total - bad}/{total} verified')
     return 1 if bad else 0
+
+
+# ------------------------------------------------------------------ the field overlays' reviewed-input pins
+# A field overlay is reviewed on one input model and pins it by SHA-256: a generator's profile (`source='...'` in the
+# species' row of PROFILES) and the chibi row (content/models/imports/chibi.json `source_sha256`, and
+# `post_source_sha256`: the input after its base generator). An edit stored with `put` that changes the overlay's input
+# (a battle slot given back to the source game's clip) moves those pins with `repin`, before `put`.
+PROFILE_MODULES = ('tools/models/field_animations/gaits.py', 'tools/models/field_animations/secondary_motion.py',
+                   'tools/models/field_animations/gazimon.py')
+CHIBI_ROWS = IMPORTED_MODELS_SCRIPT.parent / 'chibi.json'
+PACE_ROWS = IMPORTED_MODELS_SCRIPT.parent / 'pace.json'
+NATIVE_ROWS = IMPORTED_MODELS_SCRIPT.parent / 'native-bindings.json'
+CELEBRATION_ROWS = IMPORTED_MODELS_SCRIPT.parent / 'celebrations.json'
+FOLLOWTHROUGH_ROWS = IMPORTED_MODELS_SCRIPT.parent / 'followthrough.json'
+PIN_FOLDERS = ('content/models/imports', 'tools/models/field_animations')
+
+
+def repin_profile(text, species, old, new):
+    """`text`, an overlay module's source, with the profile of `species` pinned to `new` instead of `old`; None when the
+    module has no profile of the species. Refuses a profile pinned to another input."""
+    import re
+    found = list(re.finditer(rf"^\s*{int(species)}\s*:\s*dict\(\s*source\s*=\s*'([0-9a-f]{{64}})'"
+                             rf"|^\s*species\s*=\s*{int(species)}\s*,\s*source\s*=\s*'([0-9a-f]{{64}})'", text, re.M))
+    if not found:
+        return None
+    if len(found) != 1:
+        raise ValueError(f'{species}: {len(found)} profiles of the species')
+    pin = found[0]
+    group = 1 if pin.group(1) else 2
+    if pin.group(group) != old:
+        raise ValueError(f'{species}: its profile pins {pin.group(group)}, not the current input {old}')
+    return text[:pin.start(group)] + new + text[pin.end(group):]
+
+
+def repin_chibi(chibi_rows, species, old, new, post):
+    """Move the chibi row of `species` from input `old` to `new` (`post`: the new input after the row's base generator);
+    False when the species has no chibi row. Refuses a row pinned to another input."""
+    row = chibi_rows.get(str(species))
+    if row is None:
+        return False
+    if row['source_sha256'] != old:
+        raise ValueError(f'{species}: its chibi row pins {row["source_sha256"]}, not the current input {old}')
+    row['source_sha256'], row['post_source_sha256'] = new, post
+    return True
+
+
+def repin_donors(text, species, old, new):
+    """`text`, content/models/imports/native-bindings.json, with the donor pin of every recipe that takes imported species
+    `species` as its donor (`donor_species`) moved from `old` to `new`; None when no recipe does. A native binding of such a
+    donor is checked against the donor's current model, so an edit of the donor moves the pin (its output is verified apart)."""
+    import re
+    moved = None
+    for match in list(re.finditer(r'^  "(\d+)": \{', text, re.M))[::-1]:
+        end = re.search(r'^  "\d+": \{', text[match.end():], re.M)
+        stop = match.end() + end.start() if end else len(text)
+        block = text[match.start():stop]
+        if f'"donor_species": {int(species)},' in block and f'"donor_sha256": "{old}"' in block:
+            moved = moved or text
+            moved = moved[:match.start()] + block.replace(f'"donor_sha256": "{old}"', f'"donor_sha256": "{new}"') + moved[stop:]
+    return moved
+
+
+def repin_constant(text, old, new):
+    """`text`, a generator module's source, with its one input pin (`SOURCE = 'old'` at module level, or the `source='old'`
+    line of its PROFILE) moved to `new`; None when it has not exactly one."""
+    import re
+    found = list(re.finditer(rf"^(?:SOURCE\s*=\s*|\s+source\s*=\s*)'({old})'", text, re.M))
+    if len(found) != 1:
+        return None
+    return text[:found[0].start(1)] + new + text[found[0].end(1):]
+
+
+def pins_nothing(text):
+    """True when a generator module's source holds no sha256 digest at all: it takes any input and has no pin to move."""
+    import re
+    return re.search(r'\b[0-9a-f]{64}\b', text) is None
+
+
+def repin_pace(text, species, old, new, post=None):
+    """`text`, content/models/imports/pace.json, with the field pace row of `species` pinned to `new` instead of `old`;
+    None when the species has no row. A row without a base generator has its post-source follow (`post` is `new`); a row
+    that follows a base generator needs `post`, the new input after that generator. A row pinned to another input is refused."""
+    import re
+    start = re.search(rf'^ "{int(species)}": \{{', text, re.M)
+    if not start:
+        return None
+    end = re.search(r'^ "\d+": \{', text[start.end():], re.M)
+    stop = start.end() + end.start() if end else len(text)
+    block = text[start.start():stop]
+    if f'"source_sha256": "{old}"' not in block:
+        raise ValueError(f'{species}: its pace row does not pin the current input {old}')
+    if '"base_generator": null' in block:
+        post = new
+    elif post is None:
+        raise ValueError(f'{species}: its pace row follows a base generator; give the new input after it')
+    block = re.sub(r'("source_sha256": ")[0-9a-f]{64}', rf'\g<1>{new}', block)
+    block = re.sub(r'("post_source_sha256": ")[0-9a-f]{64}', rf'\g<1>{post}', block)
+    return text[:start.start()] + block + text[stop:]
+
+
+def module_from_text(name, path, text):
+    """A fresh copy of module `name` as `text` (a moved pin, not yet written) reads; the imported one stays as it is."""
+    import types
+    module = types.ModuleType(name)
+    module.__file__ = str(path)
+    exec(compile(text, str(path), 'exec'), module.__dict__)
+    return module
+
+
+@contextlib.contextmanager
+def staged_manifests(texts):
+    """Validate generators against proposed JSON pins before writing them."""
+    from unittest.mock import patch
+    original = Path.read_text
+    def read(path, *args, **kwargs):
+        return texts[path] if path in texts else original(path,*args,**kwargs)
+    with patch.object(Path,'read_text',read):
+        yield
+
+
+def stage_module(name, texts):
+    """Module `name` as the files about to be written read it."""
+    path = ROOT / (name.replace('.', '/') + '.py')
+    return module_from_text(name, path, texts[path]) if path in texts else importlib.import_module(name)
+
+
+def repin_celebration(text, species, old, new):
+    """`text`, the celebrations manifest, with the row of `species` pinned to `new` instead of `old` (only that pin's digits
+    change, the file keeps its layout); None when the species has no row. Refuses a row pinned to another input."""
+    row = json.loads(text).get(str(species))
+    if row is None:
+        return None
+    if row['source_sha256'] != old:
+        raise ValueError(f'{species}: its celebrations row pins {row["source_sha256"]}, not the current input {old}')
+    if text.count(old) != 1:
+        raise ValueError(f'{species}: the celebrations manifest names the input {text.count(old)} times')
+    return text.replace(old, new)
+
+
+def stray_pins(texts, old):
+    """Paths (in PIN_FOLDERS) that still name `old`, the files about to be written read from `texts` {path: text}."""
+    out = []
+    for folder in PIN_FOLDERS:
+        for path in sorted((ROOT / folder).iterdir()):
+            if path.suffix in ('.py', '.json') and old in texts.get(path, path.read_text()):
+                out.append(str(path.relative_to(ROOT)))
+    return out
+
+
+def repin_technique_inputs(sid, model, tim, donors=None):
+    """Review current provider inputs through the complete timing/heap checks.
+
+    Proportion recipe changes can change attack translations without changing
+    the overlay input. Explicit --technique-inputs moves those downstream pins.
+    """
+    from unittest.mock import patch
+    from tools.models import technique_timing
+    records = import_records()
+    recipes = records[str(sid)].get('technique_timing', {})
+    if not recipes:
+        return
+    program, hashes = technique_timing.program, {}
+
+    def reviewed(source, bones, slot, recipe):
+        digest = sha256(source.build())
+        hashes[recipe['source']] = digest
+        return program(source, bones, slot, dict(recipe, source_sha256=digest))
+
+    with patch.object(technique_timing, 'program', reviewed):
+        provider_output(sid, model, tim, donors)
+    path = IMPORTED_MODELS_SCRIPT.parent / 'models.json'
+    text = path.read_text()
+    # The registry keeps one species per line; retain its formatting and every
+    # other species' pins, even if two source programs share a hash.
+    line = next(line for line in text.splitlines() if line.startswith(f' "{sid}": '))
+    row = json.loads('{' + line.rstrip(',') + '}')[str(sid)]
+    for recipe in row['technique_timing'].values():
+        recipe['source_sha256'] = hashes[recipe['source']]
+    updated = f' "{sid}": ' + json.dumps(row) + (',' if line.endswith(',') else '')
+    if updated != line:
+        path.write_text(text.replace(line, updated, 1))
+        print(f'{path.relative_to(ROOT)}: {sid} technique input pins updated after provider validation')
+
+
+def cmd_repin(a):
+    from tools.models import variants
+    manifest = load(MODELS)
+    # Authored builders store their delta pins in their own manifest. After
+    # encoding there, refresh just this final provider's pins.
+    registration = import_records().get(str(a.id), {})
+    if registration.get('builder') and not any(str(r['id']) == str(a.id) for r in manifest['models']):
+        sid = int(a.id)
+        model, tim = importlib.import_module(registration['builder']).build(ROOT / 'extracted')
+        if Path(a.mmd).read_bytes() != model or (a.tim and Path(a.tim).read_bytes() != tim):
+            raise SystemExit(f'{sid}: encode the authored model first; repin requires the current builder output')
+        step, pins = species_pins()
+        pins['imports'][str(sid)] = provider_pin(sid, model, tim, donor_models(a, sid))
+        step._write_pins(pins)
+        print(f'{step.PINS}: authored imports {sid} repinned')
+        return
+    row, = rows(manifest, [a.id])
+    sid = row['id']
+    model, tim, _ = build(a, row)
+    new_model = Path(a.mmd).read_bytes()
+    new_tim = Path(a.tim).read_bytes() if a.tim else tim
+    old_input = variants.overlay_input(sid, model, tim)
+    old, new = sha256(old_input), None
+    new_input = variants.overlay_input(sid, new_model, new_tim)
+    new = sha256(new_input)
+    if old == new:
+        print(f'{sid} {row["name"]}: the overlays\' input is unchanged ({old}); nothing to move')
+        if getattr(a, 'technique_inputs', False):
+            repin_technique_inputs(sid, new_model, new_tim, donor_models(a, sid))
+        return
+    texts = {}
+    active_overlay = import_records()[str(sid)].get('field_overlay')
+    native_rows = load(NATIVE_ROWS)
+    if active_overlay and str(sid) in native_rows:
+        moved = repin_celebration(NATIVE_ROWS.read_text(), sid, old, new)
+        if moved is not None:
+            texts[NATIVE_ROWS] = moved
+    bound_path = IMPORTED_MODELS_SCRIPT.parent / 'bound-battle.json'
+    bound_rows = load(bound_path)
+    if str(sid) in bound_rows:
+        bound = bound_rows[str(sid)]
+        if bound['source_sha256'] != old:
+            raise ValueError(f'{sid}: bound battle does not pin the current input {old}')
+        bound['source_sha256'] = new
+        # The auxiliary source is also regenerated when importer materials
+        # change. Its reviewed binding and animation recipe stay unchanged.
+        with importing(a.games_dir):
+            auxiliary = provider(a, a.games_dir, sid, unchecked=True).source(bound['battle_source']['path'])
+        bound['battle_source']['sha256'] = sha256(auxiliary)
+        texts[bound_path] = json.dumps(bound_rows, indent=2) + '\n'
+    for name in PROFILE_MODULES:
+        moved = repin_profile((ROOT / name).read_text(), sid, old, new)
+        if moved is not None:
+            texts[ROOT / name] = moved
+    moved = repin_donors(NATIVE_ROWS.read_text(), sid, old, new)
+    if moved is not None:
+        texts[NATIVE_ROWS] = repin_donors(texts.get(NATIVE_ROWS, NATIVE_ROWS.read_text()), sid, old, new)
+    for path in sorted((ROOT / 'tools/models/field_animations').glob('*.py')):      # a generator pins its own input
+        if path not in texts:
+            moved = repin_constant(path.read_text(), old, new)
+            if moved is not None:
+                texts[path] = moved
+    equipment_path = IMPORTED_MODELS_SCRIPT.parent / 'animation-repairs.json'
+    equipment = repin_celebration(equipment_path.read_text(), sid, old, new)
+    if equipment is not None:
+        texts[equipment_path] = equipment
+    skeleton = json.loads(next((ROOT / 'content/species').glob(f'{sid}-*.json')).read_text())['model']['skeleton']
+    stale = [old]
+
+    def after_base(name, data):
+        """`data` after the base generator `name`, run with the pins as the files about to be written read them."""
+        module = importlib.import_module(name)
+        manifest = getattr(module,'PROFILES',getattr(module,'MANIFEST',None))
+        if ROOT / (name.replace('.', '/') + '.py') not in texts and not (isinstance(manifest,(str,Path)) and Path(manifest) in texts):
+            raise SystemExit(f'{sid}: the base generator {name} does not pin its input in a PROFILES row or a SOURCE '
+                             'constant this command moves')
+        with staged_manifests(texts), importing(a.games_dir):
+            return stage_module(name, texts).build(data, skeleton)[0]
+
+    followthrough = load(FOLLOWTHROUGH_ROWS).get(str(sid))
+    # Follow-through replaced these species' earlier pace overlays. Their old
+    # pace recipes remain as authoring history and do not consume this input.
+    pace = None if followthrough else load(PACE_ROWS).get(str(sid))
+    if pace:
+        post = sha256(after_base(pace['base_generator'], new_input)) if pace['base_generator'] else new
+        texts[PACE_ROWS] = repin_pace(PACE_ROWS.read_text(), sid, old, new, post)
+        if pace.get('after_generator'):
+            # the generator after the pace pass pins the paced model: run the pass on the old and the new input
+            from tools.models.field_animations import pace as pacing
+
+            def paced(data, base_gen):
+                with importing(a.games_dir):
+                    if base_gen:
+                        data = base_gen.build(data, skeleton)[0]
+                    return sha256(pacing.retime(data, skeleton, sid, pace['slots'])[0])
+            base = pace['base_generator']
+            old_paced = paced(old_input, base and importlib.import_module(base))
+            new_paced = paced(new_input, base and stage_module(base, texts))
+            path = ROOT / (pace['after_generator'].replace('.', '/') + '.py')
+            moved = repin_constant(path.read_text(), old_paced, new_paced)
+            if moved is None and pins_nothing(path.read_text()):
+                pass        # a generator that carries no input pin has none to move (Snimon's)
+            elif moved is None:
+                raise SystemExit(f'{sid}: {pace["after_generator"]} does not pin the paced model {old_paced}')
+            else:
+                texts[path] = moved
+                stale.append(old_paced)
+    chibi_rows = load(CHIBI_ROWS)
+    # Baked/retired chibi and celebration rows are authoring history; they
+    # do not consume the current provider input.
+    retired = not active_overlay or str(sid) in bound_rows or str(sid) in native_rows
+    chibi = None if retired else chibi_rows.get(str(sid))
+    if chibi:
+        post = sha256(after_base(chibi['base_generator'], new_input)) if chibi.get('base_generator') else new
+        repin_chibi(chibi_rows, sid, old, new, post)
+        texts[CHIBI_ROWS] = json.dumps(chibi_rows, indent=2) + '\n'
+    celebrations = None if retired else repin_celebration(CELEBRATION_ROWS.read_text(), sid, old, new)
+    if celebrations is not None:
+        texts[CELEBRATION_ROWS] = celebrations
+    followthrough = repin_celebration(FOLLOWTHROUGH_ROWS.read_text(), sid, old, new)
+    if followthrough is not None:
+        texts[FOLLOWTHROUGH_ROWS] = followthrough
+    if not texts:
+        print(f'{sid} {row["name"]}: no overlay pins its input; nothing to move')
+        return
+    for pin in stale:
+        stray = stray_pins(texts, pin)
+        if stray:
+            raise SystemExit(f'{sid}: the input {pin} is pinned in {", ".join(stray)} too, which this command does not move')
+    for path, text in texts.items():
+        path.write_text(text)
+        print(f'{path.relative_to(ROOT)}: {sid} pins moved (input {old[:12]} -> {new[:12]})')
+    if getattr(a, 'technique_inputs', False):
+        repin_technique_inputs(sid, new_model, new_tim, donor_models(a, sid))
+    print(f'next: tools/models/edit.py put {sid} {a.mmd}{" " + a.tim if a.tim else ""} (the delta and the species pins), '
+          'then tools/models/variants.py make for a species with a release variant')
 
 
 def cmd_sources(a):
@@ -366,10 +759,12 @@ def cmd_rebase(a):
         for kind in ('mmd', 'tim'):
             record = row[kind]
             before = [(old / s['path']).read_bytes() for s in record['sources']]
+            after = [(new / s['path']).read_bytes() for s in record['sources']]
+            if all(sha256(d) == s['sha256'] for d, s in zip(after, record['sources'])):
+                continue  # already rebased; auxiliary authoring snapshots may still need moving
             for s, data in zip(record['sources'], before):
                 if sha256(data) != s['sha256']:
                     raise SystemExit(f'model edit: {old / s["path"]}: not the pinned source of {record["delta"]}')
-            after = [(new / s['path']).read_bytes() for s in record['sources']]
             if after == before:
                 continue
             target = decoded(record, before)
@@ -390,6 +785,30 @@ def cmd_rebase(a):
             if p.is_file() and sha256(p.read_bytes()) != r[key]:
                 r[key] = sha256(p.read_bytes())
                 done.append(f'{SIZES.relative_to(ROOT)}: {path} {key}')
+    # Variant replay can start from an authored snapshot preceding a native
+    # polish pass. It consumes the same importer bytes as the current delta.
+    selected = {r['id'] for r in rows(manifest, a.ids)}
+    for path in sorted((ROOT / 'content/models/authoring/native-polish').glob('*.json')):
+        profile = load(path)
+        record = profile.get('preceding_delta')
+        if not record or profile.get('species') not in selected:
+            continue
+        before = [(old / s['path']).read_bytes() for s in record['sources']]
+        after = [(new / s['path']).read_bytes() for s in record['sources']]
+        if before == after or all(sha256(d) == s['sha256'] for d, s in zip(after, record['sources'])):
+            continue
+        if any(sha256(d) != s['sha256'] for d, s in zip(before, record['sources'])):
+            raise ValueError(f'{path}: preceding delta does not pin the old sources')
+        target = decoded(record, before)
+        delta = modeldelta.encode(target, after)
+        if modeldelta.decode(delta, after) != target:
+            raise ValueError(f'{path}: preceding delta rebase failed')
+        (ROOT / record['delta']).write_bytes(delta)
+        record['delta_sha256'] = sha256(delta)
+        for s, d in zip(record['sources'], after):
+            s.update(sha256=sha256(d), size=len(d))
+        save(path, profile)
+        done.append(f'{path.relative_to(ROOT)}: preceding delta rebased, target unchanged')
     if not done:
         print('nothing differs between the two source trees')
         return
@@ -417,9 +836,17 @@ def main():
     u.add_argument('tim', nargs='?')
     u.add_argument('--force', action='store_true', help='re-encode even when the target is the pinned one')
     u.add_argument('--no-species-pins', action='store_true')
+    u.add_argument('--repin-donors-from', metavar='OLD_MMD',
+                   help='move native bindings that pin OLD_MMD as this species donor to the new model')
     c = sub.add_parser('check')
     c.add_argument('ids', nargs='*')
     c.add_argument('--species-pins', action='store_true')
+    m = sub.add_parser('repin')
+    m.add_argument('id')
+    m.add_argument('mmd')
+    m.add_argument('tim', nargs='?')
+    m.add_argument('--technique-inputs', action='store_true',
+                   help='also validate and repin downstream technique inputs after a proportion recipe change')
     s = sub.add_parser('sources')
     s.add_argument('out')
     s.add_argument('ids', nargs='*')
@@ -449,7 +876,7 @@ def main():
     if a.command != 'rebase':
         a.games_dir = games_dir(a)
     return {'get': cmd_get, 'put': cmd_put, 'check': cmd_check, 'sources': cmd_sources,
-            'rebase': cmd_rebase}[a.command](a) or 0
+            'rebase': cmd_rebase, 'repin': cmd_repin}[a.command](a) or 0
 
 
 if __name__ == '__main__':

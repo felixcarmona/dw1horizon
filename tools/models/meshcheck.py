@@ -30,6 +30,9 @@ kind on the final model of a species, in its idle pose and over its animations:
             sheets of the flagged species
   python3 tools/models/meshcheck.py extract DIGI.DAT DIR           the final model, texture and skeleton of every
             species of a built archive (record originals and imports) plus the disc's other natives from extracted/
+  python3 tools/models/meshcheck.py flicker DIR [IDS...] --out REPORT.json [--jobs N] [--warp-degrees 3]
+            full per-tick geometry/facing audit of DIR/index.json models (use final provider outputs).
+            Lists bent quads separately from ordinary facing changes; reports errors without skipping a species.
 
 Uses numpy (a developer tool; nothing of the player's build depends on it).
 """
@@ -44,7 +47,7 @@ import zlib
 import numpy as np
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-sys.path.insert(0, os.path.join(ROOT, 'tools'))
+sys.path[:0] = [ROOT, os.path.join(ROOT, 'tools')]
 import mmd  # noqa: E402
 
 VIEWS = (('front', 0.0, 0.0), ('back', math.pi, 0.0), ('left', math.pi / 2, 0.0), ('right', -math.pi / 2, 0.0),
@@ -59,6 +62,7 @@ DETACHED_MIN = 0.06       # a part this far from the rest (in heights) is listed
 DETACHED_FLAG = 0.10      # ... and flagged from this far (DW1's own models float eyes, gears, flames up to ~0.2)
 STRETCH_MAX = 0.08        # a piece that moves this much farther (in heights) from every other piece tears away
 ZFIGHT_MIN_AREA = 0.0004  # overlapping coplanar area, in squared heights
+WARP_DEGREES = 3.0       # smaller bends include integer-coordinate rounding
 
 
 # ------------------------------------------------------------------ the model
@@ -160,7 +164,7 @@ def _rotate(P, yaw, pitch):
     return np.stack([X, Y, Z2], -1)
 
 
-def render(model, T, yaw, pitch=0.0, size=SIZE, frame=None, cull=True):
+def render(model, T, yaw, pitch=0.0, size=SIZE, frame=None, cull=True, primitive_cull=True):
     """Render triangles T (n,3,3 world) seen along +Z after the rotation. Returns
     (rgb image, any-face mask, culled mask (before transparency), drawn mask (after transparency), id buffer)."""
     P = _rotate(T, yaw, pitch)
@@ -181,9 +185,14 @@ def render(model, T, yaw, pitch=0.0, size=SIZE, frame=None, cull=True):
     img[:] = (40, 44, 52)
     tex = model.tex
     ys, xs = np.mgrid[0:size, 0:size] + 0.5
+    facing = {}
     for k, t in enumerate(model.tris):
         p = S[k]
         area = (p[1, 0] - p[0, 0]) * (p[2, 1] - p[0, 1]) - (p[1, 1] - p[0, 1]) * (p[2, 0] - p[0, 0])
+        # libgs runs NCLIP on a quad's FIRST three vertices. The GPU draws
+        # both halves with that decision, even when a bent quad's halves disagree.
+        key = (t[0], t[1], t[2])
+        facing.setdefault(key, area > 0)
         if abs(area) < 1e-9:
             continue
         x0, x1 = max(0, int(p[:, 0].min())), min(size - 1, int(p[:, 0].max()) + 1)
@@ -201,7 +210,7 @@ def render(model, T, yaw, pitch=0.0, size=SIZE, frame=None, cull=True):
         sub = (slice(y0, y1 + 1), slice(x0, x1 + 1))
         za = zany[sub]
         za[inside] = np.minimum(za[inside], z[inside])
-        if area < 0 and cull:
+        if cull and (not facing[key] if primitive_cull else area < 0):
             continue          # a back face: culled like the game does (GsTMDfast ignores the TMD double-sided flag)
         zc = zcull[sub]
         zc[inside] = np.minimum(zc[inside], z[inside])
@@ -527,6 +536,87 @@ def flags(r):
     return f
 
 
+def warped_quads(model, degrees=WARP_DEGREES):
+    """Bent quads: one NCLIP decision controls two triangles with different normals.
+
+    Object/primitive indices are zero based. Collapsed halves are included;
+    opposite-wound back faces are retained. A facing change alone is normal motion.
+    """
+    rows = []
+    for b, v in model.local.items():
+        oi = model.bones[b][0]
+        for pi, prim in enumerate(model.m.tmd.objects[oi].prims):
+            ids = prim.decode()['verts']
+            if len(ids) != 4:
+                continue
+            t = v[ids]
+            n = np.cross(t[[1, 3]] - t[[0, 1]], t[[2, 2]] - t[[0, 1]])
+            lengths = np.linalg.norm(n, axis=1)
+            angle = (float(np.degrees(np.arccos(np.clip(n[0] @ n[1] / lengths.prod(), -1, 1))))
+                     if lengths.min() > 1e-9 else 180.0)
+            if angle > degrees:
+                rows.append(dict(bone=b, object=oi, primitive=pi, vertices=ids, degrees=round(angle, 4)))
+    return rows
+
+
+def flicker(model, slots=None, degrees=WARP_DEGREES):
+    """Every decoded tick, eight elevated camera directions, no frame sampling.
+
+    Floating orthographic coordinates isolate mesh defects from ordinary PSX
+    pixel quantization. These are camera probes, not an emulator/GTE overflow
+    proof. Root travel is removed for jumps/bounds. The tick guard fails explicitly.
+    """
+    from tools.models.battle_qa import Rig, Clip
+    import animsheet
+    height = model.height()[0]
+    quads = warped_quads(model, degrees)
+    rig = Rig([p for _, p in model.bones], model.local,
+              [(t[0], t[3]) for t in model.tris], {})
+    local = model.tri_array(model.local)
+    area = np.linalg.norm(np.cross(local[:, 1] - local[:, 0], local[:, 2] - local[:, 0]), axis=1) / 2
+    report = dict(warp_degrees=degrees, warped_quads=quads,
+                  degenerate_triangles=np.where(area < 1e-6)[0].tolist(),
+                  tiny_triangles=np.where((area > 1e-6) & (area < height * height * 1e-5))[0].tolist(), clips={})
+    for slot in model.slots() if slots is None else slots:
+        frames, loop, _ = animsheet.slot_frames(model.m, len(model.bones), slot, max_ticks=65536)
+        if len(frames) == 65536:
+            raise ValueError(f'slot {slot}: exceeds 65535 ticks')
+        if not frames:
+            raise ValueError(f'slot {slot}: no decoded poses')
+        clip = Clip(rig, np.asarray(frames, float), loop)
+        T = np.concatenate([clip.V[b][:, rig.tris[b]] for b in rig.meshed], axis=1)
+        normals = np.cross(T[:, :, 1] - T[:, :, 0], T[:, :, 2] - T[:, :, 0])
+        areas = np.linalg.norm(normals, axis=2) / 2
+        minimum = areas.min(0)
+        row = dict(frames=len(frames), min_area=float(areas.min()),
+                   collapsed_triangles=np.where((minimum < 1e-6) | (minimum < areas[0] * .01))[0].tolist(),
+                   max_vertex_step=max(float(np.linalg.norm(np.diff(v, axis=0), axis=2).max(initial=0))
+                                       for v in clip.V.values()),
+                   max_model_coordinate=max(float(abs(v).max()) for v in clip.V.values()),
+                   min_determinant=float(np.linalg.det(clip.Wf[:, :, :3, :3]).min()),
+                   facing_changes=0, quad_facing=[])
+        Q = (np.stack([clip.V[q['bone']][:, q['vertices']] for q in quads], axis=1)
+             if quads else None)
+        for view, yaw, pitch in RING:
+            N = _rotate(normals, yaw, pitch)[..., 2]
+            row['facing_changes'] += int(np.count_nonzero(np.diff(N > 0, axis=0)))
+            if Q is None:
+                continue
+            P = _rotate(Q, yaw, pitch)
+            n = np.cross(P[:, :, [1, 3]] - P[:, :, [0, 1]], P[:, :, [2, 2]] - P[:, :, [0, 1]])[..., 2]
+            for k, q in enumerate(quads):
+                bad = n[:, k, 0] * n[:, k, 1] < -1e-6
+                if not bad.any():
+                    continue
+                changes = np.where(np.diff(n[:, k, 0] > 0))[0]
+                row['quad_facing'].append(dict(bone=q['bone'], primitive=q['primitive'], view=view,
+                    count=int(bad.sum()), ticks=np.where(bad)[0][:8].tolist(),
+                    cull_change_count=len(changes), cull_changes=changes[:8].tolist(),
+                    max_other_half_area=float(abs(n[bad, k, 1]).max() / 2)))
+        report['clips'][slot] = row
+    return report
+
+
 # ------------------------------------------------------------------ sheets
 def png(path, img):
     h, w = img.shape[:2]
@@ -601,6 +691,10 @@ def main():
     a.add_argument('--no-anims', action='store_true'); a.add_argument('--jobs', type=int, default=1)
     x = sub.add_parser('extract')
     x.add_argument('digi'); x.add_argument('out')
+    f = sub.add_parser('flicker')
+    f.add_argument('dir'); f.add_argument('ids', nargs='*'); f.add_argument('--out', required=True)
+    f.add_argument('--jobs', type=int, default=1)
+    f.add_argument('--warp-degrees', type=float, default=WARP_DEGREES)
     args = ap.parse_args()
     if args.cmd == 'extract':
         print(len(extract(args.digi, args.out)), 'species')
@@ -612,20 +706,27 @@ def main():
         if args.sheet:
             png(args.sheet, sheet(imgs))
         sys.exit(1 if r['flags'] else 0)
-    elif args.cmd == 'audit':
+    elif args.cmd in ('audit', 'flicker'):
         idx = json.load(open(os.path.join(args.dir, 'index.json')))
         todo = [t for t in sorted(idx, key=int)
                 if not args.ids or t in args.ids or idx[t]['name'] in args.ids]
-        work = [(args.dir, t, idx[t], not args.no_anims, args.sheets) for t in todo]
+        if args.cmd == 'flicker':
+            work = [(args.dir, t, idx[t], args.warp_degrees) for t in todo]
+            worker = _flicker_one
+        else:
+            work = [(args.dir, t, idx[t], not args.no_anims, args.sheets) for t in todo]
+            worker = _audit_one
         if args.jobs > 1:
             import multiprocessing
             with multiprocessing.Pool(args.jobs) as pool:
-                results = pool.imap(_audit_one, work)
+                results = pool.imap(worker, work)
                 out = dict(_print(r) for r in results)
         else:
-            out = dict(_print(_audit_one(w)) for w in work)
+            out = dict(_print(worker(w)) for w in work)
         if args.out:
             json.dump(out, open(args.out, 'w'), indent=1)
+        if args.cmd == 'flicker' and any('error' in r for r in out.values()):
+            sys.exit(1)
 
 
 def _print(res):
@@ -646,6 +747,21 @@ def _audit_one(job):
         os.makedirs(sheets, exist_ok=True)
         png(os.path.join(sheets, f'{t}-{r["name"]}.png'), sheet(imgs))
     return t, r
+
+
+def _flicker_one(job):
+    d, t, row, degrees = job
+    try:
+        r = flicker(load_dir(d, t, row), degrees=degrees)
+        r['name'] = row['name']
+        r['flags'] = []
+        if r['warped_quads']:
+            r['flags'].append(f"{len(r['warped_quads'])} bent quads over {degrees:g} degrees")
+        if r['degenerate_triangles'] or any(c['collapsed_triangles'] for c in r['clips'].values()):
+            r['flags'].append('degenerate/collapsed triangles')
+        return t, r
+    except Exception as ex:  # one broken model must not stop the sweep
+        return t, dict(name=row['name'], error=repr(ex))
 
 if __name__ == '__main__':
     main()

@@ -97,7 +97,7 @@ def model_file(t):
     """CHDAT/MMDn/NAME.MMD of Digimon type t: the model name of its species file (content/species `model.name`, the name the
     executable's table holds; any release's disc has the same files)."""
     if not _MODELS:
-        _MODELS.update({i: (s.get('model') or {}).get('name') for i, s in _species.load_content().items()} if _species else {})
+        _MODELS.update({i: (s.get('model') or {}).get('name') for i, s in _species.load_content(shared=True).items()} if _species else {})
     name = _MODELS.get(t)
     if not name:
         raise ValueError(f'species {t}: no species file with a model.name (content/species): its model cannot be measured')
@@ -130,13 +130,19 @@ def model_data(t):
     return open(path, 'rb').read()
 
 
+_MODEL_SIZES = {}      # species id -> bytes of its MMD (cleared by configure)
+
+
 def mmd_size(t):
     if MODEL_ARCHIVE:
         return len(model_data(t))  # explicit target checks must not silently budget missing models as zero
     if t < 180:
         try: return len(model_data(t))
         except FileNotFoundError: return 0
-    return _species.model_size(t) if _species else 0
+    # model_size reads every species file of the content folders: once per species, not once per call (the heap check
+    # asks 2 to 5 times per resident, and a story pass spent most of its time re-reading the same files)
+    if t not in _MODEL_SIZES: _MODEL_SIZES[t] = _species.model_size(t) if _species else 0
+    return _MODEL_SIZES[t]
 
 
 def staged(t):
@@ -173,12 +179,17 @@ def model_block_resident(t):
     return full - spare if spare >= 16 else full
 
 
-def instance_blocks(t):
+def model_bones(t):
     b = int(DIGI[t]['bone_count']) if t in DIGI else 0
     if MODEL_ARCHIVE:
         _, rows, originals = archive_models(MODEL_ARCHIVE)
         if t >= 180 or t in originals:
             b = rows[t]['para']['boneCount']
+    return b
+
+
+def instance_blocks(t):
+    b = model_bones(t)
     return blk(b * POS_DATA) + blk(b * MOMENTUM)
 
 
@@ -701,12 +712,16 @@ def setup_paths(text, screen, hour=None):
     return sorted(set(paths))
 
 
+_TWIN_SOURCES = {}     # species id -> its `_npc_original` (the content folders' twin species; cleared by configure)
+
+
 @lru_cache(None)
 def npc_twin_types(archive):
     """Field model identities present in this target archive; legacy builds keep theirs."""
     _, rows, _ = archive_models(archive)
-    return {s['_npc_original']: t for t, s in _species.load_content().items()
-            if '_npc_original' in s and t < len(rows) and rows[t]['modelSize']}
+    if not _TWIN_SOURCES and _species:      # (one read of the content folders, not one per archive)
+        _TWIN_SOURCES.update({t: s['_npc_original'] for t, s in _species.load_content(shared=True).items() if '_npc_original' in s})
+    return {orig: t for t, orig in _TWIN_SOURCES.items() if t < len(rows) and rows[t]['modelSize']}
 
 
 def path_cost(loads, sets):
@@ -756,10 +771,13 @@ def configure(env=None, partner_mmd_max=None, heap_map=None):
     TARGET_FACTS = json.load(open(path)) if path else {}
     NPC_STAGE_MAX = TARGET_FACTS.get('npc_stage_max') or 0
     npc_twin_types.cache_clear()
+    _TWIN_SOURCES.clear()
     model_data.cache_clear()
     model_block.cache_clear()
-    if 'npcanims' in sys.modules:
-        sys.modules['npcanims'].trimmed_size.cache_clear()
+    _MODEL_SIZES.clear()
+    trim = getattr(sys.modules.get('npcanims'), 'trimmed_size', None)
+    if trim is not None:
+        trim.cache_clear()
 
 
 configure()

@@ -44,6 +44,7 @@ def build(ctx):
     import contextlib, io, shutil
     from tools.localize import build as L      # (not `import build`: the recipes have a build.py each)
     from tools.care_badge import FILES, stamp
+    from tools.localize.status_art import stamp as status_stamp
     from tools.field_hud_art import PATH as HUD_PATH, build as field_hud_art
     from tools import care_bubble_art
     buf = io.StringIO()
@@ -55,6 +56,7 @@ def build(ctx):
             with open(os.path.join(ctx.root, 'extracted', path), 'rb') as f:
                 data = bytearray(f.read())
             stamp(data, entry)
+            status_stamp(data, entry)
             if path == HUD_PATH:
                 data = care_bubble_art.build(field_hud_art(data))
             dest = ctx.path(OUT, 'en', path)

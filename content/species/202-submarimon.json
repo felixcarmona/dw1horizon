@@ -10,6 +10,7 @@
                  "Buster Dive", "Muscle Charge", "War Cry", "Sonic Jab", "Blasting Spout"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 24,
+  "own_effect": {"technique": "Blasting Spout", "chunk": 273},
   "model": {
     "file": "build/batch2/Submarimon.MMD",
     "radius": 241,

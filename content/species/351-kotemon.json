@@ -10,6 +10,7 @@
                  "Fire Tower", "Blue Blaster"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 17,
+  "own_effect": {"technique": "Blue Blaster", "chunk": 244},
   "model": {
     "file": "build/batch16/Kotemon.MMD",
     "radius": 148,

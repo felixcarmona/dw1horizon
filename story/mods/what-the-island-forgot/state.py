@@ -28,6 +28,7 @@ root2 = flag()
 # (the original; the wall stays frozen until the tamer goes down to it again).
 root3 = flag()
 vault_kept = flag()
+thaw_told = flag()               # the wall's thaw was told on 311; from then on the statue room lets the tamer pass
 
 # Mt. Infinity (§3.9): Devimon's shortcut (only with R2) skips the climb from 247 to the Infinity Engine room. Megadramon
 # stays on its terrace, and Devimon waits in the Engine Room for the fight it did not have on 247.

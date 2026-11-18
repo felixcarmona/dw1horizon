@@ -117,10 +117,13 @@ def tab_problems(key, value, font, language):
 
 
 def name_problems(key, value, font, language):
-    if not key.startswith('main.MOVE_NAMES.'):
+    if key.startswith('species.') and key.endswith('.finisher'):
+        limit = FINISHER_LIMIT          # an import's own finisher name (docs/mods/unique-finishers.md)
+    elif not key.startswith('main.MOVE_NAMES.'):
         return []
-    move = int(key.rsplit('.',1)[1])
-    limit = FINISHER_LIMIT if 58 <= move <= 112 else MOVE_LIMIT
+    else:
+        move = int(key.rsplit('.',1)[1])
+        limit = FINISHER_LIMIT if 58 <= move <= 112 else MOVE_LIMIT
     width = fitted_width(value,font,language)
     return [f'move name {value!r} is {width} px after fitting; field is {limit} px'] if width > limit else []
 
@@ -207,7 +210,7 @@ def audit():
         for font in FONTS:
             count = 0
             for key,value in names.items():
-                if key in ('main.MAIN_D_801238A0', 'main.MAIN_D_80123A18', 'main.STR_YES_NO_SPACED', 'main.MAIN_D_801346AC', 'main.MAIN_D_801346B0') or key.startswith(('main.MOVE_NAMES.', 'main.ITEM_NAMES.', 'main.MOD_NOTICE_STR_')):
+                if key in ('main.MAIN_D_801238A0', 'main.MAIN_D_80123A18', 'main.STR_YES_NO_SPACED', 'main.MAIN_D_801346AC', 'main.MAIN_D_801346B0') or key.startswith(('main.MOVE_NAMES.', 'main.ITEM_NAMES.', 'main.MOD_NOTICE_STR_')) or (key.startswith('species.') and key.endswith('.finisher')):
                     if language == 'zh-hans':
                         from tools.localize.executable.chinese_layout import align
                         value = align(key,value)

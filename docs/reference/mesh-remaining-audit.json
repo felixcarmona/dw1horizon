@@ -1,0 +1,2163 @@
+{
+  "thresholds": {
+    "bent_risk": 0.003039868562537228,
+    "coplanar_area": 0.35881000000099994,
+    "degenerate": 1.000000000001,
+    "tiny": 84.000000000001,
+    "crossings_max": 595.000000000001,
+    "tie_rate": 0.0768492567648107,
+    "flip_rate": 0.07222306871957383
+  },
+  "samples": 3,
+  "slots": [
+    0,
+    2,
+    3,
+    4,
+    33,
+    34,
+    35,
+    36
+  ],
+  "native_controls": 178,
+  "native_failures": 0,
+  "remaining_before": [
+    "183",
+    "193",
+    "196",
+    "199",
+    "205",
+    "215",
+    "218",
+    "220",
+    "223",
+    "236",
+    "238",
+    "270",
+    "274",
+    "275",
+    "283",
+    "295",
+    "303",
+    "306",
+    "307",
+    "311",
+    "312",
+    "314",
+    "315",
+    "318",
+    "323",
+    "326",
+    "402",
+    "403",
+    "405",
+    "406",
+    "407",
+    "409",
+    "432",
+    "471",
+    "473",
+    "477"
+  ],
+  "remaining_after": [
+    "183",
+    "193",
+    "196",
+    "199",
+    "205",
+    "215",
+    "218",
+    "220",
+    "223",
+    "236",
+    "238",
+    "270",
+    "274",
+    "275",
+    "283",
+    "295",
+    "303",
+    "306",
+    "307",
+    "311",
+    "312",
+    "314",
+    "315",
+    "318",
+    "323",
+    "326",
+    "402",
+    "403",
+    "405",
+    "406",
+    "407",
+    "409",
+    "432",
+    "471",
+    "473",
+    "477"
+  ],
+  "preservation": {
+    "peak_resident": [
+      100256,
+      100256
+    ],
+    "changed": {
+      "323": {
+        "resident_before": 78652,
+        "resident_after": 78652,
+        "packet_before": 24432,
+        "packet_after": 24432,
+        "changed_slots": [],
+        "before_sha1": "ea2e3a91c637268d6fc62ab301bced6bc7959121",
+        "after_sha1": "ae22c9270e5153f1e018bdd8e8b94308ca6ef2fc",
+        "slots": 49
+      },
+      "326": {
+        "resident_before": 95308,
+        "resident_after": 95332,
+        "packet_before": 36072,
+        "packet_after": 36072,
+        "changed_slots": [],
+        "before_sha1": "93b5a923d3891069da16a8046a1ed02d40b2e04a",
+        "after_sha1": "7e9a3e34b38367fbe4955aa342c7264b24ae3984",
+        "slots": 50
+      },
+      "405": {
+        "resident_before": 95664,
+        "resident_after": 95664,
+        "packet_before": 32392,
+        "packet_after": 32392,
+        "changed_slots": [],
+        "before_sha1": "c985b88f324cd4b8a1bdf98f4693a806bb611597",
+        "after_sha1": "0e8e5f206db1320959e9066567cbfec0ddfcc3a6",
+        "slots": 51
+      },
+      "407": {
+        "resident_before": 71032,
+        "resident_after": 70998,
+        "packet_before": 33440,
+        "packet_after": 33400,
+        "changed_slots": [
+          4
+        ],
+        "before_sha1": "43107e319fd765ad9511fbc1235f792744e42f7a",
+        "after_sha1": "206fd8fba022eb342a14895459ba239e1b16f744",
+        "slots": 54,
+        "run_pair_20_26": {
+          "before": 20,
+          "after": 0,
+          "depth_before": 45.782822674965274,
+          "depth_after": 0.0,
+          "foot_floor_before": 0.18189185166793198,
+          "foot_floor_after": 4.5238068559986395
+        }
+      },
+      "432": {
+        "resident_before": 90992,
+        "resident_after": 90846,
+        "packet_before": 34992,
+        "packet_after": 34784,
+        "changed_slots": [],
+        "before_sha1": "d6b2cc8e3e06b60a368700804f7e08d3fef82f8f",
+        "after_sha1": "ce0bf71bc3c1f77bdc30d1d02ee924bd796ac1bb",
+        "slots": 51
+      }
+    }
+  },
+  "species": {
+    "407": {
+      "name": "Armageddemon",
+      "before": {
+        "bent_risk": 0.06614336064081557,
+        "coplanar_area": 0.0019,
+        "crossings_max": 24,
+        "tie_rate": 0.012872087930717828,
+        "flip_rate": 0.006848436658373304,
+        "degenerate": 2,
+        "severity": 21.75862517740207,
+        "flags": [
+          "bent_risk",
+          "degenerate"
+        ],
+        "cofacing_pairs": 0,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              1,
+              5
+            ],
+            "count": 15,
+            "depth": 46.74603222393441,
+            "slot": 34,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              20,
+              26
+            ],
+            "count": 18,
+            "depth": 45.782822674965274,
+            "slot": 4,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              10,
+              11
+            ],
+            "count": 50,
+            "depth": 38.48126197717727,
+            "slot": 0,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              15,
+              16
+            ],
+            "count": 10,
+            "depth": 38.289237210456164,
+            "slot": 2,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              22,
+              23
+            ],
+            "count": 49,
+            "depth": 38.07639997748621,
+            "slot": 34,
+            "tick": 14,
+            "adjacent": true
+          }
+        ]
+      },
+      "after": {
+        "bent_risk": 0.06614336064081557,
+        "coplanar_area": 0.0019,
+        "crossings_max": 6,
+        "tie_rate": 0.012841847356569276,
+        "flip_rate": 0.006869050681759712,
+        "degenerate": 0,
+        "severity": 21.75862517740207,
+        "flags": [
+          "bent_risk"
+        ],
+        "cofacing_pairs": 0,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              1,
+              5
+            ],
+            "count": 15,
+            "depth": 46.74603222393441,
+            "slot": 34,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              10,
+              11
+            ],
+            "count": 50,
+            "depth": 38.48126197717727,
+            "slot": 0,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              15,
+              16
+            ],
+            "count": 10,
+            "depth": 38.289237210456164,
+            "slot": 2,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              22,
+              23
+            ],
+            "count": 49,
+            "depth": 38.07639997748621,
+            "slot": 34,
+            "tick": 14,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              12,
+              13
+            ],
+            "count": 14,
+            "depth": 33.830628605661445,
+            "slot": 3,
+            "tick": 0,
+            "adjacent": true
+          }
+        ]
+      }
+    },
+    "409": {
+      "name": "Kyubimon",
+      "before": {
+        "bent_risk": 0.03454658560138102,
+        "coplanar_area": 0.00115,
+        "crossings_max": 1327,
+        "tie_rate": 0.01794387589757596,
+        "flip_rate": 0.025017351896460212,
+        "degenerate": 0,
+        "severity": 11.364499777104406,
+        "flags": [
+          "bent_risk",
+          "crossings_max"
+        ],
+        "cofacing_pairs": 1,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              15,
+              19
+            ],
+            "count": 62,
+            "depth": 50.3124647812748,
+            "slot": 34,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              15,
+              23
+            ],
+            "count": 69,
+            "depth": 48.32053472889237,
+            "slot": 34,
+            "tick": 8,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              17,
+              20
+            ],
+            "count": 50,
+            "depth": 43.85332951160908,
+            "slot": 34,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              15,
+              17
+            ],
+            "count": 125,
+            "depth": 43.29508549730588,
+            "slot": 2,
+            "tick": 8,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              17,
+              25
+            ],
+            "count": 28,
+            "depth": 41.91949340221316,
+            "slot": 4,
+            "tick": 7,
+            "adjacent": false
+          }
+        ]
+      },
+      "after": {
+        "bent_risk": 0.03454658560138102,
+        "coplanar_area": 0.00115,
+        "crossings_max": 1327,
+        "tie_rate": 0.01794387589757596,
+        "flip_rate": 0.025017351896460212,
+        "degenerate": 0,
+        "severity": 11.364499777104406,
+        "flags": [
+          "bent_risk",
+          "crossings_max"
+        ],
+        "cofacing_pairs": 1,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              15,
+              19
+            ],
+            "count": 62,
+            "depth": 50.3124647812748,
+            "slot": 34,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              15,
+              23
+            ],
+            "count": 69,
+            "depth": 48.32053472889237,
+            "slot": 34,
+            "tick": 8,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              17,
+              20
+            ],
+            "count": 50,
+            "depth": 43.85332951160908,
+            "slot": 34,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              15,
+              17
+            ],
+            "count": 125,
+            "depth": 43.29508549730588,
+            "slot": 2,
+            "tick": 8,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              17,
+              25
+            ],
+            "count": 28,
+            "depth": 41.91949340221316,
+            "slot": 4,
+            "tick": 7,
+            "adjacent": false
+          }
+        ]
+      }
+    },
+    "405": {
+      "name": "Cannondramon",
+      "before": {
+        "bent_risk": 0.0334122417533644,
+        "coplanar_area": 0.00339,
+        "crossings_max": 202,
+        "tie_rate": 0.013040908350853348,
+        "flip_rate": 0.010996162753351251,
+        "degenerate": 0,
+        "severity": 10.991344219658252,
+        "flags": [
+          "bent_risk"
+        ],
+        "cofacing_pairs": 3,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              14,
+              15
+            ],
+            "count": 26,
+            "depth": 46.610471961949855,
+            "slot": 36,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              13,
+              18
+            ],
+            "count": 10,
+            "depth": 41.99767790347406,
+            "slot": 3,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              13,
+              21
+            ],
+            "count": 14,
+            "depth": 40.73083617636686,
+            "slot": 36,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              7,
+              8
+            ],
+            "count": 21,
+            "depth": 39.665882907933664,
+            "slot": 0,
+            "tick": 23,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              10,
+              11
+            ],
+            "count": 17,
+            "depth": 35.31714940064022,
+            "slot": 2,
+            "tick": 0,
+            "adjacent": true
+          }
+        ]
+      },
+      "after": {
+        "bent_risk": 0.03306512096884955,
+        "coplanar_area": 0,
+        "crossings_max": 202,
+        "tie_rate": 0.013019958336133324,
+        "flip_rate": 0.010937407623246425,
+        "degenerate": 0,
+        "severity": 10.877154813973842,
+        "flags": [
+          "bent_risk"
+        ],
+        "cofacing_pairs": 0,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              14,
+              15
+            ],
+            "count": 26,
+            "depth": 46.610471961949855,
+            "slot": 36,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              13,
+              18
+            ],
+            "count": 10,
+            "depth": 41.99767790347406,
+            "slot": 3,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              13,
+              21
+            ],
+            "count": 14,
+            "depth": 40.73083617636686,
+            "slot": 36,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              7,
+              8
+            ],
+            "count": 21,
+            "depth": 39.665882907933664,
+            "slot": 0,
+            "tick": 23,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              10,
+              11
+            ],
+            "count": 17,
+            "depth": 35.31714940064022,
+            "slot": 2,
+            "tick": 0,
+            "adjacent": true
+          }
+        ]
+      }
+    },
+    "323": {
+      "name": "Lynxmon",
+      "before": {
+        "bent_risk": 0.0,
+        "coplanar_area": 2.1024400000000005,
+        "crossings_max": 183,
+        "tie_rate": 0.00909315294398455,
+        "flip_rate": 0.008785511291291903,
+        "degenerate": 0,
+        "severity": 5.8594799475882535,
+        "flags": [
+          "coplanar_area"
+        ],
+        "cofacing_pairs": 9,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              5,
+              6
+            ],
+            "count": 49,
+            "depth": 89.42882634401079,
+            "slot": 36,
+            "tick": 20,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              1,
+              5
+            ],
+            "count": 72,
+            "depth": 85.0115192485637,
+            "slot": 4,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              1,
+              9
+            ],
+            "count": 82,
+            "depth": 83.79012569516993,
+            "slot": 36,
+            "tick": 10,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              14,
+              15
+            ],
+            "count": 24,
+            "depth": 75.98493714820604,
+            "slot": 4,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              11,
+              23
+            ],
+            "count": 6,
+            "depth": 75.53549555537076,
+            "slot": 4,
+            "tick": 16,
+            "adjacent": false
+          }
+        ]
+      },
+      "after": {
+        "bent_risk": 0.0,
+        "coplanar_area": 2.0505800000000005,
+        "crossings_max": 183,
+        "tie_rate": 0.008395633727932639,
+        "flip_rate": 0.008627934338058155,
+        "degenerate": 0,
+        "severity": 5.714946629119272,
+        "flags": [
+          "coplanar_area"
+        ],
+        "cofacing_pairs": 0,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              5,
+              6
+            ],
+            "count": 49,
+            "depth": 89.42882634401079,
+            "slot": 36,
+            "tick": 20,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              1,
+              5
+            ],
+            "count": 72,
+            "depth": 85.0115192485637,
+            "slot": 4,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              14,
+              15
+            ],
+            "count": 24,
+            "depth": 83.98493714820566,
+            "slot": 4,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              1,
+              9
+            ],
+            "count": 82,
+            "depth": 83.79012569516993,
+            "slot": 36,
+            "tick": 10,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              11,
+              23
+            ],
+            "count": 6,
+            "depth": 75.53549555537076,
+            "slot": 4,
+            "tick": 16,
+            "adjacent": false
+          }
+        ]
+      }
+    },
+    "314": {
+      "name": "SkullSatamon",
+      "before": {
+        "bent_risk": 0.010821024918912755,
+        "coplanar_area": 0.01932,
+        "crossings_max": 146,
+        "tie_rate": 0.017982962542889433,
+        "flip_rate": 0.019787859880559765,
+        "degenerate": 0,
+        "severity": 3.5597015779790757,
+        "flags": [
+          "bent_risk"
+        ],
+        "cofacing_pairs": 0,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              4,
+              6
+            ],
+            "count": 20,
+            "depth": 34.21715401182013,
+            "slot": 36,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              6,
+              7
+            ],
+            "count": 19,
+            "depth": 30.547232302676946,
+            "slot": 35,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              4,
+              5
+            ],
+            "count": 20,
+            "depth": 30.372382650892998,
+            "slot": 36,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              16,
+              17
+            ],
+            "count": 19,
+            "depth": 28.30405833640672,
+            "slot": 35,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              12,
+              13
+            ],
+            "count": 33,
+            "depth": 26.550421123571056,
+            "slot": 3,
+            "tick": 12,
+            "adjacent": true
+          }
+        ]
+      },
+      "after": {
+        "bent_risk": 0.010821024918912755,
+        "coplanar_area": 0.01932,
+        "crossings_max": 146,
+        "tie_rate": 0.017982962542889433,
+        "flip_rate": 0.019787859880559765,
+        "degenerate": 0,
+        "severity": 3.5597015779790757,
+        "flags": [
+          "bent_risk"
+        ],
+        "cofacing_pairs": 0,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              4,
+              6
+            ],
+            "count": 20,
+            "depth": 34.21715401182013,
+            "slot": 36,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              6,
+              7
+            ],
+            "count": 19,
+            "depth": 30.547232302676946,
+            "slot": 35,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              4,
+              5
+            ],
+            "count": 20,
+            "depth": 30.372382650892998,
+            "slot": 36,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              16,
+              17
+            ],
+            "count": 19,
+            "depth": 28.30405833640672,
+            "slot": 35,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              12,
+              13
+            ],
+            "count": 33,
+            "depth": 26.550421123571056,
+            "slot": 3,
+            "tick": 12,
+            "adjacent": true
+          }
+        ]
+      }
+    },
+    "196": {
+      "name": "Halsemon",
+      "before": {
+        "bent_risk": 0.009891843430686388,
+        "coplanar_area": 0.08521999999999999,
+        "crossings_max": 339,
+        "tie_rate": 0.010851463116644425,
+        "flip_rate": 0.023946517617403695,
+        "degenerate": 0,
+        "severity": 3.2540365569063145,
+        "flags": [
+          "bent_risk"
+        ],
+        "cofacing_pairs": 0,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              9,
+              12
+            ],
+            "count": 22,
+            "depth": 46.4030907930538,
+            "slot": 2,
+            "tick": 8,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              8,
+              12
+            ],
+            "count": 23,
+            "depth": 40.64791476151748,
+            "slot": 35,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              8,
+              9
+            ],
+            "count": 16,
+            "depth": 40.111303606350404,
+            "slot": 35,
+            "tick": 8,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              9,
+              18
+            ],
+            "count": 19,
+            "depth": 39.25357603299319,
+            "slot": 2,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              8,
+              15
+            ],
+            "count": 27,
+            "depth": 38.928647546944376,
+            "slot": 35,
+            "tick": 8,
+            "adjacent": true
+          }
+        ]
+      },
+      "after": {
+        "bent_risk": 0.009891843430686388,
+        "coplanar_area": 0.08521999999999999,
+        "crossings_max": 339,
+        "tie_rate": 0.010851463116644425,
+        "flip_rate": 0.023946517617403695,
+        "degenerate": 0,
+        "severity": 3.2540365569063145,
+        "flags": [
+          "bent_risk"
+        ],
+        "cofacing_pairs": 0,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              9,
+              12
+            ],
+            "count": 22,
+            "depth": 46.4030907930538,
+            "slot": 2,
+            "tick": 8,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              8,
+              12
+            ],
+            "count": 23,
+            "depth": 40.64791476151748,
+            "slot": 35,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              8,
+              9
+            ],
+            "count": 16,
+            "depth": 40.111303606350404,
+            "slot": 35,
+            "tick": 8,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              9,
+              18
+            ],
+            "count": 19,
+            "depth": 39.25357603299319,
+            "slot": 2,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              8,
+              15
+            ],
+            "count": 27,
+            "depth": 38.928647546944376,
+            "slot": 35,
+            "tick": 8,
+            "adjacent": true
+          }
+        ]
+      }
+    },
+    "303": {
+      "name": "KingEtemon",
+      "before": {
+        "bent_risk": 0.009860266889150798,
+        "coplanar_area": 0.11118000000000001,
+        "crossings_max": 452,
+        "tie_rate": 0.02284483200120182,
+        "flip_rate": 0.024281827056893007,
+        "degenerate": 0,
+        "severity": 3.2436490875516406,
+        "flags": [
+          "bent_risk"
+        ],
+        "cofacing_pairs": 0,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              14,
+              21
+            ],
+            "count": 38,
+            "depth": 30.187028969762228,
+            "slot": 2,
+            "tick": 8,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              14,
+              25
+            ],
+            "count": 52,
+            "depth": 28.4201094825532,
+            "slot": 2,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              14,
+              22
+            ],
+            "count": 28,
+            "depth": 27.715426602331267,
+            "slot": 36,
+            "tick": 7,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              9,
+              21
+            ],
+            "count": 58,
+            "depth": 23.281500215068185,
+            "slot": 36,
+            "tick": 14,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              9,
+              20
+            ],
+            "count": 36,
+            "depth": 22.711030975569834,
+            "slot": 36,
+            "tick": 0,
+            "adjacent": false
+          }
+        ]
+      },
+      "after": {
+        "bent_risk": 0.009860266889150798,
+        "coplanar_area": 0.11118000000000001,
+        "crossings_max": 452,
+        "tie_rate": 0.02284483200120182,
+        "flip_rate": 0.024281827056893007,
+        "degenerate": 0,
+        "severity": 3.2436490875516406,
+        "flags": [
+          "bent_risk"
+        ],
+        "cofacing_pairs": 0,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              14,
+              21
+            ],
+            "count": 38,
+            "depth": 30.187028969762228,
+            "slot": 2,
+            "tick": 8,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              14,
+              25
+            ],
+            "count": 52,
+            "depth": 28.4201094825532,
+            "slot": 2,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              14,
+              22
+            ],
+            "count": 28,
+            "depth": 27.715426602331267,
+            "slot": 36,
+            "tick": 7,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              9,
+              21
+            ],
+            "count": 58,
+            "depth": 23.281500215068185,
+            "slot": 36,
+            "tick": 14,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              9,
+              20
+            ],
+            "count": 36,
+            "depth": 22.711030975569834,
+            "slot": 36,
+            "tick": 0,
+            "adjacent": false
+          }
+        ]
+      }
+    },
+    "326": {
+      "name": "WarGrowlmon",
+      "before": {
+        "bent_risk": 0.00982871278512967,
+        "coplanar_area": 0.00941,
+        "crossings_max": 238,
+        "tie_rate": 0.010483942723370571,
+        "flip_rate": 0.0072327667666032824,
+        "degenerate": 0,
+        "severity": 3.233268999277432,
+        "flags": [
+          "bent_risk"
+        ],
+        "cofacing_pairs": 1,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              9,
+              10
+            ],
+            "count": 44,
+            "depth": 66.96075318676965,
+            "slot": 0,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              2,
+              3
+            ],
+            "count": 32,
+            "depth": 58.82473695716563,
+            "slot": 4,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              1,
+              9
+            ],
+            "count": 39,
+            "depth": 49.32689335216012,
+            "slot": 2,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              19,
+              20
+            ],
+            "count": 9,
+            "depth": 43.36331233388315,
+            "slot": 0,
+            "tick": 48,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              1,
+              6
+            ],
+            "count": 20,
+            "depth": 40.7143454541531,
+            "slot": 0,
+            "tick": 48,
+            "adjacent": true
+          }
+        ]
+      },
+      "after": {
+        "bent_risk": 0.00982871278512967,
+        "coplanar_area": 0.00941,
+        "crossings_max": 239,
+        "tie_rate": 0.010654480789184524,
+        "flip_rate": 0.007257839397041035,
+        "degenerate": 0,
+        "severity": 3.233268999277432,
+        "flags": [
+          "bent_risk"
+        ],
+        "cofacing_pairs": 0,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              9,
+              10
+            ],
+            "count": 44,
+            "depth": 66.96075318676965,
+            "slot": 0,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              2,
+              3
+            ],
+            "count": 32,
+            "depth": 58.82473695716563,
+            "slot": 4,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              1,
+              9
+            ],
+            "count": 39,
+            "depth": 49.32689335216012,
+            "slot": 2,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              19,
+              20
+            ],
+            "count": 9,
+            "depth": 43.36331233388315,
+            "slot": 0,
+            "tick": 48,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              1,
+              6
+            ],
+            "count": 20,
+            "depth": 40.7143454541531,
+            "slot": 0,
+            "tick": 48,
+            "adjacent": true
+          }
+        ]
+      }
+    },
+    "205": {
+      "name": "MegaKabuterimon",
+      "before": {
+        "bent_risk": 0.008785843825176576,
+        "coplanar_area": 0,
+        "crossings_max": 280,
+        "tie_rate": 0.007126388349698421,
+        "flip_rate": 0.027934601703488562,
+        "degenerate": 0,
+        "severity": 2.890205166582422,
+        "flags": [
+          "bent_risk"
+        ],
+        "cofacing_pairs": 0,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              3,
+              11
+            ],
+            "count": 24,
+            "depth": 85.18743474791903,
+            "slot": 33,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              3,
+              14
+            ],
+            "count": 22,
+            "depth": 85.18242675786502,
+            "slot": 33,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              3,
+              22
+            ],
+            "count": 11,
+            "depth": 80.13680015207115,
+            "slot": 4,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              3,
+              23
+            ],
+            "count": 17,
+            "depth": 77.84100113697713,
+            "slot": 4,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              3,
+              24
+            ],
+            "count": 48,
+            "depth": 77.34626826135393,
+            "slot": 36,
+            "tick": 7,
+            "adjacent": false
+          }
+        ]
+      },
+      "after": {
+        "bent_risk": 0.008785843825176576,
+        "coplanar_area": 0,
+        "crossings_max": 280,
+        "tie_rate": 0.007126388349698421,
+        "flip_rate": 0.027934601703488562,
+        "degenerate": 0,
+        "severity": 2.890205166582422,
+        "flags": [
+          "bent_risk"
+        ],
+        "cofacing_pairs": 0,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              3,
+              11
+            ],
+            "count": 24,
+            "depth": 85.18743474791903,
+            "slot": 33,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              3,
+              14
+            ],
+            "count": 22,
+            "depth": 85.18242675786502,
+            "slot": 33,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              3,
+              22
+            ],
+            "count": 11,
+            "depth": 80.13680015207115,
+            "slot": 4,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              3,
+              23
+            ],
+            "count": 17,
+            "depth": 77.84100113697713,
+            "slot": 4,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              3,
+              24
+            ],
+            "count": 48,
+            "depth": 77.34626826135393,
+            "slot": 36,
+            "tick": 7,
+            "adjacent": false
+          }
+        ]
+      }
+    },
+    "432": {
+      "name": "Bastemon",
+      "before": {
+        "bent_risk": 0.007417920706325114,
+        "coplanar_area": 0.10215999999999997,
+        "crossings_max": 168,
+        "tie_rate": 0.01620568521359929,
+        "flip_rate": 0.0062886037059557715,
+        "degenerate": 0,
+        "severity": 2.440211000482778,
+        "flags": [
+          "bent_risk"
+        ],
+        "cofacing_pairs": 8,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              12,
+              14
+            ],
+            "count": 42,
+            "depth": 37.47719242676131,
+            "slot": 36,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              16,
+              18
+            ],
+            "count": 31,
+            "depth": 31.37246844412886,
+            "slot": 2,
+            "tick": 12,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              3,
+              4
+            ],
+            "count": 16,
+            "depth": 29.18932519348558,
+            "slot": 4,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              6,
+              7
+            ],
+            "count": 19,
+            "depth": 28.26983965302124,
+            "slot": 35,
+            "tick": 10,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              12,
+              13
+            ],
+            "count": 26,
+            "depth": 27.745552828661204,
+            "slot": 36,
+            "tick": 0,
+            "adjacent": true
+          }
+        ]
+      },
+      "after": {
+        "bent_risk": 0.00736452197797963,
+        "coplanar_area": 0.10215999999999997,
+        "crossings_max": 168,
+        "tie_rate": 0.016126019614363066,
+        "flip_rate": 0.006297208672528835,
+        "degenerate": 0,
+        "severity": 2.422644869827144,
+        "flags": [
+          "bent_risk"
+        ],
+        "cofacing_pairs": 0,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              12,
+              14
+            ],
+            "count": 42,
+            "depth": 37.47719242676131,
+            "slot": 36,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              16,
+              18
+            ],
+            "count": 31,
+            "depth": 31.37246844412886,
+            "slot": 2,
+            "tick": 12,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              3,
+              4
+            ],
+            "count": 16,
+            "depth": 29.18932519348558,
+            "slot": 4,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              6,
+              7
+            ],
+            "count": 19,
+            "depth": 28.26983965302124,
+            "slot": 35,
+            "tick": 10,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              12,
+              13
+            ],
+            "count": 26,
+            "depth": 27.745552828661204,
+            "slot": 36,
+            "tick": 0,
+            "adjacent": true
+          }
+        ]
+      }
+    },
+    "406": {
+      "name": "MaloMyotismon",
+      "before": {
+        "bent_risk": 0.005216593664805099,
+        "coplanar_area": 0.03894000000000001,
+        "crossings_max": 114,
+        "tie_rate": 0.010729954854708464,
+        "flip_rate": 0.01700408752103871,
+        "degenerate": 0,
+        "severity": 1.7160589536973487,
+        "flags": [
+          "bent_risk"
+        ],
+        "cofacing_pairs": 4,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              28,
+              29
+            ],
+            "count": 34,
+            "depth": 47.745214299545005,
+            "slot": 35,
+            "tick": 11,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              28,
+              30
+            ],
+            "count": 31,
+            "depth": 42.90705492342594,
+            "slot": 3,
+            "tick": 12,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              2,
+              4
+            ],
+            "count": 12,
+            "depth": 41.844230928171086,
+            "slot": 36,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              21,
+              22
+            ],
+            "count": 29,
+            "depth": 37.009738487058414,
+            "slot": 2,
+            "tick": 11,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              10,
+              11
+            ],
+            "count": 78,
+            "depth": 36.17144718833926,
+            "slot": 3,
+            "tick": 12,
+            "adjacent": true
+          }
+        ]
+      },
+      "after": {
+        "bent_risk": 0.005216593664805099,
+        "coplanar_area": 0.03894000000000001,
+        "crossings_max": 114,
+        "tie_rate": 0.010729954854708464,
+        "flip_rate": 0.01700408752103871,
+        "degenerate": 0,
+        "severity": 1.7160589536973487,
+        "flags": [
+          "bent_risk"
+        ],
+        "cofacing_pairs": 4,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              28,
+              29
+            ],
+            "count": 34,
+            "depth": 47.745214299545005,
+            "slot": 35,
+            "tick": 11,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              28,
+              30
+            ],
+            "count": 31,
+            "depth": 42.90705492342594,
+            "slot": 3,
+            "tick": 12,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              2,
+              4
+            ],
+            "count": 12,
+            "depth": 41.844230928171086,
+            "slot": 36,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              21,
+              22
+            ],
+            "count": 29,
+            "depth": 37.009738487058414,
+            "slot": 2,
+            "tick": 11,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              10,
+              11
+            ],
+            "count": 78,
+            "depth": 36.17144718833926,
+            "slot": 3,
+            "tick": 12,
+            "adjacent": true
+          }
+        ]
+      }
+    },
+    "336": {
+      "name": "Raidenmon",
+      "before": {
+        "bent_risk": 0.0,
+        "coplanar_area": 0.014289999999999999,
+        "crossings_max": 531,
+        "tie_rate": 0.008505066405587604,
+        "flip_rate": 0.017482385742813005,
+        "degenerate": 0,
+        "severity": 0.8924369747899145,
+        "flags": [],
+        "cofacing_pairs": 0,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              3,
+              23
+            ],
+            "count": 28,
+            "depth": 123.19278088167897,
+            "slot": 3,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              1,
+              10
+            ],
+            "count": 25,
+            "depth": 117.10681623952607,
+            "slot": 34,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              1,
+              2
+            ],
+            "count": 20,
+            "depth": 107.12397882499972,
+            "slot": 4,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              1,
+              23
+            ],
+            "count": 10,
+            "depth": 104.06676970085198,
+            "slot": 36,
+            "tick": 7,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              1,
+              9
+            ],
+            "count": 10,
+            "depth": 104.06676970085158,
+            "slot": 36,
+            "tick": 7,
+            "adjacent": true
+          }
+        ]
+      },
+      "after": {
+        "bent_risk": 0.0,
+        "coplanar_area": 0.014289999999999999,
+        "crossings_max": 531,
+        "tie_rate": 0.008505066405587604,
+        "flip_rate": 0.017482385742813005,
+        "degenerate": 0,
+        "severity": 0.8924369747899145,
+        "flags": [],
+        "cofacing_pairs": 0,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              3,
+              23
+            ],
+            "count": 28,
+            "depth": 123.19278088167897,
+            "slot": 3,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              1,
+              10
+            ],
+            "count": 25,
+            "depth": 117.10681623952607,
+            "slot": 34,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              1,
+              2
+            ],
+            "count": 20,
+            "depth": 107.12397882499972,
+            "slot": 4,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              1,
+              23
+            ],
+            "count": 10,
+            "depth": 104.06676970085198,
+            "slot": 36,
+            "tick": 7,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              1,
+              9
+            ],
+            "count": 10,
+            "depth": 104.06676970085158,
+            "slot": 36,
+            "tick": 7,
+            "adjacent": true
+          }
+        ]
+      }
+    },
+    "335": {
+      "name": "MegaGargomon",
+      "before": {
+        "bent_risk": 0.00015327713179793436,
+        "coplanar_area": 0.00548,
+        "crossings_max": 118,
+        "tie_rate": 0.0066295550186753075,
+        "flip_rate": 0.004480454827491666,
+        "degenerate": 0,
+        "severity": 0.1983193277310921,
+        "flags": [],
+        "cofacing_pairs": 0,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              23,
+              25
+            ],
+            "count": 15,
+            "depth": 68.52602625460653,
+            "slot": 34,
+            "tick": 10,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              2,
+              4
+            ],
+            "count": 21,
+            "depth": 63.50265785864374,
+            "slot": 3,
+            "tick": 24,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              2,
+              9
+            ],
+            "count": 31,
+            "depth": 62.41800881782016,
+            "slot": 2,
+            "tick": 20,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              23,
+              24
+            ],
+            "count": 12,
+            "depth": 59.107420911426885,
+            "slot": 4,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              2,
+              8
+            ],
+            "count": 15,
+            "depth": 56.45586619912572,
+            "slot": 3,
+            "tick": 24,
+            "adjacent": true
+          }
+        ]
+      },
+      "after": {
+        "bent_risk": 0.00015327713179793436,
+        "coplanar_area": 0.00548,
+        "crossings_max": 118,
+        "tie_rate": 0.0066295550186753075,
+        "flip_rate": 0.004480454827491666,
+        "degenerate": 0,
+        "severity": 0.1983193277310921,
+        "flags": [],
+        "cofacing_pairs": 0,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              23,
+              25
+            ],
+            "count": 15,
+            "depth": 68.52602625460653,
+            "slot": 34,
+            "tick": 10,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              2,
+              4
+            ],
+            "count": 21,
+            "depth": 63.50265785864374,
+            "slot": 3,
+            "tick": 24,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              2,
+              9
+            ],
+            "count": 31,
+            "depth": 62.41800881782016,
+            "slot": 2,
+            "tick": 20,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              23,
+              24
+            ],
+            "count": 12,
+            "depth": 59.107420911426885,
+            "slot": 4,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              2,
+              8
+            ],
+            "count": 15,
+            "depth": 56.45586619912572,
+            "slot": 3,
+            "tick": 24,
+            "adjacent": true
+          }
+        ]
+      }
+    },
+    "461": {
+      "name": "Omnimon",
+      "before": {
+        "bent_risk": 0.0004597518306391077,
+        "coplanar_area": 0.09270999999999999,
+        "crossings_max": 320,
+        "tie_rate": 0.012375646552643137,
+        "flip_rate": 0.008779785422044285,
+        "degenerate": 0,
+        "severity": 0.5378151260504193,
+        "flags": [],
+        "cofacing_pairs": 6,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              20,
+              21
+            ],
+            "count": 16,
+            "depth": 54.56942402552735,
+            "slot": 35,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              16,
+              17
+            ],
+            "count": 13,
+            "depth": 51.36514073796232,
+            "slot": 34,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              20,
+              22
+            ],
+            "count": 11,
+            "depth": 45.26788462396069,
+            "slot": 35,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              11,
+              12
+            ],
+            "count": 26,
+            "depth": 42.606373884772935,
+            "slot": 36,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              13,
+              22
+            ],
+            "count": 25,
+            "depth": 34.3427306504874,
+            "slot": 35,
+            "tick": 10,
+            "adjacent": false
+          }
+        ]
+      },
+      "after": {
+        "bent_risk": 0.0004597518306391077,
+        "coplanar_area": 0.09270999999999999,
+        "crossings_max": 320,
+        "tie_rate": 0.012375646552643137,
+        "flip_rate": 0.008779785422044285,
+        "degenerate": 0,
+        "severity": 0.5378151260504193,
+        "flags": [],
+        "cofacing_pairs": 6,
+        "crossing_hotspots": [
+          {
+            "bones": [
+              20,
+              21
+            ],
+            "count": 16,
+            "depth": 54.56942402552735,
+            "slot": 35,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              16,
+              17
+            ],
+            "count": 13,
+            "depth": 51.36514073796232,
+            "slot": 34,
+            "tick": 0,
+            "adjacent": true
+          },
+          {
+            "bones": [
+              20,
+              22
+            ],
+            "count": 11,
+            "depth": 45.26788462396069,
+            "slot": 35,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              11,
+              12
+            ],
+            "count": 26,
+            "depth": 42.606373884772935,
+            "slot": 36,
+            "tick": 0,
+            "adjacent": false
+          },
+          {
+            "bones": [
+              13,
+              22
+            ],
+            "count": 25,
+            "depth": 34.3427306504874,
+            "slot": 35,
+            "tick": 10,
+            "adjacent": false
+          }
+        ]
+      }
+    }
+  }
+}

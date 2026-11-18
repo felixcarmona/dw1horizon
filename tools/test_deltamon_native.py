@@ -98,7 +98,7 @@ class DeltamonNative(unittest.TestCase):
 
     def test_slots_and_ticks(self):
         self.assertEqual([len(self.frames(s)) - 1 for s in (0, 2, 3, 4)], [20, 22, 30, 24])
-        self.assertEqual(self.model.anims.table[33], self.model.anims.table[0])
+        self.assertIn(33, self.recipe['battle_originals']['slots'])     # the battle idle is the source's own
         self.assertEqual(self.model.anims.table[36], self.model.anims.table[4])
         for slot in list(range(46, 46 + len(self.record['techniques']))) + [60]:
             self.assertIsNotNone(self.model.anims.table[slot], slot)
@@ -234,6 +234,15 @@ class DeltamonNative(unittest.TestCase):
         self.assertTrue(0 <= patch['condition_bubble'][3] < BONES)
         for row in patch['effect_origins']:
             self.assertTrue(0 <= row[0] < len(self.record['model']['skeleton']) and 0 <= row[4] < BONES, row)
+
+    def test_battle_originals(self):
+        # the source game's own battle clips, retargeted onto the donor rig (native_battle.py); one-shot clips keep the
+        # length of the donor's clip they replace, since technique effects are timed to it
+        made = self.proof['battle_originals']
+        self.assertEqual(sorted(int(s) for s in made), self.recipe['battle_originals']['slots'])
+        for slot, row in made.items():
+            if int(slot) not in (33, 34):
+                self.assertEqual(row['frames'], row['donor_frames'])
 
     def test_the_buffer_holds(self):
         info = motionstorage.require(self.data, BONES)

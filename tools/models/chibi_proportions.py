@@ -54,6 +54,12 @@ def final_model(sid, models):
     with tempfile.TemporaryDirectory() as folder:
         shutil.copy(files[0], Path(folder) / f'{sid}.MMD')
         shutil.copy(files[0].with_suffix('.TIM'), Path(folder) / f'{sid}.TIM')
+        donor = json.loads(native_binding.MANIFEST.read_text()).get(sid, {}).get('donor_species')
+        if donor:                                    # a native binding whose donor is an imported species: its model too
+            donors = sorted(Path(models).glob(f'{donor}-*.MMD'))
+            if not donors:
+                raise FileNotFoundError(f'{models}: no {donor}-*.MMD, the donor of {sid} (tools/models/edit.py get {donor})')
+            shutil.copy(donors[0], Path(folder) / f'{donor}.MMD')
         species.BASE_MODELS = folder
         record = json.loads(Path(next(glob.iglob(str(ROOT / f'content/species/{sid}-*.json')))).read_text())
         skeleton = record['model']['skeleton']

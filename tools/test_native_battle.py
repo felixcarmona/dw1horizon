@@ -1,0 +1,241 @@
+#!/usr/bin/env python3
+"""The rotation helpers of the native battle retarget (tools/models/field_animations/native_battle.py)."""
+import math
+import sys
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path[:0] = [str(ROOT), str(ROOT / 'tools')]
+
+from tools.models.field_animations import native_battle  # noqa: E402
+
+
+def _rz(a):
+    c, s = math.cos(a), math.sin(a)
+    return [[c, -s, 0], [s, c, 0], [0, 0, 1]]
+
+
+def _rx(a):
+    c, s = math.cos(a), math.sin(a)
+    return [[1, 0, 0], [0, c, -s], [0, s, c]]
+
+
+class NativeBattle(unittest.TestCase):
+    def close(self, a, b, places=6):
+        for ra, rb in zip(a, b):
+            for x, y in zip(ra, rb):
+                self.assertAlmostEqual(x, y, places=places)
+
+    def test_polar_drops_the_stretch(self):
+        r = _rz(0.7)
+        stretched = [[v * k for v, k in zip(row, (2.0, 0.5, 1.3))] for row in r]
+        self.close(native_battle.polar(stretched), r)
+
+    def test_mean_of_one_rotation_is_itself(self):
+        r = _rz(1.1)
+        self.close(native_battle.mean_rotation([r], [1.0]), r)
+
+    def test_mean_lies_between(self):
+        self.close(native_battle.mean_rotation([_rz(0.2), _rz(0.6)], [1.0, 1.0]), _rz(0.4))
+
+    def test_compaction_stays_within_half_a_degree(self):
+        self.assertLess(native_battle.MAX_TOL * 360 / 4096, 0.5)
+        with self.assertRaises(ValueError):
+            native_battle.compact(b'', 1, {'tol': native_battle.MAX_TOL + 1})
+
+    def test_preserve_field_leaves_the_field_programs_alone(self):
+        from unittest import mock
+
+        class Anim:
+            def __init__(self):
+                self.tail = b'tail'
+
+        class Model:
+            def __init__(self):
+                self.anims = mock.Mock(table=list(range(40)), anims=[Anim() for _ in range(40)])
+
+            def build(self):
+                return b'built'
+
+        model, calls = Model(), []
+        exact = lambda out, nb, tol, slots=None: (calls.append((tol, slots)), (out, {}))[1]
+        with mock.patch.object(native_battle.battle_restore, 'compact', exact), \
+                mock.patch.object(native_battle.mmd.MMD, 'parse', lambda data, nb: model), \
+                mock.patch.object(native_battle.motioncyclelayer, 'share_identical_streams', lambda a, t: (a, t)):
+            native_battle.compact(b'm', 1, {'tol': 0, 'preserve_field': True})
+        self.assertEqual(calls, [(0, set(range(40)) - set(native_battle.FIELD))])
+        self.assertEqual([a.tail for a in model.anims.anims[:6]], [b'tail'] * 5 + [b''])
+
+    def test_care_tolerance_is_not_overwritten_by_bulk_compaction(self):
+        from unittest import mock
+        model = mock.Mock()
+        model.anims.table = list(range(40))
+        model.anims.anims = [mock.Mock() for _ in range(40)]
+        applied = {s: [] for s in range(40)}
+
+        def compact(data, nb, tol, slots=None):
+            for s in range(40) if slots is None else slots:
+                applied[s].append(tol)
+            return data, {}
+
+        with mock.patch.object(native_battle.battle_restore, 'compact', compact), \
+                mock.patch.object(native_battle.mmd.MMD, 'parse', return_value=model), \
+                mock.patch.object(native_battle.motioncyclelayer, 'share_identical_streams', lambda a, t: (a, t)):
+            native_battle.compact(b'm', 1, {'tol': 5, 'slot_tol': {'19': 2}})
+        self.assertEqual(applied[19], [0, 2])
+        self.assertEqual(applied[22], [0, 5])
+        for s in list(native_battle.FIELD) + list(native_battle.BATTLE):
+            self.assertEqual(applied[s], [0])
+        for slot, tol in ((0, 2), (33, 2), (19, 6), (19, -1)):
+            with self.assertRaises(ValueError):
+                native_battle.compact(b'', 1, {'tol': 5, 'slot_tol': {str(slot): tol}})
+
+    def test_mirrored_fit_follows_the_twins_bind_poses(self):
+        # a mirrored piece's local vertex v is the twin's X.v; its fitted world shape is X.(Q_twin.W_twin.X.v), so the
+        # fit from its own source world W_own.v is whatever maps one onto the other, also when the source poses the
+        # twins unevenly (a guard stance)
+        mul, apply = native_battle._mul, native_battle._apply
+        X = native_battle.FLIP
+        q_twin, w_twin, w_own = _rz(0.4), mul(_rx(0.3), _rz(-0.9)), mul(_rz(1.2), _rx(-0.5))
+        fit = native_battle.mirrored_fit(q_twin, w_twin, w_own)
+        for v in ([1., 0, 0], [0, 1., 0], [0.3, -0.2, 0.9]):
+            want = apply(X, apply(q_twin, apply(w_twin, apply(X, v))))
+            for a, b in zip(apply(fit, apply(w_own, v)), want):
+                self.assertAlmostEqual(a, b, places=6)
+        # twins posed as mirrors of each other: the plain reflection of the twin's fit
+        self.close(native_battle.mirrored_fit(q_twin, mul(mul(X, w_own), X), w_own), mul(mul(X, q_twin), X))
+
+    def test_pieces_set_in_a_reviewed_orientation_do_not_lead(self):
+        skeleton = [(-1, -1), (0, 0), (1, 1), (2, 2), (3, 3)]   # 2 the chest, 3 an upper arm, 4 armour moved off it
+        self.assertEqual(sorted(native_battle.lead_tops({2, 4}, skeleton)), [2, 4])
+        self.assertEqual(native_battle.lead_tops({2, 4}, skeleton, {4}), [2])
+        self.assertEqual(native_battle.lead_tops({4}, skeleton, {4}), [4])
+        recipe = {"pieces": {"4": {"aim": {}}, "3": {"offset": [0, 0, 0]}}, "mirror": {"9": 4, "8": 3}}
+        self.assertEqual(native_battle.fixed_pieces(recipe), {4, 9})
+        # a battle_originals `ride` piece rides its bone without leading it
+        recipe["battle_originals"] = {"slots": [33], "ride": [5]}
+        self.assertEqual(native_battle.fixed_pieces(recipe), {4, 5, 9})
+        self.assertEqual(native_battle.lead_tops({2, 5}, [(-1, -1), (0, 0), (1, 1), (2, 1), (3, 1), (4, 1)],
+                                                 native_battle.fixed_pieces(recipe)), [2])
+
+    def test_posture_skips_bones_that_hold_only_limbs(self):
+        # the QA's body bones exclude a donor bone carrying only source limb bones (a hand holding an arm's head)
+        sys.path[:0] = [str(ROOT / 'tools' / 'models')]
+        import battle_qa_native
+        # body 1, chest 2, an arm 3-4 and the head 5 on the chest, a leg 6-7 on the body
+        skeleton = [(-1, -1), (0, 0), (1, 1), (2, 2), (3, 3), (4, 2), (5, 1), (6, 6)]
+        limbs = battle_qa_native.limb_bones(skeleton)
+        self.assertEqual(set(limbs), {3, 4, 5, 6, 7})
+        # a donor rig: hand 3 (fingers 4, 5) holds the arm's two pieces, its finger 4 the arm's tip; pelvis 6 holds the
+        # source head 5 and, on its leg 7, the source leg
+        parents = [-1, 0, 1, 2, 3, 3, 1, 6]
+        carried = {1: {1, 2}, 3: {3}, 4: {4}, 6: {5}, 7: {6, 7}}
+        self.assertEqual(battle_qa_native.limb_carriers(carried, parents, limbs), {3, 4, 7})
+
+    def test_qa_measures_the_source_on_the_final_clips_length(self):
+        # a slot given its own length (battle_originals.ticks) is compared tick for tick with the source resampled to
+        # that length, not to main's
+        from unittest import mock
+        sys.path[:0] = [str(ROOT / 'tools' / 'models')]
+        import battle_qa_native
+        asked = []
+
+        def clip(source, ns, slot, ticks):
+            asked.append(ticks)
+            return [[0]] * ticks, None, None, 'tile'
+        with mock.patch.object(native_battle, 'source_clip', clip):
+            sfr, tile = battle_qa_native.source_frames('src', 3, 0x2B, ([[0]] * 41, None))
+        self.assertEqual((asked, len(sfr), tile), ([41], 41, 'tile'))
+
+    def test_order_puts_parents_first(self):
+        skeleton = [(0, -1), (1, 2), (2, 0)]        # bone 1's parent comes after it
+        order = native_battle.order(skeleton)
+        self.assertLess(order.index(2), order.index(1))
+
+    def test_events_move_with_a_slot_given_another_length(self):
+        # a technique given its own length keeps the donor's swing sound and hit at the same moment of the clip
+        ev = [(0, 'sound', 1), (10, 'sound', 2), (20, 'sound', 3)]
+        self.assertEqual(native_battle.scaled_events(ev, 21, 21), ev)
+        self.assertEqual(native_battle.scaled_events(ev, 21, 41), [(0, 'sound', 1), (20, 'sound', 2), (39, 'sound', 3)])
+        self.assertEqual(native_battle.scaled_events(ev, 21, 11), [(0, 'sound', 1), (5, 'sound', 2), (9, 'sound', 3)])
+
+    def test_sound_events_follow_a_cut_and_retime(self):
+        from unittest import mock
+        frames = [[[4096] * 3 + [0] * 6 for _ in range(2)] for _ in range(9)]
+        events = [(0, 'sound', {'bank': 1, 'note': 1}),
+                  (2, 'sound', {'bank': 1, 'note': 2}),
+                  (7, 'sound', {'bank': 4, 'note': 3})]
+        model = mock.Mock()
+        model.anims.table = [0] * 64
+        model.anims.anims = [mock.Mock()]
+        source = mock.Mock()
+        source.anims.table = [0] * 64
+        ctx = dict(rig=[(0, -1), (1, 0)], source=source, skeleton=[(0, -1), (1, 0)], rest=frames[0])
+        ops = [{'op': 'cut', 'from': 1, 'to': 3}, {'op': 'retime', 'ticks': 10}]
+        with mock.patch.object(native_battle.mmd.MMD, 'parse', return_value=model), \
+                mock.patch.object(native_battle.animsheet, 'slot_frames', return_value=(frames, None, events)), \
+                mock.patch.object(native_battle, 'source_clip', return_value=(frames, events, None, 1)), \
+                mock.patch.object(native_battle, 'retarget', side_effect=lambda poses, context: poses), \
+                mock.patch.object(native_battle.mmd, 'encode_anim') as encode, \
+                mock.patch.object(native_battle.motioncyclelayer, 'share_identical_streams', side_effect=lambda a, t: (a, t)):
+            native_battle.apply(b'model', ctx, [43], repairs={'43': ops})
+        samples, _, _, actual_events = encode.call_args.args
+        self.assertEqual(len(samples), 11)
+        self.assertEqual(actual_events, [(0, 'sound', {'bank': 1, 'note': 1}),
+                                         (8, 'sound', {'bank': 4, 'note': 3})])
+
+    def test_restored_clips_take_the_final_field_rig(self):
+        import copy
+        from unittest import mock
+        original = [[4096] * 3 + [0] * 6 for _ in range(3)]
+        original[2][7] = -100
+        final = copy.deepcopy(original)
+        final[2][7] = -125
+        frames = [copy.deepcopy(original) for _ in range(3)]
+        frames[1][2][3] = 200
+        model = mock.Mock()
+        model.anims.table = [0] * 64
+        model.anims.anims = [mock.Mock()]
+        source = mock.Mock()
+        source.anims.table = [0] * 64
+        ctx = dict(rig=[(-1, -1), (0, 0), (1, 1)], source=source,
+                   skeleton=[(-1, -1), (0, 0), (1, 1)], rest=original)
+        events = [(1, 'sound', {'bank': 1, 'note': 2})]
+        with mock.patch.object(native_battle.mmd.MMD, 'parse', return_value=model), \
+                mock.patch.object(native_battle.animsheet, 'slot_frames',
+                                  side_effect=lambda m, nb, slot: ([final] * 3, 0, events)), \
+                mock.patch.object(native_battle, 'source_clip', return_value=(frames, events, 0, 1)), \
+                mock.patch.object(native_battle, 'retarget', side_effect=lambda poses, context: poses), \
+                mock.patch.object(native_battle.mmd, 'encode_anim') as encode, \
+                mock.patch.object(native_battle.motioncyclelayer, 'share_identical_streams', side_effect=lambda a, t: (a, t)):
+            for slot in (33, 58):
+                native_battle.apply(b'model', ctx, [slot])
+                samples, _, loop, actual_events = encode.call_args.args
+                self.assertEqual([p[2][7] for p in samples], [-125] * 3)
+                self.assertEqual([p[2][3] for p in samples], [0, 200, 0])
+                self.assertEqual([p[0] for p in samples], [p[0] for p in frames])
+                self.assertEqual(loop, 0)
+                self.assertEqual(actual_events, events)
+
+    def test_a_technique_shares_the_clip_the_source_plays_for_both(self):
+        # `share`: slot 0x2F plays 0x2E's restored program where the source has one program in both slots
+        table = [None] * 46 + [7, 3, 4]
+        source = [None] * 46 + [2, 2, 5]
+        self.assertEqual(native_battle.shared(table, source, {'47': 46}, {46, 48})[46:], [7, 7, 4])
+        self.assertEqual(native_battle.shared(table, source, None, {46}), table)
+        for bad, restored in (({'48': 46}, {46}), ({'47': 46}, {47}), ({'47': 46}, {46, 47})):
+            with self.assertRaises(ValueError):
+                native_battle.shared(table, source, bad, restored)
+
+    def test_dropped_npc_slots_are_the_ones_the_scripts_never_ask_a_partner_for(self):
+        # `drop_npc_slots` leaves out the tamer's, NPCs' and kart race's clips: none may be a slot the species scripts need
+        from tools import species
+        from tools.models.field_animations import native_binding
+        self.assertFalse(set(native_binding.NPC_SLOTS) & set(species.SCRIPT_SLOTS))
+        self.assertEqual(sorted(native_binding.NPC_SLOTS),
+                         [s for s in range(0x2D) if s not in species.SCRIPT_SLOTS])
+
+
+if __name__ == '__main__':
+    unittest.main()

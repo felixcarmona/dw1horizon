@@ -12,6 +12,31 @@ from tools.derive.steps.overlays import imported_models as provider
 
 
 class ModelProvider(unittest.TestCase):
+    def test_repin_authored_builder_updates_only_its_provider_pin(self):
+        import tempfile
+        from tools.models import edit
+
+        with tempfile.TemporaryDirectory() as folder:
+            model = Path(folder) / '477.MMD'
+            model.write_bytes(b'model')
+            pins = {'imports': {'470': ['keep', 'keep'], '477': ['old', 'old']}}
+            step = SimpleNamespace(PINS='pins', _write_pins=Mock())
+            builder = SimpleNamespace(build=Mock(return_value=(b'model', b'texture')))
+            args = SimpleNamespace(id='477', mmd=str(model), tim=None)
+            with patch.object(edit, 'load', return_value={'models': []}), \
+                    patch.object(edit, 'import_records', return_value={'477': {'builder': 'example'}}), \
+                    patch.object(edit.importlib, 'import_module', return_value=builder), \
+                    patch.object(edit, 'species_pins', return_value=(step, pins)), \
+                    patch.object(edit, 'provider_pin', return_value=['new', 'texture']), \
+                    patch.object(edit, 'donor_models', return_value={}):
+                edit.cmd_repin(args)
+                step._write_pins.assert_called_once_with(
+                    {'imports': {'470': ['keep', 'keep'], '477': ['new', 'texture']}})
+                model.write_bytes(b'unencoded edit')
+                with self.assertRaisesRegex(SystemExit, 'encode the authored model first'):
+                    edit.cmd_repin(args)
+                self.assertEqual(step._write_pins.call_count, 1)
+
     def test_editor_pins_final_provider_output_without_a_field_overlay(self):
         from tools.models import edit
 
@@ -32,6 +57,27 @@ class ModelProvider(unittest.TestCase):
         self.assertEqual(actual, [hashlib.sha1(b'base modeldash repair').hexdigest(),
                                   hashlib.sha1(b'texture').hexdigest()])
 
+    def test_species_pin_check_includes_authored_builders_and_rejects_bad_pins(self):
+        import contextlib
+        import io
+        from tools.models import edit
+        for ids in ([], [470]):
+            for actual, expected_status in ((['model', 'texture'], 0), (['wrong', 'texture'], 1)):
+                with self.subTest(ids=ids, actual=actual):
+                    builder = SimpleNamespace(build=Mock(return_value=(b'model', b'texture')))
+                    output = io.StringIO()
+                    with patch.object(edit, 'load', return_value={'models': []}), \
+                            patch.object(edit, 'import_records', return_value={'470': {'builder': 'example'}}), \
+                            patch.object(edit, 'species_pins', return_value=(None, {'imports': {'470': ['model', 'texture']}})), \
+                            patch.object(edit, 'provider_pin', return_value=actual), \
+                            patch.object(edit, 'donor_models', return_value={}), \
+                            patch.object(edit.importlib, 'import_module', return_value=builder), \
+                            contextlib.redirect_stdout(output):
+                        status = edit.cmd_check(SimpleNamespace(ids=ids, species_pins=True))
+                    self.assertEqual(status, expected_status)
+                    self.assertIn('1/1 verified' if status == 0 else '0/1 verified', output.getvalue())
+                    builder.build.assert_called_once_with(edit.ROOT / 'extracted')
+
     def test_generated_base_folder_is_forwarded_to_the_imported_provider(self):
         make = Mock(return_value={'183': ('/model.MMD', '/model.TIM')})
         module = SimpleNamespace(make=make)
@@ -41,7 +87,7 @@ class ModelProvider(unittest.TestCase):
                 patch.object(species.importlib.util, 'module_from_spec', return_value=module):
             actual = species.ImportedModels(None).provide_models(context, generate=False)
         self.assertEqual(module.BASE_MODELS, '/build/imported-models')
-        make.assert_called_once_with('/build/imported-species', generate=False)
+        make.assert_called_once_with('/build/imported-species', generate=False, ids=None)
         self.assertEqual(actual, {'183': ('/model.MMD', '/model.TIM')})
 
     def test_every_reviewed_overlay_keeps_its_species_generator_and_output(self):
@@ -57,6 +103,8 @@ class ModelProvider(unittest.TestCase):
             '183': ('183', 'tools.models.field_animations.native_binding', '183-wormmon-native-crawl'),
             # BomberNanimon wears Nanimon's rig and programs; its boxer clips stay as the scale lock's provenance.
             '232': ('232', 'tools.models.field_animations.native_binding', '232-bombernanimon-native'),
+            # MegaKabuterimon wears Hercules Kabuterimon's rig and programs, planted by its own gait stage.
+            '205': ('205', 'tools.models.field_animations.native_binding', '205-megakabuterimon-native'),
             # Wizardmon wears Angemon's rig and programs (its cape and hair follow); its paced gait was retired with it.
             '241': ('241', 'tools.models.field_animations.wizardmon_native', '241-wizardmon-native'),
             # Sorcermon is Wizardmon's body: the same rig, programs and followers.
@@ -67,19 +115,40 @@ class ModelProvider(unittest.TestCase):
             '292': ('292', 'tools.models.field_animations.native_binding', '292-deltamon-native'),
             # ChaosLord wears native Machinedramon's rig and programs.
             '289': ('289', 'tools.models.field_animations.native_binding', '289-chaoslord-native'),
+            # Garudamon wears native Angemon's rig and programs, planted by its own gait stage.
+            '460': ('460', 'tools.models.field_animations.native_binding', '460-garudamon-native'),
             # GrapLeomon wears native Leomon's rig and programs, with four turning drums.
             '306': ('306', 'tools.models.field_animations.native_binding', '306-grapleomon-native'),
+            # Kyubimon wears native Garurumon's rig and a planted-sole gait on it.
+            '409': ('409', 'tools.models.field_animations.native_binding', '409-kyubimon-native'),
+            # Minotarumon wears native Ogremon's rig and programs.
+            '330': ('330', 'tools.models.field_animations.native_binding', '330-minotarumon-native'),
+            # NeoCrimson wears WarGreymon's rig, its parts bound by the recipe, and WarGreymon's gait (neocrimson_wg_gait.py).
+            '402': ('402', 'tools.models.field_animations.native_binding', '402-neocrimson-native'),
+
+            # Cannondramon wears native Monochromon's rig and programs, planted by its own gait stage.
+            '405': ('405', 'tools.models.field_animations.native_binding', '405-cannondramon-native'),
+            # Zanbamon wears a native quadruped's rig and programs, planted by its own gait stage.
+            '430': ('430', 'tools.models.field_animations.native_binding', '430-zanbamon-native'),
             # Vilemon wears native Ogremon's rig and programs.
             '295': ('295', 'tools.models.field_animations.native_binding', '295-vilemon-native'),
             # HiAndromon wears native Andromon's rig and programs.
             '302': ('302', 'tools.models.field_animations.native_binding', '302-hiandromon-native'),
             # KingEtemon wears native Etemon's rig and programs.
             '303': ('303', 'tools.models.field_animations.native_binding', '303-kingetemon-native'),
+            # SkullSatamon wears a native donor's rig and programs.
+            '314': ('314', 'tools.models.field_animations.native_binding', '314-skullsatamon-native'),
+            # WarGrowlmon wears Growlmon's rig and programs (the donor is an imported species: `donor_species`).
+            '326': ('326', 'tools.models.field_animations.native_binding', '326-wargrowlmon-native'),
+            # Maildramon wears native Unimon's rig and programs, its legs planted by a gait stage (maildramon_gait.py).
+            '324': ('324', 'tools.models.field_animations.native_binding', '324-maildramon-native'),
             # Assaultmon wears native Centarumon's rig and programs.
             '310': ('310', 'tools.models.field_animations.native_binding', '310-assaultmon-native'),
             # PrinceMamemon wears native Mamemon's rig and programs.
             '270': ('270', 'tools.models.field_animations.native_binding', '270-princemamemon-native'),
 
+            # MagnaAngemon's rig is bound offline (its scale lock); this plays its source game's battle clips on it.
+            '206': ('206', 'tools.models.field_animations.bound_battle', '206-magnaangemon-battle'),
             # MetalTyrannomon wears native Tyrannomon's rig and programs.
             '260': ('260', 'tools.models.field_animations.native_binding', '260-metaltyrannomon-native'),
             '187': ('187', 'tools.models.field_animations.followthrough', '187-stingmon-wing-followthrough'),
@@ -173,6 +242,16 @@ class ModelProvider(unittest.TestCase):
                          ('tools.models.field_animations.magnamon', '197-magnamon-native'))
         assignments['197'] = previous_magnamon[1:]
         assignments['195'] = previous_flamedramon[1:]
+        # Creepymon's clips (creepymon_gait.py) run on the celebration build and replace its field slots.
+        self.assertEqual(assignments['312'], ('tools.models.field_animations.creepymon_gait', '312-creepymon-chibi'))
+        assignments['312'] = ('tools.models.field_animations.celebrations', '312-creepymon-chibi')
+
+        # Pharaohmon's tired walk and run (pharaohmon_gait.py) run on top of the celebrations recipe.
+        self.assertEqual(assignments['319'], ('tools.models.field_animations.pharaohmon_gait', '319-pharaohmon-chibi'))
+        assignments['319'] = ('tools.models.field_animations.celebrations', '319-pharaohmon-chibi')
+        # Bastemon's idle, walk, tired walk and run (bastemon_gait.py) run on top of the celebrations' own build (chibi proportions first).
+        self.assertEqual(assignments['432'], ('tools.models.field_animations.bastemon_gait', '432-bastemon-field'))
+        assignments['432'] = ('tools.models.field_animations.celebrations', '432-bastemon-field')
         # Celebration curves run after the final proportions. Unwrap them to
         # keep guarding all the original field recipes and output names.
         for sid, row in celebrations.items():
@@ -181,12 +260,38 @@ class ModelProvider(unittest.TestCase):
                 assignments[sid] = (row['base_generator'], assignments[sid][1])
             else:
                 del assignments[sid]
+        # Snatchmon's touched-up walk, tired walk and run (snatchmon_polish.py) run on top of its chibi proportions.
+        self.assertEqual(assignments['331'], ('tools.models.field_animations.snatchmon_polish', '331-snatchmon-chibi'))
+        assignments['331'] = ('tools.models.field_animations.chibi', '331-snatchmon-chibi')
         # Hookmon's corrected clips (hookmon_polish.py) run on top of its chibi proportions and rebuild them first.
         self.assertEqual(assignments['299'], ('tools.models.field_animations.hookmon_polish', '299-hookmon-chibi'))
         assignments['299'] = ('tools.models.field_animations.chibi', '299-hookmon-chibi')
+        # So are Kyukimon's walk, tired walk and run (kyukimon_gait.py).
+        self.assertEqual(assignments['322'], ('tools.models.field_animations.kyukimon_gait', '322-kyukimon-chibi'))
+        assignments['322'] = ('tools.models.field_animations.chibi', '322-kyukimon-chibi')
         # So are Dinohyumon's (dinohyumon_gait.py).
         self.assertEqual(assignments['308'], ('tools.models.field_animations.dinohyumon_gait', '308-dinohyumon-chibi'))
         assignments['308'] = ('tools.models.field_animations.chibi', '308-dinohyumon-chibi')
+        # Mummymon's walk, tired walk and run (mummymon_gait.py) run on top of its chibi proportions the same way.
+        self.assertEqual(assignments['334'], ('tools.models.field_animations.mummymon_gait', '334-mummymon-chibi'))
+        assignments['334'] = ('tools.models.field_animations.chibi', '334-mummymon-chibi')
+
+        self.assertEqual(assignments['373'], ('tools.models.field_animations.wargreymon_gait', '373-wargreymon-field'))
+        assignments['373'] = ('tools.models.field_animations.chibi', '373-wargreymon-field')
+        # Knightmon's tired walk and run (knightmon_gait.py) are the celebration's base generator and rebuild its chibi proportions first.
+        self.assertEqual(assignments['321'], ('tools.models.field_animations.knightmon_gait', '321-knightmon-chibi'))
+        assignments['321'] = ('tools.models.field_animations.chibi', '321-knightmon-chibi')
+        # And Gargoylemon's (gargoylemon_gait.py).
+        self.assertEqual(assignments['327'], ('tools.models.field_animations.gargoylemon_gait', '327-gargoylemon-chibi'))
+        assignments['327'] = ('tools.models.field_animations.chibi', '327-gargoylemon-chibi')
+
+        # MegaGargomon's idle, walk, tired walk and run (megagargomon_gait.py) are the celebrations' base generator and rebuild its chibi proportions first.
+        self.assertEqual(assignments['335'], ('tools.models.field_animations.megagargomon_gait', '335-megagargomon-equipment'))
+        assignments['335'] = ('tools.models.field_animations.chibi', '335-megagargomon-equipment')
+
+        # Renamon's walk, tired walk, run and idle (renamon_gait.py) run on top of its chibi proportions the same way.
+        self.assertEqual(assignments['354'], ('tools.models.field_animations.renamon_gait', '354-renamon-field'))
+        assignments['354'] = ('tools.models.field_animations.chibi', '354-renamon-field')
         # Antylamon's smoothed walk (antylamon_polish.py) runs on top of its chibi proportions the same way.
         self.assertEqual(assignments['309'], ('tools.models.field_animations.antylamon_polish', '309-antylamon-chibi'))
         assignments['309'] = ('tools.models.field_animations.chibi', '309-antylamon-chibi')
@@ -245,7 +350,13 @@ class ModelProvider(unittest.TestCase):
         # All pre-existing bindings outside the repairs stay pinned.
         for sid in ('315', '332', '335'):
             del assignments[sid]
+        # Raijinmon (333) wears Ogremon's rig and programs with planted legs (raijinmon_gait.py): a native binding, no celebration row.
+        self.assertEqual(assignments.pop('333'), ('tools.models.field_animations.native_binding', '333-raijinmon-native'))
         assignments['351'] = ('tools.models.field_animations.articulation', '351-kotemon-field')
+        # Puppetmon (181) has its own field stage: planted soles under the original's pelvis, spring-driven chest, head, arms and hammer.
+        self.assertEqual(assignments['181'], ('tools.models.field_animations.puppetmon_field', '181-puppetmon-field'))
+        # Veemon (180) has its own generator: planted soles, rolling feet and blinks (veemon_gait.py, veemon_face.py).
+        self.assertEqual(assignments['180'], ('tools.models.field_animations.veemon_gait', '180-veemon-field'))
         # Raidramon (201) no longer has a field overlay: its gait is in its model delta (raidramon.py).
         self.assertNotIn('201', assignments)
         # Salamon (221) neither: its gait and blinking face are in its model delta (salamon.py, salamon_face.py).
@@ -257,8 +368,9 @@ class ModelProvider(unittest.TestCase):
         # Grizzlymon (296) neither: its idle, walk, tired walk and run are in its model delta (grizzlymon_gait.py).
         self.assertNotIn('field_overlay', records['296'])
         # KingEtemon (303) and GrapLeomon (306) wear native rigs and have no chibi row any more: their two entries left the pin.
+        # WarGrowlmon (326) wears Growlmon's rig; its row stays for the proportions guard and its baked chibi recipe stays as provenance.
         self.assertEqual(hashlib.sha1(json.dumps(assignments, sort_keys=True).encode()).hexdigest(),
-                         '8764754788ba014350734de7873ba449567913f3')
+                         'f018a892b549b28afc2ef56af8c0b3f01a378a7c')
 
 
 if __name__ == '__main__':

@@ -23,7 +23,7 @@ blinks every two to three seconds with a double blink once a loop, the walk and 
 loops (its bones and root are untouched: its program is only repeated three times so that the blink is not repeated every
 second).
 
-Slot 3 (tired walk) has its own program and changes only in the chest, the head and the blink. Slots 4 and 36 (run) keep their poses and root exactly (they share a program, so both gain the blink); slots 1, 14-18, 33, 34 and the rest are not touched.
+Slot 3 (tired walk) has its own program and changes only in the chest, the head and the blink. Slot 4 (run) keeps its poses and root exactly and gains the blink; slots 1, 14-18, 33, 34, 36 (the source's own battle run, rebuilt: content/models/imports/battle-rebuilds.json) and the rest are not touched.
 """
 import copy
 import hashlib
@@ -41,7 +41,7 @@ from tools.models.field_animations.war_greymon import set_rotation
 R = motionsecondary.R
 SPECIES = 273
 NB = 20
-SOURCE = '4da9bc7b0edeba896748c8686adf14b81e5c5dc24d7f8fd2c81f27b4449a7837'      # the paced model
+SOURCE = 'caca90e1cd48d289d1869fbf3c100fc5e6e355c92e169d6d80e49524ed076b04'      # the paced model
 PELVIS, CHEST, HEAD = 1, 2, 3
 ARMS = ((4, 5, 6, 7, 1), (8, 9, 10, 11, -1))        # arm, wrist, flower, tendril, side (x > 0 is the right)
 TAIL = (12, 13)

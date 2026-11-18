@@ -10,6 +10,7 @@
                  "Super Slap"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 45,
+  "own_effect": {"technique": "Super Slap", "chunk": 287},
   "model": {
     "file": "build/batch4/Gomamon.MMD",
     "radius": 100,

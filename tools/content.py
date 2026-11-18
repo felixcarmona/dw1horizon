@@ -529,10 +529,27 @@ def json_to_slot(i, o, wild, ids, where):
     return d
 
 
+_MAPS_LOADED = {}      # path -> ((mtime_ns, size), file dict): the content/maps files already read
+
+
+def _maps_view():
+    """{NAME: file dict} of content/maps as load_maps reads it, each file read once per version of the file (mtime and size).
+    The dicts are shared: a caller that only reads them (build_map) uses this, the others load_maps' copies."""
+    out = {}
+    for p in sorted(glob.glob(os.path.join(MAPS_DIR, '*.json'))):
+        st = os.stat(p)
+        key = (st.st_mtime_ns, st.st_size)
+        hit = _MAPS_LOADED.get(p)
+        if hit is None or hit[0] != key:
+            with open(p) as f:
+                hit = _MAPS_LOADED[p] = (key, dict(json.load(f, object_pairs_hook=collections.OrderedDict), _path=p))
+        out[os.path.basename(p)[:-5]] = hit[1]
+    return out
+
+
 def load_maps():
     """{NAME: file dict} of content/maps; an empty directory removes every placed Digimon."""
-    files = sorted(glob.glob(os.path.join(MAPS_DIR, '*.json')))
-    return {os.path.basename(p)[:-5]: dict(json.load(open(p), object_pairs_hook=collections.OrderedDict), _path=p) for p in files}
+    return {n: S._clone(m) for n, m in _maps_view().items()}
 
 
 _MAP_CTX = {}
@@ -570,7 +587,7 @@ def apply_map_collision(m, edits, where):
 def build_map(name, data, maps=None):
     """The .MAP NAME (its disc bytes `data`) with its Digimon list from content/maps (none without a file). -> bytes"""
     import dwmap
-    maps = load_maps() if maps is None else maps
+    maps = _maps_view() if maps is None else maps
     if name in NEVER_READ: return data
     m = dwmap.MapFile(data); c = _map_ctx()
     x = maps.get(name)
@@ -594,7 +611,11 @@ def built_map_path(rel):
     if new == data: return src
     dst = os.path.join(ROOT, 'build', 'content-maps', rel)
     os.makedirs(os.path.dirname(dst), exist_ok=True)
-    if not os.path.exists(dst) or open(dst, 'rb').read() != new: open(dst, 'wb').write(new)
+    if not os.path.exists(dst) or open(dst, 'rb').read() != new:
+        # (whole or not at all: story passes run side by side, and another may be reading this map)
+        tmp = f'{dst}.{os.getpid()}.part'
+        with open(tmp, 'wb') as f: f.write(new)
+        os.replace(tmp, dst)
     return dst
 
 

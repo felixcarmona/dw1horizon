@@ -172,9 +172,9 @@
           }
         ],
         "delta": "content/record-originals/deltas/67.MMD.mdelta",
-        "delta_sha256": "65b4ff2dac8e2d3929fa29f2b1c6e5f610f82fb8cae27df44a342c610e5392cd",
-        "sha256": "f93fdad13955ec7ee11f7845080832eb3a05a9e1a1c7daaa67e9de4f37b04949",
-        "size": 79896
+        "delta_sha256": "d462b9aa1ea677052c7e7ad42c40d187462fec9a398f1268f56d7a7e127a92e8",
+        "sha256": "30736ec0a58e5143623b8ee2bd3b70585e51f0873a387c80dbc7a39253751a9c",
+        "size": 79668
       }
     },
     {
@@ -956,12 +956,17 @@
             "path": "extracted/CHDAT/MMD0/BIRD.MMD",
             "size": 84644,
             "sha256": "17c2c781295b291a13ed9a03631664f5eef1acbef0990ce2cc1bbca476c8b832"
+          },
+          {
+            "path": "extracted/CHDAT/MMD1/TOKO.MMD",
+            "size": 34192,
+            "sha256": "3a4b4df9ef9a95713dccaec191ebeb5c2ced6df35fba4e4477adb47a5fed0e62"
           }
         ],
         "delta": "content/record-originals/deltas/106.MMD.mdelta",
-        "delta_sha256": "bbefa26b96991b5baa3f870678aabca3c1d429bba0e88a70b0dbe6e315b279a1",
-        "sha256": "cc25600200c472e9f3db58cd05bb357c25f74bf2bd262469e304d38a0a7c15ed",
-        "size": 67466
+        "delta_sha256": "9f9909c7acba5b0b436fbc749eaa2632f331d5bda08a6f2bd5a82f2f7a4a7dab",
+        "sha256": "59034964bae16d0ff599f212993cdae9b3028d43c703eafca66e6884194fd940",
+        "size": 66390
       }
     },
     {

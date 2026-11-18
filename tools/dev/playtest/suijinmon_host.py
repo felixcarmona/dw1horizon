@@ -26,8 +26,8 @@ def main():
     speed=abs(frames[-1][0][8]-frames[0][0][8])/(len(frames)-1)
     assert abs(speed-12)<.1,('condition walk speed',speed)
     animation=model.anims.anims[model.anims.table[3]]
-    played,_=q._played(animation,len(skeleton),3,27)
-    for tick in range(27,27*9+1,27):
+    played,_=q._played(animation,len(skeleton),3,21)
+    for tick in range(21,21*9+1,21):
         assert all(abs(a-b)<=2 for pose,other in zip(played[0][1:],played[tick][1:]) for a,b in zip(pose,other))
     report['condition_walk'].update(lowest_point=round(floor,2),nine_loops_close=True)
     a.out.write_text(json.dumps(report,indent=2)+'\n')

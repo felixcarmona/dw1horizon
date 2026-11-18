@@ -10,6 +10,7 @@
                  "Scissor Claw"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 39,
+  "own_effect": {"technique": "Scissor Claw", "chunk": 149},
   "model": {
     "file": "build/batch9/Ganimon.MMD",
     "radius": 214,

@@ -19,6 +19,12 @@ and texture is checked against the derive species pins.
 import importlib.util, json, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '../../..'))
+# Battle slots 0x21-0x24 stay the source game's own (docs/reference/motion.md): an overlay writes field slots only (but
+# magnaangemon-battle, which gives a model bound offline its source game's battle clips: bound_battle.py). Eleven
+# slots of seven species still play the clip of a field slot (main's), because the source's clip measured worse than
+# main's on the final model (tools/models/battle_qa.py, restored by hand on the overlay's output): Nefertimon 0x23/0x24
+# (vertex steps, under the floor), SaberLeomon 0x22 (crossings), Knightmon 0x24 (torso tipped 27 degrees against main's 8),
+# and in their generators' notes Gazimon 0x21, Creepymon 0x23/0x24, Gargoylemon 0x23/0x24 and Suijinmon 0x23/0x24.
 OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'blackkingnumemon-slug': ('307', 'tools.models.field_animations.black_king_numemon', '307-blackkingnumemon-slug'),
     'wormmon-native-crawl': ('183', 'tools.models.field_animations.native_binding', '183-wormmon-native-crawl'),
@@ -29,8 +35,8 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'marinedevimon-field': ('279', 'tools.models.field_animations.marine_devimon', '279-marinedevimon-field'),
     'bulbmon-field': ('313', 'tools.models.field_animations.bulbmon', '313-bulbmon-field'),
     'kurisarimon-celebration': ('431', 'tools.models.field_animations.celebrations', '431-kurisarimon-celebration'),
-    'zanbamon-celebration': ('430', 'tools.models.field_animations.celebrations', '430-zanbamon-celebration'),
-    'raijinmon-celebration': ('333', 'tools.models.field_animations.celebrations', '333-raijinmon-celebration'),
+    'zanbamon-native': ('430', 'tools.models.field_animations.native_binding', '430-zanbamon-native'),
+    'raijinmon-native': ('333', 'tools.models.field_animations.native_binding', '333-raijinmon-native'),
     'arukenimon-celebration': ('311', 'tools.models.field_animations.celebrations', '311-arukenimon-celebration'),
     'clockmon-celebration': ('290', 'tools.models.field_animations.celebrations', '290-clockmon-celebration'),
     'redotamamon-celebration': ('233', 'tools.models.field_animations.celebrations', '233-redotamamon-celebration'),
@@ -41,20 +47,20 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'gallantmon-chibi': ('318', 'tools.models.field_animations.celebrations', '318-gallantmon-chibi'),
     'malomyotismon-chibi': ('406', 'tools.models.field_animations.chibi', '406-malomyotismon-chibi'),
     'neocrimson-chibi': ('402', 'tools.models.field_animations.chibi', '402-neocrimson-chibi'),
-    'mummymon-chibi': ('334', 'tools.models.field_animations.chibi', '334-mummymon-chibi'),
-    'snatchmon-chibi': ('331', 'tools.models.field_animations.chibi', '331-snatchmon-chibi'),
-    'gargoylemon-chibi': ('327', 'tools.models.field_animations.chibi', '327-gargoylemon-chibi'),
+    'mummymon-chibi': ('334', 'tools.models.field_animations.mummymon_gait', '334-mummymon-chibi'),
+    'snatchmon-chibi': ('331', 'tools.models.field_animations.snatchmon_polish', '331-snatchmon-chibi'),
+    'gargoylemon-chibi': ('327', 'tools.models.field_animations.gargoylemon_gait', '327-gargoylemon-chibi'),
     'wargrowlmon-chibi': ('326', 'tools.models.field_animations.chibi', '326-wargrowlmon-chibi'),
     'musyamon-chibi': ('325', 'tools.models.field_animations.chibi', '325-musyamon-chibi'),
-    'maildramon-chibi': ('324', 'tools.models.field_animations.chibi', '324-maildramon-chibi'),
-    'kyukimon-chibi': ('322', 'tools.models.field_animations.chibi', '322-kyukimon-chibi'),
+    'maildramon-native': ('324', 'tools.models.field_animations.native_binding', '324-maildramon-native'),
+    'kyukimon-chibi': ('322', 'tools.models.field_animations.kyukimon_gait', '322-kyukimon-chibi'),
     'knightmon-chibi': ('321', 'tools.models.field_animations.celebrations', '321-knightmon-chibi'),
     'growlmon-chibi': ('320', 'tools.models.field_animations.chibi', '320-growlmon-chibi'),
-    'pharaohmon-chibi': ('319', 'tools.models.field_animations.celebrations', '319-pharaohmon-chibi'),
+    'pharaohmon-chibi': ('319', 'tools.models.field_animations.pharaohmon_gait', '319-pharaohmon-chibi'),
     'fujinmon-chibi': ('317', 'tools.models.field_animations.celebrations', '317-fujinmon-chibi'),
     'sakuyamon-chibi': ('316', 'tools.models.field_animations.chibi', '316-sakuyamon-chibi'),
-    'skullsatamon-chibi': ('314', 'tools.models.field_animations.chibi', '314-skullsatamon-chibi'),
-    'creepymon-chibi': ('312', 'tools.models.field_animations.celebrations', '312-creepymon-chibi'),
+    'skullsatamon-native': ('314', 'tools.models.field_animations.native_binding', '314-skullsatamon-native'),
+    'creepymon-chibi': ('312', 'tools.models.field_animations.creepymon_gait', '312-creepymon-chibi'),
     'assaultmon-native': ('310', 'tools.models.field_animations.native_binding', '310-assaultmon-native'),
     'antylamon-chibi': ('309', 'tools.models.field_animations.antylamon_polish', '309-antylamon-chibi'),
     'dinohyumon-chibi': ('308', 'tools.models.field_animations.dinohyumon_gait', '308-dinohyumon-chibi'),
@@ -80,6 +86,9 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'garbagemon-pace': ('269', 'tools.models.field_animations.pace', '269-garbagemon-pace'),
     'gazimon-field': ('285', 'tools.models.field_animations.gazimon', '285-gazimon-field'),
     'dokugumon-pace': ('298', 'tools.models.field_animations.pace', '298-dokugumon-pace'),
+    'kyubimon-native': ('409', 'tools.models.field_animations.native_binding', '409-kyubimon-native'),
+    'minotarumon-native': ('330', 'tools.models.field_animations.native_binding', '330-minotarumon-native'),
+    'cannondramon-native': ('405', 'tools.models.field_animations.native_binding', '405-cannondramon-native'),
     'grapleomon-native': ('306', 'tools.models.field_animations.native_binding', '306-grapleomon-native'),
     'vilemon-native': ('295', 'tools.models.field_animations.native_binding', '295-vilemon-native'),
     'armageddemon-pace': ('407', 'tools.models.field_animations.pace', '407-armageddemon-pace'),
@@ -105,6 +114,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'kingetemon-native': ('303', 'tools.models.field_animations.native_binding', '303-kingetemon-native'),
     'chaoslord-native': ('289', 'tools.models.field_animations.native_binding', '289-chaoslord-native'),
     'princemamemon-native': ('270', 'tools.models.field_animations.native_binding', '270-princemamemon-native'),
+    'wargrowlmon-native': ('326', 'tools.models.field_animations.native_binding', '326-wargrowlmon-native'),
     'violetelecmon-native': ('256', 'tools.models.field_animations.native_binding', '256-violetelecmon-native'),
     'sorcermon-native': ('242', 'tools.models.field_animations.sorcermon_native', '242-sorcermon-native'),
     'wizardmon-native': ('241', 'tools.models.field_animations.wizardmon_native', '241-wizardmon-native'),
@@ -138,20 +148,24 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'togemon-field': ('208', 'tools.models.field_animations.togemon', '208-togemon-field'),
     'seraphimon-field': ('207', 'tools.models.field_animations.chibi', '207-seraphimon-field'),
     'magnaangemon-field': ('206', 'tools.models.field_animations.celebrations', '206-magnaangemon-field'),
+    'magnaangemon-battle': ('206', 'tools.models.field_animations.bound_battle', '206-magnaangemon-battle'),
     'megakabuterimon-field': ('205', 'tools.models.field_animations.mega_kabuterimon', '205-megakabuterimon-field'),
+    'megakabuterimon-native': ('205', 'tools.models.field_animations.native_binding', '205-megakabuterimon-native'),
     'veedramon-field': ('203', 'tools.models.field_animations.gaits', '203-veedramon-field'),
     'monmon-upperbody': ('352', 'tools.models.field_animations.monmon', '352-monmon-upperbody'),
-    'wargreymon-field': ('373', 'tools.models.field_animations.chibi', '373-wargreymon-field'),
+    'neocrimson-native': ('402', 'tools.models.field_animations.native_binding', '402-neocrimson-native'),
+    'garudamon-native': ('460', 'tools.models.field_animations.native_binding', '460-garudamon-native'),
+    'wargreymon-field': ('373', 'tools.models.field_animations.wargreymon_gait', '373-wargreymon-field'),
     'blackwargreymon-field': ('404', 'tools.models.field_animations.celebrations', '404-blackwargreymon-field'),
     'omnimon-field': ('461', 'tools.models.field_animations.celebrations', '461-omnimon-field'),
-    'renamon-field': ('354', 'tools.models.field_animations.chibi', '354-renamon-field'),
+    'renamon-field': ('354', 'tools.models.field_animations.renamon_gait', '354-renamon-field'),
     'beelzemon-field': ('403', 'tools.models.field_animations.chibi', '403-beelzemon-field'),
     'magnamon-native': ('197', 'tools.models.field_animations.magnamon', '197-magnamon-native'),
     'magnamon-field': ('197', 'tools.models.field_animations.gaits', '197-magnamon-field'),
-    'puppetmon-field': ('181', 'tools.models.field_animations.articulation', '181-puppetmon-field'),
+    'puppetmon-field': ('181', 'tools.models.field_animations.puppetmon_field', '181-puppetmon-field'),
     'kotemon-field': ('351', 'tools.models.field_animations.imported_equipment', '351-kotemon-field'),
-    'bastemon-field': ('432', 'tools.models.field_animations.celebrations', '432-bastemon-field'),
-    'veemon-field': ('180', 'tools.models.field_animations.gaits', '180-veemon-field'),
+    'bastemon-field': ('432', 'tools.models.field_animations.bastemon_gait', '432-bastemon-field'),
+    'veemon-field': ('180', 'tools.models.field_animations.veemon_gait', '180-veemon-field'),
     'exveemon-field': ('194', 'tools.models.field_animations.gaits', '194-exveemon-field'),
     'flamedramon-field': ('195', 'tools.models.field_animations.gaits', '195-flamedramon-field'),
     'stingmon-field': ('187', 'tools.models.field_animations.secondary_motion', '187-stingmon-field'),
@@ -212,6 +226,8 @@ def overlay(out, t, recs=None, names=None, s=None):
     if tools not in sys.path: sys.path.insert(0, tools)
     import species as species_tools
     generator = __import__(recipe[1], fromlist=['build'])
+    if hasattr(generator, 'BASE_MODELS'):      # a generator that reads another imported species' model (native_binding's `donor_species`)
+        generator.BASE_MODELS = BASE_MODELS
     s['_path'] = os.path.join(ROOT, 'content/species', name)
     model, proof = generator.build(species_tools.species_model(s)[0], s['model']['skeleton'])
     model_path, report = overlay_paths(out, t, e)
@@ -322,10 +338,96 @@ def species_file(out, t, recs=None, names=None, generate=False):
         s['model']['file'] = str(model_path)
         s['model'].pop('slot_aliases', None)
         s.pop('_path', None)
+    from tools.models.field_animations import care_idles
+    care = care_idles.rows().get(str(t))
+    if care:
+        # the condition idles (slots 1, 14-19) made from the final field idle: last, so every other stage's slots stay
+        from pathlib import Path
+        import species as species_tools
+        generated = Path(os.path.abspath(out) + '-models')
+        generated.mkdir(parents=True, exist_ok=True)
+        s['_path'] = os.path.join(ROOT, 'content/species', name)
+        model, proof = care_idles.apply(species_tools.species_model(s)[0], s['model']['skeleton'], care)
+        model_path = generated / f'{t}-care-idles.MMD'
+        model_path.write_bytes(model)
+        (generated / f'{t}-care-idles-report.json').write_text(json.dumps(proof, indent=2) + '\n')
+        s['model']['file'] = str(model_path)
+        s['model'].pop('slot_aliases', None)
+        s.pop('_path', None)
+    # One final rig boundary covers source/donor restores and authored programs,
+    # including care, evolution, training and technique stages above.
+    from tools.models import clip_rig
+    from pathlib import Path
+    import species as species_tools
+    s['_path'] = os.path.join(ROOT, 'content/species', name)
+    model, fitted = clip_rig.conform(species_tools.species_model(s)[0], s['model']['skeleton'], t)
+    if fitted:
+        generated = Path(os.path.abspath(out) + '-models')
+        generated.mkdir(parents=True, exist_ok=True)
+        model_path = generated / f'{t}-rig.MMD'
+        model_path.write_bytes(model)
+        (generated / f'{t}-rig-report.json').write_text(json.dumps(fitted, indent=2) + '\n')
+        s['model']['file'] = str(model_path)
+        s['model'].pop('slot_aliases', None)
+    s.pop('_path', None)
+    if e.get('field_hover'):
+        # Fit the actual final mesh, including condition wing/leg droop.
+        from tools.models import hover
+        model, proof = hover.apply(model, s['model']['skeleton'], e['field_hover'])
+        generated = Path(os.path.abspath(out) + '-models')
+        generated.mkdir(parents=True, exist_ok=True)
+        model_path = generated / f'{t}-field-hover.MMD'
+        model_path.write_bytes(model)
+        (generated / f'{t}-field-hover-report.json').write_text(json.dumps(proof, indent=2) + '\n')
+        s['model']['file'] = str(model_path)
+        s['model'].pop('slot_aliases', None)
+    # Grounding and rig fitting above still need the original vertex
+    # pools. This pass preserves their result within the fixed resident ceiling.
+    from tools.models import mesh_stability
+    stable, stability = mesh_stability.apply_provider(model, s['model']['skeleton'], t)
+    if stability['applied']:
+        generated = Path(os.path.abspath(out) + '-models')
+        generated.mkdir(parents=True, exist_ok=True)
+        model_path = generated / f'{t}-mesh-stability.MMD'
+        model_path.write_bytes(stable)
+        (generated / f'{t}-mesh-stability-report.json').write_text(json.dumps(stability, indent=2) + '\n')
+        s['model']['file'] = str(model_path)
+        s['model'].pop('slot_aliases', None)
+    from tools.models import mesh_cleanup
+    if stability.get('deferred'):
+        cleaned, cleanup = stable, dict(applied=False, deferred=True)
+    else:
+        cleaned, cleanup = mesh_cleanup.apply(stable, s['model']['skeleton'], t)
+    if cleanup['applied']:
+        import coldsplit
+        nb = len(s['model']['skeleton'])
+        before_bytes = len(coldsplit.split(model, nb)[0])
+        after_bytes = len(coldsplit.split(cleaned, nb)[0])
+        if after_bytes > mesh_stability.MAX_RESIDENT:
+            raise ValueError(f'{t}: surface repair exceeded resident ceiling: {after_bytes}')
+        generated = Path(os.path.abspath(out) + '-models')
+        generated.mkdir(parents=True, exist_ok=True)
+        model_path = generated / f'{t}-mesh-cleanup.MMD'
+        model_path.write_bytes(cleaned)
+        cleanup.update(resident_before=before_bytes, resident_after=after_bytes)
+        (generated / f'{t}-mesh-cleanup-report.json').write_text(json.dumps(cleanup, indent=2) + '\n')
+        s['model']['file'] = str(model_path)
+        s['model'].pop('slot_aliases', None)
+    # Final storage pass: measure and recompress after every geometry/pose repair.
+    from tools.models import partner_headroom
+    final, headroom = partner_headroom.apply(cleaned, s['model']['skeleton'], t)
+    if headroom['applied']:
+        generated = Path(os.path.abspath(out) + '-models')
+        generated.mkdir(parents=True, exist_ok=True)
+        model_path = generated / f'{t}-partner-headroom.MMD'
+        model_path.write_bytes(final)
+        (generated / f'{t}-partner-headroom-report.json').write_text(json.dumps(headroom, indent=2) + '\n')
+        s['model']['file'] = str(model_path)
+        s['model'].pop('slot_aliases', None)
     return name, s
 
 
-def make(out, generate=True):
+def make(out, generate=True, ids=None):
     """The species files of OUT (and the overlays' models in OUT-models); {id: (model file, texture file or None)}.
     generate=False: the overlays' models and reports are already in OUT-models (tools/derive's overlays step made them;
     a missing one stops)."""
@@ -334,6 +436,8 @@ def make(out, generate=True):
     made = {}
     names = os.listdir(os.path.join(ROOT, 'content/species'))
     for t in recs:
+        if ids is not None and int(t) not in ids:
+            continue
         name, s = species_file(out, t, recs, names, generate)
         with open(os.path.join(out, name), 'w') as f:
             json.dump(s, f, indent=1, ensure_ascii=False)

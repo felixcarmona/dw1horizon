@@ -11,6 +11,7 @@
                  "Megaton Punch"],
   "drop": {"item": "Medium MP", "percent": 30},
   "effects_like": 6,
+  "own_effect": {"technique": "Death Claw", "chunk": 258},
   "model": {
     "file": "build/batch/Stingmon.MMD",
     "radius": 166,

@@ -10,6 +10,7 @@
                  "Wind Cutter", "Confused Storm", "Spinning Shot", "Counter", "Pummel Whack"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 34,
+  "own_effect": {"technique": "Pummel Whack", "chunk": 181},
   "model": {
     "file": "build/batch13/Gargoylemon.MMD",
     "radius": 216,

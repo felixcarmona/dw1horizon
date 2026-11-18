@@ -10,6 +10,7 @@
                  "Spit Fire", "Heat Laser", "Red Inferno", "Mega Flame"],
   "drop": {"item": "Giant Meat", "percent": 30},
   "effects_like": 5,
+  "own_effect": {"technique": "Mega Flame", "chunk": 265},
   "model": {
     "file": "build/batch2/ExVeemon.MMD",
     "radius": 133,

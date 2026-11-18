@@ -18,10 +18,15 @@ import mmd
 import motionstorage
 import numeric as np
 import retarget
-from tools.models.field_animations import native_arms, native_hands, native_jaws
+from tools.models.field_animations import native_arms, native_battle, native_hands, native_jaws
+from tools.models.field_animations.reviewed import reviewed
 
 ROOT = Path(__file__).resolve().parents[3]
 MANIFEST = ROOT / 'content/models/imports/native-bindings.json'
+NPC_SLOTS = (0x06, 0x14, 0x1A, 0x1C, 0x1D, 0x1E, 0x1F, 0x20, 0x26, 0x27)    # the tamer's, NPCs' and the kart race's
+# the folder of the imported base models (`<id>.MMD`, or `<id>-<name>.MMD` as tools/models/edit.py get writes them) that a
+# donor which is itself an imported species is read from (`donor_species`); content/models/imports/species.py sets it
+BASE_MODELS = None
 
 
 def digest(data):
@@ -113,7 +118,15 @@ def mirror_piece(mesh, skeleton, sb, twin, fitted, frame):
 
 def donor_model(recipe):
     """The donor's bytes: its extracted file, or (`donor_builder`) the model a builder script (a path from the repository root with `build(out_path)`) writes from the extraction
-    (a boss whose own file lacks the care slots a partner plays: its partner copy has them)."""
+    (a boss whose own file lacks the care slots a partner plays: its partner copy has them), or (`donor_species`) the
+    model of another imported species with its own field programs, read from BASE_MODELS."""
+    if recipe.get('donor_species'):
+        if BASE_MODELS is None:
+            raise ValueError('Native binding: the imported donor needs BASE_MODELS (the imported base models folder)')
+        found = sorted(Path(BASE_MODELS).glob(f"{recipe['donor_species']}.MMD")) + sorted(Path(BASE_MODELS).glob(f"{recipe['donor_species']}-*.MMD"))
+        if not found:
+            raise ValueError(f"Native binding: no model of the donor species {recipe['donor_species']} in {BASE_MODELS}")
+        return found[0].read_bytes()
     if recipe.get('donor_builder'):
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / 'donor.MMD'
@@ -125,23 +138,37 @@ def donor_model(recipe):
     return (Path(mmd.EXTRACTED) / recipe['model']).read_bytes()
 
 
-def bind(data, skeleton, recipe, placements=None):
+def bind_pose(mesh, skeleton, recipe):
+    """The source pose the pieces are fitted in: a frame of the bind slot, or, where the source only stands in a fighting
+    stance, a reviewed pose of its own (`bind_pose`: per bone the local rotation, or rotation and translation, in 4096ths),
+    such as the symmetric pose its mesh is modelled in (every rotation zero) with the knees and arms eased."""
+    pose = animsheet.slot_frames(mesh, len(skeleton), recipe.get('bind_slot', 33))[0][recipe.get('bind_frame', 0)]
+    for b, channels in recipe.get('bind_pose', {}).items():
+        start = len(pose[int(b)]) - 6       # after the scale channels, when the pose has them
+        pose[int(b)][start:start+len(channels)] = channels
+    return pose
+
+
+def bind(data, skeleton, recipe, placements=None, final=True, battle_context=None):
     """(model bytes, proof). `placements`, when given, receives {source bone: (anchor, transform, destination)}: how each
     piece was moved, for the authoring step that carries effect points and the condition bubble along with their piece."""
-    if digest(data) != recipe['source_sha256'] or digest(json.dumps(skeleton).encode()) != recipe['skeleton_sha256']:
+    if reviewed(digest(data)) != recipe['source_sha256'] or digest(json.dumps(skeleton).encode()) != recipe['skeleton_sha256']:
         raise ValueError('Native binding: source model or skeleton differs')
     sid, donor_id = recipe['species'], recipe['donor']
     placements = {} if placements is None else placements
     mmd.exe().add_type(sid, skeleton)
+    if recipe.get('donor_species'):
+        # an imported donor's skeleton is its species file's, not the executable's
+        mmd.exe().add_type(donor_id, json.loads(next((ROOT / 'content/species').glob(f'{donor_id}-*.json')).read_text())['model']['skeleton'])
     mesh = mmd.MMD.parse(data, len(skeleton))
     mesh.type = sid
     donor_bytes = donor_model(recipe)
-    if digest(donor_bytes) != recipe['donor_sha256']:
+    if reviewed(digest(donor_bytes)) != recipe['donor_sha256']:
         raise ValueError('Native binding: donor model differs')
     native = mmd.MMD.parse(donor_bytes, mmd.exe().bone_count[donor_id])
     native.type = donor_id
     native_rig = mmd.exe().skeleton[donor_id]
-    source_pose = animsheet.slot_frames(mesh, len(skeleton), recipe.get('bind_slot', 33))[0][0]
+    source_pose = bind_pose(mesh, skeleton, recipe)
     native_pose = animsheet.slot_frames(native, len(native_rig), 0)[0][0]
     source_pose[0] = native_pose[0] = [4096]*3 + [0]*6
     sw = np.array(mmd.bone_matrices(mesh, source_pose))
@@ -164,13 +191,31 @@ def bind(data, skeleton, recipe, placements=None):
     spin = recipe.get('spin')
     spun = [int(b) for b in spin['bones']] if spin else []
     extended = list(native_rig) + [(-1, mapping[b]) for b in spun]
+    # riders: parts of the body that sit on a donor bone but move on bones of their own (a human torso, head and arms on a
+    # mount's back), each a bone hung on a donor bone or on an earlier rider, pivoting where its lead piece sits
+    riders = recipe.get('riders', [])
+    rider_bone = {r['name']: len(extended)+k for k, r in enumerate(riders)}
+    rider_of = {sb: rider_bone[r['name']] for r in riders for sb in r['pieces']}
+    extended += [(-1, rider_bone.get(r['parent'], r['parent'])) for r in riders]
+    def rider_pivot(index):
+        r = riders[index-len(native_rig)-len(spun)]
+        rule = recipe.get('pieces', {}).get(str(r['pivot']), {})
+        return nw[rule.get('joint', mapping[r['pivot']]), :3, 3] + np.array(rule.get('offset', [0, 0, 0]))
+    def rider_anchor(index):
+        while index >= len(native_rig):
+            index = extended[index][1]
+        return index
     items = {b: [] for b in range(len(extended))}
     fitted = {}
+    battle_pieces, lows = {}, [-1e9, -1e9]       # the pieces' fitting rotations, for battle_originals (native_battle.py)
     spin_poses = {}
     mirrors = {int(k): v for k, v in recipe.get('mirror', {}).items()}
     for sb, tb in sorted(mapping.items(), key=lambda item: item[0] in mirrors):
         if sb in mirrors:
             items[tb].append(mirror_piece(mesh, skeleton, sb, mirrors[sb], fitted, nw[tb]))
+            twin = next(row for row in battle_pieces.get(mapping[mirrors[sb]], []) if row[0] == mirrors[sb])
+            fit = native_battle.mirrored_fit(twin[1], sw[mirrors[sb], :3, :3].tolist(), sw[sb, :3, :3].tolist())
+            battle_pieces.setdefault(tb, []).append((sb, fit, twin[2]))
             continue
         obj = skeleton[sb][0]
         original = mesh.tmd.objects[obj]
@@ -211,6 +256,9 @@ def bind(data, skeleton, recipe, placements=None):
             # a foot posed turned out in the source's stance, turned about the vertical to face forward
             c, s = math.cos(math.radians(rule['yaw'])), math.sin(math.radians(rule['yaw']))
             transform = np.array([[c, 0, s], [0, 1, 0], [-s, 0, c]]) @ transform
+        if 'stretch' in rule:
+            # a piece scaled unevenly along the world axes (a boot widened and lengthened, not made taller)
+            transform = np.diag(np.array(rule['stretch'], dtype=float)) @ transform
         if 'swing' in rule:
             # a held prop (a staff) turned from its direction in the source world onto the donor's own prop direction
             transform = np.array(retarget.swing(rule['swing']['from'], rule['swing']['to'])) @ transform
@@ -233,7 +281,21 @@ def bind(data, skeleton, recipe, placements=None):
             transform = np.column_stack([x, y, np.cross(x, y)]) @ source.T * factor
         anchor = np.array(rule.get('anchor', sw[sb, :3, 3].tolist()))
         destination = nw[rule.get('joint', tb), :3, 3] + np.array(rule.get('offset', [0, 0, 0]))
+        if 'follow_piece' in rule:
+            reference = int(rule['follow_piece'])
+            if reference not in placements or mapping[reference] != tb:
+                raise ValueError('Native binding: continuous surfaces must follow an earlier piece on the same carrier')
+            # Adjacent cloth panels share one world-space fit, including its
+            # anchor. Independent orientations and offsets tear their seams.
+            anchor, transform, destination = placements[reference]
+        lows[0] = max(lows[0], float(points[:, 1].max()))
         points = (points-anchor) @ transform.T + destination
+        lows[1] = max(lows[1], float(points[:, 1].max()))
+        joint = rider_pivot(rider_of[sb]) if sb in rider_of else nw[tb, :3, 3]
+        # a spinning drum leads its own bone (below), which then turns as the source's drum does in a battle clip
+        carrier = len(native_rig) + spun.index(sb) if sb in spun else rider_of.get(sb, tb)
+        battle_pieces.setdefault(carrier, []).append(
+            (sb, native_battle.polar(transform.tolist()), float(((points-joint)**2).sum())))
         if placements is not None:
             placements[sb] = (anchor, transform, destination)
         normals = np.array(mesh.tmd.obj_norms(obj)[:original.nnorm]).reshape(-1, 4)[:, :3]
@@ -249,8 +311,19 @@ def bind(data, skeleton, recipe, placements=None):
             items[bone].append((original, (points-centre) @ frame, normals @ frame))
             fitted[sb] = (points, normals)
             continue
+        if sb in rider_of:
+            anchor_bone = rider_anchor(rider_of[sb])
+            items[rider_of[sb]].append((original, (points-rider_pivot(rider_of[sb])) @ np.linalg.inv(nw[anchor_bone, :3, :3]).T,
+                                        normals @ nw[anchor_bone, :3, :3]))
+            fitted[sb] = (points, normals)
+            continue
         items[tb].append((original, (points-nw[tb, :3, 3]) @ np.linalg.inv(nw[tb, :3, :3]).T, normals @ nw[tb, :3, :3]))
         fitted[sb] = (points, normals)
+    for r in riders:
+        bone = rider_bone[r['name']]
+        parent = extended[bone][1]
+        origin = rider_pivot(parent) if parent >= len(native_rig) else nw[parent, :3, 3]
+        spin_poses[bone] = [0, 0, 0] + [round(v) for v in (rider_pivot(bone)-origin) @ nw[rider_anchor(bone), :3, :3]]
     tmd, rig = mmd.TMD(), []
     for bone, (_, parent) in enumerate(extended):
         if not items[bone]:
@@ -303,7 +376,32 @@ def bind(data, skeleton, recipe, placements=None):
         result.anims.table[destination] = slots[source]
     for destination, source in recipe.get('extra_slots', {}).items():
         result.anims.table[int(destination)] = slots[source]
+    if recipe.get('drop_npc_slots'):
+        # the donor's clips of the slots only the tamer, the NPCs and the kart race play (6, 0x14, 0x1A, 0x1C-0x20, 0x26,
+        # 0x27: tools/species.py SCRIPT_SLOTS leaves them out) are not carried: no partner starts them, and the imported
+        # species never had them; the resident buffer gets the room for the source's battle clips
+        for slot in NPC_SLOTS:
+            if slot < len(result.anims.table):
+                result.anims.table[slot] = None
+    if recipe.get('prune_unused') or recipe.get('drop_npc_slots'):
+        # the donor's own clips of the slots `extra_slots` points elsewhere stay out of the model (they would be resident
+        # and unused: WarGrowlmon's battle slots share its field clips, not Growlmon's restored battle clips)
+        used = sorted({i for i in result.anims.table if i is not None})
+        index = {old: new for new, old in enumerate(used)}
+        result.anims.anims = [result.anims.anims[i] for i in used]
+        result.anims.table = [None if i is None else index[i] for i in result.anims.table]
     output = result.build()
+    if recipe.get('battle_originals'):
+        rest = animsheet.slot_frames(mmd.MMD.parse(output, len(rig)), len(rig), 0)[0][0]
+        yaw = None
+        if recipe.get('source_yaw'):
+            cy, sy = math.cos(math.radians(recipe['source_yaw'])), math.sin(math.radians(recipe['source_yaw']))
+            yaw = [[cy, 0, sy], [0, 1, 0], [-sy, 0, cy]]
+        battle = native_battle.context(mesh, skeleton, source_pose, yaw, rig, rest, battle_pieces,
+                                       {rider_bone[r['name']]: r['pivot'] for r in riders}, mapping, lows,
+                                       native_battle.fixed_pieces(recipe))
+        if battle_context is not None:
+            battle_context.update(battle)
     if recipe.get('arm_pump'):
         output = native_arms.run_arms(mmd.MMD.parse(output, len(rig)), rig, recipe['arm_pump'])
     if recipe.get('pace'):
@@ -330,20 +428,80 @@ def bind(data, skeleton, recipe, placements=None):
         patch = dict(patch, **chibi.species_patch(patch, scales, k))
         chibi_proof = dict(factors=used['factors'], fit=used['fit'], trim=used['trim'], final_scale=report['final_scale'],
                            speeds=report['speeds'], floors=report['floors'])
+        if recipe.get('battle_originals'):
+            # The mesh now has new joint offsets. The source motion must use
+            # those dimensions too, including authored finishes below.
+            from tools.models import clip_rig
+            clip_rig.fit_context(mmd.MMD.parse(output, len(rig)), battle)
+    gait_proof = None
+    if recipe.get('gait'):
+        # the legs planted on the floor under the donor's own trunk, wings, tail and arms, written over the final (chibi) shape
+        gait = importlib.import_module(f"tools.models.field_animations.{recipe['gait']}")
+        output, gait_proof = gait.build(output, rig)
     if spin:
         # drums that turn about their own axis (their bones below the donor's), written last: no step above reshapes them
         output = add_spin(output, rig, spin)
-    storage = motionstorage.require(output, len(rig))
+    battle_proof = compact_proof = None
+    preserved_aliases = {}
+    if recipe.get('battle_originals'):
+        # the source game's own battle clips on the donor rig, for the slots that measured sound (native_battle.py)
+        if recipe['battle_originals'].get('preserve_aliases'):
+            from tools.models import native_aliases
+            preserved_aliases = native_aliases.snapshot(output, rig, recipe['battle_originals'])
+        output, battle_proof = native_battle.apply(output, battle, recipe['battle_originals']['slots'],
+                                                   repairs=recipe['battle_originals'].get('repairs'),
+                                                   ticks=recipe['battle_originals'].get('ticks'),
+                                                   share=recipe['battle_originals'].get('share'))
+        if final and recipe['battle_originals'].get('compact'):
+            output, compact_proof = native_battle.compact(output, len(rig), recipe['battle_originals']['compact'])
+    if preserved_aliases:
+        output = native_aliases.restore(output, rig, preserved_aliases)
+    finish_proof = None
+    if recipe.get('authored_finishes'):
+        from tools.models import battle_finishes
+        if tuple(recipe['authored_finishes']) != battle_finishes.SLOTS[sid]:
+            raise ValueError('Native binding: unreviewed authored finish slots')
+        output, finish_proof = battle_finishes.build(output, rig, sid, battle)
+    authored_battle_proof = None
+    if final and recipe.get('authored_battle'):
+        from tools.models import authored_battle
+        if tuple(recipe['authored_battle']) != authored_battle.SLOTS[sid]:
+            raise ValueError('Native binding: unreviewed authored battle slots')
+        output, authored_battle_proof = authored_battle.build(output, rig, sid, battle)
+    if final and recipe.get('authored_techniques'):
+        from tools.models import authored_techniques
+        if tuple(recipe['authored_techniques']) != tuple(authored_techniques.PROFILES[sid]):
+            raise ValueError('Native binding: unreviewed authored techniques')
+        output, _ = authored_techniques.build(output, rig, sid, battle)
+    # a builder that re-encodes the programs afterwards (wizardmon_native.py) compacts and checks the buffer itself
+    storage = (motionstorage.require if final else motionstorage.audit)(output, len(rig))
     proof = dict(species=sid, source_sha256=digest(data), output_sha256=digest(output),
                  donor=donor_id, generated_skeleton=rig, storage=storage, species_patch=patch)
+    if preserved_aliases:
+        proof['preserved_aliases'] = {str(slot): digest(program.build()) for slot, program in preserved_aliases.items()}
+    if finish_proof:
+        proof['authored_finishes'] = finish_proof
+    if authored_battle_proof:
+        proof['authored_battle'] = authored_battle_proof
     if chibi_proof:
         proof['chibi'] = chibi_proof
+    if gait_proof:
+        proof['gait'] = gait_proof['checks']
+    if battle_proof:
+        proof['battle_originals'] = battle_proof
+        proof['battle_rig'] = dict(skeleton=rig, rest=battle['rest'])
+    if compact_proof is not None:
+        proof['battle_compact'] = compact_proof
     return output, proof
 
 
-def build(data, skeleton):
+def recipe_of(data):
     recipes = json.loads(MANIFEST.read_text())
-    matches = [r for r in recipes.values() if r['source_sha256'] == digest(data)]
+    matches = [r for r in recipes.values() if r['source_sha256'] == reviewed(digest(data))]
     if len(matches) != 1:
         raise ValueError('Native binding: no unique reviewed source')
-    return bind(data, skeleton, matches[0])
+    return matches[0]
+
+
+def build(data, skeleton, final=True, battle_context=None):
+    return bind(data, skeleton, recipe_of(data), final=final, battle_context=battle_context)

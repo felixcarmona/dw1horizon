@@ -10,6 +10,7 @@ from collections import Counter
 import hashlib
 import inspect
 import json
+import math
 from pathlib import Path
 import subprocess
 import tempfile
@@ -109,6 +110,93 @@ def validate_blob(payload):
         raise GateFailure('unreferenced bytes in payload blob; compact before publication')
 
 
+def validate_battle_rebuilds(mapping, owner):
+    """Prove this recipe stores transforms of input poses, not encoded poses.
+
+    battle_restore.rebuild restores A's declared source clip (or B's current
+    authored clip), optionally fits A/B rig channels, then clip_repair.apply_ops
+    transforms those frames and re-encodes them. No operation below supplies a
+    pose, event program or binary payload. Numeric operands have fixed arity;
+    references select bones/ticks in those input frames. Source reconstruction
+    and final output equality remain the isolated derive/delta audits' job.
+    Keep this closed schema in step with those two consumers, never accept an
+    arbitrary `op` string or exempt a whole file from inline-data inspection.
+    """
+    def number(v):
+        return type(v) is int or type(v) is float and math.isfinite(v)
+
+    def integer(v):
+        return type(v) is int and v >= 0
+
+    def positive(v):
+        return integer(v) and v > 0
+
+    def vector(v, n, predicate=number):
+        return isinstance(v, list) and len(v) == n and all(predicate(x) for x in v)
+
+    axis = lambda v: (isinstance(v, str) and v in ('x', 'y', 'z') or
+                      vector(v, 3) and any(v))
+    envelope = lambda v: v is None or vector(v, 4, integer) and v == sorted(v)
+    channel = lambda v: isinstance(v, str) and v in ('x', 'y', 'z')
+    boolean = lambda v: type(v) is bool
+    # Required operands, optional operands: each is consumed by the named
+    # arithmetic/channel-selection branch of clip_repair.apply_ops.
+    bone = {'bone': integer}
+    timed = {'ticks': envelope}
+    rotation = dict(bone, axis=axis, deg=number)
+    oscillation = dict(cycles=number, phase=number)
+    schemas = {
+        'turn': (rotation, dict(timed, space=lambda v: v in ('world', 'parent'))),
+        'wave': (rotation, dict(timed, **oscillation)),
+        'sway': (dict(rotation, cycles=number), {'phase': number}),
+        'swing': (dict(bone, channel=channel, deg=number), oscillation),
+        'damp': (dict(bone, keep=number), dict(timed, to=lambda v: v in ('mean', 'first'))),
+        'smooth': (bone, dict(timed, passes=positive, weight=number)),
+        'mirror': (dict(bone, **{'from': integer}), {'shift': lambda v: type(v) is int}),
+        'follow': (dict(bone, **{'from': integer}),
+                   {'shift': lambda v: type(v) is int, 'gain': number, 'mirror': boolean}),
+        'lift': (dict(bone, up=number), timed),
+        'offset': (dict(bone, delta=lambda v: vector(v, 3)), timed),
+        'offset_motion': (dict(bone, axis=channel, keep=number), {}),
+        'retime': ({'ticks': positive}, {}),
+        'repeat': ({'times': positive}, {}),
+        'cut': ({'from': integer, 'to': positive}, {}),
+        'seam': ({'ticks': positive}, {'bones': lambda v: isinstance(v, list) and all(integer(b) for b in v)}),
+    }
+
+    def fail(location):
+        raise GateFailure(f'{owner}{location}: invalid or unsupported battle rebuild recipe; '
+                          'requires source-derived transform audit support')
+
+    if not isinstance(mapping, dict):
+        fail('')
+    for species, slots in mapping.items():
+        location = '/' + species
+        if not species.isdecimal() or not isinstance(slots, dict):
+            fail(location)
+        for slot, row in slots.items():
+            where = location + '/' + slot
+            if (not slot.isdecimal() or not isinstance(row, dict)
+                    or not {'ticks', 'ops'} <= row.keys()
+                    or row.keys() - {'ticks', 'ops', 'rig', 'body', 'current', 'compact'}
+                    or not (row['ticks'] is None or positive(row['ticks']))
+                    or not isinstance(row['ops'], list)):
+                fail(where)
+            if ('rig' in row and not (integer(row['rig']) or vector(row['rig'], 2, integer))
+                    or 'body' in row and row['body'] not in ('offset', 'scale')
+                    or 'current' in row and not boolean(row['current'])
+                    or 'compact' in row and not (isinstance(row['compact'], list) and all(integer(v) for v in row['compact']))):
+                fail(where)
+            for i, op in enumerate(row['ops']):
+                at = where + '/ops/' + str(i)
+                if not isinstance(op, dict) or not isinstance(op.get('op'), str) or op['op'] not in schemas:
+                    fail(at)
+                required, optional = schemas[op['op']]
+                if (not required.keys() <= op.keys() or op.keys() - required.keys() - optional.keys() - {'op'}
+                        or any(not check(op[k]) for k, check in dict(required, **optional).items() if k in op)):
+                    fail(at)
+
+
 def mapping_chunks(release):
     """Find inline hex data in operation lists, including bundled import recipes."""
     chunks = []
@@ -117,6 +205,10 @@ def mapping_chunks(release):
         if isinstance(value, dict):
             for key, child in value.items():
                 if key == 'ops' and isinstance(child, list):
+                    if Path(owner).as_posix() == 'bundle/content/models/imports/battle-rebuilds.json':
+                        # The entire closed recipe was validated before traversal.
+                        visit(child, owner, location + '/' + key)
+                        continue
                     known = {'copy', 'data', 'fill', 'disc_copy'}
                     for op in child:
                         if not isinstance(op, dict) or len(set(op) & known) != 1 or set(op) - known - {'what'}:
@@ -162,6 +254,8 @@ def mapping_chunks(release):
     for folder in ('bases', 'bundle'):
         for path in sorted((release / folder).rglob('*.json')):
             mapping = json.loads(path.read_text())
+            if path.relative_to(release).as_posix() == 'bundle/content/models/imports/battle-rebuilds.json':
+                validate_battle_rebuilds(mapping, str(path.relative_to(release)))
             if folder == 'bases':
                 known_modes = {None, 'same', 'renamed', 'own', 'patch', 'localize', 'missing', 'needs-usa', 'differs'}
                 for entry in mapping.get('files', {}).values():
@@ -389,7 +483,7 @@ def check_release(release, manifest, base_paths, source_discs, build_dirs, *, pl
                               for folder in ('bases', 'bundle') for path in sorted((release/folder).rglob('*.json'))},
                   generator_resources={str(path.relative_to(release)): audit.digest(path)
                                        for path in sorted((release/'bundle').rglob('*.csv'))},
-                  runtime={name: audit.digest(release/name) for name in ('dwpatch.py', 'isowriter.py', 'fontcopy.py')
+                  runtime={name: audit.digest(release/name) for name in ('dwpatch.py', 'isowriter.py', 'fontcopy.py', 'discformats.py')
                            if (release/name).exists()},
                   audit_tools={name: audit.digest(Path(__file__).with_name(name)) for name in
                                ('literal_gate.py', 'literal_audit.py', 'literal_scan.cpp', 'codecopy.py',

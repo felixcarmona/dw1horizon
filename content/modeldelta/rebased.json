@@ -217,6 +217,34 @@
       "kind": "TIM",
       "previous_bytes": 60,
       "bytes": 724
+    },
+    {
+      "id": 409,
+      "name": "Kyubimon",
+      "kind": "MMD",
+      "previous_bytes": 9791,
+      "bytes": 10032
+    },
+    {
+      "id": 297,
+      "name": "Marsmon",
+      "kind": "MMD",
+      "previous_bytes": 14144,
+      "bytes": 14233
+    },
+    {
+      "id": 317,
+      "name": "Fujinmon",
+      "kind": "MMD",
+      "previous_bytes": 14780,
+      "bytes": 14873
+    },
+    {
+      "id": 206,
+      "name": "MagnaAngemon",
+      "kind": "MMD",
+      "previous_bytes": 12069,
+      "bytes": 12108
     }
   ]
 }

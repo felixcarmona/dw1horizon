@@ -80,8 +80,12 @@ class KingEtemonNative(unittest.TestCase):
         self.assertEqual(len(own), len(native))
         self.assertEqual(self.speed(own), 0)
         self.assertEqual([len(self.frames(s)) for s in (0, 2, 3, 4)], [17, 17, 21, 15])
-        # the donor's own slots 27, 33, 35 and 36 are the programs the rows alias or repeat
+        # the donor's own slots 27, 33, 35 and 36 are the programs the rows alias or repeat, unless the source's battle
+        # clip took the battle slot (the field row then keeps its own program, its lengths checked above)
+        restored = set(self.recipe.get('battle_originals', {}).get('slots', ()))
         for slot, alias in ((2, 35), (3, 27), (4, 36)):
+            if alias in restored:
+                continue
             self.assertEqual(self.model.anims.table[slot], self.model.anims.table[alias], slot)
         for slot in list(range(46, 46 + len(self.record['techniques']))) + [self.record['partner']['training']['animation']]:
             self.assertIsNotNone(self.model.anims.table[slot], slot)
@@ -202,6 +206,15 @@ class KingEtemonNative(unittest.TestCase):
                         v = w[b, :3, 3] - w[a, :3, 3]
                         lean = side*np.degrees(np.arcsin(v @ axis/np.linalg.norm(v)))
                         self.assertLess(lean, limit, (slot, a))
+
+    def test_battle_originals(self):
+        # the source game's own battle clips, retargeted onto the donor rig (native_battle.py); one-shot clips keep the
+        # length of the donor's clip they replace, since technique effects are timed to it
+        made = self.proof['battle_originals']
+        self.assertEqual(sorted(int(s) for s in made), sorted(set(self.recipe['battle_originals']['slots']) | set(map(int, self.recipe['battle_originals'].get('share', {})))))
+        for slot, row in made.items():
+            if int(slot) not in (33, 34):
+                self.assertEqual(row['frames'], row['donor_frames'])
 
     def test_the_buffer_holds(self):
         info = motionstorage.require(self.data, BONES)

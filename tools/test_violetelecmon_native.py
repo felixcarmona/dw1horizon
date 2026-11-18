@@ -46,8 +46,8 @@ class VioletElecmonNative(unittest.TestCase):
 
     def test_every_program_below_the_techniques_is_elecmons_unchanged(self):
         for slot, index in enumerate(self.native.anims.table[:46]):
-            if index is None:
-                continue
+            if index is None or slot in self.recipe['battle_originals']['slots']:
+                continue            # the restored battle slots play the source game's clips (test_battle_originals)
             with self.subTest(slot=slot):
                 self.assertEqual(self.program(self.model, slot), self.program(self.native, slot))
 
@@ -68,13 +68,25 @@ class VioletElecmonNative(unittest.TestCase):
             if move in elecmon:
                 # a move Elecmon has plays Elecmon's own clip for it (its list position is its slot minus 46)
                 self.assertEqual(slots[position], 46 + elecmon.index(move), move)
+            if 46 + position in self.recipe['battle_originals']['slots']:
+                continue
             with self.subTest(move=move):
                 self.assertEqual(self.program(self.model, 46 + position), self.program(self.native, slots[position]))
 
     def test_training_clip_is_elecmons_training_clip(self):
         training = self.record['partner']['training']
         self.assertEqual(training, {'animation': 46 + len(self.record['techniques']), 'hit_tick': 10})
-        self.assertEqual(self.program(self.model, training['animation']), self.program(self.native, 46))
+        if training['animation'] not in self.recipe['battle_originals']['slots']:
+            self.assertEqual(self.program(self.model, training['animation']), self.program(self.native, 46))
+
+    def test_battle_originals(self):
+        # the source game's own battle clips, retargeted onto the donor rig; all but the idles (which loop at their own
+        # speed) as long as the donor's clip they replace, since technique effects are timed to it
+        made = self.proof['battle_originals']
+        self.assertEqual(sorted(int(s) for s in made), self.recipe['battle_originals']['slots'])
+        for slot, row in made.items():
+            if int(slot) not in (33, 34):
+                self.assertEqual(row['frames'], row['donor_frames'])
 
     def test_condition_bubble_rides_the_head(self):
         bubble = self.recipe['species_patch']['condition_bubble']

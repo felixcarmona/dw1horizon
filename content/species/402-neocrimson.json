@@ -11,6 +11,7 @@
                  "Dynamite Kick (44)", "Tremar", "Crimson Flare"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 8,
+  "own_effect": {"technique": "Crimson Flare", "chunk": 161},
   "model": {
     "file": "build/neocrimson-out/NeoCrimson.MMD",
     "radius": 227,

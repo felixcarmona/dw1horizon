@@ -274,7 +274,11 @@
   "head_width": 0.285,
   "foot": 0.939,
   "hand": 0.301,
-  "legs": 0.408
+  "legs": 0.408,
+  "accepted": {
+   "foot": 0.717,
+   "why": "the reworked field idle (f1bf755f) starts with the feet turned; mesh, bone scales and offsets are unchanged and measure at the pins in the previous idle's first pose"
+  }
  },
  "354": {
   "head": 0.42,
@@ -299,15 +303,17 @@
    "head": 0.307,
    "head_width": 0.385,
    "legs": 0.43,
-   "why": "reduced strength approved by the owner"
+   "why": "head, head_width, legs: reduced strength approved by the owner; foot, hand: the reworked field idle (3b0346f2) starts with the feet and claws in another pose, mesh, bone scales and offsets unchanged (at the pins in the previous idle's first pose)",
+   "foot": 0.959,
+   "hand": 0.45
   }
  },
  "402": {
-  "head": 0.371,
-  "head_width": 0.503,
-  "foot": 1.567,
-  "hand": 0.669,
-  "legs": 0.455
+  "head": 0.511,
+  "head_width": 0.523,
+  "foot": 1.575,
+  "hand": 0.868,
+  "legs": 0.452
  },
  "403": {
   "head": 0.321,
@@ -346,7 +352,12 @@
   "head_width": 0.456,
   "foot": 0.471,
   "hand": 0.296,
-  "legs": 0.424
+  "legs": 0.424,
+  "accepted": {
+   "foot": 0.563,
+   "hand": 0.338,
+   "why": "the reworked field idle (3946df86) starts with the feet and hands in another pose; mesh, bone scales and offsets are unchanged and measure at the pins in the previous idle's first pose"
+  }
  },
  "461": {
   "head": 0.432,

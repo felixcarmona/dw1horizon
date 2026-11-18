@@ -11,6 +11,7 @@
                  "Delete Program", "Reverse Prog", "Power Crane", "Dark Shot"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 48,
+  "own_effect": {"technique": "Dark Shot", "chunk": 190},
   "model": {
     "file": "build/meshfix2-out/Beelzemon.MMD",
     "radius": 215,

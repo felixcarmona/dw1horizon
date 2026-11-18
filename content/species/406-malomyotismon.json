@@ -11,6 +11,7 @@
                  "Megalo Spark", "Confused Storm", "Wind Cutter", "Nightmare Syndromer"],
   "drop": {"item": "sm.recovery", "percent": 30},
   "effects_like": 34,
+  "own_effect": {"technique": "Nightmare Syndromer", "chunk": 218},
   "model": {
     "file": "build/meshfix2-out/MaloMyotismon.MMD",
     "radius": 296,

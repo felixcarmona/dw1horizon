@@ -1,0 +1,113 @@
+{
+  "206": {
+    "name": "MagnaAngemon",
+    "source_sha256": "c48c6ea81b7df5c914e29f5e5f8e6f87b0bcfc7e033fb55274363ba74480053e",
+    "binding": {
+      "spec": "content/imports/specs/MagnaAngemon.json",
+      "sha256": "268c64b6a5b355d9d946dc01f803e7be3d023a2623c97458f07c2930da91e00d"
+    },
+    "battle_source": {
+      "path": "build/native-battle/MagnaAngemon-battle.MMD",
+      "sha256": "c2787bb084d5b8aaf1211af80635d06355046b4f2f30bc9b051b076a23303c36"
+    },
+    "mirror": {
+      "13": 19,
+      "14": 20,
+      "15": 21,
+      "16": 22
+    },
+    "leads": {
+      "18": 1
+    },
+    "extra_vertices": [
+      9
+    ],
+    "keep_events": [
+      40,
+      41
+    ],
+    "slots": [
+      33,
+      40,
+      41,
+      43,
+      44,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52
+    ],
+    "compact_from": 33,
+    "repairs": {
+      "44": [
+        {
+          "op": "turn",
+          "bone": 19,
+          "axis": "z",
+          "deg": -15,
+          "ticks": [
+            0,
+            0,
+            6,
+            10
+          ]
+        },
+        {
+          "op": "turn",
+          "bone": 20,
+          "axis": "x",
+          "deg": -6,
+          "ticks": [
+            0,
+            0,
+            6,
+            10
+          ]
+        },
+        {
+          "op": "lift",
+          "bone": 1,
+          "up": 40,
+          "ticks": [
+            3,
+            7,
+            12,
+            20
+          ]
+        }
+      ],
+      "43": [
+        {
+          "op": "lift",
+          "bone": 1,
+          "up": 60,
+          "ticks": [
+            18,
+            23,
+            33,
+            33
+          ]
+        },
+        {
+          "op": "turn",
+          "bone": 20,
+          "axis": "x",
+          "deg": -10,
+          "ticks": [
+            26,
+            29,
+            33,
+            33
+          ]
+        }
+      ]
+    },
+    "ticks": {
+      "43": 34
+    },
+    "drop_npc_slots": true
+  }
+}
