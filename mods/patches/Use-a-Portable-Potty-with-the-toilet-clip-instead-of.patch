@@ -1,0 +1,32 @@
+From b8c2c89021e05ab540a1d1dc5eb67db67a15b931 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 18 Nov 2026 15:17:42 +0000
+Subject: [PATCH] Use a Portable Potty with the toilet clip instead of eating
+ it
+
+---
+ src/main/partner.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/partner.c b/src/main/partner.c
+index 4d4dcd3..c0bfb03 100644
+--- a/src/main/partner.c
++++ b/src/main/partner.c
+@@ -467,7 +467,13 @@ void partnerTickFeedItem(void)
+ 		if (7 < TAMER_ENTITY.entity.anim.animFrame) {
+ 			isClose = partnerWillRefuseItem();
+ 			if (isClose == 0) {
+-				startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 8);
++				if (TAMER_ITEM.worldItem.type == 0x20) {
++					/* MOD (potty): a Portable Potty is used, not eaten: the toilet clip plays and the item leaves the hand */
++					removeObject(0xfa7, 0);
++					startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 10);
++				} else {
++					startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 8);
++				}
+ 				PARTNER_SUB_STATE = 5;
+ 			}
+ 			else {
+-- 
+2.55.0
+
