@@ -2248,6 +2248,499 @@
    "merit": 1,
    "scene": "a windy plateau with chunky grass, late-1990s low-poly look",
    "pose": "rearing up with a roar, seen from a very low camera looking up"
+  },
+  {
+   "key": "phoenixmon",
+   "number": 1,
+   "species": 59,
+   "rarity": 0,
+   "merit": 100,
+   "replaces": 1,
+   "scene": "a high golden sunset sky above blocky clouds and distant mountain peaks"
+  },
+  {
+   "key": "herculeskabuterimon",
+   "number": 2,
+   "species": 60,
+   "rarity": 0,
+   "merit": 100,
+   "replaces": 2
+  },
+  {
+   "key": "megaseadramon",
+   "number": 3,
+   "species": 61,
+   "rarity": 0,
+   "merit": 100,
+   "replaces": 3,
+   "scene": "a deep blue open sea with blocky waves and rocky islets"
+  },
+  {
+   "key": "shogungekomon",
+   "number": 4,
+   "species": 119,
+   "rarity": 0,
+   "merit": 100,
+   "replaces": 4,
+   "scene": "a snowy ice field with a frozen cliff behind",
+   "pose": "sitting heavily on the ground, belly resting on the snow"
+  },
+  {
+   "key": "myotismon",
+   "number": 5,
+   "species": 66,
+   "rarity": 0,
+   "merit": 100,
+   "replaces": 5,
+   "scene": "a dark gothic ruin courtyard with broken stone pillars and a dusky sky",
+   "pose": "standing on the ground with both boots planted, cape behind"
+  },
+  {
+   "key": "metalgreymonvirus",
+   "number": 6,
+   "species": 12,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 6
+  },
+  {
+   "key": "mamemon",
+   "number": 7,
+   "species": 13,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 7,
+   "scene": "a grassy hill with a blue sky and blocky clouds"
+  },
+  {
+   "key": "monzaemon",
+   "number": 8,
+   "species": 14,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 8,
+   "scene": "a toy-filled cobbled plaza with a blue sky"
+  },
+  {
+   "key": "skullgreymon",
+   "number": 9,
+   "species": 26,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 9
+  },
+  {
+   "key": "metalmamemon",
+   "number": 10,
+   "species": 27,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 10,
+   "scene": "a metallic factory floor with pipes and blocky machinery"
+  },
+  {
+   "key": "vademon",
+   "number": 11,
+   "species": 28,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 11,
+   "scene": "a dark night field with blocky rocks and a starry sky"
+  },
+  {
+   "key": "andromon",
+   "number": 12,
+   "species": 40,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 12,
+   "scene": "a factory yard with steel plates, pipes and machinery"
+  },
+  {
+   "key": "giromon",
+   "number": 13,
+   "species": 41,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 13,
+   "scene": "a junkyard of blocky metal scrap with a grey sky"
+  },
+  {
+   "key": "etemon",
+   "number": 14,
+   "species": 42,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 14,
+   "scene": "a rocky desert stage of cracked stone with a night sky"
+  },
+  {
+   "key": "megadramon",
+   "number": 15,
+   "species": 54,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 15
+  },
+  {
+   "key": "piximon",
+   "number": 16,
+   "species": 55,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 16,
+   "scene": "a mountain meadow with flowers and a clear sky"
+  },
+  {
+   "key": "digitamamon",
+   "number": 17,
+   "species": 56,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 17,
+   "scene": "a dark stone kitchen of a ruined tower with a cracked floor"
+  },
+  {
+   "key": "gekomon",
+   "number": 18,
+   "species": 110,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 18,
+   "scene": "standing upright with both feet flat on the ground, a snowy ice shelf",
+   "pose": "standing still, feet planted on the ground; the picture must fill the whole canvas edge to edge with no border or frame"
+  },
+  {
+   "key": "warumonzaemon",
+   "number": 19,
+   "species": 70,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 19,
+   "scene": "a toy-filled cobbled plaza at dusk with a purple sky",
+   "pose": "standing on its two dark feet, facing the viewer, a stitched dark grey teddy bear with round ears, the head is a bear head with a snout"
+  },
+  {
+   "key": "jijimon",
+   "number": 20,
+   "species": 117,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 20,
+   "scene": "a small wooden house yard with a wooden fence, grass and a warm sky"
+  },
+  {
+   "key": "kingsukamon",
+   "number": 21,
+   "species": 120,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 21
+  },
+  {
+   "key": "cherrymon",
+   "number": 22,
+   "species": 121,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 22,
+   "scene": "a dense dark forest clearing with twisted tree roots and mossy ground"
+  },
+  {
+   "key": "guardromon",
+   "number": 23,
+   "species": 92,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 23,
+   "scene": "a factory yard with steel plates and pipes"
+  },
+  {
+   "key": "hagurumon",
+   "number": 24,
+   "species": 122,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 24,
+   "scene": "a clockwork factory floor with gears and pipes"
+  },
+  {
+   "key": "brachiomon",
+   "number": 25,
+   "species": 126,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 25
+  },
+  {
+   "key": "airdramon",
+   "number": 28,
+   "species": 7,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 28,
+   "scene": "a windy sky over blocky mountain ridges and clouds"
+  },
+  {
+   "key": "angemon",
+   "number": 33,
+   "species": 20,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 33,
+   "scene": "a bright sky above a white stone temple with blocky clouds"
+  },
+  {
+   "key": "birdramon",
+   "number": 34,
+   "species": 21,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 34,
+   "scene": "a high mountain sky with blocky clouds and sunlit peaks"
+  },
+  {
+   "key": "frigimon",
+   "number": 36,
+   "species": 23,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 36,
+   "scene": "a frozen snowy pine forest clearing",
+   "pose": "standing on both feet planted in the snow, facing the viewer"
+  },
+  {
+   "key": "whamon",
+   "number": 37,
+   "species": 24,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 37,
+   "scene": "the open turquoise sea with blocky waves and a bright sky"
+  },
+  {
+   "key": "unimon",
+   "number": 38,
+   "species": 33,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 38,
+   "scene": "a green mountain meadow under a bright sky with blocky clouds"
+  },
+  {
+   "key": "ogremon",
+   "number": 39,
+   "species": 34,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 39
+  },
+  {
+   "key": "shellmon",
+   "number": 40,
+   "species": 35,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 40,
+   "scene": "a sandy sea bottom with coral and blocky rocks"
+  },
+  {
+   "key": "centarumon",
+   "number": 41,
+   "species": 36,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 41
+  },
+  {
+   "key": "bakemon",
+   "number": 42,
+   "species": 37,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 42
+  },
+  {
+   "key": "drimogemon",
+   "number": 43,
+   "species": 38,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 43
+  },
+  {
+   "key": "leomon",
+   "number": 45,
+   "species": 48,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 45
+  },
+  {
+   "key": "coelamon",
+   "number": 46,
+   "species": 49,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 46,
+   "scene": "a murky sea bottom with blocky rocks, seaweed and coral"
+  },
+  {
+   "key": "kokatorimon",
+   "number": 47,
+   "species": 50,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 47,
+   "scene": "a sandy riverbank with a bright sky",
+   "pose": "standing on both feet on the ground, wings folded"
+  },
+  {
+   "key": "kuwagamon",
+   "number": 48,
+   "species": 51,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 48
+  },
+  {
+   "key": "mojyamon",
+   "number": 49,
+   "species": 52,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 49
+  },
+  {
+   "key": "ninjamon",
+   "number": 50,
+   "species": 58,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 50,
+   "scene": "a green forest clearing with tall trees",
+   "pose": "standing on both feet on the ground in a ready stance, sword on its back"
+  },
+  {
+   "key": "penguinmon",
+   "number": 51,
+   "species": 57,
+   "rarity": 3,
+   "merit": 5,
+   "replaces": 51,
+   "scene": "a snow field with a few ice blocks and a pale sky",
+   "pose": "standing upright on both orange feet planted in the snow, facing the viewer"
+  },
+  {
+   "key": "otamamon",
+   "number": 52,
+   "species": 109,
+   "rarity": 3,
+   "merit": 5,
+   "replaces": 52,
+   "scene": "the muddy bank of a pond with lily pads, mossy stones",
+   "pose": "sitting on the ground, resting on its two front paws, no water splash"
+  },
+  {
+   "key": "tentomon",
+   "number": 53,
+   "species": 111,
+   "rarity": 3,
+   "merit": 5,
+   "replaces": 53
+  },
+  {
+   "key": "yanmamon",
+   "number": 54,
+   "species": 67,
+   "rarity": 3,
+   "merit": 5,
+   "replaces": 54
+  },
+  {
+   "key": "gotsumon",
+   "number": 55,
+   "species": 68,
+   "rarity": 3,
+   "merit": 5,
+   "replaces": 55
+  },
+  {
+   "key": "flarerizamon",
+   "number": 56,
+   "species": 69,
+   "rarity": 3,
+   "merit": 5,
+   "replaces": 56
+  },
+  {
+   "key": "toyagumon",
+   "number": 57,
+   "species": 84,
+   "rarity": 3,
+   "merit": 5,
+   "replaces": 57,
+   "scene": "a rocky plateau with dark volcanic rocks, no smoke",
+   "pose": "standing on its two block feet on the ground, facing the viewer"
+  },
+  {
+   "key": "demimeramon",
+   "number": 58,
+   "species": 127,
+   "rarity": 3,
+   "merit": 5,
+   "replaces": 58
+  },
+  {
+   "key": "tankmon",
+   "number": 59,
+   "species": 76,
+   "rarity": 3,
+   "merit": 5,
+   "replaces": 59,
+   "scene": "a muddy battlefield with blocky rocks and a grey sky"
+  },
+  {
+   "key": "goblimon",
+   "number": 60,
+   "species": 80,
+   "rarity": 3,
+   "merit": 5,
+   "replaces": 60
+  },
+  {
+   "key": "numemon",
+   "number": 61,
+   "species": 11,
+   "rarity": 4,
+   "merit": 1,
+   "replaces": 61
+  },
+  {
+   "key": "vegiemon",
+   "number": 62,
+   "species": 25,
+   "rarity": 4,
+   "merit": 1,
+   "replaces": 62,
+   "scene": "a lush green jungle clearing",
+   "pose": "standing on the ground, arms spread; the picture must fill the whole canvas edge to edge with no border or margin"
+  },
+  {
+   "key": "sukamon",
+   "number": 63,
+   "species": 39,
+   "rarity": 4,
+   "merit": 1,
+   "replaces": 63
+  },
+  {
+   "key": "nanimon",
+   "number": 64,
+   "species": 53,
+   "rarity": 4,
+   "merit": 1,
+   "replaces": 64
   }
  ]
 }
