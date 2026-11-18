@@ -484,3 +484,8 @@ at 2 MB. Physical hardware validation remains outstanding.
 | `Trim-imported-NPC-models-with-their-species-skeleton.patch` |  | Imported NPCs keep field, scripted and battle clips; cold entries survive compaction and stubs use the species skeleton. | Main +40 B: `main_BSS_END` 0x801ce3c4 → 0x801ce3ec; allocator heap 187,184 → 187,152 B (−32 B after alignment), nine-language full build. Includes one 8 B shared import mask. |
 | `Bake-the-status-mistakes-tag-and-draw-one-clean-virus-icon.patch` |  | Baked mistakes tags in all nine languages; replace the overlapping virus sprites with one authored filth icon. | Same resident table sizes and MENU overlay; removes runtime mistakes text and draw calls (heap measured in docs/reference/status-art.md). |
 | `Wait-for-the-care-menu-read-to-finish-before-drawing.patch` |  | The Square care list waits for the MENU overlay read to finish instead of drawing while it is still loading, which hung the field. | Inverts one branch and renames one flag: no new data or code; heap unchanged. |
+| `Keep-the-evolution-chart-s-tab-scroll-and-cursor-bet.patch` |  | Keep the evolution chart's tab, scroll and cursor between visits |  |
+| `Reopen-the-evolution-requirements-card-where-it-was-.patch` |  | Reopen the evolution requirements card where it was left |  |
+| `Cheats-learn-one-technique-learn-all-techniques-unlo.patch` |  | Cheats: learn one technique, learn all techniques, unlock the evolution chart |  |
+| `Show-only-the-items-usable-in-a-fight-in-the-battle-.patch` |  | Show only the items usable in a fight in the battle item list |  |
+| `Cheats-lists-wrap-around-from-the-last-row-to-the-fi.patch` |  | Cheats lists wrap around from the last row to the first |  |

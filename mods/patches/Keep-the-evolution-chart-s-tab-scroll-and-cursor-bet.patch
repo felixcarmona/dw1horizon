@@ -1,0 +1,52 @@
+From 79bfb67783c0687559b3bf1f70261b778271152d Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 17 Nov 2026 20:10:06 +0000
+Subject: [PATCH] Keep the evolution chart's tab, scroll and cursor between
+ visits
+
+---
+ src/main/game_menu.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index b773670..7b1c747 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -467,6 +467,7 @@ static int32_t modStatusNameWidth(char *name)
+  * chart's other level names (row 0x3C holds "Ultimate"; 0x48 is free) */
+ #define EVO_CHART_MEGA_ROW	0x48
+ #define EVO_CHART_MEGA_WIDTH	0x22
++static int8_t CHART_LAST_VIEW; /* MOD (chart-memory): 0 none yet, 1 evolve guide, 2 city */
+ static char EVO_CHART_MEGA_LABEL[] = CHART_STR_MEGA; /* MOD (language): keyed, text/main/game_menu.yaml */
+ 
+ RECT MEDAL_VIEW_TEXT_AREA = { 0, 12, 256, 200 };
+@@ -4712,8 +4713,14 @@ void renderEvoChartView(void)
+ 	switch (MENU_STATE) {
+ 	case 0:
+ 		if (drawEvoChartStrings(0) == 1) {
+-			if (CITY_VIEW) {
++			/* MOD (chart-memory): the chart remembers its tab, scroll and cursor between visits; the
++			 * City and Evolve views are different charts, so switching between them starts over. */
++			if (CHART_LAST_VIEW != CITY_VIEW + 1) {
+ 				CHART_TAB = CHART_TOP = 0;
++				CHART_SELECTED_ROW = CHART_SELECTED_COLUMN = 0;
++				CHART_LAST_VIEW = CITY_VIEW + 1;
++			}
++			if (CITY_VIEW) {
+ 				/* Wild recruits add nothing at once, and some scripts add more than the rule:
+ 				 * show what the next save would write, without tournament cleanup. */
+ 				recalculateProsperity();
+@@ -6168,7 +6175,9 @@ int32_t drawEvoChartStrings(int32_t arg)
+ 		clearTextSubArea(&rect1);
+ 		DRAW_STRING_CELLS(MAIN_D_80124C54, 0, 0xf0);
+ 		DRAW_STRING_PIECES(CARD_CHART_LABELS[1], 0, 0xc, 0, 0xc, 0x48, 0x54);
+-		CHART_SELECTED_COLUMN = CHART_SELECTED_ROW = 0;
++		if (!CITY_VIEW && !MOD_OPT_NEW_DIGIMON) { /* MOD (chart-memory): the grid chart keeps its cursor, see renderEvoChartView */
++			CHART_SELECTED_COLUMN = CHART_SELECTED_ROW = 0;
++		}
+ 		MENU_SUB_STATE = 1;
+ 		/* fall through */
+ 	case 1:
+-- 
+2.55.0
+

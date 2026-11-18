@@ -1,0 +1,45 @@
+From a64c22b32108e92bf99ff96d1258d811a686b525 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 17 Nov 2026 20:10:38 +0000
+Subject: [PATCH] Reopen the evolution requirements card where it was left
+
+---
+ src/main/game_menu.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 7b1c747..4f3ce5b 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -4052,6 +4052,8 @@ static int8_t CHART_CARD_SCROLL;
+ static int8_t CHART_CARD_COUNT;
+ #define CHART_CARD_VISIBLE 9
+ static int16_t CHART_CARD_ID;	/* MOD (chart criteria): the evolution whose card is drawn, -1 none */
++static int16_t CHART_CARD_LAST_ID = -1;	/* MOD (card memory): the card the popup showed when it was last closed, and where it was scrolled */
++static int8_t CHART_CARD_LAST_SCROLL;
+ static int16_t CHART_LIT_FOR;	/* the centre whose lit lines are in CHART_LIT, -1 none */
+ 
+ static void chartDetailOpen(int32_t id)
+@@ -4091,6 +4093,8 @@ static int32_t chartDetailInput(void)
+ 	/* Modal input is consumed before navigation, confirmation and history. */
+ 	if (CHART_POPUP) {
+ 		if (isKeyDown(CANCEL_BUTTON) || isKeyDown(0x80)) {
++			CHART_CARD_LAST_ID = CHART_CARD_ID;
++			CHART_CARD_LAST_SCROLL = CHART_CARD_SCROLL;
+ 			CHART_POPUP = 0;
+ 			CHART_CARD_ID = -1;
+ 			playSound(0, 4);
+@@ -5352,6 +5356,10 @@ static __attribute__((noinline)) void chartCardRender(int32_t target)
+ 	if (CHART_CARD_ID != target) {
+ 		if (MOD_RENDER_PASS != 0) return;
+ 		chartCardBuild(target);
++		if (CHART_POPUP && CHART_CARD_SCROLL == 0 && target == CHART_CARD_LAST_ID &&
++		    CHART_CARD_LAST_SCROLL <= CHART_CARD_COUNT - 1 - CHART_CARD_VISIBLE) {
++			CHART_CARD_SCROLL = CHART_CARD_LAST_SCROLL; /* MOD (card memory): the same card reopens where it was left */
++		}
+ 		CHART_NEEDS_W = drawStringMode(CHART_TEXT_NEEDS, 0, CHART_CARD_HEADER_ROW, FIT_VANILLA);
+ 		CHART_HAVE_W = drawStringMode(CHART_TEXT_HAVE, 128, CHART_CARD_HEADER_ROW, FIT_VANILLA);
+ 		chartCardPrompt(1);
+-- 
+2.55.0
+
