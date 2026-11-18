@@ -17,84 +17,84 @@
    "scene": "a snowy mountain pass with pale blue sky, snow-covered rocks and a frozen lake"
   },
   {
-   "key": "greymon",
-   "number": 68,
-   "species": 129,
-   "rarity": 4,
-   "merit": 1,
-   "scene": "a rocky volcanic canyon with lava pools and dark basalt cliffs"
-  },
-  {
-   "key": "garurumon",
-   "number": 69,
-   "species": 144,
-   "rarity": 4,
-   "merit": 1,
-   "scene": "a frozen pine forest clearing with deep snow and a pale blue sky"
-  },
-  {
-   "key": "devimon",
-   "number": 70,
-   "species": 130,
-   "rarity": 4,
-   "merit": 1,
-   "scene": "a dark gothic ruin courtyard with broken purple stone pillars, dead trees and a dusky violet sky"
-  },
-  {
    "key": "biyomon",
-   "number": 71,
+   "number": 68,
    "species": 163,
    "rarity": 4,
    "merit": 1,
    "scene": "a sunny cliff top with red rocks, a few trees and a bright sky with blocky clouds"
   },
   {
-   "key": "meramon",
-   "number": 72,
-   "species": 133,
-   "rarity": 4,
-   "merit": 1,
-   "scene": "a scorched dry wasteland with charred stumps, cracked red earth and glowing vents"
-  },
-  {
-   "key": "seadramon",
-   "number": 73,
-   "species": 134,
-   "rarity": 4,
-   "merit": 1,
-   "scene": "a shallow tropical sea shore with turquoise water, sand banks and blocky coral rocks"
-  },
-  {
-   "key": "kabuterimon",
-   "number": 74,
-   "species": 141,
-   "rarity": 4,
-   "merit": 1,
-   "scene": "a green jungle clearing with tall trees, big leaves and a mossy forest floor"
-  },
-  {
-   "key": "monochromon",
-   "number": 75,
-   "species": 165,
-   "rarity": 4,
-   "merit": 1,
-   "scene": "a dry canyon desert with sandstone mesas, cactus and a warm yellow sky"
-  },
-  {
    "key": "icedevimon",
-   "number": 76,
+   "number": 69,
    "species": 100,
    "rarity": 4,
    "merit": 1,
    "scene": "an ice cave with blue crystal walls, icicles and a frozen floor"
   },
   {
-   "key": "tyrannomon",
-   "number": 77,
-   "species": 132,
+   "key": "elecmon",
+   "number": 70,
+   "species": 140,
    "rarity": 4,
    "merit": 1,
-   "scene": "a prehistoric swamp valley with ferns, mud pools and mossy boulders"
+   "scene": "a stormy grassland with dark clouds, golden lightning in the distance and blocky hills"
+  },
+  {
+   "key": "gururumon",
+   "number": 71,
+   "species": 105,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a moonlit snowy pine forest at night with deep blue sky"
+  },
+  {
+   "key": "machinedramon",
+   "number": 72,
+   "species": 115,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a dark industrial machine factory with steel pipes, gears and glowing red lights"
+  },
+  {
+   "key": "bluemeramon",
+   "number": 73,
+   "species": 104,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a ruined stone courtyard at dusk with cold blue flames burning on torches"
+  },
+  {
+   "key": "waruseadramon",
+   "number": 74,
+   "species": 112,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a murky deep sea trench with dark teal water, jagged rocks and sunken ruins"
+  },
+  {
+   "key": "saberdramon",
+   "number": 75,
+   "species": 106,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "high rocky mountain peaks above the clouds with a wide sunset sky"
+  },
+  {
+   "key": "soulmon",
+   "number": 76,
+   "species": 107,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a foggy haunted graveyard with crooked gravestones and bare trees under a purple sky"
+  },
+  {
+   "key": "golemon",
+   "number": 77,
+   "species": 108,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a rocky canyon quarry with giant boulders and cracked sandstone"
   }
  ]
 }
