@@ -98,3 +98,23 @@ offset, JSON-driven pack eligibility, IDs 255/256/511, old/short record defaults
 and the real-card medal rule. It checks the loader's selected bytes, rather than
 GPU presentation. Artwork review and emulator presentation remain separate
 phase-B checks.
+
+## Generating and keeping the artwork
+
+Cards are built by `tools/cardmaker.py` from kept artwork plus our own frame and font, so changing
+the frame or the font only needs a re-run. The artwork of each card is generated from a render of
+the real 3D model (the model sheet is the reference image) placed in a low-poly PlayStation-style
+scene. Everything that steers the image is a field of its row in `content/cards/new.json`: `scene`,
+`pose`, `anatomy` (the limbs the model really has) and `frame` (colour override).
+
+- `tools/generate_cards.sh KEY...` generates the missing originals (2K images, retrying on rate
+  limits). Each original is written as `<key>.png` with a `<key>.json` that records the exact
+  prompt and model; those records are committed in `content/cards/generation/`.
+- The originals are too large for the repository (about 2.4 MB each). They are kept outside it,
+  and `content/cards/originals.sha256` lists their checksums. `CARD_ORIGINALS` points the tool at them.
+- `python3 tools/cardmaker.py reduce KEY...` writes the committed art, `content/cards/art/<key>.png`.
+- `python3 tools/cardmaker.py render KEY` previews a finished card; `tools/cards.py` composes the
+  card archives from the committed art at build time.
+- Imported species need their model files: `CARD_MODEL_FOLDERS` lists the folders to search.
+- Anatomy rules for new cards: draw exactly the limbs the model has, never invent legs or arms, and
+  stand every creature on the ground unless it visibly flies.

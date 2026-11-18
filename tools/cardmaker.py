@@ -173,8 +173,15 @@ def prompt_for(card):
         f"The attached image{'s are reference sheets' if many else ' is a reference sheet'} of the 3D game "
         f"model{'s' if many else ''} in three-quarter view{', in the order named' if many else ''}. "
         "They are low-polygon PlayStation models: keep each design EXACTLY (proportions, head shape, eyes, claws, "
-        "colours and markings). " + STYLES[card.get('style', 'exact')] + "\n"
-        f"Pose: {card.get('pose') or 'a dynamic, characteristic pose of your own choice that suits this creature (leaping, attacking, roaring, flying, running, playing...), different from the neutral rest pose of the reference, with a fresh camera angle'}, full body visible from head to feet. "
+        "colours and markings). "
+        "ANATOMY IS FIXED: count the limbs in the reference sheet and draw exactly those. Never add legs, feet, arms, hands, "
+        "a tail, wings, horns or any body part that the reference does not show: a creature that is only a head, or a "
+        "body with no legs, has none in the picture either (it rests on the ground, floats or hops on its body). "
+        "Never remove one either. "
+        "GROUNDING: unless the creature visibly flies in the reference (wings, rotors, a floating body) or the pose says "
+        "it leaps, it stands or rests ON the ground: every foot or the underside of its body touches the surface and "
+        "casts a clear contact shadow directly beneath it. Never let it hover above the floor. " + card.get('anatomy', '') + " " + STYLES[card.get('style', 'exact')] + "\n"
+        f"Pose: {card.get('pose') or 'a dynamic, characteristic pose of your own choice that suits this creature (leaping, attacking, roaring, flying, running, playing...), different from the neutral rest pose of the reference, with a fresh camera angle'}, the whole creature visible. "
         f"Setting: {scene}, painterly and colourful, with depth behind the creature and a clear single subject.\n"
         "Composition: the creature centred, filling about 70% of the height, with comfortable margins on every side "
         "(the card crops the edges). Soft, even light. No light beams, no god rays, no haze, no glare.\n"
@@ -218,6 +225,34 @@ def generate(card, refs):
     raise SystemExit('the generator returned no image')
 
 
+IMPORTED = _ImagePath(os.environ.get('CARD_IMPORTED_MODELS') or ROOT / 'build' / 'imported-models')
+
+
+# folders (colon-separated) holding the MMD/TIM files of the imported species, searched in order
+FALLBACK_MODELS = [_ImagePath(p) for p in (os.environ.get('CARD_MODEL_FOLDERS') or str(ROOT / 'build' / 'imported-models')).split(':')]
+
+
+def model_spec(sp):
+    """animstudio's MODEL spec for the species: an original (file in the disc, texture in ALLTIM) or an import
+    (its own .MMD/.TIM and skeleton; the derived files come from a build's imported-models folder)."""
+    m = sp['model']
+    if 'name' in m and ('skeleton' not in m or 'file' not in m):
+        return f"{model_file(sp)}:{sp['id']}"
+    mmd = ROOT / m['file']
+    tex = ROOT / sp['texture']['file'] if (sp.get('texture') or {}).get('file') else None
+    for folder in (IMPORTED, *FALLBACK_MODELS):
+        if not mmd.exists():
+            mmd = folder / f"{sp['id']}.MMD"
+            tex = folder / f"{sp['id']}.TIM"
+    if not mmd.exists():
+        raise SystemExit(f"no model file for {sp['name']} ({sp['id']})")
+    if m.get('skeleton'):
+        sys.path.insert(0, str(ROOT / 'tools'))
+        import mmd as MMD
+        MMD.exe().add_type(sp['id'], m['skeleton'])
+    return f"{mmd}:{sp['id']}:{tex or ''}"
+
+
 def model_file(sp):
     name = sp['model']['name']
     hits = glob.glob(str(ROOT / 'extracted' / 'CHDAT' / 'MMD*' / f'{name}.MMD')) + \
@@ -229,7 +264,7 @@ def model_file(sp):
 
 def reference(sp, out):
     cmd = [sys.executable, str(ROOT / 'tools' / 'animstudio.py'), 'sheet', str(out),
-           f"{model_file(sp)}:{sp['id']}", '--slot', '0', '--panels', 'mesh:three,mesh:front,mesh:side',
+           model_spec(sp), '--slot', '0', '--panels', 'mesh:three,mesh:front,mesh:side',
            '--size', '420', '--ticks', '0']
     subprocess.run(cmd, check=True, cwd=ROOT)
 
@@ -241,7 +276,7 @@ def render_model(sp, size=1800, view='three'):
     import numpy as np
     sys.path.insert(0, str(ROOT / 'tools'))
     import animstudio as A
-    mod = A.Model(f"{model_file(sp)}:{sp['id']}", 0)
+    mod = A.Model(model_spec(sp), 0)
     panel = A.Panel(mod, 'mesh', view, size)
     pose, _ = mod.pose(0)
     shots = []
@@ -341,13 +376,23 @@ DIGITS = {
 }
 
 
+EXTRA_GLYPHS = {
+    '-': ['', '', '', '', '+###+', '+###+', '', '', '', ''],
+    'X': ['##..##', '##..##', '+#..#+', '.####.', '.####.', '+#..#+', '##..##', '##..##', '', ''],
+    'Q': ['+####+', '##..##', '##..##', '##..##', '##..##', '##.###', '##..##', '+####+', '...##', ''],
+    'q': ['.....', '.....', '+####', '##.##', '##.##', '##.##', '##.##', '+####', '...##', '...##'],
+}
+
+
 def text_mask(text):
     """Bold card font as {(x, y): 1.0 | 0.5} and its width; names by cardfont, digits by DIGITS."""
     sys.path.insert(0, str(ROOT / 'tools' / 'localize' / 'textures' / 'cards-cups'))
     import cardfont
     m, x = {}, 0
+    G = dict(cardfont.G)
+    G.update(EXTRA_GLYPHS)
     for i, ch in enumerate(text):
-        rows = DIGITS[ch].split('/') if ch in DIGITS else cardfont.G[ch]
+        rows = DIGITS[ch].split('/') if ch in DIGITS else G[ch]
         w = max(len(r) for r in rows)
         top = 1 if ch in DIGITS else 0
         for y, r in enumerate(rows):
