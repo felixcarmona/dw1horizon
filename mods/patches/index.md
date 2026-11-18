@@ -491,3 +491,4 @@ at 2 MB. Physical hardware validation remains outstanding.
 | `Cheats-lists-wrap-around-from-the-last-row-to-the-fi.patch` |  | Cheats lists wrap around from the last row to the first |  |
 | `Faster-result-screens-after-a-fight-and-after-traini.patch` |  | Faster result screens after a fight and after training |  |
 | `Status-shows-the-partner-s-battle-count-with-a-baked.patch` |  | Status shows the partner's battle count with a baked BATTLES tag |  |
+| `Square-picks-a-random-egg-with-a-hint-line-under-the.patch` |  | Square picks a random egg, with a hint line under the egg panel |  |

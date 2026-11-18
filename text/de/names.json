@@ -1073,6 +1073,8 @@
  "main.LAB_STR_DISCARD": "Verwerfen",
  "main.LAB_STR_DO_IT": "Bestätigen",
  "main.LAB_STR_CHOOSE": "Wählen",
+ "doo2.EGG_STR_RANDOM": "Zufallsei",
+ "doo2.EGG_STR_CHOOSE": "Wählen",
  "main.LAB_STR_BACK": "Zurück",
  "main.LAB_STR_SIMPLE_STEP": "Schritt: ",
  "main.LAB_STR_STEP_ARROWS": " (hoch/runter)",

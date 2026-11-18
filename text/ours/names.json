@@ -997,6 +997,8 @@
  "main.LAB_STR_DISCARD": "Discard",
  "main.LAB_STR_DO_IT": "Confirm",
  "main.LAB_STR_CHOOSE": "Choose",
+ "doo2.EGG_STR_RANDOM": "Random egg",
+ "doo2.EGG_STR_CHOOSE": "Choose",
  "main.LAB_STR_BACK": "Back",
  "main.LAB_STR_SIMPLE_STEP": "Step: ",
  "main.LAB_STR_STEP_ARROWS": " (up/down)",

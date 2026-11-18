@@ -1021,6 +1021,8 @@
  "main.LAB_STR_DISCARD": "放弃",
  "main.LAB_STR_DO_IT": "确认",
  "main.LAB_STR_CHOOSE": "选择",
+ "doo2.EGG_STR_RANDOM": "随机蛋",
+ "doo2.EGG_STR_CHOOSE": "选择",
  "main.LAB_STR_BACK": "返回",
  "main.LAB_STR_SIMPLE_STEP": "幅度：",
  "main.LAB_STR_STEP_ARROWS": "（上/下）",

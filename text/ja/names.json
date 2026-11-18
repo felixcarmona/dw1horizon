@@ -1073,6 +1073,8 @@
  "main.LAB_STR_DISCARD": "破棄",
  "main.LAB_STR_DO_IT": "けってい",
  "main.LAB_STR_CHOOSE": "えらぶ",
+ "doo2.EGG_STR_RANDOM": "ランダムなタマゴ",
+ "doo2.EGG_STR_CHOOSE": "えらぶ",
  "main.LAB_STR_BACK": "もどる",
  "main.LAB_STR_SIMPLE_STEP": "変更量: ",
  "main.LAB_STR_STEP_ARROWS": " (うえ/した)",
