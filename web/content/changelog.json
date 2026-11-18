@@ -37,9 +37,10 @@
           "Myotismon remains in the Arena lobby at night as the story progresses, away from the main walking routes. Previously excluded raisable Digimon can enter grade cups; Machinedramon and Suijinmon can enter the Metalic Cup.",
           "Continuing a save away from a screen’s entrance no longer scrambles ground tiles.",
           "Restaurant result text shows the meals’ actual gains in every language. Shop balances leave no stray digits, Monochromon’s mood bubble disappears when you leave, and status labels and the filth icon are clearer.",
-          "Imported models have less flickering, fewer missing faces and fewer parts passing through each other, including Kyubimon, MaloMyotismon, MegaGargomon, Omnimon and Raidenmon. Some contacts remain. Capes, wings, baby shadows and size changes between animations are also corrected.",
+          "Imported models have less flickering, fewer missing faces and fewer parts passing through each other, including WarGreymon, Garbagemon, Kyubimon, MaloMyotismon, MegaGargomon, Omnimon and Raidenmon. Some contacts remain. Capes, wings, baby shadows and size changes between animations are also corrected.",
           "Choosing discs or changing language no longer scrolls the website back to an open changelog link. Full browser storage during CHD conversion is reported as a storage error.",
-          "Using a Portable Potty from the item menu plays the toilet animation instead of the eating one."
+          "Using a Portable Potty from the item menu plays the toilet animation instead of the eating one.",
+          "The Devimon in the Engine Room now has its Mt. Infinity stats."
         ],
         "upgrade": "Saves from v0.0.8 work, and the required discs have not changed. Back up your memory card, boot the new disc from a fresh start and load the memory-card save; emulator save states do not carry across versions."
       },
@@ -76,9 +77,10 @@
           "Myotismon permanece de noche en el vestíbulo de la Arena al avanzar la historia, apartado de las rutas principales. Los Digimon criables antes excluidos pueden entrar en las copas por categoría; Machinedramon y Suijinmon pueden entrar en la Copa Metálica.",
           "Continuar una partida lejos de la entrada de una zona ya no desordena las baldosas del suelo.",
           "El texto de los restaurantes muestra las mejoras reales de cada plato en todos los idiomas. El saldo de las tiendas no deja dígitos sueltos, la burbuja de ánimo de Monochromon desaparece al salir y las etiquetas de Estado y el icono de suciedad se ven mejor.",
-          "Los modelos importados tienen menos parpadeos, caras ausentes y piezas que se atraviesan, incluidos Kyubimon, MaloMyotismon, MegaGargomon, Omnimon y Raidenmon. Aún quedan algunos contactos. También se corrigen capas, alas, sombras de bebés y cambios de tamaño entre animaciones.",
+          "Los modelos importados tienen menos parpadeos, caras ausentes y piezas que se atraviesan, incluidos WarGreymon, Garbagemon, Kyubimon, MaloMyotismon, MegaGargomon, Omnimon y Raidenmon. Aún quedan algunos contactos. También se corrigen capas, alas, sombras de bebés y cambios de tamaño entre animaciones.",
           "Elegir discos o cambiar de idioma ya no desplaza la web hasta un enlace abierto del historial de cambios. Si el almacenamiento del navegador se llena al convertir un CHD, se indica como error de espacio.",
-          "Usar un Orinal portátil desde el menú de objetos reproduce la animación del váter en lugar de la de comer."
+          "Usar un Orinal portátil desde el menú de objetos reproduce la animación del váter en lugar de la de comer.",
+          "El Devimon de la Sala de Máquinas tiene ahora sus estadísticas del Monte Infinito."
         ],
         "upgrade": "Las partidas guardadas de v0.0.8 funcionan y los discos necesarios no cambian. Haz una copia de la tarjeta de memoria, arranca el disco nuevo desde cero y carga la partida de la tarjeta; los estados del emulador no son compatibles entre versiones."
       },
@@ -115,9 +117,10 @@
           "Myotismon continua no saguão da Arena à noite conforme a história avança, fora dos caminhos principais. Digimon criáveis antes excluídos podem entrar nas copas por categoria; Machinedramon e Suijinmon podem entrar na Copa Metálica.",
           "Continuar uma partida longe da entrada de uma área não embaralha mais os blocos do chão.",
           "O texto dos restaurantes mostra os ganhos reais dos pratos em todos os idiomas. O saldo das lojas não deixa dígitos soltos, o balão de humor de Monochromon desaparece ao sair, e os rótulos de Status e o ícone de sujeira ficam mais claros.",
-          "Os modelos importados têm menos cintilação, faces ausentes e partes se atravessando, incluindo Kyubimon, MaloMyotismon, MegaGargomon, Omnimon e Raidenmon. Alguns contatos permanecem. Capas, asas, sombras dos bebês e mudanças de tamanho entre animações também foram corrigidos.",
+          "Os modelos importados têm menos cintilação, faces ausentes e partes se atravessando, incluindo WarGreymon, Garbagemon, Kyubimon, MaloMyotismon, MegaGargomon, Omnimon e Raidenmon. Alguns contatos permanecem. Capas, asas, sombras dos bebês e mudanças de tamanho entre animações também foram corrigidos.",
           "Escolher discos ou mudar o idioma não faz mais o site rolar até um link aberto do histórico de mudanças. Armazenamento cheio no navegador durante a conversão de CHD é informado como erro de espaço.",
-          "Usar um Penico portátil pelo menu de itens toca a animação do banheiro em vez da de comer."
+          "Usar um Penico portátil pelo menu de itens toca a animação do banheiro em vez da de comer.",
+          "O Devimon da Sala de Máquinas agora tem os atributos do Monte Infinito."
         ],
         "upgrade": "Os saves de v0.0.8 funcionam, e os discos necessários não mudaram. Faça uma cópia do cartão de memória, inicie o novo disco do zero e carregue o save do cartão; estados salvos do emulador não funcionam entre versões."
       },
@@ -154,9 +157,10 @@
           "Myotismon reste dans le hall de l’Arène la nuit au fil de l’histoire, à l’écart des passages principaux. Les Digimon élevables auparavant exclus peuvent participer aux coupes par catégorie ; Machinedramon et Suijinmon peuvent participer à la Coupe Métallique.",
           "Reprendre une sauvegarde loin de l’entrée d’une zone ne mélange plus les dalles du sol.",
           "Les textes des restaurants affichent les gains réels des plats dans toutes les langues. Les soldes des boutiques ne laissent plus de chiffres parasites, la bulle d’humeur de Monochromon disparaît en sortant, et les libellés du statut ainsi que l’icône de saleté sont plus lisibles.",
-          "Les modèles importés présentent moins de scintillements, de faces manquantes et de parties qui se traversent, notamment Kyubimon, MaloMyotismon, MegaGargomon, Omnimon et Raidenmon. Certains contacts subsistent. Les capes, ailes, ombres des bébés et changements de taille entre animations sont aussi corrigés.",
+          "Les modèles importés présentent moins de scintillements, de faces manquantes et de parties qui se traversent, notamment WarGreymon, Garbagemon, Kyubimon, MaloMyotismon, MegaGargomon, Omnimon et Raidenmon. Certains contacts subsistent. Les capes, ailes, ombres des bébés et changements de taille entre animations sont aussi corrigés.",
           "Choisir des disques ou changer de langue ne fait plus défiler le site vers un lien ouvert du journal des mises à jour. Un stockage du navigateur plein pendant la conversion CHD est signalé comme une erreur d’espace disponible.",
-          "Utiliser un Pot portable depuis le menu des objets joue l'animation des toilettes au lieu de celle du repas."
+          "Utiliser un Pot portable depuis le menu des objets joue l'animation des toilettes au lieu de celle du repas.",
+          "Le Devimon de la salle des machines a désormais ses statistiques du mont Infinity."
         ],
         "upgrade": "Les sauvegardes de v0.0.8 fonctionnent et les disques requis ne changent pas. Faites une copie de votre carte mémoire, démarrez le nouveau disque à froid et chargez la sauvegarde de la carte ; les états de l’émulateur ne sont pas compatibles entre versions."
       },
@@ -193,9 +197,10 @@
           "Myotismon bleibt im Verlauf der Geschichte nachts in der Arena-Lobby, abseits der Hauptwege. Zuvor ausgeschlossene aufziehbare Digimon können an Rang-Cups teilnehmen; Machinedramon und Suijinmon dürfen in den Metall-Cup.",
           "Beim Fortsetzen eines Spielstands abseits des Gebietseingangs geraten die Bodenkacheln nicht mehr durcheinander.",
           "Restauranttexte zeigen in allen Sprachen die tatsächlichen Zuwächse der Gerichte. Geldbeträge in Läden hinterlassen keine Ziffernreste, Monochromons Stimmungsblase verschwindet beim Verlassen und Statusbeschriftungen sowie das Schmutzsymbol sind deutlicher.",
-          "Importierte Modelle haben weniger Flackern, fehlende Flächen und ineinander ragende Teile, darunter Kyubimon, MaloMyotismon, MegaGargomon, Omnimon und Raidenmon. Einige Berührungen bleiben. Auch Umhänge, Flügel, Babyschatten und Größenwechsel zwischen Animationen wurden korrigiert.",
+          "Importierte Modelle haben weniger Flackern, fehlende Flächen und ineinander ragende Teile, darunter WarGreymon, Garbagemon, Kyubimon, MaloMyotismon, MegaGargomon, Omnimon und Raidenmon. Einige Berührungen bleiben. Auch Umhänge, Flügel, Babyschatten und Größenwechsel zwischen Animationen wurden korrigiert.",
           "Die Auswahl von Discs oder ein Sprachwechsel scrollt die Website nicht mehr zu einem geöffneten Changelog-Link zurück. Voller Browserspeicher bei der CHD-Umwandlung wird als Speicherplatzfehler gemeldet.",
-          "Ein tragbares Töpfchen aus dem Itemmenü spielt jetzt die Toilettenanimation statt der Essanimation ab."
+          "Ein tragbares Töpfchen aus dem Itemmenü spielt jetzt die Toilettenanimation statt der Essanimation ab.",
+          "Der Devimon im Maschinenraum hat jetzt seine Werte vom Unendlichkeitsberg."
         ],
         "upgrade": "Spielstände aus v0.0.8 funktionieren; die benötigten Discs bleiben gleich. Sichere deine Speicherkarte, starte die neue Disc vollständig neu und lade den Speicherkartenspielstand. Emulator-Schnellspeicherstände funktionieren nicht versionsübergreifend."
       },
@@ -232,9 +237,10 @@
           "Myotismon rimane di notte nell’atrio dell’Arena con l’avanzare della storia, lontano dai passaggi principali. I Digimon allevabili prima esclusi possono partecipare alle coppe per categoria; Machinedramon e Suijinmon possono entrare nella Coppa Metallica.",
           "Caricare un salvataggio lontano dall’ingresso di un’area non mescola più le piastrelle del terreno.",
           "I testi dei ristoranti mostrano i guadagni reali dei piatti in ogni lingua. Il saldo dei negozi non lascia cifre residue, la bolla dell’umore di Monochromon scompare all’uscita e le etichette di Stato e l’icona della sporcizia sono più chiare.",
-          "I modelli importati hanno meno sfarfallii, facce mancanti e parti che si attraversano, inclusi Kyubimon, MaloMyotismon, MegaGargomon, Omnimon e Raidenmon. Alcuni contatti restano. Corretti anche mantelli, ali, ombre dei cuccioli e cambi di dimensione fra animazioni.",
+          "I modelli importati hanno meno sfarfallii, facce mancanti e parti che si attraversano, inclusi WarGreymon, Garbagemon, Kyubimon, MaloMyotismon, MegaGargomon, Omnimon e Raidenmon. Alcuni contatti restano. Corretti anche mantelli, ali, ombre dei cuccioli e cambi di dimensione fra animazioni.",
           "Scegliere dischi o cambiare lingua non fa più scorrere il sito verso un collegamento aperto del registro delle modifiche. Se lo spazio del browser si esaurisce durante la conversione CHD, viene segnalato un errore di spazio.",
-          "Usare un Vasino portatile dal menu oggetti riproduce l'animazione del bagno invece di quella del mangiare."
+          "Usare un Vasino portatile dal menu oggetti riproduce l'animazione del bagno invece di quella del mangiare.",
+          "Il Devimon della sala macchine ha ora le statistiche del Monte Infinito."
         ],
         "upgrade": "I salvataggi di v0.0.8 funzionano e i dischi richiesti non cambiano. Fai una copia della scheda di memoria, avvia da zero il nuovo disco e carica il salvataggio dalla scheda; gli stati salvati dell’emulatore non funzionano fra versioni diverse."
       },
@@ -271,9 +277,10 @@
           "物語が進んだ後も、夜の闘技場ロビーにヴァンデモンが残り、主な通り道をふさがなくなりました。これまで除外されていた育成可能なデジモンもランク別の大会に参加でき、ムゲンドラモンとスイジンモンはメタル系の大会に参加できます。",
           "マップの入口から離れた場所でセーブを再開しても、地面のタイルが崩れなくなりました。",
           "レストランの食事後の文章が、全言語で実際の上昇量を表示します。店の所持金表示に数字の残りが出ず、モノクロモンの気分の吹き出しも店を出ると消えます。状態画面の項目名と汚物アイコンも見やすくしました。",
-          "キュウビモン、ベリアルヴァンデモン、セントガルゴモン、オメガモン、ライデンモンなどの追加モデルで、ちらつき、面の欠け、パーツの貫通を減らしました。一部の接触は残っています。マント、翼、幼年期の影、動作間での大きさの変化も修正しました。",
+          "ウォーグレイモン、ガーベモン、キュウビモン、ベリアルヴァンデモン、セントガルゴモン、オメガモン、ライデンモンなどの追加モデルで、ちらつき、面の欠け、パーツの貫通を減らしました。一部の接触は残っています。マント、翼、幼年期の影、動作間での大きさの変化も修正しました。",
           "ディスク選択や言語変更のたびに、ウェブサイトが開いている更新履歴のリンクへスクロールしなくなりました。CHD変換中にブラウザーの保存領域がいっぱいになった場合は、容量不足として表示します。",
-          "アイテムメニューからポータブルトイレを使うと、食事のアニメーションではなくトイレのアニメーションが再生されます。"
+          "アイテムメニューからポータブルトイレを使うと、食事のアニメーションではなくトイレのアニメーションが再生されます。",
+          "機関室のデビモンに、インフィニティ山のステータスが適用されるようになりました。"
         ],
         "upgrade": "v0.0.8のセーブは使えます。必要なディスクは変わりません。メモリーカードをバックアップし、新しいディスクを最初から起動してカードのセーブを読み込んでください。エミュレーターのステートセーブは別バージョンでは使えません。"
       },
@@ -310,9 +317,10 @@
           "Myotismon continua de nit al vestíbul de l’Arena a mesura que avança la història, fora dels camins principals. Els Digimon criables abans exclosos poden entrar a les copes per categoria; Machinedramon i Suijinmon poden entrar a la Copa Metàl·lica.",
           "Continuar una partida lluny de l’entrada d’una zona ja no desordena les rajoles del terra.",
           "El text dels restaurants mostra els guanys reals dels plats en tots els idiomes. El saldo de les botigues no deixa dígits solts, la bombolla d’ànim de Monochromon desapareix en sortir i les etiquetes d’Estat i la icona de brutícia es veuen millor.",
-          "Els models importats tenen menys pampallugues, cares absents i peces que es travessen, inclosos Kyubimon, MaloMyotismon, MegaGargomon, Omnimon i Raidenmon. Encara queden alguns contactes. També es corregeixen capes, ales, ombres dels nadons i canvis de mida entre animacions.",
+          "Els models importats tenen menys pampallugues, cares absents i peces que es travessen, inclosos WarGreymon, Garbagemon, Kyubimon, MaloMyotismon, MegaGargomon, Omnimon i Raidenmon. Encara queden alguns contactes. També es corregeixen capes, ales, ombres dels nadons i canvis de mida entre animacions.",
           "Triar discos o canviar d’idioma ja no desplaça la web fins a un enllaç obert del registre de canvis. Si l’emmagatzematge del navegador s’omple durant la conversió d’un CHD, s’indica com a error d’espai.",
-          "Fer servir un Orinal portàtil des del menú d'objectes reprodueix l'animació del vàter en lloc de la de menjar."
+          "Fer servir un Orinal portàtil des del menú d'objectes reprodueix l'animació del vàter en lloc de la de menjar.",
+          "El Devimon de la sala de màquines té ara les estadístiques del Mont Infinit."
         ],
         "upgrade": "Les partides desades de v0.0.8 funcionen i els discos necessaris no canvien. Fes una còpia de la targeta de memòria, arrenca el disc nou des de zero i carrega la partida de la targeta; els estats de l’emulador no funcionen entre versions."
       },
@@ -349,9 +357,10 @@
           "随着剧情推进，吸血魔兽夜间仍会留在竞技场大厅，并避开主要通道。先前无法参赛的可培养数码兽现可参加等级杯；机械邪龙兽和水神兽可参加金属杯。",
           "在远离地图入口的位置继续存档时，地面图块不再错乱。",
           "所有语言的餐厅结果文字均显示餐点的实际增益。商店余额不再残留多余数字，离开商店后Monochromon的心情气泡会消失，状态栏标签和污物图标也更清晰。",
-          "导入模型的闪烁、缺面和部件穿插现象有所减少，包括九尾狐兽、贝利亚吸血魔兽、圣加鲁哥兽、奥米加兽和雷电兽。部分接触仍然存在。此外还修正了披风、翅膀、幼年期的影子及不同动画之间的大小变化。",
+          "导入模型的闪烁、缺面和部件穿插现象有所减少，包括战斗暴龙兽、垃圾兽、九尾狐兽、贝利亚吸血魔兽、圣加鲁哥兽、奥米加兽和雷电兽。部分接触仍然存在。此外还修正了披风、翅膀、幼年期的影子及不同动画之间的大小变化。",
           "选择光盘或切换语言时，网站不再滚回已打开的更新日志链接。转换CHD时若浏览器存储空间已满，会明确提示空间不足。",
-          "从道具菜单使用便携式便盆时，会播放上厕所动画，而不是吃东西动画。"
+          "从道具菜单使用便携式便盆时，会播放上厕所动画，而不是吃东西动画。",
+          "机房里的恶魔兽现在拥有无限山的属性。"
         ],
         "upgrade": "v0.0.8的存档可以继续使用，所需光盘没有变化。请先备份记忆卡，重新启动新光盘，再读取记忆卡存档；模拟器的即时存档不能跨版本使用。"
       }
