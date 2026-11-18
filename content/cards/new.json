@@ -167,6 +167,86 @@
    "rarity": 4,
    "merit": 1,
    "scene": "a rocky canyon quarry with giant boulders and cracked sandstone"
+  },
+  {
+   "key": "patamon",
+   "number": 78,
+   "species": 31,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a bright blue sky above blocky white clouds with a grassy floating island"
+  },
+  {
+   "key": "palmon",
+   "number": 79,
+   "species": 46,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a sunny flower meadow with big blocky flowers, a stream and green hills"
+  },
+  {
+   "key": "tsunomon",
+   "number": 80,
+   "species": 16,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a snowy hillside village outskirts with small pine trees and a pale sky"
+  },
+  {
+   "key": "snowagumon",
+   "number": 81,
+   "species": 71,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a frozen tundra with ice blocks, snow drifts and a cold aurora sky"
+  },
+  {
+   "key": "iceleomon",
+   "number": 82,
+   "species": 63,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a snowy mountain ridge with jagged ice cliffs and a stormy white sky"
+  },
+  {
+   "key": "piddomon",
+   "number": 83,
+   "species": 85,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a heavenly temple garden with golden pillars, red fire braziers and a sunset sky"
+  },
+  {
+   "key": "vermilimon",
+   "number": 84,
+   "species": 88,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a hot red-rock desert with lava cracks and a burning orange sky"
+  },
+  {
+   "key": "hyogamon",
+   "number": 85,
+   "species": 72,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a glacier cave valley with giant ice spires and blue crystal light"
+  },
+  {
+   "key": "tsukaimon",
+   "number": 86,
+   "species": 96,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a moonlit haunted forest with twisted trees and a purple night sky"
+  },
+  {
+   "key": "gigadramon",
+   "number": 87,
+   "species": 64,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a dark mountain fortress with icy black spires and a grey stormy sky"
   }
  ]
 }

@@ -77,8 +77,9 @@ DEFAULT_ELEMENT = 'battle'
 STYLES = {
     'exact': (
         "The attached image is a render of the real in-game 3D model of the character. USE THIS EXACT CHARACTER as the "
-        "subject: copy it faithfully, with its identical faceted low-polygon shapes, proportions, pixel-art texture "
-        "details, colours, markings, eyes, claws and pose. Do not redesign, smooth, round off or re-draw it in another "
+        "subject: copy its DESIGN faithfully, with its identical faceted low-polygon shapes, proportions, pixel-art texture "
+        "details, colours, markings, eyes and claws. The reference shows the model in a neutral rest pose: do NOT copy "
+        "that pose, re-pose the character freely. Do not redesign, smooth, round off or re-draw it in another "
         "style: it must look like the same model, only now standing inside the scene, lit consistently with it and "
         "casting a soft shadow on the ground. Only the scene around it is yours to paint, and the scene MUST be in the SAME "
         "visual style as the character: a late-1990s PlayStation 3D game environment made of flat-shaded low-polygon "
@@ -141,7 +142,7 @@ def prompt_for(card):
         f"model{'s' if many else ''} in three-quarter view{', in the order named' if many else ''}. "
         "They are low-polygon PlayStation models: keep each design EXACTLY (proportions, head shape, eyes, claws, "
         "colours and markings). " + STYLES[card.get('style', 'exact')] + "\n"
-        f"Pose: {card.get('pose') or 'lively three-quarter view'}, full body visible from head to feet. "
+        f"Pose: {card.get('pose') or 'a dynamic, characteristic pose of your own choice that suits this creature (leaping, attacking, roaring, flying, running, playing...), different from the neutral rest pose of the reference, with a fresh camera angle'}, full body visible from head to feet. "
         f"Setting: {scene}, painterly and colourful, with depth behind the creature and a clear single subject.\n"
         "Composition: the creature centred, filling about 70% of the height, with comfortable margins on every side "
         "(the card crops the edges). Soft, even light. No light beams, no god rays, no haze, no glare.\n"
