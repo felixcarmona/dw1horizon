@@ -194,7 +194,8 @@ def main():
     fails.extend(conversion_changes(sold))
 
     # cards: the best way out of each, then what a draw of a rarity is worth on average
-    cards = cards_t['cards']
+    import cards as card_content
+    cards = card_content.load(native=cards_t['cards'])
     prices = cards_t['cardPrices']
     cworth = {}
     for c, card in enumerate(cards):

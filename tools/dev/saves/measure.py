@@ -39,6 +39,8 @@ def profiles():
     base = dict(mcd.parse_records(f[0x2000:0x3000]))
     base[9] = base[9].ljust(14, b'\0'); base[10] = struct.pack('<hh', 470, 1)
     base[11] = b''; base[12] = bytes(128)
+    base[13] = bytes([0x99]) * 223
+    base[14] = struct.pack('<6H', 66, 255, 256, 511, 1, 0xffff)
     for label, raised, recruits, pickups in [('early', 3, 2, 3), ('mid', 100, 50, 80), ('late', 300, 177, 300), ('full-chart', 478, 177, 1024)]:
         rs = base.copy()
         for tag, count in [(7, raised), (8, recruits), (12, pickups)]:
@@ -63,7 +65,7 @@ def main():
     print(json.dumps(dict(block=8192, header=512, payload_each=3840,
         contiguous_tail_free=0, original_defined_fields=5546, original_explicit_unused=2646,
         original_registration_padding_each=1280, registration_padding_each=1120,
-        other_unused_payload_bytes=29, raw_max=850, margin=270,
+        other_unused_payload_bytes=29, raw_max=1093, margin=27,
         profiles=rows), indent=2))
 
 

@@ -1,0 +1,1151 @@
+From 9095f80836243e892b052b8883c089c639399ed1 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 18 Nov 2026 09:38:10 +0000
+Subject: [PATCH] Support 512 collectible card IDs with optional save records
+
+---
+ config/us/main.ld        |   2 +
+ config/us/overlay.ld     |   5 ++
+ include/dw/cards.h       |  28 +++++++
+ include/dw/ids.h         |   2 +-
+ include/dw/save_tags.h   |   2 +
+ include/dw/script.h      |  19 ++---
+ src/main/game_menu.c     |  76 ++++++++++-------
+ src/main/main_menu.c     |  19 ++++-
+ src/main/script_common.c | 177 ++++++++++++++++-----------------------
+ src/main/script_interp.c |  20 ++---
+ src/main/tamer.c         |   5 +-
+ src/main/tournament.c    |   3 +-
+ src/shop/script_menu.c   | 100 ++++++++++------------
+ 13 files changed, 241 insertions(+), 217 deletions(-)
+ create mode 100644 include/dw/cards.h
+
+diff --git a/config/us/main.ld b/config/us/main.ld
+index 0a6a6f86..b4866e74 100644
+--- a/config/us/main.ld
++++ b/config/us/main.ld
+@@ -1069,6 +1069,8 @@ ASSERT(OVL_READ_END(.MOV) <= OVL_TRN_BASE, "MOV overlay overlaps TRN's slot (TEX
+  * OVL_EVL_BASE except ENDI during the game-clear save (load_ending), whose first sector the last sector of MENU may
+  * overlap: start_ending reads ENDI again. Whole sectors: one more would need that read to be proved again. */
+ ASSERT(OVL_READ_END(.MENU) <= OVL_EVL_BASE + 0x800, "MENU overlay (in whole sectors) reaches past ENDI's first sector")
++ASSERT(renderCardsView >= OVL_BTL_BASE + 0x800 && CARD_SPRITE_CLUT >= OVL_BTL_BASE + 0x800,
++       "Card metadata sector overlaps the album renderer")
+ ASSERT(title_ui_START >= OVL_READ_END(.MENU), "MENU sector read overwrites the title UI in EVL")
+ ASSERT(title_ui_END <= OVL_END(.EVL), "Title UI is outside EVL")
+ ASSERT(TFS_RING_ADDR + TFS_RING_SLOTS * TFS_SLOT_SIZE == TFS_RING_END,
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index 46add050..7d6caac5 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -1019,6 +1019,11 @@ SECTIONS
+             BUILD_DIR/src/main/main_menu.c.o(.text.setRegisteredSpecies*);
+             BUILD_DIR/src/main/main_menu.c.o(.text.swapPartnerSpecies);
+             BUILD_DIR/src/main/sjis.c.o(.text.asciiToShiftJIS);
++            . = ALIGN(., 4);
++            /* Album drawing runs only after Player loads MENU. Keep this code
++             * and its portrait CLUT map in the tail: CARDTAB.BIN replaces only
++             * the first sector while the album is active. */
++            BUILD_DIR/src/main/game_menu.c.o(.text.renderCardsView .data.CARD_SPRITE_CLUT);
+             . = ALIGN(., 4);
+ 
+ 		}
+diff --git a/include/dw/cards.h b/include/dw/cards.h
+new file mode 100644
+index 00000000..87309fd8
+--- /dev/null
++++ b/include/dw/cards.h
+@@ -0,0 +1,28 @@
++#ifndef DW_CARDS_H
++#define DW_CARDS_H
++#include <stdint.h>
++#include <dw/ids.h>
++typedef struct {
++	uint16_t digimonId;
++	uint8_t spriteId;
++	uint8_t meritValue;
++} CardData;
++typedef char CardTableSectorCheck[sizeof(CardData) * NUM_CARDS == 2048 ? 1 : -1];
++
++/* One sector, owned by the album or card shop while no battle is active. */
++#include <dw/memmap.h>
++#define CARD_DATA ((CardData *)OVL_BTL_BASE)
++#define CARD_EXTRA_BYTES ((NUM_CARDS - 66) / 2)
++#define CARD_NONE 0xffff
++extern uint8_t MOD_CARD_EXTRA[CARD_EXTRA_BYTES];
++extern uint16_t MOD_CARD_STOCK[6];
++extern uint8_t MOD_CARD_REAL[NUM_CARDS / 8];
++void modLoadCardTable(void);
++int32_t modCardIsReal(int32_t id);
++int32_t modLoadCardImage(int32_t id, void *buffer);
++
++uint8_t getCardAmount(int32_t id);
++int32_t setCardAmount(int32_t id, int32_t amount);
++int32_t modCardMove(int32_t id, int32_t input);
++int32_t modCardTop(int32_t id, int32_t top);
++#endif
+diff --git a/include/dw/ids.h b/include/dw/ids.h
+index e3f2b5e7..be1be80a 100644
+--- a/include/dw/ids.h
++++ b/include/dw/ids.h
+@@ -169,7 +169,7 @@ typedef uint16_t CardId;
+ #define NUM_LEARNABLE_MOVES	58	/* MOVE_LEARN_CHANCES, the technique grid */
+ 
+ /* Cards */
+-#define NUM_CARDS		66	/* CARD_DATA, CARD_SPRITE_CLUT, CARD.ALL */
++#define NUM_CARDS		512	/* CARD_DATA, CARD_SPRITE_CLUT, CARD.ALL */
+ 
+ /* Trigger ranges used as per-id bitsets (scripts.md, "Free triggers") */
+ /* SET/UNSET_TRIGGER and IF operands for species 112..1023; saved recruit bits. */
+diff --git a/include/dw/save_tags.h b/include/dw/save_tags.h
+index ff24dab5..8bc06f8f 100644
+--- a/include/dw/save_tags.h
++++ b/include/dw/save_tags.h
+@@ -33,6 +33,8 @@
+ #define SAVE_TAG_VANILLA_SWAP		0x000A /* i16 species, i16 vanilla species: NEW DIGIMON off turned the partner from the first into the second (main_menu.c modVanillaSwap) */
+ #define SAVE_TAG_GROUND_PICKED		0x000B /* {i16 screen, u8 tileX, u8 tileY}[64]: the ground spots picked up today (retired; a zero-length record writes an empty legacy history) */
+ #define SAVE_TAG_GROUND_PICKUP_BITS	0x000C /* bit array: stable ground pickup IDs collected today; registry content/ground-items.json */
++#define SAVE_TAG_CARD_COUNTS		0x000D /* nibbles for card ids 66..511, low nibble first */
++#define SAVE_TAG_CARD_STOCK		0x000E /* u16[6] daily shop cards, 0xffff sold */
+ #define SAVE_TAG_REQUIRED		0x8000
+ #define SAVE_TAG_TECHNIQUE_LAYOUT	0x8003 /* u8: 1 = option A animation slots; required to prevent silent downgrade substitution */
+ /* engine tier 2 */
+diff --git a/include/dw/script.h b/include/dw/script.h
+index 974b7620..4c700eac 100644
+--- a/include/dw/script.h
++++ b/include/dw/script.h
+@@ -1,6 +1,7 @@
+ #ifndef DW_SCRIPT_H
+ #define DW_SCRIPT_H
+ 
++#include <dw/cards.h>
+ #include <setjmp.h>
+ 
+ #include <libgpu.h>
+@@ -227,27 +228,21 @@ typedef struct {
+ 
+ extern DialogueSelection DIALOGUE_SELECTION;
+ 
+-typedef struct {
+-	uint8_t digimonId;
+-	uint8_t spriteId;
+-	int16_t meritValue;
+-} CardData;
+-
+-extern CardData CARD_DATA[];
+ 
+ typedef struct {
+ 	uint8_t *buf;
+ 	int32_t isOpen;
+-	uint8_t itemCount;
+-	uint8_t topRow;
++	uint16_t itemCount;
++	uint16_t topRow;
+ 	uint8_t cursor;
+ 	uint8_t visibleRows;
+ 	uint8_t boxId;
+-	uint8_t prevTopRow;
++	uint16_t prevTopRow;
+ 	uint8_t prevCursor;
+ 	RECT rect;
+ 	uint8_t itemRow[8];
+ } ItemMenuBox;
++int32_t modCardRowId(ItemMenuBox *box, int32_t row);
+ 
+ typedef struct {
+ 	uint8_t type;
+@@ -294,7 +289,7 @@ extern int16_t TEXTBOX_ORIGIN_X;
+ extern int16_t TEXTBOX_ORIGIN_Y;
+ extern int16_t TEXTBOX_ORIGIN_Z;
+ extern uint16_t NAMING_SELECTOR;
+-extern uint8_t SHOP_ITEM_TYPE;
++extern uint16_t SHOP_ITEM_TYPE;
+ extern int16_t TMP_TAMER_LEVEL;
+ extern int16_t TMP_LIVES;
+ extern int32_t SHOP_ACTION_SELECTED;
+@@ -350,7 +345,7 @@ void readMapTFS(int32_t mapId);
+ void handleItemLoss(void);
+ void setMovementEnabled(int32_t a0, int32_t a1);
+ void scriptNPCStartAnimation(uint32_t scriptId, int32_t animId);
+-uint8_t rollCard(void);
++uint16_t rollCard(void);
+ void showCardTextbox(void);
+ void mojyaTradeFillItemList(void);
+ void renderNameDisplayBox(void);
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 854020c9..d889121b 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -10,6 +10,7 @@
+ #include <dw/mod_options.h>
+ #include <dw/caps.h> /* MOD (caps) */
+ #include <dw/mod_fps.h>
++#include <dw/cards.h>
+ #include <dw/clock.h>
+ #include <dw/entity.h>
+ #include <dw/evl.h>
+@@ -248,6 +249,7 @@ int32_t loadCardImage(int32_t id);
+ void renderEvoChartDetail(void);
+ void renderCardImage(void);
+ void renderCardCount(void);
++void renderCardSprite(uint8_t, int16_t, int16_t, int32_t);
+ int32_t hasMove(int32_t moveId);
+ int32_t drawPlayerInfoStrings(void);
+ int32_t isTriggerSet(uint16_t trigger);
+@@ -259,7 +261,6 @@ u_short GetClut(int32_t x, int32_t y);
+ void renderBox(int16_t x, int16_t y, int16_t w, int16_t h, uint8_t r,
+                uint8_t g, uint8_t b, uint8_t flags, int32_t otz);
+ void renderDigimonMoveBox(void);
+-int32_t getCardAmount(uint8_t card);
+ int32_t loadStackedTIMEntry(char *path, u_long buffer, int32_t offset,
+                             int32_t sectors);
+ void renderNumber(int32_t a, int32_t b, int32_t c, int32_t d, int32_t e,
+@@ -1879,7 +1880,8 @@ int16_t MOVE_SELECT_BOX_Y;
+ int16_t MOVE_SELECT_BOX_X;
+ int8_t SELECTED_MEDAL;
+ int8_t MEDAL_SELECTOR_INDEX;
+-int8_t SELECTED_CARD;
++int16_t SELECTED_CARD;
++static int16_t CARD_TOP_ROW;
+ int16_t CHART_SELECTED_DIGIMON;
+ int16_t CHART_SELECTED_COLUMN;
+ int16_t CHART_SELECTED_ROW;
+@@ -2541,7 +2543,7 @@ void tickPlayerMenu(void)
+ 	int16_t cardX;
+ 	int16_t boxX; /* MOD (chart): the selected box (chartBoxXY) */
+ 	int16_t boxY;
+-	uint8_t previousCard;
++	uint16_t previousCard;
+ 
+ 	if (MENU_STATE < 2) {
+ 		/* MOD (chart): L1/R1 turn the chart's tab with the focus on the menu's tab too, before the grid is entered */
+@@ -2549,6 +2551,7 @@ void tickPlayerMenu(void)
+ 			chartOverviewInput(0);
+ 		}
+ 		if (CHANGED_INPUT & 0x2000) {
++			if (PLAYER_MENU_STATE == 3) loadMenuOverlay(); /* CARDTAB occupied MENU's first sector. */
+ 			PLAYER_MENU_STATE++;
+ 			if (PLAYER_MENU_STATE >= 5) {
+ 				PLAYER_MENU_STATE = 4;
+@@ -2559,6 +2562,7 @@ void tickPlayerMenu(void)
+ 			}
+ 		}
+ 		if (CHANGED_INPUT & 0x8000) {
++			if (PLAYER_MENU_STATE == 3) loadMenuOverlay();
+ 			PLAYER_MENU_STATE--;
+ 			if (PLAYER_MENU_STATE < 0) {
+ 				PLAYER_MENU_STATE = 0;
+@@ -2578,6 +2582,7 @@ void tickPlayerMenu(void)
+ 			playSound(0, 3);
+ 			MEDAL_SELECTOR_INDEX = SELECTED_MEDAL = 0;
+ 			SELECTED_CARD = 0;
++			CARD_TOP_ROW = 0;
+ 		}
+ 	} else {
+ 		if ((isKeyDown(CANCEL_BUTTON) != 0) && (MENU_STATE == 2)) {
+@@ -2670,12 +2675,12 @@ void tickPlayerMenu(void)
+ 			previousCard = SELECTED_CARD;
+ 			if (MENU_STATE == 2) {
+ 				if ((isKeyDown(CONFIRM_BUTTON) != 0) &&
+-				    (getCardAmount((uint8_t)SELECTED_CARD) != 0)) {
++				    (getCardAmount(SELECTED_CARD) != 0)) {
+ 					playSound(0, 3);
+ 					MENU_STATE = 3;
+ 					loadCardImage(SELECTED_CARD);
+ 					cardX = (SELECTED_CARD % 11) < 6 ? 0xa6 : -0xcc;
+-					setRECT(&startPos, (SELECTED_CARD % 11) * 0x18 - 0x79, (SELECTED_CARD / 11) * 0x18 - 0x36, 1, 1);
++					setRECT(&startPos, (SELECTED_CARD % 11) * 0x18 - 0x79, (SELECTED_CARD / 11 - CARD_TOP_ROW) * 0x18 - 0x36, 1, 1);
+ 					setRECT(&finalPos, -0x4b, -0x53, 0x96, 0xb4);
+ 					setRECT(&secondFinalPos, 0x4a, 0x45, 0x36, 0x18);
+ 					createAnimatedUIBox(
+@@ -2686,22 +2691,8 @@ void tickPlayerMenu(void)
+ 						NULL, (RenderFunction)renderCardCount);
+ 				}
+ 				if (MENU_STATE == 2) {
+-					if ((CHANGED_INPUT & 0x8000) &&
+-					    ((SELECTED_CARD % 11) != 0)) {
+-						SELECTED_CARD--;
+-					}
+-					if ((CHANGED_INPUT & 0x2000) &&
+-					    ((SELECTED_CARD % 11) != 10)) {
+-						SELECTED_CARD++;
+-					}
+-					if ((CHANGED_INPUT & 0x1000) &&
+-					    (SELECTED_CARD >= 11)) {
+-						SELECTED_CARD -= 11;
+-					}
+-					if ((CHANGED_INPUT & 0x4000) &&
+-					    (SELECTED_CARD < 0x37)) {
+-						SELECTED_CARD += 11;
+-					}
++					SELECTED_CARD = modCardMove(SELECTED_CARD, CHANGED_INPUT);
++					CARD_TOP_ROW = modCardTop(SELECTED_CARD, CARD_TOP_ROW);
+ 					if (previousCard != SELECTED_CARD) {
+ 						playSound(0, 2);
+ 					}
+@@ -2710,7 +2701,7 @@ void tickPlayerMenu(void)
+ 			if ((isKeyDown(CANCEL_BUTTON) != 0) && (MENU_STATE == 3)) {
+ 				playSound(0, 4);
+ 				MENU_STATE = 2;
+-				setRECT(&startPos, (SELECTED_CARD % 11) * 0x18 - 0x79, (SELECTED_CARD / 11) * 0x18 - 0x36, 1, 1);
++				setRECT(&startPos, (SELECTED_CARD % 11) * 0x18 - 0x79, (SELECTED_CARD / 11 - CARD_TOP_ROW) * 0x18 - 0x36, 1, 1);
+ 				removeAnimatedUIBox(2, &startPos);
+ 				removeAnimatedUIBox(3, &startPos);
+ 			}
+@@ -2973,11 +2964,9 @@ void equipMove(void)
+ 	playSound(0, 3);
+ }
+ 
+-int32_t loadCardImage(id)
+-int8_t id;
++int32_t loadCardImage(int32_t id)
+ {
+-	return loadStackedTIMEntry(MAIN_D_80123E78, (u_long)TEXTURE_BUFFER,
+-	                           id * 0xe, 0xe);
++	return modLoadCardImage(id, TEXTURE_BUFFER);
+ }
+ 
+ void renderCardImage(void)
+@@ -5671,12 +5660,28 @@ void renderMedalView(void)
+ 	}
+ }
+ 
++int32_t modCardMove(int32_t id, int32_t input)
++{
++	if ((input & 0x8000) && id % 11 != 0) id--;
++	if ((input & 0x2000) && id % 11 != 10 && id + 1 < NUM_CARDS) id++;
++	if ((input & 0x1000) && id >= 11) id -= 11;
++	if ((input & 0x4000) && id + 11 < NUM_CARDS) id += 11;
++	return id;
++}
++
++int32_t modCardTop(int32_t id, int32_t top)
++{
++	if (id / 11 < top) top = id / 11;
++	if (id / 11 >= top + 6) top = id / 11 - 5;
++	return top;
++}
++
+ void renderCardsView(void)
+ {
+ 	CardSprites sprites;
+ 	int32_t j;
+ 	int32_t i;
+-	int8_t card;
++	int16_t card;
+ 	int8_t amount;
+ 
+ 	sprites = CARD_SPRITE_CLUT;
+@@ -5690,14 +5695,20 @@ void renderCardsView(void)
+ 	case 2:
+ 	case 3:
+ 		renderRectPolyFT4(((SELECTED_CARD % 11) * 24) - 0x84,
+-		                  ((SELECTED_CARD / 11) * 24) - 0x40, 0x18, 0x14, 0, 0xe8,
++		                  ((SELECTED_CARD / 11 - CARD_TOP_ROW) * 24) - 0x40, 0x18, 0x14, 0, 0xe8,
+ 		                  0x18, 0x7dc7, 5, 0);
+ 	case 1:
++		renderNumber(0, 0x35, -0x50, 3, SELECTED_CARD, 5);
++		drawLine2P(0xbebebe, 0x5e, -0x45, 0x63, -0x50, 5, 0);
++		renderNumber(0, 0x68, -0x50, 3, NUM_CARDS - 1, 5);
+ 		for (i = 0; i < 6; i++) {
+ 			for (j = 0; j < 11; j++) {
+-				card = j + i * 11;
++				card = j + (i + CARD_TOP_ROW) * 11;
++				if (card >= NUM_CARDS) continue;
+ 				amount = getCardAmount(card);
+-				if (amount > 0) {
++				if (amount > 0 && card >= 66) {
++					renderCardSprite(CARD_DATA[card].spriteId, j * 24 - 0x81, i * 24 - 0x3e, 5);
++				} else if (amount > 0) {
+ 					renderRectPolyFT4(j * 24 - 0x81, i * 24 - 0x3e, 0x10, 0x10,
+ 					                  (card % 8) * 32, (card / 8) * 16, 0x18,
+ 					                  sprites.v[card] * 64 + 0x7a07, 5, 0);
+@@ -5784,6 +5795,7 @@ int32_t drawDigimonStatsStrings(void)
+ 	switch (MENU_SUB_STATE) {
+ 	case 0:
+ 		statsCareLayout();
++		modLoadCardTable();
+ 		clearTextSubArea(&rect);
+ 		DRAW_STRING_CELLS(MAIN_D_80124C54, 0, 0xf0);
+ 		DRAW_STRING_PIECES(MAIN_D_80124C0C[2], 0, 0x24, 0);
+@@ -6013,6 +6025,7 @@ int32_t drawDigimonMovesText(void)
+ 	rect = MOVES_VIEW_TEXT_AREA;
+ 	switch (MENU_SUB_STATE) {
+ 	case 0:
++		modLoadCardTable();
+ 		clearTextSubArea(&rect);
+ 		DRAW_STRING_CELLS(MAIN_D_80124C54, 0, 0xf0);
+ 		if (PARTNER_ENTITY.digimonEntity.stats.base.moves[0] != 0xff) {
+@@ -6095,6 +6108,7 @@ int32_t drawPlayerInfoStrings(void)
+ 	rect = PLAYER_INFO_TEXT_AREA;
+ 	switch (MENU_SUB_STATE) {
+ 	case 0:
++		modLoadCardTable();
+ 		clearTextSubArea(&rect);
+ 		DRAW_STRING_CELLS(MAIN_D_80124C54, 0, 0xf0);
+ 		MENU_SUB_STATE = 1;
+@@ -6215,6 +6229,7 @@ int32_t drawCardViewStrings(void)
+ 	rect = CARD_VIEW_TEXT_AREA;
+ 	switch (MENU_SUB_STATE) {
+ 	case 0:
++		modLoadCardTable();
+ 		clearTextSubArea(&rect);
+ 		DRAW_STRING_CELLS(MAIN_D_80124C54, 0, 0xF0);
+ 		MENU_SUB_STATE = 1;
+@@ -6222,6 +6237,7 @@ int32_t drawCardViewStrings(void)
+ 	case 1:
+ 		DRAW_STRING_PIECES_AT(CARD_CHART_LABELS[0], 0, 0xC, CARD_LIST_PIECES); /* MOD (language) */
+ 		SELECTED_CARD = 0;
++		CARD_TOP_ROW = 0;
+ 		return 1;
+ 	}
+ 	return 0;
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 46ca5ed8..486e9e4c 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -244,7 +244,7 @@ typedef struct {
+ SAVE_LAYOUT_CHECK(extHead, sizeof(SaveExtHead) == 12);
+ /* Bound every record, including the optional swap and daily pickup bitmap. */
+ #define SAVE_RECORDS_MAX (sizeof(SaveExtHead) + 12 * 4 + 4 + 60 + 4 + 32 + 80 + 200 + \
+-                         2 * (NUM_DIGIMON / 8) + MOD_OPT_BYTES + 4 + sizeof(MOD_GROUND_PICKED) + 4 + 4)
++                         2 * (NUM_DIGIMON / 8) + MOD_OPT_BYTES + 4 + sizeof(MOD_GROUND_PICKED) + 4 + 4 + 8 + CARD_EXTRA_BYTES + 12)
+ SAVE_LAYOUT_CHECK(recordsFit, SAVE_RECORDS_MAX <= SAVE_INLINE_BYTES);
+ SAVE_LAYOUT_CHECK(inlinePadding, sizeof(((RegisteredDigimon *)0)->unk24) == 28 &&
+                   __builtin_offsetof(RegisteredDigimon, unk24) == 0x24 && sizeof(RegisteredDigimon) == 0x40);
+@@ -4493,6 +4493,10 @@ void loadSavegame(SavegamePayload *savegame)
+ 	TOURNAMENT_WINS = savegame->tournamentWins;
+ 	TOURNAMENTS_LOST = savegame->tournamentsLost;
+ 	memcpy(SCRIPT_STATE_PTR, savegame->scriptState, 0x17C);
++	memset(MOD_CARD_EXTRA, 0, sizeof(MOD_CARD_EXTRA));
++	for (i = 0; i < 6; i++) {
++		MOD_CARD_STOCK[i] = SCRIPT_STATE_PTR->smth[i] == 255 ? CARD_NONE : SCRIPT_STATE_PTR->smth[i];
++	}
+ 	MAIN_STATE = savegame->mainState;
+ 	memcpy(SAVED_STATE.tamerWaypointX, savegame->tamerWaypointX, 0x1E);
+ 	memcpy(SAVED_STATE.tamerWaypointY, savegame->tamerWaypointY, 0x1E);
+@@ -5141,6 +5145,8 @@ static void prepareSaveFile(int32_t fromRam)
+ 		/* Retain the old tag's meaning (an empty location list) for older readers. */
+ 		p = putRecord(p, SAVE_TAG_GROUND_PICKED, 0, 0);
+ 		p = putRecord(p, SAVE_TAG_GROUND_PICKUP_BITS, MOD_GROUND_PICKED, sizeof(MOD_GROUND_PICKED));
++		p = putRecord(p, SAVE_TAG_CARD_COUNTS, MOD_CARD_EXTRA, sizeof(MOD_CARD_EXTRA));
++		p = putRecord(p, SAVE_TAG_CARD_STOCK, MOD_CARD_STOCK, sizeof(MOD_CARD_STOCK));
+ 	}
+ 	{ uint8_t layout = 1; p = putRecord(p, SAVE_TAG_TECHNIQUE_LAYOUT, &layout, 1); }
+ 	/* MOD (tier 2): the story state's records go here */
+@@ -5421,6 +5427,8 @@ static int32_t isRecordKnown(int32_t tag)
+ 	case SAVE_TAG_OPTIONS:
+ 	case SAVE_TAG_VANILLA_SWAP:
+ 	case SAVE_TAG_GROUND_PICKED:
++	case SAVE_TAG_CARD_COUNTS:
++	case SAVE_TAG_CARD_STOCK:
+ 	case SAVE_TAG_GROUND_PICKUP_BITS:
+ 	case SAVE_TAG_TECHNIQUE_LAYOUT:
+ 		return 1;
+@@ -5504,6 +5512,15 @@ static void applyRecords(uint8_t *e)
+ 				MOD_SWAP_TO = readRecord16(d + 2);
+ 			}
+ 			break;
++		case SAVE_TAG_CARD_COUNTS:
++			for (i = 0; i < len && i < CARD_EXTRA_BYTES; i++) MOD_CARD_EXTRA[i] = d[i];
++			break;
++		case SAVE_TAG_CARD_STOCK:
++			for (i = 0; i < len / 2 && i < 6; i++) {
++				n = readRecord16(d + i * 2);
++				MOD_CARD_STOCK[i] = modCardIsReal(n) ? n : CARD_NONE;
++			}
++			break;
+ 		case SAVE_TAG_GROUND_PICKUP_BITS:
+ 			n = len < sizeof(MOD_GROUND_PICKED) ? len : sizeof(MOD_GROUND_PICKED);
+ 			for (i = 0; i < n; i++) {
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index 410f2e88..7324b851 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -11,6 +11,7 @@
+ #include <dw/input.h>
+ #include <dw/item.h>
+ #include <dw/font.h>
++#include <dw/file.h>
+ #include <dw/mod_battle.h>
+ #include <dw/mod_fish.h>
+ #include <dw/mod_kar.h>
+@@ -29,6 +30,8 @@
+ #include <dw/screen.h>
+ #include <text/main/script_common.h>
+ 
++int32_t loadStackedTIMEntry(char *, void *, int32_t, int32_t);
++
+ typedef struct {
+ 	uint8_t b[11];
+ } ShopkeeperIdTable;
+@@ -131,6 +134,8 @@ uint16_t showTextboxReady(uint8_t boxId, uint8_t speakerId);
+ void updateItemMenuAmountBoxString(void);
+ void tickSingleCardShop(void);
+ void renderSingleCardShop(void);
++int32_t modCardRowId(ItemMenuBox *box, int32_t row);
++
+ int32_t createItemMenuAmountBox(RECT *origin);
+ int32_t createSingleCardShopMenu(RECT *origin);
+ void renderItemMenuSprite(uint8_t boxId, uint8_t idx, int16_t x, int16_t y);
+@@ -439,74 +444,27 @@ int32_t CARD_PRICES[5] = {
+ 	0x00000032,
+ };
+ 
+-CardData CARD_DATA[NUM_CARDS] = {
+-	{ 0x00, 0x05, 0x0000 },
+-	{ 0x3b, 0x00, 0x0064 },
+-	{ 0x3c, 0x00, 0x0064 },
+-	{ 0x3d, 0x00, 0x0064 },
+-	{ 0x77, 0x00, 0x0064 },
+-	{ 0x42, 0x00, 0x0064 },
+-	{ 0x0c, 0x01, 0x001e },
+-	{ 0x0d, 0x01, 0x001e },
+-	{ 0x0e, 0x01, 0x001e },
+-	{ 0x1a, 0x01, 0x001e },
+-	{ 0x1b, 0x01, 0x001e },
+-	{ 0x1c, 0x01, 0x001e },
+-	{ 0x28, 0x01, 0x001e },
+-	{ 0x29, 0x01, 0x001e },
+-	{ 0x2a, 0x01, 0x001e },
+-	{ 0x36, 0x01, 0x001e },
+-	{ 0x37, 0x01, 0x001e },
+-	{ 0x38, 0x01, 0x001e },
+-	{ 0x6e, 0x01, 0x001e },
+-	{ 0x46, 0x01, 0x001e },
+-	{ 0x75, 0x01, 0x001e },
+-	{ 0x78, 0x01, 0x001e },
+-	{ 0x79, 0x01, 0x001e },
+-	{ 0x5c, 0x01, 0x001e },
+-	{ 0x7a, 0x01, 0x001e },
+-	{ 0x7e, 0x01, 0x001e },
+-	{ 0x05, 0x02, 0x000a },
+-	{ 0x06, 0x02, 0x000a },
+-	{ 0x07, 0x02, 0x000a },
+-	{ 0x08, 0x02, 0x000a },
+-	{ 0x09, 0x02, 0x000a },
+-	{ 0x0a, 0x02, 0x000a },
+-	{ 0x13, 0x02, 0x000a },
+-	{ 0x14, 0x02, 0x000a },
+-	{ 0x15, 0x02, 0x000a },
+-	{ 0x16, 0x02, 0x000a },
+-	{ 0x17, 0x02, 0x000a },
+-	{ 0x18, 0x02, 0x000a },
+-	{ 0x21, 0x02, 0x000a },
+-	{ 0x22, 0x02, 0x000a },
+-	{ 0x23, 0x02, 0x000a },
+-	{ 0x24, 0x02, 0x000a },
+-	{ 0x25, 0x02, 0x000a },
+-	{ 0x26, 0x02, 0x000a },
+-	{ 0x2f, 0x02, 0x000a },
+-	{ 0x30, 0x02, 0x000a },
+-	{ 0x31, 0x02, 0x000a },
+-	{ 0x32, 0x02, 0x000a },
+-	{ 0x33, 0x02, 0x000a },
+-	{ 0x34, 0x02, 0x000a },
+-	{ 0x3a, 0x02, 0x000a },
+-	{ 0x39, 0x03, 0x0005 },
+-	{ 0x6d, 0x03, 0x0005 },
+-	{ 0x6f, 0x03, 0x0005 },
+-	{ 0x43, 0x03, 0x0005 },
+-	{ 0x44, 0x03, 0x0005 },
+-	{ 0x45, 0x03, 0x0005 },
+-	{ 0x54, 0x03, 0x0005 },
+-	{ 0x7f, 0x03, 0x0005 },
+-	{ 0x4c, 0x03, 0x0005 },
+-	{ 0x50, 0x03, 0x0005 },
+-	{ 0x0b, 0x04, 0x0001 },
+-	{ 0x19, 0x04, 0x0001 },
+-	{ 0x27, 0x04, 0x0001 },
+-	{ 0x35, 0x04, 0x0001 },
+-	{ 0x00, 0x05, 0x0000 },
+-};
++/* Generated from the owned card JSON by balance.py; sentinels are never real. */
++uint8_t MOD_CARD_REAL[NUM_CARDS / 8] = { 0xfe, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 1 };
++uint8_t MOD_CARD_EXTRA[CARD_EXTRA_BYTES];
++uint16_t MOD_CARD_STOCK[6];
++
++int32_t modCardIsReal(int32_t id)
++{
++	return (uint32_t)id < NUM_CARDS && ((MOD_CARD_REAL[id / 8] >> (id & 7)) & 1);
++}
++
++void modLoadCardTable(void)
++{
++	readFile("\\CARD\\CARDTAB.BIN", CARD_DATA);
++}
++
++int32_t modLoadCardImage(int32_t id, void *buffer)
++{
++	if ((uint32_t)id >= NUM_CARDS) return 0;
++	return loadStackedTIMEntry(id < 66 ? "\\CARD\\CARD.ALL" : "\\CARD\\CARD2.ALL",
++	                           buffer, (id < 66 ? id : id - 66) * 14, 14);
++}
+ 
+ char *TOURNAMENT_NAMES[23] = {
+ 	STR_TOURNAMENT_NAME_GRADE_D,
+@@ -648,7 +606,7 @@ ItemMenuBox *ITEM_MENU_LEFT;
+ ItemMenuBox *ITEM_MENU_RIGHT;
+ int32_t SHOP_ACTION_SELECTED;
+ int32_t MAIN_D_80134F74;
+-uint8_t SHOP_ITEM_TYPE;
++uint16_t SHOP_ITEM_TYPE;
+ int32_t SHOP_ITEM_PRICE;
+ uint8_t MAX_SHOP_AMOUNT;
+ uint8_t SHOP_AMOUNT;
+@@ -1053,7 +1011,7 @@ void updateItemMenuAmountBoxString(void)
+ {
+ 	uint8_t *out;
+ 	uint32_t total;
+-	uint8_t id;
++	uint16_t id;
+ 	uint32_t len;
+ 
+ 	out = TEXTBOX_LINES_PTR + (ITEM_MENU_SUB_TEXTBOX_LINE << 6);
+@@ -1145,7 +1103,8 @@ void tickSingleCardShop(void)
+ 				setCardAmount(SHOP_ITEM_TYPE, amount);
+ 				amount = CARD_DATA[SHOP_ITEM_TYPE].spriteId;
+ 				MONEY -= CARD_PRICES[amount];
+-				SCRIPT_STATE_PTR->smth[box->cursor] = 0xff;
++				MOD_CARD_STOCK[box->topRow + box->cursor] = CARD_NONE;
++				SCRIPT_STATE_PTR->smth[box->topRow + box->cursor] = 0xff;
+ 				UPDATE_SHOP_BIT_BOX = 1;
+ 				SCRIPT_STATE_2 = 4;
+ 				playShopSoundOnlyInSavannah();
+@@ -1440,7 +1399,7 @@ void dailyPStatTrigger(void)
+ 	ScriptState *st;
+ 	int32_t i;
+ 	int32_t j;
+-	uint8_t r;
++	int32_t r, count, pick;
+ 	uint8_t v;
+ 
+ 	/* MOD (rules as data): MOD_DAILY says how many cards, from what pool, which one never comes up, and the counters.
+@@ -1454,21 +1413,25 @@ void dailyPStatTrigger(void)
+ 	unsetTrigger(798); /* Happy mushroom */
+ 	unsetTrigger(799); /* Ice mushroom */
+ 	for (i = 0; i < 6; i++) {
++		MOD_CARD_STOCK[i] = CARD_NONE;
+ 		st->smth[i] = 0xff;
+ 	}
+-	for (i = 0; i < 6 && i < MOD_DAILY[MOD_DAILY_CARDS] && MOD_DAILY[MOD_DAILY_POOL] > 0; i++) {
+-retry:
+-		r = randomLimit(MOD_DAILY[MOD_DAILY_POOL]);
+-		r++;
+-		if (r == MOD_DAILY[MOD_DAILY_EXCLUDED]) {
+-			goto retry;
++	for (i = 0; i < 6 && i < MOD_DAILY[MOD_DAILY_CARDS]; i++) {
++		count = 0;
++		for (r = 1; r < NUM_CARDS && r <= MOD_DAILY[MOD_DAILY_POOL]; r++) {
++			if (!modCardIsReal(r) || r == MOD_DAILY[MOD_DAILY_EXCLUDED]) continue;
++			for (j = 0; j < i && MOD_CARD_STOCK[j] != r; j++) {}
++			if (j == i) count++;
+ 		}
+-		for (j = 0; j < i; j++) {
+-			if (r == st->smth[j]) {
+-				goto retry;
+-			}
++		if (!count) break;
++		pick = randomLimit(count);
++		for (r = 1; r < NUM_CARDS; r++) {
++			if (!modCardIsReal(r) || r == MOD_DAILY[MOD_DAILY_EXCLUDED]) continue;
++			for (j = 0; j < i && MOD_CARD_STOCK[j] != r; j++) {}
++			if (j == i && pick-- == 0) break;
+ 		}
+-		st->smth[i] = r;
++		MOD_CARD_STOCK[i] = r;
++		st->smth[i] = r < 255 ? r : 0xff;
+ 	}
+ 	if (MOD_DAILY[MOD_DAILY_COUNTER_FIRST] >= 0) {
+ 		for (i = MOD_DAILY[MOD_DAILY_COUNTER_FIRST]; i < MOD_DAILY[MOD_DAILY_COUNTER_FIRST] + MOD_DAILY[MOD_DAILY_COUNTER_COUNT]; i++) {
+@@ -1819,7 +1782,7 @@ void openShop(void)
+ 
+ void allocateItemMenuBox(ItemMenuBox **box, int32_t bufSize, uint8_t rows, uint8_t x, uint8_t y, uint8_t w, uint8_t h)
+ {
+-	*box = (ItemMenuBox *)allocateArray(0x20);
++	*box = (ItemMenuBox *)allocateArray(sizeof(**box));
+ 	(*box)->buf = allocateArray(bufSize);
+ 	(*box)->isOpen = 0;
+ 	(*box)->visibleRows = rows;
+@@ -2052,6 +2015,12 @@ int32_t isItemMenuBoxBusy(ItemMenuBox *box)
+ 	return flipTextboxPage(box->boxId);
+ }
+ 
++int32_t modCardRowId(ItemMenuBox *box, int32_t row)
++{
++	uint8_t *p = box->buf + row * 3;
++	return p[0] | (p[1] << 8);
++}
++
+ int32_t createItemMenuAmountBox(RECT *origin)
+ {
+ 	ItemMenuBox *box;
+@@ -2066,13 +2035,13 @@ int32_t createItemMenuAmountBox(RECT *origin)
+ 
+ 	flags = 0xc1;
+ 	box = getItemMenuFromType();
+-	idx = (box->topRow + box->cursor) * 2;
+-	SHOP_ITEM_TYPE = box->buf[idx];
+-	if (SHOP_ITEM_TYPE == 0xff) {
++	idx = (box->topRow + box->cursor) * ((ITEM_MENU_TYPE == 3 || ITEM_MENU_TYPE == 4 || ITEM_MENU_TYPE == 6) ? 3 : 2);
++	SHOP_ITEM_TYPE = (ITEM_MENU_TYPE == 3 || ITEM_MENU_TYPE == 4 || ITEM_MENU_TYPE == 6) ? modCardRowId(box, box->topRow + box->cursor) : box->buf[idx];
++	if (SHOP_ITEM_TYPE == ((ITEM_MENU_TYPE == 3 || ITEM_MENU_TYPE == 4 || ITEM_MENU_TYPE == 6) ? CARD_NONE : 0xff)) {
+ 		goto fail;
+ 	}
+ 
+-	amount = box->buf[idx + 1];
++	amount = box->buf[idx + ((ITEM_MENU_TYPE == 3 || ITEM_MENU_TYPE == 4 || ITEM_MENU_TYPE == 6) ? 2 : 1)];
+ 	if (ITEM_MENU_TYPE < 3) {
+ 		SHOP_ITEM_PRICE = ITEM_PARA[SHOP_ITEM_TYPE].value;
+ 		if (ITEM_MENU_TYPE == 1) {
+@@ -2143,13 +2112,13 @@ int32_t createSingleCardShopMenu(RECT *origin)
+ 
+ 	flags = 0xc1;
+ 	box = getItemMenuFromType();
+-	idx = (box->topRow + box->cursor) * 2;
+-	SHOP_ITEM_TYPE = box->buf[idx];
+-	if (SHOP_ITEM_TYPE == 0xff) {
++	idx = (box->topRow + box->cursor) * ((ITEM_MENU_TYPE == 3 || ITEM_MENU_TYPE == 4 || ITEM_MENU_TYPE == 6) ? 3 : 2);
++	SHOP_ITEM_TYPE = (ITEM_MENU_TYPE == 3 || ITEM_MENU_TYPE == 4 || ITEM_MENU_TYPE == 6) ? modCardRowId(box, box->topRow + box->cursor) : box->buf[idx];
++	if (SHOP_ITEM_TYPE == ((ITEM_MENU_TYPE == 3 || ITEM_MENU_TYPE == 4 || ITEM_MENU_TYPE == 6) ? CARD_NONE : 0xff)) {
+ 		goto fail;
+ 	}
+ 
+-	amount = box->buf[idx + 1];
++	amount = box->buf[idx + ((ITEM_MENU_TYPE == 3 || ITEM_MENU_TYPE == 4 || ITEM_MENU_TYPE == 6) ? 2 : 1)];
+ 	if (ITEM_MENU_TYPE == 5) {
+ 		if ((amount & 0x80) == 0) {
+ 			goto fail;
+@@ -2402,7 +2371,7 @@ void renderItemMenuItemList(ItemMenuBox *box, int16_t x1, int16_t y1, int16_t x2
+ 	int16_t boxId;
+ 	int16_t texY;
+ 	int16_t rowY;
+-	uint8_t item;
++	uint16_t item;
+ 
+ 	boxId = box->boxId;
+ 	tbox = &TEXTBOX_DATA.box[boxId];
+@@ -2422,8 +2391,8 @@ void renderItemMenuItemList(ItemMenuBox *box, int16_t x1, int16_t y1, int16_t x2
+ 		}
+ 
+ 		for (i = 0; i < count; i++, top++, y2 += 0x12) {
+-			item = box->buf[top * 2];
+-			if (item != 0xff) {
++			item = mode == 1 ? modCardRowId(box, top) : box->buf[top * 2];
++			if (item != (mode == 1 ? CARD_NONE : 0xff)) {
+ 				if (mode == 0) {
+ 					renderItemSprite(item, x2, y2, 6 - boxId);
+ 				} else if (mode == 1) {
+@@ -2442,8 +2411,8 @@ void renderItemMenuItemList(ItemMenuBox *box, int16_t x1, int16_t y1, int16_t x2
+ 	}
+ 
+ 	for (i = 0; i < count; i++, y1 += 0x12) {
+-		item = box->buf[(box->topRow + i) * 2];
+-		if (item != 0xff) {
++		item = mode == 1 ? modCardRowId(box, box->topRow + i) : box->buf[(box->topRow + i) * 2];
++		if (item != (mode == 1 ? CARD_NONE : 0xff)) {
+ 			rowY = texY + box->itemRow[i] * 12;
+ 			renderString(0, x1, y1, outW, 0xc, outX, rowY, 6 - boxId, 1);
+ 		}
+@@ -2763,19 +2732,19 @@ amountPart:
+ void calculateCardMenuStrings(ItemMenuBox *box, uint8_t row, int32_t isLast)
+ {
+ 	uint8_t *out;
+-	uint8_t type;
+-	uint8_t id;
++	uint16_t type;
++	uint16_t id;
+ 	uint8_t amount;
+ 	int32_t idx;
+ 	uint32_t len;
+ 	int32_t value;
+ 
+ 	out = getTextboxLine(box, row);
+-	idx = (box->topRow + row) * 2;
+-	type = box->buf[idx];
+-	amount = box->buf[idx + 1];
++	idx = (box->topRow + row) * 3;
++	type = modCardRowId(box, box->topRow + row);
++	amount = box->buf[idx + 2];
+ 
+-	if (type != 0xff && MOD_PACK_RESULTS) {
++	if (type != CARD_NONE && MOD_PACK_RESULTS) {
+ 		/* MOD (amounts): a card of a purchase of packs: its name (colour 7 when it is new), how many came, NEW */
+ 		*out++ = 1;
+ 		*out++ = (amount & 0x80) ? 7 : 1;
+@@ -2792,7 +2761,7 @@ void calculateCardMenuStrings(ItemMenuBox *box, uint8_t row, int32_t isLast)
+ 			strcpy(out, STR_CARD_NEW);
+ 			out += strlen(STR_CARD_NEW);
+ 		}
+-	} else if (type != 0xff) {
++	} else if (type != CARD_NONE) {
+ 		*out++ = 1;
+ 		if (ITEM_MENU_TYPE == 3) {
+ 			if (amount != 0) {
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index 10176aad..4246999e 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -2528,14 +2528,12 @@ void scriptLearnMove(moveId)
+ 	learnMove((int16_t)(int32_t)moveId);
+ }
+ 
+-// clang-format off
+-uint8_t getCardAmount(cardId)
+-	int16_t cardId;
+-// clang-format on
++uint8_t getCardAmount(int32_t cardId)
+ {
+ 	uint8_t *cardPtr;
+ 
+-	cardPtr = &SCRIPT_STATE_PTR->cards[cardId / 2];
++	if (!modCardIsReal(cardId)) return 0;
++	cardPtr = cardId < 66 ? &SCRIPT_STATE_PTR->cards[cardId / 2] : &MOD_CARD_EXTRA[(cardId - 66) / 2];
+ 	if ((cardId & 1) == 0) {
+ 		return *cardPtr & 0xf;
+ 	} else {
+@@ -2543,20 +2541,20 @@ uint8_t getCardAmount(cardId)
+ 	}
+ }
+ 
+-// clang-format off
+-int32_t setCardAmount(cardId, value)
+-	int16_t cardId;
+-	int32_t value;
+-// clang-format on
++int32_t setCardAmount(int32_t cardId, int32_t value)
+ {
+ 	uint8_t *cardPtr;
+ 
+-	cardPtr = &SCRIPT_STATE_PTR->cards[cardId / 2];
++	if (!modCardIsReal(cardId)) return 0;
++	cardPtr = cardId < 66 ? &SCRIPT_STATE_PTR->cards[cardId / 2] : &MOD_CARD_EXTRA[(cardId - 66) / 2];
++	if (value < 0) value = 0;
++	if (value > 9) value = 9;
+ 	if ((cardId & 1) == 0) {
+ 		*cardPtr = (*cardPtr & 0xf0) | value;
+ 	} else {
+ 		*cardPtr = (*cardPtr & 0xf) | (value << 4);
+ 	}
++	return 0;
+ }
+ 
+ // clang-format off
+diff --git a/src/main/tamer.c b/src/main/tamer.c
+index 697317c4..2f7ccf78 100644
+--- a/src/main/tamer.c
++++ b/src/main/tamer.c
+@@ -1,3 +1,4 @@
++#include <dw/cards.h>
+ #include <inline_n.h>
+ #include <libetc.h>
+ #include <libgpu.h>
+@@ -184,7 +185,7 @@ int32_t isTriggerSet(uint16_t trigger);
+ extern int16_t TOURNAMENT_WINS;
+ int32_t hasMedal(uint16_t medal);
+ int32_t hasDigimonRaised(int32_t digimonId);
+-int32_t getCardAmount(uint8_t cardId);
++
+ void unlockMedal(uint16_t medal);
+ void closeTriangleMenu(void);
+ void removeTriangleMenu(void);
+@@ -723,7 +724,7 @@ int32_t modMedalHolds(ModMedal *m)
+ 		return TOURNAMENT_WINS >= m->a;
+ 	case MOD_MEDAL_ALL_CARDS:
+ 		for (i = 0; i < NUM_CARDS; i++) {
+-			if (getCardAmount((uint8_t)i) == 0) {
++			if (modCardIsReal(i) && getCardAmount(i) == 0) {
+ 				return 0;
+ 			}
+ 		}
+diff --git a/src/main/tournament.c b/src/main/tournament.c
+index e1ec76cd..c0d3dc2f 100644
+--- a/src/main/tournament.c
++++ b/src/main/tournament.c
+@@ -1,3 +1,4 @@
++#include <dw/cards.h>
+ #include <dw/clock.h>
+ #include <dw/entity.h>
+ #include <dw/partner.h>
+@@ -27,7 +28,7 @@ void unlockMedal(uint16_t medalId);
+ void showMapHeadTextbox(int32_t, int32_t, int32_t, int32_t);
+ int32_t isTriggerSet(uint16_t trigger);
+ int32_t hasMedal(uint16_t medal);
+-int32_t getCardAmount(uint8_t cardId);
++
+ void unsetTrigger(uint16_t trigger);
+ uint8_t readPStat(int32_t id);
+ void callScriptSection(int32_t, int32_t, int32_t);
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index 2d19407d..1bf688db 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -742,6 +742,7 @@ void rollCardPack(void)
+ 
+ 	switch (SCRIPT_STATE_2) {
+ 	case 0:
++		modLoadCardTable();
+ 		SHOP_ITEM_PRICE = econAmt(isTriggerSet(TRIGGER_CARD_MACHINE) ? MOD_ECON_MACHINE_PRICE : MOD_ECON_PACK_PRICE);
+ 		n = SHOP_ITEM_PRICE > 0 ? MONEY / SHOP_ITEM_PRICE : 99;
+ 		if (n == 0) {
+@@ -761,21 +762,8 @@ void rollCardPack(void)
+ 		MONEY -= SHOP_AMOUNT * SHOP_ITEM_PRICE;
+ 		UPDATE_SHOP_BIT_BOX = 1;
+ 		playShopSoundOnlyInSavannah();
+-		if (SHOP_AMOUNT > 1) {
+-			openPackResults();
+-			SCRIPT_STATE_2 = 1;
+-			break;
+-		}
+-		SCRIPT_STATE_2 = isTriggerSet(TRIGGER_CARD_MACHINE) ? 7 : 5; /* the machine's one card: one box */
+-		/* fallthrough */
+-	case 5:
+-	case 6:
+-	case 7:
+-		writePStat(PSTAT_249, rollCard());
+-		showCardTextbox();
+-		SCRIPT_NEXT_STATE_2 = SCRIPT_STATE_2 + 1;
++		openPackResults();
+ 		SCRIPT_STATE_2 = 1;
+-		SCRIPT_TEXTBOX_MODE = 1;
+ 		break;
+ 	case 10:
+ 		destroyItemMenuBox(&ITEM_MENU_LEFT);
+@@ -795,7 +783,8 @@ void openBuyCardMenu(void)
+ 
+ 	switch (SCRIPT_STATE_2) {
+ 	case 0:
+-		allocateItemMenuBox(&ITEM_MENU_LEFT, 0xc, 6, 0xb2, 0x18, 6,
++		modLoadCardTable();
++		allocateItemMenuBox(&ITEM_MENU_LEFT, 18, 6, 0xb2, 0x18, 6,
+ 		                    0x5a);
+ 		hasItems = hasAnyCardToBuy();
+ 		if (hasItems != 0) {
+@@ -837,7 +826,8 @@ void openSellCardMenu(void)
+ 
+ 	switch (SCRIPT_STATE_2) {
+ 	case 0:
+-		allocateItemMenuBox(&ITEM_MENU_LEFT, 0x84, 6, 0xd2, 0x18,
++		modLoadCardTable();
++		allocateItemMenuBox(&ITEM_MENU_LEFT, (NUM_CARDS + 1) * 3, 6, 0xd2, 0x18,
+ 		                    6, 0x5a);
+ 		hasItems = shopFillSellCardList();
+ 		SCRIPT_STATE_2 = 3;
+@@ -876,7 +866,8 @@ void openMeritShop(void)
+ 
+ 	switch (SCRIPT_STATE_2) {
+ 	case 0:
+-		allocateItemMenuBox(&ITEM_MENU_LEFT, 0x84, 6, 0x9a, 0x18,
++		modLoadCardTable();
++		allocateItemMenuBox(&ITEM_MENU_LEFT, (NUM_CARDS + 1) * 3, 6, 0x9a, 0x18,
+ 		                    6, 0x5a);
+ 		allocateItemMenuBox(&ITEM_MENU_RIGHT, 0x100, 6, 0xb2, 0x18,
+ 		                    6, 0x5a);
+@@ -1432,7 +1423,7 @@ int32_t hasAnyCardToBuy(void)
+ {
+ 	uint8_t *buf;
+ 	uint8_t i;
+-	uint8_t id;
++	uint16_t id;
+ 	int32_t any;
+ 	uint8_t spriteId;
+ 
+@@ -1441,9 +1432,10 @@ int32_t hasAnyCardToBuy(void)
+ 	ITEM_MENU_LEFT->itemCount = 0;
+ 	for (i = 0; i < 6; i++) {
+ 		ITEM_MENU_LEFT->itemCount++;
+-		id = SCRIPT_STATE_PTR->smth[i];
++		id = MOD_CARD_STOCK[i];
+ 		*buf++ = id;
+-		if (id != 0xff) {
++		*buf++ = id >> 8;
++		if (id != CARD_NONE) {
+ 			spriteId = CARD_DATA[id].spriteId;
+ 			if ((CARD_PRICES[spriteId] <= MONEY) && ((uint32_t)getCardAmount(id) < (uint32_t)econAmt(MOD_ECON_CARD_MAX))) {
+ 				*buf++ = 1;
+@@ -1494,21 +1486,23 @@ void showCardTextbox(void)
+ int32_t shopFillSellCardList(void)
+ {
+ 	uint8_t *buf = ITEM_MENU_LEFT->buf;
+-	uint8_t id;
++	uint16_t id;
+ 	uint8_t amount;
+ 
+ 	/* Only owned cards occupy rows; the buffer still stores the original card IDs. */
+ 	ITEM_MENU_LEFT->itemCount = 0;
+-	for (id = 1; id < 0x41; id++) {
++	for (id = 1; id < NUM_CARDS; id++) {
+ 		amount = getCardAmount(id);
+ 		if (amount != 0) {
+ 			*buf++ = id;
++			*buf++ = id >> 8;
+ 			*buf++ = amount;
+ 			ITEM_MENU_LEFT->itemCount++;
+ 		}
+ 	}
+ 	/* An empty list must never offer the previous trade again. */
+ 	*buf++ = 0xff;
++	*buf++ = 0xff;
+ 	*buf = 0;
+ 	return ITEM_MENU_LEFT->itemCount != 0;
+ }
+@@ -1542,12 +1536,11 @@ int32_t fillRecycleShopItemList(void)
+ 	return 0;
+ }
+ 
+-uint8_t rollCard(void)
++uint16_t rollCard(void)
+ {
+-	uint8_t *cards;
+-	uint8_t *p;
+-	uint8_t count;
+-	uint8_t i;
++	int32_t count;
++	int32_t i;
++	int32_t pick;
+ 	uint8_t rarity;
+ 
+ 	int32_t *cut;
+@@ -1568,23 +1561,17 @@ uint8_t rollCard(void)
+ 		rarity = 4;
+ 	}
+ 
+-	cards = (uint8_t *)allocateArray(NUM_CARDS);
+-	p = cards;
+ 	count = 0;
+ 	for (i = 0; i < NUM_CARDS; i++) {
+-		if (rarity == CARD_DATA[i].spriteId) {
+-			*p++ = i;
+-			count++;
+-		}
++		if (modCardIsReal(i) && rarity == CARD_DATA[i].spriteId) count++;
+ 	}
+-
+-	rarity = randomLimit(count);
+-	i = cards[rarity];
+-	freeArray((uint32_t *)cards);
+-
+-	return i;
++	if (!count) return CARD_NONE; /* Authored rarities are validated at build time. */
++	pick = randomLimit(count);
++	for (i = 0; i < NUM_CARDS; i++) {
++		if (modCardIsReal(i) && rarity == CARD_DATA[i].spriteId && pick-- == 0) return i;
++	}
++	return CARD_NONE;
+ }
+-
+ void createCardMenu(void)
+ {
+ 	RECT rect;
+@@ -2055,14 +2042,14 @@ int32_t createMeritCardTradeDialogue(void)
+ 	int32_t most;
+ 
+ 	box = getItemMenuFromType();
+-	off = (box->topRow + box->cursor) * 2;
+-	SHOP_ITEM_TYPE = box->buf[off];
++	off = (box->topRow + box->cursor) * 3;
++	SHOP_ITEM_TYPE = modCardRowId(box, box->topRow + box->cursor);
+ 
+-	if (SHOP_ITEM_TYPE != 0xff && box->buf[off + 1] != 0) {
++	if (SHOP_ITEM_TYPE != CARD_NONE && box->buf[off + 2] != 0) {
+ 		SHOP_ITEM_PRICE = CARD_DATA[SHOP_ITEM_TYPE].meritValue;
+ 		most = (econCap(MOD_ECON_MERIT_CAP, 32767) - MERIT + SHOP_ITEM_PRICE - 1) / SHOP_ITEM_PRICE;
+-		if (most > box->buf[off + 1]) {
+-			most = box->buf[off + 1];
++		if (most > box->buf[off + 2]) {
++			most = box->buf[off + 2];
+ 		}
+ 		if (most > 0) {
+ 			MAX_SHOP_AMOUNT = most;
+@@ -3684,7 +3671,7 @@ void openAmountBox(int32_t kind)
+ uint8_t MOD_PACK_RESULTS;
+ static uint8_t PACK_SHOWN;
+ static uint8_t PACK_TICK;
+-static uint8_t PACK_ART;  /* the card whose picture is shown (0xff none) */
++static uint16_t PACK_ART;  /* the card whose picture is shown (0xffff none) */
+ static uint8_t PACK_FLIP; /* 0..4: the picture turns over as it comes */
+ static uint8_t PACK_HEAD_W; /* the head's width in pixels */
+ extern char MAIN_D_80123E78[]; /* "\\CARD\\CARD.ALL" */
+@@ -3705,16 +3692,16 @@ static void tickPackResults(void)
+ 			PACK_SHOWN = 0xff;
+ 		} else if (++PACK_TICK >= 4) {
+ 			PACK_TICK = 0;
+-			playSound(0, (box->buf[PACK_SHOWN * 2 + 1] & 0x80) ? 3 : 2);
++			playSound(0, (box->buf[PACK_SHOWN * 3 + 2] & 0x80) ? 3 : 2);
+ 			PACK_SHOWN++;
+ 		}
+ 		return;
+ 	}
+ 	PACK_SHOWN = 0xff;
+-	if (box->buf[(box->topRow + box->cursor) * 2] != PACK_ART) {
+-		PACK_ART = box->buf[(box->topRow + box->cursor) * 2];
++	if (modCardRowId(box, box->topRow + box->cursor) != PACK_ART) {
++		PACK_ART = modCardRowId(box, box->topRow + box->cursor);
+ 		if (ARRAY_SECTION_OFFSET <= TEXTURE_BUFFER_SIZE - 0xe * 0x800) {
+-			loadStackedTIMEntry(MAIN_D_80123E78, TEXTURE_BUFFER + TEXTURE_BUFFER_SIZE - 0xe * 0x800, PACK_ART * 0xe, 0xe);
++			modLoadCardImage(PACK_ART, TEXTURE_BUFFER + TEXTURE_BUFFER_SIZE - 0xe * 0x800);
+ 		}
+ 		PACK_FLIP = 0;
+ 	} else if (PACK_FLIP < 4) {
+@@ -3741,7 +3728,7 @@ static void renderPackResults(void)
+ 	int16_t v;
+ 	int16_t bx;
+ 	int16_t by;
+-	uint8_t count;
++	uint16_t count;
+ 
+ 	box = ITEM_MENU_LEFT;
+ 	text = &TEXTBOX_DATA.box[1];
+@@ -3761,7 +3748,7 @@ static void renderPackResults(void)
+ 	renderItemMenuItemList(box, bx + 0x1a, by + 0x1b, bx + 8, by + 0x1a, 1);
+ 	box->itemCount = count;
+ 
+-	if (PACK_ART != 0xff && UI_BOX_DATA[1].state == 1) {
++	if (PACK_ART != CARD_NONE && UI_BOX_DATA[1].state == 1) {
+ 		POLY_FT4 *prim;
+ 
+ 		w = (75 * PACK_FLIP + 2) / 4;
+@@ -3790,7 +3777,8 @@ static void openPackResults(void)
+ 	int32_t per;
+ 
+ 	/* the list first: the arrays are a stack (allocateArray), got is freed above it */
+-	allocateItemMenuBox(&ITEM_MENU_LEFT, NUM_CARDS * 2, 5, 0xd2, 0x1c, 6, 0x56);
++	/* At most 99 three-card packs: keep the list below the image staging area. */
++	allocateItemMenuBox(&ITEM_MENU_LEFT, 99 * 3 * 3, 5, 0xd2, 0x1c, 6, 0x56);
+ 	got = (uint8_t *)allocateArray(NUM_CARDS * 2);   /* how many came, the copies before */
+ 	for (i = 0; i < NUM_CARDS; i++) {
+ 		got[i] = 0;
+@@ -3799,6 +3787,7 @@ static void openPackResults(void)
+ 	per = isTriggerSet(TRIGGER_CARD_MACHINE) ? 1 : 3; /* cards a unit: the machine's one, a pack's three */
+ 	for (i = SHOP_AMOUNT * per; i > 0; i--) {
+ 		r = rollCard();
++		if (r == CARD_NONE) continue;
+ 		if (got[r] < 99) {
+ 			got[r]++;
+ 		}
+@@ -3816,12 +3805,13 @@ static void openPackResults(void)
+ 				n = got[NUM_CARDS + i] == 0;
+ 				fresh += n;
+ 				*out++ = i;
++				*out++ = i >> 8;
+ 				*out++ = got[i] | (n << 7);
+ 			}
+ 		}
+ 	}
+ 	freeArray((uint32_t *)got);
+-	ITEM_MENU_LEFT->itemCount = (out - ITEM_MENU_LEFT->buf) / 2;
++	ITEM_MENU_LEFT->itemCount = (out - ITEM_MENU_LEFT->buf) / 3;
+ 
+ 	/* the head: row 9 of both pages, the box's first, before the rows of cards (drawn from it on, a row ends at 0xd) */
+ 	for (r = 9; r < 9 + 2 * 6; r += 6) {
+@@ -3841,7 +3831,7 @@ static void openPackResults(void)
+ 	ITEM_MENU_TYPE = 4;
+ 	PACK_SHOWN = 0;
+ 	PACK_TICK = 0;
+-	PACK_ART = 0xff;
++	PACK_ART = CARD_NONE;
+ 	triggerBoxCloseFlag(0);
+ 	setInputRepeatMask(0x5000);
+ 	setupBoxOrigin(readPStat(PSTAT_254), &origin);
+-- 
+2.55.0
+

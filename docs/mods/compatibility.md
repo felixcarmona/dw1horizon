@@ -78,3 +78,17 @@ stay append-only, and the lock format does not change.
 `build/engine-tree`. Use `git log` and `git blame` there to see which patch made a line. That tree is generated: send
 changes to `mods/patches/`. It holds no disc data. `tools/mods.sh prepare int` is the tree to build from, because it
 also adds what is generated from your own disc.
+
+## Collectible card capacity
+
+The engine supports 512 card IDs. The original v1 script-state layout and the
+meaning of every existing save tag remain unchanged. Optional tags `0x000D`
+(extra counts) and `0x000E` (wide daily stock) default from zero and the original
+shop bytes respectively when absent. The inline bound leaves 27 bytes.
+Older readers may skip these tags and cannot preserve them when resaving.
+
+Keep the engine, `CARDTAB.BIN`, `CARD2.ALL` and committed card JSON from the same
+build. The table occupies an existing battle-overlay sector while the album or
+card shop is open; the Player menu reloads MENU when leaving the album for another
+tab. Neither the table nor card art consumes a new resident heap allocation.
+See [card data and build inputs](cards.md) for the phase-B archive contract.

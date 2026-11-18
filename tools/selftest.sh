@@ -121,6 +121,8 @@ disc care-bubble-art $PY -m unittest tools.test_care_bubble_art tools.test_care_
 if [ -f "$PATCHED/src/main/mod_feed.c" ]; then
     run buff-caps-host $PY tools/dev/playtest/buff_caps_host.py "$PATCHED"
     run merit-cards-host $PY tools/dev/playtest/merit_cards_host.py "$PATCHED"
+    run cards-host $PY tools/dev/playtest/cards_host.py "$PATCHED"
+    run cards-content $PY -m unittest tools.test_cards
     run care-badge-host $PY tools/dev/playtest/care_badge_host.py "$PATCHED"
     run hpmp-care-host $PY tools/dev/playtest/hpmp_care_host.py "$PATCHED"
     run quick-care-host $PY tools/dev/playtest/quick_care_host.py "$PATCHED"

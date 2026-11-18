@@ -18,7 +18,7 @@ build places variables by link order, so its addresses differ (`tools/dev/symbol
 | Screen | 0–254 | u8 | 0–1023 | `ScreenId` (i16) | −1 (0xCC at boot, see below) | 0013, 0015, 0146 |
 | Item | 0–127 | u8, 0xFF = empty | 0–127 (carriers hold any i16) | `ItemId` (i16) | `ITEM_NONE` (−1) | 0018, 0019 |
 | Technique | 0–121 (121 named) | u8, s8 in TRN | unchanged | `MoveId` (u16) | — | 0014 (opcodes) |
-| Card | 0–65 | u8 | unchanged | `CardId` (u16) | — | 0014 (opcodes) |
+| Card | 0–511 | u16 in menus; legacy byte ops remain u8 | original nibbles + tagged extra counts | `CardId` (u16) | — | 0014 (opcodes) |
 | Music font | 1–33 | u8 | unchanged | — | 0xFF / 0xFFFF stops | 0014 (opcodes) |
 | Trigger | 0–799 (no bounds check) | u16 | unchanged | — | — | — |
 | Pstat | 0–255 | u8 value, u8 index | unchanged, plus 64 u16 wide registers | — | — | 0014 |
@@ -117,7 +117,7 @@ as literals (`[180]`, `[66]`, `0xB4`, `0x41`) almost everywhere.
 | `EVO_CHART_BOXES` | 0x80124544 | 61 × 8 | type − 1 |
 | `ITEM_TAKE_DISTANCE` | 0x80122D24 | 66 | type − 1 |
 | `DIGIMON_VLALL_SOUND_ID` | 0x80127EFC | 66 | guarded `type < 66` |
-| `CARD_DATA` | 0x8012FFD8 | 66 × 4 | card id |
+| `CARD_DATA` | battle-overlay sector, loaded from `CARDTAB.BIN` | 512 × 4 | card id |
 | `TRN_`/`TRN2_TRAINING_ANIM_IDS` | TRN, TRN2 overlays | 134 each | type |
 | `VS_DIGIMON_SPRITE_CLUT` | VS overlay | 68 | type |
 
@@ -349,12 +349,16 @@ The mod adds `LEARN_MOVE16` and the IF `move16` condition but no technique ids b
 | What | Where | Notes |
 |---|---|---|
 | Collection | `SCRIPT_STATE.cards[33]` (0x801BDFAC) | one nibble per card, cap 9; saved |
-| `CARD_DATA[66]` `{u8 digimonId, u8 rarity, i16 merit}` | 0x8012FFD8 | |
+| `CARD_DATA[512]` `{u16 species, u8 rarity, u8 merit}` | battle-overlay sector, loaded from `CARDTAB.BIN` | 16-bit species IDs |
 | `CARD_SPRITE_CLUT[66]` | 0x80123E28 | |
 | `CARD.ALL` | disc | 14 sectors per card; exactly 66 cards |
 
-Loops are fixed at `< 66`; the album is a 6×11 grid; the icon UV is `(card % 8)·32, (card / 8)·16`. The mod adds
-`GIVE_CARD16`/`TAKE_CARD16` and the IF `card16` condition, still within 66 cards.
+The album keeps an 11×6 viewport and scrolls by rows through 512 IDs. Original
+portraits retain their UVs; new cards use rarity sprites. `CARD2.ALL` holds entry
+`id−66` for IDs 66–511. `GIVE_CARD16`/`TAKE_CARD16` and IF `card16` address the whole
+range. IDs 0 and 65 and unassigned JSON rows are excluded from the album medal.
+Additional counts and wide daily stock use new optional save tags; see
+[save-format.md](save-format.md#additional-collectible-cards).
 
 ## Triggers, pstats and wide registers
 
@@ -541,6 +545,6 @@ mod's executable; the memory map is in [memory.md](memory.md)):
 
 - What `RegisteredDigimon.unk20[32]` and `moves[3]` hold.
 - Whether the item-icon VRAM rows 128–255 at x = 320 are free on every screen.
-- How card ids 0 and 65 are obtained in play.
+- Card IDs 0 and 65 are sentinels and cannot be collected.
 
 For testing new ids in an emulator (warps, forced evolution, save round trips) see [../developing.md](../developing.md).

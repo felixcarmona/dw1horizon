@@ -1,0 +1,2754 @@
+{
+ "cards": [
+  {
+   "key": "greymon",
+   "number": 26,
+   "species": 5,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 26,
+   "scene": "a rocky volcanic canyon with lava pools and dark basalt cliffs"
+  },
+  {
+   "key": "devimon",
+   "number": 27,
+   "species": 6,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 27,
+   "scene": "a dark gothic ruin courtyard with broken purple stone pillars, dead trees and a dusky violet sky"
+  },
+  {
+   "key": "tyrannomon",
+   "number": 29,
+   "species": 8,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 29,
+   "scene": "a prehistoric swamp valley with ferns, mud pools and mossy boulders"
+  },
+  {
+   "key": "meramon",
+   "number": 30,
+   "species": 9,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 30,
+   "scene": "a scorched dry wasteland with charred stumps, cracked red earth and glowing vents"
+  },
+  {
+   "key": "seadramon",
+   "number": 31,
+   "species": 10,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 31,
+   "scene": "a shallow tropical sea shore with turquoise water, sand banks and blocky coral rocks"
+  },
+  {
+   "key": "kabuterimon",
+   "number": 32,
+   "species": 19,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 32,
+   "scene": "a green jungle clearing with tall trees, big leaves and a mossy forest floor"
+  },
+  {
+   "key": "garurumon",
+   "number": 35,
+   "species": 22,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 35,
+   "scene": "a frozen pine forest clearing with deep snow and a pale blue sky"
+  },
+  {
+   "key": "monochromon",
+   "number": 44,
+   "species": 47,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 44,
+   "scene": "a dry canyon desert with sandstone mesas, cactus and a warm yellow sky"
+  },
+  {
+   "key": "agumon-lava",
+   "number": 66,
+   "species": 3,
+   "rarity": 4,
+   "merit": 1
+  },
+  {
+   "key": "gabumon",
+   "number": 67,
+   "species": 17,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a snowy mountain pass with pale blue sky, snow-covered rocks and a frozen lake"
+  },
+  {
+   "key": "biyomon",
+   "number": 68,
+   "species": 163,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a sunny cliff top with red rocks, a few trees and a bright sky with blocky clouds"
+  },
+  {
+   "key": "icedevimon",
+   "number": 69,
+   "species": 100,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "an ice cave with blue crystal walls, icicles and a frozen floor"
+  },
+  {
+   "key": "elecmon",
+   "number": 70,
+   "species": 140,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a stormy grassland with dark clouds, golden lightning in the distance and blocky hills"
+  },
+  {
+   "key": "gururumon",
+   "number": 71,
+   "species": 105,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a moonlit snowy pine forest at night with deep blue sky"
+  },
+  {
+   "key": "machinedramon",
+   "number": 72,
+   "species": 115,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a dark industrial machine factory with steel pipes, gears and glowing red lights"
+  },
+  {
+   "key": "bluemeramon",
+   "number": 73,
+   "species": 104,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a ruined stone courtyard at dusk with cold blue flames burning on torches"
+  },
+  {
+   "key": "waruseadramon",
+   "number": 74,
+   "species": 112,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a murky deep sea trench with dark teal water, jagged rocks and sunken ruins"
+  },
+  {
+   "key": "saberdramon",
+   "number": 75,
+   "species": 106,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "high rocky mountain peaks above the clouds with a wide sunset sky"
+  },
+  {
+   "key": "soulmon",
+   "number": 76,
+   "species": 107,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a foggy haunted graveyard with crooked gravestones and bare trees under a purple sky"
+  },
+  {
+   "key": "golemon",
+   "number": 77,
+   "species": 108,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a rocky canyon quarry with giant boulders and cracked sandstone"
+  },
+  {
+   "key": "patamon",
+   "number": 78,
+   "species": 31,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a bright blue sky above blocky white clouds with a grassy floating island"
+  },
+  {
+   "key": "palmon",
+   "number": 79,
+   "species": 46,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a sunny flower meadow with big blocky flowers, a stream and green hills"
+  },
+  {
+   "key": "tsunomon",
+   "number": 80,
+   "species": 16,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a snowy hillside village outskirts with small pine trees and a pale sky",
+   "anatomy": "Tsunomon is ONLY a round head-body with one horn and big eyes: NO legs, NO arms, NO feet, NO tail. It rests on the ground on its round underside.",
+   "pose": "resting on the snow on its round body, bouncing happily, its underside touching the ground with a tight contact shadow"
+  },
+  {
+   "key": "snowagumon",
+   "number": 81,
+   "species": 71,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a frozen tundra with ice blocks, snow drifts and a cold aurora sky"
+  },
+  {
+   "key": "iceleomon",
+   "number": 82,
+   "species": 63,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a snowy mountain ridge with jagged ice cliffs and a stormy white sky"
+  },
+  {
+   "key": "piddomon",
+   "number": 83,
+   "species": 85,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a heavenly temple garden with golden pillars, red fire braziers and a sunset sky"
+  },
+  {
+   "key": "vermilimon",
+   "number": 84,
+   "species": 88,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a hot red-rock desert with lava cracks and a burning orange sky"
+  },
+  {
+   "key": "hyogamon",
+   "number": 85,
+   "species": 72,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a glacier cave valley with giant ice spires and blue crystal light"
+  },
+  {
+   "key": "tsukaimon",
+   "number": 86,
+   "species": 96,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a moonlit haunted forest with twisted trees and a purple night sky"
+  },
+  {
+   "key": "gigadramon",
+   "number": 87,
+   "species": 64,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a dark mountain fortress with icy black spires and a grey stormy sky"
+  },
+  {
+   "key": "betamon",
+   "number": 88,
+   "species": 4,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a quiet pond shore with lily pads, reeds and blocky rocks at golden hour",
+   "pose": "low camera at ground level looking up at it, mid-leap out of the water with a splash frozen in the air",
+   "anatomy": "Betamon has four stubby legs with white claws and a tail: keep them visible and standing on the ground, not hidden by splash."
+  },
+  {
+   "key": "kunemon",
+   "number": 89,
+   "species": 32,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a dim forest floor with giant mushrooms and fallen logs",
+   "pose": "seen from above at a steep high angle, coiled and rearing up from the ground, crackling electricity around its body"
+  },
+  {
+   "key": "darklizardmon",
+   "number": 90,
+   "species": 101,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a desert ruin at dusk with broken sandstone arches",
+   "pose": "side profile view, crouched low and sprinting at full speed, tail stretched out behind",
+   "anatomy": "DarkLizardmon stands upright with a short furry tail and two ear/crest tufts, as in the reference: no long spike tail, not a horizontal quadruped."
+  },
+  {
+   "key": "sandyanmamon",
+   "number": 91,
+   "species": 102,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a sandy desert dune landscape with a scorching sun and heat-baked rocks",
+   "pose": "flying toward the camera in strong foreshortening, wings blurred, diving down"
+  },
+  {
+   "key": "meteormon",
+   "number": 92,
+   "species": 113,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a rocky asteroid field in a dark red sky with floating boulders",
+   "pose": "spinning in the air viewed from behind at three-quarters, hurling itself forward"
+  },
+  {
+   "key": "mastertyrannomon",
+   "number": 93,
+   "species": 124,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a ruined volcanic fortress with bone spires under a red sky",
+   "pose": "standing tall viewed from a low angle, one huge foot stomping the ground, cracks spreading, arms thrown wide"
+  },
+  {
+   "key": "shamamon",
+   "number": 94,
+   "species": 97,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a sacred jungle clearing with totem poles and hanging vines",
+   "pose": "standing with both feet on the ground in front of the totem poles, a clear contact shadow under every foot or body part touching the ground, never floating",
+   "anatomy": "Planted on the ground, not floating."
+  },
+  {
+   "key": "metaletemon",
+   "number": 95,
+   "species": 65,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a neon-lit futuristic city rooftop at night",
+   "pose": "striking a showman's pose on one leg, leaning sideways, viewed from slightly below, one arm pointing at the camera",
+   "anatomy": "MetalEtemon has a tail on its back: it must be visible."
+  },
+  {
+   "key": "akatorimon",
+   "number": 96,
+   "species": 95,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a frozen cliff top with ice arches and a pale sky",
+   "pose": "perched on a rock seen from behind over its shoulder, head turned back to look at the camera, wings half open"
+  },
+  {
+   "key": "geremon",
+   "number": 97,
+   "species": 87,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a sewer cavern with green water, pipes and moss-covered walls",
+   "pose": "sitting upright on the ground with its mouth wide open and the tongue hanging out",
+   "anatomy": "Geremon is a compact upright yellow slug-blob: a tall rounded head-body that tapers to a wide base, two eye stalks with big white eyeballs, a huge open mouth with teeth and a long red-brown tongue hanging out. ABSOLUTELY NO arms, NO hands, NO claws, NO fingers, NO legs, NO tail and NO pointed tail end: the surface of the body is smooth with only brown spots."
+  },
+  {
+   "key": "snowgoblimon",
+   "number": 98,
+   "species": 103,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "a frozen valley of ice blocks and pine trees under a pale sky",
+   "pose": "crouching low, club raised over its shoulder, seen from a high three-quarter angle"
+  },
+  {
+   "key": "fugamon",
+   "number": 99,
+   "species": 89,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "a rocky mountain ledge with swirling low-poly clouds below",
+   "pose": "leaping forward with a wide kick, seen from a low front angle"
+  },
+  {
+   "key": "tekkamon",
+   "number": 100,
+   "species": 90,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "an old rusty factory yard with blocky crates and pipes",
+   "pose": "standing with arms spread wide, seen straight from the front, slightly from below"
+  },
+  {
+   "key": "icemon",
+   "number": 101,
+   "species": 94,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "a blue glacier cave with chunky ice crystals",
+   "pose": "standing on the ice floor, a clear contact shadow under every foot or body part touching the ground, never floating",
+   "anatomy": "Icemon has two tall blocks of stone/ice standing up on top of its head like horns or ears: keep both, and keep the arm and leg design of the reference exactly."
+  },
+  {
+   "key": "weedmon",
+   "number": 103,
+   "species": 99,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "a swamp with cattails and low-poly lily pads",
+   "pose": "rising out of the ground, camera very low looking up"
+  },
+  {
+   "key": "psychemon",
+   "number": 104,
+   "species": 82,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "a dark temple hall with blocky pillars and purple torches",
+   "pose": "standing with its feet planted on the ground, a tight contact shadow under it",
+   "anatomy": "Psychemon has a tail with a pink fin at its back: it must be visible. Planted on the ground, not floating."
+  },
+  {
+   "key": "analogman",
+   "number": 105,
+   "species": 116,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "a retro computer room with chunky blocky consoles and cables on the floor",
+   "pose": "running to the right, seen in side view with a slight top angle"
+  },
+  {
+   "key": "tinmon",
+   "number": 106,
+   "species": 123,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "a snowy toy-workshop courtyard with blocky crates",
+   "pose": "marching toward the camera, seen from the front at a slight low angle"
+  },
+  {
+   "key": "shimaunimon",
+   "number": 107,
+   "species": 75,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "a sunny island beach with blocky palm trees",
+   "pose": "rearing up on its hind legs, seen from the side with a low camera"
+  },
+  {
+   "key": "botamon",
+   "number": 102,
+   "species": 1,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a lava field with black blocky rocks, late-1990s low-poly look",
+   "pose": "sitting on the ground with its round body resting on the surface, a tight contact shadow under it",
+   "anatomy": "Planted on the ground, not floating."
+  },
+  {
+   "key": "koromon",
+   "number": 108,
+   "species": 2,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
+   "pose": "bouncing happily with its ears up, resting on its round body",
+   "anatomy": "Koromon is ONLY a round head-body with two long ear stalks, eyes and a mouth: NO legs, NO feet, NO arms, NO hands, NO claws, no tail. It rests on the ground on its round underside."
+  },
+  {
+   "key": "punimon",
+   "number": 109,
+   "species": 15,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
+   "pose": "bouncing happily, resting on its round body on the grass, ears up",
+   "anatomy": "Punimon is ONLY a round red head-body with three pointed ears on top and two big eyes: NO legs, NO feet, NO arms, NO tail. It rests on the ground on its round underside."
+  },
+  {
+   "key": "poyomon",
+   "number": 110,
+   "species": 29,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
+   "pose": "floating gently just on the water surface, resting on its round body",
+   "anatomy": "Poyomon is a smooth round blob with NO limbs at all: no fins, no arms, no legs, no tail."
+  },
+  {
+   "key": "tokomon",
+   "number": 111,
+   "species": 30,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
+   "pose": "hopping happily, both stubby feet touching the ground, tight contact shadow under it",
+   "anatomy": "Tokomon is a round white blob with two ear stalks and exactly TWO small stubby feet at the bottom: NO arms, NO hands, NO side nubs, NO tail. It rests on the ground."
+  },
+  {
+   "key": "yuramon",
+   "number": 112,
+   "species": 43,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a lush meadow with blocky flowers and round trees, late-1990s low-poly look",
+   "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
+  },
+  {
+   "key": "tanemon",
+   "number": 113,
+   "species": 44,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
+   "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
+  },
+  {
+   "key": "weregarurumon",
+   "number": 114,
+   "species": 62,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "a snowy Freezeland plain with snow drifts, frozen rocks and pine trees under a pale sky",
+   "pose": "in mid-air spin or jump, seen from a high camera looking down"
+  },
+  {
+   "key": "platinumsukamon",
+   "number": 115,
+   "species": 73,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
+   "pose": "resting on the ground with its heap body touching the floor, a tight contact shadow under it",
+   "anatomy": "Planted on the ground, not floating."
+  },
+  {
+   "key": "dokunemon",
+   "number": 116,
+   "species": 74,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "Beetle Land: a forest of giant trees with thick roots and sunlight through the leaves",
+   "pose": "walking calmly toward the camera, seen from the front slightly from above"
+  },
+  {
+   "key": "redvegiemon",
+   "number": 117,
+   "species": 77,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a riverbank with reeds and blocky stones, late-1990s low-poly look",
+   "pose": "swinging its two long arms wide, mouth open, its trunk base on the ground",
+   "anatomy": "RedVegiemon has a wooden trunk body, a head with a leaf crest and a big toothed mouth, and TWO long thin arms. It has NO legs and NO feet: it stands or hops on its trunk base."
+  },
+  {
+   "key": "j-mojyamon",
+   "number": 118,
+   "species": 78,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a snowy Freezeland plain with snow drifts, frozen rocks and pine trees under a pale sky",
+   "pose": "sitting relaxed on the ground, seen from the front at eye level"
+  },
+  {
+   "key": "nisedrimogemon",
+   "number": 119,
+   "species": 79,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
+   "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
+  },
+  {
+   "key": "mudfrigimon",
+   "number": 120,
+   "species": 81,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a humid Geko Swamp with mud, reeds, tropical trees and murky pools",
+   "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
+  },
+  {
+   "key": "modokibetamon",
+   "number": 121,
+   "species": 83,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "a sunny grassy meadow with chunky rocks and flowers, dry land, no water, late-1990s low-poly look",
+   "pose": "standing on all its legs in the grass, a clear contact shadow under every foot or body part touching the ground, never floating"
+  },
+  {
+   "key": "aruraumon",
+   "number": 122,
+   "species": 86,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
+   "pose": "standing on both feet planted firmly on the ground, tight contact shadow under the feet",
+   "anatomy": "Aruraumon stands on its two feet planted on the ground."
+  },
+  {
+   "key": "morishellmon",
+   "number": 123,
+   "species": 91,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
+   "pose": "walking calmly toward the camera, seen from the front slightly from above"
+  },
+  {
+   "key": "muchomon",
+   "number": 124,
+   "species": 93,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "a rocky wasteland under a stormy sky, late-1990s low-poly look",
+   "pose": "running to the right, seen in side view with a slight top-down angle"
+  },
+  {
+   "key": "veemon",
+   "number": 125,
+   "species": 180,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "a stone arena with blocky pillars, late-1990s low-poly look",
+   "pose": "sitting relaxed on the ground, seen from the front at eye level",
+   "anatomy": "Veemon has a short pointed tail: it must be visible."
+  },
+  {
+   "key": "puppetmon",
+   "number": 126,
+   "species": 181,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a toy workshop with wooden shelves, colourful blocks and a wooden floor, late-1990s low-poly look",
+   "pose": "standing with both feet planted firmly on the ground, a tight contact shadow under the feet",
+   "anatomy": "Planted on the ground, not floating."
+  },
+  {
+   "key": "kimeramon",
+   "number": 127,
+   "species": 182,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "a desert canyon at sunset with red blocky mesas, late-1990s low-poly look",
+   "pose": "crouching ready to pounce, seen from a high three-quarter angle"
+  },
+  {
+   "key": "wormmon",
+   "number": 128,
+   "species": 183,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "a mushroom forest with chunky toadstools, late-1990s low-poly look",
+   "pose": "striking a heroic pose in strict side profile"
+  },
+  {
+   "key": "hawkmon",
+   "number": 129,
+   "species": 184,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "a windy plateau with chunky grass, late-1990s low-poly look",
+   "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle"
+  },
+  {
+   "key": "armadillomon",
+   "number": 130,
+   "species": 185,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
+   "pose": "rearing up with a roar, seen from a very low camera looking up"
+  },
+  {
+   "key": "stingmon",
+   "number": 131,
+   "species": 187,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "Beetle Land: a forest of giant trees with thick roots and sunlight through the leaves",
+   "pose": "running to the right, seen in side view with a slight top-down angle"
+  },
+  {
+   "key": "aquilamon",
+   "number": 132,
+   "species": 188,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
+   "pose": "flying through the air with both wings spread wide, seen from the front slightly below; it is a flying bird, NOT sitting"
+  },
+  {
+   "key": "ankylomon",
+   "number": 133,
+   "species": 189,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a sunny prehistoric plain with chunky grass, rocks and a few blocky palm trees, late-1990s low-poly look",
+   "pose": "walking on all four legs with every foot planted on the ground, a tight contact shadow under it",
+   "anatomy": "Planted on the ground, not floating."
+  },
+  {
+   "key": "angewomon",
+   "number": 134,
+   "species": 190,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
+   "pose": "crouching ready to pounce, seen from a high three-quarter angle"
+  },
+  {
+   "key": "metalgarurumon",
+   "number": 135,
+   "species": 191,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a snowy pine forest with chunky trees, late-1990s low-poly look",
+   "pose": "striking a heroic pose in strict side profile"
+  },
+  {
+   "key": "imperialdramon",
+   "number": 136,
+   "species": 192,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a factory floor with blocky machines and pipes, late-1990s low-poly look",
+   "pose": "standing on its feet on the factory floor, a clear contact shadow under every foot or body part touching the ground, never floating"
+  },
+  {
+   "key": "digmon",
+   "number": 137,
+   "species": 193,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a castle courtyard with banners, late-1990s low-poly look",
+   "pose": "rearing up with a roar, seen from a very low camera looking up"
+  },
+  {
+   "key": "exveemon",
+   "number": 138,
+   "species": 194,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a rocky wasteland under a stormy sky, late-1990s low-poly look",
+   "pose": "standing proudly with a wide stance, seen from a low three-quarter angle",
+   "anatomy": "ExVeemon has a tail: it must be visible."
+  },
+  {
+   "key": "flamedramon",
+   "number": 139,
+   "species": 195,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a scorched ruined fortress courtyard, late-1990s low-poly look",
+   "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
+  },
+  {
+   "key": "halsemon",
+   "number": 140,
+   "species": 196,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a mountain peak at dawn with blocky rocks, late-1990s low-poly look",
+   "pose": "perched on a rock at the peak with its talons gripping the stone and the wings half open, a clear contact shadow under every foot or body part touching the ground, never floating"
+  },
+  {
+   "key": "magnamon",
+   "number": 141,
+   "species": 197,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
+   "pose": "standing in a heroic stance with both feet planted firmly on the ground, a tight contact shadow under the feet",
+   "anatomy": "Planted on the ground, not floating."
+  },
+  {
+   "key": "nefertimon",
+   "number": 142,
+   "species": 198,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a ruined sky temple with columns, late-1990s low-poly look",
+   "pose": "walking calmly toward the camera, seen from the front slightly from above"
+  },
+  {
+   "key": "paildramon",
+   "number": 143,
+   "species": 199,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "a dusty canyon with chunky boulders, late-1990s low-poly look",
+   "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle"
+  },
+  {
+   "key": "pegasusmon",
+   "number": 144,
+   "species": 200,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
+   "pose": "rearing up with a roar, seen from a very low camera looking up"
+  },
+  {
+   "key": "lighdramon",
+   "number": 145,
+   "species": 201,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
+   "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
+  },
+  {
+   "key": "submarimon",
+   "number": 146,
+   "species": 202,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "an underwater coral reef with sand and rocks in clear blue water",
+   "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
+  },
+  {
+   "key": "veedramon",
+   "number": 147,
+   "species": 203,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "an iron forge with blocky anvils and embers on the floor, late-1990s low-poly look",
+   "pose": "standing on its feet in the forge, a clear contact shadow under every foot or body part touching the ground, never floating"
+  },
+  {
+   "key": "megakabuterimon",
+   "number": 148,
+   "species": 205,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "a flower garden with a stone path, late-1990s low-poly look",
+   "pose": "flying or hovering in the air, seen from slightly below"
+  },
+  {
+   "key": "magnaangemon",
+   "number": 149,
+   "species": 206,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
+   "pose": "standing on the cloud island, a clear contact shadow under every foot or body part touching the ground, never floating",
+   "anatomy": "MagnaAngemon is a humanoid angel knight: a tall pointed PURPLE helmet with silver trim and a visor, long straight yellow-gold hair falling behind, SIX large grey-white feathered wings (three on each side, stacked), a dark grey armoured body with purple bands and a yellow-gold shoulder piece, white metal gauntlets and dark grey boots. Copy the colours and the helmet of the reference exactly."
+  },
+  {
+   "key": "seraphimon",
+   "number": 150,
+   "species": 207,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
+   "pose": "running to the right, seen in side view with a slight top-down angle"
+  },
+  {
+   "key": "togemon",
+   "number": 151,
+   "species": 208,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
+   "pose": "sitting relaxed on the ground, seen from the front at eye level"
+  },
+  {
+   "key": "lillymon",
+   "number": 152,
+   "species": 209,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
+   "pose": "leaping toward the camera with open arms or jaws, seen from a low angle"
+  },
+  {
+   "key": "grankuwagamon",
+   "number": 153,
+   "species": 210,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "Beetle Land: a forest of giant trees with thick roots and sunlight through the leaves",
+   "pose": "crouching ready to pounce, seen from a high three-quarter angle"
+  },
+  {
+   "key": "metalseadramon",
+   "number": 154,
+   "species": 211,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a coastal beach with blue water and blocky rocks, late-1990s low-poly look",
+   "pose": "rearing its long serpentine neck out of the water, coils in the water",
+   "anatomy": "MetalSeadramon is a legless serpentine sea dragon: head, long neck, spiked fins and a long tail only. NO arms, NO hands, NO legs, NO feet; do not stand it upright."
+  },
+  {
+   "key": "venommyotismon",
+   "number": 155,
+   "species": 212,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "the gloomy courtyard of the Grey Lord's Mansion with gothic stone walls and iron gates",
+   "pose": "standing heavily on the ground with both feet planted on black rock, wings spread, a clear contact shadow under the feet, NOT flying and NOT hovering"
+  },
+  {
+   "key": "aeroveedramon",
+   "number": 156,
+   "species": 213,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "a ruined sky temple with columns, late-1990s low-poly look",
+   "pose": "walking calmly toward the camera, seen from the front slightly from above"
+  },
+  {
+   "key": "shakkoumon",
+   "number": 157,
+   "species": 214,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
+   "pose": "running to the right, seen in side view with a slight top-down angle"
+  },
+  {
+   "key": "magnadramon",
+   "number": 158,
+   "species": 215,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
+   "pose": "sitting relaxed on the ground, seen from the front at eye level"
+  },
+  {
+   "key": "devidramon",
+   "number": 159,
+   "species": 216,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a night graveyard with blocky tombstones, late-1990s low-poly look",
+   "pose": "leaping toward the camera with open arms or jaws, seen from a low angle"
+  },
+  {
+   "key": "gomamon",
+   "number": 160,
+   "species": 217,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "a sandy beach shore with blue sea, wet sand and rocks",
+   "pose": "crouching ready to pounce, seen from a high three-quarter angle"
+  },
+  {
+   "key": "ikkakumon",
+   "number": 161,
+   "species": 218,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a frozen lake with blocky ice floes, late-1990s low-poly look",
+   "pose": "striking a heroic pose in strict side profile"
+  },
+  {
+   "key": "zudomon",
+   "number": 162,
+   "species": 219,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "a sandy beach shore with blue sea, wet sand and rocks",
+   "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle"
+  },
+  {
+   "key": "vikemon",
+   "number": 163,
+   "species": 220,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a snowy pine forest with chunky trees, late-1990s low-poly look",
+   "pose": "rearing up with a roar, seen from a very low camera looking up"
+  },
+  {
+   "key": "salamon",
+   "number": 164,
+   "species": 221,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
+   "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
+  },
+  {
+   "key": "blackgatomon",
+   "number": 165,
+   "species": 222,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
+   "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
+  },
+  {
+   "key": "ladydevimon",
+   "number": 166,
+   "species": 223,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "the gloomy courtyard of the Grey Lord's Mansion with gothic stone walls and iron gates",
+   "pose": "in mid-air spin or jump, seen from a high camera looking down"
+  },
+  {
+   "key": "shurimon",
+   "number": 167,
+   "species": 225,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a night graveyard with blocky tombstones, late-1990s low-poly look",
+   "pose": "striking a heroic pose in strict side profile"
+  },
+  {
+   "key": "silphymon",
+   "number": 168,
+   "species": 226,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
+   "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle"
+  },
+  {
+   "key": "apemon",
+   "number": 169,
+   "species": 227,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a humid Geko Swamp with mud, reeds, tropical trees and murky pools",
+   "pose": "rearing up with a roar, seen from a very low camera looking up"
+  },
+  {
+   "key": "baronmon",
+   "number": 170,
+   "species": 228,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a desert canyon at sunset with red blocky mesas, late-1990s low-poly look",
+   "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
+  },
+  {
+   "key": "phantomon",
+   "number": 171,
+   "species": 229,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
+   "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
+  },
+  {
+   "key": "rosemon",
+   "number": 172,
+   "species": 230,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a riverbank with reeds and blocky stones, late-1990s low-poly look",
+   "pose": "in mid-air spin or jump, seen from a high camera looking down"
+  },
+  {
+   "key": "shellnumemon",
+   "number": 173,
+   "species": 231,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a muddy swamp with blocky logs, late-1990s low-poly look",
+   "pose": "resting on the muddy ground, a clear contact shadow under every foot or body part touching the ground, never floating"
+  },
+  {
+   "key": "bombernanimon",
+   "number": 174,
+   "species": 232,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a humid Geko Swamp with mud, reeds, tropical trees and murky pools",
+   "pose": "walking calmly toward the camera, seen from the front slightly from above"
+  },
+  {
+   "key": "redotamamon",
+   "number": 175,
+   "species": 233,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "a humid Geko Swamp with mud, reeds, tropical trees and murky pools",
+   "pose": "resting on its round body on the ground, claws forward, a clear contact shadow under every foot or body part touching the ground, never floating",
+   "anatomy": "Red Otamamon is a round red-orange ball body with a big white eye with a black pupil on each side of the face, a wide mouth with small teeth, two short arms in front ending in three large white claws each, and a pink-white fin tail at the back. It has NO legs and NO feet at all: the round body rests directly on the ground."
+  },
+  {
+   "key": "gatomon",
+   "number": 176,
+   "species": 234,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
+   "pose": "sitting relaxed on the ground, seen from the front at eye level"
+  },
+  {
+   "key": "candlemon",
+   "number": 177,
+   "species": 235,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "an iron forge with blocky anvils and embers on the floor, late-1990s low-poly look",
+   "pose": "standing with its golden base resting on the floor, tight contact shadow under the base",
+   "anatomy": "Candlemon's body is the candle on top of a golden candlestick base that stands on the ground; it has two ghostly white arms."
+  },
+  {
+   "key": "demidevimon",
+   "number": 178,
+   "species": 236,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "a dusty canyon with chunky boulders, late-1990s low-poly look",
+   "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
+  },
+  {
+   "key": "diaboromon",
+   "number": 179,
+   "species": 237,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a night city rooftop with blocky buildings, late-1990s low-poly look",
+   "pose": "in mid-air spin or jump, seen from a high camera looking down"
+  },
+  {
+   "key": "dolphmon",
+   "number": 180,
+   "species": 238,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "an ice cave with large blocky crystals, late-1990s low-poly look",
+   "pose": "flying or hovering in the air, seen from slightly below"
+  },
+  {
+   "key": "gizamon",
+   "number": 181,
+   "species": 239,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "a coastal beach with blue water and blocky rocks, late-1990s low-poly look",
+   "pose": "walking calmly toward the camera, seen from the front slightly from above"
+  },
+  {
+   "key": "gesomon",
+   "number": 182,
+   "species": 240,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "an underwater reef scene with blocky coral and sand, late-1990s low-poly look",
+   "pose": "running to the right, seen in side view with a slight top-down angle"
+  },
+  {
+   "key": "wizardmon",
+   "number": 183,
+   "species": 241,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a floating island among low-poly clouds, late-1990s low-poly look",
+   "pose": "sitting relaxed on the ground, seen from the front at eye level"
+  },
+  {
+   "key": "sorcermon",
+   "number": 184,
+   "species": 242,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a frozen lake with blocky ice floes, late-1990s low-poly look",
+   "pose": "leaping toward the camera with open arms or jaws, seen from a low angle"
+  },
+  {
+   "key": "starmon",
+   "number": 185,
+   "species": 243,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a lava field with black blocky rocks, late-1990s low-poly look",
+   "pose": "crouching ready to pounce, seen from a high three-quarter angle"
+  },
+  {
+   "key": "superstarmon",
+   "number": 186,
+   "species": 244,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
+   "pose": "striking a heroic pose in strict side profile"
+  },
+  {
+   "key": "piedmon",
+   "number": 187,
+   "species": 245,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "the gloomy courtyard of the Grey Lord's Mansion with gothic stone walls and iron gates",
+   "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle"
+  },
+  {
+   "key": "infermon",
+   "number": 188,
+   "species": 246,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "a steel bridge over a canyon, late-1990s low-poly look",
+   "pose": "rearing up with a roar, seen from a very low camera looking up"
+  },
+  {
+   "key": "kokuwamon",
+   "number": 189,
+   "species": 247,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "a mountain peak at dawn with blocky rocks, late-1990s low-poly look",
+   "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
+  },
+  {
+   "key": "marineangemon",
+   "number": 190,
+   "species": 248,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a sandy beach shore with blue sea, wet sand and rocks",
+   "pose": "sitting relaxed on the ground, seen from the front at eye level"
+  },
+  {
+   "key": "quetzalmon",
+   "number": 191,
+   "species": 249,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a ruined sky temple with columns, late-1990s low-poly look",
+   "pose": "leaping toward the camera with open arms or jaws, seen from a low angle"
+  },
+  {
+   "key": "shadramon",
+   "number": 192,
+   "species": 250,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a desert canyon at sunset with red blocky mesas, late-1990s low-poly look",
+   "pose": "crouching ready to pounce, seen from a high three-quarter angle"
+  },
+  {
+   "key": "solarmon",
+   "number": 193,
+   "species": 251,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "a scorched ruined fortress courtyard, late-1990s low-poly look",
+   "pose": "striking a heroic pose in strict side profile"
+  },
+  {
+   "key": "thundermon",
+   "number": 194,
+   "species": 252,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a windy plateau with chunky grass, late-1990s low-poly look",
+   "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle"
+  },
+  {
+   "key": "tuskmon",
+   "number": 195,
+   "species": 253,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a humid Geko Swamp with mud, reeds, tropical trees and murky pools",
+   "pose": "rearing up with a roar, seen from a very low camera looking up",
+   "anatomy": "Tuskmon is a hunched FOUR-LEGGED quadruped: it walks on all four legs, not upright like a biped."
+  },
+  {
+   "key": "tylomon",
+   "number": 196,
+   "species": 254,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "an ice cave with large blocky crystals, late-1990s low-poly look",
+   "pose": "lying on its belly on the ice floor, a clear contact shadow under every foot or body part touching the ground, never floating",
+   "anatomy": "Tylomon is a shark-like sea-dragon with NO legs and NO arms: a dark blue-purple shark head with white stripes on top, a big jaw full of teeth, three large pointed spike fins on the head and back and two long thin blade-like side fins, and a long grey-blue ridged tail. Copy the exact colours and fins of the reference."
+  },
+  {
+   "key": "valkyrimon",
+   "number": 197,
+   "species": 255,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
+   "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
+  },
+  {
+   "key": "violetelecmon",
+   "number": 198,
+   "species": 256,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
+   "pose": "standing on the ground, a clear contact shadow under every foot or body part touching the ground, never floating; it is NOT flying"
+  },
+  {
+   "key": "triceramon",
+   "number": 199,
+   "species": 257,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "a rocky wasteland under a stormy sky, late-1990s low-poly look",
+   "pose": "standing on all four legs on the rocky ground, a clear contact shadow under every foot or body part touching the ground, never floating"
+  },
+  {
+   "key": "saberleomon",
+   "number": 200,
+   "species": 258,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a stone arena with blocky pillars, late-1990s low-poly look",
+   "pose": "walking calmly toward the camera, seen from the front slightly from above"
+  },
+  {
+   "key": "okuwamon",
+   "number": 201,
+   "species": 259,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "Beetle Land: a forest of giant trees with thick roots and sunlight through the leaves",
+   "pose": "running to the right, seen in side view with a slight top-down angle"
+  },
+  {
+   "key": "metaltyrannomon",
+   "number": 202,
+   "species": 260,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "a factory floor with blocky machines and pipes, late-1990s low-poly look",
+   "pose": "rearing up with a roar, seen from a very low camera looking up"
+  },
+  {
+   "key": "tortomon",
+   "number": 203,
+   "species": 261,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a dusty canyon with chunky boulders, late-1990s low-poly look",
+   "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
+  },
+  {
+   "key": "flymon",
+   "number": 204,
+   "species": 262,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "Beetle Land: a forest of giant trees with thick roots and sunlight through the leaves",
+   "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
+  },
+  {
+   "key": "mushroomon",
+   "number": 205,
+   "species": 263,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
+   "pose": "in mid-air spin or jump, seen from a high camera looking down"
+  },
+  {
+   "key": "raremon",
+   "number": 206,
+   "species": 264,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a sewer cave with green pipes, late-1990s low-poly look",
+   "pose": "crawling along the ground, body and claws touching the floor, a tight contact shadow right under it",
+   "anatomy": "Planted on the ground, not floating."
+  },
+  {
+   "key": "darktyrannomon",
+   "number": 207,
+   "species": 265,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
+   "pose": "walking calmly toward the camera, seen from the front slightly from above"
+  },
+  {
+   "key": "extyrannomon",
+   "number": 208,
+   "species": 266,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
+   "pose": "running to the right, seen in side view with a slight top-down angle"
+  },
+  {
+   "key": "mammothmon",
+   "number": 209,
+   "species": 267,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "a snowy Freezeland plain with snow drifts, frozen rocks and pine trees under a pale sky",
+   "pose": "standing on all four legs on dry sand, facing the camera in three-quarter view, a clear contact shadow under every foot or body part touching the ground, never floating"
+  },
+  {
+   "key": "skullmammothmon",
+   "number": 210,
+   "species": 268,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a snowy tundra with blocky rocks and dead trees, late-1990s low-poly look",
+   "pose": "walking on dry land on all four legs, every foot on the snow, a clear contact shadow under every foot or body part touching the ground, never floating",
+   "anatomy": "SkullMammothmon is a FOUR-LEGGED quadruped: it walks on all four legs, no upright stance."
+  },
+  {
+   "key": "garbagemon",
+   "number": 211,
+   "species": 269,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
+   "pose": "sitting inside the bin which stands on the ground, bazooka on its shoulder, a clear contact shadow under every foot or body part touching the ground, never floating",
+   "anatomy": "Garbagemon sits INSIDE a green metal rubbish bin: only its pink head, shoulders, one arm holding a blue-and-red bazooka, and a green round bin lid held like a shield are visible above the rim of the bin. It has NO legs, NO feet and NO lower body visible: the bin hides everything below the shoulders. Copy the bin exactly."
+  },
+  {
+   "key": "princemamemon",
+   "number": 212,
+   "species": 270,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "the gloomy courtyard of the Grey Lord's Mansion with gothic stone walls and iron gates",
+   "pose": "striking a heroic pose in strict side profile"
+  },
+  {
+   "key": "plesiomon",
+   "number": 213,
+   "species": 271,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a humid Geko Swamp with mud, reeds, tropical trees and murky pools",
+   "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle"
+  },
+  {
+   "key": "woodmon",
+   "number": 214,
+   "species": 272,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
+   "pose": "walking calmly toward the camera, seen from the front slightly from above"
+  },
+  {
+   "key": "floramon",
+   "number": 215,
+   "species": 273,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
+   "pose": "running to the right, seen in side view with a slight top-down angle"
+  },
+  {
+   "key": "blossomon",
+   "number": 216,
+   "species": 274,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
+   "pose": "sitting relaxed on the ground, seen from the front at eye level"
+  },
+  {
+   "key": "scorpiomon",
+   "number": 217,
+   "species": 275,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "a volcanic cavern with glowing lava pools, dark basalt walls and ember-lit rocks",
+   "pose": "leaping toward the camera with open arms or jaws, seen from a low angle"
+  },
+  {
+   "key": "baihumon",
+   "number": 218,
+   "species": 276,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
+   "pose": "crouching ready to pounce, seen from a high three-quarter angle"
+  },
+  {
+   "key": "skullmeramon",
+   "number": 219,
+   "species": 277,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "a lava field with black blocky rocks, late-1990s low-poly look",
+   "pose": "striking a heroic pose in strict side profile"
+  },
+  {
+   "key": "octomon",
+   "number": 220,
+   "species": 278,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "an underwater coral reef with sand and rocks in clear blue water",
+   "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle",
+   "anatomy": "Octomon: one arm ends in a sword and the other in a cannon or hook, plus its six legs: exactly the reference arms, one sword only."
+  },
+  {
+   "key": "marinedevimon",
+   "number": 221,
+   "species": 279,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "an underwater coral reef with sand and rocks in clear blue water",
+   "pose": "rearing up with a roar, seen from a very low camera looking up"
+  },
+  {
+   "key": "pumpkinmon",
+   "number": 222,
+   "species": 280,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "a stone arena with blocky pillars, late-1990s low-poly look",
+   "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
+  },
+  {
+   "key": "cyclonemon",
+   "number": 223,
+   "species": 281,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
+   "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
+  },
+  {
+   "key": "kiwimon",
+   "number": 224,
+   "species": 282,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
+   "pose": "in mid-air spin or jump, seen from a high camera looking down"
+  },
+  {
+   "key": "syakomon",
+   "number": 225,
+   "species": 283,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "an underwater reef scene with blocky coral and sand, late-1990s low-poly look",
+   "pose": "flying or hovering in the air, seen from slightly below"
+  },
+  {
+   "key": "crabmon",
+   "number": 226,
+   "species": 284,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "a sandy beach shore with blue sea, wet sand and rocks",
+   "pose": "striking a heroic pose in strict side profile"
+  },
+  {
+   "key": "gazimon",
+   "number": 227,
+   "species": 285,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "a dusty canyon with chunky boulders, late-1990s low-poly look",
+   "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle"
+  },
+  {
+   "key": "deramon",
+   "number": 228,
+   "species": 286,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "a jungle clearing with big leaves and vines, late-1990s low-poly look",
+   "pose": "standing on both red feet planted firmly on the ground, tight contact shadow under the feet",
+   "anatomy": "Deramon stands on its two red feet planted on the ground."
+  },
+  {
+   "key": "tapirmon",
+   "number": 229,
+   "species": 287,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "a night graveyard with blocky tombstones, late-1990s low-poly look",
+   "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
+  },
+  {
+   "key": "boltmon",
+   "number": 230,
+   "species": 288,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
+   "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
+  },
+  {
+   "key": "chaoslord",
+   "number": 231,
+   "species": 289,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "the gloomy courtyard of the Grey Lord's Mansion with gothic stone walls and iron gates",
+   "pose": "standing on its feet on the scrap ground, a clear contact shadow under every foot or body part touching the ground, never floating"
+  },
+  {
+   "key": "clockmon",
+   "number": 232,
+   "species": 290,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a server room with blocky consoles and cables on the floor, late-1990s low-poly look",
+   "pose": "standing on its feet planted firmly on the ground, a tight contact shadow under them",
+   "anatomy": "Clockmon has FOUR arms: two red arms holding a big hammer and two grey tool arms. Draw all four and the hammer. Planted on the ground, not floating."
+  },
+  {
+   "key": "dragomon",
+   "number": 233,
+   "species": 291,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "a snowy pine forest with chunky trees, late-1990s low-poly look",
+   "pose": "walking calmly toward the camera, seen from the front slightly from above"
+  },
+  {
+   "key": "deltamon",
+   "number": 234,
+   "species": 292,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
+   "pose": "running to the right, seen in side view with a slight top-down angle"
+  },
+  {
+   "key": "gryphonmon",
+   "number": 235,
+   "species": 293,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a mountain peak at dawn with blocky rocks, late-1990s low-poly look",
+   "pose": "sitting relaxed on the ground, seen from the front at eye level",
+   "anatomy": "Gryphonmon has a long striped tail that ends in a green snake head: it must be clearly visible."
+  },
+  {
+   "key": "datamon",
+   "number": 236,
+   "species": 294,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
+   "pose": "standing with both feet on the rooftop and the mouth closed, a clear contact shadow under every foot or body part touching the ground, never floating",
+   "anatomy": "Datamon's face is a CLOSED mouth: keep the mouth completely shut, no open jaw and no teeth showing. A tall glass dome head, a dark metal body with a red eye, thin arms ending in huge many-barrelled hands, and two black legs with red-tipped feet."
+  },
+  {
+   "key": "vilemon",
+   "number": 237,
+   "species": 295,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a stone arena with blocky pillars, late-1990s low-poly look",
+   "pose": "crouching ready to pounce, seen from a high three-quarter angle"
+  },
+  {
+   "key": "grizzlymon",
+   "number": 238,
+   "species": 296,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a snowy Freezeland plain with snow drifts, frozen rocks and pine trees under a pale sky",
+   "pose": "standing on its feet on the canyon floor, a clear contact shadow under every foot or body part touching the ground, never floating"
+  },
+  {
+   "key": "marsmon",
+   "number": 239,
+   "species": 297,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a night graveyard with blocky tombstones, late-1990s low-poly look",
+   "pose": "flying or hovering in the air, seen from slightly below"
+  },
+  {
+   "key": "dokugumon",
+   "number": 240,
+   "species": 298,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
+   "pose": "walking calmly toward the camera, seen from the front slightly from above"
+  },
+  {
+   "key": "hookmon",
+   "number": 241,
+   "species": 299,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a sandy beach shore with blue sea, wet sand and rocks",
+   "pose": "running to the right, seen in side view with a slight top-down angle"
+  },
+  {
+   "key": "slashangemon",
+   "number": 242,
+   "species": 300,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
+   "pose": "sitting relaxed on the ground, seen from the front at eye level"
+  },
+  {
+   "key": "hiandromon",
+   "number": 243,
+   "species": 302,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
+   "pose": "leaping toward the camera with open arms or jaws, seen from a low angle"
+  },
+  {
+   "key": "kingetemon",
+   "number": 244,
+   "species": 303,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a stone arena with blocky pillars, late-1990s low-poly look",
+   "pose": "crouching ready to pounce, seen from a high three-quarter angle"
+  },
+  {
+   "key": "divermon",
+   "number": 245,
+   "species": 304,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "an ice cave with large blocky crystals, late-1990s low-poly look",
+   "pose": "striking a heroic pose in strict side profile"
+  },
+  {
+   "key": "ebidramon",
+   "number": 246,
+   "species": 305,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "an underwater coral reef with sand and rocks in clear blue water",
+   "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle"
+  },
+  {
+   "key": "grapleomon",
+   "number": 247,
+   "species": 306,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "a dusty canyon with chunky boulders, late-1990s low-poly look",
+   "pose": "rearing up with a roar, seen from a very low camera looking up"
+  },
+  {
+   "key": "blackkingnumemon",
+   "number": 248,
+   "species": 307,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a murky cave with bubbling green puddles, late-1990s low-poly look",
+   "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
+  },
+  {
+   "key": "dinohyumon",
+   "number": 249,
+   "species": 308,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a night graveyard with blocky tombstones, late-1990s low-poly look",
+   "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
+  },
+  {
+   "key": "antylamon",
+   "number": 250,
+   "species": 309,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
+   "pose": "leaping toward the camera with open arms or jaws, seen from a low angle"
+  },
+  {
+   "key": "assaultmon",
+   "number": 251,
+   "species": 310,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "a factory floor with blocky machines and pipes, late-1990s low-poly look",
+   "pose": "crouching ready to pounce, seen from a high three-quarter angle"
+  },
+  {
+   "key": "arukenimon",
+   "number": 252,
+   "species": 311,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
+   "pose": "striking a heroic pose in strict side profile"
+  },
+  {
+   "key": "creepymon",
+   "number": 253,
+   "species": 312,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
+   "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle"
+  },
+  {
+   "key": "bulbmon",
+   "number": 254,
+   "species": 313,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "a junkyard of blocky metal scraps, late-1990s low-poly look",
+   "pose": "rearing up with a roar, seen from a very low camera looking up"
+  },
+  {
+   "key": "skullsatamon",
+   "number": 255,
+   "species": 314,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "the gloomy courtyard of the Grey Lord's Mansion with gothic stone walls and iron gates",
+   "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
+  },
+  {
+   "key": "taomon",
+   "number": 256,
+   "species": 315,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "a scorched ruined fortress courtyard, late-1990s low-poly look",
+   "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
+  },
+  {
+   "key": "sakuyamon",
+   "number": 257,
+   "species": 316,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
+   "pose": "in mid-air spin or jump, seen from a high camera looking down"
+  },
+  {
+   "key": "fujinmon",
+   "number": 258,
+   "species": 317,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
+   "pose": "standing with both feet planted on the ground of the plateau, a clear contact shadow under every foot, never floating; it is NOT flying"
+  },
+  {
+   "key": "gallantmon",
+   "number": 259,
+   "species": 318,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
+   "pose": "walking calmly toward the camera, seen from the front slightly from above"
+  },
+  {
+   "key": "pharaohmon",
+   "number": 260,
+   "species": 319,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a flower garden with a stone path, late-1990s low-poly look",
+   "pose": "running to the right, seen in side view with a slight top-down angle"
+  },
+  {
+   "key": "growlmon",
+   "number": 261,
+   "species": 320,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "an iron forge with blocky anvils and embers on the floor, late-1990s low-poly look",
+   "pose": "sitting relaxed on the ground, seen from the front at eye level"
+  },
+  {
+   "key": "knightmon",
+   "number": 262,
+   "species": 321,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "the gloomy courtyard of the Grey Lord's Mansion with gothic stone walls and iron gates",
+   "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
+  },
+  {
+   "key": "kyukimon",
+   "number": 263,
+   "species": 322,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "a sunny hill with a few blocky windmills, late-1990s low-poly look",
+   "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
+  },
+  {
+   "key": "lynxmon",
+   "number": 264,
+   "species": 323,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a lava field with black blocky rocks, late-1990s low-poly look",
+   "pose": "standing on all four paws on a flat rock, snarling toward the camera in three-quarter view, a clear contact shadow under every foot, never floating",
+   "anatomy": "Lynxmon is a flaming golden lion walking on FOUR legs: a lion head with green eyes and blue markings, a mane and body made of flame-patterned fur, four legs ending in big white claws, and a long tail. Keep all four paws on the ground; the body is low and horizontal."
+  },
+  {
+   "key": "maildramon",
+   "number": 265,
+   "species": 324,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a rocky mountain ledge at dusk with blocky stones, late-1990s low-poly look",
+   "pose": "standing on all four legs with the wings half open, a clear contact shadow under every foot, never floating",
+   "anatomy": "MailDramon is a four-legged armoured quadruped with a long segmented neck, a golden helmet with a spike, large golden wings on its back, four legs with golden claws and a long tail with a spike tip."
+  },
+  {
+   "key": "musyamon",
+   "number": 266,
+   "species": 325,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a castle courtyard with banners, late-1990s low-poly look",
+   "pose": "walking calmly toward the camera, seen from the front slightly from above"
+  },
+  {
+   "key": "wargrowlmon",
+   "number": 267,
+   "species": 326,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "a volcanic crater rim with glowing cracks, late-1990s low-poly look",
+   "pose": "running to the right, seen in side view with a slight top-down angle"
+  },
+  {
+   "key": "gargoylemon",
+   "number": 268,
+   "species": 327,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "the gloomy courtyard of the Grey Lord's Mansion with gothic stone walls and iron gates",
+   "pose": "sitting relaxed on the ground, seen from the front at eye level"
+  },
+  {
+   "key": "snimon",
+   "number": 269,
+   "species": 328,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a stone arena with blocky pillars, late-1990s low-poly look",
+   "pose": "leaping toward the camera with open arms or jaws, seen from a low angle"
+  },
+  {
+   "key": "ghoulmon",
+   "number": 270,
+   "species": 329,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
+   "pose": "crouching ready to pounce, seen from a high three-quarter angle"
+  },
+  {
+   "key": "minotarumon",
+   "number": 271,
+   "species": 330,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a dusty canyon with chunky boulders, late-1990s low-poly look",
+   "pose": "striking a heroic pose in strict side profile"
+  },
+  {
+   "key": "vemmon",
+   "number": 272,
+   "species": 331,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
+   "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle"
+  },
+  {
+   "key": "roachmon",
+   "number": 273,
+   "species": 332,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
+   "pose": "rearing up with a roar, seen from a very low camera looking up"
+  },
+  {
+   "key": "raijinmon",
+   "number": 274,
+   "species": 333,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
+   "pose": "running to the right, seen in side view with a slight top-down angle"
+  },
+  {
+   "key": "mummymon",
+   "number": 275,
+   "species": 334,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
+   "pose": "sitting relaxed on the ground, seen from the front at eye level"
+  },
+  {
+   "key": "megagargomon",
+   "number": 276,
+   "species": 335,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a night city rooftop with blocky buildings, late-1990s low-poly look",
+   "pose": "leaping toward the camera with open arms or jaws, seen from a low angle"
+  },
+  {
+   "key": "raidenmon",
+   "number": 277,
+   "species": 336,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
+   "pose": "crouching ready to pounce, seen from a high three-quarter angle"
+  },
+  {
+   "key": "kotemon",
+   "number": 278,
+   "species": 351,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "a rocky wasteland under a stormy sky, late-1990s low-poly look",
+   "pose": "striking a heroic pose in strict side profile"
+  },
+  {
+   "key": "monmon",
+   "number": 279,
+   "species": 352,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
+   "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle"
+  },
+  {
+   "key": "bearmon",
+   "number": 280,
+   "species": 353,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "Toy Town: a colourful toy room with wooden floor and big toy blocks",
+   "pose": "rearing up with a roar, seen from a very low camera looking up"
+  },
+  {
+   "key": "renamon",
+   "number": 281,
+   "species": 354,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
+   "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
+  },
+  {
+   "key": "wargreymon",
+   "number": 282,
+   "species": 373,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a desert canyon at sunset with red blocky mesas, late-1990s low-poly look",
+   "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
+  },
+  {
+   "key": "apocalymon",
+   "number": 283,
+   "species": 400,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a steel bridge over a canyon, late-1990s low-poly look",
+   "pose": "in mid-air spin or jump, seen from a high camera looking down"
+  },
+  {
+   "key": "pukumon",
+   "number": 284,
+   "species": 401,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a snowy Freezeland plain with snow drifts, frozen rocks and pine trees under a pale sky",
+   "pose": "flying or hovering in the air, seen from slightly below"
+  },
+  {
+   "key": "neocrimson",
+   "number": 285,
+   "species": 402,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a scorched ruined fortress courtyard, late-1990s low-poly look",
+   "pose": "walking calmly toward the camera, seen from the front slightly from above"
+  },
+  {
+   "key": "beelzemon",
+   "number": 286,
+   "species": 403,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
+   "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle"
+  },
+  {
+   "key": "blackwargreymon",
+   "number": 287,
+   "species": 404,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "an iron forge with blocky anvils and embers on the floor, late-1990s low-poly look",
+   "pose": "rearing up with a roar, seen from a very low camera looking up"
+  },
+  {
+   "key": "cannondramon",
+   "number": 288,
+   "species": 405,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a factory floor with blocky machines and pipes, late-1990s low-poly look",
+   "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
+  },
+  {
+   "key": "malomyotismon",
+   "number": 289,
+   "species": 406,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a lava field with black blocky rocks, late-1990s low-poly look",
+   "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
+  },
+  {
+   "key": "armageddemon",
+   "number": 290,
+   "species": 407,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "the gloomy courtyard of the Grey Lord's Mansion with gothic stone walls and iron gates",
+   "pose": "in mid-air spin or jump, seen from a high camera looking down"
+  },
+  {
+   "key": "suijinmon",
+   "number": 291,
+   "species": 408,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a sandy beach shore with blue sea, wet sand and rocks",
+   "pose": "standing with both feet planted on the ice, a clear contact shadow under every foot or body part touching the ground, never floating; it is NOT flying"
+  },
+  {
+   "key": "kyubimon",
+   "number": 292,
+   "species": 409,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "a desert canyon at sunset with red blocky mesas, late-1990s low-poly look",
+   "pose": "walking calmly toward the camera, seen from the front slightly from above"
+  },
+  {
+   "key": "zanbamon",
+   "number": 293,
+   "species": 430,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a rocky wasteland under a stormy sky, late-1990s low-poly look",
+   "pose": "running to the right, seen in side view with a slight top-down angle"
+  },
+  {
+   "key": "kurisarimon",
+   "number": 294,
+   "species": 431,
+   "rarity": 2,
+   "merit": 10,
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
+   "pose": "sitting relaxed on the ground, seen from the front at eye level"
+  },
+  {
+   "key": "bastemon",
+   "number": 295,
+   "species": 432,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "a stone arena with blocky pillars, late-1990s low-poly look",
+   "pose": "leaping toward the camera with open arms or jaws, seen from a low angle"
+  },
+  {
+   "key": "guilmon",
+   "number": 296,
+   "species": 433,
+   "rarity": 3,
+   "merit": 5,
+   "scene": "a scorched ruined fortress courtyard, late-1990s low-poly look",
+   "pose": "crouching ready to pounce, seen from a high three-quarter angle"
+  },
+  {
+   "key": "garudamon",
+   "number": 297,
+   "species": 460,
+   "rarity": 1,
+   "merit": 30,
+   "scene": "an iron forge with blocky anvils and embers on the floor, late-1990s low-poly look",
+   "pose": "striking a heroic pose in strict side profile"
+  },
+  {
+   "key": "omnimon",
+   "number": 298,
+   "species": 461,
+   "rarity": 0,
+   "merit": 100,
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
+   "pose": "standing with both feet planted on the canyon floor, a clear contact shadow under every foot or body part touching the ground, never floating; it is NOT flying"
+  },
+  {
+   "key": "pabumon",
+   "number": 299,
+   "species": 470,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
+   "pose": "resting on the ground, the dome rim touching the ground, a clear contact shadow under every foot or body part touching the ground, never floating",
+   "anatomy": "Pabumon is a pale translucent green dome shaped like a bell or jelly cap: a smooth rounded body with a flat flared rim at the base, two black round eyes, a tiny yellow beak, two small rounded ear bumps on top and small crystal bumps. It has NO feet, NO legs, NO arms and NO tail at all: the rim of the dome rests directly on the ground."
+  },
+  {
+   "key": "pichimon",
+   "number": 300,
+   "species": 471,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
+   "pose": "running to the right, seen in side view with a slight top-down angle"
+  },
+  {
+   "key": "yukimibotamon",
+   "number": 301,
+   "species": 472,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a snowy Freezeland plain with snow drifts, frozen rocks and pine trees under a pale sky",
+   "pose": "sitting relaxed on the ground, seen from the front at eye level"
+  },
+  {
+   "key": "motimon",
+   "number": 302,
+   "species": 474,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a riverbank with reeds and blocky stones, late-1990s low-poly look",
+   "pose": "crouching ready to pounce, seen from a high three-quarter angle"
+  },
+  {
+   "key": "bukamon",
+   "number": 303,
+   "species": 475,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a humid Geko Swamp with mud, reeds, tropical trees and murky pools",
+   "pose": "striking a heroic pose in strict side profile"
+  },
+  {
+   "key": "nyaromon",
+   "number": 304,
+   "species": 476,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a sunny backyard garden with a wooden fence, chunky flowers and grass, late-1990s low-poly look",
+   "pose": "sitting still on the ground, the round body touching the grass, a clear contact shadow under it, seen from the front in three-quarter view",
+   "anatomy": "Nyaromon is just a round yellow head-ball: two tall pointed ears, two big red eyes, a zigzag mouth line and one long purple-and-yellow striped tail curling up from the back. It has NO legs, NO feet, NO arms, NO hands and NO claws: nothing but the round body, the ears and the tail."
+  },
+  {
+   "key": "yokomon",
+   "number": 305,
+   "species": 477,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a windy plateau with chunky grass, late-1990s low-poly look",
+   "pose": "rearing up with a roar, seen from a very low camera looking up"
+  },
+  {
+   "key": "phoenixmon",
+   "number": 1,
+   "species": 59,
+   "rarity": 0,
+   "merit": 100,
+   "replaces": 1,
+   "scene": "a high golden sunset sky above blocky clouds and distant mountain peaks"
+  },
+  {
+   "key": "herculeskabuterimon",
+   "number": 2,
+   "species": 60,
+   "rarity": 0,
+   "merit": 100,
+   "replaces": 2
+  },
+  {
+   "key": "megaseadramon",
+   "number": 3,
+   "species": 61,
+   "rarity": 0,
+   "merit": 100,
+   "replaces": 3,
+   "scene": "a deep blue open sea with blocky waves and rocky islets"
+  },
+  {
+   "key": "shogungekomon",
+   "number": 4,
+   "species": 119,
+   "rarity": 0,
+   "merit": 100,
+   "replaces": 4,
+   "scene": "Geko Swamp: a murky green swamp with giant lily pads, mossy logs and twisted mangrove roots, hazy green sky",
+   "pose": "sitting heavily on a muddy bank of the swamp, belly resting on the ground"
+  },
+  {
+   "key": "myotismon",
+   "number": 5,
+   "species": 66,
+   "rarity": 0,
+   "merit": 100,
+   "replaces": 5,
+   "scene": "a dark gothic ruin courtyard with broken stone pillars and a dusky sky",
+   "pose": "standing on the ground with both boots planted, cape behind"
+  },
+  {
+   "key": "metalgreymonvirus",
+   "number": 6,
+   "species": 12,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 6
+  },
+  {
+   "key": "mamemon",
+   "number": 7,
+   "species": 13,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 7,
+   "scene": "a grassy hill with a blue sky and blocky clouds"
+  },
+  {
+   "key": "monzaemon",
+   "number": 8,
+   "species": 14,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 8,
+   "scene": "a toy-filled cobbled plaza with a blue sky"
+  },
+  {
+   "key": "skullgreymon",
+   "number": 9,
+   "species": 26,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 9,
+   "scene": "the dark grounds of Grey Lord's Mansion at dusk: cracked stone paving, dead twisted trees, a broken iron fence and a grey-purple sky",
+   "pose": "standing upright on both feet, facing the viewer slightly turned, jaws open, arms hanging forward, tail on the ground; exactly the model's bone body, nothing added"
+  },
+  {
+   "key": "metalmamemon",
+   "number": 10,
+   "species": 27,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 10,
+   "scene": "a metallic factory floor with pipes and blocky machinery"
+  },
+  {
+   "key": "vademon",
+   "number": 11,
+   "species": 28,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 11,
+   "scene": "Factorial Town: a grimy industrial town street with riveted steel buildings, smokeless chimneys, pipes and metal walkways under a grey-blue sky",
+   "pose": "hovering low on its grey flying saucer just above the ground, brain upright, one hand holding its ray gun; model colours exactly as the reference, no glow"
+  },
+  {
+   "key": "andromon",
+   "number": 12,
+   "species": 40,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 12,
+   "scene": "a factory yard with steel plates, pipes and machinery"
+  },
+  {
+   "key": "giromon",
+   "number": 13,
+   "species": 41,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 13,
+   "scene": "a junkyard of blocky metal scrap with a grey sky"
+  },
+  {
+   "key": "etemon",
+   "number": 14,
+   "species": 42,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 14,
+   "scene": "a rocky desert stage of cracked stone with a night sky"
+  },
+  {
+   "key": "megadramon",
+   "number": 15,
+   "species": 54,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 15
+  },
+  {
+   "key": "piximon",
+   "number": 16,
+   "species": 55,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 16,
+   "scene": "a mountain meadow with flowers and a clear sky"
+  },
+  {
+   "key": "digitamamon",
+   "number": 17,
+   "species": 56,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 17,
+   "scene": "a dark stone kitchen of a ruined tower with a cracked floor"
+  },
+  {
+   "key": "gekomon",
+   "number": 18,
+   "species": 110,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 18,
+   "scene": "Geko Swamp: a murky green swamp with giant lily pads, mossy logs and twisted mangrove roots, hazy green sky",
+   "pose": "standing on a mossy log at the swamp edge, feet planted, singing; the picture fills the canvas edge to edge"
+  },
+  {
+   "key": "warumonzaemon",
+   "number": 19,
+   "species": 70,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 19,
+   "scene": "a toy-filled cobbled plaza at dusk with a purple sky",
+   "pose": "standing on its two dark feet, facing the viewer, a stitched dark grey teddy bear with round ears, the head is a bear head with a snout"
+  },
+  {
+   "key": "jijimon",
+   "number": 20,
+   "species": 117,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 20,
+   "scene": "a small wooden house yard with a wooden fence, grass and a warm sky"
+  },
+  {
+   "key": "kingsukamon",
+   "number": 21,
+   "species": 120,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 21
+  },
+  {
+   "key": "cherrymon",
+   "number": 22,
+   "species": 121,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 22,
+   "scene": "a dense dark forest clearing with twisted tree roots and mossy ground"
+  },
+  {
+   "key": "guardromon",
+   "number": 23,
+   "species": 92,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 23,
+   "scene": "a factory yard with steel plates and pipes"
+  },
+  {
+   "key": "hagurumon",
+   "number": 24,
+   "species": 122,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 24,
+   "scene": "a clockwork factory floor with gears and pipes"
+  },
+  {
+   "key": "brachiomon",
+   "number": 25,
+   "species": 126,
+   "rarity": 1,
+   "merit": 30,
+   "replaces": 25
+  },
+  {
+   "key": "airdramon",
+   "number": 28,
+   "species": 7,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 28,
+   "scene": "a windy sky over blocky mountain ridges and clouds"
+  },
+  {
+   "key": "angemon",
+   "number": 33,
+   "species": 20,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 33,
+   "scene": "a bright sky above a white stone temple with blocky clouds"
+  },
+  {
+   "key": "birdramon",
+   "number": 34,
+   "species": 21,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 34,
+   "scene": "flying above a wide volcanic canyon with rivers of lava, red rock cliffs and a glowing orange sky, smooth natural shapes",
+   "pose": "flying in flight with wings spread, seen from the side, wide open sky around it"
+  },
+  {
+   "key": "frigimon",
+   "number": 36,
+   "species": 23,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 36,
+   "scene": "a frozen snowy pine forest clearing",
+   "pose": "standing on both feet planted in the snow, facing the viewer"
+  },
+  {
+   "key": "whamon",
+   "number": 37,
+   "species": 24,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 37,
+   "scene": "the open turquoise sea with blocky waves and a bright sky"
+  },
+  {
+   "key": "unimon",
+   "number": 38,
+   "species": 33,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 38,
+   "scene": "a green mountain meadow under a bright sky with blocky clouds"
+  },
+  {
+   "key": "ogremon",
+   "number": 39,
+   "species": 34,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 39
+  },
+  {
+   "key": "shellmon",
+   "number": 40,
+   "species": 35,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 40,
+   "scene": "a sandy sea bottom with coral and blocky rocks"
+  },
+  {
+   "key": "centarumon",
+   "number": 41,
+   "species": 36,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 41
+  },
+  {
+   "key": "bakemon",
+   "number": 42,
+   "species": 37,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 42,
+   "scene": "Overdell Cemetery at dusk: weathered tombstones, crooked crosses, dead twisted trees, iron fence, grey-purple misty sky",
+   "pose": "floating low as a ghost just above the grass between the gravestones"
+  },
+  {
+   "key": "drimogemon",
+   "number": 43,
+   "species": 38,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 43
+  },
+  {
+   "key": "leomon",
+   "number": 45,
+   "species": 48,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 45
+  },
+  {
+   "key": "coelamon",
+   "number": 46,
+   "species": 49,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 46,
+   "scene": "a murky sea bottom with blocky rocks, seaweed and coral"
+  },
+  {
+   "key": "kokatorimon",
+   "number": 47,
+   "species": 50,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 47,
+   "scene": "Mt. Panorama plains: open grassy plains with a few rocks and distant mountains under a bright sky",
+   "pose": "standing on both feet on the ground, wings folded"
+  },
+  {
+   "key": "kuwagamon",
+   "number": 48,
+   "species": 51,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 48
+  },
+  {
+   "key": "mojyamon",
+   "number": 49,
+   "species": 52,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 49
+  },
+  {
+   "key": "ninjamon",
+   "number": 50,
+   "species": 58,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 50,
+   "scene": "a green forest clearing with tall trees",
+   "pose": "standing on both feet on the ground in a ready stance, sword on its back"
+  },
+  {
+   "key": "penguinmon",
+   "number": 51,
+   "species": 57,
+   "rarity": 3,
+   "merit": 5,
+   "replaces": 51,
+   "scene": "a snow field with a few ice blocks and a pale sky",
+   "pose": "standing upright on both orange feet planted in the snow, facing the viewer"
+  },
+  {
+   "key": "otamamon",
+   "number": 52,
+   "species": 109,
+   "rarity": 3,
+   "merit": 5,
+   "replaces": 52,
+   "scene": "Geko Swamp: a murky green swamp with giant lily pads and mangrove roots",
+   "pose": "sitting on the muddy swamp bank on its two front paws"
+  },
+  {
+   "key": "tentomon",
+   "number": 53,
+   "species": 111,
+   "rarity": 3,
+   "merit": 5,
+   "replaces": 53
+  },
+  {
+   "key": "yanmamon",
+   "number": 54,
+   "species": 67,
+   "rarity": 3,
+   "merit": 5,
+   "replaces": 54
+  },
+  {
+   "key": "gotsumon",
+   "number": 55,
+   "species": 68,
+   "rarity": 3,
+   "merit": 5,
+   "replaces": 55
+  },
+  {
+   "key": "flarerizamon",
+   "number": 56,
+   "species": 69,
+   "rarity": 3,
+   "merit": 5,
+   "replaces": 56
+  },
+  {
+   "key": "toyagumon",
+   "number": 57,
+   "species": 84,
+   "rarity": 3,
+   "merit": 5,
+   "replaces": 57,
+   "scene": "Toy Town: a plaza of giant colourful toy blocks and toy houses with a cobbled street, blue sky",
+   "pose": "standing on its two block feet on the ground, facing the viewer"
+  },
+  {
+   "key": "demimeramon",
+   "number": 58,
+   "species": 127,
+   "rarity": 3,
+   "merit": 5,
+   "replaces": 58
+  },
+  {
+   "key": "tankmon",
+   "number": 59,
+   "species": 76,
+   "rarity": 3,
+   "merit": 5,
+   "replaces": 59,
+   "scene": "a muddy battlefield with blocky rocks and a grey sky",
+   "anatomy": "Tankmon is ONE tank body with exactly ONE pair of caterpillar tracks, one long track on each side, shown with the track spikes in front. No extra wheels, no second set of tracks, no doubled wheels.",
+   "pose": "driving slowly forward on its single pair of tracks, cannon raised, seen from a three-quarter front angle"
+  },
+  {
+   "key": "goblimon",
+   "number": 60,
+   "species": 80,
+   "rarity": 3,
+   "merit": 5,
+   "replaces": 60
+  },
+  {
+   "key": "numemon",
+   "number": 61,
+   "species": 11,
+   "rarity": 4,
+   "merit": 1,
+   "replaces": 61
+  },
+  {
+   "key": "vegiemon",
+   "number": 62,
+   "species": 25,
+   "rarity": 4,
+   "merit": 1,
+   "replaces": 62,
+   "scene": "a lush green jungle clearing",
+   "pose": "standing on the ground, arms spread; the picture must fill the whole canvas edge to edge with no border or margin"
+  },
+  {
+   "key": "sukamon",
+   "number": 63,
+   "species": 39,
+   "rarity": 4,
+   "merit": 1,
+   "replaces": 63
+  },
+  {
+   "key": "nanimon",
+   "number": 64,
+   "species": 53,
+   "rarity": 4,
+   "merit": 1,
+   "replaces": 64
+  }
+ ]
+}

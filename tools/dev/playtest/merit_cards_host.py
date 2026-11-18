@@ -30,10 +30,10 @@ def main():
 #include <string.h>
 #include <assert.h>
 #include <stdio.h>
-typedef struct { uint8_t buf[132]; int itemCount, topRow, cursor, prevTopRow, prevCursor, visibleRows; uint8_t itemRow[8]; } ItemMenuBox;
+typedef struct { uint8_t buf[1539]; int itemCount, topRow, cursor, prevTopRow, prevCursor, visibleRows; uint8_t itemRow[8]; } ItemMenuBox;
 static ItemMenuBox storage, *ITEM_MENU_LEFT = &storage;
-static uint8_t cards[65];
-static uint8_t getCardAmount(int id) { assert(id >= 1 && id <= 64); return cards[id]; }
+static uint8_t cards[512];
+static uint8_t getCardAmount(int id) { assert(id >= 1 && id < 512); return cards[id]; }
 void updateItemMenuStrings(ItemMenuBox *box, int row, int style) {
  assert(box == ITEM_MENU_LEFT && row == 9 && style == 1);
  int rows=box->itemCount-box->topRow;
@@ -56,10 +56,10 @@ int main(void) {
   storage.visibleRows=6;
   int any=shopFillSellCardList(), n=0;
   for(int i=1;i<=64;i++) if(cards[i]) {
-   assert(storage.buf[n*2]==i && storage.buf[n*2+1]==cards[i]); n++;
+   assert(ROW_ID(n)==i && storage.buf[n*STRIDE+STRIDE-1]==cards[i]); n++;
   }
   assert(storage.itemCount==n && any==(n!=0));
-  assert(storage.buf[n*2]==255 && storage.buf[n*2+1]==0);
+  assert(ROW_ID(n)==NONE && storage.buf[n*STRIDE+STRIDE-1]==0);
   for(int old=0;old<64;old++) {
    storage.topRow=old>5?old-5:0;
    storage.cursor=old-storage.topRow;
@@ -73,9 +73,10 @@ int main(void) {
   }
   cases++;
  }
- memset(cards,15,sizeof(cards));
+ memset(cards,0,sizeof(cards));
+ memset(cards+1,15,64);
  assert(shopFillSellCardList() && storage.itemCount==64);
- assert(storage.buf[126]==64 && storage.buf[127]==15 && storage.buf[128]==255);
+ assert(ROW_ID(63)==64 && storage.buf[63*STRIDE+STRIDE-1]==15 && ROW_ID(64)==NONE);
  /* Remove every last copy while positioned at the end of a scrolled list. */
  for(int n=64;n>0;n--) {
   storage.topRow=n>6?n-6:0; storage.cursor=n-1-storage.topRow;
@@ -90,7 +91,9 @@ int main(void) {
     with tempfile.TemporaryDirectory(prefix='merit-cards-host-') as temp:
         c = Path(temp) / 'test.c'
         exe = Path(temp) / 'test'
-        c.write_text(prefix + builder + repair + tests)
+        wide = 'NUM_CARDS' in builder
+        layout = '#define NUM_CARDS 512\n#define STRIDE 3\n#define NONE 65535\n#define ROW_ID(n) (storage.buf[(n)*3] | storage.buf[(n)*3+1]<<8)\n' if wide else '#define STRIDE 2\n#define NONE 255\n#define ROW_ID(n) storage.buf[(n)*2]\n'
+        c.write_text(layout + prefix + builder + repair + tests)
         subprocess.run(['cc', '-std=c99', '-Wall', '-Wextra', '-Werror', '-fsanitize=address,undefined', str(c), '-o', str(exe)], check=True)
         subprocess.run([str(exe)], check=True)
 

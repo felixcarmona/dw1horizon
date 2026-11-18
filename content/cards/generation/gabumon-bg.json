@@ -1,0 +1,5 @@
+{
+ "key": "gabumon",
+ "model": "gemini-3-pro-image-preview",
+ "prompt": "Background scene for a collectible trading card: a snowy mountain pass with pale blue sky, snow-covered rocks and a frozen lake. Painterly, colourful, late-1990s 3D-game look with simple blocky shapes and hand-painted textures. NO creature, NO character, NO animal, NO person in the image. The middle and lower centre of the image is an empty, open ground area where a character will be placed later; the horizon sits at about 55% of the height. Soft, even light, no light beams, no haze, no glare. Strictly: no text, no letters, no numbers, no logos, no border, no frame. Square image."
+}

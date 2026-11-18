@@ -1,0 +1,46 @@
+From fbc3ac18279749dc3f1c6705a737ae7c3e2ef033 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 18 Nov 2026 15:05:08 +0000
+Subject: [PATCH] Support replacement artwork for every original card
+
+---
+ src/main/script_common.c | 15 ++++-----------
+ 1 file changed, 4 insertions(+), 11 deletions(-)
+
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index ec9a07d0..a699d19b 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -446,8 +446,8 @@ int32_t CARD_PRICES[5] = {
+ 
+ /* Generated from the owned card JSON by balance.py; sentinels are never real. */
+ uint8_t MOD_CARD_REAL[NUM_CARDS / 8] = { 0xfe, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 1 };
+-/* balance.py packs CARD2 entry << 6 | (original ID - 1); 0xffff is unused. */
+-uint16_t MOD_CARD_ART[8] = { 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff };
++/* balance.py writes archive entries indexed by original ID - 1; 0xffff is unused. */
++uint16_t MOD_CARD_ART[64] = { 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff };
+ uint8_t MOD_CARD_EXTRA[CARD_EXTRA_BYTES];
+ uint16_t MOD_CARD_STOCK[6];
+ 
+@@ -463,16 +463,9 @@ void modLoadCardTable(void)
+ 
+ int32_t modLoadCardImage(int32_t id, void *buffer)
+ {
+-	int32_t i;
+ 	if ((uint32_t)id >= NUM_CARDS) return 0;
+-	if (id < 66 && MOD_OPT_NEW_CARDS) {
+-		for (i = 0; i < 8; i++) {
+-			if (MOD_CARD_ART[i] != 0xffff && (MOD_CARD_ART[i] & 63) == id - 1) {
+-				id = (MOD_CARD_ART[i] >> 6) + 66;
+-				break;
+-			}
+-		}
+-	}
++	if (id >= 1 && id <= 64 && MOD_OPT_NEW_CARDS && MOD_CARD_ART[id - 1] != 0xffff)
++		id = MOD_CARD_ART[id - 1] + 66;
+ 	return loadStackedTIMEntry(id < 66 ? "\\CARD\\CARD.ALL" : "\\CARD\\CARD2.ALL",
+ 	                           buffer, (id < 66 ? id : id - 66) * 14, 14);
+ }
+-- 
+2.55.0
+

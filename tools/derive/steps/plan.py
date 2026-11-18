@@ -36,7 +36,7 @@ from . import story as ST
 
 NAME = 'plan'
 DESCRIPTION = 'Disc file and language layout'
-AFTER = ('models', 'species', 'sound', 'effects', 'title', 'story', 'screens', 'localize', 'signs', 'balance', 'storycopies')
+AFTER = ('cards', 'models', 'species', 'sound', 'effects', 'title', 'story', 'screens', 'localize', 'signs', 'balance', 'storycopies')
 FACTS = True
 SOUND = ('FAALL', 'VBALL', 'VLALL', 'ESALL')
 PLACEHOLDER = bytes(2048)    # an overlay's Spanish copy and LANGEN/LANGES.BIN until the executable is built
@@ -126,6 +126,8 @@ def make(ctx):
     O, P = ctx.path, Plan(ctx)
     orig = s.orig(s.text, f)
     P.add('DIGI.DAT', O('DIGI.DAT'))
+    P.add('CARD/CARDTAB.BIN', O('cards', 'CARDTAB.BIN'))
+    P.add('CARD/CARD2.ALL', O('cards', 'CARD2.ALL'))
     if s.scrn:   # (:325-336)
         P.add('SCRN.DAT', O('SCRN.DAT'))
         if orig and not same(O('SCRN.DAT'), O('orig', 'SCRN.DAT')):
