@@ -1073,6 +1073,8 @@
  "main.LAB_STR_DISCARD": "Abandonner",
  "main.LAB_STR_DO_IT": "Confirmer",
  "main.LAB_STR_CHOOSE": "Choisir",
+ "doo2.EGG_STR_RANDOM": "Oeuf au hasard",
+ "doo2.EGG_STR_CHOOSE": "Choisir",
  "main.LAB_STR_BACK": "Retour",
  "main.LAB_STR_SIMPLE_STEP": "Pas : ",
  "main.LAB_STR_STEP_ARROWS": " (haut/bas)",
