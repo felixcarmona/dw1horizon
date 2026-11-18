@@ -71,6 +71,18 @@ ELEMENTS = {
     'battle':  ('red',    'a dramatic arena with dust and warm light'),
 }
 DEFAULT_ELEMENT = 'battle'
+# how the creature is rendered; the game's own look is low-poly, so that is the default
+STYLES = {
+    'lowpoly': (
+        "KEEP the low-poly look: the visible flat polygon facets and angular, chunky shapes of the model, as in a "
+        "late-1990s PlayStation 3D game, lit with simple flat shading and a few clean highlights. Make it look like a "
+        "crisp render from the game's own engine, NOT a glossy modern illustration. Keep the background in the same "
+        "era: simple, slightly stylised, hand-painted texture-map look, with blocky rocks and plain colour areas, no "
+        "bokeh, no lens effects, no floating glowing particles, no shiny wet surfaces, no cinematic depth of field."),
+    'smooth': (
+        "Do NOT reproduce the polygon facets or flat shading: render smooth, rounded, organic forms with soft skin, "
+        "gentle shading and fine detail, as a polished high-quality 3D illustration."),
+}
 
 
 def species_of(key):
@@ -111,9 +123,7 @@ def prompt_for(card):
         f"The attached image{'s are reference sheets' if many else ' is a reference sheet'} of the 3D game "
         f"model{'s' if many else ''} from three sides (3/4, front, side){', in the order named' if many else ''}. "
         "They are low-polygon PlayStation models: keep each design EXACTLY (proportions, head shape, eyes, claws, "
-        "colours and markings), but do NOT reproduce the polygon facets or the flat shading: render smooth, rounded, "
-        "organic forms, soft skin with gentle subtle shading and fine detail, as a polished high-quality 3D "
-        "illustration. Friendly and heroic; keep the chibi proportions of the models (big head, small body).\n"
+        "colours and markings). " + STYLES[card.get('style', 'lowpoly')] + "\n"
         f"Pose: {card.get('pose') or 'lively three-quarter view'}, full body visible from head to feet. "
         f"Setting: {scene}, painterly and colourful, with depth behind the creature and a clear single subject.\n"
         "Composition: the creature centred, filling about 70% of the height, with comfortable margins on every side "
