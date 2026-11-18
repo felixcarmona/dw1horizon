@@ -22,8 +22,10 @@ def main():
     common = (tree / 'src/main/script_common.c').read_text()
     interp = (tree / 'src/main/script_interp.c').read_text()
     menu = (tree / 'src/main/game_menu.c').read_text()
+    assert 'return modLoadCardImage(id, TEXTURE_BUFFER);' in function(menu, 'int32_t loadCardImage(int32_t id)\n')
     save = (tree / 'src/main/main_menu.c').read_text()
     shop = (tree / 'src/shop/script_menu.c').read_text()
+    assert 'modLoadCardImage(PACK_ART,' in function(shop, 'static void tickPackResults(void)\n')
     tamer = (tree / 'src/main/tamer.c').read_text()
     item_type = re.search(r'typedef struct \{\n\tuint8_t \*buf;\n\tint32_t isOpen;.*?\} ItemMenuBox;',
                           (tree / 'include/dw/script.h').read_text(), re.S).group()
@@ -86,6 +88,7 @@ typedef struct { uint16_t digimonId; uint8_t spriteId,meritValue; } CardData;
 static CardData CARD_DATA[512];
 static int CARD_PRICES[6]={5000,1500,500,100,50,0}, MONEY=99999;
 static uint8_t MOD_CARD_REAL[64], MOD_CARD_EXTRA[223];
+static uint16_t MOD_CARD_ART[8];
 static uint16_t MOD_CARD_STOCK[6];
 typedef struct { uint8_t cards[33],smth[212]; } ScriptState;
 static ScriptState script, *SCRIPT_STATE_PTR=&script;
@@ -128,17 +131,21 @@ static uint8_t ext[2][1120];
 static uint8_t *saveExtOf(int copy) { return ext[copy]; }
 static int readRecord16(uint8_t *p) { return p[0]|p[1]<<8; }
 static const char *archive;
+static int lastArchive, lastOffset;
 static int loadStackedTIMEntry(char *path,void *buf,int off,int sectors) {
- assert(strstr(path,"CARD2.ALL") && sectors==14);
+ assert(sectors==14);
+ lastArchive=strstr(path,"CARD2.ALL")!=NULL;lastOffset=off;
+ if(!lastArchive){assert(strstr(path,"CARD.ALL"));memset(buf,0,sectors*2048);((uint8_t*)buf)[22]=off/14;return 1;}
  FILE *f=fopen(archive,"rb"); assert(f); assert(!fseek(f,off*2048L,SEEK_SET));
  assert(fread(buf,1,sectors*2048,f)==(size_t)sectors*2048); fclose(f); return 1;
 }
 '''.replace('__ITEM_MENU_BOX_TYPE__', item_type)
     tests = r'''
 int main(int argc,char **argv) {
- assert(argc==4); archive=argv[1];
+ assert(argc==5); archive=argv[1];
  FILE *table=fopen(argv[2],"rb");assert(table);assert(fread(CARD_DATA,4,512,table)==512);fclose(table);
  table=fopen(argv[3],"rb");assert(table);assert(fread(MOD_CARD_REAL,1,64,table)==64);fclose(table);
+ table=fopen(argv[4],"rb");assert(table);assert(fread(MOD_CARD_ART,2,8,table)==8);fclose(table);
  assert(CARD_DATA[511].digimonId==300);
  for(int i=-2;i<514;i++){ setCardAmount(i,9); assert(getCardAmount(i)==(modCardIsReal(i)?9:0)); }
  setCardAmount(256,42); assert(getCardAmount(256)==9);
@@ -213,8 +220,22 @@ int main(int argc,char **argv) {
  assert(getCardAmount(66)==1 && getCardAmount(67)==9 && !getCardAmount(511));
  uint8_t art[14*2048];
  for(int n=66;n<512;n++){assert(modLoadCardImage(n,art));assert((art[22]|art[23]<<8)==n-65);assert(art[544]==1);}
+ /* Real JSON mappings use the same shared loader as viewer, shop and pack results. */
+ for(int enabled=0;enabled<2;enabled++){
+  MOD_OPT_NEW_CARDS=enabled;
+  for(int n=0;n<66;n++){
+   int entry=-1;
+   for(int i=0;i<8;i++)if(MOD_CARD_ART[i]!=65535 && (MOD_CARD_ART[i]&63)==n-1)entry=MOD_CARD_ART[i]>>6;
+   assert(modLoadCardImage(n,art));
+   assert(lastArchive==(enabled && entry>=0));
+   assert(lastOffset==(enabled && entry>=0?entry:n)*14);
+   assert((art[22]|art[23]<<8)==(enabled && entry>=0?entry+1:n));
+  }
+ }
+ assert(!modLoadCardImage(-1,art) && !modLoadCardImage(512,art));
+ MOD_OPT_NEW_CARDS=1;
  memset(MOD_CARD_REAL+9,0,55);MOD_CARD_REAL[8]=1;assert(album()); /* Unassigned capacity never blocks the medal. */
- puts("PASS: cards 66..511 save round trip, sparse/short records, 510-row shop/trades, daily stock, scroll to 511, all 446 CARD2 images, JSON pack rarities, real-only medal, OFF/ON visibility and nondestructive resave");
+ puts("PASS: cards 66..511 save round trip, sparse/short records, 510-row shop/trades, daily stock, scroll to 511, all 446 CARD2 images, original/replacement art OFF/ON, JSON pack rarities, real-only medal, OFF/ON visibility and nondestructive resave");
 }
 '''
     with tempfile.TemporaryDirectory(prefix='cards-host-') as d:
@@ -223,10 +244,12 @@ int main(int argc,char **argv) {
         (d / 'new.json').write_text(json.dumps([authored(i, i % 5) for i in range(66, 512)]))
         rows = cards.build(d / 'out', d / 'CARD2.ALL', d / 'new.json')
         (d / 'real.bin').write_bytes(cards.real_mask(rows))
+        import struct
+        (d / 'art.bin').write_bytes(struct.pack('<8H', *cards.replacement_table()))
         (d / 'test.c').write_text(prefix + tags + '\n' + production + tests)
         subprocess.run(['cc', '-std=c99', '-Wall', '-Wextra', '-Werror', '-fsanitize=address,undefined',
                         str(d / 'test.c'), '-o', str(d / 'test')], check=True)
-        subprocess.run([str(d / 'test'), str(d / 'CARD2.ALL'), str(d / 'out/CARDTAB.BIN'), str(d / 'real.bin')], check=True)
+        subprocess.run([str(d / 'test'), str(d / 'CARD2.ALL'), str(d / 'out/CARDTAB.BIN'), str(d / 'real.bin'), str(d / 'art.bin')], check=True)
 
 
 if __name__ == '__main__':

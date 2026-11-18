@@ -58,6 +58,7 @@ WILD_FIRST = 11                    # index of hp in dwmap.DIGI_FIELDS (33 s16 pe
 # key, file, symbol, element format, field names (None: a list of numbers)
 SMALL_TABLES = [
     ('cards', 'SLUS_010.32', 'CARD_DATA', '<BBh', ('species', 'rarity', 'merit')),
+    ('cardArt', 'SLUS_010.32', 'MOD_CARD_ART', '<H', None),
     ('cardReal', 'SLUS_010.32', 'MOD_CARD_REAL', '<B', None),
     ('cardPrices', 'SLUS_010.32', 'CARD_PRICES', '<i', None),
     ('shopMaps', 'SLUS_010.32', 'SHOP_MAPS', '<h', None),
@@ -200,7 +201,7 @@ TABLES = [
     ('trainingBonus', 'TRN_REL.BIN', 'MOD_TRAIN_BONUS', 60),
 ]
 
-_SMALL_COUNTS = {'cardReal': 64, 'cards': 66, 'cardPrices': 5, 'shopMaps': 8, 'arenaMaps': 2, 'shopkeepers': 11, 'recyclableItems': 78,
+_SMALL_COUNTS = {'cardArt': 8, 'cardReal': 64, 'cards': 66, 'cardPrices': 5, 'shopMaps': 8, 'arenaMaps': 2, 'shopkeepers': 11, 'recyclableItems': 78,
                  'birdraTransport': 6, 'initialInventoryItems': 30, 'initialInventoryAmounts': 30, 'defaultInventoryItems': 30,
                  'defaultInventoryAmounts': 30, 'sleepPatterns': 8, 'statLimits': 22, 'targetAttackerChance': 4,
                  'statGainEnemyFactors': 4, 'healingValues': 4, 'healEffectVariant': 4, 'mojyamonGives': 12, 'mojyamonTakes': 12,
@@ -211,7 +212,7 @@ _SMALL_COUNTS = {'cardReal': 64, 'cards': 66, 'cardPrices': 5, 'shopMaps': 8, 'a
 TABLES += [(k, f, sym, struct.calcsize(fmt) * _SMALL_COUNTS[k]) for k, f, sym, fmt, _ in SMALL_TABLES]
 ORIGINAL_NAMES = {'SPECIES_BATTLE_MUSIC': 'ENEMY_MUSIC_MAPPING'}       # a table renamed by the mod
 TABLES += [('cityResidents', 'SLUS_010.32', 'CITY_RESIDENTS', 14)]
-OPTIONAL = {'cards', 'cardReal', 'evolutionRookieWeights', 'cityResidents', 'shopMaps', 'arenaMaps', 'defaultInventoryItems', 'defaultInventoryAmounts', 'curlingWeights', 'curlingStartTypes', 'curlingRingPoints', 'curlingRings', 'curlingObstacleX', 'curlingRules', 'fishingRules', 'battleMusic', 'reincarnation', 'newGameTechniques', 'donorEntries', 'donorOrigins', 'donorBones', 'trainingNum', 'trainingLevel', 'trainingBonus', 'trainGain', 'trainRules', 'train2Gain', 'train2Rules', 'train2Num', 'train2Level', 'train2Bonus', 'evolutionTiming', 'evolutionFresh', 'evolutionUltimate', 'evolutionSpecial', 'evolutionRules', 'evolutionItemRules', 'medals', 'tamerLevel', 'evolutionFormula', 'itemEffects', 'economy', 'curlingRules', 'fishingRules', 'battleFormulas', 'clock', 'newGame', 'careRules', 'careOverrides', 'modelScale', 'animatedTexture', 'tournamentRules', 'dailyRules', 'daytime', 'tournamentRemap', 'stdArena', 'vsUnlock', 'training'}   # a build from before they were tables has none
+OPTIONAL = {'cardArt', 'cards', 'cardReal', 'evolutionRookieWeights', 'cityResidents', 'shopMaps', 'arenaMaps', 'defaultInventoryItems', 'defaultInventoryAmounts', 'curlingWeights', 'curlingStartTypes', 'curlingRingPoints', 'curlingRings', 'curlingObstacleX', 'curlingRules', 'fishingRules', 'battleMusic', 'reincarnation', 'newGameTechniques', 'donorEntries', 'donorOrigins', 'donorBones', 'trainingNum', 'trainingLevel', 'trainingBonus', 'trainGain', 'trainRules', 'train2Gain', 'train2Rules', 'train2Num', 'train2Level', 'train2Bonus', 'evolutionTiming', 'evolutionFresh', 'evolutionUltimate', 'evolutionSpecial', 'evolutionRules', 'evolutionItemRules', 'medals', 'tamerLevel', 'evolutionFormula', 'itemEffects', 'economy', 'curlingRules', 'fishingRules', 'battleFormulas', 'clock', 'newGame', 'careRules', 'careOverrides', 'modelScale', 'animatedTexture', 'tournamentRules', 'dailyRules', 'daytime', 'tournamentRemap', 'stdArena', 'vsUnlock', 'training'}   # a build from before they were tables has none
 SPECIES_TABLES = ('para', 'raise', 'itemTakeDistance', 'vlall', 'vball', 'originalTypes', 'trainingAnims',
                   'training2Anims', 'battleMusic', 'reincarnation', 'newGameTechniques')
 # (patch 0087's EFFECT_FALLBACK_SPECIES / _ORIGIN were per-species tables too; patch 0106 replaced them by the DIGI.DAT
@@ -865,6 +866,9 @@ def encode(doc, exe):
             out[k] = b''.join(struct.pack(fmt, *([r[f] if f not in KEEP.get(k, ()) else kept[i][fields.index(f)] for f in fields] if fields
                                                  else (r if isinstance(r, list) else [r])))
                               for i, r in enumerate(doc[k]))
+    if exe.has('cardArt'):
+        import cards
+        out['cardArt'] = struct.pack('<8H', *cards.replacement_table())
     if exe.has('cardReal'):
         import cards
         out['cardReal'] = cards.real_mask(cards.load(native=doc['cards']))
@@ -1295,6 +1299,7 @@ def content_layer(base):
     import content
     base = merge(base, content.doc())
     import cards
+    base['cardArt'] = cards.replacement_table()
     base['cardReal'] = list(cards.real_mask(cards.load(native=base['cards'])))
     base['careOverrides'] = care_overrides(files, base.get('careRules', {}))
     if any(t < NUM_ORIGINAL for t in files):            # an evolution item of a species that does not exist gives nothing

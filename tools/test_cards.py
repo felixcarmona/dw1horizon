@@ -61,8 +61,6 @@ class CardContent(unittest.TestCase):
                     f'CARD/CARDTAB.BIN={d / "out/CARDTAB.BIN"}'], screen_dirs=None)
             self.assertEqual(names, ['CARD2.ALL', 'CARDTAB.BIN'])
             self.assertTrue(all(f[0] == '--add' for f in files))
-            with self.assertRaises(ValueError):
-                cards.build(d / 'missing', path=config)
             with art.open('r+b') as f:
                 f.seek(540)  # TIM pixel rectangle width
                 f.write(struct.pack('<H', 74))
@@ -71,6 +69,57 @@ class CardContent(unittest.TestCase):
             art.write_bytes(bytes(cards.ENTRY_BYTES))
             with self.assertRaises(ValueError):
                 cards.build(d / 'short', art, config)
+
+    def test_replacement_archives(self):
+        with tempfile.TemporaryDirectory() as d:
+            d = Path(d)
+            config = d / 'new.json'
+            config.write_text(json.dumps([authored(66), authored(70)] +
+                              [dict(key=f'art-{n}', replaces=n) for n in (26, 44)]))
+            self.assertEqual(cards.replacement_entries(config), {26: 5, 44: 6})
+            self.assertEqual(cards.replacement_table(config), [5 << 6 | 25, 6 << 6 | 43] + [65535] * 6)
+            original = d / 'CARD.ALL'
+            original.write_bytes(b'pristine disc art')
+            out = d / 'out'
+            out.mkdir()
+            (out / 'CARD.ALL').write_bytes(b'stale destructive output')
+            with patch('tools.cardmaker.tim', side_effect=lambda c, n: bytes([n]) * cards.ENTRY_BYTES):
+                cards.build(out, path=config)
+            self.assertEqual(original.read_bytes(), b'pristine disc art')
+            self.assertFalse((out / 'CARD.ALL').exists())
+            archive = (out / 'CARD2.ALL').read_bytes()
+            self.assertEqual(len(archive), 7 * cards.ENTRY_BYTES)
+            self.assertEqual([archive[i * cards.ENTRY_BYTES] for i in range(7)], [66, 0, 0, 0, 70, 26, 44])
+            art = d / 'input.all'
+            dummy_archive(art, 7)
+            cards.build(out, art, config)
+            dummy_archive(art, 5)  # Old archives lack the appended replacement art.
+            with self.assertRaises(ValueError):
+                cards.build(out, art, config)
+            dummy_archive(art, 7)
+            with art.open('r+b') as f:
+                f.seek(6 * cards.ENTRY_BYTES + 540)
+                f.write(struct.pack('<H', 74))
+            with self.assertRaises(ValueError):
+                cards.build(out, art, config)
+
+    def test_replacement_limits(self):
+        for rows in ([dict(key='bad', replaces=n) for n in (26, 26)],
+                     [dict(key='bad', replaces=65)],
+                     [dict(key=str(n), replaces=n) for n in range(1, 10)],
+                     [authored(511), dict(key='overflow', replaces=26)]):
+            with self.subTest(rows=rows), tempfile.TemporaryDirectory() as d:
+                p = Path(d) / 'new.json'
+                p.write_text(json.dumps(rows))
+                with self.assertRaises(ValueError):
+                    cards.replacement_entries(p)
+        with tempfile.TemporaryDirectory() as d:
+            p = Path(d) / 'new.json'
+            p.write_text(json.dumps([authored(510), dict(key='last', replaces=64)]))
+            self.assertEqual(cards.replacement_table(p), [(445 << 6) | 63] + [65535] * 7)
+        entries = cards.replacement_entries()
+        self.assertEqual(set(entries), {26, 27, 29, 30, 31, 32, 35, 44})
+        self.assertEqual(sorted(entries.values()), list(range(240, 248)))
 
     def test_bad_metadata(self):
         for update in ({'number': 65}, {'number': 512}, {'species': 65536},

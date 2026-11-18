@@ -2,8 +2,8 @@
 
 The engine reserves IDs 0–511. Keep original card numbers stable: 0 and 65 are
 sentinels, and 1–64 come from `content/tables/cards.json`. Additional real cards
-are the rows of `content/cards/new.json`. The phase-A list is empty until artwork
-is supplied. Duplicate species and multiple cards for a species are supported;
+are the rows of `content/cards/new.json`. Duplicate species and multiple cards
+for a species are supported;
 card number, rather than species, identifies a collectible and its saved count.
 
 Each new row has these fields:
@@ -24,15 +24,18 @@ stock, nor the Card Complete medal requirement. Other artwork metadata, such as
 `tools/cards.py` validates these rows and generates `CARD/CARDTAB.BIN`: exactly
 512 little-endian `<HBB` rows, one sector. Its four-byte row keeps the species
 aligned and stores merit in a byte. `tools/balance.py` derives the resident
-64-byte real-card bitmap from the same JSON; no extra metadata table is resident.
+64-byte real-card bitmap and the 16-byte replacement-art lookup from the same JSON.
 The economy audit includes every authored new card.
 
 The derive `cards` step and `plan` step add `CARDTAB.BIN` and `CARD2.ALL` through
 `tools/newfiles.py`. This supplies both ISO directory entries and `NEW_FILES`
 for the generated executable file table; the ordinary relayout writer assigns
-sectors and sizes. No hand-coded disc sector or original disc data is committed.
+sectors and sizes. The disc's `CARD.ALL` stays pristine and is never a plan
+replacement, including when a stale generated `CARD.ALL` exists. No hand-coded
+disc sector or original disc data is committed.
 
-Set `CARD2_ALL` to the phase-B archive path when building with new cards:
+By default the cards step composes `CARD2.ALL` from the committed artwork.
+To supply an already composed archive, set `CARD2_ALL`:
 
 ```sh
 CARD2_ALL=build/card-art/CARD2.ALL python3 -m tools.dev build --jobs 8 --name cards-engine
@@ -40,11 +43,22 @@ CARD2_ALL=build/card-art/CARD2.ALL python3 -m tools.dev build --jobs 8 --name ca
 
 Each entry is exactly `0x7000` bytes (14 sectors), with the same 150×180 8bpp TIM
 layout as `CARD.ALL`, pixels at VRAM (576,256), palette at (448,511). Entry `i`
-is card ID `66+i`. Sparse metadata retains those positions: the archive must
-reach the highest assigned ID, including holes, and may contain up to 446
-entries. A missing archive or an incorrectly sized archive fails the build when
-new cards are listed. With an empty list, the build writes an empty archive.
-No new card is obtainable in that configuration.
+is card ID `66+i` for new cards. Sparse metadata retains those positions,
+including holes. Rows with `replaces` append their art after the highest new ID,
+in JSON order: the current 240 new slots plus eight replacements use 248 of the
+446 allowed entries. The eight original IDs are 26, 27, 29, 30, 31, 32, 35 and 44;
+their replacement entries are 240–247. Replacement IDs must be unique originals
+1–64; up to eight are supported. Both composed and supplied archives must fit
+446 entries; supplied archives must reach and validate every new and replacement
+TIM. Old supplied archives without the appended art fail the build. With an
+empty list, the build writes an empty archive.
+
+`balance.py` generates eight packed u16 lookup entries in `MOD_CARD_ART`: the
+low six bits hold original ID minus one, and the upper bits hold the `CARD2.ALL`
+entry; `0xffff` marks unused slots. The shared viewer/shop/pack-result loader uses
+this lookup only with NEW CARDS ON. OFF reads original art from `CARD.ALL`.
+There is no additional image buffer or allocation. The card builder also removes
+stale generated `CARD.ALL` outputs from the old composer.
 
 The original thumbnail sheet is part of the stacked `ETCTIM.BIN` upload loaded
 by `main.c`. Its album UVs are `(id%8)*32, (id/8)*16`, on a 256-pixel texture
@@ -81,8 +95,9 @@ is 1,093/1,120 bytes (27 spare). See [save format](../reference/save-format.md).
 
 The OPTIONS row **NEW CARDS** defaults to ON. OFF hides IDs 66–511 in every
 collection and acquisition view, preserves their saved counts and existing stock,
-and requires only originals for Card Complete. Replaced artwork on an original
-card does not change its eligibility. See [options](options.md#new-cards).
+and requires only originals for Card Complete. OFF also restores the original
+full-size artwork for the eight replaced cards; ON selects the authored
+replacements. Their eligibility stays the same. See [options](options.md#new-cards).
 
 Validation without an emulator:
 
@@ -99,10 +114,19 @@ The card host check compiles the production collection functions, navigation,
 pack roll, shop builder/trade, daily stock, record writer/reader and inline
 scatter helper with address/undefined-behaviour sanitizers. It generates a
 temporary archive of 446 distinct flat-colour TIMs and verifies every new image
-offset, JSON-driven pack eligibility, IDs 255/256/511, old/short record defaults,
+offset, all eight OFF/ON replacement/original selections, JSON-driven pack
+eligibility, IDs 255/256/511, old/short record defaults,
 and the real-card medal rule. It checks the loader's selected bytes, rather than
 GPU presentation. Artwork review and emulator presentation remain separate
 phase-B checks.
+
+The artwork-option change was measured with matched executable-only links using
+the complete cards-engine file plan (1,509 new files) and shared language padding:
+`main_BSS_END` 0x801CE898 → 0x801CE908 (+112 bytes), aligned heap
+185,952 → 185,840 bytes. This includes the 16-byte lookup and loader code.
+MENU remains 55,296 bytes (27 sectors); heapcheck retains at least 29,488 bytes
+against the original-screen sweep. These are host/link checks; no full disc build
+or emulator test was run for this change.
 
 ## Generating and keeping the artwork
 

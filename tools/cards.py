@@ -89,55 +89,75 @@ def replaced(path=None):
     return [c for c in authored_cards(path) if 'replaces' in c]
 
 
-def compose_archives(out, source, path=None):
-    """Compose the authored cards from their kept art with the card maker: CARD2.ALL (entry = number - 66, holes zero) and,
-    when cards replace an original, CARD.ALL = the player's own archive with those entries replaced."""
+REPLACEMENT_LIMIT = 8
+
+
+def replacement_entries(path=None):
+    """Original ID -> CARD2 entry, after the highest authored new ID (holes retained)."""
+    authored = authored_cards(path)
+    first = max((c['number'] - FIRST_NEW + 1 for c in authored if 'replaces' not in c), default=0)
+    originals = [c['replaces'] for c in authored if 'replaces' in c]
+    if (len(originals) > REPLACEMENT_LIMIT or len(set(originals)) != len(originals) or
+        any(type(n) is not int or not 1 <= n <= 64 for n in originals)):
+        raise ValueError('replacement art requires up to eight unique original IDs 1..64')
+    if first + len(originals) > LIMIT - FIRST_NEW:
+        raise ValueError('CARD2.ALL exceeds 446 entries including replacement art')
+    return dict((n, first + i) for i, n in enumerate(originals))
+
+
+def replacement_table(path=None):
+    # Six bits identify original IDs 1..64; nine bits identify archive entries.
+    entries = [(entry << 6) | (n - 1) for n, entry in replacement_entries(path).items()]
+    return entries + [0xffff] * (REPLACEMENT_LIMIT - len(entries))
+
+
+def compose_archives(out, path=None):
+    """Compose CARD2.ALL from kept art; the disc's CARD.ALL is never modified."""
     from tools import cardmaker
     cards = authored_cards(path)
+    replacements = replacement_entries(path)
     new = [c for c in cards if 'replaces' not in c]
-    out = Path(out)
-    entries = bytearray(((max(c['number'] for c in new) - FIRST_NEW + 1) if new else 0) * ENTRY_BYTES)
-    for c in new:
-        at = (c['number'] - FIRST_NEW) * ENTRY_BYTES
-        entries[at:at + ENTRY_BYTES] = cardmaker.tim(c, c['number'])
-    (out / 'CARD2.ALL').write_bytes(bytes(entries))
-    replaced = [c for c in cards if 'replaces' in c]
-    if replaced:
-        original = bytearray(Path(source).read_bytes())
-        for c in replaced:
-            n = c['replaces']
-            if not 1 <= n < 65 or (n + 1) * ENTRY_BYTES > len(original):
-                raise ValueError(f"card {c['key']} replaces {n}: not an original card")
-            original[n * ENTRY_BYTES:(n + 1) * ENTRY_BYTES] = cardmaker.tim(c, n)
-        (out / 'CARD.ALL').write_bytes(bytes(original))
-    return len(new), len(replaced)
+    count = max([c['number'] - FIRST_NEW + 1 for c in new] +
+                [entry + 1 for entry in replacements.values()], default=0)
+    entries = bytearray(count * ENTRY_BYTES)
+    for c in cards:
+        number = c.get('replaces', c.get('number'))
+        entry = replacements[number] if 'replaces' in c else number - FIRST_NEW
+        tim = cardmaker.tim(c, number)
+        if len(tim) != ENTRY_BYTES:
+            raise ValueError(f"card {c['key']}: expected 0x7000 bytes")
+        entries[entry * ENTRY_BYTES:(entry + 1) * ENTRY_BYTES] = tim
+    (Path(out) / 'CARD2.ALL').write_bytes(entries)
+    return len(new), len(replacements)
 
 
-def build(out, art=None, path=None, native=None, source=None):
+def build(out, art=None, path=None, native=None):
     rows = load(path, native)
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
     (out / 'CARDTAB.BIN').write_bytes(b''.join(struct.pack('<HBB', r['species'], r['rarity'], r['merit']) for r in rows))
     ids = [i for i in range(FIRST_NEW, LIMIT) if rows[i]['rarity'] < 5]
-    needed = max(ids) - FIRST_NEW + 1 if ids else 0
+    replacements = replacement_entries(path)
+    entries = [i - FIRST_NEW for i in ids] + list(replacements.values())
+    needed = max(entries, default=-1) + 1
+    # Remove an output left by the former destructive archive composer.
+    (out / 'CARD.ALL').unlink(missing_ok=True)
     target = out / 'CARD2.ALL'
     if art:
         size = Path(art).stat().st_size
         if size % ENTRY_BYTES or not needed * ENTRY_BYTES <= size <= (LIMIT - FIRST_NEW) * ENTRY_BYTES:
             raise ValueError(f'CARD2.ALL requires {needed}..446 entries of 0x7000 bytes')
         with Path(art).open('rb') as source:
-            for number in ids:
-                source.seek((number - FIRST_NEW) * ENTRY_BYTES)
+            for entry in entries:
+                source.seek(entry * ENTRY_BYTES)
                 tim = source.read(544)
                 if (struct.unpack_from('<II', tim) != (0x10, 9) or
                     struct.unpack_from('<I4H', tim, 8) != (524, 448, 511, 256, 1) or
                     struct.unpack_from('<I4H', tim, 532) != (27012, 576, 256, 75, 180)):
-                    raise ValueError(f'CARD2.ALL card {number}: expected the CARD.ALL 150x180 8bpp TIM layout')
+                    raise ValueError(f'CARD2.ALL entry {entry}: expected the CARD.ALL 150x180 8bpp TIM layout')
         shutil.copyfile(art, target)
-    elif needed or any('replaces' in c for c in authored_cards(path)):
-        if not source:
-            raise ValueError('new.json lists cards: set CARD2_ALL to a ready CARD2.ALL, or give the disc CARD.ALL to compose them from the kept art')
-        compose_archives(out, source, path)
+    elif needed:
+        compose_archives(out, path)
     else:
         target.write_bytes(b'')
     return rows

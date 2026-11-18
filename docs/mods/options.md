@@ -8,7 +8,7 @@ opens a box of twelve switches (eleven in a `FONT=original` build, which has no 
 | JAPANESE CONTROLS | OFF / ON | OFF; ON on a Japanese base disc (patch 0241) | the Japanese disc's buttons (below) |
 | EVOLUTION GUIDE | OFF / ON | ON | the evolution chart's green lines and Square requirements popup (patches 0176, 0299); OFF hides the prompt and popup and draws the original detail view |
 | NEW DIGIMON | OFF / ON | ON | OFF: the partner evolves only into the species the original game raises (the species files' `"vanilla": true`, ids 1-65: the chart's 61 and WereGarurumon, IceLeomon, Gigadramon, MetalEtemon by items), so no Megas; the chart is the original sheet and its trees show the original rows (below); the death's egg box shows only the original four eggs (patch 0334; ON adds the hand-made babies' four) |
-| NEW CARDS | OFF / ON | ON | OFF: only original card numbers 1–64 are available; hides new cards in packs/machines, daily stock, merit trades, the album and Card Complete. Saved counts are retained. |
+| NEW CARDS | OFF / ON | ON | OFF: only original card numbers 1–64 are available; hides new cards in packs/machines, daily stock, merit trades, the album and Card Complete. Restores the eight original full-size artworks. Saved counts are retained. |
 | EXTENDED STORY | OFF / ON | ON | patch 0199: the story with the story mods built onto the disc (What the Island Forgot: its new places, the city's new residents), or OFF the original story; changing it on a save moves the tamer to Jijimon's house (below) |
 | DIFFICULTY | EASY / NORMAL / HARD | NORMAL | EASY doubles partner damage and halves damage taken; HARD scales enemies and adds a damage floor (below) |
 | QUICK BATTLE START | OFF / ON | ON | patches 0234, 0239: a field battle starts the moment it is triggered, its BATTLE letters and bubbles over the running fight (patches 0233, 0236, 0238); OFF, the original start |
@@ -288,10 +288,15 @@ Digimon but not a balance list of a map the story did not edit.
 `New-cards-option-preserves-hidden-collection-counts.patch` adds the
 row beneath NEW DIGIMON. ON retains the authored roster. OFF limits card
 eligibility to IDs below 66: original cards 1–64 remain, including the eight
-whose artwork was replaced. The album uses its original 11×6 grid and id/65
-counter; new cards cannot be obtained or traded and do not block Card Complete.
+whose artwork was replaced, and restores their original full-size art from the
+pristine disc `CARD.ALL`. ON selects the authored replacements appended to
+`CARD2.ALL`; the viewer, shop and pack results share this loader. Album thumbnails
+retain the original portrait sheet in either mode. The album uses its original
+11×6 grid and id/65 counter; new cards cannot be obtained or traded and do not block Card Complete.
 Already generated daily stock is hidden without consuming it. Daily refreshes
-choose from the active roster.
+choose from the active roster. The artwork selection is exported in
+`Select-original-card-artwork-with-the-New-Cards-opti.patch`; see the current
+[archive layout and memory measurement](cards.md).
 
 The 14-byte options record and 12-byte title-header copy retain their sizes.
 Byte 6 bit 0 is NEW DIGIMON; bit 7 is inverted NEW CARDS (set = OFF). Old 0/1
@@ -308,7 +313,8 @@ MENU is 55296 bytes, exactly its existing 27 sectors. Linker assertions guard th
 metadata sector and title overlay boundary. No full disc build was run.
 
 `cards_host.py` checks OFF/ON packs, daily stock, existing stock, merit lists,
-album navigation, medal eligibility and nondestructive resaving. `test_cheats.py`
+album navigation, medal eligibility, all eight original/replacement artwork
+selections and nondestructive resaving. `test_cheats.py`
 compiles the production row getter/setter and options serializer/reader, checking
 both header/tagged copies, old/short records and explicit title precedence.
 
