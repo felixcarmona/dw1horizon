@@ -1,6 +1,78 @@
 {
  "cards": [
   {
+   "key": "greymon",
+   "number": 26,
+   "species": 5,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 26,
+   "scene": "a rocky volcanic canyon with lava pools and dark basalt cliffs"
+  },
+  {
+   "key": "devimon",
+   "number": 27,
+   "species": 6,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 27,
+   "scene": "a dark gothic ruin courtyard with broken purple stone pillars, dead trees and a dusky violet sky"
+  },
+  {
+   "key": "tyrannomon",
+   "number": 29,
+   "species": 8,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 29,
+   "scene": "a prehistoric swamp valley with ferns, mud pools and mossy boulders"
+  },
+  {
+   "key": "meramon",
+   "number": 30,
+   "species": 9,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 30,
+   "scene": "a scorched dry wasteland with charred stumps, cracked red earth and glowing vents"
+  },
+  {
+   "key": "seadramon",
+   "number": 31,
+   "species": 10,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 31,
+   "scene": "a shallow tropical sea shore with turquoise water, sand banks and blocky coral rocks"
+  },
+  {
+   "key": "kabuterimon",
+   "number": 32,
+   "species": 19,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 32,
+   "scene": "a green jungle clearing with tall trees, big leaves and a mossy forest floor"
+  },
+  {
+   "key": "garurumon",
+   "number": 35,
+   "species": 22,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 35,
+   "scene": "a frozen pine forest clearing with deep snow and a pale blue sky"
+  },
+  {
+   "key": "monochromon",
+   "number": 44,
+   "species": 47,
+   "rarity": 2,
+   "merit": 10,
+   "replaces": 44,
+   "scene": "a dry canyon desert with sandstone mesas, cactus and a warm yellow sky"
+  },
+  {
    "key": "agumon-lava",
    "number": 66,
    "species": 3,
