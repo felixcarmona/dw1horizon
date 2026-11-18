@@ -48,7 +48,7 @@ import os
 import struct
 import sys
 
-import numpy as np
+from tools.derive import arraymath as np
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if ROOT not in sys.path:
@@ -297,8 +297,8 @@ def _atlas(pack, keys):
         u, v, sw, sh, clx, cly, _ = pack.rects[r]
         page = pack.pages[min(u // 256, len(pack.pages) - 1)]
         src = page.idx[v:v + sh, u % 256:u % 256 + sw]
-        ys = (np.arange(h) * sh // h).clip(0, sh - 1)
-        xs = (np.arange(w) * sw // w).clip(0, sw - 1)
+        ys = [min(max(i * sh // h, 0), sh - 1) for i in range(h)]
+        xs = [min(max(i * sw // w, 0), sw - 1) for i in range(w)]
         idx[y:y + h, x:x + w] = src[ys][:, xs]
         n = pals[(u // 256, clx, clut_row(cly, off))]
         out[(r, off)] = (x, y, w, h, (rows - pal_rows + n // 4) << 6 | n % 4)
@@ -307,7 +307,8 @@ def _atlas(pack, keys):
     for (pg, clx, cly), n in pals.items():
         page = pack.pages[min(pg, len(pack.pages) - 1)]
         data[rows - pal_rows + n // 4, 16 * (n % 4):16 * (n % 4) + 16] = page.hw[cly, clx:clx + 16]
-    tim = struct.pack('<2I', 0x10, 2) + struct.pack('<I4H', 12 + data.nbytes, 0, 0, TIM_W, rows) + data.tobytes()
+    packed = data.tobytes()
+    tim = struct.pack('<2I', 0x10, 2) + struct.pack('<I4H', 12 + len(packed), 0, 0, TIM_W, rows) + packed
     return tim, out
 
 
