@@ -41,7 +41,7 @@ import urllib.request
 from tools.image import Image
 
 ROOT = _ImagePath(__file__).resolve().parents[1]
-ART = _ImagePath(os.environ.get('CARD_ORIGINALS') or ROOT / 'build' / 'cards-originals')   # generated art as it came (2K, not committed)
+ART = _ImagePath(os.environ.get('CARD_ORIGINALS') or ROOT / 'build' / 'cards-originals')   # generated art as it came (2K PNG, not committed)
 KEPT = ROOT / 'content' / 'cards' / 'art'   # reduced copies of it that the build composes (committed)
 CARDS = ROOT / 'content' / 'cards' / 'new.json'
 OUT = ROOT / 'build' / 'cards'
@@ -125,8 +125,14 @@ def card_of(key):
     raise SystemExit(f'no card {key!r} in content/cards/new.json')
 
 
+KEPT_ORIGINALS = ROOT / 'content' / 'cards' / 'originals'   # the originals as lossy WebP (committed; see docs/mods/cards.md)
+
+
 def art_path(card):
-    return ART / f"{card['key']}.png"
+    """The generated original: the full-quality PNG when there is one, else the committed WebP copy."""
+    png = ART / f"{card['key']}.png"
+    webp = KEPT_ORIGINALS / f"{card['key']}.webp"
+    return png if png.exists() or not webp.exists() else webp
 
 
 def kept_path(card):
@@ -206,7 +212,7 @@ def generate(card, refs):
         f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI}:generateContent",
         data=json.dumps(body).encode(), headers={"Content-Type": "application/json", "x-goog-api-key": key})
     r = json.load(urllib.request.urlopen(req, timeout=300))
-    out = art_path(card)
+    out = ART / f"{card['key']}.png"
     cand = r['candidates'][0]
     if 'parts' not in cand.get('content', {}):
         raise SystemExit('the generator refused: %s' % cand.get('finishReason'))
@@ -362,8 +368,8 @@ def build_art(card, regen_bg=False, regen_model=False):
         sh = sh.resize((sh.size[0] // 4, sh.size[1] // 4), Image.Resampling.LANCZOS).resize(sh.size, Image.Resampling.BICUBIC)
         canvas.alpha_composite(sh, (x, round(foot - sh.size[1] * 0.6)))
         canvas.alpha_composite(m, (x, y))
-    canvas.convert('RGB').save(str(art_path(card)))
-    return art_path(card)
+    canvas.convert('RGB').save(str(ART / f"{card['key']}.png"))
+    return ART / f"{card['key']}.png"
 
 
 # ---------------------------------------------------------------- frame

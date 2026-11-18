@@ -110,8 +110,11 @@ scene. Everything that steers the image is a field of its row in `content/cards/
 - `tools/generate_cards.sh KEY...` generates the missing originals (2K images, retrying on rate
   limits). Each original is written as `<key>.png` with a `<key>.json` that records the exact
   prompt and model; those records are committed in `content/cards/generation/`.
-- The originals are too large for the repository (about 2.4 MB each). They are kept outside it,
-  and `content/cards/originals.sha256` lists their checksums. `CARD_ORIGINALS` points the tool at them.
+- The originals are kept in the repository as lossy WebP copies (quality 92, about 0.3 MB each) in
+  `content/cards/originals/`: visually the same as the 2K PNGs the generator returned, and enough to
+  re-reduce the art and re-run the card maker. The full-quality PNGs (about 1.8 MB each) are not committed;
+  `content/cards/originals.sha256` lists their checksums, and `CARD_ORIGINALS` points the tool at them
+  when they are at hand (the PNG wins over the WebP).
 - `python3 tools/cardmaker.py reduce KEY...` writes the committed art, `content/cards/art/<key>.png`.
 - `python3 tools/cardmaker.py render KEY` previews a finished card; `tools/cards.py` composes the
   card archives from the committed art at build time.
