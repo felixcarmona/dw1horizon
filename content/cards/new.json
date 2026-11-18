@@ -2498,7 +2498,8 @@
    "rarity": 2,
    "merit": 10,
    "replaces": 34,
-   "scene": "a high mountain sky with blocky clouds and sunlit peaks"
+   "scene": "a warm sunset sky over distant rolling hills and a smoking volcano, soft detailed painterly clouds, finely textured terrain with smooth shading and many small details, NOT chunky faceted polygons",
+   "pose": "flying in flight with wings spread, seen from the side, wide open sky around it"
   },
   {
    "key": "frigimon",
@@ -2559,7 +2560,9 @@
    "species": 37,
    "rarity": 2,
    "merit": 10,
-   "replaces": 42
+   "replaces": 42,
+   "scene": "Overdell Cemetery at dusk: weathered tombstones, crooked crosses, dead twisted trees, iron fence, grey-purple misty sky",
+   "pose": "floating low as a ghost just above the grass between the gravestones"
   },
   {
    "key": "drimogemon",
@@ -2699,7 +2702,9 @@
    "rarity": 3,
    "merit": 5,
    "replaces": 59,
-   "scene": "a muddy battlefield with blocky rocks and a grey sky"
+   "scene": "a muddy battlefield with blocky rocks and a grey sky",
+   "anatomy": "Tankmon is ONE tank body with exactly ONE pair of caterpillar tracks, one long track on each side, shown with the track spikes in front. No extra wheels, no second set of tracks, no doubled wheels.",
+   "pose": "driving slowly forward on its single pair of tracks, cannon raised, seen from a three-quarter front angle"
   },
   {
    "key": "goblimon",
