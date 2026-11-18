@@ -2282,8 +2282,8 @@
    "rarity": 0,
    "merit": 100,
    "replaces": 4,
-   "scene": "a snowy ice field with a frozen cliff behind",
-   "pose": "sitting heavily on the ground, belly resting on the snow"
+   "scene": "Geko Swamp: a murky green swamp with giant lily pads, mossy logs and twisted mangrove roots, hazy green sky",
+   "pose": "sitting heavily on a muddy bank of the swamp, belly resting on the ground"
   },
   {
    "key": "myotismon",
@@ -2345,7 +2345,8 @@
    "rarity": 1,
    "merit": 30,
    "replaces": 11,
-   "scene": "a dark night field with blocky rocks and a starry sky"
+   "scene": "Factorial Town: a grimy industrial town street with riveted steel buildings, smokeless chimneys, pipes and metal walkways under a grey-blue sky",
+   "pose": "hovering low on its grey flying saucer just above the ground, brain upright, one hand holding its ray gun; model colours exactly as the reference, no glow"
   },
   {
    "key": "andromon",
@@ -2407,8 +2408,8 @@
    "rarity": 1,
    "merit": 30,
    "replaces": 18,
-   "scene": "standing upright with both feet flat on the ground, a snowy ice shelf",
-   "pose": "standing still, feet planted on the ground; the picture must fill the whole canvas edge to edge with no border or frame"
+   "scene": "Geko Swamp: a murky green swamp with giant lily pads, mossy logs and twisted mangrove roots, hazy green sky",
+   "pose": "standing on a mossy log at the swamp edge, feet planted, singing; the picture fills the canvas edge to edge"
   },
   {
    "key": "warumonzaemon",
@@ -2592,7 +2593,7 @@
    "rarity": 2,
    "merit": 10,
    "replaces": 47,
-   "scene": "a sandy riverbank with a bright sky",
+   "scene": "Mt. Panorama plains: open grassy plains with a few rocks and distant mountains under a bright sky",
    "pose": "standing on both feet on the ground, wings folded"
   },
   {
@@ -2638,8 +2639,8 @@
    "rarity": 3,
    "merit": 5,
    "replaces": 52,
-   "scene": "the muddy bank of a pond with lily pads, mossy stones",
-   "pose": "sitting on the ground, resting on its two front paws, no water splash"
+   "scene": "Geko Swamp: a murky green swamp with giant lily pads and mangrove roots",
+   "pose": "sitting on the muddy swamp bank on its two front paws"
   },
   {
    "key": "tentomon",
@@ -2680,7 +2681,7 @@
    "rarity": 3,
    "merit": 5,
    "replaces": 57,
-   "scene": "a rocky plateau with dark volcanic rocks, no smoke",
+   "scene": "Toy Town: a plaza of giant colourful toy blocks and toy houses with a cobbled street, blue sky",
    "pose": "standing on its two block feet on the ground, facing the viewer"
   },
   {
