@@ -20,17 +20,18 @@ def check(tree):
     for name, _, _, _, index in linked.syms:
         if 0 < index < len(linked.sh):
             locations.setdefault(name, set()).add(linked.sh[index]['name'])
-    moved = {'.rodata.LAB_FIELDS', '.rodata.LAB_HOME_TEXT', '.bss.labText'}
+    cache = {'.bss.labTextHash': 40, '.bss.labTextWidth': 20}  # each row's hash and width, not a copy
+    moved = {'.rodata.LAB_FIELDS', '.rodata.LAB_HOME_TEXT', '.rodata.LAB_NUMBER_LINES', *cache}
     if '.rodata' in obj.byname:
         moved.add('.rodata')  # Some language banks need no anonymous literal pool.
     for name in sorted(moved):
         section = obj.sh[obj.byname[name]]
-        if name != '.bss.labText':
+        if name not in cache:
             assert not section['flags'] & 1, (name, 'must be compiler read-only data')
         else:
-            assert section['type'] == 8 and section['size'] == 960
+            assert section['type'] == 8 and section['size'] == cache[name], (name, section['size'])
         print(f'{name}: {section["size"]} bytes')
-    for name in ('LAB_FIELDS', 'LAB_HOME_TEXT', 'labText'):
+    for name in ('LAB_FIELDS', 'LAB_HOME_TEXT', 'LAB_NUMBER_LINES', 'labTextHash', 'labTextWidth'):
         assert locations[name] == {'.MENU'}, (name, locations[name])
     for name in ('modRosterTick', 'modRosterRenderCaption', 'modRosterTickCaption',
                  'MOD_LAB_EVO_TARGETS'):

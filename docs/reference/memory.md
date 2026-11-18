@@ -786,12 +786,14 @@ tables encode (`MOD_VS_UNLOCK`), stays resident: a reload of the overlay would u
 function in `main_menu.c` stays resident unless it is added there, which is always safe.
 
 Patch 0293 also moves the laboratory's anonymous translated UI literals,
-`LAB_FIELDS`, `LAB_HOME_TEXT` and 960-byte `labText` redraw cache into MENU.
+`LAB_FIELDS`, `LAB_HOME_TEXT` and 960-byte `labText` redraw cache into MENU. To keep MENU's
+whole-sector read within ENDI's first sector, the cache later became each row's hash and width
+(`labTextHash`, `labTextWidth`, 60 bytes) and the number editor's lines a table (`LAB_NUMBER_LINES`).
 The field roster's translated level captions have separate named resident arrays;
 its callbacks, caption buffer, species list and shared state stay resident.
 The resident `modLabMenu` entry drains queued reads, loads MENU, calls the
 synchronous UI and restores the previous overlay only after it returns. The UI
-clears `labText` before drawing or installing its render callback on every entry:
+clears the cache before drawing or installing its render callback on every entry:
 BIOS initialization does not cover overlay scratch. Its callback is removed
 before a save/load card menu reloads MENU, so no cached row survives that reload.
 The field/home tables are const and the compiler emits them and the literal pool
