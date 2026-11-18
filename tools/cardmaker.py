@@ -480,7 +480,7 @@ def to_indexed(card):
     """Quantize to the card's 256 colours of 15 bits: (indices, clut as 16-bit words). Index 0 stays black."""
     px = [tuple((c >> 3) << 3 | (c >> 5) for c in p) for p in card.getdata()]
     q = Image.frombytes('RGB', card.size, bytes(c for p in px for c in p)).quantize(255)
-    pal = q.getpalette()
+    pal = (q.getpalette() or []) + [0] * 765   # a flat image gets a palette shorter than 255 colours
     idx = [i + 1 for i in q.getdata()]
     clut = [0]
     for i in range(255):
