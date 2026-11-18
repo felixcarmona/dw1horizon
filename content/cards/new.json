@@ -247,6 +247,96 @@
    "rarity": 4,
    "merit": 1,
    "scene": "a dark mountain fortress with icy black spires and a grey stormy sky"
+  },
+  {
+   "key": "betamon",
+   "number": 88,
+   "species": 4,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a quiet pond shore with lily pads, reeds and blocky rocks at golden hour",
+   "pose": "low camera at ground level looking up at it, mid-leap out of the water with a splash frozen in the air"
+  },
+  {
+   "key": "kunemon",
+   "number": 89,
+   "species": 32,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a dim forest floor with giant mushrooms and fallen logs",
+   "pose": "seen from above at a steep high angle, coiled and rearing up from the ground, crackling electricity around its body"
+  },
+  {
+   "key": "darklizardmon",
+   "number": 90,
+   "species": 101,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a desert ruin at dusk with broken sandstone arches",
+   "pose": "side profile view, crouched low and sprinting at full speed, tail stretched out behind"
+  },
+  {
+   "key": "sandyanmamon",
+   "number": 91,
+   "species": 102,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a sandy desert dune landscape with a scorching sun and heat-baked rocks",
+   "pose": "flying toward the camera in strong foreshortening, wings blurred, diving down"
+  },
+  {
+   "key": "meteormon",
+   "number": 92,
+   "species": 113,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a rocky asteroid field in a dark red sky with floating boulders",
+   "pose": "spinning in the air viewed from behind at three-quarters, hurling itself forward"
+  },
+  {
+   "key": "mastertyrannomon",
+   "number": 93,
+   "species": 124,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a ruined volcanic fortress with bone spires under a red sky",
+   "pose": "standing tall viewed from a low angle, one huge foot stomping the ground, cracks spreading, arms thrown wide"
+  },
+  {
+   "key": "shamamon",
+   "number": 94,
+   "species": 97,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a sacred jungle clearing with totem poles and hanging vines",
+   "pose": "sitting cross-legged and meditating, floating a little above the ground, seen straight from the front, calm"
+  },
+  {
+   "key": "metaletemon",
+   "number": 95,
+   "species": 65,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a neon-lit futuristic city rooftop at night",
+   "pose": "striking a showman's pose on one leg, leaning sideways, viewed from slightly below, one arm pointing at the camera"
+  },
+  {
+   "key": "akatorimon",
+   "number": 96,
+   "species": 95,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a frozen cliff top with ice arches and a pale sky",
+   "pose": "perched on a rock seen from behind over its shoulder, head turned back to look at the camera, wings half open"
+  },
+  {
+   "key": "geremon",
+   "number": 97,
+   "species": 87,
+   "rarity": 4,
+   "merit": 1,
+   "scene": "a sewer cavern with green water, pipes and moss-covered walls",
+   "pose": "lying back relaxed on the ground seen from the side, lazily scratching its belly, completely at ease"
   }
  ]
 }
