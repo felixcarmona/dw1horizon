@@ -60,17 +60,15 @@ FRAMES = {
 }
 # species specialty (first slot) -> frame colour and the scene the art is set in
 ELEMENTS = {
-    'fire':    ('red',    'a blazing volcanic landscape, embers and warm orange-red light'),
-    'water':   ('blue',   'a bright underwater scene with soft light from above, bubbles and coral'),
-    'ice':     ('blue',   'a glittering snowy glacier under a pale blue sky'),
-    'plant':   ('green',  'a lush forest clearing with large leaves and soft green light'),
-    'wind':    ('green',  'an open sky with drifting clouds and a distant green landscape'),
-    'earth':   ('orange', 'a rocky canyon with sandstone cliffs under a warm sky'),
-    'metal':   ('orange', 'a gleaming machine workshop with brass gears and steel plates'),
-    'dark':    ('purple', 'a dusk gothic scene, purple sky and ruined towers'),
-    'thunder': ('yellow', 'a stormy sky with golden lightning bolts in the distance'),
-    'light':   ('yellow', 'a radiant heavenly sky with soft golden clouds'),
-    'battle':  ('red',    'a dramatic arena with dust and warm light'),
+    # first specialty -> frame colour, as the original 66 cards do (checked against all of them):
+    # fire red, ice and mech blue, nature green, air purple, battle orange, filth yellow
+    'fire':   ('red',    'a blazing volcanic landscape with lava and basalt cliffs'),
+    'ice':    ('blue',   'a glittering snowy glacier under a pale blue sky'),
+    'mech':   ('blue',   'a machine workshop with brass gears and steel plates'),
+    'nature': ('green',  'a lush forest clearing with large leaves'),
+    'air':    ('purple', 'an open sky with drifting clouds above a distant landscape'),
+    'battle': ('orange', 'a rocky canyon arena under a warm sky'),
+    'filth':  ('yellow', 'a murky swamp with sludge pools and dead trees'),
 }
 DEFAULT_ELEMENT = 'battle'
 # how the creature is rendered: 'faithful' (keeps the model's own look) is the default
