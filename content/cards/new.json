@@ -433,7 +433,7 @@
    "species": 1,
    "rarity": 4,
    "merit": 1,
-   "scene": "a lava field with black blocky rocks, late-1990s low-poly look",
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
    "pose": "sitting on the ground with its round body resting on the surface, a tight contact shadow under it",
    "anatomy": "Planted on the ground, not floating."
   },
@@ -443,7 +443,7 @@
    "species": 2,
    "rarity": 4,
    "merit": 1,
-   "scene": "a volcanic crater rim with glowing cracks, late-1990s low-poly look",
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
    "pose": "bouncing happily with its ears up, resting on its round body",
    "anatomy": "Koromon is ONLY a round head-body with two long ear stalks, eyes and a mouth: NO legs, NO feet, NO arms, NO hands, NO claws, no tail. It rests on the ground on its round underside."
   },
@@ -453,7 +453,7 @@
    "species": 15,
    "rarity": 4,
    "merit": 1,
-   "scene": "a floating island among low-poly clouds, late-1990s low-poly look",
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
    "pose": "bouncing happily, resting on its round body on the grass, ears up",
    "anatomy": "Punimon is ONLY a round red head-body with three pointed ears on top and two big eyes: NO legs, NO feet, NO arms, NO tail. It rests on the ground on its round underside."
   },
@@ -463,7 +463,7 @@
    "species": 29,
    "rarity": 4,
    "merit": 1,
-   "scene": "a mountain peak at dawn with blocky rocks, late-1990s low-poly look",
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
    "pose": "floating gently just on the water surface, resting on its round body",
    "anatomy": "Poyomon is a smooth round blob with NO limbs at all: no fins, no arms, no legs, no tail."
   },
@@ -473,7 +473,7 @@
    "species": 30,
    "rarity": 4,
    "merit": 1,
-   "scene": "a ruined sky temple with columns, late-1990s low-poly look",
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
    "pose": "hopping happily, both stubby feet touching the ground, tight contact shadow under it",
    "anatomy": "Tokomon is a round white blob with two ear stalks and exactly TWO small stubby feet at the bottom: NO arms, NO hands, NO side nubs, NO tail. It rests on the ground."
   },
@@ -483,7 +483,7 @@
    "species": 43,
    "rarity": 4,
    "merit": 1,
-   "scene": "a lush meadow with blocky flowers and round trees, late-1990s low-poly look",
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
    "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
   },
   {
@@ -492,7 +492,7 @@
    "species": 44,
    "rarity": 4,
    "merit": 1,
-   "scene": "a jungle clearing with big leaves and vines, late-1990s low-poly look",
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
    "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
   },
   {
@@ -501,7 +501,7 @@
    "species": 62,
    "rarity": 1,
    "merit": 30,
-   "scene": "a stone arena with blocky pillars, late-1990s low-poly look",
+   "scene": "a snowy Freezeland plain with snow drifts, frozen rocks and pine trees under a pale sky",
    "pose": "in mid-air spin or jump, seen from a high camera looking down"
   },
   {
@@ -510,7 +510,7 @@
    "species": 73,
    "rarity": 2,
    "merit": 10,
-   "scene": "a dump with blocky trash heaps, late-1990s low-poly look",
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
    "pose": "resting on the ground with its heap body touching the floor, a tight contact shadow under it",
    "anatomy": "Planted on the ground, not floating."
   },
@@ -520,7 +520,7 @@
    "species": 74,
    "rarity": 3,
    "merit": 5,
-   "scene": "a mushroom forest with chunky toadstools, late-1990s low-poly look",
+   "scene": "Beetle Land: a forest of giant trees with thick roots and sunlight through the leaves",
    "pose": "walking calmly toward the camera, seen from the front slightly from above"
   },
   {
@@ -529,7 +529,7 @@
    "species": 77,
    "rarity": 2,
    "merit": 10,
-   "scene": "a riverbank with reeds and blocky stones, late-1990s low-poly look",
+   "scene": "a humid Geko Swamp with mud, reeds, tropical trees and murky pools",
    "pose": "swinging its two long arms wide, mouth open, its trunk base on the ground",
    "anatomy": "RedVegiemon has a wooden trunk body, a head with a leaf crest and a big toothed mouth, and TWO long thin arms. It has NO legs and NO feet: it stands or hops on its trunk base."
   },
@@ -539,7 +539,7 @@
    "species": 78,
    "rarity": 2,
    "merit": 10,
-   "scene": "a dusty canyon with chunky boulders, late-1990s low-poly look",
+   "scene": "a snowy Freezeland plain with snow drifts, frozen rocks and pine trees under a pale sky",
    "pose": "sitting relaxed on the ground, seen from the front at eye level"
   },
   {
@@ -548,7 +548,7 @@
    "species": 79,
    "rarity": 2,
    "merit": 10,
-   "scene": "a night graveyard with blocky tombstones, late-1990s low-poly look",
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
    "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
   },
   {
@@ -557,7 +557,7 @@
    "species": 81,
    "rarity": 2,
    "merit": 10,
-   "scene": "a castle courtyard with banners, late-1990s low-poly look",
+   "scene": "a humid Geko Swamp with mud, reeds, tropical trees and murky pools",
    "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
   },
   {
@@ -575,7 +575,7 @@
    "species": 86,
    "rarity": 3,
    "merit": 5,
-   "scene": "a flower garden with a stone path, late-1990s low-poly look",
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
    "pose": "standing on both feet planted firmly on the ground, tight contact shadow under the feet",
    "anatomy": "Aruraumon stands on its two feet planted on the ground."
   },
@@ -585,7 +585,7 @@
    "species": 91,
    "rarity": 2,
    "merit": 10,
-   "scene": "a lush meadow with blocky flowers and round trees, late-1990s low-poly look",
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
    "pose": "walking calmly toward the camera, seen from the front slightly from above"
   },
   {
@@ -594,7 +594,7 @@
    "species": 93,
    "rarity": 3,
    "merit": 5,
-   "scene": "a rocky wasteland under a stormy sky, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "running to the right, seen in side view with a slight top-down angle"
   },
   {
@@ -603,7 +603,7 @@
    "species": 180,
    "rarity": 3,
    "merit": 5,
-   "scene": "a stone arena with blocky pillars, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "sitting relaxed on the ground, seen from the front at eye level",
    "anatomy": "Veemon has a short pointed tail: it must be visible."
   },
@@ -613,7 +613,7 @@
    "species": 181,
    "rarity": 0,
    "merit": 100,
-   "scene": "a toy workshop with wooden shelves, colourful blocks and a wooden floor, late-1990s low-poly look",
+   "scene": "Toy Town: a colourful toy room with wooden floor and big toy blocks",
    "pose": "standing with both feet planted firmly on the ground, a tight contact shadow under the feet",
    "anatomy": "Planted on the ground, not floating."
   },
@@ -632,7 +632,7 @@
    "species": 183,
    "rarity": 3,
    "merit": 5,
-   "scene": "a mushroom forest with chunky toadstools, late-1990s low-poly look",
+   "scene": "Beetle Land: a forest of giant trees with thick roots and sunlight through the leaves",
    "pose": "striking a heroic pose in strict side profile"
   },
   {
@@ -641,7 +641,7 @@
    "species": 184,
    "rarity": 3,
    "merit": 5,
-   "scene": "a windy plateau with chunky grass, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle"
   },
   {
@@ -650,7 +650,7 @@
    "species": 185,
    "rarity": 3,
    "merit": 5,
-   "scene": "a dusty canyon with chunky boulders, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "rearing up with a roar, seen from a very low camera looking up"
   },
   {
@@ -659,7 +659,7 @@
    "species": 187,
    "rarity": 2,
    "merit": 10,
-   "scene": "a riverbank with reeds and blocky stones, late-1990s low-poly look",
+   "scene": "Beetle Land: a forest of giant trees with thick roots and sunlight through the leaves",
    "pose": "running to the right, seen in side view with a slight top-down angle"
   },
   {
@@ -668,7 +668,7 @@
    "species": 188,
    "rarity": 2,
    "merit": 10,
-   "scene": "a bright sky over blocky hills and windmills, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "flying through the air with both wings spread wide, seen from the front slightly below; it is a flying bird, NOT sitting"
   },
   {
@@ -677,7 +677,7 @@
    "species": 189,
    "rarity": 2,
    "merit": 10,
-   "scene": "a sunny prehistoric plain with chunky grass, rocks and a few blocky palm trees, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "walking on all four legs with every foot planted on the ground, a tight contact shadow under it",
    "anatomy": "Planted on the ground, not floating."
   },
@@ -687,7 +687,7 @@
    "species": 190,
    "rarity": 1,
    "merit": 30,
-   "scene": "a floating island among low-poly clouds, late-1990s low-poly look",
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
    "pose": "crouching ready to pounce, seen from a high three-quarter angle"
   },
   {
@@ -705,7 +705,7 @@
    "species": 192,
    "rarity": 0,
    "merit": 100,
-   "scene": "a factory floor with blocky machines and pipes, late-1990s low-poly look",
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
    "pose": "standing on its feet on the factory floor, a clear contact shadow under every foot or body part touching the ground, never floating"
   },
   {
@@ -714,7 +714,7 @@
    "species": 193,
    "rarity": 2,
    "merit": 10,
-   "scene": "a castle courtyard with banners, late-1990s low-poly look",
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
    "pose": "rearing up with a roar, seen from a very low camera looking up"
   },
   {
@@ -723,7 +723,7 @@
    "species": 194,
    "rarity": 2,
    "merit": 10,
-   "scene": "a rocky wasteland under a stormy sky, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "standing proudly with a wide stance, seen from a low three-quarter angle",
    "anatomy": "ExVeemon has a tail: it must be visible."
   },
@@ -742,7 +742,7 @@
    "species": 196,
    "rarity": 2,
    "merit": 10,
-   "scene": "a mountain peak at dawn with blocky rocks, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "perched on a rock at the peak with its talons gripping the stone and the wings half open, a clear contact shadow under every foot or body part touching the ground, never floating"
   },
   {
@@ -751,7 +751,7 @@
    "species": 197,
    "rarity": 1,
    "merit": 30,
-   "scene": "a stone arena with blocky pillars, late-1990s low-poly look",
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
    "pose": "standing in a heroic stance with both feet planted firmly on the ground, a tight contact shadow under the feet",
    "anatomy": "Planted on the ground, not floating."
   },
@@ -761,7 +761,7 @@
    "species": 198,
    "rarity": 2,
    "merit": 10,
-   "scene": "a ruined sky temple with columns, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "walking calmly toward the camera, seen from the front slightly from above"
   },
   {
@@ -770,7 +770,7 @@
    "species": 199,
    "rarity": 1,
    "merit": 30,
-   "scene": "a dusty canyon with chunky boulders, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle"
   },
   {
@@ -779,7 +779,7 @@
    "species": 200,
    "rarity": 2,
    "merit": 10,
-   "scene": "a windy plateau with chunky grass, late-1990s low-poly look",
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
    "pose": "rearing up with a roar, seen from a very low camera looking up"
   },
   {
@@ -788,7 +788,7 @@
    "species": 201,
    "rarity": 2,
    "merit": 10,
-   "scene": "a sunny hill with a few blocky windmills, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
   },
   {
@@ -797,7 +797,7 @@
    "species": 202,
    "rarity": 2,
    "merit": 10,
-   "scene": "an ice cave with large blocky crystals, late-1990s low-poly look",
+   "scene": "an underwater coral reef with sand and rocks in clear blue water",
    "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
   },
   {
@@ -806,7 +806,7 @@
    "species": 203,
    "rarity": 2,
    "merit": 10,
-   "scene": "an iron forge with blocky anvils and embers on the floor, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "standing on its feet in the forge, a clear contact shadow under every foot or body part touching the ground, never floating"
   },
   {
@@ -815,7 +815,7 @@
    "species": 205,
    "rarity": 1,
    "merit": 30,
-   "scene": "a flower garden with a stone path, late-1990s low-poly look",
+   "scene": "Beetle Land: a forest of giant trees with thick roots and sunlight through the leaves",
    "pose": "flying or hovering in the air, seen from slightly below"
   },
   {
@@ -824,7 +824,7 @@
    "species": 206,
    "rarity": 1,
    "merit": 30,
-   "scene": "a floating island among low-poly clouds, late-1990s low-poly look",
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
    "pose": "standing on the cloud island, a clear contact shadow under every foot or body part touching the ground, never floating",
    "anatomy": "MagnaAngemon is a humanoid angel knight: a tall pointed PURPLE helmet with silver trim and a visor, long straight yellow-gold hair falling behind, SIX large grey-white feathered wings (three on each side, stacked), a dark grey armoured body with purple bands and a yellow-gold shoulder piece, white metal gauntlets and dark grey boots. Copy the colours and the helmet of the reference exactly."
   },
@@ -834,7 +834,7 @@
    "species": 207,
    "rarity": 0,
    "merit": 100,
-   "scene": "a mountain peak at dawn with blocky rocks, late-1990s low-poly look",
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
    "pose": "running to the right, seen in side view with a slight top-down angle"
   },
   {
@@ -843,7 +843,7 @@
    "species": 208,
    "rarity": 2,
    "merit": 10,
-   "scene": "a lush meadow with blocky flowers and round trees, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "sitting relaxed on the ground, seen from the front at eye level"
   },
   {
@@ -852,7 +852,7 @@
    "species": 209,
    "rarity": 1,
    "merit": 30,
-   "scene": "a jungle clearing with big leaves and vines, late-1990s low-poly look",
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
    "pose": "leaping toward the camera with open arms or jaws, seen from a low angle"
   },
   {
@@ -861,7 +861,7 @@
    "species": 210,
    "rarity": 0,
    "merit": 100,
-   "scene": "a mushroom forest with chunky toadstools, late-1990s low-poly look",
+   "scene": "Beetle Land: a forest of giant trees with thick roots and sunlight through the leaves",
    "pose": "crouching ready to pounce, seen from a high three-quarter angle"
   },
   {
@@ -870,7 +870,7 @@
    "species": 211,
    "rarity": 0,
    "merit": 100,
-   "scene": "a coastal beach with blue water and blocky rocks, late-1990s low-poly look",
+   "scene": "an underwater coral reef with sand and rocks in clear blue water",
    "pose": "rearing its long serpentine neck out of the water, coils in the water",
    "anatomy": "MetalSeadramon is a legless serpentine sea dragon: head, long neck, spiked fins and a long tail only. NO arms, NO hands, NO legs, NO feet; do not stand it upright."
   },
@@ -880,7 +880,7 @@
    "species": 212,
    "rarity": 0,
    "merit": 100,
-   "scene": "a lava field with black blocky rocks, late-1990s low-poly look",
+   "scene": "the gloomy courtyard of the Grey Lord's Mansion with gothic stone walls and iron gates",
    "pose": "standing heavily on the ground with both feet planted on black rock, wings spread, a clear contact shadow under the feet, NOT flying and NOT hovering"
   },
   {
@@ -889,7 +889,7 @@
    "species": 213,
    "rarity": 1,
    "merit": 30,
-   "scene": "a ruined sky temple with columns, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "walking calmly toward the camera, seen from the front slightly from above"
   },
   {
@@ -898,7 +898,7 @@
    "species": 214,
    "rarity": 1,
    "merit": 30,
-   "scene": "a junkyard of blocky metal scraps, late-1990s low-poly look",
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
    "pose": "running to the right, seen in side view with a slight top-down angle"
   },
   {
@@ -907,7 +907,7 @@
    "species": 215,
    "rarity": 0,
    "merit": 100,
-   "scene": "a volcanic crater rim with glowing cracks, late-1990s low-poly look",
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
    "pose": "sitting relaxed on the ground, seen from the front at eye level"
   },
   {
@@ -916,7 +916,7 @@
    "species": 216,
    "rarity": 2,
    "merit": 10,
-   "scene": "a night graveyard with blocky tombstones, late-1990s low-poly look",
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
    "pose": "leaping toward the camera with open arms or jaws, seen from a low angle"
   },
   {
@@ -925,7 +925,7 @@
    "species": 217,
    "rarity": 3,
    "merit": 5,
-   "scene": "an underwater reef scene with blocky coral and sand, late-1990s low-poly look",
+   "scene": "a sandy beach shore with blue sea, wet sand and rocks",
    "pose": "crouching ready to pounce, seen from a high three-quarter angle"
   },
   {
@@ -943,7 +943,7 @@
    "species": 219,
    "rarity": 1,
    "merit": 30,
-   "scene": "a castle courtyard with banners, late-1990s low-poly look",
+   "scene": "a sandy beach shore with blue sea, wet sand and rocks",
    "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle"
   },
   {
@@ -961,7 +961,7 @@
    "species": 221,
    "rarity": 3,
    "merit": 5,
-   "scene": "a rocky wasteland under a stormy sky, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
   },
   {
@@ -970,7 +970,7 @@
    "species": 222,
    "rarity": 2,
    "merit": 10,
-   "scene": "a stone arena with blocky pillars, late-1990s low-poly look",
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
    "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
   },
   {
@@ -979,7 +979,7 @@
    "species": 223,
    "rarity": 1,
    "merit": 30,
-   "scene": "a dusty canyon with chunky boulders, late-1990s low-poly look",
+   "scene": "the gloomy courtyard of the Grey Lord's Mansion with gothic stone walls and iron gates",
    "pose": "in mid-air spin or jump, seen from a high camera looking down"
   },
   {
@@ -997,7 +997,7 @@
    "species": 226,
    "rarity": 1,
    "merit": 30,
-   "scene": "a windy plateau with chunky grass, late-1990s low-poly look",
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
    "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle"
   },
   {
@@ -1006,7 +1006,7 @@
    "species": 227,
    "rarity": 2,
    "merit": 10,
-   "scene": "a castle courtyard with banners, late-1990s low-poly look",
+   "scene": "a humid Geko Swamp with mud, reeds, tropical trees and murky pools",
    "pose": "rearing up with a roar, seen from a very low camera looking up"
   },
   {
@@ -1015,7 +1015,7 @@
    "species": 228,
    "rarity": 2,
    "merit": 10,
-   "scene": "a desert canyon at sunset with red blocky mesas, late-1990s low-poly look",
+   "scene": "the gloomy courtyard of the Grey Lord's Mansion with gothic stone walls and iron gates",
    "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
   },
   {
@@ -1024,7 +1024,7 @@
    "species": 229,
    "rarity": 1,
    "merit": 30,
-   "scene": "a sunny hill with a few blocky windmills, late-1990s low-poly look",
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
    "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
   },
   {
@@ -1033,7 +1033,7 @@
    "species": 230,
    "rarity": 0,
    "merit": 100,
-   "scene": "a riverbank with reeds and blocky stones, late-1990s low-poly look",
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
    "pose": "in mid-air spin or jump, seen from a high camera looking down"
   },
   {
@@ -1051,7 +1051,7 @@
    "species": 232,
    "rarity": 2,
    "merit": 10,
-   "scene": "a rocky wasteland under a stormy sky, late-1990s low-poly look",
+   "scene": "a humid Geko Swamp with mud, reeds, tropical trees and murky pools",
    "pose": "walking calmly toward the camera, seen from the front slightly from above"
   },
   {
@@ -1060,7 +1060,7 @@
    "species": 233,
    "rarity": 3,
    "merit": 5,
-   "scene": "a scorched ruined fortress courtyard, late-1990s low-poly look",
+   "scene": "a humid Geko Swamp with mud, reeds, tropical trees and murky pools",
    "pose": "resting on its round body on the ground, claws forward, a clear contact shadow under every foot or body part touching the ground, never floating",
    "anatomy": "Red Otamamon is a round red-orange ball body with a big white eye with a black pupil on each side of the face, a wide mouth with small teeth, two short arms in front ending in three large white claws each, and a pink-white fin tail at the back. It has NO legs and NO feet at all: the round body rests directly on the ground."
   },
@@ -1070,7 +1070,7 @@
    "species": 234,
    "rarity": 2,
    "merit": 10,
-   "scene": "a stone arena with blocky pillars, late-1990s low-poly look",
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
    "pose": "sitting relaxed on the ground, seen from the front at eye level"
   },
   {
@@ -1089,7 +1089,7 @@
    "species": 236,
    "rarity": 3,
    "merit": 5,
-   "scene": "a dusty canyon with chunky boulders, late-1990s low-poly look",
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
    "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
   },
   {
@@ -1098,7 +1098,7 @@
    "species": 237,
    "rarity": 0,
    "merit": 100,
-   "scene": "a night city rooftop with blocky buildings, late-1990s low-poly look",
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
    "pose": "in mid-air spin or jump, seen from a high camera looking down"
   },
   {
@@ -1134,7 +1134,7 @@
    "species": 241,
    "rarity": 2,
    "merit": 10,
-   "scene": "a floating island among low-poly clouds, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "sitting relaxed on the ground, seen from the front at eye level"
   },
   {
@@ -1152,7 +1152,7 @@
    "species": 243,
    "rarity": 2,
    "merit": 10,
-   "scene": "a lava field with black blocky rocks, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "crouching ready to pounce, seen from a high three-quarter angle"
   },
   {
@@ -1161,7 +1161,7 @@
    "species": 244,
    "rarity": 1,
    "merit": 30,
-   "scene": "a volcanic crater rim with glowing cracks, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "striking a heroic pose in strict side profile"
   },
   {
@@ -1170,7 +1170,7 @@
    "species": 245,
    "rarity": 0,
    "merit": 100,
-   "scene": "a night graveyard with blocky tombstones, late-1990s low-poly look",
+   "scene": "the gloomy courtyard of the Grey Lord's Mansion with gothic stone walls and iron gates",
    "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle"
   },
   {
@@ -1188,7 +1188,7 @@
    "species": 247,
    "rarity": 3,
    "merit": 5,
-   "scene": "a mountain peak at dawn with blocky rocks, late-1990s low-poly look",
+   "scene": "Beetle Land: a forest of giant trees with thick roots and sunlight through the leaves",
    "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
   },
   {
@@ -1197,7 +1197,7 @@
    "species": 248,
    "rarity": 0,
    "merit": 100,
-   "scene": "a snowy pine forest with chunky trees, late-1990s low-poly look",
+   "scene": "a sandy beach shore with blue sea, wet sand and rocks",
    "pose": "sitting relaxed on the ground, seen from the front at eye level"
   },
   {
@@ -1206,7 +1206,7 @@
    "species": 249,
    "rarity": 2,
    "merit": 10,
-   "scene": "a ruined sky temple with columns, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "leaping toward the camera with open arms or jaws, seen from a low angle"
   },
   {
@@ -1215,7 +1215,7 @@
    "species": 250,
    "rarity": 2,
    "merit": 10,
-   "scene": "a desert canyon at sunset with red blocky mesas, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "crouching ready to pounce, seen from a high three-quarter angle"
   },
   {
@@ -1233,7 +1233,7 @@
    "species": 252,
    "rarity": 2,
    "merit": 10,
-   "scene": "a windy plateau with chunky grass, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle"
   },
   {
@@ -1242,7 +1242,7 @@
    "species": 253,
    "rarity": 2,
    "merit": 10,
-   "scene": "a castle courtyard with banners, late-1990s low-poly look",
+   "scene": "a humid Geko Swamp with mud, reeds, tropical trees and murky pools",
    "pose": "rearing up with a roar, seen from a very low camera looking up",
    "anatomy": "Tuskmon is a hunched FOUR-LEGGED quadruped: it walks on all four legs, not upright like a biped."
   },
@@ -1252,7 +1252,7 @@
    "species": 254,
    "rarity": 2,
    "merit": 10,
-   "scene": "an ice cave with large blocky crystals, late-1990s low-poly look",
+   "scene": "an underwater coral reef with sand and rocks in clear blue water",
    "pose": "lying on its belly on the ice floor, a clear contact shadow under every foot or body part touching the ground, never floating",
    "anatomy": "Tylomon is a shark-like sea-dragon with NO legs and NO arms: a dark blue-purple shark head with white stripes on top, a big jaw full of teeth, three large pointed spike fins on the head and back and two long thin blade-like side fins, and a long grey-blue ridged tail. Copy the exact colours and fins of the reference."
   },
@@ -1262,7 +1262,7 @@
    "species": 255,
    "rarity": 0,
    "merit": 100,
-   "scene": "a sunny hill with a few blocky windmills, late-1990s low-poly look",
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
    "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
   },
   {
@@ -1271,7 +1271,7 @@
    "species": 256,
    "rarity": 3,
    "merit": 5,
-   "scene": "a grassy hill with blocky rocks and a few trees, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "standing on the ground, a clear contact shadow under every foot or body part touching the ground, never floating; it is NOT flying"
   },
   {
@@ -1280,7 +1280,7 @@
    "species": 257,
    "rarity": 1,
    "merit": 30,
-   "scene": "a rocky wasteland under a stormy sky, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "standing on all four legs on the rocky ground, a clear contact shadow under every foot or body part touching the ground, never floating"
   },
   {
@@ -1289,7 +1289,7 @@
    "species": 258,
    "rarity": 0,
    "merit": 100,
-   "scene": "a stone arena with blocky pillars, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "walking calmly toward the camera, seen from the front slightly from above"
   },
   {
@@ -1298,7 +1298,7 @@
    "species": 259,
    "rarity": 1,
    "merit": 30,
-   "scene": "a flower garden with a stone path, late-1990s low-poly look",
+   "scene": "Beetle Land: a forest of giant trees with thick roots and sunlight through the leaves",
    "pose": "running to the right, seen in side view with a slight top-down angle"
   },
   {
@@ -1307,7 +1307,7 @@
    "species": 260,
    "rarity": 1,
    "merit": 30,
-   "scene": "a factory floor with blocky machines and pipes, late-1990s low-poly look",
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
    "pose": "rearing up with a roar, seen from a very low camera looking up"
   },
   {
@@ -1316,7 +1316,7 @@
    "species": 261,
    "rarity": 2,
    "merit": 10,
-   "scene": "a dusty canyon with chunky boulders, late-1990s low-poly look",
+   "scene": "a sandy beach shore with blue sea, wet sand and rocks",
    "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
   },
   {
@@ -1325,7 +1325,7 @@
    "species": 262,
    "rarity": 2,
    "merit": 10,
-   "scene": "a lush meadow with blocky flowers and round trees, late-1990s low-poly look",
+   "scene": "Beetle Land: a forest of giant trees with thick roots and sunlight through the leaves",
    "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
   },
   {
@@ -1334,7 +1334,7 @@
    "species": 263,
    "rarity": 3,
    "merit": 5,
-   "scene": "a jungle clearing with big leaves and vines, late-1990s low-poly look",
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
    "pose": "in mid-air spin or jump, seen from a high camera looking down"
   },
   {
@@ -1343,7 +1343,7 @@
    "species": 264,
    "rarity": 2,
    "merit": 10,
-   "scene": "a sewer cave with green pipes, late-1990s low-poly look",
+   "scene": "a humid Geko Swamp with mud, reeds, tropical trees and murky pools",
    "pose": "crawling along the ground, body and claws touching the floor, a tight contact shadow right under it",
    "anatomy": "Planted on the ground, not floating."
   },
@@ -1353,7 +1353,7 @@
    "species": 265,
    "rarity": 2,
    "merit": 10,
-   "scene": "an iron forge with blocky anvils and embers on the floor, late-1990s low-poly look",
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
    "pose": "walking calmly toward the camera, seen from the front slightly from above"
   },
   {
@@ -1362,7 +1362,7 @@
    "species": 266,
    "rarity": 1,
    "merit": 30,
-   "scene": "a night graveyard with blocky tombstones, late-1990s low-poly look",
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
    "pose": "running to the right, seen in side view with a slight top-down angle"
   },
   {
@@ -1371,7 +1371,7 @@
    "species": 267,
    "rarity": 1,
    "merit": 30,
-   "scene": "a coastal beach with blue water and blocky rocks, late-1990s low-poly look",
+   "scene": "a snowy Freezeland plain with snow drifts, frozen rocks and pine trees under a pale sky",
    "pose": "standing on all four legs on dry sand, facing the camera in three-quarter view, a clear contact shadow under every foot or body part touching the ground, never floating"
   },
   {
@@ -1390,7 +1390,7 @@
    "species": 269,
    "rarity": 1,
    "merit": 30,
-   "scene": "a smoky wasteland with chunky junk, late-1990s low-poly look",
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
    "pose": "sitting inside the bin which stands on the ground, bazooka on its shoulder, a clear contact shadow under every foot or body part touching the ground, never floating",
    "anatomy": "Garbagemon sits INSIDE a green metal rubbish bin: only its pink head, shoulders, one arm holding a blue-and-red bazooka, and a green round bin lid held like a shield are visible above the rim of the bin. It has NO legs, NO feet and NO lower body visible: the bin hides everything below the shoulders. Copy the bin exactly."
   },
@@ -1400,7 +1400,7 @@
    "species": 270,
    "rarity": 0,
    "merit": 100,
-   "scene": "a castle courtyard with banners, late-1990s low-poly look",
+   "scene": "the gloomy courtyard of the Grey Lord's Mansion with gothic stone walls and iron gates",
    "pose": "striking a heroic pose in strict side profile"
   },
   {
@@ -1409,7 +1409,7 @@
    "species": 271,
    "rarity": 0,
    "merit": 100,
-   "scene": "a frozen lake with blocky ice floes, late-1990s low-poly look",
+   "scene": "a humid Geko Swamp with mud, reeds, tropical trees and murky pools",
    "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle"
   },
   {
@@ -1418,7 +1418,7 @@
    "species": 272,
    "rarity": 2,
    "merit": 10,
-   "scene": "a mushroom forest with chunky toadstools, late-1990s low-poly look",
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
    "pose": "walking calmly toward the camera, seen from the front slightly from above"
   },
   {
@@ -1427,7 +1427,7 @@
    "species": 273,
    "rarity": 3,
    "merit": 5,
-   "scene": "a riverbank with reeds and blocky stones, late-1990s low-poly look",
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
    "pose": "running to the right, seen in side view with a slight top-down angle"
   },
   {
@@ -1436,7 +1436,7 @@
    "species": 274,
    "rarity": 1,
    "merit": 30,
-   "scene": "a flower garden with a stone path, late-1990s low-poly look",
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
    "pose": "sitting relaxed on the ground, seen from the front at eye level"
   },
   {
@@ -1445,7 +1445,7 @@
    "species": 275,
    "rarity": 1,
    "merit": 30,
-   "scene": "a snowy pine forest with chunky trees, late-1990s low-poly look",
+   "scene": "a volcanic cavern with glowing lava pools, dark basalt walls and ember-lit rocks",
    "pose": "leaping toward the camera with open arms or jaws, seen from a low angle"
   },
   {
@@ -1454,7 +1454,7 @@
    "species": 276,
    "rarity": 0,
    "merit": 100,
-   "scene": "a rocky wasteland under a stormy sky, late-1990s low-poly look",
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
    "pose": "crouching ready to pounce, seen from a high three-quarter angle"
   },
   {
@@ -1463,7 +1463,7 @@
    "species": 277,
    "rarity": 1,
    "merit": 30,
-   "scene": "a lava field with black blocky rocks, late-1990s low-poly look",
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
    "pose": "striking a heroic pose in strict side profile"
   },
   {
@@ -1472,7 +1472,7 @@
    "species": 278,
    "rarity": 2,
    "merit": 10,
-   "scene": "an ice cave with large blocky crystals, late-1990s low-poly look",
+   "scene": "an underwater coral reef with sand and rocks in clear blue water",
    "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle",
    "anatomy": "Octomon: one arm ends in a sword and the other in a cannon or hook, plus its six legs: exactly the reference arms, one sword only."
   },
@@ -1482,7 +1482,7 @@
    "species": 279,
    "rarity": 1,
    "merit": 30,
-   "scene": "a coastal beach with blue water and blocky rocks, late-1990s low-poly look",
+   "scene": "an underwater coral reef with sand and rocks in clear blue water",
    "pose": "rearing up with a roar, seen from a very low camera looking up"
   },
   {
@@ -1491,7 +1491,7 @@
    "species": 280,
    "rarity": 1,
    "merit": 30,
-   "scene": "a stone arena with blocky pillars, late-1990s low-poly look",
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
    "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
   },
   {
@@ -1500,7 +1500,7 @@
    "species": 281,
    "rarity": 2,
    "merit": 10,
-   "scene": "a volcanic crater rim with glowing cracks, late-1990s low-poly look",
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
    "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
   },
   {
@@ -1509,7 +1509,7 @@
    "species": 282,
    "rarity": 2,
    "merit": 10,
-   "scene": "a lush meadow with blocky flowers and round trees, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "in mid-air spin or jump, seen from a high camera looking down"
   },
   {
@@ -1527,7 +1527,7 @@
    "species": 284,
    "rarity": 3,
    "merit": 5,
-   "scene": "a frozen lake with blocky ice floes, late-1990s low-poly look",
+   "scene": "a sandy beach shore with blue sea, wet sand and rocks",
    "pose": "striking a heroic pose in strict side profile"
   },
   {
@@ -1536,7 +1536,7 @@
    "species": 285,
    "rarity": 3,
    "merit": 5,
-   "scene": "a dusty canyon with chunky boulders, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle"
   },
   {
@@ -1545,7 +1545,7 @@
    "species": 286,
    "rarity": 1,
    "merit": 30,
-   "scene": "a jungle clearing with big leaves and vines, late-1990s low-poly look",
+   "scene": "Beetle Land: a forest of giant trees with thick roots and sunlight through the leaves",
    "pose": "standing on both red feet planted firmly on the ground, tight contact shadow under the feet",
    "anatomy": "Deramon stands on its two red feet planted on the ground."
   },
@@ -1555,7 +1555,7 @@
    "species": 287,
    "rarity": 3,
    "merit": 5,
-   "scene": "a night graveyard with blocky tombstones, late-1990s low-poly look",
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
    "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
   },
   {
@@ -1564,7 +1564,7 @@
    "species": 288,
    "rarity": 0,
    "merit": 100,
-   "scene": "a castle courtyard with banners, late-1990s low-poly look",
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
    "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
   },
   {
@@ -1573,7 +1573,7 @@
    "species": 289,
    "rarity": 0,
    "merit": 100,
-   "scene": "a junkyard of blocky metal scraps, late-1990s low-poly look",
+   "scene": "the gloomy courtyard of the Grey Lord's Mansion with gothic stone walls and iron gates",
    "pose": "standing on its feet on the scrap ground, a clear contact shadow under every foot or body part touching the ground, never floating"
   },
   {
@@ -1582,7 +1582,7 @@
    "species": 290,
    "rarity": 2,
    "merit": 10,
-   "scene": "a server room with blocky consoles and cables on the floor, late-1990s low-poly look",
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
    "pose": "standing on its feet planted firmly on the ground, a tight contact shadow under them",
    "anatomy": "Clockmon has FOUR arms: two red arms holding a big hammer and two grey tool arms. Draw all four and the hammer. Planted on the ground, not floating."
   },
@@ -1601,7 +1601,7 @@
    "species": 292,
    "rarity": 2,
    "merit": 10,
-   "scene": "a rocky wasteland under a stormy sky, late-1990s low-poly look",
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
    "pose": "running to the right, seen in side view with a slight top-down angle"
   },
   {
@@ -1610,7 +1610,7 @@
    "species": 293,
    "rarity": 0,
    "merit": 100,
-   "scene": "a mountain peak at dawn with blocky rocks, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "sitting relaxed on the ground, seen from the front at eye level",
    "anatomy": "Gryphonmon has a long striped tail that ends in a green snake head: it must be clearly visible."
   },
@@ -1620,7 +1620,7 @@
    "species": 294,
    "rarity": 1,
    "merit": 30,
-   "scene": "a night city rooftop with blocky buildings, late-1990s low-poly look",
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
    "pose": "standing with both feet on the rooftop and the mouth closed, a clear contact shadow under every foot or body part touching the ground, never floating",
    "anatomy": "Datamon's face is a CLOSED mouth: keep the mouth completely shut, no open jaw and no teeth showing. A tall glass dome head, a dark metal body with a red eye, thin arms ending in huge many-barrelled hands, and two black legs with red-tipped feet."
   },
@@ -1630,7 +1630,7 @@
    "species": 295,
    "rarity": 2,
    "merit": 10,
-   "scene": "a stone arena with blocky pillars, late-1990s low-poly look",
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
    "pose": "crouching ready to pounce, seen from a high three-quarter angle"
   },
   {
@@ -1639,7 +1639,7 @@
    "species": 296,
    "rarity": 2,
    "merit": 10,
-   "scene": "a dusty canyon with chunky boulders, late-1990s low-poly look",
+   "scene": "a snowy Freezeland plain with snow drifts, frozen rocks and pine trees under a pale sky",
    "pose": "standing on its feet on the canyon floor, a clear contact shadow under every foot or body part touching the ground, never floating"
   },
   {
@@ -1657,7 +1657,7 @@
    "species": 298,
    "rarity": 2,
    "merit": 10,
-   "scene": "a mushroom forest with chunky toadstools, late-1990s low-poly look",
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
    "pose": "walking calmly toward the camera, seen from the front slightly from above"
   },
   {
@@ -1666,7 +1666,7 @@
    "species": 299,
    "rarity": 2,
    "merit": 10,
-   "scene": "a castle courtyard with banners, late-1990s low-poly look",
+   "scene": "a sandy beach shore with blue sea, wet sand and rocks",
    "pose": "running to the right, seen in side view with a slight top-down angle"
   },
   {
@@ -1675,7 +1675,7 @@
    "species": 300,
    "rarity": 0,
    "merit": 100,
-   "scene": "a rocky wasteland under a stormy sky, late-1990s low-poly look",
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
    "pose": "sitting relaxed on the ground, seen from the front at eye level"
   },
   {
@@ -1684,7 +1684,7 @@
    "species": 302,
    "rarity": 0,
    "merit": 100,
-   "scene": "a steel bridge over a canyon, late-1990s low-poly look",
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
    "pose": "leaping toward the camera with open arms or jaws, seen from a low angle"
   },
   {
@@ -1693,7 +1693,7 @@
    "species": 303,
    "rarity": 0,
    "merit": 100,
-   "scene": "a stone arena with blocky pillars, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "crouching ready to pounce, seen from a high three-quarter angle"
   },
   {
@@ -1702,7 +1702,7 @@
    "species": 304,
    "rarity": 1,
    "merit": 30,
-   "scene": "an ice cave with large blocky crystals, late-1990s low-poly look",
+   "scene": "an underwater coral reef with sand and rocks in clear blue water",
    "pose": "striking a heroic pose in strict side profile"
   },
   {
@@ -1711,7 +1711,7 @@
    "species": 305,
    "rarity": 2,
    "merit": 10,
-   "scene": "a coastal beach with blue water and blocky rocks, late-1990s low-poly look",
+   "scene": "an underwater coral reef with sand and rocks in clear blue water",
    "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle"
   },
   {
@@ -1720,7 +1720,7 @@
    "species": 306,
    "rarity": 1,
    "merit": 30,
-   "scene": "a dusty canyon with chunky boulders, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "rearing up with a roar, seen from a very low camera looking up"
   },
   {
@@ -1729,7 +1729,7 @@
    "species": 307,
    "rarity": 0,
    "merit": 100,
-   "scene": "a murky cave with bubbling green puddles, late-1990s low-poly look",
+   "scene": "a humid Geko Swamp with mud, reeds, tropical trees and murky pools",
    "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
   },
   {
@@ -1738,7 +1738,7 @@
    "species": 308,
    "rarity": 2,
    "merit": 10,
-   "scene": "a night graveyard with blocky tombstones, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
   },
   {
@@ -1747,7 +1747,7 @@
    "species": 309,
    "rarity": 1,
    "merit": 30,
-   "scene": "a castle courtyard with banners, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "leaping toward the camera with open arms or jaws, seen from a low angle"
   },
   {
@@ -1756,7 +1756,7 @@
    "species": 310,
    "rarity": 1,
    "merit": 30,
-   "scene": "a factory floor with blocky machines and pipes, late-1990s low-poly look",
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
    "pose": "crouching ready to pounce, seen from a high three-quarter angle"
   },
   {
@@ -1765,7 +1765,7 @@
    "species": 311,
    "rarity": 1,
    "merit": 30,
-   "scene": "a riverbank with reeds and blocky stones, late-1990s low-poly look",
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
    "pose": "striking a heroic pose in strict side profile"
   },
   {
@@ -1774,7 +1774,7 @@
    "species": 312,
    "rarity": 0,
    "merit": 100,
-   "scene": "a desert canyon at sunset with red blocky mesas, late-1990s low-poly look",
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
    "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle"
   },
   {
@@ -1783,7 +1783,7 @@
    "species": 313,
    "rarity": 1,
    "merit": 30,
-   "scene": "a junkyard of blocky metal scraps, late-1990s low-poly look",
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
    "pose": "rearing up with a roar, seen from a very low camera looking up"
   },
   {
@@ -1792,7 +1792,7 @@
    "species": 314,
    "rarity": 1,
    "merit": 30,
-   "scene": "a rocky wasteland under a stormy sky, late-1990s low-poly look",
+   "scene": "the gloomy courtyard of the Grey Lord's Mansion with gothic stone walls and iron gates",
    "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
   },
   {
@@ -1801,7 +1801,7 @@
    "species": 315,
    "rarity": 1,
    "merit": 30,
-   "scene": "a scorched ruined fortress courtyard, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
   },
   {
@@ -1810,7 +1810,7 @@
    "species": 316,
    "rarity": 0,
    "merit": 100,
-   "scene": "a ruined sky temple with columns, late-1990s low-poly look",
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
    "pose": "in mid-air spin or jump, seen from a high camera looking down"
   },
   {
@@ -1819,7 +1819,7 @@
    "species": 317,
    "rarity": 0,
    "merit": 100,
-   "scene": "a windy plateau with chunky grass, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "standing with both feet planted on the ground of the plateau, a clear contact shadow under every foot, never floating; it is NOT flying"
   },
   {
@@ -1828,7 +1828,7 @@
    "species": 318,
    "rarity": 0,
    "merit": 100,
-   "scene": "a stone arena with blocky pillars, late-1990s low-poly look",
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
    "pose": "walking calmly toward the camera, seen from the front slightly from above"
   },
   {
@@ -1855,7 +1855,7 @@
    "species": 321,
    "rarity": 1,
    "merit": 30,
-   "scene": "a dusty canyon with chunky boulders, late-1990s low-poly look",
+   "scene": "the gloomy courtyard of the Grey Lord's Mansion with gothic stone walls and iron gates",
    "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
   },
   {
@@ -1864,7 +1864,7 @@
    "species": 322,
    "rarity": 1,
    "merit": 30,
-   "scene": "a sunny hill with a few blocky windmills, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
   },
   {
@@ -1873,7 +1873,7 @@
    "species": 323,
    "rarity": 2,
    "merit": 10,
-   "scene": "a lava field with black blocky rocks, late-1990s low-poly look",
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
    "pose": "standing on all four paws on a flat rock, snarling toward the camera in three-quarter view, a clear contact shadow under every foot, never floating",
    "anatomy": "Lynxmon is a flaming golden lion walking on FOUR legs: a lion head with green eyes and blue markings, a mane and body made of flame-patterned fur, four legs ending in big white claws, and a long tail. Keep all four paws on the ground; the body is low and horizontal."
   },
@@ -1883,7 +1883,7 @@
    "species": 324,
    "rarity": 2,
    "merit": 10,
-   "scene": "a rocky mountain ledge at dusk with blocky stones, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "standing on all four legs with the wings half open, a clear contact shadow under every foot, never floating",
    "anatomy": "MailDramon is a four-legged armoured quadruped with a long segmented neck, a golden helmet with a spike, large golden wings on its back, four legs with golden claws and a long tail with a spike tip."
   },
@@ -1893,7 +1893,7 @@
    "species": 325,
    "rarity": 2,
    "merit": 10,
-   "scene": "a castle courtyard with banners, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "walking calmly toward the camera, seen from the front slightly from above"
   },
   {
@@ -1911,7 +1911,7 @@
    "species": 327,
    "rarity": 2,
    "merit": 10,
-   "scene": "a rocky wasteland under a stormy sky, late-1990s low-poly look",
+   "scene": "the gloomy courtyard of the Grey Lord's Mansion with gothic stone walls and iron gates",
    "pose": "sitting relaxed on the ground, seen from the front at eye level"
   },
   {
@@ -1920,7 +1920,7 @@
    "species": 328,
    "rarity": 2,
    "merit": 10,
-   "scene": "a stone arena with blocky pillars, late-1990s low-poly look",
+   "scene": "Beetle Land: a forest of giant trees with thick roots and sunlight through the leaves",
    "pose": "leaping toward the camera with open arms or jaws, seen from a low angle"
   },
   {
@@ -1929,7 +1929,7 @@
    "species": 329,
    "rarity": 0,
    "merit": 100,
-   "scene": "a server room with blocky consoles and cables on the floor, late-1990s low-poly look",
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
    "pose": "crouching ready to pounce, seen from a high three-quarter angle"
   },
   {
@@ -1947,7 +1947,7 @@
    "species": 331,
    "rarity": 3,
    "merit": 5,
-   "scene": "a night graveyard with blocky tombstones, late-1990s low-poly look",
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
    "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle"
   },
   {
@@ -1956,7 +1956,7 @@
    "species": 332,
    "rarity": 2,
    "merit": 10,
-   "scene": "a lush meadow with blocky flowers and round trees, late-1990s low-poly look",
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
    "pose": "rearing up with a roar, seen from a very low camera looking up"
   },
   {
@@ -1965,7 +1965,7 @@
    "species": 333,
    "rarity": 0,
    "merit": 100,
-   "scene": "a floating island among low-poly clouds, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "running to the right, seen in side view with a slight top-down angle"
   },
   {
@@ -1974,7 +1974,7 @@
    "species": 334,
    "rarity": 1,
    "merit": 30,
-   "scene": "a castle courtyard with banners, late-1990s low-poly look",
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
    "pose": "sitting relaxed on the ground, seen from the front at eye level"
   },
   {
@@ -1983,7 +1983,7 @@
    "species": 335,
    "rarity": 0,
    "merit": 100,
-   "scene": "a night city rooftop with blocky buildings, late-1990s low-poly look",
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
    "pose": "leaping toward the camera with open arms or jaws, seen from a low angle"
   },
   {
@@ -1992,7 +1992,7 @@
    "species": 336,
    "rarity": 0,
    "merit": 100,
-   "scene": "a mountain peak at dawn with blocky rocks, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "crouching ready to pounce, seen from a high three-quarter angle"
   },
   {
@@ -2001,7 +2001,7 @@
    "species": 351,
    "rarity": 3,
    "merit": 5,
-   "scene": "a rocky wasteland under a stormy sky, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "striking a heroic pose in strict side profile"
   },
   {
@@ -2010,7 +2010,7 @@
    "species": 352,
    "rarity": 3,
    "merit": 5,
-   "scene": "a stone arena with blocky pillars, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle"
   },
   {
@@ -2019,7 +2019,7 @@
    "species": 353,
    "rarity": 3,
    "merit": 5,
-   "scene": "a dusty canyon with chunky boulders, late-1990s low-poly look",
+   "scene": "Toy Town: a colourful toy room with wooden floor and big toy blocks",
    "pose": "rearing up with a roar, seen from a very low camera looking up"
   },
   {
@@ -2028,7 +2028,7 @@
    "species": 354,
    "rarity": 3,
    "merit": 5,
-   "scene": "a night graveyard with blocky tombstones, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
   },
   {
@@ -2046,7 +2046,7 @@
    "species": 400,
    "rarity": 0,
    "merit": 100,
-   "scene": "a steel bridge over a canyon, late-1990s low-poly look",
+   "scene": "the gloomy courtyard of the Grey Lord's Mansion with gothic stone walls and iron gates",
    "pose": "in mid-air spin or jump, seen from a high camera looking down"
   },
   {
@@ -2055,7 +2055,7 @@
    "species": 401,
    "rarity": 0,
    "merit": 100,
-   "scene": "an underwater reef scene with blocky coral and sand, late-1990s low-poly look",
+   "scene": "a snowy Freezeland plain with snow drifts, frozen rocks and pine trees under a pale sky",
    "pose": "flying or hovering in the air, seen from slightly below"
   },
   {
@@ -2064,7 +2064,7 @@
    "species": 402,
    "rarity": 0,
    "merit": 100,
-   "scene": "a scorched ruined fortress courtyard, late-1990s low-poly look",
+   "scene": "the gloomy courtyard of the Grey Lord's Mansion with gothic stone walls and iron gates",
    "pose": "walking calmly toward the camera, seen from the front slightly from above"
   },
   {
@@ -2073,7 +2073,7 @@
    "species": 403,
    "rarity": 0,
    "merit": 100,
-   "scene": "a castle courtyard with banners, late-1990s low-poly look",
+   "scene": "Overdell Cemetery at night with crooked gravestones, dead trees and purple mist",
    "pose": "attacking with a lunge, seen from a dramatic front three-quarter angle"
   },
   {
@@ -2082,7 +2082,7 @@
    "species": 404,
    "rarity": 0,
    "merit": 100,
-   "scene": "an iron forge with blocky anvils and embers on the floor, late-1990s low-poly look",
+   "scene": "the gloomy courtyard of the Grey Lord's Mansion with gothic stone walls and iron gates",
    "pose": "rearing up with a roar, seen from a very low camera looking up"
   },
   {
@@ -2091,7 +2091,7 @@
    "species": 405,
    "rarity": 0,
    "merit": 100,
-   "scene": "a factory floor with blocky machines and pipes, late-1990s low-poly look",
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
    "pose": "standing proudly with a wide stance, seen from a low three-quarter angle"
   },
   {
@@ -2100,7 +2100,7 @@
    "species": 406,
    "rarity": 0,
    "merit": 100,
-   "scene": "a lava field with black blocky rocks, late-1990s low-poly look",
+   "scene": "the gloomy courtyard of the Grey Lord's Mansion with gothic stone walls and iron gates",
    "pose": "turning back over its shoulder, seen from behind at a three-quarter angle"
   },
   {
@@ -2109,7 +2109,7 @@
    "species": 407,
    "rarity": 0,
    "merit": 100,
-   "scene": "a volcanic crater rim with glowing cracks, late-1990s low-poly look",
+   "scene": "the gloomy courtyard of the Grey Lord's Mansion with gothic stone walls and iron gates",
    "pose": "in mid-air spin or jump, seen from a high camera looking down"
   },
   {
@@ -2118,7 +2118,7 @@
    "species": 408,
    "rarity": 0,
    "merit": 100,
-   "scene": "a frozen lake with blocky ice floes, late-1990s low-poly look",
+   "scene": "a sandy beach shore with blue sea, wet sand and rocks",
    "pose": "standing with both feet planted on the ice, a clear contact shadow under every foot or body part touching the ground, never floating; it is NOT flying"
   },
   {
@@ -2127,7 +2127,7 @@
    "species": 409,
    "rarity": 2,
    "merit": 10,
-   "scene": "a desert canyon at sunset with red blocky mesas, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "walking calmly toward the camera, seen from the front slightly from above"
   },
   {
@@ -2136,7 +2136,7 @@
    "species": 430,
    "rarity": 0,
    "merit": 100,
-   "scene": "a rocky wasteland under a stormy sky, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "running to the right, seen in side view with a slight top-down angle"
   },
   {
@@ -2145,7 +2145,7 @@
    "species": 431,
    "rarity": 2,
    "merit": 10,
-   "scene": "a junkyard of blocky metal scraps, late-1990s low-poly look",
+   "scene": "Factorial Town: a grimy factory yard with steel pipes, gears, crates and conveyor machines",
    "pose": "sitting relaxed on the ground, seen from the front at eye level"
   },
   {
@@ -2154,7 +2154,7 @@
    "species": 432,
    "rarity": 1,
    "merit": 30,
-   "scene": "a stone arena with blocky pillars, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "leaping toward the camera with open arms or jaws, seen from a low angle"
   },
   {
@@ -2172,7 +2172,7 @@
    "species": 460,
    "rarity": 1,
    "merit": 30,
-   "scene": "an iron forge with blocky anvils and embers on the floor, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "striking a heroic pose in strict side profile"
   },
   {
@@ -2181,7 +2181,7 @@
    "species": 461,
    "rarity": 0,
    "merit": 100,
-   "scene": "a dusty canyon with chunky boulders, late-1990s low-poly look",
+   "scene": "a bright holy sanctuary of white marble pillars and ice crystals with soft golden light",
    "pose": "standing with both feet planted on the canyon floor, a clear contact shadow under every foot or body part touching the ground, never floating; it is NOT flying"
   },
   {
@@ -2190,7 +2190,7 @@
    "species": 470,
    "rarity": 4,
    "merit": 1,
-   "scene": "a jungle clearing with big leaves and vines, late-1990s low-poly look",
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
    "pose": "resting on the ground, the dome rim touching the ground, a clear contact shadow under every foot or body part touching the ground, never floating",
    "anatomy": "Pabumon is a pale translucent green dome shaped like a bell or jelly cap: a smooth rounded body with a flat flared rim at the base, two black round eyes, a tiny yellow beak, two small rounded ear bumps on top and small crystal bumps. It has NO feet, NO legs, NO arms and NO tail at all: the rim of the dome rests directly on the ground."
   },
@@ -2200,7 +2200,7 @@
    "species": 471,
    "rarity": 4,
    "merit": 1,
-   "scene": "a snowy pine forest with chunky trees, late-1990s low-poly look",
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
    "pose": "running to the right, seen in side view with a slight top-down angle"
   },
   {
@@ -2209,7 +2209,7 @@
    "species": 472,
    "rarity": 4,
    "merit": 1,
-   "scene": "a ruined sky temple with columns, late-1990s low-poly look",
+   "scene": "a snowy Freezeland plain with snow drifts, frozen rocks and pine trees under a pale sky",
    "pose": "sitting relaxed on the ground, seen from the front at eye level"
   },
   {
@@ -2218,7 +2218,7 @@
    "species": 474,
    "rarity": 4,
    "merit": 1,
-   "scene": "a riverbank with reeds and blocky stones, late-1990s low-poly look",
+   "scene": "Native Forest: a sunny forest clearing with big leaves, soft grass and mushrooms",
    "pose": "crouching ready to pounce, seen from a high three-quarter angle"
   },
   {
@@ -2227,7 +2227,7 @@
    "species": 475,
    "rarity": 4,
    "merit": 1,
-   "scene": "an ice cave with large blocky crystals, late-1990s low-poly look",
+   "scene": "a humid Geko Swamp with mud, reeds, tropical trees and murky pools",
    "pose": "striking a heroic pose in strict side profile"
   },
   {
@@ -2246,7 +2246,7 @@
    "species": 477,
    "rarity": 4,
    "merit": 1,
-   "scene": "a windy plateau with chunky grass, late-1990s low-poly look",
+   "scene": "Mt. Panorama: wide open plains with grass, boulders and rolling hills under a blue sky",
    "pose": "rearing up with a roar, seen from a very low camera looking up"
   },
   {
@@ -2500,7 +2500,7 @@
    "rarity": 2,
    "merit": 10,
    "replaces": 34,
-   "scene": "a warm sunset sky over distant rolling hills and a smoking volcano, soft detailed painterly clouds, finely textured terrain with smooth shading and many small details, NOT chunky faceted polygons",
+   "scene": "flying above a wide volcanic canyon with rivers of lava, red rock cliffs and a glowing orange sky, smooth natural shapes",
    "pose": "flying in flight with wings spread, seen from the side, wide open sky around it"
   },
   {
