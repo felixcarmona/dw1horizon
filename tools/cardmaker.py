@@ -9,7 +9,9 @@ Changing the frame, the colours or the font means running `render` again: the ar
 
 Usage (from the repository root, with the repository's venv for the reference render):
   cardmaker.py ref SPECIES OUT.png          reference sheet of the species' 3D model (what the generator sees)
-  cardmaker.py art KEY                      generate the art of a card with Gemini (GEMINI_API_KEY) into content/cards/art/
+  cardmaker.py art KEY [--new-bg] [--new-model]  art = our render of the species' 3D model over a creature-free background
+                                            generated with Gemini (GEMINI_API_KEY); parts kept as art/<key>-model.png, -bg.png
+  cardmaker.py gen KEY                      the older way: Gemini re-imagines the creature from the reference sheet
   cardmaker.py render [KEY ...]             compose the cards of content/cards/new.json into build/cards/
                                             (PNG preview, 8 bpp indices .idx and 15-bit CLUT .clut per card)
   cardmaker.py prompt KEY                   print the prompt, change nothing
@@ -184,6 +186,103 @@ def reference(sp, out):
     subprocess.run(cmd, check=True, cwd=ROOT)
 
 
+# ---------------------------------------------------------------- the model itself
+def render_model(sp, size=1800, view='three'):
+    """RGBA render of the species' textured 3D model at rest, drawn twice (on black and on white) so the
+    silhouette is exact; the result is cropped to the creature."""
+    import numpy as np
+    sys.path.insert(0, str(ROOT / 'tools'))
+    import animstudio as A
+    mod = A.Model(f"{model_file(sp)}:{sp['id']}", 0)
+    panel = A.Panel(mod, 'mesh', view, size)
+    pose, _ = mod.pose(0)
+    shots = []
+    for bg in ((0, 0, 0), (255, 255, 255)):
+        img = A.Image.new('RGB', (size, size), bg)
+        panel.mesh(img, pose, 1.0)
+        shots.append(np.asarray(img, np.int32))
+    alpha = 255 - np.abs(shots[1] - shots[0]).max(axis=2)
+    a = np.clip(alpha, 0, 255).astype(np.uint8)
+    rgb = np.where(a[..., None] > 0, shots[0] * 255 // np.maximum(a[..., None], 1), 0).clip(0, 255).astype(np.uint8)
+    out = np.dstack([rgb, a])
+    ys, xs = np.nonzero(a > 8)
+    return A.Image.fromarray(out[ys.min():ys.max() + 1, xs.min():xs.max() + 1], 'RGBA')
+
+
+def model_path(card, k=None):
+    return ART / f"{card['key']}-model{'' if k is None else '-%d' % k}.png"
+
+
+def bg_path(card):
+    return ART / f"{card['key']}-bg.png"
+
+
+def bg_prompt(card):
+    sp = species_of(card['species'])
+    scene = card.get('scene') or ELEMENTS[element_of(sp)][1]
+    return (
+        f"Background scene for a collectible trading card: {scene}. Painterly, colourful, late-1990s 3D-game look with "
+        "simple blocky shapes and hand-painted textures. NO creature, NO character, NO animal, NO person in the image. "
+        "The middle and lower centre of the image is an empty, open ground area where a character will be placed later; "
+        "the horizon sits at about 55% of the height. Soft, even light, no light beams, no haze, no glare. "
+        "Strictly: no text, no letters, no numbers, no logos, no border, no frame. Square image.")
+
+
+def generate_bg(card):
+    key = os.environ.get('GEMINI_API_KEY')
+    if not key:
+        raise SystemExit('GEMINI_API_KEY is not set (source ~/.zshrc)')
+    prompt = bg_prompt(card)
+    body = {"contents": [{"parts": [{"text": prompt}]}],
+            "generationConfig": {"responseModalities": ["IMAGE"], "imageConfig": {"aspectRatio": "1:1", "imageSize": "2K"}}}
+    req = urllib.request.Request(
+        f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI}:generateContent",
+        data=json.dumps(body).encode(), headers={"Content-Type": "application/json", "x-goog-api-key": key})
+    r = json.load(urllib.request.urlopen(req, timeout=300))
+    for p in r['candidates'][0]['content']['parts']:
+        d = p.get('inline_data') or p.get('inlineData')
+        if d:
+            bg_path(card).parent.mkdir(parents=True, exist_ok=True)
+            bg_path(card).write_bytes(base64.b64decode(d['data']))
+            bg_path(card).with_suffix('.json').write_text(json.dumps({"key": card['key'], "model": GEMINI, "prompt": prompt}, indent=1) + '\n')
+            return
+    raise SystemExit('the generator returned no image')
+
+
+def build_art(card, regen_bg=False, regen_model=False):
+    """art/<key>.png = background + soft shadow + the species' model render(s) (one per Digimon of the card)."""
+    ART.mkdir(parents=True, exist_ok=True)
+    species = [card['species']] + card.get('with', [])
+    for k, sp_key in enumerate(species):
+        mp = model_path(card, k or None)
+        if regen_model or not mp.exists():
+            render_model(species_of(sp_key)).save(str(mp))
+    if regen_bg or not bg_path(card).exists():
+        generate_bg(card)
+    bg = Image.open(bg_path(card)).convert('RGB')
+    S = bg.size[0]
+    canvas = bg.convert('RGBA')
+    n = len(species)
+    for k in range(n):
+        m = Image.open(model_path(card, k or None)).convert('RGBA')
+        hmax = S * (0.70 if n == 1 else 0.58)
+        wmax = S * (0.78 if n == 1 else 0.46)
+        sc = min(hmax / m.size[1], wmax / m.size[0])
+        m = m.resize((round(m.size[0] * sc), round(m.size[1] * sc)), Image.Resampling.LANCZOS)
+        cx = S * (0.5 if n == 1 else (0.3 + 0.4 * k / (n - 1)))
+        foot = S * 0.90
+        x, y = round(cx - m.size[0] / 2), round(foot - m.size[1])
+        # soft contact shadow: the silhouette squashed flat under the feet, blurred by successive halvings
+        sh = Image.new('RGBA', (m.size[0], max(8, m.size[1] // 7)), (0, 0, 0, 0))
+        al = m.getchannel('A').resize(sh.size, Image.Resampling.LANCZOS)
+        sh.putalpha(Image.frombytes('L', al.size, bytes(v * 110 // 255 for v in al.tobytes())))
+        sh = sh.resize((sh.size[0] // 4, sh.size[1] // 4), Image.Resampling.LANCZOS).resize(sh.size, Image.Resampling.BICUBIC)
+        canvas.alpha_composite(sh, (x, round(foot - sh.size[1] * 0.6)))
+        canvas.alpha_composite(m, (x, y))
+    canvas.convert('RGB').save(str(art_path(card)))
+    return art_path(card)
+
+
 # ---------------------------------------------------------------- frame
 DIGITS = {
     '0': '+###+/##.##/##.##/##.##/##.##/##.##/+###+', '1': '.##/###/.##/.##/.##/.##/####',
@@ -315,15 +414,20 @@ def render(keys):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument('cmd', choices=['ref', 'art', 'render', 'prompt'])
+    ap.add_argument('cmd', choices=['ref', 'art', 'gen', 'render', 'prompt'])
     ap.add_argument('args', nargs='*')
     ap.add_argument('--ref')
+    ap.add_argument('--new-bg', action='store_true')
+    ap.add_argument('--new-model', action='store_true')
     a = ap.parse_args()
     if a.cmd == 'render':
         return render({x.lower() for x in a.args})
     if a.cmd == 'ref':
         return reference(species_of(a.args[0]), a.args[1])
     card = card_of(a.args[0])
+    if a.cmd == 'art':
+        print(build_art(card, a.new_bg, a.new_model))
+        return
     if a.cmd == 'prompt':
         print(prompt_for(card))
         return
