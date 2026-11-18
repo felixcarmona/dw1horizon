@@ -445,3 +445,4 @@ Keep-battle-drawing-inside-the-GPU-packet-area.patch
 expand-collectible-cards.patch
 New-cards-option-preserves-hidden-collection-counts.patch
 Select-original-card-artwork-with-the-New-Cards-opti.patch
+Show-the-real-card-album-range-and-proportional-scro.patch

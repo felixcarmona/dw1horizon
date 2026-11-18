@@ -35,6 +35,10 @@ def main():
         (interp, 'int32_t setCardAmount(int32_t cardId, int32_t value)'),
         (common, 'int32_t modLoadCardImage(int32_t id, void *buffer)'),
         (common, 'int32_t modCardRowId(ItemMenuBox *box, int32_t row)'),
+        (menu, 'static __attribute__((noinline)) int32_t cardAlbumLimit(void)'),
+        (menu, 'static __attribute__((noinline)) int32_t cardAlbumTotal(void)'),
+        (menu, 'static __attribute__((noinline)) void cardAlbumScrollBar(int32_t rows)'),
+        (menu, 'static int32_t cardAlbumStep(int32_t id, int32_t step, int32_t limit)'),
         (menu, 'int32_t modCardMove(int32_t id, int32_t input)'),
         (menu, 'int32_t modCardTop(int32_t id, int32_t top)'),
         (shop, 'uint16_t rollCard(void)'),
@@ -81,6 +85,18 @@ def main():
 static int32_t MOD_ECON[4]={1,5,20,50};
 static int rarityRoll, pickLast;
 static int MOD_OPT_NEW_CARDS=1;
+static int16_t CARD_TOP_ROW;
+static int boxCalls, barY, barH;
+static void renderBox(int16_t x,int16_t y,int16_t w,int16_t h,
+                      uint8_t r,uint8_t g,uint8_t b,uint8_t flags,int32_t otz) {
+ assert(x==135 && w==3 && flags==0 && otz==5);
+ if(boxCalls++==0) {
+  assert(r==120 && g==220 && b==255);barY=y;barH=h;
+ } else {
+  assert(boxCalls==2 && y==-63 && h==138 && r==20 && g==30 && b==38);
+ }
+}
+
 static int randomLimit(int n) { assert(n>0); if(n==100)return rarityRoll; return pickLast?n-1:0; }
 static int machineMode=1;
 static int isTriggerSet(int n) { (void)n; return machineMode; }
@@ -141,8 +157,15 @@ static int loadStackedTIMEntry(char *path,void *buf,int off,int sectors) {
 }
 '''.replace('__ITEM_MENU_BOX_TYPE__', item_type)
     tests = r'''
+static void checkAlbumBar(int rows,int top) {
+ CARD_TOP_ROW=top;boxCalls=0;cardAlbumScrollBar(rows);
+ if(rows<=6){assert(!boxCalls);return;}
+ assert(boxCalls==2 && barH>0 && barY>=-63 && barY+barH<=75);
+ if(top==0)assert(barY==-63);
+ if(top==rows-6)assert(barY+barH==75);
+}
 int main(int argc,char **argv) {
- assert(argc==5); archive=argv[1];
+ assert(argc==6); archive=argv[1];
  FILE *table=fopen(argv[2],"rb");assert(table);assert(fread(CARD_DATA,4,512,table)==512);fclose(table);
  table=fopen(argv[3],"rb");assert(table);assert(fread(MOD_CARD_REAL,1,64,table)==64);fclose(table);
  table=fopen(argv[4],"rb");assert(table);assert(fread(MOD_CARD_ART,2,8,table)==8);fclose(table);
@@ -151,6 +174,8 @@ int main(int argc,char **argv) {
  setCardAmount(256,42); assert(getCardAmount(256)==9);
  setCardAmount(256,-1); assert(getCardAmount(256)==0);setCardAmount(256,9);
  assert(album());setCardAmount(511,0);assert(!album());setCardAmount(511,9);
+ assert(cardAlbumTotal()==511 && cardAlbumLimit()==512);
+ for(int rows=6;rows<=47;rows++)for(int top=0;top<=rows-6;top++)checkAlbumBar(rows,top);
  int id=0,top=0;
  for(int n=0;n<46;n++){id=modCardMove(id,0x4000);top=modCardTop(id,top);}
  for(int n=0;n<5;n++){id=modCardMove(id,0x2000);top=modCardTop(id,top);}
@@ -211,6 +236,7 @@ int main(int argc,char **argv) {
  for(int n=0;n<20;n++){id=modCardMove(id,0x4000);top=modCardTop(id,top);}
  for(int n=0;n<20;n++)id=modCardMove(id,0x2000);
  assert(id==65 && top==0 && modCardMove(65,0x4000)==65);
+ assert(cardAlbumTotal()==65 && cardAlbumLimit()==66);checkAlbumBar(6,0);
  MOD_OPT_NEW_CARDS=1;assert(getCardAmount(511)==9 && !getCardAmount(510));
  assert(!album());setCardAmount(510,9);
  setCardAmount(511,0);assert(!album());setCardAmount(511,9);
@@ -235,7 +261,30 @@ int main(int argc,char **argv) {
  assert(!modLoadCardImage(-1,art) && !modLoadCardImage(512,art));
  MOD_OPT_NEW_CARDS=1;
  memset(MOD_CARD_REAL+9,0,55);MOD_CARD_REAL[8]=1;assert(album()); /* Unassigned capacity never blocks the medal. */
- puts("PASS: cards 66..511 save round trip, sparse/short records, 510-row shop/trades, daily stock, scroll to 511, all 446 CARD2 images, original/replacement art OFF/ON, JSON pack rarities, real-only medal, OFF/ON visibility and nondestructive resave");
+ /* The shipped bitmap trims capacity to ID 305; replacement art counts once. */
+ table=fopen(argv[5],"rb");assert(table);assert(fread(MOD_CARD_REAL,1,64,table)==64);fclose(table);
+ assert(cardAlbumTotal()==305 && cardAlbumLimit()==306);
+ id=0;top=0;
+ for(int n=0;n<27;n++){id=modCardMove(id,0x4000);top=modCardTop(id,top);}
+ for(int n=0;n<10;n++){id=modCardMove(id,0x2000);top=modCardTop(id,top);}
+ assert(id==305 && top==22 && modCardMove(id,0x4000)==305 && modCardMove(id,0x2000)==305);
+ checkAlbumBar(28,0);assert(barH==29 && barY==-63);
+ checkAlbumBar(28,11);assert(barH==29 && barY==-9);
+ checkAlbumBar(28,22);assert(barH==29 && barY==46);
+ for(int i=0;i<=305;i++)for(int k=0;k<4;k++) {
+  int move=modCardMove(i,(int[]){0x8000,0x2000,0x1000,0x4000}[k]);
+  int row=modCardTop(move,top);assert(move>=0 && move<=305 && move/11>=row && move/11<row+6);
+ }
+ /* Sparse additions retain numbered positions, skipping holes along a direction. */
+ memset(MOD_CARD_REAL+9,0,55);MOD_CARD_REAL[8]=1;
+ MOD_CARD_REAL[70/8]|=1<<(70&7);MOD_CARD_REAL[74/8]|=1<<(74&7);MOD_CARD_REAL[92/8]|=1<<(92&7);
+ assert(cardAlbumTotal()==68 && cardAlbumLimit()==93);
+ assert(modCardMove(65,0x2000)==65 && modCardMove(70,0x2000)==74 && modCardMove(74,0x8000)==70);
+ assert(modCardMove(70,0x4000)==92 && modCardMove(92,0x1000)==70);
+ assert(modCardMove(92,0x2000)==92 && modCardMove(92,0x4000)==92);
+ MOD_OPT_NEW_CARDS=0;assert(cardAlbumTotal()==65 && cardAlbumLimit()==66);
+ checkAlbumBar(6,0);
+ puts("PASS: album 305/65 totals, partial final row, sparse navigation, proportional scrollbar through 512 slots; cards 66..511 save round trip, sparse/short records, 510-row shop/trades, daily stock, scroll to 511, all 446 CARD2 images, original/replacement art OFF/ON, JSON pack rarities, real-only medal, OFF/ON visibility and nondestructive resave");
 }
 '''
     with tempfile.TemporaryDirectory(prefix='cards-host-') as d:
@@ -244,12 +293,13 @@ int main(int argc,char **argv) {
         (d / 'new.json').write_text(json.dumps([authored(i, i % 5) for i in range(66, 512)]))
         rows = cards.build(d / 'out', d / 'CARD2.ALL', d / 'new.json')
         (d / 'real.bin').write_bytes(cards.real_mask(rows))
+        (d / 'shipped.bin').write_bytes(cards.real_mask(cards.load()))
         import struct
         (d / 'art.bin').write_bytes(struct.pack('<8H', *cards.replacement_table()))
         (d / 'test.c').write_text(prefix + tags + '\n' + production + tests)
         subprocess.run(['cc', '-std=c99', '-Wall', '-Wextra', '-Werror', '-fsanitize=address,undefined',
                         str(d / 'test.c'), '-o', str(d / 'test')], check=True)
-        subprocess.run([str(d / 'test'), str(d / 'CARD2.ALL'), str(d / 'out/CARDTAB.BIN'), str(d / 'real.bin'), str(d / 'art.bin')], check=True)
+        subprocess.run([str(d / 'test'), str(d / 'CARD2.ALL'), str(d / 'out/CARDTAB.BIN'), str(d / 'real.bin'), str(d / 'art.bin'), str(d / 'shipped.bin')], check=True)
 
 
 if __name__ == '__main__':

@@ -128,6 +128,45 @@ MENU remains 55,296 bytes (27 sectors); heapcheck retains at least 29,488 bytes
 against the original-screen sweep. These are host/link checks; no full disc build
 or emulator test was run for this change.
 
+## Album range and scrollbar
+
+The 11-column, six-row album trims its numbered range to the highest real card
+in the existing `MOD_CARD_REAL` bitmap. Current content ends at ID 305: 28 rows,
+with top row 0–22. Unassigned trailing capacity through ID 511 is hidden;
+sparse holes are blank and directional movement skips them within the same
+column or horizontal row. The original selectable slots 0 and 65 remain for
+compatibility. NEW CARDS OFF retains its original six rows and range 0–65.
+
+The header retains the selected card ID on the left. Its denominator preserves
+the original album's 65 numbering convention and adds only real new IDs from
+the bitmap: **305 ON, 65 OFF**. There are 64 collectible original bitmap bits
+and 240 new bits; sentinel 65 accounts for the legacy numbering difference.
+The eight replacement-art rows add no collection entries. No new array, cache,
+allocation or resident state is needed.
+
+When there are more than six rows, the right edge shows a cyan thumb over the
+dark track used by the evolution requirements popup, drawn through the existing
+`renderBox` helper (thumb before track). Its 138-pixel track spans the grid;
+thumb height is `138 * 6 / totalRows`, and its position spans the remaining
+track proportionally to `topRow / (totalRows - 6)`. It is hidden in OFF mode.
+
+Matched English FONT=b, FPS=60 executable-only links, using the same complete
+1,509-file cards-engine plan and shared language padding as the artwork-option
+measurement above, give `main_BSS_END` **0x801CE908 → 0x801CEBD8 (+720 bytes)**.
+This is resident code growth, including the navigation moved out of MENU;
+the small top-row helper moves into MENU instead. Aligned heap is
+185,840 → 185,120 bytes. MENU is **55,204 bytes, still 27 sectors (92 bytes
+spare)**; all linker assertions pass. The original-screen heapcheck passes,
+with 28,768 bytes remaining in its tightest projection.
+
+`cards_host.py` checks shipped 305/65 totals, partial final rows, sparse
+navigation, full capacity through ID 511, and scrollbar geometry at every
+scroll position for 6–47 rows under address/undefined-behaviour sanitizers.
+The 55 card/heap/economy/language unit tests, merit-card host check, save capacity
+and inline checks, and economy audit pass. No full disc build, new archive heap
+sweep, emulator/GPU presentation check, or other font/language executable link
+was run for this change.
+
 ## Generating and keeping the artwork
 
 Cards are built by `tools/cardmaker.py` from kept artwork plus our own frame and font, so changing
