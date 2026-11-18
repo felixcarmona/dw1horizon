@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def function(source, name):
-    start = re.search(r'^(?:static )?(?:void|int32_t) ' + name + r'\([^;]*?\)\n\{', source, re.M)
+    start = re.search(r'^(?:static )?(?:void|int32_t) (?:__attribute__\(\(noinline\)\) )?' + name + r'\([^;]*?\)\n\{', source, re.M)
     assert start, name
     end = source.index('\n}', start.end()) + 2
     return source[start.start():end]
@@ -106,7 +106,7 @@ def main():
 #define PAD_L2 1
 #define PAD_R2 2
 int32_t MOD_OPT_BUTTONS, MOD_OPT_EVO_GUIDE;
-int32_t MOD_OPT_NEW_DIGIMON, MOD_LANG, MOD_OPT_SIGNS, MOD_OPT_STORY;
+int32_t MOD_OPT_NEW_CARDS=1, MOD_OPT_NEW_DIGIMON, MOD_LANG, MOD_OPT_SIGNS, MOD_OPT_STORY;
 int32_t MOD_OPT_DIFFICULTY, MOD_OPT_QUICK_BATTLE, MOD_OPT_CHEATS, MOD_OPT_SHORTCUTS, MOD_OPT_TOUCHED;
 int32_t MOD_SAVE_NUMBER, MOD_FPS_MODE_RUN = 2, MOD_OPT_FPS;
 #define MOD_FPS_AUTO 0
@@ -130,10 +130,40 @@ void modRosterShowCaption(int type) { effects++; }
 '''
     for name in ('modOptionBytes', 'modApplyOptions', 'modTitleOptions', 'modHeaderSaveNumber'):
         code += '\n' + function(menu, name)
+    # Compile the actual OPTIONS get/set helpers as well as the saved representation.
+    rows = menu[menu.index('#define MOD_OPT_ROW_CARDS'):menu.index('int32_t CURRENT_MENU;')]
+    rows = '\n'.join(line for line in rows.splitlines() if line.startswith(('#define', '#if', '#else', '#endif')))
+    code += '\n' + rows + r'''
+#define MOD_BUTTONS_JP 1
+#define MOD_LANG_ZH 8
+int MOD_COLD_CACHE_TYPE=0;
+int modLanguageAt(int v) { return v; }
+int modLanguageCount(void) { return 9; }
+void modShowLanguageError(void) { }
+'''
+    code += '\n' + function(menu, 'modOptionValue') + '\n' + function(menu, 'modSetOption')
     code += '\n' + function(lab, 'modRosterTick')
     code += r'''
 int main(void) {
     uint8_t options[MOD_OPT_BYTES + 1];
+    /* Old records default ON; both copies preserve independent Digimon/cards switches. */
+    for(int len=0;len<=14;len++)for(int digi=0;digi<2;digi++) {
+        memset(options,0,sizeof(options));options[6]=digi;
+        MOD_OPT_TOUCHED=0;MOD_OPT_NEW_CARDS=0;modApplyOptions(options,len);
+        assert(MOD_OPT_NEW_CARDS==1);
+    }
+    for(int cards=0;cards<2;cards++)for(int digi=0;digi<2;digi++) {
+        MOD_OPT_NEW_DIGIMON=digi;modSetOption(MOD_OPT_ROW_CARDS,cards);
+        assert(MOD_OPT_TOUCHED && modOptionValue(MOD_OPT_ROW_CARDS)==cards);
+        modOptionBytes(options);modTitleOptions();
+        assert(options[6]==(digi|(cards?0:0x80)) && SAVE_FILE.pocketStation[10]==options[6]);
+        MOD_OPT_TOUCHED=0;MOD_OPT_NEW_CARDS=!cards;MOD_OPT_NEW_DIGIMON=!digi;
+        modApplyOptions(options,14);assert(MOD_OPT_NEW_CARDS==cards && MOD_OPT_NEW_DIGIMON==digi);
+        MOD_OPT_NEW_CARDS=!cards;modApplyOptions(&SAVE_FILE.pocketStation[4],12);
+        assert(MOD_OPT_NEW_CARDS==cards);
+        MOD_OPT_TOUCHED=1;MOD_OPT_NEW_CARDS=!cards;modApplyOptions(options,14);
+        assert(MOD_OPT_NEW_CARDS==!cards);
+    }
     /* Every new FPS choice survives both copies without changing adjacent bytes. */
     for (int fps = 0; fps < 3; fps++) {
         MOD_OPT_FPS = fps; MOD_OPT_TOUCHED = 0;

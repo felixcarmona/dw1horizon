@@ -27,6 +27,13 @@ def dummy_archive(path, count=446):
 
 
 class CardContent(unittest.TestCase):
+    def test_new_cards_option_translations(self):
+        for lang in ('ours', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca', 'zh-hans'):
+            bank = json.loads((cards.ROOT / 'text' / lang / 'names.json').read_text())
+            self.assertTrue(bank['main.MOD_OPT_STR_NEWCARDS'], lang)
+        self.assertEqual(json.loads((cards.ROOT / 'text/es/names.json').read_text())[
+            'main.MOD_OPT_STR_NEWCARDS'], 'CARTAS NUEVAS')
+
     def test_owned_table(self):
         rows = cards.load()
         self.assertEqual(len(rows), 512)

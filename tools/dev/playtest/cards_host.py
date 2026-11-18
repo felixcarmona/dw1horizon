@@ -37,6 +37,7 @@ def main():
         (menu, 'int32_t modCardTop(int32_t id, int32_t top)'),
         (shop, 'uint16_t rollCard(void)'),
         (shop, 'int32_t shopFillSellCardList(void)'),
+        (shop, 'int32_t hasAnyCardToBuy(void)'),
         (common, 'void dailyPStatTrigger(void)'),
         (shop, 'int32_t createMeritCardTradeDialogue(void)'),
         (common, 'void allocateItemMenuBox(ItemMenuBox **box, int32_t bufSize, uint8_t rows, uint8_t x, uint8_t y, uint8_t w, uint8_t h)'),
@@ -77,11 +78,13 @@ def main():
 #define TRIGGER_CARD_MACHINE 0
 static int32_t MOD_ECON[4]={1,5,20,50};
 static int rarityRoll, pickLast;
+static int MOD_OPT_NEW_CARDS=1;
 static int randomLimit(int n) { assert(n>0); if(n==100)return rarityRoll; return pickLast?n-1:0; }
 static int machineMode=1;
 static int isTriggerSet(int n) { (void)n; return machineMode; }
 typedef struct { uint16_t digimonId; uint8_t spriteId,meritValue; } CardData;
 static CardData CARD_DATA[512];
+static int CARD_PRICES[6]={5000,1500,500,100,50,0}, MONEY=99999;
 static uint8_t MOD_CARD_REAL[64], MOD_CARD_EXTRA[223];
 static uint16_t MOD_CARD_STOCK[6];
 typedef struct { uint8_t cards[33],smth[212]; } ScriptState;
@@ -175,6 +178,35 @@ int main(int argc,char **argv) {
  memset(MOD_CARD_EXTRA,0,223);memset(MOD_CARD_STOCK,0,12);applyRecords(ext[0]);
  for(int i=66;i<512;i++)assert(getCardAmount(i)==9);
  assert(MOD_CARD_STOCK[1]==255 && MOD_CARD_STOCK[2]==256 && MOD_CARD_STOCK[3]==511 && MOD_CARD_STOCK[5]==65535);
+ /* OFF hides new counts and pre-existing stock, without changing saved bytes. */
+ setCardAmount(510,0);
+ uint8_t kept[223];memcpy(kept,MOD_CARD_EXTRA,223);
+ MOD_OPT_NEW_CARDS=0;
+ assert(!getCardAmount(66) && !getCardAmount(255) && !getCardAmount(256) && !getCardAmount(511));
+ setCardAmount(511,0);assert(!memcmp(kept,MOD_CARD_EXTRA,223));
+ assert(album()); /* All originals suffice even while a new card is missing. */
+ assert(shopFillSellCardList() && box.itemCount==64);
+ for(int i=0;i<64;i++)assert(modCardRowId(&box,i)==i+1);
+ assert(hasAnyCardToBuy());
+ for(int i=0;i<6;i++)assert(modCardRowId(&box,i)==(i==4?1:CARD_NONE));
+ assert(MOD_CARD_STOCK[0]==66 && MOD_CARD_STOCK[3]==511);
+ /* Saving, reloading and saving again while OFF preserves extra counts and stock. */
+ memset(ext,0,sizeof(ext));writeCards(ext[0]);
+ memset(MOD_CARD_EXTRA,0,223);memset(MOD_CARD_STOCK,0,12);applyRecords(ext[0]);
+ assert(!memcmp(kept,MOD_CARD_EXTRA,223) && MOD_CARD_STOCK[3]==511);
+ writeCards(ext[0]);
+ for(machineMode=0;machineMode<2;machineMode++)for(int r=0;r<5;r++) {
+  rarityRoll=(int[]){0,1,5,20,50}[r];int card=rollCard();assert(card>=1 && card<=64);
+ }
+ MOD_DAILY[1]=511;dailyPStatTrigger();
+ for(int i=0;i<6;i++)assert(MOD_CARD_STOCK[i]>=1 && MOD_CARD_STOCK[i]<=64);
+ id=0;top=0;
+ for(int n=0;n<20;n++){id=modCardMove(id,0x4000);top=modCardTop(id,top);}
+ for(int n=0;n<20;n++)id=modCardMove(id,0x2000);
+ assert(id==65 && top==0 && modCardMove(65,0x4000)==65);
+ MOD_OPT_NEW_CARDS=1;assert(getCardAmount(511)==9 && !getCardAmount(510));
+ assert(!album());setCardAmount(510,9);
+ setCardAmount(511,0);assert(!album());setCardAmount(511,9);
  /* Absent and short records retain zero defaults, with no old-save migration. */
  memset(MOD_CARD_EXTRA,0,223);memset(ext,0,sizeof(ext));applyRecords(ext[0]);assert(!getCardAmount(511));
  uint8_t *p=putRecord(ext[0]+12,SAVE_TAG_CARD_COUNTS,(uint8_t[]){0x91},1);putRecord(p,0,0,0);applyRecords(ext[0]);
@@ -182,7 +214,7 @@ int main(int argc,char **argv) {
  uint8_t art[14*2048];
  for(int n=66;n<512;n++){assert(modLoadCardImage(n,art));assert((art[22]|art[23]<<8)==n-65);assert(art[544]==1);}
  memset(MOD_CARD_REAL+9,0,55);MOD_CARD_REAL[8]=1;assert(album()); /* Unassigned capacity never blocks the medal. */
- puts("PASS: cards 66..511 save round trip, sparse/short records, 510-row shop/trades, daily stock, scroll to 511, all 446 CARD2 images, JSON pack rarities, real-only medal");
+ puts("PASS: cards 66..511 save round trip, sparse/short records, 510-row shop/trades, daily stock, scroll to 511, all 446 CARD2 images, JSON pack rarities, real-only medal, OFF/ON visibility and nondestructive resave");
 }
 '''
     with tempfile.TemporaryDirectory(prefix='cards-host-') as d:

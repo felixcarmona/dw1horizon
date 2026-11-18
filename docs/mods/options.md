@@ -1,13 +1,14 @@
 # Options: the title menu's OPTIONS
 
 Patches 0167, 0169, 0173-0175, 0177, 0180-0182, 0199, 0212, 0234, 0239, 0244 and 0276 (`mods/patches/`). The title menu has a fifth row, **OPTIONS**, under BATTLE MODE. It
-opens a box of eleven switches (ten in a `FONT=original` build, which has no FONT):
+opens a box of twelve switches (eleven in a `FONT=original` build, which has no FONT):
 
 | Row | Values | Default | Effect |
 |---|---|---|---|
 | JAPANESE CONTROLS | OFF / ON | OFF; ON on a Japanese base disc (patch 0241) | the Japanese disc's buttons (below) |
 | EVOLUTION GUIDE | OFF / ON | ON | the evolution chart's green lines and Square requirements popup (patches 0176, 0299); OFF hides the prompt and popup and draws the original detail view |
 | NEW DIGIMON | OFF / ON | ON | OFF: the partner evolves only into the species the original game raises (the species files' `"vanilla": true`, ids 1-65: the chart's 61 and WereGarurumon, IceLeomon, Gigadramon, MetalEtemon by items), so no Megas; the chart is the original sheet and its trees show the original rows (below); the death's egg box shows only the original four eggs (patch 0334; ON adds the hand-made babies' four) |
+| NEW CARDS | OFF / ON | ON | OFF: only original card numbers 1–64 are available; hides new cards in packs/machines, daily stock, merit trades, the album and Card Complete. Saved counts are retained. |
 | EXTENDED STORY | OFF / ON | ON | patch 0199: the story with the story mods built onto the disc (What the Island Forgot: its new places, the city's new residents), or OFF the original story; changing it on a save moves the tamer to Jijimon's house (below) |
 | DIFFICULTY | EASY / NORMAL / HARD | NORMAL | EASY doubles partner damage and halves damage taken; HARD scales enemies and adds a damage floor (below) |
 | QUICK BATTLE START | OFF / ON | ON | patches 0234, 0239: a field battle starts the moment it is triggered, its BATTLE letters and bubbles over the running fight (patches 0233, 0236, 0238); OFF, the original start |
@@ -219,7 +220,7 @@ All the controls as in the Japanese version.
   options (`modBootOptions` calls `modButtonsBoot`), `SYSTEM_W.TIM` (9 sectors) is read into `GENERAL_BUFFER` and a
   Japanese ○ there turns JAPANESE CONTROLS on; a save's options, read right after, still win (the title shows a
   card's newest save's choice, a Continue its own). The US disc is as before. 464 bytes of heap.
-- **Saved.** The options are the record `SAVE_TAG_OPTIONS` 0x0009 (`u8[14]`: buttons, reserved clock byte (always 1), FRAME RATE (0xA0/0xA1/0xA2), reserved care byte (always 1), font, evolution guide, new digimon, language, map signs, story, difficulty, quick battle start, cheats flags, reserved enemy-bar byte (always 0)),
+- **Saved.** The options are the record `SAVE_TAG_OPTIONS` 0x0009 (`u8[14]`: buttons, reserved clock byte (always 1), FRAME RATE (0xA0/0xA1/0xA2), reserved care byte (always 1), font, evolution guide, new digimon/new cards flags, language, map signs, story, difficulty, quick battle start, cheats flags, reserved enemy-bar byte (always 0)),
   written with every save. A Continue takes them, unless OPTIONS changed any since the
   console started; a shorter record (0167's 1 byte) leaves the rest at their defaults. So the title screen before a Continue
   has the US controls (on a Japanese base disc with no saves, the Japanese ones: ○ confirms there), and the test tools, which press × at the title, keep working.
@@ -281,6 +282,35 @@ compiler output. The map signs are pasted into the files each story puts on the 
 before 0199 they were pasted into the disc's own files, so a translated sign dropped a retouch on the same screen, MAYO10
 and the TWNB city screens); the sign copies are made before the balance step, so a sign map's copy has the story's
 Digimon but not a balance list of a map the story did not edit.
+
+## NEW CARDS
+
+`New-cards-option-preserves-hidden-collection-counts.patch` adds the
+row beneath NEW DIGIMON. ON retains the authored roster. OFF limits card
+eligibility to IDs below 66: original cards 1–64 remain, including the eight
+whose artwork was replaced. The album uses its original 11×6 grid and id/65
+counter; new cards cannot be obtained or traded and do not block Card Complete.
+Already generated daily stock is hidden without consuming it. Daily refreshes
+choose from the active roster.
+
+The 14-byte options record and 12-byte title-header copy retain their sizes.
+Byte 6 bit 0 is NEW DIGIMON; bit 7 is inverted NEW CARDS (set = OFF). Old 0/1
+bytes and missing bytes therefore enable new cards. Explicit title edits keep
+precedence over Continue. Extra count records are always written and read as raw
+nibbles, including while OFF; returning to ON exposes the same counts.
+
+All nine languages have `main.MOD_OPT_STR_NEWCARDS` (Spanish: CARTAS NUEVAS).
+The title-only row pointer table lives with the title UI in EVL; album navigation
+lives after the metadata sector in MENU. Matched executable-only links with the
+complete release file plan and shared language padding measure `main_BSS_END`
+0x801CE94C → 0x801CE908 (−68 bytes); aligned heap 185776 → 185840 bytes.
+MENU is 55296 bytes, exactly its existing 27 sectors. Linker assertions guard the
+metadata sector and title overlay boundary. No full disc build was run.
+
+`cards_host.py` checks OFF/ON packs, daily stock, existing stock, merit lists,
+album navigation, medal eligibility and nondestructive resaving. `test_cheats.py`
+compiles the production row getter/setter and options serializer/reader, checking
+both header/tagged copies, old/short records and explicit title precedence.
 
 ## NEW DIGIMON
 

@@ -273,7 +273,7 @@ class Languages(unittest.TestCase):
 
     def test_new_language_option_rows_fit_the_original_viewport(self):
         from tools import fontgen
-        labels = ('JP', 'EVO', 'NEWDIGI', 'STORY', 'DIFF', 'QUICK', 'FONT', 'LANG', 'SIGNS', 'CHEATS')
+        labels = ('JP', 'EVO', 'NEWDIGI', 'NEWCARDS', 'STORY', 'DIFF', 'QUICK', 'FONT', 'LANG', 'SIGNS', 'CHEATS')
         values = ('OFF', 'ON', 'EASY', 'NORMAL', 'HARD', 'NEW', 'CLASSIC', 'ORIGINAL', 'TRANSLATED',
                   'ENGLISH', 'SPANISH', 'PORTUGUESE', 'FRENCH', 'GERMAN', 'ITALIAN', 'JAPANESE', 'CATALAN')
         for lang in ('fr', 'de', 'it', 'ja', 'ca'):

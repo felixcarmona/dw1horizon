@@ -79,6 +79,11 @@ The v1 script-state bytes never grow. The additional 223 count bytes and six
 u16 daily stock IDs use optional save tags `0x000D` and `0x000E`; the inline bound
 is 1,093/1,120 bytes (27 spare). See [save format](../reference/save-format.md).
 
+The OPTIONS row **NEW CARDS** defaults to ON. OFF hides IDs 66–511 in every
+collection and acquisition view, preserves their saved counts and existing stock,
+and requires only originals for Card Complete. Replaced artwork on an original
+card does not change its eligibility. See [options](options.md#new-cards).
+
 Validation without an emulator:
 
 ```sh

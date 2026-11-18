@@ -1,0 +1,250 @@
+From bf23e2548b31c8da1f4f3d935b20acce91f17a3d Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 18 Nov 2026 13:27:29 +0000
+Subject: [PATCH] New cards option preserves hidden collection counts
+
+---
+ config/us/main.ld        |  2 +-
+ config/us/overlay.ld     | 11 +++++------
+ include/dw/mod_options.h |  1 +
+ src/main/game_menu.c     |  7 ++++---
+ src/main/main_menu.c     | 33 +++++++++++++++++++++------------
+ src/main/mod_options.c   |  1 +
+ src/main/script_common.c |  2 +-
+ src/shop/script_menu.c   |  1 +
+ text/main/main_menu.yaml |  3 +++
+ 9 files changed, 38 insertions(+), 23 deletions(-)
+
+diff --git a/config/us/main.ld b/config/us/main.ld
+index b4866e74..5f94ced5 100644
+--- a/config/us/main.ld
++++ b/config/us/main.ld
+@@ -1069,7 +1069,7 @@ ASSERT(OVL_READ_END(.MOV) <= OVL_TRN_BASE, "MOV overlay overlaps TRN's slot (TEX
+  * OVL_EVL_BASE except ENDI during the game-clear save (load_ending), whose first sector the last sector of MENU may
+  * overlap: start_ending reads ENDI again. Whole sectors: one more would need that read to be proved again. */
+ ASSERT(OVL_READ_END(.MENU) <= OVL_EVL_BASE + 0x800, "MENU overlay (in whole sectors) reaches past ENDI's first sector")
+-ASSERT(renderCardsView >= OVL_BTL_BASE + 0x800 && CARD_SPRITE_CLUT >= OVL_BTL_BASE + 0x800,
++ASSERT(renderCardsView >= OVL_BTL_BASE + 0x800 && modCardMove >= OVL_BTL_BASE + 0x800 && CARD_SPRITE_CLUT >= OVL_BTL_BASE + 0x800,
+        "Card metadata sector overlaps the album renderer")
+ ASSERT(title_ui_START >= OVL_READ_END(.MENU), "MENU sector read overwrites the title UI in EVL")
+ ASSERT(title_ui_END <= OVL_END(.EVL), "Title UI is outside EVL")
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index 7d6caac5..1f32dd3d 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -306,11 +306,11 @@ SECTIONS
+                 .text.modShowLanguageError* .text.modRenderLanguageError*
+                 .text.modFlagRect*
+                 /* OPTIONS is title-only (CURRENT_MENU 4). Keep its cold drawing,
+-                 * setter and private helpers with the picker; mutable width caches
+-                 * and localized pointer tables keep their existing storage. */
++                 * setter, private helpers and immutable row pointers with the picker;
++                 * mutable width caches stay resident. */
+                 .text.drawOptionsText* .text.renderOptionsMenu* .text.modSetOption*
+                 .text.modOptionValue* .text.modOptionText* .text.modOptionCount*
+-                .text.modOptionV* .text.modOptionW*
++                .text.modOptionV* .text.modOptionW* .rodata.MOD_OPT_TEXT
+                 .rodata.drawOptionsText* .rodata.renderOptionsMenu* .rodata.modSetOption*
+                 .rodata.modOptionValue* .rodata.modOptionText* .rodata.modOptionCount*
+                 .rodata.modDrawLanguagePicker* .rodata.modTickLanguagePicker*
+@@ -915,8 +915,7 @@ SECTIONS
+ 			. = ALIGN(., 4);
+ 			/* their switch tables and literals, which only they read */
+ 			BUILD_DIR/src/main/main_menu.c.o(.rodata.tickMainMenu .rodata.renderMainMenu .rodata.drawMainMenuStrings
+-				.rodata.drawMainMenuStrings.str1.4 .rodata.loadSaveCopy .rodata.old.*
+-                .rodata.MOD_OPT_TEXT); /* Options row pointers are read only while MENU is loaded. */
++				.rodata.drawMainMenuStrings.str1.4 .rodata.loadSaveCopy .rodata.old.*);
+ 			. = ALIGN(., 4);
+ 			/* MOD (heap): read-only data of the card menus that only this overlay reaches (tools/xref.py classes): their
+ 			 * messages, labels and the save icon. Nothing that is ever written goes here: a reload would undo it */
+@@ -1023,7 +1022,7 @@ SECTIONS
+             /* Album drawing runs only after Player loads MENU. Keep this code
+              * and its portrait CLUT map in the tail: CARDTAB.BIN replaces only
+              * the first sector while the album is active. */
+-            BUILD_DIR/src/main/game_menu.c.o(.text.renderCardsView .data.CARD_SPRITE_CLUT);
++            BUILD_DIR/src/main/game_menu.c.o(.text.renderCardsView .text.modCardMove .data.CARD_SPRITE_CLUT);
+             . = ALIGN(., 4);
+ 
+ 		}
+diff --git a/include/dw/mod_options.h b/include/dw/mod_options.h
+index 5683954c..a85739f2 100644
+--- a/include/dw/mod_options.h
++++ b/include/dw/mod_options.h
+@@ -18,6 +18,7 @@
+ 
+ extern int32_t MOD_OPT_BUTTONS;	/* JAPANESE CONTROLS: MOD_BUTTONS_JP (input.h reads it) */
+ extern int32_t MOD_OPT_EVO_GUIDE; /* EVOLUTION GUIDE: the evolution chart's requirement card and lit lines (patch 0176), 0 = the original chart */
++extern int32_t MOD_OPT_NEW_CARDS; /* NEW CARDS: OFF hides ids >= 66 without clearing saved counts. */
+ extern int32_t MOD_OPT_NEW_DIGIMON; /* NEW DIGIMON: the species the mod made raisable; 0 = the original's only */
+ extern int32_t MOD_OPT_CHEATS; /* CHEATS: lab menu, off by default */
+ extern int32_t MOD_OPT_SHORTCUTS; /* the Cheats menu's row: Select + L1/R1/L2/R2 under CHEATS, off by default */
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index d889121b..96f4437a 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -5662,10 +5662,11 @@ void renderMedalView(void)
+ 
+ int32_t modCardMove(int32_t id, int32_t input)
+ {
++	int32_t limit = MOD_OPT_NEW_CARDS ? NUM_CARDS : 66;
+ 	if ((input & 0x8000) && id % 11 != 0) id--;
+-	if ((input & 0x2000) && id % 11 != 10 && id + 1 < NUM_CARDS) id++;
++	if ((input & 0x2000) && id % 11 != 10 && id + 1 < limit) id++;
+ 	if ((input & 0x1000) && id >= 11) id -= 11;
+-	if ((input & 0x4000) && id + 11 < NUM_CARDS) id += 11;
++	if ((input & 0x4000) && id + 11 < limit) id += 11;
+ 	return id;
+ }
+ 
+@@ -5700,7 +5701,7 @@ void renderCardsView(void)
+ 	case 1:
+ 		renderNumber(0, 0x35, -0x50, 3, SELECTED_CARD, 5);
+ 		drawLine2P(0xbebebe, 0x5e, -0x45, 0x63, -0x50, 5, 0);
+-		renderNumber(0, 0x68, -0x50, 3, NUM_CARDS - 1, 5);
++		renderNumber(0, 0x68, -0x50, 3, (MOD_OPT_NEW_CARDS ? NUM_CARDS : 66) - 1, 5);
+ 		for (i = 0; i < 6; i++) {
+ 			for (j = 0; j < 11; j++) {
+ 				card = j + (i + CARD_TOP_ROW) * 11;
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 486e9e4c..af2ae499 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -273,17 +273,18 @@ static int32_t MOD_OPTIONS_BACK; /* MOD (options): the title menu comes back fro
+ #define MOD_OPT_CHEATS_BIT 1 /* byte 12: CHEATS, and the Cheats menu's Select shortcuts in the bit above it */
+ #define MOD_OPT_SHORTCUTS_BIT 2
+ static int32_t MOD_SAVE_NUMBER; /* MOD (options): the highest save number seen in a save header (modTitleOptions) */
+-#define MOD_OPT_ROW_STORY	3 /* MOD (story): EXTENDED STORY, under NEW DIGIMON */
+-#define MOD_OPT_ROW_DIFF	4 /* MOD (difficulty): DIFFICULTY, under EXTENDED STORY */
+-#define MOD_OPT_ROW_QUICK	5 /* MOD (quick battle start): QUICK BATTLE START, under DIFFICULTY */
+-#define MOD_OPT_ROW_FPS 6
++#define MOD_OPT_ROW_CARDS 3
++#define MOD_OPT_ROW_STORY	4 /* MOD (story): EXTENDED STORY, under NEW CARDS */
++#define MOD_OPT_ROW_DIFF	5 /* MOD (difficulty): DIFFICULTY, under EXTENDED STORY */
++#define MOD_OPT_ROW_QUICK	6 /* MOD (quick battle start): QUICK BATTLE START, under DIFFICULTY */
++#define MOD_OPT_ROW_FPS 7
+ #if FONT_SWITCH
+-#define MOD_OPT_ROWS	11 /* MOD (options): and FONT, in a build with both fonts */
+-#define MOD_OPT_ROW_FONT	7
+-#define MOD_OPT_ROW_LANG	8
++#define MOD_OPT_ROWS	12 /* MOD (options): and FONT, in a build with both fonts */
++#define MOD_OPT_ROW_FONT	8
++#define MOD_OPT_ROW_LANG	9
+ #else
+-#define MOD_OPT_ROWS	10
+-#define MOD_OPT_ROW_LANG	7
++#define MOD_OPT_ROWS	11
++#define MOD_OPT_ROW_LANG	8
+ #endif
+ #define MOD_OPT_ROW_SIGNS	(MOD_OPT_ROW_LANG + 1) /* MOD (language): LANGUAGE and MAP SIGNS, the last two rows */
+ static void renderOptionsMenu(void);
+@@ -4764,7 +4765,7 @@ static void modOptionBytes(uint8_t *d)
+ 	d[4] = 0;
+ #endif
+ 	d[5] = MOD_OPT_EVO_GUIDE;
+-	d[6] = MOD_OPT_NEW_DIGIMON;
++	d[6] = MOD_OPT_NEW_DIGIMON | (MOD_OPT_NEW_CARDS ? 0 : 0x80); /* Inverted: old saves enable new cards. */
+ 	d[7] = MOD_LANG; /* MOD (language) */
+ 	d[8] = MOD_OPT_SIGNS;
+ 	d[9] = MOD_OPT_STORY; /* MOD (story) */
+@@ -4796,8 +4797,9 @@ static void modApplyOptions(const uint8_t *d, int32_t len)
+ 	if (len >= 6) {
+ 		MOD_OPT_EVO_GUIDE = d[5] != 0;
+ 	}
++	MOD_OPT_NEW_CARDS = len < 7 || !(d[6] & 0x80);
+ 	if (len >= 7) {
+-		MOD_OPT_NEW_DIGIMON = d[6] != 0;
++		MOD_OPT_NEW_DIGIMON = (d[6] & 1) != 0;
+ 		modApplySpeciesLevels(); /* MOD (canon levels) */
+ 	}
+ 	if (len >= 8) { /* MOD (language) */
+@@ -5518,7 +5520,8 @@ static void applyRecords(uint8_t *e)
+ 		case SAVE_TAG_CARD_STOCK:
+ 			for (i = 0; i < len / 2 && i < 6; i++) {
+ 				n = readRecord16(d + i * 2);
+-				MOD_CARD_STOCK[i] = modCardIsReal(n) ? n : CARD_NONE;
++				/* Saved stock survives NEW CARDS OFF too. Visibility is checked by the shop. */
++				MOD_CARD_STOCK[i] = (uint32_t)n < NUM_CARDS && ((MOD_CARD_REAL[n / 8] >> (n & 7)) & 1) ? n : CARD_NONE;
+ 			}
+ 			break;
+ 		case SAVE_TAG_GROUND_PICKUP_BITS:
+@@ -6082,6 +6085,7 @@ static char *MOD_OPT_TEXT[MOD_OPT_ROWS][4] = {
+ 	{ MOD_OPT_STR_JP, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+ 	{ MOD_OPT_STR_EVO, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+ 	{ MOD_OPT_STR_NEWDIGI, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
++	{ MOD_OPT_STR_NEWCARDS, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+ 	{ MOD_OPT_STR_STORY, MOD_OPT_STR_OFF, MOD_OPT_STR_ON }, /* MOD (story) */
+ 	{ MOD_OPT_STR_DIFF, MOD_OPT_STR_EASY, MOD_OPT_STR_NORMAL, MOD_OPT_STR_HARD }, /* MOD (difficulty) */
+ 	{ MOD_OPT_STR_QUICK, MOD_OPT_STR_OFF, MOD_OPT_STR_ON }, /* MOD (quick battle start) */
+@@ -6167,6 +6171,8 @@ static int32_t modOptionValue(int32_t row)
+ 		return MOD_OPT_EVO_GUIDE != 0;
+ 	case 2:
+ 		return MOD_OPT_NEW_DIGIMON != 0;
++	case MOD_OPT_ROW_CARDS:
++		return MOD_OPT_NEW_CARDS != 0;
+ 	case MOD_OPT_ROW_STORY: /* MOD (story) */
+ 		return MOD_OPT_STORY != 0;
+ 	case MOD_OPT_ROW_DIFF: /* MOD (difficulty): EASY, NORMAL */
+@@ -6213,6 +6219,9 @@ static void __attribute__((noinline)) modSetOption(int32_t row, int32_t value)
+ 		MOD_OPT_NEW_DIGIMON = value;
+ 		modApplySpeciesLevels(); /* MOD (canon levels) */
+ 		break;
++	case MOD_OPT_ROW_CARDS:
++		MOD_OPT_NEW_CARDS = value;
++		break;
+ 	case MOD_OPT_ROW_STORY: /* MOD (story) */
+ 		modSetStory(value);
+ 		break;
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index 1714db6a..eda8f254 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -62,6 +62,7 @@ int32_t MOD_OPT_SHORTCUTS = 0;
+ int32_t MOD_OPT_BUTTONS = MOD_BUTTONS_US;
+ int32_t MOD_OPT_EVO_GUIDE = 1;
+ int32_t MOD_OPT_NEW_DIGIMON = 1;
++int32_t MOD_OPT_NEW_CARDS = 1;
+ int16_t MOD_SWAP_FROM;
+ int16_t MOD_SWAP_TO;
+ 
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index 7324b851..5dbb97ec 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -451,7 +451,7 @@ uint16_t MOD_CARD_STOCK[6];
+ 
+ int32_t modCardIsReal(int32_t id)
+ {
+-	return (uint32_t)id < NUM_CARDS && ((MOD_CARD_REAL[id / 8] >> (id & 7)) & 1);
++	return (uint32_t)id < (MOD_OPT_NEW_CARDS ? NUM_CARDS : 66) && ((MOD_CARD_REAL[id / 8] >> (id & 7)) & 1);
+ }
+ 
+ void modLoadCardTable(void)
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index 1bf688db..04ff6ce7 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -1433,6 +1433,7 @@ int32_t hasAnyCardToBuy(void)
+ 	for (i = 0; i < 6; i++) {
+ 		ITEM_MENU_LEFT->itemCount++;
+ 		id = MOD_CARD_STOCK[i];
++		if (!modCardIsReal(id)) id = CARD_NONE; /* Hide existing new stock without consuming it. */
+ 		*buf++ = id;
+ 		*buf++ = id >> 8;
+ 		if (id != CARD_NONE) {
+diff --git a/text/main/main_menu.yaml b/text/main/main_menu.yaml
+index c1388143..bb5ee43c 100644
+--- a/text/main/main_menu.yaml
++++ b/text/main/main_menu.yaml
+@@ -359,6 +359,9 @@ MOD_OPTIONS:
+     MOD_OPT_STR_EVO:
+       ja: "EVOLUTION GUIDE"
+       en_us: "EVOLUTION GUIDE"
++    MOD_OPT_STR_NEWCARDS:
++      ja: "NEW CARDS"
++      en_us: "NEW CARDS"
+     MOD_OPT_STR_NEWDIGI:
+       ja: "NEW DIGIMON"
+       en_us: "NEW DIGIMON"
+-- 
+2.55.0
+
