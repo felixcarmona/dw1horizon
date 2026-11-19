@@ -1,0 +1,43 @@
+From 9429c1e243af1706b0b9229ca3e217ff1b249a40 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 19 Nov 2026 09:05:02 +0000
+Subject: [PATCH] Item Bank box titles take the room they need
+
+A title wider than its 56 or 60 pixel slot (Guardado, Im Besitz, In deposito) was cut off. It now takes the width it needs, up to 96 pixels, and stays centred over the box.
+---
+ src/shop/script_menu.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
+
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index 9478d1d0..0ff6ec8a 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -2505,14 +2505,18 @@ draw:
+ #if !VERSION_IS(US)
+ 	renderString(0, bx + 0x38, by + 5, 0x24, 0xc, x, y, 6 - boxId, 1);
+ #else
+-	if (flag != 0) {
+-		drawString(label1.s, x, y);
+-		color = 0x38;
+-	} else {
+-		drawString(label2.s, x, y);
+-		color = 0x3c;
++	/* MOD (keeper titles): a title wider than its 56-60 pixel slot (Guardado, Im Besitz, In deposito...) takes the room it
++	 * needs, up to 96 pixels, and stays centred over the box */
++	{
++		char *title = flag != 0 ? label1.s : label2.s;
++		int32_t base = flag != 0 ? 0x38 : 0x3c;
++		int32_t mode = fitStringMode(title, 0x60);
++		int32_t w = measureStringMode(title, mode) + 2;
++
++		color = w > base ? (w > 0x60 ? 0x60 : w) : base;
++		drawStringMode(title, x, y, mode);
++		renderString(0, bx + 0x2d + base / 2 - color / 2, by + 7, color, 0xc, x, y, 6 - boxId, 1);
+ 	}
+-	renderString(0, bx + 0x2d, by + 7, color, 0xc, x, y, 6 - boxId, 1);
+ #endif
+ 	if (MAIN_D_80134F90 == boxId - 1) {
+ 		rect.attribute = 0x40000000;
+-- 
+2.55.0
+
