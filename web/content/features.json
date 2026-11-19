@@ -187,6 +187,86 @@
    }
   },
   {
+   "id": "finishers",
+   "media": [],
+   "en": {
+    "title": "Signature finishers",
+    "body": "Imported Digimon now have finishers with their own names and effects, some adapted from Digital Card Battle and Digimon World 2 and 3. Their power fits the evolution stage: gentler for Rookies, stronger for Megas."
+   },
+   "es": {
+    "title": "Remates propios",
+    "body": "Los Digimon importados tienen ahora remates con nombre y efectos propios, algunos adaptados de Digital Card Battle y de Digimon World 2 y 3. Su potencia encaja con la etapa de evolución: más suave en Rookie, más fuerte en Mega."
+   },
+   "pt-br": {
+    "title": "Golpes finais próprios",
+    "body": "Os Digimon importados agora têm golpes finais com nome e efeitos próprios, alguns adaptados de Digital Card Battle e de Digimon World 2 e 3. A potência combina com o estágio de evolução: mais leve nos Rookies, mais forte nos Megas."
+   },
+   "fr": {
+    "title": "Des finishers à eux",
+    "body": "Les Digimon importés ont désormais des finishers avec leur propre nom et leurs propres effets, certains adaptés de Digital Card Battle et de Digimon World 2 et 3. Leur puissance suit le stade d'évolution : plus douce chez les Rookies, plus forte chez les Mégas."
+   },
+   "de": {
+    "title": "Eigene Finisher",
+    "body": "Importierte Digimon haben jetzt Finisher mit eigenem Namen und eigenen Effekten, einige angelehnt an Digital Card Battle sowie Digimon World 2 und 3. Ihre Stärke passt zur Digitationsstufe: milder bei Rookies, stärker bei Megas."
+   },
+   "it": {
+    "title": "Finisher esclusivi",
+    "body": "I Digimon importati hanno ora finisher con nome ed effetti propri, alcuni adattati da Digital Card Battle e da Digimon World 2 e 3. La potenza segue lo stadio di evoluzione: più leggera per i Rookie, più forte per i Mega."
+   },
+   "ja": {
+    "title": "固有のフィニッシャー",
+    "body": "取り込まれたデジモンに、固有の名前と効果を持つフィニッシャーが加わりました。デジタルカードバトルやデジモンワールド2・3から取り入れた技もあります。威力は進化段階に合わせてあり、成長期は控えめ、完全体以上は強力です。"
+   },
+   "ca": {
+    "title": "Rematades pròpies",
+    "body": "Els Digimon importats tenen ara rematades amb nom i efectes propis, algunes adaptades de Digital Card Battle i de Digimon World 2 i 3. La potència s'ajusta a l'etapa d'evolució: més suau en Rookie, més forta en Mega."
+   },
+   "zh-hans": {
+    "title": "专属必杀技",
+    "body": "导入的数码宝贝现在拥有各自名称和效果的必杀技，部分改编自《数码宝贝卡片对战》和《数码宝贝世界2、3》。威力与进化阶段相称：幼年期较温和，完全体以上更强。"
+   }
+  },
+  {
+   "id": "cards",
+   "media": [],
+   "en": {
+    "title": "300 collectible cards",
+    "body": "240 new cards, numbered 66 to 305, join the original 64, and every card has new art that matches its Digimon. The album scrolls and counts what you own. The NEW CARDS option in OPTIONS brings back the original cards and art whenever you want."
+   },
+   "es": {
+    "title": "300 cartas coleccionables",
+    "body": "240 cartas nuevas, de la 66 a la 305, se suman a las 64 originales, y todas tienen un dibujo nuevo acorde con su Digimon. El álbum se desplaza y cuenta las que tienes. La opción NEW CARDS en OPTIONS devuelve las cartas y los dibujos originales cuando quieras."
+   },
+   "pt-br": {
+    "title": "300 cartas colecionáveis",
+    "body": "240 cartas novas, de 66 a 305, se juntam às 64 originais, e todas têm uma arte nova que combina com seu Digimon. O álbum rola e conta as que você tem. A opção NEW CARDS em OPTIONS traz de volta as cartas e a arte originais quando quiser."
+   },
+   "fr": {
+    "title": "300 cartes à collectionner",
+    "body": "240 nouvelles cartes, numérotées de 66 à 305, rejoignent les 64 d'origine, et chacune a une nouvelle illustration assortie à son Digimon. L'album défile et compte celles que tu possèdes. L'option NEW CARDS dans OPTIONS rend les cartes et les illustrations d'origine quand tu veux."
+   },
+   "de": {
+    "title": "300 Sammelkarten",
+    "body": "240 neue Karten, nummeriert von 66 bis 305, kommen zu den 64 ursprünglichen hinzu, und jede hat ein neues Bild passend zu ihrem Digimon. Das Album scrollt und zählt, was du besitzt. Die Option NEW CARDS in OPTIONS bringt die ursprünglichen Karten und Bilder zurück, wann immer du willst."
+   },
+   "it": {
+    "title": "300 carte collezionabili",
+    "body": "240 carte nuove, numerate da 66 a 305, si aggiungono alle 64 originali, e ognuna ha un'illustrazione nuova in tema con il suo Digimon. L'album scorre e conta quelle che possiedi. L'opzione NEW CARDS in OPTIONS riporta le carte e le illustrazioni originali quando vuoi."
+   },
+   "ja": {
+    "title": "300枚のコレクションカード",
+    "body": "66〜305番の新カード240枚がオリジナルの64枚に加わり、すべてのカードにそのデジモンに合った新しいイラストが付きます。アルバムはスクロールでき、持っている枚数を数えます。OPTIONSのNEW CARDSで、いつでもオリジナルのカードとイラストに戻せます。"
+   },
+   "ca": {
+    "title": "300 cartes col·leccionables",
+    "body": "240 cartes noves, de la 66 a la 305, se sumen a les 64 originals, i totes tenen un dibuix nou d'acord amb el seu Digimon. L'àlbum es desplaça i compta les que tens. L'opció NEW CARDS a OPTIONS retorna les cartes i els dibuixos originals quan vulguis."
+   },
+   "zh-hans": {
+    "title": "300张收集卡",
+    "body": "第66至305号的240张新卡加入原有的64张，每张卡都有与其数码宝贝相配的新插画。卡册可以滚动，并统计你拥有的数量。在OPTIONS中打开NEW CARDS选项，随时可以换回原版卡片和插画。"
+   }
+  },
+  {
    "id": "fps",
    "media": [
     {
