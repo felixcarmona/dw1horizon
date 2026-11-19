@@ -498,3 +498,4 @@ at 2 MB. Physical hardware validation remains outstanding.
 | `Status-shows-the-partner-s-battle-count-with-a-baked.patch` |  | Status shows the partner's battle count with a baked BATTLES tag |  |
 | `Square-picks-a-random-egg-with-a-hint-line-under-the.patch` |  | Square picks a random egg, with a hint line under the egg panel |  |
 | `Use-a-Portable-Potty-with-the-toilet-clip-instead-of.patch` |  | Use a Portable Potty with the toilet clip instead of eating it |  |
+| `Item-Bank-lists-show-each-item-s-icon.patch` |  | Item Bank lists show each item's icon |  |
