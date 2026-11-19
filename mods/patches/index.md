@@ -500,3 +500,4 @@ at 2 MB. Physical hardware validation remains outstanding.
 | `Use-a-Portable-Potty-with-the-toilet-clip-instead-of.patch` |  | Use a Portable Potty with the toilet clip instead of eating it |  |
 | `Shrink-the-menu-overlay-back-within-its-sectors.patch` |  | Shrink the menu overlay back within its sectors |  |
 | `Item-Bank-lists-show-each-item-s-icon.patch` |  | Item Bank lists show each item's icon |  |
+| `Item-Bank-box-titles-take-the-room-they-need.patch` |  | Item Bank box titles take the room they need |  |
