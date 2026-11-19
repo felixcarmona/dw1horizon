@@ -501,3 +501,4 @@ at 2 MB. Physical hardware validation remains outstanding.
 | `Shrink-the-menu-overlay-back-within-its-sectors.patch` |  | Shrink the menu overlay back within its sectors |  |
 | `Item-Bank-lists-show-each-item-s-icon.patch` |  | Item Bank lists show each item's icon |  |
 | `Item-Bank-box-titles-take-the-room-they-need.patch` |  | Item Bank box titles take the room they need |  |
+| `Sort-Status-portraits-into-finer-depth-buckets.patch` |  | Sort Status portraits into finer depth buckets |  |
