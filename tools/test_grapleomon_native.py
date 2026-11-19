@@ -43,6 +43,7 @@ class GrapLeomonNative(unittest.TestCase):
         base.mkdir()
         shutil.copy(files[0], base / '306.MMD')
         shutil.copy(tims[0], base / '306.TIM')
+        cls.source_data = files[0].read_bytes()
         imported.BASE_MODELS = str(base)
         path, cls.proof = imported.overlay(str(Path(cls.tmp) / 'species'), '306')
         cls.data = Path(path).read_bytes()
@@ -87,6 +88,40 @@ class GrapLeomonNative(unittest.TestCase):
             self.assertAlmostEqual(self.speed(own), self.speed(native)*scale, delta=.3)
             for bone in range(DONOR_BONES):
                 self.assertEqual([f[bone][3:6] for f in own], [f[bone][3:6] for f in native], (slot, bone))
+
+    def test_proportions_preserve_every_clip_rig_and_boot(self):
+        import copy
+        recipe = copy.deepcopy(self.recipe)
+        recipe.pop('mesh_mirror')
+        for piece in recipe['pieces'].values():
+            piece.pop('shape_scale', None)
+        data, proof = binding.bind(self.source_data, self.record['model']['skeleton'], recipe)
+        baseline = mmd.MMD.parse(data, BONES)
+        self.assertEqual(proof['generated_skeleton'], self.rig)
+        for slot, program in enumerate(baseline.anims.table):
+            if program is not None:
+                self.assertEqual(animsheet.slot_frames(baseline, BONES, slot)[0], self.frames(slot), slot)
+        for bone in (*SOLES, *DRUMS):
+            obj = self.rig[bone][0]
+            self.assertEqual(baseline.tmd.obj_verts(obj), self.model.tmd.obj_verts(obj), bone)
+
+    def test_fists_match_native_leomon_size_and_are_mirrors(self):
+        def points(model, rig, bone):
+            pose = animsheet.slot_frames(model, len(rig), 0)[0][0]
+            pose[0] = [4096]*3 + [0]*6
+            frame = np.array(mmd.bone_matrices(model, pose))[bone]
+            verts = np.array(model.tmd.obj_verts(rig[bone][0]))[:, :3]
+            return verts @ frame[:3, :3].T + frame[:3, 3]
+        hands = []
+        for bone in (7, 10):
+            own = points(self.model, self.rig, bone)
+            native = points(self.native, mmd.exe().skeleton[DONOR], bone)
+            ratio = np.ptp(own, axis=0)/np.ptp(native, axis=0)
+            self.assertTrue(np.all((ratio > .94) & (ratio < 1.06)), ratio)
+            hands.append(own)
+        mirrored = hands[0] * [-1, 1, 1]
+        for vertex in hands[1]:
+            self.assertLess(np.linalg.norm(mirrored-vertex, axis=1).min(), 2)
 
     def test_slots_and_ticks(self):
         self.assertEqual([len(self.frames(s)) for s in (0, 2, 3, 4)], [17, 17, 17, 17])

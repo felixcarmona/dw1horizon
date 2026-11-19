@@ -210,7 +210,8 @@ def bind(data, skeleton, recipe, placements=None, final=True, battle_context=Non
     battle_pieces, lows = {}, [-1e9, -1e9]       # the pieces' fitting rotations, for battle_originals (native_battle.py)
     spin_poses = {}
     mirrors = {int(k): v for k, v in recipe.get('mirror', {}).items()}
-    for sb, tb in sorted(mapping.items(), key=lambda item: item[0] in mirrors):
+    mesh_mirrors = {int(k): v for k, v in recipe.get('mesh_mirror', {}).items()}
+    for sb, tb in sorted(mapping.items(), key=lambda item: item[0] in mirrors or item[0] in mesh_mirrors):
         if sb in mirrors:
             items[tb].append(mirror_piece(mesh, skeleton, sb, mirrors[sb], fitted, nw[tb]))
             twin = next(row for row in battle_pieces.get(mapping[mirrors[sb]], []) if row[0] == mirrors[sb])
@@ -300,6 +301,17 @@ def bind(data, skeleton, recipe, placements=None, final=True, battle_context=Non
             placements[sb] = (anchor, transform, destination)
         normals = np.array(mesh.tmd.obj_norms(obj)[:original.nnorm]).reshape(-1, 4)[:, :3]
         normals = normals @ np.linalg.inv(sw[sb, :3, :3]) @ np.linalg.inv(transform)
+        # Cosmetic proportions must not change the source-motion fitting rotation,
+        # weight or floor bounds above. Uniform scaling also keeps normal directions.
+        if 'shape_scale' in rule:
+            if sb in spun or sb in rider_of:
+                raise ValueError('Native binding: shape_scale needs an ordinary rigid piece')
+            points = (points-destination)*rule['shape_scale'] + destination
+        if sb in mesh_mirrors:
+            if sb in spun or sb in rider_of:
+                raise ValueError('Native binding: mesh_mirror needs an ordinary rigid piece')
+            items[tb].append(mirror_piece(mesh, skeleton, sb, mesh_mirrors[sb], fitted, nw[tb]))
+            continue
         if sb in spun:
             # a drum that turns about its own axis: its own bone below the donor's, at the drum's centre, its z axis along the drum
             axis = transform @ sw[sb, :3, :3] @ np.array(spin['bones'][str(sb)]['axis'], dtype=float)
