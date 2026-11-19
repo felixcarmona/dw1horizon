@@ -1,0 +1,32 @@
+From 5f26358c139329813c79b7e23c7c391bd1847ada Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 19 Nov 2026 12:39:35 +0000
+Subject: [PATCH] Sort Status portraits into finer depth buckets
+
+renderDigiviceEntity sorted the partner into its 512-entry ordering table with shift 5: buckets 128 depth units deep. The species cameras that keep portraits clear of the labels put many partners farther from the eye than the native ones, and their inner faces (the inside of Agumon's mouth, the far side of Patamon's head) then fell into the same or a nearer bucket than the faces in front, so the closed mouth drew as a black hole. Shift 3 gives 32-unit buckets; the table still reaches depth 16384, past every portrait. Same table, same memory.
+---
+ src/main/game_menu.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 3c84cbb..270347b 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -6055,7 +6055,13 @@ int8_t entityId;
+ 			GsSetLightMatrix(&m);
+ 			GsGetLs(pos->obj.coord2, &m);
+ 			GsSetLsMatrix(&m);
+-			GsSortObject4(&pos->obj, FRAMEBUFFER_OT[ACTIVE_FRAMEBUFFER], 5,
++			/* MOD (status portrait): shift 3, not 5. With 5 the 512-entry OT
++			 * buckets are 128 depth units deep, and a portrait camera farther
++			 * than the native ones put a mouth's inside or the far side of a
++			 * head in the same or a nearer bucket than the face: Agumon's
++			 * closed mouth drew as a black hole. 32-unit buckets order them;
++			 * the table still reaches depth 16384, past every portrait. */
++			GsSortObject4(&pos->obj, FRAMEBUFFER_OT[ACTIVE_FRAMEBUFFER], 3,
+ 			              getScratchAddr(0));
+ 		}
+ 	}
+-- 
+2.55.0
+
