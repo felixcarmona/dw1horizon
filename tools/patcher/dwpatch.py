@@ -1574,6 +1574,8 @@ def make_bundle_derive(usa, work, out, recipe, facts, source_discs=None, cache=N
                                    and '__pycache__' not in r}
     if 'tools/city_residents.py' in files:
         bundle.add('tools/city_residents.py')  # also needed when an import came from a cached module
+    if 'tools/cards.py' in files:
+        bundle.add('tools/cards.py')  # the cards step imports it; plain imports are not in the opened-file trace
     if source_discs:
         bundle |= {r for r in files if r.startswith('content/imports/releases/')}
         bundle.add('tools/discs.py')

@@ -1,0 +1,197 @@
+From b2f481e5d96508848b1db6f0183fb5c80c2adfa6 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 18 Nov 2026 19:23:43 +0000
+Subject: [PATCH] Shrink the menu overlay back within its sectors
+
+The Cheats redraw cache keeps each text row's hash and width instead of a
+960-byte copy of the rows; the number editor's box and arrows are drawn from
+a table; the card album reads its portrait CLUT map in place and draws its
+title and footer crops in a loop. MENU shrinks by 1,116 bytes (0xda3c to
+0xd5e0), so its whole-sector read ends at ENDI's first sector again. The
+executable does not change size.
+---
+ config/us/overlay.ld      |  9 ++++----
+ src/main/game_menu.c      | 17 ++++++++-------
+ src/main/mod_lab_menu.inc | 45 +++++++++++++++++++++++++++------------
+ 3 files changed, 45 insertions(+), 26 deletions(-)
+
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index f7b70389..c2ceac15 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -1001,16 +1001,17 @@ SECTIONS
+             BUILD_DIR/src/main/mod_lab.c.o(.text.modLabFieldPtr .text.modLabFit .text.modLabBound
+                 .text.modLabClamp .text.modLabList .text.modLabPerform
+                 .text.modLabDrawText .text.modLabRowY .text.modLabRender
+-                .text.modLabMenuLoaded* .text.labInt
++                .text.modLabMenuLoaded* .text.labInt .text.labHash
+                 .rodata.modLabMenuLoaded*);
+             /* UI-only storage: the anonymous translated-literal pool, immutable
+              * field/home tables and redraw cache. Roster captions, their level
+-             * table and all shared state remain resident. labText is scratch:
+-             * modLabMenuLoaded clears it before the first read on every entry;
++             * table and all shared state remain resident. The redraw cache (each
++             * row's hash and width) is scratch: modLabMenuLoaded clears the hashes
++             * before the first read on every entry;
+              * the BIOS does not zero overlay bss. Card reloads occur only after
+              * the lab's render callback has been removed. */
+             BUILD_DIR/src/main/mod_lab.c.o(.rodata .rodata.LAB_FIELDS
+-                .rodata.LAB_HOME_TEXT .bss.labText);
++                .rodata.LAB_HOME_TEXT .rodata.LAB_NUMBER_LINES .bss.labTextHash .bss.labTextWidth);
+             . = ALIGN(., 4);
+ 
+ 			LONG(0);
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 29667edf..3c84cbb6 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -5755,14 +5755,14 @@ int32_t modCardTop(int32_t id, int32_t top)
+ 
+ void renderCardsView(void)
+ {
+-	CardSprites sprites;
++	const CardSprites *sprites;
+ 	int32_t j;
+ 	int32_t i;
+ 	int16_t card;
+ 	int8_t amount;
+ 	int32_t limit;
+ 
+-	sprites = CARD_SPRITE_CLUT;
++	sprites = &CARD_SPRITE_CLUT;
+ 
+ 	switch (MENU_STATE) {
+ 	case 0:
+@@ -5791,7 +5791,7 @@ void renderCardsView(void)
+ 				} else if (amount > 0) {
+ 					renderRectPolyFT4(j * 24 - 0x81, i * 24 - 0x3e, 0x10, 0x10,
+ 					                  (card % 8) * 32, (card / 8) * 16, 0x18,
+-					                  sprites.v[card] * 64 + 0x7a07, 5, 0);
++					                  sprites->v[card] * 64 + 0x7a07, 5, 0);
+ 				}
+ 				renderBorderBox(j * 24 + 0x1e, i * 24 + 0x39, 0x12, 0x12,
+ 				                0xbebebe, 0x3c3c3c, 0x69, 0x69, 0x69, 5);
+@@ -5799,11 +5799,12 @@ void renderCardsView(void)
+ 		}
+ 
+ 		/* MOD (language): each language's crops (CARD_LIST_CROPS) */
+-		renderString(3, CARD_LIST_CROPS[0].x, -0x50, CARD_LIST_CROPS[0].w, 0xc, CARD_LIST_CROPS[0].u, 0xc, 5, 1);
+-		renderString(FOOTER_GLYPH1_COLOR, CARD_LIST_CROPS[1].x, 0x53, CARD_LIST_CROPS[1].w, 0xc, CARD_LIST_CROPS[1].u, 0xc, 5, 1);
+-		renderString(0, CARD_LIST_CROPS[2].x, 0x53, CARD_LIST_CROPS[2].w, 0xc, CARD_LIST_CROPS[2].u, 0xc, 5, 1);
+-		renderString(FOOTER_GLYPH2_COLOR, CARD_LIST_CROPS[3].x, 0x53, CARD_LIST_CROPS[3].w, 0xc, CARD_LIST_CROPS[3].u, 0xc, 5, 1);
+-		renderString(0, CARD_LIST_CROPS[4].x, 0x53, CARD_LIST_CROPS[4].w, 0xc, CARD_LIST_CROPS[4].u, 0xc, 5, 1);
++		/* the title (colour 3, at the top), then the footer's crops; colours are nibbles, crop 0 first */
++		for (i = 0; i < 5; i++) {
++			renderString(((3 | FOOTER_GLYPH1_COLOR << 4 | FOOTER_GLYPH2_COLOR << 12) >> (i * 4)) & 0xf,
++			             CARD_LIST_CROPS[i].x, i ? 0x53 : -0x50, CARD_LIST_CROPS[i].w, 0xc,
++			             CARD_LIST_CROPS[i].u, 0xc, 5, 1);
++		}
+ 	}
+ }
+ 
+diff --git a/src/main/mod_lab_menu.inc b/src/main/mod_lab_menu.inc
+index 8deadb0c..1c0bd296 100644
+--- a/src/main/mod_lab_menu.inc
++++ b/src/main/mod_lab_menu.inc
+@@ -55,7 +55,11 @@ static int32_t labTop, labCount, labField, labPrevious, labPreviousCursor;
+ static int32_t labStep;
+ static uint16_t *labChoices; /* points into modLabMenu's stack, valid until the UI closes */
+ static char *modLabMessage;
+-static char labText[LAB_ROWS][96];
++/* What each text row last drew: a hash of its bytes (0 = empty, so the clear below means
++ * "nothing drawn") and its width, all the renderer needs. Not a copy of the rows, to keep
++ * the menu overlay within its sectors. */
++static uint32_t labTextHash[LAB_ROWS];
++static int16_t labTextWidth[LAB_ROWS];
+ static char *const LAB_HOME_TEXT[] = { LAB_STR_ADD_BITS, LAB_STR_SATIATE, LAB_STR_PARAMETERS,
+     LAB_STR_EVOLVE, LAB_STR_TELEPORT, LAB_STR_HEAL, LAB_STR_SHORTCUTS_OFF, LAB_STR_SAVE_GAME, LAB_STR_LOAD_GAME, LAB_STR_MAIN_MENU, LAB_STR_OLD_AGE,
+     LAB_STR_LEARN, LAB_STR_LEARN_ALL, LAB_STR_UNLOCK_CHART, LAB_STR_CLOSE };
+@@ -68,6 +72,15 @@ static char *appendStr(char *dst, const char *src)
+     return dst;
+ }
+ 
++/* FNV-1a over the bytes, never 0 for a nonempty row */
++static uint32_t labHash(const char *s)
++{
++    uint32_t h = 0x811c9dc5;
++    if (!*s) return 0;
++    while (*s) h = (h ^ (uint8_t)*s++) * 0x01000193;
++    return h | 1;
++}
++
+ static char *labInt(char *p, int32_t value)
+ {
+     char digits[16];
+@@ -342,11 +355,14 @@ static void modLabDrawText(void)
+     p = appendStr(p, "    \x81\x7e "); appendStr(p, MOD_LAB_VIEW == LAB_NUMBER || MOD_LAB_VIEW == LAB_CONFIRM ? LAB_STR_SIMPLE_CANCEL : LAB_STR_BACK);
+     if (modLabMessage) { lines[9][0] = 0; appendStr(lines[9], modLabMessage); }
+     for (row = 0; row < LAB_ROWS; row++) {
++        uint32_t hash;
+         modLabFit(lines[row], 248);
+-        if (!strcmp(labText[row], lines[row])) continue;
++        hash = labHash(lines[row]);
++        if (labTextHash[row] == hash) continue;
+         setRECT(&area, 0, TEXT_ROW_Y(row), 256, 12); clearTextSubArea(&area);
+         drawString(lines[row], 0, TEXT_ROW_Y(row));
+-        strcpy(labText[row], lines[row]);
++        labTextHash[row] = hash;
++        labTextWidth[row] = measureStringMode(lines[row], FIT_VANILLA);
+     }
+     DrawSync(0);
+ }
+@@ -372,6 +388,12 @@ static void modLabFill(int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, in
+     setRECT(&box, x, y, w, h); GsSortBoxFill(&box, ACTIVE_ORDERING_TABLE, order);
+ }
+ 
++/* The number editor's box (4 sides), then its left and right arrows: x0, y0, x1, y1 from the box's corner */
++static const uint8_t LAB_NUMBER_LINES[8][4] = {
++    { 0, 0, 160, 0 }, { 0, 30, 160, 30 }, { 0, 0, 0, 30 }, { 160, 0, 160, 30 },
++    { 18, 10, 13, 15 }, { 13, 15, 18, 20 }, { 142, 10, 147, 15 }, { 147, 15, 142, 20 },
++};
++
+ static void modLabRender(int32_t instanceId)
+ {
+     RECT *pos = &UI_BOX_DATA[MOD_LAB_BOX].finalPos;
+@@ -384,25 +406,20 @@ static void modLabRender(int32_t instanceId)
+     drawLine2P(0x778b97, pos->x + 12, pos->y + 196, pos->x + LAB_WIDTH - 12, pos->y + 196, 0, 0);
+     /* Texture UVs are bytes: a width of 256 wraps to zero. */
+     for (row = 0; row < LAB_ROWS; row++) {
+-        if (!labText[row][0]) continue;
++        if (!labTextHash[row]) continue;
+         x = pos->x + 16;
+         y = pos->y + modLabRowY(row);
+-        if (form && row > 0 && row < 9) x = -measureStringMode(labText[row], FIT_VANILLA) / 2;
++        if (form && row > 0 && row < 9) x = -labTextWidth[row] / 2;
+         renderString(0, x, y, 248, 12, 0, TEXT_ROW_Y(row), 0, 1);
+     }
+     if (!form) {
+         y = pos->y + modLabRowY(selected);
+         modLabFill(pos->x + 10, y - 3, LAB_WIDTH - 20, 18, 61, 81, 100, 0);
+     } else if (MOD_LAB_VIEW == LAB_NUMBER) {
++        const uint8_t *l = LAB_NUMBER_LINES[0];
+         x = pos->x + 64; y = pos->y + 67;
+-        drawLine2P(0x9daeb8, x, y, x + 160, y, 0, 0);
+-        drawLine2P(0x9daeb8, x, y + 30, x + 160, y + 30, 0, 0);
+-        drawLine2P(0x9daeb8, x, y, x, y + 30, 0, 0);
+-        drawLine2P(0x9daeb8, x + 160, y, x + 160, y + 30, 0, 0);
+-        drawLine2P(0xeeeeee, x + 18, y + 10, x + 13, y + 15, 0, 0);
+-        drawLine2P(0xeeeeee, x + 13, y + 15, x + 18, y + 20, 0, 0);
+-        drawLine2P(0xeeeeee, x + 142, y + 10, x + 147, y + 15, 0, 0);
+-        drawLine2P(0xeeeeee, x + 147, y + 15, x + 142, y + 20, 0, 0);
++        for (row = 0; row < 8; row++, l += 4)
++            drawLine2P(row < 4 ? 0x9daeb8 : 0xeeeeee, x + l[0], y + l[1], x + l[2], y + l[3], 0, 0);
+     }
+ }
+ 
+@@ -489,7 +506,7 @@ void modLabMenuLoaded(uint32_t *input, uint32_t *previous)
+     removeStaticUIBox(MOD_LAB_BOX);
+     setRECT(&pos, 0, MOD_LAB_TEXT_Y, 256, LAB_ROWS * 12); clearTextSubArea(&pos);
+     /* MENU scratch is not BIOS-zeroed and may contain another overlay. */
+-    memset(labText, 0, sizeof(labText));
++    memset(labTextHash, 0, sizeof(labTextHash));
+     modLabDrawText();
+     setRECT(&pos, -LAB_WIDTH / 2, -LAB_HEIGHT / 2, LAB_WIDTH, LAB_HEIGHT);
+     createStaticUIBox(MOD_LAB_BOX, 1, 0, &pos, NULL, modLabRender);
+-- 
+2.55.0
+
