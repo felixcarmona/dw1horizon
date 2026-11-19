@@ -428,10 +428,18 @@ and 40 units per tick. Andromon's left foot slides in its own stance, so foot sl
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_hiandromon_native` (after `edit.py get 302`).
 
 GrapLeomon (306) wears native Leomon's (48, `CHDAT/MMD1/LEOM.MMD`) skeleton at scale 0.98 and its idle, walk, condition walk, run and
-technique clips; the mesh is unchanged. The forearm and shin drums sit on four extra bones appended to the rig (`spin` in the
+technique clips. Its fists now match Leomon's size (about 67 x 85 x 91 units against 70 x 84 x 90),
+with the left fist mirrored from the right; the head is 10% larger and the shoulders 18% larger.
+The recipe's piece `shape_scale` and `mesh_mirror` apply cosmetic proportions after recording the original
+motion fit, preserving every decoded clip and the rig. Unlike fitting `scale` and `mirror`, these settings
+do not change battle fitting rotations or weights. They support ordinary rigid pieces, not drums or riders.
+The importer delta aligns the left fist's normals with its mirrored twin before binding.
+The forearm and shin drums sit on four extra bones appended to the rig (`spin` in the
 recipe: `bones` {source bone: spin axis in its own frame, `sign`}, `quarters` {slot: quarter turns per loop}) that turn about
 their own axis in the four field clips while the donor bones carry them along. `PYTHONPATH=tools python3 -W ignore -m unittest
 tools.test_grapleomon_native` (after `edit.py get 306`).
+At unchanged root speeds of 22, 19.75 and 48.875 units/tick, animstudio's walk, condition walk and run stance
+slip is unchanged: left/right mean 35.57/33.03%, 83.41/83.44% and 7.83/7.83% respectively.
 
 Assaultmon (310) wears native Centarumon's (36, `CHDAT/MMD1/CENT.MMD`) 27-bone skeleton at scale 1.45 with the recipe flag
 `spread_fit` (pieces fit on the donor joints after the `spread` offsets). Four legs go onto four legs (front 4 bones on 3, hind 3

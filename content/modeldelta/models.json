@@ -3754,8 +3754,8 @@
           }
         ],
         "delta": "content/modeldelta/deltas/306-GrapLeomon.MMD.mdelta",
-        "delta_sha256": "6f852a00116ed2b32e6780b4db0eb6a1ccfb3628d7a55409e0dff0360067e11e",
-        "sha256": "8d0f1441b9fb5f10731eb27211f98b2445e061a314bf2c8c66aa07095b74f01b",
+        "delta_sha256": "4ed0133554686c6ad060c5c589af89d862b33a9c84f44baa841a3cde74074832",
+        "sha256": "76ccae06f39d613b4685f0251600f78a060a8a9f82d210a40d7461fc966ec810",
         "size": 114770
       },
       "tim": {

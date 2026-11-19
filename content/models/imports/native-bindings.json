@@ -6364,7 +6364,7 @@
     "species": 306,
     "donor": 48,
     "model": "CHDAT/MMD1/LEOM.MMD",
-    "source_sha256": "8d0f1441b9fb5f10731eb27211f98b2445e061a314bf2c8c66aa07095b74f01b",
+    "source_sha256": "76ccae06f39d613b4685f0251600f78a060a8a9f82d210a40d7461fc966ec810",
     "skeleton_sha256": "967f3add572c632311d719814c1b94485d984eadc28778ad9a5e225651c2849e",
     "donor_sha256": "390092e3b3471adc84645a512f8671b2b036413d72e09d046fc982355f1488c7",
     "scale": 0.98,
@@ -6451,6 +6451,27 @@
           40,
           10
         ]
+      },
+      "10": {
+        "shape_scale": 1.1
+      },
+      "11": {
+        "shape_scale": 1.1
+      },
+      "12": {
+        "shape_scale": 1.1
+      },
+      "13": {
+        "shape_scale": 1.1
+      },
+      "2": {
+        "shape_scale": 1.18
+      },
+      "6": {
+        "shape_scale": 1.18
+      },
+      "5": {
+        "shape_scale": 1.7
       }
     },
     "spin": {
@@ -6800,6 +6821,9 @@
         "58": 50,
         "54": 50
       }
+    },
+    "mesh_mirror": {
+      "9": 5
     }
   },
   "310": {
