@@ -228,7 +228,38 @@
   },
   {
    "id": "cards",
-   "media": [],
+   "media": [
+    {
+     "type": "compare",
+     "src": "media/clips/cards-leomon-en.jpg",
+     "alt": {
+      "en": "The same card in the album, side by side: Leomon's original art (NEW CARDS off) and its new art (NEW CARDS on)",
+      "es": "La misma carta en el álbum, lado a lado: el arte original de Leomon (NEW CARDS desactivado) y su arte nuevo (NEW CARDS activado)",
+      "pt-br": "A mesma carta no álbum, lado a lado: a arte original do Leomon (NEW CARDS desligado) e a arte nova (NEW CARDS ligado)",
+      "fr": "La même carte dans l'album, côte à côte : l'illustration d'origine de Leomon (NEW CARDS désactivé) et la nouvelle (NEW CARDS activé)",
+      "de": "Dieselbe Karte im Album, nebeneinander: Leomons Originalbild (NEW CARDS aus) und das neue Bild (NEW CARDS an)",
+      "it": "La stessa carta nell'album, fianco a fianco: l'illustrazione originale di Leomon (NEW CARDS spento) e quella nuova (NEW CARDS acceso)",
+      "ja": "アルバム内の同じカードの比較：レオモンのオリジナル絵（NEW CARDSオフ）と新しい絵（NEW CARDSオン）",
+      "ca": "La mateixa carta a l'àlbum, un al costat de l'altre: l'art original de Leomon (NEW CARDS desactivat) i el nou (NEW CARDS activat)",
+      "zh-hans": "相册中同一张卡牌的并排对比：雷欧兽的原版画面（NEW CARDS关闭）与新画面（NEW CARDS开启）"
+     }
+    },
+    {
+     "type": "image",
+     "src": "media/clips/cards-new-grid-en.jpg",
+     "alt": {
+      "en": "The card album, scrolled to the new cards: each one has its Digimon's icon",
+      "es": "El álbum de cartas, desplazado a las cartas nuevas: cada una con el icono de su Digimon",
+      "pt-br": "O álbum de cartas, rolado até as cartas novas: cada uma com o ícone do seu Digimon",
+      "fr": "L'album de cartes, défilé jusqu'aux nouvelles cartes : chacune avec l'icône de son Digimon",
+      "de": "Das Kartenalbum, bei den neuen Karten: jede mit dem Symbol ihres Digimon",
+      "it": "L'album delle carte, scorso fino alle carte nuove: ognuna con l'icona del suo Digimon",
+      "ja": "新しいカードまでスクロールしたカードアルバム：各カードにそのデジモンのアイコン",
+      "ca": "L'àlbum de cartes, desplaçat fins a les cartes noves: cadascuna amb la icona del seu Digimon",
+      "zh-hans": "滚动到新卡牌的卡牌相册：每张卡牌都有对应数码宝贝的图标"
+     }
+    }
+   ],
    "en": {
     "title": "300 collectible cards",
     "body": "240 new cards, numbered 66 to 305, join the original 64, and every card has new art that matches its Digimon. The album scrolls and counts what you own. The NEW CARDS option in OPTIONS brings back the original cards and art whenever you want."
