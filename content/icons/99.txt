@@ -1,0 +1,77 @@
+# Weedmon
+k 180a0e
+r a0a878
+R 6c7a48
+D 434c2c
+m 8c1828
+w f8f4e8
+g d8c040
+G 807018
+idle
+...........k.k..
+......k...kgkgk.
+.....kgk.kgGkgk.
+......kgkkgGgkkk
+.......kGkGgkGgk
+.......kkGGGGGk.
+.....kkrrkGGkk..
+...kkrrrrrrrRk..
+..kwkwkwkrrrRk..
+..kmmmmmmkrrRRk.
+.kkwkwkwkrrRRDk.
+krrkkkkkrrRRDDkk
+kRkkrrrrrRRDDkRk
+kk.krRRRRRDDDkRk
+...kRRRDDDDDDkRk
+....kkkkkkkkk.kk
+idle2
+................
+...........k.k..
+......k...kgkgk.
+.....kgk.kgGkgk.
+......kgkkgGgkkk
+.......kGkGgkGgk
+.......kkGGGGGk.
+.....kkrrkGGkk..
+...kkrrrrrrrRk..
+..kwkwkwkrrrRk..
+.kkwkwkwkrrRRDk.
+krrkkkkkrrRRDDkk
+kRkkrrrrrRRDDkRk
+kk.krRRRRRDDDkRk
+...kRRRDDDDDDkRk
+....kkkkkkkkk.kk
+atk
+..........k.k...
+.....k...kgkgk..
+....kgk.kgGkgk..
+.....kgkkgGgkkk.
+......kGkGgkGgk.
+......kkGGGGGk..
+....kkrrkGGkk...
+..kkrrrrrrrRk...
+.kwkwkwkrrrRk...
+.kmmmmmmkrrRRk..
+.kkwkwkwkrrRRDk.
+krrkkkkkrrRRDDkk
+kRkkrrrrrRRDDkRk
+kk.krRRRRRDDDkRk
+...kRRRDDDDDDkRk
+....kkkkkkkkk.kk
+hurt
+................
+..k.k...........
+.kgkgk...k......
+.kgkGgk.kgk.....
+kkkgGgkkgk......
+kgGkgGkGk.......
+.kGGGGGkk.......
+..kkGGkrrkk.....
+..kRrrrrrrrkk...
+..kRrrrkwkwkwk..
+.kRRrrkmmmmmmk..
+.kDRRrrkwkwkwkk.
+kkDDRRrrkkkkkrrk
+kRkDDRRrrrrrkkRk
+kRkDDDRRRRRrk.kk
+kRkDDDDDDRRRk...

@@ -1551,14 +1551,32 @@ def chart_block(tabs, icon_of, fallback):
     return bytes(head) + bytes(icons)
 
 
-def card_icon_block(cards, chart_ids, icon_of):
+def card_icons(cards, icon_of):
+    """Species -> icon of every new card's species past the chart sheet: the chart's own icon, else its hand-drawn icon
+    in content/icons. A species with neither stops the build: no album card falls back to the generic sprite."""
+    import portraits
+    out = {}
+    for n, t in sorted(cards.items()):
+        if t <= CHART_SHEET or t in out: continue
+        if t in icon_of:
+            out[t] = icon_of[t]
+            continue
+        text = portraits.drawn_text(t)
+        if text is None:
+            raise SystemExit(f'card {n}: species {t} has no icon (draw content/icons/{t}.txt)')
+        out[t] = portraits.drawn_icon(text)
+    return out
+
+
+def card_icon_block(cards, icon_of):
     """The album's icons of the new cards (CARD_FIRST..CARD_LIMIT - 1), by card number, CARD_ICONS_PER_SECTOR to a
     sector, each sector one upload (include/dw/species.h SPECIES_CARD_ICON_*): a 48x20 image of 16-bit words, the first
     16x16 frame of the chart's icon of each card's species side by side, under them their CLUTs (icon n's on line
-    16 + n % 4, the (n / 4)th), then a mask of the cards that have one. None: a hole, a species of the chart sheet (the album draws the sheet), a species the chart lacks."""
+    16 + n % 4, the (n / 4)th), then a mask of the cards that have one. None: a hole, or a species of the chart sheet (the
+    album draws the sheet)."""
     block = bytearray(CARD_ICON_SECTORS * SECTOR)
     for n, t in cards.items():
-        ic = icon_of.get(t) if t > CHART_SHEET and t in chart_ids else None
+        ic = icon_of.get(t) if t > CHART_SHEET else None
         if ic is None or not CARD_FIRST <= n < CARD_LIMIT: continue
         q, r = divmod(n - CARD_FIRST, CARD_ICONS_PER_SECTOR)
         o = q * SECTOR
@@ -1699,7 +1717,8 @@ def build(out=OUT, content=None, quiet=False, select=None):
         sector += len(pb) // SECTOR
     chart_ref = 0
     if any(chart):
-        blobs.append(card_icon_block(new_cards(), {t for tab in chart for t in tab}, icon_of))
+        cards = new_cards()
+        blobs.append(card_icon_block(cards, card_icons(cards, icon_of)))
         sector += CARD_ICON_SECTORS
         cb = chart_block(chart, icon_of, icons[0])
         chart_ref = sector

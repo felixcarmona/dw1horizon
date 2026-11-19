@@ -63,9 +63,7 @@ The original thumbnail sheet is part of the stacked `ETCTIM.BIN` upload loaded
 by `main.c`. Its album UVs are `(id%8)*32, (id/8)*16`, on a 256-pixel texture
 page. A 512-card sheet would require 64 rows and exceed that page. Original
 portraits retain their sheet and CLUTs. A new card shows the same small icon as
-its species' box in the evolution Chart (see "Album icons for new cards" below);
-a card whose species has no Chart icon keeps the generic rarity-coloured card
-sprite. The full viewer reads art only when a card is opened or the results
+its species' box in the evolution Chart (see "Album icons for new cards" below). The full viewer reads art only when a card is opened or the results
 selection changes.
 
 The metadata sector uses `OVL_BTL_BASE` during card interactions. Native shop-file reads use a different
@@ -212,19 +210,26 @@ check was performed.
 ## Album icons for new cards
 
 An owned new card (id 66 and up) shows the small icon its species has in the
-evolution Chart, as the Chart box draws it. Unowned cells stay empty, originals
+evolution Chart, as the Chart box draws it; a species outside the Chart shows
+its hand-drawn icon from `content/icons`. Unowned cells stay empty, originals
 keep their `ETCTIM.BIN` portraits, and NEW CARDS OFF still ends the album at 65.
 
 - A species on the Chart sheet (`EVO_CHART_BOXES`, the 61 native boxes) is drawn
-  straight from that sheet with the Chart's CLUT. 14 new cards use this path.
-- Any other Chart species has its icon in a block that `tools/species.py`
+  straight from that sheet with the Chart's CLUT. 16 new cards use this path.
+- Any other species has its icon in a block that `tools/species.py`
   (`card_icon_block`) writes into `DIGI.DAT` just before the Chart block:
   38 sectors (`SPECIES_CARD_ICON_SECTORS`), 12 cards per sector by card number.
   Each sector is one 48x20 16-bit image: the first 16x16 frame of each icon
   side by side on lines 0-15, their CLUTs on lines 16-19, then a mask of the
-  cards present. 210 new cards use this path.
-- A card whose species has no Chart icon (16 today) keeps the generic
-  rarity-coloured card sprite.
+  cards present. 224 new cards use this path: the Chart's icon of the species,
+  else its drawn icon in `content/icons/<id>.txt` (14 species that cannot be
+  raised have one only for their cards).
+- No card falls back to the generic rarity-coloured card sprite: a new card
+  whose species has neither icon stops the build (`card_icons`), and
+  `tools/test_evo_chart.py` (`test_every_album_card_has_a_thumbnail`, run by
+  the self-test) decodes the block for every real card of `content/cards` and
+  fails on any card without a thumbnail. A new card needs its species' icon
+  drawn first.
 
 `renderCardsView` reads a sector the first time a row of its cards is drawn
 (`readSpeciesChart` with a negative page, so the header is unchanged) and

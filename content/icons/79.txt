@@ -1,0 +1,78 @@
+# NiseDrimogemon
+k 180a0e
+w f4f0dc
+W ccc4a4
+D 948c6c
+p a868d8
+P 70409c
+d 4c2c6c
+r e83050
+h e8d8f8
+idle
+................
+..kk............
+.khPk.kkkkk.....
+.kPhPkppppPkk...
+..kPPkpppPPPPk..
+..kwwPkpPPPPdk..
+.kwwrwwkPPdPdk..
+kwwwwwwwkPdddk..
+kWwkwwwWWkddkk..
+.kkwwwWWWWkkWk..
+..kwwWWWWWWWWk..
+.kwwWWWWWWWDWk..
+.kwkWWWkkWDDDk..
+kwwkkWkPkkWDDk..
+kPkPkkPkPkkPkPk.
+.k.k..k.k..k.k..
+idle2
+................
+................
+..kk............
+.khPk.kkkkk.....
+.kPhPkppppPkk...
+..kPPkpppPPPPk..
+..kwwPkpPPPPdk..
+.kwwrwwkPPdPdk..
+kwwwwwwwkPdddk..
+kWwkwwwWWkddkk..
+..kwwWWWWWWWWk..
+.kwwWWWWWWWDWk..
+.kwkWWWkkWDDDk..
+kwwkkWkPkkWDDk..
+kPkPkkPkPkkPkPk.
+.k.k..k.k..k.k..
+atk
+................
+.kk.............
+khPk.kkkkk......
+kPhPkppppPkk....
+.kPPkpppPPPPk...
+.kwwPkpPPPPdk...
+kwwrwwkPPdPdk...
+wwwwwwwkPdddk...
+WwkwwwWWkddkk...
+kkwwwWWWWkkWk...
+..kwwWWWWWWWWk..
+.kwwWWWWWWWDWk..
+.kwkWWWkkWDDDk..
+kwwkkWkPkkWDDk..
+kPkPkkPkPkkPkPk.
+.k.k..k.k..k.k..
+hurt
+................
+................
+............kk..
+.....kkkkk.kPhk.
+...kkPppppkPhPk.
+..kPPPPpppkPPk..
+..kdPPPPpkPwwk..
+..kdPdPPkwwrwwk.
+..kdddPkwwwwwwwk
+..kkddkWWwwwkwWk
+..kWkkWWWWwwwkk.
+..kWWWWWWWWwwk..
+..kWDWWWWWWWwwk.
+..kDDDWkkWWWkwk.
+..kDDWkkPkWkkwwk
+.kPkPkkPkPkkPkPk
