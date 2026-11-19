@@ -1,0 +1,129 @@
+From af274073e7caeb2422f108e389f382613fd0aa7d Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 19 Nov 2026 08:43:15 +0000
+Subject: [PATCH] Card album shows each new card's chart icon
+
+Owned new cards draw the evolution chart's icon of their species: the chart sheet's portrait for its species, otherwise the first idle frame from a per-card icon block in DIGI.DAT, read a sector at a time into free VRAM. Cards without a chart icon keep their sprite.
+---
+ include/dw/species.h |  9 +++++++
+ src/main/game_menu.c | 63 +++++++++++++++++++++++++++++++++++++++-----
+ 2 files changed, 66 insertions(+), 6 deletions(-)
+
+diff --git a/include/dw/species.h b/include/dw/species.h
+index a1c8520..a7a4231 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -282,6 +282,15 @@ void loadSpeciesPortrait(int32_t type, int32_t x, int32_t y, int32_t rows, int32
+ #define SPECIES_CHART_TABS		5
+ #define SPECIES_CHART_ICON_SIZE		0x120
+ #define SPECIES_CHART_ICONS_PER_SECTOR	7
++/* the card album's icons, the SPECIES_CARD_ICON_SECTORS sectors just before the chart block (tools/species.py
++ * card_icon_block): by card number from 66, SPECIES_CARD_ICONS_PER_SECTOR to a sector, the first 16x16 4 bpp idle frame
++ * of the chart's icon of each card's species side by side, under them their 16-colour CLUTs (icon n's on line 16 + n % 4,
++ * the (n / 4)th): a 48x20 image of 16-bit words, one upload; then a 16-bit mask of the cards that have one (the others
++ * keep their own sprite) */
++#define SPECIES_CARD_ICONS_PER_SECTOR	12
++#define SPECIES_CARD_ICON_SECTORS	((NUM_CARDS - 66 + SPECIES_CARD_ICONS_PER_SECTOR - 1) / SPECIES_CARD_ICONS_PER_SECTOR)
++#define SPECIES_CARD_ICON_CLUTS		0x600
++#define SPECIES_CARD_ICON_MASK		0x780
+ /* the sector `k` of the chart block (0: the counts and ids, 1.. the icons) read into the species sector buffer, which
+  * the next read of DIGI.DAT reuses; NULL when the file has no chart block */
+ /* City sector pointer at header byte 0x38; zero in archives without City. */
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 3c84cbb..7bbd6ed 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -5753,6 +5753,16 @@ int32_t modCardTop(int32_t id, int32_t top)
+ 	return top;
+ }
+ 
++/* The album's icon of a new card: the chart's icon of its species, from the chart sheet (resident with the album's
++ * portraits) or from DIGI.DAT's card icons (include/dw/species.h SPECIES_CARD_ICON_*), a sector at a time, uploaded
++ * into the battle effects' VRAM (free in the menu, clear of the card viewer's). The 66 cells span at most 7 sectors:
++ * sector q goes to slot q % 8, one 48x20 upload at (656, 256 + 20 * slot): its 12 frames side by side, their CLUTs under.
++ * The chart's page list (unused on this tab, rebuilt when the chart opens) holds each slot's sector + 1, then its mask;
++ * the tab clears it when it opens (the chart's CLUTs overwrite the slots). */
++#define CARD_ICON_SLOTS		8
++#define CARD_ICON_SECTOR(p)	CHART_PAGE_IDS[p]
++#define CARD_ICON_MASK(p)	CHART_PAGE_IDS[CARD_ICON_SLOTS + (p)]
++
+ void renderCardsView(void)
+ {
+ 	const CardSprites *sprites;
+@@ -5761,6 +5771,15 @@ void renderCardsView(void)
+ 	int16_t card;
+ 	int8_t amount;
+ 	int32_t limit;
++	int32_t k;
++	int32_t s;
++	int32_t r;
++	int32_t u;
++	int32_t v;
++	int32_t tpage;
++	int32_t clut;
++	uint8_t *icon;
++	RECT rect;
+ 
+ 	sprites = &CARD_SPRITE_CLUT;
+ 
+@@ -5768,6 +5787,7 @@ void renderCardsView(void)
+ 	case 0:
+ 		if (drawCardViewStrings() == 1) {
+ 			MENU_STATE = 1;
++			memset(CHART_PAGE_IDS, 0, 2 * CARD_ICON_SLOTS * sizeof(CHART_PAGE_IDS[0]));
+ 		}
+ 		return;
+ 	case 2:
+@@ -5786,12 +5806,43 @@ void renderCardsView(void)
+ 				card = j + (i + CARD_TOP_ROW) * 11;
+ 				if (card >= limit || (card >= 66 && !modCardIsReal(card))) continue;
+ 				amount = getCardAmount(card);
+-				if (amount > 0 && card >= 66) {
+-					renderCardSprite(CARD_DATA[card].spriteId, j * 24 - 0x81, i * 24 - 0x3e, 5);
+-				} else if (amount > 0) {
+-					renderRectPolyFT4(j * 24 - 0x81, i * 24 - 0x3e, 0x10, 0x10,
+-					                  (card % 8) * 32, (card / 8) * 16, 0x18,
+-					                  sprites->v[card] * 64 + 0x7a07, 5, 0);
++				if (amount > 0) {
++					tpage = 0x18;
++					k = CARD_DATA[card].digimonId - 1;
++					if (card < 66) {
++						u = (card & 7) * 32;
++						v = (card >> 3) * 16;
++						clut = sprites->v[card] * 64 + 0x7a07;
++					} else if ((uint32_t)k < NUM_EVO_CHART_DIGIMON) {
++						/* the chart sheet: the album's own portraits */
++						u = EVO_CHART_BOXES[k].u;
++						v = EVO_CHART_BOXES[k].v;
++						clut = EVO_CHART_VIEW_COLORS.m[EVO_CHART_BOXES[k].clut];
++					} else {
++						k = (card - 66) / SPECIES_CARD_ICONS_PER_SECTOR;
++						r = card - 66 - k * SPECIES_CARD_ICONS_PER_SECTOR;
++						s = k & (CARD_ICON_SLOTS - 1);
++						if (CARD_ICON_SECTOR(s) != k + 1) {
++							CARD_ICON_SECTOR(s) = k + 1;
++							icon = readSpeciesChart(k - SPECIES_CARD_ICON_SECTORS, 0);
++							/* without the block (no species file) the mask is empty and the upload unused */
++							CARD_ICON_MASK(s) = icon != NULL ? *(uint16_t *)(icon + SPECIES_CARD_ICON_MASK) : 0;
++							setRECT(&rect, 656, 256 + s * 20, 48, 20);
++							LoadImage(&rect, (u_long *)icon);
++							DrawSync(0); /* the upload reads the sector buffer */
++						}
++						u = 64 + r * 16;
++						v = s * 20;
++						tpage = 0x1a;	/* GetTPage(0, 0, 640, 256) */
++						clut = (256 + 16 + s * 20 + (r & 3)) * 64 + 656 / 16 + (r >> 2);	/* GetClut(656 + r / 4 * 16, its line) */
++						if (!((CARD_ICON_MASK(s) >> r) & 1)) {
++							renderCardSprite(CARD_DATA[card].spriteId, j * 24 - 0x81, i * 24 - 0x3e, 5);
++							tpage = 0;
++						}
++					}
++					if (tpage) {
++						renderRectPolyFT4(j * 24 - 0x81, i * 24 - 0x3e, 0x10, 0x10, u, v, tpage, clut, 5, 0);
++					}
+ 				}
+ 				renderBorderBox(j * 24 + 0x1e, i * 24 + 0x39, 0x12, 0x12,
+ 				                0xbebebe, 0x3c3c3c, 0x69, 0x69, 0x69, 5);
+-- 
+2.55.0
+

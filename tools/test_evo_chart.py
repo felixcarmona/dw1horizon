@@ -52,5 +52,27 @@ class ChartLists(unittest.TestCase):
         self.assertEqual(E.chart_ids(bytes(d)), ([1, 2, 3, 10, 54, 64, 115], [(64, 10)]))
 
 
+    def test_card_icons(self):
+        """species.py card_icon_block: the chart's icon of each new card's species, by card number; none otherwise."""
+        icon = bytes(range(0x20)) + bytes(k & 0xff for k in range(0x20, 0x220))
+        cards = {66: 200, 67: 5, 70: 300, 79: 201, 511: 200}       # 67: chart sheet; 70: not in the chart
+        block = S.card_icon_block(cards, {5, 200, 201, 300 + 1}, {200: icon, 201: icon, 300: icon})
+        self.assertEqual(len(block), S.CARD_ICON_SECTORS * S.SECTOR)
+        self.assertEqual(S.CARD_ICON_SECTORS * S.CARD_ICONS_PER_SECTOR, 456)
+        self.assertEqual(S.CARD_ICON_CLUTS, 16 * S.CARD_ICON_LINE)
+        self.assertLessEqual(S.CARD_ICON_MASK + 2, S.SECTOR)
+        def slot(n):
+            q, r = divmod(n - S.CARD_FIRST, S.CARD_ICONS_PER_SECTOR)
+            o = q * S.SECTOR
+            mask = struct.unpack_from('<H', block, o + S.CARD_ICON_MASK)[0] >> r & 1
+            px = b''.join(block[o + y * S.CARD_ICON_LINE + r * 8:o + y * S.CARD_ICON_LINE + r * 8 + 8] for y in range(16))
+            c = o + S.CARD_ICON_CLUTS + (r & 3) * S.CARD_ICON_LINE + (r >> 2) * 32
+            return mask, block[c:c + 32] + px
+        frame = b''.join(icon[0x20 + y * 16:0x28 + y * 16] for y in range(16))
+        for n in (66, 79, 511):
+            self.assertEqual(slot(n), (1, icon[:0x20] + frame))
+        for n in (67, 68, 70):
+            self.assertEqual(slot(n), (0, bytes(0xA0)))
+
 if __name__ == '__main__':
     unittest.main()
