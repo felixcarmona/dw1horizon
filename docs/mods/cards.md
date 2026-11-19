@@ -62,10 +62,9 @@ stale generated `CARD.ALL` outputs from the old composer.
 The original thumbnail sheet is part of the stacked `ETCTIM.BIN` upload loaded
 by `main.c`. Its album UVs are `(id%8)*32, (id/8)*16`, on a 256-pixel texture
 page. A 512-card sheet would require 64 rows and exceed that page. Original
-portraits retain their sheet and CLUTs; new cards use the existing generic
-rarity-coloured card sprite, avoiding additional image data, VRAM allocation,
-runtime resampling or disc reads while scrolling. The full viewer reads art
-only when a card is opened or the results selection changes.
+portraits retain their sheet and CLUTs. A new card shows the same small icon as
+its species' box in the evolution Chart (see "Album icons for new cards" below). The full viewer reads art only when a card is opened or the results
+selection changes.
 
 The metadata sector uses `OVL_BTL_BASE` during card interactions. Native shop-file reads use a different
 overlay slot, and battles are inactive during the album and shops.
@@ -208,54 +207,42 @@ All 55 card/heap/economy/language unit tests, card and merit host checks,
 save capacity/inline checks and economy audit pass. No full disc or emulator
 check was performed.
 
-## Thumbnail budget investigation (cards-opt4, Part B — stopped)
+## Album icons for new cards
 
-No thumbnail runtime or `CARDTHM.BIN` output is installed. The generic new-card
-sprite remains. The attempted design did not meet the no-heap-regression
-constraint, so the budget probe was removed before committing this assessment.
-This establishes a failure of the tested layout, not that a different overlay
-layout is impossible.
+An owned new card (id 66 and up) shows the small icon its species has in the
+evolution Chart, as the Chart box draws it; a species outside the Chart shows
+its hand-drawn icon from `content/icons`. Unowned cells stay empty, originals
+keep their `ETCTIM.BIN` portraits, and NEW CARDS OFF still ends the album at 65.
 
-The original `ETCTIM.BIN` TIM at byte 0xA140 has 4bpp pixels at VRAM
-(512,256), 64 words × 256 lines (32,768 bytes), and a 16 × 16 BGR555 CLUT
-block at (112,488) (512 bytes). The album samples 16 × 16 portraits at
-`u=(id%8)*32`, `v=(id/8)*16`; the 32-pixel horizontal stride is real.
-The sheet has other uses, including medal uploads, and cannot be treated as an
-unallocated page. Its UV range cannot address all 240 new cards.
+- A species on the Chart sheet (`EVO_CHART_BOXES`, the 61 native boxes) is drawn
+  straight from that sheet with the Chart's CLUT. 16 new cards use this path.
+- Any other species has its icon in a block that `tools/species.py`
+  (`card_icon_block`) writes into `DIGI.DAT` just before the Chart block:
+  38 sectors (`SPECIES_CARD_ICON_SECTORS`), 12 cards per sector by card number.
+  Each sector is one 48x20 16-bit image: the first 16x16 frame of each icon
+  side by side on lines 0-15, their CLUTs on lines 16-19, then a mask of the
+  cards present. 224 new cards use this path: the Chart's icon of the species,
+  else its drawn icon in `content/icons/<id>.txt` (14 species that cannot be
+  raised have one only for their cards).
+- No card falls back to the generic rarity-coloured card sprite: a new card
+  whose species has neither icon stops the build (`card_icons`), and
+  `tools/test_evo_chart.py` (`test_every_album_card_has_a_thumbnail`, run by
+  the self-test) decodes the block for every real card of `content/cards` and
+  fails on any card without a thumbnail. A new card needs its species' icon
+  drawn first.
 
-One 16 × 16 4bpp portrait needs 128 pixel bytes and a private 16-colour palette
-needs 32 bytes. All 240 would be 38,400 bytes before headers/padding. The 66
-visible album cells need only 10,560 bytes of pixel/palette payload. A fixed
-sector per card would cost 491,520 disc bytes and allow a single-sector read
-indexed by `id-66`; tighter entries need sector-aware batching. These are
-format calculations, not generated assets or measured VRAM allocations.
+`renderCardsView` reads a sector the first time a row of its cards is drawn
+(`readSpeciesChart` with a negative page, so the header is unchanged) and
+uploads it with one `LoadImage` into one of eight 48x20 slots at VRAM
+x=656-703, y=256-415. That area is clear of the card viewer's texture
+(x=576-650, y=256-435), its CLUT row (y=511) and the text area (x>=704). Opening
+the album page reads at most seven sectors once; scrolling one row reads at most
+two. The slot state (sector and mask per slot) reuses `CHART_PAGE_IDS`, which
+the Chart rebuilds whenever it opens, and is cleared each time the Cards tab is
+entered, so a Chart visit or the card viewer never leaves stale slots.
 
-`TEXTURE_BUFFER` is already reserved at 0x80088800–0x80090000 (30,720 bytes).
-It can stage a sector without a new heap allocation, but opening a full card
-loads 28,672 bytes there. Card metadata occupies the first 2,048 bytes of
-MENU at 0x80052AE0, and the remaining MENU bytes contain live code/data; the
-battle overlay address is not an independent free thumbnail buffer.
-
-The full-card texture occupies VRAM words x=576–650, y=256–435 (27,000 bytes),
-with its 512-byte palette at x=448–703, y=511. That rectangle has enough raw
-space for a page of 4bpp portraits, but `loadCardImage` overwrites it while
-`renderCardsView` continues to render the album behind the viewer. Reuse would
-need explicit invalidation/reload and transition handling. No new thumbnail
-pixels or palettes have a validated live VRAM allocation in this change.
-
-A temporary executable-only budget probe added a single-sector read, two GPU
-uploads and a portrait draw to the existing owned-new-card branch. It deliberately
-omitted caching, crop tooling and viewer-transition handling; it was never a
-working renderer. MENU grew 55,204 → 55,480 bytes (+276), requiring 28 sectors
-rather than 27. The linker rejected it with `MENU overlay (in whole sectors)
-reaches past ENDI's first sector`. Its path string additionally moved
-`main_BSS_END` 0x801CEC18 → 0x801CEC38 (+32), projecting 185,024 heap bytes
-instead of 185,056. Moving still more loader code resident would further reduce
-heap. Simply increasing MENU's limit would overwrite a neighbouring overlay.
-
-A future implementation needs to reclaim or relocate overlay code, keep new
-strings out of resident memory, and prove viewer/album VRAM lifetimes before
-adding the crop/quantization pipeline. Those changes have not been validated
-here. The restored Part A executable links with its original 27-sector MENU,
-185,056-byte heap, and unchanged VRAM use. No full disc build or emulator test
-was run; the failed probe is retained only under ignored `build/` artifacts.
+Cost, measured on the full eight-language build: `main_BSS_END` unchanged at
+0x801CEB40, heap unchanged at 185,264 bytes (tightest screen OGRE03, 28,912
+free). MENU grows 54,752 -> 55,172 bytes (+420), still 27 sectors and inside
+`tools/title_storage_check.py`'s 100-byte reserve (24 bytes to spare).
+DIGI.DAT grows by 38 sectors.

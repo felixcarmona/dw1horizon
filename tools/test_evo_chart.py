@@ -52,5 +52,61 @@ class ChartLists(unittest.TestCase):
         self.assertEqual(E.chart_ids(bytes(d)), ([1, 2, 3, 10, 54, 64, 115], [(64, 10)]))
 
 
+    def test_card_icons(self):
+        """species.py card_icon_block: the chart's icon of each new card's species, by card number; none otherwise."""
+        icon = bytes(range(0x20)) + bytes(k & 0xff for k in range(0x20, 0x220))
+        cards = {66: 200, 67: 5, 79: 201, 511: 200}                # 67: chart sheet
+        block = S.card_icon_block(cards, {200: icon, 201: icon})
+        self.assertEqual(len(block), S.CARD_ICON_SECTORS * S.SECTOR)
+        self.assertEqual(S.CARD_ICON_SECTORS * S.CARD_ICONS_PER_SECTOR, 456)
+        self.assertEqual(S.CARD_ICON_CLUTS, 16 * S.CARD_ICON_LINE)
+        self.assertLessEqual(S.CARD_ICON_MASK + 2, S.SECTOR)
+        def slot(n):
+            q, r = divmod(n - S.CARD_FIRST, S.CARD_ICONS_PER_SECTOR)
+            o = q * S.SECTOR
+            mask = struct.unpack_from('<H', block, o + S.CARD_ICON_MASK)[0] >> r & 1
+            px = b''.join(block[o + y * S.CARD_ICON_LINE + r * 8:o + y * S.CARD_ICON_LINE + r * 8 + 8] for y in range(16))
+            c = o + S.CARD_ICON_CLUTS + (r & 3) * S.CARD_ICON_LINE + (r >> 2) * 32
+            return mask, block[c:c + 32] + px
+        frame = b''.join(icon[0x20 + y * 16:0x28 + y * 16] for y in range(16))
+        for n in (66, 79, 511):
+            self.assertEqual(slot(n), (1, icon[:0x20] + frame))
+        for n in (67, 68, 70):
+            self.assertEqual(slot(n), (0, bytes(0xA0)))
+        self.assertEqual(S.card_icons({66: 200, 67: 5}, {200: icon}), {200: icon})
+        with self.assertRaises(SystemExit):                        # no chart icon, no drawn icon: the build stops
+            S.card_icons({66: 1023}, {})
+
+
+    def test_every_album_card_has_a_thumbnail(self):
+        """Every real card of the album draws a real thumbnail, never the generic rarity sprite: an original card (1..64,
+        its replaced art included) its own sheet portrait; a new card of a chart-sheet species (1..61) the chart sheet's
+        portrait; any other new card its icon in the block the build writes (DIGI.DAT), decoded slot by slot."""
+        import cards as C, portraits
+        rows = C.load()                                            # CARDTAB.BIN: what CARD_DATA holds in the game
+        real = [n for n in range(1, C.LIMIT) if n not in (0, 65) and rows[n]['rarity'] < 5]
+        self.assertTrue(all(1 <= C.replaced()[k]['replaces'] <= 64 for k in range(len(C.replaced()))))
+        self.assertEqual([n for n in range(1, 65) if rows[n]['rarity'] >= 5], [])
+        new = S.new_cards()
+        self.assertEqual({n: rows[n]['species'] for n in real if n >= S.CARD_FIRST}, new)
+        icons = S.card_icons(new, {})                              # every species past the sheet has a drawn icon
+        block = S.card_icon_block(new, icons)
+        missing = []
+        for n in real:
+            t = rows[n]['species']
+            if n < S.CARD_FIRST or 1 <= t <= S.CHART_SHEET:
+                continue
+            q, r = divmod(n - S.CARD_FIRST, S.CARD_ICONS_PER_SECTOR)
+            o = q * S.SECTOR
+            mask = struct.unpack_from('<H', block, o + S.CARD_ICON_MASK)[0] >> r & 1
+            px = b''.join(block[o + y * S.CARD_ICON_LINE + r * 8:o + y * S.CARD_ICON_LINE + r * 8 + 8] for y in range(16))
+            c = o + S.CARD_ICON_CLUTS + (r & 3) * S.CARD_ICON_LINE + (r >> 2) * 32
+            clut = block[c:c + 32]
+            ic = portraits.drawn_icon(portraits.drawn_text(t))
+            frame = b''.join(ic[0x20 + y * 16:0x28 + y * 16] for y in range(16))
+            if not (mask and any(px) and any(clut[2:]) and px == frame and clut == ic[:0x20]):
+                missing.append((n, t))
+        self.assertEqual(missing, [], 'album cards without a thumbnail (card, species)')
+
 if __name__ == '__main__':
     unittest.main()

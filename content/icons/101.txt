@@ -1,0 +1,77 @@
+# DarkLizardmon
+k 180a0e
+h e8c070
+H b08440
+d 6e4c22
+b 585868
+B 363644
+r f02828
+w f4f0e0
+idle
+....kk.k.k.k....
+...khhkHkHkHk...
+..khhhhhHHHHk.k.
+.khhhrkhhHHdkkBk
+khhhkkhhhHHdkBbk
+khhhhhhhHHddkbBk
+.kwkwkwkHdddkbBk
+..kkkkkkdddkbbBk
+...kwkwkkkkbbbBk
+....kkkkbbbbbBBk
+...kbbkkbbbbBBk.
+...kbbbkbbbBBBk.
+....kkbbbbBBBkBk
+.....kbbkkBBkkBk
+....kbbbk.kBBkk.
+....kkkkk.kkkk..
+idle2
+................
+....kk.k.k.k....
+...khhkHkHkHk...
+..khhhhhHHHHk.k.
+.khhhrkhhHHdkkBk
+khhhkkhhhHHdkBbk
+khhhhhhhHHddkbBk
+.kwkwkwkHdddkbBk
+..kkkkkkdddkbbBk
+...kwkwkkkkbbbBk
+...kbbkkbbbbBBk.
+...kbbbkbbbBBBk.
+....kkbbbbBBBkBk
+.....kbbkkBBkkBk
+....kbbbk.kBBkk.
+....kkkkk.kkkk..
+atk
+...kk.k.k.k.....
+..khhkHkHkHk....
+.khhhhhHHHHk.k..
+khhhrkhhHHdkkBk.
+hhhkkhhhHHdkBbk.
+hhhhhhhHHddkbBk.
+kwkwkwkHdddkbBk.
+.kkkkkkdddkbbBk.
+..kwkwkkkkbbbBk.
+...kkkkbbbbbBBk.
+...kbbkkbbbbBBk.
+...kbbbkbbbBBBk.
+....kkbbbbBBBkBk
+.....kbbkkBBkkBk
+....kbbbk.kBBkk.
+....kkkkk.kkkk..
+hurt
+................
+....k.k.k.kk....
+...kHkHkHkhhk...
+.k.kHHHHhhhhhk..
+kBkkdHHhhkrhhhk.
+kbBkdHHhhhkkhhhk
+kBbkddHHhhhhhhhk
+kBbkdddHkwkwkwk.
+kBbbkdddkkkkkk..
+kBbbbkkkkwkwk...
+kBBbbbbbkkkk....
+.kBBbbbbkkbbk...
+.kBBBbbbkbbbk...
+kBkBBBbbbbkk....
+kBkkBBkkbbk.....
+.kkBBk.kbbbk....

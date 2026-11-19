@@ -1429,6 +1429,11 @@ HEADER = '<4sHHHHIIIII'          # magic, version, record size, count, first rec
 CHART_TABS = [('fresh', 'in-training'), ('rookie',), ('champion',), ('ultimate',), ('mega',)]
 CHART_SHEET = 61                 # types 1..61 have the chart sheet's hand-drawn icon (NUM_EVO_CHART_DIGIMON)
 CHART_ICON_SIZE, CHART_ICONS_PER_SECTOR = 0x120, 7   # a 16-colour CLUT and two 16x16 4 bpp images
+# the card album's icons, just before the chart block (include/dw/species.h SPECIES_CARD_ICON_*): per sector, a 48x20
+# image (lines of CARD_ICON_LINE bytes), the first 16x16 frames side by side over their CLUTs, a mask of those present
+CARD_ICONS_PER_SECTOR, CARD_FIRST, CARD_LIMIT = 12, 66, 512
+CARD_ICON_LINE, CARD_ICON_CLUTS, CARD_ICON_MASK = 8 * CARD_ICONS_PER_SECTOR, 0x600, 0x780
+CARD_ICON_SECTORS = -(-(CARD_LIMIT - CARD_FIRST) // CARD_ICONS_PER_SECTOR)
 HEADER_LEVELS = 0x40             # the header sector: the level of each partner species (one byte, partner list order)
 HEADER_RECORD_ORIGINALS = 0x20   # the header sector: a bit per original carried by its record (23 bytes)
 HEADER_VANILLA = 0x780           # the header sector: a bit per species the original game raises ("vanilla": NEW DIGIMON off)
@@ -1544,6 +1549,49 @@ def chart_block(tabs, icon_of, fallback):
             icons[o + 0x20 + y * 8:o + 0x28 + y * 8] = ic[0x20 + y * 16:0x28 + y * 16]
             icons[o + 0xA0 + y * 8:o + 0xA8 + y * 8] = ic[0x28 + y * 16:0x30 + y * 16]
     return bytes(head) + bytes(icons)
+
+
+def card_icons(cards, icon_of):
+    """Species -> icon of every new card's species past the chart sheet: the chart's own icon, else its hand-drawn icon
+    in content/icons. A species with neither stops the build: no album card falls back to the generic sprite."""
+    import portraits
+    out = {}
+    for n, t in sorted(cards.items()):
+        if t <= CHART_SHEET or t in out: continue
+        if t in icon_of:
+            out[t] = icon_of[t]
+            continue
+        text = portraits.drawn_text(t)
+        if text is None:
+            raise SystemExit(f'card {n}: species {t} has no icon (draw content/icons/{t}.txt)')
+        out[t] = portraits.drawn_icon(text)
+    return out
+
+
+def card_icon_block(cards, icon_of):
+    """The album's icons of the new cards (CARD_FIRST..CARD_LIMIT - 1), by card number, CARD_ICONS_PER_SECTOR to a
+    sector, each sector one upload (include/dw/species.h SPECIES_CARD_ICON_*): a 48x20 image of 16-bit words, the first
+    16x16 frame of the chart's icon of each card's species side by side, under them their CLUTs (icon n's on line
+    16 + n % 4, the (n / 4)th), then a mask of the cards that have one. None: a hole, or a species of the chart sheet (the
+    album draws the sheet)."""
+    block = bytearray(CARD_ICON_SECTORS * SECTOR)
+    for n, t in cards.items():
+        ic = icon_of.get(t) if t > CHART_SHEET else None
+        if ic is None or not CARD_FIRST <= n < CARD_LIMIT: continue
+        q, r = divmod(n - CARD_FIRST, CARD_ICONS_PER_SECTOR)
+        o = q * SECTOR
+        for y in range(16):
+            block[o + y * CARD_ICON_LINE + r * 8:o + y * CARD_ICON_LINE + r * 8 + 8] = ic[0x20 + y * 16:0x28 + y * 16]
+        c = o + CARD_ICON_CLUTS + (r & 3) * CARD_ICON_LINE + (r >> 2) * 0x20    # lines 16..19 of the image, 3 to a line
+        block[c:c + 0x20] = ic[:0x20]
+        struct.pack_into('<H', block, o + CARD_ICON_MASK, struct.unpack_from('<H', block, o + CARD_ICON_MASK)[0] | 1 << r)
+    return bytes(block)
+
+
+def new_cards():
+    """Card number -> species of every new card (content/cards/new.json, without the original-art replacements)."""
+    import cards
+    return {c['number']: cards.species_id(c['species']) for c in cards.authored_cards() if 'replaces' not in c}
 
 
 def chart_parents(block, tabs, paths, extra, recs, partners):
@@ -1669,6 +1717,9 @@ def build(out=OUT, content=None, quiet=False, select=None):
         sector += len(pb) // SECTOR
     chart_ref = 0
     if any(chart):
+        cards = new_cards()
+        blobs.append(card_icon_block(cards, card_icons(cards, icon_of)))
+        sector += CARD_ICON_SECTORS
         cb = chart_block(chart, icon_of, icons[0])
         chart_ref = sector
         chart_blob = len(blobs)

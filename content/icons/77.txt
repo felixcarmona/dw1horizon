@@ -1,0 +1,77 @@
+# RedVegiemon
+k 180a0e
+r e84830
+R b02418
+D 701010
+m 581020
+w f8f4e8
+g 70c840
+G 307c28
+idle
+...........k.k..
+......k...kgkgk.
+.....kgk.kgGkgk.
+......kgkkgGgkkk
+.......kGkGgkGgk
+.......kkGGGGGk.
+.....kkrrkGGkk..
+...kkrrrrrrrRk..
+..kwkwkwkrrrRk..
+..kmmmmmmkrrRRk.
+.kkwkwkwkrrRRDk.
+krrkkkkkrrRRDDkk
+kRkkrrrrrRRDDkRk
+kk.krRRRRRDDDkRk
+...kRRRDDDDDDkRk
+....kkkkkkkkk.kk
+idle2
+................
+...........k.k..
+......k...kgkgk.
+.....kgk.kgGkgk.
+......kgkkgGgkkk
+.......kGkGgkGgk
+.......kkGGGGGk.
+.....kkrrkGGkk..
+...kkrrrrrrrRk..
+..kwkwkwkrrrRk..
+.kkwkwkwkrrRRDk.
+krrkkkkkrrRRDDkk
+kRkkrrrrrRRDDkRk
+kk.krRRRRRDDDkRk
+...kRRRDDDDDDkRk
+....kkkkkkkkk.kk
+atk
+..........k.k...
+.....k...kgkgk..
+....kgk.kgGkgk..
+.....kgkkgGgkkk.
+......kGkGgkGgk.
+......kkGGGGGk..
+....kkrrkGGkk...
+..kkrrrrrrrRk...
+.kwkwkwkrrrRk...
+.kmmmmmmkrrRRk..
+.kkwkwkwkrrRRDk.
+krrkkkkkrrRRDDkk
+kRkkrrrrrRRDDkRk
+kk.krRRRRRDDDkRk
+...kRRRDDDDDDkRk
+....kkkkkkkkk.kk
+hurt
+................
+..k.k...........
+.kgkgk...k......
+.kgkGgk.kgk.....
+kkkgGgkkgk......
+kgGkgGkGk.......
+.kGGGGGkk.......
+..kkGGkrrkk.....
+..kRrrrrrrrkk...
+..kRrrrkwkwkwk..
+.kRRrrkmmmmmmk..
+.kDRRrrkwkwkwkk.
+kkDDRRrrkkkkkrrk
+kRkDDRRrrrrrkkRk
+kRkDDDRRRRRrk.kk
+kRkDDDDDDRRRk...

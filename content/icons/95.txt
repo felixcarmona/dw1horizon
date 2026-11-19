@@ -1,0 +1,79 @@
+# Akatorimon
+k 180a0e
+w f8f0d8
+W d8c8a0
+D a89870
+r e83828
+R a81810
+o f89838
+y f8d838
+Y c89818
+e 282020
+idle
+..krk.k.k.......
+.krrkkrkrk..kk..
+.kRrrrrRk..korkk
+..kwwwwk..korrok
+.kwwewwWk.kowrok
+kyykwwwWk.kwwrk.
+kYyykwwWkkwwrok.
+.kkkwwwWWkwwok..
+...kwwwWWWwrk.k.
+...kwwWWWWDkkok.
+..kWwwWWWDDkrok.
+..kWWWWWDDkrrk..
+...kWWDDDDkkk...
+....kkkkkk......
+....krk.krk.....
+...krRk.kRrk....
+idle2
+................
+..krk.k.k.......
+.krrkkrkrk..kk..
+.kRrrrrRk..korkk
+..kwwwwk..korrok
+.kwwewwWk.kowrok
+kyykwwwWk.kwwrk.
+kYyykwwWkkwwrok.
+.kkkwwwWWkwwok..
+...kwwwWWWwrk.k.
+..kWwwWWWDDkrok.
+..kWWWWWDDkrrk..
+...kWWDDDDkkk...
+....kkkkkk......
+....krk.krk.....
+...krRk.kRrk....
+atk
+.krk.k.k........
+krrkkrkrk..kk...
+kRrrrrRk..korkk.
+.kwwwwk..korrok.
+kwwewwWk.kowrok.
+yykwwwWk.kwwrk..
+YyykwwWkkwwrok..
+kkkwwwWWkwwok...
+..kwwwWWWwrk.k..
+..kwwWWWWDkkok..
+..kWwwWWWDDkrok.
+..kWWWWWDDkrrk..
+...kWWDDDDkkk...
+....kkkkkk......
+....krk.krk.....
+...krRk.kRrk....
+hurt
+................
+.......k.k.krk..
+..kk..krkrkkrrk.
+kkrok..kRrrrrRk.
+korrok..kwwwwk..
+korwok.kWwwewwk.
+.krwwk.kWwwwkyyk
+.korwwkkWwwkyyYk
+..kowwkWWwwwkkk.
+.k.krwWWWwwwk...
+.kokkDWWWWwwk...
+.korkDDWWWwwWk..
+..krrkDDWWWWWk..
+...kkkDDDDWWk...
+......kkkkkk....
+.....krk.krk....
