@@ -150,3 +150,6 @@ against, leave this list.
 | A profile tab beside Techs that shows the Digimon's own evolution chart entry, so players need not go back to the chart to see what a partner needs | 🛠️ | Reuses the chart screen; menu overlay space is limited. |
 | Distinct finishers for Raidenmon and Seraphimon instead of a bubble-like effect | ✨ | Data and effect choice per species; the audit of imported finishers lists both. |
 | MetalGarurumon's signature missile volley as its finisher | ✨ | Depends on available missile effects in the effect file. |
+| A chance that running from a wild battle fails, depending on stats or level, with a cooldown, as in Digimon World 2 and 3; as an option or on Hard only | ⚖️ 🎭 | Player suggestion (2026-11-16). Players disagree: some want fleeing harder, others do not want it forced. |
+| Tortmon with its own finisher instead of Ninjamon's (for example the stars replaced by yellow spikes) | ✨ | Player suggestion (2026-11-14); a data and effect choice for the species. |
+| Filth line moveset pass: Geremon as Filth/Plant, ShellNumemon as Filth/Water with Water Blit, Aqua Magic and Tear Drop, Raremon with Filth/Battle/Machine and Metal Sprinter, Metal Sprinter for Garbagemon, no Thunder Justice for Etemon | ⚖️ 🎭 | Player proposal (2026-11-07 and 2026-11-17 discussion). Needs a technique-coherence audit before any change. |
