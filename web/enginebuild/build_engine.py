@@ -144,8 +144,11 @@ OTHER_RELEASES = {'tools/dcb2mmd.py': ['tools/dcbrelease.py', 'content/imports/r
 
 # Where another release of a source game keeps the same files (the record only sees the reference release's paths):
 # a job that reads the first also gets the second when it was extracted (a missing tree input is skipped).
-SOURCE_PATH_ALIASES = {'build/everything/source-games/dw2003/disc/AAA/DAT/FIGHT/MODEL/':
-                       ['build/everything/source-games/dw2003/disc/AAA/DAT/MODEL/']}     # World 3 USA (dw3mmd.RELEASES)
+_DW3 = 'build/everything/source-games/dw2003/disc/AAA/DAT/'
+SOURCE_PATH_ALIASES = {_DW3 + 'FIGHT/MODEL/': [_DW3 + 'MODEL/'],                 # World 3 USA (dw3mmd.RELEASES)
+                       _DW3 + 'FIGHT/EFFECT/': [_DW3 + 'EFFECT/'],              # its 3D effects and sprite packs
+                       _DW3 + 'FIGHT/F000COM': [_DW3 + 'EFFECT/F000COM']}       # and the shared packs' textures
+                       # (tools/discs.py DW3_EFFECT_DIRS, DW3_TEXTURE_DIRS)
 
 
 # A source variant's imports (World 3 USA): its pins and carried deltas, read by these steps only with that disc (the

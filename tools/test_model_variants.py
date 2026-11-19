@@ -281,6 +281,18 @@ class PinKeys(unittest.TestCase):
                          ['content/modeldelta/deltas/dw3-us/354-Renamon.MMD.mdelta', 'content/modeldelta/variants/dw3-us.json'])
         self.assertEqual(maps['bundle'], [1])
 
+    def test_engine_plan_gives_the_effects_job_the_usa_effect_files(self):
+        sys.path.insert(0, str(ROOT / 'web/enginebuild'))
+        import build_engine
+        base = 'build/everything/source-games/dw2003/disc/AAA/DAT/'
+        plan = dict(paths=[base + 'FIGHT/EFFECT/MEFT0335.BIN', base + 'FIGHT/EFFECT/E000COM1.BIN',
+                           base + 'FIGHT/F000COM1.BIN'],
+                    files=[], jobs=[dict(step='effects', tree=[0, 1, 2], bundle=[])])
+        build_engine.alias_source_paths(plan)
+        got = [plan['paths'][i] for i in plan['jobs'][0]['tree']]
+        for name in ('EFFECT/MEFT0335.BIN', 'EFFECT/E000COM1.BIN', 'EFFECT/F000COM1.BIN'):
+            self.assertIn(base + name, got)
+
     def test_gate_wants_every_base_with_every_variant(self):
         m = dict(bases={'us': {}, 'eu': {}}, source_variants={'dw3-us': {}})
         self.assertTrue(literal_gate.output_keys_complete(
