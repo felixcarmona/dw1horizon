@@ -1,0 +1,324 @@
+From e1f752c52bf91d260299e3b2e847ce5c73fa2aad Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 20 Nov 2026 23:13:14 +0000
+Subject: [PATCH] Tamer looks: a second face, chosen on the Look page
+
+Looks other than the original tamer can take a second face (a blush, a finer mouth, a dark eyelid with lashes):
+another texture in TAMER.DAT, read in the first one's place. The Look page gets a Face row and the save record a
+third byte.
+---
+ include/dw/save_tags.h    |  2 +-
+ include/dw/species.h      |  2 ++
+ src/main/game_menu.c      | 70 ++++++++++++++++++++++++++++-----------
+ src/main/main_menu.c      |  7 ++--
+ src/main/mod_lab_menu.inc |  2 +-
+ src/main/mod_species.c    |  3 +-
+ src/main/script_interp.c  |  1 +
+ text/main/mod_lab.yaml    |  3 ++
+ 8 files changed, 66 insertions(+), 24 deletions(-)
+
+diff --git a/include/dw/save_tags.h b/include/dw/save_tags.h
+index 577bf11..43f91e2 100644
+--- a/include/dw/save_tags.h
++++ b/include/dw/save_tags.h
+@@ -35,7 +35,7 @@
+ #define SAVE_TAG_GROUND_PICKUP_BITS	0x000C /* bit array: stable ground pickup IDs collected today; registry content/ground-items.json */
+ #define SAVE_TAG_CARD_COUNTS		0x000D /* nibbles for card ids 66..511, low nibble first */
+ #define SAVE_TAG_CARD_STOCK		0x000E /* u16[6] daily shop cards, 0xffff sold */
+-#define SAVE_TAG_TAMER_LOOK		0x000F /* u8 look (0 = the original tamer), u8 hair colour */
++#define SAVE_TAG_TAMER_LOOK		0x000F /* u8 look (0 = the original tamer), u8 hair colour, u8 face */
+ #define SAVE_TAG_REQUIRED		0x8000
+ #define SAVE_TAG_TECHNIQUE_LAYOUT	0x8003 /* u8: 1 = option A animation slots; required to prevent silent downgrade substitution */
+ /* engine tier 2 */
+diff --git a/include/dw/species.h b/include/dw/species.h
+index 656920e..c386ea5 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -344,8 +344,10 @@ int32_t getDigimonModelRef(int32_t type, char **file, int32_t *sector, int32_t *
+  */
+ #define TAMER_LOOK_COUNT	13
+ #define TAMER_HAIR_COUNT	20
++#define TAMER_FACE_COUNT	2	/* the faces of looks 1..: one texture each (tools/tamer_looks/face.py) */
+ extern uint8_t MOD_TAMER_LOOK;
+ extern uint8_t MOD_TAMER_HAIR;
++extern uint8_t MOD_TAMER_FACE;
+ struct ModelComponent;
+ int32_t modLoadTamerLook(void *component);
+ void modTamerRelook(void);
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 7d9525a..8281fe7 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -2581,6 +2581,11 @@ void free3(void *ptr);
+ #define LOOK_KEY_W	0x7c
+ #define LOOK_VALUE_X	0x33	/* the value box, from the middle of the window */
+ #define LOOK_VALUE_W	86
++#define LOOK_ROWS	3	/* hairstyle, hair colour, face */
++/* Where each row's name and value are drawn in the text area: the face's go right of the first hint */
++static const uint8_t lookPageNameU[LOOK_ROWS] = { 0, 0x80, 0xb8 };
++static const uint8_t lookPageValueU[LOOK_ROWS] = { 0, 0x80, 0xf0 };
++#define LOOK_ROW_V(row, v)	((row) == 2 ? LOOK_HINT_Y : (v))
+ #define LOOK_HEAD_OBJECT	1
+ #define LOOK_HAIR_MODE		0x34u	/* textured gouraud triangle: seven words */
+ #define LOOK_HAIR_WORDS		7
+@@ -2591,8 +2596,8 @@ static int16_t lookTurn;
+ static struct {
+ 	uint16_t palette[16]; /* the hair's palette row on its way to video memory */
+ 	uint8_t levels[16];
+-	uint8_t saved[2]; /* the look and the colour when the page opened: leaving without saving brings them back */
+-	int16_t width[2];
++	uint8_t saved[3]; /* the look, the colour and the face when the page opened: leaving without saving brings them back */
++	int16_t width[3];
+ 	uint8_t row;
+ 	uint8_t looks;
+ 	uint8_t colours;
+@@ -2617,19 +2622,29 @@ int32_t playerKeyHint(int32_t key, int32_t x, int32_t y)
+ 	return (x + drawStringMode(str, x, y, fitStringMode(str, 0x60)) + 11) & ~3;
+ }
+ 
++/* Whether a row has something to choose: the original tamer has only his hairstyle, the bald head has no hair colour */
++static const char lookPageFaces[TAMER_FACE_COUNT][2] = { "1", "2" };
++static const char lookPageDash[] = "-"; /* a row with nothing to choose */
++static int32_t lookPageRowOpen(int32_t row)
++{
++	return MOD_TAMER_LOOK >= (row == 1 ? 2 : row == 2 ? 1 : 0);
++}
++
+ static void lookPageValue(int32_t row)
+ {
+ 	RECT rect;
+-	char *str = row == 0 ? LAB_LOOK_TEXT[MOD_TAMER_LOOK] : MOD_TAMER_LOOK >= 2 ? LAB_HAIR_TEXT[MOD_TAMER_HAIR] : "-"; /* no hair, no colour */
++	char *str = !lookPageRowOpen(row) ? (char *)lookPageDash : row == 0 ? LAB_LOOK_TEXT[MOD_TAMER_LOOK] :
++	            row == 1 ? LAB_HAIR_TEXT[MOD_TAMER_HAIR] : (char *)lookPageFaces[MOD_TAMER_FACE];
+ 	int32_t mode = fitStringMode(str, LOOK_VALUE_W - 6);
++	int32_t u = lookPageValueU[row];
++	int32_t v = LOOK_ROW_V(row, LOOK_VALUE_Y);
+ 
+-	setRECT(&rect, row * 0x80, LOOK_VALUE_Y, 0x80, 12);
++	setRECT(&rect, u, v, row == 2 ? 0x0c : 0x80, 12);
+ 	clearTextSubArea(&rect);
+-	drawStringMode(str, row * 0x80, LOOK_VALUE_Y, mode);
++	drawStringMode(str, u, v, mode);
+ 	lookPageState.width[row] = measureStringMode(str, mode);
+ }
+ 
+-/* A new hair colour is a new palette row: sixteen words sent to video memory, the model is not touched. */
+ static void lookPageRetint(void)
+ {
+ 	RECT rect;
+@@ -2682,6 +2697,7 @@ int32_t lookPageOpen(void)
+ {
+ 	RECT rect;
+ 	uint16_t *head;
++	char *str;
+ 	int32_t i;
+ 
+ 	if (!modFileOnDisc((char *)lookPageFile) || (head = malloc3(0x800)) == NULL) {
+@@ -2704,13 +2720,15 @@ int32_t lookPageOpen(void)
+ 	lookPageState.row = 0;
+ 	lookPageState.saved[0] = MOD_TAMER_LOOK;
+ 	lookPageState.saved[1] = MOD_TAMER_HAIR;
++	lookPageState.saved[2] = MOD_TAMER_FACE;
+ 	lookTurn = 0;
+ 	setRECT(&rect, 0, LOOK_HINT_Y, 256, 48);
+ 	clearTextSubArea(&rect);
+-	drawString(LOOK_PAGE_TEXT[2], 0, LOOK_HINT_Y);
++	drawStringMode(LOOK_PAGE_TEXT[2], 0, LOOK_HINT_Y, fitStringMode(LOOK_PAGE_TEXT[2], 0xb4));
+ 	drawString(LOOK_PAGE_TEXT[3], 0, LOOK_HINT_Y + 12);
+-	for (i = 0; i < 2; i++) {
+-		drawStringMode(LOOK_PAGE_TEXT[i], i * 0x80, LOOK_NAME_Y, fitStringMode(LOOK_PAGE_TEXT[i], 84));
++	for (i = 0; i < LOOK_ROWS; i++) {
++		str = LOOK_PAGE_TEXT[i == 2 ? 9 : i];
++		drawStringMode(str, lookPageNameU[i], LOOK_ROW_V(i, LOOK_NAME_Y), fitStringMode(str, i == 2 ? 0x36 : 84));
+ 		lookPageValue(i);
+ 	}
+ 	playerKeyHint(2, playerKeyHint(1, LOOK_LEAVE_U, LOOK_HINT_Y + 12), LOOK_HINT_Y + 12);
+@@ -2722,9 +2740,10 @@ void lookPageClose(void)
+ {
+ 	RECT rect;
+ 
+-	if (MOD_TAMER_LOOK != lookPageState.saved[0]) {
++	if (MOD_TAMER_LOOK != lookPageState.saved[0] || MOD_TAMER_FACE != lookPageState.saved[2]) {
+ 		MOD_TAMER_LOOK = lookPageState.saved[0];
+ 		MOD_TAMER_HAIR = lookPageState.saved[1];
++		MOD_TAMER_FACE = lookPageState.saved[2];
+ 		modTamerRelook();
+ 	} else if (MOD_TAMER_HAIR != lookPageState.saved[1]) {
+ 		MOD_TAMER_HAIR = lookPageState.saved[1];
+@@ -2745,6 +2764,7 @@ void lookPageInput(void)
+ 	if (isKeyDown(CONFIRM_BUTTON) != 0) { /* save: the page closes with the look as it is */
+ 		lookPageState.saved[0] = MOD_TAMER_LOOK;
+ 		lookPageState.saved[1] = MOD_TAMER_HAIR;
++		lookPageState.saved[2] = MOD_TAMER_FACE;
+ 		lookPageClose();
+ 		playSound(0, 3);
+ 		MENU_STATE = 1;
+@@ -2756,9 +2776,16 @@ void lookPageInput(void)
+ 	if (POLLED_INPUT & 8) {
+ 		lookTurn = (lookTurn + 96) & 0xFFF;
+ 	}
+-	if ((CHANGED_INPUT & 0x5000) && MOD_TAMER_LOOK >= 2) {
+-		lookPageState.row ^= 1;
+-		playSound(0, 2);
++	if (CHANGED_INPUT & 0x5000) { /* up or down: the next row that has something to choose */
++		step = lookPageState.row;
++		do {
++			step = (step + ((CHANGED_INPUT & 0x1000) ? LOOK_ROWS - 1 : 1)) % LOOK_ROWS;
++		} while (!lookPageRowOpen(step));
++		if (step != lookPageState.row) {
++			lookPageState.row = step;
++			playSound(0, 2);
++		}
++		step = 0;
+ 	}
+ 	if (CHANGED_INPUT & 0x2000) {
+ 		step = 1;
+@@ -2773,9 +2800,13 @@ void lookPageInput(void)
+ 		MOD_TAMER_LOOK = (MOD_TAMER_LOOK + lookPageState.looks + step) % lookPageState.looks;
+ 		modTamerRelook();
+ 		lookPageValue(1);
+-	} else {
++		lookPageValue(2);
++	} else if (lookPageState.row == 1) {
+ 		MOD_TAMER_HAIR = (MOD_TAMER_HAIR + lookPageState.colours + step) % lookPageState.colours;
+ 		lookPageRetint();
++	} else {
++		MOD_TAMER_FACE = (MOD_TAMER_FACE + TAMER_FACE_COUNT + step) % TAMER_FACE_COUNT;
++		modTamerRelook();
+ 	}
+ 	lookPageValue(lookPageState.row);
+ }
+@@ -2788,17 +2819,18 @@ void lookPageRender(void)
+ 	int32_t k;
+ 	int32_t y;
+ 
+-	if (MOD_TAMER_LOOK < 2) { /* the colour row stays, showing a dash, and cannot be chosen */
++	if (!lookPageRowOpen(lookPageState.row)) { /* a row with nothing to choose stays, showing a dash */
+ 		lookPageState.row = 0;
+ 	}
+ 	renderSeparatorLines(TAMER_VIEW_PLAYER_LINES, 0xb, 5);
+ 	renderString(3, e->posX, e->posY + 1, e->uvWidth, 0xc, e->uvX, e->uvY, 5, 1);
+ 	renderString(0, -0x54, -0x50, 0x48, 0xc, 0, 0x30, 5, 1);
+-	for (i = 0; i < 2; i++) {
++	for (i = 0; i < LOOK_ROWS; i++) {
+ 		y = -0x34 + i * 0x14;
+-		renderString(i == lookPageState.row ? 3 : 0, -0x29, y, 0x54, 0xc, i * 0x80, LOOK_NAME_Y, 5, 1);
++		renderString(i == lookPageState.row ? 3 : 0, -0x29, y, i == 2 ? 0x38 : 0x54, 0xc, lookPageNameU[i],
++		             LOOK_ROW_V(i, LOOK_NAME_Y), 5, 1);
+ 		renderString(0, LOOK_VALUE_X + (LOOK_VALUE_W - lookPageState.width[i]) / 2, y, lookPageState.width[i], 0xc,
+-		             i * 0x80, LOOK_VALUE_Y, 5, 1);
++		             lookPageValueU[i], LOOK_ROW_V(i, LOOK_VALUE_Y), 5, 1);
+ 		if (i == lookPageState.row) {
+ 			for (k = 0; k < 4; k++) {
+ 				drawLine2P(0x73f6ff, LOOK_VALUE_X - 7 + k, y + 5 - k, LOOK_VALUE_X - 7 + k, y + 6 + k, 5, 0);
+@@ -2812,7 +2844,7 @@ void lookPageRender(void)
+ 	renderString(0, LOOK_KEY_X, -0x50, LOOK_KEY_W, 0xc, LOOK_LEAVE_U, LOOK_HINT_Y + 12, 5, 1);
+ 	renderDigiviceEntity(ENTITY_TABLE[0], 0);
+ 	renderInsetBox(r->x, r->y, r->w, r->h, 5);
+-	for (i = 0; i < 2; i++) {
++	for (i = 0; i < LOOK_ROWS; i++) {
+ 		renderInsetBox(160 + LOOK_VALUE_X, 118 - 0x34 + i * 0x14, LOOK_VALUE_W, 14, 5);
+ 	}
+ }
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index c671089..333e344 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -245,7 +245,7 @@ SAVE_LAYOUT_CHECK(extHead, sizeof(SaveExtHead) == 12);
+ /* Bound every record, including the optional swap and daily pickup bitmap. */
+ #define SAVE_RECORDS_MAX (sizeof(SaveExtHead) + 12 * 4 + 4 + 60 + 4 + 32 + 80 + 200 + \
+                          2 * (NUM_DIGIMON / 8) + MOD_OPT_BYTES + 4 + sizeof(MOD_GROUND_PICKED) + 4 + 4 + 8 + CARD_EXTRA_BYTES + 12 + \
+-                         4 + 2 /* the tamer's look */)
++                         4 + 3 /* the tamer's look */)
+ SAVE_LAYOUT_CHECK(recordsFit, SAVE_RECORDS_MAX <= SAVE_INLINE_BYTES);
+ SAVE_LAYOUT_CHECK(inlinePadding, sizeof(((RegisteredDigimon *)0)->unk24) == 28 &&
+                   __builtin_offsetof(RegisteredDigimon, unk24) == 0x24 && sizeof(RegisteredDigimon) == 0x40);
+@@ -4444,6 +4444,7 @@ void loadSavegame(SavegamePayload *savegame)
+ 	modForgetGroundPicked(); /* A missing new record, in any old layout, means no pickups today. */
+ 	MOD_TAMER_LOOK = 0; /* MOD (tamer looks): and the original tamer */
+ 	MOD_TAMER_HAIR = 0;
++	MOD_TAMER_FACE = 0;
+ 
+ 	SAVED_STATE.playerPos = savegame->tamerPosition;
+ 	SAVED_STATE.money = savegame->money;
+@@ -5153,7 +5154,8 @@ static void prepareSaveFile(int32_t fromRam)
+ 		p = putRecord(p, SAVE_TAG_CARD_COUNTS, MOD_CARD_EXTRA, sizeof(MOD_CARD_EXTRA));
+ 		p = putRecord(p, SAVE_TAG_CARD_STOCK, MOD_CARD_STOCK, sizeof(MOD_CARD_STOCK));
+ 		swap[0] = MOD_TAMER_LOOK | (MOD_TAMER_HAIR << 8); /* MOD (tamer looks) */
+-		p = putRecord(p, SAVE_TAG_TAMER_LOOK, swap, 2);
++		swap[1] = MOD_TAMER_FACE;
++		p = putRecord(p, SAVE_TAG_TAMER_LOOK, swap, 3);
+ 	}
+ 	{ uint8_t layout = 1; p = putRecord(p, SAVE_TAG_TECHNIQUE_LAYOUT, &layout, 1); }
+ 	/* MOD (tier 2): the story state's records go here */
+@@ -5534,6 +5536,7 @@ static void applyRecords(uint8_t *e)
+ 			if (len >= 2 && d[0] < TAMER_LOOK_COUNT && d[1] < TAMER_HAIR_COUNT) {
+ 				MOD_TAMER_LOOK = d[0];
+ 				MOD_TAMER_HAIR = d[1];
++				MOD_TAMER_FACE = len >= 3 && d[2] < TAMER_FACE_COUNT ? d[2] : 0;
+ 			}
+ 			break;
+ 		case SAVE_TAG_GROUND_PICKUP_BITS:
+diff --git a/src/main/mod_lab_menu.inc b/src/main/mod_lab_menu.inc
+index ee8e845..2b45724 100644
+--- a/src/main/mod_lab_menu.inc
++++ b/src/main/mod_lab_menu.inc
+@@ -77,7 +77,7 @@ char *const LAB_HAIR_TEXT[] = {
+ /* The Player view's Look page (game_menu.c): its two row names, its two hints, what its three buttons do and the two buttons */
+ char *const LOOK_PAGE_TEXT[] = { LAB_STR_HAIRSTYLE, LAB_STR_HAIR_COLOUR, LAB_STR_SIMPLE_ADJUST, LAB_STR_LOOK_TURN,
+                                  LAB_STR_LOOK_OPEN, LAB_STR_LOOK_SAVE, LAB_STR_LOOK_EXIT,
+-                                 LAB_STR_KEY_CONFIRM, LAB_STR_KEY_CANCEL };
++                                 LAB_STR_KEY_CONFIRM, LAB_STR_KEY_CANCEL, LAB_STR_LOOK_FACE };
+ static char *LAB_STAGES[] = { "", "Baby I", "Baby II", "Rookie", "Champion", "Ultimate", "Mega" };
+ 
+ static char *appendStr(char *dst, const char *src)
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index 035d05b..0e3d317 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -1025,6 +1025,7 @@ void uploadModelTexture(void *textureData, void *component);
+ void modSmoothMapReset(void);
+ uint8_t MOD_TAMER_LOOK;
+ uint8_t MOD_TAMER_HAIR;
++uint8_t MOD_TAMER_FACE;
+ static uint32_t TAMER_COLD_READY;	/* the entry the buffer's tail holds */
+ static uint16_t TAMER_COLD_SECTOR;	/* 0: the loaded tamer has no cold entries */
+ static uint8_t TAMER_COLD_CACHED;
+@@ -1113,7 +1114,7 @@ int32_t lookTamerLoad(void *component)
+ 	}
+ 	modSmoothMapReset();
+ 	texture = malloc3(0x4800);
+-	readFileSectors(TAMER_LOOK_FILE, texture, head[3], 9);
++	readFileSectors(TAMER_LOOK_FILE, texture, head[3] + (MOD_TAMER_FACE < head[7] ? MOD_TAMER_FACE * 9 : 0), 9); /* one texture per face */
+ 	lookHairPalette((uint16_t *)((uint8_t *)texture + LOOK_TIM_PALETTE + 32 * LOOK_HAIR_ROW), rgb, (uint8_t *)head + LOOK_LEVELS);
+ 	uploadModelTexture(texture, component);
+ 	free3(texture);
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index 48af1b0..20a31f0 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -2226,6 +2226,7 @@ void initializeScripts(void)
+ 
+ 	MOD_TAMER_LOOK = 0; /* MOD (tamer looks): a new game or a save without the record has the original tamer */
+ 	MOD_TAMER_HAIR = 0;
++	MOD_TAMER_FACE = 0;
+ 	inputInit();
+ 	dailyPStatTrigger();
+ 	initializeLoadedNPCModels();
+diff --git a/text/main/mod_lab.yaml b/text/main/mod_lab.yaml
+index c9cce68..f14fb54 100644
+--- a/text/main/mod_lab.yaml
++++ b/text/main/mod_lab.yaml
+@@ -436,6 +436,9 @@ MOD_LAB:
+     LAB_STR_LOOK_EXIT:
+       ja: "Exit"
+       en_us: "Exit"
++    LAB_STR_LOOK_FACE:
++      ja: "Face"
++      en_us: "Face"
+     LAB_STR_KEY_CONFIRM:
+       ja: "△"
+       en_us: "△"
+-- 
+2.55.0
+

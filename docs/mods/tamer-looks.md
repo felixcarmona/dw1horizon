@@ -1,10 +1,12 @@
-# Tamer looks: bald, hairstyles and hair colours
+# Tamer looks: bald, hairstyles, hair colours and faces
 
 The tamer can take off his cap. Besides the original tamer there are twelve other looks: a bald head and eleven
 hairstyles (classic, messy, quiff, curtains, buzz, long, mullet, ponytail, pigtails, bun, buns), each in twenty hair
 colours. They are chosen on the **Look** page of the pause menu's Player tab: left and right change the hairstyle or the
 hair colour, L1 and R1 turn the tamer. The original tamer and the bald head have no hair to colour: their colour row
-shows a dash and cannot be chosen. The Player tab shows the button that opens the page beside the name, and the
+shows a dash and cannot be chosen. A third row, **Face**, chooses between two faces for every look but the original
+tamer, whose row shows a dash: the first is the tamer's own, the second has a blush instead of the freckle marks, a
+finer mouth with lips, a darker eyelid and two lashes. The Player tab shows the button that opens the page beside the name, and the
 page shows there the two that leave it: the confirm button saves the look, the cancel button leaves without saving and
 the tamer is again as he was when the page opened. The look is kept in the save.
 
@@ -28,14 +30,16 @@ Nothing of the looks is committed as model data. The build makes them from the p
   polygons: skull polygons the hair covers are dropped, and the hair is made of shaded triangles textured with
   a small strand tile (`hairtex.py`: one lock per band, a sheen ring, darker ends) drawn in its own palette row, the
   one the cap used.
+- `tools/tamer_looks/face.py` draws the second face on a copy of the bald head's texture, the frames the eye and
+  mouth animations copy over the face included.
 - `tools/tamer_pack.py` packs every look into `TAMER.DAT` (derive step `tamer`), a new file in the root of the disc.
 
 `TAMER.DAT`, in 2048-byte sectors:
 
 | Part | Content |
 |---|---|
-| sector 0 | `"TLK1"`, u16 looks in the file, u16 texture sector, u16 cold sector, u16 cold sectors, u16 colours; at 0x10 per look `u16 first sector, u16 sectors`; at 0x80 per colour `r, g, b`; at 0xC0 the brightness of each of the hair texture's sixteen tones (128 = the colour itself) |
-| texture | the bald head's texture (one `ALLTIM` entry, 9 sectors), shared by every look |
+| sector 0 | `"TLK1"`, u16 looks in the file, u16 texture sector, u16 cold sector, u16 cold sectors, u16 colours, u16 faces; at 0x10 per look `u16 first sector, u16 sectors`; at 0x80 per colour `r, g, b`; at 0xC0 the brightness of each of the hair texture's sixteen tones (128 = the colour itself) |
+| texture | the bald head's texture (one `ALLTIM` entry, 9 sectors), shared by every look: one per face, one after the other |
 | cold | the animations that leave the models, the same bytes for every look |
 | models | one model per look |
 
@@ -58,7 +62,7 @@ The original tamer (look 0) keeps every animation in memory, as always.
 
 ## In the engine
 
-- `modLoadTamerLook` (`mod_species.c`) loads the texture and the model of the chosen look in `loadMMD`'s place for
+- `modLoadTamerLook` (`mod_species.c`) loads the texture of the chosen face and the model of the chosen look in `loadMMD`'s place for
   the tamer, and `loadColdAnimation` serves the tamer's cold entries.
 - The hair colour is a palette row. `lookHairPalette` writes it into the look's texture before it is uploaded: each
   channel of tone `i` is `colour * level[i] / 128`, so one model and one texture serve every colour. Hair polygons
@@ -68,13 +72,13 @@ The original tamer (look 0) keeps every animation in memory, as always.
 - The Look page (`lookPage*` in `game_menu.c`), the loader (`lookTamerLoad`) and the relink (`lookTamerRelook`) are
   not in the main executable: they are linked at the tail of the EVL overlay (`look_ui` in `overlay.ld`), in memory the
   field leaves free. `modLookOverlay` reads that overlay when its marker word (`lookPageMagic`) is not there, so the page
-  and the looks cost no heap. A colour change sends the sixteen words of the palette row to video memory; a hairstyle change reads the disc.
+  and the looks cost no heap. A colour change sends the sixteen words of the palette row to video memory; a hairstyle or face change reads the disc.
 - Once a model has been drawn, the first header of each run of equal polygons holds the run's length, so the hair is
   found by position (the head's leading triangles in the hair's palette row, seven words each), never by walking header lengths.
 - The game draws one face of a polygon. The menu's close-up shows the hair from angles the field never does (under the
   fringe, between a lock and the cheek), so there `lookPageHairInside` sorts the hair a second time with two corners
   swapped: the far faces are drawn and no gap shows what is behind the head.
-- Save record `0x000F` holds the look and the colour ([save format](../reference/save-format.md)); a new game and
+- Save record `0x000F` holds the look, the colour and the face ([save format](../reference/save-format.md)); a new game and
   an older save start with the original tamer. Without `TAMER.DAT` on the disc every look is the original tamer.
 
 ## Adding a hairstyle
