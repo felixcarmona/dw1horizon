@@ -84,7 +84,7 @@ also adds what is generated from your own disc.
 The engine supports 512 card IDs. The original v1 script-state layout and the
 meaning of every existing save tag remain unchanged. Optional tags `0x000D`
 (extra counts) and `0x000E` (wide daily stock) default from zero and the original
-shop bytes respectively when absent. The inline bound leaves 27 bytes.
+shop bytes respectively when absent. With the tamer's look record (`0x000F`) the inline bound leaves 21 bytes.
 Older readers may skip these tags and cannot preserve them when resaving.
 
 Keep the engine, `CARDTAB.BIN`, `CARD2.ALL` and committed card JSON from the same
