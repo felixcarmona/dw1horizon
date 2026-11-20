@@ -21,9 +21,9 @@ INV['GP']=[('T',(31,2,186,14),'WHO\'s FIRST GRAPPLER ?','¿QUIÉN ES EL MEJOR LU
 INV['TW']=[('L',(12,4,206,106),'サンダウインド / 風雷 (Thunder Wind)','TRUENO Y VIENTO'),('T',(144,33,74,27),'CUP','COPA'),
   ('T',(148,58,74,36),'3 lines mostly hidden under the logo (…ELECTRIC… / …WINGS… / …MULTIPLATES…?)','leave, or 3 Spanish lines under the logo (unreadable either way)'),
   ('T',(74,93,94,24),'WIND&THUNDER / CUP','VIENTO Y TRUENO / COPA')]
-INV['CO']=[('L',(22,14,180,68),'クール (Cool)','GUAY'),('T',(178,17,64,30),'CUP','COPA'),
-  ('T',(66,78,124,11),'WHO\'s a MOST COOLER ?','¿QUIÉN ES EL MÁS GUAY?'),('T',(66,88,126,11),'COME COME TOGETHER','VENID, VENID TODOS'),
-  ('T',(98,97,64,12),'the "COOL" CUP','la COPA "GUAY"')]
+INV['CO']=[('L',(22,14,180,68),'クール (Cool)','HIELO'),('T',(178,17,64,30),'CUP','COPA'),
+  ('T',(66,78,124,11),'WHO\'s a MOST COOLER ?','¿QUIÉN ES EL MÁS FRÍO?'),('T',(66,88,126,11),'COME COME TOGETHER','VENID, VENID TODOS'),
+  ('T',(98,97,64,12),'the "COOL" CUP','la COPA "HIELO"')]
 INV['NT']=[('L',(18,10,216,58),'ネイチャー (Nature)','NATURALEZA'),('T',(94,55,100,36),'CUP','COPA'),
   ('T',(22,70,120,10),'MOVING BIG INSECT\'s!','¡GRANDES INSECTOS EN MARCHA!'),('T',(22,79,120,10),'MOVING GRASS… (part hidden)','¡LA HIERBA SE MUEVE!'),
   ('T',(22,88,152,12),'SING TOGETHER NATURE CUP','CANTAD JUNTOS: COPA NATURALEZA')]
