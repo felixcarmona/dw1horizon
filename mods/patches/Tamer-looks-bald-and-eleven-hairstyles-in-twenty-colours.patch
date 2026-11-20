@@ -1,25 +1,24 @@
-From aea538a803f6cf162d5303905b79db53db390a21 Mon Sep 17 00:00:00 2001
+From 7abe2fc22f44ae6a712df75283ff45b2b68b0525 Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
-Date: Fri, 20 Nov 2026 17:34:04 +0000
+Date: Fri, 20 Nov 2026 20:17:45 +0000
 Subject: [PATCH] Tamer looks: bald and eleven hairstyles in twenty colours,
  chosen on the Player tab's Look page
 
 ---
  config/us/main.ld         |   1 +
- config/us/overlay.ld      |  21 +++-
+ config/us/overlay.ld      |  21 ++-
  include/dw/memmap.h       |   1 +
  include/dw/save_tags.h    |   1 +
- include/dw/species.h      |  15 +++
- src/main/game_menu.c      | 248 +++++++++++++++++++++++++++++++++++++-
- src/main/graphics.c       |  21 +++-
- src/main/main_menu.c      |  14 ++-
- src/main/mod_lab_menu.inc |  41 +++++--
- src/main/mod_species.c    | 121 +++++++++++++++++++
- src/main/model.c          |  40 ++++--
+ include/dw/species.h      |  14 ++
+ src/main/game_menu.c      | 290 +++++++++++++++++++++++++++++++++++++-
+ src/main/main_menu.c      |  14 +-
+ src/main/mod_lab_menu.inc |  43 ++++--
+ src/main/mod_species.c    | 143 +++++++++++++++++++
+ src/main/model.c          |  39 +++--
  src/main/script_interp.c  |   2 +
  src/main/utils2.c         |   3 +
- text/main/mod_lab.yaml    | 108 +++++++++++++++++
- 14 files changed, 614 insertions(+), 23 deletions(-)
+ text/main/mod_lab.yaml    | 123 ++++++++++++++++
+ 13 files changed, 674 insertions(+), 21 deletions(-)
 
 diff --git a/config/us/main.ld b/config/us/main.ld
 index 8674036..33fe159 100644
@@ -34,7 +33,7 @@ index 8674036..33fe159 100644
         "TFS ring size does not match TFS_RING_END")
  ASSERT(TFS_RING_END <= OVL_KAR_BASE, "TFS ring overlaps KAR, which coexists with the curling map")
 diff --git a/config/us/overlay.ld b/config/us/overlay.ld
-index c2ceac1..1cda54b 100644
+index c2ceac1..11fabf9 100644
 --- a/config/us/overlay.ld
 +++ b/config/us/overlay.ld
 @@ -322,6 +322,15 @@ SECTIONS
@@ -62,7 +61,7 @@ index c2ceac1..1cda54b 100644
 +             * KAR again), so the Player tab reads EVL to open the page. Its text is MENU's. */
 +            look_ui_START = .;
 +            BUILD_DIR/src/main/game_menu.c.o(.text.lookPage* .rodata.lookPage* .bss.lookPageState);
-+            BUILD_DIR/src/main/mod_species.c.o(.text.lookTamerLoad);
++            BUILD_DIR/src/main/mod_species.c.o(.text.lookTamerLoad .text.lookHairPalette);
 +            BUILD_DIR/src/main/model.c.o(.text.lookTamerRelook);
 +            . = ALIGN(., 4);
 +
@@ -104,10 +103,10 @@ index 8bc06f8..577bf11 100644
  #define SAVE_TAG_TECHNIQUE_LAYOUT	0x8003 /* u8: 1 = option A animation slots; required to prevent silent downgrade substitution */
  /* engine tier 2 */
 diff --git a/include/dw/species.h b/include/dw/species.h
-index a7a4231..7ecc4e0 100644
+index a7a4231..656920e 100644
 --- a/include/dw/species.h
 +++ b/include/dw/species.h
-@@ -336,6 +336,21 @@ int32_t getDigimonModelRef(int32_t type, char **file, int32_t *sector, int32_t *
+@@ -336,6 +336,20 @@ int32_t getDigimonModelRef(int32_t type, char **file, int32_t *sector, int32_t *
   */
  #define COLD_ANIM_FLAG		0x80000000
  #define COLD_ANIM_MAX		0x2000
@@ -115,13 +114,12 @@ index a7a4231..7ecc4e0 100644
 +/*
 + * MOD (tamer looks): look 0 is the disc's tamer; looks 1.. (bald, then the hairstyles) and the hair colours are in TAMER.DAT
 + * (tools/tamer_pack.py). A look's model keeps its scene-only animations as cold entries, read into the tail of the tamer's
-+ * buffer. Hair polygons are untextured grey; MOD_HAIR_TINT (0 = none) colours them in updateTMDTextureData.
++ * buffer. Hair polygons are textured with their own palette row, written for the chosen colour (lookHairPalette).
 + */
 +#define TAMER_LOOK_COUNT	13
 +#define TAMER_HAIR_COUNT	20
 +extern uint8_t MOD_TAMER_LOOK;
 +extern uint8_t MOD_TAMER_HAIR;
-+extern uint32_t MOD_HAIR_TINT;
 +struct ModelComponent;
 +int32_t modLoadTamerLook(void *component);
 +void modTamerRelook(void);
@@ -130,10 +128,10 @@ index a7a4231..7ecc4e0 100644
  extern uint32_t MOD_COLD_PENDING;
  int32_t modProbeRam(void);
 diff --git a/src/main/game_menu.c b/src/main/game_menu.c
-index 8fb3fdb..8f7564f 100644
+index 8fb3fdb..be97367 100644
 --- a/src/main/game_menu.c
 +++ b/src/main/game_menu.c
-@@ -2558,6 +2558,233 @@ int32_t isUIBoxAvailable(int32_t id)
+@@ -2558,6 +2558,273 @@ int32_t isUIBoxAvailable(int32_t id)
  	return 0;
  }
  
@@ -154,14 +152,23 @@ index 8fb3fdb..8f7564f 100644
 +#define LOOK_HINT_Y	0xac	/* text rows of the last two tamer titles, drawn again when the page closes */
 +#define LOOK_NAME_Y	0xc4
 +#define LOOK_VALUE_Y	0xd0
++#define LOOK_OPEN_Y	LOOK_NAME_Y	/* the button that opens the page: in the names' row while the page is closed */
++#define LOOK_LEAVE_U	0x80	/* the buttons that save and leave: right of the second hint */
++#define LOOK_KEY_X	0x08	/* on the name's row, right of the name */
++#define LOOK_KEY_W	0x7c
 +#define LOOK_VALUE_X	0x33	/* the value box, from the middle of the window */
 +#define LOOK_VALUE_W	86
 +#define LOOK_HEAD_OBJECT	1
-+#define LOOK_HAIR_MODE		0x30u
-+#define LOOK_GREY_SHADOW	79	/* tools/tamer_looks/wig.py: the hair's darker grey; the lighter is the colour itself */
++#define LOOK_HAIR_MODE		0x34u	/* textured gouraud triangle: seven words */
++#define LOOK_HAIR_WORDS		7
++#define LOOK_HAIR_ROW		1	/* the hair's palette row (tools/tamer_looks/wig.py) */
++#define LOOK_LEVELS		0xC0
++void lookHairPalette(uint16_t *row, uint8_t *rgb, uint8_t *levels); /* mod_species.c */
 +static int16_t lookTurn;
 +static struct {
-+	uint32_t tint; /* the colour the hair polygons hold */
++	uint16_t palette[16]; /* the hair's palette row on its way to video memory */
++	uint8_t levels[16];
++	uint8_t saved[2]; /* the look and the colour when the page opened: leaving without saving brings them back */
 +	int16_t width[2];
 +	uint8_t row;
 +	uint8_t looks;
@@ -171,11 +178,20 @@ index 8fb3fdb..8f7564f 100644
 +static const char lookPageFile[] = "TAMER.DAT";
 +const uint32_t lookPageMagic __attribute__((section(".rodata.lookPageMagic"))) = 0x4B4F4F4C; /* tells modLookOverlay (mod_species.c) that this overlay tail is in memory */
 +
-+static uint32_t lookPageColour(void)
++/*
++ * A button and what it does (0 opens the Look page, 1 saves, 2 leaves), the button in its own colour: × cyan and △ green,
++ * or ○ orange and × cyan with the Japanese controls. Returns where the next one goes. In the menu's overlay: the
++ * Player view draws the first before the Look page's code is in memory.
++ */
++int32_t playerKeyHint(int32_t key, int32_t x, int32_t y)
 +{
-+	uint8_t *c = &lookPageState.rgb[MOD_TAMER_HAIR * 3];
++	char *str = LOOK_PAGE_TEXT[key == 2 ? 8 : 7];
 +
-+	return c[0] | (c[1] << 8) | (c[2] << 16);
++	setTextColor(key == 2 ? (MOD_OPT_BUTTONS ? 6 : 5) : (MOD_OPT_BUTTONS ? 10 : 6));
++	x = (x + drawStringMode(str, x, y, FIT_TIGHT) + 5) & ~3; /* a whole word of the text area: the next strip clears from its word */
++	setTextColor(1);
++	str = LOOK_PAGE_TEXT[4 + key];
++	return (x + drawStringMode(str, x, y, fitStringMode(str, 0x60)) + 11) & ~3;
 +}
 +
 +static void lookPageValue(int32_t row)
@@ -190,24 +206,14 @@ index 8fb3fdb..8f7564f 100644
 +	lookPageState.width[row] = measureStringMode(str, mode);
 +}
 +
-+/* The hair is the head's first polygons, untextured gouraud triangles of five words each. They are counted by their
-+ * own mode byte and not by the header's length: once the model has been drawn, the first header of a run of equal
-+ * polygons holds the run's count in its low half. */
++/* A new hair colour is a new palette row: sixteen words sent to video memory, the model is not touched. */
 +static void lookPageRetint(void)
 +{
-+	uint32_t tint = lookPageColour();
-+	uint32_t shadow = 0;
-+	struct TMD_STRUCT *obj = &TAMER_MODEL.modelPtr->obj[LOOK_HEAD_OBJECT];
-+	uint32_t *prim = (uint32_t *)obj->primtop;
-+	int32_t i;
++	RECT rect;
 +
-+	for (i = 0; i < 24; i += 8) {
-+		shadow |= ((((tint >> i) & 0xFF) * LOOK_GREY_SHADOW) >> 7) << i;
-+	}
-+	for (i = obj->primn; i > 0 && (prim[0] >> 24) == LOOK_HAIR_MODE; i--, prim += 5) {
-+		prim[1] = (LOOK_HAIR_MODE << 24) | ((prim[1] & 0xFFFFFF) == lookPageState.tint ? tint : shadow);
-+	}
-+	lookPageState.tint = tint;
++	lookHairPalette(lookPageState.palette, &lookPageState.rgb[MOD_TAMER_HAIR * 3], lookPageState.levels);
++	setRECT(&rect, (TAMER_MODEL.clutPage & 0x3f) << 4, (TAMER_MODEL.clutPage >> 6) + LOOK_HAIR_ROW, 16, 1);
++	LoadImage(&rect, (u_long *)lookPageState.palette);
 +}
 +
 +/* The game draws one face of a polygon, and the menu's close-up shows the hair from angles the field never does (under
@@ -217,20 +223,29 @@ index 8fb3fdb..8f7564f 100644
 +	struct TMD_STRUCT *tmd = (struct TMD_STRUCT *)obj->tmd;
 +	uint32_t *prim = (uint32_t *)tmd->primtop;
 +	uint32_t count = tmd->primn;
++	uint32_t clut = prim[1] >> 16;
 +	uint32_t hair = 0;
++	uint32_t *p;
 +	uint32_t pass, i, w;
 +
-+	while (hair < count && (prim[hair * 5] >> 24) == LOOK_HAIR_MODE) {
++	/* The hair is the head's first polygons: textured gouraud triangles in the hair's palette row. They are counted by
++	 * their own mode byte and not by the header's length: once the model has been drawn, the first header of a run of
++	 * equal polygons holds the run's count in its low half. */
++	while (hair < count && (prim[hair * LOOK_HAIR_WORDS] >> 24) == LOOK_HAIR_MODE &&
++	       (prim[hair * LOOK_HAIR_WORDS + 1] >> 16) == clut) {
 +		hair++;
 +	}
 +	if (hair == 0) {
 +		return;
 +	}
 +	for (pass = 0; pass < 2; pass++) {
-+		for (i = 0; i < hair; i++) {
-+			w = prim[i * 5 + 2];
-+			prim[i * 5 + 2] = prim[i * 5 + 3];
-+			prim[i * 5 + 3] = w;
++		for (i = 0, p = prim; i < hair; i++, p += LOOK_HAIR_WORDS) {
++			w = (p[1] ^ p[2]) & 0xFFFF; /* the two corners' texture coordinates; the palette and page words stay */
++			p[1] ^= w;
++			p[2] ^= w;
++			w = p[4];
++			p[4] = p[5];
++			p[5] = w;
 +		}
 +		if (pass == 0) {
 +			tmd->primn = hair;
@@ -255,13 +270,17 @@ index 8fb3fdb..8f7564f 100644
 +	for (i = 0; i < lookPageState.colours * 3; i++) {
 +		lookPageState.rgb[i] = ((uint8_t *)head)[0x80 + i];
 +	}
++	for (i = 0; i < 16; i++) {
++		lookPageState.levels[i] = ((uint8_t *)head)[LOOK_LEVELS + i];
++	}
 +	free3(head);
 +	if (lookPageState.colours == 0 || MOD_TAMER_LOOK >= lookPageState.looks) {
 +		return 0;
 +	}
 +	MOD_TAMER_HAIR %= lookPageState.colours;
 +	lookPageState.row = 0;
-+	lookPageState.tint = lookPageColour();
++	lookPageState.saved[0] = MOD_TAMER_LOOK;
++	lookPageState.saved[1] = MOD_TAMER_HAIR;
 +	lookTurn = 0;
 +	setRECT(&rect, 0, LOOK_HINT_Y, 256, 48);
 +	clearTextSubArea(&rect);
@@ -271,24 +290,43 @@ index 8fb3fdb..8f7564f 100644
 +		drawStringMode(LOOK_PAGE_TEXT[i], i * 0x80, LOOK_NAME_Y, fitStringMode(LOOK_PAGE_TEXT[i], 84));
 +		lookPageValue(i);
 +	}
++	playerKeyHint(2, playerKeyHint(1, LOOK_LEAVE_U, LOOK_HINT_Y + 12), LOOK_HINT_Y + 12);
 +	return 1;
 +}
 +
++/* Leaves the page: the cancel button, which throws away what was changed (the confirm button keeps it: lookPageInput) */
 +void lookPageClose(void)
 +{
 +	RECT rect;
 +
++	if (MOD_TAMER_LOOK != lookPageState.saved[0]) {
++		MOD_TAMER_LOOK = lookPageState.saved[0];
++		MOD_TAMER_HAIR = lookPageState.saved[1];
++		modTamerRelook();
++	} else if (MOD_TAMER_HAIR != lookPageState.saved[1]) {
++		MOD_TAMER_HAIR = lookPageState.saved[1];
++		lookPageRetint();
++	}
 +	lookTurn = 0;
-+	setRECT(&rect, 0, LOOK_HINT_Y, 256, 24);
++	setRECT(&rect, 0, LOOK_HINT_Y, 256, 48);
 +	clearTextSubArea(&rect);
 +	drawString(TAMER_LEVEL_TITLES[9], 0, LOOK_HINT_Y);
 +	drawString(TAMER_LEVEL_TITLES[10], 0, LOOK_HINT_Y + 12);
++	playerKeyHint(0, 0, LOOK_OPEN_Y);
 +}
 +
 +void lookPageInput(void)
 +{
 +	int32_t step = 0;
 +
++	if (isKeyDown(CONFIRM_BUTTON) != 0) { /* save: the page closes with the look as it is */
++		lookPageState.saved[0] = MOD_TAMER_LOOK;
++		lookPageState.saved[1] = MOD_TAMER_HAIR;
++		lookPageClose();
++		playSound(0, 3);
++		MENU_STATE = 1;
++		return;
++	}
 +	if (POLLED_INPUT & 4) {
 +		lookTurn = (lookTurn - 96) & 0xFFF;
 +	}
@@ -311,7 +349,6 @@ index 8fb3fdb..8f7564f 100644
 +	if (lookPageState.row == 0) {
 +		MOD_TAMER_LOOK = (MOD_TAMER_LOOK + lookPageState.looks + step) % lookPageState.looks;
 +		modTamerRelook();
-+		lookPageState.tint = lookPageColour();
 +	} else {
 +		MOD_TAMER_HAIR = (MOD_TAMER_HAIR + lookPageState.colours + step) % lookPageState.colours;
 +		lookPageRetint();
@@ -348,7 +385,8 @@ index 8fb3fdb..8f7564f 100644
 +		}
 +	}
 +	renderString(0, -0x29, 0x36, 0xb4, 0xc, 0, LOOK_HINT_Y, 5, 1);
-+	renderString(0, -0x29, 0x46, 0xb4, 0xc, 0, LOOK_HINT_Y + 12, 5, 1);
++	renderString(0, -0x29, 0x46, LOOK_LEAVE_U, 0xc, 0, LOOK_HINT_Y + 12, 5, 1);
++	renderString(0, LOOK_KEY_X, -0x50, LOOK_KEY_W, 0xc, LOOK_LEAVE_U, LOOK_HINT_Y + 12, 5, 1);
 +	renderDigiviceEntity(ENTITY_TABLE[0], 0);
 +	renderInsetBox(r->x, r->y, r->w, r->h, 5);
 +	for (i = 0; i < rows; i++) {
@@ -367,7 +405,7 @@ index 8fb3fdb..8f7564f 100644
  void tickPlayerMenu(void)
  {
  	RECT finalPos;
-@@ -2599,8 +2826,9 @@ void tickPlayerMenu(void)
+@@ -2599,8 +2866,9 @@ void tickPlayerMenu(void)
  			TRIANGLE_MENU_STATE = 6;
  			playSound(0, 4);
  		}
@@ -378,7 +416,7 @@ index 8fb3fdb..8f7564f 100644
  			MENU_STATE = 2;
  			playSound(0, 3);
  			MEDAL_SELECTOR_INDEX = SELECTED_MEDAL = 0;
-@@ -2608,6 +2836,13 @@ void tickPlayerMenu(void)
+@@ -2608,6 +2876,13 @@ void tickPlayerMenu(void)
  			CARD_TOP_ROW = 0;
  		}
  	} else {
@@ -392,7 +430,15 @@ index 8fb3fdb..8f7564f 100644
  		if ((isKeyDown(CANCEL_BUTTON) != 0) && (MENU_STATE == 2)) {
  			playSound(0, 4);
  			MENU_STATE = 1;
-@@ -3528,6 +3763,9 @@ void renderPlayerInfoView(void)
+@@ -3521,6 +3796,7 @@ void renderPlayerInfoView(void)
+ 		}
+ 
+ 		renderNumber(0, 0x35, 0x4d, 2, count, 5);
++		renderString(0, LOOK_KEY_X, -0x50, LOOK_KEY_W, 0xc, 0, LOOK_OPEN_Y, 5, 1); /* MOD (tamer looks): the Look page's button */
+ 		renderDigiviceEntity(ENTITY_TABLE[0], 0);
+ 
+ 		for (k = 0; k < 0xb; k++) {
+@@ -3528,6 +3804,9 @@ void renderPlayerInfoView(void)
  			renderInsetBox(r->x, r->y, r->w, r->h, 5);
  		}
  		break;
@@ -402,7 +448,7 @@ index 8fb3fdb..8f7564f 100644
  	}
  }
  
-@@ -6079,7 +6317,7 @@ int8_t entityId;
+@@ -6079,7 +6358,7 @@ int8_t entityId;
  	setEntityPosition(entityId, RAISE_ROW(type).viewX,
  	                  RAISE_ROW(type).viewY,
  	                  RAISE_ROW(type).viewZ);
@@ -411,7 +457,7 @@ index 8fb3fdb..8f7564f 100644
  	setupEntityMatrix(entityId);
  	startAnimation(entity, 0);
  	tickAnimation(entity);
-@@ -6114,6 +6352,12 @@ int8_t entityId;
+@@ -6114,6 +6393,12 @@ int8_t entityId;
  			 * the table still reaches depth 16384, past every portrait. */
  			GsSortObject4(&pos->obj, FRAMEBUFFER_OT[ACTIVE_FRAMEBUFFER], 3,
  			              getScratchAddr(0));
@@ -424,47 +470,14 @@ index 8fb3fdb..8f7564f 100644
  		}
  	}
  
-diff --git a/src/main/graphics.c b/src/main/graphics.c
-index fb011ec..04f2f64 100644
---- a/src/main/graphics.c
-+++ b/src/main/graphics.c
-@@ -153,6 +153,14 @@ int32_t popAttackObject(int32_t entityId, AttackObject *out)
- 	return 1;
- }
- 
-+extern uint32_t MOD_HAIR_TINT; /* MOD (tamer looks), species.h */
-+
-+static uint32_t modTint(uint32_t colour, uint32_t grey)
-+{
-+	colour = ((colour & 0xFF) * grey) >> 7;
-+	return colour > 255 ? 255 : colour;
-+}
-+
- void updateTMDTextureData(int32_t *tmd, int32_t clutX, int32_t x, int32_t y, int32_t tpage)
- {
- 	uint32_t *prim;
-@@ -178,10 +186,19 @@ void updateTMDTextureData(int32_t *tmd, int32_t clutX, int32_t x, int32_t y, int
- 		prim = (uint32_t *)obj->primtop;
- 		for (j = 0; j < primn; j++) {
- 			mode = prim[0] >> 24;
-+			len = ((prim[0] & 0xFF00) >> 8) + 1;
- 			if ((mode & 4) == 0) {
--				break;
-+				if (MOD_HAIR_TINT == 0) {
-+					break;
-+				}
-+				/* MOD (tamer looks): untextured hair holds a grey level, 128 = the colour itself */
-+				clutXs = prim[1] & 0xFF;
-+				prim[1] = (prim[1] & 0xFF000000) | modTint(MOD_HAIR_TINT, clutXs) |
-+				          (modTint(MOD_HAIR_TINT >> 8, clutXs) << 8) | (modTint(MOD_HAIR_TINT >> 16, clutXs) << 16);
-+				clutXs = clutX << 16;
-+				prim += len;
-+				continue;
- 			}
--			len = ((prim[0] & 0xFF00) >> 8) + 1;
- 			prim[1] += tpages + clut;
- 			prim[2] = clut + ((prim[2] & 0xFFE0FFFF) + clutXs);
- 			prim[3] += clut;
+@@ -6283,6 +6568,7 @@ int32_t drawPlayerInfoStrings(void)
+ 		for (i = 4; i < 0xb; i++) {
+ 			drawString(TAMER_LEVEL_TITLES[i], 0, i * 0xc + 0x40);
+ 		}
++		playerKeyHint(0, 0, LOOK_OPEN_Y); /* MOD (tamer looks) */
+ 		return 1;
+ 	}
+ 	return 0;
 diff --git a/src/main/main_menu.c b/src/main/main_menu.c
 index af2ae49..c671089 100644
 --- a/src/main/main_menu.c
@@ -519,7 +532,7 @@ index af2ae49..c671089 100644
  			n = len < sizeof(MOD_GROUND_PICKED) ? len : sizeof(MOD_GROUND_PICKED);
  			for (i = 0; i < n; i++) {
 diff --git a/src/main/mod_lab_menu.inc b/src/main/mod_lab_menu.inc
-index 1c0bd29..1f11265 100644
+index 1c0bd29..fc3e526 100644
 --- a/src/main/mod_lab_menu.inc
 +++ b/src/main/mod_lab_menu.inc
 @@ -1,7 +1,7 @@
@@ -540,7 +553,7 @@ index 1c0bd29..1f11265 100644
  int32_t MOD_LAB_VIEW, MOD_LAB_CURSOR, MOD_LAB_VALUE, MOD_LAB_TARGET;
  int32_t MOD_CHEATS_CARD_MODE, MOD_CHEATS_CARD_DONE, MOD_CHEATS_TRANSITION;
  static int32_t labAction;
-@@ -62,7 +62,20 @@ static uint32_t labTextHash[LAB_ROWS];
+@@ -62,7 +62,22 @@ static uint32_t labTextHash[LAB_ROWS];
  static int16_t labTextWidth[LAB_ROWS];
  static char *const LAB_HOME_TEXT[] = { LAB_STR_ADD_BITS, LAB_STR_SATIATE, LAB_STR_PARAMETERS,
      LAB_STR_EVOLVE, LAB_STR_TELEPORT, LAB_STR_HEAL, LAB_STR_SHORTCUTS_OFF, LAB_STR_SAVE_GAME, LAB_STR_LOAD_GAME, LAB_STR_MAIN_MENU, LAB_STR_OLD_AGE,
@@ -557,12 +570,14 @@ index 1c0bd29..1f11265 100644
 +    LAB_STR_HAIR_BURGUNDY, LAB_STR_HAIR_PINK, LAB_STR_HAIR_LAVENDER, LAB_STR_HAIR_PURPLE,
 +    LAB_STR_HAIR_NAVY, LAB_STR_HAIR_BLUE, LAB_STR_HAIR_TURQUOISE, LAB_STR_HAIR_GREEN, LAB_STR_HAIR_LIME,
 +    LAB_STR_HAIR_GREY, LAB_STR_HAIR_SILVER, LAB_STR_HAIR_WHITE };
-+/* The Player view's Look page (game_menu.c): its two row names, and its two hints */
-+char *const LOOK_PAGE_TEXT[] = { LAB_STR_HAIRSTYLE, LAB_STR_HAIR_COLOUR, LAB_STR_SIMPLE_ADJUST, LAB_STR_LOOK_TURN };
++/* The Player view's Look page (game_menu.c): its two row names, its two hints, what its three buttons do and the two buttons */
++char *const LOOK_PAGE_TEXT[] = { LAB_STR_HAIRSTYLE, LAB_STR_HAIR_COLOUR, LAB_STR_SIMPLE_ADJUST, LAB_STR_LOOK_TURN,
++                                 LAB_STR_LOOK_OPEN, LAB_STR_LOOK_SAVE, LAB_STR_LOOK_EXIT,
++                                 LAB_STR_KEY_CONFIRM, LAB_STR_KEY_CANCEL };
  static char *LAB_STAGES[] = { "", "Baby I", "Baby II", "Rookie", "Champion", "Ultimate", "Mega" };
  
  static char *appendStr(char *dst, const char *src)
-@@ -209,7 +222,10 @@ static void modLabList(int32_t view)
+@@ -209,7 +224,10 @@ static void modLabList(int32_t view)
      labCount = 0;
      MOD_LAB_VIEW = view;
      MOD_LAB_CURSOR = labTop = 0;
@@ -574,7 +589,7 @@ index 1c0bd29..1f11265 100644
          /* MOD (cheat techniques): every technique that has a name */
          for (i = 0; i < NUM_MOVE_NAMES; i++) if (MOVE_NAMES[i] && MOVE_NAMES[i][0]) labChoices[labCount++] = i;
      } else if (view == LAB_EVOLVE) {
-@@ -239,7 +255,8 @@ static void modLabList(int32_t view)
+@@ -239,7 +257,8 @@ static void modLabList(int32_t view)
              } while (id >= 0 && id != first && labCount < NUM_SCREENS);
          }
      }
@@ -584,7 +599,7 @@ index 1c0bd29..1f11265 100644
      for (i = 0; i < labCount; i++) if (labChoices[i] == id) MOD_LAB_CURSOR = i;
  }
  
-@@ -327,6 +344,7 @@ static void modLabDrawText(void)
+@@ -327,6 +346,7 @@ static void modLabDrawText(void)
      appendStr(lines[0], MOD_LAB_VIEW == LAB_HOME ? LAB_STR_TITLE :
          MOD_LAB_VIEW == LAB_VALUES ? LAB_STR_PARAMETERS : MOD_LAB_VIEW == LAB_NUMBER ? LAB_FIELDS[labField].name :
          MOD_LAB_VIEW == LAB_EVOLVE ? LAB_STR_EVOLVE : MOD_LAB_VIEW == LAB_MAPS ? LAB_STR_TELEPORT : MOD_LAB_VIEW == LAB_MOVES ? LAB_STR_LEARN :
@@ -592,7 +607,7 @@ index 1c0bd29..1f11265 100644
          LAB_HOME_TEXT[labPreviousCursor]);
      if (MOD_LAB_VIEW == LAB_NUMBER) {
          labInt(lines[3], MOD_LAB_VALUE);
-@@ -346,7 +364,8 @@ static void modLabDrawText(void)
+@@ -346,7 +366,8 @@ static void modLabDrawText(void)
              p = appendStr(p, LAB_FIELDS[n].name); p = appendStr(p, ": "); labInt(p, *modLabFieldPtr(n));
          } else {
              id = labChoices[n];
@@ -602,7 +617,7 @@ index 1c0bd29..1f11265 100644
              else modLabEntry(p, id, MOD_LAB_VIEW == LAB_EVOLVE);
          }
      }
-@@ -520,7 +539,8 @@ void modLabMenuLoaded(uint32_t *input, uint32_t *previous)
+@@ -520,7 +541,8 @@ void modLabMenuLoaded(uint32_t *input, uint32_t *previous)
              if (MOD_LAB_VIEW == LAB_HOME) break;
              if (MOD_LAB_VIEW == LAB_NUMBER) { MOD_LAB_VIEW = LAB_VALUES; MOD_LAB_CURSOR = labField; }
              else if (MOD_LAB_VIEW == LAB_CONFIRM) { MOD_LAB_VIEW = labPrevious; MOD_LAB_CURSOR = labPreviousCursor; }
@@ -612,7 +627,7 @@ index 1c0bd29..1f11265 100644
              labTop = 0;
          } else if (MOD_LAB_VIEW == LAB_NUMBER) {
              if (pressed & CONFIRM_BUTTON) {
-@@ -567,10 +587,15 @@ void modLabMenuLoaded(uint32_t *input, uint32_t *previous)
+@@ -567,10 +589,15 @@ void modLabMenuLoaded(uint32_t *input, uint32_t *previous)
                  case 13:
                      for (step = 1; step < NUM_DIGIMON; step++) setDigimonRaised(step);
                      modLabMessage = LAB_STR_MSG_UNLOCKED; break;
@@ -630,7 +645,7 @@ index 1c0bd29..1f11265 100644
                  learnMove(labChoices[MOD_LAB_CURSOR]); modLabMessage = LAB_STR_MSG_LEARNED;
              } else if (labCount) {
 diff --git a/src/main/mod_species.c b/src/main/mod_species.c
-index a1f2807..87f61e7 100644
+index a1f2807..035d05b 100644
 --- a/src/main/mod_species.c
 +++ b/src/main/mod_species.c
 @@ -12,6 +12,7 @@
@@ -641,7 +656,7 @@ index a1f2807..87f61e7 100644
  #include <dw/mod_options.h>
  #include <dw/chinese.h>
  
-@@ -1015,6 +1016,123 @@ void tickColdAnimation(Entity *entity)
+@@ -1015,6 +1016,145 @@ void tickColdAnimation(Entity *entity)
  	}
  }
  
@@ -654,7 +669,6 @@ index a1f2807..87f61e7 100644
 +void modSmoothMapReset(void);
 +uint8_t MOD_TAMER_LOOK;
 +uint8_t MOD_TAMER_HAIR;
-+uint32_t MOD_HAIR_TINT;
 +static uint32_t TAMER_COLD_READY;	/* the entry the buffer's tail holds */
 +static uint16_t TAMER_COLD_SECTOR;	/* 0: the loaded tamer has no cold entries */
 +static uint8_t TAMER_COLD_CACHED;
@@ -665,6 +679,10 @@ index a1f2807..87f61e7 100644
 +extern const uint32_t lookPageMagic[]; /* game_menu.c, in the tail (an array here: not addressed through gp) */
 +int32_t lookTamerLoad(void *component);
 +void lookTamerRelook(void);
++#define LOOK_TIM_PALETTE	20	/* the first palette row inside a TIM */
++#define LOOK_HAIR_ROW	1	/* the hair's palette row (tools/tamer_looks/wig.py) */
++#define LOOK_LEVELS	0xC0	/* in the file's first sector: the brightness of each of the row's sixteen tones */
++void lookHairPalette(uint16_t *row, uint8_t *rgb, uint8_t *levels);
 +
 +void modLookOverlay(void)
 +{
@@ -690,6 +708,26 @@ index a1f2807..87f61e7 100644
 +	lookTamerRelook();
 +}
 +
++/* The hair's palette row for a colour: tone i shows colour * level / 128. Tone 0 is the transparent one; the others
++ * carry the top bit so that black hair is never read as transparent. */
++void lookHairPalette(uint16_t *row, uint8_t *rgb, uint8_t *levels)
++{
++	int32_t i;
++	int32_t k;
++	uint32_t c;
++	uint32_t v;
++
++	row[0] = 0;
++	for (i = 1; i < 16; i++) {
++		v = 0x8000;
++		for (k = 0; k < 3; k++) {
++			c = (((rgb[k] * levels[i]) >> 7) + 4) >> 3;
++			v |= (c > 31 ? 31 : c) << (5 * k);
++		}
++		row[i] = v;
++	}
++}
++
 +int32_t lookTamerLoad(void *component)
 +{
 +	uint16_t *head = (uint16_t *)TAMER_MODEL_BUFFER;
@@ -702,7 +740,6 @@ index a1f2807..87f61e7 100644
 +	TAMER_COLD_SECTOR = 0;
 +	TAMER_COLD_READY = 0;
 +	TAMER_COLD_CACHED = 0;
-+	MOD_HAIR_TINT = 0;
 +	if (!modFileOnDisc(TAMER_LOOK_FILE)) {
 +		return 0;
 +	}
@@ -713,7 +750,6 @@ index a1f2807..87f61e7 100644
 +		return 0;
 +	}
 +	rgb = (uint8_t *)head + 0x80 + 3 * (MOD_TAMER_HAIR % head[6]);
-+	MOD_HAIR_TINT = 0x01000000 | rgb[0] | (rgb[1] << 8) | (rgb[2] << 16);
 +	cold = head[4];
 +	if (MOD_COLD_CACHE_TYPE >= 0) {
 +		readFileSectors(TAMER_LOOK_FILE, TAMER_COLD_CACHE, cold, head[5]);
@@ -722,6 +758,7 @@ index a1f2807..87f61e7 100644
 +	modSmoothMapReset();
 +	texture = malloc3(0x4800);
 +	readFileSectors(TAMER_LOOK_FILE, texture, head[3], 9);
++	lookHairPalette((uint16_t *)((uint8_t *)texture + LOOK_TIM_PALETTE + 32 * LOOK_HAIR_ROW), rgb, (uint8_t *)head + LOOK_LEVELS);
 +	uploadModelTexture(texture, component);
 +	free3(texture);
 +	readFileSectors(TAMER_LOOK_FILE, TAMER_MODEL_BUFFER, sector, sectors);
@@ -765,7 +802,7 @@ index a1f2807..87f61e7 100644
  uint8_t *loadColdAnimation(void *ent, uint32_t entry, int32_t animId)
  {
  	Entity *entity = ent;
-@@ -1026,6 +1144,9 @@ uint8_t *loadColdAnimation(void *ent, uint32_t entry, int32_t animId)
+@@ -1026,6 +1166,9 @@ uint8_t *loadColdAnimation(void *ent, uint32_t entry, int32_t animId)
  	int32_t offset;
  	int32_t length;
  
@@ -776,10 +813,10 @@ index a1f2807..87f61e7 100644
  		return NULL;
  	}
 diff --git a/src/main/model.c b/src/main/model.c
-index ae93d88..6fcf996 100644
+index ae93d88..9769b96 100644
 --- a/src/main/model.c
 +++ b/src/main/model.c
-@@ -3629,24 +3629,46 @@ ModelComponent *loadMMD(int32_t digiType, int32_t modelType)
+@@ -3629,16 +3629,19 @@ ModelComponent *loadMMD(int32_t digiType, int32_t modelType)
  	} else {
  		return 0;
  	}
@@ -808,9 +845,7 @@ index ae93d88..6fcf996 100644
  	m->modelPtr = (TMDModel *)((char *)m->mmdPtr + ((long *)m->mmdPtr)[0]);
  	m->animTablePtr = (long *)((char *)m->mmdPtr + ((long *)m->mmdPtr)[1]);
  	GsMapModelingData((u_long *)&m->modelPtr->flags);
- 	updateTMDTextureData((char *)m->modelPtr, m->pixelPage, m->pixelOffsetX, m->pixelOffsetY,
- 	                     m->clutPage - 0x7A00);
-+	MOD_HAIR_TINT = 0;
+@@ -3647,6 +3650,24 @@ ModelComponent *loadMMD(int32_t digiType, int32_t modelType)
  	return m;
  }
  
@@ -863,10 +898,10 @@ index 70ec721..76be961 100644
  		readFile(REL_BIN_FILES[lib - 1], (nv = REL_BIN_OFFSETS[lib - 1]));
  	} else {
 diff --git a/text/main/mod_lab.yaml b/text/main/mod_lab.yaml
-index 9176354..41e4357 100644
+index 9176354..c9cce68 100644
 --- a/text/main/mod_lab.yaml
 +++ b/text/main/mod_lab.yaml
-@@ -319,6 +319,114 @@ MOD_LAB:
+@@ -319,6 +319,129 @@ MOD_LAB:
      LAB_STR_UNLOCK_CHART:
        ja: "Unlock evolution chart"
        en_us: "Unlock evolution chart"
@@ -978,6 +1013,21 @@ index 9176354..41e4357 100644
 +    LAB_STR_LOOK_TURN:
 +      ja: "L1/R1: turn"
 +      en_us: "L1/R1: turn"
++    LAB_STR_LOOK_OPEN:
++      ja: "Look"
++      en_us: "Look"
++    LAB_STR_LOOK_SAVE:
++      ja: "Save"
++      en_us: "Save"
++    LAB_STR_LOOK_EXIT:
++      ja: "Exit"
++      en_us: "Exit"
++    LAB_STR_KEY_CONFIRM:
++      ja: "△"
++      en_us: "△"
++    LAB_STR_KEY_CANCEL:
++      ja: "×"
++      en_us: "×"
      LAB_STR_MSG_LEARNED:
        ja: "Learned!"
        en_us: "Learned!"

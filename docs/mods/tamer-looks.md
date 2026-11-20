@@ -3,8 +3,10 @@
 The tamer can take off his cap. Besides the original tamer there are twelve other looks: a bald head and eleven
 hairstyles (classic, messy, quiff, curtains, buzz, long, mullet, ponytail, pigtails, bun, buns), each in twenty hair
 colours. They are chosen on the **Look** page of the pause menu's Player tab: left and right change the hairstyle or the
-hair colour, L1 and R1 turn the tamer. The Cheats menu has the same two rows. The change is made at once and is kept in
-the save.
+hair colour, L1 and R1 turn the tamer. The Player tab shows the button that opens the page beside the name, and the
+page shows there the two that leave it: the confirm button saves the look, the cancel button leaves without saving and
+the tamer is again as he was when the page opened. The Cheats menu has the same two rows, which change the look at
+once. The look is kept in the save.
 
 | Look | What it is |
 |---|---|
@@ -23,15 +25,16 @@ Nothing of the looks is committed as model data. The build makes them from the p
 
 - `tools/tamer_looks/bald.py` removes the cap and closes the skull, and repaints the texture where the cap was.
 - `tools/tamer_looks/styles.py` sculpts each hairstyle over that skull; `wig.py` turns a sculpt into the head's
-  polygons: skull polygons the hair covers are dropped, and the hair is made of untextured, shaded triangles that
-  carry only a grey level.
+  polygons: skull polygons the hair covers are dropped, and the hair is made of shaded triangles textured with
+  a small strand tile (`hairtex.py`: one lock per band, a sheen ring, darker ends) drawn in its own palette row, the
+  one the cap used.
 - `tools/tamer_pack.py` packs every look into `TAMER.DAT` (derive step `tamer`), a new file in the root of the disc.
 
 `TAMER.DAT`, in 2048-byte sectors:
 
 | Part | Content |
 |---|---|
-| sector 0 | `"TLK1"`, u16 looks in the file, u16 texture sector, u16 cold sector, u16 cold sectors, u16 colours; at 0x10 per look `u16 first sector, u16 sectors`; at 0x80 per colour `r, g, b` |
+| sector 0 | `"TLK1"`, u16 looks in the file, u16 texture sector, u16 cold sector, u16 cold sectors, u16 colours; at 0x10 per look `u16 first sector, u16 sectors`; at 0x80 per colour `r, g, b`; at 0xC0 the brightness of each of the hair texture's sixteen tones (128 = the colour itself) |
 | texture | the bald head's texture (one `ALLTIM` entry, 9 sectors), shared by every look |
 | cold | the animations that leave the models, the same bytes for every look |
 | models | one model per look |
@@ -39,12 +42,13 @@ Nothing of the looks is committed as model data. The build makes them from the p
 ## Memory
 
 The tamer's buffer (`TAMER_MMD_MAX`, 0xE000 bytes) does not grow and the heap is untouched. A look's model is larger
-than the original, so it gives up fourteen animations (`COLD_SLOTS` in `tamer_pack.py`): the thirteen only scenes
-start (slots 13 and 15–26: the engine itself never asks for them) and the gym's (slot 9), which is read while the
-gym's overlay loads (`modTamerColdPrefetch`), so nothing waits when it starts. Their table entries become cold entries, as the partners' (`COLD_ANIM_FLAG`),
+than the original, so it gives up sixteen animations (`COLD_SLOTS` in `tamer_pack.py`): the thirteen only scenes
+start (slots 13 and 15–26: the engine itself never asks for them), the gym's (slot 9), which is read while the
+gym's overlay loads (`modTamerColdPrefetch`), so nothing waits when it starts, and the two praising gestures (38, 39),
+read when the praise starts. Their table entries become cold entries, as the partners' (`COLD_ANIM_FLAG`),
 and every model has to fit in `TAMER_MMD_MAX - 0x1000` bytes. No mesh is simplified for that; when a look needs more
-room (clothes, shoes), more animations become cold: praising (38, 39; 3.3 KB) and fishing (27–34; 4.3 KB) are the next
-candidates, at the price of a short read when they start on a 2 MB console. The last 0x1000 bytes of the buffer
+room (clothes, shoes), more animations become cold: fishing (27–34; 4.3 KB) is the next
+candidate, at the price of a short read when each starts on a 2 MB console. The last 0x1000 bytes of the buffer
 (`TAMER_COLD_MAX`) hold the cold animation in use:
 
 - with 2 MB of RAM, the game reads it from the disc when it starts (one or two sectors: a short wait);
@@ -56,17 +60,17 @@ The original tamer (look 0) keeps every animation in memory, as always.
 
 - `modLoadTamerLook` (`mod_species.c`) loads the texture and the model of the chosen look in `loadMMD`'s place for
   the tamer, and `loadColdAnimation` serves the tamer's cold entries.
-- `updateTMDTextureData` (`graphics.c`) used to stop at a model's first untextured polygon. While a look loads
-  (`MOD_HAIR_TINT`), it colours those polygons instead: each channel is `colour * grey / 128`, so one model serves
-  every colour. Hair polygons come first in the head, which keeps the fringe in front of the forehead.
+- The hair colour is a palette row. `lookHairPalette` writes it into the look's texture before it is uploaded: each
+  channel of tone `i` is `colour * level[i] / 128`, so one model and one texture serve every colour. Hair polygons
+  come first in the head, which keeps the fringe in front of the forehead.
 - `modTamerRelook` (`model.c`) loads the look again and links the tamer's bones to the new model, for a change while
   he is on screen.
 - The Look page (`lookPage*` in `game_menu.c`), the loader (`lookTamerLoad`) and the relink (`lookTamerRelook`) are
   not in the main executable: they are linked at the tail of the EVL overlay (`look_ui` in `overlay.ld`), in memory the
   field leaves free. `modLookOverlay` reads that overlay when its marker word (`lookPageMagic`) is not there, so the page
-  and the looks cost no heap. A colour change repaints the hair polygons in place; a hairstyle change reads the disc.
+  and the looks cost no heap. A colour change sends the sixteen words of the palette row to video memory; a hairstyle change reads the disc.
 - Once a model has been drawn, the first header of each run of equal polygons holds the run's length, so the hair is
-  found by position (the head's leading untextured triangles, five words each), never by walking header lengths.
+  found by position (the head's leading triangles in the hair's palette row, seven words each), never by walking header lengths.
 - The game draws one face of a polygon. The menu's close-up shows the hair from angles the field never does (under the
   fringe, between a lock and the cheek), so there `lookPageHairInside` sorts the hair a second time with two corners
   swapped: the far faces are drawn and no gap shows what is behind the head.

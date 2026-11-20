@@ -9,7 +9,8 @@ import mmd
 XC,YC=30.0,-2.0; SK=(44.0,50.0,39.0,40.0)        # the bald skull: up, front, back, side radii
 U0,V0,UW,VH=168,114,48,14                         # layout coordinates of the hair pieces; u >= U0+46 marks an underside
 HAIRLINE_SINK=0.9
-GREY_LIGHT,GREY_SHADOW=128,79
+HAIR_ROW=1                                        # the palette row of the hair (the cap's, free once the cap is gone)
+HAIR_CBA=(488+HAIR_ROW)<<6
 class Wig:
     base=None      # the bald model every style starts from (set by tamer_looks.build)
     def __init__(s):
@@ -22,8 +23,8 @@ class Wig:
         return (XC+(SK[0]*sc+lift)*math.sin(math.radians(phi)), YC-(SK[1] if ca>0 else SK[2])*sc*f*ca, SK[3]*sc*f*sa)
     def atx(s,x,az,sc=1.0):
         xe=max(x,8.0); phi=math.degrees(math.asin(max(-1,min(1,(xe-XC)/(SK[0]*sc))))); p=s.pt(phi,az,sc); return (x,p[1],p[2])
-    def quad(s,a,b,c,d,uv): s.prims.append(dict(mode=0x3c,flag=0,olen=12,uv=list(uv),cba=0x7b80,tsb=5,uvpad=[0,0],colors=[],norms=[a,b,c,d],verts=[a,b,c,d],pad=[]))
-    def tri(s,a,b,c,uv): s.prims.append(dict(mode=0x34,flag=0,olen=9,uv=list(uv),cba=0x7b80,tsb=5,uvpad=[0],colors=[],norms=[a,b,c],verts=[a,b,c],pad=[]))
+    def quad(s,a,b,c,d,uv): s.prims.append(dict(mode=0x3c,flag=0,olen=12,uv=list(uv),cba=HAIR_CBA,tsb=5,uvpad=[0,0],colors=[],norms=[a,b,c,d],verts=[a,b,c,d],pad=[]))
+    def tri(s,a,b,c,uv): s.prims.append(dict(mode=0x34,flag=0,olen=9,uv=list(uv),cba=HAIR_CBA,tsb=5,uvpad=[0],colors=[],norms=[a,b,c],verts=[a,b,c],pad=[]))
     def ucol(s,i): u=U0+(i%8)*6; return u,min(u+6,U0+UW-1)
     def shell(s,N,phis,sc,hem,hemsc,lift=0.0,vs=None):
         """N columns round the head; rings at elevations phis; sc(az,phi) thickness; hem(az,i) height of the loose edge."""
@@ -117,9 +118,7 @@ class Wig:
                     out.append(dict(d,uv=[d['uv'][i] for i in od],norms=[d['norms'][i] for i in od],verts=[d['verts'][i] for i in od]))
             else: out.append(d)
         hair=out
-        for d in hair:      # untextured: the grey level is tinted by the game with the chosen hair colour
-            grey=GREY_SHADOW if d['uv'][0][0]>=U0+46 else GREY_LIGHT
-            d.update(mode=0x30,olen=6,colors=[(grey,grey,grey,0x30)],uv=[],uvpad=[],cba=None,tsb=None)
+        for d in hair: d.update(mode=0x34,olen=9,cba=HAIR_CBA,uvpad=[0])      # textured gouraud triangles in the hair's own palette row
         ob.prims=[mmd.Prim.encode(d) for d in hair+skull]  # hair first: the game draws earlier polygons on top in a depth tie
         for o in tm.objects[2:]: o.vert_start+=dv; o.norm_start+=dn
         return s.m

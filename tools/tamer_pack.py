@@ -10,6 +10,7 @@ Looks 1.. are tools/tamer_looks (bald, then the hairstyles). The file, in 2048-b
   sector 0   "TLK1", u16 looks, u16 texture sector, u16 cold sector, u16 cold sectors, u16 colours
              0x10: per look u16 first sector, u16 sectors
              0x80: per hair colour r, g, b
+             0xC0: the brightness of each of the hair texture's sixteen tones, 128 = the colour itself
   texture    the bald head's texture, one ALLTIM entry (9 sectors), shared by every look
   cold       the animations of COLD_SLOTS, the same for every look, laid out by tools/coldsplit.py
   models     one resident model per look
@@ -19,8 +20,8 @@ animations of COLD_SLOTS leave the model: their table entries become cold entrie
 and the game reads one into the last 4096 bytes of the buffer when it starts. The resident model therefore has to
 fit in TAMER_MMD_MAX - 4096 bytes. The meshes are never simplified for that: more room means more cold slots.
 
-Hair polygons are untextured and carry a grey level; the game multiplies it by the chosen colour when it loads the
-model (updateTMDTextureData), so one model serves every colour.
+Hair polygons are textured with the strand tile of tools/tamer_looks/hairtex.py and its own palette row; the game
+writes that row for the chosen colour (lookHairPalette), so one model serves every colour.
 """
 import argparse
 import os
@@ -31,20 +32,21 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import coldsplit  # noqa: E402
 import mmd  # noqa: E402
 import tamer_looks  # noqa: E402
+from tamer_looks import hairtex, wig  # noqa: E402
 
 SECTOR = 2048
 TAMER_MMD_MAX = 0xE000          # include/dw/memmap.h
 COLD_BUFFER = 0x1000            # the tail of the tamer's buffer (TAMER_COLD_BUFFER)
 RESIDENT_MAX = TAMER_MMD_MAX - COLD_BUFFER
 # Animations that leave the model: the ones only scenes start (13, 15-26: the engine itself never asks for them) and
-# the gym's (9), which the game reads while the gym loads (modTamerColdPrefetch).
-COLD_SLOTS = (9, 13) + tuple(range(15, 27))
+# the gym's (9), which the game reads while the gym loads (modTamerColdPrefetch), and the two praising gestures (38, 39),
+# read when the praise starts.
+COLD_SLOTS = (9, 13) + tuple(range(15, 27)) + (38, 39)
 HEAD = 1                        # the head's object in the tamer model
-HAIR_MODE = 0x30                # untextured gouraud triangle
 MODEL = os.path.join(mmd.EXTRACTED, 'CHDAT', 'MMD0', 'BOYS.MMD')
 ALLTIM = mmd.ALLTIM
 
-# Hair colours, in the order the game numbers them. A hair polygon shows colour * grey / 128.
+# Hair colours, in the order the game numbers them. A tone of the hair's texture shows colour * level / 128.
 COLOURS = (
     ('brown', (120, 84, 48)),
     ('dark brown', (84, 56, 36)),
@@ -83,7 +85,7 @@ def slim_head(model):
 
     new_verts, new_norms, vert_at, norm_at = [], [], {}, {}
     for d in prims:
-        hair = d['mode'] == HAIR_MODE
+        hair = d.get('cba') == wig.HAIR_CBA
         for key, old, new, at in (('verts', verts, new_verts, vert_at), ('norms', norms, new_norms, norm_at)):
             out = []
             for i in d[key]:
@@ -142,6 +144,7 @@ def build(model_path, alltim_path):
         sector += len(part) // SECTOR
     for i, (_, rgb) in enumerate(COLOURS):
         header[0x80 + 3 * i:0x83 + 3 * i] = bytes(rgb)
+    header[0xC0:0xD0] = bytes(hairtex.LEVELS)
     report.append(f'cold animations: {len(cold_part)} bytes, {cold_sectors} sectors')
     return bytes(header) + texture + pad(cold_part) + b''.join(parts), report
 
