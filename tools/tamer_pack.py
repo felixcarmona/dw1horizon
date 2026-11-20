@@ -11,7 +11,8 @@ Looks 1.. are tools/tamer_looks (bald, then the hairstyles). The file, in 2048-b
              0x10: per look u16 first sector, u16 sectors
              0x80: per hair colour r, g, b
              0xC0: the brightness of each of the hair texture's sixteen tones, 128 = the colour itself
-  texture    the bald head's texture, one ALLTIM entry (9 sectors), shared by every look
+  texture    the bald head's texture, one ALLTIM entry (9 sectors), shared by every look; one per face (u16 at 0x0E:
+             how many), the second drawn by tools/tamer_looks/face.py
   cold       the animations of COLD_SLOTS, the same for every look, laid out by tools/coldsplit.py
   models     one resident model per look
 
@@ -32,7 +33,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import coldsplit  # noqa: E402
 import mmd  # noqa: E402
 import tamer_looks  # noqa: E402
-from tamer_looks import hairtex, wig  # noqa: E402
+from tamer_looks import face, hairtex, wig  # noqa: E402
 
 SECTOR = 2048
 TAMER_MMD_MAX = 0xE000          # include/dw/memmap.h
@@ -124,8 +125,9 @@ def build(model_path, alltim_path):
     """(TAMER.DAT bytes, report lines)."""
     model = mmd.MMD.load(model_path, 0)
     texture, looks = tamer_looks.build(model, mmd.load_tim(alltim_path, 0))
-    texture = texture.to_bytes()
-    assert len(texture) == mmd.ALLTIM_STRIDE, len(texture)
+    textures = [texture.to_bytes(), face.make(texture).to_bytes()]      # one per face
+    assert all(len(t) == mmd.ALLTIM_STRIDE for t in textures), [len(t) for t in textures]
+    texture = b''.join(textures)
     parts, cold_part, report = [], None, []
     for name, look in looks:
         res, cold = resident(look, model.nbones)
@@ -145,6 +147,7 @@ def build(model_path, alltim_path):
     for i, (_, rgb) in enumerate(COLOURS):
         header[0x80 + 3 * i:0x83 + 3 * i] = bytes(rgb)
     header[0xC0:0xD0] = bytes(hairtex.LEVELS)
+    struct.pack_into('<H', header, 0x0E, len(textures))
     report.append(f'cold animations: {len(cold_part)} bytes, {cold_sectors} sectors')
     return bytes(header) + texture + pad(cold_part) + b''.join(parts), report
 
