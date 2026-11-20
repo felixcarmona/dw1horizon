@@ -5,8 +5,7 @@ hairstyles (classic, messy, quiff, curtains, buzz, long, mullet, ponytail, pigta
 colours. They are chosen on the **Look** page of the pause menu's Player tab: left and right change the hairstyle or the
 hair colour, L1 and R1 turn the tamer. The Player tab shows the button that opens the page beside the name, and the
 page shows there the two that leave it: the confirm button saves the look, the cancel button leaves without saving and
-the tamer is again as he was when the page opened. The Cheats menu has the same two rows, which change the look at
-once. The look is kept in the save.
+the tamer is again as he was when the page opened. The look is kept in the save.
 
 | Look | What it is |
 |---|---|

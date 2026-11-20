@@ -1,4 +1,4 @@
-From 7abe2fc22f44ae6a712df75283ff45b2b68b0525 Mon Sep 17 00:00:00 2001
+From 43b679e0c3e6028fb07b94b11024a908e50d144e Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Fri, 20 Nov 2026 20:17:45 +0000
 Subject: [PATCH] Tamer looks: bald and eleven hairstyles in twenty colours,
@@ -12,13 +12,13 @@ Subject: [PATCH] Tamer looks: bald and eleven hairstyles in twenty colours,
  include/dw/species.h      |  14 ++
  src/main/game_menu.c      | 290 +++++++++++++++++++++++++++++++++++++-
  src/main/main_menu.c      |  14 +-
- src/main/mod_lab_menu.inc |  43 ++++--
+ src/main/mod_lab_menu.inc |  15 ++
  src/main/mod_species.c    | 143 +++++++++++++++++++
  src/main/model.c          |  39 +++--
  src/main/script_interp.c  |   2 +
  src/main/utils2.c         |   3 +
  text/main/mod_lab.yaml    | 123 ++++++++++++++++
- 13 files changed, 674 insertions(+), 21 deletions(-)
+ 13 files changed, 654 insertions(+), 13 deletions(-)
 
 diff --git a/config/us/main.ld b/config/us/main.ld
 index 8674036..33fe159 100644
@@ -532,33 +532,13 @@ index af2ae49..c671089 100644
  			n = len < sizeof(MOD_GROUND_PICKED) ? len : sizeof(MOD_GROUND_PICKED);
  			for (i = 0; i < n; i++) {
 diff --git a/src/main/mod_lab_menu.inc b/src/main/mod_lab_menu.inc
-index 1c0bd29..fc3e526 100644
+index 1c0bd29..ee8e845 100644
 --- a/src/main/mod_lab_menu.inc
 +++ b/src/main/mod_lab_menu.inc
-@@ -1,7 +1,7 @@
- /* Private laboratory implementation; included by mod_lab.c. Ten texture rows fit below UV 256; createPauseBox restores its shared last row on return. */
- #define MOD_LAB_BOX 5
- #define MOD_LAB_TEXT_Y 0x84
--#define MOD_LAB_OPTIONS 15
-+#define MOD_LAB_OPTIONS 17
- #define LAB_ROW_SHORTCUTS 6
- #define MOD_LAB_OPT_EVOLVE 3
- #define PAD_SELECT 0x100
-@@ -45,7 +45,7 @@ static int16_t MOD_LAB_EVO_TARGETS[] = { DIGIMON_MASTER_TYRANNOMON, DIGIMON_CHER
-     DIGIMON_MYOTISMON, DIGIMON_SHOGUNGEKOMON, DIGIMON_MACHINEDRAMON, DIGIMON_JIJIMON, DIGIMON_ANALOGMAN };
- #define MOD_LAB_EVO_FIXED ((int32_t)(sizeof(MOD_LAB_EVO_TARGETS) / sizeof(MOD_LAB_EVO_TARGETS[0])))
- 
--enum { LAB_HOME, LAB_VALUES, LAB_NUMBER, LAB_EVOLVE, LAB_MAPS, LAB_CONFIRM, LAB_MOVES };
-+enum { LAB_HOME, LAB_VALUES, LAB_NUMBER, LAB_EVOLVE, LAB_MAPS, LAB_CONFIRM, LAB_MOVES, LAB_LOOKS, LAB_HAIR };
- int32_t MOD_LAB_VIEW, MOD_LAB_CURSOR, MOD_LAB_VALUE, MOD_LAB_TARGET;
- int32_t MOD_CHEATS_CARD_MODE, MOD_CHEATS_CARD_DONE, MOD_CHEATS_TRANSITION;
- static int32_t labAction;
-@@ -62,7 +62,22 @@ static uint32_t labTextHash[LAB_ROWS];
- static int16_t labTextWidth[LAB_ROWS];
+@@ -63,6 +63,21 @@ static int16_t labTextWidth[LAB_ROWS];
  static char *const LAB_HOME_TEXT[] = { LAB_STR_ADD_BITS, LAB_STR_SATIATE, LAB_STR_PARAMETERS,
      LAB_STR_EVOLVE, LAB_STR_TELEPORT, LAB_STR_HEAL, LAB_STR_SHORTCUTS_OFF, LAB_STR_SAVE_GAME, LAB_STR_LOAD_GAME, LAB_STR_MAIN_MENU, LAB_STR_OLD_AGE,
--    LAB_STR_LEARN, LAB_STR_LEARN_ALL, LAB_STR_UNLOCK_CHART, LAB_STR_CLOSE };
-+    LAB_STR_LEARN, LAB_STR_LEARN_ALL, LAB_STR_UNLOCK_CHART, LAB_STR_HAIRSTYLE, LAB_STR_HAIR_COLOUR, LAB_STR_CLOSE };
+     LAB_STR_LEARN, LAB_STR_LEARN_ALL, LAB_STR_UNLOCK_CHART, LAB_STR_CLOSE };
 +/* MOD (tamer looks): the names of the looks and of the hair colours, in the order of TAMER.DAT (tools/tamer_pack.py) */
 +char *const LAB_LOOK_TEXT[] = {
 +    LAB_STR_LOOK_ORIGINAL, LAB_STR_LOOK_BALD, LAB_STR_LOOK_CLASSIC, LAB_STR_LOOK_MESSY,
@@ -577,73 +557,6 @@ index 1c0bd29..fc3e526 100644
  static char *LAB_STAGES[] = { "", "Baby I", "Baby II", "Rookie", "Champion", "Ultimate", "Mega" };
  
  static char *appendStr(char *dst, const char *src)
-@@ -209,7 +224,10 @@ static void modLabList(int32_t view)
-     labCount = 0;
-     MOD_LAB_VIEW = view;
-     MOD_LAB_CURSOR = labTop = 0;
--    if (view == LAB_MOVES) {
-+    if (view >= LAB_LOOKS) {
-+        /* MOD (tamer looks): the looks, or the hair colours */
-+        for (i = 0; i < (view == LAB_LOOKS ? TAMER_LOOK_COUNT : TAMER_HAIR_COUNT); i++) labChoices[labCount++] = i;
-+    } else if (view == LAB_MOVES) {
-         /* MOD (cheat techniques): every technique that has a name */
-         for (i = 0; i < NUM_MOVE_NAMES; i++) if (MOVE_NAMES[i] && MOVE_NAMES[i][0]) labChoices[labCount++] = i;
-     } else if (view == LAB_EVOLVE) {
-@@ -239,7 +257,8 @@ static void modLabList(int32_t view)
-             } while (id >= 0 && id != first && labCount < NUM_SCREENS);
-         }
-     }
--    id = view == LAB_EVOLVE ? PARTNER_ENTITY.digimonEntity.entity.type : view == LAB_MOVES ? 0 : CURRENT_SCREEN;
-+    id = view == LAB_EVOLVE ? PARTNER_ENTITY.digimonEntity.entity.type : view == LAB_MOVES ? 0 :
-+        view == LAB_LOOKS ? MOD_TAMER_LOOK : view == LAB_HAIR ? MOD_TAMER_HAIR : CURRENT_SCREEN;
-     for (i = 0; i < labCount; i++) if (labChoices[i] == id) MOD_LAB_CURSOR = i;
- }
- 
-@@ -327,6 +346,7 @@ static void modLabDrawText(void)
-     appendStr(lines[0], MOD_LAB_VIEW == LAB_HOME ? LAB_STR_TITLE :
-         MOD_LAB_VIEW == LAB_VALUES ? LAB_STR_PARAMETERS : MOD_LAB_VIEW == LAB_NUMBER ? LAB_FIELDS[labField].name :
-         MOD_LAB_VIEW == LAB_EVOLVE ? LAB_STR_EVOLVE : MOD_LAB_VIEW == LAB_MAPS ? LAB_STR_TELEPORT : MOD_LAB_VIEW == LAB_MOVES ? LAB_STR_LEARN :
-+        MOD_LAB_VIEW == LAB_LOOKS ? LAB_STR_HAIRSTYLE : MOD_LAB_VIEW == LAB_HAIR ? LAB_STR_HAIR_COLOUR :
-         LAB_HOME_TEXT[labPreviousCursor]);
-     if (MOD_LAB_VIEW == LAB_NUMBER) {
-         labInt(lines[3], MOD_LAB_VALUE);
-@@ -346,7 +366,8 @@ static void modLabDrawText(void)
-             p = appendStr(p, LAB_FIELDS[n].name); p = appendStr(p, ": "); labInt(p, *modLabFieldPtr(n));
-         } else {
-             id = labChoices[n];
--            if (MOD_LAB_VIEW == LAB_MOVES) appendStr(p, MOVE_NAMES[id]);
-+            if (MOD_LAB_VIEW >= LAB_LOOKS) appendStr(p, MOD_LAB_VIEW == LAB_LOOKS ? LAB_LOOK_TEXT[id] : LAB_HAIR_TEXT[id]);
-+            else if (MOD_LAB_VIEW == LAB_MOVES) appendStr(p, MOVE_NAMES[id]);
-             else modLabEntry(p, id, MOD_LAB_VIEW == LAB_EVOLVE);
-         }
-     }
-@@ -520,7 +541,8 @@ void modLabMenuLoaded(uint32_t *input, uint32_t *previous)
-             if (MOD_LAB_VIEW == LAB_HOME) break;
-             if (MOD_LAB_VIEW == LAB_NUMBER) { MOD_LAB_VIEW = LAB_VALUES; MOD_LAB_CURSOR = labField; }
-             else if (MOD_LAB_VIEW == LAB_CONFIRM) { MOD_LAB_VIEW = labPrevious; MOD_LAB_CURSOR = labPreviousCursor; }
--            else { MOD_LAB_CURSOR = MOD_LAB_VIEW == LAB_VALUES ? 2 : MOD_LAB_VIEW == LAB_EVOLVE ? 3 : 4; MOD_LAB_VIEW = LAB_HOME; }
-+            else { MOD_LAB_CURSOR = MOD_LAB_VIEW == LAB_VALUES ? 2 : MOD_LAB_VIEW == LAB_EVOLVE ? 3 :
-+                MOD_LAB_VIEW == LAB_LOOKS ? 14 : MOD_LAB_VIEW == LAB_HAIR ? 15 : 4; MOD_LAB_VIEW = LAB_HOME; }
-             labTop = 0;
-         } else if (MOD_LAB_VIEW == LAB_NUMBER) {
-             if (pressed & CONFIRM_BUTTON) {
-@@ -567,10 +589,15 @@ void modLabMenuLoaded(uint32_t *input, uint32_t *previous)
-                 case 13:
-                     for (step = 1; step < NUM_DIGIMON; step++) setDigimonRaised(step);
-                     modLabMessage = LAB_STR_MSG_UNLOCKED; break;
--                case 14: done = 1; break;
-+                case 14: case 15: modLabList(MOD_LAB_CURSOR == 14 ? LAB_LOOKS : LAB_HAIR); break;
-+                case 16: done = 1; break;
-                 }
-             } else if (MOD_LAB_VIEW == LAB_VALUES) {
-                 labField = MOD_LAB_CURSOR; MOD_LAB_VALUE = modLabClamp(labField, *modLabFieldPtr(labField)); MOD_LAB_VIEW = LAB_NUMBER; labStep = 1;
-+            } else if (MOD_LAB_VIEW >= LAB_LOOKS) {
-+                /* MOD (tamer looks): made at once, seen when the menu closes; the menu stays on the list */
-+                if (MOD_LAB_VIEW == LAB_LOOKS) MOD_TAMER_LOOK = MOD_LAB_CURSOR; else MOD_TAMER_HAIR = MOD_LAB_CURSOR;
-+                modTamerRelook();
-             } else if (labCount && MOD_LAB_VIEW == LAB_MOVES) {
-                 learnMove(labChoices[MOD_LAB_CURSOR]); modLabMessage = LAB_STR_MSG_LEARNED;
-             } else if (labCount) {
 diff --git a/src/main/mod_species.c b/src/main/mod_species.c
 index a1f2807..035d05b 100644
 --- a/src/main/mod_species.c
