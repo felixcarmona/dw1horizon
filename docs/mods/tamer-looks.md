@@ -3,7 +3,8 @@
 The tamer can take off his cap. Besides the original tamer there are twelve other looks: a bald head and eleven
 hairstyles (classic, messy, quiff, curtains, buzz, long, mullet, ponytail, pigtails, bun, buns), each in twenty hair
 colours. They are chosen on the **Look** page of the pause menu's Player tab: left and right change the hairstyle or the
-hair colour, L1 and R1 turn the tamer. The Player tab shows the button that opens the page beside the name, and the
+hair colour, L1 and R1 turn the tamer. The original tamer and the bald head have no hair to colour: their colour row
+shows a dash and cannot be chosen. The Player tab shows the button that opens the page beside the name, and the
 page shows there the two that leave it: the confirm button saves the look, the cancel button leaves without saving and
 the tamer is again as he was when the page opened. The look is kept in the save.
 

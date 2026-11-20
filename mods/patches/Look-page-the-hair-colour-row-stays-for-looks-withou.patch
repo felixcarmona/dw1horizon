@@ -1,0 +1,64 @@
+From 0cecddad600bfeb41e1eb06f9dca511bf2ad5a75 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 20 Nov 2026 22:22:48 +0000
+Subject: [PATCH] Look page: the hair colour row stays for looks without hair
+
+The original tamer and the bald head show a dash there and the cursor does not reach the row.
+---
+ src/main/game_menu.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index be97367..7d9525a 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -2620,7 +2620,7 @@ int32_t playerKeyHint(int32_t key, int32_t x, int32_t y)
+ static void lookPageValue(int32_t row)
+ {
+ 	RECT rect;
+-	char *str = row ? LAB_HAIR_TEXT[MOD_TAMER_HAIR] : LAB_LOOK_TEXT[MOD_TAMER_LOOK];
++	char *str = row == 0 ? LAB_LOOK_TEXT[MOD_TAMER_LOOK] : MOD_TAMER_LOOK >= 2 ? LAB_HAIR_TEXT[MOD_TAMER_HAIR] : "-"; /* no hair, no colour */
+ 	int32_t mode = fitStringMode(str, LOOK_VALUE_W - 6);
+ 
+ 	setRECT(&rect, row * 0x80, LOOK_VALUE_Y, 0x80, 12);
+@@ -2772,6 +2772,7 @@ void lookPageInput(void)
+ 	if (lookPageState.row == 0) {
+ 		MOD_TAMER_LOOK = (MOD_TAMER_LOOK + lookPageState.looks + step) % lookPageState.looks;
+ 		modTamerRelook();
++		lookPageValue(1);
+ 	} else {
+ 		MOD_TAMER_HAIR = (MOD_TAMER_HAIR + lookPageState.colours + step) % lookPageState.colours;
+ 		lookPageRetint();
+@@ -2783,18 +2784,17 @@ void lookPageRender(void)
+ {
+ 	StringRect *e = &TAMER_WINDOW_NAME_STRING[0];
+ 	RECT *r = &TAMER_WINDOW_BOXES[0];
+-	int32_t rows = MOD_TAMER_LOOK >= 2 ? 2 : 1;
+ 	int32_t i;
+ 	int32_t k;
+ 	int32_t y;
+ 
+-	if (lookPageState.row >= rows) {
++	if (MOD_TAMER_LOOK < 2) { /* the colour row stays, showing a dash, and cannot be chosen */
+ 		lookPageState.row = 0;
+ 	}
+ 	renderSeparatorLines(TAMER_VIEW_PLAYER_LINES, 0xb, 5);
+ 	renderString(3, e->posX, e->posY + 1, e->uvWidth, 0xc, e->uvX, e->uvY, 5, 1);
+ 	renderString(0, -0x54, -0x50, 0x48, 0xc, 0, 0x30, 5, 1);
+-	for (i = 0; i < rows; i++) {
++	for (i = 0; i < 2; i++) {
+ 		y = -0x34 + i * 0x14;
+ 		renderString(i == lookPageState.row ? 3 : 0, -0x29, y, 0x54, 0xc, i * 0x80, LOOK_NAME_Y, 5, 1);
+ 		renderString(0, LOOK_VALUE_X + (LOOK_VALUE_W - lookPageState.width[i]) / 2, y, lookPageState.width[i], 0xc,
+@@ -2812,7 +2812,7 @@ void lookPageRender(void)
+ 	renderString(0, LOOK_KEY_X, -0x50, LOOK_KEY_W, 0xc, LOOK_LEAVE_U, LOOK_HINT_Y + 12, 5, 1);
+ 	renderDigiviceEntity(ENTITY_TABLE[0], 0);
+ 	renderInsetBox(r->x, r->y, r->w, r->h, 5);
+-	for (i = 0; i < rows; i++) {
++	for (i = 0; i < 2; i++) {
+ 		renderInsetBox(160 + LOOK_VALUE_X, 118 - 0x34 + i * 0x14, LOOK_VALUE_W, 14, 5);
+ 	}
+ }
+-- 
+2.55.0
+
