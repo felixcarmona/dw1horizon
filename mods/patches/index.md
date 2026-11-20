@@ -505,3 +505,4 @@ at 2 MB. Physical hardware validation remains outstanding.
 | `Sort-Status-portraits-into-finer-depth-buckets.patch` |  | Sort Status portraits into finer depth buckets |  |
 | `Draw-the-battle-item-list-s-names-again-after-the-ba.patch` |  | Draw the battle item list's names again after the bag is filtered |  |
 | `Tamer-looks-bald-and-eleven-hairstyles-in-twenty-colours.patch` |  | Tamer looks: bald and eleven hairstyles in twenty colours, chosen on the Player tab's Look page | Page, loader and relink live in the EVL overlay's tail, not in main; nine-language heap 183920 B, screen 207 keeps 112 B; see docs/mods/tamer-looks.md |
+| `Look-page-the-hair-colour-row-stays-for-looks-withou.patch` |  | Look page: the hair colour row stays for looks without hair | The original tamer and the bald head show a dash; the cursor does not reach the row |
