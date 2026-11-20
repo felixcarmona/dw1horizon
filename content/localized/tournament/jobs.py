@@ -2,7 +2,7 @@
 CUPS = {
  'AN': ('green', 'ANIMAL', 'ANIMAL', {'CUP': 'COPA', 'ME COME TOGETHER': 'VENID, VENID TODOS', 'DEMI DEMI ANIMAL\'s': 'DEMI DEMI ANIMALES'}),
  'BT': ('brown wooden', 'BEETLE', 'ESCARABAJO', {'CUP': 'COPA', 'COME TOGETHER': 'VENID TODOS', 'BEETLE\'s CUP !!': '¡¡COPA ESCARABAJO!!'}),
- 'CO': ('chrome and sky', 'COOL', 'GUAY', {'CUP': 'COPA', 'WHO\'s a MOST COOLER ?': '¿QUIÉN ES EL MÁS GUAY?', 'COME COME TOGETHER': 'VENID, VENID TODOS', 'the "COOL" CUP': 'la COPA "GUAY"'}),
+ 'CO': ('chrome and sky', 'COOL', 'HIELO', {'CUP': 'COPA', 'WHO\'s a MOST COOLER ?': '¿QUIÉN ES EL MÁS FRÍO?', 'COME COME TOGETHER': 'VENID, VENID TODOS', 'the "COOL" CUP': 'la COPA "HIELO"'}),
  'DT': ('golden', 'DIRTY', 'SUCIA', {'CUP': 'COPA', 'the four lines of small text at the right': '¡PUAJ! PERDÓN... / ¡QUÉ SUCIOS! / VENID TODOS / LA COPA "GUARRA"'}),
  'DY': ('stone', 'DINO', 'DINO', {'CUP': 'COPA', 'COME TUGETHER !!': '¡¡VENID TODOS!!', 'DINOSAUR\'s CUP': 'COPA DINOSAURIO'}),
  'FR': ('fiery white-yellow', 'FIRE', 'FUEGO', {'CUP': 'COPA', 'COME TOGETHER BURNING DIGIMON\'s': '¡VENID, TODOS, DIGIMON DE FUEGO!'}),
