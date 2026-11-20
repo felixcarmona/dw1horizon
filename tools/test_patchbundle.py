@@ -80,7 +80,9 @@ class BundleStartup(unittest.TestCase):
             repo, work, out = (tmp / n for n in ('repo', 'work', 'out'))
             tracked = [p.relative_to(ROOT).as_posix()
                        for p in (ROOT / 'tools/derive').rglob('*.py')]
-            tracked += ['tools/languages.py', 'tools/city_residents.py', 'tools/cards.py', 'tools/derive/recipes/everything.json']
+            tracked += [p.relative_to(ROOT).as_posix() for p in (ROOT / 'tools/tamer_looks').glob('*.py')]
+            tracked += ['tools/languages.py', 'tools/city_residents.py', 'tools/cards.py', 'tools/tamer_pack.py',
+                        'tools/coldsplit.py', 'tools/mmd.py', 'tools/derive/recipes/everything.json']
             for name in tracked:
                 target = repo / name
                 target.parent.mkdir(parents=True, exist_ok=True)

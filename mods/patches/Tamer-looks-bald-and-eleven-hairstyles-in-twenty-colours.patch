@@ -1,0 +1,986 @@
+From aea538a803f6cf162d5303905b79db53db390a21 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 20 Nov 2026 17:34:04 +0000
+Subject: [PATCH] Tamer looks: bald and eleven hairstyles in twenty colours,
+ chosen on the Player tab's Look page
+
+---
+ config/us/main.ld         |   1 +
+ config/us/overlay.ld      |  21 +++-
+ include/dw/memmap.h       |   1 +
+ include/dw/save_tags.h    |   1 +
+ include/dw/species.h      |  15 +++
+ src/main/game_menu.c      | 248 +++++++++++++++++++++++++++++++++++++-
+ src/main/graphics.c       |  21 +++-
+ src/main/main_menu.c      |  14 ++-
+ src/main/mod_lab_menu.inc |  41 +++++--
+ src/main/mod_species.c    | 121 +++++++++++++++++++
+ src/main/model.c          |  40 ++++--
+ src/main/script_interp.c  |   2 +
+ src/main/utils2.c         |   3 +
+ text/main/mod_lab.yaml    | 108 +++++++++++++++++
+ 14 files changed, 614 insertions(+), 23 deletions(-)
+
+diff --git a/config/us/main.ld b/config/us/main.ld
+index 8674036..33fe159 100644
+--- a/config/us/main.ld
++++ b/config/us/main.ld
+@@ -1073,6 +1073,7 @@ ASSERT(renderCardsView >= OVL_BTL_BASE + 0x800 && modCardTop >= OVL_BTL_BASE + 0
+        "Card metadata sector overlaps the album renderer")
+ ASSERT(title_ui_START >= OVL_READ_END(.MENU), "MENU sector read overwrites the title UI in EVL")
+ ASSERT(title_ui_END <= OVL_END(.EVL), "Title UI is outside EVL")
++ASSERT(look_ui_START >= OVL_READ_END(.MENU), "MENU sector read overwrites the Look page in EVL")
+ ASSERT(TFS_RING_ADDR + TFS_RING_SLOTS * TFS_SLOT_SIZE == TFS_RING_END,
+        "TFS ring size does not match TFS_RING_END")
+ ASSERT(TFS_RING_END <= OVL_KAR_BASE, "TFS ring overlaps KAR, which coexists with the curling map")
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index c2ceac1..1cda54b 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -322,6 +322,15 @@ SECTIONS
+                 .rodata.MOD_LANGUAGE_TITLE_GLYPHS
+             );
+             . = ALIGN(., 4);
++            /* Only the title reaches these (its first menu, the new game's card and its no-card question, the VS slot): out of
++             * MENU, which is full, to make room for the Player view's Look page. Their text stays in MENU. */
++            BUILD_DIR/src/main/main_menu.c.o(
++                .text.renderInitialMenu* .text.renderSelectNewGameCard* .text.renderConfirmVSSlot*
++                .text.renderConfirmNoCard*
++                .rodata.renderInitialMenu* .rodata.renderSelectNewGameCard* .rodata.renderConfirmVSSlot*
++                .rodata.renderConfirmNoCard*
++            );
++            . = ALIGN(., 4);
+             /* Detection display only runs while the title owns EVL and MENU. */
+             BUILD_DIR/src/main/main_menu.c.o(
+                 .text.modNoticeDraw* .text.modNoticeRender* .text.modNoticeString*
+@@ -331,6 +340,15 @@ SECTIONS
+             . = ALIGN(., 4);
+             title_ui_END = .;
+ 
++            /* MOD (tamer looks): the Look page of the Player view. MENU, which that view runs from, is full; in the
++             * world nothing is kept at EVL's address (an evolution reads EVL when it starts, a closing menu reads
++             * KAR again), so the Player tab reads EVL to open the page. Its text is MENU's. */
++            look_ui_START = .;
++            BUILD_DIR/src/main/game_menu.c.o(.text.lookPage* .rodata.lookPage* .bss.lookPageState);
++            BUILD_DIR/src/main/mod_species.c.o(.text.lookTamerLoad);
++            BUILD_DIR/src/main/model.c.o(.text.lookTamerRelook);
++            . = ALIGN(., 4);
++
+ 		}
+ 	}
+ 
+@@ -1011,7 +1029,8 @@ SECTIONS
+              * the BIOS does not zero overlay bss. Card reloads occur only after
+              * the lab's render callback has been removed. */
+             BUILD_DIR/src/main/mod_lab.c.o(.rodata .rodata.LAB_FIELDS
+-                .rodata.LAB_HOME_TEXT .rodata.LAB_NUMBER_LINES .bss.labTextHash .bss.labTextWidth);
++                .rodata.LAB_HOME_TEXT .rodata.LAB_NUMBER_LINES .bss.labTextHash .bss.labTextWidth
++                .rodata.LAB_LOOK_TEXT .rodata.LAB_HAIR_TEXT .rodata.LOOK_PAGE_TEXT);
+             . = ALIGN(., 4);
+ 
+ 			LONG(0);
+diff --git a/include/dw/memmap.h b/include/dw/memmap.h
+index 3034474..1543519 100644
+--- a/include/dw/memmap.h
++++ b/include/dw/memmap.h
+@@ -133,6 +133,7 @@
+  */
+ #include <partner_mmd_max.h>
+ #define TAMER_MMD_MAX		0xE000	/* BOYS.MMD 0xDECC (GCC: one array, mod 0002) */
++#define TAMER_COLD_MAX		0x1000	/* MOD (tamer looks): the buffer's tail, where a look's scene animation is read */
+ #define MAP_SCRIPT_MAX		0x4000	/* a DG.SCN entry; the largest is 0x3800 */
+ /*
+  * MOD (MAPHEAD buffer, docs/mods/memory.md "MAPHEAD buffer"): the offset table
+diff --git a/include/dw/save_tags.h b/include/dw/save_tags.h
+index 8bc06f8..577bf11 100644
+--- a/include/dw/save_tags.h
++++ b/include/dw/save_tags.h
+@@ -35,6 +35,7 @@
+ #define SAVE_TAG_GROUND_PICKUP_BITS	0x000C /* bit array: stable ground pickup IDs collected today; registry content/ground-items.json */
+ #define SAVE_TAG_CARD_COUNTS		0x000D /* nibbles for card ids 66..511, low nibble first */
+ #define SAVE_TAG_CARD_STOCK		0x000E /* u16[6] daily shop cards, 0xffff sold */
++#define SAVE_TAG_TAMER_LOOK		0x000F /* u8 look (0 = the original tamer), u8 hair colour */
+ #define SAVE_TAG_REQUIRED		0x8000
+ #define SAVE_TAG_TECHNIQUE_LAYOUT	0x8003 /* u8: 1 = option A animation slots; required to prevent silent downgrade substitution */
+ /* engine tier 2 */
+diff --git a/include/dw/species.h b/include/dw/species.h
+index a7a4231..7ecc4e0 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -336,6 +336,21 @@ int32_t getDigimonModelRef(int32_t type, char **file, int32_t *sector, int32_t *
+  */
+ #define COLD_ANIM_FLAG		0x80000000
+ #define COLD_ANIM_MAX		0x2000
++
++/*
++ * MOD (tamer looks): look 0 is the disc's tamer; looks 1.. (bald, then the hairstyles) and the hair colours are in TAMER.DAT
++ * (tools/tamer_pack.py). A look's model keeps its scene-only animations as cold entries, read into the tail of the tamer's
++ * buffer. Hair polygons are untextured grey; MOD_HAIR_TINT (0 = none) colours them in updateTMDTextureData.
++ */
++#define TAMER_LOOK_COUNT	13
++#define TAMER_HAIR_COUNT	20
++extern uint8_t MOD_TAMER_LOOK;
++extern uint8_t MOD_TAMER_HAIR;
++extern uint32_t MOD_HAIR_TINT;
++struct ModelComponent;
++int32_t modLoadTamerLook(void *component);
++void modTamerRelook(void);
++void modTamerColdPrefetch(int32_t animId);
+ uint8_t *loadColdAnimation(void *entity, uint32_t entry, int32_t animId); /* an Entity * */
+ extern uint32_t MOD_COLD_PENDING;
+ int32_t modProbeRam(void);
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 8fb3fdb..8f7564f 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -2558,6 +2558,233 @@ int32_t isUIBoxAvailable(int32_t id)
+ 	return 0;
+ }
+ 
++/*
++ * MOD (tamer looks): the Look page of the Player view. CONFIRM on the Player tab opens it: a row for the hairstyle and
++ * one for the hair colour (looks with hair), changed with left and right and seen at once on the tamer beside them, whom
++ * L1 and R1 turn. A hairstyle is read from TAMER.DAT; a colour only tints again the hair polygons of the loaded model,
++ * with nothing read. The page's code is in EVL's tail (config/us/overlay.ld), read when the page opens: MENU, which
++ * the Player view runs from, is full, and the world keeps nothing at EVL's address. Its text is MENU's.
++ */
++extern char *const LAB_LOOK_TEXT[];
++extern char *const LAB_HAIR_TEXT[];
++extern char *const LOOK_PAGE_TEXT[];
++extern ModelComponent TAMER_MODEL;
++int32_t modFileOnDisc(char *name);
++void *malloc3(uint32_t size);
++void free3(void *ptr);
++#define LOOK_HINT_Y	0xac	/* text rows of the last two tamer titles, drawn again when the page closes */
++#define LOOK_NAME_Y	0xc4
++#define LOOK_VALUE_Y	0xd0
++#define LOOK_VALUE_X	0x33	/* the value box, from the middle of the window */
++#define LOOK_VALUE_W	86
++#define LOOK_HEAD_OBJECT	1
++#define LOOK_HAIR_MODE		0x30u
++#define LOOK_GREY_SHADOW	79	/* tools/tamer_looks/wig.py: the hair's darker grey; the lighter is the colour itself */
++static int16_t lookTurn;
++static struct {
++	uint32_t tint; /* the colour the hair polygons hold */
++	int16_t width[2];
++	uint8_t row;
++	uint8_t looks;
++	uint8_t colours;
++	uint8_t rgb[TAMER_HAIR_COUNT * 3];
++} lookPageState;
++static const char lookPageFile[] = "TAMER.DAT";
++const uint32_t lookPageMagic __attribute__((section(".rodata.lookPageMagic"))) = 0x4B4F4F4C; /* tells modLookOverlay (mod_species.c) that this overlay tail is in memory */
++
++static uint32_t lookPageColour(void)
++{
++	uint8_t *c = &lookPageState.rgb[MOD_TAMER_HAIR * 3];
++
++	return c[0] | (c[1] << 8) | (c[2] << 16);
++}
++
++static void lookPageValue(int32_t row)
++{
++	RECT rect;
++	char *str = row ? LAB_HAIR_TEXT[MOD_TAMER_HAIR] : LAB_LOOK_TEXT[MOD_TAMER_LOOK];
++	int32_t mode = fitStringMode(str, LOOK_VALUE_W - 6);
++
++	setRECT(&rect, row * 0x80, LOOK_VALUE_Y, 0x80, 12);
++	clearTextSubArea(&rect);
++	drawStringMode(str, row * 0x80, LOOK_VALUE_Y, mode);
++	lookPageState.width[row] = measureStringMode(str, mode);
++}
++
++/* The hair is the head's first polygons, untextured gouraud triangles of five words each. They are counted by their
++ * own mode byte and not by the header's length: once the model has been drawn, the first header of a run of equal
++ * polygons holds the run's count in its low half. */
++static void lookPageRetint(void)
++{
++	uint32_t tint = lookPageColour();
++	uint32_t shadow = 0;
++	struct TMD_STRUCT *obj = &TAMER_MODEL.modelPtr->obj[LOOK_HEAD_OBJECT];
++	uint32_t *prim = (uint32_t *)obj->primtop;
++	int32_t i;
++
++	for (i = 0; i < 24; i += 8) {
++		shadow |= ((((tint >> i) & 0xFF) * LOOK_GREY_SHADOW) >> 7) << i;
++	}
++	for (i = obj->primn; i > 0 && (prim[0] >> 24) == LOOK_HAIR_MODE; i--, prim += 5) {
++		prim[1] = (LOOK_HAIR_MODE << 24) | ((prim[1] & 0xFFFFFF) == lookPageState.tint ? tint : shadow);
++	}
++	lookPageState.tint = tint;
++}
++
++/* The game draws one face of a polygon, and the menu's close-up shows the hair from angles the field never does (under
++ * the fringe, inside a lock): there the hair is sorted a second time with two corners swapped, which draws its far faces. */
++void lookPageHairInside(GsDOBJ2 *obj, GsOT *ot)
++{
++	struct TMD_STRUCT *tmd = (struct TMD_STRUCT *)obj->tmd;
++	uint32_t *prim = (uint32_t *)tmd->primtop;
++	uint32_t count = tmd->primn;
++	uint32_t hair = 0;
++	uint32_t pass, i, w;
++
++	while (hair < count && (prim[hair * 5] >> 24) == LOOK_HAIR_MODE) {
++		hair++;
++	}
++	if (hair == 0) {
++		return;
++	}
++	for (pass = 0; pass < 2; pass++) {
++		for (i = 0; i < hair; i++) {
++			w = prim[i * 5 + 2];
++			prim[i * 5 + 2] = prim[i * 5 + 3];
++			prim[i * 5 + 3] = w;
++		}
++		if (pass == 0) {
++			tmd->primn = hair;
++			GsSortObject4(obj, ot, 3, getScratchAddr(0));
++			tmd->primn = count;
++		}
++	}
++}
++
++int32_t lookPageOpen(void)
++{
++	RECT rect;
++	uint16_t *head;
++	int32_t i;
++
++	if (!modFileOnDisc((char *)lookPageFile) || (head = malloc3(0x800)) == NULL) {
++		return 0;
++	}
++	readFileSectors((char *)lookPageFile, head, 0, 1);
++	lookPageState.looks = head[2] + 1 < TAMER_LOOK_COUNT ? head[2] + 1 : TAMER_LOOK_COUNT;
++	lookPageState.colours = head[6] < TAMER_HAIR_COUNT ? head[6] : TAMER_HAIR_COUNT;
++	for (i = 0; i < lookPageState.colours * 3; i++) {
++		lookPageState.rgb[i] = ((uint8_t *)head)[0x80 + i];
++	}
++	free3(head);
++	if (lookPageState.colours == 0 || MOD_TAMER_LOOK >= lookPageState.looks) {
++		return 0;
++	}
++	MOD_TAMER_HAIR %= lookPageState.colours;
++	lookPageState.row = 0;
++	lookPageState.tint = lookPageColour();
++	lookTurn = 0;
++	setRECT(&rect, 0, LOOK_HINT_Y, 256, 48);
++	clearTextSubArea(&rect);
++	drawString(LOOK_PAGE_TEXT[2], 0, LOOK_HINT_Y);
++	drawString(LOOK_PAGE_TEXT[3], 0, LOOK_HINT_Y + 12);
++	for (i = 0; i < 2; i++) {
++		drawStringMode(LOOK_PAGE_TEXT[i], i * 0x80, LOOK_NAME_Y, fitStringMode(LOOK_PAGE_TEXT[i], 84));
++		lookPageValue(i);
++	}
++	return 1;
++}
++
++void lookPageClose(void)
++{
++	RECT rect;
++
++	lookTurn = 0;
++	setRECT(&rect, 0, LOOK_HINT_Y, 256, 24);
++	clearTextSubArea(&rect);
++	drawString(TAMER_LEVEL_TITLES[9], 0, LOOK_HINT_Y);
++	drawString(TAMER_LEVEL_TITLES[10], 0, LOOK_HINT_Y + 12);
++}
++
++void lookPageInput(void)
++{
++	int32_t step = 0;
++
++	if (POLLED_INPUT & 4) {
++		lookTurn = (lookTurn - 96) & 0xFFF;
++	}
++	if (POLLED_INPUT & 8) {
++		lookTurn = (lookTurn + 96) & 0xFFF;
++	}
++	if ((CHANGED_INPUT & 0x5000) && MOD_TAMER_LOOK >= 2) {
++		lookPageState.row ^= 1;
++		playSound(0, 2);
++	}
++	if (CHANGED_INPUT & 0x2000) {
++		step = 1;
++	} else if (CHANGED_INPUT & 0x8000) {
++		step = -1;
++	}
++	if (step == 0) {
++		return;
++	}
++	playSound(0, 2);
++	if (lookPageState.row == 0) {
++		MOD_TAMER_LOOK = (MOD_TAMER_LOOK + lookPageState.looks + step) % lookPageState.looks;
++		modTamerRelook();
++		lookPageState.tint = lookPageColour();
++	} else {
++		MOD_TAMER_HAIR = (MOD_TAMER_HAIR + lookPageState.colours + step) % lookPageState.colours;
++		lookPageRetint();
++	}
++	lookPageValue(lookPageState.row);
++}
++
++void lookPageRender(void)
++{
++	StringRect *e = &TAMER_WINDOW_NAME_STRING[0];
++	RECT *r = &TAMER_WINDOW_BOXES[0];
++	int32_t rows = MOD_TAMER_LOOK >= 2 ? 2 : 1;
++	int32_t i;
++	int32_t k;
++	int32_t y;
++
++	if (lookPageState.row >= rows) {
++		lookPageState.row = 0;
++	}
++	renderSeparatorLines(TAMER_VIEW_PLAYER_LINES, 0xb, 5);
++	renderString(3, e->posX, e->posY + 1, e->uvWidth, 0xc, e->uvX, e->uvY, 5, 1);
++	renderString(0, -0x54, -0x50, 0x48, 0xc, 0, 0x30, 5, 1);
++	for (i = 0; i < rows; i++) {
++		y = -0x34 + i * 0x14;
++		renderString(i == lookPageState.row ? 3 : 0, -0x29, y, 0x54, 0xc, i * 0x80, LOOK_NAME_Y, 5, 1);
++		renderString(0, LOOK_VALUE_X + (LOOK_VALUE_W - lookPageState.width[i]) / 2, y, lookPageState.width[i], 0xc,
++		             i * 0x80, LOOK_VALUE_Y, 5, 1);
++		if (i == lookPageState.row) {
++			for (k = 0; k < 4; k++) {
++				drawLine2P(0x73f6ff, LOOK_VALUE_X - 7 + k, y + 5 - k, LOOK_VALUE_X - 7 + k, y + 6 + k, 5, 0);
++				drawLine2P(0x73f6ff, LOOK_VALUE_X + LOOK_VALUE_W + 5 - k, y + 5 - k,
++				           LOOK_VALUE_X + LOOK_VALUE_W + 5 - k, y + 6 + k, 5, 0);
++			}
++		}
++	}
++	renderString(0, -0x29, 0x36, 0xb4, 0xc, 0, LOOK_HINT_Y, 5, 1);
++	renderString(0, -0x29, 0x46, 0xb4, 0xc, 0, LOOK_HINT_Y + 12, 5, 1);
++	renderDigiviceEntity(ENTITY_TABLE[0], 0);
++	renderInsetBox(r->x, r->y, r->w, r->h, 5);
++	for (i = 0; i < rows; i++) {
++		renderInsetBox(160 + LOOK_VALUE_X, 118 - 0x34 + i * 0x14, LOOK_VALUE_W, 14, 5);
++	}
++}
++
++void modLookOverlay(void);
++
++static int32_t playerLookEnter(void)
++{
++	modLookOverlay();
++	return lookPageOpen();
++}
++
+ void tickPlayerMenu(void)
+ {
+ 	RECT finalPos;
+@@ -2599,8 +2826,9 @@ void tickPlayerMenu(void)
+ 			TRIANGLE_MENU_STATE = 6;
+ 			playSound(0, 4);
+ 		}
++		/* MOD (tamer looks): the Player tab opens its Look page */
+ 		if ((isKeyDown(CONFIRM_BUTTON) != 0) && (MENU_STATE == 1) &&
+-		    (PLAYER_MENU_STATE != 0)) {
++		    (PLAYER_MENU_STATE != 0 || playerLookEnter())) {
+ 			MENU_STATE = 2;
+ 			playSound(0, 3);
+ 			MEDAL_SELECTOR_INDEX = SELECTED_MEDAL = 0;
+@@ -2608,6 +2836,13 @@ void tickPlayerMenu(void)
+ 			CARD_TOP_ROW = 0;
+ 		}
+ 	} else {
++		if (PLAYER_MENU_STATE == 0 && MENU_STATE == 2) { /* MOD (tamer looks) */
++			if (isKeyDown(CANCEL_BUTTON) != 0) {
++				lookPageClose();
++			} else {
++				lookPageInput();
++			}
++		}
+ 		if ((isKeyDown(CANCEL_BUTTON) != 0) && (MENU_STATE == 2)) {
+ 			playSound(0, 4);
+ 			MENU_STATE = 1;
+@@ -3528,6 +3763,9 @@ void renderPlayerInfoView(void)
+ 			renderInsetBox(r->x, r->y, r->w, r->h, 5);
+ 		}
+ 		break;
++	case 2:
++		lookPageRender(); /* MOD (tamer looks) */
++		break;
+ 	}
+ }
+ 
+@@ -6079,7 +6317,7 @@ int8_t entityId;
+ 	setEntityPosition(entityId, RAISE_ROW(type).viewX,
+ 	                  RAISE_ROW(type).viewY,
+ 	                  RAISE_ROW(type).viewZ);
+-	setEntityRotation(entityId, 0, 0, 0);
++	setEntityRotation(entityId, 0, entityId == 0 ? lookTurn : 0, 0); /* MOD (tamer looks): turned on the Look page */
+ 	setupEntityMatrix(entityId);
+ 	startAnimation(entity, 0);
+ 	tickAnimation(entity);
+@@ -6114,6 +6352,12 @@ int8_t entityId;
+ 			 * the table still reaches depth 16384, past every portrait. */
+ 			GsSortObject4(&pos->obj, FRAMEBUFFER_OT[ACTIVE_FRAMEBUFFER], 3,
+ 			              getScratchAddr(0));
++			/* MOD (tamer looks): the hair's far faces too */
++			if (entityId == 0 && MOD_TAMER_LOOK > 1 &&
++			    (void *)pos->obj.tmd == (void *)&TAMER_MODEL.modelPtr->obj[LOOK_HEAD_OBJECT]) {
++				modLookOverlay();
++				lookPageHairInside(&pos->obj, FRAMEBUFFER_OT[ACTIVE_FRAMEBUFFER]);
++			}
+ 		}
+ 	}
+ 
+diff --git a/src/main/graphics.c b/src/main/graphics.c
+index fb011ec..04f2f64 100644
+--- a/src/main/graphics.c
++++ b/src/main/graphics.c
+@@ -153,6 +153,14 @@ int32_t popAttackObject(int32_t entityId, AttackObject *out)
+ 	return 1;
+ }
+ 
++extern uint32_t MOD_HAIR_TINT; /* MOD (tamer looks), species.h */
++
++static uint32_t modTint(uint32_t colour, uint32_t grey)
++{
++	colour = ((colour & 0xFF) * grey) >> 7;
++	return colour > 255 ? 255 : colour;
++}
++
+ void updateTMDTextureData(int32_t *tmd, int32_t clutX, int32_t x, int32_t y, int32_t tpage)
+ {
+ 	uint32_t *prim;
+@@ -178,10 +186,19 @@ void updateTMDTextureData(int32_t *tmd, int32_t clutX, int32_t x, int32_t y, int
+ 		prim = (uint32_t *)obj->primtop;
+ 		for (j = 0; j < primn; j++) {
+ 			mode = prim[0] >> 24;
++			len = ((prim[0] & 0xFF00) >> 8) + 1;
+ 			if ((mode & 4) == 0) {
+-				break;
++				if (MOD_HAIR_TINT == 0) {
++					break;
++				}
++				/* MOD (tamer looks): untextured hair holds a grey level, 128 = the colour itself */
++				clutXs = prim[1] & 0xFF;
++				prim[1] = (prim[1] & 0xFF000000) | modTint(MOD_HAIR_TINT, clutXs) |
++				          (modTint(MOD_HAIR_TINT >> 8, clutXs) << 8) | (modTint(MOD_HAIR_TINT >> 16, clutXs) << 16);
++				clutXs = clutX << 16;
++				prim += len;
++				continue;
+ 			}
+-			len = ((prim[0] & 0xFF00) >> 8) + 1;
+ 			prim[1] += tpages + clut;
+ 			prim[2] = clut + ((prim[2] & 0xFFE0FFFF) + clutXs);
+ 			prim[3] += clut;
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index af2ae49..c671089 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -244,7 +244,8 @@ typedef struct {
+ SAVE_LAYOUT_CHECK(extHead, sizeof(SaveExtHead) == 12);
+ /* Bound every record, including the optional swap and daily pickup bitmap. */
+ #define SAVE_RECORDS_MAX (sizeof(SaveExtHead) + 12 * 4 + 4 + 60 + 4 + 32 + 80 + 200 + \
+-                         2 * (NUM_DIGIMON / 8) + MOD_OPT_BYTES + 4 + sizeof(MOD_GROUND_PICKED) + 4 + 4 + 8 + CARD_EXTRA_BYTES + 12)
++                         2 * (NUM_DIGIMON / 8) + MOD_OPT_BYTES + 4 + sizeof(MOD_GROUND_PICKED) + 4 + 4 + 8 + CARD_EXTRA_BYTES + 12 + \
++                         4 + 2 /* the tamer's look */)
+ SAVE_LAYOUT_CHECK(recordsFit, SAVE_RECORDS_MAX <= SAVE_INLINE_BYTES);
+ SAVE_LAYOUT_CHECK(inlinePadding, sizeof(((RegisteredDigimon *)0)->unk24) == 28 &&
+                   __builtin_offsetof(RegisteredDigimon, unk24) == 0x24 && sizeof(RegisteredDigimon) == 0x40);
+@@ -4441,6 +4442,8 @@ void loadSavegame(SavegamePayload *savegame)
+ 	int32_t i;
+ 
+ 	modForgetGroundPicked(); /* A missing new record, in any old layout, means no pickups today. */
++	MOD_TAMER_LOOK = 0; /* MOD (tamer looks): and the original tamer */
++	MOD_TAMER_HAIR = 0;
+ 
+ 	SAVED_STATE.playerPos = savegame->tamerPosition;
+ 	SAVED_STATE.money = savegame->money;
+@@ -5149,6 +5152,8 @@ static void prepareSaveFile(int32_t fromRam)
+ 		p = putRecord(p, SAVE_TAG_GROUND_PICKUP_BITS, MOD_GROUND_PICKED, sizeof(MOD_GROUND_PICKED));
+ 		p = putRecord(p, SAVE_TAG_CARD_COUNTS, MOD_CARD_EXTRA, sizeof(MOD_CARD_EXTRA));
+ 		p = putRecord(p, SAVE_TAG_CARD_STOCK, MOD_CARD_STOCK, sizeof(MOD_CARD_STOCK));
++		swap[0] = MOD_TAMER_LOOK | (MOD_TAMER_HAIR << 8); /* MOD (tamer looks) */
++		p = putRecord(p, SAVE_TAG_TAMER_LOOK, swap, 2);
+ 	}
+ 	{ uint8_t layout = 1; p = putRecord(p, SAVE_TAG_TECHNIQUE_LAYOUT, &layout, 1); }
+ 	/* MOD (tier 2): the story state's records go here */
+@@ -5431,6 +5436,7 @@ static int32_t isRecordKnown(int32_t tag)
+ 	case SAVE_TAG_GROUND_PICKED:
+ 	case SAVE_TAG_CARD_COUNTS:
+ 	case SAVE_TAG_CARD_STOCK:
++	case SAVE_TAG_TAMER_LOOK:
+ 	case SAVE_TAG_GROUND_PICKUP_BITS:
+ 	case SAVE_TAG_TECHNIQUE_LAYOUT:
+ 		return 1;
+@@ -5524,6 +5530,12 @@ static void applyRecords(uint8_t *e)
+ 				MOD_CARD_STOCK[i] = (uint32_t)n < NUM_CARDS && ((MOD_CARD_REAL[n / 8] >> (n & 7)) & 1) ? n : CARD_NONE;
+ 			}
+ 			break;
++		case SAVE_TAG_TAMER_LOOK:
++			if (len >= 2 && d[0] < TAMER_LOOK_COUNT && d[1] < TAMER_HAIR_COUNT) {
++				MOD_TAMER_LOOK = d[0];
++				MOD_TAMER_HAIR = d[1];
++			}
++			break;
+ 		case SAVE_TAG_GROUND_PICKUP_BITS:
+ 			n = len < sizeof(MOD_GROUND_PICKED) ? len : sizeof(MOD_GROUND_PICKED);
+ 			for (i = 0; i < n; i++) {
+diff --git a/src/main/mod_lab_menu.inc b/src/main/mod_lab_menu.inc
+index 1c0bd29..1f11265 100644
+--- a/src/main/mod_lab_menu.inc
++++ b/src/main/mod_lab_menu.inc
+@@ -1,7 +1,7 @@
+ /* Private laboratory implementation; included by mod_lab.c. Ten texture rows fit below UV 256; createPauseBox restores its shared last row on return. */
+ #define MOD_LAB_BOX 5
+ #define MOD_LAB_TEXT_Y 0x84
+-#define MOD_LAB_OPTIONS 15
++#define MOD_LAB_OPTIONS 17
+ #define LAB_ROW_SHORTCUTS 6
+ #define MOD_LAB_OPT_EVOLVE 3
+ #define PAD_SELECT 0x100
+@@ -45,7 +45,7 @@ static int16_t MOD_LAB_EVO_TARGETS[] = { DIGIMON_MASTER_TYRANNOMON, DIGIMON_CHER
+     DIGIMON_MYOTISMON, DIGIMON_SHOGUNGEKOMON, DIGIMON_MACHINEDRAMON, DIGIMON_JIJIMON, DIGIMON_ANALOGMAN };
+ #define MOD_LAB_EVO_FIXED ((int32_t)(sizeof(MOD_LAB_EVO_TARGETS) / sizeof(MOD_LAB_EVO_TARGETS[0])))
+ 
+-enum { LAB_HOME, LAB_VALUES, LAB_NUMBER, LAB_EVOLVE, LAB_MAPS, LAB_CONFIRM, LAB_MOVES };
++enum { LAB_HOME, LAB_VALUES, LAB_NUMBER, LAB_EVOLVE, LAB_MAPS, LAB_CONFIRM, LAB_MOVES, LAB_LOOKS, LAB_HAIR };
+ int32_t MOD_LAB_VIEW, MOD_LAB_CURSOR, MOD_LAB_VALUE, MOD_LAB_TARGET;
+ int32_t MOD_CHEATS_CARD_MODE, MOD_CHEATS_CARD_DONE, MOD_CHEATS_TRANSITION;
+ static int32_t labAction;
+@@ -62,7 +62,20 @@ static uint32_t labTextHash[LAB_ROWS];
+ static int16_t labTextWidth[LAB_ROWS];
+ static char *const LAB_HOME_TEXT[] = { LAB_STR_ADD_BITS, LAB_STR_SATIATE, LAB_STR_PARAMETERS,
+     LAB_STR_EVOLVE, LAB_STR_TELEPORT, LAB_STR_HEAL, LAB_STR_SHORTCUTS_OFF, LAB_STR_SAVE_GAME, LAB_STR_LOAD_GAME, LAB_STR_MAIN_MENU, LAB_STR_OLD_AGE,
+-    LAB_STR_LEARN, LAB_STR_LEARN_ALL, LAB_STR_UNLOCK_CHART, LAB_STR_CLOSE };
++    LAB_STR_LEARN, LAB_STR_LEARN_ALL, LAB_STR_UNLOCK_CHART, LAB_STR_HAIRSTYLE, LAB_STR_HAIR_COLOUR, LAB_STR_CLOSE };
++/* MOD (tamer looks): the names of the looks and of the hair colours, in the order of TAMER.DAT (tools/tamer_pack.py) */
++char *const LAB_LOOK_TEXT[] = {
++    LAB_STR_LOOK_ORIGINAL, LAB_STR_LOOK_BALD, LAB_STR_LOOK_CLASSIC, LAB_STR_LOOK_MESSY,
++    LAB_STR_LOOK_QUIFF, LAB_STR_LOOK_CURTAINS, LAB_STR_LOOK_BUZZ, LAB_STR_LOOK_LONG, LAB_STR_LOOK_MULLET,
++    LAB_STR_LOOK_PONYTAIL, LAB_STR_LOOK_PIGTAILS, LAB_STR_LOOK_BUN, LAB_STR_LOOK_BUNS };
++char *const LAB_HAIR_TEXT[] = {
++    LAB_STR_HAIR_BROWN, LAB_STR_HAIR_DARK_BROWN, LAB_STR_HAIR_BLACK, LAB_STR_HAIR_CHESTNUT,
++    LAB_STR_HAIR_BLOND, LAB_STR_HAIR_LIGHT_BLOND, LAB_STR_HAIR_GINGER, LAB_STR_HAIR_RED,
++    LAB_STR_HAIR_BURGUNDY, LAB_STR_HAIR_PINK, LAB_STR_HAIR_LAVENDER, LAB_STR_HAIR_PURPLE,
++    LAB_STR_HAIR_NAVY, LAB_STR_HAIR_BLUE, LAB_STR_HAIR_TURQUOISE, LAB_STR_HAIR_GREEN, LAB_STR_HAIR_LIME,
++    LAB_STR_HAIR_GREY, LAB_STR_HAIR_SILVER, LAB_STR_HAIR_WHITE };
++/* The Player view's Look page (game_menu.c): its two row names, and its two hints */
++char *const LOOK_PAGE_TEXT[] = { LAB_STR_HAIRSTYLE, LAB_STR_HAIR_COLOUR, LAB_STR_SIMPLE_ADJUST, LAB_STR_LOOK_TURN };
+ static char *LAB_STAGES[] = { "", "Baby I", "Baby II", "Rookie", "Champion", "Ultimate", "Mega" };
+ 
+ static char *appendStr(char *dst, const char *src)
+@@ -209,7 +222,10 @@ static void modLabList(int32_t view)
+     labCount = 0;
+     MOD_LAB_VIEW = view;
+     MOD_LAB_CURSOR = labTop = 0;
+-    if (view == LAB_MOVES) {
++    if (view >= LAB_LOOKS) {
++        /* MOD (tamer looks): the looks, or the hair colours */
++        for (i = 0; i < (view == LAB_LOOKS ? TAMER_LOOK_COUNT : TAMER_HAIR_COUNT); i++) labChoices[labCount++] = i;
++    } else if (view == LAB_MOVES) {
+         /* MOD (cheat techniques): every technique that has a name */
+         for (i = 0; i < NUM_MOVE_NAMES; i++) if (MOVE_NAMES[i] && MOVE_NAMES[i][0]) labChoices[labCount++] = i;
+     } else if (view == LAB_EVOLVE) {
+@@ -239,7 +255,8 @@ static void modLabList(int32_t view)
+             } while (id >= 0 && id != first && labCount < NUM_SCREENS);
+         }
+     }
+-    id = view == LAB_EVOLVE ? PARTNER_ENTITY.digimonEntity.entity.type : view == LAB_MOVES ? 0 : CURRENT_SCREEN;
++    id = view == LAB_EVOLVE ? PARTNER_ENTITY.digimonEntity.entity.type : view == LAB_MOVES ? 0 :
++        view == LAB_LOOKS ? MOD_TAMER_LOOK : view == LAB_HAIR ? MOD_TAMER_HAIR : CURRENT_SCREEN;
+     for (i = 0; i < labCount; i++) if (labChoices[i] == id) MOD_LAB_CURSOR = i;
+ }
+ 
+@@ -327,6 +344,7 @@ static void modLabDrawText(void)
+     appendStr(lines[0], MOD_LAB_VIEW == LAB_HOME ? LAB_STR_TITLE :
+         MOD_LAB_VIEW == LAB_VALUES ? LAB_STR_PARAMETERS : MOD_LAB_VIEW == LAB_NUMBER ? LAB_FIELDS[labField].name :
+         MOD_LAB_VIEW == LAB_EVOLVE ? LAB_STR_EVOLVE : MOD_LAB_VIEW == LAB_MAPS ? LAB_STR_TELEPORT : MOD_LAB_VIEW == LAB_MOVES ? LAB_STR_LEARN :
++        MOD_LAB_VIEW == LAB_LOOKS ? LAB_STR_HAIRSTYLE : MOD_LAB_VIEW == LAB_HAIR ? LAB_STR_HAIR_COLOUR :
+         LAB_HOME_TEXT[labPreviousCursor]);
+     if (MOD_LAB_VIEW == LAB_NUMBER) {
+         labInt(lines[3], MOD_LAB_VALUE);
+@@ -346,7 +364,8 @@ static void modLabDrawText(void)
+             p = appendStr(p, LAB_FIELDS[n].name); p = appendStr(p, ": "); labInt(p, *modLabFieldPtr(n));
+         } else {
+             id = labChoices[n];
+-            if (MOD_LAB_VIEW == LAB_MOVES) appendStr(p, MOVE_NAMES[id]);
++            if (MOD_LAB_VIEW >= LAB_LOOKS) appendStr(p, MOD_LAB_VIEW == LAB_LOOKS ? LAB_LOOK_TEXT[id] : LAB_HAIR_TEXT[id]);
++            else if (MOD_LAB_VIEW == LAB_MOVES) appendStr(p, MOVE_NAMES[id]);
+             else modLabEntry(p, id, MOD_LAB_VIEW == LAB_EVOLVE);
+         }
+     }
+@@ -520,7 +539,8 @@ void modLabMenuLoaded(uint32_t *input, uint32_t *previous)
+             if (MOD_LAB_VIEW == LAB_HOME) break;
+             if (MOD_LAB_VIEW == LAB_NUMBER) { MOD_LAB_VIEW = LAB_VALUES; MOD_LAB_CURSOR = labField; }
+             else if (MOD_LAB_VIEW == LAB_CONFIRM) { MOD_LAB_VIEW = labPrevious; MOD_LAB_CURSOR = labPreviousCursor; }
+-            else { MOD_LAB_CURSOR = MOD_LAB_VIEW == LAB_VALUES ? 2 : MOD_LAB_VIEW == LAB_EVOLVE ? 3 : 4; MOD_LAB_VIEW = LAB_HOME; }
++            else { MOD_LAB_CURSOR = MOD_LAB_VIEW == LAB_VALUES ? 2 : MOD_LAB_VIEW == LAB_EVOLVE ? 3 :
++                MOD_LAB_VIEW == LAB_LOOKS ? 14 : MOD_LAB_VIEW == LAB_HAIR ? 15 : 4; MOD_LAB_VIEW = LAB_HOME; }
+             labTop = 0;
+         } else if (MOD_LAB_VIEW == LAB_NUMBER) {
+             if (pressed & CONFIRM_BUTTON) {
+@@ -567,10 +587,15 @@ void modLabMenuLoaded(uint32_t *input, uint32_t *previous)
+                 case 13:
+                     for (step = 1; step < NUM_DIGIMON; step++) setDigimonRaised(step);
+                     modLabMessage = LAB_STR_MSG_UNLOCKED; break;
+-                case 14: done = 1; break;
++                case 14: case 15: modLabList(MOD_LAB_CURSOR == 14 ? LAB_LOOKS : LAB_HAIR); break;
++                case 16: done = 1; break;
+                 }
+             } else if (MOD_LAB_VIEW == LAB_VALUES) {
+                 labField = MOD_LAB_CURSOR; MOD_LAB_VALUE = modLabClamp(labField, *modLabFieldPtr(labField)); MOD_LAB_VIEW = LAB_NUMBER; labStep = 1;
++            } else if (MOD_LAB_VIEW >= LAB_LOOKS) {
++                /* MOD (tamer looks): made at once, seen when the menu closes; the menu stays on the list */
++                if (MOD_LAB_VIEW == LAB_LOOKS) MOD_TAMER_LOOK = MOD_LAB_CURSOR; else MOD_TAMER_HAIR = MOD_LAB_CURSOR;
++                modTamerRelook();
+             } else if (labCount && MOD_LAB_VIEW == LAB_MOVES) {
+                 learnMove(labChoices[MOD_LAB_CURSOR]); modLabMessage = LAB_STR_MSG_LEARNED;
+             } else if (labCount) {
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index a1f2807..87f61e7 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -12,6 +12,7 @@
+ #include <dw/script.h>
+ #include <dw/sound.h>
+ #include <dw/species.h>
++#include <dw/utils.h>
+ #include <dw/mod_options.h>
+ #include <dw/chinese.h>
+ 
+@@ -1015,6 +1016,123 @@ void tickColdAnimation(Entity *entity)
+ 	}
+ }
+ 
++/* MOD (tamer looks): see species.h */
++#define TAMER_LOOK_FILE		"TAMER.DAT"
++#define TAMER_COLD_BUFFER	(TAMER_MODEL_BUFFER + TAMER_MMD_MAX - TAMER_COLD_MAX)
++#define TAMER_COLD_CACHE	((uint8_t *)0x80210000) /* with RAM above 2 MB: right after the partner's cache */
++extern uint8_t TAMER_MODEL_BUFFER[];
++void uploadModelTexture(void *textureData, void *component);
++void modSmoothMapReset(void);
++uint8_t MOD_TAMER_LOOK;
++uint8_t MOD_TAMER_HAIR;
++uint32_t MOD_HAIR_TINT;
++static uint32_t TAMER_COLD_READY;	/* the entry the buffer's tail holds */
++static uint16_t TAMER_COLD_SECTOR;	/* 0: the loaded tamer has no cold entries */
++static uint8_t TAMER_COLD_CACHED;
++
++/* The loader and the relinking live in the EVL overlay's tail (config/us/overlay.ld, look_ui): that memory is free
++ * in the world, and the overlay is read when a look is asked for and its tail is not there. */
++#define LOOK_UI_MAGIC	0x4B4F4F4C
++extern const uint32_t lookPageMagic[]; /* game_menu.c, in the tail (an array here: not addressed through gp) */
++int32_t lookTamerLoad(void *component);
++void lookTamerRelook(void);
++
++void modLookOverlay(void)
++{
++	if (lookPageMagic[0] != LOOK_UI_MAGIC) {
++		loadDynamicLibrary(EVL_REL, NULL, 0, NULL, NULL);
++	}
++}
++
++/* The texture and the resident model of the chosen look; 0 = load the disc's tamer (look 0, or no file) */
++int32_t modLoadTamerLook(void *component)
++{
++	TAMER_COLD_SECTOR = 0;
++	if (MOD_TAMER_LOOK == 0) {
++		return 0;
++	}
++	modLookOverlay();
++	return lookTamerLoad(component);
++}
++
++void modTamerRelook(void)
++{
++	modLookOverlay();
++	lookTamerRelook();
++}
++
++int32_t lookTamerLoad(void *component)
++{
++	uint16_t *head = (uint16_t *)TAMER_MODEL_BUFFER;
++	uint8_t *rgb;
++	void *texture;
++	int32_t sector;
++	int32_t sectors;
++	int32_t cold;
++
++	TAMER_COLD_SECTOR = 0;
++	TAMER_COLD_READY = 0;
++	TAMER_COLD_CACHED = 0;
++	MOD_HAIR_TINT = 0;
++	if (!modFileOnDisc(TAMER_LOOK_FILE)) {
++		return 0;
++	}
++	readFileSectors(TAMER_LOOK_FILE, head, 0, 1);
++	sector = head[8 + 2 * (MOD_TAMER_LOOK - 1)];
++	sectors = head[9 + 2 * (MOD_TAMER_LOOK - 1)];
++	if (MOD_TAMER_LOOK > head[2] || head[6] == 0 || (sectors << 11) > TAMER_MMD_MAX - TAMER_COLD_MAX) {
++		return 0;
++	}
++	rgb = (uint8_t *)head + 0x80 + 3 * (MOD_TAMER_HAIR % head[6]);
++	MOD_HAIR_TINT = 0x01000000 | rgb[0] | (rgb[1] << 8) | (rgb[2] << 16);
++	cold = head[4];
++	if (MOD_COLD_CACHE_TYPE >= 0) {
++		readFileSectors(TAMER_LOOK_FILE, TAMER_COLD_CACHE, cold, head[5]);
++		TAMER_COLD_CACHED = 1;
++	}
++	modSmoothMapReset();
++	texture = malloc3(0x4800);
++	readFileSectors(TAMER_LOOK_FILE, texture, head[3], 9);
++	uploadModelTexture(texture, component);
++	free3(texture);
++	readFileSectors(TAMER_LOOK_FILE, TAMER_MODEL_BUFFER, sector, sectors);
++	TAMER_COLD_SECTOR = cold;
++	return 1;
++}
++
++/* A scene animation of a look: from the cache above 2 MB, else read (the game waits) into the buffer's tail */
++static uint8_t *loadTamerColdAnimation(uint32_t entry)
++{
++	int32_t offset = (entry & 0xFFFF) * 4;
++	int32_t length = ((entry >> 16) & 0x7FFF) * 4;
++	int32_t count = ((offset & 0x7FF) + length + 0x7FF) >> 11;
++
++	if (TAMER_COLD_SECTOR == 0 || length == 0 || (count << 11) > TAMER_COLD_MAX) {
++		return NULL;
++	}
++	if (TAMER_COLD_CACHED) {
++		return TAMER_COLD_CACHE + offset;
++	}
++	if (entry != TAMER_COLD_READY) {
++		while (COLD_READ_BUSY) { /* the partner's read in flight */
++			tickFileReadQueue(0);
++		}
++		readFileSectors(TAMER_LOOK_FILE, TAMER_COLD_BUFFER, TAMER_COLD_SECTOR + (offset >> 11), count);
++		TAMER_COLD_READY = entry;
++	}
++	return TAMER_COLD_BUFFER + (offset & 0x7FF);
++}
++
++/* Reads a cold animation of the tamer's look ahead of its use, where the disc is being read anyway (a gym's load) */
++void modTamerColdPrefetch(int32_t animId)
++{
++	uint32_t *table = (uint32_t *)TAMER_ENTITY.entity.animPtr;
++
++	if (TAMER_COLD_SECTOR != 0 && table != NULL && (table[animId] & COLD_ANIM_FLAG)) {
++		loadTamerColdAnimation(table[animId]);
++	}
++}
++
+ uint8_t *loadColdAnimation(void *ent, uint32_t entry, int32_t animId)
+ {
+ 	Entity *entity = ent;
+@@ -1026,6 +1144,9 @@ uint8_t *loadColdAnimation(void *ent, uint32_t entry, int32_t animId)
+ 	int32_t offset;
+ 	int32_t length;
+ 
++	if (entity == &TAMER_ENTITY.entity) {
++		return loadTamerColdAnimation(entry);
++	}
+ 	if (entity != (Entity *)&PARTNER_ENTITY.digimonEntity.entity) {
+ 		return NULL;
+ 	}
+diff --git a/src/main/model.c b/src/main/model.c
+index ae93d88..6fcf996 100644
+--- a/src/main/model.c
++++ b/src/main/model.c
+@@ -3629,24 +3629,46 @@ ModelComponent *loadMMD(int32_t digiType, int32_t modelType)
+ 	} else {
+ 		return 0;
+ 	}
+-	/* MOD (partners-npc-c): the partner may have its own file */
+-	name = (modelType == 3) ? getPartnerModelName(digiType) : getDigimonModelName(digiType);
+-	loadDigimonTexture(digiType, name, m);
+-	concatStrings(path, MAIN_D_8011D484, name);
+-	concatStrings(path, path, MAIN_D_801340E4);
+-	path[9] = digiType / 30 + '0';
+-	if (modelType == 3 && getDigimonModelFileSize(digiType, path) > PARTNER_MMD_MAX) {
+-		return 0; /* MOD (scale): never past PARTNER_MODEL_BUFFER (isPartnerModelFit) */
++	/* MOD (tamer looks): a chosen look brings its own texture and model */
++	if (modelType != 2 || digiType != 0 || !modLoadTamerLook(m)) {
++		/* MOD (partners-npc-c): the partner may have its own file */
++		name = (modelType == 3) ? getPartnerModelName(digiType) : getDigimonModelName(digiType);
++		loadDigimonTexture(digiType, name, m);
++		concatStrings(path, MAIN_D_8011D484, name);
++		concatStrings(path, path, MAIN_D_801340E4);
++		path[9] = digiType / 30 + '0';
++		if (modelType == 3 && getDigimonModelFileSize(digiType, path) > PARTNER_MMD_MAX) {
++			return 0; /* MOD (scale): never past PARTNER_MODEL_BUFFER (isPartnerModelFit) */
++		}
++		readDigimonModel(digiType, path, m->mmdPtr);
+ 	}
+-	readDigimonModel(digiType, path, m->mmdPtr);
+ 	m->modelPtr = (TMDModel *)((char *)m->mmdPtr + ((long *)m->mmdPtr)[0]);
+ 	m->animTablePtr = (long *)((char *)m->mmdPtr + ((long *)m->mmdPtr)[1]);
+ 	GsMapModelingData((u_long *)&m->modelPtr->flags);
+ 	updateTMDTextureData((char *)m->modelPtr, m->pixelPage, m->pixelOffsetX, m->pixelOffsetY,
+ 	                     m->clutPage - 0x7A00);
++	MOD_HAIR_TINT = 0;
+ 	return m;
+ }
+ 
++/* MOD (tamer looks): the tamer on screen takes the chosen look. Same skeleton and animation slots: only its objects are linked again. */
++void lookTamerRelook(void)
++{
++	Entity *entity = &TAMER_ENTITY.entity;
++	PositionData *pos = entity->posData;
++	SkeletonBone *bone = getDigimonSkeleton(0);
++	int32_t i;
++
++	loadMMD(0, 2);
++	entity->animPtr = TAMER_MODEL.animTablePtr;
++	for (i = 0; i < DIGI_PARA(0).boneCount; ++pos, ++bone, ++i) {
++		if (bone->objIndex != -1) {
++			GsLinkObject4((u_long)TAMER_MODEL.modelPtr->obj, &pos->obj, bone->objIndex);
++		}
++	}
++	startAnimation(entity, 0);
++}
++
+ void unloadModel(int32_t digiType, int32_t modelType)
+ {
+ 	int32_t i;
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index 4246999..48af1b0 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -2224,6 +2224,8 @@ void initializeScripts(void)
+ 	TEXTBOX_ORIGIN_Y = -0x270f;
+ 	TEXTBOX_ORIGIN_Z = -0x270f;
+ 
++	MOD_TAMER_LOOK = 0; /* MOD (tamer looks): a new game or a save without the record has the original tamer */
++	MOD_TAMER_HAIR = 0;
+ 	inputInit();
+ 	dailyPStatTrigger();
+ 	initializeLoadedNPCModels();
+diff --git a/src/main/utils2.c b/src/main/utils2.c
+index 70ec721..76be961 100644
+--- a/src/main/utils2.c
++++ b/src/main/utils2.c
+@@ -419,6 +419,9 @@ void loadDynamicLibrary(Overlay lib, uint8_t *isComplete, uint8_t isAsync,
+ 	if (lib != BTL_REL) {
+ 		modBtlPreloadDrop(); /* MOD (quick battle start), btl.c */
+ 	}
++	if (lib == TRN_REL || lib == TRN2_REL) {
++		modTamerColdPrefetch(9); /* MOD (tamer looks): the gym's gesture, read with the gym and not when it starts */
++	}
+ 	if (!isAsync) {
+ 		readFile(REL_BIN_FILES[lib - 1], (nv = REL_BIN_OFFSETS[lib - 1]));
+ 	} else {
+diff --git a/text/main/mod_lab.yaml b/text/main/mod_lab.yaml
+index 9176354..41e4357 100644
+--- a/text/main/mod_lab.yaml
++++ b/text/main/mod_lab.yaml
+@@ -319,6 +319,114 @@ MOD_LAB:
+     LAB_STR_UNLOCK_CHART:
+       ja: "Unlock evolution chart"
+       en_us: "Unlock evolution chart"
++    LAB_STR_HAIRSTYLE:
++      ja: "Hairstyle"
++      en_us: "Hairstyle"
++    LAB_STR_HAIR_COLOUR:
++      ja: "Hair colour"
++      en_us: "Hair colour"
++    LAB_STR_LOOK_ORIGINAL:
++      ja: "Original"
++      en_us: "Original"
++    LAB_STR_LOOK_BALD:
++      ja: "Bald"
++      en_us: "Bald"
++    LAB_STR_LOOK_CLASSIC:
++      ja: "Classic"
++      en_us: "Classic"
++    LAB_STR_LOOK_MESSY:
++      ja: "Messy"
++      en_us: "Messy"
++    LAB_STR_LOOK_QUIFF:
++      ja: "Quiff"
++      en_us: "Quiff"
++    LAB_STR_LOOK_CURTAINS:
++      ja: "Curtains"
++      en_us: "Curtains"
++    LAB_STR_LOOK_BUZZ:
++      ja: "Buzz cut"
++      en_us: "Buzz cut"
++    LAB_STR_LOOK_LONG:
++      ja: "Long"
++      en_us: "Long"
++    LAB_STR_LOOK_MULLET:
++      ja: "Mullet"
++      en_us: "Mullet"
++    LAB_STR_LOOK_PONYTAIL:
++      ja: "Ponytail"
++      en_us: "Ponytail"
++    LAB_STR_LOOK_PIGTAILS:
++      ja: "Pigtails"
++      en_us: "Pigtails"
++    LAB_STR_LOOK_BUN:
++      ja: "Bun"
++      en_us: "Bun"
++    LAB_STR_LOOK_BUNS:
++      ja: "Twin buns"
++      en_us: "Twin buns"
++    LAB_STR_HAIR_BROWN:
++      ja: "Brown"
++      en_us: "Brown"
++    LAB_STR_HAIR_DARK_BROWN:
++      ja: "Dark brown"
++      en_us: "Dark brown"
++    LAB_STR_HAIR_BLACK:
++      ja: "Black"
++      en_us: "Black"
++    LAB_STR_HAIR_CHESTNUT:
++      ja: "Chestnut"
++      en_us: "Chestnut"
++    LAB_STR_HAIR_BLOND:
++      ja: "Blond"
++      en_us: "Blond"
++    LAB_STR_HAIR_LIGHT_BLOND:
++      ja: "Light blond"
++      en_us: "Light blond"
++    LAB_STR_HAIR_GINGER:
++      ja: "Ginger"
++      en_us: "Ginger"
++    LAB_STR_HAIR_RED:
++      ja: "Red"
++      en_us: "Red"
++    LAB_STR_HAIR_BURGUNDY:
++      ja: "Burgundy"
++      en_us: "Burgundy"
++    LAB_STR_HAIR_PINK:
++      ja: "Pink"
++      en_us: "Pink"
++    LAB_STR_HAIR_LAVENDER:
++      ja: "Lavender"
++      en_us: "Lavender"
++    LAB_STR_HAIR_PURPLE:
++      ja: "Purple"
++      en_us: "Purple"
++    LAB_STR_HAIR_NAVY:
++      ja: "Navy"
++      en_us: "Navy"
++    LAB_STR_HAIR_BLUE:
++      ja: "Blue"
++      en_us: "Blue"
++    LAB_STR_HAIR_TURQUOISE:
++      ja: "Turquoise"
++      en_us: "Turquoise"
++    LAB_STR_HAIR_GREEN:
++      ja: "Green"
++      en_us: "Green"
++    LAB_STR_HAIR_LIME:
++      ja: "Lime"
++      en_us: "Lime"
++    LAB_STR_HAIR_GREY:
++      ja: "Grey"
++      en_us: "Grey"
++    LAB_STR_HAIR_SILVER:
++      ja: "Silver"
++      en_us: "Silver"
++    LAB_STR_HAIR_WHITE:
++      ja: "White"
++      en_us: "White"
++    LAB_STR_LOOK_TURN:
++      ja: "L1/R1: turn"
++      en_us: "L1/R1: turn"
+     LAB_STR_MSG_LEARNED:
+       ja: "Learned!"
+       en_us: "Learned!"
+-- 
+2.55.0
+
