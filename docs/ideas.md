@@ -160,3 +160,4 @@ against, leave this list.
 | More fish and more fishing mechanics, and a hint about the evolution item that only fishing gives | 🆕 | New catches need item data and fishing tables; the hint is text only. |
 | A "choose the folder" option in the desktop patcher for its downloaded package and temporary files, for players whose system drive is full | 🛠️ | Today `HORIZON_PATCHER_HOME` moves the package and settings; temporary files follow TEMP and TMP. |
 | Let imported Digimon enter themed cups by their own element, not only by the original they borrow techniques from (Pumpkinmon, a fire Digimon, plays the Ice cup because it borrows Frigimon's moves) | ⚖️ | Rule is documented in `engine-patches.md`; changing it moves every cup list, so it needs a balance pass. |
+| A recruitable Digimon that gives the tamer clothes or costumes, and more outfits in general | 🆕 | Needs new tamer sprites for every outfit and a way to store the choice in the save. |
