@@ -1,0 +1,36 @@
+From 30821ffee0c2ea434e3a26eee2d73598fe7b1f9a Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 20 Nov 2026 16:40:20 +0000
+Subject: [PATCH] Draw the battle item list's names again after the bag is
+ filtered
+
+---
+ src/main/mod_feed.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/src/main/mod_feed.c b/src/main/mod_feed.c
+index 55ace6e..940a5cc 100644
+--- a/src/main/mod_feed.c
++++ b/src/main/mod_feed.c
+@@ -565,6 +565,8 @@ static int32_t isBattleItem(ItemId type)
+ 	return (type != ITEM_NONE) && ((ITEM_PARA[type].itemColor == 1) || (ITEM_PARA[type].itemColor == 2));
+ }
+ 
++void drawInventoryText(void);
++
+ void modBagFilterForBattle(void)
+ {
+ 	int32_t i;
+@@ -592,6 +594,9 @@ void modBagFilterForBattle(void)
+ 		INVENTORY.amounts.array[n] = 0;
+ 		INVENTORY.names.array[n] = 0xff;
+ 	}
++	/* The names are blitted from the text area, which a fight leaves as the last bag menu drew it (the whole bag, in
++	 * its own order): draw it again for the list that was just built. */
++	drawInventoryText();
+ }
+ 
+ void modBagRestoreAfterBattle(void)
+-- 
+2.55.0
+

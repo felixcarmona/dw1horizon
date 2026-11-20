@@ -503,3 +503,4 @@ at 2 MB. Physical hardware validation remains outstanding.
 | `Card-album-shows-each-new-card-s-chart-icon.patch` |  | Card album shows each new card's chart icon | 0 B main (MENU +420 B) |
 | `Item-Bank-box-titles-take-the-room-they-need.patch` |  | Item Bank box titles take the room they need |  |
 | `Sort-Status-portraits-into-finer-depth-buckets.patch` |  | Sort Status portraits into finer depth buckets |  |
+| `Draw-the-battle-item-list-s-names-again-after-the-ba.patch` |  | Draw the battle item list's names again after the bag is filtered |  |
