@@ -1,31 +1,41 @@
 #!/usr/bin/env python3
-"""TAMER.DAT: the tamer's other looks (bald and the hairstyles), made from the player's own disc.
+"""TAMER.DAT: the tamer's other looks (bald, the hairstyles, the shirts), made from the player's own disc.
 
   tamer_pack.py build OUT [--model BOYS.MMD] [--alltim ALLTIM.TIM]
   tamer_pack.py list
 
-Look 0 is the original tamer and is not in the file: the game loads the disc's own model and texture for it.
-Looks 1.. are tools/tamer_looks (bald, then the hairstyles). The file, in 2048-byte sectors, little endian:
+Look 0 is the original tamer: with his own clothes and face the game loads the disc's own model and texture.
+Looks 1.. are tools/tamer_looks (bald, then the hairstyles). A model in the file has no torso and no arms: those five
+objects are a shirt (tools/tamer_looks/shirts.py), read behind the model and linked into it, so any head goes with any
+shirt. Shirt 0 is the original hoodie and backpack. The file, in 2048-byte sectors, little endian:
 
   sector 0   "TLK1", u16 looks, u16 texture sector, u16 cold sector, u16 cold sectors, u16 colours
-             0x10: per look u16 first sector, u16 sectors
+             0x10: per look u16 first sector, u16 length in 4-byte words
              0x80: per hair colour r, g, b
              0xC0: the brightness of each of the hair texture's sixteen tones, 128 = the colour itself
+             0xD0: u16 shirts, u16 shirt colours; the original tamer's model without torso and arms (u16 first
+                   sector, u16 words); u16 sector of the original tamer's texture with his first face
+             0x100: per shirt u16 first sector, u16 sectors of geometry (after the shirt's first sector)
+             0x180: per shirt colour r, g, b of the cloth and r, g, b of stripes and prints on it
   texture    the bald head's texture, one ALLTIM entry (9 sectors), shared by every look; one per face (u16 at 0x0E:
              how many), the second drawn by tools/tamer_looks/face.py; after them the original tamer's texture with
              each face but the first (his first face is the disc's own texture)
   cold       the animations of COLD_SLOTS, the same for every look, laid out by tools/coldsplit.py
-  models     one resident model per look
+  models     one resident model per look, then the original tamer's
+  shirts     per shirt one sector (the size of its geometry, where each object's corners, normals and polygons
+             are, how the cloth's palette row is coloured, and the pixels it draws on the texture: shirts.head) and
+             its geometry
 
 A look's model is larger than the original, and the tamer's buffer (TAMER_MMD_MAX) does not grow, so the
 animations of COLD_SLOTS leave the model: their table entries become cold entries (COLD_ANIM_FLAG, as the partners')
 and the game reads one into the last 4096 bytes of the buffer when it starts. The resident model therefore has to
-fit in TAMER_MMD_MAX - 4096 bytes. The meshes are never simplified for that: more room means more cold slots.
+fit in TAMER_MMD_MAX - 4096 bytes together with the largest shirt. The meshes are never simplified for that: more room means more cold slots.
 
 Hair polygons are textured with the strand tile of tools/tamer_looks/hairtex.py and its own palette row; the game
 writes that row for the chosen colour (lookHairPalette), so one model serves every colour.
 """
 import argparse
+import copy
 import os
 import struct
 import sys
@@ -34,7 +44,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import coldsplit  # noqa: E402
 import mmd  # noqa: E402
 import tamer_looks  # noqa: E402
-from tamer_looks import face, hairtex, wig  # noqa: E402
+from tamer_looks import face, hairtex, shirts, wig  # noqa: E402
 
 SECTOR = 2048
 TAMER_MMD_MAX = 0xE000          # include/dw/memmap.h
@@ -42,8 +52,8 @@ COLD_BUFFER = 0x1000            # the tail of the tamer's buffer (TAMER_COLD_BUF
 RESIDENT_MAX = TAMER_MMD_MAX - COLD_BUFFER
 # Animations that leave the model: the ones only scenes start (13, 15-26: the engine itself never asks for them) and
 # the gym's (9), which the game reads while the gym loads (modTamerColdPrefetch), and the two praising gestures (38, 39),
-# read when the praise starts.
-COLD_SLOTS = (9, 13) + tuple(range(15, 27)) + (38, 39)
+# read when the praise starts, and fishing's (27-34), which make room for the shirts.
+COLD_SLOTS = (9, 13) + tuple(range(15, 27)) + tuple(range(27, 35)) + (38, 39)
 HEAD = 1                        # the head's object in the tamer model
 MODEL = os.path.join(mmd.EXTRACTED, 'CHDAT', 'MMD0', 'BOYS.MMD')
 ALLTIM = mmd.ALLTIM
@@ -109,12 +119,15 @@ def slim_head(model):
         o.norm_start += dn
 
 
-def resident(model, nbones):
-    """(resident model, cold part) of one look. Nothing is simplified to make it fit: a look that does not is an error."""
+def resident(model, nbones, room):
+    """(resident model, cold part) of one look, without the objects a shirt brings. Nothing is simplified to make it
+    fit: a look that leaves less than room bytes for the shirt is an error."""
     slim_head(model)
+    shirts.strip(model)
     res, cold = coldsplit.split(model.build(), nbones, slots=COLD_SLOTS, buffer_bytes=COLD_BUFFER)
-    if len(res) > RESIDENT_MAX:
-        raise SystemExit(f'tamer look does not fit: {len(res)} > {RESIDENT_MAX} bytes')
+    res += b'\0' * (-len(res) % 4)
+    if len(res) + room > RESIDENT_MAX:
+        raise SystemExit(f'tamer look does not fit: {len(res)} + {room} > {RESIDENT_MAX} bytes')
     return res, cold
 
 
@@ -126,33 +139,51 @@ def build(model_path, alltim_path):
     """(TAMER.DAT bytes, report lines)."""
     model = mmd.MMD.load(model_path, 0)
     original = mmd.load_tim(alltim_path, 0)
-    texture, looks = tamer_looks.build(model, original)
+    wardrobe = shirts.build(model, original)
+    room = max(len(body) for _, _, body, _, _, _ in wardrobe)
+    texture, looks = tamer_looks.build(copy.deepcopy(model), original)
     textures = [texture.to_bytes(), face.make(texture).to_bytes()]      # one per face
-    capped = [face.make(original, lid=False).to_bytes()]                # the original tamer's, from the second face on
+    # the original tamer's: from the second face on, then with his first (read when he wears another shirt)
+    capped = [face.make(original, lid=False).to_bytes(), original.to_bytes()]
     assert all(len(t) == mmd.ALLTIM_STRIDE for t in textures + capped), [len(t) for t in textures + capped]
     texture = b''.join(textures + capped)
     parts, cold_part, report = [], None, []
-    for name, look in looks:
-        res, cold = resident(look, model.nbones)
+    for name, look in looks + [('original', model)]:
+        res, cold = resident(look, model.nbones, room)
         assert cold_part in (None, cold), 'the cold animations differ between looks'
         cold_part = cold
-        parts.append(pad(res))
-        report.append(f'{name}: {len(res)} bytes resident ({RESIDENT_MAX - len(res)} spare)')
+        parts.append(res)
+        report.append(f'{name}: {len(res)} bytes resident ({RESIDENT_MAX - len(res) - room} spare with the largest shirt)')
     header = bytearray(SECTOR)
     tex_sector = 1
     cold_sector = tex_sector + len(texture) // SECTOR
     cold_sectors = len(pad(cold_part)) // SECTOR
-    struct.pack_into('<4s5H', header, 0, b'TLK1', len(parts), tex_sector, cold_sector, cold_sectors, len(COLOURS))
+    struct.pack_into('<4s5H', header, 0, b'TLK1', len(looks), tex_sector, cold_sector, cold_sectors, len(COLOURS))
     sector = cold_sector + cold_sectors
     for i, part in enumerate(parts):
-        struct.pack_into('<2H', header, 0x10 + 4 * i, sector, len(part) // SECTOR)
-        sector += len(part) // SECTOR
+        at = 0x10 + 4 * i if i < len(looks) else 0xD4
+        struct.pack_into('<2H', header, at, sector, len(part) // 4)
+        sector += len(pad(part)) // SECTOR
     for i, (_, rgb) in enumerate(COLOURS):
         header[0x80 + 3 * i:0x83 + 3 * i] = bytes(rgb)
     header[0xC0:0xD0] = bytes(hairtex.LEVELS)
     struct.pack_into('<H', header, 0x0E, len(textures))
+    struct.pack_into('<2H', header, 0xD0, len(wardrobe), len(shirts.COLOURS))
+    struct.pack_into('<H', header, 0xD8, tex_sector + (len(textures) + len(capped) - 1) * (mmd.ALLTIM_STRIDE // SECTOR))
+    closet = b''
+    for i, (name, first, body, _, _, _) in enumerate(wardrobe):
+        sectors = len(pad(body)) // SECTOR
+        # the game reads whole sectors behind the model: the read may run into the buffer's tail, never past it
+        if max(len(p) for p in parts) + sectors * SECTOR > TAMER_MMD_MAX:
+            raise SystemExit(f'shirt {name} does not fit behind the largest look')
+        struct.pack_into('<2H', header, 0x100 + 4 * i, sector, sectors)
+        sector += 1 + sectors
+        closet += first + pad(body)
+        report.append(f'shirt {name}: {len(body)} bytes')
+    for i, (_, rgb, second) in enumerate(shirts.COLOURS):
+        header[0x180 + 6 * i:0x186 + 6 * i] = bytes(rgb + second)
     report.append(f'cold animations: {len(cold_part)} bytes, {cold_sectors} sectors')
-    return bytes(header) + texture + pad(cold_part) + b''.join(parts), report
+    return bytes(header) + texture + pad(cold_part) + b''.join(pad(p) for p in parts) + closet, report
 
 
 def main():
@@ -169,6 +200,10 @@ def main():
             print(f'look {i}: {name}')
         for i, (name, rgb) in enumerate(COLOURS):
             print(f'colour {i}: {name} {rgb}')
+        for i, name in enumerate(shirts.NAMES):
+            print(f'shirt {i}: {name}')
+        for i, (name, rgb, _) in enumerate(shirts.COLOURS):
+            print(f'shirt colour {i}: {name} {rgb}')
         return
     data, report = build(args.model, args.alltim)
     with open(args.out, 'wb') as f:

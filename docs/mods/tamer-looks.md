@@ -1,4 +1,4 @@
-# Tamer looks: bald, hairstyles, hair colours and faces
+# Tamer looks: bald, hairstyles, hair colours, faces and shirts
 
 The tamer can take off his cap. Besides the original tamer there are twelve other looks: a bald head and eleven
 hairstyles (classic, messy, quiff, curtains, buzz, long, mullet, ponytail, pigtails, bun, buns), each in twenty hair
@@ -6,7 +6,10 @@ colours. They are chosen on the **Look** page of the pause menu's Player tab: le
 hair colour, L1 and R1 turn the tamer. The original tamer and the bald head have no hair to colour: their colour row
 shows a dash and cannot be chosen. A third row, **Face**, chooses between two faces for every look: the first is the
 tamer's own, the second has a blush instead of the freckle marks, a finer mouth with lips, a darker eyelid and two
-lashes (under the original tamer's cap the eye keeps its eyelid: the cap's shadow already frames it). The Player tab shows the button that opens the page beside the name, and the
+lashes (under the original tamer's cap the eye keeps its eyelid: the cap's shadow already frames it). Two more rows,
+**Shirt** and **Shirt colour**, dress every look, the original tamer included: the original hoodie with its backpack,
+or one of ten shirts (T-shirt, striped, printed, long sleeve, hoodie, jacket, fitted tee, top, cardigan, blouse) in
+sixteen colours. The original hoodie has no colour to choose. The Player tab shows the button that opens the page beside the name, and the
 page shows there the two that leave it: the confirm button saves the look, the cancel button leaves without saving and
 the tamer is again as he was when the page opened. The look is kept in the save.
 
@@ -18,7 +21,8 @@ the tamer is again as he was when the page opened. The look is kept in the save.
 
 Hair colours 0–19: brown, dark brown, black, chestnut, blond, light blond, ginger, red, burgundy, pink, lavender, purple,
 navy, blue, turquoise, green, lime, grey, silver, white. The names are shown, translated like the rest of the menu.
-`tools/tamer_pack.py list` prints both lists.
+Shirt colours 0–15: white, grey, black, red, burgundy, orange, yellow, lime, green, turquoise, blue, navy, purple,
+lavender, pink, brown. `tools/tamer_pack.py list` prints every list.
 
 ## Where the looks come from
 
@@ -32,33 +36,36 @@ Nothing of the looks is committed as model data. The build makes them from the p
   one the cap used.
 - `tools/tamer_looks/face.py` draws the second face on a copy of the bald head's texture and of the original tamer's, the frames the eye and
   mouth animations copy over the face included.
+- `tools/tamer_looks/shirts.py` models each shirt over the tamer's own torso and arms (trunk, upper arms and forearms:
+  objects 0, 2, 3, 5 and 6 of the model), and draws its cloth where the hoodie's was in the texture.
 - `tools/tamer_pack.py` packs every look into `TAMER.DAT` (derive step `tamer`), a new file in the root of the disc.
 
 `TAMER.DAT`, in 2048-byte sectors:
 
 | Part | Content |
 |---|---|
-| sector 0 | `"TLK1"`, u16 looks in the file, u16 texture sector, u16 cold sector, u16 cold sectors, u16 colours, u16 faces; at 0x10 per look `u16 first sector, u16 sectors`; at 0x80 per colour `r, g, b`; at 0xC0 the brightness of each of the hair texture's sixteen tones (128 = the colour itself) |
-| texture | the bald head's texture (one `ALLTIM` entry, 9 sectors), shared by every look: one per face, one after the other; then the original tamer's texture with each face but the first |
+| sector 0 | `"TLK1"`, u16 looks in the file, u16 texture sector, u16 cold sector, u16 cold sectors, u16 colours, u16 faces; at 0x10 per look `u16 first sector, u16 length in 4-byte words`; at 0x80 per colour `r, g, b`; at 0xC0 the brightness of each of the hair texture's sixteen tones (128 = the colour itself); at 0xD0 u16 shirts, u16 shirt colours; at 0xD4 `u16 sector, u16 words` of the original tamer's model without its shirt; at 0xD8 the sector of his texture with the first face; at 0x100 per shirt `u16 first sector, u16 geometry sectors`; at 0x180 per shirt colour `r, g, b` of the cloth and `r, g, b` of its second colour |
+| texture | the bald head's texture (one `ALLTIM` entry, 9 sectors), shared by every look: one per face, one after the other; then the original tamer's texture with each face but the first, and with the first |
 | cold | the animations that leave the models, the same bytes for every look |
-| models | one model per look |
+| models | one model per look, without the five objects a shirt replaces; then the original tamer's, the same way |
+| shirts | per shirt one head sector, then its geometry |
 
 ## Memory
 
 The tamer's buffer (`TAMER_MMD_MAX`, 0xE000 bytes) does not grow and the heap is untouched. A look's model is larger
-than the original, so it gives up sixteen animations (`COLD_SLOTS` in `tamer_pack.py`): the thirteen only scenes
+than the original, so it gives up twenty-four animations (`COLD_SLOTS` in `tamer_pack.py`): the thirteen only scenes
 start (slots 13 and 15–26: the engine itself never asks for them), the gym's (slot 9), which is read while the
-gym's overlay loads (`modTamerColdPrefetch`), so nothing waits when it starts, and the two praising gestures (38, 39),
-read when the praise starts. Their table entries become cold entries, as the partners' (`COLD_ANIM_FLAG`),
-and every model has to fit in `TAMER_MMD_MAX - 0x1000` bytes. No mesh is simplified for that; when a look needs more
-room (clothes, shoes), more animations become cold: fishing (27–34; 4.3 KB) is the next
-candidate, at the price of a short read when each starts on a 2 MB console. The last 0x1000 bytes of the buffer
+gym's overlay loads (`modTamerColdPrefetch`), so nothing waits when it starts, the two praising gestures (38, 39),
+read when the praise starts, and the eight of fishing (27–34), each read when it starts. Their table entries become cold entries, as the partners' (`COLD_ANIM_FLAG`),
+and every model with the largest shirt has to fit in `TAMER_MMD_MAX - 0x1000` bytes. No mesh is simplified for that;
+when a look needs more room, more animations become cold. The last 0x1000 bytes of the buffer
 (`TAMER_COLD_MAX`) hold the cold animation in use:
 
 - with 2 MB of RAM, the game reads it from the disc when it starts (one or two sectors: a short wait);
 - with more RAM, the whole cold part is read once with the model, at 0x80210000, and nothing waits.
 
-The original tamer (look 0) keeps every animation in memory, as always.
+The original tamer (look 0) in his original shirt keeps every animation in memory, as always; with another shirt he is
+a model of `TAMER.DAT` like the rest.
 
 ## In the engine
 
@@ -80,8 +87,22 @@ The original tamer (look 0) keeps every animation in memory, as always.
 - The game draws one face of a polygon. The menu's close-up shows the hair from angles the field never does (under the
   fringe, between a lock and the cheek), so there `lookPageHairInside` sorts the hair a second time with two corners
   swapped: the far faces are drawn and no gap shows what is behind the head.
-- Save record `0x000F` holds the look, the colour and the face ([save format](../reference/save-format.md)); a new game and
+- A shirt is five objects of the model. Every model in `TAMER.DAT` comes without them; `lookTamerLoad` reads the
+  chosen shirt's geometry right behind the model and points the five entries of the object table at it before the
+  model is linked. The shirt's head sector (geometry size, the five entries, a palette recipe, the rectangles of the
+  texture it draws on and their pixels) is read first: the pixels go over the texture in memory, and
+  `lookShirtPalette` makes the cloth's palette row from the recipe and the chosen colour (per tone: kept, the colour,
+  its second colour or a fixed one; a level and a share of white). Shirt 0 is the tamer's own five objects with a
+  recipe that keeps every tone. A shirt colour change sends that palette row; a shirt change reads the disc.
+- Save record `0x000F` holds the look, the colour, the face, the shirt and its colour ([save format](../reference/save-format.md)); a new game and
   an older save start with the original tamer. Without `TAMER.DAT` on the disc every look is the original tamer.
+
+## Adding a shirt
+
+Add its row to `STYLES` in `tools/tamer_looks/shirts.py` (at the end: the number is saved), raise `TAMER_SHIRT_COUNT`
+in `include/dw/species.h`, give it a name (`lookPageShirts` in `game_menu.c`, `LAB_STR_SHIRT_*`), and run
+`tools/tamer_pack.py build` to see that every look still fits with it. The shirt may draw only in its rectangles of the
+texture (`RECTS`): the trousers and the shoes use the rest.
 
 ## Adding a hairstyle
 
