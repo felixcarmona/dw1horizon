@@ -15,11 +15,13 @@ original ones, trainers, small trainers, plain, flats, Mary Janes, ankle boots, 
 rain boots, sandals), each with its own colour row and the same sixteen colours. The small kinds are a smaller foot. A
 boot's leg goes over a slim or bare shin (skinny, shorts, capri, skirt); wide trousers fall over it and only the foot
 shows. The last two rows are **Backpack** and **Backpack colour**: the original backpack, none, or one of five others
-(classic, which is the original one in any colour, school bag, mini, hiking, round) in the same sixteen colours. Every
+(classic, which is the original one in any colour, school bag, mini, hiking, round) in the same sixteen colours. Each
+of the five is the original backpack in other proportions, with its cloth, seams and shading, and its own fittings
+drawn where the original has its emblem. Every
 shirt takes every backpack: the original hoodie with the original backpack is the tamer as he always was, and with
-another one or none it is the same hoodie without it. Under a backpack a shirt shows its straps. The page shows five of
-its eleven rows at a time, around the chosen one, with a mark above or below the boxes
-when there are more. The Player tab shows the button that opens the page beside the name, and the
+another one or none it is the same hoodie without it. Under a backpack a shirt shows its straps. The last row is
+**Hands**: normal or small. The page shows five of its twelve rows at a time, around the chosen one, with a scroll
+bar beside the boxes. The Player tab shows the button that opens the page beside the name, and the
 page shows there the two that leave it: the confirm button saves the look, the cancel button leaves without saving and
 the tamer is again as he was when the page opened. The look is kept in the save.
 
@@ -127,8 +129,12 @@ a model of `TAMER.DAT` like the rest.
   drawn unless the backpack is none. The original hoodie has its backpack in its mesh and in its drawing, so with
   another backpack or none the loader reads one of two shirts that are not chosen from: the same hoodie with the
   backpack taken out and its back closed, with the straps or without them. The original backpack on another shirt is
-  the tamer's own, a little narrower so that it sits on every back.
-- Save record `0x000F` holds `MOD_TAMER_STATE`: the look, the hair colour, the face, then each garment and its colour ([save format](../reference/save-format.md)); a new game and
+  the tamer's own, a little narrower so that it sits on every back. The other styles are that same mesh with its
+  corners moved (`STYLES`: how tall, wide and deep) and the original drawing with the emblem painted over.
+- Small hands are not a garment: after the model is in memory the loader moves the corners of the two hand objects
+  to three quarters of their distance from the wrist. The original tamer with small hands is read as the original
+  tamer with another face is.
+- Save record `0x000F` holds `MOD_TAMER_STATE`: the look, the hair colour, the face, each garment and its colour, then the hands ([save format](../reference/save-format.md)); a new game and
   an older save start with the original tamer. Without `TAMER.DAT` on the disc every look is the original tamer.
 
 ## Adding a shirt
