@@ -15,7 +15,11 @@ Every term is cyclic over the clip, so loops close on the clip's own ticks; ever
 are untouched. The gloves' own orientation on the hand bones is the binding's `aim` piece rule (native_binding.py).
 """
 import copy
+import hashlib
+import json
 import math
+import os
+import sys
 
 from tools.derive import arraymath as np
 
@@ -275,13 +279,17 @@ class _Mesh:
         return int(hit.sum())
 
 
-def clear_hands(model, sk, frames, spec):
+def clear_hands(model, sk, frames, spec, solved=None):
     """Turn each hand, on the ticks it enters a leg, foot or the body (`clear` bones), by the smallest wrist swing about
     the line of the shoulders (`swing` degrees at most) and outward turn about the walking direction (`out` at
     most) that leaves it outside; the turns are eased over the neighbouring ticks round the loop, so the hand dodges
-    the passing knee in one smooth flick instead of a snap."""
+    the passing knee in one smooth flick instead of a snap.
+
+    Returns the turns each tick needs: per hand, per pass, [the arm's, the hand's], each a list of [swing, out] per
+    tick. With `solved` (such a list, from an earlier search on the same model and recipe) the search is skipped and
+    those turns are applied: the same frames, without the contact tests."""
     c = spec['clear']
-    mesh = _Mesh(model, sk)
+    mesh = _Mesh(model, sk) if solved is None else None
     ticks = len(frames) - 1
     sides = {arm['bones'][-1]: arm['side'] for arm in spec['narrow']['arms']}
     grid = sorted(((a, o) for a in range(-c['swing'], c['swing'] + 1, 3) for o in range(0, c['out'] + 1, 3)),
@@ -318,28 +326,42 @@ def clear_hands(model, sk, frames, spec):
             eased = [tuple(n[i] if abs(n[i]) > abs(s[i]) else s[i] for i in range(2)) for n, s in zip(need, soft)]
         return eased
 
-    for hand, forearm in ((int(h), f) for h, f in spec['bones'].items()):
+    record = []
+    for index, (hand, forearm) in enumerate((int(h), f) for h, f in spec['bones'].items()):
         shoulder = sk[forearm][1]
-        for _ in range(c.get('passes', 3)):      # an eased turn can still graze on a neighbouring tick: again on top
+        known = solved[index] if solved is not None else None
+        passes = []
+        record.append(passes)
+        for number in range(c.get('passes', 3)):      # an eased turn can still graze on a neighbouring tick: again on top
+            if known is not None and number >= len(known):
+                break
             moved = False
             # the forearm or the hand in a leg: first the whole arm leans out from the shoulder, as little as clears
             # it, so the wrist keeps its line; the hand turns only for what is left
             def arm_contact(pose):
                 return mesh.inside_count(pose, forearm, c['bones']) + mesh.inside_count(pose, hand, c['bones'])
-            need = [(0, 0)]*ticks
-            for t in range(ticks):
-                if arm_contact(frames[t]):
-                    need[t] = least(arm_grid, lambda a, o: arm_contact(turned(frames[t], shoulder, a, o, hand)))
+            if known is not None:
+                need = [tuple(turn) for turn in known[number][0]]
+            else:
+                need = [(0, 0)]*ticks
+                for t in range(ticks):
+                    if arm_contact(frames[t]):
+                        need[t] = least(arm_grid, lambda a, o: arm_contact(turned(frames[t], shoulder, a, o, hand)))
+            arm_need = need
             if any(a or o for a, o in need):
                 moved = True
                 for t, (a, o) in enumerate(ease(need)):
                     q = turned(frames[t], shoulder, a, o, hand)
                     frames[t][shoulder][3:6] = q[shoulder][3:6]
                 frames[ticks][shoulder][3:6] = frames[0][shoulder][3:6]
-            need = [(0, 0)]*ticks
-            for t in range(ticks):
-                if mesh.inside_count(frames[t], hand, c['bones']):
-                    need[t] = least(grid, lambda a, o: mesh.inside_count(turned(frames[t], hand, a, o), hand, c['bones']))
+            if known is not None:
+                need = [tuple(turn) for turn in known[number][1]]
+            else:
+                need = [(0, 0)]*ticks
+                for t in range(ticks):
+                    if mesh.inside_count(frames[t], hand, c['bones']):
+                        need[t] = least(grid, lambda a, o: mesh.inside_count(turned(frames[t], hand, a, o), hand, c['bones']))
+            passes.append([[list(turn) for turn in arm_need], [list(turn) for turn in need]])
             if any(a or o for a, o in need):
                 moved = True
                 for t, (a, o) in enumerate(ease(need)):
@@ -347,12 +369,49 @@ def clear_hands(model, sk, frames, spec):
                 frames[ticks][hand][3:6] = frames[0][hand][3:6]
             if not moved:
                 break
+    return record
 
 
-def run_hands(model, sk, spec):
-    """`model` with the hands of the recipe's slots loosened; returns the built bytes."""
+SOLVED = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../../content/models/imports/native-hands-solved.json')
+SEARCHED = {}      # key -> {slot: turns} of the searches this process ran (tools/models/solve_hands.py writes them)
+SEARCH = 1          # the search's own version: raise it with any change to clear_hands' grids, order or easing
+
+
+def solved_key(source, sk, spec):
+    """What a search depends on: the model the hands are loosened on, its skeleton and the recipe."""
+    text = json.dumps([[list(b) for b in sk], spec], sort_keys=True, separators=(',', ':'))
+    return hashlib.sha1(bytes(source) + text.encode()).hexdigest()
+
+
+def solved_turns(key):
+    """The committed turns of `key` ({slot: turns}), or None: NATIVE_HANDS_SOLVED=search ignores them (the search runs,
+    as it does for a model or recipe the table has not seen), =require refuses to search."""
+    mode = os.environ.get('NATIVE_HANDS_SOLVED', '')
+    if mode == 'search':
+        return None
+    table = {}
+    if os.path.isfile(SOLVED):
+        with open(SOLVED, encoding='utf-8') as f:
+            stored = json.load(f)
+        if stored.get('search') == SEARCH:      # turns of an older search are not this one's
+            table = stored['turns']
+    if key not in table and mode == 'require':
+        raise ValueError(f'native hands: no solved turns for {key} in {os.path.basename(SOLVED)}: run '
+                         'tools/models/solve_hands.py')
+    return table.get(key)
+
+
+def run_hands(model, sk, spec, source=None):
+    """`model` with the hands of the recipe's slots loosened; returns the built bytes. `source` is the bytes `model`
+    was parsed from: with them, the turns that clear the hands come from the committed table when it has this model
+    and recipe (content/models/imports/native-hands-solved.json), and from the search otherwise."""
     n = len(sk)
     additions = []
+    key = solved_key(source, sk, spec) if source is not None else None
+    known = solved_turns(key) if key else None
+    if key and known is None and any(dict(spec, **spec.get('per_slot', {}).get(str(slot), {})).get('clear') for slot in spec['slots']):
+        print(f'native hands: no solved turns for this model and recipe ({key[:12]}), searching them: this takes many '
+              'minutes (tools/models/solve_hands.py stores them)', file=sys.stderr, flush=True)
     for slot in spec['slots']:
         frames, loop, events = animsheet.slot_frames(model, n, slot)
         frames = copy.deepcopy(frames)
@@ -361,7 +420,12 @@ def run_hands(model, sk, spec):
             narrow_arms(sk, frames, row)
         pose_hands(sk, frames, row)
         if row.get('clear'):
-            clear_hands(model, sk, frames, row)
+            if known is not None:
+                clear_hands(model, sk, frames, row, known[str(slot)])
+            else:
+                turns = clear_hands(model, sk, frames, row)
+                if key:
+                    SEARCHED.setdefault(key, {})[str(slot)] = turns
         additions.append((slot, frames, loop, events))
         additions += [(alias, frames, loop, events) for alias in spec.get('alias', {}).get(str(slot), [])]
     return A.finish(model, additions, n, charts=False)

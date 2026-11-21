@@ -191,6 +191,12 @@ class KingEtemonNative(unittest.TestCase):
                     self.assertEqual(mesh.inside_count(pose, hand, bones), 0, (slot, t, hand))
                     self.assertLessEqual(mesh.inside_count(pose, forearm, bones), 2, (slot, t, forearm))
 
+    def test_the_hand_turns_come_from_the_committed_table(self):
+        """The build applied native-hands-solved.json and searched nothing: a change to the model, the skeleton or the
+        recipe needs tools/models/solve_hands.py again, or every build and every player's patch searches for a
+        quarter of an hour."""
+        self.assertEqual(native_hands.SEARCHED, {}, 'run tools/models/solve_hands.py and commit the table')
+
     def test_arms_do_not_splay_outward(self):
         """Sideways lean of each upper arm and forearm against the line of the shoulders, per tick."""
         for slot in (2, 3, 4):
