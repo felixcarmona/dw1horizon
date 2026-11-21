@@ -1,5 +1,7 @@
 """The second face of the tamer's looks: a blush instead of the freckle marks, a finer mouth with lips, a dark upper
-eyelid and two lashes. make(texture) returns a copy of the bald head's texture with that face drawn on it.
+eyelid and two lashes. make(texture) returns a copy of the bald head's texture with that face drawn on it, and
+make(texture, lid=False) does the same for the original tamer's texture: under his cap the eye is already framed by
+the cap's shadow, so it keeps its eyelid and only takes the lashes.
 
 The head's texture is a mirrored half face at u 0..28 in palette row 6. The animations copy frames over it: nine eye
 frames (16x24 at u 56+16k, v 0) onto u 8, v 0 and six mouth frames (16x16 at u 56+16k, v 24) onto u 0, v 24, so
@@ -37,7 +39,7 @@ def blush(put):
                 put(u, v, BLUSH)
 
 
-def make(texture):
+def make(texture, lid=True):
     x = copy.deepcopy(texture)
     x.idx = bytearray(x.idx)
     pal = list(x.pal[ROW])
@@ -82,7 +84,8 @@ def make(texture):
     # the face itself
     cheek(0)
     mouth(0)
-    for u, v in LID + LASHES:
+    marks = (LID if lid else ()) + LASHES
+    for u, v in marks:
         put(u, v, BLACK)
     # the eye frames: the ones that are the face's own eye take the same lid; the others (half shut, shut, looking
     # aside) get a dark line over the eye's upper outline
@@ -92,9 +95,11 @@ def make(texture):
         frame = [old[v * W + fu:v * W + fu + 16] for v in range(EYE[3])]
         cheek(fu - EYE[0])
         if sum(a != b for r, s in zip(frame, face_eye) for a, b in zip(r, s)) <= 30:
-            for u, v in LID + LASHES:
+            for u, v in marks:
                 if EYE[0] <= u < EYE[0] + 16:
                     put(fu + u - EYE[0], v, BLACK)
+            continue
+        if not lid:
             continue
         for lu in range(1, 16):
             top = next((v for v in range(1, 16) if frame[v][lu] in DARK), None)
