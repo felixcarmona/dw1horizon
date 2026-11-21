@@ -4,15 +4,15 @@ The tamer can take off his cap. Besides the original tamer there are twelve othe
 hairstyles (classic, messy, quiff, curtains, buzz, long, mullet, ponytail, pigtails, bun, buns), each in twenty hair
 colours. They are chosen on the **Look** page of the pause menu's Player tab: left and right change the hairstyle or the
 hair colour, L1 and R1 turn the tamer. The original tamer and the bald head have no hair to colour: their colour row
-shows a dash and cannot be chosen. A third row, **Face**, chooses between two faces for every look but the original
-tamer, whose row shows a dash: the first is the tamer's own, the second has a blush instead of the freckle marks, a
-finer mouth with lips, a darker eyelid and two lashes. The Player tab shows the button that opens the page beside the name, and the
+shows a dash and cannot be chosen. A third row, **Face**, chooses between two faces for every look: the first is the
+tamer's own, the second has a blush instead of the freckle marks, a finer mouth with lips, a darker eyelid and two
+lashes (under the original tamer's cap the eye keeps its eyelid: the cap's shadow already frames it). The Player tab shows the button that opens the page beside the name, and the
 page shows there the two that leave it: the confirm button saves the look, the cancel button leaves without saving and
 the tamer is again as he was when the page opened. The look is kept in the save.
 
 | Look | What it is |
 |---|---|
-| 0 | the original tamer, with his cap: the disc's own model and texture, loaded exactly as before |
+| 0 | the original tamer, with his cap: the disc's own model, and the disc's own texture with the first face |
 | 1 | bald |
 | 2–12 | the hairstyles, in the order above |
 
@@ -30,7 +30,7 @@ Nothing of the looks is committed as model data. The build makes them from the p
   polygons: skull polygons the hair covers are dropped, and the hair is made of shaded triangles textured with
   a small strand tile (`hairtex.py`: one lock per band, a sheen ring, darker ends) drawn in its own palette row, the
   one the cap used.
-- `tools/tamer_looks/face.py` draws the second face on a copy of the bald head's texture, the frames the eye and
+- `tools/tamer_looks/face.py` draws the second face on a copy of the bald head's texture and of the original tamer's, the frames the eye and
   mouth animations copy over the face included.
 - `tools/tamer_pack.py` packs every look into `TAMER.DAT` (derive step `tamer`), a new file in the root of the disc.
 
@@ -39,7 +39,7 @@ Nothing of the looks is committed as model data. The build makes them from the p
 | Part | Content |
 |---|---|
 | sector 0 | `"TLK1"`, u16 looks in the file, u16 texture sector, u16 cold sector, u16 cold sectors, u16 colours, u16 faces; at 0x10 per look `u16 first sector, u16 sectors`; at 0x80 per colour `r, g, b`; at 0xC0 the brightness of each of the hair texture's sixteen tones (128 = the colour itself) |
-| texture | the bald head's texture (one `ALLTIM` entry, 9 sectors), shared by every look: one per face, one after the other |
+| texture | the bald head's texture (one `ALLTIM` entry, 9 sectors), shared by every look: one per face, one after the other; then the original tamer's texture with each face but the first |
 | cold | the animations that leave the models, the same bytes for every look |
 | models | one model per look |
 
@@ -62,6 +62,8 @@ The original tamer (look 0) keeps every animation in memory, as always.
 
 ## In the engine
 
+- For the original tamer with another face, the same loader reads his texture with that face from `TAMER.DAT` and
+  then the disc's model.
 - `modLoadTamerLook` (`mod_species.c`) loads the texture of the chosen face and the model of the chosen look in `loadMMD`'s place for
   the tamer, and `loadColdAnimation` serves the tamer's cold entries.
 - The hair colour is a palette row. `lookHairPalette` writes it into the look's texture before it is uploaded: each

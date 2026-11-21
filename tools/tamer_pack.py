@@ -12,7 +12,8 @@ Looks 1.. are tools/tamer_looks (bald, then the hairstyles). The file, in 2048-b
              0x80: per hair colour r, g, b
              0xC0: the brightness of each of the hair texture's sixteen tones, 128 = the colour itself
   texture    the bald head's texture, one ALLTIM entry (9 sectors), shared by every look; one per face (u16 at 0x0E:
-             how many), the second drawn by tools/tamer_looks/face.py
+             how many), the second drawn by tools/tamer_looks/face.py; after them the original tamer's texture with
+             each face but the first (his first face is the disc's own texture)
   cold       the animations of COLD_SLOTS, the same for every look, laid out by tools/coldsplit.py
   models     one resident model per look
 
@@ -124,10 +125,12 @@ def pad(data):
 def build(model_path, alltim_path):
     """(TAMER.DAT bytes, report lines)."""
     model = mmd.MMD.load(model_path, 0)
-    texture, looks = tamer_looks.build(model, mmd.load_tim(alltim_path, 0))
+    original = mmd.load_tim(alltim_path, 0)
+    texture, looks = tamer_looks.build(model, original)
     textures = [texture.to_bytes(), face.make(texture).to_bytes()]      # one per face
-    assert all(len(t) == mmd.ALLTIM_STRIDE for t in textures), [len(t) for t in textures]
-    texture = b''.join(textures)
+    capped = [face.make(original, lid=False).to_bytes()]                # the original tamer's, from the second face on
+    assert all(len(t) == mmd.ALLTIM_STRIDE for t in textures + capped), [len(t) for t in textures + capped]
+    texture = b''.join(textures + capped)
     parts, cold_part, report = [], None, []
     for name, look in looks:
         res, cold = resident(look, model.nbones)
