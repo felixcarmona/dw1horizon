@@ -425,7 +425,7 @@ def bind(data, skeleton, recipe, placements=None, final=True, battle_context=Non
         output = pace.retime(output, rig, 9000+sid, rows, (data, skeleton))[0]
     if recipe.get('hands'):
         # hands that trail the forearm's swing, for a donor whose hand is rigid with it (native_hands.py)
-        output = native_hands.run_hands(mmd.MMD.parse(output, len(rig)), rig, recipe['hands'])
+        output = native_hands.run_hands(mmd.MMD.parse(output, len(rig)), rig, recipe['hands'], source=output)
     if recipe.get('jaws'):
         # the source's own mouth work replayed on the donor bones that carry the jaw pieces (native_jaws.py)
         output = native_jaws.run_jaws(mmd.MMD.parse(output, len(rig)), rig, recipe['jaws'], mesh, skeleton, source_pose, placements)

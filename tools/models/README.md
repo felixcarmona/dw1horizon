@@ -1005,7 +1005,10 @@ walk and run are retimed by `pace` (with its `lift` key for the floor), and `han
 degrees off its forearm: an `aim` rule per glove now lays it along the hand bone's x with 8 degrees of droop, palm on
 `palm`; `hands` then turns the palm to the thigh, bends the wrist (not a roll about the forearm) by the forearm's late
 swing, and `clear` leans the whole arm from the shoulder, then the wrist, on the ticks a forearm or glove enters a leg,
-foot or the body. The idles (0, 33) keep part of the donor's own hand turn (`keep`). The resident model uses about 89,600 of
+foot or the body. Those turns are searched once, by `tools/models/solve_hands.py`, and kept in
+`content/models/imports/native-hands-solved.json` under a key of the model, the skeleton and the recipe: the build applies them
+(a second instead of a quarter of an hour) and searches only for a model or recipe the table has not seen, so run the tool again
+and commit the table after changing this binding. The idles (0, 33) keep part of the donor's own hand turn (`keep`). The resident model uses about 89,600 of
 100,352 bytes. `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_kingetemon_native` (after `edit.py get 303`).
 
 Flamedramon (195) walked like a catwalk: the procedural stride (`gaits.py`)
