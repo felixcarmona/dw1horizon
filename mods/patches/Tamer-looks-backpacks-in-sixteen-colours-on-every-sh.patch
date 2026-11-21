@@ -1,0 +1,388 @@
+From 7a5552c72e3a5e314981a2875c59e8f74a9b6f2d Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 21 Nov 2026 21:56:27 +0000
+Subject: [PATCH] Tamer looks: backpacks in sixteen colours on every shirt,
+ chosen on the Look page
+
+A backpack is a garment with no objects: one sector of TAMER.DAT with its drawing, its palette recipe and its
+polygons, which the loader copies into the room every shirt but the original keeps in its torso. Those shirts
+carry a second drawing of the trunk with a backpack's straps, used unless the backpack is none. The original
+hoodie has its backpack in its mesh: with another backpack or none the loader reads one of two shirts that are
+not chosen from, the same hoodie without it. The shoes' first sector is read once more for a boot's leg, the
+backpack's having taken its place.
+
+The choices are eleven bytes (save record 0x000F as it is, longer); the Look page has eleven rows, its two
+hints over and under the button that opens it. The tamer's choices are no longer cleared when the scripts
+start: the program's memory is cleared before that, and a save load clears them itself.
+---
+ include/dw/save_tags.h   |  2 +-
+ include/dw/species.h     |  7 ++++--
+ src/main/game_menu.c     | 41 ++++++++++++++++++++-----------
+ src/main/mod_species.c   | 52 ++++++++++++++++++++++++++++++++--------
+ src/main/script_interp.c |  1 -
+ text/main/mod_lab.yaml   | 24 +++++++++++++++++++
+ 6 files changed, 99 insertions(+), 28 deletions(-)
+
+diff --git a/include/dw/save_tags.h b/include/dw/save_tags.h
+index 7a9be20..e516a73 100644
+--- a/include/dw/save_tags.h
++++ b/include/dw/save_tags.h
+@@ -35,7 +35,7 @@
+ #define SAVE_TAG_GROUND_PICKUP_BITS	0x000C /* bit array: stable ground pickup IDs collected today; registry content/ground-items.json */
+ #define SAVE_TAG_CARD_COUNTS		0x000D /* nibbles for card ids 66..511, low nibble first */
+ #define SAVE_TAG_CARD_STOCK		0x000E /* u16[6] daily shop cards, 0xffff sold */
+-#define SAVE_TAG_TAMER_LOOK		0x000F /* MOD_TAMER_STATE: u8 look (0 = the original tamer), hair colour, face, shirt (0 = the original), shirt colour, trousers, their colour, shoes, their colour; older saves end earlier */
++#define SAVE_TAG_TAMER_LOOK		0x000F /* MOD_TAMER_STATE: u8 look (0 = the original tamer), hair colour, face, shirt (0 = the original), shirt colour, trousers, their colour, shoes, their colour, backpack (0 = the original, 1 = none), its colour; older saves end earlier */
+ #define SAVE_TAG_REQUIRED		0x8000
+ #define SAVE_TAG_TECHNIQUE_LAYOUT	0x8003 /* u8: 1 = option A animation slots; required to prevent silent downgrade substitution */
+ /* engine tier 2 */
+diff --git a/include/dw/species.h b/include/dw/species.h
+index 2267915..f223e2e 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -346,7 +346,7 @@ int32_t getDigimonModelRef(int32_t type, char **file, int32_t *sector, int32_t *
+ #define TAMER_HAIR_COUNT	20
+ #define TAMER_FACE_COUNT	2	/* the faces of looks 1..: one texture each (tools/tamer_looks/face.py) */
+ /* What the player chose, in the order of the Look page's rows and of the save record */
+-#define TAMER_STATE_SIZE	9
++#define TAMER_STATE_SIZE	11
+ extern uint8_t MOD_TAMER_STATE[TAMER_STATE_SIZE] __attribute__((section(".sbss")));
+ #define MOD_TAMER_LOOK		MOD_TAMER_STATE[0]
+ #define MOD_TAMER_HAIR		MOD_TAMER_STATE[1]
+@@ -355,6 +355,7 @@ extern uint8_t MOD_TAMER_STATE[TAMER_STATE_SIZE] __attribute__((section(".sbss")
+ #define MOD_TAMER_CLOTH		MOD_TAMER_STATE[4]
+ #define MOD_TAMER_TROUSERS	MOD_TAMER_STATE[5]
+ #define MOD_TAMER_SHOES		MOD_TAMER_STATE[7]
++#define MOD_TAMER_PACK		MOD_TAMER_STATE[9]
+ /* The clothes (tools/tamer_looks/shirts.py, legs.py, shoes.py): a shirt is the torso and the arms of any look, a
+  * pair of trousers its legs, a pair of shoes its feet. Garment 0 of each kind is the original tamer's; the others
+  * are drawn with the tones of one palette row each, written for the chosen cloth colour. */
+@@ -362,7 +363,9 @@ extern uint8_t MOD_TAMER_STATE[TAMER_STATE_SIZE] __attribute__((section(".sbss")
+ #define TAMER_CLOTH_COUNT	16
+ #define TAMER_TROUSERS_COUNT	9
+ #define TAMER_SHOES_COUNT	12
+-#define LOOK_GARMENTS		3	/* the shirt, the trousers, the shoes: MOD_TAMER_STATE[3 + 2 * n] and its colour after it */
++#define TAMER_PACK_COUNT	7	/* the original backpack, none, then the others */
++#define TAMER_PACK_NONE		1
++#define LOOK_GARMENTS		4	/* the shirt, the trousers, the shoes, the backpack: MOD_TAMER_STATE[3 + 2 * n] and its colour after it */
+ typedef struct LookShirtRecipe { /* how each tone of a garment's palette row gets its colour (lookShirtPalette) */
+ 	uint8_t ways[16]; /* 0 as the texture has it, 1 from the cloth's colour, 2 from the second colour, 3 fixed */
+ 	uint8_t levels[16];
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 8966d32..d11b9a0 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -2562,7 +2562,7 @@ int32_t isUIBoxAvailable(int32_t id)
+ /*
+  * MOD (tamer looks): the Look page of the Player view. CONFIRM on the Player tab opens it: a row for the hairstyle,
+  * one for the hair colour (looks with hair), one for the face, and for the shirt, the trousers and the shoes a row
+- * each and one for its colour (every garment but the original), changed with left and right and seen at once on the
++ * each and one for its colour (every garment but the original), the same for the backpack, changed with left and right and seen at once on the
+  * tamer beside them, whom L1 and R1 turn. Five rows show at a time, around the chosen one. A hairstyle, a face or a
+  * garment is read from TAMER.DAT; a colour only writes a palette row again, with nothing read. The page's code is in
+  * EVL's tail (config/us/overlay.ld), read when the page opens: MENU, which the Player view runs from, is full, and
+@@ -2577,8 +2577,9 @@ void *malloc3(uint32_t size);
+ void free3(void *ptr);
+ #define LOOK_TOP_Y	0x40	/* the page's text: one line a row, over the tamer titles, drawn again when the page closes */
+ #define LOOK_ROW_V(row)	(LOOK_TOP_Y + 12 * (row))
+-#define LOOK_HINT_Y	0xac	/* the two hints: over the last two titles */
+ #define LOOK_OPEN_Y	0xc4	/* the button that opens the page, under the titles */
++#define LOOK_HINT_Y	0xc4	/* the two hints: over that button and under it */
++#define LOOK_END_Y	0xdc
+ #define LOOK_LEAVE_U	0x80	/* the buttons that save and leave: right of the second hint */
+ #define LOOK_KEY_X	0x08	/* on the name's row, right of the name */
+ #define LOOK_KEY_W	0x7c
+@@ -2609,7 +2610,7 @@ static struct {
+ 	uint8_t cloth[TAMER_CLOTH_COUNT * 6]; /* per cloth colour: the cloth, and stripes, prints and trim on it */
+ } lookPageState;
+ /* per garment: its palette row, and where its count and its directory are in the file's first sector (in u16s) */
+-static const uint16_t lookPageGarment[3 * LOOK_GARMENTS] = { 2, 5, 7, 0x68, 0x6D, 0x6E, 0x80, 0xA0, 0x100 };
++static const uint16_t lookPageGarment[3 * LOOK_GARMENTS] = { 2, 5, 7, 3, 0x68, 0x6D, 0x6E, 0x6F, 0x80, 0xA0, 0x100, 0x120 };
+ /* The shirts' text: here and not in MENU, which is full */
+ static const char lookPageTextShirt[] = LAB_STR_SHIRT;
+ static const char lookPageTextCloth[] = LAB_STR_SHIRT_COLOUR;
+@@ -2627,7 +2628,8 @@ static const char lookPageTextOrange[] = LAB_STR_CLOTH_ORANGE;
+ static const char lookPageTextYellow[] = LAB_STR_CLOTH_YELLOW;
+ /* how many choices the page has names for, by row */
+ static const uint8_t lookPageCounts[LOOK_ROWS] = { TAMER_LOOK_COUNT, TAMER_HAIR_COUNT, TAMER_FACE_COUNT,
+-	TAMER_SHIRT_COUNT, TAMER_CLOTH_COUNT, TAMER_TROUSERS_COUNT, TAMER_CLOTH_COUNT, TAMER_SHOES_COUNT, TAMER_CLOTH_COUNT };
++	TAMER_SHIRT_COUNT, TAMER_CLOTH_COUNT, TAMER_TROUSERS_COUNT, TAMER_CLOTH_COUNT, TAMER_SHOES_COUNT, TAMER_CLOTH_COUNT,
++	TAMER_PACK_COUNT, TAMER_CLOTH_COUNT };
+ static const char lookPageTextTrousers[] = LAB_STR_TROUSERS;
+ static const char lookPageTextTrousersColour[] = LAB_STR_TROUSERS_COLOUR;
+ static const char lookPageTextShoes[] = LAB_STR_SHOES;
+@@ -2651,19 +2653,29 @@ static const char lookPageTextShoes8[] = LAB_STR_SHOES_BOOTS;
+ static const char lookPageTextShoes9[] = LAB_STR_SHOES_CUFFED_BOOTS;
+ static const char lookPageTextShoes10[] = LAB_STR_SHOES_RAIN_BOOTS;
+ static const char lookPageTextShoes11[] = LAB_STR_SHOES_SANDALS;
+-/* The garments' names but the originals': the shirts', the trousers', the shoes' (lookPageFirst: where each kind starts) */
+-static const char *const lookPageClothes[TAMER_SHIRT_COUNT + TAMER_TROUSERS_COUNT + TAMER_SHOES_COUNT - 3] = {
++static const char lookPageTextPack[] = LAB_STR_BACKPACK;
++static const char lookPageTextPackColour[] = LAB_STR_BACKPACK_COLOUR;
++static const char lookPageTextPack1[] = LAB_STR_BACKPACK_NONE;
++static const char lookPageTextPack2[] = LAB_STR_BACKPACK_CLASSIC;
++static const char lookPageTextPack3[] = LAB_STR_BACKPACK_SCHOOL;
++static const char lookPageTextPack4[] = LAB_STR_BACKPACK_MINI;
++static const char lookPageTextPack5[] = LAB_STR_BACKPACK_HIKING;
++static const char lookPageTextPack6[] = LAB_STR_BACKPACK_ROUND;
++/* The garments' names but the originals': the shirts', the trousers', the shoes', the backpacks' (lookPageFirst: where each kind starts) */
++static const char *const lookPageClothes[TAMER_SHIRT_COUNT + TAMER_TROUSERS_COUNT + TAMER_SHOES_COUNT + TAMER_PACK_COUNT - 4] = {
+ 	lookPageTextShirt1, lookPageTextShirt2, lookPageTextShirt3, lookPageTextShirt4, lookPageTextShirt5,
+ 	lookPageTextShirt6, lookPageTextShirt7, lookPageTextShirt8, lookPageTextShirt9, lookPageTextShirt10,
+ 	lookPageTextTrousers1, lookPageTextTrousers2, lookPageTextTrousers3, lookPageTextTrousers4, lookPageTextTrousers5,
+ 	lookPageTextTrousers6, lookPageTextTrousers7, lookPageTextTrousers8,
+ 	lookPageTextShoes1, lookPageTextShoes2, lookPageTextShoes3, lookPageTextShoes4, lookPageTextShoes5, lookPageTextShoes6,
+-	lookPageTextShoes7, lookPageTextShoes8, lookPageTextShoes9, lookPageTextShoes10, lookPageTextShoes11 };
+-static const uint8_t lookPageFirst[LOOK_GARMENTS] = { 0, TAMER_SHIRT_COUNT - 1, TAMER_SHIRT_COUNT + TAMER_TROUSERS_COUNT - 2 };
++	lookPageTextShoes7, lookPageTextShoes8, lookPageTextShoes9, lookPageTextShoes10, lookPageTextShoes11,
++	lookPageTextPack1, lookPageTextPack2, lookPageTextPack3, lookPageTextPack4, lookPageTextPack5, lookPageTextPack6 };
++static const uint8_t lookPageFirst[LOOK_GARMENTS] = { 0, TAMER_SHIRT_COUNT - 1, TAMER_SHIRT_COUNT + TAMER_TROUSERS_COUNT - 2,
++	                                                    TAMER_SHIRT_COUNT + TAMER_TROUSERS_COUNT + TAMER_SHOES_COUNT - 3 };
+ /* The names of the rows from the shirt's on */
+ static const char *const lookPageRowNames[2 * LOOK_GARMENTS] = { lookPageTextShirt, lookPageTextCloth, lookPageTextTrousers,
+ 	                                                               lookPageTextTrousersColour, lookPageTextShoes,
+-	                                                               lookPageTextShoesColour };
++	                                                               lookPageTextShoesColour, lookPageTextPack, lookPageTextPackColour };
+ /* A cloth colour's name: a hair colour's (its number in LAB_HAIR_TEXT), or one of the two only cloth has */
+ #define LOOK_CLOTH_ORANGE	0xFE
+ #define LOOK_CLOTH_YELLOW	0xFF
+@@ -2689,12 +2701,12 @@ int32_t playerKeyHint(int32_t key, int32_t x, int32_t y)
+ }
+ 
+ /* Whether a row has something to choose: the original tamer and the bald head have no hair colour, an original
+- * garment no colour */
++ * garment no colour, and no backpack none either */
+ static const char lookPageFaces[TAMER_FACE_COUNT][2] = { "1", "2" };
+ static const char lookPageDash[] = "-"; /* a row with nothing to choose */
+ static int32_t lookPageRowOpen(int32_t row)
+ {
+-	return row == 1 ? MOD_TAMER_LOOK >= 2 : (row >= 4 && !(row & 1)) ? MOD_TAMER_STATE[row - 1] != 0 : 1;
++	return row == 1 ? MOD_TAMER_LOOK >= 2 : (row >= 4 && !(row & 1)) ? MOD_TAMER_STATE[row - 1] > (row == 10) : 1;
+ }
+ 
+ static char *lookPageValueText(int32_t row)
+@@ -2742,7 +2754,7 @@ static void lookPageRetint(void)
+ 	LoadImage(&rect, (u_long *)lookPageState.palette);
+ }
+ 
+-/* A garment (0 the shirt, 1 the trousers, 2 the shoes) in the colour chosen for it */
++/* A garment (0 the shirt, 1 the trousers, 2 the shoes, 3 the backpack) in the colour chosen for it */
+ static void lookPageShirtRetint(int32_t garment)
+ {
+ 	RECT rect;
+@@ -2849,7 +2861,7 @@ int32_t lookPageOpen(void)
+ 	lookPageState.row = 0;
+ 	lookPageKeep();
+ 	lookTurn = 0;
+-	setRECT(&rect, 0, LOOK_TOP_Y, 256, LOOK_OPEN_Y - LOOK_TOP_Y);
++	setRECT(&rect, 0, LOOK_TOP_Y, 256, LOOK_END_Y - LOOK_TOP_Y);
+ 	clearTextSubArea(&rect);
+ 	drawStringMode(LOOK_PAGE_TEXT[2], 0, LOOK_HINT_Y, fitStringMode(LOOK_PAGE_TEXT[2], 0xb4));
+ 	drawString(LOOK_PAGE_TEXT[3], 0, LOOK_HINT_Y + 12);
+@@ -2890,11 +2902,12 @@ void lookPageClose(void)
+ 		}
+ 	}
+ 	lookTurn = 0;
+-	setRECT(&rect, 0, LOOK_TOP_Y, 256, LOOK_OPEN_Y - LOOK_TOP_Y);
++	setRECT(&rect, 0, LOOK_TOP_Y, 256, LOOK_END_Y - LOOK_TOP_Y);
+ 	clearTextSubArea(&rect);
+ 	for (i = 0; i < 11; i++) {
+ 		drawString(TAMER_LEVEL_TITLES[i], 0, i * 0xc + 0x40);
+ 	}
++	playerKeyHint(0, 0, LOOK_OPEN_Y);
+ }
+ 
+ void lookPageInput(void)
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index 9521b01..c43fdd6 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -1043,8 +1043,9 @@ extern char MAIN_D_801340E4[];
+ #define LOOK_LEVELS	0xC0	/* in the file's first sector: the brightness of each of the row's sixteen tones */
+ void lookHairPalette(uint16_t *row, uint8_t *rgb, uint8_t *levels);
+ /* A garment (tools/tamer_looks/shirts.py, legs.py, shoes.py): objects read behind a look's model, which has none of
+- * them. Its first sector: */
+-#define LOOK_SHIRT_OBJECTS	11	/* of the three garments together */
++ * them. A backpack (backpacks.py) is a garment with no objects: its polygons go into the shirt's torso. A garment's
++ * first sector: */
++#define LOOK_SHIRT_OBJECTS	11	/* of the garments together */
+ #define LOOK_SHIRT_TABLE	0x04	/* per object where its corners, normals and polygons are */
+ #define LOOK_SHIRT_SEAT	0x3C	/* trousers: the texel of plain cloth the seat is drawn with (u, v) */
+ #define LOOK_SHIRT_RECIPE	0x40
+@@ -1053,14 +1054,17 @@ void lookHairPalette(uint16_t *row, uint8_t *rgb, uint8_t *levels);
+ #define LOOK_SHAFT		0x600	/* shoes: a boot's leg: u16 polygons (0: none), then its corners, normals and polygons */
+ #define LOOK_SHAFT_CORNERS	11
+ #define LOOK_SHAFT_BYTES	320
++#define LOOK_PACK		0x400	/* a backpack: u16 polygons (0: none), their bytes, corners, 0; then corners, normals, polygons */
++#define LOOK_SHIRT_ROOM		2	/* a shirt's flags (byte 3): its torso keeps room for a backpack, */
++#define LOOK_SHIRT_STRAPS	4	/* and one more drawing follows its own: its trunk with a backpack's straps */
+ #define LOOK_SEAT_PRIMS	16	/* a shirt's first polygons are the seat: the trousers' cloth when they are not the original's */
+ LookShirtRecipe lookShirtRecipe[LOOK_GARMENTS];
+ uint16_t lookShirtRow[LOOK_GARMENTS][16];
+ void lookShirtPalette(uint16_t *row, LookShirtRecipe *recipe, uint8_t *rgb);
+ /* the shirt: the torso, the upper arms, the forearms; the trousers: each thigh and shin; the shoes: the feet; then how
+- * many each has, its palette row, and where its count and its directory are in the file's first sector (in u16s) */
++ * many each garment has (the backpack none), its palette row, and where its count and its directory are in the file's first sector (in u16s) */
+ const uint16_t lookShirtObjects[LOOK_SHIRT_OBJECTS + 4 * LOOK_GARMENTS] = { 0, 2, 3, 5, 6, 8, 9, 11, 12, 10, 13,
+-	5, 4, 2, 2, 5, 7, 0x68, 0x6D, 0x6E, 0x80, 0xA0, 0x100 };
++	5, 4, 2, 0, 2, 5, 7, 3, 0x68, 0x6D, 0x6E, 0x6F, 0x80, 0xA0, 0x100, 0x120 };
+ #define LOOK_GARMENT_OBJECTS(g)	lookShirtObjects[LOOK_SHIRT_OBJECTS + (g)]
+ #define LOOK_GARMENT_ROW(g)	lookShirtObjects[LOOK_SHIRT_OBJECTS + LOOK_GARMENTS + (g)]
+ #define LOOK_GARMENT_COUNT(g)	lookShirtObjects[LOOK_SHIRT_OBJECTS + 2 * LOOK_GARMENTS + (g)]
+@@ -1078,7 +1082,7 @@ void modLookOverlay(void)
+ int32_t modLoadTamerLook(void *component)
+ {
+ 	TAMER_COLD_SECTOR = 0;
+-	if ((MOD_TAMER_LOOK | MOD_TAMER_FACE | MOD_TAMER_SHIRT | MOD_TAMER_TROUSERS | MOD_TAMER_SHOES) == 0) {
++	if ((MOD_TAMER_LOOK | MOD_TAMER_FACE | MOD_TAMER_SHIRT | MOD_TAMER_TROUSERS | MOD_TAMER_SHOES | MOD_TAMER_PACK) == 0) {
+ 		return 0;
+ 	}
+ 	modLookOverlay();
+@@ -1158,9 +1162,11 @@ int32_t lookTamerLoad(void *component)
+ 	uint32_t *object;
+ 	uint32_t *entry;
+ 	uint32_t *prim;
++	uint16_t *pack;
+ 	uint32_t seat;
+ 	int32_t worn[LOOK_GARMENTS];
+ 	int32_t slim;
++	int32_t room;
+ 	int32_t sector;
+ 	int32_t words;
+ 	int32_t tim;
+@@ -1182,6 +1188,11 @@ int32_t lookTamerLoad(void *component)
+ 		worn[g] = MOD_TAMER_STATE[3 + 2 * g] < head[LOOK_GARMENT_COUNT(g)] ? MOD_TAMER_STATE[3 + 2 * g] : 0;
+ 		k |= worn[g];
+ 	}
++	if (worn[0] == 0 && worn[3] != 0) {
++		/* the original shirt has its backpack in it: under another one, or none, it is one of the two shirts that
++		 * follow those he chooses from, the same hoodie without it */
++		worn[0] = head[0x68] + (worn[3] == TAMER_PACK_NONE);
++	}
+ 	if (MOD_TAMER_LOOK == 0 && k == 0) {
+ 		/* the original tamer with another face: the disc's model, and his texture with that face; these textures
+ 		 * follow the looks' own */
+@@ -1208,7 +1219,7 @@ int32_t lookTamerLoad(void *component)
+ 		tim = head[3] + (MOD_TAMER_FACE < head[7] ? MOD_TAMER_FACE * 9 : 0); /* one texture per face */
+ 	}
+ 	if (MOD_TAMER_LOOK > head[2] || head[6] == 0 || head[0x68] == 0 || head[0x69] == 0 || head[0x6D] == 0 ||
+-	    head[0x6E] == 0) {
++	    head[0x6E] == 0 || head[0x6F] == 0) {
+ 		return 0;
+ 	}
+ 	cold = head[4];
+@@ -1223,12 +1234,13 @@ int32_t lookTamerLoad(void *component)
+ 		lookHairPalette((uint16_t *)(texture + LOOK_TIM_PALETTE + 32 * LOOK_HAIR_ROW),
+ 		                (uint8_t *)head + 0x80 + 3 * (MOD_TAMER_HAIR % head[6]), (uint8_t *)head + LOOK_LEVELS);
+ 	}
+-	/* each garment: its drawing over the texture, its colour in its palette row. The shoes' first sector is read
+-	 * last and stays: a boot's leg is taken from it further down. */
++	/* each garment: its drawing over the texture, its colour in its palette row. The backpack's first sector is read
++	 * last and stays: its polygons are taken from it further down. */
+ 	pixels = texture + 8 + *(uint32_t *)(texture + 8) + 12;
+ 	at[0] = words;
+ 	seat = 0;
+ 	slim = 0;
++	room = 0;
+ 	for (g = 0, t = table; g < LOOK_GARMENTS; g++) {
+ 		sectors[g][0] = head[LOOK_GARMENT_DIR(g) + 2 * worn[g]];
+ 		sectors[g][1] = head[LOOK_GARMENT_DIR(g) + 2 * worn[g] + 1];
+@@ -1237,11 +1249,18 @@ int32_t lookTamerLoad(void *component)
+ 			seat = *(uint16_t *)(first + LOOK_SHIRT_SEAT);
+ 			slim = first[3] & 1;
+ 		}
++		n = first[2];
++		if (g == 0) {
++			room = first[3] & LOOK_SHIRT_ROOM;
++			if ((first[3] & LOOK_SHIRT_STRAPS) && worn[3] != TAMER_PACK_NONE) {
++				n++;
++			}
++		}
+ 		for (i = 0; i < LOOK_GARMENT_OBJECTS(g) * 6; i++) {
+ 			*t++ = ((uint16_t *)(first + LOOK_SHIRT_TABLE))[i];
+ 		}
+ 		from = first + LOOK_SHIRT_PIXELS;
+-		for (i = 0; i < first[2]; i++) {
++		for (i = 0; i < n; i++) {
+ 			rect = first + LOOK_SHIRT_RECTS + 4 * i; /* first byte of a row, first row, bytes, rows */
+ 			for (k = 0; k < rect[3]; k++, from += rect[2]) {
+ 				memcpy(pixels + (rect[1] + k) * 128 + rect[0], from, rect[2]);
+@@ -1261,7 +1280,8 @@ int32_t lookTamerLoad(void *component)
+ 	free3(texture);
+ 	readFileSectors(TAMER_LOOK_FILE, TAMER_MODEL_BUFFER, sector, (words * 4 + 0x7FF) >> 11);
+ 	object = (uint32_t *)(TAMER_MODEL_BUFFER + *(uint32_t *)TAMER_MODEL_BUFFER + 12);
+-	for (g = 0, t = table, n = 0; g < LOOK_GARMENTS; g++) {
++	pack = (uint16_t *)(first + LOOK_PACK);
++	for (g = 0, t = table, n = 0; g < LOOK_GARMENTS - 1; g++) {
+ 		to = TAMER_MODEL_BUFFER + at[g] * 4;
+ 		readFileSectors(TAMER_LOOK_FILE, to, sectors[g][0] + 1, sectors[g][1]);
+ 		if (g == 0 && seat != 0) {
+@@ -1277,6 +1297,18 @@ int32_t lookTamerLoad(void *component)
+ 				prim += 1 + ((prim[0] >> 8) & 0xFF);
+ 			}
+ 		}
++		if (g == 0 && room && pack[0] != 0) {
++			/* the backpack: into the room the torso keeps for it, its first corners and normals and right before its
++			 * polygons */
++			memcpy(to + t[0], pack + 4, pack[2] * 8);
++			memcpy(to + t[2], (uint8_t *)(pack + 4) + pack[2] * 8, pack[2] * 8);
++			t[4] -= pack[1];
++			memcpy(to + t[4], (uint8_t *)(pack + 4) + pack[2] * 16, pack[1]);
++			t[5] += pack[0];
++		}
++		if (g == 0 && slim) { /* a boot's leg is in the shoes' first sector: once more, over the backpack's */
++			readFileSectors(TAMER_LOOK_FILE, first, sectors[2][0], 1);
++		}
+ 		/* the garment's objects take their places in the model's table, before its offsets become addresses */
+ 		for (i = 0; i < LOOK_GARMENT_OBJECTS(g); i++, t += 6, n++) {
+ 			if (g == 1 && (i & 1) && slim && *(uint16_t *)(first + LOOK_SHAFT) != 0) {
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index cc64883..4246999 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -2224,7 +2224,6 @@ void initializeScripts(void)
+ 	TEXTBOX_ORIGIN_Y = -0x270f;
+ 	TEXTBOX_ORIGIN_Z = -0x270f;
+ 
+-	memset(MOD_TAMER_STATE, 0, TAMER_STATE_SIZE); /* MOD (tamer looks): a new game or a save without the record has the original tamer */
+ 	inputInit();
+ 	dailyPStatTrigger();
+ 	initializeLoadedNPCModels();
+diff --git a/text/main/mod_lab.yaml b/text/main/mod_lab.yaml
+index bcc8103..22bec84 100644
+--- a/text/main/mod_lab.yaml
++++ b/text/main/mod_lab.yaml
+@@ -544,6 +544,30 @@ MOD_LAB:
+     LAB_STR_SHOES_SANDALS:
+       ja: "Sandals"
+       en_us: "Sandals"
++    LAB_STR_BACKPACK:
++      ja: "Backpack"
++      en_us: "Backpack"
++    LAB_STR_BACKPACK_COLOUR:
++      ja: "Backpack colour"
++      en_us: "Backpack colour"
++    LAB_STR_BACKPACK_NONE:
++      ja: "None"
++      en_us: "None"
++    LAB_STR_BACKPACK_CLASSIC:
++      ja: "Classic"
++      en_us: "Classic"
++    LAB_STR_BACKPACK_SCHOOL:
++      ja: "School bag"
++      en_us: "School bag"
++    LAB_STR_BACKPACK_MINI:
++      ja: "Mini"
++      en_us: "Mini"
++    LAB_STR_BACKPACK_HIKING:
++      ja: "Hiking"
++      en_us: "Hiking"
++    LAB_STR_BACKPACK_ROUND:
++      ja: "Round"
++      en_us: "Round"
+     LAB_STR_CLOTH_ORANGE:
+       ja: "Orange"
+       en_us: "Orange"
+-- 
+2.55.0
+
