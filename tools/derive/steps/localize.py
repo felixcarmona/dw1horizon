@@ -40,8 +40,27 @@ def outputs(ctx):
     return out + [(f'{OUT}/files.txt', None)] + [(f'{OUT}/battle-banner-{lang}.json', None) for lang in translations(ctx.env)]
 
 
+def language_folder(ctx, lang):
+    return ctx.path(OUT) if lang == 'es' else ctx.path(OUT + '-' + lang)
+
+
+def language_unit(folder, extracted, scratch, lang, dest):
+    """One language's translated textures into folder, and their files.txt lines into dest -> the recipes' notes."""
+    import contextlib, io, json
+    from tools.localize import build as L
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        lines = L.build(folder, extracted, scratch=scratch, language=lang)
+    os.makedirs(os.path.dirname(dest), exist_ok=True)
+    with open(dest + '.tmp', 'w') as f:
+        json.dump(lines, f)
+    os.replace(dest + '.tmp', dest)
+    return buf.getvalue()
+
+
 def build(ctx):
-    import contextlib, io, shutil
+    import contextlib, io, json, shutil
+    from tools.derive import runner
     from tools.localize import build as L      # (not `import build`: the recipes have a build.py each)
     from tools.care_badge import FILES, stamp
     from tools.localize.status_art import stamp as status_stamp
@@ -73,10 +92,30 @@ def build(ctx):
         with open(dest, 'wb') as f:
             f.write(data)
         all_lines.append(f'en {path}')
-        for lang in translations(ctx.env):
-            folder = ctx.path(OUT) if lang == 'es' else ctx.path(OUT + '-' + lang)
-            lines = L.build(folder, os.path.join(ctx.root, 'extracted'), run_with=ctx.run,
-                            scratch=ctx.path('derived'), language=lang)
+        langs = list(translations(ctx.env))
+        made = {}
+        if ctx.jobs > 1 and not runner.strict() and not ctx.record and len(langs) > 1:
+            # a language's textures depend on no other language's and go to its own folder (Spanish: this step's):
+            # they are made side by side, and gathered below in the languages' order, as one pass over them does
+            parts = ctx.path('derived', 'localize-parts')
+            shutil.rmtree(parts, ignore_errors=True)
+            units = [runner.Unit(f'textures {lang}', language_unit,
+                                 (language_folder(ctx, lang), os.path.join(ctx.root, 'extracted'), ctx.path('derived'), lang,
+                                  os.path.join(parts, lang + '.json')),
+                                 ['tools', 'content/localized', 'extracted'],
+                                 [os.path.relpath(language_folder(ctx, lang), ctx.out)])
+                     for lang in langs]
+            for d in runner.run_units(ctx, units):
+                print(f'unit {d.unit.name}  ({d.seconds:.2f} s)')
+                if d.out:
+                    print(d.out.rstrip('\n'))
+                with open(d.unit.args[4]) as f:
+                    made[d.unit.args[3]] = json.load(f)
+            shutil.rmtree(parts, ignore_errors=True)
+        for lang in langs:
+            folder = language_folder(ctx, lang)
+            lines = made[lang] if lang in made else L.build(folder, os.path.join(ctx.root, 'extracted'), run_with=ctx.run,
+                                                            scratch=ctx.path('derived'), language=lang)
             if folder != ctx.path(OUT):
                 for line in lines:
                     code, path = line.split(' ', 1)
