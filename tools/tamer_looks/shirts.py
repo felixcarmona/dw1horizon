@@ -5,6 +5,13 @@ tamer's skeleton: rings around the trunk, tubes along the arms, and a small text
 trousers is kept from the tamer's own torso. The original clothes (the hoodie and the backpack) are shirt 0: the same
 five objects as the disc has them.
 
+The backpack is part of the torso and a choice of its own (backpacks.py). Every shirt but shirt 0 keeps room for one:
+PACK_CORNERS corners and normals at the start of the torso's, PACK_BYTES before its polygons (ROOM in the first
+sector's flags), and a third rectangle of pixels, the trunk again with the straps on it (STRAPS), which the game draws
+when a backpack is worn. Shirt 0 with another backpack, or with none, is one of two more shirts kept after the ones
+that can be chosen: the hoodie without the backpack's polygons, its back closed (bare), as it is drawn (its straps
+stay) and with the straps painted out.
+
 One texture serves every colour: the cloth is drawn with the tones 1..6 of the torso's palette row, and the game
 writes that row for the chosen colour (RECIPE below). The drawing replaces two rectangles of the tamer's texture that
 only the hoodie and the backpack used.
@@ -25,10 +32,16 @@ QUAD, TRI = 3, 38                          # a quad and a triangle of the torso,
 ROW, SKIN_ROW = 2, 6                       # palette rows: the cloth's and the skin's
 NC, NS = 8, 6                              # corners around the trunk and around an arm
 U0, V0, US, VH = 0, 88, 10, 39             # half the trunk, unrolled: u = front middle .. back middle, v = collar .. hem
-SLEEVE = (0, 60, 15, 72)                   # a sleeve's cloth: u0, v0 (shoulder), u1, v1 (its end)
+SLEEVE = (32, 60, 47, 72)                  # a sleeve's cloth, on the arms' texture: u0, v0 (shoulder), u1, v1 (its end)
 SKIN = (16, 25, 22, 31)                    # a patch of plain skin on the face's texture
 UMAX = 39                                  # the back's middle: the shoes' texture starts right after it
-RECTS = ((0, 88, 40, 40), (0, 60, 16, 13))  # what a shirt draws: u, v, width, height (u and width in whole bytes)
+TRUNK = (0, 88, 40, 40)
+RECTS = (TRUNK, (32, 60, 16, 13))          # what a shirt draws: u, v, width, height (u and width in whole bytes)
+PACK_CORNERS, PACK_BYTES = 16, 400         # the room a torso keeps for a backpack
+ROOM, STRAPS = 2, 4                        # flags in the first sector
+STRAP, STRAP_DARK, STRAP_EDGE = 11, 12, 13  # tones of a backpack's straps
+BACK = (68, 57, 95, 86)                    # folds of the hoodie's cloth on the arms' texture: the back without a backpack
+PACK = (2, 3, 13, 14, 28, 29, 38, 41, 45, 48, 52)   # the torso's polygons that are the backpack (backpacks.POLYGONS)
 WHITE, GREY, SK, SK2 = 7, 8, 9, 10         # tones besides the cloth's 1..6: a second colour and its shade, skin
 SKIN_AT = (19, 28)                         # where the skin's colour is read
 
@@ -302,7 +315,7 @@ def garment(model, body, arms, hood):
         me.face((left, top, ids[-1][4]), [hu(28, 2), hu(40, 0), hu(40, 2)], ROW, (1, .3, 0))
         me.face((top, right, ids[-1][4]), [hu(40, 0), hu(28, 2), hu(40, 2)], ROW, (1, .3, 0))
     pts, nrm, new = me.close()
-    parts = {TORSO: (verts + pts, norms + nrm, pelvis + new)}
+    parts = {TORSO: roomy((verts + pts, norms + nrm, pelvis + new))}
     upper, fore = ARMS[arms]
     for oi in UPPER:
         me = Mesh(quad, tri, sign)
@@ -326,8 +339,85 @@ def garment(model, body, arms, hood):
     return parts
 
 
-def paint(idx, drawing):
-    """Draw a shirt on the texture's pixels: the unrolled half trunk and the sleeve's cloth."""
+def roomy(part):
+    """A torso with room for a backpack's corners and normals before its own."""
+    verts, norms, prims = part
+    n = max(len(verts), len(norms))
+    out = []
+    for p in prims:
+        d = p.decode()
+        for key in ('verts', 'norms'):
+            if key in d:
+                d[key] = [i + PACK_CORNERS for i in d[key]]
+        out.append(mmd.Prim.encode(d))
+    return ([(0, 0, 0, 0)] * PACK_CORNERS + list(verts) + [(0, 0, 0, 0)] * (n - len(verts)),
+            [(0, 0, 0, 0)] * PACK_CORNERS + list(norms) + [(0, 0, 0, 0)] * (n - len(norms)), out)
+
+
+def bare(model):
+    """The original hoodie without the backpack: its polygons gone, the back closed, the hood lying on it."""
+    quad, tri, sign = patterns(model)
+    parts = {oi: part(model, oi) for oi in OBJECTS}
+    verts, norms, prims = parts[TORSO]
+    verts = list(verts)
+    verts[0] = (44, 31, 0, 0)                         # the hood's tip rested on the backpack
+    n = max(len(verts), len(norms))
+    verts += [(0, 0, 0, 0)] * (n - len(verts))
+    norms = list(norms) + [(0, 0, 0, 0)] * (n - len(norms))
+    me = Mesh(quad, tri, sign, n)
+    # the hole's edge, bottom to shoulders, and a spine that stands out between its two sides
+    low, mid, top = ((me.add(verts[a][:3]), me.add((x, y, 0)), me.add(verts[b][:3]))
+                     for a, b, x, y in ((10, 34, -31, 29), (18, 37, 20, 31), (16, 38, 54, 23)))
+    tip = me.add(verts[0][:3])
+    back = (0, 1, 0)
+    u0, um, u1, va, vb, vc = BACK[0], (BACK[0] + BACK[2]) // 2, BACK[2], BACK[1], (BACK[1] + BACK[3]) // 2, BACK[3]
+    for s, (ua, ub) in enumerate(((u0, um), (um, u1))):
+        me.face((mid[s], mid[s + 1], low[s], low[s + 1]), [(ua, vb), (ub, vb), (ua, vc), (ub, vc)], ROW, back)
+        me.face((top[s], top[s + 1], mid[s], mid[s + 1]), [(ua, va), (ub, va), (ua, vb), (ub, vb)], ROW, back)
+        me.face((top[s], top[s + 1], tip), [(ua, va), (ub, va), (um, va)], ROW, (.3, 1, 0))
+    me.face((low[0], low[1], low[2]), [(u0, vc), (um, vc), (u1, vc)], ROW, (-1, 0, 0))
+    pts, nrm, new = me.close()
+    kept = [prims[i] for i in PELVIS] + [p for i, p in enumerate(prims) if i not in PELVIS and i not in PACK]
+    parts[TORSO] = roomy((verts + pts, norms + nrm, kept + new))
+    return parts
+
+
+def unpack(idx):
+    """The hoodie's own drawing without the corner of the backpack that shows under each arm."""
+    pack = [(u, v) for v in range(108, 128) for u in range(24, 40) if 11 <= idx[v * W + u] <= 14]
+    for u, v in pack:
+        for du, dv in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            if idx[(v + dv) * W + u + du] == 15 and (u + du) < 40:
+                idx[(v + dv) * W + u + du] = 5
+    for u, v in pack:
+        idx[v * W + u] = (5, 4, 4, 3)[idx[v * W + u] - 11]
+
+
+def unstrap(idx):
+    """The hoodie's own drawing without the backpack's straps: the band of dark tones down each side of the chest."""
+    for v in range(88, 118):
+        row = [idx[v * W + u] for u in range(44)]
+        start = next((u for u in range(13, 30) if row[u] in (9, 10) and row[u - 1] == 15), None)
+        if start is None:
+            continue
+        end = start
+        for u in range(start, min(start + 13, 44)):
+            if row[u] not in (9, 10, 15):
+                break
+            if row[u] in (9, 10):
+                end = u
+        if row[end + 1] == 15:
+            end += 1
+        first = start if row[start - 2] in (7, 12, 13, 14, 15) and 94 <= v <= 104 else start - 1   # the badge keeps its edge
+        for u in range(first, end + 1):
+            k = u - first
+            tone = 4 if k < 1 or u >= end else 2 if (u * 3 + v * 2) % 11 == 0 else 3
+            idx[v * W + u] = tone
+
+
+def paint(idx, drawing, straps=False):
+    """Draw a shirt on the texture's pixels: the unrolled half trunk and the sleeve's cloth. straps: with a
+    backpack's straps, over the shoulder, down the chest and round the side to the back."""
     for v in range(V0, V0 + VH + 1):
         for u in range(U0, UMAX + 1):
             a, h = (u - U0) / US, (V0 + VH - v) / VH
@@ -386,6 +476,13 @@ def paint(idx, drawing):
                     tone = 5
             if drawing == 'peplum' and .3 < h < .36:
                 tone = 5                               # the belt
+            if straps:
+                # down the chest, then round the side under the arm
+                d = a - .8 if h > .44 else None
+                if h <= .44 and .8 <= a <= 3.3:
+                    d = ((h - .44) + (a - .8) * .09) * 5
+                if d is not None and abs(d) < .2 and h < .955:
+                    tone = STRAP_EDGE if abs(d) > .13 else STRAP_DARK if d < -.02 else STRAP
             idx[v * W + u] = tone
     for v in range(SLEEVE[1], SLEEVE[3] + 1):
         for u in range(SLEEVE[0], SLEEVE[2] + 1):
@@ -416,6 +513,8 @@ def recipe(texture, follows):
     else:
         ways[WHITE], fixed[WHITE] = FIXED, c15(*LIGHT)
         ways[GREY], fixed[GREY] = FIXED, c15(205, 205, 200)
+    for tone, grey in ((STRAP, 92), (STRAP_DARK, 68), (STRAP_EDGE, 44)):
+        ways[tone], fixed[tone] = FIXED, c15(grey, grey, grey + 4)
     return ways, levels, whites, fixed
 
 
@@ -542,17 +641,33 @@ def head(table, size, rec=None, drawn=None, rects=RECTS, flags=0):
 
 
 def build(model, texture):
-    """Every shirt from the tamer's model and texture: [(name, first sector, geometry, parts, recipe, pixels or None)]."""
+    """Every shirt from the tamer's model and texture: [(name, first sector, geometry, parts, recipe, pixels or None,
+    pixels with a backpack's straps or None)]. The last two are not chosen: the original hoodie for another backpack
+    and for none."""
     check_free(model)
     out = []
     parts = original(model)
     body, table = geometry(parts)
-    out.append(('original', head(table, len(body)), body, parts, None, None))
+    out.append(('original', head(table, len(body)), body, parts, None, None, None))
+    room = {TORSO: PACK_BYTES}
     for name, trunk, arms, hood, drawing, follows in STYLES:
         parts = garment(model, trunk, arms, hood)
-        body, table = geometry(parts)
-        idx = bytearray(texture.idx)
+        body, table = geometry(parts, gaps=room)
+        idx, strapped = bytearray(texture.idx), bytearray(texture.idx)
         paint(idx, drawing)
+        paint(strapped, drawing, True)
         rec = recipe(texture, follows)
-        out.append((name, head(table, len(body), rec, pixels(idx)), body, parts, rec, idx))
+        drawn = pixels(idx) + pixels(strapped, (TRUNK,))
+        first = bytearray(head(table, len(body), rec, drawn, RECTS + (TRUNK,), ROOM | STRAPS))
+        first[2] = len(RECTS)                          # the last rectangle is drawn only under a backpack
+        out.append((name, bytes(first), body, parts, rec, idx, strapped))
+    parts = bare(model)
+    body, table = geometry(parts, gaps=room)
+    idx = bytearray(texture.idx)
+    unpack(idx)
+    out.append(('hoodie for a backpack', head(table, len(body), None, pixels(idx, (TRUNK,)), (TRUNK,), ROOM), body, parts,
+                None, idx, None))
+    idx = bytearray(idx)
+    unstrap(idx)
+    out.append(('hoodie alone', head(table, len(body), None, pixels(idx, (TRUNK,)), (TRUNK,), ROOM), body, parts, None, idx, None))
     return out

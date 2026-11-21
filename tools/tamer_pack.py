@@ -8,7 +8,8 @@ Look 0 is the original tamer: with his own clothes and face the game loads the d
 Looks 1.. are tools/tamer_looks (bald, then the hairstyles). A model in the file has no torso, arms, legs or feet:
 those objects are a shirt, a pair of trousers and a pair of shoes (tools/tamer_looks/shirts.py, legs.py, shoes.py),
 read behind the model and linked into it, so any head goes with any clothes. Garment 0 of each kind is the original
-tamer's. The file, in 2048-byte sectors, little endian:
+tamer's. A backpack is a piece of the torso that the game copies into the shirt's (tools/tamer_looks/backpacks.py).
+The file, in 2048-byte sectors, little endian:
 
   sector 0   "TLK1", u16 looks, u16 texture sector, u16 cold sector, u16 cold sectors, u16 colours
              0x10: per look u16 first sector, u16 length in 4-byte words
@@ -16,11 +17,13 @@ tamer's. The file, in 2048-byte sectors, little endian:
              0xC0: the brightness of each of the hair texture's sixteen tones, 128 = the colour itself
              0xD0: u16 shirts, u16 cloth colours; the original tamer's model without his clothes (u16 first
                    sector, u16 words); u16 sector of the original tamer's texture with his first face; u16 trousers,
-                   u16 shoes
-             0x100: per shirt u16 first sector, u16 sectors of geometry (after the shirt's first sector)
+                   u16 shoes, u16 backpacks
+             0x100: per shirt u16 first sector, u16 sectors of geometry (after the shirt's first sector); after
+                    the shirts that are chosen, the original hoodie for another backpack and for none
              0x140: the same per pair of trousers
              0x180: per cloth colour r, g, b of the cloth and r, g, b of stripes, prints and trim on it
              0x200: per pair of shoes, as per shirt
+             0x240: per backpack u16 its sector, u16 0
   texture    the bald head's texture, one ALLTIM entry (9 sectors), shared by every look; one per face (u16 at 0x0E:
              how many), the second drawn by tools/tamer_looks/face.py; after them the original tamer's texture with
              each face but the first (his first face is the disc's own texture)
@@ -28,7 +31,7 @@ tamer's. The file, in 2048-byte sectors, little endian:
   models     one resident model per look, then the original tamer's
   clothes    per garment one sector (the size of its geometry, where each object's corners, normals and polygons
              are, how its palette row is coloured, and the pixels it draws on the texture: shirts.head; a boot's leg
-             too: shoes.py) and its geometry
+             too: shoes.py) and its geometry; per backpack one sector
 
 A look's model is larger than the original, and the tamer's buffer (TAMER_MMD_MAX) does not grow, so the
 animations of COLD_SLOTS leave the model: their table entries become cold entries (COLD_ANIM_FLAG, as the partners')
@@ -48,7 +51,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import coldsplit  # noqa: E402
 import mmd  # noqa: E402
 import tamer_looks  # noqa: E402
-from tamer_looks import face, hairtex, legs, shirts, shoes, wig  # noqa: E402
+from tamer_looks import backpacks, face, hairtex, legs, shirts, shoes, wig  # noqa: E402
 
 SECTOR = 2048
 TAMER_MMD_MAX = 0xE000          # include/dw/memmap.h
@@ -148,6 +151,7 @@ def build(model_path, alltim_path):
     wardrobe = [('shirt', 0x100, [g[:3] for g in shirts.build(model, original)]),
                 ('trousers', 0x140, [g[:3] for g in legs.build(model, original)]),
                 ('shoes', 0x200, [g[:3] for g in shoes.build(model, original)])]
+    packs = backpacks.build(model, original)
     largest = [max(len(body) for _, _, body in garments) for _, _, garments in wardrobe]
     room = sum(largest)
     texture, looks = tamer_looks.build(copy.deepcopy(model), original)
@@ -177,8 +181,8 @@ def build(model_path, alltim_path):
         header[0x80 + 3 * i:0x83 + 3 * i] = bytes(rgb)
     header[0xC0:0xD0] = bytes(hairtex.LEVELS)
     struct.pack_into('<H', header, 0x0E, len(textures))
-    struct.pack_into('<2H', header, 0xD0, len(wardrobe[0][2]), len(shirts.COLOURS))
-    struct.pack_into('<2H', header, 0xDA, len(wardrobe[1][2]), len(wardrobe[2][2]))
+    struct.pack_into('<2H', header, 0xD0, len(shirts.NAMES), len(shirts.COLOURS))
+    struct.pack_into('<3H', header, 0xDA, len(wardrobe[1][2]), len(wardrobe[2][2]), len(packs))
     struct.pack_into('<H', header, 0xD8, tex_sector + (len(textures) + len(capped) - 1) * (mmd.ALLTIM_STRIDE // SECTOR))
     closet = b''
     before = max(len(p) for p in parts)
@@ -195,6 +199,13 @@ def build(model_path, alltim_path):
             closet += first + pad(body)
             report.append(f'{kind} {name}: {len(body)} bytes')
         before += most
+    if len(packs) > 16:
+        raise SystemExit('too many backpacks for the header')
+    for i, pack in enumerate(packs):
+        struct.pack_into('<2H', header, 0x240 + 4 * i, sector, 0)
+        sector += 1
+        closet += pack[1]
+        report.append(f'backpack {pack[0]}')
     for i, (_, rgb, second) in enumerate(shirts.COLOURS):
         header[0x180 + 6 * i:0x186 + 6 * i] = bytes(rgb + second)
     report.append(f'cold animations: {len(cold_part)} bytes, {cold_sectors} sectors')
@@ -221,6 +232,8 @@ def main():
             print(f'trousers {i}: {name}')
         for i, name in enumerate(shoes.NAMES):
             print(f'shoes {i}: {name}')
+        for i, name in enumerate(backpacks.NAMES):
+            print(f'backpack {i}: {name}')
         for i, (name, rgb, _) in enumerate(shirts.COLOURS):
             print(f'cloth colour {i}: {name} {rgb}')
         return

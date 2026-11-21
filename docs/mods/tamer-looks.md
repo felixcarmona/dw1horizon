@@ -14,7 +14,11 @@ sixteen colours. The original hoodie has no colour to choose. Four more rows do 
 original ones, trainers, small trainers, plain, flats, Mary Janes, ankle boots, small ankle boots, boots, cuffed boots,
 rain boots, sandals), each with its own colour row and the same sixteen colours. The small kinds are a smaller foot. A
 boot's leg goes over a slim or bare shin (skinny, shorts, capri, skirt); wide trousers fall over it and only the foot
-shows. The page shows five of its nine rows at a time, around the chosen one, with a mark above or below the boxes
+shows. The last two rows are **Backpack** and **Backpack colour**: the original backpack, none, or one of five others
+(classic, which is the original one in any colour, school bag, mini, hiking, round) in the same sixteen colours. Every
+shirt takes every backpack: the original hoodie with the original backpack is the tamer as he always was, and with
+another one or none it is the same hoodie without it. Under a backpack a shirt shows its straps. The page shows five of
+its eleven rows at a time, around the chosen one, with a mark above or below the boxes
 when there are more. The Player tab shows the button that opens the page beside the name, and the
 page shows there the two that leave it: the confirm button saves the look, the cancel button leaves without saving and
 the tamer is again as he was when the page opened. The look is kept in the save.
@@ -27,7 +31,7 @@ the tamer is again as he was when the page opened. The look is kept in the save.
 
 Hair colours 0–19: brown, dark brown, black, chestnut, blond, light blond, ginger, red, burgundy, pink, lavender, purple,
 navy, blue, turquoise, green, lime, grey, silver, white. The names are shown, translated like the rest of the menu.
-Cloth colours 0–15 (shirts, trousers and shoes): white, grey, black, red, burgundy, orange, yellow, lime, green, turquoise, blue, navy, purple,
+Cloth colours 0–15 (shirts, trousers, shoes and backpacks): white, grey, black, red, burgundy, orange, yellow, lime, green, turquoise, blue, navy, purple,
 lavender, pink, brown. `tools/tamer_pack.py list` prints every list.
 
 ## Where the looks come from
@@ -50,11 +54,11 @@ Nothing of the looks is committed as model data. The build makes them from the p
 
 | Part | Content |
 |---|---|
-| sector 0 | `"TLK1"`, u16 looks in the file, u16 texture sector, u16 cold sector, u16 cold sectors, u16 colours, u16 faces; at 0x10 per look `u16 first sector, u16 length in 4-byte words`; at 0x80 per colour `r, g, b`; at 0xC0 the brightness of each of the hair texture's sixteen tones (128 = the colour itself); at 0xD0 u16 shirts, u16 cloth colours; at 0xD4 `u16 sector, u16 words` of the original tamer's model without his clothes; at 0xD8 the sector of his texture with the first face; at 0xDA u16 trousers, u16 shoes; at 0x100 per shirt `u16 first sector, u16 geometry sectors`, at 0x140 the same per pair of trousers and at 0x200 per pair of shoes; at 0x180 per cloth colour `r, g, b` of the cloth and `r, g, b` of its second colour |
+| sector 0 | `"TLK1"`, u16 looks in the file, u16 texture sector, u16 cold sector, u16 cold sectors, u16 colours, u16 faces; at 0x10 per look `u16 first sector, u16 length in 4-byte words`; at 0x80 per colour `r, g, b`; at 0xC0 the brightness of each of the hair texture's sixteen tones (128 = the colour itself); at 0xD0 u16 shirts, u16 cloth colours; at 0xD4 `u16 sector, u16 words` of the original tamer's model without his clothes; at 0xD8 the sector of his texture with the first face; at 0xDA u16 trousers, u16 shoes, u16 backpacks; at 0x100 per shirt `u16 first sector, u16 geometry sectors`, at 0x140 the same per pair of trousers at 0x200 per pair of shoes and at 0x240 per backpack (its only sector, and 0); at 0x180 per cloth colour `r, g, b` of the cloth and `r, g, b` of its second colour |
 | texture | the bald head's texture (one `ALLTIM` entry, 9 sectors), shared by every look: one per face, one after the other; then the original tamer's texture with each face but the first, and with the first |
 | cold | the animations that leave the models, the same bytes for every look |
 | models | one model per look, without the eleven objects clothes replace; then the original tamer's, the same way |
-| clothes | per shirt, per pair of trousers and per pair of shoes one head sector, then its geometry |
+| clothes | per shirt, per pair of trousers and per pair of shoes one head sector, then its geometry; after the shirts that are chosen, the original hoodie without its backpack twice (with straps for another backpack, and bare); per backpack one sector |
 
 ## Memory
 
@@ -111,6 +115,15 @@ a model of `TAMER.DAT` like the rest.
   the shoes' head sector, and it rides on the shin: slim trousers (a flag in their head sector) keep eleven unused
   corners at the start of each shin and room for ten polygons right before the shin's own, and the loader copies the
   leg there. Other trousers keep no room and the boot shows only its foot.
+- A backpack (`backpacks.py`) is a garment with no objects of its own: one sector with its drawing (the backpack's own
+  square of the texture), the recipe of its palette row, and at 0x400 up to sixteen corners, sixteen normals and 400
+  bytes of polygons. Every shirt but the original keeps that room in its torso (sixteen unused corners and normals at
+  the start, the bytes right before its polygons: a flag in its head sector), and the loader copies the backpack
+  there. Those shirts also carry one more drawing after their own, the trunk with a backpack's straps, which is
+  drawn unless the backpack is none. The original hoodie has its backpack in its mesh and in its drawing, so with
+  another backpack or none the loader reads one of two shirts that are not chosen from: the same hoodie with the
+  backpack taken out and its back closed, with the straps or without them. The original backpack on another shirt is
+  the tamer's own, a little narrower so that it sits on every back.
 - Save record `0x000F` holds `MOD_TAMER_STATE`: the look, the hair colour, the face, then each garment and its colour ([save format](../reference/save-format.md)); a new game and
   an older save start with the original tamer. Without `TAMER.DAT` on the disc every look is the original tamer.
 
@@ -121,8 +134,9 @@ in `include/dw/species.h`, give it a name (`lookPageClothes` in `game_menu.c`, `
 `tools/tamer_pack.py build` to see that every look still fits with it. The shirt may draw only in its rectangles of the
 texture (`RECTS`): the trousers and the shoes use the rest. Its torso must start with the seat's polygons.
 
-Trousers and shoes are added the same way: a row in `STYLES` of `legs.py` or `shoes.py`, `TAMER_TROUSERS_COUNT` or
-`TAMER_SHOES_COUNT`, a name in `lookPageClothes` (`LAB_STR_TROUSERS_*`, `LAB_STR_SHOES_*`).
+Trousers, shoes and backpacks are added the same way: a row in `STYLES` of `legs.py`, `shoes.py` or `backpacks.py`,
+`TAMER_TROUSERS_COUNT`, `TAMER_SHOES_COUNT` or `TAMER_PACK_COUNT`, a name in `lookPageClothes` (`LAB_STR_TROUSERS_*`,
+`LAB_STR_SHOES_*`, `LAB_STR_BACKPACK_*`). A backpack must fit in the room shirts keep (`PACK_CORNERS`, `PACK_BYTES`).
 
 ## Adding a hairstyle
 
