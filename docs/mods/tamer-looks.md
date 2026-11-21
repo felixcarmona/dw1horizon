@@ -54,7 +54,7 @@ Nothing of the looks is committed as model data. The build makes them from the p
 
 | Part | Content |
 |---|---|
-| sector 0 | `"TLK1"`, u16 looks in the file, u16 texture sector, u16 cold sector, u16 cold sectors, u16 colours, u16 faces; at 0x10 per look `u16 first sector, u16 length in 4-byte words`; at 0x80 per colour `r, g, b`; at 0xC0 the brightness of each of the hair texture's sixteen tones (128 = the colour itself); at 0xD0 u16 shirts, u16 cloth colours; at 0xD4 `u16 sector, u16 words` of the original tamer's model without his clothes; at 0xD8 the sector of his texture with the first face; at 0xDA u16 trousers, u16 shoes, u16 backpacks; at 0x100 per shirt `u16 first sector, u16 geometry sectors`, at 0x140 the same per pair of trousers at 0x200 per pair of shoes and at 0x240 per backpack (its only sector, and 0); at 0x180 per cloth colour `r, g, b` of the cloth and `r, g, b` of its second colour |
+| sector 0 | `"TLK1"`, u16 looks in the file, u16 texture sector, u16 cold sector, u16 cold sectors, u16 colours, u16 faces; at 0x10 per look `u16 first sector, u16 length in 4-byte words`; at 0x80 per colour `r, g, b`; at 0xC0 the brightness of each of the hair texture's sixteen tones (128 = the colour itself); at 0xD0 u16 shirts, u16 cloth colours; at 0xD4 `u16 sector, u16 words` of the original tamer's model without his clothes; at 0xD8 the sector of his texture with the first face; at 0xDA u16 trousers, u16 shoes, u16 backpacks; at 0x100 per shirt `u16 first sector, u16 geometry sectors`, at 0x140 the same per pair of trousers at 0x200 per pair of shoes and at 0x240 per backpack (its only sector, and 0); at 0x300 per cloth colour twelve bytes: `r, g, b` of its shade, of the cloth, of its light and of its second colour |
 | texture | the bald head's texture (one `ALLTIM` entry, 9 sectors), shared by every look: one per face, one after the other; then the original tamer's texture with each face but the first, and with the first |
 | cold | the animations that leave the models, the same bytes for every look |
 | models | one model per look, without the eleven objects clothes replace; then the original tamer's, the same way |
@@ -101,13 +101,17 @@ a model of `TAMER.DAT` like the rest.
   chosen shirt's geometry right behind the model and points the five entries of the object table at it before the
   model is linked. The shirt's head sector (geometry size, the five entries, a palette recipe, the rectangles of the
   texture it draws on and their pixels) is read first: the pixels go over the texture in memory, and
-  `lookShirtPalette` makes the cloth's palette row from the recipe and the chosen colour (per tone: kept, the colour,
-  its second colour or a fixed one; a level and a share of white). Shirt 0 is the tamer's own five objects with a
+  `lookShirtPalette` makes the cloth's palette row from the recipe and the chosen colour (per tone: kept, a fixed colour, the second
+  colour, or a place on the cloth's ramp from its shade through the colour to its light, or from black to the shade;
+  the shade and the light are colours of their own, a little off the cloth's hue, as on the tamer's own clothes). Shirt 0 is the tamer's own five objects with a
   recipe that keeps every tone. A shirt colour change sends that palette row; a shirt change reads the disc.
 - Trousers (the two thighs and shins, `tools/tamer_looks/legs.py`) and shoes (the two feet, `shoes.py`) are garments
   of the same kind, read one after the other behind the shirt, each with its own palette row (the legs' and the
   feet's) and its own rectangles of the texture. Trousers are tubes of cloth, or of skin under shorts and skirts;
   shoes are the tamer's own feet, scaled for the small kinds, with another drawing.
+- The cloth is painted like the tamer's own: shirts and trousers take their folds from the player's disc (the
+  original sleeves' and trousers' pixels, as tones of the new palette row) under a shading of the body's form, and
+  bare skin is drawn in three tones of his face, chosen per polygon by where it looks while he stands.
 - The seat is part of the torso, so of the shirt, and its palette row is shared with the original hoodie: under other
   trousers `lookTamerLoad` rewrites the shirt's first sixteen polygons (every shirt starts with the seat) to the
   legs' palette row and to one texel of plain cloth, which the trousers' head sector names.

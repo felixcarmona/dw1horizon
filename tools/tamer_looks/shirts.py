@@ -16,6 +16,7 @@ One texture serves every colour: the cloth is drawn with the tones 1..6 of the t
 writes that row for the chosen colour (RECIPE below). The drawing replaces two rectangles of the tamer's texture that
 only the hoodie and the backpack used.
 """
+import colorsys
 import math
 import struct
 
@@ -36,13 +37,16 @@ SLEEVE = (32, 60, 47, 72)                  # a sleeve's cloth, on the arms' text
 SKIN = (16, 25, 22, 31)                    # a patch of plain skin on the face's texture
 UMAX = 39                                  # the back's middle: the shoes' texture starts right after it
 TRUNK = (0, 88, 40, 40)
-RECTS = (TRUNK, (32, 60, 16, 13))          # what a shirt draws: u, v, width, height (u and width in whole bytes)
+RECTS = (TRUNK, (32, 60, 24, 13))          # what a shirt draws: u, v, width, height (u and width in whole bytes)
+BARE = (48, 60, 13)                        # bare skin, drawn beside the sleeve's cloth: u, v, height (skin_strips)
 PACK_CORNERS, PACK_BYTES = 16, 400         # the room a torso keeps for a backpack
 ROOM, STRAPS = 2, 4                        # flags in the first sector
 STRAP, STRAP_DARK, STRAP_EDGE = 11, 12, 13  # tones of a backpack's straps
 BACK = (68, 57, 95, 86)                    # folds of the hoodie's cloth on the arms' texture: the back without a backpack
 PACK = (2, 3, 13, 14, 28, 29, 38, 41, 45, 48, 52)   # the torso's polygons that are the backpack (backpacks.POLYGONS)
-WHITE, GREY, SK, SK2 = 7, 8, 9, 10         # tones besides the cloth's 1..6: a second colour and its shade, skin
+WHITE, GREY, SK, SK2, SK3 = 7, 8, 9, 10, 14  # tones besides the cloth's 1..6: a second colour and its shade; skin, lit to shaded
+SUN = (.45, -.5, -.74)                     # where bare skin is lit from as he stands: his side, above (y is down), his front (-z)
+CLOTH_LEVELS = (255, 192, 128, 85, 43, 0)  # the cloth's tones 1..6, as the hoodie's own lie between its light and its shade
 SKIN_AT = (19, 28)                         # where the skin's colour is read
 
 # The trunk's rings, hem to shoulders: height, half width, front, back and, on some, how far the bust comes out.
@@ -75,7 +79,6 @@ ARMS = {
 }
 BARE_FOREARM = 0.76                        # the tamer's forearm without the hoodie's sleeve: this much of its girth
 HOOD = ((66, 8, -27), (66, 8, 27), (73, 25, 0), (42, 31, 0), (52, 23, -27), (52, 23, 27))
-FOLDS = ((3, 112, 7, 1), (13, 116, 6, -1), (27, 113, 7, 1), (31, 119, 6, -1), (8, 121, 6, 1), (20, 104, 5, 1))
 
 # name, trunk, arms, hood, drawing, whether the second colour follows the chosen one. The number is saved: add at the end.
 STYLES = (
@@ -95,13 +98,48 @@ NAMES = ('original',) + tuple(s[0] for s in STYLES)
 # The shirt colours: the cloth, and the colour of stripes and prints on it (dark on a light cloth).
 LIGHT, DARK = (246, 246, 240), (60, 70, 110)
 CLOTH = (
-    ('white', (250, 250, 250)), ('grey', (150, 150, 155)), ('black', (40, 40, 46)), ('red', (232, 70, 60)),
-    ('burgundy', (140, 35, 55)), ('orange', (240, 140, 50)), ('yellow', (240, 200, 50)), ('lime', (160, 210, 70)),
-    ('green', (80, 170, 90)), ('turquoise', (60, 190, 190)), ('blue', (60, 110, 200)), ('navy', (45, 60, 120)),
-    ('purple', (150, 90, 200)), ('lavender', (190, 170, 235)), ('pink', (240, 120, 170)), ('brown', (140, 95, 60)),
+    ('white', (244, 244, 240)), ('grey', (150, 150, 155)), ('black', (40, 40, 46)), ('red', (216, 72, 60)),
+    ('burgundy', (140, 35, 55)), ('orange', (232, 136, 56)), ('yellow', (240, 200, 72)), ('lime', (156, 196, 80)),
+    ('green', (84, 156, 92)), ('turquoise', (64, 172, 172)), ('blue', (68, 108, 188)), ('navy', (45, 60, 120)),
+    ('purple', (144, 96, 184)), ('lavender', (190, 170, 235)), ('pink', (228, 124, 164)), ('brown', (140, 95, 60)),
 )
-COLOURS = tuple((name, rgb, DARK if sum(rgb) > 600 else LIGHT) for name, rgb in CLOTH)
-KEEP, MAIN, SECOND, FIXED = 0, 1, 2, 3     # how a tone of the cloth's palette row gets its colour
+KEEP, MAIN, SECOND, FIXED, DEEP = 0, 1, 2, 3, 4   # how a tone of the cloth's palette row gets its colour
+SHADE_AT, LIGHT_AT = .62, 1.3              # how bright a colour's shade and its light are next to it
+
+
+def shades(rgb):
+    """A cloth colour's shade and its light, as the tamer's own clothes are painted: the shade darker, richer and a
+    little towards red or violet, the light paler and a little towards yellow."""
+    h, s, v = colorsys.rgb_to_hsv(*[c / 255 for c in rgb])
+
+    def towards(hue, target, most):
+        d = (target - hue + .5) % 1 - .5
+        return (hue + max(-most, min(most, d))) % 1
+
+    def out(hue, sat, val):
+        return tuple(int(round(c * 255)) for c in colorsys.hsv_to_rgb(hue, max(0, min(1, sat)), max(0, min(1, val))))
+    k = min(1, s / .25)                                # greys stay grey
+    if s < .1:
+        shade = out(.64, .1 + s, v * (.74 if v > .6 else .6))
+        light = out(h, s * .6, v + (1 - v) * (.5 if v > .3 else .3))
+    else:
+        shade = out(towards(h, .78 if .1 < h < .55 and h > .2 else .97 if h <= .2 else .72, .035 * k),
+                    s + (1 - s) * .55 * k, v * SHADE_AT)
+        light = out(towards(h, .15, .02 * k), s * .78, v + (1 - v) * .55)
+    return shade, light
+
+
+def tone(light):
+    """How a tone that bright next to the colour (1: the colour itself) is asked of the game: a way and a level."""
+    if light >= 1:
+        return MAIN, min(255, 128 + int(round((light - 1) / (LIGHT_AT - 1) * 127)))
+    if light >= SHADE_AT:
+        return MAIN, int(round((light - SHADE_AT) / (1 - SHADE_AT) * 128))
+    return DEEP, int(round(light / SHADE_AT * 128))
+
+
+# name, the shade, the colour, the light, the second colour
+COLOURS = tuple((name, shades(rgb)[0], rgb, shades(rgb)[1], DARK if sum(rgb) > 600 else LIGHT) for name, rgb in CLOTH)
 
 
 def c15(r, g, b):
@@ -144,16 +182,17 @@ def ring(x, w, f, b, dip=0, bust=0):
 class Mesh:
     """Faces with a hint of where outside is; corner order and smooth normals are worked out when it is closed."""
 
-    def __init__(self, quad, tri, sign, base=0):
+    def __init__(self, quad, tri, sign, base=0, skin=None, sun=None):
         self.pts, self.faces = [], []
         self.quad, self.tri, self.sign, self.base = quad, tri, sign, base
+        self.skin, self.sun = skin, sun                # for faces of BARE_SKIN: (u, v, height, palette row), and the light
 
     def add(self, p):
         self.pts.append(tuple(int(round(q)) for q in p))
         return len(self.pts) - 1
 
     def face(self, vs, uvs, row, out):
-        self.faces.append((list(vs), list(uvs), row, out))
+        self.faces.append((list(vs), uvs if uvs is BARE_SKIN else list(uvs), row, out))
 
     def close(self):
         acc = [[0, 0, 0] for _ in self.pts]
@@ -166,9 +205,11 @@ class Mesh:
             if sum(cn[i] * o[i] for i in range(3)) * self.sign < 0:
                 def swap(q):
                     return [q[1], q[0]] + ([q[3], q[2]] if len(q) == 4 else [q[2]])
-                vs, uvs = swap(vs), swap(uvs)
+                vs, uvs = swap(vs), uvs if uvs is BARE_SKIN else swap(uvs)
                 cn = cross(*[self.pts[k] for k in vs][:3])
             length = sum(q * q for q in cn) ** .5 or 1
+            if uvs is BARE_SKIN:
+                uvs, row = skin_uv([self.sign * q / length for q in cn], self.sun, self.skin, len(vs))
             for k in vs:
                 for i in range(3):
                     acc[k][i] += self.sign * cn[i] / length
@@ -187,6 +228,44 @@ class Mesh:
 
 SKIN_TRI = [(SKIN[0], SKIN[1]), (SKIN[2], SKIN[1]), (SKIN[0], SKIN[3])]
 SKIN_QUAD = SKIN_TRI + [(SKIN[2], SKIN[3])]
+BARE_SKIN = ['bare skin']                  # in place of a face's texture corners: skin, lit by where the face looks
+
+
+def skin_uv(normal, sun, skin, corners):
+    """The texture corners and palette row of a face of bare skin: one of three strips a garment draws (lit, plain,
+    shaded: skin_strips) by how the face looks at the light, or the face's plain skin when the garment draws none."""
+    if skin is None or sun is None:
+        return (SKIN_QUAD if corners == 4 else SKIN_TRI), SKIN_ROW
+    u, v, height, row = skin
+    lit = sum(a * b for a, b in zip(normal, sun))
+    u += 0 if lit > .3 else 3 if lit > -.3 else 6
+    quad = [(u, v + 1), (u + 1, v + 1), (u, v + height - 2), (u + 1, v + height - 2)]
+    return (quad if corners == 4 else quad[:3]), row
+
+
+def skin_strips(idx, u, v, height, tones):
+    """Draw the three strips of skin_uv, eight pixels wide: under a garment's edge the skin is a tone darker."""
+    for y in range(height):
+        for x in range(8):
+            k = (0 if x < 2 else 1 if x < 5 else 2) + (y < 2)
+            idx[(v + y) * W + u + x] = tones[min(k, 2)]
+
+
+def suns(model):
+    """Per object of the model, SUN in the object's own frame while the tamer stands."""
+    nbones = mmd.exe().bone_count[model.type]
+    frames, _ = mmd.simulate(model.anims.anims[model.anims.table[0]], nbones)
+    pose = frames[0]
+    pose[0] = [4096, 4096, 4096, 0, 0, 0, 0, 0, 0]
+    out = {}
+    for bone, (oi, _) in enumerate(mmd.exe().skeleton[model.type]):
+        if oi < 0:
+            continue
+        m = mmd.bone_matrices(model, pose)[bone]
+        v = [sum(m[i][j] * SUN[i] for i in range(3)) for j in range(3)]
+        length = sum(q * q for q in v) ** .5 or 1
+        out[oi] = tuple(q / length for q in v)
+    return out
 
 
 def tube(mesh, rings):
@@ -204,9 +283,9 @@ def tube(mesh, rings):
         if rings[0][3] == 'f':
             mesh.face((ids[0][j], ids[0][k], cap), [(u + 2, v), (u + 6, v), (u + 4, v + 1)], ROW, (-1, 0, 0))
         else:
-            mesh.face((ids[0][j], ids[0][k], cap), SKIN_TRI, SKIN_ROW, (-1, 0, 0))
+            mesh.face((ids[0][j], ids[0][k], cap), BARE_SKIN, ROW, (-1, 0, 0))
         if rings[-1][3] == 's':
-            mesh.face((ids[-1][j], ids[-1][k], end), SKIN_TRI, SKIN_ROW, (1, 0, 0))
+            mesh.face((ids[-1][j], ids[-1][k], end), BARE_SKIN, ROW, (1, 0, 0))
         else:
             mesh.face((ids[-1][j], ids[-1][k], end), [(u + 2, v + 4), (u + 6, v + 4), (u + 4, v + 5)], ROW, (1, 0, 0))
     for i in range(len(rings) - 1):
@@ -214,7 +293,7 @@ def tube(mesh, rings):
         for j in range(NS):
             vs = (ids[i][j], ids[i][(j + 1) % NS], ids[i + 1][j], ids[i + 1][(j + 1) % NS])
             if kind == 's':
-                mesh.face(vs, SKIN_QUAD, SKIN_ROW, radial)
+                mesh.face(vs, BARE_SKIN, ROW, radial)
             elif kind == 'c':
                 mesh.face(vs, [(u + 2, SLEEVE[3] - 2)] * 2 + [(u + 4, SLEEVE[3] - 2)] * 2, ROW, (1, 0, 0))
             else:
@@ -317,13 +396,14 @@ def garment(model, body, arms, hood):
     pts, nrm, new = me.close()
     parts = {TORSO: roomy((verts + pts, norms + nrm, pelvis + new))}
     upper, fore = ARMS[arms]
+    sun, skin = suns(model), BARE + (ROW,)
     for oi in UPPER:
-        me = Mesh(quad, tri, sign)
+        me = Mesh(quad, tri, sign, skin=skin, sun=sun[oi])
         tube(me, upper)
         parts[oi] = me.close()
     for oi in FORE:
         if fore:
-            me = Mesh(quad, tri, sign)
+            me = Mesh(quad, tri, sign, skin=skin, sun=sun[oi])
             tube(me, fore)
             parts[oi] = me.close()
             continue
@@ -331,8 +411,10 @@ def garment(model, body, arms, hood):
         bare = []
         for p in prims:
             d = p.decode()
-            set_row(d, SKIN_ROW)
-            d['uv'] = SKIN_QUAD[:len(d['verts'])]
+            cn = cross(*[verts[k] for k in d['verts'][:3]])
+            length = sum(q * q for q in cn) ** .5 or 1
+            d['uv'], row = skin_uv([sign * q / length for q in cn], sun[oi], skin, len(d['verts']))
+            set_row(d, row)
             bare.append(mmd.Prim.encode(d))
         verts = [(x, int(round(y * BARE_FOREARM)), int(round(z * BARE_FOREARM)), w) for x, y, z, w in verts]
         parts[oi] = compact(verts, norms, bare)
@@ -415,38 +497,65 @@ def unstrap(idx):
             idx[v * W + u] = tone
 
 
-def paint(idx, drawing, straps=False):
-    """Draw a shirt on the texture's pixels: the unrolled half trunk and the sleeve's cloth. straps: with a
-    backpack's straps, over the shoulder, down the chest and round the side to the back."""
+FOLDS_AT = (32, 57)                        # the hoodie's sleeves on the tamer's texture: 88 by 17 pixels of nothing but folds
+# how much of those folds each drawing keeps: a thin shirt lies flatter than the hoodie
+FOLDS_KEPT = {'hoodie': 1.0, 'jacket': .9, 'long': .7, 'cardigan': .7}
+
+
+def folds(source):
+    """The hoodie's own folds: how bright its cloth is at (x, y) of an endless sheet of them, -1 (the shade) .. 1."""
+    u0, v0 = FOLDS_AT
+
+    def at(x, y):
+        band, y = divmod(y, 17)
+        x = (x + 46 * band) % 88
+        return 1 - (source[(v0 + y) * W + u0 + x] - 1) / 2.5
+    return at
+
+
+def shape(drawing, a, h):
+    """How a trunk's shape lights it at a (0 the front's middle .. 4 the back's) and h (0 the hem .. 1 the collar)."""
+    def bump(x, y, x0, y0, rx, ry):
+        return math.exp(-((x - x0) / rx) ** 2 - ((y - y0) / ry) ** 2)
+    light = .3 * bump(a, h, .5, .62, .9, .22)          # the chest
+    light += .25 * bump(a, h, 3.4, .68, .7, .2)        # the shoulder blades
+    light -= .55 * bump(a, h, 2.05, .3, .5, .42)       # under the arm
+    light -= .3 * bump(a, h, 4.0, .25, .5, .3)         # the small of the back
+    light -= .35 * max(0, .12 - h) / .12               # the hem turns under
+    light -= .3 * bump(a, h, .0, .9, 1.2, .05)         # under the collar
+    if drawing in ('fit', 'top', 'peplum', 'cardigan'):
+        light += .3 * bump(a, h, .6, .7, .5, .1) - .45 * bump(a, h, .7, .57, .9, .035)   # the bust and under it
+    return light
+
+
+def paint(idx, drawing, straps=False, source=None):
+    """Draw a shirt on the texture's pixels: the unrolled half trunk and the sleeve's cloth, with the folds of the
+    hoodie's own cloth (source: the tamer's texture as the disc has it). straps: with a backpack's straps, over the
+    shoulder, down the chest and round the side to the back."""
+    fold, kept = folds(source or bytes(idx)), FOLDS_KEPT.get(drawing, .55)
+
+    def cloth(light):
+        return max(1, min(6, int(round((1 - light) * 2.5 + 1))))
     for v in range(V0, V0 + VH + 1):
         for u in range(U0, UMAX + 1):
             a, h = (u - U0) / US, (V0 + VH - v) / VH
-            tone = 3
-            if a < 1.3 and .35 < h < .8:
-                tone = 2                               # the chest
-            if a > 2.9 and .5 < h < .85:
-                tone = 2                               # the shoulder blades
-            if 1.6 < a < 2.5 and h < .62:
-                tone = 4                               # under the arm
+            light = fold(u - U0, v - V0) * kept + shape(drawing, a, h)
+            tone = cloth(light)
             if h > .93:
                 tone = 5                               # the collar
             elif h > .9:
-                tone = 2
+                tone = min(tone, 2)
             if v >= V0 + VH - 1:
                 tone = 5                               # the hem
             elif v == V0 + VH - 2:
-                tone = 4
-            for fu, fv, length, slope in FOLDS:
-                k = u - fu
-                if 0 <= k < length and v == fv + (k * slope) // 3:
-                    tone += 1
+                tone = max(tone, 4)
             if drawing == 'stripes' and .08 < h < .9 and (v // 3) % 2 == 0:
                 tone = WHITE if tone < 4 else GREY
             if drawing == 'print' and a < .75 and .45 < h < .75 and 3.2 < math.hypot(u - U0, v - (V0 + VH * .4)) < 6.2:
                 tone = WHITE                           # a ring on the chest
             if drawing == 'hoodie':
                 if a < 1.15 and .1 < h < .36:          # the pocket
-                    tone = 4 if (abs(a - 1.15) < .12 or abs(h - .36) < .03 or abs(h - .1) < .03) else 2
+                    tone = 5 if (abs(a - 1.15) < .12 or abs(h - .36) < .03 or abs(h - .1) < .03) else max(1, tone - 1)
                 if a < .12 and h > .6:
                     tone = 6                           # the collar's slit
                 if .25 < a < .4 and .62 < h < .9:
@@ -460,10 +569,6 @@ def paint(idx, drawing, straps=False):
                     tone = 6
                 if 1.0 < a < 1.5 and .5 < h < .6:
                     tone = 5                           # a chest pocket
-            if drawing in ('fit', 'top', 'peplum', 'cardigan') and a < 1.6 and abs(h - .6) < .02:
-                tone = 4                               # the fold under the bust
-            if drawing in ('fit', 'peplum') and a < 1.0 and .62 < h < .8:
-                tone = 2
             if drawing == 'top':
                 if h > .8:
                     tone = SK if h < .93 else SK2      # bare shoulders
@@ -484,50 +589,63 @@ def paint(idx, drawing, straps=False):
                 if d is not None and abs(d) < .2 and h < .955:
                     tone = STRAP_EDGE if abs(d) > .13 else STRAP_DARK if d < -.02 else STRAP
             idx[v * W + u] = tone
+    skin_strips(idx, *BARE, (SK, SK2, SK3))
     for v in range(SLEEVE[1], SLEEVE[3] + 1):
         for u in range(SLEEVE[0], SLEEVE[2] + 1):
-            tone = 3 if v < SLEEVE[3] - 2 else 5 if v == SLEEVE[3] - 2 else 2
+            tone = cloth(fold(u - SLEEVE[0] + 58, v - SLEEVE[1] + 2) * kept + .1)
+            if v >= SLEEVE[3] - 2:
+                tone = 5 if v == SLEEVE[3] - 2 else 2
             if drawing == 'stripes' and v < SLEEVE[3] - 2 and (v // 3) % 2 == 0:
                 tone = WHITE
             if drawing == 'hoodie' and v >= SLEEVE[3] - 2:
                 tone = 5 if u % 2 else 4
-            if (v - SLEEVE[1]) % 5 == 2 and drawing in ('hoodie', 'jacket', 'long') and 2 < u % 8 < 7:
-                tone = 4
             idx[v * W + u] = tone
 
 
+def skin_tones(texture):
+    """The tamer's skin as his own face has it: lit, plain and shaded."""
+    return texture.pal[SKIN_ROW][1], texture.pal[SKIN_ROW][texture.idx[SKIN_AT[1] * W + SKIN_AT[0]]], texture.pal[0][14]
+
+
 def recipe(texture, follows):
-    """How the game colours the cloth's palette row: per tone a way, a level, a share of white and a fixed colour.
-    A cloth tone shows colour * level / 128 + (255 - colour) * white / 128, as bright as the hoodie's own tone was."""
-    ways, levels, whites, fixed = [KEEP] * 16, [0] * 16, [0] * 16, [0] * 16
-    for i in range(1, 7):
-        r, g, b = rgb15(texture.pal[ROW][i])
-        light = (r * .5 + g * .4 + b * .1) / 232
-        ways[i], levels[i], whites[i] = MAIN, min(255, int(round(light * 128))), int(round(max(0, light - .85) * 1.2 * 128))
-    skin = texture.pal[SKIN_ROW][texture.idx[SKIN_AT[1] * W + SKIN_AT[0]]]
-    ways[SK], fixed[SK] = FIXED, skin
-    ways[SK2], fixed[SK2] = FIXED, skin
+    """How the game colours the cloth's palette row: per tone a way, a level and a fixed colour (palette below)."""
+    ways, levels, fixed = [KEEP] * 16, [0] * 16, [0] * 16
+    ways[0], levels[0] = tone(.4)                      # the outline
+    for i, level in enumerate(CLOTH_LEVELS):
+        ways[i + 1], levels[i + 1] = MAIN, level
+    for t, colour in zip((SK, SK2, SK3), skin_tones(texture)):
+        ways[t], fixed[t] = FIXED, colour
     if follows:
         ways[WHITE], levels[WHITE] = SECOND, 128
         ways[GREY], levels[GREY] = SECOND, 107
     else:
         ways[WHITE], fixed[WHITE] = FIXED, c15(*LIGHT)
         ways[GREY], fixed[GREY] = FIXED, c15(205, 205, 200)
-    for tone, grey in ((STRAP, 92), (STRAP_DARK, 68), (STRAP_EDGE, 44)):
-        ways[tone], fixed[tone] = FIXED, c15(grey, grey, grey + 4)
-    return ways, levels, whites, fixed
+    for t, grey in ((STRAP, 92), (STRAP_DARK, 68), (STRAP_EDGE, 44)):
+        ways[t], fixed[t] = FIXED, c15(grey, grey, grey + 4)
+    return ways, levels, fixed
 
 
-def palette(rec, colour, second, row):
-    """The cloth's palette row for a colour: what the game computes (lookShirtPalette)."""
-    ways, levels, whites, fixed = rec
+def palette(rec, cloth, row):
+    """A garment's palette row for a cloth colour (its shade, the colour, its light, the second colour): what the
+    game computes (lookShirtPalette). A tone of the colour lies between the shade (level 0), the colour (128) and the
+    light (255); one of the second colour, or deeper than the shade, between black and that."""
+    ways, levels, fixed = rec
+    shade, colour, light, second = cloth
     out = list(row)
     for i in range(16):
+        w = levels[i]
         if ways[i] == FIXED:
             out[i] = fixed[i] | 0x8000
-        elif ways[i] in (MAIN, SECOND):
-            src = colour if ways[i] == MAIN else second
-            out[i] = c15(*[min(255, (c * levels[i] + (255 - c) * whites[i]) >> 7) for c in src]) | 0x8000
+            continue
+        if ways[i] == KEEP:
+            continue
+        if ways[i] == MAIN:
+            a, b = (shade, colour) if w <= 128 else (colour, light)
+            w = w if w <= 128 else w - 128
+        else:
+            a, b = (0, 0, 0), second if ways[i] == SECOND else shade
+        out[i] = c15(*[(p * (128 - w) + q * w) >> 7 for p, q in zip(a, b)]) | 0x8000
     return out
 
 
@@ -618,9 +736,9 @@ def pixels(idx, rects=RECTS):
 
 
 def pack_recipe(out, at, rec):
-    ways, levels, whites, fixed = rec
-    out[at:at + 16], out[at + 16:at + 32], out[at + 32:at + 48] = bytes(ways), bytes(levels), bytes(whites)
-    struct.pack_into('<16H', out, at + 48, *fixed)
+    ways, levels, fixed = rec
+    out[at:at + 16], out[at + 16:at + 32] = bytes(ways), bytes(levels)
+    struct.pack_into('<16H', out, at + 32, *fixed)
 
 
 def head(table, size, rec=None, drawn=None, rects=RECTS, flags=0):
@@ -654,8 +772,8 @@ def build(model, texture):
         parts = garment(model, trunk, arms, hood)
         body, table = geometry(parts, gaps=room)
         idx, strapped = bytearray(texture.idx), bytearray(texture.idx)
-        paint(idx, drawing)
-        paint(strapped, drawing, True)
+        paint(idx, drawing, False, texture.idx)
+        paint(strapped, drawing, True, texture.idx)
         rec = recipe(texture, follows)
         drawn = pixels(idx) + pixels(strapped, (TRUNK,))
         first = bytearray(head(table, len(body), rec, drawn, RECTS + (TRUNK,), ROOM | STRAPS))

@@ -13,7 +13,7 @@ import math
 
 import mmd
 from . import shirts
-from .shirts import MAIN, SECOND, SKIN_QUAD, SKIN_ROW, SKIN_TRI, W, c15, rgb15
+from .shirts import BARE_SKIN, FIXED, MAIN, SECOND, W, c15, rgb15
 
 THIGH, SHIN = (8, 11), (9, 12)
 OBJECTS = (8, 9, 11, 12)                   # left thigh, left shin, right thigh, right shin
@@ -28,13 +28,19 @@ CLOTH = (90, 89, 114, 110)                 # plain cloth with folds
 STRIPE = (118, 89, 130, 110)               # cloth with a stripe of the second colour down its middle
 CUFF = (58, 89, 69, 110)                  # the second colour
 POCKET = (134, 89, 158, 110)              # cloth with a pocket
-TONES = ((3, 58), (4, 77), (5, 105), (6, 128), (7, 143))   # the cloth's tones and how bright each is (128 = the colour)
+TONES = (168, 148, 128, 104, 80, 56, 32)   # the cloth's tones, LIGHTEST on: 128 is the colour, 0 its shade, 255 its light
+LIGHTEST, PLAIN, DARKEST = 2, 5, 8         # as the tamer's own trousers are drawn: PLAIN is the colour itself
+FOLDS_AT = (88, 88, 35, 24)                # the tamer's own trousers on his texture: nothing but folds of cloth
 DARK2, LIGHT2 = 11, 12                     # the second colour and its shade
-LENGTH = 132                               # a whole leg: the cloth's texture runs from the hip to the ankle
+BARE = (160, 88, 24)                       # bare skin, drawn at the end of the cloth: u, v, height (shirts.skin_strips)
+SKIN_TONES = (13, 14, 15)                  # its tones: lit, plain, shaded
 
 
-def patch(p, a=0.0, b=1.0):
+def patch(p, a=0.0, b=1.0, half=None):
+    """A drawing's corners for a quad: from a to b down it, and the whole of its width or one half."""
     u0, v0, u1, v1 = p
+    if half is not None:
+        u0, u1 = (u0, (u0 + u1) // 2) if half == 0 else ((u0 + u1) // 2 + 1, u1)
     va, vb = int(round(v0 + (v1 - v0) * a)), int(round(v0 + (v1 - v0) * b))
     return [(u0, va), (u1, va), (u0, vb), (u1, vb)]
 
@@ -47,14 +53,16 @@ def leg(mesh, rings, ns, phase, outer, x0):
 
     def radial(c):
         return (0, c[1], c[2] - 1)
+    length, reach = (66, 1) if x0 else (52, .86)
     for i in range(len(rings) - 1):
         kind = rings[i + 1][3]
-        a = max(0, min(1, (x0 + rings[i][0]) / LENGTH))
-        b = max(0, min(1, (x0 + rings[i + 1][0]) / LENGTH))
+        # each of the two bones runs down the whole drawing: its folds keep their shape (a shin's end is its last rows)
+        a = max(0, min(1, rings[i][0] / length)) * reach
+        b = max(0, min(1, rings[i + 1][0] / length)) * reach
         for j in range(ns):
             vs = (ids[i][j], ids[i][(j + 1) % ns], ids[i + 1][j], ids[i + 1][(j + 1) % ns])
             if kind == 's':
-                mesh.face(vs, SKIN_QUAD, SKIN_ROW, radial)
+                mesh.face(vs, BARE_SKIN, ROW, radial)
             elif kind == 'h':
                 mesh.face(vs, patch(CUFF, .4, .6), ROW, (1, 0, 0))
             elif kind == 't' and j == outer:
@@ -62,12 +70,11 @@ def leg(mesh, rings, ns, phase, outer, x0):
             elif kind == 'p' and j == outer:
                 mesh.face(vs, patch(POCKET), ROW, radial)
             else:
-                mesh.face(vs, patch(CLOTH, a, b), ROW, radial)
+                mesh.face(vs, patch(CLOTH, a, b, (j + (x0 > 0)) % 2), ROW, radial)
     skin = rings[-1][3] == 's'
     end = mesh.add((rings[-1][0], 0, 1))
     for j in range(ns):
-        mesh.face((ids[-1][j], ids[-1][(j + 1) % ns], end), SKIN_TRI if skin else patch(CLOTH, .1, .3)[:3],
-                  SKIN_ROW if skin else ROW, (1, 0, 0))
+        mesh.face((ids[-1][j], ids[-1][(j + 1) % ns], end), BARE_SKIN if skin else patch(CLOTH, .1, .3)[:3], ROW, (1, 0, 0))
 
 
 T0 = ((0, 23, 20), (26, 24, 21), (52, 24, 21))     # the tamer's own thigh and shin: x along the bone, half sizes
@@ -109,15 +116,15 @@ def garment(model, thigh, shin, slim):
     quad, tri, sign = shirts.patterns(model)
     sided = any(r[3] in 'tp' for r in thigh + (shin or []))
     room = SHAFT_CORNERS if slim else 0
-    parts = {}
+    parts, sun, skin = {}, shirts.suns(model), BARE + (ROW,)
     for n in range(2):
         # five sides: turned so that one faces outwards, where a stripe or a pocket goes
         phase = math.radians(18 if n == 0 else -18) if sided else 0
         outer = 3 if n == 0 else 1
-        me = shirts.Mesh(quad, tri, sign)
+        me = shirts.Mesh(quad, tri, sign, skin=skin, sun=sun[THIGH[n]])
         leg(me, thigh, 5, phase, outer, 0)
         parts[THIGH[n]] = me.close()
-        me = shirts.Mesh(quad, tri, sign, base=room)
+        me = shirts.Mesh(quad, tri, sign, base=room, skin=skin, sun=sun[SHIN[n]])
         if shin:
             leg(me, shin, 5, phase, outer, 66)
         else:
@@ -131,7 +138,10 @@ def geometry(parts, slim=False):
     return shirts.geometry(parts, OBJECTS, {oi: SHAFT_BYTES for oi in SHIN} if slim else None)
 
 
-def paint(idx, drawing):
+def paint(idx, drawing, source):
+    """Draw trousers on the texture's pixels, with the folds of the tamer's own (source: his texture as the disc has it)."""
+    fu, fv, fw, fh = FOLDS_AT
+
     def box(p, f):
         u0, v0, u1, v1 = p
         for y in range(v0 - 1, v1 + 2):
@@ -141,39 +151,39 @@ def paint(idx, drawing):
     def cloth(x, y, w, h):
         if drawing == 'cuffed' and y >= h - 2:
             return LIGHT2 if y % 2 else DARK2
-        if (x * 5 - y * 3) % 31 == 0:
-            return 7
-        if (x * 3 + y * 2) % 23 in (0, 1) and y % 7 < 4:
-            return 5
-        return 6
+        return max(LIGHTEST, min(DARKEST, source[(fv + y % fh) * W + fu + x % fw]))
 
     def stripe(x, y, w, h):
         c = cloth(x, y, w, h)
-        return LIGHT2 if abs(x - w / 2) < 2.2 and c in (5, 6, 7) else c
+        return (LIGHT2 if c < 7 else DARK2) if abs(x - w / 2) < 2.2 else c
 
     def pocket(x, y, w, h):
         if (5 < x < w - 5 and y in (6, 16)) or (6 <= y <= 16 and x in (6, w - 6)):
-            return 4
-        return 5 if 5 < x < w - 5 and 6 < y < 10 else cloth(x, y, w, h)
+            return DARKEST
+        c = cloth(x, y, w, h)
+        return min(DARKEST, c + 1) if 5 < x < w - 5 and 6 < y < 10 else c
     box(CLOTH, cloth)
     box(STRIPE, stripe)
     box(CUFF, lambda x, y, w, h: LIGHT2 if y % 4 else DARK2)
     box(POCKET, pocket)
+    shirts.skin_strips(idx, *BARE, SKIN_TONES)
 
 
-def recipe():
-    ways, levels, whites, fixed = [shirts.KEEP] * 16, [0] * 16, [0] * 16, [0] * 16
-    for i, level in TONES:
-        ways[i], levels[i] = MAIN, level
+def recipe(texture):
+    ways, levels, fixed = [shirts.KEEP] * 16, [0] * 16, [0] * 16
+    for i, level in enumerate(TONES):
+        ways[LIGHTEST + i], levels[LIGHTEST + i] = MAIN, level
     ways[DARK2], levels[DARK2] = SECOND, 102
     ways[LIGHT2], levels[LIGHT2] = SECOND, 128
-    return ways, levels, whites, fixed
+    for t, colour in zip(SKIN_TONES, shirts.skin_tones(texture)):
+        ways[t], fixed[t] = FIXED, colour
+    return ways, levels, fixed
 
 
-def palette(texture, colour, second):
-    """The texture's palette rows for trousers of a colour, as the game writes them (for pictures)."""
+def palette(texture, cloth):
+    """The texture's palette rows for trousers of a cloth colour, as the game writes them (for pictures)."""
     rows = [list(p) for p in texture.pal]
-    rows[ROW] = shirts.palette(recipe(), colour, second, rows[ROW])
+    rows[ROW] = shirts.palette(recipe(texture), cloth, rows[ROW])
     return rows
 
 
@@ -219,10 +229,9 @@ def build(model, texture):
         parts = garment(model, list(thigh), list(shin) if shin else None, slim)
         body, table = geometry(parts, slim)
         idx = bytearray(texture.idx)
-        paint(idx, drawing)
-        if idx[SEAT_AT[1] * W + SEAT_AT[0]] != 6:
-            raise SystemExit('trousers: the seat texel is not plain cloth')
-        first = bytearray(shirts.head(table, len(body), recipe(), shirts.pixels(idx, RECTS), RECTS, SLIM if slim else 0))
+        paint(idx, drawing, texture.idx)
+        idx[SEAT_AT[1] * W + SEAT_AT[0]] = PLAIN
+        first = bytearray(shirts.head(table, len(body), recipe(texture), shirts.pixels(idx, RECTS), RECTS, SLIM if slim else 0))
         first[SEAT_IN_HEAD:SEAT_IN_HEAD + 2] = bytes(SEAT_AT)
         first = bytes(first)
         out.append((name, first, body, parts, idx, slim))

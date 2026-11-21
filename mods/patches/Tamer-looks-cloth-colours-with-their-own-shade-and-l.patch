@@ -1,0 +1,134 @@
+From 80411691f274416690ee2fbb3f429a0df0bc0209 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 21 Nov 2026 22:24:58 +0000
+Subject: [PATCH] Tamer looks: cloth colours with their own shade and light
+
+A cloth colour is now four colours (its shade, the cloth, its light and the second colour) and a tone of a
+garment's palette row is a place on that ramp, so shaded cloth turns richer and lit cloth paler instead of only
+darker and brighter.
+---
+ include/dw/species.h   |  6 ++++--
+ src/main/game_menu.c   |  8 ++++----
+ src/main/mod_species.c | 33 ++++++++++++++++++++++++---------
+ 3 files changed, 32 insertions(+), 15 deletions(-)
+
+diff --git a/include/dw/species.h b/include/dw/species.h
+index f223e2e..c0c5d76 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -366,10 +366,12 @@ extern uint8_t MOD_TAMER_STATE[TAMER_STATE_SIZE] __attribute__((section(".sbss")
+ #define TAMER_PACK_COUNT	7	/* the original backpack, none, then the others */
+ #define TAMER_PACK_NONE		1
+ #define LOOK_GARMENTS		4	/* the shirt, the trousers, the shoes, the backpack: MOD_TAMER_STATE[3 + 2 * n] and its colour after it */
++#define LOOK_CLOTH		0x300	/* in the file's first sector: per cloth colour its shade, the colour, its light and
++					 * the second colour, r, g, b each */
++#define LOOK_CLOTH_SIZE		12
+ typedef struct LookShirtRecipe { /* how each tone of a garment's palette row gets its colour (lookShirtPalette) */
+-	uint8_t ways[16]; /* 0 as the texture has it, 1 from the cloth's colour, 2 from the second colour, 3 fixed */
++	uint8_t ways[16]; /* 0 as the texture has it, 1 the cloth's colour, 2 the second colour, 3 fixed, 4 the cloth's shade */
+ 	uint8_t levels[16];
+-	uint8_t whites[16];
+ 	uint16_t fixed[16];
+ } LookShirtRecipe;
+ struct ModelComponent;
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index d11b9a0..611bffa 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -2607,7 +2607,7 @@ static struct {
+ 	int16_t width[LOOK_ROWS];
+ 	uint8_t row;
+ 	uint8_t rgb[TAMER_HAIR_COUNT * 3];
+-	uint8_t cloth[TAMER_CLOTH_COUNT * 6]; /* per cloth colour: the cloth, and stripes, prints and trim on it */
++	uint8_t cloth[TAMER_CLOTH_COUNT * LOOK_CLOTH_SIZE]; /* per cloth colour: its shade, the cloth, its light, and the second colour */
+ } lookPageState;
+ /* per garment: its palette row, and where its count and its directory are in the file's first sector (in u16s) */
+ static const uint16_t lookPageGarment[3 * LOOK_GARMENTS] = { 2, 5, 7, 3, 0x68, 0x6D, 0x6E, 0x6F, 0x80, 0xA0, 0x100, 0x120 };
+@@ -2759,7 +2759,7 @@ static void lookPageShirtRetint(int32_t garment)
+ {
+ 	RECT rect;
+ 
+-	lookShirtPalette(lookShirtRow[garment], &lookShirtRecipe[garment], &lookPageState.cloth[MOD_TAMER_STATE[4 + 2 * garment] * 6]);
++	lookShirtPalette(lookShirtRow[garment], &lookShirtRecipe[garment], &lookPageState.cloth[MOD_TAMER_STATE[4 + 2 * garment] * LOOK_CLOTH_SIZE]);
+ 	setRECT(&rect, (TAMER_MODEL.clutPage & 0x3f) << 4, (TAMER_MODEL.clutPage >> 6) + lookPageGarment[garment], 16, 1);
+ 	LoadImage(&rect, (u_long *)lookShirtRow[garment]);
+ }
+@@ -2833,8 +2833,8 @@ int32_t lookPageOpen(void)
+ 	for (i = 0; i < 16; i++) {
+ 		lookPageState.levels[i] = ((uint8_t *)head)[LOOK_LEVELS + i];
+ 	}
+-	for (i = 0; i < TAMER_CLOTH_COUNT * 6; i++) {
+-		lookPageState.cloth[i] = ((uint8_t *)head)[0x180 + i];
++	for (i = 0; i < TAMER_CLOTH_COUNT * LOOK_CLOTH_SIZE; i++) {
++		lookPageState.cloth[i] = ((uint8_t *)head)[LOOK_CLOTH + i];
+ 	}
+ 	/* what the file has of each row, never more than the game knows; a choice the file does not have closes the page */
+ 	for (i = 0; i < LOOK_ROWS; i++) {
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index c43fdd6..32c4318 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -1115,28 +1115,43 @@ void lookHairPalette(uint16_t *row, uint8_t *rgb, uint8_t *levels)
+ 	}
+ }
+ 
+-/* A garment's palette row for a cloth colour (the cloth's r, g, b and the r, g, b of stripes, prints and trim): per tone the
+- * recipe says whether it stays, is a fixed colour, or shows colour * level / 128 + (255 - colour) * white / 128. */
++/* A garment's palette row for a cloth colour (its shade, the colour, its light and the second colour: LOOK_CLOTH). Per
++ * tone the recipe says whether it stays, is a fixed colour, or lies between two of those at a level of 128: from the
++ * shade (0) through the colour (128) to the light (255), or from black to the second colour or to the shade. */
+ void lookShirtPalette(uint16_t *row, LookShirtRecipe *recipe, uint8_t *rgb)
+ {
+ 	int32_t i;
+ 	int32_t k;
++	int32_t w;
+ 	uint32_t c;
+ 	uint32_t v;
+-	uint8_t *src;
++	const uint8_t *a;
++	const uint8_t *b;
+ 
+ 	for (i = 0; i < 16; i++) {
+-		if (recipe->ways[i] == 0) {
++		w = recipe->levels[i];
++		switch (recipe->ways[i]) {
++		case 0:
+ 			continue;
+-		}
+-		if (recipe->ways[i] == 3) {
++		case 3:
+ 			row[i] = recipe->fixed[i] | 0x8000;
+ 			continue;
++		case 1:
++			a = rgb;
++			if (w > 128) {
++				a = rgb + 3;
++				w -= 128;
++			}
++			b = a + 3;
++			break;
++		default:
++			a = NULL;
++			b = recipe->ways[i] == 2 ? rgb + 9 : rgb;
++			break;
+ 		}
+-		src = recipe->ways[i] == 1 ? rgb : rgb + 3;
+ 		v = 0x8000;
+ 		for (k = 0; k < 3; k++) {
+-			c = (src[k] * recipe->levels[i] + (255 - src[k]) * recipe->whites[i]) >> 10;
++			c = ((a != NULL ? a[k] * (128 - w) : 0) + b[k] * w) >> 10;
+ 			v |= (c > 31 ? 31 : c) << (5 * k);
+ 		}
+ 		row[i] = v;
+@@ -1268,7 +1283,7 @@ int32_t lookTamerLoad(void *component)
+ 		}
+ 		memcpy(&lookShirtRecipe[g], first + LOOK_SHIRT_RECIPE, sizeof(lookShirtRecipe[g]));
+ 		row = (uint16_t *)(texture + LOOK_TIM_PALETTE + 32 * LOOK_GARMENT_ROW(g));
+-		lookShirtPalette(row, &lookShirtRecipe[g], (uint8_t *)head + 0x180 + 6 * (MOD_TAMER_STATE[4 + 2 * g] % head[0x69]));
++		lookShirtPalette(row, &lookShirtRecipe[g], (uint8_t *)head + LOOK_CLOTH + LOOK_CLOTH_SIZE * (MOD_TAMER_STATE[4 + 2 * g] % head[0x69]));
+ 		memcpy(lookShirtRow[g], row, sizeof(lookShirtRow[g]));
+ 		if (at[g] * 4 + (sectors[g][1] << 11) > TAMER_MMD_MAX) {
+ 			free3(texture);
+-- 
+2.55.0
+

@@ -124,7 +124,7 @@ def paint(model, idx, drawing, boot):
 
 def recipe(texture, drawing):
     """The feet's palette row: the shoe in the colour, and its trim in the second colour, as skin or as the colour."""
-    ways, levels, whites, fixed = [shirts.KEEP] * 16, [0] * 16, [0] * 16, [0] * 16
+    ways, levels, fixed = [shirts.KEEP] * 16, [0] * 16, [0] * 16
     skin = rgb15(texture.pal[shirts.SKIN_ROW][texture.idx[shirts.SKIN_AT[1] * W + shirts.SKIN_AT[0]]])
 
     def bare(i, level):
@@ -134,24 +134,24 @@ def recipe(texture, drawing):
         if drawing == 'sandals':
             bare(i, level)
         else:
-            ways[i], levels[i] = MAIN, int(round(128 * level))
+            ways[i], levels[i] = shirts.tone(level)
     old = [sum(rgb15(c)) for c in texture.pal[ROW][:TRIM]]
     for i in range(TRIM):
         if drawing in ('bare', 'strap'):
             bare(i, 1.08 - .48 * i / 6)
         elif drawing == 'sandals':
-            ways[i], levels[i] = MAIN, int(round(128 * (1.5 - 1.05 * i / 6)))
+            ways[i], levels[i] = shirts.tone(1.3 - .85 * i / 6)
         elif drawing in ('flat', 'cuff'):
             ways[i], levels[i] = SECOND, int(round(128 * (1.1 - .6 * i / 6)))
         else:
             ways[i], levels[i] = SECOND, int(round(128 * (.45 + .65 * old[i] / (max(old) or 1))))
-    return ways, levels, whites, fixed
+    return ways, levels, fixed
 
 
-def palette(texture, rec, colour, second):
-    """The texture's palette rows for shoes of a colour, as the game writes them (for pictures)."""
+def palette(texture, rec, cloth):
+    """The texture's palette rows for shoes of a cloth colour, as the game writes them (for pictures)."""
     rows = [list(p) for p in texture.pal]
-    rows[ROW] = shirts.palette(rec, colour, second, rows[ROW])
+    rows[ROW] = shirts.palette(rec, cloth, rows[ROW])
     return rows
 
 

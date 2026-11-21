@@ -27,16 +27,17 @@ PANEL = (1, 57, 20, 86)                    # a drawn backpack's back
 SIDE = (23, 57, 30, 86)                    # its plain cloth, for the sides, the top and the bottom
 ROLL = (23, 76, 30, 86)                    # the lower end of the plain cloth: a bedroll's, in the second colour
 RIM = 10                                   # how deep in the body a backpack's open side lies (the back is near 24)
-TONES = ((1, 150, 22), (2, 128, 0), (3, 108, 0), (4, 86, 0), (5, 62, 0))   # cloth tones: level, share of white
+TONES = ((1, 1.3), (11, 1.14), (2, 1), (3, .86), (4, .72), (10, .58), (5, .44))   # cloth tones: how bright next to the colour
+OUTLINE = 5
 TRIM, TRIM_DARK, METAL, DARK = 6, 7, 8, 9  # the second colour and its shade, a buckle, a strap
 
 # name, shape, drawing. The number is saved: add at the end.
 STYLES = (
     ('classic', 'original', None),         # the original's shape and drawing, in any colour
-    ('school', ('box', 27, -20, 40, 50), 'school'),
-    ('mini', ('box', 17, 4, 40, 39), 'mini'),
-    ('hiking', ('tall', 29, -30, 44, 50), 'hiking'),
-    ('round', ('round', 25, 12, 46), 'round'),
+    ('school', ('box', 35, -30, 50, 56), 'school'),
+    ('mini', ('box', 26, -8, 44, 46), 'mini'),
+    ('hiking', ('tall', 36, -34, 50, 58), 'hiking'),
+    ('round', ('round', 35, 10, 54), 'round'),
 )
 NAMES = ('original', 'none') + tuple(s[0] for s in STYLES)
 
@@ -76,7 +77,7 @@ def shape(model, kind, *size):
         a, b = both(x0, RIM, w - 2), both(x1, RIM, w - 2)
         c = both(x0 - 2, deep, w)
         if kind == 'box':                              # the top falls away towards the back
-            d, e = both(x1 - 10, deep, w), both(x1, deep - 13, w - 2)
+            d, e = both(x1 - 14, deep, w), both(x1, deep - 16, w - 2)
             me.face((a[0], a[1], c[0], c[1]), uv(SIDE, 0, .3), ROW, out)
             me.face((d[0], d[1], c[0], c[1]), uv(PANEL, .22, 1), ROW, out)
             me.face((e[0], e[1], d[0], d[1]), uv(PANEL, 0, .22), ROW, out)
@@ -91,7 +92,7 @@ def shape(model, kind, *size):
             me.face((b[0], b[1], d[0], d[1]), uv(SIDE, 0, .3), ROW, out)
             for s in range(2):
                 me.face((b[s], d[s], a[s], c[s]), uv(SIDE, 0, .6), ROW, out)
-            rx, ry, r = x1 + 7, (RIM + deep) / 2 + 6, 9
+            rx, ry, r = x1 + 9, (RIM + deep) / 2 + 8, 11
             ring = [both(rx + r * math.cos(k * math.pi / 2), ry + r * math.sin(k * math.pi / 2), w + 3) for k in range(4)]
 
             def away(c):
@@ -104,7 +105,7 @@ def shape(model, kind, *size):
     else:                                              # a soft round one: six sides and a domed back
         r, x, deep = size
         rings = [[me.add((x + q * math.cos(k * math.pi / 3 + math.pi / 6), y, q * .95 * math.sin(k * math.pi / 3 + math.pi / 6)))
-                  for k in range(6)] for q, y in ((r - 3, RIM), (r, deep - 9))]
+                  for k in range(6)] for q, y in ((r - 4, RIM), (r, deep - 12))]
         cap = me.add((x, deep, 0))
 
         def out(c):
@@ -122,95 +123,123 @@ def shape(model, kind, *size):
     return me.close()
 
 
+def shade(light):
+    """The cloth tone nearest to a brightness (1 is the colour itself)."""
+    return min(TONES, key=lambda t: abs(t[1] - light))[0]
+
+
 def paint(idx, drawing):
+    """Draw a backpack's back and its plain cloth: every part is lit from above and rounds off towards its edges."""
     def box(p, f):
         u0, v0, u1, v1 = p
         for y in range(v0 - 1, v1 + 2):
             for x in range(u0 - 1, u1 + 2):
                 idx[y * W + x] = f(x - u0, y - v0, u1 - u0, v1 - v0)
 
-    def cloth(x, y, w, h):
-        if (x * 3 + y * 5) % 29 == 0:
-            return 2
-        return 4 if (x * 2 - y * 3) % 19 == 0 else 3
+    def form(x, y, w, h, top=0.0, bottom=1.0):
+        """How bright the cloth is at a place of a bulging part that runs from top to bottom of the height."""
+        a = min(max((y / h - top) / (bottom - top), 0), 1)
+        light = 1.2 - .5 * a ** 1.3 - .3 * abs(2 * x / w - 1) ** 3
+        if a < .12:
+            light -= .12                               # the upper edge turns away
+        return light
 
-    def edge(x, y, w, h, c):
-        return 5 if x <= 0 or x >= w or y >= h else 4 if x == 1 or x == w - 1 else c
+    def edged(x, y, w, h, tone):
+        return OUTLINE if x <= 0 or x >= w or y <= 0 or y >= h else tone
 
     def school(x, y, w, h):
-        flap = h * .42 - abs(x - w / 2) * .12
+        flap = h * .4 - (abs(x - w / 2) / (w / 2)) ** 2 * h * .1
         if y <= flap:
-            if y > flap - 1.2:
+            if y > flap - 1.3:
                 return TRIM
-            return edge(x, y, w, h, 2 if y > 1 else 1)
-        if abs(x - w / 2) < 1.6 and flap < y < flap + 4:
-            return METAL                               # the buckle
-        if 3 <= x <= w - 3 and h * .58 <= y <= h - 3:  # the pocket
-            if x in (3, w - 3) or y in (int(h * .58), h - 3):
-                return 5
-            return 4 if y == int(h * .58) + 1 else 3
-        return edge(x, y, w, h, cloth(x, y, w, h))
+            return edged(x, y, w, h, shade(form(x, y, w, h, 0, .4) + .12))
+        if abs(x - w / 2) < 1.6 and y < flap + 4:
+            return METAL if y < flap + 3 else OUTLINE  # the buckle
+        if y < flap + 2.2:
+            return edged(x, y, w, h, shade(.55))       # the flap's shadow
+        top = int(h * .6)
+        if 3 <= x <= w - 3 and top <= y <= h - 2:      # the pocket
+            if x in (3, w - 3) or y in (top, h - 2):
+                return OUTLINE
+            return shade(form(x - 3, y, w - 6, h, .6, 1) + (.12 if y == top + 1 else -.05))
+        return edged(x, y, w, h, shade(form(x, y, w, h) - .08))
 
     def mini(x, y, w, h):
-        if abs(y - h * .3) < .8:
-            return TRIM if 1 < x < w - 1 else 5        # the zip
-        d = math.hypot(x - w / 2, (y - h * .64) * .8)
-        if d < 4.6:
-            return TRIM if d > 3.4 else TRIM_DARK if d < 1.2 else 2
-        return edge(x, y, w, h, 2 if y < h * .3 else cloth(x, y, w, h))
+        zip_ = h * .3
+        if abs(y - zip_) < .8:
+            return TRIM if 1 < x < w - 1 else OUTLINE
+        if zip_ < y < zip_ + 2.4:
+            return edged(x, y, w, h, shade(.58))
+        d = math.hypot(x - w / 2, (y - h * .66) * .8)
+        if d < 4.8:                                    # a round patch
+            return OUTLINE if d > 4 else TRIM_DARK if d < 1.3 or (d > 2.6 and y > h * .66) else TRIM
+        if y < zip_:
+            return edged(x, y, w, h, shade(form(x, y, w, h, 0, .3) + .1))
+        return edged(x, y, w, h, shade(form(x, y, w, h, .3, 1)))
 
     def hiking(x, y, w, h):
-        if y < h * .2:                                 # the lid
-            return TRIM_DARK if y > h * .2 - 1.5 else edge(x, y, w, h, TRIM)
-        for strap in (.3, .7):
+        lid = h * .22 + (abs(x - w / 2) / (w / 2)) ** 2 * h * .04
+        if y < lid:
+            if y > lid - 1.4 or x <= 0 or x >= w or y <= 0:
+                return OUTLINE
+            return TRIM if y < lid * .55 and 1 < x < w - 1 else TRIM_DARK
+        for strap in (.28, .72):
             if abs(x - w * strap) < 1.3:
-                return METAL if abs(y - h * .47) < 1.6 else DARK
-        if h * .62 < y < h - 2 and 2 < x < w - 2 and (y in (int(h * .62) + 1, h - 3) or x in (3, w - 3)):
-            return 5                                   # the lower pocket's seam
-        return edge(x, y, w, h, cloth(x, y, w, h))
+                return METAL if abs(y - h * .48) < 1.6 else DARK
+        if y < lid + 2.2:
+            return edged(x, y, w, h, shade(.55))       # the lid's shadow
+        top = int(h * .64)
+        if top <= y <= h - 2 and 2 <= x <= w - 2:      # the lower pocket
+            if y in (top, h - 2) or x in (2, w - 2):
+                return OUTLINE
+            return shade(form(x - 2, y, w - 4, h, .64, 1) + (.12 if y == top + 1 else -.04))
+        return edged(x, y, w, h, shade(form(x, y, w, h) - .06))
 
     def round_(x, y, w, h):
-        d = math.hypot((x - w / 2) / (w / 2), (y - h / 2) / (h / 2))
-        if d > .82:
-            return 4
-        if abs(d - .55) < .07 and y < h * .55:
+        px, py = (x - w / 2) / (w / 2), (y - h / 2) / (h / 2)
+        d = math.hypot(px, py)
+        if abs(d - .58) < .075 and py < .25:
             return TRIM                                # the zip, an arch
+        if .58 < d < .78 and py < .25 and py > -.2 + abs(px) * .1 and abs(d - .7) < .05:
+            return shade(.58)
         if d < .3:
-            return TRIM if d > .2 else TRIM_DARK
-        return 2 if d < .55 and y < h / 2 else cloth(x, y, w, h)
+            return TRIM_DARK if d < .1 or (d > .19 and py > 0) else TRIM
+        if d < .37:
+            return OUTLINE
+        return shade(1.28 - .62 * d * d - .22 * py)
 
     def side(x, y, w, h):
-        return 5 if y % 10 == 9 else 4 if x in (0, w) else cloth(x, y, w, h)
+        if y % 10 == 9:
+            return OUTLINE                             # a seam
+        return shade(.92 - .2 * abs(2 * x / w - 1) ** 2 + (.14 if y % 10 == 0 else 0))
     box(SIDE, side)
     box(PANEL, {'school': school, 'mini': mini, 'hiking': hiking, 'round': round_}[drawing])
     if drawing == 'hiking':
-        box(ROLL, lambda x, y, w, h: DARK if x in (1, w - 1) else TRIM_DARK if y in (0, h) else TRIM)
+        box(ROLL, lambda x, y, w, h: DARK if x in (1, w - 1) else OUTLINE if y in (0, h) else TRIM if y < h * .55 else TRIM_DARK)
 
 
 def recipe(texture, drawing):
-    ways, levels, whites, fixed = [shirts.KEEP] * 16, [0] * 16, [0] * 16, [0] * 16
+    ways, levels, fixed = [shirts.KEEP] * 16, [0] * 16, [0] * 16
     if drawing is None:                                # the original's tones, as bright as they were
         tones = [rgb15(c) for c in texture.pal[ROW]]
         ref = sum(tones[1])
         for i in tuple(range(6)) + (12, 13, 14):
-            light = sum(tones[i]) / ref
-            ways[i], levels[i] = MAIN, min(255, int(round(128 * min(light, 1.15))))
-            whites[i] = int(round(max(0, light - 1.15) * 90))
-        return ways, levels, whites, fixed
-    for i, level, white in TONES:
-        ways[i], levels[i], whites[i] = MAIN, level, white
+            ways[i], levels[i] = shirts.tone(sum(tones[i]) / ref)
+        return ways, levels, fixed
+    for i, light in TONES:
+        ways[i], levels[i] = shirts.tone(light)
     ways[TRIM], levels[TRIM] = SECOND, 128
-    ways[TRIM_DARK], levels[TRIM_DARK] = SECOND, 96
+    ways[TRIM_DARK], levels[TRIM_DARK] = SECOND, 90
     ways[METAL], fixed[METAL] = FIXED, c15(200, 200, 205)
     ways[DARK], fixed[DARK] = FIXED, c15(56, 56, 62)
-    return ways, levels, whites, fixed
+    return ways, levels, fixed
 
 
-def palette(texture, rec, colour, second):
-    """The texture's palette rows for a backpack of a colour, as the game writes them (for pictures)."""
+def palette(texture, rec, cloth):
+    """The texture's palette rows for a backpack of a cloth colour, as the game writes them (for pictures)."""
     rows = [list(p) for p in texture.pal]
     if rec:
-        rows[ROW] = shirts.palette(rec, colour, second, rows[ROW])
+        rows[ROW] = shirts.palette(rec, cloth, rows[ROW])
     return rows
 
 
