@@ -249,8 +249,12 @@ def compact(verts, norms, prims):
 
 
 def original(model):
-    """Shirt 0: the hoodie and the backpack."""
-    return {oi: part(model, oi) for oi in OBJECTS}
+    """Shirt 0: the hoodie and the backpack. The seat's polygons come first in the torso, as in every shirt: trousers
+    recolour them there (legs.py)."""
+    parts = {oi: part(model, oi) for oi in OBJECTS}
+    verts, norms, prims = parts[TORSO]
+    parts[TORSO] = (verts, norms, [prims[i] for i in PELVIS] + [p for i, p in enumerate(prims) if i not in PELVIS])
+    return parts
 
 
 def garment(model, body, arms, hood):
@@ -446,10 +450,10 @@ def check_free(model):
                 raise SystemExit(f'shirts: object {oi} polygon {pi} is drawn in the cloth palette row')
 
 
-def strip(model):
-    """Take the five objects out of a model: the game links a shirt's in their place."""
+def strip(model, objects=OBJECTS):
+    """Take a garment's objects out of a model: the game links the garment's in their place."""
     tm = model.tmd
-    for oi in OBJECTS:
+    for oi in objects:
         ob = tm.objects[oi]
         for pool, start, count in ((tm.verts, 'vert_start', 'nvert'), (tm.norms, 'norm_start', 'nnorm')):
             s, n = getattr(ob, start), getattr(ob, count)
@@ -467,10 +471,10 @@ def strip(model):
     return model
 
 
-def wear(model, parts):
-    """A stripped model with a shirt's objects put back, for pictures and checks (the game does this when it loads)."""
+def wear(model, parts, objects=OBJECTS):
+    """A stripped model with a garment's objects put back, for pictures and checks (the game does this when it loads)."""
     tm = model.tmd
-    for oi in OBJECTS:
+    for oi in objects:
         verts, norms, prims = parts[oi]
         ob = tm.objects[oi]
         ob.vert_start, ob.nvert = len(tm.verts), len(verts)
@@ -481,48 +485,55 @@ def wear(model, parts):
     return model
 
 
-def geometry(parts):
-    """A shirt's polygons, corners and normals as the game reads them behind a model, and where each object's are."""
+def geometry(parts, objects=OBJECTS, gaps=None):
+    """A garment's polygons, corners and normals as the game reads them behind a model, and where each object's are.
+    Objects with the same corners or normals share them. gaps: per object, bytes left free before its polygons."""
     body, table = bytearray(), []
-    spans = {}
-    for oi in OBJECTS:
+    spans, at = {}, {}
+    for oi in objects:
+        body += bytes((gaps or {}).get(oi, 0))
         spans[oi] = len(body)
         for p in parts[oi][2]:
             body += p.raw
-    for oi in OBJECTS:
+
+    def block(rows):
+        data = b''.join(struct.pack('<4h', *r) for r in rows)
+        if data not in at:
+            at[data] = len(body)
+            body.extend(data)
+        return at[data]
+    for oi in objects:
         verts, norms, prims = parts[oi]
-        vert_at = len(body)
-        for v in verts:
-            body += struct.pack('<4h', *v)
-        norm_at = len(body)
-        for n in norms:
-            body += struct.pack('<4h', *n)
-        table.append((vert_at, len(verts), norm_at, len(norms), spans[oi], len(prims)))
+        table.append((block(verts), len(verts), block(norms), len(norms), spans[oi], len(prims)))
     return bytes(body), table
 
 
-def pixels(idx):
-    """The rectangles of RECTS out of a texture's pixels, packed two to a byte."""
+def pixels(idx, rects=RECTS):
+    """The rectangles a garment draws out of a texture's pixels, packed two to a byte."""
     out = bytearray()
-    for u, v, w, h in RECTS:
+    for u, v, w, h in rects:
         for y in range(v, v + h):
             for x in range(u, u + w, 2):
                 out.append(idx[y * W + x] | idx[y * W + x + 1] << 4)
     return bytes(out)
 
 
-def head(table, size, rec=None, drawn=None):
-    """A shirt's first sector: the size of its geometry, the object table, the palette recipe and the drawing."""
+def pack_recipe(out, at, rec):
+    ways, levels, whites, fixed = rec
+    out[at:at + 16], out[at + 16:at + 32], out[at + 32:at + 48] = bytes(ways), bytes(levels), bytes(whites)
+    struct.pack_into('<16H', out, at + 48, *fixed)
+
+
+def head(table, size, rec=None, drawn=None, rects=RECTS, flags=0):
+    """A garment's first sector: the size of its geometry, the object table, the palette recipe and the drawing."""
     out = bytearray(0x800)
-    struct.pack_into('<HH', out, 0, size, len(RECTS) if drawn else 0)
+    struct.pack_into('<HBB', out, 0, size, len(rects) if drawn else 0, flags)
     for i, row in enumerate(table):
         struct.pack_into('<6H', out, 4 + 12 * i, *row)
     if rec:
-        ways, levels, whites, fixed = rec
-        out[0x40:0x50], out[0x50:0x60], out[0x60:0x70] = bytes(ways), bytes(levels), bytes(whites)
-        struct.pack_into('<16H', out, 0x70, *fixed)
+        pack_recipe(out, 0x40, rec)
     if drawn:
-        for i, (u, v, w, h) in enumerate(RECTS):
+        for i, (u, v, w, h) in enumerate(rects):
             struct.pack_into('<4B', out, 0x90 + 4 * i, u // 2, v, w // 2, h)
         if 0xA0 + len(drawn) > len(out):
             raise SystemExit('shirts: the drawing does not fit in the first sector')

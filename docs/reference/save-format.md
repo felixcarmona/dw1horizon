@@ -164,7 +164,7 @@ An extension counts only when magic, its own checksum and its copy of the v1 che
 | 0x000C | u8[128] stable daily ground pickup bitset; supersedes the old location list without redefining its tag | 0265 |
 | 0x000D | u8[223] additional card counts: two 4-bit counts per byte, low nibble first, IDs 66–511 | card expansion |
 | 0x000E | u16[6] daily card shop stock, `0xFFFF` = sold; IDs 0–511 | card expansion |
-| 0x000F | u8 tamer look (0 = the original tamer), u8 hair colour, u8 face (absent in records of two bytes = the first face), u8 shirt and u8 shirt colour (absent in shorter records = the original shirt); absent or out of range = the original tamer | tamer looks |
+| 0x000F | u8 tamer look (0 = the original tamer), u8 hair colour, u8 face (absent in records of two bytes = the first face), u8 shirt and u8 shirt colour, u8 trousers and u8 their colour, u8 shoes and u8 their colour (absent in shorter records = the original garment); a value out of range = the original | tamer looks |
 | 0x8001, 0x8002 | reserved in the registry for required story-state records; not written by this patch series | |
 
 ### Reading rules
@@ -415,7 +415,7 @@ The v1 `SCRIPT_STATE` prefix stays exactly 0x17C bytes, including the 33 count
 bytes for IDs 0–65. Optional tag `0x000D` adds 446 nibbles (223 bytes), and optional
 `0x000E` adds the six wide daily shop IDs (12 bytes). Together their framing and
 payload use 243 bytes. With them the conservative inline bound was 1,093 of 1,120 bytes;
-the tamer's look record (`0x000F`, 9 bytes with framing) brings it to 1,102, leaving 18 bytes.
+the tamer's look record (`0x000F`, 13 bytes with framing) brings it to 1,106, leaving 14 bytes.
 The compile-time assertion includes all three records.
 
 Loading any old payload zeros the extra count bytes before applying records.
