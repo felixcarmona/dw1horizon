@@ -71,6 +71,35 @@ def _abs(p):
 
 
 # ------------------------------------------------------------------ providers
+MODEL_UNITS = 24
+
+
+def _imported_models(base_models):
+    spec = importlib.util.spec_from_file_location('imported_species', os.path.join(runner.ROOT, IMPORTED_MODELS_SCRIPT))
+    imported_models = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(imported_models)
+    imported_models.BASE_MODELS = base_models
+    return imported_models
+
+
+def imported_species_files(base_models, folder, generate=False, ids=None):
+    """{id: (model file, texture file or None)} of the imported species, their files written into folder."""
+    return _imported_models(base_models).make(folder, generate=generate, ids=ids)
+
+
+def imported_species_unit(base_models, folder, ids, dest, env, configured):
+    """One piece of the imported species (ids): their files into folder, and what imported_species_files returns
+    for them into dest. env, configured: the step's settings, for a worker that starts with none (spawned)."""
+    with species_tools() as S:
+        S.configure(env, **configured)
+        made = imported_species_files(base_models, folder, ids=set(ids))
+    os.makedirs(os.path.dirname(dest), exist_ok=True)
+    with open(dest + '.tmp', 'w') as f:
+        json.dump({str(t): list(files) for t, files in made.items()}, f)
+    os.replace(dest + '.tmp', dest)
+    return ''
+
+
 class ImportedModels:
     name = 'imports'
 
@@ -83,11 +112,31 @@ class ImportedModels:
     def provide_models(self, ctx, generate=False, ids=None):
         """Makes the species files of the imported models in build/NAME/imported-species with the overlays the overlays step made
         in imported-species-models (generate: makes the overlays too, one after another: the pin command)."""
-        spec = importlib.util.spec_from_file_location('imported_species', os.path.join(runner.ROOT, IMPORTED_MODELS_SCRIPT))
-        imported_models = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(imported_models)
-        imported_models.BASE_MODELS = ctx.path('imported-models')
-        made = imported_models.make(self.folder(ctx), generate=generate, ids=ids)
+        if (generate or ids is not None or getattr(ctx, 'jobs', 1) <= 1 or runner.strict()
+                or getattr(ctx, 'record', False)):       # (one process: one pass, as ever)
+            made = imported_species_files(ctx.path('imported-models'), self.folder(ctx), generate, ids)
+        else:
+            # every species' last model passes (rig, mesh, storage: about half a second each) depend on no other
+            # species: they are made in pieces, side by side where the build has the processes
+            imported_models = _imported_models(ctx.path('imported-models'))
+            every = [int(t) for t in imported_models.records()]
+            parts = ctx.path('derived', 'imported-species-parts')
+            shutil.rmtree(parts, ignore_errors=True)
+            pieces = [every[k::MODEL_UNITS] for k in range(MODEL_UNITS)]
+            rel = os.path.relpath(self.folder(ctx), ctx.out)
+            units = [runner.Unit(f'imported species {k + 1}/{MODEL_UNITS}', imported_species_unit,
+                                 (ctx.path('imported-models'), self.folder(ctx), piece, os.path.join(parts, f'{k}.json'),
+                                  dict(ctx.env), settings(ctx)),
+                                 [IMPORTED_MODELS_SCRIPT, os.path.dirname(IMPORTED_MODELS_SCRIPT), ctx.path('imported-models'),
+                                  'tools', 'content/species', 'step:overlays'],
+                                 [rel, rel + '-models'])
+                     for k, piece in enumerate(pieces) if piece]
+            made = {}
+            for d in runner.run_units(ctx, units):
+                with open(d.unit.args[3]) as f:
+                    made.update((int(t), tuple(files)) for t, files in json.load(f).items())
+            shutil.rmtree(parts, ignore_errors=True)
+            made = {t: made[t] for t in every}      # (the records' order, as one pass over them gives)
         return {t: (_abs(m), _abs(x) if x else None) for t, (m, x) in made.items()}
 
 
