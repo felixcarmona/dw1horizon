@@ -413,9 +413,9 @@ def draw_frame(card, spec, number, name):
     f = FRAMES[spec]
     im = card
     def rect(x0, y0, x1, y1, col):
+        row = bytes(col) * (x1 - x0 + 1)      # (whole rows at once: the card is an RGB raster)
         for y in range(y0, y1 + 1):
-            for x in range(x0, x1 + 1):
-                im.putpixel((x, y), col)
+            im.data[(y * im.width + x0) * 3:(y * im.width + x1 + 1) * 3] = row
     rect(0, 0, W - 1, H - 1, f['tint'])
     # coloured rule + dark rule round the art window
     x0, y0, x1, y1 = WIN

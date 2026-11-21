@@ -14,6 +14,7 @@ import math
 import struct
 import zlib
 from enum import IntEnum
+from operator import mul as _mul
 from types import SimpleNamespace
 
 
@@ -596,22 +597,27 @@ def _resize(im, size, kind):
     data = im.data
     if w != oldw:
         weights = _weights(oldw, w, kind)
+        # (integer sums, so their order is free: each row is split into its channels once and every window is one
+        # C-level sum of products; the players' patcher has no NumPy and this loop is its slowest image work)
         out = bytearray(w * oldh * n)
+        spans = [(lo, lo + len(ws), ws) for lo, ws in weights]
         for y in range(oldh):
-            for x, (lo, ws) in enumerate(weights):
-                for c in range(n):
-                    val = (1 << 21) + sum(
-                        data[(y * oldw + lo + j) * n + c] * k for j, k in enumerate(ws)
-                    )
-                    out[(y * w + x) * n + c] = max(0, min(255, val >> 22))
+            row = data[y * oldw * n:(y + 1) * oldw * n]
+            for c in range(n):
+                channel = row[c::n]
+                out[y * w * n + c:(y + 1) * w * n:n] = bytes([
+                    0 if v < 0 else 255 if v > 255 else v
+                    for v in [((1 << 21) + sum(map(_mul, channel[lo:hi], ws))) >> 22 for lo, hi, ws in spans]])
         data = out
     if h != oldh:
         weights = _weights(oldh, h, kind)
         out = bytearray(w * h * n)
+        stride = w * n
         for y, (lo, ws) in enumerate(weights):
-            for x in range(w * n):
-                val = (1 << 21) + sum(data[(lo + j) * w * n + x] * k for j, k in enumerate(ws))
-                out[y * w * n + x] = max(0, min(255, val >> 22))
+            rows = [data[(lo + j) * stride:(lo + j + 1) * stride] for j in range(len(ws))]
+            out[y * stride:(y + 1) * stride] = bytes([
+                0 if v < 0 else 255 if v > 255 else v
+                for v in [((1 << 21) + sum(map(_mul, column, ws))) >> 22 for column in zip(*rows)]])
         data = out
     if im.mode in ("RGBA", "LA"):
         for i in range(0, len(data), n):

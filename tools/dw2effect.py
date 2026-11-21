@@ -419,6 +419,11 @@ def uv_blocks(effect):
     for m in effect.tex_moves:
         w, h = m.size[0] * 4, m.size[1]
         rects += [[x * 4, y, x * 4 + w - 1, y + h - 1] for x, y in m.frames]
+    # (a converter asks once per primitive, and the merge below is slow on an effect of many primitives: the answer
+    # is kept by the rectangles it started from)
+    key = tuple(map(tuple, rects))
+    if key in _UV_BLOCKS:
+        return list(_UV_BLOCKS[key])
     merged = True
     while merged:
         merged = False
@@ -432,7 +437,13 @@ def uv_blocks(effect):
                     break
             if merged:
                 break
-    return sorted(tuple(r) for r in rects)
+    if len(_UV_BLOCKS) >= 256:
+        _UV_BLOCKS.clear()
+    _UV_BLOCKS[key] = result = sorted(tuple(r) for r in rects)
+    return list(result)
+
+
+_UV_BLOCKS = {}
 
 
 def shelf_pack(sizes, width=256, height=32):

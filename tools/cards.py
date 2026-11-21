@@ -4,6 +4,7 @@ CARDTAB.BIN is exactly one sector: 512 little-endian <HBB rows (species,
 rarity, merit). Unassigned IDs have rarity 5 and never enter packs or medals.
 """
 import json
+import os
 from pathlib import Path
 import shutil
 import struct
@@ -111,19 +112,39 @@ def replacement_table(path=None):
     return [entries.get(n, 0xffff) for n in range(1, REPLACEMENT_LIMIT + 1)]
 
 
-def compose_archives(out, path=None):
-    """Compose CARD2.ALL from kept art; the disc's CARD.ALL is never modified."""
+def card_tims(indexes, dest, path=None):
+    """The archive entries of authored_cards()[i] for i in indexes, one after another, written to dest: a piece of
+    compose_archives' work that another process can do (tools/derive/steps/cards.py)."""
     from tools import cardmaker
+    cards = authored_cards(path)
+    data = b''.join(cardmaker.tim(cards[i], cards[i].get('replaces', cards[i].get('number'))) for i in indexes)
+    Path(dest).parent.mkdir(parents=True, exist_ok=True)
+    Path(str(dest) + '.tmp').write_bytes(data)
+    os.replace(str(dest) + '.tmp', dest)
+    return f'{len(indexes)} cards\n'
+
+
+def compose_archives(out, path=None, parts=None):
+    """Compose CARD2.ALL from kept art; the disc's CARD.ALL is never modified. `parts`: [(indexes, file)] of
+    card_tims, the entries already drawn; the rest are drawn here."""
+    from tools import cardmaker
+    drawn = {}
+    for indexes, file in parts or ():
+        data = Path(file).read_bytes()
+        if len(data) != len(indexes) * ENTRY_BYTES:
+            raise ValueError(f'{file}: expected {len(indexes)} entries of 0x7000 bytes')
+        for k, i in enumerate(indexes):
+            drawn[i] = data[k * ENTRY_BYTES:(k + 1) * ENTRY_BYTES]
     cards = authored_cards(path)
     replacements = replacement_entries(path)
     new = [c for c in cards if 'replaces' not in c]
     count = max([c['number'] - FIRST_NEW + 1 for c in new] +
                 [entry + 1 for entry in replacements.values()], default=0)
     entries = bytearray(count * ENTRY_BYTES)
-    for c in cards:
+    for i, c in enumerate(cards):
         number = c.get('replaces', c.get('number'))
         entry = replacements[number] if 'replaces' in c else number - FIRST_NEW
-        tim = cardmaker.tim(c, number)
+        tim = drawn[i] if i in drawn else cardmaker.tim(c, number)
         if len(tim) != ENTRY_BYTES:
             raise ValueError(f"card {c['key']}: expected 0x7000 bytes")
         entries[entry * ENTRY_BYTES:(entry + 1) * ENTRY_BYTES] = tim
@@ -131,7 +152,7 @@ def compose_archives(out, path=None):
     return len(new), len(replacements)
 
 
-def build(out, art=None, path=None, native=None):
+def build(out, art=None, path=None, native=None, parts=None):
     rows = load(path, native)
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
@@ -157,7 +178,7 @@ def build(out, art=None, path=None, native=None):
                     raise ValueError(f'CARD2.ALL entry {entry}: expected the CARD.ALL 150x180 8bpp TIM layout')
         shutil.copyfile(art, target)
     elif needed:
-        compose_archives(out, path)
+        compose_archives(out, path, parts)
     else:
         target.write_bytes(b'')
     return rows
