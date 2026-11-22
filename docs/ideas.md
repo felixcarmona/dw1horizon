@@ -165,3 +165,4 @@ against, leave this list.
 | Give Goblimon a line before his fight at the Roof Clearing (today the red face goes straight to the battle), and smooth the collision where the stairs of the Coelamon quest meet that screen | 🎭 | Dialogue in eight languages; the collision needs the walkable check on that screen. |
 | Use another sound than Vademon's flying saucer for Arukenimon's new move (suggested: Betamon's footsteps) | 🎭 | An audio swap in the move's effect; needs a listen test. |
 | More tamer models from other famous tamers, next to the new Look page faces | 🆕 | Each needs a model, texture and portrait; see the Look page. |
+| Give Gallantmon (Dukemon) a lance-and-shield moveset: today it fights with a generic kick/punch list (Megaton Punch, Dynamite Kick, Sonic Jab) and players ask for the Gram Lance | 🎭 | Needs moves with a thrust animation; check them frame by frame before merging. |
