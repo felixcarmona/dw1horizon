@@ -1,7 +1,7 @@
-From 26d2d0020e8c11c0671e8fb874652b67b61c46b4 Mon Sep 17 00:00:00 2001
+From 6f6fcb4793370776e7d54a82e09441d113d3c173 Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Sun, 22 Nov 2026 18:20:04 +0000
-Subject: [PATCH] Mark stronger wild Digimon in the field with a red skull,
+Subject: [PATCH] Mark stronger wild Digimon in the field with a purple devil,
  with a WILD STRENGTH option
 
 ---
@@ -40,7 +40,7 @@ index a85739f2..ad1562bd 100644
  #define MOD_DIFF_DAMAGE(attacker, defender, partner, dmg)                                                              \
  	(MOD_OPT_DIFFICULTY != MOD_DIFF_EASY ? (dmg)                                                                       \
 diff --git a/src/main/btl.c b/src/main/btl.c
-index 7255d513..e3a49708 100644
+index 7255d513..d6da1b18 100644
 --- a/src/main/btl.c
 +++ b/src/main/btl.c
 @@ -10,6 +10,7 @@
@@ -56,7 +56,7 @@ index 7255d513..e3a49708 100644
  GARBAGE(renderFleeBubble, 23);
  
 +/*
-+ * MOD (wild strength mark): a red devil skull above each wild Digimon in the field that is stronger than the partner.
++ * MOD (wild strength mark): a purple devil above each wild Digimon in the field that is stronger than the partner.
 + * Strength is HP x (Offense + Defense), the enemy's after the scaling its fight applies (modHardEnemy); the limit is
 + * battleFormulas.strength (tools/battle_audit.py calibrates it against simulated fights). Only Digimon that fight on
 + * touch (autotalk 1) with techniques get one.
@@ -65,17 +65,17 @@ index 7255d513..e3a49708 100644
 +
 +#define SKULL_W 11
 +#define SKULL_H 9
-+/* one string per row: R body, K eye and nose sockets, . empty */
++/* the smiling devil, one string per row: R body, K eyes and grin, . empty */
 +static const char *const SKULL[SKULL_H] = {
 +	"R.........R",
-+	"RR..RRR..RR",
++	"RR.RRRRR.RR",
 +	".RRRRRRRRR.",
++	".RRRRRRRRR.",
++	".RKKRRRKKR.",
++	".RRKKRKKRR.",
++	".RKRRRRRKR.",
++	".RRKKKKKRR.",
 +	"..RRRRRRR..",
-+	"..RKKRKKR..",
-+	"..RKKRKKR..",
-+	"..RRRKRRR..",
-+	"...RRRRR...",
-+	"...RKRKR...",
 +};
 +
 +static void strengthRow(int32_t x, int32_t y, int32_t w, uint32_t rgb, int32_t z)
@@ -108,7 +108,7 @@ index 7255d513..e3a49708 100644
 +			if (in) {
 +				if (start == -2) start = c;
 +			} else if (start != -2) {
-+				strengthRow(x + start, y + r, c - start, 0x180808, 9);
++				strengthRow(x + start, y + r, c - start, 0x2a0a50, 9);
 +				start = -2;
 +			}
 +		}
@@ -119,7 +119,7 @@ index 7255d513..e3a49708 100644
 +				if (c < SKULL_W && SKULL[r][c] == want) {
 +					if (start < 0) start = c;
 +				} else if (start >= 0) {
-+					strengthRow(x + start, y + r, c - start, want == 'R' ? 0xd82020 : 0x180808, want == 'R' ? 8 : 7);
++					strengthRow(x + start, y + r, c - start, want == 'R' ? 0xb050ff : 0x2a0a50, want == 'R' ? 8 : 7);
 +					start = -1;
 +				}
 +			}
