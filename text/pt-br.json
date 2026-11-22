@@ -128,5 +128,8 @@
   "Hum, entendo, entendo.",
   "Seu parceiro estará",
   "esperando por você."
- ]
+ ],
+ "name.look.ask": ["{color 7}Jijimon {color 1}", "Antes do seu nome, me diga:", "você é menino ou menina?"],
+ "name.look.answers": ["{color 6}{player}{color 1}", "Menino", "Menina"],
+ "name.look.how": ["{color 7}Jijimon {color 1}", "E como você é?"]
 }
