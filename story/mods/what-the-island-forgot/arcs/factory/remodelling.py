@@ -7,7 +7,7 @@ from dw.text import text
 from ...state import factory_kept_shut
 
 machine_room = screen(Screen.factorial_town_162)
-datamon = machine_room.npc(Species.Datamon, at=(100, -1450), hp=3000, mp=3800, offense=640, defense=340, speed=320, brain=350, bits=1300,
+datamon = machine_room.npc(Species.Datamon, at=(100, -1450), hp=4000, mp=4200, offense=700, defense=370, speed=320, brain=350, bits=1300,
                            range=0, still=True, when=not recruited(Species.Datamon))
 
 @guardromon0.on_talk(when=factory_kept_shut)

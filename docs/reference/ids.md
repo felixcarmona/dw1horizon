@@ -545,6 +545,6 @@ mod's executable; the memory map is in [memory.md](memory.md)):
 
 - What `RegisteredDigimon.unk20[32]` and `moves[3]` hold.
 - Whether the item-icon VRAM rows 128–255 at x = 320 are free on every screen.
-- Card IDs 0 and 65 are sentinels and cannot be collected.
+- Card IDs 0 and 65 are album-only: scripts can give them and the album shows them, but the shop, the packs and the seller never offer them.
 
 For testing new ids in an emulator (warps, forced evolution, save round trips) see [../developing.md](../developing.md).
