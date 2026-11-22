@@ -129,5 +129,8 @@
   "Mmm, ya veo, ya veo.",
   "Tu compañero te estará",
   "esperando."
- ]
+ ],
+ "name.look.ask": ["{color 7}Jijimon {color 1}", "Antes de tu nombre, dime:", "¿eres chico o chica?"],
+ "name.look.answers": ["{color 6}{player}{color 1}", "Chico", "Chica"],
+ "name.look.how": ["{color 7}Jijimon {color 1}", "¿Y qué aspecto tienes?"]
 }

@@ -144,6 +144,17 @@ a model of `TAMER.DAT` like the rest.
   tamer with another face is.
 - Save record `0x000F` holds `MOD_TAMER_STATE`: the look, the hair colour, the face, each garment and its colour, then the hands ([save format](../reference/save-format.md)); a new game and
   an older save start with the original tamer. Without `TAMER.DAT` on the disc every look is the original tamer.
+- A new game asks for the look among Jijimon's questions (`lookPageQuiz`, the states from 0x30 of
+  `newGameStateMachine`; lines 0x3a to 0x3c of the quiz's text, `story/new-game-quiz.dws`). After his seven questions
+  he asks boy or girl, as a list like theirs: a boy is the original tamer, a girl starts from a look made for her
+  (`lookPageGirl`). After the name he asks what the tamer looks like and the Look page opens on the black screen, with
+  no window: the tamer on the left, every row on the right (the Tamer row too: on this page it starts the other tamer
+  as that answer would have), the turn and Save hints, and a line saying the look can be changed later in the menu. The tamer is loaded for the page and unloaded after it (the game
+  loads him after the opening's movie, as chosen); his object is removed meanwhile, so he neither ticks nor draws
+  himself. The page is one state of the questions, a frame of it per frame of the scene: it has no loop of its own.
+  It reads both of the title's overlays first, in the language chosen since the title read them.
+- The page's code is in the tail of EVL, and EVL's first sector lies over MENU's last one. An open menu that reads EVL
+  (`lookMenuOverlay`) reads MENU again after it; the new game reads them in that order.
 
 ## Adding a shirt
 

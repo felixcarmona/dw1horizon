@@ -59,6 +59,9 @@ maphead {
         goto quiz20;
         goto quiz21;
         goto quiz22;
+        goto look0;
+        goto look1;
+        goto look2;
         l1:
         show_textbox(text("m1238.u0"));
         l2:
@@ -177,6 +180,12 @@ maphead {
         quiz22:
         // The partner is first revealed after the opening movie, never by this line.
         show_textbox(text("name.quiz.result"));
+        look0:
+        show_textbox(text("name.look.ask"));
+        look1:
+        show_textbox(text("name.look.answers"));
+        look2:
+        show_textbox(text("name.look.how"));
         end_section();
     }
 }

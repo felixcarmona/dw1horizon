@@ -1,0 +1,341 @@
+From 6ec52482f5c927743e053fc8b15359956888643d Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 22 Nov 2026 14:52:29 +0000
+Subject: [PATCH] Tamer looks: Jijimon asks boy or girl, and the Look page
+ opens on his black screen
+
+A new game asks who the tamer is among Jijimon's questions (lookPageQuiz, the states from 0x30 of newGameStateMachine).
+After his seven questions he asks boy or girl, as a list like theirs; a girl starts from a look made for her. After the
+name he asks what the tamer looks like and the Look page opens with no window: the tamer on the left, every row on the
+right, the turn and Save hints and a line saying the look can be changed later in the menu.
+
+The page is a state of the questions, a frame of it per frame of the scene. The tamer is loaded for it and unloaded
+after it; his object is removed meanwhile. The title's overlays are read again first, in the language chosen since.
+---
+ src/main/game_menu.c   | 185 +++++++++++++++++++++++++++++++++++++++--
+ src/shop/script_menu.c |   9 +-
+ text/main/mod_lab.yaml |   3 +
+ 3 files changed, 189 insertions(+), 8 deletions(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 2bd8480..f574ae3 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -2591,6 +2591,10 @@ void free3(void *ptr);
+ #define LOOK_HANDS_ROW	11
+ #define LOOK_SKIN_ROW	12	/* in the hands' byte, above its first bit */
+ #define LOOK_SHOWN	6
++#define LOOK_BARE_NAME_X	(-0x1c)	/* a new game's page, with no window: the rows' names, their values and where they start */
++#define LOOK_BARE_VALUE_X	0x38
++#define LOOK_BARE_Y	(-0x68)
++#define LOOK_BARE_STEP	14
+ #define LOOK_SCROLL_X	(LOOK_VALUE_X + LOOK_VALUE_W + 7)	/* the scroll bar: right of the value boxes, as tall as the rows shown */
+ #define LOOK_SCROLL_H	((LOOK_SHOWN - 1) * 0x14 + 14)
+ #define LOOK_HEAD_OBJECT	1
+@@ -2603,6 +2607,7 @@ void lookShirtPalette(uint16_t *row, LookShirtRecipe *recipe, uint8_t *rgb);
+ extern LookShirtRecipe lookShirtRecipe[LOOK_GARMENTS]; /* of the clothes the tamer wears */
+ extern uint16_t lookShirtRow[LOOK_GARMENTS][16]; /* their palette rows as they are in video memory */
+ static int16_t lookTurn;
++void renderSelectionCursor(int32_t x, int32_t y, int16_t w, int16_t h, int32_t layer);
+ static struct {
+ 	uint16_t palette[16]; /* the hair's palette row on its way to video memory */
+ 	uint8_t levels[16];
+@@ -2611,6 +2616,7 @@ static struct {
+ 	uint32_t who[LOOK_GARMENTS][2]; /* per garment: the boy's choices and the girl's */
+ 	int16_t width[LOOK_ROWS];
+ 	uint8_t row;
++	uint8_t ask; /* a new game's page, with no window (lookPageNewGame) */
+ 	uint8_t rgb[TAMER_HAIR_COUNT * 3];
+ 	uint8_t cloth[TAMER_CLOTH_COUNT * LOOK_CLOTH_SIZE]; /* per cloth colour: its shade, the cloth, its light, and the second colour */
+ } lookPageState;
+@@ -2667,6 +2673,9 @@ static const char lookPageTextPack6[] = LAB_STR_BACKPACK_ROUND;
+ static const char lookPageTextKind[] = LAB_STR_TAMER_KIND;
+ static const char lookPageTextCap[] = LAB_STR_CAP_COLOUR;
+ static const char lookPageTextSkin[] = LAB_STR_SKIN;
++static const char lookPageTextLater[] = LAB_STR_LOOK_LATER;
++/* the girl a new game starts with: long brown hair and clothes of her own */
++static const uint8_t lookPageGirl[TAMER_STATE_SIZE] = { 7, 0, 1, 7, 14, 7, 11, 5, 2, 4, 14, 0 };
+ static const char lookPageTextBoy[] = LAB_STR_TAMER_BOY;
+ static const char lookPageTextGirl[] = LAB_STR_TAMER_GIRL;
+ /* The girl's shirts after the first ten are the boy's with a bust, and her shoes his on a smaller foot: the same names.
+@@ -2953,6 +2962,7 @@ int32_t lookPageOpen(void)
+ 	}
+ 	free3(head);
+ 	lookPageState.row = 0;
++	lookPageState.ask = 0;
+ 	lookPageKeep();
+ 	lookTurn = 0;
+ 	setRECT(&rect, 0, LOOK_TOP_Y, 256, LOOK_END_Y - LOOK_TOP_Y);
+@@ -3053,7 +3063,13 @@ void lookPageInput(void)
+ 	} else {
+ 		lookPageSet(row, (lookPageGet(row) % n + n + step) % n);
+ 	}
+-	if (row == 2) { /* boy or girl: the clothes the other wears give way to the first of their kind that this one does */
++	if (row == 2 && lookPageState.ask) { /* a new game's page: the other tamer as Jijimon's answer would have started them */
++		if (MOD_TAMER_GIRL) {
++			memcpy(MOD_TAMER_STATE, (uint8_t *)lookPageGirl, TAMER_STATE_SIZE);
++		} else {
++			memset(MOD_TAMER_STATE, 0, TAMER_STATE_SIZE);
++		}
++	} else if (row == 2) { /* boy or girl: the clothes the other wears give way to the first of their kind that this one does */
+ 		for (n = 0; n < LOOK_GARMENTS; n++) {
+ 			MOD_TAMER_STATE[3 + 2 * n] = lookPageNext(n, MOD_TAMER_STATE[3 + 2 * n], 0);
+ 		}
+@@ -3067,8 +3083,13 @@ void lookPageInput(void)
+ 	if (lookPageRowLoads(row)) {
+ 		modTamerRelook();
+ 		if (row == 2) {
+-			for (n = 3; n < 3 + 2 * LOOK_GARMENTS; n++) {
+-				lookPageValue(n);
++			if (lookPageState.ask) {
++				lookPageHairName();
++			}
++			for (n = lookPageState.ask ? 0 : 3; n < (lookPageState.ask ? LOOK_ROWS : 3 + 2 * LOOK_GARMENTS); n++) {
++				if (n != LOOK_HANDS_ROW) { /* not a row of the page: the new game's note has its place */
++					lookPageValue(n);
++				}
+ 			}
+ 		} else if (lookPageRowReads(row)) { /* the row under a hairstyle or a garment is its colour: open or not with it */
+ 			lookPageValue(row + 1);
+@@ -3112,9 +3133,34 @@ void lookPageRender(void)
+ 	if (first > LOOK_PLACES - LOOK_SHOWN) {
+ 		first = LOOK_PLACES - LOOK_SHOWN;
+ 	}
++	if (lookPageState.ask) { /* a new game's page: every row, on the black screen */
++		renderDigiviceEntity(ENTITY_TABLE[0], 0);
++		for (k = 0; k < LOOK_PLACES; k++) {
++			i = lookPageOrder[k];
++			y = LOOK_BARE_Y + k * LOOK_BARE_STEP;
++			renderString(k == lookPageState.row ? 3 : 0, LOOK_BARE_NAME_X, y, LOOK_NAME_W, 0xc, 0, LOOK_ROW_V(i), 5, 1);
++			renderString(k == lookPageState.row ? 3 : 0, LOOK_BARE_VALUE_X + (LOOK_VALUE_W - lookPageState.width[i]) / 2, y,
++			             lookPageState.width[i], 0xc, LOOK_VALUE_U, LOOK_ROW_V(i), 5, 1);
++			if (k == lookPageState.row) {
++				for (i = 0; i < 4; i++) {
++					drawLine2P(0x73f6ff, LOOK_BARE_VALUE_X - 7 + i, y + 5 - i, LOOK_BARE_VALUE_X - 7 + i, y + 6 + i, 5, 0);
++					drawLine2P(0x73f6ff, LOOK_BARE_VALUE_X + LOOK_VALUE_W + 5 - i, y + 5 - i,
++					           LOOK_BARE_VALUE_X + LOOK_VALUE_W + 5 - i, y + 6 + i, 5, 0);
++				}
++			}
++		}
++		y = LOOK_BARE_Y + LOOK_PLACES * LOOK_BARE_STEP + 6;
++		renderString(0, LOOK_BARE_NAME_X, y, 0x7c, 0xc, 0, LOOK_HINT_Y, 5, 1);
++		renderString(0, LOOK_BARE_VALUE_X + (LOOK_VALUE_W - LOOK_KEY_W) / 2, y, LOOK_KEY_W, 0xc, LOOK_KEY_U(1), LOOK_HINT_Y, 5, 1);
++		renderString(0, -lookPageState.width[LOOK_HANDS_ROW] / 2, y + 18, lookPageState.width[LOOK_HANDS_ROW], 0xc, 0, LOOK_OPEN_Y, 5, 1);
++		return;
++	}
+ 	renderSeparatorLines((Line *)lookPageLines, 0xb, 5);
+ 	renderString(3, e->posX, e->posY + 1, e->uvWidth, 0xc, e->uvX, e->uvY, 5, 1);
+ 	renderString(0, -0x54, -0x50, 0x48, 0xc, 0, 0x30, 5, 1);
++	renderString(0, -0x29, 0x4e, 0x7c, 0xc, 0, LOOK_HINT_Y, 5, 1);
++	renderDigiviceEntity(ENTITY_TABLE[0], 0);
++	renderInsetBox(r->x, r->y, r->w, r->h, 5);
+ 	for (k = first; k < first + LOOK_SHOWN; k++) {
+ 		i = lookPageOrder[k];
+ 		y = -0x34 + (k - first) * 0x14;
+@@ -3133,11 +3179,8 @@ void lookPageRender(void)
+ 	renderBox(LOOK_SCROLL_X, -0x34 + (LOOK_SCROLL_H - LOOK_SCROLL_H * LOOK_SHOWN / LOOK_PLACES) * first / (LOOK_PLACES - LOOK_SHOWN),
+ 	          2, LOOK_SCROLL_H * LOOK_SHOWN / LOOK_PLACES, 0xe6, 0xe6, 0xe6, 0, 5);
+ 	renderBox(LOOK_SCROLL_X, -0x34, 2, LOOK_SCROLL_H, 0x20, 0x48, 0x58, 0, 5);
+-	renderString(0, -0x29, 0x4e, 0x7c, 0xc, 0, LOOK_HINT_Y, 5, 1);
+ 	playerKeyRender(1, LOOK_HINT_Y);
+ 	playerKeyRender(2, LOOK_HINT_Y);
+-	renderDigiviceEntity(ENTITY_TABLE[0], 0);
+-	renderInsetBox(r->x, r->y, r->w, r->h, 5);
+ 	for (i = 0; i < LOOK_SHOWN; i++) {
+ 		renderInsetBox(160 + LOOK_VALUE_X, 118 - 0x34 + i * 0x14, LOOK_VALUE_W, 14, 5);
+ 	}
+@@ -6643,6 +6686,136 @@ void renderDigimonStatusConditions(int32_t condition)
+ static VECTOR modDigiviceSavedPos;
+ static SVECTOR modDigiviceSavedRot;
+ 
++void modTickStart(int32_t flags);
++void pollInputGame(void);
++void processInput(void);
++void fadeFromBlack(int16_t frames);
++void fadeToBlack(int16_t frames);
++extern GsOT GS_ORDERING_TABLE[2];
++extern PACKET GS_WORK_BASES[2][0x14000];
++extern int16_t FADE_OUT_CURRENT;
++
++void initializeTamer(int32_t type, int32_t posX, int32_t posY, int32_t posZ, int32_t rotX, int32_t rotY, int32_t rotZ);
++void removeEntity(int32_t objectId, int32_t entityId);
++void thunkUnloadModel(int32_t digiType, int32_t modelType);
++void showNewGameDialogue(int32_t textId, uint16_t nextState);
++void showNewGameSelection(int32_t textId, uint16_t nextState);
++void setupNewGameDialogueBox(void);
++void closeBox(int32_t boxId);
++extern uint16_t SCRIPT_STATE_2;
++#define LOOK_BARE_OBJECT	0x19c
++
++/* A new game's Look page: the tamer and every row on the black screen of Jijimon's questions, with no window. The
++ * tamer is not in memory yet: he is loaded for the page and thrown away after it (the game loads him after the
++ * opening's movie, as chosen here). Jijimon's scene goes on around it: lookPageQuiz runs the page frame by frame. */
++void loadTitleMenuOverlays(void);
++
++static void lookPageNewGameOpen(void)
++{
++	RECT pos;
++	int32_t mode;
++
++	/* the title read this code before the language was chosen: again, in the language's copy (the same code) */
++	loadTitleMenuOverlays();
++	initializeTamer(0, 0, 0, 0, 0, 0, 0);
++	removeObject(0, 0); /* he does not tick here, and only the page draws him */
++	if (lookPageOpen()) {
++		lookPageState.ask = 1;
++		setRECT(&pos, 0, LOOK_OPEN_Y, 256, 12); /* the row that is never shown: where the look is changed later */
++		clearTextSubArea(&pos);
++		mode = fitStringMode((char *)lookPageTextLater, 256);
++		drawStringMode((char *)lookPageTextLater, 0, LOOK_OPEN_Y, mode);
++		lookPageState.width[LOOK_HANDS_ROW] = measureStringMode((char *)lookPageTextLater, mode);
++		ENTITY_TABLE[2]->isOnScreen = 0;
++		DIGIVICE_ENTITY_VIEW.vpy = DIGIVICE_ENTITY_VIEW.vry = 60; /* the tamer whole, on the left of the list */
++		DIGIVICE_ENTITY_VIEW.vrx = 175;
++		addObject(LOOK_BARE_OBJECT, 0, NULL, (RenderFunction)lookPageRender);
++	}
++	fadeFromBlack(0x14);
++}
++
++static void lookPageNewGameClose(void)
++{
++	GsRVIEW2 view;
++
++	if (lookPageState.ask) {
++		removeObject(LOOK_BARE_OBJECT, 0);
++		lookPageState.ask = 0;
++		lookTurn = 0;
++		DIGIVICE_ENTITY_VIEW.vpy = DIGIVICE_ENTITY_VIEW.vry = 0;
++		DIGIVICE_ENTITY_VIEW.vrx = 0;
++		ENTITY_TABLE[2]->isOnScreen = 1;
++	}
++	removeEntity(0, 0);
++	thunkUnloadModel(0, 2);
++	/* Jijimon's view again (loadNewGameScene) */
++	GsSetProjection(0x3e8);
++	memset(&view, 0, sizeof(view));
++	view.vpz = -0x1068;
++	GsSetRefView2(&view);
++	fadeFromBlack(0x14);
++}
++
++/* A new game's questions about the tamer, among Jijimon's (newGameStateMachine sends its states from 0x30 here): boy
++ * or girl after his seven questions, and the Look page after the name. MAPHEAD 1238 lines 0x3a to 0x3c. */
++int32_t lookPageQuiz(void)
++{
++	switch (SCRIPT_STATE_2) {
++	case 0x30:
++		showNewGameDialogue(0x3a, 0x31);
++		break;
++	case 0x31:
++		showNewGameSelection(0x3b, 0x32);
++		break;
++	case 0x32: /* a boy: the original tamer */
++		memset(MOD_TAMER_STATE, 0, TAMER_STATE_SIZE);
++		SCRIPT_STATE_2 = 0x12;
++		break;
++	case 0x33: /* a girl: as she starts, to change on the page */
++		memcpy(MOD_TAMER_STATE, (uint8_t *)lookPageGirl, TAMER_STATE_SIZE);
++		SCRIPT_STATE_2 = 0x12;
++		break;
++	case 0x34: /* the name is right */
++		showNewGameDialogue(0x3c, 0x36);
++		break;
++	case 0x35: /* it is not: the keyboard again */
++		SCRIPT_STATE_2 = 0x13;
++		break;
++	case 0x36:
++		closeBox(0);
++		fadeToBlack(0x14);
++		SCRIPT_STATE_2 = 0x37;
++		break;
++	case 0x37:
++		if (FADE_OUT_CURRENT >= 0x14) {
++			lookPageNewGameOpen();
++			SCRIPT_STATE_2 = 0x38;
++		}
++		break;
++	case 0x38: /* the page, a frame of it: ask counts its first frames, when the press that answered Jijimon is not its own */
++		if (lookPageState.ask == 0) {
++			SCRIPT_STATE_2 = 0x39;
++		} else if (lookPageState.ask < 40) {
++			lookPageState.ask++;
++		} else if (isKeyDown(CONFIRM_BUTTON) != 0) {
++			playSound(0, 3);
++			fadeToBlack(0x14);
++			SCRIPT_STATE_2 = 0x39;
++		} else if (isKeyDown(CANCEL_BUTTON) == 0) {
++			lookPageInput();
++		}
++		break;
++	case 0x39:
++		if (lookPageState.ask == 0 || FADE_OUT_CURRENT >= 0x14) {
++			lookPageNewGameClose();
++			setupNewGameDialogueBox();
++			SCRIPT_STATE_2 = 0x18;
++		}
++		break;
++	}
++	return 0;
++}
++
+ void renderDigiviceEntity(entity, entityId)
+ 	Entity *entity;
+ int8_t entityId;
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index dc73d4d..1a82f71 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -1249,6 +1249,8 @@ void initializeNamingBuffer(uint8_t flags)
+ 	SCRIPT_TEXTBOX_MODE = 0;
+ }
+ 
++int32_t lookPageQuiz(void);
++
+ int32_t newGameStateMachine(void)
+ {
+ 	static uint8_t answers[7];
+@@ -1256,6 +1258,9 @@ int32_t newGameStateMachine(void)
+ 	int32_t i;
+ 	int32_t sel = 0;
+ 
++	if (SCRIPT_STATE_2 >= 0x30) { /* MOD (tamer looks): boy or girl, and the Look page (game_menu.c) */
++		return lookPageQuiz();
++	}
+ 	switch (SCRIPT_STATE_2) {
+ 	case 0:
+ 		setTrigger(TRIGGER_49);
+@@ -1281,7 +1286,7 @@ int32_t newGameStateMachine(void)
+ 	case 0x23:
+ 		if (question == 7) {
+ 			writePStat(PSTAT_254, modQuizResult(answers));
+-			showNewGameDialogue(0x39, 0x12);
++			showNewGameDialogue(0x39, 0x30); /* MOD (tamer looks): was 0x12; boy or girl first */
+ 		} else {
+ 			showNewGameDialogue(0x24 + question * 3, 0x24);
+ 		}
+@@ -1369,7 +1374,7 @@ int32_t newGameStateMachine(void)
+ 		}
+ 		break;
+ 	case 0x17:
+-		showNewGameSelection(0x1c, 0x18);
++		showNewGameSelection(0x1c, 0x34); /* MOD (tamer looks): was 0x18; the Look page first */
+ 		break;
+ 	case 0x18:
+ 		showNewGameDialogue(0x21, 0x20); /* MOD (optional name): was 0x1d -> 0x1a; first, does the player name it? */
+diff --git a/text/main/mod_lab.yaml b/text/main/mod_lab.yaml
+index fab6216..6540b17 100644
+--- a/text/main/mod_lab.yaml
++++ b/text/main/mod_lab.yaml
+@@ -571,6 +571,9 @@ MOD_LAB:
+     LAB_STR_TAMER_GIRL:
+       ja: "Girl"
+       en_us: "Girl"
++    LAB_STR_LOOK_LATER:
++      ja: "Change it later in the menu."
++      en_us: "Change it later in the menu."
+     LAB_STR_CAP_COLOUR:
+       ja: "Cap colour"
+       en_us: "Cap colour"
+-- 
+2.55.0
+

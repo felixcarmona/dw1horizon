@@ -158,9 +158,10 @@ class QuizTest(unittest.TestCase):
         self.assertEqual(len(old), 35)
         old[30] = 'name.confirm_partner'  # same entry, without echoing the hidden default
         self.assertEqual(new[:35], old)
-        self.assertEqual(len(new), 58)
+        self.assertEqual(len(new), 61)
         self.assertEqual(new[35], 'name.quiz.intro')
         self.assertEqual(new[57], 'name.quiz.result')
+        self.assertEqual(new[58:], ['name.look.ask', 'name.look.answers', 'name.look.how'])  # boy or girl, the Look page
 
     def test_actual_build_profile_includes_quiz_table(self):
         # The full driver uses --exe mods, not species. Compile a small real
@@ -173,7 +174,7 @@ class QuizTest(unittest.TestCase):
             zone.mkdir(parents=True)
             (zone / 'script.dws').write_text('script 1 { on enter { } }')
             shutil.copy(Q.ROOT / 'story/base/maphead/global-1238.dws', base / 'maphead')
-            for exe, capacity, expected in [('original', 25000, 35), ('mods', 32768, 58)]:
+            for exe, capacity, expected in [('original', 25000, 35), ('mods', 32768, 61)]:
                 with self.subTest(exe=exe), patch.object(backend, 'MAPHEAD_MAX_GIVEN', capacity), \
                      patch.object(backend, 'FONT_NAME_GIVEN', 'b'), \
                      patch.object(backend, 'FONT_GLYPHS_GIVEN', len(backend.EXTRA_ORDER)):
@@ -298,6 +299,7 @@ void showNewGameDialogue(int e, int next) {
     entry = e; SCRIPT_STATE_2 = 1; SCRIPT_NEXT_STATE_2 = next;
 }
 void showNewGameSelection(int e, int next) { showNewGameDialogue(e, next); }
+int32_t lookPageQuiz(void) { return 0; }  /* the tamer's questions, from state 0x30 (game_menu.c) */
 void showMapheadSelection(int e, int owner, int count, int *sel, int section) {
     (void)owner; (void)count; (void)sel; (void)section; entry = e;
 }

@@ -31,5 +31,8 @@
  "name.quiz.q7.number": ["{color 7}公公兽{color 1}", "最后一问啦。"],
  "name.quiz.q7.question": ["{color 7}公公兽{color 1}", "你最看重搭档的什么品质？"],
  "name.quiz.q7.answers": ["{color 6}{player}{color 1}", "勇气", "机智", "自由"],
- "name.quiz.result": ["{color 7}公公兽{color 1}", "嗯，老夫明白啦。", "你的搭档正等着你呢。"]
+ "name.quiz.result": ["{color 7}公公兽{color 1}", "嗯，老夫明白啦。", "你的搭档正等着你呢。"],
+ "name.look.ask": ["{color 7}公公兽{color 1}", "在问名字之前，告诉我：", "你是少年还是少女？"],
+ "name.look.answers": ["{color 6}{player}{color 1}", "少年", "少女"],
+ "name.look.how": ["{color 7}公公兽{color 1}", "你长什么样子呢？"]
 }

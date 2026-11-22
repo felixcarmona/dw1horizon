@@ -130,5 +130,8 @@
   "Hm, ich verstehe.",
   "Dein Partner wird auf",
   "dich warten."
- ]
+ ],
+ "name.look.ask": ["{color 7}Jijimon {color 1}", "Vor deinem Namen sag mir:", "Bist du Junge oder Mädchen?"],
+ "name.look.answers": ["{color 6}{player}{color 1}", "Ein Junge", "Ein Mädchen"],
+ "name.look.how": ["{color 7}Jijimon {color 1}", "Und wie siehst du aus?"]
 }

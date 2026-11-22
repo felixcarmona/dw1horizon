@@ -128,5 +128,8 @@
   "Mmm, ja ho veig.",
   "El teu company t'estarà",
   "esperant."
- ]
+ ],
+ "name.look.ask": ["{color 7}Jijimon {color 1}", "Abans del teu nom, digues:", "ets noi o noia?"],
+ "name.look.answers": ["{color 6}{player}{color 1}", "Noi", "Noia"],
+ "name.look.how": ["{color 7}Jijimon {color 1}", "I quin aspecte tens?"]
 }

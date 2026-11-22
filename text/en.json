@@ -130,5 +130,8 @@
   "Mm, I see, I see.",
   "Your partner will be",
   "waiting for you."
- ]
+ ],
+ "name.look.ask": ["{color 7}Jijimon {color 1}", "Before your name, tell me:", "are you a boy or a girl?"],
+ "name.look.answers": ["{color 6}{player}{color 1}", "A boy", "A girl"],
+ "name.look.how": ["{color 7}Jijimon {color 1}", "And what do you look like?"]
 }

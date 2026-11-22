@@ -128,5 +128,8 @@
   "{color 7}Jijimon {color 1}",
   "Mmh, capisco, capisco.",
   "Il tuo compagno ti aspetta."
- ]
+ ],
+ "name.look.ask": ["{color 7}Jijimon {color 1}", "Prima del tuo nome, dimmi:", "sei un ragazzo o una ragazza?"],
+ "name.look.answers": ["{color 6}{player}{color 1}", "Un ragazzo", "Una ragazza"],
+ "name.look.how": ["{color 7}Jijimon {color 1}", "E che aspetto hai?"]
 }

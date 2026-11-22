@@ -129,5 +129,8 @@
   "{color 7}Jijimon {color 1}",
   "Hum, je vois, je vois.",
   "Ton partenaire t'attendra."
- ]
+ ],
+ "name.look.ask": ["{color 7}Jijimon {color 1}", "Avant ton nom, dis-moi :", "es-tu un garçon ou une fille ?"],
+ "name.look.answers": ["{color 6}{player}{color 1}", "Un garçon", "Une fille"],
+ "name.look.how": ["{color 7}Jijimon {color 1}", "Et à quoi ressembles-tu ?"]
 }
