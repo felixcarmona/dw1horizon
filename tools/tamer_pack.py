@@ -63,6 +63,7 @@ RESIDENT_MAX = TAMER_MMD_MAX - COLD_BUFFER
 # read when the praise starts, and fishing's (27-34), which make room for the shirts.
 COLD_SLOTS = (9, 13) + tuple(range(15, 27)) + tuple(range(27, 35)) + (38, 39)
 CLOTH_AT = 0x300                # in the header: the cloth colours (LOOK_CLOTH)
+WHO_AT = 0x260                  # who wears each garment: per kind u32 the boy's choices, u32 the girl's (a bit each)
 HEAD = 1                        # the head's object in the tamer model
 MODEL = os.path.join(mmd.EXTRACTED, 'CHDAT', 'MMD0', 'BOYS.MMD')
 ALLTIM = mmd.ALLTIM
@@ -150,9 +151,9 @@ def build(model_path, alltim_path):
     model = mmd.MMD.load(model_path, 0)
     original = mmd.load_tim(alltim_path, 0)
     # per kind of garment: its name, where its directory is in the header, and (name, first sector, geometry) of each
-    wardrobe = [('shirt', 0x100, [g[:3] for g in shirts.build(model, original)]),
+    wardrobe = [('shirt', 0x400, [g[:3] for g in shirts.build(model, original)]),
                 ('trousers', 0x140, [g[:3] for g in legs.build(model, original)]),
-                ('shoes', 0x200, [g[:3] for g in shoes.build(model, original)])]
+                ('shoes', 0x480, [g[:3] for g in shoes.build(model, original)])]
     packs = backpacks.build(model, original)
     largest = [max(len(body) for _, _, body in garments) for _, _, garments in wardrobe]
     room = sum(largest)
@@ -189,7 +190,7 @@ def build(model_path, alltim_path):
     closet = b''
     before = max(len(p) for p in parts)
     for (kind, at, garments), most in zip(wardrobe, largest):
-        if at + 4 * len(garments) > at + 0x40:
+        if len(garments) > (48 if kind == 'trousers' else 32):
             raise SystemExit(f'too many {kind} for the header')
         for i, (name, first, body) in enumerate(garments):
             sectors = len(pad(body)) // SECTOR
@@ -208,6 +209,10 @@ def build(model_path, alltim_path):
         sector += 1
         closet += pack[1]
         report.append(f'backpack {pack[0]}')
+    # who wears what: per kind of garment a bit per choice, the boy's then the girl's
+    for i, kind in enumerate((shirts, legs, shoes)):
+        struct.pack_into('<2I', header, WHO_AT + 8 * i, sum(1 << k for k in kind.BOYS), sum(1 << k for k in kind.GIRLS))
+    struct.pack_into('<2I', header, WHO_AT + 24, (1 << len(packs)) - 1, (1 << len(packs)) - 1)
     for i, cloth in enumerate(shirts.COLOURS):
         header[CLOTH_AT + 12 * i:CLOTH_AT + 12 * i + 12] = bytes(sum(cloth[1:], ()))
     report.append(f'cold animations: {len(cold_part)} bytes, {cold_sectors} sectors')

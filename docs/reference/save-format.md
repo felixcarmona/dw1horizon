@@ -164,7 +164,7 @@ An extension counts only when magic, its own checksum and its copy of the v1 che
 | 0x000C | u8[128] stable daily ground pickup bitset; supersedes the old location list without redefining its tag | 0265 |
 | 0x000D | u8[223] additional card counts: two 4-bit counts per byte, low nibble first, IDs 66–511 | card expansion |
 | 0x000E | u16[6] daily card shop stock, `0xFFFF` = sold; IDs 0–511 | card expansion |
-| 0x000F | u8 tamer look (0 = the original tamer), u8 hair colour, u8 face (absent in records of two bytes = the first face), u8 shirt and u8 shirt colour, u8 trousers and u8 their colour, u8 shoes and u8 their colour, u8 backpack (0 = the original, 1 = none) and u8 its colour (absent in shorter records = the original garment), u8 hands and skin (bit 0: 1 = small hands; the bits above: the skin tone, 0 = his own, 1 to 5 from pale to dark; absent = normal hands, his own skin); a value out of range = the original | tamer looks |
+| 0x000F | u8 tamer look (0 = the original tamer), u8 hair colour, u8 boy or girl (0 = boy, 1 = girl: the face and the hands follow it; absent in records of two bytes = boy), u8 shirt and u8 shirt colour, u8 trousers and u8 their colour, u8 shoes and u8 their colour, u8 backpack (0 = the original, 1 = none) and u8 its colour (absent in shorter records = the original garment), u8 skin (bit 0 unused; the bits above: the skin tone, 0 = his own, 1 to 5 from pale to dark; absent = his own skin); a value out of range = the original | tamer looks |
 | 0x8001, 0x8002 | reserved in the registry for required story-state records; not written by this patch series | |
 
 ### Reading rules

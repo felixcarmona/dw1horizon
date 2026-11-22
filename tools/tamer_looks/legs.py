@@ -105,6 +105,8 @@ STYLES = (
     ('flared', rings(T0, .9, 'ccc', -.06), rings(S0, .78, 'ccc', .5, 60), 'plain', False),
 )
 NAMES = ('original',) + tuple(s[0] for s in STYLES)
+BOYS = tuple(NAMES.index(n) for n in ('original', 'straight', 'baggy', 'skinny', 'tracksuit', 'shorts'))
+GIRLS = tuple(i for i, n in enumerate(NAMES) if n != 'baggy')
 
 
 def original(model):

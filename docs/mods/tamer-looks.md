@@ -4,27 +4,31 @@ The tamer can take off his cap. Besides the original tamer there are twelve othe
 hairstyles (classic, messy, quiff, curtains, buzz, long, mullet, ponytail, pigtails, bun, buns), each in twenty hair
 colours. They are chosen on the **Look** page of the pause menu's Player tab: left and right change the hairstyle or the
 hair colour, L1 and R1 turn the tamer. The original tamer and the bald head have no hair to colour: their colour row
-shows a dash and cannot be chosen. A third row, **Face**, chooses between two faces for every look: the first is the
-tamer's own, the second has a blush instead of the freckle marks, a finer mouth with lips, a darker eyelid and two
+shows a dash and cannot be chosen. The page's first row, **Tamer**, is a boy or a girl, and the rest follows it: the
+face, the hands (the girl's are smaller), and which clothes the other rows offer. The boy's face is the
+tamer's own; the girl's has a blush instead of the freckle marks, a finer mouth with lips, a darker eyelid and two
 lashes (under the original tamer's cap the eye keeps its eyelid: the cap's shadow already frames it). Two more rows,
 **Shirt** and **Shirt colour**, dress every look, the original tamer included: the original hoodie with its backpack,
-or one of ten shirts (T-shirt, striped, printed, long sleeve, hoodie, jacket, fitted tee, top, cardigan, blouse) in
-sixteen colours. The original hoodie, trousers, shoes and backpack take the colours too: the first choice of their
+or another shirt in sixteen colours. The boy's are the T-shirt, striped, printed, long sleeve, hoodie and jacket; the
+girl's have a bust: the fitted tee, top, cardigan and blouse, and the striped, printed, long sleeve, hoodie and jacket
+cut for her. The original hoodie is the boy's. The original hoodie, trousers, shoes and backpack take the colours too: the first choice of their
 colour row is **Original**, their own colours, and the other fifteen dye their cloth and leave the rest (cords, soles,
 the backpack's emblem) as it was. His cap does the same: on the original tamer the second row is **Cap colour**
 instead of the hair's, and the letters of its band stay. The last row, **Skin**, is his own skin or one of five
 other tones, from pale to dark, on the face, the hands and whatever skin the clothes leave bare. Four more rows do the same for the legs and the feet:
 **Trousers** (the original ones, straight, baggy, skinny, tracksuit, shorts, capri, skirt, flared) and **Shoes** (the
-original ones, trainers, small trainers, plain, flats, Mary Janes, ankle boots, small ankle boots, boots, cuffed boots,
-rain boots, sandals), each with its own colour row and the same sixteen colours. The small kinds are a smaller foot. A
+original ones, trainers, plain, flats, Mary Janes, ankle boots, boots, cuffed boots,
+rain boots, sandals), each with its own colour row and the same sixteen colours. The girl's shoes are a smaller foot: flats, Mary Janes, and
+the trainers, plain shoes, ankle boots, boots, cuffed boots, rain boots and sandals in her size; the original shoes are
+the boy's. The skirt, the capri and the flared trousers are the girl's, the baggy ones the boy's. Changing between boy
+and girl changes a garment the other wears for the next one of its kind that this one does. A
 boot's leg goes over a slim or bare shin (skinny, shorts, capri, skirt); wide trousers fall over it and only the foot
 shows. The last two rows are **Backpack** and **Backpack colour**: the original backpack, none, or one of five others
 (classic, which is the original one in any colour, school bag, mini, hiking, round) in the same sixteen colours. Each
 of the five is the original backpack in other proportions, with its cloth, seams and shading, and its own fittings
 drawn where the original has its emblem. Every
 shirt takes every backpack: the original hoodie with the original backpack is the tamer as he always was, and with
-another one or none it is the same hoodie without it. Under a backpack a shirt shows its straps. The last row is
-**Hands**: normal or small. The page shows five of its twelve rows at a time, around the chosen one, with a scroll
+another one or none it is the same hoodie without it. Under a backpack a shirt shows its straps. The page shows five of its twelve rows at a time, around the chosen one, with a scroll
 bar beside the boxes. The Player tab shows the button that opens the page beside the name, and the
 page shows there the two that leave it: the confirm button saves the look, the cancel button leaves without saving and
 the tamer is again as he was when the page opened. The look is kept in the save.
@@ -60,7 +64,7 @@ Nothing of the looks is committed as model data. The build makes them from the p
 
 | Part | Content |
 |---|---|
-| sector 0 | `"TLK1"`, u16 looks in the file, u16 texture sector, u16 cold sector, u16 cold sectors, u16 colours, u16 faces; at 0x10 per look `u16 first sector, u16 length in 4-byte words`; at 0x80 per colour `r, g, b`; at 0xC0 the brightness of each of the hair texture's sixteen tones (128 = the colour itself); at 0xD0 u16 shirts, u16 cloth colours; at 0xD4 `u16 sector, u16 words` of the original tamer's model without his clothes; at 0xD8 the sector of his texture with the first face; at 0xDA u16 trousers, u16 shoes, u16 backpacks; at 0x100 per shirt `u16 first sector, u16 geometry sectors`, at 0x140 the same per pair of trousers at 0x200 per pair of shoes and at 0x240 per backpack (its only sector, and 0); at 0x300 per cloth colour twelve bytes: `r, g, b` of its shade, of the cloth, of its light and of its second colour |
+| sector 0 | `"TLK1"`, u16 looks in the file, u16 texture sector, u16 cold sector, u16 cold sectors, u16 colours, u16 faces; at 0x10 per look `u16 first sector, u16 length in 4-byte words`; at 0x80 per colour `r, g, b`; at 0xC0 the brightness of each of the hair texture's sixteen tones (128 = the colour itself); at 0xD0 u16 shirts, u16 cloth colours; at 0xD4 `u16 sector, u16 words` of the original tamer's model without his clothes; at 0xD8 the sector of his texture with the first face; at 0xDA u16 trousers, u16 shoes, u16 backpacks; at 0x400 per shirt `u16 first sector, u16 geometry sectors`, at 0x140 the same per pair of trousers, at 0x480 per pair of shoes and at 0x240 per backpack (its only sector, and 0); at 0x260 who wears what, per kind of garment `u32 the boy's choices, u32 the girl's`, a bit each; at 0x300 per cloth colour twelve bytes: `r, g, b` of its shade, of the cloth, of its light and of its second colour |
 | texture | the bald head's texture (one `ALLTIM` entry, 9 sectors), shared by every look: one per face, one after the other; then the original tamer's texture with each face but the first, and with the first |
 | cold | the animations that leave the models, the same bytes for every look |
 | models | one model per look, without the eleven objects clothes replace; then the original tamer's, the same way |

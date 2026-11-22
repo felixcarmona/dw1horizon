@@ -56,13 +56,15 @@ BODY = {
             (58, 27, -23, 14)),
     'hoodie': ((-37, 36, -36, 18), (-40, 45, -47, 26), (-12, 47, -52, 29), (22, 46, -45, 28), (46, 42, -32, 21),
                (59, 29, -25, 16)),
+    'hoodie fit': ((-37, 34, -34, 17), (-40, 42, -43, 24), (-10, 39, -40, 23), (15, 39, -39, 24), (30, 41, -44, 26, 12),
+                   (46, 40, -31, 20), (59, 28, -24, 15)),
     'fit': ((-34, 30, -30, 14), (-36, 37, -37, 20), (-8, 33, -33, 19), (15, 35, -35, 21), (30, 38, -41, 23, 12),
             (46, 37, -29, 18), (58, 25, -22, 13)),
     'peplum': ((-40, 38, -38, 20), (-43, 47, -46, 28), (-14, 33, -33, 19), (15, 35, -35, 21), (30, 38, -41, 23, 12),
                (46, 37, -29, 18), (58, 25, -22, 13)),
 }
 # The collar's ring: height, half width, front, back, and how far it dips at the front.
-COLLAR = {'tee': (64, 16, -21, 9, 7), 'hoodie': (66, 17, -22, 10, 5), 'fit': (64, 16, -21, 9, 10),
+COLLAR = {'tee': (64, 16, -21, 9, 7), 'hoodie': (66, 17, -22, 10, 5), 'hoodie fit': (66, 16, -22, 10, 5), 'fit': (64, 16, -21, 9, 10),
           'peplum': (64, 16, -21, 9, 10)}
 NECK = (73, -5, 0)
 # An arm's rings along it: distance, two radii, what follows ('f' cloth, 's' skin, 'c' the cuff's opening) and the
@@ -93,7 +95,15 @@ STYLES = (
     ('top', 'fit', 'bare', False, 'top', False),
     ('cardigan', 'fit', 'slim', False, 'cardigan', False),
     ('blouse', 'peplum', 'cap', False, 'peplum', False),
+    ('fitted striped', 'fit', 'cap', False, 'stripes', True),
+    ('fitted print', 'fit', 'cap', False, 'print', True),
+    ('fitted long sleeve', 'fit', 'slim', False, 'long', False),
+    ('fitted hoodie', 'hoodie fit', 'long', True, 'hoodie', False),
+    ('fitted jacket', 'hoodie fit', 'long', False, 'jacket', False),
 )
+BUST = ('fit', 'peplum', 'hoodie fit')     # the trunks with a bust: the girl's shirts, and the others are the boy's
+GIRLS = tuple(i + 1 for i, s in enumerate(STYLES) if s[1] in BUST)
+BOYS = tuple(i for i in range(len(STYLES) + 1) if i not in GIRLS)
 NAMES = ('original',) + tuple(s[0] for s in STYLES)
 
 # The shirt colours: the cloth, and the colour of stripes and prints on it (dark on a light cloth).
@@ -514,7 +524,7 @@ def folds(source):
     return at
 
 
-def shape(drawing, a, h):
+def shape(a, h, bust):
     """How a trunk's shape lights it at a (0 the front's middle .. 4 the back's) and h (0 the hem .. 1 the collar)."""
     def bump(x, y, x0, y0, rx, ry):
         return math.exp(-((x - x0) / rx) ** 2 - ((y - y0) / ry) ** 2)
@@ -524,12 +534,12 @@ def shape(drawing, a, h):
     light -= .3 * bump(a, h, 4.0, .25, .5, .3)         # the small of the back
     light -= .35 * max(0, .12 - h) / .12               # the hem turns under
     light -= .3 * bump(a, h, .0, .9, 1.2, .05)         # under the collar
-    if drawing in ('fit', 'top', 'peplum', 'cardigan'):
+    if bust:
         light += .3 * bump(a, h, .6, .7, .5, .1) - .45 * bump(a, h, .7, .57, .9, .035)   # the bust and under it
     return light
 
 
-def paint(idx, drawing, straps=False, source=None):
+def paint(idx, drawing, straps=False, source=None, bust=False):
     """Draw a shirt on the texture's pixels: the unrolled half trunk and the sleeve's cloth, with the folds of the
     hoodie's own cloth (source: the tamer's texture as the disc has it). straps: with a backpack's straps, over the
     shoulder, down the chest and round the side to the back."""
@@ -540,7 +550,7 @@ def paint(idx, drawing, straps=False, source=None):
     for v in range(V0, V0 + VH + 1):
         for u in range(U0, UMAX + 1):
             a, h = (u - U0) / US, (V0 + VH - v) / VH
-            light = fold(u - U0, v - V0) * kept + shape(drawing, a, h)
+            light = fold(u - U0, v - V0) * kept + shape(a, h, bust)
             tone = cloth(light)
             if h > .93:
                 tone = 5                               # the collar
@@ -784,8 +794,8 @@ def build(model, texture):
         parts = garment(model, trunk, arms, hood)
         body, table = geometry(parts, gaps=room)
         idx, strapped = bytearray(texture.idx), bytearray(texture.idx)
-        paint(idx, drawing, False, texture.idx)
-        paint(strapped, drawing, True, texture.idx)
+        paint(idx, drawing, False, texture.idx, trunk in BUST)
+        paint(strapped, drawing, True, texture.idx, trunk in BUST)
         rec = recipe(texture, follows)
         drawn = pixels(idx) + pixels(strapped, (TRUNK,))
         first = bytearray(head(table, len(body), rec, drawn, RECTS + (TRUNK,), ROOM | STRAPS))

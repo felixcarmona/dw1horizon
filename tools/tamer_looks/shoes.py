@@ -40,8 +40,16 @@ STYLES = (
     ('cuffed boots', (45, 21, 25, 1), 'cuff', None),
     ('rain boots', (52, 22, 25, 0), 'flat', None),
     ('sandals', None, 'sandals', (.9, .8)),
+    ('small plain', None, 'flat', (.78, .85)),
+    ('small boots', (44, 17, 17, 0), 'flat', (.8, .9)),
+    ('small cuffed boots', (45, 17, 21, 1), 'cuff', (.8, .9)),
+    ('small rain boots', (52, 18, 21, 0), 'flat', (.8, .9)),
+    ('small sandals', None, 'sandals', (.76, .7)),
 )
 NAMES = ('original',) + tuple(s[0] for s in STYLES)
+# the girl's shoes are the small ones (a smaller foot), the boy's the others
+GIRLS = tuple(i + 1 for i, s in enumerate(STYLES) if s[3] and s[0] != 'sandals')
+BOYS = tuple(i for i in range(len(STYLES) + 1) if i not in GIRLS)
 
 
 def sized(part, size):
