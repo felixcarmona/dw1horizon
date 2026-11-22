@@ -1,0 +1,34 @@
+From 0d360b6441acdac7129a5d00738df862456aaeb6 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 22 Nov 2026 08:55:30 +0000
+Subject: [PATCH] Evolution skip from the first frames hides the other entities
+ first, so the tamer comes back
+
+---
+ src/evl/evl.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/src/evl/evl.c b/src/evl/evl.c
+index 682b1b91..bbf85544 100644
+--- a/src/evl/evl.c
++++ b/src/evl/evl.c
+@@ -311,10 +311,16 @@ static void EVL_modSkipToEnd(EvoSequenceData *data)
+ 	int32_t i;
+ 
+ 	if (data->state == 0) {
++		/* state 0's end also hides the other entities and remembers who was on the map; state 3 gives that back, so
++		 * without it the table is stale (zero) and the tamer and the NPCs stay off the map for good */
++		EVL_setOtherEntitiesVisible(0);
++		setMapLayerEnabled(0);
+ 		EVL_D_800688E8 = GS_VIEWPOINT;
+ 		MAIN_D_801351E4 = DRAWING_OFFSET_X;
+ 		MAIN_D_801351E8 = DRAWING_OFFSET_Y;
+ 		MAIN_D_801351EC = VIEWPORT_DISTANCE;
++		EVL_D_80068908 = ENTITY_TABLE[1]->posData->location;
++		MAIN_D_801351F0 = ENTITY_TABLE[1]->posData->rotation;
+ 		loadMMDAsync(data->digimonId, 3, MAIN_D_801349E4, &data->modelData, (uint8_t *)&data->hasFinishedLoading);
+ 	}
+ 	stopSound();
+-- 
+2.55.0
+
