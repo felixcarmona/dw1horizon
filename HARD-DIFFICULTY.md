@@ -73,8 +73,9 @@ Training remains beneficial, and no enemy follows the partner's level or stats.
 
 NORMAL is no longer the original numbers everywhere. An enemy whose maximum HP is at least 4000 (82 of the 989
 placed enemies: the late game, the final bosses and the recruits fought there) gets 250% HP and 150% Offense, and
-every enemy hit does at least 25% of the same hit against Defense zero. Nothing below 4000 HP changes, nor EASY,
-HARD (its own factors) or two-player VS. The numbers are `battleFormulas.normal` in
+every enemy hit does at least 25% of the same hit against Defense zero. The floor applies only to those enemies. Nothing below 4000 HP changes on NORMAL, nor EASY or two-player VS.
+HARD takes the same step first and then its own factors on top (HP 110%, Offense 150%...), and keeps the larger of the two
+floors, so it stays above NORMAL. The numbers are `battleFormulas.normal` in
 `content/tables/battle-formulas.json`. The cause was that a trained partner's Defense makes enemy Offense almost
 irrelevant, so only HP and the damage floor move the fight (hits to kill, final Machinedramon, ordinary hits, from
 `tools/battle_audit.py` formulas, not live fights):
