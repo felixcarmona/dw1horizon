@@ -1,0 +1,49 @@
+From 45a253d1d8d09222c30aa841156bd8d60aeb04c7 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 22 Nov 2026 08:26:24 +0000
+Subject: [PATCH] Let cards 0 and 65 be owned again
+
+The card expansion made getCardAmount and setCardAmount ignore every card that is not a real shop or pack card, so the two album cards the original game gives out (0 and 65) were never recorded and showed an empty cell. Cards below 66 keep their stored nibble; ids from 66 up still need a real card. The seller's list skips them, as they have no price.
+---
+ src/main/script_interp.c | 4 ++--
+ src/shop/script_menu.c   | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index 4246999e..e9778c79 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -2532,7 +2532,7 @@ uint8_t getCardAmount(int32_t cardId)
+ {
+ 	uint8_t *cardPtr;
+ 
+-	if (!modCardIsReal(cardId)) return 0;
++	if ((uint32_t)cardId >= 66 && !modCardIsReal(cardId)) return 0;
+ 	cardPtr = cardId < 66 ? &SCRIPT_STATE_PTR->cards[cardId / 2] : &MOD_CARD_EXTRA[(cardId - 66) / 2];
+ 	if ((cardId & 1) == 0) {
+ 		return *cardPtr & 0xf;
+@@ -2545,7 +2545,7 @@ int32_t setCardAmount(int32_t cardId, int32_t value)
+ {
+ 	uint8_t *cardPtr;
+ 
+-	if (!modCardIsReal(cardId)) return 0;
++	if ((uint32_t)cardId >= 66 && !modCardIsReal(cardId)) return 0;
+ 	cardPtr = cardId < 66 ? &SCRIPT_STATE_PTR->cards[cardId / 2] : &MOD_CARD_EXTRA[(cardId - 66) / 2];
+ 	if (value < 0) value = 0;
+ 	if (value > 9) value = 9;
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index 49ceddd1..dc73d4da 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -1490,7 +1490,7 @@ int32_t shopFillSellCardList(void)
+ 	/* Only owned cards occupy rows; the buffer still stores the original card IDs. */
+ 	ITEM_MENU_LEFT->itemCount = 0;
+ 	for (id = 1; id < NUM_CARDS; id++) {
+-		amount = getCardAmount(id);
++		amount = modCardIsReal(id) ? getCardAmount(id) : 0;   /* the album-only cards 0 and 65 are never sold */
+ 		if (amount != 0) {
+ 			*buf++ = id;
+ 			*buf++ = id >> 8;
+-- 
+2.55.0
+
