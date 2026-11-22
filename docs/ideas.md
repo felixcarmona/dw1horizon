@@ -166,3 +166,4 @@ against, leave this list.
 | Use another sound than Vademon's flying saucer for Arukenimon's new move (suggested: Betamon's footsteps) | 🎭 | An audio swap in the move's effect; needs a listen test. |
 | More tamer models from other famous tamers, next to the new Look page faces | 🆕 | Each needs a model, texture and portrait; see the Look page. |
 | Give Gallantmon (Dukemon) a lance-and-shield moveset: today it fights with a generic kick/punch list (Megaton Punch, Dynamite Kick, Sonic Jab) and players ask for the Gram Lance | 🎭 | Needs moves with a thrust animation; check them frame by frame before merging. |
+| Zudomon plays no happy clip after being fed or praised (imported model: check its care clips against a native one) | 🎭 | Judge by eye against a native partner, frame by frame, before merging. |
