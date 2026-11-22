@@ -1,4 +1,4 @@
-From cb09c41beddcf1c161af6d802222065391474fd2 Mon Sep 17 00:00:00 2001
+From 26d2d0020e8c11c0671e8fb874652b67b61c46b4 Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Sun, 22 Nov 2026 18:20:04 +0000
 Subject: [PATCH] Mark stronger wild Digimon in the field with a red skull,
@@ -40,7 +40,7 @@ index a85739f2..ad1562bd 100644
  #define MOD_DIFF_DAMAGE(attacker, defender, partner, dmg)                                                              \
  	(MOD_OPT_DIFFICULTY != MOD_DIFF_EASY ? (dmg)                                                                       \
 diff --git a/src/main/btl.c b/src/main/btl.c
-index 7255d513..1637789e 100644
+index 7255d513..e3a49708 100644
 --- a/src/main/btl.c
 +++ b/src/main/btl.c
 @@ -10,6 +10,7 @@
@@ -96,7 +96,7 @@ index 7255d513..1637789e 100644
 +
 +	/* the outline first (behind), then the body, then the sockets on top */
 +	for (r = -1; r <= SKULL_H; r++) {
-+		for (c = -1, start = -2; c <= SKULL_W; c++) {
++		for (c = -1, start = -2; c <= SKULL_W + 1; c++) {
 +			in = 0;
 +			for (dy = -1; dy <= 1; dy++) {
 +				for (dx = -1; dx <= 1; dx++) {
