@@ -157,7 +157,7 @@ def main():
     for n,(address,_,_) in elf_symbols(a.exe+'.elf').items():e.table.setdefault(n,address)
     e.env['EMU_ARGS']='-interpreter -debugger -bios '+str(ROOT/'.tools/emu/pcsx-redux-zip/squashfs-root/usr/share/pcsx-redux/resources/openbios.bin')
     if not a.before:e.env['EMU_AUDIO']=str(a.out/'audio.raw')
-    formulas=B.load('content/tables/battle-formulas.json')['battleFormulas'];hard=formulas['hard']
+    formulas=B.load('content/tables/battle-formulas.json')['battleFormulas'];hard=formulas['hard'];normal=formulas['normal']
     if a.before:
         for key in ('defenseKnee','defenseTailHalf'):formulas['damage'].pop(key)
     species={s['id']:s for s in (B.load(p.relative_to(ROOT)) for p in (ROOT/'content/species').glob('*.json'))}
@@ -262,7 +262,9 @@ def main():
             actualMode,address,sid,hp,current,off,defense,speed,brain,mp,rawhp,rawoff,rawdef,rawspeed,rawbrain=init
             assert actualMode==mode
             for got,raw,key,cap in [(hp,rawhp,'hpPercent',30000),(off,rawoff,'offensePercent',9999),(defense,rawdef,'defensePercent',9999),(speed,rawspeed,'speedPercent',9999),(brain,rawbrain,'brainsPercent',9999)]:
-                assert got==(min(cap,raw*hard[key]//100) if mode==2 else raw),(case,init,key)
+                late=mode!=1 and rawhp>=normal['fromHp'] and key in ('hpPercent','offensePercent')
+                step=min(cap,raw*normal[key]//100) if late else raw
+                assert got==(min(cap,step*hard[key]//100) if mode==2 else step),(case,init,key)
             checked=[]
             for row in hits(e):
                 attacker,target,move,o,d,power,partner,roll,actual,charge,finRoll,frame,zeroNative,blockPercent=row
@@ -284,10 +286,6 @@ def main():
                     if mode==2:
                         if partner:expected=max(1,expected*hard['partnerDamagePercent']//100)
                         else:expected=max(expected,(B.damage(power,o,0,total,formulas['damage'],roll=roll)*hard['minimumDamagePercent']+99)//100)
-                if mode!=2 and not partner and move<58:
-                    # NORMAL's late-game floor (battleFormulas.normal): only enemies of 4000+ HP, so the hit is the plain one or the floor.
-                    floor=(B.damage(power,o,0,total,formulas['damage'],roll=roll)*formulas['normal']['minimumDamagePercent']+99)//100
-                    if actual==floor and floor>expected:expected=floor
                 assert expected==actual,(row,total,expected)
                 checked.append(dict(partner=bool(partner),offense=o,defense=d,power=power,roll=roll,damage=actual,frame=frame,move=move,finisher=move>=58,zeroDefenseNative=zeroNative,blockPercent=blockPercent))
             (a.out/(case+'-observations.json')).write_text(json.dumps(dict(initialization=init,hits=checked,samples=samples),indent=2)+'\n')
