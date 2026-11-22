@@ -69,6 +69,23 @@ budgets to 63/90 seconds on HARD (+24%/+25%). These are controlled hit budgets;
 the live trials below include natural AI, buffs, accuracy and animation time.
 Training remains beneficial, and no enemy follows the partner's level or stats.
 
+## NORMAL's late-game step (2026-11-22)
+
+NORMAL is no longer the original numbers everywhere. An enemy whose maximum HP is at least 4000 (82 of the 989
+placed enemies: the late game, the final bosses and the recruits fought there) gets 250% HP and 150% Offense, and
+every enemy hit does at least 25% of the same hit against Defense zero. Nothing below 4000 HP changes, nor EASY,
+HARD (its own factors) or two-player VS. The numbers are `battleFormulas.normal` in
+`content/tables/battle-formulas.json`. The cause was that a trained partner's Defense makes enemy Offense almost
+irrelevant, so only HP and the damage floor move the fight (hits to kill, final Machinedramon, ordinary hits, from
+`tools/battle_audit.py` formulas, not live fights):
+
+| Partner stats | Before: hits / damage taken | Now: hits / damage taken |
+|---|---|---|
+| 800 | 17 / 1092 | 43 / 1784 |
+| 1500 | 10 / 520 | 23 / 778 |
+| 4000 | 8 / 194 | 20 / 521 |
+| 9999 | 8 / 77 | 19 / 521 |
+
 ## Save and UI
 
 The existing option byte 10 remains NORMAL=0, EASY=1 and adds HARD=2. Missing or

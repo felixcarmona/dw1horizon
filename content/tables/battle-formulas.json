@@ -247,6 +247,12 @@
       "partnerDamagePercent": 95,
       "idleWeightPercent": 25,
       "minimumDamagePercent": 15
+    },
+    "normal": {
+      "fromHp": 4000,
+      "hpPercent": 250,
+      "offensePercent": 150,
+      "minimumDamagePercent": 25
     }
   }
 }

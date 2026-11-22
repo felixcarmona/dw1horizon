@@ -35,7 +35,8 @@ class CurveTests(unittest.TestCase):
         names=balance.NAMED_RULES['battleFormulas']
         tail=names.index('damage.tailHalfDifference')*2
         self.assertEqual(struct.unpack('<2h',raw[tail:tail+4]),(500,1))
-        self.assertEqual(struct.unpack('<3h',raw[-6:]),(15,999,1000))
+        self.assertEqual(struct.unpack('<3h',raw[-14:-8]),(15,999,1000))
+        self.assertEqual(struct.unpack('<4h',raw[-8:]),(4000,250,150,25))
         class Old:
             def where(self,key):return ('SLUS_010.32',0,tail)
         self.assertEqual(balance.encode_named('battleFormulas',obj,Old()),raw[:tail])

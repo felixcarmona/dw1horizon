@@ -284,6 +284,10 @@ def main():
                     if mode==2:
                         if partner:expected=max(1,expected*hard['partnerDamagePercent']//100)
                         else:expected=max(expected,(B.damage(power,o,0,total,formulas['damage'],roll=roll)*hard['minimumDamagePercent']+99)//100)
+                if mode!=2 and not partner and move<58:
+                    # NORMAL's late-game floor (battleFormulas.normal): only enemies of 4000+ HP, so the hit is the plain one or the floor.
+                    floor=(B.damage(power,o,0,total,formulas['damage'],roll=roll)*formulas['normal']['minimumDamagePercent']+99)//100
+                    if actual==floor and floor>expected:expected=floor
                 assert expected==actual,(row,total,expected)
                 checked.append(dict(partner=bool(partner),offense=o,defense=d,power=power,roll=roll,damage=actual,frame=frame,move=move,finisher=move>=58,zeroDefenseNative=zeroNative,blockPercent=blockPercent))
             (a.out/(case+'-observations.json')).write_text(json.dumps(dict(initialization=init,hits=checked,samples=samples),indent=2)+'\n')
