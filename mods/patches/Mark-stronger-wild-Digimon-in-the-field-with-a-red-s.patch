@@ -1,4 +1,4 @@
-From 99d9aae1f713c47795fec55e1c811bd8b12316d3 Mon Sep 17 00:00:00 2001
+From cb09c41beddcf1c161af6d802222065391474fd2 Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Sun, 22 Nov 2026 18:20:04 +0000
 Subject: [PATCH] Mark stronger wild Digimon in the field with a red skull,
@@ -7,13 +7,13 @@ Subject: [PATCH] Mark stronger wild Digimon in the field with a red skull,
 ---
  include/dw/mod_battle.h                       |   1 +
  include/dw/mod_options.h                      |   1 +
- src/main/btl.c                                | 112 ++++++++++++++++++
+ src/main/btl.c                                | 110 ++++++++++++++++++
  src/main/clock.c                              |   2 +
  src/main/main_menu.c                          |  23 ++--
  src/main/mod_options.c                        |   1 +
  text/main/main_menu.yaml                      |   3 +
  .../gen_lang_files.cpython-312.pyc            | Bin 5392 -> 5392 bytes
- 8 files changed, 136 insertions(+), 7 deletions(-)
+ 8 files changed, 134 insertions(+), 7 deletions(-)
 
 diff --git a/include/dw/mod_battle.h b/include/dw/mod_battle.h
 index 1f791cfe..8d5156f8 100644
@@ -40,7 +40,7 @@ index a85739f2..ad1562bd 100644
  #define MOD_DIFF_DAMAGE(attacker, defender, partner, dmg)                                                              \
  	(MOD_OPT_DIFFICULTY != MOD_DIFF_EASY ? (dmg)                                                                       \
 diff --git a/src/main/btl.c b/src/main/btl.c
-index 7255d513..d69be4f2 100644
+index 7255d513..1637789e 100644
 --- a/src/main/btl.c
 +++ b/src/main/btl.c
 @@ -10,6 +10,7 @@
@@ -51,12 +51,12 @@ index 7255d513..d69be4f2 100644
  #include <dw/species.h>
  #include <dw/item.h>
  #include <dw/main.h>
-@@ -804,6 +805,117 @@ void loadBattleData(int32_t entityId, int32_t count)
+@@ -804,6 +805,115 @@ void loadBattleData(int32_t entityId, int32_t count)
  
  GARBAGE(renderFleeBubble, 23);
  
 +/*
-+ * MOD (wild strength mark): a red skull above each wild Digimon in the field that is stronger than the partner.
++ * MOD (wild strength mark): a red devil skull above each wild Digimon in the field that is stronger than the partner.
 + * Strength is HP x (Offense + Defense), the enemy's after the scaling its fight applies (modHardEnemy); the limit is
 + * battleFormulas.strength (tools/battle_audit.py calibrates it against simulated fights). Only Digimon that fight on
 + * touch (autotalk 1) with techniques get one.
@@ -64,20 +64,18 @@ index 7255d513..d69be4f2 100644
 +extern int32_t IS_IN_MENU;
 +
 +#define SKULL_W 11
-+#define SKULL_H 11
++#define SKULL_H 9
 +/* one string per row: R body, K eye and nose sockets, . empty */
 +static const char *const SKULL[SKULL_H] = {
-+	"...RRRRR...",
-+	"..RRRRRRR..",
++	"R.........R",
++	"RR..RRR..RR",
 +	".RRRRRRRRR.",
-+	".RRRRRRRRR.",
-+	".RKKRRRKKR.",
-+	".RKKRRRKKR.",
-+	".RRRRKRRRR.",
 +	"..RRRRRRR..",
++	"..RKKRKKR..",
++	"..RKKRKKR..",
++	"..RRRKRRR..",
 +	"...RRRRR...",
-+	"...RKRKRK..",
-+	"....RRRRR..",
++	"...RKRKR...",
 +};
 +
 +static void strengthRow(int32_t x, int32_t y, int32_t w, uint32_t rgb, int32_t z)
@@ -160,7 +158,7 @@ index 7255d513..d69be4f2 100644
 +		world.vz = d->entity.posData->location.vz;
 +		if (worldPosToScreenPos(&world, &head) <= 0) continue;
 +		x = head.vx - (160 - DRAWING_OFFSET_X) - 5;
-+		y = head.vy - (120 - DRAWING_OFFSET_Y) - 16;
++		y = head.vy - (120 - DRAWING_OFFSET_Y) - 14;
 +		if (x < -160 || x > 148 || y < -120 || y > 108) continue; /* the head is off the screen */
 +		strengthSkull(x, y);
 +	}
