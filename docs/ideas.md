@@ -167,3 +167,8 @@ against, leave this list.
 | More tamer models from other famous tamers, next to the new Look page faces | 🆕 | Each needs a model, texture and portrait; see the Look page. |
 | Give Gallantmon (Dukemon) a lance-and-shield moveset: today it fights with a generic kick/punch list (Megaton Punch, Dynamite Kick, Sonic Jab) and players ask for the Gram Lance | 🎭 | Needs moves with a thrust animation; check them frame by frame before merging. |
 | Zudomon plays no happy clip after being fed or praised (imported model: check its care clips against a native one) | 🎭 | Judge by eye against a native partner, frame by frame, before merging. |
+| Optional Mega bosses after the first Machinedramon win or a prosperity threshold, with extra phases, companions and better techs rather than bigger stat caps (the caps are already used by the final bosses, which a trained Mega kills in under ten hits) | ✨ | Design first with one test boss; measure with tools/battle_audit.py. Original bosses stay fixed (see the decision log). |
+| A tournament cup that counts Megas, using the same Mega-neutral profile as the final | ✨ | Reuses the cup data; needs banners and names in every language. |
+| Stronger wild enemies and new recruits in cleared areas once prosperity passes a threshold (for example the Speedy and Glacial Dino Regions) | ✨ | Gives a reason to come back; each area needs its own list. |
+| Better techs for the recruit bosses (not only higher stats), so they hit harder than the wild enemies around them | 🎭 | A moveset review per recruit; check each move's animation. |
+| Move the Kotemon recruit fight to the empty control room that opens after Ogremon | 🎭 | A suggestion; its yard is its home today. Needs a script and walkable check. |
