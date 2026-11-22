@@ -28,8 +28,8 @@ shows. The last two rows are **Backpack** and **Backpack colour**: the original 
 of the five is the original backpack in other proportions, with its cloth, seams and shading, and its own fittings
 drawn where the original has its emblem. Every
 shirt takes every backpack: the original hoodie with the original backpack is the tamer as he always was, and with
-another one or none it is the same hoodie without it. Under a backpack a shirt shows its straps. The page shows five of its twelve rows at a time, around the chosen one, with a scroll
-bar beside the boxes. The Player tab shows the button that opens the page beside the name, and the
+another one or none it is the same hoodie without it. Under a backpack a shirt shows its straps. The page shows six of its twelve rows at a time, around the chosen one, with a scroll
+bar beside the boxes. The Player tab shows the button that opens the page in a box beside the name, and the
 page shows there the two that leave it: the confirm button saves the look, the cancel button leaves without saving and
 the tamer is again as he was when the page opened. The look is kept in the save.
 
