@@ -21,7 +21,7 @@
     "slot_aliases": [[48, 49], [50, 49], [51, 49], [52, 54], [53, 46], [57, 46]]
   },
   "texture": {"file": "build/batch13/Snatchmon.TIM", "entry": 0},
-  "voice": 42,
+  "voice": 3,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -158, -10, 1],
   "effect_origins": [[7, 0, 0, 0, 16, 0, 0, 0], [10, 0, 0, 0, 22, 0, 0, 0], [18, 0, 0, 0, 8, 0, 0, 0]],
