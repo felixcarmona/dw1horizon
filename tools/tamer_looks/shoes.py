@@ -148,6 +148,15 @@ def recipe(texture, drawing):
     return ways, levels, fixed
 
 
+def own_recipe(texture):
+    """The tamer's own shoes in a cloth colour: their four tones of red follow it; white, sole and yellow stay."""
+    ways, levels, fixed = [shirts.KEEP] * 16, [0] * 16, [0] * 16
+    tones = [sum(rgb15(c)) for c in texture.pal[ROW]]
+    for i in range(2, 6):
+        ways[i], levels[i] = shirts.tone(tones[i] / tones[3])
+    return ways, levels, fixed
+
+
 def palette(texture, rec, cloth):
     """The texture's palette rows for shoes of a cloth colour, as the game writes them (for pictures)."""
     rows = [list(p) for p in texture.pal]
@@ -190,7 +199,8 @@ def build(model, texture):
     check_free(model)
     parts = {oi: shirts.part(model, oi) for oi in OBJECTS}
     body, table = shirts.geometry(parts, OBJECTS)
-    out = [('original', shirts.head(table, len(body)), body, parts, None, None, None)]
+    own = own_recipe(texture)
+    out = [('original', shirts.head(table, len(body), own, flags=shirts.OWN), body, parts, None, own, None)]
     for name, boot, drawing, size in STYLES:
         parts = {oi: sized(shirts.part(model, oi), size) for oi in OBJECTS}
         body, table = shirts.geometry(parts, OBJECTS)

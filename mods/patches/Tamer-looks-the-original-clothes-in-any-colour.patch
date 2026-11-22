@@ -1,0 +1,137 @@
+From bb4cfa806f09618baa511bdb1cc0c8db5a57e064 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 22 Nov 2026 06:44:37 +0000
+Subject: [PATCH] Tamer looks: the original clothes in any colour
+
+The tamer's own hoodie, trousers, shoes and backpack take the cloth colours too. Their first colour is their own:
+the garment's recipe is applied only with another one. The hoodie's arms are drawn in another palette row with the
+same tones, which follow it; coloured trousers draw the seat with their cloth, and a coloured backpack is the fitted
+one over the hoodie without its own. The Look page reads the tamer again when such a colour changes.
+---
+ src/main/game_menu.c   | 22 ++++++++++++++++------
+ src/main/mod_species.c | 21 +++++++++++++++------
+ 2 files changed, 31 insertions(+), 12 deletions(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 4e23a4f..0bafe33 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -2707,13 +2707,13 @@ int32_t playerKeyHint(int32_t key, int32_t x, int32_t y)
+ 	return (x + drawStringMode(str, x, y, fitStringMode(str, 0x60)) + 11) & ~3;
+ }
+ 
+-/* Whether a row has something to choose: the original tamer and the bald head have no hair colour, an original
+- * garment no colour, and no backpack none either */
++/* Whether a row has something to choose: the original tamer and the bald head have no hair colour, and no backpack
++ * no colour. An original garment's first colour is its own. */
+ static const char lookPageFaces[TAMER_FACE_COUNT][2] = { "1", "2" };
+ static const char lookPageDash[] = "-"; /* a row with nothing to choose */
+ static int32_t lookPageRowOpen(int32_t row)
+ {
+-	return row == 1 ? MOD_TAMER_LOOK >= 2 : (row >= 4 && !(row & 1)) ? MOD_TAMER_STATE[row - 1] > (row == 10) : 1;
++	return row == 1 ? MOD_TAMER_LOOK >= 2 : row == 10 ? MOD_TAMER_STATE[9] != 1 : 1;
+ }
+ 
+ static char *lookPageValueText(int32_t row)
+@@ -2737,6 +2737,9 @@ static char *lookPageValueText(int32_t row)
+ 	if (row & 1) {
+ 		return value == 0 ? LAB_LOOK_TEXT[0] : (char *)lookPageClothes[lookPageFirst[(row - 3) / 2] + value - 1];
+ 	}
++	if (value == 0 && MOD_TAMER_STATE[row - 1] == 0) {
++		return LAB_LOOK_TEXT[0];
++	}
+ 	name = lookPageClothName[value];
+ 	return name == LOOK_CLOTH_ORANGE ? (char *)lookPageTextOrange :
+ 	       name == LOOK_CLOTH_YELLOW ? (char *)lookPageTextYellow : LAB_HAIR_TEXT[name];
+@@ -2779,6 +2782,13 @@ static int32_t lookPageRowReads(int32_t row)
+ 	return row == 0 || row == 2 || (row & 1);
+ }
+ 
++/* Whether a row's choice needs the tamer read again: those, and the colour of an original garment, which is its own
++ * drawing with colour 0 and another one (the seat, the backpack under the arms) with any other */
++static int32_t lookPageRowLoads(int32_t row)
++{
++	return lookPageRowReads(row) || (row >= 4 && MOD_TAMER_STATE[row - 1] == 0);
++}
++
+ static void lookPageKeep(void)
+ {
+ 	memcpy(lookPageState.saved, MOD_TAMER_STATE, LOOK_ROWS);
+@@ -2891,7 +2901,7 @@ void lookPageClose(void)
+ 	int32_t i;
+ 
+ 	for (i = 0; i < LOOK_ROWS; i++) {
+-		if (lookPageRowReads(i) && MOD_TAMER_STATE[i] != lookPageState.saved[i]) {
++		if (lookPageRowLoads(i) && MOD_TAMER_STATE[i] != lookPageState.saved[i]) {
+ 			reads = 1;
+ 		}
+ 	}
+@@ -2959,9 +2969,9 @@ void lookPageInput(void)
+ 	playSound(0, 2);
+ 	row = lookPageState.row;
+ 	MOD_TAMER_STATE[row] = (MOD_TAMER_STATE[row] + lookPageState.count[row] + step) % lookPageState.count[row];
+-	if (lookPageRowReads(row)) {
++	if (lookPageRowLoads(row)) {
+ 		modTamerRelook();
+-		if (row != 2 && row != LOOK_HANDS_ROW) { /* the row under a hairstyle or a garment is its colour: open or not with it */
++		if (lookPageRowReads(row) && row != 2 && row != LOOK_HANDS_ROW) { /* the row under a hairstyle or a garment is its colour: open or not with it */
+ 			lookPageValue(row + 1);
+ 		}
+ 	} else if (row == 1) {
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index 38c3d7a..77120a8 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -1057,6 +1057,8 @@ void lookHairPalette(uint16_t *row, uint8_t *rgb, uint8_t *levels);
+ #define LOOK_PACK		0x400	/* a backpack: u16 polygons (0: none), their bytes, corners, 0; then corners, normals, polygons */
+ #define LOOK_SHIRT_ROOM		2	/* a shirt's flags (byte 3): its torso keeps room for a backpack, */
+ #define LOOK_SHIRT_STRAPS	4	/* and one more drawing follows its own: its trunk with a backpack's straps */
++#define LOOK_SHIRT_OWN		16	/* any garment: the tamer's own, which keeps its colours with colour 0 */
++#define LOOK_SHIRT_SLEEVES	32	/* a shirt whose arms are drawn in the row two below its own, in the same tones */
+ #define LOOK_SEAT_PRIMS	16	/* a shirt's first polygons are the seat: the trousers' cloth when they are not the original's */
+ LookShirtRecipe lookShirtRecipe[LOOK_GARMENTS];
+ uint16_t lookShirtRow[LOOK_GARMENTS][16];
+@@ -1225,11 +1227,11 @@ int32_t lookTamerLoad(void *component)
+ 	readFileSectors(TAMER_LOOK_FILE, head, 0, 1);
+ 	for (g = 0, k = 0; g < LOOK_GARMENTS; g++) {
+ 		worn[g] = MOD_TAMER_STATE[3 + 2 * g] < head[LOOK_GARMENT_COUNT(g)] ? MOD_TAMER_STATE[3 + 2 * g] : 0;
+-		k |= worn[g];
++		k |= worn[g] | MOD_TAMER_STATE[4 + 2 * g];
+ 	}
+-	if (worn[0] == 0 && worn[3] != 0) {
+-		/* the original shirt has its backpack in it: under another one, or none, it is one of the two shirts that
+-		 * follow those he chooses from, the same hoodie without it */
++	if (worn[0] == 0 && (worn[3] != 0 || MOD_TAMER_STATE[10] != 0)) {
++		/* the original shirt has its backpack in it: under another one, one of another colour, or none, it is one
++		 * of the two shirts that follow those he chooses from, the same hoodie without it */
+ 		worn[0] = head[0x68] + (worn[3] == TAMER_PACK_NONE);
+ 	}
+ 	if (MOD_TAMER_LOOK == 0 && k == 0) {
+@@ -1286,7 +1288,7 @@ int32_t lookTamerLoad(void *component)
+ 		sectors[g][0] = head[LOOK_GARMENT_DIR(g) + 2 * worn[g]];
+ 		sectors[g][1] = head[LOOK_GARMENT_DIR(g) + 2 * worn[g] + 1];
+ 		readFileSectors(TAMER_LOOK_FILE, first, sectors[g][0], 1);
+-		if (g == 1 && worn[g] != 0) {
++		if (g == 1 && (worn[g] != 0 || MOD_TAMER_STATE[6] != 0)) {
+ 			seat = *(uint16_t *)(first + LOOK_SHIRT_SEAT);
+ 			slim = first[3] & 1;
+ 		}
+@@ -1309,7 +1311,14 @@ int32_t lookTamerLoad(void *component)
+ 		}
+ 		memcpy(&lookShirtRecipe[g], first + LOOK_SHIRT_RECIPE, sizeof(lookShirtRecipe[g]));
+ 		row = (uint16_t *)(texture + LOOK_TIM_PALETTE + 32 * LOOK_GARMENT_ROW(g));
+-		lookShirtPalette(row, &lookShirtRecipe[g], (uint8_t *)head + LOOK_CLOTH + LOOK_CLOTH_SIZE * (MOD_TAMER_STATE[4 + 2 * g] % head[0x69]));
++		k = MOD_TAMER_STATE[4 + 2 * g];
++		if (!(first[3] & LOOK_SHIRT_OWN) || k != 0) {
++			lookShirtPalette(row, &lookShirtRecipe[g], (uint8_t *)head + LOOK_CLOTH + LOOK_CLOTH_SIZE * (k % head[0x69]));
++			if (first[3] & LOOK_SHIRT_SLEEVES) {
++				memcpy(row + 33, row + 1, 12);
++				row[43] = row[0];
++			}
++		}
+ 		memcpy(lookShirtRow[g], row, sizeof(lookShirtRow[g]));
+ 		if (at[g] * 4 + (sectors[g][1] << 11) > TAMER_MMD_MAX) {
+ 			free3(texture);
+-- 
+2.55.0
+

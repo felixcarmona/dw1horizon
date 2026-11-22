@@ -9,7 +9,9 @@ tamer's own, the second has a blush instead of the freckle marks, a finer mouth 
 lashes (under the original tamer's cap the eye keeps its eyelid: the cap's shadow already frames it). Two more rows,
 **Shirt** and **Shirt colour**, dress every look, the original tamer included: the original hoodie with its backpack,
 or one of ten shirts (T-shirt, striped, printed, long sleeve, hoodie, jacket, fitted tee, top, cardigan, blouse) in
-sixteen colours. The original hoodie has no colour to choose. Four more rows do the same for the legs and the feet:
+sixteen colours. The original hoodie, trousers, shoes and backpack take the colours too: the first choice of their
+colour row is **Original**, their own colours, and the other fifteen dye their cloth and leave the rest (cords, soles,
+the backpack's emblem) as it was. Four more rows do the same for the legs and the feet:
 **Trousers** (the original ones, straight, baggy, skinny, tracksuit, shorts, capri, skirt, flared) and **Shoes** (the
 original ones, trainers, small trainers, plain, flats, Mary Janes, ankle boots, small ankle boots, boots, cuffed boots,
 rain boots, sandals), each with its own colour row and the same sixteen colours. The small kinds are a smaller foot. A

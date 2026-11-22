@@ -41,6 +41,7 @@ RECTS = (TRUNK, (32, 60, 24, 13))          # what a shirt draws: u, v, width, he
 BARE = (48, 60, 13)                        # bare skin, drawn beside the sleeve's cloth: u, v, height (skin_strips)
 PACK_CORNERS, PACK_BYTES = 16, 400         # the room a torso keeps for a backpack
 ROOM, STRAPS = 2, 4                        # flags in the first sector
+OWN, SLEEVES = 16, 32                      # more: with colour 0 it keeps its own colours; its cloth is in the arms' row too
 STRAP, STRAP_DARK, STRAP_EDGE = 11, 12, 13  # tones of a backpack's straps
 BACK = (68, 57, 95, 86)                    # folds of the hoodie's cloth on the arms' texture: the back without a backpack
 PACK = (2, 3, 13, 14, 28, 29, 38, 41, 45, 48, 52)   # the torso's polygons that are the backpack (backpacks.POLYGONS)
@@ -626,6 +627,16 @@ def recipe(texture, follows):
     return ways, levels, fixed
 
 
+def own_recipe():
+    """The tamer's own hoodie in a cloth colour: its outline and its six tones of cloth; the rest stays (cords, straps
+    and the corner of the backpack under each arm). The arms' row has the same tones (SLEEVES)."""
+    ways, levels, fixed = [KEEP] * 16, [0] * 16, [0] * 16
+    ways[0], levels[0] = tone(.4)
+    for i, level in enumerate(CLOTH_LEVELS):
+        ways[i + 1], levels[i + 1] = MAIN, level
+    return ways, levels, fixed
+
+
 def palette(rec, cloth, row):
     """A garment's palette row for a cloth colour (its shade, the colour, its light, the second colour): what the
     game computes (lookShirtPalette). A tone of the colour lies between the shade (level 0), the colour (128) and the
@@ -766,7 +777,8 @@ def build(model, texture):
     out = []
     parts = original(model)
     body, table = geometry(parts)
-    out.append(('original', head(table, len(body)), body, parts, None, None, None))
+    own = own_recipe()
+    out.append(('original', head(table, len(body), own, flags=OWN | SLEEVES), body, parts, own, None, None))
     room = {TORSO: PACK_BYTES}
     for name, trunk, arms, hood, drawing, follows in STYLES:
         parts = garment(model, trunk, arms, hood)
@@ -783,9 +795,10 @@ def build(model, texture):
     body, table = geometry(parts, gaps=room)
     idx = bytearray(texture.idx)
     unpack(idx)
-    out.append(('hoodie for a backpack', head(table, len(body), None, pixels(idx, (TRUNK,)), (TRUNK,), ROOM), body, parts,
-                None, idx, None))
+    out.append(('hoodie for a backpack', head(table, len(body), own, pixels(idx, (TRUNK,)), (TRUNK,), ROOM | OWN | SLEEVES), body,
+                parts, own, idx, None))
     idx = bytearray(idx)
     unstrap(idx)
-    out.append(('hoodie alone', head(table, len(body), None, pixels(idx, (TRUNK,)), (TRUNK,), ROOM), body, parts, None, idx, None))
+    out.append(('hoodie alone', head(table, len(body), own, pixels(idx, (TRUNK,)), (TRUNK,), ROOM | OWN | SLEEVES), body, parts, own,
+                idx, None))
     return out

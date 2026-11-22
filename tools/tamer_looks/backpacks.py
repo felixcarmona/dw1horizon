@@ -5,7 +5,7 @@ shirt keeps room for one (shirts.PACK_CORNERS leading corners and normals, shirt
 polygons) and the game copies the chosen backpack there from the backpack's sector when it loads. A backpack is that
 sector alone: the palette recipe and the drawing as in any garment (shirts.head), and its geometry at PACK_AT.
 
-Backpack 0 is the tamer's own, with its own colours; backpack 1 is none. With the original hoodie the original
+Backpack 0 is the tamer's own, with its own colours or dyed (shirts.OWN); backpack 1 is none. With the original hoodie the original
 backpack is not copied anywhere: shirt 0 is the disc's torso as it is, so the two together are the original tamer.
 With any other shirt the same polygons are used a little narrower, their open side sunk into the body. The others
 are that backpack too, in other proportions: they keep its drawing (cloth, seams, shading), draw their own fittings
@@ -160,8 +160,8 @@ def check_free(model):
                 raise SystemExit(f'backpacks: object {oi} polygon {pi} is drawn in the backpack palette row')
 
 
-def sector(pack, rec=None, drawn=None):
-    out = bytearray(shirts.head([], 0, rec, drawn, RECTS))
+def sector(pack, rec=None, drawn=None, flags=0):
+    out = bytearray(shirts.head([], 0, rec, drawn, RECTS, flags))
     if pack:
         verts, norms, prims = pack
         raw = b''.join(p.raw for p in prims)
@@ -180,8 +180,8 @@ def build(model, texture):
     """Every backpack: [(name, its sector, (corners, normals, polygons) or None, recipe or None, pixels or None)]."""
     check_free(model)
     own = fitted(model)
-    out = [('original', sector(own), own, None, None), ('none', sector(None), None, None, None)]
     rec = recipe(texture)
+    out = [('original', sector(own, rec, flags=shirts.OWN), own, rec, None), ('none', sector(None), None, None, None)]
     for name, tall, wide, deep, drawing in STYLES:
         pack = reshaped(own, tall, wide, deep)
         if drawing is None:

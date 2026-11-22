@@ -180,6 +180,21 @@ def recipe(texture):
     return ways, levels, fixed
 
 
+def own_recipe():
+    """The tamer's own trousers in a cloth colour: their seven tones of cloth and the lighter one of their seams."""
+    ways, levels, fixed = [shirts.KEEP] * 16, [0] * 16, [0] * 16
+    for i, level in enumerate(TONES):
+        ways[LIGHTEST + i], levels[LIGHTEST + i] = MAIN, level
+    ways[9], levels[9] = MAIN, 200
+    return ways, levels, fixed
+
+
+def own_seat(texture):
+    """A texel of the tamer's own trousers that is plain cloth: their seat is drawn with it when they take a colour."""
+    u0, v0, w, h = FOLDS_AT
+    return next((u, v) for v in range(v0 + h // 2, v0 + h) for u in range(u0 + 4, u0 + w) if texture.idx[v * W + u] == PLAIN)
+
+
 def palette(texture, cloth):
     """The texture's palette rows for trousers of a cloth colour, as the game writes them (for pictures)."""
     rows = [list(p) for p in texture.pal]
@@ -224,7 +239,9 @@ def build(model, texture):
     check_free(model)
     parts = original(model)
     body, table = geometry(parts)
-    out = [('original', shirts.head(table, len(body)), body, parts, None, False)]
+    first = bytearray(shirts.head(table, len(body), own_recipe(), flags=shirts.OWN))
+    first[SEAT_IN_HEAD:SEAT_IN_HEAD + 2] = bytes(own_seat(texture))
+    out = [('original', bytes(first), body, parts, None, False)]
     for name, thigh, shin, drawing, slim in STYLES:
         parts = garment(model, list(thigh), list(shin) if shin else None, slim)
         body, table = geometry(parts, slim)
