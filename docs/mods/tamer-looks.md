@@ -144,6 +144,12 @@ a model of `TAMER.DAT` like the rest.
   tamer with another face is.
 - Save record `0x000F` holds `MOD_TAMER_STATE`: the look, the hair colour, the face, each garment and its colour, then the hands ([save format](../reference/save-format.md)); a new game and
   an older save start with the original tamer. Without `TAMER.DAT` on the disc every look is the original tamer.
+- A new game asks for the look after the name (`modTamerFirstLook`, called from the new game's set-up before the first
+  screen): `lookPageNewGame` shows the Player view's panel alone, asks boy or girl with the tamer changing as the
+  answer moves, and then runs the Look page with Start and Back in place of Save and Exit. It reads both of the
+  title's overlays first, like the title does.
+- The page's code is in the tail of EVL, and EVL's first sector lies over MENU's last one. An open menu that reads EVL
+  (`lookMenuOverlay`) reads MENU again after it; the new game reads them in that order.
 
 ## Adding a shirt
 

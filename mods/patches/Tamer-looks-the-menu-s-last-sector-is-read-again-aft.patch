@@ -1,0 +1,49 @@
+From a837c26391c205e06eec73c0b3e7d7eba96000a0 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 22 Nov 2026 14:52:29 +0000
+Subject: [PATCH 1/2] Tamer looks: the menu's last sector is read again after
+ the Look page's overlay
+
+The Look page's code is in EVL's tail, and EVL's first sector lies over MENU's last one, where the page's button hints and the end of the Cards view are. A Player tab that read EVL to open the page (a tamer with nothing chosen, or after anything else used that address) jumped into EVL's header and hung. The menu reads MENU again after it.
+---
+ src/main/game_menu.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 1459e19..2bd8480 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -3145,9 +3145,20 @@ void lookPageRender(void)
+ 
+ void modLookOverlay(void);
+ 
++void loadMenuOverlay(void);
++
++/* The Look page's code for a menu that is open: EVL's first sector lies over MENU's last one, which is read again */
++static void lookMenuOverlay(void)
++{
++	if (*(volatile uint32_t *)&lookPageMagic != 0x4B4F4F4C) {
++		modLookOverlay();
++		loadMenuOverlay();
++	}
++}
++
+ static int32_t playerLookEnter(void)
+ {
+-	modLookOverlay();
++	lookMenuOverlay();
+ 	return lookPageOpen();
+ }
+ 
+@@ -6722,7 +6733,7 @@ int8_t entityId;
+ 			/* MOD (tamer looks): the hair's far faces too */
+ 			if (entityId == 0 && MOD_TAMER_LOOK > 1 &&
+ 			    (void *)pos->obj.tmd == (void *)&TAMER_MODEL.modelPtr->obj[LOOK_HEAD_OBJECT]) {
+-				modLookOverlay();
++				lookMenuOverlay();
+ 				lookPageHairInside(&pos->obj, FRAMEBUFFER_OT[ACTIVE_FRAMEBUFFER]);
+ 			}
+ 		}
+-- 
+2.55.0
+

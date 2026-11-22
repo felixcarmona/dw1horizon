@@ -524,3 +524,5 @@ at 2 MB. Physical hardware validation remains outstanding.
 | `Tamer-looks-the-skin-under-the-tamer-s-row.patch` |  | Tamer looks: the skin under the tamer's row | The Skin row was the last of the Look page; it is the second now, under the row that chooses a boy or a girl. |
 | `Let-cards-0-and-65-be-owned-again.patch` |  | Let cards 0 and 65 be owned again |  |
 | `Evolution-skip-from-the-first-frames-hides-the-other.patch` |  | Evolution skip from the first frames hides the other entities first, so the tamer comes back |  |
+| `Tamer-looks-the-menu-s-last-sector-is-read-again-aft.patch` |  | Tamer looks: the menu's last sector is read again after the Look page's overlay | Opening the Look page from the Player tab hung when the page's overlay was not in memory yet: reading it replaced the end of the menu's own code. The menu is read again after it. |
+| `Tamer-looks-a-new-game-asks-boy-or-girl-and-opens-th.patch` |  | Tamer looks: a new game asks boy or girl and opens the Look page | After the name, a new game asks whether the tamer is a boy or a girl and opens the Look page (Start, Back) before the first screen. |
