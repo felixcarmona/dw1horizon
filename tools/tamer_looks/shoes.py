@@ -128,7 +128,7 @@ def recipe(texture, drawing):
     skin = rgb15(texture.pal[shirts.SKIN_ROW][texture.idx[shirts.SKIN_AT[1] * W + shirts.SKIN_AT[0]]])
 
     def bare(i, level):
-        ways[i], fixed[i] = FIXED, c15(*[min(255, int(c * level)) for c in skin])
+        ways[i], fixed[i] = shirts.SKINNED, c15(*[min(255, int(c * level)) for c in skin])
     for i in range(TRIM, 16):
         level = 1.1 - .8 * (i - TRIM) / 8
         if drawing == 'sandals':

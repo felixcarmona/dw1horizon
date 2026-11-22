@@ -104,7 +104,7 @@ CLOTH = (
     ('green', (84, 156, 92)), ('turquoise', (64, 172, 172)), ('blue', (68, 108, 188)), ('navy', (45, 60, 120)),
     ('purple', (144, 96, 184)), ('lavender', (190, 170, 235)), ('pink', (228, 124, 164)), ('brown', (140, 95, 60)),
 )
-KEEP, MAIN, SECOND, FIXED, DEEP = 0, 1, 2, 3, 4   # how a tone of the cloth's palette row gets its colour
+KEEP, MAIN, SECOND, FIXED, DEEP, SKINNED = 0, 1, 2, 3, 4, 5   # how a tone of the cloth's palette row gets its colour (SKINNED: fixed, in the skin's tone)
 SHADE_AT, LIGHT_AT = .62, 1.3              # how bright a colour's shade and its light are next to it
 
 
@@ -615,7 +615,7 @@ def recipe(texture, follows):
     for i, level in enumerate(CLOTH_LEVELS):
         ways[i + 1], levels[i + 1] = MAIN, level
     for t, colour in zip((SK, SK2, SK3), skin_tones(texture)):
-        ways[t], fixed[t] = FIXED, colour
+        ways[t], fixed[t] = SKINNED, colour
     if follows:
         ways[WHITE], levels[WHITE] = SECOND, 128
         ways[GREY], levels[GREY] = SECOND, 107
@@ -646,7 +646,7 @@ def palette(rec, cloth, row):
     out = list(row)
     for i in range(16):
         w = levels[i]
-        if ways[i] == FIXED:
+        if ways[i] in (FIXED, SKINNED):
             out[i] = fixed[i] | 0x8000
             continue
         if ways[i] == KEEP:

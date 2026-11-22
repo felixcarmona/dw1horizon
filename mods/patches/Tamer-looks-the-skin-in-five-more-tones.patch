@@ -1,0 +1,322 @@
+From 2c772dbbb7c43eb78d6f624c48171afbf216a1d2 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 22 Nov 2026 08:20:00 +0000
+Subject: [PATCH] Tamer looks: the skin in five more tones
+
+The hands' byte of the tamer's state keeps the skin above its first bit: 0 his own, then five tones, each a red,
+green and blue factor over every colour of skin. Those are tones of the hands', the face's and the original sleeves'
+palette rows, and the ones a garment's recipe marks as bare skin (way 5). The Look page gains the Skin row.
+---
+ config/us/overlay.ld   |  3 ++-
+ include/dw/species.h   |  6 +++--
+ src/main/game_menu.c   | 55 +++++++++++++++++++++++++++++-------------
+ src/main/mod_species.c | 45 ++++++++++++++++++++++++++++++++--
+ text/main/mod_lab.yaml |  3 +++
+ 5 files changed, 90 insertions(+), 22 deletions(-)
+
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index e4f0b46..6865b16 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -346,7 +346,8 @@ SECTIONS
+             look_ui_START = .;
+             BUILD_DIR/src/main/game_menu.c.o(.text.lookPage* .rodata.lookPage* .bss.lookPageState);
+             BUILD_DIR/src/main/mod_species.c.o(.text.lookTamerLoad .text.lookTamerHands .text.lookHairPalette .text.lookShirtPalette
+-                .rodata.lookShirtObjects .rodata.lookCapRecipe .bss.lookShirtRecipe .bss.lookShirtRow);
++                .rodata.lookShirtObjects .rodata.lookCapRecipe .text.lookSkinColour .text.lookSkinTexture
++                .rodata.lookSkinTones .rodata.lookSkinRows .bss.lookShirtRecipe .bss.lookShirtRow);
+             BUILD_DIR/src/main/model.c.o(.text.lookTamerRelook);
+             . = ALIGN(., 4);
+ 
+diff --git a/include/dw/species.h b/include/dw/species.h
+index 5e00b42..ff06cc7 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -356,7 +356,9 @@ extern uint8_t MOD_TAMER_STATE[TAMER_STATE_SIZE] __attribute__((section(".sbss")
+ #define MOD_TAMER_TROUSERS	MOD_TAMER_STATE[5]
+ #define MOD_TAMER_SHOES		MOD_TAMER_STATE[7]
+ #define MOD_TAMER_PACK		MOD_TAMER_STATE[9]
+-#define MOD_TAMER_HANDS		MOD_TAMER_STATE[11]	/* 1 = small hands */
++#define MOD_TAMER_HANDS		(MOD_TAMER_STATE[11] & 1)	/* 1 = small hands */
++#define MOD_TAMER_SKIN		(MOD_TAMER_STATE[11] >> 1)	/* the same byte's other bits: 0 his own skin, then the tones */
++#define TAMER_SKIN_COUNT	6
+ /* The clothes (tools/tamer_looks/shirts.py, legs.py, shoes.py): a shirt is the torso and the arms of any look, a
+  * pair of trousers its legs, a pair of shoes its feet. Garment 0 of each kind is the original tamer's; the others
+  * are drawn with the tones of one palette row each, written for the chosen cloth colour. */
+@@ -371,7 +373,7 @@ extern uint8_t MOD_TAMER_STATE[TAMER_STATE_SIZE] __attribute__((section(".sbss")
+ 					 * the second colour, r, g, b each */
+ #define LOOK_CLOTH_SIZE		12
+ typedef struct LookShirtRecipe { /* how each tone of a garment's palette row gets its colour (lookShirtPalette) */
+-	uint8_t ways[16]; /* 0 as the texture has it, 1 the cloth's colour, 2 the second colour, 3 fixed, 4 the cloth's shade */
++	uint8_t ways[16]; /* 0 as the texture has it, 1 the cloth's colour, 2 the second colour, 3 fixed, 4 the cloth's shade, 5 fixed skin */
+ 	uint8_t levels[16];
+ 	uint16_t fixed[16];
+ } LookShirtRecipe;
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 68c8ae5..59593ca 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -2578,8 +2578,8 @@ void free3(void *ptr);
+ #define LOOK_TOP_Y	0x40	/* the page's text: one line a row, over the tamer titles, drawn again when the page closes */
+ #define LOOK_ROW_V(row)	(LOOK_TOP_Y + 12 * (row))
+ #define LOOK_OPEN_Y	0xc4	/* the button that opens the page, under the titles */
+-#define LOOK_HINT_Y	0xd0	/* the two hints: under the rows */
+-#define LOOK_END_Y	0xe8
++#define LOOK_HINT_Y	0xdc	/* the two hints: under the rows */
++#define LOOK_END_Y	0xf4
+ #define LOOK_LEAVE_U	0x80	/* the buttons that save and leave: right of the second hint */
+ #define LOOK_KEY_X	0x08	/* on the name's row, right of the name */
+ #define LOOK_KEY_W	0x7c
+@@ -2587,8 +2587,9 @@ void free3(void *ptr);
+ #define LOOK_VALUE_U	0x58	/* a row's value in the text area, right of its name */
+ #define LOOK_VALUE_X	0x33	/* the value box, from the middle of the window */
+ #define LOOK_VALUE_W	86
+-#define LOOK_ROWS	TAMER_STATE_SIZE	/* hairstyle, hair colour, face, each garment and its colour, then the hands */
++#define LOOK_ROWS	(TAMER_STATE_SIZE + 1)	/* hairstyle, hair colour, face, each garment and its colour, then the hands and the skin */
+ #define LOOK_HANDS_ROW	11
++#define LOOK_SKIN_ROW	12	/* in the hands' byte, above its first bit */
+ #define LOOK_SHOWN	5
+ #define LOOK_SCROLL_X	(LOOK_VALUE_X + LOOK_VALUE_W + 7)	/* the scroll bar: right of the value boxes, as tall as the rows shown */
+ #define LOOK_SCROLL_H	(4 * 0x14 + 14)
+@@ -2632,7 +2633,7 @@ static const char lookPageTextYellow[] = LAB_STR_CLOTH_YELLOW;
+ /* how many choices the page has names for, by row */
+ static const uint8_t lookPageCounts[LOOK_ROWS] = { TAMER_LOOK_COUNT, TAMER_HAIR_COUNT, TAMER_FACE_COUNT,
+ 	TAMER_SHIRT_COUNT, TAMER_CLOTH_COUNT, TAMER_TROUSERS_COUNT, TAMER_CLOTH_COUNT, TAMER_SHOES_COUNT, TAMER_CLOTH_COUNT,
+-	TAMER_PACK_COUNT, TAMER_CLOTH_COUNT, 2 };
++	TAMER_PACK_COUNT, TAMER_CLOTH_COUNT, 2, TAMER_SKIN_COUNT };
+ static const char lookPageTextTrousers[] = LAB_STR_TROUSERS;
+ static const char lookPageTextTrousersColour[] = LAB_STR_TROUSERS_COLOUR;
+ static const char lookPageTextShoes[] = LAB_STR_SHOES;
+@@ -2666,6 +2667,7 @@ static const char lookPageTextPack5[] = LAB_STR_BACKPACK_HIKING;
+ static const char lookPageTextPack6[] = LAB_STR_BACKPACK_ROUND;
+ static const char lookPageTextHands[] = LAB_STR_HANDS;
+ static const char lookPageTextCap[] = LAB_STR_CAP_COLOUR;
++static const char lookPageTextSkin[] = LAB_STR_SKIN;
+ static const char lookPageTextHands0[] = LAB_STR_HANDS_NORMAL;
+ static const char lookPageTextHands1[] = LAB_STR_HANDS_SMALL;
+ /* The garments' names but the originals': the shirts', the trousers', the shoes', the backpacks' (lookPageFirst: where each kind starts) */
+@@ -2680,10 +2682,10 @@ static const char *const lookPageClothes[TAMER_SHIRT_COUNT + TAMER_TROUSERS_COUN
+ static const uint8_t lookPageFirst[LOOK_GARMENTS] = { 0, TAMER_SHIRT_COUNT - 1, TAMER_SHIRT_COUNT + TAMER_TROUSERS_COUNT - 2,
+ 	                                                    TAMER_SHIRT_COUNT + TAMER_TROUSERS_COUNT + TAMER_SHOES_COUNT - 3 };
+ /* The names of the rows from the shirt's on */
+-static const char *const lookPageRowNames[2 * LOOK_GARMENTS + 1] = { lookPageTextShirt, lookPageTextCloth, lookPageTextTrousers,
++static const char *const lookPageRowNames[2 * LOOK_GARMENTS + 2] = { lookPageTextShirt, lookPageTextCloth, lookPageTextTrousers,
+ 	                                                               lookPageTextTrousersColour, lookPageTextShoes,
+ 	                                                               lookPageTextShoesColour, lookPageTextPack, lookPageTextPackColour,
+-	                                                               lookPageTextHands };
++	                                                               lookPageTextHands, lookPageTextSkin };
+ /* A cloth colour's name: a hair colour's (its number in LAB_HAIR_TEXT), or one of the two only cloth has */
+ #define LOOK_CLOTH_ORANGE	0xFE
+ #define LOOK_CLOTH_YELLOW	0xFF
+@@ -2710,7 +2712,24 @@ int32_t playerKeyHint(int32_t key, int32_t x, int32_t y)
+ 
+ /* Whether a row has something to choose: the bald head has no hair colour, and no backpack no colour. An original
+  * garment's first colour is its own; the original tamer's hair colour is his cap's, a cloth colour, the same way. */
+-static const char lookPageFaces[TAMER_FACE_COUNT][2] = { "1", "2" };
++static const char lookPageFaces[TAMER_SKIN_COUNT - 1][2] = { "1", "2", "3", "4", "5" }; /* of faces, and of skins after his own */
++/* A row's choice: a byte of the tamer's state, but the last two rows share one */
++static int32_t lookPageGet(int32_t row)
++{
++	return row == LOOK_HANDS_ROW ? MOD_TAMER_HANDS : row == LOOK_SKIN_ROW ? MOD_TAMER_SKIN : MOD_TAMER_STATE[row];
++}
++
++static void lookPageSet(int32_t row, int32_t value)
++{
++	if (row == LOOK_HANDS_ROW) {
++		value |= MOD_TAMER_STATE[LOOK_HANDS_ROW] & ~1;
++	} else if (row == LOOK_SKIN_ROW) {
++		value = (value << 1) | MOD_TAMER_HANDS;
++		row = LOOK_HANDS_ROW;
++	}
++	MOD_TAMER_STATE[row] = value;
++}
++
+ static const char lookPageDash[] = "-"; /* a row with nothing to choose */
+ static int32_t lookPageRowOpen(int32_t row)
+ {
+@@ -2719,7 +2738,7 @@ static int32_t lookPageRowOpen(int32_t row)
+ 
+ static char *lookPageValueText(int32_t row)
+ {
+-	int32_t value = MOD_TAMER_STATE[row];
++	int32_t value = lookPageGet(row);
+ 	int32_t name;
+ 
+ 	if (!lookPageRowOpen(row)) {
+@@ -2737,6 +2756,8 @@ static char *lookPageValueText(int32_t row)
+ 		return (char *)lookPageFaces[value];
+ 	case LOOK_HANDS_ROW:
+ 		return (char *)(value ? lookPageTextHands1 : lookPageTextHands0);
++	case LOOK_SKIN_ROW:
++		return value == 0 ? LAB_LOOK_TEXT[0] : (char *)lookPageFaces[value - 1];
+ 	}
+ 	if (row > 1 && (row & 1)) {
+ 		return value == 0 ? LAB_LOOK_TEXT[0] : (char *)lookPageClothes[lookPageFirst[(row - 3) / 2] + value - 1];
+@@ -2790,7 +2811,7 @@ static int32_t lookPageRowReads(int32_t row)
+  * drawing with colour 0 and another one (the seat, the backpack under the arms) with any other, and of the cap */
+ static int32_t lookPageRowLoads(int32_t row)
+ {
+-	return lookPageRowReads(row) || ((row >= 4 || row == 1) && MOD_TAMER_STATE[row - 1] == 0);
++	return lookPageRowReads(row) || row == LOOK_SKIN_ROW || ((row >= 4 || row == 1) && MOD_TAMER_STATE[row - 1] == 0);
+ }
+ 
+ /* The second row's name: the hair's colour, or the cap's on the original tamer */
+@@ -2806,7 +2827,7 @@ static void lookPageHairName(void)
+ 
+ static void lookPageKeep(void)
+ {
+-	memcpy(lookPageState.saved, MOD_TAMER_STATE, LOOK_ROWS);
++	memcpy(lookPageState.saved, MOD_TAMER_STATE, TAMER_STATE_SIZE);
+ }
+ 
+ /* The game draws one face of a polygon, and the menu's close-up shows the hair from angles the field never does (under
+@@ -2872,15 +2893,15 @@ int32_t lookPageOpen(void)
+ 	}
+ 	/* what the file has of each row, never more than the game knows; a choice the file does not have closes the page */
+ 	for (i = 0; i < LOOK_ROWS; i++) {
+-		n = i == 0 ? head[2] + 1 : i == 1 ? head[6] : i == 2 ? TAMER_FACE_COUNT : i == LOOK_HANDS_ROW ? 2 :
++		n = i == 0 ? head[2] + 1 : i == 1 ? head[6] : i == 2 ? TAMER_FACE_COUNT : i == LOOK_HANDS_ROW ? 2 : i == LOOK_SKIN_ROW ? TAMER_SKIN_COUNT :
+ 		    (i & 1) ? head[lookPageGarment[LOOK_GARMENTS + (i - 3) / 2]] : head[0x69];
+ 		lookPageState.count[i] = n < lookPageCounts[i] ? n : lookPageCounts[i];
+-		if (n == 0 || (lookPageRowReads(i) && MOD_TAMER_STATE[i] >= lookPageState.count[i])) {
++		if (n == 0 || (lookPageRowReads(i) && lookPageGet(i) >= lookPageState.count[i])) {
+ 			free3(head);
+ 			return 0;
+ 		}
+ 		if (!lookPageRowReads(i)) {
+-			MOD_TAMER_STATE[i] %= lookPageState.count[i];
++			lookPageSet(i, lookPageGet(i) % lookPageState.count[i]);
+ 		}
+ 	}
+ 	/* the recipes of the clothes he wears: the overlay may have been read again since he was loaded */
+@@ -2915,16 +2936,16 @@ void lookPageClose(void)
+ 	int32_t reads = 0;
+ 	int32_t i;
+ 
+-	for (i = 0; i < LOOK_ROWS; i++) {
++	for (i = 0; i < TAMER_STATE_SIZE; i++) {
+ 		if (lookPageRowLoads(i) && MOD_TAMER_STATE[i] != lookPageState.saved[i]) {
+ 			reads = 1;
+ 		}
+ 	}
+ 	if (reads) {
+-		memcpy(MOD_TAMER_STATE, lookPageState.saved, LOOK_ROWS);
++		memcpy(MOD_TAMER_STATE, lookPageState.saved, TAMER_STATE_SIZE);
+ 		modTamerRelook();
+ 	} else {
+-		for (i = 1; i < LOOK_ROWS; i++) {
++		for (i = 1; i < TAMER_STATE_SIZE; i++) {
+ 			if (MOD_TAMER_STATE[i] != lookPageState.saved[i]) {
+ 				MOD_TAMER_STATE[i] = lookPageState.saved[i];
+ 				if (i == 1) {
+@@ -2985,7 +3006,7 @@ void lookPageInput(void)
+ 	playSound(0, 2);
+ 	row = lookPageState.row;
+ 	n = row == 1 && MOD_TAMER_LOOK == 0 ? lookPageState.count[4] : lookPageState.count[row];
+-	MOD_TAMER_STATE[row] = (MOD_TAMER_STATE[row] % n + n + step) % n;
++	lookPageSet(row, (lookPageGet(row) % n + n + step) % n);
+ 	if (row == 0) { /* the next row is the hair's colour or the cap's: the cap starts with its own */
+ 		if (MOD_TAMER_LOOK == 0) {
+ 			MOD_TAMER_HAIR = 0;
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index 3324fae..676565b 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -1127,6 +1127,42 @@ void lookHairPalette(uint16_t *row, uint8_t *rgb, uint8_t *levels)
+ 	}
+ }
+ 
++/* The skin in another tone: each of its colours times the tone's red, green and blue (of 128). The skin is some tones
++ * of the hands' and neck's palette row, of the face's and of the original sleeves' (a bit per tone), and the tones a
++ * garment's recipe gives it (bare arms and legs). */
++const uint8_t lookSkinTones[TAMER_SKIN_COUNT - 1][3] = { { 132, 137, 151 }, { 120, 112, 105 }, { 106, 93, 84 }, { 86, 70, 63 },
++	                                                 { 59, 48, 46 } };
++const uint16_t lookSkinRows[8] = { 0x43BF, 0, 0, 0, 0x2000, 0, 0x23FE, 0 };
++uint32_t lookSkinColour(uint32_t c)
++{
++	const uint8_t *f;
++	uint32_t out = c & 0x8000;
++	uint32_t v;
++	int32_t k;
++
++	if (MOD_TAMER_SKIN == 0 || MOD_TAMER_SKIN >= TAMER_SKIN_COUNT || (c & 0x7FFF) == 0) {
++		return c;
++	}
++	f = lookSkinTones[MOD_TAMER_SKIN - 1];
++	for (k = 0; k < 15; k += 5) {
++		v = (((c >> k) & 31) * *f++ + 64) >> 7;
++		out |= (v > 31 ? 31 : v) << k;
++	}
++	return out;
++}
++
++void lookSkinTexture(uint8_t *texture)
++{
++	uint16_t *row = (uint16_t *)(texture + LOOK_TIM_PALETTE);
++	int32_t i;
++
++	for (i = 0; i < 128; i++, row++) {
++		if ((lookSkinRows[i >> 4] >> (i & 15)) & 1) {
++			*row = lookSkinColour(*row);
++		}
++	}
++}
++
+ /* A garment's palette row for a cloth colour (its shade, the colour, its light and the second colour: LOOK_CLOTH). Per
+  * tone the recipe says whether it stays, is a fixed colour, or lies between two of those at a level of 128: from the
+  * shade (0) through the colour (128) to the light (255), or from black to the second colour or to the shade. */
+@@ -1148,6 +1184,9 @@ void lookShirtPalette(uint16_t *row, LookShirtRecipe *recipe, uint8_t *rgb)
+ 		case 3:
+ 			row[i] = recipe->fixed[i] | 0x8000;
+ 			continue;
++		case 5: /* bare skin */
++			row[i] = lookSkinColour(recipe->fixed[i] | 0x8000);
++			continue;
+ 		case 1:
+ 			a = rgb;
+ 			if (w > 128) {
+@@ -1244,16 +1283,17 @@ int32_t lookTamerLoad(void *component)
+ 		worn[0] = head[0x68] + (worn[3] == TAMER_PACK_NONE);
+ 	}
+ 	if (MOD_TAMER_LOOK == 0 && k == 0) {
+-		/* the original tamer with another face, cap colour or small hands: the disc's model, and his texture with that face; these textures
++		/* the original tamer with another face, cap colour, skin or small hands: the disc's model, and his texture with that face; these textures
+ 		 * follow the looks' own */
+ 		k = MOD_TAMER_FACE < head[7] ? MOD_TAMER_FACE : 0;
+-		if (k == 0 && !MOD_TAMER_HANDS && !MOD_TAMER_HAIR) {
++		if (k == 0 && !MOD_TAMER_STATE[11] && !MOD_TAMER_HAIR) {
+ 			return 0;
+ 		}
+ 		modSmoothMapReset();
+ 		texture = malloc3(0x4800);
+ 		readFileSectors(TAMER_LOOK_FILE, texture, k == 0 ? head[0x6C] : head[3] + 9 * (head[7] - 1 + k), 9);
+ 		LOOK_CAP(texture);
++		lookSkinTexture(texture);
+ 		uploadModelTexture(texture, component);
+ 		free3(texture);
+ 		concatStrings(path, MAIN_D_8011D484, getDigimonModelName(0));
+@@ -1338,6 +1378,7 @@ int32_t lookTamerLoad(void *component)
+ 		}
+ 		at[g + 1] = at[g] + (*(uint16_t *)first + 3) / 4;
+ 	}
++	lookSkinTexture(texture);
+ 	uploadModelTexture(texture, component);
+ 	free3(texture);
+ 	readFileSectors(TAMER_LOOK_FILE, TAMER_MODEL_BUFFER, sector, (words * 4 + 0x7FF) >> 11);
+diff --git a/text/main/mod_lab.yaml b/text/main/mod_lab.yaml
+index a657793..b0730f0 100644
+--- a/text/main/mod_lab.yaml
++++ b/text/main/mod_lab.yaml
+@@ -580,6 +580,9 @@ MOD_LAB:
+     LAB_STR_CAP_COLOUR:
+       ja: "Cap colour"
+       en_us: "Cap colour"
++    LAB_STR_SKIN:
++      ja: "Skin"
++      en_us: "Skin"
+     LAB_STR_CLOTH_ORANGE:
+       ja: "Orange"
+       en_us: "Orange"
+-- 
+2.55.0
+

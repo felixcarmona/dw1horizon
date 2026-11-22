@@ -176,7 +176,7 @@ def recipe(texture):
     ways[DARK2], levels[DARK2] = SECOND, 102
     ways[LIGHT2], levels[LIGHT2] = SECOND, 128
     for t, colour in zip(SKIN_TONES, shirts.skin_tones(texture)):
-        ways[t], fixed[t] = FIXED, colour
+        ways[t], fixed[t] = shirts.SKINNED, colour
     return ways, levels, fixed
 
 
