@@ -1,4 +1,4 @@
-From 6f6fcb4793370776e7d54a82e09441d113d3c173 Mon Sep 17 00:00:00 2001
+From f850ad3992e42fd1662886070f50c315be4b6f73 Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Sun, 22 Nov 2026 18:20:04 +0000
 Subject: [PATCH] Mark stronger wild Digimon in the field with a purple devil,
@@ -7,13 +7,13 @@ Subject: [PATCH] Mark stronger wild Digimon in the field with a purple devil,
 ---
  include/dw/mod_battle.h                       |   1 +
  include/dw/mod_options.h                      |   1 +
- src/main/btl.c                                | 110 ++++++++++++++++++
+ src/main/btl.c                                | 155 ++++++++++++++++++
  src/main/clock.c                              |   2 +
- src/main/main_menu.c                          |  23 ++--
+ src/main/main_menu.c                          |  23 ++-
  src/main/mod_options.c                        |   1 +
  text/main/main_menu.yaml                      |   3 +
  .../gen_lang_files.cpython-312.pyc            | Bin 5392 -> 5392 bytes
- 8 files changed, 134 insertions(+), 7 deletions(-)
+ 8 files changed, 179 insertions(+), 7 deletions(-)
 
 diff --git a/include/dw/mod_battle.h b/include/dw/mod_battle.h
 index 1f791cfe..8d5156f8 100644
@@ -40,10 +40,10 @@ index a85739f2..ad1562bd 100644
  #define MOD_DIFF_DAMAGE(attacker, defender, partner, dmg)                                                              \
  	(MOD_OPT_DIFFICULTY != MOD_DIFF_EASY ? (dmg)                                                                       \
 diff --git a/src/main/btl.c b/src/main/btl.c
-index 7255d513..d6da1b18 100644
+index 7255d513..5984899a 100644
 --- a/src/main/btl.c
 +++ b/src/main/btl.c
-@@ -10,6 +10,7 @@
+@@ -10,13 +10,16 @@
  #include <dw/graphics.h>
  #include <dw/ids.h>
  #include <dw/mod_options.h> /* MOD (quick battle start) */
@@ -51,15 +51,24 @@ index 7255d513..d6da1b18 100644
  #include <dw/species.h>
  #include <dw/item.h>
  #include <dw/main.h>
-@@ -804,6 +805,115 @@ void loadBattleData(int32_t entityId, int32_t count)
+ #include <dw/math.h>
+ #include <dw/mod_present.h>
+ #include <dw/params.h>
++#include <dw/screen.h>
+ #include <dw/script.h>
++#include <dw/tamer.h>
+ #include <dw/sound.h>
+ #include <dw/sound_async.h>
+ #include <dw/tfs_stream.h> /* MOD (post-battle stall) */
+@@ -804,6 +807,158 @@ void loadBattleData(int32_t entityId, int32_t count)
  
  GARBAGE(renderFleeBubble, 23);
  
 +/*
 + * MOD (wild strength mark): a purple devil above each wild Digimon in the field that is stronger than the partner.
 + * Strength is HP x (Offense + Defense), the enemy's after the scaling its fight applies (modHardEnemy); the limit is
-+ * battleFormulas.strength (tools/battle_audit.py calibrates it against simulated fights). Only Digimon that fight on
-+ * touch (autotalk 1) with techniques get one.
++ * battleFormulas.strength (tools/battle_audit.py calibrates it against simulated fights). Only Digimon whose touch script
++ * starts a fight (strengthFights) get one.
 + */
 +extern int32_t IS_IN_MENU;
 +
@@ -128,6 +137,47 @@ index 7255d513..d6da1b18 100644
 +	}
 +}
 +
++/*
++ * Whether touching this Digimon starts a fight: its script section holds the battle opcodes the game and the story tools
++ * always write together, FADEOUT_HUD 0, DELAY 1, START_BATTLE 0. Digimon that only talk on touch (story characters,
++ * shopkeepers) never do. The section is read where callScriptSection(CURRENT_SCRIPT_ID, scriptId) would run it, without
++ * loading anything: the bytes stop at the next section of the script (at most 0x180 further for the last one).
++ */
++extern uint8_t *MAP_SCRIPT_PTR;
++
++static int32_t strengthFights(NPCEntity *npc)
++{
++	uint8_t *script;
++	uint16_t *entry;
++	uint32_t start, end, i;
++
++	if (CURRENT_SCRIPT_ID == 0) {
++		if (isNewScreen(npc->scriptId)) return 0;
++		script = MAPHEAD_SCRIPT_PTR;
++	} else if (CURRENT_SCRIPT_ID != 0xffff && ACTIVE_MAP_SCRIPT == CURRENT_SCRIPT_ID) {
++		script = MAP_SCRIPT_PTR;
++	} else {
++		return 0;
++	}
++	if (script == NULL) return 0;
++	start = 0xffffffff;
++	for (entry = (uint16_t *)&script[2]; entry[0] != 0xffff; entry += 2) {
++		if (entry[0] == npc->scriptId) start = entry[1];
++	}
++	if (start == 0xffffffff) return 0;
++	end = start + 0x180;
++	for (entry = (uint16_t *)&script[2]; entry[0] != 0xffff; entry += 2) {
++		if (entry[1] > start && entry[1] < end) end = entry[1];
++	}
++	for (i = start; i + 8 <= end; i++) {
++		if (script[i] == 0x27 && script[i + 1] == 0x00 && script[i + 2] == 0x67 && script[i + 3] == 0x00 &&
++		    script[i + 4] == 0x01 && script[i + 5] == 0x00 && script[i + 6] == 0x66 && script[i + 7] == 0x00) {
++			return 1;
++		}
++	}
++	return 0;
++}
++
 +static int32_t strengthScore(Stats *s)
 +{
 +	return (s->base.hp * (s->base.off + s->base.def)) >> 6;
@@ -142,13 +192,15 @@ index 7255d513..d6da1b18 100644
 +	DVECTOR head;
 +	Stats copy;
 +
-+	if (!MOD_OPT_STRENGTH || GAME_STATE != 0 || IS_SCRIPT_PAUSED != 1 || IS_IN_MENU != 0 || ENTITY_TABLE[1] == NULL) return;
++	/* only while a touch could start a fight now: the tamer is free and the partner can stand */
++	if (!MOD_OPT_STRENGTH || GAME_STATE != 0 || IS_SCRIPT_PAUSED != 1 || IS_IN_MENU != 0 || ENTITY_TABLE[1] == NULL ||
++	    tamerGetState() != 0 || PARTNER_ENTITY.digimonEntity.stats.current.currentHP <= 0) return;
 +	partner = strengthScore(&PARTNER_ENTITY.digimonEntity.stats);
 +	for (i = 2; i < 10; i++) {
 +		if (ENTITY_TABLE[i] == NULL || ENTITY_TABLE[i]->isOnMap == 0 || ENTITY_TABLE[i]->isOnScreen == 0) continue;
 +		npc = &NPC_ENTITIES[i - 2];
 +		d = &npc->digimonEntity;
-+		if (npc->autotalk != 1 || d->stats.base.hp <= 0 || d->stats.base.moves[0] == 0xff || isInvisible(&d->entity)) continue;
++		if (npc->autotalk != 1 || d->stats.base.hp <= 0 || d->stats.base.moves[0] == 0xff || isInvisible(&d->entity) || !strengthFights(npc)) continue;
 +		copy = d->stats;
 +		modHardEnemy(&copy);
 +		wild = strengthScore(&copy);
