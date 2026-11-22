@@ -97,6 +97,10 @@ against, leave this list.
 | A minimap like Digimon World 3's, showing where each exit leads, and a wider camera view | 🛠️ | Needs screen space and per-screen exit data. |
 | Digimon World 3 style card tournaments, and rewards for completing card sets (e.g. a training boost for the eight Adventure cards) | 🆕 ⚖️ | Large; rewards need an economy and balance check. |
 | More maps in Beetle Land, with stronger Champion and Ultimate enemies | 🆕 | It takes a lot of effort to unlock and is small. |
+| Version 1 to 4 cups with only their original virtual pet rosters, and new cups by origin (a Digimon World cup, a Digimon World 3 cup) in place of Version 0 | 🆕 🎭 | Player suggestion (2026-11-22). Today a Version cup's rivals are its original roster plus some new species of the same levels. New cups need a banner in every language, a schedule slot and their own lists in the four copies of the cup table. |
+| Digimon that trade specific cards which booster packs don't give | 🆕 | Player suggestion (2026-11-21). Each would need its own scene and a check of which cards stay exclusive. |
+| Wild Digimon that scale to the partner's level on every map | ⚖️ 🎭 | Player suggestion (2026-11-21). Other players answered that it removes the danger of exploring far from the city; the related plan is stronger versions of wilds only in areas the player has outgrown. |
+| Kabuterimon's evolution bonus from Tentomon instead of Kunemon | ⚖️ | Player suggestion (2026-11-21). Tentomon already evolves into Kabuterimon; the bonus species is the original game's and changing it takes the bonus away from Kunemon. |
 | Armor Digimon levels by power (e.g. Magnamon as a Mega) | 🎭 | Players disagree on which ones. |
 | More room around the forced fights on Iron Hills' zigzag ramp | ✨ | Layout change on new screens. |
 | Kotemon's arena sparring gets stronger after every win (e.g. +10% base stats each time), or teaches battle techniques | ⚖️ | With 690 HP it becomes a one-hit fight late in the game; needs a cap or a curve. |

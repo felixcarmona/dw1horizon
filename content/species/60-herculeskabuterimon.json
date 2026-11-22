@@ -12,7 +12,7 @@
                    "Charm Perfume", "Poison Powder", "Mass Morph", "Electro Shocker"],
     "evolution": {"from": [19, 51, 35, 205, -1], "to": [-1, -1, -1, -1, -1, -1]}
   },
-  "attribute": "data",
+  "attribute": "vaccine",
   "specialties": ["nature", "battle", "fire"],
   "techniques": ["Prominence Beam", "Red Inferno", "Megaton Punch", "Counter", "Buster Dive", "Muscle Charge",
                  "Poison Claw", "Danger Sting", "Green Trap", "Insect Plague", "Bug",
