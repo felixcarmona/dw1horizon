@@ -1,0 +1,300 @@
+From 99d9aae1f713c47795fec55e1c811bd8b12316d3 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 22 Nov 2026 18:20:04 +0000
+Subject: [PATCH] Mark stronger wild Digimon in the field with a red skull,
+ with a WILD STRENGTH option
+
+---
+ include/dw/mod_battle.h                       |   1 +
+ include/dw/mod_options.h                      |   1 +
+ src/main/btl.c                                | 112 ++++++++++++++++++
+ src/main/clock.c                              |   2 +
+ src/main/main_menu.c                          |  23 ++--
+ src/main/mod_options.c                        |   1 +
+ text/main/main_menu.yaml                      |   3 +
+ .../gen_lang_files.cpython-312.pyc            | Bin 5392 -> 5392 bytes
+ 8 files changed, 136 insertions(+), 7 deletions(-)
+
+diff --git a/include/dw/mod_battle.h b/include/dw/mod_battle.h
+index 1f791cfe..8d5156f8 100644
+--- a/include/dw/mod_battle.h
++++ b/include/dw/mod_battle.h
+@@ -186,6 +186,7 @@ enum {
+ 	MOD_BT_NORMAL_HP,	/* NORMAL: its maximum HP, in percent */
+ 	MOD_BT_NORMAL_OFF,	/* NORMAL: its Offense, in percent */
+ 	MOD_BT_NORMAL_FLOOR,	/* NORMAL: the least an enemy hit does, in percent of the same hit against Defense zero (0: none) */
++	MOD_BT_STRENGTH_STRONGER,	/* the field skull: the partner's strength is at most this percent of a wild Digimon's, it is stronger */
+ 	MOD_BT_SIZE
+ };
+ 
+diff --git a/include/dw/mod_options.h b/include/dw/mod_options.h
+index a85739f2..ad1562bd 100644
+--- a/include/dw/mod_options.h
++++ b/include/dw/mod_options.h
+@@ -90,6 +90,7 @@ void modSetStory(int32_t extended);
+ #define MOD_DIFF_HARD	2
+ extern int32_t MOD_OPT_DIFFICULTY; /* Saved values: NORMAL=0, EASY=1, HARD=2. */
+ extern int32_t MOD_OPT_QUICK_BATTLE; /* QUICK BATTLE START: a field battle starts at once, its intro over the fight (battle_setup.c, btl.c); 0 = the original start */
++extern int32_t MOD_OPT_STRENGTH; /* WILD STRENGTH: marks over wild Digimon in the field (clock.c), 1 = shown; saved inverted in option byte 6 bit 0x40 */
+ /* the damage `dmg` that `attacker` deals `defender` with the difficulty (`partner`: the partner's entity) */
+ #define MOD_DIFF_DAMAGE(attacker, defender, partner, dmg)                                                              \
+ 	(MOD_OPT_DIFFICULTY != MOD_DIFF_EASY ? (dmg)                                                                       \
+diff --git a/src/main/btl.c b/src/main/btl.c
+index 7255d513..d69be4f2 100644
+--- a/src/main/btl.c
++++ b/src/main/btl.c
+@@ -10,6 +10,7 @@
+ #include <dw/graphics.h>
+ #include <dw/ids.h>
+ #include <dw/mod_options.h> /* MOD (quick battle start) */
++#include <dw/mod_hard.h> /* MOD (wild strength mark): the scaling a fight applies, so the mark judges the fight */
+ #include <dw/species.h>
+ #include <dw/item.h>
+ #include <dw/main.h>
+@@ -804,6 +805,117 @@ void loadBattleData(int32_t entityId, int32_t count)
+ 
+ GARBAGE(renderFleeBubble, 23);
+ 
++/*
++ * MOD (wild strength mark): a red skull above each wild Digimon in the field that is stronger than the partner.
++ * Strength is HP x (Offense + Defense), the enemy's after the scaling its fight applies (modHardEnemy); the limit is
++ * battleFormulas.strength (tools/battle_audit.py calibrates it against simulated fights). Only Digimon that fight on
++ * touch (autotalk 1) with techniques get one.
++ */
++extern int32_t IS_IN_MENU;
++
++#define SKULL_W 11
++#define SKULL_H 11
++/* one string per row: R body, K eye and nose sockets, . empty */
++static const char *const SKULL[SKULL_H] = {
++	"...RRRRR...",
++	"..RRRRRRR..",
++	".RRRRRRRRR.",
++	".RRRRRRRRR.",
++	".RKKRRRKKR.",
++	".RKKRRRKKR.",
++	".RRRRKRRRR.",
++	"..RRRRRRR..",
++	"...RRRRR...",
++	"...RKRKRK..",
++	"....RRRRR..",
++};
++
++static void strengthRow(int32_t x, int32_t y, int32_t w, uint32_t rgb, int32_t z)
++{
++	POLY_F4 *p = (POLY_F4 *)GsGetWorkBase();
++
++	SetPolyF4(p);
++	setRGB0(p, rgb >> 16, (rgb >> 8) & 0xff, rgb & 0xff);
++	setXYWH(p, x, y, w, 1);
++	AddPrim(ACTIVE_ORDERING_TABLE->org + z, p++);
++	GsSetWorkBase((PACKET *)p);
++}
++
++static void strengthSkull(int32_t x, int32_t y)
++{
++	int32_t r, c, start, in, dx, dy, rr, cc;
++	char want;
++
++	/* the outline first (behind), then the body, then the sockets on top */
++	for (r = -1; r <= SKULL_H; r++) {
++		for (c = -1, start = -2; c <= SKULL_W; c++) {
++			in = 0;
++			for (dy = -1; dy <= 1; dy++) {
++				for (dx = -1; dx <= 1; dx++) {
++					rr = r + dy;
++					cc = c + dx;
++					if (rr >= 0 && rr < SKULL_H && cc >= 0 && cc < SKULL_W && SKULL[rr][cc] != '.') in = 1;
++				}
++			}
++			if (in) {
++				if (start == -2) start = c;
++			} else if (start != -2) {
++				strengthRow(x + start, y + r, c - start, 0x180808, 9);
++				start = -2;
++			}
++		}
++	}
++	for (want = 'R'; ; want = 'K') {
++		for (r = 0; r < SKULL_H; r++) {
++			for (c = 0, start = -1; c <= SKULL_W; c++) {
++				if (c < SKULL_W && SKULL[r][c] == want) {
++					if (start < 0) start = c;
++				} else if (start >= 0) {
++					strengthRow(x + start, y + r, c - start, want == 'R' ? 0xd82020 : 0x180808, want == 'R' ? 8 : 7);
++					start = -1;
++				}
++			}
++		}
++		if (want == 'K') break;
++	}
++}
++
++static int32_t strengthScore(Stats *s)
++{
++	return (s->base.hp * (s->base.off + s->base.def)) >> 6;
++}
++
++void modStrengthMarks(void)
++{
++	int32_t i, x, y, partner, wild;
++	DigimonEntity *d;
++	NPCEntity *npc;
++	SVECTOR world;
++	DVECTOR head;
++	Stats copy;
++
++	if (!MOD_OPT_STRENGTH || GAME_STATE != 0 || IS_SCRIPT_PAUSED != 1 || IS_IN_MENU != 0 || ENTITY_TABLE[1] == NULL) return;
++	partner = strengthScore(&PARTNER_ENTITY.digimonEntity.stats);
++	for (i = 2; i < 10; i++) {
++		if (ENTITY_TABLE[i] == NULL || ENTITY_TABLE[i]->isOnMap == 0 || ENTITY_TABLE[i]->isOnScreen == 0) continue;
++		npc = &NPC_ENTITIES[i - 2];
++		d = &npc->digimonEntity;
++		if (npc->autotalk != 1 || d->stats.base.hp <= 0 || d->stats.base.moves[0] == 0xff || isInvisible(&d->entity)) continue;
++		copy = d->stats;
++		modHardEnemy(&copy);
++		wild = strengthScore(&copy);
++		if (partner > wild / 100 * BM(STRENGTH_STRONGER)) continue;
++		world.vx = d->entity.posData->location.vx;
++		world.vy = -DIGI_PARA(d->entity.type).height;
++		world.vz = d->entity.posData->location.vz;
++		if (worldPosToScreenPos(&world, &head) <= 0) continue;
++		x = head.vx - (160 - DRAWING_OFFSET_X) - 5;
++		y = head.vy - (120 - DRAWING_OFFSET_Y) - 16;
++		if (x < -160 || x > 148 || y < -120 || y > 108) continue; /* the head is off the screen */
++		strengthSkull(x, y);
++	}
++}
++
+ void renderFleeBubble(int32_t instanceId)
+ {
+ 	Entity *e;
+diff --git a/src/main/clock.c b/src/main/clock.c
+index 47fe9cd5..d4c308dd 100644
+--- a/src/main/clock.c
++++ b/src/main/clock.c
+@@ -22,6 +22,7 @@ int32_t isFishing();
+ void addTamerLevel(int32_t chance, int32_t amount);
+ void updateBGM();
+ void renderStatusBars(int32_t isGameTimeRunning);
++void modStrengthMarks(void); /* btl.c: MOD (wild strength mark) */
+ void tickStatusBarsSlide(int32_t isGameTimeRunning);
+ 
+ extern uint16_t LAST_HANDLED_FRAME;
+@@ -381,6 +382,7 @@ void renderGameClock(int32_t instanceId)
+ 	renderDigitalClock(CLOCK_OFFSET_X + 13, -46);
+ 
+ 	renderStatusBars(IS_GAMETIME_RUNNING);
++	modStrengthMarks();
+ }
+ 
+ void updateMinuteHand(hour, minute)
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index e062d3c5..8f535224 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -278,14 +278,15 @@ static int32_t MOD_SAVE_NUMBER; /* MOD (options): the highest save number seen i
+ #define MOD_OPT_ROW_STORY	4 /* MOD (story): EXTENDED STORY, under NEW CARDS */
+ #define MOD_OPT_ROW_DIFF	5 /* MOD (difficulty): DIFFICULTY, under EXTENDED STORY */
+ #define MOD_OPT_ROW_QUICK	6 /* MOD (quick battle start): QUICK BATTLE START, under DIFFICULTY */
+-#define MOD_OPT_ROW_FPS 7
++#define MOD_OPT_ROW_STRENGTH	7 /* MOD (wild strength mark): WILD STRENGTH, under QUICK BATTLE START */
++#define MOD_OPT_ROW_FPS 8
+ #if FONT_SWITCH
+-#define MOD_OPT_ROWS	12 /* MOD (options): and FONT, in a build with both fonts */
+-#define MOD_OPT_ROW_FONT	8
+-#define MOD_OPT_ROW_LANG	9
++#define MOD_OPT_ROWS	13 /* MOD (options): and FONT, in a build with both fonts */
++#define MOD_OPT_ROW_FONT	9
++#define MOD_OPT_ROW_LANG	10
+ #else
+-#define MOD_OPT_ROWS	11
+-#define MOD_OPT_ROW_LANG	8
++#define MOD_OPT_ROWS	12
++#define MOD_OPT_ROW_LANG	9
+ #endif
+ #define MOD_OPT_ROW_SIGNS	(MOD_OPT_ROW_LANG + 1) /* MOD (language): LANGUAGE and MAP SIGNS, the last two rows */
+ static void renderOptionsMenu(void);
+@@ -4767,7 +4768,8 @@ static void modOptionBytes(uint8_t *d)
+ 	d[4] = 0;
+ #endif
+ 	d[5] = MOD_OPT_EVO_GUIDE;
+-	d[6] = MOD_OPT_NEW_DIGIMON | (MOD_OPT_NEW_CARDS ? 0 : 0x80); /* Inverted: old saves enable new cards. */
++	/* Inverted: old saves enable new cards and the wild strength marks. */
++	d[6] = MOD_OPT_NEW_DIGIMON | (MOD_OPT_NEW_CARDS ? 0 : 0x80) | (MOD_OPT_STRENGTH ? 0 : 0x40);
+ 	d[7] = MOD_LANG; /* MOD (language) */
+ 	d[8] = MOD_OPT_SIGNS;
+ 	d[9] = MOD_OPT_STORY; /* MOD (story) */
+@@ -4800,6 +4802,7 @@ static void modApplyOptions(const uint8_t *d, int32_t len)
+ 		MOD_OPT_EVO_GUIDE = d[5] != 0;
+ 	}
+ 	MOD_OPT_NEW_CARDS = len < 7 || !(d[6] & 0x80);
++	MOD_OPT_STRENGTH = len < 7 || !(d[6] & 0x40);
+ 	if (len >= 7) {
+ 		MOD_OPT_NEW_DIGIMON = (d[6] & 1) != 0;
+ 		modApplySpeciesLevels(); /* MOD (canon levels) */
+@@ -6100,6 +6103,7 @@ static char *MOD_OPT_TEXT[MOD_OPT_ROWS][4] = {
+ 	{ MOD_OPT_STR_STORY, MOD_OPT_STR_OFF, MOD_OPT_STR_ON }, /* MOD (story) */
+ 	{ MOD_OPT_STR_DIFF, MOD_OPT_STR_EASY, MOD_OPT_STR_NORMAL, MOD_OPT_STR_HARD }, /* MOD (difficulty) */
+ 	{ MOD_OPT_STR_QUICK, MOD_OPT_STR_OFF, MOD_OPT_STR_ON }, /* MOD (quick battle start) */
++	{ MOD_OPT_STR_STRENGTH, MOD_OPT_STR_OFF, MOD_OPT_STR_ON }, /* MOD (wild strength mark) */
+     { MOD_OPT_STR_FPS, MOD_OPT_STR_AUTO, MOD_OPT_STR_60, MOD_OPT_STR_20 },
+ #if FONT_SWITCH
+ 	{ MOD_OPT_STR_FONT, MOD_OPT_STR_NEW, MOD_OPT_STR_CLASSIC, MOD_OPT_STR_ORIGINAL },
+@@ -6192,6 +6196,8 @@ static int32_t modOptionValue(int32_t row)
+         return MOD_OPT_FPS;
+ 	case MOD_OPT_ROW_QUICK: /* MOD (quick battle start) */
+ 		return MOD_OPT_QUICK_BATTLE != 0;
++	case MOD_OPT_ROW_STRENGTH: /* MOD (wild strength mark) */
++		return MOD_OPT_STRENGTH != 0;
+ #if FONT_SWITCH
+ 	case MOD_OPT_ROW_FONT: /* NEW, CLASSIC, ORIGINAL */
+ 		return MOD_FONT == MOD_FONT_NEW ? 0 : MOD_FONT == MOD_FONT_CLASSIC ? 1 : 2;
+@@ -6245,6 +6251,9 @@ static void __attribute__((noinline)) modSetOption(int32_t row, int32_t value)
+ 	case MOD_OPT_ROW_QUICK: /* MOD (quick battle start) */
+ 		MOD_OPT_QUICK_BATTLE = value;
+ 		break;
++	case MOD_OPT_ROW_STRENGTH: /* MOD (wild strength mark) */
++		MOD_OPT_STRENGTH = value;
++		break;
+ #if FONT_SWITCH
+ 	case MOD_OPT_ROW_FONT:
+ 		modSetFont(value == 0 ? MOD_FONT_NEW : value == 1 ? MOD_FONT_CLASSIC : MOD_FONT_ORIGINAL);
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index eda8f254..a16b3231 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -76,6 +76,7 @@ int32_t MOD_OPT_SIGNS = 1;
+ int32_t MOD_OPT_STORY = 1;
+ int32_t MOD_OPT_DIFFICULTY = MOD_DIFF_NORMAL;
+ int32_t MOD_OPT_QUICK_BATTLE = 1;
++int32_t MOD_OPT_STRENGTH = 1; /* WILD STRENGTH: a mark above each wild Digimon in the field (mod_strength.c), ON */
+ int32_t MOD_STORY_ARRIVE = 0;
+ 
+ /* the colour the text draws a button glyph in (the US disc's: × cyan, △ green, ○ orange); -1 = not a button */
+diff --git a/text/main/main_menu.yaml b/text/main/main_menu.yaml
+index bb5ee43c..cd91f93a 100644
+--- a/text/main/main_menu.yaml
++++ b/text/main/main_menu.yaml
+@@ -401,6 +401,9 @@ MOD_OPTIONS:
+     MOD_OPT_STR_QUICK:
+       ja: "QUICK BATTLE START"
+       en_us: "QUICK BATTLE START"
++    MOD_OPT_STR_STRENGTH:
++      ja: "WILD STRENGTH"
++      en_us: "WILD STRENGTH"
+     MOD_OPT_STR_FONT:
+       ja: "FONT"
+       en_us: "FONT"
+diff --git a/tools/__pycache__/gen_lang_files.cpython-312.pyc b/tools/__pycache__/gen_lang_files.cpython-312.pyc
+index ab899bda88e0c1ceea2d3e214d7ced339d265f34..68f45e0bab92a6758d01b2032aa43c2f8531fe4c 100644
+GIT binary patch
+delta 21
+bcmbQBH9?E#G%qg~0}#k9XUg8l!y*a*Ht_^_
+
+delta 21
+bcmbQBH9?E#G%qg~0}y0x{*$$lheZ?sKXe7i
+
+-- 
+2.55.0
+

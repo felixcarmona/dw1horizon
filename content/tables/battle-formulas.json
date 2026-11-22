@@ -253,6 +253,9 @@
       "hpPercent": 250,
       "offensePercent": 150,
       "minimumDamagePercent": 25
+    },
+    "strength": {
+      "strongerPercent": 65
     }
   }
 }
