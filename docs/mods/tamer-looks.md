@@ -11,7 +11,8 @@ lashes (under the original tamer's cap the eye keeps its eyelid: the cap's shado
 or one of ten shirts (T-shirt, striped, printed, long sleeve, hoodie, jacket, fitted tee, top, cardigan, blouse) in
 sixteen colours. The original hoodie, trousers, shoes and backpack take the colours too: the first choice of their
 colour row is **Original**, their own colours, and the other fifteen dye their cloth and leave the rest (cords, soles,
-the backpack's emblem) as it was. Four more rows do the same for the legs and the feet:
+the backpack's emblem) as it was. His cap does the same: on the original tamer the second row is **Cap colour**
+instead of the hair's, and the letters of its band stay. Four more rows do the same for the legs and the feet:
 **Trousers** (the original ones, straight, baggy, skinny, tracksuit, shorts, capri, skirt, flared) and **Shoes** (the
 original ones, trainers, small trainers, plain, flats, Mary Janes, ankle boots, small ankle boots, boots, cuffed boots,
 rain boots, sandals), each with its own colour row and the same sixteen colours. The small kinds are a smaller foot. A
