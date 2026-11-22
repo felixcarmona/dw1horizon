@@ -1,0 +1,199 @@
+From 5192a8efed2d82fecc97ac93a14c3307ab2fcf4d Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 22 Nov 2026 12:24:21 +0000
+Subject: [PATCH] Tamer looks: the Look page's buttons in boxes
+
+The hint for left and right is gone, so the box under the rows is one line and the page shows six rows. The buttons
+that open the page, save and leave are each in a box of their own on the name's row, and are drawn from the menu's
+overlay, which leaves the main program smaller.
+---
+ config/us/overlay.ld |  3 ++
+ src/main/game_menu.c | 77 +++++++++++++++++++++++++++++---------------
+ 2 files changed, 54 insertions(+), 26 deletions(-)
+
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index 6865b16..ef4e558 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -1048,6 +1048,9 @@ SECTIONS
+              * the first sector while the album is active. Keep only the small top-row
+              * helper here; bitmap navigation stays resident to retain 27 sectors. */
+             BUILD_DIR/src/main/game_menu.c.o(.text.renderCardsView .text.modCardTop .data.CARD_SPRITE_CLUT);
++            . = ALIGN(., 4);
++            /* MOD (tamer looks): the Player view's buttons, drawn with MENU in memory */
++            BUILD_DIR/src/main/game_menu.c.o(.text.playerKey*);
+             . = ALIGN(., 4);
+ 
+ 		}
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index ac0a20d..5aceab2 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -2563,7 +2563,7 @@ int32_t isUIBoxAvailable(int32_t id)
+  * MOD (tamer looks): the Look page of the Player view. CONFIRM on the Player tab opens it: a row for the hairstyle,
+  * one for the hair colour (looks with hair), one for the face, and for the shirt, the trousers and the shoes a row
+  * each and one for its colour (every garment but the original), the same for the backpack, changed with left and right and seen at once on the
+- * tamer beside them, whom L1 and R1 turn. Five rows show at a time, around the chosen one. A hairstyle, a face or a
++ * tamer beside them, whom L1 and R1 turn. Six rows show at a time, around the chosen one. A hairstyle, a face or a
+  * garment is read from TAMER.DAT; a colour only writes a palette row again, with nothing read. The page's code is in
+  * EVL's tail (config/us/overlay.ld), read when the page opens: MENU, which the Player view runs from, is full, and
+  * the world keeps nothing at EVL's address. Its text is MENU's.
+@@ -2578,11 +2578,11 @@ void free3(void *ptr);
+ #define LOOK_TOP_Y	0x40	/* the page's text: one line a row, over the tamer titles, drawn again when the page closes */
+ #define LOOK_ROW_V(row)	(LOOK_TOP_Y + 12 * (row))
+ #define LOOK_OPEN_Y	0xc4	/* the button that opens the page, under the titles */
+-#define LOOK_HINT_Y	0xdc	/* the two hints: under the rows */
+-#define LOOK_END_Y	0xf4
+-#define LOOK_LEAVE_U	0x80	/* the buttons that save and leave: right of the second hint */
+-#define LOOK_KEY_X	0x08	/* on the name's row, right of the name */
+-#define LOOK_KEY_W	0x7c
++#define LOOK_HINT_Y	0xdc	/* the hint and the buttons that save and leave: under the rows */
++#define LOOK_END_Y	0xe8
++#define LOOK_KEY_W	60	/* a button: a box on the name's row, right of the name, its key and what it does in the middle */
++#define LOOK_KEY_U(key)	((key) == 0 ? 0 : 0x40 + 0x40 * (key))	/* in the text area: the two that leave right of the hint */
++#define LOOK_KEY_X(key)	((key) == 1 ? 0x0c : 0x4e)	/* the one that opens the page where the one that leaves is */
+ #define LOOK_NAME_W	84
+ #define LOOK_VALUE_U	0x58	/* a row's value in the text area, right of its name */
+ #define LOOK_VALUE_X	0x33	/* the value box, from the middle of the window */
+@@ -2590,9 +2590,9 @@ void free3(void *ptr);
+ #define LOOK_ROWS	(TAMER_STATE_SIZE + 1)	/* hairstyle, hair colour, face, each garment and its colour, then the hands and the skin */
+ #define LOOK_HANDS_ROW	11
+ #define LOOK_SKIN_ROW	12	/* in the hands' byte, above its first bit */
+-#define LOOK_SHOWN	5
++#define LOOK_SHOWN	6
+ #define LOOK_SCROLL_X	(LOOK_VALUE_X + LOOK_VALUE_W + 7)	/* the scroll bar: right of the value boxes, as tall as the rows shown */
+-#define LOOK_SCROLL_H	(4 * 0x14 + 14)
++#define LOOK_SCROLL_H	((LOOK_SHOWN - 1) * 0x14 + 14)
+ #define LOOK_HEAD_OBJECT	1
+ #define LOOK_HAIR_MODE		0x34u	/* textured gouraud triangle: seven words */
+ #define LOOK_HAIR_WORDS		7
+@@ -2701,19 +2701,29 @@ static const char lookPageFile[] = "TAMER.DAT";
+ const uint32_t lookPageMagic __attribute__((section(".rodata.lookPageMagic"))) = 0x4B4F4F4C; /* tells modLookOverlay (mod_species.c) that this overlay tail is in memory */
+ 
+ /*
+- * A button and what it does (0 opens the Look page, 1 saves, 2 leaves), the button in its own colour: × cyan and △ green,
+- * or ○ orange and × cyan with the Japanese controls. Returns where the next one goes. In the menu's overlay: the
+- * Player view draws the first before the Look page's code is in memory.
++ * A button and what it does (0 opens the Look page, 1 saves, 2 leaves), in the middle of its box, the button in its
++ * own colour: × cyan and △ green, or ○ orange and × cyan with the Japanese controls. In the menu's overlay: the Player
++ * view draws the first before the Look page's code is in memory.
+  */
+-int32_t playerKeyHint(int32_t key, int32_t x, int32_t y)
++void playerKeyHint(int32_t key, int32_t y)
+ {
+-	char *str = LOOK_PAGE_TEXT[key == 2 ? 8 : 7];
++	char *btn = LOOK_PAGE_TEXT[key == 2 ? 8 : 7];
++	char *str = LOOK_PAGE_TEXT[4 + key];
++	int32_t gap = measureStringMode(btn, FIT_TIGHT) + 6;
++	int32_t mode = fitStringMode(str, LOOK_KEY_W - 4 - gap);
++	int32_t x = LOOK_KEY_U(key) + (LOOK_KEY_W - gap - measureStringMode(str, mode)) / 2;
+ 
+ 	setTextColor(key == 2 ? (MOD_OPT_BUTTONS ? 6 : 5) : (MOD_OPT_BUTTONS ? 10 : 6));
+-	x = (x + drawStringMode(str, x, y, FIT_TIGHT) + 5) & ~3; /* a whole word of the text area: the next strip clears from its word */
++	drawStringMode(btn, x, y, FIT_TIGHT);
+ 	setTextColor(1);
+-	str = LOOK_PAGE_TEXT[4 + key];
+-	return (x + drawStringMode(str, x, y, fitStringMode(str, 0x60)) + 11) & ~3;
++	drawStringMode(str, x + gap, y, mode);
++}
++
++/* A button's box and its text, on the name's row */
++void playerKeyRender(int32_t key, int32_t v)
++{
++	renderString(0, LOOK_KEY_X(key), -0x50, LOOK_KEY_W, 0xc, LOOK_KEY_U(key), v, 5, 1);
++	renderInsetBox(160 + LOOK_KEY_X(key), 118 - 0x50, LOOK_KEY_W, 14, 5);
+ }
+ 
+ /* Whether a row has something to choose: the bald head has no hair colour, and no backpack no colour. An original
+@@ -2947,14 +2957,14 @@ int32_t lookPageOpen(void)
+ 	lookTurn = 0;
+ 	setRECT(&rect, 0, LOOK_TOP_Y, 256, LOOK_END_Y - LOOK_TOP_Y);
+ 	clearTextSubArea(&rect);
+-	drawStringMode(LOOK_PAGE_TEXT[2], 0, LOOK_HINT_Y, fitStringMode(LOOK_PAGE_TEXT[2], 0xb4));
+-	drawString(LOOK_PAGE_TEXT[3], 0, LOOK_HINT_Y + 12);
++	drawStringMode(LOOK_PAGE_TEXT[3], 0, LOOK_HINT_Y, fitStringMode(LOOK_PAGE_TEXT[3], 0x7c));
+ 	for (i = 0; i < LOOK_ROWS; i++) {
+ 		str = i >= 3 ? (char *)lookPageRowNames[i - 3] : i == 2 ? (char *)lookPageTextKind : i == 1 && MOD_TAMER_LOOK == 0 ? (char *)lookPageTextCap : LOOK_PAGE_TEXT[i];
+ 		drawStringMode(str, 0, LOOK_ROW_V(i), fitStringMode(str, LOOK_NAME_W));
+ 		lookPageValue(i);
+ 	}
+-	playerKeyHint(2, playerKeyHint(1, LOOK_LEAVE_U, LOOK_HINT_Y + 12), LOOK_HINT_Y + 12);
++	playerKeyHint(1, LOOK_HINT_Y);
++	playerKeyHint(2, LOOK_HINT_Y);
+ 	return 1;
+ }
+ 
+@@ -2991,7 +3001,7 @@ void lookPageClose(void)
+ 	for (i = 0; i < 11; i++) {
+ 		drawString(TAMER_LEVEL_TITLES[i], 0, i * 0xc + 0x40);
+ 	}
+-	playerKeyHint(0, 0, LOOK_OPEN_Y);
++	playerKeyHint(0, LOOK_OPEN_Y);
+ }
+ 
+ void lookPageInput(void)
+@@ -3068,6 +3078,21 @@ void lookPageInput(void)
+ 	lookPageValue(row);
+ }
+ 
++/* The Player view's lines with the one under the rows lower: six rows, and one line of hint under them */
++static const Line lookPageLines[11] = {
++	{ 0xff6e, 0xffbf, 0x0092, 0xffbf, 0x00, 0x00 },
++	{ 0xff6d, 0xffc0, 0x0093, 0xffc0, 0x01, 0x00 },
++	{ 0xff6e, 0xffc1, 0x0092, 0xffc1, 0x00, 0x00 },
++	{ 0xffd3, 0xffc1, 0x0092, 0xffc1, 0x00, 0x00 },
++	{ 0xffd1, 0xffc1, 0xffd1, 0x0062, 0x00, 0x00 },
++	{ 0xffd2, 0xffc0, 0xffd2, 0x0063, 0x01, 0x00 },
++	{ 0xffd3, 0xffc1, 0xffd3, 0x0041, 0x00, 0x00 },
++	{ 0xffd2, 0x0042, 0x0091, 0x0042, 0x00, 0x00 },
++	{ 0xffd3, 0x0043, 0x0093, 0x0043, 0x01, 0x00 },
++	{ 0xffd3, 0x0044, 0x0091, 0x0044, 0x00, 0x00 },
++	{ 0xffd3, 0x0045, 0xffd3, 0x0064, 0x00, 0x00 },
++};
++
+ void lookPageRender(void)
+ {
+ 	StringRect *e = &TAMER_WINDOW_NAME_STRING[0];
+@@ -3084,7 +3109,7 @@ void lookPageRender(void)
+ 	if (first > LOOK_PLACES - LOOK_SHOWN) {
+ 		first = LOOK_PLACES - LOOK_SHOWN;
+ 	}
+-	renderSeparatorLines(TAMER_VIEW_PLAYER_LINES, 0xb, 5);
++	renderSeparatorLines((Line *)lookPageLines, 0xb, 5);
+ 	renderString(3, e->posX, e->posY + 1, e->uvWidth, 0xc, e->uvX, e->uvY, 5, 1);
+ 	renderString(0, -0x54, -0x50, 0x48, 0xc, 0, 0x30, 5, 1);
+ 	for (k = first; k < first + LOOK_SHOWN; k++) {
+@@ -3105,9 +3130,9 @@ void lookPageRender(void)
+ 	renderBox(LOOK_SCROLL_X, -0x34 + (LOOK_SCROLL_H - LOOK_SCROLL_H * LOOK_SHOWN / LOOK_PLACES) * first / (LOOK_PLACES - LOOK_SHOWN),
+ 	          2, LOOK_SCROLL_H * LOOK_SHOWN / LOOK_PLACES, 0xe6, 0xe6, 0xe6, 0, 5);
+ 	renderBox(LOOK_SCROLL_X, -0x34, 2, LOOK_SCROLL_H, 0x20, 0x48, 0x58, 0, 5);
+-	renderString(0, -0x29, 0x36, 0xb4, 0xc, 0, LOOK_HINT_Y, 5, 1);
+-	renderString(0, -0x29, 0x46, LOOK_LEAVE_U, 0xc, 0, LOOK_HINT_Y + 12, 5, 1);
+-	renderString(0, LOOK_KEY_X, -0x50, LOOK_KEY_W, 0xc, LOOK_LEAVE_U, LOOK_HINT_Y + 12, 5, 1);
++	renderString(0, -0x29, 0x4e, 0x7c, 0xc, 0, LOOK_HINT_Y, 5, 1);
++	playerKeyRender(1, LOOK_HINT_Y);
++	playerKeyRender(2, LOOK_HINT_Y);
+ 	renderDigiviceEntity(ENTITY_TABLE[0], 0);
+ 	renderInsetBox(r->x, r->y, r->w, r->h, 5);
+ 	for (i = 0; i < LOOK_SHOWN; i++) {
+@@ -4094,7 +4119,7 @@ void renderPlayerInfoView(void)
+ 		}
+ 
+ 		renderNumber(0, 0x35, 0x4d, 2, count, 5);
+-		renderString(0, LOOK_KEY_X, -0x50, LOOK_KEY_W, 0xc, 0, LOOK_OPEN_Y, 5, 1); /* MOD (tamer looks): the Look page's button */
++		playerKeyRender(0, LOOK_OPEN_Y); /* MOD (tamer looks): the Look page's button */
+ 		renderDigiviceEntity(ENTITY_TABLE[0], 0);
+ 
+ 		for (k = 0; k < 0xb; k++) {
+@@ -6866,7 +6891,7 @@ int32_t drawPlayerInfoStrings(void)
+ 		for (i = 4; i < 0xb; i++) {
+ 			drawString(TAMER_LEVEL_TITLES[i], 0, i * 0xc + 0x40);
+ 		}
+-		playerKeyHint(0, 0, LOOK_OPEN_Y); /* MOD (tamer looks) */
++		playerKeyHint(0, LOOK_OPEN_Y); /* MOD (tamer looks) */
+ 		return 1;
+ 	}
+ 	return 0;
+-- 
+2.55.0
+

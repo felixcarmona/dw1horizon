@@ -1,0 +1,348 @@
+From 66942b9ff54c2fd88b08f73a97f4c6215d32d341 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 22 Nov 2026 08:56:59 +0000
+Subject: [PATCH] Tamer looks: a boy or a girl
+
+The Look page's first row chooses a boy or a girl, in the byte that was the face's. The face and the hands follow it,
+so their rows are gone, and each garment's row offers only what that tamer wears: TAMER.DAT says who wears each
+choice (a bit each, per kind of garment), and changing between boy and girl changes a garment the other wears for
+the next of its kind. The girl's new shirts and shoes take the names of the boy's. The shirts' and the shoes'
+directories move in the file's first sector, with room for thirty-two.
+---
+ include/dw/species.h   |   7 +--
+ src/main/game_menu.c   | 115 ++++++++++++++++++++++++++++-------------
+ src/main/mod_species.c |   2 +-
+ text/main/mod_lab.yaml |  24 ++++-----
+ 4 files changed, 93 insertions(+), 55 deletions(-)
+
+diff --git a/include/dw/species.h b/include/dw/species.h
+index ff06cc7..163a20c 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -356,16 +356,17 @@ extern uint8_t MOD_TAMER_STATE[TAMER_STATE_SIZE] __attribute__((section(".sbss")
+ #define MOD_TAMER_TROUSERS	MOD_TAMER_STATE[5]
+ #define MOD_TAMER_SHOES		MOD_TAMER_STATE[7]
+ #define MOD_TAMER_PACK		MOD_TAMER_STATE[9]
+-#define MOD_TAMER_HANDS		(MOD_TAMER_STATE[11] & 1)	/* 1 = small hands */
++#define MOD_TAMER_GIRL		(MOD_TAMER_FACE != 0)	/* the girl: the second face, small hands, her own clothes */
++#define MOD_TAMER_HANDS		MOD_TAMER_GIRL	/* small hands */
+ #define MOD_TAMER_SKIN		(MOD_TAMER_STATE[11] >> 1)	/* the same byte's other bits: 0 his own skin, then the tones */
+ #define TAMER_SKIN_COUNT	6
+ /* The clothes (tools/tamer_looks/shirts.py, legs.py, shoes.py): a shirt is the torso and the arms of any look, a
+  * pair of trousers its legs, a pair of shoes its feet. Garment 0 of each kind is the original tamer's; the others
+  * are drawn with the tones of one palette row each, written for the chosen cloth colour. */
+-#define TAMER_SHIRT_COUNT	11
++#define TAMER_SHIRT_COUNT	16
+ #define TAMER_CLOTH_COUNT	16
+ #define TAMER_TROUSERS_COUNT	9
+-#define TAMER_SHOES_COUNT	12
++#define TAMER_SHOES_COUNT	17
+ #define TAMER_PACK_COUNT	7	/* the original backpack, none, then the others */
+ #define TAMER_PACK_NONE		1
+ #define LOOK_GARMENTS		4	/* the shirt, the trousers, the shoes, the backpack: MOD_TAMER_STATE[3 + 2 * n] and its colour after it */
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 59593ca..cd0cb2e 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -2608,13 +2608,14 @@ static struct {
+ 	uint8_t levels[16];
+ 	uint8_t saved[LOOK_ROWS]; /* each row's choice when the page opened: leaving without saving brings them back */
+ 	uint8_t count[LOOK_ROWS]; /* how many choices each row has */
++	uint32_t who[LOOK_GARMENTS][2]; /* per garment: the boy's choices and the girl's */
+ 	int16_t width[LOOK_ROWS];
+ 	uint8_t row;
+ 	uint8_t rgb[TAMER_HAIR_COUNT * 3];
+ 	uint8_t cloth[TAMER_CLOTH_COUNT * LOOK_CLOTH_SIZE]; /* per cloth colour: its shade, the cloth, its light, and the second colour */
+ } lookPageState;
+ /* per garment: its palette row, and where its count and its directory are in the file's first sector (in u16s) */
+-static const uint16_t lookPageGarment[3 * LOOK_GARMENTS] = { 2, 5, 7, 3, 0x68, 0x6D, 0x6E, 0x6F, 0x80, 0xA0, 0x100, 0x120 };
++static const uint16_t lookPageGarment[3 * LOOK_GARMENTS] = { 2, 5, 7, 3, 0x68, 0x6D, 0x6E, 0x6F, 0x200, 0xA0, 0x240, 0x120 };
+ /* The shirts' text: here and not in MENU, which is full */
+ static const char lookPageTextShirt[] = LAB_STR_SHIRT;
+ static const char lookPageTextCloth[] = LAB_STR_SHIRT_COLOUR;
+@@ -2647,12 +2648,10 @@ static const char lookPageTextTrousers6[] = LAB_STR_TROUSERS_CAPRI;
+ static const char lookPageTextTrousers7[] = LAB_STR_TROUSERS_SKIRT;
+ static const char lookPageTextTrousers8[] = LAB_STR_TROUSERS_FLARED;
+ static const char lookPageTextShoes1[] = LAB_STR_SHOES_TRAINERS;
+-static const char lookPageTextShoes2[] = LAB_STR_SHOES_SMALL_TRAINERS;
+ static const char lookPageTextShoes3[] = LAB_STR_SHOES_PLAIN;
+ static const char lookPageTextShoes4[] = LAB_STR_SHOES_FLATS;
+ static const char lookPageTextShoes5[] = LAB_STR_SHOES_MARY_JANES;
+ static const char lookPageTextShoes6[] = LAB_STR_SHOES_ANKLE_BOOTS;
+-static const char lookPageTextShoes7[] = LAB_STR_SHOES_SMALL_ANKLE_BOOTS;
+ static const char lookPageTextShoes8[] = LAB_STR_SHOES_BOOTS;
+ static const char lookPageTextShoes9[] = LAB_STR_SHOES_CUFFED_BOOTS;
+ static const char lookPageTextShoes10[] = LAB_STR_SHOES_RAIN_BOOTS;
+@@ -2665,19 +2664,22 @@ static const char lookPageTextPack3[] = LAB_STR_BACKPACK_SCHOOL;
+ static const char lookPageTextPack4[] = LAB_STR_BACKPACK_MINI;
+ static const char lookPageTextPack5[] = LAB_STR_BACKPACK_HIKING;
+ static const char lookPageTextPack6[] = LAB_STR_BACKPACK_ROUND;
+-static const char lookPageTextHands[] = LAB_STR_HANDS;
++static const char lookPageTextKind[] = LAB_STR_TAMER_KIND;
+ static const char lookPageTextCap[] = LAB_STR_CAP_COLOUR;
+ static const char lookPageTextSkin[] = LAB_STR_SKIN;
+-static const char lookPageTextHands0[] = LAB_STR_HANDS_NORMAL;
+-static const char lookPageTextHands1[] = LAB_STR_HANDS_SMALL;
+-/* The garments' names but the originals': the shirts', the trousers', the shoes', the backpacks' (lookPageFirst: where each kind starts) */
++static const char lookPageTextBoy[] = LAB_STR_TAMER_BOY;
++static const char lookPageTextGirl[] = LAB_STR_TAMER_GIRL;
++/* The girl's shirts after the first ten are the boy's with a bust, and her shoes his on a smaller foot: the same names.
++ * The garments' names but the originals': the shirts', the trousers', the shoes', the backpacks' (lookPageFirst: where each kind starts) */
+ static const char *const lookPageClothes[TAMER_SHIRT_COUNT + TAMER_TROUSERS_COUNT + TAMER_SHOES_COUNT + TAMER_PACK_COUNT - 4] = {
+ 	lookPageTextShirt1, lookPageTextShirt2, lookPageTextShirt3, lookPageTextShirt4, lookPageTextShirt5,
+ 	lookPageTextShirt6, lookPageTextShirt7, lookPageTextShirt8, lookPageTextShirt9, lookPageTextShirt10,
++	lookPageTextShirt2, lookPageTextShirt3, lookPageTextShirt4, lookPageTextShirt5, lookPageTextShirt6,
+ 	lookPageTextTrousers1, lookPageTextTrousers2, lookPageTextTrousers3, lookPageTextTrousers4, lookPageTextTrousers5,
+ 	lookPageTextTrousers6, lookPageTextTrousers7, lookPageTextTrousers8,
+-	lookPageTextShoes1, lookPageTextShoes2, lookPageTextShoes3, lookPageTextShoes4, lookPageTextShoes5, lookPageTextShoes6,
+-	lookPageTextShoes7, lookPageTextShoes8, lookPageTextShoes9, lookPageTextShoes10, lookPageTextShoes11,
++	lookPageTextShoes1, lookPageTextShoes1, lookPageTextShoes3, lookPageTextShoes4, lookPageTextShoes5, lookPageTextShoes6,
++	lookPageTextShoes6, lookPageTextShoes8, lookPageTextShoes9, lookPageTextShoes10, lookPageTextShoes11,
++	lookPageTextShoes3, lookPageTextShoes8, lookPageTextShoes9, lookPageTextShoes10, lookPageTextShoes11,
+ 	lookPageTextPack1, lookPageTextPack2, lookPageTextPack3, lookPageTextPack4, lookPageTextPack5, lookPageTextPack6 };
+ static const uint8_t lookPageFirst[LOOK_GARMENTS] = { 0, TAMER_SHIRT_COUNT - 1, TAMER_SHIRT_COUNT + TAMER_TROUSERS_COUNT - 2,
+ 	                                                    TAMER_SHIRT_COUNT + TAMER_TROUSERS_COUNT + TAMER_SHOES_COUNT - 3 };
+@@ -2685,7 +2687,11 @@ static const uint8_t lookPageFirst[LOOK_GARMENTS] = { 0, TAMER_SHIRT_COUNT - 1,
+ static const char *const lookPageRowNames[2 * LOOK_GARMENTS + 2] = { lookPageTextShirt, lookPageTextCloth, lookPageTextTrousers,
+ 	                                                               lookPageTextTrousersColour, lookPageTextShoes,
+ 	                                                               lookPageTextShoesColour, lookPageTextPack, lookPageTextPackColour,
+-	                                                               lookPageTextHands, lookPageTextSkin };
++	                                                               lookPageTextSkin, lookPageTextSkin };
++/* The rows as the page shows them: boy or girl first (the face's byte), and the hands' row is not shown: they follow it */
++#define LOOK_PLACES	(LOOK_ROWS - 1)
++static const uint8_t lookPageOrder[LOOK_PLACES] = { 2, 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, LOOK_SKIN_ROW };
++#define LOOK_WHO	0x260	/* in the file's first sector: per garment the boy's choices and the girl's, a bit each */
+ /* A cloth colour's name: a hair colour's (its number in LAB_HAIR_TEXT), or one of the two only cloth has */
+ #define LOOK_CLOTH_ORANGE	0xFE
+ #define LOOK_CLOTH_YELLOW	0xFF
+@@ -2721,10 +2727,8 @@ static int32_t lookPageGet(int32_t row)
+ 
+ static void lookPageSet(int32_t row, int32_t value)
+ {
+-	if (row == LOOK_HANDS_ROW) {
+-		value |= MOD_TAMER_STATE[LOOK_HANDS_ROW] & ~1;
+-	} else if (row == LOOK_SKIN_ROW) {
+-		value = (value << 1) | MOD_TAMER_HANDS;
++	if (row == LOOK_SKIN_ROW) {
++		value <<= 1;
+ 		row = LOOK_HANDS_ROW;
+ 	}
+ 	MOD_TAMER_STATE[row] = value;
+@@ -2753,9 +2757,7 @@ static char *lookPageValueText(int32_t row)
+ 		}
+ 		break;
+ 	case 2:
+-		return (char *)lookPageFaces[value];
+-	case LOOK_HANDS_ROW:
+-		return (char *)(value ? lookPageTextHands1 : lookPageTextHands0);
++		return (char *)(value ? lookPageTextGirl : lookPageTextBoy);
+ 	case LOOK_SKIN_ROW:
+ 		return value == 0 ? LAB_LOOK_TEXT[0] : (char *)lookPageFaces[value - 1];
+ 	}
+@@ -2825,6 +2827,32 @@ static void lookPageHairName(void)
+ 	drawStringMode(str, 0, LOOK_ROW_V(1), fitStringMode(str, LOOK_NAME_W));
+ }
+ 
++/* Whether the tamer, boy or girl, wears that choice of a garment (a file that does not say: every one) */
++static int32_t lookPageWorn(int32_t garment, int32_t value)
++{
++	uint32_t who = lookPageState.who[garment][MOD_TAMER_GIRL];
++
++	return who == 0 || ((who >> value) & 1);
++}
++
++/* The next choice of a garment that the tamer wears, from a value on: step 0 keeps one that is worn */
++static int32_t lookPageNext(int32_t garment, int32_t value, int32_t step)
++{
++	int32_t n = lookPageState.count[3 + 2 * garment];
++	int32_t i;
++
++	value %= n;
++	for (i = 0; i < n; i++) {
++		if (step != 0 || i != 0) {
++			value = (value + n + (step < 0 ? -1 : 1)) % n;
++		}
++		if (lookPageWorn(garment, value)) {
++			break;
++		}
++	}
++	return value;
++}
++
+ static void lookPageKeep(void)
+ {
+ 	memcpy(lookPageState.saved, MOD_TAMER_STATE, TAMER_STATE_SIZE);
+@@ -2888,6 +2916,7 @@ int32_t lookPageOpen(void)
+ 	for (i = 0; i < 16; i++) {
+ 		lookPageState.levels[i] = ((uint8_t *)head)[LOOK_LEVELS + i];
+ 	}
++	memcpy(lookPageState.who, (uint8_t *)head + LOOK_WHO, sizeof(lookPageState.who));
+ 	for (i = 0; i < TAMER_CLOTH_COUNT * LOOK_CLOTH_SIZE; i++) {
+ 		lookPageState.cloth[i] = ((uint8_t *)head)[LOOK_CLOTH + i];
+ 	}
+@@ -2921,7 +2950,7 @@ int32_t lookPageOpen(void)
+ 	drawStringMode(LOOK_PAGE_TEXT[2], 0, LOOK_HINT_Y, fitStringMode(LOOK_PAGE_TEXT[2], 0xb4));
+ 	drawString(LOOK_PAGE_TEXT[3], 0, LOOK_HINT_Y + 12);
+ 	for (i = 0; i < LOOK_ROWS; i++) {
+-		str = i >= 3 ? (char *)lookPageRowNames[i - 3] : i == 1 && MOD_TAMER_LOOK == 0 ? (char *)lookPageTextCap : LOOK_PAGE_TEXT[i == 2 ? 9 : i];
++		str = i >= 3 ? (char *)lookPageRowNames[i - 3] : i == 2 ? (char *)lookPageTextKind : i == 1 && MOD_TAMER_LOOK == 0 ? (char *)lookPageTextCap : LOOK_PAGE_TEXT[i];
+ 		drawStringMode(str, 0, LOOK_ROW_V(i), fitStringMode(str, LOOK_NAME_W));
+ 		lookPageValue(i);
+ 	}
+@@ -2987,8 +3016,8 @@ void lookPageInput(void)
+ 	if (CHANGED_INPUT & 0x5000) { /* up or down: the next row that has something to choose */
+ 		step = lookPageState.row;
+ 		do {
+-			step = (step + ((CHANGED_INPUT & 0x1000) ? LOOK_ROWS - 1 : 1)) % LOOK_ROWS;
+-		} while (!lookPageRowOpen(step));
++			step = (step + ((CHANGED_INPUT & 0x1000) ? LOOK_PLACES - 1 : 1)) % LOOK_PLACES;
++		} while (!lookPageRowOpen(lookPageOrder[step]));
+ 		if (step != lookPageState.row) {
+ 			lookPageState.row = step;
+ 			playSound(0, 2);
+@@ -3004,9 +3033,18 @@ void lookPageInput(void)
+ 		return;
+ 	}
+ 	playSound(0, 2);
+-	row = lookPageState.row;
++	row = lookPageOrder[lookPageState.row];
+ 	n = row == 1 && MOD_TAMER_LOOK == 0 ? lookPageState.count[4] : lookPageState.count[row];
+-	lookPageSet(row, (lookPageGet(row) % n + n + step) % n);
++	if (row >= 3 && row < 3 + 2 * LOOK_GARMENTS && (row & 1)) {
++		lookPageSet(row, lookPageNext((row - 3) / 2, lookPageGet(row), step));
++	} else {
++		lookPageSet(row, (lookPageGet(row) % n + n + step) % n);
++	}
++	if (row == 2) { /* boy or girl: the clothes the other wears give way to the first of their kind that this one does */
++		for (n = 0; n < LOOK_GARMENTS; n++) {
++			MOD_TAMER_STATE[3 + 2 * n] = lookPageNext(n, MOD_TAMER_STATE[3 + 2 * n], 0);
++		}
++	}
+ 	if (row == 0) { /* the next row is the hair's colour or the cap's: the cap starts with its own */
+ 		if (MOD_TAMER_LOOK == 0) {
+ 			MOD_TAMER_HAIR = 0;
+@@ -3015,7 +3053,11 @@ void lookPageInput(void)
+ 	}
+ 	if (lookPageRowLoads(row)) {
+ 		modTamerRelook();
+-		if (lookPageRowReads(row) && row != 2 && row != LOOK_HANDS_ROW) { /* the row under a hairstyle or a garment is its colour: open or not with it */
++		if (row == 2) {
++			for (n = 3; n < 3 + 2 * LOOK_GARMENTS; n++) {
++				lookPageValue(n);
++			}
++		} else if (lookPageRowReads(row)) { /* the row under a hairstyle or a garment is its colour: open or not with it */
+ 			lookPageValue(row + 1);
+ 		}
+ 	} else if (row == 1) {
+@@ -3035,32 +3077,33 @@ void lookPageRender(void)
+ 	int32_t k;
+ 	int32_t y;
+ 
+-	if (!lookPageRowOpen(lookPageState.row)) { /* a row with nothing to choose stays, showing a dash */
++	if (!lookPageRowOpen(lookPageOrder[lookPageState.row])) { /* a row with nothing to choose stays, showing a dash */
+ 		lookPageState.row = 0;
+ 	}
+ 	first = lookPageState.row < 2 ? 0 : lookPageState.row - 2; /* the rows shown: around the chosen one */
+-	if (first > LOOK_ROWS - LOOK_SHOWN) {
+-		first = LOOK_ROWS - LOOK_SHOWN;
++	if (first > LOOK_PLACES - LOOK_SHOWN) {
++		first = LOOK_PLACES - LOOK_SHOWN;
+ 	}
+ 	renderSeparatorLines(TAMER_VIEW_PLAYER_LINES, 0xb, 5);
+ 	renderString(3, e->posX, e->posY + 1, e->uvWidth, 0xc, e->uvX, e->uvY, 5, 1);
+ 	renderString(0, -0x54, -0x50, 0x48, 0xc, 0, 0x30, 5, 1);
+-	for (i = first; i < first + LOOK_SHOWN; i++) {
+-		y = -0x34 + (i - first) * 0x14;
+-		renderString(i == lookPageState.row ? 3 : 0, -0x29, y, LOOK_NAME_W, 0xc, 0, LOOK_ROW_V(i), 5, 1);
++	for (k = first; k < first + LOOK_SHOWN; k++) {
++		i = lookPageOrder[k];
++		y = -0x34 + (k - first) * 0x14;
++		renderString(k == lookPageState.row ? 3 : 0, -0x29, y, LOOK_NAME_W, 0xc, 0, LOOK_ROW_V(i), 5, 1);
+ 		renderString(0, LOOK_VALUE_X + (LOOK_VALUE_W - lookPageState.width[i]) / 2, y, lookPageState.width[i], 0xc,
+ 		             LOOK_VALUE_U, LOOK_ROW_V(i), 5, 1);
+-		if (i == lookPageState.row) {
+-			for (k = 0; k < 4; k++) {
+-				drawLine2P(0x73f6ff, LOOK_VALUE_X - 7 + k, y + 5 - k, LOOK_VALUE_X - 7 + k, y + 6 + k, 5, 0);
+-				drawLine2P(0x73f6ff, LOOK_VALUE_X + LOOK_VALUE_W + 5 - k, y + 5 - k,
+-				           LOOK_VALUE_X + LOOK_VALUE_W + 5 - k, y + 6 + k, 5, 0);
++		if (k == lookPageState.row) {
++			for (i = 0; i < 4; i++) {
++				drawLine2P(0x73f6ff, LOOK_VALUE_X - 7 + i, y + 5 - i, LOOK_VALUE_X - 7 + i, y + 6 + i, 5, 0);
++				drawLine2P(0x73f6ff, LOOK_VALUE_X + LOOK_VALUE_W + 5 - i, y + 5 - i,
++				           LOOK_VALUE_X + LOOK_VALUE_W + 5 - i, y + 6 + i, 5, 0);
+ 			}
+ 		}
+ 	}
+ 	/* the scroll bar, right of the boxes: its thumb, then its track */
+-	renderBox(LOOK_SCROLL_X, -0x34 + (LOOK_SCROLL_H - LOOK_SCROLL_H * LOOK_SHOWN / LOOK_ROWS) * first / (LOOK_ROWS - LOOK_SHOWN),
+-	          2, LOOK_SCROLL_H * LOOK_SHOWN / LOOK_ROWS, 0xe6, 0xe6, 0xe6, 0, 5);
++	renderBox(LOOK_SCROLL_X, -0x34 + (LOOK_SCROLL_H - LOOK_SCROLL_H * LOOK_SHOWN / LOOK_PLACES) * first / (LOOK_PLACES - LOOK_SHOWN),
++	          2, LOOK_SCROLL_H * LOOK_SHOWN / LOOK_PLACES, 0xe6, 0xe6, 0xe6, 0, 5);
+ 	renderBox(LOOK_SCROLL_X, -0x34, 2, LOOK_SCROLL_H, 0x20, 0x48, 0x58, 0, 5);
+ 	renderString(0, -0x29, 0x36, 0xb4, 0xc, 0, LOOK_HINT_Y, 5, 1);
+ 	renderString(0, -0x29, 0x46, LOOK_LEAVE_U, 0xc, 0, LOOK_HINT_Y + 12, 5, 1);
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index 676565b..08dd392 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -1066,7 +1066,7 @@ void lookShirtPalette(uint16_t *row, LookShirtRecipe *recipe, uint8_t *rgb);
+ /* the shirt: the torso, the upper arms, the forearms; the trousers: each thigh and shin; the shoes: the feet; then how
+  * many each garment has (the backpack none), its palette row, and where its count and its directory are in the file's first sector (in u16s) */
+ const uint16_t lookShirtObjects[LOOK_SHIRT_OBJECTS + 4 * LOOK_GARMENTS] = { 0, 2, 3, 5, 6, 8, 9, 11, 12, 10, 13,
+-	5, 4, 2, 0, 2, 5, 7, 3, 0x68, 0x6D, 0x6E, 0x6F, 0x80, 0xA0, 0x100, 0x120 };
++	5, 4, 2, 0, 2, 5, 7, 3, 0x68, 0x6D, 0x6E, 0x6F, 0x200, 0xA0, 0x240, 0x120 };
+ /* The original tamer's cap in a cloth colour (the hair colour's byte, with no hairstyle): its nine greys of wool, from
+  * the light to the shade; the letters of its band stay. It is drawn in the hair's palette row. */
+ const LookShirtRecipe lookCapRecipe = { { 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+diff --git a/text/main/mod_lab.yaml b/text/main/mod_lab.yaml
+index b0730f0..fab6216 100644
+--- a/text/main/mod_lab.yaml
++++ b/text/main/mod_lab.yaml
+@@ -514,9 +514,6 @@ MOD_LAB:
+     LAB_STR_SHOES_TRAINERS:
+       ja: "Trainers"
+       en_us: "Trainers"
+-    LAB_STR_SHOES_SMALL_TRAINERS:
+-      ja: "Small trainers"
+-      en_us: "Small trainers"
+     LAB_STR_SHOES_PLAIN:
+       ja: "Plain"
+       en_us: "Plain"
+@@ -529,9 +526,6 @@ MOD_LAB:
+     LAB_STR_SHOES_ANKLE_BOOTS:
+       ja: "Ankle boots"
+       en_us: "Ankle boots"
+-    LAB_STR_SHOES_SMALL_ANKLE_BOOTS:
+-      ja: "Small boots"
+-      en_us: "Small boots"
+     LAB_STR_SHOES_BOOTS:
+       ja: "Boots"
+       en_us: "Boots"
+@@ -568,15 +562,15 @@ MOD_LAB:
+     LAB_STR_BACKPACK_ROUND:
+       ja: "Round"
+       en_us: "Round"
+-    LAB_STR_HANDS:
+-      ja: "Hands"
+-      en_us: "Hands"
+-    LAB_STR_HANDS_NORMAL:
+-      ja: "Normal"
+-      en_us: "Normal"
+-    LAB_STR_HANDS_SMALL:
+-      ja: "Small"
+-      en_us: "Small"
++    LAB_STR_TAMER_KIND:
++      ja: "Tamer"
++      en_us: "Tamer"
++    LAB_STR_TAMER_BOY:
++      ja: "Boy"
++      en_us: "Boy"
++    LAB_STR_TAMER_GIRL:
++      ja: "Girl"
++      en_us: "Girl"
+     LAB_STR_CAP_COLOUR:
+       ja: "Cap colour"
+       en_us: "Cap colour"
+-- 
+2.55.0
+

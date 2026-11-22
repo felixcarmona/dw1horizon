@@ -21,9 +21,10 @@ The file, in 2048-byte sectors, little endian:
              0x100: per shirt u16 first sector, u16 sectors of geometry (after the shirt's first sector); after
                     the shirts that are chosen, the original hoodie for another backpack and for none
              0x140: the same per pair of trousers
-             0x180: per cloth colour r, g, b of the cloth and r, g, b of stripes, prints and trim on it
              0x200: per pair of shoes, as per shirt
              0x240: per backpack u16 its sector, u16 0
+             0x300: per cloth colour r, g, b of its shade, of the cloth, of its light, and of stripes, prints and
+                    trim on it
   texture    the bald head's texture, one ALLTIM entry (9 sectors), shared by every look; one per face (u16 at 0x0E:
              how many), the second drawn by tools/tamer_looks/face.py; after them the original tamer's texture with
              each face but the first (his first face is the disc's own texture)
@@ -61,6 +62,8 @@ RESIDENT_MAX = TAMER_MMD_MAX - COLD_BUFFER
 # the gym's (9), which the game reads while the gym loads (modTamerColdPrefetch), and the two praising gestures (38, 39),
 # read when the praise starts, and fishing's (27-34), which make room for the shirts.
 COLD_SLOTS = (9, 13) + tuple(range(15, 27)) + tuple(range(27, 35)) + (38, 39)
+CLOTH_AT = 0x300                # in the header: the cloth colours (LOOK_CLOTH)
+WHO_AT = 0x260                  # who wears each garment: per kind u32 the boy's choices, u32 the girl's (a bit each)
 HEAD = 1                        # the head's object in the tamer model
 MODEL = os.path.join(mmd.EXTRACTED, 'CHDAT', 'MMD0', 'BOYS.MMD')
 ALLTIM = mmd.ALLTIM
@@ -148,9 +151,9 @@ def build(model_path, alltim_path):
     model = mmd.MMD.load(model_path, 0)
     original = mmd.load_tim(alltim_path, 0)
     # per kind of garment: its name, where its directory is in the header, and (name, first sector, geometry) of each
-    wardrobe = [('shirt', 0x100, [g[:3] for g in shirts.build(model, original)]),
+    wardrobe = [('shirt', 0x400, [g[:3] for g in shirts.build(model, original)]),
                 ('trousers', 0x140, [g[:3] for g in legs.build(model, original)]),
-                ('shoes', 0x200, [g[:3] for g in shoes.build(model, original)])]
+                ('shoes', 0x480, [g[:3] for g in shoes.build(model, original)])]
     packs = backpacks.build(model, original)
     largest = [max(len(body) for _, _, body in garments) for _, _, garments in wardrobe]
     room = sum(largest)
@@ -187,7 +190,7 @@ def build(model_path, alltim_path):
     closet = b''
     before = max(len(p) for p in parts)
     for (kind, at, garments), most in zip(wardrobe, largest):
-        if at + 4 * len(garments) > at + 0x40:
+        if len(garments) > (48 if kind == 'trousers' else 32):
             raise SystemExit(f'too many {kind} for the header')
         for i, (name, first, body) in enumerate(garments):
             sectors = len(pad(body)) // SECTOR
@@ -206,8 +209,12 @@ def build(model_path, alltim_path):
         sector += 1
         closet += pack[1]
         report.append(f'backpack {pack[0]}')
-    for i, (_, rgb, second) in enumerate(shirts.COLOURS):
-        header[0x180 + 6 * i:0x186 + 6 * i] = bytes(rgb + second)
+    # who wears what: per kind of garment a bit per choice, the boy's then the girl's
+    for i, kind in enumerate((shirts, legs, shoes)):
+        struct.pack_into('<2I', header, WHO_AT + 8 * i, sum(1 << k for k in kind.BOYS), sum(1 << k for k in kind.GIRLS))
+    struct.pack_into('<2I', header, WHO_AT + 24, (1 << len(packs)) - 1, (1 << len(packs)) - 1)
+    for i, cloth in enumerate(shirts.COLOURS):
+        header[CLOTH_AT + 12 * i:CLOTH_AT + 12 * i + 12] = bytes(sum(cloth[1:], ()))
     report.append(f'cold animations: {len(cold_part)} bytes, {cold_sectors} sectors')
     return bytes(header) + texture + pad(cold_part) + b''.join(pad(p) for p in parts) + closet, report
 
@@ -234,7 +241,7 @@ def main():
             print(f'shoes {i}: {name}')
         for i, name in enumerate(backpacks.NAMES):
             print(f'backpack {i}: {name}')
-        for i, (name, rgb, _) in enumerate(shirts.COLOURS):
+        for i, (name, _, rgb, _, _) in enumerate(shirts.COLOURS):
             print(f'cloth colour {i}: {name} {rgb}')
         return
     data, report = build(args.model, args.alltim)

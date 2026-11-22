@@ -40,8 +40,16 @@ STYLES = (
     ('cuffed boots', (45, 21, 25, 1), 'cuff', None),
     ('rain boots', (52, 22, 25, 0), 'flat', None),
     ('sandals', None, 'sandals', (.9, .8)),
+    ('small plain', None, 'flat', (.78, .85)),
+    ('small boots', (44, 17, 17, 0), 'flat', (.8, .9)),
+    ('small cuffed boots', (45, 17, 21, 1), 'cuff', (.8, .9)),
+    ('small rain boots', (52, 18, 21, 0), 'flat', (.8, .9)),
+    ('small sandals', None, 'sandals', (.76, .7)),
 )
 NAMES = ('original',) + tuple(s[0] for s in STYLES)
+# the girl's shoes are the small ones (a smaller foot), the boy's the others
+GIRLS = tuple(i + 1 for i, s in enumerate(STYLES) if s[3] and s[0] != 'sandals')
+BOYS = tuple(i for i in range(len(STYLES) + 1) if i not in GIRLS)
 
 
 def sized(part, size):
@@ -124,34 +132,43 @@ def paint(model, idx, drawing, boot):
 
 def recipe(texture, drawing):
     """The feet's palette row: the shoe in the colour, and its trim in the second colour, as skin or as the colour."""
-    ways, levels, whites, fixed = [shirts.KEEP] * 16, [0] * 16, [0] * 16, [0] * 16
+    ways, levels, fixed = [shirts.KEEP] * 16, [0] * 16, [0] * 16
     skin = rgb15(texture.pal[shirts.SKIN_ROW][texture.idx[shirts.SKIN_AT[1] * W + shirts.SKIN_AT[0]]])
 
     def bare(i, level):
-        ways[i], fixed[i] = FIXED, c15(*[min(255, int(c * level)) for c in skin])
+        ways[i], fixed[i] = shirts.SKINNED, c15(*[min(255, int(c * level)) for c in skin])
     for i in range(TRIM, 16):
         level = 1.1 - .8 * (i - TRIM) / 8
         if drawing == 'sandals':
             bare(i, level)
         else:
-            ways[i], levels[i] = MAIN, int(round(128 * level))
+            ways[i], levels[i] = shirts.tone(level)
     old = [sum(rgb15(c)) for c in texture.pal[ROW][:TRIM]]
     for i in range(TRIM):
         if drawing in ('bare', 'strap'):
             bare(i, 1.08 - .48 * i / 6)
         elif drawing == 'sandals':
-            ways[i], levels[i] = MAIN, int(round(128 * (1.5 - 1.05 * i / 6)))
+            ways[i], levels[i] = shirts.tone(1.3 - .85 * i / 6)
         elif drawing in ('flat', 'cuff'):
             ways[i], levels[i] = SECOND, int(round(128 * (1.1 - .6 * i / 6)))
         else:
             ways[i], levels[i] = SECOND, int(round(128 * (.45 + .65 * old[i] / (max(old) or 1))))
-    return ways, levels, whites, fixed
+    return ways, levels, fixed
 
 
-def palette(texture, rec, colour, second):
-    """The texture's palette rows for shoes of a colour, as the game writes them (for pictures)."""
+def own_recipe(texture):
+    """The tamer's own shoes in a cloth colour: their four tones of red follow it; white, sole and yellow stay."""
+    ways, levels, fixed = [shirts.KEEP] * 16, [0] * 16, [0] * 16
+    tones = [sum(rgb15(c)) for c in texture.pal[ROW]]
+    for i in range(2, 6):
+        ways[i], levels[i] = shirts.tone(tones[i] / tones[3])
+    return ways, levels, fixed
+
+
+def palette(texture, rec, cloth):
+    """The texture's palette rows for shoes of a cloth colour, as the game writes them (for pictures)."""
     rows = [list(p) for p in texture.pal]
-    rows[ROW] = shirts.palette(rec, colour, second, rows[ROW])
+    rows[ROW] = shirts.palette(rec, cloth, rows[ROW])
     return rows
 
 
@@ -190,7 +207,8 @@ def build(model, texture):
     check_free(model)
     parts = {oi: shirts.part(model, oi) for oi in OBJECTS}
     body, table = shirts.geometry(parts, OBJECTS)
-    out = [('original', shirts.head(table, len(body)), body, parts, None, None, None)]
+    own = own_recipe(texture)
+    out = [('original', shirts.head(table, len(body), own, flags=shirts.OWN), body, parts, None, own, None)]
     for name, boot, drawing, size in STYLES:
         parts = {oi: sized(shirts.part(model, oi), size) for oi in OBJECTS}
         body, table = shirts.geometry(parts, OBJECTS)

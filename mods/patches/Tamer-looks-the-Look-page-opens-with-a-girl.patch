@@ -1,0 +1,27 @@
+From dbcc04c41ffcb82348cf4d0bea105a6d9be61ffd Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 22 Nov 2026 10:24:23 +0000
+Subject: [PATCH] Tamer looks: the Look page opens with a girl
+
+The hands' row is no longer shown, but the page still drew its value when it opened, and a girl's read a name past
+the garments' table: the page hung. That row has no value now.
+---
+ src/main/game_menu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index cd0cb2e..ac0a20d 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -2745,7 +2745,7 @@ static char *lookPageValueText(int32_t row)
+ 	int32_t value = lookPageGet(row);
+ 	int32_t name;
+ 
+-	if (!lookPageRowOpen(row)) {
++	if (row == LOOK_HANDS_ROW || !lookPageRowOpen(row)) { /* the hands' row is not shown and has no names */
+ 		return (char *)lookPageDash;
+ 	}
+ 	switch (row) {
+-- 
+2.55.0
+

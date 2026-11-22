@@ -1,0 +1,285 @@
+From 4d519da240921deb4018e1135e2701d524bf8bb8 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 21 Nov 2026 23:37:59 +0000
+Subject: [PATCH] Tamer looks: small hands, and a scroll bar on the Look page
+
+A twelfth byte of the tamer's state chooses small hands: after the model is in
+memory the two hand objects' corners move to three quarters of their distance
+from the wrist. The Look page gains the Hands row and a scroll bar beside its
+boxes in place of the marks above and below them. The loader's first test reads
+the state as three words, which makes the main executable smaller.
+---
+ config/us/overlay.ld   |  2 +-
+ include/dw/save_tags.h |  2 +-
+ include/dw/species.h   |  5 +++--
+ src/main/game_menu.c   | 39 +++++++++++++++++++++------------------
+ src/main/mod_species.c | 37 ++++++++++++++++++++++++++++++++-----
+ text/main/mod_lab.yaml |  9 +++++++++
+ 6 files changed, 67 insertions(+), 27 deletions(-)
+
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index 9073937..564ef02 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -345,7 +345,7 @@ SECTIONS
+              * KAR again), so the Player tab reads EVL to open the page. Its text is MENU's. */
+             look_ui_START = .;
+             BUILD_DIR/src/main/game_menu.c.o(.text.lookPage* .rodata.lookPage* .bss.lookPageState);
+-            BUILD_DIR/src/main/mod_species.c.o(.text.lookTamerLoad .text.lookHairPalette .text.lookShirtPalette
++            BUILD_DIR/src/main/mod_species.c.o(.text.lookTamerLoad .text.lookTamerHands .text.lookHairPalette .text.lookShirtPalette
+                 .rodata.lookShirtObjects .bss.lookShirtRecipe .bss.lookShirtRow);
+             BUILD_DIR/src/main/model.c.o(.text.lookTamerRelook);
+             . = ALIGN(., 4);
+diff --git a/include/dw/save_tags.h b/include/dw/save_tags.h
+index e516a73..40d9ca8 100644
+--- a/include/dw/save_tags.h
++++ b/include/dw/save_tags.h
+@@ -35,7 +35,7 @@
+ #define SAVE_TAG_GROUND_PICKUP_BITS	0x000C /* bit array: stable ground pickup IDs collected today; registry content/ground-items.json */
+ #define SAVE_TAG_CARD_COUNTS		0x000D /* nibbles for card ids 66..511, low nibble first */
+ #define SAVE_TAG_CARD_STOCK		0x000E /* u16[6] daily shop cards, 0xffff sold */
+-#define SAVE_TAG_TAMER_LOOK		0x000F /* MOD_TAMER_STATE: u8 look (0 = the original tamer), hair colour, face, shirt (0 = the original), shirt colour, trousers, their colour, shoes, their colour, backpack (0 = the original, 1 = none), its colour; older saves end earlier */
++#define SAVE_TAG_TAMER_LOOK		0x000F /* MOD_TAMER_STATE: u8 look (0 = the original tamer), hair colour, face, shirt (0 = the original), shirt colour, trousers, their colour, shoes, their colour, backpack (0 = the original, 1 = none), its colour, hands (1 = small); older saves end earlier */
+ #define SAVE_TAG_REQUIRED		0x8000
+ #define SAVE_TAG_TECHNIQUE_LAYOUT	0x8003 /* u8: 1 = option A animation slots; required to prevent silent downgrade substitution */
+ /* engine tier 2 */
+diff --git a/include/dw/species.h b/include/dw/species.h
+index c0c5d76..5e00b42 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -346,8 +346,8 @@ int32_t getDigimonModelRef(int32_t type, char **file, int32_t *sector, int32_t *
+ #define TAMER_HAIR_COUNT	20
+ #define TAMER_FACE_COUNT	2	/* the faces of looks 1..: one texture each (tools/tamer_looks/face.py) */
+ /* What the player chose, in the order of the Look page's rows and of the save record */
+-#define TAMER_STATE_SIZE	11
+-extern uint8_t MOD_TAMER_STATE[TAMER_STATE_SIZE] __attribute__((section(".sbss")));
++#define TAMER_STATE_SIZE	12
++extern uint8_t MOD_TAMER_STATE[TAMER_STATE_SIZE] __attribute__((section(".sbss"), aligned(4)));
+ #define MOD_TAMER_LOOK		MOD_TAMER_STATE[0]
+ #define MOD_TAMER_HAIR		MOD_TAMER_STATE[1]
+ #define MOD_TAMER_FACE		MOD_TAMER_STATE[2]
+@@ -356,6 +356,7 @@ extern uint8_t MOD_TAMER_STATE[TAMER_STATE_SIZE] __attribute__((section(".sbss")
+ #define MOD_TAMER_TROUSERS	MOD_TAMER_STATE[5]
+ #define MOD_TAMER_SHOES		MOD_TAMER_STATE[7]
+ #define MOD_TAMER_PACK		MOD_TAMER_STATE[9]
++#define MOD_TAMER_HANDS		MOD_TAMER_STATE[11]	/* 1 = small hands */
+ /* The clothes (tools/tamer_looks/shirts.py, legs.py, shoes.py): a shirt is the torso and the arms of any look, a
+  * pair of trousers its legs, a pair of shoes its feet. Garment 0 of each kind is the original tamer's; the others
+  * are drawn with the tones of one palette row each, written for the chosen cloth colour. */
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 611bffa..4e23a4f 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -2578,8 +2578,8 @@ void free3(void *ptr);
+ #define LOOK_TOP_Y	0x40	/* the page's text: one line a row, over the tamer titles, drawn again when the page closes */
+ #define LOOK_ROW_V(row)	(LOOK_TOP_Y + 12 * (row))
+ #define LOOK_OPEN_Y	0xc4	/* the button that opens the page, under the titles */
+-#define LOOK_HINT_Y	0xc4	/* the two hints: over that button and under it */
+-#define LOOK_END_Y	0xdc
++#define LOOK_HINT_Y	0xd0	/* the two hints: under the rows */
++#define LOOK_END_Y	0xe8
+ #define LOOK_LEAVE_U	0x80	/* the buttons that save and leave: right of the second hint */
+ #define LOOK_KEY_X	0x08	/* on the name's row, right of the name */
+ #define LOOK_KEY_W	0x7c
+@@ -2587,8 +2587,11 @@ void free3(void *ptr);
+ #define LOOK_VALUE_U	0x58	/* a row's value in the text area, right of its name */
+ #define LOOK_VALUE_X	0x33	/* the value box, from the middle of the window */
+ #define LOOK_VALUE_W	86
+-#define LOOK_ROWS	TAMER_STATE_SIZE	/* hairstyle, hair colour, face, then each garment and its colour */
++#define LOOK_ROWS	TAMER_STATE_SIZE	/* hairstyle, hair colour, face, each garment and its colour, then the hands */
++#define LOOK_HANDS_ROW	11
+ #define LOOK_SHOWN	5
++#define LOOK_SCROLL_X	(LOOK_VALUE_X + LOOK_VALUE_W + 7)	/* the scroll bar: right of the value boxes, as tall as the rows shown */
++#define LOOK_SCROLL_H	(4 * 0x14 + 14)
+ #define LOOK_HEAD_OBJECT	1
+ #define LOOK_HAIR_MODE		0x34u	/* textured gouraud triangle: seven words */
+ #define LOOK_HAIR_WORDS		7
+@@ -2629,7 +2632,7 @@ static const char lookPageTextYellow[] = LAB_STR_CLOTH_YELLOW;
+ /* how many choices the page has names for, by row */
+ static const uint8_t lookPageCounts[LOOK_ROWS] = { TAMER_LOOK_COUNT, TAMER_HAIR_COUNT, TAMER_FACE_COUNT,
+ 	TAMER_SHIRT_COUNT, TAMER_CLOTH_COUNT, TAMER_TROUSERS_COUNT, TAMER_CLOTH_COUNT, TAMER_SHOES_COUNT, TAMER_CLOTH_COUNT,
+-	TAMER_PACK_COUNT, TAMER_CLOTH_COUNT };
++	TAMER_PACK_COUNT, TAMER_CLOTH_COUNT, 2 };
+ static const char lookPageTextTrousers[] = LAB_STR_TROUSERS;
+ static const char lookPageTextTrousersColour[] = LAB_STR_TROUSERS_COLOUR;
+ static const char lookPageTextShoes[] = LAB_STR_SHOES;
+@@ -2661,6 +2664,9 @@ static const char lookPageTextPack3[] = LAB_STR_BACKPACK_SCHOOL;
+ static const char lookPageTextPack4[] = LAB_STR_BACKPACK_MINI;
+ static const char lookPageTextPack5[] = LAB_STR_BACKPACK_HIKING;
+ static const char lookPageTextPack6[] = LAB_STR_BACKPACK_ROUND;
++static const char lookPageTextHands[] = LAB_STR_HANDS;
++static const char lookPageTextHands0[] = LAB_STR_HANDS_NORMAL;
++static const char lookPageTextHands1[] = LAB_STR_HANDS_SMALL;
+ /* The garments' names but the originals': the shirts', the trousers', the shoes', the backpacks' (lookPageFirst: where each kind starts) */
+ static const char *const lookPageClothes[TAMER_SHIRT_COUNT + TAMER_TROUSERS_COUNT + TAMER_SHOES_COUNT + TAMER_PACK_COUNT - 4] = {
+ 	lookPageTextShirt1, lookPageTextShirt2, lookPageTextShirt3, lookPageTextShirt4, lookPageTextShirt5,
+@@ -2673,9 +2679,10 @@ static const char *const lookPageClothes[TAMER_SHIRT_COUNT + TAMER_TROUSERS_COUN
+ static const uint8_t lookPageFirst[LOOK_GARMENTS] = { 0, TAMER_SHIRT_COUNT - 1, TAMER_SHIRT_COUNT + TAMER_TROUSERS_COUNT - 2,
+ 	                                                    TAMER_SHIRT_COUNT + TAMER_TROUSERS_COUNT + TAMER_SHOES_COUNT - 3 };
+ /* The names of the rows from the shirt's on */
+-static const char *const lookPageRowNames[2 * LOOK_GARMENTS] = { lookPageTextShirt, lookPageTextCloth, lookPageTextTrousers,
++static const char *const lookPageRowNames[2 * LOOK_GARMENTS + 1] = { lookPageTextShirt, lookPageTextCloth, lookPageTextTrousers,
+ 	                                                               lookPageTextTrousersColour, lookPageTextShoes,
+-	                                                               lookPageTextShoesColour, lookPageTextPack, lookPageTextPackColour };
++	                                                               lookPageTextShoesColour, lookPageTextPack, lookPageTextPackColour,
++	                                                               lookPageTextHands };
+ /* A cloth colour's name: a hair colour's (its number in LAB_HAIR_TEXT), or one of the two only cloth has */
+ #define LOOK_CLOTH_ORANGE	0xFE
+ #define LOOK_CLOTH_YELLOW	0xFF
+@@ -2724,6 +2731,8 @@ static char *lookPageValueText(int32_t row)
+ 		return LAB_HAIR_TEXT[value];
+ 	case 2:
+ 		return (char *)lookPageFaces[value];
++	case LOOK_HANDS_ROW:
++		return (char *)(value ? lookPageTextHands1 : lookPageTextHands0);
+ 	}
+ 	if (row & 1) {
+ 		return value == 0 ? LAB_LOOK_TEXT[0] : (char *)lookPageClothes[lookPageFirst[(row - 3) / 2] + value - 1];
+@@ -2838,7 +2847,7 @@ int32_t lookPageOpen(void)
+ 	}
+ 	/* what the file has of each row, never more than the game knows; a choice the file does not have closes the page */
+ 	for (i = 0; i < LOOK_ROWS; i++) {
+-		n = i == 0 ? head[2] + 1 : i == 1 ? head[6] : i == 2 ? TAMER_FACE_COUNT :
++		n = i == 0 ? head[2] + 1 : i == 1 ? head[6] : i == 2 ? TAMER_FACE_COUNT : i == LOOK_HANDS_ROW ? 2 :
+ 		    (i & 1) ? head[lookPageGarment[LOOK_GARMENTS + (i - 3) / 2]] : head[0x69];
+ 		lookPageState.count[i] = n < lookPageCounts[i] ? n : lookPageCounts[i];
+ 		if (n == 0 || (lookPageRowReads(i) && MOD_TAMER_STATE[i] >= lookPageState.count[i])) {
+@@ -2952,7 +2961,7 @@ void lookPageInput(void)
+ 	MOD_TAMER_STATE[row] = (MOD_TAMER_STATE[row] + lookPageState.count[row] + step) % lookPageState.count[row];
+ 	if (lookPageRowReads(row)) {
+ 		modTamerRelook();
+-		if (row != 2) { /* the row under a hairstyle or a garment is its colour: open or not with it */
++		if (row != 2 && row != LOOK_HANDS_ROW) { /* the row under a hairstyle or a garment is its colour: open or not with it */
+ 			lookPageValue(row + 1);
+ 		}
+ 	} else if (row == 1) {
+@@ -2995,16 +3004,10 @@ void lookPageRender(void)
+ 			}
+ 		}
+ 	}
+-	for (k = 0; k < 3; k++) { /* more rows above, more below */
+-		if (first > 0) {
+-			drawLine2P(0x73f6ff, LOOK_VALUE_X + LOOK_VALUE_W / 2 - k, -0x39 + k, LOOK_VALUE_X + LOOK_VALUE_W / 2 + k + 1,
+-			           -0x39 + k, 5, 0);
+-		}
+-		if (first < LOOK_ROWS - LOOK_SHOWN) {
+-			drawLine2P(0x73f6ff, LOOK_VALUE_X + LOOK_VALUE_W / 2 - k, 0x2f - k, LOOK_VALUE_X + LOOK_VALUE_W / 2 + k + 1,
+-			           0x2f - k, 5, 0);
+-		}
+-	}
++	/* the scroll bar, right of the boxes: its thumb, then its track */
++	renderBox(LOOK_SCROLL_X, -0x34 + (LOOK_SCROLL_H - LOOK_SCROLL_H * LOOK_SHOWN / LOOK_ROWS) * first / (LOOK_ROWS - LOOK_SHOWN),
++	          2, LOOK_SCROLL_H * LOOK_SHOWN / LOOK_ROWS, 0xe6, 0xe6, 0xe6, 0, 5);
++	renderBox(LOOK_SCROLL_X, -0x34, 2, LOOK_SCROLL_H, 0x20, 0x48, 0x58, 0, 5);
+ 	renderString(0, -0x29, 0x36, 0xb4, 0xc, 0, LOOK_HINT_Y, 5, 1);
+ 	renderString(0, -0x29, 0x46, LOOK_LEAVE_U, 0xc, 0, LOOK_HINT_Y + 12, 5, 1);
+ 	renderString(0, LOOK_KEY_X, -0x50, LOOK_KEY_W, 0xc, LOOK_LEAVE_U, LOOK_HINT_Y + 12, 5, 1);
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index 32c4318..38c3d7a 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -1024,7 +1024,7 @@ void tickColdAnimation(Entity *entity)
+ extern uint8_t TAMER_MODEL_BUFFER[];
+ void uploadModelTexture(void *textureData, void *component);
+ void modSmoothMapReset(void);
+-uint8_t MOD_TAMER_STATE[TAMER_STATE_SIZE] __attribute__((section(".sbss")));
++uint8_t MOD_TAMER_STATE[TAMER_STATE_SIZE] __attribute__((section(".sbss"), aligned(4)));
+ static uint32_t TAMER_COLD_READY;	/* the entry the buffer's tail holds */
+ static uint16_t TAMER_COLD_SECTOR;	/* 0: the loaded tamer has no cold entries */
+ static uint8_t TAMER_COLD_CACHED;
+@@ -1082,7 +1082,8 @@ void modLookOverlay(void)
+ int32_t modLoadTamerLook(void *component)
+ {
+ 	TAMER_COLD_SECTOR = 0;
+-	if ((MOD_TAMER_LOOK | MOD_TAMER_FACE | MOD_TAMER_SHIRT | MOD_TAMER_TROUSERS | MOD_TAMER_SHOES | MOD_TAMER_PACK) == 0) {
++	/* nothing chosen at all: no need of the overlay (it tells the original tamer in colours he does not show itself) */
++	if ((((uint32_t *)MOD_TAMER_STATE)[0] | ((uint32_t *)MOD_TAMER_STATE)[1] | ((uint32_t *)MOD_TAMER_STATE)[2]) == 0) {
+ 		return 0;
+ 	}
+ 	modLookOverlay();
+@@ -1158,6 +1159,29 @@ void lookShirtPalette(uint16_t *row, LookShirtRecipe *recipe, uint8_t *rgb)
+ 	}
+ }
+ 
++/* Small hands: each hand's corners three quarters as far from the wrist. The model has just been read: its objects
++ * still hold offsets from their table. */
++#define LOOK_HANDS	((1 << 4) | (1 << 7))	/* the objects that are hands */
++void lookTamerHands(void)
++{
++	uint32_t *object = (uint32_t *)(TAMER_MODEL_BUFFER + *(uint32_t *)TAMER_MODEL_BUFFER + 12);
++	int16_t *v;
++	int32_t i;
++	int32_t n;
++
++	if (!MOD_TAMER_HANDS) {
++		return;
++	}
++	for (i = 0; i < 8; i++, object += 7) {
++		if ((LOOK_HANDS >> i) & 1) {
++			v = (int16_t *)((uint8_t *)(object - 7 * i) + object[0]);
++			for (n = object[1] * 4; n > 0; n--, v++) {
++				*v = (*v * 3) >> 2;
++			}
++		}
++	}
++}
++
+ int32_t lookTamerLoad(void *component)
+ {
+ 	uint16_t *head = (uint16_t *)TAMER_MODEL_BUFFER;
+@@ -1209,19 +1233,21 @@ int32_t lookTamerLoad(void *component)
+ 		worn[0] = head[0x68] + (worn[3] == TAMER_PACK_NONE);
+ 	}
+ 	if (MOD_TAMER_LOOK == 0 && k == 0) {
+-		/* the original tamer with another face: the disc's model, and his texture with that face; these textures
++		/* the original tamer with another face or small hands: the disc's model, and his texture with that face; these textures
+ 		 * follow the looks' own */
+-		if (MOD_TAMER_FACE == 0 || MOD_TAMER_FACE >= head[7]) {
++		k = MOD_TAMER_FACE < head[7] ? MOD_TAMER_FACE : 0;
++		if (k == 0 && !MOD_TAMER_HANDS) {
+ 			return 0;
+ 		}
+ 		modSmoothMapReset();
+ 		texture = malloc3(0x4800);
+-		readFileSectors(TAMER_LOOK_FILE, texture, head[3] + 9 * (head[7] - 1 + MOD_TAMER_FACE), 9);
++		readFileSectors(TAMER_LOOK_FILE, texture, k == 0 ? head[0x6C] : head[3] + 9 * (head[7] - 1 + k), 9);
+ 		uploadModelTexture(texture, component);
+ 		free3(texture);
+ 		concatStrings(path, MAIN_D_8011D484, getDigimonModelName(0));
+ 		concatStrings(path, path, MAIN_D_801340E4);
+ 		readFile(path, TAMER_MODEL_BUFFER);
++		lookTamerHands();
+ 		return 1;
+ 	}
+ 	if (MOD_TAMER_LOOK == 0) { /* the original tamer in other clothes: his model without them */
+@@ -1341,6 +1367,7 @@ int32_t lookTamerLoad(void *component)
+ 			}
+ 		}
+ 	}
++	lookTamerHands();
+ 	TAMER_COLD_SECTOR = cold;
+ 	return 1;
+ }
+diff --git a/text/main/mod_lab.yaml b/text/main/mod_lab.yaml
+index 22bec84..0234001 100644
+--- a/text/main/mod_lab.yaml
++++ b/text/main/mod_lab.yaml
+@@ -568,6 +568,15 @@ MOD_LAB:
+     LAB_STR_BACKPACK_ROUND:
+       ja: "Round"
+       en_us: "Round"
++    LAB_STR_HANDS:
++      ja: "Hands"
++      en_us: "Hands"
++    LAB_STR_HANDS_NORMAL:
++      ja: "Normal"
++      en_us: "Normal"
++    LAB_STR_HANDS_SMALL:
++      ja: "Small"
++      en_us: "Small"
+     LAB_STR_CLOTH_ORANGE:
+       ja: "Orange"
+       en_us: "Orange"
+-- 
+2.55.0
+

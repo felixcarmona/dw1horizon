@@ -1,0 +1,44 @@
+From 8749bc8db76bbd140a180d1eb84d979310ebad7c Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 22 Nov 2026 13:02:51 +0000
+Subject: [PATCH] Tamer looks: the play time stays when the Look page closes
+
+The page's text shares the play time's line of the text area, and closing the page cleared it: the Player view showed
+the time cut or empty afterwards. The page writes the time again when it closes.
+---
+ src/main/game_menu.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 5aceab2..99a26c0 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -2579,7 +2579,7 @@ void free3(void *ptr);
+ #define LOOK_ROW_V(row)	(LOOK_TOP_Y + 12 * (row))
+ #define LOOK_OPEN_Y	0xc4	/* the button that opens the page, under the titles */
+ #define LOOK_HINT_Y	0xdc	/* the hint and the buttons that save and leave: under the rows */
+-#define LOOK_END_Y	0xe8
++#define LOOK_END_Y	0xf0	/* the play time's line (0xe4) is under the hint's: lookPageClose writes it again */
+ #define LOOK_KEY_W	60	/* a button: a box on the name's row, right of the name, its key and what it does in the middle */
+ #define LOOK_KEY_U(key)	((key) == 0 ? 0 : 0x40 + 0x40 * (key))	/* in the text area: the two that leave right of the hint */
+ #define LOOK_KEY_X(key)	((key) == 1 ? 0x0c : 0x4e)	/* the one that opens the page where the one that leaves is */
+@@ -2972,6 +2972,7 @@ int32_t lookPageOpen(void)
+ void lookPageClose(void)
+ {
+ 	RECT rect;
++	char buf[8];
+ 	int32_t reads = 0;
+ 	int32_t i;
+ 
+@@ -3002,6 +3003,8 @@ void lookPageClose(void)
+ 		drawString(TAMER_LEVEL_TITLES[i], 0, i * 0xc + 0x40);
+ 	}
+ 	playerKeyHint(0, LOOK_OPEN_Y);
++	sprintf(buf, FMT_PLAYTIME, (int)PLAYTIME_HOURS, (int)PLAYTIME_MINUTES);
++	drawString(buf, 0, 0xe4);
+ }
+ 
+ void lookPageInput(void)
+-- 
+2.55.0
+
