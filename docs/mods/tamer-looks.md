@@ -13,8 +13,8 @@ or another shirt in sixteen colours. The boy's are the T-shirt, striped, printed
 girl's have a bust: the fitted tee, top, cardigan and blouse, and the striped, printed, long sleeve, hoodie and jacket
 cut for her. The original hoodie is the boy's. The original hoodie, trousers, shoes and backpack take the colours too: the first choice of their
 colour row is **Original**, their own colours, and the other fifteen dye their cloth and leave the rest (cords, soles,
-the backpack's emblem) as it was. His cap does the same: on the original tamer the second row is **Cap colour**
-instead of the hair's, and the letters of its band stay. The last row, **Skin**, is his own skin or one of five
+the backpack's emblem) as it was. His cap does the same: on the original tamer the row under the hairstyle is **Cap colour**
+instead of the hair's, and the letters of its band stay. The second row, **Skin**, under the tamer's, is his own skin or one of five
 other tones, from pale to dark, on the face, the hands and whatever skin the clothes leave bare. Four more rows do the same for the legs and the feet:
 **Trousers** (the original ones, straight, baggy, skinny, tracksuit, shorts, capri, skirt, flared) and **Shoes** (the
 original ones, trainers, plain, flats, Mary Janes, ankle boots, boots, cuffed boots,
