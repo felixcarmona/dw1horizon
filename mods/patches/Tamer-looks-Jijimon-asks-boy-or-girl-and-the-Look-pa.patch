@@ -1,4 +1,4 @@
-From e603df37ee3c2810c554ad8d1edc65c706cb85ec Mon Sep 17 00:00:00 2001
+From 6ec52482f5c927743e053fc8b15359956888643d Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Sun, 22 Nov 2026 14:52:29 +0000
 Subject: [PATCH] Tamer looks: Jijimon asks boy or girl, and the Look page
@@ -12,13 +12,13 @@ right, the turn and Save hints and a line saying the look can be changed later i
 The page is a state of the questions, a frame of it per frame of the scene. The tamer is loaded for it and unloaded
 after it; his object is removed meanwhile. The title's overlays are read again first, in the language chosen since.
 ---
- src/main/game_menu.c   | 168 ++++++++++++++++++++++++++++++++++++++++-
- src/shop/script_menu.c |   9 ++-
+ src/main/game_menu.c   | 185 +++++++++++++++++++++++++++++++++++++++--
+ src/shop/script_menu.c |   9 +-
  text/main/mod_lab.yaml |   3 +
- 3 files changed, 175 insertions(+), 5 deletions(-)
+ 3 files changed, 189 insertions(+), 8 deletions(-)
 
 diff --git a/src/main/game_menu.c b/src/main/game_menu.c
-index 2bd8480..222ad55 100644
+index 2bd8480..f574ae3 100644
 --- a/src/main/game_menu.c
 +++ b/src/main/game_menu.c
 @@ -2591,6 +2591,10 @@ void free3(void *ptr);
@@ -66,7 +66,38 @@ index 2bd8480..222ad55 100644
  	lookPageKeep();
  	lookTurn = 0;
  	setRECT(&rect, 0, LOOK_TOP_Y, 256, LOOK_END_Y - LOOK_TOP_Y);
-@@ -3112,9 +3122,34 @@ void lookPageRender(void)
+@@ -3053,7 +3063,13 @@ void lookPageInput(void)
+ 	} else {
+ 		lookPageSet(row, (lookPageGet(row) % n + n + step) % n);
+ 	}
+-	if (row == 2) { /* boy or girl: the clothes the other wears give way to the first of their kind that this one does */
++	if (row == 2 && lookPageState.ask) { /* a new game's page: the other tamer as Jijimon's answer would have started them */
++		if (MOD_TAMER_GIRL) {
++			memcpy(MOD_TAMER_STATE, (uint8_t *)lookPageGirl, TAMER_STATE_SIZE);
++		} else {
++			memset(MOD_TAMER_STATE, 0, TAMER_STATE_SIZE);
++		}
++	} else if (row == 2) { /* boy or girl: the clothes the other wears give way to the first of their kind that this one does */
+ 		for (n = 0; n < LOOK_GARMENTS; n++) {
+ 			MOD_TAMER_STATE[3 + 2 * n] = lookPageNext(n, MOD_TAMER_STATE[3 + 2 * n], 0);
+ 		}
+@@ -3067,8 +3083,13 @@ void lookPageInput(void)
+ 	if (lookPageRowLoads(row)) {
+ 		modTamerRelook();
+ 		if (row == 2) {
+-			for (n = 3; n < 3 + 2 * LOOK_GARMENTS; n++) {
+-				lookPageValue(n);
++			if (lookPageState.ask) {
++				lookPageHairName();
++			}
++			for (n = lookPageState.ask ? 0 : 3; n < (lookPageState.ask ? LOOK_ROWS : 3 + 2 * LOOK_GARMENTS); n++) {
++				if (n != LOOK_HANDS_ROW) { /* not a row of the page: the new game's note has its place */
++					lookPageValue(n);
++				}
+ 			}
+ 		} else if (lookPageRowReads(row)) { /* the row under a hairstyle or a garment is its colour: open or not with it */
+ 			lookPageValue(row + 1);
+@@ -3112,9 +3133,34 @@ void lookPageRender(void)
  	if (first > LOOK_PLACES - LOOK_SHOWN) {
  		first = LOOK_PLACES - LOOK_SHOWN;
  	}
@@ -101,7 +132,7 @@ index 2bd8480..222ad55 100644
  	for (k = first; k < first + LOOK_SHOWN; k++) {
  		i = lookPageOrder[k];
  		y = -0x34 + (k - first) * 0x14;
-@@ -3133,11 +3168,8 @@ void lookPageRender(void)
+@@ -3133,11 +3179,8 @@ void lookPageRender(void)
  	renderBox(LOOK_SCROLL_X, -0x34 + (LOOK_SCROLL_H - LOOK_SCROLL_H * LOOK_SHOWN / LOOK_PLACES) * first / (LOOK_PLACES - LOOK_SHOWN),
  	          2, LOOK_SCROLL_H * LOOK_SHOWN / LOOK_PLACES, 0xe6, 0xe6, 0xe6, 0, 5);
  	renderBox(LOOK_SCROLL_X, -0x34, 2, LOOK_SCROLL_H, 0x20, 0x48, 0x58, 0, 5);
@@ -113,7 +144,7 @@ index 2bd8480..222ad55 100644
  	for (i = 0; i < LOOK_SHOWN; i++) {
  		renderInsetBox(160 + LOOK_VALUE_X, 118 - 0x34 + i * 0x14, LOOK_VALUE_W, 14, 5);
  	}
-@@ -6643,6 +6675,136 @@ void renderDigimonStatusConditions(int32_t condition)
+@@ -6643,6 +6686,136 @@ void renderDigimonStatusConditions(int32_t condition)
  static VECTOR modDigiviceSavedPos;
  static SVECTOR modDigiviceSavedRot;
  

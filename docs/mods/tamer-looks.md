@@ -148,8 +148,8 @@ a model of `TAMER.DAT` like the rest.
   `newGameStateMachine`; lines 0x3a to 0x3c of the quiz's text, `story/new-game-quiz.dws`). After his seven questions
   he asks boy or girl, as a list like theirs: a boy is the original tamer, a girl starts from a look made for her
   (`lookPageGirl`). After the name he asks what the tamer looks like and the Look page opens on the black screen, with
-  no window: the tamer on the left, every row on the right (the Tamer row too), the turn and Save hints, and a line
-  saying the look can be changed later in the menu. The tamer is loaded for the page and unloaded after it (the game
+  no window: the tamer on the left, every row on the right (the Tamer row too: on this page it starts the other tamer
+  as that answer would have), the turn and Save hints, and a line saying the look can be changed later in the menu. The tamer is loaded for the page and unloaded after it (the game
   loads him after the opening's movie, as chosen); his object is removed meanwhile, so he neither ticks nor draws
   himself. The page is one state of the questions, a frame of it per frame of the scene: it has no loop of its own.
   It reads both of the title's overlays first, in the language chosen since the title read them.
