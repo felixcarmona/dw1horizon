@@ -524,3 +524,4 @@ at 2 MB. Physical hardware validation remains outstanding.
 | `Tamer-looks-the-skin-under-the-tamer-s-row.patch` |  | Tamer looks: the skin under the tamer's row | The Skin row was the last of the Look page; it is the second now, under the row that chooses a boy or a girl. |
 | `Let-cards-0-and-65-be-owned-again.patch` |  | Let cards 0 and 65 be owned again |  |
 | `Evolution-skip-from-the-first-frames-hides-the-other.patch` |  | Evolution skip from the first frames hides the other entities first, so the tamer comes back |  |
+| `NORMAL-difficulty-late-game-enemies-have-more-HP-hit.patch` |  | NORMAL difficulty: late-game enemies have more HP, hit harder and always hurt | On NORMAL an enemy with at least 4000 maximum HP gets 250% HP and 150% Offense, and every enemy hit does at least 25% of the same hit against Defense zero (battleFormulas.normal). EASY, HARD and VS unchanged. | +8 B (four slots in MOD_BATTLE) |
