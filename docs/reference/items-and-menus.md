@@ -377,7 +377,7 @@ consumed (`partner.c:497`). "Merit N" = bought in the merit shop for N points;
   Collection counts remain capped at 9: the original 33 bytes of `SCRIPT_STATE.cards`
   retain IDs 0–65, and save record `0x000D` stores the other 223 bytes. Byte script ops
   `GIVE_CARD`/`TAKE_CARD` retain their encoding; `GIVE_CARD16`/`TAKE_CARD16` and `card16`
-  conditions address the whole range. Sentinels and unassigned IDs cannot gain copies.
+  conditions address the whole range. Cards 0 and 65 (the original game's two album-only cards) can be given by scripts and show in the album, but are never sold, packed or stocked; unassigned IDs from 66 up cannot gain copies.
 - Routine 14: without `TRIGGER_3` and `TRIGGER_4`, a 3-card pack (`rollCardPack`):
   rarity by `randomLimit(100)` → 0: 1 %, 1: 4 %, 2: 15 %, 3: 30 %, 4: 50 %, then a
   uniform real card within that rarity. Every purchase, including one pack and the
