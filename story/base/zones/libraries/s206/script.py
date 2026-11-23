@@ -284,7 +284,7 @@ def talk():    # section 8: back from the rink's menu, a quick match or a round 
     else:
         narrator.say(t13.u14)
     curling_format.set(0)
-    if curling_cups_won == 5 and curling_doubles_won == 5 and curling_crowd_won == 5 and not medal.curling_legend:
+    if curling_cups_won == 5 and not medal.curling_legend:
         medal.curling_legend.set()
         sound(0, 7)
         narrator.say(t13.u24)

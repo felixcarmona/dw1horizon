@@ -1,4 +1,4 @@
-From 8b143403717b5f67c5b6d426ffa4499d6c63647b Mon Sep 17 00:00:00 2001
+From c70d2b9c12bf7904cc561f8a4d9048bb3ab26371 Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Mon, 23 Nov 2026 08:08:02 +0000
 Subject: [PATCH] A sixteenth medal: Curling Legend
@@ -145,7 +145,7 @@ index 1459e19..cf0a7bc 100644
  		}
  
 diff --git a/text/main/game_menu.yaml b/text/main/game_menu.yaml
-index f4511cd..533cd12 100644
+index f4511cd..a88fac1 100644
 --- a/text/main/game_menu.yaml
 +++ b/text/main/game_menu.yaml
 @@ -111,6 +111,15 @@ MENU_LABELS:
@@ -157,10 +157,10 @@ index f4511cd..533cd12 100644
 +      en_us: Curling Legend
 +    STR_MEDAL_DESCRIPTION_CURLING_LEGEND:
 +      ja: レジェンドカップで優勝
-+      en_us: Won the Legend Cup in singles,
++      en_us: Won the Legend Cup,
 +    STR_MEDAL_DESCRIPTION_CURLING_LEGEND_MODES:
-+      ja: シングルス、ダブルス、みんなで
-+      en_us: doubles and free-for-all
++      ja: リンクでいちばんのカップ
++      en_us: the hardest cup of the rink
      STR_MEDAL_NAME_100_FISH:
        ja: 釣り１００ぴき
        en_us: 100 Fish
