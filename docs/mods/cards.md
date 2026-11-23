@@ -1,5 +1,11 @@
 # Card data and build inputs
 
+**The original cards keep their original artwork.** `content/cards/new.json` ships no `replaces` rows:
+every entry of `MOD_CARD_ART` is `0xffff`, cards 1–64 are read from the disc's `CARD.ALL` with NEW CARDS
+ON or OFF, and `CARD2.ALL` holds only the 240 new cards. The replacement-art mechanism described below
+stays in the engine and the tools (a `replaces` row would work again), and the sections that speak of
+64 replacements record how it was measured when all 64 originals had replacement art.
+
 The engine reserves IDs 0–511. Keep original card numbers stable: 0 and 65 are
 sentinels, and 1–64 come from `content/tables/cards.json`. Additional real cards
 are the rows of `content/cards/new.json`. Duplicate species and multiple cards
