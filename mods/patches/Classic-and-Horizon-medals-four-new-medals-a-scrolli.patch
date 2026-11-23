@@ -1,8 +1,8 @@
-From 9b30d16ee08869c6e2be70a4bff670f6f8e6c225 Mon Sep 17 00:00:00 2001
+From 43b1a7d4e2f26c78ebb097e0977aea687588de73 Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Mon, 23 Nov 2026 12:36:43 +0000
 Subject: [PATCH] Classic and Horizon medals: four new medals, a scrolling
- medal view with drawn medals, gold edges on what Horizon adds
+ medal view with drawn medals, gold corners on what Horizon adds
 
 The medal table holds 20 rows and knows three more conditions: every card in a range, every species a partner can
 be, and the city's residents (the original ones or all of them). A row can ask for an option and can hide its medal
@@ -11,21 +11,21 @@ without it; hidden medals are not counted on the Player page.
 The medal view shows a grid of five medals a row that scrolls by rows, a large picture of the selected medal, its
 name, two lines of text and a state line: earned, a count, or not earned yet. The pictures come from the species
 file (content/medals) and are loaded over the old coin stamps when the view opens; the spinning coin and its mesh
-buffer are gone.
+buffer are gone. The cursor stays on the medal last looked at.
 
-Chart, City page and card album draw a gold edge on the boxes of what the original game did not have.
+Chart, City page and card album draw a small gold corner on the boxes of what the original game did not have.
 ---
  include/dw/map_object.h  |   4 -
  include/dw/species.h     |   6 +
- include/dw/tournament.h  |  19 ++-
- src/main/game_menu.c     | 297 +++++++++++++++++++++++----------------
+ include/dw/tournament.h  |  17 ++-
+ src/main/game_menu.c     | 321 ++++++++++++++++++++++++---------------
  src/main/main.c          |  31 +++-
  src/main/map_object.c    |  28 ----
  src/main/mod_species.c   |   5 +-
- src/main/tamer.c         | 102 ++++++++++----
+ src/main/tamer.c         | 102 ++++++++++---
  src/main/tournament.c    |   3 +-
- text/main/game_menu.yaml |  48 +++++++
- 10 files changed, 353 insertions(+), 190 deletions(-)
+ text/main/game_menu.yaml |  48 ++++++
+ 10 files changed, 377 insertions(+), 188 deletions(-)
 
 diff --git a/include/dw/map_object.h b/include/dw/map_object.h
 index 3553e57..bd336d6 100644
@@ -73,10 +73,10 @@ index 163a20c..c82f153 100644
  #define SPECIES_BALANCE_SWAP_MAX 19
  /*
 diff --git a/include/dw/tournament.h b/include/dw/tournament.h
-index 5a500c3..fec95f5 100644
+index 5a500c3..50bcf8c 100644
 --- a/include/dw/tournament.h
 +++ b/include/dw/tournament.h
-@@ -25,20 +25,32 @@ int32_t checkTournamentMedalConditions(void);
+@@ -25,20 +25,30 @@ int32_t checkTournamentMedalConditions(void);
   * content/tables/medals.json. A row is checked every tamer tick (MOD_MEDAL_TICK), by the script routine 0x16 (MOD_MEDAL_SCRIPT, `text`
   * is the textbox shown), or both, and may raise the tamer level (MOD_MEDAL_LEVEL_UP).
   */
@@ -90,9 +90,7 @@ index 5a500c3..fec95f5 100644
 +#define MOD_MEDAL_NEW_CARDS	16
 +#define MOD_MEDAL_STORY		32
 +#define MOD_MEDAL_HIDE		64
-+/* the box edges of what Horizon adds (chart, City page, card album), and where the original game's residents end */
-+#define MOD_ADDED_EDGE_LIGHT	0x40d8ff
-+#define MOD_ADDED_EDGE_DARK	0x0868a0
++/* where the original game's residents end: the ids from here on are Horizon's (the City page marks them) */
 +#define MOD_ORIGINAL_RESIDENTS_END	59
 +#define MOD_MEDAL_COUNT		19 /* medals 0..18: the triggers 0x16C.. hold no more */
  enum {
@@ -111,7 +109,7 @@ index 5a500c3..fec95f5 100644
  };
  typedef struct {
  	int16_t medal; /* -1 = unused row */
-@@ -51,6 +63,9 @@ typedef struct {
+@@ -51,6 +61,9 @@ typedef struct {
  } ModMedal;
  extern ModMedal MOD_MEDALS[MOD_MEDAL_MAX];
  int32_t modMedalHolds(ModMedal *m);
@@ -122,7 +120,7 @@ index 5a500c3..fec95f5 100644
  void initTournamentSchedule(void);
  void initTournamentInfo(int32_t source);
 diff --git a/src/main/game_menu.c b/src/main/game_menu.c
-index f574ae3..e6646af 100644
+index f574ae3..b7673e5 100644
 --- a/src/main/game_menu.c
 +++ b/src/main/game_menu.c
 @@ -29,6 +29,7 @@
@@ -349,18 +347,54 @@ index f574ae3..e6646af 100644
  				count++;
  			}
  		}
-@@ -5459,7 +5452,9 @@ void renderEvoChartView(void)
+@@ -4894,6 +4887,31 @@ static int32_t chartRows(void)
+ }
+ 
+ /* the VRAM slot of the shown box k's icon: its place in the tab, modulo the slots */
++/* MOD (classic and Horizon medals): a small gold corner on the box of what the original game did not have, in the
++ * chart, the City page and the card album. `x`, `y`: the box's border as renderBorderBox takes it. A primitive
++ * added earlier is drawn over the later ones of its layer, so this comes before the box's picture; the dark
++ * triangle under the gold one is its edge. */
++static __attribute__((noinline)) void modAddedCorner(int32_t x, int32_t y)
++{
++	POLY_F3 *prim;
++	int32_t i;
++
++	x += 18 - 0xa0;
++	y += 1 - 0x78;
++	prim = (POLY_F3 *)GsGetWorkBase();
++	for (i = 0; i < 2; i++) {
++		setPolyF3(prim);
++		if (i == 0) {
++			setRGB0(prim, 0xff, 0xd8, 0x40);
++		} else {
++			setRGB0(prim, 0x60, 0x38, 0x00);
++		}
++		setXY3(prim, x - 5 - i * 2, y, x, y, x, y + 5 + i * 2);
++		AddPrim(ACTIVE_ORDERING_TABLE->org + 5, prim++);
++	}
++	GsSetWorkBase((PACKET *)prim);
++}
++
+ static int32_t chartSlot(int32_t k)
+ {
+ 	return (CHART_TOP * CHART_COLS + k) % CHART_PAGE_SIZE;
+@@ -5397,10 +5415,13 @@ void renderEvoChartView(void)
+ 		chartDrawStatus();
+ 		for (k = 0; k < CHART_PAGE_COUNT; k++) {
  			id = CHART_CELL_ID(CHART_PAGE_IDS[k]);
- 			x = CITY_VIEW ? CHART_CELL_LEVEL(CHART_PAGE_IDS[k]) - 2 : 0;
- 			w = CITY_VIEW && !isDigimonRecruited(id) ? 2 : 1;
--			renderBorderBox(bx - 1, by - 1, 0x12, 0x12, 0xbebebe, 0x3c3c3c,
-+			/* MOD (classic and Horizon medals): a gold edge on what the original game did not have */
-+			slot = CITY_VIEW ? id >= MOD_ORIGINAL_RESIDENTS_END : id > NUM_EVO_CHART_DIGIMON;
-+			renderBorderBox(bx - 1, by - 1, 0x12, 0x12, slot ? MOD_ADDED_EDGE_LIGHT : 0xbebebe, slot ? MOD_ADDED_EDGE_DARK : 0x3c3c3c,
- 			                CITY_VIEW ? CHART_TAB_FILL[x][0] / w : 0x87,
- 			                CITY_VIEW ? CHART_TAB_FILL[x][1] / w : 0x87,
- 			                CITY_VIEW ? CHART_TAB_FILL[x][2] / w : 0x87, 5);
-@@ -6282,10 +6277,100 @@ void renderEvoChartDetail(void)
++			chartBoxXY(k % CHART_COLS, k / CHART_COLS, &bx, &by);
++			if (CITY_VIEW ? id >= MOD_ORIGINAL_RESIDENTS_END : id > NUM_EVO_CHART_DIGIMON) {
++				modAddedCorner(bx - 1, by - 1);
++			}
+ 			if (CITY_VIEW ? ((CHART_PAGE_IDS[k] & 0x8000) && !isDigimonRecruited(id)) : !hasDigimonRaised(id)) {
+ 				continue;
+ 			}
+-			chartBoxXY(k % CHART_COLS, k / CHART_COLS, &bx, &by);
+ 			shift = ((PLAYTIME_FRAMES + k * 3) % 20) < 10; /* two idle frames, half a second each, out of step */
+ 			slot = chartSlot(k);
+ 			if (id <= NUM_EVO_CHART_DIGIMON) {
+@@ -6282,10 +6303,100 @@ void renderEvoChartDetail(void)
  	}
  }
  
@@ -461,7 +495,7 @@ index f574ae3..e6646af 100644
  
  	switch (MENU_STATE) {
  	case 0:
-@@ -6298,63 +6383,45 @@ void renderMedalView(void)
+@@ -6298,63 +6409,45 @@ void renderMedalView(void)
  			MENU_STATE = 2;
  		}
  	case 2:
@@ -487,12 +521,6 @@ index f574ae3..e6646af 100644
 -						}
 -					}
 -					renderDigiviceMedals();
--				}
--			} else {
--#if !VERSION_IS(US)
--				if (MEDAL_SELECTOR_INDEX == i) {
--					renderString(0, -0x42, 0x17, 0xc, 0xc, 0xe4, 0xc, 5, 1);
--					renderString(0, -0x7e, 0x27, 0xc, 0xc, 0xe4, 0xc, 5, 1);
 +		for (n = MEDAL_TOP_ROW * 5; n < MEDAL_SHOWN_COUNT && n < MEDAL_TOP_ROW * 5 + 15; n++) {
 +			i = MEDAL_SHOWN[n];
 +			x = (n % 5) * 37 - 130;
@@ -505,6 +533,12 @@ index f574ae3..e6646af 100644
 +					drawLine2P(0x20e0ff, x - 1 + j, y - 1 + j, x - 1 + j, y + 24 - j, 5, 0);
 +					drawLine2P(0x20e0ff, x + 24 - j, y - 1 + j, x + 24 - j, y + 24 - j, 5, 0);
  				}
+-			} else {
+-#if !VERSION_IS(US)
+-				if (MEDAL_SELECTOR_INDEX == i) {
+-					renderString(0, -0x42, 0x17, 0xc, 0xc, 0xe4, 0xc, 5, 1);
+-					renderString(0, -0x7e, 0x27, 0xc, 0xc, 0xe4, 0xc, 5, 1);
+-				}
 -#endif
 -				renderRectPolyFT4(((i % 5) * 38) - 0x7c, ((i / 5) * 24) - 0x3d, 0xf,
 -				                  0x18, 0xf0, 0xc8, 0x18, 0x7dc7, 5, 0);
@@ -550,19 +584,17 @@ index f574ae3..e6646af 100644
  	}
  }
  
-@@ -6503,8 +6570,9 @@ void renderCardsView(void)
- 						renderRectPolyFT4(j * 24 - 0x81, i * 24 - 0x3e, 0x10, 0x10, u, v, tpage, clut, 5, 0);
- 					}
- 				}
--				renderBorderBox(j * 24 + 0x1e, i * 24 + 0x39, 0x12, 0x12,
--				                0xbebebe, 0x3c3c3c, 0x69, 0x69, 0x69, 5);
-+				/* MOD (classic and Horizon medals): a gold edge on the cards the original game did not have */
-+				renderBorderBox(j * 24 + 0x1e, i * 24 + 0x39, 0x12, 0x12, card >= 66 ? MOD_ADDED_EDGE_LIGHT : 0xbebebe,
-+				                card >= 66 ? MOD_ADDED_EDGE_DARK : 0x3c3c3c, 0x69, 0x69, 0x69, 5);
- 			}
- 		}
- 
-@@ -6927,30 +6995,6 @@ int8_t entityId;
+@@ -6464,6 +6557,9 @@ void renderCardsView(void)
+ 			for (j = 0; j < 11; j++) {
+ 				card = j + (i + CARD_TOP_ROW) * 11;
+ 				if (card >= limit || (card >= 66 && !modCardIsReal(card))) continue;
++				if (card >= 66) {
++					modAddedCorner(j * 24 + 0x1e, i * 24 + 0x39);
++				}
+ 				amount = getCardAmount(card);
+ 				if (amount > 0) {
+ 					tpage = 0x18;
+@@ -6927,30 +7023,6 @@ int8_t entityId;
  	tickAnimation(entity);
  }
  
@@ -593,7 +625,7 @@ index f574ae3..e6646af 100644
  int32_t drawDigimonMovesText(void)
  {
  	RECT rect;
-@@ -7125,6 +7169,8 @@ int32_t drawMedalViewStrings(void)
+@@ -7125,6 +7197,8 @@ int32_t drawMedalViewStrings(void)
  {
  	RECT rect1;
  	RECT rect2;
@@ -602,7 +634,7 @@ index f574ae3..e6646af 100644
  
  	rect1 = MEDAL_VIEW_TEXT_AREA;
  	rect2 = MEDAL_DETAIL_AREA;
-@@ -7132,6 +7178,7 @@ int32_t drawMedalViewStrings(void)
+@@ -7132,6 +7206,7 @@ int32_t drawMedalViewStrings(void)
  	case 0:
  		clearTextSubArea(&rect1);
  		DRAW_STRING_CELLS(MAIN_D_80124C54, 0, 0xf0);
@@ -610,7 +642,7 @@ index f574ae3..e6646af 100644
  		MENU_SUB_STATE = 1;
  		break;
  	case 1:
-@@ -7139,19 +7186,19 @@ int32_t drawMedalViewStrings(void)
+@@ -7139,19 +7214,19 @@ int32_t drawMedalViewStrings(void)
  		MENU_SUB_STATE = 2;
  		break;
  	case 2:

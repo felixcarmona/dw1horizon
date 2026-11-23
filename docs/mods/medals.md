@@ -43,6 +43,6 @@ looked at; when an option was switched off and that medal is no longer listed, i
 
 ## Telling the original from what Horizon adds
 
-The Digimon chart, the City page and the card album draw a gold edge on the box of every entry the original game did
-not have: a species past the original 61, a resident past the original 50, a card id from 66 up. The classic medals
-count the boxes with the grey edge.
+The Digimon chart, the City page and the card album draw a small gold corner, top right, on the box of every entry
+the original game did not have: a species past the original 61, a resident past the original 50, a card id from 66
+up. The classic medals count the boxes without the corner.
