@@ -55,5 +55,9 @@
   "327": {
     "moves": ["Megaton Punch", "Tremar", "Wind Cutter", null],
     "weights": [30, 30, 30, 10]
+  },
+  "404": {
+    "moves": ["Inifinity Burn", "Megaton Punch", "Buster Dive", "Nightmare Syndromer"],
+    "weights": [35, 25, 25, 15]
   }
 }

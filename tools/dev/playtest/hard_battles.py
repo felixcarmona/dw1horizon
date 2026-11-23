@@ -146,6 +146,9 @@ def main():
     ap.add_argument('--before',action='store_true',help='old NORMAL image before the Defense extension; same owned encounter data')
     ap.add_argument('--cases',default='wild,boss');ap.add_argument('--profiles',default='late,strong,max');ap.add_argument('--modes',default='NORMAL,HARD')
     ap.add_argument('--battle-state',type=Path,help='paused checkpoint at the real final-scene startBattle entry')
+    ap.add_argument('--boss-screen',type=int,default=104,help='screen of the boss case (default the repeat Machinedramon in the Ice Sanctuary)')
+    ap.add_argument('--boss-slot',type=int,default=0,help='NPC slot of the boss on that screen')
+    ap.add_argument('--boss-triggers',default='',help='flags to set before entering the boss screen, e.g. 256 (Digitamamon recruited) for the summit duel; replaces the Ice Sanctuary setup')
     ap.add_argument('--boss-move',type=int,default=47,help='legal boss technique in slot zero (default Buster Dive)')
     ap.add_argument('--recoveries',type=int,default=0,help='player-strategy trial: carry large recoveries and throw one below 75%% HP')
     ap.add_argument('--muscle-first',action='store_true',help='select the legal Muscle Charge command until its five-use budget is spent, then Buster Dive')
@@ -161,9 +164,13 @@ def main():
     if a.before:
         for key in ('defenseKnee','defenseTailHalf'):formulas['damage'].pop(key)
     species={s['id']:s for s in (B.load(p.relative_to(ROOT)) for p in (ROOT/'content/species').glob('*.json'))}
+    imported_finishers={f['species']:f['move'] for f in B.load('content/finishers/imports.json')['finishers']}
     tf=B.load('content/tables/type-factors.json')['typeFactors']
     results=json.loads((a.out/'results.json').read_text()) if a.resume and (a.out/'results.json').exists() else []
     profiles={'late':(800,8005,9520),'strong':(1500,15000,15000),'max':(9999,30000,30000)}
+    # Two partners players showed on their status screens (offense, defense, speed, brains): real ones are lopsided,
+    # with about 8000 HP and 700-800 Defense whatever their Offense is.
+    profiles.update({'shown-mega':((1176,713,630,670),8281,7496),'shown-offense':((7633,772,1820,709),7334,7041)})
     def stop_signal(n,f):raise SystemExit(128+n)
     signal.signal(signal.SIGTERM,stop_signal)
     try:
@@ -182,7 +189,7 @@ def main():
             e.run('save',base);stamp.write_text(identity+'\n')
         assert len(e.ram())==0x200000
         assert e.peek('MOD_COLD_CACHE_TYPE','i')<0,'2 MB proof must not have expanded RAM'
-        for kind,screen,slot,profile,modeName in [(k,s,n,p,m) for k,s,n in [('wild',153,0),('boss',225 if a.battle_state else 104,0)] if k in a.cases.split(',') for p in a.profiles.split(',') for m in a.modes.split(',')]:
+        for kind,screen,slot,profile,modeName in [(k,s,n,p,m) for k,s,n in [('wild',153,0),('boss',225 if a.battle_state else a.boss_screen,0 if a.battle_state else a.boss_slot)] if k in a.cases.split(',') for p in a.profiles.split(',') for m in a.modes.split(',')]:
             case=f'{kind}-{profile}-{modeName.lower()}'
             if any(r.get('case')==case for r in results):continue
             mode=2 if modeName=='HARD' else 0
@@ -192,9 +199,11 @@ def main():
                 assert a.battle_state.with_suffix('.sha256').read_text().strip()==identity
                 e.run('pause');e.run('load',str(a.battle_state));e.run('pause')
             else:
-                if kind=='boss':e.gs('pstat','16','1')
+                if kind=='boss' and a.boss_triggers:
+                    for n in a.boss_triggers.split(','):e.gs('trigger',n,'1')
+                elif kind=='boss':e.gs('pstat','16','1')
                 assert e.warp(screen)
-                if kind=='boss':
+                if kind=='boss' and not a.boss_triggers:
                     e.gs('approach','0','600')
                     e.poke('NPC_ENTITIES+0x9c',bytes(2))
                 e.wait(2);fixture(e,close=True,enemy_slot=slot)
@@ -208,7 +217,7 @@ def main():
             learned=[0]*4
             for move in loadout:learned[move//32]|=1<<(move%32)
             e.poke('PARTNER_ENTITY+0x58',struct.pack('<4I',*learned))
-            value,health,magic=profiles[profile];stats=(value,)*4
+            value,health,magic=profiles[profile];stats=value if isinstance(value,tuple) else (value,)*4
             e.poke('PARTNER_ENTITY+0x38',struct.pack('<4h',*stats))
             e.poke('PARTNER_ENTITY+0x48',struct.pack('<4h',health,magic,health,magic))
             if a.recoveries:
@@ -269,7 +278,7 @@ def main():
             for row in hits(e):
                 attacker,target,move,o,d,power,partner,roll,actual,charge,finRoll,frame,zeroNative,blockPercent=row
                 assert roll in range(90,111)
-                tech=B.load(next((ROOT/'content/techniques').glob(str(move)+'-*.json')).relative_to(ROOT)) if move<58 else species[attacker]['finisher']
+                tech=B.load(next((ROOT/'content/techniques').glob(str(move)+'-*.json')).relative_to(ROOT)) if move<58 else species[attacker].get('finisher') or imported_finishers[attacker]
                 total=sum(10 if x is None else tf[B.ELEMENTS.index(tech['element'])][B.ELEMENTS.index(x)] for x in species[target].get('specialties',[None]*3))
                 if move>=58:
                     # Species-owned finishers override the shared MOVE_DATA row.
