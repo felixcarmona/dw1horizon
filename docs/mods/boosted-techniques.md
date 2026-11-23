@@ -14,8 +14,8 @@ partner still has to learn it like any other.
 - The speed gauge is not touched: the technique is ready as fast as before.
 - Finishers and Counter are never boosted.
 
-The technique menu shows the boosted technique's power in red with a small arrow drifting up and its MP cost in blue
-with one drifting down, in the equipped list and in the technique's panel.
+The technique menu shows the boosted technique's power in red with a small up arrow and its MP cost in blue
+with a small down arrow, in the equipped list and in the technique's panel.
 
 ## Where it lives
 
