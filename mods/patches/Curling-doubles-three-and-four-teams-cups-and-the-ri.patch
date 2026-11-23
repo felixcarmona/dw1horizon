@@ -1,4 +1,4 @@
-From 5aa5975249c9b585fa1e87cf7de444f984d7d000 Mon Sep 17 00:00:00 2001
+From aed23010369c4d0071dacbf44fe6449efea9bc6d Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Mon, 23 Nov 2026 08:08:02 +0000
 Subject: [PATCH] Curling: doubles, three and four teams, cups and the rink's
@@ -6,12 +6,12 @@ Subject: [PATCH] Curling: doubles, three and four teams, cups and the rink's
 
 A match can be a duel against a city recruit, doubles with a recruit as the mate, or three or four teams on the rink at once. The rink opens on a menu of its own: the mode, then a quick match against rivals drawn at random or one of five cups (Rookie, Amateur, Expert, Elite, Legend), each asking for its own fish, closed in grey until the cup before it is won and its four players live in the city, and marked with a trophy once won. A singles or doubles cup is a knockout of eight shown as a draw before each round; a free-for-all cup is three matches on points shown as a table. Cup progress is kept per mode in saved variables 7, 8 and 15. The classic match against Penguinmon or MetalMamemon is unchanged.
 ---
- src/kar/kar.c     | 1979 +++++++++++++++++++++++++++++++++++++++------
+ src/kar/kar.c     | 1982 +++++++++++++++++++++++++++++++++++++++------
  text/kar/kar.yaml |  100 +++
- 2 files changed, 1848 insertions(+), 231 deletions(-)
+ 2 files changed, 1851 insertions(+), 231 deletions(-)
 
 diff --git a/src/kar/kar.c b/src/kar/kar.c
-index 30c811d..316c013 100644
+index 30c811d..2736666 100644
 --- a/src/kar/kar.c
 +++ b/src/kar/kar.c
 @@ -1,4 +1,5 @@
@@ -1175,7 +1175,7 @@ index 30c811d..316c013 100644
  				}
  				KAR_renderSprite(&arr.sprite[0]);
  			}
-@@ -1363,22 +2179,598 @@ void KAR_renderReadyPrompt(void)
+@@ -1363,22 +2179,601 @@ void KAR_renderReadyPrompt(void)
  	}
  }
  
@@ -1291,15 +1291,17 @@ index 30c811d..316c013 100644
 +	}
 +}
 +
-+/* The eight of a cup's draw, top to bottom, as rows of KAR_RIVALS (0 the
-+ * player): the cup's four and three guests from the other cups, the city's
-+ * first. The player meets one of the cup's first two, then its third, then its
-+ * champion. */
++/* The eight of a cup's draw, top to bottom: 0 the player, a row of KAR_RIVALS for
++ * the cup's four, and for the three guests a species with the top bit set, drawn
++ * among everyone the city has; 0xff a place nobody takes. The player meets one of
++ * the cup's first two, then its third, then its champion. */
++#define KAR_SLOT_GUEST 0x80
++#define KAR_SLOT_EMPTY 0xff
 +static void KAR_drawSlots(void)
 +{
 +	static const uint8_t guest[3] = { 2, 5, 7 };
 +	int32_t base = readPStat(KAR_CUP_PSTAT) * 4 - 3, seed = readPStat(KAR_SEED_PSTAT);
-+	int32_t i, k, n = 0, pass;
++	int32_t i, k, r, n = 0;
 +	uint8_t *s = KAR_LOBBY.slot;
 +
 +	s[0] = 0;
@@ -1307,12 +1309,13 @@ index 30c811d..316c013 100644
 +	s[3] = base + 2;
 +	s[4] = base + 3;
 +	s[6] = base + ((seed & 1) ^ 1);
-+	for (pass = 0; pass < 2; pass++) {
-+		for (i = 0; i < 20 && n < 3; i++) {
-+			k = 1 + (seed + i * 7) % 20;
-+			if ((k < base || k > base + 3) && KAR_inCity(k) == (pass == 0)) {
-+				s[guest[n++]] = k;
-+			}
++	s[2] = s[5] = s[7] = KAR_SLOT_EMPTY;
++	for (i = 0; i < KAR_CHART_ICONS && n < 3; i++) {
++		k = 1 + (seed + i * 7) % KAR_CHART_ICONS;
++		for (r = 0; r < 4 && KAR_RIVALS[base + r].icon != k; r++) {
++		}
++		if (r == 4 && isDigimonRecruited(k)) {
++			s[guest[n++]] = KAR_SLOT_GUEST | k;
 +		}
 +	}
 +}
@@ -1446,8 +1449,8 @@ index 30c811d..316c013 100644
 +		set.sprite[0].y = y;
 +		set.sprite[0].r = set.sprite[0].g = set.sprite[0].b = light;
 +		KAR_renderSpriteSized(&set.sprite[0], 16, 16);
-+	} else {
-+		KAR_renderIcon(KAR_RIVALS[row].icon, x, y, 16, light);
++	} else if (row != KAR_SLOT_EMPTY) {
++		KAR_renderIcon(row & KAR_SLOT_GUEST ? row & 0x7f : KAR_RIVALS[row].icon, x, y, 16, light);
 +	}
 +}
 +
@@ -1471,7 +1474,7 @@ index 30c811d..316c013 100644
 +	renderString(0, 0x10, -0x68, 0x80, 13, 0, 13, 6, 1);
 +	renderString(0, -0x80, 0x5c, 0xfc, 13, 0, 104, 6, 1);
 +	{
-+		int32_t won[4], last = (readPStat(KAR_SEED_PSTAT) >> 1) & 1 ? s[6] : s[7];
++		int32_t won[4], last = s[7] == KAR_SLOT_EMPTY || ((readPStat(KAR_SEED_PSTAT) >> 1) & 1) ? s[6] : s[7];
 +
 +		won[0] = s[0];
 +		won[1] = s[3];
@@ -1779,7 +1782,7 @@ index 30c811d..316c013 100644
  	}
  }
  
-@@ -1392,7 +2784,7 @@ void KAR_handleAimScroll(void)
+@@ -1392,7 +2787,7 @@ void KAR_handleAimScroll(void)
  	}
  	dx = 0;
  	dy = 0;
@@ -1788,7 +1791,7 @@ index 30c811d..316c013 100644
  		return;
  	}
  	if ((MAIN_D_80135254 >= 10) || (MAIN_D_80135254 < -9) ||
-@@ -1432,9 +2824,11 @@ void KAR_updateRingMarkers(void)
+@@ -1432,9 +2827,11 @@ void KAR_updateRingMarkers(void)
  	zones = KAR_D_8005B460;
  	if (MAIN_D_80135244 == 0xB) {
  		MAIN_D_80135257 = 0;
@@ -1803,7 +1806,7 @@ index 30c811d..316c013 100644
  			for (stoneIndex = 0; stoneIndex < 5; stoneIndex++, stone++) {
  				if ((stone->state > 0) && (stone->speed > 0)) {
  					for (zoneIndex = 0; zoneIndex < 4; zoneIndex++) {
-@@ -1466,9 +2860,9 @@ void KAR_updateRingMarkers(void)
+@@ -1466,9 +2863,9 @@ void KAR_updateRingMarkers(void)
  	if (MAIN_D_80135244 == 0xD) {
  		int8_t ring;
  
@@ -1816,7 +1819,7 @@ index 30c811d..316c013 100644
  			if (ring != 0) {
  				flags.ring[ring - 1] = 1;
  			}
-@@ -1498,9 +2892,8 @@ void KAR_checkStonesStopped(void)
+@@ -1498,9 +2895,8 @@ void KAR_checkStonesStopped(void)
  	if (MAIN_D_80135244 != 0xb) {
  		return;
  	}
@@ -1828,7 +1831,7 @@ index 30c811d..316c013 100644
  		for (n = 0; n < 5; n++, stone++) {
  			if (stone->state > 0) {
  				if (stone->speed > 0) {
-@@ -1514,8 +2907,8 @@ void KAR_checkStonesStopped(void)
+@@ -1514,8 +2910,8 @@ void KAR_checkStonesStopped(void)
  	if (moving == 0) {
  		MAIN_D_80135244 = 0xc;
  	}
@@ -1839,7 +1842,7 @@ index 30c811d..316c013 100644
  		stone2 = stone2;
  		for (n = 0; n < 5; n++, stone2++) {
  			if (stone2->state > 0) {
-@@ -1546,10 +2939,10 @@ void KAR_updateCollisions(void)
+@@ -1546,10 +2942,10 @@ void KAR_updateCollisions(void)
  	/* Collision resolution only changes positive states to other positive
  	 * states (the pegged stone becomes 3). Keep all positive stones, even
  	 * stationary ones, in the original row/slot order. No pairs are pruned. */
@@ -1853,7 +1856,7 @@ index 30c811d..316c013 100644
  				active[count] = stone;
  				cur[count].vy = prev[count].vy = 0;
  				cur[count].pad = prev[count].pad = 0;
-@@ -1610,8 +3003,8 @@ void KAR_bounceOffWall(void)
+@@ -1610,8 +3006,8 @@ void KAR_bounceOffWall(void)
  	KarStone *stone;
  	int16_t d;
  
@@ -1864,7 +1867,7 @@ index 30c811d..316c013 100644
  		for (n = 0; n < 5; n++, stone++) {
  			if (stone->state <= 0) {
  				continue;
-@@ -2082,19 +3475,15 @@ void KAR_beginAiming(void)
+@@ -2082,19 +3478,15 @@ void KAR_beginAiming(void)
  	int8_t idx;
  	int8_t n;
  
@@ -1889,7 +1892,7 @@ index 30c811d..316c013 100644
  	}
  
  	MAIN_D_8013524C = -0x400;
-@@ -2107,7 +3496,7 @@ void KAR_selectPreviousStone(void)
+@@ -2107,7 +3499,7 @@ void KAR_selectPreviousStone(void)
  
  	if (MAIN_D_8013523A > 0) {
  		for (row = MAIN_D_8013523A - 1; row >= 0; row--) {
@@ -1898,7 +1901,7 @@ index 30c811d..316c013 100644
  				MAIN_D_8013523A = row;
  				return;
  			}
-@@ -2121,7 +3510,7 @@ void KAR_selectNextStone(void)
+@@ -2121,7 +3513,7 @@ void KAR_selectNextStone(void)
  
  	if (MAIN_D_8013523A < 4) {
  		for (row = MAIN_D_8013523A + 1; row < 5; row++) {
@@ -1907,7 +1910,7 @@ index 30c811d..316c013 100644
  				MAIN_D_8013523A = row;
  				return;
  			}
-@@ -2136,7 +3525,7 @@ void KAR_turnAimLeft(delta)
+@@ -2136,7 +3528,7 @@ void KAR_turnAimLeft(delta)
  {
  	int8_t idx;
  
@@ -1916,7 +1919,7 @@ index 30c811d..316c013 100644
  	ENTITY_TABLE[idx]->posData->rotation.vy -= delta;
  	MAIN_D_8013524C += delta;
  }
-@@ -2148,7 +3537,7 @@ void KAR_turnAimRight(delta)
+@@ -2148,7 +3540,7 @@ void KAR_turnAimRight(delta)
  {
  	int8_t idx;
  
@@ -1925,7 +1928,7 @@ index 30c811d..316c013 100644
  	ENTITY_TABLE[idx]->posData->rotation.vy -= delta;
  	MAIN_D_8013524C += delta;
  }
-@@ -2156,13 +3545,7 @@ void KAR_turnAimRight(delta)
+@@ -2156,13 +3548,7 @@ void KAR_turnAimRight(delta)
  void KAR_beginThrow(void)
  {
  	MAIN_D_80135244 = 7;
@@ -1940,7 +1943,7 @@ index 30c811d..316c013 100644
  }
  
  /* The prompts draw from the tick, so an extra pass replays them before its
-@@ -2274,7 +3657,7 @@ int32_t KAR_tickHintBox(int32_t n)
+@@ -2274,7 +3660,7 @@ int32_t KAR_tickHintBox(int32_t n)
  		return 0;
  	}
  
@@ -1949,7 +1952,7 @@ index 30c811d..316c013 100644
  		n = (int8_t)KAR_drawHintPagePenguinmon(n, MAIN_D_8013522C);
  	} else {
  		n = (int8_t)KAR_drawHintPageMetalMamemon(n, MAIN_D_8013522C);
-@@ -2311,9 +3694,12 @@ void KAR_classifyStoneRings(void)
+@@ -2311,9 +3697,12 @@ void KAR_classifyStoneRings(void)
  	int32_t i;
  	int32_t zi;
  
@@ -1965,7 +1968,7 @@ index 30c811d..316c013 100644
  		for (i = 0; i < 5; i++, stone++) {
  			stone->prevRing = stone->ring;
  			stone->ring = 0;
-@@ -2333,9 +3719,7 @@ void KAR_classifyStoneRings(void)
+@@ -2333,9 +3722,7 @@ void KAR_classifyStoneRings(void)
  					continue;
  				}
  				stone->ring = zi + 1;
@@ -1976,7 +1979,7 @@ index 30c811d..316c013 100644
  				break;
  			}
  		}
-@@ -2344,6 +3728,18 @@ void KAR_classifyStoneRings(void)
+@@ -2344,6 +3731,18 @@ void KAR_classifyStoneRings(void)
  	KAR_registerThrownStone();
  }
  
@@ -1995,7 +1998,7 @@ index 30c811d..316c013 100644
  int8_t KAR_tickScoreTally(void)
  {
  	KarTallyValues values;
-@@ -2361,20 +3757,22 @@ int8_t KAR_tickScoreTally(void)
+@@ -2361,20 +3760,22 @@ int8_t KAR_tickScoreTally(void)
  		int8_t player;
  		int8_t ring;
  
@@ -2026,7 +2029,7 @@ index 30c811d..316c013 100644
  			for (j = 0; j < 5; j++, rowStone++) {
  				if (rowStone->state >= 100) {
  					rowStone->state -= 100;
-@@ -2391,7 +3789,7 @@ int8_t KAR_tickScoreTally(void)
+@@ -2391,7 +3792,7 @@ int8_t KAR_tickScoreTally(void)
  		int8_t ring;
  
  		while (MAIN_D_80135256 >= 0) {
@@ -2035,7 +2038,7 @@ index 30c811d..316c013 100644
  			if (ring != 0) {
  				MAIN_D_80134A4F = MAIN_D_80135256;
  				MAIN_D_8013522E = 0;
-@@ -2406,9 +3804,9 @@ int8_t KAR_tickScoreTally(void)
+@@ -2406,9 +3807,9 @@ int8_t KAR_tickScoreTally(void)
  	}
  
  	if (MAIN_D_8013522E == 0) {
@@ -2048,7 +2051,7 @@ index 30c811d..316c013 100644
  			if (done == 1) {
  				MAIN_D_8013522E = 1;
  			} else {
-@@ -2423,12 +3821,12 @@ int8_t KAR_tickScoreTally(void)
+@@ -2423,12 +3824,12 @@ int8_t KAR_tickScoreTally(void)
  		int8_t player;
  		int8_t ring;
  
@@ -2066,7 +2069,7 @@ index 30c811d..316c013 100644
  			if (ring == 3) {
  				playSound2(8, 6);
  			} else {
-@@ -2438,13 +3836,13 @@ int8_t KAR_tickScoreTally(void)
+@@ -2438,13 +3839,13 @@ int8_t KAR_tickScoreTally(void)
  	}
  
  	if (MAIN_D_8013522E == 2 && MAIN_D_80135256 >= 0) {
@@ -2085,7 +2088,7 @@ index 30c811d..316c013 100644
  				}
  				MAIN_D_80135234 -= 10;
  				if (MAIN_D_80135230++ >= 7) {
-@@ -2466,6 +3864,131 @@ int8_t KAR_tickScoreTally(void)
+@@ -2466,6 +3867,131 @@ int8_t KAR_tickScoreTally(void)
  	return 0;
  }
  
@@ -2217,7 +2220,7 @@ index 30c811d..316c013 100644
  int32_t KAR_chooseOpponentShot(void)
  {
  	KarStone *stone;
-@@ -2480,8 +4003,8 @@ int32_t KAR_chooseOpponentShot(void)
+@@ -2480,8 +4006,8 @@ int32_t KAR_chooseOpponentShot(void)
  	if (MAIN_D_80135248 == 2) {
  		angle = KAR_findClearShotAngle(0, -0x6a4);
  		if (angle == -1) {
@@ -2228,7 +2231,7 @@ index 30c811d..316c013 100644
  				angle = KAR_aimAtStoneInRing(1, 0x14, &tx, &tz);
  				if (angle != -1) {
  					KAR_setOpponentShot(0, angle, tx, tz);
-@@ -2496,7 +4019,7 @@ int32_t KAR_chooseOpponentShot(void)
+@@ -2496,7 +4022,7 @@ int32_t KAR_chooseOpponentShot(void)
  						} else {
  							angle = KAR_aimAtRandomStone();
  							KAR_setOpponentShot(0, angle, 0, -0x960);
@@ -2237,7 +2240,7 @@ index 30c811d..316c013 100644
  						}
  					}
  				}
-@@ -2511,7 +4034,7 @@ int32_t KAR_chooseOpponentShot(void)
+@@ -2511,7 +4037,7 @@ int32_t KAR_chooseOpponentShot(void)
  					} else {
  						angle = KAR_aimAtRandomStone();
  						KAR_setOpponentShot(0, angle, 0, -0x960);
@@ -2246,7 +2249,7 @@ index 30c811d..316c013 100644
  					}
  				}
  			}
-@@ -2522,7 +4045,7 @@ int32_t KAR_chooseOpponentShot(void)
+@@ -2522,7 +4048,7 @@ int32_t KAR_chooseOpponentShot(void)
  		px = ENTITY_TABLE[MAIN_D_80135248]->posData[4].posMatrix.workm.t[0];
  		pz = ENTITY_TABLE[MAIN_D_80135248]->posData[4].posMatrix.workm.t[2];
  
@@ -2255,7 +2258,7 @@ index 30c811d..316c013 100644
  			angle = ratan2(-0x8fc - pz, -0x190 - px);
  			clear = KAR_findClearShotAngle(-0x190, -0x8fc);
  			if (angle == clear) {
-@@ -2534,7 +4057,7 @@ int32_t KAR_chooseOpponentShot(void)
+@@ -2534,7 +4060,7 @@ int32_t KAR_chooseOpponentShot(void)
  					KAR_setOpponentShot(1, angle, 0, -0x6a4);
  				} else {
  					angle = ratan2(-0x6a4 - pz, -px);
@@ -2264,7 +2267,7 @@ index 30c811d..316c013 100644
  						angle += rand() % BKS(AI_NOISE);
  					} else {
  						angle -= rand() % BKS(AI_NOISE);
-@@ -2544,23 +4067,23 @@ int32_t KAR_chooseOpponentShot(void)
+@@ -2544,23 +4070,23 @@ int32_t KAR_chooseOpponentShot(void)
  			}
  		} else {
  			for (i = 0; i < 5; i++) {
@@ -2294,7 +2297,7 @@ index 30c811d..316c013 100644
  				switch (KAR_D_80063914.stone.type) {
  				case 0:
  				case 1:
-@@ -2571,7 +4094,7 @@ int32_t KAR_chooseOpponentShot(void)
+@@ -2571,7 +4097,7 @@ int32_t KAR_chooseOpponentShot(void)
  						KAR_setOpponentShot(1, angle, -0x190, -0x8fc);
  					} else if (KAR_D_80063914.stone.state < 0) {
  						angle = ratan2(-0x6a4 - pz, -px);
@@ -2303,7 +2306,7 @@ index 30c811d..316c013 100644
  							angle += rand() % BKS(AI_NOISE);
  						} else {
  							angle -= rand() % BKS(AI_NOISE);
-@@ -2589,12 +4112,12 @@ int32_t KAR_chooseOpponentShot(void)
+@@ -2589,12 +4115,12 @@ int32_t KAR_chooseOpponentShot(void)
  					} else {
  						angle = KAR_aimBankShot(&KAR_D_80063914.stone, 0x190, -0x8fc);
  						KAR_setOpponentShot(0, angle, 0x190, -0x8fc);
@@ -2318,7 +2321,7 @@ index 30c811d..316c013 100644
  						angle += rand() % BKS(AI_NOISE);
  					} else {
  						angle -= rand() % BKS(AI_NOISE);
-@@ -2702,8 +4225,8 @@ int32_t KAR_findClearShotAngle(int16_t x, int16_t z)
+@@ -2702,8 +4228,8 @@ int32_t KAR_findClearShotAngle(int16_t x, int16_t z)
  	while (z < pz) {
  		px += (int16_t)((step * rcos(ang)) / 4096);
  		pz += (int16_t)((step * rsin(ang)) / 4096);
@@ -2329,7 +2332,7 @@ index 30c811d..316c013 100644
  			for (n = 0; n < 5; n++, stone++) {
  				if (stone->state > 0) {
  					dist = KAR_distance(px - stone->pos.vx, pz - stone->pos.vz);
-@@ -2737,7 +4260,7 @@ int32_t KAR_aimAtStoneInRing(player, key, outX, outZ)
+@@ -2737,7 +4263,7 @@ int32_t KAR_aimAtStoneInRing(player, key, outX, outZ)
  	int32_t i;
  	int32_t r;
  
@@ -2338,7 +2341,7 @@ index 30c811d..316c013 100644
  	for (i = 0; i < 5; i++, stone++) {
  		if ((stone->state < 2) && (stone->ring == key)) {
  			r = KAR_findClearShotAngle((int16_t)stone->pos.vx, (int16_t)stone->pos.vz);
-@@ -2763,15 +4286,15 @@ void KAR_setOpponentShot(int8_t row, int32_t val, int16_t b, int16_t c)
+@@ -2763,15 +4289,15 @@ void KAR_setOpponentShot(int8_t row, int32_t val, int16_t b, int16_t c)
  		t = KAR_D_8005B418;
  		n = KAR_findUnusedStoneOfType((int8_t)t.type[row][i]);
  		if (n >= 0) {
@@ -2357,7 +2360,7 @@ index 30c811d..316c013 100644
  }
  
  int32_t KAR_aimAtRandomStone(void)
-@@ -2784,7 +4307,7 @@ int32_t KAR_aimAtRandomStone(void)
+@@ -2784,7 +4310,7 @@ int32_t KAR_aimAtRandomStone(void)
  	int16_t px;
  	int16_t pz;
  
@@ -2366,7 +2369,7 @@ index 30c811d..316c013 100644
  	if (KAR_D_80063914.stone.state < 0) {
  		ret = ratan2(-0xc1c, -0x190);
  		return ret;
-@@ -2843,7 +4366,8 @@ int32_t KAR_findUnusedStoneOfType(key)
+@@ -2843,7 +4369,8 @@ int32_t KAR_findUnusedStoneOfType(key)
  	KarStone *stone;
  	int32_t i;
  
@@ -2376,7 +2379,7 @@ index 30c811d..316c013 100644
  	for (i = 0; i < 5; i++, stone++) {
  		if ((stone->state == -1) && (stone->type == key)) {
  			return i;
-@@ -2884,9 +4408,9 @@ int32_t KAR_computeThrowPower(a, b, c)
+@@ -2884,9 +4411,9 @@ int32_t KAR_computeThrowPower(a, b, c)
  
  void KAR_registerThrownStone(void)
  {
@@ -2389,7 +2392,7 @@ index 30c811d..316c013 100644
  	MAIN_D_80134A4F = -1;
  }
  
-@@ -2922,19 +4446,13 @@ void KAR_tickMatchState(void)
+@@ -2922,19 +4449,13 @@ void KAR_tickMatchState(void)
  	int8_t prompt;
  	int8_t player;
  
@@ -2413,7 +2416,7 @@ index 30c811d..316c013 100644
  		clearTextArea();
  		MAIN_D_80135250 = 0;
  		break;
-@@ -2967,28 +4485,28 @@ void KAR_tickMatchState(void)
+@@ -2967,28 +4488,28 @@ void KAR_tickMatchState(void)
  	case 4:
  		MAIN_D_80135250 = 1;
  		MAIN_D_80135244 = 5;
@@ -2451,7 +2454,7 @@ index 30c811d..316c013 100644
  					KAR_selectNextStone();
  				}
  			}
-@@ -2999,23 +4517,23 @@ void KAR_tickMatchState(void)
+@@ -2999,23 +4520,23 @@ void KAR_tickMatchState(void)
  #if VERSION_EQUAL_OR_NEWER(JP_TRIAL)
  			else
  #endif
@@ -2479,7 +2482,7 @@ index 30c811d..316c013 100644
  #if VERSION_IS(JP)
  			if (KAR_tickHintBox(1) != 0) {
  				if ((POLLED_INPUT & 0x2000) && (MAIN_D_8013524C < -0x18F)) {
-@@ -3110,8 +4628,8 @@ void KAR_tickMatchState(void)
+@@ -3110,8 +4631,8 @@ void KAR_tickMatchState(void)
  		break;
  	case 7:
  		MAIN_D_80135224 = tickCameraMoveTo(
@@ -2490,7 +2493,7 @@ index 30c811d..316c013 100644
  		if (MAIN_D_80135224 == 1) {
  			MAIN_D_80135244 = 8;
  		}
-@@ -3121,64 +4639,55 @@ void KAR_tickMatchState(void)
+@@ -3121,64 +4642,55 @@ void KAR_tickMatchState(void)
  		if ((MAIN_D_8013523E += 0x64) >= 0xBB8) {
  			MAIN_D_8013523E = 0;
  			MAIN_D_80135244 = 6;
@@ -2576,7 +2579,7 @@ index 30c811d..316c013 100644
  		moveCameraByDiff(&KAR_D_80063904, &KAR_D_800638F4);
  		break;
  	case 0xC: {
-@@ -3186,14 +4695,17 @@ void KAR_tickMatchState(void)
+@@ -3186,14 +4698,17 @@ void KAR_tickMatchState(void)
  
  		thunkStopSoundMask(MAIN_D_80135228);
  		KAR_classifyStoneRings();
@@ -2600,7 +2603,7 @@ index 30c811d..316c013 100644
  				}
  			}
  		}
-@@ -3219,15 +4731,10 @@ void KAR_tickMatchState(void)
+@@ -3219,15 +4734,10 @@ void KAR_tickMatchState(void)
  		break;
  	case 0xF:
  		if (KAR_tickHintBox(3) == 0) {
@@ -2618,7 +2621,7 @@ index 30c811d..316c013 100644
  			}
  			if (MAIN_D_80135250 != 0) {
  				MAIN_D_80135224 = tickCameraMoveTo(ENTITY_TABLE[player]->posData->location.vx,
-@@ -3240,21 +4747,10 @@ void KAR_tickMatchState(void)
+@@ -3240,21 +4750,10 @@ void KAR_tickMatchState(void)
  					MAIN_D_80135252 = 0;
  				}
  			} else {
@@ -2643,7 +2646,7 @@ index 30c811d..316c013 100644
  						MAIN_D_8013523A = j;
  						break;
  					}
-@@ -3269,18 +4765,24 @@ void KAR_tickMatchState(void)
+@@ -3269,18 +4768,24 @@ void KAR_tickMatchState(void)
  		MAIN_D_80135224 = tickCameraMoveTo(ENTITY_TABLE[player]->posData->location.vx,
  		                                   ENTITY_TABLE[player]->posData->location.vz, 0x14);
  		if (MAIN_D_80135224 == 1) {
@@ -2671,7 +2674,7 @@ index 30c811d..316c013 100644
  				MAIN_D_80135244 = 0x11;
  			} else {
  				MAIN_D_80135244 = 5;
-@@ -3288,14 +4790,22 @@ void KAR_tickMatchState(void)
+@@ -3288,14 +4793,22 @@ void KAR_tickMatchState(void)
  		}
  		break;
  	case 0x11:
@@ -2696,7 +2699,7 @@ index 30c811d..316c013 100644
  			MAIN_D_80135252 = 6;
  		} else {
  			MAIN_D_80135252 = 4;
-@@ -3323,5 +4833,12 @@ void KAR_tickMatchState(void)
+@@ -3323,5 +4836,12 @@ void KAR_tickMatchState(void)
  		MAIN_D_8013523E = 0;
  		KAR_finishMatch();
  		break;
